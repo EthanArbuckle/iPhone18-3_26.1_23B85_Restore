@@ -12,67 +12,67 @@
 - (BOOL)showsVenues;
 - (CGSize)size;
 - (VKEdgeInsets)edgeInsets;
-- (VKMapSnapshotCreator)initWithSize:(CGSize)a3 scale:(double)a4 homeQueue:(id)a5 signpostId:(unint64_t)a6 mapType:(int)a7 mapDisplayStyles:(id *)a8 mapDisplayStylesCount:(unint64_t)a9 auditToken:(id)a10 useMultisampling:(BOOL)a11 withError:(id *)a12;
+- (VKMapSnapshotCreator)initWithSize:(CGSize)size scale:(double)scale homeQueue:(id)queue signpostId:(unint64_t)id mapType:(int)type mapDisplayStyles:(id *)styles mapDisplayStylesCount:(unint64_t)count auditToken:(id)self0 useMultisampling:(BOOL)self1 withError:(id *)self2;
 - (id).cxx_construct;
 - (int64_t)labelScaleFactor;
 - (int64_t)terrainMode;
 - (unsigned)levelOfDetail;
-- (void)_transferSettingsFrom:(id)a3 to:(id)a4;
-- (void)addCustomFeatureDataSource:(id)a3;
-- (void)addOverlay:(id)a3;
+- (void)_transferSettingsFrom:(id)from to:(id)to;
+- (void)addCustomFeatureDataSource:(id)source;
+- (void)addOverlay:(id)overlay;
 - (void)cancel;
-- (void)cancelFlushingTileDecodes:(BOOL)a3;
-- (void)capturePostSnapshotStatisticsIfNecessary:(id)a3;
+- (void)cancelFlushingTileDecodes:(BOOL)decodes;
+- (void)capturePostSnapshotStatisticsIfNecessary:(id)necessary;
 - (void)clearResources;
 - (void)dealloc;
 - (void)didPresent;
 - (void)didReceiveMemoryWarning;
-- (void)didUpdateSceneStatus:(unsigned __int8)a3;
+- (void)didUpdateSceneStatus:(unsigned __int8)status;
 - (void)initWithSize:scale:homeQueue:signpostId:mapType:mapDisplayStyles:mapDisplayStylesCount:auditToken:useMultisampling:withError:;
-- (void)removeCustomFeatureDataSource:(id)a3;
+- (void)removeCustomFeatureDataSource:(id)source;
 - (void)renderNextSnapshot;
-- (void)renderSnapshot:(id)a3;
+- (void)renderSnapshot:(id)snapshot;
 - (void)setAllowsBackgroundGPUSubmission;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6;
-- (void)setClearFontCache:(BOOL)a3;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
-- (void)setEmphasis:(unsigned __int8)a3;
-- (void)setIncreaseContrastEnabled:(BOOL)a3;
-- (void)setLabelScaleFactor:(int64_t)a3;
-- (void)setLevelOfDetail:(unsigned __int8)a3;
-- (void)setLocalizeLabels:(BOOL)a3;
-- (void)setMapKitClientMode:(unsigned __int8)a3;
-- (void)setMapKitUsage:(unsigned __int8)a3;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5;
-- (void)setMapType:(int)a3;
-- (void)setNewInterfaceEnabled:(BOOL)a3;
-- (void)setPointsOfInterestFilter:(id)a3;
-- (void)setPreferStaleTiles:(BOOL)a3;
-- (void)setRouteContext:(id)a3;
-- (void)setRouteOverlay:(id)a3;
-- (void)setSelectedTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5;
-- (void)setShowsBuildings:(BOOL)a3;
-- (void)setShowsContourLabels:(BOOL)a3;
-- (void)setShowsGlobe:(BOOL)a3;
-- (void)setShowsHiking:(BOOL)a3 withTopographicFeatures:(BOOL)a4;
-- (void)setShowsHillshade:(BOOL)a3;
-- (void)setShowsLabels:(BOOL)a3;
-- (void)setShowsPOIUpdates:(BOOL)a3;
-- (void)setShowsPhysicalFeatureLabels:(BOOL)a3;
-- (void)setShowsPointLabels:(BOOL)a3;
-- (void)setShowsPointsOfInterest:(BOOL)a3;
-- (void)setShowsRoadLabels:(BOOL)a3;
-- (void)setShowsRoadShields:(BOOL)a3;
-- (void)setShowsTintBands:(BOOL)a3;
-- (void)setShowsTraffic:(BOOL)a3;
-- (void)setShowsVenues:(BOOL)a3;
-- (void)setTerrainMode:(int64_t)a3;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch;
+- (void)setClearFontCache:(BOOL)cache;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
+- (void)setEmphasis:(unsigned __int8)emphasis;
+- (void)setIncreaseContrastEnabled:(BOOL)enabled;
+- (void)setLabelScaleFactor:(int64_t)factor;
+- (void)setLevelOfDetail:(unsigned __int8)detail;
+- (void)setLocalizeLabels:(BOOL)labels;
+- (void)setMapKitClientMode:(unsigned __int8)mode;
+- (void)setMapKitUsage:(unsigned __int8)usage;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw;
+- (void)setMapType:(int)type;
+- (void)setNewInterfaceEnabled:(BOOL)enabled;
+- (void)setPointsOfInterestFilter:(id)filter;
+- (void)setPreferStaleTiles:(BOOL)tiles;
+- (void)setRouteContext:(id)context;
+- (void)setRouteOverlay:(id)overlay;
+- (void)setSelectedTrailWithId:(unint64_t)id name:(id)name locale:(id)locale;
+- (void)setShowsBuildings:(BOOL)buildings;
+- (void)setShowsContourLabels:(BOOL)labels;
+- (void)setShowsGlobe:(BOOL)globe;
+- (void)setShowsHiking:(BOOL)hiking withTopographicFeatures:(BOOL)features;
+- (void)setShowsHillshade:(BOOL)hillshade;
+- (void)setShowsLabels:(BOOL)labels;
+- (void)setShowsPOIUpdates:(BOOL)updates;
+- (void)setShowsPhysicalFeatureLabels:(BOOL)labels;
+- (void)setShowsPointLabels:(BOOL)labels;
+- (void)setShowsPointsOfInterest:(BOOL)interest;
+- (void)setShowsRoadLabels:(BOOL)labels;
+- (void)setShowsRoadShields:(BOOL)shields;
+- (void)setShowsTintBands:(BOOL)bands;
+- (void)setShowsTraffic:(BOOL)traffic;
+- (void)setShowsVenues:(BOOL)venues;
+- (void)setTerrainMode:(int64_t)mode;
 - (void)softDealloc;
 - (void)tileGroupDidChange;
 - (void)tileGroupWillChange;
 - (void)timeout;
 - (void)willBecomeFullyDrawn;
-- (void)willLayoutWithTimestamp:(double)a3 withContext:(void *)a4;
+- (void)willLayoutWithTimestamp:(double)timestamp withContext:(void *)context;
 @end
 
 @implementation VKMapSnapshotCreator
@@ -104,13 +104,13 @@
   return result;
 }
 
-- (void)setRouteContext:(id)a3
+- (void)setRouteContext:(id)context
 {
-  v5 = a3;
-  if (self->_routeContext != v5)
+  contextCopy = context;
+  if (self->_routeContext != contextCopy)
   {
-    v20 = v5;
-    objc_storeStrong(&self->_routeContext, a3);
+    v20 = contextCopy;
+    objc_storeStrong(&self->_routeContext, context);
     v6 = *(self->_mapEngine.__ptr_ + 5241);
     if (v6)
     {
@@ -137,33 +137,33 @@
           v22 = 0;
           if (v20)
           {
-            v11 = [(VKRouteContext *)v20 routeInfo];
-            v12 = [v11 route];
-            v13 = [v12 transportType];
+            routeInfo = [(VKRouteContext *)v20 routeInfo];
+            route = [routeInfo route];
+            transportType = [route transportType];
 
-            if (v13 >= 7)
+            if (transportType >= 7)
             {
               LOWORD(v14) = 260;
             }
 
             else
             {
-              v14 = (0x50403020100uLL >> (8 * v13)) & 7 | 0x100;
+              v14 = (0x50403020100uLL >> (8 * transportType)) & 7 | 0x100;
             }
 
             HIWORD(v22) = v14;
-            v15 = [(VKRouteContext *)v20 routeInfo];
-            v16 = [v15 route];
-            v17 = [v16 source];
+            routeInfo2 = [(VKRouteContext *)v20 routeInfo];
+            route2 = [routeInfo2 route];
+            source = [route2 source];
 
-            if (v17 >= 6)
+            if (source >= 6)
             {
               v18 = 256;
             }
 
             else
             {
-              v18 = (0x40003020100uLL >> (8 * v17)) & 7 | 0x100;
+              v18 = (0x40003020100uLL >> (8 * source)) & 7 | 0x100;
             }
 
             LOWORD(v22) = v18;
@@ -175,17 +175,17 @@
       }
     }
 
-    v19 = [(VKMapSnapshotCreator *)self _labelSettings];
-    md::LabelSettings_Navigation::setRouteContext((v19 + 8), v21);
+    _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+    md::LabelSettings_Navigation::setRouteContext((_labelSettings + 8), v21);
   }
 }
 
-- (void)setRouteOverlay:(id)a3
+- (void)setRouteOverlay:(id)overlay
 {
-  v5 = a3;
-  if (self->_routeOverlay != v5)
+  overlayCopy = overlay;
+  if (self->_routeOverlay != overlayCopy)
   {
-    objc_storeStrong(&self->_routeOverlay, a3);
+    objc_storeStrong(&self->_routeOverlay, overlay);
     ptr = self->_mapEngine.__ptr_;
     md::HomeQueueScheduler::waitForSynchronization(*(ptr + 5920), "[VKMapSnapshotCreator setRouteOverlay:]");
     md::RouteOverlayContainer::persistentOverlays(&v12, *(*(ptr + 5213) + 16));
@@ -195,9 +195,9 @@
       do
       {
         v8 = v7[4];
-        if (v8 != v5)
+        if (v8 != overlayCopy)
         {
-          md::RouteOverlayContainer::removeOverlay(*(*(ptr + 5213) + 16), v5, 1);
+          md::RouteOverlayContainer::removeOverlay(*(*(ptr + 5213) + 16), overlayCopy, 1);
         }
 
         v9 = v7[1];
@@ -230,9 +230,9 @@
       while (v10 != v13);
     }
 
-    if (v5)
+    if (overlayCopy)
     {
-      md::RouteOverlayContainer::addOverlay(*(*(ptr + 5213) + 16), v5, 1);
+      md::RouteOverlayContainer::addOverlay(*(*(ptr + 5213) + 16), overlayCopy, 1);
     }
 
     std::__tree<geo::Pool<gdc::FallbackNode>::Element *,std::less<geo::Pool<gdc::FallbackNode>::Element *>,std::allocator<geo::Pool<gdc::FallbackNode>::Element *>>::destroy(v13[0]);
@@ -241,14 +241,14 @@
 
 - (void)didPresent
 {
-  v2 = [(VKMapSnapshotCreator *)self activeCanvas];
-  [v2 didLayout];
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+  [activeCanvas didLayout];
 }
 
-- (void)willLayoutWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)willLayoutWithTimestamp:(double)timestamp withContext:(void *)context
 {
-  v6 = [(VKMapSnapshotCreator *)self activeCanvas];
-  [v6 updateWithTimestamp:a4 withContext:a3];
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+  [activeCanvas updateWithTimestamp:context withContext:timestamp];
 }
 
 - (void)didReceiveMemoryWarning
@@ -258,7 +258,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator didReceiveMemoryWarning: %p", &v8, 0xCu);
   }
 
@@ -282,12 +282,12 @@
   [v7 prune:1];
 }
 
-- (void)didUpdateSceneStatus:(unsigned __int8)a3
+- (void)didUpdateSceneStatus:(unsigned __int8)status
 {
-  if ((a3 - 2) <= 2)
+  if ((status - 2) <= 2)
   {
     self->_didBecomeFullyDrawn = 1;
-    self->_hasFailedTiles = (a3 - 3) < 2;
+    self->_hasFailedTiles = (status - 3) < 2;
   }
 }
 
@@ -298,7 +298,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p willBecomeFullyDrawn", buf, 0xCu);
   }
 
@@ -454,7 +454,7 @@ void __44__VKMapSnapshotCreator_willBecomeFullyDrawn__block_invoke(uint64_t a1)
   }
 
   v20 = *(self->_mapEngine.__ptr_ + 5207);
-  v21 = [v20 flipImage];
+  flipImage = [v20 flipImage];
   v23 = self->_ioSurfaces.__end_;
   v22 = self->_ioSurfaces.__cap_;
   if (v23 >= v22)
@@ -489,7 +489,7 @@ void __44__VKMapSnapshotCreator_willBecomeFullyDrawn__block_invoke(uint64_t a1)
       v32 = v23 - v26;
       v33 = (8 * v28);
       v34 = (8 * v28 - 8 * v32);
-      *v33 = v21;
+      *v33 = flipImage;
       v24 = (v33 + 1);
       memcpy(v34, v26, v27);
       self->_ioSurfaces.__begin_ = v34;
@@ -512,7 +512,7 @@ LABEL_48:
     std::__throw_bad_array_new_length[abi:nn200100]();
   }
 
-  *v23 = v21;
+  *v23 = flipImage;
   v24 = v23 + 1;
 LABEL_39:
   self->_ioSurfaces.__end_ = v24;
@@ -544,10 +544,10 @@ LABEL_39:
   }
 
   md::StyleLogic::setDisplayStyle(v46, v45 + v44);
-  v47 = [(VKMapSnapshotCreator *)self activeCanvas];
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
   ptr = self->_mapEngine.__ptr_;
   v51 = 0;
-  [v47 renderSceneWithEngine:ptr completion:v50];
+  [activeCanvas renderSceneWithEngine:ptr completion:v50];
   std::__function::__value_func<void ()(void)>::~__value_func[abi:nn200100](v50);
 
   ++self->_nextDisplayStyleIndex;
@@ -842,10 +842,10 @@ LABEL_22:
   }
 }
 
-- (void)capturePostSnapshotStatisticsIfNecessary:(id)a3
+- (void)capturePostSnapshotStatisticsIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = v4;
+  necessaryCopy = necessary;
+  v5 = necessaryCopy;
   if (self->_captureMemoryStatistics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -873,21 +873,21 @@ LABEL_22:
 
   else
   {
-    [v4 setMemoryStats:0];
+    [necessaryCopy setMemoryStats:0];
   }
 }
 
-- (void)cancelFlushingTileDecodes:(BOOL)a3
+- (void)cancelFlushingTileDecodes:(BOOL)decodes
 {
   v9[4] = *MEMORY[0x1E69E9840];
   completion = self->_completion;
   if (completion)
   {
-    v4 = a3;
+    decodesCopy = decodes;
     self->_completion = 0;
 
-    v6 = [(VKMapSnapshotCreator *)self activeCanvas];
-    [v6 cancelLoad];
+    activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+    [activeCanvas cancelLoad];
 
     md::MapEngine::cancelDisplayLink(self->_mapEngine.__ptr_);
     v7 = *(self->_taskContext.__ptr_ + 1);
@@ -895,11 +895,11 @@ LABEL_22:
     v9[3] = v9;
     geo::TaskQueue::barrierSync(v7, v9);
     std::__function::__value_func<void ()(void)>::~__value_func[abi:nn200100](v9);
-    v8 = [(VKMapSnapshotCreator *)self activeCanvas];
-    [v8 cancelTileRequests];
+    activeCanvas2 = [(VKMapSnapshotCreator *)self activeCanvas];
+    [activeCanvas2 cancelTileRequests];
 
     [(VKMapSnapshotCreator *)self clearResources];
-    if (v4)
+    if (decodesCopy)
     {
       md::TaskContext::flushTileDecodeQueues(self->_taskContext.__ptr_);
     }
@@ -913,7 +913,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p snapshot request timed out", &v7, 0xCu);
   }
 
@@ -942,7 +942,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p cancel snapshot", &v5, 0xCu);
   }
 
@@ -957,82 +957,82 @@ LABEL_22:
   [(VKMapSnapshotCreator *)self cancelFlushingTileDecodes:1];
 }
 
-- (void)renderSnapshot:(id)a3
+- (void)renderSnapshot:(id)snapshot
 {
-  v7 = a3;
-  if (v7)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     (*(*self->_expirationTimer.__ptr_ + 24))(self->_expirationTimer.__ptr_, 0, 70.0);
-    v4 = [v7 copy];
+    v4 = [snapshotCopy copy];
     completion = self->_completion;
     self->_completion = v4;
 
-    v6 = [(VKMapSnapshotCreator *)self activeCanvas];
-    [v6 loadScene];
+    activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+    [activeCanvas loadScene];
 
     md::MapEngine::updateRunLoopStatus(self->_mapEngine.__ptr_);
   }
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v11 = [(VKMapSnapshotCreator *)self activeCanvas];
-  [v11 setCenterCoordinate:var0 altitude:var1 yaw:a4 pitch:{a5, a6}];
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+  [activeCanvas setCenterCoordinate:var0 altitude:var1 yaw:altitude pitch:{yaw, pitch}];
 }
 
-- (void)setClearFontCache:(BOOL)a3
+- (void)setClearFontCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v4 = +[VKSharedResourcesManager sharedResources];
-  [v4 setSnapshotterIsInService:v3];
+  [v4 setSnapshotterIsInService:cacheCopy];
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw
 {
-  v9 = a3;
-  v8 = [(VKMapSnapshotCreator *)self activeCanvas];
-  [v8 setMapRegion:v9 pitch:a4 yaw:a5];
+  regionCopy = region;
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
+  [activeCanvas setMapRegion:regionCopy pitch:pitch yaw:yaw];
 }
 
-- (void)removeCustomFeatureDataSource:(id)a3
+- (void)removeCustomFeatureDataSource:(id)source
 {
-  v4 = a3;
-  md::LabelSettings::removeCustomFeatureDataSource([(VKMapSnapshotCreator *)self _labelSettings], v4);
+  sourceCopy = source;
+  md::LabelSettings::removeCustomFeatureDataSource([(VKMapSnapshotCreator *)self _labelSettings], sourceCopy);
 }
 
-- (void)addCustomFeatureDataSource:(id)a3
+- (void)addCustomFeatureDataSource:(id)source
 {
-  v4 = a3;
-  md::LabelSettings::addCustomFeatureDataSource([(VKMapSnapshotCreator *)self _labelSettings], v4);
+  sourceCopy = source;
+  md::LabelSettings::addCustomFeatureDataSource([(VKMapSnapshotCreator *)self _labelSettings], sourceCopy);
 }
 
-- (void)setLabelScaleFactor:(int64_t)a3
+- (void)setLabelScaleFactor:(int64_t)factor
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    factorCopy = factor;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setLabelScaleFactor: %ld", &v8, 0x16u);
   }
 
-  v6 = [(VKMapSnapshotCreator *)self _labelSettings];
-  if (a3 >= 6)
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  if (factor >= 6)
   {
-    v7 = 1;
+    factorCopy2 = 1;
   }
 
   else
   {
-    v7 = a3;
+    factorCopy2 = factor;
   }
 
-  md::LabelSettings_Presentation::setLabelScaleFactor(*(*v6 + 24), *(*v6 + 40), v7);
+  md::LabelSettings_Presentation::setLabelScaleFactor(*(*_labelSettings + 24), *(*_labelSettings + 40), factorCopy2);
 }
 
 - (int64_t)labelScaleFactor
@@ -1049,16 +1049,16 @@ LABEL_22:
   }
 }
 
-- (void)setTerrainMode:(int64_t)a3
+- (void)setTerrainMode:(int64_t)mode
 {
   if ([(VKMapSnapshotCreator *)self _daVinciDataAvailable]&& [(VKMapSnapshotCreator *)self _elevatedGroundIsEnabled])
   {
     v5 = *(self->_mapEngine.__ptr_ + 5242);
     v13 = 29;
-    md::MapEngineSettings::set(v5, &v13, a3);
+    md::MapEngineSettings::set(v5, &v13, mode);
     v6 = *(self->_mapEngine.__ptr_ + 5242);
     v12 = 21;
-    v7 = (a3 - 1) < 3;
+    v7 = (mode - 1) < 3;
     v8 = &v12;
   }
 
@@ -1076,23 +1076,23 @@ LABEL_22:
   md::MapEngineSettings::set(v6, v8, v7);
 }
 
-- (void)setIncreaseContrastEnabled:(BOOL)a3
+- (void)setIncreaseContrastEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
-  if ([(VKMapSnapshotCreator *)self isIncreaseContrastEnabled]!= a3)
+  if ([(VKMapSnapshotCreator *)self isIncreaseContrastEnabled]!= enabled)
   {
     v5 = GEOGetVectorKitVKMapSnapshotLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = "NO";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = "YES";
       }
 
       v8 = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2080;
       v11 = v6;
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapSnapshotCreator:%p] Set increaseContrastEnabled: %s", &v8, 0x16u);
@@ -1104,12 +1104,12 @@ LABEL_22:
       v7 = v7[5];
     }
 
-    if (*(v7 + 1113) != v3)
+    if (*(v7 + 1113) != enabledCopy)
     {
-      *(v7 + 1113) = v3;
+      *(v7 + 1113) = enabledCopy;
       if ((v7[139] & 1) == 0)
       {
-        md::StyleLogic::setResolvedIncreaseContrastEnabled(v7, v3, 0.0);
+        md::StyleLogic::setResolvedIncreaseContrastEnabled(v7, enabledCopy, 0.0);
       }
     }
   }
@@ -1142,76 +1142,76 @@ LABEL_22:
   return 0;
 }
 
-- (void)setMapKitClientMode:(unsigned __int8)a3
+- (void)setMapKitClientMode:(unsigned __int8)mode
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_mapKitClientMode != a3)
+  if (self->_mapKitClientMode != mode)
   {
-    v3 = a3;
+    modeCopy = mode;
     v5 = GEOGetVectorKitVKMapSnapshotLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
-      v10 = gss::to_string(v3);
+      v10 = gss::to_string(modeCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapSnapshotCreator:%p] Set mapKitClientMode: %s", &v7, 0x16u);
     }
 
-    self->_mapKitClientMode = v3;
+    self->_mapKitClientMode = modeCopy;
     v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
     if (v6)
     {
       v6 = v6[5];
     }
 
-    md::StyleLogic::setMapKitClientMode(v6, v3);
+    md::StyleLogic::setMapKitClientMode(v6, modeCopy);
   }
 }
 
-- (void)setMapKitUsage:(unsigned __int8)a3
+- (void)setMapKitUsage:(unsigned __int8)usage
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_mapKitUsage != a3)
+  if (self->_mapKitUsage != usage)
   {
-    v3 = a3;
+    usageCopy = usage;
     v5 = GEOGetVectorKitVKMapSnapshotLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
-      v10 = gss::to_string(v3);
+      v10 = gss::to_string(usageCopy);
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapSnapshotCreator:%p] Set mapKitUsage: %s", &v7, 0x16u);
     }
 
-    self->_mapKitUsage = v3;
-    self->_usage = v3 != 0;
+    self->_mapKitUsage = usageCopy;
+    self->_usage = usageCopy != 0;
     v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
     if (v6)
     {
       v6 = v6[5];
     }
 
-    md::StyleLogic::setUsage(v6, v3 != 0, v3);
+    md::StyleLogic::setUsage(v6, usageCopy != 0, usageCopy);
   }
 }
 
-- (void)setShowsTraffic:(BOOL)a3
+- (void)setShowsTraffic:(BOOL)traffic
 {
-  v3 = a3;
+  trafficCopy = traffic;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (trafficCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsTraffic: %s", &v8, 0x16u);
@@ -1219,7 +1219,7 @@ LABEL_22:
 
   v7 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v8) = 2;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, trafficCopy);
 }
 
 - (BOOL)showsTraffic
@@ -1245,11 +1245,11 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsGlobe:(BOOL)a3
+- (void)setShowsGlobe:(BOOL)globe
 {
   v3 = *(self->_mapEngine.__ptr_ + 5242);
   v4 = 22;
-  md::MapEngineSettings::set(v3, &v4, [(VKMapSnapshotCreator *)self _globeIsEnabled]& a3);
+  md::MapEngineSettings::set(v3, &v4, [(VKMapSnapshotCreator *)self _globeIsEnabled]& globe);
 }
 
 - (BOOL)showsGlobe
@@ -1279,21 +1279,21 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsVenues:(BOOL)a3
+- (void)setShowsVenues:(BOOL)venues
 {
-  v3 = a3;
+  venuesCopy = venues;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (venuesCopy)
     {
       v6 = "true";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsVenues: %s", &v9, 0x16u);
@@ -1301,9 +1301,9 @@ LABEL_22:
 
   v7 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v9) = 0;
-  md::MapEngineSettings::set(v7, &v9, v3);
-  v8 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsVenues(*(*v8 + 24), *(*v8 + 40), v3);
+  md::MapEngineSettings::set(v7, &v9, venuesCopy);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsVenues(*(*_labelSettings + 24), *(*_labelSettings + 40), venuesCopy);
 }
 
 - (BOOL)showsVenues
@@ -1329,18 +1329,18 @@ LABEL_22:
   return 0;
 }
 
-- (void)setSelectedTrailWithId:(unint64_t)a3 name:(id)a4 locale:(id)a5
+- (void)setSelectedTrailWithId:(unint64_t)id name:(id)name locale:(id)locale
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  localeCopy = locale;
   v10 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v17 = 134218240;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    idCopy = id;
     _os_log_impl(&dword_1B2754000, v10, OS_LOG_TYPE_INFO, "[VKMapSnapshotCreator:%p] Select trail id: %llu", &v17, 0x16u);
   }
 
@@ -1350,10 +1350,10 @@ LABEL_22:
     v12 = v11[5];
     if (v12)
     {
-      v13 = v8;
-      v14 = [v8 UTF8String];
-      v15 = v9;
-      md::HikingLogic::setSelectedTrail(v12, a3, v14, [v9 UTF8String]);
+      v13 = nameCopy;
+      uTF8String = [nameCopy UTF8String];
+      v15 = localeCopy;
+      md::HikingLogic::setSelectedTrail(v12, id, uTF8String, [localeCopy UTF8String]);
       ptr = self->_mapEngine.__ptr_;
       LOBYTE(v17) = 1;
       md::MapEngine::setNeedsTick(ptr, &v17);
@@ -1361,21 +1361,21 @@ LABEL_22:
   }
 }
 
-- (void)setPreferStaleTiles:(BOOL)a3
+- (void)setPreferStaleTiles:(BOOL)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "NO";
-    if (v3)
+    if (tilesCopy)
     {
       v6 = "YES";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[VKMapSnapshotCreator:%p] set preferStaleTiles: %s", &v8, 0x16u);
@@ -1384,7 +1384,7 @@ LABEL_22:
   v7 = *(*(*(self->_mapEngine.__ptr_ + 5213) + 24) + 56);
   if (v7)
   {
-    gdc::ResourceManager::setResourceFetcherConfig(v7, v3);
+    gdc::ResourceManager::setResourceFetcherConfig(v7, tilesCopy);
   }
 }
 
@@ -1399,21 +1399,21 @@ LABEL_22:
   return v2;
 }
 
-- (void)setShowsPOIUpdates:(BOOL)a3
+- (void)setShowsPOIUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (updatesCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p showsPOIUpdates: %s", &v8, 0x16u);
@@ -1421,7 +1421,7 @@ LABEL_22:
 
   v7 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v8) = 39;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, updatesCopy);
 }
 
 - (BOOL)showsPOIUpdates
@@ -1447,21 +1447,21 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsHillshade:(BOOL)a3
+- (void)setShowsHillshade:(BOOL)hillshade
 {
   v3 = *(self->_mapEngine.__ptr_ + 5242);
   v5 = 32;
-  if (a3)
+  if (hillshade)
   {
-    v4 = [(VKMapSnapshotCreator *)self _hillshadeIsAvailable];
+    _hillshadeIsAvailable = [(VKMapSnapshotCreator *)self _hillshadeIsAvailable];
   }
 
   else
   {
-    v4 = 0;
+    _hillshadeIsAvailable = 0;
   }
 
-  md::MapEngineSettings::set(v3, &v5, v4);
+  md::MapEngineSettings::set(v3, &v5, _hillshadeIsAvailable);
 }
 
 - (BOOL)showsHillshade
@@ -1487,16 +1487,16 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsHiking:(BOOL)a3 withTopographicFeatures:(BOOL)a4
+- (void)setShowsHiking:(BOOL)hiking withTopographicFeatures:(BOOL)features
 {
-  v4 = a4;
-  v5 = a3;
+  featuresCopy = features;
+  hikingCopy = hiking;
   v20 = *MEMORY[0x1E69E9840];
   v7 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "NO";
-    if (v5)
+    if (hikingCopy)
     {
       v9 = "YES";
     }
@@ -1507,10 +1507,10 @@ LABEL_22:
     }
 
     v14 = 134218498;
-    v15 = self;
+    selfCopy = self;
     v17 = v9;
     v16 = 2080;
-    if (v4)
+    if (featuresCopy)
     {
       v8 = "YES";
     }
@@ -1520,8 +1520,8 @@ LABEL_22:
     _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "KMapSnapshotCreator: %p Set shows hiking: %s with topograpic features: %s", &v14, 0x20u);
   }
 
-  v10 = v5 && [(VKMapSnapshotCreator *)self _hikingIsAvailable];
-  v11 = v10 & v4;
+  v10 = hikingCopy && [(VKMapSnapshotCreator *)self _hikingIsAvailable];
+  v11 = v10 & featuresCopy;
   v12 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v14) = 33;
   md::MapEngineSettings::set(v12, &v14, v10);
@@ -1576,21 +1576,21 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsTintBands:(BOOL)a3
+- (void)setShowsTintBands:(BOOL)bands
 {
-  v3 = a3;
+  bandsCopy = bands;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (bandsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsTintBands: %s", &v8, 0x16u);
@@ -1598,7 +1598,7 @@ LABEL_22:
 
   v7 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v8) = 11;
-  md::MapEngineSettings::set(v7, &v8, v3);
+  md::MapEngineSettings::set(v7, &v8, bandsCopy);
 }
 
 - (BOOL)showsTintBands
@@ -1624,21 +1624,21 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsBuildings:(BOOL)a3
+- (void)setShowsBuildings:(BOOL)buildings
 {
-  v3 = a3;
+  buildingsCopy = buildings;
   v13 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (buildingsCopy)
     {
       v6 = "true";
     }
 
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsBuildings: %s", &v9, 0x16u);
@@ -1646,8 +1646,8 @@ LABEL_22:
 
   v7 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v9) = 1;
-  md::MapEngineSettings::set(v7, &v9, v3);
-  if (v3 && *(self->_mapEngine.__ptr_ + 42104) == 1)
+  md::MapEngineSettings::set(v7, &v9, buildingsCopy);
+  if (buildingsCopy && *(self->_mapEngine.__ptr_ + 42104) == 1)
   {
     v8 = *(self->_mapEngine.__ptr_ + 5242);
     LOBYTE(v9) = 24;
@@ -1678,158 +1678,158 @@ LABEL_22:
   return 0;
 }
 
-- (void)setShowsLabels:(BOOL)a3
+- (void)setShowsLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsLabels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsPhysicalFeatureLabels:(BOOL)a3
+- (void)setShowsPhysicalFeatureLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowPhysicalFeatureLabels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPhysicalFeatureLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPhysicalFeatureLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsContourLabels:(BOOL)a3
+- (void)setShowsContourLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsContourLabels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsContourLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsContourLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsPointLabels:(BOOL)a3
+- (void)setShowsPointLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsPointLabels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPointLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPointLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setShowsRoadShields:(BOOL)a3
+- (void)setShowsRoadShields:(BOOL)shields
 {
-  v3 = a3;
+  shieldsCopy = shields;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (shieldsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsRoadShields: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsRoadShields(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsRoadShields(*(*_labelSettings + 24), *(*_labelSettings + 40), shieldsCopy);
 }
 
-- (void)setShowsRoadLabels:(BOOL)a3
+- (void)setShowsRoadLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (labelsCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsRoadLabels: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsRoadLabels(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsRoadLabels(*(*_labelSettings + 24), *(*_labelSettings + 40), labelsCopy);
 }
 
-- (void)setPointsOfInterestFilter:(id)a3
+- (void)setPointsOfInterestFilter:(id)filter
 {
-  v5 = a3;
-  v8 = v5;
-  if (self->_pointsOfInterestFilter != v5)
+  filterCopy = filter;
+  v8 = filterCopy;
+  if (self->_pointsOfInterestFilter != filterCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pointsOfInterestFilter, a3);
+    v6 = filterCopy;
+    objc_storeStrong(&self->_pointsOfInterestFilter, filter);
     if (v6)
     {
       std::allocate_shared[abi:nn200100]<md::LabelCategoryFilter,std::allocator<md::LabelCategoryFilter>,GEOPOICategoryFilter * {__strong}&,0>();
@@ -1841,36 +1841,36 @@ LABEL_22:
   }
 }
 
-- (void)setShowsPointsOfInterest:(BOOL)a3
+- (void)setShowsPointsOfInterest:(BOOL)interest
 {
-  v3 = a3;
+  interestCopy = interest;
   v12 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (interestCopy)
     {
       v6 = "true";
     }
 
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = v6;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator: %p setShowsPointsOfInterest: %s", &v8, 0x16u);
   }
 
-  v7 = [(VKMapSnapshotCreator *)self _labelSettings];
-  md::LabelSettings_Presentation::setShowsPOIs(*(*v7 + 24), *(*v7 + 40), v3);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  md::LabelSettings_Presentation::setShowsPOIs(*(*_labelSettings + 24), *(*_labelSettings + 40), interestCopy);
 }
 
 - (void)setAllowsBackgroundGPUSubmission
 {
   v5 = +[VKSharedResourcesManager sharedResources];
-  v2 = [v5 device];
-  v3 = *(v2 + 8);
-  v4 = *(v2 + 16);
+  device = [v5 device];
+  v3 = *(device + 8);
+  v4 = *(device + 16);
   if (v4)
   {
     atomic_fetch_add_explicit(&v4->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -1883,27 +1883,27 @@ LABEL_22:
   }
 }
 
-- (void)setLocalizeLabels:(BOOL)a3
+- (void)setLocalizeLabels:(BOOL)labels
 {
-  v4 = [(VKMapSnapshotCreator *)self _labelSettings];
-  v5 = *v4;
-  v6 = *(*v4 + 24);
+  _labelSettings = [(VKMapSnapshotCreator *)self _labelSettings];
+  v5 = *_labelSettings;
+  v6 = *(*_labelSettings + 24);
   v7 = *(v5 + 40);
 
-  md::LabelSettings_Presentation::setLocalizeLabels(v6, v7, a3);
+  md::LabelSettings_Presentation::setLocalizeLabels(v6, v7, labels);
 }
 
-- (void)_transferSettingsFrom:(id)a3 to:(id)a4
+- (void)_transferSettingsFrom:(id)from to:(id)to
 {
-  v10 = a3;
-  v5 = a4;
-  [v10 edgeInsets];
-  [v5 setEdgeInsets:?];
-  v6 = [v10 mapRegion];
-  [v10 pitch];
+  fromCopy = from;
+  toCopy = to;
+  [fromCopy edgeInsets];
+  [toCopy setEdgeInsets:?];
+  mapRegion = [fromCopy mapRegion];
+  [fromCopy pitch];
   v8 = v7;
-  [v10 yaw];
-  [v5 setMapRegion:v6 pitch:v8 yaw:v9];
+  [fromCopy yaw];
+  [toCopy setMapRegion:mapRegion pitch:v8 yaw:v9];
 }
 
 - (unsigned)levelOfDetail
@@ -1920,75 +1920,75 @@ LABEL_22:
   }
 }
 
-- (void)setLevelOfDetail:(unsigned __int8)a3
+- (void)setLevelOfDetail:(unsigned __int8)detail
 {
-  v3 = a3;
+  detailCopy = detail;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
   if (v4)
   {
     v4 = v4[5];
   }
 
-  if (v3 == 2)
+  if (detailCopy == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v3 == 1;
+    v5 = detailCopy == 1;
   }
 
   md::StyleLogic::setLevelOfDetail(v4, v5, 0.0);
 }
 
-- (void)setNewInterfaceEnabled:(BOOL)a3
+- (void)setNewInterfaceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
   if (v4)
   {
     v4 = *(v4 + 5);
   }
 
-  md::StyleLogic::setNewInterfaceEnabled(v4, v3);
+  md::StyleLogic::setNewInterfaceEnabled(v4, enabledCopy);
 }
 
-- (void)setEmphasis:(unsigned __int8)a3
+- (void)setEmphasis:(unsigned __int8)emphasis
 {
-  v3 = a3;
+  emphasisCopy = emphasis;
   v4 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
   if (v4)
   {
     v4 = v4[5];
   }
 
-  if (v3 == 2)
+  if (emphasisCopy == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v3 == 1;
+    v5 = emphasisCopy == 1;
   }
 
   md::StyleLogic::setEmphasis(v4, v5, 0.0);
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_edgeInsets = a3;
-  v8 = [(VKMapSnapshotCreator *)self activeCanvas];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_edgeInsets = insets;
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
   *&v9 = top;
   *&v10 = left;
   *&v11 = bottom;
   *&v12 = right;
-  [v8 setEdgeInsets:{v9, v10, v11, v12}];
+  [activeCanvas setEdgeInsets:{v9, v10, v11, v12}];
 
   v13 = *(self->_mapEngine.__ptr_ + 5234);
   v14 = *(self->_mapEngine.__ptr_ + 5235);
@@ -2012,15 +2012,15 @@ LABEL_22:
   }
 }
 
-- (void)setMapType:(int)a3
+- (void)setMapType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v15 = *MEMORY[0x1E69E9840];
   v5 = GEOGetVectorKitVKMapSnapshotLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 134218240;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v3;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKMapSnapshotCreator %p setMapType: %ld", &v11, 0x16u);
@@ -2029,12 +2029,12 @@ LABEL_22:
   v6 = *(self->_mapEngine.__ptr_ + 5242);
   LOBYTE(v11) = 20;
   md::MapEngineSettings::set(v6, &v11, v3);
-  v7 = [(VKMapSnapshotCreator *)self activeCanvas];
+  activeCanvas = [(VKMapSnapshotCreator *)self activeCanvas];
   self->_mapType = v3;
-  v8 = [(VKMapSnapshotCreator *)self activeCanvas];
-  if (v8 != v7)
+  activeCanvas2 = [(VKMapSnapshotCreator *)self activeCanvas];
+  if (activeCanvas2 != activeCanvas)
   {
-    [(VKMapSnapshotCreator *)self _transferSettingsFrom:v7 to:v8];
+    [(VKMapSnapshotCreator *)self _transferSettingsFrom:activeCanvas to:activeCanvas2];
   }
 
   v9 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x2FED70A4459DFCA1uLL);
@@ -2045,8 +2045,8 @@ LABEL_22:
 
   md::StyleLogic::updateConfiguration(v9, self->_mapType);
   *(std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((*(self->_mapEngine.__ptr_ + 5241) + 16), 0x20A1ED17D78F322BuLL)[5] + 220) = self->_mapType;
-  v10 = [(VKMapSnapshotCreator *)self activeCanvas];
-  [v10 setMapType:v3];
+  activeCanvas3 = [(VKMapSnapshotCreator *)self activeCanvas];
+  [activeCanvas3 setMapType:v3];
 }
 
 - (CGSize)size
@@ -2057,13 +2057,13 @@ LABEL_22:
   return result;
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  [(VKMapImageCanvas *)self->_mapCanvas addOverlay:a3];
+  [(VKMapImageCanvas *)self->_mapCanvas addOverlay:overlay];
   v4 = *(self->_mapEngine.__ptr_ + 5242);
   v6 = 5;
-  v5 = [(VKMapImageCanvas *)self->_mapCanvas overlays];
-  md::MapEngineSettings::set(v4, &v6, [v5 count] != 0);
+  overlays = [(VKMapImageCanvas *)self->_mapCanvas overlays];
+  md::MapEngineSettings::set(v4, &v6, [overlays count] != 0);
 }
 
 - (void)clearResources
@@ -2075,7 +2075,7 @@ LABEL_22:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v10 = 134217984;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "Clear VKMapSnapshotCreator %p resources", &v10, 0xCu);
     }
 
@@ -2119,7 +2119,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKSnapshotCreator:%p] tileGroupDidChange", &v6, 0xCu);
   }
 
@@ -2140,7 +2140,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[VKSnapshotCreator:%p] tileGroupWillChange", &v4, 0xCu);
   }
 }
@@ -2152,19 +2152,19 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v14 = 134217984;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "Deleting VKMapSnapshotCreator memory: %p", &v14, 0xCu);
   }
 
   notificationObserver = self->_notificationObserver;
   self->_notificationObserver = 0;
 
-  v5 = [MEMORY[0x1E69A2478] modernManager];
-  [v5 closeServerConnection:1];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager closeServerConnection:1];
 
-  v6 = [MEMORY[0x1E69A2610] modernLoader];
+  modernLoader = [MEMORY[0x1E69A2610] modernLoader];
   v7 = GEOTileLoaderClientIdentifier();
-  [v6 closeForClient:v7];
+  [modernLoader closeForClient:v7];
 
   completion = self->_completion;
   self->_completion = 0;
@@ -2198,7 +2198,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "Deallocating VKMapSnapshotCreator: %p", buf, 0xCu);
   }
 
@@ -2238,16 +2238,16 @@ LABEL_22:
   [(VKMapSnapshotCreator *)&v10 dealloc];
 }
 
-- (VKMapSnapshotCreator)initWithSize:(CGSize)a3 scale:(double)a4 homeQueue:(id)a5 signpostId:(unint64_t)a6 mapType:(int)a7 mapDisplayStyles:(id *)a8 mapDisplayStylesCount:(unint64_t)a9 auditToken:(id)a10 useMultisampling:(BOOL)a11 withError:(id *)a12
+- (VKMapSnapshotCreator)initWithSize:(CGSize)size scale:(double)scale homeQueue:(id)queue signpostId:(unint64_t)id mapType:(int)type mapDisplayStyles:(id *)styles mapDisplayStylesCount:(unint64_t)count auditToken:(id)self0 useMultisampling:(BOOL)self1 withError:(id *)self2
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v56 = *MEMORY[0x1E69E9840];
-  v18 = a5;
-  v19 = a10;
-  if (a12)
+  queueCopy = queue;
+  tokenCopy = token;
+  if (error)
   {
-    *a12 = 0;
+    *error = 0;
   }
 
   v40.receiver = self;
@@ -2256,7 +2256,7 @@ LABEL_22:
   if (v20)
   {
     v21 = +[VKSharedResourcesManager sharedResources];
-    v22 = [[VKManifestTileGroupObserverProxy alloc] initWithQueue:v18];
+    v22 = [[VKManifestTileGroupObserverProxy alloc] initWithQueue:queueCopy];
     manifestTileGroupObserverProxy = v20->_manifestTileGroupObserverProxy;
     v20->_manifestTileGroupObserverProxy = v22;
 
@@ -2297,9 +2297,9 @@ LABEL_22:
     std::__function::__value_func<void ()(GEOResourceManifestManager *)>::~__value_func[abi:nn200100](&v50);
     if ([v21 device] && (v28 = *(objc_msgSend(v21, "device") + 8)) != 0 && ((*(*v28 + 32))(v28) & 1) != 0)
     {
-      if (width * a4 >= 1.0 && v18 && height * a4 >= 1.0 && a4 >= 1.0 && *(*([v21 device] + 8) + 24) >= (fmax(width, height) * a4))
+      if (width * scale >= 1.0 && queueCopy && height * scale >= 1.0 && scale >= 1.0 && *(*([v21 device] + 8) + 24) >= (fmax(width, height) * scale))
       {
-        v20->_signpostId = a6;
+        v20->_signpostId = id;
         v33 = GEOGetVectorKitVKMapSnapshotLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
@@ -2308,9 +2308,9 @@ LABEL_22:
           v44 = 2048;
           v45 = height;
           v46 = 2048;
-          v47 = width;
+          scaleCopy3 = width;
           v48 = 2048;
-          v49 = a4;
+          scaleCopy = scale;
           _os_log_impl(&dword_1B2754000, v33, OS_LOG_TYPE_INFO, "Creating VKMapSnapshotCreator: %p with height:%f width:%f contenteScale:%f", &buf, 0x2Au);
         }
 
@@ -2324,7 +2324,7 @@ LABEL_22:
           v44 = 2048;
           v45 = width;
           v46 = 2048;
-          v47 = a4;
+          scaleCopy3 = scale;
           _os_signpost_emit_with_name_impl(&dword_1B2754000, v35, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "MapSnapshotCreator", "height:%f width:%f contenteScale:%f", &buf, 0x20u);
         }
 
@@ -2341,11 +2341,11 @@ LABEL_22:
         v44 = 2048;
         v45 = width;
         v46 = 2048;
-        v47 = a4;
+        scaleCopy3 = scale;
         _os_log_impl(&dword_1B2754000, v29, OS_LOG_TYPE_ERROR, "Image size or content scale too small to produce an image: height:%f, width:%f, contentScale:%f", &buf, 0x20u);
       }
 
-      if (!a12)
+      if (!error)
       {
         goto LABEL_22;
       }
@@ -2362,7 +2362,7 @@ LABEL_22:
         _os_log_impl(&dword_1B2754000, v31, OS_LOG_TYPE_ERROR, "Not able to take a snapshot without valid metal device", &buf, 2u);
       }
 
-      if (!a12)
+      if (!error)
       {
         goto LABEL_22;
       }
@@ -2370,7 +2370,7 @@ LABEL_22:
       v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.maps.snapshot" code:-3 userInfo:0];
     }
 
-    *a12 = v30;
+    *error = v30;
 LABEL_22:
     objc_destroyWeak(&location);
   }
@@ -2380,7 +2380,7 @@ LABEL_22:
 
 - (void)initWithSize:scale:homeQueue:signpostId:mapType:mapDisplayStyles:mapDisplayStylesCount:auditToken:useMultisampling:withError:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -2388,9 +2388,9 @@ LABEL_22:
 + (BOOL)supportsSharingThumbnails
 {
   v2 = +[VKPlatform sharedPlatform];
-  v3 = [v2 canMakeSharingThumbnails];
+  canMakeSharingThumbnails = [v2 canMakeSharingThumbnails];
 
-  return v3;
+  return canMakeSharingThumbnails;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface NLActivityRingsRelevanceEngineDataSource
 - (NLActivityRingsRelevanceEngineDataSource)init;
 - (id)supportedSections;
-- (void)_executeQuery:(id)a3;
+- (void)_executeQuery:(id)query;
 - (void)_generateRingsElement;
-- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)a3;
+- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)retries;
 - (void)_stopQueries;
 - (void)dealloc;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 - (void)pause;
 - (void)resume;
 @end
@@ -53,14 +53,14 @@
 
 - (void)_generateRingsElement
 {
-  v3 = [(NLActivityRingsRelevanceEngineDataSource *)self currentSummary];
+  currentSummary = [(NLActivityRingsRelevanceEngineDataSource *)self currentSummary];
 
-  if (v3)
+  if (currentSummary)
   {
-    v4 = [(NLActivityRingsRelevanceEngineDataSource *)self delegate];
-    v5 = [v4 elementOperationQueue];
-    v6 = v5;
-    if (v4 && v5)
+    delegate = [(NLActivityRingsRelevanceEngineDataSource *)self delegate];
+    elementOperationQueue = [delegate elementOperationQueue];
+    v6 = elementOperationQueue;
+    if (delegate && elementOperationQueue)
     {
       if (self->_didSetupElements)
       {
@@ -73,7 +73,7 @@
         block[2] = sub_225C;
         block[3] = &unk_8368;
         p_buf = &buf;
-        v7 = v4;
+        v7 = delegate;
         v15 = v7;
         dispatch_sync(v6, block);
         v11[0] = _NSConcreteStackBlock;
@@ -95,14 +95,14 @@
         if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
         {
           v9 = v8;
-          v10 = [(NLActivityRingsRelevanceEngineDataSource *)self currentSummary];
+          currentSummary2 = [(NLActivityRingsRelevanceEngineDataSource *)self currentSummary];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v10;
+          *(&buf + 4) = currentSummary2;
           _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[Supergreen-Rings] Creating element with current summary = %@", &buf, 0xCu);
         }
 
         self->_didSetupElements = 1;
-        [v4 invalidateElements];
+        [delegate invalidateElements];
       }
     }
   }
@@ -142,20 +142,20 @@
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v8 = HKLogCoaching;
   if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v6;
+    v13 = sectionCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[Supergreen-Rings] Elements requested (section = %{public}@).", buf, 0xCu);
   }
 
-  if ([v6 isEqualToString:REDefaultSectionIdentifier])
+  if ([sectionCopy isEqualToString:REDefaultSectionIdentifier])
   {
     serialQueue = self->_serialQueue;
     v10[0] = _NSConcreteStackBlock;
@@ -163,26 +163,26 @@
     v10[2] = sub_275C;
     v10[3] = &unk_83B8;
     v10[4] = self;
-    v11 = v7;
+    v11 = handlerCopy;
     dispatch_async(serialQueue, v10);
   }
 
   else
   {
-    (*(v7 + 2))(v7, &__NSArray0__struct);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct);
   }
 }
 
-- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)a3
+- (void)_startCurrentActivitySummaryQueryWithRemainingRetries:(unint64_t)retries
 {
   _HKInitializeLogging();
   v5 = HKLogCoaching;
-  if (a3)
+  if (retries)
   {
     if (os_log_type_enabled(HKLogCoaching, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = a3;
+      retriesCopy = retries;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[Supergreen-Rings] Trying to start current activity summary query with remaining retries %lu.", buf, 0xCu);
     }
 
@@ -192,7 +192,7 @@
     v11 = sub_2B28;
     v12 = &unk_8408;
     objc_copyWeak(v13, buf);
-    v13[1] = a3;
+    v13[1] = retries;
     v6 = objc_retainBlock(&v9);
     v7 = [_HKCurrentActivitySummaryQuery alloc];
     v8 = [v7 initWithUpdateHandler:{v6, v9, v10, v11, v12}];
@@ -208,17 +208,17 @@
   }
 }
 
-- (void)_executeQuery:(id)a3
+- (void)_executeQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2E08;
   v7[3] = &unk_83E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_async(serialQueue, v7);
 }
 

@@ -1,25 +1,25 @@
 @interface BMCommunicationSafetyResultEvent_v2
-- (BMCommunicationSafetyResultEvent_v2)initWithProto:(id)a3;
+- (BMCommunicationSafetyResultEvent_v2)initWithProto:(id)proto;
 @end
 
 @implementation BMCommunicationSafetyResultEvent_v2
 
-- (BMCommunicationSafetyResultEvent_v2)initWithProto:(id)a3
+- (BMCommunicationSafetyResultEvent_v2)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v36 = [v5 childId];
-      v35 = [v5 deviceId];
-      v34 = [v5 sourceBundleId];
+      v5 = protoCopy;
+      childId = [v5 childId];
+      deviceId = [v5 deviceId];
+      sourceBundleId = [v5 sourceBundleId];
       [v5 absoluteTimestamp];
       v7 = v6;
-      v8 = [v5 communicationSafetyResultEventDirection];
-      if (v8 >= 4)
+      communicationSafetyResultEventDirection = [v5 communicationSafetyResultEventDirection];
+      if (communicationSafetyResultEventDirection >= 4)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -32,12 +32,12 @@
 
       else
       {
-        v9 = qword_184D27980[v8];
+        v9 = qword_184D27980[communicationSafetyResultEventDirection];
       }
 
       v33 = v9;
-      v12 = [v5 communicationSafetyResultEventType];
-      if (v12 >= 5)
+      communicationSafetyResultEventType = [v5 communicationSafetyResultEventType];
+      if (communicationSafetyResultEventType >= 5)
       {
         v14 = __biome_log_for_category();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -50,12 +50,12 @@
 
       else
       {
-        v13 = qword_184D279A0[v12];
+        v13 = qword_184D279A0[communicationSafetyResultEventType];
       }
 
       v32 = v13;
-      v15 = [v5 communicationSafetyResultContentType];
-      if (v15 >= 4)
+      communicationSafetyResultContentType = [v5 communicationSafetyResultContentType];
+      if (communicationSafetyResultContentType >= 4)
       {
         v17 = __biome_log_for_category();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -68,25 +68,25 @@
 
       else
       {
-        v16 = qword_184D279C8[v15];
+        v16 = qword_184D279C8[communicationSafetyResultContentType];
       }
 
       v30 = v16;
-      v31 = [v5 contactHandles];
-      v28 = [v31 copy];
-      v27 = [v5 contentId];
-      v26 = [v5 conversationId];
-      v18 = [v5 imageData];
-      v19 = [v5 senderHandle];
+      contactHandles = [v5 contactHandles];
+      v28 = [contactHandles copy];
+      contentId = [v5 contentId];
+      conversationId = [v5 conversationId];
+      imageData = [v5 imageData];
+      senderHandle = [v5 senderHandle];
       v20 = MEMORY[0x1E695DFF8];
-      v29 = [v5 contentURL];
-      v21 = [v20 URLWithString:v29];
+      contentURL = [v5 contentURL];
+      v21 = [v20 URLWithString:contentURL];
       v22 = MEMORY[0x1E695DFF8];
-      v23 = [v5 conversationURL];
-      v24 = [v22 URLWithString:v23];
-      self = [(BMCommunicationSafetyResultEvent *)self initWithChildID:v36 deviceID:v35 sourceBundleID:v34 absoluteTimeStamp:v33 eventDirection:v32 eventType:v30 contentType:v7 contactHandles:v28 contentID:v27 conversationID:v26 imageData:v18 senderHandle:v19 contentURL:v21 conversationURL:v24];
+      conversationURL = [v5 conversationURL];
+      v24 = [v22 URLWithString:conversationURL];
+      self = [(BMCommunicationSafetyResultEvent *)self initWithChildID:childId deviceID:deviceId sourceBundleID:sourceBundleId absoluteTimeStamp:v33 eventDirection:v32 eventType:v30 contentType:v7 contactHandles:v28 contentID:contentId conversationID:conversationId imageData:imageData senderHandle:senderHandle contentURL:v21 conversationURL:v24];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -97,16 +97,16 @@
         [BMCommunicationSafetyResultEvent initWithProto:v5];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface NRDeviceCollectionHistory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHistory:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHistory:(id)history;
 - (NRDeviceCollectionHistory)init;
-- (NRDeviceCollectionHistory)initWithCoder:(id)a3;
-- (NRDeviceCollectionHistory)initWithProtobuf:(id)a3;
+- (NRDeviceCollectionHistory)initWithCoder:(id)coder;
+- (NRDeviceCollectionHistory)initWithProtobuf:(id)protobuf;
 - (NRPBDeviceCollectionHistory)protobuf;
-- (id)_mostRecentStateBefore:(id)a3;
-- (id)addObserverQueue:(id)a3 withBlock:(id)a4;
-- (id)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_mostRecentStateBefore:(id)before;
+- (id)addObserverQueue:(id)queue withBlock:(id)block;
+- (id)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deviceIDAtSwitchIndex:(unsigned int)a3 date:(id *)a4;
-- (id)historyEntryAtIndex:(unint64_t)a3;
-- (id)switchDeviceIDFromDiff:(id)a3;
-- (unint64_t)_findIndexInHistoryStateCache:(id)a3 type:(unint64_t)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)deviceIDAtSwitchIndex:(unsigned int)index date:(id *)date;
+- (id)historyEntryAtIndex:(unint64_t)index;
+- (id)switchDeviceIDFromDiff:(id)diff;
+- (unint64_t)_findIndexInHistoryStateCache:(id)cache type:(unint64_t)type;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unsigned)switchIndex;
 - (void)_createIndex;
 - (void)_sanitizeHistory;
 - (void)_truncateHistory;
-- (void)_updateHistoryCachesWithIndex:(id)a3;
-- (void)child:(id)a3 didApplyDiff:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateHistoryCachesWithIndex:(id)index;
+- (void)child:(id)child didApplyDiff:(id)diff;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)notifyHistoryObserversWithEntry:(id)a3;
-- (void)pruneStateCacheItems:(unint64_t)a3;
-- (void)removeObserver:(id)a3;
+- (void)notifyHistoryObserversWithEntry:(id)entry;
+- (void)pruneStateCacheItems:(unint64_t)items;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NRDeviceCollectionHistory
@@ -40,30 +40,30 @@
     v3 = MGGetStringAnswer();
     [v3 isEqualToString:@"Watch"];
     *(v2 + 2) = 10;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = *(v2 + 7);
-    *(v2 + 7) = v4;
+    *(v2 + 7) = array;
 
     v6 = [NRDeviceCollectionHistoryEntry alloc];
-    v7 = [MEMORY[0x1E695DF00] date];
-    v8 = [(NRDeviceCollectionHistoryEntry *)v6 initWithHistory:v2 index:0 date:v7 diff:0 switchIndex:0];
+    date = [MEMORY[0x1E695DF00] date];
+    v8 = [(NRDeviceCollectionHistoryEntry *)v6 initWithHistory:v2 index:0 date:date diff:0 switchIndex:0];
 
     [*(v2 + 7) addObject:v8];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v10 = *(v2 + 9);
-    *(v2 + 9) = v9;
+    *(v2 + 9) = dictionary;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v12 = *(v2 + 10);
-    *(v2 + 10) = v11;
+    *(v2 + 10) = array2;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v14 = *(v2 + 11);
-    *(v2 + 11) = v13;
+    *(v2 + 11) = array3;
 
-    v15 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v16 = *(v2 + 1);
-    *(v2 + 1) = v15;
+    *(v2 + 1) = orderedSet;
 
     v17 = objc_alloc_init(NRMutableDeviceCollection);
     v18 = *(v2 + 5);
@@ -83,7 +83,7 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -95,11 +95,11 @@
     switchRecords = 0;
   }
 
-  v5 = a3;
+  coderCopy = coder;
   [(NRSwitchRecordCollection *)switchRecords truncateSwitchRecords];
-  v6 = [(NRDeviceCollectionHistory *)self protobuf];
-  v7 = [v6 data];
-  [v5 encodeObject:v7 forKey:@"data"];
+  protobuf = [(NRDeviceCollectionHistory *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
   atomic_store(0, &self->_atomicDirty);
 }
@@ -137,9 +137,9 @@
     while (v5);
   }
 
-  v8 = [(NSMutableArray *)self->_history lastObject];
-  v9 = [v8 state];
-  v10 = [v9 copyWithZone:0];
+  lastObject = [(NSMutableArray *)self->_history lastObject];
+  state = [lastObject state];
+  v10 = [state copyWithZone:0];
   deviceCollection = self->_deviceCollection;
   self->_deviceCollection = v10;
 
@@ -158,32 +158,32 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (NRDeviceCollectionHistory)initWithCoder:(id)a3
+- (NRDeviceCollectionHistory)initWithCoder:(id)coder
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRDeviceCollectionHistory *)self init];
   if (!v5)
   {
     goto LABEL_25;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
-    v5->_startIndex = [v4 decodeInt64ForKey:@"startIndex"];
+    v5->_startIndex = [coderCopy decodeInt64ForKey:@"startIndex"];
     v10 = MEMORY[0x1E695DFD8];
     v35[0] = objc_opt_class();
     v35[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"history"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"history"];
     history = v5->_history;
     v5->_history = v13;
 
     [(NRDeviceCollectionHistory *)v5 _sanitizeHistory];
     [(NRDeviceCollectionHistory *)v5 _createIndex];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"switchRecordCollection"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"switchRecordCollection"];
     switchRecords = v5->_switchRecords;
     v5->_switchRecords = v15;
 
@@ -277,17 +277,17 @@ LABEL_26:
   return v9;
 }
 
-- (NRDeviceCollectionHistory)initWithProtobuf:(id)a3
+- (NRDeviceCollectionHistory)initWithProtobuf:(id)protobuf
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(NRDeviceCollectionHistory *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (protobufCopy)
     {
-      v7 = v4[1];
+      v7 = protobufCopy[1];
     }
 
     else
@@ -296,17 +296,17 @@ LABEL_26:
     }
 
     v5->_startIndex = v7;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     history = v6->_history;
-    v6->_history = v8;
+    v6->_history = array;
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    if (v4)
+    if (protobufCopy)
     {
-      v10 = v4[2];
+      v10 = protobufCopy[2];
     }
 
     else
@@ -352,9 +352,9 @@ LABEL_26:
     v6->_switchRecords = v20;
 
     v22 = v6->_switchRecords;
-    if (v4)
+    if (protobufCopy)
     {
-      v23 = v4[3];
+      v23 = protobufCopy[3];
     }
 
     else
@@ -472,8 +472,8 @@ void __45__NRDeviceCollectionHistory__sanitizeHistory__block_invoke(uint64_t a1,
     *(v3 + 8) = startIndex;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  [(NRPBDeviceCollectionHistory *)v4 setHistorys:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  [(NRPBDeviceCollectionHistory *)v4 setHistorys:array];
 
   [(NRPBDeviceCollectionHistory *)v4 setSwitchRecords:?];
   v21 = 0u;
@@ -508,8 +508,8 @@ void __45__NRDeviceCollectionHistory__sanitizeHistory__block_invoke(uint64_t a1,
         }
 
         v14 = v13;
-        v15 = [v12 protobuf];
-        [v14 addObject:v15];
+        protobuf = [v12 protobuf];
+        [v14 addObject:protobuf];
 
         ++v11;
       }
@@ -527,11 +527,11 @@ void __45__NRDeviceCollectionHistory__sanitizeHistory__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (unint64_t)_findIndexInHistoryStateCache:(id)a3 type:(unint64_t)a4
+- (unint64_t)_findIndexInHistoryStateCache:(id)cache type:(unint64_t)type
 {
   historyStateCacheIndex = self->_historyStateCacheIndex;
-  v6 = a3;
-  v7 = [(NSMutableArray *)historyStateCacheIndex indexOfObject:v6 inSortedRange:0 options:[(NSMutableArray *)historyStateCacheIndex count] usingComparator:a4, &__block_literal_global_148];
+  cacheCopy = cache;
+  v7 = [(NSMutableArray *)historyStateCacheIndex indexOfObject:cacheCopy inSortedRange:0 options:[(NSMutableArray *)historyStateCacheIndex count] usingComparator:type, &__block_literal_global_148];
 
   return v7;
 }
@@ -563,22 +563,22 @@ uint64_t __64__NRDeviceCollectionHistory__findIndexInHistoryStateCache_type___bl
   return v7;
 }
 
-- (id)_mostRecentStateBefore:(id)a3
+- (id)_mostRecentStateBefore:(id)before
 {
-  v4 = a3;
+  beforeCopy = before;
   if ([(NSMutableArray *)self->_historyStateCacheIndex count])
   {
-    v5 = [(NSMutableDictionary *)self->_historyStateCache objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_historyStateCache objectForKeyedSubscript:beforeCopy];
 
     if (v5)
     {
-      v6 = v4;
+      v6 = beforeCopy;
 LABEL_6:
       v8 = v6;
       goto LABEL_8;
     }
 
-    v7 = [(NRDeviceCollectionHistory *)self _findIndexInHistoryStateCache:v4 type:1024];
+    v7 = [(NRDeviceCollectionHistory *)self _findIndexInHistoryStateCache:beforeCopy type:1024];
     if (v7)
     {
       v6 = [(NSMutableArray *)self->_historyStateCacheIndex objectAtIndexedSubscript:v7 - 1];
@@ -592,58 +592,58 @@ LABEL_8:
   return v8;
 }
 
-- (void)_updateHistoryCachesWithIndex:(id)a3
+- (void)_updateHistoryCachesWithIndex:(id)index
 {
-  v9 = a3;
-  [(NSMutableArray *)self->_historyStateCacheMRU removeObject:v9];
-  [(NSMutableArray *)self->_historyStateCacheMRU insertObject:v9 atIndex:0];
+  indexCopy = index;
+  [(NSMutableArray *)self->_historyStateCacheMRU removeObject:indexCopy];
+  [(NSMutableArray *)self->_historyStateCacheMRU insertObject:indexCopy atIndex:0];
   if (![(NSMutableArray *)self->_historyStateCacheIndex count])
   {
     historyStateCacheIndex = self->_historyStateCacheIndex;
     goto LABEL_6;
   }
 
-  v4 = [(NRDeviceCollectionHistory *)self _findIndexInHistoryStateCache:v9 type:1024];
+  v4 = [(NRDeviceCollectionHistory *)self _findIndexInHistoryStateCache:indexCopy type:1024];
   v5 = [(NSMutableArray *)self->_historyStateCacheIndex count];
   historyStateCacheIndex = self->_historyStateCacheIndex;
   if (v4 == v5)
   {
 LABEL_6:
-    [(NSMutableArray *)historyStateCacheIndex addObject:v9];
+    [(NSMutableArray *)historyStateCacheIndex addObject:indexCopy];
     goto LABEL_7;
   }
 
   v7 = [(NSMutableArray *)historyStateCacheIndex objectAtIndexedSubscript:v4];
-  v8 = [v9 isEqual:v7];
+  v8 = [indexCopy isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
-    [(NSMutableArray *)self->_historyStateCacheIndex insertObject:v9 atIndex:v4];
+    [(NSMutableArray *)self->_historyStateCacheIndex insertObject:indexCopy atIndex:v4];
   }
 
 LABEL_7:
   [(NRDeviceCollectionHistory *)self pruneStateCacheItems:1];
 }
 
-- (void)pruneStateCacheItems:(unint64_t)a3
+- (void)pruneStateCacheItems:(unint64_t)items
 {
-  for (i = self->_historyStateCacheMRU; [(NSMutableArray *)i count]> a3; i = self->_historyStateCacheMRU)
+  for (i = self->_historyStateCacheMRU; [(NSMutableArray *)i count]> items; i = self->_historyStateCacheMRU)
   {
-    v6 = [(NSMutableArray *)self->_historyStateCacheMRU lastObject];
+    lastObject = [(NSMutableArray *)self->_historyStateCacheMRU lastObject];
     [(NSMutableArray *)self->_historyStateCacheMRU removeLastObject];
-    [(NSMutableDictionary *)self->_historyStateCache removeObjectForKey:v6];
-    [(NSMutableArray *)self->_historyStateCacheIndex removeObject:v6];
+    [(NSMutableDictionary *)self->_historyStateCache removeObjectForKey:lastObject];
+    [(NSMutableArray *)self->_historyStateCacheIndex removeObject:lastObject];
   }
 }
 
 - (void)_truncateHistory
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(NSMutableArray *)self->_history firstObject];
-  v5 = [v4 date];
+  date = [MEMORY[0x1E695DF00] date];
+  firstObject = [(NSMutableArray *)self->_history firstObject];
+  date2 = [firstObject date];
 
-  [v3 timeIntervalSinceDate:v5];
+  [date timeIntervalSinceDate:date2];
   v7 = v6;
   if ([(NRDeviceCollectionHistory *)self count]>= 5 && ([(NRDeviceCollectionHistory *)self count]> self->_maxHistoryDepth || v7 > 86400.0))
   {
@@ -683,8 +683,8 @@ LABEL_7:
             objc_enumerationMutation(v9);
           }
 
-          v16 = [*(*(&v47 + 1) + 8 * v14) date];
-          [v3 timeIntervalSinceDate:v16];
+          date3 = [*(*(&v47 + 1) + 8 * v14) date];
+          [date timeIntervalSinceDate:date3];
           v18 = v17;
 
           if (v18 <= 86400.0)
@@ -737,7 +737,7 @@ LABEL_18:
     }
 
     v22 = [(NSMutableArray *)self->_history objectAtIndexedSubscript:v21];
-    v23 = [v22 state];
+    state = [v22 state];
     v24 = nr_daemon_log();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
 
@@ -747,13 +747,13 @@ LABEL_18:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v52 = v23;
+        v52 = state;
         _os_log_impl(&dword_1E0ADF000, v26, OS_LOG_TYPE_DEFAULT, "Device collection migrated to most recent history entry %p", buf, 0xCu);
       }
     }
 
     v43 = v22;
-    v27 = [NRMutableDeviceCollection diffFrom:v45 to:v23];
+    v27 = [NRMutableDeviceCollection diffFrom:v45 to:state];
     v28 = nr_daemon_log();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
 
@@ -769,7 +769,7 @@ LABEL_18:
     }
 
     obj = v27;
-    v42 = v23;
+    v42 = state;
     if (v21)
     {
       for (i = 0; i != v21; ++i)
@@ -826,10 +826,10 @@ LABEL_18:
       {
         for (; v38; --v38)
         {
-          v39 = [(NSMutableArray *)self->_historyStateCacheIndex firstObject];
-          [(NSMutableDictionary *)self->_historyStateCache removeObjectForKey:v39];
-          [(NSMutableArray *)self->_historyStateCacheIndex removeObject:v39];
-          [(NSMutableArray *)self->_historyStateCacheMRU removeObject:v39];
+          firstObject2 = [(NSMutableArray *)self->_historyStateCacheIndex firstObject];
+          [(NSMutableDictionary *)self->_historyStateCache removeObjectForKey:firstObject2];
+          [(NSMutableArray *)self->_historyStateCacheIndex removeObject:firstObject2];
+          [(NSMutableArray *)self->_historyStateCacheMRU removeObject:firstObject2];
         }
       }
     }
@@ -840,58 +840,58 @@ LABEL_18:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (id)historyEntryAtIndex:(unint64_t)a3
+- (id)historyEntryAtIndex:(unint64_t)index
 {
   startIndex = self->_startIndex;
-  if (startIndex > a3 || [(NSMutableArray *)self->_history count]+ startIndex <= a3)
+  if (startIndex > index || [(NSMutableArray *)self->_history count]+ startIndex <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_history objectAtIndexedSubscript:a3 - self->_startIndex];
+    v6 = [(NSMutableArray *)self->_history objectAtIndexedSubscript:index - self->_startIndex];
   }
 
   return v6;
 }
 
-- (id)applyDiff:(id)a3
+- (id)applyDiff:(id)diff
 {
-  v4 = a3;
-  if ([v4 count])
+  diffCopy = diff;
+  if ([diffCopy count])
   {
-    v5 = [(NRMutableDeviceCollection *)self->_deviceCollection applyDiff:v4 upOnly:0 notifyParent:1 unconditional:0];
+    v5 = [(NRMutableDeviceCollection *)self->_deviceCollection applyDiff:diffCopy upOnly:0 notifyParent:1 unconditional:0];
 
     if (v5)
     {
-      v6 = [(NSMutableArray *)self->_history lastObject];
-      v4 = v5;
+      lastObject = [(NSMutableArray *)self->_history lastObject];
+      diffCopy = v5;
     }
 
     else
     {
-      v6 = 0;
-      v4 = 0;
+      lastObject = 0;
+      diffCopy = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    lastObject = 0;
   }
 
-  return v6;
+  return lastObject;
 }
 
-- (id)addObserverQueue:(id)a3 withBlock:(id)a4
+- (id)addObserverQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v8 = objc_alloc_init(NRDeviceCollectionHistoryObserverWrapper);
-  [(NRDeviceCollectionHistoryObserverWrapper *)v8 setObserver:v6];
+  [(NRDeviceCollectionHistoryObserverWrapper *)v8 setObserver:blockCopy];
 
-  [(NRDeviceCollectionHistoryObserverWrapper *)v8 setQueue:v7];
+  [(NRDeviceCollectionHistoryObserverWrapper *)v8 setQueue:queueCopy];
   os_unfair_lock_lock(&self->_observerLock);
   [(NSMutableOrderedSet *)self->_observers addObject:v8];
   os_unfair_lock_unlock(&self->_observerLock);
@@ -899,23 +899,23 @@ LABEL_18:
   return v8;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSMutableOrderedSet *)self->_observers removeObject:v4];
+  [(NSMutableOrderedSet *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)child:(id)a3 didApplyDiff:(id)a4
+- (void)child:(id)child didApplyDiff:(id)diff
 {
-  v14 = a3;
-  v6 = a4;
-  if (v6 && self->_deviceCollection == v14)
+  childCopy = child;
+  diffCopy = diff;
+  if (diffCopy && self->_deviceCollection == childCopy)
   {
     LODWORD(v7) = [(NRDeviceCollectionHistory *)self switchIndex];
-    v8 = [(NRDeviceCollectionHistory *)self switchDeviceIDFromDiff:v6];
+    v8 = [(NRDeviceCollectionHistory *)self switchDeviceIDFromDiff:diffCopy];
 
     if (v8)
     {
@@ -930,8 +930,8 @@ LABEL_18:
     v9 = [NRDeviceCollectionHistoryEntry alloc];
     startIndex = self->_startIndex;
     v11 = [(NSMutableArray *)self->_history count];
-    v12 = [MEMORY[0x1E695DF00] date];
-    v13 = [(NRDeviceCollectionHistoryEntry *)v9 initWithHistory:self index:v11 + startIndex date:v12 diff:v6 switchIndex:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    v13 = [(NRDeviceCollectionHistoryEntry *)v9 initWithHistory:self index:v11 + startIndex date:date diff:diffCopy switchIndex:v7];
 
     [(NSMutableArray *)self->_history addObject:v13];
     [(NRSwitchRecordCollection *)self->_switchRecords addSwitchRecordWithHistoryEntry:v13];
@@ -950,10 +950,10 @@ LABEL_18:
   }
 
   v3 = switchRecords;
-  v4 = [(NRSwitchRecordCollection *)v3 lastObject];
-  if (v4)
+  lastObject = [(NRSwitchRecordCollection *)v3 lastObject];
+  if (lastObject)
   {
-    v5 = v4[6];
+    v5 = lastObject[6];
   }
 
   else
@@ -964,15 +964,15 @@ LABEL_18:
   return v5;
 }
 
-- (id)switchDeviceIDFromDiff:(id)a3
+- (id)switchDeviceIDFromDiff:(id)diff
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  diffCopy = diff;
+  v4 = [diffCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -984,16 +984,16 @@ LABEL_18:
       {
         if (*v20 != v18)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(diffCopy);
         }
 
         v7 = *(*(&v19 + 1) + 8 * i);
-        v8 = [v3 objectForKeyedSubscript:{v7, v17}];
-        v9 = [v8 diff];
-        v10 = [v9 objectForKeyedSubscript:v17];
-        v11 = [v10 diff];
-        v12 = [v11 value];
-        v13 = [v12 isEqual:MEMORY[0x1E695E118]];
+        v8 = [diffCopy objectForKeyedSubscript:{v7, v17}];
+        diff = [v8 diff];
+        v10 = [diff objectForKeyedSubscript:v17];
+        diff2 = [v10 diff];
+        value = [diff2 value];
+        v13 = [value isEqual:MEMORY[0x1E695E118]];
 
         if (v13)
         {
@@ -1003,7 +1003,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [diffCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v5)
       {
         continue;
@@ -1021,12 +1021,12 @@ LABEL_11:
   return v14;
 }
 
-- (id)deviceIDAtSwitchIndex:(unsigned int)a3 date:(id *)a4
+- (id)deviceIDAtSwitchIndex:(unsigned int)index date:(id *)date
 {
   switchRecords = self->_switchRecords;
   if (!switchRecords || (v7 = switchRecords->super._records, v7, !v7))
   {
-    v13 = 0;
+    toUUID = 0;
     goto LABEL_15;
   }
 
@@ -1035,14 +1035,14 @@ LABEL_11:
   if (v8)
   {
     *(v8 + 28) |= 2u;
-    *(v8 + 24) = a3;
+    *(v8 + 24) = index;
   }
 
   v10 = switchRecords->super._records;
   v11 = switchRecords->super._records;
   v12 = [(NSMutableArray *)v10 indexOfObject:v9 inSortedRange:0 options:[(NSMutableArray *)v11 count] usingComparator:256, &__block_literal_global_5];
 
-  v13 = 0;
+  toUUID = 0;
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = [(NSMutableArray *)switchRecords->super._records objectAtIndexedSubscript:v12];
@@ -1051,9 +1051,9 @@ LABEL_11:
     if (v15)
     {
       v16 = *(v15 + 16);
-      v13 = [v16 toUUID];
+      toUUID = [v16 toUUID];
 
-      if (!a4)
+      if (!date)
       {
 LABEL_13:
 
@@ -1073,15 +1073,15 @@ LABEL_13:
 
     else
     {
-      v13 = 0;
+      toUUID = 0;
       v17 = 0;
-      if (!a4)
+      if (!date)
       {
         goto LABEL_13;
       }
     }
 
-    *a4 = v17;
+    *date = v17;
     goto LABEL_13;
   }
 
@@ -1089,13 +1089,13 @@ LABEL_14:
 
 LABEL_15:
 
-  return v13;
+  return toUUID;
 }
 
-- (void)notifyHistoryObserversWithEntry:(id)a3
+- (void)notifyHistoryObserversWithEntry:(id)entry
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   os_unfair_lock_lock(&self->_observerLock);
   v5 = [(NSMutableOrderedSet *)self->_observers copy];
   os_unfair_lock_unlock(&self->_observerLock);
@@ -1119,24 +1119,24 @@ LABEL_15:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 queue];
+        queue = [v11 queue];
 
-        if (v12)
+        if (queue)
         {
-          v13 = [v11 queue];
+          queue2 = [v11 queue];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __61__NRDeviceCollectionHistory_notifyHistoryObserversWithEntry___block_invoke;
           v16[3] = &unk_1E86DAF10;
           v16[4] = v11;
-          v17 = v4;
-          dispatch_async(v13, v16);
+          v17 = entryCopy;
+          dispatch_async(queue2, v16);
         }
 
         else
         {
-          v14 = [v11 observer];
-          (v14)[2](v14, v4, v11);
+          observer = [v11 observer];
+          (observer)[2](observer, entryCopy, v11);
         }
       }
 
@@ -1218,18 +1218,18 @@ void __61__NRDeviceCollectionHistory_notifyHistoryObserversWithEntry___block_inv
   return v6;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v8 = [(NSMutableArray *)self->_history copy];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v9 = [v8 countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -1237,27 +1237,27 @@ void __61__NRDeviceCollectionHistory_notifyHistoryObserversWithEntry___block_inv
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NRDeviceCollectionHistory *)self isEqualToHistory:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NRDeviceCollectionHistory *)self isEqualToHistory:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHistory:(id)a3
+- (BOOL)isEqualToHistory:(id)history
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 == self || v4 && [(NRMutableDeviceCollection *)self->_deviceCollection isEqual:v4->_deviceCollection]&& self->_startIndex == v5->_startIndex;
+  historyCopy = history;
+  v5 = historyCopy;
+  v6 = historyCopy == self || historyCopy && [(NRMutableDeviceCollection *)self->_deviceCollection isEqual:historyCopy->_deviceCollection]&& self->_startIndex == v5->_startIndex;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 48) = self->_startIndex;
-  v6 = [(NSMutableArray *)self->_history mutableCopyWithZone:a3];
+  v6 = [(NSMutableArray *)self->_history mutableCopyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -1291,9 +1291,9 @@ void __61__NRDeviceCollectionHistory_notifyHistoryObserversWithEntry___block_inv
     while (v10);
   }
 
-  v13 = [*(v5 + 56) lastObject];
-  v14 = [v13 state];
-  v15 = [v14 copyWithZone:0];
+  lastObject = [*(v5 + 56) lastObject];
+  state = [lastObject state];
+  v15 = [state copyWithZone:0];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 

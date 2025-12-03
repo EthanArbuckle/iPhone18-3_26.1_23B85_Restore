@@ -1,174 +1,174 @@
 @interface CalLazyCreateUtils
-+ (void)addArray:(id)a3 toArray:(id *)a4;
-+ (void)addArray:(id)a3 withKey:(id)a4 toDictionaryOfArrays:(id *)a5;
-+ (void)addArray:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5;
-+ (void)addArray:(id)a3 withKey:(id)a4 toStrongTableOfArrays:(id *)a5;
-+ (void)addItem:(id)a3 withKey:(id)a4 toDictionaryOfArrays:(id *)a5;
-+ (void)addItem:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5;
-+ (void)addItem:(id)a3 withKey:(id)a4 toStrongTableOfArrays:(id *)a5;
-+ (void)addObject:(id)a3 toArray:(id *)a4;
-+ (void)addObject:(id)a3 toSet:(id *)a4;
-+ (void)addSet:(id)a3 toSet:(id *)a4;
-+ (void)addSet:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5;
-+ (void)setValue:(id)a3 withKey:(id)a4 inDictionary:(id *)a5;
++ (void)addArray:(id)array toArray:(id *)toArray;
++ (void)addArray:(id)array withKey:(id)key toDictionaryOfArrays:(id *)arrays;
++ (void)addArray:(id)array withKey:(id)key toDictionaryOfSets:(id *)sets;
++ (void)addArray:(id)array withKey:(id)key toStrongTableOfArrays:(id *)arrays;
++ (void)addItem:(id)item withKey:(id)key toDictionaryOfArrays:(id *)arrays;
++ (void)addItem:(id)item withKey:(id)key toDictionaryOfSets:(id *)sets;
++ (void)addItem:(id)item withKey:(id)key toStrongTableOfArrays:(id *)arrays;
++ (void)addObject:(id)object toArray:(id *)array;
++ (void)addObject:(id)object toSet:(id *)set;
++ (void)addSet:(id)set toSet:(id *)toSet;
++ (void)addSet:(id)set withKey:(id)key toDictionaryOfSets:(id *)sets;
++ (void)setValue:(id)value withKey:(id)key inDictionary:(id *)dictionary;
 @end
 
 @implementation CalLazyCreateUtils
 
-+ (void)addArray:(id)a3 toArray:(id *)a4
++ (void)addArray:(id)array toArray:(id *)toArray
 {
-  v8 = a3;
-  if ([v8 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v5 = *a4;
-    if (!*a4)
+    v5 = *toArray;
+    if (!*toArray)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      v7 = *a4;
-      *a4 = v6;
+      array = [MEMORY[0x1E695DF70] array];
+      v7 = *toArray;
+      *toArray = array;
 
-      v5 = *a4;
+      v5 = *toArray;
     }
 
-    [v5 addObjectsFromArray:v8];
+    [v5 addObjectsFromArray:arrayCopy];
   }
 }
 
-+ (void)addObject:(id)a3 toArray:(id *)a4
++ (void)addObject:(id)object toArray:(id *)array
 {
-  v5 = a3;
-  v6 = *a4;
-  v9 = v5;
-  if (!*a4)
+  objectCopy = object;
+  v6 = *array;
+  v9 = objectCopy;
+  if (!*array)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = *a4;
-    *a4 = v7;
+    array = [MEMORY[0x1E695DF70] array];
+    v8 = *array;
+    *array = array;
 
-    v5 = v9;
-    v6 = *a4;
+    objectCopy = v9;
+    v6 = *array;
   }
 
-  [v6 addObject:v5];
+  [v6 addObject:objectCopy];
 }
 
-+ (void)setValue:(id)a3 withKey:(id)a4 inDictionary:(id *)a5
++ (void)setValue:(id)value withKey:(id)key inDictionary:(id *)dictionary
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = *a5;
-  if (!*a5)
+  valueCopy = value;
+  keyCopy = key;
+  v8 = *dictionary;
+  if (!*dictionary)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    v10 = *a5;
-    *a5 = v9;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v10 = *dictionary;
+    *dictionary = dictionary;
 
-    v8 = *a5;
+    v8 = *dictionary;
   }
 
-  [v8 setObject:v11 forKeyedSubscript:v7];
+  [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
 }
 
-+ (void)addObject:(id)a3 toSet:(id *)a4
++ (void)addObject:(id)object toSet:(id *)set
 {
-  v5 = a3;
-  v6 = *a4;
-  v9 = v5;
-  if (!*a4)
+  objectCopy = object;
+  v6 = *set;
+  v9 = objectCopy;
+  if (!*set)
   {
     v7 = [MEMORY[0x1E695DFA8] set];
-    v8 = *a4;
-    *a4 = v7;
+    v8 = *set;
+    *set = v7;
 
-    v5 = v9;
-    v6 = *a4;
+    objectCopy = v9;
+    v6 = *set;
   }
 
-  [v6 addObject:v5];
+  [v6 addObject:objectCopy];
 }
 
-+ (void)addSet:(id)a3 toSet:(id *)a4
++ (void)addSet:(id)set toSet:(id *)toSet
 {
-  v8 = a3;
-  if ([v8 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v5 = *a4;
-    if (!*a4)
+    v5 = *toSet;
+    if (!*toSet)
     {
       v6 = [MEMORY[0x1E695DFA8] set];
-      v7 = *a4;
-      *a4 = v6;
+      v7 = *toSet;
+      *toSet = v6;
 
-      v5 = *a4;
+      v5 = *toSet;
     }
 
-    [v5 unionSet:v8];
+    [v5 unionSet:setCopy];
   }
 }
 
-+ (void)addArray:(id)a3 withKey:(id)a4 toDictionaryOfArrays:(id *)a5
++ (void)addArray:(id)array withKey:(id)key toDictionaryOfArrays:(id *)arrays
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v9 count])
+  arrayCopy = array;
+  keyCopy = key;
+  if ([arrayCopy count])
   {
-    v8 = _acquireArrayFromDictionary(a5, v7);
-    [v8 addObjectsFromArray:v9];
+    v8 = _acquireArrayFromDictionary(arrays, keyCopy);
+    [v8 addObjectsFromArray:arrayCopy];
   }
 }
 
-+ (void)addItem:(id)a3 withKey:(id)a4 toDictionaryOfArrays:(id *)a5
++ (void)addItem:(id)item withKey:(id)key toDictionaryOfArrays:(id *)arrays
 {
-  v7 = a3;
-  v8 = _acquireArrayFromDictionary(a5, a4);
-  [v8 addObject:v7];
+  itemCopy = item;
+  v8 = _acquireArrayFromDictionary(arrays, key);
+  [v8 addObject:itemCopy];
 }
 
-+ (void)addArray:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5
++ (void)addArray:(id)array withKey:(id)key toDictionaryOfSets:(id *)sets
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v9 count])
+  arrayCopy = array;
+  keyCopy = key;
+  if ([arrayCopy count])
   {
-    v8 = _acquireSetFromDictionary(a5, v7);
-    [v8 addObjectsFromArray:v9];
+    v8 = _acquireSetFromDictionary(sets, keyCopy);
+    [v8 addObjectsFromArray:arrayCopy];
   }
 }
 
-+ (void)addItem:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5
++ (void)addItem:(id)item withKey:(id)key toDictionaryOfSets:(id *)sets
 {
-  v7 = a3;
-  v8 = _acquireSetFromDictionary(a5, a4);
-  [v8 addObject:v7];
+  itemCopy = item;
+  v8 = _acquireSetFromDictionary(sets, key);
+  [v8 addObject:itemCopy];
 }
 
-+ (void)addSet:(id)a3 withKey:(id)a4 toDictionaryOfSets:(id *)a5
++ (void)addSet:(id)set withKey:(id)key toDictionaryOfSets:(id *)sets
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v9 count])
+  setCopy = set;
+  keyCopy = key;
+  if ([setCopy count])
   {
-    v8 = _acquireSetFromDictionary(a5, v7);
-    [v8 unionSet:v9];
+    v8 = _acquireSetFromDictionary(sets, keyCopy);
+    [v8 unionSet:setCopy];
   }
 }
 
-+ (void)addArray:(id)a3 withKey:(id)a4 toStrongTableOfArrays:(id *)a5
++ (void)addArray:(id)array withKey:(id)key toStrongTableOfArrays:(id *)arrays
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v9 count])
+  arrayCopy = array;
+  keyCopy = key;
+  if ([arrayCopy count])
   {
-    v8 = _acquireArrayFromTable(a5, v7);
-    [v8 addObjectsFromArray:v9];
+    v8 = _acquireArrayFromTable(arrays, keyCopy);
+    [v8 addObjectsFromArray:arrayCopy];
   }
 }
 
-+ (void)addItem:(id)a3 withKey:(id)a4 toStrongTableOfArrays:(id *)a5
++ (void)addItem:(id)item withKey:(id)key toStrongTableOfArrays:(id *)arrays
 {
-  v7 = a3;
-  v8 = _acquireArrayFromTable(a5, a4);
-  [v8 addObject:v7];
+  itemCopy = item;
+  v8 = _acquireArrayFromTable(arrays, key);
+  [v8 addObject:itemCopy];
 }
 
 @end

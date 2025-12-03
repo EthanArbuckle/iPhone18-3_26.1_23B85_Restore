@@ -1,28 +1,28 @@
 @interface TUIKTReportToAppleViewController
-- (TUIKTReportToAppleViewController)initWithContext:(id)a3 staticIdentityManager:(id)a4;
+- (TUIKTReportToAppleViewController)initWithContext:(id)context staticIdentityManager:(id)manager;
 - (id)_additionalDetailsTitleSpecifier;
 - (id)_reportToAppleButtonSpecifier;
 - (id)_specifiersForAdditionalDetails;
 - (id)specifiers;
 - (void)_dismiss;
-- (void)_dismissKeyboard:(id)a3;
-- (void)_reportToApple:(id)a3;
+- (void)_dismissKeyboard:(id)keyboard;
+- (void)_reportToApple:(id)apple;
 - (void)_send;
-- (void)_setAdditionalDetails:(id)a3 withSpecifier:(id)a4;
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4;
-- (void)specifierProvider:(id)a3 showViewController:(id)a4;
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5;
+- (void)_setAdditionalDetails:(id)details withSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier;
+- (void)specifierProvider:(id)provider showViewController:(id)controller;
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion;
 @end
 
 @implementation TUIKTReportToAppleViewController
 
-- (TUIKTReportToAppleViewController)initWithContext:(id)a3 staticIdentityManager:(id)a4
+- (TUIKTReportToAppleViewController)initWithContext:(id)context staticIdentityManager:(id)manager
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_20 != -1)
   {
     [TUIKTReportToAppleViewController initWithContext:staticIdentityManager:];
@@ -34,11 +34,11 @@
     *buf = 136315906;
     v20 = "[TUIKTReportToAppleViewController initWithContext:staticIdentityManager:]";
     v21 = 2114;
-    v22 = v7;
+    v22 = contextCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = managerCopy;
     v25 = 2114;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26F50B000, v9, OS_LOG_TYPE_DEFAULT, "%s context = %{public}@, staticIdentityManager = %{public}@ on %{public}@", buf, 0x2Au);
   }
 
@@ -46,14 +46,14 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_context, a3);
-    if (!v8)
+    objc_storeStrong(&v10->_context, context);
+    if (!managerCopy)
     {
-      v8 = objc_opt_new();
-      [v8 requestSelfAccountKey];
+      managerCopy = objc_opt_new();
+      [managerCopy requestSelfAccountKey];
     }
 
-    v12 = [[TUIReportManager alloc] initWithStaticIdentityManager:v8];
+    v12 = [[TUIReportManager alloc] initWithStaticIdentityManager:managerCopy];
     reportManager = v11->_reportManager;
     v11->_reportManager = v12;
 
@@ -73,10 +73,10 @@ uint64_t __74__TUIKTReportToAppleViewController_initWithContext_staticIdentityMa
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  collectionCopy = collection;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_20 != -1)
   {
     [TUIKTReportToAppleViewController traitEnvironment:didChangeTraitCollection:];
@@ -88,11 +88,11 @@ uint64_t __74__TUIKTReportToAppleViewController_initWithContext_staticIdentityMa
     [TUIKTReportToAppleViewController traitEnvironment:v8 didChangeTraitCollection:?];
   }
 
-  v9 = [(TUIKTReportToAppleViewController *)self traitCollection];
-  v10 = [v9 userInterfaceStyle];
-  v11 = [v7 userInterfaceStyle];
+  traitCollection = [(TUIKTReportToAppleViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v10 != v11)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(TUIKTReportToAppleViewController *)self reloadSpecifiers];
   }
@@ -111,14 +111,14 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([TUIUtils isTransparencyFeatureEnabled:ffKTReportToApple])
     {
-      v6 = [(TUIKTReportToAppleViewController *)self _additionalDetailsTitleSpecifier];
-      [v5 addObject:v6];
+      _additionalDetailsTitleSpecifier = [(TUIKTReportToAppleViewController *)self _additionalDetailsTitleSpecifier];
+      [array addObject:_additionalDetailsTitleSpecifier];
 
-      v7 = [(TUIKTReportToAppleViewController *)self _specifiersForAdditionalDetails];
-      [v5 addObject:v7];
+      _specifiersForAdditionalDetails = [(TUIKTReportToAppleViewController *)self _specifiersForAdditionalDetails];
+      [array addObject:_specifiersForAdditionalDetails];
 
       reportToAppleSpecifierProvider = self->_reportToAppleSpecifierProvider;
       if (!reportToAppleSpecifierProvider)
@@ -132,14 +132,14 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
         reportToAppleSpecifierProvider = self->_reportToAppleSpecifierProvider;
       }
 
-      v11 = [(TUIReportToAppleSpecifierProvider *)reportToAppleSpecifierProvider specifiers];
-      [v5 addObjectsFromArray:v11];
+      specifiers = [(TUIReportToAppleSpecifierProvider *)reportToAppleSpecifierProvider specifiers];
+      [array addObjectsFromArray:specifiers];
 
-      v12 = [(TUIKTReportToAppleViewController *)self _reportToAppleButtonSpecifier];
-      [v5 addObject:v12];
+      _reportToAppleButtonSpecifier = [(TUIKTReportToAppleViewController *)self _reportToAppleButtonSpecifier];
+      [array addObject:_reportToAppleButtonSpecifier];
     }
 
-    v13 = [v5 copy];
+    v13 = [array copy];
     v14 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v13;
 
@@ -162,7 +162,7 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
   return v6;
 }
 
-- (void)_reportToApple:(id)a3
+- (void)_reportToApple:(id)apple
 {
   v8 = [[TUIReportDetailsViewController alloc] initWithReportManager:self->_reportManager];
   v4 = objc_opt_new();
@@ -170,8 +170,8 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
   v6 = [v5 localizedStringForKey:@"DETAILS_BACK_BUTTON_TITLE" value:&stru_287F92480 table:@"Localizable"];
   [v4 setTitle:v6];
 
-  v7 = [(TUIKTReportToAppleViewController *)self navigationItem];
-  [v7 setBackBarButtonItem:v4];
+  navigationItem = [(TUIKTReportToAppleViewController *)self navigationItem];
+  [navigationItem setBackBarButtonItem:v4];
 
   [(TUIKTReportToAppleViewController *)self showViewController:v8 sender:self];
 }
@@ -201,9 +201,9 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
   return v2;
 }
 
-- (void)_setAdditionalDetails:(id)a3 withSpecifier:(id)a4
+- (void)_setAdditionalDetails:(id)details withSpecifier:(id)specifier
 {
-  v7 = [a4 propertyForKey:*MEMORY[0x277D40148]];
+  v7 = [specifier propertyForKey:*MEMORY[0x277D40148]];
   if ([v7 placeholderDisplayed])
   {
     [(TUIReportManager *)self->_reportManager setAdditionalDetails:&stru_287F92480];
@@ -211,33 +211,33 @@ uint64_t __78__TUIKTReportToAppleViewController_traitEnvironment_didChangeTraitC
 
   else
   {
-    v5 = [v7 textView];
-    v6 = [v5 text];
-    [(TUIReportManager *)self->_reportManager setAdditionalDetails:v6];
+    textView = [v7 textView];
+    text = [textView text];
+    [(TUIReportManager *)self->_reportManager setAdditionalDetails:text];
   }
 }
 
-- (void)specifierProvider:(id)a3 showViewController:(id)a4
+- (void)specifierProvider:(id)provider showViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(TUIKTReportToAppleViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(TUIKTReportToAppleViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(TUIKTReportToAppleViewController *)self showViewController:v6 sender:v7];
+    [(TUIKTReportToAppleViewController *)self showViewController:controllerCopy sender:providerCopy];
   }
 }
 
-- (void)specifierProvider:(id)a3 willBeginLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider willBeginLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_20 != -1)
   {
     [TUIKTReportToAppleViewController specifierProvider:willBeginLoadingSpecifier:];
@@ -258,10 +258,10 @@ uint64_t __80__TUIKTReportToAppleViewController_specifierProvider_willBeginLoadi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)specifierProvider:(id)a3 didFinishLoadingSpecifier:(id)a4
+- (void)specifierProvider:(id)provider didFinishLoadingSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  specifierCopy = specifier;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_20 != -1)
   {
     [TUIKTReportToAppleViewController specifierProvider:didFinishLoadingSpecifier:];
@@ -289,11 +289,11 @@ uint64_t __87__TUIKTReportToAppleViewController_reloadSpecifiersForProvider_oldS
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)validateDataclassAccessForProvider:(id)a3 specifier:(id)a4 completion:(id)a5
+- (void)validateDataclassAccessForProvider:(id)provider specifier:(id)specifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  specifierCopy = specifier;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_20 != -1)
   {
     [TUIKTReportToAppleViewController validateDataclassAccessForProvider:specifier:completion:];
@@ -403,10 +403,10 @@ uint64_t __41__TUIKTReportToAppleViewController__send__block_invoke_4()
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_dismissKeyboard:(id)a3
+- (void)_dismissKeyboard:(id)keyboard
 {
-  v3 = [(TUIKTReportToAppleViewController *)self view];
-  [v3 endEditing:1];
+  view = [(TUIKTReportToAppleViewController *)self view];
+  [view endEditing:1];
 }
 
 - (void)traitEnvironment:(uint64_t)a1 didChangeTraitCollection:(NSObject *)a2 .cold.2(uint64_t a1, NSObject *a2)

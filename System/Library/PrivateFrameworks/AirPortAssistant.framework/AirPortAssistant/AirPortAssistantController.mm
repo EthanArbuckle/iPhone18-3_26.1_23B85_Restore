@@ -1,19 +1,19 @@
 @interface AirPortAssistantController
-+ (BOOL)isUnconfiguredDevice:(id)a3;
-+ (BOOL)launchAUForNetwork:(id)a3 withMacAddress:(id)a4 getAUFromAppStore:(BOOL)a5 viewController:(id)a6;
-+ (id)assistantUIViewControllerWithParameters:(id)a3;
++ (BOOL)isUnconfiguredDevice:(id)device;
++ (BOOL)launchAUForNetwork:(id)network withMacAddress:(id)address getAUFromAppStore:(BOOL)store viewController:(id)controller;
++ (id)assistantUIViewControllerWithParameters:(id)parameters;
 + (id)sharedInstance;
-+ (id)unconfiguredDeviceName:(id)a3;
-+ (id)uniqueBaseStationName:(id)a3 withBssid:(id)a4;
++ (id)unconfiguredDeviceName:(id)name;
++ (id)uniqueBaseStationName:(id)name withBssid:(id)bssid;
 + (void)cancelAirPortAssistantController;
-- (id)WACDeviceFromScanInfo:(id)a3;
-- (int)configureUIViewControllerWithParameters:(id)a3;
+- (id)WACDeviceFromScanInfo:(id)info;
+- (int)configureUIViewControllerWithParameters:(id)parameters;
 - (int)start2_4WiFiScan;
-- (void)assistantCompleteWithResult:(int)a3;
+- (void)assistantCompleteWithResult:(int)result;
 - (void)dealloc;
 - (void)stop2_4WiFiScan;
 - (void)updateWACListeners;
-- (void)wirelessScanDone:(id)a3;
+- (void)wirelessScanDone:(id)done;
 @end
 
 @implementation AirPortAssistantController
@@ -30,44 +30,44 @@
   return result;
 }
 
-+ (id)assistantUIViewControllerWithParameters:(id)a3
++ (id)assistantUIViewControllerWithParameters:(id)parameters
 {
-  v3 = a3;
-  if (a3)
+  parametersCopy = parameters;
+  if (parameters)
   {
-    v4 = objc_msgSend_objectForKey_(a3, a2, @"scanRecord");
-    v6 = objc_msgSend_objectForKey_(v3, v5, @"currentWiFiScan");
-    v8 = objc_msgSend_objectForKey_(v3, v7, @"deviceMACAddr");
+    v4 = objc_msgSend_objectForKey_(parameters, a2, @"scanRecord");
+    v6 = objc_msgSend_objectForKey_(parametersCopy, v5, @"currentWiFiScan");
+    v8 = objc_msgSend_objectForKey_(parametersCopy, v7, @"deviceMACAddr");
     if (!(v4 | v8))
     {
       return 0;
     }
 
     v11 = v8;
-    v3 = objc_msgSend_sharedInstance(AirPortAssistantController, v9, v10);
-    if (v3)
+    parametersCopy = objc_msgSend_sharedInstance(AirPortAssistantController, v9, v10);
+    if (parametersCopy)
     {
       v12 = [AssistantUIViewController alloc];
       v14 = objc_msgSend_initWithNibName_bundle_(v12, v13, 0, 0);
       if (v14)
       {
         v16 = v14;
-        objc_msgSend_setAssistantDelegate_(v14, v15, v3);
+        objc_msgSend_setAssistantDelegate_(v14, v15, parametersCopy);
         objc_msgSend_setMacAddress_(v16, v17, v11);
         objc_msgSend_setScanInfoRecord_(v16, v18, v4);
         objc_msgSend_setParamScanResults_(v16, v19, v6);
-        objc_msgSend_setViewController_(v3, v20, v16);
+        objc_msgSend_setViewController_(parametersCopy, v20, v16);
 
         v22 = objc_msgSend_scanInfoNetworkName_(WiFiUtils, v21, v4);
-        objc_msgSend_setConfiguredSSID_(v3, v23, v22);
-        return v3;
+        objc_msgSend_setConfiguredSSID_(parametersCopy, v23, v22);
+        return parametersCopy;
       }
 
       return 0;
     }
   }
 
-  return v3;
+  return parametersCopy;
 }
 
 + (void)cancelAirPortAssistantController
@@ -112,10 +112,10 @@
   }
 }
 
-- (void)assistantCompleteWithResult:(int)a3
+- (void)assistantCompleteWithResult:(int)result
 {
-  v3 = *&a3;
-  v5 = self;
+  v3 = *&result;
+  selfCopy = self;
   if (self->_delegate)
   {
     v7 = objc_opt_respondsToSelector();
@@ -145,14 +145,14 @@
   objc_msgSend_setContext_(self, v6, 0);
 }
 
-+ (BOOL)isUnconfiguredDevice:(id)a3
++ (BOOL)isUnconfiguredDevice:(id)device
 {
-  objc_msgSend_downloadAssetsIfNeeded(AirPortAssistantController, a2, a3);
-  IsUnconfigured = objc_msgSend_scanInfoIsUnconfigured_(WiFiUtils, v4, a3);
-  v7 = objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v6, a3);
-  v9 = objc_msgSend_scanInfoSupportsACPConfigV1_(WiFiUtils, v8, a3);
-  v11 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v10, a3);
-  v13 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v12, a3);
+  objc_msgSend_downloadAssetsIfNeeded(AirPortAssistantController, a2, device);
+  IsUnconfigured = objc_msgSend_scanInfoIsUnconfigured_(WiFiUtils, v4, device);
+  v7 = objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v6, device);
+  v9 = objc_msgSend_scanInfoSupportsACPConfigV1_(WiFiUtils, v8, device);
+  v11 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v10, device);
+  v13 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v12, device);
   if (IsUnconfigured)
   {
     v14 = (v13 != 0) | v7 | v9 | v11;
@@ -166,47 +166,47 @@
   return v14 & 1;
 }
 
-+ (id)unconfiguredDeviceName:(id)a3
++ (id)unconfiguredDeviceName:(id)name
 {
-  v4 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a3);
+  v4 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, name);
 
-  return sub_23EB6D0E0(a3, v4, 0);
+  return sub_23EB6D0E0(name, v4, 0);
 }
 
-+ (id)uniqueBaseStationName:(id)a3 withBssid:(id)a4
++ (id)uniqueBaseStationName:(id)name withBssid:(id)bssid
 {
-  v5 = sub_23EB6D320(a4, 0, a3);
+  v5 = sub_23EB6D320(bssid, 0, name);
   v6 = MEMORY[0x277CCAB68];
   v8 = objc_msgSend_substringFromIndex_(v5, v7, 9);
   v10 = objc_msgSend_stringWithString_(v6, v9, v8);
   v13 = objc_msgSend_length(v10, v11, v12);
   objc_msgSend_replaceOccurrencesOfString_withString_options_range_(v10, v14, @":", &stru_285145FE8, 0, 0, v13 - 1);
-  return objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v15, @"%@ %@", a3, v10);
+  return objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v15, @"%@ %@", name, v10);
 }
 
-+ (BOOL)launchAUForNetwork:(id)a3 withMacAddress:(id)a4 getAUFromAppStore:(BOOL)a5 viewController:(id)a6
++ (BOOL)launchAUForNetwork:(id)network withMacAddress:(id)address getAUFromAppStore:(BOOL)store viewController:(id)controller
 {
-  v7 = a5;
+  storeCopy = store;
   v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"apmanage://manage?");
-  if (a4)
+  if (address)
   {
-    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%@macaddr=%@", v11, a4);
+    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%@macaddr=%@", v11, address);
   }
 
-  if (a3)
+  if (network)
   {
-    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%@&network=%@", v11, a3);
+    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%@&network=%@", v11, network);
     v15 = objc_msgSend_URLQueryAllowedCharacterSet(MEMORY[0x277CCA900], v13, v14);
     v11 = objc_msgSend_stringByAddingPercentEncodingWithAllowedCharacters_(v12, v16, v15);
   }
 
   v17 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v10, v11);
   v18 = sub_23EC0F534(v17);
-  if (!v18 && v7)
+  if (!v18 && storeCopy)
   {
     sub_23EB6CCD4(@"SetupRecommendations");
     v19 = [AUUIAlert alloc];
-    v21 = objc_msgSend_initWithViewController_(v19, v20, a6);
+    v21 = objc_msgSend_initWithViewController_(v19, v20, controller);
     v22 = sub_23EB6CD3C(@"AskToGetAirPortUtility1", qword_27E383800);
     objc_msgSend_setTitle_(v21, v23, v22);
     v24 = sub_23EB6CD3C(@"AskToGetAirPortUtility2", qword_27E383800);
@@ -271,18 +271,18 @@
   objc_msgSend_removeObserver_name_object_(v10, v11, self, @"com.apple.WiFiUtils.Scan.Complete", 0);
 }
 
-- (int)configureUIViewControllerWithParameters:(id)a3
+- (int)configureUIViewControllerWithParameters:(id)parameters
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!parameters)
   {
     return -6762;
   }
 
-  v5 = objc_msgSend_objectForKey_(a3, a2, @"scanRecord");
-  v7 = objc_msgSend_objectForKey_(a3, v6, @"currentWiFiScan");
-  v9 = objc_msgSend_objectForKey_(a3, v8, @"deviceMACAddr");
-  v11 = objc_msgSend_objectForKey_(a3, v10, @"wacShouldHideFindAppUI");
+  v5 = objc_msgSend_objectForKey_(parameters, a2, @"scanRecord");
+  v7 = objc_msgSend_objectForKey_(parameters, v6, @"currentWiFiScan");
+  v9 = objc_msgSend_objectForKey_(parameters, v8, @"deviceMACAddr");
+  v11 = objc_msgSend_objectForKey_(parameters, v10, @"wacShouldHideFindAppUI");
   if (!(v5 | v9))
   {
     return -6762;
@@ -314,7 +314,7 @@
   return 0;
 }
 
-- (void)wirelessScanDone:(id)a3
+- (void)wirelessScanDone:(id)done
 {
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -385,7 +385,7 @@
     {
       v44 = v42;
       v81 = v10;
-      v82 = self;
+      selfCopy = self;
       v45 = *v91;
       do
       {
@@ -448,7 +448,7 @@ LABEL_26:
 
       while (v44);
       v10 = v81;
-      self = v82;
+      self = selfCopy;
     }
 
     objc_msgSend_setUnconfiguredWACDevices_(self, v43, v85);
@@ -506,24 +506,24 @@ LABEL_26:
   objc_msgSend_clearScanCache(v78, v79, v80);
 }
 
-- (id)WACDeviceFromScanInfo:(id)a3
+- (id)WACDeviceFromScanInfo:(id)info
 {
-  v4 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
+  v4 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, info);
   v5 = MEMORY[0x277CCABB0];
-  IsMFIAirPlayDevice = objc_msgSend_scanInfoIsMFIAirPlayDevice_(WiFiUtils, v6, a3);
+  IsMFIAirPlayDevice = objc_msgSend_scanInfoIsMFIAirPlayDevice_(WiFiUtils, v6, info);
   v36 = objc_msgSend_numberWithBool_(v5, v8, IsMFIAirPlayDevice);
   v9 = MEMORY[0x277CCABB0];
-  v11 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v10, a3);
+  v11 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v10, info);
   v13 = objc_msgSend_numberWithBool_(v9, v12, v11);
   v14 = MEMORY[0x277CCABB0];
-  v16 = objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v15, a3);
+  v16 = objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v15, info);
   v18 = objc_msgSend_numberWithBool_(v14, v17, v16);
-  v20 = objc_msgSend_scanInfoFriendlyName_(WiFiUtils, v19, a3);
-  v22 = objc_msgSend_scanInfoDeviceID_(WiFiUtils, v21, a3);
-  v24 = objc_msgSend_scanInfoNetworkName_(WiFiUtils, v23, a3);
-  v26 = objc_msgSend_scanInfoBSSIDStr_(WiFiUtils, v25, a3);
-  v28 = objc_msgSend_scanInfoModelName_(WiFiUtils, v27, a3);
-  v30 = objc_msgSend_scanInfoManufacturerName_(WiFiUtils, v29, a3);
+  v20 = objc_msgSend_scanInfoFriendlyName_(WiFiUtils, v19, info);
+  v22 = objc_msgSend_scanInfoDeviceID_(WiFiUtils, v21, info);
+  v24 = objc_msgSend_scanInfoNetworkName_(WiFiUtils, v23, info);
+  v26 = objc_msgSend_scanInfoBSSIDStr_(WiFiUtils, v25, info);
+  v28 = objc_msgSend_scanInfoModelName_(WiFiUtils, v27, info);
+  v30 = objc_msgSend_scanInfoManufacturerName_(WiFiUtils, v29, info);
   objc_msgSend_setObject_forKey_(v4, v31, v36, @"wacSupportsAirPlay");
   objc_msgSend_setObject_forKey_(v4, v32, v13, @"wacSupportsSpruce");
   objc_msgSend_setObject_forKey_(v4, v33, v18, @"wacSupportsSecureWAC");

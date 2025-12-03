@@ -10,7 +10,7 @@
   v12 = a5;
   Current = CFRunLoopGetCurrent();
   addNullRunLoopSourceForRunLoopAndModes(Current, v10);
-  [a1 performSelector:a4 withObject:v12 afterDelay:v10 inModes:a2];
+  [self performSelector:a4 withObject:v12 afterDelay:v10 inModes:a2];
 }
 
 @end

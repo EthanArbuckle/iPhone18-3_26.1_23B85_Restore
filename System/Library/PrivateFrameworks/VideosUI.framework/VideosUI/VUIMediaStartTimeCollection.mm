@@ -1,7 +1,7 @@
 @interface VUIMediaStartTimeCollection
 + (void)initialize;
 - (VUIMediaStartTimeInfo)preferredStartTimeInfo;
-- (void)addStartTimeInfo:(id)a3;
+- (void)addStartTimeInfo:(id)info;
 - (void)removeAllStartTimeInfos;
 @end
 
@@ -22,26 +22,26 @@ void __41__VUIMediaStartTimeCollection_initialize__block_invoke()
   sLogObject_12 = v0;
 }
 
-- (void)addStartTimeInfo:(id)a3
+- (void)addStartTimeInfo:(id)info
 {
-  v5 = a3;
-  v4 = [(VUIMediaStartTimeCollection *)self startTimeInfos];
-  if (!v4)
+  infoCopy = info;
+  startTimeInfos = [(VUIMediaStartTimeCollection *)self startTimeInfos];
+  if (!startTimeInfos)
   {
-    v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(VUIMediaStartTimeCollection *)self setStartTimeInfos:v4];
+    startTimeInfos = objc_alloc_init(MEMORY[0x1E695DF70]);
+    [(VUIMediaStartTimeCollection *)self setStartTimeInfos:startTimeInfos];
   }
 
-  if (v5)
+  if (infoCopy)
   {
-    [v4 addObject:v5];
+    [startTimeInfos addObject:infoCopy];
   }
 }
 
 - (void)removeAllStartTimeInfos
 {
-  v2 = [(VUIMediaStartTimeCollection *)self startTimeInfos];
-  [v2 removeAllObjects];
+  startTimeInfos = [(VUIMediaStartTimeCollection *)self startTimeInfos];
+  [startTimeInfos removeAllObjects];
 }
 
 - (VUIMediaStartTimeInfo)preferredStartTimeInfo
@@ -51,8 +51,8 @@ void __41__VUIMediaStartTimeCollection_initialize__block_invoke()
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v2 = [(VUIMediaStartTimeCollection *)self startTimeInfos];
-  v3 = [v2 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  startTimeInfos = [(VUIMediaStartTimeCollection *)self startTimeInfos];
+  v3 = [startTimeInfos countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (!v3)
   {
     v5 = 0;
@@ -68,7 +68,7 @@ void __41__VUIMediaStartTimeCollection_initialize__block_invoke()
     {
       if (*v28 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(startTimeInfos);
       }
 
       v8 = *(*(&v27 + 1) + 8 * i);
@@ -78,23 +78,23 @@ void __41__VUIMediaStartTimeCollection_initialize__block_invoke()
         continue;
       }
 
-      v9 = [(VUIMediaStartTimeInfo *)v5 timestamp];
-      v10 = [v8 timestamp];
-      v11 = v10;
-      if (v9 && v10)
+      timestamp = [(VUIMediaStartTimeInfo *)v5 timestamp];
+      timestamp2 = [v8 timestamp];
+      v11 = timestamp2;
+      if (timestamp && timestamp2)
       {
-        v12 = [v10 laterDate:v9];
+        v12 = [timestamp2 laterDate:timestamp];
 
         if (v12 != v11)
         {
-          if (![v11 isEqualToDate:v9])
+          if (![v11 isEqualToDate:timestamp])
           {
             goto LABEL_19;
           }
 
 LABEL_14:
-          v13 = [v8 type];
-          if (v13 == -[VUIMediaStartTimeInfo type](v5, "type") || [v8 type] != 1)
+          type = [v8 type];
+          if (type == -[VUIMediaStartTimeInfo type](v5, "type") || [v8 type] != 1)
           {
             goto LABEL_19;
           }
@@ -107,12 +107,12 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (!(v9 | v10))
+      if (!(timestamp | timestamp2))
       {
         goto LABEL_14;
       }
 
-      if (v10)
+      if (timestamp2)
       {
         goto LABEL_18;
       }
@@ -120,14 +120,14 @@ LABEL_18:
 LABEL_19:
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    v4 = [startTimeInfos countByEnumeratingWithState:&v27 objects:v33 count:16];
   }
 
   while (v4);
 LABEL_24:
 
-  v15 = [(VUIMediaStartTimeInfo *)v5 startTime];
-  [v15 doubleValue];
+  startTime = [(VUIMediaStartTimeInfo *)v5 startTime];
+  [startTime doubleValue];
   if (v16 != 0.0)
   {
 
@@ -136,26 +136,26 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v17 = [(VUIMediaStartTimeInfo *)v5 type];
+  type2 = [(VUIMediaStartTimeInfo *)v5 type];
 
-  if (v17 != 1)
+  if (type2 != 1)
   {
     goto LABEL_30;
   }
 
   v18 = +[VUIFeaturesConfiguration sharedInstance];
-  v19 = [v18 nowPlayingConfig];
-  v20 = [v19 convertMainContentRelativeStartTimeOfZeroToAbsoluteStartTimeOfZero];
+  nowPlayingConfig = [v18 nowPlayingConfig];
+  convertMainContentRelativeStartTimeOfZeroToAbsoluteStartTimeOfZero = [nowPlayingConfig convertMainContentRelativeStartTimeOfZeroToAbsoluteStartTimeOfZero];
 
-  if (!v20)
+  if (!convertMainContentRelativeStartTimeOfZeroToAbsoluteStartTimeOfZero)
   {
     goto LABEL_30;
   }
 
   v21 = [VUIMediaStartTimeInfo alloc];
-  v22 = [(VUIMediaStartTimeInfo *)v5 timestamp];
-  v23 = [(VUIMediaStartTimeInfo *)v5 source];
-  v24 = [(VUIMediaStartTimeInfo *)v21 initWithStartTime:&unk_1F5E5D770 timestamp:v22 type:0 source:v23];
+  timestamp3 = [(VUIMediaStartTimeInfo *)v5 timestamp];
+  source = [(VUIMediaStartTimeInfo *)v5 source];
+  v24 = [(VUIMediaStartTimeInfo *)v21 initWithStartTime:&unk_1F5E5D770 timestamp:timestamp3 type:0 source:source];
 
   v25 = sLogObject_12;
   if (os_log_type_enabled(sLogObject_12, OS_LOG_TYPE_DEFAULT))

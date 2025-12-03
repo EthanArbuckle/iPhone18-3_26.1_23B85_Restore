@@ -1,12 +1,12 @@
 @interface StubDocument
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7;
-- (_TtC7SwiftUI12StubDocument)initWithFileURL:(id)a3;
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error;
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error;
+- (_TtC7SwiftUI12StubDocument)initWithFileURL:(id)l;
 @end
 
 @implementation StubDocument
 
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error
 {
   _s7SwiftUI25NavigationItemDescriptionVSgMaTm_1(0, &lazy cache variable for type metadata for URL?, MEMORY[0x1E6968FB0]);
   MEMORY[0x1EEE9AC00](v10 - 8);
@@ -18,14 +18,14 @@
   MEMORY[0x1EEE9AC00](v17);
   v19 = &v25[-v18];
   swift_unknownObjectRetain();
-  v20 = a4;
-  v21 = self;
-  v22 = a6;
+  lCopy = l;
+  selfCopy = self;
+  rLCopy = rL;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
-  if (v22)
+  if (rLCopy)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -47,7 +47,7 @@
   return 1;
 }
 
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -56,7 +56,7 @@
   return 1;
 }
 
-- (_TtC7SwiftUI12StubDocument)initWithFileURL:(id)a3
+- (_TtC7SwiftUI12StubDocument)initWithFileURL:(id)l
 {
   v3 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v3 - 8);

@@ -1,74 +1,74 @@
 @interface PUIStylePickerHomeScreenComponentViewController
-+ (id)_homeScreenStyleVariantOptionForTypeOption:(id)a3 variant:(unint64_t)a4;
++ (id)_homeScreenStyleVariantOptionForTypeOption:(id)option variant:(unint64_t)variant;
 + (id)_orderedHomeScreenStylePickerOptions;
-+ (id)_orderedHomeScreenStylePickerVariantOptionsForTypeOption:(id)a3;
-+ (id)_typeOptionForStyleType:(unint64_t)a3 variant:(unint64_t)a4;
-+ (unint64_t)_homeScreenStyleTypeForOption:(id)a3;
-+ (unint64_t)_homeScreenStyleVariantForOption:(id)a3;
++ (id)_orderedHomeScreenStylePickerVariantOptionsForTypeOption:(id)option;
++ (id)_typeOptionForStyleType:(unint64_t)type variant:(unint64_t)variant;
++ (unint64_t)_homeScreenStyleTypeForOption:(id)option;
++ (unint64_t)_homeScreenStyleVariantForOption:(id)option;
 - (BOOL)_caseColorButtonSupported;
 - (BOOL)_enclosureColorButtonSupported;
-- (PUIStylePickerHomeScreenComponentViewController)initWithHomeScreenConfiguration:(id)a3;
+- (PUIStylePickerHomeScreenComponentViewController)initWithHomeScreenConfiguration:(id)configuration;
 - (PUIStylePickerHomeScreenComponentViewControllerDelegate)delegate;
 - (double)_calculateEstimatedHeight;
 - (double)_calculateStyleItemSpacing;
-- (id)_actionForIconTintSource:(unint64_t)a3;
-- (id)_variantActionsForHomeScreenItemType:(id)a3;
-- (id)_variantPickerViewForSelectedStylePickerTypeOption:(id)a3;
-- (void)_accentColorSlidersDidChangeValue:(id)a3;
-- (void)_configureItemViewsForHomeScreenConfiguration:(id)a3;
+- (id)_actionForIconTintSource:(unint64_t)source;
+- (id)_variantActionsForHomeScreenItemType:(id)type;
+- (id)_variantPickerViewForSelectedStylePickerTypeOption:(id)option;
+- (void)_accentColorSlidersDidChangeValue:(id)value;
+- (void)_configureItemViewsForHomeScreenConfiguration:(id)configuration;
 - (void)_createColorSliders;
-- (void)_createHomeScreenItemVariantPickersForItemViews:(id)a3;
-- (void)_createHomeScreenItemViewsWithHomeScreenConfiguration:(id)a3;
-- (void)_createHorizontalStackViewForItemViews:(id)a3;
-- (void)_createPrimaryVerticalStackViewWithArrangedSubviews:(id)a3;
-- (void)_createTintSourceHorizontalStackViewForHomeScreenConfiguration:(id)a3;
-- (void)_mutateHomeScreenConfiguration:(id)a3;
+- (void)_createHomeScreenItemVariantPickersForItemViews:(id)views;
+- (void)_createHomeScreenItemViewsWithHomeScreenConfiguration:(id)configuration;
+- (void)_createHorizontalStackViewForItemViews:(id)views;
+- (void)_createPrimaryVerticalStackViewWithArrangedSubviews:(id)subviews;
+- (void)_createTintSourceHorizontalStackViewForHomeScreenConfiguration:(id)configuration;
+- (void)_mutateHomeScreenConfiguration:(id)configuration;
 - (void)_notifyDelegateOfUpdatedEstimatedHeight;
 - (void)_notifyDelegateOfUpdatedHomeScreenConfiguration;
-- (void)_selectedHomeScreenStylePickerTypeOptionDidChange:(id)a3;
-- (void)_selectedHomeScreenStyleVariantOptionChangedToOption:(id)a3;
-- (void)_selectedIconTintSourceChangedToTintSource:(unint64_t)a3;
-- (void)_updateItemMarginsForHomeScreenConfiguration:(id)a3;
+- (void)_selectedHomeScreenStylePickerTypeOptionDidChange:(id)change;
+- (void)_selectedHomeScreenStyleVariantOptionChangedToOption:(id)option;
+- (void)_selectedIconTintSourceChangedToTintSource:(unint64_t)source;
+- (void)_updateItemMarginsForHomeScreenConfiguration:(id)configuration;
 - (void)_updateLayoutConstraints;
-- (void)_updateSelectionForTintSourceControlsForCurrentIconTintSource:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_updateSelectionForTypeOption:(id)a3 animated:(BOOL)a4;
-- (void)_updateViewControllerForHomeScreenConfiguration:(id)a3 animated:(BOOL)a4;
-- (void)navigateHomeScreenColorPickerSlidersToColor:(id)a3 animated:(BOOL)a4;
-- (void)setEstimatedHeight:(double)a3 notifyDelegate:(BOOL)a4;
-- (void)updateHomeScreenCustomTintColorToColor:(id)a3;
+- (void)_updateSelectionForTintSourceControlsForCurrentIconTintSource:(unint64_t)source animated:(BOOL)animated;
+- (void)_updateSelectionForTypeOption:(id)option animated:(BOOL)animated;
+- (void)_updateViewControllerForHomeScreenConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)navigateHomeScreenColorPickerSlidersToColor:(id)color animated:(BOOL)animated;
+- (void)setEstimatedHeight:(double)height notifyDelegate:(BOOL)delegate;
+- (void)updateHomeScreenCustomTintColorToColor:(id)color;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUIStylePickerHomeScreenComponentViewController
 
-- (PUIStylePickerHomeScreenComponentViewController)initWithHomeScreenConfiguration:(id)a3
+- (PUIStylePickerHomeScreenComponentViewController)initWithHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = PUIStylePickerHomeScreenComponentViewController;
   v5 = [(PUIStylePickerHomeScreenComponentViewController *)&v18 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     homeScreenConfiguration = v5->_homeScreenConfiguration;
     v5->_homeScreenConfiguration = v6;
 
-    v8 = [v4 accentStyle];
-    v9 = [[_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl alloc] initWithStyle:v8];
+    accentStyle = [configurationCopy accentStyle];
+    v9 = [[_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl alloc] initWithStyle:accentStyle];
     lumaSliderUICoordinatorImpl = v5->_lumaSliderUICoordinatorImpl;
     v5->_lumaSliderUICoordinatorImpl = v9;
 
-    v11 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v8 suggested:0 coordinator:v5->_lumaSliderUICoordinatorImpl];
+    v11 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:accentStyle suggested:0 coordinator:v5->_lumaSliderUICoordinatorImpl];
     lumaSliderUICoordinator = v5->_lumaSliderUICoordinator;
     v5->_lumaSliderUICoordinator = v11;
 
-    v13 = [(PUIStyleUICoordinatorImpl *)[_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl alloc] initWithStyle:v8];
+    v13 = [(PUIStyleUICoordinatorImpl *)[_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl alloc] initWithStyle:accentStyle];
     gradientColorSliderUICoordinatorImpl = v5->_gradientColorSliderUICoordinatorImpl;
     v5->_gradientColorSliderUICoordinatorImpl = v13;
 
-    v15 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v8 suggested:0 coordinator:v5->_gradientColorSliderUICoordinatorImpl];
+    v15 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:accentStyle suggested:0 coordinator:v5->_gradientColorSliderUICoordinatorImpl];
     gradientColorSliderUICoordinator = v5->_gradientColorSliderUICoordinator;
     v5->_gradientColorSliderUICoordinator = v15;
   }
@@ -84,11 +84,11 @@
   [(PUIStylePickerHomeScreenComponentViewController *)self _updateViewControllerForHomeScreenConfiguration:0 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUIStylePickerHomeScreenComponentViewController;
-  [(PUIStylePickerHomeScreenComponentViewController *)&v4 viewWillAppear:a3];
+  [(PUIStylePickerHomeScreenComponentViewController *)&v4 viewWillAppear:appear];
   [(PUIStylePickerHomeScreenComponentViewController *)self _updateLayoutConstraints];
 }
 
@@ -100,14 +100,14 @@
   [(PUIStylePickerHomeScreenComponentViewController *)self _updateItemMarginsForHomeScreenConfiguration:0];
 }
 
-- (void)setEstimatedHeight:(double)a3 notifyDelegate:(BOOL)a4
+- (void)setEstimatedHeight:(double)height notifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
+  delegateCopy = delegate;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_estimatedHeight = a3;
+    self->_estimatedHeight = height;
     [(PUIStylePickerHomeScreenComponentViewController *)self _updateLayoutConstraints];
-    if (v4)
+    if (delegateCopy)
     {
 
       [(PUIStylePickerHomeScreenComponentViewController *)self _notifyDelegateOfUpdatedEstimatedHeight];
@@ -140,11 +140,11 @@
   return v4;
 }
 
-+ (id)_orderedHomeScreenStylePickerVariantOptionsForTypeOption:(id)a3
++ (id)_orderedHomeScreenStylePickerVariantOptionsForTypeOption:(id)option
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"dark"])
+  optionCopy = option;
+  if ([optionCopy isEqualToString:@"dark"])
   {
     v12 = @"always";
     v13 = @"auto";
@@ -156,7 +156,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([v3 isEqualToString:@"clear"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"accent"))
+  if (([optionCopy isEqualToString:@"clear"] & 1) != 0 || objc_msgSend(optionCopy, "isEqualToString:", @"accent"))
   {
     v9 = @"light";
     v10 = @"dark";
@@ -173,21 +173,21 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_typeOptionForStyleType:(unint64_t)a3 variant:(unint64_t)a4
++ (id)_typeOptionForStyleType:(unint64_t)type variant:(unint64_t)variant
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = @"accent";
     goto LABEL_15;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v4 = @"clear";
     goto LABEL_15;
   }
 
-  if (a3 != 5)
+  if (type != 5)
   {
 LABEL_10:
     v5 = PUIFeatureEnabled(11);
@@ -202,14 +202,14 @@ LABEL_10:
   }
 
   v4 = @"dark";
-  if (a4)
+  if (variant)
   {
-    if (a4 == 1)
+    if (variant == 1)
     {
       goto LABEL_15;
     }
 
-    if (a4 == 2)
+    if (variant == 2)
     {
       if (PUIFeatureEnabled(11))
       {
@@ -237,15 +237,15 @@ LABEL_15:
   return v4;
 }
 
-+ (unint64_t)_homeScreenStyleTypeForOption:(id)a3
++ (unint64_t)_homeScreenStyleTypeForOption:(id)option
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"clear"])
+  optionCopy = option;
+  if ([optionCopy isEqualToString:@"clear"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"accent"])
+  else if ([optionCopy isEqualToString:@"accent"])
   {
     v4 = 3;
   }
@@ -258,45 +258,45 @@ LABEL_15:
   return v4;
 }
 
-+ (unint64_t)_homeScreenStyleVariantForOption:(id)a3
++ (unint64_t)_homeScreenStyleVariantForOption:(id)option
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"light"])
+  optionCopy = option;
+  if ([optionCopy isEqualToString:@"light"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = ([v3 isEqualToString:@"dark"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"always");
+    v4 = ([optionCopy isEqualToString:@"dark"] & 1) != 0 || objc_msgSend(optionCopy, "isEqualToString:", @"always");
   }
 
   return v4;
 }
 
-+ (id)_homeScreenStyleVariantOptionForTypeOption:(id)a3 variant:(unint64_t)a4
++ (id)_homeScreenStyleVariantOptionForTypeOption:(id)option variant:(unint64_t)variant
 {
-  v5 = a3;
-  v6 = v5;
-  if (!a4)
+  optionCopy = option;
+  v6 = optionCopy;
+  if (!variant)
   {
     goto LABEL_7;
   }
 
-  if (a4 == 2)
+  if (variant == 2)
   {
     v9 = @"light";
     goto LABEL_9;
   }
 
-  if (a4 != 1)
+  if (variant != 1)
   {
 LABEL_7:
     v9 = @"auto";
     goto LABEL_9;
   }
 
-  v7 = [v5 isEqualToString:@"dark"];
+  v7 = [optionCopy isEqualToString:@"dark"];
   v8 = @"always";
   if (!v7)
   {
@@ -309,32 +309,32 @@ LABEL_9:
   return v9;
 }
 
-- (void)_selectedHomeScreenStylePickerTypeOptionDidChange:(id)a3
+- (void)_selectedHomeScreenStylePickerTypeOptionDidChange:(id)change
 {
-  v4 = [a3 styleTypeOption];
-  v5 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleTypeForOption:v4];
-  v6 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-  v7 = [v6 styleType];
+  styleTypeOption = [change styleTypeOption];
+  v5 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleTypeForOption:styleTypeOption];
+  homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+  styleType = [homeScreenConfiguration styleType];
 
-  if (v5 == 5 || v7 != v5)
+  if (v5 == 5 || styleType != v5)
   {
-    if (([v4 isEqualToString:@"auto"] & 1) == 0)
+    if (([styleTypeOption isEqualToString:@"auto"] & 1) == 0)
     {
-      if ([v4 isEqualToString:@"light"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"default"))
+      if ([styleTypeOption isEqualToString:@"light"] & 1) != 0 || (objc_msgSend(styleTypeOption, "isEqualToString:", @"default"))
       {
         v9 = 2;
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:@"dark"])
+      if ([styleTypeOption isEqualToString:@"dark"])
       {
         v9 = 1;
         goto LABEL_12;
       }
 
-      if (([v4 isEqualToString:@"clear"] & 1) == 0)
+      if (([styleTypeOption isEqualToString:@"clear"] & 1) == 0)
       {
-        v9 = [v4 isEqualToString:@"accent"];
+        v9 = [styleTypeOption isEqualToString:@"accent"];
         goto LABEL_12;
       }
     }
@@ -345,7 +345,7 @@ LABEL_12:
     v12[1] = 3221225472;
     v12[2] = __101__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenStylePickerTypeOptionDidChange___block_invoke;
     v12[3] = &unk_1E7854548;
-    v12[4] = v4;
+    v12[4] = styleTypeOption;
     v12[5] = v9;
     v12[6] = v5;
     [(PUIStylePickerHomeScreenComponentViewController *)self _mutateHomeScreenConfiguration:v12];
@@ -354,10 +354,10 @@ LABEL_12:
 
   if (v5 == 3)
   {
-    v10 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-    v11 = [v10 suggestedAccentColor];
+    homeScreenConfiguration2 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+    suggestedAccentColor = [homeScreenConfiguration2 suggestedAccentColor];
 
-    [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:v11 animated:1];
+    [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:suggestedAccentColor animated:1];
   }
 
 LABEL_13:
@@ -378,17 +378,17 @@ void __101__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenS
   [v6 setStyleVariant:v3];
 }
 
-- (void)_selectedHomeScreenStyleVariantOptionChangedToOption:(id)a3
+- (void)_selectedHomeScreenStyleVariantOptionChangedToOption:(id)option
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleVariantForOption:v4];
+  optionCopy = option;
+  v5 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleVariantForOption:optionCopy];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __104__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenStyleVariantOptionChangedToOption___block_invoke;
   v24[3] = &unk_1E7854570;
   v26 = v5;
-  v6 = v4;
+  v6 = optionCopy;
   v25 = v6;
   [(PUIStylePickerHomeScreenComponentViewController *)self _mutateHomeScreenConfiguration:v24];
   v22 = 0u;
@@ -412,15 +412,15 @@ void __101__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenS
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-        v14 = [v13 styleType];
-        v15 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-        v16 = +[PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:variant:](PUIStylePickerHomeScreenComponentViewController, "_typeOptionForStyleType:variant:", v14, [v15 styleVariant]);
+        homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+        styleType = [homeScreenConfiguration styleType];
+        homeScreenConfiguration2 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+        v16 = +[PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:variant:](PUIStylePickerHomeScreenComponentViewController, "_typeOptionForStyleType:variant:", styleType, [homeScreenConfiguration2 styleVariant]);
 
-        v17 = [v12 styleTypeOption];
-        LODWORD(v14) = [v17 isEqualToString:v16];
+        styleTypeOption = [v12 styleTypeOption];
+        LODWORD(styleType) = [styleTypeOption isEqualToString:v16];
 
-        if (v14)
+        if (styleType)
         {
           v18 = v12;
 
@@ -462,37 +462,37 @@ void __104__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenS
   [v3 setStyleVariant:*(a1 + 40)];
 }
 
-- (void)_selectedIconTintSourceChangedToTintSource:(unint64_t)a3
+- (void)_selectedIconTintSourceChangedToTintSource:(unint64_t)source
 {
-  [(PUIStylePickerHomeScreenComponentViewController *)self _updateSelectionForTintSourceControlsForCurrentIconTintSource:a3 animated:1];
+  [(PUIStylePickerHomeScreenComponentViewController *)self _updateSelectionForTintSourceControlsForCurrentIconTintSource:source animated:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__PUIStylePickerHomeScreenComponentViewController__selectedIconTintSourceChangedToTintSource___block_invoke;
   v9[3] = &__block_descriptor_40_e54_v16__0__PUIMutableStylePickerHomeScreenConfiguration_8l;
-  v9[4] = a3;
+  v9[4] = source;
   [(PUIStylePickerHomeScreenComponentViewController *)self _mutateHomeScreenConfiguration:v9];
-  v5 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-  v6 = [v5 accentColor];
+  homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+  accentColor = [homeScreenConfiguration accentColor];
 
-  [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:v6 animated:1];
-  if (a3 == 1)
+  [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:accentColor animated:1];
+  if (source == 1)
   {
-    v7 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
+    delegate = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-      [v7 homeScreenComponentViewController:self didBeginEyedropperSessionForHomeScreenConfiguration:v8];
+      homeScreenConfiguration2 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+      [delegate homeScreenComponentViewController:self didBeginEyedropperSessionForHomeScreenConfiguration:homeScreenConfiguration2];
     }
   }
 }
 
-- (void)_mutateHomeScreenConfiguration:(id)a3
+- (void)_mutateHomeScreenConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    v4 = a3;
-    v5 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-    v6 = [v5 mutableCopy];
+    configurationCopy = configuration;
+    homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+    v6 = [homeScreenConfiguration mutableCopy];
     v7 = v6;
     if (v6)
     {
@@ -506,52 +506,52 @@ void __104__PUIStylePickerHomeScreenComponentViewController__selectedHomeScreenS
 
     v9 = v8;
 
-    v4[2](v4, v9);
+    configurationCopy[2](configurationCopy, v9);
     [(PUIStylePickerHomeScreenComponentViewController *)self _updateViewControllerForHomeScreenConfiguration:v9 animated:1];
     [(PUIStylePickerHomeScreenComponentViewController *)self _notifyDelegateOfUpdatedHomeScreenConfiguration];
   }
 }
 
-- (void)updateHomeScreenCustomTintColorToColor:(id)a3
+- (void)updateHomeScreenCustomTintColorToColor:(id)color
 {
-  [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:a3];
-  v12 = [(PUIStylePickerHomeScreenConfiguration *)self->_homeScreenConfiguration accentStyle];
-  [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:v12];
+  [(PUIStylePickerHomeScreenComponentViewController *)self navigateHomeScreenColorPickerSlidersToColor:color];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self->_homeScreenConfiguration accentStyle];
+  [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:accentStyle];
   v5 = v4;
-  [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:v12];
+  [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:accentStyle];
   v7 = v6;
-  [v12 alpha];
-  v9 = [v12 copyWithLuminance:v7 + (v5 - v7) * ((v8 + -0.25 + v8 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
+  [accentStyle alpha];
+  v9 = [accentStyle copyWithLuminance:v7 + (v5 - v7) * ((v8 + -0.25 + v8 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
   customTintSourceControl = self->_customTintSourceControl;
-  v11 = [v9 luminanceAppliedColor];
-  [(PUIStylePickerHomeScreenTintSourceControl *)customTintSourceControl setTintColor:v11];
+  luminanceAppliedColor = [v9 luminanceAppliedColor];
+  [(PUIStylePickerHomeScreenTintSourceControl *)customTintSourceControl setTintColor:luminanceAppliedColor];
 }
 
-- (void)navigateHomeScreenColorPickerSlidersToColor:(id)a3 animated:(BOOL)a4
+- (void)navigateHomeScreenColorPickerSlidersToColor:(id)color animated:(BOOL)animated
 {
-  v5 = a3;
+  colorCopy = color;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __104__PUIStylePickerHomeScreenComponentViewController_navigateHomeScreenColorPickerSlidersToColor_animated___block_invoke;
   v16[3] = &unk_1E78545B8;
-  v17 = v5;
-  v6 = v5;
+  v17 = colorCopy;
+  v6 = colorCopy;
   [(PUIStylePickerHomeScreenComponentViewController *)self _mutateHomeScreenConfiguration:v16];
-  v7 = [(PUIStylePickerHomeScreenConfiguration *)self->_homeScreenConfiguration accentStyle];
-  v8 = [(PUIStyleUICoordinatorImpl *)[_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl alloc] initWithStyle:v7];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self->_homeScreenConfiguration accentStyle];
+  v8 = [(PUIStyleUICoordinatorImpl *)[_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl alloc] initWithStyle:accentStyle];
   gradientColorSliderUICoordinatorImpl = self->_gradientColorSliderUICoordinatorImpl;
   self->_gradientColorSliderUICoordinatorImpl = v8;
 
-  v10 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v7 suggested:0 coordinator:self->_gradientColorSliderUICoordinatorImpl];
+  v10 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:accentStyle suggested:0 coordinator:self->_gradientColorSliderUICoordinatorImpl];
   gradientColorSliderUICoordinator = self->_gradientColorSliderUICoordinator;
   self->_gradientColorSliderUICoordinator = v10;
 
   [(PUIStyleVariationSlider *)self->_gradientColorSlider setStyleCoordinator:self->_gradientColorSliderUICoordinator animated:1];
-  v12 = [[_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl alloc] initWithStyle:v7];
+  v12 = [[_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl alloc] initWithStyle:accentStyle];
   lumaSliderUICoordinatorImpl = self->_lumaSliderUICoordinatorImpl;
   self->_lumaSliderUICoordinatorImpl = v12;
 
-  v14 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:v7 suggested:0 coordinator:self->_lumaSliderUICoordinatorImpl];
+  v14 = [[PUIStyleUICoordinator alloc] initWithInitialStyle:accentStyle suggested:0 coordinator:self->_lumaSliderUICoordinatorImpl];
   lumaSliderUICoordinator = self->_lumaSliderUICoordinator;
   self->_lumaSliderUICoordinator = v14;
 
@@ -566,10 +566,10 @@ void __104__PUIStylePickerHomeScreenComponentViewController_navigateHomeScreenCo
   [v3 setStyleType:3];
 }
 
-- (void)_createHomeScreenItemViewsWithHomeScreenConfiguration:(id)a3
+- (void)_createHomeScreenItemViewsWithHomeScreenConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (!self->_itemViews)
   {
     v16 = 1000;
@@ -584,7 +584,7 @@ void __104__PUIStylePickerHomeScreenComponentViewController_navigateHomeScreenCo
     {
       v6 = v5;
       v19 = *v22;
-      v7 = self;
+      selfCopy = self;
       do
       {
         v8 = 0;
@@ -600,22 +600,22 @@ void __104__PUIStylePickerHomeScreenComponentViewController_navigateHomeScreenCo
           [(PUIStylePickerHomeScreenItemView *)v10 addTarget:self action:sel__selectedHomeScreenStylePickerTypeOptionDidChange_ forControlEvents:64];
           if ([v9 isEqualToString:@"accent"])
           {
-            v11 = [v4 accentColor];
+            accentColor = [configurationCopy accentColor];
           }
 
           else
           {
-            v11 = 0;
+            accentColor = 0;
           }
 
-          v12 = [v4 lastUserSelectedVariantForStyleTypeOption];
-          v13 = [v12 objectForKey:v9];
-          [v4 iconSize];
-          [(PUIStylePickerHomeScreenItemView *)v10 setStyleTypeOption:v9 styleVariantOption:v13 iconSize:v11 tintColor:?];
+          lastUserSelectedVariantForStyleTypeOption = [configurationCopy lastUserSelectedVariantForStyleTypeOption];
+          v13 = [lastUserSelectedVariantForStyleTypeOption objectForKey:v9];
+          [configurationCopy iconSize];
+          [(PUIStylePickerHomeScreenItemView *)v10 setStyleTypeOption:v9 styleVariantOption:v13 iconSize:accentColor tintColor:?];
 
           [v20 addObject:v10];
           ++v8;
-          self = v7;
+          self = selfCopy;
         }
 
         while (v6 != v8);
@@ -631,16 +631,16 @@ void __104__PUIStylePickerHomeScreenComponentViewController_navigateHomeScreenCo
   }
 }
 
-- (void)_configureItemViewsForHomeScreenConfiguration:(id)a3
+- (void)_configureItemViewsForHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   itemViews = self->_itemViews;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__PUIStylePickerHomeScreenComponentViewController__configureItemViewsForHomeScreenConfiguration___block_invoke;
   v7[3] = &unk_1E78545E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [(NSMutableArray *)itemViews enumerateObjectsUsingBlock:v7];
 }
 
@@ -660,13 +660,13 @@ void __97__PUIStylePickerHomeScreenComponentViewController__configureItemViewsFo
   [v5 setIconSize:?];
 }
 
-- (void)_createHorizontalStackViewForItemViews:(id)a3
+- (void)_createHorizontalStackViewForItemViews:(id)views
 {
   if (!self->_homeScreenItemTypeHorizontalStackView)
   {
     v4 = MEMORY[0x1E69DCF90];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArrangedSubviews:v5];
+    viewsCopy = views;
+    v6 = [[v4 alloc] initWithArrangedSubviews:viewsCopy];
 
     [(UIStackView *)v6 setAxis:0];
     [(UIStackView *)v6 setDistribution:1];
@@ -719,19 +719,19 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
   _caseColorButtonSupported_caseButtonSupported = v1;
 }
 
-- (void)_createTintSourceHorizontalStackViewForHomeScreenConfiguration:(id)a3
+- (void)_createTintSourceHorizontalStackViewForHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (!self->_tintSourceHorizontalStackView)
   {
-    v33 = v4;
+    v33 = configurationCopy;
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [v33 enclosureAccentColor];
-    if ([(PUIStylePickerHomeScreenComponentViewController *)self _enclosureColorButtonSupported]&& v6)
+    enclosureAccentColor = [v33 enclosureAccentColor];
+    if ([(PUIStylePickerHomeScreenComponentViewController *)self _enclosureColorButtonSupported]&& enclosureAccentColor)
     {
       v7 = [PUIStylePickerHomeScreenTintSourceControl alloc];
       v8 = [(PUIStylePickerHomeScreenComponentViewController *)self _actionForIconTintSource:4];
-      v9 = [(PUIStylePickerHomeScreenTintSourceControl *)v7 initWithTintColor:v6 tintSource:4 primaryAction:v8];
+      v9 = [(PUIStylePickerHomeScreenTintSourceControl *)v7 initWithTintColor:enclosureAccentColor tintSource:4 primaryAction:v8];
 
       [(PUIStylePickerHomeScreenTintSourceControl *)v9 setAccessibilityIdentifier:@"device color source control"];
       [v5 addObject:v9];
@@ -739,38 +739,38 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
 
     if ([(PUIStylePickerHomeScreenComponentViewController *)self _caseColorButtonSupported])
     {
-      v10 = [v33 caseAccentColor];
+      caseAccentColor = [v33 caseAccentColor];
 
       v11 = [PUIStylePickerHomeScreenTintSourceControl alloc];
       v12 = [(PUIStylePickerHomeScreenComponentViewController *)self _actionForIconTintSource:3];
-      v13 = [(PUIStylePickerHomeScreenTintSourceControl *)v11 initWithTintColor:v10 tintSource:3 primaryAction:v12];
+      v13 = [(PUIStylePickerHomeScreenTintSourceControl *)v11 initWithTintColor:caseAccentColor tintSource:3 primaryAction:v12];
 
       [(PUIStylePickerHomeScreenTintSourceControl *)v13 setAccessibilityIdentifier:@"case color source control"];
       [v5 addObject:v13];
 
-      v6 = v10;
+      enclosureAccentColor = caseAccentColor;
     }
 
-    v14 = [v33 suggestedAccentColor];
+    suggestedAccentColor = [v33 suggestedAccentColor];
 
     v15 = [PUIStylePickerHomeScreenTintSourceControl alloc];
     v16 = [(PUIStylePickerHomeScreenComponentViewController *)self _actionForIconTintSource:2];
-    v17 = [(PUIStylePickerHomeScreenTintSourceControl *)v15 initWithTintColor:v14 tintSource:2 primaryAction:v16];
+    v17 = [(PUIStylePickerHomeScreenTintSourceControl *)v15 initWithTintColor:suggestedAccentColor tintSource:2 primaryAction:v16];
 
     [(PUIStylePickerHomeScreenTintSourceControl *)v17 setAccessibilityIdentifier:@"suggested color control"];
     [v5 addObject:v17];
-    v18 = [v33 accentStyle];
-    [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:v18];
+    accentStyle = [v33 accentStyle];
+    [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:accentStyle];
     v20 = v19;
-    [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:v18];
+    [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:accentStyle];
     v22 = v21;
-    [v18 alpha];
-    v24 = [v18 copyWithLuminance:v22 + (v20 - v22) * ((v23 + -0.25 + v23 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
-    v25 = [v24 luminanceAppliedColor];
+    [accentStyle alpha];
+    v24 = [accentStyle copyWithLuminance:v22 + (v20 - v22) * ((v23 + -0.25 + v23 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
+    luminanceAppliedColor = [v24 luminanceAppliedColor];
 
     v26 = [PUIStylePickerHomeScreenTintSourceControl alloc];
     v27 = [(PUIStylePickerHomeScreenComponentViewController *)self _actionForIconTintSource:1];
-    v28 = [(PUIStylePickerHomeScreenTintSourceControl *)v26 initWithTintColor:v25 tintSource:1 primaryAction:v27];
+    v28 = [(PUIStylePickerHomeScreenTintSourceControl *)v26 initWithTintColor:luminanceAppliedColor tintSource:1 primaryAction:v27];
 
     [(PUIStylePickerHomeScreenTintSourceControl *)v28 setAccessibilityIdentifier:@"color picker control"];
     customTintSourceControl = self->_customTintSourceControl;
@@ -787,20 +787,20 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
     tintSourceHorizontalStackView = self->_tintSourceHorizontalStackView;
     self->_tintSourceHorizontalStackView = v31;
 
-    v4 = v33;
+    configurationCopy = v33;
   }
 }
 
-- (void)_updateSelectionForTintSourceControlsForCurrentIconTintSource:(unint64_t)a3 animated:(BOOL)a4
+- (void)_updateSelectionForTintSourceControlsForCurrentIconTintSource:(unint64_t)source animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(UIStackView *)self->_tintSourceHorizontalStackView arrangedSubviews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrangedSubviews = [(UIStackView *)self->_tintSourceHorizontalStackView arrangedSubviews];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -812,7 +812,7 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -840,21 +840,21 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
 
         if (v15)
         {
-          [v15 setSelected:objc_msgSend(v15 animated:{"iconTintSource") == a3, v4}];
+          [v15 setSelected:objc_msgSend(v15 animated:{"iconTintSource") == source, animatedCopy}];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)_actionForIconTintSource:(unint64_t)a3
+- (id)_actionForIconTintSource:(unint64_t)source
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E69DC628];
@@ -863,7 +863,7 @@ void __76__PUIStylePickerHomeScreenComponentViewController__caseColorButtonSuppo
   v7[2] = __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSource___block_invoke;
   v7[3] = &unk_1E7854608;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = source;
   v5 = [v4 actionWithHandler:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -877,14 +877,14 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
   [WeakRetained _selectedIconTintSourceChangedToTintSource:*(a1 + 40)];
 }
 
-- (void)_createHomeScreenItemVariantPickersForItemViews:(id)a3
+- (void)_createHomeScreenItemVariantPickersForItemViews:(id)views
 {
   v24 = *MEMORY[0x1E69E9840];
   if (PUIFeatureEnabled(11) && !self->_homeScreenItemVariantPickerForItemView)
   {
-    v4 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     homeScreenItemVariantPickerForItemView = self->_homeScreenItemVariantPickerForItemView;
-    self->_homeScreenItemVariantPickerForItemView = v4;
+    self->_homeScreenItemVariantPickerForItemView = weakToStrongObjectsMapTable;
 
     v21 = 0u;
     v22 = 0u;
@@ -910,8 +910,8 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 styleTypeOption];
-          v17 = [(PUIStylePickerHomeScreenComponentViewController *)self _variantActionsForHomeScreenItemType:v16];
+          styleTypeOption = [v15 styleTypeOption];
+          v17 = [(PUIStylePickerHomeScreenComponentViewController *)self _variantActionsForHomeScreenItemType:styleTypeOption];
 
           v18 = [[PUIStylePickerSegmentedControl alloc] initWithFrame:v17 actions:v10, v11, v12, v13];
           [(NSMapTable *)self->_homeScreenItemVariantPickerForItemView setObject:v18 forKey:v15];
@@ -935,8 +935,8 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
 
     [(PUIStyleVariationSlider *)self->_gradientColorSlider setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUIStyleVariationSlider *)self->_gradientColorSlider addTarget:self action:sel__accentColorSlidersDidChangeValue_ forControlEvents:4096];
-    v5 = [(PUIStyleVariationSlider *)self->_gradientColorSlider sliderGestureRecognizer];
-    [v5 setDelegate:self];
+    sliderGestureRecognizer = [(PUIStyleVariationSlider *)self->_gradientColorSlider sliderGestureRecognizer];
+    [sliderGestureRecognizer setDelegate:self];
   }
 
   if (!self->_lumaSlider)
@@ -947,16 +947,16 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
 
     [(PUIStyleVariationSlider *)self->_lumaSlider setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUIStyleVariationSlider *)self->_lumaSlider addTarget:self action:sel__accentColorSlidersDidChangeValue_ forControlEvents:4096];
-    v8 = [(PUIStyleVariationSlider *)self->_lumaSlider sliderGestureRecognizer];
-    [v8 setDelegate:self];
+    sliderGestureRecognizer2 = [(PUIStyleVariationSlider *)self->_lumaSlider sliderGestureRecognizer];
+    [sliderGestureRecognizer2 setDelegate:self];
   }
 }
 
-- (void)_createPrimaryVerticalStackViewWithArrangedSubviews:(id)a3
+- (void)_createPrimaryVerticalStackViewWithArrangedSubviews:(id)subviews
 {
   v4 = MEMORY[0x1E69DCF90];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArrangedSubviews:v5];
+  subviewsCopy = subviews;
+  v6 = [[v4 alloc] initWithArrangedSubviews:subviewsCopy];
 
   [(UIStackView *)v6 setAxis:1];
   [(UIStackView *)v6 setDistribution:0];
@@ -966,45 +966,45 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
   self->_primaryVerticalStackView = v6;
 }
 
-- (void)_updateViewControllerForHomeScreenConfiguration:(id)a3 animated:(BOOL)a4
+- (void)_updateViewControllerForHomeScreenConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v56[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   homeScreenConfiguration = self->_homeScreenConfiguration;
-  if (v6)
+  if (configurationCopy)
   {
-    if ([(PUIStylePickerHomeScreenConfiguration *)homeScreenConfiguration isEqual:v6])
+    if ([(PUIStylePickerHomeScreenConfiguration *)homeScreenConfiguration isEqual:configurationCopy])
     {
       goto LABEL_41;
     }
 
-    v40 = v4;
-    v8 = [(PUIStylePickerHomeScreenConfiguration *)v6 copy];
+    v40 = animatedCopy;
+    v8 = [(PUIStylePickerHomeScreenConfiguration *)configurationCopy copy];
     v9 = self->_homeScreenConfiguration;
     self->_homeScreenConfiguration = v8;
   }
 
   else
   {
-    v40 = v4;
-    v6 = homeScreenConfiguration;
+    v40 = animatedCopy;
+    configurationCopy = homeScreenConfiguration;
   }
 
-  v10 = [(PUIStylePickerHomeScreenConfiguration *)v6 styleType];
-  v11 = [(PUIStylePickerHomeScreenConfiguration *)v6 styleVariant];
-  v12 = [PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:v10 variant:v11];
-  v13 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleVariantOptionForTypeOption:v12 variant:v11];
+  styleType = [(PUIStylePickerHomeScreenConfiguration *)configurationCopy styleType];
+  styleVariant = [(PUIStylePickerHomeScreenConfiguration *)configurationCopy styleVariant];
+  v12 = [PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:styleType variant:styleVariant];
+  v13 = [PUIStylePickerHomeScreenComponentViewController _homeScreenStyleVariantOptionForTypeOption:v12 variant:styleVariant];
   v14 = [v12 isEqualToString:@"accent"];
   itemViews = self->_itemViews;
   if (!itemViews)
   {
-    [(PUIStylePickerHomeScreenComponentViewController *)self _createHomeScreenItemViewsWithHomeScreenConfiguration:v6];
+    [(PUIStylePickerHomeScreenComponentViewController *)self _createHomeScreenItemViewsWithHomeScreenConfiguration:configurationCopy];
     itemViews = self->_itemViews;
   }
 
   v16 = itemViews;
-  [(PUIStylePickerHomeScreenComponentViewController *)self _configureItemViewsForHomeScreenConfiguration:v6];
+  [(PUIStylePickerHomeScreenComponentViewController *)self _configureItemViewsForHomeScreenConfiguration:configurationCopy];
   if (!self->_homeScreenItemTypeHorizontalStackView)
   {
     [(PUIStylePickerHomeScreenComponentViewController *)self _createHorizontalStackViewForItemViews:v16];
@@ -1033,7 +1033,7 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
 
     if (PUIFeatureEnabled(11) && !self->_tintSourceHorizontalStackView)
     {
-      [(PUIStylePickerHomeScreenComponentViewController *)self _createTintSourceHorizontalStackViewForHomeScreenConfiguration:v6];
+      [(PUIStylePickerHomeScreenComponentViewController *)self _createTintSourceHorizontalStackViewForHomeScreenConfiguration:configurationCopy];
     }
 
     [(UIStackView *)v17 insertArrangedSubview:self->_gradientColorSlider atIndex:1];
@@ -1108,12 +1108,12 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
     [(UIStackView *)self->_primaryVerticalStackView setCustomSpacing:v20 afterView:18.0];
   }
 
-  [(PUIStylePickerHomeScreenComponentViewController *)self _updateItemMarginsForHomeScreenConfiguration:v6, v38];
+  [(PUIStylePickerHomeScreenComponentViewController *)self _updateItemMarginsForHomeScreenConfiguration:configurationCopy, v38];
   if ([(PUIStylePickerHomeScreenComponentViewController *)self isViewLoaded])
   {
-    v27 = [(UIStackView *)self->_primaryVerticalStackView superview];
+    superview = [(UIStackView *)self->_primaryVerticalStackView superview];
 
-    if (!v27)
+    if (!superview)
     {
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
@@ -1124,7 +1124,7 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
     }
   }
 
-  v28 = [(PUIStylePickerHomeScreenConfiguration *)v6 iconTintSource];
+  iconTintSource = [(PUIStylePickerHomeScreenConfiguration *)configurationCopy iconTintSource];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __108__PUIStylePickerHomeScreenComponentViewController__updateViewControllerForHomeScreenConfiguration_animated___block_invoke_2;
@@ -1133,7 +1133,7 @@ void __76__PUIStylePickerHomeScreenComponentViewController__actionForIconTintSou
   v29 = v12;
   v53 = v40;
   v51 = v29;
-  v52 = v28;
+  v52 = iconTintSource;
   v54 = v42;
   v30 = MEMORY[0x1AC5769F0](v50);
   v49[0] = MEMORY[0x1E69E9820];
@@ -1224,10 +1224,10 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
   return v2();
 }
 
-- (id)_variantPickerViewForSelectedStylePickerTypeOption:(id)a3
+- (id)_variantPickerViewForSelectedStylePickerTypeOption:(id)option
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionCopy = option;
   homeScreenItemVariantPickerForItemView = self->_homeScreenItemVariantPickerForItemView;
   if (!homeScreenItemVariantPickerForItemView)
   {
@@ -1239,10 +1239,10 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMapTable *)homeScreenItemVariantPickerForItemView keyEnumerator];
-  v7 = [v6 allObjects];
+  keyEnumerator = [(NSMapTable *)homeScreenItemVariantPickerForItemView keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1254,13 +1254,13 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 styleTypeOption];
+        styleTypeOption = [v13 styleTypeOption];
 
-        if (v14 == v4)
+        if (styleTypeOption == optionCopy)
         {
           v15 = [(NSMapTable *)self->_homeScreenItemVariantPickerForItemView objectForKey:v13];
 
@@ -1268,7 +1268,7 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -1282,10 +1282,10 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
   return v10;
 }
 
-- (id)_variantActionsForHomeScreenItemType:(id)a3
+- (id)_variantActionsForHomeScreenItemType:(id)type
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   objc_initWeak(location, self);
   v5 = MEMORY[0x1E69DC628];
   v6 = LocalizedNSStringFromPUIHomeScreenStyleVariantOption(@"light");
@@ -1323,7 +1323,7 @@ uint64_t __108__PUIStylePickerHomeScreenComponentViewController__updateViewContr
   objc_copyWeak(&v24, location);
   v16 = [v14 actionWithTitle:v15 image:0 identifier:0 handler:&v20];
 
-  if ([v4 isEqualToString:{@"dark", v20, v21, v22, v23}])
+  if ([typeCopy isEqualToString:{@"dark", v20, v21, v22, v23}])
   {
     v32[1] = v13;
     v17 = v33;
@@ -1333,7 +1333,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:@"clear"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"accent"))
+  if (([typeCopy isEqualToString:@"clear"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"accent"))
   {
     location[1] = v7;
     location[2] = v10;
@@ -1383,21 +1383,21 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
   v80[5] = *MEMORY[0x1E69E9840];
   if ([(PUIStylePickerHomeScreenComponentViewController *)self isViewLoaded])
   {
-    v3 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-    v4 = [v3 styleType];
-    v69 = v3;
-    [v3 iconSize];
+    homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+    styleType = [homeScreenConfiguration styleType];
+    v69 = homeScreenConfiguration;
+    [homeScreenConfiguration iconSize];
     v6 = v5;
     v8 = v7;
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v11 = 31.0;
     v12 = 31.0;
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
-      v13 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-      [v13 layoutInsets];
+      homeScreenConfiguration2 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+      [homeScreenConfiguration2 layoutInsets];
       v12 = v14;
       v11 = v15;
     }
@@ -1414,8 +1414,8 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
       v17 = 0.0;
     }
 
-    v66 = v4;
-    if (v4 == 3)
+    v66 = styleType;
+    if (styleType == 3)
     {
       v18 = 21;
     }
@@ -1500,9 +1500,9 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
             v43 = [MEMORY[0x1E696ACD8] constraintWithItem:v42 attribute:7 relatedBy:1 toItem:self->_primaryVerticalStackView attribute:7 multiplier:1.0 constant:0.0];
             [v31 addObject:v43];
 
-            v44 = [v42 heightAnchor];
+            heightAnchor = [v42 heightAnchor];
             +[(PUIStyleVariationSlider *)_PUIStylePickerHomeScreenVariationSlider];
-            v45 = [v44 constraintEqualToConstant:?];
+            v45 = [heightAnchor constraintEqualToConstant:?];
             [v31 addObject:v45];
           }
 
@@ -1517,18 +1517,18 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
       v32 = v70;
       if (PUIFeatureEnabled(11))
       {
-        v46 = [(UIStackView *)self->_tintSourceHorizontalStackView arrangedSubviews];
-        v47 = [v46 count];
+        arrangedSubviews = [(UIStackView *)self->_tintSourceHorizontalStackView arrangedSubviews];
+        v47 = [arrangedSubviews count];
 
         +[PUIStylePickerHomeScreenTintSourceControl defaultDiameter];
         v49 = v48;
         v50 = (32 * v47 - 32) + v47 * v48;
-        v51 = [(UIStackView *)self->_tintSourceHorizontalStackView widthAnchor];
-        v52 = [v51 constraintEqualToConstant:v50];
+        widthAnchor = [(UIStackView *)self->_tintSourceHorizontalStackView widthAnchor];
+        v52 = [widthAnchor constraintEqualToConstant:v50];
         [v31 addObject:v52];
 
-        v53 = [(UIStackView *)self->_tintSourceHorizontalStackView heightAnchor];
-        v54 = [v53 constraintEqualToConstant:v49];
+        heightAnchor2 = [(UIStackView *)self->_tintSourceHorizontalStackView heightAnchor];
+        v54 = [heightAnchor2 constraintEqualToConstant:v49];
         [v31 addObject:v54];
       }
     }
@@ -1538,18 +1538,18 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
       variantPickerWrapperView = self->_variantPickerWrapperView;
       if (variantPickerWrapperView)
       {
-        v56 = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)variantPickerWrapperView heightAnchor];
+        heightAnchor3 = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)variantPickerWrapperView heightAnchor];
         +[PUIStylePickerSegmentedControl defaultHeight];
-        v57 = [v56 constraintEqualToConstant:?];
+        v57 = [heightAnchor3 constraintEqualToConstant:?];
         [v31 addObject:v57];
 
-        v58 = [(PUIStylePickerHomeScreenComponentViewController *)self view];
-        [v58 bounds];
+        view = [(PUIStylePickerHomeScreenComponentViewController *)self view];
+        [view bounds];
         v60 = v59 - v12 - v11;
 
-        v61 = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)self->_variantPickerWrapperView widthAnchor];
+        widthAnchor2 = [(_PUIStylePickerHomeScreenVariantPickerWrapperView *)self->_variantPickerWrapperView widthAnchor];
         [(PUIStylePickerSegmentedControl *)self->_selectedVariantPicker calculatedWidthForAvailableWidth:v60];
-        v62 = [v61 constraintEqualToConstant:?];
+        v62 = [widthAnchor2 constraintEqualToConstant:?];
         [v31 addObject:v62];
       }
     }
@@ -1573,16 +1573,16 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
 
 - (double)_calculateEstimatedHeight
 {
-  v3 = [MEMORY[0x1E698E730] sharedInstance];
-  v4 = [v3 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  v5 = [MEMORY[0x1E698E730] sharedInstance];
-  v6 = [v5 homeButtonType];
+  mEMORY[0x1E698E730]2 = [MEMORY[0x1E698E730] sharedInstance];
+  homeButtonType = [mEMORY[0x1E698E730]2 homeButtonType];
 
-  v7 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-  v8 = [v7 styleType];
-  v9 = +[PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:variant:](PUIStylePickerHomeScreenComponentViewController, "_typeOptionForStyleType:variant:", v8, [v7 styleVariant]);
-  [v7 iconSize];
+  homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+  styleType = [homeScreenConfiguration styleType];
+  v9 = +[PUIStylePickerHomeScreenComponentViewController _typeOptionForStyleType:variant:](PUIStylePickerHomeScreenComponentViewController, "_typeOptionForStyleType:variant:", styleType, [homeScreenConfiguration styleVariant]);
+  [homeScreenConfiguration iconSize];
   [PUIStylePickerHomeScreenItemView defaultSizeForIconSize:?];
   v11 = v10;
   if (PUIFeatureEnabled(9))
@@ -1595,7 +1595,7 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
     v12 = 0.0;
   }
 
-  if (v8 == 3)
+  if (styleType == 3)
   {
     +[(PUIStyleVariationSlider *)_PUIStylePickerHomeScreenVariationSlider];
     v14 = v13 + v11 + v12 + 32.0 + v13 + 22.0 + 21.0;
@@ -1622,15 +1622,15 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
     }
   }
 
-  if (v6 != 2 && v4 == 0)
+  if (homeButtonType != 2 && deviceClass == 0)
   {
     v14 = v14 + 33.0;
   }
 
-  v20 = [MEMORY[0x1E69DC938] currentDevice];
-  v21 = [v20 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v21 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = v14 + 22.0;
   }
@@ -1640,45 +1640,45 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
 
 - (double)_calculateStyleItemSpacing
 {
-  v3 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-  [v3 iconSpacing];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+  [homeScreenConfiguration iconSpacing];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v6 = [(PUIStylePickerHomeScreenComponentViewController *)self view];
-    [v6 bounds];
+    view = [(PUIStylePickerHomeScreenComponentViewController *)self view];
+    [view bounds];
 
     v7 = +[PUIStylePickerHomeScreenComponentViewController _orderedHomeScreenStylePickerOptions];
     [v7 count];
 
-    [v3 iconSize];
+    [homeScreenConfiguration iconSize];
   }
 
-  v8 = [(PUIStylePickerHomeScreenComponentViewController *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(PUIStylePickerHomeScreenComponentViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v10 = v9;
 
   return v10;
 }
 
-- (void)_updateItemMarginsForHomeScreenConfiguration:(id)a3
+- (void)_updateItemMarginsForHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v4 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+    configurationCopy = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
   }
 
-  v13 = v4;
+  v13 = configurationCopy;
   [(PUIStylePickerHomeScreenComponentViewController *)self _calculateStyleItemSpacing];
   v6 = v5;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v9 = 0.0;
     v10 = v6;
@@ -1695,10 +1695,10 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
   [(UIStackView *)self->_homeScreenItemTypeHorizontalStackView setSpacing:v6];
 }
 
-- (void)_updateSelectionForTypeOption:(id)a3 animated:(BOOL)a4
+- (void)_updateSelectionForTypeOption:(id)option animated:(BOOL)animated
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  optionCopy = option;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1719,8 +1719,8 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 styleTypeOption];
-        v13 = v12 == v5;
+        styleTypeOption = [v11 styleTypeOption];
+        v13 = styleTypeOption == optionCopy;
 
         [v11 setSelected:v13 animated:1];
       }
@@ -1732,33 +1732,33 @@ void __88__PUIStylePickerHomeScreenComponentViewController__variantActionsForHom
   }
 }
 
-- (void)_accentColorSlidersDidChangeValue:(id)a3
+- (void)_accentColorSlidersDidChangeValue:(id)value
 {
-  if (self->_gradientColorSlider == a3)
+  if (self->_gradientColorSlider == value)
   {
     [(_PUIStylePickerHomeScreenGradientSliderUICoordinatorImpl *)self->_gradientColorSliderUICoordinatorImpl resetSaturation];
     lumaSliderUICoordinatorImpl = self->_lumaSliderUICoordinatorImpl;
-    v5 = [(PUIStyleUICoordinatorImpl *)self->_gradientColorSliderUICoordinatorImpl style];
-    [(_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl *)lumaSliderUICoordinatorImpl gradientSliderDidChange:v5];
+    style = [(PUIStyleUICoordinatorImpl *)self->_gradientColorSliderUICoordinatorImpl style];
+    [(_PUIStylePickerHomeScreenLumaSliderUICoordinatorImpl *)lumaSliderUICoordinatorImpl gradientSliderDidChange:style];
   }
 
-  v6 = [(PUIStyleUICoordinatorImpl *)self->_lumaSliderUICoordinatorImpl style];
-  [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:v6];
+  style2 = [(PUIStyleUICoordinatorImpl *)self->_lumaSliderUICoordinatorImpl style];
+  [PUIDiscreteGradientVariatedCustomStyle minLuminanceForStyle:style2];
   v8 = v7;
-  [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:v6];
+  [PUIDiscreteGradientVariatedCustomStyle maxLuminanceForStyle:style2];
   v10 = v9;
-  [v6 alpha];
-  v12 = [v6 copyWithLuminance:v10 + (v8 - v10) * ((v11 + -0.25 + v11 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
+  [style2 alpha];
+  v12 = [style2 copyWithLuminance:v10 + (v8 - v10) * ((v11 + -0.25 + v11 + -0.25) / 0.75 + -1.0 + 1.0) * 0.5 alpha:1.0];
   customTintSourceControl = self->_customTintSourceControl;
-  v14 = [v12 luminanceAppliedColor];
-  [(PUIStylePickerHomeScreenTintSourceControl *)customTintSourceControl setTintColor:v14];
+  luminanceAppliedColor = [v12 luminanceAppliedColor];
+  [(PUIStylePickerHomeScreenTintSourceControl *)customTintSourceControl setTintColor:luminanceAppliedColor];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__PUIStylePickerHomeScreenComponentViewController__accentColorSlidersDidChangeValue___block_invoke;
   v16[3] = &unk_1E78545B8;
-  v17 = v6;
-  v15 = v6;
+  v17 = style2;
+  v15 = style2;
   [(PUIStylePickerHomeScreenComponentViewController *)self _mutateHomeScreenConfiguration:v16];
 }
 
@@ -1772,26 +1772,26 @@ void __85__PUIStylePickerHomeScreenComponentViewController__accentColorSlidersDi
 
 - (void)_notifyDelegateOfUpdatedHomeScreenConfiguration
 {
-  v3 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
+  delegate = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
-    v5 = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
-    [v6 homeScreenComponentViewController:self didUpdateHomeScreenConfiguration:v5];
+    delegate2 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
+    homeScreenConfiguration = [(PUIStylePickerHomeScreenComponentViewController *)self homeScreenConfiguration];
+    [delegate2 homeScreenComponentViewController:self didUpdateHomeScreenConfiguration:homeScreenConfiguration];
   }
 }
 
 - (void)_notifyDelegateOfUpdatedEstimatedHeight
 {
-  v3 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
+  delegate = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
-    [v5 homeScreenComponentViewControllerUpdatedEstimatedHeight:self];
+    delegate2 = [(PUIStylePickerHomeScreenComponentViewController *)self delegate];
+    [delegate2 homeScreenComponentViewControllerUpdatedEstimatedHeight:self];
   }
 }
 

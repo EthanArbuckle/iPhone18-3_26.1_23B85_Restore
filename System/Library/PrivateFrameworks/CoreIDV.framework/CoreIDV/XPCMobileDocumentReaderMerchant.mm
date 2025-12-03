@@ -1,15 +1,15 @@
 @interface XPCMobileDocumentReaderMerchant
 - (_TtC7CoreIDV31XPCMobileDocumentReaderMerchant)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentReaderMerchant
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s7CoreIDV31XPCMobileDocumentReaderMerchantC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s7CoreIDV31XPCMobileDocumentReaderMerchantC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC7CoreIDV31XPCMobileDocumentReaderMerchant)init

@@ -1,23 +1,23 @@
 @interface ARDualGuidedFilter
-- (ARDualGuidedFilter)initWithDevice:(id)a3 useSmoothing:(BOOL)a4;
-- (id)encodeBoxBlurToCommandBuffer:(id)a3 input:(id)a4 intermediate:(id)a5 output:(id)a6;
-- (void)encodeDualCoefficients:(id)a3 guide:(id)a4 stencil:(id)a5 coefficientsTextureFG:(id)a6 coefficientsTextureBG:(id)a7;
-- (void)setUncertaintyRadius:(unint64_t)a3;
-- (void)setupBuffersWithWidth:(unsigned int)a3 andHeight:(unsigned int)a4;
+- (ARDualGuidedFilter)initWithDevice:(id)device useSmoothing:(BOOL)smoothing;
+- (id)encodeBoxBlurToCommandBuffer:(id)buffer input:(id)input intermediate:(id)intermediate output:(id)output;
+- (void)encodeDualCoefficients:(id)coefficients guide:(id)guide stencil:(id)stencil coefficientsTextureFG:(id)g coefficientsTextureBG:(id)bG;
+- (void)setUncertaintyRadius:(unint64_t)radius;
+- (void)setupBuffersWithWidth:(unsigned int)width andHeight:(unsigned int)height;
 @end
 
 @implementation ARDualGuidedFilter
 
-- (ARDualGuidedFilter)initWithDevice:(id)a3 useSmoothing:(BOOL)a4
+- (ARDualGuidedFilter)initWithDevice:(id)device useSmoothing:(BOOL)smoothing
 {
-  v7 = a3;
+  deviceCopy = device;
   v47.receiver = self;
   v47.super_class = ARDualGuidedFilter;
   v8 = [(ARDualGuidedFilter *)&v47 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
+    objc_storeStrong(&v8->_device, device);
     v10 = ARKitCoreBundle();
     v11 = [v10 URLForResource:@"default" withExtension:@"metallib"];
 
@@ -25,7 +25,7 @@
     mattingLibrary = v9->_mattingLibrary;
     v9->_mattingLibrary = v12;
 
-    v14 = a4 || [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.matting.useTemporalSmoothing"];
+    v14 = smoothing || [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.matting.useTemporalSmoothing"];
     v9->_usingSmoothing = v14;
     v9->_useSoftGuidedFilter = ![ARKitUserDefaults BOOLForKey:@"com.apple.arkit.matting.disableSoftEdges"];
     v15 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.matting.doubleMLResolutionForIPad"];
@@ -86,7 +86,7 @@
     if (v9->_useSoftGuidedFilter)
     {
       v46 = v11;
-      v38 = v7;
+      v38 = deviceCopy;
       v39 = [(MTLLibrary *)v9->_mattingLibrary newFunctionWithName:@"confidence_k"];
       v40 = [(MTLDevice *)v9->_device newComputePipelineStateWithFunction:v39 error:0];
       getConfidence = v9->_getConfidence;
@@ -97,7 +97,7 @@
       combineFGBGStencil = v9->_combineFGBGStencil;
       v9->_combineFGBGStencil = v43;
 
-      v7 = v38;
+      deviceCopy = v38;
       v11 = v46;
     }
   }
@@ -105,19 +105,19 @@
   return v9;
 }
 
-- (void)setUncertaintyRadius:(unint64_t)a3
+- (void)setUncertaintyRadius:(unint64_t)radius
 {
-  if (a3 <= 1)
+  if (radius <= 1)
   {
-    v4 = 1;
+    radiusCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    radiusCopy = radius;
   }
 
-  self->_uncertaintyRadius = v4;
+  self->_uncertaintyRadius = radiusCopy;
   v5 = [objc_alloc(MEMORY[0x1E69745D0]) initWithDevice:self->_device kernelDiameter:(2 * self->_uncertaintyRadius) | 1];
   guidedFilter = self->_guidedFilter;
   self->_guidedFilter = v5;
@@ -132,52 +132,52 @@
   [(MPSImageGuidedFilter *)v8 setLabel:@"com.apple.arkit.guidedfilter"];
 }
 
-- (id)encodeBoxBlurToCommandBuffer:(id)a3 input:(id)a4 intermediate:(id)a5 output:(id)a6
+- (id)encodeBoxBlurToCommandBuffer:(id)buffer input:(id)input intermediate:(id)intermediate output:(id)output
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v30 = v10;
-  v14 = [v10 computeCommandEncoder];
-  [v14 setLabel:@"Compute box blur"];
-  v15 = [v11 width];
-  v16 = [v11 height];
-  v17 = v11;
+  bufferCopy = buffer;
+  inputCopy = input;
+  intermediateCopy = intermediate;
+  outputCopy = output;
+  v30 = bufferCopy;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"Compute box blur"];
+  width = [inputCopy width];
+  height = [inputCopy height];
+  v17 = inputCopy;
   v40[0] = v17;
-  v18 = v12;
+  v18 = intermediateCopy;
   uncertaintyRadius = self->_uncertaintyRadius;
   v40[1] = v18;
   v37[0] = uncertaintyRadius;
   *&v37[1] = 1.0 / ((2 * uncertaintyRadius) | 1);
   __asm { FMOV            V1.2S, #1.0 }
 
-  v38 = vdiv_f32(_D1, vcvt_f32_u32(__PAIR64__(v16, v15)));
-  [v14 setComputePipelineState:self->_boxblurVPSO];
-  [v14 setTextures:v40 withRange:{0, 2}];
-  [v14 setBytes:v37 length:16 atIndex:0];
-  v34 = (v15 + 15) >> 4;
-  v35 = (v16 + 15) >> 4;
+  v38 = vdiv_f32(_D1, vcvt_f32_u32(__PAIR64__(height, width)));
+  [computeCommandEncoder setComputePipelineState:self->_boxblurVPSO];
+  [computeCommandEncoder setTextures:v40 withRange:{0, 2}];
+  [computeCommandEncoder setBytes:v37 length:16 atIndex:0];
+  v34 = (width + 15) >> 4;
+  v35 = (height + 15) >> 4;
   v36 = 1;
   v31 = vdupq_n_s64(0x10uLL);
   v32 = v31;
   v33 = 1;
-  [v14 dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
+  [computeCommandEncoder dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
   v25 = v18;
   v39[0] = v25;
-  v26 = v13;
+  v26 = outputCopy;
   v39[1] = v26;
-  [v14 setComputePipelineState:self->_boxblurHPSO];
-  [v14 setTextures:v39 withRange:{0, 2}];
-  [v14 setBytes:v37 length:16 atIndex:0];
-  v34 = (v15 + 15) >> 4;
-  v35 = (v16 + 15) >> 4;
+  [computeCommandEncoder setComputePipelineState:self->_boxblurHPSO];
+  [computeCommandEncoder setTextures:v39 withRange:{0, 2}];
+  [computeCommandEncoder setBytes:v37 length:16 atIndex:0];
+  v34 = (width + 15) >> 4;
+  v35 = (height + 15) >> 4;
   v36 = 1;
   v32 = v31;
   v33 = 1;
-  [v14 dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
+  [computeCommandEncoder endEncoding];
   for (i = 1; i != -1; --i)
   {
   }
@@ -189,13 +189,13 @@
   return v30;
 }
 
-- (void)setupBuffersWithWidth:(unsigned int)a3 andHeight:(unsigned int)a4
+- (void)setupBuffersWithWidth:(unsigned int)width andHeight:(unsigned int)height
 {
-  if (self->_width != a3 || self->_height != a4)
+  if (self->_width != width || self->_height != height)
   {
-    self->_width = a3;
-    self->_height = a4;
-    v26 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:a3 height:a4 mipmapped:0];
+    self->_width = width;
+    self->_height = height;
+    v26 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:width height:height mipmapped:0];
     [v26 setUsage:3];
     [v26 setStorageMode:0];
     v5 = [(MTLDevice *)self->_device newTextureWithDescriptor:v26];
@@ -217,13 +217,13 @@
       confidenceMap = self->_confidenceMap;
       self->_confidenceMap = v11;
 
-      v13 = [v26 pixelFormat];
+      pixelFormat = [v26 pixelFormat];
       [v26 setPixelFormat:12];
       v14 = [(MTLDevice *)self->_device newTextureWithDescriptor:v26];
       combinedFGBG = self->_combinedFGBG;
       self->_combinedFGBG = v14;
 
-      [v26 setPixelFormat:v13];
+      [v26 setPixelFormat:pixelFormat];
     }
 
     [v26 setUsage:3];
@@ -253,104 +253,104 @@
   }
 }
 
-- (void)encodeDualCoefficients:(id)a3 guide:(id)a4 stencil:(id)a5 coefficientsTextureFG:(id)a6 coefficientsTextureBG:(id)a7
+- (void)encodeDualCoefficients:(id)coefficients guide:(id)guide stencil:(id)stencil coefficientsTextureFG:(id)g coefficientsTextureBG:(id)bG
 {
-  v12 = a3;
-  v13 = a4;
-  v46 = a6;
-  v45 = a7;
-  v42 = a5;
-  -[ARDualGuidedFilter setupBuffersWithWidth:andHeight:](self, "setupBuffersWithWidth:andHeight:", [v13 width], objc_msgSend(v13, "height"));
-  v14 = [v12 computeCommandEncoder];
+  coefficientsCopy = coefficients;
+  guideCopy = guide;
+  gCopy = g;
+  bGCopy = bG;
+  stencilCopy = stencil;
+  -[ARDualGuidedFilter setupBuffersWithWidth:andHeight:](self, "setupBuffersWithWidth:andHeight:", [guideCopy width], objc_msgSend(guideCopy, "height"));
+  computeCommandEncoder = [coefficientsCopy computeCommandEncoder];
   v58[0] = self->_erodeRadius;
-  v15 = [v13 width];
-  v47 = v13;
-  v16 = [v13 height];
-  [v14 setComputePipelineState:self->_erodeVPSO];
-  [v14 setTexture:v42 atIndex:0];
-  [v14 setTexture:self->_erodeIntermediate atIndex:1];
-  [v14 setBytes:v58 length:4 atIndex:0];
-  v17 = [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
-  v18 = [(MTLComputePipelineState *)self->_erodeVPSO maxTotalThreadsPerThreadgroup];
-  v19 = v18 / [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
-  v44 = v15;
-  v41 = v15 - 1;
-  v43 = v16;
-  v40 = v16 - 1;
-  v55 = (v41 + v17) / v17;
+  width = [guideCopy width];
+  v47 = guideCopy;
+  height = [guideCopy height];
+  [computeCommandEncoder setComputePipelineState:self->_erodeVPSO];
+  [computeCommandEncoder setTexture:stencilCopy atIndex:0];
+  [computeCommandEncoder setTexture:self->_erodeIntermediate atIndex:1];
+  [computeCommandEncoder setBytes:v58 length:4 atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_erodeVPSO maxTotalThreadsPerThreadgroup];
+  v19 = maxTotalThreadsPerThreadgroup / [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
+  v44 = width;
+  v41 = width - 1;
+  v43 = height;
+  v40 = height - 1;
+  v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
   v56 = (v40 + v19) / v19;
   v57 = 1;
-  v52 = v17;
+  v52 = threadExecutionWidth;
   v53 = v19;
   v54 = 1;
-  [v14 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-  [v14 setComputePipelineState:self->_erodeHPSO];
-  [v14 setTexture:self->_erodeIntermediate atIndex:0];
+  [computeCommandEncoder dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+  [computeCommandEncoder setComputePipelineState:self->_erodeHPSO];
+  [computeCommandEncoder setTexture:self->_erodeIntermediate atIndex:0];
   p_overlayStencilDownsampled = &self->_overlayStencilDownsampled;
-  [v14 setTexture:self->_overlayStencilDownsampled atIndex:1];
-  [v14 setBytes:v58 length:4 atIndex:0];
-  v55 = (v41 + v17) / v17;
+  [computeCommandEncoder setTexture:self->_overlayStencilDownsampled atIndex:1];
+  [computeCommandEncoder setBytes:v58 length:4 atIndex:0];
+  v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
   v56 = (v40 + v19) / v19;
   v57 = 1;
-  v52 = v17;
+  v52 = threadExecutionWidth;
   v53 = v19;
   v54 = 1;
-  [v14 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-  [v14 endEncoding];
-  v21 = [v12 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [coefficientsCopy computeCommandEncoder];
 
-  [v21 setComputePipelineState:self->_invertPSO];
-  [v21 setTexture:v42 atIndex:0];
+  [computeCommandEncoder2 setComputePipelineState:self->_invertPSO];
+  [computeCommandEncoder2 setTexture:stencilCopy atIndex:0];
 
   p_overlayStencilDownsampledBG = &self->_overlayStencilDownsampledBG;
-  [v21 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
-  v55 = (v41 + v17) / v17;
+  [computeCommandEncoder2 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
+  v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
   v56 = (v40 + v19) / v19;
   v57 = 1;
-  v52 = v17;
+  v52 = threadExecutionWidth;
   v53 = v19;
   v54 = 1;
-  [v21 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-  [v21 endEncoding];
-  v23 = [v12 computeCommandEncoder];
+  [computeCommandEncoder2 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+  [computeCommandEncoder2 endEncoding];
+  computeCommandEncoder3 = [coefficientsCopy computeCommandEncoder];
 
-  [v23 setComputePipelineState:self->_erodeVPSO];
-  [v23 setTexture:self->_overlayStencilDownsampledBG atIndex:0];
-  [v23 setTexture:self->_erodeIntermediate atIndex:1];
-  [v23 setBytes:v58 length:4 atIndex:0];
-  v55 = (v41 + v17) / v17;
+  [computeCommandEncoder3 setComputePipelineState:self->_erodeVPSO];
+  [computeCommandEncoder3 setTexture:self->_overlayStencilDownsampledBG atIndex:0];
+  [computeCommandEncoder3 setTexture:self->_erodeIntermediate atIndex:1];
+  [computeCommandEncoder3 setBytes:v58 length:4 atIndex:0];
+  v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
   v56 = (v40 + v19) / v19;
   v57 = 1;
-  v52 = v17;
+  v52 = threadExecutionWidth;
   v53 = v19;
   v54 = 1;
-  [v23 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-  [v23 setComputePipelineState:self->_erodeHPSO];
-  [v23 setTexture:self->_erodeIntermediate atIndex:0];
-  [v23 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
-  [v23 setBytes:v58 length:4 atIndex:0];
-  v55 = (v41 + v17) / v17;
+  [computeCommandEncoder3 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+  [computeCommandEncoder3 setComputePipelineState:self->_erodeHPSO];
+  [computeCommandEncoder3 setTexture:self->_erodeIntermediate atIndex:0];
+  [computeCommandEncoder3 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
+  [computeCommandEncoder3 setBytes:v58 length:4 atIndex:0];
+  v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
   v56 = (v40 + v19) / v19;
   v57 = 1;
-  v52 = v17;
+  v52 = threadExecutionWidth;
   v53 = v19;
   v54 = 1;
-  [v23 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-  [v23 endEncoding];
+  [computeCommandEncoder3 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+  [computeCommandEncoder3 endEncoding];
   if (self->_useSoftGuidedFilter)
   {
-    [v12 computeCommandEncoder];
-    v25 = v24 = v12;
+    [coefficientsCopy computeCommandEncoder];
+    v25 = v24 = coefficientsCopy;
 
     [v25 setComputePipelineState:self->_getConfidence];
     [v25 setTexture:self->_overlayStencilDownsampled atIndex:0];
     [v25 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
     p_overlayStencilDownsampledBG = &self->_confidenceMap;
     [v25 setTexture:self->_confidenceMap atIndex:2];
-    v55 = (v41 + v17) / v17;
+    v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
     v56 = (v40 + v19) / v19;
     v57 = 1;
-    v52 = v17;
+    v52 = threadExecutionWidth;
     v53 = v19;
     v54 = 1;
     [v25 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
@@ -359,45 +359,45 @@
     [v25 setTexture:self->_overlayStencilDownsampledBG atIndex:1];
     p_overlayStencilDownsampled = &self->_combinedFGBG;
     [v25 setTexture:self->_combinedFGBG atIndex:2];
-    v55 = (v41 + v17) / v17;
+    v55 = (v41 + threadExecutionWidth) / threadExecutionWidth;
     v56 = (v40 + v19) / v19;
     v57 = 1;
-    v52 = v17;
+    v52 = threadExecutionWidth;
     v53 = v19;
     v54 = 1;
     [v25 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
     [v25 endEncoding];
-    v23 = v25;
-    v12 = v24;
+    computeCommandEncoder3 = v25;
+    coefficientsCopy = v24;
   }
 
-  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:v12 sourceTexture:*p_overlayStencilDownsampled guidanceTexture:v47 weightsTexture:0 destinationCoefficientsTexture:self->_overlayCoefficentsNonBlurred];
-  v26 = v46;
-  v27 = [(ARDualGuidedFilter *)self encodeBoxBlurToCommandBuffer:v12 input:self->_overlayCoefficentsNonBlurred intermediate:self->_blurIntermediate output:v46];
-  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:v12 sourceTexture:*p_overlayStencilDownsampledBG guidanceTexture:v47 weightsTexture:0 destinationCoefficientsTexture:self->_overlayCoefficentsNonBlurred];
-  v28 = v45;
-  v29 = [(ARDualGuidedFilter *)self encodeBoxBlurToCommandBuffer:v12 input:self->_overlayCoefficentsNonBlurred intermediate:self->_blurIntermediate output:v45];
+  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:coefficientsCopy sourceTexture:*p_overlayStencilDownsampled guidanceTexture:v47 weightsTexture:0 destinationCoefficientsTexture:self->_overlayCoefficentsNonBlurred];
+  v26 = gCopy;
+  v27 = [(ARDualGuidedFilter *)self encodeBoxBlurToCommandBuffer:coefficientsCopy input:self->_overlayCoefficentsNonBlurred intermediate:self->_blurIntermediate output:gCopy];
+  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:coefficientsCopy sourceTexture:*p_overlayStencilDownsampledBG guidanceTexture:v47 weightsTexture:0 destinationCoefficientsTexture:self->_overlayCoefficentsNonBlurred];
+  v28 = bGCopy;
+  v29 = [(ARDualGuidedFilter *)self encodeBoxBlurToCommandBuffer:coefficientsCopy input:self->_overlayCoefficentsNonBlurred intermediate:self->_blurIntermediate output:bGCopy];
   if (self->_usingSmoothing)
   {
     v51 = 1045220557;
-    v30 = [v12 computeCommandEncoder];
-    [v30 setComputePipelineState:self->_smoothCoeficients];
-    [v30 setTexture:v46 atIndex:0];
-    [v30 setTexture:self->_smoothedCoefficientsTextureFG atIndex:1];
-    [v30 setBytes:&v51 length:4 atIndex:0];
-    v31 = v12;
-    v32 = [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
-    v33 = [(MTLComputePipelineState *)self->_erodeVPSO maxTotalThreadsPerThreadgroup];
-    v34 = v33 / [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
-    v55 = (v41 + v32) / v32;
+    computeCommandEncoder4 = [coefficientsCopy computeCommandEncoder];
+    [computeCommandEncoder4 setComputePipelineState:self->_smoothCoeficients];
+    [computeCommandEncoder4 setTexture:gCopy atIndex:0];
+    [computeCommandEncoder4 setTexture:self->_smoothedCoefficientsTextureFG atIndex:1];
+    [computeCommandEncoder4 setBytes:&v51 length:4 atIndex:0];
+    v31 = coefficientsCopy;
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_erodeVPSO maxTotalThreadsPerThreadgroup];
+    v34 = maxTotalThreadsPerThreadgroup2 / [(MTLComputePipelineState *)self->_erodeVPSO threadExecutionWidth];
+    v55 = (v41 + threadExecutionWidth2) / threadExecutionWidth2;
     v56 = (v40 + v34) / v34;
     v57 = 1;
-    v52 = v32;
+    v52 = threadExecutionWidth2;
     v53 = v34;
     v54 = 1;
-    [v30 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-    [v30 endEncoding];
-    v35 = [v31 blitCommandEncoder];
+    [computeCommandEncoder4 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+    [computeCommandEncoder4 endEncoding];
+    blitCommandEncoder = [v31 blitCommandEncoder];
     smoothedCoefficientsTextureFG = self->_smoothedCoefficientsTextureFG;
     v55 = 0;
     v56 = 0;
@@ -408,25 +408,25 @@
     v48 = 0;
     v49 = 0;
     v50 = 0;
-    [v35 copyFromTexture:smoothedCoefficientsTextureFG sourceSlice:0 sourceLevel:0 sourceOrigin:&v55 sourceSize:&v52 toTexture:v46 destinationSlice:0 destinationLevel:0 destinationOrigin:&v48];
-    [v35 endEncoding];
-    v37 = [v31 computeCommandEncoder];
+    [blitCommandEncoder copyFromTexture:smoothedCoefficientsTextureFG sourceSlice:0 sourceLevel:0 sourceOrigin:&v55 sourceSize:&v52 toTexture:gCopy destinationSlice:0 destinationLevel:0 destinationOrigin:&v48];
+    [blitCommandEncoder endEncoding];
+    computeCommandEncoder5 = [v31 computeCommandEncoder];
 
-    v28 = v45;
-    [v37 setComputePipelineState:self->_smoothCoeficients];
-    [v37 setTexture:v45 atIndex:0];
-    [v37 setTexture:self->_smoothedCoefficientsTextureBG atIndex:1];
-    [v37 setBytes:&v51 length:4 atIndex:0];
-    v55 = (v41 + v32) / v32;
+    v28 = bGCopy;
+    [computeCommandEncoder5 setComputePipelineState:self->_smoothCoeficients];
+    [computeCommandEncoder5 setTexture:bGCopy atIndex:0];
+    [computeCommandEncoder5 setTexture:self->_smoothedCoefficientsTextureBG atIndex:1];
+    [computeCommandEncoder5 setBytes:&v51 length:4 atIndex:0];
+    v55 = (v41 + threadExecutionWidth2) / threadExecutionWidth2;
     v56 = (v40 + v34) / v34;
     v57 = 1;
-    v52 = v32;
+    v52 = threadExecutionWidth2;
     v53 = v34;
-    v12 = v31;
+    coefficientsCopy = v31;
     v54 = 1;
-    [v37 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
-    [v37 endEncoding];
-    v38 = [v31 blitCommandEncoder];
+    [computeCommandEncoder5 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v52];
+    [computeCommandEncoder5 endEncoding];
+    blitCommandEncoder2 = [v31 blitCommandEncoder];
 
     smoothedCoefficientsTextureBG = self->_smoothedCoefficientsTextureBG;
     v55 = 0;
@@ -438,10 +438,10 @@
     v48 = 0;
     v49 = 0;
     v50 = 0;
-    [v38 copyFromTexture:smoothedCoefficientsTextureBG sourceSlice:0 sourceLevel:0 sourceOrigin:&v55 sourceSize:&v52 toTexture:v45 destinationSlice:0 destinationLevel:0 destinationOrigin:&v48];
-    [v38 endEncoding];
+    [blitCommandEncoder2 copyFromTexture:smoothedCoefficientsTextureBG sourceSlice:0 sourceLevel:0 sourceOrigin:&v55 sourceSize:&v52 toTexture:bGCopy destinationSlice:0 destinationLevel:0 destinationOrigin:&v48];
+    [blitCommandEncoder2 endEncoding];
 
-    v26 = v46;
+    v26 = gCopy;
   }
 }
 

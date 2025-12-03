@@ -1,427 +1,427 @@
 @interface MTLToolsBlitCommandEncoder
-- (MTLToolsBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5;
+- (MTLToolsBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor;
 - (id)endEncodingAndRetrieveProgramAddressTable;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTensor:(id)a3 sourceOrigin:(id)a4 sourceDimensions:(id)a5 toTensor:(id)a6 destinationOrigin:(id)a7 destinationDimensions:(id)a8;
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTensor:(id)tensor sourceOrigin:(id)origin sourceDimensions:(id)dimensions toTensor:(id)toTensor destinationOrigin:(id)destinationOrigin destinationDimensions:(id)destinationDimensions;
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
 - (void)endEncoding;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)insertDebugSignpost:(id)a3;
-- (void)invalidateCompressedTexture:(id)a3;
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5;
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5 slice:(unint64_t)a6 level:(unint64_t)a7;
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)insertDebugSignpost:(id)signpost;
+- (void)invalidateCompressedTexture:(id)texture;
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor;
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6;
-- (void)updateFence:(id)a3;
-- (void)waitForFence:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset;
+- (void)updateFence:(id)fence;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLToolsBlitCommandEncoder
 
-- (MTLToolsBlitCommandEncoder)initWithBlitCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTLToolsBlitCommandEncoder)initWithBlitCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLToolsBlitCommandEncoder;
-  v6 = [(MTLToolsCommandEncoder *)&v10 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsCommandEncoder *)&v10 initWithBaseObject:encoder parent:parent];
   v7 = v6;
-  if (a5 && v6)
+  if (descriptor && v6)
   {
     for (i = 0; i != 4; ++i)
     {
-      -[MTLToolsCommandEncoder addRetainedObject:](v7, "addRetainedObject:", [objc_msgSend(objc_msgSend(a5 "sampleBufferAttachments")]);
+      -[MTLToolsCommandEncoder addRetainedObject:](v7, "addRetainedObject:", [objc_msgSend(objc_msgSend(descriptor "sampleBufferAttachments")]);
     }
   }
 
   return v7;
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 updateFence:v6];
+  [baseObject updateFence:baseObject2];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 waitForFence:v6];
+  [baseObject waitForFence:baseObject2];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v23 = *a6;
-  v22 = *a7;
-  v20 = [a8 baseObject];
-  v21 = *a11;
-  [v18 copyFromTexture:v19 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v23 sourceSize:&v22 toTexture:v20 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v21];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTexture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v23 = *origin;
+  v22 = *size;
+  baseObject3 = [toTexture baseObject];
+  v21 = *destinationOrigin;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v23 sourceSize:&v22 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v21];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v24 = *a6;
-  v23 = *a7;
-  v20 = [a8 baseObject];
-  v22 = *a11;
-  [v18 copyFromTexture:v19 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v24 sourceSize:&v23 toTexture:v20 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v22 options:a12];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTexture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v24 = *origin;
+  v23 = *size;
+  baseObject3 = [toTexture baseObject];
+  v22 = *destinationOrigin;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v24 sourceSize:&v23 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v22 options:options];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v22 = *a7;
-  v20 = [a8 baseObject];
-  v21 = *a11;
-  [v18 copyFromBuffer:v19 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v22 toTexture:v20 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v21];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v22 = *size;
+  baseObject3 = [texture baseObject];
+  v21 = *origin;
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v22 toTexture:baseObject3 destinationSlice:slice destinationLevel:level destinationOrigin:&v21];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v23 = *a7;
-  v20 = [a8 baseObject];
-  v22 = *a11;
-  [v18 copyFromBuffer:v19 sourceOffset:a4 sourceBytesPerRow:a5 sourceBytesPerImage:a6 sourceSize:&v23 toTexture:v20 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v22 options:a12];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  v23 = *size;
+  baseObject3 = [texture baseObject];
+  v22 = *origin;
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v23 toTexture:baseObject3 destinationSlice:slice destinationLevel:level destinationOrigin:&v22 options:options];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v21 = *a6;
-  v20 = *a7;
-  [v18 copyFromTexture:v19 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v21 sourceSize:&v20 toBuffer:objc_msgSend(a8 destinationOffset:"baseObject") destinationBytesPerRow:a9 destinationBytesPerImage:{a10, a11}];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v21 = *origin;
+  v20 = *size;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v21 sourceSize:&v20 toBuffer:objc_msgSend(buffer destinationOffset:"baseObject") destinationBytesPerRow:offset destinationBytesPerImage:{row, image}];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v19 = [(MTLToolsObject *)self baseObject];
-  v20 = [a3 baseObject];
-  v22 = *a6;
-  v21 = *a7;
-  [v19 copyFromTexture:v20 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v22 sourceSize:&v21 toBuffer:objc_msgSend(a8 destinationOffset:"baseObject") destinationBytesPerRow:a9 destinationBytesPerImage:a10 options:{a11, a12}];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v22 = *origin;
+  v21 = *size;
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v22 sourceSize:&v21 toBuffer:objc_msgSend(buffer destinationOffset:"baseObject") destinationBytesPerRow:offset destinationBytesPerImage:row options:{image, options}];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a5];
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
-  v15 = [a5 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toBuffer];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [toBuffer baseObject];
 
-  [v13 copyFromBuffer:v14 sourceOffset:a4 toBuffer:v15 destinationOffset:a6 size:a7];
+  [baseObject copyFromBuffer:baseObject2 sourceOffset:offset toBuffer:baseObject3 destinationOffset:destinationOffset size:size];
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v5 generateMipmapsForTexture:v6];
+  [baseObject generateMipmapsForTexture:baseObject2];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a3 baseObject];
-  v17 = *&a6->var0.var2;
-  v18[0] = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a6->var1.var1;
-  [v15 fillTexture:v16 level:a4 slice:a5 region:v18 bytes:a7 length:a8];
+  v18[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v18 bytes:bytes length:length];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v16 = [(MTLToolsObject *)self baseObject];
-  v17 = [a3 baseObject];
-  v18 = *&a6->var0.var2;
-  v19[0] = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v18 = *&region->var0.var2;
+  v19[0] = *&region->var0.var0;
   v19[1] = v18;
-  v19[2] = *&a6->var1.var1;
-  [v16 fillTexture:v17 level:a4 slice:a5 region:v19 color:{var0, var1, var2, var3}];
+  v19[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v19 color:{var0, var1, var2, var3}];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v20 = *&a6->var0.var2;
-  v21[0] = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v20 = *&region->var0.var2;
+  v21[0] = *&region->var0.var0;
   v21[1] = v20;
-  v21[2] = *&a6->var1.var1;
-  [v18 fillTexture:v19 level:a4 slice:a5 region:v21 color:a8 pixelFormat:var0, var1, var2, var3];
+  v21[2] = *&region->var1.var1;
+  [baseObject fillTexture:baseObject2 level:level slice:slice region:v21 color:format pixelFormat:var0, var1, var2, var3];
 }
 
-- (void)invalidateCompressedTexture:(id)a3
+- (void)invalidateCompressedTexture:(id)texture
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v5 invalidateCompressedTexture:v6];
+  [baseObject invalidateCompressedTexture:baseObject2];
 }
 
-- (void)invalidateCompressedTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)invalidateCompressedTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v9 invalidateCompressedTexture:v10 slice:a4 level:a5];
+  [baseObject invalidateCompressedTexture:baseObject2 slice:slice level:level];
 }
 
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v9 optimizeContentsForTexture:v10 readAccessPattern:a4 readAccessor:a5];
+  [baseObject optimizeContentsForTexture:baseObject2 readAccessPattern:pattern readAccessor:accessor];
 }
 
-- (void)optimizeContentsForTexture:(id)a3 readAccessPattern:(int64_t)a4 readAccessor:(int64_t)a5 slice:(unint64_t)a6 level:(unint64_t)a7
+- (void)optimizeContentsForTexture:(id)texture readAccessPattern:(int64_t)pattern readAccessor:(int64_t)accessor slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
 
-  [v13 optimizeContentsForTexture:v14 readAccessPattern:a4 readAccessor:a5 slice:a6 level:a7];
+  [baseObject optimizeContentsForTexture:baseObject2 readAccessPattern:pattern readAccessor:accessor slice:slice level:level];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a6];
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a3 baseObject];
-  v19 = [a6 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTexture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [toTexture baseObject];
 
-  [v17 copyFromTexture:v18 sourceSlice:a4 sourceLevel:a5 toTexture:v19 destinationSlice:a7 destinationLevel:a8 sliceCount:? levelCount:?];
+  [baseObject copyFromTexture:baseObject2 sourceSlice:slice sourceLevel:level toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel sliceCount:? levelCount:?];
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a4];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
-  v9 = [a4 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTexture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [toTexture baseObject];
 
-  [v7 copyFromTexture:v8 toTexture:v9];
+  [baseObject copyFromTexture:baseObject2 toTexture:baseObject3];
 }
 
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = *&a4->var0.var2;
-  v13[0] = *&a4->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [counters baseObject];
+  v12 = *&region->var0.var2;
+  v13[0] = *&region->var0.var0;
   v13[1] = v12;
-  v13[2] = *&a4->var1.var1;
-  [v10 resetTextureAccessCounters:v11 region:v13 mipLevel:a5 slice:a6];
+  v13[2] = *&region->var1.var1;
+  [baseObject resetTextureAccessCounters:baseObject2 region:v13 mipLevel:level slice:slice];
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [access baseObject];
 
-  [v5 optimizeContentsForGPUAccess:v6];
+  [baseObject optimizeContentsForGPUAccess:baseObject2];
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [access baseObject];
 
-  [v9 optimizeContentsForGPUAccess:v10 slice:a4 level:a5];
+  [baseObject optimizeContentsForGPUAccess:baseObject2 slice:slice level:level];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [access baseObject];
 
-  [v5 optimizeContentsForCPUAccess:v6];
+  [baseObject optimizeContentsForCPUAccess:baseObject2];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [access baseObject];
 
-  [v9 optimizeContentsForCPUAccess:v10 slice:a4 level:a5];
+  [baseObject optimizeContentsForCPUAccess:baseObject2 slice:slice level:level];
 }
 
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 resetCommandsInBuffer:v9 withRange:{location, length}];
+  [baseObject resetCommandsInBuffer:baseObject2 withRange:{location, length}];
 }
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a5];
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
-  v14 = [a5 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:destination];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [destination baseObject];
 
-  [v12 copyIndirectCommandBuffer:v13 sourceRange:location destination:length destinationIndex:{v14, a6}];
+  [baseObject copyIndirectCommandBuffer:baseObject2 sourceRange:location destination:length destinationIndex:{baseObject3, index}];
 }
 
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 optimizeIndirectCommandBuffer:v9 withRange:{location, length}];
+  [baseObject optimizeIndirectCommandBuffer:baseObject2 withRange:{location, length}];
 }
 
-- (void)resolveCounters:(id)a3 inRange:(_NSRange)a4 destinationBuffer:(id)a5 destinationOffset:(unint64_t)a6
+- (void)resolveCounters:(id)counters inRange:(_NSRange)range destinationBuffer:(id)buffer destinationOffset:(unint64_t)offset
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a5];
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
-  v14 = [a5 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [counters baseObject];
+  baseObject3 = [buffer baseObject];
 
-  [v12 resolveCounters:v13 inRange:location destinationBuffer:length destinationOffset:{v14, a6}];
+  [baseObject resolveCounters:baseObject2 inRange:location destinationBuffer:length destinationOffset:{baseObject3, offset}];
 }
 
 - (id)endEncodingAndRetrieveProgramAddressTable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 endEncodingAndRetrieveProgramAddressTable];
+  return [baseObject endEncodingAndRetrieveProgramAddressTable];
 }
 
 - (void)endEncoding
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 endEncoding];
+  [baseObject endEncoding];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 insertDebugSignpost:a3];
+  [baseObject insertDebugSignpost:signpost];
 }
 
 - (void)popDebugGroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 popDebugGroup];
+  [baseObject popDebugGroup];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 pushDebugGroup:a3];
+  [baseObject pushDebugGroup:group];
 }
 
-- (void)copyFromTensor:(id)a3 sourceOrigin:(id)a4 sourceDimensions:(id)a5 toTensor:(id)a6 destinationOrigin:(id)a7 destinationDimensions:(id)a8
+- (void)copyFromTensor:(id)tensor sourceOrigin:(id)origin sourceDimensions:(id)dimensions toTensor:(id)toTensor destinationOrigin:(id)destinationOrigin destinationDimensions:(id)destinationDimensions
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a6];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a3 baseObject];
-  v17 = [a6 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTensor];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [tensor baseObject];
+  baseObject3 = [toTensor baseObject];
 
-  [v15 copyFromTensor:v16 sourceOrigin:a4 sourceDimensions:a5 toTensor:v17 destinationOrigin:a7 destinationDimensions:a8];
+  [baseObject copyFromTensor:baseObject2 sourceOrigin:origin sourceDimensions:dimensions toTensor:baseObject3 destinationOrigin:destinationOrigin destinationDimensions:destinationDimensions];
 }
 
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v9 = a4.var1;
-  v10 = a4.var0;
+  var1 = destinationSlice.var1;
+  var0 = destinationSlice.var0;
+  v9 = slice.var1;
+  v10 = slice.var0;
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a5];
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
-  v15 = [a5 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTensor];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [tensor baseObject];
+  baseObject3 = [toTensor baseObject];
 
-  [v13 copyFromTensor:v14 sourceSlice:v10 toTensor:v9 destinationSlice:{v15, var0, var1}];
+  [baseObject copyFromTensor:baseObject2 sourceSlice:v10 toTensor:v9 destinationSlice:{baseObject3, var0, var1}];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface AAUIMetalBadgeRenderer
-- (AAUIMetalBadgeRenderer)initWithCAMetalLayer:(id)a3 useEarnedShader:(BOOL)a4;
+- (AAUIMetalBadgeRenderer)initWithCAMetalLayer:(id)layer useEarnedShader:(BOOL)shader;
 - (id)snapshot;
 - (void)_drawBadgeFrameCallback;
-- (void)_drawBadgeModel:(id)a3 intoRenderEncoder:(id)a4 withBackTexture:(BOOL)a5;
-- (void)_drawFrameWithDrawable:(id)a3;
-- (void)_drawIntoRenderEncoder:(id)a3;
-- (void)_loadBadgeModelWithConfiguration:(id)a3;
+- (void)_drawBadgeModel:(id)model intoRenderEncoder:(id)encoder withBackTexture:(BOOL)texture;
+- (void)_drawFrameWithDrawable:(id)drawable;
+- (void)_drawIntoRenderEncoder:(id)encoder;
+- (void)_loadBadgeModelWithConfiguration:(id)configuration;
 - (void)_setupAttributes;
-- (void)_setupCommonBindingsForRenderEncoder:(id)a3 pipelineState:(id)a4 verticesBuffer:(id)a5;
+- (void)_setupCommonBindingsForRenderEncoder:(id)encoder pipelineState:(id)state verticesBuffer:(id)buffer;
 - (void)_setupRenderPipeline;
 - (void)_setupTextures;
-- (void)_updateModelTransformForBadge:(id)a3;
+- (void)_updateModelTransformForBadge:(id)badge;
 - (void)cleanupAfterSnapshot;
 - (void)dealloc;
 - (void)resizeBadgeForCurrentViewSize;
-- (void)setBackTextureImage:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setBackTextureImage:(id)image;
+- (void)setConfiguration:(id)configuration;
+- (void)setPaused:(BOOL)paused;
 - (void)snapshot;
 @end
 
@@ -119,22 +119,22 @@
       colorAttachmentMSAA = self->_colorAttachmentMSAA;
       self->_colorAttachmentMSAA = v25;
 
-      v27 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+      renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
       renderPassDesc = self->_renderPassDesc;
-      self->_renderPassDesc = v27;
+      self->_renderPassDesc = renderPassDescriptor;
 
-      v29 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-      v30 = [v29 objectAtIndexedSubscript:0];
+      colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+      v30 = [colorAttachments objectAtIndexedSubscript:0];
 
       [v30 setLoadAction:2];
       [v30 setStoreAction:2];
       [v30 setClearColor:{0.0, 0.0, 0.0, 0.0}];
       [v30 setTexture:self->_colorAttachmentMSAA];
-      v31 = [(MTLRenderPassDescriptor *)self->_renderPassDesc depthAttachment];
-      [v31 setLoadAction:2];
-      [v31 setStoreAction:0];
-      [v31 setTexture:self->_depthAttachmentMSAA];
-      [v31 setResolveTexture:0];
+      depthAttachment = [(MTLRenderPassDescriptor *)self->_renderPassDesc depthAttachment];
+      [depthAttachment setLoadAction:2];
+      [depthAttachment setStoreAction:0];
+      [depthAttachment setTexture:self->_depthAttachmentMSAA];
+      [depthAttachment setResolveTexture:0];
     }
   }
 }
@@ -253,59 +253,59 @@
   v9 = [MTLDevice newDefaultLibraryWithBundle:"newDefaultLibraryWithBundle:error:" error:?];
   v10 = 0;
   v11 = objc_alloc_init(MEMORY[0x277CD7090]);
-  v12 = [v11 attributes];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  attributes = [v11 attributes];
+  v13 = [attributes objectAtIndexedSubscript:0];
   [v13 setFormat:30];
 
-  v14 = [v11 attributes];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  attributes2 = [v11 attributes];
+  v15 = [attributes2 objectAtIndexedSubscript:0];
   [v15 setOffset:0];
 
-  v16 = [v11 attributes];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  attributes3 = [v11 attributes];
+  v17 = [attributes3 objectAtIndexedSubscript:0];
   [v17 setBufferIndex:5];
 
-  v18 = [v11 attributes];
-  v19 = [v18 objectAtIndexedSubscript:2];
+  attributes4 = [v11 attributes];
+  v19 = [attributes4 objectAtIndexedSubscript:2];
   [v19 setFormat:30];
 
-  v20 = [v11 attributes];
-  v21 = [v20 objectAtIndexedSubscript:2];
+  attributes5 = [v11 attributes];
+  v21 = [attributes5 objectAtIndexedSubscript:2];
   [v21 setOffset:12];
 
-  v22 = [v11 attributes];
-  v23 = [v22 objectAtIndexedSubscript:2];
+  attributes6 = [v11 attributes];
+  v23 = [attributes6 objectAtIndexedSubscript:2];
   [v23 setBufferIndex:5];
 
-  v24 = [v11 attributes];
-  v25 = [v24 objectAtIndexedSubscript:1];
+  attributes7 = [v11 attributes];
+  v25 = [attributes7 objectAtIndexedSubscript:1];
   [v25 setFormat:29];
 
-  v26 = [v11 attributes];
-  v27 = [v26 objectAtIndexedSubscript:1];
+  attributes8 = [v11 attributes];
+  v27 = [attributes8 objectAtIndexedSubscript:1];
   [v27 setOffset:24];
 
-  v28 = [v11 attributes];
-  v29 = [v28 objectAtIndexedSubscript:1];
+  attributes9 = [v11 attributes];
+  v29 = [attributes9 objectAtIndexedSubscript:1];
   [v29 setBufferIndex:5];
 
-  v30 = [v11 layouts];
-  v31 = [v30 objectAtIndexedSubscript:5];
+  layouts = [v11 layouts];
+  v31 = [layouts objectAtIndexedSubscript:5];
   [v31 setStride:32];
 
-  v32 = [v11 layouts];
-  v33 = [v32 objectAtIndexedSubscript:5];
+  layouts2 = [v11 layouts];
+  v33 = [layouts2 objectAtIndexedSubscript:5];
   [v33 setStepRate:1];
 
-  v34 = [v11 layouts];
-  v35 = [v34 objectAtIndexedSubscript:5];
+  layouts3 = [v11 layouts];
+  v35 = [layouts3 objectAtIndexedSubscript:5];
   [v35 setStepFunction:1];
 
   [v6 setVertexDescriptor:v11];
-  v36 = [(CAMetalLayer *)self->_metalLayer pixelFormat];
-  v37 = [v6 colorAttachments];
-  v38 = [v37 objectAtIndexedSubscript:0];
-  [v38 setPixelFormat:v36];
+  pixelFormat = [(CAMetalLayer *)self->_metalLayer pixelFormat];
+  colorAttachments = [v6 colorAttachments];
+  v38 = [colorAttachments objectAtIndexedSubscript:0];
+  [v38 setPixelFormat:pixelFormat];
 
   [v6 setDepthAttachmentPixelFormat:252];
   [v6 setRasterSampleCount:4];
@@ -401,21 +401,21 @@
   }
 }
 
-- (AAUIMetalBadgeRenderer)initWithCAMetalLayer:(id)a3 useEarnedShader:(BOOL)a4
+- (AAUIMetalBadgeRenderer)initWithCAMetalLayer:(id)layer useEarnedShader:(BOOL)shader
 {
-  v7 = a3;
+  layerCopy = layer;
   v25.receiver = self;
   v25.super_class = AAUIMetalBadgeRenderer;
   v8 = [(AAUIMetalBadgeRenderer *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    v8->_useEarnedShader = a4;
+    v8->_useEarnedShader = shader;
     v10 = +[AAUICommandQueueTransaction sharedDevice];
     device = v9->_device;
     v9->_device = v10;
 
-    objc_storeStrong(&v9->_metalLayer, a3);
+    objc_storeStrong(&v9->_metalLayer, layer);
     [(CAMetalLayer *)v9->_metalLayer setDevice:v9->_device];
     [(CAMetalLayer *)v9->_metalLayer setPixelFormat:80];
     [(CAMetalLayer *)v9->_metalLayer setFramebufferOnly:1];
@@ -427,8 +427,8 @@
     v13 = v12;
     [objc_opt_class() screenScaleMaximum];
     v15 = v14;
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    [v16 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v18 = v13 * v17;
 
     if (v18 >= v15)
@@ -477,10 +477,10 @@
   [(AAUIMetalBadgeRenderer *)&v6 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   displayLink = self->_displayLink;
-  if (a3)
+  if (paused)
   {
     [(CADisplayLink *)displayLink setPaused:1];
     [(CADisplayLink *)self->_displayLink invalidate];
@@ -501,8 +501,8 @@
     self->_displayLink = v6;
 
     v8 = self->_displayLink;
-    v9 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v8 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:60];
     [(CADisplayLink *)self->_displayLink setPaused:0];
@@ -510,55 +510,55 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  if (self->_configuration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_configuration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_configuration, configuration);
     [(AAUIMetalBadgeRenderer *)self _loadBadgeModelWithConfiguration:self->_configuration];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
-- (void)_loadBadgeModelWithConfiguration:(id)a3
+- (void)_loadBadgeModelWithConfiguration:(id)configuration
 {
   v90[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 badgeTexturePaths];
+  configurationCopy = configuration;
+  badgeTexturePaths = [configurationCopy badgeTexturePaths];
 
-  if (!v5)
+  if (!badgeTexturePaths)
   {
     v23 = ACHLogDefault();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      [AAUIMetalBadgeRenderer _loadBadgeModelWithConfiguration:v4];
+      [AAUIMetalBadgeRenderer _loadBadgeModelWithConfiguration:configurationCopy];
     }
 
     goto LABEL_50;
   }
 
-  v6 = [v4 badgeModelPaths];
+  badgeModelPaths = [configurationCopy badgeModelPaths];
 
-  if (v6)
+  if (badgeModelPaths)
   {
-    v7 = [v4 metalColor];
-    *self->_anon_130 = AAUIColorVectorFromColor(v7);
+    metalColor = [configurationCopy metalColor];
+    *self->_anon_130 = AAUIColorVectorFromColor(metalColor);
 
-    v8 = [v4 useFullColorEnamel];
-    self->_anon_130[90] = v8;
-    if ((v8 & 1) == 0)
+    useFullColorEnamel = [configurationCopy useFullColorEnamel];
+    self->_anon_130[90] = useFullColorEnamel;
+    if ((useFullColorEnamel & 1) == 0)
     {
-      v9 = [v4 modelEnamelColor];
-      *&self->_anon_130[16] = AAUIColorVectorFromColor(v9);
+      modelEnamelColor = [configurationCopy modelEnamelColor];
+      *&self->_anon_130[16] = AAUIColorVectorFromColor(modelEnamelColor);
     }
 
-    v10 = [v4 enamelTriColors];
-    v11 = v10;
-    if (v10)
+    enamelTriColors = [configurationCopy enamelTriColors];
+    v11 = enamelTriColors;
+    if (enamelTriColors)
     {
-      v12 = [v10 objectAtIndexedSubscript:0];
+      v12 = [enamelTriColors objectAtIndexedSubscript:0];
       *&self->_anon_130[32] = AAUIColorVectorFromColor(v12);
 
       v13 = [v11 objectAtIndexedSubscript:1];
@@ -570,8 +570,8 @@
 
     if (!self->_useEarnedShader)
     {
-      self->_anon_130[88] = [v4 unearnedUsesTwoToneEnamel];
-      self->_anon_130[89] = v8;
+      self->_anon_130[88] = [configurationCopy unearnedUsesTwoToneEnamel];
+      self->_anon_130[89] = useFullColorEnamel;
       *&self->_anon_130[80] = 0;
     }
 
@@ -582,14 +582,14 @@
     v90[0] = MEMORY[0x277CBEC38];
     v90[1] = MEMORY[0x277CBEC28];
     v79 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v89 count:2];
-    v17 = [v4 badgeTexturePaths];
-    v18 = [v17 count];
+    badgeTexturePaths2 = [configurationCopy badgeTexturePaths];
+    v18 = [badgeTexturePaths2 count];
 
     if (v18)
     {
       v19 = objc_alloc(MEMORY[0x277D755B8]);
-      v20 = [v4 badgeTexturePaths];
-      v21 = [v20 objectAtIndexedSubscript:0];
+      badgeTexturePaths3 = [configurationCopy badgeTexturePaths];
+      v21 = [badgeTexturePaths3 objectAtIndexedSubscript:0];
       v22 = [v19 initWithContentsOfFile:v21];
     }
 
@@ -598,22 +598,22 @@
       v22 = 0;
     }
 
-    v24 = [v4 badgeTexturePaths];
-    v25 = [v24 count];
+    badgeTexturePaths4 = [configurationCopy badgeTexturePaths];
+    v25 = [badgeTexturePaths4 count];
 
     v76 = v11;
     if (v25 >= 2)
     {
-      v26 = [v4 badgeTexturePaths];
-      v27 = [v26 count];
+      badgeTexturePaths5 = [configurationCopy badgeTexturePaths];
+      v27 = [badgeTexturePaths5 count];
 
       if (v27 >= 2)
       {
         v28 = 1;
         do
         {
-          v29 = [v4 badgeTexturePaths];
-          v30 = [v29 objectAtIndexedSubscript:v28];
+          badgeTexturePaths6 = [configurationCopy badgeTexturePaths];
+          v30 = [badgeTexturePaths6 objectAtIndexedSubscript:v28];
 
           v31 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:v30];
           if (v31)
@@ -631,30 +631,30 @@
           }
 
           ++v28;
-          v35 = [v4 badgeTexturePaths];
-          v36 = [v35 count];
+          badgeTexturePaths7 = [configurationCopy badgeTexturePaths];
+          v36 = [badgeTexturePaths7 count];
         }
 
         while (v36 > v28);
       }
     }
 
-    self->_anon_130[92] = [v4 faceHasMetalInlay];
+    self->_anon_130[92] = [configurationCopy faceHasMetalInlay];
     v78 = v22;
     if (v22)
     {
-      v37 = [v4 glyphTexturePath];
+      glyphTexturePath = [configurationCopy glyphTexturePath];
 
-      if (v37)
+      if (glyphTexturePath)
       {
         self->_anon_130[91] = 1;
         v38 = MEMORY[0x277CBEBC0];
-        v39 = [v4 glyphTexturePath];
-        v40 = [v38 fileURLWithPath:v39];
+        glyphTexturePath2 = [configurationCopy glyphTexturePath];
+        v40 = [v38 fileURLWithPath:glyphTexturePath2];
 
         v41 = objc_alloc(MEMORY[0x277D755B8]);
-        v42 = [v40 path];
-        v43 = [v41 initWithContentsOfFile:v42];
+        path = [v40 path];
+        v43 = [v41 initWithContentsOfFile:path];
 
         [v22 size];
         v46 = v44;
@@ -663,8 +663,8 @@
         {
           UIGraphicsBeginImageContext(*&v44);
           CurrentContext = UIGraphicsGetCurrentContext();
-          v49 = [MEMORY[0x277D75348] blueColor];
-          CGContextSetFillColorWithColor(CurrentContext, [v49 CGColor]);
+          blueColor = [MEMORY[0x277D75348] blueColor];
+          CGContextSetFillColorWithColor(CurrentContext, [blueColor CGColor]);
 
           v93.origin.x = 0.0;
           v93.origin.y = 0.0;
@@ -694,10 +694,10 @@
         [v78 drawInRect:{0.0, 0.0, v46, v47}];
         if (v50)
         {
-          [v4 glyphPositionOffset];
+          [configurationCopy glyphPositionOffset];
           v55 = v54;
           v57 = v56;
-          [v4 glyphTextureScale];
+          [configurationCopy glyphTextureScale];
           [v50 drawInRect:2 blendMode:v55 alpha:{v57, v46 * v58, v47 * v58, 1.0}];
         }
 
@@ -732,20 +732,20 @@
       v62 = ACHLogDefault();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
       {
-        [AAUIMetalBadgeRenderer _loadBadgeModelWithConfiguration:v4];
+        [AAUIMetalBadgeRenderer _loadBadgeModelWithConfiguration:configurationCopy];
       }
     }
 
     v74 = v51;
-    v77 = self;
+    selfCopy = self;
     [(AAUIMetalBadgeRenderer *)self _cleanupConfiguration];
-    v63 = [v4 badgeModelPaths];
+    badgeModelPaths2 = [configurationCopy badgeModelPaths];
     v64 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v65 = v63;
+    v65 = badgeModelPaths2;
     v66 = [v65 countByEnumeratingWithState:&v80 objects:v88 count:16];
     if (v66)
     {
@@ -785,21 +785,21 @@
       while (v67);
     }
 
-    badgeModels = v77->_badgeModels;
-    v77->_badgeModels = v64;
+    badgeModels = selfCopy->_badgeModels;
+    selfCopy->_badgeModels = v64;
 
     v23 = v76;
 LABEL_50:
   }
 }
 
-- (void)setBackTextureImage:(id)a3
+- (void)setBackTextureImage:(id)image
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_backTextureImage != v5)
+  imageCopy = image;
+  if (self->_backTextureImage != imageCopy)
   {
-    objc_storeStrong(&self->_backTextureImage, a3);
+    objc_storeStrong(&self->_backTextureImage, image);
     if (self->_backTextureImage)
     {
       v6 = [objc_alloc(MEMORY[0x277CD71F0]) initWithDevice:self->_device];
@@ -812,9 +812,9 @@ LABEL_50:
       v25[2] = *MEMORY[0x277CD71B0];
       v26[2] = MEMORY[0x277CBEC28];
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
-      v10 = [(UIImage *)self->_backTextureImage CGImage];
+      cGImage = [(UIImage *)self->_backTextureImage CGImage];
       v24 = 0;
-      v11 = [v6 newTextureWithCGImage:v10 options:v9 error:&v24];
+      v11 = [v6 newTextureWithCGImage:cGImage options:v9 error:&v24];
       v12 = v24;
       backTexture = self->_backTexture;
       self->_backTexture = v11;
@@ -853,9 +853,9 @@ LABEL_50:
   }
 }
 
-- (void)_updateModelTransformForBadge:(id)a3
+- (void)_updateModelTransformForBadge:(id)badge
 {
-  v37 = a3;
+  badgeCopy = badge;
   v4 = 0;
   v40 = xmmword_23E4DF950;
   v41 = xmmword_23E4DF980;
@@ -876,14 +876,14 @@ LABEL_50:
   v36 = v42;
   v33 = v45;
   v34 = v44;
-  [v37 rotationY];
+  [badgeCopy rotationY];
   *&v5 = v5;
   *&v6 = _matrix4x4_rotation(*&v5, xmmword_23E4DF920);
   v31 = v7;
   v32 = v6;
   v29 = v9;
   v30 = v8;
-  [v37 rotationX];
+  [badgeCopy rotationX];
   *&v10 = v10;
   *&v11 = _matrix4x4_rotation(*&v10, xmmword_23E4DF910);
   v15 = 0;
@@ -955,17 +955,17 @@ LABEL_50:
 {
   if (([(CAMetalLayer *)self->_metalLayer isDrawableAvailable]& 1) != 0)
   {
-    v3 = [(CAMetalLayer *)self->_metalLayer nextDrawable];
-    if (v3)
+    nextDrawable = [(CAMetalLayer *)self->_metalLayer nextDrawable];
+    if (nextDrawable)
     {
-      v8 = v3;
-      v4 = [v3 texture];
-      v5 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-      v6 = [v5 objectAtIndexedSubscript:0];
-      [v6 setResolveTexture:v4];
+      v8 = nextDrawable;
+      texture = [nextDrawable texture];
+      colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+      v6 = [colorAttachments objectAtIndexedSubscript:0];
+      [v6 setResolveTexture:texture];
 
       [(AAUIMetalBadgeRenderer *)self _drawFrameWithDrawable:v8];
-      v3 = v8;
+      nextDrawable = v8;
     }
   }
 
@@ -979,43 +979,43 @@ LABEL_50:
   }
 }
 
-- (void)_setupCommonBindingsForRenderEncoder:(id)a3 pipelineState:(id)a4 verticesBuffer:(id)a5
+- (void)_setupCommonBindingsForRenderEncoder:(id)encoder pipelineState:(id)state verticesBuffer:(id)buffer
 {
-  v9 = a3;
-  v8 = a5;
-  [v9 setRenderPipelineState:a4];
-  [v9 setDepthStencilState:self->_depthStencilState];
-  [v9 setCullMode:1];
-  [v9 setVertexBuffer:v8 offset:0 atIndex:5];
+  encoderCopy = encoder;
+  bufferCopy = buffer;
+  [encoderCopy setRenderPipelineState:state];
+  [encoderCopy setDepthStencilState:self->_depthStencilState];
+  [encoderCopy setCullMode:1];
+  [encoderCopy setVertexBuffer:bufferCopy offset:0 atIndex:5];
 
-  [v9 setVertexBytes:self->_anon_60 length:64 atIndex:0];
-  [v9 setVertexBytes:self->_anon_a0 length:64 atIndex:1];
+  [encoderCopy setVertexBytes:self->_anon_60 length:64 atIndex:0];
+  [encoderCopy setVertexBytes:self->_anon_a0 length:64 atIndex:1];
   if (self->_useEarnedShader)
   {
-    [v9 setVertexBytes:self->_anon_e0 length:64 atIndex:2];
-    [v9 setVertexBytes:self->_cameraPosition length:16 atIndex:3];
-    [v9 setFragmentTexture:self->_environmentTexture atIndex:0];
+    [encoderCopy setVertexBytes:self->_anon_e0 length:64 atIndex:2];
+    [encoderCopy setVertexBytes:self->_cameraPosition length:16 atIndex:3];
+    [encoderCopy setFragmentTexture:self->_environmentTexture atIndex:0];
   }
 }
 
-- (void)_drawBadgeModel:(id)a3 intoRenderEncoder:(id)a4 withBackTexture:(BOOL)a5
+- (void)_drawBadgeModel:(id)model intoRenderEncoder:(id)encoder withBackTexture:(BOOL)texture
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = 32 * [v8 vertexCount];
+  textureCopy = texture;
+  modelCopy = model;
+  encoderCopy = encoder;
+  v10 = 32 * [modelCopy vertexCount];
   v11 = [(MTLDevice *)self->_device newBufferWithLength:v10 options:0];
-  memcpy([v11 contents], objc_msgSend(v8, "vertices"), v10);
-  v12 = 4 * [v8 indexCount];
+  memcpy([v11 contents], objc_msgSend(modelCopy, "vertices"), v10);
+  v12 = 4 * [modelCopy indexCount];
   v13 = [(MTLDevice *)self->_device newBufferWithLength:v12 options:0];
-  memcpy([v13 contents], objc_msgSend(v8, "indices"), v12);
-  if ([v8 groupCount] >= 1)
+  memcpy([v13 contents], objc_msgSend(modelCopy, "indices"), v12);
+  if ([modelCopy groupCount] >= 1)
   {
     v14 = 0;
     v15 = 0;
     p_colorTexture = &self->_colorTexture;
     v17 = 432;
-    if (v5)
+    if (textureCopy)
     {
       v17 = 424;
     }
@@ -1035,7 +1035,7 @@ LABEL_50:
       v43[0] = *self->_anon_130;
       v43[1] = v20;
       v21 = self->_shaderRenderPipeline;
-      v22 = *([v8 materials] + 4 * v14);
+      v22 = *([modelCopy materials] + 4 * v14);
       if (v22)
       {
         if (v22 == 1)
@@ -1050,7 +1050,7 @@ LABEL_50:
           v24 = v42;
           if (v22 != 2)
           {
-            [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:v9 pipelineState:v21 verticesBuffer:v11, v23];
+            [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:encoderCopy pipelineState:v21 verticesBuffer:v11, v23];
 LABEL_13:
             v25 = 0;
             LODWORD(v44) = 0;
@@ -1070,12 +1070,12 @@ LABEL_13:
         v25 = v26;
         if (self->_useEarnedShader && v26)
         {
-          v27 = [(AAUIMetalBadgeRenderer *)self configuration];
-          if ([v27 faceHasMetalInlay])
+          configuration = [(AAUIMetalBadgeRenderer *)self configuration];
+          if ([configuration faceHasMetalInlay])
           {
-            v28 = [(AAUIMetalBadgeRenderer *)self configuration];
-            v29 = [v28 enamelTriColors];
-            v39 = [v29 count];
+            configuration2 = [(AAUIMetalBadgeRenderer *)self configuration];
+            enamelTriColors = [configuration2 enamelTriColors];
+            v39 = [enamelTriColors count];
 
             p_shaderFaceInlayTriColorsPipeline = &self->_shaderFaceInlayTriColorsPipeline;
             if (!v39)
@@ -1088,15 +1088,15 @@ LABEL_13:
           {
 
 LABEL_20:
-            v31 = [(AAUIMetalBadgeRenderer *)self configuration];
-            v32 = [v31 faceHasMetalInlay];
+            configuration3 = [(AAUIMetalBadgeRenderer *)self configuration];
+            faceHasMetalInlay = [configuration3 faceHasMetalInlay];
 
             p_shaderFaceInlayTriColorsPipeline = &self->_shaderFaceInlayRenderPipeline;
-            if ((v32 & 1) == 0)
+            if ((faceHasMetalInlay & 1) == 0)
             {
-              v33 = [(AAUIMetalBadgeRenderer *)self configuration];
-              v34 = [v33 enamelTriColors];
-              v35 = [v34 count];
+              configuration4 = [(AAUIMetalBadgeRenderer *)self configuration];
+              enamelTriColors2 = [configuration4 enamelTriColors];
+              v35 = [enamelTriColors2 count];
 
               v36 = 80;
               if (!v35)
@@ -1112,11 +1112,11 @@ LABEL_20:
 
           v38 = self->_fleckNormalTexture;
           v11 = v41;
-          [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:v9 pipelineState:v37 verticesBuffer:v41];
-          [v9 setFragmentTexture:v25 atIndex:1];
+          [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:encoderCopy pipelineState:v37 verticesBuffer:v41];
+          [encoderCopy setFragmentTexture:v25 atIndex:1];
           if (v38)
           {
-            [v9 setFragmentTexture:v38 atIndex:2];
+            [encoderCopy setFragmentTexture:v38 atIndex:2];
           }
 
           v21 = v37;
@@ -1126,29 +1126,29 @@ LABEL_20:
         }
       }
 
-      [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:v9 pipelineState:v21 verticesBuffer:v11];
+      [(AAUIMetalBadgeRenderer *)self _setupCommonBindingsForRenderEncoder:encoderCopy pipelineState:v21 verticesBuffer:v11];
       if (!v25)
       {
         goto LABEL_13;
       }
 
-      [v9 setFragmentTexture:v25 atIndex:1];
+      [encoderCopy setFragmentTexture:v25 atIndex:1];
 LABEL_27:
-      [v9 setFragmentBytes:v43 length:96 atIndex:4];
-      [v9 drawIndexedPrimitives:3 indexCount:3 * *(objc_msgSend(v8 indexType:"groups") + 4 * v14) indexBuffer:1 indexBufferOffset:{v13, 4 * v15}];
-      v15 += 3 * *([v8 groups] + 4 * v14);
+      [encoderCopy setFragmentBytes:v43 length:96 atIndex:4];
+      [encoderCopy drawIndexedPrimitives:3 indexCount:3 * *(objc_msgSend(modelCopy indexType:"groups") + 4 * v14) indexBuffer:1 indexBufferOffset:{v13, 4 * v15}];
+      v15 += 3 * *([modelCopy groups] + 4 * v14);
 
       ++v14;
     }
 
-    while (v14 < [v8 groupCount]);
+    while (v14 < [modelCopy groupCount]);
   }
 }
 
-- (void)_drawIntoRenderEncoder:(id)a3
+- (void)_drawIntoRenderEncoder:(id)encoder
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  encoderCopy = encoder;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1170,7 +1170,7 @@ LABEL_27:
           objc_enumerationMutation(v5);
         }
 
-        [(AAUIMetalBadgeRenderer *)self _drawBadgeModel:*(*(&v11 + 1) + 8 * v10) intoRenderEncoder:v4 withBackTexture:v9 & 1, v11];
+        [(AAUIMetalBadgeRenderer *)self _drawBadgeModel:*(*(&v11 + 1) + 8 * v10) intoRenderEncoder:encoderCopy withBackTexture:v9 & 1, v11];
         v9 = 0;
         ++v10;
       }
@@ -1184,40 +1184,40 @@ LABEL_27:
   }
 }
 
-- (void)_drawFrameWithDrawable:(id)a3
+- (void)_drawFrameWithDrawable:(id)drawable
 {
-  v4 = a3;
-  v5 = [(AAUIMetalBadgeRenderer *)self stateUpdateBlock];
-  v6 = v5[2]();
+  drawableCopy = drawable;
+  stateUpdateBlock = [(AAUIMetalBadgeRenderer *)self stateUpdateBlock];
+  v6 = stateUpdateBlock[2]();
   [(AAUIMetalBadgeRenderer *)self _updateModelTransformForBadge:v6];
-  v7 = [(AAUICommandQueueTransaction *)self->_transaction commandQueue];
-  v8 = [v7 commandBuffer];
+  commandQueue = [(AAUICommandQueueTransaction *)self->_transaction commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  [v8 setLabel:@"Activity Badge Command Buffer"];
-  v9 = [v8 renderCommandEncoderWithDescriptor:self->_renderPassDesc];
+  [commandBuffer setLabel:@"Activity Badge Command Buffer"];
+  v9 = [commandBuffer renderCommandEncoderWithDescriptor:self->_renderPassDesc];
   [v9 setLabel:@"Activity Badge Render Encoder"];
   [(AAUIMetalBadgeRenderer *)self _drawIntoRenderEncoder:v9];
   [v9 endEncoding];
-  if (v4)
+  if (drawableCopy)
   {
-    [v8 presentDrawable:v4];
-    [v8 commit];
+    [commandBuffer presentDrawable:drawableCopy];
+    [commandBuffer commit];
   }
 
   else
   {
-    [v8 commit];
-    [v8 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
-  v10 = [v8 error];
+  error = [commandBuffer error];
 
-  if (v10)
+  if (error)
   {
     v11 = ACHLogDefault();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(AAUIMetalBadgeRenderer *)v8 _drawFrameWithDrawable:v11];
+      [(AAUIMetalBadgeRenderer *)commandBuffer _drawFrameWithDrawable:v11];
     }
   }
 }
@@ -1253,8 +1253,8 @@ LABEL_27:
     [v8 setUsage:4];
     [v8 setStorageMode:0];
     v9 = [(MTLDevice *)self->_device newTextureWithDescriptor:v8];
-    v10 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+    v11 = [colorAttachments objectAtIndexedSubscript:0];
     [v11 setResolveTexture:v9];
 
     [(AAUIMetalBadgeRenderer *)self _drawFrameWithDrawable:0];
@@ -1272,8 +1272,8 @@ LABEL_27:
     {
       v17 = v16;
       v18 = MEMORY[0x277D755B8];
-      v19 = [MEMORY[0x277D759A0] mainScreen];
-      [v19 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v6 = [v18 imageWithCGImage:v17 scale:0 orientation:?];
 
       CGImageRelease(v17);
@@ -1303,8 +1303,8 @@ LABEL_27:
   colorTexture = self->_colorTexture;
   self->_colorTexture = 0;
 
-  v5 = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
-  v4 = [v5 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDesc colorAttachments];
+  v4 = [colorAttachments objectAtIndexedSubscript:0];
   [v4 setResolveTexture:0];
 }
 

@@ -1,19 +1,19 @@
 @interface HAP2EncodedEnableNotificationResponse
-- (HAP2EncodedEnableNotificationResponse)initWithNotificationResponses:(id)a3 updatedValues:(id)a4;
+- (HAP2EncodedEnableNotificationResponse)initWithNotificationResponses:(id)responses updatedValues:(id)values;
 @end
 
 @implementation HAP2EncodedEnableNotificationResponse
 
-- (HAP2EncodedEnableNotificationResponse)initWithNotificationResponses:(id)a3 updatedValues:(id)a4
+- (HAP2EncodedEnableNotificationResponse)initWithNotificationResponses:(id)responses updatedValues:(id)values
 {
-  v7 = a4;
+  valuesCopy = values;
   v11.receiver = self;
   v11.super_class = HAP2EncodedEnableNotificationResponse;
-  v8 = [(HAP2EncodedCharacteristicResponse *)&v11 initWithCharacteristics:a3];
+  v8 = [(HAP2EncodedCharacteristicResponse *)&v11 initWithCharacteristics:responses];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_updatedValues, a4);
+    objc_storeStrong(&v8->_updatedValues, values);
   }
 
   return v9;

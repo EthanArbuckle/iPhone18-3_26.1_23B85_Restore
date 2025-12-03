@@ -1,33 +1,33 @@
 @interface AWDSymptomsNetworkAnalyticsScoring
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
-- (int)StringAsScoringCompletionCode:(id)a3;
+- (int)StringAsNetworkType:(id)type;
+- (int)StringAsScoringCompletionCode:(id)code;
 - (int)networkType;
 - (int)scoringCompletionCode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)setHasNumberEntriesWithHomeLOI:(BOOL)a3;
-- (void)setHasNumberEntriesWithUnapprovedLOI:(BOOL)a3;
-- (void)setHasNumberEntriesWithUndefinedLOI:(BOOL)a3;
-- (void)setHasNumberEntriesWithWorkLOI:(BOOL)a3;
-- (void)setHasScoredEntries:(BOOL)a3;
-- (void)setHasScoredKnownGood:(BOOL)a3;
-- (void)setHasScoringCompletionCode:(BOOL)a3;
-- (void)setHasTimeSinceLastScoringSecs:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)setHasNumberEntriesWithHomeLOI:(BOOL)i;
+- (void)setHasNumberEntriesWithUnapprovedLOI:(BOOL)i;
+- (void)setHasNumberEntriesWithUndefinedLOI:(BOOL)i;
+- (void)setHasNumberEntriesWithWorkLOI:(BOOL)i;
+- (void)setHasScoredEntries:(BOOL)entries;
+- (void)setHasScoredKnownGood:(BOOL)good;
+- (void)setHasScoringCompletionCode:(BOOL)code;
+- (void)setHasTimeSinceLastScoringSecs:(BOOL)secs;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkAnalyticsScoring
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 256;
   }
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -68,20 +68,20 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -94,9 +94,9 @@
   return v4;
 }
 
-- (void)setHasTimeSinceLastScoringSecs:(BOOL)a3
+- (void)setHasTimeSinceLastScoringSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 128;
   }
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)setHasScoringCompletionCode:(BOOL)a3
+- (void)setHasScoringCompletionCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 1024;
   }
@@ -137,20 +137,20 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsScoringCompletionCode:(id)a3
+- (int)StringAsScoringCompletionCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INSUFFICIENT_DATA"])
+  else if ([codeCopy isEqualToString:@"INSUFFICIENT_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ERRORS"])
+  else if ([codeCopy isEqualToString:@"ERRORS"])
   {
     v4 = 3;
   }
@@ -163,9 +163,9 @@
   return v4;
 }
 
-- (void)setHasScoredEntries:(BOOL)a3
+- (void)setHasScoredEntries:(BOOL)entries
 {
-  if (a3)
+  if (entries)
   {
     v3 = 32;
   }
@@ -178,9 +178,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasScoredKnownGood:(BOOL)a3
+- (void)setHasScoredKnownGood:(BOOL)good
 {
-  if (a3)
+  if (good)
   {
     v3 = 64;
   }
@@ -193,9 +193,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumberEntriesWithHomeLOI:(BOOL)a3
+- (void)setHasNumberEntriesWithHomeLOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 2;
   }
@@ -208,9 +208,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNumberEntriesWithWorkLOI:(BOOL)a3
+- (void)setHasNumberEntriesWithWorkLOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 16;
   }
@@ -223,9 +223,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumberEntriesWithUndefinedLOI:(BOOL)a3
+- (void)setHasNumberEntriesWithUndefinedLOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 8;
   }
@@ -238,9 +238,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumberEntriesWithUnapprovedLOI:(BOOL)a3
+- (void)setHasNumberEntriesWithUnapprovedLOI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 4;
   }
@@ -259,20 +259,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkAnalyticsScoring;
   v4 = [(AWDSymptomsNetworkAnalyticsScoring *)&v8 description];
-  v5 = [(AWDSymptomsNetworkAnalyticsScoring *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkAnalyticsScoring *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -303,7 +303,7 @@ LABEL_3:
     v9 = off_27898F020[v8];
   }
 
-  [v3 setObject:v9 forKey:@"networkType"];
+  [dictionary setObject:v9 forKey:@"networkType"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -319,7 +319,7 @@ LABEL_4:
 
 LABEL_21:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timeSinceLastScoringSecs];
-  [v3 setObject:v10 forKey:@"timeSinceLastScoringSecs"];
+  [dictionary setObject:v10 forKey:@"timeSinceLastScoringSecs"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -345,7 +345,7 @@ LABEL_22:
     v12 = off_27898F038[v11];
   }
 
-  [v3 setObject:v12 forKey:@"scoringCompletionCode"];
+  [dictionary setObject:v12 forKey:@"scoringCompletionCode"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -361,7 +361,7 @@ LABEL_6:
 
 LABEL_26:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_scoredEntries];
-  [v3 setObject:v13 forKey:@"scoredEntries"];
+  [dictionary setObject:v13 forKey:@"scoredEntries"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -377,7 +377,7 @@ LABEL_7:
 
 LABEL_27:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_scoredKnownGood];
-  [v3 setObject:v14 forKey:@"scoredKnownGood"];
+  [dictionary setObject:v14 forKey:@"scoredKnownGood"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -393,7 +393,7 @@ LABEL_8:
 
 LABEL_28:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_lifetimeOldestItemSecs];
-  [v3 setObject:v15 forKey:@"lifetimeOldestItemSecs"];
+  [dictionary setObject:v15 forKey:@"lifetimeOldestItemSecs"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -409,7 +409,7 @@ LABEL_9:
 
 LABEL_29:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numberEntriesWithHomeLOI];
-  [v3 setObject:v16 forKey:@"numberEntriesWithHomeLOI"];
+  [dictionary setObject:v16 forKey:@"numberEntriesWithHomeLOI"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -425,7 +425,7 @@ LABEL_10:
 
 LABEL_30:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numberEntriesWithWorkLOI];
-  [v3 setObject:v17 forKey:@"numberEntriesWithWorkLOI"];
+  [dictionary setObject:v17 forKey:@"numberEntriesWithWorkLOI"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -441,23 +441,23 @@ LABEL_11:
 
 LABEL_31:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numberEntriesWithUndefinedLOI];
-  [v3 setObject:v18 forKey:@"numberEntriesWithUndefinedLOI"];
+  [dictionary setObject:v18 forKey:@"numberEntriesWithUndefinedLOI"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numberEntriesWithUnapprovedLOI];
-    [v3 setObject:v5 forKey:@"numberEntriesWithUnapprovedLOI"];
+    [dictionary setObject:v5 forKey:@"numberEntriesWithUnapprovedLOI"];
   }
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -613,14 +613,14 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    v4[9] = self->_timestamp;
-    *(v4 + 44) |= 0x100u;
+    toCopy[9] = self->_timestamp;
+    *(toCopy + 44) |= 0x100u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -639,8 +639,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 20) = self->_networkType;
-  *(v4 + 44) |= 0x200u;
+  *(toCopy + 20) = self->_networkType;
+  *(toCopy + 44) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -654,8 +654,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  v4[8] = self->_timeSinceLastScoringSecs;
-  *(v4 + 44) |= 0x80u;
+  toCopy[8] = self->_timeSinceLastScoringSecs;
+  *(toCopy + 44) |= 0x80u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -669,8 +669,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  *(v4 + 21) = self->_scoringCompletionCode;
-  *(v4 + 44) |= 0x400u;
+  *(toCopy + 21) = self->_scoringCompletionCode;
+  *(toCopy + 44) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -684,8 +684,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  v4[6] = self->_scoredEntries;
-  *(v4 + 44) |= 0x20u;
+  toCopy[6] = self->_scoredEntries;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -699,8 +699,8 @@ LABEL_7:
   }
 
 LABEL_21:
-  v4[7] = self->_scoredKnownGood;
-  *(v4 + 44) |= 0x40u;
+  toCopy[7] = self->_scoredKnownGood;
+  *(toCopy + 44) |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -714,8 +714,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  v4[1] = self->_lifetimeOldestItemSecs;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = self->_lifetimeOldestItemSecs;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -729,8 +729,8 @@ LABEL_9:
   }
 
 LABEL_23:
-  v4[2] = self->_numberEntriesWithHomeLOI;
-  *(v4 + 44) |= 2u;
+  toCopy[2] = self->_numberEntriesWithHomeLOI;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -744,8 +744,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  v4[5] = self->_numberEntriesWithWorkLOI;
-  *(v4 + 44) |= 0x10u;
+  toCopy[5] = self->_numberEntriesWithWorkLOI;
+  *(toCopy + 44) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -759,21 +759,21 @@ LABEL_11:
   }
 
 LABEL_25:
-  v4[4] = self->_numberEntriesWithUndefinedLOI;
-  *(v4 + 44) |= 8u;
+  toCopy[4] = self->_numberEntriesWithUndefinedLOI;
+  *(toCopy + 44) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    v4[3] = self->_numberEntriesWithUnapprovedLOI;
-    *(v4 + 44) |= 4u;
+    toCopy[3] = self->_numberEntriesWithUnapprovedLOI;
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_13:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -930,25 +930,25 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 44) & 0x100) == 0 || self->_timestamp != *(v4 + 9))
+    if ((*(equalCopy + 44) & 0x100) == 0 || self->_timestamp != *(equalCopy + 9))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x100) != 0)
+  else if ((*(equalCopy + 44) & 0x100) != 0)
   {
 LABEL_57:
     v7 = 0;
@@ -957,20 +957,20 @@ LABEL_57:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 44) & 0x200) == 0 || self->_networkType != *(v4 + 20))
+    if ((*(equalCopy + 44) & 0x200) == 0 || self->_networkType != *(equalCopy + 20))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x200) != 0)
+  else if ((*(equalCopy + 44) & 0x200) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_timeSinceLastScoringSecs != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_timeSinceLastScoringSecs != *(equalCopy + 8))
     {
       goto LABEL_57;
     }
@@ -983,20 +983,20 @@ LABEL_57:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 44) & 0x400) == 0 || self->_scoringCompletionCode != *(v4 + 21))
+    if ((*(equalCopy + 44) & 0x400) == 0 || self->_scoringCompletionCode != *(equalCopy + 21))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 44) & 0x400) != 0)
+  else if ((*(equalCopy + 44) & 0x400) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_scoredEntries != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_scoredEntries != *(equalCopy + 6))
     {
       goto LABEL_57;
     }
@@ -1009,7 +1009,7 @@ LABEL_57:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_scoredKnownGood != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_scoredKnownGood != *(equalCopy + 7))
     {
       goto LABEL_57;
     }
@@ -1022,7 +1022,7 @@ LABEL_57:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_lifetimeOldestItemSecs != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_lifetimeOldestItemSecs != *(equalCopy + 1))
     {
       goto LABEL_57;
     }
@@ -1035,7 +1035,7 @@ LABEL_57:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_numberEntriesWithHomeLOI != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_numberEntriesWithHomeLOI != *(equalCopy + 2))
     {
       goto LABEL_57;
     }
@@ -1048,7 +1048,7 @@ LABEL_57:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_numberEntriesWithWorkLOI != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_numberEntriesWithWorkLOI != *(equalCopy + 5))
     {
       goto LABEL_57;
     }
@@ -1061,7 +1061,7 @@ LABEL_57:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_numberEntriesWithUndefinedLOI != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_numberEntriesWithUndefinedLOI != *(equalCopy + 4))
     {
       goto LABEL_57;
     }
@@ -1074,7 +1074,7 @@ LABEL_57:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_numberEntriesWithUnapprovedLOI != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_numberEntriesWithUnapprovedLOI != *(equalCopy + 3))
     {
       goto LABEL_57;
     }
@@ -1245,15 +1245,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x100) != 0)
   {
-    self->_timestamp = *(v4 + 9);
+    self->_timestamp = *(fromCopy + 9);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x200) == 0)
     {
 LABEL_3:
@@ -1266,14 +1266,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 0x200) == 0)
+  else if ((*(fromCopy + 44) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_networkType = *(v4 + 20);
+  self->_networkType = *(fromCopy + 20);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1286,9 +1286,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_timeSinceLastScoringSecs = *(v4 + 8);
+  self->_timeSinceLastScoringSecs = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x400) == 0)
   {
 LABEL_5:
@@ -1301,9 +1301,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_scoringCompletionCode = *(v4 + 21);
+  self->_scoringCompletionCode = *(fromCopy + 21);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1316,9 +1316,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_scoredEntries = *(v4 + 6);
+  self->_scoredEntries = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1331,9 +1331,9 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_scoredKnownGood = *(v4 + 7);
+  self->_scoredKnownGood = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -1346,9 +1346,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_lifetimeOldestItemSecs = *(v4 + 1);
+  self->_lifetimeOldestItemSecs = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1361,9 +1361,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_numberEntriesWithHomeLOI = *(v4 + 2);
+  self->_numberEntriesWithHomeLOI = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -1376,9 +1376,9 @@ LABEL_10:
   }
 
 LABEL_24:
-  self->_numberEntriesWithWorkLOI = *(v4 + 5);
+  self->_numberEntriesWithWorkLOI = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_11:
@@ -1391,12 +1391,12 @@ LABEL_11:
   }
 
 LABEL_25:
-  self->_numberEntriesWithUndefinedLOI = *(v4 + 4);
+  self->_numberEntriesWithUndefinedLOI = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_12:
-    self->_numberEntriesWithUnapprovedLOI = *(v4 + 3);
+    self->_numberEntriesWithUnapprovedLOI = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

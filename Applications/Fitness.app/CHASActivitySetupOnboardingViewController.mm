@@ -1,7 +1,7 @@
 @interface CHASActivitySetupOnboardingViewController
-+ (void)performEndToEndCloudSyncOnSkippingSetupForHealthStore:(id)a3;
++ (void)performEndToEndCloudSyncOnSkippingSetupForHealthStore:(id)store;
 - (BOOL)holdBeforeDisplaying;
-- (CHASActivitySetupOnboardingViewController)initWithPresentationContext:(int64_t)a3;
+- (CHASActivitySetupOnboardingViewController)initWithPresentationContext:(int64_t)context;
 - (id)animationController;
 - (id)detailString;
 - (id)detailTitleString;
@@ -11,16 +11,16 @@
 - (id)suggestedButtonTitle;
 - (id)tapToRadarMetadata;
 - (id)titleString;
-- (void)_timeoutAndMoveOn:(id)a3;
+- (void)_timeoutAndMoveOn:(id)on;
 - (void)didReceiveMemoryWarning;
-- (void)okayButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation CHASActivitySetupOnboardingViewController
 
-- (CHASActivitySetupOnboardingViewController)initWithPresentationContext:(int64_t)a3
+- (CHASActivitySetupOnboardingViewController)initWithPresentationContext:(int64_t)context
 {
   v7.receiver = self;
   v7.super_class = CHASActivitySetupOnboardingViewController;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_presentationContext = a3;
+    v4->_presentationContext = context;
     [(CHASActivitySetupOnboardingViewController *)v4 setStyle:98];
   }
 
@@ -46,9 +46,9 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)animationController
@@ -100,7 +100,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -110,11 +110,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Started Health Setup", v6, 2u);
   }
 
-  v5 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  [v5 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  delegate = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -124,13 +124,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Skipped Health Setup", v9, 2u);
   }
 
-  v5 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  v6 = [v5 activePairingDevice];
+  delegate = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
 
   v7 = FIUIHealthStoreForDevice();
   [CHASActivitySetupOnboardingViewController performEndToEndCloudSyncOnSkippingSetupForHealthStore:v7];
-  v8 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  [v8 buddyControllerDone:self];
+  delegate2 = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  [delegate2 buddyControllerDone:self];
 }
 
 - (void)viewDidLoad
@@ -147,9 +147,9 @@
   [(CHASActivitySetupOnboardingViewController *)&v2 didReceiveMemoryWarning];
 }
 
-+ (void)performEndToEndCloudSyncOnSkippingSetupForHealthStore:(id)a3
++ (void)performEndToEndCloudSyncOnSkippingSetupForHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = FIGetActivePairedDevice();
   v15 = 0;
   v16 = &v15;
@@ -177,18 +177,18 @@
   }
 
   v7 = [v5 valueForProperty:*v6];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = [[HKSecondaryDevicePairingAgent alloc] initWithHealthStore:v4];
-    v10 = [v5 pairingID];
+    v9 = [[HKSecondaryDevicePairingAgent alloc] initWithHealthStore:storeCopy];
+    pairingID = [v5 pairingID];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000B4AF4;
     v13[3] = &unk_10083A8F8;
-    v13[4] = a1;
-    [v9 performEndToEndCloudSyncWithNRDeviceUUID:v10 syncParticipantFirst:1 completion:v13];
+    v13[4] = self;
+    [v9 performEndToEndCloudSyncWithNRDeviceUUID:pairingID syncParticipantFirst:1 completion:v13];
   }
 }
 
@@ -201,11 +201,11 @@
 
 - (BOOL)holdBeforeDisplaying
 {
-  v3 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  v4 = [v3 activePairingDevice];
+  delegate = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
 
   v5 = [[NSUUID alloc] initWithUUIDString:@"DB36394D-9CED-4841-BA1D-84B029EA25BB"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [activePairingDevice supportsCapability:v5];
 
   if (v6)
   {
@@ -228,15 +228,15 @@
     v14[1] = 3221225472;
     v14[2] = sub_1000B4DA8;
     v14[3] = &unk_10083A970;
-    v15 = v4;
-    v16 = self;
+    v15 = activePairingDevice;
+    selfCopy = self;
     dispatch_async(v12, v14);
   }
 
   return v6;
 }
 
-- (void)_timeoutAndMoveOn:(id)a3
+- (void)_timeoutAndMoveOn:(id)on
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -245,13 +245,13 @@
     sub_10069B580(v4);
   }
 
-  v5 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  v6 = [v5 activePairingDevice];
+  delegate = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
 
   v7 = FIUIHealthStoreForDevice();
   [CHASActivitySetupOnboardingViewController performEndToEndCloudSyncOnSkippingSetupForHealthStore:v7];
-  v8 = [(CHASActivitySetupOnboardingViewController *)self delegate];
-  [v8 buddyControllerReleaseHoldAndSkip:self];
+  delegate2 = [(CHASActivitySetupOnboardingViewController *)self delegate];
+  [delegate2 buddyControllerReleaseHoldAndSkip:self];
 }
 
 @end

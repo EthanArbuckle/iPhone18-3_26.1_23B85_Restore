@@ -1,27 +1,27 @@
 @interface MecabraFacemarkCandidate
-+ (id)candidateWithString:(id)a3 category:(id)a4;
-+ (id)copyFacemarkCandidatesForLanguage:(int)a3;
-+ (id)copyFacemarkCandidatesForLocale:(id)a3;
-- (MecabraFacemarkCandidate)initWithString:(id)a3 category:(id)a4;
++ (id)candidateWithString:(id)string category:(id)category;
++ (id)copyFacemarkCandidatesForLanguage:(int)language;
++ (id)copyFacemarkCandidatesForLocale:(id)locale;
+- (MecabraFacemarkCandidate)initWithString:(id)string category:(id)category;
 - (void)dealloc;
 @end
 
 @implementation MecabraFacemarkCandidate
 
-- (MecabraFacemarkCandidate)initWithString:(id)a3 category:(id)a4
+- (MecabraFacemarkCandidate)initWithString:(id)string category:(id)category
 {
   v12.receiver = self;
   v12.super_class = MecabraFacemarkCandidate;
   v6 = [(MecabraFacemarkCandidate *)&v12 init];
-  v6->_string = objc_msgSend_copy(a3, v7, v8);
-  v6->_category = objc_msgSend_copy(a4, v9, v10);
+  v6->_string = objc_msgSend_copy(string, v7, v8);
+  v6->_category = objc_msgSend_copy(category, v9, v10);
   return v6;
 }
 
-+ (id)candidateWithString:(id)a3 category:(id)a4
++ (id)candidateWithString:(id)string category:(id)category
 {
-  v6 = [a1 alloc];
-  v8 = objc_msgSend_initWithString_category_(v6, v7, a3, a4);
+  v6 = [self alloc];
+  v8 = objc_msgSend_initWithString_category_(v6, v7, string, category);
 
   return v8;
 }
@@ -33,28 +33,28 @@
   [(MecabraFacemarkCandidate *)&v3 dealloc];
 }
 
-+ (id)copyFacemarkCandidatesForLocale:(id)a3
++ (id)copyFacemarkCandidatesForLocale:(id)locale
 {
-  v4 = sub_29927733C(a3);
+  v4 = sub_29927733C(locale);
 
-  return MEMORY[0x2A1C70FE8](a1, sel_copyFacemarkCandidatesForLanguage_, v4);
+  return MEMORY[0x2A1C70FE8](self, sel_copyFacemarkCandidatesForLanguage_, v4);
 }
 
-+ (id)copyFacemarkCandidatesForLanguage:(int)a3
++ (id)copyFacemarkCandidatesForLanguage:(int)language
 {
   v35 = *MEMORY[0x29EDCA608];
-  if ((a3 - 1) < 2 || a3 == 5)
+  if ((language - 1) < 2 || language == 5)
   {
-    v4 = 3;
+    languageCopy = 3;
   }
 
   else
   {
-    v4 = a3;
+    languageCopy = language;
   }
 
   v5 = sub_29936C2B8();
-  v6 = sub_29936C350(v5, v4, off_2A145F738[0], off_2A145F698[0]);
+  v6 = sub_29936C350(v5, languageCopy, off_2A145F738[0], off_2A145F698[0]);
   v8 = MEMORY[0x29EDB8D80];
   if (*(v6 + 23) >= 0)
   {

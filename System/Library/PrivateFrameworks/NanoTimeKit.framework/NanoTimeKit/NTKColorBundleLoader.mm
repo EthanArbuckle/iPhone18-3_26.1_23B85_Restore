@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __38__NTKColorBundleLoader_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_25 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_25, block);
@@ -135,9 +135,9 @@ void __45__NTKColorBundleLoader_colorBundlesDirectory__block_invoke(uint64_t a1)
       _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "#color-bundle It will monitor color bundle updates", buf, 2u);
     }
 
-    v7 = [(NTKColorBundleLoader *)self colorBundlesDirectory];
-    v8 = [v7 path];
-    v9 = open([v8 cStringUsingEncoding:4], 0);
+    colorBundlesDirectory = [(NTKColorBundleLoader *)self colorBundlesDirectory];
+    path = [colorBundlesDirectory path];
+    v9 = open([path cStringUsingEncoding:4], 0);
 
     v10 = dispatch_source_create(MEMORY[0x277D85D48], v9, 0xEuLL, self->_queue);
     colorBundleSource = self->_colorBundleSource;

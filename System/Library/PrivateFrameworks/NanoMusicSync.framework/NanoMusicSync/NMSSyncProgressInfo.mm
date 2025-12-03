@@ -1,79 +1,79 @@
 @interface NMSSyncProgressInfo
-+ (id)_stringFromSyncState:(unint64_t)a3;
-+ (id)_stringFromWaitingSubstate:(unint64_t)a3;
++ (id)_stringFromSyncState:(unint64_t)state;
++ (id)_stringFromWaitingSubstate:(unint64_t)substate;
 - (id)description;
 @end
 
 @implementation NMSSyncProgressInfo
 
-+ (id)_stringFromSyncState:(unint64_t)a3
++ (id)_stringFromSyncState:(unint64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    switch(a3)
+    switch(state)
     {
       case 0uLL:
-        v4 = @"Unknown";
+        state = @"Unknown";
 
-        return v4;
+        return state;
       case 1uLL:
-        v4 = @"Idle";
+        state = @"Idle";
 
-        return v4;
+        return state;
       case 2uLL:
-        v4 = @"Pending";
+        state = @"Pending";
 
-        return v4;
+        return state;
     }
 
 LABEL_22:
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown [%tu]", a3];
+    state = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown [%tu]", state];
 
-    return v4;
+    return state;
   }
 
-  if (a3 > 97)
+  if (state > 97)
   {
-    if (a3 == 98)
+    if (state == 98)
     {
-      v4 = @"Metadata Syncing";
+      state = @"Metadata Syncing";
 
-      return v4;
+      return state;
     }
 
-    if (a3 == 99)
+    if (state == 99)
     {
-      v4 = @"Asset Syncing";
+      state = @"Asset Syncing";
 
-      return v4;
+      return state;
     }
 
     goto LABEL_22;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
-    if (a3 == 4)
+    if (state == 4)
     {
-      v4 = @"Asset Updating";
+      state = @"Asset Updating";
 
-      return v4;
+      return state;
     }
 
     goto LABEL_22;
   }
 
-  v4 = @"Waiting";
+  state = @"Waiting";
 
-  return v4;
+  return state;
 }
 
-+ (id)_stringFromWaitingSubstate:(unint64_t)a3
++ (id)_stringFromWaitingSubstate:(unint64_t)substate
 {
-  v3 = a3;
+  substateCopy = substate;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = v4;
-  if (v3)
+  if (substateCopy)
   {
     [v4 addObject:@"Power"];
   }

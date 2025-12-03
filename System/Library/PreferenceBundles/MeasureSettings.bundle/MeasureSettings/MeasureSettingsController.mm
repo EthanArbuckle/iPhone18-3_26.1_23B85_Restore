@@ -1,11 +1,11 @@
 @interface MeasureSettingsController
 - (id)measureSettingsSpecifiers;
-- (id)specifierIDForValue:(id)a3;
+- (id)specifierIDForValue:(id)value;
 - (id)specifiers;
 - (void)configureUnitsRadioSelector;
 - (void)emitNavigationEvent;
 - (void)setAppPolicy;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation MeasureSettingsController
@@ -17,9 +17,9 @@
   if (!v4)
   {
     [(MeasureSettingsController *)self setAppPolicy];
-    v5 = [(MeasureSettingsController *)self measureSettingsSpecifiers];
+    measureSettingsSpecifiers = [(MeasureSettingsController *)self measureSettingsSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = measureSettingsSpecifiers;
 
     [(MeasureSettingsController *)self configureUnitsRadioSelector];
     v4 = *&self->PSListController_opaque[v3];
@@ -48,8 +48,8 @@
 
 - (void)configureUnitsRadioSelector
 {
-  v3 = [objc_opt_class() measureUnitsSpecifierID];
-  v4 = [(MeasureSettingsController *)self indexOfSpecifierID:v3];
+  measureUnitsSpecifierID = [objc_opt_class() measureUnitsSpecifierID];
+  v4 = [(MeasureSettingsController *)self indexOfSpecifierID:measureUnitsSpecifierID];
 
   v8 = [(MeasureSettingsController *)self specifierAtIndex:v4];
   [SharedDefaults setupSpecifier:v8];
@@ -59,11 +59,11 @@
   [v8 setProperty:v7 forKey:PSRadioGroupCheckedSpecifierKey];
 }
 
-- (id)specifierIDForValue:(id)a3
+- (id)specifierIDForValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (!valueCopy)
   {
     if (sub_1BAC())
     {
@@ -75,7 +75,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (![v3 integerValue])
+  if (![valueCopy integerValue])
   {
     goto LABEL_5;
   }
@@ -87,17 +87,17 @@ LABEL_6:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = MeasureSettingsController;
-  v6 = a4;
-  [(MeasureSettingsController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [objc_opt_class() measureUnitsSpecifierID];
-  v8 = [(MeasureSettingsController *)self indexOfSpecifierID:v7];
+  pathCopy = path;
+  [(MeasureSettingsController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  measureUnitsSpecifierID = [objc_opt_class() measureUnitsSpecifierID];
+  v8 = [(MeasureSettingsController *)self indexOfSpecifierID:measureUnitsSpecifierID];
 
   v9 = [(MeasureSettingsController *)self specifierAtIndex:v8];
-  v10 = [(MeasureSettingsController *)self indexForIndexPath:v6];
+  v10 = [(MeasureSettingsController *)self indexForIndexPath:pathCopy];
 
   v11 = [(MeasureSettingsController *)self specifierAtIndex:v10];
   v12 = [v11 propertyForKey:PSValueKey];
@@ -110,14 +110,14 @@ LABEL_6:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"MEASURE" table:@"MeasureSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"MEASURE" table:@"MeasureSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"APPS" table:@"MeasureSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"APPS" table:@"MeasureSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];

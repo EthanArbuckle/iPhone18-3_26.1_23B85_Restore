@@ -1,11 +1,11 @@
 @interface PIAutoEnhanceFilter
 + (id)autoEnhanceCache;
 + (id)customAttributes;
-- (id)apertureAutoEnhanceFiltersForImage:(id)a3;
-- (id)autoEnhanceFiltersForImage:(id)a3 algorithm:(id)a4;
-- (id)colorNormalizationFiltersForImage:(id)a3;
+- (id)apertureAutoEnhanceFiltersForImage:(id)image;
+- (id)autoEnhanceFiltersForImage:(id)image algorithm:(id)algorithm;
+- (id)colorNormalizationFiltersForImage:(id)image;
 - (id)outputImage;
-- (id)photosAutoEnhanceFiltersForImage:(id)a3;
+- (id)photosAutoEnhanceFiltersForImage:(id)image;
 @end
 
 @implementation PIAutoEnhanceFilter
@@ -55,10 +55,10 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
   return v5;
 }
 
-- (id)photosAutoEnhanceFiltersForImage:(id)a3
+- (id)photosAutoEnhanceFiltersForImage:(id)image
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  imageCopy = image;
   v4 = MEMORY[0x1E695F620];
   v95 = *MEMORY[0x1E695F830];
   v96[0] = @"PIAutoEnhanceFilter";
@@ -66,13 +66,13 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
   v6 = [v4 contextWithOptions:v5];
 
   v82 = 0;
-  v7 = [MEMORY[0x1E695F648] extractDataToDictionary:v3 dataExtractor:@"CILocalLight" options:0 context:v6 colorSpace:0 error:&v82];
+  v7 = [MEMORY[0x1E695F648] extractDataToDictionary:imageCopy dataExtractor:@"CILocalLight" options:0 context:v6 colorSpace:0 error:&v82];
   v8 = v82;
   v9 = v8;
   if (v7)
   {
     v81 = v8;
-    v10 = [MEMORY[0x1E695F648] extractDataToDictionary:v3 dataExtractor:@"CISmartTone" options:0 context:v6 colorSpace:0 error:&v81];
+    v10 = [MEMORY[0x1E695F648] extractDataToDictionary:imageCopy dataExtractor:@"CISmartTone" options:0 context:v6 colorSpace:0 error:&v81];
     v11 = v81;
 
     v12 = MEMORY[0x1E695F658];
@@ -87,7 +87,7 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
     {
       v78 = v18;
       v80 = v11;
-      v19 = [MEMORY[0x1E695F648] extractDataToDictionary:v3 dataExtractor:@"CISmartColor" options:0 context:v6 colorSpace:0 error:&v80];
+      v19 = [MEMORY[0x1E695F648] extractDataToDictionary:imageCopy dataExtractor:@"CISmartColor" options:0 context:v6 colorSpace:0 error:&v80];
       v20 = v80;
 
       v21 = MEMORY[0x1E695F658];
@@ -98,7 +98,7 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
       if (v19)
       {
         v79 = v20;
-        v24 = [MEMORY[0x1E695F648] extractDataToDictionary:v3 dataExtractor:@"CIFaceBalance" options:0 context:v6 colorSpace:0 error:&v79];
+        v24 = [MEMORY[0x1E695F648] extractDataToDictionary:imageCopy dataExtractor:@"CIFaceBalance" options:0 context:v6 colorSpace:0 error:&v79];
         v11 = v79;
 
         v74 = v24;
@@ -284,18 +284,18 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
   return v65;
 }
 
-- (id)colorNormalizationFiltersForImage:(id)a3
+- (id)colorNormalizationFiltersForImage:(id)image
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  imageCopy = image;
   v4 = objc_alloc_init(PIColorNormalizationFilter);
-  [(PIColorNormalizationFilter *)v4 setInputImage:v3];
+  [(PIColorNormalizationFilter *)v4 setInputImage:imageCopy];
 
-  v5 = [(PIColorNormalizationFilter *)v4 outputNormalization];
-  if (v5)
+  outputNormalization = [(PIColorNormalizationFilter *)v4 outputNormalization];
+  if (outputNormalization)
   {
     [(PIColorNormalizationFilter *)v4 setInputImage:0];
-    [(PIColorNormalizationFilter *)v4 setInputNormalization:v5];
+    [(PIColorNormalizationFilter *)v4 setInputNormalization:outputNormalization];
     v8[0] = v4;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
@@ -309,7 +309,7 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
   return v6;
 }
 
-- (id)apertureAutoEnhanceFiltersForImage:(id)a3
+- (id)apertureAutoEnhanceFiltersForImage:(id)image
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695F988];
@@ -318,34 +318,34 @@ uint64_t __39__PIAutoEnhanceFilter_autoEnhanceCache__block_invoke()
   v10[0] = MEMORY[0x1E695E118];
   v10[1] = MEMORY[0x1E695E110];
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v7 = [v5 autoAdjustmentFiltersWithOptions:v6];
+  v7 = [imageCopy autoAdjustmentFiltersWithOptions:v6];
 
   return v7;
 }
 
-- (id)autoEnhanceFiltersForImage:(id)a3 algorithm:(id)a4
+- (id)autoEnhanceFiltersForImage:(id)image algorithm:(id)algorithm
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"Aperture"])
+  imageCopy = image;
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"Aperture"])
   {
-    v8 = [(PIAutoEnhanceFilter *)self apertureAutoEnhanceFiltersForImage:v6];
+    v8 = [(PIAutoEnhanceFilter *)self apertureAutoEnhanceFiltersForImage:imageCopy];
 LABEL_7:
     v9 = v8;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"Photos"])
+  if ([algorithmCopy isEqualToString:@"Photos"])
   {
-    v8 = [(PIAutoEnhanceFilter *)self photosAutoEnhanceFiltersForImage:v6];
+    v8 = [(PIAutoEnhanceFilter *)self photosAutoEnhanceFiltersForImage:imageCopy];
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"ColorNorm"])
+  if ([algorithmCopy isEqualToString:@"ColorNorm"])
   {
-    v8 = [(PIAutoEnhanceFilter *)self colorNormalizationFiltersForImage:v6];
+    v8 = [(PIAutoEnhanceFilter *)self colorNormalizationFiltersForImage:imageCopy];
     goto LABEL_7;
   }
 
@@ -358,46 +358,46 @@ LABEL_8:
 - (id)outputImage
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(PIAutoEnhanceFilter *)self inputImage];
-  v4 = [(PIAutoEnhanceFilter *)self inputTargetImage];
-  v5 = v4;
-  if (v4)
+  inputImage = [(PIAutoEnhanceFilter *)self inputImage];
+  inputTargetImage = [(PIAutoEnhanceFilter *)self inputTargetImage];
+  v5 = inputTargetImage;
+  if (inputTargetImage)
   {
-    v6 = v4;
+    v6 = inputTargetImage;
   }
 
   else
   {
-    v6 = v3;
+    v6 = inputImage;
   }
 
   v7 = v6;
 
-  NSLog(&cfstr_AutoEnhanceInp.isa, [v3 digest], objc_msgSend(v7, "digest"));
-  if (v3)
+  NSLog(&cfstr_AutoEnhanceInp.isa, [inputImage digest], objc_msgSend(v7, "digest"));
+  if (inputImage)
   {
-    v8 = [(PIAutoEnhanceFilter *)self inputAlgorithm];
-    v9 = v8;
+    inputAlgorithm = [(PIAutoEnhanceFilter *)self inputAlgorithm];
+    v9 = inputAlgorithm;
     v10 = @"Aperture";
-    if (v8)
+    if (inputAlgorithm)
     {
-      v10 = v8;
+      v10 = inputAlgorithm;
     }
 
     v11 = v10;
 
-    v12 = [objc_opt_class() autoEnhanceCache];
+    autoEnhanceCache = [objc_opt_class() autoEnhanceCache];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%llX", v11, objc_msgSend(v7, "digest")];
-    v14 = [v12 objectForKey:v13];
+    v14 = [autoEnhanceCache objectForKey:v13];
     if (!v14)
     {
       v14 = [(PIAutoEnhanceFilter *)self autoEnhanceFiltersForImage:v7 algorithm:v11];
-      [v12 setObject:v14 forKey:v13];
+      [autoEnhanceCache setObject:v14 forKey:v13];
     }
 
-    v25 = v12;
+    v25 = autoEnhanceCache;
     v26 = v11;
-    v15 = v3;
+    outputImage = inputImage;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -412,7 +412,7 @@ LABEL_8:
       do
       {
         v21 = 0;
-        v22 = v15;
+        v22 = outputImage;
         do
         {
           if (*v28 != v19)
@@ -422,10 +422,10 @@ LABEL_8:
 
           v23 = *(*(&v27 + 1) + 8 * v21);
           [v23 setValue:v22 forKey:v20];
-          v15 = [v23 outputImage];
+          outputImage = [v23 outputImage];
 
           ++v21;
-          v22 = v15;
+          v22 = outputImage;
         }
 
         while (v18 != v21);
@@ -438,10 +438,10 @@ LABEL_8:
 
   else
   {
-    v15 = 0;
+    outputImage = 0;
   }
 
-  return v15;
+  return outputImage;
 }
 
 @end

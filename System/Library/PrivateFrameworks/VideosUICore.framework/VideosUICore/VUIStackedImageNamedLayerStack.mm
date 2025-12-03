@@ -1,9 +1,9 @@
 @interface VUIStackedImageNamedLayerStack
 - (CGSize)radiosityImageScale;
 - (CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setFlattenedImage:(CGImage *)a3;
+- (void)setFlattenedImage:(CGImage *)image;
 @end
 
 @implementation VUIStackedImageNamedLayerStack
@@ -21,9 +21,9 @@
   [(VUIStackedImageNamedLayerStack *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSString *)self->_name copy];
@@ -48,10 +48,10 @@
   return v4;
 }
 
-- (void)setFlattenedImage:(CGImage *)a3
+- (void)setFlattenedImage:(CGImage *)image
 {
   flattenedImage = self->_flattenedImage;
-  if (flattenedImage != a3)
+  if (flattenedImage != image)
   {
     if (flattenedImage)
     {
@@ -59,9 +59,9 @@
       self->_flattenedImage = 0;
     }
 
-    if (a3)
+    if (image)
     {
-      self->_flattenedImage = CGImageRetain(a3);
+      self->_flattenedImage = CGImageRetain(image);
     }
   }
 }

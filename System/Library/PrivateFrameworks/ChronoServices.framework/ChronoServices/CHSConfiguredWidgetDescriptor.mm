@@ -1,30 +1,30 @@
 @interface CHSConfiguredWidgetDescriptor
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSConfiguredWidgetContainerDescriptor)container;
 - (CHSConfiguredWidgetDescriptor)init;
-- (CHSConfiguredWidgetDescriptor)initWithCoder:(id)a3;
-- (CHSConfiguredWidgetDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5 isSuggestion:(BOOL)a6 isSystemConfigured:(BOOL)a7;
-- (id)_initWithDescriptor:(id)a3;
-- (id)_initWithUniqueIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5 displayProperties:(id)a6 fallbackToDefaultDisplayIfNecessary:(BOOL)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (CHSConfiguredWidgetDescriptor)initWithCoder:(id)coder;
+- (CHSConfiguredWidgetDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics isSuggestion:(BOOL)suggestion isSystemConfigured:(BOOL)configured;
+- (id)_initWithDescriptor:(id)descriptor;
+- (id)_initWithUniqueIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics displayProperties:(id)properties fallbackToDefaultDisplayIfNecessary:(BOOL)necessary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)extensionBundleIdentifier;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
 - (unint64_t)supportedRenderingModes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSConfiguredWidgetDescriptor
 
 - (id)extensionBundleIdentifier
 {
-  v2 = [(CHSWidget *)self->_widget extensionIdentity];
-  v3 = [v2 extensionBundleIdentifier];
+  extensionIdentity = [(CHSWidget *)self->_widget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-  return v3;
+  return extensionBundleIdentifier;
 }
 
 - (CHSConfiguredWidgetContainerDescriptor)container
@@ -36,42 +36,42 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CHSConfiguredWidgetDescriptor.m" lineNumber:47 description:@"use designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetDescriptor.m" lineNumber:47 description:@"use designated initializer"];
 
   return 0;
 }
 
 - (CHSConfiguredWidgetDescriptor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetDescriptor.m" lineNumber:52 description:@"use designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetDescriptor.m" lineNumber:52 description:@"use designated initializer"];
 
   return 0;
 }
 
-- (id)_initWithUniqueIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5 displayProperties:(id)a6 fallbackToDefaultDisplayIfNecessary:(BOOL)a7
+- (id)_initWithUniqueIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics displayProperties:(id)properties fallbackToDefaultDisplayIfNecessary:(BOOL)necessary
 {
-  v7 = a7;
+  necessaryCopy = necessary;
   v43[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  propertiesCopy = properties;
   v37.receiver = self;
   v37.super_class = CHSConfiguredWidgetDescriptor;
   v16 = [(CHSConfiguredWidgetDescriptor *)&v37 init];
   if (v16)
   {
-    v17 = [v13 copy];
+    v17 = [widgetCopy copy];
     widget = v16->_widget;
     v16->_widget = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     uniqueIdentifier = v16->_uniqueIdentifier;
     v16->_uniqueIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [metricsCopy copy];
     metrics = v16->_metrics;
     v16->_metrics = v21;
 
@@ -87,14 +87,14 @@
     supportedRenderSchemes = v16->_supportedRenderSchemes;
     v16->_supportedRenderSchemes = v26;
 
-    if (v15)
+    if (propertiesCopy)
     {
-      v28 = v15;
+      v28 = propertiesCopy;
       displayProperties = v16->_displayProperties;
       v16->_displayProperties = v28;
     }
 
-    else if (v7)
+    else if (necessaryCopy)
     {
       v39 = 0;
       v40 = &v39;
@@ -136,47 +136,47 @@
   return v16;
 }
 
-- (CHSConfiguredWidgetDescriptor)initWithUniqueIdentifier:(id)a3 widget:(id)a4 metrics:(id)a5 isSuggestion:(BOOL)a6 isSystemConfigured:(BOOL)a7
+- (CHSConfiguredWidgetDescriptor)initWithUniqueIdentifier:(id)identifier widget:(id)widget metrics:(id)metrics isSuggestion:(BOOL)suggestion isSystemConfigured:(BOOL)configured
 {
-  result = [(CHSConfiguredWidgetDescriptor *)self initWithUniqueIdentifier:a3 widget:a4 metrics:a5];
+  result = [(CHSConfiguredWidgetDescriptor *)self initWithUniqueIdentifier:identifier widget:widget metrics:metrics];
   if (result)
   {
-    result->_suggestion = a6;
-    result->_systemConfigured = a7;
+    result->_suggestion = suggestion;
+    result->_systemConfigured = configured;
   }
 
   return result;
 }
 
-- (id)_initWithDescriptor:(id)a3
+- (id)_initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(CHSConfiguredWidgetDescriptor *)self _initWithUniqueIdentifier:*(v4 + 10) widget:*(v4 + 11) metrics:*(v4 + 12) displayProperties:*(v4 + 6) fallbackToDefaultDisplayIfNecessary:0];
+  descriptorCopy = descriptor;
+  v5 = [(CHSConfiguredWidgetDescriptor *)self _initWithUniqueIdentifier:*(descriptorCopy + 10) widget:*(descriptorCopy + 11) metrics:*(descriptorCopy + 12) displayProperties:*(descriptorCopy + 6) fallbackToDefaultDisplayIfNecessary:0];
   v6 = v5;
   if (v5)
   {
-    v5[16] = *(v4 + 16);
-    v5[17] = *(v4 + 17);
-    *(v5 + 3) = *(v4 + 3);
-    v7 = [*(v4 + 4) copy];
+    v5[16] = *(descriptorCopy + 16);
+    v5[17] = *(descriptorCopy + 17);
+    *(v5 + 3) = *(descriptorCopy + 3);
+    v7 = [*(descriptorCopy + 4) copy];
     v8 = *(v6 + 4);
     *(v6 + 4) = v7;
 
-    *(v6 + 40) = *(v4 + 40);
-    *(v6 + 41) = *(v4 + 41);
-    objc_storeStrong(v6 + 7, *(v4 + 7));
-    *(v6 + 8) = *(v4 + 8);
-    *(v6 + 9) = *(v4 + 9);
+    *(v6 + 40) = *(descriptorCopy + 40);
+    *(v6 + 41) = *(descriptorCopy + 41);
+    objc_storeStrong(v6 + 7, *(descriptorCopy + 7));
+    *(v6 + 8) = *(descriptorCopy + 8);
+    *(v6 + 9) = *(descriptorCopy + 9);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -316,53 +316,53 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_uniqueIdentifier];
-  v5 = [v3 appendObject:self->_widget];
-  v6 = [v3 appendObject:self->_metrics];
-  v7 = [v3 appendBool:self->_suggestion];
-  v8 = [v3 appendBool:self->_systemConfigured];
-  v9 = [v3 appendUnsignedInteger:self->_supportedColorSchemes];
-  v10 = [v3 appendObject:self->_supportedRenderSchemes];
-  v11 = [v3 appendBool:self->_supportsLowLuminance];
-  v12 = [v3 appendBool:self->_showsWidgetLabel];
-  v13 = [v3 appendObject:self->_displayProperties];
-  v14 = [v3 appendObject:self->_refreshStrategy];
-  v15 = [v3 appendUnsignedInteger:self->_supportedProximities];
-  v16 = [v3 appendObject:self->_idealizedDateComponents];
-  v17 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_uniqueIdentifier];
+  v5 = [builder appendObject:self->_widget];
+  v6 = [builder appendObject:self->_metrics];
+  v7 = [builder appendBool:self->_suggestion];
+  v8 = [builder appendBool:self->_systemConfigured];
+  v9 = [builder appendUnsignedInteger:self->_supportedColorSchemes];
+  v10 = [builder appendObject:self->_supportedRenderSchemes];
+  v11 = [builder appendBool:self->_supportsLowLuminance];
+  v12 = [builder appendBool:self->_showsWidgetLabel];
+  v13 = [builder appendObject:self->_displayProperties];
+  v14 = [builder appendObject:self->_refreshStrategy];
+  v15 = [builder appendUnsignedInteger:self->_supportedProximities];
+  v16 = [builder appendObject:self->_idealizedDateComponents];
+  v17 = [builder hash];
 
   return v17;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CHSConfiguredWidgetDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSConfiguredWidgetDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSConfiguredWidgetDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSConfiguredWidgetDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CHSConfiguredWidgetDescriptor *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CHSConfiguredWidgetDescriptor *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__CHSConfiguredWidgetDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E7453000;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -391,45 +391,45 @@ id __71__CHSConfiguredWidgetDescriptor_descriptionBuilderWithMultilinePrefix___b
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 72) withName:@"idealizedDateComponents" skipIfNil:1];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableConfiguredWidgetDescriptor alloc];
 
   return [(CHSConfiguredWidgetDescriptor *)v4 _initWithDescriptor:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_widget forKey:@"widget"];
-  [v4 encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v4 encodeObject:self->_metrics forKey:@"metrics"];
-  [v4 encodeBool:self->_suggestion forKey:@"isSuggestion"];
-  [v4 encodeBool:self->_systemConfigured forKey:@"isSystemConfigured"];
-  [v4 encodeInt32:LODWORD(self->_supportedColorSchemes) forKey:@"supportedColorSchemes"];
-  [v4 encodeObject:self->_supportedRenderSchemes forKey:@"supportedRenderSchemes2"];
-  [v4 encodeBool:self->_supportsLowLuminance forKey:@"supportsLowLuminance"];
-  [v4 encodeBool:self->_showsWidgetLabel forKey:@"showsWidgetLabel"];
-  [v4 encodeObject:self->_displayProperties forKey:@"displayProperties"];
-  [v4 encodeObject:self->_refreshStrategy forKey:@"refreshStrategy"];
-  [v4 encodeInt32:LODWORD(self->_supportedProximities) forKey:@"supportedProximities"];
-  [v4 encodeObject:self->_idealizedDateComponents forKey:@"idealizedDateComponents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_widget forKey:@"widget"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_metrics forKey:@"metrics"];
+  [coderCopy encodeBool:self->_suggestion forKey:@"isSuggestion"];
+  [coderCopy encodeBool:self->_systemConfigured forKey:@"isSystemConfigured"];
+  [coderCopy encodeInt32:LODWORD(self->_supportedColorSchemes) forKey:@"supportedColorSchemes"];
+  [coderCopy encodeObject:self->_supportedRenderSchemes forKey:@"supportedRenderSchemes2"];
+  [coderCopy encodeBool:self->_supportsLowLuminance forKey:@"supportsLowLuminance"];
+  [coderCopy encodeBool:self->_showsWidgetLabel forKey:@"showsWidgetLabel"];
+  [coderCopy encodeObject:self->_displayProperties forKey:@"displayProperties"];
+  [coderCopy encodeObject:self->_refreshStrategy forKey:@"refreshStrategy"];
+  [coderCopy encodeInt32:LODWORD(self->_supportedProximities) forKey:@"supportedProximities"];
+  [coderCopy encodeObject:self->_idealizedDateComponents forKey:@"idealizedDateComponents"];
 }
 
-- (CHSConfiguredWidgetDescriptor)initWithCoder:(id)a3
+- (CHSConfiguredWidgetDescriptor)initWithCoder:(id)coder
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v41 = self;
-  v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
-  v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
-  v5 = [v4 decodeBoolForKey:@"isSystemConfigured"];
-  v6 = [v4 decodeBoolForKey:@"isSuggestion"];
-  v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayProperties"];
-  if ([v4 containsValueForKey:@"supportedColorSchemes"])
+  coderCopy = coder;
+  selfCopy = self;
+  v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
+  v5 = [coderCopy decodeBoolForKey:@"isSystemConfigured"];
+  v6 = [coderCopy decodeBoolForKey:@"isSuggestion"];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayProperties"];
+  if ([coderCopy containsValueForKey:@"supportedColorSchemes"])
   {
-    v7 = [v4 decodeInt32ForKey:@"supportedColorSchemes"];
+    v7 = [coderCopy decodeInt32ForKey:@"supportedColorSchemes"];
     IsValid = CHSWidgetColorSchemesIsValid(v7);
   }
 
@@ -447,35 +447,35 @@ id __71__CHSConfiguredWidgetDescriptor_descriptionBuilderWithMultilinePrefix___b
     v7 = 0xFFFFFFFFLL;
   }
 
-  if ([v4 containsValueForKey:@"supportedRenderSchemes2"])
+  if ([coderCopy containsValueForKey:@"supportedRenderSchemes2"])
   {
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedRenderSchemes2"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedRenderSchemes2"];
     goto LABEL_21;
   }
 
-  if ([v4 containsValueForKey:@"supportedRenderSchemes"])
+  if ([coderCopy containsValueForKey:@"supportedRenderSchemes"])
   {
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedRenderSchemes"];
-    v12 = [MEMORY[0x1E695DF70] array];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedRenderSchemes"];
+    array = [MEMORY[0x1E695DF70] array];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __47__CHSConfiguredWidgetDescriptor_initWithCoder___block_invoke;
     v45[3] = &unk_1E74541E8;
-    v13 = v12;
+    v13 = array;
     v46 = v13;
     [v11 enumerateObjectsUsingBlock:v45];
     v14 = v13;
 
-    v15 = v46;
+    _compatibilityRenderSchemesFromDeprecatedRenderingModes = v46;
     v10 = v14;
 LABEL_19:
 
     goto LABEL_21;
   }
 
-  if ([v4 containsValueForKey:@"supportedRenderingModes"])
+  if ([coderCopy containsValueForKey:@"supportedRenderingModes"])
   {
-    v16 = [v4 decodeInt32ForKey:@"supportedRenderingModes"];
+    v16 = [coderCopy decodeInt32ForKey:@"supportedRenderingModes"];
     if (CHSWidgetRenderingModesIsValid(v16))
     {
       v17 = v16 & 6;
@@ -489,8 +489,8 @@ LABEL_17:
         }
 
         v14 = [[CHSWidgetRenderScheme alloc] initWithRenderingModes:v17 backgroundViewPolicy:1];
-        v15 = [(CHSWidgetRenderScheme *)v14 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
-        v20 = [v10 arrayByAddingObjectsFromArray:v15];
+        _compatibilityRenderSchemesFromDeprecatedRenderingModes = [(CHSWidgetRenderScheme *)v14 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
+        v20 = [v10 arrayByAddingObjectsFromArray:_compatibilityRenderSchemesFromDeprecatedRenderingModes];
 
         v10 = v20;
         goto LABEL_19;
@@ -498,14 +498,14 @@ LABEL_17:
 
 LABEL_16:
       v18 = [[CHSWidgetRenderScheme alloc] initWithRenderingModes:1 backgroundViewPolicy:0];
-      v19 = [(CHSWidgetRenderScheme *)v18 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
-      v10 = [MEMORY[0x1E695E0F0] arrayByAddingObjectsFromArray:v19];
+      _compatibilityRenderSchemesFromDeprecatedRenderingModes2 = [(CHSWidgetRenderScheme *)v18 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
+      v10 = [MEMORY[0x1E695E0F0] arrayByAddingObjectsFromArray:_compatibilityRenderSchemesFromDeprecatedRenderingModes2];
 
       goto LABEL_17;
     }
   }
 
-  else if ([v4 decodeBoolForKey:@"supportsTinting"])
+  else if ([coderCopy decodeBoolForKey:@"supportsTinting"])
   {
     v17 = 6;
     goto LABEL_16;
@@ -516,20 +516,20 @@ LABEL_21:
   v39 = v10;
   v21 = [v10 count];
   v22 = +[CHSWidgetRefreshStrategyFactory defaultStrategy];
-  if ([v4 containsValueForKey:@"refreshStrategy"])
+  if ([coderCopy containsValueForKey:@"refreshStrategy"])
   {
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"refreshStrategy"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshStrategy"];
 
     v22 = v23;
   }
 
-  v24 = [v4 decodeBoolForKey:@"supportsLowLuminance"];
-  v38 = [v4 decodeBoolForKey:@"showsWidgetLabel"];
+  v24 = [coderCopy decodeBoolForKey:@"supportsLowLuminance"];
+  v38 = [coderCopy decodeBoolForKey:@"showsWidgetLabel"];
   v25 = v24;
   v26 = v5;
-  if ([v4 containsValueForKey:@"supportedProximities"])
+  if ([coderCopy containsValueForKey:@"supportedProximities"])
   {
-    v27 = [v4 decodeInt32ForKey:@"supportedProximities"];
+    v27 = [coderCopy decodeInt32ForKey:@"supportedProximities"];
   }
 
   else
@@ -538,9 +538,9 @@ LABEL_21:
   }
 
   v37 = v27;
-  if ([v4 containsValueForKey:@"idealizedDateComponents"])
+  if ([coderCopy containsValueForKey:@"idealizedDateComponents"])
   {
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idealizedDateComponents"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idealizedDateComponents"];
   }
 
   else
@@ -551,7 +551,7 @@ LABEL_21:
   v29 = 0;
   if (v44 && v43 && v42 && ((IsValid ^ 1) & 1) == 0 && v21)
   {
-    v30 = [(CHSConfiguredWidgetDescriptor *)v41 _initWithUniqueIdentifier:v43 widget:v44 metrics:v42 displayProperties:v40 fallbackToDefaultDisplayIfNecessary:0];
+    v30 = [(CHSConfiguredWidgetDescriptor *)selfCopy _initWithUniqueIdentifier:v43 widget:v44 metrics:v42 displayProperties:v40 fallbackToDefaultDisplayIfNecessary:0];
     v31 = v30;
     if (v30)
     {
@@ -575,7 +575,7 @@ LABEL_21:
 
   else
   {
-    v34 = v41;
+    v34 = selfCopy;
   }
 
   v35 = *MEMORY[0x1E69E9840];

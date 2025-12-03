@@ -1,7 +1,7 @@
 @interface CSLNotificationsController
 - (id)specifiers;
-- (void)_subscribeToNotificationsForSpecifiers:(id)a3;
-- (void)_unsubscribeFromNotificationsForSpecifiers:(id)a3;
+- (void)_subscribeToNotificationsForSpecifiers:(id)specifiers;
+- (void)_unsubscribeFromNotificationsForSpecifiers:(id)specifiers;
 - (void)dealloc;
 @end
 
@@ -12,10 +12,10 @@
   [(CSLNotificationsController *)self _unsubscribeFromNotificationsForSpecifiers:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers]];
   v5.receiver = self;
   v5.super_class = CSLNotificationsController;
-  v3 = [(CSLNotificationsController *)&v5 specifiers];
-  [(CSLNotificationsController *)self _subscribeToNotificationsForSpecifiers:v3];
+  specifiers = [(CSLNotificationsController *)&v5 specifiers];
+  [(CSLNotificationsController *)self _subscribeToNotificationsForSpecifiers:specifiers];
 
-  return v3;
+  return specifiers;
 }
 
 - (void)dealloc
@@ -26,14 +26,14 @@
   [(CSLNotificationsController *)&v3 dealloc];
 }
 
-- (void)_subscribeToNotificationsForSpecifiers:(id)a3
+- (void)_subscribeToNotificationsForSpecifiers:(id)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -45,7 +45,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -57,21 +57,21 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_unsubscribeFromNotificationsForSpecifiers:(id)a3
+- (void)_unsubscribeFromNotificationsForSpecifiers:(id)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -83,7 +83,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -95,7 +95,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

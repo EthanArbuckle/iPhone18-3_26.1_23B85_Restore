@@ -1,7 +1,7 @@
 @interface SUICWEdgeLight
 - (SUICEdgeLightMaskMetalLayer)wedge;
-- (SUICWEdgeLight)initWithDelegate:(id)a3;
-- (void)_drawFrame:(id)a3;
+- (SUICWEdgeLight)initWithDelegate:(id)delegate;
+- (void)_drawFrame:(id)frame;
 @end
 
 @implementation SUICWEdgeLight
@@ -13,26 +13,26 @@
   return WeakRetained;
 }
 
-- (SUICWEdgeLight)initWithDelegate:(id)a3
+- (SUICWEdgeLight)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SUICWEdgeLight;
   v5 = [(SUICWEdgeLight *)&v8 init];
   v6 = v5;
   if (v5 == self)
   {
-    [(SUICWEdgeLight *)v5 setWedge:v4];
+    [(SUICWEdgeLight *)v5 setWedge:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)_drawFrame:(id)a3
+- (void)_drawFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(SUICWEdgeLight *)self wedge];
-  [v5 _drawFrame:v4];
+  frameCopy = frame;
+  wedge = [(SUICWEdgeLight *)self wedge];
+  [wedge _drawFrame:frameCopy];
 }
 
 @end

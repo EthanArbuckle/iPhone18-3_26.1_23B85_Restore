@@ -14,15 +14,15 @@
     {
       v5 = MEMORY[0x29EDBA0F8];
       v6 = accessibilityLocalizedString(@"app.located.in");
-      v7 = [v4 accessibilityLabel];
-      v8 = [v5 localizedStringWithFormat:v6, v7];
+      accessibilityLabel = [v4 accessibilityLabel];
+      v8 = [v5 localizedStringWithFormat:v6, accessibilityLabel];
 
-      v9 = __UIAXStringForVariables();
+      accessibilityLabel2 = __UIAXStringForVariables();
     }
 
     else
     {
-      v9 = [v3 accessibilityLabel];
+      accessibilityLabel2 = [v3 accessibilityLabel];
     }
   }
 
@@ -30,10 +30,10 @@
   {
     v11.receiver = self;
     v11.super_class = SearchUIAppIconCardSectionViewAccessibility;
-    v9 = [(SearchUIAppIconCardSectionViewAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel2 = [(SearchUIAppIconCardSectionViewAccessibility *)&v11 accessibilityLabel];
   }
 
-  return v9;
+  return accessibilityLabel2;
 }
 
 uint64_t __65__SearchUIAppIconCardSectionViewAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2)

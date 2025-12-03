@@ -1,27 +1,27 @@
 @interface DASessionInternal
-- (DASessionInternal)initWithDelegate:(id)a3;
+- (DASessionInternal)initWithDelegate:(id)delegate;
 - (id)delegate;
 - (id)proxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)closeProxy;
 - (void)dealloc;
-- (void)dispatchBlockOnCallback:(id)a3;
+- (void)dispatchBlockOnCallback:(id)callback;
 - (void)resume;
-- (void)setProxy:(id)a3;
+- (void)setProxy:(id)proxy;
 @end
 
 @implementation DASessionInternal
 
-- (DASessionInternal)initWithDelegate:(id)a3
+- (DASessionInternal)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = DASessionInternal;
   v5 = [(DASessionInternal *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     ClassName = object_getClassName(v6);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create(ClassName, v8);
@@ -61,11 +61,11 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchBlockOnCallback:(id)a3
+- (void)dispatchBlockOnCallback:(id)callback
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  callbackCopy = callback;
+  v5 = callbackCopy;
   callbackQueue = self->_callbackQueue;
   if (callbackQueue)
   {
@@ -73,7 +73,7 @@
     block[1] = 3221225472;
     block[2] = __45__DASessionInternal_dispatchBlockOnCallback___block_invoke;
     block[3] = &unk_278F70290;
-    v10 = v4;
+    v10 = callbackCopy;
     dispatch_async(callbackQueue, block);
     v7 = v10;
   }
@@ -115,27 +115,27 @@
 
 - (id)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_proxy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_proxy;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProxy:(id)a3
+- (void)setProxy:(id)proxy
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_proxy != v6)
+  proxyCopy = proxy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_proxy != proxyCopy)
   {
-    objc_storeStrong(&v5->_proxy, a3);
+    objc_storeStrong(&selfCopy->_proxy, proxy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(DASessionInternal *)v5 resume];
+  [(DASessionInternal *)selfCopy resume];
 }
 
 - (void)resume
@@ -147,12 +147,12 @@
   }
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DASessionInternal *)self proxy];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  proxy = [(DASessionInternal *)self proxy];
+  v6 = [proxy synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v6)
   {
@@ -172,7 +172,7 @@
     v15 = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v11 = [v8 errorWithDomain:@"DigitalAccessError" code:216 userInfo:v10];
-    v4[2](v4, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   v12 = *MEMORY[0x277D85DE8];

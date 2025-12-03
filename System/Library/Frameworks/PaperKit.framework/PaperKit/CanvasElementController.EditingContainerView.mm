@@ -1,12 +1,12 @@
 @interface CanvasElementController.EditingContainerView
-- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithCoder:(id)a3;
-- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithFrame:(CGRect)a3;
+- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithCoder:(id)coder;
+- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CanvasElementController.EditingContainerView
 
-- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithCoder:(id)a3
+- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -27,7 +27,7 @@
   }
 }
 
-- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithFrame:(CGRect)a3
+- (_TtCC8PaperKit23CanvasElementControllerP33_DA32B6809F82252A18050DB886E8EA8120EditingContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

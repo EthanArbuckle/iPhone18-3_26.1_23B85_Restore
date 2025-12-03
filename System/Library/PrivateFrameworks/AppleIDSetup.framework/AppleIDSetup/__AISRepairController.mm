@@ -1,14 +1,14 @@
 @interface __AISRepairController
 - (__AISRepairController)init;
-- (void)generateSymptomReportWithContext:(id)a3 completionHandler:(id)a4;
-- (void)repairWithContext:(id)a3 completionHandler:(id)a4;
+- (void)generateSymptomReportWithContext:(id)context completionHandler:(id)handler;
+- (void)repairWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation __AISRepairController
 
-- (void)repairWithContext:(id)a3 completionHandler:(id)a4
+- (void)repairWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -21,15 +21,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_2406C8274(v8, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2406C8274(contextCopy, v6, v7);
   sub_24058CA60(v6);
 }
 
-- (void)generateSymptomReportWithContext:(id)a3 completionHandler:(id)a4
+- (void)generateSymptomReportWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -42,9 +42,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_2406C9324(v8, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2406C9324(contextCopy, v6, v7);
   sub_24058CA60(v6);
 }
 

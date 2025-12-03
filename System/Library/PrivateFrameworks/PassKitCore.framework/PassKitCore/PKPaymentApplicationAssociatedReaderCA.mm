@@ -1,50 +1,50 @@
 @interface PKPaymentApplicationAssociatedReaderCA
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToASCAssociatedReaderIDReaderCA:(id)a3;
-- (PKPaymentApplicationAssociatedReaderCA)initWithCoder:(id)a3;
-- (PKPaymentApplicationAssociatedReaderCA)initWithDictionary:(id)a3 success:(BOOL *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToASCAssociatedReaderIDReaderCA:(id)a;
+- (PKPaymentApplicationAssociatedReaderCA)initWithCoder:(id)coder;
+- (PKPaymentApplicationAssociatedReaderCA)initWithDictionary:(id)dictionary success:(BOOL *)success;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentApplicationAssociatedReaderCA
 
-- (PKPaymentApplicationAssociatedReaderCA)initWithDictionary:(id)a3 success:(BOOL *)a4
+- (PKPaymentApplicationAssociatedReaderCA)initWithDictionary:(id)dictionary success:(BOOL *)success
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (success)
   {
-    *a4 = 1;
-    if (!v6)
+    *success = 1;
+    if (!dictionaryCopy)
     {
-      v8 = 0;
-      *a4 = 0;
+      selfCopy = 0;
+      *success = 0;
       goto LABEL_12;
     }
   }
 
-  else if (!v6)
+  else if (!dictionaryCopy)
   {
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v9 = [v6 PKStringForKey:@"scheme"];
+  v9 = [dictionaryCopy PKStringForKey:@"scheme"];
   v10 = PKTerminalPublicKeySchemeFromString(v9);
-  v8 = 0;
+  selfCopy = 0;
   if (v10)
   {
     v11 = v10;
-    if (v10 == 1 && ([v7 PKStringForKey:@"publicKey"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "pk_decodeHexadecimal"), v8 = objc_claimAutoreleasedReturnValue(), v12, !v8))
+    if (v10 == 1 && ([v7 PKStringForKey:@"publicKey"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "pk_decodeHexadecimal"), selfCopy = objc_claimAutoreleasedReturnValue(), v12, !selfCopy))
     {
-      v8 = 0;
-      if (a4)
+      selfCopy = 0;
+      if (success)
       {
-        *a4 = 0;
+        *success = 0;
       }
     }
 
@@ -57,17 +57,17 @@
       if (v13)
       {
         v13->_scheme = v11;
-        objc_storeStrong(&v13->_publicKey, v8);
+        objc_storeStrong(&v13->_publicKey, selfCopy);
       }
 
       self = v14;
 
-      v8 = self;
+      selfCopy = self;
     }
   }
 
 LABEL_12:
-  return v8;
+  return selfCopy;
 }
 
 - (id)asDictionary
@@ -76,24 +76,24 @@ LABEL_12:
   v4 = PKTerminalPublicKeySchemeToString(self->_scheme);
   [v3 setObject:v4 forKeyedSubscript:@"scheme"];
 
-  v5 = [(NSData *)self->_publicKey hexEncoding];
-  [v3 setObject:v5 forKeyedSubscript:@"publicKey"];
+  hexEncoding = [(NSData *)self->_publicKey hexEncoding];
+  [v3 setObject:hexEncoding forKeyedSubscript:@"publicKey"];
 
   v6 = [v3 copy];
 
   return v6;
 }
 
-- (PKPaymentApplicationAssociatedReaderCA)initWithCoder:(id)a3
+- (PKPaymentApplicationAssociatedReaderCA)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentApplicationAssociatedReaderCA;
   v5 = [(PKPaymentApplicationAssociatedReaderCA *)&v9 init];
   if (v5)
   {
-    v5->_scheme = [v4 decodeIntegerForKey:@"scheme"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
+    v5->_scheme = [coderCopy decodeIntegerForKey:@"scheme"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v6;
   }
@@ -101,20 +101,20 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scheme = self->_scheme;
-  v5 = a3;
-  [v5 encodeInteger:scheme forKey:@"scheme"];
-  [v5 encodeObject:self->_publicKey forKey:@"publicKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:scheme forKey:@"scheme"];
+  [coderCopy encodeObject:self->_publicKey forKey:@"publicKey"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = PKTerminalPublicKeySchemeToString(self->_scheme);
-  v5 = [(NSData *)self->_publicKey hexEncoding];
-  v6 = [v3 stringWithFormat:@"<scheme: '%@' publicKey: '%@';>", v4, v5];;
+  hexEncoding = [(NSData *)self->_publicKey hexEncoding];
+  v6 = [v3 stringWithFormat:@"<scheme: '%@' publicKey: '%@';>", v4, hexEncoding];;
 
   return v6;
 }
@@ -128,28 +128,28 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplicationAssociatedReaderCA *)self isEqualToASCAssociatedReaderIDReaderCA:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplicationAssociatedReaderCA *)self isEqualToASCAssociatedReaderIDReaderCA:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToASCAssociatedReaderIDReaderCA:(id)a3
+- (BOOL)isEqualToASCAssociatedReaderIDReaderCA:(id)a
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_scheme == v4[1])
+  aCopy = a;
+  v5 = aCopy;
+  if (aCopy && self->_scheme == aCopy[1])
   {
     publicKey = self->_publicKey;
     v7 = v5[2];
@@ -172,11 +172,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentApplicationAssociatedReaderCA allocWithZone:](PKPaymentApplicationAssociatedReaderCA init];
   v5->_scheme = self->_scheme;
-  v6 = [(NSData *)self->_publicKey copyWithZone:a3];
+  v6 = [(NSData *)self->_publicKey copyWithZone:zone];
   publicKey = v5->_publicKey;
   v5->_publicKey = v6;
 

@@ -1,8 +1,8 @@
 @interface VCReportingDistribution
-- (void)accumulate:(id)a3;
+- (void)accumulate:(id)accumulate;
 - (void)dealloc;
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4;
-- (void)updateWithPayload:(id)a3;
+- (void)updateReport:(id)report withStreamGroup:(id)group;
+- (void)updateWithPayload:(id)payload;
 @end
 
 @implementation VCReportingDistribution
@@ -14,13 +14,13 @@
   [(VCReportingDistribution *)&v3 dealloc];
 }
 
-- (void)updateWithPayload:(id)a3
+- (void)updateWithPayload:(id)payload
 {
-  if (a3)
+  if (payload)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingSum", "doubleValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingSum", "doubleValue"}];
     v13 = v5;
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingCount", "intValue"}];
+    v6 = [objc_msgSend(payload objectForKeyedSubscript:{-[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_ReportingCount", "intValue"}];
     if (v6)
     {
       v7.f64[0] = v13;
@@ -32,14 +32,14 @@
       v10 = v8;
       if (v9)
       {
-        [objc_msgSend(a3 objectForKeyedSubscript:{v9, v8), "doubleValue"}];
+        [objc_msgSend(payload objectForKeyedSubscript:{v9, v8), "doubleValue"}];
       }
 
       self->_min = fmin(self->_min, v10);
       v11 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_ReportingMax"];
       if (v11)
       {
-        [objc_msgSend(a3 objectForKeyedSubscript:{v11), "doubleValue"}];
+        [objc_msgSend(payload objectForKeyedSubscript:{v11), "doubleValue"}];
         v8 = v12;
       }
 
@@ -53,27 +53,27 @@
   }
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a3)
+    if (accumulate)
     {
-      [a3 sum];
+      [accumulate sum];
       self->_sum = v5 + self->_sum;
-      [a3 count];
+      [accumulate count];
       min = self->_min;
       self->_count = v7 + self->_count;
-      [a3 min];
+      [accumulate min];
       self->_min = fmin(min, v8);
       max = self->_max;
-      [a3 max];
+      [accumulate max];
       self->_max = fmax(max, v10);
       histogram = self->_histogram;
-      v12 = [a3 histogram];
+      histogram = [accumulate histogram];
 
-      [(VCHistogram *)histogram merge:v12];
+      [(VCHistogram *)histogram merge:histogram];
     }
 
     else
@@ -83,79 +83,79 @@
   }
 }
 
-- (void)updateReport:(id)a3 withStreamGroup:(id)a4
+- (void)updateReport:(id)report withStreamGroup:(id)group
 {
-  if (a3)
+  if (report)
   {
     count = self->_count;
     if (count != 0.0)
     {
       sum = self->_sum;
       v9 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedAverage"];
-      if (a4 && v9)
+      if (group && v9)
       {
-        v10 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedAverage", a4];
+        group = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedAverage", group];
       }
 
       else
       {
-        v10 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedAverage"];
+        group = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedAverage"];
       }
 
-      if (v10)
+      if (group)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", sum / count), v10}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", sum / count), group}];
       }
 
       v11 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMin"];
-      if (a4 && v11)
+      if (group && v11)
       {
-        v12 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedMin", a4];
+        group2 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedMin", group];
       }
 
       else
       {
-        v12 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMin"];
+        group2 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMin"];
       }
 
-      if (v12)
+      if (group2)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_min), v12}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_min), group2}];
       }
 
       v13 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMax"];
-      if (a4 && v13)
+      if (group && v13)
       {
-        v14 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedMax", a4];
+        group3 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedMax", group];
       }
 
       else
       {
-        v14 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMax"];
+        group3 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedMax"];
       }
 
-      if (v14)
+      if (group3)
       {
-        [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_max), v14}];
+        [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", self->_max), group3}];
       }
 
       v15 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedHistogram"];
-      if (a4 && v15)
+      if (group && v15)
       {
-        v16 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedHistogram", a4];
+        group4 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", -[NSDictionary objectForKeyedSubscript:](self->_keys, "objectForKeyedSubscript:", @"VCReportingDistributionKey_AggregatedHistogram", group];
       }
 
       else
       {
-        v16 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedHistogram"];
+        group4 = [(NSDictionary *)self->_keys objectForKeyedSubscript:@"VCReportingDistributionKey_AggregatedHistogram"];
       }
 
-      v17 = v16;
-      if (v16)
+      v17 = group4;
+      if (group4)
       {
         v18 = [(VCHistogram *)self->_histogram description];
 
-        [a3 setObject:v18 forKeyedSubscript:v17];
+        [report setObject:v18 forKeyedSubscript:v17];
       }
     }
   }

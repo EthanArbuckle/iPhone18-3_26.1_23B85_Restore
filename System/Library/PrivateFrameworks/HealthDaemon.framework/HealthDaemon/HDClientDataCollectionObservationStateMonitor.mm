@@ -1,6 +1,6 @@
 @interface HDClientDataCollectionObservationStateMonitor
 - (HDClientDataCollectionObservationStateMonitor)init;
-- (HDClientDataCollectionObservationStateMonitor)initWithClient:(id)a3 delegate:(id)a4;
+- (HDClientDataCollectionObservationStateMonitor)initWithClient:(id)client delegate:(id)delegate;
 - (HDClientDataCollectionObservationStateMonitorDelegate)delegate;
 - (HDProfile)profile;
 - (id)currentObserverState;
@@ -21,34 +21,34 @@
   return 0;
 }
 
-- (HDClientDataCollectionObservationStateMonitor)initWithClient:(id)a3 delegate:(id)a4
+- (HDClientDataCollectionObservationStateMonitor)initWithClient:(id)client delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = HDClientDataCollectionObservationStateMonitor;
   v9 = [(HDClientDataCollectionObservationStateMonitor *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    v11 = [v7 profile];
-    objc_storeWeak(&v10->_profile, v11);
+    objc_storeStrong(&v9->_client, client);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v10->_profile, profile);
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v12 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v10->_lock;
     v10->_lock = v12;
 
     WeakRetained = objc_loadWeakRetained(&v10->_profile);
-    v15 = [WeakRetained daemon];
-    v16 = [v15 processStateManager];
-    v17 = [(HDHealthStoreClient *)v10->_client process];
-    v18 = [v17 bundleIdentifier];
-    [v16 registerObserver:v10 forBundleIdentifier:v18];
+    daemon = [WeakRetained daemon];
+    processStateManager = [daemon processStateManager];
+    process = [(HDHealthStoreClient *)v10->_client process];
+    bundleIdentifier = [process bundleIdentifier];
+    [processStateManager registerObserver:v10 forBundleIdentifier:bundleIdentifier];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v10 selector:sel_workoutManagerDidChangeState_ name:@"HDWorkoutManagerStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_workoutManagerDidChangeState_ name:@"HDWorkoutManagerStateDidChange" object:0];
   }
 
   return v10;
@@ -69,57 +69,57 @@
   if (!v3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained daemon];
-    v7 = [v6 processStateManager];
-    v8 = [(HDHealthStoreClient *)self->_client process];
-    v9 = [v8 bundleIdentifier];
-    [v7 unregisterObserver:self forBundleIdentifier:v9];
+    daemon = [WeakRetained daemon];
+    processStateManager = [daemon processStateManager];
+    process = [(HDHealthStoreClient *)self->_client process];
+    bundleIdentifier = [process bundleIdentifier];
+    [processStateManager unregisterObserver:self forBundleIdentifier:bundleIdentifier];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 removeObserver:self name:@"HDWorkoutManagerStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"HDWorkoutManagerStateDidChange" object:0];
   }
 }
 
 - (id)currentObserverState
 {
-  v3 = [(HDHealthStoreClient *)self->_client process];
+  process = [(HDHealthStoreClient *)self->_client process];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 processStateManager];
-  v7 = [v3 bundleIdentifier];
-  v32 = [v6 isApplicationStateForegroundForBundleIdentifier:v7];
+  daemon = [WeakRetained daemon];
+  processStateManager = [daemon processStateManager];
+  bundleIdentifier = [process bundleIdentifier];
+  v32 = [processStateManager isApplicationStateForegroundForBundleIdentifier:bundleIdentifier];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v9 = [v8 workoutManager];
-  v10 = [v9 currentWorkoutClient];
-  v11 = [v10 process];
-  v12 = [v11 applicationIdentifier];
-  v13 = [v3 applicationIdentifier];
-  if (v12 == v13)
+  workoutManager = [v8 workoutManager];
+  currentWorkoutClient = [workoutManager currentWorkoutClient];
+  process2 = [currentWorkoutClient process];
+  applicationIdentifier = [process2 applicationIdentifier];
+  applicationIdentifier2 = [process applicationIdentifier];
+  if (applicationIdentifier == applicationIdentifier2)
   {
     v18 = 1;
   }
 
   else
   {
-    v14 = [v3 applicationIdentifier];
-    if (v14)
+    applicationIdentifier3 = [process applicationIdentifier];
+    if (applicationIdentifier3)
     {
-      v29 = v14;
+      v29 = applicationIdentifier3;
       v28 = objc_loadWeakRetained(&self->_profile);
-      v27 = [v28 workoutManager];
-      v26 = [v27 currentWorkoutClient];
-      [v26 process];
-      v15 = v30 = v10;
+      workoutManager2 = [v28 workoutManager];
+      currentWorkoutClient2 = [workoutManager2 currentWorkoutClient];
+      [currentWorkoutClient2 process];
+      v15 = v30 = currentWorkoutClient;
       [v15 applicationIdentifier];
       v16 = v31 = v8;
-      v17 = [v3 applicationIdentifier];
-      v18 = [v16 isEqualToString:v17];
+      applicationIdentifier4 = [process applicationIdentifier];
+      v18 = [v16 isEqualToString:applicationIdentifier4];
 
       v8 = v31;
-      v10 = v30;
+      currentWorkoutClient = v30;
 
-      v14 = v29;
+      applicationIdentifier3 = v29;
     }
 
     else
@@ -129,10 +129,10 @@
   }
 
   v19 = objc_loadWeakRetained(&self->_profile);
-  v20 = [v19 daemon];
-  v21 = [v20 processStateManager];
-  v22 = [v3 bundleIdentifier];
-  v23 = [v21 isApplicationStateBackgroundRunningForBundleIdentifier:v22];
+  daemon2 = [v19 daemon];
+  processStateManager2 = [daemon2 processStateManager];
+  bundleIdentifier2 = [process bundleIdentifier];
+  v23 = [processStateManager2 isApplicationStateBackgroundRunningForBundleIdentifier:bundleIdentifier2];
 
   v24 = [HDDataCollectionObserverState dataCollectionObserverStateInForeground:v32 hasRunningWorkout:v18 hasBackgroundObserver:v23 shouldTakeWorkoutDatabaseAssertion:v18];
 

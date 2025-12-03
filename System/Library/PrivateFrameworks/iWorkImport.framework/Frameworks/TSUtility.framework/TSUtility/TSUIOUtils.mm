@@ -1,20 +1,20 @@
 @interface TSUIOUtils
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3 outInfo:(void *)a4 outCallbacks:(const CGDataProviderSequentialCallbacks *)a5;
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3 length:(unint64_t)a4 outInfo:(void *)a5 outCallbacks:(const CGDataProviderSequentialCallbacks *)a6;
-+ (void)readAllFromChannel:(id)a3 completion:(id)a4;
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6;
-+ (void)readFromOffsetAndWait:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 handler:(id)a6;
-+ (void)readWithHandlerAndWait:(id)a3 handler:(id)a4;
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks;
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel length:(unint64_t)length outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks;
++ (void)readAllFromChannel:(id)channel completion:(id)completion;
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion;
++ (void)readFromOffsetAndWait:(id)wait offset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
++ (void)readWithHandlerAndWait:(id)wait handler:(id)handler;
 @end
 
 @implementation TSUIOUtils
 
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (!v9)
+  channelCopy = channel;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!channelCopy)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUIOUtils readAllFromChannel:offset:length:completion:]"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUIOUtils.m"];
@@ -35,7 +35,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -56,17 +56,17 @@ LABEL_3:
   v21 = v22;
   v14 = v11;
   v20 = v14;
-  [v9 readFromOffset:a4 length:a5 handler:v19];
+  [channelCopy readFromOffset:offset length:length handler:v19];
 
   _Block_object_dispose(v22, 8);
 }
 
-+ (void)readAllFromChannel:(id)a3 completion:(id)a4
++ (void)readAllFromChannel:(id)channel completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  channelCopy = channel;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (!channelCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUIOUtils readAllFromChannel:completion:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUIOUtils.m"];
@@ -87,7 +87,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -108,48 +108,48 @@ LABEL_3:
   v17 = v18;
   v10 = v7;
   v16 = v10;
-  [v5 readWithHandler:v15];
+  [channelCopy readWithHandler:v15];
 
   _Block_object_dispose(v18, 8);
 }
 
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3 outInfo:(void *)a4 outCallbacks:(const CGDataProviderSequentialCallbacks *)a5
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks
 {
-  if (!a3)
+  if (!stream)
   {
     return 0;
   }
 
-  v7 = a3;
-  CFRetain(v7);
-  if (a4)
+  streamCopy = stream;
+  CFRetain(streamCopy);
+  if (info)
   {
-    *a4 = v7;
+    *info = streamCopy;
   }
 
-  if (a5)
+  if (callbacks)
   {
-    *a5 = &stru_28862B840;
+    *callbacks = &stru_28862B840;
   }
 
-  Sequential = CGDataProviderCreateSequential(v7, &stru_28862B840);
+  Sequential = CGDataProviderCreateSequential(streamCopy, &stru_28862B840);
 
   return Sequential;
 }
 
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3 length:(unint64_t)a4 outInfo:(void *)a5 outCallbacks:(const CGDataProviderSequentialCallbacks *)a6
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel length:(unint64_t)length outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks
 {
-  if (!a3)
+  if (!channel)
   {
     return 0;
   }
 
-  v10 = a3;
-  v11 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:v10 length:a4];
+  channelCopy = channel;
+  v11 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:channelCopy length:length];
 
   if ([(TSUReadChannelInputStreamAdapter *)v11 canSeek])
   {
-    v12 = [a1 newCGDataProviderForInputStream:v11 outInfo:a5 outCallbacks:a6];
+    v12 = [self newCGDataProviderForInputStream:v11 outInfo:info outCallbacks:callbacks];
   }
 
   else
@@ -165,38 +165,38 @@ LABEL_3:
   return v12;
 }
 
-+ (void)readWithHandlerAndWait:(id)a3 handler:(id)a4
++ (void)readWithHandlerAndWait:(id)wait handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v7 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2770FA39C;
   v10[3] = &unk_27A703A78;
-  v12 = v5;
+  v12 = handlerCopy;
   v8 = v7;
   v11 = v8;
-  v9 = v5;
-  [v6 readWithHandler:v10];
+  v9 = handlerCopy;
+  [waitCopy readWithHandler:v10];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-+ (void)readFromOffsetAndWait:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 handler:(id)a6
++ (void)readFromOffsetAndWait:(id)wait offset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v9 = a6;
-  v10 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v11 = dispatch_semaphore_create(0);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2770FA4E4;
   v14[3] = &unk_27A703A78;
-  v16 = v9;
+  v16 = handlerCopy;
   v12 = v11;
   v15 = v12;
-  v13 = v9;
-  [v10 readFromOffset:a4 length:a5 handler:v14];
+  v13 = handlerCopy;
+  [waitCopy readFromOffset:offset length:length handler:v14];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 }

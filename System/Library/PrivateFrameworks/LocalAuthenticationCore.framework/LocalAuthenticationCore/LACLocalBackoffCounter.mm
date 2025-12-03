@@ -1,13 +1,13 @@
 @interface LACLocalBackoffCounter
-- (void)currentBackoffErrorWithReply:(id)a3;
+- (void)currentBackoffErrorWithReply:(id)reply;
 @end
 
 @implementation LACLocalBackoffCounter
 
-- (void)currentBackoffErrorWithReply:(id)a3
+- (void)currentBackoffErrorWithReply:(id)reply
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v4 = MKBGetDeviceLockStateInfo();
   v5 = [v4 objectForKey:*MEMORY[0x1E69B1A28]];
   v6 = v5;
@@ -45,7 +45,7 @@ LABEL_7:
     _os_log_impl(&dword_1B0233000, v13, OS_LOG_TYPE_DEFAULT, "backoff: %{public}@", &v15, 0xCu);
   }
 
-  v3[2](v3, v12);
+  replyCopy[2](replyCopy, v12);
   v14 = *MEMORY[0x1E69E9840];
 }
 

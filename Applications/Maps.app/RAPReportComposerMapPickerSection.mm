@@ -1,10 +1,10 @@
 @interface RAPReportComposerMapPickerSection
-- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)a3 camera:(id)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7;
-- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)kind camera:(id)camera report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes;
+- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (id)footerTitle;
 - (id)headerTitle;
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4;
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path;
 - (void)registerReuseIdentifiersForCells;
 @end
 
@@ -18,9 +18,9 @@
   [(RAPTablePartSection *)self registerClass:v3 forNamespacedReuseIdentifier:@"MapViewTableViewCell"];
 }
 
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path
 {
-  v5 = [(RAPInlineMapViewModel *)self->_mapViewModel delegate:a3];
+  v5 = [(RAPInlineMapViewModel *)self->_mapViewModel delegate:index];
   [v5 inlineMapViewModelRequestsDisplayPowerActions:self->_mapViewModel];
 }
 
@@ -29,17 +29,17 @@
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
     v3 = +[NSBundle mainBundle];
-    v4 = [v3 localizedStringForKey:@"Report composer map picker location footer title [Report a Problem]" value:@"localized string not found" table:0];
+    footerTitle = [v3 localizedStringForKey:@"Report composer map picker location footer title [Report a Problem]" value:@"localized string not found" table:0];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = RAPReportComposerMapPickerSection;
-    v4 = [(RAPTablePartSection *)&v6 footerTitle];
+    footerTitle = [(RAPTablePartSection *)&v6 footerTitle];
   }
 
-  return v4;
+  return footerTitle;
 }
 
 - (id)headerTitle
@@ -80,7 +80,7 @@
   return v7;
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
   mapViewCell = self->_mapViewCell;
   if (!mapViewCell)
@@ -104,48 +104,48 @@
   return mapViewCell;
 }
 
-- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)a3 centerCoordinate:(CLLocationCoordinate2D)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7
+- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)kind centerCoordinate:(CLLocationCoordinate2D)coordinate report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  reportCopy = report;
+  delegateCopy = delegate;
+  attributesCopy = attributes;
   v23.receiver = self;
   v23.super_class = RAPReportComposerMapPickerSection;
   v17 = [(RAPTablePartSection *)&v23 init];
   if (v17)
   {
-    if (!v16)
+    if (!attributesCopy)
     {
       v18 = [RAPMarkerViewAttributes alloc];
       v19 = +[GEOFeatureStyleAttributes addressMarkerStyleAttributes];
-      v16 = [(RAPMarkerViewAttributes *)v18 initWithTitle:0 styleAttributes:v19];
+      attributesCopy = [(RAPMarkerViewAttributes *)v18 initWithTitle:0 styleAttributes:v19];
     }
 
-    v20 = [[RAPInlineMapViewModel alloc] initForPickingFeatureOfKind:a3 centerCoordinate:v16 markerViewAttributes:0 accessPointsEnabled:v15 delegate:latitude, longitude];
+    longitude = [[RAPInlineMapViewModel alloc] initForPickingFeatureOfKind:kind centerCoordinate:attributesCopy markerViewAttributes:0 accessPointsEnabled:delegateCopy delegate:latitude, longitude];
     mapViewModel = v17->_mapViewModel;
-    v17->_mapViewModel = v20;
+    v17->_mapViewModel = longitude;
 
-    v17->_kind = a3;
-    objc_storeStrong(&v17->_report, a5);
+    v17->_kind = kind;
+    objc_storeStrong(&v17->_report, report);
   }
 
   return v17;
 }
 
-- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)a3 camera:(id)a4 report:(id)a5 delegate:(id)a6 markerViewAttributes:(id)a7
+- (RAPReportComposerMapPickerSection)initWithFeatureKind:(int64_t)kind camera:(id)camera report:(id)report delegate:(id)delegate markerViewAttributes:(id)attributes
 {
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  [v13 centerCoordinate];
-  v17 = [(RAPReportComposerMapPickerSection *)self initWithFeatureKind:a3 centerCoordinate:v16 report:v15 delegate:v14 markerViewAttributes:?];
+  cameraCopy = camera;
+  attributesCopy = attributes;
+  delegateCopy = delegate;
+  reportCopy = report;
+  [cameraCopy centerCoordinate];
+  v17 = [(RAPReportComposerMapPickerSection *)self initWithFeatureKind:kind centerCoordinate:reportCopy report:delegateCopy delegate:attributesCopy markerViewAttributes:?];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_camera, a4);
+    objc_storeStrong(&v17->_camera, camera);
   }
 
   return v17;

@@ -2,7 +2,7 @@
 + (id)durationCache;
 - (double)duration;
 - (id)description;
-- (void)setDuration:(double)a3;
+- (void)setDuration:(double)duration;
 @end
 
 @implementation CKAVMediaObject
@@ -13,8 +13,8 @@
   v8.receiver = self;
   v8.super_class = CKAVMediaObject;
   v4 = [(CKMediaObject *)&v8 description];
-  v5 = [(CKMediaObject *)self transcoderUserInfo];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  transcoderUserInfo = [(CKMediaObject *)self transcoderUserInfo];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, transcoderUserInfo];
 
   return v6;
 }
@@ -30,8 +30,8 @@
   if (!self->_durationLoaded)
   {
     v3 = +[CKAVMediaObject durationCache];
-    v4 = [(CKMediaObject *)self transferGUID];
-    v5 = [v3 objectForKey:v4];
+    transferGUID = [(CKMediaObject *)self transferGUID];
+    v5 = [v3 objectForKey:transferGUID];
 
     if (v5)
     {
@@ -39,10 +39,10 @@
       [(CKAVMediaObject *)self setDuration:?];
     }
 
-    v6 = [(CKMediaObject *)self transcoderUserInfo];
-    v7 = v6;
+    transcoderUserInfo = [(CKMediaObject *)self transcoderUserInfo];
+    v7 = transcoderUserInfo;
     durationLoaded = self->_durationLoaded;
-    if (!v6)
+    if (!transcoderUserInfo)
     {
       goto LABEL_33;
     }
@@ -52,7 +52,7 @@
       goto LABEL_61;
     }
 
-    v9 = [v6 objectForKey:*MEMORY[0x1E69A6F60]];
+    v9 = [transcoderUserInfo objectForKey:*MEMORY[0x1E69A6F60]];
     if (v9)
     {
       objc_opt_class();
@@ -74,7 +74,7 @@
 
         if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
         {
-          v40 = self;
+          selfCopy2 = self;
           v42 = *&v9;
           _CKLog();
         }
@@ -119,26 +119,26 @@ LABEL_33:
             v20 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [(CKMediaObject *)self fileURL];
+              fileURL = [(CKMediaObject *)self fileURL];
               *buf = 138412546;
               *&buf[4] = self;
               *&buf[12] = 2112;
-              *&buf[14] = v21;
+              *&buf[14] = fileURL;
               _os_log_impl(&dword_19020E000, v20, OS_LOG_TYPE_DEBUG, "For media object (%@), calculating duration from file: %@", buf, 0x16u);
             }
           }
 
           if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
           {
-            v43 = [(CKMediaObject *)self fileURL];
+            fileURL2 = [(CKMediaObject *)self fileURL];
             _CKLog();
           }
 
           v22 = objc_alloc_init(MEMORY[0x1E696AC08]);
           v46 = 0;
-          v23 = [(CKMediaObject *)self fileURL];
-          v24 = [v23 path];
-          v25 = [v22 fileExistsAtPath:v24 isDirectory:&v46];
+          fileURL3 = [(CKMediaObject *)self fileURL];
+          path = [fileURL3 path];
+          v25 = [v22 fileExistsAtPath:path isDirectory:&v46];
           v26 = v46;
 
           if (v26 & 1 | ((v25 & 1) == 0))
@@ -149,16 +149,16 @@ LABEL_33:
               v27 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
-                v28 = [(CKMediaObject *)self fileURL];
+                fileURL4 = [(CKMediaObject *)self fileURL];
                 *buf = 138412290;
-                *&buf[4] = v28;
+                *&buf[4] = fileURL4;
                 _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_DEBUG, "  => No file at URL (%@), aborting duration calculation", buf, 0xCu);
               }
             }
 
             if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
             {
-              v41 = [(CKMediaObject *)self fileURL];
+              fileURL5 = [(CKMediaObject *)self fileURL];
               _CKLog();
             }
 
@@ -167,8 +167,8 @@ LABEL_33:
 
           else
           {
-            v29 = [(CKMediaObject *)self transcoderUserInfo];
-            v30 = [v29 objectForKey:*MEMORY[0x1E69A6F58]];
+            transcoderUserInfo2 = [(CKMediaObject *)self transcoderUserInfo];
+            v30 = [transcoderUserInfo2 objectForKey:*MEMORY[0x1E69A6F58]];
 
             if (v30)
             {
@@ -181,16 +181,16 @@ LABEL_33:
             }
             v31 = ;
             v32 = MEMORY[0x193AF5EC0](@"PLAssetSharingUtilities", @"PhotoLibraryServices");
-            v33 = [(CKMediaObject *)self fileURL];
-            v34 = [v33 path];
-            v35 = [v32 playerItemForVideoURL:v31 fallbackFilePath:v34 library:0];
+            fileURL6 = [(CKMediaObject *)self fileURL];
+            path2 = [fileURL6 path];
+            v35 = [v32 playerItemForVideoURL:v31 fallbackFilePath:path2 library:0];
 
-            v36 = [v35 asset];
-            v37 = v36;
+            asset = [v35 asset];
+            v37 = asset;
             v38 = duration__CMTimeGetSeconds;
-            if (v36)
+            if (asset)
             {
-              [v36 duration];
+              [asset duration];
             }
 
             else
@@ -246,11 +246,11 @@ LABEL_61:
         v44 = v11;
         v45 = v13;
         v42 = v18;
-        v40 = self;
+        selfCopy2 = self;
         _CKLog();
       }
 
-      [(CKAVMediaObject *)self setDuration:v18, v40, *&v42, v44, v45];
+      [(CKAVMediaObject *)self setDuration:v18, selfCopy2, *&v42, v44, v45];
     }
 
     goto LABEL_32;
@@ -285,16 +285,16 @@ void __32__CKAVMediaObject_durationCache__block_invoke()
   durationCache_sDurationCache = v0;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     self->_durationLoaded = 1;
     v7 = +[CKAVMediaObject durationCache];
-    v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    v6 = [(CKMediaObject *)self transferGUID];
-    [v7 setObject:v5 forKey:v6];
+    v5 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+    transferGUID = [(CKMediaObject *)self transferGUID];
+    [v7 setObject:v5 forKey:transferGUID];
   }
 }
 

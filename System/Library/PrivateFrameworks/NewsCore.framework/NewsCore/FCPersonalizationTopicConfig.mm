@@ -1,10 +1,10 @@
 @interface FCPersonalizationTopicConfig
 - (FCPersonalizationTopicConfig)init;
-- (FCPersonalizationTopicConfig)initWithCoder:(id)a3;
-- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)a3;
-- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)a3 defaultConfig:(id)a4;
-- (FCPersonalizationTopicConfig)initWithTopicID:(id)a3 scoreMultiplier:(double)a4 tagWeight:(double)a5 capAtBaseline:(BOOL)a6 limitInGroup:(int64_t)a7 shouldLimitInGroup:(BOOL)a8 publisherTopicWeight:(double)a9 useHalfLifeCoefficientOverride:(BOOL)a10 halfLifeCoefficientOverride:(double)a11;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationTopicConfig)initWithCoder:(id)coder;
+- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)dictionary;
+- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)dictionary defaultConfig:(id)config;
+- (FCPersonalizationTopicConfig)initWithTopicID:(id)d scoreMultiplier:(double)multiplier tagWeight:(double)weight capAtBaseline:(BOOL)baseline limitInGroup:(int64_t)group shouldLimitInGroup:(BOOL)inGroup publisherTopicWeight:(double)topicWeight useHalfLifeCoefficientOverride:(BOOL)self0 halfLifeCoefficientOverride:(double)self1;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationTopicConfig
@@ -35,16 +35,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)a3
+- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = FCPersonalizationTopicConfig;
   v5 = [(FCPersonalizationTopicConfig *)&v20 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"topicId", 0);
-    v7 = FCAppConfigurationDoubleValue(v4, @"scoreMultiplier", 1.0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"topicId", 0);
+    v7 = FCAppConfigurationDoubleValue(dictionaryCopy, @"scoreMultiplier", 1.0);
     if (v7 < 0.0)
     {
       v8 = 1.0;
@@ -55,7 +55,7 @@
       v8 = v7;
     }
 
-    v9 = FCAppConfigurationDoubleValue(v4, @"tagWeight", 1.0);
+    v9 = FCAppConfigurationDoubleValue(dictionaryCopy, @"tagWeight", 1.0);
     if (v9 < 0.0)
     {
       v10 = 1.0;
@@ -66,10 +66,10 @@
       v10 = v9;
     }
 
-    v11 = FCAppConfigurationBoolValue(v4, @"capAtBaseline", 0);
-    v12 = FCAppConfigurationIntegerValue(v4, @"limitInGroup", 100);
-    v13 = FCAppConfigurationBoolValue(v4, @"shouldLimitInGroup", 0);
-    v14 = FCAppConfigurationDoubleValue(v4, @"publisherTopicWeight", 1.0);
+    v11 = FCAppConfigurationBoolValue(dictionaryCopy, @"capAtBaseline", 0);
+    v12 = FCAppConfigurationIntegerValue(dictionaryCopy, @"limitInGroup", 100);
+    v13 = FCAppConfigurationBoolValue(dictionaryCopy, @"shouldLimitInGroup", 0);
+    v14 = FCAppConfigurationDoubleValue(dictionaryCopy, @"publisherTopicWeight", 1.0);
     if (v14 < 0.0)
     {
       v15 = 1.0;
@@ -80,8 +80,8 @@
       v15 = v14;
     }
 
-    v16 = FCAppConfigurationBoolValue(v4, @"useHalfLifeCoefficientOverride", 0);
-    v17 = FCAppConfigurationDoubleValue(v4, @"halfLifeCoefficientOverride", 1.0);
+    v16 = FCAppConfigurationBoolValue(dictionaryCopy, @"useHalfLifeCoefficientOverride", 0);
+    v17 = FCAppConfigurationDoubleValue(dictionaryCopy, @"halfLifeCoefficientOverride", 1.0);
     if (v17 <= 0.0)
     {
       v18 = 1.0;
@@ -98,48 +98,48 @@
   return v5;
 }
 
-- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)a3 defaultConfig:(id)a4
+- (FCPersonalizationTopicConfig)initWithConfigDictionary:(id)dictionary defaultConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  configCopy = config;
   v29.receiver = self;
   v29.super_class = FCPersonalizationTopicConfig;
   v8 = [(FCPersonalizationTopicConfig *)&v29 init];
   if (v8)
   {
-    v9 = [v7 topicID];
-    v10 = FCAppConfigurationStringValue(v6, @"topicId", v9);
-    [v7 scoreMultiplier];
-    v12 = FCAppConfigurationDoubleValue(v6, @"scoreMultiplier", v11);
-    [v7 scoreMultiplier];
+    topicID = [configCopy topicID];
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"topicId", topicID);
+    [configCopy scoreMultiplier];
+    v12 = FCAppConfigurationDoubleValue(dictionaryCopy, @"scoreMultiplier", v11);
+    [configCopy scoreMultiplier];
     if (v12 < 0.0)
     {
       v12 = v13;
     }
 
-    [v7 tagWeight];
-    v15 = FCAppConfigurationDoubleValue(v6, @"tagWeight", v14);
-    [v7 tagWeight];
+    [configCopy tagWeight];
+    v15 = FCAppConfigurationDoubleValue(dictionaryCopy, @"tagWeight", v14);
+    [configCopy tagWeight];
     if (v15 < 0.0)
     {
       v15 = v16;
     }
 
-    v17 = FCAppConfigurationBoolValue(v6, @"capAtBaseline", [v7 capAtBaseline]);
-    v18 = FCAppConfigurationIntegerValue(v6, @"limitInGroup", [v7 limitInGroup]);
-    v19 = FCAppConfigurationBoolValue(v6, @"shouldLimitInGroup", [v7 shouldLimitInGroup]);
-    [v7 publisherTopicWeight];
-    v21 = FCAppConfigurationDoubleValue(v6, @"publisherTopicWeight", v20);
-    [v7 publisherTopicWeight];
+    v17 = FCAppConfigurationBoolValue(dictionaryCopy, @"capAtBaseline", [configCopy capAtBaseline]);
+    v18 = FCAppConfigurationIntegerValue(dictionaryCopy, @"limitInGroup", [configCopy limitInGroup]);
+    v19 = FCAppConfigurationBoolValue(dictionaryCopy, @"shouldLimitInGroup", [configCopy shouldLimitInGroup]);
+    [configCopy publisherTopicWeight];
+    v21 = FCAppConfigurationDoubleValue(dictionaryCopy, @"publisherTopicWeight", v20);
+    [configCopy publisherTopicWeight];
     if (v21 < 0.0)
     {
       v21 = v22;
     }
 
-    v23 = FCAppConfigurationBoolValue(v6, @"useHalfLifeCoefficientOverride", [v7 useHalfLifeCoefficientOverride]);
-    [v7 halfLifeCoefficientOverride];
-    v25 = FCAppConfigurationDoubleValue(v6, @"halfLifeCoefficientOverride", v24);
-    [v7 halfLifeCoefficientOverride];
+    v23 = FCAppConfigurationBoolValue(dictionaryCopy, @"useHalfLifeCoefficientOverride", [configCopy useHalfLifeCoefficientOverride]);
+    [configCopy halfLifeCoefficientOverride];
+    v25 = FCAppConfigurationDoubleValue(dictionaryCopy, @"halfLifeCoefficientOverride", v24);
+    [configCopy halfLifeCoefficientOverride];
     if (v25 <= 0.0)
     {
       v27 = v26;
@@ -156,68 +156,68 @@
   return v8;
 }
 
-- (FCPersonalizationTopicConfig)initWithTopicID:(id)a3 scoreMultiplier:(double)a4 tagWeight:(double)a5 capAtBaseline:(BOOL)a6 limitInGroup:(int64_t)a7 shouldLimitInGroup:(BOOL)a8 publisherTopicWeight:(double)a9 useHalfLifeCoefficientOverride:(BOOL)a10 halfLifeCoefficientOverride:(double)a11
+- (FCPersonalizationTopicConfig)initWithTopicID:(id)d scoreMultiplier:(double)multiplier tagWeight:(double)weight capAtBaseline:(BOOL)baseline limitInGroup:(int64_t)group shouldLimitInGroup:(BOOL)inGroup publisherTopicWeight:(double)topicWeight useHalfLifeCoefficientOverride:(BOOL)self0 halfLifeCoefficientOverride:(double)self1
 {
-  v21 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = FCPersonalizationTopicConfig;
   v22 = [(FCPersonalizationTopicConfig *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_topicID, a3);
-    v23->_scoreMultiplier = a4;
-    v23->_tagWeight = a5;
-    v23->_capAtBaseline = a6;
-    v23->_limitInGroup = a7;
-    v23->_shouldLimitInGroup = a8;
-    v23->_useHalfLifeCoefficientOverride = a10;
-    v23->_publisherTopicWeight = a9;
-    v23->_halfLifeCoefficientOverride = a11;
+    objc_storeStrong(&v22->_topicID, d);
+    v23->_scoreMultiplier = multiplier;
+    v23->_tagWeight = weight;
+    v23->_capAtBaseline = baseline;
+    v23->_limitInGroup = group;
+    v23->_shouldLimitInGroup = inGroup;
+    v23->_useHalfLifeCoefficientOverride = override;
+    v23->_publisherTopicWeight = topicWeight;
+    v23->_halfLifeCoefficientOverride = coefficientOverride;
   }
 
   return v23;
 }
 
-- (FCPersonalizationTopicConfig)initWithCoder:(id)a3
+- (FCPersonalizationTopicConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"topicId"];
-  [v4 decodeDoubleForKey:@"scoreMultiplier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"topicId"];
+  [coderCopy decodeDoubleForKey:@"scoreMultiplier"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"tagWeight"];
+  [coderCopy decodeDoubleForKey:@"tagWeight"];
   v9 = v8;
-  v10 = [v4 decodeBoolForKey:@"capAtBaseline"];
-  v11 = [v4 decodeIntegerForKey:@"limitInGroup"];
-  v12 = [v4 decodeBoolForKey:@"shouldLimitInGroup"];
-  [v4 decodeDoubleForKey:@"publisherTopicWeight"];
+  v10 = [coderCopy decodeBoolForKey:@"capAtBaseline"];
+  v11 = [coderCopy decodeIntegerForKey:@"limitInGroup"];
+  v12 = [coderCopy decodeBoolForKey:@"shouldLimitInGroup"];
+  [coderCopy decodeDoubleForKey:@"publisherTopicWeight"];
   v14 = v13;
-  v15 = [v4 decodeBoolForKey:@"useHalfLifeCoefficientOverride"];
-  [v4 decodeDoubleForKey:@"halfLifeCoefficientOverride"];
+  v15 = [coderCopy decodeBoolForKey:@"useHalfLifeCoefficientOverride"];
+  [coderCopy decodeDoubleForKey:@"halfLifeCoefficientOverride"];
   v17 = v16;
 
   v18 = [(FCPersonalizationTopicConfig *)self initWithTopicID:v5 scoreMultiplier:v10 tagWeight:v11 capAtBaseline:v12 limitInGroup:v15 shouldLimitInGroup:v7 publisherTopicWeight:v9 useHalfLifeCoefficientOverride:v14 halfLifeCoefficientOverride:v17];
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(FCPersonalizationTopicConfig *)self topicID];
-  [v5 encodeObject:v4 forKey:@"topicId"];
+  coderCopy = coder;
+  topicID = [(FCPersonalizationTopicConfig *)self topicID];
+  [coderCopy encodeObject:topicID forKey:@"topicId"];
 
   [(FCPersonalizationTopicConfig *)self scoreMultiplier];
-  [v5 encodeDouble:@"scoreMultiplier" forKey:?];
+  [coderCopy encodeDouble:@"scoreMultiplier" forKey:?];
   [(FCPersonalizationTopicConfig *)self tagWeight];
-  [v5 encodeDouble:@"tagWeight" forKey:?];
-  [v5 encodeBool:-[FCPersonalizationTopicConfig capAtBaseline](self forKey:{"capAtBaseline"), @"capAtBaseline"}];
-  [v5 encodeInteger:-[FCPersonalizationTopicConfig limitInGroup](self forKey:{"limitInGroup"), @"limitInGroup"}];
-  [v5 encodeBool:-[FCPersonalizationTopicConfig shouldLimitInGroup](self forKey:{"shouldLimitInGroup"), @"shouldLimitInGroup"}];
+  [coderCopy encodeDouble:@"tagWeight" forKey:?];
+  [coderCopy encodeBool:-[FCPersonalizationTopicConfig capAtBaseline](self forKey:{"capAtBaseline"), @"capAtBaseline"}];
+  [coderCopy encodeInteger:-[FCPersonalizationTopicConfig limitInGroup](self forKey:{"limitInGroup"), @"limitInGroup"}];
+  [coderCopy encodeBool:-[FCPersonalizationTopicConfig shouldLimitInGroup](self forKey:{"shouldLimitInGroup"), @"shouldLimitInGroup"}];
   [(FCPersonalizationTopicConfig *)self publisherTopicWeight];
-  [v5 encodeDouble:@"publisherTopicWeight" forKey:?];
-  [v5 encodeBool:-[FCPersonalizationTopicConfig useHalfLifeCoefficientOverride](self forKey:{"useHalfLifeCoefficientOverride"), @"useHalfLifeCoefficientOverride"}];
+  [coderCopy encodeDouble:@"publisherTopicWeight" forKey:?];
+  [coderCopy encodeBool:-[FCPersonalizationTopicConfig useHalfLifeCoefficientOverride](self forKey:{"useHalfLifeCoefficientOverride"), @"useHalfLifeCoefficientOverride"}];
   [(FCPersonalizationTopicConfig *)self halfLifeCoefficientOverride];
-  [v5 encodeDouble:@"halfLifeCoefficientOverride" forKey:?];
+  [coderCopy encodeDouble:@"halfLifeCoefficientOverride" forKey:?];
 }
 
 @end

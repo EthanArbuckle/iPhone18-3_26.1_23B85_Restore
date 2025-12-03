@@ -21,48 +21,48 @@
 - (id)currentClientUpdatesConfigMessage;
 - (id)discoveryDescription;
 - (id)errorForCurrentState;
-- (id)registerDiscoveryTokenForConfiguration:(id)a3;
+- (id)registerDiscoveryTokenForConfiguration:(id)configuration;
 - (int64_t)port;
-- (uint64_t)_highestDiscoveryModeForConfiguration:(uint64_t)a1;
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)disconnect:(id)a3;
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)notifyDiscoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4;
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5;
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
+- (uint64_t)_highestDiscoveryModeForConfiguration:(uint64_t)configuration;
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
+- (void)disconnect:(id)disconnect;
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)notifyDiscoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration;
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion;
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue;
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion;
 - (void)sendClientUpdatesConfigMessage;
-- (void)sendCustomData:(id)a3 withName:(id)a4;
-- (void)setConnectionStateCallback:(id)a3 withQueue:(id)a4;
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4;
-- (void)setDeviceInfoChangedCallback:(id)a3 withQueue:(id)a4;
-- (void)setDiscoveryMode:(unsigned int)a3 forConfiguration:(id)a4;
-- (void)setDiscoveryOutputDevicesChangedCallback:(id)a3 forToken:(id)a4;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setNameCallback:(id)a3 withQueue:(id)a4;
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setPairingAllowedCallback:(id)a3 withQueue:(id)a4;
-- (void)setPairingCallback:(id)a3 withQueue:(id)a4;
-- (void)setSubscribedPlayerPaths:(id)a3;
-- (void)setVolumeCallback:(id)a3 withQueue:(id)a4;
-- (void)setVolumeChangedCallback:(id)a3 withQueue:(id)a4;
-- (void)setVolumeControlCapabilitiesCallback:(id)a3 withQueue:(id)a4;
-- (void)setVolumeMutedChangedCallback:(id)a3 withQueue:(id)a4;
-- (void)setWantsNowPlayingArtworkNotifications:(BOOL)a3;
-- (void)setWantsNowPlayingNotifications:(BOOL)a3;
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3;
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3;
-- (void)setWantsVolumeNotifications:(BOOL)a3;
-- (void)unregisterDiscoveryToken:(id)a3;
-- (void)updateDesignatedGroupLeader:(id)a3;
+- (void)sendCustomData:(id)data withName:(id)name;
+- (void)setConnectionStateCallback:(id)callback withQueue:(id)queue;
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue;
+- (void)setDeviceInfoChangedCallback:(id)callback withQueue:(id)queue;
+- (void)setDiscoveryMode:(unsigned int)mode forConfiguration:(id)configuration;
+- (void)setDiscoveryOutputDevicesChangedCallback:(id)callback forToken:(id)token;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setNameCallback:(id)callback withQueue:(id)queue;
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setPairingAllowedCallback:(id)callback withQueue:(id)queue;
+- (void)setPairingCallback:(id)callback withQueue:(id)queue;
+- (void)setSubscribedPlayerPaths:(id)paths;
+- (void)setVolumeCallback:(id)callback withQueue:(id)queue;
+- (void)setVolumeChangedCallback:(id)callback withQueue:(id)queue;
+- (void)setVolumeControlCapabilitiesCallback:(id)callback withQueue:(id)queue;
+- (void)setVolumeMutedChangedCallback:(id)callback withQueue:(id)queue;
+- (void)setWantsNowPlayingArtworkNotifications:(BOOL)notifications;
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications;
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications;
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications;
+- (void)setWantsVolumeNotifications:(BOOL)notifications;
+- (void)unregisterDiscoveryToken:(id)token;
+- (void)updateDesignatedGroupLeader:(id)leader;
 @end
 
 @implementation MRExternalDevice
@@ -85,9 +85,9 @@
   objc_exception_throw(v5);
 }
 
-- (void)setSubscribedPlayerPaths:(id)a3
+- (void)setSubscribedPlayerPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setSubscribedPlayerPaths:]"];
@@ -207,7 +207,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setWantsNowPlayingNotifications:(BOOL)a3
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -229,7 +229,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setWantsNowPlayingArtworkNotifications:(BOOL)a3
+- (void)setWantsNowPlayingArtworkNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -251,7 +251,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setWantsVolumeNotifications:(BOOL)a3
+- (void)setWantsVolumeNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -273,7 +273,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -295,7 +295,7 @@
   objc_exception_throw(v5);
 }
 
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -339,9 +339,9 @@
   objc_exception_throw(v5);
 }
 
-- (void)disconnect:(id)a3
+- (void)disconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice disconnect:]"];
@@ -351,10 +351,10 @@
   objc_exception_throw(v7);
 }
 
-- (void)setPairingCallback:(id)a3 withQueue:(id)a4
+- (void)setPairingCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setPairingCallback:withQueue:]"];
@@ -364,10 +364,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setConnectionStateCallback:(id)a3 withQueue:(id)a4
+- (void)setConnectionStateCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setConnectionStateCallback:withQueue:]"];
@@ -377,10 +377,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setNameCallback:(id)a3 withQueue:(id)a4
+- (void)setNameCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setNameCallback:withQueue:]"];
@@ -390,10 +390,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setPairingAllowedCallback:(id)a3 withQueue:(id)a4
+- (void)setPairingAllowedCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setPairingAllowedCallback:withQueue:]"];
@@ -403,10 +403,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setCustomDataCallback:withQueue:]"];
@@ -416,10 +416,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setVolumeCallback:(id)a3 withQueue:(id)a4
+- (void)setVolumeCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setVolumeCallback:withQueue:]"];
@@ -429,10 +429,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setVolumeChangedCallback:(id)a3 withQueue:(id)a4
+- (void)setVolumeChangedCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setVolumeChangedCallback:withQueue:]"];
@@ -442,10 +442,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setVolumeControlCapabilitiesCallback:(id)a3 withQueue:(id)a4
+- (void)setVolumeControlCapabilitiesCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setVolumeControlCapabilitiesCallback:withQueue:]"];
@@ -455,10 +455,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setVolumeMutedChangedCallback:(id)a3 withQueue:(id)a4
+- (void)setVolumeMutedChangedCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setVolumeMutedChangedCallback:withQueue:]"];
@@ -468,10 +468,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setDeviceInfoChangedCallback:(id)a3 withQueue:(id)a4
+- (void)setDeviceInfoChangedCallback:(id)callback withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setDeviceInfoChangedCallback:withQueue:]"];
@@ -481,11 +481,11 @@
   objc_exception_throw(v10);
 }
 
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice removeFromParentGroup:queue:completion:]"];
@@ -495,11 +495,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice requestGroupSessionWithDetails:queue:completion:]"];
@@ -509,11 +509,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice requestMicrophoneConnectionWithDetails:queue:completion:]"];
@@ -523,11 +523,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice outputDeviceVolumeControlCapabilities:queue:completion:]"];
@@ -537,11 +537,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  volumeCopy = volume;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice outputDeviceVolume:queue:completion:]"];
@@ -551,22 +551,22 @@
   objc_exception_throw(v13);
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
+  dCopy = d;
   v14 = [[MRRequestDetails alloc] initWithName:@"setOutputDeviceVolume" requestID:0 reason:@"LegacyAPI"];
-  *&v13 = a3;
-  [(MRExternalDevice *)self setOutputDeviceVolume:v12 outputDeviceUID:v14 details:v11 queue:v10 completion:v13];
+  *&v13 = volume;
+  [(MRExternalDevice *)self setOutputDeviceVolume:dCopy outputDeviceUID:v14 details:queueCopy queue:completionCopy completion:v13];
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D930];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setOutputDeviceVolume:outputDeviceUID:details:queue:completion:]"];
@@ -576,12 +576,12 @@
   objc_exception_throw(v17);
 }
 
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D930];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice adjustOutputDeviceVolume:outputDeviceUID:details:queue:completion:]"];
@@ -591,12 +591,12 @@
   objc_exception_throw(v17);
 }
 
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = MEMORY[0x1E695DF30];
   v15 = *MEMORY[0x1E695D930];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice muteOutputDeviceVolume:outputDeviceUID:details:queue:completion:]"];
@@ -606,12 +606,12 @@
   objc_exception_throw(v17);
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  modeCopy = mode;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = MEMORY[0x1E695DF30];
   v14 = *MEMORY[0x1E695D930];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setListeningMode:outputDeviceUID:queue:completion:]"];
@@ -621,11 +621,11 @@
   objc_exception_throw(v16);
 }
 
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = MEMORY[0x1E695DF30];
   v12 = *MEMORY[0x1E695D930];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setConversationDetectionEnabled:outputDeviceUID:queue:completion:]"];
@@ -635,11 +635,11 @@
   objc_exception_throw(v14);
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice modifyTopologyWithRequest:withReplyQueue:completion:]"];
@@ -649,12 +649,12 @@
   objc_exception_throw(v13);
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = MEMORY[0x1E695DF30];
   v14 = *MEMORY[0x1E695D930];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice createHostedEndpointWithOutputDeviceUIDs:details:queue:completion:]"];
@@ -664,10 +664,10 @@
   objc_exception_throw(v16);
 }
 
-- (void)sendCustomData:(id)a3 withName:(id)a4
+- (void)sendCustomData:(id)data withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice sendCustomData:withName:]"];
@@ -677,10 +677,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a5;
+  callbackCopy = callback;
+  queueCopy = queue;
   v8 = MEMORY[0x1E695DF30];
   v9 = *MEMORY[0x1E695D930];
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice ping:callback:withQueue:]"];
@@ -723,9 +723,9 @@
   objc_exception_throw(v5);
 }
 
-- (void)updateDesignatedGroupLeader:(id)a3
+- (void)updateDesignatedGroupLeader:(id)leader
 {
-  v3 = a3;
+  leaderCopy = leader;
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice updateDesignatedGroupLeader:]"];
@@ -735,10 +735,10 @@
   objc_exception_throw(v7);
 }
 
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = MEMORY[0x1E695DF30];
   v9 = *MEMORY[0x1E695D930];
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice connectWithOptions:userInfo:completion:]"];
@@ -750,64 +750,64 @@
 
 - (BOOL)supportsExternalDiscovery
 {
-  v2 = [(MRExternalDevice *)self supportedMessages];
-  v3 = [v2 isSupported:109];
+  supportedMessages = [(MRExternalDevice *)self supportedMessages];
+  v3 = [supportedMessages isSupported:109];
 
   return v3;
 }
 
-- (id)registerDiscoveryTokenForConfiguration:(id)a3
+- (id)registerDiscoveryTokenForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:arc4random()];
-  v6 = self;
-  objc_sync_enter(v6);
-  discoveryConfigurations = v6->_discoveryConfigurations;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryConfigurations = selfCopy->_discoveryConfigurations;
   if (!discoveryConfigurations)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v9 = v6->_discoveryConfigurations;
-    v6->_discoveryConfigurations = v8;
+    v9 = selfCopy->_discoveryConfigurations;
+    selfCopy->_discoveryConfigurations = v8;
 
-    discoveryConfigurations = v6->_discoveryConfigurations;
+    discoveryConfigurations = selfCopy->_discoveryConfigurations;
   }
 
-  [(NSMutableDictionary *)discoveryConfigurations setObject:v4 forKeyedSubscript:v5];
-  objc_sync_exit(v6);
+  [(NSMutableDictionary *)discoveryConfigurations setObject:configurationCopy forKeyedSubscript:v5];
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (uint64_t)_highestDiscoveryModeForConfiguration:(uint64_t)a1
+- (uint64_t)_highestDiscoveryModeForConfiguration:(uint64_t)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v5 = *(a1 + 24);
+    v5 = *(configuration + 24);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __58__MRExternalDevice__highestDiscoveryModeForConfiguration___block_invoke;
     v7[3] = &unk_1E769E9D0;
-    v7[4] = a1;
+    v7[4] = configuration;
     v8 = v3;
     v9 = &v10;
     [v5 enumerateKeysAndObjectsUsingBlock:v7];
-    a1 = *(v11 + 6);
+    configuration = *(v11 + 6);
 
     _Block_object_dispose(&v10, 8);
   }
 
-  return a1;
+  return configuration;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3 forConfiguration:(id)a4
+- (void)setDiscoveryMode:(unsigned int)mode forConfiguration:(id)configuration
 {
-  v4 = a4;
+  configurationCopy = configuration;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRExternalDevice setDiscoveryMode:forConfiguration:]"];
@@ -817,62 +817,62 @@
   objc_exception_throw(v8);
 }
 
-- (void)setDiscoveryOutputDevicesChangedCallback:(id)a3 forToken:(id)a4
+- (void)setDiscoveryOutputDevicesChangedCallback:(id)callback forToken:(id)token
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v13;
-  if (!v7->_discoveryOutputDevicesCallbacks)
+  callbackCopy = callback;
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = callbackCopy;
+  if (!selfCopy->_discoveryOutputDevicesCallbacks)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    discoveryOutputDevicesCallbacks = v7->_discoveryOutputDevicesCallbacks;
-    v7->_discoveryOutputDevicesCallbacks = v9;
+    discoveryOutputDevicesCallbacks = selfCopy->_discoveryOutputDevicesCallbacks;
+    selfCopy->_discoveryOutputDevicesCallbacks = v9;
 
-    v8 = v13;
+    v8 = callbackCopy;
   }
 
   v11 = [v8 copy];
   v12 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v7->_discoveryOutputDevicesCallbacks setObject:v12 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->_discoveryOutputDevicesCallbacks setObject:v12 forKeyedSubscript:tokenCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterDiscoveryToken:(id)a3
+- (void)unregisterDiscoveryToken:(id)token
 {
-  v5 = a3;
-  [(MRExternalDevice *)self setDiscoveryMode:0 forToken:v5];
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_discoveryOutputDevicesCallbacks setObject:0 forKeyedSubscript:v5];
-  [(NSMutableDictionary *)v4->_discoveryConfigurations setObject:0 forKeyedSubscript:v5];
-  [(NSMutableDictionary *)v4->_discoveryModes setObject:0 forKeyedSubscript:v5];
-  objc_sync_exit(v4);
+  tokenCopy = token;
+  [(MRExternalDevice *)self setDiscoveryMode:0 forToken:tokenCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_discoveryOutputDevicesCallbacks setObject:0 forKeyedSubscript:tokenCopy];
+  [(NSMutableDictionary *)selfCopy->_discoveryConfigurations setObject:0 forKeyedSubscript:tokenCopy];
+  [(NSMutableDictionary *)selfCopy->_discoveryModes setObject:0 forKeyedSubscript:tokenCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)notifyDiscoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4
+- (void)notifyDiscoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = self;
-  objc_sync_enter(v9);
-  discoveryOutputDevicesCallbacks = v9->_discoveryOutputDevicesCallbacks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryOutputDevicesCallbacks = selfCopy->_discoveryOutputDevicesCallbacks;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__MRExternalDevice_notifyDiscoveryOutputDevicesChanged_forConfiguration___block_invoke;
   v22[3] = &unk_1E769E980;
-  v22[4] = v9;
-  v11 = v7;
+  v22[4] = selfCopy;
+  v11 = configurationCopy;
   v23 = v11;
   v12 = v8;
   v24 = v12;
   [(NSMutableDictionary *)discoveryOutputDevicesCallbacks enumerateKeysAndObjectsUsingBlock:v22];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -935,24 +935,24 @@ void __73__MRExternalDevice_notifyDiscoveryOutputDevicesChanged_forConfiguration
 
 - (id)discoveryDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v5 = [(NSMutableDictionary *)v2->_discoveryConfigurations allValues];
-  v6 = [v4 initWithArray:v5];
+  allValues = [(NSMutableDictionary *)selfCopy->_discoveryConfigurations allValues];
+  v6 = [v4 initWithArray:allValues];
 
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __40__MRExternalDevice_discoveryDescription__block_invoke;
   v13 = &unk_1E769E9A8;
-  v14 = v2;
+  v14 = selfCopy;
   v7 = v3;
   v15 = v7;
   [v6 enumerateObjectsUsingBlock:&v10];
   v8 = [v7 componentsJoinedByString:{@", ", v10, v11, v12, v13, v14}];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

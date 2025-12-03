@@ -1,11 +1,11 @@
 @interface SHHapticsFetcher
 - (SHHapticsFetcher)init;
-- (SHHapticsFetcher)initWithURLBuilder:(id)a3 networkRequester:(id)a4;
-- (id)reqeustOfType:(int64_t)a3 fromEndpoint:(id)a4 withMediaItem:(id)a5;
-- (void)hapticForMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4;
-- (void)hasHapticTrackForMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)reqeustOfType:(int64_t)a3 withMediaItem:(id)a4 completionHandler:(id)a5;
+- (SHHapticsFetcher)initWithURLBuilder:(id)builder networkRequester:(id)requester;
+- (id)reqeustOfType:(int64_t)type fromEndpoint:(id)endpoint withMediaItem:(id)item;
+- (void)hapticForMediaItem:(id)item completionHandler:(id)handler;
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler;
+- (void)hasHapticTrackForMediaItem:(id)item completionHandler:(id)handler;
+- (void)reqeustOfType:(int64_t)type withMediaItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SHHapticsFetcher
@@ -19,18 +19,18 @@
   return v5;
 }
 
-- (SHHapticsFetcher)initWithURLBuilder:(id)a3 networkRequester:(id)a4
+- (SHHapticsFetcher)initWithURLBuilder:(id)builder networkRequester:(id)requester
 {
-  v7 = a3;
-  v8 = a4;
+  builderCopy = builder;
+  requesterCopy = requester;
   v14.receiver = self;
   v14.super_class = SHHapticsFetcher;
   v9 = [(SHHapticsFetcher *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_urlBuilder, a3);
-    objc_storeStrong(&v10->_networkRequester, a4);
+    objc_storeStrong(&v9->_urlBuilder, builder);
+    objc_storeStrong(&v10->_networkRequester, requester);
     v11 = dispatch_queue_create("com.apple.ShazamKit.HapticEndpointRequester", 0);
     requestQueue = v10->_requestQueue;
     v10->_requestQueue = v11;
@@ -39,14 +39,14 @@
   return v10;
 }
 
-- (void)hapticsForMediaItems:(id)a3 completionHandler:(id)a4
+- (void)hapticsForMediaItems:(id)items completionHandler:(id)handler
 {
-  v18 = a3;
-  v19 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v6 = dispatch_group_create();
   if (v6 && ([(SHHapticsFetcher *)self requestQueue], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v18 count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
     *buf = 0;
     v34 = buf;
     v35 = 0x3032000000;
@@ -57,7 +57,7 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = v18;
+    obj = itemsCopy;
     v9 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
     if (v9)
     {
@@ -93,16 +93,16 @@
       while (v9);
     }
 
-    v13 = [(SHHapticsFetcher *)self requestQueue];
+    requestQueue = [(SHHapticsFetcher *)self requestQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100045574;
     block[3] = &unk_10007E1B8;
     v22 = v8;
-    v23 = v19;
+    v23 = handlerCopy;
     v24 = buf;
     v14 = v8;
-    dispatch_group_notify(v6, v13, block);
+    dispatch_group_notify(v6, requestQueue, block);
 
     _Block_object_dispose(buf, 8);
   }
@@ -120,23 +120,23 @@
     v41 = @"Failed to start paginated network request";
     v16 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
     v17 = [SHError errorWithCode:600 underlyingError:0 keyOverrides:v16];
-    (*(v19 + 2))(v19, &__NSArray0__struct, v17);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, v17);
   }
 }
 
-- (void)hapticForMediaItem:(id)a3 completionHandler:(id)a4
+- (void)hapticForMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000456EC;
   v10[3] = &unk_10007E208;
-  v8 = v7;
+  v8 = handlerCopy;
   v12 = v8;
   objc_copyWeak(&v13, &location);
-  v9 = v6;
+  v9 = itemCopy;
   v11 = v9;
   [(SHHapticsFetcher *)self reqeustOfType:2 withMediaItem:v9 completionHandler:v10];
 
@@ -144,44 +144,44 @@
   objc_destroyWeak(&location);
 }
 
-- (void)hasHapticTrackForMediaItem:(id)a3 completionHandler:(id)a4
+- (void)hasHapticTrackForMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10004597C;
   v9[3] = &unk_10007E230;
-  v8 = v7;
+  v8 = handlerCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [(SHHapticsFetcher *)self reqeustOfType:1 withMediaItem:v6 completionHandler:v9];
+  [(SHHapticsFetcher *)self reqeustOfType:1 withMediaItem:itemCopy completionHandler:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
 }
 
-- (void)reqeustOfType:(int64_t)a3 withMediaItem:(id)a4 completionHandler:(id)a5
+- (void)reqeustOfType:(int64_t)type withMediaItem:(id)item completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 properties];
-  v11 = [v10 count];
+  itemCopy = item;
+  handlerCopy = handler;
+  properties = [itemCopy properties];
+  v11 = [properties count];
 
   if (v11)
   {
     objc_initWeak(&location, self);
-    v12 = [(SHHapticsFetcher *)self urlBuilder];
+    urlBuilder = [(SHHapticsFetcher *)self urlBuilder];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100045BB0;
     v14[3] = &unk_10007E258;
-    v16 = v9;
+    v16 = handlerCopy;
     objc_copyWeak(v17, &location);
-    v17[1] = a3;
-    v15 = v8;
-    [v12 loadHapticsEndpointForClientIdentifier:@"com.apple.shazamd" callback:v14];
+    v17[1] = type;
+    v15 = itemCopy;
+    [urlBuilder loadHapticsEndpointForClientIdentifier:@"com.apple.shazamd" callback:v14];
 
     objc_destroyWeak(v17);
     objc_destroyWeak(&location);
@@ -190,19 +190,19 @@
   else
   {
     v13 = [SHCoreError errorWithCode:400 underlyingError:0 keyOverrides:&__NSDictionary0__struct];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (id)reqeustOfType:(int64_t)a3 fromEndpoint:(id)a4 withMediaItem:(id)a5
+- (id)reqeustOfType:(int64_t)type fromEndpoint:(id)endpoint withMediaItem:(id)item
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 fetchHapticByAdamIDURL];
-  if (v9)
+  endpointCopy = endpoint;
+  itemCopy = item;
+  fetchHapticByAdamIDURL = [endpointCopy fetchHapticByAdamIDURL];
+  if (fetchHapticByAdamIDURL)
   {
-    v10 = [v8 appleMusicID];
-    v11 = v10 != 0;
+    appleMusicID = [itemCopy appleMusicID];
+    v11 = appleMusicID != 0;
   }
 
   else
@@ -210,8 +210,8 @@
     v11 = 0;
   }
 
-  v12 = [v7 fetchHapticByISRCURL];
-  if (!v12)
+  fetchHapticByISRCURL = [endpointCopy fetchHapticByISRCURL];
+  if (!fetchHapticByISRCURL)
   {
     if (!v11)
     {
@@ -219,31 +219,31 @@
     }
 
 LABEL_9:
-    v15 = [v8 appleMusicID];
-    v16 = v7;
-    v17 = a3;
-    v18 = v15;
+    appleMusicID2 = [itemCopy appleMusicID];
+    v16 = endpointCopy;
+    typeCopy2 = type;
+    v18 = appleMusicID2;
     v19 = 1;
     goto LABEL_10;
   }
 
-  v13 = v12;
-  v14 = [v8 isrc];
+  v13 = fetchHapticByISRCURL;
+  isrc = [itemCopy isrc];
 
   if (v11)
   {
     goto LABEL_9;
   }
 
-  if (v14)
+  if (isrc)
   {
-    v15 = [v8 isrc];
-    v16 = v7;
-    v17 = a3;
-    v18 = v15;
+    appleMusicID2 = [itemCopy isrc];
+    v16 = endpointCopy;
+    typeCopy2 = type;
+    v18 = appleMusicID2;
     v19 = 2;
 LABEL_10:
-    v20 = [v16 requestOfType:v17 forID:v18 ofIDType:v19];
+    v20 = [v16 requestOfType:typeCopy2 forID:v18 ofIDType:v19];
 
     goto LABEL_12;
   }

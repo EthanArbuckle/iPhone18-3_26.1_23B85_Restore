@@ -1,17 +1,17 @@
 @interface TSDRangeClamper
-+ (_NSRange)clampSelectedRange:(_NSRange)a3 inFullString:(id)a4 toWordLimit:(unint64_t)a5;
++ (_NSRange)clampSelectedRange:(_NSRange)range inFullString:(id)string toWordLimit:(unint64_t)limit;
 @end
 
 @implementation TSDRangeClamper
 
-+ (_NSRange)clampSelectedRange:(_NSRange)a3 inFullString:(id)a4 toWordLimit:(unint64_t)a5
++ (_NSRange)clampSelectedRange:(_NSRange)range inFullString:(id)string toWordLimit:(unint64_t)limit
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [a4 substringWithRange:?];
-  if ([v8 tsdWordCount] > a5)
+  length = range.length;
+  location = range.location;
+  v8 = [string substringWithRange:?];
+  if ([v8 tsdWordCount] > limit)
   {
-    length = [v8 endingCharIndexForWordLimit:a5];
+    length = [v8 endingCharIndexForWordLimit:limit];
   }
 
   v9 = location;

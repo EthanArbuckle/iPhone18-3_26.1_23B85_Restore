@@ -1,7 +1,7 @@
 @interface WLKMovieClip
-+ (id)movieClipsWithArray:(id)a3;
++ (id)movieClipsWithArray:(id)array;
 - (WLKMovieClip)init;
-- (WLKMovieClip)initWithDictionary:(id)a3;
+- (WLKMovieClip)initWithDictionary:(id)dictionary;
 - (WLKMovieClipAsset)preferredAsset;
 - (id)_init;
 - (id)preferredURL;
@@ -9,18 +9,18 @@
 
 @implementation WLKMovieClip
 
-+ (id)movieClipsWithArray:(id)a3
++ (id)movieClipsWithArray:(id)array
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
@@ -45,7 +45,7 @@
               v12 = [WLKMovieClip alloc];
               v13 = [(WLKMovieClip *)v12 initWithDictionary:v11, v17];
 
-              [v4 addObject:v13];
+              [array addObject:v13];
             }
           }
         }
@@ -56,7 +56,7 @@
       while (v7);
     }
 
-    v14 = [v4 copy];
+    v14 = [array copy];
   }
 
   else
@@ -69,51 +69,51 @@
   return v14;
 }
 
-- (WLKMovieClip)initWithDictionary:(id)a3
+- (WLKMovieClip)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = [(WLKMovieClip *)self _init];
-    if (v5)
+    _init = [(WLKMovieClip *)self _init];
+    if (_init)
     {
-      v6 = [v4 wlk_stringForKey:@"title"];
+      v6 = [dictionaryCopy wlk_stringForKey:@"title"];
       v7 = [v6 copy];
-      v8 = v5[1];
-      v5[1] = v7;
+      v8 = _init[1];
+      _init[1] = v7;
 
-      v9 = [v4 wlk_dictionaryForKey:@"previewArtwork"];
+      v9 = [dictionaryCopy wlk_dictionaryForKey:@"previewArtwork"];
       if (v9)
       {
         v10 = [[WLKMovieClipPreviewArtwork alloc] initWithDictionary:v9];
-        v11 = v5[2];
-        v5[2] = v10;
+        v11 = _init[2];
+        _init[2] = v10;
       }
 
-      v12 = [v4 wlk_arrayForKey:@"clipAssets"];
+      v12 = [dictionaryCopy wlk_arrayForKey:@"clipAssets"];
       if (v12)
       {
         v13 = [WLKMovieClipAsset movieClipAssetsWithArray:v12];
         v14 = [v13 copy];
-        v15 = v5[3];
-        v5[3] = v14;
+        v15 = _init[3];
+        _init[3] = v14;
       }
 
-      v16 = [v4 wlk_stringForKey:@"hlsUrl"];
-      v17 = v5[4];
-      v5[4] = v16;
+      v16 = [dictionaryCopy wlk_stringForKey:@"hlsUrl"];
+      v17 = _init[4];
+      _init[4] = v16;
     }
 
-    self = v5;
-    v18 = self;
+    self = _init;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)_init
@@ -154,10 +154,10 @@
   v4 = v13[5];
   if (!v4)
   {
-    v5 = [(WLKMovieClip *)self assets];
-    v6 = [v5 firstObject];
+    assets = [(WLKMovieClip *)self assets];
+    firstObject = [assets firstObject];
     v7 = v13[5];
-    v13[5] = v6;
+    v13[5] = firstObject;
 
     v4 = v13[5];
   }
@@ -202,14 +202,14 @@ void __30__WLKMovieClip_preferredAsset__block_invoke_2(uint64_t a1, void *a2, ui
 
 - (id)preferredURL
 {
-  v3 = [(WLKMovieClip *)self hlsUrl];
-  if (!v3)
+  hlsUrl = [(WLKMovieClip *)self hlsUrl];
+  if (!hlsUrl)
   {
-    v4 = [(WLKMovieClip *)self preferredAsset];
-    v3 = [v4 url];
+    preferredAsset = [(WLKMovieClip *)self preferredAsset];
+    hlsUrl = [preferredAsset url];
   }
 
-  return v3;
+  return hlsUrl;
 }
 
 @end

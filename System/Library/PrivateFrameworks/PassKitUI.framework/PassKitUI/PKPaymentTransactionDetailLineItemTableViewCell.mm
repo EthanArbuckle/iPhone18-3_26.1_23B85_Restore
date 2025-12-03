@@ -1,24 +1,24 @@
 @interface PKPaymentTransactionDetailLineItemTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionDetailLineItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionDetailLineItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setHasTrailingLineSeperator:(BOOL)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setValueColor:(id)a3;
-- (void)setValueFont:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)setHasTrailingLineSeperator:(BOOL)seperator;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)setTitleColor:(id)color;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
+- (void)setValueColor:(id)color;
+- (void)setValueFont:(id)font;
+- (void)setValueText:(id)text;
 @end
 
 @implementation PKPaymentTransactionDetailLineItemTableViewCell
 
-- (PKPaymentTransactionDetailLineItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPaymentTransactionDetailLineItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = PKPaymentTransactionDetailLineItemTableViewCell;
-  v4 = [(PKPaymentTransactionDetailLineItemTableViewCell *)&v17 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKPaymentTransactionDetailLineItemTableViewCell *)&v17 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -35,15 +35,15 @@
     v4->_valueFont = v9;
     v16 = v9;
 
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    objc_storeStrong(&v4->_titleColor, v11);
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    objc_storeStrong(&v4->_titleColor, labelColor);
     valueColor = v4->_valueColor;
-    v4->_valueColor = v11;
-    v13 = v11;
+    v4->_valueColor = labelColor;
+    v13 = labelColor;
 
-    v14 = [(PKPaymentTransactionDetailLineItemTableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_titleLabel];
-    [v14 addSubview:v4->_valueLabel];
+    contentView = [(PKPaymentTransactionDetailLineItemTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_valueLabel];
     [(UILabel *)v4->_titleLabel setFont:v4->_titleFont];
     [(UILabel *)v4->_titleLabel setTextColor:v4->_titleColor];
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
@@ -61,88 +61,88 @@
   return v4;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_titleText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_titleText] & 1) == 0)
   {
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(UILabel *)self->_titleLabel setText:self->_titleText];
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_titleFont] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_titleFont] & 1) == 0)
   {
-    objc_storeStrong(&self->_titleFont, a3);
+    objc_storeStrong(&self->_titleFont, font);
     [(UILabel *)self->_titleLabel setFont:self->_titleFont];
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_titleColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_titleColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
+    objc_storeStrong(&self->_titleColor, color);
     [(UILabel *)self->_titleLabel setTextColor:self->_titleColor];
   }
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_valueText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_valueText] & 1) == 0)
   {
-    objc_storeStrong(&self->_valueText, a3);
-    [(UILabel *)self->_valueLabel setText:v5];
+    objc_storeStrong(&self->_valueText, text);
+    [(UILabel *)self->_valueLabel setText:textCopy];
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setValueFont:(id)a3
+- (void)setValueFont:(id)font
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_valueFont] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_valueFont] & 1) == 0)
   {
-    objc_storeStrong(&self->_valueFont, a3);
+    objc_storeStrong(&self->_valueFont, font);
     [(UILabel *)self->_valueLabel setFont:self->_valueFont];
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setValueColor:(id)a3
+- (void)setValueColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_valueColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_valueColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_valueColor, a3);
+    objc_storeStrong(&self->_valueColor, color);
     [(UILabel *)self->_valueLabel setTextColor:self->_valueColor];
   }
 }
 
-- (void)setHasTrailingLineSeperator:(BOOL)a3
+- (void)setHasTrailingLineSeperator:(BOOL)seperator
 {
-  if (self->_hasTrailingLineSeperator == !a3)
+  if (self->_hasTrailingLineSeperator == !seperator)
   {
-    self->_hasTrailingLineSeperator = a3;
+    self->_hasTrailingLineSeperator = seperator;
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setSeparatorStyle:[(PKPaymentTransactionDetailLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]];
 
     [(PKPaymentTransactionDetailLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  if ([(PKPaymentTransactionDetailLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]== a3)
+  if ([(PKPaymentTransactionDetailLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]== style)
   {
     v5.receiver = self;
     v5.super_class = PKPaymentTransactionDetailLineItemTableViewCell;
-    [(PKPaymentTransactionDetailLineItemTableViewCell *)&v5 setSeparatorStyle:a3];
+    [(PKPaymentTransactionDetailLineItemTableViewCell *)&v5 setSeparatorStyle:style];
   }
 }
 
@@ -151,12 +151,12 @@
   v29.receiver = self;
   v29.super_class = PKPaymentTransactionDetailLineItemTableViewCell;
   [(PKPaymentTransactionDetailLineItemTableViewCell *)&v29 layoutSubviews];
-  v3 = [(PKPaymentTransactionDetailLineItemTableViewCell *)self _shouldReverseLayoutDirection];
-  v4 = [(PKPaymentTransactionDetailLineItemTableViewCell *)self contentView];
+  _shouldReverseLayoutDirection = [(PKPaymentTransactionDetailLineItemTableViewCell *)self _shouldReverseLayoutDirection];
+  contentView = [(PKPaymentTransactionDetailLineItemTableViewCell *)self contentView];
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v6 = v5;
   v8 = v7;
-  [v4 bounds];
+  [contentView bounds];
   v12 = v6 + v11;
   v13 = 11.0;
   v14 = v9 + 11.0;
@@ -171,7 +171,7 @@
   remainder.origin.y = v9 + 11.0;
   remainder.size.width = v16;
   remainder.size.height = v10 - v13;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v18 = CGRectMinXEdge;
   }
@@ -200,10 +200,10 @@
   [(UILabel *)self->_titleLabel setFrame:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(PKPaymentTransactionDetailLineItemTableViewCell *)self contentView:a3.width];
+  width = fits.width;
+  v5 = [(PKPaymentTransactionDetailLineItemTableViewCell *)self contentView:fits.width];
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v7 = v6;
   v9 = v8;

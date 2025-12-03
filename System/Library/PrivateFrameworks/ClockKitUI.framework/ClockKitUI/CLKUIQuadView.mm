@@ -1,62 +1,62 @@
 @interface CLKUIQuadView
-+ (id)quadViewWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 colorSpace:(int64_t)a6;
-- (BOOL)_sync_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7;
-- (BOOL)renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4 completion:(id)a5;
++ (id)quadViewWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options colorSpace:(int64_t)space;
+- (BOOL)_sync_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion;
+- (BOOL)renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group completion:(id)completion;
 - (CGSize)drawableSize;
-- (CLKUIQuadView)initWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 asyncRenderQueue:(id)a6;
+- (CLKUIQuadView)initWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options asyncRenderQueue:(id)queue;
 - (CLKUIQuadViewDelegate)delegate;
-- (void)_async_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7;
-- (void)_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7;
-- (void)_prerenderForTime:(double)a3;
-- (void)_runOnRenderQueueIfNeeded:(id)a3;
-- (void)addQuad:(id)a3;
-- (void)addQuadsFromArray:(id)a3;
+- (void)_async_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion;
+- (void)_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion;
+- (void)_prerenderForTime:(double)time;
+- (void)_runOnRenderQueueIfNeeded:(id)needed;
+- (void)addQuad:(id)quad;
+- (void)addQuadsFromArray:(id)array;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)enumerateHierarchyObserversFromView:(id)a3 withBlock:(id)a4;
+- (void)enumerateHierarchyObserversFromView:(id)view withBlock:(id)block;
 - (void)removeAllQuads;
-- (void)removeQuad:(id)a3;
-- (void)setDebugIdentifier:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)removeQuad:(id)quad;
+- (void)setDebugIdentifier:(id)identifier;
+- (void)setDelegate:(id)delegate;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CLKUIQuadView
 
-+ (id)quadViewWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 colorSpace:(int64_t)a6
++ (id)quadViewWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options colorSpace:(int64_t)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = [[CLKUIMetalQuadView alloc] initWithFrame:v12 identifier:a5 options:a6 colorSpace:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  height = [[CLKUIMetalQuadView alloc] initWithFrame:identifierCopy identifier:options options:space colorSpace:x, y, width, height];
 
-  return v13;
+  return height;
 }
 
-- (void)_runOnRenderQueueIfNeeded:(id)a3
+- (void)_runOnRenderQueueIfNeeded:(id)needed
 {
   asyncRenderQueue = self->_asyncRenderQueue;
   if (asyncRenderQueue)
   {
-    v5 = a3;
+    neededCopy = needed;
     dispatch_assert_queue_not_V2(asyncRenderQueue);
-    dispatch_sync(self->_asyncRenderQueue, v5);
+    dispatch_sync(self->_asyncRenderQueue, neededCopy);
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(needed + 2))(needed);
   }
 }
 
-- (BOOL)renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4 completion:(id)a5
+- (BOOL)renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
+  discardCopy = discard;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  completionCopy = completion;
   [(NSCountedSet *)self->_disabledRenderingReasons count];
   kdebug_trace();
   if ([(NSCountedSet *)self->_disabledRenderingReasons count])
@@ -73,9 +73,9 @@
       _os_log_impl(&dword_1E49C8000, v10, OS_LOG_TYPE_DEFAULT, "CLKUIQuadView (%@): Rendering disabled for reasons: %@", buf, 0x16u);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
 
     v13 = 0;
@@ -83,7 +83,7 @@
 
   else
   {
-    if (v6)
+    if (discardCopy)
     {
       [(CLKUIQuadView *)self discardContents];
     }
@@ -103,9 +103,9 @@
       v20 = buf;
       v17[4] = self;
       v21 = v14;
-      v18 = v8;
-      v22 = v6;
-      v19 = v9;
+      v18 = groupCopy;
+      v22 = discardCopy;
+      v19 = completionCopy;
       dispatch_sync(asyncRenderQueue, v17);
 
       v13 = *(*&buf[8] + 24);
@@ -113,7 +113,7 @@
 
     else
     {
-      v13 = [(CLKUIQuadView *)self _sync_prepareAndRenderForTime:v8 inGroup:!v6 checkForDrawable:1 renderDiscontinuity:v9 completion:v14];
+      v13 = [(CLKUIQuadView *)self _sync_prepareAndRenderForTime:groupCopy inGroup:!discardCopy checkForDrawable:1 renderDiscontinuity:completionCopy completion:v14];
       *(*&buf[8] + 24) = v13;
     }
 
@@ -130,40 +130,40 @@ uint64_t __77__CLKUIQuadView_renderSynchronouslyWithImageQueueDiscard_inGroup_co
   return result;
 }
 
-- (CLKUIQuadView)initWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 asyncRenderQueue:(id)a6
+- (CLKUIQuadView)initWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options asyncRenderQueue:(id)queue
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = CLKUIQuadView;
-  v16 = [(CLKUIQuadView *)&v26 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(CLKUIQuadView *)&v26 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = dispatch_semaphore_create(3);
-    asyncSemaphore = v16->_asyncSemaphore;
-    v16->_asyncSemaphore = v17;
+    asyncSemaphore = height->_asyncSemaphore;
+    height->_asyncSemaphore = v17;
 
-    v19 = [[CLKUIQuadViewRenderCoordinator alloc] initWithQuadView:v16 synchronizeWithClockTimer:(a5 >> 2) & 1];
-    renderCoordinator = v16->_renderCoordinator;
-    v16->_renderCoordinator = v19;
+    v19 = [[CLKUIQuadViewRenderCoordinator alloc] initWithQuadView:height synchronizeWithClockTimer:(options >> 2) & 1];
+    renderCoordinator = height->_renderCoordinator;
+    height->_renderCoordinator = v19;
 
-    v21 = [MEMORY[0x1E695DF70] array];
-    mutableQuads = v16->_mutableQuads;
-    v16->_mutableQuads = v21;
+    array = [MEMORY[0x1E695DF70] array];
+    mutableQuads = height->_mutableQuads;
+    height->_mutableQuads = array;
 
     v23 = objc_opt_new();
-    disabledRenderingReasons = v16->_disabledRenderingReasons;
-    v16->_disabledRenderingReasons = v23;
+    disabledRenderingReasons = height->_disabledRenderingReasons;
+    height->_disabledRenderingReasons = v23;
 
-    objc_storeStrong(&v16->_asyncRenderQueue, a6);
-    objc_storeStrong(&v16->_debugIdentifier, a4);
+    objc_storeStrong(&height->_asyncRenderQueue, queue);
+    objc_storeStrong(&height->_debugIdentifier, identifier);
   }
 
-  return v16;
+  return height;
 }
 
 - (void)dealloc
@@ -178,23 +178,23 @@ uint64_t __77__CLKUIQuadView_renderSynchronouslyWithImageQueueDiscard_inGroup_co
   [(CLKUIQuadView *)&v4 dealloc];
 }
 
-- (void)_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7
+- (void)_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion
 {
   if (self->_asyncRenderQueue)
   {
-    [(CLKUIQuadView *)self _async_prepareAndRenderForTime:a4 inGroup:a5 checkForDrawable:a6 renderDiscontinuity:a7 completion:a3];
+    [(CLKUIQuadView *)self _async_prepareAndRenderForTime:group inGroup:drawable checkForDrawable:discontinuity renderDiscontinuity:completion completion:time];
   }
 
   else
   {
-    [(CLKUIQuadView *)self _sync_prepareAndRenderForTime:a4 inGroup:a5 checkForDrawable:a6 renderDiscontinuity:a7 completion:a3];
+    [(CLKUIQuadView *)self _sync_prepareAndRenderForTime:group inGroup:drawable checkForDrawable:discontinuity renderDiscontinuity:completion completion:time];
   }
 }
 
-- (void)_async_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7
+- (void)_async_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion
 {
-  v12 = a4;
-  v13 = a7;
+  groupCopy = group;
+  completionCopy = completion;
   if (dispatch_semaphore_wait(self->_asyncSemaphore, 0))
   {
     asyncRenderQueue = self->_asyncRenderQueue;
@@ -203,8 +203,8 @@ uint64_t __77__CLKUIQuadView_renderSynchronouslyWithImageQueueDiscard_inGroup_co
     block[2] = __104__CLKUIQuadView__async_prepareAndRenderForTime_inGroup_checkForDrawable_renderDiscontinuity_completion___block_invoke_2;
     block[3] = &unk_1E8762710;
     block[4] = self;
-    v20 = v13;
-    v15 = v13;
+    v20 = completionCopy;
+    v15 = completionCopy;
     dispatch_async(asyncRenderQueue, block);
     v16 = v20;
   }
@@ -217,12 +217,12 @@ uint64_t __77__CLKUIQuadView_renderSynchronouslyWithImageQueueDiscard_inGroup_co
     v21[2] = __104__CLKUIQuadView__async_prepareAndRenderForTime_inGroup_checkForDrawable_renderDiscontinuity_completion___block_invoke;
     v21[3] = &unk_1E87626E8;
     v21[4] = self;
-    v24 = a3;
-    v25 = a5;
-    v26 = a6;
-    v22 = v12;
-    v23 = v13;
-    v18 = v13;
+    timeCopy = time;
+    drawableCopy = drawable;
+    discontinuityCopy = discontinuity;
+    v22 = groupCopy;
+    v23 = completionCopy;
+    v18 = completionCopy;
     dispatch_async(v17, v21);
 
     v16 = v22;
@@ -250,12 +250,12 @@ intptr_t __104__CLKUIQuadView__async_prepareAndRenderForTime_inGroup_checkForDra
   return dispatch_semaphore_signal(v3);
 }
 
-- (BOOL)_sync_prepareAndRenderForTime:(double)a3 inGroup:(id)a4 checkForDrawable:(BOOL)a5 renderDiscontinuity:(BOOL)a6 completion:(id)a7
+- (BOOL)_sync_prepareAndRenderForTime:(double)time inGroup:(id)group checkForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a4;
-  v13 = a7;
+  discontinuityCopy = discontinuity;
+  drawableCopy = drawable;
+  groupCopy = group;
+  completionCopy = completion;
   asyncRenderQueue = self->_asyncRenderQueue;
   if (asyncRenderQueue)
   {
@@ -263,25 +263,25 @@ intptr_t __104__CLKUIQuadView__async_prepareAndRenderForTime_inGroup_checkForDra
   }
 
   frameNum = self->_frameNum;
-  if (v12)
+  if (groupCopy)
   {
-    dispatch_group_enter(v12);
+    dispatch_group_enter(groupCopy);
   }
 
   debugId = self->_debugId;
   kdebug_trace();
-  [(CLKUIQuadView *)self _prerenderForTime:a3];
+  [(CLKUIQuadView *)self _prerenderForTime:time];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDrawable_renderDiscontinuity_completion___block_invoke;
   v21[3] = &unk_1E8762738;
-  v22 = v12;
-  v23 = v13;
+  v22 = groupCopy;
+  v23 = completionCopy;
   v24 = frameNum;
   v25 = debugId;
-  v17 = v12;
-  v18 = v13;
-  v19 = [(CLKUIQuadView *)self _displayAndCheckForDrawable:v9 renderDiscontinuity:v8 withCompletion:v21];
+  v17 = groupCopy;
+  v18 = completionCopy;
+  v19 = [(CLKUIQuadView *)self _displayAndCheckForDrawable:drawableCopy renderDiscontinuity:discontinuityCopy withCompletion:v21];
   kdebug_trace();
   ++self->_frameNum;
 
@@ -305,43 +305,43 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
   return kdebug_trace();
 }
 
-- (void)enumerateHierarchyObserversFromView:(id)a3 withBlock:(id)a4
+- (void)enumerateHierarchyObserversFromView:(id)view withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = v5;
+  viewCopy = view;
+  blockCopy = block;
+  v9 = viewCopy;
   v7 = v9;
   do
   {
     if (objc_opt_respondsToSelector())
     {
-      v6[2](v6, v7);
+      blockCopy[2](blockCopy, v7);
     }
 
-    v8 = [v7 superview];
+    superview = [v7 superview];
 
-    v7 = v8;
+    v7 = superview;
   }
 
-  while (v8);
+  while (superview);
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v7.receiver = self;
   v7.super_class = CLKUIQuadView;
-  [(CLKUIQuadView *)&v7 willMoveToWindow:a3];
-  v4 = [(CLKUIQuadView *)self superview];
+  [(CLKUIQuadView *)&v7 willMoveToWindow:window];
+  superview = [(CLKUIQuadView *)self superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(CLKUIQuadView *)self superview];
+    superview2 = [(CLKUIQuadView *)self superview];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __34__CLKUIQuadView_willMoveToWindow___block_invoke;
     v6[3] = &unk_1E8762760;
     v6[4] = self;
-    [(CLKUIQuadView *)self enumerateHierarchyObserversFromView:v5 withBlock:v6];
+    [(CLKUIQuadView *)self enumerateHierarchyObserversFromView:superview2 withBlock:v6];
   }
 }
 
@@ -350,17 +350,17 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
   v6.receiver = self;
   v6.super_class = CLKUIQuadView;
   [(CLKUIQuadView *)&v6 didMoveToWindow];
-  v3 = [(CLKUIQuadView *)self superview];
+  superview = [(CLKUIQuadView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(CLKUIQuadView *)self superview];
+    superview2 = [(CLKUIQuadView *)self superview];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __32__CLKUIQuadView_didMoveToWindow__block_invoke;
     v5[3] = &unk_1E8762760;
     v5[4] = self;
-    [(CLKUIQuadView *)self enumerateHierarchyObserversFromView:v4 withBlock:v5];
+    [(CLKUIQuadView *)self enumerateHierarchyObserversFromView:superview2 withBlock:v5];
   }
 }
 
@@ -373,27 +373,27 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
   return result;
 }
 
-- (void)addQuad:(id)a3
+- (void)addQuad:(id)quad
 {
-  v4 = a3;
-  [v4 setQuadView:self];
-  [v4 setupForQuadView:self];
-  [(NSMutableArray *)self->_mutableQuads addObject:v4];
+  quadCopy = quad;
+  [quadCopy setQuadView:self];
+  [quadCopy setupForQuadView:self];
+  [(NSMutableArray *)self->_mutableQuads addObject:quadCopy];
 
   mutableQuads = self->_mutableQuads;
 
   [(CLKUIQuadView *)self _handleQuadArrayChange:mutableQuads];
 }
 
-- (void)addQuadsFromArray:(id)a3
+- (void)addQuadsFromArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -404,7 +404,7 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -412,22 +412,22 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
         [v9 setupForQuadView:self];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableArray *)self->_mutableQuads addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_mutableQuads addObjectsFromArray:arrayCopy];
   [(CLKUIQuadView *)self _handleQuadArrayChange:self->_mutableQuads];
 }
 
-- (void)removeQuad:(id)a3
+- (void)removeQuad:(id)quad
 {
-  v4 = a3;
-  [v4 purge];
-  [v4 setQuadView:0];
-  [(NSMutableArray *)self->_mutableQuads removeObject:v4];
+  quadCopy = quad;
+  [quadCopy purge];
+  [quadCopy setQuadView:0];
+  [(NSMutableArray *)self->_mutableQuads removeObject:quadCopy];
 
   mutableQuads = self->_mutableQuads;
 
@@ -471,18 +471,18 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
   [(CLKUIQuadView *)self _handleQuadArrayChange:self->_mutableQuads];
 }
 
-- (void)_prerenderForTime:(double)a3
+- (void)_prerenderForTime:(double)time
 {
   if (*&self->_delegateRespondsTo)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained quadViewWillDisplay:self forTime:a3];
+    [WeakRetained quadViewWillDisplay:self forTime:time];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -492,10 +492,10 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
   }
 }
 
-- (void)setDebugIdentifier:(id)a3
+- (void)setDebugIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 length];
+  identifierCopy = identifier;
+  v5 = [identifierCopy length];
   if (v5)
   {
     v6 = 0;
@@ -513,7 +513,7 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
 
     do
     {
-      v8 |= [v4 characterAtIndex:v7++] << v6;
+      v8 |= [identifierCopy characterAtIndex:v7++] << v6;
       v6 += 8;
     }
 
@@ -527,7 +527,7 @@ uint64_t __103__CLKUIQuadView__sync_prepareAndRenderForTime_inGroup_checkForDraw
 
   self->_debugId = v8;
   debugIdentifier = self->_debugIdentifier;
-  self->_debugIdentifier = v4;
+  self->_debugIdentifier = identifierCopy;
 }
 
 - (CLKUIQuadViewDelegate)delegate

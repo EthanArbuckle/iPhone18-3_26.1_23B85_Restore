@@ -1,20 +1,20 @@
 @interface CNMeCardSharingSettingsHeaderViewController
-+ (double)avatarEdgeLengthForTraitCollection:(id)a3;
++ (double)avatarEdgeLengthForTraitCollection:(id)collection;
 - (CGRect)avatarViewControllerFrame;
 - (CGRect)toggleAnimationButtonFrame;
-- (CNMeCardSharingSettingsHeaderViewController)initWithAvatarProvider:(id)a3 mode:(int64_t)a4;
+- (CNMeCardSharingSettingsHeaderViewController)initWithAvatarProvider:(id)provider mode:(int64_t)mode;
 - (CNMeCardSharingSettingsHeaderViewControllerDelegate)delegate;
 - (double)availableAvatarSpace;
-- (double)desiredHeightForTraitCollection:(id)a3;
+- (double)desiredHeightForTraitCollection:(id)collection;
 - (double)maxAvatarHeight;
 - (double)maxHeight;
 - (double)minAvatarHeight;
 - (double)minHeight;
 - (double)separatorHeight;
 - (id)toggleAnimationButtonImageName;
-- (void)avatarViewControllerDidUpdateImage:(id)a3 needsLayout:(BOOL)a4;
-- (void)avatarViewControllerWasTapped:(id)a3;
-- (void)labelButtonTapped:(id)a3;
+- (void)avatarViewControllerDidUpdateImage:(id)image needsLayout:(BOOL)layout;
+- (void)avatarViewControllerWasTapped:(id)tapped;
+- (void)labelButtonTapped:(id)tapped;
 - (void)updateButtonLabel;
 - (void)updateLabelButtonFrame;
 - (void)viewDidLayoutSubviews;
@@ -30,38 +30,38 @@
   return WeakRetained;
 }
 
-- (void)avatarViewControllerWasTapped:(id)a3
+- (void)avatarViewControllerWasTapped:(id)tapped
 {
-  v4 = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
-  [v4 sharingSettingsHeaderWasTapped:self];
+  delegate = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
+  [delegate sharingSettingsHeaderWasTapped:self];
 }
 
-- (void)avatarViewControllerDidUpdateImage:(id)a3 needsLayout:(BOOL)a4
+- (void)avatarViewControllerDidUpdateImage:(id)image needsLayout:(BOOL)layout
 {
-  if (a4)
+  if (layout)
   {
-    v5 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view setNeedsLayout];
   }
 
   [(CNMeCardSharingSettingsHeaderViewController *)self updateButtonLabel];
 }
 
-- (void)labelButtonTapped:(id)a3
+- (void)labelButtonTapped:(id)tapped
 {
-  v4 = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
-  [v4 sharingSettingsHeaderWasTapped:self];
+  delegate = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
+  [delegate sharingSettingsHeaderWasTapped:self];
 }
 
 - (void)updateButtonLabel
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
-  v4 = [v3 showsPosterAnimation];
+  avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+  showsPosterAnimation = [avatarViewController showsPosterAnimation];
 
-  v5 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController hasImage];
-  if (v4)
+  hasImage = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController hasImage];
+  if (showsPosterAnimation)
   {
-    if (v5 || [(CNMeCardSharingAvatarViewController *)self->_avatarViewController isWaitingForPosterPreviews])
+    if (hasImage || [(CNMeCardSharingAvatarViewController *)self->_avatarViewController isWaitingForPosterPreviews])
     {
       v6 = @"SNAP_SHARING_POSTER_EDIT";
     }
@@ -72,7 +72,7 @@
     }
   }
 
-  else if (v5 || [(CNMeCardSharingAvatarViewController *)self->_avatarViewController isWaitingForPosterPreviews])
+  else if (hasImage || [(CNMeCardSharingAvatarViewController *)self->_avatarViewController isWaitingForPosterPreviews])
   {
     v6 = @"SHARING_EDIT";
   }
@@ -85,9 +85,9 @@
   v7 = CNContactsUIBundle();
   v11 = [v7 localizedStringForKey:v6 value:&stru_1F0CE7398 table:@"Localized"];
 
-  v8 = [(UIButton *)self->_labelButton titleLabel];
-  v9 = [v8 text];
-  v10 = [v11 isEqualToString:v9];
+  titleLabel = [(UIButton *)self->_labelButton titleLabel];
+  text = [titleLabel text];
+  v10 = [v11 isEqualToString:text];
 
   if ((v10 & 1) == 0)
   {
@@ -100,17 +100,17 @@
 {
   [(CNMeCardSharingSettingsHeaderViewController *)self maxAvatarHeight];
   v4 = v3;
-  v5 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view layoutIfNeeded];
 
-  v6 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v6 bounds];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view2 bounds];
   v7 = CGRectGetWidth(v15) + -40.0;
 
   [(UIButton *)self->_labelButton sizeThatFits:v7, 100.0];
   v9 = v8;
-  v10 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v10 safeAreaInsets];
+  view3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view3 safeAreaInsets];
   v12 = v11;
 
   v13 = 44.0;
@@ -126,17 +126,17 @@
 {
   [(CNMeCardSharingSettingsHeaderViewController *)self minAvatarHeight];
   v4 = v3;
-  v5 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view layoutIfNeeded];
 
-  v6 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v6 bounds];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view2 bounds];
   v7 = CGRectGetWidth(v15) + -40.0;
 
   [(UIButton *)self->_labelButton sizeThatFits:v7, 100.0];
   v9 = v8;
-  v10 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v10 safeAreaInsets];
+  view3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view3 safeAreaInsets];
   v12 = v11;
 
   v13 = 44.0;
@@ -150,14 +150,14 @@
 
 - (double)maxAvatarHeight
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v3 bounds];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view bounds];
   v5 = v4 + -10.0;
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (v5 > 320.0)
     {
@@ -167,8 +167,8 @@
 
   else if (![(CNMeCardSharingSettingsHeaderViewController *)self mode])
   {
-    v8 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v8 bounds];
+    view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view2 bounds];
     v5 = v9 + -40.0;
   }
 
@@ -177,16 +177,16 @@
 
 - (double)minAvatarHeight
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
-  v4 = [v3 showsPosterAnimation];
+  avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+  showsPosterAnimation = [avatarViewController showsPosterAnimation];
 
-  if (!v4)
+  if (!showsPosterAnimation)
   {
     return 130.0;
   }
 
-  v5 = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
-  [v5 viewHeight];
+  delegate = [(CNMeCardSharingSettingsHeaderViewController *)self delegate];
+  [delegate viewHeight];
   v7 = v6;
 
   return ceil(v7 / 3.0);
@@ -194,24 +194,24 @@
 
 - (double)availableAvatarSpace
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v3 frame];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view frame];
   v5 = v4;
 
   result = 0.0;
   if (v5 > 0.0)
   {
-    v7 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v7 layoutIfNeeded];
+    view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view2 layoutIfNeeded];
 
-    v8 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v8 bounds];
+    view3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view3 bounds];
     v9 = CGRectGetWidth(v16) + -40.0;
 
     [(UIButton *)self->_labelButton sizeThatFits:v9, 100.0];
     v11 = v10;
-    v12 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v12 safeAreaInsets];
+    view4 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view4 safeAreaInsets];
     v14 = v13;
 
     v15 = 44.0;
@@ -226,21 +226,21 @@
   return result;
 }
 
-- (double)desiredHeightForTraitCollection:(id)a3
+- (double)desiredHeightForTraitCollection:(id)collection
 {
   [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewControllerFrame];
   v5 = v4;
-  v6 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v6 layoutIfNeeded];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v7 bounds];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view2 bounds];
   v8 = CGRectGetWidth(v16) + -40.0;
 
   [(UIButton *)self->_labelButton sizeThatFits:v8, 100.0];
   v10 = v9;
-  v11 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v11 safeAreaInsets];
+  view3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view3 safeAreaInsets];
   v13 = v12;
 
   v14 = 44.0;
@@ -256,22 +256,22 @@
 {
   if ([(CNMeCardSharingSettingsHeaderViewController *)self isViewLoaded]&& self->_labelButton)
   {
-    v3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v3 bounds];
+    view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view bounds];
     v4 = CGRectGetWidth(v16) + -40.0;
 
     [(UIButton *)self->_labelButton sizeThatFits:v4, 100.0];
     v6 = v5;
     v8 = v7;
-    v9 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
-    [v9 showsPosterAnimation];
+    avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+    [avatarViewController showsPosterAnimation];
 
     v10 = v6 + 40.0;
-    v11 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v11 bounds];
+    view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view2 bounds];
     v12 = (CGRectGetWidth(v17) - v10) * 0.5;
-    v13 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-    [v13 frame];
+    view3 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+    [view3 frame];
     [(UIButton *)self->_labelButton setFrame:v12, CGRectGetMaxY(v18) + 16.0, v10, v8];
 
     labelButton = self->_labelButton;
@@ -287,14 +287,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
   [(CNMeCardSharingSettingsHeaderViewController *)self toggleAnimationButtonFrame];
   v13 = v12;
   [(UIButton *)self->_toggleAnimationButton setFrame:?];
-  v14 = [(UIButton *)self->_toggleAnimationButton layer];
-  [v14 setCornerRadius:v13 * 0.5];
+  layer = [(UIButton *)self->_toggleAnimationButton layer];
+  [layer setCornerRadius:v13 * 0.5];
 
   v15 = 1;
   [(UIButton *)self->_toggleAnimationButton setClipsToBounds:1];
@@ -307,11 +307,11 @@
   [(CNMeCardSharingSettingsHeaderViewController *)self updateLabelButtonFrame];
   [(CNMeCardSharingSettingsHeaderViewController *)self separatorHeight];
   v17 = v16;
-  v18 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v18 bounds];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view2 bounds];
   v19 = CGRectGetMaxY(v22) - v17;
-  v20 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v20 bounds];
+  view3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view3 bounds];
   [(UIView *)self->_separatorView setFrame:0.0, v19, CGRectGetWidth(v23), v17];
 
   v21.receiver = self;
@@ -321,8 +321,8 @@
 
 - (id)toggleAnimationButtonImageName
 {
-  v2 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
-  if ([v2 isPosterAnimationPaused])
+  avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+  if ([avatarViewController isPosterAnimationPaused])
   {
     v3 = @"play.circle.fill";
   }
@@ -339,15 +339,15 @@
 
 - (CGRect)toggleAnimationButtonFrame
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
-  v4 = [v3 isPosterAnimationPausable];
+  avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+  isPosterAnimationPausable = [avatarViewController isPosterAnimationPausable];
 
-  if (v4)
+  if (isPosterAnimationPausable)
   {
     [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewControllerFrame];
     v7 = v5 + v6 + -44.0 + -7.0;
-    v8 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    [v8 bounds];
+    view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    [view bounds];
     v10 = v9 + -44.0 + -25.0;
 
     v11 = 44.0;
@@ -373,12 +373,12 @@
 
 - (CGRect)avatarViewControllerFrame
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v8 = v7;
 
   [(CNMeCardSharingSettingsHeaderViewController *)self availableAvatarSpace];
@@ -406,9 +406,9 @@
     v15 = v14;
   }
 
-  v16 = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
+  avatarViewController = [(CNMeCardSharingSettingsHeaderViewController *)self avatarViewController];
   v17 = v15;
-  if ([v16 showsPosterAnimation])
+  if ([avatarViewController showsPosterAnimation])
   {
     v18 = v5 / v8;
     if (v5 / v8 < v8 / v5)
@@ -419,12 +419,12 @@
     v17 = v15 / v18;
   }
 
-  v19 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v19 bounds];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view bounds];
   v20 = floor((CGRectGetWidth(v28) - v17) * 0.5);
 
-  v21 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v21 safeAreaInsets];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view2 safeAreaInsets];
   v23 = v22;
 
   if (v23 >= 44.0)
@@ -449,14 +449,14 @@
 
 - (double)separatorHeight
 {
-  v3 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  v4 = [v3 window];
-  if (v4)
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v5 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 screen];
-    [v7 scale];
+    view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+    window2 = [view2 window];
+    screen = [window2 screen];
+    [screen scale];
     v9 = 1.0 / v8;
   }
 
@@ -473,34 +473,34 @@
   v35.receiver = self;
   v35.super_class = CNMeCardSharingSettingsHeaderViewController;
   [(CNMeCardSharingSettingsHeaderViewController *)&v35 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v4 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  view = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   v5 = [[CNMeCardSharingAvatarViewController alloc] initWithAvatarProvider:self->_avatarProvider mode:self->_mode];
   avatarViewController = self->_avatarViewController;
   self->_avatarViewController = v5;
 
   [(CNMeCardSharingAvatarViewController *)self->_avatarViewController setDelegate:self];
-  v7 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  v8 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-  [v7 addSubview:v8];
+  view2 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  view3 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+  [view2 addSubview:view3];
 
   [(CNMeCardSharingSettingsHeaderViewController *)self addChildViewController:self->_avatarViewController];
   [(CNMeCardSharingAvatarViewController *)self->_avatarViewController didMoveToParentViewController:self];
-  v9 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v9 setButtonSize:3];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setButtonSize:3];
   v10 = MEMORY[0x1E69DCAD8];
-  v11 = [MEMORY[0x1E69DC888] tintColor];
-  v12 = [v10 configurationWithHierarchicalColor:v11];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  v12 = [v10 configurationWithHierarchicalColor:tintColor];
   v13 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDD58]];
   v14 = [v12 configurationByApplyingConfiguration:v13];
-  [v9 setPreferredSymbolConfigurationForImage:v14];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v14];
 
   v15 = MEMORY[0x1E69DCAB8];
-  v16 = [(CNMeCardSharingSettingsHeaderViewController *)self toggleAnimationButtonImageName];
-  v17 = [v15 systemImageNamed:v16];
-  [v9 setImage:v17];
+  toggleAnimationButtonImageName = [(CNMeCardSharingSettingsHeaderViewController *)self toggleAnimationButtonImageName];
+  v17 = [v15 systemImageNamed:toggleAnimationButtonImageName];
+  [plainButtonConfiguration setImage:v17];
 
   objc_initWeak(&location, self);
   v18 = MEMORY[0x1E69DC628];
@@ -510,7 +510,7 @@
   v32[3] = &unk_1E74E4BD0;
   objc_copyWeak(&v33, &location);
   v19 = [v18 actionWithHandler:v32];
-  v20 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:v19];
+  v20 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v19];
   toggleAnimationButton = self->_toggleAnimationButton;
   self->_toggleAnimationButton = v20;
 
@@ -522,28 +522,28 @@
   v30[3] = &unk_1E74E3C58;
   objc_copyWeak(&v31, &location);
   [(UIButton *)v22 setConfigurationUpdateHandler:v30];
-  v23 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v23 addSubview:self->_toggleAnimationButton];
+  view4 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view4 addSubview:self->_toggleAnimationButton];
 
-  v24 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  [v24 setButtonSize:1];
-  [v24 setCornerStyle:4];
-  [v24 setContentInsets:{8.0, 10.0, 8.0, 10.0}];
-  v25 = [MEMORY[0x1E69DC888] labelColor];
-  [v24 setBaseForegroundColor:v25];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  [filledButtonConfiguration setButtonSize:1];
+  [filledButtonConfiguration setCornerStyle:4];
+  [filledButtonConfiguration setContentInsets:{8.0, 10.0, 8.0, 10.0}];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [filledButtonConfiguration setBaseForegroundColor:labelColor];
 
-  v26 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-  [v24 setBaseBackgroundColor:v26];
+  tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+  [filledButtonConfiguration setBaseBackgroundColor:tertiarySystemFillColor];
 
-  [v24 setTitleTextAttributesTransformer:&__block_literal_global_29115];
-  v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v24 primaryAction:0];
+  [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_29115];
+  v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
   labelButton = self->_labelButton;
   self->_labelButton = v27;
 
   [(CNMeCardSharingSettingsHeaderViewController *)self updateButtonLabel];
   [(UIButton *)self->_labelButton addTarget:self action:sel_labelButtonTapped_ forControlEvents:64];
-  v29 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
-  [v29 addSubview:self->_labelButton];
+  view5 = [(CNMeCardSharingSettingsHeaderViewController *)self view];
+  [view5 addSubview:self->_labelButton];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&v33);
@@ -583,28 +583,28 @@ id __58__CNMeCardSharingSettingsHeaderViewController_viewDidLoad__block_invoke_3
   return v2;
 }
 
-- (CNMeCardSharingSettingsHeaderViewController)initWithAvatarProvider:(id)a3 mode:(int64_t)a4
+- (CNMeCardSharingSettingsHeaderViewController)initWithAvatarProvider:(id)provider mode:(int64_t)mode
 {
-  v7 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CNMeCardSharingSettingsHeaderViewController;
   v8 = [(CNMeCardSharingSettingsHeaderViewController *)&v12 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_avatarProvider, a3);
-    v9->_mode = a4;
+    objc_storeStrong(&v8->_avatarProvider, provider);
+    v9->_mode = mode;
     v10 = v9;
   }
 
   return v9;
 }
 
-+ (double)avatarEdgeLengthForTraitCollection:(id)a3
++ (double)avatarEdgeLengthForTraitCollection:(id)collection
 {
-  v3 = [a3 verticalSizeClass];
+  verticalSizeClass = [collection verticalSizeClass];
   result = 168.0;
-  if (v3 == 1)
+  if (verticalSizeClass == 1)
   {
     return 120.0;
   }

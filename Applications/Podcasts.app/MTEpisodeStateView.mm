@@ -1,21 +1,21 @@
 @interface MTEpisodeStateView
-+ (id)imageForIconKey:(id)a3 theme:(id)a4;
++ (id)imageForIconKey:(id)key theme:(id)theme;
 + (id)orderedIconKeys;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTEpisodeStateView)init;
-- (id)_imageViewForKey:(id)a3;
+- (id)_imageViewForKey:(id)key;
 - (id)_imageViews;
 - (id)imagesForCurrentIconsExcludingPlayState;
-- (void)_setEnabled:(BOOL)a3 forFlag:(unint64_t)a4;
+- (void)_setEnabled:(BOOL)enabled forFlag:(unint64_t)flag;
 - (void)_updateIconsIfNeeded;
 - (void)_updateImageViews;
-- (void)applyThemeToImageViewWithKey:(id)a3;
+- (void)applyThemeToImageViewWithKey:(id)key;
 - (void)layoutSubviews;
-- (void)setAssetStatus:(unint64_t)a3;
-- (void)setCenteredLayout:(BOOL)a3;
-- (void)setColorTheme:(id)a3;
-- (void)setPlayStatus:(unint64_t)a3;
-- (void)setVerticalLayout:(BOOL)a3;
+- (void)setAssetStatus:(unint64_t)status;
+- (void)setCenteredLayout:(BOOL)layout;
+- (void)setColorTheme:(id)theme;
+- (void)setPlayStatus:(unint64_t)status;
+- (void)setVerticalLayout:(BOOL)layout;
 - (void)sizeToFit;
 - (void)updateSizeIfNeeded;
 @end
@@ -34,31 +34,31 @@
   return v3;
 }
 
-+ (id)imageForIconKey:(id)a3 theme:(id)a4
++ (id)imageForIconKey:(id)key theme:(id)theme
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  themeCopy = theme;
   if (qword_100583C60 != -1)
   {
     sub_1003B2C9C();
   }
 
-  v7 = [v5 unsignedIntegerValue];
-  if (v7 == 2048)
+  unsignedIntegerValue = [keyCopy unsignedIntegerValue];
+  if (unsignedIntegerValue == 2048)
   {
-    v8 = [UIImage backCatalogPartiallyPlayedIconForTheme:v6];
+    v8 = [UIImage backCatalogPartiallyPlayedIconForTheme:themeCopy];
   }
 
   else
   {
-    if (v7 == 1024)
+    if (unsignedIntegerValue == 1024)
     {
-      [UIImage backCatalogIconForTheme:v6];
+      [UIImage backCatalogIconForTheme:themeCopy];
     }
 
     else
     {
-      [qword_100583C58 objectForKeyedSubscript:v5];
+      [qword_100583C58 objectForKeyedSubscript:keyCopy];
     }
     v8 = ;
   }
@@ -95,30 +95,30 @@
   }
 }
 
-- (void)setVerticalLayout:(BOOL)a3
+- (void)setVerticalLayout:(BOOL)layout
 {
-  if (self->_verticalLayout != a3)
+  if (self->_verticalLayout != layout)
   {
-    self->_verticalLayout = a3;
+    self->_verticalLayout = layout;
     [(MTEpisodeStateView *)self setNeedsLayout];
   }
 }
 
-- (void)setCenteredLayout:(BOOL)a3
+- (void)setCenteredLayout:(BOOL)layout
 {
-  if (self->_centeredLayout != a3)
+  if (self->_centeredLayout != layout)
   {
-    self->_centeredLayout = a3;
+    self->_centeredLayout = layout;
     [(MTEpisodeStateView *)self setNeedsLayout];
   }
 }
 
-- (void)setAssetStatus:(unint64_t)a3
+- (void)setAssetStatus:(unint64_t)status
 {
-  v4 = 4u >> a3;
-  if (a3 <= 4)
+  v4 = 4u >> status;
+  if (status <= 4)
   {
-    v5 = 2u >> a3;
+    v5 = 2u >> status;
   }
 
   else
@@ -127,9 +127,9 @@
     v5 = 0;
   }
 
-  if (a3 <= 4)
+  if (status <= 4)
   {
-    v6 = 8u >> a3;
+    v6 = 8u >> status;
   }
 
   else
@@ -137,9 +137,9 @@
     v6 = 0;
   }
 
-  if (a3 <= 4)
+  if (status <= 4)
   {
-    v7 = 0x10u >> a3;
+    v7 = 0x10u >> status;
   }
 
   else
@@ -154,13 +154,13 @@
   [(MTEpisodeStateView *)self _setAirplaneMode:v7 & 1];
 }
 
-- (void)setPlayStatus:(unint64_t)a3
+- (void)setPlayStatus:(unint64_t)status
 {
   v3 = self->_icons & 0xFFFFFFFFFFFFE07FLL;
   self->_icons = v3;
-  if (a3 <= 5)
+  if (status <= 5)
   {
-    self->_icons = v3 | qword_1003FE910[a3];
+    self->_icons = v3 | qword_1003FE910[status];
   }
 
   [(MTEpisodeStateView *)self _setNeedsIconUpdate];
@@ -195,11 +195,11 @@
           if (([v9 unsignedIntegerValue] & icons) != 0)
           {
             v11 = [(MTEpisodeStateView *)self _imageViewForKey:v9];
-            v12 = [v11 image];
+            image = [v11 image];
 
-            if (v12)
+            if (image)
             {
-              [v3 addObject:v12];
+              [v3 addObject:image];
             }
           }
         }
@@ -216,14 +216,14 @@
   return v13;
 }
 
-- (void)_setEnabled:(BOOL)a3 forFlag:(unint64_t)a4
+- (void)_setEnabled:(BOOL)enabled forFlag:(unint64_t)flag
 {
   icons = self->_icons;
-  if (((((icons & a4) == 0) ^ a3) & 1) == 0)
+  if (((((icons & flag) == 0) ^ enabled) & 1) == 0)
   {
-    v5 = icons & ~a4;
-    v6 = icons | a4;
-    if (!a3)
+    v5 = icons & ~flag;
+    v6 = icons | flag;
+    if (!enabled)
     {
       v6 = v5;
     }
@@ -243,9 +243,9 @@
 
 - (void)_updateImageViews
 {
-  v3 = [(MTEpisodeStateView *)self _imageViews];
+  _imageViews = [(MTEpisodeStateView *)self _imageViews];
   v4 = [NSSet setWithArray:self->_imageViews];
-  v5 = [NSSet setWithArray:v3];
+  v5 = [NSSet setWithArray:_imageViews];
   v6 = [NSMutableSet setWithSet:v4];
   [v6 minusSet:v5];
   v25 = 0u;
@@ -313,7 +313,7 @@
   }
 
   imageViews = self->_imageViews;
-  self->_imageViews = v3;
+  self->_imageViews = _imageViews;
 }
 
 - (id)_imageViews
@@ -361,20 +361,20 @@
   return v12;
 }
 
-- (id)_imageViewForKey:(id)a3
+- (id)_imageViewForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_imageViewCache objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_imageViewCache objectForKeyedSubscript:keyCopy];
   if (!v5)
   {
-    v6 = [(MTEpisodeStateView *)self colorTheme];
-    v7 = [MTEpisodeStateView imageForIconKey:v4 theme:v6];
+    colorTheme = [(MTEpisodeStateView *)self colorTheme];
+    v7 = [MTEpisodeStateView imageForIconKey:keyCopy theme:colorTheme];
 
     if (v7)
     {
       v5 = [[UIImageView alloc] initWithImage:v7];
       [v5 sizeToFit];
-      [(NSMutableDictionary *)self->_imageViewCache setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_imageViewCache setObject:v5 forKeyedSubscript:keyCopy];
     }
 
     else
@@ -383,28 +383,28 @@
     }
   }
 
-  [(MTEpisodeStateView *)self applyThemeToImageViewWithKey:v4];
+  [(MTEpisodeStateView *)self applyThemeToImageViewWithKey:keyCopy];
 
   return v5;
 }
 
-- (void)applyThemeToImageViewWithKey:(id)a3
+- (void)applyThemeToImageViewWithKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_imageViewCache objectForKeyedSubscript:?];
-  if (v4 && [v7 unsignedIntegerValue] == 4096)
+  if (v4 && [keyCopy unsignedIntegerValue] == 4096)
   {
-    v5 = [(MTEpisodeStateView *)self colorTheme];
-    v6 = [UIColor tintColorForTheme:v5];
+    colorTheme = [(MTEpisodeStateView *)self colorTheme];
+    v6 = [UIColor tintColorForTheme:colorTheme];
     [v4 setTintColor:v6];
   }
 }
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v5 = a3;
-  objc_storeStrong(&self->_colorTheme, a3);
-  v6 = [UIColor secondaryTextColorForTheme:v5];
+  themeCopy = theme;
+  objc_storeStrong(&self->_colorTheme, theme);
+  v6 = [UIColor secondaryTextColorForTheme:themeCopy];
   [(MTEpisodeStateView *)self setTintColor:v6];
 
   imageViewCache = self->_imageViewCache;
@@ -412,8 +412,8 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000E0DB4;
   v9[3] = &unk_1004DBD28;
-  v10 = v5;
-  v8 = v5;
+  v10 = themeCopy;
+  v8 = themeCopy;
   [(NSMutableDictionary *)imageViewCache enumerateKeysAndObjectsUsingBlock:v9];
   [(MTEpisodeStateView *)self setNeedsLayout];
 }
@@ -427,19 +427,19 @@
   [(MTEpisodeStateView *)self _updateIconsIfNeeded];
   if ([(MTEpisodeStateView *)self _isRTL]&& ![(MTEpisodeStateView *)self isVerticalLayout])
   {
-    v7 = [(NSArray *)self->_imageViews reverseObjectEnumerator];
+    reverseObjectEnumerator = [(NSArray *)self->_imageViews reverseObjectEnumerator];
   }
 
   else
   {
-    v7 = [(NSArray *)self->_imageViews objectEnumerator];
+    reverseObjectEnumerator = [(NSArray *)self->_imageViews objectEnumerator];
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v7;
+  v8 = reverseObjectEnumerator;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -460,12 +460,12 @@
         [v15 frame];
         v17 = v16;
         v19 = v18;
-        v20 = [(MTEpisodeStateView *)self isVerticalLayout];
-        v21 = [(MTEpisodeStateView *)self isCenteredLayout];
-        if (v20)
+        isVerticalLayout = [(MTEpisodeStateView *)self isVerticalLayout];
+        isCenteredLayout = [(MTEpisodeStateView *)self isCenteredLayout];
+        if (isVerticalLayout)
         {
           x = v6 - v17;
-          if (v21)
+          if (isCenteredLayout)
           {
             IMRoundToPixel();
             x = v22;
@@ -480,7 +480,7 @@
         else
         {
           y = v4 - v19;
-          if (v21)
+          if (isCenteredLayout)
           {
             IMRoundToPixel();
             y = v23;
@@ -488,11 +488,11 @@
         }
 
         [v15 setFrame:{x, y, v17, v19}];
-        v24 = [(MTEpisodeStateView *)self isVerticalLayout];
+        isVerticalLayout2 = [(MTEpisodeStateView *)self isVerticalLayout];
         +[MTEpisodeStateView imagePadding];
         v26 = y + v19 + v25;
         v27 = x + v17 + v25;
-        if (v24)
+        if (isVerticalLayout2)
         {
           y = v26;
         }
@@ -510,9 +510,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MTEpisodeStateView *)self _updateIconsIfNeeded:a3.width];
+  [(MTEpisodeStateView *)self _updateIconsIfNeeded:fits.width];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -538,10 +538,10 @@
         [v11 frame];
         v13 = v12;
         v15 = v14;
-        v16 = [(MTEpisodeStateView *)self isVerticalLayout];
-        v17 = [(NSArray *)self->_imageViews lastObject];
+        isVerticalLayout = [(MTEpisodeStateView *)self isVerticalLayout];
+        lastObject = [(NSArray *)self->_imageViews lastObject];
 
-        if (v16)
+        if (isVerticalLayout)
         {
           if (v9 < v13)
           {
@@ -549,7 +549,7 @@
           }
 
           v8 = v8 + v15;
-          if (v11 != v17)
+          if (v11 != lastObject)
           {
             +[MTEpisodeStateView imagePadding];
             v8 = v8 + v18;
@@ -564,7 +564,7 @@
           }
 
           v9 = v9 + v13;
-          if (v11 != v17)
+          if (v11 != lastObject)
           {
             +[MTEpisodeStateView imagePadding];
             v9 = v9 + v19;

@@ -1,27 +1,27 @@
 @interface NUMutableRegion
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addRect:(id *)a3;
-- (void)addRegion:(id)a3;
-- (void)clipToRect:(id *)a3;
-- (void)clipToRegion:(id)a3;
-- (void)diffWithRect:(id *)a3;
-- (void)diffWithRegion:(id)a3;
-- (void)flipInRect:(id *)a3;
-- (void)growBy:(id)a3;
-- (void)growBy:(id)a3 inRect:(id *)a4;
-- (void)removeRect:(id *)a3;
-- (void)removeRegion:(id)a3;
-- (void)setRegion:(id)a3;
-- (void)shrinkBy:(id)a3;
-- (void)shrinkBy:(id)a3 inRect:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addRect:(id *)rect;
+- (void)addRegion:(id)region;
+- (void)clipToRect:(id *)rect;
+- (void)clipToRegion:(id)region;
+- (void)diffWithRect:(id *)rect;
+- (void)diffWithRegion:(id)region;
+- (void)flipInRect:(id *)rect;
+- (void)growBy:(id)by;
+- (void)growBy:(id)by inRect:(id *)rect;
+- (void)removeRect:(id *)rect;
+- (void)removeRegion:(id)region;
+- (void)setRegion:(id)region;
+- (void)shrinkBy:(id)by;
+- (void)shrinkBy:(id)by inRect:(id *)rect;
 @end
 
 @implementation NUMutableRegion
 
-- (void)shrinkBy:(id)a3 inRect:(id *)a4
+- (void)shrinkBy:(id)by inRect:(id *)rect
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 0 || a3.var1 < 0)
+  if (by.var0 < 0 || by.var1 < 0)
   {
     v6 = NUAssertLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -40,8 +40,8 @@
       if (v10)
       {
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v13;
         *&buf[12] = 2114;
@@ -52,8 +52,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -63,16 +63,16 @@
   }
 
   imp = self->super._imp;
-  var1 = a4->var1;
-  *buf = a4->var0;
+  var1 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = var1;
-  NU::Region::shrinkInRect(imp, a3.var0, a3.var1, buf);
+  NU::Region::shrinkInRect(imp, by.var0, by.var1, buf);
 }
 
-- (void)shrinkBy:(id)a3
+- (void)shrinkBy:(id)by
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 0 || a3.var1 < 0)
+  if (by.var0 < 0 || by.var1 < 0)
   {
     v4 = NUAssertLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -91,8 +91,8 @@
       if (v8)
       {
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v13 = [v12 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v13 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v19 = v11;
         v20 = 2114;
@@ -103,8 +103,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v19 = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -115,13 +115,13 @@
 
   imp = self->super._imp;
 
-  NU::Region::shrink(imp, a3.var0, a3.var1);
+  NU::Region::shrink(imp, by.var0, by.var1);
 }
 
-- (void)growBy:(id)a3 inRect:(id *)a4
+- (void)growBy:(id)by inRect:(id *)rect
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 0 || a3.var1 < 0)
+  if (by.var0 < 0 || by.var1 < 0)
   {
     v6 = NUAssertLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -140,8 +140,8 @@
       if (v10)
       {
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v13;
         *&buf[12] = 2114;
@@ -152,8 +152,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -163,17 +163,17 @@
   }
 
   imp = self->super._imp;
-  var1 = a4->var1;
-  *buf = a4->var0;
+  var1 = rect->var1;
+  *buf = rect->var0;
   *&buf[16] = var1;
-  NU::Region::grow(imp, a3.var0, a3.var1);
+  NU::Region::grow(imp, by.var0, by.var1);
   NU::Region::clip(imp, buf);
 }
 
-- (void)growBy:(id)a3
+- (void)growBy:(id)by
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3.var0 < 0 || a3.var1 < 0)
+  if (by.var0 < 0 || by.var1 < 0)
   {
     v4 = NUAssertLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -192,8 +192,8 @@
       if (v8)
       {
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v13 = [v12 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v13 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v19 = v11;
         v20 = 2114;
@@ -204,8 +204,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v19 = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -216,13 +216,13 @@
 
   imp = self->super._imp;
 
-  NU::Region::grow(imp, a3.var0, a3.var1);
+  NU::Region::grow(imp, by.var0, by.var1);
 }
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  v6 = a3;
-  v4 = v6[1];
+  regionCopy = region;
+  v4 = regionCopy[1];
   imp = self->super._imp;
   if (imp != v4)
   {
@@ -231,89 +231,89 @@
   }
 }
 
-- (void)flipInRect:(id *)a3
+- (void)flipInRect:(id *)rect
 {
   imp = self->super._imp;
-  var1 = a3->var1;
-  v5[0] = a3->var0;
+  var1 = rect->var1;
+  v5[0] = rect->var0;
   v5[1] = var1;
   NU::Region::flipInRect(imp, v5);
 }
 
-- (void)diffWithRegion:(id)a3
+- (void)diffWithRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    NU::Region::diff(self->super._imp, *(a3 + 1));
+    NU::Region::diff(self->super._imp, *(region + 1));
   }
 }
 
-- (void)diffWithRect:(id *)a3
+- (void)diffWithRect:(id *)rect
 {
   imp = self->super._imp;
-  var1 = a3->var1;
-  v5[0] = a3->var0;
+  var1 = rect->var1;
+  v5[0] = rect->var0;
   v5[1] = var1;
   NU::Region::diff(imp, v5);
 }
 
-- (void)clipToRegion:(id)a3
+- (void)clipToRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    NU::Region::clip(self->super._imp, *(a3 + 1));
+    NU::Region::clip(self->super._imp, *(region + 1));
   }
 }
 
-- (void)clipToRect:(id *)a3
+- (void)clipToRect:(id *)rect
 {
   imp = self->super._imp;
-  var1 = a3->var1;
-  v5[0] = a3->var0;
+  var1 = rect->var1;
+  v5[0] = rect->var0;
   v5[1] = var1;
   NU::Region::clip(imp, v5);
 }
 
-- (void)removeRegion:(id)a3
+- (void)removeRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
     imp = self->super._imp;
-    NU::Region::breakRects(*(a3 + 1), imp);
+    NU::Region::breakRects(*(region + 1), imp);
 
     NU::Region::mergeRectsVertically(imp);
   }
 }
 
-- (void)addRegion:(id)a3
+- (void)addRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    NU::Region::add(self->super._imp, *(a3 + 1));
+    NU::Region::add(self->super._imp, *(region + 1));
   }
 }
 
-- (void)removeRect:(id *)a3
+- (void)removeRect:(id *)rect
 {
   imp = self->super._imp;
-  var1 = a3->var1;
-  v5[0] = a3->var0;
+  var1 = rect->var1;
+  v5[0] = rect->var0;
   v5[1] = var1;
   NU::Region::remove(imp, v5);
 }
 
-- (void)addRect:(id *)a3
+- (void)addRect:(id *)rect
 {
   imp = self->super._imp;
-  var1 = a3->var1;
-  v5[0] = a3->var0;
+  var1 = rect->var1;
+  v5[0] = rect->var0;
   v5[1] = var1;
   NU::Region::add(imp, v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NURegion allocWithZone:a3];
+  v4 = [NURegion allocWithZone:zone];
 
   return [(NURegion *)v4 initWithRegion:self];
 }

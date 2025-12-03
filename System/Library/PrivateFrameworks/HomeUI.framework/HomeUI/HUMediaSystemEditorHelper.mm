@@ -1,29 +1,29 @@
 @interface HUMediaSystemEditorHelper
 - (HFMediaSystemBuilder)mediaSystemBuilder;
-- (HUMediaSystemEditorHelper)initWithDelegate:(id)a3;
+- (HUMediaSystemEditorHelper)initWithDelegate:(id)delegate;
 - (HUMediaSystemEditorHelperDelegate)delegate;
 - (id)_authKitContextGenerator;
 - (id)_checkIfAccessoriesNeedSoftwareUpdateToSupportPairing;
-- (id)_executeAppleMusicAccountReconcilationForMediaSystemBuilder:(id)a3;
-- (id)_executePreferredMediaUserReconcilationForMediaSystemBuilder:(id)a3;
+- (id)_executeAppleMusicAccountReconcilationForMediaSystemBuilder:(id)builder;
+- (id)_executePreferredMediaUserReconcilationForMediaSystemBuilder:(id)builder;
 - (id)_promptForRoomChange;
 - (id)createMediaSystem;
-- (id)createMediaSystemWithAccessory:(id)a3;
-- (void)_configureMediaSystemBuilderToMoveHomePodsToRoom:(id)a3;
+- (id)createMediaSystemWithAccessory:(id)accessory;
+- (void)_configureMediaSystemBuilderToMoveHomePodsToRoom:(id)room;
 @end
 
 @implementation HUMediaSystemEditorHelper
 
-- (HUMediaSystemEditorHelper)initWithDelegate:(id)a3
+- (HUMediaSystemEditorHelper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HUMediaSystemEditorHelper;
   v5 = [(HUMediaSystemEditorHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -31,18 +31,18 @@
 
 - (HFMediaSystemBuilder)mediaSystemBuilder
 {
-  v2 = [(HUMediaSystemEditorHelper *)self delegate];
-  v3 = [v2 mediaSystemBuilder];
+  delegate = [(HUMediaSystemEditorHelper *)self delegate];
+  mediaSystemBuilder = [delegate mediaSystemBuilder];
 
-  return v3;
+  return mediaSystemBuilder;
 }
 
-- (id)createMediaSystemWithAccessory:(id)a3
+- (id)createMediaSystemWithAccessory:(id)accessory
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
-  if (v6 && (v7 = v6, -[HUMediaSystemEditorHelper inFlightCommitFuture](self, "inFlightCommitFuture"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isFinished], v8, v7, (v9 & 1) == 0))
+  accessoryCopy = accessory;
+  inFlightCommitFuture = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
+  if (inFlightCommitFuture && (v7 = inFlightCommitFuture, -[HUMediaSystemEditorHelper inFlightCommitFuture](self, "inFlightCommitFuture"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isFinished], v8, v7, (v9 & 1) == 0))
   {
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -53,7 +53,7 @@
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_INFO, "Skipping '%@'; createNewMediaSystem already in progress.", buf, 0xCu);
     }
 
-    v21 = 0;
+    createMediaSystem = 0;
   }
 
   else
@@ -62,10 +62,10 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-    v11 = [v10 accessories];
+    mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+    accessories = [mediaSystemBuilder accessories];
 
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v12 = [accessories countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -76,63 +76,63 @@
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accessories);
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-          v18 = [v17 firstSetupSourceAccessory];
+          mediaSystemBuilder2 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+          firstSetupSourceAccessory = [mediaSystemBuilder2 firstSetupSourceAccessory];
 
-          if (v16 != v18)
+          if (v16 != firstSetupSourceAccessory)
           {
-            v19 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-            [v19 removeAccessory:v16];
+            mediaSystemBuilder3 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+            [mediaSystemBuilder3 removeAccessory:v16];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v13 = [accessories countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v13);
     }
 
-    v20 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-    [v20 addAccessory:v5];
+    mediaSystemBuilder4 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+    [mediaSystemBuilder4 addAccessory:accessoryCopy];
 
-    v21 = [(HUMediaSystemEditorHelper *)self createMediaSystem];
+    createMediaSystem = [(HUMediaSystemEditorHelper *)self createMediaSystem];
   }
 
-  return v21;
+  return createMediaSystem;
 }
 
 - (id)createMediaSystem
 {
-  v3 = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
-  if (v3 && (v4 = v3, -[HUMediaSystemEditorHelper inFlightCommitFuture](self, "inFlightCommitFuture"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFinished], v5, v4, (v6 & 1) == 0))
+  inFlightCommitFuture = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
+  if (inFlightCommitFuture && (v4 = inFlightCommitFuture, -[HUMediaSystemEditorHelper inFlightCommitFuture](self, "inFlightCommitFuture"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFinished], v5, v4, (v6 & 1) == 0))
   {
-    v17 = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
+    inFlightCommitFuture2 = [(HUMediaSystemEditorHelper *)self inFlightCommitFuture];
   }
 
   else
   {
-    v7 = [(HUMediaSystemEditorHelper *)self delegate];
-    [v7 mediaSystemEditorHelperDidBeginCommitting:self];
+    delegate = [(HUMediaSystemEditorHelper *)self delegate];
+    [delegate mediaSystemEditorHelperDidBeginCommitting:self];
 
-    v8 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+    mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
     objc_initWeak(&location, self);
-    v9 = [(HUMediaSystemEditorHelper *)self _checkIfAccessoriesNeedSoftwareUpdateToSupportPairing];
+    _checkIfAccessoriesNeedSoftwareUpdateToSupportPairing = [(HUMediaSystemEditorHelper *)self _checkIfAccessoriesNeedSoftwareUpdateToSupportPairing];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke;
     v29[3] = &unk_277DBEB10;
     v29[4] = self;
-    v10 = [v9 flatMap:v29];
+    v10 = [_checkIfAccessoriesNeedSoftwareUpdateToSupportPairing flatMap:v29];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_2;
     v27[3] = &unk_277DBE078;
     v27[4] = self;
-    v11 = v8;
+    v11 = mediaSystemBuilder;
     v28 = v11;
     v12 = [v10 flatMap:v27];
     v26[0] = MEMORY[0x277D85DD0];
@@ -155,21 +155,21 @@
     v22[3] = &unk_277DBAFF8;
     v16 = v14;
     v23 = v16;
-    v17 = [v15 flatMap:v22];
+    inFlightCommitFuture2 = [v15 flatMap:v22];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_6;
     v20[3] = &unk_277DB8CA8;
     objc_copyWeak(&v21, &location);
-    v18 = [v17 addCompletionBlock:v20];
-    [(HUMediaSystemEditorHelper *)self setInFlightCommitFuture:v17];
+    v18 = [inFlightCommitFuture2 addCompletionBlock:v20];
+    [(HUMediaSystemEditorHelper *)self setInFlightCommitFuture:inFlightCommitFuture2];
     objc_destroyWeak(&v21);
 
     objc_destroyWeak(&location);
   }
 
-  return v17;
+  return inFlightCommitFuture2;
 }
 
 id __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_3(uint64_t a1)
@@ -218,14 +218,14 @@ void __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_7(uint64_t 
 {
   v36 = *MEMORY[0x277D85DE8];
   v24 = objc_opt_new();
-  v21 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  v3 = [v21 accessories];
-  v22 = [v3 na_map:&__block_literal_global_140];
+  mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  accessories = [mediaSystemBuilder accessories];
+  v22 = [accessories na_map:&__block_literal_global_140];
 
   if ([v22 count] == 1)
   {
-    v4 = [v22 anyObject];
-    [v24 finishWithResult:v4];
+    anyObject = [v22 anyObject];
+    [v24 finishWithResult:anyObject];
   }
 
   else
@@ -233,8 +233,8 @@ void __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_7(uint64_t 
     objc_initWeak(&location, self);
     v20 = _HULocalizedStringWithDefaultValue(@"HUMediaSystemEditorGridViewControllerRoomChangeAlertTitle", @"HUMediaSystemEditorGridViewControllerRoomChangeAlertTitle", 1);
     v5 = [MEMORY[0x277D75110] alertControllerWithTitle:? message:? preferredStyle:?];
-    v6 = [v22 allObjects];
-    v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_10_0];
+    allObjects = [v22 allObjects];
+    v7 = [allObjects sortedArrayUsingComparator:&__block_literal_global_10_0];
 
     v32 = 0u;
     v33 = 0u;
@@ -256,7 +256,7 @@ void __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_7(uint64_t 
 
           v11 = *(*(&v30 + 1) + 8 * i);
           v12 = MEMORY[0x277D750F8];
-          v13 = [v11 name];
+          name = [v11 name];
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
           v27[2] = __49__HUMediaSystemEditorHelper__promptForRoomChange__block_invoke_3;
@@ -264,7 +264,7 @@ void __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_7(uint64_t 
           objc_copyWeak(&v29, &location);
           v27[4] = v11;
           v28 = v24;
-          v14 = [v12 actionWithTitle:v13 style:0 handler:v27];
+          v14 = [v12 actionWithTitle:name style:0 handler:v27];
           [v5 addAction:v14];
 
           objc_destroyWeak(&v29);
@@ -286,8 +286,8 @@ void __46__HUMediaSystemEditorHelper_createMediaSystem__block_invoke_7(uint64_t 
     v17 = [v15 actionWithTitle:v16 style:1 handler:v25];
     [v5 addAction:v17];
 
-    v18 = [(HUMediaSystemEditorHelper *)self delegate];
-    [v18 mediaSystemEditorHelper:self needsToPresentViewController:v5 animated:1 completion:0];
+    delegate = [(HUMediaSystemEditorHelper *)self delegate];
+    [delegate mediaSystemEditorHelper:self needsToPresentViewController:v5 animated:1 completion:0];
 
     objc_destroyWeak(&location);
   }
@@ -319,35 +319,35 @@ void __49__HUMediaSystemEditorHelper__promptForRoomChange__block_invoke_4(uint64
   [v1 finishWithError:v2];
 }
 
-- (void)_configureMediaSystemBuilderToMoveHomePodsToRoom:(id)a3
+- (void)_configureMediaSystemBuilderToMoveHomePodsToRoom:(id)room
 {
   v4 = MEMORY[0x277D149D8];
-  v5 = a3;
+  roomCopy = room;
   v6 = [v4 alloc];
-  v7 = [v5 home];
-  v8 = [v6 initWithExistingObject:v5 inHome:v7];
+  home = [roomCopy home];
+  v8 = [v6 initWithExistingObject:roomCopy inHome:home];
 
-  v9 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  [v9 setRoom:v8];
+  mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  [mediaSystemBuilder setRoom:v8];
 
-  v11 = [(HUMediaSystemEditorHelper *)self delegate];
-  v10 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  [v11 mediaSystemEditorHelper:self didModifyMediaSystemBuilder:v10];
+  delegate = [(HUMediaSystemEditorHelper *)self delegate];
+  mediaSystemBuilder2 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  [delegate mediaSystemEditorHelper:self didModifyMediaSystemBuilder:mediaSystemBuilder2];
 }
 
-- (id)_executePreferredMediaUserReconcilationForMediaSystemBuilder:(id)a3
+- (id)_executePreferredMediaUserReconcilationForMediaSystemBuilder:(id)builder
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  v6 = [v5 accessories];
+  builderCopy = builder;
+  mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  accessories = [mediaSystemBuilder accessories];
 
   v7 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v8 = v6;
+  v8 = accessories;
   v9 = [v8 countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (v9)
   {
@@ -362,8 +362,8 @@ void __49__HUMediaSystemEditorHelper__promptForRoomChange__block_invoke_4(uint64
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v60 + 1) + 8 * i) preferredMediaUser];
-        [v7 na_safeAddObject:v13];
+        preferredMediaUser = [*(*(&v60 + 1) + 8 * i) preferredMediaUser];
+        [v7 na_safeAddObject:preferredMediaUser];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v60 objects:v65 count:16];
@@ -376,15 +376,15 @@ void __49__HUMediaSystemEditorHelper__promptForRoomChange__block_invoke_4(uint64
   {
     v14 = MEMORY[0x277D2C900];
 LABEL_10:
-    v15 = [v14 futureWithNoResult];
+    futureWithNoResult = [v14 futureWithNoResult];
     goto LABEL_22;
   }
 
   if ([v7 count] == 1)
   {
     v16 = MEMORY[0x277D2C900];
-    v17 = [v7 anyObject];
-    v15 = [v16 futureWithResult:v17];
+    anyObject = [v7 anyObject];
+    futureWithNoResult = [v16 futureWithResult:anyObject];
   }
 
   else
@@ -397,8 +397,8 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v41 = self;
-    v42 = v4;
+    selfCopy = self;
+    v42 = builderCopy;
     v44 = objc_opt_new();
     v40 = objc_opt_new();
     v20 = MEMORY[0x277D75110];
@@ -426,14 +426,14 @@ LABEL_10:
 
           v27 = *(*(&v56 + 1) + 8 * j);
           v28 = MEMORY[0x277D750F8];
-          v29 = [v27 name];
+          name = [v27 name];
           v53[0] = MEMORY[0x277D85DD0];
           v53[1] = 3221225472;
           v53[2] = __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMediaSystemBuilder___block_invoke;
           v53[3] = &unk_277DBBD90;
           v54 = v44;
           v55 = v27;
-          v30 = [v28 actionWithTitle:v29 style:0 handler:v53];
+          v30 = [v28 actionWithTitle:name style:0 handler:v53];
           [v22 addAction:v30];
         }
 
@@ -454,31 +454,31 @@ LABEL_10:
     v34 = [v31 actionWithTitle:v32 style:1 handler:v51];
     [v22 addAction:v34];
 
-    v35 = [(HUMediaSystemEditorHelper *)v41 delegate];
+    delegate = [(HUMediaSystemEditorHelper *)selfCopy delegate];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMediaSystemBuilder___block_invoke_3;
     v49[3] = &unk_277DB8488;
     v36 = v40;
     v50 = v36;
-    [v35 mediaSystemEditorHelper:v41 needsToPresentViewController:v22 animated:1 completion:v49];
+    [delegate mediaSystemEditorHelper:selfCopy needsToPresentViewController:v22 animated:1 completion:v49];
 
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMediaSystemBuilder___block_invoke_4;
     v45[3] = &unk_277DBEB60;
-    v4 = v42;
+    builderCopy = v42;
     v46 = v42;
     v47 = v33;
     v48 = v36;
     v37 = v36;
     v38 = v33;
-    v15 = [v38 flatMap:v45];
+    futureWithNoResult = [v38 flatMap:v45];
   }
 
 LABEL_22:
 
-  return v15;
+  return futureWithNoResult;
 }
 
 void __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMediaSystemBuilder___block_invoke_2(uint64_t a1)
@@ -502,15 +502,15 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
   return v4;
 }
 
-- (id)_executeAppleMusicAccountReconcilationForMediaSystemBuilder:(id)a3
+- (id)_executeAppleMusicAccountReconcilationForMediaSystemBuilder:(id)builder
 {
   v67 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v3 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  v38 = [v3 accessories];
+  builderCopy = builder;
+  mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  accessories = [mediaSystemBuilder accessories];
 
-  v4 = [v38 na_all:&__block_literal_global_25_2];
-  v5 = [v38 na_map:&__block_literal_global_27];
+  v4 = [accessories na_all:&__block_literal_global_25_2];
+  v5 = [accessories na_map:&__block_literal_global_27];
   v6 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
@@ -531,8 +531,8 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
         }
 
         v11 = *(*(&v61 + 1) + 8 * i);
-        v12 = [v11 username];
-        [v6 setObject:v11 forKey:v12];
+        username = [v11 username];
+        [v6 setObject:v11 forKey:username];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v61 objects:v66 count:16];
@@ -542,8 +542,8 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
   }
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [v6 allValues];
-  v39 = [v13 setWithArray:v14];
+  allValues = [v6 allValues];
+  v39 = [v13 setWithArray:allValues];
 
   if ([v39 count])
   {
@@ -551,8 +551,8 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
     v16 = MEMORY[0x277D2C900];
     if ((v15 & v4) == 1)
     {
-      v17 = [v39 anyObject];
-      v18 = [v16 futureWithResult:v17];
+      anyObject = [v39 anyObject];
+      futureWithNoResult = [v16 futureWithResult:anyObject];
     }
 
     else
@@ -563,7 +563,7 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
       {
         v19 = MEMORY[0x277D75110];
         v20 = _HULocalizedStringWithDefaultValue(@"HUMediaSystemEditorViewControllerAccountSelectionAlertTitle", @"HUMediaSystemEditorViewControllerAccountSelectionAlertTitle", 1);
-        v42 = [v19 alertControllerWithTitle:v20 message:0 preferredStyle:1];
+        anyObject2 = [v19 alertControllerWithTitle:v20 message:0 preferredStyle:1];
 
         v59 = 0u;
         v60 = 0u;
@@ -585,15 +585,15 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
 
               v24 = *(*(&v57 + 1) + 8 * j);
               v25 = MEMORY[0x277D750F8];
-              v26 = [v24 username];
+              username2 = [v24 username];
               v54[0] = MEMORY[0x277D85DD0];
               v54[1] = 3221225472;
               v54[2] = __89__HUMediaSystemEditorHelper__executeAppleMusicAccountReconcilationForMediaSystemBuilder___block_invoke_3;
               v54[3] = &unk_277DBBD90;
               v55 = v41;
               v56 = v24;
-              v27 = [v25 actionWithTitle:v26 style:0 handler:v54];
-              [v42 addAction:v27];
+              v27 = [v25 actionWithTitle:username2 style:0 handler:v54];
+              [anyObject2 addAction:v27];
             }
 
             v21 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
@@ -610,22 +610,22 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
         v52[3] = &unk_277DB7600;
         v53 = v41;
         v30 = [v28 actionWithTitle:v29 style:1 handler:v52];
-        [v42 addAction:v30];
+        [anyObject2 addAction:v30];
 
-        v31 = [(HUMediaSystemEditorHelper *)self delegate];
+        delegate = [(HUMediaSystemEditorHelper *)self delegate];
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __89__HUMediaSystemEditorHelper__executeAppleMusicAccountReconcilationForMediaSystemBuilder___block_invoke_5;
         v50[3] = &unk_277DB8488;
         v51 = v35;
-        [v31 mediaSystemEditorHelper:self needsToPresentViewController:v42 animated:1 completion:v50];
+        [delegate mediaSystemEditorHelper:self needsToPresentViewController:anyObject2 animated:1 completion:v50];
       }
 
       else
       {
         [v35 finishWithNoResult];
-        v42 = [v39 anyObject];
-        [v41 finishWithResult:v42];
+        anyObject2 = [v39 anyObject];
+        [v41 finishWithResult:anyObject2];
       }
 
       objc_initWeak(&location, self);
@@ -634,13 +634,13 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
       v43[2] = __89__HUMediaSystemEditorHelper__executeAppleMusicAccountReconcilationForMediaSystemBuilder___block_invoke_6;
       v43[3] = &unk_277DBEBB0;
       objc_copyWeak(&v48, &location);
-      v44 = v38;
-      v45 = v37;
+      v44 = accessories;
+      v45 = builderCopy;
       v32 = v41;
       v46 = v32;
       v33 = v35;
       v47 = v33;
-      v18 = [v32 flatMap:v43];
+      futureWithNoResult = [v32 flatMap:v43];
 
       objc_destroyWeak(&v48);
       objc_destroyWeak(&location);
@@ -649,10 +649,10 @@ id __90__HUMediaSystemEditorHelper__executePreferredMediaUserReconcilationForMed
 
   else
   {
-    v18 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v18;
+  return futureWithNoResult;
 }
 
 BOOL __89__HUMediaSystemEditorHelper__executeAppleMusicAccountReconcilationForMediaSystemBuilder___block_invoke(uint64_t a1, void *a2)
@@ -771,29 +771,29 @@ id __53__HUMediaSystemEditorHelper__authKitContextGenerator__block_invoke_2(uint
 
 - (id)_checkIfAccessoriesNeedSoftwareUpdateToSupportPairing
 {
-  v3 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-  v4 = [v3 accessories];
-  v5 = [v4 na_filter:&__block_literal_global_47_0];
+  mediaSystemBuilder = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+  accessories = [mediaSystemBuilder accessories];
+  v5 = [accessories na_filter:&__block_literal_global_47_0];
 
   if ([v5 count])
   {
-    v6 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-    v7 = [v6 firstSetupSourceAccessory];
+    mediaSystemBuilder2 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+    firstSetupSourceAccessory = [mediaSystemBuilder2 firstSetupSourceAccessory];
 
-    v8 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
-    v9 = [v8 accessories];
-    v10 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v7];
-    v11 = [v9 na_setByRemovingObjectsFromSet:v10];
-    v12 = [v11 anyObject];
+    mediaSystemBuilder3 = [(HUMediaSystemEditorHelper *)self mediaSystemBuilder];
+    accessories2 = [mediaSystemBuilder3 accessories];
+    v10 = [MEMORY[0x277CBEB98] na_setWithSafeObject:firstSetupSourceAccessory];
+    v11 = [accessories2 na_setByRemovingObjectsFromSet:v10];
+    anyObject = [v11 anyObject];
 
-    if ([v7 hf_needsSoftwareUpdateToSupportBeingAddedToMediaSystem])
+    if ([firstSetupSourceAccessory hf_needsSoftwareUpdateToSupportBeingAddedToMediaSystem])
     {
-      v13 = v7;
+      v13 = firstSetupSourceAccessory;
     }
 
     else
     {
-      v13 = v12;
+      v13 = anyObject;
     }
 
     v14 = v13;
@@ -825,15 +825,15 @@ id __53__HUMediaSystemEditorHelper__authKitContextGenerator__block_invoke_2(uint
     v27 = [v24 actionWithTitle:v25 style:1 handler:v35];
     [v19 addAction:v27];
 
-    v28 = [(HUMediaSystemEditorHelper *)self delegate];
-    [v28 mediaSystemEditorHelper:self needsToPresentViewController:v19 animated:1 completion:0];
+    delegate = [(HUMediaSystemEditorHelper *)self delegate];
+    [delegate mediaSystemEditorHelper:self needsToPresentViewController:v19 animated:1 completion:0];
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __82__HUMediaSystemEditorHelper__checkIfAccessoriesNeedSoftwareUpdateToSupportPairing__block_invoke_4;
     v32[3] = &unk_277DBD4E0;
     v33 = v14;
-    v34 = self;
+    selfCopy = self;
     v29 = v14;
     v30 = [v26 flatMap:v32];
   }

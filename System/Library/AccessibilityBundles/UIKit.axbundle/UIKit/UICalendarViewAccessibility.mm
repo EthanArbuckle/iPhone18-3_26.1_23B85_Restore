@@ -1,23 +1,23 @@
 @interface UICalendarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_configuedCellForCollectionView:(id)a3 indexPath:(id)a4 day:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_configuedCellForCollectionView:(id)view indexPath:(id)path day:(id)day;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateVisibleMonth;
 - (void)_axMarkupSubviews;
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4 updateDataSource:(BOOL)a5 updateCollectionView:(BOOL)a6 notifyDelegate:(BOOL)a7;
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated updateDataSource:(BOOL)source updateCollectionView:(BOOL)view notifyDelegate:(BOOL)delegate;
 - (void)_setupViewHierarchy;
 @end
 
 @implementation UICalendarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UICalendarView";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v3 = "v";
@@ -40,23 +40,23 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UICalendarViewAccessibility;
   [(UICalendarViewAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UICalendarViewAccessibility *)v4 _axMarkupSubviews];
-  [(UICalendarViewAccessibility *)v4 _accessibilityUpdateVisibleMonth];
+  [(UICalendarViewAccessibility *)selfCopy _axMarkupSubviews];
+  [(UICalendarViewAccessibility *)selfCopy _accessibilityUpdateVisibleMonth];
 }
 
 - (void)_axMarkupSubviews
 {
-  v10 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v8 = 0;
     objc_opt_class();
-    v2 = [v10 safeValueForKey:@"_collectionView"];
+    v2 = [selfCopy safeValueForKey:@"_collectionView"];
     v7 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v2);
     v6 = MEMORY[0x29EDC9748](v7);
@@ -76,25 +76,25 @@
 
 - (void)_setupViewHierarchy
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UICalendarViewAccessibility;
   [(UICalendarViewAccessibility *)&v2 _setupViewHierarchy];
-  [(UICalendarViewAccessibility *)v4 _axMarkupSubviews];
+  [(UICalendarViewAccessibility *)selfCopy _axMarkupSubviews];
 }
 
-- (id)_configuedCellForCollectionView:(id)a3 indexPath:(id)a4 day:(id)a5
+- (id)_configuedCellForCollectionView:(id)view indexPath:(id)path day:(id)day
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, path);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v25.receiver = v30;
+  objc_storeStrong(&v27, day);
+  v25.receiver = selfCopy;
   v25.super_class = UICalendarViewAccessibility;
   v26 = [(UICalendarViewAccessibility *)&v25 _configuedCellForCollectionView:location[0] indexPath:v28 day:v27];
   v9 = v26;
@@ -105,7 +105,7 @@
   v23 = &unk_29F30CDE8;
   v24 = MEMORY[0x29EDC9748](v27);
   [v9 _setAccessibilityLabelBlock:&v19];
-  objc_initWeak(&v18, v30);
+  objc_initWeak(&v18, selfCopy);
   v10 = v26;
   v11 = MEMORY[0x29EDCA5F8];
   v12 = -1073741824;
@@ -177,30 +177,30 @@ uint64_t __77__UICalendarViewAccessibility__configuedCellForCollectionView_index
   return v6;
 }
 
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4 updateDataSource:(BOOL)a5 updateCollectionView:(BOOL)a6 notifyDelegate:(BOOL)a7
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated updateDataSource:(BOOL)source updateCollectionView:(BOOL)view notifyDelegate:(BOOL)delegate
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  v14 = a5;
-  v13 = a6;
-  v12 = a7;
-  v11.receiver = v17;
+  objc_storeStrong(location, month);
+  animatedCopy = animated;
+  sourceCopy = source;
+  viewCopy = view;
+  delegateCopy = delegate;
+  v11.receiver = selfCopy;
   v11.super_class = UICalendarViewAccessibility;
-  [(UICalendarViewAccessibility *)&v11 _setVisibleMonth:location[0] animated:a4 updateDataSource:a5 updateCollectionView:a6 notifyDelegate:a7];
-  [(UICalendarViewAccessibility *)v17 _accessibilityUpdateVisibleMonth];
+  [(UICalendarViewAccessibility *)&v11 _setVisibleMonth:location[0] animated:animated updateDataSource:source updateCollectionView:view notifyDelegate:delegate];
+  [(UICalendarViewAccessibility *)selfCopy _accessibilityUpdateVisibleMonth];
   objc_storeStrong(location, 0);
 }
 
 - (void)_accessibilityUpdateVisibleMonth
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = 0;
   objc_opt_class();
-  v2 = [(UICalendarViewAccessibility *)v8 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+  v2 = [(UICalendarViewAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v5 = __UIAccessibilityCastAsSafeCategory();
   MEMORY[0x29EDC9740](v2);
   v4 = MEMORY[0x29EDC9748](v5);

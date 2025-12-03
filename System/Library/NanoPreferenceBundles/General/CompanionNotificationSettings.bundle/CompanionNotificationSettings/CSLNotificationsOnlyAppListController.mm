@@ -1,26 +1,26 @@
 @interface CSLNotificationsOnlyAppListController
 - (id)localizedMirroringDetailFooter;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CSLNotificationsOnlyAppListController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"bundleID"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"bundleID"];
   v6 = [v5 copy];
   bundleID = self->_bundleID;
   self->_bundleID = v6;
 
-  v8 = [v4 propertyForKey:@"localizedName"];
+  v8 = [specifierCopy propertyForKey:@"localizedName"];
   v9 = [v8 copy];
   paneTitle = self->_paneTitle;
   self->_paneTitle = v9;
 
   v11.receiver = self;
   v11.super_class = CSLNotificationsOnlyAppListController;
-  [(CSLNotificationsOnlyAppListController *)&v11 setSpecifier:v4];
+  [(CSLNotificationsOnlyAppListController *)&v11 setSpecifier:specifierCopy];
 }
 
 - (id)localizedMirroringDetailFooter

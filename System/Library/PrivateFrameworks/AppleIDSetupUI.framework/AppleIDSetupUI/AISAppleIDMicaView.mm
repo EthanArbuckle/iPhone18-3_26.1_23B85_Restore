@@ -1,18 +1,18 @@
 @interface AISAppleIDMicaView
-- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithCoder:(id)a3;
-- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithFrame:(CGRect)a3;
+- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithCoder:(id)coder;
+- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AISAppleIDMicaView
 
-- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithCoder:(id)a3
+- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14AppleIDSetupUI18AISAppleIDMicaView_micaPlayer) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for AISAppleIDMicaView();
-  v4 = a3;
-  v5 = [(AISAppleIDMicaView *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AISAppleIDMicaView *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -23,19 +23,19 @@
   return v6;
 }
 
-- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithFrame:(CGRect)a3
+- (_TtC14AppleIDSetupUI18AISAppleIDMicaView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14AppleIDSetupUI18AISAppleIDMicaView_micaPlayer) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for AISAppleIDMicaView();
-  v7 = [(AISAppleIDMicaView *)&v9 initWithFrame:x, y, width, height];
+  height = [(AISAppleIDMicaView *)&v9 initWithFrame:x, y, width, height];
   sub_24091E5A4();
 
-  return v7;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -48,10 +48,10 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 layer];
-    [v4 moveAndResizeWithinParentLayer:v5 usingGravity:*MEMORY[0x277CDA710] animate:0];
+    layer = [v2 layer];
+    [v4 moveAndResizeWithinParentLayer:layer usingGravity:*MEMORY[0x277CDA710] animate:0];
 
-    v2 = v5;
+    v2 = layer;
   }
 }
 

@@ -1,19 +1,19 @@
 @interface RMStatusPublisherDelegate
-+ (id)sharedDelegateWithPublisherClass:(Class)a3;
-- (RMStatusPublisherDelegate)initWithPublisherClass:(Class)a3;
-- (id)_filterSupportedStatus:(id)a3 store:(id)a4 unsupported:(id)a5;
-- (void)fetchStatusForStatusKeys:(id)a3 store:(id)a4 completionHandler:(id)a5;
++ (id)sharedDelegateWithPublisherClass:(Class)class;
+- (RMStatusPublisherDelegate)initWithPublisherClass:(Class)class;
+- (id)_filterSupportedStatus:(id)status store:(id)store unsupported:(id)unsupported;
+- (void)fetchStatusForStatusKeys:(id)keys store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation RMStatusPublisherDelegate
 
-+ (id)sharedDelegateWithPublisherClass:(Class)a3
++ (id)sharedDelegateWithPublisherClass:(Class)class
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RMStatusPublisherDelegate_sharedDelegateWithPublisherClass___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0lu32l8;
-  block[4] = a3;
+  block[4] = class;
   if (sharedDelegateWithPublisherClass__onceToken != -1)
   {
     dispatch_once(&sharedDelegateWithPublisherClass__onceToken, block);
@@ -31,7 +31,7 @@ uint64_t __62__RMStatusPublisherDelegate_sharedDelegateWithPublisherClass___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (RMStatusPublisherDelegate)initWithPublisherClass:(Class)a3
+- (RMStatusPublisherDelegate)initWithPublisherClass:(Class)class
 {
   v15.receiver = self;
   v15.super_class = RMStatusPublisherDelegate;
@@ -39,7 +39,7 @@ uint64_t __62__RMStatusPublisherDelegate_sharedDelegateWithPublisherClass___bloc
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_publisherClass, a3);
+    objc_storeStrong(&v4->_publisherClass, class);
     v6 = dispatch_queue_create("com.apple.rmstore.publisher", 0);
     publisherQueue = v5->_publisherQueue;
     v5->_publisherQueue = v6;
@@ -56,38 +56,38 @@ uint64_t __62__RMStatusPublisherDelegate_sharedDelegateWithPublisherClass___bloc
   return v5;
 }
 
-- (void)fetchStatusForStatusKeys:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)fetchStatusForStatusKeys:(id)keys store:(id)store completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  storeCopy = store;
+  handlerCopy = handler;
   v11 = self->_fetchLock;
   [(RMSharedLock *)v11 lock];
   v12 = NSStringFromClass([(RMStatusPublisherDelegate *)self publisherClass]);
-  v13 = [MEMORY[0x277D45F58] statusPublisherDelegate];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  statusPublisherDelegate = [MEMORY[0x277D45F58] statusPublisherDelegate];
+  if (os_log_type_enabled(statusPublisherDelegate, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v33 = v12;
     v34 = 2114;
-    v35 = v8;
-    _os_log_impl(&dword_261E36000, v13, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ starting processing status keys: %{public}@", buf, 0x16u);
+    v35 = keysCopy;
+    _os_log_impl(&dword_261E36000, statusPublisherDelegate, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ starting processing status keys: %{public}@", buf, 0x16u);
   }
 
-  v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-  v15 = [(RMStatusPublisherDelegate *)self _filterSupportedStatus:v8 store:v9 unsupported:v14];
+  v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
+  v15 = [(RMStatusPublisherDelegate *)self _filterSupportedStatus:keysCopy store:storeCopy unsupported:v14];
   if ([v14 count])
   {
-    v16 = [MEMORY[0x277D45F58] statusPublisherDelegate];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    statusPublisherDelegate2 = [MEMORY[0x277D45F58] statusPublisherDelegate];
+    if (os_log_type_enabled(statusPublisherDelegate2, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v14 allKeys];
+      allKeys = [v14 allKeys];
       *buf = 138543618;
       v33 = v12;
       v34 = 2114;
-      v35 = v17;
-      _os_log_impl(&dword_261E36000, v16, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ unsupported status keys: %{public}@", buf, 0x16u);
+      v35 = allKeys;
+      _os_log_impl(&dword_261E36000, statusPublisherDelegate2, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ unsupported status keys: %{public}@", buf, 0x16u);
     }
   }
 
@@ -95,40 +95,40 @@ uint64_t __62__RMStatusPublisherDelegate_sharedDelegateWithPublisherClass___bloc
   {
     [(RMStatusPublisherDelegate *)self publisherClass];
     v18 = objc_opt_new();
-    v19 = [(RMStatusPublisherDelegate *)self publisherQueue];
+    publisherQueue = [(RMStatusPublisherDelegate *)self publisherQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __78__RMStatusPublisherDelegate_fetchStatusForStatusKeys_store_completionHandler___block_invoke;
     v23[3] = &unk_279B05E20;
     v24 = v18;
     v25 = v15;
-    v26 = v9;
+    v26 = storeCopy;
     v27 = v12;
-    v28 = v8;
+    v28 = keysCopy;
     v29 = v14;
-    v31 = v10;
+    v31 = handlerCopy;
     v30 = v11;
-    v20 = v18;
-    dispatch_async(v19, v23);
+    statusPublisherDelegate4 = v18;
+    dispatch_async(publisherQueue, v23);
   }
 
   else
   {
-    v21 = [MEMORY[0x277D45F58] statusPublisherDelegate];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    statusPublisherDelegate3 = [MEMORY[0x277D45F58] statusPublisherDelegate];
+    if (os_log_type_enabled(statusPublisherDelegate3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v33 = v12;
-      _os_log_impl(&dword_261E36000, v21, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ has no valid status keys to process", buf, 0xCu);
+      _os_log_impl(&dword_261E36000, statusPublisherDelegate3, OS_LOG_TYPE_DEFAULT, "Publisher %{public}@ has no valid status keys to process", buf, 0xCu);
     }
 
-    (*(v10 + 2))(v10, v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, v14, 0);
     [(RMSharedLock *)v11 unlock];
-    v20 = [MEMORY[0x277D45F58] statusPublisherDelegate];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    statusPublisherDelegate4 = [MEMORY[0x277D45F58] statusPublisherDelegate];
+    if (os_log_type_enabled(statusPublisherDelegate4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_261E36000, v20, OS_LOG_TYPE_DEFAULT, "Fetching complete.", buf, 2u);
+      _os_log_impl(&dword_261E36000, statusPublisherDelegate4, OS_LOG_TYPE_DEFAULT, "Fetching complete.", buf, 2u);
     }
   }
 
@@ -191,18 +191,18 @@ void __78__RMStatusPublisherDelegate_fetchStatusForStatusKeys_store_completionHa
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filterSupportedStatus:(id)a3 store:(id)a4 unsupported:(id)a5
+- (id)_filterSupportedStatus:(id)status store:(id)store unsupported:(id)unsupported
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  statusCopy = status;
+  storeCopy = store;
+  unsupportedCopy = unsupported;
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(statusCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = statusCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -221,7 +221,7 @@ void __78__RMStatusPublisherDelegate_fetchStatusForStatusKeys_store_completionHa
         v16 = [MEMORY[0x277D46040] stubObjectForStatusItemType:v15];
         if (v16)
         {
-          if ([v8 isValidStatusItem:v16])
+          if ([storeCopy isValidStatusItem:v16])
           {
             [v21 addObject:v15];
             goto LABEL_12;
@@ -236,7 +236,7 @@ void __78__RMStatusPublisherDelegate_fetchStatusForStatusKeys_store_completionHa
         }
 
         v18 = v17;
-        [v9 setObject:v17 forKeyedSubscript:v15];
+        [unsupportedCopy setObject:v17 forKeyedSubscript:v15];
 
 LABEL_12:
       }

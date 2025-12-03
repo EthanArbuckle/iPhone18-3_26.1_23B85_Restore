@@ -1,17 +1,17 @@
 @interface AWDMDNSResponderResolveStatsResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasServerID:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasServerID:(BOOL)d;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMDNSResponderResolveStatsResult
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -52,24 +52,24 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  if ([a3 isEqualToString:@"IPv4Addr"])
+  if ([type isEqualToString:@"IPv4Addr"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"IPv6Addr"])
+  if ([type isEqualToString:@"IPv6Addr"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NegA"])
+  if ([type isEqualToString:@"NegA"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NegAAAA"])
+  if ([type isEqualToString:@"NegAAAA"])
   {
     return 3;
   }
@@ -77,9 +77,9 @@
   return 0;
 }
 
-- (void)setHasServerID:(BOOL)a3
+- (void)setHasServerID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -101,7 +101,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -116,31 +116,31 @@
       v6 = off_29EE32A28[type];
     }
 
-    [v3 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_count), @"count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_count), @"count"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serverID), @"serverID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_serverID), @"serverID"}];
   }
 
   data = self->_data;
   if (data)
   {
-    [v3 setObject:data forKey:@"data"];
+    [dictionary setObject:data forKey:@"data"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -182,13 +182,13 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 7) = self->_type;
-    *(a3 + 32) |= 4u;
+    *(to + 7) = self->_type;
+    *(to + 32) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -207,26 +207,26 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_count;
-  *(a3 + 32) |= 1u;
+  *(to + 2) = self->_count;
+  *(to + 32) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 6) = self->_serverID;
-    *(a3 + 32) |= 2u;
+    *(to + 6) = self->_serverID;
+    *(to + 32) |= 2u;
   }
 
 LABEL_5:
   data = self->_data;
   if (data)
   {
-    [a3 setData:data];
+    [to setData:data];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -265,25 +265,25 @@ LABEL_4:
 
 LABEL_5:
 
-  v6[2] = [(NSData *)self->_data copyWithZone:a3];
+  v6[2] = [(NSData *)self->_data copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_type != *(a3 + 7))
+      if ((*(equal + 32) & 4) == 0 || self->_type != *(equal + 7))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -292,32 +292,32 @@ LABEL_19:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_count != *(a3 + 2))
+      if ((*(equal + 32) & 1) == 0 || self->_count != *(equal + 2))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_serverID != *(a3 + 6))
+      if ((*(equal + 32) & 2) == 0 || self->_serverID != *(equal + 6))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_19;
     }
 
     data = self->_data;
-    if (data | *(a3 + 2))
+    if (data | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSData *)data isEqual:?];
@@ -372,14 +372,14 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSData *)self->_data hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) != 0)
   {
-    self->_type = *(a3 + 7);
+    self->_type = *(from + 7);
     *&self->_has |= 4u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -392,22 +392,22 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 1) == 0)
+  else if ((*(from + 32) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_count = *(a3 + 2);
+  self->_count = *(from + 2);
   *&self->_has |= 1u;
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
 LABEL_4:
-    self->_serverID = *(a3 + 6);
+    self->_serverID = *(from + 6);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDMDNSResponderResolveStatsResult *)self setData:?];
   }

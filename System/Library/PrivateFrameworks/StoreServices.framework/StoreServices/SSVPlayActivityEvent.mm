@@ -1,13 +1,13 @@
 @interface SSVPlayActivityEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)dataRepresentation;
 - (SSVPlayActivityEvent)init;
-- (SSVPlayActivityEvent)initWithCoder:(id)a3;
-- (SSVPlayActivityEvent)initWithDataRepresentation:(id)a3;
+- (SSVPlayActivityEvent)initWithCoder:(id)coder;
+- (SSVPlayActivityEvent)initWithDataRepresentation:(id)representation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)persistentID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSVPlayActivityEvent
@@ -26,10 +26,10 @@
   return result;
 }
 
-- (SSVPlayActivityEvent)initWithDataRepresentation:(id)a3
+- (SSVPlayActivityEvent)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[SSVPBPlayActivityEvent alloc] initWithData:v4];
+  representationCopy = representation;
+  v5 = [[SSVPBPlayActivityEvent alloc] initWithData:representationCopy];
   if (!v5)
   {
 
@@ -59,9 +59,9 @@
 
     if ([(SSVPBPlayActivityEvent *)v5 hasDeviceName])
     {
-      v9 = [(SSVPBPlayActivityEvent *)v5 deviceName];
+      deviceName = [(SSVPBPlayActivityEvent *)v5 deviceName];
       deviceName = v6->_deviceName;
-      v6->_deviceName = v9;
+      v6->_deviceName = deviceName;
     }
 
     if ([(SSVPBPlayActivityEvent *)v5 hasDisplayType])
@@ -109,10 +109,10 @@
 
     if ([(SSVPBPlayActivityEvent *)v5 hasEventTimeZoneName])
     {
-      v18 = [(SSVPBPlayActivityEvent *)v5 eventTimeZoneName];
-      if (v18)
+      eventTimeZoneName = [(SSVPBPlayActivityEvent *)v5 eventTimeZoneName];
+      if (eventTimeZoneName)
       {
-        v19 = [MEMORY[0x1E695DFE8] timeZoneWithName:v18];
+        v19 = [MEMORY[0x1E695DFE8] timeZoneWithName:eventTimeZoneName];
         eventTimeZone = v6->_eventTimeZone;
         v6->_eventTimeZone = v19;
       }
@@ -125,9 +125,9 @@
 LABEL_31:
         if ([(SSVPBPlayActivityEvent *)v5 hasFeatureName])
         {
-          v23 = [(SSVPBPlayActivityEvent *)v5 featureName];
+          featureName = [(SSVPBPlayActivityEvent *)v5 featureName];
           featureName = v6->_featureName;
-          v6->_featureName = v23;
+          v6->_featureName = featureName;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasItemDuration])
@@ -171,9 +171,9 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasLyricLanguage])
         {
-          v30 = [(SSVPBPlayActivityEvent *)v5 lyricLanguage];
+          lyricLanguage = [(SSVPBPlayActivityEvent *)v5 lyricLanguage];
           lyricsLanguage = v6->_lyricsLanguage;
-          v6->_lyricsLanguage = v30;
+          v6->_lyricsLanguage = lyricLanguage;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasMediaType])
@@ -193,9 +193,9 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasRecommendationData])
         {
-          v32 = [(SSVPBPlayActivityEvent *)v5 recommendationData];
+          recommendationData = [(SSVPBPlayActivityEvent *)v5 recommendationData];
           recommendationData = v6->_recommendationData;
-          v6->_recommendationData = v32;
+          v6->_recommendationData = recommendationData;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasSBEnabled])
@@ -205,9 +205,9 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasSourceType])
         {
-          v34 = [(SSVPBPlayActivityEvent *)v5 sourceType];
-          v35 = v34 == 1;
-          if (v34 == 2)
+          sourceType = [(SSVPBPlayActivityEvent *)v5 sourceType];
+          v35 = sourceType == 1;
+          if (sourceType == 2)
           {
             v35 = 2;
           }
@@ -222,30 +222,30 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasStoreFrontID])
         {
-          v36 = [(SSVPBPlayActivityEvent *)v5 storeFrontID];
+          storeFrontID = [(SSVPBPlayActivityEvent *)v5 storeFrontID];
           storeFrontID = v6->_storeFrontID;
-          v6->_storeFrontID = v36;
+          v6->_storeFrontID = storeFrontID;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasTimedMetadata])
         {
-          v38 = [(SSVPBPlayActivityEvent *)v5 timedMetadata];
+          timedMetadata = [(SSVPBPlayActivityEvent *)v5 timedMetadata];
           timedMetadata = v6->_timedMetadata;
-          v6->_timedMetadata = v38;
+          v6->_timedMetadata = timedMetadata;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasTrackInfo])
         {
-          v40 = [(SSVPBPlayActivityEvent *)v5 trackInfo];
+          trackInfo = [(SSVPBPlayActivityEvent *)v5 trackInfo];
           trackInfo = v6->_trackInfo;
-          v6->_trackInfo = v40;
+          v6->_trackInfo = trackInfo;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasEventType])
         {
-          v42 = [(SSVPBPlayActivityEvent *)v5 eventType];
-          v43 = v42 == 2;
-          if (v42 == 3)
+          eventType = [(SSVPBPlayActivityEvent *)v5 eventType];
+          v43 = eventType == 2;
+          if (eventType == 3)
           {
             v43 = 2;
           }
@@ -274,9 +274,9 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasBuildVersion])
         {
-          v46 = [(SSVPBPlayActivityEvent *)v5 buildVersion];
+          buildVersion = [(SSVPBPlayActivityEvent *)v5 buildVersion];
           buildVersion = v6->_buildVersion;
-          v6->_buildVersion = v46;
+          v6->_buildVersion = buildVersion;
 
           v48 = v6->_version;
           if (v48 <= 2)
@@ -289,29 +289,29 @@ LABEL_31:
 
         if ([(SSVPBPlayActivityEvent *)v5 hasRequestingBundleVersion])
         {
-          v49 = [(SSVPBPlayActivityEvent *)v5 requestingBundleVersion];
+          requestingBundleVersion = [(SSVPBPlayActivityEvent *)v5 requestingBundleVersion];
           requestingBundleVersion = v6->_requestingBundleVersion;
-          v6->_requestingBundleVersion = v49;
+          v6->_requestingBundleVersion = requestingBundleVersion;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasRequestingBundleIdentifier])
         {
-          v51 = [(SSVPBPlayActivityEvent *)v5 requestingBundleIdentifier];
+          requestingBundleIdentifier = [(SSVPBPlayActivityEvent *)v5 requestingBundleIdentifier];
           requestingBundleIdentifier = v6->_requestingBundleIdentifier;
-          v6->_requestingBundleIdentifier = v51;
+          v6->_requestingBundleIdentifier = requestingBundleIdentifier;
         }
 
         if ([(SSVPBPlayActivityEvent *)v5 hasSystemReleaseType])
         {
-          v53 = [(SSVPBPlayActivityEvent *)v5 systemReleaseType];
-          if (v53 - 1 >= 4)
+          systemReleaseType = [(SSVPBPlayActivityEvent *)v5 systemReleaseType];
+          if (systemReleaseType - 1 >= 4)
           {
             v54 = 0;
           }
 
           else
           {
-            v54 = v53;
+            v54 = systemReleaseType;
           }
         }
 
@@ -322,41 +322,41 @@ LABEL_31:
 LABEL_96:
             if ([(SSVPBPlayActivityEvent *)v5 hasEnqueuerProperties])
             {
-              v56 = [(SSVPBPlayActivityEvent *)v5 enqueuerProperties];
-              if (v56)
+              enqueuerProperties = [(SSVPBPlayActivityEvent *)v5 enqueuerProperties];
+              if (enqueuerProperties)
               {
                 v57 = objc_alloc_init(SSVMutablePlayActivityEnqueuerProperties);
-                if ([v56 hasBuildVersion])
+                if ([enqueuerProperties hasBuildVersion])
                 {
-                  v58 = [v56 buildVersion];
-                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setBuildVersion:v58];
+                  buildVersion2 = [enqueuerProperties buildVersion];
+                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setBuildVersion:buildVersion2];
                 }
 
-                if ([v56 hasDeviceGUID])
+                if ([enqueuerProperties hasDeviceGUID])
                 {
-                  v59 = [v56 deviceGUID];
-                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setDeviceGUID:v59];
+                  deviceGUID = [enqueuerProperties deviceGUID];
+                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setDeviceGUID:deviceGUID];
                 }
 
-                if ([v56 hasDeviceName])
+                if ([enqueuerProperties hasDeviceName])
                 {
-                  v60 = [v56 deviceName];
-                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setDeviceName:v60];
+                  deviceName2 = [enqueuerProperties deviceName];
+                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setDeviceName:deviceName2];
                 }
 
-                if ([v56 hasTimeZoneName])
+                if ([enqueuerProperties hasTimeZoneName])
                 {
-                  v61 = [v56 timeZoneName];
-                  if (v61)
+                  timeZoneName = [enqueuerProperties timeZoneName];
+                  if (timeZoneName)
                   {
-                    v62 = [MEMORY[0x1E695DFE8] timeZoneWithName:v61];
+                    v62 = [MEMORY[0x1E695DFE8] timeZoneWithName:timeZoneName];
                     [(SSVMutablePlayActivityEnqueuerProperties *)v57 setTimeZone:v62];
                   }
                 }
 
-                if ([v56 hasSystemReleaseType])
+                if ([enqueuerProperties hasSystemReleaseType])
                 {
-                  v63 = [v56 systemReleaseType] - 1;
+                  v63 = [enqueuerProperties systemReleaseType] - 1;
                   if (v63 < 4)
                   {
                     v64 = v63 + 1;
@@ -370,25 +370,25 @@ LABEL_96:
                   [(SSVMutablePlayActivityEnqueuerProperties *)v57 setSystemReleaseType:v64];
                 }
 
-                if ([v56 hasSBEnabled])
+                if ([enqueuerProperties hasSBEnabled])
                 {
-                  -[SSVMutablePlayActivityEnqueuerProperties setSBEnabled:](v57, "setSBEnabled:", [v56 sBEnabled]);
+                  -[SSVMutablePlayActivityEnqueuerProperties setSBEnabled:](v57, "setSBEnabled:", [enqueuerProperties sBEnabled]);
                 }
 
-                if ([v56 hasStoreAccountID])
+                if ([enqueuerProperties hasStoreAccountID])
                 {
-                  -[SSVMutablePlayActivityEnqueuerProperties setStoreAccountID:](v57, "setStoreAccountID:", [v56 storeAccountID]);
+                  -[SSVMutablePlayActivityEnqueuerProperties setStoreAccountID:](v57, "setStoreAccountID:", [enqueuerProperties storeAccountID]);
                 }
 
-                if ([v56 hasStoreFrontID])
+                if ([enqueuerProperties hasStoreFrontID])
                 {
-                  v65 = [v56 storeFrontID];
-                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setStoreFrontID:v65];
+                  storeFrontID2 = [enqueuerProperties storeFrontID];
+                  [(SSVMutablePlayActivityEnqueuerProperties *)v57 setStoreFrontID:storeFrontID2];
                 }
 
-                if ([v56 hasPrivateListeningEnabled])
+                if ([enqueuerProperties hasPrivateListeningEnabled])
                 {
-                  v66 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v56, "privateListeningEnabled")}];
+                  v66 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(enqueuerProperties, "privateListeningEnabled")}];
                   [(SSVMutablePlayActivityEnqueuerProperties *)v57 setPrivateListeningEnabled:v66];
                 }
 
@@ -400,9 +400,9 @@ LABEL_96:
 
             if ([(SSVPBPlayActivityEvent *)v5 hasHouseholdID])
             {
-              v69 = [(SSVPBPlayActivityEvent *)v5 householdID];
+              householdID = [(SSVPBPlayActivityEvent *)v5 householdID];
               householdID = v6->_householdID;
-              v6->_householdID = v69;
+              v6->_householdID = householdID;
             }
 
             if ([(SSVPBPlayActivityEvent *)v5 hasPrivateListeningEnabled])
@@ -424,29 +424,29 @@ LABEL_96:
               goto LABEL_141;
             }
 
-            v75 = [(SSVPBPlayActivityEvent *)v5 hasContainerID];
-            v76 = v75;
-            if (v75)
+            hasContainerID = [(SSVPBPlayActivityEvent *)v5 hasContainerID];
+            v76 = hasContainerID;
+            if (hasContainerID)
             {
-              v77 = [(SSVPBPlayActivityEvent *)v5 containerID];
+              containerID = [(SSVPBPlayActivityEvent *)v5 containerID];
               containerID = v6->_containerID;
-              v6->_containerID = v77;
+              v6->_containerID = containerID;
             }
 
             if ([(SSVPBPlayActivityEvent *)v5 hasExternalID])
             {
-              v79 = [(SSVPBPlayActivityEvent *)v5 externalID];
+              externalID = [(SSVPBPlayActivityEvent *)v5 externalID];
               externalID = v6->_externalID;
-              v6->_externalID = v79;
+              v6->_externalID = externalID;
 
               v76 = 1;
             }
 
             if ([(SSVPBPlayActivityEvent *)v5 hasPersonalizedContainerID])
             {
-              v81 = [(SSVPBPlayActivityEvent *)v5 personalizedContainerID];
+              personalizedContainerID = [(SSVPBPlayActivityEvent *)v5 personalizedContainerID];
               personalizedContainerID = v6->_personalizedContainerID;
-              v6->_personalizedContainerID = v81;
+              v6->_personalizedContainerID = personalizedContainerID;
 
               if (![(SSVPBPlayActivityEvent *)v5 hasStoreID])
               {
@@ -459,9 +459,9 @@ LABEL_96:
             if ([(SSVPBPlayActivityEvent *)v5 hasStoreID])
             {
 LABEL_138:
-              v83 = [(SSVPBPlayActivityEvent *)v5 storeID];
+              storeID = [(SSVPBPlayActivityEvent *)v5 storeID];
               storeID = v6->_storeID;
-              v6->_storeID = v83;
+              v6->_storeID = storeID;
 LABEL_170:
 
               goto LABEL_171;
@@ -492,32 +492,32 @@ LABEL_141:
               {
                 v85[2](v85);
                 v86 = v110[5];
-                v87 = [(SSVPBPlayActivityEvent *)v5 globalPlaylistID];
-                [v86 setGlobalPlaylistID:v87];
+                globalPlaylistID = [(SSVPBPlayActivityEvent *)v5 globalPlaylistID];
+                [v86 setGlobalPlaylistID:globalPlaylistID];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasPlaylistVersionHash])
               {
                 v85[2](v85);
                 v88 = v110[5];
-                v89 = [(SSVPBPlayActivityEvent *)v5 playlistVersionHash];
-                [v88 setPlaylistVersionHash:v89];
+                playlistVersionHash = [(SSVPBPlayActivityEvent *)v5 playlistVersionHash];
+                [v88 setPlaylistVersionHash:playlistVersionHash];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasStationHash])
               {
                 v85[2](v85);
                 v90 = v110[5];
-                v91 = [(SSVPBPlayActivityEvent *)v5 stationHash];
-                [v90 setStationHash:v91];
+                stationHash = [(SSVPBPlayActivityEvent *)v5 stationHash];
+                [v90 setStationHash:stationHash];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasStationStringID])
               {
                 v85[2](v85);
                 v92 = v110[5];
-                v93 = [(SSVPBPlayActivityEvent *)v5 stationStringID];
-                [v92 setStationStringID:v93];
+                stationStringID = [(SSVPBPlayActivityEvent *)v5 stationStringID];
+                [v92 setStationStringID:stationStringID];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasStationID])
@@ -530,8 +530,8 @@ LABEL_141:
               {
                 v85[2](v85);
                 v94 = v110[5];
-                v95 = [(SSVPBPlayActivityEvent *)v5 cloudAlbumID];
-                [v94 setCloudAlbumID:v95];
+                cloudAlbumID = [(SSVPBPlayActivityEvent *)v5 cloudAlbumID];
+                [v94 setCloudAlbumID:cloudAlbumID];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasCloudPlaylistID])
@@ -581,8 +581,8 @@ LABEL_141:
               {
                 v96[2](v96);
                 v97 = v103[5];
-                v98 = [(SSVPBPlayActivityEvent *)v5 lyricsID];
-                [v97 setLyricsID:v98];
+                lyricsID = [(SSVPBPlayActivityEvent *)v5 lyricsID];
+                [v97 setLyricsID:lyricsID];
               }
 
               if ([(SSVPBPlayActivityEvent *)v5 hasEquivalencySourceAdamID])
@@ -602,9 +602,9 @@ LABEL_141:
             goto LABEL_171;
           }
 
-          v55 = [(SSVPBPlayActivityEvent *)v5 internalBuild];
+          internalBuild = [(SSVPBPlayActivityEvent *)v5 internalBuild];
           v54 = 4;
-          if (!v55)
+          if (!internalBuild)
           {
             v54 = 0;
           }
@@ -615,7 +615,7 @@ LABEL_141:
       }
 
       v22 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:v21];
-      v18 = v6->_eventTimeZone;
+      eventTimeZoneName = v6->_eventTimeZone;
       v6->_eventTimeZone = v22;
     }
 
@@ -823,10 +823,10 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -836,8 +836,8 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SSVPlayActivityEvent *)self persistentID];
-      v6 = v5 == [(SSVPlayActivityEvent *)v4 persistentID];
+      persistentID = [(SSVPlayActivityEvent *)self persistentID];
+      v6 = persistentID == [(SSVPlayActivityEvent *)equalCopy persistentID];
     }
 
     else
@@ -849,29 +849,29 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   return v6;
 }
 
-- (SSVPlayActivityEvent)initWithCoder:(id)a3
+- (SSVPlayActivityEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_SSVPlayActivityEventCoderDataRepresentation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_SSVPlayActivityEventCoderDataRepresentation"];
 
   v6 = [(SSVPlayActivityEvent *)self initWithDataRepresentation:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SSVPlayActivityEvent *)self dataRepresentation];
-  if ([v4 length])
+  coderCopy = coder;
+  dataRepresentation = [(SSVPlayActivityEvent *)self dataRepresentation];
+  if ([dataRepresentation length])
   {
-    [v5 encodeObject:v4 forKey:@"_SSVPlayActivityEventCoderDataRepresentation"];
+    [coderCopy encodeObject:dataRepresentation forKey:@"_SSVPlayActivityEventCoderDataRepresentation"];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(SSVPlayActivityEvent *)self _mutableCopyClass];
-  v6 = [[(objc_class *)v5 allocWithZone:a3] init];
+  _mutableCopyClass = [(SSVPlayActivityEvent *)self _mutableCopyClass];
+  v6 = [[(objc_class *)_mutableCopyClass allocWithZone:zone] init];
 
   if (v6)
   {
@@ -934,8 +934,8 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   }
 
   [(SSVPBPlayActivityEvent *)v3 setContainerType:v5];
-  v6 = [(SSVPlayActivityEvent *)self deviceName];
-  [(SSVPBPlayActivityEvent *)v3 setDeviceName:v6];
+  deviceName = [(SSVPlayActivityEvent *)self deviceName];
+  [(SSVPBPlayActivityEvent *)v3 setDeviceName:deviceName];
 
   v7 = [(SSVPlayActivityEvent *)self displayType]- 1;
   if (v7 < 3)
@@ -949,24 +949,24 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   }
 
   [(SSVPBPlayActivityEvent *)v3 setDisplayType:v8];
-  v9 = [(SSVPlayActivityEvent *)self endReasonType];
+  endReasonType = [(SSVPlayActivityEvent *)self endReasonType];
   v10 = 0;
-  if (v9 - 1 <= 0xD)
+  if (endReasonType - 1 <= 0xD)
   {
-    v10 = dword_1D4B390E8[v9 - 1];
+    v10 = dword_1D4B390E8[endReasonType - 1];
   }
 
   [(SSVPBPlayActivityEvent *)v3 setEndReasonType:v10];
-  v11 = [(SSVPlayActivityEvent *)self eventDate];
-  [v11 timeIntervalSinceReferenceDate];
+  eventDate = [(SSVPlayActivityEvent *)self eventDate];
+  [eventDate timeIntervalSinceReferenceDate];
   [(SSVPBPlayActivityEvent *)v3 setEventDateTimestamp:?];
 
-  v12 = [(SSVPlayActivityEvent *)self eventTimeZone];
-  v13 = [v12 name];
-  [(SSVPBPlayActivityEvent *)v3 setEventTimeZoneName:v13];
+  eventTimeZone = [(SSVPlayActivityEvent *)self eventTimeZone];
+  name = [eventTimeZone name];
+  [(SSVPBPlayActivityEvent *)v3 setEventTimeZoneName:name];
 
-  v14 = [(SSVPlayActivityEvent *)self featureName];
-  [(SSVPBPlayActivityEvent *)v3 setFeatureName:v14];
+  featureName = [(SSVPlayActivityEvent *)self featureName];
+  [(SSVPBPlayActivityEvent *)v3 setFeatureName:featureName];
 
   [(SSVPlayActivityEvent *)self itemDuration];
   [(SSVPBPlayActivityEvent *)v3 setItemDuration:?];
@@ -988,42 +988,42 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   [(SSVPBPlayActivityEvent *)v3 setItemType:v16];
   [(SSVPBPlayActivityEvent *)v3 setMediaType:[(SSVPlayActivityEvent *)self mediaType]== 1];
   [(SSVPBPlayActivityEvent *)v3 setCharacterDisplayedCount:[(SSVPlayActivityEvent *)self lyricsDisplayedCharacterCount]];
-  v17 = [(SSVPlayActivityEvent *)self lyricsLanguage];
-  [(SSVPBPlayActivityEvent *)v3 setLyricLanguage:v17];
+  lyricsLanguage = [(SSVPlayActivityEvent *)self lyricsLanguage];
+  [(SSVPBPlayActivityEvent *)v3 setLyricLanguage:lyricsLanguage];
 
   [(SSVPBPlayActivityEvent *)v3 setOffline:[(SSVPlayActivityEvent *)self isOffline]];
   [(SSVPBPlayActivityEvent *)v3 setPersistentID:[(SSVPlayActivityEvent *)self persistentID]];
-  v18 = [(SSVPlayActivityEvent *)self recommendationData];
-  [(SSVPBPlayActivityEvent *)v3 setRecommendationData:v18];
+  recommendationData = [(SSVPlayActivityEvent *)self recommendationData];
+  [(SSVPBPlayActivityEvent *)v3 setRecommendationData:recommendationData];
 
   [(SSVPBPlayActivityEvent *)v3 setSBEnabled:self->_SBEnabled];
-  v19 = [(SSVPlayActivityEvent *)self sourceType];
-  if (v19 == 2)
+  sourceType = [(SSVPlayActivityEvent *)self sourceType];
+  if (sourceType == 2)
   {
     v20 = 2;
   }
 
   else
   {
-    v20 = v19 == 1;
+    v20 = sourceType == 1;
   }
 
   [(SSVPBPlayActivityEvent *)v3 setSourceType:v20];
   [(SSVPBPlayActivityEvent *)v3 setStoreAccountID:[(SSVPlayActivityEvent *)self storeAccountID]];
-  v21 = [(SSVPlayActivityEvent *)self storeFrontID];
-  [(SSVPBPlayActivityEvent *)v3 setStoreFrontID:v21];
+  storeFrontID = [(SSVPlayActivityEvent *)self storeFrontID];
+  [(SSVPBPlayActivityEvent *)v3 setStoreFrontID:storeFrontID];
 
-  v22 = [(SSVPlayActivityEvent *)self timedMetadata];
-  [(SSVPBPlayActivityEvent *)v3 setTimedMetadata:v22];
+  timedMetadata = [(SSVPlayActivityEvent *)self timedMetadata];
+  [(SSVPBPlayActivityEvent *)v3 setTimedMetadata:timedMetadata];
 
-  v23 = [(SSVPlayActivityEvent *)self trackInfo];
-  [(SSVPBPlayActivityEvent *)v3 setTrackInfo:v23];
+  trackInfo = [(SSVPlayActivityEvent *)self trackInfo];
+  [(SSVPBPlayActivityEvent *)v3 setTrackInfo:trackInfo];
 
-  v24 = [(SSVPlayActivityEvent *)self requestingBundleIdentifier];
-  [(SSVPBPlayActivityEvent *)v3 setRequestingBundleIdentifier:v24];
+  requestingBundleIdentifier = [(SSVPlayActivityEvent *)self requestingBundleIdentifier];
+  [(SSVPBPlayActivityEvent *)v3 setRequestingBundleIdentifier:requestingBundleIdentifier];
 
-  v25 = [(SSVPlayActivityEvent *)self requestingBundleVersion];
-  [(SSVPBPlayActivityEvent *)v3 setRequestingBundleVersion:v25];
+  requestingBundleVersion = [(SSVPlayActivityEvent *)self requestingBundleVersion];
+  [(SSVPBPlayActivityEvent *)v3 setRequestingBundleVersion:requestingBundleVersion];
 
   v26 = [(SSVPlayActivityEvent *)self systemReleaseType]- 1;
   if (v26 < 4)
@@ -1037,44 +1037,44 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
   }
 
   [(SSVPBPlayActivityEvent *)v3 setSystemReleaseType:v27];
-  v28 = [(SSVPlayActivityEvent *)self enqueuerProperties];
-  if (v28)
+  enqueuerProperties = [(SSVPlayActivityEvent *)self enqueuerProperties];
+  if (enqueuerProperties)
   {
     v29 = objc_alloc_init(SSVPBPlayActivityEnqueuerProperties);
-    v30 = [v28 buildVersion];
-    if (v30)
+    buildVersion = [enqueuerProperties buildVersion];
+    if (buildVersion)
     {
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setBuildVersion:v30];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setBuildVersion:buildVersion];
     }
 
-    v31 = [v28 deviceGUID];
-    if (v31)
+    deviceGUID = [enqueuerProperties deviceGUID];
+    if (deviceGUID)
     {
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setDeviceGUID:v31];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setDeviceGUID:deviceGUID];
     }
 
-    v32 = [v28 deviceName];
-    if (v32)
+    deviceName2 = [enqueuerProperties deviceName];
+    if (deviceName2)
     {
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setDeviceName:v32];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setDeviceName:deviceName2];
     }
 
-    v33 = [v28 isPrivateListeningEnabled];
-    v34 = v33;
-    if (v33)
+    isPrivateListeningEnabled = [enqueuerProperties isPrivateListeningEnabled];
+    v34 = isPrivateListeningEnabled;
+    if (isPrivateListeningEnabled)
     {
-      -[SSVPBPlayActivityEnqueuerProperties setPrivateListeningEnabled:](v29, "setPrivateListeningEnabled:", [v33 BOOLValue]);
+      -[SSVPBPlayActivityEnqueuerProperties setPrivateListeningEnabled:](v29, "setPrivateListeningEnabled:", [isPrivateListeningEnabled BOOLValue]);
     }
 
-    v35 = [v28 timeZone];
-    v36 = v35;
-    if (v35)
+    timeZone = [enqueuerProperties timeZone];
+    v36 = timeZone;
+    if (timeZone)
     {
-      v37 = [v35 name];
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setTimeZoneName:v37];
+      name2 = [timeZone name];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setTimeZoneName:name2];
     }
 
-    v38 = [v28 systemReleaseType] - 1;
+    v38 = [enqueuerProperties systemReleaseType] - 1;
     if (v38 < 4)
     {
       v39 = (v38 + 1);
@@ -1086,46 +1086,46 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
     }
 
     [(SSVPBPlayActivityEnqueuerProperties *)v29 setSystemReleaseType:v39];
-    -[SSVPBPlayActivityEnqueuerProperties setSBEnabled:](v29, "setSBEnabled:", [v28 isSBEnabled]);
-    v40 = [v28 storeAccountID];
-    if (v40)
+    -[SSVPBPlayActivityEnqueuerProperties setSBEnabled:](v29, "setSBEnabled:", [enqueuerProperties isSBEnabled]);
+    storeAccountID = [enqueuerProperties storeAccountID];
+    if (storeAccountID)
     {
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setStoreAccountID:v40];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setStoreAccountID:storeAccountID];
     }
 
-    v41 = [v28 storeFrontID];
-    if (v41)
+    storeFrontID2 = [enqueuerProperties storeFrontID];
+    if (storeFrontID2)
     {
-      [(SSVPBPlayActivityEnqueuerProperties *)v29 setStoreFrontID:v41];
+      [(SSVPBPlayActivityEnqueuerProperties *)v29 setStoreFrontID:storeFrontID2];
     }
 
     [(SSVPBPlayActivityEvent *)v3 setEnqueuerProperties:v29];
   }
 
-  v42 = [(SSVPlayActivityEvent *)self householdID];
-  [(SSVPBPlayActivityEvent *)v3 setHouseholdID:v42];
+  householdID = [(SSVPlayActivityEvent *)self householdID];
+  [(SSVPBPlayActivityEvent *)v3 setHouseholdID:householdID];
 
-  v43 = [(SSVPlayActivityEvent *)self isPrivateListeningEnabled];
-  v44 = v43;
-  if (v43)
+  isPrivateListeningEnabled2 = [(SSVPlayActivityEvent *)self isPrivateListeningEnabled];
+  v44 = isPrivateListeningEnabled2;
+  if (isPrivateListeningEnabled2)
   {
-    -[SSVPBPlayActivityEvent setPrivateListeningEnabled:](v3, "setPrivateListeningEnabled:", [v43 BOOLValue]);
+    -[SSVPBPlayActivityEvent setPrivateListeningEnabled:](v3, "setPrivateListeningEnabled:", [isPrivateListeningEnabled2 BOOLValue]);
   }
 
-  v45 = [(SSVPlayActivityEvent *)self isSiriInitiated];
-  v46 = v45;
-  if (v45)
+  isSiriInitiated = [(SSVPlayActivityEvent *)self isSiriInitiated];
+  v46 = isSiriInitiated;
+  if (isSiriInitiated)
   {
-    -[SSVPBPlayActivityEvent setSiriInitiated:](v3, "setSiriInitiated:", [v45 BOOLValue]);
+    -[SSVPBPlayActivityEvent setSiriInitiated:](v3, "setSiriInitiated:", [isSiriInitiated BOOLValue]);
   }
 
   if (self->_version > 1)
   {
-    v51 = [(SSVPlayActivityEvent *)self buildVersion];
-    [(SSVPBPlayActivityEvent *)v3 setBuildVersion:v51];
+    buildVersion2 = [(SSVPlayActivityEvent *)self buildVersion];
+    [(SSVPBPlayActivityEvent *)v3 setBuildVersion:buildVersion2];
 
-    v52 = [(SSVPlayActivityEvent *)self eventType];
-    if (v52 == 1)
+    eventType = [(SSVPlayActivityEvent *)self eventType];
+    if (eventType == 1)
     {
       v53 = 2;
     }
@@ -1135,7 +1135,7 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
       v53 = 1;
     }
 
-    if (v52 == 2)
+    if (eventType == 2)
     {
       v54 = 3;
     }
@@ -1147,54 +1147,54 @@ void __51__SSVPlayActivityEvent_initWithDataRepresentation___block_invoke_2(uint
 
     [(SSVPBPlayActivityEvent *)v3 setEventType:v54];
     [(SSVPBPlayActivityEvent *)v3 setReasonHintType:[(SSVPlayActivityEvent *)self reasonHintType]== 1];
-    v50 = [(SSVPlayActivityEvent *)self containerIDs];
-    -[SSVPBPlayActivityEvent setContainerAdamID:](v3, "setContainerAdamID:", [v50 adamID]);
-    v55 = [v50 globalPlaylistID];
-    [(SSVPBPlayActivityEvent *)v3 setGlobalPlaylistID:v55];
+    containerIDs = [(SSVPlayActivityEvent *)self containerIDs];
+    -[SSVPBPlayActivityEvent setContainerAdamID:](v3, "setContainerAdamID:", [containerIDs adamID]);
+    globalPlaylistID = [containerIDs globalPlaylistID];
+    [(SSVPBPlayActivityEvent *)v3 setGlobalPlaylistID:globalPlaylistID];
 
-    v56 = [v50 playlistVersionHash];
-    [(SSVPBPlayActivityEvent *)v3 setPlaylistVersionHash:v56];
+    playlistVersionHash = [containerIDs playlistVersionHash];
+    [(SSVPBPlayActivityEvent *)v3 setPlaylistVersionHash:playlistVersionHash];
 
-    v57 = [v50 stationHash];
-    [(SSVPBPlayActivityEvent *)v3 setStationHash:v57];
+    stationHash = [containerIDs stationHash];
+    [(SSVPBPlayActivityEvent *)v3 setStationHash:stationHash];
 
-    v58 = [v50 stationStringID];
-    [(SSVPBPlayActivityEvent *)v3 setStationStringID:v58];
+    stationStringID = [containerIDs stationStringID];
+    [(SSVPBPlayActivityEvent *)v3 setStationStringID:stationStringID];
 
-    -[SSVPBPlayActivityEvent setStationID:](v3, "setStationID:", [v50 stationID]);
-    v59 = [v50 cloudAlbumID];
-    [(SSVPBPlayActivityEvent *)v3 setCloudAlbumID:v59];
+    -[SSVPBPlayActivityEvent setStationID:](v3, "setStationID:", [containerIDs stationID]);
+    cloudAlbumID = [containerIDs cloudAlbumID];
+    [(SSVPBPlayActivityEvent *)v3 setCloudAlbumID:cloudAlbumID];
 
-    -[SSVPBPlayActivityEvent setCloudPlaylistID:](v3, "setCloudPlaylistID:", [v50 cloudPlaylistID]);
-    v60 = [(SSVPlayActivityEvent *)self itemIDs];
-    -[SSVPBPlayActivityEvent setSubscriptionAdamID:](v3, "setSubscriptionAdamID:", [v60 subscriptionAdamID]);
-    -[SSVPBPlayActivityEvent setPurchasedAdamID:](v3, "setPurchasedAdamID:", [v60 purchasedAdamID]);
-    -[SSVPBPlayActivityEvent setRadioAdamID:](v3, "setRadioAdamID:", [v60 radioAdamID]);
-    -[SSVPBPlayActivityEvent setItemCloudID:](v3, "setItemCloudID:", [v60 cloudID]);
-    v61 = [v60 lyricsID];
-    [(SSVPBPlayActivityEvent *)v3 setLyricsID:v61];
+    -[SSVPBPlayActivityEvent setCloudPlaylistID:](v3, "setCloudPlaylistID:", [containerIDs cloudPlaylistID]);
+    itemIDs = [(SSVPlayActivityEvent *)self itemIDs];
+    -[SSVPBPlayActivityEvent setSubscriptionAdamID:](v3, "setSubscriptionAdamID:", [itemIDs subscriptionAdamID]);
+    -[SSVPBPlayActivityEvent setPurchasedAdamID:](v3, "setPurchasedAdamID:", [itemIDs purchasedAdamID]);
+    -[SSVPBPlayActivityEvent setRadioAdamID:](v3, "setRadioAdamID:", [itemIDs radioAdamID]);
+    -[SSVPBPlayActivityEvent setItemCloudID:](v3, "setItemCloudID:", [itemIDs cloudID]);
+    lyricsID = [itemIDs lyricsID];
+    [(SSVPBPlayActivityEvent *)v3 setLyricsID:lyricsID];
 
-    -[SSVPBPlayActivityEvent setEquivalencySourceAdamID:](v3, "setEquivalencySourceAdamID:", [v60 equivalencySourceAdamID]);
+    -[SSVPBPlayActivityEvent setEquivalencySourceAdamID:](v3, "setEquivalencySourceAdamID:", [itemIDs equivalencySourceAdamID]);
   }
 
   else
   {
-    v47 = [(SSVPlayActivityEvent *)self containerID];
-    [(SSVPBPlayActivityEvent *)v3 setContainerID:v47];
+    containerID = [(SSVPlayActivityEvent *)self containerID];
+    [(SSVPBPlayActivityEvent *)v3 setContainerID:containerID];
 
-    v48 = [(SSVPlayActivityEvent *)self externalID];
-    [(SSVPBPlayActivityEvent *)v3 setExternalID:v48];
+    externalID = [(SSVPlayActivityEvent *)self externalID];
+    [(SSVPBPlayActivityEvent *)v3 setExternalID:externalID];
 
-    v49 = [(SSVPlayActivityEvent *)self personalizedContainerID];
-    [(SSVPBPlayActivityEvent *)v3 setPersonalizedContainerID:v49];
+    personalizedContainerID = [(SSVPlayActivityEvent *)self personalizedContainerID];
+    [(SSVPBPlayActivityEvent *)v3 setPersonalizedContainerID:personalizedContainerID];
 
-    v50 = [(SSVPlayActivityEvent *)self storeID];
-    [(SSVPBPlayActivityEvent *)v3 setStoreID:v50];
+    containerIDs = [(SSVPlayActivityEvent *)self storeID];
+    [(SSVPBPlayActivityEvent *)v3 setStoreID:containerIDs];
   }
 
-  v62 = [(SSVPBPlayActivityEvent *)v3 data];
+  data = [(SSVPBPlayActivityEvent *)v3 data];
 
-  return v62;
+  return data;
 }
 
 - (int64_t)persistentID

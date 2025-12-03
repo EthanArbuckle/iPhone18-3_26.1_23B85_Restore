@@ -1,8 +1,8 @@
 @interface PXGUniformAlias
-- (BOOL)isEquivalentToUniform:(id)a3;
+- (BOOL)isEquivalentToUniform:(id)uniform;
 - (CGImage)image;
-- (PXGUniformAlias)initWithIndex:(int64_t)a3 aliasing:(id)a4;
-- (PXGUniformAlias)initWithName:(id)a3 type:(unint64_t)a4;
+- (PXGUniformAlias)initWithIndex:(int64_t)index aliasing:(id)aliasing;
+- (PXGUniformAlias)initWithName:(id)name type:(unint64_t)type;
 - (__n128)float3Value;
 - (__n128)float4Value;
 - (const)bytes;
@@ -13,62 +13,62 @@
 - (id)name;
 - (id)textureProvider;
 - (int64_t)bytesLength;
-- (void)setCachedTexture:(id)a3;
+- (void)setCachedTexture:(id)texture;
 @end
 
 @implementation PXGUniformAlias
 
 - (const)bytes
 {
-  v2 = [(PXGUniformAlias *)self original];
-  v3 = [v2 bytes];
+  original = [(PXGUniformAlias *)self original];
+  bytes = [original bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (int64_t)bytesLength
 {
-  v2 = [(PXGUniformAlias *)self original];
-  v3 = [v2 bytesLength];
+  original = [(PXGUniformAlias *)self original];
+  bytesLength = [original bytesLength];
 
-  return v3;
+  return bytesLength;
 }
 
 - (id)cachedTexture
 {
-  v2 = [(PXGUniformAlias *)self original];
-  v3 = [v2 cachedTexture];
+  original = [(PXGUniformAlias *)self original];
+  cachedTexture = [original cachedTexture];
 
-  return v3;
+  return cachedTexture;
 }
 
-- (void)setCachedTexture:(id)a3
+- (void)setCachedTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [(PXGUniformAlias *)self original];
-  [v5 setCachedTexture:v4];
+  textureCopy = texture;
+  original = [(PXGUniformAlias *)self original];
+  [original setCachedTexture:textureCopy];
 }
 
 - (id)textureProvider
 {
-  v2 = [(PXGUniformAlias *)self original];
-  v3 = [v2 textureProvider];
+  original = [(PXGUniformAlias *)self original];
+  textureProvider = [original textureProvider];
 
-  return v3;
+  return textureProvider;
 }
 
 - (CGImage)image
 {
-  v2 = [(PXGUniformAlias *)self original];
-  v3 = [v2 image];
+  original = [(PXGUniformAlias *)self original];
+  image = [original image];
 
-  return v3;
+  return image;
 }
 
 - (__n128)float4Value
 {
-  v1 = [a1 original];
-  [v1 float4Value];
+  original = [self original];
+  [original float4Value];
   v4 = v2;
 
   return v4;
@@ -76,8 +76,8 @@
 
 - (__n128)float3Value
 {
-  v1 = [a1 original];
-  [v1 float3Value];
+  original = [self original];
+  [original float3Value];
   v4 = v2;
 
   return v4;
@@ -85,8 +85,8 @@
 
 - (double)float2Value
 {
-  v1 = [a1 original];
-  [v1 float2Value];
+  original = [self original];
+  [original float2Value];
   v3 = v2;
 
   return v3;
@@ -94,17 +94,17 @@
 
 - (float)floatValue
 {
-  v2 = [(PXGUniformAlias *)self original];
-  [v2 floatValue];
+  original = [(PXGUniformAlias *)self original];
+  [original floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)isEquivalentToUniform:(id)a3
+- (BOOL)isEquivalentToUniform:(id)uniform
 {
-  v4 = a3;
-  if (self == v4)
+  uniformCopy = uniform;
+  if (self == uniformCopy)
   {
     v12 = 1;
   }
@@ -114,19 +114,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGUniformAlias *)self original];
-      v7 = [v6 name];
-      v8 = [(PXGUniformAlias *)v5 original];
-      v9 = [v8 name];
-      v10 = v9;
-      if (v7 == v9)
+      v5 = uniformCopy;
+      original = [(PXGUniformAlias *)self original];
+      name = [original name];
+      original2 = [(PXGUniformAlias *)v5 original];
+      name2 = [original2 name];
+      v10 = name2;
+      if (name == name2)
       {
       }
 
       else
       {
-        v11 = [v7 isEqual:v9];
+        v11 = [name isEqual:name2];
 
         if ((v11 & 1) == 0)
         {
@@ -134,11 +134,11 @@
         }
       }
 
-      v13 = [(PXGUniformAlias *)self index];
-      if (v13 == [(PXGUniformAlias *)v5 index])
+      index = [(PXGUniformAlias *)self index];
+      if (index == [(PXGUniformAlias *)v5 index])
       {
-        v14 = [(PXGUniform *)self type];
-        v12 = v14 == [(PXGUniform *)v5 type];
+        type = [(PXGUniform *)self type];
+        v12 = type == [(PXGUniform *)v5 type];
 LABEL_12:
 
         goto LABEL_13;
@@ -162,9 +162,9 @@ LABEL_13:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGUniformAlias *)self name];
-  v7 = [(PXGUniformAlias *)self original];
-  v8 = [v3 stringWithFormat:@"<%@:%p name:%@ original:%@>", v5, self, v6, v7];;
+  name = [(PXGUniformAlias *)self name];
+  original = [(PXGUniformAlias *)self original];
+  v8 = [v3 stringWithFormat:@"<%@:%p name:%@ original:%@>", v5, self, name, original];;
 
   return v8;
 }
@@ -172,35 +172,35 @@ LABEL_13:
 - (id)name
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PXGUniformAlias *)self original];
-  v5 = [v4 name];
-  v6 = [v3 stringWithFormat:@"%@Alias%ld", v5, -[PXGUniformAlias index](self, "index")];
+  original = [(PXGUniformAlias *)self original];
+  name = [original name];
+  v6 = [v3 stringWithFormat:@"%@Alias%ld", name, -[PXGUniformAlias index](self, "index")];
 
   return v6;
 }
 
-- (PXGUniformAlias)initWithIndex:(int64_t)a3 aliasing:(id)a4
+- (PXGUniformAlias)initWithIndex:(int64_t)index aliasing:(id)aliasing
 {
-  v7 = a4;
-  v8 = [v7 name];
+  aliasingCopy = aliasing;
+  name = [aliasingCopy name];
   v11.receiver = self;
   v11.super_class = PXGUniformAlias;
-  v9 = -[PXGUniform initWithName:type:](&v11, sel_initWithName_type_, v8, [v7 type]);
+  v9 = -[PXGUniform initWithName:type:](&v11, sel_initWithName_type_, name, [aliasingCopy type]);
 
   if (v9)
   {
-    objc_storeStrong(&v9->_original, a4);
-    v9->_index = a3;
+    objc_storeStrong(&v9->_original, aliasing);
+    v9->_index = index;
   }
 
   return v9;
 }
 
-- (PXGUniformAlias)initWithName:(id)a3 type:(unint64_t)a4
+- (PXGUniformAlias)initWithName:(id)name type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXGUniform.m" lineNumber:157 description:{@"%s is not available as initializer", "-[PXGUniformAlias initWithName:type:]"}];
+  nameCopy = name;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGUniform.m" lineNumber:157 description:{@"%s is not available as initializer", "-[PXGUniformAlias initWithName:type:]"}];
 
   abort();
 }

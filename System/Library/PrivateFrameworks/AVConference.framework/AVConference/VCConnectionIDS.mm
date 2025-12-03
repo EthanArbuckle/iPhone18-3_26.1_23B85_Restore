@@ -1,9 +1,9 @@
 @interface VCConnectionIDS
-+ (id)VCConnectionIDS_CDBPS:(id)a3;
-+ (id)VCConnectionIDS_RPS:(id)a3;
-+ (unsigned)worstCaseNetworkOverheadInBytesWithNumOfStreamId:(int)a3 isPriorityIncluded:(BOOL)a4;
-- (BOOL)isOnSameInterfacesAndQRSessionWithConnection:(id)a3;
-- (BOOL)isOnSameQRSessionWithConnection:(id)a3;
++ (id)VCConnectionIDS_CDBPS:(id)s;
++ (id)VCConnectionIDS_RPS:(id)s;
++ (unsigned)worstCaseNetworkOverheadInBytesWithNumOfStreamId:(int)id isPriorityIncluded:(BOOL)included;
+- (BOOL)isOnSameInterfacesAndQRSessionWithConnection:(id)connection;
+- (BOOL)isOnSameQRSessionWithConnection:(id)connection;
 - (BOOL)isWifiToWifi;
 - (NSData)sharedDigestKey;
 - (NSString)description;
@@ -11,14 +11,14 @@
 - (NSString)localInterfaceTypeString;
 - (NSString)relaySessionToken;
 - (NSString)remoteInterfaceTypeString;
-- (VCConnectionIDS)initWithLinkContext:(id)a3 dataChannelToken:(unsigned int)a4;
-- (int)cellTechForSoMask:(unsigned int)a3 fallbackTo:(int)a4;
+- (VCConnectionIDS)initWithLinkContext:(id)context dataChannelToken:(unsigned int)token;
+- (int)cellTechForSoMask:(unsigned int)mask fallbackTo:(int)to;
 - (int)localConnectionType;
 - (int)remoteConnectionType;
-- (unsigned)applyLinkFlagsOverride:(unsigned __int16)a3 isLocal:(BOOL)a4;
-- (unsigned)updateMaxConnectionMTU:(unsigned __int16)a3;
+- (unsigned)applyLinkFlagsOverride:(unsigned __int16)override isLocal:(BOOL)local;
+- (unsigned)updateMaxConnectionMTU:(unsigned __int16)u;
 - (void)dealloc;
-- (void)setCellularMTU:(int)a3;
+- (void)setCellularMTU:(int)u;
 - (void)setUpVTable;
 @end
 
@@ -58,12 +58,12 @@
   self->super._vTable.qrExperiments = _VCConnectionIDS_QRExperiments;
 }
 
-- (unsigned)applyLinkFlagsOverride:(unsigned __int16)a3 isLocal:(BOOL)a4
+- (unsigned)applyLinkFlagsOverride:(unsigned __int16)override isLocal:(BOOL)local
 {
-  v4 = a4;
-  v5 = a3;
+  localCopy = local;
+  overrideCopy = override;
   v25 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (local)
   {
     v6 = @"linkFlagsOverride";
   }
@@ -88,7 +88,7 @@
         v14 = v9;
         v15 = 2080;
         v16 = "[VCConnectionIDS applyLinkFlagsOverride:isLocal:]";
-        if (v4)
+        if (localCopy)
         {
           v11 = "local";
         }
@@ -98,22 +98,22 @@
         v19 = 2080;
         v20 = v11;
         v21 = 1024;
-        v22 = v5;
+        v22 = overrideCopy;
         v23 = 1024;
         v24 = v8;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Overriding %s link flags: 0x%04x -> 0x%04x", &v13, 0x32u);
       }
     }
 
-    LOWORD(v5) = v8;
+    LOWORD(overrideCopy) = v8;
   }
 
-  return v5;
+  return overrideCopy;
 }
 
-- (VCConnectionIDS)initWithLinkContext:(id)a3 dataChannelToken:(unsigned int)a4
+- (VCConnectionIDS)initWithLinkContext:(id)context dataChannelToken:(unsigned int)token
 {
-  v4 = *&a4;
+  v4 = *&token;
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VCConnectionIDS;
@@ -122,16 +122,16 @@
   if (v6)
   {
     v6->super._connectionType = 2;
-    v6->_linkContext = a3;
+    v6->_linkContext = context;
     v7->_datagramChannelToken = v4;
     v7->_datagramChannel = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager datagramChannelWithChannelToken:"datagramChannelWithChannelToken:", v4];
-    v8 = [+[VCDefaults sharedInstance](VCDefaults localRATTypeOverride];
-    if ((v8 + 1) <= 0xA && ((1 << (v8 + 1)) & 0x403) != 0)
+    localRATTypeOverride = [+[VCDefaults sharedInstance](VCDefaults localRATTypeOverride];
+    if ((localRATTypeOverride + 1) <= 0xA && ((1 << (localRATTypeOverride + 1)) & 0x403) != 0)
     {
-      v8 = [(IDSDataChannelLinkContext *)v7->_linkContext RATType];
+      localRATTypeOverride = [(IDSDataChannelLinkContext *)v7->_linkContext RATType];
     }
 
-    v7->_localCellTech = VCConnectionIDSCellTechForRATType(v8);
+    v7->_localCellTech = VCConnectionIDSCellTechForRATType(localRATTypeOverride);
     if (VCConnection_IsLocalOnCellular(v7))
     {
       v7->_localCellTech = [(VCConnectionIDS *)v7 cellTechForSoMask:[(IDSDataChannelLinkContext *)v7->_linkContext localDataSoMask] fallbackTo:v7->_localCellTech];
@@ -144,22 +144,22 @@
       v7->_remoteCellTech = [(VCConnectionIDS *)v7 cellTechForSoMask:[(IDSDataChannelLinkContext *)v7->_linkContext remoteDataSoMask] fallbackTo:v7->_remoteCellTech];
     }
 
-    v10 = [(IDSDataChannelLinkContext *)v7->_linkContext connectionType];
-    if ((v10 - 1) > 4)
+    connectionType = [(IDSDataChannelLinkContext *)v7->_linkContext connectionType];
+    if ((connectionType - 1) > 4)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = dword_1DBD49B60[v10 - 1];
+      v11 = dword_1DBD49B60[connectionType - 1];
     }
 
     v7->_type = v11;
     v7->_linkConnectionType = [(IDSDataChannelLinkContext *)v7->_linkContext connectionType];
-    v12 = [(IDSDataChannelLinkContext *)v7->_linkContext maxMTU];
-    v7->_maxConnectionMTU = v12;
-    v7->_connectionMTU = v12;
+    maxMTU = [(IDSDataChannelLinkContext *)v7->_linkContext maxMTU];
+    v7->_maxConnectionMTU = maxMTU;
+    v7->_connectionMTU = maxMTU;
     v13 = [(VCConnectionIDS *)v7 applyLinkFlagsOverride:[(IDSDataChannelLinkContext *)v7->_linkContext localLinkFlags]& 2 | [(IDSDataChannelLinkContext *)v7->_linkContext localLinkFlags]& 1 | ([(IDSDataChannelLinkContext *)v7->_linkContext localLinkFlags]>> 6) & 4 isLocal:1];
     [(VCConnection *)v7 setLinkFlags:v13];
     [(VCConnection *)v7 setPreviousLinkFlags:v13];
@@ -197,9 +197,9 @@
 
 - (NSString)relaySessionToken
 {
-  v2 = [(NSData *)[(IDSDataChannelLinkContext *)self->_linkContext relaySessionToken] __imHexString];
+  __imHexString = [(NSData *)[(IDSDataChannelLinkContext *)self->_linkContext relaySessionToken] __imHexString];
 
-  return [v2 lowercaseString];
+  return [__imHexString lowercaseString];
 }
 
 - (NSData)sharedDigestKey
@@ -249,13 +249,13 @@
         v20 = 1024;
         v21 = IsLocalConstrained;
         v22 = 1024;
-        v23 = [(VCConnectionIDS *)self isLocalOn5G];
+        isLocalOn5G = [(VCConnectionIDS *)self isLocalOn5G];
         v24 = 1024;
         v25 = IsRemoteExpensive;
         v26 = 1024;
         v27 = IsRemoteConstrained & 1;
         v28 = 1024;
-        v29 = [(VCConnectionIDS *)self isRemoteOn5G];
+        isRemoteOn5G = [(VCConnectionIDS *)self isRemoteOn5G];
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [Local] Expensive %d, constraint %d, 5G %d. [Remote] Expensive %d, constraint %d, 5G %d", &v12, 0x40u);
       }
     }
@@ -273,13 +273,13 @@
       v20 = 1024;
       v21 = IsLocalConstrained;
       v22 = 1024;
-      v23 = [(VCConnectionIDS *)self isLocalOn5G];
+      isLocalOn5G = [(VCConnectionIDS *)self isLocalOn5G];
       v24 = 1024;
       v25 = IsRemoteExpensive;
       v26 = 1024;
       v27 = IsRemoteConstrained & 1;
       v28 = 1024;
-      v29 = [(VCConnectionIDS *)self isRemoteOn5G];
+      isRemoteOn5G = [(VCConnectionIDS *)self isRemoteOn5G];
       _os_log_debug_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d [Local] Expensive %d, constraint %d, 5G %d. [Remote] Expensive %d, constraint %d, 5G %d", &v12, 0x40u);
     }
   }
@@ -287,15 +287,15 @@
   return v7;
 }
 
-+ (id)VCConnectionIDS_RPS:(id)a3
++ (id)VCConnectionIDS_RPS:(id)s
 {
-  if (!a3)
+  if (!s)
   {
     +[VCConnectionIDS VCConnectionIDS_RPS:];
     return v6;
   }
 
-  v3 = *(a3 + 44);
+  v3 = *(s + 44);
   if (!v3)
   {
     +[VCConnectionIDS VCConnectionIDS_RPS:];
@@ -307,15 +307,15 @@
   return v4;
 }
 
-+ (id)VCConnectionIDS_CDBPS:(id)a3
++ (id)VCConnectionIDS_CDBPS:(id)s
 {
-  if (!a3)
+  if (!s)
   {
     +[VCConnectionIDS VCConnectionIDS_CDBPS:];
     return v6;
   }
 
-  v3 = *(a3 + 45);
+  v3 = *(s + 45);
   if (!v3)
   {
     +[VCConnectionIDS VCConnectionIDS_CDBPS:];
@@ -327,9 +327,9 @@
   return v4;
 }
 
-+ (unsigned)worstCaseNetworkOverheadInBytesWithNumOfStreamId:(int)a3 isPriorityIncluded:(BOOL)a4
++ (unsigned)worstCaseNetworkOverheadInBytesWithNumOfStreamId:(int)id isPriorityIncluded:(BOOL)included
 {
-  if (a4)
+  if (included)
   {
     v4 = 45;
   }
@@ -339,7 +339,7 @@
     v4 = 44;
   }
 
-  return ((a3 > 1) | (2 * a3)) + v4 + 56;
+  return ((id > 1) | (2 * id)) + v4 + 56;
 }
 
 - (int)localConnectionType
@@ -386,17 +386,17 @@
   return [v4 stringWithUTF8String:v3];
 }
 
-- (void)setCellularMTU:(int)a3
+- (void)setCellularMTU:(int)u
 {
   if (VCConnection_IsLocalOnCellular(self))
   {
-    self->_connectionMTU = a3;
+    self->_connectionMTU = u;
   }
 }
 
-- (unsigned)updateMaxConnectionMTU:(unsigned __int16)a3
+- (unsigned)updateMaxConnectionMTU:(unsigned __int16)u
 {
-  v3 = a3;
+  uCopy = u;
   v28 = *MEMORY[0x1E69E9840];
   if ((VCConnection_IsLocalOnCellular(self) & 1) != 0 || VCConnection_IsRemoteOnCellular(self))
   {
@@ -418,7 +418,7 @@
 
     else
     {
-      v7 = v3;
+      v7 = uCopy;
     }
 
     v8 = v7;
@@ -438,7 +438,7 @@
       v10 = v6;
     }
 
-    if (v10 != v3)
+    if (v10 != uCopy)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -453,7 +453,7 @@
           v18 = 1024;
           v19 = 506;
           v20 = 1024;
-          v21 = v3;
+          v21 = uCopy;
           v22 = 1024;
           v23 = v10;
           v24 = 1024;
@@ -465,29 +465,29 @@
       }
 
       self->_maxConnectionMTU = v10;
-      LOWORD(v3) = v10;
+      LOWORD(uCopy) = v10;
     }
   }
 
-  return v3;
+  return uCopy;
 }
 
-- (BOOL)isOnSameQRSessionWithConnection:(id)a3
+- (BOOL)isOnSameQRSessionWithConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
-    v4 = [(VCConnectionIDS *)self connectionQRSessionID];
-    v5 = [a3 connectionQRSessionID];
-    if (v4 && v5)
+    connectionQRSessionID = [(VCConnectionIDS *)self connectionQRSessionID];
+    connectionQRSessionID2 = [connection connectionQRSessionID];
+    if (connectionQRSessionID && connectionQRSessionID2)
     {
 
-      LOBYTE(v5) = [v4 isEqual:v5];
+      LOBYTE(connectionQRSessionID2) = [connectionQRSessionID isEqual:connectionQRSessionID2];
     }
 
     else
     {
-      LOBYTE(v5) = (v4 | v5) == 0;
+      LOBYTE(connectionQRSessionID2) = (connectionQRSessionID | connectionQRSessionID2) == 0;
     }
   }
 
@@ -500,10 +500,10 @@
       v8 = *MEMORY[0x1E6986650];
       if (*MEMORY[0x1E6986640] == 1)
       {
-        LODWORD(v5) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-        if (!v5)
+        LODWORD(connectionQRSessionID2) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+        if (!connectionQRSessionID2)
         {
-          return v5;
+          return connectionQRSessionID2;
         }
 
         v10 = 136315650;
@@ -517,27 +517,27 @@
 
       else
       {
-        LODWORD(v5) = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-        if (!v5)
+        LODWORD(connectionQRSessionID2) = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
+        if (!connectionQRSessionID2)
         {
-          return v5;
+          return connectionQRSessionID2;
         }
 
         [VCConnectionIDS isOnSameQRSessionWithConnection:];
       }
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(connectionQRSessionID2) = 0;
   }
 
-  return v5;
+  return connectionQRSessionID2;
 }
 
-- (BOOL)isOnSameInterfacesAndQRSessionWithConnection:(id)a3
+- (BOOL)isOnSameInterfacesAndQRSessionWithConnection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (a3)
+  if (connection)
   {
     v6 = MEMORY[0x1E6986640];
     v7 = MEMORY[0x1E6986650];
@@ -557,9 +557,9 @@
           v24 = 1024;
           v25 = 554;
           v26 = 2080;
-          v27 = [(NSString *)[(VCConnectionIDS *)self description] UTF8String];
+          uTF8String = [(NSString *)[(VCConnectionIDS *)self description] UTF8String];
           v28 = 2080;
-          v29 = [objc_msgSend(a3 "description")];
+          v29 = [objc_msgSend(connection "description")];
           _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCConnection: isOnSameInterfacesAndQRSessionWithConnection: %s vs. %s", &v20, 0x30u);
         }
       }
@@ -573,16 +573,16 @@
         v24 = 1024;
         v25 = 554;
         v26 = 2080;
-        v27 = [(NSString *)[(VCConnectionIDS *)self description] UTF8String];
+        uTF8String = [(NSString *)[(VCConnectionIDS *)self description] UTF8String];
         v28 = 2080;
-        v29 = [objc_msgSend(a3 "description")];
+        v29 = [objc_msgSend(connection "description")];
         _os_log_debug_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d VCConnection: isOnSameInterfacesAndQRSessionWithConnection: %s vs. %s", &v20, 0x30u);
       }
     }
 
     if (VCConnection_IsOnSameInterfacesWithConnection(self))
     {
-      v14 = [(VCConnectionIDS *)self isOnSameQRSessionWithConnection:a3];
+      v14 = [(VCConnectionIDS *)self isOnSameQRSessionWithConnection:connection];
     }
 
     else
@@ -612,7 +612,7 @@
           v24 = 1024;
           v25 = 556;
           v26 = 2080;
-          v27 = v18;
+          uTF8String = v18;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCConnection: isOnSameInterfacesAndQRSessionWithConnection: %s", &v20, 0x26u);
         }
       }
@@ -657,31 +657,31 @@
   return v14;
 }
 
-- (int)cellTechForSoMask:(unsigned int)a3 fallbackTo:(int)a4
+- (int)cellTechForSoMask:(unsigned int)mask fallbackTo:(int)to
 {
-  if (a3)
+  if (mask)
   {
-    a4 = 5;
+    to = 5;
   }
 
-  if ((a3 & 8) != 0)
+  if ((mask & 8) != 0)
   {
-    v5 = 9;
+    toCopy = 9;
   }
 
   else
   {
-    v5 = a4;
+    toCopy = to;
   }
 
-  if ((a3 & 4) != 0)
+  if ((mask & 4) != 0)
   {
     return 8;
   }
 
   else
   {
-    return v5;
+    return toCopy;
   }
 }
 

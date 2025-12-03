@@ -1,10 +1,10 @@
 @interface UARPIPDevice
 - (BOOL)connect;
 - (BOOL)initRecvSource;
-- (BOOL)initSocketWithIPv4Address:(id)a3 port:(unsigned __int16)a4;
-- (BOOL)initSocketWithIPv6Address:(id)a3 port:(unsigned __int16)a4;
+- (BOOL)initSocketWithIPv4Address:(id)address port:(unsigned __int16)port;
+- (BOOL)initSocketWithIPv6Address:(id)address port:(unsigned __int16)port;
 - (BOOL)recvUARPMsg;
-- (BOOL)sendData:(id)a3;
+- (BOOL)sendData:(id)data;
 - (void)connect;
 - (void)dealloc;
 - (void)initRecvSource;
@@ -13,19 +13,19 @@
 
 @implementation UARPIPDevice
 
-- (BOOL)initSocketWithIPv4Address:(id)a3 port:(unsigned __int16)a4
+- (BOOL)initSocketWithIPv4Address:(id)address port:(unsigned __int16)port
 {
-  v4 = a4;
+  portCopy = port;
   v11 = 0;
-  v7 = a3;
-  v8 = inet_pton(2, [a3 UTF8String], &v11);
+  addressCopy = address;
+  v8 = inet_pton(2, [address UTF8String], &v11);
   if (v8 == 1)
   {
     v9 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
     *(v9 + 1) = 0;
     *v9 = 528;
     *(v9 + 1) = v11;
-    *(v9 + 1) = __rev16(v4);
+    *(v9 + 1) = __rev16(portCopy);
     self->_socketAddressFamily = 2;
     self->_socketAddressLength = *v9;
     self->_socketAddress = v9;
@@ -35,12 +35,12 @@
   return v8 == 1;
 }
 
-- (BOOL)initSocketWithIPv6Address:(id)a3 port:(unsigned __int16)a4
+- (BOOL)initSocketWithIPv6Address:(id)address port:(unsigned __int16)port
 {
-  v4 = a4;
+  portCopy = port;
   v11 = 0uLL;
-  v7 = a3;
-  v8 = inet_pton(30, [a3 UTF8String], &v11);
+  addressCopy = address;
+  v8 = inet_pton(30, [address UTF8String], &v11);
   if (v8 == 1)
   {
     v9 = malloc_type_malloc(0x1CuLL, 0x100004027586B93uLL);
@@ -49,7 +49,7 @@
     *(v9 + 12) = 0;
     *v9 = 7708;
     *(v9 + 8) = v11;
-    *(v9 + 1) = __rev16(v4);
+    *(v9 + 1) = __rev16(portCopy);
     self->_socketAddressFamily = 30;
     self->_socketAddressLength = *v9;
     self->_socketAddress = v9;
@@ -170,17 +170,17 @@ void __30__UARPIPDevice_initRecvSource__block_invoke(uint64_t a1)
   return v3 == 0;
 }
 
-- (BOOL)sendData:(id)a3
+- (BOOL)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__UARPIPDevice_sendData___block_invoke;
   v8[3] = &unk_278EC1140;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v8);
 
   return 1;
@@ -276,7 +276,7 @@ void __25__UARPIPDevice_sendData___block_invoke(uint64_t a1)
 - (void)initRecvSource
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_247AA7000, a1, a3, "%s: Failed to create dispatch_source_t", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_247AA7000, self, a3, "%s: Failed to create dispatch_source_t", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -290,7 +290,7 @@ void __30__UARPIPDevice_initRecvSource__block_invoke_cold_1(NSObject *a1, uint64
 - (void)connect
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = __error();
   strerror(*v2);
   OUTLINED_FUNCTION_0_3();

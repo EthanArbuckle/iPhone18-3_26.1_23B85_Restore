@@ -1,6 +1,6 @@
 @interface STUsageColors
 + (NSArray)orderedUsageColors;
-+ (void)updateVibrancyStylingForView:(id)a3 withUsageColor:(id)a4;
++ (void)updateVibrancyStylingForView:(id)view withUsageColor:(id)color;
 @end
 
 @implementation STUsageColors
@@ -8,26 +8,26 @@
 + (NSArray)orderedUsageColors
 {
   v7[3] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75348] systemBlueColor];
-  v3 = [MEMORY[0x277D75348] systemTealColor];
-  v7[1] = v3;
-  v4 = [MEMORY[0x277D75348] systemOrangeColor];
-  v7[2] = v4;
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  systemTealColor = [MEMORY[0x277D75348] systemTealColor];
+  v7[1] = systemTealColor;
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v7[2] = systemOrangeColor;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:3];
 
   return v5;
 }
 
-+ (void)updateVibrancyStylingForView:(id)a3 withUsageColor:(id)a4
++ (void)updateVibrancyStylingForView:(id)view withUsageColor:(id)color
 {
-  v18 = a3;
-  v5 = a4;
+  viewCopy = view;
+  colorCopy = color;
   v6 = MEMORY[0x277D26740];
-  v7 = [v18 traitCollection];
-  v8 = [v6 _visualStylingProviderForRecipe:0 category:3 andUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
+  traitCollection = [viewCopy traitCollection];
+  v8 = [v6 _visualStylingProviderForRecipe:0 category:3 andUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v9 = [MEMORY[0x277D75348] systemGrayColor];
-  v10 = [v5 isEqual:v9];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v10 = [colorCopy isEqual:systemGrayColor];
 
   if (v10)
   {
@@ -36,8 +36,8 @@
 
   else
   {
-    v12 = [MEMORY[0x277D75348] systemBlueColor];
-    v13 = [v5 isEqual:v12];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v13 = [colorCopy isEqual:systemBlueColor];
 
     if (v13)
     {
@@ -46,8 +46,8 @@
 
     else
     {
-      v14 = [MEMORY[0x277D75348] systemTealColor];
-      v15 = [v5 isEqual:v14];
+      systemTealColor = [MEMORY[0x277D75348] systemTealColor];
+      v15 = [colorCopy isEqual:systemTealColor];
 
       if (v15)
       {
@@ -56,8 +56,8 @@
 
       else
       {
-        v16 = [MEMORY[0x277D75348] systemOrangeColor];
-        v17 = [v5 isEqual:v16];
+        systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+        v17 = [colorCopy isEqual:systemOrangeColor];
 
         if (!v17)
         {
@@ -69,7 +69,7 @@
     }
   }
 
-  [v8 automaticallyUpdateView:v18 withStyle:v11];
+  [v8 automaticallyUpdateView:viewCopy withStyle:v11];
 LABEL_10:
 }
 

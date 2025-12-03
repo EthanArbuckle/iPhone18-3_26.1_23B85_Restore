@@ -2,7 +2,7 @@
 + (id)getUserFSSleepManager;
 - (UserFSSleepManager)init;
 - (void)disableSystemSleep;
-- (void)disableSystemSleepDelayed:(id)a3;
+- (void)disableSystemSleepDelayed:(id)delayed;
 - (void)reenableSystemSleep;
 @end
 
@@ -59,17 +59,17 @@
   dispatch_sync(sleepCountQueue, block);
 }
 
-- (void)disableSystemSleepDelayed:(id)a3
+- (void)disableSystemSleepDelayed:(id)delayed
 {
-  v4 = a3;
+  delayedCopy = delayed;
   sleepCountQueue = self->sleepCountQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100018110;
   v7[3] = &unk_100038C98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delayedCopy;
+  v6 = delayedCopy;
   dispatch_sync(sleepCountQueue, v7);
 }
 

@@ -1,7 +1,7 @@
 @interface HDClinicalOptInStudyUpload
-- (BOOL)clinicalOptInStudyShouldAbortUpload:(id)a3;
+- (BOOL)clinicalOptInStudyShouldAbortUpload:(id)upload;
 - (HDClinicalOptInStudyUpload)init;
-- (HDClinicalOptInStudyUpload)initWithStudy:(id)a3 completion:(id)a4;
+- (HDClinicalOptInStudyUpload)initWithStudy:(id)study completion:(id)completion;
 - (void)shouldAbortUpload;
 - (void)triggerUpload;
 @end
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (HDClinicalOptInStudyUpload)initWithStudy:(id)a3 completion:(id)a4
+- (HDClinicalOptInStudyUpload)initWithStudy:(id)study completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  studyCopy = study;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = HDClinicalOptInStudyUpload;
   v9 = [(HDClinicalOptInStudyUpload *)&v14 init];
@@ -27,8 +27,8 @@
   if (v9)
   {
     v9->_ivarLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_study, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_study, study);
+    v11 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v11;
   }
@@ -55,9 +55,9 @@
   {
     self->_didTrigger = 1;
     os_unfair_lock_unlock(&self->_ivarLock);
-    v4 = [(HDClinicalOptInStudyUpload *)self study];
+    study = [(HDClinicalOptInStudyUpload *)self study];
     v11 = 0;
-    v5 = [v4 triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:self error:&v11];
+    v5 = [study triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:self error:&v11];
     v6 = v11;
 
     if ((v5 & 1) == 0)
@@ -71,9 +71,9 @@
     }
 
     completion = self->_completion;
-    v9 = [(HDClinicalOptInStudyUpload *)self study];
-    v10 = [v9 currentSubjectID];
-    completion[2](completion, v5, v10, v6);
+    study2 = [(HDClinicalOptInStudyUpload *)self study];
+    currentSubjectID = [study2 currentSubjectID];
+    completion[2](completion, v5, currentSubjectID, v6);
   }
 }
 
@@ -85,7 +85,7 @@
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (BOOL)clinicalOptInStudyShouldAbortUpload:(id)a3
+- (BOOL)clinicalOptInStudyShouldAbortUpload:(id)upload
 {
   os_unfair_lock_lock(&self->_ivarLock);
   shouldAbort = self->_shouldAbort;

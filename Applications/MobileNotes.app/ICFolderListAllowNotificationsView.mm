@@ -3,7 +3,7 @@
 + (double)backgroundTopMargin;
 + (double)separatorTopMargin;
 + (double)titleTopMargin;
-- (ICFolderListAllowNotificationsView)initWithFrame:(CGRect)a3;
+- (ICFolderListAllowNotificationsView)initWithFrame:(CGRect)frame;
 - (id)constraints;
 - (id)createBell;
 - (id)createCloseButton;
@@ -65,11 +65,11 @@
   return result;
 }
 
-- (ICFolderListAllowNotificationsView)initWithFrame:(CGRect)a3
+- (ICFolderListAllowNotificationsView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = ICFolderListAllowNotificationsView;
-  v3 = [(ICFolderListAllowNotificationsView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICFolderListAllowNotificationsView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIView);
@@ -77,50 +77,50 @@
     [v4 setBackgroundColor:v5];
 
     [(ICFolderListAllowNotificationsView *)v3 setBackgroundView:v4];
-    v6 = [(ICFolderListAllowNotificationsView *)v3 createRoundedRectView];
-    [(ICFolderListAllowNotificationsView *)v3 setRoundedRectView:v6];
+    createRoundedRectView = [(ICFolderListAllowNotificationsView *)v3 createRoundedRectView];
+    [(ICFolderListAllowNotificationsView *)v3 setRoundedRectView:createRoundedRectView];
 
-    v7 = [(ICFolderListAllowNotificationsView *)v3 contentView];
-    v8 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    [v7 addSubview:v8];
+    contentView = [(ICFolderListAllowNotificationsView *)v3 contentView];
+    roundedRectView = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    [contentView addSubview:roundedRectView];
 
-    v9 = [(ICFolderListAllowNotificationsView *)v3 createBell];
-    [(ICFolderListAllowNotificationsView *)v3 setBellBackgroundView:v9];
+    createBell = [(ICFolderListAllowNotificationsView *)v3 createBell];
+    [(ICFolderListAllowNotificationsView *)v3 setBellBackgroundView:createBell];
 
-    v10 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    v11 = [(ICFolderListAllowNotificationsView *)v3 bellBackgroundView];
-    [v10 addSubview:v11];
+    roundedRectView2 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    bellBackgroundView = [(ICFolderListAllowNotificationsView *)v3 bellBackgroundView];
+    [roundedRectView2 addSubview:bellBackgroundView];
 
-    v12 = [(ICFolderListAllowNotificationsView *)v3 createTitle];
-    [(ICFolderListAllowNotificationsView *)v3 setTitleLabel:v12];
+    createTitle = [(ICFolderListAllowNotificationsView *)v3 createTitle];
+    [(ICFolderListAllowNotificationsView *)v3 setTitleLabel:createTitle];
 
-    v13 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    v14 = [(ICFolderListAllowNotificationsView *)v3 titleLabel];
-    [v13 addSubview:v14];
+    roundedRectView3 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    titleLabel = [(ICFolderListAllowNotificationsView *)v3 titleLabel];
+    [roundedRectView3 addSubview:titleLabel];
 
-    v15 = [(ICFolderListAllowNotificationsView *)v3 createSeparator];
-    [(ICFolderListAllowNotificationsView *)v3 setSeparatorView:v15];
+    createSeparator = [(ICFolderListAllowNotificationsView *)v3 createSeparator];
+    [(ICFolderListAllowNotificationsView *)v3 setSeparatorView:createSeparator];
 
-    v16 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    v17 = [(ICFolderListAllowNotificationsView *)v3 separatorView];
-    [v16 addSubview:v17];
+    roundedRectView4 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    separatorView = [(ICFolderListAllowNotificationsView *)v3 separatorView];
+    [roundedRectView4 addSubview:separatorView];
 
-    v18 = [(ICFolderListAllowNotificationsView *)v3 createCloseButton];
-    [(ICFolderListAllowNotificationsView *)v3 setCloseButton:v18];
+    createCloseButton = [(ICFolderListAllowNotificationsView *)v3 createCloseButton];
+    [(ICFolderListAllowNotificationsView *)v3 setCloseButton:createCloseButton];
 
-    v19 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    v20 = [(ICFolderListAllowNotificationsView *)v3 closeButton];
-    [v19 addSubview:v20];
+    roundedRectView5 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    closeButton = [(ICFolderListAllowNotificationsView *)v3 closeButton];
+    [roundedRectView5 addSubview:closeButton];
 
-    v21 = [(ICFolderListAllowNotificationsView *)v3 createSettingsButton];
-    [(ICFolderListAllowNotificationsView *)v3 setSettingsButton:v21];
+    createSettingsButton = [(ICFolderListAllowNotificationsView *)v3 createSettingsButton];
+    [(ICFolderListAllowNotificationsView *)v3 setSettingsButton:createSettingsButton];
 
-    v22 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
-    v23 = [(ICFolderListAllowNotificationsView *)v3 settingsButton];
-    [v22 addSubview:v23];
+    roundedRectView6 = [(ICFolderListAllowNotificationsView *)v3 roundedRectView];
+    settingsButton = [(ICFolderListAllowNotificationsView *)v3 settingsButton];
+    [roundedRectView6 addSubview:settingsButton];
 
-    v24 = [(ICFolderListAllowNotificationsView *)v3 constraints];
-    [NSLayoutConstraint activateConstraints:v24];
+    constraints = [(ICFolderListAllowNotificationsView *)v3 constraints];
+    [NSLayoutConstraint activateConstraints:constraints];
 
     [(ICFolderListAllowNotificationsView *)v3 updateCloseButtonImage];
     [(ICFolderListAllowNotificationsView *)v3 updateColors];
@@ -135,7 +135,7 @@
 {
   v3 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(ICFolderListAllowNotificationsView *)self traitCollection];
+  traitCollection = [(ICFolderListAllowNotificationsView *)self traitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   v6 = v5;
 
@@ -295,155 +295,155 @@
 - (id)constraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(ICFolderListAllowNotificationsView *)self contentView];
-  v7 = [v6 layoutMarginsGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  roundedRectView = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  leadingAnchor = [roundedRectView leadingAnchor];
+  contentView = [(ICFolderListAllowNotificationsView *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v9];
 
-  v10 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(ICFolderListAllowNotificationsView *)self contentView];
-  v13 = [v12 layoutMarginsGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  roundedRectView2 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  trailingAnchor = [roundedRectView2 trailingAnchor];
+  contentView2 = [(ICFolderListAllowNotificationsView *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v17 = [v16 topAnchor];
-  v18 = [(ICFolderListAllowNotificationsView *)self contentView];
-  v19 = [v18 topAnchor];
+  roundedRectView3 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  topAnchor = [roundedRectView3 topAnchor];
+  contentView3 = [(ICFolderListAllowNotificationsView *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
   [objc_opt_class() backgroundTopMargin];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:?];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v3 addObject:v20];
 
-  v21 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(ICFolderListAllowNotificationsView *)self contentView];
-  v24 = [v23 bottomAnchor];
+  roundedRectView4 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  bottomAnchor = [roundedRectView4 bottomAnchor];
+  contentView4 = [(ICFolderListAllowNotificationsView *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
   [objc_opt_class() backgroundBottomMargin];
-  v26 = [v22 constraintEqualToAnchor:v24 constant:-v25];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v25];
   [v3 addObject:v26];
 
-  v27 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v28 = [v27 leadingAnchor];
-  v29 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v30 = [v29 leadingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:12.0];
+  bellBackgroundView = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  leadingAnchor3 = [bellBackgroundView leadingAnchor];
+  roundedRectView5 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  leadingAnchor4 = [roundedRectView5 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
   [v3 addObject:v31];
 
-  v32 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v33 = [v32 topAnchor];
-  v34 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35 constant:16.0];
+  bellBackgroundView2 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  topAnchor3 = [bellBackgroundView2 topAnchor];
+  roundedRectView6 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  topAnchor4 = [roundedRectView6 topAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
   [v3 addObject:v36];
 
-  v37 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v38 = [v37 widthAnchor];
-  v39 = [v38 constraintEqualToConstant:32.0];
+  bellBackgroundView3 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  widthAnchor = [bellBackgroundView3 widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:32.0];
   [v3 addObject:v39];
 
-  v40 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v41 = [v40 heightAnchor];
-  v42 = [v41 constraintEqualToConstant:32.0];
+  bellBackgroundView4 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  heightAnchor = [bellBackgroundView4 heightAnchor];
+  v42 = [heightAnchor constraintEqualToConstant:32.0];
   [v3 addObject:v42];
 
-  v43 = [(ICFolderListAllowNotificationsView *)self bellImageView];
-  v44 = [v43 centerXAnchor];
-  v45 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v46 = [v45 centerXAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  bellImageView = [(ICFolderListAllowNotificationsView *)self bellImageView];
+  centerXAnchor = [bellImageView centerXAnchor];
+  bellBackgroundView5 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  centerXAnchor2 = [bellBackgroundView5 centerXAnchor];
+  v47 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v3 addObject:v47];
 
-  v48 = [(ICFolderListAllowNotificationsView *)self bellImageView];
-  v49 = [v48 centerYAnchor];
-  v50 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v51 = [v50 centerYAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51];
+  bellImageView2 = [(ICFolderListAllowNotificationsView *)self bellImageView];
+  centerYAnchor = [bellImageView2 centerYAnchor];
+  bellBackgroundView6 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  centerYAnchor2 = [bellBackgroundView6 centerYAnchor];
+  v52 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v3 addObject:v52];
 
-  v53 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v54 = [v53 topAnchor];
-  v55 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v56 = [v55 topAnchor];
+  titleLabel = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  topAnchor5 = [titleLabel topAnchor];
+  roundedRectView7 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  topAnchor6 = [roundedRectView7 topAnchor];
   [objc_opt_class() titleTopMargin];
-  v57 = [v54 constraintEqualToAnchor:v56 constant:?];
+  v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:?];
   [v3 addObject:v57];
 
-  v58 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v59 = [v58 leadingAnchor];
-  v60 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
-  v61 = [v60 trailingAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61 constant:12.0];
+  titleLabel2 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  leadingAnchor5 = [titleLabel2 leadingAnchor];
+  bellBackgroundView7 = [(ICFolderListAllowNotificationsView *)self bellBackgroundView];
+  trailingAnchor3 = [bellBackgroundView7 trailingAnchor];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:12.0];
   [v3 addObject:v62];
 
-  v63 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v64 = [v63 trailingAnchor];
-  v65 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v66 = [v65 leadingAnchor];
-  v67 = [v64 constraintLessThanOrEqualToAnchor:v66 constant:-7.0];
+  titleLabel3 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  trailingAnchor4 = [titleLabel3 trailingAnchor];
+  closeButton = [(ICFolderListAllowNotificationsView *)self closeButton];
+  leadingAnchor6 = [closeButton leadingAnchor];
+  v67 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor6 constant:-7.0];
   [v3 addObject:v67];
 
-  v68 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v69 = [v68 font];
-  [v69 ascender];
+  titleLabel4 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  font = [titleLabel4 font];
+  [font ascender];
   v71 = v70;
-  v72 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v73 = [v72 font];
-  [v73 descender];
+  titleLabel5 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  font2 = [titleLabel5 font];
+  [font2 descender];
   v75 = v71 + v74;
 
-  v76 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v77 = [v76 centerYAnchor];
-  v78 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v79 = [v78 firstBaselineAnchor];
-  v80 = [v77 constraintEqualToAnchor:v79 constant:v75 * -0.5];
+  closeButton2 = [(ICFolderListAllowNotificationsView *)self closeButton];
+  centerYAnchor3 = [closeButton2 centerYAnchor];
+  titleLabel6 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel6 firstBaselineAnchor];
+  v80 = [centerYAnchor3 constraintEqualToAnchor:firstBaselineAnchor constant:v75 * -0.5];
   [v3 addObject:v80];
 
-  v81 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v82 = [v81 trailingAnchor];
-  v83 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v84 = [v83 trailingAnchor];
-  v85 = [v82 constraintEqualToAnchor:v84 constant:-7.0];
+  closeButton3 = [(ICFolderListAllowNotificationsView *)self closeButton];
+  trailingAnchor5 = [closeButton3 trailingAnchor];
+  roundedRectView8 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  trailingAnchor6 = [roundedRectView8 trailingAnchor];
+  v85 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-7.0];
   [v3 addObject:v85];
 
-  v86 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v87 = [v86 heightAnchor];
-  v88 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v89 = [v88 widthAnchor];
-  v90 = [v87 constraintEqualToAnchor:v89];
+  closeButton4 = [(ICFolderListAllowNotificationsView *)self closeButton];
+  heightAnchor2 = [closeButton4 heightAnchor];
+  closeButton5 = [(ICFolderListAllowNotificationsView *)self closeButton];
+  widthAnchor2 = [closeButton5 widthAnchor];
+  v90 = [heightAnchor2 constraintEqualToAnchor:widthAnchor2];
   [v3 addObject:v90];
 
-  v91 = [(ICFolderListAllowNotificationsView *)self separatorView];
-  v92 = [v91 topAnchor];
-  v93 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v94 = [v93 bottomAnchor];
+  separatorView = [(ICFolderListAllowNotificationsView *)self separatorView];
+  topAnchor7 = [separatorView topAnchor];
+  titleLabel7 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  bottomAnchor3 = [titleLabel7 bottomAnchor];
   [objc_opt_class() separatorTopMargin];
-  v95 = [v92 constraintEqualToAnchor:v94 constant:?];
+  v95 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v3 addObject:v95];
 
-  v96 = [(ICFolderListAllowNotificationsView *)self separatorView];
-  v97 = [v96 leadingAnchor];
-  v98 = [(ICFolderListAllowNotificationsView *)self titleLabel];
-  v99 = [v98 leadingAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99];
+  separatorView2 = [(ICFolderListAllowNotificationsView *)self separatorView];
+  leadingAnchor7 = [separatorView2 leadingAnchor];
+  titleLabel8 = [(ICFolderListAllowNotificationsView *)self titleLabel];
+  leadingAnchor8 = [titleLabel8 leadingAnchor];
+  v100 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v3 addObject:v100];
 
-  v101 = [(ICFolderListAllowNotificationsView *)self separatorView];
-  v102 = [v101 trailingAnchor];
+  separatorView3 = [(ICFolderListAllowNotificationsView *)self separatorView];
+  trailingAnchor7 = [separatorView3 trailingAnchor];
   v103 = objc_opt_self();
-  v104 = [v103 roundedRectView];
-  v105 = [v104 trailingAnchor];
-  v106 = [v102 constraintEqualToAnchor:v105 constant:-13.0];
+  roundedRectView9 = [v103 roundedRectView];
+  trailingAnchor8 = [roundedRectView9 trailingAnchor];
+  v106 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-13.0];
   [v3 addObject:v106];
 
-  v107 = [(ICFolderListAllowNotificationsView *)self separatorView];
-  v108 = [v107 heightAnchor];
+  separatorView4 = [(ICFolderListAllowNotificationsView *)self separatorView];
+  heightAnchor3 = [separatorView4 heightAnchor];
   [(ICFolderListAllowNotificationsView *)self ic_hairlineWidth];
-  v109 = [v108 constraintEqualToConstant:?];
+  v109 = [heightAnchor3 constraintEqualToConstant:?];
   [v3 addObject:v109];
 
   if (+[UIDevice ic_isVision])
@@ -456,11 +456,11 @@
     v110 = 0.0;
   }
 
-  v111 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-  v112 = [v111 topAnchor];
-  v113 = [(ICFolderListAllowNotificationsView *)self separatorView];
-  v114 = [v113 bottomAnchor];
-  v115 = [v112 constraintEqualToAnchor:v114 constant:v110];
+  settingsButton = [(ICFolderListAllowNotificationsView *)self settingsButton];
+  topAnchor8 = [settingsButton topAnchor];
+  separatorView5 = [(ICFolderListAllowNotificationsView *)self separatorView];
+  bottomAnchor4 = [separatorView5 bottomAnchor];
+  v115 = [topAnchor8 constraintEqualToAnchor:bottomAnchor4 constant:v110];
   [v3 addObject:v115];
 
   if (+[UIDevice ic_isVision])
@@ -473,50 +473,50 @@
     [v119 contentInsets];
     v121 = v120;
 
-    v122 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-    v123 = [v122 leadingAnchor];
-    v124 = [(ICFolderListAllowNotificationsView *)self separatorView];
-    v125 = [v124 leadingAnchor];
-    v126 = [v123 constraintEqualToAnchor:v125 constant:-v118];
+    settingsButton2 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+    leadingAnchor9 = [settingsButton2 leadingAnchor];
+    separatorView6 = [(ICFolderListAllowNotificationsView *)self separatorView];
+    leadingAnchor10 = [separatorView6 leadingAnchor];
+    v126 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:-v118];
     [v3 addObject:v126];
 
-    v127 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-    v128 = [v127 trailingAnchor];
-    v129 = [(ICFolderListAllowNotificationsView *)self separatorView];
-    v130 = [v129 trailingAnchor];
-    [v128 constraintLessThanOrEqualToAnchor:v130 constant:v121];
+    settingsButton3 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+    trailingAnchor9 = [settingsButton3 trailingAnchor];
+    separatorView7 = [(ICFolderListAllowNotificationsView *)self separatorView];
+    trailingAnchor10 = [separatorView7 trailingAnchor];
+    [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10 constant:v121];
   }
 
   else
   {
-    v131 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-    v132 = [v131 leadingAnchor];
-    v133 = [(ICFolderListAllowNotificationsView *)self separatorView];
-    v134 = [v133 leadingAnchor];
-    v135 = [v132 constraintEqualToAnchor:v134];
+    settingsButton4 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+    leadingAnchor11 = [settingsButton4 leadingAnchor];
+    separatorView8 = [(ICFolderListAllowNotificationsView *)self separatorView];
+    leadingAnchor12 = [separatorView8 leadingAnchor];
+    v135 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     [v3 addObject:v135];
 
-    v127 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-    v128 = [v127 trailingAnchor];
-    v129 = [(ICFolderListAllowNotificationsView *)self separatorView];
-    v130 = [v129 trailingAnchor];
-    [v128 constraintEqualToAnchor:v130];
+    settingsButton3 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+    trailingAnchor9 = [settingsButton3 trailingAnchor];
+    separatorView7 = [(ICFolderListAllowNotificationsView *)self separatorView];
+    trailingAnchor10 = [separatorView7 trailingAnchor];
+    [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   }
   v136 = ;
   [v3 addObject:v136];
 
-  v137 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-  v138 = [v137 heightAnchor];
-  v139 = [v138 constraintEqualToConstant:44.0];
+  settingsButton5 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+  heightAnchor4 = [settingsButton5 heightAnchor];
+  v139 = [heightAnchor4 constraintEqualToConstant:44.0];
 
   LODWORD(v140) = 1144750080;
   [v139 setPriority:v140];
   [v3 addObject:v139];
-  v141 = [(ICFolderListAllowNotificationsView *)self settingsButton];
-  v142 = [v141 bottomAnchor];
-  v143 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  v144 = [v143 bottomAnchor];
-  v145 = [v142 constraintEqualToAnchor:v144 constant:-v110];
+  settingsButton6 = [(ICFolderListAllowNotificationsView *)self settingsButton];
+  bottomAnchor5 = [settingsButton6 bottomAnchor];
+  roundedRectView10 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  bottomAnchor6 = [roundedRectView10 bottomAnchor];
+  v145 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v110];
   [v3 addObject:v145];
 
   v146 = [v3 copy];
@@ -539,8 +539,8 @@
     +[UIColor quaternarySystemFillColor];
   }
   v5 = ;
-  v4 = [(ICFolderListAllowNotificationsView *)self roundedRectView];
-  [v4 setBackgroundColor:v5];
+  roundedRectView = [(ICFolderListAllowNotificationsView *)self roundedRectView];
+  [roundedRectView setBackgroundColor:v5];
 }
 
 - (void)updateCloseButtonImage
@@ -563,12 +563,12 @@
   [v12 pointSize];
   v7 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:1 scale:?];
   v8 = [UIImage systemImageNamed:@"xmark" withConfiguration:v7];
-  v9 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  v10 = [v9 configuration];
+  closeButton = [(ICFolderListAllowNotificationsView *)self closeButton];
+  configuration = [closeButton configuration];
 
-  [v10 setImage:v8];
-  v11 = [(ICFolderListAllowNotificationsView *)self closeButton];
-  [v11 setConfiguration:v10];
+  [configuration setImage:v8];
+  closeButton2 = [(ICFolderListAllowNotificationsView *)self closeButton];
+  [closeButton2 setConfiguration:configuration];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilFstUtil_TopNSearcher
-- (BOOL)acceptResultWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)a3;
+- (BOOL)acceptResultWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)path;
 - (id)search;
-- (void)addIfCompetitiveWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)a3;
-- (void)addStartPathsWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withId:(id)a4 withBoolean:(BOOL)a5 withOrgApacheLuceneUtilIntsRefBuilder:(id)a6 withFloat:(float)a7 withJavaLangCharSequence:(id)a8;
+- (void)addIfCompetitiveWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)path;
+- (void)addStartPathsWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withId:(id)id withBoolean:(BOOL)boolean withOrgApacheLuceneUtilIntsRefBuilder:(id)builder withFloat:(float)float withJavaLangCharSequence:(id)sequence;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstUtil_TopNSearcher
 
-- (void)addIfCompetitiveWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)a3
+- (void)addIfCompetitiveWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)path
 {
   fst = self->fst_;
   if (!fst)
@@ -22,18 +22,18 @@
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!path)
   {
     goto LABEL_20;
   }
 
-  v7 = *(a3 + 1);
+  v7 = *(path + 1);
   if (!v7)
   {
     goto LABEL_20;
   }
 
-  v8 = [(OrgApacheLuceneUtilFstOutputs *)outputs addWithId:*(a3 + 2) withId:*(v7 + 16)];
+  v8 = [(OrgApacheLuceneUtilFstOutputs *)outputs addWithId:*(path + 2) withId:*(v7 + 16)];
   queue = self->queue_;
   if (!queue)
   {
@@ -42,14 +42,14 @@
 
   if ([(JavaUtilTreeSet *)queue size]== self->maxQueueDepth_)
   {
-    v10 = [(JavaUtilTreeSet *)self->queue_ last];
+    last = [(JavaUtilTreeSet *)self->queue_ last];
     pathComparator = self->pathComparator_;
     if (!pathComparator)
     {
       goto LABEL_20;
     }
 
-    v12 = [(JavaUtilComparator *)pathComparator compareWithId:a3 withId:v10];
+    v12 = [(JavaUtilComparator *)pathComparator compareWithId:path withId:last];
     if (v12 > 0)
     {
       return;
@@ -57,17 +57,17 @@
 
     if (!v12)
     {
-      v13 = *(a3 + 3);
+      v13 = *(path + 3);
       if (v13)
       {
-        [v13 appendWithInt:*(*(a3 + 1) + 8)];
-        if (v10)
+        [v13 appendWithInt:*(*(path + 1) + 8)];
+        if (last)
         {
-          v14 = [v10[3] get];
+          v14 = [last[3] get];
           if (v14)
           {
-            v15 = [v14 compareToWithId:{objc_msgSend(*(a3 + 3), "get")}];
-            [*(a3 + 3) setLengthWithInt:{objc_msgSend(*(a3 + 3), "length") - 1}];
+            v15 = [v14 compareToWithId:{objc_msgSend(*(path + 3), "get")}];
+            [*(path + 3) setLengthWithInt:{objc_msgSend(*(path + 3), "length") - 1}];
             if ((v15 & 0x80000000) != 0)
             {
               return;
@@ -85,15 +85,15 @@ LABEL_20:
 
 LABEL_14:
   v16 = new_OrgApacheLuceneUtilIntsRefBuilder_init();
-  v17 = *(a3 + 3);
+  v17 = *(path + 3);
   if (!v17)
   {
     goto LABEL_20;
   }
 
   -[OrgApacheLuceneUtilIntsRefBuilder copyIntsWithOrgApacheLuceneUtilIntsRef:](v16, "copyIntsWithOrgApacheLuceneUtilIntsRef:", [v17 get]);
-  [(OrgApacheLuceneUtilIntsRefBuilder *)v16 appendWithInt:*(*(a3 + 1) + 8)];
-  -[JavaUtilTreeSet addWithId:](self->queue_, "addWithId:", [a3 newPathWithId:v8 withOrgApacheLuceneUtilIntsRefBuilder:v16]);
+  [(OrgApacheLuceneUtilIntsRefBuilder *)v16 appendWithInt:*(*(path + 1) + 8)];
+  -[JavaUtilTreeSet addWithId:](self->queue_, "addWithId:", [path newPathWithId:v8 withOrgApacheLuceneUtilIntsRefBuilder:v16]);
   if ([(JavaUtilTreeSet *)self->queue_ size]== self->maxQueueDepth_ + 1)
   {
     v18 = self->queue_;
@@ -102,9 +102,9 @@ LABEL_14:
   }
 }
 
-- (void)addStartPathsWithOrgApacheLuceneUtilFstFST_Arc:(id)a3 withId:(id)a4 withBoolean:(BOOL)a5 withOrgApacheLuceneUtilIntsRefBuilder:(id)a6 withFloat:(float)a7 withJavaLangCharSequence:(id)a8
+- (void)addStartPathsWithOrgApacheLuceneUtilFstFST_Arc:(id)arc withId:(id)id withBoolean:(BOOL)boolean withOrgApacheLuceneUtilIntsRefBuilder:(id)builder withFloat:(float)float withJavaLangCharSequence:(id)sequence
 {
-  if (!a4)
+  if (!id)
   {
     goto LABEL_14;
   }
@@ -121,17 +121,17 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v15 = a4;
-  if ([a4 isEqual:{-[OrgApacheLuceneUtilFstOutputs getNoOutput](outputs, "getNoOutput")}])
+  idCopy = id;
+  if ([id isEqual:{-[OrgApacheLuceneUtilFstOutputs getNoOutput](outputs, "getNoOutput")}])
   {
-    v15 = [(OrgApacheLuceneUtilFstOutputs *)self->fst_->outputs_ getNoOutput];
+    idCopy = [(OrgApacheLuceneUtilFstOutputs *)self->fst_->outputs_ getNoOutput];
   }
 
   v17 = [OrgApacheLuceneUtilFstUtil_FSTPath alloc];
-  OrgApacheLuceneUtilFstUtil_FSTPath_initWithId_withOrgApacheLuceneUtilFstFST_Arc_withOrgApacheLuceneUtilIntsRefBuilder_withFloat_withJavaLangCharSequence_(v17, v15, a3, a6, a8, a7);
+  OrgApacheLuceneUtilFstUtil_FSTPath_initWithId_withOrgApacheLuceneUtilFstFST_Arc_withOrgApacheLuceneUtilIntsRefBuilder_withFloat_withJavaLangCharSequence_(v17, idCopy, arc, builder, sequence, float);
   v18 = v17;
-  [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:a3 withOrgApacheLuceneUtilFstFST_Arc:v18->arc_ withOrgApacheLuceneUtilFstFST_BytesReader:self->bytesReader_];
-  if (!a5)
+  [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:arc withOrgApacheLuceneUtilFstFST_Arc:v18->arc_ withOrgApacheLuceneUtilFstFST_BytesReader:self->bytesReader_];
+  if (!boolean)
   {
     goto LABEL_7;
   }
@@ -148,7 +148,7 @@ LABEL_14:
   while (![(OrgApacheLuceneUtilFstFST_Arc *)arc isLast])
   {
     [(OrgApacheLuceneUtilFstFST *)self->fst_ readNextArcWithOrgApacheLuceneUtilFstFST_Arc:v18->arc_ withOrgApacheLuceneUtilFstFST_BytesReader:self->bytesReader_];
-    if (a5)
+    if (boolean)
     {
       goto LABEL_9;
     }
@@ -176,14 +176,14 @@ LABEL_7:
     goto LABEL_46;
   }
 
-  v5 = [(OrgApacheLuceneUtilFstFST *)fst getBytesReader];
+  getBytesReader = [(OrgApacheLuceneUtilFstFST *)fst getBytesReader];
   outputs = self->fst_->outputs_;
   if (!outputs)
   {
     goto LABEL_46;
   }
 
-  v7 = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
+  getNoOutput = [(OrgApacheLuceneUtilFstOutputs *)outputs getNoOutput];
   v8 = [(JavaUtilArrayList *)v3 size];
   topN = self->topN_;
   if (v8 >= topN || (p_queue = &self->queue_, (queue = self->queue_) == 0))
@@ -195,15 +195,15 @@ LABEL_7:
   v32 = 0;
   do
   {
-    v12 = [(JavaUtilTreeSet *)queue pollFirst];
-    if (!v12)
+    pollFirst = [(JavaUtilTreeSet *)queue pollFirst];
+    if (!pollFirst)
     {
       topN = self->topN_;
       break;
     }
 
-    v13 = v12;
-    v14 = v12[1];
+    v13 = pollFirst;
+    v14 = pollFirst[1];
     if (!v14)
     {
       goto LABEL_46;
@@ -211,13 +211,13 @@ LABEL_7:
 
     if (v14[2] == -1)
     {
-      v27 = v12[3];
+      v27 = pollFirst[3];
       if (!v27)
       {
         goto LABEL_46;
       }
 
-      [v27 setLengthWithInt:{objc_msgSend(v12[3], "length") - 1}];
+      [v27 setLengthWithInt:{objc_msgSend(pollFirst[3], "length") - 1}];
       v25 = [v13[3] get];
       v26 = v13[2];
 LABEL_37:
@@ -232,7 +232,7 @@ LABEL_37:
       JreStrongAssign(&self->queue_, 0);
     }
 
-    [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:v5];
+    [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:getBytesReader];
     comparator = self->comparator_;
     if (!comparator)
     {
@@ -242,7 +242,7 @@ LABEL_37:
     v18 = 0;
     while (1)
     {
-      v19 = [(JavaUtilComparator *)comparator compareWithId:v7 withId:*(v13[1] + 2)];
+      v19 = [(JavaUtilComparator *)comparator compareWithId:getNoOutput withId:*(v13[1] + 2)];
       v20 = *p_queue;
       if (v19)
       {
@@ -283,7 +283,7 @@ LABEL_37:
         break;
       }
 
-      [(OrgApacheLuceneUtilFstFST *)self->fst_ readNextArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:v5];
+      [(OrgApacheLuceneUtilFstFST *)self->fst_ readNextArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:getBytesReader];
 LABEL_30:
       comparator = self->comparator_;
       if (!comparator)
@@ -309,7 +309,7 @@ LABEL_26:
 
       [v23 appendWithInt:?];
       JreStrongAssign(v13 + 2, [(OrgApacheLuceneUtilFstOutputs *)self->fst_->outputs_ addWithId:v13[2] withId:*(v13[1] + 2)]);
-      [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:v5];
+      [(OrgApacheLuceneUtilFstFST *)self->fst_ readFirstTargetArcWithOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_Arc:v13[1] withOrgApacheLuceneUtilFstFST_BytesReader:getBytesReader];
       v18 = 0;
       goto LABEL_30;
     }
@@ -351,15 +351,15 @@ LABEL_43:
   return v30;
 }
 
-- (BOOL)acceptResultWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)a3
+- (BOOL)acceptResultWithOrgApacheLuceneUtilFstUtil_FSTPath:(id)path
 {
-  if (!a3 || (v5 = *(a3 + 3)) == 0)
+  if (!path || (v5 = *(path + 3)) == 0)
   {
     JreThrowNullPointerException();
   }
 
   v6 = [v5 get];
-  v7 = *(a3 + 2);
+  v7 = *(path + 2);
 
   return [(OrgApacheLuceneUtilFstUtil_TopNSearcher *)self acceptResultWithOrgApacheLuceneUtilIntsRef:v6 withId:v7];
 }

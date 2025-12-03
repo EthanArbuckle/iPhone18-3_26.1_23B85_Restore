@@ -1,5 +1,5 @@
 @interface IntroductionUIProvider.IntroductionCardContentViewController
-- (_TtCC21TDGSharingViewService22IntroductionUIProvider37IntroductionCardContentViewController)initWithContentView:(id)a3;
+- (_TtCC21TDGSharingViewService22IntroductionUIProvider37IntroductionCardContentViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -26,7 +26,7 @@
   }
 }
 
-- (_TtCC21TDGSharingViewService22IntroductionUIProvider37IntroductionCardContentViewController)initWithContentView:(id)a3
+- (_TtCC21TDGSharingViewService22IntroductionUIProvider37IntroductionCardContentViewController)initWithContentView:(id)view
 {
   v5 = &self->PRXCardContentViewController_opaque[OBJC_IVAR____TtCC21TDGSharingViewService22IntroductionUIProvider37IntroductionCardContentViewController_viewDidLoadCompletionHandler];
   v6 = type metadata accessor for IntroductionUIProvider.IntroductionCardContentViewController();
@@ -34,7 +34,7 @@
   *(v5 + 1) = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(IntroductionUIProvider.IntroductionCardContentViewController *)&v8 initWithContentView:a3];
+  return [(IntroductionUIProvider.IntroductionCardContentViewController *)&v8 initWithContentView:view];
 }
 
 @end

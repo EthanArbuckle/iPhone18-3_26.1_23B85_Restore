@@ -1,6 +1,6 @@
 @interface PixelBufferConverter
 - (PixelBufferConverter)init;
-- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)a3 toFormat:(unsigned int)a4;
+- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)buffer toFormat:(unsigned int)format;
 - (void)dealloc;
 @end
 
@@ -42,13 +42,13 @@
   [(PixelBufferConverter *)&v5 dealloc];
 }
 
-- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)a3 toFormat:(unsigned int)a4
+- (__CVBuffer)convertPixelBuffer:(__CVBuffer *)buffer toFormat:(unsigned int)format
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (buffer)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
   }
 
   else
@@ -57,7 +57,7 @@
     Height = *(MEMORY[0x1E695F060] + 8);
   }
 
-  if (ARRecreatePixelBufferPoolOnConfigurationChanges(&self->_pixelBufferPool, a4, Width, Height))
+  if (ARRecreatePixelBufferPoolOnConfigurationChanges(&self->_pixelBufferPool, format, Width, Height))
   {
     if (ARShouldUseLogTypeError_onceToken_47 != -1)
     {
@@ -76,7 +76,7 @@
         *buf = 138543618;
         v34 = v13;
         v35 = 2048;
-        v36 = self;
+        selfCopy6 = self;
         v14 = "%{public}@ <%p>: Could not create pixel buffer pool.";
 LABEL_16:
         v18 = v11;
@@ -100,7 +100,7 @@ LABEL_28:
     *buf = 138543618;
     v34 = v13;
     v35 = 2048;
-    v36 = self;
+    selfCopy6 = self;
     v14 = "Error: %{public}@ <%p>: Could not create pixel buffer pool.";
     goto LABEL_27;
   }
@@ -125,7 +125,7 @@ LABEL_28:
         *buf = 138543618;
         v34 = v13;
         v35 = 2048;
-        v36 = self;
+        selfCopy6 = self;
         v14 = "%{public}@ <%p>: Could not create pixel buffer from pool.";
         goto LABEL_16;
       }
@@ -145,7 +145,7 @@ LABEL_29:
     *buf = 138543618;
     v34 = v13;
     v35 = 2048;
-    v36 = self;
+    selfCopy6 = self;
     v14 = "Error: %{public}@ <%p>: Could not create pixel buffer from pool.";
 LABEL_27:
     v18 = v11;
@@ -153,7 +153,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a3, pixelBufferOut))
+  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, buffer, pixelBufferOut))
   {
     if (ARShouldUseLogTypeError_onceToken_47 != -1)
     {
@@ -172,7 +172,7 @@ LABEL_27:
         *buf = 138543618;
         v34 = v25;
         v35 = 2048;
-        v36 = self;
+        selfCopy6 = self;
         v26 = "%{public}@ <%p>: Could not convert pixel buffer";
         v27 = v23;
         v28 = OS_LOG_TYPE_ERROR;
@@ -188,7 +188,7 @@ LABEL_34:
       *buf = 138543618;
       v34 = v25;
       v35 = 2048;
-      v36 = self;
+      selfCopy6 = self;
       v26 = "Error: %{public}@ <%p>: Could not convert pixel buffer";
       v27 = v23;
       v28 = OS_LOG_TYPE_INFO;

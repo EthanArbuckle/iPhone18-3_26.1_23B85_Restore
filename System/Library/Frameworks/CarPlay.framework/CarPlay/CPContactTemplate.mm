@@ -1,9 +1,9 @@
 @interface CPContactTemplate
-- (CPContactTemplate)initWithCoder:(id)a3;
+- (CPContactTemplate)initWithCoder:(id)coder;
 - (CPContactTemplate)initWithContact:(CPContact *)contact;
 - (id)entity;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)performUpdate;
 - (void)setContact:(CPContact *)contact;
 @end
@@ -28,21 +28,21 @@
 
 - (id)entity
 {
-  v2 = [(CPContactTemplate *)self contact];
-  v3 = [v2 contactEntity];
+  contact = [(CPContactTemplate *)self contact];
+  contactEntity = [contact contactEntity];
 
-  return v3;
+  return contactEntity;
 }
 
-- (CPContactTemplate)initWithCoder:(id)a3
+- (CPContactTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPContactTemplate;
-  v5 = [(CPTemplate *)&v9 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPEntity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPEntity"];
     contact = v5->_contact;
     v5->_contact = v6;
 
@@ -52,14 +52,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CPContactTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CPContactTemplate *)self contact:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"CPEntity"];
+  [coderCopy encodeObject:v5 forKey:@"CPEntity"];
 }
 
 - (void)setContact:(CPContact *)contact
@@ -79,13 +79,13 @@
   v8.super_class = CPContactTemplate;
   [(CPTemplate *)&v8 performUpdate];
   objc_initWeak(&location, self);
-  v3 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__CPContactTemplate_performUpdate__block_invoke;
   v5[3] = &unk_278A11790;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addSuccessBlock:v5];
+  v4 = [templateProviderFuture addSuccessBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -98,16 +98,16 @@ void __34__CPContactTemplate_performUpdate__block_invoke(uint64_t a1, void *a2)
   [v3 updateEntityTemplate:WeakRetained withProxyDelegate:WeakRetained];
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__CPContactTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

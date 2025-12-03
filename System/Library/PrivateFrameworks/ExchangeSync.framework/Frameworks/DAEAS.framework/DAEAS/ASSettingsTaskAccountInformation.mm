@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 @end
 
 @implementation ASSettingsTaskAccountInformation
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_131 = v2;
     acceptsTopLevelLeaves___haveChecked_130 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_133 = v2;
     parsingLeafNode___haveChecked_132 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_135 = v2;
     parsingWithSubItems___haveChecked_134 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_137 = v2;
     frontingBasicTypes___haveChecked_136 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_139 = v2;
     notifyOfUnknownTokens___haveChecked_138 = 1;
   }
@@ -101,9 +101,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASSettingsTaskAccountInformation *)self emailAddressList];
-  v7 = [(ASSettingsTaskAccountInformation *)self accountId];
-  v8 = [v3 stringWithFormat:@"%@ %p: emailAddressList: %@ accountId %@", v5, self, v6, v7];
+  emailAddressList = [(ASSettingsTaskAccountInformation *)self emailAddressList];
+  accountId = [(ASSettingsTaskAccountInformation *)self accountId];
+  v8 = [v3 stringWithFormat:@"%@ %p: emailAddressList: %@ accountId %@", v5, self, emailAddressList, accountId];
 
   return v8;
 }
@@ -111,7 +111,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -130,19 +130,19 @@
     v5 = [v19 dictionaryWithObjectsAndKeys:{v18, v17, v16, v15, v14, v6, v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = ASSettingsTaskAccountInformation;
-  [(ASItem *)&v13 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v13 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -158,7 +158,7 @@
       if (os_log_type_enabled(v10, v11))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_24A0AC000, v10, v11, "%@ Parsed its context.", buf, 0xCu);
       }
     }

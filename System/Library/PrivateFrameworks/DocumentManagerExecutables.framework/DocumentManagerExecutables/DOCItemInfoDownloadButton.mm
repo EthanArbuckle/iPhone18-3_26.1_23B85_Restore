@@ -1,13 +1,13 @@
 @interface DOCItemInfoDownloadButton
 - (DOCDownloadProgressView)progressView;
-- (DOCItemInfoDownloadButton)initWithCoder:(id)a3;
-- (DOCItemInfoDownloadButton)initWithFrame:(CGRect)a3;
+- (DOCItemInfoDownloadButton)initWithCoder:(id)coder;
+- (DOCItemInfoDownloadButton)initWithFrame:(CGRect)frame;
 - (DOCItemInfoDownloadButtonDelegate)delegate;
 - (void)applyTintColorToViews;
 - (void)commonInit;
-- (void)setDownloadState:(unint64_t)a3;
-- (void)setNode:(id)a3;
-- (void)setProgressView:(id)a3;
+- (void)setDownloadState:(unint64_t)state;
+- (void)setNode:(id)node;
+- (void)setProgressView:(id)view;
 - (void)tintColorDidChange;
 - (void)updateDownloadState;
 - (void)updateForState;
@@ -16,11 +16,11 @@
 
 @implementation DOCItemInfoDownloadButton
 
-- (DOCItemInfoDownloadButton)initWithFrame:(CGRect)a3
+- (DOCItemInfoDownloadButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DOCItemInfoDownloadButton;
-  v3 = [(DOCItemInfoDownloadButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCItemInfoDownloadButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (DOCItemInfoDownloadButton)initWithCoder:(id)a3
+- (DOCItemInfoDownloadButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DOCItemInfoDownloadButton;
-  v3 = [(DOCItemInfoDownloadButton *)&v6 initWithCoder:a3];
+  v3 = [(DOCItemInfoDownloadButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -47,10 +47,10 @@
 - (void)commonInit
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [v3 background];
-  [v5 setBackgroundColor:v4];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
   v6 = MEMORY[0x277D75220];
   v7 = MEMORY[0x277D750C8];
@@ -60,21 +60,21 @@
   v19 = &unk_278FA1F60;
   objc_copyWeak(&v20, &location);
   v8 = [v7 actionWithHandler:&v16];
-  v9 = [v6 buttonWithConfiguration:v3 primaryAction:{v8, v16, v17, v18, v19}];
+  v9 = [v6 buttonWithConfiguration:plainButtonConfiguration primaryAction:{v8, v16, v17, v18, v19}];
   [(DOCItemInfoDownloadButton *)self setUnderlyingButton:v9];
 
-  v10 = [(DOCItemInfoDownloadButton *)self underlyingButton];
-  [(DOCItemInfoDownloadButton *)self addSubview:v10];
+  underlyingButton = [(DOCItemInfoDownloadButton *)self underlyingButton];
+  [(DOCItemInfoDownloadButton *)self addSubview:underlyingButton];
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(DOCItemInfoDownloadButton *)self underlyingButton];
+  underlyingButton2 = [(DOCItemInfoDownloadButton *)self underlyingButton];
   v13 = DOCConstraintsToResizeWithSuperview();
   [v11 activateConstraints:v13];
 
   [(DOCItemInfoDownloadButton *)self updateForState];
   v14 = [MEMORY[0x277D755A8] doc_circleWithInset:-8.0];
-  v15 = [(DOCItemInfoDownloadButton *)self underlyingButton];
-  [v15 setHoverStyle:v14];
+  underlyingButton3 = [(DOCItemInfoDownloadButton *)self underlyingButton];
+  [underlyingButton3 setHoverStyle:v14];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -86,9 +86,9 @@ void __39__DOCItemInfoDownloadButton_commonInit__block_invoke(uint64_t a1)
   [WeakRetained userDidTapDownloadButton];
 }
 
-- (void)setProgressView:(id)a3
+- (void)setProgressView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_progressView);
 
   if (WeakRetained != obj)
@@ -110,16 +110,16 @@ void __39__DOCItemInfoDownloadButton_commonInit__block_invoke(uint64_t a1)
 
 - (void)applyTintColorToViews
 {
-  v4 = [(DOCItemInfoDownloadButton *)self tintColor];
-  v3 = [(DOCItemInfoDownloadButton *)self progressView];
-  [v3 setActiveStrokeColor:v4];
+  tintColor = [(DOCItemInfoDownloadButton *)self tintColor];
+  progressView = [(DOCItemInfoDownloadButton *)self progressView];
+  [progressView setActiveStrokeColor:tintColor];
 }
 
-- (void)setDownloadState:(unint64_t)a3
+- (void)setDownloadState:(unint64_t)state
 {
-  if (self->_downloadState != a3)
+  if (self->_downloadState != state)
   {
-    self->_downloadState = a3;
+    self->_downloadState = state;
     [(DOCItemInfoDownloadButton *)self updateForState];
   }
 }
@@ -129,17 +129,17 @@ void __39__DOCItemInfoDownloadButton_commonInit__block_invoke(uint64_t a1)
   node = self->_node;
   if (!node)
   {
-    v7 = [(DOCItemInfoDownloadButton *)self progressView];
-    [v7 setObservedProgress:0];
+    progressView = [(DOCItemInfoDownloadButton *)self progressView];
+    [progressView setObservedProgress:0];
 
 LABEL_5:
     v6 = 0;
     goto LABEL_9;
   }
 
-  v4 = [(DOCNode *)node downloadingProgress];
-  v5 = [(DOCItemInfoDownloadButton *)self progressView];
-  [v5 setObservedProgress:v4];
+  downloadingProgress = [(DOCNode *)node downloadingProgress];
+  progressView2 = [(DOCItemInfoDownloadButton *)self progressView];
+  [progressView2 setObservedProgress:downloadingProgress];
 
   if (([(DOCNode *)self->_node isDownloading]& 1) != 0)
   {
@@ -158,34 +158,34 @@ LABEL_9:
   [(DOCItemInfoDownloadButton *)self setDownloadState:v6];
 }
 
-- (void)setNode:(id)a3
+- (void)setNode:(id)node
 {
-  v5 = a3;
-  if (self->_node != v5)
+  nodeCopy = node;
+  if (self->_node != nodeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_node, a3);
+    v6 = nodeCopy;
+    objc_storeStrong(&self->_node, node);
     [(DOCItemInfoDownloadButton *)self updateDownloadState];
-    v5 = v6;
+    nodeCopy = v6;
   }
 }
 
 - (void)updateForState
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DOCItemInfoOpenButton.m" lineNumber:120 description:@"Subclasses must override this method"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DOCItemInfoOpenButton.m" lineNumber:120 description:@"Subclasses must override this method"];
 }
 
 - (void)userDidTapDownloadButton
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DOCItemInfoDownloadButton *)self node];
-  v4 = v3;
-  if (v3)
+  node = [(DOCItemInfoDownloadButton *)self node];
+  v4 = node;
+  if (node)
   {
-    if ([v3 isCloudItem] && (objc_msgSend(v4, "isDownloaded") & 1) == 0 && (DOCIsNetworkReachable() & 1) == 0)
+    if ([node isCloudItem] && (objc_msgSend(v4, "isDownloaded") & 1) == 0 && (DOCIsNetworkReachable() & 1) == 0)
     {
-      v17 = [(DOCItemInfoDownloadButton *)self delegate];
+      delegate = [(DOCItemInfoDownloadButton *)self delegate];
       v18 = objc_opt_respondsToSelector();
 
       if ((v18 & 1) == 0)
@@ -193,23 +193,23 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v9 = [(DOCItemInfoDownloadButton *)self delegate];
-      v19 = [(DOCItemInfoDownloadButton *)self node];
+      delegate2 = [(DOCItemInfoDownloadButton *)self delegate];
+      node2 = [(DOCItemInfoDownloadButton *)self node];
       v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:-1009 userInfo:0];
-      [v9 nodeDownloadButton:self downloadingNode:v19 encounteredError:v20];
+      [delegate2 nodeDownloadButton:self downloadingNode:node2 encounteredError:v20];
 
       goto LABEL_8;
     }
 
-    v5 = [(DOCItemInfoDownloadButton *)self downloadState];
-    if (v5 == 1)
+    downloadState = [(DOCItemInfoDownloadButton *)self downloadState];
+    if (downloadState == 1)
     {
-      v11 = [v4 downloadingProgress];
-      [v11 cancel];
+      downloadingProgress = [v4 downloadingProgress];
+      [downloadingProgress cancel];
 
       v12 = objc_alloc(MEMORY[0x277CC63D0]);
-      v13 = [v4 fpfs_fpItem];
-      v29 = v13;
+      fpfs_fpItem = [v4 fpfs_fpItem];
+      v29 = fpfs_fpItem;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
       v15 = [v12 initWithItems:v14];
 
@@ -219,29 +219,29 @@ LABEL_9:
       v24 = &unk_278FA1C30;
       v25 = v4;
       [v15 setCompletionBlock:&v21];
-      v16 = [MEMORY[0x277CC6408] defaultManager];
-      [v16 scheduleAction:v15];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
+      [defaultManager scheduleAction:v15];
 
       goto LABEL_10;
     }
 
-    if (!v5)
+    if (!downloadState)
     {
       v6 = objc_alloc(MEMORY[0x277CC63C0]);
-      v7 = [v4 fpfs_fpItem];
-      v30[0] = v7;
+      fpfs_fpItem2 = [v4 fpfs_fpItem];
+      v30[0] = fpfs_fpItem2;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-      v9 = [v6 initWithItems:v8];
+      delegate2 = [v6 initWithItems:v8];
 
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __53__DOCItemInfoDownloadButton_userDidTapDownloadButton__block_invoke;
       v26[3] = &unk_278FA1F88;
       v27 = v4;
-      v28 = self;
-      [v9 setDownloadCompletionBlock:v26];
-      v10 = [MEMORY[0x277CC6408] defaultManager];
-      [v10 scheduleAction:v9];
+      selfCopy = self;
+      [delegate2 setDownloadCompletionBlock:v26];
+      defaultManager2 = [MEMORY[0x277CC6408] defaultManager];
+      [defaultManager2 scheduleAction:delegate2];
 
 LABEL_8:
     }

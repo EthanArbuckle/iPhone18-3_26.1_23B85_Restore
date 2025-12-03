@@ -1,30 +1,30 @@
 @interface CKFlipFlopPredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (CKFlipFlopPredicateValidator)initWithValidator:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (CKFlipFlopPredicateValidator)initWithValidator:(id)validator;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKFlipFlopPredicateValidator
 
-- (CKFlipFlopPredicateValidator)initWithValidator:(id)a3
+- (CKFlipFlopPredicateValidator)initWithValidator:(id)validator
 {
   v7.receiver = self;
   v7.super_class = CKFlipFlopPredicateValidator;
-  v3 = a3;
+  validatorCopy = validator;
   v4 = [(CKFlipFlopPredicateValidator *)&v7 init];
-  objc_msgSend_setValidator_(v4, v5, v3, v7.receiver, v7.super_class);
+  objc_msgSend_setValidator_(v4, v5, validatorCopy, v7.receiver, v7.super_class);
 
   return v4;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v6 = a3;
+  validateCopy = validate;
   v9 = objc_msgSend_validator(self, v7, v8);
   v11 = v9;
-  if (!a4)
+  if (!error)
   {
-    v16 = objc_msgSend_validate_error_(v9, v10, v6, 0);
+    v16 = objc_msgSend_validate_error_(v9, v10, validateCopy, 0);
 
     v13 = 0;
     if (v16)
@@ -39,7 +39,7 @@ LABEL_7:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v14 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_22;
       }
@@ -47,7 +47,7 @@ LABEL_7:
       goto LABEL_14;
     }
 
-    v17 = v6;
+    v17 = validateCopy;
     v20 = objc_msgSend_predicateOperatorType(v17, v18, v19);
     if (v20 > 5 || (v23 = qword_1886FE948[v20], objc_msgSend_comparisonPredicateModifier(v17, v21, v22)))
     {
@@ -63,7 +63,7 @@ LABEL_7:
 
     v40 = objc_msgSend_validator(self, v38, v39);
     v42 = v40;
-    if (a4)
+    if (error)
     {
       v46 = 0;
       v43 = objc_msgSend_validate_error_(v40, v41, v37, &v46);
@@ -90,7 +90,7 @@ LABEL_25:
 
 LABEL_11:
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -100,7 +100,7 @@ LABEL_14:
     {
       v24 = v13;
       v15 = 0;
-      *a4 = v13;
+      *error = v13;
       goto LABEL_23;
     }
 
@@ -109,7 +109,7 @@ LABEL_14:
       v25 = v14;
       v13 = 0;
       v15 = 0;
-      *a4 = v14;
+      *error = v14;
       goto LABEL_23;
     }
 
@@ -120,7 +120,7 @@ LABEL_22:
   }
 
   v47 = 0;
-  v12 = objc_msgSend_validate_error_(v9, v10, v6, &v47);
+  v12 = objc_msgSend_validate_error_(v9, v10, validateCopy, &v47);
   v13 = v47;
 
   if ((v12 & 1) == 0)

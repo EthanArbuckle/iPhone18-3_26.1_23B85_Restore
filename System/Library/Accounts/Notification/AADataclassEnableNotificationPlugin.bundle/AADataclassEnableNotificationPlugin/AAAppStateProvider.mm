@@ -1,17 +1,17 @@
 @interface AAAppStateProvider
-+ (id)appStateForBundleID:(id)a3;
++ (id)appStateForBundleID:(id)d;
 @end
 
 @implementation AAAppStateProvider
 
-+ (id)appStateForBundleID:(id)a3
++ (id)appStateForBundleID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = objc_alloc(MEMORY[0x29EDB93F8]);
     v18 = 0;
-    v6 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v4, v5, v3, 1, &v18);
+    v6 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v4, v5, dCopy, 1, &v18);
     v9 = v6;
     if (v6)
     {

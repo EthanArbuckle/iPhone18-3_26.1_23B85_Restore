@@ -3,18 +3,18 @@
 - (NSString)description;
 - (PKMessagesAppControllerInterface)primaryAppController;
 - (PKMessagesAppSharedContext)init;
-- (id)_urlForMessageIdentifier:(id)a3 planningToWrite:(BOOL)a4;
-- (id)externalizedControllerStateForMessageIdentifier:(id)a3;
+- (id)_urlForMessageIdentifier:(id)identifier planningToWrite:(BOOL)write;
+- (id)externalizedControllerStateForMessageIdentifier:(id)identifier;
 - (void)_purgeOldCacheEntries;
-- (void)_registerAppViewController:(id)a3;
-- (void)_revealPrimaryAppController:(id)a3;
-- (void)_unregisterAppViewController:(id)a3;
-- (void)_withPrimaryAppController:(id)a3;
+- (void)_registerAppViewController:(id)controller;
+- (void)_revealPrimaryAppController:(id)controller;
+- (void)_unregisterAppViewController:(id)controller;
+- (void)_withPrimaryAppController:(id)controller;
 - (void)dealloc;
-- (void)handlePaymentRequestMessage:(id)a3 sender:(id)a4 completion:(id)a5;
-- (void)persistExternalizedControllerState:(id)a3 forMessageIdentifier:(id)a4;
-- (void)removeExternalizedControllerStateDataForMessageIdentifier:(id)a3;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)handlePaymentRequestMessage:(id)message sender:(id)sender completion:(id)completion;
+- (void)persistExternalizedControllerState:(id)state forMessageIdentifier:(id)identifier;
+- (void)removeExternalizedControllerStateDataForMessageIdentifier:(id)identifier;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 @end
 
 @implementation PKMessagesAppSharedContext
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __43__PKMessagesAppSharedContext_sharedContext__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_592 != -1)
   {
     dispatch_once(&_MergedGlobals_592, block);
@@ -50,21 +50,21 @@ void __43__PKMessagesAppSharedContext_sharedContext__block_invoke(uint64_t a1)
   v2 = [(PKMessagesAppSharedContext *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     weakBubbleAppControllers = v2->_weakBubbleAppControllers;
-    v2->_weakBubbleAppControllers = v3;
+    v2->_weakBubbleAppControllers = weakObjectsPointerArray;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingPrimaryHandlers = v2->_pendingPrimaryHandlers;
-    v2->_pendingPrimaryHandlers = v5;
+    v2->_pendingPrimaryHandlers = array;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     externalizedControllerStateStore = v2->_externalizedControllerStateStore;
-    v2->_externalizedControllerStateStore = v7;
+    v2->_externalizedControllerStateStore = dictionary;
 
-    v9 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentServiceDataProvider = v2->_paymentServiceDataProvider;
-    v2->_paymentServiceDataProvider = v9;
+    v2->_paymentServiceDataProvider = defaultDataProvider;
 
     [(PKPaymentDefaultDataProvider *)v2->_paymentServiceDataProvider addDelegate:v2];
     v11 = dispatch_time(0, 1000000000);
@@ -87,27 +87,27 @@ void __43__PKMessagesAppSharedContext_sharedContext__block_invoke(uint64_t a1)
   [(PKMessagesAppSharedContext *)&v3 dealloc];
 }
 
-- (void)_registerAppViewController:(id)a3
+- (void)_registerAppViewController:(id)controller
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 transactionSource];
+  controllerCopy = controller;
+  transactionSource = [controllerCopy transactionSource];
   transactionSource = self->_transactionSource;
-  self->_transactionSource = v5;
+  self->_transactionSource = transactionSource;
 
-  v7 = [v4 presentationStyle];
+  presentationStyle = [controllerCopy presentationStyle];
   v8 = PKLogFacilityTypeGetObject();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 2)
+  if (presentationStyle == 2)
   {
     if (v9)
     {
       *buf = 138543362;
-      v16 = v4;
+      v16 = controllerCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Registering Bubble App Controller : %{public}@", buf, 0xCu);
     }
 
-    [(NSPointerArray *)self->_weakBubbleAppControllers addPointer:v4];
+    [(NSPointerArray *)self->_weakBubbleAppControllers addPointer:controllerCopy];
   }
 
   else
@@ -115,11 +115,11 @@ void __43__PKMessagesAppSharedContext_sharedContext__block_invoke(uint64_t a1)
     if (v9)
     {
       *buf = 138543362;
-      v16 = v4;
+      v16 = controllerCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Registering Primary App Controller : %{public}@", buf, 0xCu);
     }
 
-    objc_storeWeak(&self->_primaryAppController, v4);
+    objc_storeWeak(&self->_primaryAppController, controllerCopy);
     if ([(NSMutableArray *)self->_pendingPrimaryHandlers count])
     {
       v10 = [(NSMutableArray *)self->_pendingPrimaryHandlers copy];
@@ -128,7 +128,7 @@ void __43__PKMessagesAppSharedContext_sharedContext__block_invoke(uint64_t a1)
       v12[1] = 3221225472;
       v12[2] = __57__PKMessagesAppSharedContext__registerAppViewController___block_invoke;
       v12[3] = &unk_1E8010A10;
-      v13 = v4;
+      v13 = controllerCopy;
       v14 = v10;
       v11 = v10;
       dispatch_async(MEMORY[0x1E69E96A0], v12);
@@ -181,19 +181,19 @@ void __57__PKMessagesAppSharedContext__registerAppViewController___block_invoke(
   }
 }
 
-- (void)_unregisterAppViewController:(id)a3
+- (void)_unregisterAppViewController:(id)controller
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_primaryAppController);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == controllerCopy)
   {
     v6 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v4;
+      v12 = controllerCopy;
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Unregistering Primary App Controller : %{public}@", buf, 0xCu);
     }
 
@@ -257,9 +257,9 @@ void __59__PKMessagesAppSharedContext__unregisterAppViewController___block_invok
   }
 }
 
-- (void)_revealPrimaryAppController:(id)a3
+- (void)_revealPrimaryAppController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -273,22 +273,22 @@ void __59__PKMessagesAppSharedContext__unregisterAppViewController___block_invok
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Requesting presentation on sending controller.", v5, 2u);
   }
 
-  [v3 requestPresentationStyle:0];
+  [controllerCopy requestPresentationStyle:0];
 }
 
-- (void)handlePaymentRequestMessage:(id)a3 sender:(id)a4 completion:(id)a5
+- (void)handlePaymentRequestMessage:(id)message sender:(id)sender completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  [(PKMessagesAppSharedContext *)self _revealPrimaryAppController:a4];
+  messageCopy = message;
+  completionCopy = completion;
+  [(PKMessagesAppSharedContext *)self _revealPrimaryAppController:sender];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__PKMessagesAppSharedContext_handlePaymentRequestMessage_sender_completion___block_invoke;
   v12[3] = &unk_1E80156B0;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = messageCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = messageCopy;
   [(PKMessagesAppSharedContext *)self _withPrimaryAppController:v12];
 }
 
@@ -306,12 +306,12 @@ uint64_t __76__PKMessagesAppSharedContext_handlePaymentRequestMessage_sender_com
   return result;
 }
 
-- (void)_withPrimaryAppController:(id)a3
+- (void)_withPrimaryAppController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    aBlock = v4;
+    aBlock = controllerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_primaryAppController);
     if (WeakRetained)
     {
@@ -325,22 +325,22 @@ uint64_t __76__PKMessagesAppSharedContext_handlePaymentRequestMessage_sender_com
       [(NSMutableArray *)pendingPrimaryHandlers addObject:v7];
     }
 
-    v4 = aBlock;
+    controllerCopy = aBlock;
   }
 }
 
-- (void)persistExternalizedControllerState:(id)a3 forMessageIdentifier:(id)a4
+- (void)persistExternalizedControllerState:(id)state forMessageIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (identifier)
   {
     externalizedControllerStateStore = self->_externalizedControllerStateStore;
-    v7 = a4;
-    v8 = a3;
-    [(NSMutableDictionary *)externalizedControllerStateStore setObject:v8 forKeyedSubscript:v7];
-    v9 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:v7 planningToWrite:1];
+    identifierCopy = identifier;
+    stateCopy = state;
+    [(NSMutableDictionary *)externalizedControllerStateStore setObject:stateCopy forKeyedSubscript:identifierCopy];
+    v9 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:identifierCopy planningToWrite:1];
 
-    LOBYTE(externalizedControllerStateStore) = [v8 writeToURL:v9 atomically:1];
+    LOBYTE(externalizedControllerStateStore) = [stateCopy writeToURL:v9 atomically:1];
     if ((externalizedControllerStateStore & 1) == 0)
     {
       v10 = PKLogFacilityTypeGetObject();
@@ -354,16 +354,16 @@ uint64_t __76__PKMessagesAppSharedContext_handlePaymentRequestMessage_sender_com
   }
 }
 
-- (id)externalizedControllerStateForMessageIdentifier:(id)a3
+- (id)externalizedControllerStateForMessageIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_externalizedControllerStateStore objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_externalizedControllerStateStore objectForKeyedSubscript:identifierCopy];
     if (!v5)
     {
-      v6 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:v4 planningToWrite:0];
+      v6 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:identifierCopy planningToWrite:0];
       v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6];
       if (!v5)
       {
@@ -386,22 +386,22 @@ uint64_t __76__PKMessagesAppSharedContext_handlePaymentRequestMessage_sender_com
   return v5;
 }
 
-- (void)removeExternalizedControllerStateDataForMessageIdentifier:(id)a3
+- (void)removeExternalizedControllerStateDataForMessageIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     externalizedControllerStateStore = self->_externalizedControllerStateStore;
-    v5 = a3;
-    [(NSMutableDictionary *)externalizedControllerStateStore setObject:0 forKeyedSubscript:v5];
-    v6 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:v5 planningToWrite:1];
+    identifierCopy = identifier;
+    [(NSMutableDictionary *)externalizedControllerStateStore setObject:0 forKeyedSubscript:identifierCopy];
+    v6 = [(PKMessagesAppSharedContext *)self _urlForMessageIdentifier:identifierCopy planningToWrite:1];
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    LOBYTE(v5) = [v7 removeItemAtURL:v6 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    LOBYTE(identifierCopy) = [defaultManager removeItemAtURL:v6 error:0];
 
     v8 = PKLogFacilityTypeGetObject();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (identifierCopy)
     {
       if (v9)
       {
@@ -423,11 +423,11 @@ LABEL_7:
   }
 }
 
-- (id)_urlForMessageIdentifier:(id)a3 planningToWrite:(BOOL)a4
+- (id)_urlForMessageIdentifier:(id)identifier planningToWrite:(BOOL)write
 {
-  v4 = a4;
+  writeCopy = write;
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v17[0] = @"PeerPaymentControllerState";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   PKSharedCacheCreateDirectory();
@@ -438,10 +438,10 @@ LABEL_7:
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v7 = [v5 UUIDString];
-  v8 = [v7 stringByAppendingPathExtension:@"archive"];
+  uUIDString = [identifierCopy UUIDString];
+  v8 = [uUIDString stringByAppendingPathExtension:@"archive"];
 
-  if (v4)
+  if (writeCopy)
   {
     PKSharedCacheCreateFileURLForWriting();
   }
@@ -650,8 +650,8 @@ uint64_t __51__PKMessagesAppSharedContext__purgeOldCacheEntries__block_invoke_3(
   WeakRetained = objc_loadWeakRetained(&self->_primaryAppController);
   [v3 appendFormat:@"primaryAppController: %@ ", WeakRetained];
 
-  v5 = [(PKMessagesAppSharedContext *)self bubbleAppControllers];
-  [v3 appendFormat:@"bubbleAppControllers: %@ ", v5];
+  bubbleAppControllers = [(PKMessagesAppSharedContext *)self bubbleAppControllers];
+  [v3 appendFormat:@"bubbleAppControllers: %@ ", bubbleAppControllers];
 
   [v3 appendFormat:@"pendingPrimaryHandlers: %@", self->_pendingPrimaryHandlers];
   [v3 appendFormat:@"externalizedControllerStateStore: %@", self->_externalizedControllerStateStore];
@@ -661,28 +661,28 @@ uint64_t __51__PKMessagesAppSharedContext__purgeOldCacheEntries__block_invoke_3(
   return v6;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   transactionSource = self->_transactionSource;
-  if (transactionSource && (-[PKTransactionSource transactionSourceIdentifiers](transactionSource, "transactionSourceIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v6], v9, (v10 & 1) != 0))
+  if (transactionSource && (-[PKTransactionSource transactionSourceIdentifiers](transactionSource, "transactionSourceIdentifiers"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:identifierCopy], v9, (v10 & 1) != 0))
   {
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = transactionCopy;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Received updated transaction %@.", buf, 0xCu);
     }
 
-    v12 = [(PKMessagesAppSharedContext *)self bubbleAppControllers];
+    bubbleAppControllers = [(PKMessagesAppSharedContext *)self bubbleAppControllers];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v13 = [bubbleAppControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = v13;
@@ -693,13 +693,13 @@ uint64_t __51__PKMessagesAppSharedContext__purgeOldCacheEntries__block_invoke_3(
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(bubbleAppControllers);
           }
 
-          [*(*(&v17 + 1) + 8 * i) _handleUpdatedTransaction:v7 forTransactionSourceIdentifier:v6];
+          [*(*(&v17 + 1) + 8 * i) _handleUpdatedTransaction:transactionCopy forTransactionSourceIdentifier:identifierCopy];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v14 = [bubbleAppControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v14);
@@ -708,11 +708,11 @@ uint64_t __51__PKMessagesAppSharedContext__purgeOldCacheEntries__block_invoke_3(
 
   else
   {
-    v12 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    bubbleAppControllers = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(bubbleAppControllers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Received updated transaction for non peer payment pass. Ignoring.", buf, 2u);
+      _os_log_impl(&dword_1BD026000, bubbleAppControllers, OS_LOG_TYPE_DEFAULT, "PKMessagesAppSharedContext: Received updated transaction for non peer payment pass. Ignoring.", buf, 2u);
     }
   }
 }

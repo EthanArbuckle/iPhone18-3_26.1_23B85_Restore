@@ -2,18 +2,18 @@
 + (BOOL)enabled;
 - (CSSearchQuery)searchQuery;
 - (DOCAppProtectionContextProviding)appProtectionContext;
-- (DOCProtectedAppContainerCache)initWithDelegate:(id)a3;
+- (DOCProtectedAppContainerCache)initWithDelegate:(id)delegate;
 - (DOCProtectedAppContainerCacheDelegate)delegate;
 - (NSArray)apps;
-- (id)appForAppContainerBundleID:(id)a3;
-- (id)appForAppContainerOID:(id)a3;
+- (id)appForAppContainerBundleID:(id)d;
+- (id)appForAppContainerOID:(id)d;
 - (id)description;
-- (void)appForAppContainerBundleID:(id)a3 completion:(id)a4;
-- (void)appForAppContainerOID:(id)a3 completion:(id)a4;
-- (void)createProtectedAppLookupTablesFromResultSet:(id)a3 completionHandler:(id)a4;
-- (void)fetchAllAppContainerIDsFromCoreSpotlightAsync:(id)a3;
+- (void)appForAppContainerBundleID:(id)d completion:(id)completion;
+- (void)appForAppContainerOID:(id)d completion:(id)completion;
+- (void)createProtectedAppLookupTablesFromResultSet:(id)set completionHandler:(id)handler;
+- (void)fetchAllAppContainerIDsFromCoreSpotlightAsync:(id)async;
 - (void)fetchAllAppContainerIDsFromCoreSpotlightIfNeeded;
-- (void)lookupOIDs:(id)a3;
+- (void)lookupOIDs:(id)ds;
 @end
 
 @implementation DOCProtectedAppContainerCache
@@ -35,9 +35,9 @@ BOOL __40__DOCProtectedAppContainerCache_enabled__block_invoke()
   return result;
 }
 
-- (DOCProtectedAppContainerCache)initWithDelegate:(id)a3
+- (DOCProtectedAppContainerCache)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DOCProtectedAppContainerCache;
   v5 = [(DOCProtectedAppContainerCache *)&v8 init];
@@ -45,7 +45,7 @@ BOOL __40__DOCProtectedAppContainerCache_enabled__block_invoke()
   if (v5)
   {
     v5->_cacheStatus = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -57,11 +57,11 @@ BOOL __40__DOCProtectedAppContainerCache_enabled__block_invoke()
   v11.receiver = self;
   v11.super_class = DOCProtectedAppContainerCache;
   v4 = [(DOCProtectedAppContainerCache *)&v11 description];
-  v5 = [(DOCProtectedAppContainerCache *)self cacheStatus];
+  cacheStatus = [(DOCProtectedAppContainerCache *)self cacheStatus];
   v6 = [(NSMutableArray *)self->_appList count];
   appList = self->_appList;
-  v8 = [(NSMutableDictionary *)self->_oidToAppMap allKeys];
-  v9 = [v3 stringWithFormat:@"%@ cacheStatus=%lu, app count: %lu, apps=%@, oids=%@", v4, v5, v6, appList, v8];
+  allKeys = [(NSMutableDictionary *)self->_oidToAppMap allKeys];
+  v9 = [v3 stringWithFormat:@"%@ cacheStatus=%lu, app count: %lu, apps=%@, oids=%@", v4, cacheStatus, v6, appList, allKeys];
 
   return v9;
 }
@@ -82,37 +82,37 @@ BOOL __40__DOCProtectedAppContainerCache_enabled__block_invoke()
   return appList;
 }
 
-- (id)appForAppContainerOID:(id)a3
+- (id)appForAppContainerOID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(DOCProtectedAppContainerCache *)self fetchAllAppContainerIDsFromCoreSpotlightIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_oidToAppMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_oidToAppMap objectForKey:dCopy];
 
   return v5;
 }
 
-- (id)appForAppContainerBundleID:(id)a3
+- (id)appForAppContainerBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(DOCProtectedAppContainerCache *)self fetchAllAppContainerIDsFromCoreSpotlightIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_appIdToAppMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_appIdToAppMap objectForKey:dCopy];
 
   return v5;
 }
 
-- (void)appForAppContainerOID:(id)a3 completion:(id)a4
+- (void)appForAppContainerOID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__DOCProtectedAppContainerCache_appForAppContainerOID_completion___block_invoke;
   v10[3] = &unk_278F9C050;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   [(DOCProtectedAppContainerCache *)self fetchAllAppContainerIDsFromCoreSpotlightAsync:v10];
 }
 
@@ -122,19 +122,19 @@ void __66__DOCProtectedAppContainerCache_appForAppContainerOID_completion___bloc
   (*(a1[6] + 16))();
 }
 
-- (void)appForAppContainerBundleID:(id)a3 completion:(id)a4
+- (void)appForAppContainerBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__DOCProtectedAppContainerCache_appForAppContainerBundleID_completion___block_invoke;
   v10[3] = &unk_278F9C050;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   [(DOCProtectedAppContainerCache *)self fetchAllAppContainerIDsFromCoreSpotlightAsync:v10];
 }
 
@@ -167,9 +167,9 @@ void __81__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
   }
 }
 
-- (void)fetchAllAppContainerIDsFromCoreSpotlightAsync:(id)a3
+- (void)fetchAllAppContainerIDsFromCoreSpotlightAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = docLogHandle;
   if (!docLogHandle)
   {
@@ -199,10 +199,10 @@ void __81__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
     goto LABEL_20;
   }
 
-  v6 = [(DOCProtectedAppContainerCache *)self appProtectionContext];
-  v7 = [v6 hasAnyProtectedApps];
+  appProtectionContext = [(DOCProtectedAppContainerCache *)self appProtectionContext];
+  hasAnyProtectedApps = [appProtectionContext hasAnyProtectedApps];
 
-  if ((v7 & 1) == 0)
+  if ((hasAnyProtectedApps & 1) == 0)
   {
     v10 = docLogHandle;
     if (!docLogHandle)
@@ -253,7 +253,7 @@ void __81__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
 LABEL_11:
     [(DOCProtectedAppContainerCache *)v8 fetchAllAppContainerIDsFromCoreSpotlightAsync:?];
 LABEL_20:
-    v4[2](v4);
+    asyncCopy[2](asyncCopy);
     goto LABEL_21;
   }
 
@@ -275,7 +275,7 @@ LABEL_20:
   v12[2] = __79__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotlightAsync___block_invoke;
   v12[3] = &unk_278F9C688;
   v12[4] = self;
-  v13 = v4;
+  v13 = asyncCopy;
   [(DOCProtectedAppContainerCache *)self lookupOIDs:v12];
 
 LABEL_21:
@@ -336,9 +336,9 @@ void __79__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
   return searchQuery;
 }
 
-- (void)lookupOIDs:(id)a3
+- (void)lookupOIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = docLogHandle;
   if (!docLogHandle)
   {
@@ -352,16 +352,16 @@ void __79__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __44__DOCProtectedAppContainerCache_lookupOIDs___block_invoke;
   v19[3] = &unk_278F9C6B0;
   v21 = Current;
-  v8 = v7;
+  v8 = dictionary;
   v20 = v8;
-  v9 = [(DOCProtectedAppContainerCache *)self searchQuery];
-  [v9 setFoundItemsHandler:v19];
+  searchQuery = [(DOCProtectedAppContainerCache *)self searchQuery];
+  [searchQuery setFoundItemsHandler:v19];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
@@ -372,13 +372,13 @@ void __79__DOCProtectedAppContainerCache_fetchAllAppContainerIDsFromCoreSpotligh
   v10 = v8;
   v15 = v10;
   v17[1] = *&Current;
-  v11 = v4;
+  v11 = dsCopy;
   v16 = v11;
-  v12 = [(DOCProtectedAppContainerCache *)self searchQuery];
-  [v12 setCompletionHandler:v14];
+  searchQuery2 = [(DOCProtectedAppContainerCache *)self searchQuery];
+  [searchQuery2 setCompletionHandler:v14];
 
-  v13 = [(DOCProtectedAppContainerCache *)self searchQuery];
-  [v13 start];
+  searchQuery3 = [(DOCProtectedAppContainerCache *)self searchQuery];
+  [searchQuery3 start];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -627,14 +627,14 @@ void __44__DOCProtectedAppContainerCache_lookupOIDs___block_invoke_2(uint64_t a1
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createProtectedAppLookupTablesFromResultSet:(id)a3 completionHandler:(id)a4
+- (void)createProtectedAppLookupTablesFromResultSet:(id)set completionHandler:(id)handler
 {
-  v5 = a3;
+  setCopy = set;
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = [v6 array];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  handlerCopy = handler;
+  array = [v6 array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v11 = docLogHandle;
   if (!docLogHandle)
   {
@@ -651,13 +651,13 @@ void __44__DOCProtectedAppContainerCache_lookupOIDs___block_invoke_2(uint64_t a1
   v16[1] = 3221225472;
   v16[2] = __95__DOCProtectedAppContainerCache_createProtectedAppLookupTablesFromResultSet_completionHandler___block_invoke;
   v16[3] = &unk_278F9C728;
-  v12 = v8;
+  v12 = array;
   v17 = v12;
-  v13 = v9;
+  v13 = dictionary;
   v18 = v13;
-  v14 = v10;
+  v14 = dictionary2;
   v19 = v14;
-  [v5 enumerateKeysAndObjectsUsingBlock:v16];
+  [setCopy enumerateKeysAndObjectsUsingBlock:v16];
   v15 = docLogHandle;
   if (!docLogHandle)
   {
@@ -670,7 +670,7 @@ void __44__DOCProtectedAppContainerCache_lookupOIDs___block_invoke_2(uint64_t a1
     [DOCProtectedAppContainerCache createProtectedAppLookupTablesFromResultSet:completionHandler:];
   }
 
-  v7[2](v7, v12, v13, v14, 0);
+  handlerCopy[2](handlerCopy, v12, v13, v14, 0);
 }
 
 void __95__DOCProtectedAppContainerCache_createProtectedAppLookupTablesFromResultSet_completionHandler___block_invoke(id *a1, void *a2, void *a3)

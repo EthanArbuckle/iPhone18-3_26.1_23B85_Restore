@@ -1,65 +1,65 @@
 @interface PKAccountInvitationAccessLevelContentConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountInvitationAccessLevelContentConfiguration:(id)a3;
-- (PKAccountInvitationAccessLevelContentConfiguration)initWithAccessLevelOption:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountInvitationAccessLevelContentConfiguration:(id)configuration;
+- (PKAccountInvitationAccessLevelContentConfiguration)initWithAccessLevelOption:(id)option;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
 - (unint64_t)hash;
 @end
 
 @implementation PKAccountInvitationAccessLevelContentConfiguration
 
-- (PKAccountInvitationAccessLevelContentConfiguration)initWithAccessLevelOption:(id)a3
+- (PKAccountInvitationAccessLevelContentConfiguration)initWithAccessLevelOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v15.receiver = self;
   v15.super_class = PKAccountInvitationAccessLevelContentConfiguration;
   v5 = [(PKAccountInvitationAccessLevelContentConfiguration *)&v15 init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [optionCopy image];
     image = v5->_image;
-    v5->_image = v6;
+    v5->_image = image;
 
-    v8 = [v4 title];
+    title = [optionCopy title];
     title = v5->_title;
-    v5->_title = v8;
+    v5->_title = title;
 
-    v10 = [v4 subtitle];
+    subtitle = [optionCopy subtitle];
     subtitle = v5->_subtitle;
-    v5->_subtitle = v10;
+    v5->_subtitle = subtitle;
 
-    v12 = [v4 secondarySubtitle];
+    secondarySubtitle = [optionCopy secondarySubtitle];
     secondarySubtitle = v5->_secondarySubtitle;
-    v5->_secondarySubtitle = v12;
+    v5->_secondarySubtitle = secondarySubtitle;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountInvitationAccessLevelContentConfiguration *)self isEqualToAccountInvitationAccessLevelContentConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountInvitationAccessLevelContentConfiguration *)self isEqualToAccountInvitationAccessLevelContentConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountInvitationAccessLevelContentConfiguration:(id)a3
+- (BOOL)isEqualToAccountInvitationAccessLevelContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && PKEqualObjects())
+  configurationCopy = configuration;
+  if (configurationCopy && PKEqualObjects())
   {
-    v5 = v4[2];
+    v5 = configurationCopy[2];
     v6 = self->_title;
     v7 = v5;
     v8 = v7;
@@ -83,7 +83,7 @@
       }
     }
 
-    v10 = v4[3];
+    v10 = configurationCopy[3];
     v6 = self->_subtitle;
     v11 = v10;
     v8 = v11;
@@ -92,7 +92,7 @@
 
 LABEL_16:
       secondarySubtitle = self->_secondarySubtitle;
-      v13 = v4[4];
+      v13 = configurationCopy[4];
       v6 = secondarySubtitle;
       v14 = v13;
       v8 = v14;
@@ -149,19 +149,19 @@ LABEL_22:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v5 + 8), self->_image);
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_secondarySubtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_secondarySubtitle copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 

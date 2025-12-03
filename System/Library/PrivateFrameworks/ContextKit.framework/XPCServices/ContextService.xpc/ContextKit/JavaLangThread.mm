@@ -5,7 +5,7 @@
 + (uint64_t)getNextThreadId;
 + (void)initialize;
 - (BOOL)isAlive;
-- (JavaLangThread)initWithJavaLangThreadGroup:(id)a3 withNSString:(id)a4 withBoolean:(BOOL)a5;
+- (JavaLangThread)initWithJavaLangThreadGroup:(id)group withNSString:(id)string withBoolean:(BOOL)boolean;
 - (NSString)description;
 - (id)getContextClassLoader;
 - (id)getStackTrace;
@@ -16,30 +16,30 @@
 - (void)__javaClone;
 - (void)dealloc;
 - (void)interrupt;
-- (void)parkForWithLong:(int64_t)a3;
-- (void)parkUntilWithLong:(int64_t)a3;
-- (void)popInterruptAction$WithJavaLangRunnable:(id)a3;
-- (void)pushInterruptAction$WithJavaLangRunnable:(id)a3;
+- (void)parkForWithLong:(int64_t)long;
+- (void)parkUntilWithLong:(int64_t)long;
+- (void)popInterruptAction$WithJavaLangRunnable:(id)runnable;
+- (void)pushInterruptAction$WithJavaLangRunnable:(id)runnable;
 - (void)run;
-- (void)run0WithId:(id)a3;
-- (void)setNameWithNSString:(id)a3;
-- (void)setPriorityWithInt:(int)a3;
-- (void)setUncaughtExceptionHandlerWithJavaLangThread_UncaughtExceptionHandler:(id)a3;
+- (void)run0WithId:(id)id;
+- (void)setNameWithNSString:(id)string;
+- (void)setPriorityWithInt:(int)int;
+- (void)setUncaughtExceptionHandlerWithJavaLangThread_UncaughtExceptionHandler:(id)handler;
 - (void)start;
 - (void)unpark;
 @end
 
 @implementation JavaLangThread
 
-- (JavaLangThread)initWithJavaLangThreadGroup:(id)a3 withNSString:(id)a4 withBoolean:(BOOL)a5
+- (JavaLangThread)initWithJavaLangThreadGroup:(id)group withNSString:(id)string withBoolean:(BOOL)boolean
 {
-  v5 = a5;
+  booleanCopy = boolean;
   JreStrongAssignAndConsume(&self->vmThread_, [NSObject alloc]);
   self->parkState_ = 1;
   JreStrongAssignAndConsume(&self->parkBlocker_, [NSObject alloc]);
   v9 = new_JavaUtilArrayList_init();
   JreStrongAssignAndConsume(&self->interruptActions_, v9);
-  sub_1002797AC(self, a3, 0, a4, 0, v5);
+  sub_1002797AC(self, group, 0, string, 0, booleanCopy);
   return self;
 }
 
@@ -60,8 +60,8 @@
 
 - (void)run
 {
-  v3 = [self->nsThread_ threadDictionary];
-  v4 = [v3 objectForKey:off_1005538B8[0]];
+  threadDictionary = [self->nsThread_ threadDictionary];
+  v4 = [threadDictionary objectForKey:off_1005538B8[0]];
   if (v4)
   {
     v5 = v4 == self;
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)run0WithId:(id)a3
+- (void)run0WithId:(id)id
 {
   [(JavaLangThread *)self run];
   interruptActions = self->interruptActions_;
@@ -97,15 +97,15 @@
 
 - (int64_t)getId
 {
-  v2 = [self->nsThread_ threadDictionary];
-  v3 = [v2 objectForKey:off_1005538C0[0]];
+  threadDictionary = [self->nsThread_ threadDictionary];
+  v3 = [threadDictionary objectForKey:off_1005538C0[0]];
 
   return [v3 longLongValue];
 }
 
-- (void)setNameWithNSString:(id)a3
+- (void)setNameWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v5 = objc_alloc_init(JavaLangNullPointerException);
     v6 = v5;
@@ -117,30 +117,30 @@
   [nsThread setName:?];
 }
 
-- (void)setPriorityWithInt:(int)a3
+- (void)setPriorityWithInt:(int)int
 {
   [(JavaLangThread *)self checkAccess];
-  if ((a3 - 11) <= 0xFFFFFFF5)
+  if ((int - 11) <= 0xFFFFFFF5)
   {
     v8 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Wrong Thread priority value");
     objc_exception_throw(v8);
   }
 
-  v5 = [(JavaLangThread *)self getThreadGroup];
-  if (!v5)
+  getThreadGroup = [(JavaLangThread *)self getThreadGroup];
+  if (!getThreadGroup)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5;
-  if ([v5 getMaxPriority] < a3)
+  v6 = getThreadGroup;
+  if ([getThreadGroup getMaxPriority] < int)
   {
-    a3 = [v6 getMaxPriority];
+    int = [v6 getMaxPriority];
   }
 
   nsThread = self->nsThread_;
 
-  [nsThread setThreadPriority:a3 / 10.0];
+  [nsThread setThreadPriority:int / 10.0];
 }
 
 - (id)getState
@@ -158,9 +158,9 @@ LABEL_9:
     return *v3;
   }
 
-  v5 = [self->nsThread_ isExecuting];
+  isExecuting = [self->nsThread_ isExecuting];
   explicit = atomic_load_explicit(JavaLangThread_StateEnum__initialized, memory_order_acquire);
-  if (v5)
+  if (isExecuting)
   {
     v3 = &qword_100558C48;
   }
@@ -180,15 +180,15 @@ LABEL_9:
 
 - (id)getStackTrace
 {
-  v2 = [new_JavaLangThrowable_init() getStackTrace];
-  if (!v2)
+  getStackTrace = [new_JavaLangThrowable_init() getStackTrace];
+  if (!getStackTrace)
   {
 LABEL_19:
     JreThrowNullPointerException();
   }
 
-  v3 = v2;
-  v4 = v2[2];
+  v3 = getStackTrace;
+  v4 = getStackTrace[2];
   if (v4 < 1)
   {
     v6 = 0;
@@ -205,14 +205,14 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v8 = [v7 getMethodName];
-    if (!v8)
+    getMethodName = [v7 getMethodName];
+    if (!getMethodName)
     {
       goto LABEL_19;
     }
 
-    v9 = v8;
-    if (![v8 contains:@"getStackTrace"])
+    v9 = getMethodName;
+    if (![getMethodName contains:@"getStackTrace"])
     {
       break;
     }
@@ -255,13 +255,13 @@ LABEL_13:
 
 - (int)countStackFrames
 {
-  v2 = [(JavaLangThread *)self getStackTrace];
-  if (!v2)
+  getStackTrace = [(JavaLangThread *)self getStackTrace];
+  if (!getStackTrace)
   {
     JreThrowNullPointerException();
   }
 
-  return v2[2];
+  return getStackTrace[2];
 }
 
 - (void)interrupt
@@ -347,15 +347,15 @@ LABEL_6:
 
 - (NSString)description
 {
-  v3 = [(JavaLangThread *)self getThreadGroup];
+  getThreadGroup = [(JavaLangThread *)self getThreadGroup];
   [(JavaLangThread *)self getName];
   [(JavaLangThread *)self getPriority];
-  if (!v3)
+  if (!getThreadGroup)
   {
     return JreStrcat("$$CI$", v4, v5, v6, v7, v8, v9, v10, @"Thread[");
   }
 
-  [v3 getName];
+  [getThreadGroup getName];
   return JreStrcat("$$CIC$C", v11, v12, v13, v14, v15, v16, v17, @"Thread[");
 }
 
@@ -386,7 +386,7 @@ LABEL_6:
   objc_sync_exit(vmThread);
 }
 
-- (void)parkForWithLong:(int64_t)a3
+- (void)parkForWithLong:(int64_t)long
 {
   vmThread = self->vmThread_;
   objc_sync_enter(vmThread);
@@ -399,7 +399,7 @@ LABEL_6:
       JreThrowNullPointerException();
     }
 
-    [vmThread waitWithLong:a3 / 1000000 withInt:(a3 % 1000000)];
+    [vmThread waitWithLong:long / 1000000 withInt:(long % 1000000)];
     if (self->parkState_ == 3)
     {
       self->parkState_ = 1;
@@ -420,11 +420,11 @@ LABEL_6:
   objc_sync_exit(vmThread);
 }
 
-- (void)parkUntilWithLong:(int64_t)a3
+- (void)parkUntilWithLong:(int64_t)long
 {
   vmThread = self->vmThread_;
   objc_sync_enter(vmThread);
-  v6 = a3 - JavaLangSystem_currentTimeMillis();
+  v6 = long - JavaLangSystem_currentTimeMillis();
   if (v6 <= 0)
   {
     self->parkState_ = 1;
@@ -450,11 +450,11 @@ LABEL_6:
 
 - (id)getUncaughtExceptionHandler
 {
-  v2 = [self->nsThread_ threadDictionary];
-  result = [v2 objectForKey:off_1005538C8[0]];
+  threadDictionary = [self->nsThread_ threadDictionary];
+  result = [threadDictionary objectForKey:off_1005538C8[0]];
   if (!result)
   {
-    v4 = [v2 objectForKey:off_1005538D0];
+    v4 = [threadDictionary objectForKey:off_1005538D0];
     if (v4)
     {
       v5 = (v4 + 72);
@@ -476,25 +476,25 @@ LABEL_6:
   return result;
 }
 
-- (void)setUncaughtExceptionHandlerWithJavaLangThread_UncaughtExceptionHandler:(id)a3
+- (void)setUncaughtExceptionHandlerWithJavaLangThread_UncaughtExceptionHandler:(id)handler
 {
-  v4 = [self->nsThread_ threadDictionary];
+  threadDictionary = [self->nsThread_ threadDictionary];
   v5 = off_1005538C8[0];
-  if (a3)
+  if (handler)
   {
 
-    [v4 setObject:a3 forKey:v5];
+    [threadDictionary setObject:handler forKey:v5];
   }
 
   else
   {
     v6 = off_1005538C8[0];
 
-    [v4 removeObjectForKey:{v6, v5}];
+    [threadDictionary removeObjectForKey:{v6, v5}];
   }
 }
 
-- (void)pushInterruptAction$WithJavaLangRunnable:(id)a3
+- (void)pushInterruptAction$WithJavaLangRunnable:(id)runnable
 {
   interruptActions = self->interruptActions_;
   objc_sync_enter(interruptActions);
@@ -504,16 +504,16 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilList *)v6 addWithId:a3];
+  [(JavaUtilList *)v6 addWithId:runnable];
   objc_sync_exit(interruptActions);
-  if (a3 && [(JavaLangThread *)self isInterrupted])
+  if (runnable && [(JavaLangThread *)self isInterrupted])
   {
 
-    [a3 run];
+    [runnable run];
   }
 }
 
-- (void)popInterruptAction$WithJavaLangRunnable:(id)a3
+- (void)popInterruptAction$WithJavaLangRunnable:(id)runnable
 {
   interruptActions = self->interruptActions_;
   objc_sync_enter(interruptActions);
@@ -523,7 +523,7 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  if ([(JavaUtilList *)v6 removeWithInt:[(JavaUtilList *)v6 size]- 1]!= a3)
+  if ([(JavaUtilList *)v6 removeWithInt:[(JavaUtilList *)v6 size]- 1]!= runnable)
   {
     v14 = JreStrcat("$@$@", v7, v8, v9, v10, v11, v12, v13, @"Expected ");
     v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
@@ -563,7 +563,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100556F78, [JavaLangThread_SystemUncaughtExceptionHandler alloc]);
     +[JavaLangThread initializeThreadClass]_0();

@@ -1,43 +1,43 @@
 @interface RTStoredHintEnumerationOptions
-- (BOOL)isEqual:(id)a3;
-- (RTStoredHintEnumerationOptions)initWithCoder:(id)a3;
-- (RTStoredHintEnumerationOptions)initWithReferenceLocation:(id)a3 sourceFilter:(id)a4 ascending:(BOOL)a5 distance:(id)a6 dateInterval:(id)a7 limit:(unint64_t)a8 batchSize:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (RTStoredHintEnumerationOptions)initWithCoder:(id)coder;
+- (RTStoredHintEnumerationOptions)initWithReferenceLocation:(id)location sourceFilter:(id)filter ascending:(BOOL)ascending distance:(id)distance dateInterval:(id)interval limit:(unint64_t)limit batchSize:(unint64_t)size;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredHintEnumerationOptions
 
-- (RTStoredHintEnumerationOptions)initWithReferenceLocation:(id)a3 sourceFilter:(id)a4 ascending:(BOOL)a5 distance:(id)a6 dateInterval:(id)a7 limit:(unint64_t)a8 batchSize:(unint64_t)a9
+- (RTStoredHintEnumerationOptions)initWithReferenceLocation:(id)location sourceFilter:(id)filter ascending:(BOOL)ascending distance:(id)distance dateInterval:(id)interval limit:(unint64_t)limit batchSize:(unint64_t)size
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  if ([v17 integerValue])
+  locationCopy = location;
+  filterCopy = filter;
+  distanceCopy = distance;
+  intervalCopy = interval;
+  if ([filterCopy integerValue])
   {
-    if (v16)
+    if (locationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
 
-    v18 = 0;
+    distanceCopy = 0;
     goto LABEL_8;
   }
 
-  v17 = 0;
-  if (!v16)
+  filterCopy = 0;
+  if (!locationCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (!v18)
+  if (!distanceCopy)
   {
-    v18 = &unk_1F3DE3B58;
+    distanceCopy = &unk_1F3DE3B58;
   }
 
 LABEL_8:
@@ -47,13 +47,13 @@ LABEL_8:
   v21 = v20;
   if (v20)
   {
-    v20->_ascending = a5;
-    objc_storeStrong(&v20->_referenceLocation, a3);
-    objc_storeStrong(&v21->_sourceFilter, v17);
-    objc_storeStrong(&v21->_distance, v18);
-    objc_storeStrong(&v21->_dateInterval, a7);
-    v21->_limit = a8;
-    v21->_batchSize = a9;
+    v20->_ascending = ascending;
+    objc_storeStrong(&v20->_referenceLocation, location);
+    objc_storeStrong(&v21->_sourceFilter, filterCopy);
+    objc_storeStrong(&v21->_distance, distanceCopy);
+    objc_storeStrong(&v21->_dateInterval, interval);
+    v21->_limit = limit;
+    v21->_batchSize = size;
   }
 
   return v21;
@@ -75,10 +75,10 @@ LABEL_8:
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -88,31 +88,31 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v23 = [(RTStoredHintEnumerationOptions *)self ascending];
-      v22 = [(RTStoredHintEnumerationOptions *)v5 ascending];
-      v21 = [(RTStoredHintEnumerationOptions *)self batchSize];
-      v20 = [(RTStoredHintEnumerationOptions *)v5 batchSize];
-      v6 = [(RTStoredHintEnumerationOptions *)self dateInterval];
-      v7 = [(RTStoredHintEnumerationOptions *)v5 dateInterval];
-      v19 = [v6 isEqualToDateInterval:v7];
+      v5 = equalCopy;
+      ascending = [(RTStoredHintEnumerationOptions *)self ascending];
+      ascending2 = [(RTStoredHintEnumerationOptions *)v5 ascending];
+      batchSize = [(RTStoredHintEnumerationOptions *)self batchSize];
+      batchSize2 = [(RTStoredHintEnumerationOptions *)v5 batchSize];
+      dateInterval = [(RTStoredHintEnumerationOptions *)self dateInterval];
+      dateInterval2 = [(RTStoredHintEnumerationOptions *)v5 dateInterval];
+      v19 = [dateInterval isEqualToDateInterval:dateInterval2];
 
-      v8 = [(RTStoredHintEnumerationOptions *)self distance];
-      v9 = [(RTStoredHintEnumerationOptions *)v5 distance];
+      distance = [(RTStoredHintEnumerationOptions *)self distance];
+      distance2 = [(RTStoredHintEnumerationOptions *)v5 distance];
 
-      v10 = [(RTStoredHintEnumerationOptions *)self limit];
-      v11 = [(RTStoredHintEnumerationOptions *)v5 limit];
-      v12 = [(RTStoredHintEnumerationOptions *)self referenceLocation];
-      v13 = [(RTStoredHintEnumerationOptions *)v5 referenceLocation];
-      v14 = [v12 isEqualToLocation:v13];
+      limit = [(RTStoredHintEnumerationOptions *)self limit];
+      limit2 = [(RTStoredHintEnumerationOptions *)v5 limit];
+      referenceLocation = [(RTStoredHintEnumerationOptions *)self referenceLocation];
+      referenceLocation2 = [(RTStoredHintEnumerationOptions *)v5 referenceLocation];
+      v14 = [referenceLocation isEqualToLocation:referenceLocation2];
 
-      v15 = [(RTStoredHintEnumerationOptions *)self sourceFilter];
-      v16 = [(RTStoredHintEnumerationOptions *)v5 sourceFilter];
+      sourceFilter = [(RTStoredHintEnumerationOptions *)self sourceFilter];
+      sourceFilter2 = [(RTStoredHintEnumerationOptions *)v5 sourceFilter];
 
       v17 = 0;
-      if (v23 == v22 && v21 == v20 && v19 && v8 == v9 && v10 == v11)
+      if (ascending == ascending2 && batchSize == batchSize2 && v19 && distance == distance2 && limit == limit2)
       {
-        if (v15 == v16)
+        if (sourceFilter == sourceFilter2)
         {
           v17 = v14;
         }
@@ -133,29 +133,29 @@ LABEL_8:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ascending = self->_ascending;
-  v5 = a3;
-  [v5 encodeBool:ascending forKey:@"ascending"];
-  [v5 encodeInteger:self->_batchSize forKey:@"batchSize"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_distance forKey:@"distance"];
-  [v5 encodeInteger:self->_limit forKey:@"limit"];
-  [v5 encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
-  [v5 encodeObject:self->_sourceFilter forKey:@"sourceFilter"];
+  coderCopy = coder;
+  [coderCopy encodeBool:ascending forKey:@"ascending"];
+  [coderCopy encodeInteger:self->_batchSize forKey:@"batchSize"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_distance forKey:@"distance"];
+  [coderCopy encodeInteger:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
+  [coderCopy encodeObject:self->_sourceFilter forKey:@"sourceFilter"];
 }
 
-- (RTStoredHintEnumerationOptions)initWithCoder:(id)a3
+- (RTStoredHintEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"ascending"];
-  v6 = [v4 decodeIntegerForKey:@"batchSize"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distance"];
-  v9 = [v4 decodeIntegerForKey:@"limit"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceFilter"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"ascending"];
+  v6 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distance"];
+  v9 = [coderCopy decodeIntegerForKey:@"limit"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceFilter"];
 
   v12 = [(RTStoredHintEnumerationOptions *)self initWithReferenceLocation:v10 sourceFilter:v11 ascending:v5 distance:v8 dateInterval:v7 limit:v9 batchSize:v6];
   return v12;
@@ -176,11 +176,11 @@ LABEL_8:
   }
 
   distance = self->_distance;
-  v7 = [(NSDateInterval *)self->_dateInterval startDate];
-  v8 = [v7 stringFromDate];
-  v9 = [(NSDateInterval *)self->_dateInterval endDate];
-  v10 = [v9 stringFromDate];
-  v11 = [v3 stringWithFormat:@"ascending, %@, sourceFilter, %@, distance, %@, startDate, %@, endDate, %@, limit, %ld", v5, sourceFilter, distance, v8, v10, self->_limit];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v11 = [v3 stringWithFormat:@"ascending, %@, sourceFilter, %@, distance, %@, startDate, %@, endDate, %@, limit, %ld", v5, sourceFilter, distance, stringFromDate, stringFromDate2, self->_limit];
 
   return v11;
 }

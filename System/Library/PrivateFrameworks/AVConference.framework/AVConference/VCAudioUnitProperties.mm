@@ -2,7 +2,7 @@
 - (VoiceIOFarEndVersionInfo)farEndVersionInfo;
 - (id)description;
 - (void)dealloc;
-- (void)setFarEndVersionInfo:(VoiceIOFarEndVersionInfo *)a3;
+- (void)setFarEndVersionInfo:(VoiceIOFarEndVersionInfo *)info;
 @end
 
 @implementation VCAudioUnitProperties
@@ -67,20 +67,20 @@
   return self;
 }
 
-- (void)setFarEndVersionInfo:(VoiceIOFarEndVersionInfo *)a3
+- (void)setFarEndVersionInfo:(VoiceIOFarEndVersionInfo *)info
 {
-  *self->_farEndVersionInfo.farEndHwModel = *a3->farEndHwModel;
-  v3 = *&a3->farEndHwModel[16];
-  v4 = *&a3->farEndHwModel[32];
-  v5 = *&a3->farEndHwModel[48];
-  *self->_farEndVersionInfo.farEndOSVersion = *a3->farEndOSVersion;
+  *self->_farEndVersionInfo.farEndHwModel = *info->farEndHwModel;
+  v3 = *&info->farEndHwModel[16];
+  v4 = *&info->farEndHwModel[32];
+  v5 = *&info->farEndHwModel[48];
+  *self->_farEndVersionInfo.farEndOSVersion = *info->farEndOSVersion;
   *&self->_farEndVersionInfo.farEndHwModel[48] = v5;
   *&self->_farEndVersionInfo.farEndHwModel[32] = v4;
   *&self->_farEndVersionInfo.farEndHwModel[16] = v3;
-  v6 = *&a3->farEndOSVersion[16];
-  v7 = *&a3->farEndOSVersion[32];
-  v8 = *&a3->farEndOSVersion[48];
-  self->_farEndVersionInfo.farEndAUVersion = a3->farEndAUVersion;
+  v6 = *&info->farEndOSVersion[16];
+  v7 = *&info->farEndOSVersion[32];
+  v8 = *&info->farEndOSVersion[48];
+  self->_farEndVersionInfo.farEndAUVersion = info->farEndAUVersion;
   *&self->_farEndVersionInfo.farEndOSVersion[48] = v8;
   *&self->_farEndVersionInfo.farEndOSVersion[32] = v7;
   *&self->_farEndVersionInfo.farEndOSVersion[16] = v6;

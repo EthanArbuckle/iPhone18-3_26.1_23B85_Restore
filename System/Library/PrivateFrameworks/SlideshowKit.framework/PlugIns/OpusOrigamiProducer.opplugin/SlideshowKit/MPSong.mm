@@ -1,44 +1,44 @@
 @interface MPSong
 + (id)song;
-+ (id)songWithPath:(id)a3;
++ (id)songWithPath:(id)path;
 - (MPSong)init;
-- (MPSong)initWithPath:(id)a3;
+- (MPSong)initWithPath:(id)path;
 - (NSURL)URL;
 - (double)audioVolume;
 - (double)duration;
 - (double)maxDuration;
 - (double)startTime;
 - (double)stopTime;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)parentDocument;
-- (void)copyStruct:(id)a3;
+- (void)copyStruct:(id)struct;
 - (void)dealloc;
-- (void)setAudioVolume:(double)a3;
-- (void)setDuration:(double)a3;
-- (void)setFadeInDuration:(double)a3;
-- (void)setFadeOutDuration:(double)a3;
+- (void)setAudioVolume:(double)volume;
+- (void)setDuration:(double)duration;
+- (void)setFadeInDuration:(double)duration;
+- (void)setFadeOutDuration:(double)duration;
 - (void)setInternalDuration;
 - (void)setInternalStartTime;
-- (void)setParentPlaylist:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setSong:(id)a3;
-- (void)setStartTime:(double)a3;
-- (void)setURL:(id)a3;
+- (void)setParentPlaylist:(id)playlist;
+- (void)setPath:(id)path;
+- (void)setSong:(id)song;
+- (void)setStartTime:(double)time;
+- (void)setURL:(id)l;
 @end
 
 @implementation MPSong
 
 + (id)song
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)songWithPath:(id)a3
++ (id)songWithPath:(id)path
 {
-  v3 = [[a1 alloc] initWithPath:a3];
+  v3 = [[self alloc] initWithPath:path];
 
   return v3;
 }
@@ -64,20 +64,20 @@
   return v2;
 }
 
-- (MPSong)initWithPath:(id)a3
+- (MPSong)initWithPath:(id)path
 {
   v4 = [(MPSong *)self init];
   if (v4)
   {
-    v4->_path = a3;
+    v4->_path = path;
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPath:{-[NSString copy](self->_path, "copy")}];
   [v4 copyStruct:self->_internal];
   return v4;
@@ -120,14 +120,14 @@
   return [(NSString *)v5 stringByAppendingFormat:@"\t                   Has Song: %@\n", v6];
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
   path = self->_path;
   if (path)
   {
   }
 
-  self->_path = a3;
+  self->_path = path;
   [(MPSongInternal *)self->_internal duration];
   v6 = -1.0;
   v8 = v7 == -1.0;
@@ -168,11 +168,11 @@
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [a3 path];
+  path = [l path];
 
-  [(MPSong *)self setPath:v4];
+  [(MPSong *)self setPath:path];
 }
 
 - (double)startTime
@@ -184,37 +184,37 @@
     if (v4)
     {
       v5 = v4;
-      v6 = [(MPSong *)self path];
+      path = [(MPSong *)self path];
 
-      [v5 startTimeForPath:v6];
+      [v5 startTimeForPath:path];
     }
 
     else
     {
       v7 = +[MPAssetManager sharedManager];
-      v8 = [(MPSong *)self path];
+      path2 = [(MPSong *)self path];
 
-      [v7 startTimeForAssetAtPath:v8];
+      [v7 startTimeForAssetAtPath:path2];
     }
   }
 
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v5 = [(MPSong *)self parentDocument];
-  v6 = v5;
+  parentDocument = [(MPSong *)self parentDocument];
+  v6 = parentDocument;
   v7 = 0.0;
-  if (v5)
+  if (parentDocument)
   {
-    if ([objc_msgSend(v5 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
+    if ([objc_msgSend(parentDocument documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
     {
       [v6 durationForPath:{-[MPSong path](self, "path")}];
       v7 = v8;
-      if (v8 < a3)
+      if (v8 < time)
       {
-        a3 = v8;
+        time = v8;
       }
     }
   }
@@ -223,10 +223,10 @@
   v10 = v9;
   if ([(MPSongInternal *)self->_internal assetLogging])
   {
-    NSLog(@"Setting startTime: %f on MPSong with path: %@", *&a3, self->_path);
+    NSLog(@"Setting startTime: %f on MPSong with path: %@", *&time, self->_path);
   }
 
-  [(MPSongInternal *)self->_internal setStartTime:a3];
+  [(MPSongInternal *)self->_internal setStartTime:time];
   if (v6 && [objc_msgSend(v6 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
   {
     [(MPSongInternal *)self->_internal duration];
@@ -248,17 +248,17 @@
     else
     {
       [(MPSong *)self duration];
-      if (v7 != 0.0 && a3 + v12 > v7)
+      if (v7 != 0.0 && time + v12 > v7)
       {
-        [(MPSong *)self setDuration:v7 - a3];
+        [(MPSong *)self setDuration:v7 - time];
       }
     }
   }
 
   song = self->_song;
-  if (a3 == -1.0 || !song)
+  if (time == -1.0 || !song)
   {
-    if (a3 == -1.0 && song)
+    if (time == -1.0 && song)
     {
 
       [(MCSong *)song undefineStartTime];
@@ -268,7 +268,7 @@
   else
   {
 
-    [(MCSong *)song setStartTime:a3];
+    [(MCSong *)song setStartTime:time];
   }
 }
 
@@ -286,21 +286,21 @@
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = [(MPSong *)self parentDocument];
-  if (v5)
+  parentDocument = [(MPSong *)self parentDocument];
+  if (parentDocument)
   {
-    v6 = v5;
-    if ([objc_msgSend(v5 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
+    v6 = parentDocument;
+    if ([objc_msgSend(parentDocument documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}])
     {
       [v6 durationForPath:{-[MPSong path](self, "path")}];
       v8 = v7;
       [(MPSong *)self startTime];
-      if (v8 != 0.0 && v9 + a3 > v8)
+      if (v8 != 0.0 && v9 + duration > v8)
       {
         [(MPSong *)self startTime];
-        a3 = v8 - v10;
+        duration = v8 - v10;
       }
     }
   }
@@ -309,10 +309,10 @@
   v12 = v11;
   if ([(MPSongInternal *)self->_internal assetLogging])
   {
-    NSLog(@"Setting duration: %f on MPSong with path: %@", *&a3, self->_path);
+    NSLog(@"Setting duration: %f on MPSong with path: %@", *&duration, self->_path);
   }
 
-  [(MPSongInternal *)self->_internal setDuration:a3];
+  [(MPSongInternal *)self->_internal setDuration:duration];
   parentPlaylist = self->_parentPlaylist;
   if (parentPlaylist)
   {
@@ -323,9 +323,9 @@
   }
 
   song = self->_song;
-  if (!song || a3 == -1.0)
+  if (!song || duration == -1.0)
   {
-    if (song && a3 == -1.0)
+    if (song && duration == -1.0)
     {
 
       [(MCSong *)song undefineDuration];
@@ -335,29 +335,29 @@
   else
   {
 
-    [(MCSong *)song setDuration:a3];
+    [(MCSong *)song setDuration:duration];
   }
 }
 
-- (void)setFadeInDuration:(double)a3
+- (void)setFadeInDuration:(double)duration
 {
   [(MPSongInternal *)self->_internal setFadeInDuration:?];
   song = self->_song;
   if (song)
   {
 
-    [(MCSong *)song setFadeInDuration:a3];
+    [(MCSong *)song setFadeInDuration:duration];
   }
 }
 
-- (void)setFadeOutDuration:(double)a3
+- (void)setFadeOutDuration:(double)duration
 {
   [(MPSongInternal *)self->_internal setFadeOutDuration:?];
   song = self->_song;
   if (song)
   {
 
-    [(MCSong *)song setFadeOutDuration:a3];
+    [(MCSong *)song setFadeOutDuration:duration];
   }
 }
 
@@ -375,14 +375,14 @@
   return result;
 }
 
-- (void)setAudioVolume:(double)a3
+- (void)setAudioVolume:(double)volume
 {
   [(MPSongInternal *)self->_internal setAudioVolume:?];
   song = self->_song;
   if (song)
   {
 
-    *&v5 = a3;
+    *&v5 = volume;
     [(MCSong *)song setVolume:v5];
   }
 }
@@ -393,17 +393,17 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [(MPSong *)self path];
+    path = [(MPSong *)self path];
 
-    [v4 durationForPath:v5];
+    [v4 durationForPath:path];
   }
 
   else
   {
     v7 = +[MPAssetManager sharedManager];
-    v8 = [(MPSong *)self path];
+    path2 = [(MPSong *)self path];
 
-    [v7 durationForAssetAtPath:v8];
+    [v7 durationForAssetAtPath:path2];
   }
 
   return result;
@@ -415,17 +415,17 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [(MPSong *)self path];
+    path = [(MPSong *)self path];
 
-    [v4 stopTimeForPath:v5];
+    [v4 stopTimeForPath:path];
   }
 
   else
   {
     v7 = +[MPAssetManager sharedManager];
-    v8 = [(MPSong *)self path];
+    path2 = [(MPSong *)self path];
 
-    [v7 stopTimeForAssetAtPath:v8];
+    [v7 stopTimeForAssetAtPath:path2];
   }
 
   return result;
@@ -433,28 +433,28 @@
 
 - (id)parentDocument
 {
-  v2 = [(MPSong *)self parentPlaylist];
+  parentPlaylist = [(MPSong *)self parentPlaylist];
 
-  return [v2 parentDocument];
+  return [parentPlaylist parentDocument];
 }
 
-- (void)copyStruct:(id)a3
+- (void)copyStruct:(id)struct
 {
-  [a3 duration];
+  [struct duration];
   [(MPSongInternal *)self->_internal setDuration:?];
-  [a3 startTime];
+  [struct startTime];
   [(MPSongInternal *)self->_internal setStartTime:?];
-  [a3 audioVolume];
+  [struct audioVolume];
   [(MPSongInternal *)self->_internal setAudioVolume:?];
-  [a3 fadeInDuration];
+  [struct fadeInDuration];
   [(MPSongInternal *)self->_internal setFadeInDuration:?];
-  [a3 fadeOutDuration];
+  [struct fadeOutDuration];
   internal = self->_internal;
 
   [(MPSongInternal *)internal setFadeOutDuration:?];
 }
 
-- (void)setSong:(id)a3
+- (void)setSong:(id)song
 {
   song = self->_song;
   if (song)
@@ -463,9 +463,9 @@
     self->_song = 0;
   }
 
-  v6 = a3;
-  self->_song = v6;
-  if (v6)
+  songCopy = song;
+  self->_song = songCopy;
+  if (songCopy)
   {
     [(MPSongInternal *)self->_internal audioVolume];
     if (v7 != -1.0)
@@ -498,14 +498,14 @@
   }
 }
 
-- (void)setParentPlaylist:(id)a3
+- (void)setParentPlaylist:(id)playlist
 {
-  if (a3 && self->_parentPlaylist)
+  if (playlist && self->_parentPlaylist)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A song may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parentPlaylist = a3;
+  self->_parentPlaylist = playlist;
 }
 
 - (void)setInternalDuration

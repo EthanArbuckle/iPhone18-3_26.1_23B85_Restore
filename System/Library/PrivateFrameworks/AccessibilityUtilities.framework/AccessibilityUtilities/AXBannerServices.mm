@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (AXUIClient)serverClient;
 - (id)_init;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dismissBanner;
-- (void)presentBannerWithTitle:(id)a3 message:(id)a4 duration:(double)a5;
+- (void)presentBannerWithTitle:(id)title message:(id)message duration:(double)duration;
 @end
 
 @implementation AXBannerServices
@@ -41,10 +41,10 @@ uint64_t __34__AXBannerServices_sharedInstance__block_invoke()
   if (!serverClient)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
     v7 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
-    v8 = [v4 stringWithFormat:@"AXBannerServicesClient-%@-%@", v6, v7];
+    v8 = [v4 stringWithFormat:@"AXBannerServicesClient-%@-%@", processName, v7];
 
     v15 = 0;
     v16 = &v15;
@@ -75,40 +75,40 @@ uint64_t __34__AXBannerServices_sharedInstance__block_invoke()
   return serverClient;
 }
 
-- (void)presentBannerWithTitle:(id)a3 message:(id)a4 duration:(double)a5
+- (void)presentBannerWithTitle:(id)title message:(id)message duration:(double)duration
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  if (v12)
+  titleCopy = title;
+  messageCopy = message;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (titleCopy)
   {
-    [v9 setObject:v12 forKeyedSubscript:@"title"];
+    [dictionary setObject:titleCopy forKeyedSubscript:@"title"];
   }
 
-  if (v8)
+  if (messageCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:@"message"];
+    [dictionary setObject:messageCopy forKeyedSubscript:@"message"];
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
-  [v9 setObject:v10 forKeyedSubscript:@"duration"];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+  [dictionary setObject:v10 forKeyedSubscript:@"duration"];
 
-  v11 = [(AXBannerServices *)self serverClient];
-  [v11 sendAsynchronousMessage:v9 withIdentifier:1000 targetAccessQueue:0 completion:0];
+  serverClient = [(AXBannerServices *)self serverClient];
+  [serverClient sendAsynchronousMessage:dictionary withIdentifier:1000 targetAccessQueue:0 completion:0];
 }
 
 - (void)dismissBanner
 {
-  v2 = [(AXBannerServices *)self serverClient];
-  [v2 sendAsynchronousMessage:MEMORY[0x1E695E0F8] withIdentifier:1001 targetAccessQueue:0 completion:0];
+  serverClient = [(AXBannerServices *)self serverClient];
+  [serverClient sendAsynchronousMessage:MEMORY[0x1E695E0F8] withIdentifier:1001 targetAccessQueue:0 completion:0];
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v4 = a3;
-  v5 = [(AXBannerServices *)self serverClient];
+  clientCopy = client;
+  serverClient = [(AXBannerServices *)self serverClient];
 
-  if (v5 == v4)
+  if (serverClient == clientCopy)
   {
     serverClient = self->_serverClient;
     self->_serverClient = 0;

@@ -1,8 +1,8 @@
 @interface SFBorderView
-- (SFBorderView)initWithCoder:(id)a3;
-- (SFBorderView)initWithFrame:(CGRect)a3;
+- (SFBorderView)initWithCoder:(id)coder;
+- (SFBorderView)initWithFrame:(CGRect)frame;
 - (UIColor)borderColor;
-- (void)setBorderColor:(id)a3;
+- (void)setBorderColor:(id)color;
 @end
 
 @implementation SFBorderView
@@ -14,36 +14,36 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
   v5 = OBJC_IVAR___SFBorderView_borderColor;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = color;
+  colorCopy = color;
+  selfCopy = self;
 
   sub_18BA84A40();
 }
 
-- (SFBorderView)initWithFrame:(CGRect)a3
+- (SFBorderView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR___SFBorderView_borderColor) = 0;
   v5.receiver = self;
   v5.super_class = SFBorderView;
-  v3 = [(SFBorderView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFBorderView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   sub_18BA84C2C();
 
   return v3;
 }
 
-- (SFBorderView)initWithCoder:(id)a3
+- (SFBorderView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___SFBorderView_borderColor) = 0;
   v8.receiver = self;
   v8.super_class = SFBorderView;
-  v3 = a3;
-  v4 = [(SFBorderView *)&v8 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(SFBorderView *)&v8 initWithCoder:coderCopy];
   v5 = v4;
   if (v4)
   {

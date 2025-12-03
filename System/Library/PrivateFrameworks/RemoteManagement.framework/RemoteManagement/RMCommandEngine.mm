@@ -1,33 +1,33 @@
 @interface RMCommandEngine
-- (BOOL)_executeCommand:(id)a3 managementChannel:(id)a4 error:(id *)a5;
-- (BOOL)_handleResultForCommand:(id)a3 status:(signed __int16)a4 result:(id)a5 reasons:(id)a6 unknownPayloadKeys:(id)a7 error:(id)a8 outError:(id *)a9;
-- (RMCommandEngine)initWithManagementSourceObjectID:(id)a3 context:(id)a4;
+- (BOOL)_executeCommand:(id)command managementChannel:(id)channel error:(id *)error;
+- (BOOL)_handleResultForCommand:(id)command status:(signed __int16)status result:(id)result reasons:(id)reasons unknownPayloadKeys:(id)keys error:(id)error outError:(id *)outError;
+- (RMCommandEngine)initWithManagementSourceObjectID:(id)d context:(id)context;
 - (id)_fetchCommand;
-- (void)_processCommand:(id)a3;
+- (void)_processCommand:(id)command;
 @end
 
 @implementation RMCommandEngine
 
-- (RMCommandEngine)initWithManagementSourceObjectID:(id)a3 context:(id)a4
+- (RMCommandEngine)initWithManagementSourceObjectID:(id)d context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = RMCommandEngine;
   v9 = [(RMCommandEngine *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managementSourceObjectID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_managementSourceObjectID, d);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
 }
 
-- (void)_processCommand:(id)a3
+- (void)_processCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = _os_activity_create(&_mh_execute_header, "CommandEngine: executing pending command", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -66,7 +66,7 @@
   v15[2] = sub_10001C654;
   v7 = v15[3] = &unk_1000D1538;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v18 = &v38;
   v19 = &v32;
   v20 = &v26;
@@ -112,7 +112,7 @@
     }
   }
 
-  v4[2](v4, *(v23 + 24), v27[5]);
+  commandCopy[2](commandCopy, *(v23 + 24), v27[5]);
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v26, 8);
 
@@ -122,10 +122,10 @@
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_executeCommand:(id)a3 managementChannel:(id)a4 error:(id *)a5
+- (BOOL)_executeCommand:(id)command managementChannel:(id)channel error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  channelCopy = channel;
   v9 = [[NSConditionLock alloc] initWithCondition:0];
   v61 = 0;
   v62 = &v61;
@@ -161,7 +161,7 @@
   v36 = sub_10001C63C;
   v37 = sub_10001C64C;
   v38 = 0;
-  v10 = v7;
+  v10 = commandCopy;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10001CD60;
@@ -175,7 +175,7 @@
   v11 = v9;
   v25 = v11;
   v32 = 1;
-  [v10 rm_executeRequestOnBehalfOfManagementChannel:v8 completionHandler:v24];
+  [v10 rm_executeRequestOnBehalfOfManagementChannel:channelCopy completionHandler:v24];
   [v11 lockWhenCondition:1];
   [v11 unlock];
   v12 = v62[5];
@@ -187,7 +187,7 @@
   v23 = 0;
   v18 = [(RMCommandEngine *)self _handleResultForCommand:v12 status:v13 result:v14 reasons:v15 unknownPayloadKeys:v16 error:v17 outError:&v23];
   v19 = v23;
-  if (a5)
+  if (error)
   {
     v20 = v18;
   }
@@ -200,7 +200,7 @@
   if ((v20 & 1) == 0 && v19)
   {
     v19 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   _Block_object_dispose(&v33, 8);
@@ -218,9 +218,9 @@
 - (id)_fetchCommand
 {
   v3 = +[RMCommandPayload fetchRequest];
-  v4 = [(RMCommandEngine *)self managementSourceObjectID];
+  managementSourceObjectID = [(RMCommandEngine *)self managementSourceObjectID];
   v5 = +[NSNull null];
-  v6 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", v4, @"state", v5];
+  v6 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", managementSourceObjectID, @"state", v5];
   [v3 setPredicate:v6];
 
   [v3 setFetchLimit:1];
@@ -229,7 +229,7 @@
   v8 = v12;
   if (v7)
   {
-    v9 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
@@ -240,24 +240,24 @@
       sub_10001D984(v8, v10);
     }
 
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (BOOL)_handleResultForCommand:(id)a3 status:(signed __int16)a4 result:(id)a5 reasons:(id)a6 unknownPayloadKeys:(id)a7 error:(id)a8 outError:(id *)a9
+- (BOOL)_handleResultForCommand:(id)command status:(signed __int16)status result:(id)result reasons:(id)reasons unknownPayloadKeys:(id)keys error:(id)error outError:(id *)outError
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  commandCopy = command;
+  resultCopy = result;
+  reasonsCopy = reasons;
+  keysCopy = keys;
+  errorCopy = error;
   v20 = _os_activity_create(&_mh_execute_header, "CommandEngine: processing command result", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v20, &state);
-  v21 = [(RMCommandEngine *)self context];
+  context = [(RMCommandEngine *)self context];
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -268,26 +268,26 @@
   v31[1] = 3221225472;
   v31[2] = sub_10001D258;
   v31[3] = &unk_1000D17C0;
-  v22 = v15;
+  v22 = commandCopy;
   v32 = v22;
   v38 = &v40;
-  v23 = v19;
+  v23 = errorCopy;
   v33 = v23;
-  v24 = v17;
+  v24 = reasonsCopy;
   v34 = v24;
-  v39 = a4;
-  v25 = v16;
+  statusCopy = status;
+  v25 = resultCopy;
   v35 = v25;
-  v26 = v18;
+  v26 = keysCopy;
   v36 = v26;
-  v27 = v21;
+  v27 = context;
   v37 = v27;
   [v27 performBlockAndWait:v31];
   v28 = v41[5];
-  if (a9 && v28)
+  if (outError && v28)
   {
     v28 = v28;
-    *a9 = v28;
+    *outError = v28;
   }
 
   v29 = v28 == 0;

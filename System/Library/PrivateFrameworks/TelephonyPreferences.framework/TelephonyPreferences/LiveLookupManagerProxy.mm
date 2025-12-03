@@ -1,10 +1,10 @@
 @interface LiveLookupManagerProxy
 + (NSString)LLExtensionsChangedNotification;
 - (LiveLookupManagerProxy)init;
-- (id)extensionName:(id)a3;
+- (id)extensionName:(id)name;
 - (id)extensions;
-- (void)setEnabled:(BOOL)a3 forExtension:(_TtC14IdentityLookup21LiveLookupDBExtension *)a4 completion:(id)a5;
-- (void)setWithPrioritizedExtensionIdentifiers:(id)a3;
+- (void)setEnabled:(BOOL)enabled forExtension:(_TtC14IdentityLookup21LiveLookupDBExtension *)extension completion:(id)completion;
+- (void)setWithPrioritizedExtensionIdentifiers:(id)identifiers;
 @end
 
 @implementation LiveLookupManagerProxy
@@ -26,7 +26,7 @@
   v3 = OBJC_IVAR___LiveLookupManagerProxy_manager;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
 
   sub_21B91E42C();
 
@@ -36,22 +36,22 @@
   return v6;
 }
 
-- (id)extensionName:(id)a3
+- (id)extensionName:(id)name
 {
-  v3 = [a3 identifier];
+  identifier = [name identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)setEnabled:(BOOL)a3 forExtension:(_TtC14IdentityLookup21LiveLookupDBExtension *)a4 completion:(id)a5
+- (void)setEnabled:(BOOL)enabled forExtension:(_TtC14IdentityLookup21LiveLookupDBExtension *)extension completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD9AC98, &qword_21B923378) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = enabled;
+  *(v13 + 24) = extension;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_21B91E78C();
@@ -66,18 +66,18 @@
   v16[3] = 0;
   v16[4] = &unk_21B923398;
   v16[5] = v15;
-  v17 = a4;
-  v18 = self;
+  extensionCopy = extension;
+  selfCopy = self;
   sub_21B916854(0, 0, v11, &unk_21B9233A8, v16);
 }
 
-- (void)setWithPrioritizedExtensionIdentifiers:(id)a3
+- (void)setWithPrioritizedExtensionIdentifiers:(id)identifiers
 {
   sub_21B91E75C();
   v4 = OBJC_IVAR___LiveLookupManagerProxy_manager;
   swift_beginAccess();
   v5 = *(&self->super.isa + v4);
-  v6 = self;
+  selfCopy = self;
 
   sub_21B91E43C();
 }

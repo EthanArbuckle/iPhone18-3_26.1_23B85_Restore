@@ -7,7 +7,7 @@
 + (id)pu_meshTransformApplyingNormalizedPerspectiveTransform:()PUPerspectiveTransform
 {
   v3 = objc_alloc_init(MEMORY[0x1E69793F8]);
-  v15 = vmulq_f32(a1, 0);
+  v15 = vmulq_f32(self, 0);
   v4 = vaddq_f32(a3, vmlaq_f32(v15, 0, a2));
   v19 = 0uLL;
   v20 = vcvtq_f64_f32(vdiv_f32(*v4.i8, *&vdupq_laneq_s32(v4, 2)));
@@ -18,14 +18,14 @@
   v20 = vcvtq_f64_f32(vdiv_f32(*v5.i8, *&vdupq_laneq_s32(v5, 2)));
   v21 = 0;
   [v3 addVertex:&v19];
-  v6 = vaddq_f32(a3, vaddq_f32(a2, a1));
+  v6 = vaddq_f32(a3, vaddq_f32(a2, self));
   __asm { FMOV            V1.2D, #1.0 }
 
   v19 = _Q1;
   v20 = vcvtq_f64_f32(vdiv_f32(*v6.i8, *&vdupq_laneq_s32(v6, 2)));
   v21 = 0;
   [v3 addVertex:&v19];
-  v12 = vaddq_f32(a3, vmlaq_f32(a1, 0, a2));
+  v12 = vaddq_f32(a3, vmlaq_f32(self, 0, a2));
   v19 = xmmword_1B3D0CFD0;
   v20 = vcvtq_f64_f32(vdiv_f32(*v12.i8, *&vdupq_laneq_s32(v12, 2)));
   v21 = 0;

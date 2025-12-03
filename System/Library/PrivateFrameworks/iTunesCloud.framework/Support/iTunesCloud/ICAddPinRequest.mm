@@ -1,6 +1,6 @@
 @interface ICAddPinRequest
-- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)a3;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)revision;
+- (id)canonicalResponseForResponse:(id)response;
 - (id)description;
 @end
 
@@ -19,26 +19,26 @@
   return v9;
 }
 
-- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)a3
+- (id)_bodyDataWithServerDatabaseRevision:(unsigned int)revision
 {
   v3 = ICDAAPUtilitiesCreateDataForContainer();
 
   return v3;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v4 = [(ICDResponse *)ICPinOperationResponse responseWithResponse:a3];
-  v5 = [v4 responseData];
-  if ([v5 length])
+  v4 = [(ICDResponse *)ICPinOperationResponse responseWithResponse:response];
+  responseData = [v4 responseData];
+  if ([responseData length])
   {
-    v6 = [NSInputStream inputStreamWithData:v5];
+    v6 = [NSInputStream inputStreamWithData:responseData];
     v7 = [[DKDAAPParser alloc] initWithStream:v6];
     v8 = [[ICPinOperationResponseParserDelegate alloc] initWithEntityType:self->_entityType pinAction:self->_pinAction];
     [v7 setDelegate:v8];
     [v7 parse];
-    v9 = [(ICPinOperationResponseParserDelegate *)v8 addedItems];
-    v10 = [v9 copy];
+    addedItems = [(ICPinOperationResponseParserDelegate *)v8 addedItems];
+    v10 = [addedItems copy];
     [v4 setAddedItems:v10];
 
     [v4 setUpdateRequired:{-[ICPinOperationResponseParserDelegate updateRequired](v8, "updateRequired")}];

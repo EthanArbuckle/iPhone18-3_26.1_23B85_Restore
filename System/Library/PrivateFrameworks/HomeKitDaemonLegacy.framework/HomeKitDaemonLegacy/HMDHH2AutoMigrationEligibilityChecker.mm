@@ -1,22 +1,22 @@
 @interface HMDHH2AutoMigrationEligibilityChecker
 + (id)logCategory;
-- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)a3;
-- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)a3 accountManager:(id)a4 featuresDataSource:(id)a5 userDefaults:(id)a6 cloudkitReachabilitySource:(id)a7;
+- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)manager;
+- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)manager accountManager:(id)accountManager featuresDataSource:(id)source userDefaults:(id)defaults cloudkitReachabilitySource:(id)reachabilitySource;
 - (HMDHomeManager)homeManager;
 - (uint64_t)_hasAnySharedUser;
 - (uint64_t)_migrationReadinessiCloudAccountStatus;
 - (uint64_t)_rampHash;
-- (uint64_t)_unsupportedDeviceTypeFromDevice:(void *)a1;
-- (uint64_t)_unsupportedDevicesOnCurrentAccountNotAtLeastVersion:(void *)a1;
-- (uint64_t)_unsupportedDevicesWithCurrentDeviceAtLeastVersion:(void *)a3 residentDevicesAtLeastVersion:(void *)a4 otherDevicesAtLeastVersion:;
+- (uint64_t)_unsupportedDeviceTypeFromDevice:(void *)device;
+- (uint64_t)_unsupportedDevicesOnCurrentAccountNotAtLeastVersion:(void *)version;
+- (uint64_t)_unsupportedDevicesWithCurrentDeviceAtLeastVersion:(void *)version residentDevicesAtLeastVersion:(void *)leastVersion otherDevicesAtLeastVersion:;
 - (uint64_t)allHomesSupportHH2;
 - (uint64_t)numberOwnedNonEmptyHomes;
 - (uint64_t)numberOwnedSharedHomes;
 - (uint64_t)numberUnownedSharedHomes;
 - (uint64_t)ownedHomesAreEmpty;
 - (void)_unsupportedDevicesOnCurrentAccountForOwnerAutoMigration;
-- (void)fetchIsCurrentUserEligibleForAutoMigrationWithCompletion:(id)a3;
-- (void)fetchIsCurrentUserEligibleForMigrationByOwnerWithCompletion:(id)a3;
+- (void)fetchIsCurrentUserEligibleForAutoMigrationWithCompletion:(id)completion;
+- (void)fetchIsCurrentUserEligibleForMigrationByOwnerWithCompletion:(id)completion;
 @end
 
 @implementation HMDHH2AutoMigrationEligibilityChecker
@@ -28,10 +28,10 @@
   return WeakRetained;
 }
 
-- (void)fetchIsCurrentUserEligibleForMigrationByOwnerWithCompletion:(id)a3
+- (void)fetchIsCurrentUserEligibleForMigrationByOwnerWithCompletion:(id)completion
 {
   v95 = *MEMORY[0x277D85DE8];
-  v82 = a3;
+  completionCopy = completion;
   if (!self)
   {
     goto LABEL_23;
@@ -41,10 +41,10 @@
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v4 = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
-  v5 = [v4 homes];
+  homeManager = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
+  homes = [homeManager homes];
 
-  v6 = [v5 countByEnumeratingWithState:&v84 objects:v91 count:16];
+  v6 = [homes countByEnumeratingWithState:&v84 objects:v91 count:16];
   if (v6)
   {
     v7 = v6;
@@ -56,22 +56,22 @@
       {
         if (*v85 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(homes);
         }
 
         v11 = *(*(&v84 + 1) + 8 * i);
         if (([v11 isOwnerUser] & 1) == 0 && (objc_msgSend(v11, "isUpdatedToHH2") & 1) == 0)
         {
-          v12 = [v11 owner];
-          v13 = v12;
+          owner = [v11 owner];
+          v13 = owner;
           if (v8)
           {
-            v14 = [v8 isAccountEqualWithUser:v12];
+            v14 = [v8 isAccountEqualWithUser:owner];
 
             if ((v14 & 1) == 0)
             {
               v15 = objc_autoreleasePoolPush();
-              v16 = self;
+              selfCopy = self;
               v17 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
@@ -90,12 +90,12 @@
 
           else
           {
-            v8 = v12;
+            v8 = owner;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v84 objects:v91 count:16];
+      v7 = [homes countByEnumeratingWithState:&v84 objects:v91 count:16];
       if (v7)
       {
         continue;
@@ -122,7 +122,7 @@ LABEL_21:
   {
 LABEL_23:
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -139,7 +139,7 @@ LABEL_23:
   if (([(HMDHH2AutoMigrationEligibilityChecker *)self ownedHomesAreEmpty]& 1) == 0)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -153,14 +153,14 @@ LABEL_23:
     v20 |= 0x400uLL;
   }
 
-  v29 = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
-  v30 = [(HMDHH2AutoMigrationEligibilityChecker *)self _migrationReadinessiCloudAccountStatus];
-  v83 = v30;
-  if (v30)
+  homeManager2 = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
+  _migrationReadinessiCloudAccountStatus = [(HMDHH2AutoMigrationEligibilityChecker *)self _migrationReadinessiCloudAccountStatus];
+  v83 = _migrationReadinessiCloudAccountStatus;
+  if (_migrationReadinessiCloudAccountStatus)
   {
-    v31 = v30;
+    v31 = _migrationReadinessiCloudAccountStatus;
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy4 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -207,13 +207,13 @@ LABEL_23:
     v20 |= 1uLL;
   }
 
-  v38 = [v29 cloudDataSyncStateFilter];
-  v39 = [v38 isiCloudSwitchEnabled];
+  cloudDataSyncStateFilter = [homeManager2 cloudDataSyncStateFilter];
+  isiCloudSwitchEnabled = [cloudDataSyncStateFilter isiCloudSwitchEnabled];
 
-  if ((v39 & 1) == 0)
+  if ((isiCloudSwitchEnabled & 1) == 0)
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy5 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
@@ -227,13 +227,13 @@ LABEL_23:
     v20 |= 2uLL;
   }
 
-  v44 = [v29 cloudDataSyncStateFilter];
-  v45 = [v44 isKeychainSyncSwitchEnabled];
+  cloudDataSyncStateFilter2 = [homeManager2 cloudDataSyncStateFilter];
+  isKeychainSyncSwitchEnabled = [cloudDataSyncStateFilter2 isKeychainSyncSwitchEnabled];
 
-  if ((v45 & 1) == 0)
+  if ((isKeychainSyncSwitchEnabled & 1) == 0)
   {
     v46 = objc_autoreleasePoolPush();
-    v47 = self;
+    selfCopy6 = self;
     v48 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
@@ -247,13 +247,13 @@ LABEL_23:
     v20 |= 4uLL;
   }
 
-  v50 = [(HMDHH2AutoMigrationEligibilityChecker *)self isHSA2Enabled];
-  v51 = v50[2]();
+  isHSA2Enabled = [(HMDHH2AutoMigrationEligibilityChecker *)self isHSA2Enabled];
+  v51 = isHSA2Enabled[2]();
 
   if ((v51 & 1) == 0)
   {
     v52 = objc_autoreleasePoolPush();
-    v53 = self;
+    selfCopy7 = self;
     v54 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
     {
@@ -273,8 +273,8 @@ LABEL_23:
     goto LABEL_64;
   }
 
-  v58 = [v57 minimumHomeKitVersionForSharedUserHH2MigrationByOwnerManual];
-  v59 = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountNotAtLeastVersion:v58];
+  minimumHomeKitVersionForSharedUserHH2MigrationByOwnerManual = [v57 minimumHomeKitVersionForSharedUserHH2MigrationByOwnerManual];
+  v59 = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountNotAtLeastVersion:minimumHomeKitVersionForSharedUserHH2MigrationByOwnerManual];
 
   if (!v59)
   {
@@ -284,7 +284,7 @@ LABEL_64:
   }
 
   v60 = objc_autoreleasePoolPush();
-  v61 = self;
+  selfCopy8 = self;
   v62 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
   {
@@ -297,21 +297,21 @@ LABEL_64:
   objc_autoreleasePoolPop(v60);
   v64 = v20 | 0x10;
 LABEL_65:
-  v65 = [(HMDHH2AutoMigrationEligibilityChecker *)self numberOwnedNonEmptyHomes];
-  v66 = [(HMDHH2AutoMigrationEligibilityChecker *)self numberUnownedSharedHomes];
-  v67 = [(HMDHH2AutoMigrationEligibilityChecker *)self numberOwnedSharedHomes];
+  numberOwnedNonEmptyHomes = [(HMDHH2AutoMigrationEligibilityChecker *)self numberOwnedNonEmptyHomes];
+  numberUnownedSharedHomes = [(HMDHH2AutoMigrationEligibilityChecker *)self numberUnownedSharedHomes];
+  numberOwnedSharedHomes = [(HMDHH2AutoMigrationEligibilityChecker *)self numberOwnedSharedHomes];
   p_superclass = HMDHomeLocationData.superclass;
-  v69 = [[HMDHH2AutoMigrationEligibilityResult alloc] initWithStatus:v64 iCloudAccountStatus:v83 unsupportedDevices:v59 hasOnlyEmptyHomes:[(HMDHH2AutoMigrationEligibilityChecker *)self ownedHomesAreEmpty] numberOwnedNonEmptyHomes:v65 numberUnownedSharedHomes:v66 numberOwnedSharedHomes:v67];
-  v81 = v29;
+  v69 = [[HMDHH2AutoMigrationEligibilityResult alloc] initWithStatus:v64 iCloudAccountStatus:v83 unsupportedDevices:v59 hasOnlyEmptyHomes:[(HMDHH2AutoMigrationEligibilityChecker *)self ownedHomesAreEmpty] numberOwnedNonEmptyHomes:numberOwnedNonEmptyHomes numberUnownedSharedHomes:numberUnownedSharedHomes numberOwnedSharedHomes:numberOwnedSharedHomes];
+  v81 = homeManager2;
   if (self && (-[HMDHH2AutoMigrationEligibilityChecker homeManager](self, "homeManager"), v70 = objc_claimAutoreleasedReturnValue(), [v70 idsServerBag], v71 = objc_claimAutoreleasedReturnValue(), v70, v71))
   {
-    v72 = [v71 minimumHomeKitVersionForSharedUserHH2MigrationByOwnerAuto];
-    v73 = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountNotAtLeastVersion:v72];
+    minimumHomeKitVersionForSharedUserHH2MigrationByOwnerAuto = [v71 minimumHomeKitVersionForSharedUserHH2MigrationByOwnerAuto];
+    v73 = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountNotAtLeastVersion:minimumHomeKitVersionForSharedUserHH2MigrationByOwnerAuto];
 
     if (v73)
     {
       v74 = objc_autoreleasePoolPush();
-      v75 = self;
+      selfCopy9 = self;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
@@ -335,8 +335,8 @@ LABEL_65:
     v73 = 0;
   }
 
-  v78 = [objc_alloc((p_superclass + 49)) initWithStatus:v20 iCloudAccountStatus:v83 unsupportedDevices:v73 hasOnlyEmptyHomes:-[HMDHH2AutoMigrationEligibilityChecker ownedHomesAreEmpty](self) numberOwnedNonEmptyHomes:v65 numberUnownedSharedHomes:v66 numberOwnedSharedHomes:v67];
-  v82[2](v82, v69, v78);
+  v78 = [objc_alloc((p_superclass + 49)) initWithStatus:v20 iCloudAccountStatus:v83 unsupportedDevices:v73 hasOnlyEmptyHomes:-[HMDHH2AutoMigrationEligibilityChecker ownedHomesAreEmpty](self) numberOwnedNonEmptyHomes:numberOwnedNonEmptyHomes numberUnownedSharedHomes:numberUnownedSharedHomes numberOwnedSharedHomes:numberOwnedSharedHomes];
+  completionCopy[2](completionCopy, v69, v78);
 
   v79 = *MEMORY[0x277D85DE8];
 }
@@ -344,16 +344,16 @@ LABEL_65:
 - (uint64_t)ownedHomesAreEmpty
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v1 = [a1 homeManager];
-    v2 = [v1 homes];
+    homeManager = [self homeManager];
+    homes = [homeManager homes];
 
-    v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v3 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v4 = v3;
@@ -364,7 +364,7 @@ LABEL_65:
         {
           if (*v12 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(homes);
           }
 
           v7 = *(*(&v11 + 1) + 8 * i);
@@ -375,7 +375,7 @@ LABEL_65:
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v4)
         {
           continue;
@@ -400,12 +400,12 @@ LABEL_13:
 
 - (uint64_t)_migrationReadinessiCloudAccountStatus
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 40);
+  v1 = *(self + 40);
   v7 = 0;
   v2 = v1;
   v3 = [v2 areCloudKitServersReachableWithError:&v7];
@@ -423,16 +423,16 @@ LABEL_13:
 - (uint64_t)numberOwnedNonEmptyHomes
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v1 = [a1 homeManager];
-    v2 = [v1 homes];
+    homeManager = [self homeManager];
+    homes = [homeManager homes];
 
-    v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v3 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
       v4 = v3;
@@ -444,7 +444,7 @@ LABEL_13:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(homes);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -454,7 +454,7 @@ LABEL_13:
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v4);
@@ -478,16 +478,16 @@ LABEL_13:
 - (uint64_t)numberUnownedSharedHomes
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v1 = [a1 homeManager];
-    v2 = [v1 homes];
+    homeManager = [self homeManager];
+    homes = [homeManager homes];
 
-    v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v3 = [homes countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v3)
     {
       v4 = v3;
@@ -499,13 +499,13 @@ LABEL_13:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(homes);
           }
 
           v5 += [*(*(&v10 + 1) + 8 * i) isOwnerUser] ^ 1;
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [homes countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v4);
@@ -529,16 +529,16 @@ LABEL_13:
 - (uint64_t)numberOwnedSharedHomes
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v1 = [a1 homeManager];
-    v2 = [v1 homes];
+    homeManager = [self homeManager];
+    homes = [homeManager homes];
 
-    v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v3 = [homes countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v3)
     {
       v4 = v3;
@@ -550,20 +550,20 @@ LABEL_13:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(homes);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
           if ([v8 isOwnerUser])
           {
-            v9 = [v8 users];
-            v10 = [v9 na_any:&__block_literal_global_102_66716];
+            users = [v8 users];
+            v10 = [users na_any:&__block_literal_global_102_66716];
 
             v5 += v10;
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v4 = [homes countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v4);
@@ -584,7 +584,7 @@ LABEL_13:
   return v5;
 }
 
-- (uint64_t)_unsupportedDevicesOnCurrentAccountNotAtLeastVersion:(void *)a1
+- (uint64_t)_unsupportedDevicesOnCurrentAccountNotAtLeastVersion:(void *)version
 {
   v38 = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -592,11 +592,11 @@ LABEL_13:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [objc_getProperty(a1 v4];
-  v6 = [v5 devices];
+  v5 = [objc_getProperty(version v4];
+  devices = [v5 devices];
 
-  v7 = v6;
-  v8 = [v6 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  v7 = devices;
+  v8 = [devices countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v8)
   {
     v10 = v8;
@@ -617,18 +617,18 @@ LABEL_13:
         }
 
         v14 = *(*(&v27 + 1) + 8 * v13);
-        v15 = [v14 derivedVersion];
-        v16 = [v15 isAtLeastVersion:v3];
+        derivedVersion = [v14 derivedVersion];
+        v16 = [derivedVersion isAtLeastVersion:v3];
 
         if ((v16 & 1) == 0)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = a1;
+          versionCopy = version;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
-            v21 = v20 = a1;
+            v21 = v20 = version;
             *buf = v24;
             v32 = v21;
             v33 = 2114;
@@ -637,12 +637,12 @@ LABEL_13:
             v36 = v14;
             _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Device for current user does not meet required version %{public}@ for HH2 auto migration: %{public}@", buf, 0x20u);
 
-            a1 = v20;
+            version = v20;
             v7 = v25;
           }
 
           objc_autoreleasePoolPop(v17);
-          v11 |= [(HMDHH2AutoMigrationEligibilityChecker *)v18 _unsupportedDeviceTypeFromDevice:v14];
+          v11 |= [(HMDHH2AutoMigrationEligibilityChecker *)versionCopy _unsupportedDeviceTypeFromDevice:v14];
           v10 = v26;
         }
 
@@ -665,7 +665,7 @@ LABEL_13:
   return v11;
 }
 
-- (uint64_t)_unsupportedDeviceTypeFromDevice:(void *)a1
+- (uint64_t)_unsupportedDeviceTypeFromDevice:(void *)device
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
@@ -679,12 +679,12 @@ LABEL_13:
     v4 = 0;
   }
 
-  v5 = [v3 productInfo];
-  v6 = [v5 productPlatform];
+  productInfo = [v3 productInfo];
+  productPlatform = [productInfo productPlatform];
 
-  if (v6 > 2)
+  if (productPlatform > 2)
   {
-    switch(v6)
+    switch(productPlatform)
     {
       case 3:
         v4 |= 8uLL;
@@ -694,7 +694,7 @@ LABEL_13:
         break;
       case 5:
         v8 = objc_autoreleasePoolPush();
-        v9 = a1;
+        deviceCopy = device;
         v10 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
@@ -710,15 +710,15 @@ LABEL_13:
     }
   }
 
-  else if (v6)
+  else if (productPlatform)
   {
     v7 = v4 | 1;
-    if (v6 != 2)
+    if (productPlatform != 2)
     {
       v7 = v4 | 4;
     }
 
-    if (v6 == 1)
+    if (productPlatform == 1)
     {
       v4 |= 4uLL;
     }
@@ -732,7 +732,7 @@ LABEL_13:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    deviceCopy2 = device;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -766,34 +766,34 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
   return v3;
 }
 
-- (void)fetchIsCurrentUserEligibleForAutoMigrationWithCompletion:(id)a3
+- (void)fetchIsCurrentUserEligibleForAutoMigrationWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v5 = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
-  v6 = [(HMDHH2AutoMigrationEligibilityChecker *)self _migrationReadinessiCloudAccountStatus];
-  if (v6)
+  homeManager = [(HMDHH2AutoMigrationEligibilityChecker *)self homeManager];
+  _migrationReadinessiCloudAccountStatus = [(HMDHH2AutoMigrationEligibilityChecker *)self _migrationReadinessiCloudAccountStatus];
+  if (_migrationReadinessiCloudAccountStatus)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = HMFGetLogIdentifier();
       v11 = v10;
       v12 = @"iCloud account is not signed in";
-      if (v6 <= 7)
+      if (_migrationReadinessiCloudAccountStatus <= 7)
       {
-        if (v6 == 2)
+        if (_migrationReadinessiCloudAccountStatus == 2)
         {
           v12 = @"iCloud account status could not be determined";
         }
 
-        else if (v6 == 4)
+        else if (_migrationReadinessiCloudAccountStatus == 4)
         {
           v12 = @"iCloud account status is temporarily unavailable";
         }
@@ -801,7 +801,7 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
 
       else
       {
-        switch(v6)
+        switch(_migrationReadinessiCloudAccountStatus)
         {
           case 8:
             v12 = @"iCloud account status is restricted";
@@ -826,13 +826,13 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
     v40[3] |= 1uLL;
   }
 
-  v13 = [v5 cloudDataSyncStateFilter];
-  v14 = [v13 isiCloudSwitchEnabled];
+  cloudDataSyncStateFilter = [homeManager cloudDataSyncStateFilter];
+  isiCloudSwitchEnabled = [cloudDataSyncStateFilter isiCloudSwitchEnabled];
 
-  if ((v14 & 1) == 0)
+  if ((isiCloudSwitchEnabled & 1) == 0)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -846,13 +846,13 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
     v40[3] |= 2uLL;
   }
 
-  v19 = [v5 cloudDataSyncStateFilter];
-  v20 = [v19 isKeychainSyncSwitchEnabled];
+  cloudDataSyncStateFilter2 = [homeManager cloudDataSyncStateFilter];
+  isKeychainSyncSwitchEnabled = [cloudDataSyncStateFilter2 isKeychainSyncSwitchEnabled];
 
-  if ((v20 & 1) == 0)
+  if ((isKeychainSyncSwitchEnabled & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -866,13 +866,13 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
     v40[3] |= 4uLL;
   }
 
-  v25 = [(HMDHH2AutoMigrationEligibilityChecker *)self isHSA2Enabled];
-  v26 = v25[2]();
+  isHSA2Enabled = [(HMDHH2AutoMigrationEligibilityChecker *)self isHSA2Enabled];
+  v26 = isHSA2Enabled[2]();
 
   if ((v26 & 1) == 0)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy4 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
@@ -886,18 +886,18 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
     v40[3] |= 8uLL;
   }
 
-  v31 = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountForOwnerAutoMigration];
+  _unsupportedDevicesOnCurrentAccountForOwnerAutoMigration = [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDevicesOnCurrentAccountForOwnerAutoMigration];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __98__HMDHH2AutoMigrationEligibilityChecker_fetchIsCurrentUserEligibleForAutoMigrationWithCompletion___block_invoke;
   v34[3] = &unk_279728398;
   v34[4] = self;
   v36 = &v39;
-  v37 = v31;
-  v38 = v6;
-  v32 = v4;
+  v37 = _unsupportedDevicesOnCurrentAccountForOwnerAutoMigration;
+  v38 = _migrationReadinessiCloudAccountStatus;
+  v32 = completionCopy;
   v35 = v32;
-  [v5 fetchHasOnlyEmptyHomesWithCompletion:v34];
+  [homeManager fetchHasOnlyEmptyHomesWithCompletion:v34];
 
   _Block_object_dispose(&v39, 8);
   v33 = *MEMORY[0x277D85DE8];
@@ -905,42 +905,42 @@ BOOL __63__HMDHH2AutoMigrationEligibilityChecker_numberOwnedSharedHomes__block_i
 
 - (void)_unsupportedDevicesOnCurrentAccountForOwnerAutoMigration
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    hasAnyShared = [(HMDHH2AutoMigrationEligibilityChecker *)a1 _hasAnySharedUser];
-    v3 = [v1 homeManager];
-    v4 = [v3 idsServerBag];
+    hasAnyShared = [(HMDHH2AutoMigrationEligibilityChecker *)self _hasAnySharedUser];
+    homeManager = [selfCopy homeManager];
+    idsServerBag = [homeManager idsServerBag];
 
     if (hasAnyShared)
     {
-      if (v4)
+      if (idsServerBag)
       {
-        v5 = [v4 minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithSharedUsers];
-        v6 = [v4 minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithSharedUsers];
-        v7 = [v4 minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers];
+        minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithSharedUsers];
+        minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithSharedUsers];
+        minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers];
 LABEL_7:
-        v8 = v7;
-        v1 = [(HMDHH2AutoMigrationEligibilityChecker *)v1 _unsupportedDevicesWithCurrentDeviceAtLeastVersion:v5 residentDevicesAtLeastVersion:v6 otherDevicesAtLeastVersion:v7];
+        v8 = minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers;
+        selfCopy = [(HMDHH2AutoMigrationEligibilityChecker *)selfCopy _unsupportedDevicesWithCurrentDeviceAtLeastVersion:minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithSharedUsers residentDevicesAtLeastVersion:minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithSharedUsers otherDevicesAtLeastVersion:minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers];
 
 LABEL_9:
-        return v1;
+        return selfCopy;
       }
     }
 
-    else if (v4)
+    else if (idsServerBag)
     {
-      v5 = [v4 minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithoutSharedUsers];
-      v6 = [v4 minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithoutSharedUsers];
-      v7 = [v4 minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithoutSharedUsers];
+      minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerMeDeviceAutoHH2MigrationWithoutSharedUsers];
+      minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerResidentDevicesAutoHH2MigrationWithoutSharedUsers];
+      minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithSharedUsers = [idsServerBag minimumHomeKitVersionForOwnerOtherDevicesAutoHH2MigrationWithoutSharedUsers];
       goto LABEL_7;
     }
 
-    v1 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __98__HMDHH2AutoMigrationEligibilityChecker_fetchIsCurrentUserEligibleForAutoMigrationWithCompletion___block_invoke(uint64_t a1, unsigned int a2)
@@ -1649,21 +1649,21 @@ LABEL_118:
 - (uint64_t)allHomesSupportHH2
 {
   v59 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v2 = [a1 homeManager];
-    v3 = [v2 homes];
+    homeManager = [self homeManager];
+    homes = [homeManager homes];
 
-    v4 = [v3 countByEnumeratingWithState:&v47 objects:v58 count:16];
+    v4 = [homes countByEnumeratingWithState:&v47 objects:v58 count:16];
     if (v4)
     {
       v5 = v4;
-      v41 = a1;
-      v42 = v3;
+      selfCopy = self;
+      v42 = homes;
       v6 = *v48;
       v39 = *v48;
       while (2)
@@ -1674,14 +1674,14 @@ LABEL_118:
         {
           if (*v48 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(homes);
           }
 
           v8 = *(*(&v47 + 1) + 8 * v7);
           if (([v8 isOwnerUser] & 1) == 0)
           {
             v35 = objc_autoreleasePoolPush();
-            v36 = v41;
+            v36 = selfCopy;
             v37 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
             {
@@ -1702,8 +1702,8 @@ LABEL_118:
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v9 = [v8 users];
-          v10 = [v9 countByEnumeratingWithState:&v43 objects:v57 count:16];
+          users = [v8 users];
+          v10 = [users countByEnumeratingWithState:&v43 objects:v57 count:16];
           if (v10)
           {
             v11 = v10;
@@ -1714,35 +1714,35 @@ LABEL_118:
               {
                 if (*v44 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(users);
                 }
 
                 v14 = *(*(&v43 + 1) + 8 * i);
                 if (([v14 isOwner] & 1) == 0)
                 {
-                  v15 = [v14 userDataController];
-                  v16 = [v15 supportsHH2MigrationByOwnerManual];
-                  v17 = [v15 supportsHH2MigrationByOwnerAuto];
+                  userDataController = [v14 userDataController];
+                  supportsHH2MigrationByOwnerManual = [userDataController supportsHH2MigrationByOwnerManual];
+                  supportsHH2MigrationByOwnerAuto = [userDataController supportsHH2MigrationByOwnerAuto];
                   v18 = isInternalBuild();
-                  v19 = v17 | v16;
+                  v19 = supportsHH2MigrationByOwnerAuto | supportsHH2MigrationByOwnerManual;
                   if (!v18)
                   {
-                    v19 = v17;
+                    v19 = supportsHH2MigrationByOwnerAuto;
                   }
 
                   if ((v19 & 1) == 0)
                   {
                     v23 = objc_autoreleasePoolPush();
-                    v24 = v41;
+                    v24 = selfCopy;
                     v25 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                     {
                       v26 = HMFGetLogIdentifier();
-                      v27 = [v8 shortDescription];
+                      shortDescription = [v8 shortDescription];
                       *buf = 138543874;
                       v52 = v26;
                       v53 = 2114;
-                      v54 = v27;
+                      v54 = shortDescription;
                       v55 = 2114;
                       v56 = v14;
                       _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Home %{public}@ has at least one shared user that doesn't support migration by owner performing auto migration: %{public}@", buf, 0x20u);
@@ -1755,22 +1755,22 @@ LABEL_118:
 
                 if (([v14 isOwner] & 1) == 0)
                 {
-                  v20 = [v14 userDataController];
-                  v21 = [v20 supportsHH2MigrationByOwnerAuto];
+                  userDataController2 = [v14 userDataController];
+                  supportsHH2MigrationByOwnerAuto2 = [userDataController2 supportsHH2MigrationByOwnerAuto];
 
-                  if ((v21 & 1) == 0)
+                  if ((supportsHH2MigrationByOwnerAuto2 & 1) == 0)
                   {
                     v28 = objc_autoreleasePoolPush();
-                    v29 = v41;
+                    v29 = selfCopy;
                     v30 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
                     {
                       v31 = HMFGetLogIdentifier();
-                      v32 = [v8 shortDescription];
+                      shortDescription2 = [v8 shortDescription];
                       *buf = 138543874;
                       v52 = v31;
                       v53 = 2114;
-                      v54 = v32;
+                      v54 = shortDescription2;
                       v55 = 2114;
                       v56 = v14;
                       _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_INFO, "%{public}@Home %{public}@ has at least one shared user that doesn't support migration by owner performing auto migration: %{public}@", buf, 0x20u);
@@ -1780,13 +1780,13 @@ LABEL_118:
 LABEL_32:
 
                     v22 = 0;
-                    v3 = v42;
+                    homes = v42;
                     goto LABEL_33;
                   }
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v43 objects:v57 count:16];
+              v11 = [users countByEnumeratingWithState:&v43 objects:v57 count:16];
               if (v11)
               {
                 continue;
@@ -1798,7 +1798,7 @@ LABEL_32:
 
           ++v7;
           v6 = v39;
-          v3 = v42;
+          homes = v42;
         }
 
         while (v7 != v40);
@@ -2222,7 +2222,7 @@ LABEL_63:
 - (uint64_t)_rampHash
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [objc_getProperty(a1 a2];
+  v3 = [objc_getProperty(self a2];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2236,15 +2236,15 @@ LABEL_63:
 
   v5 = v4;
 
-  if (!v5 || (v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5]) == 0)
+  if (!v5 || (uUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5]) == 0)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v8 = objc_getProperty(a1, v7, 32, 1);
-    v9 = [v6 UUIDString];
-    [v8 setObject:v9 forKey:@"rmigration-ercv"];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v8 = objc_getProperty(self, v7, 32, 1);
+    uUIDString = [uUID UUIDString];
+    [v8 setObject:uUIDString forKey:@"rmigration-ercv"];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -2252,17 +2252,17 @@ LABEL_63:
       *v19 = 138543618;
       *&v19[4] = v13;
       v20 = 2114;
-      v21 = v6;
+      v21 = uUID;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Generated ramp candidate value: %{public}@", v19, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
   }
 
-  v14 = [v6 hmf_bytesAsData];
-  v15 = [v14 hm_generateSHA256];
+  hmf_bytesAsData = [uUID hmf_bytesAsData];
+  hm_generateSHA256 = [hmf_bytesAsData hm_generateSHA256];
 
-  [v15 getBytes:v19 length:8];
+  [hm_generateSHA256 getBytes:v19 length:8];
   v16 = *v19;
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2344,9 +2344,9 @@ LABEL_11:
 
 - (uint64_t)_hasAnySharedUser
 {
-  v1 = [a1 homeManager];
-  v2 = [v1 homes];
-  v3 = [v2 na_any:&__block_literal_global_111];
+  homeManager = [self homeManager];
+  homes = [homeManager homes];
+  v3 = [homes na_any:&__block_literal_global_111];
 
   return v3;
 }
@@ -2421,21 +2421,21 @@ LABEL_11:
   return v5;
 }
 
-- (uint64_t)_unsupportedDevicesWithCurrentDeviceAtLeastVersion:(void *)a3 residentDevicesAtLeastVersion:(void *)a4 otherDevicesAtLeastVersion:
+- (uint64_t)_unsupportedDevicesWithCurrentDeviceAtLeastVersion:(void *)version residentDevicesAtLeastVersion:(void *)leastVersion otherDevicesAtLeastVersion:
 {
   v53 = *MEMORY[0x277D85DE8];
   v41 = a2;
-  v38 = a3;
-  v39 = a4;
+  versionCopy = version;
+  leastVersionCopy = leastVersion;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = [objc_getProperty(a1 v7];
-  v9 = [v8 devices];
+  v8 = [objc_getProperty(self v7];
+  devices = [v8 devices];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v42 objects:v52 count:16];
+  obj = devices;
+  v10 = [devices countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2453,16 +2453,16 @@ LABEL_11:
         v15 = *(*(&v42 + 1) + 8 * i);
         if (![v15 isCurrentDevice])
         {
-          v22 = [v15 productInfo];
-          if ([v22 productClass] != 3 && (objc_msgSend(v22, "productPlatform") == 4 || (objc_msgSend(v15, "capabilities"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isResidentCapable"), v31, v32)))
+          productInfo = [v15 productInfo];
+          if ([productInfo productClass] != 3 && (objc_msgSend(productInfo, "productPlatform") == 4 || (objc_msgSend(v15, "capabilities"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isResidentCapable"), v31, v32)))
           {
-            v33 = [v15 derivedVersion];
-            v34 = [v33 isAtLeastVersion:v38];
+            derivedVersion = [v15 derivedVersion];
+            v34 = [derivedVersion isAtLeastVersion:versionCopy];
 
             if ((v34 & 1) == 0)
             {
               v25 = objc_autoreleasePoolPush();
-              v35 = a1;
+              selfCopy = self;
               v27 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
               {
@@ -2470,7 +2470,7 @@ LABEL_11:
                 *buf = 138543874;
                 v47 = v28;
                 v48 = 2114;
-                v49 = v38;
+                v49 = versionCopy;
                 v50 = 2114;
                 v51 = v15;
                 v29 = v27;
@@ -2485,13 +2485,13 @@ LABEL_20:
 
           else
           {
-            v23 = [v15 derivedVersion];
-            v24 = [v23 isAtLeastVersion:v39];
+            derivedVersion2 = [v15 derivedVersion];
+            v24 = [derivedVersion2 isAtLeastVersion:leastVersionCopy];
 
             if ((v24 & 1) == 0)
             {
               v25 = objc_autoreleasePoolPush();
-              v26 = a1;
+              selfCopy2 = self;
               v27 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
               {
@@ -2499,7 +2499,7 @@ LABEL_20:
                 *buf = 138543874;
                 v47 = v28;
                 v48 = 2114;
-                v49 = v39;
+                v49 = leastVersionCopy;
                 v50 = 2114;
                 v51 = v15;
                 v29 = v27;
@@ -2510,20 +2510,20 @@ LABEL_20:
 LABEL_21:
 
               objc_autoreleasePoolPop(v25);
-              v12 |= [(HMDHH2AutoMigrationEligibilityChecker *)a1 _unsupportedDeviceTypeFromDevice:v15];
+              v12 |= [(HMDHH2AutoMigrationEligibilityChecker *)self _unsupportedDeviceTypeFromDevice:v15];
             }
           }
 
           continue;
         }
 
-        v16 = [v15 derivedVersion];
-        v17 = [v16 isAtLeastVersion:v41];
+        derivedVersion3 = [v15 derivedVersion];
+        v17 = [derivedVersion3 isAtLeastVersion:v41];
 
         if ((v17 & 1) == 0)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy3 = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -2538,7 +2538,7 @@ LABEL_21:
           }
 
           objc_autoreleasePoolPop(v18);
-          v12 |= [(HMDHH2AutoMigrationEligibilityChecker *)v19 _unsupportedDeviceTypeFromDevice:v15];
+          v12 |= [(HMDHH2AutoMigrationEligibilityChecker *)selfCopy3 _unsupportedDeviceTypeFromDevice:v15];
         }
       }
 
@@ -2557,35 +2557,35 @@ LABEL_27:
   return v12;
 }
 
-- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)a3 accountManager:(id)a4 featuresDataSource:(id)a5 userDefaults:(id)a6 cloudkitReachabilitySource:(id)a7
+- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)manager accountManager:(id)accountManager featuresDataSource:(id)source userDefaults:(id)defaults cloudkitReachabilitySource:(id)reachabilitySource
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  sourceCopy = source;
+  defaultsCopy = defaults;
+  reachabilitySourceCopy = reachabilitySource;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!accountManagerCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v14)
+  if (!sourceCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = reachabilitySourceCopy;
+  if (!reachabilitySourceCopy)
   {
 LABEL_11:
     v23 = _HMFPreconditionFailure();
@@ -2598,11 +2598,11 @@ LABEL_11:
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_homeManager, v12);
-    objc_storeStrong(&v19->_accountManager, a4);
-    objc_storeStrong(&v19->_featuresDataSource, a5);
-    objc_storeStrong(&v19->_userDefaults, a6);
-    objc_storeStrong(&v19->_cloudkitReachabilitySource, a7);
+    objc_storeWeak(&v18->_homeManager, managerCopy);
+    objc_storeStrong(&v19->_accountManager, accountManager);
+    objc_storeStrong(&v19->_featuresDataSource, source);
+    objc_storeStrong(&v19->_userDefaults, defaults);
+    objc_storeStrong(&v19->_cloudkitReachabilitySource, reachabilitySource);
     isHSA2Enabled = v19->_isHSA2Enabled;
     v19->_isHSA2Enabled = &__block_literal_global_66799;
 
@@ -2621,14 +2621,14 @@ HMDHH2FrameworkSwitch *__135__HMDHH2AutoMigrationEligibilityChecker_initWithHome
   return v3;
 }
 
-- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)a3
+- (HMDHH2AutoMigrationEligibilityChecker)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[HMDAppleAccountManager sharedManager];
   v6 = objc_alloc_init(HMDFeaturesDataSource);
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v8 = objc_alloc_init(HMDCloudKitReachabilitySource);
-  v9 = [(HMDHH2AutoMigrationEligibilityChecker *)self initWithHomeManager:v4 accountManager:v5 featuresDataSource:v6 userDefaults:v7 cloudkitReachabilitySource:v8];
+  v9 = [(HMDHH2AutoMigrationEligibilityChecker *)self initWithHomeManager:managerCopy accountManager:v5 featuresDataSource:v6 userDefaults:standardUserDefaults cloudkitReachabilitySource:v8];
 
   return v9;
 }

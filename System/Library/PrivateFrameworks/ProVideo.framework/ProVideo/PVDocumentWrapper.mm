@@ -1,18 +1,18 @@
 @interface PVDocumentWrapper
-- (PVDocumentWrapper)initWithOZXDocument:(void *)a3 forKey:(id)a4;
+- (PVDocumentWrapper)initWithOZXDocument:(void *)document forKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation PVDocumentWrapper
 
-- (PVDocumentWrapper)initWithOZXDocument:(void *)a3 forKey:(id)a4
+- (PVDocumentWrapper)initWithOZXDocument:(void *)document forKey:(id)key
 {
   v6.receiver = self;
   v6.super_class = PVDocumentWrapper;
-  result = [(PVDocumentWrapper *)&v6 init:a3];
+  result = [(PVDocumentWrapper *)&v6 init:document];
   if (result)
   {
-    result->_ozxDocument = a3;
+    result->_ozxDocument = document;
   }
 
   return result;

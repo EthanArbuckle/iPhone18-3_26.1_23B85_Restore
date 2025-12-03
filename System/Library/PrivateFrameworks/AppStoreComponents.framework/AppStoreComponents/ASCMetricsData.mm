@@ -1,41 +1,41 @@
 @interface ASCMetricsData
-- (ASCMetricsData)initWithCoder:(id)a3;
-- (ASCMetricsData)initWithTopic:(id)a3 shouldFlush:(BOOL)a4 fields:(id)a5 includingFields:(id)a6 excludingFields:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (ASCMetricsData)initWithCoder:(id)coder;
+- (ASCMetricsData)initWithTopic:(id)topic shouldFlush:(BOOL)flush fields:(id)fields includingFields:(id)includingFields excludingFields:(id)excludingFields;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)metricsDataByMergingFields:(id)a3 uniquingFieldsWithBlock:(id)a4;
+- (id)metricsDataByMergingFields:(id)fields uniquingFieldsWithBlock:(id)block;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCMetricsData
 
-- (ASCMetricsData)initWithTopic:(id)a3 shouldFlush:(BOOL)a4 fields:(id)a5 includingFields:(id)a6 excludingFields:(id)a7
+- (ASCMetricsData)initWithTopic:(id)topic shouldFlush:(BOOL)flush fields:(id)fields includingFields:(id)includingFields excludingFields:(id)excludingFields
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  topicCopy = topic;
+  fieldsCopy = fields;
+  includingFieldsCopy = includingFields;
+  excludingFieldsCopy = excludingFields;
   +[ASCEligibility assertCurrentProcessEligibility];
   v26.receiver = self;
   v26.super_class = ASCMetricsData;
   v16 = [(ASCMetricsData *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [topicCopy copy];
     topic = v16->_topic;
     v16->_topic = v17;
 
-    v16->_shouldFlush = a4;
-    v19 = [v13 copy];
+    v16->_shouldFlush = flush;
+    v19 = [fieldsCopy copy];
     fields = v16->_fields;
     v16->_fields = v19;
 
-    v21 = [v14 copy];
+    v21 = [includingFieldsCopy copy];
     includingFields = v16->_includingFields;
     v16->_includingFields = v21;
 
-    v23 = [v15 copy];
+    v23 = [excludingFieldsCopy copy];
     excludingFields = v16->_excludingFields;
     v16->_excludingFields = v23;
   }
@@ -43,25 +43,25 @@
   return v16;
 }
 
-- (ASCMetricsData)initWithCoder:(id)a3
+- (ASCMetricsData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
-  v6 = [v4 decodeBoolForKey:@"shouldFlush"];
-  v7 = ASCMetricsFieldsDecodeForKey(v4, @"fields");
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  v6 = [coderCopy decodeBoolForKey:@"shouldFlush"];
+  v7 = ASCMetricsFieldsDecodeForKey(coderCopy, @"fields");
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CBEB98]);
     v9 = objc_opt_class();
     v10 = [v8 initWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"includingFields"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"includingFields"];
     if (v11)
     {
-      v12 = [v4 decodeObjectOfClasses:v10 forKey:@"excludingFields"];
+      v12 = [coderCopy decodeObjectOfClasses:v10 forKey:@"excludingFields"];
       if (v12)
       {
         self = [(ASCMetricsData *)self initWithTopic:v5 shouldFlush:v6 fields:v7 includingFields:v11 excludingFields:v12];
-        v13 = self;
+        selfCopy = self;
       }
 
       else
@@ -72,7 +72,7 @@
           [(ASCMetricsData *)v30 initWithCoder:v31, v32, v33, v34, v35, v36, v37];
         }
 
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -84,7 +84,7 @@
         [(ASCMetricsData *)v22 initWithCoder:v23, v24, v25, v26, v27, v28, v29];
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -96,54 +96,54 @@
       [(ASCMetricsData *)v14 initWithCoder:v15, v16, v17, v18, v19, v20, v21];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCMetricsData *)self topic];
-  [v4 encodeObject:v5 forKey:@"topic"];
+  coderCopy = coder;
+  topic = [(ASCMetricsData *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 
-  [v4 encodeBool:-[ASCMetricsData shouldFlush](self forKey:{"shouldFlush"), @"shouldFlush"}];
-  v6 = [(ASCMetricsData *)self fields];
-  [v4 encodeObject:v6 forKey:@"fields"];
+  [coderCopy encodeBool:-[ASCMetricsData shouldFlush](self forKey:{"shouldFlush"), @"shouldFlush"}];
+  fields = [(ASCMetricsData *)self fields];
+  [coderCopy encodeObject:fields forKey:@"fields"];
 
-  v7 = [(ASCMetricsData *)self includingFields];
-  [v4 encodeObject:v7 forKey:@"includingFields"];
+  includingFields = [(ASCMetricsData *)self includingFields];
+  [coderCopy encodeObject:includingFields forKey:@"includingFields"];
 
-  v8 = [(ASCMetricsData *)self excludingFields];
-  [v4 encodeObject:v8 forKey:@"excludingFields"];
+  excludingFields = [(ASCMetricsData *)self excludingFields];
+  [coderCopy encodeObject:excludingFields forKey:@"excludingFields"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCMetricsData *)self topic];
-  [(ASCHasher *)v3 combineObject:v4];
+  topic = [(ASCMetricsData *)self topic];
+  [(ASCHasher *)v3 combineObject:topic];
 
   [(ASCHasher *)v3 combineBool:[(ASCMetricsData *)self shouldFlush]];
-  v5 = [(ASCMetricsData *)self fields];
-  [(ASCHasher *)v3 combineObject:v5];
+  fields = [(ASCMetricsData *)self fields];
+  [(ASCHasher *)v3 combineObject:fields];
 
-  v6 = [(ASCMetricsData *)self includingFields];
-  [(ASCHasher *)v3 combineObject:v6];
+  includingFields = [(ASCMetricsData *)self includingFields];
+  [(ASCHasher *)v3 combineObject:includingFields];
 
-  v7 = [(ASCMetricsData *)self excludingFields];
-  [(ASCHasher *)v3 combineObject:v7];
+  excludingFields = [(ASCMetricsData *)self excludingFields];
+  [(ASCHasher *)v3 combineObject:excludingFields];
 
-  v8 = [(ASCHasher *)v3 finalizeHash];
-  return v8;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -166,18 +166,18 @@
 
   if (v7)
   {
-    v8 = [(ASCMetricsData *)self topic];
-    v9 = [v7 topic];
-    v10 = v9;
-    if (v8 && v9)
+    topic = [(ASCMetricsData *)self topic];
+    topic2 = [v7 topic];
+    v10 = topic2;
+    if (topic && topic2)
     {
-      if (![v8 isEqual:v9])
+      if (![topic isEqual:topic2])
       {
         goto LABEL_14;
       }
     }
 
-    else if (v8 != v9)
+    else if (topic != topic2)
     {
 LABEL_14:
       v11 = 0;
@@ -186,46 +186,46 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v12 = [(ASCMetricsData *)self shouldFlush];
-    if (v12 != [v7 shouldFlush])
+    shouldFlush = [(ASCMetricsData *)self shouldFlush];
+    if (shouldFlush != [v7 shouldFlush])
     {
       goto LABEL_14;
     }
 
-    v13 = [(ASCMetricsData *)self fields];
-    v14 = [v7 fields];
-    v15 = v14;
-    if (v13 && v14)
+    fields = [(ASCMetricsData *)self fields];
+    fields2 = [v7 fields];
+    v15 = fields2;
+    if (fields && fields2)
     {
-      if ([v13 isEqual:v14])
+      if ([fields isEqual:fields2])
       {
 LABEL_18:
-        v16 = [(ASCMetricsData *)self includingFields];
-        v17 = [v7 includingFields];
-        v18 = v17;
-        if (v16 && v17)
+        includingFields = [(ASCMetricsData *)self includingFields];
+        includingFields2 = [v7 includingFields];
+        v18 = includingFields2;
+        if (includingFields && includingFields2)
         {
-          if ([v16 isEqual:v17])
+          if ([includingFields isEqual:includingFields2])
           {
             goto LABEL_21;
           }
         }
 
-        else if (v16 == v17)
+        else if (includingFields == includingFields2)
         {
 LABEL_21:
-          v19 = [(ASCMetricsData *)self excludingFields];
-          v20 = [v7 excludingFields];
-          v21 = v20;
-          v23 = v19;
-          if (v19 && v20)
+          excludingFields = [(ASCMetricsData *)self excludingFields];
+          excludingFields2 = [v7 excludingFields];
+          v21 = excludingFields2;
+          v23 = excludingFields;
+          if (excludingFields && excludingFields2)
           {
-            v11 = [v19 isEqual:v20];
+            v11 = [excludingFields isEqual:excludingFields2];
           }
 
           else
           {
-            v11 = v19 == v20;
+            v11 = excludingFields == excludingFields2;
           }
 
           goto LABEL_30;
@@ -238,7 +238,7 @@ LABEL_30:
       }
     }
 
-    else if (v13 == v14)
+    else if (fields == fields2)
     {
       goto LABEL_18;
     }
@@ -258,37 +258,37 @@ LABEL_33:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCMetricsData *)self topic];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"topic"];
+  topic = [(ASCMetricsData *)self topic];
+  [(ASCDescriber *)v3 addObject:topic withName:@"topic"];
 
   [(ASCDescriber *)v3 addBool:[(ASCMetricsData *)self shouldFlush] withName:@"shouldFlush"];
-  v5 = [(ASCMetricsData *)self fields];
-  [(ASCDescriber *)v3 addSensitiveObject:v5 withName:@"fields"];
+  fields = [(ASCMetricsData *)self fields];
+  [(ASCDescriber *)v3 addSensitiveObject:fields withName:@"fields"];
 
-  v6 = [(ASCMetricsData *)self includingFields];
-  [(ASCDescriber *)v3 addSensitiveObject:v6 withName:@"includingFields"];
+  includingFields = [(ASCMetricsData *)self includingFields];
+  [(ASCDescriber *)v3 addSensitiveObject:includingFields withName:@"includingFields"];
 
-  v7 = [(ASCMetricsData *)self excludingFields];
-  [(ASCDescriber *)v3 addSensitiveObject:v7 withName:@"excludingFields"];
+  excludingFields = [(ASCMetricsData *)self excludingFields];
+  [(ASCDescriber *)v3 addSensitiveObject:excludingFields withName:@"excludingFields"];
 
-  v8 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v8;
+  return finalizeDescription;
 }
 
-- (id)metricsDataByMergingFields:(id)a3 uniquingFieldsWithBlock:(id)a4
+- (id)metricsDataByMergingFields:(id)fields uniquingFieldsWithBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCMetricsData *)self fields];
-  v9 = [v8 asc_dictionaryByMergingDictionary:v7 uniquingKeysWithBlock:v6];
+  blockCopy = block;
+  fieldsCopy = fields;
+  fields = [(ASCMetricsData *)self fields];
+  v9 = [fields asc_dictionaryByMergingDictionary:fieldsCopy uniquingKeysWithBlock:blockCopy];
 
   v10 = [ASCMetricsData alloc];
-  v11 = [(ASCMetricsData *)self topic];
-  v12 = [(ASCMetricsData *)self shouldFlush];
-  v13 = [(ASCMetricsData *)self includingFields];
-  v14 = [(ASCMetricsData *)self excludingFields];
-  v15 = [(ASCMetricsData *)v10 initWithTopic:v11 shouldFlush:v12 fields:v9 includingFields:v13 excludingFields:v14];
+  topic = [(ASCMetricsData *)self topic];
+  shouldFlush = [(ASCMetricsData *)self shouldFlush];
+  includingFields = [(ASCMetricsData *)self includingFields];
+  excludingFields = [(ASCMetricsData *)self excludingFields];
+  v15 = [(ASCMetricsData *)v10 initWithTopic:topic shouldFlush:shouldFlush fields:v9 includingFields:includingFields excludingFields:excludingFields];
 
   return v15;
 }

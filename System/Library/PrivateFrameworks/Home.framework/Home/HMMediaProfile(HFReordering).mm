@@ -6,10 +6,10 @@
 
 - (id)hf_serviceNameComponents
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceNameComponents];
+  accessory = [self accessory];
+  hf_serviceNameComponents = [accessory hf_serviceNameComponents];
 
-  return v2;
+  return hf_serviceNameComponents;
 }
 
 @end

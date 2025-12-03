@@ -2,25 +2,25 @@
 + (id)sharedInstance;
 + (int)randomTransition;
 - (PLPhotosDefaults)init;
-- (int)transitionForAnimationMovingForward:(BOOL)a3;
-- (void)_reloadPhotoDefaultValuesAndNotify:(BOOL)a3;
+- (int)transitionForAnimationMovingForward:(BOOL)forward;
+- (void)_reloadPhotoDefaultValuesAndNotify:(BOOL)notify;
 - (void)dealloc;
-- (void)setMusicCollection:(id)a3;
+- (void)setMusicCollection:(id)collection;
 @end
 
 @implementation PLPhotosDefaults
 
-- (void)setMusicCollection:(id)a3
+- (void)setMusicCollection:(id)collection
 {
   musicCollection = self->_musicCollection;
-  if (musicCollection != a3)
+  if (musicCollection != collection)
   {
 
-    self->_musicCollection = a3;
+    self->_musicCollection = collection;
   }
 }
 
-- (int)transitionForAnimationMovingForward:(BOOL)a3
+- (int)transitionForAnimationMovingForward:(BOOL)forward
 {
   result = self->_transition;
   if (result == -1)
@@ -48,7 +48,7 @@
     v6 = v5;
   }
 
-  if (!a3)
+  if (!forward)
   {
     return v6;
   }
@@ -71,9 +71,9 @@
   return v3;
 }
 
-- (void)_reloadPhotoDefaultValuesAndNotify:(BOOL)a3
+- (void)_reloadPhotoDefaultValuesAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v5 = CFPreferencesCopyAppValue(@"SummarizeSections", @"com.apple.mobileslideshow");
   if (!v5)
   {
@@ -81,11 +81,11 @@
   }
 
   self->_summarizeMomentSections = [v5 BOOLValue];
-  if (v3)
+  if (notifyCopy)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v6 postNotificationName:@"PLPhotosDefaultsDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"PLPhotosDefaultsDidChangeNotification" object:self];
   }
 }
 

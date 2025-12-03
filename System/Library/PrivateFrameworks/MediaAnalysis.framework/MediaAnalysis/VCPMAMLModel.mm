@@ -1,14 +1,14 @@
 @interface VCPMAMLModel
-+ (id)vcp_sharedModelWithModelName:(id)a3;
-- (VCPMAMLModel)initWithModelName:(id)a3;
++ (id)vcp_sharedModelWithModelName:(id)name;
+- (VCPMAMLModel)initWithModelName:(id)name;
 @end
 
 @implementation VCPMAMLModel
 
-- (VCPMAMLModel)initWithModelName:(id)a3
+- (VCPMAMLModel)initWithModelName:(id)name
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v54.receiver = self;
   v54.super_class = VCPMAMLModel;
   v5 = [(VCPMAMLModel *)&v54 init];
@@ -17,15 +17,15 @@
     goto LABEL_57;
   }
 
-  v6 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v7 = [v6 URLForResource:v4 withExtension:@"mlmodelc"];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  v7 = [vcp_mediaAnalysisBundle URLForResource:nameCopy withExtension:@"mlmodelc"];
 
   if (!v7)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v57 = v4;
+      v57 = nameCopy;
       v58 = 2112;
       v59 = 0;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@][MAMLModel] Failed to open model file at url %@", buf, 0x16u);
@@ -48,7 +48,7 @@
     {
       v22 = v5->_model;
       *buf = 138412802;
-      v57 = v4;
+      v57 = nameCopy;
       v58 = 2112;
       v59 = v22;
       v60 = 2112;
@@ -59,22 +59,22 @@
     goto LABEL_49;
   }
 
-  v12 = [(MLModel *)v11 modelDescription];
-  v13 = [v12 inputDescriptionsByName];
+  modelDescription = [(MLModel *)v11 modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v14 = v13;
-  v15 = [v14 countByEnumeratingWithState:&v49 objects:v64 count:16];
-  if (v15)
+  v14 = inputDescriptionsByName;
+  pixelsHigh2 = [v14 countByEnumeratingWithState:&v49 objects:v64 count:16];
+  if (pixelsHigh2)
   {
     v43 = v9;
     v16 = *v50;
     while (2)
     {
-      for (i = 0; i != v15; ++i)
+      for (i = 0; i != pixelsHigh2; ++i)
       {
         if (*v50 != v16)
         {
@@ -85,28 +85,28 @@
         v19 = [v14 objectForKeyedSubscript:v18];
         if ([v19 type] == 4)
         {
-          v20 = [v19 imageConstraint];
-          if (v20)
+          imageConstraint = [v19 imageConstraint];
+          if (imageConstraint)
           {
-            v23 = v20;
+            v23 = imageConstraint;
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
-              v24 = [v23 pixelsWide];
-              v25 = [v23 pixelsHigh];
-              v26 = [v23 pixelFormatType];
+              pixelsWide = [v23 pixelsWide];
+              pixelsHigh = [v23 pixelsHigh];
+              pixelFormatType = [v23 pixelFormatType];
               *buf = 138413058;
               v57 = v18;
               v58 = 2048;
-              v59 = v24;
+              v59 = pixelsWide;
               v60 = 2048;
-              v61 = v25;
+              v61 = pixelsHigh;
               v62 = 2048;
-              v63 = v26;
+              v63 = pixelFormatType;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MAMLModel] Input feature %@ %ldx%ld %ld", buf, 0x2Au);
             }
 
-            v21 = [v23 pixelsWide];
-            v15 = [v23 pixelsHigh];
+            pixelsWide2 = [v23 pixelsWide];
+            pixelsHigh2 = [v23 pixelsHigh];
             v5->_inputPixelFormat = [v23 pixelFormatType];
             v27 = [v18 copy];
             inputFeatureName = v5->_inputFeatureName;
@@ -117,8 +117,8 @@
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v49 objects:v64 count:16];
-      if (v15)
+      pixelsHigh2 = [v14 countByEnumeratingWithState:&v49 objects:v64 count:16];
+      if (pixelsHigh2)
       {
         continue;
       }
@@ -126,17 +126,17 @@
       break;
     }
 
-    v21 = 0;
+    pixelsWide2 = 0;
 LABEL_25:
     v9 = v43;
   }
 
   else
   {
-    v21 = 0;
+    pixelsWide2 = 0;
   }
 
-  if (!v5->_inputFeatureName || !v5->_inputPixelFormat || !v21 || !v15)
+  if (!v5->_inputFeatureName || !v5->_inputPixelFormat || !pixelsWide2 || !pixelsHigh2)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -151,7 +151,7 @@ LABEL_25:
     goto LABEL_44;
   }
 
-  if (v21 != v15)
+  if (pixelsWide2 != pixelsHigh2)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -159,9 +159,9 @@ LABEL_25:
     }
 
     *buf = 134218240;
-    v57 = v21;
+    v57 = pixelsWide2;
     v58 = 2048;
-    v59 = v15;
+    v59 = pixelsHigh2;
     v38 = MEMORY[0x1E69E9C10];
     v39 = "[MAMLModel] Mismatched inputImage width (%ld) and height (%ld)";
     v40 = 22;
@@ -174,15 +174,15 @@ LABEL_49:
   }
 
   v44 = v9;
-  v5->_inputSize = v15;
-  v29 = [(MLModel *)v5->_model modelDescription];
-  v30 = [v29 outputDescriptionsByName];
+  v5->_inputSize = pixelsHigh2;
+  modelDescription2 = [(MLModel *)v5->_model modelDescription];
+  outputDescriptionsByName = [modelDescription2 outputDescriptionsByName];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v31 = v30;
+  v31 = outputDescriptionsByName;
   v32 = [v31 countByEnumeratingWithState:&v45 objects:v55 count:16];
   if (v32)
   {
@@ -250,18 +250,18 @@ LABEL_58:
   return v41;
 }
 
-+ (id)vcp_sharedModelWithModelName:(id)a3
++ (id)vcp_sharedModelWithModelName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPMAMLModel-%@", v3];
+  nameCopy = name;
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPMAMLModel-%@", nameCopy];
   v5 = +[VCPSharedInstanceManager sharedManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__VCPMAMLModel_vcp_sharedModelWithModelName___block_invoke;
   v9[3] = &unk_1E8350EA0;
-  v10 = v3;
-  v6 = v3;
-  v7 = [v5 sharedInstanceWithIdentifier:v4 andCreationBlock:v9];
+  v10 = nameCopy;
+  v6 = nameCopy;
+  v7 = [v5 sharedInstanceWithIdentifier:nameCopy andCreationBlock:v9];
 
   return v7;
 }

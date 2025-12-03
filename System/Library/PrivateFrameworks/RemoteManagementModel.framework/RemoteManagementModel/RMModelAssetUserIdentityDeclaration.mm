@@ -1,11 +1,11 @@
 @interface RMModelAssetUserIdentityDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 fullName:(id)a4 emailAddress:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier fullName:(id)name emailAddress:(id)address;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAssetUserIdentityDeclaration
@@ -24,48 +24,48 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 fullName:(id)a4 emailAddress:(id)a5
++ (id)buildWithIdentifier:(id)identifier fullName:(id)name emailAddress:(id)address
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  addressCopy = address;
+  nameCopy = name;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.asset.useridentity"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadFullName:v9];
+  [v10 setPayloadFullName:nameCopy];
 
-  [v10 setPayloadEmailAddress:v8];
+  [v10 setPayloadEmailAddress:addressCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.asset.useridentity"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -125,12 +125,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAssetUserIdentityDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -139,33 +139,33 @@
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
   v13 = 0;
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"FullName" forKeyPath:@"payloadFullName" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"FullName" forKeyPath:@"payloadFullName" isRequired:0 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"EmailAddress" forKeyPath:@"payloadEmailAddress" isRequired:0 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EmailAddress" forKeyPath:@"payloadEmailAddress" isRequired:0 defaultValue:0 error:error];
   }
 
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAssetUserIdentityDeclaration *)self payloadFullName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"FullName" value:v5 isRequired:0 defaultValue:0];
+  payloadFullName = [(RMModelAssetUserIdentityDeclaration *)self payloadFullName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"FullName" value:payloadFullName isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAssetUserIdentityDeclaration *)self payloadEmailAddress];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"EmailAddress" value:v6 isRequired:0 defaultValue:0];
+  payloadEmailAddress = [(RMModelAssetUserIdentityDeclaration *)self payloadEmailAddress];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"EmailAddress" value:payloadEmailAddress isRequired:0 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelAssetUserIdentityDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadFullName copy];
   v6 = v4[6];
   v4[6] = v5;

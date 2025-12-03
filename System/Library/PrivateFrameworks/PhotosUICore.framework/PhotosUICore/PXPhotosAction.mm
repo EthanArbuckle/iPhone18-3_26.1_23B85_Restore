@@ -1,40 +1,40 @@
 @interface PXPhotosAction
 - (PXPhotosAction)init;
-- (PXPhotosAction)initWithPhotoLibrary:(id)a3;
+- (PXPhotosAction)initWithPhotoLibrary:(id)library;
 - (int64_t)assetCount;
-- (void)performChanges:(id)a3 completionHandler:(id)a4;
+- (void)performChanges:(id)changes completionHandler:(id)handler;
 @end
 
 @implementation PXPhotosAction
 
-- (void)performChanges:(id)a3 completionHandler:(id)a4
+- (void)performChanges:(id)changes completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  changesCopy = changes;
   v8 = PLUIActionsGetLog();
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
   v11 = v10;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
-    v12 = [(PXAction *)self actionIdentifier];
+    actionIdentifier = [(PXAction *)self actionIdentifier];
     *buf = 138543362;
-    v21 = v12;
+    v21 = actionIdentifier;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PhotosAction", "Identifier=%{public}@", buf, 0xCu);
   }
 
-  v13 = [(PXPhotosAction *)self photoLibrary];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __51__PXPhotosAction_performChanges_completionHandler___block_invoke;
   v16[3] = &unk_1E7735F00;
-  v18 = v6;
+  v18 = handlerCopy;
   v19 = v9;
   v17 = v11;
-  v14 = v6;
+  v14 = handlerCopy;
   v15 = v11;
-  [v13 performChanges:v7 completionHandler:v16];
+  [photoLibrary performChanges:changesCopy completionHandler:v16];
 }
 
 void __51__PXPhotosAction_performChanges_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -54,33 +54,33 @@ void __51__PXPhotosAction_performChanges_completionHandler___block_invoke(uint64
 
 - (int64_t)assetCount
 {
-  v2 = [(PXPhotosAction *)self assets];
-  v3 = [v2 count];
+  assets = [(PXPhotosAction *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
 - (PXPhotosAction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosAction.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXPhotosAction init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAction.m" lineNumber:28 description:{@"%s is not available as initializer", "-[PXPhotosAction init]"}];
 
   abort();
 }
 
-- (PXPhotosAction)initWithPhotoLibrary:(id)a3
+- (PXPhotosAction)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PXPhotosAction;
   v6 = [(PXPhotosAction *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [v5 librarySpecificFetchOptions];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     standardFetchOptions = v7->_standardFetchOptions;
-    v7->_standardFetchOptions = v8;
+    v7->_standardFetchOptions = librarySpecificFetchOptions;
   }
 
   return v7;

@@ -1,35 +1,35 @@
 @interface IDSQRParticipantStreams
-+ (id)streamWithParticipantID:(id)a3 streamArray:(id)a4 anyParticipant:(BOOL)a5 anyStream:(BOOL)a6;
-- (IDSQRParticipantStreams)initWithParticipantID:(id)a3 streamArray:(id)a4 anyParticipant:(BOOL)a5 anyStream:(BOOL)a6;
++ (id)streamWithParticipantID:(id)d streamArray:(id)array anyParticipant:(BOOL)participant anyStream:(BOOL)stream;
+- (IDSQRParticipantStreams)initWithParticipantID:(id)d streamArray:(id)array anyParticipant:(BOOL)participant anyStream:(BOOL)stream;
 @end
 
 @implementation IDSQRParticipantStreams
 
-+ (id)streamWithParticipantID:(id)a3 streamArray:(id)a4 anyParticipant:(BOOL)a5 anyStream:(BOOL)a6
++ (id)streamWithParticipantID:(id)d streamArray:(id)array anyParticipant:(BOOL)participant anyStream:(BOOL)stream
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[IDSQRParticipantStreams alloc] initWithParticipantID:v10 streamArray:v9 anyParticipant:v7 anyStream:v6];
+  streamCopy = stream;
+  participantCopy = participant;
+  arrayCopy = array;
+  dCopy = d;
+  v11 = [[IDSQRParticipantStreams alloc] initWithParticipantID:dCopy streamArray:arrayCopy anyParticipant:participantCopy anyStream:streamCopy];
 
   return v11;
 }
 
-- (IDSQRParticipantStreams)initWithParticipantID:(id)a3 streamArray:(id)a4 anyParticipant:(BOOL)a5 anyStream:(BOOL)a6
+- (IDSQRParticipantStreams)initWithParticipantID:(id)d streamArray:(id)array anyParticipant:(BOOL)participant anyStream:(BOOL)stream
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  arrayCopy = array;
   v16.receiver = self;
   v16.super_class = IDSQRParticipantStreams;
   v13 = [(IDSQRParticipantStreams *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_participantID, a3);
-    objc_storeStrong(&v14->_streamArray, a4);
-    v14->_anyParticipant = a5;
-    v14->_anyStream = a6;
+    objc_storeStrong(&v13->_participantID, d);
+    objc_storeStrong(&v14->_streamArray, array);
+    v14->_anyParticipant = participant;
+    v14->_anyStream = stream;
   }
 
   return v14;

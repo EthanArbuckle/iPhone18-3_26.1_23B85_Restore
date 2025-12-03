@@ -2,23 +2,23 @@
 - (BOOL)pairedDeviceSupportsMailContentProtectedChannel;
 - (BOOL)pairedDeviceSupportsMultipleMailboxes;
 - (BOOL)pairedDeviceSupportsStandaloneMode;
-- (BOOL)willPresentNotificationForMessage:(id)a3;
+- (BOOL)willPresentNotificationForMessage:(id)message;
 - (NNMKSyncStateManager)init;
 - (NNMKSyncStateManagerDelegate)delegate;
-- (id)_bbSubsectionIdsForMessage:(id)a3;
+- (id)_bbSubsectionIdsForMessage:(id)message;
 - (id)_pairedNanoRegistryDevice;
 - (id)pairedDeviceScreenScale;
 - (id)pairedDeviceScreenSize;
 - (id)pairingStorePath;
-- (void)_handleDidUnpairNotification:(id)a3;
-- (void)_handlePairedDeviceChangedNotification:(id)a3;
+- (void)_handleDidUnpairNotification:(id)notification;
+- (void)_handlePairedDeviceChangedNotification:(id)notification;
 - (void)dealloc;
 - (void)reportInitialSyncDidComplete;
 - (void)reportInitialSyncDidCompleteSending;
-- (void)reportInitialSyncDidFailWithError:(id)a3;
-- (void)reportInitialSyncProgress:(double)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
+- (void)reportInitialSyncDidFailWithError:(id)error;
+- (void)reportInitialSyncProgress:(double)progress;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
 @end
 
 @implementation NNMKSyncStateManager
@@ -47,11 +47,11 @@
     v2->_initialSyncCoordinator = v6;
 
     [(PSYSyncCoordinator *)v2->_initialSyncCoordinator setDelegate:v2];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__handleDidUnpairNotification_ name:*MEMORY[0x277D2BC78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleDidUnpairNotification_ name:*MEMORY[0x277D2BC78] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel__handlePairedDeviceChangedNotification_ name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handlePairedDeviceChangedNotification_ name:*MEMORY[0x277D2BC48] object:0];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -101,83 +101,83 @@ uint64_t __28__NNMKSyncStateManager_init__block_invoke_2(uint64_t a1, int a2)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
 
   v4.receiver = self;
   v4.super_class = NNMKSyncStateManager;
   [(NNMKSyncStateManager *)&v4 dealloc];
 }
 
-- (void)reportInitialSyncProgress:(double)a3
+- (void)reportInitialSyncProgress:(double)progress
 {
-  v4 = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
-  [v4 reportProgress:a3];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
+  [activeSyncSession reportProgress:progress];
 }
 
 - (void)reportInitialSyncDidCompleteSending
 {
-  v2 = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
-  [v2 syncDidCompleteSending];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
+  [activeSyncSession syncDidCompleteSending];
 }
 
 - (void)reportInitialSyncDidComplete
 {
-  v2 = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
-  [v2 syncDidComplete];
+  activeSyncSession = [(PSYSyncCoordinator *)self->_initialSyncCoordinator activeSyncSession];
+  [activeSyncSession syncDidComplete];
 }
 
-- (void)reportInitialSyncDidFailWithError:(id)a3
+- (void)reportInitialSyncDidFailWithError:(id)error
 {
   initialSyncCoordinator = self->_initialSyncCoordinator;
-  v4 = a3;
-  v5 = [(PSYSyncCoordinator *)initialSyncCoordinator activeSyncSession];
-  [v5 syncDidFailWithError:v4];
+  errorCopy = error;
+  activeSyncSession = [(PSYSyncCoordinator *)initialSyncCoordinator activeSyncSession];
+  [activeSyncSession syncDidFailWithError:errorCopy];
 }
 
 - (id)pairingStorePath
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 pairingStorePath];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  pairingStorePath = [mEMORY[0x277D2BCF8] pairingStorePath];
 
-  return v3;
+  return pairingStorePath;
 }
 
 - (id)pairedDeviceScreenSize
 {
-  v2 = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
-  v3 = [v2 valueForProperty:*MEMORY[0x277D2BBF0]];
+  _pairedNanoRegistryDevice = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
+  v3 = [_pairedNanoRegistryDevice valueForProperty:*MEMORY[0x277D2BBF0]];
 
   return v3;
 }
 
 - (id)pairedDeviceScreenScale
 {
-  v2 = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
-  v3 = [v2 valueForProperty:*MEMORY[0x277D2BBE8]];
+  _pairedNanoRegistryDevice = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
+  v3 = [_pairedNanoRegistryDevice valueForProperty:*MEMORY[0x277D2BBE8]];
 
   return v3;
 }
 
-- (BOOL)willPresentNotificationForMessage:(id)a3
+- (BOOL)willPresentNotificationForMessage:(id)message
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 checkState:1])
+  messageCopy = message;
+  if (![messageCopy checkState:1])
   {
 LABEL_9:
     v16 = 0;
     goto LABEL_13;
   }
 
-  v5 = [v4 accountId];
+  accountId = [messageCopy accountId];
 
-  if (!v5)
+  if (!accountId)
   {
     v15 = qword_28144D620;
     if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_ERROR))
     {
-      [(NNMKSyncStateManager *)v15 willPresentNotificationForMessage:v4];
+      [(NNMKSyncStateManager *)v15 willPresentNotificationForMessage:messageCopy];
     }
 
     goto LABEL_9;
@@ -193,7 +193,7 @@ LABEL_9:
   v26 = 0;
   v6 = dispatch_semaphore_create(0);
   notificationsPingSubscriber = self->_notificationsPingSubscriber;
-  v8 = [(NNMKSyncStateManager *)self _bbSubsectionIdsForMessage:v4];
+  v8 = [(NNMKSyncStateManager *)self _bbSubsectionIdsForMessage:messageCopy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_invoke;
@@ -212,10 +212,10 @@ LABEL_9:
     v12 = qword_28144D620;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 messageId];
+      messageId = [messageCopy messageId];
       v14 = *(v28 + 24);
       *buf = 138543618;
-      v32 = v13;
+      v32 = messageId;
       v33 = 1024;
       v34 = v14;
       _os_log_impl(&dword_25B19F000, v12, OS_LOG_TYPE_DEFAULT, "#BulletinDistributor Ping Subscriber did respond. (Id: %{public}@, Notification: %d)", buf, 0x12u);
@@ -244,7 +244,7 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_handleDidUnpairNotification:(id)a3
+- (void)_handleDidUnpairNotification:(id)notification
 {
   v4 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
@@ -253,11 +253,11 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
     _os_log_impl(&dword_25B19F000, v4, OS_LOG_TYPE_DEFAULT, "Received Unpair notification from NanoRegistry. Informing NNMKSyncProvider...", v6, 2u);
   }
 
-  v5 = [(NNMKSyncStateManager *)self delegate];
-  [v5 syncStateManagerDidUnpair:self];
+  delegate = [(NNMKSyncStateManager *)self delegate];
+  [delegate syncStateManagerDidUnpair:self];
 }
 
-- (void)_handlePairedDeviceChangedNotification:(id)a3
+- (void)_handlePairedDeviceChangedNotification:(id)notification
 {
   v4 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
@@ -266,22 +266,22 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
     _os_log_impl(&dword_25B19F000, v4, OS_LOG_TYPE_DEFAULT, "Received Paired Device Changed notification from NanoRegistry. Informing NNMKSyncProvider...", v6, 2u);
   }
 
-  v5 = [(NNMKSyncStateManager *)self delegate];
-  [v5 syncStateManagerDidChangePairedDevice:self];
+  delegate = [(NNMKSyncStateManager *)self delegate];
+  [delegate syncStateManagerDidChangePairedDevice:self];
 }
 
 - (BOOL)pairedDeviceSupportsMailContentProtectedChannel
 {
-  v2 = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
+  _pairedNanoRegistryDevice = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"0AEBD96A-0D13-42E0-9D9B-3D4BFAB8B7DB"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [_pairedNanoRegistryDevice supportsCapability:v3];
 
   return v4;
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,17 +289,17 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
     _os_log_impl(&dword_25B19F000, v6, OS_LOG_TYPE_DEFAULT, "Received notification from PairedSync to begin SyncSession. Informing NNMKSyncProvider...", v11, 2u);
   }
 
-  v7 = [(NNMKSyncStateManager *)self delegate];
-  [v5 syncSessionType];
+  delegate = [(NNMKSyncStateManager *)self delegate];
+  [sessionCopy syncSessionType];
   v8 = NSStringfromPSYSyncSessionType();
-  v9 = [v5 sessionIdentifier];
-  v10 = [v9 UUIDString];
-  [v7 syncStateManagerDidBeginSyncSession:self syncSessionType:v8 syncSessionIdentifier:v10];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
+  uUIDString = [sessionIdentifier UUIDString];
+  [delegate syncStateManagerDidBeginSyncSession:self syncSessionType:v8 syncSessionIdentifier:uUIDString];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
@@ -307,32 +307,32 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
     _os_log_impl(&dword_25B19F000, v6, OS_LOG_TYPE_DEFAULT, "Received notification from PairedSync to invalidate SyncSession. Informing NNMKSyncProvider...", v10, 2u);
   }
 
-  v7 = [(NNMKSyncStateManager *)self delegate];
-  v8 = [v5 sessionIdentifier];
-  v9 = [v8 UUIDString];
-  [v7 syncStateManagerDidInvalidateSyncSession:self syncSessionIdentifier:v9];
+  delegate = [(NNMKSyncStateManager *)self delegate];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
+  uUIDString = [sessionIdentifier UUIDString];
+  [delegate syncStateManagerDidInvalidateSyncSession:self syncSessionIdentifier:uUIDString];
 }
 
-- (id)_bbSubsectionIdsForMessage:(id)a3
+- (id)_bbSubsectionIdsForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x277CBEB58];
-  v6 = [v4 accountId];
-  v7 = [v5 setWithObject:v6];
+  accountId = [messageCopy accountId];
+  v7 = [v5 setWithObject:accountId];
 
-  if ([v4 checkState:64])
+  if ([messageCopy checkState:64])
   {
     [v7 addObject:@"com.apple.mobilemail.bulletin-subsection.VIP"];
   }
 
-  if ([v4 checkState:128])
+  if ([messageCopy checkState:128])
   {
     [v7 addObject:@"com.apple.mobilemail.bulletin-subsection.ThreadNotify"];
   }
 
-  v8 = [(NNMKSyncStateManager *)self delegate];
-  v9 = [v4 mailboxId];
-  v10 = [v8 syncStateManagerShouldAddFavoriteSubsectionForMailboxId:v9];
+  delegate = [(NNMKSyncStateManager *)self delegate];
+  mailboxId = [messageCopy mailboxId];
+  v10 = [delegate syncStateManagerShouldAddFavoriteSubsectionForMailboxId:mailboxId];
 
   if (v10)
   {
@@ -344,15 +344,15 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
 
 - (id)_pairedNanoRegistryDevice
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  return v3;
+  return getActivePairedDevice;
 }
 
 - (BOOL)pairedDeviceSupportsMultipleMailboxes
 {
-  v2 = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
+  _pairedNanoRegistryDevice = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
   v3 = NRWatchOSVersionForRemoteDevice();
 
   return (v3 & 0xFFFC0000) != 0;
@@ -360,9 +360,9 @@ intptr_t __58__NNMKSyncStateManager_willPresentNotificationForMessage___block_in
 
 - (BOOL)pairedDeviceSupportsStandaloneMode
 {
-  v2 = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
+  _pairedNanoRegistryDevice = [(NNMKSyncStateManager *)self _pairedNanoRegistryDevice];
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"1CFACCB8-FFEB-4682-A50E-16F853583912"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [_pairedNanoRegistryDevice supportsCapability:v3];
 
   return v4;
 }

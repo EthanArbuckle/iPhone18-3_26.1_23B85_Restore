@@ -115,8 +115,8 @@
 
 - (BOOL)isMCGlobal
 {
-  v3 = [(JavaNetInet4Address *)self isMulticastAddress];
-  if (v3)
+  isMulticastAddress = [(JavaNetInet4Address *)self isMulticastAddress];
+  if (isMulticastAddress)
   {
     ipaddress = self->super.ipaddress_;
     if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
@@ -124,10 +124,10 @@
       sub_10014A090();
     }
 
-    LOBYTE(v3) = LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(ipaddress, 0, JavaNioByteOrder_BIG_ENDIAN__) + 536870656 < 0xEFFFF00;
+    LOBYTE(isMulticastAddress) = LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(ipaddress, 0, JavaNioByteOrder_BIG_ENDIAN__) + 536870656 < 0xEFFFF00;
   }
 
-  return v3;
+  return isMulticastAddress;
 }
 
 - (BOOL)isMCLinkLocal
@@ -325,7 +325,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v10 = 0;
     v2 = [IOSByteArray arrayWithBytes:&v10 count:4];

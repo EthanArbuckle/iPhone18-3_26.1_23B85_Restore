@@ -1,38 +1,38 @@
 @interface PXSharedLibraryPhotoKitDataSourceManager
-+ (id)exitingDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)invitationsDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)previewDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)a3;
++ (id)exitingDataSourceManagerForPhotoLibrary:(id)library;
++ (id)invitationsDataSourceManagerForPhotoLibrary:(id)library;
++ (id)previewDataSourceManagerForPhotoLibrary:(id)library;
++ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)library;
 - (PXSharedLibraryPhotoKitDataSourceManager)init;
-- (PXSharedLibraryPhotoKitDataSourceManager)initWithType:(int64_t)a3 fetchResult:(id)a4;
+- (PXSharedLibraryPhotoKitDataSourceManager)initWithType:(int64_t)type fetchResult:(id)result;
 - (id)createInitialDataSource;
 - (id)fetchExiting;
 - (id)fetchPreview;
 - (id)fetchSharedLibrary;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 @end
 
 @implementation PXSharedLibraryPhotoKitDataSourceManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  queueCopy = queue;
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_19;
   }
 
-  v9 = [(PXSectionedDataSourceManager *)self dataSource];
-  if (!v9)
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if (!dataSource)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
-    [v31 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:272 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v33}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:272 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.dataSource", v33}];
 LABEL_22:
 
     goto LABEL_4;
@@ -41,34 +41,34 @@ LABEL_22:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = objc_opt_class();
     v33 = NSStringFromClass(v34);
-    v35 = [v9 px_descriptionForAssertionMessage];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:272 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v33, v35}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:272 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.dataSource", v33, px_descriptionForAssertionMessage}];
 
     goto LABEL_22;
   }
 
 LABEL_4:
-  v10 = [v8 objectForKeyedSubscript:@"currentDataSource"];
+  v10 = [infoCopy objectForKeyedSubscript:@"currentDataSource"];
 
-  if (v10 == v9)
+  if (v10 == dataSource)
   {
-    v11 = [v8 objectForKeyedSubscript:@"preparedDataSource"];
-    v12 = [v8 objectForKeyedSubscript:@"preparedChangeDetails"];
+    v11 = [infoCopy objectForKeyedSubscript:@"preparedDataSource"];
+    v12 = [infoCopy objectForKeyedSubscript:@"preparedChangeDetails"];
   }
 
   else
   {
     v38 = 0;
-    v11 = [v9 dataSourceUpdatedWithChange:v7 changeDetails:&v38];
+    v11 = [dataSource dataSourceUpdatedWithChange:queueCopy changeDetails:&v38];
     v12 = v38;
   }
 
   v13 = v12;
   v14 = [v11 numberOfItemsInSection:0];
-  v37 = v7;
+  v37 = queueCopy;
   if (v14)
   {
     if (v11)
@@ -82,10 +82,10 @@ LABEL_4:
     }
 
     v16 = [v11 sharedLibraryAtItemIndexPath:buf];
-    v17 = [v16 libraryScope];
+    libraryScope = [v16 libraryScope];
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [v17 uuid];
-    v15 = [v18 stringWithFormat:@", first: <%p:%@>", v17, v19];
+    uuid = [libraryScope uuid];
+    v15 = [v18 stringWithFormat:@", first: <%p:%@>", libraryScope, uuid];
   }
 
   else
@@ -93,7 +93,7 @@ LABEL_4:
     v15 = &stru_1F1741150;
   }
 
-  v36 = v8;
+  v36 = infoCopy;
   v20 = PLSharedLibraryGetLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,25 +123,25 @@ LABEL_4:
   }
 
   v24 = [off_1E77218B0 alloc];
-  v25 = [v9 identifier];
-  v26 = [v11 identifier];
-  v27 = [off_1E7721450 changeDetailsWithNoChanges];
+  identifier = [dataSource identifier];
+  identifier2 = [v11 identifier];
+  changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
   v39 = &unk_1F190DC00;
   v40 = v13;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v29 = v28 = v13;
-  v30 = [v24 initWithFromDataSourceIdentifier:v25 toDataSourceIdentifier:v26 sectionChanges:v27 itemChangeDetailsBySection:v29 subitemChangeDetailsByItemBySection:0];
+  v30 = [v24 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v29 subitemChangeDetailsByItemBySection:0];
 
   [(PXSectionedDataSourceManager *)self setDataSource:v11 changeDetails:v30];
-  v8 = v36;
-  v7 = v37;
+  infoCopy = v36;
+  queueCopy = v37;
 LABEL_19:
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changeCopy = change;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -158,7 +158,7 @@ LABEL_19:
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v6 = v16[5];
   v13 = 0;
-  v7 = [v6 dataSourceUpdatedWithChange:v5 changeDetails:&v13];
+  v7 = [v6 dataSourceUpdatedWithChange:changeCopy changeDetails:&v13];
   v8 = v13;
   v9 = v8;
   if (v7)
@@ -229,16 +229,16 @@ LABEL_3:
 
 - (id)fetchExiting
 {
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"exitState", 0];
-  [v2 setPredicate:v3];
+  [librarySpecificFetchOptions setPredicate:v3];
 
-  [v2 setIncludeExitingShares:1];
-  v4 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:v2];
-  v5 = [v4 firstObject];
-  if (v5)
+  [librarySpecificFetchOptions setIncludeExitingShares:1];
+  v4 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
+  firstObject = [v4 firstObject];
+  if (firstObject)
   {
-    v6 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:v5];
+    v6 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:firstObject];
   }
 
   else
@@ -251,12 +251,12 @@ LABEL_3:
 
 - (id)fetchSharedLibrary
 {
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v3 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:v2];
-  v4 = [v3 firstObject];
-  if (v4)
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v3 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
+  firstObject = [v3 firstObject];
+  if (firstObject)
   {
-    v5 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:v4];
+    v5 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:firstObject];
   }
 
   else
@@ -269,12 +269,12 @@ LABEL_3:
 
 - (id)fetchPreview
 {
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v3 = [MEMORY[0x1E69788A0] fetchPreviewLibraryScopeWithOptions:v2];
-  v4 = [v3 firstObject];
-  if (v4)
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v3 = [MEMORY[0x1E69788A0] fetchPreviewLibraryScopeWithOptions:librarySpecificFetchOptions];
+  firstObject = [v3 firstObject];
+  if (firstObject)
   {
-    v5 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:v4];
+    v5 = [[PXSharedLibraryPhotoKit alloc] initWithLibraryScope:firstObject];
   }
 
   else
@@ -285,15 +285,15 @@ LABEL_3:
   return v5;
 }
 
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  lCopy = l;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!lCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"shareURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"shareURL"}];
 
     if (v9)
     {
@@ -301,13 +301,13 @@ LABEL_3:
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -320,7 +320,7 @@ LABEL_3:
   v14[3] = &unk_1E7747790;
   v15 = v9;
   v11 = v9;
-  PXSharedLibraryFetchLibraryScopeForURL(photoLibrary, v7, v14);
+  PXSharedLibraryFetchLibraryScopeForURL(photoLibrary, lCopy, v14);
 }
 
 void __87__PXSharedLibraryPhotoKitDataSourceManager_fetchSharedLibraryForURL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -338,13 +338,13 @@ void __87__PXSharedLibraryPhotoKitDataSourceManager_fetchSharedLibraryForURL_com
   }
 }
 
-- (PXSharedLibraryPhotoKitDataSourceManager)initWithType:(int64_t)a3 fetchResult:(id)a4
+- (PXSharedLibraryPhotoKitDataSourceManager)initWithType:(int64_t)type fetchResult:(id)result
 {
-  v8 = a4;
-  if (!v8)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
   }
 
   v15.receiver = self;
@@ -353,11 +353,11 @@ void __87__PXSharedLibraryPhotoKitDataSourceManager_fetchSharedLibraryForURL_com
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    objc_storeStrong(&v9->_fetchResult, a4);
-    v11 = [(PHFetchResult *)v10->_fetchResult photoLibrary];
+    v9->_type = type;
+    objc_storeStrong(&v9->_fetchResult, result);
+    photoLibrary = [(PHFetchResult *)v10->_fetchResult photoLibrary];
     photoLibrary = v10->_photoLibrary;
-    v10->_photoLibrary = v11;
+    v10->_photoLibrary = photoLibrary;
   }
 
   return v10;
@@ -365,77 +365,77 @@ void __87__PXSharedLibraryPhotoKitDataSourceManager_fetchSharedLibraryForURL_com
 
 - (PXSharedLibraryPhotoKitDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:172 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKitDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:172 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKitDataSourceManager init]"}];
 
   abort();
 }
 
-+ (id)exitingDataSourceManagerForPhotoLibrary:(id)a3
++ (id)exitingDataSourceManagerForPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v6 = [v5 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"exitState", 0];
-  [v6 setPredicate:v7];
+  [librarySpecificFetchOptions setPredicate:v7];
 
-  [v6 setIncludeExitingShares:1];
-  v8 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:v6];
+  [librarySpecificFetchOptions setIncludeExitingShares:1];
+  v8 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
   v9 = [[PXSharedLibraryPhotoKitDataSourceManager alloc] initWithType:3 fetchResult:v8];
 
   return v9;
 }
 
-+ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)a3
++ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v6 = MEMORY[0x1E69788A0];
-  v7 = [v5 librarySpecificFetchOptions];
-  v8 = [v6 fetchActiveLibraryScopeWithOptions:v7];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v8 = [v6 fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
 
   v9 = [[PXSharedLibraryPhotoKitDataSourceManager alloc] initWithType:2 fetchResult:v8];
 
   return v9;
 }
 
-+ (id)previewDataSourceManagerForPhotoLibrary:(id)a3
++ (id)previewDataSourceManagerForPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v6 = [v5 librarySpecificFetchOptions];
-  v7 = [MEMORY[0x1E69788A0] fetchPreviewLibraryScopeWithOptions:v6];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v7 = [MEMORY[0x1E69788A0] fetchPreviewLibraryScopeWithOptions:librarySpecificFetchOptions];
   v8 = [[PXSharedLibraryPhotoKitDataSourceManager alloc] initWithType:1 fetchResult:v7];
 
   return v8;
 }
 
-+ (id)invitationsDataSourceManagerForPhotoLibrary:(id)a3
++ (id)invitationsDataSourceManagerForPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitDataSource.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v6 = [v5 librarySpecificFetchOptions];
-  v7 = [MEMORY[0x1E69788A0] fetchPendingLibraryScopeInvitationWithOptions:v6];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v7 = [MEMORY[0x1E69788A0] fetchPendingLibraryScopeInvitationWithOptions:librarySpecificFetchOptions];
   v8 = [[PXSharedLibraryPhotoKitDataSourceManager alloc] initWithType:0 fetchResult:v7];
 
   return v8;

@@ -1,18 +1,18 @@
 @interface PUAssetActionPerformer
-- (BOOL)dismissViewController:(id)a3 completionHandler:(id)a4;
-- (BOOL)presentViewController:(id)a3;
+- (BOOL)dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)presentViewController:(id)controller;
 - (NSUndoManager)undoManager;
 - (OS_os_log)actionPerformerLog;
-- (PUAssetActionPerformer)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5;
+- (PUAssetActionPerformer)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection;
 - (PUAssetActionPerformerDelegate)delegate;
-- (unint64_t)_unlockActionTypeForAssetActionType:(unint64_t)a3;
-- (void)_completeStateWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handleStepFinished:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5;
+- (unint64_t)_unlockActionTypeForAssetActionType:(unint64_t)type;
+- (void)_completeStateWithSuccess:(BOOL)success error:(id)error;
+- (void)_handleStepFinished:(unint64_t)finished withSuccess:(BOOL)success error:(id)error;
 - (void)_performUnlockIfNeeded;
-- (void)_transitionToState:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5;
+- (void)_transitionToState:(unint64_t)state withSuccess:(BOOL)success error:(id)error;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
-- (void)performWithCompletionHandler:(id)a3;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation PUAssetActionPerformer
@@ -31,7 +31,7 @@
   return WeakRetained;
 }
 
-- (void)_completeStateWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_completeStateWithSuccess:(BOOL)success error:(id)error
 {
   (*(self->_completionHandler + 2))();
   completionHandler = self->_completionHandler;
@@ -41,33 +41,33 @@
   self->_presentedViewController = 0;
 }
 
-- (void)_transitionToState:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_transitionToState:(unint64_t)state withSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v14 = a5;
-  if (self->_state >= a3)
+  successCopy = success;
+  errorCopy = error;
+  if (self->_state >= state)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:732 description:{@"Tried transitioning from %lu to the same or earlier step %lu", self->_state, a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:732 description:{@"Tried transitioning from %lu to the same or earlier step %lu", self->_state, state}];
   }
 
-  self->_state = a3;
-  v9 = [(PUAssetActionPerformer *)self delegate];
+  self->_state = state;
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PUAssetActionPerformer *)self delegate];
-    [v11 assetActionPerformer:self didChangeState:a3];
+    delegate2 = [(PUAssetActionPerformer *)self delegate];
+    [delegate2 assetActionPerformer:self didChangeState:state];
   }
 
-  if (a3 > 19)
+  if (state > 19)
   {
-    if (a3 != 20)
+    if (state != 20)
     {
-      if (a3 == 30)
+      if (state == 30)
       {
-        [(PUAssetActionPerformer *)self _completeStateWithSuccess:v5 error:v14];
+        [(PUAssetActionPerformer *)self _completeStateWithSuccess:successCopy error:errorCopy];
         goto LABEL_15;
       }
 
@@ -79,17 +79,17 @@
 
   else
   {
-    if (a3 != 5)
+    if (state != 5)
     {
-      if (a3 == 10)
+      if (state == 10)
       {
         [(PUAssetActionPerformer *)self performUserInteractionTask];
         goto LABEL_15;
       }
 
 LABEL_12:
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:759 description:{@"Not allowed to transition to state:%ld", a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:759 description:{@"Not allowed to transition to state:%ld", state}];
 
       goto LABEL_15;
     }
@@ -100,19 +100,19 @@ LABEL_12:
 LABEL_15:
 }
 
-- (void)_handleStepFinished:(unint64_t)a3 withSuccess:(BOOL)a4 error:(id)a5
+- (void)_handleStepFinished:(unint64_t)finished withSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v13 = a5;
+  successCopy = success;
+  errorCopy = error;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
-  if ([(PUAssetActionPerformer *)self state]== a3)
+  if ([(PUAssetActionPerformer *)self state]== finished)
   {
-    if (!v5)
+    if (!successCopy)
     {
       goto LABEL_12;
     }
@@ -120,28 +120,28 @@ LABEL_15:
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:700 description:{@"Invalid parameter not satisfying: %@", @"fromState == [self state]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:700 description:{@"Invalid parameter not satisfying: %@", @"fromState == [self state]"}];
 
-    if (!v5)
+    if (!successCopy)
     {
       goto LABEL_12;
     }
   }
 
-  if (a3 > 9)
+  if (finished > 9)
   {
-    if (a3 == 10)
+    if (finished == 10)
     {
       v9 = 20;
       goto LABEL_13;
     }
 
-    if (a3 != 20)
+    if (finished != 20)
     {
 LABEL_11:
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:723 description:{@"Not allowed to transition from state:%ld", a3}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:723 description:{@"Not allowed to transition from state:%ld", finished}];
     }
 
 LABEL_12:
@@ -149,9 +149,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3)
+  if (finished)
   {
-    if (a3 == 5)
+    if (finished == 5)
     {
       v9 = 10;
       goto LABEL_13;
@@ -162,7 +162,7 @@ LABEL_12:
 
   v9 = 5;
 LABEL_13:
-  [(PUAssetActionPerformer *)self _transitionToState:v9 withSuccess:v5 error:v13];
+  [(PUAssetActionPerformer *)self _transitionToState:v9 withSuccess:successCopy error:errorCopy];
 }
 
 - (void)performBackgroundTask
@@ -175,23 +175,23 @@ LABEL_13:
   }
 }
 
-- (BOOL)dismissViewController:(id)a3 completionHandler:(id)a4
+- (BOOL)dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if ([(PUAssetActionPerformer *)self state]!= 10)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:669 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PUAssetActionPerformerStateUserInteraction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:669 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PUAssetActionPerformerStateUserInteraction"}];
   }
 
-  v9 = [(PUAssetActionPerformer *)self delegate];
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PUAssetActionPerformer *)self delegate];
-    v12 = [v11 assetActionPerformer:self dismissViewController:v7 completionHandler:v8];
+    delegate2 = [(PUAssetActionPerformer *)self delegate];
+    v12 = [delegate2 assetActionPerformer:self dismissViewController:controllerCopy completionHandler:handlerCopy];
   }
 
   else
@@ -202,21 +202,21 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)presentViewController:(id)a3
+- (BOOL)presentViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   if ([(PUAssetActionPerformer *)self state]!= 10)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:656 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PUAssetActionPerformerStateUserInteraction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:656 description:{@"Invalid parameter not satisfying: %@", @"[self state] == PUAssetActionPerformerStateUserInteraction"}];
   }
 
-  v7 = [(PUAssetActionPerformer *)self delegate];
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  if ((v8 & 1) != 0 && (-[PUAssetActionPerformer delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 assetActionPerformer:self presentViewController:v6], v9, v10))
+  if ((v8 & 1) != 0 && (-[PUAssetActionPerformer delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 assetActionPerformer:self presentViewController:controllerCopy], v9, v10))
   {
-    objc_storeStrong(&self->_presentedViewController, a3);
+    objc_storeStrong(&self->_presentedViewController, controller);
     v11 = 1;
   }
 
@@ -238,33 +238,33 @@ LABEL_13:
   }
 }
 
-- (unint64_t)_unlockActionTypeForAssetActionType:(unint64_t)a3
+- (unint64_t)_unlockActionTypeForAssetActionType:(unint64_t)type
 {
   v3 = 4;
   v4 = 2;
-  if (a3 != 66)
+  if (type != 66)
   {
     v4 = 0;
   }
 
-  if (a3 != 43)
+  if (type != 43)
   {
     v3 = v4;
   }
 
   v5 = 1;
   v6 = 3;
-  if (a3 != 35)
+  if (type != 35)
   {
     v6 = 0;
   }
 
-  if (a3 != 15)
+  if (type != 15)
   {
     v5 = v6;
   }
 
-  if (a3 <= 42)
+  if (type <= 42)
   {
     return v5;
   }
@@ -303,13 +303,13 @@ LABEL_13:
   }
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetActionManager.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"[NSThread isMainThread]"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -317,8 +317,8 @@ LABEL_13:
   v10[2] = __55__PUAssetActionPerformer_performWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7B7F938;
   v10[4] = self;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v10 copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v7;
@@ -343,41 +343,41 @@ uint64_t __55__PUAssetActionPerformer_performWithCompletionHandler___block_invok
 
 - (NSUndoManager)undoManager
 {
-  v3 = [(PUAssetActionPerformer *)self delegate];
-  v4 = [v3 undoManagerForAssetActionPerformer:self];
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  v4 = [delegate undoManagerForAssetActionPerformer:self];
 
   return v4;
 }
 
-- (PUAssetActionPerformer)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5
+- (PUAssetActionPerformer)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
+  assetsCopy = assets;
+  collectionCopy = collection;
   v24.receiver = self;
   v24.super_class = PUAssetActionPerformer;
   v10 = [(PUAssetActionPerformer *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    v10->_actionType = a3;
+    v10->_actionType = type;
     v10->_state = 0;
-    v12 = [v8 copy];
+    v12 = [assetsCopy copy];
     assets = v11->_assets;
     v11->_assets = v12;
 
-    v14 = [v9 copy];
+    v14 = [collectionCopy copy];
     assetsByAssetCollection = v11->_assetsByAssetCollection;
     v11->_assetsByAssetCollection = v14;
 
     if (!v11->_assets)
     {
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v17 = v11->_assetsByAssetCollection;
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __78__PUAssetActionPerformer_initWithActionType_assets_orAssetsByAssetCollection___block_invoke;
       v22[3] = &unk_1E7B75268;
-      v18 = v16;
+      v18 = array;
       v23 = v18;
       [(NSDictionary *)v17 enumerateKeysAndObjectsUsingBlock:v22];
       v19 = v11->_assets;

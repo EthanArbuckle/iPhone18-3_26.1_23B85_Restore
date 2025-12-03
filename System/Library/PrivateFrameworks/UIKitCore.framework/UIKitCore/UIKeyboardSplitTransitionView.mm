@@ -2,26 +2,26 @@
 - (BOOL)canDisplayTransition;
 - (BOOL)showDictationKey;
 - (BOOL)showIntlKey;
-- (CGImage)keyImageWithToken:(id)a3;
-- (CGRect)rectEnclosingKeyplane:(id)a3;
-- (CGSize)sizeForShadowLayer:(int)a3;
+- (CGImage)keyImageWithToken:(id)token;
+- (CGRect)rectEnclosingKeyplane:(id)keyplane;
+- (CGSize)sizeForShadowLayer:(int)layer;
 - (NSArray)backgroundLayers;
 - (UIKeyboardKeyplaneTransitionDelegate)splitTransitionDelegate;
 - (UIKeyboardSplitTransitionDataSource)splitTransitionDataSource;
 - (id)bottomDropShadow;
 - (id)centerDropShadow;
-- (id)colorsForBackgroundLayer:(int)a3;
+- (id)colorsForBackgroundLayer:(int)layer;
 - (id)outerCenterDropShadow;
 - (id)topDropShadow;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)finalizeTransition;
-- (void)finishWithProgress:(double)a3 completionBlock:(id)a4;
+- (void)finishWithProgress:(double)progress completionBlock:(id)block;
 - (void)initializeLayers;
-- (void)setFrame:(CGRect)a3;
-- (void)transformForProgress:(double)a3;
-- (void)transitionToFinalState:(id)a3;
-- (void)updateWithProgress:(double)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)transformForProgress:(double)progress;
+- (void)transitionToFinalState:(id)state;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation UIKeyboardSplitTransitionView
@@ -40,8 +40,8 @@
   sliceSet = self->_sliceSet;
   self->_sliceSet = 0;
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"UIKeyboardRivenVisualStyleDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardRivenVisualStyleDidChange" object:0];
 
   v7.receiver = self;
   v7.super_class = UIKeyboardSplitTransitionView;
@@ -50,46 +50,46 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 screen];
-    [v5 scale];
+    window2 = [(UIView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v7 = v6;
-    v8 = [(UIView *)self layer];
-    [v8 setRasterizationScale:v7];
+    layer = [(UIView *)self layer];
+    [layer setRasterizationScale:v7];
 
-    v9 = [(UIView *)self window];
-    v10 = [v9 screen];
-    v11 = [(UIKeyboardMotionSupport *)UISplitKeyboardSupport supportForScreen:v10];
+    window3 = [(UIView *)self window];
+    screen2 = [window3 screen];
+    v11 = [(UIKeyboardMotionSupport *)UISplitKeyboardSupport supportForScreen:screen2];
     [(UIKeyboardSplitTransitionView *)self setSplitTransitionDelegate:v11];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:self selector:sel_rebuildTransitionForSplitStyleChange_ name:@"UIKeyboardRivenVisualStyleDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_rebuildTransitionForSplitStyleChange_ name:@"UIKeyboardRivenVisualStyleDidChange" object:0];
   }
 
   else
   {
     [(UIKeyboardSplitTransitionView *)self setSplitTransitionDelegate:0];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIKeyboardSplitTransitionView;
-  [(UIView *)&v6 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  [(UIView *)&v6 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  backgroundLayers = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__UIKeyboardSplitTransitionView_setFrame___block_invoke;
   v5[3] = &unk_1E70F5BE0;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [backgroundLayers enumerateObjectsUsingBlock:v5];
 }
 
 void __42__UIKeyboardSplitTransitionView_setFrame___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -145,8 +145,8 @@ void __42__UIKeyboardSplitTransitionView_setFrame___block_invoke(uint64_t a1, vo
     do
     {
       v6 = backgroundLayers_backgroundLayers;
-      v7 = [MEMORY[0x1E6979380] layer];
-      [v6 addObject:v7];
+      layer = [MEMORY[0x1E6979380] layer];
+      [v6 addObject:layer];
 
       --v3;
     }
@@ -220,53 +220,53 @@ void __42__UIKeyboardSplitTransitionView_setFrame___block_invoke(uint64_t a1, vo
 
 - (void)initializeLayers
 {
-  v3 = [objc_opt_self() mainScreen];
-  [v3 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
-  v6 = [(UIKeyboardSplitTransitionView *)self shadowLayers];
-  v7 = [v6 objectAtIndex:0];
+  shadowLayers = [(UIKeyboardSplitTransitionView *)self shadowLayers];
+  v7 = [shadowLayers objectAtIndex:0];
 
-  v8 = [v7 contents];
+  contents = [v7 contents];
 
-  if (!v8)
+  if (!contents)
   {
-    v9 = [(UIKeyboardSplitTransitionView *)self topDropShadow];
-    v10 = [(UIKeyboardSplitTransitionView *)self centerDropShadow];
-    v11 = [(UIKeyboardSplitTransitionView *)self bottomDropShadow];
-    v12 = [(UIKeyboardSplitTransitionView *)self outerCenterDropShadow];
-    v13 = [(UIKeyboardSplitTransitionView *)self shadowLayers];
+    topDropShadow = [(UIKeyboardSplitTransitionView *)self topDropShadow];
+    centerDropShadow = [(UIKeyboardSplitTransitionView *)self centerDropShadow];
+    bottomDropShadow = [(UIKeyboardSplitTransitionView *)self bottomDropShadow];
+    outerCenterDropShadow = [(UIKeyboardSplitTransitionView *)self outerCenterDropShadow];
+    shadowLayers2 = [(UIKeyboardSplitTransitionView *)self shadowLayers];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke;
     v23[3] = &unk_1E7118E20;
-    v24 = v10;
-    v25 = v9;
-    v26 = v11;
-    v27 = v12;
+    v24 = centerDropShadow;
+    v25 = topDropShadow;
+    v26 = bottomDropShadow;
+    v27 = outerCenterDropShadow;
     v28 = v5;
-    v14 = v12;
-    v15 = v11;
-    v16 = v9;
-    v17 = v10;
-    [v13 enumerateObjectsUsingBlock:v23];
+    v14 = outerCenterDropShadow;
+    v15 = bottomDropShadow;
+    v16 = topDropShadow;
+    v17 = centerDropShadow;
+    [shadowLayers2 enumerateObjectsUsingBlock:v23];
   }
 
-  v18 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
-  v19 = [v18 objectAtIndex:0];
+  backgroundLayers = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v19 = [backgroundLayers objectAtIndex:0];
 
-  v20 = [v19 contents];
+  contents2 = [v19 contents];
 
-  if (!v20)
+  if (!contents2)
   {
-    v21 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+    backgroundLayers2 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke_2;
     v22[3] = &unk_1E71028D0;
     v22[4] = self;
     v22[5] = v5;
-    [v21 enumerateObjectsUsingBlock:v22];
+    [backgroundLayers2 enumerateObjectsUsingBlock:v22];
   }
 }
 
@@ -348,7 +348,7 @@ void __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke_2(uint64
   [v9 setContentsScale:*(a1 + 40)];
 }
 
-- (id)colorsForBackgroundLayer:(int)a3
+- (id)colorsForBackgroundLayer:(int)layer
 {
   if (!colorsForBackgroundLayer__modernColors)
   {
@@ -360,10 +360,10 @@ void __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke_2(uint64
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 textInputTraits];
-  v9 = [v8 keyboardAppearance];
+  textInputTraits = [v7 textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((keyboardAppearance & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v10 = 0;
   }
@@ -376,24 +376,24 @@ void __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke_2(uint64
   return v10;
 }
 
-- (CGSize)sizeForShadowLayer:(int)a3
+- (CGSize)sizeForShadowLayer:(int)layer
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
-  if (a3 > 4)
+  if (layer > 4)
   {
-    if ((a3 - 7) < 2)
+    if ((layer - 7) < 2)
     {
-      v5 = [(UIKeyboardSplitTransitionView *)self outerCenterDropShadow];
+      outerCenterDropShadow = [(UIKeyboardSplitTransitionView *)self outerCenterDropShadow];
       goto LABEL_15;
     }
 
-    if (a3 == 5)
+    if (layer == 5)
     {
       goto LABEL_13;
     }
 
-    if (a3 != 6)
+    if (layer != 6)
     {
       goto LABEL_16;
     }
@@ -401,35 +401,35 @@ void __49__UIKeyboardSplitTransitionView_initializeLayers__block_invoke_2(uint64
     goto LABEL_12;
   }
 
-  if (a3 <= 2)
+  if (layer <= 2)
   {
-    if (a3 != 1)
+    if (layer != 1)
     {
-      if (a3 != 2)
+      if (layer != 2)
       {
         goto LABEL_16;
       }
 
 LABEL_13:
-      v5 = [(UIKeyboardSplitTransitionView *)self centerDropShadow];
+      outerCenterDropShadow = [(UIKeyboardSplitTransitionView *)self centerDropShadow];
       goto LABEL_15;
     }
 
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (layer == 3)
   {
 LABEL_12:
-    v5 = [(UIKeyboardSplitTransitionView *)self bottomDropShadow];
+    outerCenterDropShadow = [(UIKeyboardSplitTransitionView *)self bottomDropShadow];
     goto LABEL_15;
   }
 
 LABEL_11:
-  v5 = [(UIKeyboardSplitTransitionView *)self topDropShadow];
+  outerCenterDropShadow = [(UIKeyboardSplitTransitionView *)self topDropShadow];
 LABEL_15:
-  v6 = v5;
-  [v5 size];
+  v6 = outerCenterDropShadow;
+  [outerCenterDropShadow size];
   v3 = v7;
   v4 = v8;
 
@@ -441,7 +441,7 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)rectEnclosingKeyplane:(id)a3
+- (CGRect)rectEnclosingKeyplane:(id)keyplane
 {
   v25 = *MEMORY[0x1E69E9840];
   x = *MEMORY[0x1E695F058];
@@ -452,8 +452,8 @@ LABEL_16:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 subtrees];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  subtrees = [keyplane subtrees];
+  v8 = [subtrees countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -465,7 +465,7 @@ LABEL_16:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subtrees);
         }
 
         [*(*(&v20 + 1) + 8 * v11) frame];
@@ -486,7 +486,7 @@ LABEL_16:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [subtrees countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -503,12 +503,12 @@ LABEL_16:
   return result;
 }
 
-- (void)transformForProgress:(double)a3
+- (void)transformForProgress:(double)progress
 {
-  v5 = [(UIKeyboardSplitTransitionView *)self shouldAllowRubberiness];
-  v6 = [(UIView *)self layer];
-  v7 = v6;
-  if (!v5)
+  shouldAllowRubberiness = [(UIKeyboardSplitTransitionView *)self shouldAllowRubberiness];
+  layer = [(UIView *)self layer];
+  v7 = layer;
+  if (!shouldAllowRubberiness)
   {
     v12 = *(MEMORY[0x1E69792E8] + 80);
     *&v20.m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -522,20 +522,20 @@ LABEL_16:
     v15 = *(MEMORY[0x1E69792E8] + 48);
     *&v20.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v20.m23 = v15;
-    [v6 setTransform:&v20];
+    [layer setTransform:&v20];
 
     return;
   }
 
-  v8 = [v6 valueForKeyPath:@"transform.translation.y"];
+  v8 = [layer valueForKeyPath:@"transform.translation.y"];
   [v8 floatValue];
   v10 = v9;
 
   memset(&v20, 0, sizeof(v20));
   CATransform3DMakeTranslation(&v20, 0.0, v10, 0.0);
-  if (a3 > 1.0)
+  if (progress > 1.0)
   {
-    v11 = (a3 + -1.0) * 0.025 + 1.0;
+    v11 = (progress + -1.0) * 0.025 + 1.0;
 LABEL_7:
     v18 = v20;
     CATransform3DScale(&v19, &v18, v11, 1.0, 1.0);
@@ -543,9 +543,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    v11 = a3 * 0.025 + 1.0;
+    v11 = progress * 0.025 + 1.0;
     goto LABEL_7;
   }
 
@@ -566,23 +566,23 @@ LABEL_8:
   }
 
   [(UIKeyboardSplitTransitionView *)self updateWithProgress:self->_finishProgress];
-  v5 = [(UIKeyboardSplitTransitionView *)self completionBlock];
+  completionBlock = [(UIKeyboardSplitTransitionView *)self completionBlock];
 
-  if (v5)
+  if (completionBlock)
   {
-    v6 = [(UIKeyboardSplitTransitionView *)self completionBlock];
-    v6[2]();
+    completionBlock2 = [(UIKeyboardSplitTransitionView *)self completionBlock];
+    completionBlock2[2]();
 
     [(UIKeyboardSplitTransitionView *)self setCompletionBlock:0];
   }
 
-  v7 = [(UIKeyboardSplitTransitionView *)self splitTransitionDelegate];
-  [v7 transitionDidFinish:{-[UIKeyboardSplitTransitionView transitionIsVisible](self, "transitionIsVisible")}];
+  splitTransitionDelegate = [(UIKeyboardSplitTransitionView *)self splitTransitionDelegate];
+  [splitTransitionDelegate transitionDidFinish:{-[UIKeyboardSplitTransitionView transitionIsVisible](self, "transitionIsVisible")}];
 }
 
-- (void)transitionToFinalState:(id)a3
+- (void)transitionToFinalState:(id)state
 {
-  [a3 timestamp];
+  [state timestamp];
   v5 = v4;
   finishProgress = self->_finishProgress;
   if (vabdd_f64(self->_currentProgress, finishProgress) < 0.01 || (v7 = v5 - self->_finalTransitionStartTime, finishDuration = self->_finishDuration, v7 >= finishDuration))
@@ -603,10 +603,10 @@ LABEL_8:
   }
 }
 
-- (void)finishWithProgress:(double)a3 completionBlock:(id)a4
+- (void)finishWithProgress:(double)progress completionBlock:(id)block
 {
-  [(UIKeyboardSplitTransitionView *)self setCompletionBlock:a4];
-  self->_finishProgress = a3;
+  [(UIKeyboardSplitTransitionView *)self setCompletionBlock:block];
+  self->_finishProgress = progress;
   self->_liftOffProgress = self->_currentProgress;
   if (+[UIView areAnimationsEnabled])
   {
@@ -620,15 +620,15 @@ LABEL_8:
 
     self->_finishDuration = vabdd_f64(currentProgress, self->_finishProgress) / v8;
     self->_finalTransitionStartTime = CACurrentMediaTime();
-    v9 = [(UIView *)self window];
-    v10 = [v9 screen];
-    v11 = [v10 displayLinkWithTarget:self selector:sel_transitionToFinalState_];
+    window = [(UIView *)self window];
+    screen = [window screen];
+    v11 = [screen displayLinkWithTarget:self selector:sel_transitionToFinalState_];
     displayLink = self->_displayLink;
     self->_displayLink = v11;
 
     v13 = self->_displayLink;
-    v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v13 addToRunLoop:v14 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v13 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   else
@@ -639,25 +639,25 @@ LABEL_8:
   }
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
   if (!self->_isRebuilding)
   {
-    if (a3 > 1.0 || a3 < 0.0)
+    if (progress > 1.0 || progress < 0.0)
     {
-      [(UIKeyboardSplitTransitionView *)self transformForProgress:a3];
+      [(UIKeyboardSplitTransitionView *)self transformForProgress:progress];
     }
 
-    self->_currentProgress = a3;
-    v5 = 1.0;
-    if (a3 <= 1.0)
+    self->_currentProgress = progress;
+    progressCopy = 1.0;
+    if (progress <= 1.0)
     {
-      v5 = a3;
+      progressCopy = progress;
     }
 
-    if (a3 >= 0.0)
+    if (progress >= 0.0)
     {
-      v6 = v5;
+      v6 = progressCopy;
     }
 
     else
@@ -665,17 +665,17 @@ LABEL_8:
       v6 = 0.0;
     }
 
-    v7 = [(UIView *)self layer];
-    [v7 setTimeOffset:v6];
+    layer = [(UIView *)self layer];
+    [layer setTimeOffset:v6];
 
     v8 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v9 = [v8 preferencesActions];
-    v10 = [v9 currentInputModeSupportsCrescendo];
+    preferencesActions = [v8 preferencesActions];
+    currentInputModeSupportsCrescendo = [preferencesActions currentInputModeSupportsCrescendo];
 
-    if ((v10 & 1) == 0)
+    if ((currentInputModeSupportsCrescendo & 1) == 0)
     {
-      v11 = [(UIKeyboardSplitTransitionView *)self splitTransitionDelegate];
-      [v11 updateProgress:v6 startHeight:self->_startFrame.size.height endHeight:self->_endFrame.size.height];
+      splitTransitionDelegate = [(UIKeyboardSplitTransitionView *)self splitTransitionDelegate];
+      [splitTransitionDelegate updateProgress:v6 startHeight:self->_startFrame.size.height endHeight:self->_endFrame.size.height];
     }
   }
 }
@@ -695,11 +695,11 @@ LABEL_8:
   return [(UIKeyboardSplitTransitionView *)self splitKeyboardImage]!= 0;
 }
 
-- (CGImage)keyImageWithToken:(id)a3
+- (CGImage)keyImageWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_transitionDataSource);
-  v6 = [WeakRetained renderedImageWithToken:v4];
+  v6 = [WeakRetained renderedImageWithToken:tokenCopy];
 
   return v6;
 }
@@ -707,17 +707,17 @@ LABEL_8:
 - (BOOL)showIntlKey
 {
   WeakRetained = objc_loadWeakRetained(&self->_transitionDataSource);
-  v3 = [WeakRetained showsInternationalKey];
+  showsInternationalKey = [WeakRetained showsInternationalKey];
 
-  return v3;
+  return showsInternationalKey;
 }
 
 - (BOOL)showDictationKey
 {
   WeakRetained = objc_loadWeakRetained(&self->_transitionDataSource);
-  v3 = [WeakRetained showsDictationKey];
+  showsDictationKey = [WeakRetained showsDictationKey];
 
-  return v3;
+  return showsDictationKey;
 }
 
 - (UIKeyboardKeyplaneTransitionDelegate)splitTransitionDelegate

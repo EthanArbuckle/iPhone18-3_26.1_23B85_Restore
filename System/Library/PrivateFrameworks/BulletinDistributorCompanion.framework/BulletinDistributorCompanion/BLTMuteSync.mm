@@ -1,14 +1,14 @@
 @interface BLTMuteSync
 - (BLTMuteSync)init;
-- (BOOL)isMutedForTodaySectionIdentifier:(id)a3;
+- (BOOL)isMutedForTodaySectionIdentifier:(id)identifier;
 - (NSSet)mutedForTodaySectionIdentifiers;
 - (void)_cleanMuteIdentifiers;
 - (void)_loadMutedSectionIdentifiers;
 - (void)_queue_sync;
 - (void)_updateObservers;
-- (void)addSectionIdentifiers:(id)a3;
+- (void)addSectionIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)removeSectionIdentifiers:(id)a3;
+- (void)removeSectionIdentifiers:(id)identifiers;
 @end
 
 @implementation BLTMuteSync
@@ -53,8 +53,8 @@
 
 - (void)_updateObservers
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"BLTMuteSyncMutedForTodayChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BLTMuteSyncMutedForTodayChangedNotification" object:0];
 }
 
 - (void)_cleanMuteIdentifiers
@@ -198,8 +198,8 @@ void __43__BLTMuteSync__loadMutedSectionIdentifiers__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v17 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano"];
-  v3 = [v17 synchronize];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  synchronize = [v17 synchronize];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -222,9 +222,9 @@ void __43__BLTMuteSync__loadMutedSectionIdentifiers__block_invoke(uint64_t a1)
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld-%ld-%ld", objc_msgSend(v9, "day"), objc_msgSend(v9, "month"), objc_msgSend(v9, "year")];
         v11 = [(NSMutableDictionary *)self->_mutedSectionIdentifiersForDay objectForKeyedSubscript:v9];
-        v12 = [v11 allObjects];
+        allObjects = [v11 allObjects];
 
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        [dictionary setObject:allObjects forKeyedSubscript:v10];
       }
 
       v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -233,14 +233,14 @@ void __43__BLTMuteSync__loadMutedSectionIdentifiers__block_invoke(uint64_t a1)
     while (v6);
   }
 
-  if (![v4 count])
+  if (![dictionary count])
   {
 
-    v4 = 0;
+    dictionary = 0;
   }
 
-  [v17 setObject:v4 forKey:@"MuteForTodaySectionIdentifiers"];
-  v13 = [v17 synchronize];
+  [v17 setObject:dictionary forKey:@"MuteForTodaySectionIdentifiers"];
+  synchronize2 = [v17 synchronize];
   npsManager = self->_npsManager;
   v15 = [MEMORY[0x277CBEB98] setWithObjects:{@"MuteForTodaySectionIdentifiers", 0}];
   [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v15];
@@ -283,19 +283,19 @@ void __46__BLTMuteSync_mutedForTodaySectionIdentifiers__block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isMutedForTodaySectionIdentifier:(id)a3
+- (BOOL)isMutedForTodaySectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BLTMuteSync *)self mutedForTodaySectionIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  mutedForTodaySectionIdentifiers = [(BLTMuteSync *)self mutedForTodaySectionIdentifiers];
+  v6 = [mutedForTodaySectionIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-- (void)addSectionIdentifiers:(id)a3
+- (void)addSectionIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v9 = 0;
     v10 = &v9;
@@ -308,7 +308,7 @@ void __46__BLTMuteSync_mutedForTodaySectionIdentifiers__block_invoke(void *a1)
     block[2] = __37__BLTMuteSync_addSectionIdentifiers___block_invoke;
     block[3] = &unk_278D32FC8;
     block[4] = self;
-    v7 = v4;
+    v7 = identifiersCopy;
     v8 = &v9;
     dispatch_sync(queue, block);
     if (*(v10 + 24) == 1)
@@ -347,9 +347,9 @@ void __37__BLTMuteSync_addSectionIdentifiers___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeSectionIdentifiers:(id)a3
+- (void)removeSectionIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_not_V2(self->_queue);
   v10 = 0;
   v11 = &v10;
@@ -361,7 +361,7 @@ void __37__BLTMuteSync_addSectionIdentifiers___block_invoke(uint64_t a1)
   block[2] = __40__BLTMuteSync_removeSectionIdentifiers___block_invoke;
   block[3] = &unk_278D32FC8;
   block[4] = self;
-  v6 = v4;
+  v6 = identifiersCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(queue, block);

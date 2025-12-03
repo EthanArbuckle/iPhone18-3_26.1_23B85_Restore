@@ -1,16 +1,16 @@
 @interface CALNPersistentTriggeredEventNotificationDataStorage
-+ (id)notificationDataFromPersistentStorageWithPath:(id)a3 error:(id *)a4;
-- (BOOL)_loadDataWithError:(id *)a3;
-- (BOOL)_saveDataWithError:(id *)a3;
-- (CALNPersistentTriggeredEventNotificationDataStorage)initWithPath:(id)a3 isProtectedStorage:(BOOL)a4;
++ (id)notificationDataFromPersistentStorageWithPath:(id)path error:(id *)error;
+- (BOOL)_loadDataWithError:(id *)error;
+- (BOOL)_saveDataWithError:(id *)error;
+- (CALNPersistentTriggeredEventNotificationDataStorage)initWithPath:(id)path isProtectedStorage:(BOOL)storage;
 - (id)notificationData;
-- (id)notificationDataWithIdentifier:(id)a3;
-- (void)_addNotificationData:(id)a3 withIdentifier:(id)a4;
+- (id)notificationDataWithIdentifier:(id)identifier;
+- (void)_addNotificationData:(id)data withIdentifier:(id)identifier;
 - (void)_removeData;
-- (void)_removeNotificationDataWithIdentifier:(id)a3;
-- (void)addNotificationData:(id)a3 withIdentifier:(id)a4;
+- (void)_removeNotificationDataWithIdentifier:(id)identifier;
+- (void)addNotificationData:(id)data withIdentifier:(id)identifier;
 - (void)removeNotificationData;
-- (void)removeNotificationDataWithIdentifier:(id)a3;
+- (void)removeNotificationDataWithIdentifier:(id)identifier;
 @end
 
 @implementation CALNPersistentTriggeredEventNotificationDataStorage
@@ -78,18 +78,18 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)notificationDataFromPersistentStorageWithPath:(id)a3 error:(id *)a4
++ (id)notificationDataFromPersistentStorageWithPath:(id)path error:(id *)error
 {
   v5 = notificationDataFromPersistentStorageWithPath_error__onceToken;
-  v6 = a3;
+  pathCopy = path;
   if (v5 != -1)
   {
     +[CALNPersistentTriggeredEventNotificationDataStorage notificationDataFromPersistentStorageWithPath:error:];
   }
 
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy];
 
-  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:notificationDataFromPersistentStorageWithPath_error__allowedClasses fromData:v7 error:a4];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:notificationDataFromPersistentStorageWithPath_error__allowedClasses fromData:v7 error:error];
 
   return v8;
 }
@@ -109,29 +109,29 @@ void __107__CALNPersistentTriggeredEventNotificationDataStorage_notificationData
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (CALNPersistentTriggeredEventNotificationDataStorage)initWithPath:(id)a3 isProtectedStorage:(BOOL)a4
+- (CALNPersistentTriggeredEventNotificationDataStorage)initWithPath:(id)path isProtectedStorage:(BOOL)storage
 {
-  v6 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = CALNPersistentTriggeredEventNotificationDataStorage;
   v7 = [(CALNPersistentTriggeredEventNotificationDataStorage *)&v18 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [pathCopy copy];
     path = v7->_path;
     v7->_path = v8;
 
-    v7->_protected = a4;
+    v7->_protected = storage;
     v10 = objc_opt_new();
     inMemoryStorage = v7->_inMemoryStorage;
     v7->_inMemoryStorage = v10;
 
     objc_opt_class();
     v12 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     workQueue = v7->_workQueue;
     v7->_workQueue = v15;
   }
@@ -147,14 +147,14 @@ void __107__CALNPersistentTriggeredEventNotificationDataStorage_notificationData
   v10 = __Block_byref_object_copy__9;
   v11 = __Block_byref_object_dispose__9;
   v12 = 0;
-  v3 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__CALNPersistentTriggeredEventNotificationDataStorage_notificationData__block_invoke;
   v6[3] = &unk_278D6F460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -171,42 +171,42 @@ void __71__CALNPersistentTriggeredEventNotificationDataStorage_notificationData_
   *(v3 + 40) = v2;
 }
 
-- (void)addNotificationData:(id)a3 withIdentifier:(id)a4
+- (void)addNotificationData:(id)data withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dataCopy = data;
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__CALNPersistentTriggeredEventNotificationDataStorage_addNotificationData_withIdentifier___block_invoke;
   block[3] = &unk_278D6F318;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dataCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = dataCopy;
+  dispatch_sync(workQueue, block);
 }
 
-- (id)notificationDataWithIdentifier:(id)a3
+- (id)notificationDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  v5 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataWithIdentifier___block_invoke;
   block[3] = &unk_278D6F2C8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -223,46 +223,46 @@ void __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataW
   *(v3 + 40) = v2;
 }
 
-- (void)removeNotificationDataWithIdentifier:(id)a3
+- (void)removeNotificationDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92__CALNPersistentTriggeredEventNotificationDataStorage_removeNotificationDataWithIdentifier___block_invoke;
   v7[3] = &unk_278D6F278;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 - (void)removeNotificationData
 {
-  v3 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__CALNPersistentTriggeredEventNotificationDataStorage_removeNotificationData__block_invoke;
   block[3] = &unk_278D6F250;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
-- (void)_addNotificationData:(id)a3 withIdentifier:(id)a4
+- (void)_addNotificationData:(id)data withIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  dataCopy = data;
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
-  [v9 addNotificationData:v6 withIdentifier:v7];
+  inMemoryStorage = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
+  [inMemoryStorage addNotificationData:dataCopy withIdentifier:identifierCopy];
 
   v13 = 0;
-  LOBYTE(v9) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v13];
+  LOBYTE(inMemoryStorage) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v13];
   v10 = v13;
-  if ((v9 & 1) == 0)
+  if ((inMemoryStorage & 1) == 0)
   {
     v11 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -270,9 +270,9 @@ void __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataW
       *buf = 138543874;
       v15 = v10;
       v16 = 2114;
-      v17 = v7;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = dataCopy;
       _os_log_error_impl(&dword_242909000, v11, OS_LOG_TYPE_ERROR, "Could not save notification data. error = %{public}@, identifier = %{public}@, data = %@", buf, 0x20u);
     }
   }
@@ -280,19 +280,19 @@ void __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataW
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeNotificationDataWithIdentifier:(id)a3
+- (void)_removeNotificationDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
-  [v6 removeNotificationDataWithIdentifier:v4];
+  inMemoryStorage = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
+  [inMemoryStorage removeNotificationDataWithIdentifier:identifierCopy];
 
   v9 = 0;
-  LOBYTE(v6) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v9];
+  LOBYTE(inMemoryStorage) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v9];
   v7 = v9;
-  if ((v6 & 1) == 0)
+  if ((inMemoryStorage & 1) == 0)
   {
     v8 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -304,16 +304,16 @@ void __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataW
 
 - (void)_removeData
 {
-  v3 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
-  [v4 removeNotificationData];
+  inMemoryStorage = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
+  [inMemoryStorage removeNotificationData];
 
   v7 = 0;
-  LOBYTE(v4) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v7];
+  LOBYTE(inMemoryStorage) = [(CALNPersistentTriggeredEventNotificationDataStorage *)self _saveDataWithError:&v7];
   v5 = v7;
-  if ((v4 & 1) == 0)
+  if ((inMemoryStorage & 1) == 0)
   {
     v6 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -323,15 +323,15 @@ void __86__CALNPersistentTriggeredEventNotificationDataStorage_notificationDataW
   }
 }
 
-- (BOOL)_loadDataWithError:(id *)a3
+- (BOOL)_loadDataWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_opt_class();
-  v7 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self path];
-  v8 = [v6 notificationDataFromPersistentStorageWithPath:v7 error:a3];
+  path = [(CALNPersistentTriggeredEventNotificationDataStorage *)self path];
+  v8 = [v6 notificationDataFromPersistentStorageWithPath:path error:error];
 
   if (v8)
   {
@@ -364,16 +364,16 @@ void __74__CALNPersistentTriggeredEventNotificationDataStorage__loadDataWithErro
   [v7 addNotificationData:v5 withIdentifier:v6];
 }
 
-- (BOOL)_saveDataWithError:(id *)a3
+- (BOOL)_saveDataWithError:(id *)error
 {
-  v5 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentTriggeredEventNotificationDataStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
-  v7 = [v6 notificationData];
+  inMemoryStorage = [(CALNPersistentTriggeredEventNotificationDataStorage *)self inMemoryStorage];
+  notificationData = [inMemoryStorage notificationData];
 
   v19 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v19];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:notificationData requiringSecureCoding:1 error:&v19];
   v9 = v19;
   if (v8)
   {
@@ -387,15 +387,15 @@ void __74__CALNPersistentTriggeredEventNotificationDataStorage__loadDataWithErro
       v10 = 268435457;
     }
 
-    v11 = [(CALNPersistentTriggeredEventNotificationDataStorage *)self path];
+    path = [(CALNPersistentTriggeredEventNotificationDataStorage *)self path];
     v18 = v9;
-    v12 = [v8 writeToFile:v11 options:v10 error:&v18];
+    v12 = [v8 writeToFile:path options:v10 error:&v18];
     v13 = v18;
 
     if (v12)
     {
       v14 = 1;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -423,11 +423,11 @@ void __74__CALNPersistentTriggeredEventNotificationDataStorage__loadDataWithErro
 
   v14 = 0;
   v13 = v9;
-  if (a3)
+  if (error)
   {
 LABEL_14:
     v16 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
 LABEL_15:

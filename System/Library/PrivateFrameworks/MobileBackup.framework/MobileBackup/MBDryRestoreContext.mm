@@ -1,6 +1,6 @@
 @interface MBDryRestoreContext
 - (_TtC7backupd19MBDryRestoreContext)init;
-- (id)domainForName:(id)a3 containerID:(id)a4 domainManager:(id)a5;
+- (id)domainForName:(id)name containerID:(id)d domainManager:(id)manager;
 @end
 
 @implementation MBDryRestoreContext
@@ -12,14 +12,14 @@
   return result;
 }
 
-- (id)domainForName:(id)a3 containerID:(id)a4 domainManager:(id)a5
+- (id)domainForName:(id)name containerID:(id)d domainManager:(id)manager
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (a4)
+  if (d)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v12;
+    d = v12;
   }
 
   else
@@ -27,9 +27,9 @@
     v11 = 0;
   }
 
-  v13 = a5;
-  v14 = self;
-  v15 = sub_1000114B4(v8, v10, v11, a4);
+  managerCopy = manager;
+  selfCopy = self;
+  v15 = sub_1000114B4(v8, v10, v11, d);
 
   return v15;
 }

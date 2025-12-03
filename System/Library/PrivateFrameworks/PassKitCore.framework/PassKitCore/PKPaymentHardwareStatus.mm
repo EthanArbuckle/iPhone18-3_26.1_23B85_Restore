@@ -1,28 +1,28 @@
 @interface PKPaymentHardwareStatus
 - (BOOL)_isDemoModeActive;
 - (BOOL)canMakePayments;
-- (PKPaymentHardwareStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentHardwareStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentHardwareStatus
 
-- (PKPaymentHardwareStatus)initWithCoder:(id)a3
+- (PKPaymentHardwareStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPaymentHardwareStatus;
   v5 = [(PKPaymentHardwareStatus *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_hasSecureElement = [v4 decodeBoolForKey:@"hasSecureElement"];
-    v5->_hasRemoteDevices = [v4 decodeBoolForKey:@"hasRemoteDevices"];
-    v5->_canMakeRemotePayments = [v4 decodeBoolForKey:@"canMakeRemotePayments"];
-    v5->_isSRD = [v4 decodeBoolForKey:@"isSRD"];
-    v5->_inFailForward = [v4 decodeBoolForKey:@"inFailForward"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_hasSecureElement = [coderCopy decodeBoolForKey:@"hasSecureElement"];
+    v5->_hasRemoteDevices = [coderCopy decodeBoolForKey:@"hasRemoteDevices"];
+    v5->_canMakeRemotePayments = [coderCopy decodeBoolForKey:@"canMakeRemotePayments"];
+    v5->_isSRD = [coderCopy decodeBoolForKey:@"isSRD"];
+    v5->_inFailForward = [coderCopy decodeBoolForKey:@"inFailForward"];
   }
 
   return v5;
@@ -38,19 +38,19 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeBool:self->_hasSecureElement forKey:@"hasSecureElement"];
-  [v5 encodeBool:self->_hasRemoteDevices forKey:@"hasRemoteDevices"];
-  [v5 encodeBool:self->_canMakeRemotePayments forKey:@"canMakeRemotePayments"];
-  [v5 encodeBool:self->_isSRD forKey:@"isSRD"];
-  [v5 encodeBool:self->_inFailForward forKey:@"inFailForward"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeBool:self->_hasSecureElement forKey:@"hasSecureElement"];
+  [coderCopy encodeBool:self->_hasRemoteDevices forKey:@"hasRemoteDevices"];
+  [coderCopy encodeBool:self->_canMakeRemotePayments forKey:@"canMakeRemotePayments"];
+  [coderCopy encodeBool:self->_isSRD forKey:@"isSRD"];
+  [coderCopy encodeBool:self->_inFailForward forKey:@"inFailForward"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[PKPaymentHardwareStatus allocWithZone:?]];
   *(result + 2) = self->_type;

@@ -1,20 +1,20 @@
 @interface WFRemoteWidgetConfigurationDefaultValueForParameterResponse
-- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithDefaultValue:(id)a3 error:(id)a4;
+- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithDefaultValue:(id)value error:(id)error;
 - (id)description;
 @end
 
 @implementation WFRemoteWidgetConfigurationDefaultValueForParameterResponse
 
-- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFRemoteWidgetConfigurationDefaultValueForParameterResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"defaultValue"];
+    v6 = [coderCopy decodeObjectForKey:@"defaultValue"];
     defaultValue = v5->_defaultValue;
     v5->_defaultValue = v6;
 
@@ -27,23 +27,23 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationDefaultValueForParameterResponse *)self defaultValue];
-  v5 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v6 = [v3 stringWithFormat:@"defaultValue: %@, error: %@", v4, v5];
+  defaultValue = [(WFRemoteWidgetConfigurationDefaultValueForParameterResponse *)self defaultValue];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v6 = [v3 stringWithFormat:@"defaultValue: %@, error: %@", defaultValue, error];
 
   return v6;
 }
 
-- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithDefaultValue:(id)a3 error:(id)a4
+- (WFRemoteWidgetConfigurationDefaultValueForParameterResponse)initWithDefaultValue:(id)value error:(id)error
 {
-  v7 = a3;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationDefaultValueForParameterResponse;
-  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:a4];
+  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_defaultValue, a3);
+    objc_storeStrong(&v8->_defaultValue, value);
     v10 = v9;
   }
 

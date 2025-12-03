@@ -1,5 +1,5 @@
 @interface SKUISearchBar
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SKUISearchBar)init;
 @end
 
@@ -24,21 +24,21 @@
     }
 
     [(SKUISearchBar *)v2 setSemanticContentAttribute:v3];
-    v5 = [(SKUISearchBar *)v2 searchField];
-    [v5 setSemanticContentAttribute:v3];
+    searchField = [(SKUISearchBar *)v2 searchField];
+    [searchField setSemanticContentAttribute:v3];
 
-    v6 = [(SKUISearchBar *)v2 searchField];
-    [v6 setTextAlignment:v4];
+    searchField2 = [(SKUISearchBar *)v2 searchField];
+    [searchField2 setTextAlignment:v4];
   }
 
   return v2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v13.receiver = self;
   v13.super_class = SKUISearchBar;
-  [(SKUISearchBar *)&v13 sizeThatFits:a3.width, a3.height];
+  [(SKUISearchBar *)&v13 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(SKUISearchBar *)self intrinsicWidth];

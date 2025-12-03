@@ -1,25 +1,25 @@
 @interface SBBacklightControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)screenIsDim;
-- (float)_factorToPublishForBacklightState:(int64_t)a3;
-- (void)setBacklightState:(int64_t)a3 source:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
+- (float)_factorToPublishForBacklightState:(int64_t)state;
+- (void)setBacklightState:(int64_t)state source:(int64_t)source animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBBacklightControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBBacklightController" hasInstanceMethod:@"setBacklightState:source:animated:completion:" withFullSignature:{"v", "q", "q", "B", "@?", 0}];
-  [v3 validateClass:@"SBBacklightControllerAccessibility" hasInstanceMethod:@"_factorToPublishForBacklightState:" withFullSignature:{"f", "q", 0}];
-  [v3 validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsDim" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBBacklightController" hasInstanceMethod:@"setBacklightState:source:animated:completion:" withFullSignature:{"v", "q", "q", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBBacklightControllerAccessibility" hasInstanceMethod:@"_factorToPublishForBacklightState:" withFullSignature:{"f", "q", 0}];
+  [validationsCopy validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBBacklightController" hasInstanceMethod:@"screenIsDim" withFullSignature:{"B", 0}];
 }
 
-- (float)_factorToPublishForBacklightState:(int64_t)a3
+- (float)_factorToPublishForBacklightState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 0.02;
   }
@@ -32,10 +32,10 @@
   return result;
 }
 
-- (void)setBacklightState:(int64_t)a3 source:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setBacklightState:(int64_t)state source:(int64_t)source animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
+  animatedCopy = animated;
+  completionCopy = completion;
   v11 = MEMORY[0x29ED38050]();
   v31 = 0;
   v32 = &v31;
@@ -45,9 +45,9 @@
   v25 = 3221225472;
   v26 = __83__SBBacklightControllerAccessibility_setBacklightState_source_animated_completion___block_invoke;
   v27 = &unk_29F2FBE28;
-  v28 = self;
+  selfCopy = self;
   v29 = &v31;
-  v30 = a3;
+  stateCopy = state;
   AXPerformSafeBlock();
   v12 = v32[6];
   _Block_object_dispose(&v31, 8);
@@ -57,8 +57,8 @@
     v21[1] = 3221225472;
     v21[2] = __83__SBBacklightControllerAccessibility_setBacklightState_source_animated_completion___block_invoke_2;
     v21[3] = &unk_29F2FC678;
-    v23 = a4;
-    v22 = v10;
+    sourceCopy = source;
+    v22 = completionCopy;
     v13 = MEMORY[0x29ED38050](v21);
 
     v11 = v13;
@@ -72,8 +72,8 @@
 
   if ((setBacklightState_source_animated_completion___AXShouldSpeakNextDimmedMessage & 1) == 0 && UIAccessibilityIsVoiceOverRunning())
   {
-    v14 = [MEMORY[0x29EDBDFA8] server];
-    [v14 isMediaPlayingForApp:0 completionHandler:&__block_literal_global_23];
+    server = [MEMORY[0x29EDBDFA8] server];
+    [server isMediaPlayingForApp:0 completionHandler:&__block_literal_global_23];
 
     v15 = 1;
 LABEL_10:
@@ -93,14 +93,14 @@ LABEL_10:
   {
     if (_SBAXScreenCurtainEnabled != 1 || v12 == 0.0)
     {
-      [(SBBacklightControllerAccessibility *)&v18 setBacklightState:a3 source:a4 animated:v6 completion:v11, self, SBBacklightControllerAccessibility];
+      [(SBBacklightControllerAccessibility *)&v18 setBacklightState:state source:source animated:animatedCopy completion:v11, self, SBBacklightControllerAccessibility];
     }
 
     else
     {
       v19.receiver = self;
       v19.super_class = SBBacklightControllerAccessibility;
-      [(SBBacklightControllerAccessibility *)&v19 setBacklightState:2 source:a4 animated:v16 != v17 completion:v11];
+      [(SBBacklightControllerAccessibility *)&v19 setBacklightState:2 source:source animated:v16 != v17 completion:v11];
       BKSHIDServicesSetBacklightFactorPending();
     }
   }
@@ -109,7 +109,7 @@ LABEL_10:
   {
     v20.receiver = self;
     v20.super_class = SBBacklightControllerAccessibility;
-    [(SBBacklightControllerAccessibility *)&v20 setBacklightState:a3 source:a4 animated:v6 completion:v11, v18.receiver, v18.super_class];
+    [(SBBacklightControllerAccessibility *)&v20 setBacklightState:state source:source animated:animatedCopy completion:v11, v18.receiver, v18.super_class];
   }
 }
 

@@ -3,20 +3,20 @@
 + (Class)invalidationContextClass;
 + (Class)layoutAttributesClass;
 + (double)snapToBoundariesDecelerationRate;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)progress;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setFocusedItemHorizontalCenterOffset:(double)a3;
-- (void)setInterItemSpacing:(double)a3;
-- (void)setItemWidth:(double)a3;
-- (void)setLayoutData:(id)a3;
-- (void)setMenuBarFocusedItemIndexPath:(id)a3 withTransitionProgress:(double)a4;
-- (void)setScaledItemWidth:(double)a3;
+- (void)setFocusedItemHorizontalCenterOffset:(double)offset;
+- (void)setInterItemSpacing:(double)spacing;
+- (void)setItemWidth:(double)width;
+- (void)setLayoutData:(id)data;
+- (void)setMenuBarFocusedItemIndexPath:(id)path withTransitionProgress:(double)progress;
+- (void)setScaledItemWidth:(double)width;
 @end
 
 @implementation SKUIZoomingShelfCollectionViewLayout
@@ -57,15 +57,15 @@
   v71.receiver = self;
   v71.super_class = SKUIZoomingShelfCollectionViewLayout;
   [(SKUIZoomingShelfCollectionViewLayout *)&v71 prepareLayout];
-  v11 = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
-  v58 = [v11 backgroundColor];
-  [v11 bounds];
+  collectionView = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
+  backgroundColor = [collectionView backgroundColor];
+  [collectionView bounds];
   v69 = v13;
   v70 = v12;
   v67 = v15;
   v68 = v14;
-  v57 = v11;
-  [v11 contentOffset];
+  v57 = collectionView;
+  [collectionView contentOffset];
   v17 = v16;
   focusedItemHorizontalCenterOffset = self->_focusedItemHorizontalCenterOffset;
   interItemSpacing = self->_interItemSpacing;
@@ -89,8 +89,8 @@
   v25 = itemWidth * 0.5;
   v65 = interItemSpacing + itemWidth;
   v66 = focusedItemHorizontalCenterOffset - v22;
-  v56 = [v11 numberOfSections];
-  if (v56 <= 0)
+  numberOfSections = [collectionView numberOfSections];
+  if (numberOfSections <= 0)
   {
     v52 = scaledItemWidth - itemWidth;
     v51 = -1.0;
@@ -123,7 +123,7 @@
           if ((v63 & 1) != 0 || ([(NSMutableDictionary *)self->_cachedLayoutAttributes objectForKey:v35], (v36 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v36 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
-            [v36 setBackgroundColor:v58];
+            [v36 setBackgroundColor:backgroundColor];
           }
 
           [(SKUIShelfLayoutData *)self->_layoutData sizeForItemAtIndex:v26 + i];
@@ -165,7 +165,7 @@
       ++v27;
     }
 
-    while (v27 != v56);
+    while (v27 != numberOfSections);
     v51 = (v26 - 1);
     v22 = v54;
     focusedItemHorizontalCenterOffset = v55;
@@ -203,12 +203,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -248,9 +248,9 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -263,7 +263,7 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
     }
   }
 
-  v13 = [(NSMutableDictionary *)self->_cachedLayoutAttributes objectForKey:v4];
+  v13 = [(NSMutableDictionary *)self->_cachedLayoutAttributes objectForKey:pathCopy];
 
   return v13;
 }
@@ -287,12 +287,12 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   return v10;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -307,23 +307,23 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
 
   v24.receiver = self;
   v24.super_class = SKUIZoomingShelfCollectionViewLayout;
-  v16 = [(SKUIZoomingShelfCollectionViewLayout *)&v24 invalidationContextForBoundsChange:x, y, width, height];
-  v17 = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
-  [v17 bounds];
+  height = [(SKUIZoomingShelfCollectionViewLayout *)&v24 invalidationContextForBoundsChange:x, y, width, height];
+  collectionView = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v19 = v18;
   v21 = v20;
 
   if (v19 == width && v21 == height)
   {
-    [v16 setInvalidateGeometryOnlyOfExistingLayoutAttributes:1];
+    [height setInvalidateGeometryOnlyOfExistingLayoutAttributes:1];
   }
 
-  return v16;
+  return height;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -336,19 +336,19 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
     }
   }
 
-  v13 = v4;
+  v13 = contextCopy;
   self->_invalidateGeometryOnlyOfExistingLayoutAttributes = [v13 invalidateGeometryOnlyOfExistingLayoutAttributes];
   v14.receiver = self;
   v14.super_class = SKUIZoomingShelfCollectionViewLayout;
   [(SKUIZoomingShelfCollectionViewLayout *)&v14 invalidateLayoutWithContext:v13];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -361,7 +361,7 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
     }
   }
 
-  v17 = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
+  collectionView = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
   focusedItemHorizontalCenterOffset = self->_focusedItemHorizontalCenterOffset;
   interItemSpacing = self->_interItemSpacing;
   itemWidth = self->_itemWidth;
@@ -392,9 +392,9 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   v26 = v38[5];
   if (v26)
   {
-    v27 = [v26 section];
-    v28 = [v38[5] item];
-    if (v27 < 1)
+    section = [v26 section];
+    item = [v38[5] item];
+    if (section < 1)
     {
       v30 = 0;
     }
@@ -405,13 +405,13 @@ void __74__SKUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
       v30 = 0;
       do
       {
-        v30 += [v17 numberOfItemsInSection:v29++];
+        v30 += [collectionView numberOfItemsInSection:v29++];
       }
 
-      while (v27 != v29);
+      while (section != v29);
     }
 
-    v31 = itemWidth * 0.5 + focusedItemHorizontalCenterOffset - scaledItemWidth * 0.5 + (v30 + v28) * (interItemSpacing + itemWidth) + (scaledItemWidth - itemWidth) * 0.5 - focusedItemHorizontalCenterOffset;
+    v31 = itemWidth * 0.5 + focusedItemHorizontalCenterOffset - scaledItemWidth * 0.5 + (v30 + item) * (interItemSpacing + itemWidth) + (scaledItemWidth - itemWidth) * 0.5 - focusedItemHorizontalCenterOffset;
   }
 
   else
@@ -442,7 +442,7 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
   }
 }
 
-- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)a3
+- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)progress
 {
   v41[1] = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
@@ -457,13 +457,13 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  v13 = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
-  [v13 layoutIfNeeded];
-  v14 = [v13 indexPathsForVisibleItems];
-  v34 = a3;
-  if (![v14 count])
+  collectionView = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
+  [collectionView layoutIfNeeded];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  progressCopy = progress;
+  if (![indexPathsForVisibleItems count])
   {
-    [v13 contentOffset];
+    [collectionView contentOffset];
     if (v15 <= 0.0)
     {
       v18 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
@@ -473,8 +473,8 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
 
     else
     {
-      v16 = [v13 numberOfSections] - 1;
-      v17 = [v13 numberOfItemsInSection:v16];
+      v16 = [collectionView numberOfSections] - 1;
+      v17 = [collectionView numberOfItemsInSection:v16];
       v18 = [MEMORY[0x277CCAA70] indexPathForItem:v17 - 1 inSection:v16];
       v40 = v18;
       v19 = &v40;
@@ -482,14 +482,14 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
 
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
 
-    v14 = v20;
+    indexPathsForVisibleItems = v20;
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v21 = v14;
+  v21 = indexPathsForVisibleItems;
   v22 = [v21 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v22)
   {
@@ -531,17 +531,17 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     v26 = 1.79769313e308;
   }
 
-  if (v34)
+  if (progressCopy)
   {
-    *v34 = v26 * 2.0 + -1.0;
+    *progressCopy = v26 * 2.0 + -1.0;
   }
 
   return v24;
 }
 
-- (void)setMenuBarFocusedItemIndexPath:(id)a3 withTransitionProgress:(double)a4
+- (void)setMenuBarFocusedItemIndexPath:(id)path withTransitionProgress:(double)progress
 {
-  v6 = a3;
+  pathCopy = path;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -554,36 +554,36 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  v15 = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
+  collectionView = [(SKUIZoomingShelfCollectionViewLayout *)self collectionView];
   interItemSpacing = self->_interItemSpacing;
   itemWidth = self->_itemWidth;
   scaledItemWidth = self->_scaledItemWidth;
-  v19 = [v6 section];
-  if (v19 < 1)
+  section = [pathCopy section];
+  if (section < 1)
   {
     v22 = 0;
   }
 
   else
   {
-    v20 = v19;
+    v20 = section;
     v21 = 0;
     v22 = 0;
     do
     {
-      v22 += [v15 numberOfItemsInSection:v21++];
+      v22 += [collectionView numberOfItemsInSection:v21++];
     }
 
     while (v20 != v21);
   }
 
   v23 = itemWidth * 0.5 + interItemSpacing + scaledItemWidth * 0.5 + itemWidth * 0.5 + interItemSpacing + scaledItemWidth * 0.5;
-  v24 = [v6 item] + v22;
-  [v15 contentOffset];
-  [v15 setContentOffset:v23 * 0.5 + itemWidth * 0.5 + scaledItemWidth * -0.5 + v24 * (interItemSpacing + itemWidth) + (a4 + 1.0) * -0.5 * (v23 - (scaledItemWidth - itemWidth))];
+  v24 = [pathCopy item] + v22;
+  [collectionView contentOffset];
+  [collectionView setContentOffset:v23 * 0.5 + itemWidth * 0.5 + scaledItemWidth * -0.5 + v24 * (interItemSpacing + itemWidth) + (progress + 1.0) * -0.5 * (v23 - (scaledItemWidth - itemWidth))];
 }
 
-- (void)setFocusedItemHorizontalCenterOffset:(double)a3
+- (void)setFocusedItemHorizontalCenterOffset:(double)offset
 {
   if (os_variant_has_internal_content())
   {
@@ -597,16 +597,16 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  if (self->_focusedItemHorizontalCenterOffset != a3)
+  if (self->_focusedItemHorizontalCenterOffset != offset)
   {
-    self->_focusedItemHorizontalCenterOffset = a3;
+    self->_focusedItemHorizontalCenterOffset = offset;
     [(SKUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setLayoutData:(id)a3
+- (void)setLayoutData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -619,14 +619,14 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  if (self->_layoutData != v5)
+  if (self->_layoutData != dataCopy)
   {
-    objc_storeStrong(&self->_layoutData, a3);
+    objc_storeStrong(&self->_layoutData, data);
     [(SKUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setInterItemSpacing:(double)a3
+- (void)setInterItemSpacing:(double)spacing
 {
   if (os_variant_has_internal_content())
   {
@@ -640,14 +640,14 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  if (self->_interItemSpacing != a3)
+  if (self->_interItemSpacing != spacing)
   {
-    self->_interItemSpacing = a3;
+    self->_interItemSpacing = spacing;
     [(SKUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setItemWidth:(double)a3
+- (void)setItemWidth:(double)width
 {
   if (os_variant_has_internal_content())
   {
@@ -661,14 +661,14 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  if (self->_itemWidth != a3)
+  if (self->_itemWidth != width)
   {
-    self->_itemWidth = a3;
+    self->_itemWidth = width;
     [(SKUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setScaledItemWidth:(double)a3
+- (void)setScaledItemWidth:(double)width
 {
   if (os_variant_has_internal_content())
   {
@@ -682,9 +682,9 @@ void __106__SKUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     }
   }
 
-  if (self->_scaledItemWidth != a3)
+  if (self->_scaledItemWidth != width)
   {
-    self->_scaledItemWidth = a3;
+    self->_scaledItemWidth = width;
     [(SKUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }

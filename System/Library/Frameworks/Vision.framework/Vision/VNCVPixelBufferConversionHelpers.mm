@@ -1,37 +1,37 @@
 @interface VNCVPixelBufferConversionHelpers
-+ (BOOL)isCVPixelBuffer:(__CVBuffer *)a3 equalToCVPixelBuffer:(__CVBuffer *)a4;
-+ (__CVBuffer)createCVPixelBufferRefFromDictionaryRepresentation:(id)a3;
-+ (id)createDictionaryRepresentationOfCVPixelBuffer:(__CVBuffer *)a3;
++ (BOOL)isCVPixelBuffer:(__CVBuffer *)buffer equalToCVPixelBuffer:(__CVBuffer *)pixelBuffer;
++ (__CVBuffer)createCVPixelBufferRefFromDictionaryRepresentation:(id)representation;
++ (id)createDictionaryRepresentationOfCVPixelBuffer:(__CVBuffer *)buffer;
 + (id)dictionaryRepresentationClassesSet;
-+ (unint64_t)computeHashForCVPixelBuffer:(__CVBuffer *)a3;
++ (unint64_t)computeHashForCVPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation VNCVPixelBufferConversionHelpers
 
-+ (unint64_t)computeHashForCVPixelBuffer:(__CVBuffer *)a3
++ (unint64_t)computeHashForCVPixelBuffer:(__CVBuffer *)buffer
 {
-  IsPlanar = CVPixelBufferIsPlanar(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  IsPlanar = CVPixelBufferIsPlanar(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v8 = [CVPixelBufferGetAttributes() hash];
-  v9 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldNotPropagate);
+  v9 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldNotPropagate);
   v10 = [(__CFDictionary *)v9 hash]^ __ROR8__(v8 ^ __ROR8__((Width << 26) ^ (Height << 13) ^ PixelFormatType, 51), 51);
 
   if (IsPlanar)
   {
-    PlaneCount = CVPixelBufferGetPlaneCount(a3);
+    PlaneCount = CVPixelBufferGetPlaneCount(buffer);
     v12 = PlaneCount ^ __ROR8__(v10, 51);
-    CVPixelBufferLockBaseAddress(a3, 0);
+    CVPixelBufferLockBaseAddress(buffer, 0);
     if (PlaneCount >= 1)
     {
       v13 = 0;
       v14 = PlaneCount & 0x7FFFFFFF;
       do
       {
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, v13);
-        HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, v13);
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, v13);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, v13);
+        HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, v13);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, v13);
         v12 = VNHashMemory(BaseAddressOfPlane, BytesPerRowOfPlane * HeightOfPlane) ^ __ROR8__(v12, 51);
         ++v13;
       }
@@ -42,38 +42,38 @@
 
   else
   {
-    CVPixelBufferLockBaseAddress(a3, 0);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    v19 = CVPixelBufferGetHeight(a3);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
+    CVPixelBufferLockBaseAddress(buffer, 0);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+    v19 = CVPixelBufferGetHeight(buffer);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
     v12 = VNHashMemory(BaseAddress, BytesPerRow * v19) ^ __ROR8__(v10, 51);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
   return v12;
 }
 
-+ (BOOL)isCVPixelBuffer:(__CVBuffer *)a3 equalToCVPixelBuffer:(__CVBuffer *)a4
++ (BOOL)isCVPixelBuffer:(__CVBuffer *)buffer equalToCVPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  if ((!a3 || a4) && (a3 || !a4))
+  if ((!buffer || pixelBuffer) && (buffer || !pixelBuffer))
   {
-    if (a4 == a3)
+    if (pixelBuffer == buffer)
     {
       v12 = 1;
       return v12 & 1;
     }
 
-    Height = CVPixelBufferGetHeight(a3);
-    if (Height == CVPixelBufferGetHeight(a4))
+    Height = CVPixelBufferGetHeight(buffer);
+    if (Height == CVPixelBufferGetHeight(pixelBuffer))
     {
-      v7 = CVPixelBufferGetHeight(a3);
-      if (v7 == CVPixelBufferGetHeight(a4))
+      v7 = CVPixelBufferGetHeight(buffer);
+      if (v7 == CVPixelBufferGetHeight(pixelBuffer))
       {
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-        if (PixelFormatType == CVPixelBufferGetPixelFormatType(a4))
+        PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+        if (PixelFormatType == CVPixelBufferGetPixelFormatType(pixelBuffer))
         {
-          IsPlanar = CVPixelBufferIsPlanar(a3);
-          if (IsPlanar == CVPixelBufferIsPlanar(a4))
+          IsPlanar = CVPixelBufferIsPlanar(buffer);
+          if (IsPlanar == CVPixelBufferIsPlanar(pixelBuffer))
           {
             v33 = CVPixelBufferGetAttributes();
             v32 = CVPixelBufferGetAttributes();
@@ -85,14 +85,14 @@ LABEL_42:
               return v12 & 1;
             }
 
-            v31 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldNotPropagate);
-            v30 = CVBufferCopyAttachments(a4, kCVAttachmentMode_ShouldNotPropagate);
+            v31 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldNotPropagate);
+            v30 = CVBufferCopyAttachments(pixelBuffer, kCVAttachmentMode_ShouldNotPropagate);
             if (([(__CFDictionary *)v31 isEqual:?]& 1) != 0)
             {
               if (IsPlanar)
               {
-                PlaneCount = CVPixelBufferGetPlaneCount(a3);
-                if (PlaneCount == CVPixelBufferGetPlaneCount(a4))
+                PlaneCount = CVPixelBufferGetPlaneCount(buffer);
+                if (PlaneCount == CVPixelBufferGetPlaneCount(pixelBuffer))
                 {
                   if (PlaneCount < 1)
                   {
@@ -105,31 +105,31 @@ LABEL_42:
                   v12 = 1;
                   while (1)
                   {
-                    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, v11);
-                    v14 = CVPixelBufferGetBytesPerRowOfPlane(a4, v11);
+                    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, v11);
+                    v14 = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, v11);
                     if (BytesPerRowOfPlane != v14)
                     {
                       break;
                     }
 
-                    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, v11);
-                    if (HeightOfPlane != CVPixelBufferGetHeightOfPlane(a4, v11))
+                    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, v11);
+                    if (HeightOfPlane != CVPixelBufferGetHeightOfPlane(pixelBuffer, v11))
                     {
                       break;
                     }
 
-                    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, v11);
-                    if (WidthOfPlane != CVPixelBufferGetWidthOfPlane(a4, v11))
+                    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, v11);
+                    if (WidthOfPlane != CVPixelBufferGetWidthOfPlane(pixelBuffer, v11))
                     {
                       break;
                     }
 
                     if (WidthOfPlane && HeightOfPlane)
                     {
-                      CVPixelBufferLockBaseAddress(a3, 0);
-                      CVPixelBufferLockBaseAddress(a4, 0);
-                      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, v11);
-                      v18 = CVPixelBufferGetBaseAddressOfPlane(a4, v11);
+                      CVPixelBufferLockBaseAddress(buffer, 0);
+                      CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+                      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, v11);
+                      v18 = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, v11);
                       if (HeightOfPlane >= 1)
                       {
                         v19 = v18;
@@ -145,8 +145,8 @@ LABEL_42:
                         while (HeightOfPlane);
                       }
 
-                      CVPixelBufferUnlockBaseAddress(a3, 0);
-                      CVPixelBufferUnlockBaseAddress(a4, 0);
+                      CVPixelBufferUnlockBaseAddress(buffer, 0);
+                      CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
                     }
 
                     if (++v11 == v29)
@@ -159,23 +159,23 @@ LABEL_42:
 
               else
               {
-                BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-                v23 = CVPixelBufferGetBytesPerRow(a4);
+                BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+                v23 = CVPixelBufferGetBytesPerRow(pixelBuffer);
                 if (BytesPerRow == v23)
                 {
-                  v24 = CVPixelBufferGetHeight(a3);
-                  if (v24 == CVPixelBufferGetHeight(a4))
+                  v24 = CVPixelBufferGetHeight(buffer);
+                  if (v24 == CVPixelBufferGetHeight(pixelBuffer))
                   {
-                    Width = CVPixelBufferGetWidth(a3);
-                    if (Width == CVPixelBufferGetWidth(a4))
+                    Width = CVPixelBufferGetWidth(buffer);
+                    if (Width == CVPixelBufferGetWidth(pixelBuffer))
                     {
                       v12 = 1;
                       if (Width && v24)
                       {
-                        CVPixelBufferLockBaseAddress(a3, 0);
-                        CVPixelBufferLockBaseAddress(a4, 0);
-                        BaseAddress = CVPixelBufferGetBaseAddress(a3);
-                        v27 = CVPixelBufferGetBaseAddress(a4);
+                        CVPixelBufferLockBaseAddress(buffer, 0);
+                        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+                        BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+                        v27 = CVPixelBufferGetBaseAddress(pixelBuffer);
                         if (v24 >= 1)
                         {
                           v28 = v27;
@@ -190,8 +190,8 @@ LABEL_42:
                           while (v24);
                         }
 
-                        CVPixelBufferUnlockBaseAddress(a3, 0);
-                        CVPixelBufferUnlockBaseAddress(a4, 0);
+                        CVPixelBufferUnlockBaseAddress(buffer, 0);
+                        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
                       }
 
                       goto LABEL_41;
@@ -215,25 +215,25 @@ LABEL_41:
   return v12 & 1;
 }
 
-+ (__CVBuffer)createCVPixelBufferRefFromDictionaryRepresentation:(id)a3
++ (__CVBuffer)createCVPixelBufferRefFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v36 = v3;
-  v4 = [v3 objectForKey:@"vnpbo_width"];
-  v5 = [v4 intValue];
+  representationCopy = representation;
+  v36 = representationCopy;
+  v4 = [representationCopy objectForKey:@"vnpbo_width"];
+  intValue = [v4 intValue];
 
-  v6 = [v3 objectForKey:@"vnpbo_height"];
-  v7 = [v6 intValue];
+  v6 = [representationCopy objectForKey:@"vnpbo_height"];
+  intValue2 = [v6 intValue];
 
-  v8 = [v3 objectForKey:@"vnpbo_pixelFormat"];
-  v9 = [v8 intValue];
+  v8 = [representationCopy objectForKey:@"vnpbo_pixelFormat"];
+  intValue3 = [v8 intValue];
 
-  v10 = [v3 objectForKey:@"vnpbo_attribs"];
-  v11 = [v3 objectForKey:@"vnpbo_attach"];
-  v12 = v5;
-  v13 = v7;
+  v10 = [representationCopy objectForKey:@"vnpbo_attribs"];
+  v11 = [representationCopy objectForKey:@"vnpbo_attach"];
+  v12 = intValue;
+  v13 = intValue2;
   buffer = 0;
-  if (VNCVPixelBufferCreateUsingIOSurface(v12, v7, v9, v10, &buffer))
+  if (VNCVPixelBufferCreateUsingIOSurface(v12, intValue2, intValue3, v10, &buffer))
   {
     v14 = 0;
   }
@@ -255,20 +255,20 @@ LABEL_41:
         for (i = 0; i != PlaneCount; ++i)
         {
           v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%zu", @"vnpbo_bytes", i];
-          v17 = [v3 objectForKey:v16];
+          v17 = [representationCopy objectForKey:v16];
 
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%zu", @"vnpbo_bpr", i];
-          v19 = [v3 objectForKey:v18];
+          v19 = [representationCopy objectForKey:v18];
           LODWORD(v20) = [v19 intValue];
 
           HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, i);
           BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, i);
           BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, i);
-          v24 = [v17 bytes];
+          bytes = [v17 bytes];
           v25 = v20;
           if (BytesPerRowOfPlane == v20)
           {
-            memcpy(BaseAddressOfPlane, v24, HeightOfPlane * v20);
+            memcpy(BaseAddressOfPlane, bytes, HeightOfPlane * v20);
           }
 
           else
@@ -285,13 +285,13 @@ LABEL_41:
 
             for (; HeightOfPlane; --HeightOfPlane)
             {
-              memcpy(BaseAddressOfPlane, v24, v20);
-              v24 += v25;
+              memcpy(BaseAddressOfPlane, bytes, v20);
+              bytes += v25;
               BaseAddressOfPlane += BytesPerRowOfPlane;
             }
           }
 
-          v3 = v36;
+          representationCopy = v36;
         }
       }
 
@@ -300,37 +300,37 @@ LABEL_41:
 
     else
     {
-      v26 = [v3 objectForKey:@"vnpbo_bytes"];
-      v27 = [v3 objectForKey:@"vnpbo_bpr"];
-      v28 = [v27 intValue];
+      v26 = [representationCopy objectForKey:@"vnpbo_bytes"];
+      v27 = [representationCopy objectForKey:@"vnpbo_bpr"];
+      intValue4 = [v27 intValue];
 
       CVPixelBufferLockBaseAddress(buffer, 0);
       BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
       BaseAddress = CVPixelBufferGetBaseAddress(buffer);
-      v31 = [v26 bytes];
-      if (BytesPerRow == v28)
+      bytes2 = [v26 bytes];
+      if (BytesPerRow == intValue4)
       {
-        memcpy(BaseAddress, v31, v28 * v7);
+        memcpy(BaseAddress, bytes2, intValue4 * intValue2);
       }
 
       else
       {
-        if (v28 >= BytesPerRow)
+        if (intValue4 >= BytesPerRow)
         {
           v32 = BytesPerRow;
         }
 
         else
         {
-          v32 = v28;
+          v32 = intValue4;
         }
 
-        if (v7)
+        if (intValue2)
         {
           do
           {
-            memcpy(BaseAddress, v31, v32);
-            v31 += v28;
+            memcpy(BaseAddress, bytes2, v32);
+            bytes2 += intValue4;
             BaseAddress += BytesPerRow;
             --v13;
           }
@@ -341,7 +341,7 @@ LABEL_41:
 
       CVPixelBufferUnlockBaseAddress(buffer, 0);
 
-      v3 = v36;
+      representationCopy = v36;
     }
 
     v14 = buffer;
@@ -351,14 +351,14 @@ LABEL_41:
   return v14;
 }
 
-+ (id)createDictionaryRepresentationOfCVPixelBuffer:(__CVBuffer *)a3
++ (id)createDictionaryRepresentationOfCVPixelBuffer:(__CVBuffer *)buffer
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v24 = CVPixelBufferGetAttributes();
-  v23 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldNotPropagate);
+  v23 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldNotPropagate);
   v8 = [MEMORY[0x1E696AD98] numberWithInt:Width];
   [v4 setObject:v8 forKey:@"vnpbo_width"];
 
@@ -370,17 +370,17 @@ LABEL_41:
 
   [v4 setObject:v24 forKey:@"vnpbo_attribs"];
   [v4 setObject:v23 forKey:@"vnpbo_attach"];
-  if (CVPixelBufferIsPlanar(a3))
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    PlaneCount = CVPixelBufferGetPlaneCount(a3);
+    PlaneCount = CVPixelBufferGetPlaneCount(buffer);
     if (PlaneCount)
     {
       for (i = 0; i != PlaneCount; ++i)
       {
-        HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, i);
-        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, i);
-        CVPixelBufferLockBaseAddress(a3, 0);
-        v15 = [MEMORY[0x1E695DEF0] dataWithBytes:CVPixelBufferGetBaseAddressOfPlane(a3 length:{i), HeightOfPlane * BytesPerRowOfPlane}];
+        HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, i);
+        BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, i);
+        CVPixelBufferLockBaseAddress(buffer, 0);
+        v15 = [MEMORY[0x1E695DEF0] dataWithBytes:CVPixelBufferGetBaseAddressOfPlane(buffer length:{i), HeightOfPlane * BytesPerRowOfPlane}];
         v16 = [MEMORY[0x1E696AD98] numberWithInt:BytesPerRowOfPlane];
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%zu", @"vnpbo_bpr", i];
         [v4 setObject:v16 forKey:v17];
@@ -388,21 +388,21 @@ LABEL_41:
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%zu", @"vnpbo_bytes", i];
         [v4 setObject:v15 forKey:v18];
 
-        CVPixelBufferUnlockBaseAddress(a3, 0);
+        CVPixelBufferUnlockBaseAddress(buffer, 0);
       }
     }
   }
 
   else
   {
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    CVPixelBufferLockBaseAddress(a3, 0);
-    v20 = [MEMORY[0x1E695DEF0] dataWithBytes:CVPixelBufferGetBaseAddress(a3) length:Height * BytesPerRow];
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+    CVPixelBufferLockBaseAddress(buffer, 0);
+    bytesPerRow = [MEMORY[0x1E695DEF0] dataWithBytes:CVPixelBufferGetBaseAddress(buffer) length:Height * BytesPerRow];
     v21 = [MEMORY[0x1E696AD98] numberWithInt:BytesPerRow];
     [v4 setObject:v21 forKey:@"vnpbo_bpr"];
 
-    [v4 setObject:v20 forKey:@"vnpbo_bytes"];
-    CVPixelBufferUnlockBaseAddress(a3, 0);
+    [v4 setObject:bytesPerRow forKey:@"vnpbo_bytes"];
+    CVPixelBufferUnlockBaseAddress(buffer, 0);
   }
 
   return v4;

@@ -1,49 +1,49 @@
 @interface MPSGraphViewerNodeRegionSPI
-- (MPSGraphViewerNodeRegionSPI)initWithJSONDictionary:(id)a3;
-- (MPSGraphViewerNodeRegionSPI)initWithName:(id)a3 returnType:(id)a4 nodes:(id)a5;
+- (MPSGraphViewerNodeRegionSPI)initWithJSONDictionary:(id)dictionary;
+- (MPSGraphViewerNodeRegionSPI)initWithName:(id)name returnType:(id)type nodes:(id)nodes;
 - (id)jsonDictionary;
 @end
 
 @implementation MPSGraphViewerNodeRegionSPI
 
-- (MPSGraphViewerNodeRegionSPI)initWithName:(id)a3 returnType:(id)a4 nodes:(id)a5
+- (MPSGraphViewerNodeRegionSPI)initWithName:(id)name returnType:(id)type nodes:(id)nodes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  nodesCopy = nodes;
   v15.receiver = self;
   v15.super_class = MPSGraphViewerNodeRegionSPI;
   v12 = [(MPSGraphViewerNodeRegionSPI *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_returnType, a4);
-    objc_storeStrong(&v13->_nodes, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_returnType, type);
+    objc_storeStrong(&v13->_nodes, nodes);
   }
 
   return v13;
 }
 
-- (MPSGraphViewerNodeRegionSPI)initWithJSONDictionary:(id)a3
+- (MPSGraphViewerNodeRegionSPI)initWithJSONDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = MPSGraphViewerNodeRegionSPI;
   v5 = [(MPSGraphViewerNodeRegionSPI *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"returnType"];
+    v8 = [dictionaryCopy objectForKey:@"returnType"];
     returnType = v5->_returnType;
     v5->_returnType = v8;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v4 objectForKey:@"nodes"];
+    [dictionaryCopy objectForKey:@"nodes"];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -93,8 +93,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(MPSGraphViewerNodeRegionSPI *)self nodes];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  nodes = [(MPSGraphViewerNodeRegionSPI *)self nodes];
+  v5 = [nodes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -104,34 +104,34 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodes);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [nodes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [(MPSGraphViewerNodeRegionSPI *)self name];
-  [v9 setObject:v10 forKey:@"name"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  name = [(MPSGraphViewerNodeRegionSPI *)self name];
+  [dictionary setObject:name forKey:@"name"];
 
-  v11 = [(MPSGraphViewerNodeRegionSPI *)self returnType];
-  LOBYTE(v10) = v11 == 0;
+  returnType = [(MPSGraphViewerNodeRegionSPI *)self returnType];
+  LOBYTE(name) = returnType == 0;
 
-  if ((v10 & 1) == 0)
+  if ((name & 1) == 0)
   {
-    v12 = [(MPSGraphViewerNodeRegionSPI *)self returnType];
-    [v9 setObject:v12 forKey:@"returnType"];
+    returnType2 = [(MPSGraphViewerNodeRegionSPI *)self returnType];
+    [dictionary setObject:returnType2 forKey:@"returnType"];
   }
 
-  [v9 setObject:v3 forKey:@"nodes"];
-  v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v9];
+  [dictionary setObject:v3 forKey:@"nodes"];
+  v13 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   return v13;
 }

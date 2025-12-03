@@ -1,48 +1,48 @@
 @interface NTKFaceSnapshotViewController
-- (NTKFaceSnapshotViewController)initWithFace:(id)a3;
+- (NTKFaceSnapshotViewController)initWithFace:(id)face;
 - (void)_attemptToFetchSnapshot;
-- (void)_handleSnapshot:(id)a3 forKey:(id)a4;
+- (void)_handleSnapshot:(id)snapshot forKey:(id)key;
 - (void)_updateFaceSnapshotIfNecessaryOfFace;
 - (void)complicationTemplatesChanged;
 - (void)complicationsChanged;
 - (void)dealloc;
-- (void)faceConfigurationDidChange:(id)a3;
-- (void)faceResourceDirectoryDidChange:(id)a3;
+- (void)faceConfigurationDidChange:(id)change;
+- (void)faceResourceDirectoryDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NTKFaceSnapshotViewController
 
-- (NTKFaceSnapshotViewController)initWithFace:(id)a3
+- (NTKFaceSnapshotViewController)initWithFace:(id)face
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  faceCopy = face;
   v13.receiver = self;
   v13.super_class = NTKFaceSnapshotViewController;
   v6 = [(NTKFaceSnapshotViewController *)&v13 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_face, a3);
+    objc_storeStrong(&v6->_face, face);
     [(NTKFace *)v7->_face addObserver:v7];
     v8 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(NTKFaceSnapshotViewController *)v7 face];
+      face = [(NTKFaceSnapshotViewController *)v7 face];
       *buf = 134218242;
       v15 = v7;
       v16 = 2112;
-      v17 = v9;
+      v17 = face;
       _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Observing face %@", buf, 0x16u);
     }
 
     [(NTKFaceSnapshotViewController *)v7 _attemptToFetchSnapshot];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel_complicationsChanged name:@"NTKWidgetComplicationProviderComplicationsDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_complicationsChanged name:@"NTKWidgetComplicationProviderComplicationsDidChange" object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v7 selector:sel_complicationTemplatesChanged name:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_complicationTemplatesChanged name:@"NTKCompanionWidgetComplicationManagerComplicationTemplatesDidChange" object:0];
   }
 
   return v7;
@@ -75,16 +75,16 @@
   }
 
   v5 = +[NTKFaceSnapshotCache snapshotCache];
-  v6 = [(NTKFaceSnapshotViewController *)self face];
-  v7 = [v5 cachedSnapshotOfFace:v6];
+  face = [(NTKFaceSnapshotViewController *)self face];
+  v7 = [v5 cachedSnapshotOfFace:face];
 
-  v8 = [(NTKFaceSnapshotViewController *)self face];
-  v9 = [v8 dailySnapshotKey];
-  v10 = [v9 copy];
+  face2 = [(NTKFaceSnapshotViewController *)self face];
+  dailySnapshotKey = [face2 dailySnapshotKey];
+  v10 = [dailySnapshotKey copy];
 
-  v11 = [(NTKFaceSnapshotViewController *)self face];
-  v12 = [v11 unsafeDailySnapshotKey];
-  v13 = [v12 copy];
+  face3 = [(NTKFaceSnapshotViewController *)self face];
+  unsafeDailySnapshotKey = [face3 unsafeDailySnapshotKey];
+  v13 = [unsafeDailySnapshotKey copy];
 
   v14 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -92,11 +92,11 @@
   {
     if (v15)
     {
-      v16 = [(NTKFaceSnapshotViewController *)self face];
+      face4 = [(NTKFaceSnapshotViewController *)self face];
       *buf = 134218242;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
-      v35 = v16;
+      v35 = face4;
       _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Fetched cached snapshot of face %@", buf, 0x16u);
     }
 
@@ -107,27 +107,27 @@
   {
     if (v15)
     {
-      v17 = [(NTKFaceSnapshotViewController *)self face];
+      face5 = [(NTKFaceSnapshotViewController *)self face];
       *buf = 134218242;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
-      v35 = v17;
+      v35 = face5;
       _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Cached snapshot miss of face %@", buf, 0x16u);
     }
 
     objc_initWeak(buf, self);
     v18 = [[NTKFaceSnapshotCacheRequestOptions alloc] initWithPriority:3];
     v19 = [NTKFaceSnapshotCacheRequest alloc];
-    v20 = [(NTKFaceSnapshotViewController *)self face];
+    face6 = [(NTKFaceSnapshotViewController *)self face];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke;
     v27 = &unk_278783E58;
     objc_copyWeak(&v31, buf);
-    v28 = self;
+    selfCopy3 = self;
     v29 = v10;
     v30 = v13;
-    v21 = [(NTKFaceSnapshotCacheRequest *)v19 initWithFace:v20 options:v18 completion:&v24];
+    v21 = [(NTKFaceSnapshotCacheRequest *)v19 initWithFace:face6 options:v18 completion:&v24];
 
     v22 = [NTKFaceSnapshotCache snapshotCache:v24];
     [v22 fetchSnapshotWithRequest:v21];
@@ -200,30 +200,30 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   [WeakRetained _attemptToFetchSnapshot];
 }
 
-- (void)_handleSnapshot:(id)a3 forKey:(id)a4
+- (void)_handleSnapshot:(id)snapshot forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  keyCopy = key;
   v8 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NTKFaceSnapshotViewController *)self face];
+    face = [(NTKFaceSnapshotViewController *)self face];
     v13 = 134218498;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v6;
+    v16 = snapshotCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = face;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Handling snapshot %@ of face %@", &v13, 0x20u);
   }
 
-  [(NTKFaceSnapshotViewController *)self setSnapshotImage:v6];
-  v10 = [v7 copy];
+  [(NTKFaceSnapshotViewController *)self setSnapshotImage:snapshotCopy];
+  v10 = [keyCopy copy];
 
   [(NTKFaceSnapshotViewController *)self setSnapshotKeyOfSnapshotImage:v10];
-  v11 = [(NTKFaceSnapshotViewController *)self imageView];
-  [v11 setImage:v6];
+  imageView = [(NTKFaceSnapshotViewController *)self imageView];
+  [imageView setImage:snapshotCopy];
 
   snapshotRequest = self->_snapshotRequest;
   self->_snapshotRequest = 0;
@@ -235,17 +235,17 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   v10.super_class = NTKFaceSnapshotViewController;
   [(NTKFaceSnapshotViewController *)&v10 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277D755E8]);
-  v4 = [(NTKFaceSnapshotViewController *)self snapshotImage];
-  v5 = [v3 initWithImage:v4];
+  snapshotImage = [(NTKFaceSnapshotViewController *)self snapshotImage];
+  v5 = [v3 initWithImage:snapshotImage];
   imageView = self->_imageView;
   self->_imageView = v5;
 
-  v7 = [(NTKFaceSnapshotViewController *)self view];
-  v8 = [(NTKFaceSnapshotViewController *)self imageView];
-  [v7 addSubview:v8];
+  view = [(NTKFaceSnapshotViewController *)self view];
+  imageView = [(NTKFaceSnapshotViewController *)self imageView];
+  [view addSubview:imageView];
 
-  v9 = [(NTKFaceSnapshotViewController *)self imageView];
-  [v9 setContentMode:2];
+  imageView2 = [(NTKFaceSnapshotViewController *)self imageView];
+  [imageView2 setContentMode:2];
 }
 
 - (void)viewWillLayoutSubviews
@@ -253,8 +253,8 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   v17.receiver = self;
   v17.super_class = NTKFaceSnapshotViewController;
   [(NTKFaceSnapshotViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(NTKFaceSnapshotViewController *)self view];
-  [v3 bounds];
+  view = [(NTKFaceSnapshotViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -270,7 +270,7 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   v19.size.width = v9;
   v19.size.height = v11;
   v13 = CGRectGetHeight(v19) * 0.5;
-  v14 = [(NTKFaceSnapshotViewController *)self imageView];
+  imageView = [(NTKFaceSnapshotViewController *)self imageView];
   v20.origin.x = v5;
   v20.origin.y = v7;
   v20.size.width = v9;
@@ -280,40 +280,40 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   v21.origin.y = v7;
   v21.size.width = v9;
   v21.size.height = v11;
-  [v14 setBounds:{0.0, 0.0, Width, CGRectGetHeight(v21)}];
+  [imageView setBounds:{0.0, 0.0, Width, CGRectGetHeight(v21)}];
 
-  v16 = [(NTKFaceSnapshotViewController *)self imageView];
-  [v16 setCenter:{v12, v13}];
+  imageView2 = [(NTKFaceSnapshotViewController *)self imageView];
+  [imageView2 setCenter:{v12, v13}];
 }
 
-- (void)faceConfigurationDidChange:(id)a3
+- (void)faceConfigurationDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Face config changed for face %@", &v6, 0x16u);
   }
 
   [(NTKFaceSnapshotViewController *)self _updateFaceSnapshotIfNecessaryOfFace];
 }
 
-- (void)faceResourceDirectoryDidChange:(id)a3
+- (void)faceResourceDirectoryDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = changeCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Resource directory changed for face %@", &v6, 0x16u);
   }
 
@@ -327,7 +327,7 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Complications changed", &v4, 0xCu);
   }
 
@@ -341,7 +341,7 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "SnapshotVC %p: Complication templates changed", &v4, 0xCu);
   }
 
@@ -350,10 +350,10 @@ void __56__NTKFaceSnapshotViewController__attemptToFetchSnapshot__block_invoke_1
 
 - (void)_updateFaceSnapshotIfNecessaryOfFace
 {
-  v3 = [(NTKFaceSnapshotViewController *)self snapshotKeyOfSnapshotImage];
-  v4 = [(NTKFaceSnapshotViewController *)self face];
-  v5 = [v4 dailySnapshotKey];
-  v6 = [v3 isEqualToString:v5];
+  snapshotKeyOfSnapshotImage = [(NTKFaceSnapshotViewController *)self snapshotKeyOfSnapshotImage];
+  face = [(NTKFaceSnapshotViewController *)self face];
+  dailySnapshotKey = [face dailySnapshotKey];
+  v6 = [snapshotKeyOfSnapshotImage isEqualToString:dailySnapshotKey];
 
   if ((v6 & 1) == 0)
   {

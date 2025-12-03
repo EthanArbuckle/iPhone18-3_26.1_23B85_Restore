@@ -1,34 +1,34 @@
 @interface SXVideoFillViewFactory
-- (SXVideoFillViewFactory)initWithDOMObjectProvider:(id)a3 imageViewFactory:(id)a4;
-- (id)createVideoFillViewForVideoFill:(id)a3;
+- (SXVideoFillViewFactory)initWithDOMObjectProvider:(id)provider imageViewFactory:(id)factory;
+- (id)createVideoFillViewForVideoFill:(id)fill;
 @end
 
 @implementation SXVideoFillViewFactory
 
-- (SXVideoFillViewFactory)initWithDOMObjectProvider:(id)a3 imageViewFactory:(id)a4
+- (SXVideoFillViewFactory)initWithDOMObjectProvider:(id)provider imageViewFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = SXVideoFillViewFactory;
   v9 = [(SXVideoFillViewFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_DOMObjectProvider, a3);
-    objc_storeStrong(&v10->_imageViewFactory, a4);
+    objc_storeStrong(&v9->_DOMObjectProvider, provider);
+    objc_storeStrong(&v10->_imageViewFactory, factory);
   }
 
   return v10;
 }
 
-- (id)createVideoFillViewForVideoFill:(id)a3
+- (id)createVideoFillViewForVideoFill:(id)fill
 {
-  v4 = a3;
+  fillCopy = fill;
   v5 = [SXVideoFillView alloc];
-  v6 = [(SXVideoFillViewFactory *)self DOMObjectProvider];
-  v7 = [(SXVideoFillViewFactory *)self imageViewFactory];
-  v8 = [(SXVideoFillView *)v5 initWithVideoFill:v4 DOMObjectProvider:v6 imageViewFactory:v7];
+  dOMObjectProvider = [(SXVideoFillViewFactory *)self DOMObjectProvider];
+  imageViewFactory = [(SXVideoFillViewFactory *)self imageViewFactory];
+  v8 = [(SXVideoFillView *)v5 initWithVideoFill:fillCopy DOMObjectProvider:dOMObjectProvider imageViewFactory:imageViewFactory];
 
   return v8;
 }

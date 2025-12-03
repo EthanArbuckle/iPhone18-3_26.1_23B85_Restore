@@ -1,36 +1,36 @@
 @interface CUIKContactDescriptionGenerator
-+ (id)CUIKLabeledDisplayStringForContact:(id)a3 label:(id)a4;
-+ (id)CUIKLabeledDisplayStringForContact:(id)a3 label:(id)a4 isMe:(BOOL)a5;
++ (id)CUIKLabeledDisplayStringForContact:(id)contact label:(id)label;
++ (id)CUIKLabeledDisplayStringForContact:(id)contact label:(id)label isMe:(BOOL)me;
 @end
 
 @implementation CUIKContactDescriptionGenerator
 
-+ (id)CUIKLabeledDisplayStringForContact:(id)a3 label:(id)a4
++ (id)CUIKLabeledDisplayStringForContact:(id)contact label:(id)label
 {
   v6 = MEMORY[0x1E6992F50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultProvider];
-  v10 = [v8 identifier];
-  v11 = [v9 contactIdentifierIsMe:v10];
+  labelCopy = label;
+  contactCopy = contact;
+  defaultProvider = [v6 defaultProvider];
+  identifier = [contactCopy identifier];
+  v11 = [defaultProvider contactIdentifierIsMe:identifier];
 
-  v12 = [a1 CUIKLabeledDisplayStringForContact:v8 label:v7 isMe:v11];
+  v12 = [self CUIKLabeledDisplayStringForContact:contactCopy label:labelCopy isMe:v11];
 
   return v12;
 }
 
-+ (id)CUIKLabeledDisplayStringForContact:(id)a3 label:(id)a4 isMe:(BOOL)a5
++ (id)CUIKLabeledDisplayStringForContact:(id)contact label:(id)label isMe:(BOOL)me
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [MEMORY[0x1E695CEE0] localizedStringForLabel:a4];
-  v9 = [v8 localizedCapitalizedString];
+  meCopy = me;
+  contactCopy = contact;
+  v8 = [MEMORY[0x1E695CEE0] localizedStringForLabel:label];
+  localizedCapitalizedString = [v8 localizedCapitalizedString];
 
-  if (v5)
+  if (meCopy)
   {
-    if (v9)
+    if (localizedCapitalizedString)
     {
-      v10 = v9;
+      v10 = localizedCapitalizedString;
       goto LABEL_13;
     }
 
@@ -40,16 +40,16 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695CD80] stringFromContact:v7 style:0];
-    if ([v7 contactType] != 1)
+    v11 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
+    if ([contactCopy contactType] != 1)
     {
       v13 = MEMORY[0x1E696AEC0];
       v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v15 = v14;
-      if (v9)
+      if (localizedCapitalizedString)
       {
         v16 = [v14 localizedStringForKey:@"%@’s %@" value:&stru_1F4AA8958 table:0];
-        [v13 localizedStringWithFormat:v16, v11, v9];
+        [v13 localizedStringWithFormat:v16, v11, localizedCapitalizedString];
       }
 
       else

@@ -1,26 +1,26 @@
 @interface NTKComplicationLayoutRule
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7;
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8;
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8 contentTransform:(CGAffineTransform *)a9;
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8 editingTransform:(CGAffineTransform *)a9;
-- (BOOL)isEqual:(id)a3;
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding;
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip;
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip contentTransform:(CGAffineTransform *)transform;
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip editingTransform:(CGAffineTransform *)transform;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)contentTransform;
 - (CGAffineTransform)editingTransform;
 - (UIEdgeInsets)keylinePadding;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForDevice:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForDevice:(id)device;
 - (unint64_t)hash;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setEditingTransform:(CGAffineTransform *)a3;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setEditingTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation NTKComplicationLayoutRule
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = NTKComplicationLayoutRule;
-  result = [(NTKLayoutRule *)&v8 initForDevice:a3];
+  result = [(NTKLayoutRule *)&v8 initForDevice:device];
   if (result)
   {
     v4 = MEMORY[0x277CBF2C0];
@@ -38,13 +38,13 @@
   return result;
 }
 
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  result = [a1 layoutRuleForDevice:a3 withReferenceFrame:a5 horizontalLayout:a6 verticalLayout:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  result = [self layoutRuleForDevice:device withReferenceFrame:layout horizontalLayout:verticalLayout verticalLayout:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   *(result + 9) = top;
   *(result + 10) = left;
   *(result + 11) = bottom;
@@ -52,13 +52,13 @@
   return result;
 }
 
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  result = [a1 layoutRuleForDevice:a3 withReferenceFrame:a5 horizontalLayout:a6 verticalLayout:a8 clip:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  result = [self layoutRuleForDevice:device withReferenceFrame:layout horizontalLayout:verticalLayout verticalLayout:clip clip:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   *(result + 9) = top;
   *(result + 10) = left;
   *(result + 11) = bottom;
@@ -66,23 +66,23 @@
   return result;
 }
 
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8 editingTransform:(CGAffineTransform *)a9
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip editingTransform:(CGAffineTransform *)transform
 {
-  result = [a1 layoutRuleForDevice:a3 withReferenceFrame:a5 horizontalLayout:a6 verticalLayout:a8 keylinePadding:a4.origin.x clip:{a4.origin.y, a4.size.width, a4.size.height, a7.top, a7.left, a7.bottom, a7.right}];
-  v12 = *&a9->c;
-  v11 = *&a9->tx;
-  *(result + 104) = *&a9->a;
+  result = [self layoutRuleForDevice:device withReferenceFrame:layout horizontalLayout:verticalLayout verticalLayout:clip keylinePadding:frame.origin.x clip:{frame.origin.y, frame.size.width, frame.size.height, padding.top, padding.left, padding.bottom, padding.right}];
+  v12 = *&transform->c;
+  v11 = *&transform->tx;
+  *(result + 104) = *&transform->a;
   *(result + 120) = v12;
   *(result + 136) = v11;
   return result;
 }
 
-+ (id)layoutRuleForDevice:(id)a3 withReferenceFrame:(CGRect)a4 horizontalLayout:(int64_t)a5 verticalLayout:(int64_t)a6 keylinePadding:(UIEdgeInsets)a7 clip:(BOOL)a8 contentTransform:(CGAffineTransform *)a9
++ (id)layoutRuleForDevice:(id)device withReferenceFrame:(CGRect)frame horizontalLayout:(int64_t)layout verticalLayout:(int64_t)verticalLayout keylinePadding:(UIEdgeInsets)padding clip:(BOOL)clip contentTransform:(CGAffineTransform *)transform
 {
-  result = [a1 layoutRuleForDevice:a3 withReferenceFrame:a5 horizontalLayout:a6 verticalLayout:a8 keylinePadding:a4.origin.x clip:{a4.origin.y, a4.size.width, a4.size.height, a7.top, a7.left, a7.bottom, a7.right}];
-  v12 = *&a9->c;
-  v11 = *&a9->tx;
-  *(result + 152) = *&a9->a;
+  result = [self layoutRuleForDevice:device withReferenceFrame:layout horizontalLayout:verticalLayout verticalLayout:clip keylinePadding:frame.origin.x clip:{frame.origin.y, frame.size.width, frame.size.height, padding.top, padding.left, padding.bottom, padding.right}];
+  v12 = *&transform->c;
+  v11 = *&transform->tx;
+  *(result + 152) = *&transform->a;
   *(result + 168) = v12;
   *(result + 184) = v11;
   return result;
@@ -109,12 +109,12 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = NTKComplicationLayoutRule;
-  if (![(NTKLayoutRule *)&v16 isEqual:v4])
+  if (![(NTKLayoutRule *)&v16 isEqual:equalCopy])
   {
     goto LABEL_10;
   }
@@ -125,7 +125,7 @@
     goto LABEL_10;
   }
 
-  [v4 keylinePadding];
+  [equalCopy keylinePadding];
   v6.f64[1] = v5;
   v8.f64[1] = v7;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_keylinePadding.top, v6), vceqq_f64(*&self->_keylinePadding.bottom, v8)))) & 1) == 0)
@@ -133,9 +133,9 @@
     goto LABEL_10;
   }
 
-  if (v4)
+  if (equalCopy)
   {
-    [v4 editingTransform];
+    [equalCopy editingTransform];
   }
 
   else
@@ -150,9 +150,9 @@
   if (CGAffineTransformEqualToTransform(&v14, &t2))
   {
     p_contentTransform = &self->_contentTransform;
-    if (v4)
+    if (equalCopy)
     {
-      [v4 contentTransform];
+      [equalCopy contentTransform];
     }
 
     else
@@ -176,11 +176,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NTKComplicationLayoutRule;
-  result = [(NTKLayoutRule *)&v10 copyWithZone:a3];
+  result = [(NTKLayoutRule *)&v10 copyWithZone:zone];
   v5 = *&self->_keylinePadding.bottom;
   *(result + 72) = *&self->_keylinePadding.top;
   *(result + 88) = v5;
@@ -219,11 +219,11 @@ LABEL_10:
   return self;
 }
 
-- (void)setEditingTransform:(CGAffineTransform *)a3
+- (void)setEditingTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_editingTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_editingTransform.a = *&transform->a;
   *&self->_editingTransform.c = v4;
   *&self->_editingTransform.tx = v3;
 }
@@ -237,11 +237,11 @@ LABEL_10:
   return self;
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_contentTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_contentTransform.a = *&transform->a;
   *&self->_contentTransform.c = v4;
   *&self->_contentTransform.tx = v3;
 }

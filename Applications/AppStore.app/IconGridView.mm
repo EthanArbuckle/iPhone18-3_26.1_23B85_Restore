@@ -1,12 +1,12 @@
 @interface IconGridView
-- (_TtC8AppStore12IconGridView)initWithCoder:(id)a3;
-- (_TtC8AppStore12IconGridView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore12IconGridView)initWithCoder:(id)coder;
+- (_TtC8AppStore12IconGridView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation IconGridView
 
-- (_TtC8AppStore12IconGridView)initWithCoder:(id)a3
+- (_TtC8AppStore12IconGridView)initWithCoder:(id)coder
 {
   v4 = sub_10002849C(&qword_100975330);
   __chkstk_darwin(v4);
@@ -24,11 +24,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006E72E4();
 }
 
-- (_TtC8AppStore12IconGridView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore12IconGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,35 +1,35 @@
 @interface MDMClientCoreRestoreAppHelper
-- (MDMClientCoreRestoreAppHelper)initWithApps:(id)a3 persona:(id)a4 operation:(unint64_t)a5 originator:(id)a6 completion:(id)a7;
+- (MDMClientCoreRestoreAppHelper)initWithApps:(id)apps persona:(id)persona operation:(unint64_t)operation originator:(id)originator completion:(id)completion;
 - (id)_errorForBatch;
 - (id)_logMessageForBatch;
 - (void)_notifyCallerThatAllOperationsAreComplete;
-- (void)_recordResponseForApp:(id)a3 error:(id)a4;
-- (void)_sendManageRequestForApp:(id)a3;
-- (void)_sendUnmanageRequestForApp:(id)a3;
+- (void)_recordResponseForApp:(id)app error:(id)error;
+- (void)_sendManageRequestForApp:(id)app;
+- (void)_sendUnmanageRequestForApp:(id)app;
 - (void)start;
 @end
 
 @implementation MDMClientCoreRestoreAppHelper
 
-- (MDMClientCoreRestoreAppHelper)initWithApps:(id)a3 persona:(id)a4 operation:(unint64_t)a5 originator:(id)a6 completion:(id)a7
+- (MDMClientCoreRestoreAppHelper)initWithApps:(id)apps persona:(id)persona operation:(unint64_t)operation originator:(id)originator completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  appsCopy = apps;
+  personaCopy = persona;
+  originatorCopy = originator;
+  completionCopy = completion;
   v27.receiver = self;
   v27.super_class = MDMClientCoreRestoreAppHelper;
   v16 = [(MDMClientCoreRestoreAppHelper *)&v27 init];
   if (v16)
   {
-    v17 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v12];
+    v17 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:appsCopy];
     apps = v16->_apps;
     v16->_apps = v17;
 
-    objc_storeStrong(&v16->_persona, a4);
-    v16->_operation = a5;
-    objc_storeStrong(&v16->_originator, a6);
-    v19 = _Block_copy(v15);
+    objc_storeStrong(&v16->_persona, persona);
+    v16->_operation = operation;
+    objc_storeStrong(&v16->_originator, originator);
+    v19 = _Block_copy(completionCopy);
     completion = v16->_completion;
     v16->_completion = v19;
 
@@ -53,15 +53,15 @@
 - (void)start
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMClientCoreRestoreAppHelper *)self apps];
-  v4 = [v3 mutableCopy];
+  apps = [(MDMClientCoreRestoreAppHelper *)self apps];
+  v4 = [apps mutableCopy];
   [(MDMClientCoreRestoreAppHelper *)self setAppsWaitingForResult:v4];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(MDMClientCoreRestoreAppHelper *)self setErrorsForApps:v5];
 
-  v6 = [(MDMClientCoreRestoreAppHelper *)self apps];
-  v7 = [v6 count];
+  apps2 = [(MDMClientCoreRestoreAppHelper *)self apps];
+  v7 = [apps2 count];
 
   if (v7)
   {
@@ -69,8 +69,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(MDMClientCoreRestoreAppHelper *)self apps];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    apps3 = [(MDMClientCoreRestoreAppHelper *)self apps];
+    v9 = [apps3 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -81,7 +81,7 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(apps3);
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
@@ -96,7 +96,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [apps3 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -113,17 +113,17 @@
 - (id)_errorForBatch
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMClientCoreRestoreAppHelper *)self operation];
+  operation = [(MDMClientCoreRestoreAppHelper *)self operation];
   v4 = 1;
-  if (v3)
+  if (operation)
   {
     v4 = 2;
   }
 
   v27 = v4;
-  v5 = [(MDMClientCoreRestoreAppHelper *)self operation];
+  operation2 = [(MDMClientCoreRestoreAppHelper *)self operation];
   v6 = @"unmanaged";
-  if (!v5)
+  if (!operation2)
   {
     v6 = @"managed";
   }
@@ -134,7 +134,7 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = self;
+  selfCopy = self;
   obj = [(MDMClientCoreRestoreAppHelper *)self errorsForApps];
   v8 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v8)
@@ -153,8 +153,8 @@
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [(MDMClientCoreRestoreAppHelper *)v7 errorsForApps];
-        v16 = [v15 objectForKey:v14];
+        errorsForApps = [(MDMClientCoreRestoreAppHelper *)selfCopy errorsForApps];
+        v16 = [errorsForApps objectForKey:v14];
 
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"The app %@ could not be marked as %@.", v14, v29];
         v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
@@ -170,7 +170,7 @@
     while (v9);
   }
 
-  if ([(MDMClientCoreRestoreAppHelper *)v7 operation])
+  if ([(MDMClientCoreRestoreAppHelper *)selfCopy operation])
   {
     v20 = 4;
   }
@@ -193,17 +193,17 @@
 - (id)_logMessageForBatch
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMClientCoreRestoreAppHelper *)self operation];
+  operation = [(MDMClientCoreRestoreAppHelper *)self operation];
   v4 = @"mark as unmanaged";
-  if (!v3)
+  if (!operation)
   {
     v4 = @"mark as managed";
   }
 
   v20 = v4;
-  v5 = [(MDMClientCoreRestoreAppHelper *)self operation];
+  operation2 = [(MDMClientCoreRestoreAppHelper *)self operation];
   v6 = @"unmanaged";
-  if (!v5)
+  if (!operation2)
   {
     v6 = @"managed";
   }
@@ -214,8 +214,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(MDMClientCoreRestoreAppHelper *)self apps];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  apps = [(MDMClientCoreRestoreAppHelper *)self apps];
+  v9 = [apps countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -226,12 +226,12 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(apps);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [(MDMClientCoreRestoreAppHelper *)self errorsForApps];
-        v15 = [v14 objectForKey:v13];
+        errorsForApps = [(MDMClientCoreRestoreAppHelper *)self errorsForApps];
+        v15 = [errorsForApps objectForKey:v13];
 
         if (v15)
         {
@@ -247,7 +247,7 @@
         [v7 appendFormat:@"\n\t%@: %@", v13, v16];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [apps countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -261,66 +261,66 @@
 - (void)_notifyCallerThatAllOperationsAreComplete
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(MDMClientCoreRestoreAppHelper *)self _logMessageForBatch];
+  _logMessageForBatch = [(MDMClientCoreRestoreAppHelper *)self _logMessageForBatch];
   v4 = 16 * ([(NSMutableDictionary *)self->_errorsForApps count]!= 0);
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, v4))
   {
     v13 = 138543362;
-    v14 = v3;
+    v14 = _logMessageForBatch;
     _os_log_impl(&dword_247E7D000, v5, v4, "%{public}@", &v13, 0xCu);
   }
 
-  v6 = [(MDMClientCoreRestoreAppHelper *)self errorsForApps];
-  v7 = [v6 count];
+  errorsForApps = [(MDMClientCoreRestoreAppHelper *)self errorsForApps];
+  v7 = [errorsForApps count];
 
   if (v7)
   {
-    v8 = [(MDMClientCoreRestoreAppHelper *)self _errorForBatch];
+    _errorForBatch = [(MDMClientCoreRestoreAppHelper *)self _errorForBatch];
   }
 
   else
   {
-    v8 = 0;
+    _errorForBatch = 0;
   }
 
-  v9 = [(MDMClientCoreRestoreAppHelper *)self completion];
+  completion = [(MDMClientCoreRestoreAppHelper *)self completion];
 
-  if (v9)
+  if (completion)
   {
-    v10 = [(MDMClientCoreRestoreAppHelper *)self completion];
-    (v10)[2](v10, v8);
+    completion2 = [(MDMClientCoreRestoreAppHelper *)self completion];
+    (completion2)[2](completion2, _errorForBatch);
   }
 
-  v11 = [(MDMClientCoreRestoreAppHelper *)self onComplete];
+  onComplete = [(MDMClientCoreRestoreAppHelper *)self onComplete];
 
-  if (v11)
+  if (onComplete)
   {
-    v12 = [(MDMClientCoreRestoreAppHelper *)self onComplete];
-    (v12)[2](v12, self);
+    onComplete2 = [(MDMClientCoreRestoreAppHelper *)self onComplete];
+    (onComplete2)[2](onComplete2, self);
   }
 }
 
-- (void)_recordResponseForApp:(id)a3 error:(id)a4
+- (void)_recordResponseForApp:(id)app error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  errorCopy = error;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = [(MDMClientCoreRestoreAppHelper *)self queue];
+  queue = [(MDMClientCoreRestoreAppHelper *)self queue];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __61__MDMClientCoreRestoreAppHelper__recordResponseForApp_error___block_invoke;
   v14 = &unk_278EE8110;
-  v9 = v7;
+  v9 = errorCopy;
   v15 = v9;
-  v16 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = appCopy;
   v17 = v10;
   v18 = &v19;
-  dispatch_sync(v8, &v11);
+  dispatch_sync(queue, &v11);
 
   if (!v20[3])
   {
@@ -345,49 +345,49 @@ void __61__MDMClientCoreRestoreAppHelper__recordResponseForApp_error___block_inv
   *(*(*(a1 + 56) + 8) + 24) = [v4 count];
 }
 
-- (void)_sendManageRequestForApp:(id)a3
+- (void)_sendManageRequestForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = objc_alloc_init(MEMORY[0x277D04CA0]);
-  [v5 setBundleIdentifier:v4];
+  [v5 setBundleIdentifier:appCopy];
   v6 = MEMORY[0x277CBEC38];
   [v5 setInternal:MEMORY[0x277CBEC38]];
-  v7 = [(MDMClientCoreRestoreAppHelper *)self originator];
-  [v5 setOriginator:v7];
+  originator = [(MDMClientCoreRestoreAppHelper *)self originator];
+  [v5 setOriginator:originator];
 
-  v8 = [(MDMClientCoreRestoreAppHelper *)self persona];
-  [v5 setPersonaIdentifier:v8];
+  persona = [(MDMClientCoreRestoreAppHelper *)self persona];
+  [v5 setPersonaIdentifier:persona];
 
   [v5 setRemovable:v6];
   [v5 setManagementOptions:1];
-  v9 = [MEMORY[0x277D04BF8] systemConnection];
+  systemConnection = [MEMORY[0x277D04BF8] systemConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__MDMClientCoreRestoreAppHelper__sendManageRequestForApp___block_invoke;
   v11[3] = &unk_278EE8138;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v9 performRequest:v5 completion:v11];
+  v12 = appCopy;
+  v10 = appCopy;
+  [systemConnection performRequest:v5 completion:v11];
 }
 
-- (void)_sendUnmanageRequestForApp:(id)a3
+- (void)_sendUnmanageRequestForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = objc_alloc_init(MEMORY[0x277D04D68]);
-  [v5 setBundleIdentifier:v4];
-  v6 = [(MDMClientCoreRestoreAppHelper *)self persona];
-  [v5 setPersonaIdentifier:v6];
+  [v5 setBundleIdentifier:appCopy];
+  persona = [(MDMClientCoreRestoreAppHelper *)self persona];
+  [v5 setPersonaIdentifier:persona];
 
-  v7 = [MEMORY[0x277D04BF8] systemConnection];
+  systemConnection = [MEMORY[0x277D04BF8] systemConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__MDMClientCoreRestoreAppHelper__sendUnmanageRequestForApp___block_invoke;
   v9[3] = &unk_278EE8138;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 performRequest:v5 completion:v9];
+  v10 = appCopy;
+  v8 = appCopy;
+  [systemConnection performRequest:v5 completion:v9];
 }
 
 @end

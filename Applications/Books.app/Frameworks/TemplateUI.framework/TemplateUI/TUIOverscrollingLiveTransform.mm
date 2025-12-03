@@ -2,17 +2,17 @@
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGSize)size;
-- (TUIOverscrollingLiveTransform)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5;
+- (TUIOverscrollingLiveTransform)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIOverscrollingLiveTransform
 
-- (TUIOverscrollingLiveTransform)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5
+- (TUIOverscrollingLiveTransform)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
   v13.receiver = self;
   v13.super_class = TUIOverscrollingLiveTransform;
   result = [(TUIOverscrollingLiveTransform *)&v13 init];
@@ -22,9 +22,9 @@
     result->_center.y = y;
     result->_size.width = width;
     result->_size.height = height;
-    v11 = *&a5->a;
-    v12 = *&a5->c;
-    *&result->_transform.tx = *&a5->tx;
+    v11 = *&transform->a;
+    v12 = *&transform->c;
+    *&result->_transform.tx = *&transform->tx;
     *&result->_transform.c = v12;
     *&result->_transform.a = v11;
   }

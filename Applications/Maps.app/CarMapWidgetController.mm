@@ -1,31 +1,31 @@
 @interface CarMapWidgetController
 - (id)contextsForCurrentAppState;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation CarMapWidgetController
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v7.receiver = self;
   v7.super_class = CarMapWidgetController;
-  [(CarWidgetController *)&v7 sceneDidEnterBackground:a3];
-  v4 = [(CarWidgetController *)self chromeViewController];
-  v5 = [v4 acquireChromeDeactivationTokenForReason:@"CarPlay Dashboard backgrounded"];
+  [(CarWidgetController *)&v7 sceneDidEnterBackground:background];
+  chromeViewController = [(CarWidgetController *)self chromeViewController];
+  v5 = [chromeViewController acquireChromeDeactivationTokenForReason:@"CarPlay Dashboard backgrounded"];
   chromeDeactivationToken = self->_chromeDeactivationToken;
   self->_chromeDeactivationToken = v5;
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   chromeDeactivationToken = self->_chromeDeactivationToken;
   self->_chromeDeactivationToken = 0;
-  v5 = a3;
+  foregroundCopy = foreground;
 
   v6.receiver = self;
   v6.super_class = CarMapWidgetController;
-  [(CarWidgetController *)&v6 sceneWillEnterForeground:v5];
+  [(CarWidgetController *)&v6 sceneWillEnterForeground:foregroundCopy];
 }
 
 - (id)contextsForCurrentAppState
@@ -33,38 +33,38 @@
   v3 = objc_alloc_init(CarMapWidgetMapBrowsingModeController);
   v4 = [NSMutableArray arrayWithObject:v3];
   v5 = +[CarDisplayController sharedInstance];
-  v6 = [v5 platformController];
-  v7 = [v6 currentSession];
+  platformController = [v5 platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(CarWidgetController *)self sceneType]<= 3)
   {
     v17 = [CarMapWidgetRouteGeniusModeController alloc];
-    v18 = +[CarRouteGeniusService sharedService];
-    v19 = [v18 suggestion];
-    v20 = [(CarBasicRouteGeniusModeController *)v17 initWithSuggestion:v19];
+    chromeViewController2 = +[CarRouteGeniusService sharedService];
+    suggestion = [chromeViewController2 suggestion];
+    v20 = [(CarBasicRouteGeniusModeController *)v17 initWithSuggestion:suggestion];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = currentSession;
     objc_opt_class();
     v9 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
     v10 = v9;
 
-    v11 = [v10 isCarNavigationCompatible];
-    if (v11)
+    isCarNavigationCompatible = [v10 isCarNavigationCompatible];
+    if (isCarNavigationCompatible)
     {
       if ([(CarWidgetController *)self sceneType]== 6)
       {
-        v12 = [(CarWidgetController *)self chromeViewController];
-        v13 = [v12 view];
-        v14 = [v13 window];
-        v15 = [v14 _car_hybridInstrumentClusterLayout];
+        chromeViewController = [(CarWidgetController *)self chromeViewController];
+        view = [chromeViewController view];
+        window = [view window];
+        _car_hybridInstrumentClusterLayout = [window _car_hybridInstrumentClusterLayout];
 
-        if (!v15)
+        if (!_car_hybridInstrumentClusterLayout)
         {
           v20 = objc_alloc_init(CarSmallWidgetNavigationModeController);
           goto LABEL_15;
@@ -79,10 +79,10 @@
       }
 
       v21 = [v16 alloc];
-      v18 = [(CarWidgetController *)self chromeViewController];
-      v19 = [v18 view];
-      v22 = [v19 window];
-      v20 = [v21 initWithPresentationType:{objc_msgSend(v22, "_car_hybridInstrumentClusterPresentationType")}];
+      chromeViewController2 = [(CarWidgetController *)self chromeViewController];
+      suggestion = [chromeViewController2 view];
+      window2 = [suggestion window];
+      v20 = [v21 initWithPresentationType:{objc_msgSend(window2, "_car_hybridInstrumentClusterPresentationType")}];
 
 LABEL_14:
 LABEL_15:
@@ -100,8 +100,8 @@ LABEL_15:
       if ([v24 count])
       {
         v44 = v23;
-        v45 = self;
-        v46 = v7;
+        selfCopy = self;
+        v46 = currentSession;
         v47 = v4;
         v48 = v3;
         v26 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v25 count]);
@@ -175,8 +175,8 @@ LABEL_36:
 
             v4 = v47;
             v3 = v48;
-            self = v45;
-            v7 = v46;
+            self = selfCopy;
+            currentSession = v46;
             v25 = v43;
             v23 = v44;
             goto LABEL_39;
@@ -195,7 +195,7 @@ LABEL_36:
 LABEL_39:
 
     *buf = 134349314;
-    v54 = self;
+    selfCopy2 = self;
     v55 = 2112;
     v56 = v40;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}p] Recreating current app state with modes: %@", buf, 0x16u);

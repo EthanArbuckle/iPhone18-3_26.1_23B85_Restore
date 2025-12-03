@@ -1,26 +1,26 @@
 @interface HDCloudSyncPipelineStageDescription
 - (HDCloudSyncPipelineStageDescription)init;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)descriptionForLogs;
-- (id)mergeWithDescription:(id)a3;
-- (id)serializedPrettyPrinted:(BOOL)a3 error:(id *)a4;
-- (id)setAccountInfoPartition:(id)a3 hasValidCredentials:(BOOL)a4 accountStatus:(id)a5 encryptionStatus:(id)a6;
+- (id)mergeWithDescription:(id)description;
+- (id)serializedPrettyPrinted:(BOOL)printed error:(id *)error;
+- (id)setAccountInfoPartition:(id)partition hasValidCredentials:(BOOL)credentials accountStatus:(id)status encryptionStatus:(id)encryptionStatus;
 @end
 
 @implementation HDCloudSyncPipelineStageDescription
 
-- (id)mergeWithDescription:(id)a3
+- (id)mergeWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = self;
-  HDCloudSyncPipelineStageDescription.merge(with:)(v6, v4);
+  descriptionCopy = description;
+  selfCopy = self;
+  HDCloudSyncPipelineStageDescription.merge(with:)(v6, descriptionCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (id)setAccountInfoPartition:(id)a3 hasValidCredentials:(BOOL)a4 accountStatus:(id)a5 encryptionStatus:(id)a6
+- (id)setAccountInfoPartition:(id)partition hasValidCredentials:(BOOL)credentials accountStatus:(id)status encryptionStatus:(id)encryptionStatus
 {
   v8 = sub_22911C35C();
   v10 = v9;
@@ -28,23 +28,23 @@
   v13 = v12;
   v14 = sub_22911C35C();
   v16 = v15;
-  v17 = self;
+  selfCopy = self;
   v18._countAndFlagsBits = v8;
   v18._object = v10;
   v19._countAndFlagsBits = v11;
   v19._object = v13;
   v20._countAndFlagsBits = v14;
   v20._object = v16;
-  HDCloudSyncPipelineStageDescription.setAccountInfo(partition:hasValidCredentials:accountStatus:encryptionStatus:)(v21, v18, a4, v19, v20);
+  HDCloudSyncPipelineStageDescription.setAccountInfo(partition:hasValidCredentials:accountStatus:encryptionStatus:)(v21, v18, credentials, v19, v20);
   v23 = v22;
 
   return v23;
 }
 
-- (id)serializedPrettyPrinted:(BOOL)a3 error:(id *)a4
+- (id)serializedPrettyPrinted:(BOOL)printed error:(id *)error
 {
-  v5 = self;
-  v6 = HDCloudSyncPipelineStageDescription.serialized(prettyPrinted:)(a3);
+  selfCopy = self;
+  v6 = HDCloudSyncPipelineStageDescription.serialized(prettyPrinted:)(printed);
   v8 = v7;
 
   v9 = sub_22911B80C();
@@ -55,7 +55,7 @@
 
 - (id)descriptionForLogs
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HDCloudSyncPipelineStageDescription.descriptionForLogs()();
   v5 = v4;
 
@@ -65,9 +65,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   HDCloudSyncPipelineStageDescription.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -78,7 +78,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HDCloudSyncPipelineStageDescription.description.getter();
 
   v3 = sub_22911C34C();

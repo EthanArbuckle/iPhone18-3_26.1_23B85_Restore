@@ -1,19 +1,19 @@
 @interface UARPTatsuManifestLocation
-- (UARPTatsuManifestLocation)initWithDictionary:(id)a3;
+- (UARPTatsuManifestLocation)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation UARPTatsuManifestLocation
 
-- (UARPTatsuManifestLocation)initWithDictionary:(id)a3
+- (UARPTatsuManifestLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = UARPTatsuManifestLocation;
   v5 = [(UARPTatsuManifestLocation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Payload 4CC"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Payload 4CC"];
     if (v6)
     {
       objc_opt_class();
@@ -25,7 +25,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"ftabSubfile"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"ftabSubfile"];
     if (v9)
     {
       objc_opt_class();
@@ -35,7 +35,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"MetaData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"MetaData"];
     if (v10)
     {
       objc_opt_class();

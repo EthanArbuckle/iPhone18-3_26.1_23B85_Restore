@@ -1,21 +1,21 @@
 @interface BaseEpisodePropertySource
-+ (id)defaultSortOrderSortDescriptorsForPodcastUuid:(id)a3;
-- (id)__urlIfCanFindDatabaseEpisodeForUuid:(id)a3 urlBlock:(id)a4;
-- (id)__urlIfCanFindDatabasePodcastForUuid:(id)a3 urlBlock:(id)a4;
-- (id)_localizedDateStringForDate:(id)a3;
-- (id)_localizedStringByCombiningWithString:(id)a3 firstComponent:(id)a4 secondComponent:(id)a5;
-- (id)_localizedStringForDuration:(double)a3 podcastTitle:(id)a4;
-- (id)_openEpisodeDetailInAppURLForEpisodeUuid:(id)a3 episodeStoreTrackId:(int64_t)a4 podcastStoreCollectionId:(int64_t)a5;
-- (id)_openPodcastDetailInAppURLForPodcastUuid:(id)a3 podcastStoreCollectionId:(int64_t)a4;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_initiatePlaybackWithDefaultBehaviorForEpisodeUUid:(id)a3 episodeStoreTrackId:(int64_t)a4 podcastUuid:(id)a5 podcastStoreCollectionId:(int64_t)a6 completion:(id)a7;
++ (id)defaultSortOrderSortDescriptorsForPodcastUuid:(id)uuid;
+- (id)__urlIfCanFindDatabaseEpisodeForUuid:(id)uuid urlBlock:(id)block;
+- (id)__urlIfCanFindDatabasePodcastForUuid:(id)uuid urlBlock:(id)block;
+- (id)_localizedDateStringForDate:(id)date;
+- (id)_localizedStringByCombiningWithString:(id)string firstComponent:(id)component secondComponent:(id)secondComponent;
+- (id)_localizedStringForDuration:(double)duration podcastTitle:(id)title;
+- (id)_openEpisodeDetailInAppURLForEpisodeUuid:(id)uuid episodeStoreTrackId:(int64_t)id podcastStoreCollectionId:(int64_t)collectionId;
+- (id)_openPodcastDetailInAppURLForPodcastUuid:(id)uuid podcastStoreCollectionId:(int64_t)id;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_initiatePlaybackWithDefaultBehaviorForEpisodeUUid:(id)uid episodeStoreTrackId:(int64_t)id podcastUuid:(id)uuid podcastStoreCollectionId:(int64_t)collectionId completion:(id)completion;
 @end
 
 @implementation BaseEpisodePropertySource
 
-+ (id)defaultSortOrderSortDescriptorsForPodcastUuid:(id)a3
++ (id)defaultSortOrderSortDescriptorsForPodcastUuid:(id)uuid
 {
-  v3 = a3;
+  uuidCopy = uuid;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -25,15 +25,15 @@
   if (+[MTDB canExtensionOpenDatabase])
   {
     v4 = +[MTDB sharedInstance];
-    v5 = [v4 mainOrPrivateContext];
+    mainOrPrivateContext = [v4 mainOrPrivateContext];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100002360;
     v12[3] = &unk_10002C770;
-    v6 = v5;
+    v6 = mainOrPrivateContext;
     v13 = v6;
-    v14 = v3;
+    v14 = uuidCopy;
     v15 = &v16;
     [v6 performBlockAndWait:v12];
   }
@@ -54,63 +54,63 @@
   return v10;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BaseEpisodePropertySource *)self sortPropertyValues];
-  if (v5 && (v6 = v5, +[MTPodcast allPossibleEpisodeListSortOrderProperties](MTPodcast, "allPossibleEpisodeListSortOrderProperties"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v4], v7, v6, v8))
+  keyCopy = key;
+  sortPropertyValues = [(BaseEpisodePropertySource *)self sortPropertyValues];
+  if (sortPropertyValues && (v6 = sortPropertyValues, +[MTPodcast allPossibleEpisodeListSortOrderProperties](MTPodcast, "allPossibleEpisodeListSortOrderProperties"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:keyCopy], v7, v6, v8))
   {
-    v9 = [(BaseEpisodePropertySource *)self sortPropertyValues];
-    v10 = [v9 objectForKey:v4];
+    sortPropertyValues2 = [(BaseEpisodePropertySource *)self sortPropertyValues];
+    v10 = [sortPropertyValues2 objectForKey:keyCopy];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = BaseEpisodePropertySource;
-    v10 = [(BaseEpisodePropertySource *)&v12 valueForUndefinedKey:v4];
+    v10 = [(BaseEpisodePropertySource *)&v12 valueForUndefinedKey:keyCopy];
   }
 
   return v10;
 }
 
-- (id)_localizedDateStringForDate:(id)a3
+- (id)_localizedDateStringForDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = [a3 friendlyDisplayString];
+    friendlyDisplayString = [date friendlyDisplayString];
   }
 
   else
   {
-    v4 = &stru_10002D1C8;
+    friendlyDisplayString = &stru_10002D1C8;
   }
 
-  return v4;
+  return friendlyDisplayString;
 }
 
-- (id)_localizedStringByCombiningWithString:(id)a3 firstComponent:(id)a4 secondComponent:(id)a5
+- (id)_localizedStringByCombiningWithString:(id)string firstComponent:(id)component secondComponent:(id)secondComponent
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  stringCopy = string;
+  componentCopy = component;
+  secondComponentCopy = secondComponent;
+  if ([componentCopy length] && objc_msgSend(secondComponentCopy, "length"))
   {
-    v10 = [NSString stringWithFormat:@"%@%@%@", v8, v7, v9];
+    secondComponentCopy = [NSString stringWithFormat:@"%@%@%@", componentCopy, stringCopy, secondComponentCopy];
 LABEL_8:
-    v11 = v10;
+    v11 = secondComponentCopy;
     goto LABEL_9;
   }
 
-  if ([v8 length])
+  if ([componentCopy length])
   {
-    v10 = v8;
+    secondComponentCopy = componentCopy;
     goto LABEL_8;
   }
 
-  if ([v9 length])
+  if ([secondComponentCopy length])
   {
-    v10 = v9;
+    secondComponentCopy = secondComponentCopy;
     goto LABEL_8;
   }
 
@@ -120,28 +120,28 @@ LABEL_9:
   return v11;
 }
 
-- (id)_localizedStringForDuration:(double)a3 podcastTitle:(id)a4
+- (id)_localizedStringForDuration:(double)duration podcastTitle:(id)title
 {
-  v6 = a4;
-  if (a3 <= 1.0)
+  titleCopy = title;
+  if (duration <= 1.0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [NSString prettyShortStringWithDuration:a3];
+    v7 = [NSString prettyShortStringWithDuration:duration];
   }
 
-  v8 = [objc_opt_class() defaultCombiningString];
-  v9 = [(BaseEpisodePropertySource *)self _localizedStringByCombiningWithString:v8 firstComponent:v7 secondComponent:v6];
+  defaultCombiningString = [objc_opt_class() defaultCombiningString];
+  v9 = [(BaseEpisodePropertySource *)self _localizedStringByCombiningWithString:defaultCombiningString firstComponent:v7 secondComponent:titleCopy];
 
   return v9;
 }
 
-- (id)_openPodcastDetailInAppURLForPodcastUuid:(id)a3 podcastStoreCollectionId:(int64_t)a4
+- (id)_openPodcastDetailInAppURLForPodcastUuid:(id)uuid podcastStoreCollectionId:(int64_t)id
 {
-  v7 = a3;
+  uuidCopy = uuid;
   if (!+[NSThread isMainThread])
   {
     v8 = _MTLogCategoryDefault();
@@ -158,7 +158,7 @@ LABEL_9:
     }
   }
 
-  v12 = [(BaseEpisodePropertySource *)self __urlIfCanFindDatabasePodcastForUuid:v7 urlBlock:&stru_10002C7B0];
+  v12 = [(BaseEpisodePropertySource *)self __urlIfCanFindDatabasePodcastForUuid:uuidCopy urlBlock:&stru_10002C7B0];
   v13 = v12;
   if (v12)
   {
@@ -167,7 +167,7 @@ LABEL_9:
 
   else
   {
-    v14 = [NSURL mt_displayURLForPodcastStoreCollectionId:a4];
+    v14 = [NSURL mt_displayURLForPodcastStoreCollectionId:id];
   }
 
   v15 = v14;
@@ -175,9 +175,9 @@ LABEL_9:
   return v15;
 }
 
-- (id)_openEpisodeDetailInAppURLForEpisodeUuid:(id)a3 episodeStoreTrackId:(int64_t)a4 podcastStoreCollectionId:(int64_t)a5
+- (id)_openEpisodeDetailInAppURLForEpisodeUuid:(id)uuid episodeStoreTrackId:(int64_t)id podcastStoreCollectionId:(int64_t)collectionId
 {
-  v9 = a3;
+  uuidCopy = uuid;
   if (!+[NSThread isMainThread])
   {
     v10 = _MTLogCategoryDefault();
@@ -194,7 +194,7 @@ LABEL_9:
     }
   }
 
-  v14 = [(BaseEpisodePropertySource *)self __urlIfCanFindDatabaseEpisodeForUuid:v9 urlBlock:&stru_10002C7F0];
+  v14 = [(BaseEpisodePropertySource *)self __urlIfCanFindDatabaseEpisodeForUuid:uuidCopy urlBlock:&stru_10002C7F0];
   v15 = v14;
   if (v14)
   {
@@ -203,7 +203,7 @@ LABEL_9:
 
   else
   {
-    v16 = [NSURL mt_displayURLForEpisodeStoreTrackId:a4 inPodcastWithStoreCollectionId:a5];
+    v16 = [NSURL mt_displayURLForEpisodeStoreTrackId:id inPodcastWithStoreCollectionId:collectionId];
   }
 
   v17 = v16;
@@ -211,9 +211,9 @@ LABEL_9:
   return v17;
 }
 
-- (void)_initiatePlaybackWithDefaultBehaviorForEpisodeUUid:(id)a3 episodeStoreTrackId:(int64_t)a4 podcastUuid:(id)a5 podcastStoreCollectionId:(int64_t)a6 completion:(id)a7
+- (void)_initiatePlaybackWithDefaultBehaviorForEpisodeUUid:(id)uid episodeStoreTrackId:(int64_t)id podcastUuid:(id)uuid podcastStoreCollectionId:(int64_t)collectionId completion:(id)completion
 {
-  v10 = a7;
+  completionCopy = completion;
   if (!+[NSThread isMainThread])
   {
     v11 = _MTLogCategoryDefault();
@@ -234,11 +234,11 @@ LABEL_9:
   v24[1] = 3221225472;
   v24[2] = sub_100002C2C;
   v24[3] = &unk_10002C818;
-  v25 = v10;
-  v15 = v10;
+  v25 = completionCopy;
+  v15 = completionCopy;
   v16 = objc_retainBlock(v24);
   v17 = +[MTPlaybackIdentifierUtil sharedInstance];
-  v18 = [v17 universalPlaybackQueueIdentifierForPodcastFeedUrl:0 podcastStoreId:a6 episodeGuid:0 episodeStoreId:a4 sampPlaybackOrder:0];
+  v18 = [v17 universalPlaybackQueueIdentifierForPodcastFeedUrl:0 podcastStoreId:collectionId episodeGuid:0 episodeStoreId:id sampPlaybackOrder:0];
 
   v19 = +[MTPlaybackIdentifierUtil sharedInstance];
   v20 = [v19 playbackRequestURLWithPlayReason:13 baseRequestURLString:v18];
@@ -252,11 +252,11 @@ LABEL_9:
   [MTExtensionPlaybackController setQueueWithPlaybackRequestIdentifier:v20 completion:v22];
 }
 
-- (id)__urlIfCanFindDatabaseEpisodeForUuid:(id)a3 urlBlock:(id)a4
+- (id)__urlIfCanFindDatabaseEpisodeForUuid:(id)uuid urlBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  uuidCopy = uuid;
+  blockCopy = block;
+  if (blockCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -264,20 +264,20 @@ LABEL_9:
     v20 = sub_100002348;
     v21 = sub_100002358;
     v22 = 0;
-    if ([v5 length] && +[MTDB canExtensionOpenDatabase](MTDB, "canExtensionOpenDatabase"))
+    if ([uuidCopy length] && +[MTDB canExtensionOpenDatabase](MTDB, "canExtensionOpenDatabase"))
     {
       v7 = +[MTDB sharedInstance];
-      v8 = [v7 mainOrPrivateContext];
+      mainOrPrivateContext = [v7 mainOrPrivateContext];
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100002E04;
       v12[3] = &unk_10002C840;
-      v9 = v8;
+      v9 = mainOrPrivateContext;
       v13 = v9;
-      v14 = v5;
+      v14 = uuidCopy;
       v16 = &v17;
-      v15 = v6;
+      v15 = blockCopy;
       [v9 performBlockAndWait:v12];
     }
 
@@ -293,11 +293,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)__urlIfCanFindDatabasePodcastForUuid:(id)a3 urlBlock:(id)a4
+- (id)__urlIfCanFindDatabasePodcastForUuid:(id)uuid urlBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  uuidCopy = uuid;
+  blockCopy = block;
+  if (blockCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -305,20 +305,20 @@ LABEL_9:
     v20 = sub_100002348;
     v21 = sub_100002358;
     v22 = 0;
-    if ([v5 length] && +[MTDB canExtensionOpenDatabase](MTDB, "canExtensionOpenDatabase"))
+    if ([uuidCopy length] && +[MTDB canExtensionOpenDatabase](MTDB, "canExtensionOpenDatabase"))
     {
       v7 = +[MTDB sharedInstance];
-      v8 = [v7 mainOrPrivateContext];
+      mainOrPrivateContext = [v7 mainOrPrivateContext];
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10000305C;
       v12[3] = &unk_10002C840;
-      v9 = v8;
+      v9 = mainOrPrivateContext;
       v13 = v9;
-      v14 = v5;
+      v14 = uuidCopy;
       v16 = &v17;
-      v15 = v6;
+      v15 = blockCopy;
       [v9 performBlockAndWait:v12];
     }
 

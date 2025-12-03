@@ -1,20 +1,20 @@
 @interface PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v7 = [a4 assetCollection];
-  if (!v7)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer.m" lineNumber:39 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer.m" lineNumber:39 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v21}];
 LABEL_20:
 
     goto LABEL_3;
@@ -23,28 +23,28 @@ LABEL_20:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v7 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer.m" lineNumber:39 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v21, v23}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer.m" lineNumber:39 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v21, px_descriptionForAssertionMessage}];
 
     goto LABEL_20;
   }
 
 LABEL_3:
-  v8 = [v7 estimatedPhotosCount];
-  v9 = [v7 estimatedVideosCount];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  estimatedPhotosCount = [assetCollection estimatedPhotosCount];
+  estimatedVideosCount = [assetCollection estimatedVideosCount];
+  if (estimatedPhotosCount != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v9;
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+    v10 = estimatedVideosCount;
+    if (estimatedVideosCount != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = v9 + v8;
-      if (v10 + v8 >= 1)
+      v11 = estimatedVideosCount + estimatedPhotosCount;
+      if (v10 + estimatedPhotosCount >= 1)
       {
         v12 = v10 == 0;
-        v13 = v12 || v8 != 0;
+        v13 = v12 || estimatedPhotosCount != 0;
         v14 = !v13;
         v15 = 2;
         if (!v14)
@@ -52,7 +52,7 @@ LABEL_3:
           v15 = 0;
         }
 
-        if (v8 != 0 && v12)
+        if (estimatedPhotosCount != 0 && v12)
         {
           v16 = 1;
         }
@@ -72,33 +72,33 @@ LABEL_3:
   return v17;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = a3;
-  v5 = [v4 assetCollection];
+  referenceCopy = reference;
+  assetCollection = [referenceCopy assetCollection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 assetCollection];
-    if ([v7 px_isSharedLibrarySharingSuggestionsSmartAlbum])
+    assetCollection2 = [referenceCopy assetCollection];
+    if ([assetCollection2 px_isSharedLibrarySharingSuggestionsSmartAlbum])
     {
-      v8 = 1;
+      px_isSharedLibrarySharingSuggestion = 1;
     }
 
     else
     {
-      v8 = [v7 px_isSharedLibrarySharingSuggestion];
+      px_isSharedLibrarySharingSuggestion = [assetCollection2 px_isSharedLibrarySharingSuggestion];
     }
   }
 
   else
   {
-    v8 = 0;
+    px_isSharedLibrarySharingSuggestion = 0;
   }
 
-  return v8;
+  return px_isSharedLibrarySharingSuggestion;
 }
 
 - (void)performBackgroundTask
@@ -110,15 +110,15 @@ LABEL_3:
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_INFO, "Attempting remove sharing suggestions. Calling PXSharedLibraryRemoveSharingSuggestions()", buf, 2u);
   }
 
-  v4 = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
-  v5 = v4;
-  if (!v4)
+  assetsDataSource = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
+  v5 = assetsDataSource;
+  if (!assetsDataSource)
   {
     v9 = MEMORY[0x1E6978630];
-    v10 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v6 = [v9 fetchAssetsInAssetCollection:v10 options:0];
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    allItemsEnumerator = [v9 fetchAssetsInAssetCollection:assetCollection options:0];
 
-    if (v6)
+    if (allItemsEnumerator)
     {
       goto LABEL_5;
     }
@@ -127,21 +127,21 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  v6 = [v4 allItemsEnumerator];
-  if (!v6)
+  allItemsEnumerator = [assetsDataSource allItemsEnumerator];
+  if (!allItemsEnumerator)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v7 = [[PXMoveAssetsToSharedLibraryAction alloc] initWithAssets:v6];
-  v8 = [(PXActionPerformer *)self undoManager];
+  v7 = [[PXMoveAssetsToSharedLibraryAction alloc] initWithAssets:allItemsEnumerator];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PXPhotoKitMoveAssetCollectionToSharedLibraryActionPerformer_performBackgroundTask__block_invoke;
   v11[3] = &unk_1E774C5C0;
   v11[4] = self;
-  [(PXAction *)v7 executeWithUndoManager:v8 completionHandler:v11];
+  [(PXAction *)v7 executeWithUndoManager:undoManager completionHandler:v11];
 }
 
 @end

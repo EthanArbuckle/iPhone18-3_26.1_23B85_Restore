@@ -1,27 +1,27 @@
 @interface _CHSControlConfigurationHost
 - (NSArray)controlConfigurations;
 - (NSString)identifier;
-- (_CHSControlConfigurationHost)initWithIdentifier:(id)a3 configurations:(id)a4;
-- (id)controlConfigurationsForApplicationContainerBundleIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CHSControlConfigurationHost)initWithIdentifier:(id)identifier configurations:(id)configurations;
+- (id)controlConfigurationsForApplicationContainerBundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _CHSControlConfigurationHost
 
-- (_CHSControlConfigurationHost)initWithIdentifier:(id)a3 configurations:(id)a4
+- (_CHSControlConfigurationHost)initWithIdentifier:(id)identifier configurations:(id)configurations
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationsCopy = configurations;
   v14.receiver = self;
   v14.super_class = _CHSControlConfigurationHost;
   v8 = [(_CHSControlConfigurationHost *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [configurationsCopy copy];
     configurations = v8->_configurations;
     v8->_configurations = v11;
   }
@@ -43,16 +43,16 @@
   return v2;
 }
 
-- (id)controlConfigurationsForApplicationContainerBundleIdentifier:(id)a3
+- (id)controlConfigurationsForApplicationContainerBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   configurations = self->_configurations;
   v6 = MEMORY[0x1E696AE18];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93___CHSControlConfigurationHost_controlConfigurationsForApplicationContainerBundleIdentifier___block_invoke;
   v11[3] = &unk_1E7453E00;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
   v8 = [v6 predicateWithBlock:v11];
   v9 = [(NSArray *)configurations filteredArrayUsingPredicate:v8];
@@ -60,7 +60,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_CHSControlConfigurationHost alloc];
   identifier = self->_identifier;

@@ -1,5 +1,5 @@
 @interface EVOnboardingPrivacyViewController
-- (EVOnboardingPrivacyViewController)initWithDelegate:(id)a3;
+- (EVOnboardingPrivacyViewController)initWithDelegate:(id)delegate;
 - (id)obViewController;
 - (void)_aboutImproveEVRoutingPressed;
 - (void)_notNowPressed;
@@ -58,13 +58,13 @@
   v6 = [v5 localizedStringForKey:@"[EV Onboarding] Improve EV Routing subtitle" value:@"localized string not found" table:0];
 
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [(EVOnboardingPrivacyViewController *)self view];
-  v10 = [v9 _screen];
-  if (v10)
+  bundleIdentifier = [v7 bundleIdentifier];
+  view = [(EVOnboardingPrivacyViewController *)self view];
+  _screen = [view _screen];
+  if (_screen)
   {
-    v2 = [(EVOnboardingPrivacyViewController *)self view];
-    [v2 _screen];
+    view2 = [(EVOnboardingPrivacyViewController *)self view];
+    [view2 _screen];
   }
 
   else
@@ -73,11 +73,11 @@
   }
   v11 = ;
   [v11 scale];
-  v12 = [UIImage _applicationIconImageForBundleIdentifier:v8 format:2 scale:?];
-  if (v10)
+  v12 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:2 scale:?];
+  if (_screen)
   {
 
-    v11 = v2;
+    v11 = view2;
   }
 
   v13 = [[OBWelcomeController alloc] initWithTitle:v29 detailText:v6 icon:v12];
@@ -89,8 +89,8 @@
 
   [v14 addTarget:self action:"_sharePressed" forControlEvents:64];
   [v14 setAccessibilityIdentifier:@"ShareButton"];
-  v17 = [v13 buttonTray];
-  [v17 addButton:v14];
+  buttonTray = [v13 buttonTray];
+  [buttonTray addButton:v14];
 
   v18 = +[OBLinkTrayButton linkButton];
   v19 = +[NSBundle mainBundle];
@@ -99,8 +99,8 @@
 
   [v18 addTarget:self action:"_notNowPressed" forControlEvents:64];
   [v18 setAccessibilityIdentifier:@"NotNowButton"];
-  v21 = [v13 buttonTray];
-  [v21 addButton:v18];
+  buttonTray2 = [v13 buttonTray];
+  [buttonTray2 addButton:v18];
 
   v22 = +[OBHeaderAccessoryButton accessoryButton];
   v23 = +[NSBundle mainBundle];
@@ -109,14 +109,14 @@
 
   [v22 addTarget:self action:"_aboutImproveEVRoutingPressed" forControlEvents:64];
   [v22 setAccessibilityIdentifier:@"ImproveEVRoutingButton"];
-  v25 = [v22 titleLabel];
-  [v25 setNumberOfLines:0];
+  titleLabel = [v22 titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v26 = [v13 headerView];
-  [v26 addAccessoryButton:v22];
+  headerView = [v13 headerView];
+  [headerView addAccessoryButton:v22];
 
-  v27 = [v13 headerView];
-  [v27 setAccessibilityIdentifier:@"EVOnboardingHeader"];
+  headerView2 = [v13 headerView];
+  [headerView2 setAccessibilityIdentifier:@"EVOnboardingHeader"];
 
   return v13;
 }
@@ -126,23 +126,23 @@
   v5.receiver = self;
   v5.super_class = EVOnboardingPrivacyViewController;
   [(EVOnboardingBaseViewController *)&v5 viewDidLoad];
-  v3 = [(EVOnboardingPrivacyViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"EVOnboardingPrivacyView"];
+  view = [(EVOnboardingPrivacyViewController *)self view];
+  [view setAccessibilityIdentifier:@"EVOnboardingPrivacyView"];
 
-  v4 = [(EVOnboardingPrivacyViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem = [(EVOnboardingPrivacyViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (EVOnboardingPrivacyViewController)initWithDelegate:(id)a3
+- (EVOnboardingPrivacyViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = EVOnboardingPrivacyViewController;
-  v5 = [(EVOnboardingBaseViewController *)&v8 initWithDelegate:v4];
+  v5 = [(EVOnboardingBaseViewController *)&v8 initWithDelegate:delegateCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

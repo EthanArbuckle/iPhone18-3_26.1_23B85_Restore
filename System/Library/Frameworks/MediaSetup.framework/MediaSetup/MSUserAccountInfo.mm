@@ -1,24 +1,24 @@
 @interface MSUserAccountInfo
-- (MSUserAccountInfo)initWithCoder:(id)a3;
-- (MSUserAccountInfo)initWithHomeUserID:(id)a3 sharedUserID:(id)a4;
+- (MSUserAccountInfo)initWithCoder:(id)coder;
+- (MSUserAccountInfo)initWithHomeUserID:(id)d sharedUserID:(id)iD;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSUserAccountInfo
 
-- (MSUserAccountInfo)initWithHomeUserID:(id)a3 sharedUserID:(id)a4
+- (MSUserAccountInfo)initWithHomeUserID:(id)d sharedUserID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = MSUserAccountInfo;
   v9 = [(MSUserAccountInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeUserID, a3);
-    objc_storeStrong(&v10->_sharedUserID, a4);
+    objc_storeStrong(&v9->_homeUserID, d);
+    objc_storeStrong(&v10->_sharedUserID, iD);
   }
 
   return v10;
@@ -34,22 +34,22 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   homeUserID = self->_homeUserID;
-  v5 = a3;
-  [v5 encodeObject:homeUserID forKey:@"MSSHomeUserIDEncodedKey"];
-  [v5 encodeObject:self->_sharedUserID forKey:@"MSSSharedUserIDEncodedKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:homeUserID forKey:@"MSSHomeUserIDEncodedKey"];
+  [coderCopy encodeObject:self->_sharedUserID forKey:@"MSSSharedUserIDEncodedKey"];
 }
 
-- (MSUserAccountInfo)initWithCoder:(id)a3
+- (MSUserAccountInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSHomeUserIDEncodedKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSHomeUserIDEncodedKey"];
   homeUserID = self->_homeUserID;
   self->_homeUserID = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSSSharedUserIDEncodedKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSSSharedUserIDEncodedKey"];
 
   sharedUserID = self->_sharedUserID;
   self->_sharedUserID = v7;

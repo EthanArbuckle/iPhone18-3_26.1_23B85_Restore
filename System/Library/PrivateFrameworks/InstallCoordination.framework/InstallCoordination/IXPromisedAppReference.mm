@@ -1,73 +1,73 @@
 @interface IXPromisedAppReference
-+ (id)acquireReferenceToAppWithIdentity:(id)a3 inDomain:(unint64_t)a4 forClient:(unint64_t)a5 ifMatchingPredicate:(id)a6 error:(id *)a7;
-+ (id)acquireReferenceToAppWithIdentity:(id)a3 inDomain:(unint64_t)a4 forClient:(unint64_t)a5 matchingAppInRecord:(id)a6 error:(id *)a7;
++ (id)acquireReferenceToAppWithIdentity:(id)identity inDomain:(unint64_t)domain forClient:(unint64_t)client ifMatchingPredicate:(id)predicate error:(id *)error;
++ (id)acquireReferenceToAppWithIdentity:(id)identity inDomain:(unint64_t)domain forClient:(unint64_t)client matchingAppInRecord:(id)record error:(id *)error;
 - (IXApplicationIdentity)identity;
-- (IXPromisedAppReference)initWithCoder:(id)a3;
-- (IXPromisedAppReference)initWithName:(id)a3 client:(unint64_t)a4 forAppWithIdentity:(id)a5 inDomain:(unint64_t)a6 ifMatchingPredicate:(id)a7 error:(id *)a8;
-- (IXPromisedAppReference)initWithSeed:(id)a3;
-- (id)placeholderPromiseForInstallType:(unint64_t)a3 withError:(id *)a4;
+- (IXPromisedAppReference)initWithCoder:(id)coder;
+- (IXPromisedAppReference)initWithName:(id)name client:(unint64_t)client forAppWithIdentity:(id)identity inDomain:(unint64_t)domain ifMatchingPredicate:(id)predicate error:(id *)error;
+- (IXPromisedAppReference)initWithSeed:(id)seed;
+- (id)placeholderPromiseForInstallType:(unint64_t)type withError:(id *)error;
 - (unint64_t)installationDomain;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetWithCompletion:(id)completion;
 @end
 
 @implementation IXPromisedAppReference
 
-- (IXPromisedAppReference)initWithCoder:(id)a3
+- (IXPromisedAppReference)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPromisedAppReference;
-  return [(IXOwnedDataPromise *)&v4 initWithCoder:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPromisedAppReference;
-  [(IXDataPromise *)&v3 encodeWithCoder:a3];
+  [(IXDataPromise *)&v3 encodeWithCoder:coder];
 }
 
-+ (id)acquireReferenceToAppWithIdentity:(id)a3 inDomain:(unint64_t)a4 forClient:(unint64_t)a5 ifMatchingPredicate:(id)a6 error:(id *)a7
++ (id)acquireReferenceToAppWithIdentity:(id)identity inDomain:(unint64_t)domain forClient:(unint64_t)client ifMatchingPredicate:(id)predicate error:(id *)error
 {
   v11 = MEMORY[0x1E696AEC0];
-  v12 = a6;
-  v13 = a3;
-  v14 = [v11 stringWithFormat:@"%@/%lu", v13, a4];
-  v15 = [objc_alloc(objc_opt_class()) initWithName:v14 client:a5 forAppWithIdentity:v13 inDomain:a4 ifMatchingPredicate:v12 error:a7];
+  predicateCopy = predicate;
+  identityCopy = identity;
+  domain = [v11 stringWithFormat:@"%@/%lu", identityCopy, domain];
+  v15 = [objc_alloc(objc_opt_class()) initWithName:domain client:client forAppWithIdentity:identityCopy inDomain:domain ifMatchingPredicate:predicateCopy error:error];
 
   return v15;
 }
 
-+ (id)acquireReferenceToAppWithIdentity:(id)a3 inDomain:(unint64_t)a4 forClient:(unint64_t)a5 matchingAppInRecord:(id)a6 error:(id *)a7
++ (id)acquireReferenceToAppWithIdentity:(id)identity inDomain:(unint64_t)domain forClient:(unint64_t)client matchingAppInRecord:(id)record error:(id *)error
 {
-  v12 = a3;
-  v13 = [a6 uniqueInstallIdentifier];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uniqueInstallIdentifier = %@", v13];
-  v15 = [a1 acquireReferenceToAppWithIdentity:v12 inDomain:a4 forClient:a5 ifMatchingPredicate:v14 error:a7];
+  identityCopy = identity;
+  uniqueInstallIdentifier = [record uniqueInstallIdentifier];
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uniqueInstallIdentifier = %@", uniqueInstallIdentifier];
+  v15 = [self acquireReferenceToAppWithIdentity:identityCopy inDomain:domain forClient:client ifMatchingPredicate:v14 error:error];
 
   return v15;
 }
 
-- (IXPromisedAppReference)initWithName:(id)a3 client:(unint64_t)a4 forAppWithIdentity:(id)a5 inDomain:(unint64_t)a6 ifMatchingPredicate:(id)a7 error:(id *)a8
+- (IXPromisedAppReference)initWithName:(id)name client:(unint64_t)client forAppWithIdentity:(id)identity inDomain:(unint64_t)domain ifMatchingPredicate:(id)predicate error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = [v15 location];
+  nameCopy = name;
+  identityCopy = identity;
+  predicateCopy = predicate;
+  location = [identityCopy location];
   v37.receiver = self;
   v37.super_class = IXPromisedAppReference;
-  v18 = [(IXOwnedDataPromise *)&v37 initWithName:v14 client:a4 diskSpaceNeeded:0 location:v17];
+  v18 = [(IXOwnedDataPromise *)&v37 initWithName:nameCopy client:client diskSpaceNeeded:0 location:location];
 
   if (!v18)
   {
     goto LABEL_7;
   }
 
-  v19 = [(IXDataPromise *)v18 seed];
-  [v19 setInstallationDomain:a6];
+  seed = [(IXDataPromise *)v18 seed];
+  [seed setInstallationDomain:domain];
 
-  v20 = [(IXDataPromise *)v18 seed];
-  [v20 setIdentity:v15];
+  seed2 = [(IXDataPromise *)v18 seed];
+  [seed2 setIdentity:identityCopy];
 
   v31 = 0;
   v32 = &v31;
@@ -82,14 +82,14 @@
   v30[3] = &unk_1E85C5560;
   v30[4] = &v31;
   v22 = [v21 synchronousRemoteObjectProxyWithErrorHandler:v30];
-  v23 = [(IXDataPromise *)v18 seed];
+  seed3 = [(IXDataPromise *)v18 seed];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDomain_ifMatchingPredicate_error___block_invoke_11;
   v27[3] = &unk_1E85C6040;
   v29 = &v31;
   v28 = v18;
-  [v22 _remote_createAppReferenceDataPromiseWithSeed:v23 ifMatchingPredicate:v16 completion:v27];
+  [v22 _remote_createAppReferenceDataPromiseWithSeed:seed3 ifMatchingPredicate:predicateCopy completion:v27];
 
   v24 = v32[5];
   if (!v24)
@@ -101,9 +101,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v24;
+    *error = v24;
   }
 
   _Block_object_dispose(&v31, 8);
@@ -148,20 +148,20 @@ void __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDoma
   }
 }
 
-- (id)placeholderPromiseForInstallType:(unint64_t)a3 withError:(id *)a4
+- (id)placeholderPromiseForInstallType:(unint64_t)type withError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = [(IXDataPromise *)self seed];
-  v7 = [v6 identity];
-  v8 = [v6 creatorIdentifier];
+  seed = [(IXDataPromise *)self seed];
+  identity = [seed identity];
+  creatorIdentifier = [seed creatorIdentifier];
   v22 = 0;
-  v9 = IXApplicationRecordForIdentityInDomain(v7, [v6 installationDomain], &v22);
+  v9 = IXApplicationRecordForIdentityInDomain(identity, [seed installationDomain], &v22);
   v10 = v22;
   if (v9)
   {
     v11 = [v9 URL];
     v21 = v10;
-    v12 = [IXPlaceholder placeholderForInstallable:v11 client:v8 installType:a3 metadata:0 error:&v21];
+    v12 = [IXPlaceholder placeholderForInstallable:v11 client:creatorIdentifier installType:type metadata:0 error:&v21];
     v13 = v21;
     v14 = v10;
     v10 = v11;
@@ -176,7 +176,7 @@ void __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDoma
       *buf = 136315906;
       v24 = "[IXPromisedAppReference placeholderPromiseForInstallType:withError:]";
       v25 = 2112;
-      v26 = v7;
+      v26 = identity;
       v27 = 2112;
       v28 = v20;
       v29 = 2112;
@@ -185,14 +185,14 @@ void __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDoma
     }
 
     v14 = MIStringForInstallationDomain();
-    v13 = _CreateError("[IXPromisedAppReference placeholderPromiseForInstallType:withError:]", 125, @"IXErrorDomain", 0x32uLL, v10, 0, @"Could not get LSApplicationRecord for app with identity %@ in domain %@", v16, v7);
+    v13 = _CreateError("[IXPromisedAppReference placeholderPromiseForInstallType:withError:]", 125, @"IXErrorDomain", 0x32uLL, v10, 0, @"Could not get LSApplicationRecord for app with identity %@ in domain %@", v16, identity);
     v12 = 0;
   }
 
-  if (a4 && !v12)
+  if (error && !v12)
   {
     v17 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -200,10 +200,10 @@ void __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDoma
   return v12;
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
   v3 = kIXLoggingSubsystem;
-  v4 = a3;
+  completionCopy = completion;
   v5 = IXGetLoggingHandle(v3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -211,30 +211,30 @@ void __100__IXPromisedAppReference_initWithName_client_forAppWithIdentity_inDoma
   }
 
   v7 = _CreateError("[IXPromisedAppReference resetWithCompletion:]", 141, @"IXErrorDomain", 4uLL, 0, 0, @"Resetting a promised app referece doesn't make sense.", v6, v8);
-  v4[2](v4, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
 - (IXApplicationIdentity)identity
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 identity];
+  seed = [(IXDataPromise *)self seed];
+  identity = [seed identity];
 
-  return v3;
+  return identity;
 }
 
 - (unint64_t)installationDomain
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 installationDomain];
+  seed = [(IXDataPromise *)self seed];
+  installationDomain = [seed installationDomain];
 
-  return v3;
+  return installationDomain;
 }
 
-- (IXPromisedAppReference)initWithSeed:(id)a3
+- (IXPromisedAppReference)initWithSeed:(id)seed
 {
   v4.receiver = self;
   v4.super_class = IXPromisedAppReference;
-  return [(IXOwnedDataPromise *)&v4 initWithSeed:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithSeed:seed];
 }
 
 - (void)resetWithCompletion:(os_log_t)log .cold.1(os_log_t log)

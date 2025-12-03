@@ -1,24 +1,24 @@
 @interface CRLiOSInsertPageViewControllerFadeView
-- (CRLiOSInsertPageViewControllerFadeView)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 shouldAddDividerView:(BOOL)a5;
+- (CRLiOSInsertPageViewControllerFadeView)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint shouldAddDividerView:(BOOL)view;
 - (void)layoutSubviews;
 @end
 
 @implementation CRLiOSInsertPageViewControllerFadeView
 
-- (CRLiOSInsertPageViewControllerFadeView)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 shouldAddDividerView:(BOOL)a5
+- (CRLiOSInsertPageViewControllerFadeView)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint shouldAddDividerView:(BOOL)view
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  viewCopy = view;
+  y = endPoint.y;
+  x = endPoint.x;
+  v8 = point.y;
+  v9 = point.x;
   v24.receiver = self;
   v24.super_class = CRLiOSInsertPageViewControllerFadeView;
   v10 = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v13 = [(CRLiOSInsertPageViewControllerFadeView *)&v24 initWithFrame:CGRectZero.origin.x, v10, width, height];
-  if (v13)
+  height = [(CRLiOSInsertPageViewControllerFadeView *)&v24 initWithFrame:CGRectZero.origin.x, v10, width, height];
+  if (height)
   {
     v14 = +[CAGradientLayer layer];
     v15 = +[UIColor whiteColor];
@@ -32,20 +32,20 @@
 
     [v14 setStartPoint:{v9, v8}];
     [v14 setEndPoint:{x, y}];
-    v20 = [(CRLiOSInsertPageViewControllerFadeView *)v13 layer];
-    [v20 setMask:v14];
+    layer = [(CRLiOSInsertPageViewControllerFadeView *)height layer];
+    [layer setMask:v14];
 
-    if (v5)
+    if (viewCopy)
     {
-      v21 = [[CRLiOSInspectorDividerView alloc] initWithFrame:CGRectZero.origin.x, v10, width, height];
-      line = v13->_line;
-      v13->_line = v21;
+      height2 = [[CRLiOSInspectorDividerView alloc] initWithFrame:CGRectZero.origin.x, v10, width, height];
+      line = height->_line;
+      height->_line = height2;
 
-      [(CRLiOSInsertPageViewControllerFadeView *)v13 addSubview:v13->_line];
+      [(CRLiOSInsertPageViewControllerFadeView *)height addSubview:height->_line];
     }
   }
 
-  return v13;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -58,9 +58,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLiOSInsertPageViewControllerFadeView *)self layer];
-  v12 = [v11 mask];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  layer = [(CRLiOSInsertPageViewControllerFadeView *)self layer];
+  mask = [layer mask];
+  [mask setFrame:{v4, v6, v8, v10}];
 
   if (self->_line)
   {

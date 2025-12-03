@@ -60,7 +60,7 @@
 
 + (id)everythingChanged
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setRoutesChanged:1];
   [v2 setSelectedRouteChanged:1];
   [v2 setRouteRevisionsChanged:1];

@@ -1,24 +1,24 @@
 @interface CHWorkoutDetailedHeartRateViewController
-- (CHWorkoutDetailedHeartRateViewController)initWithCoder:(id)a3;
-- (CHWorkoutDetailedHeartRateViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CHWorkoutDetailedHeartRateViewController)initWithWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5;
+- (CHWorkoutDetailedHeartRateViewController)initWithCoder:(id)coder;
+- (CHWorkoutDetailedHeartRateViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CHWorkoutDetailedHeartRateViewController)initWithWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CHWorkoutDetailedHeartRateViewController
 
-- (CHWorkoutDetailedHeartRateViewController)initWithWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5
+- (CHWorkoutDetailedHeartRateViewController)initWithWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_1001C991C(v7, a4, v9);
+  workoutCopy = workout;
+  activityCopy = activity;
+  managerCopy = manager;
+  v10 = sub_1001C991C(workoutCopy, activity, managerCopy);
 
   return v10;
 }
 
-- (CHWorkoutDetailedHeartRateViewController)initWithCoder:(id)a3
+- (CHWorkoutDetailedHeartRateViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -27,17 +27,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C8EEC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1001C923C(a3);
+  selfCopy = self;
+  sub_1001C923C(appear);
 }
 
-- (CHWorkoutDetailedHeartRateViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CHWorkoutDetailedHeartRateViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

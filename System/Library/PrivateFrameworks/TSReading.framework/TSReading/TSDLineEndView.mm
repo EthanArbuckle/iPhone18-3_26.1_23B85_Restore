@@ -1,20 +1,20 @@
 @interface TSDLineEndView
-+ (id)viewWithLineEnd:(id)a3 onRight:(BOOL)a4;
++ (id)viewWithLineEnd:(id)end onRight:(BOOL)right;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TSDLineEndView
 
-+ (id)viewWithLineEnd:(id)a3 onRight:(BOOL)a4
++ (id)viewWithLineEnd:(id)end onRight:(BOOL)right
 {
-  v4 = a4;
+  rightCopy = right;
   v6 = objc_alloc_init(TSDLineEndView);
   [(TSDLineEndView *)v6 setOpaque:0];
   [(TSDLineEndView *)v6 setAlpha:0.699999988];
-  [(TSDLineEndView *)v6 setLineEnd:a3];
+  [(TSDLineEndView *)v6 setLineEnd:end];
   [(TSDLineEndView *)v6 setBounds:0.0, 0.0, 27.0, 11.0];
-  [(TSDLineEndView *)v6 setOnRight:v4];
+  [(TSDLineEndView *)v6 setOnRight:rightCopy];
   return v6;
 }
 
@@ -25,7 +25,7 @@
   [(TSDLineEndView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   mLineEnd = self->mLineEnd;

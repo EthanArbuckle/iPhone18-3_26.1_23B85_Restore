@@ -31,7 +31,7 @@
 + (LNSystemProtocol)previewEntityProtocol;
 + (LNSystemProtocol)progressReportingProtocol;
 + (LNSystemProtocol)propertyUpdaterProtocol;
-+ (LNSystemProtocol)protocolWithIdentifier:(id)a3;
++ (LNSystemProtocol)protocolWithIdentifier:(id)identifier;
 + (LNSystemProtocol)pushToTalkTransmissionProtocol;
 + (LNSystemProtocol)putEntityInContainerProtocol;
 + (LNSystemProtocol)requiresMDMChecksProtocol;
@@ -63,19 +63,19 @@
 + (LNSystemProtocol)zoomProtocol;
 + (NSArray)allProtocols;
 + (id)allProtocolsByIdentifier;
-+ (id)ofKind:(int64_t)a3;
-+ (id)parametersForProtocolWithIdentifier:(id)a3;
-+ (id)protocolOrNilWithIdentifier:(id)a3;
++ (id)ofKind:(int64_t)kind;
++ (id)parametersForProtocolWithIdentifier:(id)identifier;
++ (id)protocolOrNilWithIdentifier:(id)identifier;
 + (id)sendMessageProtocol;
 + (id)systemProtocolKindsByIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (LNSystemProtocol)initWithCoder:(id)a3;
-- (LNSystemProtocol)initWithIdentifier:(id)a3 parameters:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNSystemProtocol)initWithCoder:(id)coder;
+- (LNSystemProtocol)initWithIdentifier:(id)identifier parameters:(id)parameters;
 - (NSString)typeName;
 - (id)description;
 - (int64_t)kind;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSystemProtocol
@@ -494,7 +494,7 @@ void __44__LNSystemProtocol_allProtocolsByIdentifier__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__LNSystemProtocol_allProtocolsByIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allProtocolsByIdentifier_onceToken_8951 != -1)
   {
     dispatch_once(&allProtocolsByIdentifier_onceToken_8951, block);
@@ -581,28 +581,28 @@ void __44__LNSystemProtocol_openEntitySystemProtocol__block_invoke()
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNSystemProtocol *)self identifier];
-      v8 = [(LNSystemProtocol *)v6 identifier];
-      if ([v7 isEqualToString:v8])
+      identifier = [(LNSystemProtocol *)self identifier];
+      identifier2 = [(LNSystemProtocol *)v6 identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v9 = [(LNSystemProtocol *)self parameters];
-        v10 = [(LNSystemProtocol *)v6 parameters];
-        v11 = v9;
-        v12 = v10;
+        parameters = [(LNSystemProtocol *)self parameters];
+        parameters2 = [(LNSystemProtocol *)v6 parameters];
+        v11 = parameters;
+        v12 = parameters2;
         v13 = v12;
         if (v11 == v12)
         {
@@ -636,54 +636,54 @@ void __44__LNSystemProtocol_openEntitySystemProtocol__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(LNSystemProtocol *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(LNSystemProtocol *)self parameters];
-  v6 = [v5 hash];
+  identifier = [(LNSystemProtocol *)self identifier];
+  v4 = [identifier hash];
+  parameters = [(LNSystemProtocol *)self parameters];
+  v6 = [parameters hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSystemProtocol *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNSystemProtocol *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNSystemProtocol *)self parameters];
-  [v4 encodeObject:v6 forKey:@"parameters"];
+  parameters = [(LNSystemProtocol *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 }
 
-- (LNSystemProtocol)initWithCoder:(id)a3
+- (LNSystemProtocol)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"parameters"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parameters"];
 
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     if (v10)
     {
       self = [(LNSystemProtocol *)self initWithIdentifier:v10 parameters:v9];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -691,31 +691,31 @@ void __44__LNSystemProtocol_openEntitySystemProtocol__block_invoke()
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSystemProtocol *)self typeName];
-  v7 = [v3 stringWithFormat:@"<%@: %p, typeName: %@>", v5, self, v6];
+  typeName = [(LNSystemProtocol *)self typeName];
+  v7 = [v3 stringWithFormat:@"<%@: %p, typeName: %@>", v5, self, typeName];
 
   return v7;
 }
 
 - (NSString)typeName
 {
-  v2 = [(LNSystemProtocol *)self identifier];
-  v3 = [v2 componentsSeparatedByString:@"."];
-  v4 = [v3 lastObject];
+  identifier = [(LNSystemProtocol *)self identifier];
+  v3 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v3 lastObject];
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Action", v4];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Action", lastObject];
 
   return v5;
 }
 
-- (LNSystemProtocol)initWithIdentifier:(id)a3 parameters:(id)a4
+- (LNSystemProtocol)initWithIdentifier:(id)identifier parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  v9 = parametersCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (parametersCopy)
     {
       goto LABEL_3;
     }
@@ -723,8 +723,8 @@ void __44__LNSystemProtocol_openEntitySystemProtocol__block_invoke()
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNSystemProtocol.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSystemProtocol.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v9)
     {
@@ -732,8 +732,8 @@ void __44__LNSystemProtocol_openEntitySystemProtocol__block_invoke()
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNSystemProtocol.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNSystemProtocol.m" lineNumber:367 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -741,7 +741,7 @@ LABEL_3:
   v10 = [(LNSystemProtocol *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
@@ -755,18 +755,18 @@ LABEL_3:
   return v10;
 }
 
-+ (id)protocolOrNilWithIdentifier:(id)a3
++ (id)protocolOrNilWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"LNSystemProtocol.m" lineNumber:484 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSystemProtocol.m" lineNumber:484 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v6 = [a1 allProtocolsByIdentifier];
-  v7 = [v6 valueForKey:v5];
+  allProtocolsByIdentifier = [self allProtocolsByIdentifier];
+  v7 = [allProtocolsByIdentifier valueForKey:identifierCopy];
 
   if (!v7)
   {
@@ -774,7 +774,7 @@ LABEL_3:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v5;
+      v13 = identifierCopy;
       _os_log_impl(&dword_18EF7E000, v8, OS_LOG_TYPE_ERROR, "%{public}@ is not a valid LN_TYPE(SystemProtocolIdentifier)", buf, 0xCu);
     }
   }
@@ -784,10 +784,10 @@ LABEL_3:
   return v7;
 }
 
-+ (id)parametersForProtocolWithIdentifier:(id)a3
++ (id)parametersForProtocolWithIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"com.apple.link.systemProtocol.ChangeBinarySetting"])
+  if ([identifier isEqualToString:@"com.apple.link.systemProtocol.ChangeBinarySetting"])
   {
     v8 = @"setting";
     if (parametersForProtocolWithIdentifier__onceToken != -1)
@@ -820,10 +820,10 @@ uint64_t __56__LNSystemProtocol_parametersForProtocolWithIdentifier___block_invo
 
 + (NSArray)allProtocols
 {
-  v2 = [a1 allProtocolsByIdentifier];
-  v3 = [v2 allValues];
+  allProtocolsByIdentifier = [self allProtocolsByIdentifier];
+  allValues = [allProtocolsByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 + (LNSystemProtocol)staccatoLongPressProtocol
@@ -1960,50 +1960,50 @@ void __41__LNSystemProtocol_audioStartingProtocol__block_invoke()
 
 - (int64_t)kind
 {
-  v3 = [objc_opt_class() systemProtocolKindsByIdentifier];
-  v4 = [(LNSystemProtocol *)self identifier];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  systemProtocolKindsByIdentifier = [objc_opt_class() systemProtocolKindsByIdentifier];
+  identifier = [(LNSystemProtocol *)self identifier];
+  v5 = [systemProtocolKindsByIdentifier objectForKeyedSubscript:identifier];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 23;
+    integerValue = 23;
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (id)ofKind:(int64_t)a3
++ (id)ofKind:(int64_t)kind
 {
-  if (a3 == 23)
+  if (kind == 23)
   {
     v3 = 0;
   }
 
   else
   {
-    if (a3 == 13)
+    if (kind == 13)
     {
-      v4 = 14;
+      kindCopy = 14;
     }
 
     else
     {
-      v4 = a3;
+      kindCopy = kind;
     }
 
-    v5 = [a1 systemProtocolKindsByIdentifier];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-    v7 = [v5 allKeysForObject:v6];
-    v8 = [v7 firstObject];
+    systemProtocolKindsByIdentifier = [self systemProtocolKindsByIdentifier];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:kindCopy];
+    v7 = [systemProtocolKindsByIdentifier allKeysForObject:v6];
+    firstObject = [v7 firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v3 = [LNSystemProtocol protocolWithIdentifier:v8];
+      v3 = [LNSystemProtocol protocolWithIdentifier:firstObject];
     }
 
     else
@@ -2015,13 +2015,13 @@ void __41__LNSystemProtocol_audioStartingProtocol__block_invoke()
   return v3;
 }
 
-+ (LNSystemProtocol)protocolWithIdentifier:(id)a3
++ (LNSystemProtocol)protocolWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 protocolOrNilWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self protocolOrNilWithIdentifier:identifierCopy];
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:@"InitNotImplemented" format:{@"%@ is not a valid LNSystemProtocolIdentifier", v4}];
+    [MEMORY[0x1E695DF30] raise:@"InitNotImplemented" format:{@"%@ is not a valid LNSystemProtocolIdentifier", identifierCopy}];
   }
 
   return v5;

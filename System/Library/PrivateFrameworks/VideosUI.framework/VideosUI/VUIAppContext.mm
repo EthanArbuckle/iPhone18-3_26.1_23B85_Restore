@@ -1,40 +1,40 @@
 @interface VUIAppContext
 + (id)currentAppContext;
-- (BOOL)_prepareStartWithURL:(id)a3;
-- (VUIAppContext)initWithApplication:(id)a3 mode:(unint64_t)a4 delegate:(id)a5;
+- (BOOL)_prepareStartWithURL:(id)l;
+- (VUIAppContext)initWithApplication:(id)application mode:(unint64_t)mode delegate:(id)delegate;
 - (VUIAppContextDelegate)delegate;
 - (VUIApplication)app;
 - (id)_appTraitCollection;
-- (id)_errorWithMessage:(id)a3;
+- (id)_errorWithMessage:(id)message;
 - (void)_addPrivateInterfaces;
-- (void)_addStopRecordToPendingQueueWithReload:(BOOL)a3;
-- (void)_dispatchError:(id)a3;
-- (void)_doEvaluate:(id)a3;
+- (void)_addStopRecordToPendingQueueWithReload:(BOOL)reload;
+- (void)_dispatchError:(id)error;
+- (void)_doEvaluate:(id)evaluate;
 - (void)_drainOnStartQueue;
-- (void)_enqueueOnStartOrExecute:(id)a3;
-- (void)_evaluate:(id)a3;
+- (void)_enqueueOnStartOrExecute:(id)execute;
+- (void)_evaluate:(id)_evaluate;
 - (void)_invalidateJSThread;
 - (void)_jsThreadMain;
-- (void)_sourceCanceledOnRunLoop:(__CFRunLoop *)a3;
+- (void)_sourceCanceledOnRunLoop:(__CFRunLoop *)loop;
 - (void)_sourcePerform;
-- (void)_sourceScheduledOnRunLoop:(__CFRunLoop *)a3;
-- (void)_startWithScript:(id)a3 scriptUrl:(id)a4;
-- (void)_startWithURL:(id)a3;
-- (void)_stopAndReload:(BOOL)a3;
-- (void)addPostEvaluateBlock:(id)a3;
-- (void)contextDidFailWithError:(id)a3;
-- (void)contextDidStartWithJS:(id)a3 options:(id)a4;
-- (void)contextDidStopWithOptions:(id)a3;
+- (void)_sourceScheduledOnRunLoop:(__CFRunLoop *)loop;
+- (void)_startWithScript:(id)script scriptUrl:(id)url;
+- (void)_startWithURL:(id)l;
+- (void)_stopAndReload:(BOOL)reload;
+- (void)addPostEvaluateBlock:(id)block;
+- (void)contextDidFailWithError:(id)error;
+- (void)contextDidStartWithJS:(id)s options:(id)options;
+- (void)contextDidStopWithOptions:(id)options;
 - (void)dealloc;
-- (void)evaluate:(id)a3 completionBlock:(id)a4 completionQueue:(id)a5;
-- (void)evaluateDelegateBlockSync:(id)a3;
+- (void)evaluate:(id)evaluate completionBlock:(id)block completionQueue:(id)queue;
+- (void)evaluateDelegateBlockSync:(id)sync;
 - (void)evaluateFoundationJS;
-- (void)handleReloadWithUrgencyType:(unint64_t)a3 minInterval:(double)a4 data:(id)a5;
-- (void)launchAppWithOptions:(id)a3;
-- (void)resumeWithOptions:(id)a3;
-- (void)setException:(id)a3 withErrorMessage:(id)a4;
+- (void)handleReloadWithUrgencyType:(unint64_t)type minInterval:(double)interval data:(id)data;
+- (void)launchAppWithOptions:(id)options;
+- (void)resumeWithOptions:(id)options;
+- (void)setException:(id)exception withErrorMessage:(id)message;
 - (void)start;
-- (void)suspendWithOptions:(id)a3;
+- (void)suspendWithOptions:(id)options;
 @end
 
 @implementation VUIAppContext
@@ -56,8 +56,8 @@
     [(VUIAppContext *)self setRunning:1];
     kdebug_trace();
     v5 = [(VUIAppContext *)self app];
-    v4 = [v5 appJSURL];
-    [(VUIAppContext *)self _prepareStartWithURL:v4];
+    appJSURL = [v5 appJSURL];
+    [(VUIAppContext *)self _prepareStartWithURL:appJSURL];
   }
 }
 
@@ -77,36 +77,36 @@
   v17.schedule = VUIRunLoopSourceScheduleCallBack;
   v17.cancel = VUIRunLoopSourceCancelCallBack;
   v17.perform = VUIRunLoopSourcePerformCallBack;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   Current = CFRunLoopGetCurrent();
-  v4->_jsThreadRunLoop = Current;
+  selfCopy->_jsThreadRunLoop = Current;
   CFRetain(Current);
   v6 = CFRunLoopSourceCreate(*MEMORY[0x1E695E480], 0, &v17);
-  v4->_jsThreadRunLoopSource = v6;
+  selfCopy->_jsThreadRunLoopSource = v6;
   v7 = *MEMORY[0x1E695E8E0];
   CFRunLoopAddSource(Current, v6, *MEMORY[0x1E695E8E0]);
-  v8 = [MEMORY[0x1E696AF00] currentThread];
-  v9 = [v8 threadDictionary];
-  [v9 setObject:v4 forKeyedSubscript:@"vuiAppContext"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:selfCopy forKeyedSubscript:@"vuiAppContext"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   do
   {
     v10 = objc_autoreleasePoolPush();
     v11 = CFRunLoopRunInMode(v7, 1.0e10, 1u);
     objc_autoreleasePoolPop(v10);
-    v12 = v4;
+    v12 = selfCopy;
     objc_sync_enter(v12);
-    jsThreadRunLoopSource = v4->_jsThreadRunLoopSource;
+    jsThreadRunLoopSource = selfCopy->_jsThreadRunLoopSource;
     objc_sync_exit(v12);
   }
 
   while ((v11 - 3) <= 0xFFFFFFFD && jsThreadRunLoopSource == v6);
   v15 = v12;
   objc_sync_enter(v15);
-  v16 = [v8 threadDictionary];
-  [v16 removeObjectForKey:@"vuiAppContext"];
+  threadDictionary2 = [currentThread threadDictionary];
+  [threadDictionary2 removeObjectForKey:@"vuiAppContext"];
   CFRelease(v6);
   CFRelease(Current);
 
@@ -116,17 +116,17 @@
 
 - (void)_sourcePerform
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VUIAppContext *)v2 pendingQueue];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingQueue = [(VUIAppContext *)selfCopy pendingQueue];
+  objc_sync_exit(selfCopy);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __31__VUIAppContext__sourcePerform__block_invoke;
   aBlock[3] = &unk_1E87375D0;
-  aBlock[4] = v2;
-  v4 = v3;
+  aBlock[4] = selfCopy;
+  v4 = pendingQueue;
   v17 = v4;
   v5 = _Block_copy(aBlock);
   v6 = v5[2]();
@@ -135,32 +135,32 @@
     v7 = v6;
     do
     {
-      v8 = [v7 evaluateBlock];
-      v8[2]();
+      evaluateBlock = [v7 evaluateBlock];
+      evaluateBlock[2]();
 
-      v9 = [v7 completionBlock];
+      completionBlock = [v7 completionBlock];
 
-      if (v9)
+      if (completionBlock)
       {
-        v10 = [v7 completionQueue];
+        completionQueue = [v7 completionQueue];
 
-        if (v10)
+        if (completionQueue)
         {
-          v11 = [v7 completionQueue];
+          completionQueue2 = [v7 completionQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __31__VUIAppContext__sourcePerform__block_invoke_2;
           block[3] = &unk_1E872D768;
           v15 = v7;
-          dispatch_async(v11, block);
+          dispatch_async(completionQueue2, block);
 
-          v12 = v15;
+          completionBlock2 = v15;
         }
 
         else
         {
-          v12 = [v7 completionBlock];
-          v12[2](v12, 1);
+          completionBlock2 = [v7 completionBlock];
+          completionBlock2[2](completionBlock2, 1);
         }
       }
 
@@ -205,31 +205,31 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   }
 
   kdebug_trace();
-  v4 = [(VUIAppContext *)self jsContext];
+  jsContext = [(VUIAppContext *)self jsContext];
   v5 = [[VUIJSDevice alloc] initWithAppContext:self];
-  [v4 setObject:v5 forKeyedSubscript:@"Device"];
+  [jsContext setObject:v5 forKeyedSubscript:@"Device"];
   v6 = [(VUIAppContext *)self app];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 userDefaultsStorage];
-    if (v7)
+    userDefaultsStorage = [v6 userDefaultsStorage];
+    if (userDefaultsStorage)
     {
-      v8 = [[VUIJSUserDefaults alloc] initWithAppContext:self userDefaultsStorage:v7];
-      [v4 setObject:v8 forKeyedSubscript:@"userDefaults"];
+      v8 = [[VUIJSUserDefaults alloc] initWithAppContext:self userDefaultsStorage:userDefaultsStorage];
+      [jsContext setObject:v8 forKeyedSubscript:@"userDefaults"];
     }
   }
 
   v9 = [(VUIJSObject *)[VUIJSApplication alloc] initWithAppContext:self];
   [(VUIAppContext *)self setJsApp:v9];
 
-  v10 = [(VUIAppContext *)self jsApp];
-  [v4 setObject:v10 forKeyedSubscript:@"App"];
+  jsApp = [(VUIAppContext *)self jsApp];
+  [jsContext setObject:jsApp forKeyedSubscript:@"App"];
 
   [(VUIAppContext *)self _addPrivateInterfaces];
-  v11 = [(VUIAppContext *)self delegate];
+  delegate = [(VUIAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 appContext:self evaluateAppJavaScriptInContext:v4];
+    [delegate appContext:self evaluateAppJavaScriptInContext:jsContext];
   }
 
   v12 = VUISignpostLogObject();
@@ -242,10 +242,10 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   kdebug_trace();
 }
 
-- (void)launchAppWithOptions:(id)a3
+- (void)launchAppWithOptions:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = VUISignpostLogObject();
   if (os_signpost_enabled(v5))
   {
@@ -253,19 +253,19 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
     _os_signpost_emit_with_name_impl(&dword_1E323F000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "JS.LaunchApp", "", &v11, 2u);
   }
 
-  v6 = [(VUIAppContext *)self jsContext];
+  jsContext = [(VUIAppContext *)self jsContext];
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = optionsCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_INFO, "VUIAppContext - Starting context with options: %@", &v11, 0xCu);
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"App"];
+  v8 = [jsContext objectForKeyedSubscript:@"App"];
   v9 = [v8 toObjectOfClass:objc_opt_class()];
 
-  [v9 launchAppWithOptions:v4];
+  [v9 launchAppWithOptions:optionsCopy];
   v10 = VUISignpostLogObject();
   if (os_signpost_enabled(v10))
   {
@@ -279,7 +279,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v3 = [[VUIJSFoundation alloc] initWithAppContext:self];
   [(VUIAppContext *)self setJsFoundation:v3];
 
-  v4 = [(VUIAppContext *)self jsContext];
+  jsContext = [(VUIAppContext *)self jsContext];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -287,7 +287,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   aBlock[3] = &unk_1E872D9E0;
   objc_copyWeak(&v28, &location);
   v5 = _Block_copy(aBlock);
-  [v4 setObject:v5 forKeyedSubscript:@"formatLocalizedNumber"];
+  [jsContext setObject:v5 forKeyedSubscript:@"formatLocalizedNumber"];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -295,7 +295,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v25[3] = &unk_1E872DA08;
   objc_copyWeak(&v26, &location);
   v6 = _Block_copy(v25);
-  [v4 setObject:v6 forKeyedSubscript:@"joinComponentsWithLocalizedCommaAndSpace"];
+  [jsContext setObject:v6 forKeyedSubscript:@"joinComponentsWithLocalizedCommaAndSpace"];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -303,7 +303,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v23[3] = &unk_1E872DA08;
   objc_copyWeak(&v24, &location);
   v7 = _Block_copy(v23);
-  [v4 setObject:v7 forKeyedSubscript:@"joinComponentsWithLocalizedSemicolonAndSpace"];
+  [jsContext setObject:v7 forKeyedSubscript:@"joinComponentsWithLocalizedSemicolonAndSpace"];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -311,7 +311,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v21[3] = &unk_1E872DA30;
   objc_copyWeak(&v22, &location);
   v8 = _Block_copy(v21);
-  [v4 setObject:v8 forKeyedSubscript:@"setTimeout"];
+  [jsContext setObject:v8 forKeyedSubscript:@"setTimeout"];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -319,7 +319,7 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v19[3] = &unk_1E872DA58;
   objc_copyWeak(&v20, &location);
   v9 = _Block_copy(v19);
-  [v4 setObject:v9 forKeyedSubscript:@"formatDuration"];
+  [jsContext setObject:v9 forKeyedSubscript:@"formatDuration"];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -327,19 +327,19 @@ id __31__VUIAppContext__sourcePerform__block_invoke(uint64_t a1)
   v17[3] = &unk_1E872DA80;
   objc_copyWeak(&v18, &location);
   v10 = _Block_copy(v17);
-  [v4 setObject:v10 forKeyedSubscript:@"formatNumber"];
+  [jsContext setObject:v10 forKeyedSubscript:@"formatNumber"];
 
-  [v4 setObject:&__block_literal_global_3 forKeyedSubscript:@"formatInitials"];
-  [v4 setObject:&__block_literal_global_63 forKeyedSubscript:@"fetchAppAccessStatus"];
+  [jsContext setObject:&__block_literal_global_3 forKeyedSubscript:@"formatInitials"];
+  [jsContext setObject:&__block_literal_global_63 forKeyedSubscript:@"fetchAppAccessStatus"];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __42__VUIAppContext_JS___addPrivateInterfaces__block_invoke_9;
   v15 = &unk_1E872DB10;
   objc_copyWeak(&v16, &location);
   v11 = _Block_copy(&v12);
-  [v4 setObject:v11 forKeyedSubscript:{@"openURL", v12, v13, v14, v15}];
+  [jsContext setObject:v11 forKeyedSubscript:{@"openURL", v12, v13, v14, v15}];
 
-  [v4 setObject:&__block_literal_global_81 forKeyedSubscript:@"btoa"];
+  [jsContext setObject:&__block_literal_global_81 forKeyedSubscript:@"btoa"];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -692,18 +692,18 @@ LABEL_7:
 
 + (id)currentAppContext
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"vuiAppContext"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"vuiAppContext"];
 
   return v4;
 }
 
-- (VUIAppContext)initWithApplication:(id)a3 mode:(unint64_t)a4 delegate:(id)a5
+- (VUIAppContext)initWithApplication:(id)application mode:(unint64_t)mode delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  delegateCopy = delegate;
   +[VUIPreference setupJSCoreConsoleLogging];
   v21.receiver = self;
   v21.super_class = VUIAppContext;
@@ -711,11 +711,11 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_app, v8);
+    objc_storeWeak(&v10->_app, applicationCopy);
     v11->_respondsToTraitCollection = objc_opt_respondsToSelector() & 1;
     v11->_running = 0;
-    v11->_mode = a4;
-    objc_storeWeak(&v11->_delegate, v9);
+    v11->_mode = mode;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     onStartQueue = v11->_onStartQueue;
     v11->_onStartQueue = v12;
@@ -770,24 +770,24 @@ void __51__VUIAppContext_initWithApplication_mode_delegate___block_invoke_2(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIAppContext;
   [(VUIAppContext *)&v4 dealloc];
 }
 
-- (void)suspendWithOptions:(id)a3
+- (void)suspendWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__VUIAppContext_suspendWithOptions___block_invoke;
   v6[3] = &unk_1E872F038;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = optionsCopy;
   v7 = v5;
   [(VUIAppContext *)self _enqueueOnStartOrExecute:v6];
 
@@ -828,9 +828,9 @@ void __36__VUIAppContext_suspendWithOptions___block_invoke_2(uint64_t a1, void *
   JSGarbageCollect(v6);
 }
 
-- (void)resumeWithOptions:(id)a3
+- (void)resumeWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -838,7 +838,7 @@ void __36__VUIAppContext_suspendWithOptions___block_invoke_2(uint64_t a1, void *
   v6[3] = &unk_1E872D9B8;
   objc_copyWeak(&v8, &location);
   v6[4] = self;
-  v5 = v4;
+  v5 = optionsCopy;
   v7 = v5;
   [(VUIAppContext *)self _enqueueOnStartOrExecute:v6];
 
@@ -899,34 +899,34 @@ void __35__VUIAppContext_resumeWithOptions___block_invoke_2(uint64_t a1, void *a
   [v9 resumeAppWithOptions:v10];
 }
 
-- (void)evaluate:(id)a3 completionBlock:(id)a4 completionQueue:(id)a5
+- (void)evaluate:(id)evaluate completionBlock:(id)block completionQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  if ([(VUIAppContext *)v11 canAccessPendingQueue])
+  evaluateCopy = evaluate;
+  blockCopy = block;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(VUIAppContext *)selfCopy canAccessPendingQueue])
   {
-    objc_initWeak(&location, v11);
+    objc_initWeak(&location, selfCopy);
     v12 = [VUIRunLoopSourceRecord alloc];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __58__VUIAppContext_evaluate_completionBlock_completionQueue___block_invoke;
     v16[3] = &unk_1E872E828;
     objc_copyWeak(&v18, &location);
-    v17 = v8;
-    v13 = [(VUIRunLoopSourceRecord *)v12 initWithEvaluateBlock:v16 completionBlock:v9 completionQueue:v10];
-    v14 = [(VUIAppContext *)v11 pendingQueue];
-    [v14 addObject:v13];
+    v17 = evaluateCopy;
+    v13 = [(VUIRunLoopSourceRecord *)v12 initWithEvaluateBlock:v16 completionBlock:blockCopy completionQueue:queueCopy];
+    pendingQueue = [(VUIAppContext *)selfCopy pendingQueue];
+    [pendingQueue addObject:v13];
 
-    if (v11->_jsThreadRunLoop)
+    if (selfCopy->_jsThreadRunLoop)
     {
-      jsThreadRunLoopSource = v11->_jsThreadRunLoopSource;
+      jsThreadRunLoopSource = selfCopy->_jsThreadRunLoopSource;
       if (jsThreadRunLoopSource)
       {
         CFRunLoopSourceSignal(jsThreadRunLoopSource);
-        CFRunLoopWakeUp(v11->_jsThreadRunLoop);
+        CFRunLoopWakeUp(selfCopy->_jsThreadRunLoop);
       }
     }
 
@@ -934,7 +934,7 @@ void __35__VUIAppContext_resumeWithOptions___block_invoke_2(uint64_t a1, void *a
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__VUIAppContext_evaluate_completionBlock_completionQueue___block_invoke(uint64_t a1)
@@ -943,19 +943,19 @@ void __58__VUIAppContext_evaluate_completionBlock_completionQueue___block_invoke
   [WeakRetained _evaluate:*(a1 + 32)];
 }
 
-- (void)evaluateDelegateBlockSync:(id)a3
+- (void)evaluateDelegateBlockSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = dispatch_semaphore_create(0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__VUIAppContext_evaluateDelegateBlockSync___block_invoke;
   block[3] = &unk_1E8730538;
   v9 = v5;
-  v10 = v4;
+  v10 = syncCopy;
   block[4] = self;
   v6 = v5;
-  v7 = v4;
+  v7 = syncCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -968,43 +968,43 @@ intptr_t __43__VUIAppContext_evaluateDelegateBlockSync___block_invoke(uint64_t a
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)addPostEvaluateBlock:(id)a3
+- (void)addPostEvaluateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VUIAppContext *)self postEvaluationBlocks];
+  blockCopy = block;
+  postEvaluationBlocks = [(VUIAppContext *)self postEvaluationBlocks];
 
-  if (v5)
+  if (postEvaluationBlocks)
   {
-    v6 = [(VUIAppContext *)self postEvaluationBlocks];
-    v7 = [v4 copy];
-    [(VUIAppContext *)v6 addObject:v7];
+    selfCopy = [(VUIAppContext *)self postEvaluationBlocks];
+    v7 = [blockCopy copy];
+    [(VUIAppContext *)selfCopy addObject:v7];
   }
 
   else
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    if ([(VUIAppContext *)v6 canAccessPendingQueue])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(VUIAppContext *)selfCopy canAccessPendingQueue])
     {
-      objc_initWeak(&location, v6);
+      objc_initWeak(&location, selfCopy);
       v8 = [VUIRunLoopSourceRecord alloc];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __38__VUIAppContext_addPostEvaluateBlock___block_invoke;
       v12[3] = &unk_1E872E828;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
+      v13 = blockCopy;
       v9 = [(VUIRunLoopSourceRecord *)v8 initWithEvaluateBlock:v12 completionBlock:0];
-      v10 = [(VUIAppContext *)v6 pendingQueue];
-      [v10 insertObject:v9 atIndex:0];
+      pendingQueue = [(VUIAppContext *)selfCopy pendingQueue];
+      [pendingQueue insertObject:v9 atIndex:0];
 
-      if (v6->_jsThreadRunLoop)
+      if (selfCopy->_jsThreadRunLoop)
       {
-        jsThreadRunLoopSource = v6->_jsThreadRunLoopSource;
+        jsThreadRunLoopSource = selfCopy->_jsThreadRunLoopSource;
         if (jsThreadRunLoopSource)
         {
           CFRunLoopSourceSignal(jsThreadRunLoopSource);
-          CFRunLoopWakeUp(v6->_jsThreadRunLoop);
+          CFRunLoopWakeUp(selfCopy->_jsThreadRunLoop);
         }
       }
 
@@ -1012,7 +1012,7 @@ intptr_t __43__VUIAppContext_evaluateDelegateBlockSync___block_invoke(uint64_t a
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1022,42 +1022,42 @@ void __38__VUIAppContext_addPostEvaluateBlock___block_invoke(uint64_t a1)
   [WeakRetained _doEvaluate:*(a1 + 32)];
 }
 
-- (void)setException:(id)a3 withErrorMessage:(id)a4
+- (void)setException:(id)exception withErrorMessage:(id)message
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(VUIAppContext *)self jsContext];
-  if (v11)
+  exceptionCopy = exception;
+  messageCopy = message;
+  jsContext = [(VUIAppContext *)self jsContext];
+  if (exceptionCopy)
   {
-    [MEMORY[0x1E696EB58] valueWithObject:v11 inContext:v7];
+    [MEMORY[0x1E696EB58] valueWithObject:exceptionCopy inContext:jsContext];
   }
 
   else
   {
-    [MEMORY[0x1E696EB58] valueWithNewErrorFromMessage:v6 inContext:v7];
+    [MEMORY[0x1E696EB58] valueWithNewErrorFromMessage:messageCopy inContext:jsContext];
   }
   v8 = ;
-  v9 = [MEMORY[0x1E696EB58] valueWithBool:1 inContext:v7];
+  v9 = [MEMORY[0x1E696EB58] valueWithBool:1 inContext:jsContext];
   [v8 setObject:v9 forKeyedSubscript:@"errorDispatched"];
 
-  [v7 setException:v8];
-  v10 = [(VUIAppContext *)self _errorWithMessage:v6];
+  [jsContext setException:v8];
+  v10 = [(VUIAppContext *)self _errorWithMessage:messageCopy];
   [(VUIAppContext *)self _dispatchError:v10];
 }
 
-- (void)handleReloadWithUrgencyType:(unint64_t)a3 minInterval:(double)a4 data:(id)a5
+- (void)handleReloadWithUrgencyType:(unint64_t)type minInterval:(double)interval data:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__VUIAppContext_handleReloadWithUrgencyType_minInterval_data___block_invoke;
   block[3] = &unk_1E8737530;
   objc_copyWeak(v12, &location);
-  v11 = v8;
-  v12[1] = a3;
-  v12[2] = *&a4;
-  v9 = v8;
+  v11 = dataCopy;
+  v12[1] = type;
+  v12[2] = *&interval;
+  v9 = dataCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(v12);
@@ -1093,13 +1093,13 @@ void __62__VUIAppContext_handleReloadWithUrgencyType_minInterval_data___block_in
   }
 }
 
-- (BOOL)_prepareStartWithURL:(id)a3
+- (BOOL)_prepareStartWithURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
-  v5 = [(VUIAppContext *)self mode];
-  v6 = v4;
+  mode = [(VUIAppContext *)self mode];
+  v6 = lCopy;
   if (!v6)
   {
     goto LABEL_15;
@@ -1110,49 +1110,49 @@ void __62__VUIAppContext_handleReloadWithUrgencyType_minInterval_data___block_in
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [(VUIAppContext *)self mode];
+    mode2 = [(VUIAppContext *)self mode];
     *buf = 138413058;
     v31 = v9;
     v32 = 2048;
-    v33 = v10;
+    v33 = mode2;
     v34 = 2048;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v6;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_INFO, "VUIAppContext - <%@ (%lu): %p> Launching JavaScript app from URL: %@", buf, 0x2Au);
   }
 
-  v11 = [v6 scheme];
-  v12 = [v11 lowercaseString];
-  if (![v12 isEqualToString:@"https"])
+  scheme = [v6 scheme];
+  lowercaseString = [scheme lowercaseString];
+  if (![lowercaseString isEqualToString:@"https"])
   {
     v13 = [(VUIAppContext *)self app];
-    v14 = [v13 shouldIgnoreJSValidation];
+    shouldIgnoreJSValidation = [v13 shouldIgnoreJSValidation];
 
-    if (v14)
+    if (shouldIgnoreJSValidation)
     {
       goto LABEL_8;
     }
 
 LABEL_15:
-    v15 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69DF888] code:101 userInfo:0];
-    [(VUIAppContext *)self contextDidFailWithError:v15];
+    selfCopy2 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69DF888] code:101 userInfo:0];
+    [(VUIAppContext *)self contextDidFailWithError:selfCopy2];
     LOBYTE(self) = 0;
     goto LABEL_16;
   }
 
 LABEL_8:
-  v15 = self;
-  objc_sync_enter(v15);
-  v16 = [(VUIAppContext *)v15 pendingQueue];
-  LODWORD(self) = v16 == 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  pendingQueue = [(VUIAppContext *)selfCopy2 pendingQueue];
+  LODWORD(self) = pendingQueue == 0;
 
   if (self)
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(VUIAppContext *)v15 setPendingQueue:v18];
+    [(VUIAppContext *)selfCopy2 setPendingQueue:v18];
 
-    [(VUIAppContext *)v15 setCanAccessPendingQueue:1];
+    [(VUIAppContext *)selfCopy2 setCanAccessPendingQueue:1];
     v19 = [VUIRunLoopSourceRecord alloc];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -1161,12 +1161,12 @@ LABEL_8:
     objc_copyWeak(&v28, &location);
     v27 = v6;
     v20 = [(VUIRunLoopSourceRecord *)v19 initWithEvaluateBlock:v26 completionBlock:0 completionQueue:0];
-    v21 = [(VUIAppContext *)v15 pendingQueue];
-    [v21 addObject:v20];
+    pendingQueue2 = [(VUIAppContext *)selfCopy2 pendingQueue];
+    [pendingQueue2 addObject:v20];
 
-    v22 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:v15 selector:sel__jsThreadMain object:0];
+    v22 = [objc_alloc(MEMORY[0x1E696AF00]) initWithTarget:selfCopy2 selector:sel__jsThreadMain object:0];
     v23 = v22;
-    if (v5 == 1000)
+    if (mode == 1000)
     {
       v24 = 9;
     }
@@ -1186,10 +1186,10 @@ LABEL_8:
   else
   {
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69DF888] code:100 userInfo:0];
-    [(VUIAppContext *)v15 contextDidFailWithError:v17];
+    [(VUIAppContext *)selfCopy2 contextDidFailWithError:v17];
   }
 
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy2);
 LABEL_16:
 
   objc_destroyWeak(&location);
@@ -1202,10 +1202,10 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
   [WeakRetained _startWithURL:*(a1 + 32)];
 }
 
-- (void)_startWithURL:(id)a3
+- (void)_startWithURL:(id)l
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if (+[VUIPreference ignoreHTTPCache])
   {
     v5 = 1;
@@ -1213,8 +1213,8 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(VUIAppContext *)self reloadContext];
-    v5 = v6 != 0;
+    reloadContext = [(VUIAppContext *)self reloadContext];
+    v5 = reloadContext != 0;
   }
 
   v7 = VUIDefaultLogObject();
@@ -1227,11 +1227,11 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
     *&buf[12] = 2048;
     *&buf[14] = [(VUIAppContext *)self mode];
     *&buf[22] = 2048;
-    v44 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "<%@ (%lu): %p> Attempting to start context with script", buf, 0x20u);
   }
 
-  v10 = [(VUIAppContext *)self delegate];
+  delegate = [(VUIAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v11 = VUIDefaultLogObject();
@@ -1245,7 +1245,7 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v44 = __Block_byref_object_copy__38;
+    selfCopy = __Block_byref_object_copy__38;
     v45 = __Block_byref_object_dispose__38;
     v46 = 0;
     v29 = 0;
@@ -1267,7 +1267,7 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
     v27 = v28;
     v13 = v12;
     v24 = v13;
-    [v10 appContext:self scriptForURL:v4 cachePolicy:v5 completion:v23];
+    [delegate appContext:self scriptForURL:lCopy cachePolicy:v5 completion:v23];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
     if (v30[5] || ![*(*&buf[8] + 40) length])
     {
@@ -1277,14 +1277,14 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
       {
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v19 = [(VUIAppContext *)self mode];
+        mode = [(VUIAppContext *)self mode];
         v20 = v30[5];
         *v35 = 138413058;
         v36 = v18;
         v37 = 2048;
-        v38 = v19;
+        v38 = mode;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v41 = 2112;
         v42 = v20;
         _os_log_error_impl(&dword_1E323F000, v14, OS_LOG_TYPE_ERROR, "<%@ (%lu): %p> Failed to load launch URL with error: %@", v35, 0x2Au);
@@ -1308,7 +1308,7 @@ void __38__VUIAppContext__prepareStartWithURL___block_invoke(uint64_t a1)
         _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_INFO, "Downloaded application script sussessfully. Starting script...", v35, 2u);
       }
 
-      [(VUIAppContext *)self _startWithScript:*(*&buf[8] + 40) scriptUrl:v4];
+      [(VUIAppContext *)self _startWithScript:*(*&buf[8] + 40) scriptUrl:lCopy];
     }
 
     _Block_object_dispose(v28, 8);
@@ -1380,11 +1380,11 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
   [*(a1 + 32) contextDidFailWithError:v5];
 }
 
-- (void)_startWithScript:(id)a3 scriptUrl:(id)a4
+- (void)_startWithScript:(id)script scriptUrl:(id)url
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  scriptCopy = script;
+  urlCopy = url;
   v8 = VUISignpostLogObject();
   v9 = os_signpost_id_generate(v8);
 
@@ -1397,25 +1397,25 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
     _os_signpost_emit_with_name_impl(&dword_1E323F000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "JS.Evaluate", "", buf, 2u);
   }
 
-  if ([v6 length])
+  if ([scriptCopy length])
   {
-    v13 = [(VUIAppContext *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 appContext:self shouldStartWithScript:v6 scriptURL:v7] & 1) == 0)
+    delegate = [(VUIAppContext *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate appContext:self shouldStartWithScript:scriptCopy scriptURL:urlCopy] & 1) == 0)
     {
       v29 = VUIDefaultLogObject();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v32 = [(VUIAppContext *)self mode];
+        mode = [(VUIAppContext *)self mode];
         *buf = 138413058;
         v49 = v31;
         v50 = 2048;
-        v51 = v32;
+        v51 = mode;
         v52 = 2048;
-        v53 = self;
+        selfCopy2 = self;
         v54 = 2112;
-        v55 = v7;
+        v55 = urlCopy;
         _os_log_impl(&dword_1E323F000, v29, OS_LOG_TYPE_INFO, "VUIAppContext - <%@ (%lu): %p> Delegate opted to stop script loading from %@", buf, 0x2Au);
       }
 
@@ -1425,11 +1425,11 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
     else
     {
       v38 = [(VUIAppContext *)self app];
-      v14 = [v38 appIdentifier];
+      appIdentifier = [v38 appIdentifier];
       v15 = objc_alloc_init(MEMORY[0x1E696EB40]);
-      if ([v14 length])
+      if ([appIdentifier length])
       {
-        [v15 setName:v14];
+        [v15 setName:appIdentifier];
       }
 
       [v15 _setITMLDebuggableType];
@@ -1444,7 +1444,7 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
         _os_signpost_emit_with_name_impl(&dword_1E323F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "JS.Evaluate.JSContextEvaluateScript", "", buf, 2u);
       }
 
-      v17 = [v15 evaluateScript:v6 withSourceURL:v7];
+      v17 = [v15 evaluateScript:scriptCopy withSourceURL:urlCopy];
       v18 = VUISignpostLogObject();
       if (os_signpost_enabled(v18))
       {
@@ -1452,31 +1452,31 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
         _os_signpost_emit_with_name_impl(&dword_1E323F000, v18, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "JS.Evaluate.JSContextEvaluateScript", "", buf, 2u);
       }
 
-      v19 = [v15 exception];
+      exception = [v15 exception];
 
-      if (v19)
+      if (exception)
       {
-        v20 = [v15 exception];
+        exception2 = [v15 exception];
         v21 = VUIDefaultLogObject();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           v33 = objc_opt_class();
           v34 = NSStringFromClass(v33);
-          v35 = [(VUIAppContext *)self mode];
-          v36 = [v20 toDictionary];
+          mode2 = [(VUIAppContext *)self mode];
+          toDictionary = [exception2 toDictionary];
           *buf = 138413570;
           v49 = v34;
           v50 = 2048;
-          v51 = v35;
+          v51 = mode2;
           v52 = 2048;
-          v53 = self;
+          selfCopy2 = self;
           v54 = 2112;
-          v55 = v7;
+          v55 = urlCopy;
           v56 = 2112;
-          v57 = v20;
+          v57 = exception2;
           v58 = 2112;
-          v59 = v36;
-          v37 = v36;
+          v59 = toDictionary;
+          v37 = toDictionary;
           _os_log_error_impl(&dword_1E323F000, v21, OS_LOG_TYPE_ERROR, "<%@ (%lu): %p> Unable to start script (%@) because of %@: %@", buf, 0x3Eu);
         }
 
@@ -1486,9 +1486,9 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
         block[1] = 3221225472;
         block[2] = __44__VUIAppContext__startWithScript_scriptUrl___block_invoke_98;
         block[3] = &unk_1E872D990;
-        v45 = v20;
-        v46 = self;
-        v22 = v20;
+        v45 = exception2;
+        selfCopy3 = self;
+        v22 = exception2;
         dispatch_async(MEMORY[0x1E69E96A0], block);
 
         v23 = v38;
@@ -1521,8 +1521,8 @@ void __31__VUIAppContext__startWithURL___block_invoke_93(uint64_t a1)
         v39[4] = self;
         v23 = v38;
         v40 = v38;
-        v41 = v7;
-        v42 = v6;
+        v41 = urlCopy;
+        v42 = scriptCopy;
         [(VUIAppContext *)self _evaluate:v39];
       }
     }
@@ -1656,32 +1656,32 @@ void __44__VUIAppContext__startWithScript_scriptUrl___block_invoke_106(uint64_t 
   }
 }
 
-- (void)_addStopRecordToPendingQueueWithReload:(BOOL)a3
+- (void)_addStopRecordToPendingQueueWithReload:(BOOL)reload
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(VUIAppContext *)v4 canAccessPendingQueue])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(VUIAppContext *)selfCopy canAccessPendingQueue])
   {
-    [(VUIAppContext *)v4 setCanAccessPendingQueue:0];
-    objc_initWeak(&location, v4);
+    [(VUIAppContext *)selfCopy setCanAccessPendingQueue:0];
+    objc_initWeak(&location, selfCopy);
     v5 = [VUIRunLoopSourceRecord alloc];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke;
     v9[3] = &unk_1E872EDE0;
     objc_copyWeak(&v10, &location);
-    v11 = a3;
+    reloadCopy = reload;
     v6 = [(VUIRunLoopSourceRecord *)v5 initWithEvaluateBlock:v9 completionBlock:0];
-    v7 = [(VUIAppContext *)v4 pendingQueue];
-    [v7 addObject:v6];
+    pendingQueue = [(VUIAppContext *)selfCopy pendingQueue];
+    [pendingQueue addObject:v6];
 
-    if (v4->_jsThreadRunLoop)
+    if (selfCopy->_jsThreadRunLoop)
     {
-      jsThreadRunLoopSource = v4->_jsThreadRunLoopSource;
+      jsThreadRunLoopSource = selfCopy->_jsThreadRunLoopSource;
       if (jsThreadRunLoopSource)
       {
         CFRunLoopSourceSignal(jsThreadRunLoopSource);
-        CFRunLoopWakeUp(v4->_jsThreadRunLoop);
+        CFRunLoopWakeUp(selfCopy->_jsThreadRunLoop);
       }
     }
 
@@ -1689,7 +1689,7 @@ void __44__VUIAppContext__startWithScript_scriptUrl___block_invoke_106(uint64_t 
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke(uint64_t a1)
@@ -1698,12 +1698,12 @@ void __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke(u
   [WeakRetained _stopAndReload:*(a1 + 40)];
 }
 
-- (void)_stopAndReload:(BOOL)a3
+- (void)_stopAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"VUINetworkPropertiesChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUINetworkPropertiesChangedNotification" object:0];
 
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1713,17 +1713,17 @@ void __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke(u
     *buf = 138413058;
     v14 = v8;
     v15 = 2048;
-    v16 = [(VUIAppContext *)self mode];
+    mode = [(VUIAppContext *)self mode];
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = v3;
+    v20 = reloadCopy;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "<%@ (%lu): %p> Stop and reload %d", buf, 0x26u);
   }
 
   [(VUIAppContext *)self setIsValid:0];
   [(VUIAppContext *)self setJsContext:0];
-  if (v3)
+  if (reloadCopy)
   {
     [(VUIAppContext *)self _invalidateJSThread];
   }
@@ -1731,14 +1731,14 @@ void __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke(u
   else
   {
     [(VUIAppContext *)self setNextJSChecksum:0];
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(VUIAppContext *)v9 onStartQueue];
-    [v10 removeAllObjects];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    onStartQueue = [(VUIAppContext *)selfCopy2 onStartQueue];
+    [onStartQueue removeAllObjects];
 
-    objc_sync_exit(v9);
-    [(VUIAppContext *)v9 _invalidateJSThread];
-    [(VUIAppContext *)v9 setReloadContext:0];
+    objc_sync_exit(selfCopy2);
+    [(VUIAppContext *)selfCopy2 _invalidateJSThread];
+    [(VUIAppContext *)selfCopy2 setReloadContext:0];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -1746,7 +1746,7 @@ void __56__VUIAppContext__addStopRecordToPendingQueueWithReload___block_invoke(u
   v11[2] = __32__VUIAppContext__stopAndReload___block_invoke;
   v11[3] = &unk_1E872ECA0;
   v11[4] = self;
-  v12 = v3;
+  v12 = reloadCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
@@ -1763,7 +1763,7 @@ uint64_t __32__VUIAppContext__stopAndReload___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_sourceScheduledOnRunLoop:(__CFRunLoop *)a3
+- (void)_sourceScheduledOnRunLoop:(__CFRunLoop *)loop
 {
   CFRunLoopSourceSignal(self->_jsThreadRunLoopSource);
   jsThreadRunLoop = self->_jsThreadRunLoop;
@@ -1780,7 +1780,7 @@ void __31__VUIAppContext__sourcePerform__block_invoke_2(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_sourceCanceledOnRunLoop:(__CFRunLoop *)a3
+- (void)_sourceCanceledOnRunLoop:(__CFRunLoop *)loop
 {
   obj = self;
   objc_sync_enter(obj);
@@ -1789,46 +1789,46 @@ void __31__VUIAppContext__sourcePerform__block_invoke_2(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)_evaluate:(id)a3
+- (void)_evaluate:(id)_evaluate
 {
-  v16 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  [(VUIAppContext *)self setPostEvaluationBlocks:v4];
+  _evaluateCopy = _evaluate;
+  array = [MEMORY[0x1E695DF70] array];
+  [(VUIAppContext *)self setPostEvaluationBlocks:array];
 
-  [(VUIAppContext *)self _doEvaluate:v16];
-  v5 = [(VUIAppContext *)self postEvaluationBlocks];
-  v6 = [v5 firstObject];
+  [(VUIAppContext *)self _doEvaluate:_evaluateCopy];
+  postEvaluationBlocks = [(VUIAppContext *)self postEvaluationBlocks];
+  firstObject = [postEvaluationBlocks firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     do
     {
-      v7 = [(VUIAppContext *)self postEvaluationBlocks];
-      [v7 removeObjectAtIndex:0];
+      postEvaluationBlocks2 = [(VUIAppContext *)self postEvaluationBlocks];
+      [postEvaluationBlocks2 removeObjectAtIndex:0];
 
-      v8 = [(VUIAppContext *)self jsContext];
-      (v6)[2](v6, v8);
+      jsContext = [(VUIAppContext *)self jsContext];
+      (firstObject)[2](firstObject, jsContext);
 
-      v9 = [(VUIAppContext *)self jsContext];
-      v10 = [v9 exception];
+      jsContext2 = [(VUIAppContext *)self jsContext];
+      exception = [jsContext2 exception];
 
-      if (v10)
+      if (exception)
       {
-        v11 = [(VUIAppContext *)self jsContext];
-        v12 = [v11 exception];
-        [(VUIAppContext *)self _dispatchError:v12];
+        jsContext3 = [(VUIAppContext *)self jsContext];
+        exception2 = [jsContext3 exception];
+        [(VUIAppContext *)self _dispatchError:exception2];
 
-        v13 = [(VUIAppContext *)self jsContext];
-        [v13 setException:0];
+        jsContext4 = [(VUIAppContext *)self jsContext];
+        [jsContext4 setException:0];
       }
 
-      v14 = [(VUIAppContext *)self postEvaluationBlocks];
-      v15 = [v14 firstObject];
+      postEvaluationBlocks3 = [(VUIAppContext *)self postEvaluationBlocks];
+      firstObject2 = [postEvaluationBlocks3 firstObject];
 
-      v6 = v15;
+      firstObject = firstObject2;
     }
 
-    while (v15);
+    while (firstObject2);
   }
 
   [(VUIAppContext *)self setPostEvaluationBlocks:0];
@@ -1842,8 +1842,8 @@ void __31__VUIAppContext__sourcePerform__block_invoke_2(uint64_t a1)
   CFRunLoopWakeUp(obj->_jsThreadRunLoop);
   obj->_jsThreadRunLoop = 0;
   obj->_jsThreadRunLoopSource = 0;
-  v2 = [(VUIAppContext *)obj pendingQueue];
-  [v2 removeAllObjects];
+  pendingQueue = [(VUIAppContext *)obj pendingQueue];
+  [pendingQueue removeAllObjects];
 
   [(VUIAppContext *)obj setPendingQueue:0];
   [(VUIAppContext *)obj setCanAccessPendingQueue:0];
@@ -1851,9 +1851,9 @@ void __31__VUIAppContext__sourcePerform__block_invoke_2(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)_doEvaluate:(id)a3
+- (void)_doEvaluate:(id)evaluate
 {
-  v4 = a3;
+  evaluateCopy = evaluate;
   if (![(VUIAppContext *)self isValid])
   {
     v5 = VUIDefaultLogObject();
@@ -1863,39 +1863,39 @@ void __31__VUIAppContext__sourcePerform__block_invoke_2(uint64_t a1)
     }
   }
 
-  v6 = [(VUIAppContext *)self jsContext];
-  v4[2](v4, v6);
+  jsContext = [(VUIAppContext *)self jsContext];
+  evaluateCopy[2](evaluateCopy, jsContext);
 
-  v7 = [(VUIAppContext *)self jsContext];
-  v8 = [v7 exception];
+  jsContext2 = [(VUIAppContext *)self jsContext];
+  exception = [jsContext2 exception];
 
-  if (v8)
+  if (exception)
   {
-    v9 = [(VUIAppContext *)self jsContext];
-    v10 = [v9 exception];
-    [(VUIAppContext *)self _dispatchError:v10];
+    jsContext3 = [(VUIAppContext *)self jsContext];
+    exception2 = [jsContext3 exception];
+    [(VUIAppContext *)self _dispatchError:exception2];
 
-    v11 = [(VUIAppContext *)self jsContext];
-    [v11 setException:0];
+    jsContext4 = [(VUIAppContext *)self jsContext];
+    [jsContext4 setException:0];
   }
 }
 
-- (id)_errorWithMessage:(id)a3
+- (id)_errorWithMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIAppContext *)self jsContext];
-  v6 = [v5 objectForKeyedSubscript:@"Error"];
+  messageCopy = message;
+  jsContext = [(VUIAppContext *)self jsContext];
+  v6 = [jsContext objectForKeyedSubscript:@"Error"];
   v7 = [v6 constructWithArguments:MEMORY[0x1E695E0F0]];
 
-  [v7 setObject:v4 forKeyedSubscript:@"message"];
+  [v7 setObject:messageCopy forKeyedSubscript:@"message"];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
   v8 = [v7 objectForKeyedSubscript:{@"stack", 0}];
-  v9 = [v8 toString];
-  v10 = [v9 componentsSeparatedByString:@"\n"];
+  toString = [v8 toString];
+  v10 = [toString componentsSeparatedByString:@"\n"];
 
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
@@ -1948,30 +1948,30 @@ LABEL_16:
   return v7;
 }
 
-- (void)_dispatchError:(id)a3
+- (void)_dispatchError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"errorDispatched"];
-  v6 = [v5 toBool];
+  errorCopy = error;
+  v5 = [errorCopy objectForKeyedSubscript:@"errorDispatched"];
+  toBool = [v5 toBool];
 
-  if ((v6 & 1) == 0)
+  if ((toBool & 1) == 0)
   {
-    v7 = [v4 objectForKeyedSubscript:@"message"];
-    v8 = [v7 toString];
+    v7 = [errorCopy objectForKeyedSubscript:@"message"];
+    toString = [v7 toString];
 
-    v9 = [v4 objectForKeyedSubscript:@"sourceURL"];
-    v10 = [v9 toString];
+    v9 = [errorCopy objectForKeyedSubscript:@"sourceURL"];
+    toString2 = [v9 toString];
 
-    v11 = [v4 objectForKeyedSubscript:@"line"];
-    v12 = [v11 toString];
+    v11 = [errorCopy objectForKeyedSubscript:@"line"];
+    toString3 = [v11 toString];
 
-    v13 = [v4 objectForKeyedSubscript:@"column"];
-    v14 = [v13 toString];
+    v13 = [errorCopy objectForKeyedSubscript:@"column"];
+    toString4 = [v13 toString];
 
-    if ([v8 length])
+    if ([toString length])
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v12, v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", toString3, toString4];
       v16 = VUIDefaultLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -1980,13 +1980,13 @@ LABEL_16:
         *buf = 138413570;
         v20 = v18;
         v21 = 2048;
-        v22 = [(VUIAppContext *)self mode];
+        mode = [(VUIAppContext *)self mode];
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = v8;
+        v26 = toString;
         v27 = 2112;
-        v28 = v10;
+        v28 = toString2;
         v29 = 2112;
         v30 = v15;
         _os_log_error_impl(&dword_1E323F000, v16, OS_LOG_TYPE_ERROR, "<%@ (%lu): %p> Error: %@ - %@ - line:%@", buf, 0x3Eu);
@@ -1995,9 +1995,9 @@ LABEL_16:
   }
 }
 
-- (void)_enqueueOnStartOrExecute:(id)a3
+- (void)_enqueueOnStartOrExecute:(id)execute
 {
-  aBlock = a3;
+  aBlock = execute;
   if ([(VUIAppContext *)self isValid])
   {
     aBlock[2]();
@@ -2005,28 +2005,28 @@ LABEL_16:
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(VUIAppContext *)v4 onStartQueue];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    onStartQueue = [(VUIAppContext *)selfCopy onStartQueue];
     v6 = _Block_copy(aBlock);
-    [v5 addObject:v6];
+    [onStartQueue addObject:v6];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (void)_drainOnStartQueue
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VUIAppContext *)v2 onStartQueue];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  onStartQueue = [(VUIAppContext *)selfCopy onStartQueue];
+  v4 = [onStartQueue copy];
 
-  v5 = [(VUIAppContext *)v2 onStartQueue];
-  [v5 removeAllObjects];
+  onStartQueue2 = [(VUIAppContext *)selfCopy onStartQueue];
+  [onStartQueue2 removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if ([v4 count])
   {
     v6 = VUIDefaultLogObject();
@@ -2078,39 +2078,39 @@ LABEL_16:
   }
 }
 
-- (void)contextDidStopWithOptions:(id)a3
+- (void)contextDidStopWithOptions:(id)options
 {
-  v4 = [(VUIAppContext *)self delegate];
+  delegate = [(VUIAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appContext:self didStopWithOptions:0];
+    [delegate appContext:self didStopWithOptions:0];
   }
 }
 
-- (void)contextDidFailWithError:(id)a3
+- (void)contextDidFailWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   [(VUIAppContext *)self setRunning:0];
-  v4 = [(VUIAppContext *)self delegate];
+  delegate = [(VUIAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appContext:self didFailWithError:v5];
+    [delegate appContext:self didFailWithError:errorCopy];
   }
 }
 
-- (void)contextDidStartWithJS:(id)a3 options:(id)a4
+- (void)contextDidStartWithJS:(id)s options:(id)options
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(VUIAppContext *)self delegate];
+  sCopy = s;
+  optionsCopy = options;
+  delegate = [(VUIAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 appContext:self didStartWithOptions:v6 validatedJSString:v8];
+    [delegate appContext:self didStartWithOptions:optionsCopy validatedJSString:sCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v7 appContext:self didStartWithOptions:v6];
+    [delegate appContext:self didStartWithOptions:optionsCopy];
   }
 
   [(VUIAppContext *)self _drainOnStartQueue];
@@ -2121,15 +2121,15 @@ LABEL_16:
   if (self->_respondsToTraitCollection)
   {
     WeakRetained = objc_loadWeakRetained(&self->_app);
-    v3 = [WeakRetained appTraitCollection];
+    appTraitCollection = [WeakRetained appTraitCollection];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    appTraitCollection = MEMORY[0x1E695E0F8];
   }
 
-  return v3;
+  return appTraitCollection;
 }
 
 void __62__VUIAppContext_handleReloadWithUrgencyType_minInterval_data___block_invoke_cold_1(void *a1, void *a2)

@@ -1,7 +1,7 @@
 @interface FRArticleNotificationPersonalizer
 - (FRArticleNotificationPersonalizer)init;
-- (FRArticleNotificationPersonalizer)initWithAppConfigurationManager:(id)a3 feedPersonalizerFactory:(id)a4;
-- (void)sortItems:(id)a3 completion:(id)a4;
+- (FRArticleNotificationPersonalizer)initWithAppConfigurationManager:(id)manager feedPersonalizerFactory:(id)factory;
+- (void)sortItems:(id)items completion:(id)completion;
 @end
 
 @implementation FRArticleNotificationPersonalizer
@@ -29,20 +29,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRArticleNotificationPersonalizer)initWithAppConfigurationManager:(id)a3 feedPersonalizerFactory:(id)a4
+- (FRArticleNotificationPersonalizer)initWithAppConfigurationManager:(id)manager feedPersonalizerFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  factoryCopy = factory;
+  if (!managerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10001A444();
-    if (v8)
+    if (factoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (factoryCopy)
   {
     goto LABEL_6;
   }
@@ -59,17 +59,17 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appConfigurationManager, a3);
-    objc_storeStrong(&v10->_feedPersonalizerFactory, a4);
+    objc_storeStrong(&v9->_appConfigurationManager, manager);
+    objc_storeStrong(&v10->_feedPersonalizerFactory, factory);
   }
 
   return v10;
 }
 
-- (void)sortItems:(id)a3 completion:(id)a4
+- (void)sortItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   v8 = [FCFileCoordinatedTodayPrivateDataTransactionQueue alloc];
   v9 = FCURLForTodayPrivateDataTransactionQueue();
   v10 = [v8 initWithFileURL:v9];
@@ -92,7 +92,7 @@ LABEL_6:
   v32[3] = sub_100002870;
   v32[4] = sub_100002880;
   v33 = 0;
-  v16 = [(FRArticleNotificationPersonalizer *)self appConfigurationManager];
+  appConfigurationManager = [(FRArticleNotificationPersonalizer *)self appConfigurationManager];
   dispatch_group_enter(v15);
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -101,7 +101,7 @@ LABEL_6:
   v31 = v32;
   v17 = v15;
   v30 = v17;
-  [v16 fetchAppConfigurationIfNeededWithCompletion:v29];
+  [appConfigurationManager fetchAppConfigurationIfNeededWithCompletion:v29];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000028D8;
@@ -114,14 +114,14 @@ LABEL_6:
   block[2] = sub_100002920;
   block[3] = &unk_100024C40;
   block[4] = self;
-  v23 = v16;
+  v23 = appConfigurationManager;
   v26 = v34;
   v27 = v32;
-  v24 = v6;
-  v25 = v7;
-  v19 = v7;
-  v20 = v6;
-  v21 = v16;
+  v24 = itemsCopy;
+  v25 = completionCopy;
+  v19 = completionCopy;
+  v20 = itemsCopy;
+  v21 = appConfigurationManager;
   dispatch_group_notify(v17, v18, block);
 
   _Block_object_dispose(v32, 8);

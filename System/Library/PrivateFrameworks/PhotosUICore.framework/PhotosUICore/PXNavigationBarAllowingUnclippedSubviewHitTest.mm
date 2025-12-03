@@ -1,22 +1,22 @@
 @interface PXNavigationBarAllowingUnclippedSubviewHitTest
-- (id)_unclippedViewPassingHitTest:(id)a3 point:(CGPoint)a4 event:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_unclippedViewPassingHitTest:(id)test point:(CGPoint)point event:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PXNavigationBarAllowingUnclippedSubviewHitTest
 
-- (id)_unclippedViewPassingHitTest:(id)a3 point:(CGPoint)a4 event:(id)a5
+- (id)_unclippedViewPassingHitTest:(id)test point:(CGPoint)point event:(id)event
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  testCopy = test;
+  eventCopy = event;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v9;
+  v11 = testCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v12)
   {
@@ -40,7 +40,7 @@ LABEL_3:
 
     v16 = *(*(&v20 + 1) + 8 * v15);
     [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self convertPoint:v16 toView:x, y, v20];
-    v17 = [v16 hitTest:v10 withEvent:?];
+    v17 = [v16 hitTest:eventCopy withEvent:?];
     v18 = v17;
     if (v17)
     {
@@ -85,34 +85,34 @@ id __91__PXNavigationBarAllowingUnclippedSubviewHitTest__unclippedViewPassingHit
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = PXNavigationBarAllowingUnclippedSubviewHitTest;
-  v8 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)&v16 hitTest:v7 withEvent:x, y];
-  v9 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self topItem];
-  v10 = [v9 _preferredNavigationBarVisibility];
+  v8 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)&v16 hitTest:eventCopy withEvent:x, y];
+  topItem = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self topItem];
+  _preferredNavigationBarVisibility = [topItem _preferredNavigationBarVisibility];
 
   if ((!v8 || __68__PXNavigationBarAllowingUnclippedSubviewHitTest_hitTest_withEvent___block_invoke()) && ([(PXNavigationBarAllowingUnclippedSubviewHitTest *)self isHidden]& 1) == 0)
   {
     [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self alpha];
-    if (v11 > 0.01 && [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self isUserInteractionEnabled]&& !v10)
+    if (v11 > 0.01 && [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self isUserInteractionEnabled]&& !_preferredNavigationBarVisibility)
     {
       if (v8 && (__68__PXNavigationBarAllowingUnclippedSubviewHitTest_hitTest_withEvent___block_invoke() & 1) != 0)
       {
-        v12 = v8;
+        selfCopy = v8;
       }
 
       else
       {
-        v12 = self;
+        selfCopy = self;
       }
 
-      v13 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)v12 subviews];
-      v14 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self _unclippedViewPassingHitTest:v13 point:v7 event:x, y];
+      subviews = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)selfCopy subviews];
+      v14 = [(PXNavigationBarAllowingUnclippedSubviewHitTest *)self _unclippedViewPassingHitTest:subviews point:eventCopy event:x, y];
 
       v8 = v14;
     }

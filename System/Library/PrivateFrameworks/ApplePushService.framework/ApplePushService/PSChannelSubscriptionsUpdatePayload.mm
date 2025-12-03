@@ -1,51 +1,51 @@
 @interface PSChannelSubscriptionsUpdatePayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addAppChannelUpdates:(id)a3;
-- (void)addSubscriptionUpdates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppChannelUpdates:(id)updates;
+- (void)addSubscriptionUpdates:(id)updates;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSChannelSubscriptionsUpdatePayload
 
-- (void)addAppChannelUpdates:(id)a3
+- (void)addAppChannelUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   appChannelUpdates = self->_appChannelUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!appChannelUpdates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_appChannelUpdates;
     self->_appChannelUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     appChannelUpdates = self->_appChannelUpdates;
   }
 
-  [(NSMutableArray *)appChannelUpdates addObject:v4];
+  [(NSMutableArray *)appChannelUpdates addObject:updatesCopy];
 }
 
-- (void)addSubscriptionUpdates:(id)a3
+- (void)addSubscriptionUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   subscriptionUpdates = self->_subscriptionUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!subscriptionUpdates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_subscriptionUpdates;
     self->_subscriptionUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     subscriptionUpdates = self->_subscriptionUpdates;
   }
 
-  [(NSMutableArray *)subscriptionUpdates addObject:v4];
+  [(NSMutableArray *)subscriptionUpdates addObject:updatesCopy];
 }
 
 - (id)description
@@ -53,8 +53,8 @@
   v7.receiver = self;
   v7.super_class = PSChannelSubscriptionsUpdatePayload;
   v3 = [(PSChannelSubscriptionsUpdatePayload *)&v7 description];
-  v4 = [(PSChannelSubscriptionsUpdatePayload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSChannelSubscriptionsUpdatePayload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -119,8 +119,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -135,9 +135,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -203,43 +203,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(PSChannelSubscriptionsUpdatePayload *)self appChannelUpdatesCount])
   {
-    [v12 clearAppChannelUpdates];
-    v4 = [(PSChannelSubscriptionsUpdatePayload *)self appChannelUpdatesCount];
-    if (v4)
+    [toCopy clearAppChannelUpdates];
+    appChannelUpdatesCount = [(PSChannelSubscriptionsUpdatePayload *)self appChannelUpdatesCount];
+    if (appChannelUpdatesCount)
     {
-      v5 = v4;
+      v5 = appChannelUpdatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PSChannelSubscriptionsUpdatePayload *)self appChannelUpdatesAtIndex:i];
-        [v12 addAppChannelUpdates:v7];
+        [toCopy addAppChannelUpdates:v7];
       }
     }
   }
 
   if ([(PSChannelSubscriptionsUpdatePayload *)self subscriptionUpdatesCount])
   {
-    [v12 clearSubscriptionUpdates];
-    v8 = [(PSChannelSubscriptionsUpdatePayload *)self subscriptionUpdatesCount];
-    if (v8)
+    [toCopy clearSubscriptionUpdates];
+    subscriptionUpdatesCount = [(PSChannelSubscriptionsUpdatePayload *)self subscriptionUpdatesCount];
+    if (subscriptionUpdatesCount)
     {
-      v9 = v8;
+      v9 = subscriptionUpdatesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PSChannelSubscriptionsUpdatePayload *)self subscriptionUpdatesAtIndex:j];
-        [v12 addSubscriptionUpdates:v11];
+        [toCopy addSubscriptionUpdates:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -260,7 +260,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addAppChannelUpdates:v11];
 
         v10 = v10 + 1;
@@ -293,7 +293,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addSubscriptionUpdates:v17];
 
         v16 = v16 + 1;
@@ -309,13 +309,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appChannelUpdates = self->_appChannelUpdates, !(appChannelUpdates | v4[1])) || -[NSMutableArray isEqual:](appChannelUpdates, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appChannelUpdates = self->_appChannelUpdates, !(appChannelUpdates | equalCopy[1])) || -[NSMutableArray isEqual:](appChannelUpdates, "isEqual:")))
   {
     subscriptionUpdates = self->_subscriptionUpdates;
-    if (subscriptionUpdates | v4[2])
+    if (subscriptionUpdates | equalCopy[2])
     {
       v7 = [(NSMutableArray *)subscriptionUpdates isEqual:?];
     }
@@ -334,14 +334,14 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -372,7 +372,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

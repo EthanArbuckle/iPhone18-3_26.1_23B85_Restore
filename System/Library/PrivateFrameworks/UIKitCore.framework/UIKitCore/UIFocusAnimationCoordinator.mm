@@ -1,23 +1,23 @@
 @interface UIFocusAnimationCoordinator
-+ (id)_focusAnimationCoordinatorForAnimationType:(int64_t)a3 withConfiguration:(id)a4 inContext:(id)a5;
++ (id)_focusAnimationCoordinatorForAnimationType:(int64_t)type withConfiguration:(id)configuration inContext:(id)context;
 - (_UIFocusAnimationConfiguration)_activeConfiguration;
 - (double)_activeAnimationDuration;
 - (double)_animationDelay;
 - (double)_focusingAnimationDuration;
 - (double)_unfocusingAnimationDuration;
 - (double)_unfocusingRepositionAnimationDuration;
-- (id)_configurationForFocusAnimation:(int64_t)a3;
-- (id)_initWithFocusUpdateContext:(id)a3;
+- (id)_configurationForFocusAnimation:(int64_t)animation;
+- (id)_initWithFocusUpdateContext:(id)context;
 - (unint64_t)_animationOptions;
 - (void)_animate;
-- (void)_animateFocusAnimation:(int64_t)a3;
-- (void)_cancelFocusAnimation:(int64_t)a3;
-- (void)_configureWithFocusUpdateContext:(id)a3;
-- (void)_consumeBlocks:(id)a3;
-- (void)_consumeBlocks:(id)a3 withAnimationContext:(id)a4;
-- (void)_setConfiguration:(id)a3 forFocusAnimation:(int64_t)a4;
+- (void)_animateFocusAnimation:(int64_t)animation;
+- (void)_cancelFocusAnimation:(int64_t)animation;
+- (void)_configureWithFocusUpdateContext:(id)context;
+- (void)_consumeBlocks:(id)blocks;
+- (void)_consumeBlocks:(id)blocks withAnimationContext:(id)context;
+- (void)_setConfiguration:(id)configuration forFocusAnimation:(int64_t)animation;
 - (void)addCoordinatedAnimations:(void *)animations completion:(void *)completion;
-- (void)addCoordinatedAnimationsForAnimation:(int64_t)a3 animations:(id)a4 completion:(id)a5;
+- (void)addCoordinatedAnimationsForAnimation:(int64_t)animation animations:(id)animations completion:(id)completion;
 - (void)addCoordinatedFocusingAnimations:(void *)animations completion:(void *)completion;
 - (void)addCoordinatedUnfocusingAnimations:(void *)animations completion:(void *)completion;
 @end
@@ -26,19 +26,19 @@
 
 - (_UIFocusAnimationConfiguration)_activeConfiguration
 {
-  v3 = [(UIFocusAnimationCoordinator *)self activeFocusAnimation];
+  activeFocusAnimation = [(UIFocusAnimationCoordinator *)self activeFocusAnimation];
 
-  return [(UIFocusAnimationCoordinator *)self _configurationForFocusAnimation:v3];
+  return [(UIFocusAnimationCoordinator *)self _configurationForFocusAnimation:activeFocusAnimation];
 }
 
 - (double)_focusingAnimationDuration
 {
-  v3 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  [v3 focusingBaseDuration];
+  _activeConfiguration = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  [_activeConfiguration focusingBaseDuration];
   v5 = v4;
-  v6 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  v7 = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
-  [v6 _focusingVelocityBasedDurationScaleFactorForAnimationInContext:v7];
+  _activeConfiguration2 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  _focusUpdateContext = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
+  [_activeConfiguration2 _focusingVelocityBasedDurationScaleFactorForAnimationInContext:_focusUpdateContext];
   v9 = v5 * v8;
 
   return v9;
@@ -46,44 +46,44 @@
 
 - (double)_unfocusingAnimationDuration
 {
-  v3 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  [v3 unfocusingBaseDuration];
+  _activeConfiguration = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  [_activeConfiguration unfocusingBaseDuration];
   v5 = v4;
-  v6 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  v7 = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
-  [v6 _unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:v7];
+  _activeConfiguration2 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  _focusUpdateContext = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
+  [_activeConfiguration2 _unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:_focusUpdateContext];
   v9 = v5 * v8;
 
   return v9;
 }
 
-+ (id)_focusAnimationCoordinatorForAnimationType:(int64_t)a3 withConfiguration:(id)a4 inContext:(id)a5
++ (id)_focusAnimationCoordinatorForAnimationType:(int64_t)type withConfiguration:(id)configuration inContext:(id)context
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  configurationCopy = configuration;
+  contextCopy = context;
+  if (!configurationCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UIFocusAnimationCoordinator.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusAnimationCoordinator.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
-  v11 = [[a1 alloc] _initWithFocusUpdateContext:v10];
-  [v11 _setConfiguration:v9 forFocusAnimation:a3];
-  [v11 _prepareForFocusAnimation:a3];
+  v11 = [[self alloc] _initWithFocusUpdateContext:contextCopy];
+  [v11 _setConfiguration:configurationCopy forFocusAnimation:type];
+  [v11 _prepareForFocusAnimation:type];
 
   return v11;
 }
 
-- (id)_initWithFocusUpdateContext:(id)a3
+- (id)_initWithFocusUpdateContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = UIFocusAnimationCoordinator;
   v6 = [(UIFocusAnimationCoordinator *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_focusUpdateContext, a3);
+    objc_storeStrong(&v6->_focusUpdateContext, context);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     focusingAnimations = v7->_focusingAnimations;
     v7->_focusingAnimations = v8;
@@ -108,37 +108,37 @@
     unfocusingCompletions = v7->_unfocusingCompletions;
     v7->_unfocusingCompletions = v18;
 
-    if (v5)
+    if (contextCopy)
     {
-      [(UIFocusAnimationCoordinator *)v7 _configureWithFocusUpdateContext:v5];
+      [(UIFocusAnimationCoordinator *)v7 _configureWithFocusUpdateContext:contextCopy];
     }
   }
 
   return v7;
 }
 
-- (void)_configureWithFocusUpdateContext:(id)a3
+- (void)_configureWithFocusUpdateContext:(id)context
 {
-  v5 = a3;
-  v30 = v5;
-  if (!v5)
+  contextCopy = context;
+  v30 = contextCopy;
+  if (!contextCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"UIFocusAnimationCoordinator.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusAnimationCoordinator.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    v5 = 0;
+    contextCopy = 0;
   }
 
-  v6 = [v5 previouslyFocusedView];
-  v7 = [v6 _preferredConfigurationForFocusAnimation:1 inContext:v30];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v7 = [previouslyFocusedView _preferredConfigurationForFocusAnimation:1 inContext:v30];
 
   if (v7)
   {
     [(UIFocusAnimationCoordinator *)self _setConfiguration:v7 forFocusAnimation:1];
   }
 
-  v8 = [v30 nextFocusedView];
-  v9 = [v8 _preferredConfigurationForFocusAnimation:0 inContext:v30];
+  nextFocusedView = [v30 nextFocusedView];
+  v9 = [nextFocusedView _preferredConfigurationForFocusAnimation:0 inContext:v30];
   if (v9)
   {
     v10 = v9;
@@ -146,10 +146,10 @@
     if (v11 > 0.0)
     {
       v12 = v11;
-      v13 = [v8 _focusSystem];
-      v14 = [v13 behavior];
+      _focusSystem = [nextFocusedView _focusSystem];
+      behavior = [_focusSystem behavior];
 
-      if (v14)
+      if (behavior)
       {
         v15 = [v10 copy];
 
@@ -227,10 +227,10 @@
 
 - (unint64_t)_animationOptions
 {
-  v2 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  v3 = [v2 animationOptions];
+  _activeConfiguration = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  animationOptions = [_activeConfiguration animationOptions];
 
-  return v3;
+  return animationOptions;
 }
 
 - (double)_animationDelay
@@ -240,8 +240,8 @@
     return 0.0;
   }
 
-  v4 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  [v4 focusingDelay];
+  _activeConfiguration = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  [_activeConfiguration focusingDelay];
   v6 = v5;
 
   return v6;
@@ -274,28 +274,28 @@
 
 - (double)_unfocusingRepositionAnimationDuration
 {
-  v3 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  [v3 unfocusingRepositionBaseDuration];
+  _activeConfiguration = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  [_activeConfiguration unfocusingRepositionBaseDuration];
   v5 = v4;
-  v6 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
-  v7 = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
-  [v6 _unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:v7];
+  _activeConfiguration2 = [(UIFocusAnimationCoordinator *)self _activeConfiguration];
+  _focusUpdateContext = [(UIFocusAnimationCoordinator *)self _focusUpdateContext];
+  [_activeConfiguration2 _unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:_focusUpdateContext];
   v9 = v5 * v8;
 
   return v9;
 }
 
-- (void)_setConfiguration:(id)a3 forFocusAnimation:(int64_t)a4
+- (void)_setConfiguration:(id)configuration forFocusAnimation:(int64_t)animation
 {
-  v6 = a3;
-  if (v6)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v8 = v6;
-    v7 = [(UIFocusAnimationCoordinator *)self _isLocked];
-    v6 = v8;
-    if (!v7)
+    v8 = configurationCopy;
+    _isLocked = [(UIFocusAnimationCoordinator *)self _isLocked];
+    configurationCopy = v8;
+    if (!_isLocked)
     {
-      if (a4)
+      if (animation)
       {
         [(UIFocusAnimationCoordinator *)self setUnfocusingConfiguration:v8];
       }
@@ -305,14 +305,14 @@
         [(UIFocusAnimationCoordinator *)self setFocusingConfiguration:v8];
       }
 
-      v6 = v8;
+      configurationCopy = v8;
     }
   }
 }
 
-- (id)_configurationForFocusAnimation:(int64_t)a3
+- (id)_configurationForFocusAnimation:(int64_t)animation
 {
-  if (a3 || !self->_focusingConfiguration)
+  if (animation || !self->_focusingConfiguration)
   {
     unfocusingConfiguration = self->_unfocusingConfiguration;
     if (!unfocusingConfiguration)
@@ -333,15 +333,15 @@ LABEL_7:
   return v4;
 }
 
-- (void)_consumeBlocks:(id)a3
+- (void)_consumeBlocks:(id)blocks
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blocksCopy = blocks;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [blocksCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -353,32 +353,32 @@ LABEL_7:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(blocksCopy);
         }
 
         (*(*(*(&v8 + 1) + 8 * v7++) + 16))();
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [blocksCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 
-  [v3 removeAllObjects];
+  [blocksCopy removeAllObjects];
 }
 
-- (void)_consumeBlocks:(id)a3 withAnimationContext:(id)a4
+- (void)_consumeBlocks:(id)blocks withAnimationContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  blocksCopy = blocks;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [blocksCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -390,20 +390,20 @@ LABEL_7:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(blocksCopy);
         }
 
         (*(*(*(&v11 + 1) + 8 * v10++) + 16))();
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [blocksCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  [v5 removeAllObjects];
+  [blocksCopy removeAllObjects];
 }
 
 - (void)addCoordinatedAnimations:(void *)animations completion:(void *)completion
@@ -413,14 +413,14 @@ LABEL_7:
   [(UIFocusAnimationCoordinator *)self addCoordinatedAnimationsForAnimation:[(UIFocusAnimationCoordinator *)self activeFocusAnimation] animations:v7 completion:v6];
 }
 
-- (void)addCoordinatedAnimationsForAnimation:(int64_t)a3 animations:(id)a4 completion:(id)a5
+- (void)addCoordinatedAnimationsForAnimation:(int64_t)animation animations:(id)animations completion:(id)completion
 {
-  aBlock = a4;
-  v8 = a5;
+  aBlock = animations;
+  completionCopy = completion;
   if (aBlock)
   {
     v9 = 56;
-    if (!a3)
+    if (!animation)
     {
       v9 = 40;
     }
@@ -430,16 +430,16 @@ LABEL_7:
     [v10 addObject:v11];
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v12 = 72;
-    if (!a3)
+    if (!animation)
     {
       v12 = 64;
     }
 
     v13 = *(&self->super.isa + v12);
-    v14 = _Block_copy(v8);
+    v14 = _Block_copy(completionCopy);
     [v13 addObject:v14];
   }
 }
@@ -484,15 +484,15 @@ LABEL_7:
 
 - (void)_animate
 {
-  v3 = [(UIFocusAnimationCoordinator *)self activeFocusAnimation];
+  activeFocusAnimation = [(UIFocusAnimationCoordinator *)self activeFocusAnimation];
 
-  [(UIFocusAnimationCoordinator *)self _animateFocusAnimation:v3];
+  [(UIFocusAnimationCoordinator *)self _animateFocusAnimation:activeFocusAnimation];
 }
 
-- (void)_animateFocusAnimation:(int64_t)a3
+- (void)_animateFocusAnimation:(int64_t)animation
 {
   v5 = [(UIFocusAnimationCoordinator *)self _configurationForFocusAnimation:?];
-  if (a3)
+  if (animation)
   {
     [(UIFocusAnimationCoordinator *)self _unfocusingAnimationDuration];
     v7 = v6;
@@ -526,15 +526,15 @@ LABEL_7:
 
   else
   {
-    v18 = [v5 animationOptions];
+    animationOptions = [v5 animationOptions];
     if (fabs(v8) >= 2.22044605e-16)
     {
-      v19 = v18 | 0x800;
+      v19 = animationOptions | 0x800;
     }
 
     else
     {
-      v19 = v18;
+      v19 = animationOptions;
     }
 
     v22[0] = MEMORY[0x1E69E9820];
@@ -564,10 +564,10 @@ uint64_t __54__UIFocusAnimationCoordinator__animateFocusAnimation___block_invoke
   return [v2 _consumeBlocks:v3];
 }
 
-- (void)_cancelFocusAnimation:(int64_t)a3
+- (void)_cancelFocusAnimation:(int64_t)animation
 {
   v3 = 72;
-  if (!a3)
+  if (!animation)
   {
     v3 = 64;
   }

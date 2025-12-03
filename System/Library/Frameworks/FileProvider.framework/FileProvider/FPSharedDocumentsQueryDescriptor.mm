@@ -1,22 +1,22 @@
 @interface FPSharedDocumentsQueryDescriptor
-- (id)queryStringForMountPoint:(id)a3;
+- (id)queryStringForMountPoint:(id)point;
 @end
 
 @implementation FPSharedDocumentsQueryDescriptor
 
-- (id)queryStringForMountPoint:(id)a3
+- (id)queryStringForMountPoint:(id)point
 {
-  v4 = [(FPSpotlightQueryDescriptor *)self settings];
-  v5 = [v4 allowedFileTypes];
-  v30 = v5;
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  allowedFileTypes = [settings allowedFileTypes];
+  v30 = allowedFileTypes;
 
-  v6 = [(FPSpotlightQueryDescriptor *)self settings];
-  v7 = [v6 excludedFileTypes];
-  v8 = v7;
+  settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedFileTypes = [settings2 excludedFileTypes];
+  v8 = excludedFileTypes;
   v9 = MEMORY[0x1E695E0F0];
-  if (v7)
+  if (excludedFileTypes)
   {
-    v10 = v7;
+    v10 = excludedFileTypes;
   }
 
   else
@@ -27,12 +27,12 @@
   v11 = v10;
   v29 = v11;
 
-  v12 = [(FPSpotlightQueryDescriptor *)self settings];
-  v13 = [v12 excludedParentOIDs];
-  v14 = v13;
-  if (v13)
+  settings3 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedParentOIDs = [settings3 excludedParentOIDs];
+  v14 = excludedParentOIDs;
+  if (excludedParentOIDs)
   {
-    v15 = v13;
+    v15 = excludedParentOIDs;
   }
 
   else
@@ -43,16 +43,16 @@
   v16 = v15;
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = FPContentTypeQueryStringForFileTypes(v5, v11);
+  v18 = FPContentTypeQueryStringForFileTypes(allowedFileTypes, v11);
 
   v19 = FPIsTrashedQueryStringFragment(0);
-  v20 = [(FPSpotlightQueryDescriptor *)self settings];
-  v21 = [v20 allowedProviders];
-  v22 = FPFileProviderOriginatedItemsQueryStringFragment(v21);
+  settings4 = [(FPSpotlightQueryDescriptor *)self settings];
+  allowedProviders = [settings4 allowedProviders];
+  v22 = FPFileProviderOriginatedItemsQueryStringFragment(allowedProviders);
   v23 = FPExcludedCollaborationInvitationsQueryStringFragment();
-  v24 = [(FPSpotlightQueryDescriptor *)self settings];
-  v25 = [v24 excludedParentOIDs];
-  v26 = FPExcludedOIDParentsQueryStringFragment(v25);
+  settings5 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedParentOIDs2 = [settings5 excludedParentOIDs];
+  v26 = FPExcludedOIDParentsQueryStringFragment(excludedParentOIDs2);
   v27 = [v17 stringWithFormat:@"(kMDItemIsShared = \"1\"", v18, v19, v22, v23, v26];
 
   return v27;

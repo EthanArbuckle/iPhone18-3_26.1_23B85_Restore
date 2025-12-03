@@ -1,37 +1,37 @@
 @interface UIKeyboardAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityKeyboardIsContinuousPathAvailable;
 - (BOOL)_accessibilityKeyboardIsContinuousPathTracking;
-- (BOOL)_accessibilityTriggerDictationFromPath:(id)a3;
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
+- (BOOL)_accessibilityTriggerDictationFromPath:(id)path;
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
 - (BOOL)canBecomeFocused;
 - (CGRect)_accessibilityDirectInteractionFrame;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityNativeFocusPreferredElement;
-- (uint64_t)_accessibilitySwitchToGestureMode:(void *)a1;
+- (uint64_t)_accessibilitySwitchToGestureMode:(void *)mode;
 - (uint64_t)_axDeleteByCharacter;
 - (uint64_t)_axDeleteByWord;
-- (uint64_t)_axEnterTextValue:(uint64_t)a1;
+- (uint64_t)_axEnterTextValue:(uint64_t)value;
 - (uint64_t)_axShift;
 - (uint64_t)_axShiftLock;
-- (void)_voiceOverStatus:(id)a3;
+- (void)_voiceOverStatus:(id)status;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
 - (void)dictationRecognitionFailed;
-- (void)insertDictationResult:(id)a3;
+- (void)insertDictationResult:(id)result;
 @end
 
 @implementation UIKeyboardAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v14 = location;
   v13 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateProtocol:@"UITextInput_Internal" hasRequiredInstanceMethod:@"_deleteByWord"];
   v9 = "B";
   v7 = @"UIKeyboardImpl";
@@ -73,115 +73,115 @@
 
 - (BOOL)_accessibilityKeyboardIsContinuousPathTracking
 {
-  v5 = [MEMORY[0x29EDC7B08] activeInstance];
-  v4 = [v5 safeValueForKey:@"m_layout"];
+  activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+  v4 = [activeInstance safeValueForKey:@"m_layout"];
   v3 = [v4 safeValueForKey:@"_typingStyleEstimator"];
-  v6 = [v3 _accessibilityKeyboardIsContinuousPathTracking];
+  _accessibilityKeyboardIsContinuousPathTracking = [v3 _accessibilityKeyboardIsContinuousPathTracking];
   MEMORY[0x29EDC9740](v3);
   MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
-  return v6;
+  MEMORY[0x29EDC9740](activeInstance);
+  return _accessibilityKeyboardIsContinuousPathTracking;
 }
 
 - (BOOL)_accessibilityKeyboardIsContinuousPathAvailable
 {
-  v4 = [MEMORY[0x29EDC7B08] activeInstance];
-  v3 = [v4 safeValueForKey:@"m_layout"];
+  activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+  v3 = [activeInstance safeValueForKey:@"m_layout"];
   v5 = [v3 safeBoolForKey:@"_allowContinuousPathUI"];
   MEMORY[0x29EDC9740](v3);
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](activeInstance);
   return v5;
 }
 
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  actionCopy = action;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v10 = a5;
-  if (v12 == 2600)
+  objc_storeStrong(&location, value);
+  portCopy = port;
+  if (actionCopy == 2600)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axDeleteByCharacter]& 1;
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axDeleteByCharacter]& 1;
     v9 = 1;
   }
 
-  else if (v12 == 2601)
+  else if (actionCopy == 2601)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axDeleteByWord]& 1;
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axDeleteByWord]& 1;
     v9 = 1;
   }
 
-  else if (v12 == 2602 || v12 == 2603)
+  else if (actionCopy == 2602 || actionCopy == 2603)
   {
-    v15 = [UIKeyboardAccessibility _axAdvanceKeyboardPlane:v14];
+    _axCommitWord = [UIKeyboardAccessibility _axAdvanceKeyboardPlane:selfCopy];
     v9 = 1;
   }
 
-  else if (v12 == 2604)
+  else if (actionCopy == 2604)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axCommitWord];
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axCommitWord];
     v9 = 1;
   }
 
-  else if (v12 == 2605)
+  else if (actionCopy == 2605)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axEnterTextValue:?]& 1;
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axEnterTextValue:?]& 1;
     v9 = 1;
   }
 
-  else if (v12 == 2606 || v12 == 2607)
+  else if (actionCopy == 2606 || actionCopy == 2607)
   {
-    v15 = [UIKeyboardAccessibility _axAdvanceKeyboardSuggestion:v14];
+    _axCommitWord = [UIKeyboardAccessibility _axAdvanceKeyboardSuggestion:selfCopy];
     v9 = 1;
   }
 
-  else if (v12 == 2608)
+  else if (actionCopy == 2608)
   {
-    v15 = [UIKeyboardAccessibility _axAdvanceInternationalKeyboard:v14];
+    _axCommitWord = [UIKeyboardAccessibility _axAdvanceInternationalKeyboard:selfCopy];
     v9 = 1;
   }
 
-  else if (v12 == 2609)
+  else if (actionCopy == 2609)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axShift]& 1;
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axShift]& 1;
     v9 = 1;
   }
 
-  else if (v12 == 2610)
+  else if (actionCopy == 2610)
   {
-    v15 = [(UIKeyboardAccessibility *)v14 _axShiftLock]& 1;
+    _axCommitWord = [(UIKeyboardAccessibility *)selfCopy _axShiftLock]& 1;
     v9 = 1;
   }
 
   else
   {
-    if (v12 == 2611)
+    if (actionCopy == 2611)
     {
-      v6 = v14;
+      v6 = selfCopy;
       [location BOOLValue];
-      v15 = [UIKeyboardAccessibility _accessibilitySwitchToGestureMode:v6]& 1;
+      _axCommitWord = [UIKeyboardAccessibility _accessibilitySwitchToGestureMode:v6]& 1;
     }
 
     else
     {
-      v8.receiver = v14;
+      v8.receiver = selfCopy;
       v8.super_class = UIKeyboardAccessibility;
-      v15 = [(UIKeyboardAccessibility *)&v8 _iosAccessibilityPerformAction:v12 withValue:location fencePort:v10];
+      _axCommitWord = [(UIKeyboardAccessibility *)&v8 _iosAccessibilityPerformAction:actionCopy withValue:location fencePort:portCopy];
     }
 
     v9 = 1;
   }
 
   objc_storeStrong(&location, 0);
-  return v15 & 1;
+  return _axCommitWord & 1;
 }
 
 - (uint64_t)_axDeleteByCharacter
 {
-  v3[1] = a1;
-  if (a1)
+  v3[1] = self;
+  if (self)
   {
     v3[0] = [MEMORY[0x29EDC7B08] activeInstance];
     v2 = MEMORY[0x29EDC9748](v3[0]);
@@ -201,13 +201,13 @@
 
 - (uint64_t)_axDeleteByWord
 {
-  v4[1] = a1;
-  if (a1)
+  v4[1] = self;
+  if (self)
   {
     v4[0] = [MEMORY[0x29EDC7B08] activeInstance];
-    v3 = [v4[0] inputDelegate];
-    v1 = [v3 safeValueForKey:@"_deleteByWord"];
-    MEMORY[0x29EDC9740](v3);
+    inputDelegate = [v4[0] inputDelegate];
+    v1 = [inputDelegate safeValueForKey:@"_deleteByWord"];
+    MEMORY[0x29EDC9740](inputDelegate);
     v5 = 1;
     objc_storeStrong(v4, 0);
   }
@@ -220,21 +220,21 @@
   return v5 & 1;
 }
 
-- (uint64_t)_axEnterTextValue:(uint64_t)a1
+- (uint64_t)_axEnterTextValue:(uint64_t)value
 {
-  v6 = a1;
+  valueCopy = value;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v6)
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [MEMORY[0x29EDC7B08] activeInstance];
-      [v3 addInputString:location];
+      activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+      [activeInstance addInputString:location];
       v7 = 1;
       v4 = 1;
-      objc_storeStrong(&v3, 0);
+      objc_storeStrong(&activeInstance, 0);
     }
 
     else
@@ -256,8 +256,8 @@
 
 - (uint64_t)_axShift
 {
-  v2[1] = a1;
-  if (a1)
+  v2[1] = self;
+  if (self)
   {
     v2[0] = [MEMORY[0x29EDC7B08] activeInstance];
     [v2[0] setShift:{objc_msgSend(v2[0], "isShifted") ^ 1}];
@@ -275,8 +275,8 @@
 
 - (uint64_t)_axShiftLock
 {
-  v2[1] = a1;
-  if (a1)
+  v2[1] = self;
+  if (self)
   {
     v2[0] = [MEMORY[0x29EDC7B08] activeInstance];
     [v2[0] setShiftLocked:{objc_msgSend(v2[0], "isShiftLocked") ^ 1}];
@@ -292,15 +292,15 @@
   return v3 & 1;
 }
 
-- (uint64_t)_accessibilitySwitchToGestureMode:(void *)a1
+- (uint64_t)_accessibilitySwitchToGestureMode:(void *)mode
 {
-  if (a1)
+  if (mode)
   {
-    if (([a1 _accessibilityBoolValueForKey:@"VORegistered"] & 1) == 0)
+    if (([mode _accessibilityBoolValueForKey:@"VORegistered"] & 1) == 0)
     {
-      v2 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v2 addObserver:a1 selector:sel__voiceOverStatus_ name:*MEMORY[0x29EDC8000] object:0];
-      [a1 _accessibilitySetBoolValue:1 forKey:{@"VORegistered", MEMORY[0x29EDC9740](v2).n128_f64[0]}];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:mode selector:sel__voiceOverStatus_ name:*MEMORY[0x29EDC8000] object:0];
+      [mode _accessibilitySetBoolValue:1 forKey:{@"VORegistered", MEMORY[0x29EDC9740](defaultCenter).n128_f64[0]}];
     }
 
     v4 = 1;
@@ -316,19 +316,19 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:v6 name:*MEMORY[0x29EDC8000] object:0];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v4.receiver = v6;
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x29EDC8000] object:0];
+  *&v2 = MEMORY[0x29EDC9740](defaultCenter).n128_u64[0];
+  v4.receiver = selfCopy;
   v4.super_class = UIKeyboardAccessibility;
   [(UIKeyboardAccessibility *)&v4 dealloc];
 }
 
 - (void)deactivate
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyboardAccessibility;
@@ -338,7 +338,7 @@
 
 - (void)activate
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyboardAccessibility;
@@ -346,44 +346,44 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (BOOL)_accessibilityTriggerDictationFromPath:(id)a3
+- (BOOL)_accessibilityTriggerDictationFromPath:(id)path
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v11 = 0;
-  v10 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  if (v10)
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  if (mEMORY[0x29EDC7B18])
   {
-    [v10 setDelegate:v13];
-    v6 = [v10 currentInputMode];
-    v9 = [v6 primaryLanguage];
-    *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    v7 = v10;
+    [mEMORY[0x29EDC7B18] setDelegate:selfCopy];
+    currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+    primaryLanguage = [currentInputMode primaryLanguage];
+    *&v3 = MEMORY[0x29EDC9740](currentInputMode).n128_u64[0];
+    v7 = mEMORY[0x29EDC7B18];
     v8 = [MEMORY[0x29EDB8E70] fileURLWithPath:location[0] isDirectory:{0, v3}];
     [v7 startDictationConnectionForFileAtURL:? forInputModeIdentifier:?];
     MEMORY[0x29EDC9740](v8);
     v11 = 1;
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&primaryLanguage, 0);
   }
 
   v5 = v11;
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&mEMORY[0x29EDC7B18], 0);
   objc_storeStrong(location, 0);
   return v5 & 1;
 }
 
-- (void)insertDictationResult:(id)a3
+- (void)insertDictationResult:(id)result
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  [v3 setDelegate:0];
+  objc_storeStrong(location, result);
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  [mEMORY[0x29EDC7B18] setDelegate:0];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7420], 0);
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&mEMORY[0x29EDC7B18], 0);
   objc_storeStrong(location, 0);
 }
 
@@ -402,23 +402,23 @@
 
 - (CGRect)accessibilityFrame
 {
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
-  v30 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  v29 = [v30 currentInputMode];
-  v31 = [v29 isExtensionInputMode];
-  MEMORY[0x29EDC9740](v29);
-  MEMORY[0x29EDC9740](v30);
-  v53 = v31;
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+  isExtensionInputMode = [currentInputMode isExtensionInputMode];
+  MEMORY[0x29EDC9740](currentInputMode);
+  MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]);
+  v53 = isExtensionInputMode;
   v52 = [NSClassFromString(&cfstr_Uiremotekeyboa_5.isa) safeBoolForKey:@"enabled"];
   v51 = 1;
-  v34 = [MEMORY[0x29EDC7BB8] sharedInstance];
-  v33 = [v34 safeValueForKey:@"containerRootController"];
+  mEMORY[0x29EDC7BB8] = [MEMORY[0x29EDC7BB8] sharedInstance];
+  v33 = [mEMORY[0x29EDC7BB8] safeValueForKey:@"containerRootController"];
   v32 = [v33 safeValueForKey:@"inputViewSet"];
   v50 = [v32 safeUIViewForKey:@"inputView"];
   MEMORY[0x29EDC9740](v32);
   MEMORY[0x29EDC9740](v33);
-  MEMORY[0x29EDC9740](v34);
+  MEMORY[0x29EDC9740](mEMORY[0x29EDC7BB8]);
   if ((v52 & 1) == 0 || (NSClassFromString(&cfstr_Uiremotekeyboa_2.isa), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (!v50)
@@ -434,23 +434,23 @@
   if (objc_opt_isKindOfClass())
   {
     location = [v49 safeUIViewForKey:@"touchableView"];
-    v27 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+    activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
     v46 = 0;
     v28 = 1;
-    if (location == v27)
+    if (location == activeKeyboard)
     {
-      v47 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+      activeKeyboard2 = [MEMORY[0x29EDC7AF8] activeKeyboard];
       v46 = 1;
-      v28 = v47 == 0;
+      v28 = activeKeyboard2 == 0;
     }
 
     v51 = v28;
     if (v46)
     {
-      MEMORY[0x29EDC9740](v47);
+      MEMORY[0x29EDC9740](activeKeyboard2);
     }
 
-    MEMORY[0x29EDC9740](v27);
+    MEMORY[0x29EDC9740](activeKeyboard);
     objc_storeStrong(&location, 0);
   }
 
@@ -467,7 +467,7 @@
 
   else
   {
-    v37.receiver = v55;
+    v37.receiver = selfCopy;
     v37.super_class = UIKeyboardAccessibility;
     [(UIKeyboardAccessibility *)&v37 accessibilityFrame];
     v56 = v11;
@@ -493,7 +493,7 @@ LABEL_17:
 
     else
     {
-      v35.receiver = v55;
+      v35.receiver = selfCopy;
       v35.super_class = UIKeyboardAccessibility;
       [(UIKeyboardAccessibility *)&v35 accessibilityFrame];
       v56 = v19;
@@ -518,15 +518,15 @@ LABEL_17:
 
 - (CGRect)_accessibilityDirectInteractionFrame
 {
-  v11 = [MEMORY[0x29EDC7B08] activeInstance];
-  v10 = [v11 safeValueForKey:@"m_layout"];
+  activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+  v10 = [activeInstance safeValueForKey:@"m_layout"];
   [v10 accessibilityFrame];
   v12 = v2;
   v13 = v3;
   v14 = v4;
   v15 = v5;
   MEMORY[0x29EDC9740](v10);
-  MEMORY[0x29EDC9740](v11);
+  MEMORY[0x29EDC9740](activeInstance);
   v6 = v12;
   v7 = v13;
   v8 = v14;
@@ -538,15 +538,15 @@ LABEL_17:
   return result;
 }
 
-- (void)_voiceOverStatus:(id)a3
+- (void)_voiceOverStatus:(id)status
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, status);
   if (!UIAccessibilityIsVoiceOverRunning())
   {
-    [UIKeyboardAccessibility _accessibilitySwitchToGestureMode:v4];
+    [UIKeyboardAccessibility _accessibilitySwitchToGestureMode:selfCopy];
   }
 
   objc_storeStrong(location, 0);
@@ -554,21 +554,21 @@ LABEL_17:
 
 - (BOOL)canBecomeFocused
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (([(UIKeyboardAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     return 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIKeyboardAccessibility;
   return [(UIKeyboardAccessibility *)&v3 canBecomeFocused];
 }
 
 - (id)_accessibilityNativeFocusPreferredElement
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIKeyboardAccessibility;

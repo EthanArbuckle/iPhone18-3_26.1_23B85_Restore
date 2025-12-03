@@ -1,7 +1,7 @@
 @interface BCLockout
-- (void)_sendNotfications:(id)a3 isLock:(BOOL)a4;
+- (void)_sendNotfications:(id)notfications isLock:(BOOL)lock;
 - (void)dealloc;
-- (void)setPath:(id)a3;
+- (void)setPath:(id)path;
 - (void)unlock;
 @end
 
@@ -16,7 +16,7 @@
   [(BCLockout *)&v3 dealloc];
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
   if (self->_lockFile)
   {
@@ -25,9 +25,9 @@
     self->_lockFile = 0;
   }
 
-  if (a3)
+  if (path)
   {
-    self->_lockFile = [[IMLockFile alloc] initWithPath:a3];
+    self->_lockFile = [[IMLockFile alloc] initWithPath:path];
   }
 }
 
@@ -40,17 +40,17 @@
     {
       if ([(BCLockout *)self endNotifications])
       {
-        v3 = [(BCLockout *)self endNotifications];
+        endNotifications = [(BCLockout *)self endNotifications];
 
-        [(BCLockout *)self _sendNotfications:v3 isLock:0];
+        [(BCLockout *)self _sendNotfications:endNotifications isLock:0];
       }
     }
   }
 }
 
-- (void)_sendNotfications:(id)a3 isLock:(BOOL)a4
+- (void)_sendNotfications:(id)notfications isLock:(BOOL)lock
 {
-  v4 = a4;
+  lockCopy = lock;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   if (DarwinNotifyCenter)
   {
@@ -59,7 +59,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v8 = [notfications countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -70,14 +70,14 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(notfications);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
           CFNotificationCenterPostNotification(v7, v12, 0, 0, 1u);
           v13 = BCDefaultLog();
           v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-          if (v4)
+          if (lockCopy)
           {
             if (!v14)
             {
@@ -106,7 +106,7 @@
           _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 0xCu);
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v9 = [notfications countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v9);

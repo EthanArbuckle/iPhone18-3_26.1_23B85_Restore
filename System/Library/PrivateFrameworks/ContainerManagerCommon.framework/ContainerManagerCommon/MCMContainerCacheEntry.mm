@@ -1,30 +1,30 @@
 @interface MCMContainerCacheEntry
-+ (id)UUIDForFileHandle:(id)a3;
-+ (id)UUIDForURL:(id)a3;
-+ (id)_fileHandleForURL:(id)a3 writeable:(BOOL)a4;
-+ (id)identifierForFileHandle:(id)a3;
-+ (id)identifierForURL:(id)a3;
-+ (id)schemaVersionForFileHandle:(id)a3;
-+ (id)schemaVersionForURL:(id)a3;
-+ (timespec)birthtimeForFileHandle:(id)a3;
-+ (timespec)birthtimeForURL:(id)a3;
-+ (void)clearAttributesForFileHandle:(id)a3;
-+ (void)clearAttributesForURL:(id)a3;
-+ (void)setBirthtime:(timespec)a3 forFileHandle:(id)a4;
-+ (void)setBirthtime:(timespec)a3 forURL:(id)a4;
-+ (void)setIdentifier:(id)a3 forFileHandle:(id)a4;
-+ (void)setIdentifier:(id)a3 forURL:(id)a4;
-+ (void)setSchemaVersion:(id)a3 forFileHandle:(id)a4;
-+ (void)setSchemaVersion:(id)a3 forURL:(id)a4;
-+ (void)setUUID:(id)a3 forFileHandle:(id)a4;
-+ (void)setUUID:(id)a3 forURL:(id)a4;
++ (id)UUIDForFileHandle:(id)handle;
++ (id)UUIDForURL:(id)l;
++ (id)_fileHandleForURL:(id)l writeable:(BOOL)writeable;
++ (id)identifierForFileHandle:(id)handle;
++ (id)identifierForURL:(id)l;
++ (id)schemaVersionForFileHandle:(id)handle;
++ (id)schemaVersionForURL:(id)l;
++ (timespec)birthtimeForFileHandle:(id)handle;
++ (timespec)birthtimeForURL:(id)l;
++ (void)clearAttributesForFileHandle:(id)handle;
++ (void)clearAttributesForURL:(id)l;
++ (void)setBirthtime:(timespec)birthtime forFileHandle:(id)handle;
++ (void)setBirthtime:(timespec)birthtime forURL:(id)l;
++ (void)setIdentifier:(id)identifier forFileHandle:(id)handle;
++ (void)setIdentifier:(id)identifier forURL:(id)l;
++ (void)setSchemaVersion:(id)version forFileHandle:(id)handle;
++ (void)setSchemaVersion:(id)version forURL:(id)l;
++ (void)setUUID:(id)d forFileHandle:(id)handle;
++ (void)setUUID:(id)d forURL:(id)l;
 - (BOOL)corrupt;
 - (BOOL)ignore;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContainerCacheEntry:(id)a3;
-- (BOOL)verifyWithError:(id *)a3;
-- (MCMContainerCacheEntry)initWithIdentifier:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 uuid:(id)a6 metadata:(id)a7 userIdentityCache:(id)a8;
-- (MCMContainerCacheEntry)initWithMetadata:(id)a3 userIdentityCache:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContainerCacheEntry:(id)entry;
+- (BOOL)verifyWithError:(id *)error;
+- (MCMContainerCacheEntry)initWithIdentifier:(id)identifier containerPath:(id)path schemaVersion:(id)version uuid:(id)uuid metadata:(id)metadata userIdentityCache:(id)cache;
+- (MCMContainerCacheEntry)initWithMetadata:(id)metadata userIdentityCache:(id)cache;
 - (MCMContainerCacheEntry_Internal)next;
 - (MCMContainerCacheUpdatable)cache;
 - (MCMContainerPath)containerPath;
@@ -35,32 +35,32 @@
 - (NSString)description;
 - (NSString)identifier;
 - (NSUUID)uuid;
-- (id)_fabricateMetadataForContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7;
-- (id)_findUserManagedAssetsDirectoryAtContainerRootURL:(id)a3;
-- (id)_identifierForContainerPath:(id)a3;
-- (id)_metadataFromContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7;
-- (id)_readMetadataForIdentifier:(id)a3 containerPath:(id)a4 error:(id *)a5;
+- (id)_fabricateMetadataForContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache;
+- (id)_findUserManagedAssetsDirectoryAtContainerRootURL:(id)l;
+- (id)_identifierForContainerPath:(id)path;
+- (id)_metadataFromContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache;
+- (id)_readMetadataForIdentifier:(id)identifier containerPath:(id)path error:(id *)error;
 - (id)containerIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fsNodeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fsNodeWithError:(id *)error;
 - (id)fullDescription;
-- (id)initFromContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7;
+- (id)initFromContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache;
 - (id)metadataMinimal;
-- (id)metadataWithError:(id *)a3;
-- (timespec)birthtimeWithError:(id *)a3;
+- (id)metadataWithError:(id *)error;
+- (timespec)birthtimeWithError:(id *)error;
 - (unint64_t)generation;
 - (unint64_t)hash;
-- (void)setCache:(id)a3;
-- (void)setContainerPath:(id)a3;
-- (void)setCorrupt:(BOOL)a3;
-- (void)setFsNode:(id)a3;
-- (void)setGeneration:(unint64_t)a3;
-- (void)setIgnore:(BOOL)a3;
-- (void)setNext:(id)a3;
-- (void)setSchemaVersion:(id)a3;
-- (void)setUuid:(id)a3;
+- (void)setCache:(id)cache;
+- (void)setContainerPath:(id)path;
+- (void)setCorrupt:(BOOL)corrupt;
+- (void)setFsNode:(id)node;
+- (void)setGeneration:(unint64_t)generation;
+- (void)setIgnore:(BOOL)ignore;
+- (void)setNext:(id)next;
+- (void)setSchemaVersion:(id)version;
+- (void)setUuid:(id)uuid;
 - (void)setXattrs;
-- (void)setXattrsWithFileHandle:(id)a3;
+- (void)setXattrsWithFileHandle:(id)handle;
 @end
 
 @implementation MCMContainerCacheEntry
@@ -116,12 +116,12 @@
 - (id)metadataMinimal
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMContainerCacheEntry *)self containerIdentity];
+  containerIdentity = [(MCMContainerCacheEntry *)self containerIdentity];
   v4 = [MCMMetadataMinimal alloc];
-  v5 = [(MCMContainerCacheEntry *)self containerPath];
-  v6 = [(MCMContainerCacheEntry *)self schemaVersion];
-  v7 = [(MCMContainerCacheEntry *)self userIdentityCache];
-  v8 = [(MCMMetadataMinimal *)v4 initWithContainerIdentity:v3 containerPath:v5 schemaVersion:v6 userIdentityCache:v7];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  schemaVersion = [(MCMContainerCacheEntry *)self schemaVersion];
+  userIdentityCache = [(MCMContainerCacheEntry *)self userIdentityCache];
+  v8 = [(MCMMetadataMinimal *)v4 initWithContainerIdentity:containerIdentity containerPath:containerPath schemaVersion:schemaVersion userIdentityCache:userIdentityCache];
 
   v9 = *MEMORY[0x1E69E9840];
 
@@ -149,23 +149,23 @@
   v21[1] = *MEMORY[0x1E69E9840];
   v21[0] = 1;
   v3 = containermanager_copy_global_configuration();
-  v4 = [v3 staticConfig];
-  v5 = [(MCMContainerCacheEntry *)self containerPath];
-  v19 = [v4 configForContainerClass:{objc_msgSend(v5, "containerClass")}];
+  staticConfig = [v3 staticConfig];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  v19 = [staticConfig configForContainerClass:{objc_msgSend(containerPath, "containerClass")}];
 
-  v18 = [(MCMContainerCacheEntry *)self uuid];
-  v20 = [(MCMContainerCacheEntry *)self containerPath];
-  v6 = [v20 userIdentity];
-  v7 = [(MCMContainerCacheEntry *)self identifier];
-  v8 = [(MCMContainerCacheEntry *)self containerPath];
-  v9 = [v8 containerPathIdentifier];
-  v10 = [(MCMContainerCacheEntry *)self cache];
-  v11 = [(MCMContainerCacheEntry *)self containerPath];
-  v12 = [v11 transient];
-  v13 = [(MCMContainerCacheEntry *)self userIdentityCache];
-  BYTE1(v17) = v12;
-  LOBYTE(v17) = v10 != 0;
-  v14 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:v18 userIdentity:v6 identifier:v7 containerConfig:v19 platform:0 containerPathIdentifier:v9 existed:v17 transient:v13 userIdentityCache:v21 error:?];
+  uuid = [(MCMContainerCacheEntry *)self uuid];
+  containerPath2 = [(MCMContainerCacheEntry *)self containerPath];
+  userIdentity = [containerPath2 userIdentity];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  containerPath3 = [(MCMContainerCacheEntry *)self containerPath];
+  containerPathIdentifier = [containerPath3 containerPathIdentifier];
+  cache = [(MCMContainerCacheEntry *)self cache];
+  containerPath4 = [(MCMContainerCacheEntry *)self containerPath];
+  transient = [containerPath4 transient];
+  userIdentityCache = [(MCMContainerCacheEntry *)self userIdentityCache];
+  BYTE1(v17) = transient;
+  LOBYTE(v17) = cache != 0;
+  v14 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:uuid userIdentity:userIdentity identifier:identifier containerConfig:v19 platform:0 containerPathIdentifier:containerPathIdentifier existed:v17 transient:userIdentityCache userIdentityCache:v21 error:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -197,38 +197,38 @@
   return result;
 }
 
-- (void)setFsNode:(id)a3
+- (void)setFsNode:(id)node
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_fsNode = &self->_fsNode;
 
-  objc_storeStrong(p_fsNode, a3);
+  objc_storeStrong(p_fsNode, node);
 }
 
-- (void)setCache:(id)a3
+- (void)setCache:(id)cache
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_cache = &self->_cache;
 
-  objc_storeWeak(p_cache, a3);
+  objc_storeWeak(p_cache, cache);
 }
 
-- (void)setGeneration:(unint64_t)a3
+- (void)setGeneration:(unint64_t)generation
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_generation = a3;
+  self->_generation = generation;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNext:(id)a3
+- (void)setNext:(id)next
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_next = &self->_next;
 
-  objc_storeStrong(p_next, a3);
+  objc_storeStrong(p_next, next);
 }
 
 - (MCMContainerCacheEntry_Internal)next
@@ -239,70 +239,70 @@
   return result;
 }
 
-- (void)setIgnore:(BOOL)a3
+- (void)setIgnore:(BOOL)ignore
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_ignore = a3;
+  self->_ignore = ignore;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCorrupt:(BOOL)a3
+- (void)setCorrupt:(BOOL)corrupt
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_corrupt = a3;
+  self->_corrupt = corrupt;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_uuid = &self->_uuid;
 
-  objc_storeStrong(p_uuid, a3);
+  objc_storeStrong(p_uuid, uuid);
 }
 
-- (void)setSchemaVersion:(id)a3
+- (void)setSchemaVersion:(id)version
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_schemaVersion = &self->_schemaVersion;
 
-  objc_storeStrong(p_schemaVersion, a3);
+  objc_storeStrong(p_schemaVersion, version);
 }
 
-- (void)setContainerPath:(id)a3
+- (void)setContainerPath:(id)path
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_containerPath = &self->_containerPath;
 
-  objc_storeStrong(p_containerPath, a3);
+  objc_storeStrong(p_containerPath, path);
 }
 
-- (id)_metadataFromContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7
+- (id)_metadataFromContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache
 {
   v20 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 containerPathForRealPath];
-  v17 = [(MCMContainerCacheEntry *)self _fabricateMetadataForContainerPath:v16 identifier:v15 uuid:v14 schemaVersion:v13 userIdentityCache:v12];
+  cacheCopy = cache;
+  versionCopy = version;
+  uuidCopy = uuid;
+  identifierCopy = identifier;
+  containerPathForRealPath = [path containerPathForRealPath];
+  v17 = [(MCMContainerCacheEntry *)self _fabricateMetadataForContainerPath:containerPathForRealPath identifier:identifierCopy uuid:uuidCopy schemaVersion:versionCopy userIdentityCache:cacheCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (id)_findUserManagedAssetsDirectoryAtContainerRootURL:(id)a3
+- (id)_findUserManagedAssetsDirectoryAtContainerRootURL:(id)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = +[MCMFileManager defaultManager];
   v25 = 0;
-  v22 = v3;
-  v5 = [v4 urlsForItemsInDirectoryAtURL:v3 error:&v25];
+  v22 = lCopy;
+  v5 = [v4 urlsForItemsInDirectoryAtURL:lCopy error:&v25];
   v6 = v25;
 
   if (!v5)
@@ -310,9 +310,9 @@
     v7 = container_log_handle_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v3 path];
+      path = [lCopy path];
       *buf = 138412546;
-      v32 = v21;
+      v32 = path;
       v33 = 2112;
       v34 = v6;
       _os_log_error_impl(&dword_1DF2C3000, v7, OS_LOG_TYPE_ERROR, "Couldn't read container contents when reconstructing metadata; path = [%@], error = %@", buf, 0x16u);
@@ -341,8 +341,8 @@
 
         v13 = *(*(&v27 + 1) + 8 * v12);
 
-        v14 = [v13 lastPathComponent];
-        if ([v14 hasPrefix:@"com.apple.UserManagedAssets."])
+        lastPathComponent = [v13 lastPathComponent];
+        if ([lastPathComponent hasPrefix:@"com.apple.UserManagedAssets."])
         {
           v24 = 0;
           v15 = +[MCMFileManager defaultManager];
@@ -363,9 +363,9 @@
             v17 = container_log_handle_for_category();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              v18 = [v22 path];
+              path2 = [v22 path];
               *buf = 138412546;
-              v32 = v18;
+              v32 = path2;
               v33 = 2112;
               v34 = v6;
               _os_log_error_impl(&dword_1DF2C3000, v17, OS_LOG_TYPE_ERROR, "Couldn't stat container contents when reconstructing metadata; path = [%@], error = %@", buf, 0x16u);
@@ -388,36 +388,36 @@
     while (v10);
   }
 
-  v14 = 0;
+  lastPathComponent = 0;
 LABEL_22:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return lastPathComponent;
 }
 
-- (id)_identifierForContainerPath:(id)a3
+- (id)_identifierForContainerPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 containerClass];
-  v5 = [v3 containerRootURL];
-  v6 = [MCMContainerCacheEntry identifierForURL:v5];
+  pathCopy = path;
+  containerClass = [pathCopy containerClass];
+  containerRootURL = [pathCopy containerRootURL];
+  v6 = [MCMContainerCacheEntry identifierForURL:containerRootURL];
 
   if (!v6)
   {
-    if ((v4 & 0xFFFFFFFFFFFFFFFELL) != 0xC)
+    if ((containerClass & 0xFFFFFFFFFFFFFFFELL) != 0xC)
     {
       v6 = 0;
       goto LABEL_10;
     }
 
-    v7 = [v3 containerPathIdentifier];
+    containerPathIdentifier = [pathCopy containerPathIdentifier];
     v8 = +[MCMEntitlementBypassList sharedBypassList];
     v9 = v8;
-    if (v4 == 13)
+    if (containerClass == 13)
     {
-      v10 = [v8 systemGroupContainerIdIsWellknown:v7];
+      v10 = [v8 systemGroupContainerIdIsWellknown:containerPathIdentifier];
 
       if ((v10 & 1) == 0)
       {
@@ -431,7 +431,7 @@ LABEL_9:
 
     else
     {
-      v11 = [v8 systemContainerIdIsWellknown:v7];
+      v11 = [v8 systemContainerIdIsWellknown:containerPathIdentifier];
 
       if (!v11)
       {
@@ -439,7 +439,7 @@ LABEL_9:
       }
     }
 
-    v6 = v7;
+    v6 = containerPathIdentifier;
     goto LABEL_9;
   }
 
@@ -450,62 +450,62 @@ LABEL_10:
   return v6;
 }
 
-- (id)_fabricateMetadataForContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7
+- (id)_fabricateMetadataForContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 containerClass];
-  v17 = [v11 containerRootURL];
-  v48 = [v11 containerPathIdentifier];
-  v47 = [v11 userIdentity];
+  pathCopy = path;
+  identifierCopy = identifier;
+  uuidCopy = uuid;
+  versionCopy = version;
+  cacheCopy = cache;
+  containerClass = [pathCopy containerClass];
+  containerRootURL = [pathCopy containerRootURL];
+  containerPathIdentifier = [pathCopy containerPathIdentifier];
+  userIdentity = [pathCopy userIdentity];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v19 = containermanager_copy_global_configuration();
-  v20 = [v19 staticConfig];
-  v42 = v16;
-  v46 = [v20 configForContainerClass:v16];
+  staticConfig = [v19 staticConfig];
+  v42 = containerClass;
+  v46 = [staticConfig configForContainerClass:containerClass];
 
   v21 = container_log_handle_for_category();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v52 = v17;
+    v52 = containerRootURL;
     v53 = 2112;
-    v54 = v12;
+    v54 = identifierCopy;
     v55 = 2112;
-    v56 = v13;
+    v56 = uuidCopy;
     v57 = 2112;
-    v58 = v14;
+    v58 = versionCopy;
     _os_log_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_DEFAULT, "Attempting to recover from corrupt metadata for [%@]; identifier = %@, uuid = %@, schemaVersion = %@", buf, 0x2Au);
   }
 
-  v44 = v15;
-  v45 = v17;
-  if (!v12)
+  v44 = cacheCopy;
+  v45 = containerRootURL;
+  if (!identifierCopy)
   {
-    v12 = [(MCMContainerCacheEntry *)self _identifierForContainerPath:v11];
-    if (!v12)
+    identifierCopy = [(MCMContainerCacheEntry *)self _identifierForContainerPath:pathCopy];
+    if (!identifierCopy)
     {
       p_super = container_log_handle_for_category();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v52 = v17;
+        v52 = containerRootURL;
         _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "Unable to recover from corrupt metadata for [%@], no identifier", buf, 0xCu);
       }
 
-      v12 = 0;
+      identifierCopy = 0;
       goto LABEL_25;
     }
   }
 
-  if (v13)
+  if (uuidCopy)
   {
-    if (v14)
+    if (versionCopy)
     {
       goto LABEL_7;
     }
@@ -513,27 +513,27 @@ LABEL_10:
 
   else
   {
-    v30 = [MCMContainerCacheEntry UUIDForURL:v17];
+    v30 = [MCMContainerCacheEntry UUIDForURL:containerRootURL];
     v31 = v30;
     if (v30)
     {
-      v32 = v30;
+      uUID = v30;
     }
 
     else
     {
-      v32 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
-    v13 = v32;
+    uuidCopy = uUID;
 
-    if (v14)
+    if (versionCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v38 = [MCMContainerCacheEntry schemaVersionForURL:v17];
+  v38 = [MCMContainerCacheEntry schemaVersionForURL:containerRootURL];
   v39 = v38;
   v40 = &unk_1F5A76FA8;
   if (v38)
@@ -541,13 +541,13 @@ LABEL_10:
     v40 = v38;
   }
 
-  v14 = v40;
+  versionCopy = v40;
 
 LABEL_7:
   v50 = 1;
   BYTE1(v41) = isKindOfClass & 1;
   LOBYTE(v41) = 1;
-  v22 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:v13 userIdentity:v47 identifier:v12 containerConfig:v46 platform:0 containerPathIdentifier:v48 existed:v41 transient:v15 userIdentityCache:&v50 error:?];
+  v22 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:uuidCopy userIdentity:userIdentity identifier:identifierCopy containerConfig:v46 platform:0 containerPathIdentifier:containerPathIdentifier existed:v41 transient:cacheCopy userIdentityCache:&v50 error:?];
   if (!v22)
   {
     p_super = container_log_handle_for_category();
@@ -555,7 +555,7 @@ LABEL_7:
     {
       error_description = container_get_error_description();
       *buf = 138412546;
-      v52 = v17;
+      v52 = containerRootURL;
       v53 = 2080;
       v54 = error_description;
       _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "Unable to generate identity for [%@]: error = %s", buf, 0x16u);
@@ -566,17 +566,17 @@ LABEL_25:
     v23 = 0;
     v26 = 0;
     v28 = 0;
-    v24 = v11;
+    v24 = pathCopy;
     goto LABEL_26;
   }
 
   v23 = v22;
-  v24 = [MCMContainerPath containerPathForContainerIdentity:v22 containerPathIdentifier:v48];
+  v24 = [MCMContainerPath containerPathForContainerIdentity:v22 containerPathIdentifier:containerPathIdentifier];
 
   if (v24)
   {
     v25 = [(MCMContainerCacheEntry *)self _findUserManagedAssetsDirectoryAtContainerRootURL:v45];
-    v26 = [[MCMMetadata alloc] initWithContainerIdentity:v23 info:0 containerPath:v24 userManagedAssetsDirName:v25 schemaVersion:v14 dataProtectionClass:0xFFFFFFFFLL creator:0 userIdentityCache:v15];
+    v26 = [[MCMMetadata alloc] initWithContainerIdentity:v23 info:0 containerPath:v24 userManagedAssetsDirName:v25 schemaVersion:versionCopy dataProtectionClass:0xFFFFFFFFLL creator:0 userIdentityCache:cacheCopy];
     v49 = 0;
     v27 = [(MCMMetadata *)v26 writeMetadataToDiskWithError:&v49];
     v28 = v49;
@@ -586,9 +586,9 @@ LABEL_25:
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v52 = v48;
+        v52 = containerPathIdentifier;
         v53 = 2112;
-        v54 = v12;
+        v54 = identifierCopy;
         v55 = 2048;
         v56 = v42;
         _os_log_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_DEFAULT, "Fabricated metadata for [%@:%@(%llu)]", buf, 0x20u);
@@ -601,7 +601,7 @@ LABEL_25:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v52 = v48;
+        v52 = containerPathIdentifier;
         v53 = 2048;
         v54 = v42;
         v55 = 2112;
@@ -622,7 +622,7 @@ LABEL_25:
       *buf = 138412546;
       v52 = v23;
       v53 = 2112;
-      v54 = v48;
+      v54 = containerPathIdentifier;
       _os_log_error_impl(&dword_1DF2C3000, p_super, OS_LOG_TYPE_ERROR, "Could not construct containerPath; identity = %@, containerPathIdentifier = %@", buf, 0x16u);
     }
 
@@ -639,17 +639,17 @@ LABEL_26:
   return v26;
 }
 
-- (id)_readMetadataForIdentifier:(id)a3 containerPath:(id)a4 error:(id *)a5
+- (id)_readMetadataForIdentifier:(id)identifier containerPath:(id)path error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 containerClassPath];
-  v9 = [v8 containerClass];
-  v10 = [v8 userIdentity];
+  pathCopy = path;
+  containerClassPath = [pathCopy containerClassPath];
+  containerClass = [containerClassPath containerClass];
+  userIdentity = [containerClassPath userIdentity];
   v11 = [MCMMetadata alloc];
-  v12 = [(MCMContainerCacheEntry *)self userIdentityCache];
+  userIdentityCache = [(MCMContainerCacheEntry *)self userIdentityCache];
   v19 = 0;
-  v13 = [(MCMMetadataMinimal *)v11 initByReadingAndValidatingMetadataAtContainerPath:v7 userIdentity:v10 containerClass:v9 userIdentityCache:v12 error:&v19];
+  v13 = [(MCMMetadataMinimal *)v11 initByReadingAndValidatingMetadataAtContainerPath:pathCopy userIdentity:userIdentity containerClass:containerClass userIdentityCache:userIdentityCache error:&v19];
   v14 = v19;
 
   if (!v13)
@@ -658,16 +658,16 @@ LABEL_26:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v7;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v14;
       _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Could not read metadata at [%@]: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -676,10 +676,10 @@ LABEL_26:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -699,17 +699,17 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self == v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = self == equalCopy;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MCMContainerCacheEntry *)self isEqualToContainerCacheEntry:v4];
+      v5 = [(MCMContainerCacheEntry *)self isEqualToContainerCacheEntry:equalCopy];
     }
   }
 
@@ -717,21 +717,21 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)isEqualToContainerCacheEntry:(id)a3
+- (BOOL)isEqualToContainerCacheEntry:(id)entry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MCMContainerCacheEntry *)self fsNode];
-    if (!v6)
+    v5 = entryCopy;
+    fsNode = [(MCMContainerCacheEntry *)self fsNode];
+    if (!fsNode)
     {
-      v11 = [v5 fsNode];
-      if (v11)
+      fsNode2 = [v5 fsNode];
+      if (fsNode2)
       {
-        v12 = v11;
+        identifier = fsNode2;
         v10 = 0;
 LABEL_27:
 
@@ -739,60 +739,60 @@ LABEL_27:
       }
     }
 
-    v7 = [(MCMContainerCacheEntry *)self fsNode];
-    if (v7)
+    fsNode3 = [(MCMContainerCacheEntry *)self fsNode];
+    if (fsNode3)
     {
-      v8 = v7;
-      v9 = [v5 fsNode];
+      v8 = fsNode3;
+      fsNode4 = [v5 fsNode];
 
-      if (v6)
+      if (fsNode)
       {
 
-        if (!v9)
+        if (!fsNode4)
         {
           goto LABEL_19;
         }
       }
 
-      else if (!v9)
+      else if (!fsNode4)
       {
         goto LABEL_19;
       }
     }
 
-    else if (v6)
+    else if (fsNode)
     {
     }
 
-    v13 = [(MCMContainerCacheEntry *)self fsNode];
-    if (!v13)
+    fsNode5 = [(MCMContainerCacheEntry *)self fsNode];
+    if (!fsNode5)
     {
       goto LABEL_15;
     }
 
-    v14 = v13;
-    v15 = [(MCMContainerCacheEntry *)self fsNode];
-    v16 = [v5 fsNode];
-    v17 = [v15 isEqual:v16];
+    v14 = fsNode5;
+    fsNode6 = [(MCMContainerCacheEntry *)self fsNode];
+    fsNode7 = [v5 fsNode];
+    v17 = [fsNode6 isEqual:fsNode7];
 
     if (v17)
     {
 LABEL_15:
-      v12 = [(MCMContainerCacheEntry *)self identifier];
-      v18 = [v5 identifier];
-      if ([v12 isEqualToString:v18])
+      identifier = [(MCMContainerCacheEntry *)self identifier];
+      identifier2 = [v5 identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v19 = [(MCMContainerCacheEntry *)self containerPath];
-        v20 = [v5 containerPath];
-        if ([v19 isEqual:v20] && (v21 = -[MCMContainerCacheEntry corrupt](self, "corrupt"), v21 == objc_msgSend(v5, "corrupt")))
+        containerPath = [(MCMContainerCacheEntry *)self containerPath];
+        containerPath2 = [v5 containerPath];
+        if ([containerPath isEqual:containerPath2] && (v21 = -[MCMContainerCacheEntry corrupt](self, "corrupt"), v21 == objc_msgSend(v5, "corrupt")))
         {
-          v22 = [(MCMContainerCacheEntry *)self schemaVersion];
-          v23 = [v5 schemaVersion];
-          if ([v22 isEqualToNumber:v23])
+          schemaVersion = [(MCMContainerCacheEntry *)self schemaVersion];
+          schemaVersion2 = [v5 schemaVersion];
+          if ([schemaVersion isEqualToNumber:schemaVersion2])
           {
-            v27 = [(MCMContainerCacheEntry *)self uuid];
-            v24 = [v5 uuid];
-            v10 = [v27 isEqual:v24];
+            uuid = [(MCMContainerCacheEntry *)self uuid];
+            uuid2 = [v5 uuid];
+            v10 = [uuid isEqual:uuid2];
           }
 
           else
@@ -832,11 +832,11 @@ LABEL_29:
 - (unint64_t)hash
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMContainerCacheEntry *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(MCMContainerCacheEntry *)self containerPath];
-  v6 = [v5 containerRootURL];
-  v7 = [v6 hash];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  v4 = [identifier hash];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  containerRootURL = [containerPath containerRootURL];
+  v7 = [containerRootURL hash];
 
   v8 = *MEMORY[0x1E69E9840];
   return v7 ^ v4;
@@ -848,12 +848,12 @@ LABEL_29:
   v17 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MCMContainerCacheEntry *)self identifier];
-  v6 = [(MCMContainerCacheEntry *)self generation];
-  v7 = [(MCMContainerCacheEntry *)self containerPath];
-  v8 = [(MCMContainerCacheEntry *)self schemaVersion];
-  v9 = [(MCMContainerCacheEntry *)self uuid];
-  v10 = [(MCMContainerCacheEntry *)self fsNode];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  generation = [(MCMContainerCacheEntry *)self generation];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  schemaVersion = [(MCMContainerCacheEntry *)self schemaVersion];
+  uuid = [(MCMContainerCacheEntry *)self uuid];
+  fsNode = [(MCMContainerCacheEntry *)self fsNode];
   if ([(MCMContainerCacheEntry *)self corrupt])
   {
     v11 = ", CORRUPT";
@@ -864,14 +864,14 @@ LABEL_29:
     v11 = "";
   }
 
-  v12 = [(MCMContainerCacheEntry *)self ignore];
+  ignore = [(MCMContainerCacheEntry *)self ignore];
   v13 = ", IGNORED";
-  if (!v12)
+  if (!ignore)
   {
     v13 = "";
   }
 
-  v14 = [v17 stringWithFormat:@"<%@: %p identifier = %@, generation = %llu, containerPath = %@, schemaVersion = %@, uuid = %@, fsNode = %@%s%s>", v4, self, v5, v6, v7, v8, v9, v10, v11, v13];;
+  v14 = [v17 stringWithFormat:@"<%@: %p identifier = %@, generation = %llu, containerPath = %@, schemaVersion = %@, uuid = %@, fsNode = %@%s%s>", v4, self, identifier, generation, containerPath, schemaVersion, uuid, fsNode, v11, v13];;
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -882,12 +882,12 @@ LABEL_29:
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MCMContainerCacheEntry *)self identifier];
-  v5 = [(MCMContainerCacheEntry *)self generation];
-  v6 = [(MCMContainerCacheEntry *)self containerPath];
-  v7 = [(MCMContainerCacheEntry *)self schemaVersion];
-  v8 = [(MCMContainerCacheEntry *)self uuid];
-  v9 = [(MCMContainerCacheEntry *)self fsNode];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  generation = [(MCMContainerCacheEntry *)self generation];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  schemaVersion = [(MCMContainerCacheEntry *)self schemaVersion];
+  uuid = [(MCMContainerCacheEntry *)self uuid];
+  fsNode = [(MCMContainerCacheEntry *)self fsNode];
   if ([(MCMContainerCacheEntry *)self corrupt])
   {
     v10 = "|CORRUPT";
@@ -898,33 +898,33 @@ LABEL_29:
     v10 = "";
   }
 
-  v11 = [(MCMContainerCacheEntry *)self ignore];
+  ignore = [(MCMContainerCacheEntry *)self ignore];
   v12 = "|IGNORED";
-  if (!v11)
+  if (!ignore)
   {
     v12 = "";
   }
 
-  v13 = [v3 stringWithFormat:@"(%@|%llu|%@|%@|%@|%@%s%s)", v4, v5, v6, v7, v8, v9, v10, v12];
+  v13 = [v3 stringWithFormat:@"(%@|%llu|%@|%@|%@|%@%s%s)", identifier, generation, containerPath, schemaVersion, uuid, fsNode, v10, v12];
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-- (timespec)birthtimeWithError:(id *)a3
+- (timespec)birthtimeWithError:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MCMContainerCacheEntry *)self containerPath];
-  v6 = [v5 containerRootURL];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  containerRootURL = [containerPath containerRootURL];
 
-  v7 = [MCMContainerCacheEntry birthtimeForURL:v6];
+  v7 = [MCMContainerCacheEntry birthtimeForURL:containerRootURL];
   if (v7 | v8)
   {
-    v11 = v7;
+    birthtime = v7;
     v13 = v8;
     v10 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -937,20 +937,20 @@ LABEL_29:
   v10 = v19[0];
   if (v9)
   {
-    v11 = [v9 birthtime];
+    birthtime = [v9 birthtime];
     v13 = v12;
   }
 
   else
   {
     v13 = 0;
-    v11 = 0;
+    birthtime = 0;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_8:
-    if (v11)
+    if (birthtime)
     {
       v14 = 0;
     }
@@ -963,34 +963,34 @@ LABEL_8:
     if (v14)
     {
       v15 = v10;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
 LABEL_14:
 
   v16 = *MEMORY[0x1E69E9840];
-  v17 = v11;
+  v17 = birthtime;
   v18 = v13;
   result.tv_nsec = v18;
   result.tv_sec = v17;
   return result;
 }
 
-- (id)fsNodeWithError:(id *)a3
+- (id)fsNodeWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MCMContainerCacheEntry *)self containerPath];
-  v6 = [v5 containerRootURL];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  containerRootURL = [containerPath containerRootURL];
 
-  v7 = [(MCMContainerCacheEntry *)self fmForNode];
+  fmForNode = [(MCMContainerCacheEntry *)self fmForNode];
   v12[0] = 0;
-  v8 = [v7 fsNodeOfURL:v6 followSymlinks:0 error:v12];
+  v8 = [fmForNode fsNodeOfURL:containerRootURL followSymlinks:0 error:v12];
   v9 = v12[0];
 
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = [[MCMError alloc] initWithNSError:v9 url:v6 defaultErrorType:127];
+    *error = [[MCMError alloc] initWithNSError:v9 url:containerRootURL defaultErrorType:127];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -998,15 +998,15 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v111 = *MEMORY[0x1E69E9840];
-  v4 = [(MCMContainerCacheEntry *)self containerPath];
-  v86 = [(MCMContainerCacheEntry *)self identifier];
-  v87 = [v4 containerClassPath];
-  v5 = [v87 userIdentity];
-  v6 = [(MCMContainerCacheEntry *)self userIdentityCache];
-  v85 = [v6 libraryRepairForUserIdentity:v5];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  containerClassPath = [containerPath containerClassPath];
+  userIdentity = [containerClassPath userIdentity];
+  userIdentityCache = [(MCMContainerCacheEntry *)self userIdentityCache];
+  v85 = [userIdentityCache libraryRepairForUserIdentity:userIdentity];
 
   v103 = 0;
   v104 = &v103;
@@ -1019,7 +1019,7 @@ LABEL_14:
   v101 = __Block_byref_object_dispose__14909;
   v102 = 0;
   v7 = +[MCMFileManager defaultManager];
-  v8 = [v4 metadataURL];
+  metadataURL = [containerPath metadataURL];
   v96 = 0;
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
@@ -1029,20 +1029,20 @@ LABEL_14:
   v93 = v83;
   v94 = &v103;
   v95 = &v97;
-  LOBYTE(v7) = [v85 fixAndRetryIfPermissionsErrorWithURL:v8 containerPath:v4 containerIdentifier:v86 error:&v96 duringBlock:v92];
+  LOBYTE(v7) = [v85 fixAndRetryIfPermissionsErrorWithURL:metadataURL containerPath:containerPath containerIdentifier:identifier error:&v96 duringBlock:v92];
   v9 = v96;
 
   if ((v7 & 1) == 0)
   {
     v39 = [MCMError alloc];
-    v40 = [v4 metadataURL];
-    v41 = [(MCMError *)v39 initWithNSError:v9 url:v40 defaultErrorType:12];
+    metadataURL2 = [containerPath metadataURL];
+    v41 = [(MCMError *)v39 initWithNSError:v9 url:metadataURL2 defaultErrorType:12];
 
     v42 = container_log_handle_for_category();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v108 = self;
+      selfCopy9 = self;
       v109 = 2112;
       v110 = v9;
       _os_log_error_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_ERROR, "Cache entry failed verification, failed to check; cacheEntry = %@, error = %@", buf, 0x16u);
@@ -1053,24 +1053,24 @@ LABEL_14:
 
   if (v104[3])
   {
-    v10 = [(MCMContainerCacheEntry *)self fsNode];
+    fsNode = [(MCMContainerCacheEntry *)self fsNode];
 
-    if (!v10)
+    if (!fsNode)
     {
       goto LABEL_7;
     }
 
-    v11 = [(MCMContainerCacheEntry *)self fsNode];
-    v12 = [v11 isEqual:v98[5]];
+    fsNode2 = [(MCMContainerCacheEntry *)self fsNode];
+    v12 = [fsNode2 isEqual:v98[5]];
 
     if (v12)
     {
-      v13 = [(MCMContainerCacheEntry *)self fsNode];
-      v14 = [v13 ctime];
-      if (v14 == [v98[5] ctime])
+      fsNode3 = [(MCMContainerCacheEntry *)self fsNode];
+      ctime = [fsNode3 ctime];
+      if (ctime == [v98[5] ctime])
       {
-        v15 = [(MCMContainerCacheEntry *)self fsNode];
-        [v15 ctime];
+        fsNode4 = [(MCMContainerCacheEntry *)self fsNode];
+        [fsNode4 ctime];
         v17 = v16;
         [v98[5] ctime];
         LOBYTE(v17) = v17 == v18;
@@ -1079,17 +1079,17 @@ LABEL_14:
         {
 LABEL_7:
           v19 = objc_opt_class();
-          v20 = [(MCMContainerCacheEntry *)self containerPath];
-          v21 = [v20 containerRootURL];
-          v22 = [v19 identifierForURL:v21];
+          containerPath2 = [(MCMContainerCacheEntry *)self containerPath];
+          containerRootURL = [containerPath2 containerRootURL];
+          v22 = [v19 identifierForURL:containerRootURL];
 
-          if (v22 && ([v86 MCM_isEqualToString:v22 caseSensitive:{objc_msgSend(v87, "isCaseSensitive")}] & 1) == 0)
+          if (v22 && ([identifier MCM_isEqualToString:v22 caseSensitive:{objc_msgSend(containerClassPath, "isCaseSensitive")}] & 1) == 0)
           {
             v42 = container_log_handle_for_category();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v108 = self;
+              selfCopy9 = self;
               v109 = 2112;
               v110 = v22;
               _os_log_error_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_ERROR, "Cache entry failed verification, identifier doesn't match; cacheEntry = %@, current identifier = %@", buf, 0x16u);
@@ -1101,24 +1101,24 @@ LABEL_7:
           else
           {
             v23 = objc_opt_class();
-            v24 = [(MCMContainerCacheEntry *)self containerPath];
-            v25 = [v24 containerRootURL];
-            v26 = [v23 UUIDForURL:v25];
+            containerPath3 = [(MCMContainerCacheEntry *)self containerPath];
+            containerRootURL2 = [containerPath3 containerRootURL];
+            v26 = [v23 UUIDForURL:containerRootURL2];
 
             if (!v26 || (-[MCMContainerCacheEntry uuid](self, "uuid"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isEqual:v26], v27, (v28 & 1) != 0))
             {
               v29 = objc_opt_class();
-              v30 = [(MCMContainerCacheEntry *)self containerPath];
-              v31 = [v30 containerRootURL];
-              v32 = [v29 schemaVersionForURL:v31];
+              containerPath4 = [(MCMContainerCacheEntry *)self containerPath];
+              containerRootURL3 = [containerPath4 containerRootURL];
+              v32 = [v29 schemaVersionForURL:containerRootURL3];
 
               if (!v32 || (-[MCMContainerCacheEntry schemaVersion](self, "schemaVersion"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 isEqual:v32], v33, (v34 & 1) != 0))
               {
-                v79 = [(MCMContainerCacheEntry *)self containerPath];
-                v35 = [v79 containerRootURL];
-                v36 = [(MCMContainerCacheEntry *)self containerPath];
-                v37 = [v36 containerDataURL];
-                v76 = [v35 isEqual:v37];
+                containerPath5 = [(MCMContainerCacheEntry *)self containerPath];
+                containerRootURL4 = [containerPath5 containerRootURL];
+                containerPath6 = [(MCMContainerCacheEntry *)self containerPath];
+                containerDataURL = [containerPath6 containerDataURL];
+                v76 = [containerRootURL4 isEqual:containerDataURL];
 
                 if (v76)
                 {
@@ -1131,12 +1131,12 @@ LABEL_59:
                 }
 
                 v90 = 0;
-                v60 = [(MCMContainerCacheEntry *)self containerPath];
-                v61 = [v60 containerDataURL];
+                containerPath7 = [(MCMContainerCacheEntry *)self containerPath];
+                containerDataURL2 = [containerPath7 containerDataURL];
                 v88 = v9;
                 v89 = 0;
-                v80 = [v83 itemAtURL:v61 followSymlinks:0 exists:&v90 isDirectory:0 fsNode:&v89 error:&v88];
-                v77 = v60;
+                v80 = [v83 itemAtURL:containerDataURL2 followSymlinks:0 exists:&v90 isDirectory:0 fsNode:&v89 error:&v88];
+                v77 = containerPath7;
                 v42 = v89;
                 v38 = v88;
 
@@ -1149,10 +1149,10 @@ LABEL_59:
                   }
 
                   v62 = [MCMError alloc];
-                  v81 = [(MCMContainerCacheEntry *)self containerPath];
-                  v78 = [v81 containerDataURL];
-                  v63 = [v78 path];
-                  v41 = [(MCMError *)v62 initWithErrorType:163 category:1 path:v63 POSIXerrno:0];
+                  containerPath8 = [(MCMContainerCacheEntry *)self containerPath];
+                  containerDataURL3 = [containerPath8 containerDataURL];
+                  path = [containerDataURL3 path];
+                  v41 = [(MCMError *)v62 initWithErrorType:163 category:1 path:path POSIXerrno:0];
 
                   v64 = container_log_handle_for_category();
                   if (!os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -1161,7 +1161,7 @@ LABEL_59:
                   }
 
                   *buf = 138412546;
-                  v108 = self;
+                  selfCopy9 = self;
                   v109 = 2112;
                   v110 = v42;
                   v65 = "Cache entry failed verification, Data subdirectory doesn't target expectation; cacheEntry = %@, node = %@";
@@ -1170,9 +1170,9 @@ LABEL_59:
                 else
                 {
                   v72 = [MCMError alloc];
-                  v82 = [(MCMContainerCacheEntry *)self containerPath];
-                  v73 = [v82 containerDataURL];
-                  v41 = [(MCMError *)v72 initWithNSError:v38 url:v73 defaultErrorType:105];
+                  containerPath9 = [(MCMContainerCacheEntry *)self containerPath];
+                  containerDataURL4 = [containerPath9 containerDataURL];
+                  v41 = [(MCMError *)v72 initWithNSError:v38 url:containerDataURL4 defaultErrorType:105];
 
                   v64 = container_log_handle_for_category();
                   if (!os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -1184,7 +1184,7 @@ LABEL_57:
                   }
 
                   *buf = 138412546;
-                  v108 = self;
+                  selfCopy9 = self;
                   v109 = 2112;
                   v110 = v38;
                   v65 = "Cache entry failed verification, could not stat Data subdirectory; cacheEntry = %@, error = [%@]";
@@ -1198,7 +1198,7 @@ LABEL_57:
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v108 = self;
+                selfCopy9 = self;
                 v109 = 2112;
                 v110 = v32;
                 _os_log_error_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_ERROR, "Cache entry failed verification, schemaVersion doesn't match; cacheEntry = %@, current schemaVersion = %@", buf, 0x16u);
@@ -1211,7 +1211,7 @@ LABEL_57:
             if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v108 = self;
+              selfCopy9 = self;
               v109 = 2112;
               v110 = v26;
               _os_log_error_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_ERROR, "Cache entry failed verification, UUID doesn't match; cacheEntry = %@, current uuid = %@", buf, 0x16u);
@@ -1241,7 +1241,7 @@ LABEL_28:
 
       v74 = v98[5];
       *buf = 138412546;
-      v108 = self;
+      selfCopy9 = self;
       v109 = 2112;
       v110 = v74;
       v49 = "Cache entry failed verification, ctime changed; cacheEntry = %@, current fsNode = %@";
@@ -1257,7 +1257,7 @@ LABEL_28:
 
       v48 = v98[5];
       *buf = 138412546;
-      v108 = self;
+      selfCopy9 = self;
       v109 = 2112;
       v110 = v48;
       v49 = "Cache entry failed verification, fs node changed; cacheEntry = %@, current fsNode = %@";
@@ -1267,21 +1267,21 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (![v5 isDataSeparated])
+  if (![userIdentity isDataSeparated])
   {
     goto LABEL_40;
   }
 
   v43 = +[MCMFileManager defaultManager];
-  v44 = [v5 homeDirectoryURL];
+  homeDirectoryURL = [userIdentity homeDirectoryURL];
   v91 = 0;
-  v45 = [v43 mountPointForURL:v44 error:&v91];
+  v45 = [v43 mountPointForURL:homeDirectoryURL error:&v91];
   v42 = v91;
 
   if (!v45)
   {
-    v50 = [v42 domain];
-    if ([v50 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v42 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
       v51 = [v42 code]== 2;
 
@@ -1298,9 +1298,9 @@ LABEL_28:
     v57 = container_log_handle_for_category();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
     {
-      v75 = [v5 homeDirectoryURL];
+      homeDirectoryURL2 = [userIdentity homeDirectoryURL];
       *buf = 138412546;
-      v108 = v75;
+      selfCopy9 = homeDirectoryURL2;
       v109 = 2112;
       v110 = v42;
       _os_log_error_impl(&dword_1DF2C3000, v57, OS_LOG_TYPE_ERROR, "Failed to check mount point at [%@]: %@", buf, 0x16u);
@@ -1309,8 +1309,8 @@ LABEL_28:
     goto LABEL_39;
   }
 
-  v46 = [v5 homeDirectoryURL];
-  v47 = [v45 isEqual:v46];
+  homeDirectoryURL3 = [userIdentity homeDirectoryURL];
+  v47 = [v45 isEqual:homeDirectoryURL3];
 
   if (v47)
   {
@@ -1318,18 +1318,18 @@ LABEL_39:
 
 LABEL_40:
     v58 = [MCMError alloc];
-    v59 = [v4 metadataURL];
-    v41 = [(MCMError *)v58 initWithNSError:v9 url:v59 defaultErrorType:12];
+    metadataURL3 = [containerPath metadataURL];
+    v41 = [(MCMError *)v58 initWithNSError:v9 url:metadataURL3 defaultErrorType:12];
 
     v42 = container_log_handle_for_category();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v70 = [v4 metadataURL];
-      v71 = [v70 path];
+      metadataURL4 = [containerPath metadataURL];
+      path2 = [metadataURL4 path];
       *buf = 138412546;
-      v108 = self;
+      selfCopy9 = self;
       v109 = 2112;
-      v110 = v71;
+      v110 = path2;
       _os_log_error_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_ERROR, "Cache entry failed verification, metadata URL doesn't exist; cacheEntry = %@, metadataURL = [%@]", buf, 0x16u);
     }
 
@@ -1338,10 +1338,10 @@ LABEL_40:
 
 LABEL_25:
   v52 = MEMORY[0x1E696AEC0];
-  v53 = [v5 identifier];
-  v54 = [v5 homeDirectoryURL];
-  v55 = [v54 path];
-  v56 = [v52 stringWithFormat:@"Persona [%@] volume not mounted at [%@]", v53, v55];
+  identifier2 = [userIdentity identifier];
+  homeDirectoryURL4 = [userIdentity homeDirectoryURL];
+  path3 = [homeDirectoryURL4 path];
+  v56 = [v52 stringWithFormat:@"Persona [%@] volume not mounted at [%@]", identifier2, path3];
 
   v41 = [[MCMError alloc] initWithErrorType:162 category:1 message:v56];
 LABEL_42:
@@ -1350,10 +1350,10 @@ LABEL_42:
   v22 = 0;
 LABEL_52:
 
-  if (a3)
+  if (error)
   {
     v66 = v41;
-    *a3 = v41;
+    *error = v41;
   }
 
   [(MCMContainerCacheEntry *)self setCorrupt:1];
@@ -1381,22 +1381,22 @@ uint64_t __42__MCMContainerCacheEntry_verifyWithError___block_invoke(void *a1, u
   return v6;
 }
 
-- (id)metadataWithError:(id *)a3
+- (id)metadataWithError:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MCMContainerCacheEntry *)self identifier];
-  v6 = [(MCMContainerCacheEntry *)self containerPath];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
   v20[0] = 0;
-  v7 = [(MCMContainerCacheEntry *)self _readMetadataForIdentifier:v5 containerPath:v6 error:v20];
+  v7 = [(MCMContainerCacheEntry *)self _readMetadataForIdentifier:identifier containerPath:containerPath error:v20];
   v8 = v20[0];
 
   if (v7)
   {
 LABEL_2:
-    v9 = [(MCMContainerCacheEntry *)self containerIdentity];
-    v10 = [v7 metadataByChangingContainerIdentity:v9];
+    containerIdentity = [(MCMContainerCacheEntry *)self containerIdentity];
+    v10 = [v7 metadataByChangingContainerIdentity:containerIdentity];
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -1406,13 +1406,13 @@ LABEL_2:
 
   if ([v8 type] == 108)
   {
-    v11 = [(MCMContainerCacheEntry *)self containerPath];
-    v12 = [(MCMContainerCacheEntry *)self containerIdentity];
-    v13 = [v12 identifier];
-    v14 = [(MCMContainerCacheEntry *)self containerIdentity];
-    v15 = [v14 uuid];
-    v16 = [(MCMContainerCacheEntry *)self userIdentityCache];
-    v7 = [(MCMContainerCacheEntry *)self _metadataFromContainerPath:v11 identifier:v13 uuid:v15 schemaVersion:0 userIdentityCache:v16];
+    containerPath2 = [(MCMContainerCacheEntry *)self containerPath];
+    containerIdentity2 = [(MCMContainerCacheEntry *)self containerIdentity];
+    identifier2 = [containerIdentity2 identifier];
+    containerIdentity3 = [(MCMContainerCacheEntry *)self containerIdentity];
+    uuid = [containerIdentity3 uuid];
+    userIdentityCache = [(MCMContainerCacheEntry *)self userIdentityCache];
+    v7 = [(MCMContainerCacheEntry *)self _metadataFromContainerPath:containerPath2 identifier:identifier2 uuid:uuid schemaVersion:0 userIdentityCache:userIdentityCache];
 
     if (v7)
     {
@@ -1428,7 +1428,7 @@ LABEL_2:
   }
 
   v10 = 0;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -1437,7 +1437,7 @@ LABEL_9:
   if (!v10)
   {
     v17 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_11:
@@ -1447,14 +1447,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)initFromContainerPath:(id)a3 identifier:(id)a4 uuid:(id)a5 schemaVersion:(id)a6 userIdentityCache:(id)a7
+- (id)initFromContainerPath:(id)path identifier:(id)identifier uuid:(id)uuid schemaVersion:(id)version userIdentityCache:(id)cache
 {
   v17 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = [(MCMContainerCacheEntry *)self _metadataFromContainerPath:a3 identifier:a4 uuid:a5 schemaVersion:a6 userIdentityCache:v12];
+  cacheCopy = cache;
+  v13 = [(MCMContainerCacheEntry *)self _metadataFromContainerPath:path identifier:identifier uuid:uuid schemaVersion:version userIdentityCache:cacheCopy];
   if (v13)
   {
-    v14 = [(MCMContainerCacheEntry *)self initWithMetadata:v13 userIdentityCache:v12];
+    v14 = [(MCMContainerCacheEntry *)self initWithMetadata:v13 userIdentityCache:cacheCopy];
   }
 
   else
@@ -1467,29 +1467,29 @@ LABEL_11:
   return v14;
 }
 
-- (MCMContainerCacheEntry)initWithIdentifier:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 uuid:(id)a6 metadata:(id)a7 userIdentityCache:(id)a8
+- (MCMContainerCacheEntry)initWithIdentifier:(id)identifier containerPath:(id)path schemaVersion:(id)version uuid:(id)uuid metadata:(id)metadata userIdentityCache:(id)cache
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  pathCopy = path;
+  versionCopy = version;
+  uuidCopy = uuid;
+  metadataCopy = metadata;
+  cacheCopy = cache;
   v29.receiver = self;
   v29.super_class = MCMContainerCacheEntry;
   v18 = [(MCMContainerCacheEntry *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_userIdentityCache, a8);
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v19->_containerPath, a4);
-    objc_storeStrong(&v19->_schemaVersion, a5);
-    objc_storeStrong(&v19->_uuid, a6);
-    v20 = [v16 fsNode];
+    objc_storeStrong(&v18->_userIdentityCache, cache);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v19->_containerPath, path);
+    objc_storeStrong(&v19->_schemaVersion, version);
+    objc_storeStrong(&v19->_uuid, uuid);
+    fsNode = [metadataCopy fsNode];
     fsNode = v19->_fsNode;
-    v19->_fsNode = v20;
+    v19->_fsNode = fsNode;
 
     objc_storeWeak(&v19->_cache, 0);
     *&v19->_corrupt = 0;
@@ -1504,14 +1504,14 @@ LABEL_11:
   return v19;
 }
 
-- (MCMContainerCacheEntry)initWithMetadata:(id)a3 userIdentityCache:(id)a4
+- (MCMContainerCacheEntry)initWithMetadata:(id)metadata userIdentityCache:(id)cache
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 conformsToProtocol:&unk_1F5A81C70])
+  metadataCopy = metadata;
+  cacheCopy = cache;
+  if ([metadataCopy conformsToProtocol:&unk_1F5A81C70])
   {
-    v8 = v6;
+    v8 = metadataCopy;
   }
 
   else
@@ -1519,30 +1519,30 @@ LABEL_11:
     v8 = 0;
   }
 
-  v9 = [v6 identifier];
-  v10 = [v6 containerPath];
-  v11 = [v6 schemaVersion];
-  v12 = [v6 uuid];
-  v13 = [(MCMContainerCacheEntry *)self initWithIdentifier:v9 containerPath:v10 schemaVersion:v11 uuid:v12 metadata:v8 userIdentityCache:v7];
+  identifier = [metadataCopy identifier];
+  containerPath = [metadataCopy containerPath];
+  schemaVersion = [metadataCopy schemaVersion];
+  uuid = [metadataCopy uuid];
+  v13 = [(MCMContainerCacheEntry *)self initWithIdentifier:identifier containerPath:containerPath schemaVersion:schemaVersion uuid:uuid metadata:v8 userIdentityCache:cacheCopy];
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)setXattrsWithFileHandle:(id)a3
+- (void)setXattrsWithFileHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_opt_class();
-  v6 = [(MCMContainerCacheEntry *)self identifier];
-  [v5 setIdentifier:v6 forFileHandle:v4];
+  identifier = [(MCMContainerCacheEntry *)self identifier];
+  [v5 setIdentifier:identifier forFileHandle:handleCopy];
 
   v7 = objc_opt_class();
-  v8 = [(MCMContainerCacheEntry *)self uuid];
-  [v7 setUUID:v8 forFileHandle:v4];
+  uuid = [(MCMContainerCacheEntry *)self uuid];
+  [v7 setUUID:uuid forFileHandle:handleCopy];
 
   v9 = objc_opt_class();
-  v11 = [(MCMContainerCacheEntry *)self schemaVersion];
+  schemaVersion = [(MCMContainerCacheEntry *)self schemaVersion];
   [v9 setSchemaVersion:? forFileHandle:?];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1552,33 +1552,33 @@ LABEL_11:
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(MCMContainerCacheEntry *)self containerPath];
-  v5 = [v4 containerRootURL];
-  v7 = [v3 _fileHandleForURL:v5 writeable:1];
+  containerPath = [(MCMContainerCacheEntry *)self containerPath];
+  containerRootURL = [containerPath containerRootURL];
+  v7 = [v3 _fileHandleForURL:containerRootURL writeable:1];
 
   [(MCMContainerCacheEntry *)self setXattrsWithFileHandle:v7];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_fileHandleForURL:(id)a3 writeable:(BOOL)a4
++ (id)_fileHandleForURL:(id)l writeable:(BOOL)writeable
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = [MCMFileHandle alloc];
-  v6 = [v4 path];
+  path = [lCopy path];
 
   LOBYTE(v10) = 1;
-  v7 = [(MCMFileHandle *)v5 initWithPath:v6 relativeToFileHandle:0 direction:9 symlinks:0 createMode:0 createDPClass:0 openLazily:v10];
+  v7 = [(MCMFileHandle *)v5 initWithPath:path relativeToFileHandle:0 direction:9 symlinks:0 createMode:0 createDPClass:0 openLazily:v10];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (void)clearAttributesForFileHandle:(id)a3
++ (void)clearAttributesForFileHandle:(id)handle
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handleCopy = handle;
   v28[0] = @"com.apple.containermanager.identifier";
   v28[1] = @"com.apple.containermanager.schema-version";
   v28[2] = @"com.apple.containermanager.uuid";
@@ -1607,7 +1607,7 @@ LABEL_11:
 
         v10 = *(*(&v24 + 1) + 8 * v9);
         v16 = 0;
-        v11 = [v3 removeXattr:v10 error:{&v16, v15}];
+        v11 = [handleCopy removeXattr:v10 error:{&v16, v15}];
         v12 = v16;
         if ((v11 & 1) == 0)
         {
@@ -1617,7 +1617,7 @@ LABEL_11:
             *buf = v15;
             v18 = v10;
             v19 = 2112;
-            v20 = v3;
+            v20 = handleCopy;
             v21 = 2112;
             v22 = v12;
             _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "Could not clear xattr [%@] from [%@]; error = %@", buf, 0x20u);
@@ -1637,24 +1637,24 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)clearAttributesForURL:(id)a3
++ (void)clearAttributesForURL:(id)l
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = [a1 _fileHandleForURL:a3 writeable:1];
-  [a1 clearAttributesForFileHandle:?];
+  v5 = [self _fileHandleForURL:l writeable:1];
+  [self clearAttributesForFileHandle:?];
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setBirthtime:(timespec)a3 forFileHandle:(id)a4
++ (void)setBirthtime:(timespec)birthtime forFileHandle:(id)handle
 {
-  tv_nsec = a3.tv_nsec;
-  tv_sec = a3.tv_sec;
+  tv_nsec = birthtime.tv_nsec;
+  tv_sec = birthtime.tv_sec;
   v16 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = [v6 stringWithFormat:@"%ld.%09ld", tv_sec, tv_nsec];
+  handleCopy = handle;
+  tv_nsec = [v6 stringWithFormat:@"%ld.%09ld", tv_sec, tv_nsec];
   v13 = 0;
-  LOBYTE(v6) = [v7 setXattr:@"com.apple.containermanager.birthtime" valueAsString:v8 error:&v13];
+  LOBYTE(v6) = [handleCopy setXattr:@"com.apple.containermanager.birthtime" valueAsString:tv_nsec error:&v13];
 
   v9 = v13;
   v10 = v9;
@@ -1672,21 +1672,21 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setBirthtime:(timespec)a3 forURL:(id)a4
++ (void)setBirthtime:(timespec)birthtime forURL:(id)l
 {
-  tv_nsec = a3.tv_nsec;
-  tv_sec = a3.tv_sec;
+  tv_nsec = birthtime.tv_nsec;
+  tv_sec = birthtime.tv_sec;
   v9 = *MEMORY[0x1E69E9840];
-  v8 = [a1 _fileHandleForURL:a4 writeable:1];
-  [a1 setBirthtime:tv_sec forFileHandle:tv_nsec];
+  v8 = [self _fileHandleForURL:l writeable:1];
+  [self setBirthtime:tv_sec forFileHandle:tv_nsec];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setUUID:(id)a3 forFileHandle:(id)a4
++ (void)setUUID:(id)d forFileHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [a4 setXattr:@"com.apple.containermanager.uuid" valueAsUUID:a3 error:&v9];
+  v4 = [handle setXattr:@"com.apple.containermanager.uuid" valueAsUUID:d error:&v9];
   v5 = v9;
   v6 = v5;
   if ((v4 & 1) == 0 && v5)
@@ -1703,21 +1703,21 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setUUID:(id)a3 forURL:(id)a4
++ (void)setUUID:(id)d forURL:(id)l
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = [a1 _fileHandleForURL:a4 writeable:1];
-  [a1 setUUID:v6 forFileHandle:?];
+  dCopy = d;
+  v8 = [self _fileHandleForURL:l writeable:1];
+  [self setUUID:dCopy forFileHandle:?];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setSchemaVersion:(id)a3 forFileHandle:(id)a4
++ (void)setSchemaVersion:(id)version forFileHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [a4 setXattr:@"com.apple.containermanager.schema-version" valueAsNumber:a3 error:&v9];
+  v4 = [handle setXattr:@"com.apple.containermanager.schema-version" valueAsNumber:version error:&v9];
   v5 = v9;
   v6 = v5;
   if ((v4 & 1) == 0 && v5)
@@ -1734,21 +1734,21 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setSchemaVersion:(id)a3 forURL:(id)a4
++ (void)setSchemaVersion:(id)version forURL:(id)l
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = [a1 _fileHandleForURL:a4 writeable:1];
-  [a1 setSchemaVersion:v6 forFileHandle:?];
+  versionCopy = version;
+  v8 = [self _fileHandleForURL:l writeable:1];
+  [self setSchemaVersion:versionCopy forFileHandle:?];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setIdentifier:(id)a3 forFileHandle:(id)a4
++ (void)setIdentifier:(id)identifier forFileHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v4 = [a4 setXattr:@"com.apple.containermanager.identifier" valueAsString:a3 error:&v9];
+  v4 = [handle setXattr:@"com.apple.containermanager.identifier" valueAsString:identifier error:&v9];
   v5 = v9;
   v6 = v5;
   if ((v4 & 1) == 0 && v5)
@@ -1765,21 +1765,21 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setIdentifier:(id)a3 forURL:(id)a4
++ (void)setIdentifier:(id)identifier forURL:(id)l
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v8 = [a1 _fileHandleForURL:a4 writeable:1];
-  [a1 setIdentifier:v6 forFileHandle:?];
+  identifierCopy = identifier;
+  v8 = [self _fileHandleForURL:l writeable:1];
+  [self setIdentifier:identifierCopy forFileHandle:?];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (timespec)birthtimeForFileHandle:(id)a3
++ (timespec)birthtimeForFileHandle:(id)handle
 {
   v20 = *MEMORY[0x1E69E9840];
   v17 = 0;
-  v3 = [a3 copyValueAsStringFromXattr:@"com.apple.containermanager.birthtime" maxLength:1024 error:&v17];
+  v3 = [handle copyValueAsStringFromXattr:@"com.apple.containermanager.birthtime" maxLength:1024 error:&v17];
   v4 = v17;
   v5 = v4;
   if (v3)
@@ -1834,11 +1834,11 @@ LABEL_14:
   return result;
 }
 
-+ (timespec)birthtimeForURL:(id)a3
++ (timespec)birthtimeForURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _fileHandleForURL:a3 writeable:0];
-  v5 = [a1 birthtimeForFileHandle:v4];
+  v4 = [self _fileHandleForURL:l writeable:0];
+  v5 = [self birthtimeForFileHandle:v4];
   v7 = v6;
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1849,11 +1849,11 @@ LABEL_14:
   return result;
 }
 
-+ (id)UUIDForFileHandle:(id)a3
++ (id)UUIDForFileHandle:(id)handle
 {
   v13 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v3 = [a3 copyValueAsUUIDFromXattr:@"com.apple.containermanager.uuid" error:&v10];
+  v3 = [handle copyValueAsUUIDFromXattr:@"com.apple.containermanager.uuid" error:&v10];
   v4 = v10;
   v5 = v4;
   if (v3)
@@ -1882,22 +1882,22 @@ LABEL_14:
   return v3;
 }
 
-+ (id)UUIDForURL:(id)a3
++ (id)UUIDForURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _fileHandleForURL:a3 writeable:0];
-  v5 = [a1 UUIDForFileHandle:v4];
+  v4 = [self _fileHandleForURL:l writeable:0];
+  v5 = [self UUIDForFileHandle:v4];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (id)schemaVersionForFileHandle:(id)a3
++ (id)schemaVersionForFileHandle:(id)handle
 {
   v13 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v3 = [a3 copyValueAsNumberFromXattr:@"com.apple.containermanager.schema-version" error:&v10];
+  v3 = [handle copyValueAsNumberFromXattr:@"com.apple.containermanager.schema-version" error:&v10];
   v4 = v10;
   v5 = v4;
   if (v3)
@@ -1926,22 +1926,22 @@ LABEL_14:
   return v3;
 }
 
-+ (id)schemaVersionForURL:(id)a3
++ (id)schemaVersionForURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _fileHandleForURL:a3 writeable:0];
-  v5 = [a1 schemaVersionForFileHandle:v4];
+  v4 = [self _fileHandleForURL:l writeable:0];
+  v5 = [self schemaVersionForFileHandle:v4];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (id)identifierForFileHandle:(id)a3
++ (id)identifierForFileHandle:(id)handle
 {
   v13 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v3 = [a3 copyValueAsStringFromXattr:@"com.apple.containermanager.identifier" maxLength:1024 error:&v10];
+  v3 = [handle copyValueAsStringFromXattr:@"com.apple.containermanager.identifier" maxLength:1024 error:&v10];
   v4 = v10;
   v5 = v4;
   if (v3)
@@ -1970,11 +1970,11 @@ LABEL_14:
   return v3;
 }
 
-+ (id)identifierForURL:(id)a3
++ (id)identifierForURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _fileHandleForURL:a3 writeable:0];
-  v5 = [a1 identifierForFileHandle:v4];
+  v4 = [self _fileHandleForURL:l writeable:0];
+  v5 = [self identifierForFileHandle:v4];
 
   v6 = *MEMORY[0x1E69E9840];
 

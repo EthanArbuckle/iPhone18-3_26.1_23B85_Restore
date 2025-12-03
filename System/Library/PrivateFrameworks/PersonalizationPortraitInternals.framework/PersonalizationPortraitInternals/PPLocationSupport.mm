@@ -1,68 +1,68 @@
 @interface PPLocationSupport
-+ (BOOL)fuzzyMatchingLocations:(id)a3 and:(id)a4;
-+ (id)fullAddressOfLocation:(id)a3;
-+ (id)locationFromThoroughfare:(id)a3 subThoroughfare:(id)a4 locality:(id)a5 subLocality:(id)a6 administrativeArea:(id)a7 postalCode:(id)a8 category:(unsigned __int16)a9;
-+ (id)mapTitleForLocation:(id)a3;
-+ (id)streetAddressOfLocation:(id)a3;
++ (BOOL)fuzzyMatchingLocations:(id)locations and:(id)and;
++ (id)fullAddressOfLocation:(id)location;
++ (id)locationFromThoroughfare:(id)thoroughfare subThoroughfare:(id)subThoroughfare locality:(id)locality subLocality:(id)subLocality administrativeArea:(id)area postalCode:(id)code category:(unsigned __int16)category;
++ (id)mapTitleForLocation:(id)location;
++ (id)streetAddressOfLocation:(id)location;
 @end
 
 @implementation PPLocationSupport
 
-+ (id)locationFromThoroughfare:(id)a3 subThoroughfare:(id)a4 locality:(id)a5 subLocality:(id)a6 administrativeArea:(id)a7 postalCode:(id)a8 category:(unsigned __int16)a9
++ (id)locationFromThoroughfare:(id)thoroughfare subThoroughfare:(id)subThoroughfare locality:(id)locality subLocality:(id)subLocality administrativeArea:(id)area postalCode:(id)code category:(unsigned __int16)category
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  codeCopy = code;
+  areaCopy = area;
+  subLocalityCopy = subLocality;
+  localityCopy = locality;
+  subThoroughfareCopy = subThoroughfare;
+  thoroughfareCopy = thoroughfare;
   v20 = objc_opt_new();
-  [v20 setObject:v19 forKeyedSubscript:@"Thoroughfare"];
+  [v20 setObject:thoroughfareCopy forKeyedSubscript:@"Thoroughfare"];
 
-  [v20 setObject:v18 forKeyedSubscript:@"SubThoroughfare"];
-  [v20 setObject:v17 forKeyedSubscript:@"City"];
+  [v20 setObject:subThoroughfareCopy forKeyedSubscript:@"SubThoroughfare"];
+  [v20 setObject:localityCopy forKeyedSubscript:@"City"];
 
-  [v20 setObject:v16 forKeyedSubscript:@"SubLocality"];
-  [v20 setObject:v15 forKeyedSubscript:@"State"];
+  [v20 setObject:subLocalityCopy forKeyedSubscript:@"SubLocality"];
+  [v20 setObject:areaCopy forKeyedSubscript:@"State"];
 
-  [v20 setObject:v14 forKeyedSubscript:@"ZIP"];
+  [v20 setObject:codeCopy forKeyedSubscript:@"ZIP"];
   v21 = [objc_alloc(MEMORY[0x277CBFC40]) initWithLocation:0 addressDictionary:v20 region:0 areasOfInterest:0];
-  v22 = [objc_alloc(MEMORY[0x277D3A3D8]) initWithPlacemark:v21 category:a9 mostRelevantRecord:0];
+  v22 = [objc_alloc(MEMORY[0x277D3A3D8]) initWithPlacemark:v21 category:category mostRelevantRecord:0];
 
   return v22;
 }
 
-+ (BOOL)fuzzyMatchingLocations:(id)a3 and:(id)a4
++ (BOOL)fuzzyMatchingLocations:(id)locations and:(id)and
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 == v6)
+  locationsCopy = locations;
+  andCopy = and;
+  if (locationsCopy == andCopy)
   {
     v16 = 1;
     goto LABEL_42;
   }
 
-  v7 = [v5 placemark];
-  v8 = [v7 name];
-  if (!v8)
+  placemark = [locationsCopy placemark];
+  name = [placemark name];
+  if (!name)
   {
 
 LABEL_8:
-    v17 = [v5 placemark];
-    v18 = [v17 postalCode];
-    if (v18)
+    placemark2 = [locationsCopy placemark];
+    postalCode = [placemark2 postalCode];
+    if (postalCode)
     {
-      v19 = v18;
-      v20 = [v6 placemark];
-      v21 = [v20 postalCode];
+      v19 = postalCode;
+      placemark3 = [andCopy placemark];
+      postalCode2 = [placemark3 postalCode];
 
-      if (v21)
+      if (postalCode2)
       {
-        v22 = [v5 placemark];
-        v23 = [v22 postalCode];
-        v24 = [v6 placemark];
-        v25 = [v24 postalCode];
-        v26 = [v23 caseInsensitiveCompare:v25];
+        placemark4 = [locationsCopy placemark];
+        postalCode3 = [placemark4 postalCode];
+        placemark5 = [andCopy placemark];
+        postalCode4 = [placemark5 postalCode];
+        v26 = [postalCode3 caseInsensitiveCompare:postalCode4];
 
         if (v26)
         {
@@ -75,21 +75,21 @@ LABEL_8:
     {
     }
 
-    v27 = [v5 placemark];
-    v28 = [v27 country];
-    if (v28)
+    placemark6 = [locationsCopy placemark];
+    country = [placemark6 country];
+    if (country)
     {
-      v29 = v28;
-      v30 = [v6 placemark];
-      v31 = [v30 country];
+      v29 = country;
+      placemark7 = [andCopy placemark];
+      country2 = [placemark7 country];
 
-      if (v31)
+      if (country2)
       {
-        v32 = [v5 placemark];
-        v33 = [v32 country];
-        v34 = [v6 placemark];
-        v35 = [v34 country];
-        v36 = [v33 caseInsensitiveCompare:v35];
+        placemark8 = [locationsCopy placemark];
+        country3 = [placemark8 country];
+        placemark9 = [andCopy placemark];
+        country4 = [placemark9 country];
+        v36 = [country3 caseInsensitiveCompare:country4];
 
         if (v36)
         {
@@ -102,21 +102,21 @@ LABEL_8:
     {
     }
 
-    v37 = [v5 placemark];
-    v38 = [v37 locality];
-    if (v38)
+    placemark10 = [locationsCopy placemark];
+    locality = [placemark10 locality];
+    if (locality)
     {
-      v39 = v38;
-      v40 = [v6 placemark];
-      v41 = [v40 locality];
+      v39 = locality;
+      placemark11 = [andCopy placemark];
+      locality2 = [placemark11 locality];
 
-      if (v41)
+      if (locality2)
       {
-        v42 = [v5 placemark];
-        v43 = [v42 locality];
-        v44 = [v6 placemark];
-        v45 = [v44 locality];
-        v46 = [v43 caseInsensitiveCompare:v45];
+        placemark12 = [locationsCopy placemark];
+        locality3 = [placemark12 locality];
+        placemark13 = [andCopy placemark];
+        locality4 = [placemark13 locality];
+        v46 = [locality3 caseInsensitiveCompare:locality4];
 
         if (v46)
         {
@@ -129,21 +129,21 @@ LABEL_8:
     {
     }
 
-    v47 = [v5 placemark];
-    v48 = [v47 subLocality];
-    if (v48)
+    placemark14 = [locationsCopy placemark];
+    subLocality = [placemark14 subLocality];
+    if (subLocality)
     {
-      v49 = v48;
-      v50 = [v6 placemark];
-      v51 = [v50 subLocality];
+      v49 = subLocality;
+      placemark15 = [andCopy placemark];
+      subLocality2 = [placemark15 subLocality];
 
-      if (v51)
+      if (subLocality2)
       {
-        v52 = [v5 placemark];
-        v53 = [v52 subLocality];
-        v54 = [v6 placemark];
-        v55 = [v54 subLocality];
-        v56 = [v53 caseInsensitiveCompare:v55];
+        placemark16 = [locationsCopy placemark];
+        subLocality3 = [placemark16 subLocality];
+        placemark17 = [andCopy placemark];
+        subLocality4 = [placemark17 subLocality];
+        v56 = [subLocality3 caseInsensitiveCompare:subLocality4];
 
         if (v56)
         {
@@ -156,21 +156,21 @@ LABEL_8:
     {
     }
 
-    v57 = [v5 placemark];
-    v58 = [v57 thoroughfare];
-    if (v58)
+    placemark18 = [locationsCopy placemark];
+    thoroughfare = [placemark18 thoroughfare];
+    if (thoroughfare)
     {
-      v59 = v58;
-      v60 = [v6 placemark];
-      v61 = [v60 thoroughfare];
+      v59 = thoroughfare;
+      placemark19 = [andCopy placemark];
+      thoroughfare2 = [placemark19 thoroughfare];
 
-      if (v61)
+      if (thoroughfare2)
       {
-        v62 = [v5 placemark];
-        v63 = [v62 thoroughfare];
-        v64 = [v6 placemark];
-        v65 = [v64 thoroughfare];
-        v66 = [v63 caseInsensitiveCompare:v65];
+        placemark20 = [locationsCopy placemark];
+        thoroughfare3 = [placemark20 thoroughfare];
+        placemark21 = [andCopy placemark];
+        thoroughfare4 = [placemark21 thoroughfare];
+        v66 = [thoroughfare3 caseInsensitiveCompare:thoroughfare4];
 
         if (v66)
         {
@@ -183,21 +183,21 @@ LABEL_8:
     {
     }
 
-    v67 = [v5 placemark];
-    v68 = [v67 subThoroughfare];
-    if (v68)
+    placemark22 = [locationsCopy placemark];
+    subThoroughfare = [placemark22 subThoroughfare];
+    if (subThoroughfare)
     {
-      v69 = v68;
-      v70 = [v6 placemark];
-      v71 = [v70 subThoroughfare];
+      v69 = subThoroughfare;
+      placemark23 = [andCopy placemark];
+      subThoroughfare2 = [placemark23 subThoroughfare];
 
-      if (v71)
+      if (subThoroughfare2)
       {
-        v72 = [v5 placemark];
-        v73 = [v72 subThoroughfare];
-        v74 = [v6 placemark];
-        v75 = [v74 subThoroughfare];
-        v76 = [v73 caseInsensitiveCompare:v75];
+        placemark24 = [locationsCopy placemark];
+        subThoroughfare3 = [placemark24 subThoroughfare];
+        placemark25 = [andCopy placemark];
+        subThoroughfare4 = [placemark25 subThoroughfare];
+        v76 = [subThoroughfare3 caseInsensitiveCompare:subThoroughfare4];
 
         if (v76)
         {
@@ -210,21 +210,21 @@ LABEL_8:
     {
     }
 
-    v77 = [v5 placemark];
-    v78 = [v77 administrativeArea];
-    if (v78)
+    placemark26 = [locationsCopy placemark];
+    administrativeArea = [placemark26 administrativeArea];
+    if (administrativeArea)
     {
-      v79 = v78;
-      v80 = [v6 placemark];
-      v81 = [v80 administrativeArea];
+      v79 = administrativeArea;
+      placemark27 = [andCopy placemark];
+      administrativeArea2 = [placemark27 administrativeArea];
 
-      if (v81)
+      if (administrativeArea2)
       {
-        v82 = [v5 placemark];
-        v83 = [v82 administrativeArea];
-        v84 = [v6 placemark];
-        v85 = [v84 administrativeArea];
-        v86 = [v83 caseInsensitiveCompare:v85];
+        placemark28 = [locationsCopy placemark];
+        administrativeArea3 = [placemark28 administrativeArea];
+        placemark29 = [andCopy placemark];
+        administrativeArea4 = [placemark29 administrativeArea];
+        v86 = [administrativeArea3 caseInsensitiveCompare:administrativeArea4];
 
         if (v86)
         {
@@ -239,32 +239,32 @@ LABEL_41:
     {
     }
 
-    v12 = [PPLocationSupport fullAddressOfLocation:v5];
-    v88 = [PPLocationSupport fullAddressOfLocation:v6];
-    v13 = v88;
+    placemark31 = [PPLocationSupport fullAddressOfLocation:locationsCopy];
+    v88 = [PPLocationSupport fullAddressOfLocation:andCopy];
+    name3 = v88;
     v16 = 0;
-    if (v12 && v88)
+    if (placemark31 && v88)
     {
-      v16 = [v12 caseInsensitiveCompare:v88] == 0;
+      v16 = [placemark31 caseInsensitiveCompare:v88] == 0;
     }
 
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [v6 placemark];
-  v11 = [v10 name];
+  v9 = name;
+  placemark30 = [andCopy placemark];
+  name2 = [placemark30 name];
 
-  if (!v11)
+  if (!name2)
   {
     goto LABEL_8;
   }
 
-  v12 = [v5 placemark];
-  v13 = [v12 name];
-  v14 = [v6 placemark];
-  v15 = [v14 name];
-  v16 = [v13 caseInsensitiveCompare:v15] == 0;
+  placemark31 = [locationsCopy placemark];
+  name3 = [placemark31 name];
+  placemark32 = [andCopy placemark];
+  name4 = [placemark32 name];
+  v16 = [name3 caseInsensitiveCompare:name4] == 0;
 
 LABEL_5:
 LABEL_42:
@@ -272,55 +272,55 @@ LABEL_42:
   return v16;
 }
 
-+ (id)mapTitleForLocation:(id)a3
++ (id)mapTitleForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 placemark];
-  v6 = [v5 name];
+  locationCopy = location;
+  placemark = [locationCopy placemark];
+  name = [placemark name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [v4 placemark];
+    placemark2 = [locationCopy placemark];
 
-    v8 = [v7 name];
-    v4 = v7;
+    name2 = [placemark2 name];
+    locationCopy = placemark2;
   }
 
   else
   {
-    v8 = [a1 streetAddressOfLocation:v4];
+    name2 = [self streetAddressOfLocation:locationCopy];
   }
 
-  return v8;
+  return name2;
 }
 
-+ (id)fullAddressOfLocation:(id)a3
++ (id)fullAddressOfLocation:(id)location
 {
-  v4 = a3;
-  v5 = [a1 streetAddressOfLocation:v4];
-  v6 = [v4 placemark];
-  v7 = [v6 locality];
-  v8 = [v4 placemark];
-  v9 = [v8 administrativeArea];
-  v10 = [v4 placemark];
-  v11 = [v10 postalCode];
-  v12 = [v4 placemark];
+  locationCopy = location;
+  v5 = [self streetAddressOfLocation:locationCopy];
+  placemark = [locationCopy placemark];
+  locality = [placemark locality];
+  placemark2 = [locationCopy placemark];
+  administrativeArea = [placemark2 administrativeArea];
+  placemark3 = [locationCopy placemark];
+  postalCode = [placemark3 postalCode];
+  placemark4 = [locationCopy placemark];
 
-  v13 = [v12 country];
-  v14 = [PPNamedEntitySupport fullAddressForStreetAddress:v5 city:v7 state:v9 postalCode:v11 country:v13];
+  country = [placemark4 country];
+  v14 = [PPNamedEntitySupport fullAddressForStreetAddress:v5 city:locality state:administrativeArea postalCode:postalCode country:country];
 
   return v14;
 }
 
-+ (id)streetAddressOfLocation:(id)a3
++ (id)streetAddressOfLocation:(id)location
 {
-  v3 = a3;
-  v4 = [v3 placemark];
-  v5 = [v4 thoroughfare];
-  v6 = [v3 placemark];
+  locationCopy = location;
+  placemark = [locationCopy placemark];
+  thoroughfare = [placemark thoroughfare];
+  placemark2 = [locationCopy placemark];
 
-  v7 = [v6 subThoroughfare];
-  v8 = [PPNamedEntitySupport streetAddressFromThoroughfare:v5 subThoroughfare:v7];
+  subThoroughfare = [placemark2 subThoroughfare];
+  v8 = [PPNamedEntitySupport streetAddressFromThoroughfare:thoroughfare subThoroughfare:subThoroughfare];
 
   return v8;
 }

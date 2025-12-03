@@ -1,27 +1,27 @@
 @interface AMSUIDashboardMessageViewController
-- (AMSUIDashboardMessageViewController)initWithRequest:(id)a3;
-- (AMSUIDashboardMessageViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5;
+- (AMSUIDashboardMessageViewController)initWithRequest:(id)request;
+- (AMSUIDashboardMessageViewController)initWithRequest:(id)request bag:(id)bag account:(id)account;
 - (id)_defaultPreferredImageSymbolConfiguration;
 - (id)_effectiveImageSymbolConfiguration;
-- (id)_messageFontCompatibleWith:(id)a3;
+- (id)_messageFontCompatibleWith:(id)with;
 - (id)_messageTextColor;
-- (id)_titleFontCompatibleWith:(id)a3;
+- (id)_titleFontCompatibleWith:(id)with;
 - (id)_titleTextColor;
 - (int64_t)_iconAnimationPlayCount;
 - (int64_t)_primaryImageRenderingMode;
 - (void)_commitAppearance;
-- (void)_setDialogRequest:(id)a3;
-- (void)setPreferredAppearance:(id)a3;
+- (void)_setDialogRequest:(id)request;
+- (void)setPreferredAppearance:(id)appearance;
 @end
 
 @implementation AMSUIDashboardMessageViewController
 
-- (AMSUIDashboardMessageViewController)initWithRequest:(id)a3
+- (AMSUIDashboardMessageViewController)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = AMSUIDashboardMessageViewController;
-  v5 = [(AMSUIBaseMessageViewController *)&v13 initWithRequest:v4];
+  v5 = [(AMSUIBaseMessageViewController *)&v13 initWithRequest:requestCopy];
   if (v5)
   {
     v6 = objc_alloc_init(AMSUIDashboardMessageAppearance);
@@ -29,8 +29,8 @@
     v5->_preferredAppearance = v6;
 
     v8 = [AMSUIDashboardMessageAppearance alloc];
-    v9 = [v4 appearanceInfo];
-    v10 = [(AMSUIDashboardMessageAppearance *)v8 initWithDictionary:v9];
+    appearanceInfo = [requestCopy appearanceInfo];
+    v10 = [(AMSUIDashboardMessageAppearance *)v8 initWithDictionary:appearanceInfo];
     requestAppearance = v5->_requestAppearance;
     v5->_requestAppearance = v10;
   }
@@ -38,155 +38,155 @@
   return v5;
 }
 
-- (AMSUIDashboardMessageViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (AMSUIDashboardMessageViewController)initWithRequest:(id)request bag:(id)bag account:(id)account
 {
   v6.receiver = self;
   v6.super_class = AMSUIDashboardMessageViewController;
-  return [(AMSUIBaseMessageViewController *)&v6 initWithRequest:a3 bag:a4 account:a5];
+  return [(AMSUIBaseMessageViewController *)&v6 initWithRequest:request bag:bag account:account];
 }
 
-- (void)_setDialogRequest:(id)a3
+- (void)_setDialogRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = AMSUIDashboardMessageViewController;
-  [(AMSUIBaseMessageViewController *)&v12 _setDialogRequest:v4];
-  v5 = [(AMSUIBaseMessageViewController *)self _messageView];
-  v6 = [v4 defaultAction];
-  if (v6)
+  [(AMSUIBaseMessageViewController *)&v12 _setDialogRequest:requestCopy];
+  _messageView = [(AMSUIBaseMessageViewController *)self _messageView];
+  defaultAction = [requestCopy defaultAction];
+  if (defaultAction)
   {
-    [v5 setBodyDialogAction:v6 target:self action:sel__didTapActionButton_];
+    [_messageView setBodyDialogAction:defaultAction target:self action:sel__didTapActionButton_];
   }
 
-  v7 = [v4 buttonActions];
-  if (v7)
+  buttonActions = [requestCopy buttonActions];
+  if (buttonActions)
   {
-    v8 = v7;
-    v9 = [v4 buttonActions];
-    v10 = [v9 count];
+    v8 = buttonActions;
+    buttonActions2 = [requestCopy buttonActions];
+    v10 = [buttonActions2 count];
 
     if (v10)
     {
-      v11 = [v4 buttonActions];
-      [v5 setButtonsForDialogActions:v11 target:self action:sel__didTapActionButton_];
+      buttonActions3 = [requestCopy buttonActions];
+      [_messageView setButtonsForDialogActions:buttonActions3 target:self action:sel__didTapActionButton_];
     }
   }
 }
 
-- (id)_messageFontCompatibleWith:(id)a3
+- (id)_messageFontCompatibleWith:(id)with
 {
-  v4 = a3;
-  v5 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v6 = [v5 _messageFontDictionary];
-  v7 = [AMSUIFontParser fontWithDictionary:v6 compatibleWith:v4];
+  withCopy = with;
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  _messageFontDictionary = [requestAppearance _messageFontDictionary];
+  v7 = [AMSUIFontParser fontWithDictionary:_messageFontDictionary compatibleWith:withCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    messageFont = v7;
   }
 
   else
   {
-    v10 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-    v9 = [v10 messageFont];
+    requestAppearance2 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+    messageFont = [requestAppearance2 messageFont];
   }
 
-  if (!v9)
+  if (!messageFont)
   {
-    v11 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v12 = [v11 _messageFontDictionary];
-    v13 = [AMSUIFontParser fontWithDictionary:v12 compatibleWith:v4];
+    preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    _messageFontDictionary2 = [preferredAppearance _messageFontDictionary];
+    v13 = [AMSUIFontParser fontWithDictionary:_messageFontDictionary2 compatibleWith:withCopy];
     v14 = v13;
     if (v13)
     {
-      v9 = v13;
+      messageFont = v13;
     }
 
     else
     {
-      v15 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-      v9 = [v15 messageFont];
+      preferredAppearance2 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+      messageFont = [preferredAppearance2 messageFont];
     }
   }
 
-  return v9;
+  return messageFont;
 }
 
 - (id)_messageTextColor
 {
-  v3 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v4 = [v3 messageTextColor];
-  v5 = v4;
-  if (v4)
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  messageTextColor = [requestAppearance messageTextColor];
+  v5 = messageTextColor;
+  if (messageTextColor)
   {
-    v6 = v4;
+    messageTextColor2 = messageTextColor;
   }
 
   else
   {
-    v7 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v6 = [v7 messageTextColor];
+    preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    messageTextColor2 = [preferredAppearance messageTextColor];
   }
 
-  return v6;
+  return messageTextColor2;
 }
 
-- (id)_titleFontCompatibleWith:(id)a3
+- (id)_titleFontCompatibleWith:(id)with
 {
-  v4 = a3;
-  v5 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v6 = [v5 _titleFontDictionary];
-  v7 = [AMSUIFontParser fontWithDictionary:v6 compatibleWith:v4];
+  withCopy = with;
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  _titleFontDictionary = [requestAppearance _titleFontDictionary];
+  v7 = [AMSUIFontParser fontWithDictionary:_titleFontDictionary compatibleWith:withCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    titleFont = v7;
   }
 
   else
   {
-    v10 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-    v9 = [v10 titleFont];
+    requestAppearance2 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+    titleFont = [requestAppearance2 titleFont];
   }
 
-  if (!v9)
+  if (!titleFont)
   {
-    v11 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v12 = [v11 _titleFontDictionary];
-    v13 = [AMSUIFontParser fontWithDictionary:v12 compatibleWith:v4];
+    preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    _titleFontDictionary2 = [preferredAppearance _titleFontDictionary];
+    v13 = [AMSUIFontParser fontWithDictionary:_titleFontDictionary2 compatibleWith:withCopy];
     v14 = v13;
     if (v13)
     {
-      v9 = v13;
+      titleFont = v13;
     }
 
     else
     {
-      v15 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-      v9 = [v15 titleFont];
+      preferredAppearance2 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+      titleFont = [preferredAppearance2 titleFont];
     }
   }
 
-  return v9;
+  return titleFont;
 }
 
 - (id)_titleTextColor
 {
-  v3 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v4 = [v3 titleTextColor];
-  v5 = v4;
-  if (v4)
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  titleTextColor = [requestAppearance titleTextColor];
+  v5 = titleTextColor;
+  if (titleTextColor)
   {
-    v6 = v4;
+    titleTextColor2 = titleTextColor;
   }
 
   else
   {
-    v7 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v6 = [v7 titleTextColor];
+    preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    titleTextColor2 = [preferredAppearance titleTextColor];
   }
 
-  return v6;
+  return titleTextColor2;
 }
 
 - (void)_commitAppearance
@@ -195,19 +195,19 @@
   v72.receiver = self;
   v72.super_class = AMSUIDashboardMessageViewController;
   [(AMSUIBaseMessageViewController *)&v72 _commitAppearance];
-  v4 = [(AMSUIDashboardMessageViewController *)self viewIfLoaded];
+  viewIfLoaded = [(AMSUIDashboardMessageViewController *)self viewIfLoaded];
 
-  if (!v4)
+  if (!viewIfLoaded)
   {
     goto LABEL_62;
   }
 
-  v5 = [(AMSUIBaseMessageViewController *)self _messageView];
-  v6 = [v5 accessoryView];
+  _messageView = [(AMSUIBaseMessageViewController *)self _messageView];
+  accessoryView = [_messageView accessoryView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = accessoryView;
   }
 
   else
@@ -215,154 +215,154 @@
     v7 = 0;
   }
 
-  v8 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v9 = [v8 accessoryButtonBackgroundColor];
-  v10 = v9;
-  if (v9)
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  accessoryButtonBackgroundColor = [requestAppearance accessoryButtonBackgroundColor];
+  v10 = accessoryButtonBackgroundColor;
+  if (accessoryButtonBackgroundColor)
   {
-    v11 = v9;
+    accessoryButtonBackgroundColor2 = accessoryButtonBackgroundColor;
   }
 
   else
   {
-    v12 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v11 = [v12 accessoryButtonBackgroundColor];
+    preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    accessoryButtonBackgroundColor2 = [preferredAppearance accessoryButtonBackgroundColor];
   }
 
-  if (v7 && v11)
+  if (v7 && accessoryButtonBackgroundColor2)
   {
-    [v7 setPreferredBackgroundColor:v11];
+    [v7 setPreferredBackgroundColor:accessoryButtonBackgroundColor2];
   }
 
-  v66 = v11;
-  v13 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v14 = [v13 accessoryButtonColor];
-  v15 = v14;
-  if (v14)
+  v66 = accessoryButtonBackgroundColor2;
+  requestAppearance2 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  accessoryButtonColor = [requestAppearance2 accessoryButtonColor];
+  v15 = accessoryButtonColor;
+  if (accessoryButtonColor)
   {
-    v16 = v14;
-  }
-
-  else
-  {
-    v17 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v16 = [v17 accessoryButtonColor];
-  }
-
-  if (v7 && v16)
-  {
-    [v7 setPreferredForegroundColor:v16];
-  }
-
-  v18 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v19 = [v18 accessoryButtonFont];
-  if (v19)
-  {
-    v20 = v19;
+    accessoryButtonColor2 = accessoryButtonColor;
   }
 
   else
   {
-    v21 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v20 = [v21 accessoryButtonFont];
+    preferredAppearance2 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    accessoryButtonColor2 = [preferredAppearance2 accessoryButtonColor];
+  }
 
-    if (!v20)
+  if (v7 && accessoryButtonColor2)
+  {
+    [v7 setPreferredForegroundColor:accessoryButtonColor2];
+  }
+
+  requestAppearance3 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  accessoryButtonFont = [requestAppearance3 accessoryButtonFont];
+  if (accessoryButtonFont)
+  {
+    accessoryButtonFont2 = accessoryButtonFont;
+  }
+
+  else
+  {
+    preferredAppearance3 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    accessoryButtonFont2 = [preferredAppearance3 accessoryButtonFont];
+
+    if (!accessoryButtonFont2)
     {
       goto LABEL_21;
     }
   }
 
-  [v7 setPreferredFont:v20];
+  [v7 setPreferredFont:accessoryButtonFont2];
 
 LABEL_21:
-  v22 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v23 = [v22 backgroundColor];
-  v65 = v16;
-  if (v23)
+  requestAppearance4 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  backgroundColor = [requestAppearance4 backgroundColor];
+  v65 = accessoryButtonColor2;
+  if (backgroundColor)
   {
-    v24 = v23;
+    backgroundColor2 = backgroundColor;
   }
 
   else
   {
-    v25 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v24 = [v25 backgroundColor];
+    preferredAppearance4 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    backgroundColor2 = [preferredAppearance4 backgroundColor];
 
-    if (!v24)
+    if (!backgroundColor2)
     {
       goto LABEL_25;
     }
   }
 
-  [v5 set_ams_backgroundColor:v24];
+  [_messageView set_ams_backgroundColor:backgroundColor2];
 
 LABEL_25:
-  v26 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v27 = [v26 backgroundImage];
-  v28 = v27;
-  if (!v27)
+  requestAppearance5 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  backgroundImage = [requestAppearance5 backgroundImage];
+  backgroundImage2 = backgroundImage;
+  if (!backgroundImage)
   {
-    v2 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v28 = [v2 backgroundImage];
+    preferredAppearance5 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    backgroundImage2 = [preferredAppearance5 backgroundImage];
   }
 
-  v29 = [v5 backgroundImageView];
-  [v29 setImage:v28];
+  backgroundImageView = [_messageView backgroundImageView];
+  [backgroundImageView setImage:backgroundImage2];
 
-  if (!v27)
+  if (!backgroundImage)
   {
   }
 
-  v30 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v31 = [v30 footerButtonBackgroundColor];
-  v32 = v31;
-  if (v31)
+  requestAppearance6 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  footerButtonBackgroundColor = [requestAppearance6 footerButtonBackgroundColor];
+  v32 = footerButtonBackgroundColor;
+  if (footerButtonBackgroundColor)
   {
-    v33 = v31;
-  }
-
-  else
-  {
-    v34 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v33 = [v34 footerButtonBackgroundColor];
-  }
-
-  v35 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v36 = [v35 footerButtonColor];
-  v37 = v36;
-  if (v36)
-  {
-    v38 = v36;
+    footerButtonBackgroundColor2 = footerButtonBackgroundColor;
   }
 
   else
   {
-    v39 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v38 = [v39 footerButtonColor];
+    preferredAppearance6 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    footerButtonBackgroundColor2 = [preferredAppearance6 footerButtonBackgroundColor];
+  }
+
+  requestAppearance7 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  footerButtonColor = [requestAppearance7 footerButtonColor];
+  v37 = footerButtonColor;
+  if (footerButtonColor)
+  {
+    footerButtonColor2 = footerButtonColor;
+  }
+
+  else
+  {
+    preferredAppearance7 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    footerButtonColor2 = [preferredAppearance7 footerButtonColor];
   }
 
   v67 = v7;
 
-  v40 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v41 = [v40 footerButtonFont];
-  v42 = v41;
-  if (v41)
+  requestAppearance8 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  footerButtonFont = [requestAppearance8 footerButtonFont];
+  v42 = footerButtonFont;
+  if (footerButtonFont)
   {
-    v43 = v41;
+    footerButtonFont2 = footerButtonFont;
   }
 
   else
   {
-    v44 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v43 = [v44 footerButtonFont];
+    preferredAppearance8 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    footerButtonFont2 = [preferredAppearance8 footerButtonFont];
   }
 
-  v45 = [v5 footerButtons];
+  footerButtons = [_messageView footerButtons];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v46 = [v45 countByEnumeratingWithState:&v68 objects:v73 count:16];
+  v46 = [footerButtons countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v46)
   {
     v47 = v46;
@@ -373,85 +373,85 @@ LABEL_25:
       {
         if (*v69 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(footerButtons);
         }
 
         v50 = *(*(&v68 + 1) + 8 * i);
-        if (v38)
+        if (footerButtonColor2)
         {
-          [*(*(&v68 + 1) + 8 * i) setPreferredForegroundColor:v38];
+          [*(*(&v68 + 1) + 8 * i) setPreferredForegroundColor:footerButtonColor2];
         }
 
-        if (v43)
+        if (footerButtonFont2)
         {
-          [v50 setPreferredFont:v43];
+          [v50 setPreferredFont:footerButtonFont2];
         }
 
-        if (v33)
+        if (footerButtonBackgroundColor2)
         {
-          [v50 setPreferredBackgroundColor:v33];
+          [v50 setPreferredBackgroundColor:footerButtonBackgroundColor2];
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v68 objects:v73 count:16];
+      v47 = [footerButtons countByEnumeratingWithState:&v68 objects:v73 count:16];
     }
 
     while (v47);
   }
 
-  v51 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v52 = [v51 imageTintColor];
-  if (v52)
+  requestAppearance9 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  imageTintColor = [requestAppearance9 imageTintColor];
+  if (imageTintColor)
   {
-    v53 = v52;
+    imageTintColor2 = imageTintColor;
 
     v54 = v67;
   }
 
   else
   {
-    v55 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v53 = [v55 imageTintColor];
+    preferredAppearance9 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    imageTintColor2 = [preferredAppearance9 imageTintColor];
 
     v54 = v67;
-    if (!v53)
+    if (!imageTintColor2)
     {
       goto LABEL_55;
     }
   }
 
-  [v5 setIconColor:v53];
+  [_messageView setIconColor:imageTintColor2];
 
 LABEL_55:
-  v56 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v57 = [v56 separatorColor];
-  if (v57)
+  requestAppearance10 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  separatorColor = [requestAppearance10 separatorColor];
+  if (separatorColor)
   {
-    v58 = v57;
+    separatorColor2 = separatorColor;
 
 LABEL_58:
-    [v5 setSeparatorColor:v58];
+    [_messageView setSeparatorColor:separatorColor2];
 
     goto LABEL_59;
   }
 
-  v59 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-  v58 = [v59 separatorColor];
+  preferredAppearance10 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+  separatorColor2 = [preferredAppearance10 separatorColor];
 
-  if (v58)
+  if (separatorColor2)
   {
     goto LABEL_58;
   }
 
 LABEL_59:
-  v60 = [(AMSUIBaseMessageViewController *)self _loadedImage];
+  _loadedImage = [(AMSUIBaseMessageViewController *)self _loadedImage];
 
-  if (v60)
+  if (_loadedImage)
   {
-    v61 = [(AMSUIBaseMessageViewController *)self _loadedImage];
-    v62 = [v61 ams_imageWithRenderingMode:{-[AMSUIDashboardMessageViewController _primaryImageRenderingMode](self, "_primaryImageRenderingMode")}];
-    v63 = [v5 imageView];
-    [v63 setImage:v62];
+    _loadedImage2 = [(AMSUIBaseMessageViewController *)self _loadedImage];
+    v62 = [_loadedImage2 ams_imageWithRenderingMode:{-[AMSUIDashboardMessageViewController _primaryImageRenderingMode](self, "_primaryImageRenderingMode")}];
+    imageView = [_messageView imageView];
+    [imageView setImage:v62];
   }
 
   [(AMSUIBaseMessageViewController *)self _updateTextWithAttributes];
@@ -462,36 +462,36 @@ LABEL_62:
 
 - (int64_t)_iconAnimationPlayCount
 {
-  v3 = 1;
-  v4 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-  if (v4)
+  iconAnimationPlayCount2 = 1;
+  preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+  if (preferredAppearance)
   {
-    v5 = v4;
-    v6 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-    v7 = [v6 iconAnimationPlayCount];
+    v5 = preferredAppearance;
+    preferredAppearance2 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+    iconAnimationPlayCount = [preferredAppearance2 iconAnimationPlayCount];
 
-    if (v7 != -90)
+    if (iconAnimationPlayCount != -90)
     {
-      v8 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-      v3 = [v8 iconAnimationPlayCount];
+      preferredAppearance3 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+      iconAnimationPlayCount2 = [preferredAppearance3 iconAnimationPlayCount];
     }
   }
 
-  v9 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  if (v9)
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  if (requestAppearance)
   {
-    v10 = v9;
-    v11 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-    v12 = [v11 iconAnimationPlayCount];
+    v10 = requestAppearance;
+    requestAppearance2 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+    iconAnimationPlayCount3 = [requestAppearance2 iconAnimationPlayCount];
 
-    if (v12 != -90)
+    if (iconAnimationPlayCount3 != -90)
     {
-      v13 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-      v3 = [v13 iconAnimationPlayCount];
+      requestAppearance3 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+      iconAnimationPlayCount2 = [requestAppearance3 iconAnimationPlayCount];
     }
   }
 
-  return v3;
+  return iconAnimationPlayCount2;
 }
 
 - (id)_defaultPreferredImageSymbolConfiguration
@@ -505,39 +505,39 @@ LABEL_62:
 
 - (id)_effectiveImageSymbolConfiguration
 {
-  v3 = [(AMSUIDashboardMessageViewController *)self _defaultPreferredImageSymbolConfiguration];
-  v4 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-  v5 = [v4 imageSymbolConfiguration];
-  v6 = [v3 configurationByApplyingConfiguration:v5];
-  v7 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v8 = [v7 imageSymbolConfiguration];
-  v9 = [v6 configurationByApplyingConfiguration:v8];
+  _defaultPreferredImageSymbolConfiguration = [(AMSUIDashboardMessageViewController *)self _defaultPreferredImageSymbolConfiguration];
+  preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+  imageSymbolConfiguration = [preferredAppearance imageSymbolConfiguration];
+  v6 = [_defaultPreferredImageSymbolConfiguration configurationByApplyingConfiguration:imageSymbolConfiguration];
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  imageSymbolConfiguration2 = [requestAppearance imageSymbolConfiguration];
+  v9 = [v6 configurationByApplyingConfiguration:imageSymbolConfiguration2];
 
   return v9;
 }
 
-- (void)setPreferredAppearance:(id)a3
+- (void)setPreferredAppearance:(id)appearance
 {
-  objc_storeStrong(&self->_preferredAppearance, a3);
+  objc_storeStrong(&self->_preferredAppearance, appearance);
 
   [(AMSUIDashboardMessageViewController *)self _commitAppearance];
 }
 
 - (int64_t)_primaryImageRenderingMode
 {
-  v3 = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
-  v4 = [v3 primaryImageRenderingMode];
+  preferredAppearance = [(AMSUIDashboardMessageViewController *)self preferredAppearance];
+  primaryImageRenderingMode = [preferredAppearance primaryImageRenderingMode];
 
-  v5 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-  v6 = [v5 primaryImageRenderingMode];
+  requestAppearance = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+  primaryImageRenderingMode2 = [requestAppearance primaryImageRenderingMode];
 
-  if (v6)
+  if (primaryImageRenderingMode2)
   {
-    v7 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
-    v4 = [v7 primaryImageRenderingMode];
+    requestAppearance2 = [(AMSUIDashboardMessageViewController *)self requestAppearance];
+    primaryImageRenderingMode = [requestAppearance2 primaryImageRenderingMode];
   }
 
-  return v4;
+  return primaryImageRenderingMode;
 }
 
 @end

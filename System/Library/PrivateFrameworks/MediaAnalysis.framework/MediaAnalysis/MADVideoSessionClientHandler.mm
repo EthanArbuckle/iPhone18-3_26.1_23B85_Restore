@@ -1,28 +1,28 @@
 @interface MADVideoSessionClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-- (MADVideoSessionClientHandler)initWithXPCConnection:(id)a3;
-- (id)tapToRadarURLWithTitle:(id)a3 description:(id)a4 debugState:(id)a5 componentID:(unint64_t)a6 componentName:(id)a7 componentVersion:(id)a8 videoURL:(id)a9;
++ (id)clientHandlerWithXPCConnection:(id)connection;
+- (MADVideoSessionClientHandler)initWithXPCConnection:(id)connection;
+- (id)tapToRadarURLWithTitle:(id)title description:(id)description debugState:(id)state componentID:(unint64_t)d componentName:(id)name componentVersion:(id)version videoURL:(id)l;
 - (id)tasks;
-- (void)addRequest:(id)a3 reply:(id)a4;
-- (void)generateTapToRadarNotificationWithVideoURL:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)processFrameWithIOSurface:(id)a3 frameProperties:(id)a4 reply:(id)a5;
+- (void)addRequest:(id)request reply:(id)reply;
+- (void)generateTapToRadarNotificationWithVideoURL:(id)l options:(id)options reply:(id)reply;
+- (void)processFrameWithIOSurface:(id)surface frameProperties:(id)properties reply:(id)reply;
 - (void)removeAllRequests;
-- (void)removeRequest:(id)a3 reply:(id)a4;
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 options:(id)a4 reply:(id)a5;
+- (void)removeRequest:(id)request reply:(id)reply;
+- (void)requestTTRNotificationWithVideoFrames:(id)frames options:(id)options reply:(id)reply;
 @end
 
 @implementation MADVideoSessionClientHandler
 
-- (MADVideoSessionClientHandler)initWithXPCConnection:(id)a3
+- (MADVideoSessionClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v44.receiver = self;
   v44.super_class = MADVideoSessionClientHandler;
   v6 = [(MADVideoSessionClientHandler *)&v44 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, v7);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     connection = v7->_connection;
@@ -40,9 +40,9 @@
     v41[3] = &unk_100282A30;
     objc_copyWeak(&v42, &location);
     [(NSXPCConnection *)v11 setInvalidationHandler:v41];
-    v12 = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
     clientProxy = v7->_clientProxy;
-    v7->_clientProxy = v12;
+    v7->_clientProxy = remoteObjectProxy;
 
     v14 = dispatch_queue_create("MADVideoSessionClientHandler.management", 0);
     managementQueue = v7->_managementQueue;
@@ -157,18 +157,18 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (void)addRequest:(id)a3 reply:(id)a4
+- (void)addRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -181,19 +181,19 @@
   block[2] = sub_100097C98;
   block[3] = &unk_100285278;
   block[4] = self;
-  v9 = v6;
+  v9 = requestCopy;
   v11 = v9;
   v12 = &v13;
   dispatch_sync(managementQueue, block);
-  v7[2](v7, v14[5] == 0);
+  replyCopy[2](replyCopy, v14[5] == 0);
 
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)removeRequest:(id)a3 reply:(id)a4
+- (void)removeRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -207,10 +207,10 @@
   block[3] = &unk_1002852A0;
   block[4] = self;
   v12 = &v13;
-  v9 = v6;
+  v9 = requestCopy;
   v11 = v9;
   dispatch_sync(managementQueue, block);
-  v7[2](v7, v14[5] == 0);
+  replyCopy[2](replyCopy, v14[5] == 0);
 
   _Block_object_dispose(&v13, 8);
 }
@@ -248,11 +248,11 @@
   return v3;
 }
 
-- (void)processFrameWithIOSurface:(id)a3 frameProperties:(id)a4 reply:(id)a5
+- (void)processFrameWithIOSurface:(id)surface frameProperties:(id)properties reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  replyCopy = reply;
   v11 = objc_alloc_init(MADScopedWatchdog);
   taskQueue = self->_taskQueue;
   block[0] = _NSConcreteStackBlock;
@@ -260,28 +260,28 @@
   block[2] = sub_100098780;
   block[3] = &unk_1002852F0;
   v20 = v11;
-  v21 = v10;
+  v21 = replyCopy;
   block[4] = self;
-  v18 = v9;
-  v19 = v8;
+  v18 = propertiesCopy;
+  v19 = surfaceCopy;
   v13 = v11;
-  v14 = v8;
-  v15 = v9;
-  v16 = v10;
+  v14 = surfaceCopy;
+  v15 = propertiesCopy;
+  v16 = replyCopy;
   dispatch_async(taskQueue, block);
 }
 
-- (id)tapToRadarURLWithTitle:(id)a3 description:(id)a4 debugState:(id)a5 componentID:(unint64_t)a6 componentName:(id)a7 componentVersion:(id)a8 videoURL:(id)a9
+- (id)tapToRadarURLWithTitle:(id)title description:(id)description debugState:(id)state componentID:(unint64_t)d componentName:(id)name componentVersion:(id)version videoURL:(id)l
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = [NSString stringWithFormat:@"%@ Debug Info:\n %@", v15, a5];
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  versionCopy = version;
+  lCopy = l;
+  state = [NSString stringWithFormat:@"%@ Debug Info:\n %@", descriptionCopy, state];
 
-  v20 = [v18 path];
-  v21 = [NSString stringWithFormat:@"tap-to-radar://new?Title=%@&Classification=Serious Bug&ComponentID=%d&ComponentName=%@&ComponentVersion=%@&Reproducible=Sometimes&Description=%@&Attachments=%@", v14, a6, v16, v17, v19, v20];
+  path = [lCopy path];
+  v21 = [NSString stringWithFormat:@"tap-to-radar://new?Title=%@&Classification=Serious Bug&ComponentID=%d&ComponentName=%@&ComponentVersion=%@&Reproducible=Sometimes&Description=%@&Attachments=%@", titleCopy, d, nameCopy, versionCopy, state, path];
 
   v22 = +[NSCharacterSet URLQueryAllowedCharacterSet];
   v23 = [v21 stringByAddingPercentEncodingWithAllowedCharacters:v22];
@@ -291,35 +291,35 @@
   return v24;
 }
 
-- (void)generateTapToRadarNotificationWithVideoURL:(id)a3 options:(id)a4 reply:(id)a5
+- (void)generateTapToRadarNotificationWithVideoURL:(id)l options:(id)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v28 = v8;
+  lCopy = l;
+  optionsCopy = options;
+  replyCopy = reply;
+  v28 = lCopy;
   v11 = +[NSMutableString string];
   [v11 appendString:@"False positive detected during FaceTime call"];
   v12 = objc_alloc_init(NSDateFormatter);
   [v12 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v13 = [v9 startDate];
+  startDate = [optionsCopy startDate];
 
-  if (v13)
+  if (startDate)
   {
-    v14 = [v9 startDate];
-    v15 = [v12 stringFromDate:v14];
+    startDate2 = [optionsCopy startDate];
+    v15 = [v12 stringFromDate:startDate2];
     [v11 appendFormat:@", call started at: %@", v15];
   }
 
-  v16 = [v9 eventDate];
+  eventDate = [optionsCopy eventDate];
 
-  if (v16)
+  if (eventDate)
   {
-    v17 = [v9 eventDate];
-    v18 = [v12 stringFromDate:v17];
+    eventDate2 = [optionsCopy eventDate];
+    v18 = [v12 stringFromDate:eventDate2];
     [v11 appendFormat:@", false positive detected at: %@", v18];
   }
 
-  v19 = [(MADVideoSessionClientHandler *)self tapToRadarURLWithTitle:@"[TTR] False positive detected during FaceTime call" description:v11 debugState:&__NSDictionary0__struct componentID:1518832 componentName:@"Communication Safety | ML Data feedback" componentVersion:@"New Bugs" videoURL:v8];
+  v19 = [(MADVideoSessionClientHandler *)self tapToRadarURLWithTitle:@"[TTR] False positive detected during FaceTime call" description:v11 debugState:&__NSDictionary0__struct componentID:1518832 componentName:@"Communication Safety | ML Data feedback" componentVersion:@"New Bugs" videoURL:lCopy];
   v20 = objc_alloc_init(UNMutableNotificationContent);
   [v20 setCategoryIdentifier:@"userSafetyCategory"];
   [v20 setTitle:@"[Internal] Was this a false positive?"];
@@ -331,7 +331,7 @@
   +[NSDate timeIntervalSinceReferenceDate];
   v23 = [NSString stringWithFormat:@"com.apple.mediaanalysisd.notifications:%lf", v22];
   v24 = [UNNotificationRequest requestWithIdentifier:v23 content:v20 trigger:0];
-  v25 = v10;
+  v25 = replyCopy;
   [v24 setDestinations:15];
   v26 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.mediaanalysisd.notifications"];
   v29[0] = _NSConcreteStackBlock;
@@ -343,21 +343,21 @@
   [v26 addNotificationRequest:v24 withCompletionHandler:v29];
 }
 
-- (void)requestTTRNotificationWithVideoFrames:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestTTRNotificationWithVideoFrames:(id)frames options:(id)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  framesCopy = frames;
+  optionsCopy = options;
+  replyCopy = reply;
   if (self->_userSafetyEntitled && [MADUserSafetySettings isEnabledForTask:self->_secTask.value_])
   {
     v11 = +[NSBundle vcp_mediaAnalysisBundle];
-    v12 = [v11 bundleIdentifier];
-    [v12 UTF8String];
+    bundleIdentifier = [v11 bundleIdentifier];
+    [bundleIdentifier UTF8String];
     has_internal_content = os_variant_has_internal_content();
 
     if (has_internal_content)
     {
-      if ([v8 count])
+      if ([framesCopy count])
       {
         v14 = objc_alloc_init(MADScopedWatchdog);
         tapToRadarNotificationQueue = self->_tapToRadarNotificationQueue;
@@ -366,10 +366,10 @@
         block[2] = sub_100099B80;
         block[3] = &unk_100285318;
         v25 = v14;
-        v26 = v9;
-        v27 = v8;
-        v28 = self;
-        v29 = v10;
+        v26 = optionsCopy;
+        v27 = framesCopy;
+        selfCopy = self;
+        v29 = replyCopy;
         v16 = v14;
         dispatch_async(tapToRadarNotificationQueue, block);
 
@@ -393,7 +393,7 @@
         v32 = v16;
         v17 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
         v23 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v17];
-        (*(v10 + 2))(v10, 0, v23);
+        (*(replyCopy + 2))(replyCopy, 0, v23);
       }
     }
 
@@ -414,7 +414,7 @@
       v34 = v16;
       v17 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v21 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v17];
-      (*(v10 + 2))(v10, 0, v21);
+      (*(replyCopy + 2))(replyCopy, 0, v21);
     }
   }
 
@@ -435,7 +435,7 @@
     v36 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v19 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v17];
-    (*(v10 + 2))(v10, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 }
 

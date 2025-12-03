@@ -1,40 +1,40 @@
 @interface BKSLocalDefaults
 - (BKSLocalDefaults)init;
-- (id)valueForKey:(id)a3 defaultValueProvider:(id)a4;
+- (id)valueForKey:(id)key defaultValueProvider:(id)provider;
 - (void)_bindAndRegisterDefaults;
 - (void)migrateDefaultsIfNecessary;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation BKSLocalDefaults
 
-- (id)valueForKey:(id)a3 defaultValueProvider:(id)a4
+- (id)valueForKey:(id)key defaultValueProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BSAbstractDefaultDomain *)self _store];
-  v9 = [v8 objectForKey:v7];
+  providerCopy = provider;
+  keyCopy = key;
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v9 = [_store objectForKey:keyCopy];
 
-  if (v6 && !v9)
+  if (providerCopy && !v9)
   {
-    v9 = v6[2](v6);
+    v9 = providerCopy[2](providerCopy);
   }
 
   return v9;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BSAbstractDefaultDomain *)self _store];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store setObject:valueCopy forKey:keyCopy];
 }
 
 - (void)migrateDefaultsIfNecessary
 {
-  v2 = [(BSAbstractDefaultDomain *)self _store];
-  [v2 removeObjectForKey:@"InvertColorsEnabled"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store removeObjectForKey:@"InvertColorsEnabled"];
 }
 
 - (void)_bindAndRegisterDefaults

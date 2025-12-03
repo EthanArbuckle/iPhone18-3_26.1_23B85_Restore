@@ -1,17 +1,17 @@
 @interface GEOMetroRegionData
 - (GEOMetroRegionData)init;
-- (GEOMetroRegionData)initWithFileURL:(id)a3;
-- (id)metroNameForLocation:(id)a3;
+- (GEOMetroRegionData)initWithFileURL:(id)l;
+- (id)metroNameForLocation:(id)location;
 @end
 
 @implementation GEOMetroRegionData
 
-- (id)metroNameForLocation:(id)a3
+- (id)metroNameForLocation:(id)location
 {
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v8 = v7;
   v31 = 0;
   v32 = &v31;
@@ -19,10 +19,10 @@
   v34 = __Block_byref_object_copy__1202;
   v35 = __Block_byref_object_dispose__1203;
   v36 = &unk_1AB6D4001;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v10 = v9;
-  v11 = [v4 coordinate];
-  gloria::TileId::FromLatLng(v11, v12, v13, v14, v10, v15);
+  coordinate = [locationCopy coordinate];
+  gloria::TileId::FromLatLng(coordinate, v12, v13, v14, v10, v15);
   v37 = v16;
   v38 = v17;
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -41,12 +41,12 @@
   {
     if ([v21 count] <= 1)
     {
-      v22 = [v21 firstObject];
+      firstObject = [v21 firstObject];
       goto LABEL_9;
     }
 
     v23 = [v21 sortedArrayUsingComparator:&__block_literal_global_1207];
-    v22 = [v23 firstObject];
+    firstObject = [v23 firstObject];
   }
 
   else
@@ -58,13 +58,13 @@
       _os_log_impl(&dword_1AB634000, v23, OS_LOG_TYPE_INFO, "Did not find matching polygon in underlying data", v25, 2u);
     }
 
-    v22 = 0;
+    firstObject = 0;
   }
 
 LABEL_9:
   _Block_object_dispose(&v31, 8);
 
-  return v22;
+  return firstObject;
 }
 
 BOOL __43__GEOMetroRegionData_metroNameForLocation___block_invoke(uint64_t a1, void *a2)
@@ -138,9 +138,9 @@ LABEL_11:
   return v17;
 }
 
-- (GEOMetroRegionData)initWithFileURL:(id)a3
+- (GEOMetroRegionData)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = GEOMetroRegionData;
   v5 = [(GEOMetroRegionData *)&v13 init];
@@ -152,7 +152,7 @@ LABEL_11:
   v6 = objc_alloc(MEMORY[0x1E69A1DE0]);
   v7 = objc_opt_class();
   v8 = GEOGetMetroRegionLog();
-  v9 = [v6 initWithFileURL:v4 rootQuadKey:0 metadataClass:0 dataClass:v7 log:v8];
+  v9 = [v6 initWithFileURL:lCopy rootQuadKey:0 metadataClass:0 dataClass:v7 log:v8];
   db = v5->_db;
   v5->_db = v9;
 

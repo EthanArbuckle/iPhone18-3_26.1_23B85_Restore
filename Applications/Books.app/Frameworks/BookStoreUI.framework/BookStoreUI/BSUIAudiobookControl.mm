@@ -1,23 +1,23 @@
 @interface BSUIAudiobookControl
-- (BSUIAudiobookControl)initWithFrame:(CGRect)a3;
+- (BSUIAudiobookControl)initWithFrame:(CGRect)frame;
 - (BSUIAudiobookControlDelegate)delegate;
 - (CGSize)currentSize;
-- (id)circleWithRect:(CGRect)a3 color:(id)a4;
+- (id)circleWithRect:(CGRect)rect color:(id)color;
 - (void)_animateProgressWipe;
 - (void)_updatePlaying;
 - (void)_updateProgress;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)scaleDown:(id)a3;
-- (void)scaleUpAndTogglePlayPause:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setProgress:(double)a3;
+- (void)scaleDown:(id)down;
+- (void)scaleUpAndTogglePlayPause:(id)pause;
+- (void)setPlaying:(BOOL)playing;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation BSUIAudiobookControl
 
-- (BSUIAudiobookControl)initWithFrame:(CGRect)a3
+- (BSUIAudiobookControl)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BSUIAudiobookControl;
@@ -38,8 +38,8 @@
     self->_currentSize.height = v7;
     [(BSUIAudiobookControl *)self bounds];
     v8 = CGRectGetWidth(v21) * 0.5;
-    v9 = [(UIView *)self->_blurView layer];
-    [v9 setCornerRadius:v8];
+    layer = [(UIView *)self->_blurView layer];
+    [layer setCornerRadius:v8];
 
     [(BSUIAudiobookControl *)self bounds];
     v11 = v10;
@@ -54,7 +54,7 @@
   }
 }
 
-- (void)scaleDown:(id)a3
+- (void)scaleDown:(id)down
 {
   v9 = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
   [v9 setFromValue:&off_39B510];
@@ -66,11 +66,11 @@
   v7 = [CAMediaTimingFunction functionWithControlPoints:v4];
   [v9 setTimingFunction:v7];
 
-  v8 = [(BSUIAudiobookControl *)self layer];
-  [v8 addAnimation:v9 forKey:@"layerScaleDownAnimation"];
+  layer = [(BSUIAudiobookControl *)self layer];
+  [layer addAnimation:v9 forKey:@"layerScaleDownAnimation"];
 }
 
-- (void)scaleUpAndTogglePlayPause:(id)a3
+- (void)scaleUpAndTogglePlayPause:(id)pause
 {
   v6 = [CASpringAnimation animationWithKeyPath:@"transform.scale"];
   [v6 setMass:1.0];
@@ -81,20 +81,20 @@
   [v6 setToValue:&off_39B510];
   [v6 settlingDuration];
   [v6 setDuration:?];
-  v4 = [(BSUIAudiobookControl *)self layer];
-  [v4 addAnimation:v6 forKey:@"layerScaleUpAnimation"];
+  layer = [(BSUIAudiobookControl *)self layer];
+  [layer addAnimation:v6 forKey:@"layerScaleUpAnimation"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained togglePlayPause:self];
 }
 
-- (id)circleWithRect:(CGRect)a3 color:(id)a4
+- (id)circleWithRect:(CGRect)rect color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v33.origin.x = x;
   v33.origin.y = y;
   v33.size.width = width;
@@ -123,11 +123,11 @@
   v25[3] = &unk_387388;
   v27 = v12;
   v28 = v12;
-  v26 = v8;
+  v26 = colorCopy;
   v29 = v15;
   v30 = v15;
   v31 = v11;
-  v16 = v8;
+  v16 = colorCopy;
   v17 = objc_retainBlock(v25);
   v18 = +[UIGraphicsImageRendererFormat defaultFormat];
   v19 = [[UIGraphicsImageRenderer alloc] initWithSize:v18 format:{v12, v12}];
@@ -144,13 +144,13 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(BSUIAudiobookControl *)self window];
+  window = [(BSUIAudiobookControl *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(BSUIAudiobookControl *)self window];
-    v5 = [v4 screen];
-    [v5 scale];
+    window2 = [(BSUIAudiobookControl *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v7 = v6;
 
     progressLayer = self->_progressLayer;
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
+    self->_playing = playing;
     [(BSUIAudiobookControl *)self _updatePlaying];
 
     [(BSUIAudiobookControl *)self _updateProgress];
@@ -189,17 +189,17 @@
   v6 = +[UIColor whiteColor];
   v7 = [v5 tui_imageMaskWithColor:v6];
 
-  v8 = [(BSUIAudiobookControl *)self playPauseButton];
-  [v8 setImage:v7 forState:0];
+  playPauseButton = [(BSUIAudiobookControl *)self playPauseButton];
+  [playPauseButton setImage:v7 forState:0];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   progress = self->_progress;
-  if (progress != a3)
+  if (progress != progress)
   {
-    self->_progress = a3;
-    if (a3 >= 0.01 || progress <= 0.98)
+    self->_progress = progress;
+    if (progress >= 0.01 || progress <= 0.98)
     {
       [(BSUIAudiobookControl *)self _updateProgress];
     }
@@ -230,9 +230,9 @@
   [(CAShapeLayer *)self->_progressLayer addAnimation:v7 forKey:@"strokeStartAnimation"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(CAShapeLayer *)self->_progressLayer setPath:0, a4];
+  [(CAShapeLayer *)self->_progressLayer setPath:0, finished];
   [(CAShapeLayer *)self->_progressLayer setStrokeStart:0.0];
 
   [(BSUIAudiobookControl *)self setWipeAnimationInProgress:0];

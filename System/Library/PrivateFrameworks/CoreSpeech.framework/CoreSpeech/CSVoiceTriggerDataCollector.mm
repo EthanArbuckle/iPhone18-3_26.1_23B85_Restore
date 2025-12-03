@@ -3,72 +3,72 @@
 - (CSVoiceTriggerDataCollector)init;
 - (id)_filteredVTEIArray;
 - (id)fetchVoiceTriggerHeartBeatMetrics;
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)_createAndSubmitRejectLoggingDictWithSource:(id)a3 withPHSAcceptInfo:(id)a4;
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)_createAndSubmitRejectLoggingDictWithSource:(id)source withPHSAcceptInfo:(id)info;
 - (void)_submitToggleReport;
-- (void)addVTAcceptEntryAndSubmit:(id)a3;
-- (void)addVTRejectEntry:(id)a3 truncateData:(BOOL)a4;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
+- (void)addVTAcceptEntryAndSubmit:(id)submit;
+- (void)addVTRejectEntry:(id)entry truncateData:(BOOL)data;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
 @end
 
 @implementation CSVoiceTriggerDataCollector
 
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100035D58;
   v5[3] = &unk_100253BF8;
-  v6 = a4;
+  enabledCopy = enabled;
   v5[4] = self;
   dispatch_async(queue, v5);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v9 = a4;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100035FCC;
   block[3] = &unk_100253900;
-  v15 = a5;
-  v13 = v9;
-  v14 = self;
-  v11 = v9;
+  successfullyCopy = successfully;
+  v13 = contextCopy;
+  selfCopy = self;
+  v11 = contextCopy;
   dispatch_async(queue, block);
 }
 
 - (void)_submitToggleReport
 {
   v3 = +[CSVoiceTriggerStatistics sharedInstance];
-  v4 = [v3 getPHSRejectCount];
+  getPHSRejectCount = [v3 getPHSRejectCount];
 
   v5 = +[CSVoiceTriggerStatistics sharedInstance];
-  v6 = [v5 getVTRejectCount];
+  getVTRejectCount = [v5 getVTRejectCount];
 
   vteiList = self->_vteiList;
   if (vteiList && ([(NSMutableArray *)vteiList lastObject], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(NSMutableArray *)self->_vteiList lastObject];
-    v10 = [v9 objectForKeyedSubscript:kVTEIsatNumberTrainingUtterances];
-    v11 = [v10 unsignedIntegerValue];
+    lastObject = [(NSMutableArray *)self->_vteiList lastObject];
+    v10 = [lastObject objectForKeyedSubscript:kVTEIsatNumberTrainingUtterances];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v22[0] = kVTEIsatNumberTrainingUtterances;
-  v12 = [NSNumber numberWithUnsignedInteger:v11];
+  v12 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
   v23[0] = v12;
   v22[1] = kVTEILastConsecutiveVTRejects;
-  v13 = [NSNumber numberWithUnsignedInteger:v6];
+  v13 = [NSNumber numberWithUnsignedInteger:getVTRejectCount];
   v23[1] = v13;
   v22[2] = kVTEILastConsecutivePHSRejects;
-  v14 = [NSNumber numberWithUnsignedInteger:v4];
+  v14 = [NSNumber numberWithUnsignedInteger:getPHSRejectCount];
   v23[2] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
 
@@ -86,18 +86,18 @@
   [v17 logEventWithType:4708 context:v15];
 }
 
-- (void)_createAndSubmitRejectLoggingDictWithSource:(id)a3 withPHSAcceptInfo:(id)a4
+- (void)_createAndSubmitRejectLoggingDictWithSource:(id)source withPHSAcceptInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSVoiceTriggerDataCollector *)self _filteredVTEIArray];
-  if ([v8 count])
+  sourceCopy = source;
+  infoCopy = info;
+  _filteredVTEIArray = [(CSVoiceTriggerDataCollector *)self _filteredVTEIArray];
+  if ([_filteredVTEIArray count])
   {
     v9 = +[NSMutableDictionary dictionary];
     v10 = @"unkown";
-    if (v6)
+    if (sourceCopy)
     {
-      v10 = v6;
+      v10 = sourceCopy;
     }
 
     v11 = v10;
@@ -105,10 +105,10 @@
     v12 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
     [v9 setObject:v12 forKey:kVTEItriggerEndMachTime];
 
-    [v9 setObject:v8 forKey:kVTEIRejectInfoList];
-    if (v7)
+    [v9 setObject:_filteredVTEIArray forKey:kVTEIRejectInfoList];
+    if (infoCopy)
     {
-      [v9 setObject:v7 forKey:kVTEIPHSAcceptEventInfo];
+      [v9 setObject:infoCopy forKey:kVTEIPHSAcceptEventInfo];
     }
 
     v13 = +[AFAnalytics sharedAnalytics];
@@ -124,7 +124,7 @@
       v21 = 2048;
       v22 = [(NSMutableArray *)vteiList count];
       v23 = 2112;
-      v24 = v6;
+      v24 = sourceCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s Submitting %lu VT/PHS reject logs for siri record type %@", &v19, 0x20u);
     }
   }
@@ -164,9 +164,9 @@
 
       v9 = *(*(&v24 + 1) + 8 * i);
       v10 = [v9 objectForKeyedSubscript:{@"dcTriggerEndMachTime", v21}];
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-      [CSFTimeUtils hostTimeToTimeInterval:v3 - v11];
+      [CSFTimeUtils hostTimeToTimeInterval:v3 - unsignedIntegerValue];
       v13 = v12;
       v14 = [NSMutableDictionary dictionaryWithDictionary:v9];
       [v14 removeObjectForKey:@"dcTriggerEndMachTime"];
@@ -182,7 +182,7 @@
         *buf = v21;
         v29 = "[CSVoiceTriggerDataCollector _filteredVTEIArray]";
         v30 = 2048;
-        v31 = v11;
+        v31 = unsignedIntegerValue;
         v32 = 2048;
         v33 = v13;
         v16 = v18;
@@ -200,7 +200,7 @@
         *buf = v21;
         v29 = "[CSVoiceTriggerDataCollector _filteredVTEIArray]";
         v30 = 2048;
-        v31 = v11;
+        v31 = unsignedIntegerValue;
         v32 = 2048;
         v33 = v13;
         v16 = v15;
@@ -230,32 +230,32 @@ LABEL_14:
   return v19;
 }
 
-- (void)addVTAcceptEntryAndSubmit:(id)a3
+- (void)addVTAcceptEntryAndSubmit:(id)submit
 {
-  v4 = a3;
+  submitCopy = submit;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100036804;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = submitCopy;
+  v6 = submitCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addVTRejectEntry:(id)a3 truncateData:(BOOL)a4
+- (void)addVTRejectEntry:(id)entry truncateData:(BOOL)data
 {
-  v6 = a3;
+  entryCopy = entry;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100036914;
   block[3] = &unk_100253900;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = entryCopy;
+  selfCopy = self;
+  dataCopy = data;
+  v8 = entryCopy;
   dispatch_async(queue, block);
 }
 
@@ -302,9 +302,9 @@ LABEL_14:
     [v8 addObserver:v2];
 
     v9 = +[CSVoiceTriggerEnabledMonitor sharedInstance];
-    v10 = [v9 isEnabled];
+    isEnabled = [v9 isEnabled];
     v11 = 0;
-    if (v10)
+    if (isEnabled)
     {
       v11 = +[NSDate date];
     }

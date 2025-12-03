@@ -9,53 +9,53 @@
 
 - (id)hu_indicatorColorForCurrentAccessMode
 {
-  v1 = [a1 currentAccessMode];
-  if (v1 > 1)
+  currentAccessMode = [self currentAccessMode];
+  if (currentAccessMode > 1)
   {
-    if (v1 == 2)
+    if (currentAccessMode == 2)
     {
-      v1 = [MEMORY[0x277D75348] systemRedColor];
+      currentAccessMode = [MEMORY[0x277D75348] systemRedColor];
       goto LABEL_9;
     }
 
-    if (v1 != 3)
+    if (currentAccessMode != 3)
     {
       goto LABEL_9;
     }
 
 LABEL_7:
-    v1 = [MEMORY[0x277D75348] systemGrayColor];
+    currentAccessMode = [MEMORY[0x277D75348] systemGrayColor];
     goto LABEL_9;
   }
 
-  if (!v1)
+  if (!currentAccessMode)
   {
     goto LABEL_7;
   }
 
-  if (v1 == 1)
+  if (currentAccessMode == 1)
   {
-    v1 = [MEMORY[0x277D75348] systemBlueColor];
+    currentAccessMode = [MEMORY[0x277D75348] systemBlueColor];
   }
 
 LABEL_9:
 
-  return v1;
+  return currentAccessMode;
 }
 
 - (__CFString)hu_indicatorImageNameForCurrentAccessMode
 {
-  if ([a1 currentAccessMode] == 2)
+  if ([self currentAccessMode] == 2)
   {
-    v2 = [a1 hu_indicatorImageNameForLiveStreaming];
+    hu_indicatorImageNameForLiveStreaming = [self hu_indicatorImageNameForLiveStreaming];
   }
 
   else
   {
-    v2 = @"circle.fill";
+    hu_indicatorImageNameForLiveStreaming = @"circle.fill";
   }
 
-  return v2;
+  return hu_indicatorImageNameForLiveStreaming;
 }
 
 - (__CFString)hu_indicatorImageNameForLiveStreaming
@@ -73,15 +73,15 @@ LABEL_9:
 
 - (__CFString)hu_currentAccessModeDescription
 {
-  v1 = [a1 currentAccessMode];
-  if ((v1 - 1) > 2)
+  currentAccessMode = [self currentAccessMode];
+  if ((currentAccessMode - 1) > 2)
   {
     return @"Off";
   }
 
   else
   {
-    return off_277DC00C8[v1 - 1];
+    return off_277DC00C8[currentAccessMode - 1];
   }
 }
 

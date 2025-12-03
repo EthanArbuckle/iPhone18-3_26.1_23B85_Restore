@@ -1,15 +1,15 @@
 @interface ISDelayedInvocationRecorder
-- (void)invokeInvocation:(id)a3;
+- (void)invokeInvocation:(id)invocation;
 @end
 
 @implementation ISDelayedInvocationRecorder
 
-- (void)invokeInvocation:(id)a3
+- (void)invokeInvocation:(id)invocation
 {
-  [a3 retainArguments];
+  [invocation retainArguments];
   delayInterval = self->_delayInterval;
 
-  [a3 performSelector:sel_invoke withObject:0 afterDelay:delayInterval];
+  [invocation performSelector:sel_invoke withObject:0 afterDelay:delayInterval];
 }
 
 @end

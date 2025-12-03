@@ -1,16 +1,16 @@
 @interface TSPObjectUUIDMap
-- (BOOL)hasObjectUUID:(id)a3;
-- (BOOL)isAnyObjectIdentifierInDocument:(id)a3;
-- (BOOL)isObjectIdentifierInDocument:(int64_t)a3;
-- (BOOL)shouldSuppressAssertionForObjectUUID:(id)a3;
+- (BOOL)hasObjectUUID:(id)d;
+- (BOOL)isAnyObjectIdentifierInDocument:(id)document;
+- (BOOL)isObjectIdentifierInDocument:(int64_t)document;
+- (BOOL)shouldSuppressAssertionForObjectUUID:(id)d;
 - (TSPObjectUUIDMap)init;
-- (TSPObjectUUIDMap)initWithDelegate:(id)a3;
-- (int64_t)objectIdentifierForUUID:(id)a3;
+- (TSPObjectUUIDMap)initWithDelegate:(id)delegate;
+- (int64_t)objectIdentifierForUUID:(id)d;
 - (void)endAssertOnRead;
-- (void)object:(id)a3 didChangeUUIDToValue:(id)a4 fromValue:(id)a5;
-- (void)objectWasAddedToDocument:(id)a3 options:(unint64_t)a4;
-- (void)objectWillBeRemovedFromDocument:(id)a3;
-- (void)setPersistedUUIDMap:(id)a3;
+- (void)object:(id)object didChangeUUIDToValue:(id)value fromValue:(id)fromValue;
+- (void)objectWasAddedToDocument:(id)document options:(unint64_t)options;
+- (void)objectWillBeRemovedFromDocument:(id)document;
+- (void)setPersistedUUIDMap:(id)map;
 @end
 
 @implementation TSPObjectUUIDMap
@@ -31,16 +31,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectUUIDMap)initWithDelegate:(id)a3
+- (TSPObjectUUIDMap)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = TSPObjectUUIDMap;
   v5 = [(TSPObjectUUIDMap *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("TSPObjectUUIDMap.Access", v7);
     accessQueue = v6->_accessQueue;
@@ -62,34 +62,34 @@
   return v6;
 }
 
-- (void)setPersistedUUIDMap:(id)a3
+- (void)setPersistedUUIDMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A62000;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = mapCopy;
+  v6 = mapCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (BOOL)shouldSuppressAssertionForObjectUUID:(id)a3
+- (BOOL)shouldSuppressAssertionForObjectUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_accessQueue);
-  LOBYTE(self) = objc_msgSend_containsObject_(self->_UUIDsWithSuppressedAssertions, v5, v4);
+  LOBYTE(self) = objc_msgSend_containsObject_(self->_UUIDsWithSuppressedAssertions, v5, dCopy);
 
   return self;
 }
 
-- (int64_t)objectIdentifierForUUID:(id)a3
+- (int64_t)objectIdentifierForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_inMemoryUUIDDictionary, v5, v4);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_inMemoryUUIDDictionary, v5, dCopy);
   if (v8)
   {
     v9 = objc_msgSend_null(MEMORY[0x277CBEB68], v6, v7);
@@ -107,20 +107,20 @@
 
   else
   {
-    objc_msgSend_objectLocationForUUID_(self->_persistedUUIDMap, v6, v4);
+    objc_msgSend_objectLocationForUUID_(self->_persistedUUIDMap, v6, dCopy);
     v12 = v13;
   }
 
   return v12;
 }
 
-- (void)objectWasAddedToDocument:(id)a3 options:(unint64_t)a4
+- (void)objectWasAddedToDocument:(id)document options:(unint64_t)options
 {
-  v6 = a3;
-  v11 = objc_msgSend_objectUUID(v6, v7, v8);
+  documentCopy = document;
+  v11 = objc_msgSend_objectUUID(documentCopy, v7, v8);
   if (v11)
   {
-    if (a4 & 1) != 0 || (objc_msgSend_tsp_isRunningFinalizeHandlersForLegacyDocument(MEMORY[0x277CCACC8], v9, v10))
+    if (options & 1) != 0 || (objc_msgSend_tsp_isRunningFinalizeHandlersForLegacyDocument(MEMORY[0x277CCACC8], v9, v10))
     {
       isPerformingLegacyDocumentReferenceResolution = 1;
     }
@@ -135,19 +135,19 @@
     block[1] = 3221225472;
     block[2] = sub_276A62618;
     block[3] = &unk_27A6E5298;
-    v17 = v6;
-    v18 = self;
+    v17 = documentCopy;
+    selfCopy = self;
     v21 = isPerformingLegacyDocumentReferenceResolution;
     v19 = v11;
-    v20 = a4;
+    optionsCopy = options;
     dispatch_sync(accessQueue, block);
   }
 }
 
-- (void)objectWillBeRemovedFromDocument:(id)a3
+- (void)objectWillBeRemovedFromDocument:(id)document
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectUUID(v4, v5, v6);
+  documentCopy = document;
+  v7 = objc_msgSend_objectUUID(documentCopy, v5, v6);
   v8 = v7;
   if (v7)
   {
@@ -158,26 +158,26 @@
     block[3] = &unk_27A6E29B0;
     block[4] = self;
     v11 = v7;
-    v12 = v4;
+    v12 = documentCopy;
     dispatch_sync(accessQueue, block);
   }
 }
 
-- (BOOL)hasObjectUUID:(id)a3
+- (BOOL)hasObjectUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  if (v5)
+  if (dCopy)
   {
     if (atomic_load(&self->_assertOnReadCount))
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSPObjectUUIDMap hasObjectUUID:]");
       v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPObjectUUIDMap.mm");
-      v13 = objc_msgSend_UUIDString(v5, v11, v12);
+      v13 = objc_msgSend_UUIDString(dCopy, v11, v12);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v8, v10, 215, 0, "Attempting to read object with UUID %{public}@ when UUID map does not allow reading.", v13);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
@@ -203,7 +203,7 @@
     block[3] = &unk_27A6E2C00;
     v32 = &v33;
     block[4] = self;
-    v31 = v5;
+    v31 = dCopy;
     dispatch_sync(accessQueue, block);
 
     v28 = *(v34 + 24);
@@ -219,7 +219,7 @@
   return v28 & 1;
 }
 
-- (BOOL)isObjectIdentifierInDocument:(int64_t)a3
+- (BOOL)isObjectIdentifierInDocument:(int64_t)document
 {
   v7 = 0;
   v8 = &v7;
@@ -231,7 +231,7 @@
   block[2] = sub_276A62E84;
   block[3] = &unk_27A6E4D78;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = document;
   block[4] = self;
   dispatch_sync(accessQueue, block);
   v4 = *(v8 + 24);
@@ -239,10 +239,10 @@
   return v4;
 }
 
-- (BOOL)isAnyObjectIdentifierInDocument:(id)a3
+- (BOOL)isAnyObjectIdentifierInDocument:(id)document
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  documentCopy = document;
+  if (objc_msgSend_count(documentCopy, v5, v6))
   {
     v14 = 0;
     v15 = &v14;
@@ -253,8 +253,8 @@
     block[1] = 3221225472;
     block[2] = sub_276A630C4;
     block[3] = &unk_27A6E3818;
-    v11 = v4;
-    v12 = self;
+    v11 = documentCopy;
+    selfCopy = self;
     v13 = &v14;
     dispatch_sync(accessQueue, block);
     v8 = *(v15 + 24);
@@ -270,13 +270,13 @@
   return v8 & 1;
 }
 
-- (void)object:(id)a3 didChangeUUIDToValue:(id)a4 fromValue:(id)a5
+- (void)object:(id)object didChangeUUIDToValue:(id)value fromValue:(id)fromValue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  objectCopy = object;
+  valueCopy = value;
+  fromValueCopy = fromValue;
+  v11 = fromValueCopy;
+  if (fromValueCopy)
   {
     accessQueue = self->_accessQueue;
     v13[0] = MEMORY[0x277D85DD0];
@@ -284,9 +284,9 @@
     v13[2] = sub_276A63934;
     v13[3] = &unk_27A6E2870;
     v13[4] = self;
-    v14 = v10;
-    v15 = v9;
-    v16 = v8;
+    v14 = fromValueCopy;
+    v15 = valueCopy;
+    v16 = objectCopy;
     dispatch_async(accessQueue, v13);
   }
 }

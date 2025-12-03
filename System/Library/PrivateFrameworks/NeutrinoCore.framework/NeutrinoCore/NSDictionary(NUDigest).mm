@@ -13,8 +13,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [self allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -33,7 +33,7 @@
         v11 = *(*(&v13 + 1) + 8 * i);
         [v11 nu_updateDigest:v4];
         [v4 addCString:":"];
-        v12 = [a1 objectForKeyedSubscript:v11];
+        v12 = [self objectForKeyedSubscript:v11];
         [v12 nu_updateDigest:v4];
 
         [v4 addCString:{", "}];

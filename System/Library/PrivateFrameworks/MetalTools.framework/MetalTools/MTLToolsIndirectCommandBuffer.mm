@@ -1,20 +1,20 @@
 @interface MTLToolsIndirectCommandBuffer
 - (MTLResourceID)gpuResourceID;
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3;
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3;
+- (id)indirectComputeCommandAtIndex:(unint64_t)index;
+- (id)indirectRenderCommandAtIndex:(unint64_t)index;
 - (unint64_t)gpuAddress;
 - (unint64_t)gpuHandle;
 - (unint64_t)resourceIndex;
 - (unint64_t)size;
 - (unint64_t)storageMode;
 - (unint64_t)uniqueIdentifier;
-- (void)getHeader:(void *)a3 headerSize:(unint64_t *)a4;
-- (void)resetWithRange:(_NSRange)a3;
+- (void)getHeader:(void *)header headerSize:(unint64_t *)size;
+- (void)resetWithRange:(_NSRange)range;
 @end
 
 @implementation MTLToolsIndirectCommandBuffer
 
-- (id)indirectComputeCommandAtIndex:(unint64_t)a3
+- (id)indirectComputeCommandAtIndex:(unint64_t)index
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -33,7 +33,7 @@
   return v7;
 }
 
-- (id)indirectRenderCommandAtIndex:(unint64_t)a3
+- (id)indirectRenderCommandAtIndex:(unint64_t)index
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -54,67 +54,67 @@
 
 - (unint64_t)size
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 size];
+  return [baseObject size];
 }
 
 - (unint64_t)storageMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 storageMode];
+  return [baseObject storageMode];
 }
 
-- (void)getHeader:(void *)a3 headerSize:(unint64_t *)a4
+- (void)getHeader:(void *)header headerSize:(unint64_t *)size
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 getHeader:a3 headerSize:a4];
+  [baseObject getHeader:header headerSize:size];
 }
 
-- (void)resetWithRange:(_NSRange)a3
+- (void)resetWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 resetWithRange:{location, length}];
+  [baseObject resetWithRange:{location, length}];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 @end

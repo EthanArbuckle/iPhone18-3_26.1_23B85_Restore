@@ -2,13 +2,13 @@
 - (BOOL)isDirect;
 - (BOOL)isReadOnly;
 - (double)get;
-- (double)getWithInt:(int)a3;
+- (double)getWithInt:(int)int;
 - (id)asReadOnlyBuffer;
 - (id)compact;
 - (id)duplicate;
 - (id)order;
-- (id)putWithDouble:(double)a3;
-- (id)putWithInt:(int)a3 withDouble:(double)a4;
+- (id)putWithDouble:(double)double;
+- (id)putWithInt:(int)int withDouble:(double)double;
 - (id)slice;
 - (void)dealloc;
 @end
@@ -23,9 +23,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
+  asReadOnlyBuffer = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
   v5 = [JavaNioByteBufferAsDoubleBuffer alloc];
-  sub_1001D3EB0(v5, v4);
+  sub_1001D3EB0(v5, asReadOnlyBuffer);
   v6 = v5;
   v6->super.super.limit_ = self->super.super.limit_;
   v6->super.super.position_ = self->super.super.position_;
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (double)getWithInt:(int)a3
+- (double)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -106,7 +106,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaNioByteBuffer *)byteBuffer getDoubleWithInt:(8 * a3)];
+  [(JavaNioByteBuffer *)byteBuffer getDoubleWithInt:(8 * int)];
   return result;
 }
 
@@ -143,7 +143,7 @@
   return [(JavaNioByteBuffer *)byteBuffer order];
 }
 
-- (id)putWithDouble:(double)a3
+- (id)putWithDouble:(double)double
 {
   position = self->super.super.position_;
   if (position == self->super.super.limit_)
@@ -159,11 +159,11 @@
   }
 
   self->super.super.position_ = position + 1;
-  [(JavaNioByteBuffer *)byteBuffer putDoubleWithInt:(8 * position) withDouble:a3];
+  [(JavaNioByteBuffer *)byteBuffer putDoubleWithInt:(8 * position) withDouble:double];
   return self;
 }
 
-- (id)putWithInt:(int)a3 withDouble:(double)a4
+- (id)putWithInt:(int)int withDouble:(double)double
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -172,7 +172,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaNioByteBuffer *)byteBuffer putDoubleWithInt:(8 * a3) withDouble:a4];
+  [(JavaNioByteBuffer *)byteBuffer putDoubleWithInt:(8 * int) withDouble:double];
   return self;
 }
 

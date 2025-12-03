@@ -1,22 +1,22 @@
 @interface ATXModeDimensionSet
-- (ATXModeDimensionSet)initWithMode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXModeDimensionSet)initWithMode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)coreAnalyticsDictionary;
 - (id)powerset;
 @end
 
 @implementation ATXModeDimensionSet
 
-- (ATXModeDimensionSet)initWithMode:(id)a3
+- (ATXModeDimensionSet)initWithMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v9.receiver = self;
   v9.super_class = ATXModeDimensionSet;
   v6 = [(ATXModeDimensionSet *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mode, a3);
+    objc_storeStrong(&v6->_mode, mode);
   }
 
   return v7;
@@ -29,9 +29,9 @@
   v4 = [[ATXModeDimensionSet alloc] initWithMode:self->_mode];
   [v3 addObject:v4];
 
-  v5 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (id)coreAnalyticsDictionary
@@ -39,13 +39,13 @@
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"mode";
   mode = self->_mode;
-  v3 = mode;
+  null = mode;
   if (!mode)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!mode)
   {
@@ -56,9 +56,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXModeDimensionSet allocWithZone:a3];
+  v4 = [ATXModeDimensionSet allocWithZone:zone];
   mode = self->_mode;
 
   return [(ATXModeDimensionSet *)v4 initWithMode:mode];

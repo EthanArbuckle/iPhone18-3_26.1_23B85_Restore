@@ -1,14 +1,14 @@
 @interface SGModelHead
-- (SGModelHead)initWithDictionary:(id)a3 key:(id)a4;
+- (SGModelHead)initWithDictionary:(id)dictionary key:(id)key;
 @end
 
 @implementation SGModelHead
 
-- (SGModelHead)initWithDictionary:(id)a3 key:(id)a4
+- (SGModelHead)initWithDictionary:(id)dictionary key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v8 = dictionaryCopy;
   v9 = v8;
   if (!v8)
   {
@@ -31,11 +31,11 @@
   {
 LABEL_16:
     self = self;
-    v18 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v10->_name, a4);
+  objc_storeStrong(&v10->_name, key);
   v11 = [v9 objectForKeyedSubscript:@"LABELS"];
   labels = self->_labels;
   self->_labels = v11;
@@ -82,9 +82,9 @@ LABEL_12:
   if (v14)
   {
     v15 = v14;
-    v16 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-    if ([(NSArray *)self->_labels count]== v16)
+    if ([(NSArray *)self->_labels count]== unsignedIntegerValue)
     {
       v17 = [(NSArray *)self->_labels count];
 LABEL_13:
@@ -111,10 +111,10 @@ LABEL_25:
   }
 
 LABEL_9:
-  v18 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

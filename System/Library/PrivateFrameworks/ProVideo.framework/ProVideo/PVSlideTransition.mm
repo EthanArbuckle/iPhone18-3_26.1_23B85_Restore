@@ -1,23 +1,23 @@
 @interface PVSlideTransition
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVSlideTransition
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.transition", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v7 withProperties:v6];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.transition", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v32);
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 1u, &v31);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v32);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 1u, &v31);
   v12 = v32;
   *v11 = v32;
   if (v12)
@@ -26,7 +26,7 @@
   }
 
   memset(&v30, 0, sizeof(v30));
-  lhs = *a3;
+  lhs = *time;
   [(PVEffect *)self effectRange];
   rhs = v27[0];
   CMTimeSubtract(&v30, &lhs, &rhs);
@@ -35,13 +35,13 @@
   [(PVEffect *)self effectRange];
   lhs = v27[1];
   v14 = CMTimeGetSeconds(&lhs);
-  v15 = (*(**a6.m_Obj + 40))();
+  v15 = (*(**context.m_Obj + 40))();
   v17 = v16;
-  v18 = [(PVSlideTransition *)self transitionDirection];
+  transitionDirection = [(PVSlideTransition *)self transitionDirection];
   v19 = Seconds / v14;
-  if (v18 > 1)
+  if (transitionDirection > 1)
   {
-    if (v18 == 2)
+    if (transitionDirection == 2)
     {
       HGTransform::HGTransform(v27);
       v25 = -(v17 * v19);
@@ -69,7 +69,7 @@
 
     else
     {
-      if (v18 != 3)
+      if (transitionDirection != 3)
       {
         goto LABEL_28;
       }
@@ -99,9 +99,9 @@
     }
   }
 
-  else if (v18)
+  else if (transitionDirection)
   {
-    if (v18 != 1)
+    if (transitionDirection != 1)
     {
       goto LABEL_28;
     }

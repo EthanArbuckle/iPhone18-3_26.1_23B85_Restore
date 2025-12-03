@@ -1,8 +1,8 @@
 @interface SBAllowAmbientIdleTimerAttributeHandler
 + (id)attributeClasses;
-- (id)countingTargetForEntry:(id)a3;
-- (void)activateWithFirstEntry:(id)a3;
-- (void)deactivateWithFinalEntry:(id)a3;
+- (id)countingTargetForEntry:(id)entry;
+- (void)activateWithFirstEntry:(id)entry;
+- (void)deactivateWithFinalEntry:(id)entry;
 @end
 
 @implementation SBAllowAmbientIdleTimerAttributeHandler
@@ -16,17 +16,17 @@
   return v2;
 }
 
-- (id)countingTargetForEntry:(id)a3
+- (id)countingTargetForEntry:(id)entry
 {
-  v5 = a3;
-  v6 = [v5 attribute];
+  entryCopy = entry;
+  attribute = [entryCopy attribute];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(SBAllowAmbientIdleTimerAttributeHandler *)a2 countingTargetForEntry:?];
   }
 
-  if ([v6 isForSleepFocus])
+  if ([attribute isForSleepFocus])
   {
     v7 = @"Sleep";
   }
@@ -41,10 +41,10 @@
   return v7;
 }
 
-- (void)activateWithFirstEntry:(id)a3
+- (void)activateWithFirstEntry:(id)entry
 {
-  v4 = a3;
-  v3 = v4;
+  entryCopy = entry;
+  v3 = entryCopy;
   BSDispatchMain();
 }
 
@@ -83,10 +83,10 @@ void __66__SBAllowAmbientIdleTimerAttributeHandler_activateWithFirstEntry___bloc
   }
 }
 
-- (void)deactivateWithFinalEntry:(id)a3
+- (void)deactivateWithFinalEntry:(id)entry
 {
-  v4 = a3;
-  v3 = v4;
+  entryCopy = entry;
+  v3 = entryCopy;
   BSDispatchMain();
 }
 

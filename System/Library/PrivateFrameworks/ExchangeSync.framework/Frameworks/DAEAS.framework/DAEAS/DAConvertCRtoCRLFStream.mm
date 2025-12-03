@@ -1,24 +1,24 @@
 @interface DAConvertCRtoCRLFStream
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5;
-- (DAConvertCRtoCRLFStream)initWithData:(id)a3;
-- (DAConvertCRtoCRLFStream)initWithMIMEData:(id)a3 preflightData:(id)a4 postflightData:(id)a5 intendToStream:(BOOL)a6;
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context;
+- (DAConvertCRtoCRLFStream)initWithData:(id)data;
+- (DAConvertCRtoCRLFStream)initWithMIMEData:(id)data preflightData:(id)preflightData postflightData:(id)postflightData intendToStream:(BOOL)stream;
 - (id)delegate;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (void)_scheduleCallback;
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4;
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode;
 - (void)_streamEventTrigger;
 - (void)close;
 - (void)dealloc;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
 @end
 
 @implementation DAConvertCRtoCRLFStream
 
 - (void)_streamEventTrigger
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"DAConvertCRtoCRLFStream.m" lineNumber:45 description:@"sanity check for stream data"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"DAConvertCRtoCRLFStream.m" lineNumber:45 description:@"sanity check for stream data"];
 }
 
 - (void)_scheduleCallback
@@ -30,7 +30,7 @@
   }
 }
 
-- (void)_scheduleInCFRunLoop:(__CFRunLoop *)a3 forMode:(__CFString *)a4
+- (void)_scheduleInCFRunLoop:(__CFRunLoop *)loop forMode:(__CFString *)mode
 {
   rls = self->_rls;
   if (!rls)
@@ -48,15 +48,15 @@
     }
   }
 
-  CFRunLoopAddSource(a3, rls, a4);
+  CFRunLoopAddSource(loop, rls, mode);
 }
 
-- (BOOL)_setCFClientFlags:(unint64_t)a3 callback:(void *)a4 context:(id *)a5
+- (BOOL)_setCFClientFlags:(unint64_t)flags callback:(void *)callback context:(id *)context
 {
   p_clientContext = &self->_clientContext;
   release = self->_clientContext.release;
   info = self->_clientContext.info;
-  if (!a5)
+  if (!context)
   {
     self->_clientContext.copyDescription = 0;
     *&p_clientContext->version = 0u;
@@ -69,38 +69,38 @@
     goto LABEL_5;
   }
 
-  v10 = *&a5->var0;
-  v11 = *&a5->var2;
-  self->_clientContext.copyDescription = a5->var4;
+  v10 = *&context->var0;
+  v11 = *&context->var2;
+  self->_clientContext.copyDescription = context->var4;
   *&p_clientContext->version = v10;
   *&self->_clientContext.retain = v11;
   retain = self->_clientContext.retain;
   if (retain)
   {
-    retain(self->_clientContext.info, a2, a3);
+    retain(self->_clientContext.info, a2, flags);
   }
 
   if (release)
   {
 LABEL_5:
-    release(info, a2, a3);
+    release(info, a2, flags);
   }
 
 LABEL_6:
-  self->_clientCallback = a4;
+  self->_clientCallback = callback;
   return 1;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = a4;
-  -[DAConvertCRtoCRLFStream _scheduleInCFRunLoop:forMode:](self, "_scheduleInCFRunLoop:forMode:", [a3 getCFRunLoop], v6);
+  modeCopy = mode;
+  -[DAConvertCRtoCRLFStream _scheduleInCFRunLoop:forMode:](self, "_scheduleInCFRunLoop:forMode:", [loop getCFRunLoop], modeCopy);
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = a4;
-  -[DAConvertCRtoCRLFStream _unscheduleFromCFRunLoop:forMode:](self, "_unscheduleFromCFRunLoop:forMode:", [a3 getCFRunLoop], v6);
+  modeCopy = mode;
+  -[DAConvertCRtoCRLFStream _unscheduleFromCFRunLoop:forMode:](self, "_unscheduleFromCFRunLoop:forMode:", [loop getCFRunLoop], modeCopy);
 }
 
 - (void)close
@@ -124,17 +124,17 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   v65 = *MEMORY[0x277D85DE8];
   v4 = -1;
-  if (a3)
+  if (read)
   {
-    v5 = a4;
-    if (a4)
+    lengthCopy = length;
+    if (length)
     {
-      v6 = a3;
-      bzero(a3, a4);
+      readCopy = read;
+      bzero(read, length);
       v8 = [(NSData *)self->_preflightData length];
       v9 = 168;
       readOffset = self->_readOffset;
@@ -149,28 +149,28 @@ LABEL_6:
         do
         {
           v11 = v8 - readOffset;
-          if (v5 - v4 >= v11)
+          if (lengthCopy - v4 >= v11)
           {
             v12 = v11;
           }
 
           else
           {
-            v12 = v5 - v4;
+            v12 = lengthCopy - v4;
           }
 
-          memcpy(&v6[v4], [(NSData *)self->_preflightData bytes]+ self->_readOffset, v12);
+          memcpy(&readCopy[v4], [(NSData *)self->_preflightData bytes]+ self->_readOffset, v12);
           readOffset = self->_readOffset + v12;
           self->_readOffset = readOffset;
           v4 += v12;
           self->_lastByteCopiedWasCR = 0;
         }
 
-        while (readOffset < v8 && v4 < v5);
+        while (readOffset < v8 && v4 < lengthCopy);
       }
 
       v14 = [(NSData *)self->_mimeData length]+ v8;
-      v15 = v5 - 1;
+      v15 = lengthCopy - 1;
       v16 = self->_readOffset;
       v17 = v16 < v14;
       if (v16 < v14 && v4 < v15)
@@ -189,20 +189,20 @@ LABEL_6:
             v24 = v15 - v4;
           }
 
-          v25 = memccpy(&v6[v4], [(NSData *)self->_mimeData bytes]+ self->_readOffset - [(NSData *)self->_preflightData length], 10, v24);
+          v25 = memccpy(&readCopy[v4], [(NSData *)self->_mimeData bytes]+ self->_readOffset - [(NSData *)self->_preflightData length], 10, v24);
           if (!v25)
           {
             v16 = self->_readOffset + v24;
             self->_readOffset = v16;
             v4 += v24;
-            v15 = v5 - 1;
-            self->_lastByteCopiedWasCR = v6[v4 - 1] == 13;
+            v15 = lengthCopy - 1;
+            self->_lastByteCopiedWasCR = readCopy[v4 - 1] == 13;
             goto LABEL_43;
           }
 
-          v26 = v25 - &v6[v4];
+          v26 = v25 - &readCopy[v4];
           self->_readOffset += v26;
-          v4 = v25 - v6;
+          v4 = v25 - readCopy;
           v27 = v25;
           if (*(v25 - 1) != 10)
           {
@@ -216,11 +216,11 @@ LABEL_6:
 
           if (v26 < 2)
           {
-            v15 = v5 - 1;
+            v15 = lengthCopy - 1;
             goto LABEL_42;
           }
 
-          v15 = v5 - 1;
+          v15 = lengthCopy - 1;
           if (*(v27 - 2) != 13)
           {
             goto LABEL_40;
@@ -238,7 +238,7 @@ LABEL_43:
           }
         }
 
-        v15 = v5 - 1;
+        v15 = lengthCopy - 1;
         if (self->_lastByteCopiedWasCR)
         {
           goto LABEL_42;
@@ -253,58 +253,58 @@ LABEL_40:
 LABEL_20:
       if (v17 && v4 == v15)
       {
-        v20 = [(NSData *)self->_mimeData bytes];
+        bytes = [(NSData *)self->_mimeData bytes];
         v21 = self->_readOffset;
-        v22 = v20[v21 - [(NSData *)self->_preflightData length]];
+        v22 = bytes[v21 - [(NSData *)self->_preflightData length]];
         if (v22 == 10)
         {
           if (self->_lastByteCopiedWasCR)
           {
-            v6[v15] = 10;
+            readCopy[v15] = 10;
             ++self->_readOffset;
             self->_lastByteCopiedWasCR = 0;
           }
 
           else
           {
-            v6[v15] = 13;
+            readCopy[v15] = 13;
             self->_lastByteCopiedWasCR = 1;
           }
         }
 
         else
         {
-          v6[v15] = v22;
+          readCopy[v15] = v22;
           ++self->_readOffset;
-          self->_lastByteCopiedWasCR = v6[v15] == 13;
+          self->_lastByteCopiedWasCR = readCopy[v15] == 13;
         }
 
-        v4 = v5;
+        v4 = lengthCopy;
       }
 
       v28 = 152;
       v29 = [(NSData *)self->_postflightData length];
       v30 = v29 + v14;
       v31 = self->_readOffset;
-      if (v31 < v29 + v14 && v4 < v5)
+      if (v31 < v29 + v14 && v4 < lengthCopy)
       {
         v56 = v29 + v14;
         do
         {
           v33 = v30 - v31;
-          if (v5 - v4 >= v33)
+          if (lengthCopy - v4 >= v33)
           {
             v34 = v33;
           }
 
           else
           {
-            v34 = v5 - v4;
+            v34 = lengthCopy - v4;
           }
 
-          v35 = [*(&self->super.super.super.isa + v28) bytes];
-          v36 = v5;
-          v37 = v6;
+          bytes2 = [*(&self->super.super.super.isa + v28) bytes];
+          v36 = lengthCopy;
+          v37 = readCopy;
           v38 = *(&self->super.super.super.isa + v9);
           v39 = v9;
           v40 = v28;
@@ -313,9 +313,9 @@ LABEL_20:
           v28 = v40;
           v9 = v39;
           v43 = v38 - v42;
-          v6 = v37;
-          v5 = v36;
-          memcpy(&v6[v4], (v35 + v43), v34);
+          readCopy = v37;
+          lengthCopy = v36;
+          memcpy(&readCopy[v4], (bytes2 + v43), v34);
           v30 = v56;
           v31 = (*(&self->super.super.super.isa + v39) + v34);
           *(&self->super.super.super.isa + v39) = v31;
@@ -336,7 +336,7 @@ LABEL_20:
           [(ASTrafficLogger *)self->_trafficLogger setIsOutgoingTraffic:1];
         }
 
-        v47 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v6 length:v4];
+        v47 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:readCopy length:v4];
         [(ASTrafficLogger *)self->_trafficLogger logWBXMLData:v47];
       }
 
@@ -347,7 +347,7 @@ LABEL_20:
         v50 = *(&self->super.super.super.isa + v9);
         totalLength = self->_totalLength;
         *buf = 138413058;
-        v58 = self;
+        selfCopy = self;
         v59 = 2048;
         v60 = v4;
         v61 = 2048;
@@ -370,24 +370,24 @@ LABEL_20:
   return v4;
 }
 
-- (DAConvertCRtoCRLFStream)initWithMIMEData:(id)a3 preflightData:(id)a4 postflightData:(id)a5 intendToStream:(BOOL)a6
+- (DAConvertCRtoCRLFStream)initWithMIMEData:(id)data preflightData:(id)preflightData postflightData:(id)postflightData intendToStream:(BOOL)stream
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  preflightDataCopy = preflightData;
+  postflightDataCopy = postflightData;
   v20.receiver = self;
   v20.super_class = DAConvertCRtoCRLFStream;
   v14 = [(DAConvertCRtoCRLFStream *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_mimeData, a3);
-    objc_storeStrong(&v15->_preflightData, a4);
-    objc_storeStrong(&v15->_postflightData, a5);
+    objc_storeStrong(&v14->_mimeData, data);
+    objc_storeStrong(&v15->_preflightData, preflightData);
+    objc_storeStrong(&v15->_postflightData, postflightData);
     v16 = [(NSData *)v15->_preflightData length];
     v17 = [(NSData *)v15->_mimeData length]+ v16;
     v15->_totalLength = v17 + [(NSData *)v15->_postflightData length];
-    v15->_intendToStream = a6;
+    v15->_intendToStream = stream;
     trafficLogger = v15->_trafficLogger;
     v15->_trafficLogger = 0;
   }
@@ -395,9 +395,9 @@ LABEL_20:
   return v15;
 }
 
-- (DAConvertCRtoCRLFStream)initWithData:(id)a3
+- (DAConvertCRtoCRLFStream)initWithData:(id)data
 {
-  v3 = [(DAConvertCRtoCRLFStream *)self initWithMIMEData:a3 preflightData:0 postflightData:0 intendToStream:0];
+  v3 = [(DAConvertCRtoCRLFStream *)self initWithMIMEData:data preflightData:0 postflightData:0 intendToStream:0];
   trafficLogger = v3->_trafficLogger;
   v3->_trafficLogger = 0;
 

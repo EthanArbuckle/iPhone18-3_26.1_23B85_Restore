@@ -1,7 +1,7 @@
 @interface CKQuickLookThumbnailAttachmentItem
 + (CGSize)defaultSize;
 - (CGSize)size;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (void)generatePreviewWithCompletion:(id)completion;
 @end
 
 @implementation CKQuickLookThumbnailAttachmentItem
@@ -25,21 +25,21 @@
   return result;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
+  completionCopy = completion;
+  previewCache = [objc_opt_class() previewCache];
   v6 = CKAttachmentPreviewCacheKey(self);
   [objc_opt_class() defaultSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v5 cachedPreviewForKey:v6];
+  v11 = [previewCache cachedPreviewForKey:v6];
   if (v11)
   {
-    v4[2](v4, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
-  else if (([v5 isGeneratingPreviewForKey:v6] & 1) == 0)
+  else if (([previewCache isGeneratingPreviewForKey:v6] & 1) == 0)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -52,10 +52,10 @@
     v12[1] = 3221225472;
     v12[2] = __68__CKQuickLookThumbnailAttachmentItem_generatePreviewWithCompletion___block_invoke_38;
     v12[3] = &unk_1E72EDE00;
-    v13 = v5;
+    v13 = previewCache;
     v14 = v6;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = completionCopy;
     [v13 enqueueGenerationBlock:v17 completion:v12 withPriority:1 forKey:v14];
   }
 }

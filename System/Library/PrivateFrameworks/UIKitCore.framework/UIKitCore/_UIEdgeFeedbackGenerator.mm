@@ -1,48 +1,48 @@
 @interface _UIEdgeFeedbackGenerator
-- (BOOL)_valueIsOvershot:(double)a3;
-- (_UIEdgeFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4;
-- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)a3 coordinateSpace:(id)a4;
-- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)a3 view:(id)a4;
+- (BOOL)_valueIsOvershot:(double)overshot;
+- (_UIEdgeFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view;
+- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)style coordinateSpace:(id)space;
+- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)style view:(id)view;
 - (double)_effectiveDistance;
 - (float)_percentBeyondDistance;
 - (void)_animationEnded;
 - (void)_animationStarted;
-- (void)_animationStartedUsingTimeout:(BOOL)a3;
+- (void)_animationStartedUsingTimeout:(BOOL)timeout;
 - (void)_deactivate;
-- (void)_positionUpdated:(double)a3 withVelocity:(double)a4 atLocation:(CGPoint)a5;
-- (void)_setCloseToEdge:(BOOL)a3;
-- (void)_setState:(int64_t)a3;
-- (void)_stopAnimatingWithTimeout:(double)a3;
+- (void)_positionUpdated:(double)updated withVelocity:(double)velocity atLocation:(CGPoint)location;
+- (void)_setCloseToEdge:(BOOL)edge;
+- (void)_setState:(int64_t)state;
+- (void)_stopAnimatingWithTimeout:(double)timeout;
 - (void)_updateCloseToEdge;
-- (void)positionUpdated:(double)a3 atLocation:(CGPoint)a4;
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3;
-- (void)userInteractionEndedAtLocation:(CGPoint)a3;
-- (void)userInteractionStartedAtLocation:(CGPoint)a3;
+- (void)positionUpdated:(double)updated atLocation:(CGPoint)location;
+- (void)userInteractionCancelledAtLocation:(CGPoint)location;
+- (void)userInteractionEndedAtLocation:(CGPoint)location;
+- (void)userInteractionStartedAtLocation:(CGPoint)location;
 @end
 
 @implementation _UIEdgeFeedbackGenerator
 
-- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)a3 coordinateSpace:(id)a4
+- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)style coordinateSpace:(id)space
 {
-  v6 = _viewFromCoordinateSpace(a4);
-  v7 = [(_UIEdgeFeedbackGenerator *)self initWithStyle:a3 view:v6];
+  v6 = _viewFromCoordinateSpace(space);
+  v7 = [(_UIEdgeFeedbackGenerator *)self initWithStyle:style view:v6];
 
   return v7;
 }
 
-- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)a3 view:(id)a4
+- (_UIEdgeFeedbackGenerator)initWithStyle:(int64_t)style view:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   v7 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v8 = [objc_msgSend(objc_opt_class() "_configurationClass")];
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (style == 3)
     {
       v8 = [objc_msgSend(objc_opt_class() "_configurationClass")];
       goto LABEL_10;
@@ -51,13 +51,13 @@
 
   else
   {
-    if (!a3)
+    if (!style)
     {
       v8 = [objc_msgSend(objc_opt_class() "_configurationClass")];
       goto LABEL_10;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
       v8 = [objc_msgSend(objc_opt_class() "_configurationClass")];
 LABEL_10:
@@ -67,36 +67,36 @@ LABEL_10:
 
   v11.receiver = self;
   v11.super_class = _UIEdgeFeedbackGenerator;
-  v9 = [(UIFeedbackGenerator *)&v11 initWithConfiguration:v7 view:v6];
+  v9 = [(UIFeedbackGenerator *)&v11 initWithConfiguration:v7 view:viewCopy];
 
   return v9;
 }
 
-- (_UIEdgeFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4
+- (_UIEdgeFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view
 {
   v8.receiver = self;
   v8.super_class = _UIEdgeFeedbackGenerator;
-  v4 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:a3 view:a4];
+  v4 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:configuration view:view];
   v5 = v4;
   if (v4)
   {
-    v6 = [(_UIEdgeFeedbackGenerator *)v4 _edgeConfiguration];
-    -[_UIEdgeFeedbackGenerator setAxis:](v5, "setAxis:", [v6 _defaultAxis]);
+    _edgeConfiguration = [(_UIEdgeFeedbackGenerator *)v4 _edgeConfiguration];
+    -[_UIEdgeFeedbackGenerator setAxis:](v5, "setAxis:", [_edgeConfiguration _defaultAxis]);
   }
 
   return v5;
 }
 
-- (void)_stopAnimatingWithTimeout:(double)a3
+- (void)_stopAnimatingWithTimeout:(double)timeout
 {
   [(_UIEdgeFeedbackGenerator *)self _cancelStopAnimatingTimeout];
 
-  [(_UIEdgeFeedbackGenerator *)self performSelector:sel__animationEnded withObject:0 afterDelay:a3];
+  [(_UIEdgeFeedbackGenerator *)self performSelector:sel__animationEnded withObject:0 afterDelay:timeout];
 }
 
-- (void)userInteractionStartedAtLocation:(CGPoint)a3
+- (void)userInteractionStartedAtLocation:(CGPoint)location
 {
-  if ([(UIFeedbackGenerator *)self _isEnabled:a3.x])
+  if ([(UIFeedbackGenerator *)self _isEnabled:location.x])
   {
     if ([(_UIEdgeFeedbackGenerator *)self _state]== 2 || [(_UIEdgeFeedbackGenerator *)self _state]== 3)
     {
@@ -114,9 +114,9 @@ LABEL_10:
   }
 }
 
-- (void)userInteractionEndedAtLocation:(CGPoint)a3
+- (void)userInteractionEndedAtLocation:(CGPoint)location
 {
-  if ([(UIFeedbackGenerator *)self _isEnabled:a3.x])
+  if ([(UIFeedbackGenerator *)self _isEnabled:location.x])
   {
     [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
     if ([(_UIEdgeFeedbackGenerator *)self _state]== 1)
@@ -127,9 +127,9 @@ LABEL_10:
   }
 }
 
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3
+- (void)userInteractionCancelledAtLocation:(CGPoint)location
 {
-  if ([(UIFeedbackGenerator *)self _isEnabled:a3.x])
+  if ([(UIFeedbackGenerator *)self _isEnabled:location.x])
   {
     [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
     if ([(_UIEdgeFeedbackGenerator *)self _state]== 1)
@@ -157,9 +157,9 @@ LABEL_10:
   }
 }
 
-- (void)_animationStartedUsingTimeout:(BOOL)a3
+- (void)_animationStartedUsingTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     [(_UIEdgeFeedbackGenerator *)self _setState:3];
 
@@ -193,21 +193,21 @@ LABEL_10:
   v6 = v5;
   if (v5 < 1.0)
   {
-    v3 = self;
+    selfCopy3 = self;
     v4 = 0;
     goto LABEL_20;
   }
 
   value = self->_value;
   v8 = value >= v6 - value ? v6 - value : self->_value;
-  v9 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-  [v9 minDistanceFromEdge];
+  _edgeConfiguration = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+  [_edgeConfiguration minDistanceFromEdge];
   v11 = v10;
 
   if (v8 < v11)
   {
 LABEL_2:
-    v3 = self;
+    selfCopy3 = self;
     v4 = 1;
   }
 
@@ -245,21 +245,21 @@ LABEL_2:
       self->_closeToEdgeUpdateTime = v18;
     }
 
-    v3 = self;
+    selfCopy3 = self;
     v4 = v16;
   }
 
 LABEL_20:
 
-  [(_UIEdgeFeedbackGenerator *)v3 _setCloseToEdge:v4];
+  [(_UIEdgeFeedbackGenerator *)selfCopy3 _setCloseToEdge:v4];
 }
 
-- (void)_setCloseToEdge:(BOOL)a3
+- (void)_setCloseToEdge:(BOOL)edge
 {
-  if (self->_closeToEdge != a3)
+  if (self->_closeToEdge != edge)
   {
-    self->_closeToEdge = a3;
-    if (a3)
+    self->_closeToEdge = edge;
+    if (edge)
     {
       [(UIFeedbackGenerator *)self activateWithCompletionBlock:0];
     }
@@ -279,8 +279,8 @@ LABEL_20:
     axis = self->_axis;
     if (axis == 1)
     {
-      v4 = [(UIFeedbackGenerator *)self view];
-      [v4 bounds];
+      view = [(UIFeedbackGenerator *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v8);
       goto LABEL_6;
     }
@@ -288,8 +288,8 @@ LABEL_20:
     distance = 0.0;
     if (axis == 2)
     {
-      v4 = [(UIFeedbackGenerator *)self view];
-      [v4 bounds];
+      view = [(UIFeedbackGenerator *)self view];
+      [view bounds];
       Width = CGRectGetHeight(v7);
 LABEL_6:
       distance = Width;
@@ -299,64 +299,64 @@ LABEL_6:
   return distance;
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
     if (state == 1)
     {
-      v6 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
-      [v6 stop];
+      _playingContinuousFeedback = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
+      [_playingContinuousFeedback stop];
 
       [(_UIEdgeFeedbackGenerator *)self _setPlayingContinuousFeedback:0];
-      v7 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-      v8 = [v7 userInteractingReleaseFeedback];
+      _edgeConfiguration = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+      userInteractingReleaseFeedback = [_edgeConfiguration userInteractingReleaseFeedback];
 
-      if (self->_value != 2.22507386e-308 && [(_UIEdgeFeedbackGenerator *)self _isOvershot]&& !self->_playedOvershotThresholdFeedback && v8)
+      if (self->_value != 2.22507386e-308 && [(_UIEdgeFeedbackGenerator *)self _isOvershot]&& !self->_playedOvershotThresholdFeedback && userInteractingReleaseFeedback)
       {
-        v9 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-        v10 = [v9 userInteractingReleaseFeedbackUpdateBlock];
+        _edgeConfiguration2 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+        userInteractingReleaseFeedbackUpdateBlock = [_edgeConfiguration2 userInteractingReleaseFeedbackUpdateBlock];
 
-        if (v10)
+        if (userInteractingReleaseFeedbackUpdateBlock)
         {
-          v11 = [v8 copy];
+          v11 = [userInteractingReleaseFeedback copy];
 
-          v12 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-          v13 = [v12 userInteractingReleaseFeedbackUpdateBlock];
+          _edgeConfiguration3 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+          userInteractingReleaseFeedbackUpdateBlock2 = [_edgeConfiguration3 userInteractingReleaseFeedbackUpdateBlock];
           [(_UIEdgeFeedbackGenerator *)self _percentBeyondDistance];
-          v13[2](v13, v11, v14);
+          userInteractingReleaseFeedbackUpdateBlock2[2](userInteractingReleaseFeedbackUpdateBlock2, v11, v14);
 
-          v8 = v11;
+          userInteractingReleaseFeedback = v11;
         }
 
-        [(UIFeedbackGenerator *)self _playFeedback:v8 atLocation:1.79769313e308, 1.79769313e308];
+        [(UIFeedbackGenerator *)self _playFeedback:userInteractingReleaseFeedback atLocation:1.79769313e308, 1.79769313e308];
       }
     }
 
-    self->_state = a3;
-    if (!a3)
+    self->_state = state;
+    if (!state)
     {
       self->_playedOvershotThresholdFeedback = 0;
     }
   }
 }
 
-- (BOOL)_valueIsOvershot:(double)a3
+- (BOOL)_valueIsOvershot:(double)overshot
 {
   if (self->_extentBeyondDistance <= 0.0)
   {
-    if (fabs(a3) > 2.22044605e-16)
+    if (fabs(overshot) > 2.22044605e-16)
     {
       [(_UIEdgeFeedbackGenerator *)self _effectiveDistance];
-      return vabdd_f64(a3, v6) <= 2.22044605e-16;
+      return vabdd_f64(overshot, v6) <= 2.22044605e-16;
     }
   }
 
-  else if (a3 >= 0.0)
+  else if (overshot >= 0.0)
   {
     [(_UIEdgeFeedbackGenerator *)self _effectiveDistance];
-    return v4 < a3;
+    return v4 < overshot;
   }
 
   return 1;
@@ -379,16 +379,16 @@ LABEL_6:
   return v4 / self->_extentBeyondDistance;
 }
 
-- (void)positionUpdated:(double)a3 atLocation:(CGPoint)a4
+- (void)positionUpdated:(double)updated atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   if ([(UIFeedbackGenerator *)self _isEnabled])
   {
     if (self->_state)
     {
       [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
-      if (self->_value != a3)
+      if (self->_value != updated)
       {
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v10 = v9;
@@ -404,7 +404,7 @@ LABEL_6:
           value = self->_value;
           if (previousValueUpdateTime == 2.22507386e-308)
           {
-            v14 = (a3 - value) / (v10 - lastValueUpdateTime);
+            v14 = (updated - value) / (v10 - lastValueUpdateTime);
           }
 
           else
@@ -417,22 +417,22 @@ LABEL_6:
 
         [(_UIEdgeFeedbackGenerator *)self _setLastValueUpdateTime:v10];
 
-        [(_UIEdgeFeedbackGenerator *)self _positionUpdated:a3 withVelocity:v14 atLocation:x, y];
+        [(_UIEdgeFeedbackGenerator *)self _positionUpdated:updated withVelocity:v14 atLocation:x, y];
       }
     }
   }
 }
 
-- (void)_positionUpdated:(double)a3 withVelocity:(double)a4 atLocation:(CGPoint)a5
+- (void)_positionUpdated:(double)updated withVelocity:(double)velocity atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  if (![(UIFeedbackGenerator *)self _isEnabled]|| self->_value == a3 || !self->_state)
+  y = location.y;
+  x = location.x;
+  if (![(UIFeedbackGenerator *)self _isEnabled]|| self->_value == updated || !self->_state)
   {
     return;
   }
 
-  v10 = [(_UIEdgeFeedbackGenerator *)self _isOvershot];
+  _isOvershot = [(_UIEdgeFeedbackGenerator *)self _isOvershot];
   previousValue = self->_previousValue;
   value = self->_value;
   if (previousValue == 2.22507386e-308 || value == 2.22507386e-308)
@@ -442,23 +442,23 @@ LABEL_6:
 
   else
   {
-    v14 = (value > previousValue) ^ (value < a3);
+    v14 = (value > previousValue) ^ (value < updated);
   }
 
   [(_UIEdgeFeedbackGenerator *)self _setPreviousValue:?];
-  [(_UIEdgeFeedbackGenerator *)self _setValue:a3];
-  [(_UIEdgeFeedbackGenerator *)self _setVelocity:a4];
+  [(_UIEdgeFeedbackGenerator *)self _setValue:updated];
+  [(_UIEdgeFeedbackGenerator *)self _setVelocity:velocity];
   [(_UIEdgeFeedbackGenerator *)self _updateCloseToEdge];
-  v15 = [(_UIEdgeFeedbackGenerator *)self _isOvershot];
-  v16 = v15;
+  _isOvershot2 = [(_UIEdgeFeedbackGenerator *)self _isOvershot];
+  v16 = _isOvershot2;
   if (self->_previousValue == 2.22507386e-308)
   {
-    v17 = v15;
+    v17 = _isOvershot2;
   }
 
   else
   {
-    v17 = v10;
+    v17 = _isOvershot;
   }
 
   state = self->_state;
@@ -467,35 +467,35 @@ LABEL_6:
     case 3:
       [(_UIEdgeFeedbackGenerator *)self _stopAnimatingWithTimeout:0.2];
 LABEL_24:
-      v29 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-      v30 = [v29 animatingThresholdFeedback];
+      _edgeConfiguration = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+      animatingThresholdFeedback = [_edgeConfiguration animatingThresholdFeedback];
 
-      if (!(v17 & 1 | !v16) && !self->_playedOvershotThresholdFeedback && v30)
+      if (!(v17 & 1 | !v16) && !self->_playedOvershotThresholdFeedback && animatingThresholdFeedback)
       {
-        v31 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-        v32 = [v31 animatingThresholdFeedbackUpdateBlock];
+        _edgeConfiguration2 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+        animatingThresholdFeedbackUpdateBlock = [_edgeConfiguration2 animatingThresholdFeedbackUpdateBlock];
 
-        if (v32)
+        if (animatingThresholdFeedbackUpdateBlock)
         {
-          v33 = [v30 copy];
+          v33 = [animatingThresholdFeedback copy];
 
-          v34 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-          v35 = [v34 animatingThresholdFeedbackUpdateBlock];
-          v35[2](v35, v33, a4);
+          _edgeConfiguration3 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+          animatingThresholdFeedbackUpdateBlock2 = [_edgeConfiguration3 animatingThresholdFeedbackUpdateBlock];
+          animatingThresholdFeedbackUpdateBlock2[2](animatingThresholdFeedbackUpdateBlock2, v33, velocity);
 
-          v30 = v33;
+          animatingThresholdFeedback = v33;
         }
 
-        [(UIFeedbackGenerator *)self _playFeedback:v30 atLocation:x, y];
+        [(UIFeedbackGenerator *)self _playFeedback:animatingThresholdFeedback atLocation:x, y];
         self->_playedOvershotThresholdFeedback = 1;
       }
 
       if ((self->_lastState & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
-        v36 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-        v37 = [v36 animatingMaximumExtentFeedback];
+        _edgeConfiguration4 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+        animatingMaximumExtentFeedback = [_edgeConfiguration4 animatingMaximumExtentFeedback];
 
-        if (v37)
+        if (animatingMaximumExtentFeedback)
         {
           v38 = v14;
         }
@@ -507,66 +507,66 @@ LABEL_24:
 
         if (v38 == 1)
         {
-          v39 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-          v40 = [v39 animatingMaximumExtentFeedbackUpdateBlock];
+          _edgeConfiguration5 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+          animatingMaximumExtentFeedbackUpdateBlock = [_edgeConfiguration5 animatingMaximumExtentFeedbackUpdateBlock];
 
-          if (v40)
+          if (animatingMaximumExtentFeedbackUpdateBlock)
           {
-            v41 = [v37 copy];
+            v41 = [animatingMaximumExtentFeedback copy];
 
-            v42 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-            v43 = [v42 animatingMaximumExtentFeedbackUpdateBlock];
-            v43[2](v43, v41, a4);
+            _edgeConfiguration6 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+            animatingMaximumExtentFeedbackUpdateBlock2 = [_edgeConfiguration6 animatingMaximumExtentFeedbackUpdateBlock];
+            animatingMaximumExtentFeedbackUpdateBlock2[2](animatingMaximumExtentFeedbackUpdateBlock2, v41, velocity);
 
-            v37 = v41;
+            animatingMaximumExtentFeedback = v41;
           }
 
-          [(UIFeedbackGenerator *)self _playFeedback:v37 atLocation:x, y];
+          [(UIFeedbackGenerator *)self _playFeedback:animatingMaximumExtentFeedback atLocation:x, y];
         }
 
-        v30 = v37;
+        animatingThresholdFeedback = animatingMaximumExtentFeedback;
       }
 
       goto LABEL_49;
     case 2:
       goto LABEL_24;
     case 1:
-      if (v15 && (-[_UIEdgeFeedbackGenerator _edgeConfiguration](self, "_edgeConfiguration"), v19 = objc_claimAutoreleasedReturnValue(), [v19 userInteractingBeyondEdgeFeedbackUpdateBlock], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
+      if (_isOvershot2 && (-[_UIEdgeFeedbackGenerator _edgeConfiguration](self, "_edgeConfiguration"), v19 = objc_claimAutoreleasedReturnValue(), [v19 userInteractingBeyondEdgeFeedbackUpdateBlock], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
       {
-        v21 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
+        _playingContinuousFeedback = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
 
-        if (!v21)
+        if (!_playingContinuousFeedback)
         {
-          v22 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-          v23 = [v22 userInteractingBeyondEdgeFeedback];
-          [(_UIEdgeFeedbackGenerator *)self _setPlayingContinuousFeedback:v23];
+          _edgeConfiguration7 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+          userInteractingBeyondEdgeFeedback = [_edgeConfiguration7 userInteractingBeyondEdgeFeedback];
+          [(_UIEdgeFeedbackGenerator *)self _setPlayingContinuousFeedback:userInteractingBeyondEdgeFeedback];
         }
 
-        v24 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-        v25 = [v24 userInteractingBeyondEdgeFeedbackUpdateBlock];
-        v26 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
+        _edgeConfiguration8 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+        userInteractingBeyondEdgeFeedbackUpdateBlock = [_edgeConfiguration8 userInteractingBeyondEdgeFeedbackUpdateBlock];
+        _playingContinuousFeedback2 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
         [(_UIEdgeFeedbackGenerator *)self _percentBeyondDistance];
-        (v25)[2](v25, v26, v27);
+        (userInteractingBeyondEdgeFeedbackUpdateBlock)[2](userInteractingBeyondEdgeFeedbackUpdateBlock, _playingContinuousFeedback2, v27);
 
-        if (!v21)
+        if (!_playingContinuousFeedback)
         {
-          v28 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
-          [(UIFeedbackGenerator *)self _playFeedback:v28 atLocation:x, y];
+          _playingContinuousFeedback3 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
+          [(UIFeedbackGenerator *)self _playFeedback:_playingContinuousFeedback3 atLocation:x, y];
         }
       }
 
       else
       {
-        v44 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
-        [v44 stop];
+        _playingContinuousFeedback4 = [(_UIEdgeFeedbackGenerator *)self _playingContinuousFeedback];
+        [_playingContinuousFeedback4 stop];
 
         [(_UIEdgeFeedbackGenerator *)self _setPlayingContinuousFeedback:0];
       }
 
-      v45 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-      v30 = [v45 userInteractingThresholdFeedback];
+      _edgeConfiguration9 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+      animatingThresholdFeedback = [_edgeConfiguration9 userInteractingThresholdFeedback];
 
-      if (v30)
+      if (animatingThresholdFeedback)
       {
         if (v17 & 1 | !v16 || self->_playedOvershotThresholdFeedback)
         {
@@ -578,21 +578,21 @@ LABEL_24:
 
         else
         {
-          v46 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-          v47 = [v46 userInteractingThresholdFeedbackUpdateBlock];
+          _edgeConfiguration10 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+          userInteractingThresholdFeedbackUpdateBlock = [_edgeConfiguration10 userInteractingThresholdFeedbackUpdateBlock];
 
-          if (v47)
+          if (userInteractingThresholdFeedbackUpdateBlock)
           {
-            v48 = [v30 copy];
+            v48 = [animatingThresholdFeedback copy];
 
-            v49 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
-            v50 = [v49 userInteractingThresholdFeedbackUpdateBlock];
-            v50[2](v50, v48, a4);
+            _edgeConfiguration11 = [(_UIEdgeFeedbackGenerator *)self _edgeConfiguration];
+            userInteractingThresholdFeedbackUpdateBlock2 = [_edgeConfiguration11 userInteractingThresholdFeedbackUpdateBlock];
+            userInteractingThresholdFeedbackUpdateBlock2[2](userInteractingThresholdFeedbackUpdateBlock2, v48, velocity);
 
-            v30 = v48;
+            animatingThresholdFeedback = v48;
           }
 
-          [(UIFeedbackGenerator *)self _playFeedback:v30 atLocation:x, y];
+          [(UIFeedbackGenerator *)self _playFeedback:animatingThresholdFeedback atLocation:x, y];
           self->_playedOvershotThresholdFeedback = 1;
         }
       }

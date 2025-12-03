@@ -1,18 +1,18 @@
 @interface SKRaptorQEncoder
-- (BOOL)_writeESI:(unsigned int)a3 sbn:(unsigned __int8)a4 rq:(nanorq *)a5 inputIO:(ioctx *)a6 outputFile:(__sFILE *)a7 error:(id *)a8;
-- (SKRaptorQEncoder)initWithInputURL:(id)a3 symbolSize:(unint64_t)a4 error:(id *)a5;
-- (id)encodeInputFile:(id *)a3;
-- (id)encodeWithInputURL:(id)a3 packetSize:(unint64_t)a4 repairFactor:(unint64_t)a5 error:(id *)a6;
-- (id)generatePacketWithESI:(unsigned int)a3 sourceBlock:(unsigned __int8)a4 error:(id *)a5;
+- (BOOL)_writeESI:(unsigned int)i sbn:(unsigned __int8)sbn rq:(nanorq *)rq inputIO:(ioctx *)o outputFile:(__sFILE *)file error:(id *)error;
+- (SKRaptorQEncoder)initWithInputURL:(id)l symbolSize:(unint64_t)size error:(id *)error;
+- (id)encodeInputFile:(id *)file;
+- (id)encodeWithInputURL:(id)l packetSize:(unint64_t)size repairFactor:(unint64_t)factor error:(id *)error;
+- (id)generatePacketWithESI:(unsigned int)i sourceBlock:(unsigned __int8)block error:(id *)error;
 - (void)dealloc;
-- (void)encodeWithInputURL:(id)a3 packetSize:(unint64_t)a4 repairFactor:(unint64_t)a5 dispatchQueue:(id)a6 completionHandler:(id)a7;
+- (void)encodeWithInputURL:(id)l packetSize:(unint64_t)size repairFactor:(unint64_t)factor dispatchQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation SKRaptorQEncoder
 
-- (SKRaptorQEncoder)initWithInputURL:(id)a3 symbolSize:(unint64_t)a4 error:(id *)a5
+- (SKRaptorQEncoder)initWithInputURL:(id)l symbolSize:(unint64_t)size error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = SKRaptorQEncoder;
   v9 = [(SKRaptorQEncoder *)&v22 init];
@@ -33,10 +33,10 @@
     _os_log_impl(&dword_259B04000, v10, OS_LOG_TYPE_DEFAULT, "Initialize NanoRQ encoder...", v21, 2u);
   }
 
-  v11 = [v8 fileSystemRepresentation];
-  if (!v11)
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -44,15 +44,15 @@
     v16 = *MEMORY[0x277CCA590];
 LABEL_19:
     NSErrorF();
-    *a5 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_21;
   }
 
-  v12 = ioctx_from_file(v11, 1);
+  v12 = ioctx_from_file(fileSystemRepresentation, 1);
   v9->_inputIO = v12;
   if (!v12)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -62,9 +62,9 @@ LABEL_19:
   }
 
   v13 = (v12->var3)();
-  if (a4 >= 0x10000)
+  if (size >= 0x10000)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -73,11 +73,11 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v14 = nanorq_encoder_new(v13, a4, 8u);
+  v14 = nanorq_encoder_new(v13, size, 8u);
   v9->_rq = v14;
   if (!v14)
   {
-    if (a5)
+    if (error)
     {
       v19 = *MEMORY[0x277CCA590];
       goto LABEL_19;
@@ -131,7 +131,7 @@ void __54__SKRaptorQEncoder_initWithInputURL_symbolSize_error___block_invoke()
   [(SKRaptorQEncoder *)&v5 dealloc];
 }
 
-- (id)encodeInputFile:(id *)a3
+- (id)encodeInputFile:(id *)file
 {
   rq = self->_rq;
   if (rq)
@@ -152,7 +152,7 @@ void __54__SKRaptorQEncoder_initWithInputURL_symbolSize_error___block_invoke()
         v10 = v9;
         if ((nanorq_generate_symbols(self->_rq, v8, self->_inputIO) & 1) == 0)
         {
-          if (a3)
+          if (file)
           {
             v16 = *MEMORY[0x277CCA590];
             goto LABEL_16;
@@ -170,12 +170,12 @@ void __54__SKRaptorQEncoder_initWithInputURL_symbolSize_error___block_invoke()
         }
       }
 
-      if (a3)
+      if (file)
       {
         v15 = *MEMORY[0x277CCA590];
 LABEL_16:
         NSErrorF();
-        *a3 = v12 = 0;
+        *file = v12 = 0;
         goto LABEL_8;
       }
 
@@ -197,11 +197,11 @@ LABEL_7:
 LABEL_8:
   }
 
-  else if (a3)
+  else if (file)
   {
     v17 = *MEMORY[0x277CCA590];
     NSErrorF();
-    *a3 = v12 = 0;
+    *file = v12 = 0;
   }
 
   else
@@ -212,46 +212,46 @@ LABEL_8:
   return v12;
 }
 
-- (id)generatePacketWithESI:(unsigned int)a3 sourceBlock:(unsigned __int8)a4 error:(id *)a5
+- (id)generatePacketWithESI:(unsigned int)i sourceBlock:(unsigned __int8)block error:(id *)error
 {
   rq = self->_rq;
   if (rq)
   {
-    v8 = a4;
+    blockCopy = block;
     v10 = nanorq_symbol_size(rq);
     v11 = malloc_type_calloc(v10 + 4, 1uLL, 0x100004077774924uLL);
     if (v11)
     {
       v12 = v11;
-      *v11 = nanorq_tag(v8, a3);
-      if (nanorq_encode(self->_rq, (v12 + 1), a3, v8, self->_inputIO) == v10)
+      *v11 = nanorq_tag(blockCopy, i);
+      if (nanorq_encode(self->_rq, (v12 + 1), i, blockCopy, self->_inputIO) == v10)
       {
         v13 = dispatch_data_create(v12, v10 + 4, 0, *MEMORY[0x277D85CB0]);
 
         return v13;
       }
 
-      if (a5)
+      if (error)
       {
         v17 = *MEMORY[0x277CCA590];
 LABEL_13:
         v18 = NSErrorF();
         v19 = v18;
         v13 = 0;
-        *a5 = v18;
+        *error = v18;
 
         return v13;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v16 = *MEMORY[0x277CCA590];
       goto LABEL_13;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = *MEMORY[0x277CCA590];
     goto LABEL_13;
@@ -262,14 +262,14 @@ LABEL_13:
   return v13;
 }
 
-- (void)encodeWithInputURL:(id)a3 packetSize:(unint64_t)a4 repairFactor:(unint64_t)a5 dispatchQueue:(id)a6 completionHandler:(id)a7
+- (void)encodeWithInputURL:(id)l packetSize:(unint64_t)size repairFactor:(unint64_t)factor dispatchQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (v13)
+  lCopy = l;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (queueCopy)
   {
-    v15 = v13;
+    v15 = queueCopy;
   }
 
   else
@@ -283,12 +283,12 @@ LABEL_13:
   block[2] = __95__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_dispatchQueue_completionHandler___block_invoke;
   block[3] = &unk_2798EBF58;
   block[4] = self;
-  v20 = v12;
-  v22 = a4;
-  v23 = a5;
-  v21 = v14;
-  v17 = v14;
-  v18 = v12;
+  v20 = lCopy;
+  sizeCopy = size;
+  factorCopy = factor;
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = lCopy;
   dispatch_async(v15, block);
 }
 
@@ -304,20 +304,20 @@ void __95__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_dispatchQ
   (*(a1[6] + 16))();
 }
 
-- (id)encodeWithInputURL:(id)a3 packetSize:(unint64_t)a4 repairFactor:(unint64_t)a5 error:(id *)a6
+- (id)encodeWithInputURL:(id)l packetSize:(unint64_t)size repairFactor:(unint64_t)factor error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v52 = [MEMORY[0x277CCAA00] defaultManager];
-  v53 = [v55 lastPathComponent];
-  v51 = [v53 stringByAppendingPathExtension:@"encoded"];
-  v50 = [v53 stringByAppendingPathExtension:@"summary"];
-  v7 = [v55 URLByDeletingLastPathComponent];
-  v61 = [v7 URLByAppendingPathComponent:v51 isDirectory:1];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  lastPathComponent = [lCopy lastPathComponent];
+  v51 = [lastPathComponent stringByAppendingPathExtension:@"encoded"];
+  v50 = [lastPathComponent stringByAppendingPathExtension:@"summary"];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v61 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v51 isDirectory:1];
 
   v54 = [v61 URLByAppendingPathComponent:v50];
-  v8 = [v54 path];
-  v9 = [v52 fileExistsAtPath:v8];
+  path = [v54 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
@@ -334,8 +334,8 @@ void __95__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_dispatchQ
       _os_log_impl(&dword_259B04000, v10, OS_LOG_TYPE_DEFAULT, "Load encoder summary from file: %{public}@", buf, 0xCu);
     }
 
-    v11 = [v54 path];
-    v12 = [SKRaptorQEncoderSummary encoderSummaryFromFile:v11];
+    path2 = [v54 path];
+    v12 = [SKRaptorQEncoderSummary encoderSummaryFromFile:path2];
 
     if (v12)
     {
@@ -350,31 +350,31 @@ void __95__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_dispatchQ
     v13 = MIBUConnObj;
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = *a6;
+      v14 = *error;
       *buf = 138543362;
       v66 = v14;
       _os_log_impl(&dword_259B04000, v13, OS_LOG_TYPE_DEFAULT, "Failed to load summary from file: %{public}@", buf, 0xCu);
     }
 
-    [v52 removeItemAtURL:v61 error:0];
-    v15 = v52;
+    [defaultManager removeItemAtURL:v61 error:0];
+    v15 = defaultManager;
     v16 = v61;
   }
 
   else
   {
     v16 = v61;
-    [v52 removeItemAtURL:v61 error:0];
-    v15 = v52;
+    [defaultManager removeItemAtURL:v61 error:0];
+    v15 = defaultManager;
   }
 
-  if ([v15 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:a6])
+  if ([v15 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:error])
   {
-    v17 = v55;
-    v18 = [v55 fileSystemRepresentation];
-    if (v18)
+    v17 = lCopy;
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
+    if (fileSystemRepresentation)
     {
-      v19 = ioctx_from_file(v18, 1);
+      v19 = ioctx_from_file(fileSystemRepresentation, 1);
       v20 = v19;
       if (v19)
       {
@@ -385,14 +385,14 @@ void __95__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_dispatchQ
         v64[4] = v19;
         v49 = MEMORY[0x259CAE830](v64);
         v21 = (*(v20 + 24))(v20);
-        if (a4 >= 0x10000)
+        if (size >= 0x10000)
         {
-          if (a6)
+          if (error)
           {
 LABEL_68:
             v46 = *MEMORY[0x277CCA590];
             NSErrorF();
-            *a6 = v12 = 0;
+            *error = v12 = 0;
 LABEL_55:
             v49[2]();
 
@@ -402,7 +402,7 @@ LABEL_55:
 
         else
         {
-          v22 = nanorq_encoder_new(v21, a4, 8u);
+          v22 = nanorq_encoder_new(v21, size, 8u);
           v23 = v22;
           if (v22)
           {
@@ -427,10 +427,10 @@ LABEL_55:
                   break;
                 }
 
-                if (a6)
+                if (error)
                 {
                   NSErrorF();
-                  *a6 = v36 = 0;
+                  *error = v36 = 0;
                 }
 
                 else
@@ -478,10 +478,10 @@ LABEL_32:
               if (nanorq_generate_symbols(v23, v25, v20))
               {
                 v32 = v29;
-                v33 = [v29 fileSystemRepresentation];
-                if (v33)
+                fileSystemRepresentation2 = [v29 fileSystemRepresentation];
+                if (fileSystemRepresentation2)
                 {
-                  v34 = fopen(v33, "wb+");
+                  v34 = fopen(fileSystemRepresentation2, "wb+");
                   v62[0] = MEMORY[0x277D85DD0];
                   v62[1] = 3221225472;
                   v62[2] = __69__SKRaptorQEncoder_encodeWithInputURL_packetSize_repairFactor_error___block_invoke_101;
@@ -490,7 +490,7 @@ LABEL_32:
                   v35 = MEMORY[0x259CAE830](v62);
                   if (v34)
                   {
-                    if ([(SKRaptorQEncoder *)self _writeSBN:v25 rq:v23 repairFactor:a5 inputIO:v20 outputFile:v34 error:a6])
+                    if ([(SKRaptorQEncoder *)self _writeSBN:v25 rq:v23 repairFactor:factor inputIO:v20 outputFile:v34 error:error])
                     {
                       nanorq_encoder_cleanup(v23, v25);
                       v36 = 1;
@@ -501,19 +501,19 @@ LABEL_31:
                       goto LABEL_32;
                     }
 
-                    if (a6)
+                    if (error)
                     {
                       v37 = 0;
                       goto LABEL_45;
                     }
                   }
 
-                  else if (a6)
+                  else if (error)
                   {
                     v37 = NSErrorF();
 LABEL_45:
                     v36 = 0;
-                    *a6 = v37;
+                    *error = v37;
                     goto LABEL_30;
                   }
 
@@ -521,16 +521,16 @@ LABEL_45:
                   goto LABEL_30;
                 }
 
-                if (a6)
+                if (error)
                 {
 LABEL_40:
                   NSErrorF();
-                  *a6 = v36 = 0;
+                  *error = v36 = 0;
                   goto LABEL_31;
                 }
               }
 
-              else if (a6)
+              else if (error)
               {
                 goto LABEL_40;
               }
@@ -549,9 +549,9 @@ LABEL_49:
 
             [(SKRaptorQEncoderSummary *)v38 setRqBasicParameters:nanorq_oti_common(v23)];
             [(SKRaptorQEncoderSummary *)v38 setRqExtendedParameters:nanorq_oti_scheme_specific(v23)];
-            v41 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v38 requiringSecureCoding:1 error:a6];
+            v41 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v38 requiringSecureCoding:1 error:error];
             v42 = v41;
-            if (v41 && [v41 writeToURL:v54 options:0 error:a6])
+            if (v41 && [v41 writeToURL:v54 options:0 error:error])
             {
               v12 = v38;
             }
@@ -567,7 +567,7 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          if (a6)
+          if (error)
           {
             goto LABEL_68;
           }
@@ -577,18 +577,18 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      if (a6)
+      if (error)
       {
         goto LABEL_63;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_63:
       v45 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a6 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_56;
     }
   }
@@ -681,17 +681,17 @@ void __71__SKRaptorQEncoder__writeSBN_rq_repairFactor_inputIO_outputFile_error__
   }
 }
 
-- (BOOL)_writeESI:(unsigned int)a3 sbn:(unsigned __int8)a4 rq:(nanorq *)a5 inputIO:(ioctx *)a6 outputFile:(__sFILE *)a7 error:(id *)a8
+- (BOOL)_writeESI:(unsigned int)i sbn:(unsigned __int8)sbn rq:(nanorq *)rq inputIO:(ioctx *)o outputFile:(__sFILE *)file error:(id *)error
 {
-  v12 = a4;
+  sbnCopy = sbn;
   v21 = *MEMORY[0x277D85DE8];
-  HIDWORD(v20) = nanorq_tag(a4, a3);
-  v14 = nanorq_symbol_size(a5);
+  HIDWORD(v20) = nanorq_tag(sbn, i);
+  v14 = nanorq_symbol_size(rq);
   v15 = (&v20 - ((MEMORY[0x28223BE20]() + 15) & 0xFFFFFFFFFFFFFFF0));
   bzero(v15, v14);
-  if (nanorq_encode(a5, v15, a3, v12, a6) != v14)
+  if (nanorq_encode(rq, v15, i, sbnCopy, o) != v14)
   {
-    if (a8)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -699,9 +699,9 @@ void __71__SKRaptorQEncoder__writeSBN_rq_repairFactor_inputIO_outputFile_error__
     goto LABEL_11;
   }
 
-  if (fwrite(&v20 + 4, 1uLL, 4uLL, a7) != 4)
+  if (fwrite(&v20 + 4, 1uLL, 4uLL, file) != 4)
   {
-    if (a8)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -710,14 +710,14 @@ void __71__SKRaptorQEncoder__writeSBN_rq_repairFactor_inputIO_outputFile_error__
   }
 
   v16 = 1;
-  if (fwrite(v15, 1uLL, v14, a7) != v14)
+  if (fwrite(v15, 1uLL, v14, file) != v14)
   {
-    if (a8)
+    if (error)
     {
 LABEL_10:
       v19 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a8 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_4;
     }
 

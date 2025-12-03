@@ -13,8 +13,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-  [v3 unregisterEventListener:self];
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+  [mEMORY[0x277D2C840] unregisterEventListener:self];
 
   v4.receiver = self;
   v4.super_class = PSGSEIDDetailsController;
@@ -23,9 +23,9 @@
 
 - (void)viewDidLoad
 {
-  v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-  [v3 registerEventListener:self];
-  -[PSGSEIDDetailsController setHwState:](self, "setHwState:", [v3 getHwSupport]);
+  mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+  [mEMORY[0x277D2C840] registerEventListener:self];
+  -[PSGSEIDDetailsController setHwState:](self, "setHwState:", [mEMORY[0x277D2C840] getHwSupport]);
   v4.receiver = self;
   v4.super_class = PSGSEIDDetailsController;
   [(PSGSEIDDetailsController *)&v4 viewDidLoad];
@@ -34,7 +34,7 @@
 - (id)specifiers
 {
   [(PSGSEIDDetailsController *)self _updateHwStateChange];
-  v3 = [(PSGSEIDDetailsController *)self hwState];
+  hwState = [(PSGSEIDDetailsController *)self hwState];
   v4 = *MEMORY[0x277D3FC48];
   v5 = *(&self->super.super.super.super.super.isa + v4);
   if (v5)
@@ -42,7 +42,7 @@
     goto LABEL_4;
   }
 
-  if (v3 == 2)
+  if (hwState == 2)
   {
     [(PSGSEIDDetailsController *)self _setupSEIDSpecifier];
     v5 = *(&self->super.super.super.super.super.isa + v4);
@@ -69,10 +69,10 @@ LABEL_5:
   SEIDString = self->_SEIDString;
   if (!SEIDString)
   {
-    v4 = [MEMORY[0x277D2C868] embeddedSecureElement];
-    v5 = [v4 serialNumber];
+    embeddedSecureElement = [MEMORY[0x277D2C868] embeddedSecureElement];
+    serialNumber = [embeddedSecureElement serialNumber];
     v6 = self->_SEIDString;
-    self->_SEIDString = v5;
+    self->_SEIDString = serialNumber;
 
     SEIDString = self->_SEIDString;
   }
@@ -89,9 +89,9 @@ LABEL_5:
     _os_log_impl(&dword_21CF20000, v3, OS_LOG_TYPE_DEFAULT, "HW state updated", buf, 2u);
   }
 
-  v4 = [(PSGSEIDDetailsController *)self hwState];
+  hwState = [(PSGSEIDDetailsController *)self hwState];
   [(PSGSEIDDetailsController *)self _updateHwStateChange];
-  if (v4 != 4 && v4 != [(PSGSEIDDetailsController *)self hwState])
+  if (hwState != 4 && hwState != [(PSGSEIDDetailsController *)self hwState])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -119,8 +119,8 @@ uint64_t __50__PSGSEIDDetailsController_hardwareStateDidChange__block_invoke(uin
 {
   if ([(PSGSEIDDetailsController *)self hwState]!= 4 && [(PSGSEIDDetailsController *)self hwState]!= 2)
   {
-    v3 = [MEMORY[0x277D2C840] sharedHardwareManager];
-    -[PSGSEIDDetailsController setHwState:](self, "setHwState:", [v3 getHwSupport]);
+    mEMORY[0x277D2C840] = [MEMORY[0x277D2C840] sharedHardwareManager];
+    -[PSGSEIDDetailsController setHwState:](self, "setHwState:", [mEMORY[0x277D2C840] getHwSupport]);
   }
 }
 
@@ -141,16 +141,16 @@ uint64_t __50__PSGSEIDDetailsController_hardwareStateDidChange__block_invoke(uin
 
   else
   {
-    v6 = [(PSGSEIDDetailsController *)self SEIDString];
-    if (!v6)
+    sEIDString = [(PSGSEIDDetailsController *)self SEIDString];
+    if (!sEIDString)
     {
       [PSGSEIDDetailsController _setupSEIDSpecifier];
     }
 
-    v5 = v6;
+    v5 = sEIDString;
     v7 = MEMORY[0x277D3FAD8];
-    v8 = [(PSGSEIDDetailsController *)self SEIDString];
-    v9 = [v7 preferenceSpecifierNamed:v8 target:0 set:0 get:0 detail:0 cell:4 edit:0];
+    sEIDString2 = [(PSGSEIDDetailsController *)self SEIDString];
+    v9 = [v7 preferenceSpecifierNamed:sEIDString2 target:0 set:0 get:0 detail:0 cell:4 edit:0];
 
     [v9 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FED8]];
     v15[0] = v9;

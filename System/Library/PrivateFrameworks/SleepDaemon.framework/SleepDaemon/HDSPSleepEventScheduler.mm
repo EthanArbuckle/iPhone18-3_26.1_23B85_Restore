@@ -1,9 +1,9 @@
 @interface HDSPSleepEventScheduler
 - (BOOL)_lock_shouldScheduleEvents;
-- (BOOL)_shouldNotifyHandler:(id)a3 forEvent:(id)a4;
+- (BOOL)_shouldNotifyHandler:(id)handler forEvent:(id)event;
 - (HDSPEnvironment)environment;
-- (HDSPSleepEventScheduler)initWithEnvironment:(id)a3;
-- (HDSPSleepEventScheduler)initWithEnvironment:(id)a3 schedulerProvider:(id)a4 limitingScheduler:(id)a5;
+- (HDSPSleepEventScheduler)initWithEnvironment:(id)environment;
+- (HDSPSleepEventScheduler)initWithEnvironment:(id)environment schedulerProvider:(id)provider limitingScheduler:(id)scheduler;
 - (HKSPSleepEvent)lastStandardSleepEvent;
 - (NSDate)lastEventTriggerDate;
 - (id)_allSleepEvents;
@@ -13,39 +13,39 @@
 - (void)_handleOverdueEvents;
 - (void)_loadLastStandardSleepEvent;
 - (void)_lock_rescheduleEvents;
-- (void)_lock_updateLastStandardSleepEvent:(id)a3;
+- (void)_lock_updateLastStandardSleepEvent:(id)event;
 - (void)_schedulePendingEvents;
-- (void)addEventHandler:(id)a3;
-- (void)addEventProvider:(id)a3;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)eventProviderCancelledEvents:(id)a3;
-- (void)eventProviderHasUpcomingEvents:(id)a3;
-- (void)notifyForOverdueEvents:(id)a3;
-- (void)removeEventHandler:(id)a3;
-- (void)removeEventProvider:(id)a3;
+- (void)addEventHandler:(id)handler;
+- (void)addEventProvider:(id)provider;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)eventProviderCancelledEvents:(id)events;
+- (void)eventProviderHasUpcomingEvents:(id)events;
+- (void)notifyForOverdueEvents:(id)events;
+- (void)removeEventHandler:(id)handler;
+- (void)removeEventProvider:(id)provider;
 - (void)rescheduleEvents;
 - (void)scheduledEventIsDue;
-- (void)setLastEventTriggerDate:(id)a3;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
+- (void)setLastEventTriggerDate:(id)date;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
 @end
 
 @implementation HDSPSleepEventScheduler
 
-- (HDSPSleepEventScheduler)initWithEnvironment:(id)a3
+- (HDSPSleepEventScheduler)initWithEnvironment:(id)environment
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__HDSPSleepEventScheduler_initWithEnvironment___block_invoke;
   v11[3] = &unk_279C7C718;
-  v12 = self;
+  selfCopy = self;
   v4 = MEMORY[0x277D62470];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277D2C938] serialDispatchQueueSchedulerWithName:@"com.apple.sleep.HDSPSleepEventScheduler"];
   v8 = [v6 initWithScheduler:v7];
-  v9 = [(HDSPSleepEventScheduler *)v12 initWithEnvironment:v5 schedulerProvider:v11 limitingScheduler:v8];
+  v9 = [(HDSPSleepEventScheduler *)selfCopy initWithEnvironment:environmentCopy schedulerProvider:v11 limitingScheduler:v8];
 
   return v9;
 }
@@ -60,12 +60,12 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
   return v5;
 }
 
-- (HDSPSleepEventScheduler)initWithEnvironment:(id)a3 schedulerProvider:(id)a4 limitingScheduler:(id)a5
+- (HDSPSleepEventScheduler)initWithEnvironment:(id)environment schedulerProvider:(id)provider limitingScheduler:(id)scheduler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v33.receiver = self;
   v33.super_class = HDSPSleepEventScheduler;
   v11 = [(HDSPSleepEventScheduler *)&v33 init];
@@ -83,9 +83,9 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
       _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v11->_environment, v8);
-    v15 = [v8 mutexGenerator];
-    v16 = v15[2]();
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v16 = mutexGenerator[2]();
     mutexProvider = v11->_mutexProvider;
     v11->_mutexProvider = v16;
 
@@ -94,22 +94,22 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
     v11->_sleepEvents = v18;
 
     v20 = objc_alloc(MEMORY[0x277D624A0]);
-    v21 = [v8 defaultCallbackScheduler];
-    v22 = [v20 initWithCallbackScheduler:v21];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v22 = [v20 initWithCallbackScheduler:defaultCallbackScheduler];
     eventHandlers = v11->_eventHandlers;
     v11->_eventHandlers = v22;
 
-    v24 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     eventProviders = v11->_eventProviders;
-    v11->_eventProviders = v24;
+    v11->_eventProviders = weakObjectsHashTable;
 
-    v26 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     pendingEventProviders = v11->_pendingEventProviders;
-    v11->_pendingEventProviders = v26;
+    v11->_pendingEventProviders = weakObjectsHashTable2;
 
-    if (v9)
+    if (providerCopy)
     {
-      v28 = v9[2](v9, v8);
+      v28 = providerCopy[2](providerCopy, environmentCopy);
     }
 
     else
@@ -121,7 +121,7 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
     v11->_scheduler = v28;
 
     [(HDSPEventScheduler *)v11->_scheduler setDelegate:v11];
-    objc_storeStrong(&v11->_limitingScheduler, a5);
+    objc_storeStrong(&v11->_limitingScheduler, scheduler);
     v30 = v11;
   }
 
@@ -153,10 +153,10 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
 - (void)_lock_rescheduleEvents
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepEventScheduler *)self _lock_shouldScheduleEvents];
+  _lock_shouldScheduleEvents = [(HDSPSleepEventScheduler *)self _lock_shouldScheduleEvents];
   v4 = HKSPLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_lock_shouldScheduleEvents)
   {
     if (v5)
     {
@@ -167,19 +167,19 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v8 = [WeakRetained assertionManager];
-    [v8 takeAssertionWithIdentifier:@"HDSPRescheduleTransaction" type:1];
+    assertionManager = [WeakRetained assertionManager];
+    [assertionManager takeAssertionWithIdentifier:@"HDSPRescheduleTransaction" type:1];
 
-    v9 = [WeakRetained assertionManager];
-    [v9 takeAssertionWithIdentifier:@"HDSPRescheduleAssertion" type:2];
+    assertionManager2 = [WeakRetained assertionManager];
+    [assertionManager2 takeAssertionWithIdentifier:@"HDSPRescheduleAssertion" type:2];
 
-    v10 = [(NSHashTable *)self->_eventProviders allObjects];
+    allObjects = [(NSHashTable *)self->_eventProviders allObjects];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __49__HDSPSleepEventScheduler__lock_rescheduleEvents__block_invoke;
     v13[3] = &unk_279C7C740;
     v13[4] = self;
-    [v10 na_each:v13];
+    [allObjects na_each:v13];
   }
 
   else
@@ -218,34 +218,34 @@ HDSPXPCAlarmScheduler *__47__HDSPSleepEventScheduler_initWithEnvironment___block
 {
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained sleepScheduleModelManager];
-  v5 = [v4 sleepSchedule];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepSchedule = [sleepScheduleModelManager sleepSchedule];
 
-  if (([v5 isEnabled] & 1) == 0)
+  if (([sleepSchedule isEnabled] & 1) == 0)
   {
-    v11 = HKSPLogForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    sleepSettings = HKSPLogForCategory();
+    if (os_log_type_enabled(sleepSettings, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543362;
       v19 = objc_opt_class();
       v13 = v19;
-      _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule disabled, not scheduling", &v18, 0xCu);
+      _os_log_impl(&dword_269B11000, sleepSettings, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule disabled, not scheduling", &v18, 0xCu);
     }
 
     goto LABEL_11;
   }
 
   v6 = objc_loadWeakRetained(&self->_environment);
-  v7 = [v6 behavior];
-  v8 = [v7 isAppleWatch];
+  behavior = [v6 behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v8)
+  if (isAppleWatch)
   {
     v9 = objc_loadWeakRetained(&self->_environment);
-    v10 = [v9 sleepScheduleModelManager];
-    v11 = [v10 sleepSettings];
+    sleepScheduleModelManager2 = [v9 sleepScheduleModelManager];
+    sleepSettings = [sleepScheduleModelManager2 sleepSettings];
 
-    if (([v11 watchSleepFeaturesEnabled]& 1) != 0)
+    if (([sleepSettings watchSleepFeaturesEnabled]& 1) != 0)
     {
 
       goto LABEL_5;
@@ -273,10 +273,10 @@ LABEL_12:
   return v12;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,25 +286,25 @@ LABEL_12:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v12, 0xCu);
   }
 
-  v7 = [v4 sleepScheduleModelManager];
-  [v7 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v8 = [v4 timeChangeListener];
-  [v8 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v9 = [v4 diagnostics];
-  [v9 addProvider:self];
+  diagnostics = [readyCopy diagnostics];
+  [diagnostics addProvider:self];
 
   if ([(HDSPEventScheduler *)self->_scheduler conformsToProtocol:&unk_287A97ED8])
   {
-    v10 = [v4 notificationListener];
-    [v10 addObserver:self->_scheduler];
+    notificationListener = [readyCopy notificationListener];
+    [notificationListener addObserver:self->_scheduler];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -377,34 +377,34 @@ void __54__HDSPSleepEventScheduler__loadLastStandardSleepEvent__block_invoke(uin
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_updateLastStandardSleepEvent:(id)a3
+- (void)_lock_updateLastStandardSleepEvent:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventCopy = event;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v5 identifier];
+    identifier = [eventCopy identifier];
     *buf = 138543618;
     v20 = v7;
     v21 = 2114;
-    v22 = v9;
+    v22 = identifier;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating last standard sleep event: %{public}@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_lastStandardSleepEvent, a3);
+  objc_storeStrong(&self->_lastStandardSleepEvent, event);
   v10 = objc_alloc_init(MEMORY[0x277D62458]);
   v18 = 0;
-  v11 = [v10 serialize:v5 error:&v18];
+  v11 = [v10 serialize:eventCopy error:&v18];
   v12 = v18;
   if (v11)
   {
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v14 = [WeakRetained userDefaults];
-    v15 = [v10 serializedDictionary];
-    [v14 hksp_setObject:v15 forKey:@"HDSPLastStandardSleepEvent"];
+    userDefaults = [WeakRetained userDefaults];
+    serializedDictionary = [v10 serializedDictionary];
+    [userDefaults hksp_setObject:serializedDictionary forKey:@"HDSPLastStandardSleepEvent"];
   }
 
   else
@@ -419,10 +419,10 @@ void __54__HDSPSleepEventScheduler__loadLastStandardSleepEvent__block_invoke(uin
     *buf = 138543874;
     v20 = v17;
     v21 = 2114;
-    v22 = v5;
+    v22 = eventCopy;
     v23 = 2114;
     v24 = v12;
-    v14 = v17;
+    userDefaults = v17;
     _os_log_error_impl(&dword_269B11000, WeakRetained, OS_LOG_TYPE_ERROR, "[%{public}@] failed to serialize sleep event %{public}@ with error %{public}@", buf, 0x20u);
   }
 
@@ -443,11 +443,11 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained currentDateProvider];
+  currentDateProvider = [WeakRetained currentDateProvider];
 
-  if (v6)
+  if (currentDateProvider)
   {
-    v6[2](v6);
+    currentDateProvider[2](currentDateProvider);
   }
 
   else
@@ -455,19 +455,19 @@ LABEL_7:
     [MEMORY[0x277CBEAA8] date];
   }
   v7 = ;
-  v8 = [(HDSPSleepEventScheduler *)self lastEventTriggerDate];
-  v9 = v8;
-  if (v8)
+  lastEventTriggerDate = [(HDSPSleepEventScheduler *)self lastEventTriggerDate];
+  v9 = lastEventTriggerDate;
+  if (lastEventTriggerDate)
   {
-    v10 = v8;
+    distantPast = lastEventTriggerDate;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v11 = v10;
+  v11 = distantPast;
 
   v12 = [v7 dateByAddingTimeInterval:-*MEMORY[0x277D622C0]];
   v13 = [v11 laterDate:v12];
@@ -479,7 +479,7 @@ LABEL_7:
   v18 = 3221225472;
   v19 = __49__HDSPSleepEventScheduler__schedulePendingEvents__block_invoke;
   v20 = &unk_279C7C7B8;
-  v21 = self;
+  selfCopy = self;
   v14 = v13;
   v22 = v14;
   v15 = v7;
@@ -682,18 +682,18 @@ uint64_t __49__HDSPSleepEventScheduler__schedulePendingEvents__block_invoke_2(ui
 - (NSDate)lastEventTriggerDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained userDefaults];
-  v4 = [v3 hksp_objectForKey:@"HDSPLastEventTriggerDate"];
+  userDefaults = [WeakRetained userDefaults];
+  v4 = [userDefaults hksp_objectForKey:@"HDSPLastEventTriggerDate"];
 
   return v4;
 }
 
-- (void)setLastEventTriggerDate:(id)a3
+- (void)setLastEventTriggerDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v5 = [WeakRetained userDefaults];
-  [v5 hksp_setObject:v4 forKey:@"HDSPLastEventTriggerDate"];
+  userDefaults = [WeakRetained userDefaults];
+  [userDefaults hksp_setObject:dateCopy forKey:@"HDSPLastEventTriggerDate"];
 }
 
 - (HKSPSleepEvent)lastStandardSleepEvent
@@ -759,11 +759,11 @@ uint64_t __49__HDSPSleepEventScheduler__schedulePendingEvents__block_invoke_2(ui
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained currentDateProvider];
-  v7 = v6;
-  if (v6)
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v7 = currentDateProvider;
+  if (currentDateProvider)
   {
-    (*(v6 + 16))(v6);
+    (*(currentDateProvider + 16))(currentDateProvider);
   }
 
   else
@@ -776,7 +776,7 @@ uint64_t __49__HDSPSleepEventScheduler__schedulePendingEvents__block_invoke_2(ui
   v12 = 3221225472;
   v13 = __47__HDSPSleepEventScheduler__handleOverdueEvents__block_invoke;
   v14 = &unk_279C7B2D0;
-  v15 = self;
+  selfCopy = self;
   v16 = v8;
   v9 = v8;
   [(HDSPSleepEventScheduler *)self _withLock:&v11];
@@ -818,34 +818,34 @@ uint64_t __47__HDSPSleepEventScheduler__handleOverdueEvents__block_invoke_3(uint
   return v6;
 }
 
-- (void)notifyForOverdueEvents:(id)a3
+- (void)notifyForOverdueEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v18 = objc_opt_class();
     v19 = 2114;
-    v20 = v4;
+    v20 = eventsCopy;
     v6 = v18;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] overdue events: %{public}@", buf, 0x16u);
   }
 
-  if ([v4 count])
+  if ([eventsCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v8 = [WeakRetained assertionManager];
-    [v8 takeAssertionWithIdentifier:@"HDSPNotifyDueAssertion" type:2];
+    assertionManager = [WeakRetained assertionManager];
+    [assertionManager takeAssertionWithIdentifier:@"HDSPNotifyDueAssertion" type:2];
 
     eventHandlers = self->_eventHandlers;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __50__HDSPSleepEventScheduler_notifyForOverdueEvents___block_invoke;
     v14[3] = &unk_279C7C828;
-    v15 = v4;
-    v16 = self;
+    v15 = eventsCopy;
+    selfCopy = self;
     v10 = [(HKSPObserverSet *)eventHandlers enumerateObserversWithFutureBlock:v14];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -910,15 +910,15 @@ void __50__HDSPSleepEventScheduler_notifyForOverdueEvents___block_invoke_379(uin
   [v1 releaseAssertionWithIdentifier:@"HDSPNotifyDueAssertion"];
 }
 
-- (BOOL)_shouldNotifyHandler:(id)a3 forEvent:(id)a4
+- (BOOL)_shouldNotifyHandler:(id)handler forEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v5 eventIdentifiers], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  handlerCopy = handler;
+  eventCopy = event;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([handlerCopy eventIdentifiers], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v5 eventIdentifiers];
-    v9 = [v6 identifier];
-    v10 = [v8 containsObject:v9];
+    eventIdentifiers = [handlerCopy eventIdentifiers];
+    identifier = [eventCopy identifier];
+    v10 = [eventIdentifiers containsObject:identifier];
   }
 
   else
@@ -929,19 +929,19 @@ void __50__HDSPSleepEventScheduler_notifyForOverdueEvents___block_invoke_379(uin
   return v10;
 }
 
-- (void)eventProviderHasUpcomingEvents:(id)a3
+- (void)eventProviderHasUpcomingEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained defaultCallbackScheduler];
+  defaultCallbackScheduler = [WeakRetained defaultCallbackScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HDSPSleepEventScheduler_eventProviderHasUpcomingEvents___block_invoke;
   v8[3] = &unk_279C7B2D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBlock:v8];
+  v9 = eventsCopy;
+  v7 = eventsCopy;
+  [defaultCallbackScheduler performBlock:v8];
 }
 
 void __58__HDSPSleepEventScheduler_eventProviderHasUpcomingEvents___block_invoke(uint64_t a1)
@@ -974,19 +974,19 @@ void __58__HDSPSleepEventScheduler_eventProviderHasUpcomingEvents___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eventProviderCancelledEvents:(id)a3
+- (void)eventProviderCancelledEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained defaultCallbackScheduler];
+  defaultCallbackScheduler = [WeakRetained defaultCallbackScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HDSPSleepEventScheduler_eventProviderCancelledEvents___block_invoke;
   v8[3] = &unk_279C7B2D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBlock:v8];
+  v9 = eventsCopy;
+  v7 = eventsCopy;
+  [defaultCallbackScheduler performBlock:v8];
 }
 
 void __56__HDSPSleepEventScheduler_eventProviderCancelledEvents___block_invoke(uint64_t a1)
@@ -1027,21 +1027,21 @@ uint64_t __56__HDSPSleepEventScheduler_eventProviderCancelledEvents___block_invo
   return [v3 removeEventsForProvider:v2];
 }
 
-- (void)addEventProvider:(id)a3
+- (void)addEventProvider:(id)provider
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v4 setSleepEventDelegate:self];
+      [providerCopy setSleepEventDelegate:self];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __44__HDSPSleepEventScheduler_addEventProvider___block_invoke;
       v8[3] = &unk_279C7B2D0;
       v8[4] = self;
-      v9 = v4;
+      v9 = providerCopy;
       [(HDSPSleepEventScheduler *)self _withLock:v8];
     }
 
@@ -1053,7 +1053,7 @@ uint64_t __56__HDSPSleepEventScheduler_eventProviderCancelledEvents___block_invo
         *buf = 138543618;
         v11 = objc_opt_class();
         v12 = 2114;
-        v13 = v4;
+        v13 = providerCopy;
         v7 = v11;
         _os_log_error_impl(&dword_269B11000, v5, OS_LOG_TYPE_ERROR, "[%{public}@] event provider %{public}@ didn't synthesize a delegate", buf, 0x16u);
       }
@@ -1063,18 +1063,18 @@ uint64_t __56__HDSPSleepEventScheduler_eventProviderCancelledEvents___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEventProvider:(id)a3
+- (void)removeEventProvider:(id)provider
 {
-  v4 = a3;
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  providerCopy = provider;
+  if (providerCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 setSleepEventDelegate:0];
+    [providerCopy setSleepEventDelegate:0];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__HDSPSleepEventScheduler_removeEventProvider___block_invoke;
     v5[3] = &unk_279C7B2D0;
     v5[4] = self;
-    v6 = v4;
+    v6 = providerCopy;
     [(HDSPSleepEventScheduler *)self _withLock:v5];
   }
 }
@@ -1089,33 +1089,33 @@ uint64_t __47__HDSPSleepEventScheduler_removeEventProvider___block_invoke(uint64
   return [v3 removeObject:v2];
 }
 
-- (void)addEventHandler:(id)a3
+- (void)addEventHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(HKSPObserverSet *)self->_eventHandlers addObserver:?];
   }
 }
 
-- (void)removeEventHandler:(id)a3
+- (void)removeEventHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(HKSPObserverSet *)self->_eventHandlers removeObserver:?];
   }
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v5;
+    v12 = modelCopy;
     v7 = v10;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepScheduleModel: %{public}@", &v9, 0x16u);
   }
@@ -1124,7 +1124,7 @@ uint64_t __47__HDSPSleepEventScheduler_removeEventProvider___block_invoke(uint64
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -1136,14 +1136,14 @@ uint64_t __47__HDSPSleepEventScheduler_removeEventProvider___block_invoke(uint64
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] significantTimeChangeDetected", v15, 0xCu);
   }
 
-  v6 = [(HDSPSleepEventScheduler *)self environment];
-  v7 = [v6 currentDateProvider];
-  v9 = v7[2](v7, v8);
+  environment = [(HDSPSleepEventScheduler *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v9 = currentDateProvider[2](currentDateProvider, v8);
 
-  v10 = [(HDSPSleepEventScheduler *)self lastEventTriggerDate];
-  LODWORD(v7) = [v10 hksp_isAfterDate:v9];
+  lastEventTriggerDate = [(HDSPSleepEventScheduler *)self lastEventTriggerDate];
+  LODWORD(currentDateProvider) = [lastEventTriggerDate hksp_isAfterDate:v9];
 
-  if (v7)
+  if (currentDateProvider)
   {
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1196,10 +1196,10 @@ void __42__HDSPSleepEventScheduler__allSleepEvents__block_invoke(uint64_t a1)
 - (id)diagnosticDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDSPSleepEventScheduler *)self _allSleepEvents];
-  v5 = [(HDSPSleepEventScheduler *)self lastStandardSleepEvent];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"Scheduled Events: %@, Last Standard Sleep Event: %@", v4, v6];
+  _allSleepEvents = [(HDSPSleepEventScheduler *)self _allSleepEvents];
+  lastStandardSleepEvent = [(HDSPSleepEventScheduler *)self lastStandardSleepEvent];
+  identifier = [lastStandardSleepEvent identifier];
+  v7 = [v3 stringWithFormat:@"Scheduled Events: %@, Last Standard Sleep Event: %@", _allSleepEvents, identifier];
 
   return v7;
 }

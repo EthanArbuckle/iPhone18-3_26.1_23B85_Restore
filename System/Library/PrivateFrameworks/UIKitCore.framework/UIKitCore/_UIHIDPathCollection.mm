@@ -1,15 +1,15 @@
 @interface _UIHIDPathCollection
-- (BOOL)hasPathWithId:(id)a3;
+- (BOOL)hasPathWithId:(id)id;
 - (_UIHIDPathCollection)init;
-- (__IOHIDEvent)_createCollectionEventForEvent:(__IOHIDEvent *)a3;
+- (__IOHIDEvent)_createCollectionEventForEvent:(__IOHIDEvent *)event;
 - (id)hidEventFromCurrentState;
-- (id)pathsInPhase:(int64_t)a3;
+- (id)pathsInPhase:(int64_t)phase;
 - (id)pathsTouching;
 - (unsigned)_collectionMask;
-- (void)addPath:(id)a3;
+- (void)addPath:(id)path;
 - (void)dealloc;
-- (void)removePath:(id)a3;
-- (void)updateWithHIDEvent:(__IOHIDEvent *)a3;
+- (void)removePath:(id)path;
+- (void)updateWithHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation _UIHIDPathCollection
@@ -45,15 +45,15 @@
   [(_UIHIDPathCollection *)&v4 dealloc];
 }
 
-- (BOOL)hasPathWithId:(id)a3
+- (BOOL)hasPathWithId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_pathsById objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_pathsById objectForKey:id];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)pathsInPhase:(int64_t)a3
+- (id)pathsInPhase:(int64_t)phase
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -61,8 +61,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -73,17 +73,17 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 deliveryPhase] == a3)
+        if ([v11 deliveryPhase] == phase)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -100,8 +100,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -112,7 +112,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -122,7 +122,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -131,35 +131,35 @@
   return v3;
 }
 
-- (void)addPath:(id)a3
+- (void)addPath:(id)path
 {
   pathsById = self->_pathsById;
-  v4 = a3;
-  v5 = [v4 pathId];
-  [(NSMutableDictionary *)pathsById setObject:v4 forKey:v5];
+  pathCopy = path;
+  pathId = [pathCopy pathId];
+  [(NSMutableDictionary *)pathsById setObject:pathCopy forKey:pathId];
 }
 
-- (void)removePath:(id)a3
+- (void)removePath:(id)path
 {
   pathsById = self->_pathsById;
-  v4 = [a3 pathId];
-  [(NSMutableDictionary *)pathsById removeObjectForKey:v4];
+  pathId = [path pathId];
+  [(NSMutableDictionary *)pathsById removeObjectForKey:pathId];
 }
 
-- (void)updateWithHIDEvent:(__IOHIDEvent *)a3
+- (void)updateWithHIDEvent:(__IOHIDEvent *)event
 {
   hidEvent = self->_hidEvent;
-  if (hidEvent != a3)
+  if (hidEvent != event)
   {
     if (hidEvent)
     {
       CFRelease(hidEvent);
     }
 
-    self->_hidEvent = a3;
-    if (a3)
+    self->_hidEvent = event;
+    if (event)
     {
-      CFRetain(a3);
+      CFRetain(event);
     }
 
     self->_machTimestamp = IOHIDEventGetTimeStamp();
@@ -173,8 +173,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v3)
   {
 
@@ -194,18 +194,18 @@
       v11 = v8;
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(objectEnumerator);
       }
 
-      v12 = [*(*(&v15 + 1) + 8 * i) deliveryPhase];
-      v8 |= v12 == 6 || v12 == 4;
-      v7 |= v12 == 5;
-      v5 |= v12 == 6;
-      v6 |= (v12 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+      deliveryPhase = [*(*(&v15 + 1) + 8 * i) deliveryPhase];
+      v8 |= deliveryPhase == 6 || deliveryPhase == 4;
+      v7 |= deliveryPhase == 5;
+      v5 |= deliveryPhase == 6;
+      v6 |= (deliveryPhase & 0xFFFFFFFFFFFFFFFDLL) == 1;
     }
 
-    v13 = v12;
-    v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v13 = deliveryPhase;
+    v4 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v4);
@@ -244,7 +244,7 @@ LABEL_16:
   return result;
 }
 
-- (__IOHIDEvent)_createCollectionEventForEvent:(__IOHIDEvent *)a3
+- (__IOHIDEvent)_createCollectionEventForEvent:(__IOHIDEvent *)event
 {
   v18 = *MEMORY[0x1E69E9840];
   [(_UIHIDPathCollection *)self _collectionMask];
@@ -252,8 +252,8 @@ LABEL_16:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_pathsById objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     LOBYTE(v6) = 0;
@@ -264,7 +264,7 @@ LABEL_16:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -273,7 +273,7 @@ LABEL_16:
         [v9 deliveryPhase];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -298,7 +298,7 @@ LABEL_16:
 {
   v56 = *MEMORY[0x1E69E9840];
   v3 = _UIEventHIDGetChildStylusEvent(self->_hidEvent);
-  v46 = self;
+  selfCopy = self;
   v4 = BKSHIDEventGetBaseAttributes();
   v5 = objc_opt_class();
   v6 = v4;
@@ -322,9 +322,9 @@ LABEL_16:
 
   v8 = v7;
 
-  v9 = [v6 contextID];
-  v10 = v46;
-  v46->_locus = 0;
+  contextID = [v6 contextID];
+  v10 = selfCopy;
+  selfCopy->_locus = 0;
   v47 = [(_UIHIDPathCollection *)v10 _createCollectionEventForEvent:v10->_hidEvent];
   v11 = [(NSMutableDictionary *)v10->_pathsById count];
   MEMORY[0x1EEE9AC00](v11);
@@ -333,8 +333,8 @@ LABEL_16:
   v53 = 0u;
   v52 = 0u;
   v51 = 0u;
-  v13 = [(NSMutableDictionary *)v10->_pathsById objectEnumerator];
-  v49 = [v13 countByEnumeratingWithState:&v51 objects:v55 count:16];
+  objectEnumerator = [(NSMutableDictionary *)v10->_pathsById objectEnumerator];
+  v49 = [objectEnumerator countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (!v49)
   {
 
@@ -344,7 +344,7 @@ LABEL_26:
     goto LABEL_29;
   }
 
-  v38[3] = v9;
+  v38[3] = contextID;
   v39 = v38;
   v40 = v8;
   v41 = v6;
@@ -352,7 +352,7 @@ LABEL_26:
   v48 = *v52;
   v44 = *MEMORY[0x1E695E480];
   v42 = v3;
-  v43 = v13;
+  v43 = objectEnumerator;
   do
   {
     for (i = 0; i != v49; ++i)
@@ -373,8 +373,8 @@ LABEL_26:
           IOHIDEventGetFloatValue();
           IOHIDEventGetFloatValue();
           IOHIDEventGetFloatValue();
-          v17 = [v16 pathId];
-          [v17 intValue];
+          pathId = [v16 pathId];
+          [pathId intValue];
           [v16 identity];
           [v16 position];
           [v16 position];
@@ -385,8 +385,8 @@ LABEL_26:
 
         else
         {
-          v19 = [v16 pathId];
-          [v19 intValue];
+          pathId2 = [v16 pathId];
+          [pathId2 intValue];
           [v16 identity];
           [v16 position];
           [v16 position];
@@ -402,8 +402,8 @@ LABEL_26:
 
         [v16 generationCount];
         IOHIDEventSetIntegerValue();
-        v20 = [v16 pathId];
-        v21 = [v20 intValue];
+        pathId3 = [v16 pathId];
+        intValue = [pathId3 intValue];
 
         [v16 position];
         v23 = v22;
@@ -414,8 +414,8 @@ LABEL_26:
         [v16 position];
         v28 = v50;
         v29 = &v45[36 * v50];
-        *v29 = v21;
-        *(v29 + 1) = v21;
+        *v29 = intValue;
+        *(v29 + 1) = intValue;
         v31 = v30;
         *(v29 + 1) = 0;
         *(v29 + 4) = 0;
@@ -442,7 +442,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v33 = v46;
+  v33 = selfCopy;
   Type = IOHIDEventGetType();
   hidEvent = v33->_hidEvent;
   if (Type != 17)

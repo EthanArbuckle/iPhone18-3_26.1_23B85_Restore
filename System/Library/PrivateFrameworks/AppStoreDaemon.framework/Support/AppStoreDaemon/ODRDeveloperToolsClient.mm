@@ -1,25 +1,25 @@
 @interface ODRDeveloperToolsClient
-- (void)getSimulatedBandwidthWithReply:(id)a3;
-- (void)purgeAllTagsInBundleWithID:(id)a3 replyBlock:(id)a4;
-- (void)purgeTagWithName:(id)a3 inBundleWithID:(id)a4 replyBlock:(id)a5;
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 replyBlock:(id)a5;
-- (void)setSimulatedBandwidth:(unint64_t)a3 withReply:(id)a4;
-- (void)tagStatusForBundle:(id)a3 replyBlock:(id)a4;
+- (void)getSimulatedBandwidthWithReply:(id)reply;
+- (void)purgeAllTagsInBundleWithID:(id)d replyBlock:(id)block;
+- (void)purgeTagWithName:(id)name inBundleWithID:(id)d replyBlock:(id)block;
+- (void)registerManifest:(id)manifest forBundleID:(id)d replyBlock:(id)block;
+- (void)setSimulatedBandwidth:(unint64_t)bandwidth withReply:(id)reply;
+- (void)tagStatusForBundle:(id)bundle replyBlock:(id)block;
 @end
 
 @implementation ODRDeveloperToolsClient
 
-- (void)tagStatusForBundle:(id)a3 replyBlock:(id)a4
+- (void)tagStatusForBundle:(id)bundle replyBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_1002ECD84;
   v20 = sub_1002ECD94;
   v21 = objc_opt_new();
-  v7 = sub_100399B78(ODRApplication, v5);
+  v7 = sub_100399B78(ODRApplication, bundleCopy);
   v8 = sub_10039A79C(v7, 0);
   v9 = sub_100208FBC();
   v12[0] = _NSConcreteStackBlock;
@@ -33,25 +33,25 @@
   v15 = &v16;
   [v9 readUsingSession:v12];
 
-  v6[2](v6, v17[5], 0);
+  blockCopy[2](blockCopy, v17[5], 0);
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)purgeAllTagsInBundleWithID:(id)a3 replyBlock:(id)a4
+- (void)purgeAllTagsInBundleWithID:(id)d replyBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  blockCopy = block;
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     *&buf[4] = "[ODRDeveloperToolsClient purgeAllTagsInBundleWithID:replyBlock:]";
     *&buf[12] = 2114;
-    *&buf[14] = v5;
+    *&buf[14] = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s BundleID [%{public}@]", buf, 0x16u);
   }
 
-  v8 = sub_100399B78(ODRApplication, v5);
+  v8 = sub_100399B78(ODRApplication, dCopy);
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -102,28 +102,28 @@
     while (v12);
   }
 
-  v6[2](v6, 0);
+  blockCopy[2](blockCopy, 0);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)purgeTagWithName:(id)a3 inBundleWithID:(id)a4 replyBlock:(id)a5
+- (void)purgeTagWithName:(id)name inBundleWithID:(id)d replyBlock:(id)block
 {
-  v7 = a3;
-  v25 = a4;
-  v24 = a5;
+  nameCopy = name;
+  dCopy = d;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     *&buf[4] = "[ODRDeveloperToolsClient purgeTagWithName:inBundleWithID:replyBlock:]";
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = nameCopy;
     *&buf[22] = 2114;
-    v42 = v25;
+    v42 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s TagName [%{public}@] BundleID [%{public}@]", buf, 0x20u);
   }
 
-  v9 = sub_100399B78(ODRApplication, v25);
+  v9 = sub_100399B78(ODRApplication, dCopy);
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -136,7 +136,7 @@
   v30[2] = sub_1002ED8D0;
   v30[3] = &unk_10051F410;
   v33 = buf;
-  v23 = v7;
+  v23 = nameCopy;
   v31 = v23;
   v22 = v9;
   v32 = v22;
@@ -151,7 +151,7 @@
     v37 = 2114;
     v38 = v23;
     v39 = 2114;
-    v40 = v25;
+    v40 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "There are [%ld] tags with name [%{public}@] for bundleID [%{public}@]", v35, 0x20u);
   }
 
@@ -194,21 +194,21 @@
     while (v14);
   }
 
-  v24[2](v24, 0);
+  blockCopy[2](blockCopy, 0);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 replyBlock:(id)a5
+- (void)registerManifest:(id)manifest forBundleID:(id)d replyBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_100399B78(ODRApplication, v8);
+  manifestCopy = manifest;
+  dCopy = d;
+  blockCopy = block;
+  v10 = sub_100399B78(ODRApplication, dCopy);
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v22 = [v7 length];
+    v22 = [manifestCopy length];
     v23 = 2114;
     v24 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[DT] Importing %{iec-bytes}lu manifest for %{public}@", buf, 0x16u);
@@ -217,7 +217,7 @@
   v12 = sub_100338694([ODRApplicationImportTask alloc], v10);
   v13 = [ODRManifest alloc];
   v14 = sub_10039A6A0(v10);
-  v15 = sub_100280A90(v13, v7, v14, 0);
+  v15 = sub_100280A90(v13, manifestCopy, v14, 0);
 
   if (v12)
   {
@@ -230,7 +230,7 @@
   v18[2] = sub_1002EDBC0;
   v18[3] = &unk_100522188;
   objc_copyWeak(&v20, buf);
-  v17 = v9;
+  v17 = blockCopy;
   v19 = v17;
   [v12 setCompletionBlock:v18];
   sub_10023EDE4(ODRTaskQueue, v12, -1);
@@ -239,19 +239,19 @@
   objc_destroyWeak(buf);
 }
 
-- (void)getSimulatedBandwidthWithReply:(id)a3
+- (void)getSimulatedBandwidthWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v4 = sub_1002B3D88();
-  (*(a3 + 2))(v5, v4, 0);
+  (*(reply + 2))(replyCopy, v4, 0);
 }
 
-- (void)setSimulatedBandwidth:(unint64_t)a3 withReply:(id)a4
+- (void)setSimulatedBandwidth:(unint64_t)bandwidth withReply:(id)reply
 {
-  v6 = a4;
-  sub_1002B3D04(ODRSimulatedDownloadsManager, a3);
+  replyCopy = reply;
+  sub_1002B3D04(ODRSimulatedDownloadsManager, bandwidth);
   v5 = sub_1002B3D88();
-  v6[2](v6, v5, 0);
+  replyCopy[2](replyCopy, v5, 0);
 }
 
 @end

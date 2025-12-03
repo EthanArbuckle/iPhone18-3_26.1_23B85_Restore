@@ -1,8 +1,8 @@
 @interface HMCHIPVendorMetadataProduct
-+ (id)productFromDictionaryRepresentation:(id)a3;
++ (id)productFromDictionaryRepresentation:(id)representation;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCHIPVendorMetadataProduct)initWithIdentifier:(id)a3 categoryNumber:(id)a4 deviceTypeID:(id)a5 name:(id)a6 label:(id)a7 installationGuideURL:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HMCHIPVendorMetadataProduct)initWithIdentifier:(id)identifier categoryNumber:(id)number deviceTypeID:(id)d name:(id)name label:(id)label installationGuideURL:(id)l;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)dictionaryRepresentation;
@@ -13,58 +13,58 @@
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMCHIPVendorMetadataProduct *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMCHIPVendorMetadataProduct *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
-  v9 = [v7 initWithName:@"Category" value:v8];
-  [v3 addObject:v9];
+  categoryNumber = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
+  v9 = [v7 initWithName:@"Category" value:categoryNumber];
+  [array addObject:v9];
 
-  v10 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
+  deviceTypeID = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
 
-  if (v10)
+  if (deviceTypeID)
   {
     v11 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v12 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
-    v13 = [v11 initWithName:@"Device Type" value:v12];
-    [v3 addObject:v13];
+    deviceTypeID2 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
+    v13 = [v11 initWithName:@"Device Type" value:deviceTypeID2];
+    [array addObject:v13];
   }
 
-  v14 = [(HMCHIPVendorMetadataProduct *)self name];
+  name = [(HMCHIPVendorMetadataProduct *)self name];
 
-  if (v14)
+  if (name)
   {
     v15 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v16 = [(HMCHIPVendorMetadataProduct *)self name];
-    v17 = [v15 initWithName:@"Name" value:v16];
-    [v3 addObject:v17];
+    name2 = [(HMCHIPVendorMetadataProduct *)self name];
+    v17 = [v15 initWithName:@"Name" value:name2];
+    [array addObject:v17];
   }
 
-  v18 = [(HMCHIPVendorMetadataProduct *)self label];
+  label = [(HMCHIPVendorMetadataProduct *)self label];
 
-  if (v18)
+  if (label)
   {
     v19 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v20 = [(HMCHIPVendorMetadataProduct *)self label];
-    v21 = [v19 initWithName:@"Label" value:v20];
-    [v3 addObject:v21];
+    label2 = [(HMCHIPVendorMetadataProduct *)self label];
+    v21 = [v19 initWithName:@"Label" value:label2];
+    [array addObject:v21];
   }
 
-  v22 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
+  installationGuideURL = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
 
-  if (v22)
+  if (installationGuideURL)
   {
     v23 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v24 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
-    v25 = [v23 initWithName:@"Installation Guide URL" value:v24];
-    [v3 addObject:v25];
+    installationGuideURL2 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
+    v25 = [v23 initWithName:@"Installation Guide URL" value:installationGuideURL2];
+    [array addObject:v25];
   }
 
-  v26 = [v3 copy];
+  v26 = [array copy];
 
   return v26;
 }
@@ -78,19 +78,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMCHIPVendorMetadataProduct *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMCHIPVendorMetadataProduct *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -102,19 +102,19 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 identifier];
-    v9 = [(HMCHIPVendorMetadataProduct *)self identifier];
-    if ([v8 isEqualToNumber:v9])
+    identifier = [v6 identifier];
+    identifier2 = [(HMCHIPVendorMetadataProduct *)self identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v10 = [v7 categoryNumber];
-      v11 = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
-      if (![v10 isEqualToNumber:v11])
+      categoryNumber = [v7 categoryNumber];
+      categoryNumber2 = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
+      if (![categoryNumber isEqualToNumber:categoryNumber2])
       {
         goto LABEL_13;
       }
 
-      v12 = [v7 deviceTypeID];
-      v13 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
+      deviceTypeID = [v7 deviceTypeID];
+      deviceTypeID2 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
       v14 = HMFEqualObjects();
 
       if (!v14)
@@ -122,8 +122,8 @@
         goto LABEL_13;
       }
 
-      v15 = [v7 name];
-      v16 = [(HMCHIPVendorMetadataProduct *)self name];
+      name = [v7 name];
+      name2 = [(HMCHIPVendorMetadataProduct *)self name];
       v17 = HMFEqualObjects();
 
       if (!v17)
@@ -131,14 +131,14 @@
         goto LABEL_13;
       }
 
-      v18 = [v7 label];
-      v19 = [(HMCHIPVendorMetadataProduct *)self label];
+      label = [v7 label];
+      label2 = [(HMCHIPVendorMetadataProduct *)self label];
       v20 = HMFEqualObjects();
 
       if (v20)
       {
-        v21 = [v7 installationGuideURL];
-        v22 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
+        installationGuideURL = [v7 installationGuideURL];
+        installationGuideURL2 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
         v23 = HMFEqualObjects();
       }
 
@@ -163,47 +163,47 @@ LABEL_13:
   return v23;
 }
 
-- (HMCHIPVendorMetadataProduct)initWithIdentifier:(id)a3 categoryNumber:(id)a4 deviceTypeID:(id)a5 name:(id)a6 label:(id)a7 installationGuideURL:(id)a8
+- (HMCHIPVendorMetadataProduct)initWithIdentifier:(id)identifier categoryNumber:(id)number deviceTypeID:(id)d name:(id)name label:(id)label installationGuideURL:(id)l
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v27 = a6;
-  obj = a8;
-  v26 = a7;
-  v18 = a8;
-  if (!v15)
+  identifierCopy = identifier;
+  numberCopy = number;
+  dCopy = d;
+  nameCopy = name;
+  obj = l;
+  labelCopy = label;
+  lCopy = l;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v16)
+  if (!numberCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v17)
+  if (!dCopy)
   {
 LABEL_9:
     v23 = _HMFPreconditionFailure();
     return [(HMCHIPVendorMetadataProduct *)v23 dictionaryRepresentation];
   }
 
-  v19 = v18;
+  v19 = lCopy;
   v28.receiver = self;
   v28.super_class = HMCHIPVendorMetadataProduct;
   v20 = [(HMCHIPVendorMetadataProduct *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_identifier, a3);
-    objc_storeStrong(&v21->_categoryNumber, a4);
-    objc_storeStrong(&v21->_deviceTypeID, a5);
-    objc_storeStrong(&v21->_label, a7);
-    objc_storeStrong(&v21->_name, a6);
+    objc_storeStrong(&v20->_identifier, identifier);
+    objc_storeStrong(&v21->_categoryNumber, number);
+    objc_storeStrong(&v21->_deviceTypeID, d);
+    objc_storeStrong(&v21->_label, label);
+    objc_storeStrong(&v21->_name, name);
     objc_storeStrong(&v21->_installationGuideURL, obj);
   }
 
@@ -212,32 +212,32 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(HMCHIPVendorMetadataProduct *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"ProductID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  identifier = [(HMCHIPVendorMetadataProduct *)self identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"ProductID"];
 
-  v5 = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
-  [v3 setObject:v5 forKeyedSubscript:@"Category"];
+  categoryNumber = [(HMCHIPVendorMetadataProduct *)self categoryNumber];
+  [dictionary setObject:categoryNumber forKeyedSubscript:@"Category"];
 
-  v6 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
+  deviceTypeID = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
 
-  if (v6)
+  if (deviceTypeID)
   {
-    v7 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
-    [v3 setObject:v7 forKeyedSubscript:@"DeviceType"];
+    deviceTypeID2 = [(HMCHIPVendorMetadataProduct *)self deviceTypeID];
+    [dictionary setObject:deviceTypeID2 forKeyedSubscript:@"DeviceType"];
   }
 
-  v8 = [(HMCHIPVendorMetadataProduct *)self name];
-  [v3 setObject:v8 forKeyedSubscript:@"Name"];
+  name = [(HMCHIPVendorMetadataProduct *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"Name"];
 
-  v9 = [(HMCHIPVendorMetadataProduct *)self label];
-  [v3 setObject:v9 forKeyedSubscript:@"Label"];
+  label = [(HMCHIPVendorMetadataProduct *)self label];
+  [dictionary setObject:label forKeyedSubscript:@"Label"];
 
-  v10 = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
-  v11 = [v10 absoluteString];
-  [v3 setObject:v11 forKeyedSubscript:@"InstallationGuideURL"];
+  installationGuideURL = [(HMCHIPVendorMetadataProduct *)self installationGuideURL];
+  absoluteString = [installationGuideURL absoluteString];
+  [dictionary setObject:absoluteString forKeyedSubscript:@"InstallationGuideURL"];
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
@@ -249,16 +249,16 @@ LABEL_9:
   return NSStringFromClass(v2);
 }
 
-+ (id)productFromDictionaryRepresentation:(id)a3
++ (id)productFromDictionaryRepresentation:(id)representation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"ProductID"];
-  v6 = [v4 hmf_numberForKey:@"Category"];
-  v7 = [v4 hmf_numberForKey:@"DeviceType"];
-  v8 = [v4 hmf_stringForKey:@"Label"];
-  v9 = [v4 hmf_stringForKey:@"Name"];
-  v10 = [v4 hmf_stringForKey:@"InstallationGuideURL"];
+  representationCopy = representation;
+  v5 = [representationCopy hmf_numberForKey:@"ProductID"];
+  v6 = [representationCopy hmf_numberForKey:@"Category"];
+  v7 = [representationCopy hmf_numberForKey:@"DeviceType"];
+  v8 = [representationCopy hmf_stringForKey:@"Label"];
+  v9 = [representationCopy hmf_stringForKey:@"Name"];
+  v10 = [representationCopy hmf_stringForKey:@"InstallationGuideURL"];
   if (v10)
   {
     v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
@@ -285,7 +285,7 @@ LABEL_9:
 
 LABEL_8:
   context = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -294,7 +294,7 @@ LABEL_8:
     *buf = 138543618;
     v21 = v15;
     v22 = 2112;
-    v23 = v4;
+    v23 = representationCopy;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@productFromDictionaryRepresentation cannot build object from dictionary %@", buf, 0x16u);
 
     v8 = v18;

@@ -1,25 +1,25 @@
 @interface VOTSimpleClickButtonInterceptor
-- (BOOL)touchEventOccurred:(id)a3 inTVDirectTouch:(BOOL)a4;
-- (VOTSimpleClickButtonInterceptor)initWithThreadKey:(id)a3 simpleClickHandler:(id)a4;
-- (void)_drainQueue:(BOOL)a3;
+- (BOOL)touchEventOccurred:(id)occurred inTVDirectTouch:(BOOL)touch;
+- (VOTSimpleClickButtonInterceptor)initWithThreadKey:(id)key simpleClickHandler:(id)handler;
+- (void)_drainQueue:(BOOL)queue;
 - (void)_timerFired;
-- (void)buttonDownOccurred:(id)a3;
-- (void)buttonUpOccurred:(id)a3;
+- (void)buttonDownOccurred:(id)occurred;
+- (void)buttonUpOccurred:(id)occurred;
 - (void)dealloc;
 @end
 
 @implementation VOTSimpleClickButtonInterceptor
 
-- (VOTSimpleClickButtonInterceptor)initWithThreadKey:(id)a3 simpleClickHandler:(id)a4
+- (VOTSimpleClickButtonInterceptor)initWithThreadKey:(id)key simpleClickHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = VOTSimpleClickButtonInterceptor;
   v8 = [(VOTSimpleClickButtonInterceptor *)&v16 init];
   if (v8)
   {
-    v9 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v8 selector:"_timerFired" threadKey:v6];
+    v9 = [objc_allocWithZone(SCRCTargetSelectorTimer) initWithTarget:v8 selector:"_timerFired" threadKey:keyCopy];
     simpleClickHandler = v8->_simpleClickHandler;
     v8->_simpleClickHandler = v9;
 
@@ -27,7 +27,7 @@
     timer = v8->_timer;
     v8->_timer = v11;
 
-    [(VOTSimpleClickButtonInterceptor *)v8 setSimpleClickHandler:v7];
+    [(VOTSimpleClickButtonInterceptor *)v8 setSimpleClickHandler:handlerCopy];
     v13 = dispatch_queue_create("ButtonInterceptorQueue", 0);
     v14 = *&v8->_clickDown;
     *&v8->_clickDown = v13;
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [(VOTSimpleClickButtonInterceptor *)self timer];
-  [v3 invalidate];
+  timer = [(VOTSimpleClickButtonInterceptor *)self timer];
+  [timer invalidate];
 
   v4 = *&self->_clickDown;
   *&self->_clickDown = 0;
@@ -49,40 +49,40 @@
   [(VOTSimpleClickButtonInterceptor *)&v5 dealloc];
 }
 
-- (void)buttonDownOccurred:(id)a3
+- (void)buttonDownOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v14.receiver = self;
   v14.super_class = VOTSimpleClickButtonInterceptor;
-  [(VOTButtonInterceptor *)&v14 buttonDownOccurred:v4];
+  [(VOTButtonInterceptor *)&v14 buttonDownOccurred:occurredCopy];
   *(&self->super._listensPassively + 1) = 1;
   v5 = *&self->_clickDown;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10011431C;
   v11 = &unk_1001C7778;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = occurredCopy;
+  v6 = occurredCopy;
   dispatch_sync(v5, &v8);
   v7 = [(VOTSimpleClickButtonInterceptor *)self timer:v8];
   [v7 dispatchAfterDelay:0.3];
 }
 
-- (void)buttonUpOccurred:(id)a3
+- (void)buttonUpOccurred:(id)occurred
 {
-  v4 = a3;
+  occurredCopy = occurred;
   v16.receiver = self;
   v16.super_class = VOTSimpleClickButtonInterceptor;
-  [(VOTButtonInterceptor *)&v16 buttonUpOccurred:v4];
+  [(VOTButtonInterceptor *)&v16 buttonUpOccurred:occurredCopy];
   v5 = *&self->_clickDown;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1001144C8;
   v13 = &unk_1001C7778;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = occurredCopy;
+  v6 = occurredCopy;
   dispatch_sync(v5, &v10);
   v7 = [(VOTSimpleClickButtonInterceptor *)self timer:v10];
   [v7 cancel];
@@ -108,16 +108,16 @@
   [(VOTSimpleClickButtonInterceptor *)self _drainQueue:1];
 }
 
-- (BOOL)touchEventOccurred:(id)a3 inTVDirectTouch:(BOOL)a4
+- (BOOL)touchEventOccurred:(id)occurred inTVDirectTouch:(BOOL)touch
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 handInfo];
-  v8 = [v7 eventType];
+  touchCopy = touch;
+  occurredCopy = occurred;
+  handInfo = [occurredCopy handInfo];
+  eventType = [handInfo eventType];
 
-  if (v4)
+  if (touchCopy)
   {
-    if (v8 == 1 && [v6 fingerCount] == 2)
+    if (eventType == 1 && [occurredCopy fingerCount] == 2)
     {
       v9 = +[VOTElement systemWideElement];
       [v9 sendTouchCancelledEvent];
@@ -128,19 +128,19 @@
 
   else
   {
-    v11 = v8 < 0xB;
+    v11 = eventType < 0xB;
     v12 = *&self->_clickDown;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001146C0;
     block[3] = &unk_1001CB700;
     block[4] = self;
-    v13 = v11 & (0x540u >> v8);
-    v17 = v8 == 1;
-    v18 = v11 & (0x540u >> v8);
-    v16 = v6;
+    v13 = v11 & (0x540u >> eventType);
+    v17 = eventType == 1;
+    v18 = v11 & (0x540u >> eventType);
+    v16 = occurredCopy;
     dispatch_sync(v12, block);
-    if (v8 == 1)
+    if (eventType == 1)
     {
       *(&self->super._listensPassively + 2) = 0;
     }
@@ -160,14 +160,14 @@
   return v10;
 }
 
-- (void)_drainQueue:(BOOL)a3
+- (void)_drainQueue:(BOOL)queue
 {
   v3 = *&self->_clickDown;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001147C8;
   v4[3] = &unk_1001C89E8;
-  v5 = a3;
+  queueCopy = queue;
   v4[4] = self;
   dispatch_async(v3, v4);
 }

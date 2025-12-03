@@ -68,31 +68,31 @@
     [NSString(IC) ic_containsNonWhitespaceCharacters];
   }
 
-  return [a1 rangeOfCharacterFromSet:ic_containsNonWhitespaceCharacters_invertedWhitespaces] != 0x7FFFFFFFFFFFFFFFLL;
+  return [self rangeOfCharacterFromSet:ic_containsNonWhitespaceCharacters_invertedWhitespaces] != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)ic_nilWhenEmpty
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (id)ic_calculateEqualsSignString
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 ic_thinSpaceCharacterString];
-  v4 = [a1 ic_equalsSignCharacterString];
-  v5 = [a1 ic_thinSpaceCharacterString];
-  v6 = [v2 stringWithFormat:@"%@%@%@", v3, v4, v5];
+  ic_thinSpaceCharacterString = [self ic_thinSpaceCharacterString];
+  ic_equalsSignCharacterString = [self ic_equalsSignCharacterString];
+  ic_thinSpaceCharacterString2 = [self ic_thinSpaceCharacterString];
+  v6 = [v2 stringWithFormat:@"%@%@%@", ic_thinSpaceCharacterString, ic_equalsSignCharacterString, ic_thinSpaceCharacterString2];
 
   return v6;
 }
@@ -100,8 +100,8 @@
 + (id)ic_calculateGraphExpressionString
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [a1 ic_calculateEqualsSignString];
-  v3 = [v1 stringWithFormat:@"y%@", v2];
+  ic_calculateEqualsSignString = [self ic_calculateEqualsSignString];
+  v3 = [v1 stringWithFormat:@"y%@", ic_calculateEqualsSignString];
 
   return v3;
 }
@@ -109,8 +109,8 @@
 - (id)ic_leftToRightString
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [objc_opt_class() ic_leftToRightCharacterString];
-  v4 = [v2 stringWithFormat:@"%@%@", v3, a1];
+  ic_leftToRightCharacterString = [objc_opt_class() ic_leftToRightCharacterString];
+  v4 = [v2 stringWithFormat:@"%@%@", ic_leftToRightCharacterString, self];
 
   return v4;
 }
@@ -118,32 +118,32 @@
 - (id)ic_rightToLeftString
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [objc_opt_class() ic_rightToLeftCharacterString];
-  v4 = [v2 stringWithFormat:@"%@%@", v3, a1];
+  ic_rightToLeftCharacterString = [objc_opt_class() ic_rightToLeftCharacterString];
+  v4 = [v2 stringWithFormat:@"%@%@", ic_rightToLeftCharacterString, self];
 
   return v4;
 }
 
 - (id)ic_md5
 {
-  v1 = [a1 ic_dataValue];
-  v2 = [v1 ic_md5];
+  ic_dataValue = [self ic_dataValue];
+  ic_md5 = [ic_dataValue ic_md5];
 
-  return v2;
+  return ic_md5;
 }
 
 - (id)ic_sha256
 {
-  v1 = [a1 ic_dataValue];
-  v2 = [v1 ic_sha256];
+  ic_dataValue = [self ic_dataValue];
+  ic_sha256 = [ic_dataValue ic_sha256];
 
-  return v2;
+  return ic_sha256;
 }
 
 - (id)ic_htmlStringEscapingQuotesAndLineBreaks
 {
   v16 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -156,7 +156,7 @@
     do
     {
       v5 = 0;
-      v6 = v1;
+      v6 = selfCopy;
       do
       {
         if (*v12 != v4)
@@ -167,10 +167,10 @@
         v7 = *(*(&v11 + 1) + 8 * v5);
         v8 = [v7 objectAtIndexedSubscript:0];
         v9 = [v7 objectAtIndexedSubscript:1];
-        v1 = [v6 stringByReplacingOccurrencesOfString:v8 withString:v9];
+        selfCopy = [v6 stringByReplacingOccurrencesOfString:v8 withString:v9];
 
         ++v5;
-        v6 = v1;
+        v6 = selfCopy;
       }
 
       while (v3 != v5);
@@ -180,23 +180,23 @@
     while (v3);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)ic_trimmedString
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (__CFString)ic_trailingTrimmedString
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v3 = [a1 length] + 1;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v3 = [self length] + 1;
     v4 = &stru_1F4FCDA88;
     while (1)
     {
@@ -207,9 +207,9 @@
       }
 
       --v3;
-      if (([v2 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", v5)}] & 1) == 0)
+      if (([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(self, "characterAtIndex:", v5)}] & 1) == 0)
       {
-        v4 = [a1 substringToIndex:v3];
+        v4 = [self substringToIndex:v3];
         break;
       }
     }
@@ -225,8 +225,8 @@
 
 - (id)ic_leadingTrimmedString
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 ic_stringByTrimmingLeadingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self ic_stringByTrimmingLeadingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
@@ -239,32 +239,32 @@
   }
 
   v2 = ic_whitespaceAndNewlineCoalescedString_regex;
-  v3 = [a1 length];
+  v3 = [self length];
 
-  return [v2 stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{v3, @" "}];
+  return [v2 stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{v3, @" "}];
 }
 
 - (id)ic_sanitizedFilenameString
 {
-  v1 = [a1 copy];
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [v1 stringByTrimmingCharactersInSet:v2];
+  v1 = [self copy];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [v1 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v4 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"."];
   v5 = [v3 ic_stringByTrimmingLeadingCharactersInSet:v4];
 
-  v6 = [MEMORY[0x1E696AB08] ic_illegalFilenameCharacterSet];
-  v7 = [v5 ic_stringByReplacingCharactersInSet:v6 withString:&stru_1F4FCDA88];
+  ic_illegalFilenameCharacterSet = [MEMORY[0x1E696AB08] ic_illegalFilenameCharacterSet];
+  v7 = [v5 ic_stringByReplacingCharactersInSet:ic_illegalFilenameCharacterSet withString:&stru_1F4FCDA88];
 
   if ([v7 length] > 0x80)
   {
-    v9 = [v7 pathExtension];
-    if ([v9 length])
+    pathExtension = [v7 pathExtension];
+    if ([pathExtension length])
     {
-      v10 = [v7 stringByDeletingPathExtension];
-      v11 = [v10 ic_substringToIndex:{126 - objc_msgSend(v9, "length")}];
+      stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
+      v11 = [stringByDeletingPathExtension ic_substringToIndex:{126 - objc_msgSend(pathExtension, "length")}];
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v11, v9];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v11, pathExtension];
     }
 
     else
@@ -283,7 +283,7 @@
 
 - (uint64_t)ic_lineRangeIgnoringLineBreakCharactersForIndex:()IC
 {
-  location = [a1 lineRangeForRange:{a3, 0}];
+  location = [self lineRangeForRange:{a3, 0}];
   length = v5;
   v7 = [@"\u2028" characterAtIndex:0];
   v8 = location - 1;
@@ -291,12 +291,12 @@
   {
     do
     {
-      if ([a1 characterAtIndex:v8] != v7)
+      if ([self characterAtIndex:v8] != v7)
       {
         break;
       }
 
-      v16.location = [a1 lineRangeForRange:{v8, 0}];
+      v16.location = [self lineRangeForRange:{v8, 0}];
       v16.length = v9;
       v14.location = location;
       v14.length = length;
@@ -309,9 +309,9 @@
     while ((v10.location - 1) > 0);
   }
 
-  for (i = location + length; (i - 1) >= 0 && i < [a1 length] && objc_msgSend(a1, "characterAtIndex:", i - 1) == v7; i = v12.location + v12.length)
+  for (i = location + length; (i - 1) >= 0 && i < [self length] && objc_msgSend(self, "characterAtIndex:", i - 1) == v7; i = v12.location + v12.length)
   {
-    v15.location = [a1 lineRangeForRange:{i, 0}];
+    v15.location = [self lineRangeForRange:{i, 0}];
     v17.location = location;
     v17.length = length;
     v12 = NSUnionRange(v15, v17);
@@ -324,8 +324,8 @@
 
 - (id)ic_stringByRemovingAttachmentCharacters
 {
-  v2 = [objc_opt_class() ic_attachmentCharacterString];
-  v3 = [a1 stringByReplacingOccurrencesOfString:v2 withString:&stru_1F4FCDA88];
+  ic_attachmentCharacterString = [objc_opt_class() ic_attachmentCharacterString];
+  v3 = [self stringByReplacingOccurrencesOfString:ic_attachmentCharacterString withString:&stru_1F4FCDA88];
 
   return v3;
 }
@@ -333,20 +333,20 @@
 - (id)ic_stringByRemovingLanguageDirectionCharacters
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = a1;
-  v3 = [v1 ic_leftToRightCharacterString];
-  v4 = [v2 stringByReplacingOccurrencesOfString:v3 withString:&stru_1F4FCDA88];
+  selfCopy = self;
+  ic_leftToRightCharacterString = [v1 ic_leftToRightCharacterString];
+  v4 = [selfCopy stringByReplacingOccurrencesOfString:ic_leftToRightCharacterString withString:&stru_1F4FCDA88];
 
-  v5 = [MEMORY[0x1E696AEC0] ic_rightToLeftCharacterString];
-  v6 = [v4 stringByReplacingOccurrencesOfString:v5 withString:&stru_1F4FCDA88];
+  ic_rightToLeftCharacterString = [MEMORY[0x1E696AEC0] ic_rightToLeftCharacterString];
+  v6 = [v4 stringByReplacingOccurrencesOfString:ic_rightToLeftCharacterString withString:&stru_1F4FCDA88];
 
   return v6;
 }
 
 - (id)ic_stringByRemovingWhitespaceOnlyLines
 {
-  v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v3 = [self componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_127];
   v5 = [v3 filteredArrayUsingPredicate:v4];
@@ -358,20 +358,20 @@
 
 - (uint64_t)ic_isLastCharacterANewline
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 ic_isLastCharacterInRangeANewlineForRange:{0, v2}];
+  return [self ic_isLastCharacterInRangeANewlineForRange:{0, v2}];
 }
 
 - (BOOL)ic_canConvertToTag
 {
-  v1 = [a1 stringByApplyingTransform:*MEMORY[0x1E695DA38] reverse:0];
+  v1 = [self stringByApplyingTransform:*MEMORY[0x1E695DA38] reverse:0];
   v2 = 0;
   if ([v1 length] <= 0x4C)
   {
-    v3 = [MEMORY[0x1E696AB08] ic_hashtagAllowedCharacterSet];
-    v4 = [objc_opt_class() ic_hashtagCharacterString];
-    if ([v1 hasPrefix:v4])
+    ic_hashtagAllowedCharacterSet = [MEMORY[0x1E696AB08] ic_hashtagAllowedCharacterSet];
+    ic_hashtagCharacterString = [objc_opt_class() ic_hashtagCharacterString];
+    if ([v1 hasPrefix:ic_hashtagCharacterString])
     {
       v5 = [v1 substringFromIndex:1];
     }
@@ -383,7 +383,7 @@
 
     v6 = v5;
 
-    v7 = [v6 ic_stringByReplacingCharactersInSet:v3 withString:&stru_1F4FCDA88];
+    v7 = [v6 ic_stringByReplacingCharactersInSet:ic_hashtagAllowedCharacterSet withString:&stru_1F4FCDA88];
     v2 = [v1 ic_containsHashtagPrefix] && objc_msgSend(v1, "length") != 1 && objc_msgSend(v7, "length") == 0;
   }
 
@@ -392,7 +392,7 @@
 
 - (uint64_t)ic_numberOfLines
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 0;
@@ -403,7 +403,7 @@
   v5 = 0;
   do
   {
-    v6 = [a1 lineRangeForRange:{v5, 0}];
+    v6 = [self lineRangeForRange:{v5, 0}];
     v5 = v6 + v7;
     ++v4;
   }
@@ -422,8 +422,8 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v9 = [v6 initWithTagSchemes:v8 options:0];
 
-  [v9 setString:a1];
-  v10 = [a1 length];
+  [v9 setString:self];
+  v10 = [self length];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __44__NSString_IC__ic_uniqueWordsWithMinLength___block_invoke;
@@ -431,7 +431,7 @@
   v24 = a3;
   v11 = v5;
   v22 = v11;
-  v23 = a1;
+  selfCopy = self;
   [v9 enumerateTagsInRange:0 scheme:v10 options:v7 usingBlock:{6, v21}];
   v15 = 0;
   v16 = &v15;
@@ -457,37 +457,37 @@
   block[1] = 3221225472;
   block[2] = __63__NSString_IC__ic_containsNonWhitespaceAndAttachmentCharacters__block_invoke;
   block[3] = &unk_1E84848B8;
-  block[4] = a1;
+  block[4] = self;
   if (ic_containsNonWhitespaceAndAttachmentCharacters_onceToken != -1)
   {
     dispatch_once(&ic_containsNonWhitespaceAndAttachmentCharacters_onceToken, block);
   }
 
-  return [a1 rangeOfCharacterFromSet:ic_containsNonWhitespaceAndAttachmentCharacters_invertedWhitespaceAndAttachmentCharacters] != 0x7FFFFFFFFFFFFFFFLL;
+  return [self rangeOfCharacterFromSet:ic_containsNonWhitespaceAndAttachmentCharacters_invertedWhitespaceAndAttachmentCharacters] != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (BOOL)ic_containsAlphanumericCharacters
 {
-  v2 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:alphanumericCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
 
 - (BOOL)ic_containsWhitespaceCharacters
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
 
 - (uint64_t)ic_containsHashtagPrefix
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    v3 = [a1 characterAtIndex:0];
+    v3 = [self characterAtIndex:0];
     return v3 == 35 || v3 == 65283;
   }
 
@@ -496,9 +496,9 @@
 
 - (uint64_t)ic_isNumeric
 {
-  v2 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v3 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:a1];
-  v4 = [v2 isSupersetOfSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v3 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:self];
+  v4 = [decimalDigitCharacterSet isSupersetOfSet:v3];
 
   return v4;
 }
@@ -507,7 +507,7 @@
 {
   v8 = a5;
   v9 = a3 + a4;
-  v10 = [a1 length];
+  v10 = [self length];
   if (v9 >= v10)
   {
     v9 = v10;
@@ -524,7 +524,7 @@
     v12 = 0;
     v13 = 0;
     v11 = 0;
-    [a1 getParagraphStart:&v13 end:&v12 contentsEnd:&v11 forRange:{a3, 0}];
+    [self getParagraphStart:&v13 end:&v12 contentsEnd:&v11 forRange:{a3, 0}];
     v8[2](v8, v13, v12, v11, &v14);
     a3 = v12;
   }
@@ -536,7 +536,7 @@
 {
   v8 = a5;
   v9 = a3 + a4;
-  v10 = [a1 length];
+  v10 = [self length];
   v13 = 0;
   v14 = a3;
   if (v9 >= v10)
@@ -548,7 +548,7 @@
   v11 = 0;
   do
   {
-    [a1 getLineStart:&v14 end:&v13 contentsEnd:&v12 forRange:{a3, 0}];
+    [self getLineStart:&v14 end:&v13 contentsEnd:&v12 forRange:{a3, 0}];
     v8[2](v8, v14, v12 - v14, &v11);
     a3 = v13;
     v14 = v13;
@@ -559,16 +559,16 @@
 
 - (uint64_t)ic_substringFromIndex:()IC
 {
-  v2 = [a1 rangeOfComposedCharacterSequenceAtIndex:?];
+  v2 = [self rangeOfComposedCharacterSequenceAtIndex:?];
 
-  return [a1 substringFromIndex:v2];
+  return [self substringFromIndex:v2];
 }
 
 - (id)ic_substringToIndex:()IC
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 length];
+    v5 = [self length];
     if (v5 - 1 >= a3)
     {
       v6 = a3;
@@ -579,13 +579,13 @@
       v6 = v5 - 1;
     }
 
-    v7 = [a1 rangeOfComposedCharacterSequenceAtIndex:v6];
-    v9 = [a1 substringToIndex:v7 + v8];
+    v7 = [self rangeOfComposedCharacterSequenceAtIndex:v6];
+    v9 = [self substringToIndex:v7 + v8];
   }
 
   else
   {
-    v9 = [a1 copy];
+    v9 = [self copy];
   }
 
   return v9;
@@ -593,16 +593,16 @@
 
 - (uint64_t)ic_substringWithRange:()IC
 {
-  v3 = [a1 rangeOfComposedCharacterSequencesForRange:?];
+  v3 = [self rangeOfComposedCharacterSequencesForRange:?];
 
-  return [a1 substringWithRange:{v3, v2}];
+  return [self substringWithRange:{v3, v2}];
 }
 
 - (id)ic_checkedSubstringWithRange:()IC
 {
-  if ([a1 ic_rangeIsValid:?])
+  if ([self ic_rangeIsValid:?])
   {
-    v7 = [a1 ic_substringWithRange:{a3, a4}];
+    v7 = [self ic_substringWithRange:{a3, a4}];
   }
 
   else
@@ -615,8 +615,8 @@
 
 - (id)ic_stringByReplacingNewlineCharactersWithWhiteSpace
 {
-  v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v3 = [a1 ic_stringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v3 = [self ic_stringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
@@ -625,8 +625,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 rangeOfCharacterFromSet:v6];
+  selfCopy = self;
+  v9 = [selfCopy rangeOfCharacterFromSet:v6];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
@@ -641,7 +641,7 @@
     {
       if (!v11)
       {
-        v11 = [v8 mutableCopy];
+        v11 = [selfCopy mutableCopy];
       }
 
       [v11 replaceCharactersInRange:v12 withString:{v13, v7}];
@@ -654,18 +654,18 @@
     {
       v15 = [v11 copy];
 
-      v8 = v15;
+      selfCopy = v15;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)ic_stringByReplacingCharactersInStringMap:()IC
 {
   v44 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v26 = a1;
+  selfCopy = self;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   objc_msgSend(v5, "appendString:", @"(");
   v40 = 0u;
@@ -673,8 +673,8 @@
   v38 = 0u;
   v39 = 0u;
   v25 = v4;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
     v8 = *v39;
@@ -684,7 +684,7 @@
       {
         if (*v39 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = [MEMORY[0x1E696AE70] escapedPatternForString:*(*(&v38 + 1) + 8 * i)];
@@ -693,7 +693,7 @@
         [v5 appendString:@"|"];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v7);
@@ -712,16 +712,16 @@
   v35 = __Block_byref_object_copy__9;
   v36 = __Block_byref_object_dispose__9;
   v37 = 0;
-  v11 = [v26 length];
+  v11 = [selfCopy length];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __58__NSString_IC__ic_stringByReplacingCharactersInStringMap___block_invoke;
   v31[3] = &unk_1E84858F8;
   v31[4] = &v32;
-  [v24 enumerateMatchesInString:v26 options:0 range:0 usingBlock:{v11, v31}];
+  [v24 enumerateMatchesInString:selfCopy options:0 range:0 usingBlock:{v11, v31}];
   if ([v33[5] count])
   {
-    v12 = [v26 mutableCopy];
+    v12 = [selfCopy mutableCopy];
   }
 
   else
@@ -733,8 +733,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [v33[5] reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v42 count:16];
+  reverseObjectEnumerator = [v33[5] reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v42 count:16];
   if (v14)
   {
     v15 = *v28;
@@ -744,16 +744,16 @@
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v17 = [*(*(&v27 + 1) + 8 * j) rangeValue];
+        rangeValue = [*(*(&v27 + 1) + 8 * j) rangeValue];
         v19 = v18;
-        v20 = [v26 substringWithRange:{v17, v18}];
+        v20 = [selfCopy substringWithRange:{rangeValue, v18}];
         v21 = [v25 objectForKeyedSubscript:v20];
         if (v21)
         {
-          [v12 replaceCharactersInRange:v17 withString:{v19, v21}];
+          [v12 replaceCharactersInRange:rangeValue withString:{v19, v21}];
         }
 
         else
@@ -762,7 +762,7 @@
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v27 objects:v42 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v42 count:16];
     }
 
     while (v14);
@@ -772,30 +772,30 @@
   {
     v22 = [v12 copy];
 
-    v26 = v22;
+    selfCopy = v22;
   }
 
   _Block_object_dispose(&v32, 8);
 
-  return v26;
+  return selfCopy;
 }
 
 - (id)ic_stringByReplacingLeadingFullWidthHashSignIfPossible
 {
-  if ([a1 ic_containsHashtagPrefix])
+  if ([self ic_containsHashtagPrefix])
   {
-    v2 = [a1 substringToIndex:1];
-    v3 = [a1 substringFromIndex:1];
+    v2 = [self substringToIndex:1];
+    v3 = [self substringFromIndex:1];
     v4 = [v2 stringByApplyingTransform:*MEMORY[0x1E695DA38] reverse:0];
-    v5 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@%@", v4, v3];
+    selfCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@%@", v4, v3];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)ic_paragraphRangeForRange:()IC contentEnd:
@@ -803,7 +803,7 @@
   v8 = 0;
   v9 = 0;
   v7 = 0;
-  [a1 getParagraphStart:&v9 end:&v8 contentsEnd:&v7 forRange:{a3, a4}];
+  [self getParagraphStart:&v9 end:&v8 contentsEnd:&v7 forRange:{a3, a4}];
   if (a5)
   {
     *a5 = v7;
@@ -819,9 +819,9 @@
   v13 = 0x3010000000;
   v14 = &unk_1D45D60DB;
   v15 = xmmword_1D45CAAD0;
-  if ([a1 ic_rangeIsValid:?])
+  if ([self ic_rangeIsValid:?])
   {
-    v7 = [a1 length];
+    v7 = [self length];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __41__NSString_IC__ic_sentenceRangeForRange___block_invoke;
@@ -829,7 +829,7 @@
     v10[5] = a3;
     v10[6] = a4;
     v10[4] = &v11;
-    [a1 enumerateSubstringsInRange:0 options:v7 usingBlock:{4, v10}];
+    [self enumerateSubstringsInRange:0 options:v7 usingBlock:{4, v10}];
   }
 
   v8 = v12[4];
@@ -848,7 +848,7 @@
   v3[2] = __38__NSString_IC__ic_lengthOfLongestLine__block_invoke;
   v3[3] = &unk_1E8484F60;
   v3[4] = &v4;
-  [a1 enumerateLinesUsingBlock:v3];
+  [self enumerateLinesUsingBlock:v3];
   v1 = v5[3];
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -856,11 +856,11 @@
 
 - (BOOL)ic_isLastCharacterInRangeANewlineForRange:()IC
 {
-  v7 = [a1 ic_safeCharacterRangeForRange:?];
+  v7 = [self ic_safeCharacterRangeForRange:?];
   v9 = 0;
   if (a3 == v7 && a4 == v8)
   {
-    v10 = [a1 ic_substringWithRange:{v7, v8}];
+    v10 = [self ic_substringWithRange:{v7, v8}];
     if ([v10 length])
     {
       v9 = [v10 characterAtIndex:{objc_msgSend(v10, "length") - 1}] == 10;
@@ -877,7 +877,7 @@
 
 - (NSUInteger)ic_safeCharacterRangeForRange:()IC
 {
-  v6 = [a1 length];
+  v6 = [self length];
   if (v6 == a3)
   {
     return a3;
@@ -899,7 +899,7 @@
 - (uint64_t)ic_countOfCharactersInSet:()IC
 {
   v4 = a3;
-  v5 = [a1 rangeOfCharacterFromSet:v4 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v5 = [self rangeOfCharacterFromSet:v4 options:0 range:{0, objc_msgSend(self, "length")}];
   v6 = 0;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -908,7 +908,7 @@
     do
     {
       ++v6;
-      v7 = [a1 rangeOfCharacterFromSet:v4 options:0 range:{v7 + 1, objc_msgSend(a1, "length") + ~v7}];
+      v7 = [self rangeOfCharacterFromSet:v4 options:0 range:{v7 + 1, objc_msgSend(self, "length") + ~v7}];
     }
 
     while (v7 != 0x7FFFFFFFFFFFFFFFLL);
@@ -919,25 +919,25 @@
 
 - (__CFString)ic_stringByTrimmingLeadingCharactersInSet:()IC
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = &stru_1F4FCDA88;
+    selfCopy = &stru_1F4FCDA88;
   }
 
   else if (v5)
   {
-    v6 = [a1 ic_substringFromIndex:v5];
+    selfCopy = [self ic_substringFromIndex:v5];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)ic_truncatedStringWithMaxLength:()IC truncated:
@@ -947,24 +947,24 @@
     *a4 = 0;
   }
 
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 ic_substringWithRange:{0, a3}];
+    v7 = [self ic_substringWithRange:{0, a3}];
     v8 = [v7 length];
-    if (v8 == [a1 length])
+    if (v8 == [self length])
     {
-      v9 = v7;
+      selfCopy = v7;
     }
 
     else
     {
-      v10 = [v7 ic_trailingTrimmedString];
-      v9 = [v10 stringByAppendingString:@"…"];
+      ic_trailingTrimmedString = [v7 ic_trailingTrimmedString];
+      selfCopy = [ic_trailingTrimmedString stringByAppendingString:@"…"];
 
       if (a4)
       {
@@ -973,24 +973,24 @@
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)ic_tokenSafeText
 {
-  v1 = [a1 localizedUppercaseString];
-  v2 = [v1 stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
+  localizedUppercaseString = [self localizedUppercaseString];
+  v2 = [localizedUppercaseString stringByApplyingTransform:*MEMORY[0x1E695DA48] reverse:0];
 
   return v2;
 }
 
 - (id)ic_withHashtagPrefix
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v4 = [objc_opt_class() ic_hashtagCharacterString];
-  if ([v3 hasPrefix:v4])
+  ic_hashtagCharacterString = [objc_opt_class() ic_hashtagCharacterString];
+  if ([v3 hasPrefix:ic_hashtagCharacterString])
   {
     v5 = v3;
   }
@@ -998,8 +998,8 @@
   else
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [objc_opt_class() ic_hashtagCharacterString];
-    v5 = [v6 stringWithFormat:@"%@%@", v7, v3];
+    ic_hashtagCharacterString2 = [objc_opt_class() ic_hashtagCharacterString];
+    v5 = [v6 stringWithFormat:@"%@%@", ic_hashtagCharacterString2, v3];
   }
 
   return v5;
@@ -1007,11 +1007,11 @@
 
 - (id)ic_withoutHashtagPrefix
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v4 = [objc_opt_class() ic_hashtagCharacterString];
-  if ([v3 hasPrefix:v4])
+  ic_hashtagCharacterString = [objc_opt_class() ic_hashtagCharacterString];
+  if ([v3 hasPrefix:ic_hashtagCharacterString])
   {
     v5 = [v3 substringFromIndex:1];
   }
@@ -1029,21 +1029,21 @@
 - (__CFString)ic_hashtagDisplayText
 {
   v2 = MEMORY[0x1E696AB08];
-  v3 = [objc_opt_class() ic_hashtagCharacterString];
-  v4 = [v2 characterSetWithCharactersInString:v3];
+  ic_hashtagCharacterString = [objc_opt_class() ic_hashtagCharacterString];
+  v4 = [v2 characterSetWithCharactersInString:ic_hashtagCharacterString];
 
-  v5 = [v4 invertedSet];
-  v6 = [a1 rangeOfCharacterFromSet:v5];
+  invertedSet = [v4 invertedSet];
+  v6 = [self rangeOfCharacterFromSet:invertedSet];
 
   if (!v6)
   {
-    v7 = [a1 copy];
+    v7 = [self copy];
     goto LABEL_5;
   }
 
-  if ([a1 length] >= 2)
+  if ([self length] >= 2)
   {
-    v7 = [a1 ic_substringFromIndex:1];
+    v7 = [self ic_substringFromIndex:1];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -1058,7 +1058,7 @@ LABEL_7:
 - (id)ic_stringWithoutSuffix:()IC
 {
   v4 = a3;
-  v5 = [a1 copy];
+  v5 = [self copy];
   if ([v5 hasSuffix:v4])
   {
     v6 = [v5 substringToIndex:{objc_msgSend(v5, "length") - objc_msgSend(v4, "length")}];
@@ -1071,11 +1071,11 @@ LABEL_7:
 
 - (id)ic_mentionString
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v4 = [objc_opt_class() ic_mentionCharacterString];
-  v5 = [v3 hasPrefix:v4];
+  ic_mentionCharacterString = [objc_opt_class() ic_mentionCharacterString];
+  v5 = [v3 hasPrefix:ic_mentionCharacterString];
 
   if (v5)
   {
@@ -1085,8 +1085,8 @@ LABEL_7:
   else
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [objc_opt_class() ic_mentionCharacterString];
-    v6 = [v7 localizedStringWithFormat:@"%@%@", v8, v3];
+    ic_mentionCharacterString2 = [objc_opt_class() ic_mentionCharacterString];
+    v6 = [v7 localizedStringWithFormat:@"%@%@", ic_mentionCharacterString2, v3];
   }
 
   return v6;
@@ -1118,8 +1118,8 @@ LABEL_7:
   v12 = v11;
   if (!a4)
   {
-    v16 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v13 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v13 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
     if (v13)
     {
@@ -1165,15 +1165,15 @@ LABEL_14:
     }
 
     v8 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v7 style:1 options:0];
-    v9 = [v8 ic_trimmedString];
+    ic_trimmedString = [v8 ic_trimmedString];
   }
 
   else
   {
-    v9 = &stru_1F4FCDA88;
+    ic_trimmedString = &stru_1F4FCDA88;
   }
 
-  return v9;
+  return ic_trimmedString;
 }
 
 - (uint64_t)ic_startsWithDelimeter:()IC
@@ -1183,9 +1183,9 @@ LABEL_14:
     return 1;
   }
 
-  v3 = [a1 characterAtIndex:a3 - 1];
-  v4 = [MEMORY[0x1E696AEC0] ic_nonDelimeterSet];
-  v5 = [v4 characterIsMember:v3] ^ 1;
+  v3 = [self characterAtIndex:a3 - 1];
+  ic_nonDelimeterSet = [MEMORY[0x1E696AEC0] ic_nonDelimeterSet];
+  v5 = [ic_nonDelimeterSet characterIsMember:v3] ^ 1;
 
   return v5;
 }
@@ -1193,7 +1193,7 @@ LABEL_14:
 - (uint64_t)ic_endsWithDelimeter:()IC
 {
   v5 = a3 + a4;
-  v6 = [a1 length];
+  v6 = [self length];
   if (v5 >= v6)
   {
     v7 = v6;
@@ -1204,25 +1204,25 @@ LABEL_14:
     v7 = v5;
   }
 
-  if (v7 == [a1 length])
+  if (v7 == [self length])
   {
     return 1;
   }
 
-  v9 = [a1 characterAtIndex:v5];
-  v10 = [MEMORY[0x1E696AEC0] ic_nonDelimeterSet];
-  v8 = [v10 characterIsMember:v9] ^ 1;
+  v9 = [self characterAtIndex:v5];
+  ic_nonDelimeterSet = [MEMORY[0x1E696AEC0] ic_nonDelimeterSet];
+  v8 = [ic_nonDelimeterSet characterIsMember:v9] ^ 1;
 
   return v8;
 }
 
 - (uint64_t)ic_rangeEncapsulatesWord:()IC
 {
-  result = [a1 ic_startsWithDelimeter:?];
+  result = [self ic_startsWithDelimeter:?];
   if (result)
   {
 
-    return [a1 ic_endsWithDelimeter:{a3, a4}];
+    return [self ic_endsWithDelimeter:{a3, a4}];
   }
 
   return result;
@@ -1231,7 +1231,7 @@ LABEL_14:
 - (uint64_t)ic_range:()IC onlyContainsCharacterSet:
 {
   v8 = a5;
-  v17.location = [a1 ic_range];
+  v17.location = [self ic_range];
   v17.length = v9;
   v16.location = a3;
   v16.length = a4;
@@ -1242,7 +1242,7 @@ LABEL_14:
     do
     {
       v13 = v12;
-      v14 = [v8 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", location)}];
+      v14 = [v8 characterIsMember:{objc_msgSend(self, "characterAtIndex:", location)}];
       if (!v14)
       {
         break;
@@ -1265,7 +1265,7 @@ LABEL_14:
 
 - (id)ic_attributedString
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a1];
+  v1 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self];
 
   return v1;
 }

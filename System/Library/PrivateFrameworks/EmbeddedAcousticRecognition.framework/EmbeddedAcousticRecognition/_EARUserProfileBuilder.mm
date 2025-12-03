@@ -1,34 +1,34 @@
 @interface _EARUserProfileBuilder
-+ (BOOL)isEasyToRecognizeWord:(id)a3 forLocale:(id)a4;
++ (BOOL)isEasyToRecognizeWord:(id)word forLocale:(id)locale;
 + (void)initialize;
-- (BOOL)_writeProfileToStream:(void *)a3;
-- (BOOL)writeProfileToFile:(id)a3 protectionClass:(int64_t)a4 coordinated:(BOOL)a5 length:(unint64_t *)a6 error:(id *)a7;
+- (BOOL)_writeProfileToStream:(void *)stream;
+- (BOOL)writeProfileToFile:(id)file protectionClass:(int64_t)class coordinated:(BOOL)coordinated length:(unint64_t *)length error:(id *)error;
 - (NSDictionary)templateToVersion;
 - (NSSet)experimentIds;
 - (_EARPeopleSuggesterConfig)peopleSuggesterConfig;
-- (_EARUserProfileBuilder)initWithConfig:(id)a3 language:(id)a4 overrides:(id)a5 textNormalizationModelRoot:(id)a6 sdapiOverrides:(id)a7 emptyVoc:(id)a8 pgVoc:(id)a9 paramsetHolder:(id)a10 isJit:(BOOL)a11 error:(id *)a12;
-- (_EARUserProfileBuilder)initWithConfiguration:(id)a3 language:(id)a4 overrides:(id)a5 sdapiOverrides:(id)a6 generalVoc:(id)a7 emptyVoc:(id)a8 pgVoc:(id)a9 lexiconEnh:(id)a10 tokenEnh:(id)a11 paramsetHolder:(id)a12 isJit:(BOOL)a13;
-- (_EARUserProfileBuilder)initWithConfiguration:(id)a3 withLanguage:(id)a4 withSdapiOverrides:(id)a5 withSdapiConfig:(id)a6;
-- (id)createInlineLmeUserDataForContextData:(id)a3 speechProfile:(id)a4;
+- (_EARUserProfileBuilder)initWithConfig:(id)config language:(id)language overrides:(id)overrides textNormalizationModelRoot:(id)root sdapiOverrides:(id)sdapiOverrides emptyVoc:(id)voc pgVoc:(id)pgVoc paramsetHolder:(id)self0 isJit:(BOOL)self1 error:(id *)self2;
+- (_EARUserProfileBuilder)initWithConfiguration:(id)configuration language:(id)language overrides:(id)overrides sdapiOverrides:(id)sdapiOverrides generalVoc:(id)voc emptyVoc:(id)emptyVoc pgVoc:(id)pgVoc lexiconEnh:(id)self0 tokenEnh:(id)self1 paramsetHolder:(id)self2 isJit:(BOOL)self3;
+- (_EARUserProfileBuilder)initWithConfiguration:(id)configuration withLanguage:(id)language withSdapiOverrides:(id)overrides withSdapiConfig:(id)config;
+- (id)createInlineLmeUserDataForContextData:(id)data speechProfile:(id)profile;
 - (id)dataProfile;
-- (id)pronunciationsForOrthography:(id)a3;
-- (id)sanitizedStringWithString:(id)a3;
-- (void)_embeddingsForOrthography:(const void *)a3 templateName:(const void *)a4 embeddings:(void *)a5 pronRequest:(int)a6;
-- (void)_logLmeSlotUpdatedEventsWithLanguage:()basic_string<char numEnumeratedEntries:()std:(std::allocator<char>> *)a3 :char_traits<char>;
-- (void)_logSpeechProfileUpdatedEventWithLmeData:(shared_ptr<quasar:(int)a4 :()map<std:()int :()std:(std:(int>>> *)a5 :allocator<std::pair<const)std::string :less<std::string> string LmeData>)a3 sizeInBytes:numEnumeratedEntries:;
-- (void)_pronunciationsForOrthography:(const void *)a3 phoneticOrthography:(const void *)a4 templateName:(const void *)a5 pronunciations:(void *)a6 pronRequest:(int)a7 outOrthography:(void *)a8;
-- (void)addPersonalizationData:(id)a3;
-- (void)addPersonalizationJsonData:(id)a3;
-- (void)addWordWithParts:(id)a3 templateName:(id)a4;
-- (void)createInlineLmeUserDataForContextStrings:(id)a3;
-- (void)createInlineLmeUserDataForWordsWithMetadata:(id)a3;
-- (void)readUserProfile:(id)a3;
-- (void)readUserProfileWithPath:(id)a3;
-- (void)removeLmeDataForTemplateName:(id)a3;
-- (void)setExperimentIds:(id)a3;
-- (void)setTemplateToVersion:(id)a3;
+- (id)pronunciationsForOrthography:(id)orthography;
+- (id)sanitizedStringWithString:(id)string;
+- (void)_embeddingsForOrthography:(const void *)orthography templateName:(const void *)name embeddings:(void *)embeddings pronRequest:(int)request;
+- (void)_logLmeSlotUpdatedEventsWithLanguage:()basic_string<char numEnumeratedEntries:()std:(std::allocator<char>> *)std :char_traits<char>;
+- (void)_logSpeechProfileUpdatedEventWithLmeData:(shared_ptr<quasar:(int)data :()map<std:()int :()std:(std:(int>>> *)std :allocator<std::pair<const)std::string :less<std::string> string LmeData>)a3 sizeInBytes:numEnumeratedEntries:;
+- (void)_pronunciationsForOrthography:(const void *)orthography phoneticOrthography:(const void *)phoneticOrthography templateName:(const void *)name pronunciations:(void *)pronunciations pronRequest:(int)request outOrthography:(void *)outOrthography;
+- (void)addPersonalizationData:(id)data;
+- (void)addPersonalizationJsonData:(id)data;
+- (void)addWordWithParts:(id)parts templateName:(id)name;
+- (void)createInlineLmeUserDataForContextStrings:(id)strings;
+- (void)createInlineLmeUserDataForWordsWithMetadata:(id)metadata;
+- (void)readUserProfile:(id)profile;
+- (void)readUserProfileWithPath:(id)path;
+- (void)removeLmeDataForTemplateName:(id)name;
+- (void)setExperimentIds:(id)ids;
+- (void)setTemplateToVersion:(id)version;
 - (void)signalEndOfUserData;
-- (void)writeOutUserDataToJson:(id)a3 withConfig:(id)a4;
+- (void)writeOutUserDataToJson:(id)json withConfig:(id)config;
 @end
 
 @implementation _EARUserProfileBuilder
@@ -36,7 +36,7 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
     EARLogger::initializeLogging(v3);
 
@@ -44,29 +44,29 @@
   }
 }
 
-+ (BOOL)isEasyToRecognizeWord:(id)a3 forLocale:(id)a4
++ (BOOL)isEasyToRecognizeWord:(id)word forLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 UTF8String];
-  v8 = [v6 localeIdentifier];
-  v9 = [v8 UTF8String];
-  LOBYTE(v7) = quasar::wordIsNativeScriptForLocale(v7, v9, v10);
+  wordCopy = word;
+  localeCopy = locale;
+  uTF8String = [wordCopy UTF8String];
+  localeIdentifier = [localeCopy localeIdentifier];
+  uTF8String2 = [localeIdentifier UTF8String];
+  LOBYTE(uTF8String) = quasar::wordIsNativeScriptForLocale(uTF8String, uTF8String2, v10);
 
-  return v7;
+  return uTF8String;
 }
 
-- (_EARUserProfileBuilder)initWithConfiguration:(id)a3 withLanguage:(id)a4 withSdapiOverrides:(id)a5 withSdapiConfig:(id)a6
+- (_EARUserProfileBuilder)initWithConfiguration:(id)configuration withLanguage:(id)language withSdapiOverrides:(id)overrides withSdapiConfig:(id)config
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  languageCopy = language;
+  overridesCopy = overrides;
+  configCopy = config;
   v17.receiver = self;
   v17.super_class = _EARUserProfileBuilder;
   if ([(_EARUserProfileBuilder *)&v17 init])
   {
-    v16.__r_.__value_.__r.__words[0] = [v10 fileSystemRepresentation];
+    v16.__r_.__value_.__r.__words[0] = [configurationCopy fileSystemRepresentation];
     std::make_unique[abi:ne200100]<quasar::LmeDataFactory,char const*,0>();
   }
 
@@ -75,43 +75,43 @@
   return v14;
 }
 
-- (_EARUserProfileBuilder)initWithConfiguration:(id)a3 language:(id)a4 overrides:(id)a5 sdapiOverrides:(id)a6 generalVoc:(id)a7 emptyVoc:(id)a8 pgVoc:(id)a9 lexiconEnh:(id)a10 tokenEnh:(id)a11 paramsetHolder:(id)a12 isJit:(BOOL)a13
+- (_EARUserProfileBuilder)initWithConfiguration:(id)configuration language:(id)language overrides:(id)overrides sdapiOverrides:(id)sdapiOverrides generalVoc:(id)voc emptyVoc:(id)emptyVoc pgVoc:(id)pgVoc lexiconEnh:(id)self0 tokenEnh:(id)self1 paramsetHolder:(id)self2 isJit:(BOOL)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v31 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:v21 lexiconEnh:v24 tokenEnh:v25 itnEnh:0];
-  LOBYTE(v30) = a13;
-  v28 = [(_EARUserProfileBuilder *)self initWithConfiguration:v18 language:v19 overrides:v31 sdapiOverrides:v20 emptyVoc:v22 pgVoc:v23 paramsetHolder:v26 isJit:v30];
+  configurationCopy = configuration;
+  languageCopy = language;
+  overridesCopy = overrides;
+  sdapiOverridesCopy = sdapiOverrides;
+  vocCopy = voc;
+  emptyVocCopy = emptyVoc;
+  pgVocCopy = pgVoc;
+  enhCopy = enh;
+  tokenEnhCopy = tokenEnh;
+  holderCopy = holder;
+  v27 = [_EARQuasarTokenizer extractModelRootFromNcsResourcePaths:vocCopy lexiconEnh:enhCopy tokenEnh:tokenEnhCopy itnEnh:0];
+  LOBYTE(v30) = jit;
+  v28 = [(_EARUserProfileBuilder *)self initWithConfiguration:configurationCopy language:languageCopy overrides:overridesCopy sdapiOverrides:sdapiOverridesCopy emptyVoc:emptyVocCopy pgVoc:pgVocCopy paramsetHolder:holderCopy isJit:v30];
 
   return v28;
 }
 
-- (_EARUserProfileBuilder)initWithConfig:(id)a3 language:(id)a4 overrides:(id)a5 textNormalizationModelRoot:(id)a6 sdapiOverrides:(id)a7 emptyVoc:(id)a8 pgVoc:(id)a9 paramsetHolder:(id)a10 isJit:(BOOL)a11 error:(id *)a12
+- (_EARUserProfileBuilder)initWithConfig:(id)config language:(id)language overrides:(id)overrides textNormalizationModelRoot:(id)root sdapiOverrides:(id)sdapiOverrides emptyVoc:(id)voc pgVoc:(id)pgVoc paramsetHolder:(id)self0 isJit:(BOOL)self1 error:(id *)self2
 {
   v31 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  obj = a4;
-  v24 = a4;
-  v28 = a5;
-  v18 = a6;
-  v25 = a7;
-  v26 = a8;
-  v27 = a9;
-  v19 = a10;
+  configCopy = config;
+  obj = language;
+  languageCopy = language;
+  overridesCopy = overrides;
+  rootCopy = root;
+  sdapiOverridesCopy = sdapiOverrides;
+  vocCopy = voc;
+  pgVocCopy = pgVoc;
+  holderCopy = holder;
   v30.receiver = self;
   v30.super_class = _EARUserProfileBuilder;
   if ([(_EARUserProfileBuilder *)&v30 init])
   {
-    v20 = v29;
-    [v29 fileSystemRepresentation];
+    v20 = configCopy;
+    [configCopy fileSystemRepresentation];
     std::make_unique[abi:ne200100]<quasar::LmeDataFactory,char const*,0>();
   }
 
@@ -120,15 +120,15 @@
   return v21;
 }
 
-- (void)addWordWithParts:(id)a3 templateName:(id)a4
+- (void)addWordWithParts:(id)parts templateName:(id)name
 {
   v108 = *MEMORY[0x1E69E9840];
-  v72 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  partsCopy = parts;
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy)
   {
-    [v6 ear_toString];
+    [nameCopy ear_toString];
   }
 
   else
@@ -177,9 +177,9 @@ LABEL_17:
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
-      obj = v72;
+      obj = partsCopy;
       v21 = [obj countByEnumeratingWithState:&v85 objects:v106 count:16];
-      v69 = self;
+      selfCopy = self;
       if (!v21)
       {
 
@@ -195,7 +195,7 @@ LABEL_119:
         v84 = 0;
         v57 = v94;
         v56 = v95;
-        v58 = v69;
+        v58 = selfCopy;
         if (v94 != v95)
         {
           do
@@ -208,7 +208,7 @@ LABEL_119:
             }
 
             memset(&v76, 0, sizeof(v76));
-            [(_EARUserProfileBuilder *)v58 _pronunciationsForOrthography:v57 phoneticOrthography:&__p templateName:&v101 pronunciations:v57 + 56 pronRequest:3 outOrthography:&v76, v69];
+            [(_EARUserProfileBuilder *)v58 _pronunciationsForOrthography:v57 phoneticOrthography:&__p templateName:&v101 pronunciations:v57 + 56 pronRequest:3 outOrthography:&v76, selfCopy];
             std::string::operator=(v57, &v76);
             if (!quasar::LmeDataFactoryBase::PronSet::empty((v57 + 56)))
             {
@@ -326,8 +326,8 @@ LABEL_22:
         v83 = 0;
         v84 = 0;
         v82 = &v83;
-        v25 = [v24 pronunciations];
-        v26 = v25 == 0;
+        pronunciations = [v24 pronunciations];
+        v26 = pronunciations == 0;
 
         if (!v26)
         {
@@ -335,8 +335,8 @@ LABEL_22:
           v81 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v27 = [v24 pronunciations];
-          v28 = [v27 countByEnumeratingWithState:&v78 objects:v105 count:16];
+          pronunciations2 = [v24 pronunciations];
+          v28 = [pronunciations2 countByEnumeratingWithState:&v78 objects:v105 count:16];
           if (v28)
           {
             v29 = *v79;
@@ -346,7 +346,7 @@ LABEL_22:
               {
                 if (*v79 != v29)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(pronunciations2);
                 }
 
                 v31 = *(*(&v78 + 1) + 8 * i);
@@ -367,18 +367,18 @@ LABEL_22:
                 }
               }
 
-              v28 = [v27 countByEnumeratingWithState:&v78 objects:v105 count:16];
+              v28 = [pronunciations2 countByEnumeratingWithState:&v78 objects:v105 count:16];
             }
 
             while (v28);
           }
         }
 
-        v32 = [v24 tagName];
-        v33 = v32;
-        if (v32)
+        tagName = [v24 tagName];
+        v33 = tagName;
+        if (tagName)
         {
-          [v32 ear_toString];
+          [tagName ear_toString];
         }
 
         else
@@ -386,11 +386,11 @@ LABEL_22:
           memset(&__p, 0, sizeof(__p));
         }
 
-        v34 = [v24 orthography];
-        v35 = v34;
-        if (v34)
+        orthography = [v24 orthography];
+        v35 = orthography;
+        if (orthography)
         {
-          [v34 ear_toString];
+          [orthography ear_toString];
         }
 
         else
@@ -430,11 +430,11 @@ LABEL_102:
           goto LABEL_101;
         }
 
-        v38 = [v24 phoneticOrthography];
-        v39 = v38;
-        if (v38)
+        phoneticOrthography = [v24 phoneticOrthography];
+        v39 = phoneticOrthography;
+        if (phoneticOrthography)
         {
-          [v38 ear_toString];
+          [phoneticOrthography ear_toString];
         }
 
         else
@@ -455,7 +455,7 @@ LABEL_102:
 LABEL_62:
           if (utf8::find_invalid<std::__wrap_iter<char const*>>(p_str, p_str + v40) == p_str + v40)
           {
-            v104 = &v76;
+            frequency = &v76;
             v42 = std::__tree<std::__value_type<std::string,std::string>,std::__map_value_compare<std::string,std::__value_type<std::string,std::string>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,std::string>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&v92, &v76.__r_.__value_.__l.__data_);
             std::string::operator=((v42 + 56), &__str);
           }
@@ -515,16 +515,16 @@ LABEL_66:
           {
             do
             {
-              v104 = [v24 frequency];
+              frequency = [v24 frequency];
               v48 = v95;
               if (v95 >= v96)
               {
-                v49 = std::vector<quasar::LmeDataFactoryBase::Word>::__emplace_back_slow_path<std::string const&,std::string&,unsigned long,std::set<std::string> &>(&v94, v47 + 32, &__p, &v104, &v82);
+                v49 = std::vector<quasar::LmeDataFactoryBase::Word>::__emplace_back_slow_path<std::string const&,std::string&,unsigned long,std::set<std::string> &>(&v94, v47 + 32, &__p, &frequency, &v82);
               }
 
               else
               {
-                std::allocator<quasar::LmeDataFactoryBase::Word>::construct[abi:ne200100]<quasar::LmeDataFactoryBase::Word,std::string const&,std::string&,unsigned long,std::set<std::string> &>(&v94, v95, v47 + 32, &__p, &v104, &v82);
+                std::allocator<quasar::LmeDataFactoryBase::Word>::construct[abi:ne200100]<quasar::LmeDataFactoryBase::Word,std::string const&,std::string&,unsigned long,std::set<std::string> &>(&v94, v95, v47 + 32, &__p, &frequency, &v82);
                 v49 = v48 + 80;
               }
 
@@ -644,9 +644,9 @@ LABEL_109:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v11 = v72;
+  v11 = partsCopy;
   v12 = [v11 countByEnumeratingWithState:&v97 objects:v107 count:16];
-  v13 = self;
+  selfCopy2 = self;
   if (!v12)
   {
     goto LABEL_16;
@@ -663,8 +663,8 @@ LABEL_10:
       objc_enumerationMutation(v11);
     }
 
-    v17 = [*(*(&v97 + 1) + 8 * v16) orthography];
-    v18 = [v17 length] > v15;
+    orthography2 = [*(*(&v97 + 1) + 8 * v16) orthography];
+    v18 = [orthography2 length] > v15;
 
     if (v18)
     {
@@ -679,7 +679,7 @@ LABEL_10:
 LABEL_16:
 
         v7 = v10;
-        self = v13;
+        self = selfCopy2;
         goto LABEL_17;
       }
 
@@ -687,7 +687,7 @@ LABEL_16:
     }
   }
 
-  ++v13->_wordsRejected;
+  ++selfCopy2->_wordsRejected;
 
   v7 = v10;
 LABEL_110:
@@ -702,16 +702,16 @@ LABEL_110:
   }
 }
 
-- (void)removeLmeDataForTemplateName:(id)a3
+- (void)removeLmeDataForTemplateName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     ptr = self->_quasarLmeData.__ptr_;
     if (ptr)
     {
-      [v4 ear_toString];
+      [nameCopy ear_toString];
       quasar::LmeData::removeFstData(ptr, &__p);
       if (v8 < 0)
       {
@@ -773,10 +773,10 @@ LABEL_110:
   return v3;
 }
 
-- (void)setTemplateToVersion:(id)a3
+- (void)setTemplateToVersion:(id)version
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   std::__tree<std::string>::destroy(&self->_templateToVersion, self->_templateToVersion.__tree_.__end_node_.__left_);
   self->_templateToVersion.__tree_.__end_node_.__left_ = 0;
   self->_templateToVersion.__tree_.__size_ = 0;
@@ -785,7 +785,7 @@ LABEL_110:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v4;
+  v5 = versionCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -812,13 +812,13 @@ LABEL_110:
         }
 
         v10 = [v5 objectForKeyedSubscript:v9];
-        v11 = [v10 longLongValue];
+        longLongValue = [v10 longLongValue];
         *__p = *v13;
         v12 = v14;
         v14 = 0;
         *v13 = 0uLL;
         v16 = v12;
-        v17 = v11;
+        v17 = longLongValue;
         std::__tree<std::__value_type<std::string,long long>,std::__map_value_compare<std::string,std::__value_type<std::string,long long>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,long long>>>::__emplace_unique_key_args<std::string,std::pair<std::string const,long long>>(&self->_templateToVersion, __p);
         if (SHIBYTE(v16) < 0)
         {
@@ -890,10 +890,10 @@ LABEL_110:
   return v3;
 }
 
-- (void)setExperimentIds:(id)a3
+- (void)setExperimentIds:(id)ids
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   std::__tree<std::string>::destroy(&self->_experimentIds, self->_experimentIds.__tree_.__end_node_.__left_);
   self->_experimentIds.__tree_.__end_node_.__left_ = 0;
   self->_experimentIds.__tree_.__size_ = 0;
@@ -902,7 +902,7 @@ LABEL_110:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = idsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -947,10 +947,10 @@ LABEL_110:
   }
 }
 
-- (BOOL)_writeProfileToStream:(void *)a3
+- (BOOL)_writeProfileToStream:(void *)stream
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3 + *(*a3 - 24);
+  v4 = stream + *(*stream - 24);
   if ((v4[32] & 5) == 0)
   {
     (*(**(v4 + 5) + 32))(&__str);
@@ -1068,18 +1068,18 @@ LABEL_110:
   return v5;
 }
 
-- (BOOL)writeProfileToFile:(id)a3 protectionClass:(int64_t)a4 coordinated:(BOOL)a5 length:(unint64_t *)a6 error:(id *)a7
+- (BOOL)writeProfileToFile:(id)file protectionClass:(int64_t)class coordinated:(BOOL)coordinated length:(unint64_t *)length error:(id *)error
 {
-  v9 = a5;
+  coordinatedCopy = coordinated;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = v12;
-  if (a6)
+  fileCopy = file;
+  v13 = fileCopy;
+  if (length)
   {
-    *a6 = 0;
+    *length = 0;
   }
 
-  if ([v12 length])
+  if ([fileCopy length])
   {
     *buf = 0;
     v45 = buf;
@@ -1178,13 +1178,13 @@ LABEL_110:
           __p = v43;
         }
 
-        v34 = a4;
-        v35 = a6;
+        classCopy = class;
+        lengthCopy = length;
         v31 = &v38;
-        v37 = v9;
+        v37 = coordinatedCopy;
         v21 = v13;
         v29 = v21;
-        v36 = a7;
+        errorCopy = error;
         v22 = MEMORY[0x1B8C868A0](v28);
         v23 = ConvertCXXExceptionToNSError(v22);
         if (v23 && (v39[3] & 1) != 0)
@@ -1196,9 +1196,9 @@ LABEL_110:
             *v55 = 138478339;
             v56 = v21;
             v57 = 2048;
-            v58 = a4;
+            classCopy2 = class;
             v59 = 1024;
-            LODWORD(v60) = v9;
+            LODWORD(classCopy3) = coordinatedCopy;
             _os_log_impl(&dword_1B501D000, v24, OS_LOG_TYPE_INFO, "Persisted speech profile to path=%{private}@ protectionClass=%ld coordinated=%d", v55, 0x1Cu);
           }
         }
@@ -1208,9 +1208,9 @@ LABEL_110:
           v24 = EARLogger::QuasarOSLogger(v23);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            if (a7)
+            if (error)
             {
-              v27 = *a7;
+              v27 = *error;
             }
 
             else
@@ -1221,11 +1221,11 @@ LABEL_110:
             *v55 = 138478595;
             v56 = v21;
             v57 = 2114;
-            v58 = v27;
+            classCopy2 = v27;
             v59 = 2048;
-            v60 = a4;
+            classCopy3 = class;
             v61 = 1024;
-            v62 = v9;
+            v62 = coordinatedCopy;
             _os_log_error_impl(&dword_1B501D000, v24, OS_LOG_TYPE_ERROR, "Persisting speech profile to path=%{private}@ failed with error=%{public}@ protectionClass=%ld coordinated=%d", v55, 0x26u);
           }
 
@@ -1293,10 +1293,10 @@ LABEL_110:
   return v16;
 }
 
-- (void)readUserProfile:(id)a3
+- (void)readUserProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
     std::__tree<std::string>::destroy(&self->_templateToVersion, self->_templateToVersion.__tree_.__end_node_.__left_);
     self->_templateToVersion.__tree_.__end_node_.__left_ = 0;
@@ -1306,15 +1306,15 @@ LABEL_110:
     self->_experimentIds.__tree_.__end_node_.__left_ = 0;
     self->_experimentIds.__tree_.__size_ = 0;
     self->_experimentIds.__tree_.__begin_node_ = &self->_experimentIds.__tree_.__end_node_;
-    EARHelpers::createNSDataInputStream(v4, v5);
+    EARHelpers::createNSDataInputStream(profileCopy, v5);
   }
 }
 
-- (void)readUserProfileWithPath:(id)a3
+- (void)readUserProfileWithPath:(id)path
 {
   v7[72] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     std::__tree<std::string>::destroy(&self->_templateToVersion, self->_templateToVersion.__tree_.__end_node_.__left_);
     self->_templateToVersion.__tree_.__end_node_.__left_ = 0;
@@ -1324,7 +1324,7 @@ LABEL_110:
     self->_experimentIds.__tree_.__end_node_.__left_ = 0;
     self->_experimentIds.__tree_.__size_ = 0;
     self->_experimentIds.__tree_.__begin_node_ = &self->_experimentIds.__tree_.__end_node_;
-    [v4 ear_toString];
+    [pathCopy ear_toString];
     std::ifstream::basic_ifstream(v7);
     if (v6 < 0)
     {
@@ -1335,18 +1335,18 @@ LABEL_110:
   }
 }
 
-- (void)addPersonalizationData:(id)a3
+- (void)addPersonalizationData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (self->_personalizationRecipe.__ptr_)
   {
     if (!self->_tokenizer.__ptr_)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1013 description:@"Tokenizer is invoked after explicit release!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1013 description:@"Tokenizer is invoked after explicit release!"];
     }
 
-    EARHelpers::StdPersonalizedInputFromEARPersonalizedInput(v5, v17);
+    EARHelpers::StdPersonalizedInputFromEARPersonalizedInput(dataCopy, v17);
     ptr = self->_personalizationRecipe.__ptr_;
     std::map<std::string,std::map<std::string,int>>::map[abi:ne200100](v14, v17);
     quasar::PersonalizationRecipe::getPersonalizedData(ptr, v14, &v15);
@@ -1400,15 +1400,15 @@ LABEL_110:
   }
 }
 
-- (void)addPersonalizationJsonData:(id)a3
+- (void)addPersonalizationJsonData:(id)data
 {
-  v5 = a3;
-  v6 = v5;
+  dataCopy = data;
+  v6 = dataCopy;
   if (self->_personalizationRecipe.__ptr_)
   {
     if (self->_tokenizer.__ptr_)
     {
-      if (!v5)
+      if (!dataCopy)
       {
         goto LABEL_6;
       }
@@ -1416,8 +1416,8 @@ LABEL_110:
 
     else
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1030 description:@"Tokenizer is invoked after explicit release!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1030 description:@"Tokenizer is invoked after explicit release!"];
 
       if (!v6)
       {
@@ -1431,17 +1431,17 @@ LABEL_6:
   }
 }
 
-- (void)writeOutUserDataToJson:(id)a3 withConfig:(id)a4
+- (void)writeOutUserDataToJson:(id)json withConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
+  jsonCopy = json;
+  configCopy = config;
   quasar::SystemConfig::SystemConfig(v7);
 }
 
-- (id)pronunciationsForOrthography:(id)a3
+- (id)pronunciationsForOrthography:(id)orthography
 {
-  v4 = a3;
-  v26 = v4;
+  orthographyCopy = orthography;
+  v26 = orthographyCopy;
   EARHelpers::truncateFromFirstNull(&v26);
   v5 = v26;
 
@@ -1542,14 +1542,14 @@ LABEL_6:
   return v6;
 }
 
-- (void)_pronunciationsForOrthography:(const void *)a3 phoneticOrthography:(const void *)a4 templateName:(const void *)a5 pronunciations:(void *)a6 pronRequest:(int)a7 outOrthography:(void *)a8
+- (void)_pronunciationsForOrthography:(const void *)orthography phoneticOrthography:(const void *)phoneticOrthography templateName:(const void *)name pronunciations:(void *)pronunciations pronRequest:(int)request outOrthography:(void *)outOrthography
 {
-  v9 = *&a7;
-  std::string::operator=(a8, a3);
-  v16 = *(a3 + 23);
+  v9 = *&request;
+  std::string::operator=(outOrthography, orthography);
+  v16 = *(orthography + 23);
   if ((v16 & 0x80u) != 0)
   {
-    v16 = *(a3 + 1);
+    v16 = *(orthography + 1);
   }
 
   if (v16)
@@ -1557,7 +1557,7 @@ LABEL_6:
     v105 = 0;
     v106 = 0;
     v107 = 0;
-    quasar::Bitmap::~Bitmap(a6);
+    quasar::Bitmap::~Bitmap(pronunciations);
     v18 = v17 + 1;
     v19 = *v17;
     if (*v17 != v17 + 1)
@@ -1599,22 +1599,22 @@ LABEL_6:
       while (v21 != v18);
     }
 
-    if (*(a3 + 23) < 0)
+    if (*(orthography + 23) < 0)
     {
-      std::string::__init_copy_ctor_external(&__str, *a3, *(a3 + 1));
+      std::string::__init_copy_ctor_external(&__str, *orthography, *(orthography + 1));
     }
 
     else
     {
-      __str = *a3;
+      __str = *orthography;
     }
 
     if (v105 == v106)
     {
-      v27 = *(a4 + 23);
+      v27 = *(phoneticOrthography + 23);
       if ((v27 & 0x80u) != 0)
       {
-        v27 = *(a4 + 1);
+        v27 = *(phoneticOrthography + 1);
       }
 
       if (v27)
@@ -1646,7 +1646,7 @@ LABEL_6:
           operator delete(__p);
         }
 
-        std::string::operator=(a8, &__str);
+        std::string::operator=(outOrthography, &__str);
       }
     }
 
@@ -1697,45 +1697,45 @@ LABEL_6:
     ptr = self->_outPronCache.__ptr_;
     if (ptr)
     {
-      quasar::WordPronCache::addTemplateForWord(ptr, a5, &__str, 1);
-      quasar::WordPronCache::addTemplateForWord(self->_outPronCache.__ptr_, a5, a3, 1);
+      quasar::WordPronCache::addTemplateForWord(ptr, name, &__str, 1);
+      quasar::WordPronCache::addTemplateForWord(self->_outPronCache.__ptr_, name, orthography, 1);
     }
 
-    quasar::LmeDataFactoryBase::PronSet::clear(a6);
-    v31 = *(a4 + 23);
+    quasar::LmeDataFactoryBase::PronSet::clear(pronunciations);
+    v31 = *(phoneticOrthography + 23);
     v32 = v31;
-    v33 = *(a4 + 1);
+    v33 = *(phoneticOrthography + 1);
     if ((v31 & 0x80u) == 0)
     {
-      v34 = *(a4 + 23);
+      v34 = *(phoneticOrthography + 23);
     }
 
     else
     {
-      v34 = *(a4 + 1);
+      v34 = *(phoneticOrthography + 1);
     }
 
     if (v34)
     {
-      v35 = a4;
+      orthographyCopy = phoneticOrthography;
     }
 
     else
     {
-      v35 = a3;
+      orthographyCopy = orthography;
     }
 
-    if (SHIBYTE(v35->__r_.__value_.__r.__words[2]) < 0)
+    if (SHIBYTE(orthographyCopy->__r_.__value_.__r.__words[2]) < 0)
     {
-      std::string::__init_copy_ctor_external(&v103, v35->__r_.__value_.__l.__data_, v35->__r_.__value_.__l.__size_);
-      v31 = *(a4 + 23);
-      v33 = *(a4 + 1);
-      v32 = *(a4 + 23);
+      std::string::__init_copy_ctor_external(&v103, orthographyCopy->__r_.__value_.__l.__data_, orthographyCopy->__r_.__value_.__l.__size_);
+      v31 = *(phoneticOrthography + 23);
+      v33 = *(phoneticOrthography + 1);
+      v32 = *(phoneticOrthography + 23);
     }
 
     else
     {
-      v103 = *v35;
+      v103 = *orthographyCopy;
     }
 
     if (v32 < 0)
@@ -1745,14 +1745,14 @@ LABEL_6:
 
     if (v31)
     {
-      if (*(a3 + 23) < 0)
+      if (*(orthography + 23) < 0)
       {
-        std::string::__init_copy_ctor_external(&v102, *a3, *(a3 + 1));
+        std::string::__init_copy_ctor_external(&v102, *orthography, *(orthography + 1));
       }
 
       else
       {
-        v102 = *a3;
+        v102 = *orthography;
       }
     }
 
@@ -1785,19 +1785,19 @@ LABEL_6:
         operator delete(v94.__r_.__value_.__l.__data_);
       }
 
-      if (quasar::WordPronCache::lookupWord(self->_outPronCache.__ptr_, &__p, 1, a6))
+      if (quasar::WordPronCache::lookupWord(self->_outPronCache.__ptr_, &__p, 1, pronunciations))
       {
         ++self->_outPronCacheHits;
-        quasar::LmeDataFactoryBase::PronSet::toPronChoices(a6, v9, &v90);
+        quasar::LmeDataFactoryBase::PronSet::toPronChoices(pronunciations, v9, &v90);
         quasar::LmeDataFactoryBase::PronSet::PronSet(&v83, &v90);
 LABEL_192:
-        v67 = a6 + 8;
-        std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(a6, *(a6 + 1));
+        v67 = pronunciations + 8;
+        std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(pronunciations, *(pronunciations + 1));
         size = v83.__r_.__value_.__l.__size_;
-        *a6 = v83.__r_.__value_.__r.__words[0];
-        *(a6 + 1) = size;
+        *pronunciations = v83.__r_.__value_.__r.__words[0];
+        *(pronunciations + 1) = size;
         v69 = v83.__r_.__value_.__r.__words[2];
-        *(a6 + 2) = *(&v83.__r_.__value_.__l + 2);
+        *(pronunciations + 2) = *(&v83.__r_.__value_.__l + 2);
         if (v69)
         {
           *(size + 16) = v67;
@@ -1808,7 +1808,7 @@ LABEL_192:
 
         else
         {
-          *a6 = v67;
+          *pronunciations = v67;
         }
 
         std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&v83, size);
@@ -1864,7 +1864,7 @@ LABEL_192:
         operator delete(v89.__r_.__value_.__l.__data_);
       }
 
-      if (quasar::LmeData::lookupWordPronCache(self->_quasarLmeData.__ptr_, &__p, 1, a6))
+      if (quasar::LmeData::lookupWordPronCache(self->_quasarLmeData.__ptr_, &__p, 1, pronunciations))
       {
         if (v9 == 3)
         {
@@ -1882,7 +1882,7 @@ LABEL_192:
             }
 
             std::string::basic_string[abi:ne200100]<0>(v80, "");
-            quasar::LmeDataFactoryBase::Word::Word(&v83, &v82, v80, 1, a6);
+            quasar::LmeDataFactoryBase::Word::Word(&v83, &v82, v80, 1, pronunciations);
             quasar::WordPronCache::addWord(v36, &v83, 1);
             std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(v86, v86[1]);
             if (v85 < 0)
@@ -1915,29 +1915,29 @@ LABEL_192:
               v60 = __str.__r_.__value_.__l.__size_;
             }
 
-            v61 = *(a3 + 23);
+            v61 = *(orthography + 23);
             v62 = v61;
-            v63 = *(a3 + 1);
+            v63 = *(orthography + 1);
             if ((v61 & 0x80u) != 0)
             {
-              v61 = *(a3 + 1);
+              v61 = *(orthography + 1);
             }
 
-            if (v60 != v61 || ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? (p_str = &__str) : (p_str = __str.__r_.__value_.__r.__words[0]), v62 >= 0 ? (v65 = a3) : (v65 = *a3), memcmp(p_str, v65, v60)))
+            if (v60 != v61 || ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? (p_str = &__str) : (p_str = __str.__r_.__value_.__r.__words[0]), v62 >= 0 ? (v65 = orthography) : (v65 = *orthography), memcmp(p_str, v65, v60)))
             {
               v66 = self->_outPronCache.__ptr_;
               if (v62 < 0)
               {
-                std::string::__init_copy_ctor_external(&v79, *a3, v63);
+                std::string::__init_copy_ctor_external(&v79, *orthography, v63);
               }
 
               else
               {
-                v79 = *a3;
+                v79 = *orthography;
               }
 
               std::string::basic_string[abi:ne200100]<0>(v77, "");
-              quasar::LmeDataFactoryBase::Word::Word(&v83, &v79, v77, 1, a6);
+              quasar::LmeDataFactoryBase::Word::Word(&v83, &v79, v77, 1, pronunciations);
               quasar::WordPronCache::addWord(v66, &v83, 1);
               quasar::LmeDataFactoryBase::Word::~Word(&v83);
               if (v78 < 0)
@@ -1955,7 +1955,7 @@ LABEL_192:
           }
         }
 
-        quasar::LmeDataFactoryBase::PronSet::toPronChoices(a6, v9, &v90);
+        quasar::LmeDataFactoryBase::PronSet::toPronChoices(pronunciations, v9, &v90);
         quasar::LmeDataFactoryBase::PronSet::PronSet(&v83, &v90);
         goto LABEL_192;
       }
@@ -1974,20 +1974,20 @@ LABEL_192:
 
     if (!self->_tokenizer.__ptr_)
     {
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v70 handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1163 description:@"Tokenizer is invoked after explicit release!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1163 description:@"Tokenizer is invoked after explicit release!"];
     }
 
     if (v105 == v106)
     {
       quasar::getPronunciationsFromOrthography(&v103, &self->_sanitizer, self->_tokenizer.__ptr_, self->_g2p.__ptr_, v9, &__p);
-      v40 = a6 + 8;
-      std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(a6, *(a6 + 1));
+      v40 = pronunciations + 8;
+      std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(pronunciations, *(pronunciations + 1));
       v41 = *(&__p + 1);
-      *a6 = __p;
-      *(a6 + 1) = v41;
+      *pronunciations = __p;
+      *(pronunciations + 1) = v41;
       v42 = v96;
-      *(a6 + 2) = v96;
+      *(pronunciations + 2) = v96;
       if (v42)
       {
         *(v41 + 16) = v40;
@@ -1999,7 +1999,7 @@ LABEL_192:
 
       else
       {
-        *a6 = v40;
+        *pronunciations = v40;
       }
 
       std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&__p, v41);
@@ -2007,15 +2007,15 @@ LABEL_192:
       {
 LABEL_157:
         ++self->_outPronCacheMisses;
-        quasar::LmeDataFactoryBase::PronSet::toPronChoices(a6, v9, &v83);
+        quasar::LmeDataFactoryBase::PronSet::toPronChoices(pronunciations, v9, &v83);
         quasar::LmeDataFactoryBase::PronSet::PronSet(&__p, &v83);
-        v57 = a6 + 8;
-        std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(a6, *(a6 + 1));
+        v57 = pronunciations + 8;
+        std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(pronunciations, *(pronunciations + 1));
         v58 = *(&__p + 1);
-        *a6 = __p;
-        *(a6 + 1) = v58;
+        *pronunciations = __p;
+        *(pronunciations + 1) = v58;
         v59 = v96;
-        *(a6 + 2) = v96;
+        *(pronunciations + 2) = v96;
         if (v59)
         {
           *(v58 + 16) = v57;
@@ -2027,7 +2027,7 @@ LABEL_157:
 
         else
         {
-          *a6 = v57;
+          *pronunciations = v57;
         }
 
         std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&__p, v58);
@@ -2085,7 +2085,7 @@ LABEL_199:
               quasar::PronChoice::PronChoice(&__p, p_data);
               if (__p == 4)
               {
-                quasar::LmeDataFactoryBase::PronSet::insert(a6, 4, &__p + 8, v98);
+                quasar::LmeDataFactoryBase::PronSet::insert(pronunciations, 4, &__p + 8, v98);
               }
 
               if (SHIBYTE(v97) < 0)
@@ -2110,13 +2110,13 @@ LABEL_199:
     {
       (*(*self->_g2p.__ptr_ + 32))(&v83);
       quasar::LmeDataFactoryBase::PronSet::PronSet(&__p, &v83);
-      v37 = a6 + 8;
-      std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(a6, *(a6 + 1));
+      v37 = pronunciations + 8;
+      std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(pronunciations, *(pronunciations + 1));
       v38 = *(&__p + 1);
-      *a6 = __p;
-      *(a6 + 1) = v38;
+      *pronunciations = __p;
+      *(pronunciations + 1) = v38;
       v39 = v96;
-      *(a6 + 2) = v96;
+      *(pronunciations + 2) = v96;
       if (v39)
       {
         *(v38 + 16) = v37;
@@ -2128,7 +2128,7 @@ LABEL_199:
 
       else
       {
-        *a6 = v37;
+        *pronunciations = v37;
       }
 
       std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&__p, v38);
@@ -2152,7 +2152,7 @@ LABEL_199:
         }
 
         std::string::basic_string[abi:ne200100]<0>(v74, "");
-        quasar::LmeDataFactoryBase::Word::Word(&__p, &v76, v74, 1, a6);
+        quasar::LmeDataFactoryBase::Word::Word(&__p, &v76, v74, 1, pronunciations);
         quasar::WordPronCache::addWord(v43, &__p, 1);
         std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&v100, v101);
         if (v99 < 0)
@@ -2185,29 +2185,29 @@ LABEL_199:
           v50 = __str.__r_.__value_.__l.__size_;
         }
 
-        v51 = *(a3 + 23);
+        v51 = *(orthography + 23);
         v52 = v51;
-        v53 = *(a3 + 1);
+        v53 = *(orthography + 1);
         if ((v51 & 0x80u) != 0)
         {
-          v51 = *(a3 + 1);
+          v51 = *(orthography + 1);
         }
 
-        if (v50 != v51 || ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? (v54 = &__str) : (v54 = __str.__r_.__value_.__r.__words[0]), v52 >= 0 ? (v55 = a3) : (v55 = *a3), memcmp(v54, v55, v50)))
+        if (v50 != v51 || ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? (v54 = &__str) : (v54 = __str.__r_.__value_.__r.__words[0]), v52 >= 0 ? (v55 = orthography) : (v55 = *orthography), memcmp(v54, v55, v50)))
         {
           v56 = self->_outPronCache.__ptr_;
           if (v52 < 0)
           {
-            std::string::__init_copy_ctor_external(&v73, *a3, v53);
+            std::string::__init_copy_ctor_external(&v73, *orthography, v53);
           }
 
           else
           {
-            v73 = *a3;
+            v73 = *orthography;
           }
 
           std::string::basic_string[abi:ne200100]<0>(v71, "");
-          quasar::LmeDataFactoryBase::Word::Word(&__p, &v73, v71, 1, a6);
+          quasar::LmeDataFactoryBase::Word::Word(&__p, &v73, v71, 1, pronunciations);
           quasar::WordPronCache::addWord(v56, &__p, 1);
           std::__tree<std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::__map_value_compare<std::pair<quasar::PronType,std::string>,std::__value_type<std::pair<quasar::PronType,std::string>,float>,std::less<std::pair<quasar::PronType,std::string>>,true>,std::allocator<std::__value_type<std::pair<quasar::PronType,std::string>,float>>>::destroy(&v100, v101);
           if (v99 < 0)
@@ -2237,30 +2237,30 @@ LABEL_199:
   }
 }
 
-- (void)_embeddingsForOrthography:(const void *)a3 templateName:(const void *)a4 embeddings:(void *)a5 pronRequest:(int)a6
+- (void)_embeddingsForOrthography:(const void *)orthography templateName:(const void *)name embeddings:(void *)embeddings pronRequest:(int)request
 {
-  v6 = *(a3 + 23);
+  v6 = *(orthography + 23);
   if ((v6 & 0x80u) != 0)
   {
-    v6 = *(a3 + 1);
+    v6 = *(orthography + 1);
   }
 
   if (v6)
   {
-    quasar::TextSanitizer::sanitize(&self->_sanitizer, a3);
+    quasar::TextSanitizer::sanitize(&self->_sanitizer, orthography);
   }
 }
 
-- (id)sanitizedStringWithString:(id)a3
+- (id)sanitizedStringWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   v12[0] = 0;
   v12[1] = 0;
   v13 = 0;
-  if (v4)
+  if (stringCopy)
   {
-    [v4 ear_toString];
+    [stringCopy ear_toString];
   }
 
   else
@@ -2305,16 +2305,16 @@ LABEL_199:
   }
 }
 
-- (void)createInlineLmeUserDataForContextStrings:(id)a3
+- (void)createInlineLmeUserDataForContextStrings:(id)strings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   [(_EARUserProfileBuilder *)self removeAllWords];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = v4;
+  obj = stringsCopy;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v5)
   {
@@ -2350,16 +2350,16 @@ LABEL_199:
   }
 }
 
-- (void)createInlineLmeUserDataForWordsWithMetadata:(id)a3
+- (void)createInlineLmeUserDataForWordsWithMetadata:(id)metadata
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  metadataCopy = metadata;
   [(_EARUserProfileBuilder *)self removeAllWords];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v10;
+  v4 = metadataCopy;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
@@ -2390,11 +2390,11 @@ LABEL_199:
   }
 }
 
-- (id)createInlineLmeUserDataForContextData:(id)a3 speechProfile:(id)a4
+- (id)createInlineLmeUserDataForContextData:(id)data speechProfile:(id)profile
 {
   v116[1] = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v67 = a4;
+  dataCopy = data;
+  profileCopy = profile;
   v113 = 0;
   v114 = 0;
   v112 = &v113;
@@ -2403,7 +2403,7 @@ LABEL_199:
     operator new();
   }
 
-  if ([v68 hasVisualContext])
+  if ([dataCopy hasVisualContext])
   {
     cntrl = self->_dataFactory.__cntrl_;
     ptr = self->_dataFactory.__ptr_;
@@ -2413,7 +2413,7 @@ LABEL_199:
     }
 
     v66 = cntrl;
-    v7 = v68;
+    v7 = dataCopy;
     v8 = v7;
     *v72 = 0u;
     v73 = 0u;
@@ -2620,7 +2620,7 @@ LABEL_34:
   }
 
 LABEL_61:
-  if (!v68)
+  if (!dataCopy)
   {
     v34 = 0;
     v72[0] = 0;
@@ -2629,7 +2629,7 @@ LABEL_61:
     goto LABEL_69;
   }
 
-  [v68 getWords];
+  [dataCopy getWords];
   v34 = v72[0];
   if (v72[0] != &v72[1])
   {
@@ -2638,8 +2638,8 @@ LABEL_61:
 LABEL_69:
       if (!self->_tokenizer.__ptr_)
       {
-        v55 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v55 handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1322 description:@"Tokenizer is invoked after explicit release!"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EARUserProfileBuilder.mm" lineNumber:1322 description:@"Tokenizer is invoked after explicit release!"];
       }
 
       quasar::LmeDataFactory::getNameEnumeratorFromAceCategory(self->_dataFactory.__ptr_, (v34 + 4), &v103);
@@ -2853,9 +2853,9 @@ LABEL_63:
     memset(v96, 0, sizeof(v96));
     v95 = 1065353216;
     v97 = 1065353216;
-    if (v68)
+    if (dataCopy)
     {
-      [v68 getTemplateToAverageCost];
+      [dataCopy getTemplateToAverageCost];
     }
 
     else
@@ -2867,9 +2867,9 @@ LABEL_63:
 
     std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::__move_assign(v96, v72);
     std::__hash_table<std::string,std::hash<std::string>,std::equal_to<std::string>,std::allocator<std::string>>::~__hash_table(v72);
-    if (v68)
+    if (dataCopy)
     {
-      [v68 getTemplateToDeviationCost];
+      [dataCopy getTemplateToDeviationCost];
     }
 
     else
@@ -3004,7 +3004,7 @@ LABEL_63:
   return v3;
 }
 
-- (void)_logSpeechProfileUpdatedEventWithLmeData:(shared_ptr<quasar:(int)a4 :()map<std:()int :()std:(std:(int>>> *)a5 :allocator<std::pair<const)std::string :less<std::string> string LmeData>)a3 sizeInBytes:numEnumeratedEntries:
+- (void)_logSpeechProfileUpdatedEventWithLmeData:(shared_ptr<quasar:(int)data :()map<std:()int :()std:(std:(int>>> *)std :allocator<std::pair<const)std::string :less<std::string> string LmeData>)a3 sizeInBytes:numEnumeratedEntries:
 {
   if (SLODWORD(a3.__cntrl_) < 1)
   {
@@ -3017,11 +3017,11 @@ LABEL_63:
     return;
   }
 
-  v6 = *&a4;
+  v6 = *&data;
   cntrl = a3.__cntrl_;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:cntrl];
-  [v8 setObject:v9 forKeyedSubscript:@"sizeInBytes"];
+  [dictionary setObject:v9 forKeyedSubscript:@"sizeInBytes"];
 
   v10 = *ptr;
   v11 = *(*ptr + 343);
@@ -3037,23 +3037,23 @@ LABEL_63:
   }
 
   v13 = [MEMORY[0x1E696AEC0] ear_stringWithStringView:{v12, v11}];
-  [v8 setObject:v13 forKeyedSubscript:@"language"];
+  [dictionary setObject:v13 forKeyedSubscript:@"language"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithInt:*(*ptr + 8)];
-  [v8 setObject:v14 forKeyedSubscript:@"formatVersion"];
+  [dictionary setObject:v14 forKeyedSubscript:@"formatVersion"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithInt:*(*ptr + 264)];
-  [v8 setObject:v15 forKeyedSubscript:@"g2pModelVersion"];
+  [dictionary setObject:v15 forKeyedSubscript:@"g2pModelVersion"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:*(*ptr + 56)];
-  [v8 setObject:v16 forKeyedSubscript:@"pronunciationCacheSize"];
+  [dictionary setObject:v16 forKeyedSubscript:@"pronunciationCacheSize"];
 
-  v17 = [MEMORY[0x1E696AE30] processInfo];
-  v18 = [v17 processName];
-  [v8 setObject:v18 forKeyedSubscript:@"process"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  [dictionary setObject:processName forKeyedSubscript:@"process"];
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:*(v6 + 16)];
-  [v8 setObject:v19 forKeyedSubscript:@"numLmeSlotsUpdated"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numLmeSlotsUpdated"];
 
   v21 = *(*ptr + 224);
   v20 = *(*ptr + 232);
@@ -3077,7 +3077,7 @@ LABEL_12:
       v24 = 1;
 LABEL_13:
       v25 = [v23 numberWithUnsignedLong:quasar::QsrTextSymbolTable::NumSymbols(v21)];
-      [v8 setObject:v25 forKeyedSubscript:@"totalEntityCount"];
+      [dictionary setObject:v25 forKeyedSubscript:@"totalEntityCount"];
 
       if ((v24 & 1) == 0)
       {
@@ -3097,7 +3097,7 @@ LABEL_13:
   v35 = 3221225472;
   v36 = __100___EARUserProfileBuilder__logSpeechProfileUpdatedEventWithLmeData_sizeInBytes_numEnumeratedEntries___block_invoke;
   v37 = &unk_1E7C1A2E0;
-  v26 = v8;
+  v26 = dictionary;
   v38 = v26;
   AnalyticsSendEventLazy();
   if (quasar::gLogLevel >= 4)
@@ -3137,7 +3137,7 @@ LABEL_13:
   }
 }
 
-- (void)_logLmeSlotUpdatedEventsWithLanguage:()basic_string<char numEnumeratedEntries:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)_logLmeSlotUpdatedEventsWithLanguage:()basic_string<char numEnumeratedEntries:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v25 = v3;
   v4 = v3 + 1;
@@ -3165,18 +3165,18 @@ LABEL_13:
       v11 = [MEMORY[0x1E696AD98] numberWithInt:*(v5 + 14)];
       [v7 setObject:v11 forKeyedSubscript:@"entityCount"];
 
-      data = a3;
-      if (*(&a3->__rep_.__l + 23) < 0)
+      data = std;
+      if (*(&std->__rep_.__l + 23) < 0)
       {
-        data = a3->__rep_.__l.__data_;
+        data = std->__rep_.__l.__data_;
       }
 
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:data];
       [v7 setObject:v13 forKeyedSubscript:@"language"];
 
-      v14 = [MEMORY[0x1E696AE30] processInfo];
-      v15 = [v14 processName];
-      [v7 setObject:v15 forKeyedSubscript:@"process"];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      [v7 setObject:processName forKeyedSubscript:@"process"];
 
       v29 = MEMORY[0x1E69E9820];
       v30 = 3221225472;

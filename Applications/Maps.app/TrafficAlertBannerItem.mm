@@ -1,40 +1,40 @@
 @interface TrafficAlertBannerItem
 - (NSString)subtitle;
 - (NSString)title;
-- (TrafficAlertBannerItem)initWithGuidanceState:(id)a3;
+- (TrafficAlertBannerItem)initWithGuidanceState:(id)state;
 - (UIImage)icon;
-- (void)updateFromGuidanceState:(id)a3;
+- (void)updateFromGuidanceState:(id)state;
 @end
 
 @implementation TrafficAlertBannerItem
 
-- (void)updateFromGuidanceState:(id)a3
+- (void)updateFromGuidanceState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 trafficIncidentAlert];
+  stateCopy = state;
+  trafficIncidentAlert = [stateCopy trafficIncidentAlert];
 
-  if (v5)
+  if (trafficIncidentAlert)
   {
     v6.receiver = self;
     v6.super_class = TrafficAlertBannerItem;
-    [(BannerItem *)&v6 updateFromGuidanceState:v4];
+    [(BannerItem *)&v6 updateFromGuidanceState:stateCopy];
   }
 }
 
 - (UIImage)icon
 {
-  v3 = [(BannerItem *)self guidanceState];
-  v4 = [v3 trafficIncidentAlert];
-  v5 = [v4 incident];
+  guidanceState = [(BannerItem *)self guidanceState];
+  trafficIncidentAlert = [guidanceState trafficIncidentAlert];
+  incident = [trafficIncidentAlert incident];
 
-  if ([v5 hasType] && (v6 = +[VKTrafficIncidentFeature incidentTypeForGeoRouteIncident:](VKTrafficIncidentFeature, "incidentTypeForGeoRouteIncident:", v5), -[TrafficAlertBannerItem _hasIconForIncidentType:](self, "_hasIconForIncidentType:", v6)))
+  if ([incident hasType] && (v6 = +[VKTrafficIncidentFeature incidentTypeForGeoRouteIncident:](VKTrafficIncidentFeature, "incidentTypeForGeoRouteIncident:", incident), -[TrafficAlertBannerItem _hasIconForIncidentType:](self, "_hasIconForIncidentType:", v6)))
   {
     if (self->_incidentType != v6)
     {
       self->_incidentType = v6;
       v8 = +[MKSystemController sharedInstance];
       [v8 screenScale];
-      v10 = sub_100955280(v5, v9);
+      v10 = sub_100955280(incident, v9);
       incidentIcon = self->_incidentIcon;
       self->_incidentIcon = v10;
     }
@@ -52,31 +52,31 @@
 
 - (NSString)subtitle
 {
-  v2 = [(BannerItem *)self guidanceState];
-  v3 = [v2 trafficIncidentAlert];
-  v4 = [v3 subtitle];
+  guidanceState = [(BannerItem *)self guidanceState];
+  trafficIncidentAlert = [guidanceState trafficIncidentAlert];
+  subtitle = [trafficIncidentAlert subtitle];
 
-  return v4;
+  return subtitle;
 }
 
 - (NSString)title
 {
-  v2 = [(BannerItem *)self guidanceState];
-  v3 = [v2 trafficIncidentAlert];
-  v4 = [v3 title];
+  guidanceState = [(BannerItem *)self guidanceState];
+  trafficIncidentAlert = [guidanceState trafficIncidentAlert];
+  title = [trafficIncidentAlert title];
 
-  return v4;
+  return title;
 }
 
-- (TrafficAlertBannerItem)initWithGuidanceState:(id)a3
+- (TrafficAlertBannerItem)initWithGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = TrafficAlertBannerItem;
-  v5 = [(BannerItem *)&v9 initWithGuidanceState:v4];
+  v5 = [(BannerItem *)&v9 initWithGuidanceState:stateCopy];
   if (v5)
   {
-    v6 = [v4 uniqueIdForBannerType:1];
+    v6 = [stateCopy uniqueIdForBannerType:1];
     uniqueId = v5->super._uniqueId;
     v5->super._uniqueId = v6;
   }

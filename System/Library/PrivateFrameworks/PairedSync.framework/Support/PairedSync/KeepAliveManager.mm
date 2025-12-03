@@ -35,12 +35,12 @@
       goto LABEL_15;
     }
 
-    v10 = [v9 domain];
-    if ([v10 isEqualToString:NSCocoaErrorDomain])
+    domain = [v9 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v11 = [v9 code];
+      code = [v9 code];
 
-      if (v11 == 516)
+      if (code == 516)
       {
 LABEL_15:
         byte_100038060 = 0;
@@ -61,9 +61,9 @@ LABEL_15:
       v14 = psd_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v9 psy_safeDescription];
+        psy_safeDescription = [v9 psy_safeDescription];
         *buf = 138543362;
-        v18 = v15;
+        v18 = psy_safeDescription;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Failed to create KeepAlive file with error: %{public}@", buf, 0xCu);
       }
     }
@@ -111,12 +111,12 @@ LABEL_18:
       return;
     }
 
-    v10 = [v9 domain];
-    if ([v10 isEqualToString:NSCocoaErrorDomain])
+    domain = [v9 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v11 = [v9 code];
+      code = [v9 code];
 
-      if (v11 == 4)
+      if (code == 4)
       {
         goto LABEL_18;
       }
@@ -134,9 +134,9 @@ LABEL_18:
       v14 = psd_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v9 psy_safeDescription];
+        psy_safeDescription = [v9 psy_safeDescription];
         *buf = 138543362;
-        v18 = v15;
+        v18 = psy_safeDescription;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Failed to delete KeepAlive file with error: %{public}@", buf, 0xCu);
       }
     }

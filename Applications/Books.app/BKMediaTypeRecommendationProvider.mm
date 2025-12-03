@@ -1,11 +1,11 @@
 @interface BKMediaTypeRecommendationProvider
 - (BKMediaTypeRecommendationProvider)init;
-- (void)recommendedMediaTypeWith:(id)a3;
+- (void)recommendedMediaTypeWith:(id)with;
 @end
 
 @implementation BKMediaTypeRecommendationProvider
 
-- (void)recommendedMediaTypeWith:(id)a3
+- (void)recommendedMediaTypeWith:(id)with
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
@@ -16,10 +16,10 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v9[5] = a3;
-  v10 = a3;
-  v11 = self;
-  v12 = v10;
+  v9[5] = with;
+  withCopy = with;
+  selfCopy = self;
+  v12 = withCopy;
   sub_1005E3DA4(0, 0, v7, &unk_100834BE0, v9);
 
   sub_100007840(v7, &qword_100AD67D0);

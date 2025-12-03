@@ -1,8 +1,8 @@
 @interface ADPeerStreamConnection
-- (ADPeerStreamConnection)initWithServiceIdentifier:(id)a3 delegate:(id)a4 listener:(BOOL)a5;
+- (ADPeerStreamConnection)initWithServiceIdentifier:(id)identifier delegate:(id)delegate listener:(BOOL)listener;
 - (void)close;
-- (void)getLocalMetrics:(id)a3;
-- (void)getSocket:(id)a3;
+- (void)getLocalMetrics:(id)metrics;
+- (void)getSocket:(id)socket;
 @end
 
 @implementation ADPeerStreamConnection
@@ -15,10 +15,10 @@
   [(ADSharedPeerStreamConnection *)sharedConnection closeForConnection:self];
 }
 
-- (void)getLocalMetrics:(id)a3
+- (void)getLocalMetrics:(id)metrics
 {
-  v4 = a3;
-  if (v4)
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
     v5 = AFSiriLogContextIDS;
     if (os_log_type_enabled(AFSiriLogContextIDS, OS_LOG_TYPE_INFO))
@@ -31,8 +31,8 @@
     vendedDeviceConnection = self->_vendedDeviceConnection;
     if (vendedDeviceConnection)
     {
-      v7 = [(IDSDeviceConnection *)vendedDeviceConnection metrics];
-      v4[2](v4, v7);
+      metrics = [(IDSDeviceConnection *)vendedDeviceConnection metrics];
+      metricsCopy[2](metricsCopy, metrics);
     }
 
     else
@@ -45,14 +45,14 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s No current IDS device connection", &v9, 0xCu);
       }
 
-      v4[2](v4, 0);
+      metricsCopy[2](metricsCopy, 0);
     }
   }
 }
 
-- (void)getSocket:(id)a3
+- (void)getSocket:(id)socket
 {
-  v4 = a3;
+  socketCopy = socket;
   vendedDeviceConnection = self->_vendedDeviceConnection;
   self->_vendedDeviceConnection = 0;
 
@@ -62,27 +62,27 @@
   v8[2] = sub_100096FE0;
   v8[3] = &unk_10050FE10;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = socketCopy;
+  v7 = socketCopy;
   [(ADSharedPeerStreamConnection *)sharedConnection getSocketForConnection:self completion:v8];
 }
 
-- (ADPeerStreamConnection)initWithServiceIdentifier:(id)a3 delegate:(id)a4 listener:(BOOL)a5
+- (ADPeerStreamConnection)initWithServiceIdentifier:(id)identifier delegate:(id)delegate listener:(BOOL)listener
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  listenerCopy = listener;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = ADPeerStreamConnection;
   v10 = [(ADPeerStreamConnection *)&v17 init];
   if (v10)
   {
-    v11 = [ADSharedPeerStreamConnection sharedPeerStreamConnectionWithServiceIdentifier:v8 listener:v5];
+    v11 = [ADSharedPeerStreamConnection sharedPeerStreamConnectionWithServiceIdentifier:identifierCopy listener:listenerCopy];
     sharedConnection = v10->_sharedConnection;
     v10->_sharedConnection = v11;
 
-    v13 = objc_storeWeak(&v10->_delegate, v9);
-    if (v9)
+    v13 = objc_storeWeak(&v10->_delegate, delegateCopy);
+    if (delegateCopy)
     {
       v14 = v10->_sharedConnection;
       WeakRetained = objc_loadWeakRetained(&v10->_delegate);

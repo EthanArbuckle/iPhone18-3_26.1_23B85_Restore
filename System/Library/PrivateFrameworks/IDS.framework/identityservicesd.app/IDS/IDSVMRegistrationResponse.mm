@@ -1,10 +1,10 @@
 @interface IDSVMRegistrationResponse
 - (IDSVMRegistrationResponse)init;
-- (IDSVMRegistrationResponse)initWithCoder:(id)a3;
-- (IDSVMRegistrationResponse)initWithDataRepresentation:(id)a3;
-- (IDSVMRegistrationResponse)initWithVersion:(unint64_t)a3 language:(id)a4 hardwareVersion:(id)a5 osVersion:(id)a6 softwareVersion:(id)a7 deviceName:(id)a8;
+- (IDSVMRegistrationResponse)initWithCoder:(id)coder;
+- (IDSVMRegistrationResponse)initWithDataRepresentation:(id)representation;
+- (IDSVMRegistrationResponse)initWithVersion:(unint64_t)version language:(id)language hardwareVersion:(id)hardwareVersion osVersion:(id)osVersion softwareVersion:(id)softwareVersion deviceName:(id)name;
 - (NSData)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSVMRegistrationResponse
@@ -13,54 +13,54 @@
 {
   v3 = IMCurrentPreferredLanguage();
   v4 = +[FTDeviceSupport sharedInstance];
-  v5 = [v4 model];
+  model = [v4 model];
   v6 = +[FTDeviceSupport sharedInstance];
-  v7 = [v6 productOSVersion];
+  productOSVersion = [v6 productOSVersion];
   v8 = +[FTDeviceSupport sharedInstance];
-  v9 = [v8 productBuildVersion];
+  productBuildVersion = [v8 productBuildVersion];
   v10 = +[FTDeviceSupport sharedInstance];
-  v11 = [v10 deviceName];
-  v12 = [(IDSVMRegistrationResponse *)self initWithVersion:1 language:v3 hardwareVersion:v5 osVersion:v7 softwareVersion:v9 deviceName:v11];
+  deviceName = [v10 deviceName];
+  v12 = [(IDSVMRegistrationResponse *)self initWithVersion:1 language:v3 hardwareVersion:model osVersion:productOSVersion softwareVersion:productBuildVersion deviceName:deviceName];
 
   return v12;
 }
 
-- (IDSVMRegistrationResponse)initWithVersion:(unint64_t)a3 language:(id)a4 hardwareVersion:(id)a5 osVersion:(id)a6 softwareVersion:(id)a7 deviceName:(id)a8
+- (IDSVMRegistrationResponse)initWithVersion:(unint64_t)version language:(id)language hardwareVersion:(id)hardwareVersion osVersion:(id)osVersion softwareVersion:(id)softwareVersion deviceName:(id)name
 {
-  v22 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  languageCopy = language;
+  hardwareVersionCopy = hardwareVersion;
+  osVersionCopy = osVersion;
+  softwareVersionCopy = softwareVersion;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = IDSVMRegistrationResponse;
   v18 = [(IDSVMRegistrationResponse *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_language, a4);
-    objc_storeStrong(&v19->_hardwareVersion, a5);
-    objc_storeStrong(&v19->_osVersion, a6);
-    objc_storeStrong(&v19->_softwareVersion, a7);
-    objc_storeStrong(&v19->_deviceName, a8);
-    v19->_version = a3;
+    objc_storeStrong(&v18->_language, language);
+    objc_storeStrong(&v19->_hardwareVersion, hardwareVersion);
+    objc_storeStrong(&v19->_osVersion, osVersion);
+    objc_storeStrong(&v19->_softwareVersion, softwareVersion);
+    objc_storeStrong(&v19->_deviceName, name);
+    v19->_version = version;
   }
 
   return v19;
 }
 
-- (IDSVMRegistrationResponse)initWithDataRepresentation:(id)a3
+- (IDSVMRegistrationResponse)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v9];
   v6 = v9;
   if (!v5)
   {
     v7 = +[IMRGLog vm];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10091D11C(v4, v6, v7);
+      sub_10091D11C(representationCopy, v6, v7);
     }
   }
 
@@ -84,30 +84,30 @@
   return v2;
 }
 
-- (IDSVMRegistrationResponse)initWithCoder:(id)a3
+- (IDSVMRegistrationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"version"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareVersion"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersion"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"softwareVersion"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
 
   v11 = [(IDSVMRegistrationResponse *)self initWithVersion:v5 language:v6 hardwareVersion:v7 osVersion:v8 softwareVersion:v9 deviceName:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeObject:self->_language forKey:@"language"];
-  [v5 encodeObject:self->_hardwareVersion forKey:@"hardwareVersion"];
-  [v5 encodeObject:self->_osVersion forKey:@"osVersion"];
-  [v5 encodeObject:self->_softwareVersion forKey:@"softwareVersion"];
-  [v5 encodeObject:self->_deviceName forKey:@"deviceName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeObject:self->_language forKey:@"language"];
+  [coderCopy encodeObject:self->_hardwareVersion forKey:@"hardwareVersion"];
+  [coderCopy encodeObject:self->_osVersion forKey:@"osVersion"];
+  [coderCopy encodeObject:self->_softwareVersion forKey:@"softwareVersion"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"deviceName"];
 }
 
 @end

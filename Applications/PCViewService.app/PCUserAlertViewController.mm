@@ -1,16 +1,16 @@
 @interface PCUserAlertViewController
-- (PCUserAlertViewController)initWithCoder:(id)a3;
-- (PCUserAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (PCUserAlertViewController)initWithCoder:(id)coder;
+- (PCUserAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)handleButtonActions:(id)a3;
+- (void)handleButtonActions:(id)actions;
 @end
 
 @implementation PCUserAlertViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -23,49 +23,49 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1000826A8(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000826A8(context, v6, v7);
   sub_10000B17C(v6);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   sub_10000ED88(0, &qword_1000DA1E0, SBUIRemoteAlertButtonAction_ptr);
   sub_10000EDD0();
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100082B68(v4);
 }
 
-- (PCUserAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PCUserAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for PCUserAlertViewController();
-  v9 = [(PCUserAlertViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(PCUserAlertViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (PCUserAlertViewController)initWithCoder:(id)a3
+- (PCUserAlertViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PCUserAlertViewController();
-  v4 = a3;
-  v5 = [(PCUserAlertViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PCUserAlertViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

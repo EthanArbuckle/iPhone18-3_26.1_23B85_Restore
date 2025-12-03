@@ -1,20 +1,20 @@
 @interface SMLocationEvent
-- (SMLocationEvent)initWithLocation:(id)a3 distance:(double)a4;
+- (SMLocationEvent)initWithLocation:(id)location distance:(double)distance;
 @end
 
 @implementation SMLocationEvent
 
-- (SMLocationEvent)initWithLocation:(id)a3 distance:(double)a4
+- (SMLocationEvent)initWithLocation:(id)location distance:(double)distance
 {
-  v7 = a3;
+  locationCopy = location;
   v11.receiver = self;
   v11.super_class = SMLocationEvent;
   v8 = [(SMLocationEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_location, a3);
-    v9->_distance = a4;
+    objc_storeStrong(&v8->_location, location);
+    v9->_distance = distance;
   }
 
   return v9;

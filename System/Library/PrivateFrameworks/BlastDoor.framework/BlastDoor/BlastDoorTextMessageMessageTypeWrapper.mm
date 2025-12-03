@@ -16,7 +16,7 @@
 
 - (unint64_t)type
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21459088C();
 
   return v3;
@@ -24,7 +24,7 @@
 
 - (BlastDoorTypingIndicator)typingIndicator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21459099C();
 
   return v3;
@@ -32,7 +32,7 @@
 
 - (BlastDoorMessage)textMessage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214590B2C();
 
   return v3;
@@ -40,7 +40,7 @@
 
 - (BlastDoorTapBack)tapback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214590CC4();
 
   return v3;
@@ -48,7 +48,7 @@
 
 - (BlastDoorBalloonPlugin)balloonPlugin
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214590E7C();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (BlastDoorSticker)sticker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145910BC();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (BlastDoorAudioMessage)audioMessage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214591278();
 
   return v3;
@@ -72,7 +72,7 @@
 
 - (BlastDoorEmojiTapBack)emojiTapback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145913E0();
 
   return v3;
@@ -80,7 +80,7 @@
 
 - (BlastDoorStickerTapBack)stickerTapback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145915A4();
 
   return v3;
@@ -88,7 +88,7 @@
 
 - (BlastDoorCustomAcknowledgement)customAcknowledgement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214591718();
 
   return v3;

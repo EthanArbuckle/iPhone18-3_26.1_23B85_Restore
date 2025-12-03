@@ -1,5 +1,5 @@
 @interface CPSpacerFinder
-- (CPSpacerFinder)initWithContentZone:(id)a3;
+- (CPSpacerFinder)initWithContentZone:(id)zone;
 - (id)spacers;
 - (void)assessQuality;
 - (void)dealloc;
@@ -54,7 +54,7 @@
   [(CPSpacerFinder *)self spacers];
   [(CPSpacerFinder *)self assessQuality];
   [(CPSpacerFinder *)self determineValidity];
-  v3 = [(CPZone *)self->contentZone textLinesInZone];
+  textLinesInZone = [(CPZone *)self->contentZone textLinesInZone];
   v15 = [(NSMutableArray *)self->spacers count];
   if (!self->segmentationCount)
   {
@@ -62,7 +62,7 @@
   }
 
   v4 = 0;
-  v14 = v3;
+  v14 = textLinesInZone;
   do
   {
     v5 = &self->segmentations[v4];
@@ -171,14 +171,14 @@ LABEL_17:
 {
   if (self->segmentationCount)
   {
-    v2 = self;
+    selfCopy3 = self;
     v3 = 0;
     allocator = *MEMORY[0x1E695E480];
     do
     {
       v104 = v3;
-      v4 = &v2->segmentations[v3];
-      v110 = [*v4 wordArray];
+      v4 = &selfCopy3->segmentations[v3];
+      wordArray = [*v4 wordArray];
       v5 = *(v4 + 8);
       if (!v5)
       {
@@ -200,16 +200,16 @@ LABEL_17:
         v109 = v6;
         if (v6 + 1 >= v5)
         {
-          v116 = [*v4 wordCount];
+          wordCount = [*v4 wordCount];
         }
 
         else
         {
-          v116 = v11[18] + 1;
+          wordCount = v11[18] + 1;
         }
 
         v115 = v9;
-        v111 = v110 + 48 * *v11;
+        v111 = wordArray + 48 * *v11;
         v12 = *(v11 + 5);
         if (!v12)
         {
@@ -230,7 +230,7 @@ LABEL_72:
           }
 
           v64 = v115;
-          v9 = v116;
+          v9 = wordCount;
           goto LABEL_74;
         }
 
@@ -252,8 +252,8 @@ LABEL_72:
               height = v126.size.height;
               v20 = v7;
               v21 = v13;
-              v22 = [(CPZone *)v2->contentZone graphicsInZone];
-              v23 = [v22 count];
+              graphicsInZone = [(CPZone *)selfCopy3->contentZone graphicsInZone];
+              v23 = [graphicsInZone count];
               v24 = v23;
               if (v23)
               {
@@ -263,7 +263,7 @@ LABEL_72:
                 v27 = 1;
                 do
                 {
-                  v28 = [v22 objectAtIndex:v25];
+                  v28 = [graphicsInZone objectAtIndex:v25];
                   [v28 renderedBounds];
                   if (v32 < height + height)
                   {
@@ -294,7 +294,7 @@ LABEL_72:
                 }
 
                 while (v24 != v25);
-                v2 = self;
+                selfCopy3 = self;
                 if (v27)
                 {
                   [*v117 maximumWordGap];
@@ -311,8 +311,8 @@ LABEL_72:
                   v44 = *(v11 + 2);
                   v45 = *(v11 + 4);
                   r1a = *(v11 + 3);
-                  v46 = [(CPZone *)self->contentZone graphicsInZone];
-                  v47 = [v46 count];
+                  graphicsInZone2 = [(CPZone *)self->contentZone graphicsInZone];
+                  v47 = [graphicsInZone2 count];
                   v48 = v47;
                   if (v47)
                   {
@@ -323,7 +323,7 @@ LABEL_72:
                     v119 = INFINITY;
                     do
                     {
-                      v50 = [v46 objectAtIndex:v49];
+                      v50 = [graphicsInZone2 objectAtIndex:v49];
                       [v50 renderedBounds];
                       if (v54 < v45 + v45)
                       {
@@ -382,14 +382,14 @@ LABEL_72:
                   }
 
                   v61 = *(v11 + 7);
-                  v2 = self;
+                  selfCopy3 = self;
                   if (v61)
                   {
                     v62 = v106 * v107 + v106 * v107;
                     if (v123 <= v62 + v43 && v122 + v123 >= v43 + r1a - v62)
                     {
 LABEL_38:
-                      excludeSpacerFromBounds(&v2->spacerSequence, v12, *(v11 + 1), *(v11 + 2), *(v11 + 3), *(v11 + 4));
+                      excludeSpacerFromBounds(&selfCopy3->spacerSequence, v12, *(v11 + 1), *(v11 + 2), *(v11 + 3), *(v11 + 4));
                       v13 = v21;
                       v7 = v20;
                       goto LABEL_58;
@@ -417,9 +417,9 @@ LABEL_58:
         }
 
         v4 = v117;
-        v63 = [*v117 charSequence];
+        charSequence = [*v117 charSequence];
         v64 = v115;
-        v9 = v116;
+        v9 = wordCount;
         if (!v13)
         {
           goto LABEL_74;
@@ -437,7 +437,7 @@ LABEL_58:
           goto LABEL_68;
         }
 
-        v67 = v63;
+        v67 = charSequence;
         v68 = *(v66 + 88);
         v69 = *(v66 + 96);
         v70 = *(v66 + 104);
@@ -525,7 +525,7 @@ LABEL_115:
               if (preferredSpacer(v94, v13) == v13)
               {
 LABEL_142:
-                excludeSpacerFromBounds(&v2->spacerSequence, v94, *v13, *(v13 + 8), *(v13 + 16), *(v13 + 24));
+                excludeSpacerFromBounds(&selfCopy3->spacerSequence, v94, *v13, *(v13 + 8), *(v13 + 16), *(v13 + 24));
                 goto LABEL_143;
               }
             }
@@ -545,7 +545,7 @@ LABEL_142:
             v100 = v94[2];
             v101 = v94[3];
 LABEL_141:
-            excludeSpacerFromBounds(&v2->spacerSequence, v13, v98, v99, v100, v101);
+            excludeSpacerFromBounds(&selfCopy3->spacerSequence, v13, v98, v99, v100, v101);
             LODWORD(v7) = 0;
             v13 = 0;
           }
@@ -583,7 +583,7 @@ LABEL_143:
           LODWORD(v7) = v65;
           if (v65 && v108 == 1)
           {
-            excludeSpacerFromBounds(&v2->spacerSequence, v113, *v13, *(v13 + 8), *(v13 + 16), *(v13 + 24));
+            excludeSpacerFromBounds(&selfCopy3->spacerSequence, v113, *v13, *(v13 + 8), *(v13 + 16), *(v13 + 24));
           }
         }
 
@@ -650,7 +650,7 @@ LABEL_87:
 
         if ((canSeparateWordRight(v13, v79) & 1) == 0)
         {
-          excludeSpacerFromBounds(&v2->spacerSequence, v13, *(v11 + 1), *(v11 + 2), *(v11 + 3), *(v11 + 4));
+          excludeSpacerFromBounds(&selfCopy3->spacerSequence, v13, *(v11 + 1), *(v11 + 2), *(v11 + 3), *(v11 + 4));
           v13 = 0;
           LODWORD(v7) = 0;
           goto LABEL_93;
@@ -714,7 +714,7 @@ LABEL_144:
       v3 = v104 + 1;
     }
 
-    while (v104 + 1 < v2->segmentationCount);
+    while (v104 + 1 < selfCopy3->segmentationCount);
   }
 }
 
@@ -723,17 +723,17 @@ LABEL_144:
   count = self->spacerSequence.count;
   if (count)
   {
-    v3 = self;
+    selfCopy = self;
     self->qualityEntries = malloc_type_malloc(176 * count, 0x10000401EC9425BuLL);
-    if (v3->segmentationCount)
+    if (selfCopy->segmentationCount)
     {
       v4 = 0;
       v86 = 0;
-      v82 = v3;
+      v82 = selfCopy;
       while (1)
       {
-        v5 = &v3->segmentations[v4];
-        v78 = [*v5 wordArray];
+        v5 = &selfCopy->segmentations[v4];
+        wordArray = [*v5 wordArray];
         v6 = *(v5 + 8);
         if (v6)
         {
@@ -742,7 +742,7 @@ LABEL_144:
 
 LABEL_119:
         v4 = v76 + 1;
-        v3 = v82;
+        selfCopy = v82;
         if (v76 + 1 >= v82->segmentationCount)
         {
           return;
@@ -760,14 +760,14 @@ LABEL_119:
         v12 = v7 + 1;
         v13 = v12 >= v6 ? [*v5 wordCount] : *(v10 + 72) + 1;
         v81 = v12;
-        v14 = v78 + 48 * v11;
+        v14 = wordArray + 48 * v11;
         v15 = v9 - v8;
         if (v9 - v8 != 1)
         {
           break;
         }
 
-        v16 = [*v5 charSequence];
+        charSequence = [*v5 charSequence];
         v17 = *(v14 + 4);
         if (v17 < 5)
         {
@@ -782,7 +782,7 @@ LABEL_16:
             break;
           }
 
-          v19 = v16;
+          v19 = charSequence;
           v20 = v17 - 1;
           while (1)
           {
@@ -1315,9 +1315,9 @@ LABEL_118:
       v14 = &self->segmentations[v13];
       if ([v14->var0 wordCount])
       {
-        v15 = [v14->var0 firstWord];
-        v16 = *(v15 + 32);
-        v45 = *(v15 + 16);
+        firstWord = [v14->var0 firstWord];
+        v16 = *(firstWord + 32);
+        v45 = *(firstWord + 16);
         v46 = v16;
         v41 = 0.0;
         *&v43[8] = 0;
@@ -1327,13 +1327,13 @@ LABEL_118:
         *v43 = v9;
         *&v43[16] = v45;
         v44 = v16;
-        v17 = [v14->var0 wordCount];
+        wordCount = [v14->var0 wordCount];
         var0 = v14->var0;
-        if (v17 == 1)
+        if (wordCount == 1)
         {
-          v19 = [var0 firstWord];
+          firstWord2 = [var0 firstWord];
           [v14->var0 charSequence];
-          segmentTextLine(0, v19, 0, v20, &v40);
+          segmentTextLine(0, firstWord2, 0, v20, &v40);
         }
 
         else
@@ -1500,8 +1500,8 @@ LABEL_118:
 
 - (void)initializeSegmentations
 {
-  v3 = [(CPZone *)self->contentZone textLinesInZone];
-  v4 = [v3 count];
+  textLinesInZone = [(CPZone *)self->contentZone textLinesInZone];
+  v4 = [textLinesInZone count];
   self->segmentationCount = v4;
   if (v4)
   {
@@ -1513,7 +1513,7 @@ LABEL_118:
       v7 = 0;
       do
       {
-        v8 = [v3 objectAtIndex:v7];
+        v8 = [textLinesInZone objectAtIndex:v7];
         self->segmentations[v6].var0 = v8;
         [v8 bounds];
         v15.origin.x = v9;
@@ -1600,7 +1600,7 @@ LABEL_118:
   }
 }
 
-- (CPSpacerFinder)initWithContentZone:(id)a3
+- (CPSpacerFinder)initWithContentZone:(id)zone
 {
   v15.receiver = self;
   v15.super_class = CPSpacerFinder;
@@ -1608,15 +1608,15 @@ LABEL_118:
   v5 = v4;
   if (v4)
   {
-    v4->contentZone = a3;
-    [a3 zoneBounds];
+    v4->contentZone = zone;
+    [zone zoneBounds];
     v5->zoneBounds.origin.x = v6;
     v5->zoneBounds.origin.y = v7;
     v5->zoneBounds.size.width = v8;
     v5->zoneBounds.size.height = v9;
-    if (([a3 hasBorders] & 1) == 0)
+    if (([zone hasBorders] & 1) == 0)
     {
-      [objc_msgSend(a3 "charactersInZone")];
+      [objc_msgSend(zone "charactersInZone")];
       v16.origin.x = v10;
       v16.origin.y = v11;
       v16.size.width = v12;

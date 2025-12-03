@@ -1,11 +1,11 @@
 @interface AXMImageCaptionModelAssetManager
 + (id)sharedInstance;
 - (AXMImageCaptionModelAssetManager)init;
-- (id)_modelURLForType:(unint64_t)a3 baseURL:(id)a4;
-- (id)infoForModelAtURL:(id)a3;
-- (id)modelURLForType:(unint64_t)a3 timeout:(double)a4;
-- (void)_performWithLock:(id)a3;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
+- (id)_modelURLForType:(unint64_t)type baseURL:(id)l;
+- (id)infoForModelAtURL:(id)l;
+- (id)modelURLForType:(unint64_t)type timeout:(double)timeout;
+- (void)_performWithLock:(id)lock;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
 @end
 
 @implementation AXMImageCaptionModelAssetManager
@@ -39,8 +39,8 @@ void __50__AXMImageCaptionModelAssetManager_sharedInstance__block_invoke()
   {
     v2->_lock._os_unfair_lock_opaque = 0;
     v4 = MEMORY[0x1E69881B0];
-    v5 = [MEMORY[0x1E69881E0] policy];
-    v6 = [v4 assetControllerWithPolicy:v5];
+    policy = [MEMORY[0x1E69881E0] policy];
+    v6 = [v4 assetControllerWithPolicy:policy];
     assetController = v3->_assetController;
     v3->_assetController = v6;
 
@@ -51,7 +51,7 @@ void __50__AXMImageCaptionModelAssetManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)modelURLForType:(unint64_t)a3 timeout:(double)a4
+- (id)modelURLForType:(unint64_t)type timeout:(double)timeout
 {
   v22 = 0;
   v23 = &v22;
@@ -68,13 +68,13 @@ void __50__AXMImageCaptionModelAssetManager_sharedInstance__block_invoke()
   [(AXMImageCaptionModelAssetManager *)self _performWithLock:v21];
   if (v23[5])
   {
-    v7 = [(AXMImageCaptionModelAssetManager *)self _modelURLForType:a3 baseURL:?];
+    v7 = [(AXMImageCaptionModelAssetManager *)self _modelURLForType:type baseURL:?];
 LABEL_3:
     v8 = v7;
     goto LABEL_7;
   }
 
-  if (a4 == 0.0 || self->_didTryWaitingForAssetLookup)
+  if (timeout == 0.0 || self->_didTryWaitingForAssetLookup)
   {
     v8 = 0;
   }
@@ -86,7 +86,7 @@ LABEL_3:
     v12 = v23[5];
     v13 = v12 == 0;
     v14 = v10 - v10;
-    if (!v12 && v14 < a4)
+    if (!v12 && v14 < timeout)
     {
       v15 = *MEMORY[0x1E695E8E0];
       do
@@ -110,7 +110,7 @@ LABEL_3:
 
         else
         {
-          v18 = v14 < a4;
+          v18 = v14 < timeout;
         }
       }
 
@@ -119,14 +119,14 @@ LABEL_3:
 
     if (!v13)
     {
-      v7 = [(AXMImageCaptionModelAssetManager *)self _modelURLForType:a3 baseURL:?];
+      v7 = [(AXMImageCaptionModelAssetManager *)self _modelURLForType:type baseURL:?];
       goto LABEL_3;
     }
 
     v19 = AXLogAssetLoader();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(AXMImageCaptionModelAssetManager *)v19 modelURLForType:v14 timeout:a4];
+      [(AXMImageCaptionModelAssetManager *)v19 modelURLForType:v14 timeout:timeout];
     }
 
     v8 = 0;
@@ -155,9 +155,9 @@ void __60__AXMImageCaptionModelAssetManager_modelURLForType_timeout___block_invo
   *(v3 + 40) = v2;
 }
 
-- (id)infoForModelAtURL:(id)a3
+- (id)infoForModelAtURL:(id)l
 {
-  v3 = [a3 URLByAppendingPathComponent:@"model_info.json"];
+  v3 = [l URLByAppendingPathComponent:@"model_info.json"];
   v12 = 0;
   v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:0 error:&v12];
   v5 = v12;
@@ -200,16 +200,16 @@ void __60__AXMImageCaptionModelAssetManager_modelURLForType_timeout___block_invo
   return v8;
 }
 
-- (id)_modelURLForType:(unint64_t)a3 baseURL:(id)a4
+- (id)_modelURLForType:(unint64_t)type baseURL:(id)l
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  if (a3 == 1)
+  if (type == 1)
   {
-    v9 = [v5 URLByAppendingPathComponent:@"VideoCaptionModel"];
-    v10 = [v9 path];
-    [v6 fileExistsAtPath:v10 isDirectory:&v13];
+    v9 = [lCopy URLByAppendingPathComponent:@"VideoCaptionModel"];
+    path = [v9 path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v13];
 
     if (v13 != 1)
     {
@@ -222,15 +222,15 @@ void __60__AXMImageCaptionModelAssetManager_modelURLForType_timeout___block_invo
 
   else
   {
-    if (a3)
+    if (type)
     {
       v11 = 0;
       goto LABEL_12;
     }
 
-    v7 = [v5 URLByAppendingPathComponent:@"ImageCaptionModel"];
-    v8 = [v7 path];
-    [v6 fileExistsAtPath:v8 isDirectory:&v13];
+    v7 = [lCopy URLByAppendingPathComponent:@"ImageCaptionModel"];
+    path2 = [v7 path];
+    [defaultManager fileExistsAtPath:path2 isDirectory:&v13];
 
     if (v13)
     {
@@ -239,7 +239,7 @@ void __60__AXMImageCaptionModelAssetManager_modelURLForType_timeout___block_invo
 
     else
     {
-      v9 = v5;
+      v9 = lCopy;
     }
   }
 
@@ -252,42 +252,42 @@ LABEL_12:
   return v11;
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a6;
+  assetsCopy = assets;
+  errorCopy = error;
   v10 = AXLogAssetLoader();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v18 = v8;
+    v18 = assetsCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = errorCopy;
     _os_log_impl(&dword_1AE37B000, v10, OS_LOG_TYPE_INFO, "ImageCaptionAssetManager. didFinishRefreshingAssets: (%@). error: %@", buf, 0x16u);
   }
 
-  v11 = [MEMORY[0x1E69881A8] newsestCompatibleImageCaptionModelAssetFromAssets:v8 withStage:@"Stable" language:@"en" isInstalled:1 isDownloadable:0];
+  v11 = [MEMORY[0x1E69881A8] newsestCompatibleImageCaptionModelAssetFromAssets:assetsCopy withStage:@"Stable" language:@"en" isInstalled:1 isDownloadable:0];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69881B8] store];
-    [v12 recordLastAssetAccess:v11];
+    store = [MEMORY[0x1E69881B8] store];
+    [store recordLastAssetAccess:v11];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __98__AXMImageCaptionModelAssetManager_assetController_didFinishRefreshingAssets_wasSuccessful_error___block_invoke;
     v14[3] = &unk_1E7A1CB30;
     v15 = v11;
-    v16 = self;
+    selfCopy = self;
     [(AXMImageCaptionModelAssetManager *)self _performWithLock:v14];
     v13 = v15;
   }

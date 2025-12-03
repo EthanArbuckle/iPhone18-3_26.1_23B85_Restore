@@ -1,7 +1,7 @@
 @interface PUPhotosGridCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable;
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3;
+- (BOOL)_accessibilitySavePhotoLabel:(id)label;
 - (id)_accessibilityElementStoredUserLabel;
 - (id)_accessibilityPHAssetLocalIdentifier;
 - (id)_accessibilityPhotoDescription;
@@ -16,62 +16,62 @@
 
 @implementation PUPhotosGridCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isPhoto" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUPhotosGridViewController" hasInstanceMethod:@"photoCollectionAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"PUPhotosGridViewController" hasInstanceMethod:@"assetsInAssetCollection:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isPhoto" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUPhotosGridViewController" hasInstanceMethod:@"photoCollectionAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"PUPhotosGridViewController" hasInstanceMethod:@"assetsInAssetCollection:" withFullSignature:{"@", "@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PUPhotosGridCellAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(PUPhotosGridCellAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(PUPhotosGridCellAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(PUPhotosGridCellAccessibility *)self accessibilityUserDefinedLabel];
 LABEL_5:
-    v7 = v4;
+    accessibilityLabel = accessibilityUserDefinedLabel2;
     goto LABEL_6;
   }
 
-  v5 = [(PUPhotosGridCellAccessibility *)self accessibilityIdentifier];
-  v6 = [v5 isEqualToString:@"AddPhotoPlaceholder"];
+  accessibilityIdentifier = [(PUPhotosGridCellAccessibility *)self accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqualToString:@"AddPhotoPlaceholder"];
 
   if (v6)
   {
-    v4 = accessibilityPULocalizedString(@"add.photo.placeholder");
+    accessibilityUserDefinedLabel2 = accessibilityPULocalizedString(@"add.photo.placeholder");
     goto LABEL_5;
   }
 
-  v9 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v7 = [v9 accessibilityLabel];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  accessibilityLabel = [_axPHAsset accessibilityLabel];
 
   v10 = [(PUPhotosGridCellAccessibility *)self _accessibilityDescendantOfType:NSClassFromString(&cfstr_Pxtextbannervi.isa)];
   v11 = v10;
   if (v10)
   {
     v12 = [v10 safeValueForKey:@"_textLabel"];
-    v13 = [v12 accessibilityLabel];
+    accessibilityLabel2 = [v12 accessibilityLabel];
 
     v14 = __AXStringForVariables();
 
-    v7 = v14;
+    accessibilityLabel = v14;
   }
 
 LABEL_6:
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityValue];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  accessibilityValue = [_axPHAsset accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -88,8 +88,8 @@ LABEL_6:
   if (!_AXSAutomationEnabled())
   {
     v7 = *MEMORY[0x29EDC7F88];
-    v8 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-    v6 |= v7 | [v8 accessibilityTraits];
+    _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+    v6 |= v7 | [_axPHAsset accessibilityTraits];
   }
 
   return v6;
@@ -97,8 +97,8 @@ LABEL_6:
 
 - (id)_axPHAsset
 {
-  v3 = [(PUPhotosGridCellAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AddPhotoPlaceholder"];
+  accessibilityIdentifier = [(PUPhotosGridCellAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AddPhotoPlaceholder"];
 
   if (v4)
   {
@@ -108,7 +108,7 @@ LABEL_6:
   else
   {
     v6 = [(PUPhotosGridCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
-    v7 = [v6 delegate];
+    delegate = [v6 delegate];
     v8 = __UIAccessibilitySafeClass();
 
     v9 = [(PUPhotosGridCellAccessibility *)self safeValueForKey:@"_accessibilityIndexPath"];
@@ -193,57 +193,57 @@ uint64_t __43__PUPhotosGridCellAccessibility__axPHAsset__block_invoke_3(uint64_t
 
 - (id)_axMainAssetURL
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 safeValueForKey:@"mainFileURL"];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  v3 = [_axPHAsset safeValueForKey:@"mainFileURL"];
 
   return v3;
 }
 
 - (id)_accessibilityPhotoDescription
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoDescription];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  _accessibilityPhotoDescription = [_axPHAsset _accessibilityPhotoDescription];
 
-  return v3;
+  return _accessibilityPhotoDescription;
 }
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  _accessibilityPHAssetLocalIdentifier = [_axPHAsset _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  _accessibilityPhotoLibraryURL = [_axPHAsset _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  _accessibilityIsPHAssetLocallyAvailable = [_axPHAsset _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3
+- (BOOL)_accessibilitySavePhotoLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v6 = [v5 _accessibilitySavePhotoLabel:v4];
+  labelCopy = label;
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  v6 = [_axPHAsset _accessibilitySavePhotoLabel:labelCopy];
 
   return v6;
 }
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v3 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v4 = [v3 safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  v4 = [_axPHAsset safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
 
   if ([v4 length])
   {
@@ -251,19 +251,19 @@ uint64_t __43__PUPhotosGridCellAccessibility__axPHAsset__block_invoke_3(uint64_t
     goto LABEL_11;
   }
 
-  v6 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v7 = [v6 safeBoolForKey:@"isPhoto"];
+  _axPHAsset2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  v7 = [_axPHAsset2 safeBoolForKey:@"isPhoto"];
 
   if (v7)
   {
-    v8 = [(PUPhotosGridCellAccessibility *)self _axMainAssetURL];
+    _axMainAssetURL = [(PUPhotosGridCellAccessibility *)self _axMainAssetURL];
     v9 = UIAccessibilityMetadataDescriptionForImage();
   }
 
   else
   {
-    v10 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-    v11 = [v10 safeBoolForKey:@"isVideo"];
+    _axPHAsset3 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+    v11 = [_axPHAsset3 safeBoolForKey:@"isVideo"];
 
     if (!v11)
     {
@@ -271,7 +271,7 @@ uint64_t __43__PUPhotosGridCellAccessibility__axPHAsset__block_invoke_3(uint64_t
       goto LABEL_11;
     }
 
-    v8 = [(PUPhotosGridCellAccessibility *)self _axMainAssetURL];
+    _axMainAssetURL = [(PUPhotosGridCellAccessibility *)self _axMainAssetURL];
     v9 = UIAccessibilityMetadataDescriptionForVideo();
   }
 
@@ -294,10 +294,10 @@ LABEL_11:
 
 - (id)accessibilityCustomContent
 {
-  v2 = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityCustomContent];
+  _axPHAsset = [(PUPhotosGridCellAccessibility *)self _axPHAsset];
+  accessibilityCustomContent = [_axPHAsset accessibilityCustomContent];
 
-  return v3;
+  return accessibilityCustomContent;
 }
 
 @end

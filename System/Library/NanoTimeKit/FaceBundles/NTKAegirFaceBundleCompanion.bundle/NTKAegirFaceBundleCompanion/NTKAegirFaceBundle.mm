@@ -1,27 +1,27 @@
 @interface NTKAegirFaceBundle
-- (id)_galleryEditOptionsForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_galleryEditOptionsForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKAegirFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKAegirFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKAegirFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  v6 = [(NTKAegirFaceBundle *)self _galleryEditOptionsForDevice:v4];
+  v6 = [(NTKAegirFaceBundle *)self _galleryEditOptionsForDevice:deviceCopy];
   v7 = [v6 objectForKeyedSubscript:&off_15818];
   v8 = [v6 objectForKeyedSubscript:&off_15830];
   v9 = [v6 objectForKeyedSubscript:&off_15848];
@@ -30,8 +30,8 @@
   v18 = 3221225472;
   v19 = sub_8DE4;
   v20 = &unk_14808;
-  v21 = self;
-  v22 = v4;
+  selfCopy = self;
+  v22 = deviceCopy;
   v24 = v23 = v9;
   v25 = v8;
   v26 = v5;
@@ -39,18 +39,18 @@
   v11 = v8;
   v12 = v24;
   v13 = v9;
-  v14 = v4;
+  v14 = deviceCopy;
   [v7 enumerateObjectsUsingBlock:&v17];
   v15 = [v10 copy];
 
   return v15;
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [deviceCopy supportsCapability:v4];
 
   if (v5)
   {
@@ -85,11 +85,11 @@
   return v8;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [[NSUUID alloc] initWithUUIDString:@"E7B1CD81-445C-4840-9F24-3A32B510B6A1"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [deviceCopy supportsCapability:v5];
 
   if (v6)
   {
@@ -98,7 +98,7 @@
 
   else
   {
-    v8 = [(NTKAegirFaceBundle *)self defaultFaceForDevice:v4];
+    v8 = [(NTKAegirFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v9 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v8 priority:300];
     v10 = v9;
     if (v9)

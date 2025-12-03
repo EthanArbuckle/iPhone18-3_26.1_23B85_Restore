@@ -1,7 +1,7 @@
 @interface SnapshotTimer
-+ (void)takeSnapshotForTask:(id)a3;
++ (void)takeSnapshotForTask:(id)task;
 - (SnapshotTimer)init;
-- (void)checkinWithTimeout:(double)a3 forTask:(id)a4;
+- (void)checkinWithTimeout:(double)timeout forTask:(id)task;
 @end
 
 @implementation SnapshotTimer
@@ -20,7 +20,7 @@
   return result;
 }
 
-+ (void)takeSnapshotForTask:(id)a3
++ (void)takeSnapshotForTask:(id)task
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -33,10 +33,10 @@
   }
 }
 
-- (void)checkinWithTimeout:(double)a3 forTask:(id)a4
+- (void)checkinWithTimeout:(double)timeout forTask:(id)task
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0)
+  if (timeout == 0.0)
   {
 
     [SnapshotTimer takeSnapshotForTask:?];
@@ -44,14 +44,14 @@
 
   else
   {
-    v6 = dispatch_time(0, (a3 * 1000000000.0));
+    v6 = dispatch_time(0, (timeout * 1000000000.0));
     global_queue = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__SnapshotTimer_checkinWithTimeout_forTask___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a4;
+    block[5] = task;
     dispatch_after(v6, global_queue, block);
   }
 }

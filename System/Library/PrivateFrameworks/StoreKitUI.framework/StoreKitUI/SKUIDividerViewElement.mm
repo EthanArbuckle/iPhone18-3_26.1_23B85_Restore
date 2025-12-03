@@ -1,15 +1,15 @@
 @interface SKUIDividerViewElement
-- (SKUIDividerViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIDividerViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (int64_t)dividerType;
 @end
 
 @implementation SKUIDividerViewElement
 
-- (SKUIDividerViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIDividerViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIDividerViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,12 +17,12 @@
 
   v16.receiver = self;
   v16.super_class = SKUIDividerViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
-    v13 = [v12 string];
-    v14 = [v13 length];
+    v12 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
+    string = [v12 string];
+    v14 = [string length];
 
     if (v14)
     {
@@ -37,12 +37,12 @@
 {
   if (!self->_dividerTypeWasInitialized)
   {
-    v3 = [(SKUIDividerViewElement *)self style];
-    v4 = [v3 dividerType];
+    style = [(SKUIDividerViewElement *)self style];
+    dividerType = [style dividerType];
 
-    if (v4)
+    if (dividerType)
     {
-      if ([@"full" isEqualToString:v4])
+      if ([@"full" isEqualToString:dividerType])
       {
         v5 = 1;
 LABEL_10:
@@ -52,13 +52,13 @@ LABEL_10:
         return self->_dividerType;
       }
 
-      if ([@"inset" isEqualToString:v4])
+      if ([@"inset" isEqualToString:dividerType])
       {
         v5 = 2;
         goto LABEL_10;
       }
 
-      if ([@"borderless" isEqualToString:v4])
+      if ([@"borderless" isEqualToString:dividerType])
       {
         v5 = 3;
         goto LABEL_10;

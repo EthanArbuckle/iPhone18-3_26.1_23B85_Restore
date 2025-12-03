@@ -1,21 +1,21 @@
 @interface FigKVCInspectable
-- (BOOL)validateValue:(id *)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)validateValue:(id *)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (id)valueForUndefinedKey:(id)a3;
+- (BOOL)validateValue:(id *)value forKey:(id)key error:(id *)error;
+- (BOOL)validateValue:(id *)value forKeyPath:(id)path error:(id *)error;
+- (id)valueForUndefinedKey:(id)key;
 @end
 
 @implementation FigKVCInspectable
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v3 = objc_alloc_init(FigUndefinedKeyValueSentry);
 
   return v3;
 }
 
-- (BOOL)validateValue:(id *)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)validateValue:(id *)value forKey:(id)key error:(id *)error
 {
-  if (a3)
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -26,15 +26,15 @@
 
   v10.receiver = self;
   v10.super_class = FigKVCInspectable;
-  return [(FigKVCInspectable *)&v10 validateValue:a3 forKey:a4 error:a5];
+  return [(FigKVCInspectable *)&v10 validateValue:value forKey:key error:error];
 }
 
-- (BOOL)validateValue:(id *)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)validateValue:(id *)value forKeyPath:(id)path error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = *a3;
+    v9 = *value;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -81,7 +81,7 @@
   {
     v15.receiver = self;
     v15.super_class = FigKVCInspectable;
-    return [(FigKVCInspectable *)&v15 validateValue:a3 forKeyPath:a4 error:a5];
+    return [(FigKVCInspectable *)&v15 validateValue:value forKeyPath:path error:error];
   }
 
   return result;

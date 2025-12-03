@@ -1,15 +1,15 @@
 @interface HMMutableRestrictedGuestSchedule
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableRestrictedGuestSchedule
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMRestrictedGuestHomeAccessSchedule allocWithZone:a3];
-  v5 = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
-  v6 = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
-  v7 = [(HMRestrictedGuestHomeAccessSchedule *)v4 initWithWeekDayRules:v5 yearDayRules:v6];
+  v4 = [HMRestrictedGuestHomeAccessSchedule allocWithZone:zone];
+  weekDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self weekDayRules];
+  yearDayRules = [(HMRestrictedGuestHomeAccessSchedule *)self yearDayRules];
+  v7 = [(HMRestrictedGuestHomeAccessSchedule *)v4 initWithWeekDayRules:weekDayRules yearDayRules:yearDayRules];
 
   return v7;
 }

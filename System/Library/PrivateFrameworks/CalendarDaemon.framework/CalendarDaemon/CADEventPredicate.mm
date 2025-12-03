@@ -1,31 +1,31 @@
 @interface CADEventPredicate
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6;
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6 propertyLoadMode:(unint64_t)a7;
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 eventUUID:(id)a6 calendars:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (CADEventPredicate)initWithCoder:(id)a3;
-- (CADEventPredicate)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6 propertyLoadMode:(unint64_t)a7;
-- (CADEventPredicate)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 eventUUID:(id)a6 calendars:(id)a7;
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars;
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars propertyLoadMode:(unint64_t)mode;
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone eventUUID:(id)d calendars:(id)calendars;
+- (BOOL)isEqual:(id)equal;
+- (CADEventPredicate)initWithCoder:(id)coder;
+- (CADEventPredicate)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars propertyLoadMode:(unint64_t)mode;
+- (CADEventPredicate)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone eventUUID:(id)d calendars:(id)calendars;
 - (id)concisePublicDescription;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
-- (id)copyWithStartDate:(id)a3 endDate:(id)a4;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
+- (id)copyWithStartDate:(id)date endDate:(id)endDate;
 - (id)defaultPropertiesToLoad;
-- (id)generateDatesForEvent:(void *)a3;
-- (id)incrementalPredicatesToExpandResultsFromPredicate:(id)a3 filteringRequiredToRemoveEventsNoLongerMatched:(BOOL *)a4;
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8;
+- (id)generateDatesForEvent:(void *)event;
+- (id)incrementalPredicatesToExpandResultsFromPredicate:(id)predicate filteringRequiredToRemoveEventsNoLongerMatched:(BOOL *)matched;
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset;
 - (id)predicateFormat;
 - (id)relatedObjectPropertiesToLoad;
 - (unint64_t)hash;
-- (void)beginSignpostWithHandle:(id)a3 signpostID:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)beginSignpostWithHandle:(id)handle signpostID:(unint64_t)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADEventPredicate
 
 - (id)defaultPropertiesToLoad
 {
-  v2 = [(CADEventPredicate *)self propertyLoadMode];
-  if (v2 == 2)
+  propertyLoadMode = [(CADEventPredicate *)self propertyLoadMode];
+  if (propertyLoadMode == 2)
   {
     if (defaultPropertiesToLoad_onceToken != -1)
     {
@@ -35,7 +35,7 @@
     v3 = defaultPropertiesToLoad_extendedPropertiesToLoad;
   }
 
-  else if (v2 == 1)
+  else if (propertyLoadMode == 1)
   {
     v3 = CADEKPersistentEventDefaultPropertiesToLoad();
   }
@@ -129,12 +129,12 @@
 
   v4 = CADEventPredicateDescriptionDateFormatter();
   v16 = MEMORY[0x277CCACA8];
-  v5 = [(EKPredicate *)self startDate];
-  v6 = [v4 stringFromDate:v5];
-  v7 = [(EKPredicate *)self endDate];
-  v8 = [v4 stringFromDate:v7];
-  v9 = [(EKPredicate *)self calendars];
-  v10 = [CADPredicate conciseCalendarList:v9];
+  startDate = [(EKPredicate *)self startDate];
+  v6 = [v4 stringFromDate:startDate];
+  endDate = [(EKPredicate *)self endDate];
+  v8 = [v4 stringFromDate:endDate];
+  calendars = [(EKPredicate *)self calendars];
+  v10 = [CADPredicate conciseCalendarList:calendars];
   v11 = [v3 componentsJoinedByString:{@", "}];
   v12 = v11;
   if (self->_randomize)
@@ -156,24 +156,24 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"CADEventPredicate"];
   v4 = CADEventPredicateDescriptionDateFormatter();
-  v5 = [(EKPredicate *)self startDate];
-  if (v5)
+  startDate = [(EKPredicate *)self startDate];
+  if (startDate)
   {
-    v6 = [v4 stringFromDate:v5];
+    v6 = [v4 stringFromDate:startDate];
     [v3 appendFormat:@"; start:%@", v6];
   }
 
-  v7 = [(EKPredicate *)self endDate];
-  if (v7)
+  endDate = [(EKPredicate *)self endDate];
+  if (endDate)
   {
-    v8 = [v4 stringFromDate:v7];
+    v8 = [v4 stringFromDate:endDate];
     [v3 appendFormat:@"; end:%@", v8];
   }
 
-  v9 = [(EKPredicate *)self calendars];
-  if (v9)
+  calendars = [(EKPredicate *)self calendars];
+  if (calendars)
   {
-    v10 = [CADPredicate conciseCalendarList:v9];
+    v10 = [CADPredicate conciseCalendarList:calendars];
     [v3 appendFormat:@"; cals:%@", v10];
   }
 
@@ -237,49 +237,49 @@
   return v3;
 }
 
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithStartDate:v12 endDate:v11 timeZone:v10 calendars:v9];
+  calendarsCopy = calendars;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v13 = [objc_alloc(objc_opt_class()) initWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy calendars:calendarsCopy];
 
   return v13;
 }
 
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6 propertyLoadMode:(unint64_t)a7
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars propertyLoadMode:(unint64_t)mode
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [objc_alloc(objc_opt_class()) initWithStartDate:v14 endDate:v13 timeZone:v12 calendars:v11 propertyLoadMode:a7];
+  calendarsCopy = calendars;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v15 = [objc_alloc(objc_opt_class()) initWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy calendars:calendarsCopy propertyLoadMode:mode];
 
   return v15;
 }
 
-+ (id)predicateWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 eventUUID:(id)a6 calendars:(id)a7
++ (id)predicateWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone eventUUID:(id)d calendars:(id)calendars
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [objc_alloc(objc_opt_class()) initWithStartDate:v15 endDate:v14 timeZone:v13 eventUUID:v12 calendars:v11];
+  calendarsCopy = calendars;
+  dCopy = d;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v16 = [objc_alloc(objc_opt_class()) initWithStartDate:dateCopy endDate:endDateCopy timeZone:zoneCopy eventUUID:dCopy calendars:calendarsCopy];
 
   return v16;
 }
 
-- (CADEventPredicate)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 eventUUID:(id)a6 calendars:(id)a7
+- (CADEventPredicate)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone eventUUID:(id)d calendars:(id)calendars
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = CADEventPredicate;
-  v16 = [(EKPredicate *)&v22 initWithCalendars:a7];
+  v16 = [(EKPredicate *)&v22 initWithCalendars:calendars];
   v17 = v16;
   if (!v16)
   {
@@ -288,14 +288,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v12 && v13)
+  if (dateCopy && endDateCopy)
   {
-    [(EKPredicate *)v16 setStartDate:v12];
-    [(EKPredicate *)v17 setEndDate:v13];
-    objc_storeStrong(&v17->super._uuid, a6);
-    if (v14)
+    [(EKPredicate *)v16 setStartDate:dateCopy];
+    [(EKPredicate *)v17 setEndDate:endDateCopy];
+    objc_storeStrong(&v17->super._uuid, d);
+    if (zoneCopy)
     {
-      v18 = [v14 copy];
+      v18 = [zoneCopy copy];
     }
 
     else
@@ -317,85 +317,85 @@ LABEL_10:
   return v19;
 }
 
-- (CADEventPredicate)initWithStartDate:(id)a3 endDate:(id)a4 timeZone:(id)a5 calendars:(id)a6 propertyLoadMode:(unint64_t)a7
+- (CADEventPredicate)initWithStartDate:(id)date endDate:(id)endDate timeZone:(id)zone calendars:(id)calendars propertyLoadMode:(unint64_t)mode
 {
-  result = [(CADEventPredicate *)self initWithStartDate:a3 endDate:a4 timeZone:a5 calendars:a6];
+  result = [(CADEventPredicate *)self initWithStartDate:date endDate:endDate timeZone:zone calendars:calendars];
   if (result)
   {
-    result->_propertyLoadMode = a7;
+    result->_propertyLoadMode = mode;
   }
 
   return result;
 }
 
-- (CADEventPredicate)initWithCoder:(id)a3
+- (CADEventPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CADEventPredicate;
-  v5 = [(EKPredicate *)&v15 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(EKPredicate *)v5 setStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     [(EKPredicate *)v5 setEndDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     uuid = v5->super._uuid;
     v5->super._uuid = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->super._timeZone;
     v5->super._timeZone = v10;
 
-    v5->_propertyLoadMode = [v4 decodeIntegerForKey:@"propertyLoadMode"];
-    v5->_shouldLoadProposedTimesInRange = [v4 decodeBoolForKey:@"shouldLoadProposedTimesInRange"];
-    v5->_excludeTimedEvents = [v4 decodeBoolForKey:@"excludeTimedEvents"];
-    v5->_excludeAllDayEvents = [v4 decodeBoolForKey:@"excludeAllDayEvents"];
-    v5->_excludeDeclined = [v4 decodeBoolForKey:@"excludeDeclined"];
-    v5->_excludeProposed = [v4 decodeBoolForKey:@"excludeProposed"];
-    v5->_excludeDeclinedUnlessProposed = [v4 decodeBoolForKey:@"excludeDeclinedUnlessProposed"];
-    v5->_excludeNoAttendeeEvents = [v4 decodeBoolForKey:@"excludeNoAttendeeEvents"];
-    v5->_excludeNoLocationEvents = [v4 decodeBoolForKey:@"excludeNoLocationEvents"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filteredOutTitles"];
+    v5->_propertyLoadMode = [coderCopy decodeIntegerForKey:@"propertyLoadMode"];
+    v5->_shouldLoadProposedTimesInRange = [coderCopy decodeBoolForKey:@"shouldLoadProposedTimesInRange"];
+    v5->_excludeTimedEvents = [coderCopy decodeBoolForKey:@"excludeTimedEvents"];
+    v5->_excludeAllDayEvents = [coderCopy decodeBoolForKey:@"excludeAllDayEvents"];
+    v5->_excludeDeclined = [coderCopy decodeBoolForKey:@"excludeDeclined"];
+    v5->_excludeProposed = [coderCopy decodeBoolForKey:@"excludeProposed"];
+    v5->_excludeDeclinedUnlessProposed = [coderCopy decodeBoolForKey:@"excludeDeclinedUnlessProposed"];
+    v5->_excludeNoAttendeeEvents = [coderCopy decodeBoolForKey:@"excludeNoAttendeeEvents"];
+    v5->_excludeNoLocationEvents = [coderCopy decodeBoolForKey:@"excludeNoLocationEvents"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filteredOutTitles"];
     filteredOutTitles = v5->_filteredOutTitles;
     v5->_filteredOutTitles = v12;
 
-    v5->_randomize = [v4 decodeBoolForKey:@"randomize"];
-    v5->_limit = [v4 decodeIntegerForKey:@"limit"];
+    v5->_randomize = [coderCopy decodeBoolForKey:@"randomize"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"limit"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CADEventPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(EKPredicate *)self startDate:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  [coderCopy encodeObject:v5 forKey:@"startDate"];
 
-  v6 = [(EKPredicate *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(EKPredicate *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  [v4 encodeObject:self->super._uuid forKey:@"UUID"];
-  [v4 encodeObject:self->super._timeZone forKey:@"timeZone"];
-  [v4 encodeInteger:-[CADEventPredicate propertyLoadMode](self forKey:{"propertyLoadMode"), @"propertyLoadMode"}];
-  [v4 encodeBool:self->_shouldLoadProposedTimesInRange forKey:@"shouldLoadProposedTimesInRange"];
-  [v4 encodeBool:self->_excludeTimedEvents forKey:@"excludeTimedEvents"];
-  [v4 encodeBool:self->_excludeAllDayEvents forKey:@"excludeAllDayEvents"];
-  [v4 encodeBool:self->_excludeDeclined forKey:@"excludeDeclined"];
-  [v4 encodeBool:self->_excludeProposed forKey:@"excludeProposed"];
-  [v4 encodeBool:self->_excludeDeclinedUnlessProposed forKey:@"excludeDeclinedUnlessProposed"];
-  [v4 encodeBool:self->_excludeNoAttendeeEvents forKey:@"excludeNoAttendeeEvents"];
-  [v4 encodeBool:self->_excludeNoLocationEvents forKey:@"excludeNoLocationEvents"];
-  [v4 encodeObject:self->_filteredOutTitles forKey:@"filteredOutTitles"];
-  [v4 encodeBool:self->_randomize forKey:@"randomize"];
-  [v4 encodeInteger:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->super._uuid forKey:@"UUID"];
+  [coderCopy encodeObject:self->super._timeZone forKey:@"timeZone"];
+  [coderCopy encodeInteger:-[CADEventPredicate propertyLoadMode](self forKey:{"propertyLoadMode"), @"propertyLoadMode"}];
+  [coderCopy encodeBool:self->_shouldLoadProposedTimesInRange forKey:@"shouldLoadProposedTimesInRange"];
+  [coderCopy encodeBool:self->_excludeTimedEvents forKey:@"excludeTimedEvents"];
+  [coderCopy encodeBool:self->_excludeAllDayEvents forKey:@"excludeAllDayEvents"];
+  [coderCopy encodeBool:self->_excludeDeclined forKey:@"excludeDeclined"];
+  [coderCopy encodeBool:self->_excludeProposed forKey:@"excludeProposed"];
+  [coderCopy encodeBool:self->_excludeDeclinedUnlessProposed forKey:@"excludeDeclinedUnlessProposed"];
+  [coderCopy encodeBool:self->_excludeNoAttendeeEvents forKey:@"excludeNoAttendeeEvents"];
+  [coderCopy encodeBool:self->_excludeNoLocationEvents forKey:@"excludeNoLocationEvents"];
+  [coderCopy encodeObject:self->_filteredOutTitles forKey:@"filteredOutTitles"];
+  [coderCopy encodeBool:self->_randomize forKey:@"randomize"];
+  [coderCopy encodeInteger:self->_limit forKey:@"limit"];
 }
 
 void __44__CADEventPredicate_defaultPropertiesToLoad__block_invoke()
@@ -418,17 +418,17 @@ void __44__CADEventPredicate_defaultPropertiesToLoad__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithStartDate:(id)a3 endDate:(id)a4
+- (id)copyWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = [CADEventPredicate alloc];
   timeZone = self->super._timeZone;
-  v10 = [(EKPredicate *)self calendars];
-  v11 = [(CADEventPredicate *)v8 initWithStartDate:v7 endDate:v6 timeZone:timeZone calendars:v10];
+  calendars = [(EKPredicate *)self calendars];
+  v11 = [(CADEventPredicate *)v8 initWithStartDate:dateCopy endDate:endDateCopy timeZone:timeZone calendars:calendars];
 
-  v12 = [(EKPredicate *)self title];
-  [v11 setTitle:v12];
+  title = [(EKPredicate *)self title];
+  [v11 setTitle:title];
 
   objc_storeStrong((v11 + 16), self->super._uuid);
   [v11 setExcludeAllDayEvents:{-[CADEventPredicate excludeAllDayEvents](self, "excludeAllDayEvents")}];
@@ -439,37 +439,37 @@ void __44__CADEventPredicate_defaultPropertiesToLoad__block_invoke()
   [v11 setExcludeNoAttendeeEvents:{-[CADEventPredicate excludeNoAttendeeEvents](self, "excludeNoAttendeeEvents")}];
   [v11 setExcludeNoLocationEvents:{-[CADEventPredicate excludeNoLocationEvents](self, "excludeNoLocationEvents")}];
   [v11 setExcludeDeclinedUnlessProposed:{-[CADEventPredicate excludeDeclinedUnlessProposed](self, "excludeDeclinedUnlessProposed")}];
-  v13 = [(CADEventPredicate *)self filteredOutTitles];
-  [v11 setFilteredOutTitles:v13];
+  filteredOutTitles = [(CADEventPredicate *)self filteredOutTitles];
+  [v11 setFilteredOutTitles:filteredOutTitles];
 
   *(v11 + 120) = self->_propertyLoadMode;
   return v11;
 }
 
-- (void)beginSignpostWithHandle:(id)a3 signpostID:(unint64_t)a4
+- (void)beginSignpostWithHandle:(id)handle signpostID:(unint64_t)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  handleCopy = handle;
+  v7 = handleCopy;
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(handleCopy))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(CADEventPredicate *)self predicateFormat];
+    predicateFormat = [(CADEventPredicate *)self predicateFormat];
     v12 = 138412546;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
-    _os_signpost_emit_with_name_impl(&dword_22430B000, v7, OS_SIGNPOST_INTERVAL_BEGIN, a4, "EKPredicateSearch", "predicateClass=%@; predicateFormat=%{public}@", &v12, 0x16u);
+    v15 = predicateFormat;
+    _os_signpost_emit_with_name_impl(&dword_22430B000, v7, OS_SIGNPOST_INTERVAL_BEGIN, d, "EKPredicateSearch", "predicateClass=%@; predicateFormat=%{public}@", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_41;
@@ -478,9 +478,9 @@ void __44__CADEventPredicate_defaultPropertiesToLoad__block_invoke()
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(EKPredicate *)v4 startDate];
-    v8 = [(EKPredicate *)self startDate];
-    if (![v7 isEqual:v8])
+    startDate = [(EKPredicate *)equalCopy startDate];
+    startDate2 = [(EKPredicate *)self startDate];
+    if (![startDate isEqual:startDate2])
     {
       v6 = 0;
 LABEL_40:
@@ -488,9 +488,9 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v9 = [(EKPredicate *)v4 endDate];
-    v10 = [(EKPredicate *)self endDate];
-    if (![v9 isEqual:v10])
+    endDate = [(EKPredicate *)equalCopy endDate];
+    endDate2 = [(EKPredicate *)self endDate];
+    if (![endDate isEqual:endDate2])
     {
       v6 = 0;
 LABEL_39:
@@ -498,10 +498,10 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v11 = [(CADEventPredicate *)v4 timeZone];
-    v12 = [(CADEventPredicate *)self timeZone];
-    v49 = v11;
-    if (![v11 isEquivalentTo:v12])
+    timeZone = [(CADEventPredicate *)equalCopy timeZone];
+    timeZone2 = [(CADEventPredicate *)self timeZone];
+    v49 = timeZone;
+    if (![timeZone isEquivalentTo:timeZone2])
     {
       v6 = 0;
 LABEL_38:
@@ -509,34 +509,34 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v13 = [(CADEventPredicate *)v4 eventUUID];
-    v48 = [(CADEventPredicate *)self eventUUID];
-    if (v13 != v48)
+    eventUUID = [(CADEventPredicate *)equalCopy eventUUID];
+    eventUUID2 = [(CADEventPredicate *)self eventUUID];
+    if (eventUUID != eventUUID2)
     {
-      v14 = [(CADEventPredicate *)v4 eventUUID];
-      v44 = [(CADEventPredicate *)self eventUUID];
-      v45 = v14;
-      if (![v14 isEqual:?])
+      eventUUID3 = [(CADEventPredicate *)equalCopy eventUUID];
+      eventUUID4 = [(CADEventPredicate *)self eventUUID];
+      v45 = eventUUID3;
+      if (![eventUUID3 isEqual:?])
       {
         v6 = 0;
         goto LABEL_36;
       }
     }
 
-    v15 = [(EKPredicate *)v4 calendars];
-    v16 = [(EKPredicate *)self calendars];
-    v46 = v15;
-    v47 = v13;
-    v17 = v15 == v16;
-    v18 = v16;
+    calendars = [(EKPredicate *)equalCopy calendars];
+    calendars2 = [(EKPredicate *)self calendars];
+    v46 = calendars;
+    v47 = eventUUID;
+    v17 = calendars == calendars2;
+    v18 = calendars2;
     if (!v17)
     {
-      v19 = [(EKPredicate *)v4 calendars];
-      v20 = [(EKPredicate *)self calendars];
-      v41 = v19;
-      v21 = v19;
-      v11 = v20;
-      if (![v21 isEqual:v20])
+      calendars3 = [(EKPredicate *)equalCopy calendars];
+      calendars4 = [(EKPredicate *)self calendars];
+      v41 = calendars3;
+      v21 = calendars3;
+      timeZone = calendars4;
+      if (![v21 isEqual:calendars4])
       {
         v6 = 0;
         v22 = v46;
@@ -547,33 +547,33 @@ LABEL_31:
     }
 
     v42 = v18;
-    v23 = [(CADEventPredicate *)v4 propertyLoadMode];
-    if (v23 != [(CADEventPredicate *)self propertyLoadMode])
+    propertyLoadMode = [(CADEventPredicate *)equalCopy propertyLoadMode];
+    if (propertyLoadMode != [(CADEventPredicate *)self propertyLoadMode])
     {
       goto LABEL_30;
     }
 
-    v24 = [(CADEventPredicate *)v4 excludeTimedEvents];
-    if (v24 != [(CADEventPredicate *)self excludeTimedEvents])
+    excludeTimedEvents = [(CADEventPredicate *)equalCopy excludeTimedEvents];
+    if (excludeTimedEvents != [(CADEventPredicate *)self excludeTimedEvents])
     {
       goto LABEL_30;
     }
 
-    v25 = [(CADEventPredicate *)v4 excludeAllDayEvents];
-    if (v25 != [(CADEventPredicate *)self excludeAllDayEvents])
+    excludeAllDayEvents = [(CADEventPredicate *)equalCopy excludeAllDayEvents];
+    if (excludeAllDayEvents != [(CADEventPredicate *)self excludeAllDayEvents])
     {
       goto LABEL_30;
     }
 
-    v26 = [(CADEventPredicate *)v4 excludeDeclined];
-    if (v26 == [(CADEventPredicate *)self excludeDeclined]&& (v27 = [(CADEventPredicate *)v4 excludeProposed], v27 == [(CADEventPredicate *)self excludeProposed]) && (v28 = [(CADEventPredicate *)v4 excludeDeclinedUnlessProposed], v28 == [(CADEventPredicate *)self excludeDeclinedUnlessProposed]) && (v29 = [(CADEventPredicate *)v4 excludeNoAttendeeEvents], v29 == [(CADEventPredicate *)self excludeNoAttendeeEvents]) && (v30 = [(CADEventPredicate *)v4 excludeNoLocationEvents], v30 == [(CADEventPredicate *)self excludeNoLocationEvents]) && (v31 = [(CADEventPredicate *)v4 randomize], v31 == [(CADEventPredicate *)self randomize]) && (v32 = [(CADEventPredicate *)v4 limit], v32 == [(CADEventPredicate *)self limit]))
+    excludeDeclined = [(CADEventPredicate *)equalCopy excludeDeclined];
+    if (excludeDeclined == [(CADEventPredicate *)self excludeDeclined]&& (v27 = [(CADEventPredicate *)equalCopy excludeProposed], v27 == [(CADEventPredicate *)self excludeProposed]) && (v28 = [(CADEventPredicate *)equalCopy excludeDeclinedUnlessProposed], v28 == [(CADEventPredicate *)self excludeDeclinedUnlessProposed]) && (v29 = [(CADEventPredicate *)equalCopy excludeNoAttendeeEvents], v29 == [(CADEventPredicate *)self excludeNoAttendeeEvents]) && (v30 = [(CADEventPredicate *)equalCopy excludeNoLocationEvents], v30 == [(CADEventPredicate *)self excludeNoLocationEvents]) && (v31 = [(CADEventPredicate *)equalCopy randomize], v31 == [(CADEventPredicate *)self randomize]) && (v32 = [(CADEventPredicate *)equalCopy limit], v32 == [(CADEventPredicate *)self limit]))
     {
-      v40 = v11;
-      v43 = v12;
-      v33 = [(CADEventPredicate *)v4 filteredOutTitles];
-      v34 = [(CADEventPredicate *)self filteredOutTitles];
-      v35 = v34;
-      if (v33 == v34)
+      v40 = timeZone;
+      v43 = timeZone2;
+      filteredOutTitles = [(CADEventPredicate *)equalCopy filteredOutTitles];
+      filteredOutTitles2 = [(CADEventPredicate *)self filteredOutTitles];
+      v35 = filteredOutTitles2;
+      if (filteredOutTitles == filteredOutTitles2)
       {
 
         v6 = 1;
@@ -582,17 +582,17 @@ LABEL_31:
 
       else
       {
-        v36 = [(CADEventPredicate *)v4 filteredOutTitles];
-        v37 = [(CADEventPredicate *)self filteredOutTitles];
-        v6 = [v36 isEqualToSet:v37];
+        filteredOutTitles3 = [(CADEventPredicate *)equalCopy filteredOutTitles];
+        filteredOutTitles4 = [(CADEventPredicate *)self filteredOutTitles];
+        v6 = [filteredOutTitles3 isEqualToSet:filteredOutTitles4];
 
         v38 = v6;
       }
 
       v22 = v46;
       v18 = v42;
-      v12 = v43;
-      v11 = v40;
+      timeZone2 = v43;
+      timeZone = v40;
       if (v46 != v42)
       {
         goto LABEL_31;
@@ -614,8 +614,8 @@ LABEL_30:
     v6 = v38;
 LABEL_35:
 
-    v13 = v47;
-    if (v47 == v48)
+    eventUUID = v47;
+    if (v47 == eventUUID2)
     {
 LABEL_37:
 
@@ -635,10 +635,10 @@ LABEL_41:
 
 - (unint64_t)hash
 {
-  v3 = [(EKPredicate *)self startDate];
-  v4 = [v3 hash];
-  v5 = [(EKPredicate *)self endDate];
-  v6 = 17 * [v5 hash] + 13 * v4;
+  startDate = [(EKPredicate *)self startDate];
+  v4 = [startDate hash];
+  endDate = [(EKPredicate *)self endDate];
+  v6 = 17 * [endDate hash] + 13 * v4;
   v7 = v6 + 23 * [(NSTimeZone *)self->super._timeZone hash];
   v8 = v7 + 29 * [(NSString *)self->super._uuid hash];
   if (self->_shouldLoadProposedTimesInRange)
@@ -654,7 +654,7 @@ LABEL_41:
   return v8 + v9;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v51 = *MEMORY[0x277D85DE8];
   AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
@@ -664,18 +664,18 @@ LABEL_41:
   if (FilterFromRowIDs)
   {
     v8 = FilterFromRowIDs;
-    v9 = [(EKPredicate *)self startDate];
-    v10 = [(EKPredicate *)self endDate];
-    v11 = [(CADEventPredicate *)self timeZone];
-    v12 = v11;
-    if (!v11)
+    startDate = [(EKPredicate *)self startDate];
+    endDate = [(EKPredicate *)self endDate];
+    timeZone = [(CADEventPredicate *)self timeZone];
+    defaultTimeZone = timeZone;
+    if (!timeZone)
     {
-      v12 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
     }
 
     [(CADEventPredicate *)self shouldLoadProposedTimesInRange];
     v13 = CalDatabaseCopyEventOccurrencesInDateRangeEx();
-    if (!v11)
+    if (!timeZone)
     {
     }
 
@@ -831,14 +831,14 @@ LABEL_53:
   return v39;
 }
 
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset
 {
   v69 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  datesCopy = dates;
+  rangeCopy = range;
   AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
-  v14 = [(EKPredicate *)self calendars];
-  v15 = [v14 count];
+  calendars = [(EKPredicate *)self calendars];
+  v15 = [calendars count];
 
   if (v15)
   {
@@ -920,21 +920,21 @@ LABEL_16:
 
   if (!self->_excludeDeclined && (!self->_excludeDeclinedUnlessProposed || v31) || CalEventGetParticipationStatus() != 2)
   {
-    if (v12)
+    if (rangeCopy)
     {
-      v32 = [(EKPredicate *)self startDate];
-      v33 = [v12 startDate];
-      if ([v32 CalIsBeforeDate:v33])
+      startDate = [(EKPredicate *)self startDate];
+      startDate2 = [rangeCopy startDate];
+      if ([startDate CalIsBeforeDate:startDate2])
       {
 
 LABEL_38:
-        v16 = [(CADEventPredicate *)self generateDatesForEvent:a3];
+        v16 = [(CADEventPredicate *)self generateDatesForEvent:event];
         goto LABEL_70;
       }
 
-      v34 = [(EKPredicate *)self endDate];
-      v35 = [v12 endDate];
-      v62 = [v34 CalIsAfterDate:v35];
+      endDate = [(EKPredicate *)self endDate];
+      endDate2 = [rangeCopy endDate];
+      v62 = [endDate CalIsAfterDate:endDate2];
 
       if (v62)
       {
@@ -966,24 +966,24 @@ LABEL_38:
       started = self->super._timeZone;
     }
 
-    v43 = [(EKPredicate *)self startDate];
+    startDate3 = [(EKPredicate *)self startDate];
     v61 = started;
     v44 = [MEMORY[0x277CBEA80] CalGregorianCalendarForTimeZone:started];
     v63 = v37;
-    v45 = [v43 CalDateByComponentwiseAddingComponents:v37 inCalendar:v44];
+    v45 = [startDate3 CalDateByComponentwiseAddingComponents:v37 inCalendar:v44];
 
     v60 = v45;
     [v45 timeIntervalSinceReferenceDate];
     v47 = v46;
-    v48 = [(EKPredicate *)self endDate];
-    [v48 timeIntervalSinceReferenceDate];
+    endDate3 = [(EKPredicate *)self endDate];
+    [endDate3 timeIntervalSinceReferenceDate];
     v50 = v49;
 
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v16 = v11;
+    v16 = datesCopy;
     v51 = [v16 countByEnumeratingWithState:&v64 objects:v68 count:16];
     if (v51)
     {
@@ -1047,7 +1047,7 @@ LABEL_17:
   return v16;
 }
 
-- (id)generateDatesForEvent:(void *)a3
+- (id)generateDatesForEvent:(void *)event
 {
   started = CalEventCopyStartTimeZone();
   if (!started)
@@ -1055,17 +1055,17 @@ LABEL_17:
     started = self->super._timeZone;
   }
 
-  v5 = [(EKPredicate *)self startDate];
-  v6 = [(EKPredicate *)self endDate];
+  startDate = [(EKPredicate *)self startDate];
+  endDate = [(EKPredicate *)self endDate];
   v7 = CalEventCopyOccurrenceDatesInDateRange();
 
   return v7;
 }
 
-- (id)incrementalPredicatesToExpandResultsFromPredicate:(id)a3 filteringRequiredToRemoveEventsNoLongerMatched:(BOOL *)a4
+- (id)incrementalPredicatesToExpandResultsFromPredicate:(id)predicate filteringRequiredToRemoveEventsNoLongerMatched:(BOOL *)matched
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = objc_opt_class();
   if (v7 != objc_opt_class())
   {
@@ -1073,11 +1073,11 @@ LABEL_17:
     goto LABEL_39;
   }
 
-  v9 = v6;
-  v10 = [(EKPredicate *)self calendars];
-  v11 = [v9 calendars];
-  v12 = [v10 count];
-  v13 = [v11 count];
+  v9 = predicateCopy;
+  calendars = [(EKPredicate *)self calendars];
+  calendars2 = [v9 calendars];
+  v12 = [calendars count];
+  v13 = [calendars2 count];
   if (v12 || !v13)
   {
     if (v13)
@@ -1092,14 +1092,14 @@ LABEL_17:
 
     if (v12 && v13)
     {
-      v35 = a4;
-      v15 = [MEMORY[0x277CBEB98] setWithArray:v10];
+      matchedCopy = matched;
+      startDate = [MEMORY[0x277CBEB98] setWithArray:calendars];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v37 = v11;
-      v16 = v11;
+      v37 = calendars2;
+      v16 = calendars2;
       v17 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v17)
       {
@@ -1115,7 +1115,7 @@ LABEL_17:
               objc_enumerationMutation(v16);
             }
 
-            v19 += [v15 containsObject:*(*(&v39 + 1) + 8 * i)] ^ 1;
+            v19 += [startDate containsObject:*(*(&v39 + 1) + 8 * i)] ^ 1;
           }
 
           v18 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -1129,11 +1129,11 @@ LABEL_17:
         v19 = 0;
       }
 
-      v22 = [v10 count] + v19;
+      v22 = [calendars count] + v19;
       if (v22 != [v16 count])
       {
         v8 = 0;
-        v11 = v37;
+        calendars2 = v37;
 LABEL_43:
 
         goto LABEL_38;
@@ -1141,8 +1141,8 @@ LABEL_43:
 
       v14 = v19 > 0;
 
-      a4 = v35;
-      v11 = v37;
+      matched = matchedCopy;
+      calendars2 = v37;
     }
 
     uuid = self->super._uuid;
@@ -1154,48 +1154,48 @@ LABEL_43:
         timeZone = self->super._timeZone;
         if (!(timeZone | *(v9 + 3)) || [(NSTimeZone *)timeZone isEqual:?])
         {
-          v15 = [(EKPredicate *)self startDate];
-          v26 = [(EKPredicate *)self endDate];
-          v27 = [v9 startDate];
-          v38 = [v9 endDate];
-          v33 = v27;
-          v34 = v26;
-          if ([v26 CalIsBeforeOrSameAsDate:v27] & 1) != 0 || (objc_msgSend(v38, "CalIsBeforeOrSameAsDate:", v15))
+          startDate = [(EKPredicate *)self startDate];
+          endDate = [(EKPredicate *)self endDate];
+          startDate2 = [v9 startDate];
+          endDate2 = [v9 endDate];
+          v33 = startDate2;
+          v34 = endDate;
+          if ([endDate CalIsBeforeOrSameAsDate:startDate2] & 1) != 0 || (objc_msgSend(endDate2, "CalIsBeforeOrSameAsDate:", startDate))
           {
             v8 = 0;
-            v28 = v38;
+            v28 = endDate2;
           }
 
           else
           {
-            v36 = a4;
+            matchedCopy2 = matched;
             v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-            if ([v15 isBeforeDate:v27])
+            if ([startDate isBeforeDate:startDate2])
             {
-              v31 = [(CADEventPredicate *)self copyWithStartDate:v15 endDate:v27];
+              v31 = [(CADEventPredicate *)self copyWithStartDate:startDate endDate:startDate2];
               [v8 addObject:v31];
             }
 
             else
             {
-              v14 |= [v15 isAfterDate:v27];
+              v14 |= [startDate isAfterDate:startDate2];
             }
 
-            v28 = v38;
-            if ([v34 isAfterDate:v38])
+            v28 = endDate2;
+            if ([v34 isAfterDate:endDate2])
             {
-              v32 = [(CADEventPredicate *)self copyWithStartDate:v38 endDate:v34];
+              v32 = [(CADEventPredicate *)self copyWithStartDate:endDate2 endDate:v34];
               [v8 addObject:v32];
             }
 
             else
             {
-              LOBYTE(v14) = [v34 isBeforeDate:v38] | v14;
+              LOBYTE(v14) = [v34 isBeforeDate:endDate2] | v14;
             }
 
-            if (v36)
+            if (matchedCopy2)
             {
-              *v36 = v14 & 1;
+              *matchedCopy2 = v14 & 1;
             }
           }
 

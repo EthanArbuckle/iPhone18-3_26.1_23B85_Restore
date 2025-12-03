@@ -1,11 +1,11 @@
 @interface BCSURLAction
-- (BCSURLAction)initWithData:(id)a3 codePayload:(id)a4;
+- (BCSURLAction)initWithData:(id)data codePayload:(id)payload;
 - (BOOL)_allowAppClipCodeUniversalLinkFallback;
 - (BOOL)_isCodeFromQRScanner;
 - (BOOL)_isVisualCode;
-- (BOOL)_shouldBlockHandlingURL:(id)a3;
-- (BOOL)_shouldOpenInAppForAppLink:(id)a3;
-- (BOOL)_tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:(id)a3;
+- (BOOL)_shouldBlockHandlingURL:(id)l;
+- (BOOL)_shouldOpenInAppForAppLink:(id)link;
+- (BOOL)_tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:(id)handler;
 - (BOOL)_willOpenInSafari;
 - (BOOL)hasSensitiveURL;
 - (BOOL)isAMSAction;
@@ -13,15 +13,15 @@
 - (BOOL)isPasskeyAction;
 - (BOOL)mustOpenAppLinkInApp;
 - (id)_actionDescriptionForAppClip;
-- (id)_actionDescriptionForURL:(id)a3 application:(id)a4 shouldShowHostNameForSafariURL:(BOOL)a5;
-- (id)_actionDescriptionWithoutTargetApplicationForURL:(id)a3;
+- (id)_actionDescriptionForURL:(id)l application:(id)application shouldShowHostNameForSafariURL:(BOOL)rL;
+- (id)_actionDescriptionWithoutTargetApplicationForURL:(id)l;
 - (id)_actionPickerItemsForAppClip;
 - (id)_actionPickerItemsForLockScreenVisibleApps;
 - (id)_actionPickerItemsForUnlockedAppLinks;
 - (id)_additionalActionPickerItems;
 - (id)_appclipLaunchReason;
 - (id)_commonActionPickerItemsForURL;
-- (id)_menuElementForActionPicker:(id)a3;
+- (id)_menuElementForActionPicker:(id)picker;
 - (id)_requiresOpenInTargetApplication;
 - (id)actionIconSystemImageName;
 - (id)actionPickerItems;
@@ -37,23 +37,23 @@
 - (unint64_t)menuElementsCount;
 - (void)_appclipLaunchReason;
 - (void)_didActivateBarcodeWithURLPayload;
-- (void)_openActionInTargetApplicationWithOptions:(id)a3;
-- (void)_queryApplicationRecordForURL:(id)a3 completionHandler:(id)a4;
-- (void)_resolveAppClipForURL:(id)a3 completion:(id)a4;
-- (void)_resolveTargetApplicationForURL:(id)a3 completionHandler:(id)a4;
-- (void)determineActionabilityWithCompletionHandler:(id)a3;
+- (void)_openActionInTargetApplicationWithOptions:(id)options;
+- (void)_queryApplicationRecordForURL:(id)l completionHandler:(id)handler;
+- (void)_resolveAppClipForURL:(id)l completion:(id)completion;
+- (void)_resolveTargetApplicationForURL:(id)l completionHandler:(id)handler;
+- (void)determineActionabilityWithCompletionHandler:(id)handler;
 - (void)performAction;
-- (void)performActionWithOptions:(id)a3 completion:(id)a4;
-- (void)performDefaultActionWithFBOptions:(id)a3;
+- (void)performActionWithOptions:(id)options completion:(id)completion;
+- (void)performDefaultActionWithFBOptions:(id)options;
 - (void)shortDescription;
 @end
 
 @implementation BCSURLAction
 
-- (BCSURLAction)initWithData:(id)a3 codePayload:(id)a4
+- (BCSURLAction)initWithData:(id)data codePayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  payloadCopy = payload;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -62,35 +62,35 @@
 
   v11.receiver = self;
   v11.super_class = BCSURLAction;
-  v8 = [(BCSAction *)&v11 initWithData:v6 codePayload:v7];
+  v8 = [(BCSAction *)&v11 initWithData:dataCopy codePayload:payloadCopy];
   if (!v8)
   {
     self = 0;
 LABEL_5:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)url
 {
-  v2 = [(BCSAction *)self data];
-  v3 = [v2 url];
+  data = [(BCSAction *)self data];
+  v3 = [data url];
 
   return v3;
 }
 
 - (BOOL)isAirplayPairingAction
 {
-  v2 = [(BCSURLAction *)self targetApplication];
-  v3 = [v2 bundleIdentifier];
-  if ([v3 isEqualToString:@"com.apple.APSUIApp"])
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.APSUIApp"])
   {
     v4 = _bcs_airplayInWifiEnabled();
   }
@@ -107,69 +107,69 @@ LABEL_6:
 {
   if ([(BCSURLAction *)self _hasCellularPlanAction])
   {
-    v3 = [(CTCellularPlanQRCodeAction *)self->_cellularPlanAction title];
+    title = [(CTCellularPlanQRCodeAction *)self->_cellularPlanAction title];
   }
 
   else if ([(BCSURLAction *)self isAirplayPairingAction])
   {
-    v3 = _BCSLocalizedString(@"Connect", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    title = _BCSLocalizedString(@"Connect", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = BCSURLAction;
-    v3 = [(BCSAction *)&v5 localizedDefaultActionTitle];
+    title = [(BCSAction *)&v5 localizedDefaultActionTitle];
   }
 
-  return v3;
+  return title;
 }
 
 - (id)localizedDefaultActionDescription
 {
   if ([(BCSURLAction *)self _hasCellularPlanAction])
   {
-    v3 = [(CTCellularPlanQRCodeAction *)self->_cellularPlanAction message];
+    message = [(CTCellularPlanQRCodeAction *)self->_cellularPlanAction message];
 LABEL_13:
-    v4 = v3;
+    v4 = message;
     goto LABEL_14;
   }
 
   if ([(BCSURLAction *)self isAMSAction])
   {
-    v3 = _BCSLocalizedString(@"Tap here to learn more", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    message = _BCSLocalizedString(@"Tap here to learn more", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
     goto LABEL_13;
   }
 
   if ([(BCSURLAction *)self isPasskeyAssertionAction])
   {
-    v3 = [(BCSURLAction *)self _passkeyAssertionActionDescription];
+    message = [(BCSURLAction *)self _passkeyAssertionActionDescription];
     goto LABEL_13;
   }
 
   if ([(BCSURLAction *)self isPasskeyRegistrationAction])
   {
-    v3 = [(BCSURLAction *)self _passkeyRegistrationActionDescription];
+    message = [(BCSURLAction *)self _passkeyRegistrationActionDescription];
     goto LABEL_13;
   }
 
   if ([(BCSURLAction *)self isApplePayInitiateAction])
   {
-    v3 = [(BCSURLAction *)self _applePayActionDescription];
+    message = [(BCSURLAction *)self _applePayActionDescription];
     goto LABEL_13;
   }
 
   if ([(BCSURLAction *)self isDigitalIdentityCredentialPresentationAction])
   {
-    v3 = [(BCSURLAction *)self _digitalIdentityCredentialPresentationDescription];
+    message = [(BCSURLAction *)self _digitalIdentityCredentialPresentationDescription];
     goto LABEL_13;
   }
 
-  v6 = [(BCSURLAction *)self targetApplication];
-  if (v6)
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  if (targetApplication)
   {
     v7 = [(BCSURLAction *)self url];
-    v8 = [(BCSURLAction *)self _actionDescriptionForURL:v7 application:v6 shouldShowHostNameForSafariURL:1];
+    v8 = [(BCSURLAction *)self _actionDescriptionForURL:v7 application:targetApplication shouldShowHostNameForSafariURL:1];
   }
 
   else
@@ -196,39 +196,39 @@ LABEL_14:
 {
   if ([(BCSURLAction *)self _hasCellularPlanAction])
   {
-    v3 = @"com.apple.Preferences.cellularData";
+    bundleIdentifier = @"com.apple.Preferences.cellularData";
   }
 
   else
   {
-    v4 = [(BCSURLAction *)self targetApplication];
-    v3 = [v4 bundleIdentifier];
+    targetApplication = [(BCSURLAction *)self targetApplication];
+    bundleIdentifier = [targetApplication bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)debugDescriptionExtraInfoDictionary
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(BCSURLAction *)self targetApplication];
-  v4 = v3;
-  if (v3)
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  v4 = targetApplication;
+  if (targetApplication)
   {
-    v5 = [v3 bundleIdentifier];
+    bundleIdentifier = [targetApplication bundleIdentifier];
   }
 
   else
   {
-    v5 = &stru_2853953A0;
+    bundleIdentifier = &stru_2853953A0;
   }
 
   v11[0] = @"targetApplication";
   v11[1] = @"url";
-  v12[0] = v5;
+  v12[0] = bundleIdentifier;
   v6 = [(BCSURLAction *)self url];
-  v7 = [v6 absoluteString];
-  v12[1] = v7;
+  absoluteString = [v6 absoluteString];
+  v12[1] = absoluteString;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -238,7 +238,7 @@ LABEL_14:
 
 - (id)_commonActionPickerItemsForURL
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   SSReadingListClass = getSSReadingListClass();
   v5 = [(BCSURLAction *)self url];
   LODWORD(SSReadingListClass) = [SSReadingListClass supportsURL:v5];
@@ -257,18 +257,18 @@ LABEL_14:
     v9 = [getUIImageClass() systemImageNamed:@"eyeglasses"];
     [(BCSActionPickerItem *)v8 setIcon:v9];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
   v10 = [BCSCopyActionPickerItem alloc];
   v11 = [(BCSURLAction *)self url];
   v12 = [(BCSCopyActionPickerItem *)v10 initWithAction:self urlToCopy:v11];
 
-  [v3 addObject:v12];
+  [array addObject:v12];
   v13 = [[BCSShareActionPickerItem alloc] initWithAction:self];
-  [v3 addObject:v13];
+  [array addObject:v13];
 
-  return v3;
+  return array;
 }
 
 void __46__BCSURLAction__commonActionPickerItemsForURL__block_invoke(uint64_t a1)
@@ -280,10 +280,10 @@ void __46__BCSURLAction__commonActionPickerItemsForURL__block_invoke(uint64_t a1
 
 - (id)_additionalActionPickerItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(BCSAction *)self detectedCode];
+  array = [MEMORY[0x277CBEB18] array];
+  detectedCode = [(BCSAction *)self detectedCode];
 
-  if (!v4)
+  if (!detectedCode)
   {
     goto LABEL_4;
   }
@@ -291,9 +291,9 @@ void __46__BCSURLAction__commonActionPickerItemsForURL__block_invoke(uint64_t a1
   if ([(NSArray *)self->_appLinks count])
   {
     v5 = [(BCSURLAction *)self url];
-    v6 = [v5 _bcs_isRedirectedSHCURL];
+    _bcs_isRedirectedSHCURL = [v5 _bcs_isRedirectedSHCURL];
 
-    if (v6)
+    if (_bcs_isRedirectedSHCURL)
     {
 LABEL_4:
       v7 = 0;
@@ -306,16 +306,16 @@ LABEL_4:
     v11 = [(BCSURLAction *)self url];
     v12 = [(BCSURLActionPickerItem *)v9 initWithLabel:v10 action:self url:v11 applicationRecord:v8];
 
-    [v3 addObject:v12];
+    [array addObject:v12];
   }
 
   if ([(BCSURLAction *)self _willOpenInSafari]|| [(NSArray *)self->_appLinks count])
   {
-    v13 = [(BCSURLAction *)self _commonActionPickerItemsForURL];
-    [v3 addObjectsFromArray:v13];
+    _commonActionPickerItemsForURL = [(BCSURLAction *)self _commonActionPickerItemsForURL];
+    [array addObjectsFromArray:_commonActionPickerItemsForURL];
   }
 
-  v7 = v3;
+  v7 = array;
 LABEL_10:
 
   return v7;
@@ -323,31 +323,31 @@ LABEL_10:
 
 - (id)_actionPickerItemsForAppClip
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(BCSActionPickerItem *)[BCSAppClipActionPickerItem alloc] initWithAction:self];
-  [v3 addObject:v4];
+  [array addObject:v4];
   if ([(BCSAction *)self codeType]!= 3)
   {
     v5 = [BCSCopyActionPickerItem alloc];
     v6 = [(BCSURLAction *)self url];
     v7 = [(BCSCopyActionPickerItem *)v5 initWithAction:self urlToCopy:v6];
 
-    [v3 addObject:v7];
+    [array addObject:v7];
     v8 = [[BCSShareActionPickerItem alloc] initWithAction:self];
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_willOpenInSafari
 {
-  v3 = [(BCSURLAction *)self targetApplication];
-  v4 = [v3 bundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.mobilesafari"])
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
   {
-    v5 = [(BCSAction *)self clipMetadataRequest];
-    v6 = v5 == 0;
+    clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
+    v6 = clipMetadataRequest == 0;
   }
 
   else
@@ -367,15 +367,15 @@ LABEL_10:
 
   if ([(BCSURLAction *)self isPasskeyAssertionAction])
   {
-    v6 = [(BCSURLAction *)self _passkeyAssertionActionDescription];
+    _passkeyAssertionActionDescription = [(BCSURLAction *)self _passkeyAssertionActionDescription];
 LABEL_13:
-    v5 = v6;
+    v5 = _passkeyAssertionActionDescription;
     goto LABEL_14;
   }
 
   if ([(BCSURLAction *)self isPasskeyRegistrationAction])
   {
-    v6 = [(BCSURLAction *)self _passkeyRegistrationActionDescription];
+    _passkeyAssertionActionDescription = [(BCSURLAction *)self _passkeyRegistrationActionDescription];
     goto LABEL_13;
   }
 
@@ -383,30 +383,30 @@ LABEL_13:
   {
     v7 = @"Connect";
 LABEL_10:
-    v6 = _BCSLocalizedString(v7, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    _passkeyAssertionActionDescription = _BCSLocalizedString(v7, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
     goto LABEL_13;
   }
 
   if ([(BCSURLAction *)self isApplePayInitiateAction])
   {
-    v6 = [(BCSURLAction *)self _applePayActionDescription];
+    _passkeyAssertionActionDescription = [(BCSURLAction *)self _applePayActionDescription];
     goto LABEL_13;
   }
 
   if (self->_deviceDataIsUnavailable)
   {
-    v9 = [(BCSURLAction *)self targetApplication];
-    if (v9)
+    targetApplication = [(BCSURLAction *)self targetApplication];
+    if (targetApplication)
     {
-      v10 = v9;
-      v11 = [(BCSURLAction *)self isAMSAction];
+      v10 = targetApplication;
+      isAMSAction = [(BCSURLAction *)self isAMSAction];
 
-      if (!v11)
+      if (!isAMSAction)
       {
-        v15 = [(BCSURLAction *)self targetApplication];
-        v16 = [v15 developerType];
+        targetApplication2 = [(BCSURLAction *)self targetApplication];
+        developerType = [targetApplication2 developerType];
 
-        if (v16 != 1)
+        if (developerType != 1)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -423,10 +423,10 @@ LABEL_10:
     if ([(NSArray *)self->_appLinks count])
     {
 LABEL_2:
-      v3 = [(BCSURLAction *)self url];
-      v4 = [v3 _bcs_displayString];
+      targetApplication3 = [(BCSURLAction *)self url];
+      _bcs_displayString = [targetApplication3 _bcs_displayString];
 LABEL_3:
-      v5 = v4;
+      v5 = _bcs_displayString;
 
       goto LABEL_14;
     }
@@ -436,7 +436,7 @@ LABEL_3:
   {
     if (![(BCSURLAction *)self _hasCellularPlanAction])
     {
-      v6 = [(BCSURLAction *)self localizedDefaultActionDescription];
+      _passkeyAssertionActionDescription = [(BCSURLAction *)self localizedDefaultActionDescription];
       goto LABEL_13;
     }
 
@@ -445,13 +445,13 @@ LABEL_3:
   }
 
   v12 = [(BCSURLAction *)self url];
-  v13 = [v12 _bcs_isRedirectedSHCURL];
+  _bcs_isRedirectedSHCURL = [v12 _bcs_isRedirectedSHCURL];
 
-  if (!v13 || (-[BCSURLAction url](self, "url"), v14 = objc_claimAutoreleasedReturnValue(), [v14 _bcs_localizedDisplayNameForRedirectedSHCURL], v5 = objc_claimAutoreleasedReturnValue(), v14, !v5))
+  if (!_bcs_isRedirectedSHCURL || (-[BCSURLAction url](self, "url"), v14 = objc_claimAutoreleasedReturnValue(), [v14 _bcs_localizedDisplayNameForRedirectedSHCURL], v5 = objc_claimAutoreleasedReturnValue(), v14, !v5))
   {
 LABEL_28:
-    v3 = [(BCSURLAction *)self targetApplication];
-    v4 = [v3 localizedName];
+    targetApplication3 = [(BCSURLAction *)self targetApplication];
+    _bcs_displayString = [targetApplication3 localizedName];
     goto LABEL_3;
   }
 
@@ -467,17 +467,17 @@ LABEL_14:
     return @"safari.fill";
   }
 
-  v4 = [(LSApplicationRecord *)self->_userVisibleAppRecord bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.Home"];
+  bundleIdentifier = [(LSApplicationRecord *)self->_userVisibleAppRecord bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.Home"];
 
   if (v5)
   {
     return @"homekit";
   }
 
-  v6 = [(BCSAction *)self clipMetadataRequest];
+  clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-  if (v6)
+  if (clipMetadataRequest)
   {
     return @"arrow.up.forward.appclip";
   }
@@ -488,9 +488,9 @@ LABEL_14:
   }
 
   v7 = [(BCSURLAction *)self url];
-  v8 = [v7 _bcs_isRedirectedSHCURL];
+  _bcs_isRedirectedSHCURL = [v7 _bcs_isRedirectedSHCURL];
 
-  if (v8)
+  if (_bcs_isRedirectedSHCURL)
   {
     return @"health.fill";
   }
@@ -520,19 +520,19 @@ LABEL_14:
 
 - (id)_actionPickerItemsForLockScreenVisibleApps
 {
-  v4 = [(NSArray *)self->_appLinks firstObject];
+  firstObject = [(NSArray *)self->_appLinks firstObject];
   userVisibleAppRecord = self->_userVisibleAppRecord;
   if (userVisibleAppRecord)
   {
-    v6 = userVisibleAppRecord;
+    firstObject2 = userVisibleAppRecord;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_upiApplicationRecords firstObject];
+    firstObject2 = [(NSArray *)self->_upiApplicationRecords firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject2;
   v8 = self->_userVisibleAppRecord;
   if (!v8 || (-[LSApplicationRecord bundleIdentifier](self->_userVisibleAppRecord, "bundleIdentifier"), v2 = objc_claimAutoreleasedReturnValue(), ([v2 isEqualToString:@"com.apple.mobilesafari"] & 1) != 0))
   {
@@ -551,26 +551,26 @@ LABEL_14:
 
 LABEL_9:
   v11 = [BCSURLActionPickerItem alloc];
-  if (v4)
+  if (firstObject)
   {
-    v12 = [(BCSAction *)self codePayload];
-    v13 = [(BCSURLActionPickerItem *)v11 initWithLabel:v10 action:self appLink:v4 codePayload:v12];
+    codePayload = [(BCSAction *)self codePayload];
+    v13 = [(BCSURLActionPickerItem *)v11 initWithLabel:v10 action:self appLink:firstObject codePayload:codePayload];
   }
 
   else
   {
-    v12 = [(BCSURLAction *)self url];
-    v13 = [(BCSURLActionPickerItem *)v11 initWithLabel:v10 action:self url:v12 applicationRecord:v7 preferApplicationIcon:self->_userVisibleAppRecord != 0];
+    codePayload = [(BCSURLAction *)self url];
+    v13 = [(BCSURLActionPickerItem *)v11 initWithLabel:v10 action:self url:codePayload applicationRecord:v7 preferApplicationIcon:self->_userVisibleAppRecord != 0];
   }
 
   v14 = v13;
 
-  v15 = [MEMORY[0x277CBEB18] array];
-  [v15 addObject:v14];
-  v16 = [(BCSURLAction *)self _commonActionPickerItemsForURL];
-  [v15 addObjectsFromArray:v16];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:v14];
+  _commonActionPickerItemsForURL = [(BCSURLAction *)self _commonActionPickerItemsForURL];
+  [array addObjectsFromArray:_commonActionPickerItemsForURL];
 
-  return v15;
+  return array;
 }
 
 - (id)_actionPickerItemsForUnlockedAppLinks
@@ -578,14 +578,14 @@ LABEL_9:
   v26 = *MEMORY[0x277D85DE8];
   if (![(NSArray *)self->_appLinks count])
   {
-    v20 = 0;
+    array = 0;
     goto LABEL_15;
   }
 
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [(BCSURLAction *)self url];
-  v4 = [(BCSAction *)self detectedCode];
-  if (v4)
+  detectedCode = [(BCSAction *)self detectedCode];
+  if (detectedCode)
   {
 
 LABEL_6:
@@ -609,15 +609,15 @@ LABEL_6:
           }
 
           v9 = *(*(&v21 + 1) + 8 * i);
-          v10 = [v9 targetApplicationRecord];
-          v11 = [(BCSURLAction *)self _actionDescriptionForURL:v3 application:v10 shouldShowHostNameForSafariURL:0];
+          targetApplicationRecord = [v9 targetApplicationRecord];
+          v11 = [(BCSURLAction *)self _actionDescriptionForURL:v3 application:targetApplicationRecord shouldShowHostNameForSafariURL:0];
 
           v12 = [BCSURLActionPickerItem alloc];
-          v13 = [(BCSAction *)self codePayload];
-          v14 = [(BCSAction *)self detectedCode];
-          v15 = [(BCSURLActionPickerItem *)v12 initWithLabel:v11 action:self appLink:v9 codePayload:v13 preferApplicationIcon:v14 != 0];
+          codePayload = [(BCSAction *)self codePayload];
+          detectedCode2 = [(BCSAction *)self detectedCode];
+          v15 = [(BCSURLActionPickerItem *)v12 initWithLabel:v11 action:self appLink:v9 codePayload:codePayload preferApplicationIcon:detectedCode2 != 0];
 
-          [v20 addObject:v15];
+          [array addObject:v15];
         }
 
         v6 = [(NSArray *)obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -626,8 +626,8 @@ LABEL_6:
       while (v6);
     }
 
-    v16 = [(BCSURLAction *)self _additionalActionPickerItems];
-    [v20 addObjectsFromArray:v16];
+    _additionalActionPickerItems = [(BCSURLAction *)self _additionalActionPickerItems];
+    [array addObjectsFromArray:_additionalActionPickerItems];
 
     goto LABEL_14;
   }
@@ -642,60 +642,60 @@ LABEL_14:
 LABEL_15:
   v17 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return array;
 }
 
 - (id)actionPickerItems
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(BCSURLAction *)self url];
-  v5 = [(BCSURLAction *)self _hasCellularPlanAction];
-  v6 = [(BCSURLAction *)self isAMSAction];
-  v7 = [(BCSURLAction *)self isPasskeyAction];
-  v8 = [(BCSURLAction *)self isApplePayInitiateAction];
-  if ([(BCSURLAction *)self isDigitalIdentityCredentialPresentationAction]|| v8 || v7 || v6 || v5)
+  _hasCellularPlanAction = [(BCSURLAction *)self _hasCellularPlanAction];
+  isAMSAction = [(BCSURLAction *)self isAMSAction];
+  isPasskeyAction = [(BCSURLAction *)self isPasskeyAction];
+  isApplePayInitiateAction = [(BCSURLAction *)self isApplePayInitiateAction];
+  if ([(BCSURLAction *)self isDigitalIdentityCredentialPresentationAction]|| isApplePayInitiateAction || isPasskeyAction || isAMSAction || _hasCellularPlanAction)
   {
     v13 = [[BCSActionPickerItem alloc] initWithAction:self];
-    [v3 addObject:v13];
-    v14 = v3;
+    [array addObject:v13];
+    v14 = array;
 
     goto LABEL_40;
   }
 
-  v9 = [(BCSAction *)self detectedCode];
-  if (v9)
+  detectedCode = [(BCSAction *)self detectedCode];
+  if (detectedCode)
   {
-    v10 = v9;
-    v11 = [(BCSAction *)self clipMetadataRequest];
+    v10 = detectedCode;
+    clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-    if (v11)
+    if (clipMetadataRequest)
     {
-      v12 = [(BCSURLAction *)self _actionPickerItemsForAppClip];
+      _actionPickerItemsForAppClip = [(BCSURLAction *)self _actionPickerItemsForAppClip];
 LABEL_13:
-      v14 = v12;
+      v14 = _actionPickerItemsForAppClip;
       goto LABEL_40;
     }
   }
 
-  v15 = [(BCSAction *)self detectedCode];
-  if (v15)
+  detectedCode2 = [(BCSAction *)self detectedCode];
+  if (detectedCode2)
   {
     deviceDataIsUnavailable = self->_deviceDataIsUnavailable;
 
     if (deviceDataIsUnavailable)
     {
-      v12 = [(BCSURLAction *)self _actionPickerItemsForLockScreenVisibleApps];
+      _actionPickerItemsForAppClip = [(BCSURLAction *)self _actionPickerItemsForLockScreenVisibleApps];
       goto LABEL_13;
     }
   }
 
-  v17 = [(BCSURLAction *)self _actionPickerItemsForUnlockedAppLinks];
-  if (![v17 count])
+  _actionPickerItemsForUnlockedAppLinks = [(BCSURLAction *)self _actionPickerItemsForUnlockedAppLinks];
+  if (![_actionPickerItemsForUnlockedAppLinks count])
   {
     if ([(NSArray *)self->_upiApplicationRecords count]>= 2)
     {
-      v37 = v17;
+      v37 = _actionPickerItemsForUnlockedAppLinks;
       v38 = v4;
       appStoreSearchURLForUnsupportedScheme = self->_appStoreSearchURLForUnsupportedScheme;
       if (!appStoreSearchURLForUnsupportedScheme)
@@ -724,9 +724,9 @@ LABEL_13:
             }
 
             v25 = *(*(&v39 + 1) + 8 * i);
-            v26 = [v25 localizedName];
-            v27 = [[BCSURLActionPickerItem alloc] initWithLabel:v26 action:self url:v19 applicationRecord:v25 preferApplicationIcon:1];
-            [v3 addObject:v27];
+            localizedName = [v25 localizedName];
+            v27 = [[BCSURLActionPickerItem alloc] initWithLabel:localizedName action:self url:v19 applicationRecord:v25 preferApplicationIcon:1];
+            [array addObject:v27];
           }
 
           v22 = [(NSArray *)v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -735,8 +735,8 @@ LABEL_13:
         while (v22);
       }
 
-      v14 = v3;
-      v17 = v37;
+      v14 = array;
+      _actionPickerItemsForUnlockedAppLinks = v37;
       v4 = v38;
       goto LABEL_39;
     }
@@ -759,11 +759,11 @@ LABEL_32:
         v32 = v31;
         v33 = [[BCSURLActionPickerItem alloc] initWithLabel:v30 action:self url:v32 applicationRecord:self->_userVisibleAppRecord preferApplicationIcon:1];
 
-        [v3 addObject:v33];
-        v34 = [(BCSURLAction *)self _additionalActionPickerItems];
-        [v3 addObjectsFromArray:v34];
+        [array addObject:v33];
+        _additionalActionPickerItems = [(BCSURLAction *)self _additionalActionPickerItems];
+        [array addObjectsFromArray:_additionalActionPickerItems];
 
-        v14 = v3;
+        v14 = array;
         goto LABEL_39;
       }
 
@@ -795,7 +795,7 @@ LABEL_31:
     goto LABEL_39;
   }
 
-  v14 = v17;
+  v14 = _actionPickerItemsForUnlockedAppLinks;
 LABEL_39:
 
 LABEL_40:
@@ -806,13 +806,13 @@ LABEL_40:
 
 - (id)_appclipLaunchReason
 {
-  v2 = [(BCSAction *)self codeType];
-  if (v2 == 3)
+  codeType = [(BCSAction *)self codeType];
+  if (codeType == 3)
   {
     v3 = @"AppclipCode";
   }
 
-  else if (v2 == 2)
+  else if (codeType == 2)
   {
     v7 = 0;
     v8 = &v7;
@@ -853,8 +853,8 @@ LABEL_40:
 
   else
   {
-    v6 = [(LSApplicationRecord *)self->_userVisibleAppRecord bundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.Home"];
+    bundleIdentifier = [(LSApplicationRecord *)self->_userVisibleAppRecord bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.Home"];
 
     if (v7)
     {
@@ -880,16 +880,16 @@ LABEL_40:
   return v5 & 1;
 }
 
-- (void)performActionWithOptions:(id)a3 completion:(id)a4
+- (void)performActionWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   if ([(BCSURLAction *)self hasSensitiveURL])
   {
-    v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v9 = [(BCSURLAction *)self url];
     v12 = 0;
-    v10 = [v8 openSensitiveURL:v9 withOptions:v6 error:&v12];
+    v10 = [defaultWorkspace openSensitiveURL:v9 withOptions:optionsCopy error:&v12];
     v11 = v12;
 
     if ((v10 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -897,13 +897,13 @@ LABEL_40:
       [BCSURLAction performActionWithOptions:? completion:?];
     }
 
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    [(BCSURLAction *)self performDefaultActionWithFBOptions:v6];
-    v7[2](v7, 0);
+    [(BCSURLAction *)self performDefaultActionWithFBOptions:optionsCopy];
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -942,10 +942,10 @@ LABEL_40:
   }
 }
 
-- (void)performDefaultActionWithFBOptions:(id)a3
+- (void)performDefaultActionWithFBOptions:(id)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(BCSURLAction *)self _hasCellularPlanAction])
   {
     [(CTCellularPlanQRCodeAction *)self->_cellularPlanAction performWithCompletionHandler:&__block_literal_global_10];
@@ -957,8 +957,8 @@ LABEL_40:
     goto LABEL_7;
   }
 
-  v5 = [(BCSURLAction *)self targetApplication];
-  if (v5)
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  if (targetApplication)
   {
 
     goto LABEL_7;
@@ -967,31 +967,31 @@ LABEL_40:
   if (self->_deviceDataIsUnavailable)
   {
 LABEL_7:
-    v6 = [(BCSURLAction *)self _requiresOpenInTargetApplication];
+    _requiresOpenInTargetApplication = [(BCSURLAction *)self _requiresOpenInTargetApplication];
 
-    if (v6)
+    if (_requiresOpenInTargetApplication)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v7 = [(BCSURLAction *)self targetApplication];
-        v8 = [v7 bundleIdentifier];
+        targetApplication2 = [(BCSURLAction *)self targetApplication];
+        bundleIdentifier = [targetApplication2 bundleIdentifier];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = bundleIdentifier;
         _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSURLAction: Handling URL with LSApplicationWorkspace operation with target application: %@.", &buf, 0xCu);
       }
 
       v9 = +[BCSAWDLogger sharedLogger];
       [v9 logBarcodeActivatedEventForAction:self];
 
-      [(BCSURLAction *)self _openActionInTargetApplicationWithOptions:v4];
+      [(BCSURLAction *)self _openActionInTargetApplicationWithOptions:optionsCopy];
       [(BCSURLAction *)self _didActivateBarcodeWithURLPayload];
     }
 
     else
     {
-      v10 = [(BCSAction *)self clipMetadataRequest];
+      clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-      if (v10)
+      if (clipMetadataRequest)
       {
         v38 = 0;
         v39 = &v38;
@@ -1015,10 +1015,10 @@ LABEL_7:
         v14 = [(BCSURLAction *)self url];
         v15 = [v13 initWithURL:v14];
 
-        v16 = [(BCSURLAction *)self _appclipLaunchReason];
-        v17 = [v15 sessionProxy];
-        v18 = [v17 configuration];
-        [v18 setLaunchReason:v16];
+        _appclipLaunchReason = [(BCSURLAction *)self _appclipLaunchReason];
+        sessionProxy = [v15 sessionProxy];
+        configuration = [sessionProxy configuration];
+        [configuration setLaunchReason:_appclipLaunchReason];
 
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
@@ -1037,17 +1037,17 @@ LABEL_7:
           _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSURLAction: perform action with default app link", &buf, 2u);
         }
 
-        v19 = [(NSArray *)self->_appLinks firstObject];
-        v20 = [(BCSAction *)self codePayload];
-        _bcs_openAppLinkIgnoringOpenStrategy(v19, v4, v20);
+        firstObject = [(NSArray *)self->_appLinks firstObject];
+        codePayload = [(BCSAction *)self codePayload];
+        _bcs_openAppLinkIgnoringOpenStrategy(firstObject, optionsCopy, codePayload);
 
         if ([(NSArray *)self->_appLinks count]>= 2)
         {
           v21 = +[BCSQRCodeParser sharedParser];
-          v22 = [v19 targetApplicationProxy];
-          v23 = [v22 bundleIdentifier];
-          v24 = [v19 URL];
-          [v21 setPreferredBundleIdentifier:v23 forURL:v24];
+          targetApplicationProxy = [firstObject targetApplicationProxy];
+          bundleIdentifier2 = [targetApplicationProxy bundleIdentifier];
+          v24 = [firstObject URL];
+          [v21 setPreferredBundleIdentifier:bundleIdentifier2 forURL:v24];
         }
 
         [(BCSURLAction *)self _didActivateBarcodeWithURLPayload];
@@ -1056,10 +1056,10 @@ LABEL_7:
       else
       {
         v25 = [(BCSURLAction *)self url];
-        v26 = [v25 _bcs_isUPIURL];
+        _bcs_isUPIURL = [v25 _bcs_isUPIURL];
 
         v27 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-        if (v26)
+        if (_bcs_isUPIURL)
         {
           if (v27)
           {
@@ -1068,10 +1068,10 @@ LABEL_7:
           }
 
           v28 = +[BCSQRCodeParser sharedParser];
-          v29 = [(BCSURLAction *)self targetApplication];
-          v30 = [v29 bundleIdentifier];
+          targetApplication3 = [(BCSURLAction *)self targetApplication];
+          bundleIdentifier3 = [targetApplication3 bundleIdentifier];
           v31 = [(BCSURLAction *)self url];
-          [v28 setPreferredBundleIdentifier:v30 forURL:v31];
+          [v28 setPreferredBundleIdentifier:bundleIdentifier3 forURL:v31];
 
           [(BCSURLAction *)self _openActionInTargetApplicationWithOptions:0];
           [(BCSURLAction *)self _didActivateBarcodeWithURLPayload];
@@ -1085,10 +1085,10 @@ LABEL_7:
             _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSURLAction: perform default action by opening URL", &buf, 2u);
           }
 
-          v32 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
           v33 = [(BCSURLAction *)self url];
           v36 = 0;
-          [v32 openURL:v33 withOptions:v4 error:&v36];
+          [defaultWorkspace openURL:v33 withOptions:optionsCopy error:&v36];
           v34 = v36;
 
           [(BCSURLAction *)self _didActivateBarcodeWithURLPayload];
@@ -1168,15 +1168,15 @@ void __50__BCSURLAction_performDefaultActionWithFBOptions___block_invoke_105(uin
 LABEL_11:
 }
 
-- (void)_openActionInTargetApplicationWithOptions:(id)a3
+- (void)_openActionInTargetApplicationWithOptions:(id)options
 {
   v4 = MEMORY[0x277CC1E80];
-  v5 = a3;
-  v6 = [v4 defaultWorkspace];
+  optionsCopy = options;
+  defaultWorkspace = [v4 defaultWorkspace];
   v7 = [(BCSURLAction *)self url];
-  v8 = [(BCSURLAction *)self targetApplication];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v6 operationToOpenResource:v7 usingApplication:v9 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v5 delegate:0];
+  targetApplication = [(BCSURLAction *)self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
+  v10 = [defaultWorkspace operationToOpenResource:v7 usingApplication:bundleIdentifier uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:optionsCopy delegate:0];
 
   [v10 start];
 }
@@ -1205,11 +1205,11 @@ void __29__BCSURLAction_performAction__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_resolveAppClipForURL:(id)a3 completion:(id)a4
+- (void)_resolveAppClipForURL:(id)l completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = [(BCSURLAction *)self url];
   if (![v8 _bcs_isHTTPFamilyURL])
   {
@@ -1250,8 +1250,8 @@ void __29__BCSURLAction_performAction__block_invoke(uint64_t a1, void *a2)
   }
 
   v13 = [(BCSURLAction *)self url];
-  v14 = [v13 absoluteString];
-  v15 = [v14 hasPrefix:@"https://found.apple.com/airtag?"];
+  absoluteString = [v13 absoluteString];
+  v15 = [absoluteString hasPrefix:@"https://found.apple.com/airtag?"];
 
   if (v15)
   {
@@ -1269,7 +1269,7 @@ void __29__BCSURLAction_performAction__block_invoke(uint64_t a1, void *a2)
   if ((_bcs_isHostAppEntitled() & 1) == 0)
   {
 LABEL_11:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_12;
   }
 
@@ -1297,9 +1297,9 @@ LABEL_11:
 
   if ([v22 isLikelyAvailable])
   {
-    v23 = [(BCSURLAction *)self _appclipLaunchReason];
-    v24 = [v22 sessionConfiguration];
-    [v24 setLaunchReason:v23];
+    _appclipLaunchReason = [(BCSURLAction *)self _appclipLaunchReason];
+    sessionConfiguration = [v22 sessionConfiguration];
+    [sessionConfiguration setLaunchReason:_appclipLaunchReason];
 
     if (-[BCSURLAction _isVisualCode](self, "_isVisualCode") && ([MEMORY[0x277CCA8D8] mainBundle], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "bundleIdentifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", @"com.apple.BarcodeScanner"), v26, v25, (v27 & 1) == 0))
     {
@@ -1309,20 +1309,20 @@ LABEL_11:
       v28[3] = &unk_278CFF3F0;
       v28[4] = self;
       v29 = v22;
-      v30 = v7;
+      v30 = completionCopy;
       [v29 requestMetadataWithCompletion:v28];
     }
 
     else
     {
       [(BCSAction *)self setClipMetadataRequest:v22];
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_12:
@@ -1341,10 +1341,10 @@ void __49__BCSURLAction__resolveAppClipForURL_completion___block_invoke(uint64_t
   (*(v4 + 16))(v4, v5 != 0);
 }
 
-- (void)determineActionabilityWithCompletionHandler:(id)a3
+- (void)determineActionabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (![(BCSURLAction *)self _tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:v4])
+  handlerCopy = handler;
+  if (![(BCSURLAction *)self _tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:handlerCopy])
   {
     v5 = [(BCSURLAction *)self url];
     v6[0] = MEMORY[0x277D85DD0];
@@ -1352,7 +1352,7 @@ void __49__BCSURLAction__resolveAppClipForURL_completion___block_invoke(uint64_t
     v6[2] = __60__BCSURLAction_determineActionabilityWithCompletionHandler___block_invoke;
     v6[3] = &unk_278CFF440;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(BCSURLAction *)self _resolveAppClipForURL:v5 completion:v6];
   }
 }
@@ -1391,14 +1391,14 @@ void __60__BCSURLAction_determineActionabilityWithCompletionHandler___block_invo
   }
 }
 
-- (BOOL)_tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:(id)a3
+- (BOOL)_tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(BCSURLAction *)self url];
-  v6 = [v5 absoluteString];
+  absoluteString = [v5 absoluteString];
 
-  v7 = [v6 lowercaseString];
-  if (([v7 hasPrefix:@"x-esim://"] & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"lpa:"))
+  lowercaseString = [absoluteString lowercaseString];
+  if (([lowercaseString hasPrefix:@"x-esim://"] & 1) != 0 || objc_msgSend(lowercaseString, "hasPrefix:", @"lpa:"))
   {
     v8 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v8)
@@ -1434,8 +1434,8 @@ void __60__BCSURLAction_determineActionabilityWithCompletionHandler___block_invo
     v23[2] = __92__BCSURLAction__tryDetermineActionabilityForSpecialCodesFromQRScannerWithCompletionHandler___block_invoke;
     v23[3] = &unk_278CFF468;
     v23[4] = self;
-    v24 = v4;
-    [(CoreTelephonyClient *)v20 getActionForCardData:v6 completionHandler:v23];
+    v24 = handlerCopy;
+    [(CoreTelephonyClient *)v20 getActionForCardData:absoluteString completionHandler:v23];
 
     v21 = 1;
   }
@@ -1512,8 +1512,8 @@ LABEL_12:
   {
     if (v3 == 1)
     {
-      v4 = [(NSArray *)self->_appLinks firstObject];
-      v5 = [(BCSURLAction *)self _shouldOpenInAppForAppLink:v4];
+      firstObject = [(NSArray *)self->_appLinks firstObject];
+      v5 = [(BCSURLAction *)self _shouldOpenInAppForAppLink:firstObject];
 
       LOBYTE(v3) = v5;
       return v3;
@@ -1526,10 +1526,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)_resolveTargetApplicationForURL:(id)a3 completionHandler:(id)a4
+- (void)_resolveTargetApplicationForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v8)
   {
@@ -1547,7 +1547,7 @@ LABEL_5:
   }
 
   self->_deviceDataIsUnavailable = v16;
-  if ([(BCSURLAction *)self _shouldBlockHandlingURL:v6])
+  if ([(BCSURLAction *)self _shouldBlockHandlingURL:lCopy])
   {
     v17 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v17)
@@ -1555,16 +1555,16 @@ LABEL_5:
       [(BCSURLAction *)v17 _resolveTargetApplicationForURL:v18 completionHandler:v19, v20, v21, v22, v23, v24];
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else if (_bcs_isHostAppEntitled())
   {
-    v25 = [(BCSURLAction *)self _requiresOpenInTargetApplication];
-    if (v25)
+    _requiresOpenInTargetApplication = [(BCSURLAction *)self _requiresOpenInTargetApplication];
+    if (_requiresOpenInTargetApplication)
     {
-      objc_storeStrong(&self->_userVisibleAppRecord, v25);
-      v7[2](v7, 1);
+      objc_storeStrong(&self->_userVisibleAppRecord, _requiresOpenInTargetApplication);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     else
@@ -1575,15 +1575,15 @@ LABEL_5:
       v27[2] = __66__BCSURLAction__resolveTargetApplicationForURL_completionHandler___block_invoke;
       v27[3] = &unk_278CFF490;
       v27[4] = self;
-      v29 = v7;
-      v28 = v6;
+      v29 = handlerCopy;
+      v28 = lCopy;
       [LSAppLinkClass getAppLinksWithURL:v28 completionHandler:v27];
     }
   }
 
   else
   {
-    [(BCSURLAction *)self _queryApplicationRecordForURL:v6 completionHandler:v7];
+    [(BCSURLAction *)self _queryApplicationRecordForURL:lCopy completionHandler:handlerCopy];
   }
 }
 
@@ -1690,25 +1690,25 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)_queryApplicationRecordForURL:(id)a3 completionHandler:(id)a4
+- (void)_queryApplicationRecordForURL:(id)l completionHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [getLSApplicationWorkspaceClass() defaultWorkspace];
-  v9 = [v8 URLOverrideForURL:v6];
+  lCopy = l;
+  handlerCopy = handler;
+  defaultWorkspace = [getLSApplicationWorkspaceClass() defaultWorkspace];
+  v9 = [defaultWorkspace URLOverrideForURL:lCopy];
 
   if (_bcs_isHostAppEntitled())
   {
-    v68 = self;
-    v10 = [getLSApplicationWorkspaceClass() defaultWorkspace];
-    v11 = [v10 applicationsAvailableForOpeningURL:v9];
+    selfCopy = self;
+    defaultWorkspace2 = [getLSApplicationWorkspaceClass() defaultWorkspace];
+    v11 = [defaultWorkspace2 applicationsAvailableForOpeningURL:v9];
     if ([v9 _bcs_isUPIURL] && objc_msgSend(v11, "count") >= 2)
     {
       v64 = v9;
-      v66 = v10;
-      v63 = v6;
-      v12 = [MEMORY[0x277CBEB18] array];
+      v66 = defaultWorkspace2;
+      v63 = lCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
@@ -1733,9 +1733,9 @@ LABEL_23:
 
             v19 = *(*(&v72 + 1) + 8 * v18);
             v20 = objc_alloc(getLSApplicationRecordClass());
-            v21 = [v19 bundleIdentifier];
+            bundleIdentifier = [v19 bundleIdentifier];
             v71 = 0;
-            v22 = [v20 initWithBundleIdentifier:v21 allowPlaceholder:1 error:&v71];
+            v22 = [v20 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v71];
             v23 = v71;
 
             if (v23 || !v22)
@@ -1748,7 +1748,7 @@ LABEL_23:
 
             else
             {
-              [v12 addObject:v22];
+              [array addObject:v22];
             }
 
             ++v18;
@@ -1761,51 +1761,51 @@ LABEL_23:
         while (v15);
       }
 
-      if ([v12 count] < 2)
+      if ([array count] < 2)
       {
-        v27 = 0;
+        firstObject = 0;
       }
 
       else
       {
-        v24 = [(BCSURLAction *)v68 preferredBundleID];
-        v25 = [BCSAppRanker orderApplicationRecords:v12 forPreferredBundleID:v24];
-        upiApplicationRecords = v68->_upiApplicationRecords;
-        v68->_upiApplicationRecords = v25;
+        preferredBundleID = [(BCSURLAction *)selfCopy preferredBundleID];
+        v25 = [BCSAppRanker orderApplicationRecords:array forPreferredBundleID:preferredBundleID];
+        upiApplicationRecords = selfCopy->_upiApplicationRecords;
+        selfCopy->_upiApplicationRecords = v25;
 
-        v27 = [(NSArray *)v68->_upiApplicationRecords firstObject];
+        firstObject = [(NSArray *)selfCopy->_upiApplicationRecords firstObject];
       }
 
-      v6 = v63;
+      lCopy = v63;
       v9 = v64;
-      v10 = v66;
+      defaultWorkspace2 = v66;
       v11 = v62;
     }
 
     else
     {
-      v27 = 0;
+      firstObject = 0;
     }
 
-    v28 = [v11 firstObject];
-    v29 = v28;
-    if (!v27 && v28)
+    firstObject2 = [v11 firstObject];
+    v29 = firstObject2;
+    if (!firstObject && firstObject2)
     {
       v30 = v11;
-      v67 = v10;
+      v67 = defaultWorkspace2;
       v31 = objc_alloc(getLSApplicationRecordClass());
-      v32 = [v29 bundleIdentifier];
+      bundleIdentifier2 = [v29 bundleIdentifier];
       v70 = 0;
-      v33 = [v31 initWithBundleIdentifier:v32 allowPlaceholder:1 error:&v70];
+      v33 = [v31 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:1 error:&v70];
       v34 = v70;
 
       if (v34)
       {
         v65 = v9;
         v35 = objc_alloc(getLSApplicationRecordClass());
-        v36 = [v29 bundleIdentifier];
+        bundleIdentifier3 = [v29 bundleIdentifier];
         v69 = v34;
-        v27 = [v35 initWithBundleIdentifierOfSystemPlaceholder:v36 error:&v69];
+        firstObject = [v35 initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier3 error:&v69];
         v37 = v69;
 
         if (v37)
@@ -1817,7 +1817,7 @@ LABEL_23:
             [BCSURLAction _queryApplicationRecordForURL:v37 completionHandler:?];
           }
 
-          v10 = v67;
+          defaultWorkspace2 = v67;
           goto LABEL_32;
         }
 
@@ -1826,28 +1826,28 @@ LABEL_23:
 
       else
       {
-        v27 = v33;
+        firstObject = v33;
       }
 
-      v10 = v67;
+      defaultWorkspace2 = v67;
       v11 = v30;
     }
 
 LABEL_32:
-    v38 = [(BCSAction *)v68 data];
-    v39 = [v38 type];
+    data = [(BCSAction *)selfCopy data];
+    type = [data type];
 
-    if (v39 == 12 || v39 == 9)
+    if (type == 12 || type == 9)
     {
-      v40 = v27 != 0;
+      v40 = firstObject != 0;
     }
 
     else
     {
-      v40 = v27 != 0;
-      if (![v6 _bcs_hasScheme:@"airplay"] && v27)
+      v40 = firstObject != 0;
+      if (![lCopy _bcs_hasScheme:@"airplay"] && firstObject)
       {
-        if (([v10 isApplicationAvailableToOpenURL:v9 includePrivateURLSchemes:0 error:0] & 1) == 0)
+        if (([defaultWorkspace2 isApplicationAvailableToOpenURL:v9 includePrivateURLSchemes:0 error:0] & 1) == 0)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
@@ -1861,35 +1861,35 @@ LABEL_32:
       }
     }
 
-    if (v68->_deviceDataIsUnavailable)
+    if (selfCopy->_deviceDataIsUnavailable)
     {
-      if ([v27 developerType] == 1 && (objc_msgSend(v27, "applicationState"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "isRemovedSystemApp"), v41, (v42 & 1) == 0))
+      if ([firstObject developerType] == 1 && (objc_msgSend(firstObject, "applicationState"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "isRemovedSystemApp"), v41, (v42 & 1) == 0))
       {
-        v59 = v27;
-        userVisibleAppRecord = v68->_userVisibleAppRecord;
-        v68->_userVisibleAppRecord = v59;
+        v59 = firstObject;
+        userVisibleAppRecord = selfCopy->_userVisibleAppRecord;
+        selfCopy->_userVisibleAppRecord = v59;
       }
 
       else
       {
-        v43 = [(NSArray *)v68->_appLinks count];
+        v43 = [(NSArray *)selfCopy->_appLinks count];
         if (v43 == 0 && v40)
         {
-          v44 = [v27 applicationState];
-          v45 = [v44 isInstalled];
+          applicationState = [firstObject applicationState];
+          isInstalled = [applicationState isInstalled];
 
-          if (v45)
+          if (isInstalled)
           {
 LABEL_54:
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
             {
-              [BCSURLAction _queryApplicationRecordForURL:v68 completionHandler:v6];
+              [BCSURLAction _queryApplicationRecordForURL:selfCopy completionHandler:lCopy];
             }
 
 LABEL_56:
             v60 = 1;
 LABEL_60:
-            v7[2](v7, v60);
+            handlerCopy[2](handlerCopy, v60);
 
             goto LABEL_61;
           }
@@ -1903,15 +1903,15 @@ LABEL_60:
         v55 = MEMORY[0x277CBEBC0];
         userVisibleAppRecord = [v9 scheme];
         v57 = [v55 _bcs_appStoreSearchURLWithScheme:userVisibleAppRecord];
-        appStoreSearchURLForUnsupportedScheme = v68->_appStoreSearchURLForUnsupportedScheme;
-        v68->_appStoreSearchURLForUnsupportedScheme = v57;
+        appStoreSearchURLForUnsupportedScheme = selfCopy->_appStoreSearchURLForUnsupportedScheme;
+        selfCopy->_appStoreSearchURLForUnsupportedScheme = v57;
       }
 
       goto LABEL_54;
     }
 
-    objc_storeStrong(&v68->_userVisibleAppRecord, v27);
-    v46 = v68->_userVisibleAppRecord;
+    objc_storeStrong(&selfCopy->_userVisibleAppRecord, firstObject);
+    v46 = selfCopy->_userVisibleAppRecord;
     v47 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v46)
     {
@@ -1933,7 +1933,7 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v7[2](v7, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_61:
 
   v61 = *MEMORY[0x277D85DE8];
@@ -1941,19 +1941,19 @@ LABEL_61:
 
 - (id)preferredBundleID
 {
-  v2 = [(BCSAction *)self data];
+  data = [(BCSAction *)self data];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 preferredBundleID];
+    preferredBundleID = [data preferredBundleID];
   }
 
   else
   {
-    v3 = 0;
+    preferredBundleID = 0;
   }
 
-  return v3;
+  return preferredBundleID;
 }
 
 - (BOOL)_allowAppClipCodeUniversalLinkFallback
@@ -1992,58 +1992,58 @@ LABEL_8:
 
 - (id)_actionDescriptionForAppClip
 {
-  v3 = [(BCSAction *)self clipMetadataRequest];
-  v4 = [v3 getClipMetadataSynchronously];
+  clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
+  getClipMetadataSynchronously = [clipMetadataRequest getClipMetadataSynchronously];
 
-  v5 = [(BCSAction *)self detectedCode];
+  detectedCode = [(BCSAction *)self detectedCode];
 
-  if (v5)
+  if (detectedCode)
   {
-    v6 = [v4 clipName];
+    clipName = [getClipMetadataSynchronously clipName];
   }
 
   else
   {
-    if ([v4 isPoweredByThirdParty])
+    if ([getClipMetadataSynchronously isPoweredByThirdParty])
     {
       v7 = MEMORY[0x277CCACA8];
       v8 = _BCSLocalizedString(@"%@\nPowered by %@", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-      v9 = [v4 clipCaption];
-      v10 = [v4 fullAppName];
-      v11 = [v7 stringWithFormat:v8, v9, v10];
+      clipCaption = [getClipMetadataSynchronously clipCaption];
+      fullAppName = [getClipMetadataSynchronously fullAppName];
+      v11 = [v7 stringWithFormat:v8, clipCaption, fullAppName];
 
       goto LABEL_7;
     }
 
-    v6 = [v4 clipCaption];
+    clipName = [getClipMetadataSynchronously clipCaption];
   }
 
-  v11 = v6;
+  v11 = clipName;
 LABEL_7:
 
   return v11;
 }
 
-- (id)_actionDescriptionForURL:(id)a3 application:(id)a4 shouldShowHostNameForSafariURL:(BOOL)a5
+- (id)_actionDescriptionForURL:(id)l application:(id)application shouldShowHostNameForSafariURL:(BOOL)rL
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 bundleIdentifier];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
+  rLCopy = rL;
+  lCopy = l;
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier2 = [mainBundle bundleIdentifier];
 
-  v13 = [v12 isEqualToString:v10];
-  if (v5 && [v10 isEqualToString:@"com.apple.mobilesafari"])
+  v13 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
+  if (rLCopy && [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
   {
-    v14 = [v8 _bcs_displayString];
-    if ([v14 length])
+    _bcs_displayString = [lCopy _bcs_displayString];
+    if ([_bcs_displayString length])
     {
       if (v13)
       {
         v15 = MEMORY[0x277CCACA8];
-        v16 = _BCSLocalizedString(@"Open “%@”", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-        [v15 stringWithFormat:v16, v14];
+        localizedName = _BCSLocalizedString(@"Open “%@”", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+        [v15 stringWithFormat:localizedName, _bcs_displayString];
         v19 = LABEL_11:;
 LABEL_12:
 
@@ -2051,47 +2051,47 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v24 = [(BCSAction *)self clipMetadataRequest];
+      clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-      if (!v24)
+      if (!clipMetadataRequest)
       {
-        v16 = [v9 localizedName];
+        localizedName = [applicationCopy localizedName];
         v26 = MEMORY[0x277CCACA8];
         v27 = _BCSLocalizedString(@"Open “%@” in %@", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-        v19 = [v26 stringWithFormat:v27, v14, v16];
+        v19 = [v26 stringWithFormat:v27, _bcs_displayString, localizedName];
 
         goto LABEL_12;
       }
 
-      v22 = [(BCSURLAction *)self _actionDescriptionForAppClip];
+      _actionDescriptionForAppClip = [(BCSURLAction *)self _actionDescriptionForAppClip];
 LABEL_24:
-      v19 = v22;
+      v19 = _actionDescriptionForAppClip;
       goto LABEL_13;
     }
   }
 
-  if (([v10 isEqualToString:@"com.apple.AppStore"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"com.apple.MobileStore"))
+  if (([bundleIdentifier isEqualToString:@"com.apple.AppStore"] & 1) != 0 || objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.MobileStore"))
   {
     v17 = MEMORY[0x277CCACA8];
     v18 = @"View in %@";
 LABEL_10:
-    v14 = _BCSLocalizedString(v18, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-    v16 = [v9 localizedName];
-    [v17 stringWithFormat:v14, v16];
+    _bcs_displayString = _BCSLocalizedString(v18, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    localizedName = [applicationCopy localizedName];
+    [v17 stringWithFormat:_bcs_displayString, localizedName];
     goto LABEL_11;
   }
 
   if (v13)
   {
     v21 = MEMORY[0x277CCACA8];
-    v14 = _BCSLocalizedString(@"Open", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-    v22 = [v21 stringWithFormat:v14];
+    _bcs_displayString = _BCSLocalizedString(@"Open", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    _actionDescriptionForAppClip = [v21 stringWithFormat:_bcs_displayString];
     goto LABEL_24;
   }
 
-  if ([v8 _bcs_isOtpauthURL])
+  if ([lCopy _bcs_isOtpauthURL])
   {
-    if (![v10 isEqualToString:@"com.apple.Preferences"])
+    if (![bundleIdentifier isEqualToString:@"com.apple.Preferences"])
     {
       v17 = MEMORY[0x277CCACA8];
       v18 = @"Add Verification Code in “%@”";
@@ -2102,9 +2102,9 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  if ([v8 _bcs_isOtpauthMigrationURL])
+  if ([lCopy _bcs_isOtpauthMigrationURL])
   {
-    if (![v10 isEqualToString:@"com.apple.Preferences"])
+    if (![bundleIdentifier isEqualToString:@"com.apple.Preferences"])
     {
       v17 = MEMORY[0x277CCACA8];
       v18 = @"Add Verification Codes in “%@”";
@@ -2113,36 +2113,36 @@ LABEL_10:
 
     v23 = @"Add Verification Codes in Passwords";
 LABEL_28:
-    v25 = _BCSLocalizedString(v23, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    localizedName2 = _BCSLocalizedString(v23, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
     goto LABEL_33;
   }
 
   v28 = [(BCSURLAction *)self url];
-  v29 = [v28 _bcs_isUPIURL];
+  _bcs_isUPIURL = [v28 _bcs_isUPIURL];
 
-  if (!v29)
+  if (!_bcs_isUPIURL)
   {
     v17 = MEMORY[0x277CCACA8];
     v18 = @"Open in %@";
     goto LABEL_10;
   }
 
-  v25 = [v9 localizedName];
+  localizedName2 = [applicationCopy localizedName];
 LABEL_33:
-  v19 = v25;
+  v19 = localizedName2;
 LABEL_14:
 
   return v19;
 }
 
-- (id)_actionDescriptionWithoutTargetApplicationForURL:(id)a3
+- (id)_actionDescriptionWithoutTargetApplicationForURL:(id)l
 {
-  v3 = [a3 _bcs_displayString];
-  if ([v3 length])
+  _bcs_displayString = [l _bcs_displayString];
+  if ([_bcs_displayString length])
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = _BCSLocalizedString(@"Open “%@” link", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-    v6 = [v4 stringWithFormat:v5, v3];
+    v6 = [v4 stringWithFormat:v5, _bcs_displayString];
   }
 
   else
@@ -2153,15 +2153,15 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)_shouldOpenInAppForAppLink:(id)a3
+- (BOOL)_shouldOpenInAppForAppLink:(id)link
 {
-  v3 = [a3 openStrategy];
-  if (v3 == 2)
+  openStrategy = [link openStrategy];
+  if (openStrategy == 2)
   {
     return 1;
   }
 
-  if (v3 == 1)
+  if (openStrategy == 1)
   {
     return _bcs_isCurrentProcessSafari() ^ 1;
   }
@@ -2169,31 +2169,31 @@ LABEL_14:
   return 0;
 }
 
-- (BOOL)_shouldBlockHandlingURL:(id)a3
+- (BOOL)_shouldBlockHandlingURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [l scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"data"];
-  return v3;
+  LOBYTE(scheme) = [lowercaseString isEqualToString:@"data"];
+  return scheme;
 }
 
 - (BOOL)_isCodeFromQRScanner
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v5 = ([v4 isEqualToString:@"com.apple.BarcodeScanner"] & 1) != 0 || -[BCSURLAction _isVisualCode](self, "_isVisualCode");
+  v5 = ([bundleIdentifier isEqualToString:@"com.apple.BarcodeScanner"] & 1) != 0 || -[BCSURLAction _isVisualCode](self, "_isVisualCode");
   return v5;
 }
 
 - (BOOL)_isVisualCode
 {
-  v2 = [(BCSAction *)self codePayload];
-  v3 = v2;
-  if (v2)
+  codePayload = [(BCSAction *)self codePayload];
+  v3 = codePayload;
+  if (codePayload)
   {
-    v4 = [v2 codeType] == 1 || objc_msgSend(v3, "codeType") == 3;
+    v4 = [codePayload codeType] == 1 || objc_msgSend(v3, "codeType") == 3;
   }
 
   else
@@ -2207,11 +2207,11 @@ LABEL_14:
 - (BOOL)isAMSAction
 {
   v2 = [(BCSURLAction *)self url];
-  v3 = [v2 host];
-  v4 = [&unk_28539D448 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  host = [v2 host];
+  v4 = [&unk_28539D448 objectForKeyedSubscript:host];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)contentPreviewString
@@ -2219,43 +2219,43 @@ LABEL_14:
   if ([(BCSURLAction *)self _willOpenInSafari])
   {
     v3 = [(BCSURLAction *)self url];
-    v4 = [v3 absoluteString];
+    absoluteString = [v3 absoluteString];
   }
 
   else
   {
-    v5 = [(BCSAction *)self clipMetadataRequest];
+    clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-    if (v5)
+    if (clipMetadataRequest)
     {
-      v4 = 0;
+      absoluteString = 0;
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = BCSURLAction;
-      v4 = [(BCSAction *)&v7 contentPreviewString];
+      absoluteString = [(BCSAction *)&v7 contentPreviewString];
     }
   }
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)_menuElementForActionPicker:(id)a3
+- (id)_menuElementForActionPicker:(id)picker
 {
-  v3 = a3;
+  pickerCopy = picker;
   UIActionClass = getUIActionClass();
-  v5 = [v3 label];
-  v6 = [v3 icon];
-  v7 = [v3 label];
+  label = [pickerCopy label];
+  icon = [pickerCopy icon];
+  label2 = [pickerCopy label];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__BCSURLAction__menuElementForActionPicker___block_invoke;
   v11[3] = &unk_278CFE810;
-  v12 = v3;
-  v8 = v3;
-  v9 = [UIActionClass actionWithTitle:v5 image:v6 identifier:v7 handler:v11];
+  v12 = pickerCopy;
+  v8 = pickerCopy;
+  v9 = [UIActionClass actionWithTitle:label image:icon identifier:label2 handler:v11];
 
   return v9;
 }
@@ -2263,8 +2263,8 @@ LABEL_14:
 - (id)menuElements
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v3 = [(BCSAction *)self detectedCode];
-  if (v3 && (v4 = v3, -[BCSURLAction url](self, "url"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _bcs_isUPIURL], v5, v4, v6))
+  detectedCode = [(BCSAction *)self detectedCode];
+  if (detectedCode && (v4 = detectedCode, -[BCSURLAction url](self, "url"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _bcs_isUPIURL], v5, v4, v6))
   {
     v7 = [BCSCopyActionPickerItem alloc];
     v8 = [(BCSURLAction *)self url];
@@ -2280,29 +2280,29 @@ LABEL_14:
     v14 = [getUIMenuClass() menuWithTitle:&stru_2853953A0 image:0 identifier:0 options:1 children:v13];
     v20.receiver = self;
     v20.super_class = BCSURLAction;
-    v15 = [(BCSAction *)&v20 menuElements];
-    v16 = [v15 arrayByAddingObject:v14];
+    menuElements = [(BCSAction *)&v20 menuElements];
+    menuElements2 = [menuElements arrayByAddingObject:v14];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = BCSURLAction;
-    v16 = [(BCSAction *)&v19 menuElements];
+    menuElements2 = [(BCSAction *)&v19 menuElements];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return menuElements2;
 }
 
 - (unint64_t)menuElementsCount
 {
-  v3 = [(BCSAction *)self detectedCode];
-  if (v3 && (v4 = v3, -[BCSURLAction url](self, "url"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _bcs_isUPIURL], v5, v4, v6))
+  detectedCode = [(BCSAction *)self detectedCode];
+  if (detectedCode && (v4 = detectedCode, -[BCSURLAction url](self, "url"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _bcs_isUPIURL], v5, v4, v6))
   {
-    v7 = [(BCSURLAction *)self menuElements];
-    v8 = [v7 count];
+    menuElements = [(BCSURLAction *)self menuElements];
+    v8 = [menuElements count];
 
     return v8;
   }
@@ -2328,8 +2328,8 @@ LABEL_14:
 - (void)shortDescription
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 targetApplication];
-  v2 = [v1 bundleIdentifier];
+  targetApplication = [self targetApplication];
+  bundleIdentifier = [targetApplication bundleIdentifier];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_3();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -2339,9 +2339,9 @@ LABEL_14:
 
 - (void)_appclipLaunchReason
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCPSSessionLaunchReasonNFC(void)"];
-  [v0 handleFailureInFunction:v1 file:@"BCSURLAction.m" lineNumber:88 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"BCSURLAction.m" lineNumber:88 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

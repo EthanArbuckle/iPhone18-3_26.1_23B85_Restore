@@ -1,57 +1,57 @@
 @interface CPSEntityViewController
-- (BOOL)entityContentViewController:(id)a3 didPressButton:(id)a4 forEntity:(id)a5;
-- (BOOL)entityContentViewController:(id)a3 didPressButton:(id)a4 forPOI:(id)a5;
-- (BOOL)entityContentViewController:(id)a3 didSelectPointOfInterestWithIdentifier:(id)a4;
-- (BOOL)entityContentViewController:(id)a3 regionDidChange:(id *)a4;
-- (CPSEntityViewController)initWithEntityTemplate:(id)a3 templateDelegate:(id)a4 templateEnvironment:(id)a5;
+- (BOOL)entityContentViewController:(id)controller didPressButton:(id)button forEntity:(id)entity;
+- (BOOL)entityContentViewController:(id)controller didPressButton:(id)button forPOI:(id)i;
+- (BOOL)entityContentViewController:(id)controller didSelectPointOfInterestWithIdentifier:(id)identifier;
+- (BOOL)entityContentViewController:(id)controller regionDidChange:(id *)change;
+- (CPSEntityViewController)initWithEntityTemplate:(id)template templateDelegate:(id)delegate templateEnvironment:(id)environment;
 - (id)entityTemplate;
 - (id)entityTemplateDelegate;
 - (void)_viewDidLoad;
 - (void)setupViewControllers;
-- (void)trailingBarButtonPressed:(id)a3;
-- (void)updateEntityTemplate:(id)a3 withProxyDelegate:(id)a4;
+- (void)trailingBarButtonPressed:(id)pressed;
+- (void)updateEntityTemplate:(id)template withProxyDelegate:(id)delegate;
 @end
 
 @implementation CPSEntityViewController
 
-- (CPSEntityViewController)initWithEntityTemplate:(id)a3 templateDelegate:(id)a4 templateEnvironment:(id)a5
+- (CPSEntityViewController)initWithEntityTemplate:(id)template templateDelegate:(id)delegate templateEnvironment:(id)environment
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, delegate);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v5 = v28;
-  v28 = 0;
+  objc_storeStrong(&v25, environment);
+  v5 = selfCopy;
+  selfCopy = 0;
   v24.receiver = v5;
   v24.super_class = CPSEntityViewController;
   v23 = [(CPSBaseTemplateViewController *)&v24 initWithTemplate:location[0] templateDelegate:v26 templateEnvironment:v25];
-  v28 = v23;
-  objc_storeStrong(&v28, v23);
+  selfCopy = v23;
+  objc_storeStrong(&selfCopy, v23);
   if (v23)
   {
-    v6 = [location[0] entity];
-    entity = v28->_entity;
-    v28->_entity = v6;
+    entity = [location[0] entity];
+    entity = selfCopy->_entity;
+    selfCopy->_entity = entity;
     v8 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:517 valueOptions:MEMORY[0x277D82BD8](entity).n128_f64[0]];
-    buttonMap = v28->_buttonMap;
-    v28->_buttonMap = v8;
+    buttonMap = selfCopy->_buttonMap;
+    selfCopy->_buttonMap = v8;
     MEMORY[0x277D82BD8](buttonMap);
     v10 = [CPSEntityResourceProvider alloc];
-    v11 = [(CPSEntityResourceProvider *)v10 initWithTemplateEnvironment:v25 entityTemplate:location[0] templateDelegate:v26 actionDelegate:v28];
-    resourceProvider = v28->_resourceProvider;
-    v28->_resourceProvider = v11;
+    v11 = [(CPSEntityResourceProvider *)v10 initWithTemplateEnvironment:v25 entityTemplate:location[0] templateDelegate:v26 actionDelegate:selfCopy];
+    resourceProvider = selfCopy->_resourceProvider;
+    selfCopy->_resourceProvider = v11;
     MEMORY[0x277D82BD8](resourceProvider);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v13 = [CPSContactEntityViewController alloc];
-      v14 = [(CPSContactEntityViewController *)v13 initWithEntity:v28->_entity resourceProvider:v28->_resourceProvider];
-      contentViewController = v28->_contentViewController;
-      v28->_contentViewController = v14;
+      v14 = [(CPSContactEntityViewController *)v13 initWithEntity:selfCopy->_entity resourceProvider:selfCopy->_resourceProvider];
+      contentViewController = selfCopy->_contentViewController;
+      selfCopy->_contentViewController = v14;
       MEMORY[0x277D82BD8](contentViewController);
     }
 
@@ -61,276 +61,276 @@
       if (objc_opt_isKindOfClass())
       {
         v16 = [CPSPointsOfInterestEntityViewController alloc];
-        v17 = [(CPSPointsOfInterestEntityViewController *)v16 initWithEntity:v28->_entity resourceProvider:v28->_resourceProvider];
-        v18 = v28->_contentViewController;
-        v28->_contentViewController = v17;
+        v17 = [(CPSPointsOfInterestEntityViewController *)v16 initWithEntity:selfCopy->_entity resourceProvider:selfCopy->_resourceProvider];
+        v18 = selfCopy->_contentViewController;
+        selfCopy->_contentViewController = v17;
         MEMORY[0x277D82BD8](v18);
       }
     }
   }
 
-  v20 = MEMORY[0x277D82BE0](v28);
+  v20 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v20;
 }
 
 - (id)entityTemplate
 {
   v3 = objc_opt_class();
-  v4 = [(CPSBaseTemplateViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_15(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSBaseTemplateViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_15(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
 
 - (id)entityTemplateDelegate
 {
-  v3 = [(CPSBaseTemplateViewController *)self templateDelegate];
-  v4 = CPSSafeProtocolCast_2(&unk_285632A28, v3);
-  MEMORY[0x277D82BD8](v3);
+  templateDelegate = [(CPSBaseTemplateViewController *)self templateDelegate];
+  v4 = CPSSafeProtocolCast_2(&unk_285632A28, templateDelegate);
+  MEMORY[0x277D82BD8](templateDelegate);
 
   return v4;
 }
 
 - (void)_viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSEntityViewController;
   [(CPSBaseTemplateViewController *)&v2 _viewDidLoad];
-  [(CPSEntityViewController *)v4 setupViewControllers];
+  [(CPSEntityViewController *)selfCopy setupViewControllers];
 }
 
 - (void)setupViewControllers
 {
   v78[4] = *MEMORY[0x277D85DE8];
-  v76 = self;
+  selfCopy = self;
   v75[1] = a2;
   if (_UISolariumEnabled())
   {
-    v74 = [MEMORY[0x277D75348] clearColor];
-    v73 = [(CPSEntityViewController *)v76 view];
-    [v73 setBackgroundColor:v74];
-    MEMORY[0x277D82BD8](v73);
-    v2 = MEMORY[0x277D82BD8](v74).n128_u64[0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    view = [(CPSEntityViewController *)selfCopy view];
+    [view setBackgroundColor:clearColor];
+    MEMORY[0x277D82BD8](view);
+    v2 = MEMORY[0x277D82BD8](clearColor).n128_u64[0];
   }
 
   else
   {
-    v72 = [MEMORY[0x277D75348] tableBackgroundColor];
-    v71 = [(CPSEntityViewController *)v76 view];
-    [v71 setBackgroundColor:v72];
-    MEMORY[0x277D82BD8](v71);
-    v2 = MEMORY[0x277D82BD8](v72).n128_u64[0];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    view2 = [(CPSEntityViewController *)selfCopy view];
+    [view2 setBackgroundColor:tableBackgroundColor];
+    MEMORY[0x277D82BD8](view2);
+    v2 = MEMORY[0x277D82BD8](tableBackgroundColor).n128_u64[0];
   }
 
-  v62 = [(CPSEntityViewController *)v76 contentViewController];
-  v61 = [(CPSBaseEntityContentViewController *)v62 view];
-  [v61 setTranslatesAutoresizingMaskIntoConstraints:0];
-  MEMORY[0x277D82BD8](v61);
-  v63 = [(CPSEntityViewController *)v76 contentViewController];
-  [(CPSBaseEntityContentViewController *)v63 willMoveToParentViewController:v76];
-  v64 = [(CPSEntityViewController *)v76 contentViewController];
-  [(CPSEntityViewController *)v76 addChildViewController:?];
-  v67 = [(CPSEntityViewController *)v76 view];
-  v66 = [(CPSEntityViewController *)v76 contentViewController];
-  v65 = [(CPSBaseEntityContentViewController *)v66 view];
-  [v67 addSubview:?];
-  MEMORY[0x277D82BD8](v65);
-  MEMORY[0x277D82BD8](v66);
-  v68 = [(CPSEntityViewController *)v76 contentViewController];
-  [(CPSBaseEntityContentViewController *)v68 didMoveToParentViewController:v76];
+  contentViewController = [(CPSEntityViewController *)selfCopy contentViewController];
+  view3 = [(CPSBaseEntityContentViewController *)contentViewController view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  MEMORY[0x277D82BD8](view3);
+  contentViewController2 = [(CPSEntityViewController *)selfCopy contentViewController];
+  [(CPSBaseEntityContentViewController *)contentViewController2 willMoveToParentViewController:selfCopy];
+  contentViewController3 = [(CPSEntityViewController *)selfCopy contentViewController];
+  [(CPSEntityViewController *)selfCopy addChildViewController:?];
+  view4 = [(CPSEntityViewController *)selfCopy view];
+  contentViewController4 = [(CPSEntityViewController *)selfCopy contentViewController];
+  view5 = [(CPSBaseEntityContentViewController *)contentViewController4 view];
+  [view4 addSubview:?];
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](contentViewController4);
+  contentViewController5 = [(CPSEntityViewController *)selfCopy contentViewController];
+  [(CPSBaseEntityContentViewController *)contentViewController5 didMoveToParentViewController:selfCopy];
   v75[0] = 0;
-  v69 = [(CPSEntityViewController *)v76 contentViewController];
-  v70 = [(CPSBaseEntityContentViewController *)v69 shouldAppearInUnsafeArea];
-  *&v3 = MEMORY[0x277D82BD8](v69).n128_u64[0];
-  if (v70)
+  contentViewController6 = [(CPSEntityViewController *)selfCopy contentViewController];
+  shouldAppearInUnsafeArea = [(CPSBaseEntityContentViewController *)contentViewController6 shouldAppearInUnsafeArea];
+  *&v3 = MEMORY[0x277D82BD8](contentViewController6).n128_u64[0];
+  if (shouldAppearInUnsafeArea)
   {
-    v60 = [(CPSEntityViewController *)v76 contentViewController];
-    v59 = [(CPSBaseEntityContentViewController *)v60 view];
-    v58 = [v59 topAnchor];
-    v57 = [(CPSEntityViewController *)v76 view];
-    v56 = [v57 topAnchor];
-    v55 = [v58 constraintEqualToAnchor:?];
+    contentViewController7 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view6 = [(CPSBaseEntityContentViewController *)contentViewController7 view];
+    topAnchor = [view6 topAnchor];
+    view7 = [(CPSEntityViewController *)selfCopy view];
+    topAnchor2 = [view7 topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:?];
     v78[0] = v55;
-    v54 = [(CPSEntityViewController *)v76 contentViewController];
-    v53 = [(CPSBaseEntityContentViewController *)v54 view];
-    v52 = [v53 bottomAnchor];
-    v51 = [(CPSEntityViewController *)v76 view];
-    v50 = [v51 bottomAnchor];
-    v49 = [v52 constraintEqualToAnchor:?];
+    contentViewController8 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view8 = [(CPSBaseEntityContentViewController *)contentViewController8 view];
+    bottomAnchor = [view8 bottomAnchor];
+    view9 = [(CPSEntityViewController *)selfCopy view];
+    bottomAnchor2 = [view9 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:?];
     v78[1] = v49;
-    v48 = [(CPSEntityViewController *)v76 contentViewController];
-    v47 = [(CPSBaseEntityContentViewController *)v48 view];
-    v46 = [v47 leftAnchor];
-    v45 = [(CPSEntityViewController *)v76 view];
-    v44 = [v45 leftAnchor];
-    v43 = [v46 constraintEqualToAnchor:?];
+    contentViewController9 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view10 = [(CPSBaseEntityContentViewController *)contentViewController9 view];
+    leftAnchor = [view10 leftAnchor];
+    view11 = [(CPSEntityViewController *)selfCopy view];
+    leftAnchor2 = [view11 leftAnchor];
+    v43 = [leftAnchor constraintEqualToAnchor:?];
     v78[2] = v43;
-    v42 = [(CPSEntityViewController *)v76 contentViewController];
-    v41 = [(CPSBaseEntityContentViewController *)v42 view];
-    v40 = [v41 rightAnchor];
-    v39 = [(CPSEntityViewController *)v76 view];
-    v38 = [v39 rightAnchor];
-    v37 = [v40 constraintEqualToAnchor:?];
+    contentViewController10 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view12 = [(CPSBaseEntityContentViewController *)contentViewController10 view];
+    rightAnchor = [view12 rightAnchor];
+    view13 = [(CPSEntityViewController *)selfCopy view];
+    rightAnchor2 = [view13 rightAnchor];
+    v37 = [rightAnchor constraintEqualToAnchor:?];
     v78[3] = v37;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:4];
     v5 = v75[0];
     v75[0] = v4;
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](view13);
+    MEMORY[0x277D82BD8](rightAnchor);
+    MEMORY[0x277D82BD8](view12);
+    MEMORY[0x277D82BD8](contentViewController10);
     MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
-    MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](view11);
+    MEMORY[0x277D82BD8](leftAnchor);
+    MEMORY[0x277D82BD8](view10);
+    MEMORY[0x277D82BD8](contentViewController9);
     MEMORY[0x277D82BD8](v49);
-    MEMORY[0x277D82BD8](v50);
-    MEMORY[0x277D82BD8](v51);
-    MEMORY[0x277D82BD8](v52);
-    MEMORY[0x277D82BD8](v53);
-    MEMORY[0x277D82BD8](v54);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](view9);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](view8);
+    MEMORY[0x277D82BD8](contentViewController8);
     MEMORY[0x277D82BD8](v55);
-    MEMORY[0x277D82BD8](v56);
-    MEMORY[0x277D82BD8](v57);
-    MEMORY[0x277D82BD8](v58);
-    MEMORY[0x277D82BD8](v59);
-    v6 = MEMORY[0x277D82BD8](v60).n128_u64[0];
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](view7);
+    MEMORY[0x277D82BD8](topAnchor);
+    MEMORY[0x277D82BD8](view6);
+    v6 = MEMORY[0x277D82BD8](contentViewController7).n128_u64[0];
   }
 
   else
   {
-    v36 = [(CPSEntityViewController *)v76 contentViewController];
-    v35 = [(CPSBaseEntityContentViewController *)v36 view];
-    v34 = [v35 topAnchor];
-    v33 = [(CPSEntityViewController *)v76 view];
-    v32 = [v33 safeAreaLayoutGuide];
-    v31 = [v32 topAnchor];
-    v30 = [v34 constraintEqualToAnchor:?];
+    contentViewController11 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view14 = [(CPSBaseEntityContentViewController *)contentViewController11 view];
+    topAnchor3 = [view14 topAnchor];
+    view15 = [(CPSEntityViewController *)selfCopy view];
+    safeAreaLayoutGuide = [view15 safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide topAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:?];
     v77[0] = v30;
-    v29 = [(CPSEntityViewController *)v76 contentViewController];
-    v28 = [(CPSBaseEntityContentViewController *)v29 view];
-    v27 = [v28 bottomAnchor];
-    v26 = [(CPSEntityViewController *)v76 view];
-    v25 = [v26 safeAreaLayoutGuide];
-    v24 = [v25 bottomAnchor];
-    v23 = [v27 constraintEqualToAnchor:?];
+    contentViewController12 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view16 = [(CPSBaseEntityContentViewController *)contentViewController12 view];
+    bottomAnchor3 = [view16 bottomAnchor];
+    view17 = [(CPSEntityViewController *)selfCopy view];
+    safeAreaLayoutGuide2 = [view17 safeAreaLayoutGuide];
+    bottomAnchor4 = [safeAreaLayoutGuide2 bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:?];
     v77[1] = v23;
-    v22 = [(CPSEntityViewController *)v76 contentViewController];
-    v21 = [(CPSBaseEntityContentViewController *)v22 view];
-    v20 = [v21 leftAnchor];
-    v19 = [(CPSEntityViewController *)v76 view];
-    v18 = [v19 safeAreaLayoutGuide];
-    v17 = [v18 leftAnchor];
-    v16 = [v20 constraintEqualToAnchor:?];
+    contentViewController13 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view18 = [(CPSBaseEntityContentViewController *)contentViewController13 view];
+    leftAnchor3 = [view18 leftAnchor];
+    view19 = [(CPSEntityViewController *)selfCopy view];
+    safeAreaLayoutGuide3 = [view19 safeAreaLayoutGuide];
+    leftAnchor4 = [safeAreaLayoutGuide3 leftAnchor];
+    v16 = [leftAnchor3 constraintEqualToAnchor:?];
     v77[2] = v16;
-    v15 = [(CPSEntityViewController *)v76 contentViewController];
-    v14 = [(CPSBaseEntityContentViewController *)v15 view];
-    v13 = [v14 rightAnchor];
-    v12 = [(CPSEntityViewController *)v76 view];
-    v11 = [v12 safeAreaLayoutGuide];
-    v10 = [v11 rightAnchor];
-    v9 = [v13 constraintEqualToAnchor:?];
+    contentViewController14 = [(CPSEntityViewController *)selfCopy contentViewController];
+    view20 = [(CPSBaseEntityContentViewController *)contentViewController14 view];
+    rightAnchor3 = [view20 rightAnchor];
+    view21 = [(CPSEntityViewController *)selfCopy view];
+    safeAreaLayoutGuide4 = [view21 safeAreaLayoutGuide];
+    rightAnchor4 = [safeAreaLayoutGuide4 rightAnchor];
+    v9 = [rightAnchor3 constraintEqualToAnchor:?];
     v77[3] = v9;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:4];
     v8 = v75[0];
     v75[0] = v7;
     MEMORY[0x277D82BD8](v8);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](rightAnchor4);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+    MEMORY[0x277D82BD8](view21);
+    MEMORY[0x277D82BD8](rightAnchor3);
+    MEMORY[0x277D82BD8](view20);
+    MEMORY[0x277D82BD8](contentViewController14);
     MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](leftAnchor4);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+    MEMORY[0x277D82BD8](view19);
+    MEMORY[0x277D82BD8](leftAnchor3);
+    MEMORY[0x277D82BD8](view18);
+    MEMORY[0x277D82BD8](contentViewController13);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](bottomAnchor4);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+    MEMORY[0x277D82BD8](view17);
+    MEMORY[0x277D82BD8](bottomAnchor3);
+    MEMORY[0x277D82BD8](view16);
+    MEMORY[0x277D82BD8](contentViewController12);
     MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
-    MEMORY[0x277D82BD8](v32);
-    MEMORY[0x277D82BD8](v33);
-    MEMORY[0x277D82BD8](v34);
-    MEMORY[0x277D82BD8](v35);
-    v6 = MEMORY[0x277D82BD8](v36).n128_u64[0];
+    MEMORY[0x277D82BD8](topAnchor4);
+    MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+    MEMORY[0x277D82BD8](view15);
+    MEMORY[0x277D82BD8](topAnchor3);
+    MEMORY[0x277D82BD8](view14);
+    v6 = MEMORY[0x277D82BD8](contentViewController11).n128_u64[0];
   }
 
   [MEMORY[0x277CCAAD0] activateConstraints:{v75[0], *&v6}];
   objc_storeStrong(v75, 0);
 }
 
-- (void)trailingBarButtonPressed:(id)a3
+- (void)trailingBarButtonPressed:(id)pressed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(CPSEntityViewController *)v12 buttonMap];
-  v10 = [(NSMapTable *)v7 objectForKey:location[0]];
-  v9 = [v10 identifier];
+  objc_storeStrong(location, pressed);
+  buttonMap = [(CPSEntityViewController *)selfCopy buttonMap];
+  v10 = [(NSMapTable *)buttonMap objectForKey:location[0]];
+  identifier = [v10 identifier];
   oslog = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v13, v12, v9);
+    __os_log_helper_16_2_2_8_64_8_64(v13, selfCopy, identifier);
     _os_log_debug_impl(&dword_242FE8000, oslog, OS_LOG_TYPE_DEBUG, "%@: entity button selected with UUID: %@", v13, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(CPSBaseTemplateViewController *)v12 templateDelegate];
-  v6 = [(CPTemplateDelegate *)v5 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  templateDelegate = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+  v6 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSBaseTemplateViewController *)v12 templateDelegate];
-    [(CPTemplateDelegate *)v4 handleActionForControlIdentifier:v9];
-    MEMORY[0x277D82BD8](v4);
+    templateDelegate2 = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+    [(CPTemplateDelegate *)templateDelegate2 handleActionForControlIdentifier:identifier];
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)entityContentViewController:(id)a3 didPressButton:(id)a4 forEntity:(id)a5
+- (BOOL)entityContentViewController:(id)controller didPressButton:(id)button forEntity:(id)entity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, button);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
-  v27 = [v29 identifier];
+  objc_storeStrong(&v28, entity);
+  identifier = [v29 identifier];
   v26 = CarPlaySupportGeneralLogging();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v33, v31, v27);
+    __os_log_helper_16_2_2_8_64_8_64(v33, selfCopy, identifier);
     _os_log_debug_impl(&dword_242FE8000, v26, v25, "%@: entity button selected with UUID: %@", v33, 0x16u);
   }
 
@@ -340,7 +340,7 @@
   isKindOfClass = 0;
   if (objc_opt_isKindOfClass())
   {
-    v24 = [(CPSEntityViewController *)v31 entity];
+    entity = [(CPSEntityViewController *)selfCopy entity];
     v23 = 1;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -348,94 +348,94 @@
 
   if (v23)
   {
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](entity);
   }
 
   if (isKindOfClass)
   {
     v22 = MEMORY[0x277D82BE0](v29);
-    v21 = [(CPSEntityViewController *)v31 entity];
+    entity2 = [(CPSEntityViewController *)selfCopy entity];
     v11 = MEMORY[0x277D551E0];
-    v15 = [(CPSBaseTemplateViewController *)v31 templateEnvironment];
-    v14 = [(CPSTemplateEnvironment *)v15 bundleIdentifier];
-    v13 = [(CPEntity *)v21 name];
-    v12 = [v22 phoneOrEmail];
-    v20 = [v11 messageComposeNewThreadDirectActionWithAppBundleId:v14 fullName:v13 phoneOrEmailAddress:?];
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    *&v5 = MEMORY[0x277D82BD8](v15).n128_u64[0];
-    v16 = [(CPSBaseTemplateViewController *)v31 viewControllerDelegate];
-    [(CPSTemplateViewControllerDelegate *)v16 templateViewController:v31 shouldActivateSiriWithDirectActionContext:v20];
-    MEMORY[0x277D82BD8](v16);
+    templateEnvironment = [(CPSBaseTemplateViewController *)selfCopy templateEnvironment];
+    bundleIdentifier = [(CPSTemplateEnvironment *)templateEnvironment bundleIdentifier];
+    name = [(CPEntity *)entity2 name];
+    phoneOrEmail = [v22 phoneOrEmail];
+    v20 = [v11 messageComposeNewThreadDirectActionWithAppBundleId:bundleIdentifier fullName:name phoneOrEmailAddress:?];
+    MEMORY[0x277D82BD8](phoneOrEmail);
+    MEMORY[0x277D82BD8](name);
+    MEMORY[0x277D82BD8](bundleIdentifier);
+    *&v5 = MEMORY[0x277D82BD8](templateEnvironment).n128_u64[0];
+    viewControllerDelegate = [(CPSBaseTemplateViewController *)selfCopy viewControllerDelegate];
+    [(CPSTemplateViewControllerDelegate *)viewControllerDelegate templateViewController:selfCopy shouldActivateSiriWithDirectActionContext:v20];
+    MEMORY[0x277D82BD8](viewControllerDelegate);
     v32 = 1;
     objc_storeStrong(&v20, 0);
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&entity2, 0);
     objc_storeStrong(&v22, 0);
   }
 
   else
   {
-    v9 = [(CPSBaseTemplateViewController *)v31 templateDelegate];
-    v10 = [(CPTemplateDelegate *)v9 conformsToProtocol:&unk_28562C040];
-    *&v6 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    templateDelegate = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+    v10 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+    *&v6 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
     if (v10)
     {
-      v8 = [(CPSBaseTemplateViewController *)v31 templateDelegate];
-      [(CPTemplateDelegate *)v8 handleActionForControlIdentifier:v27];
-      MEMORY[0x277D82BD8](v8);
+      templateDelegate2 = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+      [(CPTemplateDelegate *)templateDelegate2 handleActionForControlIdentifier:identifier];
+      MEMORY[0x277D82BD8](templateDelegate2);
     }
 
     v32 = 1;
   }
 
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(location, 0);
   return v32 & 1;
 }
 
-- (BOOL)entityContentViewController:(id)a3 regionDidChange:(id *)a4
+- (BOOL)entityContentViewController:(id)controller regionDidChange:(id *)change
 {
   v15 = v4;
   v16 = v5;
   v17 = v6;
   v18 = v7;
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(CPSEntityViewController *)v14 entityTemplateDelegate];
-  v12 = [v11 conformsToProtocol:&unk_285632A28];
-  *&v8 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  objc_storeStrong(location, controller);
+  entityTemplateDelegate = [(CPSEntityViewController *)selfCopy entityTemplateDelegate];
+  v12 = [entityTemplateDelegate conformsToProtocol:&unk_285632A28];
+  *&v8 = MEMORY[0x277D82BD8](entityTemplateDelegate).n128_u64[0];
   if (v12)
   {
-    v10 = [(CPSEntityViewController *)v14 entityTemplateDelegate];
-    [v10 handleMapRegionDidChange:{v15, v16, v17, v18}];
-    MEMORY[0x277D82BD8](v10);
+    entityTemplateDelegate2 = [(CPSEntityViewController *)selfCopy entityTemplateDelegate];
+    [entityTemplateDelegate2 handleMapRegionDidChange:{v15, v16, v17, v18}];
+    MEMORY[0x277D82BD8](entityTemplateDelegate2);
   }
 
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (BOOL)entityContentViewController:(id)a3 didSelectPointOfInterestWithIdentifier:(id)a4
+- (BOOL)entityContentViewController:(id)controller didSelectPointOfInterestWithIdentifier:(id)identifier
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v8 = [(CPSEntityViewController *)v12 entityTemplateDelegate];
-  v9 = [v8 conformsToProtocol:&unk_285632A28];
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  objc_storeStrong(&v10, identifier);
+  entityTemplateDelegate = [(CPSEntityViewController *)selfCopy entityTemplateDelegate];
+  v9 = [entityTemplateDelegate conformsToProtocol:&unk_285632A28];
+  *&v4 = MEMORY[0x277D82BD8](entityTemplateDelegate).n128_u64[0];
   if (v9)
   {
-    v6 = [(CPSEntityViewController *)v12 entityTemplateDelegate];
-    [v6 handleDidSelectPointOfInterestWithIdentifier:v10];
-    MEMORY[0x277D82BD8](v6);
+    entityTemplateDelegate2 = [(CPSEntityViewController *)selfCopy entityTemplateDelegate];
+    [entityTemplateDelegate2 handleDidSelectPointOfInterestWithIdentifier:v10];
+    MEMORY[0x277D82BD8](entityTemplateDelegate2);
   }
 
   objc_storeStrong(&v10, 0);
@@ -443,51 +443,51 @@
   return 1;
 }
 
-- (BOOL)entityContentViewController:(id)a3 didPressButton:(id)a4 forPOI:(id)a5
+- (BOOL)entityContentViewController:(id)controller didPressButton:(id)button forPOI:(id)i
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, button);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v13 = [v15 identifier];
+  objc_storeStrong(&v14, i);
+  identifier = [v15 identifier];
   oslog = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v18, v17, v13);
+    __os_log_helper_16_2_2_8_64_8_64(v18, selfCopy, identifier);
     _os_log_debug_impl(&dword_242FE8000, oslog, OS_LOG_TYPE_DEBUG, "%@: POI button selected with UUID: %@", v18, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v8 = [(CPSBaseTemplateViewController *)v17 templateDelegate];
-  v9 = [(CPTemplateDelegate *)v8 conformsToProtocol:&unk_28562C040];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  templateDelegate = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+  v9 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v5 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v9)
   {
-    v7 = [(CPSBaseTemplateViewController *)v17 templateDelegate];
-    [(CPTemplateDelegate *)v7 handleActionForControlIdentifier:v13];
-    MEMORY[0x277D82BD8](v7);
+    templateDelegate2 = [(CPSBaseTemplateViewController *)selfCopy templateDelegate];
+    [(CPTemplateDelegate *)templateDelegate2 handleActionForControlIdentifier:identifier];
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (void)updateEntityTemplate:(id)a3 withProxyDelegate:(id)a4
+- (void)updateEntityTemplate:(id)template withProxyDelegate:(id)delegate
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -496,7 +496,7 @@
   v10 = 0;
   v11 = __66__CPSEntityViewController_updateEntityTemplate_withProxyDelegate___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);

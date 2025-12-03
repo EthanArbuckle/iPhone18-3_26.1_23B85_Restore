@@ -1,9 +1,9 @@
 @interface CKSMSComposeQueuingRemoteViewControllerProxy
 - (CKSMSComposeQueuingRemoteViewControllerProxy)init;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)setServiceViewControllerProxy:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)setServiceViewControllerProxy:(id)proxy;
 @end
 
 @implementation CKSMSComposeQueuingRemoteViewControllerProxy
@@ -15,8 +15,8 @@
   v2 = [(CKSMSComposeQueuingRemoteViewControllerProxy *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    [(CKSMSComposeQueuingRemoteViewControllerProxy *)v2 setQueuedInvocations:v3];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CKSMSComposeQueuingRemoteViewControllerProxy *)v2 setQueuedInvocations:array];
   }
 
   return v2;
@@ -31,22 +31,22 @@
   [(CKSMSComposeQueuingRemoteViewControllerProxy *)&v3 dealloc];
 }
 
-- (void)setServiceViewControllerProxy:(id)a3
+- (void)setServiceViewControllerProxy:(id)proxy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  proxyCopy = proxy;
   p_serviceViewControllerProxy = &self->_serviceViewControllerProxy;
-  if (self->_serviceViewControllerProxy != v5)
+  if (self->_serviceViewControllerProxy != proxyCopy)
   {
-    objc_storeStrong(&self->_serviceViewControllerProxy, a3);
+    objc_storeStrong(&self->_serviceViewControllerProxy, proxy);
     if (*p_serviceViewControllerProxy)
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v7 = [(CKSMSComposeQueuingRemoteViewControllerProxy *)self queuedInvocations];
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      queuedInvocations = [(CKSMSComposeQueuingRemoteViewControllerProxy *)self queuedInvocations];
+      v8 = [queuedInvocations countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         v9 = v8;
@@ -58,26 +58,26 @@
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(queuedInvocations);
             }
 
             [*(*(&v13 + 1) + 8 * v11++) invokeWithTarget:*p_serviceViewControllerProxy];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v9 = [queuedInvocations countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v9);
       }
 
-      v12 = [(CKSMSComposeQueuingRemoteViewControllerProxy *)self queuedInvocations];
-      [v12 removeAllObjects];
+      queuedInvocations2 = [(CKSMSComposeQueuingRemoteViewControllerProxy *)self queuedInvocations];
+      [queuedInvocations2 removeAllObjects];
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = CKSMSComposeQueuingRemoteViewControllerProxy;
@@ -85,7 +85,7 @@
   if (!v4)
   {
     v5 = &unk_1F0587230;
-    MethodDescription = protocol_getMethodDescription(v5, a3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(v5, selector, 1, 1);
     if (MethodDescription.types)
     {
       v4 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:MethodDescription.types];
@@ -100,19 +100,19 @@
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   serviceViewControllerProxy = self->_serviceViewControllerProxy;
-  v5 = a3;
-  v6 = v5;
+  invocationCopy = invocation;
+  v6 = invocationCopy;
   if (serviceViewControllerProxy)
   {
-    [v5 invokeWithTarget:serviceViewControllerProxy];
+    [invocationCopy invokeWithTarget:serviceViewControllerProxy];
   }
 
   else
   {
-    [v5 retainArguments];
+    [invocationCopy retainArguments];
     [(NSMutableArray *)self->_queuedInvocations addObject:v6];
   }
 }

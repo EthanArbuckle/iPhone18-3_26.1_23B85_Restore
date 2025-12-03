@@ -1,11 +1,11 @@
 @interface DebugFormatBezelView.NonAnimatingLayerDelegate
 - (_TtCC8NewsFeed20DebugFormatBezelViewP33_7FD54A6866B412ED3B21DBEEFFFC415225NonAnimatingLayerDelegate)init;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation DebugFormatBezelView.NonAnimatingLayerDelegate
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   v4 = [objc_allocWithZone(MEMORY[0x1E695DFB0]) init];
 

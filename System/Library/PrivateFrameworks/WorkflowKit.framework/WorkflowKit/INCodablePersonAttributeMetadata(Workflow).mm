@@ -20,7 +20,7 @@
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &off_1F4B0F560;
     v7 = objc_msgSendSuper2(&v9, sel_wf_contentItemForValue_, v4);
   }
@@ -74,7 +74,7 @@
     v12 = v11;
     _Block_object_dispose(&v30, 8);
     v13 = objc_alloc_init(v11);
-    v14 = [MEMORY[0x1E6996CC8] requiredKeysToFetch];
+    requiredKeysToFetch = [MEMORY[0x1E6996CC8] requiredKeysToFetch];
     IsAuthorizedToAccessContact = WFCNContactIsAuthorizedToAccessContact();
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -83,15 +83,15 @@
     v28 = IsAuthorizedToAccessContact;
     v16 = v13;
     v26 = v16;
-    v17 = v14;
+    v17 = requiredKeysToFetch;
     v27 = v17;
     v18 = [v10 if_map:v25];
-    v19 = [a1 type];
-    if (v19 <= 1)
+    type = [self type];
+    if (type <= 1)
     {
-      if (v19)
+      if (type)
       {
-        if (v19 != 1)
+        if (type != 1)
         {
           goto LABEL_27;
         }
@@ -107,7 +107,7 @@
 
     else
     {
-      switch(v19)
+      switch(type)
       {
         case 2:
           v20 = [(WFMultipleValueParameterState *)[WFPhoneNumberSubstitutableState alloc] initWithParameterStates:v18];
@@ -139,7 +139,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  v24.receiver = a1;
+  v24.receiver = self;
   v24.super_class = &off_1F4B0F560;
   v4 = objc_msgSendSuper2(&v24, sel_wf_parameterStateForIntentValue_parameterDefinition_, v7, v8);
 LABEL_24:
@@ -151,15 +151,15 @@ LABEL_24:
 
 - (id)wf_parameterClass
 {
-  v1 = [a1 type];
-  if (v1 > 3)
+  type = [self type];
+  if (type > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v2 = *off_1E837E518[v1];
+    v2 = *off_1E837E518[type];
     v3 = objc_opt_class();
   }
 

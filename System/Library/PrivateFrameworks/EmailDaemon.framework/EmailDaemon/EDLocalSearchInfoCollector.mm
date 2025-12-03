@@ -1,10 +1,10 @@
 @interface EDLocalSearchInfoCollector
 - (BOOL)_combinedHasQueryEmbedding;
 - (EDLocalSearchInfoCollector)init;
-- (id)localSearchInfoForConversationIDs:(id)a3;
-- (id)localSearchInfoForMessageObjectIDs:(id)a3;
+- (id)localSearchInfoForConversationIDs:(id)ds;
+- (id)localSearchInfoForMessageObjectIDs:(id)ds;
 - (int)_combinedQueryStatus;
-- (void)processRankingSignalsBySearchableItemID:(id)a3 forMessages:(id)a4;
+- (void)processRankingSignalsBySearchableItemID:(id)d forMessages:(id)messages;
 @end
 
 @implementation EDLocalSearchInfoCollector
@@ -28,17 +28,17 @@
   return v2;
 }
 
-- (void)processRankingSignalsBySearchableItemID:(id)a3 forMessages:(id)a4
+- (void)processRankingSignalsBySearchableItemID:(id)d forMessages:(id)messages
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_forMessages___block_invoke;
   v8[3] = &unk_1E8253160;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a4 enumerateObjectsUsingBlock:v8];
+  v9 = dCopy;
+  v7 = dCopy;
+  [messages enumerateObjectsUsingBlock:v8];
 }
 
 void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_forMessages___block_invoke(uint64_t a1, void *a2)
@@ -100,16 +100,16 @@ void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_fo
   }
 }
 
-- (id)localSearchInfoForMessageObjectIDs:(id)a3
+- (id)localSearchInfoForMessageObjectIDs:(id)ds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -124,8 +124,8 @@ void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_fo
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(EDLocalSearchInfoCollector *)self allRankingsByObjectID];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        allRankingsByObjectID = [(EDLocalSearchInfoCollector *)self allRankingsByObjectID];
+        v12 = [allRankingsByObjectID objectForKeyedSubscript:v10];
 
         if (v12)
         {
@@ -145,16 +145,16 @@ void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_fo
   return v13;
 }
 
-- (id)localSearchInfoForConversationIDs:(id)a3
+- (id)localSearchInfoForConversationIDs:(id)ds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -169,8 +169,8 @@ void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_fo
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(EDLocalSearchInfoCollector *)self rankingObjectIDsByConversation];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        rankingObjectIDsByConversation = [(EDLocalSearchInfoCollector *)self rankingObjectIDsByConversation];
+        v12 = [rankingObjectIDsByConversation objectForKeyedSubscript:v10];
 
         if (v12)
         {
@@ -217,14 +217,14 @@ void __82__EDLocalSearchInfoCollector_processRankingSignalsBySearchableItemID_fo
 
 - (BOOL)_combinedHasQueryEmbedding
 {
-  v3 = [(EDLocalSearchInfoCollector *)self hasTopHitsQueryEmbedding];
-  if (v3)
+  hasTopHitsQueryEmbedding = [(EDLocalSearchInfoCollector *)self hasTopHitsQueryEmbedding];
+  if (hasTopHitsQueryEmbedding)
   {
 
-    LOBYTE(v3) = [(EDLocalSearchInfoCollector *)self hasLiveSearchQueryEmbedding];
+    LOBYTE(hasTopHitsQueryEmbedding) = [(EDLocalSearchInfoCollector *)self hasLiveSearchQueryEmbedding];
   }
 
-  return v3;
+  return hasTopHitsQueryEmbedding;
 }
 
 @end

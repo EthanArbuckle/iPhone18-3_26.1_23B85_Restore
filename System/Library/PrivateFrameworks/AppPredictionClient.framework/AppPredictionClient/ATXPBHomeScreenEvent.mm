@@ -9,19 +9,19 @@
 - (BOOL)hasWidgetBundleId;
 - (BOOL)hasWidgetKind;
 - (BOOL)hasWidgetUniqueId;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)stackKindAsString:(__CFString *)a1;
-- (__CFString)stackLocationAsString:(__CFString *)a1;
-- (__CFString)widgetSizeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)stackKindAsString:(__CFString *)string;
+- (__CFString)stackLocationAsString:(__CFString *)string;
+- (__CFString)widgetSizeAsString:(__CFString *)string;
 - (double)date;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)suggestionIdsAtIndex:(id *)a1;
-- (uint64_t)StringAsStackKind:(uint64_t)a1;
-- (uint64_t)StringAsStackLocation:(uint64_t)a1;
-- (uint64_t)StringAsWidgetSize:(uint64_t)a1;
-- (uint64_t)addSuggestionIds:(uint64_t)a1;
+- (id)suggestionIdsAtIndex:(id *)index;
+- (uint64_t)StringAsStackKind:(uint64_t)kind;
+- (uint64_t)StringAsStackLocation:(uint64_t)location;
+- (uint64_t)StringAsWidgetSize:(uint64_t)size;
+- (uint64_t)addSuggestionIds:(uint64_t)ids;
 - (uint64_t)appBundleId;
 - (uint64_t)blendingCacheId;
 - (uint64_t)clearSuggestionIds;
@@ -55,20 +55,20 @@
 - (uint64_t)widgetSize;
 - (uint64_t)widgetUniqueId;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setAppBundleId:(uint64_t)a1;
-- (void)setBlendingCacheId:(uint64_t)a1;
-- (void)setEventTypeString:(uint64_t)a1;
-- (void)setIntentDescription:(uint64_t)a1;
-- (void)setMetadata:(uint64_t)a1;
-- (void)setReason:(uint64_t)a1;
-- (void)setStackId:(uint64_t)a1;
-- (void)setSuggestionIds:(uint64_t)a1;
-- (void)setWidgetBundleId:(uint64_t)a1;
-- (void)setWidgetKind:(uint64_t)a1;
-- (void)setWidgetUniqueId:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setAppBundleId:(uint64_t)id;
+- (void)setBlendingCacheId:(uint64_t)id;
+- (void)setEventTypeString:(uint64_t)string;
+- (void)setIntentDescription:(uint64_t)description;
+- (void)setMetadata:(uint64_t)metadata;
+- (void)setReason:(uint64_t)reason;
+- (void)setStackId:(uint64_t)id;
+- (void)setSuggestionIds:(uint64_t)ids;
+- (void)setWidgetBundleId:(uint64_t)id;
+- (void)setWidgetKind:(uint64_t)kind;
+- (void)setWidgetUniqueId:(uint64_t)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBHomeScreenEvent
@@ -79,55 +79,55 @@
   v8.receiver = self;
   v8.super_class = ATXPBHomeScreenEvent;
   v4 = [(ATXPBHomeScreenEvent *)&v8 description];
-  v5 = [(ATXPBHomeScreenEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBHomeScreenEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v4 forKey:@"date"];
+    [dictionary setObject:v4 forKey:@"date"];
   }
 
   eventTypeString = self->_eventTypeString;
   if (eventTypeString)
   {
-    [v3 setObject:eventTypeString forKey:@"eventTypeString"];
+    [dictionary setObject:eventTypeString forKey:@"eventTypeString"];
   }
 
   reason = self->_reason;
   if (reason)
   {
-    [v3 setObject:reason forKey:@"reason"];
+    [dictionary setObject:reason forKey:@"reason"];
   }
 
   blendingCacheId = self->_blendingCacheId;
   if (blendingCacheId)
   {
-    [v3 setObject:blendingCacheId forKey:@"blendingCacheId"];
+    [dictionary setObject:blendingCacheId forKey:@"blendingCacheId"];
   }
 
   stackId = self->_stackId;
   if (stackId)
   {
-    [v3 setObject:stackId forKey:@"stackId"];
+    [dictionary setObject:stackId forKey:@"stackId"];
   }
 
   widgetBundleId = self->_widgetBundleId;
   if (widgetBundleId)
   {
-    [v3 setObject:widgetBundleId forKey:@"widgetBundleId"];
+    [dictionary setObject:widgetBundleId forKey:@"widgetBundleId"];
   }
 
   widgetKind = self->_widgetKind;
   if (widgetKind)
   {
-    [v3 setObject:widgetKind forKey:@"widgetKind"];
+    [dictionary setObject:widgetKind forKey:@"widgetKind"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -143,38 +143,38 @@
       v12 = off_1E80C5B58[v11];
     }
 
-    [v3 setObject:v12 forKey:@"widgetSize"];
+    [dictionary setObject:v12 forKey:@"widgetSize"];
   }
 
   intentDescription = self->_intentDescription;
   if (intentDescription)
   {
-    [v3 setObject:intentDescription forKey:@"intentDescription"];
+    [dictionary setObject:intentDescription forKey:@"intentDescription"];
   }
 
   widgetUniqueId = self->_widgetUniqueId;
   if (widgetUniqueId)
   {
-    [v3 setObject:widgetUniqueId forKey:@"widgetUniqueId"];
+    [dictionary setObject:widgetUniqueId forKey:@"widgetUniqueId"];
   }
 
   suggestionIds = self->_suggestionIds;
   if (suggestionIds)
   {
-    [v3 setObject:suggestionIds forKey:@"suggestionIds"];
+    [dictionary setObject:suggestionIds forKey:@"suggestionIds"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v17 = [(ATXPBHomeScreenEventMetadata *)metadata dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"metadata"];
+    dictionaryRepresentation = [(ATXPBHomeScreenEventMetadata *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   appBundleId = self->_appBundleId;
   if (appBundleId)
   {
-    [v3 setObject:appBundleId forKey:@"appBundleId"];
+    [dictionary setObject:appBundleId forKey:@"appBundleId"];
   }
 
   has = self->_has;
@@ -191,7 +191,7 @@
       v23 = off_1E80C5B80[stackKind];
     }
 
-    [v3 setObject:v23 forKey:@"stackKind"];
+    [dictionary setObject:v23 forKey:@"stackKind"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -222,7 +222,7 @@ LABEL_32:
     v25 = off_1E80C5BC0[stackLocation];
   }
 
-  [v3 setObject:v25 forKey:@"stackLocation"];
+  [dictionary setObject:v25 forKey:@"stackLocation"];
 
   if ((*&self->_has & 0x10) == 0)
   {
@@ -231,17 +231,17 @@ LABEL_32:
 
 LABEL_33:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSuggestedWidget];
-  [v3 setObject:v20 forKey:@"isSuggestedWidget"];
+  [dictionary setObject:v20 forKey:@"isSuggestedWidget"];
 
 LABEL_34:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
@@ -365,10 +365,10 @@ LABEL_35:
 LABEL_36:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -376,27 +376,27 @@ LABEL_36:
     *(v5 + 124) |= 1u;
   }
 
-  v7 = [(NSString *)self->_eventTypeString copyWithZone:a3];
+  v7 = [(NSString *)self->_eventTypeString copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(NSString *)self->_reason copyWithZone:a3];
+  v9 = [(NSString *)self->_reason copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
-  v11 = [(NSString *)self->_blendingCacheId copyWithZone:a3];
+  v11 = [(NSString *)self->_blendingCacheId copyWithZone:zone];
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
 
-  v13 = [(NSString *)self->_stackId copyWithZone:a3];
+  v13 = [(NSString *)self->_stackId copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
-  v15 = [(NSString *)self->_widgetBundleId copyWithZone:a3];
+  v15 = [(NSString *)self->_widgetBundleId copyWithZone:zone];
   v16 = *(v6 + 88);
   *(v6 + 88) = v15;
 
-  v17 = [(NSString *)self->_widgetKind copyWithZone:a3];
+  v17 = [(NSString *)self->_widgetKind copyWithZone:zone];
   v18 = *(v6 + 96);
   *(v6 + 96) = v17;
 
@@ -406,11 +406,11 @@ LABEL_36:
     *(v6 + 124) |= 8u;
   }
 
-  v19 = [(NSString *)self->_intentDescription copyWithZone:a3];
+  v19 = [(NSString *)self->_intentDescription copyWithZone:zone];
   v20 = *(v6 + 40);
   *(v6 + 40) = v19;
 
-  v21 = [(NSString *)self->_widgetUniqueId copyWithZone:a3];
+  v21 = [(NSString *)self->_widgetUniqueId copyWithZone:zone];
   v22 = *(v6 + 112);
   *(v6 + 112) = v21;
 
@@ -433,7 +433,7 @@ LABEL_36:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v35 + 1) + 8 * i) copyWithZone:{a3, v35}];
+        v28 = [*(*(&v35 + 1) + 8 * i) copyWithZone:{zone, v35}];
         [(ATXPBHomeScreenEvent *)v6 addSuggestionIds:v28];
       }
 
@@ -443,11 +443,11 @@ LABEL_36:
     while (v25);
   }
 
-  v29 = [(ATXPBHomeScreenEventMetadata *)self->_metadata copyWithZone:a3];
+  v29 = [(ATXPBHomeScreenEventMetadata *)self->_metadata copyWithZone:zone];
   v30 = *(v6 + 48);
   *(v6 + 48) = v29;
 
-  v31 = [(NSString *)self->_appBundleId copyWithZone:a3];
+  v31 = [(NSString *)self->_appBundleId copyWithZone:zone];
   v32 = *(v6 + 16);
   *(v6 + 16) = v31;
 
@@ -489,35 +489,35 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 124) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 124) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 124))
+  else if (*(equalCopy + 124))
   {
     goto LABEL_46;
   }
 
   eventTypeString = self->_eventTypeString;
-  if (eventTypeString | *(v4 + 4) && ![(NSString *)eventTypeString isEqual:?])
+  if (eventTypeString | *(equalCopy + 4) && ![(NSString *)eventTypeString isEqual:?])
   {
     goto LABEL_46;
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 7))
+  if (reason | *(equalCopy + 7))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -526,7 +526,7 @@ LABEL_15:
   }
 
   blendingCacheId = self->_blendingCacheId;
-  if (blendingCacheId | *(v4 + 3))
+  if (blendingCacheId | *(equalCopy + 3))
   {
     if (![(NSString *)blendingCacheId isEqual:?])
     {
@@ -535,7 +535,7 @@ LABEL_15:
   }
 
   stackId = self->_stackId;
-  if (stackId | *(v4 + 8))
+  if (stackId | *(equalCopy + 8))
   {
     if (![(NSString *)stackId isEqual:?])
     {
@@ -544,7 +544,7 @@ LABEL_15:
   }
 
   widgetBundleId = self->_widgetBundleId;
-  if (widgetBundleId | *(v4 + 11))
+  if (widgetBundleId | *(equalCopy + 11))
   {
     if (![(NSString *)widgetBundleId isEqual:?])
     {
@@ -553,7 +553,7 @@ LABEL_15:
   }
 
   widgetKind = self->_widgetKind;
-  if (widgetKind | *(v4 + 12))
+  if (widgetKind | *(equalCopy + 12))
   {
     if (![(NSString *)widgetKind isEqual:?])
     {
@@ -563,25 +563,25 @@ LABEL_15:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 124) & 8) == 0 || self->_widgetSize != *(v4 + 26))
+    if ((*(equalCopy + 124) & 8) == 0 || self->_widgetSize != *(equalCopy + 26))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 124) & 8) != 0)
+  else if ((*(equalCopy + 124) & 8) != 0)
   {
     goto LABEL_46;
   }
 
   intentDescription = self->_intentDescription;
-  if (intentDescription | *(v4 + 5) && ![(NSString *)intentDescription isEqual:?])
+  if (intentDescription | *(equalCopy + 5) && ![(NSString *)intentDescription isEqual:?])
   {
     goto LABEL_46;
   }
 
   widgetUniqueId = self->_widgetUniqueId;
-  if (widgetUniqueId | *(v4 + 14))
+  if (widgetUniqueId | *(equalCopy + 14))
   {
     if (![(NSString *)widgetUniqueId isEqual:?])
     {
@@ -590,7 +590,7 @@ LABEL_15:
   }
 
   suggestionIds = self->_suggestionIds;
-  if (suggestionIds | *(v4 + 10))
+  if (suggestionIds | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)suggestionIds isEqual:?])
     {
@@ -599,7 +599,7 @@ LABEL_15:
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 6))
+  if (metadata | *(equalCopy + 6))
   {
     if (![(ATXPBHomeScreenEventMetadata *)metadata isEqual:?])
     {
@@ -608,7 +608,7 @@ LABEL_15:
   }
 
   appBundleId = self->_appBundleId;
-  if (appBundleId | *(v4 + 2))
+  if (appBundleId | *(equalCopy + 2))
   {
     if (![(NSString *)appBundleId isEqual:?])
     {
@@ -618,34 +618,34 @@ LABEL_15:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 124) & 2) == 0 || self->_stackKind != *(v4 + 18))
+    if ((*(equalCopy + 124) & 2) == 0 || self->_stackKind != *(equalCopy + 18))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 124) & 2) != 0)
+  else if ((*(equalCopy + 124) & 2) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 124) & 4) == 0 || self->_stackLocation != *(v4 + 19))
+    if ((*(equalCopy + 124) & 4) == 0 || self->_stackLocation != *(equalCopy + 19))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 124) & 4) != 0)
+  else if ((*(equalCopy + 124) & 4) != 0)
   {
     goto LABEL_46;
   }
 
-  v16 = (*(v4 + 124) & 0x10) == 0;
+  v16 = (*(equalCopy + 124) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 124) & 0x10) == 0)
+    if ((*(equalCopy + 124) & 0x10) == 0)
     {
 LABEL_46:
       v16 = 0;
@@ -654,13 +654,13 @@ LABEL_46:
 
     if (self->_isSuggestedWidget)
     {
-      if ((*(v4 + 120) & 1) == 0)
+      if ((*(equalCopy + 120) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 120))
+    else if (*(equalCopy + 120))
     {
       goto LABEL_46;
     }
@@ -917,31 +917,31 @@ LABEL_15:
   return result;
 }
 
-- (__CFString)widgetSizeAsString:(__CFString *)a1
+- (__CFString)widgetSizeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if ((a2 - 1) < 5)
   {
-    a1 = off_1E80C5B58[(a2 - 1)];
+    string = off_1E80C5B58[(a2 - 1)];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsWidgetSize:(uint64_t)a1
+- (uint64_t)StringAsWidgetSize:(uint64_t)size
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (size)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"TwoByTwo"])
@@ -1013,19 +1013,19 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addSuggestionIds:(uint64_t)a1
+- (uint64_t)addSuggestionIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
     v5 = OUTLINED_FUNCTION_5_9();
     v10 = v6;
     if (!v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v8 = *(a1 + 80);
-      *(a1 + 80) = v7;
+      v8 = *(ids + 80);
+      *(ids + 80) = v7;
 
       v5 = OUTLINED_FUNCTION_5_9();
     }
@@ -1047,15 +1047,15 @@ LABEL_4:
   return result;
 }
 
-- (id)suggestionIdsAtIndex:(id *)a1
+- (id)suggestionIdsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[10] objectAtIndex:a2];
+    index = [index[10] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (BOOL)hasMetadata
@@ -1137,31 +1137,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)stackKindAsString:(__CFString *)a1
+- (__CFString)stackKindAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 8)
   {
-    a1 = off_1E80C5B80[a2];
+    string = off_1E80C5B80[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsStackKind:(uint64_t)a1
+- (uint64_t)StringAsStackKind:(uint64_t)kind
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (kind)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unknown"])
@@ -1277,31 +1277,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)stackLocationAsString:(__CFString *)a1
+- (__CFString)stackLocationAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 6)
   {
-    a1 = off_1E80C5BC0[a2];
+    string = off_1E80C5BC0[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsStackLocation:(uint64_t)a1
+- (uint64_t)StringAsStackLocation:(uint64_t)location
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (location)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unknown"])
@@ -1389,49 +1389,49 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 124))
+    if (*(to + 124))
     {
-      v3[1] = *(a1 + 8);
+      v3[1] = *(to + 8);
       *(v3 + 124) |= 1u;
     }
 
-    v4 = *(a1 + 32);
+    v4 = *(to + 32);
     v31 = v3;
     if (v4)
     {
       [(ATXPBHomeScreenEvent *)v3 setEventTypeString:v4];
     }
 
-    v5 = *(a1 + 56);
+    v5 = *(to + 56);
     if (v5)
     {
       [(ATXPBHomeScreenEvent *)v31 setReason:v5];
     }
 
-    v6 = *(a1 + 24);
+    v6 = *(to + 24);
     if (v6)
     {
       [(ATXPBHomeScreenEvent *)v31 setBlendingCacheId:v6];
     }
 
-    v7 = *(a1 + 64);
+    v7 = *(to + 64);
     if (v7)
     {
       [(ATXPBHomeScreenEvent *)v31 setStackId:v7];
     }
 
-    v8 = *(a1 + 88);
+    v8 = *(to + 88);
     if (v8)
     {
       [(ATXPBHomeScreenEvent *)v31 setWidgetBundleId:v8];
     }
 
-    v9 = *(a1 + 96);
+    v9 = *(to + 96);
     if (v9)
     {
       [(ATXPBHomeScreenEvent *)v31 setWidgetKind:v9];
@@ -1444,13 +1444,13 @@ LABEL_4:
       *(v12 + v14) = v13 | 8;
     }
 
-    v15 = *(a1 + 40);
+    v15 = *(to + 40);
     if (v15)
     {
       [(ATXPBHomeScreenEvent *)v31 setIntentDescription:v15];
     }
 
-    v16 = *(a1 + 112);
+    v16 = *(to + 112);
     if (v16)
     {
       [(ATXPBHomeScreenEvent *)v31 setWidgetUniqueId:v16];
@@ -1469,19 +1469,19 @@ LABEL_4:
         v18 = v17;
         for (i = 0; i != v18; ++i)
         {
-          v20 = [(ATXPBHomeScreenEvent *)a1 suggestionIdsAtIndex:?];
+          v20 = [(ATXPBHomeScreenEvent *)to suggestionIdsAtIndex:?];
           [(ATXPBHomeScreenEvent *)v31 addSuggestionIds:v20];
         }
       }
     }
 
-    v21 = *(a1 + 48);
+    v21 = *(to + 48);
     if (v21)
     {
       [(ATXPBHomeScreenEvent *)v31 setMetadata:v21];
     }
 
-    v22 = *(a1 + 16);
+    v22 = *(to + 16);
     if (v22)
     {
       [(ATXPBHomeScreenEvent *)v31 setAppBundleId:v22];
@@ -1516,7 +1516,7 @@ LABEL_34:
     if ((v30 & 0x10) != 0)
     {
 LABEL_35:
-      *(v3 + 120) = *(a1 + 120);
+      *(v3 + 120) = *(to + 120);
       *(v3 + 124) |= 0x10u;
     }
   }
@@ -1524,155 +1524,155 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)setEventTypeString:(uint64_t)a1
+- (void)setEventTypeString:(uint64_t)string
 {
-  if (a1)
+  if (string)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(string, a2, 32);
   }
 }
 
-- (void)setReason:(uint64_t)a1
+- (void)setReason:(uint64_t)reason
 {
-  if (a1)
+  if (reason)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 56);
+    OUTLINED_FUNCTION_2(reason, a2, 56);
   }
 }
 
-- (void)setBlendingCacheId:(uint64_t)a1
+- (void)setBlendingCacheId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(id, a2, 24);
   }
 }
 
-- (void)setStackId:(uint64_t)a1
+- (void)setStackId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 64);
+    OUTLINED_FUNCTION_2(id, a2, 64);
   }
 }
 
-- (void)setWidgetBundleId:(uint64_t)a1
+- (void)setWidgetBundleId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 88);
+    OUTLINED_FUNCTION_2(id, a2, 88);
   }
 }
 
-- (void)setWidgetKind:(uint64_t)a1
+- (void)setWidgetKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 96);
+    OUTLINED_FUNCTION_2(kind, a2, 96);
   }
 }
 
-- (void)setIntentDescription:(uint64_t)a1
+- (void)setIntentDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 40);
+    OUTLINED_FUNCTION_2(description, a2, 40);
   }
 }
 
-- (void)setWidgetUniqueId:(uint64_t)a1
+- (void)setWidgetUniqueId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 112);
+    OUTLINED_FUNCTION_2(id, a2, 112);
   }
 }
 
-- (void)setMetadata:(uint64_t)a1
+- (void)setMetadata:(uint64_t)metadata
 {
-  if (a1)
+  if (metadata)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 48);
+    OUTLINED_FUNCTION_2(metadata, a2, 48);
   }
 }
 
-- (void)setAppBundleId:(uint64_t)a1
+- (void)setAppBundleId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(id, a2, 16);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_40;
   }
 
   if (*(v3 + 124))
   {
-    *(a1 + 8) = v3[1];
-    *(a1 + 124) |= 1u;
+    *(from + 8) = v3[1];
+    *(from + 124) |= 1u;
   }
 
   v5 = v3[4];
   if (v5)
   {
-    [(ATXPBHomeScreenEvent *)a1 setEventTypeString:v5];
+    [(ATXPBHomeScreenEvent *)from setEventTypeString:v5];
   }
 
   v6 = *(v4 + 7);
   if (v6)
   {
-    [(ATXPBHomeScreenEvent *)a1 setReason:v6];
+    [(ATXPBHomeScreenEvent *)from setReason:v6];
   }
 
   v7 = *(v4 + 3);
   if (v7)
   {
-    [(ATXPBHomeScreenEvent *)a1 setBlendingCacheId:v7];
+    [(ATXPBHomeScreenEvent *)from setBlendingCacheId:v7];
   }
 
   v8 = *(v4 + 8);
   if (v8)
   {
-    [(ATXPBHomeScreenEvent *)a1 setStackId:v8];
+    [(ATXPBHomeScreenEvent *)from setStackId:v8];
   }
 
   v9 = *(v4 + 11);
   if (v9)
   {
-    [(ATXPBHomeScreenEvent *)a1 setWidgetBundleId:v9];
+    [(ATXPBHomeScreenEvent *)from setWidgetBundleId:v9];
   }
 
   v10 = *(v4 + 12);
   if (v10)
   {
-    [(ATXPBHomeScreenEvent *)a1 setWidgetKind:v10];
+    [(ATXPBHomeScreenEvent *)from setWidgetKind:v10];
   }
 
   OUTLINED_FUNCTION_3_8();
   if ((v11 & 8) != 0)
   {
     OUTLINED_FUNCTION_1_20(104);
-    *(a1 + v13) = v12 | 8;
+    *(from + v13) = v12 | 8;
   }
 
   v14 = *(v4 + 5);
   if (v14)
   {
-    [(ATXPBHomeScreenEvent *)a1 setIntentDescription:v14];
+    [(ATXPBHomeScreenEvent *)from setIntentDescription:v14];
   }
 
   v15 = *(v4 + 14);
   if (v15)
   {
-    [(ATXPBHomeScreenEvent *)a1 setWidgetUniqueId:v15];
+    [(ATXPBHomeScreenEvent *)from setWidgetUniqueId:v15];
   }
 
   v32 = 0u;
@@ -1695,7 +1695,7 @@ LABEL_36:
           objc_enumerationMutation(v16);
         }
 
-        [(ATXPBHomeScreenEvent *)a1 addSuggestionIds:?];
+        [(ATXPBHomeScreenEvent *)from addSuggestionIds:?];
       }
 
       while (v18 != v20);
@@ -1705,7 +1705,7 @@ LABEL_36:
     while (v18);
   }
 
-  v21 = *(a1 + 48);
+  v21 = *(from + 48);
   v22 = *(v4 + 6);
   if (v21)
   {
@@ -1717,13 +1717,13 @@ LABEL_36:
 
   else if (v22)
   {
-    [(ATXPBHomeScreenEvent *)a1 setMetadata:v22];
+    [(ATXPBHomeScreenEvent *)from setMetadata:v22];
   }
 
   v23 = *(v4 + 2);
   if (v23)
   {
-    [(ATXPBHomeScreenEvent *)a1 setAppBundleId:v23];
+    [(ATXPBHomeScreenEvent *)from setAppBundleId:v23];
   }
 
   OUTLINED_FUNCTION_3_8();
@@ -1736,7 +1736,7 @@ LABEL_36:
 
 LABEL_42:
     OUTLINED_FUNCTION_1_20(76);
-    *(a1 + v28) = v27 | 4;
+    *(from + v28) = v27 | 4;
     OUTLINED_FUNCTION_3_8();
     if ((v29 & 0x10) == 0)
     {
@@ -1747,7 +1747,7 @@ LABEL_42:
   }
 
   OUTLINED_FUNCTION_1_20(72);
-  *(a1 + v26) = v25 | 2;
+  *(from + v26) = v25 | 2;
   OUTLINED_FUNCTION_3_8();
   if ((v24 & 4) != 0)
   {
@@ -1758,8 +1758,8 @@ LABEL_38:
   if ((v24 & 0x10) != 0)
   {
 LABEL_39:
-    *(a1 + 120) = *(v4 + 120);
-    *(a1 + 124) |= 0x10u;
+    *(from + 120) = *(v4 + 120);
+    *(from + 124) |= 0x10u;
   }
 
 LABEL_40:
@@ -1767,9 +1767,9 @@ LABEL_40:
 
 - (double)date
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -1868,11 +1868,11 @@ LABEL_40:
   return result;
 }
 
-- (void)setSuggestionIds:(uint64_t)a1
+- (void)setSuggestionIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 80);
+    OUTLINED_FUNCTION_2(ids, a2, 80);
   }
 }
 
@@ -1898,9 +1898,9 @@ LABEL_40:
 
 - (uint64_t)isSuggestedWidget
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 120);
+    v1 = *(self + 120);
   }
 
   else

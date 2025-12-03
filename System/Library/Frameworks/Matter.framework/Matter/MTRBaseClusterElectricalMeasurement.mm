@@ -814,53 +814,53 @@
 - (void)getProfileInfoCommandWithParams:(MTRElectricalMeasurementClusterGetProfileInfoCommandParams *)params completion:(MTRStatusCompletion)completion
 {
   v5 = completion;
-  v6 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240298;
   block[3] = &unk_278A72B88;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)getMeasurementProfileCommandWithParams:(MTRElectricalMeasurementClusterGetMeasurementProfileCommandParams *)params completion:(MTRStatusCompletion)completion
 {
   v5 = completion;
-  v6 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392403DC;
   block[3] = &unk_278A72B88;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)readAttributeMeasurementTypeWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240520;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasurementTypeWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240668;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasurementTypeWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -878,27 +878,27 @@
 - (void)readAttributeDcVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392408D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240A18;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -916,27 +916,27 @@
 - (void)readAttributeDcVoltageMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240C80;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcVoltageMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239240DC8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcVoltageMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -954,27 +954,27 @@
 - (void)readAttributeDcVoltageMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241030;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcVoltageMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241178;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcVoltageMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -992,27 +992,27 @@
 - (void)readAttributeDcCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392413E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241528;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1030,27 +1030,27 @@
 - (void)readAttributeDcCurrentMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241790;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcCurrentMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392418D8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcCurrentMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1068,27 +1068,27 @@
 - (void)readAttributeDcCurrentMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241B40;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcCurrentMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241C88;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcCurrentMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1106,27 +1106,27 @@
 - (void)readAttributeDcPowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239241EF0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcPowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242038;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcPowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1144,27 +1144,27 @@
 - (void)readAttributeDcPowerMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392422A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcPowerMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392423E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcPowerMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1182,27 +1182,27 @@
 - (void)readAttributeDcPowerMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242650;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcPowerMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242798;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcPowerMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1220,27 +1220,27 @@
 - (void)readAttributeDcVoltageMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242A00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcVoltageMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242B48;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcVoltageMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1258,27 +1258,27 @@
 - (void)readAttributeDcVoltageDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242DB0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcVoltageDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239242EF8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcVoltageDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1296,27 +1296,27 @@
 - (void)readAttributeDcCurrentMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243160;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcCurrentMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392432A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcCurrentMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1334,27 +1334,27 @@
 - (void)readAttributeDcCurrentDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243510;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcCurrentDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243658;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcCurrentDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1372,27 +1372,27 @@
 - (void)readAttributeDcPowerMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392438C0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcPowerMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243A08;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcPowerMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1410,27 +1410,27 @@
 - (void)readAttributeDcPowerDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243C70;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeDcPowerDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239243DB8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeDcPowerDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1448,27 +1448,27 @@
 - (void)readAttributeAcFrequencyWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244020;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcFrequencyWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244168;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcFrequencyWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1486,27 +1486,27 @@
 - (void)readAttributeAcFrequencyMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392443D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcFrequencyMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244518;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcFrequencyMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1524,27 +1524,27 @@
 - (void)readAttributeAcFrequencyMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244780;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcFrequencyMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392448C8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcFrequencyMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1562,27 +1562,27 @@
 - (void)readAttributeNeutralCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244B30;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeNeutralCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244C78;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeNeutralCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1600,27 +1600,27 @@
 - (void)readAttributeTotalActivePowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239244EE0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeTotalActivePowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245028;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeTotalActivePowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1638,27 +1638,27 @@
 - (void)readAttributeTotalReactivePowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245290;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeTotalReactivePowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392453D8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeTotalReactivePowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1676,27 +1676,27 @@
 - (void)readAttributeTotalApparentPowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245640;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeTotalApparentPowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245788;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeTotalApparentPowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1714,27 +1714,27 @@
 - (void)readAttributeMeasured1stHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392459F0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured1stHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245B38;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured1stHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1752,27 +1752,27 @@
 - (void)readAttributeMeasured3rdHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245DA0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured3rdHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239245EE8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured3rdHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1790,27 +1790,27 @@
 - (void)readAttributeMeasured5thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246150;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured5thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246298;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured5thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1828,27 +1828,27 @@
 - (void)readAttributeMeasured7thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246500;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured7thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246648;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured7thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1866,27 +1866,27 @@
 - (void)readAttributeMeasured9thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392468B0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured9thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392469F8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured9thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1904,27 +1904,27 @@
 - (void)readAttributeMeasured11thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246C60;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasured11thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239246DA8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasured11thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1942,27 +1942,27 @@
 - (void)readAttributeMeasuredPhase1stHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247010;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase1stHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247158;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase1stHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1980,27 +1980,27 @@
 - (void)readAttributeMeasuredPhase3rdHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392473C0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase3rdHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247508;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase3rdHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2018,27 +2018,27 @@
 - (void)readAttributeMeasuredPhase5thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247770;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase5thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392478B8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase5thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2056,27 +2056,27 @@
 - (void)readAttributeMeasuredPhase7thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247B20;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase7thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247C68;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase7thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2094,27 +2094,27 @@
 - (void)readAttributeMeasuredPhase9thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239247ED0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase9thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248018;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase9thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2132,27 +2132,27 @@
 - (void)readAttributeMeasuredPhase11thHarmonicCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248280;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeMeasuredPhase11thHarmonicCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392483C8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeMeasuredPhase11thHarmonicCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2170,27 +2170,27 @@
 - (void)readAttributeAcFrequencyMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248630;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcFrequencyMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248778;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcFrequencyMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2208,27 +2208,27 @@
 - (void)readAttributeAcFrequencyDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392489E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcFrequencyDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248B28;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcFrequencyDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2246,27 +2246,27 @@
 - (void)readAttributePowerMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248D90;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePowerMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239248ED8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePowerMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2284,27 +2284,27 @@
 - (void)readAttributePowerDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239249140;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePowerDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239249288;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePowerDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2322,27 +2322,27 @@
 - (void)readAttributeHarmonicCurrentMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392494F0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeHarmonicCurrentMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239249638;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeHarmonicCurrentMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2360,27 +2360,27 @@
 - (void)readAttributePhaseHarmonicCurrentMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392498A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePhaseHarmonicCurrentMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392499E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePhaseHarmonicCurrentMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2398,27 +2398,27 @@
 - (void)readAttributeInstantaneousVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239249C50;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInstantaneousVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239249D98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInstantaneousVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2436,27 +2436,27 @@
 - (void)readAttributeInstantaneousLineCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A000;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInstantaneousLineCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A148;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInstantaneousLineCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2474,27 +2474,27 @@
 - (void)readAttributeInstantaneousActiveCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A3B0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInstantaneousActiveCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A4F8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInstantaneousActiveCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2512,27 +2512,27 @@
 - (void)readAttributeInstantaneousReactiveCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A760;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInstantaneousReactiveCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924A8A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInstantaneousReactiveCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2550,27 +2550,27 @@
 - (void)readAttributeInstantaneousPowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924AB10;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeInstantaneousPowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924AC58;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeInstantaneousPowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2588,27 +2588,27 @@
 - (void)readAttributeRmsVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924AEC0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B008;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2626,27 +2626,27 @@
 - (void)readAttributeRmsVoltageMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B270;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B3B8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2664,27 +2664,27 @@
 - (void)readAttributeRmsVoltageMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B620;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B768;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2702,27 +2702,27 @@
 - (void)readAttributeRmsCurrentWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924B9D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924BB18;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2740,27 +2740,27 @@
 - (void)readAttributeRmsCurrentMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924BD80;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924BEC8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2778,27 +2778,27 @@
 - (void)readAttributeRmsCurrentMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C130;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C278;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2816,27 +2816,27 @@
 - (void)readAttributeActivePowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C4E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C628;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2854,27 +2854,27 @@
 - (void)readAttributeActivePowerMinWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C890;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMinWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924C9D8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMinWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2892,27 +2892,27 @@
 - (void)readAttributeActivePowerMaxWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924CC40;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMaxWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924CD88;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMaxWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2930,27 +2930,27 @@
 - (void)readAttributeReactivePowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924CFF0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReactivePowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924D138;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReactivePowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2968,27 +2968,27 @@
 - (void)readAttributeApparentPowerWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924D3A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeApparentPowerWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924D4E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeApparentPowerWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3006,27 +3006,27 @@
 - (void)readAttributePowerFactorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924D750;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePowerFactorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924D898;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePowerFactorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3044,40 +3044,40 @@
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924DB00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeAverageRmsVoltageMeasurementPeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924DC54;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsVoltageMeasurementPeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924DD98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsVoltageMeasurementPeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3095,40 +3095,40 @@
 - (void)readAttributeAverageRmsUnderVoltageCounterWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E000;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeAverageRmsUnderVoltageCounterWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E154;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsUnderVoltageCounterWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E298;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsUnderVoltageCounterWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3146,40 +3146,40 @@
 - (void)readAttributeRmsExtremeOverVoltagePeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E500;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeRmsExtremeOverVoltagePeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E654;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeOverVoltagePeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924E798;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeOverVoltagePeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3197,40 +3197,40 @@
 - (void)readAttributeRmsExtremeUnderVoltagePeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924EA00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeRmsExtremeUnderVoltagePeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924EB54;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeUnderVoltagePeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924EC98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeUnderVoltagePeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3248,40 +3248,40 @@
 - (void)readAttributeRmsVoltageSagPeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924EF00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeRmsVoltageSagPeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F054;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSagPeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F198;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSagPeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3299,40 +3299,40 @@
 - (void)readAttributeRmsVoltageSwellPeriodWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F400;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeRmsVoltageSwellPeriodWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F554;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSwellPeriodWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F698;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSwellPeriodWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3350,27 +3350,27 @@
 - (void)readAttributeAcVoltageMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924F900;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcVoltageMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924FA48;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcVoltageMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3388,27 +3388,27 @@
 - (void)readAttributeAcVoltageDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924FCB0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcVoltageDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23924FDF8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcVoltageDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3426,27 +3426,27 @@
 - (void)readAttributeAcCurrentMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250060;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcCurrentMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392501A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcCurrentMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3464,27 +3464,27 @@
 - (void)readAttributeAcCurrentDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250410;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcCurrentDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250558;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcCurrentDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3502,27 +3502,27 @@
 - (void)readAttributeAcPowerMultiplierWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392507C0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcPowerMultiplierWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250908;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcPowerMultiplierWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3540,27 +3540,27 @@
 - (void)readAttributeAcPowerDivisorWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250B70;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcPowerDivisorWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250CB8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcPowerDivisorWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3578,40 +3578,40 @@
 - (void)readAttributeOverloadAlarmsMaskWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239250F20;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeOverloadAlarmsMaskWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251074;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeOverloadAlarmsMaskWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392511B8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeOverloadAlarmsMaskWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3629,27 +3629,27 @@
 - (void)readAttributeVoltageOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251420;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeVoltageOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251568;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeVoltageOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3667,27 +3667,27 @@
 - (void)readAttributeCurrentOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392517D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeCurrentOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251918;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeCurrentOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3705,40 +3705,40 @@
 - (void)readAttributeAcOverloadAlarmsMaskWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251B80;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)writeAttributeAcOverloadAlarmsMaskWithValue:(NSNumber *)value params:(MTRWriteParams *)params completion:(MTRStatusCompletion)completion
 {
   v6 = completion;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251CD4;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcOverloadAlarmsMaskWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239251E18;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcOverloadAlarmsMaskWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3756,27 +3756,27 @@
 - (void)readAttributeAcVoltageOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252080;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcVoltageOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392521C8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcVoltageOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3794,27 +3794,27 @@
 - (void)readAttributeAcCurrentOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252430;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcCurrentOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252578;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcCurrentOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3832,27 +3832,27 @@
 - (void)readAttributeAcActivePowerOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392527E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcActivePowerOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252928;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcActivePowerOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3870,27 +3870,27 @@
 - (void)readAttributeAcReactivePowerOverloadWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252B90;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcReactivePowerOverloadWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252CD8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcReactivePowerOverloadWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3908,27 +3908,27 @@
 - (void)readAttributeAverageRmsOverVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239252F40;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsOverVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253088;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsOverVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3946,27 +3946,27 @@
 - (void)readAttributeAverageRmsUnderVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392532F0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsUnderVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253438;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsUnderVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -3984,27 +3984,27 @@
 - (void)readAttributeRmsExtremeOverVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392536A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeOverVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392537E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeOverVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4022,27 +4022,27 @@
 - (void)readAttributeRmsExtremeUnderVoltageWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253A50;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeUnderVoltageWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253B98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeUnderVoltageWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4060,27 +4060,27 @@
 - (void)readAttributeRmsVoltageSagWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253E00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSagWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239253F48;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSagWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4098,27 +4098,27 @@
 - (void)readAttributeRmsVoltageSwellWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392541B0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSwellWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392542F8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSwellWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4136,27 +4136,27 @@
 - (void)readAttributeLineCurrentPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239254560;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeLineCurrentPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392546A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeLineCurrentPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4174,27 +4174,27 @@
 - (void)readAttributeActiveCurrentPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239254910;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActiveCurrentPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239254A58;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActiveCurrentPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4212,27 +4212,27 @@
 - (void)readAttributeReactiveCurrentPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239254CC0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReactiveCurrentPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239254E08;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReactiveCurrentPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4250,27 +4250,27 @@
 - (void)readAttributeRmsVoltagePhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255070;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltagePhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392551B8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltagePhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4288,27 +4288,27 @@
 - (void)readAttributeRmsVoltageMinPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255420;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMinPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255568;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMinPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4326,27 +4326,27 @@
 - (void)readAttributeRmsVoltageMaxPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392557D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMaxPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255918;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMaxPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4364,27 +4364,27 @@
 - (void)readAttributeRmsCurrentPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255B80;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255CC8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4402,27 +4402,27 @@
 - (void)readAttributeRmsCurrentMinPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239255F30;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMinPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256078;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMinPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4440,27 +4440,27 @@
 - (void)readAttributeRmsCurrentMaxPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392562E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMaxPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256428;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMaxPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4478,27 +4478,27 @@
 - (void)readAttributeActivePowerPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256690;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392567D8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4516,27 +4516,27 @@
 - (void)readAttributeActivePowerMinPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256A40;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMinPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256B88;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMinPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4554,27 +4554,27 @@
 - (void)readAttributeActivePowerMaxPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256DF0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMaxPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239256F38;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMaxPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4592,27 +4592,27 @@
 - (void)readAttributeReactivePowerPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392571A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReactivePowerPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392572E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReactivePowerPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4630,27 +4630,27 @@
 - (void)readAttributeApparentPowerPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257550;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeApparentPowerPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257698;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeApparentPowerPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4668,27 +4668,27 @@
 - (void)readAttributePowerFactorPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257900;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePowerFactorPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257A48;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePowerFactorPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4706,27 +4706,27 @@
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257CB0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239257DF8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4744,27 +4744,27 @@
 - (void)readAttributeAverageRmsOverVoltageCounterPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258060;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsOverVoltageCounterPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392581A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsOverVoltageCounterPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4782,27 +4782,27 @@
 - (void)readAttributeAverageRmsUnderVoltageCounterPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258410;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsUnderVoltageCounterPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258558;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsUnderVoltageCounterPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4820,27 +4820,27 @@
 - (void)readAttributeRmsExtremeOverVoltagePeriodPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392587C0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeOverVoltagePeriodPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258908;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeOverVoltagePeriodPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4858,27 +4858,27 @@
 - (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258B70;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeUnderVoltagePeriodPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258CB8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4896,27 +4896,27 @@
 - (void)readAttributeRmsVoltageSagPeriodPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239258F20;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSagPeriodPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259068;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSagPeriodPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4934,27 +4934,27 @@
 - (void)readAttributeRmsVoltageSwellPeriodPhaseBWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392592D0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSwellPeriodPhaseBWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259418;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSwellPeriodPhaseBWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -4972,27 +4972,27 @@
 - (void)readAttributeLineCurrentPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259680;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeLineCurrentPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2392597C8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeLineCurrentPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5010,27 +5010,27 @@
 - (void)readAttributeActiveCurrentPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259A30;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActiveCurrentPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259B78;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActiveCurrentPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5048,27 +5048,27 @@
 - (void)readAttributeReactiveCurrentPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259DE0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReactiveCurrentPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239259F28;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReactiveCurrentPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5086,27 +5086,27 @@
 - (void)readAttributeRmsVoltagePhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925A190;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltagePhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925A2D8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltagePhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5124,27 +5124,27 @@
 - (void)readAttributeRmsVoltageMinPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925A540;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMinPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925A688;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMinPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5162,27 +5162,27 @@
 - (void)readAttributeRmsVoltageMaxPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925A8F0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageMaxPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925AA38;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageMaxPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5200,27 +5200,27 @@
 - (void)readAttributeRmsCurrentPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925ACA0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925ADE8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5238,27 +5238,27 @@
 - (void)readAttributeRmsCurrentMinPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B050;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMinPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B198;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMinPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5276,27 +5276,27 @@
 - (void)readAttributeRmsCurrentMaxPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B400;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsCurrentMaxPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B548;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsCurrentMaxPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5314,27 +5314,27 @@
 - (void)readAttributeActivePowerPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B7B0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925B8F8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5352,27 +5352,27 @@
 - (void)readAttributeActivePowerMinPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925BB60;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMinPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925BCA8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMinPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5390,27 +5390,27 @@
 - (void)readAttributeActivePowerMaxPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925BF10;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeActivePowerMaxPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925C058;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeActivePowerMaxPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5428,27 +5428,27 @@
 - (void)readAttributeReactivePowerPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925C2C0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeReactivePowerPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925C408;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeReactivePowerPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5466,27 +5466,27 @@
 - (void)readAttributeApparentPowerPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925C670;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeApparentPowerPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925C7B8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeApparentPowerPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5504,27 +5504,27 @@
 - (void)readAttributePowerFactorPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925CA20;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributePowerFactorPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925CB68;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributePowerFactorPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5542,27 +5542,27 @@
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925CDD0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925CF18;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5580,27 +5580,27 @@
 - (void)readAttributeAverageRmsOverVoltageCounterPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925D180;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsOverVoltageCounterPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925D2C8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsOverVoltageCounterPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5618,27 +5618,27 @@
 - (void)readAttributeAverageRmsUnderVoltageCounterPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925D530;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAverageRmsUnderVoltageCounterPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925D678;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAverageRmsUnderVoltageCounterPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5656,27 +5656,27 @@
 - (void)readAttributeRmsExtremeOverVoltagePeriodPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925D8E0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeOverVoltagePeriodPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925DA28;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeOverVoltagePeriodPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5694,27 +5694,27 @@
 - (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925DC90;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsExtremeUnderVoltagePeriodPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925DDD8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5732,27 +5732,27 @@
 - (void)readAttributeRmsVoltageSagPeriodPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E040;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSagPeriodPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E188;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSagPeriodPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5770,27 +5770,27 @@
 - (void)readAttributeRmsVoltageSwellPeriodPhaseCWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E3F0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeRmsVoltageSwellPeriodPhaseCWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E538;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeRmsVoltageSwellPeriodPhaseCWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5808,27 +5808,27 @@
 - (void)readAttributeGeneratedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E7A0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeGeneratedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925E8E8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeGeneratedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5846,27 +5846,27 @@
 - (void)readAttributeAcceptedCommandListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925EB50;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAcceptedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925EC98;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAcceptedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5884,27 +5884,27 @@
 - (void)readAttributeAttributeListWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925EF00;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeAttributeListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925F048;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeAttributeListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5922,27 +5922,27 @@
 - (void)readAttributeFeatureMapWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925F2B0;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeFeatureMapWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925F3F8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeFeatureMapWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -5960,27 +5960,27 @@
 - (void)readAttributeClusterRevisionWithCompletion:(void *)completion
 {
   v4 = completion;
-  v5 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925F660;
   block[3] = &unk_278A72B88;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 - (void)subscribeAttributeClusterRevisionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
 {
   v6 = reportHandler;
-  v7 = [(MTRCluster *)self callbackQueue];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23925F7A8;
   block[3] = &unk_278A72B88;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, block);
+  dispatch_async(callbackQueue, block);
 }
 
 + (void)readAttributeClusterRevisionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -6040,14 +6040,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23925FCBC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasurementTypeWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasurementTypeWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcVoltageWithCompletionHandler:(void *)completionHandler
@@ -6095,14 +6095,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239260020;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcVoltageMinWithCompletionHandler:(void *)completionHandler
@@ -6150,14 +6150,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239260384;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcVoltageMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcVoltageMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcVoltageMaxWithCompletionHandler:(void *)completionHandler
@@ -6205,14 +6205,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392606E8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcVoltageMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcVoltageMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcCurrentWithCompletionHandler:(void *)completionHandler
@@ -6260,14 +6260,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239260A4C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcCurrentMinWithCompletionHandler:(void *)completionHandler
@@ -6315,14 +6315,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239260DB0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcCurrentMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcCurrentMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcCurrentMaxWithCompletionHandler:(void *)completionHandler
@@ -6370,14 +6370,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239261114;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcCurrentMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcCurrentMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcPowerWithCompletionHandler:(void *)completionHandler
@@ -6425,14 +6425,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239261478;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcPowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcPowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcPowerMinWithCompletionHandler:(void *)completionHandler
@@ -6480,14 +6480,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392617DC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcPowerMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcPowerMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcPowerMaxWithCompletionHandler:(void *)completionHandler
@@ -6535,14 +6535,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239261B40;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcPowerMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcPowerMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcVoltageMultiplierWithCompletionHandler:(void *)completionHandler
@@ -6590,14 +6590,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239261EA4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcVoltageMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcVoltageMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcVoltageDivisorWithCompletionHandler:(void *)completionHandler
@@ -6645,14 +6645,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239262208;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcVoltageDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcVoltageDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcCurrentMultiplierWithCompletionHandler:(void *)completionHandler
@@ -6700,14 +6700,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926256C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcCurrentMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcCurrentMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcCurrentDivisorWithCompletionHandler:(void *)completionHandler
@@ -6755,14 +6755,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392628D0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcCurrentDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcCurrentDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcPowerMultiplierWithCompletionHandler:(void *)completionHandler
@@ -6810,14 +6810,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239262C34;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcPowerMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcPowerMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDcPowerDivisorWithCompletionHandler:(void *)completionHandler
@@ -6865,14 +6865,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239262F98;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDcPowerDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDcPowerDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcFrequencyWithCompletionHandler:(void *)completionHandler
@@ -6920,14 +6920,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392632FC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcFrequencyWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcFrequencyWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcFrequencyMinWithCompletionHandler:(void *)completionHandler
@@ -6975,14 +6975,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239263660;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcFrequencyMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcFrequencyMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcFrequencyMaxWithCompletionHandler:(void *)completionHandler
@@ -7030,14 +7030,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392639C4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcFrequencyMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcFrequencyMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeNeutralCurrentWithCompletionHandler:(void *)completionHandler
@@ -7085,14 +7085,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239263D28;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeNeutralCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeNeutralCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTotalActivePowerWithCompletionHandler:(void *)completionHandler
@@ -7140,14 +7140,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926408C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTotalActivePowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTotalActivePowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTotalReactivePowerWithCompletionHandler:(void *)completionHandler
@@ -7195,14 +7195,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392643F0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTotalReactivePowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTotalReactivePowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTotalApparentPowerWithCompletionHandler:(void *)completionHandler
@@ -7250,14 +7250,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239264754;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTotalApparentPowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTotalApparentPowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured1stHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7305,14 +7305,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239264AB8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured1stHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured1stHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured3rdHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7360,14 +7360,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239264E1C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured3rdHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured3rdHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured5thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7415,14 +7415,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239265180;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured5thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured5thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured7thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7470,14 +7470,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392654E4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured7thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured7thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured9thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7525,14 +7525,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239265848;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured9thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured9thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasured11thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7580,14 +7580,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239265BAC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasured11thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasured11thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase1stHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7635,14 +7635,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239265F10;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase1stHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase1stHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase3rdHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7690,14 +7690,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239266274;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase3rdHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase3rdHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase5thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7745,14 +7745,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392665D8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase5thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase5thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase7thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7800,14 +7800,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926693C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase7thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase7thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase9thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7855,14 +7855,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239266CA0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase9thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase9thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeasuredPhase11thHarmonicCurrentWithCompletionHandler:(void *)completionHandler
@@ -7910,14 +7910,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239267004;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeasuredPhase11thHarmonicCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeasuredPhase11thHarmonicCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcFrequencyMultiplierWithCompletionHandler:(void *)completionHandler
@@ -7965,14 +7965,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239267368;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcFrequencyMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcFrequencyMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcFrequencyDivisorWithCompletionHandler:(void *)completionHandler
@@ -8020,14 +8020,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392676CC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcFrequencyDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcFrequencyDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePowerMultiplierWithCompletionHandler:(void *)completionHandler
@@ -8075,14 +8075,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239267A30;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePowerMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePowerMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePowerDivisorWithCompletionHandler:(void *)completionHandler
@@ -8130,14 +8130,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239267D94;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePowerDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePowerDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeHarmonicCurrentMultiplierWithCompletionHandler:(void *)completionHandler
@@ -8185,14 +8185,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392680F8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeHarmonicCurrentMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeHarmonicCurrentMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePhaseHarmonicCurrentMultiplierWithCompletionHandler:(void *)completionHandler
@@ -8240,14 +8240,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926845C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePhaseHarmonicCurrentMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePhaseHarmonicCurrentMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInstantaneousVoltageWithCompletionHandler:(void *)completionHandler
@@ -8295,14 +8295,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392687C0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInstantaneousVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInstantaneousVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInstantaneousLineCurrentWithCompletionHandler:(void *)completionHandler
@@ -8350,14 +8350,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239268B24;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInstantaneousLineCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInstantaneousLineCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInstantaneousActiveCurrentWithCompletionHandler:(void *)completionHandler
@@ -8405,14 +8405,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239268E88;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInstantaneousActiveCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInstantaneousActiveCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInstantaneousReactiveCurrentWithCompletionHandler:(void *)completionHandler
@@ -8460,14 +8460,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392691EC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInstantaneousReactiveCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInstantaneousReactiveCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeInstantaneousPowerWithCompletionHandler:(void *)completionHandler
@@ -8515,14 +8515,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239269550;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeInstantaneousPowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeInstantaneousPowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageWithCompletionHandler:(void *)completionHandler
@@ -8570,14 +8570,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392698B4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMinWithCompletionHandler:(void *)completionHandler
@@ -8625,14 +8625,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239269C18;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMaxWithCompletionHandler:(void *)completionHandler
@@ -8680,14 +8680,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239269F7C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentWithCompletionHandler:(void *)completionHandler
@@ -8735,14 +8735,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926A2E0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMinWithCompletionHandler:(void *)completionHandler
@@ -8790,14 +8790,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926A644;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMaxWithCompletionHandler:(void *)completionHandler
@@ -8845,14 +8845,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926A9A8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerWithCompletionHandler:(void *)completionHandler
@@ -8900,14 +8900,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926AD0C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMinWithCompletionHandler:(void *)completionHandler
@@ -8955,14 +8955,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926B070;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMinWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMinWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMaxWithCompletionHandler:(void *)completionHandler
@@ -9010,14 +9010,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926B3D4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMaxWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMaxWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReactivePowerWithCompletionHandler:(void *)completionHandler
@@ -9065,14 +9065,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926B738;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReactivePowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReactivePowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeApparentPowerWithCompletionHandler:(void *)completionHandler
@@ -9120,14 +9120,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926BA9C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeApparentPowerWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeApparentPowerWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePowerFactorWithCompletionHandler:(void *)completionHandler
@@ -9175,14 +9175,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926BE00;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePowerFactorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePowerFactorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodWithCompletionHandler:(void *)completionHandler
@@ -9230,14 +9230,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926C174;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsVoltageMeasurementPeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsVoltageMeasurementPeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsUnderVoltageCounterWithCompletionHandler:(void *)completionHandler
@@ -9285,14 +9285,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926C4E8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsUnderVoltageCounterWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsUnderVoltageCounterWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeOverVoltagePeriodWithCompletionHandler:(void *)completionHandler
@@ -9340,14 +9340,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926C85C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeOverVoltagePeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeOverVoltagePeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeUnderVoltagePeriodWithCompletionHandler:(void *)completionHandler
@@ -9395,14 +9395,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926CBD0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeUnderVoltagePeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeUnderVoltagePeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSagPeriodWithCompletionHandler:(void *)completionHandler
@@ -9450,14 +9450,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926CF44;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSagPeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSagPeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSwellPeriodWithCompletionHandler:(void *)completionHandler
@@ -9505,14 +9505,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926D2B8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSwellPeriodWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSwellPeriodWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcVoltageMultiplierWithCompletionHandler:(void *)completionHandler
@@ -9560,14 +9560,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926D61C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcVoltageMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcVoltageMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcVoltageDivisorWithCompletionHandler:(void *)completionHandler
@@ -9615,14 +9615,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926D980;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcVoltageDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcVoltageDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcCurrentMultiplierWithCompletionHandler:(void *)completionHandler
@@ -9670,14 +9670,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926DCE4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcCurrentMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcCurrentMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcCurrentDivisorWithCompletionHandler:(void *)completionHandler
@@ -9725,14 +9725,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926E048;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcCurrentDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcCurrentDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcPowerMultiplierWithCompletionHandler:(void *)completionHandler
@@ -9780,14 +9780,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926E3AC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcPowerMultiplierWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcPowerMultiplierWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcPowerDivisorWithCompletionHandler:(void *)completionHandler
@@ -9835,14 +9835,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926E710;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcPowerDivisorWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcPowerDivisorWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeOverloadAlarmsMaskWithCompletionHandler:(void *)completionHandler
@@ -9890,14 +9890,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926EA84;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeOverloadAlarmsMaskWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeOverloadAlarmsMaskWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeVoltageOverloadWithCompletionHandler:(void *)completionHandler
@@ -9945,14 +9945,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926EDE8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeVoltageOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeVoltageOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeCurrentOverloadWithCompletionHandler:(void *)completionHandler
@@ -10000,14 +10000,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926F14C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeCurrentOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeCurrentOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcOverloadAlarmsMaskWithCompletionHandler:(void *)completionHandler
@@ -10055,14 +10055,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926F4C0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcOverloadAlarmsMaskWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcOverloadAlarmsMaskWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcVoltageOverloadWithCompletionHandler:(void *)completionHandler
@@ -10110,14 +10110,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926F824;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcVoltageOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcVoltageOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcCurrentOverloadWithCompletionHandler:(void *)completionHandler
@@ -10165,14 +10165,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926FB88;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcCurrentOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcCurrentOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcActivePowerOverloadWithCompletionHandler:(void *)completionHandler
@@ -10220,14 +10220,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23926FEEC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcActivePowerOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcActivePowerOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcReactivePowerOverloadWithCompletionHandler:(void *)completionHandler
@@ -10275,14 +10275,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239270250;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcReactivePowerOverloadWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcReactivePowerOverloadWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsOverVoltageWithCompletionHandler:(void *)completionHandler
@@ -10330,14 +10330,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392705B4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsOverVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsOverVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsUnderVoltageWithCompletionHandler:(void *)completionHandler
@@ -10385,14 +10385,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239270918;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsUnderVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsUnderVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeOverVoltageWithCompletionHandler:(void *)completionHandler
@@ -10440,14 +10440,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239270C7C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeOverVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeOverVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeUnderVoltageWithCompletionHandler:(void *)completionHandler
@@ -10495,14 +10495,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239270FE0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeUnderVoltageWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeUnderVoltageWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSagWithCompletionHandler:(void *)completionHandler
@@ -10550,14 +10550,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239271344;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSagWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSagWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSwellWithCompletionHandler:(void *)completionHandler
@@ -10605,14 +10605,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392716A8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSwellWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSwellWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeLineCurrentPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10660,14 +10660,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239271A0C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeLineCurrentPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeLineCurrentPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActiveCurrentPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10715,14 +10715,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239271D70;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActiveCurrentPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActiveCurrentPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReactiveCurrentPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10770,14 +10770,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392720D4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReactiveCurrentPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReactiveCurrentPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltagePhaseBWithCompletionHandler:(void *)completionHandler
@@ -10825,14 +10825,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239272438;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltagePhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltagePhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMinPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10880,14 +10880,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927279C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMinPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMinPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMaxPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10935,14 +10935,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239272B00;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMaxPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMaxPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentPhaseBWithCompletionHandler:(void *)completionHandler
@@ -10990,14 +10990,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239272E64;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMinPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11045,14 +11045,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392731C8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMinPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMinPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMaxPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11100,14 +11100,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927352C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMaxPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMaxPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11155,14 +11155,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239273890;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMinPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11210,14 +11210,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239273BF4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMinPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMinPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMaxPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11265,14 +11265,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239273F58;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMaxPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMaxPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReactivePowerPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11320,14 +11320,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392742BC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReactivePowerPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReactivePowerPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeApparentPowerPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11375,14 +11375,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239274620;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeApparentPowerPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeApparentPowerPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePowerFactorPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11430,14 +11430,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239274984;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePowerFactorPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePowerFactorPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11485,14 +11485,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239274CE8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsVoltageMeasurementPeriodPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsOverVoltageCounterPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11540,14 +11540,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927504C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsOverVoltageCounterPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsOverVoltageCounterPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsUnderVoltageCounterPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11595,14 +11595,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392753B0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsUnderVoltageCounterPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsUnderVoltageCounterPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeOverVoltagePeriodPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11650,14 +11650,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239275714;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeOverVoltagePeriodPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeOverVoltagePeriodPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11705,14 +11705,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239275A78;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeUnderVoltagePeriodPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeUnderVoltagePeriodPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSagPeriodPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11760,14 +11760,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239275DDC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSagPeriodPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSagPeriodPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSwellPeriodPhaseBWithCompletionHandler:(void *)completionHandler
@@ -11815,14 +11815,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239276140;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSwellPeriodPhaseBWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSwellPeriodPhaseBWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeLineCurrentPhaseCWithCompletionHandler:(void *)completionHandler
@@ -11870,14 +11870,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392764A4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeLineCurrentPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeLineCurrentPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActiveCurrentPhaseCWithCompletionHandler:(void *)completionHandler
@@ -11925,14 +11925,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239276808;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActiveCurrentPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActiveCurrentPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReactiveCurrentPhaseCWithCompletionHandler:(void *)completionHandler
@@ -11980,14 +11980,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239276B6C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReactiveCurrentPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReactiveCurrentPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltagePhaseCWithCompletionHandler:(void *)completionHandler
@@ -12035,14 +12035,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239276ED0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltagePhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltagePhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMinPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12090,14 +12090,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239277234;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMinPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMinPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageMaxPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12145,14 +12145,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239277598;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageMaxPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageMaxPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12200,14 +12200,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392778FC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMinPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12255,14 +12255,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239277C60;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMinPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMinPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsCurrentMaxPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12310,14 +12310,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239277FC4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsCurrentMaxPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsCurrentMaxPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12365,14 +12365,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239278328;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMinPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12420,14 +12420,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927868C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMinPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMinPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActivePowerMaxPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12475,14 +12475,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392789F0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActivePowerMaxPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActivePowerMaxPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeReactivePowerPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12530,14 +12530,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239278D54;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeReactivePowerPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeReactivePowerPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeApparentPowerPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12585,14 +12585,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2392790B8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeApparentPowerPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeApparentPowerPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePowerFactorPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12640,14 +12640,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927941C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePowerFactorPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePowerFactorPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12695,14 +12695,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239279780;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsVoltageMeasurementPeriodPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsOverVoltageCounterPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12750,14 +12750,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239279AE4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsOverVoltageCounterPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsOverVoltageCounterPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAverageRmsUnderVoltageCounterPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12805,14 +12805,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_239279E48;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAverageRmsUnderVoltageCounterPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAverageRmsUnderVoltageCounterPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeOverVoltagePeriodPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12860,14 +12860,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927A1AC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeOverVoltagePeriodPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeOverVoltagePeriodPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsExtremeUnderVoltagePeriodPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12915,14 +12915,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927A510;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsExtremeUnderVoltagePeriodPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsExtremeUnderVoltagePeriodPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSagPeriodPhaseCWithCompletionHandler:(void *)completionHandler
@@ -12970,14 +12970,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927A874;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSagPeriodPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSagPeriodPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRmsVoltageSwellPeriodPhaseCWithCompletionHandler:(void *)completionHandler
@@ -13025,14 +13025,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927ABD8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRmsVoltageSwellPeriodPhaseCWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRmsVoltageSwellPeriodPhaseCWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeGeneratedCommandListWithCompletionHandler:(void *)completionHandler
@@ -13080,14 +13080,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927AF3C;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeGeneratedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeGeneratedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcceptedCommandListWithCompletionHandler:(void *)completionHandler
@@ -13135,14 +13135,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927B2A0;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcceptedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcceptedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAttributeListWithCompletionHandler:(void *)completionHandler
@@ -13190,14 +13190,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927B604;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAttributeListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAttributeListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeFeatureMapWithCompletionHandler:(void *)completionHandler
@@ -13245,14 +13245,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927B968;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeFeatureMapWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeFeatureMapWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeClusterRevisionWithCompletionHandler:(void *)completionHandler
@@ -13300,14 +13300,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23927BCCC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeClusterRevisionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeClusterRevisionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 @end

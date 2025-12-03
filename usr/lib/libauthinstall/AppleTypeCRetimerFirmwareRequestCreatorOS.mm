@@ -1,22 +1,22 @@
 @interface AppleTypeCRetimerFirmwareRequestCreatorOS
-- (AppleTypeCRetimerFirmwareRequestCreatorOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (BOOL)parseOptions:(id)a3;
-- (id)generateHashForSubfile:(id)a3;
+- (AppleTypeCRetimerFirmwareRequestCreatorOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (BOOL)parseOptions:(id)options;
+- (id)generateHashForSubfile:(id)subfile;
 - (void)generateRequestDictionary;
 @end
 
 @implementation AppleTypeCRetimerFirmwareRequestCreatorOS
 
-- (AppleTypeCRetimerFirmwareRequestCreatorOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerFirmwareRequestCreatorOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = AppleTypeCRetimerFirmwareRequestCreatorOS;
-  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
   if (v9)
   {
-    if (![(AppleTypeCRetimerFirmwareRequestCreatorOS *)v9 parseOptions:v8])
+    if (![(AppleTypeCRetimerFirmwareRequestCreatorOS *)v9 parseOptions:optionsCopy])
     {
       v11 = 0;
       goto LABEL_6;
@@ -31,10 +31,10 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
   if (!v5)
   {
     v32 = @"Unable to locate firmware data";
@@ -75,7 +75,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"DeviceInfo"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"DeviceInfo"];
   v14 = v13;
   if (v13)
   {
@@ -157,16 +157,16 @@ LABEL_15:
   return v25;
 }
 
-- (id)generateHashForSubfile:(id)a3
+- (id)generateHashForSubfile:(id)subfile
 {
   v11 = *MEMORY[0x29EDCA608];
   memset(&v9, 0, sizeof(v9));
-  v3 = a3;
+  subfileCopy = subfile;
   CC_SHA384_Init(&v9);
-  v4 = [v3 dataPointer];
-  v5 = [v3 dataLength];
+  dataPointer = [subfileCopy dataPointer];
+  dataLength = [subfileCopy dataLength];
 
-  CC_SHA384_Update(&v9, v4, v5);
+  CC_SHA384_Update(&v9, dataPointer, dataLength);
   CC_SHA384_Final(md, &v9);
   v6 = [MEMORY[0x29EDB8DA0] dataWithBytes:md length:48];
   v7 = *MEMORY[0x29EDCA608];
@@ -178,30 +178,30 @@ LABEL_15:
 {
   v60[4] = *MEMORY[0x29EDCA608];
   tagNumber = self->_tagNumber;
-  v4 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v45 = tagNumber;
-  v5 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, tagNumber];
+  tagNumber = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, tagNumber];
   v6 = MEMORY[0x29EDB8EB0];
-  v50 = v5;
-  [v4 setObject:? forKeyedSubscript:?];
-  v7 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, tagNumber];
+  v50 = tagNumber;
+  [dictionary setObject:? forKeyedSubscript:?];
+  tagNumber2 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, tagNumber];
   v8 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:self->_boardID];
-  v49 = v7;
-  [v4 setObject:v8 forKeyedSubscript:v7];
+  v49 = tagNumber2;
+  [dictionary setObject:v8 forKeyedSubscript:tagNumber2];
 
-  v9 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, tagNumber];
+  tagNumber3 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, tagNumber];
   v10 = [MEMORY[0x29EDBA070] numberWithUnsignedShort:self->_chipID];
-  v48 = v9;
-  [v4 setObject:v10 forKeyedSubscript:v9];
+  v48 = tagNumber3;
+  [dictionary setObject:v10 forKeyedSubscript:tagNumber3];
 
-  v11 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, tagNumber];
+  tagNumber4 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, tagNumber];
   v12 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_ecid];
-  v47 = v11;
-  [v4 setObject:v12 forKeyedSubscript:v11];
+  v47 = tagNumber4;
+  [dictionary setObject:v12 forKeyedSubscript:tagNumber4];
 
-  v46 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, tagNumber];
-  [v4 setObject:self->_nonce forKeyedSubscript:?];
-  v13 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, tagNumber];
+  tagNumber5 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, tagNumber];
+  [dictionary setObject:self->_nonce forKeyedSubscript:?];
+  tagNumber6 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, tagNumber];
   v14 = MEMORY[0x29EDB8EA8];
   v15 = v6;
   if (self->_productionStatus)
@@ -214,14 +214,14 @@ LABEL_15:
     v16 = MEMORY[0x29EDB8EA8];
   }
 
-  v44 = v13;
-  [v4 setObject:v16 forKeyedSubscript:?];
-  v17 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, tagNumber];
+  v44 = tagNumber6;
+  [dictionary setObject:v16 forKeyedSubscript:?];
+  tagNumber7 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, tagNumber];
   v18 = [MEMORY[0x29EDBA070] numberWithUnsignedChar:self->_securityDomain];
-  v43 = v17;
-  [v4 setObject:v18 forKeyedSubscript:v17];
+  v43 = tagNumber7;
+  [dictionary setObject:v18 forKeyedSubscript:tagNumber7];
 
-  v19 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, tagNumber];
+  tagNumber8 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, tagNumber];
   if (self->_securityMode)
   {
     v20 = v15;
@@ -232,10 +232,10 @@ LABEL_15:
     v20 = v14;
   }
 
-  v42 = v19;
-  [v4 setObject:v20 forKeyedSubscript:?];
+  v42 = tagNumber8;
+  [dictionary setObject:v20 forKeyedSubscript:?];
   v52 = [(AppleTypeCRetimerFirmwareRequestCreatorOS *)self generateHashForSubfile:self->_rkos];
-  v51 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, tagNumber];
+  tagNumber9 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, tagNumber];
   productionStatus = self->_productionStatus;
   if (self->_demote && self->_productionStatus)
   {
@@ -292,7 +292,7 @@ LABEL_15:
   }
 
   v28 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:v25];
-  [v4 setObject:v28 forKeyedSubscript:v51];
+  [dictionary setObject:v28 forKeyedSubscript:tagNumber9];
 
   v29 = [(AppleTypeCRetimerFirmwareRequestCreatorOS *)self generateHashForSubfile:self->_rrko];
   v30 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RestoreRTKitOS error:%u", @"%u", 0, v45];
@@ -352,9 +352,9 @@ LABEL_15:
   }
 
   v38 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:v35];
-  [v4 setObject:v38 forKeyedSubscript:v30];
+  [dictionary setObject:v38 forKeyedSubscript:v30];
 
-  v39 = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:v4];
+  v39 = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:dictionary];
   requestDictionary = self->_requestDictionary;
   self->_requestDictionary = v39;
 

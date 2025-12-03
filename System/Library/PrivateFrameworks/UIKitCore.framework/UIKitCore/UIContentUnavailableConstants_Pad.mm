@@ -9,7 +9,7 @@
   v3 = sharedConstants___sharedConstants_96;
   if (!sharedConstants___sharedConstants_96)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedConstants___sharedConstants_96;
     sharedConstants___sharedConstants_96 = v4;
 

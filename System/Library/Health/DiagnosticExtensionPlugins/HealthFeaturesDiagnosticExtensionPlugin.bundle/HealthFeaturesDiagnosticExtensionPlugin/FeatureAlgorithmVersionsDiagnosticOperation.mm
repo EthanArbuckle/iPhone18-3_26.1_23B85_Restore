@@ -1,5 +1,5 @@
 @interface FeatureAlgorithmVersionsDiagnosticOperation
-- (FeatureAlgorithmVersionsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3;
+- (FeatureAlgorithmVersionsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l;
 - (NSString)reportFilename;
 - (void)run;
 @end
@@ -15,11 +15,11 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   sub_F38();
 }
 
-- (FeatureAlgorithmVersionsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3
+- (FeatureAlgorithmVersionsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l
 {
   ObjectType = swift_getObjectType();
   v5 = sub_2790();

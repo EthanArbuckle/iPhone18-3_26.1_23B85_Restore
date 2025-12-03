@@ -1,44 +1,44 @@
 @interface DSKBLEPairing
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
 @end
 
 @implementation DSKBLEPairing
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_10011C594(a3, a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  selfCopy = self;
+  sub_10011C594(agent, pairing, type);
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10011CFA0(a4);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  sub_10011CFA0(pairing);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_10011D904(a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10011D904(pairing, error);
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10011DF34(a4);
+  agentCopy = agent;
+  unpairCopy = unpair;
+  selfCopy = self;
+  sub_10011DF34(unpair);
 }
 
 @end

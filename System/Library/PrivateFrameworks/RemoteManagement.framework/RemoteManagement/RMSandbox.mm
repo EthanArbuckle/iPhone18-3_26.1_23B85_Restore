@@ -1,7 +1,7 @@
 @interface RMSandbox
 + (BOOL)configureSandbox;
-+ (id)tokenForURL:(id)a3;
-+ (int64_t)consumeToken:(id)a3;
++ (id)tokenForURL:(id)l;
++ (int64_t)consumeToken:(id)token;
 + (void)configureSandbox;
 @end
 
@@ -9,11 +9,11 @@
 
 + (BOOL)configureSandbox
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 UTF8String];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  uTF8String = [bundleIdentifier UTF8String];
 
-  if (v4)
+  if (uTF8String)
   {
     if (_set_user_dir_suffix())
     {
@@ -39,9 +39,9 @@
   return 0;
 }
 
-+ (id)tokenForURL:(id)a3
++ (id)tokenForURL:(id)l
 {
-  [a3 fileSystemRepresentation];
+  [l fileSystemRepresentation];
   v3 = sandbox_extension_issue_file();
   if (v3)
   {
@@ -58,11 +58,11 @@
   return v5;
 }
 
-+ (int64_t)consumeToken:(id)a3
++ (int64_t)consumeToken:(id)token
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [token UTF8String];
 
-  return MEMORY[0x1EEE74400](v3);
+  return MEMORY[0x1EEE74400](uTF8String);
 }
 
 + (void)configureSandbox
@@ -71,7 +71,7 @@
   v2 = *__error();
   v4[0] = 67109120;
   v4[1] = v2;
-  _os_log_fault_impl(&dword_1E1168000, a1, OS_LOG_TYPE_FAULT, "Failed to initialize sandbox: %{darwin.errno}d", v4, 8u);
+  _os_log_fault_impl(&dword_1E1168000, self, OS_LOG_TYPE_FAULT, "Failed to initialize sandbox: %{darwin.errno}d", v4, 8u);
   v3 = *MEMORY[0x1E69E9840];
 }
 

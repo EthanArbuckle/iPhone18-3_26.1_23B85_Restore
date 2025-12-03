@@ -1,21 +1,21 @@
 @interface MSStructuredPageViewController
-- (BOOL)_handleInlinePreviewForIndexPath:(id)a3;
-- (BOOL)_handleMediaPreviewForIndexPath:(id)a3;
-- (BOOL)_handlePreviewForIndexPath:(id)a3;
-- (BOOL)canSelectRowAtIndexPath:(id)a3;
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4;
-- (BOOL)purchaseItemAtIndexPath:(id)a3;
+- (BOOL)_handleInlinePreviewForIndexPath:(id)path;
+- (BOOL)_handleMediaPreviewForIndexPath:(id)path;
+- (BOOL)_handlePreviewForIndexPath:(id)path;
+- (BOOL)canSelectRowAtIndexPath:(id)path;
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count;
+- (BOOL)purchaseItemAtIndexPath:(id)path;
 - (MSStructuredPageViewController)init;
-- (id)setDisplayedSectionGroup:(id)a3;
-- (void)_playerStatusChangeNotification:(id)a3;
-- (void)_setPreviewStatus:(id)a3 forIndexPath:(id)a4 animated:(BOOL)a5;
+- (id)setDisplayedSectionGroup:(id)group;
+- (void)_playerStatusChangeNotification:(id)notification;
+- (void)_setPreviewStatus:(id)status forIndexPath:(id)path animated:(BOOL)animated;
 - (void)_stopPreviewPlayback;
 - (void)applicationDidEnterBackground;
 - (void)dealloc;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
-- (void)setSkLoading:(BOOL)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
+- (void)setSkLoading:(BOOL)loading;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MSStructuredPageViewController
@@ -50,7 +50,7 @@
   [(SUViewController *)&v3 applicationDidEnterBackground];
 }
 
-- (BOOL)canSelectRowAtIndexPath:(id)a3
+- (BOOL)canSelectRowAtIndexPath:(id)path
 {
   v5 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   if ([objc_msgSend(objc_msgSend(v5 "defaultStoreOffer")] && (objc_msgSend(objc_msgSend(v5, "contentRating"), "isRestricted") & 1) == 0 && (-[SUTableDataSource canShowPreviewForItem:](-[SUTableViewController dataSource](self, "dataSource"), "canShowPreviewForItem:", v5) & 1) != 0)
@@ -60,13 +60,13 @@
 
   v7.receiver = self;
   v7.super_class = MSStructuredPageViewController;
-  return [(SUStructuredPageViewController *)&v7 canSelectRowAtIndexPath:a3];
+  return [(SUStructuredPageViewController *)&v7 canSelectRowAtIndexPath:path];
 }
 
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count
 {
   v7 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
-  if (a4 == 1 && (v8 = v7, [objc_msgSend(objc_msgSend(v7 "defaultStoreOffer")]) && -[SUTableDataSource canShowPreviewForItem:](-[SUTableViewController dataSource](self, "dataSource"), "canShowPreviewForItem:", v8))
+  if (count == 1 && (v8 = v7, [objc_msgSend(objc_msgSend(v7 "defaultStoreOffer")]) && -[SUTableDataSource canShowPreviewForItem:](-[SUTableViewController dataSource](self, "dataSource"), "canShowPreviewForItem:", v8))
   {
     if ([objc_msgSend(v8 "contentRating")])
     {
@@ -76,7 +76,7 @@
     else
     {
 
-      return [(MSStructuredPageViewController *)self _handlePreviewForIndexPath:a3];
+      return [(MSStructuredPageViewController *)self _handlePreviewForIndexPath:path];
     }
   }
 
@@ -84,11 +84,11 @@
   {
     v10.receiver = self;
     v10.super_class = MSStructuredPageViewController;
-    return [(SUStructuredPageViewController *)&v10 handleSelectionForIndexPath:a3 tapCount:a4];
+    return [(SUStructuredPageViewController *)&v10 handleSelectionForIndexPath:path tapCount:count];
   }
 }
 
-- (BOOL)purchaseItemAtIndexPath:(id)a3
+- (BOOL)purchaseItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = MSStructuredPageViewController;
@@ -106,27 +106,27 @@
   return v5;
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
   [(MSStructuredPageViewController *)self _setPreviewStatus:0 forIndexPath:0 animated:0];
   v7.receiver = self;
   v7.super_class = MSStructuredPageViewController;
-  [(SUStructuredPageViewController *)&v7 reloadWithStorePage:a3 forURL:a4];
+  [(SUStructuredPageViewController *)&v7 reloadWithStorePage:page forURL:l];
 }
 
-- (id)setDisplayedSectionGroup:(id)a3
+- (id)setDisplayedSectionGroup:(id)group
 {
   v5 = [(SUSegmentedControl *)self->_inlineSegmentedControl isDescendantOfView:[(UITableView *)[(SUTableViewController *)self tableView] tableHeaderView]];
 
   self->_inlineSegmentedControl = 0;
-  if (a3)
+  if (group)
   {
     v6 = objc_alloc_init(MEMORY[0x277D7FE80]);
     self->_inlineSegmentedControl = v6;
     [(SUSegmentedControl *)v6 setClientInterface:[(SUViewController *)self clientInterface]];
-    -[SUSegmentedControl setItems:](self->_inlineSegmentedControl, "setItems:", [objc_msgSend(a3 "sections")]);
-    -[SUSegmentedControl setTintColor:](self->_inlineSegmentedControl, "setTintColor:", [a3 tintColor]);
-    -[SUSegmentedControl setTintStyle:](self->_inlineSegmentedControl, "setTintStyle:", [a3 tintStyle]);
+    -[SUSegmentedControl setItems:](self->_inlineSegmentedControl, "setItems:", [objc_msgSend(group "sections")]);
+    -[SUSegmentedControl setTintColor:](self->_inlineSegmentedControl, "setTintColor:", [group tintColor]);
+    -[SUSegmentedControl setTintStyle:](self->_inlineSegmentedControl, "setTintStyle:", [group tintStyle]);
     [(SUSegmentedControl *)self->_inlineSegmentedControl sizeToFit];
     [(SUSegmentedControl *)self->_inlineSegmentedControl frame];
     v8 = v7;
@@ -149,25 +149,25 @@
   return self->_inlineSegmentedControl;
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v5.receiver = self;
   v5.super_class = MSStructuredPageViewController;
   [(SUStructuredPageGroupedViewController *)&v5 setSkLoading:?];
-  if (v3)
+  if (loadingCopy)
   {
     [(MSStructuredPageViewController *)self _setPreviewStatus:0 forIndexPath:0 animated:0];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  if (self->_previewIndexPath && [a5 isEqual:?])
+  if (self->_previewIndexPath && [path isEqual:?])
   {
     previewStatus = self->_previewStatus;
 LABEL_6:
-    [a4 setPreviewStatus:previewStatus];
+    [cell setPreviewStatus:previewStatus];
     goto LABEL_7;
   }
 
@@ -181,67 +181,67 @@ LABEL_6:
 LABEL_7:
   v10.receiver = self;
   v10.super_class = MSStructuredPageViewController;
-  [(SUTableViewController *)&v10 tableView:a3 willDisplayCell:a4 forRowAtIndexPath:a5];
+  [(SUTableViewController *)&v10 tableView:view willDisplayCell:cell forRowAtIndexPath:path];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MSStructuredPageViewController *)self _stopPreviewPlayback];
   [(MSStructuredPageViewController *)self _setPreviewStatus:0 forIndexPath:0 animated:0];
   v5.receiver = self;
   v5.super_class = MSStructuredPageViewController;
-  [(SUItemTableViewController *)&v5 viewWillDisappear:v3];
+  [(SUItemTableViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)_playerStatusChangeNotification:(id)a3
+- (void)_playerStatusChangeNotification:(id)notification
 {
-  if (([objc_msgSend(objc_msgSend(a3 "object")] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if (([objc_msgSend(objc_msgSend(notification "object")] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     [(MSStructuredPageViewController *)self _stopPreviewPlayback];
     previewIndexPath = self->_previewIndexPath;
-    v5 = self;
-    v6 = 0;
+    selfCopy2 = self;
+    playerStatus = 0;
     v7 = 1;
   }
 
   else
   {
-    v6 = [(SUAudioPlayer *)self->_previewPlayer playerStatus];
+    playerStatus = [(SUAudioPlayer *)self->_previewPlayer playerStatus];
     previewIndexPath = self->_previewIndexPath;
-    v5 = self;
+    selfCopy2 = self;
     v7 = 0;
   }
 
-  [(MSStructuredPageViewController *)v5 _setPreviewStatus:v6 forIndexPath:previewIndexPath animated:v7];
+  [(MSStructuredPageViewController *)selfCopy2 _setPreviewStatus:playerStatus forIndexPath:previewIndexPath animated:v7];
 }
 
-- (BOOL)_handleInlinePreviewForIndexPath:(id)a3
+- (BOOL)_handleInlinePreviewForIndexPath:(id)path
 {
-  v5 = [(SUTableViewController *)self tableView];
+  tableView = [(SUTableViewController *)self tableView];
   previewIndexPath = self->_previewIndexPath;
-  if (!previewIndexPath || (v7 = [(NSIndexPath *)previewIndexPath isEqual:a3], [(MSStructuredPageViewController *)self _setPreviewStatus:0 forIndexPath:self->_previewIndexPath animated:1], [(MSStructuredPageViewController *)self _stopPreviewPlayback], (v7 & 1) == 0))
+  if (!previewIndexPath || (v7 = [(NSIndexPath *)previewIndexPath isEqual:path], [(MSStructuredPageViewController *)self _setPreviewStatus:0 forIndexPath:self->_previewIndexPath animated:1], [(MSStructuredPageViewController *)self _stopPreviewPlayback], (v7 & 1) == 0))
   {
     v8 = [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
     if (v8)
     {
       self->_previewPlayer = [objc_alloc(MEMORY[0x277D7FDA0]) initWithURL:v8];
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel__playerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:self->_previewPlayer];
-      [(MSStructuredPageViewController *)self _setPreviewStatus:[(SUAudioPlayer *)self->_previewPlayer playerStatus] forIndexPath:a3 animated:1];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__playerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:self->_previewPlayer];
+      [(MSStructuredPageViewController *)self _setPreviewStatus:[(SUAudioPlayer *)self->_previewPlayer playerStatus] forIndexPath:path animated:1];
       [(SUAudioPlayer *)self->_previewPlayer play];
     }
 
-    self->_previewIndexPath = a3;
+    self->_previewIndexPath = path;
   }
 
-  [(UITableView *)v5 deselectRowAtIndexPath:a3 animated:1];
+  [(UITableView *)tableView deselectRowAtIndexPath:path animated:1];
   return 1;
 }
 
-- (BOOL)_handleMediaPreviewForIndexPath:(id)a3
+- (BOOL)_handleMediaPreviewForIndexPath:(id)path
 {
-  v4 = [objc_alloc(MEMORY[0x277D7FE10]) initWithItem:{objc_msgSend(objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self, "dataSource"), "structuredPage"), "itemList"), "itemAtIndexPath:", a3)}];
+  v4 = [objc_alloc(MEMORY[0x277D7FE10]) initWithItem:{objc_msgSend(objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self, "dataSource"), "structuredPage"), "itemList"), "itemAtIndexPath:", path)}];
   v5 = [objc_alloc(MEMORY[0x277D7FE18]) initWithMediaPlayerItem:v4];
   [v5 setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
   [(MSStructuredPageViewController *)self presentViewController:v5 animated:1 completion:0];
@@ -249,39 +249,39 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)_handlePreviewForIndexPath:(id)a3
+- (BOOL)_handlePreviewForIndexPath:(id)path
 {
   v5 = [objc_msgSend(objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   if ((v5 - 1001) > 8 || ((1 << (v5 + 23)) & 0x147) == 0)
   {
 
-    return [(MSStructuredPageViewController *)self _handleInlinePreviewForIndexPath:a3];
+    return [(MSStructuredPageViewController *)self _handleInlinePreviewForIndexPath:path];
   }
 
   else
   {
 
-    return [(MSStructuredPageViewController *)self _handleMediaPreviewForIndexPath:a3];
+    return [(MSStructuredPageViewController *)self _handleMediaPreviewForIndexPath:path];
   }
 }
 
-- (void)_setPreviewStatus:(id)a3 forIndexPath:(id)a4 animated:(BOOL)a5
+- (void)_setPreviewStatus:(id)status forIndexPath:(id)path animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   previewStatus = self->_previewStatus;
-  if (previewStatus != a3)
+  if (previewStatus != status)
   {
 
-    self->_previewStatus = a3;
+    self->_previewStatus = status;
   }
 
   previewIndexPath = self->_previewIndexPath;
-  if (a4 && previewIndexPath)
+  if (path && previewIndexPath)
   {
-    if (([(NSIndexPath *)previewIndexPath isEqual:a4]& 1) != 0)
+    if (([(NSIndexPath *)previewIndexPath isEqual:path]& 1) != 0)
     {
 LABEL_11:
-      [(UITableViewCell *)[(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:self->_previewIndexPath] setPreviewStatus:a3 animated:v5];
+      [(UITableViewCell *)[(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:self->_previewIndexPath] setPreviewStatus:status animated:animatedCopy];
       goto LABEL_12;
     }
 
@@ -290,7 +290,7 @@ LABEL_11:
 
   if (previewIndexPath)
   {
-    [(UITableViewCell *)[(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:self->_previewIndexPath] setPreviewStatus:0 animated:v5];
+    [(UITableViewCell *)[(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:self->_previewIndexPath] setPreviewStatus:0 animated:animatedCopy];
     v11 = self->_previewIndexPath;
   }
 
@@ -299,7 +299,7 @@ LABEL_11:
     v11 = 0;
   }
 
-  v12 = [a4 copy];
+  v12 = [path copy];
   self->_previewIndexPath = v12;
   if (v12)
   {
@@ -318,8 +318,8 @@ LABEL_12:
 {
   if (self->_previewPlayer)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
     [(SUAudioPlayer *)self->_previewPlayer stop];
 
     self->_previewPlayer = 0;

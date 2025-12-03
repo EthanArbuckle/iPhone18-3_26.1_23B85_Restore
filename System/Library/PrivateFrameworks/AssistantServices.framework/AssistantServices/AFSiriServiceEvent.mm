@@ -1,16 +1,16 @@
 @interface AFSiriServiceEvent
-- (AFSiriServiceEvent)initWithDomain:(id)a3 identifier:(id)a4 command:(id)a5;
-- (AFSiriServiceEvent)initWithMetadata:(id)a3 identifier:(id)a4;
+- (AFSiriServiceEvent)initWithDomain:(id)domain identifier:(id)identifier command:(id)command;
+- (AFSiriServiceEvent)initWithMetadata:(id)metadata identifier:(id)identifier;
 @end
 
 @implementation AFSiriServiceEvent
 
-- (AFSiriServiceEvent)initWithMetadata:(id)a3 identifier:(id)a4
+- (AFSiriServiceEvent)initWithMetadata:(id)metadata identifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  if (metadataCopy)
   {
     if (initWithMetadata_identifier__onceToken != -1)
     {
@@ -18,8 +18,8 @@
     }
 
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [v6 allKeys];
-    v10 = [v8 setWithArray:v9];
+    allKeys = [metadataCopy allKeys];
+    v10 = [v8 setWithArray:allKeys];
 
     if (([v10 isSubsetOfSet:initWithMetadata_identifier__knownKeys] & 1) == 0)
     {
@@ -37,21 +37,21 @@
       }
 
 LABEL_11:
-      v19 = 0;
-      v21 = self;
+      selfCopy2 = 0;
+      selfCopy = self;
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v11 = [v6 objectForKey:@"dismissalReason"];
+    v11 = [metadataCopy objectForKey:@"dismissalReason"];
     if (v11)
     {
       v12 = v11;
-      v13 = [v6 objectForKey:@"dismissalReason"];
-      v14 = [v13 integerValue];
+      v13 = [metadataCopy objectForKey:@"dismissalReason"];
+      integerValue = [v13 integerValue];
 
-      if (v14 >= 54)
+      if (integerValue >= 54)
       {
         v15 = AFSiriLogContextEvent;
         if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@ LABEL_23:
           *buf = 136315394;
           v35 = "[AFSiriServiceEvent initWithMetadata:identifier:]";
           v36 = 1024;
-          LODWORD(v37) = v14;
+          LODWORD(v37) = integerValue;
           v16 = "%s Unsupported BMSiriServiceDismissalReason %u";
           v17 = v15;
           v18 = 18;
@@ -74,18 +74,18 @@ LABEL_26:
 
     else
     {
-      v14 = 0;
+      integerValue = 0;
     }
 
-    v21 = [v6 objectForKey:@"unintended"];
-    v22 = [v6 objectForKey:@"requestSource"];
+    selfCopy = [metadataCopy objectForKey:@"unintended"];
+    v22 = [metadataCopy objectForKey:@"requestSource"];
     if (v22)
     {
       v23 = v22;
-      v24 = [v6 objectForKey:@"requestSource"];
-      v25 = [v24 integerValue];
+      v24 = [metadataCopy objectForKey:@"requestSource"];
+      integerValue2 = [v24 integerValue];
 
-      if (v25 >= 45)
+      if (integerValue2 >= 45)
       {
         v26 = AFSiriLogContextEvent;
         if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_ERROR))
@@ -93,23 +93,23 @@ LABEL_26:
           *buf = 136315394;
           v35 = "[AFSiriServiceEvent initWithMetadata:identifier:]";
           v36 = 1024;
-          LODWORD(v37) = v25;
+          LODWORD(v37) = integerValue2;
           _os_log_error_impl(&dword_1912FE000, v26, OS_LOG_TYPE_ERROR, "%s Unsupported BMSiriServiceRequestSource %u", buf, 0x12u);
         }
 
-        v19 = 0;
+        selfCopy2 = 0;
         goto LABEL_22;
       }
     }
 
     else
     {
-      v25 = 0;
+      integerValue2 = 0;
     }
 
     v27 = objc_alloc(getBMSiriServiceClass());
-    v28 = [v6 objectForKey:@"domain"];
-    v29 = [v27 initWithDismissalReason:v14 unintended:v21 requestSource:v25 identifier:v7 domain:v28 command:0];
+    v28 = [metadataCopy objectForKey:@"domain"];
+    v29 = [v27 initWithDismissalReason:integerValue unintended:selfCopy requestSource:integerValue2 identifier:identifierCopy domain:v28 command:0];
 
     if (v29)
     {
@@ -126,17 +126,17 @@ LABEL_26:
 
     self = v30;
 
-    v19 = self;
+    selfCopy2 = self;
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v19 = 0;
+  selfCopy2 = 0;
 LABEL_24:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy2;
 }
 
 void __50__AFSiriServiceEvent_initWithMetadata_identifier___block_invoke()
@@ -155,12 +155,12 @@ void __50__AFSiriServiceEvent_initWithMetadata_identifier___block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AFSiriServiceEvent)initWithDomain:(id)a3 identifier:(id)a4 command:(id)a5
+- (AFSiriServiceEvent)initWithDomain:(id)domain identifier:(id)identifier command:(id)command
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_alloc(getBMSiriServiceClass()) initWithDismissalReason:0 unintended:0 requestSource:0 identifier:v9 domain:v10 command:v8];
+  commandCopy = command;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  v11 = [objc_alloc(getBMSiriServiceClass()) initWithDismissalReason:0 unintended:0 requestSource:0 identifier:identifierCopy domain:domainCopy command:commandCopy];
 
   if (v11)
   {

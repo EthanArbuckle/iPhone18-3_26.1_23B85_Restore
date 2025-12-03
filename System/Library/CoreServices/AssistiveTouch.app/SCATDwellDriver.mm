@@ -1,30 +1,30 @@
 @interface SCATDwellDriver
 - (BOOL)_actuallyHandleSelectAction;
-- (BOOL)_handleStepAction:(int64_t)a3;
+- (BOOL)_handleStepAction:(int64_t)action;
 - (BOOL)_handleStepNextAction;
 - (BOOL)_handleStepPreviousAction;
 - (BOOL)_shouldUseDwellSelection;
 - (BOOL)_shouldUseScanAbortTimer;
-- (BOOL)handleInputAction:(id)a3;
+- (BOOL)handleInputAction:(id)action;
 - (double)dwellDelay;
 - (void)_cancelDwellRelatedTimers;
-- (void)_didTransitionToPhase:(int)a3;
+- (void)_didTransitionToPhase:(int)phase;
 - (void)_dwellTimerFired;
 - (void)_idleTimerDidFire;
 - (void)_resetDwellTimer;
 - (void)_scanAbortTimerFired;
 - (void)_startDwellTimer;
 - (void)_startScanAbortTimer;
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4;
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context;
 @end
 
 @implementation SCATDwellDriver
 
-- (BOOL)handleInputAction:(id)a3
+- (BOOL)handleInputAction:(id)action
 {
   v6.receiver = self;
   v6.super_class = SCATDwellDriver;
-  v4 = [(SCATDriver *)&v6 handleInputAction:a3];
+  v4 = [(SCATDriver *)&v6 handleInputAction:action];
   [(SCATDwellDriver *)self _resetDwellTimer];
   return v4;
 }
@@ -36,7 +36,7 @@
   return [(SCATDriver *)&v3 _handleSelectAction];
 }
 
-- (BOOL)_handleStepAction:(int64_t)a3
+- (BOOL)_handleStepAction:(int64_t)action
 {
   if ([(SCATDwellDriver *)self isReadyForSelect])
   {
@@ -45,7 +45,7 @@
 
   else
   {
-    [(SCATDriver *)self _stepToNextFocusContextInDirection:a3];
+    [(SCATDriver *)self _stepToNextFocusContextInDirection:action];
   }
 
   return 1;
@@ -83,38 +83,38 @@
 
 - (BOOL)_shouldUseDwellSelection
 {
-  v2 = [(SCATDriver *)self activeElementManager];
-  v3 = [v2 allowsDwellSelection];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  allowsDwellSelection = [activeElementManager allowsDwellSelection];
 
-  return v3;
+  return allowsDwellSelection;
 }
 
 - (BOOL)_shouldUseScanAbortTimer
 {
-  v3 = [(SCATDriver *)self focusContext];
-  v4 = [v3 element];
+  focusContext = [(SCATDriver *)self focusContext];
+  element = [focusContext element];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCATDriver *)self focusContext];
-    v6 = [v5 element];
-    v7 = [v6 allowsDwellScanningToAbortAfterTimeout];
+    focusContext2 = [(SCATDriver *)self focusContext];
+    element2 = [focusContext2 element];
+    allowsDwellScanningToAbortAfterTimeout = [element2 allowsDwellScanningToAbortAfterTimeout];
 
-    if (v7)
+    if (allowsDwellScanningToAbortAfterTimeout)
     {
       v8 = 0;
       goto LABEL_6;
     }
   }
 
-  v5 = [(SCATDriver *)self activeElementManager];
-  if ([v5 allowsDwellScanningToAbortAfterTimeout])
+  focusContext2 = [(SCATDriver *)self activeElementManager];
+  if ([focusContext2 allowsDwellScanningToAbortAfterTimeout])
   {
     v8 = 1;
 LABEL_6:
-    v9 = [(SCATDriver *)self focusContext];
-    v10 = [v9 selectBehavior] != 4;
+    focusContext3 = [(SCATDriver *)self focusContext];
+    v10 = [focusContext3 selectBehavior] != 4;
 
     if (!v8)
     {
@@ -140,11 +140,11 @@ LABEL_10:
   }
 }
 
-- (void)_didTransitionToPhase:(int)a3
+- (void)_didTransitionToPhase:(int)phase
 {
   v4.receiver = self;
   v4.super_class = SCATDwellDriver;
-  [(SCATDriver *)&v4 _didTransitionToPhase:*&a3];
+  [(SCATDriver *)&v4 _didTransitionToPhase:*&phase];
   [(SCATDwellDriver *)self _resetDwellTimer];
 }
 
@@ -175,8 +175,8 @@ LABEL_10:
 {
   [(SCATDwellDriver *)self _cancelDwellRelatedTimers];
   [(SCATDwellDriver *)self setIsReadyForSelect:1];
-  v3 = [(SCATDriver *)self delegate];
-  [v3 driver:self indicateDwellScanningWillAbort:1];
+  delegate = [(SCATDriver *)self delegate];
+  [delegate driver:self indicateDwellScanningWillAbort:1];
 
   v4 = +[AXSettings sharedInstance];
   [v4 assistiveTouchScanTimeout];
@@ -215,8 +215,8 @@ LABEL_10:
 - (void)_cancelDwellRelatedTimers
 {
   [(SCATDwellDriver *)self setIsReadyForSelect:0];
-  v3 = [(SCATDriver *)self delegate];
-  [v3 driver:self indicateDwellScanningWillAbort:0];
+  delegate = [(SCATDriver *)self delegate];
+  [delegate driver:self indicateDwellScanningWillAbort:0];
 
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_dwellTimerFired" object:0];
 
@@ -243,11 +243,11 @@ LABEL_10:
   return v9;
 }
 
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = SCATDwellDriver;
-  [(SCATDriver *)&v6 outputManager:a3 didSpeakFocusContext:a4];
+  [(SCATDriver *)&v6 outputManager:manager didSpeakFocusContext:context];
   v5 = +[AXSettings sharedInstance];
   [v5 assistiveTouchScanTimeout];
   [(SCATDwellDriver *)self performSelector:"_scanAbortTimerFired" withObject:0 afterDelay:?];

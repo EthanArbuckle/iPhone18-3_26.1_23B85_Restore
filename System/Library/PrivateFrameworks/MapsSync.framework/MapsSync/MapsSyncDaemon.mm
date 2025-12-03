@@ -1,21 +1,21 @@
 @interface MapsSyncDaemon
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4;
-- (id)identifierForConnection:(id)a3;
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context;
+- (id)identifierForConnection:(id)connection;
 @end
 
 @implementation MapsSyncDaemon
 
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
 
-  v6 = a3;
-  LOBYTE(a3) = _s9mapssyncd14MapsSyncDaemonC19willPerformRecovery8forError4fromSbs0I0_pSg_So33NSXPCStoreServerConnectionContextCSgtF_0();
+  errorCopy = error;
+  LOBYTE(error) = _s9mapssyncd14MapsSyncDaemonC19willPerformRecovery8forError4fromSbs0I0_pSg_So33NSXPCStoreServerConnectionContextCSgtF_0();
 
-  return a3 & 1;
+  return error & 1;
 }
 
-- (id)identifierForConnection:(id)a3
+- (id)identifierForConnection:(id)connection
 {
   v3 = sub_100028F78();
 

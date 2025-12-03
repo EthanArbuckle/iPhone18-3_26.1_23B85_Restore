@@ -1,6 +1,6 @@
 @interface _SOTimerMutation
 - (BOOL)getIsFiring;
-- (_SOTimerMutation)initWithBase:(id)a3;
+- (_SOTimerMutation)initWithBase:(id)base;
 - (double)getDuration;
 - (double)getFireTimeInterval;
 - (id)getDismissedDate;
@@ -20,60 +20,60 @@
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_lastModifiedDate;
+    lastModifiedDate = self->_lastModifiedDate;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base lastModifiedDate];
+    lastModifiedDate = [(SOTimer *)self->_base lastModifiedDate];
   }
 
-  return v2;
+  return lastModifiedDate;
 }
 
 - (id)getDismissedDate
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_dismissedDate;
+    dismissedDate = self->_dismissedDate;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base dismissedDate];
+    dismissedDate = [(SOTimer *)self->_base dismissedDate];
   }
 
-  return v2;
+  return dismissedDate;
 }
 
 - (id)getFiredDate
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_firedDate;
+    firedDate = self->_firedDate;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base firedDate];
+    firedDate = [(SOTimer *)self->_base firedDate];
   }
 
-  return v2;
+  return firedDate;
 }
 
 - (id)getFireDate
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_fireDate;
+    fireDate = self->_fireDate;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base fireDate];
+    fireDate = [(SOTimer *)self->_base fireDate];
   }
 
-  return v2;
+  return fireDate;
 }
 
 - (double)getFireTimeInterval
@@ -128,15 +128,15 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_title;
+    title = self->_title;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base title];
+    title = [(SOTimer *)self->_base title];
   }
 
-  return v2;
+  return title;
 }
 
 - (BOOL)getIsFiring
@@ -156,42 +156,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_timerURL;
+    timerURL = self->_timerURL;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base timerURL];
+    timerURL = [(SOTimer *)self->_base timerURL];
   }
 
-  return v2;
+  return timerURL;
 }
 
 - (id)getTimerID
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_timerID;
+    timerID = self->_timerID;
   }
 
   else
   {
-    v2 = [(SOTimer *)self->_base timerID];
+    timerID = [(SOTimer *)self->_base timerID];
   }
 
-  return v2;
+  return timerID;
 }
 
-- (_SOTimerMutation)initWithBase:(id)a3
+- (_SOTimerMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SOTimerMutation;
   v6 = [(_SOTimerMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

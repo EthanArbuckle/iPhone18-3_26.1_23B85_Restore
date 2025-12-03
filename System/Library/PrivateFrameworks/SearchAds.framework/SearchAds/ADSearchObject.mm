@@ -1,16 +1,16 @@
 @interface ADSearchObject
 - (ADSearchObject)init;
-- (ADSearchObject)initWithSponsoredSearchRequestData:(id)a3 routingInfoData:(id)a4 deviceRequestID:(id)a5 userTargetingID:(id)a6 error:(id)a7;
-- (BOOL)checkForNonWKDiscardOverrides:(BOOL)a3 forAdamID:(id)a4;
-- (BOOL)isAppInstalled:(unint64_t)a3;
-- (id)filterAdsForNonWK:(id)a3;
-- (id)updatedWithTransparencyRenderingData:(id)a3;
-- (int64_t)setAdvertisementsWithPolicy:(id)a3;
+- (ADSearchObject)initWithSponsoredSearchRequestData:(id)data routingInfoData:(id)infoData deviceRequestID:(id)d userTargetingID:(id)iD error:(id)error;
+- (BOOL)checkForNonWKDiscardOverrides:(BOOL)overrides forAdamID:(id)d;
+- (BOOL)isAppInstalled:(unint64_t)installed;
+- (id)filterAdsForNonWK:(id)k;
+- (id)updatedWithTransparencyRenderingData:(id)data;
+- (int64_t)setAdvertisementsWithPolicy:(id)policy;
 - (void)addFeaturesToAdvertisements;
-- (void)orderedAds:(id)a3;
-- (void)orderedAdsWithODMLSuccess:(id)a3;
-- (void)setAdvertisements:(id)a3;
-- (void)setOrganics:(id)a3;
+- (void)orderedAds:(id)ads;
+- (void)orderedAdsWithODMLSuccess:(id)success;
+- (void)setAdvertisements:(id)advertisements;
+- (void)setOrganics:(id)organics;
 @end
 
 @implementation ADSearchObject
@@ -47,31 +47,31 @@
   return v6;
 }
 
-- (ADSearchObject)initWithSponsoredSearchRequestData:(id)a3 routingInfoData:(id)a4 deviceRequestID:(id)a5 userTargetingID:(id)a6 error:(id)a7
+- (ADSearchObject)initWithSponsoredSearchRequestData:(id)data routingInfoData:(id)infoData deviceRequestID:(id)d userTargetingID:(id)iD error:(id)error
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  infoDataCopy = infoData;
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
   v21 = objc_msgSend_init(self, v17, v18, v19, v20);
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong((v21 + 8), a3);
-    objc_storeStrong(&v22->_routingInfoData, a4);
-    objc_storeStrong(&v22->_deviceRequestID, a5);
-    objc_storeStrong(&v22->_userTargetingID, a6);
-    objc_storeStrong(&v22->_error, a7);
+    objc_storeStrong((v21 + 8), data);
+    objc_storeStrong(&v22->_routingInfoData, infoData);
+    objc_storeStrong(&v22->_deviceRequestID, d);
+    objc_storeStrong(&v22->_userTargetingID, iD);
+    objc_storeStrong(&v22->_error, error);
   }
 
   return v22;
 }
 
-- (void)setAdvertisements:(id)a3
+- (void)setAdvertisements:(id)advertisements
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  advertisementsCopy = advertisements;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,7 +83,7 @@
   if (MGGetBoolAnswer())
   {
     v10 = MEMORY[0x277CBEB18];
-    v11 = objc_msgSend_count(v4, v6, v7, v8, v9);
+    v11 = objc_msgSend_count(advertisementsCopy, v6, v7, v8, v9);
     v15 = objc_msgSend_arrayWithCapacity_(v10, v12, v11, v13, v14);
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
@@ -91,7 +91,7 @@
     v68[3] = &unk_279B889B8;
     v16 = v15;
     v69 = v16;
-    objc_msgSend_enumerateObjectsUsingBlock_(v4, v17, v68, v18, v19);
+    objc_msgSend_enumerateObjectsUsingBlock_(advertisementsCopy, v17, v68, v18, v19);
     v20 = APLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -102,7 +102,7 @@
     }
   }
 
-  v26 = objc_msgSend_filterAdsForNonWK_(self, v6, v4, v8, v9);
+  v26 = objc_msgSend_filterAdsForNonWK_(self, v6, advertisementsCopy, v8, v9);
   v30 = objc_msgSend_updatedWithTransparencyRenderingData_(self, v27, v26, v28, v29);
   advertisements = self->_advertisements;
   self->_advertisements = v30;
@@ -136,10 +136,10 @@
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)setAdvertisementsWithPolicy:(id)a3
+- (int64_t)setAdvertisementsWithPolicy:(id)policy
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  policyCopy = policy;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,7 +151,7 @@
   if (MGGetBoolAnswer())
   {
     v10 = MEMORY[0x277CBEB18];
-    v11 = objc_msgSend_count(v4, v6, v7, v8, v9);
+    v11 = objc_msgSend_count(policyCopy, v6, v7, v8, v9);
     v15 = objc_msgSend_arrayWithCapacity_(v10, v12, v11, v13, v14);
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
@@ -159,7 +159,7 @@
     v88[3] = &unk_279B889B8;
     v16 = v15;
     v89 = v16;
-    objc_msgSend_enumerateObjectsUsingBlock_(v4, v17, v88, v18, v19);
+    objc_msgSend_enumerateObjectsUsingBlock_(policyCopy, v17, v88, v18, v19);
     v20 = APLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -170,13 +170,13 @@
     }
   }
 
-  v26 = objc_msgSend_filterAdsForNonWK_(self, v6, v4, v8, v9);
-  if (objc_msgSend_count(v26, v27, v28, v29, v30) || !objc_msgSend_count(v4, v31, v32, v33, v34))
+  v26 = objc_msgSend_filterAdsForNonWK_(self, v6, policyCopy, v8, v9);
+  if (objc_msgSend_count(v26, v27, v28, v29, v30) || !objc_msgSend_count(policyCopy, v31, v32, v33, v34))
   {
     v35 = objc_msgSend_filter(APSearchAdFilter, v31, v32, v33, v34);
     v39 = objc_msgSend_filterWithAds_(v35, v36, v26, v37, v38);
 
-    if (objc_msgSend_count(v39, v40, v41, v42, v43) || !objc_msgSend_count(v4, v44, v45, v46, v47))
+    if (objc_msgSend_count(v39, v40, v41, v42, v43) || !objc_msgSend_count(policyCopy, v44, v45, v46, v47))
     {
       v48 = objc_msgSend_updatedWithTransparencyRenderingData_(self, v44, v39, v46, v47);
       advertisements = self->_advertisements;
@@ -240,10 +240,10 @@
   return v82;
 }
 
-- (void)setOrganics:(id)a3
+- (void)setOrganics:(id)organics
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  organicsCopy = organics;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -253,15 +253,15 @@
   }
 
   organics = self->_organics;
-  self->_organics = v4;
+  self->_organics = organicsCopy;
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)orderedAds:(id)a3
+- (void)orderedAds:(id)ads
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  adsCopy = ads;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -283,26 +283,26 @@
     v32[2] = sub_264E4A4D0;
     v32[3] = &unk_279B88A08;
     v32[4] = self;
-    v33 = v4;
+    v33 = adsCopy;
     objc_msgSend_getRerankedAdsWithTimeLimit_completion_(v20, v27, v32, v28, v29, v26);
   }
 
   else
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEA60]);
-    if (v4)
+    if (adsCopy)
     {
-      (*(v4 + 2))(v4, v30, 0);
+      (*(adsCopy + 2))(adsCopy, v30, 0);
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)orderedAdsWithODMLSuccess:(id)a3
+- (void)orderedAdsWithODMLSuccess:(id)success
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  successCopy = success;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -324,16 +324,16 @@
     v32[2] = sub_264E4A848;
     v32[3] = &unk_279B88A08;
     v32[4] = self;
-    v33 = v4;
+    v33 = successCopy;
     objc_msgSend_getRerankedAdsWithTimeLimit_completion_(v20, v27, v32, v28, v29, v26);
   }
 
   else
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEA60]);
-    if (v4)
+    if (successCopy)
     {
-      (*(v4 + 2))(v4, v30, 1);
+      (*(successCopy + 2))(successCopy, v30, 1);
     }
   }
 
@@ -347,7 +347,7 @@
   v11 = objc_msgSend_firstObject(v6, v7, v8, v9, v10);
   v116 = objc_msgSend_adamID(v11, v12, v13, v14, v15);
 
-  v120 = self;
+  selfCopy = self;
   v20 = objc_msgSend_organics(self, v16, v17, v18, v19);
   v119 = objc_msgSend_count(v20, v21, v22, v23, v24);
 
@@ -396,7 +396,7 @@
         v60 = *(*(&v121 + 1) + 8 * i);
         v61 = objc_msgSend_adamID(v60, v52, v53, v54, v55, v114);
         v66 = objc_msgSend_longLongValue(v61, v62, v63, v64, v65);
-        isAppInstalled = objc_msgSend_isAppInstalled_(v120, v67, v66, v68, v69);
+        isAppInstalled = objc_msgSend_isAppInstalled_(selfCopy, v67, v66, v68, v69);
 
         if (v119)
         {
@@ -452,19 +452,19 @@
   v113 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAppInstalled:(unint64_t)a3
+- (BOOL)isAppInstalled:(unint64_t)installed
 {
   v4 = objc_alloc(MEMORY[0x277CC1E70]);
-  v7 = objc_msgSend_initWithStoreItemIdentifier_error_(v4, v5, a3, 0, v6);
-  LOBYTE(a3) = v7 != 0;
+  v7 = objc_msgSend_initWithStoreItemIdentifier_error_(v4, v5, installed, 0, v6);
+  LOBYTE(installed) = v7 != 0;
 
-  return a3;
+  return installed;
 }
 
-- (id)updatedWithTransparencyRenderingData:(id)a3
+- (id)updatedWithTransparencyRenderingData:(id)data
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v8 = objc_msgSend_sharedInstance(MEMORY[0x277CE4AB8], v4, v5, v6, v7);
   v13 = objc_msgSend_locationEnabled(v8, v9, v10, v11, v12);
 
@@ -474,7 +474,7 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v20 = v3;
+  v20 = dataCopy;
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v21, &v35, v39, 16);
   if (v22)
   {
@@ -504,16 +504,16 @@
   return v20;
 }
 
-- (id)filterAdsForNonWK:(id)a3
+- (id)filterAdsForNonWK:(id)k
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  kCopy = k;
   v59 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5, v6, v7);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v3;
+  obj = kCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v61, v72, 16);
   if (v9)
   {
@@ -625,17 +625,17 @@ LABEL_23:
   return v59;
 }
 
-- (BOOL)checkForNonWKDiscardOverrides:(BOOL)a3 forAdamID:(id)a4
+- (BOOL)checkForNonWKDiscardOverrides:(BOOL)overrides forAdamID:(id)d
 {
   *&v37[5] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v6 = objc_alloc(MEMORY[0x277CBEBD0]);
   v10 = objc_msgSend_initWithSuiteName_(v6, v7, *MEMORY[0x277CE95C8], v8, v9);
   if (objc_msgSend_BOOLForKey_(v10, v11, @"enableNonWKOverrides", v12, v13))
   {
     v17 = objc_msgSend_stringForKey_(v10, v14, @"nonWKAppsSearchAds", v15, v16);
     v21 = objc_msgSend_componentsSeparatedByString_(v17, v18, @",", v19, v20);
-    v29 = (objc_msgSend_containsObject_(v21, v22, v5, v23, v24) & 1) != 0 || objc_msgSend_count(v21, v25, v26, v27, v28) == 0;
+    v29 = (objc_msgSend_containsObject_(v21, v22, dCopy, v23, v24) & 1) != 0 || objc_msgSend_count(v21, v25, v26, v27, v28) == 0;
     v30 = objc_msgSend_BOOLForKey_(v10, v25, @"enableDMAEligible", v27, v28);
     v31 = APLogForCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -654,16 +654,16 @@ LABEL_23:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         v36 = 138412290;
-        *v37 = v5;
+        *v37 = dCopy;
         _os_log_impl(&dword_264E42000, v33, OS_LOG_TYPE_DEFAULT, "Discarding ad with adamid: %@ based off overrides.", &v36, 0xCu);
       }
     }
 
-    a3 = v32 ^ 1;
+    overrides = v32 ^ 1;
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return a3;
+  return overrides;
 }
 
 @end

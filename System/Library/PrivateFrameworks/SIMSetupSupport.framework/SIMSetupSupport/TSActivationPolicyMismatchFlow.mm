@@ -1,10 +1,10 @@
 @interface TSActivationPolicyMismatchFlow
 - (TSActivationPolicyMismatchFlow)init;
-- (TSActivationPolicyMismatchFlow)initWithPlanItemError:(id)a3;
+- (TSActivationPolicyMismatchFlow)initWithPlanItemError:(id)error;
 - (id)_firstViewController;
 - (id)firstViewController;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSActivationPolicyMismatchFlow
@@ -16,16 +16,16 @@
   return [(TSSIMSetupFlow *)&v3 init];
 }
 
-- (TSActivationPolicyMismatchFlow)initWithPlanItemError:(id)a3
+- (TSActivationPolicyMismatchFlow)initWithPlanItemError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = TSActivationPolicyMismatchFlow;
   v6 = [(TSSIMSetupFlow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_planItemError, a3);
+    objc_storeStrong(&v6->_planItemError, error);
   }
 
   return v7;
@@ -50,16 +50,16 @@
   return v3;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__TSActivationPolicyMismatchFlow_firstViewController___block_invoke;
   v6[3] = &unk_279B45058;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

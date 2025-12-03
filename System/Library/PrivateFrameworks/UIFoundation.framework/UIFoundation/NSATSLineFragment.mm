@@ -1,13 +1,13 @@
 @interface NSATSLineFragment
-- (double)resolveOpticalAlignmentUpdatingMinPosition:(double *)a3 maxPosition:;
+- (double)resolveOpticalAlignmentUpdatingMinPosition:(double *)position maxPosition:;
 - (uint64_t)_copyRenderingContextWithGlyphOrigin:(uint64_t)result;
 - (uint64_t)resolvedLineBreakMode:(uint64_t)result;
-- (unint64_t)_charIndexToBreakLineByWordWrappingAtIndex:(char *)a3 lineFragmentWidth:(double)a4 hyphenate:;
+- (unint64_t)_charIndexToBreakLineByWordWrappingAtIndex:(char *)index lineFragmentWidth:(double)width hyphenate:;
 - (void)dealloc;
 - (void)finalize;
-- (void)getTypographicLineHeight:(int)a3 baselineOffset:(int)a4 leading:(int)a5;
-- (void)justifyWithFactor:(uint64_t)a1;
-- (void)saveMorphedGlyphs:(uint64_t)a1;
+- (void)getTypographicLineHeight:(int)height baselineOffset:(int)offset leading:(int)leading;
+- (void)justifyWithFactor:(uint64_t)factor;
+- (void)saveMorphedGlyphs:(uint64_t)glyphs;
 - (void)saveWithGlyphOrigin:;
 @end
 
@@ -35,9 +35,9 @@ double __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFr
   return [(NSATSGlyphStorage *)v5 _widthForStringRange:a2, a3];
 }
 
-- (void)getTypographicLineHeight:(int)a3 baselineOffset:(int)a4 leading:(int)a5
+- (void)getTypographicLineHeight:(int)height baselineOffset:(int)offset leading:(int)leading
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -47,16 +47,16 @@ double __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFr
   v115 = v45;
   v116 = v46;
   v117 = v47;
-  v48 = [*(v43 + 16) _getATSTypesetterGuts];
-  v113 = *(v48 + 40);
-  v49 = *(v48 + 16);
+  _getATSTypesetterGuts = [*(v43 + 16) _getATSTypesetterGuts];
+  v113 = *(_getATSTypesetterGuts + 40);
+  v49 = *(_getATSTypesetterGuts + 16);
   v50 = v49[11];
   v51 = v49[12];
   v52 = *(v44 + 40);
   v53 = v52 - [*(v44 + 16) paragraphCharacterRange];
-  v118 = [*(v44 + 16) typesetterBehavior];
-  v120 = [*(v44 + 16) usesFontLeading];
-  v119 = [*(v44 + 16) _forceOriginalFontBaseline];
+  typesetterBehavior = [*(v44 + 16) typesetterBehavior];
+  usesFontLeading = [*(v44 + 16) usesFontLeading];
+  _forceOriginalFontBaseline = [*(v44 + 16) _forceOriginalFontBaseline];
   v54 = v49[25];
   v114 = v49;
   if (v54)
@@ -90,9 +90,9 @@ double __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFr
   }
 
   v58 = v50 + 104 * v51;
-  if ((v120 & 1) == 0)
+  if ((usesFontLeading & 1) == 0)
   {
-    v61 = [*(v44 + 16) paragraphSeparatorGlyphRange];
+    paragraphSeparatorGlyphRange = [*(v44 + 16) paragraphSeparatorGlyphRange];
     if (v62)
     {
       v63 = *(v44 + 24);
@@ -101,7 +101,7 @@ double __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFr
     else
     {
       v63 = *(v44 + 24);
-      if (*(v44 + 32) + v63 >= v61)
+      if (*(v44 + 32) + v63 >= paragraphSeparatorGlyphRange)
       {
         v59 = 0;
         goto LABEL_16;
@@ -149,7 +149,7 @@ LABEL_22:
     v123 = *MEMORY[0x1E696AA80];
     v70 = *(MEMORY[0x1E696AA80] + 24);
     bRecta = *(MEMORY[0x1E696AA80] + 16);
-    v71 = (v118 < 2) & ~v120;
+    v71 = (typesetterBehavior < 2) & ~usesFontLeading;
     v72 = v57 + 104;
     do
     {
@@ -170,7 +170,7 @@ LABEL_22:
       }
 
       v75 = 0.0;
-      if ((((v59 | v60) | v120) & 1) != 0 && ([*(v72 - 96) isVertical] & 1) == 0)
+      if ((((v59 | v60) | usesFontLeading) & 1) != 0 && ([*(v72 - 96) isVertical] & 1) == 0)
       {
         v76 = *(v72 - 104);
         if (!v76)
@@ -178,25 +178,25 @@ LABEL_22:
           goto LABEL_39;
         }
 
-        if (!v119 || (v77 = [*(v72 - 104) objectForKey:_NSOriginalFontAttributeName]) == 0)
+        if (!_forceOriginalFontBaseline || (verticalFont = [*(v72 - 104) objectForKey:_NSOriginalFontAttributeName]) == 0)
         {
-          v77 = [v76 objectForKey:@"NSFont"];
+          verticalFont = [v76 objectForKey:@"NSFont"];
         }
 
         if ([objc_msgSend(v76 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
         {
-          v77 = [v77 verticalFont];
+          verticalFont = [verticalFont verticalFont];
         }
 
-        if (!v77)
+        if (!verticalFont)
         {
 LABEL_39:
-          v77 = NSDefaultFont();
+          verticalFont = NSDefaultFont();
         }
 
-        if (((v120 & 1) != 0 || CTFontIsSystemUIFont()) && v77)
+        if (((usesFontLeading & 1) != 0 || CTFontIsSystemUIFont()) && verticalFont)
         {
-          [v77 _leading];
+          [verticalFont _leading];
           v75 = v78;
         }
       }
@@ -205,7 +205,7 @@ LABEL_39:
       {
         if ((v59 & 1) == 0)
         {
-          v79 = v120;
+          v79 = usesFontLeading;
           if (v75 <= 0.0)
           {
             v79 = 1;
@@ -295,7 +295,7 @@ LABEL_39:
   }
 
   v92 = v69 - v66;
-  if (v118 < 3)
+  if (typesetterBehavior < 3)
   {
     v99 = v69 - v66;
     v95 = v116;
@@ -370,8 +370,8 @@ LABEL_39:
   *v97 = v105 - v66;
   *v95 = v105;
   *v96 = v66 + v68;
-  v109 = v120;
-  if (v118 >= 3)
+  v109 = usesFontLeading;
+  if (typesetterBehavior >= 3)
   {
     v109 = 0;
   }
@@ -384,87 +384,87 @@ LABEL_39:
       goto LABEL_104;
     }
 
-    if (!v119 || (v111 = [v110 objectForKey:_NSOriginalFontAttributeName]) == 0)
+    if (!_forceOriginalFontBaseline || (verticalFont2 = [v110 objectForKey:_NSOriginalFontAttributeName]) == 0)
     {
-      v111 = [v110 objectForKey:@"NSFont"];
+      verticalFont2 = [v110 objectForKey:@"NSFont"];
     }
 
     if ([objc_msgSend(v110 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
     {
-      v111 = [v111 verticalFont];
+      verticalFont2 = [verticalFont2 verticalFont];
     }
 
-    if (!v111)
+    if (!verticalFont2)
     {
 LABEL_104:
-      v111 = NSDefaultFont();
+      verticalFont2 = NSDefaultFont();
     }
 
-    [v111 _leading];
+    [verticalFont2 _leading];
     *v96 = v112;
   }
 
   OUTLINED_FUNCTION_29();
 }
 
-- (void)justifyWithFactor:(uint64_t)a1
+- (void)justifyWithFactor:(uint64_t)factor
 {
-  if (a1)
+  if (factor)
   {
-    v4 = *(a1 + 64) - *(a1 + 56);
-    v5 = *(a1 + 80);
-    BoundsWithOptions = CTLineGetBoundsWithOptions(*(a1 + 8), 0);
-    if (BoundsWithOptions.size.width + *(a1 + 96) - v5 < v4 * a2)
+    v4 = *(factor + 64) - *(factor + 56);
+    v5 = *(factor + 80);
+    BoundsWithOptions = CTLineGetBoundsWithOptions(*(factor + 8), 0);
+    if (BoundsWithOptions.size.width + *(factor + 96) - v5 < v4 * a2)
     {
       JustifiedLineWithOptions = CTLineCreateJustifiedLineWithOptions();
       if (JustifiedLineWithOptions)
       {
         v7 = JustifiedLineWithOptions;
-        CFRelease(*(a1 + 8));
-        *(a1 + 8) = v7;
-        *(a1 + 72) = *(a1 + 48) + *(a1 + 40);
-        *(a1 + 80) = 0;
+        CFRelease(*(factor + 8));
+        *(factor + 8) = v7;
+        *(factor + 72) = *(factor + 48) + *(factor + 40);
+        *(factor + 80) = 0;
       }
     }
   }
 }
 
-- (double)resolveOpticalAlignmentUpdatingMinPosition:(double *)a3 maxPosition:
+- (double)resolveOpticalAlignmentUpdatingMinPosition:(double *)position maxPosition:
 {
-  if (a1)
+  if (self)
   {
-    BoundsWithOptions = CTLineGetBoundsWithOptions(*(a1 + 8), 0x80uLL);
+    BoundsWithOptions = CTLineGetBoundsWithOptions(*(self + 8), 0x80uLL);
     x = BoundsWithOptions.origin.x;
     width = BoundsWithOptions.size.width;
-    v10 = CTLineGetBoundsWithOptions(*(a1 + 8), 0xC0uLL);
-    v10.size.height = *(a1 + 64);
-    v10.origin.y = *(a1 + 56) + x - v10.origin.x;
-    *(a1 + 56) = v10.origin.y;
-    *(a1 + 64) = v10.size.height + x + width - (v10.origin.x + v10.size.width);
+    v10 = CTLineGetBoundsWithOptions(*(self + 8), 0xC0uLL);
+    v10.size.height = *(self + 64);
+    v10.origin.y = *(self + 56) + x - v10.origin.x;
+    *(self + 56) = v10.origin.y;
+    *(self + 64) = v10.size.height + x + width - (v10.origin.x + v10.size.width);
     *a2 = v10.origin.y;
-    result = *(a1 + 64);
-    *a3 = result;
+    result = *(self + 64);
+    *position = result;
   }
 
   return result;
 }
 
-- (void)saveMorphedGlyphs:(uint64_t)a1
+- (void)saveMorphedGlyphs:(uint64_t)glyphs
 {
   *&v138[508] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (glyphs)
   {
-    v2 = a1;
-    if (*(a1 + 8))
+    glyphsCopy = glyphs;
+    if (*(glyphs + 8))
     {
       v118 = v138;
-      v124 = *([*(a1 + 16) _getATSTypesetterGuts] + 16);
-      GlyphRuns = CTLineGetGlyphRuns(*(v2 + 8));
+      v124 = *([*(glyphs + 16) _getATSTypesetterGuts] + 16);
+      GlyphRuns = CTLineGetGlyphRuns(*(glyphsCopy + 8));
       v135 = 0;
       v136 = 0;
       Count = CFArrayGetCount(GlyphRuns);
       v6 = Count;
-      v7 = *(v2 + 104) & 3;
+      v7 = *(glyphsCopy + 104) & 3;
       v120 = a2;
       if (v7 == 2)
       {
@@ -505,9 +505,9 @@ LABEL_104:
       }
 
       v11 = 0;
-      v130 = v2;
+      v130 = glyphsCopy;
       v131 = 0;
-      v125 = (v2 + 32);
+      v125 = (glyphsCopy + 32);
       v12 = 0x1EAC99000uLL;
 LABEL_13:
       v127 = v11;
@@ -548,14 +548,14 @@ LABEL_13:
 
           if ((v19 & 0x10) != 0 || (*(v124 + v18) & 0x10) != 0)
           {
-            v29 = *(v2 + 16);
+            v29 = *(glyphsCopy + 16);
             v30 = v126 + location;
             v31 = v24;
-            v32 = v2;
+            v32 = glyphsCopy;
             v33 = v22;
             v34 = [v29 glyphRangeForCharacterRange:v30 actualCharacterRange:{1, 0}];
             v22 = v33;
-            v2 = v32;
+            glyphsCopy = v32;
             v24 = v31;
             v28 = v34;
           }
@@ -571,9 +571,9 @@ LABEL_13:
           {
             v36 = v24;
             v121 = v28;
-            v37 = [*(v2 + 16) _allowsEllipsisGlyphSubstitution];
+            _allowsEllipsisGlyphSubstitution = [*(glyphsCopy + 16) _allowsEllipsisGlyphSubstitution];
             v24 = v36;
-            if (v37)
+            if (_allowsEllipsisGlyphSubstitution)
             {
               v137 = 0xFFFFFF;
               GlyphRuns = v122;
@@ -585,7 +585,7 @@ LABEL_13:
                 {
                   v131 = v121;
                   v41 = 1;
-                  [*(v2 + 16) substituteGlyphsInRange:v121 withGlyphs:{1, &v137}];
+                  [*(glyphsCopy + 16) substituteGlyphsInRange:v121 withGlyphs:{1, &v137}];
                 }
 
                 else if (v38 < 0x80)
@@ -593,7 +593,7 @@ LABEL_13:
                   v41 = v38 + 1;
                   __memset_chk();
                   v131 = v121;
-                  [*(v2 + 16) substituteGlyphsInRange:v121 withGlyphs:{v38 + 1, &v137}];
+                  [*(glyphsCopy + 16) substituteGlyphsInRange:v121 withGlyphs:{v38 + 1, &v137}];
                 }
 
                 else
@@ -603,7 +603,7 @@ LABEL_13:
                   do
                   {
                     __memset_chk();
-                    [*(v2 + 16) substituteGlyphsInRange:v39 withGlyphs:{128, &v137}];
+                    [*(glyphsCopy + 16) substituteGlyphsInRange:v39 withGlyphs:{128, &v137}];
                     v39 += v40;
                     v38 -= v40;
                     v40 = 128;
@@ -620,7 +620,7 @@ LABEL_13:
                   }
 
 LABEL_154:
-                  [*(v2 + 16) substituteGlyphsInRange:v131 withGlyphs:{v38, &v137}];
+                  [*(glyphsCopy + 16) substituteGlyphsInRange:v131 withGlyphs:{v38, &v137}];
                 }
               }
 
@@ -629,7 +629,7 @@ LABEL_154:
                 v131 = v121;
                 v41 = 1;
                 v12 = 0x1EAC99000;
-                [*(v2 + 16) substituteGlyphsInRange:v121 withGlyphs:{1, &v137}];
+                [*(glyphsCopy + 16) substituteGlyphsInRange:v121 withGlyphs:{1, &v137}];
               }
 
               v11 = v41;
@@ -701,12 +701,12 @@ LABEL_154:
                     v89 = (v83 - v87) >> 2;
                     if (v85)
                     {
-                      v90 = *(v2 + 32);
+                      v90 = *(glyphsCopy + 32);
                       v91 = -v89;
-                      __NSDoReordants(*(v2 + 16), v80, v83, v82, v81, v126, -v89, &v134, v125);
-                      if (*(v2 + 32) <= v90)
+                      __NSDoReordants(*(glyphsCopy + 16), v80, v83, v82, v81, v126, -v89, &v134, v125);
+                      if (*(glyphsCopy + 32) <= v90)
                       {
-                        v2 = v130;
+                        glyphsCopy = v130;
                         v12 = 0x1EAC99000;
                       }
 
@@ -714,7 +714,7 @@ LABEL_154:
                       {
                         v12 = 0x1EAC99000;
                         OUTLINED_FUNCTION_0_0(Status, v45, v46, v92, v47, v48, v49, v50, v117, v118, v119, v120, v121, v122, v123, v124);
-                        v2 = v130;
+                        glyphsCopy = v130;
                       }
 
                       v11 = v128;
@@ -749,7 +749,7 @@ LABEL_123:
                 if ((v84 & 0x20) == 0)
                 {
                   v93 = v134;
-                  [*(v2 + 16) insertGlyph:*v80 atGlyphIndex:v134 characterIndex:*v82 + v126];
+                  [*(glyphsCopy + 16) insertGlyph:*v80 atGlyphIndex:v134 characterIndex:*v82 + v126];
                   OUTLINED_FUNCTION_18();
                   OUTLINED_FUNCTION_0_0(v99, v100, v101, v102, v103, v104, v105, v106, v117, v118, v119, v120, v121, v122, v123, v124);
                   if ((*v83 & 0x40000) == 0)
@@ -840,7 +840,7 @@ LABEL_144:
               bzero(&v138[4 * v98 - 4], 4 * v95);
               v93 = *v81 + v129;
               v11 = v97;
-              v2 = v130;
+              glyphsCopy = v130;
               v12 = 0x1EAC99000;
               if (!v11)
               {
@@ -848,7 +848,7 @@ LABEL_144:
               }
 
 LABEL_145:
-              [*(v2 + 16) substituteGlyphsInRange:v131 withGlyphs:{v11, &v137}];
+              [*(glyphsCopy + 16) substituteGlyphsInRange:v131 withGlyphs:{v11, &v137}];
 LABEL_146:
               v134 = v93 + 1;
               OUTLINED_FUNCTION_17();
@@ -881,7 +881,7 @@ LABEL_151:
               v54 = *v42;
               if (v51 && (v54 & 0x40000) == 0 || (v54 & 0x220000) != 0 || !v27 || !*v27 || v51 == 128)
               {
-                Status = [*(v2 + 16) substituteGlyphsInRange:v53 withGlyphs:?];
+                Status = [*(glyphsCopy + 16) substituteGlyphsInRange:v53 withGlyphs:?];
                 v51 = 0;
                 v54 = *v42;
               }
@@ -919,12 +919,12 @@ LABEL_151:
                   if (v55)
                   {
                     v61 = v51;
-                    v62 = v2;
-                    v63 = *(v2 + 32);
+                    v62 = glyphsCopy;
+                    v63 = *(glyphsCopy + 32);
                     __NSDoReordants(*(v62 + 16), v35, v42, v43, v27, v126, v59 >> 2, &v134, v125);
                     if (*(v62 + 32) <= v63)
                     {
-                      v2 = v130;
+                      glyphsCopy = v130;
                       v12 = 0x1EAC99000;
                     }
 
@@ -932,7 +932,7 @@ LABEL_151:
                     {
                       v12 = 0x1EAC99000;
                       OUTLINED_FUNCTION_0_0(Status, v45, v46, v64, v47, v48, v49, v50, v117, v118, v119, v120, v121, v122, v123, v124);
-                      v2 = v130;
+                      glyphsCopy = v130;
                     }
 
                     v51 = v61;
@@ -993,8 +993,8 @@ LABEL_73:
             }
 
             v65 = v51;
-            v66 = [*(v2 + 16) insertGlyph:*v35 atGlyphIndex:v134 characterIndex:*v43 + v126];
-            OUTLINED_FUNCTION_0_0(v66, v67, v68, v65, v69, v70, v71, v72, v117, v118, v119, v120, v121, v122, v123, v124);
+            v126 = [*(glyphsCopy + 16) insertGlyph:*v35 atGlyphIndex:v134 characterIndex:*v43 + v126];
+            OUTLINED_FUNCTION_0_0(v126, v67, v68, v65, v69, v70, v71, v72, v117, v118, v119, v120, v121, v122, v123, v124);
             OUTLINED_FUNCTION_18();
             v54 = *v42;
 LABEL_76:
@@ -1052,7 +1052,7 @@ LABEL_76:
 
                 bzero(&v138[4 * v78 - 4], 4 * v75);
                 v76 = *v27 + v133;
-                v2 = v130;
+                glyphsCopy = v130;
               }
 
               v53 = v74;
@@ -1101,11 +1101,11 @@ LABEL_153:
         }
       }
 
-      v107 = *(v2 + 88);
-      v108 = *(v2 + 32);
+      v107 = *(glyphsCopy + 88);
+      v108 = *(glyphsCopy + 32);
       if (v107)
       {
-        v109 = [*(v2 + 16) insertGlyph:v107 atGlyphIndex:v108 + *(v2 + 24) characterIndex:*(v2 + 40) + *(v2 + 48) - 1];
+        v109 = [*(glyphsCopy + 16) insertGlyph:v107 atGlyphIndex:v108 + *(glyphsCopy + 24) characterIndex:*(glyphsCopy + 40) + *(glyphsCopy + 48) - 1];
         OUTLINED_FUNCTION_0_0(v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124);
         OUTLINED_FUNCTION_18();
       }
@@ -1139,16 +1139,16 @@ LABEL_153:
   }
 
   v3 = v1;
-  v4 = [*(v0 + 16) _getATSTypesetterGuts];
-  v253 = *(v4 + 16);
-  v284 = [*(v2 + 16) _bidiLevels];
+  _getATSTypesetterGuts = [*(v0 + 16) _getATSTypesetterGuts];
+  v253 = *(_getATSTypesetterGuts + 16);
+  _bidiLevels = [*(v2 + 16) _bidiLevels];
   HIBYTE(v292) = 0;
   v293 = 0;
   v6 = *(v2 + 24);
   v5 = *(v2 + 32);
   [*(v2 + 16) lineFragmentPadding];
   v273 = v7;
-  v8 = *(*(v4 + 40) + 216);
+  v8 = *(*(_getATSTypesetterGuts + 40) + 216);
   *(&v292 + 7) = *(v2 + 88) != 0;
   GlyphRuns = CTLineGetGlyphRuns(*(v2 + 8));
   Count = CFArrayGetCount(GlyphRuns);
@@ -1304,7 +1304,7 @@ LABEL_24:
     if ((*(v36 + 224) & 8) != 0)
     {
       BYTE7(v292) = 1;
-      v65 = OUTLINED_FUNCTION_10_0(v50, v51, v52, v53, v54, v55, v56, v57, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v44, *(&v273 + 1), v280, v284, v288);
+      v65 = OUTLINED_FUNCTION_10_0(v50, v51, v52, v53, v54, v55, v56, v57, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v44, *(&v273 + 1), v280, _bidiLevels, v288);
       v261 = v66;
       v245 = v67;
       v69 = v68;
@@ -1319,7 +1319,7 @@ LABEL_24:
     v72 = v58 + 2 * *(&v292 + 1);
     v73 = v59 + 4 * *(&v292 + 1);
     v74 = v60 + 8 * *(&v292 + 1);
-    if (v284)
+    if (_bidiLevels)
     {
       if ((*(v36 + 224) & 8) == 0)
       {
@@ -1333,7 +1333,7 @@ LABEL_24:
           BYTE7(v292) = 1;
           if (*(v288 + 88) && v257 + v273 - 1 == v241)
           {
-            v131 = OUTLINED_FUNCTION_10_0(Status, v51, v52, v241, v78, v79, v80, v81, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+            v131 = OUTLINED_FUNCTION_10_0(Status, v51, v52, v241, v78, v79, v80, v81, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
             OUTLINED_FUNCTION_26(v131, v132, v133, v134);
             v62 = v76;
             v14 = v14 + *(v288 + 96);
@@ -1364,7 +1364,7 @@ LABEL_24:
               {
                 v148 = v144;
                 v311 = 0;
-                v149 = OUTLINED_FUNCTION_10_0(v135, v136, v137, v138, v139, v140, v141, v142, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+                v149 = OUTLINED_FUNCTION_10_0(v135, v136, v137, v138, v139, v140, v141, v142, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
                 v157 = OUTLINED_FUNCTION_27(v149, v150, v151, v152, v153, v154, v155, v156, v195, v199, v203, v207, v211, v215, v219, v223, v227, v232, v236, v240, v244, v248, v252, v256, v260, v264, v268, v272, v276, v279, v283, v287, v291, v292, *(&v292 + 1), v293, v294, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, 0);
                 v147 = v157;
                 if (v158 < 2 || (v159 = *(v73 - 4), (v159 & 0x20) != 0))
@@ -1447,7 +1447,7 @@ LABEL_158:
               v175 = *(v49 - 1);
               if (v175 != 0.0)
               {
-                OUTLINED_FUNCTION_9_0(v167, v168, v169, v170, v171, v172, v173, v174, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+                OUTLINED_FUNCTION_9_0(v167, v168, v169, v170, v171, v172, v173, v174, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
                 v175 = *(v49 - 1);
               }
 
@@ -1509,7 +1509,7 @@ LABEL_112:
       {
         if ((v91 | ((v92 & 0x200000u) >> 21)))
         {
-          v93 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v84, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v82, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+          v93 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v84, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v82, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
           v95 = v94;
           v83 = [v93 setLocation:0 withAdvancements:v280 forStartOfGlyphRange:{*&v237, v233}];
           v90 = v95;
@@ -1535,7 +1535,7 @@ LABEL_112:
       }
 
       v311 = 0;
-      v97 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v84, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v85, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v90, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+      v97 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v84, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v85, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v90, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
       v105 = OUTLINED_FUNCTION_27(v97, v98, v99, v100, v101, v102, v103, v104, v193, v197, v201, v205, v209, v213, v217, v221, v225, v230, v234, v238, v242, v246, v250, v254, v258, v262, v266, v270, v274, v277, v281, v285, v289, v292, *(&v292 + 1), v293, v294, v295, v296, v297, v298, v299, v300, v301, v302, v303, v304, v305, v306, v307, v308, v309, 0);
       v111 = v105;
       if (v106 >= 2)
@@ -1650,7 +1650,7 @@ LABEL_90:
         }
 
         v124 = v122 + v85;
-        v125 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v96, v122 + v121, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v122 + v257, v261, v265, v269, v273, *(&v273 + 1), v123, v284, v288);
+        v125 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v96, v122 + v121, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v122 + v257, v261, v265, v269, v273, *(&v273 + 1), v123, _bidiLevels, v288);
         goto LABEL_96;
       }
 
@@ -1663,7 +1663,7 @@ LABEL_94:
       HIDWORD(v216) = v119;
       LODWORD(v220) = v91;
       v124 = v85;
-      v125 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v96, 1, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+      v125 = OUTLINED_FUNCTION_10_0(v83, v51, v52, v96, 1, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
 LABEL_96:
       v83 = [v125 setNotShownAttribute:1 forGlyphRange:?];
       v85 = v124;
@@ -1708,7 +1708,7 @@ LABEL_97:
       v127 = *(v49 - 1);
       if (v127 != 0.0)
       {
-        OUTLINED_FUNCTION_9_0(v83, v51, v52, v96, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, v284, v288);
+        OUTLINED_FUNCTION_9_0(v83, v51, v52, v96, v85, v86, v87, v88, v192, v196, v200, v204, v208, v212, v216, v220, v224, v229, *&v233, v237, v241, v245, v249, v253, v257, v261, v265, v269, v273, *(&v273 + 1), v280, _bidiLevels, v288);
         v127 = *(v49 - 1);
       }
 
@@ -1745,14 +1745,14 @@ LABEL_25:
   }
 
 LABEL_173:
-  if (v284)
+  if (_bidiLevels)
   {
-    v177 = [*(v288 + 16) paragraphCharacterRange];
-    v179 = v177;
+    paragraphCharacterRange = [*(v288 + 16) paragraphCharacterRange];
+    v179 = paragraphCharacterRange;
     v180 = *(v288 + 32);
     if (*(v288 + 48) == v180)
     {
-      [*(v288 + 16) setBidiLevels:v284 + *(v288 + 40) - v177 forGlyphRange:*(v288 + 24)];
+      [*(v288 + 16) setBidiLevels:_bidiLevels + *(v288 + 40) - paragraphCharacterRange forGlyphRange:*(v288 + 24)];
     }
 
     else
@@ -1790,7 +1790,7 @@ LABEL_173:
 
               else
               {
-                v191 = *(v284 + v189);
+                v191 = *(_bidiLevels + v189);
               }
 
               *v187 = v191;
@@ -1830,7 +1830,7 @@ LABEL_195:
   {
     v3 = result;
     v4 = objc_allocWithZone(NSLineFragmentRenderingContext);
-    v5 = [*(v3 + 16) _textStorageForAttachmentProtocol];
+    _textStorageForAttachmentProtocol = [*(v3 + 16) _textStorageForAttachmentProtocol];
     v6 = CFGetTypeID(*(v3 + 8));
     v7 = *(v3 + 8);
     if (v6 == qword_1ED4DF2E0)
@@ -1847,77 +1847,77 @@ LABEL_195:
     BoundsWithOptions = CTLineGetBoundsWithOptions(v7, 0);
     v9 = *(v3 + 96) + BoundsWithOptions.size.width;
     v10 = *(v3 + 80);
-    v11 = [*(v3 + 16) _usesScreenFonts];
+    _usesScreenFonts = [*(v3 + 16) _usesScreenFonts];
     v12 = [*(v3 + 16) _baseWritingDirection] == 1;
-    v13 = [*(v3 + 16) applicationFrameworkContext];
+    applicationFrameworkContext = [*(v3 + 16) applicationFrameworkContext];
 
-    return [v4 initWithTextStorage:v5 runs:GlyphRuns glyphOrigin:v11 lineFragmentWidth:v12 elasticWidth:v13 usesScreenFonts:a2 isRTL:v9 applicationFrameworkContext:v10];
+    return [v4 initWithTextStorage:_textStorageForAttachmentProtocol runs:GlyphRuns glyphOrigin:_usesScreenFonts lineFragmentWidth:v12 elasticWidth:applicationFrameworkContext usesScreenFonts:a2 isRTL:v9 applicationFrameworkContext:v10];
   }
 
   return result;
 }
 
-- (unint64_t)_charIndexToBreakLineByWordWrappingAtIndex:(char *)a3 lineFragmentWidth:(double)a4 hyphenate:
+- (unint64_t)_charIndexToBreakLineByWordWrappingAtIndex:(char *)index lineFragmentWidth:(double)width hyphenate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7 = a1;
-  v8 = [*(a1 + 16) paragraphArbitrator];
-  v9 = *(v7 + 40);
+  selfCopy = self;
+  paragraphArbitrator = [*(self + 16) paragraphArbitrator];
+  v9 = *(selfCopy + 40);
   v69 = a2 - v9;
-  v10 = *(v7 + 16);
-  if (v8)
+  v10 = *(selfCopy + 16);
+  if (paragraphArbitrator)
   {
     [v10 lineBreakStrategy];
     [OUTLINED_FUNCTION_35() setLineBreakStrategy:?];
-    [*(v7 + 16) hyphenationFactorForGlyphAtIndex:*(v7 + 24)];
-    [v8 setHyphenationFactor:v11];
+    [*(selfCopy + 16) hyphenationFactorForGlyphAtIndex:*(selfCopy + 24)];
+    [paragraphArbitrator setHyphenationFactor:v11];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFragmentWidth_hyphenate___block_invoke;
     v72[3] = &unk_1E7265B28;
-    v72[4] = v7;
-    [v8 setValidateLineBreakContext:v72];
+    v72[4] = selfCopy;
+    [paragraphArbitrator setValidateLineBreakContext:v72];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __92__NSATSLineFragment__charIndexToBreakLineByWordWrappingAtIndex_lineFragmentWidth_hyphenate___block_invoke_2;
     v71[3] = &unk_1E7265B50;
-    v71[4] = v7;
-    [v8 setLineWidth:v71];
-    [*(v7 + 16) attributedString];
+    v71[4] = selfCopy;
+    [paragraphArbitrator setLineWidth:v71];
+    [*(selfCopy + 16) attributedString];
     [OUTLINED_FUNCTION_35() setAttributedString:?];
-    [*(v7 + 16) paragraphCharacterRange];
+    [*(selfCopy + 16) paragraphCharacterRange];
     [OUTLINED_FUNCTION_35() setParagraphRange:?];
-    [*(v7 + 16) typesetterBehavior];
+    [*(selfCopy + 16) typesetterBehavior];
     [OUTLINED_FUNCTION_35() setTypesetterBehavior:?];
-    [v8 lineBreakContextBeforeIndex:a2 lineFragmentWidth:v9 range:{v69, a4}];
-    [v8 resetBreaker];
-    [v8 reset];
-    *a3 = 0;
+    [paragraphArbitrator lineBreakContextBeforeIndex:a2 lineFragmentWidth:v9 range:{v69, width}];
+    [paragraphArbitrator resetBreaker];
+    [paragraphArbitrator reset];
+    *index = 0;
     return 0;
   }
 
-  v62 = a3;
-  v63 = [v10 _getATSTypesetterGuts];
-  v13 = [*(v7 + 16) attributedString];
-  theString = [v13 string];
-  v14 = [*(v7 + 16) paragraphCharacterRange];
+  indexCopy = index;
+  _getATSTypesetterGuts = [v10 _getATSTypesetterGuts];
+  attributedString = [*(selfCopy + 16) attributedString];
+  theString = [attributedString string];
+  paragraphCharacterRange = [*(selfCopy + 16) paragraphCharacterRange];
   v16 = v15;
-  [*(v7 + 16) hyphenationFactorForGlyphAtIndex:*(v7 + 24)];
+  [*(selfCopy + 16) hyphenationFactorForGlyphAtIndex:*(selfCopy + 24)];
   v18 = v17;
-  v19 = [*(v7 + 16) lineBreakStrategy];
-  v70 = v13;
-  v66 = [v13 methodForSelector:sel_lineBreakBeforeIndex_withinRange_];
+  lineBreakStrategy = [*(selfCopy + 16) lineBreakStrategy];
+  v70 = attributedString;
+  v66 = [attributedString methodForSelector:sel_lineBreakBeforeIndex_withinRange_];
   CharacterAtIndex = [objc_opt_class() instanceMethodForSelector:sel_lineBreakBeforeIndex_withinRange_];
-  v64 = v7;
+  v64 = selfCopy;
   v65 = CharacterAtIndex;
   v28 = 0;
   v29 = 0;
-  v30 = v19 & (v9 == v14);
-  v31 = v14 + v16;
+  v30 = lineBreakStrategy & (v9 == paragraphCharacterRange);
+  v31 = paragraphCharacterRange + v16;
   do
   {
     v32 = a2 - 1;
@@ -1925,8 +1925,8 @@ LABEL_195:
     {
       if (v66 == v65)
       {
-        v33 = [*(v7 + 16) lineBreakStrategy];
-        CharacterAtIndex = [OUTLINED_FUNCTION_20(v33 v34];
+        lineBreakStrategy2 = [*(selfCopy + 16) lineBreakStrategy];
+        CharacterAtIndex = [OUTLINED_FUNCTION_20(lineBreakStrategy2 v34];
       }
 
       else
@@ -1977,11 +1977,11 @@ LABEL_195:
       v47 = v31 - CharacterAtIndex;
       if (v31 > CharacterAtIndex)
       {
-        v48 = [v70 string];
-        v49 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-        v50 = v48;
-        v7 = v64;
-        CharacterAtIndex = [v50 rangeOfCharacterFromSet:v49 options:0 range:{v46, v47}];
+        string = [v70 string];
+        alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+        v50 = string;
+        selfCopy = v64;
+        CharacterAtIndex = [v50 rangeOfCharacterFromSet:alphanumericCharacterSet options:0 range:{v46, v47}];
         if (!v21)
         {
           v46 = v31;
@@ -2014,7 +2014,7 @@ LABEL_195:
 
     else
     {
-      if (!((v12 <= v9) | v29 & 1) && ((v28 & 1) != 0 || [(NSATSGlyphStorage *)*(v63 + 16) _widthForStringRange:v9, v12 - v9]/ a4 < v18))
+      if (!((v12 <= v9) | v29 & 1) && ((v28 & 1) != 0 || [(NSATSGlyphStorage *)*(_getATSTypesetterGuts + 16) _widthForStringRange:v9, v12 - v9]/ width < v18))
       {
         v29 = 1;
 LABEL_42:
@@ -2041,7 +2041,7 @@ LABEL_42:
     }
 
 LABEL_50:
-    v58 = *(v7 + 16);
+    v58 = *(selfCopy + 16);
     if ((v28 | v52))
     {
       CharacterAtIndex = [v58 shouldBreakLineByHyphenatingBeforeCharacterAtIndex:v12];
@@ -2069,7 +2069,7 @@ LABEL_55:
   while (v51 > v9);
   v59 = 0;
 LABEL_57:
-  *v62 = v59;
+  *indexCopy = v59;
   return v12;
 }
 
@@ -2117,25 +2117,25 @@ LABEL_57:
   }
 
   v3 = result;
-  v4 = [*(result + 16) _getATSTypesetterGuts];
-  if ((*(v4 + 84) & 0x10) != 0)
+  _getATSTypesetterGuts = [*(result + 16) _getATSTypesetterGuts];
+  if ((*(_getATSTypesetterGuts + 84) & 0x10) != 0)
   {
     if (!a2)
     {
       return 0;
     }
 
-    return (*(*(v4 + 40) + 216) >> 11) & 0xF;
+    return (*(*(_getATSTypesetterGuts + 40) + 216) >> 11) & 0xF;
   }
 
   if (!a2)
   {
-    return (*(*(v4 + 40) + 216) >> 11) & 0xF;
+    return (*(*(_getATSTypesetterGuts + 40) + 216) >> 11) & 0xF;
   }
 
-  v5 = [*(v3 + 16) currentTextContainer];
+  currentTextContainer = [*(v3 + 16) currentTextContainer];
 
-  return [v5 lineBreakMode];
+  return [currentTextContainer lineBreakMode];
 }
 
 @end

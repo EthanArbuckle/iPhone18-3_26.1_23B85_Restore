@@ -1,17 +1,17 @@
 @interface TIMathSymbolPunctuationController
-- (BOOL)updateInputString:(id)a3;
+- (BOOL)updateInputString:(id)string;
 - (TIMathSymbolPunctuationController)init;
-- (id)mathSymbolPunctuationedStringForInputString:(id)a3;
-- (void)setInputString:(id)a3;
+- (id)mathSymbolPunctuationedStringForInputString:(id)string;
+- (void)setInputString:(id)string;
 @end
 
 @implementation TIMathSymbolPunctuationController
 
-- (id)mathSymbolPunctuationedStringForInputString:(id)a3
+- (id)mathSymbolPunctuationedStringForInputString:(id)string
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  stringCopy = string;
+  v5 = [stringCopy length];
   if (!v5)
   {
     v17 = 0;
@@ -21,8 +21,8 @@
   v10 = v5;
   MEMORY[0x28223BE20](v5, v6, v7, v8, v9);
   v12 = v25 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  [v4 getCharacters:v12];
-  v13 = [(TIMathSymbolPunctuationController *)self updateInputString:v4];
+  [stringCopy getCharacters:v12];
+  v13 = [(TIMathSymbolPunctuationController *)self updateInputString:stringCopy];
   if (v13 != [(TIMathSymbolPunctuationController *)self replaceAfterNumerals]|| !self->_state || !self->_enabled)
   {
     goto LABEL_29;
@@ -31,8 +31,8 @@
   if (!self->_replaceAfterNumerals)
   {
     v14 = *&v12[2 * v10 - 2];
-    v15 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v16 = [v15 characterIsMember:v14];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    v16 = [decimalDigitCharacterSet characterIsMember:v14];
 
     if (!v16)
     {
@@ -77,7 +77,7 @@
   {
 LABEL_27:
     v20 = self->_location;
-    if (v20 >= [v4 length])
+    if (v20 >= [stringCopy length])
     {
 LABEL_29:
       LOBYTE(v16) = 0;
@@ -87,7 +87,7 @@ LABEL_29:
     v21 = self->_location;
     LOBYTE(v16) = 1;
     v22 = [MEMORY[0x277CCACA8] stringWithCharacters:&self->_replacementCharacter length:1];
-    v17 = [v4 stringByReplacingCharactersInRange:v21 withString:{1, v22}];
+    v17 = [stringCopy stringByReplacingCharactersInRange:v21 withString:{1, v22}];
 
 LABEL_36:
     self->_state = 0;
@@ -105,16 +105,16 @@ LABEL_32:
   return v17;
 }
 
-- (BOOL)updateInputString:(id)a3
+- (BOOL)updateInputString:(id)string
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  stringCopy = string;
+  v5 = [stringCopy length];
   if (v5)
   {
     v6 = v5;
     v7 = v15 - ((2 * v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-    [v4 getCharacters:v7];
+    [stringCopy getCharacters:v7];
     v8 = 0;
     v9 = v6 - 1;
     v10 = *&v7[2 * v9];
@@ -229,11 +229,11 @@ LABEL_30:
   return v8;
 }
 
-- (void)setInputString:(id)a3
+- (void)setInputString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(TIMathSymbolPunctuationController *)self reset];
-  [(TIMathSymbolPunctuationController *)self updateInputString:v4];
+  [(TIMathSymbolPunctuationController *)self updateInputString:stringCopy];
 }
 
 - (TIMathSymbolPunctuationController)init
@@ -243,10 +243,10 @@ LABEL_30:
   v2 = [(TIMathSymbolPunctuationController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v4 = [v3 decimalSeparator];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    decimalSeparator = [currentLocale decimalSeparator];
     decimalSeparator = v2->_decimalSeparator;
-    v2->_decimalSeparator = v4;
+    v2->_decimalSeparator = decimalSeparator;
 
     v2->_enabled = 1;
   }

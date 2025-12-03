@@ -5,10 +5,10 @@
 - (NSString)description;
 - (void)applyComicInkParameters;
 - (void)applyComicParameters;
-- (void)applyTo:(id)a3 completionHandler:(id)a4;
-- (void)setIsComicEnabled:(BOOL)a3;
-- (void)setIsCurlEnabled:(BOOL)a3;
-- (void)setIsStroked:(BOOL)a3;
+- (void)applyTo:(id)to completionHandler:(id)handler;
+- (void)setIsComicEnabled:(BOOL)enabled;
+- (void)setIsCurlEnabled:(BOOL)enabled;
+- (void)setIsStroked:(BOOL)stroked;
 @end
 
 @implementation STKStickerEffect
@@ -28,11 +28,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsStroked:(BOOL)a3
+- (void)setIsStroked:(BOOL)stroked
 {
   v5 = OBJC_IVAR___STKStickerEffect_isStroked;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = stroked;
 }
 
 - (BOOL)isComicEnabled
@@ -42,11 +42,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsComicEnabled:(BOOL)a3
+- (void)setIsComicEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___STKStickerEffect_isComicEnabled;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = enabled;
 }
 
 - (BOOL)isCurlEnabled
@@ -56,11 +56,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsCurlEnabled:(BOOL)a3
+- (void)setIsCurlEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___STKStickerEffect_isCurlEnabled;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = enabled;
 }
 
 - (void)applyComicParameters
@@ -81,21 +81,21 @@
   *(v2 + 4) = 6;
 }
 
-- (void)applyTo:(id)a3 completionHandler:(id)a4
+- (void)applyTo:(id)to completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v16 = self;
+  toCopy = to;
+  selfCopy = self;
   v9 = sub_19A6BCF04();
   if (v9)
   {
     v10 = v9;
     v11 = swift_allocObject();
     v11[2] = v10;
-    v11[3] = v8;
-    v11[4] = v16;
+    v11[3] = toCopy;
+    v11[4] = selfCopy;
     v11[5] = sub_19A612E9C;
     v11[6] = v7;
     aBlock[4] = sub_19A6BED64;
@@ -105,8 +105,8 @@
     aBlock[2] = sub_19A6815D4;
     aBlock[3] = &block_descriptor_75_1;
     v12 = _Block_copy(aBlock);
-    v13 = v8;
-    v14 = v16;
+    v13 = toCopy;
+    v14 = selfCopy;
     v15 = v10;
 
     itk_performBlockOnMainThread();

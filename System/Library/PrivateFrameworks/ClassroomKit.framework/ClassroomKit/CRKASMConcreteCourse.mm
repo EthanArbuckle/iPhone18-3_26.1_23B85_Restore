@@ -1,10 +1,10 @@
 @interface CRKASMConcreteCourse
-+ (id)courseNameForClass:(id)a3;
-+ (id)trustedUserIdentifierForTrustedUsers:(id)a3;
-+ (id)trustedUsersFromPersons:(id)a3 environment:(id)a4;
-+ (id)usersFromPersons:(id)a3 environment:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CRKASMConcreteCourse)initWithBackingClass:(id)a3 location:(id)a4 persons:(id)a5 trustedPersons:(id)a6 identityVendor:(id)a7 manageableLocationIDs:(id)a8 environment:(id)a9;
++ (id)courseNameForClass:(id)class;
++ (id)trustedUserIdentifierForTrustedUsers:(id)users;
++ (id)trustedUsersFromPersons:(id)persons environment:(id)environment;
++ (id)usersFromPersons:(id)persons environment:(id)environment;
+- (BOOL)isEqual:(id)equal;
+- (CRKASMConcreteCourse)initWithBackingClass:(id)class location:(id)location persons:(id)persons trustedPersons:(id)trustedPersons identityVendor:(id)vendor manageableLocationIDs:(id)ds environment:(id)environment;
 - (CRKIdentity)identity;
 - (NSSet)allTrustedUserCertificates;
 - (id)description;
@@ -13,49 +13,49 @@
 
 @implementation CRKASMConcreteCourse
 
-- (CRKASMConcreteCourse)initWithBackingClass:(id)a3 location:(id)a4 persons:(id)a5 trustedPersons:(id)a6 identityVendor:(id)a7 manageableLocationIDs:(id)a8 environment:(id)a9
+- (CRKASMConcreteCourse)initWithBackingClass:(id)class location:(id)location persons:(id)persons trustedPersons:(id)trustedPersons identityVendor:(id)vendor manageableLocationIDs:(id)ds environment:(id)environment
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v44 = a7;
-  v19 = a8;
-  v20 = a9;
+  classCopy = class;
+  locationCopy = location;
+  personsCopy = persons;
+  trustedPersonsCopy = trustedPersons;
+  vendorCopy = vendor;
+  dsCopy = ds;
+  environmentCopy = environment;
   v45.receiver = self;
   v45.super_class = CRKASMConcreteCourse;
   v21 = [(CRKASMConcreteCourse *)&v45 init];
   if (v21)
   {
-    v22 = [objc_opt_class() trustedUsersFromPersons:v18 environment:v20];
-    v23 = [v15 objectID];
-    v24 = [v23 copy];
+    v22 = [objc_opt_class() trustedUsersFromPersons:trustedPersonsCopy environment:environmentCopy];
+    objectID = [classCopy objectID];
+    v24 = [objectID copy];
     backingClassObjectID = v21->_backingClassObjectID;
     v21->_backingClassObjectID = v24;
 
-    objc_storeStrong(&v21->_identityVendor, a7);
-    v26 = [v20 certificateVendor];
+    objc_storeStrong(&v21->_identityVendor, vendor);
+    certificateVendor = [environmentCopy certificateVendor];
     certificateVendor = v21->_certificateVendor;
-    v21->_certificateVendor = v26;
+    v21->_certificateVendor = certificateVendor;
 
     v28 = MEMORY[0x277D04C00];
-    v29 = [v15 objectID];
-    v30 = [v28 crk_identifierWithOpaqueString:v29];
+    objectID2 = [classCopy objectID];
+    v30 = [v28 crk_identifierWithOpaqueString:objectID2];
     identifier = v21->_identifier;
     v21->_identifier = v30;
 
-    v21->_mascot = [CRKClassKitColorAndMascotUtility mascotForClass:v15];
-    v21->_color = [CRKClassKitColorAndMascotUtility colorForClass:v15];
+    v21->_mascot = [CRKClassKitColorAndMascotUtility mascotForClass:classCopy];
+    v21->_color = [CRKClassKitColorAndMascotUtility colorForClass:classCopy];
     objc_storeStrong(&v21->_trustedUsers, v22);
-    v32 = [[CRKASMConcreteLocation alloc] initWithBackingLocation:v16];
+    v32 = [[CRKASMConcreteLocation alloc] initWithBackingLocation:locationCopy];
     location = v21->_location;
     v21->_location = v32;
 
-    v34 = [objc_opt_class() courseNameForClass:v15];
+    v34 = [objc_opt_class() courseNameForClass:classCopy];
     name = v21->_name;
     v21->_name = v34;
 
-    v36 = [objc_opt_class() usersFromPersons:v17 environment:v20];
+    v36 = [objc_opt_class() usersFromPersons:personsCopy environment:environmentCopy];
     users = v21->_users;
     v21->_users = v36;
 
@@ -63,10 +63,10 @@
     trustedUserIdentifiers = v21->_trustedUserIdentifiers;
     v21->_trustedUserIdentifiers = v38;
 
-    if ([v15 isEditable])
+    if ([classCopy isEditable])
     {
-      v40 = [v16 objectID];
-      v21->_editable = [v19 containsObject:v40];
+      objectID3 = [locationCopy objectID];
+      v21->_editable = [dsCopy containsObject:objectID3];
     }
 
     else
@@ -74,9 +74,9 @@
       v21->_editable = 0;
     }
 
-    v41 = [v15 dateCreated];
+    dateCreated = [classCopy dateCreated];
     creationDate = v21->_creationDate;
-    v21->_creationDate = v41;
+    v21->_creationDate = dateCreated;
   }
 
   return v21;
@@ -84,52 +84,52 @@
 
 - (CRKIdentity)identity
 {
-  v2 = [(CRKASMConcreteCourse *)self identityVendor];
-  v3 = [v2 identity];
+  identityVendor = [(CRKASMConcreteCourse *)self identityVendor];
+  identity = [identityVendor identity];
 
-  return v3;
+  return identity;
 }
 
 - (NSSet)allTrustedUserCertificates
 {
-  v3 = [(CRKASMConcreteCourse *)self certificateVendor];
-  v4 = [(CRKASMConcreteCourse *)self trustedUserIdentifiers];
-  v5 = [v3 certificatesForUserIdentifiers:v4];
+  certificateVendor = [(CRKASMConcreteCourse *)self certificateVendor];
+  trustedUserIdentifiers = [(CRKASMConcreteCourse *)self trustedUserIdentifiers];
+  v5 = [certificateVendor certificatesForUserIdentifiers:trustedUserIdentifiers];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CRKASMConcreteCourse *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CRKASMConcreteCourse *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CRKASMConcreteCourse *)self mascot];
-  v8 = v6 ^ v7 ^ [(CRKASMConcreteCourse *)self color];
-  v9 = [(CRKASMConcreteCourse *)self isEditable];
-  v10 = [(CRKASMConcreteCourse *)self users];
-  v11 = v8 ^ v9 ^ [v10 hash];
-  v12 = [(CRKASMConcreteCourse *)self trustedUsers];
-  v13 = [v12 hash];
-  v14 = [(CRKASMConcreteCourse *)self identityVendor];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(CRKASMConcreteCourse *)self certificateVendor];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(CRKASMConcreteCourse *)self location];
-  v19 = v11 ^ v17 ^ [v18 hash];
-  v20 = [(CRKASMConcreteCourse *)self creationDate];
-  v21 = [v20 hash];
+  identifier = [(CRKASMConcreteCourse *)self identifier];
+  v4 = [identifier hash];
+  name = [(CRKASMConcreteCourse *)self name];
+  v6 = [name hash] ^ v4;
+  mascot = [(CRKASMConcreteCourse *)self mascot];
+  v8 = v6 ^ mascot ^ [(CRKASMConcreteCourse *)self color];
+  isEditable = [(CRKASMConcreteCourse *)self isEditable];
+  users = [(CRKASMConcreteCourse *)self users];
+  v11 = v8 ^ isEditable ^ [users hash];
+  trustedUsers = [(CRKASMConcreteCourse *)self trustedUsers];
+  v13 = [trustedUsers hash];
+  identityVendor = [(CRKASMConcreteCourse *)self identityVendor];
+  v15 = v13 ^ [identityVendor hash];
+  certificateVendor = [(CRKASMConcreteCourse *)self certificateVendor];
+  v17 = v15 ^ [certificateVendor hash];
+  location = [(CRKASMConcreteCourse *)self location];
+  v19 = v11 ^ v17 ^ [location hash];
+  creationDate = [(CRKASMConcreteCourse *)self creationDate];
+  v21 = [creationDate hash];
 
   return v19 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""identifier name];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  name = [CFSTR(""identifier name];
+  v6 = [name mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -139,10 +139,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -171,7 +171,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMConcreteCourse *)v8 valueForKey:v16];
+          v18 = [(CRKASMConcreteCourse *)selfCopy valueForKey:v16];
           v19 = [(CRKASMConcreteCourse *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -218,42 +218,42 @@ LABEL_16:
 {
   v17 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
-  v18 = [(CRKASMConcreteCourse *)self identifier];
-  v3 = [v18 stringValue];
-  v4 = [(CRKASMConcreteCourse *)self name];
+  identifier = [(CRKASMConcreteCourse *)self identifier];
+  stringValue = [identifier stringValue];
+  name = [(CRKASMConcreteCourse *)self name];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKASMConcreteCourse mascot](self, "mascot")}];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKASMConcreteCourse color](self, "color")}];
-  v7 = [(CRKASMConcreteCourse *)self isEditable];
+  isEditable = [(CRKASMConcreteCourse *)self isEditable];
   v8 = @"NO";
-  if (v7)
+  if (isEditable)
   {
     v8 = @"YES";
   }
 
   v9 = v8;
-  v10 = [(CRKASMConcreteCourse *)self users];
-  v11 = [(CRKASMConcreteCourse *)self trustedUsers];
-  v12 = [(CRKASMConcreteCourse *)self location];
-  v13 = [(CRKASMConcreteCourse *)self creationDate];
-  v14 = [v17 stringWithFormat:@"<%@: %p { identifier = %@, name = %@, mascot = %@, color = %@, editable = %@, users = %@, trustedUsers = %@, location = %@, creationDate = %@ }>", v16, self, v3, v4, v5, v6, v9, v10, v11, v12, v13];
+  users = [(CRKASMConcreteCourse *)self users];
+  trustedUsers = [(CRKASMConcreteCourse *)self trustedUsers];
+  location = [(CRKASMConcreteCourse *)self location];
+  creationDate = [(CRKASMConcreteCourse *)self creationDate];
+  v14 = [v17 stringWithFormat:@"<%@: %p { identifier = %@, name = %@, mascot = %@, color = %@, editable = %@, users = %@, trustedUsers = %@, location = %@, creationDate = %@ }>", v16, self, stringValue, name, v5, v6, v9, users, trustedUsers, location, creationDate];
 
   return v14;
 }
 
-+ (id)trustedUserIdentifierForTrustedUsers:(id)a3
++ (id)trustedUserIdentifierForTrustedUsers:(id)users
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [a3 crk_mapUsingBlock:&__block_literal_global_20];
+  v4 = [users crk_mapUsingBlock:&__block_literal_global_20];
   v5 = [v3 setWithArray:v4];
 
   return v5;
 }
 
-+ (id)courseNameForClass:(id)a3
++ (id)courseNameForClass:(id)class
 {
-  v3 = a3;
-  v4 = [v3 displayName];
-  v5 = [v4 copy];
+  classCopy = class;
+  displayName = [classCopy displayName];
+  v5 = [displayName copy];
   v6 = v5;
   if (v5)
   {
@@ -262,23 +262,23 @@ LABEL_16:
 
   else
   {
-    v8 = [v3 className];
-    v7 = [v8 copy];
+    className = [classCopy className];
+    v7 = [className copy];
   }
 
   return v7;
 }
 
-+ (id)usersFromPersons:(id)a3 environment:(id)a4
++ (id)usersFromPersons:(id)persons environment:(id)environment
 {
-  v5 = a4;
+  environmentCopy = environment;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__CRKASMConcreteCourse_usersFromPersons_environment___block_invoke;
   v9[3] = &unk_278DC18E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 crk_mapUsingBlock:v9];
+  v10 = environmentCopy;
+  v6 = environmentCopy;
+  v7 = [persons crk_mapUsingBlock:v9];
 
   return v7;
 }
@@ -293,16 +293,16 @@ id __53__CRKASMConcreteCourse_usersFromPersons_environment___block_invoke(uint64
   return v5;
 }
 
-+ (id)trustedUsersFromPersons:(id)a3 environment:(id)a4
++ (id)trustedUsersFromPersons:(id)persons environment:(id)environment
 {
-  v5 = a4;
+  environmentCopy = environment;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__CRKASMConcreteCourse_trustedUsersFromPersons_environment___block_invoke;
   v9[3] = &unk_278DC1908;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 crk_mapUsingBlock:v9];
+  v10 = environmentCopy;
+  v6 = environmentCopy;
+  v7 = [persons crk_mapUsingBlock:v9];
 
   return v7;
 }

@@ -1,17 +1,17 @@
 @interface SBSwitcherResizeGrabberLayoutAttributes
-+ (id)attributesWithLeafAppLayout:(id)a3 edge:(unint64_t)a4;
++ (id)attributesWithLeafAppLayout:(id)layout edge:(unint64_t)edge;
 - (id)_copy;
 @end
 
 @implementation SBSwitcherResizeGrabberLayoutAttributes
 
-+ (id)attributesWithLeafAppLayout:(id)a3 edge:(unint64_t)a4
++ (id)attributesWithLeafAppLayout:(id)layout edge:(unint64_t)edge
 {
-  v5 = a3;
+  layoutCopy = layout;
   v6 = objc_alloc_init(SBSwitcherResizeGrabberLayoutAttributes);
-  [(SBSwitcherResizeGrabberLayoutAttributes *)v6 setLeafAppLayout:v5];
+  [(SBSwitcherResizeGrabberLayoutAttributes *)v6 setLeafAppLayout:layoutCopy];
 
-  [(SBSwitcherResizeGrabberLayoutAttributes *)v6 setEdge:a4];
+  [(SBSwitcherResizeGrabberLayoutAttributes *)v6 setEdge:edge];
 
   return v6;
 }

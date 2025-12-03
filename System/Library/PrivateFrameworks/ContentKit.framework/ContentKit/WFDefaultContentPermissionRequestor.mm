@@ -1,8 +1,8 @@
 @interface WFDefaultContentPermissionRequestor
 - (WFContactStore)contactStore;
-- (void)allowContactsAccessWithCompletionHandler:(id)a3;
-- (void)allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4;
-- (void)requestUserConsentToLoadWebContentAtURL:(id)a3 completionHandler:(id)a4;
+- (void)allowContactsAccessWithCompletionHandler:(id)handler;
+- (void)allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler;
+- (void)requestUserConsentToLoadWebContentAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WFDefaultContentPermissionRequestor
@@ -31,10 +31,10 @@
   return contactStore;
 }
 
-- (void)allowNetworkAccessAfterPromptingForURLs:(id)a3 completionHandler:(id)a4
+- (void)allowNetworkAccessAfterPromptingForURLs:(id)ls completionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = getWFSecurityLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,13 +43,13 @@
     _os_log_impl(&dword_21E1BD000, v5, OS_LOG_TYPE_DEFAULT, "%s Denying unrestricted network access due to missing WFContentPermissionRequestor", &v6, 0xCu);
   }
 
-  (*(v4 + 2))(v4, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)allowContactsAccessWithCompletionHandler:(id)a3
+- (void)allowContactsAccessWithCompletionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   v4 = getWFContentGraphLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -59,13 +59,13 @@
   }
 
   v5 = objc_opt_new();
-  v3[2](v3, v5, 0);
+  handlerCopy[2](handlerCopy, v5, 0);
 }
 
-- (void)requestUserConsentToLoadWebContentAtURL:(id)a3 completionHandler:(id)a4
+- (void)requestUserConsentToLoadWebContentAtURL:(id)l completionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  handlerCopy = handler;
   v5 = getWFSecurityLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -74,7 +74,7 @@
     _os_log_impl(&dword_21E1BD000, v5, OS_LOG_TYPE_DEFAULT, "%s Denying load of external web resources due to missing WFContentPermissionRequestor.", &v6, 0xCu);
   }
 
-  (*(v4 + 2))(v4, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
 @end

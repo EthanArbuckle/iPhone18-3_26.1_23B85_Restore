@@ -1,16 +1,16 @@
 @interface _ASPasswordManagerAccountsSelectionInfo
 - (BOOL)isSelectedAccountSingleFileVaultRecoveryKey;
 - (BOOL)isSelectedAccountSingleSignInWithApple;
-- (_ASPasswordManagerAccountsSelectionInfo)initWithSavedAccounts:(id)a3;
+- (_ASPasswordManagerAccountsSelectionInfo)initWithSavedAccounts:(id)accounts;
 - (int64_t)selectedCredentialTypes;
 @end
 
 @implementation _ASPasswordManagerAccountsSelectionInfo
 
-- (_ASPasswordManagerAccountsSelectionInfo)initWithSavedAccounts:(id)a3
+- (_ASPasswordManagerAccountsSelectionInfo)initWithSavedAccounts:(id)accounts
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   v25.receiver = self;
   v25.super_class = _ASPasswordManagerAccountsSelectionInfo;
   v5 = [(_ASPasswordManagerAccountsSelectionInfo *)&v25 init];
@@ -22,7 +22,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v4;
+    v7 = accountsCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v8)
     {
@@ -38,10 +38,10 @@
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 credentialTypes];
-          v14 = [v12 credentialTypes];
+          credentialTypes = [v12 credentialTypes];
+          credentialTypes2 = [v12 credentialTypes];
           p_numberOfFileVaultRecoveryKeys = &v6->_numberOfFileVaultRecoveryKeys;
-          if (v14 & 8) != 0 || (p_numberOfFileVaultRecoveryKeys = &v6->_numberOfPasswords, (v13))
+          if (credentialTypes2 & 8) != 0 || (p_numberOfFileVaultRecoveryKeys = &v6->_numberOfPasswords, (credentialTypes))
           {
             ++*p_numberOfFileVaultRecoveryKeys;
           }
@@ -56,8 +56,8 @@
             ++v6->_numberOfPasskeys;
           }
 
-          v16 = [v12 totpGenerators];
-          v17 = [v16 count];
+          totpGenerators = [v12 totpGenerators];
+          v17 = [totpGenerators count];
 
           if (v17)
           {
@@ -122,24 +122,24 @@
 
 - (BOOL)isSelectedAccountSingleSignInWithApple
 {
-  v3 = [(_ASPasswordManagerAccountsSelectionInfo *)self hasOnlySignInWithAppleAccounts];
-  if (v3)
+  hasOnlySignInWithAppleAccounts = [(_ASPasswordManagerAccountsSelectionInfo *)self hasOnlySignInWithAppleAccounts];
+  if (hasOnlySignInWithAppleAccounts)
   {
-    LOBYTE(v3) = [(_ASPasswordManagerAccountsSelectionInfo *)self numberOfSignInWithAppleAccounts]== 1;
+    LOBYTE(hasOnlySignInWithAppleAccounts) = [(_ASPasswordManagerAccountsSelectionInfo *)self numberOfSignInWithAppleAccounts]== 1;
   }
 
-  return v3;
+  return hasOnlySignInWithAppleAccounts;
 }
 
 - (BOOL)isSelectedAccountSingleFileVaultRecoveryKey
 {
-  v3 = [(_ASPasswordManagerAccountsSelectionInfo *)self hasOnlyFileVaultRecoveryKeys];
-  if (v3)
+  hasOnlyFileVaultRecoveryKeys = [(_ASPasswordManagerAccountsSelectionInfo *)self hasOnlyFileVaultRecoveryKeys];
+  if (hasOnlyFileVaultRecoveryKeys)
   {
-    LOBYTE(v3) = [(_ASPasswordManagerAccountsSelectionInfo *)self numberOfFileVaultRecoveryKeys]== 1;
+    LOBYTE(hasOnlyFileVaultRecoveryKeys) = [(_ASPasswordManagerAccountsSelectionInfo *)self numberOfFileVaultRecoveryKeys]== 1;
   }
 
-  return v3;
+  return hasOnlyFileVaultRecoveryKeys;
 }
 
 @end

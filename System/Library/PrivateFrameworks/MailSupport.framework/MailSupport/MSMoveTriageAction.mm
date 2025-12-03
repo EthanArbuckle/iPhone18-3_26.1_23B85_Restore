@@ -1,59 +1,59 @@
 @interface MSMoveTriageAction
-- (MSMoveTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailbox:(id)a7 flagChange:(id)a8 copyMessages:(BOOL)a9;
-- (MSMoveTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailboxType:(int64_t)a7 flagChange:(id)a8 copyMessages:(BOOL)a9;
-- (MSMoveTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailboxType:(int64_t)a7 flagChange:(id)a8 copyMessages:(BOOL)a9;
+- (MSMoveTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailbox:(id)mailbox flagChange:(id)change copyMessages:(BOOL)messages;
+- (MSMoveTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailboxType:(int64_t)type flagChange:(id)change copyMessages:(BOOL)messages;
+- (MSMoveTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailboxType:(int64_t)type flagChange:(id)change copyMessages:(BOOL)messages;
 - (id)_changeAction;
 @end
 
 @implementation MSMoveTriageAction
 
-- (MSMoveTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailbox:(id)a7 flagChange:(id)a8 copyMessages:(BOOL)a9
+- (MSMoveTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailbox:(id)mailbox flagChange:(id)change copyMessages:(BOOL)messages
 {
-  v16 = a7;
-  v17 = a8;
+  mailboxCopy = mailbox;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = MSMoveTriageAction;
-  v18 = [(MSTriageAction *)&v21 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  v18 = [(MSTriageAction *)&v21 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_destinationMailbox, a7);
-    objc_storeStrong(&v19->_flagChange, a8);
-    v19->_copyMessages = a9;
+    objc_storeStrong(&v18->_destinationMailbox, mailbox);
+    objc_storeStrong(&v19->_flagChange, change);
+    v19->_copyMessages = messages;
   }
 
   return v19;
 }
 
-- (MSMoveTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailboxType:(int64_t)a7 flagChange:(id)a8 copyMessages:(BOOL)a9
+- (MSMoveTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailboxType:(int64_t)type flagChange:(id)change copyMessages:(BOOL)messages
 {
-  v16 = a8;
+  changeCopy = change;
   v20.receiver = self;
   v20.super_class = MSMoveTriageAction;
-  v17 = [(MSTriageAction *)&v20 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  v17 = [(MSTriageAction *)&v20 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   v18 = v17;
   if (v17)
   {
-    v17->_destinationMailboxType = a7;
-    objc_storeStrong(&v17->_flagChange, a8);
-    v18->_copyMessages = a9;
+    v17->_destinationMailboxType = type;
+    objc_storeStrong(&v17->_flagChange, change);
+    v18->_copyMessages = messages;
   }
 
   return v18;
 }
 
-- (MSMoveTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 destinationMailboxType:(int64_t)a7 flagChange:(id)a8 copyMessages:(BOOL)a9
+- (MSMoveTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate destinationMailboxType:(int64_t)type flagChange:(id)change copyMessages:(BOOL)messages
 {
-  v16 = a8;
+  changeCopy = change;
   v20.receiver = self;
   v20.super_class = MSMoveTriageAction;
-  v17 = [(MSTriageAction *)&v20 initWithQuery:a3 origin:a4 actor:a5 delegate:a6];
+  v17 = [(MSTriageAction *)&v20 initWithQuery:query origin:origin actor:actor delegate:delegate];
   v18 = v17;
   if (v17)
   {
-    v17->_destinationMailboxType = a7;
-    objc_storeStrong(&v17->_flagChange, a8);
-    v18->_copyMessages = a9;
+    v17->_destinationMailboxType = type;
+    objc_storeStrong(&v17->_flagChange, change);
+    v18->_copyMessages = messages;
   }
 
   return v18;
@@ -61,18 +61,18 @@
 
 - (id)_changeAction
 {
-  v3 = [(MSTriageAction *)self messageListItemSelection];
-  v4 = [v3 isSelectAll];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  isSelectAll = [messageListItemSelection isSelectAll];
 
   destinationMailbox = self->_destinationMailbox;
-  if (!v4)
+  if (!isSelectAll)
   {
     if (destinationMailbox)
     {
       v12 = objc_alloc(MEMORY[0x277D06E40]);
-      v7 = [(MSTriageAction *)self messageListItemSelection];
-      v8 = [v7 messageListItems];
-      v13 = [v12 initWithMessageListItems:v8 origin:-[MSTriageAction origin](self actor:"origin") destinationMailbox:-[MSTriageAction actor](self copyMessages:{"actor"), self->_destinationMailbox, self->_copyMessages}];
+      messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+      messageListItems = [messageListItemSelection2 messageListItems];
+      v13 = [v12 initWithMessageListItems:messageListItems origin:-[MSTriageAction origin](self actor:"origin") destinationMailbox:-[MSTriageAction actor](self copyMessages:{"actor"), self->_destinationMailbox, self->_copyMessages}];
     }
 
     else
@@ -82,19 +82,19 @@
         goto LABEL_18;
       }
 
-      v17 = [(MSTriageAction *)self query];
+      query = [(MSTriageAction *)self query];
 
       v18 = objc_alloc(MEMORY[0x277D06E40]);
-      if (v17)
+      if (query)
       {
-        v7 = [(MSTriageAction *)self query];
-        v14 = [v18 initWithQuery:v7 origin:-[MSTriageAction origin](self actor:"origin") specialDestinationMailboxType:-[MSTriageAction actor](self flagChange:"actor") copyMessages:{self->_destinationMailboxType, self->_flagChange, self->_copyMessages}];
+        messageListItemSelection2 = [(MSTriageAction *)self query];
+        v14 = [v18 initWithQuery:messageListItemSelection2 origin:-[MSTriageAction origin](self actor:"origin") specialDestinationMailboxType:-[MSTriageAction actor](self flagChange:"actor") copyMessages:{self->_destinationMailboxType, self->_flagChange, self->_copyMessages}];
         goto LABEL_11;
       }
 
-      v7 = [(MSTriageAction *)self messageListItemSelection];
-      v8 = [v7 messageListItems];
-      v13 = [v18 initWithMessageListItems:v8 origin:-[MSTriageAction origin](self actor:"origin") specialDestinationMailboxType:-[MSTriageAction actor](self flagChange:"actor") copyMessages:{self->_destinationMailboxType, self->_flagChange, self->_copyMessages}];
+      messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+      messageListItems = [messageListItemSelection2 messageListItems];
+      v13 = [v18 initWithMessageListItems:messageListItems origin:-[MSTriageAction origin](self actor:"origin") specialDestinationMailboxType:-[MSTriageAction actor](self flagChange:"actor") copyMessages:{self->_destinationMailboxType, self->_flagChange, self->_copyMessages}];
     }
 
     v14 = v13;
@@ -107,11 +107,11 @@ LABEL_11:
   if (destinationMailbox)
   {
     v6 = objc_alloc(MEMORY[0x277D06E48]);
-    v7 = [(MSTriageAction *)self messageListItemSelection];
-    v8 = [v7 mailboxes];
-    v9 = [(MSTriageAction *)self messageListItemSelection];
-    v10 = [v9 messageListItems];
-    v11 = [v6 initWithMailboxes:v8 messageListItemsToExclude:v10 destinationMailbox:self->_destinationMailbox copyMessages:self->_copyMessages origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
+    messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+    messageListItems = [messageListItemSelection2 mailboxes];
+    messageListItemSelection3 = [(MSTriageAction *)self messageListItemSelection];
+    messageListItems2 = [messageListItemSelection3 messageListItems];
+    v11 = [v6 initWithMailboxes:messageListItems messageListItemsToExclude:messageListItems2 destinationMailbox:self->_destinationMailbox copyMessages:self->_copyMessages origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
 LABEL_9:
     v14 = v11;
 
@@ -121,11 +121,11 @@ LABEL_9:
   if (self->_destinationMailboxType)
   {
     v15 = objc_alloc(MEMORY[0x277D06E48]);
-    v7 = [(MSTriageAction *)self messageListItemSelection];
-    v8 = [v7 mailboxes];
-    v9 = [(MSTriageAction *)self messageListItemSelection];
-    v10 = [v9 messageListItems];
-    v11 = [v15 initWithMailboxes:v8 messageListItemsToExclude:v10 specialDestinationMailboxType:self->_destinationMailboxType flagChange:self->_flagChange copyMessages:self->_copyMessages origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
+    messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+    messageListItems = [messageListItemSelection2 mailboxes];
+    messageListItemSelection3 = [(MSTriageAction *)self messageListItemSelection];
+    messageListItems2 = [messageListItemSelection3 messageListItems];
+    v11 = [v15 initWithMailboxes:messageListItems messageListItemsToExclude:messageListItems2 specialDestinationMailboxType:self->_destinationMailboxType flagChange:self->_flagChange copyMessages:self->_copyMessages origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
     goto LABEL_9;
   }
 

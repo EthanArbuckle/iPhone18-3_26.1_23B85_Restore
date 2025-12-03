@@ -6,15 +6,15 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKActivityAnalogDensityEditOption *)self density];
-  if (v2 == &dword_0 + 3)
+  density = [(NTKActivityAnalogDensityEditOption *)self density];
+  if (density == &dword_0 + 3)
   {
     v3 = @"EDIT_OPTION_LABEL_ANALOG_DENSITY_SUBDIALS";
     v4 = @"Subdials";
     goto LABEL_5;
   }
 
-  if (v2 == &dword_0 + 1)
+  if (density == &dword_0 + 1)
   {
     v3 = @"EDIT_OPTION_LABEL_ANALOG_DENSITY_RINGS";
     v4 = @"Rings";

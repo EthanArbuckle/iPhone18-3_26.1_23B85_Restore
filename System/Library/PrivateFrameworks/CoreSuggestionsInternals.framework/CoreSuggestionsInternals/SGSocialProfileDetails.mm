@@ -1,8 +1,8 @@
 @interface SGSocialProfileDetails
-- (SGSocialProfileDetails)initWithCNSocialProfile:(id)a3;
-- (SGSocialProfileDetails)initWithSerialized:(id)a3;
-- (SGSocialProfileDetails)initWithSocialProfile:(id)a3;
-- (SGSocialProfileDetails)initWithUsername:(id)a3 userIdentifier:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 service:(id)a7 teamIdentifier:(id)a8;
+- (SGSocialProfileDetails)initWithCNSocialProfile:(id)profile;
+- (SGSocialProfileDetails)initWithSerialized:(id)serialized;
+- (SGSocialProfileDetails)initWithSocialProfile:(id)profile;
+- (SGSocialProfileDetails)initWithUsername:(id)username userIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier displayName:(id)name service:(id)service teamIdentifier:(id)teamIdentifier;
 - (id)serialize;
 @end
 
@@ -23,10 +23,10 @@
   return v3;
 }
 
-- (SGSocialProfileDetails)initWithSerialized:(id)a3
+- (SGSocialProfileDetails)initWithSerialized:(id)serialized
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serializedCopy = serialized;
   v5 = SGDelimitedStringsDeserialize();
   if ([v5 count] == 6)
   {
@@ -38,7 +38,7 @@
     v11 = [v5 objectAtIndexedSubscript:5];
     self = [(SGSocialProfileDetails *)self initWithUsername:v6 userIdentifier:v7 bundleIdentifier:v8 displayName:v9 service:v10 teamIdentifier:v11];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,25 +47,25 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = serializedCopy;
       _os_log_error_impl(&dword_231E60000, v13, OS_LOG_TYPE_ERROR, "Failed to decode socialProfileData: %@", &v16, 0xCu);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
-- (SGSocialProfileDetails)initWithCNSocialProfile:(id)a3
+- (SGSocialProfileDetails)initWithCNSocialProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 username];
-  v26 = v4;
-  if (v4)
+  profileCopy = profile;
+  username = [profileCopy username];
+  v26 = username;
+  if (username)
   {
-    v5 = v4;
+    v5 = username;
   }
 
   else
@@ -74,11 +74,11 @@
   }
 
   v23 = v5;
-  v6 = [v3 userIdentifier];
-  v7 = v6;
-  if (v6)
+  userIdentifier = [profileCopy userIdentifier];
+  v7 = userIdentifier;
+  if (userIdentifier)
   {
-    v8 = v6;
+    v8 = userIdentifier;
   }
 
   else
@@ -87,12 +87,12 @@
   }
 
   v22 = v8;
-  v25 = [v3 bundleIdentifiers];
-  v9 = [v25 firstObject];
-  v10 = v9;
-  if (v9)
+  bundleIdentifiers = [profileCopy bundleIdentifiers];
+  firstObject = [bundleIdentifiers firstObject];
+  v10 = firstObject;
+  if (firstObject)
   {
-    v11 = v9;
+    v11 = firstObject;
   }
 
   else
@@ -100,11 +100,11 @@
     v11 = &stru_284703F00;
   }
 
-  v12 = [v3 displayname];
-  v13 = v12;
-  if (v12)
+  displayname = [profileCopy displayname];
+  v13 = displayname;
+  if (displayname)
   {
-    v14 = v12;
+    v14 = displayname;
   }
 
   else
@@ -112,11 +112,11 @@
     v14 = &stru_284703F00;
   }
 
-  v15 = [v3 service];
-  v16 = v15;
-  if (v15)
+  service = [profileCopy service];
+  v16 = service;
+  if (service)
   {
-    v17 = v15;
+    v17 = service;
   }
 
   else
@@ -124,11 +124,11 @@
     v17 = &stru_284703F00;
   }
 
-  v18 = [v3 teamIdentifier];
+  teamIdentifier = [profileCopy teamIdentifier];
 
-  if (v18)
+  if (teamIdentifier)
   {
-    v19 = v18;
+    v19 = teamIdentifier;
   }
 
   else
@@ -141,14 +141,14 @@
   return v20;
 }
 
-- (SGSocialProfileDetails)initWithSocialProfile:(id)a3
+- (SGSocialProfileDetails)initWithSocialProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 username];
-  v5 = v4;
-  if (v4)
+  profileCopy = profile;
+  username = [profileCopy username];
+  v5 = username;
+  if (username)
   {
-    v6 = v4;
+    v6 = username;
   }
 
   else
@@ -157,11 +157,11 @@
   }
 
   v22 = v6;
-  v7 = [v3 userIdentifier];
-  v8 = v7;
-  if (v7)
+  userIdentifier = [profileCopy userIdentifier];
+  v8 = userIdentifier;
+  if (userIdentifier)
   {
-    v9 = v7;
+    v9 = userIdentifier;
   }
 
   else
@@ -170,12 +170,12 @@
   }
 
   v21 = v9;
-  v10 = [v3 bundleIdentifier];
-  v11 = [v3 displayName];
-  v12 = v11;
-  if (v11)
+  bundleIdentifier = [profileCopy bundleIdentifier];
+  displayName = [profileCopy displayName];
+  v12 = displayName;
+  if (displayName)
   {
-    v13 = v11;
+    v13 = displayName;
   }
 
   else
@@ -183,11 +183,11 @@
     v13 = &stru_284703F00;
   }
 
-  v14 = [v3 service];
-  v15 = v14;
-  if (v14)
+  service = [profileCopy service];
+  v15 = service;
+  if (service)
   {
-    v16 = v14;
+    v16 = service;
   }
 
   else
@@ -195,11 +195,11 @@
     v16 = &stru_284703F00;
   }
 
-  v17 = [v3 teamIdentifier];
+  teamIdentifier = [profileCopy teamIdentifier];
 
-  if (v17)
+  if (teamIdentifier)
   {
-    v18 = v17;
+    v18 = teamIdentifier;
   }
 
   else
@@ -207,51 +207,51 @@
     v18 = &stru_284703F00;
   }
 
-  v19 = [(SGSocialProfileDetails *)self initWithUsername:v22 userIdentifier:v21 bundleIdentifier:v10 displayName:v13 service:v16 teamIdentifier:v18];
+  v19 = [(SGSocialProfileDetails *)self initWithUsername:v22 userIdentifier:v21 bundleIdentifier:bundleIdentifier displayName:v13 service:v16 teamIdentifier:v18];
 
   return v19;
 }
 
-- (SGSocialProfileDetails)initWithUsername:(id)a3 userIdentifier:(id)a4 bundleIdentifier:(id)a5 displayName:(id)a6 service:(id)a7 teamIdentifier:(id)a8
+- (SGSocialProfileDetails)initWithUsername:(id)username userIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier displayName:(id)name service:(id)service teamIdentifier:(id)teamIdentifier
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  serviceCopy = service;
+  teamIdentifierCopy = teamIdentifier;
   v48.receiver = self;
   v48.super_class = SGSocialProfileDetails;
   v20 = [(SGSocialProfileDetails *)&v48 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [usernameCopy copy];
     username = v20->_username;
     v20->_username = v21;
 
-    v23 = [v15 copy];
+    v23 = [identifierCopy copy];
     userIdentifier = v20->_userIdentifier;
     v20->_userIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [bundleIdentifierCopy copy];
     bundleIdentifier = v20->_bundleIdentifier;
     v20->_bundleIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [nameCopy copy];
     displayName = v20->_displayName;
     v20->_displayName = v27;
 
-    v29 = [v18 copy];
+    v29 = [serviceCopy copy];
     service = v20->_service;
     v20->_service = v29;
 
-    v31 = [v19 copy];
+    v31 = [teamIdentifierCopy copy];
     teamIdentifier = v20->_teamIdentifier;
     v20->_teamIdentifier = v31;
 
     v33 = 0x277CBE000uLL;
-    if ([v16 length] && objc_msgSend(v15, "length"))
+    if ([bundleIdentifierCopy length] && objc_msgSend(identifierCopy, "length"))
     {
       v34 = v20->_bundleIdentifier;
       v52[0] = v20->_userIdentifier;
@@ -265,20 +265,20 @@
       v36 = 0;
     }
 
-    if ([v16 length] && objc_msgSend(v14, "length"))
+    if ([bundleIdentifierCopy length] && objc_msgSend(usernameCopy, "length"))
     {
       v37 = v20->_bundleIdentifier;
       v51[0] = v20->_username;
       v51[1] = v37;
       v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-      v39 = SGDelimitedStringsSerializeArray();
+      serialize = SGDelimitedStringsSerializeArray();
 
       v33 = 0x277CBE000;
     }
 
     else
     {
-      v39 = [(SGSocialProfileDetails *)v20 serialize];
+      serialize = [(SGSocialProfileDetails *)v20 serialize];
     }
 
     if (v36)
@@ -288,14 +288,14 @@
 
     else
     {
-      v40 = v39;
+      v40 = serialize;
     }
 
     objc_storeStrong(&v20->_preferredUniqueIdentifier, v40);
     if (v36)
     {
       v50[0] = v36;
-      v50[1] = v39;
+      v50[1] = serialize;
       v41 = *(v33 + 2656);
       v42 = v50;
       v43 = 2;
@@ -303,7 +303,7 @@
 
     else
     {
-      v49 = v39;
+      v49 = serialize;
       v41 = *(v33 + 2656);
       v42 = &v49;
       v43 = 1;

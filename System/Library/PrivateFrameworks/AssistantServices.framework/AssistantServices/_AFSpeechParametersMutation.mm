@@ -5,7 +5,7 @@
 - (BOOL)getNarrowband;
 - (BOOL)getSecureOfflineOnly;
 - (BOOL)getShouldStoreAudioOnDevice;
-- (_AFSpeechParametersMutation)initWithBase:(id)a3;
+- (_AFSpeechParametersMutation)initWithBase:(id)base;
 - (double)getMaximumRecognitionDuration;
 - (id)getApplicationName;
 - (id)getInputOrigin;
@@ -27,45 +27,45 @@
 {
   if ((*(&self->_mutationFlags + 2) & 8) != 0)
   {
-    v2 = self->_jitGrammar;
+    jitGrammar = self->_jitGrammar;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base jitGrammar];
+    jitGrammar = [(AFSpeechParameters *)self->_base jitGrammar];
   }
 
-  return v2;
+  return jitGrammar;
 }
 
 - (id)getLocation
 {
   if ((*(&self->_mutationFlags + 2) & 4) != 0)
   {
-    v2 = self->_location;
+    location = self->_location;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base location];
+    location = [(AFSpeechParameters *)self->_base location];
   }
 
-  return v2;
+  return location;
 }
 
 - (id)getInputOrigin
 {
   if ((*(&self->_mutationFlags + 2) & 2) != 0)
   {
-    v2 = self->_inputOrigin;
+    inputOrigin = self->_inputOrigin;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base inputOrigin];
+    inputOrigin = [(AFSpeechParameters *)self->_base inputOrigin];
   }
 
-  return v2;
+  return inputOrigin;
 }
 
 - (double)getMaximumRecognitionDuration
@@ -161,147 +161,147 @@
 {
   if ((*(&self->_mutationFlags + 1) & 2) != 0)
   {
-    v2 = self->_originalAudioFileURL;
+    originalAudioFileURL = self->_originalAudioFileURL;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base originalAudioFileURL];
+    originalAudioFileURL = [(AFSpeechParameters *)self->_base originalAudioFileURL];
   }
 
-  return v2;
+  return originalAudioFileURL;
 }
 
 - (id)getModelOverrideURL
 {
   if (*(&self->_mutationFlags + 1))
   {
-    v2 = self->_modelOverrideURL;
+    modelOverrideURL = self->_modelOverrideURL;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base modelOverrideURL];
+    modelOverrideURL = [(AFSpeechParameters *)self->_base modelOverrideURL];
   }
 
-  return v2;
+  return modelOverrideURL;
 }
 
 - (id)getOverrides
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_overrides;
+    overrides = self->_overrides;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base overrides];
+    overrides = [(AFSpeechParameters *)self->_base overrides];
   }
 
-  return v2;
+  return overrides;
 }
 
 - (id)getProfile
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_profile;
+    profile = self->_profile;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base profile];
+    profile = [(AFSpeechParameters *)self->_base profile];
   }
 
-  return v2;
+  return profile;
 }
 
 - (id)getApplicationName
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_applicationName;
+    applicationName = self->_applicationName;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base applicationName];
+    applicationName = [(AFSpeechParameters *)self->_base applicationName];
   }
 
-  return v2;
+  return applicationName;
 }
 
 - (id)getLoggingContext
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_loggingContext;
+    loggingContext = self->_loggingContext;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base loggingContext];
+    loggingContext = [(AFSpeechParameters *)self->_base loggingContext];
   }
 
-  return v2;
+  return loggingContext;
 }
 
 - (id)getTask
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_task;
+    task = self->_task;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base task];
+    task = [(AFSpeechParameters *)self->_base task];
   }
 
-  return v2;
+  return task;
 }
 
 - (id)getInteractionIdentifier
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_interactionIdentifier;
+    interactionIdentifier = self->_interactionIdentifier;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base interactionIdentifier];
+    interactionIdentifier = [(AFSpeechParameters *)self->_base interactionIdentifier];
   }
 
-  return v2;
+  return interactionIdentifier;
 }
 
 - (id)getLanguage
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_language;
+    language = self->_language;
   }
 
   else
   {
-    v2 = [(AFSpeechParameters *)self->_base language];
+    language = [(AFSpeechParameters *)self->_base language];
   }
 
-  return v2;
+  return language;
 }
 
-- (_AFSpeechParametersMutation)initWithBase:(id)a3
+- (_AFSpeechParametersMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSpeechParametersMutation;
   v6 = [(_AFSpeechParametersMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

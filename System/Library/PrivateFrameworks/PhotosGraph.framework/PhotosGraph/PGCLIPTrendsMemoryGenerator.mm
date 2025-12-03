@@ -1,16 +1,16 @@
 @interface PGCLIPTrendsMemoryGenerator
 + (id)CLIPTrendsConfigurations;
 + (id)_CLIPTrends;
-- (PGCLIPTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4;
+- (PGCLIPTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations;
 @end
 
 @implementation PGCLIPTrendsMemoryGenerator
 
-- (PGCLIPTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4
+- (PGCLIPTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations
 {
   v6.receiver = self;
   v6.super_class = PGCLIPTrendsMemoryGenerator;
-  v4 = [(PGTrendsMemoryGenerator *)&v6 initWithMemoryGenerationContext:a3 configurations:a4];
+  v4 = [(PGTrendsMemoryGenerator *)&v6 initWithMemoryGenerationContext:context configurations:configurations];
   if (v4)
   {
     v4->_minimumSceneAnalysisVersion = [MEMORY[0x277D3CAB0] latestVersion];
@@ -21,8 +21,8 @@
 
 + (id)CLIPTrendsConfigurations
 {
-  v2 = [a1 _CLIPTrends];
-  if ([v2 count])
+  _CLIPTrends = [self _CLIPTrends];
+  if ([_CLIPTrends count])
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6[0] = MEMORY[0x277D85DD0];
@@ -32,7 +32,7 @@
     v8 = 0x3FF0000000000000;
     v4 = v3;
     v7 = v4;
-    [v2 enumerateKeysAndObjectsUsingBlock:v6];
+    [_CLIPTrends enumerateKeysAndObjectsUsingBlock:v6];
   }
 
   else

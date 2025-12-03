@@ -1,5 +1,5 @@
 @interface SecConcrete_sec_trust
-- (SecConcrete_sec_trust)initWithTrust:(__SecTrust *)a3;
+- (SecConcrete_sec_trust)initWithTrust:(__SecTrust *)trust;
 - (void)dealloc;
 @end
 
@@ -19,30 +19,30 @@
   [(SecConcrete_sec_trust *)&v4 dealloc];
 }
 
-- (SecConcrete_sec_trust)initWithTrust:(__SecTrust *)a3
+- (SecConcrete_sec_trust)initWithTrust:(__SecTrust *)trust
 {
-  v3 = a3;
-  if (a3)
+  selfCopy2 = trust;
+  if (trust)
   {
     v6.receiver = self;
     v6.super_class = SecConcrete_sec_trust;
     self = [(SecConcrete_sec_trust *)&v6 init];
     if (self)
     {
-      v4 = self;
-      CFRetain(v3);
-      v4->trust = v3;
-      self = v4;
-      v3 = self;
+      selfCopy = self;
+      CFRetain(selfCopy2);
+      selfCopy->trust = selfCopy2;
+      self = selfCopy;
+      selfCopy2 = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v3;
+  return selfCopy2;
 }
 
 @end

@@ -6,19 +6,19 @@
 
 - (id)_matchedPerson
 {
-  v2 = [a1 matchedPeople];
-  if ([v2 count] == 1)
+  matchedPeople = [self matchedPeople];
+  if ([matchedPeople count] == 1)
   {
-    v3 = [a1 matchedPeople];
-    v4 = [v3 firstObject];
+    matchedPeople2 = [self matchedPeople];
+    firstObject = [matchedPeople2 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MPSGPURawCounters
-- (int)requestCountersWithExtraRequestedCounter:(id)a3 fillStats:(id)a4;
-- (void)aggregatePerfSamplesForCommandBuffer:(id)a3 firstCommandBuffer:(id)a4;
+- (int)requestCountersWithExtraRequestedCounter:(id)counter fillStats:(id)stats;
+- (void)aggregatePerfSamplesForCommandBuffer:(id)buffer firstCommandBuffer:(id)commandBuffer;
 - (void)dealloc;
 - (void)getPStateAndFrequency;
 @end
@@ -38,7 +38,7 @@ LABEL_8:
     v74 = CFDataGetBytePtr(v15);
     v18 = *(v17 + 1);
     v19 = (v17 + 8);
-    v71 = self;
+    selfCopy2 = self;
     v72 = v15;
     if (v18)
     {
@@ -52,7 +52,7 @@ LABEL_8:
     v74 = 0;
     v18 = *(BytePtr + 1);
     v19 = (BytePtr + 8);
-    v71 = self;
+    selfCopy2 = self;
     v72 = 0;
     if (v18)
     {
@@ -248,7 +248,7 @@ LABEL_42:
 
   CFRelease(cf);
   CFRelease(v72);
-  self = v71;
+  self = selfCopy2;
 LABEL_47:
   v45 = off_2814650F0();
   if (v45)
@@ -289,27 +289,27 @@ LABEL_47:
   [(MPSCounters *)&v2 dealloc];
 }
 
-- (int)requestCountersWithExtraRequestedCounter:(id)a3 fillStats:(id)a4
+- (int)requestCountersWithExtraRequestedCounter:(id)counter fillStats:(id)stats
 {
   counterStatistics = self->super._counterStatistics;
-  if (counterStatistics != a4)
+  if (counterStatistics != stats)
   {
-    v7 = a3;
-    self->super._counterStatistics = a4;
+    counterCopy = counter;
+    self->super._counterStatistics = stats;
 
-    a3 = v7;
+    counter = counterCopy;
   }
 
-  return objc_msgSend_requestCountersWithExtraRequestedCounter_(self, a2, a3, a4, v4);
+  return objc_msgSend_requestCountersWithExtraRequestedCounter_(self, a2, counter, stats, v4);
 }
 
-- (void)aggregatePerfSamplesForCommandBuffer:(id)a3 firstCommandBuffer:(id)a4
+- (void)aggregatePerfSamplesForCommandBuffer:(id)buffer firstCommandBuffer:(id)commandBuffer
 {
   self->super._encodersInWorkload = 1;
   v7 = malloc_type_malloc(0x40uLL, 0x100004077774924uLL);
-  objc_msgSend_GPUStartTime(a4, v8, v9, v10, v11);
+  objc_msgSend_GPUStartTime(commandBuffer, v8, v9, v10, v11);
   v13 = v12;
-  objc_msgSend_GPUEndTime(a3, v14, v15, v16, v17);
+  objc_msgSend_GPUEndTime(buffer, v14, v15, v16, v17);
   v19 = v18;
   maxFrequency = self->_maxFrequency;
   *v7 = 0;

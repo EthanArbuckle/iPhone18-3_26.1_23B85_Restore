@@ -1,16 +1,16 @@
 @interface RAPImageResponseStorage
-+ (id)baseFilePathWithSubmissionIdentifier:(id)a3;
-+ (void)enumerateOverResponseFilePathsForSubmissionIdentifier:(id)a3 usingBlock:(id)a4;
-- (BOOL)removeImageUploadObjectsForSubmissionIdentifier:(id)a3;
-- (BOOL)saveResponseData:(id)a3 forSubmissionIdentifier:(id)a4 imageIdentifier:(id)a5;
-- (id)fetchImageUploadObjectsForSubmissionIdentifier:(id)a3;
++ (id)baseFilePathWithSubmissionIdentifier:(id)identifier;
++ (void)enumerateOverResponseFilePathsForSubmissionIdentifier:(id)identifier usingBlock:(id)block;
+- (BOOL)removeImageUploadObjectsForSubmissionIdentifier:(id)identifier;
+- (BOOL)saveResponseData:(id)data forSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier;
+- (id)fetchImageUploadObjectsForSubmissionIdentifier:(id)identifier;
 @end
 
 @implementation RAPImageResponseStorage
 
-- (BOOL)removeImageUploadObjectsForSubmissionIdentifier:(id)a3
+- (BOOL)removeImageUploadObjectsForSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -20,48 +20,48 @@
   v6[2] = sub_1009F7F5C;
   v6[3] = &unk_101631998;
   v6[4] = &v7;
-  [RAPImageResponseStorage enumerateOverResponseFilePathsForSubmissionIdentifier:v3 usingBlock:v6];
+  [RAPImageResponseStorage enumerateOverResponseFilePathsForSubmissionIdentifier:identifierCopy usingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (id)fetchImageUploadObjectsForSubmissionIdentifier:(id)a3
+- (id)fetchImageUploadObjectsForSubmissionIdentifier:(id)identifier
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1009F8084;
   v10 = &unk_101631970;
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = objc_alloc_init(NSMutableArray);
   v3 = v12;
-  v4 = v11;
+  v4 = identifierCopy;
   [RAPImageResponseStorage enumerateOverResponseFilePathsForSubmissionIdentifier:v4 usingBlock:&v7];
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (BOOL)saveResponseData:(id)a3 forSubmissionIdentifier:(id)a4 imageIdentifier:(id)a5
+- (BOOL)saveResponseData:(id)data forSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:a4];
-  v10 = [RAPFileManager saveData:v8 toDirectory:v9 filename:v7];
+  imageIdentifierCopy = imageIdentifier;
+  dataCopy = data;
+  v9 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:identifier];
+  v10 = [RAPFileManager saveData:dataCopy toDirectory:v9 filename:imageIdentifierCopy];
 
   return v10;
 }
 
-+ (void)enumerateOverResponseFilePathsForSubmissionIdentifier:(id)a3 usingBlock:(id)a4
++ (void)enumerateOverResponseFilePathsForSubmissionIdentifier:(id)identifier usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v7 = +[NSFileManager defaultManager];
-  v8 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:v5];
-  v9 = [v8 path];
+  v8 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:identifierCopy];
+  path = [v8 path];
   v24 = 0;
-  v10 = [v7 contentsOfDirectoryAtPath:v9 error:&v24];
+  v10 = [v7 contentsOfDirectoryAtPath:path error:&v24];
   v19 = v24;
 
   v22 = 0u;
@@ -84,10 +84,10 @@
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:v5, v19];
+        v17 = [RAPImageResponseStorage baseFilePathWithSubmissionIdentifier:identifierCopy, v19];
         v18 = [v17 URLByAppendingPathComponent:v16];
 
-        v6[2](v6, v16, v18);
+        blockCopy[2](blockCopy, v16, v18);
       }
 
       v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -97,12 +97,12 @@
   }
 }
 
-+ (id)baseFilePathWithSubmissionIdentifier:(id)a3
++ (id)baseFilePathWithSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RAPFileManager baseSubmissionFilePath];
   v5 = [v4 URLByAppendingPathComponent:@"rap_image_responses" isDirectory:1];
-  v6 = [v5 URLByAppendingPathComponent:v3 isDirectory:1];
+  v6 = [v5 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   return v6;
 }

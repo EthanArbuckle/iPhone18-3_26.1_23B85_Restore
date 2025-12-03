@@ -1,19 +1,19 @@
 @interface WFIPViewController
-- (WFIPViewController)initWithAddresses:(id)a3 prefixLengths:(id)a4;
-- (WFIPViewController)initWithAddresses:(id)a3 prefixLengths:(id)a4 appearanceProxy:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WFIPViewController)initWithAddresses:(id)addresses prefixLengths:(id)lengths;
+- (WFIPViewController)initWithAddresses:(id)addresses prefixLengths:(id)lengths appearanceProxy:(id)proxy;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation WFIPViewController
 
-- (WFIPViewController)initWithAddresses:(id)a3 prefixLengths:(id)a4
+- (WFIPViewController)initWithAddresses:(id)addresses prefixLengths:(id)lengths
 {
-  v6 = a4;
-  v7 = a3;
+  lengthsCopy = lengths;
+  addressesCopy = addresses;
   v8 = +[WFAppearanceProxy defaultAppearanceProxy];
-  v9 = [(WFIPViewController *)self initWithAddresses:v7 prefixLengths:v6 appearanceProxy:v8];
+  v9 = [(WFIPViewController *)self initWithAddresses:addressesCopy prefixLengths:lengthsCopy appearanceProxy:v8];
 
   return v9;
 }
@@ -28,47 +28,47 @@
   [(WFIPViewController *)self setTitle:v4];
 
   v5 = *MEMORY[0x277D76F30];
-  v6 = [(WFIPViewController *)self tableView];
-  [v6 setRowHeight:v5];
+  tableView = [(WFIPViewController *)self tableView];
+  [tableView setRowHeight:v5];
 
-  v7 = [(WFIPViewController *)self tableView];
-  [v7 setEstimatedRowHeight:44.0];
+  tableView2 = [(WFIPViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
-  v8 = [(WFIPViewController *)self tableView];
-  [v8 setEstimatedSectionHeaderHeight:0.0];
+  tableView3 = [(WFIPViewController *)self tableView];
+  [tableView3 setEstimatedSectionHeaderHeight:0.0];
 
-  v9 = [(WFIPViewController *)self tableView];
-  [v9 setEstimatedSectionFooterHeight:0.0];
+  tableView4 = [(WFIPViewController *)self tableView];
+  [tableView4 setEstimatedSectionFooterHeight:0.0];
 
   if ([MEMORY[0x277D75418] currentIsIPad])
   {
-    v10 = [(WFIPViewController *)self tableView];
-    [v10 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
+    tableView5 = [(WFIPViewController *)self tableView];
+    [tableView5 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFIPViewController *)self addresses:a3];
+  v4 = [(WFIPViewController *)self addresses:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
-  v7 = [(WFIPViewController *)self addresses];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v5, "row")}];
+  addresses = [(WFIPViewController *)self addresses];
+  v8 = [addresses objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v9 = [(WFIPViewController *)self prefixes];
+  prefixes = [(WFIPViewController *)self prefixes];
 
-  if (v9)
+  if (prefixes)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(WFIPViewController *)self prefixes];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v5, "row")}];
+    prefixes2 = [(WFIPViewController *)self prefixes];
+    v12 = [prefixes2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v13 = [v10 stringWithFormat:@"%@/%@", v8, v12];
   }
 
@@ -77,48 +77,48 @@
     v13 = v8;
   }
 
-  v14 = [v6 textLabel];
-  [v14 setText:v13];
+  textLabel = [v6 textLabel];
+  [textLabel setText:v13];
 
-  v15 = [MEMORY[0x277D75348] defaultTextColor];
-  v16 = [v6 textLabel];
-  [v16 setTextColor:v15];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  textLabel2 = [v6 textLabel];
+  [textLabel2 setTextColor:defaultTextColor];
 
   [v6 setSelectionStyle:0];
-  v17 = [v6 textLabel];
-  [v17 setNumberOfLines:0];
+  textLabel3 = [v6 textLabel];
+  [textLabel3 setNumberOfLines:0];
 
-  v18 = [(WFIPViewController *)self appearanceProxy];
-  v19 = [v18 cellTextLabelFont];
+  appearanceProxy = [(WFIPViewController *)self appearanceProxy];
+  cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-  if (v19)
+  if (cellTextLabelFont)
   {
-    v20 = [(WFIPViewController *)self appearanceProxy];
-    v21 = [v20 cellTextLabelFont];
-    v22 = [v6 textLabel];
-    [v22 setFont:v21];
+    appearanceProxy2 = [(WFIPViewController *)self appearanceProxy];
+    cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+    textLabel4 = [v6 textLabel];
+    [textLabel4 setFont:cellTextLabelFont2];
   }
 
   return v6;
 }
 
-- (WFIPViewController)initWithAddresses:(id)a3 prefixLengths:(id)a4 appearanceProxy:(id)a5
+- (WFIPViewController)initWithAddresses:(id)addresses prefixLengths:(id)lengths appearanceProxy:(id)proxy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  addressesCopy = addresses;
+  lengthsCopy = lengths;
+  proxyCopy = proxy;
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   if (v12)
   {
     v17.receiver = self;
     v17.super_class = WFIPViewController;
-    v13 = -[WFIPViewController initWithStyle:](&v17, sel_initWithStyle_, [v11 tableViewStyle]);
+    v13 = -[WFIPViewController initWithStyle:](&v17, sel_initWithStyle_, [proxyCopy tableViewStyle]);
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_addresses, a3);
-      objc_storeStrong(&v14->_prefixes, a4);
-      v15 = v11;
+      objc_storeStrong(&v13->_addresses, addresses);
+      objc_storeStrong(&v14->_prefixes, lengths);
+      v15 = proxyCopy;
       self = v14->_appearanceProxy;
       v14->_appearanceProxy = v15;
     }

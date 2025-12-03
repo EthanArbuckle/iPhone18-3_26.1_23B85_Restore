@@ -1,67 +1,67 @@
 @interface CBColorPolicyFilter
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)shouldMitigateForSample:(id)a3 withLuxThr:(float *)a4 NitsThr:(float *)a5 andSize:(unint64_t)a6;
-- (CBColorPolicyFilter)initWithID:(unsigned int)a3;
-- (id)copyPropertyForKey:(id)a3;
-- (id)filterEvent:(id)a3;
-- (id)handleALSEvent:(id)a3;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)shouldMitigateForSample:(id)sample withLuxThr:(float *)thr NitsThr:(float *)nitsThr andSize:(unint64_t)size;
+- (CBColorPolicyFilter)initWithID:(unsigned int)d;
+- (id)copyPropertyForKey:(id)key;
+- (id)filterEvent:(id)event;
+- (id)handleALSEvent:(id)event;
 - (void)dealloc;
-- (void)initializeMitigationsForDevice:(unsigned int)a3;
+- (void)initializeMitigationsForDevice:(unsigned int)device;
 - (void)resetFilter;
-- (void)setModuleObject:(id)a3;
+- (void)setModuleObject:(id)object;
 @end
 
 @implementation CBColorPolicyFilter
 
-- (CBColorPolicyFilter)initWithID:(unsigned int)a3
+- (CBColorPolicyFilter)initWithID:(unsigned int)d
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  dCopy = d;
   v6.receiver = self;
   v6.super_class = CBColorPolicyFilter;
-  v9 = [(CBColorPolicyFilter *)&v6 init];
-  if (v9)
+  selfCopy = [(CBColorPolicyFilter *)&v6 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.CBColorPolicyFilter", "default");
-    v9->super._logHandle = v3;
-    [(CBColorPolicyFilter *)v9 initializeMitigationsForDevice:v7];
+    selfCopy->super._logHandle = v3;
+    [(CBColorPolicyFilter *)selfCopy initializeMitigationsForDevice:dCopy];
     v4 = [[CBStack alloc] initWithLength:?];
-    v9->_alsStack = v4;
-    v9->_stackLength = 20;
-    v9->_stackCurrentCount = 0;
-    v9->_consecutiveNonMitgatedCount = 0;
-    v9->_mitigationUsedYet = 0;
-    v9->_ceConfidenceThreshold = 0.1;
-    v9->_ceEnabled = 1;
+    selfCopy->_alsStack = v4;
+    selfCopy->_stackLength = 20;
+    selfCopy->_stackCurrentCount = 0;
+    selfCopy->_consecutiveNonMitgatedCount = 0;
+    selfCopy->_mitigationUsedYet = 0;
+    selfCopy->_ceConfidenceThreshold = 0.1;
+    selfCopy->_ceEnabled = 1;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_ceModule);
-  *&v2 = MEMORY[0x1E69E5920](v5->_alsStack).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_ceModule);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_alsStack).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBColorPolicyFilter;
   [(CBColorPolicyFilter *)&v3 dealloc];
 }
 
-- (void)setModuleObject:(id)a3
+- (void)setModuleObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_ceModule = a3;
+    self->_ceModule = object;
     MEMORY[0x1E69E5928](self->_ceModule);
   }
 }
@@ -74,37 +74,37 @@
   self->_mitigationUsedYet = 0;
 }
 
-- (id)filterEvent:(id)a3
+- (id)filterEvent:(id)event
 {
-  if ([a3 eventType] == 12)
+  if ([event eventType] == 12)
   {
-    return [(CBColorPolicyFilter *)self handleALSEvent:a3];
+    return [(CBColorPolicyFilter *)self handleALSEvent:event];
   }
 
   else
   {
-    return a3;
+    return event;
   }
 }
 
-- (id)handleALSEvent:(id)a3
+- (id)handleALSEvent:(id)event
 {
   v33 = __b;
-  v74 = self;
+  selfCopy = self;
   v73 = a2;
-  v72 = a3;
+  eventCopy = event;
   v71 = 1;
   v70 = 0;
   v69 = 0.27;
   v68 = 1.0;
   __c = 0;
   v67 = 0;
-  [a3 illuminance];
+  [event illuminance];
   *&v3 = v3;
   v66 = *&v3;
   memset(__b, 0, sizeof(__b));
-  v35 = v72;
-  if (v72)
+  v35 = eventCopy;
+  if (eventCopy)
   {
     [(CBHIDEvent *)v35 vendorData];
   }
@@ -121,40 +121,40 @@
   {
     if (__b[82])
     {
-      if ([(CBColorPolicyFilter *)v74 sampleIsFromMitigatedRegion:v72, v4])
+      if ([(CBColorPolicyFilter *)selfCopy sampleIsFromMitigatedRegion:eventCopy, v4])
       {
         *&v5 = v66;
         *&v6 = v64;
-        [(CBColorPolicyFilter *)v74 computeBaselineStrengthForLux:v5 andNits:v6];
+        [(CBColorPolicyFilter *)selfCopy computeBaselineStrengthForLux:v5 andNits:v6];
         v69 = v7;
-        [(CBHIDEvent *)v72 setColorMitigationTriggered:1];
-        v74->_isColorMitigationTriggered = 1;
+        [(CBHIDEvent *)eventCopy setColorMitigationTriggered:1];
+        selfCopy->_isColorMitigationTriggered = 1;
       }
 
       else
       {
-        [(CBHIDEvent *)v72 setColorMitigationTriggered:0];
-        v74->_isColorMitigationTriggered = 0;
+        [(CBHIDEvent *)eventCopy setColorMitigationTriggered:0];
+        selfCopy->_isColorMitigationTriggered = 0;
         v69 = 0.27;
       }
 
-      v74->_filteredALS = v72;
-      v74->_filteredStrength = v69;
+      selfCopy->_filteredALS = eventCopy;
+      selfCopy->_filteredStrength = v69;
     }
 
-    else if ([(CBColorPolicyFilter *)v74 sampleIsFromMitigatedRegion:v72, v4])
+    else if ([(CBColorPolicyFilter *)selfCopy sampleIsFromMitigatedRegion:eventCopy, v4])
     {
-      [(CBHIDEvent *)v72 setColorMitigationTriggered:1];
+      [(CBHIDEvent *)eventCopy setColorMitigationTriggered:1];
       *&v8 = v66;
       *&v9 = v64;
-      [(CBColorPolicyFilter *)v74 computeBaselineStrengthForLux:v8 andNits:v9];
+      [(CBColorPolicyFilter *)selfCopy computeBaselineStrengthForLux:v8 andNits:v9];
       v63 = v10;
-      if (v74->_ceEnabled)
+      if (selfCopy->_ceEnabled)
       {
-        if ([(CBColorPolicyFilter *)v74 sampleIsFromCERegion:v72])
+        if ([(CBColorPolicyFilter *)selfCopy sampleIsFromCERegion:eventCopy])
         {
           v70 = 1;
-          v62 = [(CBCEModule *)v74->_ceModule copyInference:v72];
+          v62 = [(CBCEModule *)selfCopy->_ceModule copyInference:eventCopy];
           v32 = v62;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -166,7 +166,7 @@
           }
 
           MEMORY[0x1E69E5920](v62);
-          if (v68 >= v74->_ceConfidenceThreshold)
+          if (v68 >= selfCopy->_ceConfidenceThreshold)
           {
             if (v69 < v63)
             {
@@ -193,49 +193,49 @@
         v69 = v63;
       }
 
-      v74->_isColorMitigationTriggered = 1;
+      selfCopy->_isColorMitigationTriggered = 1;
     }
 
     else
     {
-      [(CBHIDEvent *)v72 setColorMitigationTriggered:0];
-      v74->_isColorMitigationTriggered = 0;
+      [(CBHIDEvent *)eventCopy setColorMitigationTriggered:0];
+      selfCopy->_isColorMitigationTriggered = 0;
       v69 = 0.27;
     }
 
     if (v71)
     {
       v29 = objc_alloc(MEMORY[0x1E695DF20]);
-      v28 = v72;
+      v28 = eventCopy;
       v24 = 0x1E696A000uLL;
       v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v67];
       *&v13 = v69;
       v26 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
       v23 = MEMORY[0x1E696AD98];
-      v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[CBHIDEvent colorMitigationTriggered](v72, "colorMitigationTriggered")}];
+      v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[CBHIDEvent colorMitigationTriggered](eventCopy, "colorMitigationTriggered")}];
       v30 = &v18;
       v61 = [v29 initWithObjectsAndKeys:{v28, @"ALSSample", v25, @"sampleTimestamp", v26, @"Strength", v27, @"Mitigated", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v70 & 1), @"isStrengthFromCE", 0}];
-      [(CBStack *)v74->_alsStack pushObj:v61];
+      [(CBStack *)selfCopy->_alsStack pushObj:v61];
       v31 = &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets;
-      ++v74->_stackCurrentCount;
+      ++selfCopy->_stackCurrentCount;
       MEMORY[0x1E69E5920](v61);
-      if (*(&v74->super.super.isa + v31[735]) > v74->_stackLength)
+      if (*(&selfCopy->super.super.isa + v31[735]) > selfCopy->_stackLength)
       {
         context = objc_autoreleasePoolPush();
-        v14 = [(CBStack *)v74->_alsStack popObj];
+        popObj = [(CBStack *)selfCopy->_alsStack popObj];
         v15 = context;
-        v61 = v14;
-        --v74->_stackCurrentCount;
+        v61 = popObj;
+        --selfCopy->_stackCurrentCount;
         objc_autoreleasePoolPop(v15);
       }
     }
 
     if ((__b[82] & 1) == 0)
     {
-      if (([(CBHIDEvent *)v72 colorMitigationTriggered]& 1) != 0)
+      if (([(CBHIDEvent *)eventCopy colorMitigationTriggered]& 1) != 0)
       {
-        v74->_consecutiveNonMitgatedCount = 0;
-        v60 = [(CBStack *)v74->_alsStack stack];
+        selfCopy->_consecutiveNonMitgatedCount = 0;
+        stack = [(CBStack *)selfCopy->_alsStack stack];
         v53 = 0;
         v54 = &v53;
         v55 = 1375731712;
@@ -249,10 +249,10 @@
         v50 = __38__CBColorPolicyFilter_handleALSEvent___block_invoke;
         v51 = &unk_1E867C510;
         v52 = &v53;
-        [(NSMutableArray *)v60 enumerateObjectsUsingBlock:?];
+        [(NSMutableArray *)stack enumerateObjectsUsingBlock:?];
         if (!v54[5])
         {
-          v74->_mitigationUsedYet = 1;
+          selfCopy->_mitigationUsedYet = 1;
           v43[0] = 0;
           v43[1] = v43;
           v44 = 0x20000000;
@@ -265,35 +265,35 @@
           v40 = &unk_1E867D2E8;
           v41 = v43;
           v42 = &v53;
-          [(NSMutableArray *)v60 enumerateObjectsUsingBlock:?];
+          [(NSMutableArray *)stack enumerateObjectsUsingBlock:?];
           _Block_object_dispose(v43, 8);
         }
 
         v21 = [v54[5] objectForKey:@"ALSSample"];
-        v74->_filteredALS = v21;
+        selfCopy->_filteredALS = v21;
         v20 = [v54[5] objectForKey:@"Strength"];
         [v20 floatValue];
         v19 = v16;
-        v74->_filteredStrength = v16;
+        selfCopy->_filteredStrength = v16;
         _Block_object_dispose(&v53, 8);
       }
 
-      else if (v74->_mitigationUsedYet)
+      else if (selfCopy->_mitigationUsedYet)
       {
-        if (++v74->_consecutiveNonMitgatedCount < 0x14)
+        if (++selfCopy->_consecutiveNonMitgatedCount < 0x14)
         {
-          [(CBHIDEvent *)v72 setColorMitigationTriggered:1];
-          v74->_isColorMitigationTriggered = 1;
+          [(CBHIDEvent *)eventCopy setColorMitigationTriggered:1];
+          selfCopy->_isColorMitigationTriggered = 1;
         }
 
-        v74->_filteredALS = v72;
-        v74->_filteredStrength = v69;
+        selfCopy->_filteredALS = eventCopy;
+        selfCopy->_filteredStrength = v69;
       }
 
       else
       {
-        v74->_filteredALS = v72;
-        v74->_filteredStrength = v69;
+        selfCopy->_filteredALS = eventCopy;
+        selfCopy->_filteredStrength = v69;
       }
     }
   }
@@ -301,32 +301,32 @@
   else
   {
     v69 = 0.27;
-    if ([(CBColorPolicyFilter *)v74 sampleIsFromMitigatedRegion:v72])
+    if ([(CBColorPolicyFilter *)selfCopy sampleIsFromMitigatedRegion:eventCopy])
     {
-      [(CBHIDEvent *)v72 setColorMitigationTriggered:1];
-      v74->_isColorMitigationTriggered = 1;
-      v74->_mitigationUsedYet = 1;
-      v74->_consecutiveNonMitgatedCount = 0;
+      [(CBHIDEvent *)eventCopy setColorMitigationTriggered:1];
+      selfCopy->_isColorMitigationTriggered = 1;
+      selfCopy->_mitigationUsedYet = 1;
+      selfCopy->_consecutiveNonMitgatedCount = 0;
     }
 
-    else if (v74->_mitigationUsedYet && (++v74->_consecutiveNonMitgatedCount, v74->_consecutiveNonMitgatedCount < 0x14))
+    else if (selfCopy->_mitigationUsedYet && (++selfCopy->_consecutiveNonMitgatedCount, selfCopy->_consecutiveNonMitgatedCount < 0x14))
     {
-      [(CBHIDEvent *)v72 setColorMitigationTriggered:1];
-      v74->_isColorMitigationTriggered = 1;
+      [(CBHIDEvent *)eventCopy setColorMitigationTriggered:1];
+      selfCopy->_isColorMitigationTriggered = 1;
     }
 
     else
     {
-      [(CBHIDEvent *)v72 setColorMitigationTriggered:0];
-      v74->_isColorMitigationTriggered = 0;
+      [(CBHIDEvent *)eventCopy setColorMitigationTriggered:0];
+      selfCopy->_isColorMitigationTriggered = 0;
     }
 
     v71 = 0;
-    v74->_filteredALS = v72;
-    v74->_filteredStrength = v69;
+    selfCopy->_filteredALS = eventCopy;
+    selfCopy->_filteredStrength = v69;
   }
 
-  return v74->_filteredALS;
+  return selfCopy->_filteredALS;
 }
 
 uint64_t __38__CBColorPolicyFilter_handleALSEvent___block_invoke(uint64_t a1, void *a2)
@@ -361,33 +361,33 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v13 = 0;
-  if ([a4 isEqual:@"CEEnable"])
+  if ([key isEqual:@"CEEnable"])
   {
-    self->_ceEnabled = [a3 BOOLValue] & 1;
+    self->_ceEnabled = [property BOOLValue] & 1;
     v13 = 1;
   }
 
-  if ([a4 isEqual:@"CEConfidenceThreshold"])
+  if ([key isEqual:@"CEConfidenceThreshold"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 floatValue];
+      [property floatValue];
       self->_ceConfidenceThreshold = v4;
       v13 = 1;
     }
   }
 
-  if ([a4 isEqual:@"MitigationBoundaryOverride"])
+  if ([key isEqual:@"MitigationBoundaryOverride"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [a3 objectForKey:@"TTRestriction_th_E"];
-      v11 = [a3 objectForKey:@"TTRestriction_th_L"];
+      v12 = [property objectForKey:@"TTRestriction_th_E"];
+      v11 = [property objectForKey:@"TTRestriction_th_L"];
       v8 = [v12 count];
       if (v8 == [v11 count])
       {
@@ -415,10 +415,10 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
   return v13;
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
   v4 = 0;
-  if ([a3 isEqual:@"CEEnable"])
+  if ([key isEqual:@"CEEnable"])
   {
     return [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:self->_ceEnabled];
   }
@@ -426,7 +426,7 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
   return v4;
 }
 
-- (void)initializeMitigationsForDevice:(unsigned int)a3
+- (void)initializeMitigationsForDevice:(unsigned int)device
 {
   v15 = *MEMORY[0x1E69E9840];
   memcpy(__dst, &unk_1DEAD628C, sizeof(__dst));
@@ -439,7 +439,7 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
   __memcpy_chk();
   v4 = self->_mitigationThrSize;
   __memcpy_chk();
-  if (a3 == 1 || a3 == 3)
+  if (device == 1 || device == 3)
   {
     memcpy(v12, &unk_1DEAD62E4, sizeof(v12));
     memcpy(v11, &unk_1DEAD6310, sizeof(v11));
@@ -450,7 +450,7 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
     __memcpy_chk();
   }
 
-  else if (a3 == 2 || a3 == 4)
+  else if (device == 2 || device == 4)
   {
     self->_ceMitigationThrSize = 5;
     v7 = self->_ceMitigationThrSize;
@@ -462,30 +462,30 @@ float __38__CBColorPolicyFilter_handleALSEvent___block_invoke_2(uint64_t a1, voi
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldMitigateForSample:(id)a3 withLuxThr:(float *)a4 NitsThr:(float *)a5 andSize:(unint64_t)a6
+- (BOOL)shouldMitigateForSample:(id)sample withLuxThr:(float *)thr NitsThr:(float *)nitsThr andSize:(unint64_t)size
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
-  v16 = a5;
-  v15 = a6;
-  if (!a4 || !v16)
+  sampleCopy = sample;
+  thrCopy = thr;
+  nitsThrCopy = nitsThr;
+  sizeCopy = size;
+  if (!thr || !nitsThrCopy)
   {
     return 0;
   }
 
-  v14 = v17;
-  v13 = v16;
-  v12 = v15;
+  v14 = thrCopy;
+  v13 = nitsThrCopy;
+  v12 = sizeCopy;
   v11 = 0;
-  [v18 illuminance];
+  [sampleCopy illuminance];
   *&v6 = v6;
   v10 = *&v6;
   memset(__b, 0, sizeof(__b));
-  if (v18)
+  if (sampleCopy)
   {
-    [v18 vendorData];
+    [sampleCopy vendorData];
   }
 
   else

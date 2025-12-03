@@ -1,16 +1,16 @@
 @interface TSCHLineAreaSeriesModelCache
-- (TSCHLineAreaSeriesModelCache)initWithChartModel:(id)a3 forSeries:(unint64_t)a4;
+- (TSCHLineAreaSeriesModelCache)initWithChartModel:(id)model forSeries:(unint64_t)series;
 - (void)dealloc;
 @end
 
 @implementation TSCHLineAreaSeriesModelCache
 
-- (TSCHLineAreaSeriesModelCache)initWithChartModel:(id)a3 forSeries:(unint64_t)a4
+- (TSCHLineAreaSeriesModelCache)initWithChartModel:(id)model forSeries:(unint64_t)series
 {
-  v6 = a3;
-  v11 = objc_msgSend_chartInfo(v6, v7, v8, v9, v10);
-  v16 = objc_msgSend_numberOfSeries(v6, v12, v13, v14, v15);
-  if (v11 && v16 > a4)
+  modelCopy = model;
+  v11 = objc_msgSend_chartInfo(modelCopy, v7, v8, v9, v10);
+  v16 = objc_msgSend_numberOfSeries(modelCopy, v12, v13, v14, v15);
+  if (v11 && v16 > series)
   {
     v386.receiver = self;
     v386.super_class = TSCHLineAreaSeriesModelCache;
@@ -20,12 +20,12 @@
     {
 LABEL_55:
       self = v26;
-      v96 = self;
+      selfCopy = self;
       goto LABEL_56;
     }
 
-    v21->_seriesIndex = a4;
-    v27 = objc_msgSend_seriesAtIndex_(v6, v22, v23, v24, v25, a4);
+    v21->_seriesIndex = series;
+    v27 = objc_msgSend_seriesAtIndex_(modelCopy, v22, v23, v24, v25, series);
     series = v26->_series;
     v26->_series = v27;
 
@@ -39,8 +39,8 @@ LABEL_55:
     {
       v58 = objc_msgSend_axisIDForAxisType_(v26->_series, v54, v55, v56, v57, 2);
       groupAxis = objc_msgSend_axisIDForAxisType_(v26->_series, v59, v60, v61, v62, 1);
-      v68 = objc_msgSend_axisForID_(v6, v64, v65, v66, v67, v58);
-      v73 = objc_msgSend_axisForID_(v6, v69, v70, v71, v72, groupAxis);
+      v68 = objc_msgSend_axisForID_(modelCopy, v64, v65, v66, v67, v58);
+      v73 = objc_msgSend_axisForID_(modelCopy, v69, v70, v71, v72, groupAxis);
       objc_opt_class();
       objc_msgSend_isCategory(v73, v74, v75, v76, v77);
       v78 = TSUDynamicCast();
@@ -64,13 +64,13 @@ LABEL_55:
     {
       objc_opt_class();
       v101 = objc_msgSend_axisIDForAxisType_(v26->_series, v97, v98, v99, v100, 5);
-      v106 = objc_msgSend_axisForID_(v6, v102, v103, v104, v105, v101);
+      v106 = objc_msgSend_axisForID_(modelCopy, v102, v103, v104, v105, v101);
       v107 = TSUDynamicCast();
       v108 = v26->_valueAxis;
       v26->_valueAxis = v107;
 
       v58 = objc_msgSend_axisIDForAxisType_(v26->_series, v109, v110, v111, v112, 6);
-      v117 = objc_msgSend_axisForID_(v6, v113, v114, v115, v116, v58);
+      v117 = objc_msgSend_axisForID_(modelCopy, v113, v114, v115, v116, v58);
       groupAxis = v26->_groupAxis;
       v26->_groupAxis = v117;
     }
@@ -317,10 +317,10 @@ LABEL_50:
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v81, v88, v89, v90, v91, v82, v87, 39, 0, "Bad inputs to [TSCHLineAreaSeriesModelCache initWithChartModel:forSeries:]");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v92, v93, v94, v95);
-  v96 = 0;
+  selfCopy = 0;
 LABEL_56:
 
-  return v96;
+  return selfCopy;
 }
 
 - (void)dealloc

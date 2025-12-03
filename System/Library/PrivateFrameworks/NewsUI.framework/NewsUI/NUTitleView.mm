@@ -1,12 +1,12 @@
 @interface NUTitleView
 - (CGRect)lastLayoutBounds;
-- (NUTitleView)initWithStyler:(id)a3;
+- (NUTitleView)initWithStyler:(id)styler;
 - (NUTitleViewDelegate)delegate;
 - (id)createMaskingLayerForTranslation;
-- (void)applyTitleViewUpdate:(id)a3 animation:(unint64_t)a4;
-- (void)finishDisplayingTitleViewUpdate:(id)a3 finished:(id)a4;
+- (void)applyTitleViewUpdate:(id)update animation:(unint64_t)animation;
+- (void)finishDisplayingTitleViewUpdate:(id)update finished:(id)finished;
 - (void)layoutSubviews;
-- (void)setStyler:(id)a3;
+- (void)setStyler:(id)styler;
 - (void)titleViewHandleTapGesture;
 @end
 
@@ -17,8 +17,8 @@
   v30.receiver = self;
   v30.super_class = NUTitleView;
   [(NUTitleView *)&v30 layoutSubviews];
-  v3 = [(NUTitleView *)self slideAnimator];
-  if ([v3 isAnimating])
+  slideAnimator = [(NUTitleView *)self slideAnimator];
+  if ([slideAnimator isAnimating])
   {
     goto LABEL_5;
   }
@@ -37,19 +37,19 @@
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(NUTitleView *)self titleView];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    titleView = [(NUTitleView *)self titleView];
+    [titleView setFrame:{v13, v15, v17, v19}];
 
     [(NUTitleView *)self bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(NUTitleView *)self incomingTitleView];
-    [v29 setFrame:{v22, v24, v26, v28}];
+    incomingTitleView = [(NUTitleView *)self incomingTitleView];
+    [incomingTitleView setFrame:{v22, v24, v26, v28}];
 
-    v3 = [(NUTitleView *)self titleView];
-    [v3 relayoutWithAnimation:0];
+    slideAnimator = [(NUTitleView *)self titleView];
+    [slideAnimator relayoutWithAnimation:0];
 LABEL_5:
   }
 
@@ -70,9 +70,9 @@ LABEL_5:
   return result;
 }
 
-- (NUTitleView)initWithStyler:(id)a3
+- (NUTitleView)initWithStyler:(id)styler
 {
-  v5 = a3;
+  stylerCopy = styler;
   v24.receiver = self;
   v24.super_class = NUTitleView;
   v6 = MEMORY[0x277CBF3A0];
@@ -80,7 +80,7 @@ LABEL_5:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_styler, a3);
+    objc_storeStrong(&v7->_styler, styler);
     v9 = objc_alloc_init(NUAnimationQueue);
     animationQueue = v8->_animationQueue;
     v8->_animationQueue = v9;
@@ -101,14 +101,14 @@ LABEL_5:
     v17 = v6[1];
     v8->_lastLayoutBounds.origin = *v6;
     v8->_lastLayoutBounds.size = v17;
-    v18 = [[NUCrossFadeTitleView alloc] initWithStyler:v5];
+    v18 = [[NUCrossFadeTitleView alloc] initWithStyler:stylerCopy];
     titleView = v8->_titleView;
     v8->_titleView = v18;
 
     [(NUCrossFadeTitleView *)v8->_titleView setAutoresizingMask:2];
     [(NUCrossFadeTitleView *)v8->_titleView setClipsToBounds:1];
     [(NUTitleView *)v8 addSubview:v8->_titleView];
-    v20 = [[NUCrossFadeTitleView alloc] initWithStyler:v5];
+    v20 = [[NUCrossFadeTitleView alloc] initWithStyler:stylerCopy];
     incomingTitleView = v8->_incomingTitleView;
     v8->_incomingTitleView = v20;
 
@@ -123,65 +123,65 @@ LABEL_5:
   return v8;
 }
 
-- (void)setStyler:(id)a3
+- (void)setStyler:(id)styler
 {
-  objc_storeStrong(&self->_styler, a3);
-  v5 = a3;
-  v6 = [(NUTitleView *)self titleView];
-  [v6 setStyler:v5];
+  objc_storeStrong(&self->_styler, styler);
+  stylerCopy = styler;
+  titleView = [(NUTitleView *)self titleView];
+  [titleView setStyler:stylerCopy];
 
-  v7 = [(NUTitleView *)self incomingTitleView];
-  [v7 setStyler:v5];
+  incomingTitleView = [(NUTitleView *)self incomingTitleView];
+  [incomingTitleView setStyler:stylerCopy];
 }
 
-- (void)applyTitleViewUpdate:(id)a3 animation:(unint64_t)a4
+- (void)applyTitleViewUpdate:(id)update animation:(unint64_t)animation
 {
-  v6 = a3;
-  if (v6)
+  updateCopy = update;
+  if (updateCopy)
   {
     if ([MEMORY[0x277D75D18] areAnimationsEnabled])
     {
-      v7 = a4;
+      animationCopy = animation;
     }
 
     else
     {
-      v7 = 3;
+      animationCopy = 3;
     }
 
-    if ([v6 shouldCancelPendingUpdates])
+    if ([updateCopy shouldCancelPendingUpdates])
     {
-      v8 = [(NUTitleView *)self animationQueue];
-      [v8 cancel];
+      animationQueue = [(NUTitleView *)self animationQueue];
+      [animationQueue cancel];
 
-      v9 = [(NUTitleView *)self lingerSemaphore];
+      lingerSemaphore = [(NUTitleView *)self lingerSemaphore];
 
-      if (v9)
+      if (lingerSemaphore)
       {
-        v10 = [(NUTitleView *)self lingerSemaphore];
-        dispatch_semaphore_signal(v10);
+        lingerSemaphore2 = [(NUTitleView *)self lingerSemaphore];
+        dispatch_semaphore_signal(lingerSemaphore2);
 
         [(NUTitleView *)self setLingerSemaphore:0];
       }
     }
 
     objc_initWeak(&location, self);
-    v11 = [(NUTitleView *)self animationQueue];
+    animationQueue2 = [(NUTitleView *)self animationQueue];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __46__NUTitleView_applyTitleViewUpdate_animation___block_invoke_2;
     v18 = &unk_2799A3CA8;
     objc_copyWeak(v20, &location);
-    v20[1] = v7;
-    v12 = v6;
+    v20[1] = animationCopy;
+    v12 = updateCopy;
     v19 = v12;
-    [v11 addAnimation:&v15];
+    [animationQueue2 addAnimation:&v15];
 
-    v13 = [v12 accessibilityTitle];
-    [(NUTitleView *)self setAccessibilityLabel:v13];
+    accessibilityTitle = [v12 accessibilityTitle];
+    [(NUTitleView *)self setAccessibilityLabel:accessibilityTitle];
 
-    v14 = [(NUTitleView *)self accessibilityLabel];
-    [(NUTitleView *)self setIsAccessibilityElement:v14 != 0];
+    accessibilityLabel = [(NUTitleView *)self accessibilityLabel];
+    [(NUTitleView *)self setIsAccessibilityElement:accessibilityLabel != 0];
 
     objc_destroyWeak(v20);
     objc_destroyWeak(&location);
@@ -366,34 +366,34 @@ void __46__NUTitleView_applyTitleViewUpdate_animation___block_invoke_8(uint64_t 
 
 - (void)titleViewHandleTapGesture
 {
-  v3 = [(NUTitleView *)self delegate];
+  delegate = [(NUTitleView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NUTitleView *)self delegate];
-    [v5 titleViewDidTapOnTitleView:self];
+    delegate2 = [(NUTitleView *)self delegate];
+    [delegate2 titleViewDidTapOnTitleView:self];
   }
 }
 
-- (void)finishDisplayingTitleViewUpdate:(id)a3 finished:(id)a4
+- (void)finishDisplayingTitleViewUpdate:(id)update finished:(id)finished
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = _UIAccessibilityFocusedElements();
-  if ([v8 containsObject:self])
+  updateCopy = update;
+  finishedCopy = finished;
+  accessibilityTitle = _UIAccessibilityFocusedElements();
+  if ([accessibilityTitle containsObject:self])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v9 = [v6 shouldSpeakAccessibilityTitleWhenDisplayed];
+  shouldSpeakAccessibilityTitleWhenDisplayed = [updateCopy shouldSpeakAccessibilityTitleWhenDisplayed];
 
-  if (v9)
+  if (shouldSpeakAccessibilityTitleWhenDisplayed)
   {
-    v8 = [v6 accessibilityTitle];
-    if (v8)
+    accessibilityTitle = [updateCopy accessibilityTitle];
+    if (accessibilityTitle)
     {
       UIAccessibilitySpeakOrQueueIfNeeded();
     }
@@ -402,10 +402,10 @@ LABEL_5:
   }
 
 LABEL_6:
-  [v6 lingerTimeInterval];
+  [updateCopy lingerTimeInterval];
   if (v10 == 0.0 || ([(NUTitleView *)self lingerSemaphore], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v7[2](v7);
+    finishedCopy[2](finishedCopy);
   }
 
   else
@@ -416,8 +416,8 @@ LABEL_6:
     block[2] = __56__NUTitleView_finishDisplayingTitleViewUpdate_finished___block_invoke;
     block[3] = &unk_2799A3170;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = updateCopy;
+    v15 = finishedCopy;
     dispatch_async(v12, block);
   }
 }
@@ -440,15 +440,15 @@ void __56__NUTitleView_finishDisplayingTitleViewUpdate_finished___block_invoke(i
 - (id)createMaskingLayerForTranslation
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CD9EB0] layer];
-  v4 = [(NUTitleView *)self titleView];
-  [v4 visibleFrame];
+  layer = [MEMORY[0x277CD9EB0] layer];
+  titleView = [(NUTitleView *)self titleView];
+  [titleView visibleFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NUTitleView *)self incomingTitleView];
-  [v13 visibleFrame];
+  incomingTitleView = [(NUTitleView *)self incomingTitleView];
+  [incomingTitleView visibleFrame];
   v29.origin.x = v14;
   v29.origin.y = v15;
   v29.size.width = v16;
@@ -458,10 +458,10 @@ void __56__NUTitleView_finishDisplayingTitleViewUpdate_finished___block_invoke(i
   v27.size.width = v10;
   v27.size.height = v12;
   v28 = CGRectUnion(v27, v29);
-  [v3 setFrame:{v28.origin.x, v28.origin.y, v28.size.width, v28.size.height}];
+  [layer setFrame:{v28.origin.x, v28.origin.y, v28.size.width, v28.size.height}];
 
   [(NUTitleView *)self center];
-  [v3 setPosition:?];
+  [layer setPosition:?];
   v18 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
   v25[0] = [v18 CGColor];
   v19 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
@@ -471,12 +471,12 @@ void __56__NUTitleView_finishDisplayingTitleViewUpdate_finished___block_invoke(i
   v21 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
   v25[3] = [v21 CGColor];
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
-  [v3 setColors:v22];
+  [layer setColors:v22];
 
-  [v3 setLocations:&unk_286E12E78];
+  [layer setLocations:&unk_286E12E78];
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return layer;
 }
 
 - (NUTitleViewDelegate)delegate

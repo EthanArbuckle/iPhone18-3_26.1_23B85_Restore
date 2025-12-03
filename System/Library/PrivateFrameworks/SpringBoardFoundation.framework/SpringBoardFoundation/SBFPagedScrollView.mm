@@ -1,27 +1,27 @@
 @interface SBFPagedScrollView
 - ($33B86EF7FE50CF4F9754CC1CC7D02E21)currentScrollInterval;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)resetContentOffsetToCurrentPage;
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 withAnimationSettings:(id)a4 withCompletion:(id)a5;
-- (CGPoint)contentOffsetForPageAtIndex:(unint64_t)a3;
-- (SBFPagedScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)scrollToPageAtIndex:(unint64_t)index animated:(BOOL)animated withCompletion:(id)completion;
+- (BOOL)scrollToPageAtIndex:(unint64_t)index withAnimationSettings:(id)settings withCompletion:(id)completion;
+- (CGPoint)contentOffsetForPageAtIndex:(unint64_t)index;
+- (SBFPagedScrollView)initWithFrame:(CGRect)frame;
 - (_NSRange)visiblePageRange;
 - (double)pageRelativeScrollOffset;
 - (double)unclippedPageRelativeScrollOffset;
 - (void)_bs_didEndScrolling;
-- (void)_bs_didScrollWithContext:(id *)a3;
+- (void)_bs_didScrollWithContext:(id *)context;
 - (void)_bs_willBeginScrolling;
 - (void)_layoutScrollView;
 - (void)_updateCurrentPageForScrollOffset;
 - (void)_updateVisiblePages;
 - (void)layoutPages;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setGestureEnabled:(BOOL)a3;
-- (void)setPageViews:(id)a3;
-- (void)setVisiblePageRange:(_NSRange)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setGestureEnabled:(BOOL)enabled;
+- (void)setPageViews:(id)views;
+- (void)setVisiblePageRange:(_NSRange)range;
 @end
 
 @implementation SBFPagedScrollView
@@ -44,7 +44,7 @@
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v7 = [(SBFPagedScrollView *)self pageViews];
+    pageViews = [(SBFPagedScrollView *)self pageViews];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __41__SBFPagedScrollView__updateVisiblePages__block_invoke;
@@ -55,7 +55,7 @@
     *&v11[9] = height;
     v11[4] = &v16;
     v11[5] = &v12;
-    [v7 enumerateObjectsUsingBlock:v11];
+    [pageViews enumerateObjectsUsingBlock:v11];
 
     v8 = v17;
     v9 = v17[3];
@@ -80,8 +80,8 @@
 
 - (void)_layoutScrollView
 {
-  v3 = [(SBFPagedScrollView *)self pageViews];
-  v4 = [v3 count];
+  pageViews = [(SBFPagedScrollView *)self pageViews];
+  v4 = [pageViews count];
 
   [(SBFPagedScrollView *)self bounds];
   x = v14.origin.x;
@@ -178,8 +178,8 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
 
 - (double)pageRelativeScrollOffset
 {
-  v3 = [(SBFPagedScrollView *)self pageViews];
-  v4 = ([v3 count] - 1);
+  pageViews = [(SBFPagedScrollView *)self pageViews];
+  v4 = ([pageViews count] - 1);
   [(SBFPagedScrollView *)self unclippedPageRelativeScrollOffset];
   v6 = fmax(v5, 0.0);
 
@@ -227,8 +227,8 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
   v5 = *(MEMORY[0x1E698E5E0] + 16);
   retstr->var0 = *MEMORY[0x1E698E5E0];
   retstr->var1 = v5;
-  v6 = [(SBFPagedScrollView *)self pageViews];
-  [v6 count];
+  pageViews = [(SBFPagedScrollView *)self pageViews];
+  [pageViews count];
 
   result = [(SBFPagedScrollView *)self currentPageIndex];
   *(&retstr->var0.var1 + 1) = 0;
@@ -260,11 +260,11 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
   [(SBFPagedScrollView *)self _layoutScrollView];
 }
 
-- (SBFPagedScrollView)initWithFrame:(CGRect)a3
+- (SBFPagedScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBFPagedScrollView;
-  v3 = [(BSUIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -281,11 +281,11 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
   return v4;
 }
 
-- (void)setPageViews:(id)a3
+- (void)setPageViews:(id)views
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSArray *)self->_pageViews isEqualToArray:v4])
+  viewsCopy = views;
+  if ([(NSArray *)self->_pageViews isEqualToArray:viewsCopy])
   {
     goto LABEL_27;
   }
@@ -296,7 +296,7 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
   v38[1] = 3221225472;
   v38[2] = __35__SBFPagedScrollView_setPageViews___block_invoke;
   v38[3] = &unk_1E807EF68;
-  v7 = v4;
+  v7 = viewsCopy;
   v39 = v7;
   v8 = [v6 predicateWithBlock:v38];
   v9 = [(NSArray *)pageViews filteredArrayUsingPredicate:v8];
@@ -341,8 +341,8 @@ BOOL __41__SBFPagedScrollView__updateVisiblePages__block_invoke(uint64_t a1, voi
     while (v14);
   }
 
-  v18 = [(SBFPagedScrollView *)self currentPageIndex];
-  if (v18 >= [(NSArray *)self->_pageViews count])
+  currentPageIndex = [(SBFPagedScrollView *)self currentPageIndex];
+  if (currentPageIndex >= [(NSArray *)self->_pageViews count])
   {
     v19 = 0;
     if (!v7)
@@ -418,12 +418,12 @@ LABEL_19:
 LABEL_27:
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBFPagedScrollView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -436,26 +436,26 @@ LABEL_27:
   self->_changingScrollViewLayout = 0;
 }
 
-- (void)setVisiblePageRange:(_NSRange)a3
+- (void)setVisiblePageRange:(_NSRange)range
 {
-  if (self->_visiblePageRange.location != a3.location || self->_visiblePageRange.length != a3.length)
+  if (self->_visiblePageRange.location != range.location || self->_visiblePageRange.length != range.length)
   {
-    self->_visiblePageRange = a3;
-    if (a3.length)
+    self->_visiblePageRange = range;
+    if (range.length)
     {
       [(SBFPagedScrollView *)self setCurrentPageIndex:?];
     }
   }
 }
 
-- (void)setGestureEnabled:(BOOL)a3
+- (void)setGestureEnabled:(BOOL)enabled
 {
-  if (self->_gestureEnabled != a3)
+  if (self->_gestureEnabled != enabled)
   {
-    v4 = a3;
-    self->_gestureEnabled = a3;
-    v5 = [(SBFPagedScrollView *)self panGestureRecognizer];
-    [v5 setEnabled:v4];
+    enabledCopy = enabled;
+    self->_gestureEnabled = enabled;
+    panGestureRecognizer = [(SBFPagedScrollView *)self panGestureRecognizer];
+    [panGestureRecognizer setEnabled:enabledCopy];
   }
 }
 
@@ -473,14 +473,14 @@ LABEL_27:
   *&v15 = v5;
   *(&v15 + 1) = v6;
   *(v11 + 2) = *MEMORY[0x1E695EFF8];
-  v7 = [(SBFPagedScrollView *)self pageViews];
+  pageViews = [(SBFPagedScrollView *)self pageViews];
   v8 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __33__SBFPagedScrollView_layoutPages__block_invoke;
   v9[3] = &unk_1E807EF90;
   v9[4] = &v10;
-  [v7 enumerateObjectsWithOptions:2 * v8 usingBlock:v9];
+  [pageViews enumerateObjectsWithOptions:2 * v8 usingBlock:v9];
 
   _Block_object_dispose(&v10, 8);
 }
@@ -494,24 +494,24 @@ double __33__SBFPagedScrollView_layoutPages__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (BOOL)scrollToPageAtIndex:(unint64_t)index animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBFPagedScrollView *)self pageViews];
-  v10 = [v9 count];
+  animatedCopy = animated;
+  completionCopy = completion;
+  pageViews = [(SBFPagedScrollView *)self pageViews];
+  v10 = [pageViews count];
 
-  if (v10 >= a3)
+  if (v10 >= index)
   {
-    v11 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v11 = v10;
+    indexCopy = v10;
   }
 
-  [(SBFPagedScrollView *)self contentOffsetForPageAtIndex:v11];
+  [(SBFPagedScrollView *)self contentOffsetForPageAtIndex:indexCopy];
   v13 = v12;
   v15 = v14;
   objc_initWeak(&location, self);
@@ -520,9 +520,9 @@ double __33__SBFPagedScrollView_layoutPages__block_invoke(uint64_t a1, void *a2)
   v19[2] = __66__SBFPagedScrollView_scrollToPageAtIndex_animated_withCompletion___block_invoke;
   v19[3] = &unk_1E807EFB8;
   objc_copyWeak(&v21, &location);
-  v16 = v8;
+  v16 = completionCopy;
   v20 = v16;
-  v17 = [(BSUIScrollView *)self setContentOffset:v5 animated:v19 completion:v13, v15];
+  v17 = [(BSUIScrollView *)self setContentOffset:animatedCopy animated:v19 completion:v13, v15];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -546,24 +546,24 @@ uint64_t __66__SBFPagedScrollView_scrollToPageAtIndex_animated_withCompletion___
   return result;
 }
 
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 withAnimationSettings:(id)a4 withCompletion:(id)a5
+- (BOOL)scrollToPageAtIndex:(unint64_t)index withAnimationSettings:(id)settings withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SBFPagedScrollView *)self pageViews];
-  v11 = [v10 count];
+  settingsCopy = settings;
+  completionCopy = completion;
+  pageViews = [(SBFPagedScrollView *)self pageViews];
+  v11 = [pageViews count];
 
-  if (v11 >= a3)
+  if (v11 >= index)
   {
-    v12 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v12 = v11;
+    indexCopy = v11;
   }
 
-  [(SBFPagedScrollView *)self contentOffsetForPageAtIndex:v12];
+  [(SBFPagedScrollView *)self contentOffsetForPageAtIndex:indexCopy];
   v14 = v13;
   v16 = v15;
   objc_initWeak(&location, self);
@@ -572,9 +572,9 @@ uint64_t __66__SBFPagedScrollView_scrollToPageAtIndex_animated_withCompletion___
   v20[2] = __79__SBFPagedScrollView_scrollToPageAtIndex_withAnimationSettings_withCompletion___block_invoke;
   v20[3] = &unk_1E807EFB8;
   objc_copyWeak(&v22, &location);
-  v17 = v9;
+  v17 = completionCopy;
   v21 = v17;
-  v18 = [(BSUIScrollView *)self setContentOffset:v8 withAnimationSettings:v20 completion:v14, v16];
+  v18 = [(BSUIScrollView *)self setContentOffset:settingsCopy withAnimationSettings:v20 completion:v14, v16];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -600,24 +600,24 @@ uint64_t __79__SBFPagedScrollView_scrollToPageAtIndex_withAnimationSettings_with
 
 - (BOOL)resetContentOffsetToCurrentPage
 {
-  v3 = [(SBFPagedScrollView *)self currentPageIndex];
+  currentPageIndex = [(SBFPagedScrollView *)self currentPageIndex];
 
-  return [(SBFPagedScrollView *)self scrollToPageAtIndex:v3 animated:0 withCompletion:0];
+  return [(SBFPagedScrollView *)self scrollToPageAtIndex:currentPageIndex animated:0 withCompletion:0];
 }
 
-- (CGPoint)contentOffsetForPageAtIndex:(unint64_t)a3
+- (CGPoint)contentOffsetForPageAtIndex:(unint64_t)index
 {
-  v4 = self;
+  selfCopy = self;
   [(SBFPagedScrollView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  if (v13 == 1)
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection == 1)
   {
-    v4 = [v4 pageViews];
-    a3 = [v4 count] + ~a3;
+    selfCopy = [selfCopy pageViews];
+    index = [selfCopy count] + ~index;
   }
 
   v18.origin.x = v6;
@@ -625,25 +625,25 @@ uint64_t __79__SBFPagedScrollView_scrollToPageAtIndex_withAnimationSettings_with
   v18.size.width = v10;
   v18.size.height = v12;
   Width = CGRectGetWidth(v18);
-  if (v13 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
   }
 
-  v15 = Width * a3;
+  v15 = Width * index;
   v16 = 0.0;
   result.y = v16;
   result.x = v15;
   return result;
 }
 
-- (void)_bs_didScrollWithContext:(id *)a3
+- (void)_bs_didScrollWithContext:(id *)context
 {
   v7.receiver = self;
   v7.super_class = SBFPagedScrollView;
-  v4 = *&a3->var1.y;
-  v5[0] = *&a3->var0;
+  v4 = *&context->var1.y;
+  v5[0] = *&context->var0;
   v5[1] = v4;
-  y = a3->var2.y;
+  y = context->var2.y;
   [(BSUIScrollView *)&v7 _bs_didScrollWithContext:v5];
   [(SBFPagedScrollView *)self _updateVisiblePages];
 }
@@ -657,7 +657,7 @@ uint64_t __79__SBFPagedScrollView_scrollToPageAtIndex_withAnimationSettings_with
   [(SBFPagedScrollView *)self _updateCurrentPageForScrollOffset];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (!self->_gestureEnabled)
   {
@@ -668,17 +668,17 @@ uint64_t __79__SBFPagedScrollView_scrollToPageAtIndex_withAnimationSettings_with
   v9 = v5;
   v7.receiver = self;
   v7.super_class = SBFPagedScrollView;
-  return [(SBFPagedScrollView *)&v7 gestureRecognizer:a3 shouldReceiveTouch:a4];
+  return [(SBFPagedScrollView *)&v7 gestureRecognizer:recognizer shouldReceiveTouch:touch];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (!-[BSUIScrollView isScrolling](self, "isScrolling") && (-[SBFPagedScrollView panGestureRecognizer](self, "panGestureRecognizer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v6) && [v7 isMemberOfClass:objc_opt_class()])
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (!-[BSUIScrollView isScrolling](self, "isScrolling") && (-[SBFPagedScrollView panGestureRecognizer](self, "panGestureRecognizer"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == recognizerCopy) && [gestureRecognizerCopy isMemberOfClass:objc_opt_class()])
   {
     v9 = objc_opt_class();
-    v10 = v7;
+    v10 = gestureRecognizerCopy;
     if (v9)
     {
       if (objc_opt_isKindOfClass())

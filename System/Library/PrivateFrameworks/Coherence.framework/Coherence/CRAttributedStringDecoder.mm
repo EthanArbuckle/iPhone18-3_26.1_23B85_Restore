@@ -1,12 +1,12 @@
 @interface CRAttributedStringDecoder
-- (id)storageWithError:(id *)a3;
+- (id)storageWithError:(id *)error;
 @end
 
 @implementation CRAttributedStringDecoder
 
-- (id)storageWithError:(id *)a3
+- (id)storageWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1ADDED684(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);

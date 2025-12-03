@@ -1,15 +1,15 @@
 @interface IRRuleOutputHistoryPattern
-- (IRRuleOutputHistoryPattern)initWithRule:(id)a3;
-- (id)evaluateRuleOutputWithCandidateIdentifier:(id)a3;
+- (IRRuleOutputHistoryPattern)initWithRule:(id)rule;
+- (id)evaluateRuleOutputWithCandidateIdentifier:(id)identifier;
 @end
 
 @implementation IRRuleOutputHistoryPattern
 
-- (IRRuleOutputHistoryPattern)initWithRule:(id)a3
+- (IRRuleOutputHistoryPattern)initWithRule:(id)rule
 {
   v7.receiver = self;
   v7.super_class = IRRuleOutputHistoryPattern;
-  v3 = [(IRRuleOutput *)&v7 initWithRule:a3];
+  v3 = [(IRRuleOutput *)&v7 initWithRule:rule];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -20,30 +20,30 @@
   return v3;
 }
 
-- (id)evaluateRuleOutputWithCandidateIdentifier:(id)a3
+- (id)evaluateRuleOutputWithCandidateIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(IRRuleOutputEvaluation);
-  v6 = [(IRRuleOutput *)self rule];
+  rule = [(IRRuleOutput *)self rule];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(IRRuleOutput *)self rule];
-    v9 = [(IRRuleOutputHistoryPattern *)self numberOfEventsInHistory];
-    if (v9 >= [v8 minNumberOfEventsInHistory])
+    rule2 = [(IRRuleOutput *)self rule];
+    numberOfEventsInHistory = [(IRRuleOutputHistoryPattern *)self numberOfEventsInHistory];
+    if (numberOfEventsInHistory >= [rule2 minNumberOfEventsInHistory])
     {
-      v12 = [(IRRuleOutputHistoryPattern *)self scoreForCandidates];
-      v13 = [v12 objectForKeyedSubscript:v4];
+      scoreForCandidates = [(IRRuleOutputHistoryPattern *)self scoreForCandidates];
+      v13 = [scoreForCandidates objectForKeyedSubscript:identifierCopy];
 
       if (v13)
       {
         [(IRRuleOutputEvaluation *)v5 setHasBoolean:1];
-        [v8 threshold];
-        if (v14 == -2147483650.0 || ([v8 threshold], v15 == 2147483650.0))
+        [rule2 threshold];
+        if (v14 == -2147483650.0 || ([rule2 threshold], v15 == 2147483650.0))
         {
-          [v8 threshold];
+          [rule2 threshold];
           v16 = @"@max.self";
           if (v17 == -2147483650.0)
           {
@@ -59,9 +59,9 @@
 
           else
           {
-            v20 = [(IRRuleOutputHistoryPattern *)self scoreForCandidates];
-            v21 = [v20 allValues];
-            v22 = [v21 valueForKeyPath:v18];
+            scoreForCandidates2 = [(IRRuleOutputHistoryPattern *)self scoreForCandidates];
+            allValues = [scoreForCandidates2 allValues];
+            v22 = [allValues valueForKeyPath:v18];
             -[IRRuleOutputEvaluation setBoolean:](v5, "setBoolean:", [v13 isEqual:v22]);
           }
         }
@@ -70,7 +70,7 @@
         {
           [v13 doubleValue];
           v26 = v25;
-          [v8 threshold];
+          [rule2 threshold];
           [(IRRuleOutputEvaluation *)v5 setBoolean:v26 >= v27];
         }
       }

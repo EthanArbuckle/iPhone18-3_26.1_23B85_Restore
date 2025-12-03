@@ -3,13 +3,13 @@
 - (NavigationLocationProvider)init;
 - (id)_console;
 - (int)headingOrientation;
-- (void)_updateDebugLocationConsoleForLocation:(id)a3;
-- (void)accuracyAuthorizationOnQueue:(id)a3 result:(id)a4;
-- (void)authorizationStatusOnQueue:(id)a3 result:(id)a4;
+- (void)_updateDebugLocationConsoleForLocation:(id)location;
+- (void)accuracyAuthorizationOnQueue:(id)queue result:(id)result;
+- (void)authorizationStatusOnQueue:(id)queue result:(id)result;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)setHeadingOrientation:(int)a3;
+- (void)navigationService:(id)service didUpdateHeading:(double)heading accuracy:(double)accuracy;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)setHeadingOrientation:(int)orientation;
 @end
 
 @implementation NavigationLocationProvider
@@ -17,12 +17,12 @@
 - (id)_console
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [v2 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v5 = [v4 _debugConsole];
+  _debugConsole = [mapView _debugConsole];
 
-  return v5;
+  return _debugConsole;
 }
 
 - (MKLocationProviderDelegate)delegate
@@ -32,12 +32,12 @@
   return WeakRetained;
 }
 
-- (void)navigationService:(id)a3 didUpdateHeading:(double)a4 accuracy:(double)a5
+- (void)navigationService:(id)service didUpdateHeading:(double)heading accuracy:(double)accuracy
 {
   +[NSDate timeIntervalSinceReferenceDate];
   memset(v12, 0, sizeof(v12));
-  v13 = a4;
-  v14 = a5;
+  headingCopy = heading;
+  accuracyCopy = accuracy;
   v15 = v8;
   v16 = 0u;
   v17 = 0u;
@@ -51,9 +51,9 @@
   if (os_log_type_enabled(qword_10195D270, OS_LOG_TYPE_INFO))
   {
     LODWORD(v12[0]) = 134218240;
-    *(v12 + 4) = a4;
+    *(v12 + 4) = heading;
     WORD6(v12[0]) = 2048;
-    *(v12 + 14) = a5;
+    *(v12 + 14) = accuracy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Got updated heading: %f, accuracy: %f", v12, 0x16u);
   }
 
@@ -61,31 +61,31 @@
   [WeakRetained locationProvider:self didUpdateHeading:v9];
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v5 = a4;
-  v6 = [v5 uuid];
-  if (v6)
+  locationCopy = location;
+  uuid = [locationCopy uuid];
+  if (uuid)
   {
     v7 = sub_100799FA0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = uuid;
       v13 = 2080;
       v14 = "[NavigationLocationProvider navigationService:didUpdateMatchedLocation:]";
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[Maps] %@ Received - in %s", &v11, 0x16u);
     }
 
-    [(NavigationLocationProvider *)self _updateDebugLocationConsoleForLocation:v5];
+    [(NavigationLocationProvider *)self _updateDebugLocationConsoleForLocation:locationCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained locationProvider:self didUpdateLocation:v5];
+    [WeakRetained locationProvider:self didUpdateLocation:locationCopy];
 
     v9 = sub_100799FA0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = uuid;
       v13 = 2080;
       v14 = "[NavigationLocationProvider navigationService:didUpdateMatchedLocation:]";
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[Maps] %@ Processed - in %s", &v11, 0x16u);
@@ -94,21 +94,21 @@
 
   else
   {
-    [(NavigationLocationProvider *)self _updateDebugLocationConsoleForLocation:v5];
+    [(NavigationLocationProvider *)self _updateDebugLocationConsoleForLocation:locationCopy];
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 locationProvider:self didUpdateLocation:v5];
+    [v10 locationProvider:self didUpdateLocation:locationCopy];
   }
 }
 
-- (void)accuracyAuthorizationOnQueue:(id)a3 result:(id)a4
+- (void)accuracyAuthorizationOnQueue:(id)queue result:(id)result
 {
-  v6 = a4;
-  if (v6)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v7 = a3;
-    if (!a3)
+    queueCopy = queue;
+    if (!queue)
     {
-      v7 = &_dispatch_main_q;
+      queueCopy = &_dispatch_main_q;
       v8 = &_dispatch_main_q;
     }
 
@@ -117,23 +117,23 @@
     v9[2] = sub_100790734;
     v9[3] = &unk_101661090;
     v9[4] = self;
-    v10 = v6;
-    dispatch_async(v7, v9);
-    if (!a3)
+    v10 = resultCopy;
+    dispatch_async(queueCopy, v9);
+    if (!queue)
     {
     }
   }
 }
 
-- (void)authorizationStatusOnQueue:(id)a3 result:(id)a4
+- (void)authorizationStatusOnQueue:(id)queue result:(id)result
 {
-  v6 = a4;
-  if (v6)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v7 = a3;
-    if (!a3)
+    queueCopy = queue;
+    if (!queue)
     {
-      v7 = &_dispatch_main_q;
+      queueCopy = &_dispatch_main_q;
       v8 = &_dispatch_main_q;
     }
 
@@ -142,17 +142,17 @@
     v9[2] = sub_100790848;
     v9[3] = &unk_101661090;
     v9[4] = self;
-    v10 = v6;
-    dispatch_async(v7, v9);
-    if (!a3)
+    v10 = resultCopy;
+    dispatch_async(queueCopy, v9);
+    if (!queue)
     {
     }
   }
 }
 
-- (void)setHeadingOrientation:(int)a3
+- (void)setHeadingOrientation:(int)orientation
 {
-  v3 = *&a3;
+  v3 = *&orientation;
   v4 = +[MNNavigationService sharedService];
   [v4 setHeadingOrientation:v3];
 }
@@ -160,38 +160,38 @@
 - (int)headingOrientation
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 headingOrientation];
+  headingOrientation = [v2 headingOrientation];
 
-  return v3;
+  return headingOrientation;
 }
 
-- (void)_updateDebugLocationConsoleForLocation:(id)a3
+- (void)_updateDebugLocationConsoleForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = +[GEOPlatform sharedPlatform];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
     v7 = +[MNNavigationService sharedService];
-    v8 = [v7 navigationTransportType];
+    navigationTransportType = [v7 navigationTransportType];
 
-    if (v8 != 1)
+    if (navigationTransportType != 1)
     {
-      v9 = [v4 routeMatch];
-      v38 = [v9 routeCoordinate];
-      LODWORD(v10) = [v9 routeCoordinate] >> 32;
-      [v4 coordinate];
+      routeMatch = [locationCopy routeMatch];
+      routeCoordinate = [routeMatch routeCoordinate];
+      LODWORD(v10) = [routeMatch routeCoordinate] >> 32;
+      [locationCopy coordinate];
       v12 = v11;
-      [v4 coordinate];
+      [locationCopy coordinate];
       v14 = v13;
-      [v4 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       v16 = v15;
-      [v4 course];
+      [locationCopy course];
       v18 = v17;
-      if (v4)
+      if (locationCopy)
       {
-        [v4 clientLocation];
+        [locationCopy clientLocation];
         v19 = *(&v46 + 4);
       }
 
@@ -210,16 +210,16 @@
       }
 
       v20 = v10;
-      [v4 speed];
+      [locationCopy speed];
       v22 = v21;
-      v23 = [v9 stepIndex];
-      [v9 distanceFromRoute];
+      stepIndex = [routeMatch stepIndex];
+      [routeMatch distanceFromRoute];
       v25 = v24;
-      v26 = [v9 step];
-      v27 = [v26 geoStep];
-      v28 = [v27 maneuverType];
+      step = [routeMatch step];
+      geoStep = [step geoStep];
+      maneuverType = [geoStep maneuverType];
       v29 = @"NO_TURN";
-      switch(v28)
+      switch(maneuverType)
       {
         case 0:
           break;
@@ -410,24 +410,24 @@
           v29 = @"TURN_AROUND";
           break;
         default:
-          v29 = [NSString stringWithFormat:@"(unknown: %i)", v28];
+          v29 = [NSString stringWithFormat:@"(unknown: %i)", maneuverType];
           break;
       }
 
-      v30 = [(__CFString *)v29 lowercaseString];
-      v31 = [v9 step];
-      v32 = [v31 maneuverRoadName];
-      v33 = [NSString stringWithFormat:@"[%u, %0.2f]  (%0.5f, %0.5f)±%0.0fm  %0.0f°±%0.0f°  %0.1fm/s\nStep %d  Dist: %0.1f  (%@ > %@)", v38, *&v20, v12, v14, v16, v18, v19, v22, v23, v25, v30, v32];
+      lowercaseString = [(__CFString *)v29 lowercaseString];
+      step2 = [routeMatch step];
+      maneuverRoadName = [step2 maneuverRoadName];
+      v33 = [NSString stringWithFormat:@"[%u, %0.2f]  (%0.5f, %0.5f)±%0.0fm  %0.0f°±%0.0f°  %0.1fm/s\nStep %d  Dist: %0.1f  (%@ > %@)", routeCoordinate, *&v20, v12, v14, v16, v18, v19, v22, stepIndex, v25, lowercaseString, maneuverRoadName];
 
-      v34 = [v4 state];
-      if (v34 == 2)
+      state = [locationCopy state];
+      if (state == 2)
       {
         v35 = +[UIColor redColor];
       }
 
       else
       {
-        if (v34 == 1)
+        if (state == 1)
         {
           +[UIColor greenColor];
         }
@@ -456,9 +456,9 @@
 - (void)dealloc
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     dispatch_async(&_dispatch_main_q, &stru_101629030);
   }
@@ -482,9 +482,9 @@
     [v3 registerObserver:v2];
 
     v4 = +[GEOPlatform sharedPlatform];
-    v5 = [v4 isInternalInstall];
+    isInternalInstall = [v4 isInternalInstall];
 
-    if (v5)
+    if (isInternalInstall)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;

@@ -1,15 +1,15 @@
 @interface CRLiOSAlignmentToolsController
 - (UIViewController)viewController;
 - (_TtC8Freeform30CRLiOSAlignmentToolsController)init;
-- (_TtC8Freeform30CRLiOSAlignmentToolsController)initWithDelegate:(id)a3;
+- (_TtC8Freeform30CRLiOSAlignmentToolsController)initWithDelegate:(id)delegate;
 - (void)dismissAlignmentTools;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation CRLiOSAlignmentToolsController
 
-- (_TtC8Freeform30CRLiOSAlignmentToolsController)initWithDelegate:(id)a3
+- (_TtC8Freeform30CRLiOSAlignmentToolsController)initWithDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   *(&self->super.isa + OBJC_IVAR____TtC8Freeform30CRLiOSAlignmentToolsController____lazy_storage___viewController) = 0;
@@ -21,17 +21,17 @@
 
 - (UIViewController)viewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100763C28();
 
   return v3;
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform30CRLiOSAlignmentToolsController____lazy_storage___viewController);
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform30CRLiOSAlignmentToolsController____lazy_storage___viewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform30CRLiOSAlignmentToolsController____lazy_storage___viewController) = controller;
+  controllerCopy = controller;
 }
 
 - (void)dismissAlignmentTools
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

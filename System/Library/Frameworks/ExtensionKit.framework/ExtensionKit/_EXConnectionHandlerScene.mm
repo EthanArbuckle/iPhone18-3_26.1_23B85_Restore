@@ -1,13 +1,13 @@
 @interface _EXConnectionHandlerScene
-- (BOOL)shouldAcceptConnection:(id)a3;
-- (void)connectToSession:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
+- (void)connectToSession:(id)session;
 @end
 
 @implementation _EXConnectionHandlerScene
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -16,10 +16,10 @@
   block[1] = 3221225472;
   block[2] = __52___EXConnectionHandlerScene_shouldAcceptConnection___block_invoke;
   block[3] = &unk_1E8401DC8;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
   block[4] = self;
-  v5 = v4;
+  v5 = connectionCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v6 = *(v12 + 24);
 
@@ -27,23 +27,23 @@
   return v6;
 }
 
-- (void)connectToSession:(id)a3
+- (void)connectToSession:(id)session
 {
-  v13 = a3;
-  v4 = [v13 configuration];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v13 extension];
-    v6 = [v5 identity];
-    v7 = [v13 role];
-    v8 = [v6 extensionViewControllerClassForSceneRole:v7];
+    extension = [sessionCopy extension];
+    identity = [extension identity];
+    role = [sessionCopy role];
+    v8 = [identity extensionViewControllerClassForSceneRole:role];
 
     v9 = objc_alloc_init(v8);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIViewController *)v9 setSceneConfiguration:v4];
+      [(UIViewController *)v9 setSceneConfiguration:configuration];
       viewController = self->_viewController;
       self->_viewController = v9;
 

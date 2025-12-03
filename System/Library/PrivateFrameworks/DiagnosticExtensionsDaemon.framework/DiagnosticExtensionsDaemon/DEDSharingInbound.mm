@@ -2,10 +2,10 @@
 - (DEDController)delegate;
 - (DEDSharingConnection)connection;
 - (DEDSharingInbound)init;
-- (DEDSharingInbound)initWithController:(id)a3 sharingConnection:(id)a4;
-- (void)handleObject:(id)a3 forSFSession:(id)a4;
-- (void)handleObject:(id)a3 forSFSession:(id)a4 forBugSession:(id)a5 callingDevice:(id)a6;
-- (void)handleRequest:(id)a3 forSFSession:(id)a4 completion:(id)a5;
+- (DEDSharingInbound)initWithController:(id)controller sharingConnection:(id)connection;
+- (void)handleObject:(id)object forSFSession:(id)session;
+- (void)handleObject:(id)object forSFSession:(id)session forBugSession:(id)bugSession callingDevice:(id)device;
+- (void)handleRequest:(id)request forSFSession:(id)session completion:(id)completion;
 @end
 
 @implementation DEDSharingInbound
@@ -32,33 +32,33 @@
   return v2;
 }
 
-- (DEDSharingInbound)initWithController:(id)a3 sharingConnection:(id)a4
+- (DEDSharingInbound)initWithController:(id)controller sharingConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  connectionCopy = connection;
   v8 = objc_alloc_init(DEDSharingInbound);
 
   if (v8)
   {
-    [(DEDSharingInbound *)v8 setDelegate:v6];
-    [(DEDSharingInbound *)v8 setConnection:v7];
+    [(DEDSharingInbound *)v8 setDelegate:controllerCopy];
+    [(DEDSharingInbound *)v8 setConnection:connectionCopy];
   }
 
   return v8;
 }
 
-- (void)handleObject:(id)a3 forSFSession:(id)a4
+- (void)handleObject:(id)object forSFSession:(id)session
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  sessionCopy = session;
   v8 = [(DEDSharingInbound *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DEDSharingInbound handleObject:forSFSession:];
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"setup"];
+  v9 = [objectCopy objectForKeyedSubscript:@"setup"];
   v10 = [v9 isEqualToString:@"ready_check"];
 
   if (v10)
@@ -66,7 +66,7 @@
     v11 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+      v12 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
       *buf = 138412290;
       v63 = v12;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "received ready_check setup command with identifier [%@]", buf, 0xCu);
@@ -80,17 +80,17 @@
 
     v14 = +[DEDDevice currentDeviceWithDaemonInfo];
     v61[0] = @"ready_device";
-    v15 = [v6 objectForKeyedSubscript:{@"yourIdentifier", @"setup", @"myIdentifier"}];
+    v15 = [objectCopy objectForKeyedSubscript:{@"yourIdentifier", @"setup", @"myIdentifier"}];
     v61[1] = v15;
     v60[2] = @"device";
-    v16 = [v14 serialize];
-    v61[2] = v16;
+    serialize = [v14 serialize];
+    v61[2] = serialize;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:3];
 
-    [v7 sendWithFlags:0 object:v17];
+    [sessionCopy sendWithFlags:0 object:v17];
   }
 
-  v18 = [v6 objectForKeyedSubscript:@"setup"];
+  v18 = [objectCopy objectForKeyedSubscript:@"setup"];
   v19 = [v18 isEqualToString:@"ready_device"];
 
   if (v19)
@@ -98,7 +98,7 @@
     v20 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+      v21 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
       *buf = 138412290;
       v63 = v21;
       _os_log_impl(&dword_248AD7000, v20, OS_LOG_TYPE_DEFAULT, "received ready_device setup command with identifier [%@]", buf, 0xCu);
@@ -110,16 +110,16 @@
       [DEDSharingInbound handleObject:forSFSession:];
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"device"];
+    v23 = [objectCopy objectForKeyedSubscript:@"device"];
     v24 = [DEDDevice deviceWithDictionary:v23];
 
-    v25 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+    v25 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
     [v24 setAddress:v25];
 
     [v24 setTransport:3];
     [v24 setRemoteTransport:3];
-    v26 = [v7 peerDevice];
-    [v24 setSfDevice:v26];
+    peerDevice = [sessionCopy peerDevice];
+    [v24 setSfDevice:peerDevice];
 
     v27 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -127,11 +127,11 @@
       [DEDSharingInbound handleObject:v24 forSFSession:v27];
     }
 
-    v28 = [(DEDSharingInbound *)self connection];
-    [v28 updateControllerWithDevice:v24 andStatus:{objc_msgSend(v24, "status")}];
+    connection = [(DEDSharingInbound *)self connection];
+    [connection updateControllerWithDevice:v24 andStatus:{objc_msgSend(v24, "status")}];
   }
 
-  v29 = [v6 objectForKeyedSubscript:@"setup"];
+  v29 = [objectCopy objectForKeyedSubscript:@"setup"];
   v30 = [v29 isEqualToString:@"start_session"];
 
   if (v30)
@@ -139,7 +139,7 @@
     v31 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+      v32 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
       *buf = 138412290;
       v63 = v32;
       _os_log_impl(&dword_248AD7000, v31, OS_LOG_TYPE_DEFAULT, "received start_session setup command with identifier [%@]", buf, 0xCu);
@@ -151,29 +151,29 @@
       [DEDSharingInbound handleObject:forSFSession:];
     }
 
-    v34 = [v6 objectForKeyedSubscript:@"sessionID"];
-    v35 = [v6 objectForKeyedSubscript:@"config"];
+    v34 = [objectCopy objectForKeyedSubscript:@"sessionID"];
+    v35 = [objectCopy objectForKeyedSubscript:@"config"];
     v36 = [DEDBugSessionConfiguration secureUnarchiveWithData:v35];
 
-    v37 = [v6 objectForKeyedSubscript:@"callingDevice"];
+    v37 = [objectCopy objectForKeyedSubscript:@"callingDevice"];
     v38 = [DEDDevice deviceWithDictionary:v37];
 
-    v39 = [v6 objectForKeyedSubscript:@"targetDevice"];
+    v39 = [objectCopy objectForKeyedSubscript:@"targetDevice"];
     v40 = [DEDDevice deviceWithDictionary:v39];
 
     [v38 setTransport:3];
-    v41 = [v38 identifier];
-    [v38 setAddress:v41];
+    identifier = [v38 identifier];
+    [v38 setAddress:identifier];
 
-    v42 = [(DEDSharingInbound *)self connection];
-    v43 = [v38 identifier];
-    [v42 addIncomingSFSession:v7 forIdentifier:v43];
+    connection2 = [(DEDSharingInbound *)self connection];
+    identifier2 = [v38 identifier];
+    [connection2 addIncomingSFSession:sessionCopy forIdentifier:identifier2];
 
-    v44 = [(DEDSharingInbound *)self delegate];
-    [v44 sharingInbound_startBugSessionWithIdentifier:v34 configuration:v36 caller:v38 target:v40];
+    delegate = [(DEDSharingInbound *)self delegate];
+    [delegate sharingInbound_startBugSessionWithIdentifier:v34 configuration:v36 caller:v38 target:v40];
   }
 
-  v45 = [v6 objectForKeyedSubscript:@"setup"];
+  v45 = [objectCopy objectForKeyedSubscript:@"setup"];
   v46 = [v45 isEqualToString:@"did_start_session"];
 
   if (v46)
@@ -181,7 +181,7 @@
     v47 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+      v48 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
       *buf = 138412290;
       v63 = v48;
       _os_log_impl(&dword_248AD7000, v47, OS_LOG_TYPE_DEFAULT, "received start_session setup command with identifier [%@]", buf, 0xCu);
@@ -193,18 +193,18 @@
       [DEDSharingInbound handleObject:forSFSession:];
     }
 
-    v50 = [(DEDSharingInbound *)self delegate];
-    [v50 sharingInbound_didStartBugSessionWithInfo:v6];
+    delegate2 = [(DEDSharingInbound *)self delegate];
+    [delegate2 sharingInbound_didStartBugSessionWithInfo:objectCopy];
   }
 
-  v51 = [v6 objectForKeyedSubscript:@"session"];
+  v51 = [objectCopy objectForKeyedSubscript:@"session"];
 
   if (v51)
   {
     v52 = [(DEDSharingInbound *)self log];
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [v6 objectForKeyedSubscript:@"myIdentifier"];
+      v53 = [objectCopy objectForKeyedSubscript:@"myIdentifier"];
       *buf = 138412290;
       v63 = v53;
       _os_log_impl(&dword_248AD7000, v52, OS_LOG_TYPE_DEFAULT, "received session setup command with identifier [%@]", buf, 0xCu);
@@ -216,44 +216,44 @@
       [DEDSharingInbound handleObject:forSFSession:];
     }
 
-    v55 = [v6 objectForKeyedSubscript:@"sessionID"];
-    v56 = [v6 objectForKeyedSubscript:@"callingDevice"];
+    v55 = [objectCopy objectForKeyedSubscript:@"sessionID"];
+    v56 = [objectCopy objectForKeyedSubscript:@"callingDevice"];
     v57 = [DEDDevice deviceWithDictionary:v56];
 
     [v57 setTransport:3];
-    v58 = [v57 identifier];
-    [v57 setAddress:v58];
+    identifier3 = [v57 identifier];
+    [v57 setAddress:identifier3];
 
-    [(DEDSharingInbound *)self handleObject:v6 forSFSession:v7 forBugSession:v55 callingDevice:v57];
+    [(DEDSharingInbound *)self handleObject:objectCopy forSFSession:sessionCopy forBugSession:v55 callingDevice:v57];
   }
 
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleObject:(id)a3 forSFSession:(id)a4 forBugSession:(id)a5 callingDevice:(id)a6
+- (void)handleObject:(id)object forSFSession:(id)session forBugSession:(id)bugSession callingDevice:(id)device
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  sessionCopy = session;
+  bugSessionCopy = bugSession;
+  deviceCopy = device;
   v14 = [(DEDSharingInbound *)self log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [DEDSharingInbound handleObject:forSFSession:forBugSession:callingDevice:];
   }
 
-  v15 = [(DEDSharingInbound *)self delegate];
+  delegate = [(DEDSharingInbound *)self delegate];
 
-  if (v15)
+  if (delegate)
   {
-    v16 = [v10 objectForKeyedSubscript:@"session"];
-    v17 = [(DEDSharingInbound *)self connection];
-    v18 = [v13 identifier];
-    [v17 addIncomingSFSession:v11 forIdentifier:v18];
+    v16 = [objectCopy objectForKeyedSubscript:@"session"];
+    connection = [(DEDSharingInbound *)self connection];
+    identifier = [deviceCopy identifier];
+    [connection addIncomingSFSession:sessionCopy forIdentifier:identifier];
 
-    v19 = [(DEDSharingInbound *)self delegate];
-    v20 = [v19 sessionForIdentifier:v12];
+    delegate2 = [(DEDSharingInbound *)self delegate];
+    v20 = [delegate2 sessionForIdentifier:bugSessionCopy];
 
     if ([v16 isEqualToString:@"ping"])
     {
@@ -277,20 +277,20 @@ LABEL_28:
 
     if ([v16 isEqualToString:@"startDiagnostic"])
     {
-      v21 = [v10 objectForKeyedSubscript:@"identifier"];
-      v22 = [v10 objectForKeyedSubscript:@"parameters"];
+      v21 = [objectCopy objectForKeyedSubscript:@"identifier"];
+      v22 = [objectCopy objectForKeyedSubscript:@"parameters"];
       v61 = v21;
       v23 = [[DEDExtensionIdentifier alloc] initWithString:v21];
-      v24 = [v10 objectForKeyedSubscript:@"deferDate"];
-      v25 = [(DEDExtensionIdentifier *)v23 extensionIdentifier];
+      v24 = [objectCopy objectForKeyedSubscript:@"deferDate"];
+      extensionIdentifier = [(DEDExtensionIdentifier *)v23 extensionIdentifier];
       if (v24)
       {
-        v26 = [v20 startDiagnosticExtensionWithIdentifier:v25 parameters:v22 deferRunUntil:v24 completion:0];
+        v26 = [v20 startDiagnosticExtensionWithIdentifier:extensionIdentifier parameters:v22 deferRunUntil:v24 completion:0];
       }
 
       else
       {
-        v36 = [v20 startDiagnosticExtensionWithIdentifier:v25 parameters:v22 completion:0];
+        v36 = [v20 startDiagnosticExtensionWithIdentifier:extensionIdentifier parameters:v22 completion:0];
       }
 
       goto LABEL_28;
@@ -298,9 +298,9 @@ LABEL_28:
 
     if ([v16 isEqualToString:@"terminateExtension"])
     {
-      v27 = [v10 objectForKeyedSubscript:@"identifier"];
-      v28 = [v10 objectForKeyedSubscript:@"info"];
-      [v20 terminateExtension:v27 withInfo:v28];
+      delegate3 = [objectCopy objectForKeyedSubscript:@"identifier"];
+      v28 = [objectCopy objectForKeyedSubscript:@"info"];
+      [v20 terminateExtension:delegate3 withInfo:v28];
     }
 
     else
@@ -308,13 +308,13 @@ LABEL_28:
       if ([v16 isEqualToString:@"supportsExtensions"])
       {
         v59 = v20;
-        v60 = v13;
-        v29 = [MEMORY[0x277CBEB18] array];
+        v60 = deviceCopy;
+        array = [MEMORY[0x277CBEB18] array];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v30 = [v10 objectForKeyedSubscript:@"extensions"];
+        v30 = [objectCopy objectForKeyedSubscript:@"extensions"];
         v31 = [v30 countByEnumeratingWithState:&v62 objects:v66 count:16];
         if (v31)
         {
@@ -330,7 +330,7 @@ LABEL_28:
               }
 
               v35 = [DEDExtension extensionWithDictionary:*(*(&v62 + 1) + 8 * i)];
-              [v29 addObject:v35];
+              [array addObject:v35];
             }
 
             v32 = [v30 countByEnumeratingWithState:&v62 objects:v66 count:16];
@@ -340,9 +340,9 @@ LABEL_28:
         }
 
         v20 = v59;
-        [v59 supportsDiagnostics:v29];
+        [v59 supportsDiagnostics:array];
 
-        v13 = v60;
+        deviceCopy = v60;
         goto LABEL_28;
       }
 
@@ -368,10 +368,10 @@ LABEL_28:
 
         if ([v16 isEqualToString:@"didGetStatus"])
         {
-          v39 = [v10 objectForKeyedSubscript:@"groups"];
+          v39 = [objectCopy objectForKeyedSubscript:@"groups"];
           v40 = [v39 ded_mapWithBlock:&__block_literal_global_31];
 
-          v41 = [v10 objectForKeyedSubscript:@"extensions"];
+          v41 = [objectCopy objectForKeyedSubscript:@"extensions"];
           v42 = [v41 ded_mapWithBlock:&__block_literal_global_117];
 
           [v20 hasCollected:v40 isCollecting:v42];
@@ -381,26 +381,26 @@ LABEL_28:
         {
           if ([v16 isEqualToString:@"didGetState"])
           {
-            v43 = [v10 objectForKeyedSubscript:@"state"];
-            v44 = [v43 integerValue];
+            v43 = [objectCopy objectForKeyedSubscript:@"state"];
+            integerValue = [v43 integerValue];
 
-            v27 = [v10 objectForKeyedSubscript:@"info"];
-            [v20 didGetState:v44 info:v27];
+            delegate3 = [objectCopy objectForKeyedSubscript:@"info"];
+            [v20 didGetState:integerValue info:delegate3];
             goto LABEL_16;
           }
 
           if ([v16 isEqualToString:@"didSyncStatus"])
           {
-            v45 = [v10 objectForKeyedSubscript:@"groups"];
-            v27 = [v45 ded_mapWithBlock:&__block_literal_global_128];
+            v45 = [objectCopy objectForKeyedSubscript:@"groups"];
+            delegate3 = [v45 ded_mapWithBlock:&__block_literal_global_128];
 
-            v46 = [v10 objectForKeyedSubscript:@"extensions"];
+            v46 = [objectCopy objectForKeyedSubscript:@"extensions"];
             v47 = [v46 ded_mapWithBlock:&__block_literal_global_130];
 
-            v48 = [v10 objectForKeyedSubscript:@"identifiers"];
+            v48 = [objectCopy objectForKeyedSubscript:@"identifiers"];
             v49 = [v48 ded_mapWithBlock:&__block_literal_global_135];
 
-            [v20 hasCollected:v27 isCollecting:v47 identifiers:v49];
+            [v20 hasCollected:delegate3 isCollecting:v47 identifiers:v49];
             goto LABEL_16;
           }
 
@@ -408,40 +408,40 @@ LABEL_28:
           {
             if ([v16 isEqualToString:@"didAdoptFiles"])
             {
-              v27 = [v10 objectForKey:@"error"];
-              [v20 didAdoptFilesWithError:v27];
+              delegate3 = [objectCopy objectForKey:@"error"];
+              [v20 didAdoptFilesWithError:delegate3];
             }
 
             else
             {
               if ([v16 isEqualToString:@"compressionProgress"])
               {
-                v51 = [v10 objectForKeyedSubscript:@"compressed"];
-                v52 = [v51 unsignedLongLongValue];
+                v51 = [objectCopy objectForKeyedSubscript:@"compressed"];
+                unsignedLongLongValue = [v51 unsignedLongLongValue];
 
-                v53 = [v10 objectForKeyedSubscript:@"total"];
-                v54 = [v53 unsignedLongLongValue];
+                v53 = [objectCopy objectForKeyedSubscript:@"total"];
+                unsignedLongLongValue2 = [v53 unsignedLongLongValue];
 
-                [v20 compressionProgress:v52 total:v54];
+                [v20 compressionProgress:unsignedLongLongValue total:unsignedLongLongValue2];
                 goto LABEL_28;
               }
 
               if ([v16 isEqualToString:@"uploadProgress"])
               {
-                v55 = [v10 objectForKeyedSubscript:@"uploaded"];
-                v56 = [v55 longLongValue];
+                v55 = [objectCopy objectForKeyedSubscript:@"uploaded"];
+                longLongValue = [v55 longLongValue];
 
-                v57 = [v10 objectForKeyedSubscript:@"total"];
-                v58 = [v57 longLongValue];
+                v57 = [objectCopy objectForKeyedSubscript:@"total"];
+                longLongValue2 = [v57 longLongValue];
 
-                [v20 uploadProgress:v56 total:v58];
+                [v20 uploadProgress:longLongValue total:longLongValue2];
                 goto LABEL_28;
               }
 
               if ([v16 isEqualToString:@"uploadFinished"])
               {
-                v27 = [v10 objectForKeyedSubscript:@"error"];
-                [v20 didFinishUploadingWithError:v27];
+                delegate3 = [objectCopy objectForKeyedSubscript:@"error"];
+                [v20 didFinishUploadingWithError:delegate3];
               }
 
               else
@@ -466,14 +466,14 @@ LABEL_28:
 
                 if ([v16 isEqualToString:@"didCancelSession"])
                 {
-                  v27 = [(DEDSharingInbound *)self delegate];
-                  [v27 sharingInbound_didAbortSessionWithID:v12];
+                  delegate3 = [(DEDSharingInbound *)self delegate];
+                  [delegate3 sharingInbound_didAbortSessionWithID:bugSessionCopy];
                 }
 
                 else
                 {
-                  v27 = [(DEDSharingInbound *)self log];
-                  if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+                  delegate3 = [(DEDSharingInbound *)self log];
+                  if (os_log_type_enabled(delegate3, OS_LOG_TYPE_ERROR))
                   {
                     [DEDSharingInbound handleObject:forSFSession:forBugSession:callingDevice:];
                   }
@@ -484,7 +484,7 @@ LABEL_28:
             goto LABEL_16;
           }
 
-          v40 = [v10 objectForKeyedSubscript:@"filesForAdopt"];
+          v40 = [objectCopy objectForKeyedSubscript:@"filesForAdopt"];
           v50 = [(DEDSharingInbound *)self log];
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
@@ -497,11 +497,11 @@ LABEL_28:
         goto LABEL_28;
       }
 
-      v27 = [v10 objectForKeyedSubscript:@"identifier"];
-      v38 = [v10 objectForKeyedSubscript:@"group"];
+      delegate3 = [objectCopy objectForKeyedSubscript:@"identifier"];
+      v38 = [objectCopy objectForKeyedSubscript:@"group"];
       v28 = [DEDAttachmentGroup groupWithDictionary:v38];
 
-      [v20 finishedDiagnosticWithIdentifier:v27 result:v28];
+      [v20 finishedDiagnosticWithIdentifier:delegate3 result:v28];
     }
 
 LABEL_16:
@@ -521,11 +521,11 @@ DEDExtensionIdentifier *__75__DEDSharingInbound_handleObject_forSFSession_forBug
   return v3;
 }
 
-- (void)handleRequest:(id)a3 forSFSession:(id)a4 completion:(id)a5
+- (void)handleRequest:(id)request forSFSession:(id)session completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  sessionCopy = session;
+  completionCopy = completion;
   __assert_rtn("[DEDSharingInbound handleRequest:forSFSession:completion:]", "DEDSharingInbound.m", 257, "false");
 }
 

@@ -1,47 +1,47 @@
 @interface CHJapaneseTokenizationAndConversionStep
-- (CHJapaneseTokenizationAndConversionStep)initWithMecabra:(id)a3 wordLanguageModel:(void *)a4 ovsStringChecker:(id)a5 promoteKanaConversion:(BOOL)a6;
-- (id)process:(id)a3 options:(id)a4;
+- (CHJapaneseTokenizationAndConversionStep)initWithMecabra:(id)mecabra wordLanguageModel:(void *)model ovsStringChecker:(id)checker promoteKanaConversion:(BOOL)conversion;
+- (id)process:(id)process options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CHJapaneseTokenizationAndConversionStep
 
-- (CHJapaneseTokenizationAndConversionStep)initWithMecabra:(id)a3 wordLanguageModel:(void *)a4 ovsStringChecker:(id)a5 promoteKanaConversion:(BOOL)a6
+- (CHJapaneseTokenizationAndConversionStep)initWithMecabra:(id)mecabra wordLanguageModel:(void *)model ovsStringChecker:(id)checker promoteKanaConversion:(BOOL)conversion
 {
-  v11 = a3;
-  v12 = a5;
+  mecabraCopy = mecabra;
+  checkerCopy = checker;
   v17.receiver = self;
   v17.super_class = CHJapaneseTokenizationAndConversionStep;
   v13 = [(CHJapaneseTokenizationAndConversionStep *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_mecabraWrapper, a3);
+    objc_storeStrong(&v13->_mecabraWrapper, mecabra);
     v14->_mecabraContextRef = MecabraContextCreateMutable();
-    if (a4)
+    if (model)
     {
-      CFRetain(a4);
+      CFRetain(model);
     }
 
     mCFObject = v14->_wordLanguageModel.mCFObject;
-    v14->_wordLanguageModel.mCFObject = a4;
+    v14->_wordLanguageModel.mCFObject = model;
     if (mCFObject)
     {
       CFRelease(mCFObject);
     }
 
-    v14->_promoteKanaConversion = a6;
-    objc_storeStrong(&v14->_ovsStringChecker, a5);
+    v14->_promoteKanaConversion = conversion;
+    objc_storeStrong(&v14->_ovsStringChecker, checker);
   }
 
   return v14;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v505 = *MEMORY[0x1E69E9840];
-  v448 = a3;
-  v444 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -54,7 +54,7 @@
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "CHJapaneseTokenizationAndConversionStep is running", buf, 2u);
   }
 
-  v465 = objc_msgSend_result(v448, v6, v7, v8, v9, v10);
+  v465 = objc_msgSend_result(processCopy, v6, v7, v8, v9, v10);
   v16 = objc_msgSend_string(MEMORY[0x1E696AD60], v11, v12, v13, v14, v15);
   v502[0] = MEMORY[0x1E69E9820];
   v502[1] = 3221225472;
@@ -63,10 +63,10 @@
   v447 = v16;
   v503 = v447;
   objc_msgSend_enumerateTokensInTopTranscriptionPathWithBlock_(v465, v17, v502, v18, v19, v20);
-  v446 = objc_msgSend_leftContext(v448, v21, v22, v23, v24, v25);
+  v446 = objc_msgSend_leftContext(processCopy, v21, v22, v23, v24, v25);
   if (objc_msgSend_length(v446, v26, v27, v28, v29, v30))
   {
-    objc_msgSend_mecabra(self->_mecabraWrapper, v31, v32, v33, v34, v35, v444);
+    objc_msgSend_mecabra(self->_mecabraWrapper, v31, v32, v33, v34, v35, optionsCopy);
     LengthForContextString = MecabraGetLengthForContextString();
     v42 = objc_msgSend_length(v446, v37, v38, v39, v40, v41);
     v47 = objc_msgSend_substringFromIndex_(v446, v43, v42 - LengthForContextString, v44, v45, v46);
@@ -87,7 +87,7 @@
     CandidateFromContextString = 0;
   }
 
-  v58 = objc_msgSend_array(MEMORY[0x1E695DF70], v31, v32, v33, v34, v35, v444);
+  v58 = objc_msgSend_array(MEMORY[0x1E695DF70], v31, v32, v33, v34, v35, optionsCopy);
   v64 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x1E696AB08], v59, v60, v61, v62, v63);
   v457 = objc_msgSend_componentsSeparatedByCharactersInSet_(v447, v65, v64, v66, v67, v68);
 
@@ -286,11 +286,11 @@ LABEL_52:
 
       if (!v181)
       {
-        v437 = objc_msgSend_result(v448, v182, v183, v184, v185, v186);
+        v437 = objc_msgSend_result(processCopy, v182, v183, v184, v185, v186);
         v441 = objc_msgSend_modifiedResultWithBestPathTokens_pathProbabilities_(v437, v438, v163, v464, v439, v440);
-        if (v448)
+        if (processCopy)
         {
-          objc_storeStrong(v448 + 3, v441);
+          objc_storeStrong(processCopy + 3, v441);
         }
 
         break;
@@ -356,7 +356,7 @@ LABEL_52:
       v480 = buf;
       v460 = v252;
       v474 = v252;
-      v475 = self;
+      selfCopy = self;
       v476 = v58;
       v481 = v497;
       objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v465, v253, v456, 0, v248, v468);
@@ -480,9 +480,9 @@ LABEL_98:
     }
   }
 
-  v442 = v448;
+  v442 = processCopy;
 
-  return v448;
+  return processCopy;
 }
 
 - (void)dealloc

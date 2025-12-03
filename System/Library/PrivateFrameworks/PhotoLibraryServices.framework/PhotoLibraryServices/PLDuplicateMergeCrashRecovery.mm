@@ -1,123 +1,123 @@
 @interface PLDuplicateMergeCrashRecovery
-- (BOOL)removeCrashRecoveryMarkerFileWithError:(id *)a3;
-- (BOOL)writeCrashRecoveryMarkerFileForTargetAssetUUID:(id)a3 error:(id *)a4;
-- (PLDuplicateMergeCrashRecovery)initWithLibraryServicesManager:(id)a3;
-- (PLDuplicateMergeCrashRecovery)initWithPhotoLibrary:(id)a3;
+- (BOOL)removeCrashRecoveryMarkerFileWithError:(id *)error;
+- (BOOL)writeCrashRecoveryMarkerFileForTargetAssetUUID:(id)d error:(id *)error;
+- (PLDuplicateMergeCrashRecovery)initWithLibraryServicesManager:(id)manager;
+- (PLDuplicateMergeCrashRecovery)initWithPhotoLibrary:(id)library;
 - (id)_crashRecoveryMarkerFileURL;
 - (id)_readCrashRecoveryUUIDContainerMarkerFile;
 - (id)_readCrashRecoveryUUIDListMarkerFile;
-- (int64_t)_requestRecoveryActionForAsset:(id)a3;
-- (void)_performCrashRecoveryIfNeededWithUUIDs:(id)a3;
-- (void)_recoveryMasterRecordCleanupForAsset:(id)a3;
-- (void)_recoveryMasterResourceRecordCleanupForAsset:(id)a3;
+- (int64_t)_requestRecoveryActionForAsset:(id)asset;
+- (void)_performCrashRecoveryIfNeededWithUUIDs:(id)ds;
+- (void)_recoveryMasterRecordCleanupForAsset:(id)asset;
+- (void)_recoveryMasterResourceRecordCleanupForAsset:(id)asset;
 - (void)performCrashRecoveryIfNeeded;
 @end
 
 @implementation PLDuplicateMergeCrashRecovery
 
-- (void)_recoveryMasterResourceRecordCleanupForAsset:(id)a3
+- (void)_recoveryMasterResourceRecordCleanupForAsset:(id)asset
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 masterResourceForCPLType:1];
-  v5 = [v4 cplFileURL];
-  if (![v5 checkResourceIsReachableAndReturnError:0])
+  assetCopy = asset;
+  v4 = [assetCopy masterResourceForCPLType:1];
+  cplFileURL = [v4 cplFileURL];
+  if (![cplFileURL checkResourceIsReachableAndReturnError:0])
   {
-    v8 = [v3 master];
-    v9 = [v8 scopedIdentifier];
-    v6 = [v9 identifier];
+    master = [assetCopy master];
+    scopedIdentifier = [master scopedIdentifier];
+    identifier = [scopedIdentifier identifier];
 
-    v7 = [v4 fingerprint];
-    if (-[NSObject length](v6, "length") && [v7 length])
+    fingerprint = [v4 fingerprint];
+    if (-[NSObject length](identifier, "length") && [fingerprint length])
     {
-      [v4 setFingerprint:v6];
-      v10 = [v3 additionalAttributes];
-      v11 = [v10 originalStableHash];
-      [v4 setStableHash:v11];
+      [v4 setFingerprint:identifier];
+      additionalAttributes = [assetCopy additionalAttributes];
+      originalStableHash = [additionalAttributes originalStableHash];
+      [v4 setStableHash:originalStableHash];
     }
 
     goto LABEL_7;
   }
 
-  v6 = PLDuplicateDetectionGetLog();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  identifier = PLDuplicateDetectionGetLog();
+  if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v3 uuid];
+    fingerprint = [assetCopy uuid];
     v12 = 138543362;
-    v13 = v7;
-    _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "Duplicate Merge: Unexpected original resource on disk for asset %{public}@.", &v12, 0xCu);
+    v13 = fingerprint;
+    _os_log_impl(&dword_19BF1F000, identifier, OS_LOG_TYPE_ERROR, "Duplicate Merge: Unexpected original resource on disk for asset %{public}@.", &v12, 0xCu);
 LABEL_7:
   }
 }
 
-- (void)_recoveryMasterRecordCleanupForAsset:(id)a3
+- (void)_recoveryMasterRecordCleanupForAsset:(id)asset
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 master];
-  if (v5)
+  assetCopy = asset;
+  master = [assetCopy master];
+  if (master)
   {
     v6 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 scopedIdentifier];
-      v8 = [v4 uuid];
+      scopedIdentifier = [master scopedIdentifier];
+      uuid = [assetCopy uuid];
       v11 = 138543618;
-      v12 = v7;
+      v12 = scopedIdentifier;
       v13 = 2114;
-      v14 = v8;
+      v14 = uuid;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Duplicate Merge: Deleting master %{public}@ so a new master is created for asset %{public}@", &v11, 0x16u);
     }
 
-    [v4 setMaster:0];
-    [PLCloudMaster deleteMasterIfNecessary:v5 inLibrary:self->_library];
+    [assetCopy setMaster:0];
+    [PLCloudMaster deleteMasterIfNecessary:master inLibrary:self->_library];
   }
 
   v9 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 uuid];
+    uuid2 = [assetCopy uuid];
     v11 = 138543362;
-    v12 = v10;
+    v12 = uuid2;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Duplicate Merge: Marking asset %{public}@ as not pushed to get it re-pushed to CPL", &v11, 0xCu);
   }
 
-  [v4 setCloudLocalState:0];
+  [assetCopy setCloudLocalState:0];
 }
 
-- (int64_t)_requestRecoveryActionForAsset:(id)a3
+- (int64_t)_requestRecoveryActionForAsset:(id)asset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 master];
-  if (v6)
+  assetCopy = asset;
+  master = [assetCopy master];
+  if (master)
   {
-    v7 = [v5 mainFileURL];
-    v8 = [v6 scopedIdentifier];
-    v9 = [v8 identifier];
+    mainFileURL = [assetCopy mainFileURL];
+    scopedIdentifier = [master scopedIdentifier];
+    identifier = [scopedIdentifier identifier];
 
-    if (v9)
+    if (identifier)
     {
-      v10 = [v6 fingerprintScheme];
-      if (!v10)
+      fingerprintScheme = [master fingerprintScheme];
+      if (!fingerprintScheme)
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeCrashRecovery.m" lineNumber:236 description:{@"Failed to get fingerprint scheme from %@", v6}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeCrashRecovery.m" lineNumber:236 description:{@"Failed to get fingerprint scheme from %@", master}];
       }
 
       v28 = 0;
-      v11 = [v7 checkResourceIsReachableAndReturnError:&v28];
+      v11 = [mainFileURL checkResourceIsReachableAndReturnError:&v28];
       v12 = v28;
       v13 = v12;
       if (v11)
       {
         v27 = v12;
-        v14 = [v10 fingerPrintForFileAtURL:v7 error:&v27];
+        v14 = [fingerprintScheme fingerPrintForFileAtURL:mainFileURL error:&v27];
         v15 = v27;
 
         if (v14)
         {
-          v16 = [v9 isEqualToString:v14] ^ 1;
+          v16 = [identifier isEqualToString:v14] ^ 1;
         }
 
         else
@@ -125,12 +125,12 @@ LABEL_7:
           v22 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v5 uuid];
-            v24 = [v10 fingerprintSchemeDescription];
+            uuid = [assetCopy uuid];
+            fingerprintSchemeDescription = [fingerprintScheme fingerprintSchemeDescription];
             *buf = 138543874;
-            v30 = v23;
+            v30 = uuid;
             v31 = 2114;
-            v32 = v24;
+            v32 = fingerprintSchemeDescription;
             v33 = 2112;
             v34 = v15;
             _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "Duplicate Merge: Failed to generate fingerprint from %{public}@ for asset %{public}@. Error: %@", buf, 0x20u);
@@ -150,19 +150,19 @@ LABEL_7:
         {
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [v5 uuid];
+            uuid2 = [assetCopy uuid];
             *buf = 138543618;
-            v30 = v19;
+            v30 = uuid2;
             v31 = 2112;
             v32 = v13;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Duplicate Merge: No master resource found for asset %{public}@. Error: %@", buf, 0x16u);
           }
 
-          v14 = [v5 masterResourceForCPLType:1];
-          v20 = [v14 fingerprint];
-          if (v20)
+          v14 = [assetCopy masterResourceForCPLType:1];
+          fingerprint = [v14 fingerprint];
+          if (fingerprint)
           {
-            if ([v9 isEqualToString:v20])
+            if ([identifier isEqualToString:fingerprint])
             {
               v16 = 0;
             }
@@ -183,9 +183,9 @@ LABEL_7:
         {
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v5 uuid];
+            uuid3 = [assetCopy uuid];
             *buf = 138543618;
-            v30 = v21;
+            v30 = uuid3;
             v31 = 2112;
             v32 = v13;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Duplicate Merge: Failed to check if the resource is available on disk for asset %{public}@. Error: %@", buf, 0x16u);
@@ -212,17 +212,17 @@ LABEL_7:
   return v16;
 }
 
-- (void)_performCrashRecoveryIfNeededWithUUIDs:(id)a3
+- (void)_performCrashRecoveryIfNeededWithUUIDs:(id)ds
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  dsCopy = ds;
   v6 = +[PLManagedAsset entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", v5];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", dsCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:dsCopy];
   v14[0] = @"master";
   v14[1] = @"modernResources";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
@@ -330,23 +330,23 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
 - (void)performCrashRecoveryIfNeeded
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = [(PLDuplicateMergeCrashRecovery *)self _readCrashRecoveryUUIDContainerMarkerFile];
-  if ([v4 count])
+  _readCrashRecoveryUUIDContainerMarkerFile = [(PLDuplicateMergeCrashRecovery *)self _readCrashRecoveryUUIDContainerMarkerFile];
+  if ([_readCrashRecoveryUUIDContainerMarkerFile count])
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = [(PLPhotoLibrary *)self->_library fingerprintContext];
-    v7 = v6;
-    if (v6)
+    fingerprintContext = [(PLPhotoLibrary *)self->_library fingerprintContext];
+    v7 = fingerprintContext;
+    if (fingerprintContext)
     {
-      v8 = v6;
+      mEMORY[0x1E6994AD8] = fingerprintContext;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E6994AD8] sharedContext];
+      mEMORY[0x1E6994AD8] = [MEMORY[0x1E6994AD8] sharedContext];
     }
 
-    v9 = v8;
+    v9 = mEMORY[0x1E6994AD8];
 
     v10 = [objc_opt_class() description];
     v21[0] = v10;
@@ -376,7 +376,7 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
 
     else
     {
-      [(PLDuplicateMergeCrashRecovery *)self _performCrashRecoveryIfNeededWithUUIDs:v4];
+      [(PLDuplicateMergeCrashRecovery *)self _performCrashRecoveryIfNeededWithUUIDs:_readCrashRecoveryUUIDContainerMarkerFile];
     }
   }
 
@@ -386,13 +386,13 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
   }
 }
 
-- (BOOL)removeCrashRecoveryMarkerFileWithError:(id *)a3
+- (BOOL)removeCrashRecoveryMarkerFileWithError:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  _crashRecoveryMarkerFileURL = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v12];
+  v6 = [defaultManager removeItemAtURL:_crashRecoveryMarkerFileURL error:&v12];
   v7 = v12;
 
   if (v6 & 1) != 0 || (PLIsErrorFileNotFound())
@@ -410,11 +410,11 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Duplicate Merge: Failed to remove crash recovery marker file: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -426,26 +426,26 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
   return v8;
 }
 
-- (BOOL)writeCrashRecoveryMarkerFileForTargetAssetUUID:(id)a3 error:(id *)a4
+- (BOOL)writeCrashRecoveryMarkerFileForTargetAssetUUID:(id)d error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v7 = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    _crashRecoveryMarkerFileURL = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [_crashRecoveryMarkerFileURL path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
       v25 = 0;
-      v11 = [MEMORY[0x1E696AC00] fileHandleForUpdatingURL:v7 error:&v25];
+      v11 = [MEMORY[0x1E696AC00] fileHandleForUpdatingURL:_crashRecoveryMarkerFileURL error:&v25];
       v12 = v25;
       if (v11)
       {
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @", ", v6];
-        v14 = [v13 dataUsingEncoding:4];
+        dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @", ", dCopy];
+        v14 = [dCopy dataUsingEncoding:4];
         [v11 seekToEndOfFile];
         [v11 writeData:v14];
         [v11 closeFile];
@@ -453,7 +453,7 @@ void __72__PLDuplicateMergeCrashRecovery__performCrashRecoveryIfNeededWithUUIDs_
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v27 = v6;
+          v27 = dCopy;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Duplicate Merge: Successfully updated crash recovery marker file for asset UUID %{public}@", buf, 0xCu);
         }
 
@@ -469,7 +469,7 @@ LABEL_20:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = v6;
+        v27 = dCopy;
         v28 = 2112;
         v29 = v12;
         v20 = "Duplicate Merge: Failed to update crash recovery marker file for asset UUID %{public}@: %@";
@@ -480,7 +480,7 @@ LABEL_20:
     else
     {
       v24 = 0;
-      v17 = [v6 writeToURL:v7 atomically:1 encoding:4 error:&v24];
+      v17 = [dCopy writeToURL:_crashRecoveryMarkerFileURL atomically:1 encoding:4 error:&v24];
       v12 = v24;
       v18 = PLDuplicateDetectionGetLog();
       v11 = v18;
@@ -489,7 +489,7 @@ LABEL_20:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v27 = v6;
+          v27 = dCopy;
           _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Duplicate Merge: Successfully created crash recovery marker file for asset UUID %{public}@", buf, 0xCu);
         }
 
@@ -499,7 +499,7 @@ LABEL_20:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = v6;
+        v27 = dCopy;
         v28 = 2112;
         v29 = v12;
         v20 = "Duplicate Merge: Failed to create crash recovery marker file for asset UUID %{public}@: %@";
@@ -510,11 +510,11 @@ LABEL_16:
 
     v21 = v12;
     v19 = v21;
-    if (a4)
+    if (error)
     {
       v22 = v21;
       v16 = 0;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -534,9 +534,9 @@ LABEL_21:
 - (id)_readCrashRecoveryUUIDListMarkerFile
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
+  _crashRecoveryMarkerFileURL = [(PLDuplicateMergeCrashRecovery *)self _crashRecoveryMarkerFileURL];
   v7 = 0;
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithContentsOfURL:v2 encoding:4 error:&v7];
+  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithContentsOfURL:_crashRecoveryMarkerFileURL encoding:4 error:&v7];
   v4 = v7;
   if (!v3 && (PLIsErrorFileNotFound() & 1) == 0)
   {
@@ -560,8 +560,8 @@ LABEL_21:
 
 - (id)_readCrashRecoveryUUIDContainerMarkerFile
 {
-  v2 = [(PLDuplicateMergeCrashRecovery *)self _readCrashRecoveryUUIDListMarkerFile];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
+  _readCrashRecoveryUUIDListMarkerFile = [(PLDuplicateMergeCrashRecovery *)self _readCrashRecoveryUUIDListMarkerFile];
+  v3 = [_readCrashRecoveryUUIDListMarkerFile componentsSeparatedByString:{@", "}];
 
   return v3;
 }
@@ -576,13 +576,13 @@ LABEL_21:
   return v5;
 }
 
-- (PLDuplicateMergeCrashRecovery)initWithPhotoLibrary:(id)a3
+- (PLDuplicateMergeCrashRecovery)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeCrashRecovery.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeCrashRecovery.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   v13.receiver = self;
@@ -591,19 +591,19 @@ LABEL_21:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_library, a3);
-    v9 = [v6 pathManager];
+    objc_storeStrong(&v7->_library, library);
+    pathManager = [libraryCopy pathManager];
     pathManager = v8->_pathManager;
-    v8->_pathManager = v9;
+    v8->_pathManager = pathManager;
   }
 
   return v8;
 }
 
-- (PLDuplicateMergeCrashRecovery)initWithLibraryServicesManager:(id)a3
+- (PLDuplicateMergeCrashRecovery)initWithLibraryServicesManager:(id)manager
 {
-  v4 = [a3 databaseContext];
-  v5 = [v4 newShortLivedLibraryWithName:"-[PLDuplicateMergeCrashRecovery initWithLibraryServicesManager:]"];
+  databaseContext = [manager databaseContext];
+  v5 = [databaseContext newShortLivedLibraryWithName:"-[PLDuplicateMergeCrashRecovery initWithLibraryServicesManager:]"];
 
   if (v5)
   {

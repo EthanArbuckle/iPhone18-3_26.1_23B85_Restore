@@ -1,46 +1,46 @@
 @interface MLCCustomLayerTensor
-+ (id)customLayerTensorWithDescriptor:(id)a3 cpuBuffer:(id)a4;
-+ (id)customLayerTensorWithDescriptor:(id)a3 gpuBuffer:(id)a4;
-- (MLCCustomLayerTensor)initWithTensorDescriptor:(id)a3 cpuBuffer:(id)a4 gpuBuffer:(id)a5;
++ (id)customLayerTensorWithDescriptor:(id)descriptor cpuBuffer:(id)buffer;
++ (id)customLayerTensorWithDescriptor:(id)descriptor gpuBuffer:(id)buffer;
+- (MLCCustomLayerTensor)initWithTensorDescriptor:(id)descriptor cpuBuffer:(id)buffer gpuBuffer:(id)gpuBuffer;
 - (MLCTensorData)hostData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MLCCustomLayerTensor
 
-+ (id)customLayerTensorWithDescriptor:(id)a3 gpuBuffer:(id)a4
++ (id)customLayerTensorWithDescriptor:(id)descriptor gpuBuffer:(id)buffer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTensorDescriptor:v7 cpuBuffer:0 gpuBuffer:v6];
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  v8 = [[self alloc] initWithTensorDescriptor:descriptorCopy cpuBuffer:0 gpuBuffer:bufferCopy];
 
   return v8;
 }
 
-+ (id)customLayerTensorWithDescriptor:(id)a3 cpuBuffer:(id)a4
++ (id)customLayerTensorWithDescriptor:(id)descriptor cpuBuffer:(id)buffer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTensorDescriptor:v7 cpuBuffer:v6 gpuBuffer:0];
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  v8 = [[self alloc] initWithTensorDescriptor:descriptorCopy cpuBuffer:bufferCopy gpuBuffer:0];
 
   return v8;
 }
 
-- (MLCCustomLayerTensor)initWithTensorDescriptor:(id)a3 cpuBuffer:(id)a4 gpuBuffer:(id)a5
+- (MLCCustomLayerTensor)initWithTensorDescriptor:(id)descriptor cpuBuffer:(id)buffer gpuBuffer:(id)gpuBuffer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
+  gpuBufferCopy = gpuBuffer;
   v15.receiver = self;
   v15.super_class = MLCCustomLayerTensor;
   v12 = [(MLCCustomLayerTensor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_descriptor, a3);
-    objc_storeStrong(&v13->_cpuBuffer, a4);
-    objc_storeStrong(&v13->_gpuBuffer, a5);
+    objc_storeStrong(&v12->_descriptor, descriptor);
+    objc_storeStrong(&v13->_cpuBuffer, buffer);
+    objc_storeStrong(&v13->_gpuBuffer, gpuBuffer);
   }
 
   return v13;
@@ -48,10 +48,10 @@
 
 - (MLCTensorData)hostData
 {
-  v3 = [(MLCCustomLayerTensor *)self cpuBuffer];
-  v4 = [v3 bytes];
-  v5 = [(MLCCustomLayerTensor *)self cpuBuffer];
-  v6 = +[MLCTensorData dataWithBytesNoCopy:length:](MLCTensorData, "dataWithBytesNoCopy:length:", v4, [v5 length]);
+  cpuBuffer = [(MLCCustomLayerTensor *)self cpuBuffer];
+  bytes = [cpuBuffer bytes];
+  cpuBuffer2 = [(MLCCustomLayerTensor *)self cpuBuffer];
+  v6 = +[MLCTensorData dataWithBytesNoCopy:length:](MLCTensorData, "dataWithBytesNoCopy:length:", bytes, [cpuBuffer2 length]);
 
   return v6;
 }
@@ -61,22 +61,22 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCCustomLayerTensor *)self descriptor];
-  v7 = [(MLCCustomLayerTensor *)self cpuBuffer];
-  v8 = [v7 bytes];
-  v9 = [(MLCCustomLayerTensor *)self gpuBuffer];
-  v10 = [v3 stringWithFormat:@"%@: { tensorDescriptor=%@ : cpuBuffer=%@ : gpuBuffer=%@}", v5, v6, v8, v9];
+  descriptor = [(MLCCustomLayerTensor *)self descriptor];
+  cpuBuffer = [(MLCCustomLayerTensor *)self cpuBuffer];
+  bytes = [cpuBuffer bytes];
+  gpuBuffer = [(MLCCustomLayerTensor *)self gpuBuffer];
+  v10 = [v3 stringWithFormat:@"%@: { tensorDescriptor=%@ : cpuBuffer=%@ : gpuBuffer=%@}", v5, descriptor, bytes, gpuBuffer];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCCustomLayerTensor *)self descriptor];
-  v6 = [(MLCCustomLayerTensor *)self cpuBuffer];
-  v7 = [(MLCCustomLayerTensor *)self gpuBuffer];
-  v8 = [v4 initWithTensorDescriptor:v5 cpuBuffer:v6 gpuBuffer:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  descriptor = [(MLCCustomLayerTensor *)self descriptor];
+  cpuBuffer = [(MLCCustomLayerTensor *)self cpuBuffer];
+  gpuBuffer = [(MLCCustomLayerTensor *)self gpuBuffer];
+  v8 = [v4 initWithTensorDescriptor:descriptor cpuBuffer:cpuBuffer gpuBuffer:gpuBuffer];
 
   return v8;
 }

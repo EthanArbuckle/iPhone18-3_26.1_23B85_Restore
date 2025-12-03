@@ -3,22 +3,22 @@
 - (NSArray)_additionalTextInputLocales;
 - (NSLocale)locale;
 - (UITextInputMode)textInputMode;
-- (_TtC17SequoiaTranslator21LanguageAwareTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC17SequoiaTranslator21LanguageAwareTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (void)reloadInputViews;
-- (void)setLocale:(id)a3;
-- (void)textViewTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setLocale:(id)locale;
+- (void)textViewTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LanguageAwareTextView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for LanguageAwareTextView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(LanguageAwareTextView *)&v6 traitCollectionDidChange:v4];
+  [(LanguageAwareTextView *)&v6 traitCollectionDidChange:changeCopy];
   sub_1001396DC();
 }
 
@@ -44,14 +44,14 @@
   return v10;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v5 = sub_100005AD4(&qword_1003AFCE0);
   v6 = __chkstk_darwin(v5 - 8);
   v8 = &v15[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v6);
   v10 = &v15[-v9];
-  if (a3)
+  if (locale)
   {
     static Locale._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for Locale();
@@ -68,7 +68,7 @@
   swift_beginAccess();
   sub_1000E1D20(self + v13, v8);
   swift_beginAccess();
-  v14 = self;
+  selfCopy = self;
   sub_100135504(v10, self + v13);
   swift_endAccess();
   sub_100139B84(v8);
@@ -79,7 +79,7 @@
 
 - (NSArray)_additionalTextInputLocales
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013A330();
 
   if (v3)
@@ -98,7 +98,7 @@
 
 - (UITextInputMode)textInputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013A558();
 
   return v3;
@@ -116,32 +116,32 @@
   v3 = *(self + OBJC_IVAR____TtC17SequoiaTranslator21LanguageAwareTextView_willResignFirstResponder);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     sub_10001AD18(v3);
-    v3(v4);
+    v3(selfCopy);
     sub_10001ABE4(v3);
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for LanguageAwareTextView();
-  v6 = [(LanguageAwareTextView *)&v8 resignFirstResponder];
+  resignFirstResponder = [(LanguageAwareTextView *)&v8 resignFirstResponder];
 
-  return v6;
+  return resignFirstResponder;
 }
 
-- (void)textViewTapped:(id)a3
+- (void)textViewTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_10013AE9C(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_10013AE9C(tappedCopy);
 }
 
-- (_TtC17SequoiaTranslator21LanguageAwareTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC17SequoiaTranslator21LanguageAwareTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

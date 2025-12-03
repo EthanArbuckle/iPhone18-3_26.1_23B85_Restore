@@ -1,18 +1,18 @@
 @interface _UIBarCustomizationChicletAnchorView
-+ (id)_jitterRotationAnimationWithAmount:(double)a3;
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3;
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3;
++ (id)_jitterRotationAnimationWithAmount:(double)amount;
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount;
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount;
 - (BOOL)isUserInteractionEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_UIBarCustomizationChicletAnchorView)init;
 - (id)description;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setChiclet:(id)a3;
-- (void)setContentPadding:(double)a3;
-- (void)setDebugUIEnabled:(BOOL)a3;
-- (void)setJiggling:(BOOL)a3;
-- (void)setState:(int64_t)a3;
+- (void)setChiclet:(id)chiclet;
+- (void)setContentPadding:(double)padding;
+- (void)setDebugUIEnabled:(BOOL)enabled;
+- (void)setJiggling:(BOOL)jiggling;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation _UIBarCustomizationChicletAnchorView
@@ -27,8 +27,8 @@
     v3 = [[UIView alloc] initWithFrame:0.0, 0.0, 4.0, 4.0];
     [(_UIBarCustomizationChicletAnchorView *)v2 setPositionAdaptorView:v3];
 
-    v4 = [(_UIBarCustomizationChicletAnchorView *)v2 positionAdaptorView];
-    [(UIView *)v2 addSubview:v4];
+    positionAdaptorView = [(_UIBarCustomizationChicletAnchorView *)v2 positionAdaptorView];
+    [(UIView *)v2 addSubview:positionAdaptorView];
 
     if (_UIInternalPreferencesRevisionOnce != -1)
     {
@@ -82,44 +82,44 @@
   [(UIView *)self bounds];
   v5 = v4 + v3 * 0.5;
   v8 = v7 + v6 * 0.5;
-  v9 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-  [v9 setCenter:{v5, v8}];
+  positionAdaptorView = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+  [positionAdaptorView setCenter:{v5, v8}];
 
-  v10 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-  [v10 bounds];
+  positionAdaptorView2 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+  [positionAdaptorView2 bounds];
   v13 = v12 + v11 * 0.5;
   v16 = v15 + v14 * 0.5;
-  v17 = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
-  [v17 setCenter:{v13, v16}];
+  chiclet = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
+  [chiclet setCenter:{v13, v16}];
 }
 
-- (void)setChiclet:(id)a3
+- (void)setChiclet:(id)chiclet
 {
-  v5 = a3;
+  chicletCopy = chiclet;
   chiclet = self->_chiclet;
-  v9 = v5;
-  if (chiclet != v5)
+  v9 = chicletCopy;
+  if (chiclet != chicletCopy)
   {
     [(_UIBarCustomizationChiclet *)chiclet setAnchorView:0];
-    objc_storeStrong(&self->_chiclet, a3);
+    objc_storeStrong(&self->_chiclet, chiclet);
     v7 = self->_chiclet;
     if (v7)
     {
       [(_UIBarCustomizationChiclet *)v7 setAnchorView:self];
-      v8 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-      [v8 addSubview:self->_chiclet];
+      positionAdaptorView = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+      [positionAdaptorView addSubview:self->_chiclet];
 
       [(UIView *)self sizeToFit];
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    [(UIView *)self setClipsToBounds:a3 == 1];
+    self->_state = state;
+    [(UIView *)self setClipsToBounds:state == 1];
   }
 }
 
@@ -135,11 +135,11 @@
   return [(UIView *)&v4 isUserInteractionEnabled];
 }
 
-- (void)setContentPadding:(double)a3
+- (void)setContentPadding:(double)padding
 {
-  if (self->_contentPadding != a3)
+  if (self->_contentPadding != padding)
   {
-    self->_contentPadding = a3;
+    self->_contentPadding = padding;
     [(UIView *)self sizeToFit];
     if (+[UIView _isInAnimationBlock])
     {
@@ -149,27 +149,27 @@
   }
 }
 
-- (void)setJiggling:(BOOL)a3
+- (void)setJiggling:(BOOL)jiggling
 {
-  v3 = a3;
-  v12 = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
-  if (([v12 fixed] & 1) == 0)
+  jigglingCopy = jiggling;
+  chiclet = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
+  if (([chiclet fixed] & 1) == 0)
   {
     jiggling = self->_jiggling;
 
-    if (jiggling == v3)
+    if (jiggling == jigglingCopy)
     {
       return;
     }
 
-    self->_jiggling = v3;
-    v6 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-    v12 = [v6 layer];
+    self->_jiggling = jigglingCopy;
+    positionAdaptorView = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+    chiclet = [positionAdaptorView layer];
 
     if (self->_jiggling)
     {
-      v7 = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
-      [v7 bounds];
+      chiclet2 = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
+      [chiclet2 bounds];
       v8 = 60.0 / CGRectGetWidth(v14);
 
       if (v8 > 1.0)
@@ -180,21 +180,21 @@
       v9 = [objc_opt_class() _jitterRotationAnimationWithStrength:v8];
       v10 = [objc_opt_class() _jitterXTranslationAnimationWithStrength:1.0];
       v11 = [objc_opt_class() _jitterYTranslationAnimationWithStrength:1.0];
-      [v12 addAnimation:v9 forKey:@"RotationJitterAnimation"];
-      [v12 addAnimation:v10 forKey:@"XTranslationJitterAnimation"];
-      [v12 addAnimation:v11 forKey:@"YTranslationJitterAnimation"];
+      [chiclet addAnimation:v9 forKey:@"RotationJitterAnimation"];
+      [chiclet addAnimation:v10 forKey:@"XTranslationJitterAnimation"];
+      [chiclet addAnimation:v11 forKey:@"YTranslationJitterAnimation"];
     }
 
     else
     {
-      [v12 removeAllAnimations];
+      [chiclet removeAllAnimations];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_UIBarCustomizationChicletAnchorView *)self chiclet:a3.width];
+  v4 = [(_UIBarCustomizationChicletAnchorView *)self chiclet:fits.width];
   [v4 bounds];
   Width = CGRectGetWidth(v11);
   [(_UIBarCustomizationChicletAnchorView *)self contentPadding];
@@ -207,19 +207,19 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(_UIBarCustomizationChicletAnchorView *)self isUserInteractionEnabled])
   {
-    v8 = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
-    v9 = v8;
-    if (v8 && ([v8 fixed] & 1) == 0)
+    chiclet = [(_UIBarCustomizationChicletAnchorView *)self chiclet];
+    v9 = chiclet;
+    if (chiclet && ([chiclet fixed] & 1) == 0)
     {
       [(UIView *)self convertPoint:v9 toView:x, y];
-      v10 = [v9 hitTest:v7 withEvent:?];
+      v10 = [v9 hitTest:eventCopy withEvent:?];
     }
 
     else
@@ -247,14 +247,14 @@
   v9 = v8;
   [(UIView *)self frame];
   v11 = [v3 stringWithFormat:@"(%g %g %g %g)", v5, v7, v9, v10];;
-  v12 = [(_UIBarCustomizationChicletAnchorView *)self state];
+  state = [(_UIBarCustomizationChicletAnchorView *)self state];
   v13 = @"Dragging";
-  if (v12 != 1)
+  if (state != 1)
   {
     v13 = 0;
   }
 
-  if (v12)
+  if (state)
   {
     v14 = v13;
   }
@@ -269,15 +269,15 @@
   return v15;
 }
 
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.x"];
   [v4 setDuration:0.134];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -294,15 +294,15 @@
   return v4;
 }
 
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.y"];
   [v4 setDuration:0.142];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -319,15 +319,15 @@
   return v4;
 }
 
-+ (id)_jitterRotationAnimationWithAmount:(double)a3
++ (id)_jitterRotationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation"];
   [v4 setDuration:0.128];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -344,41 +344,41 @@
   return v4;
 }
 
-- (void)setDebugUIEnabled:(BOOL)a3
+- (void)setDebugUIEnabled:(BOOL)enabled
 {
-  if (self->_debugUIEnabled != a3)
+  if (self->_debugUIEnabled != enabled)
   {
-    self->_debugUIEnabled = a3;
-    if (a3)
+    self->_debugUIEnabled = enabled;
+    if (enabled)
     {
-      v16 = [UIColor colorWithHue:arc4random_uniform(0x167u) / 359.0 saturation:0.6 brightness:0.9 alpha:1.0];
-      v5 = [(UIView *)self layer];
-      [v5 setBorderWidth:1.0];
+      positionAdaptorView3 = [UIColor colorWithHue:arc4random_uniform(0x167u) / 359.0 saturation:0.6 brightness:0.9 alpha:1.0];
+      layer = [(UIView *)self layer];
+      [layer setBorderWidth:1.0];
 
-      v6 = v16;
-      v7 = [v16 CGColor];
-      v8 = [(UIView *)self layer];
-      [v8 setBorderColor:v7];
+      v6 = positionAdaptorView3;
+      cGColor = [positionAdaptorView3 CGColor];
+      layer2 = [(UIView *)self layer];
+      [layer2 setBorderColor:cGColor];
 
-      v9 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-      v10 = [v9 layer];
-      [v10 setBorderWidth:1.0];
+      positionAdaptorView = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+      layer3 = [positionAdaptorView layer];
+      [layer3 setBorderWidth:1.0];
 
-      v11 = v16;
-      v12 = [v16 CGColor];
-      v13 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-      v14 = [v13 layer];
-      [v14 setBorderColor:v12];
+      v11 = positionAdaptorView3;
+      cGColor2 = [positionAdaptorView3 CGColor];
+      positionAdaptorView2 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+      layer4 = [positionAdaptorView2 layer];
+      [layer4 setBorderColor:cGColor2];
     }
 
     else
     {
-      v15 = [(UIView *)self layer];
-      [v15 setBorderWidth:0.0];
+      layer5 = [(UIView *)self layer];
+      [layer5 setBorderWidth:0.0];
 
-      v16 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
-      v13 = [v16 layer];
-      [v13 setBorderWidth:0.0];
+      positionAdaptorView3 = [(_UIBarCustomizationChicletAnchorView *)self positionAdaptorView];
+      positionAdaptorView2 = [positionAdaptorView3 layer];
+      [positionAdaptorView2 setBorderWidth:0.0];
     }
   }
 }

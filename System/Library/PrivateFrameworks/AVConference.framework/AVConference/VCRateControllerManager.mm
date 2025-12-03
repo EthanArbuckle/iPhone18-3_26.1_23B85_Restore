@@ -1,10 +1,10 @@
 @interface VCRateControllerManager
 + (id)sharedInstance;
 - (VCRateControllerManager)init;
-- (id)getRateControllerSharingGroupWithConnection:(id)a3 usePolicy:(unsigned int)a4;
-- (id)prepareCallIDKeyFromConnection:(id)a3;
-- (id)prepareEndPointKeyFromConnection:(id)a3;
-- (void)cleanupRateControllerSharingGroupWithConnection:(id)a3 usePolicy:(unsigned int)a4;
+- (id)getRateControllerSharingGroupWithConnection:(id)connection usePolicy:(unsigned int)policy;
+- (id)prepareCallIDKeyFromConnection:(id)connection;
+- (id)prepareEndPointKeyFromConnection:(id)connection;
+- (void)cleanupRateControllerSharingGroupWithConnection:(id)connection usePolicy:(unsigned int)policy;
 - (void)dealloc;
 - (void)init;
 @end
@@ -72,15 +72,15 @@ VCRateControllerManager *__41__VCRateControllerManager_sharedInstance__block_inv
   [(VCObject *)&v3 dealloc];
 }
 
-- (id)prepareEndPointKeyFromConnection:(id)a3
+- (id)prepareEndPointKeyFromConnection:(id)connection
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!connection)
   {
     return 0;
   }
 
-  if (![a3 connectionResult])
+  if (![connection connectionResult])
   {
     [VCRateControllerManager prepareEndPointKeyFromConnection:];
     return v7;
@@ -114,22 +114,22 @@ VCRateControllerManager *__41__VCRateControllerManager_sharedInstance__block_inv
   return result;
 }
 
-- (id)prepareCallIDKeyFromConnection:(id)a3
+- (id)prepareCallIDKeyFromConnection:(id)connection
 {
-  if (!a3)
+  if (!connection)
   {
     [VCRateControllerManager prepareCallIDKeyFromConnection:];
     return v5;
   }
 
-  v3 = [a3 connectionResult];
-  if (!v3)
+  connectionResult = [connection connectionResult];
+  if (!connectionResult)
   {
     [VCRateControllerManager prepareCallIDKeyFromConnection:];
     return v5;
   }
 
-  result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", *v3];
+  result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", *connectionResult];
   if (!result)
   {
     [VCRateControllerManager prepareCallIDKeyFromConnection:];
@@ -139,14 +139,14 @@ VCRateControllerManager *__41__VCRateControllerManager_sharedInstance__block_inv
   return result;
 }
 
-- (void)cleanupRateControllerSharingGroupWithConnection:(id)a3 usePolicy:(unsigned int)a4
+- (void)cleanupRateControllerSharingGroupWithConnection:(id)connection usePolicy:(unsigned int)policy
 {
-  if (!a3)
+  if (!connection)
   {
     return;
   }
 
-  if (a4 == 2)
+  if (policy == 2)
   {
     objc_opt_class();
     if (OUTLINED_FUNCTION_41())
@@ -230,7 +230,7 @@ LABEL_47:
     return;
   }
 
-  if (a4 != 1)
+  if (policy != 1)
   {
     return;
   }
@@ -319,14 +319,14 @@ LABEL_46:
   }
 }
 
-- (id)getRateControllerSharingGroupWithConnection:(id)a3 usePolicy:(unsigned int)a4
+- (id)getRateControllerSharingGroupWithConnection:(id)connection usePolicy:(unsigned int)policy
 {
-  v6 = *&a4;
+  v6 = *&policy;
   v89 = *MEMORY[0x1E69E9840];
-  v9 = 184;
+  connectionCopy2 = 184;
   pthread_mutex_lock(&self->_sharingGroupMutex);
   v10 = self->_defaultSharingGroup;
-  if (a3 && v6)
+  if (connection && v6)
   {
     if (v6 != 2)
     {
@@ -338,7 +338,7 @@ LABEL_46:
       objc_opt_class();
       if (OUTLINED_FUNCTION_41())
       {
-        v11 = [(VCRateControllerManager *)self prepareEndPointKeyFromConnection:a3];
+        v11 = [(VCRateControllerManager *)self prepareEndPointKeyFromConnection:connection];
         if (v11)
         {
           v12 = OUTLINED_FUNCTION_39_5(v11);
@@ -506,8 +506,8 @@ LABEL_93:
         OUTLINED_FUNCTION_16_0();
         _os_log_error_impl(v54, v55, v56, v57, v58, v59);
 LABEL_109:
-        v9 = a3;
-        a3 = v6;
+        connectionCopy2 = connection;
+        connection = v6;
         LODWORD(v6) = v53;
         goto LABEL_57;
       }
@@ -602,7 +602,7 @@ LABEL_108:
       goto LABEL_109;
     }
 
-    v15 = [(VCRateControllerManager *)self prepareCallIDKeyFromConnection:a3];
+    v15 = [(VCRateControllerManager *)self prepareCallIDKeyFromConnection:connection];
     if (!v15)
     {
       v53 = v6;
@@ -698,8 +698,8 @@ LABEL_35:
       _os_log_impl(v19, v20, v21, v22, v23, v24);
 LABEL_36:
       v10 = [*(&self->super.super.isa + v5) objectForKeyedSubscript:v4];
-      v9 = a3;
-      a3 = v6;
+      connectionCopy2 = connection;
+      connection = v6;
       LODWORD(v6) = v72;
       goto LABEL_57;
     }
@@ -802,7 +802,7 @@ LABEL_56:
   }
 
 LABEL_57:
-  pthread_mutex_unlock((self + v9));
+  pthread_mutex_unlock((self + connectionCopy2));
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -818,9 +818,9 @@ LABEL_57:
         v77 = 2048;
         v78 = v10;
         v79 = 2048;
-        v80 = v41;
+        selfCopy = v41;
         v81 = 2048;
-        v82 = a3;
+        connectionCopy3 = connection;
         v83 = v42;
         LODWORD(v84) = v6;
         v43 = &dword_1DB56E000;
@@ -859,13 +859,13 @@ LABEL_67:
         v77 = 2112;
         v78 = v38;
         v79 = 2048;
-        v80 = self;
+        selfCopy = self;
         v81 = 2048;
-        v82 = v10;
+        connectionCopy3 = v10;
         v83 = 2048;
         v84 = v50;
         v85 = 2048;
-        v86 = a3;
+        connectionCopy4 = connection;
         v87 = v51;
         v88 = v6;
         OUTLINED_FUNCTION_20_1();
@@ -880,7 +880,7 @@ LABEL_67:
 
 - (void)init
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

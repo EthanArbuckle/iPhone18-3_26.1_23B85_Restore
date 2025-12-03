@@ -1,64 +1,64 @@
 @interface IDSUserAccountSynchronizer
-- (BOOL)_allowHomeNumberForUser:(id)a3 simCarrierIdentifiers:(id)a4 userCarrierIdentifiers:(id)a5;
-- (IDSUserAccountSynchronizer)initWithUserStore:(id)a3 accountController:(id)a4 serviceController:(id)a5 migrationTracker:(id)a6 restrictions:(id)a7 queue:(id)a8;
-- (IDSUserAccountSynchronizer)initWithUserStore:(id)a3 accountController:(id)a4 serviceController:(id)a5 migrationTracker:(id)a6 userDefaults:(id)a7 restrictions:(id)a8 ctAdapter:(id)a9 queue:(id)a10 accountBuilder:(id)a11;
+- (BOOL)_allowHomeNumberForUser:(id)user simCarrierIdentifiers:(id)identifiers userCarrierIdentifiers:(id)carrierIdentifiers;
+- (IDSUserAccountSynchronizer)initWithUserStore:(id)store accountController:(id)controller serviceController:(id)serviceController migrationTracker:(id)tracker restrictions:(id)restrictions queue:(id)queue;
+- (IDSUserAccountSynchronizer)initWithUserStore:(id)store accountController:(id)controller serviceController:(id)serviceController migrationTracker:(id)tracker userDefaults:(id)defaults restrictions:(id)restrictions ctAdapter:(id)adapter queue:(id)self0 accountBuilder:(id)self1;
 - (NSMutableDictionary)cachedDisabledByService;
-- (id)_accountsForUser:(id)a3;
-- (void)_restrictionsChangedNotification:(id)a3;
+- (id)_accountsForUser:(id)user;
+- (void)_restrictionsChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)setCachedDisabledByService:(id)a3;
+- (void)setCachedDisabledByService:(id)service;
 - (void)synchronize;
-- (void)userStore:(id)a3 didRemoveAuthenticationCertificateForUser:(id)a4;
-- (void)userStore:(id)a3 didUpdateUser:(id)a4;
+- (void)userStore:(id)store didRemoveAuthenticationCertificateForUser:(id)user;
+- (void)userStore:(id)store didUpdateUser:(id)user;
 @end
 
 @implementation IDSUserAccountSynchronizer
 
-- (IDSUserAccountSynchronizer)initWithUserStore:(id)a3 accountController:(id)a4 serviceController:(id)a5 migrationTracker:(id)a6 restrictions:(id)a7 queue:(id)a8
+- (IDSUserAccountSynchronizer)initWithUserStore:(id)store accountController:(id)controller serviceController:(id)serviceController migrationTracker:(id)tracker restrictions:(id)restrictions queue:(id)queue
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  queueCopy = queue;
+  restrictionsCopy = restrictions;
+  trackerCopy = tracker;
+  serviceControllerCopy = serviceController;
+  controllerCopy = controller;
+  storeCopy = store;
   v20 = +[IMUserDefaults sharedDefaults];
   v21 = +[IDSCTAdapter sharedInstance];
-  v22 = [(IDSUserAccountSynchronizer *)self initWithUserStore:v19 accountController:v18 serviceController:v17 migrationTracker:v16 userDefaults:v20 restrictions:v15 ctAdapter:v21 queue:v14 accountBuilder:&stru_100BE4110];
+  v22 = [(IDSUserAccountSynchronizer *)self initWithUserStore:storeCopy accountController:controllerCopy serviceController:serviceControllerCopy migrationTracker:trackerCopy userDefaults:v20 restrictions:restrictionsCopy ctAdapter:v21 queue:queueCopy accountBuilder:&stru_100BE4110];
 
   return v22;
 }
 
-- (IDSUserAccountSynchronizer)initWithUserStore:(id)a3 accountController:(id)a4 serviceController:(id)a5 migrationTracker:(id)a6 userDefaults:(id)a7 restrictions:(id)a8 ctAdapter:(id)a9 queue:(id)a10 accountBuilder:(id)a11
+- (IDSUserAccountSynchronizer)initWithUserStore:(id)store accountController:(id)controller serviceController:(id)serviceController migrationTracker:(id)tracker userDefaults:(id)defaults restrictions:(id)restrictions ctAdapter:(id)adapter queue:(id)self0 accountBuilder:(id)self1
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v28 = a7;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v18 = a11;
+  storeCopy = store;
+  controllerCopy = controller;
+  serviceControllerCopy = serviceController;
+  trackerCopy = tracker;
+  defaultsCopy = defaults;
+  restrictionsCopy = restrictions;
+  adapterCopy = adapter;
+  queueCopy = queue;
+  builderCopy = builder;
   v33.receiver = self;
   v33.super_class = IDSUserAccountSynchronizer;
   v19 = [(IDSUserAccountSynchronizer *)&v33 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_accountController, a4);
-    objc_storeStrong(&v20->_serviceController, a5);
-    v21 = objc_retainBlock(v18);
+    objc_storeStrong(&v19->_accountController, controller);
+    objc_storeStrong(&v20->_serviceController, serviceController);
+    v21 = objc_retainBlock(builderCopy);
     accountBuilder = v20->_accountBuilder;
     v20->_accountBuilder = v21;
 
-    objc_storeStrong(&v20->_restrictions, a8);
-    objc_storeStrong(&v20->_migrationTracker, a6);
-    objc_storeStrong(&v20->_userDefaults, a7);
-    objc_storeStrong(&v20->_queue, a10);
-    objc_storeStrong(&v20->_userStore, a3);
-    objc_storeStrong(&v20->_ctAdapter, a9);
-    [(IDSUserStore *)v20->_userStore addActionListener:v20, v25, v26, v27, v28, v29, v30, v31, v32];
+    objc_storeStrong(&v20->_restrictions, restrictions);
+    objc_storeStrong(&v20->_migrationTracker, tracker);
+    objc_storeStrong(&v20->_userDefaults, defaults);
+    objc_storeStrong(&v20->_queue, queue);
+    objc_storeStrong(&v20->_userStore, store);
+    objc_storeStrong(&v20->_ctAdapter, adapter);
+    [(IDSUserStore *)v20->_userStore addActionListener:v20, queueCopy, adapterCopy, restrictionsCopy, defaultsCopy, trackerCopy, serviceControllerCopy, controllerCopy, storeCopy];
     v23 = +[NSNotificationCenter defaultCenter];
     [v23 addObserver:v20 selector:"_restrictionsChangedNotification:" name:@"__kIDSRestrictionsChangedNotification" object:0];
   }
@@ -74,14 +74,14 @@
   [(IDSUserAccountSynchronizer *)&v3 dealloc];
 }
 
-- (void)userStore:(id)a3 didRemoveAuthenticationCertificateForUser:(id)a4
+- (void)userStore:(id)store didRemoveAuthenticationCertificateForUser:(id)user
 {
-  v5 = a4;
+  userCopy = user;
   v6 = +[IMRGLog registration];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = userCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Did remove auth cert -- reidentifying {user: %@}", buf, 0xCu);
   }
 
@@ -89,7 +89,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(IDSUserAccountSynchronizer *)self _accountsForUser:v5, 0];
+  v7 = [(IDSUserAccountSynchronizer *)self _accountsForUser:userCopy, 0];
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -117,12 +117,12 @@
   }
 }
 
-- (void)userStore:(id)a3 didUpdateUser:(id)a4
+- (void)userStore:(id)store didUpdateUser:(id)user
 {
-  v5 = a4;
-  if ([v5 realm] == 2)
+  userCopy = user;
+  if ([userCopy realm] == 2)
   {
-    v6 = v5;
+    v6 = userCopy;
     if ([v6 hasBeenProvisioned])
     {
       v18 = 0u;
@@ -146,8 +146,8 @@
             }
 
             v12 = *(*(&v16 + 1) + 8 * v11);
-            v13 = [v6 expirationDate];
-            [v12 setExpirationDate:v13];
+            expirationDate = [v6 expirationDate];
+            [v12 setExpirationDate:expirationDate];
 
             v11 = v11 + 1;
           }
@@ -177,7 +177,7 @@
   }
 }
 
-- (void)_restrictionsChangedNotification:(id)a3
+- (void)_restrictionsChangedNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -188,11 +188,11 @@
   dispatch_async(queue, block);
 }
 
-- (id)_accountsForUser:(id)a3
+- (id)_accountsForUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  if ([v4 realm] && objc_msgSend(v4, "realm") != 2)
+  userCopy = user;
+  uniqueIdentifier = [userCopy uniqueIdentifier];
+  if ([userCopy realm] && objc_msgSend(userCopy, "realm") != 2)
   {
     v7 = &__NSArray0__struct;
   }
@@ -204,7 +204,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_1006A6054;
     v9[3] = &unk_100BDCF30;
-    v10 = v5;
+    v10 = uniqueIdentifier;
     v7 = [v6 __imArrayByFilteringWithBlock:v9];
   }
 
@@ -213,13 +213,13 @@
 
 - (NSMutableDictionary)cachedDisabledByService
 {
-  v3 = [(IDSUserAccountSynchronizer *)self userDefaults];
-  v4 = [v3 copyKeyListForAppID:@"com.apple.identityservices.serviceDisablement"];
+  userDefaults = [(IDSUserAccountSynchronizer *)self userDefaults];
+  v4 = [userDefaults copyKeyListForAppID:@"com.apple.identityservices.serviceDisablement"];
 
   if (v4)
   {
-    v5 = [(IDSUserAccountSynchronizer *)self userDefaults];
-    v6 = [v5 copyMultipleForCurrentKeys:v4 appID:@"com.apple.identityservices.serviceDisablement"];
+    userDefaults2 = [(IDSUserAccountSynchronizer *)self userDefaults];
+    v6 = [userDefaults2 copyMultipleForCurrentKeys:v4 appID:@"com.apple.identityservices.serviceDisablement"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -243,14 +243,14 @@
   return v8;
 }
 
-- (void)setCachedDisabledByService:(id)a3
+- (void)setCachedDisabledByService:(id)service
 {
-  v4 = a3;
-  v5 = [(IDSUserAccountSynchronizer *)self userDefaults];
-  [v5 setMultiple:v4 remove:0 appID:@"com.apple.identityservices.serviceDisablement"];
+  serviceCopy = service;
+  userDefaults = [(IDSUserAccountSynchronizer *)self userDefaults];
+  [userDefaults setMultiple:serviceCopy remove:0 appID:@"com.apple.identityservices.serviceDisablement"];
 
-  v6 = [(IDSUserAccountSynchronizer *)self userDefaults];
-  [v6 synchronizeAppID:@"com.apple.identityservices.serviceDisablement"];
+  userDefaults2 = [(IDSUserAccountSynchronizer *)self userDefaults];
+  [userDefaults2 synchronizeAppID:@"com.apple.identityservices.serviceDisablement"];
 }
 
 - (void)synchronize
@@ -278,22 +278,22 @@ LABEL_4:
 
   if ([(IDSDataMigrationTracker *)self->_migrationTracker hasPerformedMigration])
   {
-    v179 = self;
+    selfCopy = self;
     v7 = +[FTDeviceSupport sharedInstance];
-    v8 = [v7 registrationSupported];
+    registrationSupported = [v7 registrationSupported];
 
-    if (v8)
+    if (registrationSupported)
     {
       [(IDSUserAccountSynchronizer *)self setMidSynchronize:1];
-      v178 = [(IDSDAccountController *)self->_accountController isiCloudSignedIn];
-      if (v178)
+      isiCloudSignedIn = [(IDSDAccountController *)self->_accountController isiCloudSignedIn];
+      if (isiCloudSignedIn)
       {
-        v187 = [(IDSDAccountController *)self->_accountController isiCloudHSA2];
+        isiCloudHSA2 = [(IDSDAccountController *)self->_accountController isiCloudHSA2];
       }
 
       else
       {
-        v187 = 0;
+        isiCloudHSA2 = 0;
       }
 
       v19 = [(IDSUserStore *)self->_userStore usersWithRealms:&off_100C3DDA8];
@@ -309,9 +309,9 @@ LABEL_4:
       v239 = v168;
       v176 = v19;
       v171 = [(__CFString *)v19 __imArrayByApplyingBlock:v237];
-      v23 = [(IDSUserAccountSynchronizer *)self ctAdapter];
+      ctAdapter = [(IDSUserAccountSynchronizer *)self ctAdapter];
       v236 = 0;
-      v24 = [v23 currentSIMsWithError:&v236];
+      v24 = [ctAdapter currentSIMsWithError:&v236];
       v166 = v236;
       v25 = [v24 __imArrayByApplyingBlock:&stru_100BE4178];
       v26 = [NSSet setWithArray:v25];
@@ -330,8 +330,8 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Synchronizing users to accounts {users: %@}", buf, 0xCu);
       }
 
-      p_isa = &v179->super.isa;
-      v30 = [(IDSDAccountController *)v179->_accountController accountsWithType:0];
+      p_isa = &selfCopy->super.isa;
+      v30 = [(IDSDAccountController *)selfCopy->_accountController accountsWithType:0];
       v31 = [v30 copy];
 
       v234 = 0u;
@@ -345,7 +345,7 @@ LABEL_4:
       if (v191)
       {
         v189 = *v233;
-        if (v187)
+        if (isiCloudHSA2)
         {
           v33 = @"YES";
         }
@@ -367,27 +367,27 @@ LABEL_4:
 
             v195 = i;
             v35 = *(*(&v232 + 1) + 8 * i);
-            v36 = [(__CFString *)v35 registration];
-            if (([(__CFString *)v35 isAdHocAccount]& 1) != 0 || (v37 = [(__CFString *)v35 isRegistered], v38 = v36, (v37 & 1) == 0))
+            registration = [(__CFString *)v35 registration];
+            if (([(__CFString *)v35 isAdHocAccount]& 1) != 0 || (v37 = [(__CFString *)v35 isRegistered], v38 = registration, (v37 & 1) == 0))
             {
               v38 = v35;
             }
 
-            v193 = v36;
-            v201 = [v38 userUniqueIdentifier];
+            v193 = registration;
+            userUniqueIdentifier = [v38 userUniqueIdentifier];
 
-            v39 = [(__CFString *)v35 service];
+            service = [(__CFString *)v35 service];
             v231[0] = _NSConcreteStackBlock;
             v231[1] = 3221225472;
             v231[2] = sub_1006A7EF8;
             v231[3] = &unk_100BDFA90;
             v231[4] = v35;
             v40 = [(__CFString *)v32 __imArrayByFilteringWithBlock:v231];
-            v41 = [v40 firstObject];
+            firstObject = [v40 firstObject];
 
-            if (v41)
+            if (firstObject)
             {
-              v199 = [p_isa[2] propertiesForUser:v41];
+              v199 = [p_isa[2] propertiesForUser:firstObject];
             }
 
             else
@@ -395,17 +395,17 @@ LABEL_4:
               v199 = 0;
             }
 
-            v42 = [(__CFString *)v35 accountType];
-            v197 = v41;
+            accountType = [(__CFString *)v35 accountType];
+            v197 = firstObject;
             if ([p_isa[7] shouldDisableAccount:v35])
             {
-              v43 = v39;
+              v43 = service;
               [p_isa[3] forceRemoveAccount:v35];
               v44 = +[IMRGLog registration];
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v246 = v201;
+                v246 = userUniqueIdentifier;
                 v247 = 2112;
                 v248 = v35;
                 v45 = v44;
@@ -422,9 +422,9 @@ LABEL_112:
               goto LABEL_113;
             }
 
-            if (!v42 && ![v39 wantsPhoneNumberAccount] || ((v178 | objc_msgSend(v39, "iCloudBasedService") ^ 1) & 1) == 0)
+            if (!accountType && ![service wantsPhoneNumberAccount] || ((isiCloudSignedIn | objc_msgSend(service, "iCloudBasedService") ^ 1) & 1) == 0)
             {
-              v43 = v39;
+              v43 = service;
               [p_isa[3] forceRemoveAccount:v35];
               v44 = +[IMRGLog registration];
               if (!os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -440,9 +440,9 @@ LABEL_112:
               goto LABEL_56;
             }
 
-            if (-[__CFString isTemporary](v35, "isTemporary") && !-[__CFString accountType](v35, "accountType") && (!v187 || ([p_isa _allowHomeNumberForUser:v41 simCarrierIdentifiers:v180 userCarrierIdentifiers:v185] & 1) == 0))
+            if (-[__CFString isTemporary](v35, "isTemporary") && !-[__CFString accountType](v35, "accountType") && (!isiCloudHSA2 || ([p_isa _allowHomeNumberForUser:firstObject simCarrierIdentifiers:v180 userCarrierIdentifiers:v185] & 1) == 0))
             {
-              v43 = v39;
+              v43 = service;
               [p_isa[3] forceRemoveAccount:v35];
               v44 = +[IMRGLog registration];
               if (!os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -468,13 +468,13 @@ LABEL_112:
               goto LABEL_112;
             }
 
-            if (v41 && v199 && [(__CFString *)v199 disableRegistration])
+            if (firstObject && v199 && [(__CFString *)v199 disableRegistration])
             {
-              v43 = v39;
+              v43 = service;
               v48 = [NSNumber numberWithBool:[(__CFString *)v35 isUserDisabled]];
-              v49 = [(__CFString *)v35 service];
-              v50 = [v49 identifier];
-              [v186 setObject:v48 forKeyedSubscript:v50];
+              service2 = [(__CFString *)v35 service];
+              identifier = [service2 identifier];
+              [v186 setObject:v48 forKeyedSubscript:identifier];
 
               [p_isa[3] forceRemoveAccount:v35];
               v44 = +[IMRGLog registration];
@@ -497,10 +497,10 @@ LABEL_56:
               goto LABEL_111;
             }
 
-            v182 = v39;
-            if (v201 || ![v171 count])
+            v182 = service;
+            if (userUniqueIdentifier || ![v171 count])
             {
-              if ([v171 containsObject:v201])
+              if ([v171 containsObject:userUniqueIdentifier])
               {
                 v229 = 0u;
                 v230 = 0u;
@@ -525,32 +525,32 @@ LABEL_56:
                       v57 = *(*(&v227 + 1) + 8 * j);
                       if (![v57 realm])
                       {
-                        v58 = [v57 uniqueIdentifier];
-                        v59 = [(__CFString *)v35 userUniqueIdentifier];
-                        v60 = [v58 isEqualToString:v59];
+                        uniqueIdentifier = [v57 uniqueIdentifier];
+                        userUniqueIdentifier2 = [(__CFString *)v35 userUniqueIdentifier];
+                        v60 = [uniqueIdentifier isEqualToString:userUniqueIdentifier2];
 
                         if (v60)
                         {
                           v61 = v57;
-                          v62 = [(__CFString *)v35 loginID];
-                          if (v62)
+                          loginID = [(__CFString *)v35 loginID];
+                          if (loginID)
                           {
-                            v63 = v62;
-                            v64 = [(__CFString *)v35 loginID];
-                            v65 = [(__CFString *)v61 differsFromPhoneNumber:v64];
+                            v63 = loginID;
+                            loginID2 = [(__CFString *)v35 loginID];
+                            v65 = [(__CFString *)v61 differsFromPhoneNumber:loginID2];
 
                             if (v65)
                             {
                               v66 = [NSNumber numberWithBool:[(__CFString *)v35 isUserDisabled]];
-                              v67 = [(__CFString *)v35 service];
-                              v68 = [v67 identifier];
-                              [v186 setObject:v66 forKeyedSubscript:v68];
+                              service3 = [(__CFString *)v35 service];
+                              identifier2 = [service3 identifier];
+                              [v186 setObject:v66 forKeyedSubscript:identifier2];
 
                               v69 = +[IMRGLog registration];
                               if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
                               {
                                 *buf = 138412802;
-                                v246 = v201;
+                                v246 = userUniqueIdentifier;
                                 v247 = 2112;
                                 v248 = v61;
                                 v249 = 2112;
@@ -569,7 +569,7 @@ LABEL_56:
                   }
 
                   while (v53);
-                  p_isa = &v179->super.isa;
+                  p_isa = &selfCopy->super.isa;
                 }
 
                 else
@@ -578,29 +578,29 @@ LABEL_86:
                   v54 = 0;
                 }
 
-                v78 = v201;
+                v78 = userUniqueIdentifier;
                 goto LABEL_99;
               }
 
               if (![(__CFString *)v35 accountType])
               {
                 v70 = p_isa[3];
-                v71 = [(__CFString *)v35 service];
-                v72 = [v70 appleIDAccountOnService:v71];
+                service4 = [(__CFString *)v35 service];
+                v72 = [v70 appleIDAccountOnService:service4];
 
-                v73 = [(__CFString *)v35 vettedAliases];
-                v74 = [v73 firstObject];
+                vettedAliases = [(__CFString *)v35 vettedAliases];
+                firstObject2 = [vettedAliases firstObject];
 
-                if (v72 && v74)
+                if (v72 && firstObject2)
                 {
-                  [v72 markAsWasSelectedAlias:v74];
+                  [v72 markAsWasSelectedAlias:firstObject2];
                 }
               }
 
               v75 = [NSNumber numberWithBool:[(__CFString *)v35 isUserDisabled]];
-              v76 = [(__CFString *)v35 service];
-              v77 = [v76 identifier];
-              [v186 setObject:v75 forKeyedSubscript:v77];
+              service5 = [(__CFString *)v35 service];
+              identifier3 = [service5 identifier];
+              [v186 setObject:v75 forKeyedSubscript:identifier3];
 
               [p_isa[3] forceRemoveAccount:v35];
               v51 = +[IMRGLog registration];
@@ -610,8 +610,8 @@ LABEL_86:
               }
 
               *buf = 138412546;
-              v78 = v201;
-              v246 = v201;
+              v78 = userUniqueIdentifier;
+              v246 = userUniqueIdentifier;
               v247 = 2112;
               v248 = v35;
               v79 = v51;
@@ -620,16 +620,16 @@ LABEL_86:
 
             else
             {
-              v81 = [(__CFString *)v35 registration];
-              v82 = [v81 registrationType];
+              registration2 = [(__CFString *)v35 registration];
+              registrationType = [registration2 registrationType];
 
               v83 = v168;
-              if (v82 == 2 || (-[__CFString registration](v35, "registration"), v84 = objc_claimAutoreleasedReturnValue(), v85 = [v84 registrationType], v84, v83 = v167, !v85))
+              if (registrationType == 2 || (-[__CFString registration](v35, "registration"), v84 = objc_claimAutoreleasedReturnValue(), v85 = [v84 registrationType], v84, v83 = v167, !v85))
               {
-                v88 = [v83 firstObject];
-                v89 = [v88 uniqueIdentifier];
+                firstObject3 = [v83 firstObject];
+                uniqueIdentifier2 = [firstObject3 uniqueIdentifier];
 
-                v78 = v89;
+                v78 = uniqueIdentifier2;
               }
 
               else
@@ -639,7 +639,7 @@ LABEL_86:
 
               [(__CFString *)v35 setUserUniqueIdentifier:v78];
               v51 = +[IMRGLog registration];
-              p_isa = &v179->super.isa;
+              p_isa = &selfCopy->super.isa;
               if (!os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
               {
                 goto LABEL_98;
@@ -660,13 +660,13 @@ LABEL_99:
 
             if (v78)
             {
-              v201 = v78;
-              v90 = [(__CFString *)v35 service];
-              v91 = [v90 identifier];
+              userUniqueIdentifier = v78;
+              service6 = [(__CFString *)v35 service];
+              identifier4 = [service6 identifier];
 
               v43 = v182;
               v92 = v197;
-              if (!v91)
+              if (!identifier4)
               {
                 v32 = v176;
                 v26 = v180;
@@ -674,9 +674,9 @@ LABEL_99:
                 goto LABEL_114;
               }
 
-              v93 = [(__CFString *)v35 service];
-              v94 = [v93 identifier];
-              v95 = [v173 objectForKeyedSubscript:v94];
+              service7 = [(__CFString *)v35 service];
+              identifier5 = [service7 identifier];
+              v95 = [v173 objectForKeyedSubscript:identifier5];
               v96 = v95;
               if (v95)
               {
@@ -688,14 +688,14 @@ LABEL_99:
                 v44 = +[NSSet set];
               }
 
-              if (([v44 containsObject:v201]| v54))
+              if (([v44 containsObject:userUniqueIdentifier]| v54))
               {
                 v98 = +[IMRGLog registration];
                 v32 = v176;
                 if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v246 = v201;
+                  v246 = userUniqueIdentifier;
                   v247 = 2112;
                   v248 = v35;
                   _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, "Removing extra account for user without matching user {uniqueIdentifier: %@, account: %@}", buf, 0x16u);
@@ -706,10 +706,10 @@ LABEL_99:
 
               else
               {
-                v99 = [v44 setByAddingObject:v201];
-                v100 = [(__CFString *)v35 service];
-                v101 = [v100 identifier];
-                [v173 setObject:v99 forKeyedSubscript:v101];
+                v99 = [v44 setByAddingObject:userUniqueIdentifier];
+                service8 = [(__CFString *)v35 service];
+                identifier6 = [service8 identifier];
+                [v173 setObject:v99 forKeyedSubscript:identifier6];
 
                 v32 = v176;
               }
@@ -717,7 +717,7 @@ LABEL_99:
               goto LABEL_111;
             }
 
-            v201 = 0;
+            userUniqueIdentifier = 0;
             v32 = v176;
             v26 = v180;
             v97 = v195;
@@ -765,16 +765,16 @@ LABEL_114:
       v214 = 0u;
       v211 = 0u;
       v212 = 0u;
-      v106 = v179;
-      v107 = [(IDSDServiceController *)v179->_serviceController allPrimaryServices];
-      v108 = [v107 countByEnumeratingWithState:&v211 objects:v243 count:16];
+      v106 = selfCopy;
+      allPrimaryServices = [(IDSDServiceController *)selfCopy->_serviceController allPrimaryServices];
+      v108 = [allPrimaryServices countByEnumeratingWithState:&v211 objects:v243 count:16];
       v109 = v176;
       if (v108)
       {
         v110 = v108;
         v111 = *v212;
         v112 = @"YES";
-        if (v187)
+        if (isiCloudHSA2)
         {
           v113 = @"YES";
         }
@@ -786,7 +786,7 @@ LABEL_114:
 
         v183 = v113;
         v169 = *v212;
-        v170 = v107;
+        v170 = allPrimaryServices;
         do
         {
           v114 = 0;
@@ -795,15 +795,15 @@ LABEL_114:
           {
             if (*v212 != v111)
             {
-              objc_enumerationMutation(v107);
+              objc_enumerationMutation(allPrimaryServices);
             }
 
             v115 = *(*(&v211 + 1) + 8 * v114);
-            if ([(__CFString *)v115 wantsPhoneNumberAccount]&& ![(IDSRestrictions *)v106->_restrictions shouldDisableService:v115]&& (v178 | [(__CFString *)v115 iCloudBasedService]^ 1) == 1)
+            if ([(__CFString *)v115 wantsPhoneNumberAccount]&& ![(IDSRestrictions *)v106->_restrictions shouldDisableService:v115]&& (isiCloudSignedIn | [(__CFString *)v115 iCloudBasedService]^ 1) == 1)
             {
               v175 = v114;
-              v116 = [(__CFString *)v115 identifier];
-              v117 = [v173 objectForKeyedSubscript:v116];
+              identifier7 = [(__CFString *)v115 identifier];
+              v117 = [v173 objectForKeyedSubscript:identifier7];
 
               v209 = 0u;
               v210 = 0u;
@@ -834,12 +834,12 @@ LABEL_114:
 
                   v200 = v121;
                   v122 = *(*(&v207 + 1) + 8 * v121);
-                  v202 = [v122 uniqueIdentifier];
+                  uniqueIdentifier3 = [v122 uniqueIdentifier];
                   if (([v120 containsObject:?] & 1) == 0 && (objc_msgSend(v122, "realm") && objc_msgSend(v122, "realm") != 2 || -[__CFString wantsPhoneNumberAccount](v119, "wantsPhoneNumberAccount")))
                   {
                     if (!-[__CFString disabledOnTinkerWatch](v119, "disabledOnTinkerWatch") || ([p_cache + 273 sharedInstance], v123 = objc_claimAutoreleasedReturnValue(), v124 = objc_msgSend(v123, "isCurrentDeviceTinkerConfiguredWatch"), v123, v119 = v192, (v124 & 1) == 0))
                     {
-                      if ([v122 realm] == 2 && (!v187 || !-[IDSUserAccountSynchronizer _allowHomeNumberForUser:simCarrierIdentifiers:userCarrierIdentifiers:](v106, "_allowHomeNumberForUser:simCarrierIdentifiers:userCarrierIdentifiers:", v122, v26, v185)))
+                      if ([v122 realm] == 2 && (!isiCloudHSA2 || !-[IDSUserAccountSynchronizer _allowHomeNumberForUser:simCarrierIdentifiers:userCarrierIdentifiers:](v106, "_allowHomeNumberForUser:simCarrierIdentifiers:userCarrierIdentifiers:", v122, v26, v185)))
                       {
                         v125 = +[IMRGLog registration];
                         if (os_log_type_enabled(v125, OS_LOG_TYPE_DEFAULT))
@@ -873,63 +873,63 @@ LABEL_183:
                       if (os_log_type_enabled(v126, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 138412546;
-                        v246 = v202;
+                        v246 = uniqueIdentifier3;
                         v247 = 2112;
                         v248 = v192;
                         _os_log_impl(&_mh_execute_header, v126, OS_LOG_TYPE_DEFAULT, "Creating missing accounts for user {uniqueIdentifier: %@, service: %@}", buf, 0x16u);
                       }
 
-                      v127 = [(__CFString *)v192 identifier];
-                      v128 = [v186 objectForKeyedSubscript:v127];
+                      identifier8 = [(__CFString *)v192 identifier];
+                      v128 = [v186 objectForKeyedSubscript:identifier8];
 
                       v188 = v128;
                       v190 = v125;
                       if (v128)
                       {
-                        v129 = [v128 BOOLValue];
-                        v130 = v129;
+                        bOOLValue = [v128 BOOLValue];
+                        isUserDisabled2 = bOOLValue;
                         v120 = v184;
 LABEL_174:
                         v151 = (*(v106->_accountBuilder + 2))();
-                        [(__CFString *)v151 setUserUniqueIdentifier:v202];
+                        [(__CFString *)v151 setUserUniqueIdentifier:uniqueIdentifier3];
                         if ([v122 realm] == 2)
                         {
                           [(__CFString *)v151 setIsTemporary:1];
-                          v152 = [v122 unprefixedIdentifier];
-                          [(__CFString *)v151 setLoginID:v152];
+                          unprefixedIdentifier = [v122 unprefixedIdentifier];
+                          [(__CFString *)v151 setLoginID:unprefixedIdentifier];
 
                           if ([v122 hasBeenProvisioned])
                           {
-                            v153 = [v122 expirationDate];
-                            [(__CFString *)v151 setExpirationDate:v153];
+                            expirationDate = [v122 expirationDate];
+                            [(__CFString *)v151 setExpirationDate:expirationDate];
                           }
                         }
 
                         [(IDSDAccountController *)v106->_accountController addAccount:v151];
-                        if (v129)
+                        if (bOOLValue)
                         {
                           v154 = +[IMRGLog registration];
                           if (os_log_type_enabled(v154, OS_LOG_TYPE_DEFAULT))
                           {
                             *buf = 138412546;
-                            v246 = v202;
+                            v246 = uniqueIdentifier3;
                             v247 = 2112;
                             v248 = v151;
                             _os_log_impl(&_mh_execute_header, v154, OS_LOG_TYPE_DEFAULT, "Disabling account {uniqueIdentifier: %@, account: %@}", buf, 0x16u);
                           }
 
                           accountController = v106->_accountController;
-                          v156 = [(__CFString *)v151 uniqueID];
-                          [(IDSDAccountController *)accountController disableAccountWithUniqueID:v156];
+                          uniqueID = [(__CFString *)v151 uniqueID];
+                          [(IDSDAccountController *)accountController disableAccountWithUniqueID:uniqueID];
 
-                          [(__CFString *)v151 setIsUserDisabled:v130 & 1];
+                          [(__CFString *)v151 setIsUserDisabled:isUserDisabled2 & 1];
                         }
 
                         else
                         {
                           v157 = v106->_accountController;
-                          v158 = [(__CFString *)v151 uniqueID];
-                          [(IDSDAccountController *)v157 enableAccountWithUniqueID:v158];
+                          uniqueID2 = [(__CFString *)v151 uniqueID];
+                          [(IDSDAccountController *)v157 enableAccountWithUniqueID:uniqueID2];
 
                           [(__CFString *)v151 registerAccount];
                         }
@@ -954,8 +954,8 @@ LABEL_174:
                         {
                           v136 = v135;
                           v137 = 0;
-                          v130 = 0;
-                          v138 = 0;
+                          isUserDisabled2 = 0;
+                          isUserDisabled = 0;
                           v139 = 0;
                           v140 = *v204;
                           do
@@ -970,21 +970,21 @@ LABEL_174:
                               v142 = *(*(&v203 + 1) + 8 * k);
                               if ([v122 realm] && objc_msgSend(v122, "realm") != 2 || objc_msgSend(v142, "accountType"))
                               {
-                                if (v138)
+                                if (isUserDisabled)
                                 {
-                                  v138 = 1;
+                                  isUserDisabled = 1;
                                 }
 
                                 else
                                 {
-                                  v138 = [v142 isUserDisabled];
+                                  isUserDisabled = [v142 isUserDisabled];
                                 }
                               }
 
                               else
                               {
-                                v130 = [v142 isUserDisabled];
-                                v137 |= v130;
+                                isUserDisabled2 = [v142 isUserDisabled];
+                                v137 |= isUserDisabled2;
                                 v139 = 1;
                               }
                             }
@@ -996,8 +996,8 @@ LABEL_174:
 
                           if (v137)
                           {
-                            v129 = 1;
-                            v106 = v179;
+                            bOOLValue = 1;
+                            v106 = selfCopy;
                             v26 = v180;
                             v112 = @"YES";
                             v120 = v184;
@@ -1007,19 +1007,19 @@ LABEL_173:
                             goto LABEL_174;
                           }
 
-                          v106 = v179;
+                          v106 = selfCopy;
                         }
 
                         else
                         {
 
                           v139 = 0;
-                          v138 = 0;
-                          v130 = 0;
+                          isUserDisabled = 0;
+                          isUserDisabled2 = 0;
                         }
 
                         v120 = v184;
-                        v129 = (v139 ^ 1) & v138;
+                        bOOLValue = (v139 ^ 1) & isUserDisabled;
                         v26 = v180;
                         v143 = v181;
                         v112 = @"YES";
@@ -1030,17 +1030,17 @@ LABEL_173:
                       v144 = v112;
                       v145 = v26;
                       v147 = v146 = v133;
-                      v148 = [(__CFString *)v192 identifier];
-                      v149 = [v147 objectForKeyedSubscript:v148];
-                      v129 = [v149 BOOLValue];
+                      identifier9 = [(__CFString *)v192 identifier];
+                      v149 = [v147 objectForKeyedSubscript:identifier9];
+                      bOOLValue = [v149 BOOLValue];
 
-                      v150 = [(__CFString *)v192 identifier];
-                      [v186 setObject:&__kCFBooleanFalse forKeyedSubscript:v150];
+                      identifier10 = [(__CFString *)v192 identifier];
+                      [v186 setObject:&__kCFBooleanFalse forKeyedSubscript:identifier10];
 
                       v143 = v146;
                       v26 = v145;
                       v112 = v144;
-                      v130 = v129;
+                      isUserDisabled2 = bOOLValue;
                       v120 = v184;
                       goto LABEL_173;
                     }
@@ -1060,7 +1060,7 @@ LABEL_186:
                   v114 = v175;
                   v109 = v176;
                   v111 = v169;
-                  v107 = v170;
+                  allPrimaryServices = v170;
                   v110 = v172;
                   break;
                 }
@@ -1071,14 +1071,14 @@ LABEL_186:
           }
 
           while (v114 != v110);
-          v110 = [v107 countByEnumeratingWithState:&v211 objects:v243 count:16];
+          v110 = [allPrimaryServices countByEnumeratingWithState:&v211 objects:v243 count:16];
         }
 
         while (v110);
       }
 
-      v159 = [(IDSUserAccountSynchronizer *)v106 cachedDisabledByService];
-      v160 = [v159 mutableCopy];
+      cachedDisabledByService = [(IDSUserAccountSynchronizer *)v106 cachedDisabledByService];
+      v160 = [cachedDisabledByService mutableCopy];
       v161 = v160;
       if (v160)
       {
@@ -1091,16 +1091,16 @@ LABEL_186:
       }
 
       [v162 addEntriesFromDictionary:v186];
-      [(IDSUserAccountSynchronizer *)v179 setCachedDisabledByService:v162];
-      [(IDSUserAccountSynchronizer *)v179 setMidSynchronize:0];
+      [(IDSUserAccountSynchronizer *)selfCopy setCachedDisabledByService:v162];
+      [(IDSUserAccountSynchronizer *)selfCopy setMidSynchronize:0];
     }
 
     else
     {
       v14 = +[FTDeviceSupport sharedInstance];
-      v15 = [v14 deviceType];
+      deviceType = [v14 deviceType];
 
-      if (v15 == 2)
+      if (deviceType == 2)
       {
         v3 = +[IMRGLog warning];
         if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1156,9 +1156,9 @@ LABEL_186:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Performing migration if needed", buf, 2u);
       }
 
-      v11 = [(IDSDataMigrationTracker *)self->_migrationTracker performMigrationIfNeeded];
+      performMigrationIfNeeded = [(IDSDataMigrationTracker *)self->_migrationTracker performMigrationIfNeeded];
       migrationPromise = self->_migrationPromise;
-      self->_migrationPromise = v11;
+      self->_migrationPromise = performMigrationIfNeeded;
 
       v13 = self->_migrationPromise;
       v240[0] = _NSConcreteStackBlock;
@@ -1171,45 +1171,45 @@ LABEL_186:
   }
 }
 
-- (BOOL)_allowHomeNumberForUser:(id)a3 simCarrierIdentifiers:(id)a4 userCarrierIdentifiers:(id)a5
+- (BOOL)_allowHomeNumberForUser:(id)user simCarrierIdentifiers:(id)identifiers userCarrierIdentifiers:(id)carrierIdentifiers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 realm] == 2)
+  userCopy = user;
+  identifiersCopy = identifiers;
+  carrierIdentifiersCopy = carrierIdentifiers;
+  if ([userCopy realm] == 2)
   {
-    v10 = v7;
+    v10 = userCopy;
     v11 = [IMPair alloc];
-    v12 = [v10 countryCode];
-    v13 = [v10 networkCode];
-    v14 = [v11 initWithFirst:v12 second:v13];
+    countryCode = [v10 countryCode];
+    networkCode = [v10 networkCode];
+    v14 = [v11 initWithFirst:countryCode second:networkCode];
 
     if (+[IMUserDefaults bypassHomeNumberCarrierCheck])
     {
       goto LABEL_3;
     }
 
-    v16 = [v10 countryCode];
-    if ([v16 length])
+    countryCode2 = [v10 countryCode];
+    if ([countryCode2 length])
     {
     }
 
     else
     {
-      v17 = [v10 networkCode];
-      v18 = [v17 length];
+      networkCode2 = [v10 networkCode];
+      v18 = [networkCode2 length];
 
       if (!v18)
       {
 LABEL_3:
-        if ([v8 count])
+        if ([identifiersCopy count])
         {
           v15 = 1;
         }
 
         else
         {
-          v15 = [v9 count] != 0;
+          v15 = [carrierIdentifiersCopy count] != 0;
         }
 
 LABEL_21:
@@ -1218,11 +1218,11 @@ LABEL_21:
       }
     }
 
-    if ([v8 count])
+    if ([identifiersCopy count])
     {
-      if ([v8 count] <= 1)
+      if ([identifiersCopy count] <= 1)
       {
-        v19 = [v8 containsObject:v14] ^ 1;
+        v19 = [identifiersCopy containsObject:v14] ^ 1;
       }
 
       else
@@ -1236,11 +1236,11 @@ LABEL_21:
       LOBYTE(v19) = 0;
     }
 
-    if ([v9 count])
+    if ([carrierIdentifiersCopy count])
     {
-      if ([v9 count] <= 1)
+      if ([carrierIdentifiersCopy count] <= 1)
       {
-        v20 = [v9 containsObject:v14] ^ 1;
+        v20 = [carrierIdentifiersCopy containsObject:v14] ^ 1;
       }
 
       else

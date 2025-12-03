@@ -12,8 +12,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CNAggregatedPropertyNameGroups *)self groups];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  groups = [(CNAggregatedPropertyNameGroups *)self groups];
+  v3 = [groups countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -25,14 +25,14 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(groups);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) saveChanges];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [groups countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -46,8 +46,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CNAggregatedPropertyNameGroups *)self groups];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  groups = [(CNAggregatedPropertyNameGroups *)self groups];
+  v3 = [groups countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -57,7 +57,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(groups);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) modified])
@@ -67,7 +67,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [groups countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;

@@ -1,15 +1,15 @@
 @interface ICBGTaskScheduler
 + (ICBGTaskScheduler)sharedTaskScheduler;
-- (BOOL)hasScheduledTask:(id)a3;
+- (BOOL)hasScheduledTask:(id)task;
 - (id)_init;
 - (void)_loadSavedTaskInfo;
 - (void)_postExpiredEvents;
 - (void)_saveTaskInfo;
 - (void)_scheduleNextTask;
-- (void)cancelTask:(id)a3;
-- (void)registerForTask:(id)a3 handler:(id)a4;
-- (void)scheduleRecurringTask:(id)a3 withInterval:(double)a4 afterDelay:(double)a5 withUserData:(id)a6;
-- (void)scheduleTask:(id)a3 afterDelay:(double)a4 withUserData:(id)a5;
+- (void)cancelTask:(id)task;
+- (void)registerForTask:(id)task handler:(id)handler;
+- (void)scheduleRecurringTask:(id)task withInterval:(double)interval afterDelay:(double)delay withUserData:(id)data;
+- (void)scheduleTask:(id)task afterDelay:(double)delay withUserData:(id)data;
 @end
 
 @implementation ICBGTaskScheduler
@@ -188,14 +188,14 @@ uint64_t __39__ICBGTaskScheduler__postExpiredEvents__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = v4;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ persisting event data %{public}@", &v7, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 setObject:v4 forKey:@"ICBackgroundTaskScheduler"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:v4 forKey:@"ICBackgroundTaskScheduler"];
 }
 
 - (void)_scheduleNextTask
@@ -454,14 +454,14 @@ void __38__ICBGTaskScheduler__scheduleNextTask__block_invoke_46(uint64_t a1, voi
 - (void)_loadSavedTaskInfo
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"ICBackgroundTaskScheduler"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"ICBackgroundTaskScheduler"];
 
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v4;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ loaded persisted task info %{public}@", &v11, 0x16u);
@@ -474,161 +474,161 @@ void __38__ICBGTaskScheduler__scheduleNextTask__block_invoke_46(uint64_t a1, voi
     v7 = v6;
     if (v6)
     {
-      v8 = [(NSMutableDictionary *)v6 mutableCopy];
+      dictionary = [(NSMutableDictionary *)v6 mutableCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     taskInfoDictionaries = self->_taskInfoDictionaries;
-    self->_taskInfoDictionaries = v8;
+    self->_taskInfoDictionaries = dictionary;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_taskInfoDictionaries;
-    self->_taskInfoDictionaries = v9;
+    self->_taskInfoDictionaries = dictionary2;
   }
 }
 
-- (void)cancelTask:(id)a3
+- (void)cancelTask:(id)task
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = taskCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ canceling task '%{public}@'", &v6, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_taskInfoDictionaries removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_taskInfoDictionaries removeObjectForKey:taskCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(ICBGTaskScheduler *)self _scheduleNextTask];
 }
 
-- (BOOL)hasScheduledTask:(id)a3
+- (BOOL)hasScheduledTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_taskInfoDictionaries objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_taskInfoDictionaries objectForKey:taskCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5 != 0;
 }
 
-- (void)scheduleRecurringTask:(id)a3 withInterval:(double)a4 afterDelay:(double)a5 withUserData:(id)a6
+- (void)scheduleRecurringTask:(id)task withInterval:(double)interval afterDelay:(double)delay withUserData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (a4 <= 0.0)
+  taskCopy = task;
+  dataCopy = data;
+  if (interval <= 0.0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"ICBGTaskScheduler.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"interval > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICBGTaskScheduler.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"interval > 0"}];
   }
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  v14 = v13 + a5;
+  v14 = v13 + delay;
   v15 = objc_opt_new();
-  [v15 setObject:v11 forKey:@"identifier"];
+  [v15 setObject:taskCopy forKey:@"identifier"];
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
   [v15 setObject:v16 forKey:@"time"];
 
   [v15 setObject:MEMORY[0x1E695E118] forKey:@"is_recurring"];
-  v17 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v17 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
   [v15 setObject:v17 forKey:@"interval"];
 
-  if (v12)
+  if (dataCopy)
   {
-    [v15 setObject:v12 forKey:@"userData"];
+    [v15 setObject:dataCopy forKey:@"userData"];
   }
 
   v18 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v11;
+    v23 = taskCopy;
     v24 = 2048;
-    v25 = a4;
+    intervalCopy = interval;
     v26 = 2048;
-    v27 = a5;
+    delayCopy = delay;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling recurring task '%{public}@' with interval %f and delay %f", buf, 0x2Au);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_taskInfoDictionaries setObject:v15 forKey:v11];
+  [(NSMutableDictionary *)self->_taskInfoDictionaries setObject:v15 forKey:taskCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(ICBGTaskScheduler *)self _saveTaskInfo];
   [(ICBGTaskScheduler *)self _scheduleNextTask];
 }
 
-- (void)scheduleTask:(id)a3 afterDelay:(double)a4 withUserData:(id)a5
+- (void)scheduleTask:(id)task afterDelay:(double)delay withUserData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  taskCopy = task;
+  dataCopy = data;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  v11 = v10 + a4;
+  v11 = v10 + delay;
   v12 = objc_opt_new();
-  [v12 setObject:v8 forKey:@"identifier"];
+  [v12 setObject:taskCopy forKey:@"identifier"];
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
   [v12 setObject:v13 forKey:@"time"];
 
   [v12 setObject:MEMORY[0x1E695E110] forKey:@"is_recurring"];
-  if (v9)
+  if (dataCopy)
   {
-    [v12 setObject:v9 forKey:@"userData"];
+    [v12 setObject:dataCopy forKey:@"userData"];
   }
 
   v14 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v8;
+    v18 = taskCopy;
     v19 = 2048;
-    v20 = a4;
+    delayCopy = delay;
     _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling task '%{public}@' with delay %f", &v15, 0x20u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_taskInfoDictionaries setObject:v12 forKey:v8];
+  [(NSMutableDictionary *)self->_taskInfoDictionaries setObject:v12 forKey:taskCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(ICBGTaskScheduler *)self _saveTaskInfo];
   [(ICBGTaskScheduler *)self _scheduleNextTask];
 }
 
-- (void)registerForTask:(id)a3 handler:(id)a4
+- (void)registerForTask:(id)task handler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = taskCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Registering handler for task '%{public}@'", &v11, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
   taskHandlers = self->_taskHandlers;
-  v10 = MEMORY[0x1B8C781E0](v7);
+  v10 = MEMORY[0x1B8C781E0](handlerCopy);
 
-  [(NSMutableDictionary *)taskHandlers setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)taskHandlers setObject:v10 forKey:taskCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(ICBGTaskScheduler *)self _postExpiredEvents];
 }
@@ -645,14 +645,14 @@ void __38__ICBGTaskScheduler__scheduleNextTask__block_invoke_46(uint64_t a1, voi
     v2->_queue = v3;
 
     v2->_lock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     taskHandlers = v2->_taskHandlers;
-    v2->_taskHandlers = v5;
+    v2->_taskHandlers = dictionary;
 
     v7 = +[ICClientInfo defaultInfo];
-    v8 = [v7 processName];
+    processName = [v7 processName];
 
-    v9 = [@"com.apple.itunescloud.ICBackgroundTaskScheduler.task_identifier" stringByAppendingFormat:@".%@", v8];
+    v9 = [@"com.apple.itunescloud.ICBackgroundTaskScheduler.task_identifier" stringByAppendingFormat:@".%@", processName];
     taskIdentifier = v2->_taskIdentifier;
     v2->_taskIdentifier = v9;
 

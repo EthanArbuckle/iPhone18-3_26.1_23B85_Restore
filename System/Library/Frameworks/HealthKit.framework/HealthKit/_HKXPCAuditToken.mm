@@ -1,23 +1,23 @@
 @interface _HKXPCAuditToken
 + (id)auditTokenForCurrentTask;
-+ (id)signingIdentifierFromAuditToken:(id *)a3;
++ (id)signingIdentifierFromAuditToken:(id *)token;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)signingIdentifier;
-- (_HKXPCAuditToken)initWithAuditToken:(id *)a3;
+- (_HKXPCAuditToken)initWithAuditToken:(id *)token;
 @end
 
 @implementation _HKXPCAuditToken
 
-- (_HKXPCAuditToken)initWithAuditToken:(id *)a3
+- (_HKXPCAuditToken)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = _HKXPCAuditToken;
   result = [(_HKXPCAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *a3->var0;
-    *&result->_auditToken.val[4] = *&a3->var0[4];
+    v5 = *token->var0;
+    *&result->_auditToken.val[4] = *&token->var0[4];
     *result->_auditToken.val = v5;
   }
 
@@ -37,7 +37,7 @@
 
 + (id)auditTokenForCurrentTask
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   task_info_outCnt = 8;
   memset(v5, 0, sizeof(v5));
   task_info(*MEMORY[0x1E69E9A60], 0xFu, v5, &task_info_outCnt);
@@ -46,10 +46,10 @@
   return v3;
 }
 
-+ (id)signingIdentifierFromAuditToken:(id *)a3
++ (id)signingIdentifierFromAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &cf);
   if (v4)
@@ -87,10 +87,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -98,7 +98,7 @@
   else
   {
     objc_opt_class();
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && *self->_auditToken.val == *v4->_auditToken.val && *&self->_auditToken.val[2] == *&v4->_auditToken.val[2] && *&self->_auditToken.val[4] == *&v4->_auditToken.val[4] && *&self->_auditToken.val[6] == *&v4->_auditToken.val[6];
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && *self->_auditToken.val == *equalCopy->_auditToken.val && *&self->_auditToken.val[2] == *&equalCopy->_auditToken.val[2] && *&self->_auditToken.val[4] == *&equalCopy->_auditToken.val[4] && *&self->_auditToken.val[6] == *&equalCopy->_auditToken.val[6];
   }
 
   return v8;

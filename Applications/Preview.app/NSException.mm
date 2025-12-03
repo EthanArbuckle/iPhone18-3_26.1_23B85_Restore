@@ -1,13 +1,13 @@
 @interface NSException
-+ (id)doWhileCatching:(id)a3;
++ (id)doWhileCatching:(id)catching;
 @end
 
 @implementation NSException
 
-+ (id)doWhileCatching:(id)a3
++ (id)doWhileCatching:(id)catching
 {
-  v3 = a3;
-  v3[2]();
+  catchingCopy = catching;
+  catchingCopy[2]();
 
   return 0;
 }

@@ -2,25 +2,25 @@
 + (id)logCategory;
 - (BOOL)isThisDesignatedFMFDevice;
 - (HMDPersonDataSource)dataSource;
-- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)a3;
-- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)a3 fmfHandler:(id)a4 photoLibrary:(id)a5 workQueue:(id)a6 cloudPhotosSettingObserver:(id)a7 logEventSubmitter:(id)a8;
-- (id)_importFaceCropsForPersons:(id)a3 usingFaceCropUUIDsByPersonUUID:(id)a4 batchChange:(id)a5;
-- (id)_importPersonsUsingBatchChange:(id)a3;
+- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)d;
+- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)d fmfHandler:(id)handler photoLibrary:(id)library workQueue:(id)queue cloudPhotosSettingObserver:(id)observer logEventSubmitter:(id)submitter;
+- (id)_importFaceCropsForPersons:(id)persons usingFaceCropUUIDsByPersonUUID:(id)d batchChange:(id)change;
+- (id)_importPersonsUsingBatchChange:(id)change;
 - (id)logIdentifier;
 - (void)_configure;
 - (void)_handleFMFDeviceChanged;
 - (void)_handleUpdatedCloudPhotosSetting;
 - (void)_import;
-- (void)_importFaceCropsForPerson:(id)a3 usingCurrentHomeKitFaceCropUUIDs:(id)a4 batchChange:(id)a5;
+- (void)_importFaceCropsForPerson:(id)person usingCurrentHomeKitFaceCropUUIDs:(id)ds batchChange:(id)change;
 - (void)_reconfigure;
 - (void)_registerForNotifications;
-- (void)_submitLogEventForFaceCrops:(id)a3;
-- (void)_submitLogEventsForUpdatedPersonsWithCurrentPersons:(id)a3 previousPersons:(id)a4;
+- (void)_submitLogEventForFaceCrops:(id)crops;
+- (void)_submitLogEventsForUpdatedPersonsWithCurrentPersons:(id)persons previousPersons:(id)previousPersons;
 - (void)_unconfigure;
-- (void)configureWithDataSource:(id)a3 home:(id)a4;
-- (void)handleCloudPhotosEnabledDidChangeNotification:(id)a3;
-- (void)handleFMFDeviceChangedNotification:(id)a3;
-- (void)observerDidObserveChange:(id)a3;
+- (void)configureWithDataSource:(id)source home:(id)home;
+- (void)handleCloudPhotosEnabledDidChangeNotification:(id)notification;
+- (void)handleFMFDeviceChangedNotification:(id)notification;
+- (void)observerDidObserveChange:(id)change;
 @end
 
 @implementation HMDPhotoLibraryPersonImporter
@@ -34,62 +34,62 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPhotoLibraryPersonImporter *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMDPhotoLibraryPersonImporter *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)observerDidObserveChange:(id)a3
+- (void)observerDidObserveChange:(id)change
 {
-  v4 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDPhotoLibraryPersonImporter *)self _import];
 }
 
-- (void)handleFMFDeviceChangedNotification:(id)a3
+- (void)handleFMFDeviceChangedNotification:(id)notification
 {
-  v4 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDPhotoLibraryPersonImporter_handleFMFDeviceChangedNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)handleCloudPhotosEnabledDidChangeNotification:(id)a3
+- (void)handleCloudPhotosEnabledDidChangeNotification:(id)notification
 {
-  v4 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDPhotoLibraryPersonImporter_handleCloudPhotosEnabledDidChangeNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 - (BOOL)isThisDesignatedFMFDevice
 {
-  v2 = [(HMDPhotoLibraryPersonImporter *)self fmfHandler];
-  v3 = [v2 isThisDesignatedFMFDevice];
+  fmfHandler = [(HMDPhotoLibraryPersonImporter *)self fmfHandler];
+  isThisDesignatedFMFDevice = [fmfHandler isThisDesignatedFMFDevice];
 
-  return v3;
+  return isThisDesignatedFMFDevice;
 }
 
-- (void)configureWithDataSource:(id)a3 home:(id)a4
+- (void)configureWithDataSource:(id)source home:(id)home
 {
-  v5 = a3;
-  v6 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  sourceCopy = source;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__HMDPhotoLibraryPersonImporter_configureWithDataSource_home___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = sourceCopy;
+  v7 = sourceCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __62__HMDPhotoLibraryPersonImporter_configureWithDataSource_home___block_invoke(uint64_t a1)
@@ -147,10 +147,10 @@ LABEL_11:
 
 - (void)_reconfigure
 {
-  v3 = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
-  v4 = [v3 isCloudPhotosEnabled];
+  cloudPhotosSettingObserver = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
+  isCloudPhotosEnabled = [cloudPhotosSettingObserver isCloudPhotosEnabled];
 
-  if (v4 && [(HMDPhotoLibraryPersonImporter *)self isThisDesignatedFMFDevice])
+  if (isCloudPhotosEnabled && [(HMDPhotoLibraryPersonImporter *)self isThisDesignatedFMFDevice])
   {
 
     [(HMDPhotoLibraryPersonImporter *)self _configure];
@@ -166,16 +166,16 @@ LABEL_11:
 - (void)_handleFMFDeviceChanged
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = HMFGetLogIdentifier();
-    [(HMDPhotoLibraryPersonImporter *)v5 isThisDesignatedFMFDevice];
+    [(HMDPhotoLibraryPersonImporter *)selfCopy isThisDesignatedFMFDevice];
     v8 = HMFBooleanToString();
     v10 = 138543618;
     v11 = v7;
@@ -185,21 +185,21 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDPhotoLibraryPersonImporter *)v5 _reconfigure];
+  [(HMDPhotoLibraryPersonImporter *)selfCopy _reconfigure];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_handleUpdatedCloudPhotosSetting
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
-  [v4 isCloudPhotosEnabled];
+  cloudPhotosSettingObserver = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
+  [cloudPhotosSettingObserver isCloudPhotosEnabled];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -213,18 +213,18 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDPhotoLibraryPersonImporter *)v6 _reconfigure];
+  [(HMDPhotoLibraryPersonImporter *)selfCopy _reconfigure];
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_unconfigure
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -235,21 +235,21 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDPhotoLibraryPersonImporter *)v5 photoLibraryObserver];
-  [v8 invalidate];
+  photoLibraryObserver = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibraryObserver];
+  [photoLibraryObserver invalidate];
 
-  [(HMDPhotoLibraryPersonImporter *)v5 setPhotoLibraryObserver:0];
+  [(HMDPhotoLibraryPersonImporter *)selfCopy setPhotoLibraryObserver:0];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_configure
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -260,69 +260,69 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDPhotoLibraryPersonImporter *)v5 photoLibraryObserverFactory];
-  v9 = v8[2]();
-  [(HMDPhotoLibraryPersonImporter *)v5 setPhotoLibraryObserver:v9];
+  photoLibraryObserverFactory = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibraryObserverFactory];
+  v9 = photoLibraryObserverFactory[2]();
+  [(HMDPhotoLibraryPersonImporter *)selfCopy setPhotoLibraryObserver:v9];
 
-  v10 = [(HMDPhotoLibraryPersonImporter *)v5 photoLibraryObserver];
-  [v10 setDelegate:v5];
+  photoLibraryObserver = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibraryObserver];
+  [photoLibraryObserver setDelegate:selfCopy];
 
-  v11 = [(HMDPhotoLibraryPersonImporter *)v5 photoLibraryObserver];
-  [v11 configure];
+  photoLibraryObserver2 = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibraryObserver];
+  [photoLibraryObserver2 configure];
 
-  [(HMDPhotoLibraryPersonImporter *)v5 _import];
+  [(HMDPhotoLibraryPersonImporter *)selfCopy _import];
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_registerForNotifications
 {
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
-  [v4 addObserver:self selector:sel_handleCloudPhotosEnabledDidChangeNotification_ name:@"HMDCloudPhotoSettingChangedNotification" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  cloudPhotosSettingObserver = [(HMDPhotoLibraryPersonImporter *)self cloudPhotosSettingObserver];
+  [defaultCenter addObserver:self selector:sel_handleCloudPhotosEnabledDidChangeNotification_ name:@"HMDCloudPhotoSettingChangedNotification" object:cloudPhotosSettingObserver];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [(HMDPhotoLibraryPersonImporter *)self fmfHandler];
-  [v7 addObserver:self selector:sel_handleFMFDeviceChangedNotification_ name:@"HMDFMFStatusUpdateNotification" object:v6];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  fmfHandler = [(HMDPhotoLibraryPersonImporter *)self fmfHandler];
+  [defaultCenter2 addObserver:self selector:sel_handleFMFDeviceChangedNotification_ name:@"HMDFMFStatusUpdateNotification" object:fmfHandler];
 }
 
-- (void)_submitLogEventForFaceCrops:(id)a3
+- (void)_submitLogEventForFaceCrops:(id)crops
 {
-  v4 = a3;
-  v5 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  cropsCopy = crops;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
+  logEventSubmitter = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
   v6 = [HMDPhotoLibraryImportingFaceCropsImportedLogEvent alloc];
-  v7 = [v4 allKeys];
+  allKeys = [cropsCopy allKeys];
 
-  v8 = -[HMDPhotoLibraryImportingFaceCropsImportedLogEvent initWithNumberOfImportedFaceCrops:](v6, "initWithNumberOfImportedFaceCrops:", [v7 count]);
-  [v9 submitLogEvent:v8];
+  v8 = -[HMDPhotoLibraryImportingFaceCropsImportedLogEvent initWithNumberOfImportedFaceCrops:](v6, "initWithNumberOfImportedFaceCrops:", [allKeys count]);
+  [logEventSubmitter submitLogEvent:v8];
 }
 
-- (void)_submitLogEventsForUpdatedPersonsWithCurrentPersons:(id)a3 previousPersons:(id)a4
+- (void)_submitLogEventsForUpdatedPersonsWithCurrentPersons:(id)persons previousPersons:(id)previousPersons
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  personsCopy = persons;
+  previousPersonsCopy = previousPersons;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v6 na_map:&__block_literal_global_26_95914];
+  v9 = [personsCopy na_map:&__block_literal_global_26_95914];
   v10 = [v9 count];
 
-  v11 = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
-  v12 = -[HMDPhotoLibraryImportingPersonsImportedLogEvent initWithTotalNumberOfImportedPersons:numberOfNamedImportedPersons:]([HMDPhotoLibraryImportingPersonsImportedLogEvent alloc], "initWithTotalNumberOfImportedPersons:numberOfNamedImportedPersons:", [v6 count], v10);
-  [v11 submitLogEvent:v12];
+  logEventSubmitter = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
+  v12 = -[HMDPhotoLibraryImportingPersonsImportedLogEvent initWithTotalNumberOfImportedPersons:numberOfNamedImportedPersons:]([HMDPhotoLibraryImportingPersonsImportedLogEvent alloc], "initWithTotalNumberOfImportedPersons:numberOfNamedImportedPersons:", [personsCopy count], v10);
+  [logEventSubmitter submitLogEvent:v12];
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v14 = v7;
+  v14 = previousPersonsCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
   {
@@ -338,8 +338,8 @@ LABEL_11:
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        v20 = [v19 UUID];
-        [v13 setObject:v19 forKeyedSubscript:v20];
+        uUID = [v19 UUID];
+        [dictionary setObject:v19 forKeyedSubscript:uUID];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -352,14 +352,14 @@ LABEL_11:
   v27[1] = 3221225472;
   v27[2] = __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsWithCurrentPersons_previousPersons___block_invoke_2;
   v27[3] = &unk_27972A4D0;
-  v28 = v13;
-  v21 = v13;
-  v22 = [v6 na_filter:v27];
+  v28 = dictionary;
+  v21 = dictionary;
+  v22 = [personsCopy na_filter:v27];
   v23 = [v22 count];
 
-  v24 = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
+  logEventSubmitter2 = [(HMDPhotoLibraryPersonImporter *)self logEventSubmitter];
   v25 = [[HMDPhotoLibraryImportingPhotoLibraryRenamedPersonsLogEvent alloc] initWithNumberOfRenamedPersons:v23];
-  [v24 submitLogEvent:v25];
+  [logEventSubmitter2 submitLogEvent:v25];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -389,51 +389,51 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
   return v13;
 }
 
-- (void)_importFaceCropsForPerson:(id)a3 usingCurrentHomeKitFaceCropUUIDs:(id)a4 batchChange:(id)a5
+- (void)_importFaceCropsForPerson:(id)person usingCurrentHomeKitFaceCropUUIDs:(id)ds batchChange:(id)change
 {
   v95 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v75 = a5;
-  v10 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  personCopy = person;
+  dsCopy = ds;
+  changeCopy = change;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [(HMDPhotoLibraryPersonImporter *)self photoLibrary];
-  v76 = v8;
-  v12 = [v8 externalPersonUUID];
-  v13 = [v11 fetchFaceCropDataByUUIDForPersonUUID:v12];
+  photoLibrary = [(HMDPhotoLibraryPersonImporter *)self photoLibrary];
+  v76 = personCopy;
+  externalPersonUUID = [personCopy externalPersonUUID];
+  v13 = [photoLibrary fetchFaceCropDataByUUIDForPersonUUID:externalPersonUUID];
 
   if (v13)
   {
     [(HMDPhotoLibraryPersonImporter *)self _submitLogEventForFaceCrops:v13];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v76 UUID];
+      uUID = [v76 UUID];
       *buf = 138544130;
       v88 = v17;
       v89 = 2112;
-      v90 = v18;
+      v90 = uUID;
       v91 = 2048;
       v92 = [v13 count];
       v93 = 2048;
-      v94 = [v9 count];
+      v94 = [dsCopy count];
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Importing face crops for person with uuid: %@ which has %lu current photos face crops, and %lu previous face crops in HomeKit", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v14);
     v19 = MEMORY[0x277CBEB98];
     v72 = v13;
-    v20 = [v13 allKeys];
-    v21 = [v19 setWithArray:v20];
+    allKeys = [v13 allKeys];
+    v21 = [v19 setWithArray:allKeys];
 
-    v22 = [v21 na_setByRemovingObjectsFromSet:v9];
+    v22 = [v21 na_setByRemovingObjectsFromSet:dsCopy];
     v68 = v21;
-    v69 = v9;
-    v67 = [v9 na_setByRemovingObjectsFromSet:v21];
+    v69 = dsCopy;
+    v67 = [dsCopy na_setByRemovingObjectsFromSet:v21];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -454,59 +454,59 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
 
           v24 = *(*(&v81 + 1) + 8 * i);
           v25 = objc_autoreleasePoolPush();
-          v26 = [(HMDPhotoLibraryPersonImporter *)v15 photoLibrary];
+          photoLibrary2 = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibrary];
           v27 = [v72 objectForKeyedSubscript:v24];
-          v28 = [v26 faceCropFromFaceCropData:v27];
+          v28 = [photoLibrary2 faceCropFromFaceCropData:v27];
 
           if (v28)
           {
             v29 = objc_alloc(MEMORY[0x277CD1C78]);
-            v30 = [v28 dataRepresentation];
-            v31 = [MEMORY[0x277CBEAA8] date];
+            dataRepresentation = [v28 dataRepresentation];
+            date = [MEMORY[0x277CBEAA8] date];
             [v28 faceBoundingBox];
             v33 = v32;
             v35 = v34;
             v37 = v36;
             v39 = v38;
-            v40 = [v76 UUID];
-            v41 = [v29 initWithUUID:v24 dataRepresentation:v30 dateCreated:v31 faceBoundingBox:v40 personUUID:{v33, v35, v37, v39}];
+            uUID2 = [v76 UUID];
+            v41 = [v29 initWithUUID:v24 dataRepresentation:dataRepresentation dateCreated:date faceBoundingBox:uUID2 personUUID:{v33, v35, v37, v39}];
 
             [v41 setSource:1];
             v42 = objc_autoreleasePoolPush();
-            v43 = v15;
+            v43 = selfCopy;
             v44 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
             {
               v45 = HMFGetLogIdentifier();
-              v46 = [v76 UUID];
+              uUID3 = [v76 UUID];
               *buf = 138543874;
               v88 = v45;
               v89 = 2112;
-              v90 = v46;
+              v90 = uUID3;
               v91 = 2112;
               v92 = v41;
               _os_log_impl(&dword_2531F8000, v44, OS_LOG_TYPE_INFO, "%{public}@Adding new face crop for person with uuid %@: %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v42);
-            [v75 addOrUpdateFaceCrop:v41];
+            [changeCopy addOrUpdateFaceCrop:v41];
           }
 
           else
           {
             v47 = objc_autoreleasePoolPush();
-            v48 = v15;
+            v48 = selfCopy;
             v49 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
             {
               v50 = HMFGetLogIdentifier();
-              v51 = [v76 UUID];
+              uUID4 = [v76 UUID];
               *buf = 138543874;
               v88 = v50;
               v89 = 2112;
               v90 = v24;
               v91 = 2112;
-              v92 = v51;
+              v92 = uUID4;
               _os_log_impl(&dword_2531F8000, v49, OS_LOG_TYPE_INFO, "%{public}@Did not receive a valid face crop from HomeAI for photos face crop with uuid: %@ for person with uuid: %@", buf, 0x20u);
             }
 
@@ -543,23 +543,23 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
 
           v56 = *(*(&v77 + 1) + 8 * j);
           v57 = objc_autoreleasePoolPush();
-          v58 = v15;
+          v58 = selfCopy;
           v59 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
           {
             v60 = HMFGetLogIdentifier();
-            v61 = [v76 UUID];
+            uUID5 = [v76 UUID];
             *buf = 138543874;
             v88 = v60;
             v89 = 2112;
-            v90 = v61;
+            v90 = uUID5;
             v91 = 2112;
             v92 = v56;
             _os_log_impl(&dword_2531F8000, v59, OS_LOG_TYPE_INFO, "%{public}@Removing old face crop for person with uuid %@: %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v57);
-          [v75 removeFaceCropWithUUID:v56];
+          [changeCopy removeFaceCropWithUUID:v56];
         }
 
         v53 = [v74 countByEnumeratingWithState:&v77 objects:v85 count:16];
@@ -568,14 +568,14 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
       while (v53);
     }
 
-    v9 = v69;
+    dsCopy = v69;
     v13 = v72;
   }
 
   else
   {
     v62 = objc_autoreleasePoolPush();
-    v63 = self;
+    selfCopy2 = self;
     v64 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
     {
@@ -593,17 +593,17 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_importFaceCropsForPersons:(id)a3 usingFaceCropUUIDsByPersonUUID:(id)a4 batchChange:(id)a5
+- (id)_importFaceCropsForPersons:(id)persons usingFaceCropUUIDsByPersonUUID:(id)d batchChange:(id)change
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v30 = a4;
-  v29 = a5;
-  v9 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  personsCopy = persons;
+  dCopy = d;
+  changeCopy = change;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -611,17 +611,17 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
     *buf = 138543618;
     v40 = v13;
     v41 = 2112;
-    v42 = v8;
+    v42 = personsCopy;
     _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Importing face crops for Photos persons: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v8;
+  obj = personsCopy;
   v15 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v15)
   {
@@ -642,16 +642,16 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
         v31[1] = 3221225472;
         v31[2] = __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCropUUIDsByPersonUUID_batchChange___block_invoke;
         v31[3] = &unk_27972A488;
-        v31[4] = v11;
+        v31[4] = selfCopy;
         v31[5] = v19;
-        v32 = v30;
-        v33 = v29;
+        v32 = dCopy;
+        v33 = changeCopy;
         v21 = MEMORY[0x277D2C938];
-        v22 = [(HMDPhotoLibraryPersonImporter *)v11 workQueue];
-        v23 = [v21 schedulerWithDispatchQueue:v22];
+        workQueue2 = [(HMDPhotoLibraryPersonImporter *)selfCopy workQueue];
+        v23 = [v21 schedulerWithDispatchQueue:workQueue2];
         v24 = [v20 lazyFutureWithBlock:v31 scheduler:v23];
 
-        [v14 addObject:v24];
+        [array addObject:v24];
       }
 
       v16 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -660,7 +660,7 @@ uint64_t __101__HMDPhotoLibraryPersonImporter__submitLogEventsForUpdatedPersonsW
     while (v16);
   }
 
-  v25 = [MEMORY[0x277D2C900] chainFutures:v14];
+  v25 = [MEMORY[0x277D2C900] chainFutures:array];
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -696,15 +696,15 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
   v14 = [v15 addCompletionBlock:v13];
 }
 
-- (id)_importPersonsUsingBatchChange:(id)a3
+- (id)_importPersonsUsingBatchChange:(id)change
 {
   v105 = *MEMORY[0x277D85DE8];
-  v80 = a3;
-  v4 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  changeCopy = change;
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -715,17 +715,17 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDPhotoLibraryPersonImporter *)v6 photoLibrary];
-  [v9 fetchPersons];
+  photoLibrary = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibrary];
+  [photoLibrary fetchPersons];
 
-  v10 = [(HMDPhotoLibraryPersonImporter *)v6 photoLibrary];
-  v11 = [v10 persons];
+  photoLibrary2 = [(HMDPhotoLibraryPersonImporter *)selfCopy photoLibrary];
+  persons = [photoLibrary2 persons];
 
   v12 = objc_autoreleasePoolPush();
-  v13 = v6;
+  v13 = selfCopy;
   v14 = HMFGetOSLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (persons)
   {
     if (v15)
     {
@@ -733,27 +733,27 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
       *buf = 138543618;
       v102 = v16;
       v103 = 2112;
-      v104 = v11;
+      v104 = persons;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Current Photo Library persons: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v18 = [MEMORY[0x277CBEB58] set];
     v19 = [MEMORY[0x277CBEB58] set];
-    v20 = [(HMDPhotoLibraryPersonImporter *)v13 dataSource];
+    dataSource = [(HMDPhotoLibraryPersonImporter *)v13 dataSource];
     v93[0] = MEMORY[0x277D85DD0];
     v93[1] = 3221225472;
     v93[2] = __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_invoke;
     v93[3] = &unk_27972A440;
     v21 = v19;
     v94 = v21;
-    v22 = v17;
+    v22 = dictionary;
     v95 = v22;
     v96 = v13;
     v71 = v18;
     v97 = v71;
-    [v20 enumeratePersonsUsingBlock:v93];
+    [dataSource enumeratePersonsUsingBlock:v93];
 
     v23 = objc_autoreleasePoolPush();
     v24 = v13;
@@ -761,24 +761,24 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v22 allValues];
+      allValues = [v22 allValues];
       *buf = 138543618;
       v102 = v26;
       v103 = 2112;
-      v104 = v27;
+      v104 = allValues;
       _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Previous HomeKit persons: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
     v79 = v24;
-    [(HMDPhotoLibraryPersonImporter *)v24 _submitLogEventsForUpdatedPersonsWithCurrentPersons:v11 previousPersons:v21];
-    v78 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v11, "count")}];
+    [(HMDPhotoLibraryPersonImporter *)v24 _submitLogEventsForUpdatedPersonsWithCurrentPersons:persons previousPersons:v21];
+    v78 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(persons, "count")}];
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v73 = v11;
-    obj = v11;
+    v73 = persons;
+    obj = persons;
     v28 = [obj countByEnumeratingWithState:&v89 objects:v100 count:16];
     v74 = v22;
     if (v28)
@@ -795,24 +795,24 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
           }
 
           v32 = *(*(&v89 + 1) + 8 * i);
-          v33 = [v32 UUID];
-          v34 = [v22 objectForKeyedSubscript:v33];
+          uUID = [v32 UUID];
+          v34 = [v22 objectForKeyedSubscript:uUID];
 
           if ([v21 containsObject:v32])
           {
-            v35 = [v34 mutableCopy];
-            v36 = [v32 UUID];
-            [v35 setExternalPersonUUID:v36];
+            createHMPerson = [v34 mutableCopy];
+            uUID2 = [v32 UUID];
+            [createHMPerson setExternalPersonUUID:uUID2];
 
-            [v78 addObject:v35];
+            [v78 addObject:createHMPerson];
             goto LABEL_22;
           }
 
           if (v34)
           {
-            v35 = [v34 mutableCopy];
-            [v32 updateHMPerson:v35];
-            [v78 addObject:v35];
+            createHMPerson = [v34 mutableCopy];
+            [v32 updateHMPerson:createHMPerson];
+            [v78 addObject:createHMPerson];
             v37 = objc_autoreleasePoolPush();
             v38 = v79;
             v39 = HMFGetOSLogHandle();
@@ -822,7 +822,7 @@ void __103__HMDPhotoLibraryPersonImporter__importFaceCropsForPersons_usingFaceCr
               *buf = 138543618;
               v102 = v40;
               v103 = 2112;
-              v104 = v35;
+              v104 = createHMPerson;
               v41 = v39;
               v42 = "%{public}@Updating person: %@";
 LABEL_20:
@@ -834,8 +834,8 @@ LABEL_20:
 
           else
           {
-            v35 = [v32 createHMPerson];
-            [v78 addObject:v35];
+            createHMPerson = [v32 createHMPerson];
+            [v78 addObject:createHMPerson];
             v37 = objc_autoreleasePoolPush();
             v38 = v79;
             v39 = HMFGetOSLogHandle();
@@ -845,7 +845,7 @@ LABEL_20:
               *buf = 138543618;
               v102 = v40;
               v103 = 2112;
-              v104 = v35;
+              v104 = createHMPerson;
               v41 = v39;
               v42 = "%{public}@Adding person: %@";
               goto LABEL_20;
@@ -853,7 +853,7 @@ LABEL_20:
           }
 
           objc_autoreleasePoolPop(v37);
-          [v80 addOrUpdatePerson:v35];
+          [changeCopy addOrUpdatePerson:createHMPerson];
 LABEL_22:
         }
 
@@ -870,8 +870,8 @@ LABEL_22:
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v75 = [v22 allValues];
-    v43 = [v75 countByEnumeratingWithState:&v85 objects:v99 count:16];
+    allValues2 = [v22 allValues];
+    v43 = [allValues2 countByEnumeratingWithState:&v85 objects:v99 count:16];
     if (v43)
     {
       v44 = v43;
@@ -882,13 +882,13 @@ LABEL_22:
         {
           if (*v86 != v45)
           {
-            objc_enumerationMutation(v75);
+            objc_enumerationMutation(allValues2);
           }
 
           v47 = *(*(&v85 + 1) + 8 * j);
           v48 = [[HMDPhotoLibraryPerson alloc] initWithHMPerson:v47];
-          v49 = [(HMDPhotoLibraryPerson *)v48 UUID];
-          v50 = [obja containsObject:v49];
+          uUID3 = [(HMDPhotoLibraryPerson *)v48 UUID];
+          v50 = [obja containsObject:uUID3];
 
           if ((v50 & 1) == 0)
           {
@@ -906,12 +906,12 @@ LABEL_22:
             }
 
             objc_autoreleasePoolPop(v51);
-            v55 = [v47 UUID];
-            [v80 removePersonWithUUID:v55];
+            uUID4 = [v47 UUID];
+            [changeCopy removePersonWithUUID:uUID4];
           }
         }
 
-        v44 = [v75 countByEnumeratingWithState:&v85 objects:v99 count:16];
+        v44 = [allValues2 countByEnumeratingWithState:&v85 objects:v99 count:16];
       }
 
       while (v44);
@@ -951,8 +951,8 @@ LABEL_22:
           }
 
           objc_autoreleasePoolPop(v62);
-          v66 = [v61 UUID];
-          [v80 removePersonWithUUID:v66];
+          uUID5 = [v61 UUID];
+          [changeCopy removePersonWithUUID:uUID5];
         }
 
         v58 = [v56 countByEnumeratingWithState:&v81 objects:v98 count:16];
@@ -962,7 +962,7 @@ LABEL_22:
     }
 
     v67 = [v78 copy];
-    v11 = v73;
+    persons = v73;
   }
 
   else
@@ -1058,20 +1058,20 @@ void __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_
 - (void)_import
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibraryPersonImporter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibraryPersonImporter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDPhotoLibraryPersonImporter *)self dataSource];
-  v5 = v4;
-  if (v4)
+  dataSource = [(HMDPhotoLibraryPersonImporter *)self dataSource];
+  v5 = dataSource;
+  if (dataSource)
   {
-    v6 = [v4 createBatchChange];
-    if (v6)
+    createBatchChange = [dataSource createBatchChange];
+    if (createBatchChange)
     {
       if ([(HMDPhotoLibraryPersonImporter *)self hasActiveImport])
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = self;
+        selfCopy = self;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
@@ -1082,14 +1082,14 @@ void __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_
         }
 
         objc_autoreleasePoolPop(v7);
-        [(HMDPhotoLibraryPersonImporter *)v8 setHasQueuedImport:1];
+        [(HMDPhotoLibraryPersonImporter *)selfCopy setHasQueuedImport:1];
       }
 
       else
       {
         [(HMDPhotoLibraryPersonImporter *)self setHasActiveImport:1];
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy2 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
@@ -1100,31 +1100,31 @@ void __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_
         }
 
         objc_autoreleasePoolPop(v19);
-        v23 = [v5 fetchFaceCropUUIDsByPersonUUID];
+        fetchFaceCropUUIDsByPersonUUID = [v5 fetchFaceCropUUIDsByPersonUUID];
         v24 = MEMORY[0x277D2C938];
-        v25 = [(HMDPhotoLibraryPersonImporter *)v20 workQueue];
-        v26 = [v24 schedulerWithDispatchQueue:v25];
-        v27 = [v23 reschedule:v26];
+        workQueue2 = [(HMDPhotoLibraryPersonImporter *)selfCopy2 workQueue];
+        v26 = [v24 schedulerWithDispatchQueue:workQueue2];
+        v27 = [fetchFaceCropUUIDsByPersonUUID reschedule:v26];
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = __40__HMDPhotoLibraryPersonImporter__import__block_invoke;
         v36[3] = &unk_27972A418;
-        v36[4] = v20;
-        v28 = v6;
+        v36[4] = selfCopy2;
+        v28 = createBatchChange;
         v37 = v28;
         v29 = [v27 flatMap:v36];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __40__HMDPhotoLibraryPersonImporter__import__block_invoke_9;
         v34[3] = &unk_27972E868;
-        v34[4] = v20;
+        v34[4] = selfCopy2;
         v35 = v28;
         v30 = [v29 flatMap:v34];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __40__HMDPhotoLibraryPersonImporter__import__block_invoke_11;
         v33[3] = &unk_279733BC0;
-        v33[4] = v20;
+        v33[4] = selfCopy2;
         v31 = [v30 addCompletionBlock:v33];
       }
     }
@@ -1132,7 +1132,7 @@ void __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy3 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -1149,7 +1149,7 @@ void __64__HMDPhotoLibraryPersonImporter__importPersonsUsingBatchChange___block_
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy4 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -1360,33 +1360,33 @@ void __40__HMDPhotoLibraryPersonImporter__import__block_invoke_11(uint64_t a1, v
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)a3 fmfHandler:(id)a4 photoLibrary:(id)a5 workQueue:(id)a6 cloudPhotosSettingObserver:(id)a7 logEventSubmitter:(id)a8
+- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)d fmfHandler:(id)handler photoLibrary:(id)library workQueue:(id)queue cloudPhotosSettingObserver:(id)observer logEventSubmitter:(id)submitter
 {
-  v25 = a3;
-  v24 = a4;
-  v15 = a5;
-  v16 = a6;
-  v23 = a7;
-  v17 = a8;
+  dCopy = d;
+  handlerCopy = handler;
+  libraryCopy = library;
+  queueCopy = queue;
+  observerCopy = observer;
+  submitterCopy = submitter;
   v30.receiver = self;
   v30.super_class = HMDPhotoLibraryPersonImporter;
   v18 = [(HMDPhotoLibraryPersonImporter *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_UUID, a3);
-    objc_storeStrong(&v19->_workQueue, a6);
-    objc_storeStrong(&v19->_fmfHandler, a4);
-    objc_storeStrong(&v19->_photoLibrary, a5);
-    objc_storeStrong(&v19->_cloudPhotosSettingObserver, a7);
-    objc_storeStrong(&v19->_logEventSubmitter, a8);
+    objc_storeStrong(&v18->_UUID, d);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeStrong(&v19->_fmfHandler, handler);
+    objc_storeStrong(&v19->_photoLibrary, library);
+    objc_storeStrong(&v19->_cloudPhotosSettingObserver, observer);
+    objc_storeStrong(&v19->_logEventSubmitter, submitter);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __125__HMDPhotoLibraryPersonImporter_initWithUUID_fmfHandler_photoLibrary_workQueue_cloudPhotosSettingObserver_logEventSubmitter___block_invoke;
     aBlock[3] = &unk_27972A3F0;
-    v27 = v25;
-    v28 = v16;
-    v29 = v15;
+    v27 = dCopy;
+    v28 = queueCopy;
+    v29 = libraryCopy;
     v20 = _Block_copy(aBlock);
     photoLibraryObserverFactory = v19->_photoLibraryObserverFactory;
     v19->_photoLibraryObserverFactory = v20;
@@ -1402,17 +1402,17 @@ HMDPhotoLibraryObserver *__125__HMDPhotoLibraryPersonImporter_initWithUUID_fmfHa
   return v1;
 }
 
-- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)a3
+- (HMDPhotoLibraryPersonImporter)initWithUUID:(id)d
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v6 = a3;
+  dCopy = d;
   v7 = dispatch_queue_create("com.apple.homed.photos.person.importer", v5);
 
   v8 = [[HMDPhotoLibrary alloc] initWithWorkQueue:v7];
   v9 = +[HMDFMFHandlerFactory sharedHandler];
   v10 = +[HMDCloudPhotosSettingObserver sharedInstance];
   v11 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v12 = [(HMDPhotoLibraryPersonImporter *)self initWithUUID:v6 fmfHandler:v9 photoLibrary:v8 workQueue:v7 cloudPhotosSettingObserver:v10 logEventSubmitter:v11];
+  v12 = [(HMDPhotoLibraryPersonImporter *)self initWithUUID:dCopy fmfHandler:v9 photoLibrary:v8 workQueue:v7 cloudPhotosSettingObserver:v10 logEventSubmitter:v11];
 
   return v12;
 }

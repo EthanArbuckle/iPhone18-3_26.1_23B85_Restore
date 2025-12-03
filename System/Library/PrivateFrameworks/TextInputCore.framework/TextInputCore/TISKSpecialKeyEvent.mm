@@ -6,20 +6,20 @@
 
 - (id)description
 {
-  v3 = [(TISKInputEvent *)self input];
-  v4 = [v3 string];
-  if ([v4 isEqualToString:@"\n"])
+  input = [(TISKInputEvent *)self input];
+  string = [input string];
+  if ([string isEqualToString:@"\n"])
   {
-    v5 = @"NL";
+    string2 = @"NL";
   }
 
   else
   {
-    v6 = [(TISKInputEvent *)self input];
-    v5 = [v6 string];
+    input2 = [(TISKInputEvent *)self input];
+    string2 = [input2 string];
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"spl-%@", v5];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"spl-%@", string2];
 
   return v7;
 }

@@ -30,7 +30,7 @@
 - (NSURLResponse)response;
 - (NSUUID)_connectionIdentifier;
 - (id)_establishmentReport;
-- (id)initWithTransactionMetadata:(void *)a3 clientMetadata:;
+- (id)initWithTransactionMetadata:(void *)metadata clientMetadata:;
 - (id)remoteEndpoint;
 - (int)_privacyStance;
 - (int64_t)countOfRequestBodyBytesBeforeEncoding;
@@ -1018,7 +1018,7 @@ LABEL_12:
 
 - (NSNumber)negotiatedTLSCipherSuite
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -1136,9 +1136,9 @@ LABEL_27:
   if (!v9)
   {
 LABEL_30:
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1169,7 +1169,7 @@ LABEL_36:
 
 - (NSNumber)negotiatedTLSProtocolVersion
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -1287,9 +1287,9 @@ LABEL_27:
   if (!v9)
   {
 LABEL_30:
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1320,9 +1320,9 @@ LABEL_36:
 
 - (NSNumber)remotePort
 {
-  v2 = [(NWURLSessionTaskTransactionMetrics *)self remoteEndpoint];
-  v3 = v2;
-  if (v2 && (v4 = v2, type = _nw_endpoint_get_type(v4), v4, type == 1))
+  remoteEndpoint = [(NWURLSessionTaskTransactionMetrics *)self remoteEndpoint];
+  v3 = remoteEndpoint;
+  if (remoteEndpoint && (v4 = remoteEndpoint, type = _nw_endpoint_get_type(v4), v4, type == 1))
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = v4;
@@ -1342,9 +1342,9 @@ LABEL_36:
 - (id)remoteEndpoint
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    connection_metadata = nw_http_transaction_metadata_get_connection_metadata(*(a1 + 104));
+    connection_metadata = nw_http_transaction_metadata_get_connection_metadata(*(self + 104));
     v2 = connection_metadata;
     if (!connection_metadata)
     {
@@ -1497,9 +1497,9 @@ LABEL_15:
 
 - (NSString)remoteAddress
 {
-  v2 = [(NWURLSessionTaskTransactionMetrics *)self remoteEndpoint];
-  v3 = v2;
-  if (v2 && (v4 = v2, type = _nw_endpoint_get_type(v4), v4, type == 1))
+  remoteEndpoint = [(NWURLSessionTaskTransactionMetrics *)self remoteEndpoint];
+  v3 = remoteEndpoint;
+  if (remoteEndpoint && (v4 = remoteEndpoint, type = _nw_endpoint_get_type(v4), v4, type == 1))
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = v4;
@@ -1650,7 +1650,7 @@ LABEL_8:
 
 - (BOOL)isReusedConnection
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -1659,9 +1659,9 @@ LABEL_8:
   connection_metadata = nw_http_transaction_metadata_get_connection_metadata(self);
   if (connection_metadata)
   {
-    if (v2)
+    if (selfCopy)
     {
-      transactionMetadata = v2->_transactionMetadata;
+      transactionMetadata = selfCopy->_transactionMetadata;
     }
 
     else
@@ -1705,7 +1705,7 @@ LABEL_8:
 
 - (NSString)networkProtocolName
 {
-  v2 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -1827,9 +1827,9 @@ LABEL_27:
   }
 
 LABEL_30:
-  if (v2)
+  if (selfCopy)
   {
-    clientMetadata = v2->_clientMetadata;
+    clientMetadata = selfCopy->_clientMetadata;
   }
 
   else
@@ -1872,7 +1872,7 @@ LABEL_40:
 
 - (NSDate)responseEndDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -1882,9 +1882,9 @@ LABEL_40:
   if (inbound_message_end_time)
   {
     v4 = inbound_message_end_time;
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1900,7 +1900,7 @@ LABEL_40:
 
 - (NSDate)responseStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -1910,9 +1910,9 @@ LABEL_40:
   if (inbound_message_start_time)
   {
     v4 = inbound_message_start_time;
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1928,7 +1928,7 @@ LABEL_40:
 
 - (NSDate)requestEndDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -1938,9 +1938,9 @@ LABEL_40:
   if (outbound_message_end_time)
   {
     v4 = outbound_message_end_time;
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1956,7 +1956,7 @@ LABEL_40:
 
 - (NSDate)requestStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -1966,9 +1966,9 @@ LABEL_40:
   if (outbound_message_start_time)
   {
     v4 = outbound_message_start_time;
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -1984,18 +1984,18 @@ LABEL_40:
 
 - (NSDate)connectEndDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid))
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid))
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + (v2->connectionTiming.connectDurationMS + v2->connectionTiming.connectStartTimeMS) * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + (selfCopy->connectionTiming.connectDurationMS + selfCopy->connectionTiming.connectStartTimeMS) * 0.001}];
     }
   }
 
@@ -2010,9 +2010,9 @@ LABEL_40:
 - (void)computeConnectionTiming
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 97) & 1) == 0)
+  if (self && (*(self + 97) & 1) == 0)
   {
-    connection_metadata = nw_http_transaction_metadata_get_connection_metadata(*(a1 + 104));
+    connection_metadata = nw_http_transaction_metadata_get_connection_metadata(*(self + 104));
     v3 = connection_metadata;
     if (!connection_metadata)
     {
@@ -2033,13 +2033,13 @@ LABEL_19:
     attempt_started_after_milliseconds = nw_establishment_report_get_attempt_started_after_milliseconds(establishment_report);
     resolution_started_after_milliseconds = nw_establishment_report_get_resolution_started_after_milliseconds(v5);
     flow_started_after_milliseconds = nw_establishment_report_get_flow_started_after_milliseconds(v5);
-    *(a1 + 56) = resolution_started_after_milliseconds + attempt_started_after_milliseconds;
-    *(a1 + 72) = flow_started_after_milliseconds + attempt_started_after_milliseconds;
+    *(self + 56) = resolution_started_after_milliseconds + attempt_started_after_milliseconds;
+    *(self + 72) = flow_started_after_milliseconds + attempt_started_after_milliseconds;
     enumerate_block[0] = MEMORY[0x1E69E9820];
     enumerate_block[1] = 3221225472;
     enumerate_block[2] = __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block_invoke;
     enumerate_block[3] = &unk_1E6A2FED0;
-    enumerate_block[4] = a1;
+    enumerate_block[4] = self;
     nw_establishment_report_enumerate_resolution_reports(v5, enumerate_block);
     v23 = 0;
     v24 = &v23;
@@ -2083,14 +2083,14 @@ LABEL_19:
         }
       }
 
-      *(a1 + 88) = v20[3];
-      *(a1 + 96) = 1;
+      *(self + 88) = v20[3];
+      *(self + 96) = 1;
     }
 
 LABEL_12:
-    v14 = nw_establishment_report_get_duration_milliseconds(v5) - *(a1 + 72);
-    *(a1 + 80) = v14;
-    if (*(a1 + 88) > v14)
+    v14 = nw_establishment_report_get_duration_milliseconds(v5) - *(self + 72);
+    *(self + 80) = v14;
+    if (*(self + 88) > v14)
     {
       if (__nwlog_url_log::onceToken != -1)
       {
@@ -2100,8 +2100,8 @@ LABEL_12:
       v15 = gurlLogObj;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = *(a1 + 80);
-        v17 = *(a1 + 88);
+        v16 = *(self + 80);
+        v17 = *(self + 88);
         *buf = 134218240;
         v31 = v17;
         v32 = 2048;
@@ -2109,10 +2109,10 @@ LABEL_12:
         _os_log_impl(&dword_181A37000, v15, OS_LOG_TYPE_INFO, "TLS (%llu ms) took longer than connect (%llu ms)", buf, 0x16u);
       }
 
-      *(a1 + 88) = *(a1 + 80);
+      *(self + 88) = *(self + 80);
     }
 
-    *(a1 + 97) = 1;
+    *(self + 97) = 1;
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v23, 8);
 
@@ -2131,18 +2131,18 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)secureConnectionEndDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid) && v2->connectionTiming.secure)
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid) && selfCopy->connectionTiming.secure)
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + (v2->connectionTiming.connectDurationMS + v2->connectionTiming.connectStartTimeMS) * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + (selfCopy->connectionTiming.connectDurationMS + selfCopy->connectionTiming.connectStartTimeMS) * 0.001}];
     }
   }
 
@@ -2156,18 +2156,18 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)secureConnectionStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid) && v2->connectionTiming.secure)
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid) && selfCopy->connectionTiming.secure)
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + (v2->connectionTiming.connectDurationMS + v2->connectionTiming.connectStartTimeMS - v2->connectionTiming.secureConnectionDurationMS) * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + (selfCopy->connectionTiming.connectDurationMS + selfCopy->connectionTiming.connectStartTimeMS - selfCopy->connectionTiming.secureConnectionDurationMS) * 0.001}];
     }
   }
 
@@ -2181,18 +2181,18 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)connectStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid))
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid))
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + v2->connectionTiming.connectStartTimeMS * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + selfCopy->connectionTiming.connectStartTimeMS * 0.001}];
     }
   }
 
@@ -2206,18 +2206,18 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)domainLookupEndDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid))
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid))
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + (v2->connectionTiming.domainLookupDurationMS + v2->connectionTiming.domainLookupStartMS) * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + (selfCopy->connectionTiming.domainLookupDurationMS + selfCopy->connectionTiming.domainLookupStartMS) * 0.001}];
     }
   }
 
@@ -2231,18 +2231,18 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)domainLookupStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
   }
 
-  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)v2 computeConnectionTiming], v2->connectionTiming.valid))
+  if (nw_http_transaction_metadata_is_first_on_connection(self) && ([(NWURLSessionTaskTransactionMetrics *)selfCopy computeConnectionTiming], selfCopy->connectionTiming.valid))
   {
-    start_time = nw_http_transaction_metadata_get_start_time(v2->_transactionMetadata);
+    start_time = nw_http_transaction_metadata_get_start_time(selfCopy->_transactionMetadata);
     if (start_time)
     {
-      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(v2->_clientMetadata, start_time) + v2->connectionTiming.domainLookupStartMS * 0.001}];
+      start_time = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:{nw_http_client_metadata_convert_time_to_absolute(selfCopy->_clientMetadata, start_time) + selfCopy->connectionTiming.domainLookupStartMS * 0.001}];
     }
   }
 
@@ -2256,7 +2256,7 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
 
 - (NSDate)fetchStartDate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_transactionMetadata;
@@ -2266,9 +2266,9 @@ uint64_t __61__NWURLSessionTaskTransactionMetrics_computeConnectionTiming__block
   if (start_time)
   {
     v4 = start_time;
-    if (v2)
+    if (selfCopy)
     {
-      clientMetadata = v2->_clientMetadata;
+      clientMetadata = selfCopy->_clientMetadata;
     }
 
     else
@@ -2532,7 +2532,7 @@ LABEL_24:
 
 - (NSURLRequest)request
 {
-  v2 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -2554,7 +2554,7 @@ LABEL_24:
     }
   }
 
-  if (!v2 || (v9 = v2->_clientMetadata) == 0)
+  if (!selfCopy || (v9 = selfCopy->_clientMetadata) == 0)
   {
     v22 = __nwlog_obj();
     *buf = 136446210;
@@ -2737,24 +2737,24 @@ LABEL_15:
   return v8;
 }
 
-- (id)initWithTransactionMetadata:(void *)a3 clientMetadata:
+- (id)initWithTransactionMetadata:(void *)metadata clientMetadata:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = NWURLSessionTaskTransactionMetrics;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 13, a2);
-      objc_storeStrong(a1 + 14, a3);
+      objc_storeStrong(self + 14, metadata);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

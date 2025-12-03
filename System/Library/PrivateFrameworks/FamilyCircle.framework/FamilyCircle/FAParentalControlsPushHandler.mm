@@ -1,7 +1,7 @@
 @interface FAParentalControlsPushHandler
-- (BOOL)shouldProcess:(id)a3;
+- (BOOL)shouldProcess:(id)process;
 - (FAParentalControlsPushHandler)init;
-- (void)process:(id)a3;
+- (void)process:(id)process;
 @end
 
 @implementation FAParentalControlsPushHandler
@@ -16,12 +16,12 @@
   return [(FAParentalControlsPushHandler *)&v5 init];
 }
 
-- (BOOL)shouldProcess:(id)a3
+- (BOOL)shouldProcess:(id)process
 {
-  if (a3)
+  if (process)
   {
-    v3 = a3;
-    v4 = [v3 event];
+    processCopy = process;
+    event = [processCopy event];
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
 
@@ -46,11 +46,11 @@
   return self;
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
-  v5 = a3;
-  v6 = self;
-  ParentalControlsPushHandler.process(_:)(a3);
+  processCopy = process;
+  selfCopy = self;
+  ParentalControlsPushHandler.process(_:)(process);
 }
 
 @end

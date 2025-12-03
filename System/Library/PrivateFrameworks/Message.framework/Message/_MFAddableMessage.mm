@@ -1,30 +1,30 @@
 @interface _MFAddableMessage
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)isServerSearchResult;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (ECAngleBracketIDHash)messageIDHeaderHash;
 - (ECMailbox)mailbox;
-- (_MFAddableMessage)initWithLibraryMessage:(id)a3 messageIDHash:(int64_t)a4 mailboxURL:(id)a5;
-- (id)bestAlternativePart:(BOOL *)a3;
-- (id)bestAlternativePartAsData:(BOOL *)a3 usingEncoding:(unint64_t)a4;
+- (_MFAddableMessage)initWithLibraryMessage:(id)message messageIDHash:(int64_t)hash mailboxURL:(id)l;
+- (id)bestAlternativePart:(BOOL *)part;
+- (id)bestAlternativePartAsData:(BOOL *)data usingEncoding:(unint64_t)encoding;
 - (int64_t)messageIDHash;
 @end
 
 @implementation _MFAddableMessage
 
-- (_MFAddableMessage)initWithLibraryMessage:(id)a3 messageIDHash:(int64_t)a4 mailboxURL:(id)a5
+- (_MFAddableMessage)initWithLibraryMessage:(id)message messageIDHash:(int64_t)hash mailboxURL:(id)l
 {
-  v9 = a3;
-  v10 = a5;
+  messageCopy = message;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = _MFAddableMessage;
   v11 = [(_MFAddableMessage *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_libraryMessage, a3);
-    v12->_messageIDHash = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_libraryMessage, message);
+    v12->_messageIDHash = hash;
+    v13 = [lCopy copy];
     urlString = v12->_urlString;
     v12->_urlString = v13;
   }
@@ -37,8 +37,8 @@
   messageIDHash = self->_messageIDHash;
   if (!messageIDHash)
   {
-    v3 = [(_MFAddableMessage *)self libraryMessage];
-    messageIDHash = [v3 messageIDHash];
+    libraryMessage = [(_MFAddableMessage *)self libraryMessage];
+    messageIDHash = [libraryMessage messageIDHash];
   }
 
   return messageIDHash;
@@ -48,57 +48,57 @@
 {
   if (self->_messageIDHash)
   {
-    v2 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:self->_messageIDHash];
+    messageIDHeaderHash = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:self->_messageIDHash];
   }
 
   else
   {
-    v3 = [(_MFAddableMessage *)self libraryMessage];
-    v2 = [v3 messageIDHeaderHash];
+    libraryMessage = [(_MFAddableMessage *)self libraryMessage];
+    messageIDHeaderHash = [libraryMessage messageIDHeaderHash];
   }
 
-  return v2;
+  return messageIDHeaderHash;
 }
 
 - (ECMailbox)mailbox
 {
-  v3 = [(_MFAddableMessage *)self urlString];
+  urlString = [(_MFAddableMessage *)self urlString];
 
-  if (v3)
+  if (urlString)
   {
-    v4 = [(_MFAddableMessage *)self urlString];
-    [MailAccount mailboxUidFromActiveAccountsForURL:v4];
+    urlString2 = [(_MFAddableMessage *)self urlString];
+    [MailAccount mailboxUidFromActiveAccountsForURL:urlString2];
   }
 
   else
   {
-    v4 = [(_MFAddableMessage *)self libraryMessage];
-    [v4 mailbox];
+    urlString2 = [(_MFAddableMessage *)self libraryMessage];
+    [urlString2 mailbox];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)bestAlternativePart:(BOOL *)a3
+- (id)bestAlternativePart:(BOOL *)part
 {
-  v4 = [(_MFAddableMessage *)self libraryMessage];
-  v5 = [v4 bestAlternativePart:a3];
+  libraryMessage = [(_MFAddableMessage *)self libraryMessage];
+  v5 = [libraryMessage bestAlternativePart:part];
 
   return v5;
 }
 
-- (id)bestAlternativePartAsData:(BOOL *)a3 usingEncoding:(unint64_t)a4
+- (id)bestAlternativePartAsData:(BOOL *)data usingEncoding:(unint64_t)encoding
 {
-  v6 = [(_MFAddableMessage *)self libraryMessage];
-  v7 = [v6 bestAlternativePartAsData:a3 usingEncoding:a4];
+  libraryMessage = [(_MFAddableMessage *)self libraryMessage];
+  v7 = [libraryMessage bestAlternativePartAsData:data usingEncoding:encoding];
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(_MFAddableMessage *)self libraryMessage];
+  libraryMessage = [(_MFAddableMessage *)self libraryMessage];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
@@ -106,15 +106,15 @@
 
 - (BOOL)isServerSearchResult
 {
-  v2 = [(_MFAddableMessage *)self libraryMessage];
-  v3 = [v2 isServerSearchResult];
+  libraryMessage = [(_MFAddableMessage *)self libraryMessage];
+  isServerSearchResult = [libraryMessage isServerSearchResult];
 
-  return v3;
+  return isServerSearchResult;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  v3 = [(_MFAddableMessage *)self libraryMessage];
+  libraryMessage = [(_MFAddableMessage *)self libraryMessage];
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;

@@ -5,8 +5,8 @@
 - (BOOL)isReachable;
 - (BOOL)requiresThreadRouter;
 - (BOOL)supportsCHIP;
-- (HMDUnpairedHAPAccessory)initWithAccessoryServer:(id)a3 messageDispatcher:(id)a4;
-- (HMDUnpairedHAPAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6;
+- (HMDUnpairedHAPAccessory)initWithAccessoryServer:(id)server messageDispatcher:(id)dispatcher;
+- (HMDUnpairedHAPAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher;
 - (NSArray)accessoryServers;
 - (id)commissioningID;
 - (id)dumpDescription;
@@ -18,9 +18,9 @@
 - (id)serialNumber;
 - (id)vendorID;
 - (unint64_t)transportTypes;
-- (void)addAccessoryServer:(id)a3;
-- (void)identifyWithCompletionHandler:(id)a3;
-- (void)removeAccessoryServer:(id)a3;
+- (void)addAccessoryServer:(id)server;
+- (void)identifyWithCompletionHandler:(id)handler;
+- (void)removeAccessoryServer:(id)server;
 @end
 
 @implementation HMDUnpairedHAPAccessory
@@ -32,32 +32,32 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  matterDeviceTypeID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (matterDeviceTypeID2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != matterDeviceTypeID2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 matterDeviceTypeID];
+        matterDeviceTypeID = [v6 matterDeviceTypeID];
 
-        if (v7)
+        if (matterDeviceTypeID)
         {
-          v3 = [v6 matterDeviceTypeID];
+          matterDeviceTypeID2 = [v6 matterDeviceTypeID];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      matterDeviceTypeID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (matterDeviceTypeID2)
       {
         continue;
       }
@@ -70,7 +70,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return matterDeviceTypeID2;
 }
 
 - (BOOL)requiresThreadRouter
@@ -80,8 +80,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -91,7 +91,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) requiresThreadRouter])
@@ -101,7 +101,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -124,35 +124,35 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  serialNumber2 = [accessoryServers countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (serialNumber2)
   {
     v4 = *v13;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != serialNumber2; i = i + 1)
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 primaryAccessory];
-        v8 = [v7 serialNumber];
+        primaryAccessory = [v6 primaryAccessory];
+        serialNumber = [primaryAccessory serialNumber];
 
-        if (v8)
+        if (serialNumber)
         {
-          v9 = [v6 primaryAccessory];
-          v3 = [v9 serialNumber];
+          primaryAccessory2 = [v6 primaryAccessory];
+          serialNumber2 = [primaryAccessory2 serialNumber];
 
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v3)
+      serialNumber2 = [accessoryServers countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (serialNumber2)
       {
         continue;
       }
@@ -165,7 +165,7 @@ LABEL_11:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return serialNumber2;
 }
 
 - (id)productID
@@ -175,32 +175,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  productID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (productID2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != productID2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 productID];
+        productID = [v6 productID];
 
-        if (v7)
+        if (productID)
         {
-          v3 = [v6 productID];
+          productID2 = [v6 productID];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      productID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (productID2)
       {
         continue;
       }
@@ -213,7 +213,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return productID2;
 }
 
 - (id)vendorID
@@ -223,32 +223,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  vendorID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (vendorID2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != vendorID2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 vendorID];
+        vendorID = [v6 vendorID];
 
-        if (v7)
+        if (vendorID)
         {
-          v3 = [v6 vendorID];
+          vendorID2 = [v6 vendorID];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      vendorID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (vendorID2)
       {
         continue;
       }
@@ -261,7 +261,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return vendorID2;
 }
 
 - (id)commissioningID
@@ -271,32 +271,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  commissioningID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (commissioningID2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != commissioningID2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 commissioningID];
+        commissioningID = [v6 commissioningID];
 
-        if (v7)
+        if (commissioningID)
         {
-          v3 = [v6 commissioningID];
+          commissioningID2 = [v6 commissioningID];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      commissioningID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (commissioningID2)
       {
         continue;
       }
@@ -309,7 +309,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return commissioningID2;
 }
 
 - (id)nodeID
@@ -319,32 +319,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  nodeID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (nodeID2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != nodeID2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 nodeID];
+        nodeID = [v6 nodeID];
 
-        if (v7)
+        if (nodeID)
         {
-          v3 = [v6 nodeID];
+          nodeID2 = [v6 nodeID];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      nodeID2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (nodeID2)
       {
         continue;
       }
@@ -357,7 +357,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return nodeID2;
 }
 
 - (id)rootPublicKey
@@ -367,32 +367,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  rootPublicKey2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (rootPublicKey2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != rootPublicKey2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 rootPublicKey];
+        rootPublicKey = [v6 rootPublicKey];
 
-        if (v7)
+        if (rootPublicKey)
         {
-          v3 = [v6 rootPublicKey];
+          rootPublicKey2 = [v6 rootPublicKey];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      rootPublicKey2 = [accessoryServers countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (rootPublicKey2)
       {
         continue;
       }
@@ -405,7 +405,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return rootPublicKey2;
 }
 
 - (BOOL)isKnownToSystemCommissioner
@@ -415,8 +415,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -426,7 +426,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isKnownToSystemCommissioner])
@@ -436,7 +436,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -455,14 +455,14 @@ LABEL_11:
 - (BOOL)supportsCHIP
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  if ([v3 count])
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  if ([accessoryServers count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = accessoryServers;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -480,7 +480,7 @@ LABEL_11:
           if ([*(*(&v12 + 1) + 8 * i) communicationProtocol] == 2)
           {
 
-            v9 = 1;
+            initializedAsMatter = 1;
             goto LABEL_13;
           }
         }
@@ -495,18 +495,18 @@ LABEL_11:
       }
     }
 
-    v9 = 0;
+    initializedAsMatter = 0;
   }
 
   else
   {
-    v9 = [(HMDUnpairedHAPAccessory *)self initializedAsMatter];
+    initializedAsMatter = [(HMDUnpairedHAPAccessory *)self initializedAsMatter];
   }
 
 LABEL_13:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return initializedAsMatter;
 }
 
 - (BOOL)hasIPLink
@@ -516,8 +516,8 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -528,7 +528,7 @@ LABEL_13:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
@@ -563,7 +563,7 @@ LABEL_19:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [accessoryServers countByEnumeratingWithState:&v13 objects:v17 count:16];
       v10 = 0;
       if (v4)
       {
@@ -592,8 +592,8 @@ LABEL_20:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -603,7 +603,7 @@ LABEL_20:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) linkType] == 2)
@@ -613,7 +613,7 @@ LABEL_20:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [accessoryServers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -636,8 +636,8 @@ LABEL_11:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v3)
   {
     v5 = v3;
@@ -652,17 +652,17 @@ LABEL_11:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessoryServers);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 linkType];
-        if (v11 == 2)
+        linkType = [v10 linkType];
+        if (linkType == 2)
         {
           v6 |= 2uLL;
         }
 
-        else if (v11 == 1)
+        else if (linkType == 1)
         {
           v12 = *(v8 + 2624);
           v13 = v10;
@@ -679,8 +679,8 @@ LABEL_11:
 
           v15 = v14;
 
-          v16 = [v15 isWacAccessory];
-          if (v16)
+          isWacAccessory = [v15 isWacAccessory];
+          if (isWacAccessory)
           {
             v17 = 9;
           }
@@ -702,11 +702,11 @@ LABEL_11:
           {
             HMFGetLogIdentifier();
             v22 = v21 = v8;
-            v23 = [v19 linkType];
+            linkType2 = [v19 linkType];
             *buf = v26;
             v32 = v22;
             v33 = 2048;
-            v34 = v23;
+            v34 = linkType2;
             _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Unhandled linkType: %tu", buf, 0x16u);
 
             v8 = v21;
@@ -716,7 +716,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v5 = [accessoryServers countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v5);
@@ -738,8 +738,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -752,7 +752,7 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(accessoryServers);
       }
 
       v5 = *(*(&v11 + 1) + 8 * v7);
@@ -766,7 +766,7 @@ LABEL_3:
       v8 = v5;
       if (v4 == v7)
       {
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [accessoryServers countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -787,12 +787,12 @@ LABEL_3:
   return v5;
 }
 
-- (void)removeAccessoryServer:(id)a3
+- (void)removeAccessoryServer:(id)server
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v4 linkType];
+  linkType = [serverCopy linkType];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -812,7 +812,7 @@ LABEL_3:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v5 == [v10 linkType])
+        if (linkType == [v10 linkType])
         {
           [(NSMutableArray *)self->_accessoryServers removeObject:v10];
           goto LABEL_11;
@@ -835,12 +835,12 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAccessoryServer:(id)a3
+- (void)addAccessoryServer:(id)server
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v4 linkType];
+  linkType = [serverCopy linkType];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -860,7 +860,7 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if (v5 == [v10 linkType])
+        if (linkType == [v10 linkType])
         {
           [(NSMutableArray *)self->_accessoryServers removeObject:v10];
         }
@@ -872,12 +872,12 @@ LABEL_11:
     while (v7);
   }
 
-  [(NSMutableArray *)self->_accessoryServers addObject:v4];
-  v11 = [v4 category];
-  [(HMDUnassociatedAccessory *)self updateCategoryWithCategoryIdentifier:v11];
+  [(NSMutableArray *)self->_accessoryServers addObject:serverCopy];
+  category = [serverCopy category];
+  [(HMDUnassociatedAccessory *)self updateCategoryWithCategoryIdentifier:category];
 
-  v12 = [v4 matterDeviceTypeID];
-  [(HMDUnassociatedAccessory *)self setMatterDeviceTypeID:v12];
+  matterDeviceTypeID = [serverCopy matterDeviceTypeID];
+  [(HMDUnassociatedAccessory *)self setMatterDeviceTypeID:matterDeviceTypeID];
 
   os_unfair_recursive_lock_unlock();
   v13 = *MEMORY[0x277D85DE8];
@@ -892,15 +892,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)identifyWithCompletionHandler:(id)a3
+- (void)identifyWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUnpairedHAPAccessory *)self preferredAccessoryServer];
-  if (v5)
+  handlerCopy = handler;
+  preferredAccessoryServer = [(HMDUnpairedHAPAccessory *)self preferredAccessoryServer];
+  if (preferredAccessoryServer)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -911,23 +911,23 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v6);
-    objc_initWeak(buf, v7);
+    objc_initWeak(buf, selfCopy);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke;
     v12[3] = &unk_278686D60;
     objc_copyWeak(&v14, buf);
-    v13 = v4;
-    [v5 identifyWithCompletion:v12];
+    v13 = handlerCopy;
+    [preferredAccessoryServer identifyWithCompletion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:4 userInfo:0];
-    (*(v4 + 2))(v4, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -963,8 +963,8 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
 
 - (BOOL)isReachable
 {
-  v2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v3 = [v2 count] != 0;
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v3 = [accessoryServers count] != 0;
 
   return v3;
 }
@@ -974,30 +974,30 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
   v32 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = HMDUnpairedHAPAccessory;
-  v3 = [(HMDUnassociatedAccessory *)&v30 dumpDescription];
-  v4 = [v3 mutableCopy];
+  dumpDescription = [(HMDUnassociatedAccessory *)&v30 dumpDescription];
+  v4 = [dumpDescription mutableCopy];
 
   v5 = *MEMORY[0x277D0F170];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0F170]];
   v7 = [v6 mutableCopy];
 
-  v8 = [(HMDUnpairedHAPAccessory *)self setupHash];
+  setupHash = [(HMDUnpairedHAPAccessory *)self setupHash];
   [(HMDUnpairedHAPAccessory *)self transportTypes];
   v9 = HMAccessoryTransportTypesToString();
-  [v7 appendFormat:@"  setupHash %@  transportTypes %@  linkType ", v8, v9];
+  [v7 appendFormat:@"  setupHash %@  transportTypes %@  linkType ", setupHash, v9];
 
   v25 = v4;
   [v4 setObject:v7 forKey:v5];
   v10 = MEMORY[0x277CBEB18];
-  v11 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  accessoryServers = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(accessoryServers, "count")}];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
-  v14 = [v13 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  accessoryServers2 = [(HMDUnpairedHAPAccessory *)self accessoryServers];
+  v14 = [accessoryServers2 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1008,15 +1008,15 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
       {
         if (*v27 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(accessoryServers2);
         }
 
         v18 = MEMORY[0x277CCACA8];
-        v19 = [*(*(&v26 + 1) + 8 * i) linkType];
+        linkType = [*(*(&v26 + 1) + 8 * i) linkType];
         v20 = @"Undefined";
-        if (v19 <= 2)
+        if (linkType <= 2)
         {
-          v20 = off_2786768F0[v19];
+          v20 = off_2786768F0[linkType];
         }
 
         v21 = v20;
@@ -1024,7 +1024,7 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
         [v12 addObject:v22];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v15 = [accessoryServers2 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v15);
@@ -1040,16 +1040,16 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
   return v25;
 }
 
-- (HMDUnpairedHAPAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6
+- (HMDUnpairedHAPAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher
 {
   v10.receiver = self;
   v10.super_class = HMDUnpairedHAPAccessory;
-  v6 = [(HMDUnassociatedAccessory *)&v10 initWithIdentifier:a3 name:a4 category:a5 messageDispatcher:a6];
+  v6 = [(HMDUnassociatedAccessory *)&v10 initWithIdentifier:identifier name:name category:category messageDispatcher:dispatcher];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     accessoryServers = v6->_accessoryServers;
-    v6->_accessoryServers = v7;
+    v6->_accessoryServers = array;
 
     v6->_certificationStatus = 0;
     v6->_linkType = 0;
@@ -1058,28 +1058,28 @@ void __57__HMDUnpairedHAPAccessory_identifyWithCompletionHandler___block_invoke(
   return v6;
 }
 
-- (HMDUnpairedHAPAccessory)initWithAccessoryServer:(id)a3 messageDispatcher:(id)a4
+- (HMDUnpairedHAPAccessory)initWithAccessoryServer:(id)server messageDispatcher:(id)dispatcher
 {
-  v6 = a3;
+  serverCopy = server;
   v7 = MEMORY[0x277CD1680];
-  v8 = a4;
-  v9 = [v6 category];
-  v10 = [v7 categoryWithCategoryIdentifier:v9];
+  dispatcherCopy = dispatcher;
+  category = [serverCopy category];
+  v10 = [v7 categoryWithCategoryIdentifier:category];
 
-  v11 = [v6 identifier];
-  v12 = [v6 name];
-  v13 = [(HMDUnpairedHAPAccessory *)self initWithIdentifier:v11 name:v12 category:v10 messageDispatcher:v8];
+  identifier = [serverCopy identifier];
+  name = [serverCopy name];
+  v13 = [(HMDUnpairedHAPAccessory *)self initWithIdentifier:identifier name:name category:v10 messageDispatcher:dispatcherCopy];
 
   if (v13)
   {
-    [(NSMutableArray *)v13->_accessoryServers addObject:v6];
-    v14 = [v6 setupHash];
-    v15 = [v14 copy];
+    [(NSMutableArray *)v13->_accessoryServers addObject:serverCopy];
+    setupHash = [serverCopy setupHash];
+    v15 = [setupHash copy];
     setupHash = v13->_setupHash;
     v13->_setupHash = v15;
 
-    v13->_linkType = [v6 linkType];
-    v13->_initializedAsMatter = [v6 communicationProtocol] == 2;
+    v13->_linkType = [serverCopy linkType];
+    v13->_initializedAsMatter = [serverCopy communicationProtocol] == 2;
   }
 
   return v13;

@@ -2,12 +2,12 @@
 + (BOOL)EDUMode;
 + (id)sharedStakeholder;
 - (NDUserSyncStakeholder)init;
-- (id)startUMTask:(id)a3 taskInfo:(id)a4;
-- (void)endBridgingUMTask:(id)a3;
-- (void)endUMTask:(id)a3;
-- (void)restoredTaskActive:(id)a3;
-- (void)restoredTaskEnqueued:(id)a3;
-- (void)startBridgingUMTask:(id)a3;
+- (id)startUMTask:(id)task taskInfo:(id)info;
+- (void)endBridgingUMTask:(id)task;
+- (void)endUMTask:(id)task;
+- (void)restoredTaskActive:(id)active;
+- (void)restoredTaskEnqueued:(id)enqueued;
+- (void)startBridgingUMTask:(id)task;
 - (void)tasksHaveBeenEnqueued;
 - (void)uploadContent;
 @end
@@ -29,9 +29,9 @@
 + (BOOL)EDUMode
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isMultiUser];
+  isMultiUser = [v2 isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
 - (void)tasksHaveBeenEnqueued
@@ -50,12 +50,12 @@
   os_unfair_lock_unlock(&self->_monitorTaskLock);
 }
 
-- (void)restoredTaskActive:(id)a3
+- (void)restoredTaskActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if (!self->_tasksInitialized)
   {
-    v6 = v4;
+    v6 = activeCopy;
     os_unfair_lock_lock(&self->_monitorTaskLock);
     [(NSMutableSet *)self->_monitorTaskSet removeObject:v6];
     if (![(NSMutableSet *)self->_monitorTaskSet count]&& self->_tasksEnqueued)
@@ -68,20 +68,20 @@
     }
 
     os_unfair_lock_unlock(&self->_monitorTaskLock);
-    v4 = v6;
+    activeCopy = v6;
   }
 }
 
-- (void)restoredTaskEnqueued:(id)a3
+- (void)restoredTaskEnqueued:(id)enqueued
 {
-  v4 = a3;
+  enqueuedCopy = enqueued;
   if (!self->_tasksInitialized)
   {
-    v5 = v4;
+    v5 = enqueuedCopy;
     os_unfair_lock_lock(&self->_monitorTaskLock);
     [(NSMutableSet *)self->_monitorTaskSet addObject:v5];
     os_unfair_lock_unlock(&self->_monitorTaskLock);
-    v4 = v5;
+    enqueuedCopy = v5;
   }
 }
 
@@ -100,19 +100,19 @@
   os_unfair_lock_unlock(&self->_monitorTaskLock);
 }
 
-- (void)endUMTask:(id)a3
+- (void)endUMTask:(id)task
 {
-  v4 = a3;
-  if (v4)
+  taskCopy = task;
+  if (taskCopy)
   {
     os_unfair_lock_lock(&self->_activeTasksLock);
-    [(NSMutableSet *)self->_activeTasks removeObject:v4];
+    [(NSMutableSet *)self->_activeTasks removeObject:taskCopy];
     os_unfair_lock_unlock(&self->_activeTasksLock);
-    [v4 end];
+    [taskCopy end];
     v5 = +[NSURLCredentialStorage sharedCredentialStorage];
-    v6 = [v5 allCredentials];
+    allCredentials = [v5 allCredentials];
 
-    if (v6)
+    if (allCredentials)
     {
       v7 = +[NSMutableSet set];
       os_unfair_lock_lock(&self->_activeTasksLock);
@@ -135,8 +135,8 @@
               objc_enumerationMutation(v8);
             }
 
-            v12 = [*(*(&v16 + 1) + 8 * v11) bundleID];
-            [v7 addObject:v12];
+            bundleID = [*(*(&v16 + 1) + 8 * v11) bundleID];
+            [v7 addObject:bundleID];
 
             v11 = v11 + 1;
           }
@@ -155,31 +155,31 @@
       v14[3] = &unk_1000D5AA8;
       v13 = v7;
       v15 = v13;
-      [v6 enumerateKeysAndObjectsUsingBlock:v14];
+      [allCredentials enumerateKeysAndObjectsUsingBlock:v14];
     }
   }
 }
 
-- (void)endBridgingUMTask:(id)a3
+- (void)endBridgingUMTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   bridgeTasks = self->_bridgeTasks;
-  v10 = v4;
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(NSMutableDictionary *)bridgeTasks objectForKeyedSubscript:v6];
+  v10 = taskCopy;
+  uniqueIdentifier = [taskCopy uniqueIdentifier];
+  v7 = [(NSMutableDictionary *)bridgeTasks objectForKeyedSubscript:uniqueIdentifier];
 
   if (v7)
   {
     [v7 end];
     v8 = self->_bridgeTasks;
-    v9 = [v10 uniqueIdentifier];
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
+    uniqueIdentifier2 = [v10 uniqueIdentifier];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:uniqueIdentifier2];
   }
 }
 
-- (void)startBridgingUMTask:(id)a3
+- (void)startBridgingUMTask:(id)task
 {
-  v12 = a3;
+  taskCopy = task;
   if (+[NDUserSyncStakeholder EDUMode])
   {
     v4 = +[Daemon sharedDaemon];
@@ -189,14 +189,14 @@
 
     else
     {
-      if ([v12 taskKind] != 1)
+      if ([taskCopy taskKind] != 1)
       {
         v9 = v4;
         goto LABEL_8;
       }
 
-      v5 = [v12 originalRequest];
-      [v5 _timeWindowDelay];
+      originalRequest = [taskCopy originalRequest];
+      [originalRequest _timeWindowDelay];
       v7 = v6;
 
       if (v7 != 0.0)
@@ -205,13 +205,13 @@
       }
     }
 
-    v8 = [v12 bundleID];
-    v9 = [UMUserSyncTask taskWithName:@"nsurlsession bg task" reason:@"retry" forBundleID:v8];
+    bundleID = [taskCopy bundleID];
+    v9 = [UMUserSyncTask taskWithName:@"nsurlsession bg task" reason:@"retry" forBundleID:bundleID];
 
     [v9 begin];
     bridgeTasks = self->_bridgeTasks;
-    v11 = [v12 uniqueIdentifier];
-    [(NSMutableDictionary *)bridgeTasks setObject:v9 forKeyedSubscript:v11];
+    uniqueIdentifier = [taskCopy uniqueIdentifier];
+    [(NSMutableDictionary *)bridgeTasks setObject:v9 forKeyedSubscript:uniqueIdentifier];
 
 LABEL_8:
   }
@@ -219,10 +219,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)startUMTask:(id)a3 taskInfo:(id)a4
+- (id)startUMTask:(id)task taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  infoCopy = info;
   if (+[NDUserSyncStakeholder EDUMode])
   {
     v8 = +[Daemon sharedDaemon];
@@ -230,7 +230,7 @@ LABEL_9:
     {
 
 LABEL_6:
-      v12 = [UMUserSyncTask taskWithName:@"nsurlsession bg task" reason:@"client" forBundleID:v6];
+      v12 = [UMUserSyncTask taskWithName:@"nsurlsession bg task" reason:@"client" forBundleID:taskCopy];
       os_unfair_lock_lock(&self->_activeTasksLock);
       [(NSMutableSet *)self->_activeTasks addObject:v12];
       os_unfair_lock_unlock(&self->_activeTasksLock);
@@ -238,10 +238,10 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    if ([v7 taskKind] == 1)
+    if ([infoCopy taskKind] == 1)
     {
-      v9 = [v7 originalRequest];
-      [v9 _timeWindowDelay];
+      originalRequest = [infoCopy originalRequest];
+      [originalRequest _timeWindowDelay];
       v11 = v10;
 
       if (v11 == 0.0)

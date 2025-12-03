@@ -1,14 +1,14 @@
 @interface IMNicknameEncryptionRecordTag
-- (BOOL)isEqualToTag:(id)a3 error:(id *)a4;
+- (BOOL)isEqualToTag:(id)tag error:(id *)error;
 @end
 
 @implementation IMNicknameEncryptionRecordTag
 
-- (BOOL)isEqualToTag:(id)a3 error:(id *)a4
+- (BOOL)isEqualToTag:(id)tag error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = IMNicknameEncryptionRecordTag;
-  return [(IMNicknameEncryptionTag *)&v5 isEqualToTag:a3 error:a4];
+  return [(IMNicknameEncryptionTag *)&v5 isEqualToTag:tag error:error];
 }
 
 @end

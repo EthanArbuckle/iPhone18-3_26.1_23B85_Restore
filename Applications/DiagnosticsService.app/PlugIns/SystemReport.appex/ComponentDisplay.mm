@@ -1,5 +1,5 @@
 @interface ComponentDisplay
-- (BOOL)_isDisplayModeCurrent:(id)a3 withModes:(id)a4;
+- (BOOL)_isDisplayModeCurrent:(id)current withModes:(id)modes;
 - (BOOL)deviceSupportsTopModuleAuth;
 - (BOOL)isCoverGlassRepaired;
 - (BOOL)isPresent;
@@ -7,28 +7,28 @@
 - (BOOL)isTrustedForUI;
 - (BOOL)topModuleAuthPassed;
 - (id)authError;
-- (id)factoryDataSizeForRegion:(int)a3;
+- (id)factoryDataSizeForRegion:(int)region;
 - (id)getAppleTopModuleAuthClass;
 - (id)getDisplayModes;
 - (id)getTopModuleAuthDict;
-- (id)parseBIMData:(id)a3;
-- (id)readFactoryDataForRegion:(int)a3;
+- (id)parseBIMData:(id)data;
+- (id)readFactoryDataForRegion:(int)region;
 - (id)refreshRate;
 - (id)retrieveBIMData;
 - (id)serialNumber;
 - (id)topModuleAccessoryCertificate;
 - (id)topModuleFdrValidationStatus;
 - (id)topModuleIDSN;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentDisplay
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentDisplay *)self serialNumber];
-  v3 = v2;
-  if (!v2)
+  serialNumber = [(ComponentDisplay *)self serialNumber];
+  v3 = serialNumber;
+  if (!serialNumber)
   {
     v5 = IOServiceNameMatching("IODPDevice");
     MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v5);
@@ -74,7 +74,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [v2 length] != 0;
+  v4 = [serialNumber length] != 0;
 LABEL_9:
 
   return v4;
@@ -152,9 +152,9 @@ LABEL_9:
   }
 
   v24 = +[UIScreen mainScreen];
-  v25 = [v24 displayConfiguration];
+  displayConfiguration = [v24 displayConfiguration];
 
-  v26 = [v25 deviceName];
+  deviceName = [displayConfiguration deviceName];
   *buf = 0;
   IOMobileFramebufferOpenByName();
 
@@ -177,65 +177,65 @@ LABEL_9:
   return v32;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v22 = a3;
-  v4 = [(ComponentDisplay *)self getDisplayModes];
-  [v22 setObject:v4 forKeyedSubscript:@"displayModes"];
-  v5 = [NSNumber numberWithBool:[(ComponentDisplay *)self _isDisplayModeCurrent:@"zoomed" withModes:v4]];
-  [v22 setObject:v5 forKeyedSubscript:@"isZoomed"];
+  attributesCopy = attributes;
+  getDisplayModes = [(ComponentDisplay *)self getDisplayModes];
+  [attributesCopy setObject:getDisplayModes forKeyedSubscript:@"displayModes"];
+  v5 = [NSNumber numberWithBool:[(ComponentDisplay *)self _isDisplayModeCurrent:@"zoomed" withModes:getDisplayModes]];
+  [attributesCopy setObject:v5 forKeyedSubscript:@"isZoomed"];
 
-  v6 = [NSNumber numberWithBool:[(ComponentDisplay *)self _isDisplayModeCurrent:@"dense" withModes:v4]];
-  [v22 setObject:v6 forKeyedSubscript:@"isDense"];
+  v6 = [NSNumber numberWithBool:[(ComponentDisplay *)self _isDisplayModeCurrent:@"dense" withModes:getDisplayModes]];
+  [attributesCopy setObject:v6 forKeyedSubscript:@"isDense"];
 
-  v7 = [(ComponentDisplay *)self serialNumber];
-  v8 = v7;
-  if (v7 && [v7 length])
+  serialNumber = [(ComponentDisplay *)self serialNumber];
+  v8 = serialNumber;
+  if (serialNumber && [serialNumber length])
   {
-    [v22 setObject:v8 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:v8 forKeyedSubscript:@"serialNumber"];
   }
 
-  v9 = [(ComponentDisplay *)self refreshRate];
-  [v22 setObject:v9 forKeyedSubscript:@"refreshRate"];
+  refreshRate = [(ComponentDisplay *)self refreshRate];
+  [attributesCopy setObject:refreshRate forKeyedSubscript:@"refreshRate"];
 
-  v10 = [(ComponentDisplay *)self retrieveBIMData];
-  if (v10)
+  retrieveBIMData = [(ComponentDisplay *)self retrieveBIMData];
+  if (retrieveBIMData)
   {
-    [v22 setObject:v10 forKeyedSubscript:@"BIM"];
+    [attributesCopy setObject:retrieveBIMData forKeyedSubscript:@"BIM"];
   }
 
-  v11 = [(ComponentDisplay *)self getTopModuleAuthDict];
-  [(ComponentDisplay *)self setTopModuleAuthDict:v11];
+  getTopModuleAuthDict = [(ComponentDisplay *)self getTopModuleAuthDict];
+  [(ComponentDisplay *)self setTopModuleAuthDict:getTopModuleAuthDict];
 
   v12 = [NSNumber numberWithBool:[(ComponentDisplay *)self deviceSupportsTopModuleAuth]];
-  [v22 setObject:v12 forKeyedSubscript:@"deviceSupportsTopModuleAuth"];
+  [attributesCopy setObject:v12 forKeyedSubscript:@"deviceSupportsTopModuleAuth"];
 
   v13 = [NSNumber numberWithBool:[(ComponentDisplay *)self topModuleAuthPassed]];
-  [v22 setObject:v13 forKeyedSubscript:@"authPassed"];
+  [attributesCopy setObject:v13 forKeyedSubscript:@"authPassed"];
 
-  v14 = [(ComponentDisplay *)self authError];
-  [v22 setObject:v14 forKeyedSubscript:@"authErrorCode"];
+  authError = [(ComponentDisplay *)self authError];
+  [attributesCopy setObject:authError forKeyedSubscript:@"authErrorCode"];
 
   v15 = [NSNumber numberWithBool:[(ComponentDisplay *)self isTrusted]];
-  [v22 setObject:v15 forKeyedSubscript:@"isTrusted"];
+  [attributesCopy setObject:v15 forKeyedSubscript:@"isTrusted"];
 
   v16 = [NSNumber numberWithBool:[(ComponentDisplay *)self isTrustedForUI]];
-  [v22 setObject:v16 forKeyedSubscript:@"isTrustedForUI"];
+  [attributesCopy setObject:v16 forKeyedSubscript:@"isTrustedForUI"];
 
-  v17 = [(ComponentDisplay *)self topModuleFdrValidationStatus];
-  [v22 setObject:v17 forKeyedSubscript:@"fdrValidationStatus"];
+  topModuleFdrValidationStatus = [(ComponentDisplay *)self topModuleFdrValidationStatus];
+  [attributesCopy setObject:topModuleFdrValidationStatus forKeyedSubscript:@"fdrValidationStatus"];
 
-  v18 = [(ComponentDisplay *)self topModuleAccessoryCertificate];
-  [v22 setObject:v18 forKeyedSubscript:@"accessoryCertificate"];
+  topModuleAccessoryCertificate = [(ComponentDisplay *)self topModuleAccessoryCertificate];
+  [attributesCopy setObject:topModuleAccessoryCertificate forKeyedSubscript:@"accessoryCertificate"];
 
-  v19 = [(ComponentDisplay *)self topModuleIDSN];
-  [v22 setObject:v19 forKeyedSubscript:@"chipId"];
+  topModuleIDSN = [(ComponentDisplay *)self topModuleIDSN];
+  [attributesCopy setObject:topModuleIDSN forKeyedSubscript:@"chipId"];
 
   v20 = [NSNumber numberWithInt:[(ComponentDisplay *)self getDeviceCoverGlassCoating]];
-  [v22 setObject:v20 forKeyedSubscript:@"deviceCoverGlassCoating"];
+  [attributesCopy setObject:v20 forKeyedSubscript:@"deviceCoverGlassCoating"];
 
   v21 = [NSNumber numberWithBool:[(ComponentDisplay *)self isCoverGlassRepaired]];
-  [v22 setObject:v21 forKeyedSubscript:@"isCoverGlassRepaired"];
+  [attributesCopy setObject:v21 forKeyedSubscript:@"isCoverGlassRepaired"];
 }
 
 - (id)serialNumber
@@ -350,7 +350,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)readFactoryDataForRegion:(int)a3
+- (id)readFactoryDataForRegion:(int)region
 {
   v5 = [(ComponentDisplay *)self factoryDataSizeForRegion:?];
   v6 = v5;
@@ -361,17 +361,17 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  input = a3;
-  v7 = [v5 unsignedLongValue];
-  v19 = v7;
-  outputStruct = malloc_type_malloc(v7, 0x100004077774924uLL);
+  input = region;
+  unsignedLongValue = [v5 unsignedLongValue];
+  v19 = unsignedLongValue;
+  outputStruct = malloc_type_malloc(unsignedLongValue, 0x100004077774924uLL);
   if (!outputStruct)
   {
     v14 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v21 = v7;
+      v21 = unsignedLongValue;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to malloc %zu bytes", buf, 0xCu);
     }
 
@@ -425,10 +425,10 @@ LABEL_12:
   return v13;
 }
 
-- (id)factoryDataSizeForRegion:(int)a3
+- (id)factoryDataSizeForRegion:(int)region
 {
   output = 0;
-  input = a3;
+  input = region;
   outputCnt = 1;
   v3 = IOConnectCallMethod(self->_driverConnect, 2u, &input, 1u, 0, 0, &output, &outputCnt, 0, 0);
   if (v3)
@@ -476,13 +476,13 @@ LABEL_6:
   return v6;
 }
 
-- (id)parseBIMData:(id)a3
+- (id)parseBIMData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v23 = 0u;
     v24 = 0u;
-    [a3 getBytes:&v23 length:32];
+    [data getBytes:&v23 length:32];
     if (v23 == 255 || *(&v23 + 2) == -1)
     {
       v4 = DiagnosticLogHandleForCategory();
@@ -632,16 +632,16 @@ LABEL_16:
 
 - (BOOL)deviceSupportsTopModuleAuth
 {
-  v2 = [(ComponentDisplay *)self topModuleAuthDict];
-  v3 = v2 != 0;
+  topModuleAuthDict = [(ComponentDisplay *)self topModuleAuthDict];
+  v3 = topModuleAuthDict != 0;
 
   return v3;
 }
 
 - (BOOL)topModuleAuthPassed
 {
-  v2 = [(ComponentDisplay *)self topModuleAuthDict];
-  v3 = [v2 objectForKey:@"AuthPassed"];
+  topModuleAuthDict = [(ComponentDisplay *)self topModuleAuthDict];
+  v3 = [topModuleAuthDict objectForKey:@"AuthPassed"];
 
   if (v3)
   {
@@ -658,8 +658,8 @@ LABEL_16:
 
 - (id)authError
 {
-  v2 = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
-  v3 = [DAComponentUtil getIORegistryClass:v2 property:@"authError" optionalKey:0 classValidator:&stru_100090D40];
+  getAppleTopModuleAuthClass = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
+  v3 = [DAComponentUtil getIORegistryClass:getAppleTopModuleAuthClass property:@"authError" optionalKey:0 classValidator:&stru_100090D40];
 
   if (v3)
   {
@@ -678,8 +678,8 @@ LABEL_16:
 
 - (id)topModuleFdrValidationStatus
 {
-  v2 = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
-  v3 = [DAComponentUtil getIORegistryClass:v2 property:@"FdrValidationStatus" optionalKey:0 classValidator:&stru_100090D40];
+  getAppleTopModuleAuthClass = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
+  v3 = [DAComponentUtil getIORegistryClass:getAppleTopModuleAuthClass property:@"FdrValidationStatus" optionalKey:0 classValidator:&stru_100090D40];
 
   if (v3)
   {
@@ -698,8 +698,8 @@ LABEL_16:
 
 - (BOOL)isTrusted
 {
-  v2 = [(ComponentDisplay *)self topModuleAuthDict];
-  v3 = [v2 objectForKey:@"isTrusted"];
+  topModuleAuthDict = [(ComponentDisplay *)self topModuleAuthDict];
+  v3 = [topModuleAuthDict objectForKey:@"isTrusted"];
 
   if (v3)
   {
@@ -716,8 +716,8 @@ LABEL_16:
 
 - (BOOL)isTrustedForUI
 {
-  v2 = [(ComponentDisplay *)self topModuleAuthDict];
-  v3 = [v2 objectForKey:@"isTrustedForUI"];
+  topModuleAuthDict = [(ComponentDisplay *)self topModuleAuthDict];
+  v3 = [topModuleAuthDict objectForKey:@"isTrustedForUI"];
 
   if (v3)
   {
@@ -734,8 +734,8 @@ LABEL_16:
 
 - (id)topModuleAccessoryCertificate
 {
-  v2 = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
-  v3 = [DAComponentUtil getIORegistryName:v2 property:@"AccessoryCertificate" optionalKey:0 classValidator:&stru_100090D40];
+  getAppleTopModuleAuthClass = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
+  v3 = [DAComponentUtil getIORegistryName:getAppleTopModuleAuthClass property:@"AccessoryCertificate" optionalKey:0 classValidator:&stru_100090D40];
 
   if (v3)
   {
@@ -754,8 +754,8 @@ LABEL_16:
 
 - (id)topModuleIDSN
 {
-  v2 = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
-  v3 = [DAComponentUtil getIORegistryClass:v2 property:@"IDSN" optionalKey:0 classValidator:&stru_100090D40];
+  getAppleTopModuleAuthClass = [(ComponentDisplay *)self getAppleTopModuleAuthClass];
+  v3 = [DAComponentUtil getIORegistryClass:getAppleTopModuleAuthClass property:@"IDSN" optionalKey:0 classValidator:&stru_100090D40];
 
   if (v3)
   {
@@ -818,16 +818,16 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)_isDisplayModeCurrent:(id)a3 withModes:(id)a4
+- (BOOL)_isDisplayModeCurrent:(id)current withModes:(id)modes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"current"];
-  v8 = [v6 objectForKeyedSubscript:@"available"];
+  currentCopy = current;
+  modesCopy = modes;
+  v7 = [modesCopy objectForKeyedSubscript:@"current"];
+  v8 = [modesCopy objectForKeyedSubscript:@"available"];
 
   if (v7 && v8)
   {
-    v9 = [v8 objectForKeyedSubscript:v5];
+    v9 = [v8 objectForKeyedSubscript:currentCopy];
     if (!v9)
     {
       v10 = DiagnosticLogHandleForCategory();

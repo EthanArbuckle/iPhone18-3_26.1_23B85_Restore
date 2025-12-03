@@ -1,27 +1,27 @@
 @interface PFVideoSharingOperation
-+ (id)operationErrorWithCode:(int64_t)a3 underlyingError:(id)a4 withDescription:(id)a5;
++ (id)operationErrorWithCode:(int64_t)code underlyingError:(id)error withDescription:(id)description;
 - (BOOL)_ensureVideoProperties;
 - (BOOL)_runExport;
 - (BOOL)success;
 - (NSError)operationError;
-- (PFVideoSharingOperation)initWithVideoURL:(id)a3 adjustmentData:(id)a4;
+- (PFVideoSharingOperation)initWithVideoURL:(id)l adjustmentData:(id)data;
 - (float)progress;
-- (void)_setOperationError:(id)a3;
-- (void)_setSuccess:(BOOL)a3;
+- (void)_setOperationError:(id)error;
+- (void)_setSuccess:(BOOL)success;
 - (void)_validateMetadata;
 - (void)cancel;
 - (void)main;
-- (void)setCustomAccessibilityLabel:(id)a3;
-- (void)setCustomCaption:(id)a3;
-- (void)setCustomLocation:(id)a3;
-- (void)setExportFileType:(id)a3;
-- (void)setExportPreset:(id)a3;
-- (void)setOutputDirectoryURL:(id)a3;
-- (void)setOutputFilename:(id)a3;
-- (void)setShouldStripAccessibilityDescription:(BOOL)a3;
-- (void)setShouldStripCaption:(BOOL)a3;
-- (void)setShouldStripLocation:(BOOL)a3;
-- (void)setShouldStripMetadata:(BOOL)a3;
+- (void)setCustomAccessibilityLabel:(id)label;
+- (void)setCustomCaption:(id)caption;
+- (void)setCustomLocation:(id)location;
+- (void)setExportFileType:(id)type;
+- (void)setExportPreset:(id)preset;
+- (void)setOutputDirectoryURL:(id)l;
+- (void)setOutputFilename:(id)filename;
+- (void)setShouldStripAccessibilityDescription:(BOOL)description;
+- (void)setShouldStripCaption:(BOOL)caption;
+- (void)setShouldStripLocation:(BOOL)location;
+- (void)setShouldStripMetadata:(BOOL)metadata;
 @end
 
 @implementation PFVideoSharingOperation
@@ -48,17 +48,17 @@
   return v3;
 }
 
-- (void)_setOperationError:(id)a3
+- (void)_setOperationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PFVideoSharingOperation__setOperationError___block_invoke;
   v7[3] = &unk_1E7B66D98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -91,14 +91,14 @@ void __46__PFVideoSharingOperation__setOperationError___block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)_setSuccess:(BOOL)a3
+- (void)_setSuccess:(BOOL)success
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __39__PFVideoSharingOperation__setSuccess___block_invoke;
   v4[3] = &unk_1E7B66D70;
-  v5 = a3;
+  successCopy = success;
   v4[4] = self;
   dispatch_sync(externalIsolation, v4);
 }
@@ -115,17 +115,17 @@ uint64_t __39__PFVideoSharingOperation__setSuccess___block_invoke(uint64_t resul
   return result;
 }
 
-- (void)setExportFileType:(id)a3
+- (void)setExportFileType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFVideoSharingOperation_setExportFileType___block_invoke;
   v7[3] = &unk_1E7B66D98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -150,17 +150,17 @@ uint64_t __45__PFVideoSharingOperation_setExportFileType___block_invoke(uint64_t
   return result;
 }
 
-- (void)setExportPreset:(id)a3
+- (void)setExportPreset:(id)preset
 {
-  v4 = a3;
+  presetCopy = preset;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__PFVideoSharingOperation_setExportPreset___block_invoke;
   v7[3] = &unk_1E7B66D98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = presetCopy;
+  selfCopy = self;
+  v6 = presetCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -185,17 +185,17 @@ uint64_t __43__PFVideoSharingOperation_setExportPreset___block_invoke(uint64_t a
   return result;
 }
 
-- (void)setOutputDirectoryURL:(id)a3
+- (void)setOutputDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PFVideoSharingOperation_setOutputDirectoryURL___block_invoke;
   v7[3] = &unk_1E7B66D98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -220,17 +220,17 @@ uint64_t __49__PFVideoSharingOperation_setOutputDirectoryURL___block_invoke(uint
   return result;
 }
 
-- (void)setOutputFilename:(id)a3
+- (void)setOutputFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFVideoSharingOperation_setOutputFilename___block_invoke;
   v7[3] = &unk_1E7B66D98;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = filenameCopy;
+  selfCopy = self;
+  v6 = filenameCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -255,17 +255,17 @@ uint64_t __45__PFVideoSharingOperation_setOutputFilename___block_invoke(uint64_t
   return result;
 }
 
-- (void)setCustomAccessibilityLabel:(id)a3
+- (void)setCustomAccessibilityLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PFVideoSharingOperation_setCustomAccessibilityLabel___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = labelCopy;
+  v6 = labelCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -285,7 +285,7 @@ uint64_t __55__PFVideoSharingOperation_setCustomAccessibilityLabel___block_invok
   return result;
 }
 
-- (void)setShouldStripAccessibilityDescription:(BOOL)a3
+- (void)setShouldStripAccessibilityDescription:(BOOL)description
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -293,7 +293,7 @@ uint64_t __55__PFVideoSharingOperation_setCustomAccessibilityLabel___block_invok
   v4[2] = __66__PFVideoSharingOperation_setShouldStripAccessibilityDescription___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  descriptionCopy = description;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -309,17 +309,17 @@ uint64_t __66__PFVideoSharingOperation_setShouldStripAccessibilityDescription___
   return result;
 }
 
-- (void)setCustomCaption:(id)a3
+- (void)setCustomCaption:(id)caption
 {
-  v4 = a3;
+  captionCopy = caption;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PFVideoSharingOperation_setCustomCaption___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = captionCopy;
+  v6 = captionCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -339,7 +339,7 @@ uint64_t __44__PFVideoSharingOperation_setCustomCaption___block_invoke(uint64_t 
   return result;
 }
 
-- (void)setShouldStripCaption:(BOOL)a3
+- (void)setShouldStripCaption:(BOOL)caption
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -347,7 +347,7 @@ uint64_t __44__PFVideoSharingOperation_setCustomCaption___block_invoke(uint64_t 
   v4[2] = __49__PFVideoSharingOperation_setShouldStripCaption___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  captionCopy = caption;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -363,17 +363,17 @@ uint64_t __49__PFVideoSharingOperation_setShouldStripCaption___block_invoke(uint
   return result;
 }
 
-- (void)setCustomLocation:(id)a3
+- (void)setCustomLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFVideoSharingOperation_setCustomLocation___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -393,14 +393,14 @@ uint64_t __45__PFVideoSharingOperation_setCustomLocation___block_invoke(uint64_t
   return result;
 }
 
-- (void)setShouldStripLocation:(BOOL)a3
+- (void)setShouldStripLocation:(BOOL)location
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __50__PFVideoSharingOperation_setShouldStripLocation___block_invoke;
   v4[3] = &unk_1E7B66D70;
-  v5 = a3;
+  locationCopy = location;
   v4[4] = self;
   dispatch_sync(externalIsolation, v4);
 }
@@ -417,14 +417,14 @@ uint64_t __50__PFVideoSharingOperation_setShouldStripLocation___block_invoke(uin
   return result;
 }
 
-- (void)setShouldStripMetadata:(BOOL)a3
+- (void)setShouldStripMetadata:(BOOL)metadata
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __50__PFVideoSharingOperation_setShouldStripMetadata___block_invoke;
   v4[3] = &unk_1E7B66D70;
-  v5 = a3;
+  metadataCopy = metadata;
   v4[4] = self;
   dispatch_sync(externalIsolation, v4);
 }
@@ -500,7 +500,7 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
 - (BOOL)_runExport
 {
   v119 = *MEMORY[0x1E69E9840];
-  v51 = [(PFVideoSharingOperation *)self videoURL];
+  videoURL = [(PFVideoSharingOperation *)self videoURL];
   v102 = 0;
   v103 = &v102;
   v104 = 0x3032000000;
@@ -536,16 +536,16 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
   block[7] = &v90;
   block[8] = &v84;
   dispatch_sync(externalIsolation, block);
-  v50 = [v51 pathExtension];
+  pathExtension = [videoURL pathExtension];
   v4 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:?];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  v52 = v5;
-  v6 = [(PFVideoSharingOperation *)self _adjustments];
+  v52 = identifier;
+  _adjustments = [(PFVideoSharingOperation *)self _adjustments];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = _adjustments;
   }
 
   else
@@ -615,7 +615,7 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
     v66 = 0x3032000000;
     v67 = __Block_byref_object_copy__13549;
     v68 = __Block_byref_object_dispose__13550;
-    v17 = v50;
+    v17 = pathExtension;
     v69 = v17;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -627,8 +627,8 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
       v14 = v78;
     }
 
-    v18 = [v14[5] supportedFileTypes];
-    v19 = [v18 containsObject:*(*(&v114 + 1) + 40)];
+    supportedFileTypes = [v14[5] supportedFileTypes];
+    v19 = [supportedFileTypes containsObject:*(*(&v114 + 1) + 40)];
 
     if (([v12 isEqualToString:v11] & v19 & 1) == 0)
     {
@@ -674,9 +674,9 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFVideoSharingOperation] Output file URL will be %{public}@.", buf, 0xCu);
     }
 
-    v27 = [MEMORY[0x1E696AC08] defaultManager];
-    v28 = [v26 path];
-    v29 = [v27 fileExistsAtPath:v28];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v26 path];
+    v29 = [defaultManager fileExistsAtPath:path];
 
     if (v29)
     {
@@ -684,15 +684,15 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
       v31 = MEMORY[0x1E69E9C10];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v47 = [v26 path];
+        path2 = [v26 path];
         *buf = 138543362;
-        v109 = v47;
+        v109 = path2;
         _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFVideoSharingOperation] Output file already exists at path: %{public}@. Aborting video remaking.", buf, 0xCu);
       }
 
       v32 = objc_opt_class();
-      v33 = [v26 path];
-      v34 = [v32 operationErrorWithCode:3 underlyingError:0 withDescription:{@"Output file already exists at path: %@", v33}];
+      path3 = [v26 path];
+      v34 = [v32 operationErrorWithCode:3 underlyingError:0 withDescription:{@"Output file already exists at path: %@", path3}];
 
       v35 = 0;
       v13 = v34;
@@ -721,9 +721,9 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
       v58 = v39;
       [v38 exportAsynchronouslyWithCompletionHandler:v57];
       dispatch_semaphore_wait(v39, 0xFFFFFFFFFFFFFFFFLL);
-      v40 = [v78[5] status];
-      v35 = v40 == 3;
-      if (v40 == 3)
+      status = [v78[5] status];
+      v35 = status == 3;
+      if (status == 3)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
@@ -734,15 +734,15 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
 
       else
       {
-        v41 = [v78[5] error];
+        error = [v78[5] error];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v109 = v41;
+          v109 = error;
           _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFVideoSharingOperation] Encountered error in export session %@.", buf, 0xCu);
         }
 
-        v43 = [objc_opt_class() operationErrorWithCode:5 underlyingError:v41 withDescription:@"Error in export session"];
+        v43 = [objc_opt_class() operationErrorWithCode:5 underlyingError:error withDescription:@"Error in export session"];
 
         v13 = v43;
       }
@@ -755,7 +755,7 @@ void *__35__PFVideoSharingOperation_progress__block_invoke(void *result)
       v53[4] = self;
       v13 = v13;
       v54 = v13;
-      v56 = v40 == 3;
+      v56 = status == 3;
       v55 = v26;
       dispatch_sync(v44, v53);
     }
@@ -976,13 +976,13 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFVideoSharingOperation] Stripping all metadata", buf, 2u);
     }
 
-    v4 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [(AVAsset *)self->_videoAsset metadata];
-    v6 = v5;
+    metadata = [(AVAsset *)self->_videoAsset metadata];
+    v6 = metadata;
     if ((v46[3] & 1) != 0 || (v42[3] & 1) != 0 || *(v38 + 24) == 1)
     {
       v7 = [MEMORY[0x1E695DFA8] set];
@@ -1019,7 +1019,7 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
         [v7 addObject:*MEMORY[0x1E6987670]];
       }
 
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
@@ -1039,13 +1039,13 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
             }
 
             v12 = *(*(&v26 + 1) + 8 * i);
-            v13 = [v12 commonKey];
-            v14 = [v7 member:v13];
+            commonKey = [v12 commonKey];
+            v14 = [v7 member:commonKey];
             v15 = v14 == 0;
 
             if (v15)
             {
-              [(NSArray *)v4 addObject:v12];
+              [(NSArray *)array addObject:v12];
             }
           }
 
@@ -1058,7 +1058,7 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
 
     else
     {
-      v4 = v5;
+      array = metadata;
     }
   }
 
@@ -1075,9 +1075,9 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
         customAccessibilityLabel = self->_customAccessibilityLabel;
       }
 
-      v17 = [PFSharingUtilities addAccessibilityDescription:customAccessibilityLabel toAVMetadata:v4, v26];
+      v17 = [PFSharingUtilities addAccessibilityDescription:customAccessibilityLabel toAVMetadata:array, v26];
 
-      v4 = v17;
+      array = v17;
     }
   }
 
@@ -1095,9 +1095,9 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
         customCaption = self->_customCaption;
       }
 
-      v20 = [PFSharingUtilities addDescription:customCaption toAVMetadata:v4, v26];
+      v20 = [PFSharingUtilities addDescription:customCaption toAVMetadata:array, v26];
 
-      v4 = v20;
+      array = v20;
     }
   }
 
@@ -1112,9 +1112,9 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
       customDate = self->_customDate;
     }
 
-    v22 = [PFSharingUtilities addCustomDate:customDate toAVMetadata:v4, v26];
+    v22 = [PFSharingUtilities addCustomDate:customDate toAVMetadata:array, v26];
 
-    v4 = v22;
+    array = v22;
   }
 
   if ((v46[3] & 1) == 0)
@@ -1130,14 +1130,14 @@ void __37__PFVideoSharingOperation__runExport__block_invoke_42(uint64_t a1)
         v23 = v32[5];
       }
 
-      v24 = [PFSharingUtilities addCustomLocation:v23 toAVMetadata:v4, v26];
+      v24 = [PFSharingUtilities addCustomLocation:v23 toAVMetadata:array, v26];
 
-      v4 = v24;
+      array = v24;
     }
   }
 
   videoMetadata = self->_videoMetadata;
-  self->_videoMetadata = v4;
+  self->_videoMetadata = array;
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(&v37, 8);
@@ -1162,12 +1162,12 @@ uint64_t __44__PFVideoSharingOperation__validateMetadata__block_invoke(uint64_t 
 
 - (BOOL)_ensureVideoProperties
 {
-  v4 = [(PFVideoSharingOperation *)self videoURL];
-  if (v4)
+  videoURL = [(PFVideoSharingOperation *)self videoURL];
+  if (videoURL)
   {
     v5 = MEMORY[0x1E6988168];
-    v2 = [(PFVideoSharingOperation *)self videoURL];
-    v6 = [v5 assetWithURL:v2];
+    videoURL2 = [(PFVideoSharingOperation *)self videoURL];
+    v6 = [v5 assetWithURL:videoURL2];
   }
 
   else
@@ -1176,7 +1176,7 @@ uint64_t __44__PFVideoSharingOperation__validateMetadata__block_invoke(uint64_t 
   }
 
   objc_storeStrong(&self->_videoAsset, v6);
-  if (v4)
+  if (videoURL)
   {
   }
 
@@ -1270,29 +1270,29 @@ LABEL_11:
   if ([(PFVideoSharingOperation *)self _ensureVideoProperties])
   {
     [(PFVideoSharingOperation *)self _validateMetadata];
-    v3 = [(PFVideoSharingOperation *)self _runExport];
+    _runExport = [(PFVideoSharingOperation *)self _runExport];
   }
 
   else
   {
-    v3 = 0;
+    _runExport = 0;
   }
 
-  [(PFVideoSharingOperation *)self _setSuccess:v3];
+  [(PFVideoSharingOperation *)self _setSuccess:_runExport];
 }
 
-- (PFVideoSharingOperation)initWithVideoURL:(id)a3 adjustmentData:(id)a4
+- (PFVideoSharingOperation)initWithVideoURL:(id)l adjustmentData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = PFVideoSharingOperation;
   v8 = [(PFVideoSharingOperation *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(PFVideoSharingOperation *)v8 _setVideoURL:v6];
-    [(PFVideoSharingOperation *)v9 _setAdjustments:v7];
+    [(PFVideoSharingOperation *)v8 _setVideoURL:lCopy];
+    [(PFVideoSharingOperation *)v9 _setAdjustments:dataCopy];
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v11 = dispatch_queue_create("com.apple.PFVideoSharingOperation.isolationQueue", v10);
     externalIsolation = v9->_externalIsolation;
@@ -1302,20 +1302,20 @@ LABEL_11:
   return v9;
 }
 
-+ (id)operationErrorWithCode:(int64_t)a3 underlyingError:(id)a4 withDescription:(id)a5
++ (id)operationErrorWithCode:(int64_t)code underlyingError:(id)error withDescription:(id)description
 {
-  v7 = a4;
-  if (a5)
+  errorCopy = error;
+  if (description)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = a5;
-    a5 = [[v8 alloc] initWithFormat:v9 arguments:&v14];
+    descriptionCopy = description;
+    description = [[v8 alloc] initWithFormat:descriptionCopy arguments:&v14];
   }
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  [v10 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-  [v10 setObject:a5 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoSharingOperationErrorDomain" code:a3 userInfo:v10];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  [dictionary setObject:description forKeyedSubscript:*MEMORY[0x1E696A578]];
+  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoSharingOperationErrorDomain" code:code userInfo:dictionary];
 
   return v11;
 }

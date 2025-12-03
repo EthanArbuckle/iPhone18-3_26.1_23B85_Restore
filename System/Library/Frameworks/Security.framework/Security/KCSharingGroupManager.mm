@@ -1,25 +1,25 @@
 @interface KCSharingGroupManager
 + (id)sharedInstance;
-- (KCSharingGroupManager)initWithDaemonConnection:(id)a3;
-- (void)acceptInviteForGroupID:(id)a3 completion:(id)a4;
+- (KCSharingGroupManager)initWithDaemonConnection:(id)connection;
+- (void)acceptInviteForGroupID:(id)d completion:(id)completion;
 - (void)accountChanged;
-- (void)addSubscriber:(id)a3;
-- (void)checkAvailabilityForHandle:(id)a3 completion:(id)a4;
-- (void)checkAvailabilityForHandles:(id)a3 completion:(id)a4;
-- (void)createGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)declineInviteForGroupID:(id)a3 completion:(id)a4;
-- (void)deleteGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3;
-- (void)getGroupByGroupID:(id)a3 completion:(id)a4;
-- (void)getGroupsWithRequest:(id)a3 completion:(id)a4;
-- (void)leaveGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)performMaintenanceWithCompletion:(id)a3;
-- (void)provisionWithReply:(id)a3;
-- (void)removeSubscriber:(id)a3;
-- (void)resyncWithCompletion:(id)a3;
-- (void)updateGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3;
-- (void)verifyGroupsInSyncWithCompletion:(id)a3;
+- (void)addSubscriber:(id)subscriber;
+- (void)checkAvailabilityForHandle:(id)handle completion:(id)completion;
+- (void)checkAvailabilityForHandles:(id)handles completion:(id)completion;
+- (void)createGroupWithRequest:(id)request completion:(id)completion;
+- (void)declineInviteForGroupID:(id)d completion:(id)completion;
+- (void)deleteGroupWithRequest:(id)request completion:(id)completion;
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply;
+- (void)getGroupByGroupID:(id)d completion:(id)completion;
+- (void)getGroupsWithRequest:(id)request completion:(id)completion;
+- (void)leaveGroupWithRequest:(id)request completion:(id)completion;
+- (void)performMaintenanceWithCompletion:(id)completion;
+- (void)provisionWithReply:(id)reply;
+- (void)removeSubscriber:(id)subscriber;
+- (void)resyncWithCompletion:(id)completion;
+- (void)updateGroupWithRequest:(id)request completion:(id)completion;
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion;
+- (void)verifyGroupsInSyncWithCompletion:(id)completion;
 @end
 
 @implementation KCSharingGroupManager
@@ -51,9 +51,9 @@ void __39__KCSharingGroupManager_sharedInstance__block_invoke()
   v3 = KCSharingLogObject(@"KCSharingGroupManager", 0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
+    cachedCurrentUserIdentifier = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
     v6 = 138543362;
-    v7 = v4;
+    v7 = cachedCurrentUserIdentifier;
     _os_log_impl(&dword_1887D2000, v3, OS_LOG_TYPE_DEFAULT, "Received accountChanged notification, invalidating cached current user identifier: %{public}@", &v6, 0xCu);
   }
 
@@ -61,55 +61,55 @@ void __39__KCSharingGroupManager_sharedInstance__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 performMaintenanceWithCompletion:v4];
+  completionCopy = completion;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection performMaintenanceWithCompletion:completionCopy];
 }
 
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:v4];
+  completionCopy = completion;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:completionCopy];
 }
 
-- (void)verifyGroupsInSyncWithCompletion:(id)a3
+- (void)verifyGroupsInSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 verifyGroupsInSyncWithCompletion:v4];
+  completionCopy = completion;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection verifyGroupsInSyncWithCompletion:completionCopy];
 }
 
-- (void)resyncWithCompletion:(id)a3
+- (void)resyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 resyncWithCompletion:v4];
+  completionCopy = completion;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection resyncWithCompletion:completionCopy];
 }
 
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
+  replyCopy = reply;
+  cachedCurrentUserIdentifier = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
 
-  if (v5)
+  if (cachedCurrentUserIdentifier)
   {
-    v6 = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
-    v4[2](v4, v6, 0);
+    cachedCurrentUserIdentifier2 = [(KCSharingGroupManager *)self cachedCurrentUserIdentifier];
+    replyCopy[2](replyCopy, cachedCurrentUserIdentifier2, 0);
   }
 
   else
   {
-    v7 = [(KCSharingGroupManager *)self daemonConnection];
+    daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__KCSharingGroupManager_fetchCurrentUserIdentifierWithReply___block_invoke;
     v8[3] = &unk_1E70D6988;
     v8[4] = self;
-    v9 = v4;
-    [v7 fetchCurrentUserIdentifierWithReply:v8];
+    v9 = replyCopy;
+    [daemonConnection fetchCurrentUserIdentifierWithReply:v8];
   }
 }
 
@@ -143,50 +143,50 @@ void __61__KCSharingGroupManager_fetchCurrentUserIdentifierWithReply___block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provisionWithReply:(id)a3
+- (void)provisionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 provisionWithReply:v4];
+  replyCopy = reply;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection provisionWithReply:replyCopy];
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 removeConnectionListener:v4];
+  subscriberCopy = subscriber;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection removeConnectionListener:subscriberCopy];
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupManager *)self daemonConnection];
-  [v5 addConnectionListener:v4];
+  subscriberCopy = subscriber;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection addConnectionListener:subscriberCopy];
 }
 
-- (void)checkAvailabilityForHandles:(id)a3 completion:(id)a4
+- (void)checkAvailabilityForHandles:(id)handles completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 checkAvailabilityForHandles:v7 completion:v6];
+  completionCopy = completion;
+  handlesCopy = handles;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection checkAvailabilityForHandles:handlesCopy completion:completionCopy];
 }
 
-- (void)checkAvailabilityForHandle:(id)a3 completion:(id)a4
+- (void)checkAvailabilityForHandle:(id)handle completion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v15[0] = v6;
+  handleCopy = handle;
+  completionCopy = completion;
+  v15[0] = handleCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__KCSharingGroupManager_checkAvailabilityForHandle_completion___block_invoke;
   v12[3] = &unk_1E70D6960;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = handleCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = handleCopy;
   [(KCSharingGroupManager *)self checkAvailabilityForHandles:v8 completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -202,84 +202,84 @@ void __63__KCSharingGroupManager_checkAvailabilityForHandle_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)declineInviteForGroupID:(id)a3 completion:(id)a4
+- (void)declineInviteForGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 declineInviteForGroupID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection declineInviteForGroupID:dCopy completion:completionCopy];
 }
 
-- (void)acceptInviteForGroupID:(id)a3 completion:(id)a4
+- (void)acceptInviteForGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 acceptInviteForGroupID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection acceptInviteForGroupID:dCopy completion:completionCopy];
 }
 
-- (void)deleteGroupWithRequest:(id)a3 completion:(id)a4
+- (void)deleteGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 deleteGroupWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection deleteGroupWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)leaveGroupWithRequest:(id)a3 completion:(id)a4
+- (void)leaveGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 leaveGroupWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection leaveGroupWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)updateGroupWithRequest:(id)a3 completion:(id)a4
+- (void)updateGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 updateGroupWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection updateGroupWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)createGroupWithRequest:(id)a3 completion:(id)a4
+- (void)createGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 createGroupWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection createGroupWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)getGroupsWithRequest:(id)a3 completion:(id)a4
+- (void)getGroupsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 getGroupsWithRequest:v7 completion:v6];
+  completionCopy = completion;
+  requestCopy = request;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection getGroupsWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)getGroupByGroupID:(id)a3 completion:(id)a4
+- (void)getGroupByGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingGroupManager *)self daemonConnection];
-  [v8 getGroupByGroupID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  daemonConnection = [(KCSharingGroupManager *)self daemonConnection];
+  [daemonConnection getGroupByGroupID:dCopy completion:completionCopy];
 }
 
-- (KCSharingGroupManager)initWithDaemonConnection:(id)a3
+- (KCSharingGroupManager)initWithDaemonConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = KCSharingGroupManager;
   v6 = [(KCSharingGroupManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_daemonConnection, a3);
+    objc_storeStrong(&v6->_daemonConnection, connection);
     cachedCurrentUserIdentifier = v7->_cachedCurrentUserIdentifier;
     v7->_cachedCurrentUserIdentifier = 0;
 
-    [v5 addConnectionListener:v7];
+    [connectionCopy addConnectionListener:v7];
   }
 
   return v7;

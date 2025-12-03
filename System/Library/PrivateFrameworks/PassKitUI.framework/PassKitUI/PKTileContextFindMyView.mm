@@ -1,13 +1,13 @@
 @interface PKTileContextFindMyView
-+ (id)createWithEventName:(id)a3;
++ (id)createWithEventName:(id)name;
 - (PKTileContextFindMyView)init;
 @end
 
 @implementation PKTileContextFindMyView
 
-+ (id)createWithEventName:(id)a3
++ (id)createWithEventName:(id)name
 {
-  if (a3)
+  if (name)
   {
     sub_1BE052434();
   }

@@ -1,38 +1,38 @@
 @interface CUIShapeEffectPreset
 + (_CUIVibrantColorMatrixOptions)monochromeVibrantColorMatrixOptions;
-+ (_CUIVibrantColorMatrixOptions)standardVibrantColorMatrixOptionsForColor:(SEL)a3;
-+ (_CUIVibrantColorMatrixOptions)vibrantColorMatrixOptionsWithColor:(SEL)a3 saturation:(CGColor *)a4 brightness:(double)a5;
-+ (id)caFilterFromCUIEffectBlendMode:(unsigned int)a3;
-+ (id)requiredEffectParametersForEffectType:(unsigned int)a3;
-+ (int)cgBlendModeFromCUIEffectBlendMode:(unsigned int)a3;
-+ (unsigned)cuiEffectBlendModeFromCGBlendMode:(int)a3;
-+ (void)configureVibrantColorMatrixFilter:(id)a3 withOptions:(_CUIVibrantColorMatrixOptions *)a4;
-- ($ADFAF175FB2F7D6E2A77149C0E7BB12A)valueForParameter:(unsigned int)a3 inEffectAtIndex:(unint64_t)a4;
++ (_CUIVibrantColorMatrixOptions)standardVibrantColorMatrixOptionsForColor:(SEL)color;
++ (_CUIVibrantColorMatrixOptions)vibrantColorMatrixOptionsWithColor:(SEL)color saturation:(CGColor *)saturation brightness:(double)brightness;
++ (id)caFilterFromCUIEffectBlendMode:(unsigned int)mode;
++ (id)requiredEffectParametersForEffectType:(unsigned int)type;
++ (int)cgBlendModeFromCUIEffectBlendMode:(unsigned int)mode;
++ (unsigned)cuiEffectBlendModeFromCGBlendMode:(int)mode;
++ (void)configureVibrantColorMatrixFilter:(id)filter withOptions:(_CUIVibrantColorMatrixOptions *)options;
+- ($ADFAF175FB2F7D6E2A77149C0E7BB12A)valueForParameter:(unsigned int)parameter inEffectAtIndex:(unint64_t)index;
 - (CUIShapeEffectPreset)init;
-- (CUIShapeEffectPreset)initWithConstantPreset:(id *)a3;
-- (CUIShapeEffectPreset)initWithEffectScale:(double)a3;
+- (CUIShapeEffectPreset)initWithConstantPreset:(id *)preset;
+- (CUIShapeEffectPreset)initWithEffectScale:(double)scale;
 - (id)CUIEffectDataRepresentation;
 - (id)debugDescription;
 - (id)layerEffectsRepresentation;
 - (uint64_t)setScaleFactor:(uint64_t)result;
 - (unint64_t)_parameterCount;
 - (unint64_t)effectCount;
-- (unsigned)effectTypeAtIndex:(unint64_t)a3;
-- (void)_insertEffectTuple:(id)a3 atEffectIndex:(unint64_t)a4;
-- (void)addBevelEmbossWithHighlightColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 shadowColorRed:(unsigned int)a7 green:(unsigned int)a8 blue:(unsigned int)a9 opacity:(double)a10 blur:(int)a11 soften:(int)a12 bevelStyle:(unsigned int)a13;
-- (void)addColorFillWithRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blendMode:(unsigned int)a7 tintable:(BOOL)a8;
-- (void)addDropShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8 offset:(int)a9 angle:(int)a10;
-- (void)addEffectsFromPreset:(id)a3;
-- (void)addExtraShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8 offset:(int)a9 angle:(int)a10;
-- (void)addGradientFillWithTopColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 bottomColorRed:(unsigned int)a6 green:(unsigned int)a7 blue:(unsigned int)a8 opacity:(double)a9 blendMode:(unsigned int)a10;
-- (void)addHueSaturationWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 angle:(int)a6 width:(int)a7 tintable:(BOOL)a8;
-- (void)addInnerGlowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 blendMode:(unsigned int)a8;
-- (void)addInnerShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 offset:(int)a8 angle:(int)a9 blendMode:(unsigned int)a10;
-- (void)addOuterGlowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8;
-- (void)addValue:(id)a3 forParameter:(unsigned int)a4 withEffectType:(unsigned int)a5 atEffectIndex:(unint64_t)a6;
-- (void)addValue:(id)a3 forParameter:(unsigned int)a4 withNewEffectType:(unsigned int)a5;
-- (void)appendValue:(id)a3 forParameter:(unsigned int)a4 withEffectType:(unsigned int)a5;
-- (void)getEffectTuples:(id *)a3 count:(unint64_t *)a4 atEffectIndex:(unint64_t)a5;
+- (unsigned)effectTypeAtIndex:(unint64_t)index;
+- (void)_insertEffectTuple:(id)tuple atEffectIndex:(unint64_t)index;
+- (void)addBevelEmbossWithHighlightColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity shadowColorRed:(unsigned int)colorRed green:(unsigned int)a8 blue:(unsigned int)a9 opacity:(double)self0 blur:(int)self1 soften:(int)self2 bevelStyle:(unsigned int)self3;
+- (void)addColorFillWithRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blendMode:(unsigned int)mode tintable:(BOOL)tintable;
+- (void)addDropShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread offset:(int)offset angle:(int)self0;
+- (void)addEffectsFromPreset:(id)preset;
+- (void)addExtraShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread offset:(int)offset angle:(int)self0;
+- (void)addGradientFillWithTopColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue bottomColorRed:(unsigned int)colorRed green:(unsigned int)a7 blue:(unsigned int)a8 opacity:(double)opacity blendMode:(unsigned int)self0;
+- (void)addHueSaturationWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue angle:(int)angle width:(int)width tintable:(BOOL)tintable;
+- (void)addInnerGlowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur blendMode:(unsigned int)mode;
+- (void)addInnerShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur offset:(int)offset angle:(int)angle blendMode:(unsigned int)self0;
+- (void)addOuterGlowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread;
+- (void)addValue:(id)value forParameter:(unsigned int)parameter withEffectType:(unsigned int)type atEffectIndex:(unint64_t)index;
+- (void)addValue:(id)value forParameter:(unsigned int)parameter withNewEffectType:(unsigned int)type;
+- (void)appendValue:(id)value forParameter:(unsigned int)parameter withEffectType:(unsigned int)type;
+- (void)getEffectTuples:(id *)tuples count:(unint64_t *)count atEffectIndex:(unint64_t)index;
 @end
 
 @implementation CUIShapeEffectPreset
@@ -40,10 +40,10 @@
 - (id)layerEffectsRepresentation
 {
   v3 = objc_alloc_init(CUIPSDLayerEffects);
-  v4 = [(CUIShapeEffectPreset *)self effectCount];
-  if (v4)
+  effectCount = [(CUIShapeEffectPreset *)self effectCount];
+  if (effectCount)
   {
-    v5 = v4;
+    v5 = effectCount;
     v6 = 0;
     v7 = 0;
     do
@@ -121,34 +121,34 @@ LABEL_19:
   return result;
 }
 
-- (CUIShapeEffectPreset)initWithEffectScale:(double)a3
+- (CUIShapeEffectPreset)initWithEffectScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = CUIShapeEffectPreset;
   result = [(CUIShapeEffectPreset *)&v5 init];
   if (result)
   {
-    result->_scaleFactor = a3;
+    result->_scaleFactor = scale;
     result->_minimumShadowSpread = 0.0;
   }
 
   return result;
 }
 
-+ (id)requiredEffectParametersForEffectType:(unsigned int)a3
++ (id)requiredEffectParametersForEffectType:(unsigned int)type
 {
-  if (a3 <= 1215653202)
+  if (type <= 1215653202)
   {
-    if (a3 > 1164796530)
+    if (type > 1164796530)
     {
-      if (a3 == 1164796531)
+      if (type == 1164796531)
       {
         return &unk_1F00F7F30;
       }
 
-      if (a3 != 1180787813)
+      if (type != 1180787813)
       {
-        v3 = a3 == 1198678372;
+        v3 = type == 1198678372;
         v4 = &unk_1F00F7EB8;
 LABEL_10:
         if (v3)
@@ -168,7 +168,7 @@ LABEL_10:
     v6 = 1131375730;
     v7 = &unk_1F00F7EA0;
     v9 = &unk_1F00F7F18;
-    if (a3 != 1148350320)
+    if (type != 1148350320)
     {
       v9 = 0;
     }
@@ -176,16 +176,16 @@ LABEL_10:
 
   else
   {
-    if (a3 <= 1766288502)
+    if (type <= 1766288502)
     {
-      if (a3 == 1215653203)
+      if (type == 1215653203)
       {
         return &unk_1F00F7F60;
       }
 
-      if (a3 != 1397715043)
+      if (type != 1397715043)
       {
-        v3 = a3 == 1484026465;
+        v3 = type == 1484026465;
         v4 = &unk_1F00F7F48;
         goto LABEL_10;
       }
@@ -195,7 +195,7 @@ LABEL_10:
 
     v6 = 1766288503;
     v7 = &unk_1F00F7ED0;
-    if (a3 == 1866951799)
+    if (type == 1866951799)
     {
       v8 = &unk_1F00F7F00;
     }
@@ -205,7 +205,7 @@ LABEL_10:
       v8 = 0;
     }
 
-    if (a3 == 1768837992)
+    if (type == 1768837992)
     {
       v9 = &unk_1F00F7EE8;
     }
@@ -216,7 +216,7 @@ LABEL_10:
     }
   }
 
-  if (a3 == v6)
+  if (type == v6)
   {
     return v7;
   }
@@ -239,13 +239,13 @@ LABEL_10:
   return v3;
 }
 
-- (unsigned)effectTypeAtIndex:(unint64_t)a3
+- (unsigned)effectTypeAtIndex:(unint64_t)index
 {
-  v5 = self + 4 * a3;
-  if (a3 > 0x18 || !*(v5 + 502))
+  v5 = self + 4 * index;
+  if (index > 0x18 || !*(v5 + 502))
   {
-    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", a3];
-    if (a3)
+    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", index];
+    if (index)
     {
       goto LABEL_4;
     }
@@ -255,7 +255,7 @@ LABEL_6:
     return self->_parameterList[v6].effectType;
   }
 
-  if (!a3)
+  if (!index)
   {
     goto LABEL_6;
   }
@@ -265,9 +265,9 @@ LABEL_4:
   return self->_parameterList[v6].effectType;
 }
 
-- ($ADFAF175FB2F7D6E2A77149C0E7BB12A)valueForParameter:(unsigned int)a3 inEffectAtIndex:(unint64_t)a4
+- ($ADFAF175FB2F7D6E2A77149C0E7BB12A)valueForParameter:(unsigned int)parameter inEffectAtIndex:(unint64_t)index
 {
-  if (a3 == 6)
+  if (parameter == 6)
   {
     v7 = 90;
   }
@@ -277,10 +277,10 @@ LABEL_4:
     v7 = 0;
   }
 
-  v8 = self + 4 * a4;
-  if (a4 <= 0x18 && *(v8 + 502))
+  v8 = self + 4 * index;
+  if (index <= 0x18 && *(v8 + 502))
   {
-    if (a4)
+    if (index)
     {
 LABEL_7:
       v9 = *(v8 + 501);
@@ -290,8 +290,8 @@ LABEL_7:
 
   else
   {
-    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", a4];
-    if (a4)
+    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", index];
+    if (index)
     {
       goto LABEL_7;
     }
@@ -311,7 +311,7 @@ LABEL_14:
   else
   {
     v13 = (&self->_parameterList[v9].effectValue.intValue + 2);
-    while (*(v13 - 6) != a3)
+    while (*(v13 - 6) != parameter)
     {
       v13 += 4;
       if (!--v12)
@@ -327,39 +327,39 @@ LABEL_14:
   return (v14 | v7);
 }
 
-- (void)_insertEffectTuple:(id)a3 atEffectIndex:(unint64_t)a4
+- (void)_insertEffectTuple:(id)tuple atEffectIndex:(unint64_t)index
 {
   effectIndex = self->_effectIndex;
-  v5 = self->_effectIndex[a4];
-  v6 = self->_effectIndex[a4 + 1];
-  if (a4 && !v5)
+  v5 = self->_effectIndex[index];
+  v6 = self->_effectIndex[index + 1];
+  if (index && !v5)
   {
-    v7 = &effectIndex[a4];
+    v7 = &effectIndex[index];
     v5 = *(v7 - 1);
     *v7 = v5;
   }
 
-  if (v6 >= 1 && a4 + 1 <= 0x18)
+  if (v6 >= 1 && index + 1 <= 0x18)
   {
-    v9 = a4;
+    indexCopy = index;
     do
     {
-      ++self->_effectIndex[++v9];
+      ++self->_effectIndex[++indexCopy];
     }
 
-    while (v9 != 24);
+    while (indexCopy != 24);
   }
 
-  self->_parameterList[v5] = a3;
-  ++effectIndex[a4];
+  self->_parameterList[v5] = tuple;
+  ++effectIndex[index];
 }
 
-- (void)getEffectTuples:(id *)a3 count:(unint64_t *)a4 atEffectIndex:(unint64_t)a5
+- (void)getEffectTuples:(id *)tuples count:(unint64_t *)count atEffectIndex:(unint64_t)index
 {
-  v9 = self + 4 * a5;
-  if (a5 <= 0x18 && *(v9 + 502))
+  v9 = self + 4 * index;
+  if (index <= 0x18 && *(v9 + 502))
   {
-    if (a5)
+    if (index)
     {
 LABEL_4:
       v10 = *(v9 + 501);
@@ -369,8 +369,8 @@ LABEL_4:
 
   else
   {
-    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", a5];
-    if (a5)
+    [NSException raise:NSInvalidArgumentException format:@"Invalid effect index %lu for effect preset", index];
+    if (index)
     {
       goto LABEL_4;
     }
@@ -379,200 +379,200 @@ LABEL_4:
   v10 = 0;
 LABEL_7:
   v11 = *(v9 + 502);
-  if (a3)
+  if (tuples)
   {
-    *a3 = &self->_parameterList[v10];
+    *tuples = &self->_parameterList[v10];
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v11 - v10;
+    *count = v11 - v10;
   }
 }
 
-- (void)addValue:(id)a3 forParameter:(unsigned int)a4 withEffectType:(unsigned int)a5 atEffectIndex:(unint64_t)a6
+- (void)addValue:(id)value forParameter:(unsigned int)parameter withEffectType:(unsigned int)type atEffectIndex:(unint64_t)index
 {
-  v8 = *&a4;
-  v11 = self + 4 * a6;
-  if (a6 >= 0x19)
+  v8 = *&parameter;
+  v11 = self + 4 * index;
+  if (index >= 0x19)
   {
-    [NSException raise:NSRangeException format:@"Invalid effect index %lu for effect preset", a6];
+    [NSException raise:NSRangeException format:@"Invalid effect index %lu for effect preset", index];
 LABEL_4:
     v12 = *(v11 + 501);
     goto LABEL_5;
   }
 
-  if (a6)
+  if (index)
   {
     goto LABEL_4;
   }
 
   v12 = 0;
 LABEL_5:
-  if (self->_parameterList[v12].effectType != a5 && *(v11 + 502) >= 1)
+  if (self->_parameterList[v12].effectType != type && *(v11 + 502) >= 1)
   {
-    [NSException raise:NSInternalInconsistencyException format:@"Attempt to add an effect with incompatible type at index %lu", a6];
+    [NSException raise:NSInternalInconsistencyException format:@"Attempt to add an effect with incompatible type at index %lu", index];
   }
 
-  [(CUIShapeEffectPreset *)self _insertEffectTuple:a5 | (v8 << 32) atEffectIndex:a3.var1, a6];
+  [(CUIShapeEffectPreset *)self _insertEffectTuple:type | (v8 << 32) atEffectIndex:value.var1, index];
 }
 
-- (void)appendValue:(id)a3 forParameter:(unsigned int)a4 withEffectType:(unsigned int)a5
+- (void)appendValue:(id)value forParameter:(unsigned int)parameter withEffectType:(unsigned int)type
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&type;
+  v6 = *&parameter;
   [(CUIShapeEffectPreset *)self effectCount];
 
-  [(CUIShapeEffectPreset *)self addValue:a3.var1 forParameter:v6 withEffectType:v5 atEffectIndex:?];
+  [(CUIShapeEffectPreset *)self addValue:value.var1 forParameter:v6 withEffectType:v5 atEffectIndex:?];
 }
 
-- (void)addValue:(id)a3 forParameter:(unsigned int)a4 withNewEffectType:(unsigned int)a5
+- (void)addValue:(id)value forParameter:(unsigned int)parameter withNewEffectType:(unsigned int)type
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v9 = [(CUIShapeEffectPreset *)self effectCount];
+  v5 = *&type;
+  v6 = *&parameter;
+  effectCount = [(CUIShapeEffectPreset *)self effectCount];
 
-  [(CUIShapeEffectPreset *)self addValue:a3.var1 forParameter:v6 withEffectType:v5 atEffectIndex:v9];
+  [(CUIShapeEffectPreset *)self addValue:value.var1 forParameter:v6 withEffectType:v5 atEffectIndex:effectCount];
 }
 
-- (void)addColorFillWithRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blendMode:(unsigned int)a7 tintable:(BOOL)a8
+- (void)addColorFillWithRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blendMode:(unsigned int)mode tintable:(BOOL)tintable
 {
-  v8 = a8;
-  v9 = *&a7;
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1131375730];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1131375730 withEffectType:a6];
+  tintableCopy = tintable;
+  v9 = *&mode;
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1131375730];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1131375730 withEffectType:opacity];
   [(CUIShapeEffectPreset *)self appendEnumValue:v9 forParameter:7 withEffectType:1131375730];
 
-  [(CUIShapeEffectPreset *)self appendEnumValue:v8 forParameter:10 withEffectType:1131375730];
+  [(CUIShapeEffectPreset *)self appendEnumValue:tintableCopy forParameter:10 withEffectType:1131375730];
 }
 
-- (void)addGradientFillWithTopColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 bottomColorRed:(unsigned int)a6 green:(unsigned int)a7 blue:(unsigned int)a8 opacity:(double)a9 blendMode:(unsigned int)a10
+- (void)addGradientFillWithTopColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue bottomColorRed:(unsigned int)colorRed green:(unsigned int)a7 blue:(unsigned int)a8 opacity:(double)opacity blendMode:(unsigned int)self0
 {
   v11 = *&a8;
   v12 = *&a7;
-  v13 = *&a6;
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1198678372];
+  v13 = *&colorRed;
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1198678372];
   [(CUIShapeEffectPreset *)self appendColorValueRed:v13 green:v12 blue:v11 forParameter:1 withEffectType:1198678372];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1198678372 withEffectType:a9];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1198678372 withEffectType:opacity];
 
-  [(CUIShapeEffectPreset *)self appendEnumValue:a10 forParameter:7 withEffectType:1198678372];
+  [(CUIShapeEffectPreset *)self appendEnumValue:mode forParameter:7 withEffectType:1198678372];
 }
 
-- (void)addInnerGlowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 blendMode:(unsigned int)a8
+- (void)addInnerGlowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur blendMode:(unsigned int)mode
 {
-  v8 = *&a8;
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1766288503];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1766288503 withEffectType:a6];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:4 withEffectType:1766288503];
+  v8 = *&mode;
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1766288503];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1766288503 withEffectType:opacity];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1766288503];
 
   [(CUIShapeEffectPreset *)self appendEnumValue:v8 forParameter:7 withEffectType:1766288503];
 }
 
-- (void)addInnerShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 offset:(int)a8 angle:(int)a9 blendMode:(unsigned int)a10
+- (void)addInnerShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur offset:(int)offset angle:(int)angle blendMode:(unsigned int)self0
 {
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1768837992];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1768837992 withEffectType:a6];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:4 withEffectType:1768837992];
-  [(CUIShapeEffectPreset *)self appendIntValue:a8 forParameter:5 withEffectType:1768837992];
-  [(CUIShapeEffectPreset *)self appendAngleValue:a9 forParameter:6 withEffectType:1768837992];
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1768837992];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1768837992 withEffectType:opacity];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1768837992];
+  [(CUIShapeEffectPreset *)self appendIntValue:offset forParameter:5 withEffectType:1768837992];
+  [(CUIShapeEffectPreset *)self appendAngleValue:angle forParameter:6 withEffectType:1768837992];
 
-  [(CUIShapeEffectPreset *)self appendEnumValue:a10 forParameter:7 withEffectType:1768837992];
+  [(CUIShapeEffectPreset *)self appendEnumValue:mode forParameter:7 withEffectType:1768837992];
 }
 
-- (void)addOuterGlowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8
+- (void)addOuterGlowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread
 {
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1866951799];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1866951799 withEffectType:a6];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:4 withEffectType:1866951799];
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1866951799];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1866951799 withEffectType:opacity];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1866951799];
 
-  [(CUIShapeEffectPreset *)self appendIntValue:a8 forParameter:9 withEffectType:1866951799];
+  [(CUIShapeEffectPreset *)self appendIntValue:spread forParameter:9 withEffectType:1866951799];
 }
 
-- (void)addDropShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8 offset:(int)a9 angle:(int)a10
+- (void)addDropShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread offset:(int)offset angle:(int)self0
 {
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1148350320];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1148350320 withEffectType:a6];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:4 withEffectType:1148350320];
-  [(CUIShapeEffectPreset *)self appendIntValue:a8 forParameter:9 withEffectType:1148350320];
-  [(CUIShapeEffectPreset *)self appendIntValue:a9 forParameter:5 withEffectType:1148350320];
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1148350320];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1148350320 withEffectType:opacity];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1148350320];
+  [(CUIShapeEffectPreset *)self appendIntValue:spread forParameter:9 withEffectType:1148350320];
+  [(CUIShapeEffectPreset *)self appendIntValue:offset forParameter:5 withEffectType:1148350320];
 
-  [(CUIShapeEffectPreset *)self appendAngleValue:a10 forParameter:6 withEffectType:1148350320];
+  [(CUIShapeEffectPreset *)self appendAngleValue:angle forParameter:6 withEffectType:1148350320];
 }
 
-- (void)addExtraShadowWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 blur:(int)a7 spread:(int)a8 offset:(int)a9 angle:(int)a10
+- (void)addExtraShadowWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity blur:(int)blur spread:(int)spread offset:(int)offset angle:(int)self0
 {
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1484026465];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1484026465 withEffectType:a6];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:4 withEffectType:1484026465];
-  [(CUIShapeEffectPreset *)self appendIntValue:a8 forParameter:9 withEffectType:1484026465];
-  [(CUIShapeEffectPreset *)self appendIntValue:a9 forParameter:5 withEffectType:1484026465];
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1484026465];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1484026465 withEffectType:opacity];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1484026465];
+  [(CUIShapeEffectPreset *)self appendIntValue:spread forParameter:9 withEffectType:1484026465];
+  [(CUIShapeEffectPreset *)self appendIntValue:offset forParameter:5 withEffectType:1484026465];
 
-  [(CUIShapeEffectPreset *)self appendAngleValue:a10 forParameter:6 withEffectType:1484026465];
+  [(CUIShapeEffectPreset *)self appendAngleValue:angle forParameter:6 withEffectType:1484026465];
 }
 
-- (void)addBevelEmbossWithHighlightColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 opacity:(double)a6 shadowColorRed:(unsigned int)a7 green:(unsigned int)a8 blue:(unsigned int)a9 opacity:(double)a10 blur:(int)a11 soften:(int)a12 bevelStyle:(unsigned int)a13
+- (void)addBevelEmbossWithHighlightColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue opacity:(double)opacity shadowColorRed:(unsigned int)colorRed green:(unsigned int)a8 blue:(unsigned int)a9 opacity:(double)self0 blur:(int)self1 soften:(int)self2 bevelStyle:(unsigned int)self3
 {
   v14 = *&a9;
   v15 = *&a8;
-  v16 = *&a7;
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1164796531];
-  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1164796531 withEffectType:a6];
+  v16 = *&colorRed;
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1164796531];
+  [(CUIShapeEffectPreset *)self appendFloatValue:2 forParameter:1164796531 withEffectType:opacity];
   [(CUIShapeEffectPreset *)self appendColorValueRed:v16 green:v15 blue:v14 forParameter:1 withEffectType:1164796531];
   [(CUIShapeEffectPreset *)self appendFloatValue:3 forParameter:1164796531 withEffectType:a10];
-  [(CUIShapeEffectPreset *)self appendIntValue:a11 forParameter:4 withEffectType:1164796531];
-  [(CUIShapeEffectPreset *)self appendIntValue:a12 forParameter:8 withEffectType:1164796531];
+  [(CUIShapeEffectPreset *)self appendIntValue:blur forParameter:4 withEffectType:1164796531];
+  [(CUIShapeEffectPreset *)self appendIntValue:soften forParameter:8 withEffectType:1164796531];
 
-  [(CUIShapeEffectPreset *)self appendEnumValue:a13 forParameter:11 withEffectType:1164796531];
+  [(CUIShapeEffectPreset *)self appendEnumValue:style forParameter:11 withEffectType:1164796531];
 }
 
-- (void)addHueSaturationWithColorRed:(unsigned int)a3 green:(unsigned int)a4 blue:(unsigned int)a5 angle:(int)a6 width:(int)a7 tintable:(BOOL)a8
+- (void)addHueSaturationWithColorRed:(unsigned int)red green:(unsigned int)green blue:(unsigned int)blue angle:(int)angle width:(int)width tintable:(BOOL)tintable
 {
-  v8 = a8;
-  [(CUIShapeEffectPreset *)self addColorValueRed:*&a3 green:*&a4 blue:*&a5 forParameter:0 withNewEffectType:1215653203];
-  [(CUIShapeEffectPreset *)self appendAngleValue:a6 forParameter:6 withEffectType:1215653203];
-  [(CUIShapeEffectPreset *)self appendIntValue:a7 forParameter:5 withEffectType:1215653203];
+  tintableCopy = tintable;
+  [(CUIShapeEffectPreset *)self addColorValueRed:*&red green:*&green blue:*&blue forParameter:0 withNewEffectType:1215653203];
+  [(CUIShapeEffectPreset *)self appendAngleValue:angle forParameter:6 withEffectType:1215653203];
+  [(CUIShapeEffectPreset *)self appendIntValue:width forParameter:5 withEffectType:1215653203];
 
-  [(CUIShapeEffectPreset *)self appendEnumValue:v8 forParameter:10 withEffectType:1215653203];
+  [(CUIShapeEffectPreset *)self appendEnumValue:tintableCopy forParameter:10 withEffectType:1215653203];
 }
 
-- (void)addEffectsFromPreset:(id)a3
+- (void)addEffectsFromPreset:(id)preset
 {
-  v5 = [a3 effectCount];
-  if (v5)
+  effectCount = [preset effectCount];
+  if (effectCount)
   {
-    v6 = v5;
+    v6 = effectCount;
     v7 = 0;
-    v86 = v5;
-    v87 = self;
+    v86 = effectCount;
+    selfCopy = self;
     do
     {
-      v8 = [a3 effectTypeAtIndex:v7];
+      v8 = [preset effectTypeAtIndex:v7];
       if (v8 <= 1215653202)
       {
         if (v8 <= 1164796530)
         {
           if (v8 == 1131375730)
           {
-            v41 = [a3 valueForParameter:7 inEffectAtIndex:v7];
-            v42 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v41 = [preset valueForParameter:7 inEffectAtIndex:v7];
+            v42 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v43 = v42;
             v44 = BYTE1(v42);
             v45 = BYTE2(v42);
-            v46 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-            -[CUIShapeEffectPreset addColorFillWithRed:green:blue:opacity:blendMode:tintable:](self, "addColorFillWithRed:green:blue:opacity:blendMode:tintable:", v43, v44, v45, v41, [a3 valueForParameter:10 inEffectAtIndex:v7] == 1, v46);
+            v46 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+            -[CUIShapeEffectPreset addColorFillWithRed:green:blue:opacity:blendMode:tintable:](self, "addColorFillWithRed:green:blue:opacity:blendMode:tintable:", v43, v44, v45, v41, [preset valueForParameter:10 inEffectAtIndex:v7] == 1, v46);
           }
 
           else if (v8 == 1148350320)
           {
-            v33 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v33 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v34 = v33;
             v35 = BYTE1(v33);
             v36 = BYTE2(v33);
-            v37 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-            v38 = [a3 valueForParameter:4 inEffectAtIndex:v7];
-            v39 = [a3 valueForParameter:9 inEffectAtIndex:v7];
-            v40 = [a3 valueForParameter:5 inEffectAtIndex:v7];
-            LODWORD(v84) = [a3 valueForParameter:6 inEffectAtIndex:v7];
+            v37 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+            v38 = [preset valueForParameter:4 inEffectAtIndex:v7];
+            v39 = [preset valueForParameter:9 inEffectAtIndex:v7];
+            v40 = [preset valueForParameter:5 inEffectAtIndex:v7];
+            LODWORD(v84) = [preset valueForParameter:6 inEffectAtIndex:v7];
             [(CUIShapeEffectPreset *)self addDropShadowWithColorRed:v34 green:v35 blue:v36 opacity:v38 blur:v39 spread:v40 offset:v37 angle:v84];
           }
         }
@@ -582,40 +582,40 @@ LABEL_5:
           switch(v8)
           {
             case 1164796531:
-              v55 = [a3 valueForParameter:4 inEffectAtIndex:v7];
-              v56 = [a3 valueForParameter:8 inEffectAtIndex:v7];
-              v57 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+              v55 = [preset valueForParameter:4 inEffectAtIndex:v7];
+              v56 = [preset valueForParameter:8 inEffectAtIndex:v7];
+              v57 = [preset valueForParameter:0 inEffectAtIndex:v7];
               v58 = v57;
               v59 = BYTE1(v57);
               v60 = BYTE2(v57);
-              v61 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-              v62 = [a3 valueForParameter:1 inEffectAtIndex:v7];
+              v61 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+              v62 = [preset valueForParameter:1 inEffectAtIndex:v7];
               v63 = v62;
               v64 = BYTE1(v62);
               v65 = BYTE2(v62);
-              v66 = COERCE_DOUBLE([a3 valueForParameter:3 inEffectAtIndex:v7]);
-              LODWORD(v85) = [a3 valueForParameter:11 inEffectAtIndex:v7];
+              v66 = COERCE_DOUBLE([preset valueForParameter:3 inEffectAtIndex:v7]);
+              LODWORD(v85) = [preset valueForParameter:11 inEffectAtIndex:v7];
               v67 = v64;
-              self = v87;
+              self = selfCopy;
               v68 = v65;
               v6 = v86;
-              [(CUIShapeEffectPreset *)v87 addBevelEmbossWithHighlightColorRed:v58 green:v59 blue:v60 opacity:v63 shadowColorRed:v67 green:v68 blue:v61 opacity:v66 blur:__PAIR64__(v56 soften:v55) bevelStyle:v85];
+              [(CUIShapeEffectPreset *)selfCopy addBevelEmbossWithHighlightColorRed:v58 green:v59 blue:v60 opacity:v63 shadowColorRed:v67 green:v68 blue:v61 opacity:v66 blur:__PAIR64__(v56 soften:v55) bevelStyle:v85];
               break;
             case 1180787813:
-              v47 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
+              v47 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
               [(CUIShapeEffectPreset *)self addOutputOpacityWithOpacity:v47];
               break;
             case 1198678372:
-              v19 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+              v19 = [preset valueForParameter:0 inEffectAtIndex:v7];
               v20 = v19;
               v21 = BYTE1(v19);
               v22 = BYTE2(v19);
-              v23 = [a3 valueForParameter:1 inEffectAtIndex:v7];
+              v23 = [preset valueForParameter:1 inEffectAtIndex:v7];
               v24 = v23;
               v25 = BYTE1(v23);
               v26 = BYTE2(v23);
-              v27 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-              LODWORD(v84) = [a3 valueForParameter:7 inEffectAtIndex:v7];
+              v27 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+              LODWORD(v84) = [preset valueForParameter:7 inEffectAtIndex:v7];
               [(CUIShapeEffectPreset *)self addGradientFillWithTopColorRed:v20 green:v21 blue:v22 bottomColorRed:v24 green:v25 blue:v26 opacity:v27 blendMode:v84];
               break;
           }
@@ -627,31 +627,31 @@ LABEL_5:
         switch(v8)
         {
           case 1766288503:
-            v78 = [a3 valueForParameter:7 inEffectAtIndex:v7];
-            v79 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v78 = [preset valueForParameter:7 inEffectAtIndex:v7];
+            v79 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v80 = v79;
             v81 = BYTE1(v79);
             v82 = BYTE2(v79);
-            v83 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-            -[CUIShapeEffectPreset addInnerGlowWithColorRed:green:blue:opacity:blur:blendMode:](self, "addInnerGlowWithColorRed:green:blue:opacity:blur:blendMode:", v80, v81, v82, [a3 valueForParameter:4 inEffectAtIndex:v7], v78, v83);
+            v83 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+            -[CUIShapeEffectPreset addInnerGlowWithColorRed:green:blue:opacity:blur:blendMode:](self, "addInnerGlowWithColorRed:green:blue:opacity:blur:blendMode:", v80, v81, v82, [preset valueForParameter:4 inEffectAtIndex:v7], v78, v83);
             break;
           case 1768837992:
-            v49 = [a3 valueForParameter:7 inEffectAtIndex:v7];
-            v50 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v49 = [preset valueForParameter:7 inEffectAtIndex:v7];
+            v50 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v51 = v50;
             v52 = BYTE1(v50);
             v53 = BYTE2(v50);
-            v54 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
+            v54 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
             LODWORD(v84) = v49;
-            -[CUIShapeEffectPreset addInnerShadowWithColorRed:green:blue:opacity:blur:offset:angle:blendMode:](self, "addInnerShadowWithColorRed:green:blue:opacity:blur:offset:angle:blendMode:", v51, v52, v53, [a3 valueForParameter:4 inEffectAtIndex:v7], objc_msgSend(a3, "valueForParameter:inEffectAtIndex:", 5, v7), objc_msgSend(a3, "valueForParameter:inEffectAtIndex:", 6, v7), v54, v84);
+            -[CUIShapeEffectPreset addInnerShadowWithColorRed:green:blue:opacity:blur:offset:angle:blendMode:](self, "addInnerShadowWithColorRed:green:blue:opacity:blur:offset:angle:blendMode:", v51, v52, v53, [preset valueForParameter:4 inEffectAtIndex:v7], objc_msgSend(preset, "valueForParameter:inEffectAtIndex:", 5, v7), objc_msgSend(preset, "valueForParameter:inEffectAtIndex:", 6, v7), v54, v84);
             break;
           case 1866951799:
-            v28 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v28 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v29 = v28;
             v30 = BYTE1(v28);
             v31 = BYTE2(v28);
-            v32 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-            -[CUIShapeEffectPreset addOuterGlowWithColorRed:green:blue:opacity:blur:spread:](self, "addOuterGlowWithColorRed:green:blue:opacity:blur:spread:", v29, v30, v31, [a3 valueForParameter:4 inEffectAtIndex:v7], objc_msgSend(a3, "valueForParameter:inEffectAtIndex:", 9, v7), v32);
+            v32 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+            -[CUIShapeEffectPreset addOuterGlowWithColorRed:green:blue:opacity:blur:spread:](self, "addOuterGlowWithColorRed:green:blue:opacity:blur:spread:", v29, v30, v31, [preset valueForParameter:4 inEffectAtIndex:v7], objc_msgSend(preset, "valueForParameter:inEffectAtIndex:", 9, v7), v32);
             break;
         }
       }
@@ -661,38 +661,38 @@ LABEL_5:
         switch(v8)
         {
           case 1215653203:
-            v69 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v69 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v70 = v69;
             v71 = BYTE1(v69);
             v72 = BYTE2(v69);
-            v73 = [a3 valueForParameter:6 inEffectAtIndex:v7];
-            v74 = [a3 valueForParameter:5 inEffectAtIndex:v7];
-            v75 = [a3 valueForParameter:10 inEffectAtIndex:v7] == 1;
+            v73 = [preset valueForParameter:6 inEffectAtIndex:v7];
+            v74 = [preset valueForParameter:5 inEffectAtIndex:v7];
+            v75 = [preset valueForParameter:10 inEffectAtIndex:v7] == 1;
             v76 = v70;
-            self = v87;
+            self = selfCopy;
             v77 = v71;
             v6 = v86;
-            [(CUIShapeEffectPreset *)v87 addHueSaturationWithColorRed:v76 green:v77 blue:v72 angle:v73 width:v74 tintable:v75];
+            [(CUIShapeEffectPreset *)selfCopy addHueSaturationWithColorRed:v76 green:v77 blue:v72 angle:v73 width:v74 tintable:v75];
             break;
           case 1397715043:
-            v48 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
+            v48 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
             [(CUIShapeEffectPreset *)self addShapeOpacityWithOpacity:v48];
             break;
           case 1484026465:
-            v9 = [a3 valueForParameter:0 inEffectAtIndex:v7];
+            v9 = [preset valueForParameter:0 inEffectAtIndex:v7];
             v10 = v9;
             v11 = BYTE1(v9);
             v12 = BYTE2(v9);
-            v13 = COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:v7]);
-            v14 = [a3 valueForParameter:4 inEffectAtIndex:v7];
-            v15 = [a3 valueForParameter:9 inEffectAtIndex:v7];
-            v16 = [a3 valueForParameter:5 inEffectAtIndex:v7];
-            LODWORD(v84) = [a3 valueForParameter:6 inEffectAtIndex:v7];
+            v13 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v7]);
+            v14 = [preset valueForParameter:4 inEffectAtIndex:v7];
+            v15 = [preset valueForParameter:9 inEffectAtIndex:v7];
+            v16 = [preset valueForParameter:5 inEffectAtIndex:v7];
+            LODWORD(v84) = [preset valueForParameter:6 inEffectAtIndex:v7];
             v17 = v10;
-            self = v87;
+            self = selfCopy;
             v18 = v11;
             v6 = v86;
-            [(CUIShapeEffectPreset *)v87 addExtraShadowWithColorRed:v17 green:v18 blue:v12 opacity:v14 blur:v15 spread:v16 offset:v13 angle:v84];
+            [(CUIShapeEffectPreset *)selfCopy addExtraShadowWithColorRed:v17 green:v18 blue:v12 opacity:v14 blur:v15 spread:v16 offset:v13 angle:v84];
             break;
         }
       }
@@ -710,12 +710,12 @@ LABEL_5:
   v86.super_class = CUIShapeEffectPreset;
   v3 = [NSMutableString stringWithString:[(CUIShapeEffectPreset *)&v86 debugDescription]];
   [(NSMutableString *)v3 appendFormat:@"\nEffects: {\n"];
-  v4 = [(CUIShapeEffectPreset *)self effectCount];
-  if (v4)
+  effectCount = [(CUIShapeEffectPreset *)self effectCount];
+  if (effectCount)
   {
-    v5 = v4;
+    v5 = effectCount;
     v6 = 0;
-    v84 = v4;
+    v84 = effectCount;
     v85 = 1852797549;
     do
     {
@@ -884,43 +884,43 @@ LABEL_5:
   return v3;
 }
 
-+ (unsigned)cuiEffectBlendModeFromCGBlendMode:(int)a3
++ (unsigned)cuiEffectBlendModeFromCGBlendMode:(int)mode
 {
-  if ((a3 - 1) > 0x1A)
+  if ((mode - 1) > 0x1A)
   {
     return 1852797549;
   }
 
   else
   {
-    return dword_18E022258[a3 - 1];
+    return dword_18E022258[mode - 1];
   }
 }
 
-+ (int)cgBlendModeFromCUIEffectBlendMode:(unsigned int)a3
++ (int)cgBlendModeFromCUIEffectBlendMode:(unsigned int)mode
 {
   result = 0;
-  if (a3 > 1749838195)
+  if (mode > 1749838195)
   {
-    if (a3 > 1852797548)
+    if (mode > 1852797548)
     {
-      if (a3 > 1935897197)
+      if (mode > 1935897197)
       {
-        if (a3 > 1986227572)
+        if (mode > 1986227572)
         {
-          if (a3 != 1986227573 && a3 != 1986229103)
+          if (mode != 1986227573 && mode != 1986229103)
           {
 LABEL_44:
-            _CUILog(4, "CUIEffectBlendMode can't be converted to CGBlendMode", *&a3, v3, v4, v5, v6, v7, v8);
+            _CUILog(4, "CUIEffectBlendMode can't be converted to CGBlendMode", *&mode, v3, v4, v5, v6, v7, v8);
             return 0;
           }
         }
 
         else
         {
-          if (a3 != 1935897198)
+          if (mode != 1935897198)
           {
-            if (a3 == 1936553316)
+            if (mode == 1936553316)
             {
               return 11;
             }
@@ -932,11 +932,11 @@ LABEL_44:
         }
       }
 
-      else if (a3 > 1934387571)
+      else if (mode > 1934387571)
       {
-        if (a3 != 1934387572)
+        if (mode != 1934387572)
         {
-          if (a3 == 1935766560)
+          if (mode == 1935766560)
           {
             return 13;
           }
@@ -947,9 +947,9 @@ LABEL_44:
         return 8;
       }
 
-      else if (a3 != 1852797549)
+      else if (mode != 1852797549)
       {
-        if (a3 == 1870030194)
+        if (mode == 1870030194)
         {
           return 3;
         }
@@ -958,13 +958,13 @@ LABEL_44:
       }
     }
 
-    else if (a3 > 1818518630)
+    else if (mode > 1818518630)
     {
-      if (a3 > 1819634975)
+      if (mode > 1819634975)
       {
-        if (a3 != 1819634976)
+        if (mode != 1819634976)
         {
-          if (a3 == 1836411936)
+          if (mode == 1836411936)
           {
             return 1;
           }
@@ -977,9 +977,9 @@ LABEL_44:
 
       else
       {
-        if (a3 != 1818518631)
+        if (mode != 1818518631)
         {
-          if (a3 == 1818850405)
+          if (mode == 1818850405)
           {
             return 5;
           }
@@ -991,11 +991,11 @@ LABEL_44:
       }
     }
 
-    else if (a3 > 1768188277)
+    else if (mode > 1768188277)
     {
-      if (a3 != 1768188278)
+      if (mode != 1768188278)
       {
-        if (a3 == 1818391150)
+        if (mode == 1818391150)
         {
           return 26;
         }
@@ -1008,9 +1008,9 @@ LABEL_44:
 
     else
     {
-      if (a3 != 1749838196)
+      if (mode != 1749838196)
       {
-        if (a3 == 1752524064)
+        if (mode == 1752524064)
         {
           return 12;
         }
@@ -1022,13 +1022,13 @@ LABEL_44:
     }
   }
 
-  else if (a3 > 1668246641)
+  else if (mode > 1668246641)
   {
-    if (a3 > 1684629093)
+    if (mode > 1684629093)
     {
-      if (a3 != 1684629094)
+      if (mode != 1684629094)
       {
-        if (a3 == 1684633120)
+        if (mode == 1684633120)
         {
           return 6;
         }
@@ -1041,9 +1041,9 @@ LABEL_44:
 
     else
     {
-      if (a3 != 1668246642)
+      if (mode != 1668246642)
       {
-        if (a3 == 1684107883)
+        if (mode == 1684107883)
         {
           return 4;
         }
@@ -1057,12 +1057,12 @@ LABEL_44:
 
   else
   {
-    if (a3 - 16 < 0xC)
+    if (mode - 16 < 0xC)
     {
-      return a3;
+      return mode;
     }
 
-    if (a3)
+    if (mode)
     {
       goto LABEL_44;
     }
@@ -1071,14 +1071,14 @@ LABEL_44:
   return result;
 }
 
-+ (id)caFilterFromCUIEffectBlendMode:(unsigned int)a3
++ (id)caFilterFromCUIEffectBlendMode:(unsigned int)mode
 {
   v3 = &kCAFilterNormalBlendMode;
-  if (a3 <= 1718842721)
+  if (mode <= 1718842721)
   {
-    if (a3 <= 1668246641)
+    if (mode <= 1668246641)
     {
-      switch(a3)
+      switch(mode)
       {
         case 0u:
           v3 = &kCAFilterSourceOver;
@@ -1126,16 +1126,16 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if (a3 > 1684629093)
+    if (mode > 1684629093)
     {
       v7 = 1684629094;
       v8 = &kCAFilterDifferenceBlendMode;
-      if (a3 == 1717856630)
+      if (mode == 1717856630)
       {
         v3 = &kCAFilterDivideBlendMode;
       }
 
-      if (a3 == 1684633120)
+      if (mode == 1684633120)
       {
         v3 = &kCAFilterColorDodgeBlendMode;
       }
@@ -1143,13 +1143,13 @@ LABEL_44:
       goto LABEL_38;
     }
 
-    if (a3 == 1668246642)
+    if (mode == 1668246642)
     {
       v6 = @"colorBlendMode";
       return [CAFilter filterWithType:v6];
     }
 
-    v4 = a3 == 1684107883;
+    v4 = mode == 1684107883;
     v5 = &kCAFilterDarkenBlendMode;
 LABEL_43:
     if (v4)
@@ -1160,46 +1160,46 @@ LABEL_43:
     goto LABEL_45;
   }
 
-  if (a3 <= 1836411935)
+  if (mode <= 1836411935)
   {
-    if (a3 <= 1816947059)
+    if (mode <= 1816947059)
     {
-      if (a3 > 1752524063)
+      if (mode > 1752524063)
       {
-        if (a3 == 1752524064)
+        if (mode == 1752524064)
         {
           v6 = @"hueBlendMode";
           return [CAFilter filterWithType:v6];
         }
 
-        v4 = a3 == 1768188278;
+        v4 = mode == 1768188278;
         v5 = &kCAFilterColorBurnBlendMode;
         goto LABEL_43;
       }
 
       v7 = 1718842722;
       v8 = &kCAFilterSubtractBlendMode;
-      v9 = a3 == 1749838196;
+      v9 = mode == 1749838196;
       v10 = &kCAFilterHardLightBlendMode;
     }
 
     else
     {
-      if (a3 > 1818518630)
+      if (mode > 1818518630)
       {
-        if (a3 == 1818518631)
+        if (mode == 1818518631)
         {
           v3 = &kCAFilterLinearDodgeBlendMode;
           goto LABEL_45;
         }
 
-        if (a3 == 1818850405)
+        if (mode == 1818850405)
         {
           v3 = &kCAFilterLightenBlendMode;
           goto LABEL_45;
         }
 
-        if (a3 != 1819634976)
+        if (mode != 1819634976)
         {
           goto LABEL_45;
         }
@@ -1210,7 +1210,7 @@ LABEL_43:
 
       v7 = 1816947060;
       v8 = &kCAFilterLinearLightBlendMode;
-      v9 = a3 == 1818391150;
+      v9 = mode == 1818391150;
       v10 = &kCAFilterLinearBurnBlendMode;
     }
 
@@ -1221,7 +1221,7 @@ LABEL_36:
     }
 
 LABEL_38:
-    if (a3 == v7)
+    if (mode == v7)
     {
       v3 = v8;
     }
@@ -1229,47 +1229,47 @@ LABEL_38:
     goto LABEL_45;
   }
 
-  if (a3 <= 1935766559)
+  if (mode <= 1935766559)
   {
-    if (a3 > 1884055923)
+    if (mode > 1884055923)
     {
-      if (a3 == 1884055924)
+      if (mode == 1884055924)
       {
         v3 = &kCAFilterPinLightBlendMode;
         goto LABEL_45;
       }
 
-      if (a3 == 1885434739)
+      if (mode == 1885434739)
       {
         return 0;
       }
 
-      v4 = a3 == 1934387572;
+      v4 = mode == 1934387572;
       v5 = &kCAFilterSoftLightBlendMode;
       goto LABEL_43;
     }
 
     v7 = 1836411936;
     v8 = &kCAFilterMultiply;
-    v9 = a3 == 1870030194;
+    v9 = mode == 1870030194;
     v10 = &kCAFilterOverlayBlendMode;
     goto LABEL_36;
   }
 
-  if (a3 <= 1936553315)
+  if (mode <= 1936553315)
   {
-    if (a3 == 1935766560)
+    if (mode == 1935766560)
     {
       v6 = @"saturationBlendMode";
       return [CAFilter filterWithType:v6];
     }
 
-    v4 = a3 == 1935897198;
+    v4 = mode == 1935897198;
     v5 = &kCAFilterScreenBlendMode;
     goto LABEL_43;
   }
 
-  switch(a3)
+  switch(mode)
   {
     case 0x736D7564u:
       v3 = &kCAFilterExclusionBlendMode;
@@ -1308,7 +1308,7 @@ LABEL_45:
   return result;
 }
 
-+ (_CUIVibrantColorMatrixOptions)standardVibrantColorMatrixOptionsForColor:(SEL)a3
++ (_CUIVibrantColorMatrixOptions)standardVibrantColorMatrixOptionsForColor:(SEL)color
 {
   SRGB = _CUIColorSpaceGetSRGB();
   DisplayP3 = _CUIColorSpaceGetDisplayP3();
@@ -1341,13 +1341,13 @@ LABEL_45:
   return result;
 }
 
-+ (_CUIVibrantColorMatrixOptions)vibrantColorMatrixOptionsWithColor:(SEL)a3 saturation:(CGColor *)a4 brightness:(double)a5
++ (_CUIVibrantColorMatrixOptions)vibrantColorMatrixOptionsWithColor:(SEL)color saturation:(CGColor *)saturation brightness:(double)brightness
 {
-  if (CGColorGetAlpha(a4) >= 1.0)
+  if (CGColorGetAlpha(saturation) >= 1.0)
   {
     if (a2)
     {
-      result = [a2 standardVibrantColorMatrixOptionsForColor:a4];
+      result = [a2 standardVibrantColorMatrixOptionsForColor:saturation];
       goto LABEL_7;
     }
 
@@ -1377,13 +1377,13 @@ LABEL_7:
   *&retstr->var1 = v14;
   *&retstr->var3 = v15;
   retstr->var3 = a6;
-  retstr->var4 = a5;
+  retstr->var4 = brightness;
   return result;
 }
 
-+ (void)configureVibrantColorMatrixFilter:(id)a3 withOptions:(_CUIVibrantColorMatrixOptions *)a4
++ (void)configureVibrantColorMatrixFilter:(id)filter withOptions:(_CUIVibrantColorMatrixOptions *)options
 {
-  if (a3)
+  if (filter)
   {
     v16 = 0u;
     v17 = 0u;
@@ -1407,8 +1407,8 @@ LABEL_7:
     v15 = v10;
     v13 = v8;
     v7 = [NSValue valueWithCAColorMatrix:&v8];
-    [a3 setValue:v7 forKey:kCAFilterInputColorMatrix];
-    [a3 setEnabled:1];
+    [filter setValue:v7 forKey:kCAFilterInputColorMatrix];
+    [filter setEnabled:1];
   }
 }
 
@@ -1426,11 +1426,11 @@ LABEL_7:
 - (id)CUIEffectDataRepresentation
 {
   v27 = xmmword_18E0222D0;
-  v3 = [(CUIShapeEffectPreset *)self effectCount];
-  v28 = v3;
-  v4 = malloc_type_calloc(v3 + 1, 4uLL, 0x100004052888210uLL);
-  v5 = [[NSMutableData alloc] initWithCapacity:{(8 * -[CUIShapeEffectPreset _parameterCount](self, "_parameterCount") + 8) * v3}];
-  if (v3)
+  effectCount = [(CUIShapeEffectPreset *)self effectCount];
+  v28 = effectCount;
+  v4 = malloc_type_calloc(effectCount + 1, 4uLL, 0x100004052888210uLL);
+  v5 = [[NSMutableData alloc] initWithCapacity:{(8 * -[CUIShapeEffectPreset _parameterCount](self, "_parameterCount") + 8) * effectCount}];
+  if (effectCount)
   {
     v6 = 0;
     v7 = 0;
@@ -1506,19 +1506,19 @@ LABEL_7:
       v7 = v6;
     }
 
-    while (v3 > v6);
+    while (effectCount > v6);
   }
 
-  v23 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v5 length] + 4 * v3 + 20);
+  v23 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v5 length] + 4 * effectCount + 20);
   [(NSMutableData *)v23 appendBytes:&v27 length:20];
-  [(NSMutableData *)v23 appendBytes:v4 length:4 * (v3 + 1)];
+  [(NSMutableData *)v23 appendBytes:v4 length:4 * (effectCount + 1)];
   [(NSMutableData *)v23 appendData:v5];
   free(v4);
 
   return v23;
 }
 
-- (CUIShapeEffectPreset)initWithConstantPreset:(id *)a3
+- (CUIShapeEffectPreset)initWithConstantPreset:(id *)preset
 {
   v15.receiver = self;
   v15.super_class = CUIShapeEffectPreset;
@@ -1528,13 +1528,13 @@ LABEL_7:
     v5 = 0;
     v6 = 0;
     v7 = 1.0;
-    if (a3->var3 == 144)
+    if (preset->var3 == 144)
     {
       v7 = 2.0;
     }
 
     result->_scaleFactor = v7;
-    p_var2 = &a3->var5[0].var2;
+    p_var2 = &preset->var5[0].var2;
     v9 = 125;
     do
     {

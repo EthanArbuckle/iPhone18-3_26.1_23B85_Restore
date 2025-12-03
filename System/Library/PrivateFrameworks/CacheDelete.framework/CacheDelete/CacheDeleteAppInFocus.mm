@@ -1,13 +1,13 @@
 @interface CacheDeleteAppInFocus
-+ (void)subscribeToAppInFocusStreamBeginning:(id)a3 callback:(id)a4;
++ (void)subscribeToAppInFocusStreamBeginning:(id)beginning callback:(id)callback;
 @end
 
 @implementation CacheDeleteAppInFocus
 
-+ (void)subscribeToAppInFocusStreamBeginning:(id)a3 callback:(id)a4
++ (void)subscribeToAppInFocusStreamBeginning:(id)beginning callback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
+  beginningCopy = beginning;
+  callbackCopy = callback;
   if (BiomeLibraryLibraryCore())
   {
     if (qword_1ED76A0E8 != -1)
@@ -42,21 +42,21 @@
 
     v8 = v7();
     v9 = [v8 App];
-    v10 = [v9 InFocus];
+    inFocus = [v9 InFocus];
 
     v11 = objc_autoreleasePoolPush();
     v12 = objc_opt_new();
     v13 = [_MergedGlobals_8 alloc];
-    v14 = [MEMORY[0x1E695DF00] date];
-    v15 = [v13 initWithStartDate:v14 endDate:v5 maxEvents:0 lastN:0 reversed:1];
+    date = [MEMORY[0x1E695DF00] date];
+    v15 = [v13 initWithStartDate:date endDate:beginningCopy maxEvents:0 lastN:0 reversed:1];
 
-    v16 = [v10 publisherWithOptions:v15];
+    v16 = [inFocus publisherWithOptions:v15];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__CacheDeleteAppInFocus_subscribeToAppInFocusStreamBeginning_callback___block_invoke_3;
     v20[3] = &unk_1E7F03140;
     v21 = v12;
-    v22 = v6;
+    v22 = callbackCopy;
     v17 = v12;
     v18 = [v16 sinkWithCompletion:&__block_literal_global_36_0 receiveInput:v20];
 

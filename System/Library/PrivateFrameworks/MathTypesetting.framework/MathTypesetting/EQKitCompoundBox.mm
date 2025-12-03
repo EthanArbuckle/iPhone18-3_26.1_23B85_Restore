@@ -1,25 +1,25 @@
 @interface EQKitCompoundBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 - (void)p_ensureDimensionsAreValid;
 @end
 
 @implementation EQKitCompoundBox
 
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   v9.receiver = self;
   v9.super_class = EQKitCompoundBox;
   v5 = [(EQKitCompoundBox *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [boxesCopy copy];
     childBoxes = v5->_childBoxes;
     v5->_childBoxes = v6;
   }
@@ -27,36 +27,36 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitCompoundBox *)self childBoxes];
-  v6 = [v4 initWithChildBoxes:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v6 = [v4 initWithChildBoxes:childBoxes];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(EQKitCompoundBox *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitCompoundBox *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(EQKitCompoundBox *)self childBoxes];
-    v7 = [(EQKitCompoundBox *)v5 childBoxes];
-    if (v6 == v7)
+    v5 = equalCopy;
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    childBoxes2 = [(EQKitCompoundBox *)v5 childBoxes];
+    if (childBoxes == childBoxes2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [childBoxes isEqual:childBoxes2];
     }
   }
 
@@ -114,17 +114,17 @@
   v8 = v7;
   [(EQKitCompoundBox *)self width];
   v10 = v9;
-  v11 = [(EQKitCompoundBox *)self childBoxes];
-  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@", v4, self, v6, v8, v10, v11];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v12 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@", v4, self, v6, v8, v10, childBoxes];
 
   return v12;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
-  *a3 = 0.0;
-  *a4 = 0.0;
-  *a5 = 0.0;
+  *height = 0.0;
+  *depth = 0.0;
+  *width = 0.0;
 }
 
 - (CGRect)p_cacheErasableBounds

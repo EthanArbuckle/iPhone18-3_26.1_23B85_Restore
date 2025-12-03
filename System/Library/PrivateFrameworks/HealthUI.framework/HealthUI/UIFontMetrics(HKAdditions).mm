@@ -11,7 +11,7 @@
   v17[1] = 3221225472;
   v17[2] = __115__UIFontMetrics_HKAdditions__hk_scaledDirectionalEdgeInsetsForDirectionalEdgeInsets_compatibleWithTraitCollection___block_invoke;
   v17[3] = &unk_1E81B8658;
-  v17[4] = a1;
+  v17[4] = self;
   v18 = v12;
   v13 = v12;
   v14 = _Block_copy(v17);

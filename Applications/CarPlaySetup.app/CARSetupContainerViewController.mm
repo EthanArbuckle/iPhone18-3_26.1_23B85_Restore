@@ -1,7 +1,7 @@
 @interface CARSetupContainerViewController
 - (void)_setupPromptPresenter;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -18,9 +18,9 @@
     sub_10000802C(v3);
   }
 
-  v4 = [(CARSetupContainerViewController *)self view];
+  view = [(CARSetupContainerViewController *)self view];
   v5 = +[UIColor clearColor];
-  [v4 setBackgroundColor:v5];
+  [view setBackgroundColor:v5];
 }
 
 - (void)_setupPromptPresenter
@@ -29,38 +29,38 @@
   [(CARSetupContainerViewController *)self setPromptPresenter:v3];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = CARSetupLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 userInfo];
+    userInfo = [contextCopy userInfo];
     v11 = 138412546;
-    v12 = v6;
+    v12 = contextCopy;
     v13 = 2112;
-    v14 = v9;
+    v14 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Configure with context %@ userinfo %@", &v11, 0x16u);
   }
 
-  v10 = [(CARSetupContainerViewController *)self _remoteViewControllerProxy];
-  [v10 setAllowsAlertItems:0];
-  if (v7)
+  _remoteViewControllerProxy = [(CARSetupContainerViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:0];
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(CARSetupContainerViewController *)self _setupPromptPresenter];
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy);
+    v5 = completionCopy;
   }
 }
 

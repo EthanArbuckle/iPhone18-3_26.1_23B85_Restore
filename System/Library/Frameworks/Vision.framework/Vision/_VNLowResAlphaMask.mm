@@ -1,17 +1,17 @@
 @interface _VNLowResAlphaMask
-- (BOOL)isEqual:(id)a3;
-- (_VNLowResAlphaMask)initWithAlphaMaskArray:(id)a3;
-- (_VNLowResAlphaMask)initWithCoder:(id)a3;
-- (_VNLowResAlphaMask)initWithSingleAlphaMask:(__CVBuffer *)a3;
-- (__CVBuffer)_alphaMaskAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_VNLowResAlphaMask)initWithAlphaMaskArray:(id)array;
+- (_VNLowResAlphaMask)initWithCoder:(id)coder;
+- (_VNLowResAlphaMask)initWithSingleAlphaMask:(__CVBuffer *)mask;
+- (__CVBuffer)_alphaMaskAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _VNLowResAlphaMask
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_isSingleMask)
   {
@@ -31,10 +31,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_isSingleMask == v5->_isSingleMask && (v6 = [(NSArray *)self->_instanceLowResMaskArray count], v6 == [(NSArray *)v5->_instanceLowResMaskArray count]))
       {
         if (v6)
@@ -112,9 +112,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if (self)
   {
     v4 = [(NSArray *)self->_instanceLowResMaskArray count];
@@ -125,8 +125,8 @@
     v4 = 0;
   }
 
-  [v8 encodeBool:self->_isSingleMask forKey:@"isSingleMask"];
-  [v8 encodeInt64:v4 forKey:@"ILRMASize"];
+  [coderCopy encodeBool:self->_isSingleMask forKey:@"isSingleMask"];
+  [coderCopy encodeInt64:v4 forKey:@"ILRMASize"];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
@@ -134,14 +134,14 @@
       v6 = [@"ILRMAE" stringByAppendingFormat:@"%d", i];
       v7 = [(NSArray *)self->_instanceLowResMaskArray objectAtIndexedSubscript:i];
 
-      [v8 vn_encodePixelBuffer:v7 forKey:v6];
+      [coderCopy vn_encodePixelBuffer:v7 forKey:v6];
     }
   }
 }
 
-- (_VNLowResAlphaMask)initWithCoder:(id)a3
+- (_VNLowResAlphaMask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _VNLowResAlphaMask;
   v5 = [(_VNLowResAlphaMask *)&v15 init];
@@ -150,8 +150,8 @@
     goto LABEL_7;
   }
 
-  v5->_isSingleMask = [v4 decodeBoolForKey:@"isSingleMask"];
-  v6 = [v4 decodeInt64ForKey:@"ILRMASize"];
+  v5->_isSingleMask = [coderCopy decodeBoolForKey:@"isSingleMask"];
+  v6 = [coderCopy decodeInt64ForKey:@"ILRMASize"];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
   if (!v6)
   {
@@ -169,7 +169,7 @@ LABEL_7:
   while (1)
   {
     v9 = [@"ILRMAE" stringByAppendingFormat:@"%d", v8];
-    v10 = [v4 vn_decodePixelBufferForKey:v9];
+    v10 = [coderCopy vn_decodePixelBufferForKey:v9];
     if (!v10)
     {
       break;
@@ -189,12 +189,12 @@ LABEL_8:
   return v13;
 }
 
-- (__CVBuffer)_alphaMaskAtIndex:(unint64_t)a3
+- (__CVBuffer)_alphaMaskAtIndex:(unint64_t)index
 {
   instanceLowResMaskArray = self->_instanceLowResMaskArray;
-  if (instanceLowResMaskArray && [(NSArray *)instanceLowResMaskArray count]> a3)
+  if (instanceLowResMaskArray && [(NSArray *)instanceLowResMaskArray count]> index)
   {
-    v6 = [(NSArray *)self->_instanceLowResMaskArray objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)self->_instanceLowResMaskArray objectAtIndexedSubscript:index];
   }
 
   else
@@ -206,15 +206,15 @@ LABEL_8:
   return v6;
 }
 
-- (_VNLowResAlphaMask)initWithAlphaMaskArray:(id)a3
+- (_VNLowResAlphaMask)initWithAlphaMaskArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = _VNLowResAlphaMask;
   v5 = [(_VNLowResAlphaMask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     instanceLowResMaskArray = v5->_instanceLowResMaskArray;
     v5->_instanceLowResMaskArray = v6;
 
@@ -224,7 +224,7 @@ LABEL_8:
   return v5;
 }
 
-- (_VNLowResAlphaMask)initWithSingleAlphaMask:(__CVBuffer *)a3
+- (_VNLowResAlphaMask)initWithSingleAlphaMask:(__CVBuffer *)mask
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -232,7 +232,7 @@ LABEL_8:
   v4 = [(_VNLowResAlphaMask *)&v8 init];
   if (v4)
   {
-    v9[0] = a3;
+    v9[0] = mask;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     instanceLowResMaskArray = v4->_instanceLowResMaskArray;
     v4->_instanceLowResMaskArray = v5;

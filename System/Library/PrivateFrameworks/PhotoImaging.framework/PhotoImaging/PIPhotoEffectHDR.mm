@@ -162,8 +162,8 @@ void __40__PIPhotoEffectHDR_hdrOffsetColorKernel__block_invoke()
         v32 = dispatch_get_specific(*v26);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v32;
         v40 = 2114;
@@ -174,8 +174,8 @@ void __40__PIPhotoEffectHDR_hdrOffsetColorKernel__block_invoke()
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v31;
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -184,10 +184,10 @@ void __40__PIPhotoEffectHDR_hdrOffsetColorKernel__block_invoke()
     _NUAssertFailHandler();
   }
 
-  v4 = [MEMORY[0x1E69B3A10] workingColorSpace];
-  v5 = -[CIImage imageByTaggingWithColorSpace:](inputImage, "imageByTaggingWithColorSpace:", [v4 CGColorSpace]);
+  workingColorSpace = [MEMORY[0x1E69B3A10] workingColorSpace];
+  v5 = -[CIImage imageByTaggingWithColorSpace:](inputImage, "imageByTaggingWithColorSpace:", [workingColorSpace CGColorSpace]);
 
-  v6 = [(PIPhotoEffectHDR *)self hdrOffsetKernel];
+  hdrOffsetKernel = [(PIPhotoEffectHDR *)self hdrOffsetKernel];
   [v5 extent];
   v8 = v7;
   v10 = v9;
@@ -195,21 +195,21 @@ void __40__PIPhotoEffectHDR_hdrOffsetColorKernel__block_invoke()
   v14 = v13;
   v37 = v5;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-  v16 = [v6 applyWithExtent:v15 arguments:{v8, v10, v12, v14}];
+  v16 = [hdrOffsetKernel applyWithExtent:v15 arguments:{v8, v10, v12, v14}];
 
   v17 = MEMORY[0x1E695F648];
-  v18 = [(PIPhotoEffectHDR *)self photoEffectName];
-  v19 = [v17 filterWithName:v18];
+  photoEffectName = [(PIPhotoEffectHDR *)self photoEffectName];
+  v19 = [v17 filterWithName:photoEffectName];
 
   [v19 setValue:v5 forKey:@"inputImage"];
   [(PIPhotoEffectHDR *)self configureFilter:v19];
-  v20 = [v19 outputImage];
+  outputImage = [v19 outputImage];
   v21 = [MEMORY[0x1E695F648] filterWithName:@"CIAdditionCompositing"];
-  [v21 setValue:v20 forKey:@"inputBackgroundImage"];
+  [v21 setValue:outputImage forKey:@"inputBackgroundImage"];
   [v21 setValue:v16 forKey:@"inputImage"];
-  v22 = [v21 outputImage];
+  outputImage2 = [v21 outputImage];
 
-  return v22;
+  return outputImage2;
 }
 
 - (id)photoEffectName
@@ -225,9 +225,9 @@ void __40__PIPhotoEffectHDR_hdrOffsetColorKernel__block_invoke()
 
 - (id)hdrOffsetKernel
 {
-  v2 = [(PIPhotoEffectHDR *)self isBlackAndWhite];
+  isBlackAndWhite = [(PIPhotoEffectHDR *)self isBlackAndWhite];
   v3 = objc_opt_class();
-  if (v2)
+  if (isBlackAndWhite)
   {
     [v3 hdrOffsetBlackAndWhiteKernel];
   }

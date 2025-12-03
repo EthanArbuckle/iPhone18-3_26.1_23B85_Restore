@@ -1,20 +1,20 @@
 @interface VNImageHomographicAlignmentObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNImageHomographicAlignmentObservation)init;
-- (VNImageHomographicAlignmentObservation)initWithCoder:(id)a3;
-- (__n128)setWarpTransform:(__n128)a3;
+- (VNImageHomographicAlignmentObservation)initWithCoder:(id)coder;
+- (__n128)setWarpTransform:(__n128)transform;
 - (id)vn_cloneObject;
 - (matrix_float3x3)warpTransform;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNImageHomographicAlignmentObservation
 
-- (__n128)setWarpTransform:(__n128)a3
+- (__n128)setWarpTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   return result;
 }
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -42,9 +42,9 @@
   {
     v18.receiver = self;
     v18.super_class = VNImageHomographicAlignmentObservation;
-    if ([(VNImageAlignmentObservation *)&v18 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNImageAlignmentObservation *)&v18 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNImageHomographicAlignmentObservation *)self warpTransform];
       v15 = v7;
       v16 = v6;
@@ -138,37 +138,37 @@
 {
   v7.receiver = self;
   v7.super_class = VNImageHomographicAlignmentObservation;
-  v3 = [(VNImageAlignmentObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNImageAlignmentObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v5 = *&self[1].super.super._confidence;
     v4 = *&self[1].super.super._requestImageBuffers;
-    v3[7] = *&self[1].super.super.super.isa;
-    v3[8] = v5;
-    v3[9] = v4;
+    vn_cloneObject[7] = *&self[1].super.super.super.isa;
+    vn_cloneObject[8] = v5;
+    vn_cloneObject[9] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNImageHomographicAlignmentObservation;
-  [(VNImageAlignmentObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encode3x3Matrix:@"warpTransform" forKey:{*&self[1].super.super.super.isa, *&self[1].super.super._confidence, *&self[1].super.super._requestImageBuffers}];
+  [(VNImageAlignmentObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encode3x3Matrix:@"warpTransform" forKey:{*&self[1].super.super.super.isa, *&self[1].super.super._confidence, *&self[1].super.super._requestImageBuffers}];
 }
 
-- (VNImageHomographicAlignmentObservation)initWithCoder:(id)a3
+- (VNImageHomographicAlignmentObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = VNImageHomographicAlignmentObservation;
-  v5 = [(VNImageAlignmentObservation *)&v14 initWithCoder:v4];
+  v5 = [(VNImageAlignmentObservation *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 vn_decode3x3MatrixForKey:@"warpTransform"];
+    [coderCopy vn_decode3x3MatrixForKey:@"warpTransform"];
     v5[1].super.super.super.isa = v6;
     LODWORD(v5[1].super.super._originatingRequestSpecifier) = v7;
     *&v5[1].super.super._confidence = v8;

@@ -1,19 +1,19 @@
 @interface PUIDShapeView
 - (UIBezierPath)path;
 - (UIColor)fillColor;
-- (void)setPath:(id)a3;
+- (void)setPath:(id)path;
 @end
 
 @implementation PUIDShapeView
 
 - (UIColor)fillColor
 {
-  v2 = [(PUIDShapeView *)self shapeLayer];
-  v3 = [v2 fillColor];
+  shapeLayer = [(PUIDShapeView *)self shapeLayer];
+  fillColor = [shapeLayer fillColor];
 
-  if (v3)
+  if (fillColor)
   {
-    v4 = [UIColor colorWithCGColor:v3];
+    v4 = [UIColor colorWithCGColor:fillColor];
   }
 
   else
@@ -26,13 +26,13 @@
 
 - (UIBezierPath)path
 {
-  v2 = [(PUIDShapeView *)self shapeLayer];
-  v3 = [v2 path];
-  if (v3)
+  shapeLayer = [(PUIDShapeView *)self shapeLayer];
+  path = [shapeLayer path];
+  if (path)
   {
-    v4 = [UIBezierPath bezierPathWithCGPath:v3];
-    v5 = [v2 fillRule];
-    if ([v5 isEqualToString:kCAFillRuleEvenOdd])
+    v4 = [UIBezierPath bezierPathWithCGPath:path];
+    fillRule = [shapeLayer fillRule];
+    if ([fillRule isEqualToString:kCAFillRuleEvenOdd])
     {
       [v4 setUsesEvenOddFillRule:1];
     }
@@ -46,12 +46,12 @@
   return v4;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(PUIDShapeView *)self shapeLayer];
-  [v6 setPath:{objc_msgSend(v4, "CGPath")}];
-  LODWORD(self) = [v4 usesEvenOddFillRule];
+  pathCopy = path;
+  shapeLayer = [(PUIDShapeView *)self shapeLayer];
+  [shapeLayer setPath:{objc_msgSend(pathCopy, "CGPath")}];
+  LODWORD(self) = [pathCopy usesEvenOddFillRule];
 
   v5 = &kCAFillRuleEvenOdd;
   if (!self)
@@ -59,7 +59,7 @@
     v5 = &kCAFillRuleNonZero;
   }
 
-  [v6 setFillRule:*v5];
+  [shapeLayer setFillRule:*v5];
 }
 
 @end

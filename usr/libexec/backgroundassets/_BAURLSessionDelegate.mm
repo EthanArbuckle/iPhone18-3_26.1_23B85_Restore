@@ -1,39 +1,39 @@
 @interface _BAURLSessionDelegate
-- (_BAURLSessionDelegate)initWithNotifyQueue:(id)a3 withDestinationDirectory:(id)a4 uniqueFileName:(BOOL)a5 inBackground:(BOOL)a6 withAuthenticationHandler:(id)a7 withRedirectResponseHandler:(id)a8 withBytesReceivedHandler:(id)a9 usingBlock:(id)a10;
-- (id)_combineExistingError:(id)a3 newError:(id)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
+- (_BAURLSessionDelegate)initWithNotifyQueue:(id)queue withDestinationDirectory:(id)directory uniqueFileName:(BOOL)name inBackground:(BOOL)background withAuthenticationHandler:(id)handler withRedirectResponseHandler:(id)responseHandler withBytesReceivedHandler:(id)receivedHandler usingBlock:(id)self0;
+- (id)_combineExistingError:(id)error newError:(id)newError;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
 - (void)cancel;
-- (void)cancelWithResumeData:(id)a3;
-- (void)installConnectivityTimerWithTimeout:(double)a3 task:(id)a4;
+- (void)cancelWithResumeData:(id)data;
+- (void)installConnectivityTimerWithTimeout:(double)timeout task:(id)task;
 @end
 
 @implementation _BAURLSessionDelegate
 
-- (_BAURLSessionDelegate)initWithNotifyQueue:(id)a3 withDestinationDirectory:(id)a4 uniqueFileName:(BOOL)a5 inBackground:(BOOL)a6 withAuthenticationHandler:(id)a7 withRedirectResponseHandler:(id)a8 withBytesReceivedHandler:(id)a9 usingBlock:(id)a10
+- (_BAURLSessionDelegate)initWithNotifyQueue:(id)queue withDestinationDirectory:(id)directory uniqueFileName:(BOOL)name inBackground:(BOOL)background withAuthenticationHandler:(id)handler withRedirectResponseHandler:(id)responseHandler withBytesReceivedHandler:(id)receivedHandler usingBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  queueCopy = queue;
+  directoryCopy = directory;
+  handlerCopy = handler;
+  responseHandlerCopy = responseHandler;
+  receivedHandlerCopy = receivedHandler;
+  blockCopy = block;
   v39.receiver = self;
   v39.super_class = _BAURLSessionDelegate;
   v22 = [(_BAURLSessionDelegate *)&v39 init];
   if (v22)
   {
-    if (v16)
+    if (queueCopy)
     {
-      v23 = v16;
+      v23 = queueCopy;
       notifyQueue = v22->_notifyQueue;
       v22->_notifyQueue = v23;
     }
@@ -48,28 +48,28 @@
     }
 
     v22->_stateLock._os_unfair_lock_opaque = 0;
-    v28 = [v17 copy];
+    v28 = [directoryCopy copy];
     destinationDirectory = v22->_destinationDirectory;
     v22->_destinationDirectory = v28;
 
-    v22->_uniqueFileName = a5;
-    v30 = [v21 copy];
+    v22->_uniqueFileName = name;
+    v30 = [blockCopy copy];
     notifyBlock = v22->_notifyBlock;
     v22->_notifyBlock = v30;
 
-    v32 = [v18 copy];
+    v32 = [handlerCopy copy];
     challengeBlock = v22->_challengeBlock;
     v22->_challengeBlock = v32;
 
-    v34 = [v19 copy];
+    v34 = [responseHandlerCopy copy];
     redirectResponseBlock = v22->_redirectResponseBlock;
     v22->_redirectResponseBlock = v34;
 
-    v36 = [v20 copy];
+    v36 = [receivedHandlerCopy copy];
     bytesReceivedBlock = v22->_bytesReceivedBlock;
     v22->_bytesReceivedBlock = v36;
 
-    v22->_inBackground = a6;
+    v22->_inBackground = background;
   }
 
   return v22;
@@ -84,114 +84,114 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)cancelWithResumeData:(id)a3
+- (void)cancelWithResumeData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_stateLock);
   v4 = [NSError errorWithDomain:NSURLErrorDomain code:-999 userInfo:0];
   [(_BAURLSessionDelegate *)self setMostRecentError:v4];
 
-  [(_BAURLSessionDelegate *)self setResumeData:v5];
+  [(_BAURLSessionDelegate *)self setResumeData:dataCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)installConnectivityTimerWithTimeout:(double)a3 task:(id)a4
+- (void)installConnectivityTimerWithTimeout:(double)timeout task:(id)task
 {
-  v6 = a4;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v7)
+  if (awaitingConnectivityTimer)
   {
-    v8 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_source_cancel(v8);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_source_cancel(awaitingConnectivityTimer2);
 
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
   }
 
   v9 = dispatch_queue_create("com.apple.BAURLSession.TimeOutQueue", 0);
   v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
-  v11 = dispatch_time(0, (a3 * 1000000000.0));
+  v11 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10000CBC0;
   v17 = &unk_100079538;
-  v18 = self;
+  selfCopy = self;
   v19 = v10;
-  v20 = v6;
-  v21 = a3;
-  v12 = v6;
+  v20 = taskCopy;
+  timeoutCopy = timeout;
+  v12 = taskCopy;
   v13 = v10;
   dispatch_source_set_event_handler(v13, &v14);
-  [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimeout:a3, v14, v15, v16, v17, v18];
+  [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimeout:timeout, v14, v15, v16, v17, selfCopy];
   [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:v13];
   dispatch_resume(v13);
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (id)_combineExistingError:(id)a3 newError:(id)a4
+- (id)_combineExistingError:(id)error newError:(id)newError
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  newErrorCopy = newError;
+  v6 = newErrorCopy;
+  if (error)
   {
-    v7 = a3;
-    v8 = [v7 userInfo];
-    v9 = [v8 mutableCopy];
+    errorCopy = error;
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo mutableCopy];
 
     if (v6)
     {
       [v9 setObject:v6 forKeyedSubscript:NSUnderlyingErrorKey];
     }
 
-    v10 = [v7 domain];
-    v11 = [v7 code];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
     v12 = [v9 copy];
-    v13 = [NSError errorWithDomain:v10 code:v11 userInfo:v12];
+    v13 = [NSError errorWithDomain:domain code:code userInfo:v12];
   }
 
   else
   {
-    v13 = v5;
+    v13 = newErrorCopy;
   }
 
   return v13;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v27 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v7)
+  if (awaitingConnectivityTimer)
   {
-    v8 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_source_cancel(v8);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_source_cancel(awaitingConnectivityTimer2);
 
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
   }
 
-  v9 = [(_BAURLSessionDelegate *)self mostRecentError];
-  if (v6)
+  mostRecentError = [(_BAURLSessionDelegate *)self mostRecentError];
+  if (errorCopy)
   {
-    v10 = [(_BAURLSessionDelegate *)self mostRecentError];
-    if (v10)
+    mostRecentError2 = [(_BAURLSessionDelegate *)self mostRecentError];
+    if (mostRecentError2)
     {
-      v11 = [(_BAURLSessionDelegate *)self mostRecentError];
-      if (!v11)
+      mostRecentError3 = [(_BAURLSessionDelegate *)self mostRecentError];
+      if (!mostRecentError3)
       {
 LABEL_8:
 
         goto LABEL_9;
       }
 
-      v12 = [(_BAURLSessionDelegate *)self mostRecentError];
-      v13 = [v12 userInfo];
-      v14 = [v13 objectForKey:NSUnderlyingErrorKey];
+      mostRecentError4 = [(_BAURLSessionDelegate *)self mostRecentError];
+      userInfo = [mostRecentError4 userInfo];
+      v14 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if (v14)
       {
@@ -199,29 +199,29 @@ LABEL_8:
       }
     }
 
-    v10 = [(_BAURLSessionDelegate *)self mostRecentError];
-    v15 = [(_BAURLSessionDelegate *)self _combineExistingError:v10 newError:v6];
+    mostRecentError2 = [(_BAURLSessionDelegate *)self mostRecentError];
+    v15 = [(_BAURLSessionDelegate *)self _combineExistingError:mostRecentError2 newError:errorCopy];
 
-    v9 = v15;
+    mostRecentError = v15;
     goto LABEL_8;
   }
 
 LABEL_9:
-  v16 = [(_BAURLSessionDelegate *)self data];
-  v17 = [(_BAURLSessionDelegate *)self response];
-  v18 = [(_BAURLSessionDelegate *)self resumeData];
-  v19 = [(_BAURLSessionDelegate *)self fileHandle];
+  data = [(_BAURLSessionDelegate *)self data];
+  response = [(_BAURLSessionDelegate *)self response];
+  resumeData = [(_BAURLSessionDelegate *)self resumeData];
+  fileHandle = [(_BAURLSessionDelegate *)self fileHandle];
 
-  if (v19)
+  if (fileHandle)
   {
-    v20 = [(_BAURLSessionDelegate *)self fileHandle];
-    v21 = [v20 filePath];
-    v22 = [NSURL fileURLWithPath:v21];
+    fileHandle2 = [(_BAURLSessionDelegate *)self fileHandle];
+    filePath = [fileHandle2 filePath];
+    v22 = [NSURL fileURLWithPath:filePath];
 
-    v23 = [(_BAURLSessionDelegate *)self fileHandle];
-    v24 = [v23 handle];
+    fileHandle3 = [(_BAURLSessionDelegate *)self fileHandle];
+    handle = [fileHandle3 handle];
     v35 = 0;
-    [v24 synchronizeAndReturnError:&v35];
+    [handle synchronizeAndReturnError:&v35];
     v25 = v35;
 
     [(_BAURLSessionDelegate *)self setFileHandle:0];
@@ -241,46 +241,46 @@ LABEL_9:
     block[3] = &unk_100079560;
     block[4] = self;
     v30 = v22;
-    v31 = v16;
-    v32 = v17;
-    v33 = v18;
-    v34 = v9;
+    v31 = data;
+    v32 = response;
+    v33 = resumeData;
+    v34 = mostRecentError;
     dispatch_async(notifyQueue, block);
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = a3;
+  taskCopy = task;
+  errorCopy = error;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_stateLock);
-  v10 = [v17 response];
-  [(_BAURLSessionDelegate *)self setResponse:v10];
+  response = [taskCopy response];
+  [(_BAURLSessionDelegate *)self setResponse:response];
 
-  v11 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v11)
+  if (awaitingConnectivityTimer)
   {
-    v12 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_source_cancel(v12);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_source_cancel(awaitingConnectivityTimer2);
 
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
   }
 
-  if (v8)
+  if (errorCopy)
   {
-    v13 = [(_BAURLSessionDelegate *)self mostRecentError];
-    v14 = [(_BAURLSessionDelegate *)self _combineExistingError:v13 newError:v8];
+    mostRecentError = [(_BAURLSessionDelegate *)self mostRecentError];
+    v14 = [(_BAURLSessionDelegate *)self _combineExistingError:mostRecentError newError:errorCopy];
     [(_BAURLSessionDelegate *)self setMostRecentError:v14];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v8 userInfo];
-      v16 = [v15 objectForKey:NSURLSessionDownloadTaskResumeData];
+      userInfo = [errorCopy userInfo];
+      v16 = [userInfo objectForKey:NSURLSessionDownloadTaskResumeData];
 
       if (v16)
       {
@@ -290,68 +290,68 @@ LABEL_9:
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  [v9 finishTasksAndInvalidate];
+  [sessionCopy finishTasksAndInvalidate];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v12;
-    v15 = [(NSString *)v14 statusCode];
-    if (v15 >= 400)
+    v14 = responseCopy;
+    statusCode = [(NSString *)v14 statusCode];
+    if (statusCode >= 400)
     {
-      v28 = v15;
+      v28 = statusCode;
       os_unfair_lock_lock(&self->_stateLock);
       [(_BAURLSessionDelegate *)self setResponse:v14];
       v45[0] = NSURLErrorFailingURLErrorKey;
       [(NSString *)v14 URL];
-      v43 = v10;
-      v30 = v29 = v13;
-      v31 = [v30 absoluteString];
-      v46[0] = v31;
+      v43 = sessionCopy;
+      v30 = v29 = handlerCopy;
+      absoluteString = [v30 absoluteString];
+      v46[0] = absoluteString;
       v45[1] = @"ResponseStatusCode";
       v32 = [NSNumber numberWithInteger:v28];
       v46[1] = v32;
       v45[2] = @"ResponseHTTPHeaders";
-      v33 = [(NSString *)v14 allHeaderFields];
-      v46[2] = v33;
+      allHeaderFields = [(NSString *)v14 allHeaderFields];
+      v46[2] = allHeaderFields;
       v34 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:3];
 
-      v13 = v29;
-      v10 = v43;
+      handlerCopy = v29;
+      sessionCopy = v43;
       v35 = [NSError errorWithDomain:@"BAURLSessionErrorDomain" code:100 userInfo:v34];
       [(_BAURLSessionDelegate *)self setMostRecentError:v35];
 
       os_unfair_lock_unlock(&self->_stateLock);
-      v13[2](v13, 0);
+      handlerCopy[2](handlerCopy, 0);
 
       goto LABEL_20;
     }
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  [(_BAURLSessionDelegate *)self setResponse:v12];
-  -[_BAURLSessionDelegate setFullDownloadSize:](self, "setFullDownloadSize:", [v12 expectedContentLength]);
+  [(_BAURLSessionDelegate *)self setResponse:responseCopy];
+  -[_BAURLSessionDelegate setFullDownloadSize:](self, "setFullDownloadSize:", [responseCopy expectedContentLength]);
   v14 = self->_destinationDirectory;
   if (v14)
   {
-    v39 = v13;
-    v40 = v12;
-    v41 = v11;
-    v42 = v10;
-    v16 = [v11 currentRequest];
-    v17 = [v16 URL];
-    v18 = [v17 lastPathComponent];
-    v19 = v18;
+    v39 = handlerCopy;
+    v40 = responseCopy;
+    v41 = taskCopy;
+    v42 = sessionCopy;
+    currentRequest = [taskCopy currentRequest];
+    v17 = [currentRequest URL];
+    lastPathComponent = [v17 lastPathComponent];
+    v19 = lastPathComponent;
     while (1)
     {
-      v20 = [(NSString *)v14 stringByAppendingPathComponent:v18];
+      v20 = [(NSString *)v14 stringByAppendingPathComponent:lastPathComponent];
 
       v21 = [(_BAURLSessionDelegate *)self uniqueFileName]? 3586 : 1538;
       v19 = v20;
@@ -367,29 +367,29 @@ LABEL_9:
         [(_BAURLSessionDelegate *)self setMostRecentError:v26];
 
         os_unfair_lock_unlock(&self->_stateLock);
-        v13 = v39;
+        handlerCopy = v39;
         v39[2](v39, 0);
-        v10 = v42;
+        sessionCopy = v42;
 LABEL_14:
-        v12 = v40;
+        responseCopy = v40;
 
-        v11 = v41;
+        taskCopy = v41;
         goto LABEL_20;
       }
 
       v23 = +[NSUUID UUID];
-      v24 = [v23 UUIDString];
-      v25 = [v24 substringToIndex:8];
-      v16 = [NSString stringWithFormat:@"BAUnique-%@", v25];
+      uUIDString = [v23 UUIDString];
+      v25 = [uUIDString substringToIndex:8];
+      currentRequest = [NSString stringWithFormat:@"BAUnique-%@", v25];
 
-      v18 = [v16 stringByAppendingPathExtension:@"dat"];
-      v17 = v18;
+      lastPathComponent = [currentRequest stringByAppendingPathExtension:@"dat"];
+      v17 = lastPathComponent;
     }
 
     v36 = v22;
     memset(&v44, 0, sizeof(v44));
-    v10 = v42;
-    v13 = v39;
+    sessionCopy = v42;
+    handlerCopy = v39;
     if (fstat(v22, &v44) < 0)
     {
       v38 = [NSError errorWithDomain:@"BAURLSessionErrorDomain" code:102 userInfo:0];
@@ -404,8 +404,8 @@ LABEL_14:
     v37 = [[BAFileHandle alloc] initWithFileDescriptor:v36 originalPath:v19 closeOnDealloc:1];
     [(_BAURLSessionDelegate *)self setFileHandle:v37];
 
-    v12 = v40;
-    v11 = v41;
+    responseCopy = v40;
+    taskCopy = v41;
   }
 
   else
@@ -415,40 +415,40 @@ LABEL_14:
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  v13[2](v13, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_20:
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v57 = a3;
-  v8 = a4;
-  v9 = a5;
-  v58 = v8;
-  v10 = [v8 response];
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
+  v58 = taskCopy;
+  response = [taskCopy response];
   os_unfair_lock_lock(&self->_stateLock);
-  [(_BAURLSessionDelegate *)self setResponse:v10];
+  [(_BAURLSessionDelegate *)self setResponse:response];
   v11 = self->_destinationDirectory;
-  v12 = [(_BAURLSessionDelegate *)self uniqueFileName];
+  uniqueFileName = [(_BAURLSessionDelegate *)self uniqueFileName];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v10;
-    v14 = [v13 statusCode];
-    if (v14 >= 400)
+    v13 = response;
+    statusCode = [v13 statusCode];
+    if (statusCode >= 400)
     {
-      v37 = v14;
+      v37 = statusCode;
       v56 = v11;
       v66[0] = NSURLErrorFailingURLErrorKey;
       v38 = [v13 URL];
-      v39 = [v38 absoluteString];
-      v67[0] = v39;
+      absoluteString = [v38 absoluteString];
+      v67[0] = absoluteString;
       v66[1] = @"ResponseStatusCode";
       v40 = [NSNumber numberWithInteger:v37];
       v67[1] = v40;
       v66[2] = @"ResponseHTTPHeaders";
-      v41 = [v13 allHeaderFields];
-      v67[2] = v41;
+      allHeaderFields = [v13 allHeaderFields];
+      v67[2] = allHeaderFields;
       v42 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:3];
 
       v43 = [NSError errorWithDomain:@"BAURLSessionErrorDomain" code:100 userInfo:v42];
@@ -460,17 +460,17 @@ LABEL_20:
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
-  if (!v9 || !v11)
+  if (!lCopy || !v11)
   {
-    if (v9)
+    if (lCopy)
     {
       v59 = 0;
-      v34 = [NSData dataWithContentsOfURL:v9 options:8 error:&v59];
+      v34 = [NSData dataWithContentsOfURL:lCopy options:8 error:&v59];
       v35 = v59;
       if (v34)
       {
         v36 = +[NSFileManager defaultManager];
-        [v36 removeItemAtURL:v9 error:0];
+        [v36 removeItemAtURL:lCopy error:0];
 
         os_unfair_lock_lock(&self->_stateLock);
         [(_BAURLSessionDelegate *)self setData:v34];
@@ -498,10 +498,10 @@ LABEL_20:
   }
 
   v56 = v11;
-  v15 = [v58 currentRequest];
-  v16 = [v15 URL];
-  v17 = [v16 lastPathComponent];
-  v18 = [(NSString *)v11 stringByAppendingPathComponent:v17];
+  currentRequest = [v58 currentRequest];
+  v16 = [currentRequest URL];
+  lastPathComponent = [v16 lastPathComponent];
+  v18 = [(NSString *)v11 stringByAppendingPathComponent:lastPathComponent];
 
   while (1)
   {
@@ -515,14 +515,14 @@ LABEL_20:
         goto LABEL_11;
       }
 
-      if (!v12)
+      if (!uniqueFileName)
       {
         break;
       }
 
       v28 = +[NSUUID UUID];
-      v29 = [v28 UUIDString];
-      v30 = [v29 substringToIndex:8];
+      uUIDString = [v28 UUIDString];
+      v30 = [uUIDString substringToIndex:8];
       v31 = [NSString stringWithFormat:@"BAUnique-%@", v30];
 
       v32 = [v31 stringByAppendingPathExtension:@"dat"];
@@ -550,10 +550,10 @@ LABEL_20:
     }
 
 LABEL_11:
-    v24 = v9;
-    v25 = [v9 fileSystemRepresentation];
+    v24 = lCopy;
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v26 = v18;
-    if (!renamex_np(v25, [v18 fileSystemRepresentation], 4u))
+    if (!renamex_np(fileSystemRepresentation, [v18 fileSystemRepresentation], 4u))
     {
       break;
     }
@@ -611,44 +611,44 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_stateLock);
-  v7 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v7)
+  if (awaitingConnectivityTimer)
   {
-    v8 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_source_cancel(v8);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_source_cancel(awaitingConnectivityTimer2);
 
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
   }
 
-  v9 = [v6 length];
-  v10 = [(_BAURLSessionDelegate *)self fileHandle];
+  v9 = [dataCopy length];
+  fileHandle = [(_BAURLSessionDelegate *)self fileHandle];
 
-  if (v10)
+  if (fileHandle)
   {
-    v11 = [(_BAURLSessionDelegate *)self fileHandle];
-    v12 = [v11 handle];
-    [v12 writeData:v6];
+    fileHandle2 = [(_BAURLSessionDelegate *)self fileHandle];
+    handle = [fileHandle2 handle];
+    [handle writeData:dataCopy];
 
-    v13 = [(_BAURLSessionDelegate *)self fileHandle];
-    v14 = [v13 handle];
-    v15 = [v14 offsetInFile];
+    fileHandle3 = [(_BAURLSessionDelegate *)self fileHandle];
+    handle2 = [fileHandle3 handle];
+    offsetInFile = [handle2 offsetInFile];
   }
 
   else
   {
-    v16 = [(_BAURLSessionDelegate *)self data];
-    [v16 appendData:v6];
+    data = [(_BAURLSessionDelegate *)self data];
+    [data appendData:dataCopy];
 
-    v13 = [(_BAURLSessionDelegate *)self data];
-    v15 = [v13 length];
+    fileHandle3 = [(_BAURLSessionDelegate *)self data];
+    offsetInFile = [fileHandle3 length];
   }
 
-  v17 = [(_BAURLSessionDelegate *)self fullDownloadSize];
+  fullDownloadSize = [(_BAURLSessionDelegate *)self fullDownloadSize];
   os_unfair_lock_unlock(&self->_stateLock);
   if (self->_bytesReceivedBlock)
   {
@@ -661,22 +661,22 @@ LABEL_31:
       v19[3] = &unk_100079588;
       v19[4] = self;
       v19[5] = v9;
-      v19[6] = v15;
-      v19[7] = v17;
+      v19[6] = offsetInFile;
+      v19[7] = fullDownloadSize;
       dispatch_async(notifyQueue, v19);
     }
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v11 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v11)
+  if (awaitingConnectivityTimer)
   {
-    v12 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_source_cancel(v12);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_source_cancel(awaitingConnectivityTimer2);
 
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
   }
@@ -692,15 +692,15 @@ LABEL_31:
       v14[2] = sub_10000E240;
       v14[3] = &unk_100079588;
       v14[4] = self;
-      v14[5] = a5;
-      v14[6] = a6;
-      v14[7] = a7;
+      v14[5] = data;
+      v14[6] = written;
+      v14[7] = write;
       dispatch_async(notifyQueue, v14);
     }
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes
 {
   if (self->_bytesReceivedBlock)
   {
@@ -712,43 +712,43 @@ LABEL_31:
       block[2] = sub_10000E320;
       block[3] = &unk_1000795B0;
       block[4] = self;
-      block[5] = a5;
-      block[6] = a6;
+      block[5] = offset;
+      block[6] = bytes;
       dispatch_async(notifyQueue, block);
     }
   }
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
-  v4 = a4;
+  connectivityCopy = connectivity;
   v5 = sub_100010694();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectivityCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BAURLSession: Task %{public}@ is awaiting connectivity.", &v6, 0xCu);
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   if (!self->_challengeBlock)
   {
-    v16 = [v9 protectionSpace];
-    v17 = [v16 authenticationMethod];
-    if ([v17 isEqualToString:NSURLAuthenticationMethodServerTrust])
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
     {
-      v18 = [v9 previousFailureCount];
+      previousFailureCount = [challengeCopy previousFailureCount];
 
-      if (!v18)
+      if (!previousFailureCount)
       {
-        v19 = [v9 protectionSpace];
-        v20 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v19 serverTrust]);
+        protectionSpace2 = [challengeCopy protectionSpace];
+        proposedCredential = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace2 serverTrust]);
 
         goto LABEL_13;
       }
@@ -758,30 +758,30 @@ LABEL_31:
     {
     }
 
-    if ([v9 previousFailureCount])
+    if ([challengeCopy previousFailureCount])
     {
-      v20 = 0;
+      proposedCredential = 0;
       v22 = 1;
 LABEL_14:
-      v10[2](v10, v22, v20);
+      handlerCopy[2](handlerCopy, v22, proposedCredential);
       goto LABEL_15;
     }
 
-    v20 = [v9 proposedCredential];
+    proposedCredential = [challengeCopy proposedCredential];
 LABEL_13:
     v22 = 0;
     goto LABEL_14;
   }
 
   os_unfair_lock_lock(&self->_stateLock);
-  v12 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+  awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
 
-  if (v12)
+  if (awaitingConnectivityTimer)
   {
-    v13 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
-    dispatch_suspend(v13);
+    awaitingConnectivityTimer2 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    dispatch_suspend(awaitingConnectivityTimer2);
 
-    v12 = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
+    awaitingConnectivityTimer = [(_BAURLSessionDelegate *)self awaitingConnectivityTimer];
     [(_BAURLSessionDelegate *)self awaitingConnectivityTimeout];
     v15 = v14;
     [(_BAURLSessionDelegate *)self setAwaitingConnectivityTimer:0];
@@ -800,11 +800,11 @@ LABEL_13:
   v23[2] = sub_10000E6C0;
   v23[3] = &unk_1000795D8;
   objc_copyWeak(v26, &location);
-  v20 = v12;
-  v24 = v20;
+  proposedCredential = awaitingConnectivityTimer;
+  v24 = proposedCredential;
   v26[1] = v15;
-  v25 = v10;
-  challengeBlock[2](challengeBlock, v9, v23);
+  v25 = handlerCopy;
+  challengeBlock[2](challengeBlock, challengeCopy, v23);
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
@@ -813,14 +813,14 @@ LABEL_15:
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  v17 = handlerCopy;
   if (self->_redirectResponseBlock)
   {
     notifyQueue = self->_notifyQueue;
@@ -828,17 +828,17 @@ LABEL_15:
     v20[1] = 3221225472;
     v20[2] = sub_10000E938;
     v20[3] = &unk_100079600;
-    v23 = v16;
+    v23 = handlerCopy;
     v20[4] = self;
-    v21 = v15;
-    v22 = v14;
+    v21 = requestCopy;
+    v22 = redirectionCopy;
     dispatch_async(notifyQueue, v20);
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    (v17)[2](v17, v15);
+    (v17)[2](v17, requestCopy);
     objc_autoreleasePoolPop(v19);
   }
 }

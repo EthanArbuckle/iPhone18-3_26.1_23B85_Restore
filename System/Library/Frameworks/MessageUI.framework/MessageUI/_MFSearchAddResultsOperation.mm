@@ -1,22 +1,22 @@
 @interface _MFSearchAddResultsOperation
-+ (id)operationWithResults:(id)a3 ofType:(unint64_t)a4 consumer:(id)a5;
++ (id)operationWithResults:(id)results ofType:(unint64_t)type consumer:(id)consumer;
 - (void)main;
 @end
 
 @implementation _MFSearchAddResultsOperation
 
-+ (id)operationWithResults:(id)a3 ofType:(unint64_t)a4 consumer:(id)a5
++ (id)operationWithResults:(id)results ofType:(unint64_t)type consumer:(id)consumer
 {
-  v7 = a3;
-  v8 = a5;
+  resultsCopy = results;
+  consumerCopy = consumer;
   v9 = objc_alloc_init(_MFSearchAddResultsOperation);
   results = v9->_results;
-  v9->_results = v7;
-  v11 = v7;
+  v9->_results = resultsCopy;
+  v11 = resultsCopy;
 
-  v9->_type = a4;
+  v9->_type = type;
   consumer = v9->_consumer;
-  v9->_consumer = v8;
+  v9->_consumer = consumerCopy;
 
   return v9;
 }

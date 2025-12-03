@@ -11,22 +11,22 @@
 - (BOOL)isMCSiteLocal;
 - (BOOL)isMulticastAddress;
 - (BOOL)isSiteLocalAddress;
-- (JavaNetInet6Address)initWithByteArray:(id)a3 withNSString:(id)a4 withInt:(int)a5;
+- (JavaNetInet6Address)initWithByteArray:(id)array withNSString:(id)string withInt:(int)int;
 - (id)description;
 - (id)getScopedInterface;
 - (int)getScopeId;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaNetInet6Address
 
-- (JavaNetInet6Address)initWithByteArray:(id)a3 withNSString:(id)a4 withInt:(int)a5
+- (JavaNetInet6Address)initWithByteArray:(id)array withNSString:(id)string withInt:(int)int
 {
-  JavaNetInetAddress_initWithInt_withByteArray_withNSString_(self, 30, a3, a4);
-  *&self->scope_id_set_ = a5;
-  *(&self->super.family_ + 4) = a5 != 0;
+  JavaNetInetAddress_initWithInt_withByteArray_withNSString_(self, 30, array, string);
+  *&self->scope_id_set_ = int;
+  *(&self->super.family_ + 4) = int != 0;
   return self;
 }
 
@@ -335,19 +335,19 @@
   return result;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_10;
   }
 
-  v5 = [a3 putFields];
-  v6 = v5;
+  putFields = [stream putFields];
+  v6 = putFields;
   ipaddress = self->super.ipaddress_;
   if (!ipaddress)
   {
-    if (v5)
+    if (putFields)
     {
       ipaddress = 0;
       goto LABEL_7;
@@ -357,24 +357,24 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!putFields)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  [v5 putWithNSString:@"ipaddress" withId:ipaddress];
+  [putFields putWithNSString:@"ipaddress" withId:ipaddress];
   [v6 putWithNSString:@"scope_id" withInt:*&self->scope_id_set_];
   [v6 putWithNSString:@"scope_id_set" withBoolean:*(&self->super.family_ + 4)];
   [v6 putWithNSString:@"scope_ifname_set" withBoolean:LOBYTE(self->scope_id_)];
   [v6 putWithNSString:@"ifname" withId:*(&self->scope_ifname_set_ + 4)];
 
-  [a3 writeFields];
+  [stream writeFields];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || (v4 = [a3 readFields]) == 0)
+  if (!stream || (v4 = [stream readFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -428,7 +428,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v12[0] = 0;
     v12[1] = 0;

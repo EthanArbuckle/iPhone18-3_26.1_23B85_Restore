@@ -1,17 +1,17 @@
 @interface _UIDebuggingOverlayDetailOpacity
-- (void)_sliderValueChanged:(id)a3;
-- (void)_updateForInspectedView:(id)a3;
+- (void)_sliderValueChanged:(id)changed;
+- (void)_updateForInspectedView:(id)view;
 @end
 
 @implementation _UIDebuggingOverlayDetailOpacity
 
-- (void)_updateForInspectedView:(id)a3
+- (void)_updateForInspectedView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_inspectedView, v4);
-  v5 = [v4 layer];
+  viewCopy = view;
+  objc_storeWeak(&self->_inspectedView, viewCopy);
+  layer = [viewCopy layer];
 
-  [v5 opacity];
+  [layer opacity];
   v7 = v6;
 
   v8 = objc_alloc_init(UISlider);
@@ -25,14 +25,14 @@
   self->_view = &v8->super.super;
 }
 
-- (void)_sliderValueChanged:(id)a3
+- (void)_sliderValueChanged:(id)changed
 {
-  [a3 value];
+  [changed value];
   v5 = v4;
   WeakRetained = objc_loadWeakRetained(&self->_inspectedView);
-  v6 = [WeakRetained layer];
+  layer = [WeakRetained layer];
   LODWORD(v7) = v5;
-  [v6 setOpacity:v7];
+  [layer setOpacity:v7];
 }
 
 @end

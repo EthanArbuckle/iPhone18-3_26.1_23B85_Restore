@@ -1,17 +1,17 @@
 @interface WBXMLData
 - (WBXMLData)init;
-- (id)dataExpectCompleteData:(BOOL)a3;
+- (id)dataExpectCompleteData:(BOOL)data;
 - (void)_applyCurrentCodePage;
-- (void)appendByteArrayData:(id)a3;
-- (void)appendData:(id)a3;
-- (void)appendEmptyTag:(unsigned __int8)a3;
-- (void)appendInt:(int)a3;
-- (void)appendString:(id)a3;
-- (void)closeProspectiveTag:(unsigned __int8)a3;
-- (void)closeTag:(unsigned __int8)a3;
-- (void)openTag:(unsigned __int8)a3;
+- (void)appendByteArrayData:(id)data;
+- (void)appendData:(id)data;
+- (void)appendEmptyTag:(unsigned __int8)tag;
+- (void)appendInt:(int)int;
+- (void)appendString:(id)string;
+- (void)closeProspectiveTag:(unsigned __int8)tag;
+- (void)closeTag:(unsigned __int8)tag;
+- (void)openTag:(unsigned __int8)tag;
 - (void)renderProspectiveTags;
-- (void)switchToCodePage:(unsigned __int8)a3;
+- (void)switchToCodePage:(unsigned __int8)page;
 @end
 
 @implementation WBXMLData
@@ -27,26 +27,26 @@
   }
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
   v7 = 3;
   data = self->_data;
-  v5 = a3;
+  stringCopy = string;
   [(NSMutableData *)data appendBytes:&v7 length:1];
-  v6 = [v5 UTF8String];
+  uTF8String = [stringCopy UTF8String];
 
-  [(NSMutableData *)self->_data appendBytes:v6 length:strlen(v6) + 1];
+  [(NSMutableData *)self->_data appendBytes:uTF8String length:strlen(uTF8String) + 1];
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
   v7 = 3;
   data = self->_data;
-  v5 = a3;
+  dataCopy = data;
   [(NSMutableData *)data appendBytes:&v7 length:1];
-  [(NSMutableData *)self->_data appendData:v5];
+  [(NSMutableData *)self->_data appendData:dataCopy];
   v6 = 0;
-  [v5 getBytes:&v6 range:{objc_msgSend(v5, "length") - 1, 1}];
+  [dataCopy getBytes:&v6 range:{objc_msgSend(dataCopy, "length") - 1, 1}];
 
   if (v6)
   {
@@ -55,23 +55,23 @@
   }
 }
 
-- (void)appendInt:(int)a3
+- (void)appendInt:(int)int
 {
   v7 = *MEMORY[0x277D85DE8];
-  snprintf(__str, 0xCuLL, "%d", a3);
+  snprintf(__str, 0xCuLL, "%d", int);
   v5 = 3;
   [(NSMutableData *)self->_data appendBytes:&v5 length:1];
   [(NSMutableData *)self->_data appendBytes:__str length:strlen(__str) + 1];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendByteArrayData:(id)a3
+- (void)appendByteArrayData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v10 = -61;
   [(NSMutableData *)self->_data appendBytes:&v10 length:1];
-  v5 = [v4 length];
+  v5 = [dataCopy length];
   if (HIDWORD(v5))
   {
     v6 = DALoggingwithCategory();
@@ -86,22 +86,22 @@
 
   v8 = [objc_alloc(MEMORY[0x277CBEA90]) initForLengthTokenOfLength:v5];
   [(NSMutableData *)self->_data appendData:v8];
-  [(NSMutableData *)self->_data appendData:v4];
+  [(NSMutableData *)self->_data appendData:dataCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (void)renderProspectiveTags
 {
-  v3 = [(NSMutableData *)self->_stateStack mutableBytes];
+  mutableBytes = [(NSMutableData *)self->_stateStack mutableBytes];
   v4 = [(NSMutableData *)self->_stateStack length];
   if ([(NSMutableData *)self->_stateStack length])
   {
-    v5 = &v3[v4 - 1];
+    v5 = &mutableBytes[v4 - 1];
     v6 = *v5;
     if (v6 != 195 && (v6 & 0x40) != 0)
     {
-      while (v5 >= v3)
+      while (v5 >= mutableBytes)
       {
         v8 = *v5;
         if (v8 == 195 || (v8 & 0x40) == 0)
@@ -112,7 +112,7 @@
         --v5;
       }
 
-      for (i = (v5 + 1); i < &v3[[(NSMutableData *)self->_stateStack length]]; ++i)
+      for (i = (v5 + 1); i < &mutableBytes[[(NSMutableData *)self->_stateStack length]]; ++i)
       {
         [(WBXMLData *)self _applyCurrentCodePage];
         v11 = *i;
@@ -124,33 +124,33 @@
   }
 }
 
-- (void)switchToCodePage:(unsigned __int8)a3
+- (void)switchToCodePage:(unsigned __int8)page
 {
-  if (self->_currentCodePage != a3)
+  if (self->_currentCodePage != page)
   {
     [(WBXMLData *)self renderProspectiveTags];
     self->_haveAppliedCurrentCodePage = 0;
-    self->_currentCodePage = a3;
+    self->_currentCodePage = page;
   }
 }
 
-- (void)closeProspectiveTag:(unsigned __int8)a3
+- (void)closeProspectiveTag:(unsigned __int8)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v16 = *MEMORY[0x277D85DE8];
   if ([(NSMutableData *)self->_stateStack length])
   {
     v11 = 0;
     [(NSMutableData *)self->_stateStack getBytes:&v11 range:[(NSMutableData *)self->_stateStack length]- 1, 1];
     v5 = v11 != 195 && (v11 & 0x40) != 0;
-    if ((v11 & 0x3F) != v3)
+    if ((v11 & 0x3F) != tagCopy)
     {
       v6 = DALoggingwithCategory();
       v7 = *(MEMORY[0x277D03988] + 4);
       if (os_log_type_enabled(v6, v7))
       {
         *buf = 67109376;
-        v13 = v3;
+        v13 = tagCopy;
         v14 = 1024;
         v15 = v11 & 0x3F;
         _os_log_impl(&dword_24A0AC000, v6, v7, "closing a WBXML tag %d when our stack's top tag is %d", buf, 0xEu);
@@ -172,7 +172,7 @@
     if (os_log_type_enabled(v8, v9))
     {
       *buf = 67109120;
-      v13 = v3;
+      v13 = tagCopy;
       _os_log_impl(&dword_24A0AC000, v8, v9, "closing a WBXML tag %d when we don't have a tag open", buf, 8u);
     }
   }
@@ -180,46 +180,46 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendEmptyTag:(unsigned __int8)a3
+- (void)appendEmptyTag:(unsigned __int8)tag
 {
   [(WBXMLData *)self renderProspectiveTags];
   [(WBXMLData *)self _applyCurrentCodePage];
-  v5 = a3;
-  [(NSMutableData *)self->_data appendBytes:&v5 length:1];
+  tagCopy = tag;
+  [(NSMutableData *)self->_data appendBytes:&tagCopy length:1];
 }
 
-- (void)openTag:(unsigned __int8)a3
+- (void)openTag:(unsigned __int8)tag
 {
-  v3 = a3;
-  v7 = a3;
+  tagCopy = tag;
+  tagCopy2 = tag;
   [(WBXMLData *)self renderProspectiveTags];
   [(WBXMLData *)self _applyCurrentCodePage];
-  if (v3 != 195 && (v3 & 0x40) != 0)
+  if (tagCopy != 195 && (tagCopy & 0x40) != 0)
   {
-    [(WBXMLData *)v3 openTag:a2, self];
+    [(WBXMLData *)tagCopy openTag:a2, self];
   }
 
-  v6 = v3 | 0x40;
+  v6 = tagCopy | 0x40;
   [(NSMutableData *)self->_data appendBytes:&v6 length:1];
-  [(NSMutableData *)self->_stateStack appendBytes:&v7 length:1];
+  [(NSMutableData *)self->_stateStack appendBytes:&tagCopy2 length:1];
 }
 
-- (void)closeTag:(unsigned __int8)a3
+- (void)closeTag:(unsigned __int8)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v15 = *MEMORY[0x277D85DE8];
   if ([(NSMutableData *)self->_stateStack length])
   {
     v10 = 0;
     [(NSMutableData *)self->_stateStack getBytes:&v10 range:[(NSMutableData *)self->_stateStack length]- 1, 1];
-    if (v10 != v3)
+    if (v10 != tagCopy)
     {
       v5 = DALoggingwithCategory();
       v6 = *(MEMORY[0x277D03988] + 4);
       if (os_log_type_enabled(v5, v6))
       {
         *buf = 67109376;
-        v12 = v3;
+        v12 = tagCopy;
         v13 = 1024;
         v14 = v10;
         _os_log_impl(&dword_24A0AC000, v5, v6, "closing a WBXML tag %d when our stack's top tag is %d", buf, 0xEu);
@@ -236,7 +236,7 @@
     if (os_log_type_enabled(v7, v8))
     {
       *buf = 67109120;
-      v12 = v3;
+      v12 = tagCopy;
       _os_log_impl(&dword_24A0AC000, v7, v8, "closing a WBXML tag %d when we don't have a tag open", buf, 8u);
     }
   }
@@ -246,9 +246,9 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataExpectCompleteData:(BOOL)a3
+- (id)dataExpectCompleteData:(BOOL)data
 {
-  if (a3 && [(NSMutableData *)self->_stateStack length])
+  if (data && [(NSMutableData *)self->_stateStack length])
   {
     v4 = DALoggingwithCategory();
     v5 = *(MEMORY[0x277D03988] + 4);

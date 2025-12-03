@@ -3,12 +3,12 @@
 - (SBHRecentsDocumentExtensionWrappingViewController)init;
 - (SBHRecentsDocumentExtensionWrappingViewControllerDelegate)delegate;
 - (id)cancelTouchesForCurrentEventInHostedContent;
-- (void)_updateViewIntrinsicContentSize:(CGSize)a3;
+- (void)_updateViewIntrinsicContentSize:(CGSize)size;
 - (void)dealloc;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)wrapRemoteViewController:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)wrapRemoteViewController:(id)controller;
 @end
 
 @implementation SBHRecentsDocumentExtensionWrappingViewController
@@ -80,8 +80,8 @@
 
     else
     {
-      v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v2 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     v12 = CGRectGetWidth(*&v6) * 0.46;
@@ -104,108 +104,108 @@
   [(SBHRecentsDocumentExtensionWrappingViewController *)self _updateViewIntrinsicContentSize:v10, v11];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = SBHRecentsDocumentExtensionWrappingViewController;
-  v4 = a3;
-  [(SBHRecentsDocumentExtensionWrappingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(SBHRecentsDocumentExtensionWrappingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(SBHRecentsDocumentExtensionWrappingViewController *)self _updateViewIntrinsicContentSize:v6, v8];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = SBHRecentsDocumentExtensionWrappingViewController;
   [(SBHRecentsDocumentExtensionWrappingViewController *)&v12 setPreferredContentSize:?];
-  v6 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-  [v6 frame];
+  view = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+  [view frame];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-  [v11 setFrame:{v8, v10, width, height}];
+  view2 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+  [view2 setFrame:{v8, v10, width, height}];
 }
 
-- (void)_updateViewIntrinsicContentSize:(CGSize)a3
+- (void)_updateViewIntrinsicContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-  [v7 setIntrinsicContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  view = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+  [view setIntrinsicContentSize:{width, height}];
   [(SBHRecentsDocumentExtensionWrappingViewController *)self setPreferredContentSize:width, height];
-  v6 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-  [v6 setNeedsUpdateConstraints];
+  view2 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
-- (void)wrapRemoteViewController:(id)a3
+- (void)wrapRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   wrappedRemoteViewController = self->_wrappedRemoteViewController;
-  v36 = v5;
-  if (wrappedRemoteViewController != v5)
+  v36 = controllerCopy;
+  if (wrappedRemoteViewController != controllerCopy)
   {
     [(_UIRemoteViewController *)wrappedRemoteViewController willMoveToParentViewController:0];
-    v7 = [(_UIRemoteViewController *)self->_wrappedRemoteViewController view];
-    [v7 removeFromSuperview];
+    view = [(_UIRemoteViewController *)self->_wrappedRemoteViewController view];
+    [view removeFromSuperview];
 
     [(_UIRemoteViewController *)self->_wrappedRemoteViewController removeFromParentViewController];
   }
 
-  objc_storeStrong(&self->_wrappedRemoteViewController, a3);
+  objc_storeStrong(&self->_wrappedRemoteViewController, controller);
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
   [(NSMutableArray *)self->_constraints removeAllObjects];
-  v8 = [(_UIRemoteViewController *)v36 view];
-  [v8 setAccessibilityIdentifier:@"Icon Pop Over"];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-  v10 = v9;
-  if (v8 && v9)
+  view2 = [(_UIRemoteViewController *)v36 view];
+  [view2 setAccessibilityIdentifier:@"Icon Pop Over"];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+  v10 = view3;
+  if (view2 && view3)
   {
     [(_UIRemoteViewController *)v36 bs_endAppearanceTransition:1];
-    v11 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
-    [(SBHRecentsDocumentExtensionWrappingViewController *)self bs_addChildViewController:v36 withSuperview:v11];
+    view4 = [(SBHRecentsDocumentExtensionWrappingViewController *)self view];
+    [(SBHRecentsDocumentExtensionWrappingViewController *)self bs_addChildViewController:v36 withSuperview:view4];
 
     constraints = self->_constraints;
-    v13 = [v8 topAnchor];
-    v14 = [v10 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [view2 topAnchor];
+    topAnchor2 = [v10 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(NSMutableArray *)constraints addObject:v15];
 
     v16 = self->_constraints;
-    v17 = [v8 bottomAnchor];
-    v18 = [v10 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [view2 bottomAnchor];
+    bottomAnchor2 = [v10 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(NSMutableArray *)v16 addObject:v19];
 
     v20 = self->_constraints;
-    v21 = [v8 leadingAnchor];
-    v22 = [v10 leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    leadingAnchor = [view2 leadingAnchor];
+    leadingAnchor2 = [v10 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(NSMutableArray *)v20 addObject:v23];
 
     v24 = self->_constraints;
-    v25 = [v8 trailingAnchor];
-    v26 = [v10 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor = [view2 trailingAnchor];
+    trailingAnchor2 = [v10 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(NSMutableArray *)v24 addObject:v27];
 
     v28 = self->_constraints;
-    v29 = [v8 widthAnchor];
-    v30 = [v10 widthAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 multiplier:1.0];
+    widthAnchor = [view2 widthAnchor];
+    widthAnchor2 = [v10 widthAnchor];
+    v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
     [(NSMutableArray *)v28 addObject:v31];
 
     v32 = self->_constraints;
-    v33 = [v8 heightAnchor];
-    v34 = [v10 heightAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 multiplier:1.0];
+    heightAnchor = [view2 heightAnchor];
+    heightAnchor2 = [v10 heightAnchor];
+    v35 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
     [(NSMutableArray *)v32 addObject:v35];
   }
 
@@ -220,9 +220,9 @@
     v5 = v4;
     if (!self->_touchCancellationAssertionsToTokens)
     {
-      v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
       touchCancellationAssertionsToTokens = self->_touchCancellationAssertionsToTokens;
-      self->_touchCancellationAssertionsToTokens = v6;
+      self->_touchCancellationAssertionsToTokens = weakToStrongObjectsMapTable;
     }
 
     objc_initWeak(&location, self);
@@ -259,11 +259,11 @@ void __96__SBHRecentsDocumentExtensionWrappingViewController_cancelTouchesForCur
 
 - (BOOL)isTransparent
 {
-  v2 = self;
-  v3 = [(SBHRecentsDocumentExtensionWrappingViewController *)self delegate];
-  LOBYTE(v2) = [v3 recentsDocumentExtensionWrappingViewControllerHasTransparentContent:v2];
+  selfCopy = self;
+  delegate = [(SBHRecentsDocumentExtensionWrappingViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate recentsDocumentExtensionWrappingViewControllerHasTransparentContent:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (SBHRecentsDocumentExtensionWrappingViewControllerDelegate)delegate

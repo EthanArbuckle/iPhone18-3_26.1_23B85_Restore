@@ -1,15 +1,15 @@
 @interface SCLSchoolModeWakeScheduler
-- (void)scheduleWakeForDate:(id)a3;
+- (void)scheduleWakeForDate:(id)date;
 @end
 
 @implementation SCLSchoolModeWakeScheduler
 
-- (void)scheduleWakeForDate:(id)a3
+- (void)scheduleWakeForDate:(id)date
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:v4];
+  dateCopy = date;
+  date = [MEMORY[0x277CBEAA8] date];
+  [dateCopy timeIntervalSinceDate:date];
   v6 = v5;
 
   v7 = scl_framework_log();
@@ -18,7 +18,7 @@
     *buf = 136315394;
     v12 = "com.apple.schooltime.wake.activity";
     v13 = 2112;
-    v14 = v3;
+    v14 = dateCopy;
     _os_log_impl(&dword_264829000, v7, OS_LOG_TYPE_DEFAULT, "Registering xpc activity %s for %@", buf, 0x16u);
   }
 

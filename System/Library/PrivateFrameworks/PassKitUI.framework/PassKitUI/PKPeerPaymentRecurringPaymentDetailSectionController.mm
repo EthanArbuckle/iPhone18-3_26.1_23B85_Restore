@@ -1,34 +1,34 @@
 @interface PKPeerPaymentRecurringPaymentDetailSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
-- (PKPeerPaymentRecurringPaymentDetailSectionController)initWithRecurringPayment:(id)a3 productTimeZone:(id)a4 mode:(unint64_t)a5 delegate:(id)a6;
+- (BOOL)shouldHighlightItem:(id)item;
+- (PKPeerPaymentRecurringPaymentDetailSectionController)initWithRecurringPayment:(id)payment productTimeZone:(id)zone mode:(unint64_t)mode delegate:(id)delegate;
 - (PKPeerPaymentRecurringPaymentDetailSectionControllerDelegate)delegate;
-- (id)cellRegistrationForItem:(id)a3;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_decorateAmountListCell:(id)a3 forItem:(id)a4;
-- (void)_decorateDateListCell:(id)a3 forItem:(id)a4;
-- (void)_decorateDateSelectorListCell:(id)a3 forItem:(id)a4;
-- (void)_handleFrequencyChanged:(unint64_t)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_decorateAmountListCell:(id)cell forItem:(id)item;
+- (void)_decorateDateListCell:(id)cell forItem:(id)item;
+- (void)_decorateDateSelectorListCell:(id)cell forItem:(id)item;
+- (void)_handleFrequencyChanged:(unint64_t)changed;
 - (void)_toggleShowStartDateSelector;
-- (void)amountDidChange:(id)a3;
-- (void)dateSelectorCollectionViewCell:(id)a3 didUpdateDate:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
-- (void)setHideAmount:(BOOL)a3;
-- (void)setIsEditable:(BOOL)a3;
-- (void)setStatus:(unint64_t)a3;
-- (void)setTitleColor:(id)a3;
-- (void)updateWithRecurringPayment:(id)a3;
+- (void)amountDidChange:(id)change;
+- (void)dateSelectorCollectionViewCell:(id)cell didUpdateDate:(id)date;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
+- (void)setHideAmount:(BOOL)amount;
+- (void)setIsEditable:(BOOL)editable;
+- (void)setStatus:(unint64_t)status;
+- (void)setTitleColor:(id)color;
+- (void)updateWithRecurringPayment:(id)payment;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailSectionController
 
-- (PKPeerPaymentRecurringPaymentDetailSectionController)initWithRecurringPayment:(id)a3 productTimeZone:(id)a4 mode:(unint64_t)a5 delegate:(id)a6
+- (PKPeerPaymentRecurringPaymentDetailSectionController)initWithRecurringPayment:(id)payment productTimeZone:(id)zone mode:(unint64_t)mode delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  paymentCopy = payment;
+  zoneCopy = zone;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentRecurringPaymentDetailSectionController;
   v13 = [(PKPeerPaymentRecurringPaymentDetailSectionController *)&v21 init];
@@ -41,20 +41,20 @@
     productCalendar = v14->_productCalendar;
     v14->_productCalendar = v16;
 
-    [(NSCalendar *)v14->_productCalendar setTimeZone:v11];
-    v14->_mode = a5;
-    objc_storeWeak(&v14->_delegate, v12);
-    v18 = [MEMORY[0x1E69DC888] labelColor];
+    [(NSCalendar *)v14->_productCalendar setTimeZone:zoneCopy];
+    v14->_mode = mode;
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     titleColor = v14->_titleColor;
-    v14->_titleColor = v18;
+    v14->_titleColor = labelColor;
 
-    [(PKPeerPaymentRecurringPaymentDetailSectionController *)v14 updateWithRecurringPayment:v10];
+    [(PKPeerPaymentRecurringPaymentDetailSectionController *)v14 updateWithRecurringPayment:paymentCopy];
   }
 
   return v14;
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!self->_hideAmount)
@@ -83,19 +83,19 @@
       [(PKPeerPaymentRecurringPaymentDateSelectorDetailRowItem *)v10 setDate:self->_startDate];
       if ((PKPeerPaymentDisableRecurringDateRestrictions() & 1) == 0)
       {
-        v11 = [MEMORY[0x1E695DF00] date];
-        v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v13 = [v12 dateByAddingUnit:4 value:1 toDate:v11 options:0];
+        date = [MEMORY[0x1E695DF00] date];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        v13 = [currentCalendar dateByAddingUnit:4 value:1 toDate:date options:0];
 
         if (self->_mode == 2)
         {
-          v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v15 = [v14 dateByAddingUnit:16 value:1 toDate:v11 options:0];
+          currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+          v15 = [currentCalendar2 dateByAddingUnit:16 value:1 toDate:date options:0];
         }
 
         else
         {
-          v15 = v11;
+          v15 = date;
         }
 
         [(PKPeerPaymentRecurringPaymentDateSelectorDetailRowItem *)v10 setMinimumDate:v15];
@@ -121,7 +121,7 @@
   v19[2] = __76__PKPeerPaymentRecurringPaymentDetailSectionController_reloadItemsAnimated___block_invoke;
   v19[3] = &unk_1E8013F80;
   v19[4] = self;
-  v20 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], v19);
 }
 
@@ -143,7 +143,7 @@ void __76__PKPeerPaymentRecurringPaymentDetailSectionController_reloadItemsAnima
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_rowItems];
@@ -151,9 +151,9 @@ void __76__PKPeerPaymentRecurringPaymentDetailSectionController_reloadItemsAnima
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -288,23 +288,23 @@ void __80__PKPeerPaymentRecurringPaymentDetailSectionController_cellRegistration
   [WeakRetained _handleFrequencyChanged:v4];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [(PKDynamicListSectionController *)self headerText];
-  if (v8)
+  headerText = [(PKDynamicListSectionController *)self headerText];
+  if (headerText)
   {
   }
 
   else
   {
-    v9 = [(PKDynamicListSectionController *)self attributedHeaderText];
+    attributedHeaderText = [(PKDynamicListSectionController *)self attributedHeaderText];
 
-    if (!v9)
+    if (!attributedHeaderText)
     {
       goto LABEL_5;
     }
@@ -312,16 +312,16 @@ void __80__PKPeerPaymentRecurringPaymentDetailSectionController_cellRegistration
 
   [v6 setHeaderMode:1];
 LABEL_5:
-  v10 = [(PKDynamicListSectionController *)self footerText];
-  if (v10)
+  footerText = [(PKDynamicListSectionController *)self footerText];
+  if (footerText)
   {
   }
 
   else
   {
-    v11 = [(PKDynamicListSectionController *)self attributedFooterText];
+    attributedFooterText = [(PKDynamicListSectionController *)self attributedFooterText];
 
-    if (!v11)
+    if (!attributedFooterText)
     {
       goto LABEL_9;
     }
@@ -329,15 +329,15 @@ LABEL_5:
 
   [v6 setFooterMode:1];
 LABEL_9:
-  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v12 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
 
   return v12;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = [a3 identifier];
-  if (v4 == @"startDate" || (v5 = v4) != 0 && (v6 = [(__CFString *)v4 isEqualToString:@"startDate"], v5, v5, v6))
+  identifier = [item identifier];
+  if (identifier == @"startDate" || (v5 = identifier) != 0 && (v6 = [(__CFString *)identifier isEqualToString:@"startDate"], v5, v5, v6))
   {
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self _toggleShowStartDateSelector];
   }
@@ -346,20 +346,20 @@ LABEL_9:
   [WeakRetained deselectCells];
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
   if (self->_isEditable)
   {
-    v3 = [a3 identifier];
-    v4 = v3;
-    if (v3 == @"frequency")
+    identifier = [item identifier];
+    v4 = identifier;
+    if (identifier == @"frequency")
     {
       LOBYTE(v5) = 0;
     }
 
-    else if (v3)
+    else if (identifier)
     {
-      v5 = [(__CFString *)v3 isEqualToString:@"frequency"]^ 1;
+      v5 = [(__CFString *)identifier isEqualToString:@"frequency"]^ 1;
     }
 
     else
@@ -376,12 +376,12 @@ LABEL_9:
   return v5;
 }
 
-- (void)setIsEditable:(BOOL)a3
+- (void)setIsEditable:(BOOL)editable
 {
-  if (self->_isEditable != a3)
+  if (self->_isEditable != editable)
   {
-    self->_isEditable = a3;
-    if (!a3)
+    self->_isEditable = editable;
+    if (!editable)
     {
       self->_showStartDateSelector = 0;
     }
@@ -390,49 +390,49 @@ LABEL_9:
   }
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)setHideAmount:(BOOL)a3
+- (void)setHideAmount:(BOOL)amount
 {
-  if (self->_hideAmount != a3)
+  if (self->_hideAmount != amount)
   {
-    self->_hideAmount = a3;
+    self->_hideAmount = amount;
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_titleColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
+    objc_storeStrong(&self->_titleColor, color);
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)updateWithRecurringPayment:(id)a3
+- (void)updateWithRecurringPayment:(id)payment
 {
-  v15 = a3;
-  v4 = [v15 amount];
-  v5 = [v15 currency];
+  paymentCopy = payment;
+  amount = [paymentCopy amount];
+  currency = [paymentCopy currency];
   v6 = PKCurrencyAmountMake();
   amount = self->_amount;
   self->_amount = v6;
 
-  v8 = [v15 startDate];
+  startDate = [paymentCopy startDate];
   startDate = self->_startDate;
-  self->_startDate = v8;
+  self->_startDate = startDate;
 
-  self->_frequency = [v15 frequency];
-  self->_status = [v15 status];
+  self->_frequency = [paymentCopy frequency];
+  self->_status = [paymentCopy status];
   if (self->_mode == 2)
   {
     v10 = @"DETAILS_NEXT_PAYMENT";
@@ -447,66 +447,66 @@ LABEL_9:
   startDateTitle = self->_startDateTitle;
   self->_startDateTitle = v11;
 
-  v13 = [v15 upcomingPaymentDates];
-  v14 = [v13 firstObject];
+  upcomingPaymentDates = [paymentCopy upcomingPaymentDates];
+  firstObject = [upcomingPaymentDates firstObject];
 
-  if (v14)
+  if (firstObject)
   {
-    objc_storeStrong(&self->_startDate, v14);
+    objc_storeStrong(&self->_startDate, firstObject);
   }
 
   [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:1];
 }
 
-- (void)_decorateAmountListCell:(id)a3 forItem:(id)a4
+- (void)_decorateAmountListCell:(id)cell forItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 title];
-  [v7 setTitle:v8];
+  itemCopy = item;
+  cellCopy = cell;
+  title = [itemCopy title];
+  [cellCopy setTitle:title];
 
-  v9 = [v6 currencyAmount];
-  [v7 setCurrencyAmount:v9];
+  currencyAmount = [itemCopy currencyAmount];
+  [cellCopy setCurrencyAmount:currencyAmount];
 
-  [v7 setIsEditable:{objc_msgSend(v6, "isEditable")}];
-  [v7 setDelegate:self];
-  v10 = [v6 titleColor];
+  [cellCopy setIsEditable:{objc_msgSend(itemCopy, "isEditable")}];
+  [cellCopy setDelegate:self];
+  titleColor = [itemCopy titleColor];
 
-  [v7 setTitleColor:v10];
+  [cellCopy setTitleColor:titleColor];
 }
 
-- (void)_decorateDateListCell:(id)a3 forItem:(id)a4
+- (void)_decorateDateListCell:(id)cell forItem:(id)item
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v9 = [v7 title];
-  [v8 setText:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v10 = [v8 textProperties];
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [v10 setColor:v11];
+  textProperties = [valueCellConfiguration textProperties];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textProperties setColor:labelColor];
 
-  v12 = [v7 date];
-  if ([v7 isEditable])
+  date = [itemCopy date];
+  if ([itemCopy isEditable])
   {
     v23 = 0x401C000000000000;
     v24 = vdupq_n_s64(1uLL);
     v25 = vdupq_n_s64(2uLL);
     v13 = [[PKContinuousButton alloc] initWithConfiguration:&v23];
-    v14 = v12;
-    if (!v12)
+    date2 = date;
+    if (!date)
     {
-      v14 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
     }
 
     v15 = PKMediumDateString();
     [(PKContinuousButton *)v13 setTitle:v15 forState:0];
 
-    if (v12)
+    if (date)
     {
-      if ([(NSCalendar *)self->_productCalendar isDateInToday:v12])
+      if ([(NSCalendar *)self->_productCalendar isDateInToday:date])
       {
         PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsStartDa_0.isa);
       }
@@ -515,19 +515,19 @@ LABEL_9:
       {
         PKMediumDateString();
       }
-      v16 = ;
-      [(PKContinuousButton *)v13 setTitle:v16 forState:0];
+      date3 = ;
+      [(PKContinuousButton *)v13 setTitle:date3 forState:0];
     }
 
     else
     {
 
-      v16 = [MEMORY[0x1E695DF00] date];
+      date3 = [MEMORY[0x1E695DF00] date];
       v17 = PKMediumDateString();
       [(PKContinuousButton *)v13 setTitle:v17 forState:0];
     }
 
-    if ([v7 isSelected])
+    if ([itemCopy isSelected])
     {
       [MEMORY[0x1E69DC888] linkColor];
     }
@@ -539,20 +539,20 @@ LABEL_9:
     v18 = ;
     [(PKContinuousButton *)v13 updateTitleColorWithColor:v18];
 
-    v19 = [MEMORY[0x1E69DC740] pkui_createPlainButtonConfiguration];
-    [v19 setContentInsets:{6.0, 12.0, 6.0, 12.0}];
-    [v19 setTitleAlignment:2];
-    [(PKContinuousButton *)v13 setConfiguration:v19];
+    pkui_createPlainButtonConfiguration = [MEMORY[0x1E69DC740] pkui_createPlainButtonConfiguration];
+    [pkui_createPlainButtonConfiguration setContentInsets:{6.0, 12.0, 6.0, 12.0}];
+    [pkui_createPlainButtonConfiguration setTitleAlignment:2];
+    [(PKContinuousButton *)v13 setConfiguration:pkui_createPlainButtonConfiguration];
     [(PKContinuousButton *)v13 addTarget:self action:sel__didTapDateButton_ forControlEvents:64];
     v20 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v13 placement:1];
     v26[0] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [v6 setAccessories:v21];
+    [cellCopy setAccessories:v21];
   }
 
-  else if (v12)
+  else if (date)
   {
-    if ([(NSCalendar *)self->_productCalendar isDateInToday:v12])
+    if ([(NSCalendar *)self->_productCalendar isDateInToday:date])
     {
       PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsStartDa_0.isa);
     }
@@ -562,38 +562,38 @@ LABEL_9:
       PKMediumDateString();
     }
     v22 = ;
-    [v8 setSecondaryText:v22];
-    [v6 setAccessories:MEMORY[0x1E695E0F0]];
+    [valueCellConfiguration setSecondaryText:v22];
+    [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
   }
 
-  [v6 setContentConfiguration:v8];
-  [v6 setAccessibilityIdentifier:*MEMORY[0x1E69B9698]];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
+  [cellCopy setAccessibilityIdentifier:*MEMORY[0x1E69B9698]];
 }
 
-- (void)_decorateDateSelectorListCell:(id)a3 forItem:(id)a4
+- (void)_decorateDateSelectorListCell:(id)cell forItem:(id)item
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 date];
-  if (v7)
+  cellCopy = cell;
+  itemCopy = item;
+  date = [itemCopy date];
+  if (date)
   {
-    [v11 setDate:v7];
+    [cellCopy setDate:date];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v11 setDate:v8];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [cellCopy setDate:date2];
   }
 
-  v9 = [v6 minimumDate];
-  [v11 setMinimumDate:v9];
+  minimumDate = [itemCopy minimumDate];
+  [cellCopy setMinimumDate:minimumDate];
 
-  v10 = [v6 maximumDate];
+  maximumDate = [itemCopy maximumDate];
 
-  [v11 setMaximumDate:v10];
-  [v11 setDelegate:self];
-  [v11 setContentAlignment:*MEMORY[0x1E69BB7F8]];
+  [cellCopy setMaximumDate:maximumDate];
+  [cellCopy setDelegate:self];
+  [cellCopy setContentAlignment:*MEMORY[0x1E69BB7F8]];
 }
 
 - (void)_toggleShowStartDateSelector
@@ -623,24 +623,24 @@ void __84__PKPeerPaymentRecurringPaymentDetailSectionController__toggleShowStart
   [WeakRetained makeCellFirstResponderWithItem:v3];
 }
 
-- (void)_handleFrequencyChanged:(unint64_t)a3
+- (void)_handleFrequencyChanged:(unint64_t)changed
 {
-  if (self->_frequency != a3)
+  if (self->_frequency != changed)
   {
-    self->_frequency = a3;
+    self->_frequency = changed;
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)amountDidChange:(id)a3
+- (void)amountDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   amount = self->_amount;
-  v9 = v4;
+  v9 = changeCopy;
   if (amount)
   {
-    v6 = [(PKCurrencyAmount *)amount amount];
-    v7 = [v6 pk_isEqualToDecimalNumber:v9];
+    amount = [(PKCurrencyAmount *)amount amount];
+    v7 = [amount pk_isEqualToDecimalNumber:v9];
 
     if (v7)
     {
@@ -648,25 +648,25 @@ void __84__PKPeerPaymentRecurringPaymentDetailSectionController__toggleShowStart
     }
 
     amount = self->_amount;
-    v4 = v9;
+    changeCopy = v9;
   }
 
-  [(PKCurrencyAmount *)amount setAmount:v4];
+  [(PKCurrencyAmount *)amount setAmount:changeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained amountDidChange];
 
 LABEL_5:
 }
 
-- (void)dateSelectorCollectionViewCell:(id)a3 didUpdateDate:(id)a4
+- (void)dateSelectorCollectionViewCell:(id)cell didUpdateDate:(id)date
 {
-  v6 = a4;
-  if (self->_startDate != v6)
+  dateCopy = date;
+  if (self->_startDate != dateCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_startDate, a4);
+    v7 = dateCopy;
+    objc_storeStrong(&self->_startDate, date);
     [(PKPeerPaymentRecurringPaymentDetailSectionController *)self reloadItemsAnimated:0];
-    v6 = v7;
+    dateCopy = v7;
   }
 }
 

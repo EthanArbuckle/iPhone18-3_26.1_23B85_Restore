@@ -1,24 +1,24 @@
 @interface ShowMyLocationCardActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowMyLocationCardActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v11 = a4;
-  v5 = a3;
+  contextCopy = context;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v11 appCoordinator];
-    v8 = [v7 chromeViewController];
-    v9 = [v8 mapView];
+    appCoordinator = [contextCopy appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    v10 = [v9 userLocation];
-    [v9 selectAnnotation:v10 animated:1];
+    userLocation = [mapView userLocation];
+    [mapView selectAnnotation:userLocation animated:1];
   }
 }
 

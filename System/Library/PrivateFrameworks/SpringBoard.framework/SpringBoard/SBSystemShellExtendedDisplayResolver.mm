@@ -1,14 +1,14 @@
 @interface SBSystemShellExtendedDisplayResolver
 - (SBDisplayWindowingModeResolverDelegate)delegate;
-- (SBSystemShellExtendedDisplayResolver)initWithRootDisplay:(id)a3;
+- (SBSystemShellExtendedDisplayResolver)initWithRootDisplay:(id)display;
 @end
 
 @implementation SBSystemShellExtendedDisplayResolver
 
-- (SBSystemShellExtendedDisplayResolver)initWithRootDisplay:(id)a3
+- (SBSystemShellExtendedDisplayResolver)initWithRootDisplay:(id)display
 {
-  v6 = a3;
-  if (([v6 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [(SBSystemShellExtendedDisplayResolver *)a2 initWithRootDisplay:?];
   }
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_rootDisplayIdentity, a3);
+    objc_storeStrong(&v7->_rootDisplayIdentity, display);
   }
 
   return v8;

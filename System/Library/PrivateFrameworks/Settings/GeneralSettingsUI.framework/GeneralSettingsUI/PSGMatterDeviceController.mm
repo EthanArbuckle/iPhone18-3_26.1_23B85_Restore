@@ -1,14 +1,14 @@
 @interface PSGMatterDeviceController
 + (BOOL)shouldShowTestSpecifiers;
-+ (id)serviceSpecifierWithPairing:(id)a3 target:(id)a4;
++ (id)serviceSpecifierWithPairing:(id)pairing target:(id)target;
 + (id)testSpecifiers;
-- (BOOL)isServiceAtIndexPath:(id)a3;
+- (BOOL)isServiceAtIndexPath:(id)path;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)reloadServicesWithCompletion:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)reloadServicesWithCompletion:(id)completion;
 - (void)showDeleteFromMatterLocker;
-- (void)showDeleteService:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)showDeleteService:(id)service;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
 
 + (BOOL)shouldShowTestSpecifiers
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isInternalInstall])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"PSGMatterControllerShowTestDevices"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"PSGMatterControllerShowTestDevices"];
   }
 
   else
@@ -39,27 +39,27 @@
   return v3;
 }
 
-+ (id)serviceSpecifierWithPairing:(id)a3 target:(id)a4
++ (id)serviceSpecifierWithPairing:(id)pairing target:(id)target
 {
   v5 = MEMORY[0x277D3FAD8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 fabric];
-  v9 = [v8 ecosystem];
-  v10 = [v9 vendor];
-  v11 = [v10 displayName];
-  v12 = [v5 preferenceSpecifierNamed:v11 target:v6 set:0 get:sel_detailText_ detail:0 cell:4 edit:0];
+  targetCopy = target;
+  pairingCopy = pairing;
+  fabric = [pairingCopy fabric];
+  ecosystem = [fabric ecosystem];
+  vendor = [ecosystem vendor];
+  displayName = [vendor displayName];
+  v12 = [v5 preferenceSpecifierNamed:displayName target:targetCopy set:0 get:sel_detailText_ detail:0 cell:4 edit:0];
 
-  v13 = [v7 uuid];
-  v14 = [v13 UUIDString];
-  [v12 setIdentifier:v14];
+  uuid = [pairingCopy uuid];
+  uUIDString = [uuid UUIDString];
+  [v12 setIdentifier:uUIDString];
 
   [v12 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  [v12 setObject:v7 forKeyedSubscript:@"PSGDevicePairingKey"];
-  v15 = [v7 fabric];
+  [v12 setObject:pairingCopy forKeyedSubscript:@"PSGDevicePairingKey"];
+  fabric2 = [pairingCopy fabric];
 
-  v16 = [v15 displayName];
-  [v12 setObject:v16 forKeyedSubscript:*MEMORY[0x277D401A8]];
+  displayName2 = [fabric2 displayName];
+  [v12 setObject:displayName2 forKeyedSubscript:*MEMORY[0x277D401A8]];
 
   return v12;
 }
@@ -69,8 +69,8 @@
   v4.receiver = self;
   v4.super_class = PSGMatterDeviceController;
   [(PSGMatterDeviceController *)&v4 viewDidLoad];
-  v3 = [(PSGMatterDeviceController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(PSGMatterDeviceController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 }
 
 - (id)specifiers
@@ -79,12 +79,12 @@
   if (!*(&self->super.super.super.super.super.super.isa + v3))
   {
     v30 = *MEMORY[0x277D3FC48];
-    v4 = [(PSGMatterDeviceController *)self pairing];
+    pairing = [(PSGMatterDeviceController *)self pairing];
 
-    if (!v4)
+    if (!pairing)
     {
-      v5 = [(PSGMatterDeviceController *)self specifier];
-      v6 = [v5 objectForKeyedSubscript:@"PSGDevicePairingKey"];
+      specifier = [(PSGMatterDeviceController *)self specifier];
+      v6 = [specifier objectForKeyedSubscript:@"PSGDevicePairingKey"];
       [(PSGMatterDeviceController *)self setPairing:v6];
     }
 
@@ -96,10 +96,10 @@
     v10 = [v8 preferenceSpecifierNamed:v9 target:self set:0 get:sel_detailText_ detail:0 cell:4 edit:0];
 
     [v10 setIdentifier:@"MATTER_INFO_NAME"];
-    v11 = [(PSGMatterDeviceController *)self pairing];
-    v12 = [v11 name];
+    pairing2 = [(PSGMatterDeviceController *)self pairing];
+    name = [pairing2 name];
     v13 = *MEMORY[0x277D401A8];
-    [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x277D401A8]];
+    [v10 setObject:name forKeyedSubscript:*MEMORY[0x277D401A8]];
 
     v14 = *MEMORY[0x277D3FED8];
     v15 = MEMORY[0x277CBEC38];
@@ -110,9 +110,9 @@
     v18 = [v16 preferenceSpecifierNamed:v17 target:self set:0 get:sel_detailText_ detail:0 cell:4 edit:0];
 
     [v18 setIdentifier:@"MATTER_INFO_SERIAL"];
-    v19 = [(PSGMatterDeviceController *)self pairing];
-    v20 = [v19 serialNumber];
-    [v18 setObject:v20 forKeyedSubscript:v13];
+    pairing3 = [(PSGMatterDeviceController *)self pairing];
+    serialNumber = [pairing3 serialNumber];
+    [v18 setObject:serialNumber forKeyedSubscript:v13];
 
     [v18 setObject:v15 forKeyedSubscript:v14];
     [v7 addObject:v18];
@@ -139,17 +139,17 @@
   return v27;
 }
 
-- (void)reloadServicesWithCompletion:(id)a3
+- (void)reloadServicesWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSGMatterDeviceController *)self pairingManager];
+  completionCopy = completion;
+  pairingManager = [(PSGMatterDeviceController *)self pairingManager];
 
-  if (!v5)
+  if (!pairingManager)
   {
     v6 = objc_alloc(MEMORY[0x277CD5588]);
-    v7 = [(PSGMatterDeviceController *)self pairing];
-    v8 = [v6 initWithSystemCommissionerPairing:v7];
+    pairing = [(PSGMatterDeviceController *)self pairing];
+    v8 = [v6 initWithSystemCommissionerPairing:pairing];
     [(PSGMatterDeviceController *)self setPairingManager:v8];
   }
 
@@ -166,19 +166,19 @@
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v10];
   v19 = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-  v13 = [(PSGMatterDeviceController *)self navigationItem];
-  [v13 setRightBarButtonItems:v12];
+  navigationItem = [(PSGMatterDeviceController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v12];
 
   [v10 startAnimating];
-  v14 = [(PSGMatterDeviceController *)self pairingManager];
+  pairingManager2 = [(PSGMatterDeviceController *)self pairingManager];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__PSGMatterDeviceController_reloadServicesWithCompletion___block_invoke;
   v17[3] = &unk_2783254F0;
   v17[4] = self;
-  v18 = v4;
-  v15 = v4;
-  [v14 fetchPairingsWithCompletionHandler:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  [pairingManager2 fetchPairingsWithCompletionHandler:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -355,16 +355,16 @@ void __58__PSGMatterDeviceController_reloadServicesWithCompletion___block_invoke
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 1)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (style == 1)
   {
-    v10 = v7;
-    v7 = [(PSGMatterDeviceController *)self isServiceAtIndexPath:v7];
+    v10 = pathCopy;
+    pathCopy = [(PSGMatterDeviceController *)self isServiceAtIndexPath:pathCopy];
     v8 = v10;
-    if (v7)
+    if (pathCopy)
     {
       v9 = [(PSGMatterDeviceController *)self specifierAtIndexPath:v10];
       [(PSGMatterDeviceController *)self showDeleteService:v9];
@@ -373,16 +373,16 @@ void __58__PSGMatterDeviceController_reloadServicesWithCompletion___block_invoke
     }
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](pathCopy, v8);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = PSGMatterDeviceController;
-  v6 = a4;
-  v7 = [(PSGMatterDeviceController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(PSGMatterDeviceController *)self specifierAtIndexPath:v6, v16.receiver, v16.super_class];
+  pathCopy = path;
+  v7 = [(PSGMatterDeviceController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(PSGMatterDeviceController *)self specifierAtIndexPath:pathCopy, v16.receiver, v16.super_class];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -395,9 +395,9 @@ void __58__PSGMatterDeviceController_reloadServicesWithCompletion___block_invoke
       v11 = v7;
       if ([v11 type] == 13)
       {
-        v12 = [MEMORY[0x277D75348] systemRedColor];
-        v13 = [v11 textLabel];
-        [v13 setTextColor:v12];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        textLabel = [v11 textLabel];
+        [textLabel setTextColor:systemRedColor];
 
         goto LABEL_7;
       }
@@ -410,22 +410,22 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isServiceAtIndexPath:(id)a3
+- (BOOL)isServiceAtIndexPath:(id)path
 {
-  v3 = [(PSGMatterDeviceController *)self specifierAtIndexPath:a3];
+  v3 = [(PSGMatterDeviceController *)self specifierAtIndexPath:path];
   v4 = [v3 objectForKeyedSubscript:@"PSGDevicePairingKey"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)showDeleteService:(id)a3
+- (void)showDeleteService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = MEMORY[0x277CCACA8];
   v6 = PSG_LocalizedStringForMatter(@"SERVICE_DELETE_PROMPT_DETAIL");
-  v7 = [v4 name];
-  v8 = [v5 stringWithFormat:v6, v7];
+  name = [serviceCopy name];
+  v8 = [v5 stringWithFormat:v6, name];
 
   v9 = MEMORY[0x277D75110];
   v10 = PSG_LocalizedStringForMatter(@"SERVICE_DELETE_PROMPT");
@@ -433,17 +433,17 @@ LABEL_7:
 
   v12 = MEMORY[0x277CCACA8];
   v13 = PSG_LocalizedStringForMatter(@"SERVICE_DELETE_PROMPT_DELETE");
-  v14 = [v4 name];
-  v15 = [v12 stringWithFormat:v13, v14];
+  name2 = [serviceCopy name];
+  v15 = [v12 stringWithFormat:v13, name2];
 
   v16 = MEMORY[0x277D750F8];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __47__PSGMatterDeviceController_showDeleteService___block_invoke;
   v23[3] = &unk_2783250E0;
-  v24 = v4;
-  v25 = self;
-  v17 = v4;
+  v24 = serviceCopy;
+  selfCopy = self;
+  v17 = serviceCopy;
   v18 = [v16 actionWithTitle:v15 style:2 handler:v23];
   [v11 addAction:v18];
 

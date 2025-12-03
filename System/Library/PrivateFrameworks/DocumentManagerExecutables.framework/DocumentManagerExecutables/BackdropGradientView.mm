@@ -1,13 +1,13 @@
 @interface BackdropGradientView
-- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithFrame:(CGRect)a3;
-- (void)effectiveAppearanceDidChange:(id)a3;
+- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithFrame:(CGRect)frame;
+- (void)effectiveAppearanceDidChange:(id)change;
 - (void)layoutSubviews;
 @end
 
 @implementation BackdropGradientView
 
-- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView_gradientMaskLayer;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277CD9EB0]) init];
@@ -37,17 +37,17 @@
   v3(v4);
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for BackdropGradientView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(BackdropGradientView *)&v6 effectiveAppearanceDidChange:v4];
-  BackdropGradientView.updateAppearanceColorView(appearance:)(v4);
+  [(BackdropGradientView *)&v6 effectiveAppearanceDidChange:changeCopy];
+  BackdropGradientView.updateAppearanceColorView(appearance:)(changeCopy);
 }
 
-- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutablesP33_0BFB980FCBDEF78F05FB1DEEFECAD8EF20BackdropGradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

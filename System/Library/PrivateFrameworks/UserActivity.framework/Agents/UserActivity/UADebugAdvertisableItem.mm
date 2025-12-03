@@ -1,20 +1,20 @@
 @interface UADebugAdvertisableItem
-- (UADebugAdvertisableItem)initWithType:(unint64_t)a3 manager:(id)a4;
+- (UADebugAdvertisableItem)initWithType:(unint64_t)type manager:(id)manager;
 - (id)advertisingBytes;
 @end
 
 @implementation UADebugAdvertisableItem
 
-- (UADebugAdvertisableItem)initWithType:(unint64_t)a3 manager:(id)a4
+- (UADebugAdvertisableItem)initWithType:(unint64_t)type manager:(id)manager
 {
-  v6 = a4;
-  if (!a3)
+  managerCopy = manager;
+  if (!type)
   {
     v7 = @"AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = @"EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA";
 LABEL_5:
@@ -31,7 +31,7 @@ LABEL_7:
   if (v9)
   {
     [(UADebugAdvertisableItem *)v9 setType:5];
-    [(UADebugAdvertisableItem *)v10 setDebugType:a3];
+    [(UADebugAdvertisableItem *)v10 setDebugType:type];
   }
 
   return v10;

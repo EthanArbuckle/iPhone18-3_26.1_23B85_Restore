@@ -40,16 +40,16 @@
 
 + (id)_gkServerTimestamp
 {
-  v1 = [a1 date];
-  v2 = [v1 _gkServerTimestamp];
+  date = [self date];
+  _gkServerTimestamp = [date _gkServerTimestamp];
 
-  return v2;
+  return _gkServerTimestamp;
 }
 
 - (uint64_t)_gkServerTimestamp
 {
   v1 = MEMORY[0x277CCABB0];
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
 
   return [v1 _gkServerTimeInterval:?];
 }

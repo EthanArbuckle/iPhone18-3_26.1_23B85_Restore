@@ -1,42 +1,42 @@
 @interface SUAppPurgingAlertItem
-- (SUAppPurgingAlertItem)initWithHandler:(id)a3 bytesNeeded:(unint64_t)a4 includingAppleIntelligence:(BOOL)a5;
+- (SUAppPurgingAlertItem)initWithHandler:(id)handler bytesNeeded:(unint64_t)needed includingAppleIntelligence:(BOOL)intelligence;
 - (id)_manageStorageButton;
 - (id)_noButton;
 - (id)_yesButton;
 - (id)buttons;
 - (id)message;
-- (id)modelSpecificLocalizedStringKeyForKey:(id)a3;
+- (id)modelSpecificLocalizedStringKeyForKey:(id)key;
 - (id)title;
-- (void)alertWasDismissed:(unint64_t)a3;
+- (void)alertWasDismissed:(unint64_t)dismissed;
 @end
 
 @implementation SUAppPurgingAlertItem
 
-- (SUAppPurgingAlertItem)initWithHandler:(id)a3 bytesNeeded:(unint64_t)a4 includingAppleIntelligence:(BOOL)a5
+- (SUAppPurgingAlertItem)initWithHandler:(id)handler bytesNeeded:(unint64_t)needed includingAppleIntelligence:(BOOL)intelligence
 {
-  v8 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = SUAppPurgingAlertItem;
   v9 = [(SUBaseAlertItem *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     handler = v9->_handler;
     v9->_handler = v10;
 
-    v9->_bytesNeeded = a4;
-    v9->_includingAppleIntelligence = a5;
+    v9->_bytesNeeded = needed;
+    v9->_includingAppleIntelligence = intelligence;
   }
 
   return v9;
 }
 
-- (void)alertWasDismissed:(unint64_t)a3
+- (void)alertWasDismissed:(unint64_t)dismissed
 {
   v6.receiver = self;
   v6.super_class = SUAppPurgingAlertItem;
   [(SUBaseAlertItem *)&v6 alertWasDismissed:?];
-  if (a3 != 1)
+  if (dismissed != 1)
   {
     handler = self->_handler;
     if (handler)
@@ -91,17 +91,17 @@
 
 - (id)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SUAppPurgingAlertItem *)self _yesButton];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  _yesButton = [(SUAppPurgingAlertItem *)self _yesButton];
+  [array addObject:_yesButton];
 
-  v5 = [(SUAppPurgingAlertItem *)self _manageStorageButton];
-  [v3 addObject:v5];
+  _manageStorageButton = [(SUAppPurgingAlertItem *)self _manageStorageButton];
+  [array addObject:_manageStorageButton];
 
-  v6 = [(SUAppPurgingAlertItem *)self _noButton];
-  [v3 addObject:v6];
+  _noButton = [(SUAppPurgingAlertItem *)self _noButton];
+  [array addObject:_noButton];
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
@@ -210,12 +210,12 @@ uint64_t __34__SUAppPurgingAlertItem__noButton__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)modelSpecificLocalizedStringKeyForKey:(id)a3
+- (id)modelSpecificLocalizedStringKeyForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = MGCopyAnswer();
-  v5 = [v4 uppercaseString];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   if ([v6 hasSuffix:@"_SIMULATOR"])
   {
@@ -224,7 +224,7 @@ uint64_t __34__SUAppPurgingAlertItem__noButton__block_invoke(uint64_t a1)
     v6 = v7;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v3, v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", keyCopy, v6];
 
   return v8;
 }

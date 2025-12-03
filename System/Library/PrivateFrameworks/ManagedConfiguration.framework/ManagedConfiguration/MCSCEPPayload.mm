@@ -1,5 +1,5 @@
 @interface MCSCEPPayload
-- (MCSCEPPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCSCEPPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)verboseDescription;
@@ -7,23 +7,23 @@
 
 @implementation MCSCEPPayload
 
-- (MCSCEPPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCSCEPPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v105.receiver = self;
   v105.super_class = MCSCEPPayload;
-  v10 = [(MCCertificatePayload *)&v105 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCCertificatePayload *)&v105 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_29;
   }
 
-  if (([v9 isStub] & 1) == 0)
+  if (([profileCopy isStub] & 1) == 0)
   {
     v104 = 0;
-    v14 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v104];
+    v14 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"PayloadContent" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v104];
     v12 = v104;
     v16 = [v14 mutableCopy];
     v17 = v16;
@@ -47,9 +47,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v30 = [v29 intValue];
-        v10->_keySize = v30;
-        if (v30 == 1024)
+        intValue = [v29 intValue];
+        v10->_keySize = intValue;
+        if (intValue == 1024)
         {
           v38 = 0x1E77CF000uLL;
         }
@@ -57,7 +57,7 @@
         else
         {
           v38 = 0x1E77CF000;
-          if (v30 != 2048 && v30 != 4096)
+          if (intValue != 2048 && intValue != 4096)
           {
             v39 = MEMORY[0x1E696ABC0];
             v40 = MCErrorArray(@"ERROR_PROFILE_FIELD_INVALID_VALUE_P_FIELD", v31, v32, v33, v34, v35, v36, v37, @"Keysize");
@@ -145,13 +145,13 @@ LABEL_36:
 
         else
         {
-          v80 = [v79 unsignedIntValue];
-          v10->_usageFlags = v80;
-          if ((v80 & 0xFFFFFFFA) != 0)
+          unsignedIntValue = [v79 unsignedIntValue];
+          v10->_usageFlags = unsignedIntValue;
+          if ((unsignedIntValue & 0xFFFFFFFA) != 0)
           {
             v91 = MEMORY[0x1E696ABC0];
-            v72 = [v9 friendlyName];
-            v77 = MCErrorArray(@"SCEP_ERROR_INVALID_USAGE_FLAG_P_FIELD", v81, v82, v83, v84, v85, v86, v87, v72);
+            friendlyName = [profileCopy friendlyName];
+            v77 = MCErrorArray(@"SCEP_ERROR_INVALID_USAGE_FLAG_P_FIELD", v81, v82, v83, v84, v85, v86, v87, friendlyName);
             v92 = [v91 MCErrorWithDomain:@"MCSCEPErrorDomain" code:22000 descriptionArray:v77 errorType:@"MCFatalError"];
 
             v73 = 0;
@@ -165,14 +165,14 @@ LABEL_36:
         v71 = v29;
         if (v12)
         {
-          v72 = 0;
+          friendlyName = 0;
           v73 = 0;
           goto LABEL_51;
         }
 
         v90 = v70;
         v95 = 0;
-        v72 = [MCProfile removeOptionalObjectInDictionary:v17 key:@"Retries" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v95];
+        friendlyName = [MCProfile removeOptionalObjectInDictionary:v17 key:@"Retries" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v95];
         v74 = v95;
         if (v74)
         {
@@ -190,17 +190,17 @@ LABEL_51:
           goto LABEL_4;
         }
 
-        if (v72)
+        if (friendlyName)
         {
-          v75 = [v72 unsignedIntValue];
+          unsignedIntValue2 = [friendlyName unsignedIntValue];
         }
 
         else
         {
-          v75 = 3;
+          unsignedIntValue2 = 3;
         }
 
-        v10->_retries = v75;
+        v10->_retries = unsignedIntValue2;
         v94 = 0;
         v76 = v17;
         v77 = [MCProfile removeOptionalObjectInDictionary:v17 key:@"RetryDelay" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v94];
@@ -210,15 +210,15 @@ LABEL_51:
         {
           if (v77)
           {
-            v78 = [v77 unsignedIntValue];
+            unsignedIntValue3 = [v77 unsignedIntValue];
           }
 
           else
           {
-            v78 = 10;
+            unsignedIntValue3 = 10;
           }
 
-          v10->_retryDelay = v78;
+          v10->_retryDelay = unsignedIntValue3;
           v73 = 1;
         }
 
@@ -256,24 +256,24 @@ LABEL_21:
   }
 
   v93 = 0;
-  v11 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"Keysize" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v93];
+  v11 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"Keysize" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v93];
   v12 = v93;
   v10->_keySize = [v11 unsignedIntValue];
 
   if (!v12)
   {
 LABEL_4:
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v13 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v14 = v13;
-        v15 = [(MCPayload *)v10 friendlyName];
+        friendlyName2 = [(MCPayload *)v10 friendlyName];
         *buf = 138543618;
-        v107 = v15;
+        v107 = friendlyName2;
         v108 = 2114;
-        v109 = v8;
+        v109 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v14, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
 
 LABEL_22:
@@ -290,10 +290,10 @@ LABEL_23:
 LABEL_24:
   v47 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
   v48 = v47;
-  if (a5)
+  if (error)
   {
     v49 = v47;
-    *a5 = v48;
+    *error = v48;
   }
 
   v50 = _MCLogObjects;
@@ -302,11 +302,11 @@ LABEL_24:
     v51 = v50;
     v52 = objc_opt_class();
     v53 = v52;
-    v54 = [v48 MCVerboseDescription];
+    mCVerboseDescription = [v48 MCVerboseDescription];
     *buf = 138543618;
     v107 = v52;
     v108 = 2114;
-    v109 = v54;
+    v109 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v51, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
   }
 
@@ -321,19 +321,19 @@ LABEL_29:
 {
   v6.receiver = self;
   v6.super_class = MCSCEPPayload;
-  v3 = [(MCCertificatePayload *)&v6 stubDictionary];
+  stubDictionary = [(MCCertificatePayload *)&v6 stubDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_keySize];
-  [v3 setObject:v4 forKey:@"Keysize"];
+  [stubDictionary setObject:v4 forKey:@"Keysize"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v8.receiver = self;
   v8.super_class = MCSCEPPayload;
-  v3 = [(MCCertificatePayload *)&v8 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCCertificatePayload *)&v8 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_URLString)
   {
@@ -345,12 +345,12 @@ LABEL_29:
     [v4 appendFormat:@"CA Instance : %@\n", self->_CAInstanceName];
   }
 
-  v5 = [(NSData *)self->_CAFingerprint MCHexString];
+  mCHexString = [(NSData *)self->_CAFingerprint MCHexString];
 
-  if (v5)
+  if (mCHexString)
   {
-    v6 = [(NSData *)self->_CAFingerprint MCHexString];
-    [v4 appendFormat:@"Fingerprint : %@\n", v6];
+    mCHexString2 = [(NSData *)self->_CAFingerprint MCHexString];
+    [v4 appendFormat:@"Fingerprint : %@\n", mCHexString2];
   }
 
   if (self->_CACaps)

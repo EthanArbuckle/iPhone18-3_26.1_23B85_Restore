@@ -1,79 +1,79 @@
 @interface ATXInfoTimelineEntryRelevance
-+ (id)relevanceWithScore:(double)a3 duration:(double)a4;
-- (ATXInfoTimelineEntryRelevance)initWithCoder:(id)a3;
-- (ATXInfoTimelineEntryRelevance)initWithScore:(double)a3 duration:(double)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)relevanceWithScore:(double)score duration:(double)duration;
+- (ATXInfoTimelineEntryRelevance)initWithCoder:(id)coder;
+- (ATXInfoTimelineEntryRelevance)initWithScore:(double)score duration:(double)duration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInfoTimelineEntryRelevance
 
-+ (id)relevanceWithScore:(double)a3 duration:(double)a4
++ (id)relevanceWithScore:(double)score duration:(double)duration
 {
-  v4 = [[a1 alloc] initWithScore:a3 duration:a4];
+  v4 = [[self alloc] initWithScore:score duration:duration];
 
   return v4;
 }
 
-- (ATXInfoTimelineEntryRelevance)initWithScore:(double)a3 duration:(double)a4
+- (ATXInfoTimelineEntryRelevance)initWithScore:(double)score duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = ATXInfoTimelineEntryRelevance;
   result = [(ATXInfoTimelineEntryRelevance *)&v7 init];
   if (result)
   {
-    result->_score = a3;
-    result->_duration = a4;
+    result->_score = score;
+    result->_duration = duration;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   score = self->_score;
-  v5 = a3;
-  [v5 encodeDouble:@"score" forKey:score];
-  [v5 encodeDouble:@"duration" forKey:self->_duration];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"score" forKey:score];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
 }
 
-- (ATXInfoTimelineEntryRelevance)initWithCoder:(id)a3
+- (ATXInfoTimelineEntryRelevance)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"score"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"score"];
   v6 = v5;
-  v7 = [v4 error];
+  error = [coderCopy error];
 
-  if (v7)
+  if (error)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [ATXInfoTimelineEntryRelevance initWithCoder:v4];
+      [ATXInfoTimelineEntryRelevance initWithCoder:coderCopy];
     }
   }
 
   else
   {
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v9 = v8;
-    v10 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (!v10)
+    if (!error2)
     {
       self = [(ATXInfoTimelineEntryRelevance *)self initWithScore:v6 duration:v9];
-      v11 = self;
+      selfCopy = self;
       goto LABEL_8;
     }
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [ATXInfoTimelineEntryRelevance initWithCoder:v4];
+      [ATXInfoTimelineEntryRelevance initWithCoder:coderCopy];
     }
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)initWithCoder:(void *)a1 .cold.1(void *a1)

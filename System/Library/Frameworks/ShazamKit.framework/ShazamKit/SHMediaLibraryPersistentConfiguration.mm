@@ -1,7 +1,7 @@
 @interface SHMediaLibraryPersistentConfiguration
 + (NSURL)managedObjectModelURL;
 + (id)applicationSupportDirectory;
-+ (id)persistentStoreDescriptionForStoreType:(id)a3;
++ (id)persistentStoreDescriptionForStoreType:(id)type;
 + (id)persistentStoreURL;
 @end
 
@@ -42,20 +42,20 @@
 
 + (id)persistentStoreURL
 {
-  v2 = [a1 applicationSupportDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.shazamd" isDirectory:1];
+  applicationSupportDirectory = [self applicationSupportDirectory];
+  v3 = [applicationSupportDirectory URLByAppendingPathComponent:@"com.apple.shazamd" isDirectory:1];
 
-  v4 = [v3 path];
+  path = [v3 path];
 
-  if (!v4)
+  if (!path)
   {
     v13 = 0;
     goto LABEL_13;
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:0];
+  path2 = [v3 path];
+  v7 = [v5 fileExistsAtPath:path2 isDirectory:0];
 
   if ((v7 & 1) == 0)
   {
@@ -67,9 +67,9 @@
     }
 
     v9 = +[NSFileManager defaultManager];
-    v10 = [v3 path];
+    path3 = [v3 path];
     v16 = 0;
-    v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v16];
+    v11 = [v9 createDirectoryAtPath:path3 withIntermediateDirectories:1 attributes:0 error:&v16];
     v12 = v16;
 
     if ((v11 & 1) == 0)
@@ -96,22 +96,22 @@ LABEL_13:
   return v13;
 }
 
-+ (id)persistentStoreDescriptionForStoreType:(id)a3
++ (id)persistentStoreDescriptionForStoreType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_opt_new();
-  [v5 setType:v4];
+  [v5 setType:typeCopy];
   [v5 setShouldMigrateStoreAutomatically:1];
   [v5 setShouldInferMappingModelAutomatically:1];
   [v5 setUsesPersistentHistoryTracking:1];
-  v6 = [v4 isEqualToString:NSInMemoryStoreType];
+  v6 = [typeCopy isEqualToString:NSInMemoryStoreType];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [a1 persistentStoreURL];
-    if (v7)
+    persistentStoreURL = [self persistentStoreURL];
+    if (persistentStoreURL)
     {
-      [v5 setURL:v7];
+      [v5 setURL:persistentStoreURL];
     }
 
     else

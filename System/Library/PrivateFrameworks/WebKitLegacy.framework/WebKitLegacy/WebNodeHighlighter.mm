@@ -1,5 +1,5 @@
 @interface WebNodeHighlighter
-- (WebNodeHighlighter)initWithInspectedWebView:(id)a3;
+- (WebNodeHighlighter)initWithInspectedWebView:(id)view;
 - (void)dealloc;
 - (void)hideHighlight;
 - (void)highlight;
@@ -7,14 +7,14 @@
 
 @implementation WebNodeHighlighter
 
-- (WebNodeHighlighter)initWithInspectedWebView:(id)a3
+- (WebNodeHighlighter)initWithInspectedWebView:(id)view
 {
   v5.receiver = self;
   v5.super_class = WebNodeHighlighter;
   result = [(WebNodeHighlighter *)&v5 init];
   if (result)
   {
-    result->_inspectedWebView = a3;
+    result->_inspectedWebView = view;
   }
 
   return result;

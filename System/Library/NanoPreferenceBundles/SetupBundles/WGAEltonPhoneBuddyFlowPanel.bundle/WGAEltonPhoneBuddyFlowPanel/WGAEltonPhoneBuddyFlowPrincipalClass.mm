@@ -4,7 +4,7 @@
 - (WGAEltonPhoneBuddyFlowPrincipalClass)init;
 - (id)_phoneBuddyFlowPanelLog;
 - (id)viewController;
-- (void)miniFlowStepComplete:(id)a3;
+- (void)miniFlowStepComplete:(id)complete;
 @end
 
 @implementation WGAEltonPhoneBuddyFlowPrincipalClass
@@ -17,8 +17,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(WGAEltonPhoneBuddyFlowPrincipalClass *)v2 _pairedDeviceSupportsFlick];
-    if (v4)
+    _pairedDeviceSupportsFlick = [(WGAEltonPhoneBuddyFlowPrincipalClass *)v2 _pairedDeviceSupportsFlick];
+    if (_pairedDeviceSupportsFlick)
     {
       v5 = &OBJC_IVAR___WGAEltonPhoneBuddyFlowPrincipalClass__gesturesViewController;
     }
@@ -29,7 +29,7 @@
     }
 
     v6 = &off_C190;
-    if (!v4)
+    if (!_pairedDeviceSupportsFlick)
     {
       v6 = off_C188;
     }
@@ -47,9 +47,9 @@
 
 - (id)viewController
 {
-  v3 = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self _pairedDeviceSupportsFlick];
+  _pairedDeviceSupportsFlick = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self _pairedDeviceSupportsFlick];
   v4 = &OBJC_IVAR___WGAEltonPhoneBuddyFlowPrincipalClass__firstController;
-  if (v3)
+  if (_pairedDeviceSupportsFlick)
   {
     v4 = &OBJC_IVAR___WGAEltonPhoneBuddyFlowPrincipalClass__gesturesViewController;
   }
@@ -59,10 +59,10 @@
   return v5;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (BOOL)_pairedDeviceSupportsFlick
@@ -70,20 +70,20 @@
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v5 = [v3 getDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
   v7 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   v9 = _os_feature_enabled_impl();
-  v10 = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WGAEltonPhoneBuddyFlowPrincipalClass *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109376;
     v12[1] = v8;
     v13 = 1024;
     v14 = v9;
-    _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel principal view controller -- deviceIsNapiliAligned:%d, flickFeatureEnabled: %d", v12, 0xEu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel principal view controller -- deviceIsNapiliAligned:%d, flickFeatureEnabled: %d", v12, 0xEu);
   }
 
   return v8 & v9;
@@ -94,10 +94,10 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v4 = [v2 getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   v6 = [[NSUUID alloc] initWithUUIDString:@"0E581E21-36BA-4770-9408-0467585E8495"];
-  LOBYTE(v3) = [v5 supportsCapability:v6];
+  LOBYTE(v3) = [firstObject supportsCapability:v6];
 
   LOBYTE(v6) = BPSDeviceHasCapabilityForString() ^ 1;
   return v3 & v6;

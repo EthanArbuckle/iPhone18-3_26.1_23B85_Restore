@@ -31,10 +31,10 @@
 
 - (BOOL)isResidentCapable
 {
-  v2 = [objc_opt_self() deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  deviceCapabilities = [objc_opt_self() deviceCapabilities];
+  isResidentCapable = [deviceCapabilities isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 - (HMDHAPAccessoryDefaultDataSource)init

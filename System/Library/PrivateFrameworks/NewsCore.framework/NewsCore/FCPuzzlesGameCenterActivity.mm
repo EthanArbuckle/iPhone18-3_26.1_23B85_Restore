@@ -1,12 +1,12 @@
 @interface FCPuzzlesGameCenterActivity
-- (FCPuzzlesGameCenterActivity)initWithDictionary:(id)a3;
+- (FCPuzzlesGameCenterActivity)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCPuzzlesGameCenterActivity
 
-- (FCPuzzlesGameCenterActivity)initWithDictionary:(id)a3
+- (FCPuzzlesGameCenterActivity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FCPuzzlesGameCenterActivity;
   v5 = [(FCPuzzlesGameCenterActivity *)&v10 init];
@@ -15,21 +15,21 @@
     goto LABEL_4;
   }
 
-  v6 = FCAppConfigurationStringValue(v4, @"identifier", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"identifier", 0);
   [(FCPuzzlesGameCenterActivity *)v5 setIdentifier:v6];
 
-  v7 = [(FCPuzzlesGameCenterActivity *)v5 identifier];
+  identifier = [(FCPuzzlesGameCenterActivity *)v5 identifier];
 
-  if (v7)
+  if (identifier)
   {
-    v8 = FCAppConfigurationStringValue(v4, @"puzzleTypeID", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"puzzleTypeID", 0);
     [(FCPuzzlesGameCenterActivity *)v5 setPuzzleTypeID:v8];
 
 LABEL_4:
-    v7 = v5;
+    identifier = v5;
   }
 
-  return v7;
+  return identifier;
 }
 
 @end

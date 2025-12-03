@@ -1,28 +1,28 @@
 @interface PKTextFieldCollectionViewListCell
-- (BOOL)textFieldShouldReturn:(id)a3 forContentView:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return forContentView:(id)view;
 - (id)textFieldText;
 - (void)beginEditing;
 - (void)endEditing;
 - (void)prepareForReuse;
 - (void)resetTextFieldTextFromLabel;
-- (void)setToolbarItems:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3 forContentView:(id)a4;
-- (void)textFieldDidChangeSelection:(id)a3 forContentView:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3 forContentView:(id)a4;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setToolbarItems:(id)items;
+- (void)textFieldDidBeginEditing:(id)editing forContentView:(id)view;
+- (void)textFieldDidChangeSelection:(id)selection forContentView:(id)view;
+- (void)textFieldDidEndEditing:(id)editing forContentView:(id)view;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation PKTextFieldCollectionViewListCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [(PKTextFieldCollectionViewListCell *)self contentConfiguration];
-  v6 = [v5 copy];
-  v8 = [v6 updatedConfigurationForState:v4];
+  stateCopy = state;
+  contentConfiguration = [(PKTextFieldCollectionViewListCell *)self contentConfiguration];
+  v6 = [contentConfiguration copy];
+  v8 = [v6 updatedConfigurationForState:stateCopy];
 
-  v7 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v7 setDelegate:self];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView setDelegate:self];
 
   [(PKTextFieldCollectionViewListCell *)self setContentConfiguration:v8];
 }
@@ -32,49 +32,49 @@
   v4.receiver = self;
   v4.super_class = PKTextFieldCollectionViewListCell;
   [(PKTextFieldCollectionViewListCell *)&v4 prepareForReuse];
-  v3 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v3 prepareForReuse];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView prepareForReuse];
 }
 
 - (id)textFieldText
 {
-  v2 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  v3 = [v2 textFieldText];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  textFieldText = [_textFieldContentView textFieldText];
 
-  return v3;
+  return textFieldText;
 }
 
 - (void)beginEditing
 {
-  v2 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v2 beginEditing];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView beginEditing];
 }
 
 - (void)endEditing
 {
-  v2 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v2 endEditing];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView endEditing];
 }
 
 - (void)resetTextFieldTextFromLabel
 {
-  v2 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v2 resetTextFieldTextFromLabel];
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView resetTextFieldTextFromLabel];
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
-  [v5 setToolbarItems:v4];
+  itemsCopy = items;
+  _textFieldContentView = [(PKTextFieldCollectionViewListCell *)self _textFieldContentView];
+  [_textFieldContentView setToolbarItems:itemsCopy];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3 forContentView:(id)a4
+- (BOOL)textFieldShouldReturn:(id)return forContentView:(id)view
 {
-  v5 = a3;
+  returnCopy = return;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldShouldReturn:v5 forListCell:self];
+    v6 = [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldShouldReturn:returnCopy forListCell:self];
   }
 
   else
@@ -85,30 +85,30 @@
   return v6;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3 forContentView:(id)a4
+- (void)textFieldDidBeginEditing:(id)editing forContentView:(id)view
 {
-  v5 = a3;
+  editingCopy = editing;
   if (objc_opt_respondsToSelector())
   {
-    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidBeginEditing:v5 forListCell:self];
+    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidBeginEditing:editingCopy forListCell:self];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3 forContentView:(id)a4
+- (void)textFieldDidEndEditing:(id)editing forContentView:(id)view
 {
-  v5 = a3;
+  editingCopy = editing;
   if (objc_opt_respondsToSelector())
   {
-    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidEndEditing:v5 forListCell:self];
+    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidEndEditing:editingCopy forListCell:self];
   }
 }
 
-- (void)textFieldDidChangeSelection:(id)a3 forContentView:(id)a4
+- (void)textFieldDidChangeSelection:(id)selection forContentView:(id)view
 {
-  v5 = a3;
+  selectionCopy = selection;
   if (objc_opt_respondsToSelector())
   {
-    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidChangeSelection:v5 forListCell:self];
+    [(PKTextFieldCollectionViewListCellDelegate *)self->_delegate textFieldDidChangeSelection:selectionCopy forListCell:self];
   }
 }
 

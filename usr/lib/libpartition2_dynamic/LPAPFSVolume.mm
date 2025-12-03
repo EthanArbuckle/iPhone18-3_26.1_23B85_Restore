@@ -1,33 +1,33 @@
 @interface LPAPFSVolume
-+ (const)roleMetadataForRole:(int)a3;
-+ (id)defaultVolumeNameGivenRole:(int)a3;
++ (const)roleMetadataForRole:(int)role;
++ (id)defaultVolumeNameGivenRole:(int)role;
 + (id)supportedContentTypes;
-+ (void)_loadMountPointTableForMode:(int)a3;
-+ (void)enumerateRoleMetadataUsingBlock:(id)a3;
++ (void)_loadMountPointTableForMode:(int)mode;
++ (void)enumerateRoleMetadataUsingBlock:(id)block;
 + (void)initialize;
-- (BOOL)_pathIsTemporaryMount:(id)a3;
-- (BOOL)createSnapshot:(id)a3 error:(id *)a4;
-- (BOOL)deleteSnapshots:(id)a3 waitForDeletionFor:(double)a4 error:(id *)a5;
-- (BOOL)deleteVolumeWithError:(id *)a3;
-- (BOOL)eraseVolumeWithError:(id *)a3;
+- (BOOL)_pathIsTemporaryMount:(id)mount;
+- (BOOL)createSnapshot:(id)snapshot error:(id *)error;
+- (BOOL)deleteSnapshots:(id)snapshots waitForDeletionFor:(double)for error:(id *)error;
+- (BOOL)deleteVolumeWithError:(id *)error;
+- (BOOL)eraseVolumeWithError:(id *)error;
 - (BOOL)isEncrypted;
 - (BOOL)isFilevaultEncrypted;
 - (BOOL)isMounted;
-- (BOOL)mountAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)mountWithError:(id *)a3;
-- (BOOL)renameSnapshot:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)revertToSnapshot:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)rootToSnapshot:(id)a3 error:(id *)a4;
-- (BOOL)setRole:(int)a3 withError:(id *)a4;
-- (BOOL)unmountAllWithError:(id *)a3;
-- (BOOL)unmountWithOptions:(id)a3 error:(id *)a4;
-- (id)_createTemporaryMountPointWithError:(id *)a3;
+- (BOOL)mountAtPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)mountWithError:(id *)error;
+- (BOOL)renameSnapshot:(id)snapshot to:(id)to error:(id *)error;
+- (BOOL)revertToSnapshot:(id)snapshot options:(id)options error:(id *)error;
+- (BOOL)rootToSnapshot:(id)snapshot error:(id *)error;
+- (BOOL)setRole:(int)role withError:(id *)error;
+- (BOOL)unmountAllWithError:(id *)error;
+- (BOOL)unmountWithOptions:(id)options error:(id *)error;
+- (id)_createTemporaryMountPointWithError:(id *)error;
 - (id)container;
-- (id)mountAtTemporaryPathWithOptions:(id)a3 error:(id *)a4;
+- (id)mountAtTemporaryPathWithOptions:(id)options error:(id *)error;
 - (id)pairedVolume;
-- (id)snapshotInfoWithError:(id *)a3;
+- (id)snapshotInfoWithError:(id *)error;
 - (id)snapshotMountPoints;
-- (id)snapshotsWithError:(id *)a3;
+- (id)snapshotsWithError:(id *)error;
 - (id)volumeGroupUUID;
 - (int)role;
 @end
@@ -36,7 +36,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (_is_running_in_ramdisk_onceToken != -1)
     {
@@ -52,7 +52,7 @@
 + (id)supportedContentTypes
 {
   v7[1] = *MEMORY[0x29EDCA608];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[0] = LPAPFSVolumeMediaTypeUUID[0];
     v3 = [MEMORY[0x29EDB8D80] arrayWithObjects:v7 count:1];
@@ -60,7 +60,7 @@
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___LPAPFSVolume;
     v3 = objc_msgSendSuper2(&v6, sel_supportedContentTypes);
   }
@@ -70,9 +70,9 @@
   return v3;
 }
 
-+ (void)_loadMountPointTableForMode:(int)a3
++ (void)_loadMountPointTableForMode:(int)mode
 {
-  v3 = (&kLPDefaultMountPointTable + 16 * a3);
+  v3 = (&kLPDefaultMountPointTable + 16 * mode);
   v4 = *v3;
   v5 = *(v3 + 1);
   v6 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:v4];
@@ -99,13 +99,13 @@
   sMountPointLookupTable = v12;
 }
 
-+ (void)enumerateRoleMetadataUsingBlock:(id)a3
++ (void)enumerateRoleMetadataUsingBlock:(id)block
 {
   v4 = &enumerateRoleMetadataUsingBlock__sRoleMetadata;
   v5 = 17;
   do
   {
-    (*(a3 + 2))(a3, v4);
+    (*(block + 2))(block, v4);
     v4 += 24;
     --v5;
   }
@@ -113,7 +113,7 @@
   while (v5);
 }
 
-+ (const)roleMetadataForRole:(int)a3
++ (const)roleMetadataForRole:(int)role
 {
   v7 = 0;
   v8 = &v7;
@@ -123,9 +123,9 @@
   v5[1] = 3254779904;
   v5[2] = __36__LPAPFSVolume_roleMetadataForRole___block_invoke;
   v5[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v6 = a3;
+  roleCopy = role;
   v5[4] = &v7;
-  [a1 enumerateRoleMetadataUsingBlock:v5];
+  [self enumerateRoleMetadataUsingBlock:v5];
   v3 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v3;
@@ -141,7 +141,7 @@ uint64_t __36__LPAPFSVolume_roleMetadataForRole___block_invoke(uint64_t result, 
   return result;
 }
 
-+ (id)defaultVolumeNameGivenRole:(int)a3
++ (id)defaultVolumeNameGivenRole:(int)role
 {
   v7 = 0;
   v8 = &v7;
@@ -153,9 +153,9 @@ uint64_t __36__LPAPFSVolume_roleMetadataForRole___block_invoke(uint64_t result, 
   v5[1] = 3254779904;
   v5[2] = __43__LPAPFSVolume_defaultVolumeNameGivenRole___block_invoke;
   v5[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v6 = a3;
+  roleCopy = role;
   v5[4] = &v7;
-  [a1 enumerateRoleMetadataUsingBlock:v5];
+  [self enumerateRoleMetadataUsingBlock:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -176,7 +176,7 @@ void __43__LPAPFSVolume_defaultVolumeNameGivenRole___block_invoke(uint64_t a1, u
   }
 }
 
-- (BOOL)setRole:(int)a3 withError:(id *)a4
+- (BOOL)setRole:(int)role withError:(id *)error
 {
   v13[0] = 0;
   v13[1] = v13;
@@ -187,16 +187,16 @@ void __43__LPAPFSVolume_defaultVolumeNameGivenRole___block_invoke(uint64_t a1, u
   v11[1] = 3254779904;
   v11[2] = __34__LPAPFSVolume_setRole_withError___block_invoke;
   v11[3] = &__block_descriptor_44_e8_32r_e17_v16__0r____iS___8l;
-  v12 = a3;
+  roleCopy = role;
   v11[4] = v13;
   [v7 enumerateRoleMetadataUsingBlock:v11];
-  v8 = [(LPMedia *)self BSDName];
-  [v8 fileSystemRepresentation];
+  bSDName = [(LPMedia *)self BSDName];
+  [bSDName fileSystemRepresentation];
   v9 = APFSVolumeRole();
 
-  if (a4 && v9)
+  if (error && v9)
   {
-    *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v9 userInfo:0];
+    *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v9 userInfo:0];
   }
 
   _Block_object_dispose(v13, 8);
@@ -221,9 +221,9 @@ uint64_t __34__LPAPFSVolume_setRole_withError___block_invoke(uint64_t result, ui
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v3 = [(LPMedia *)self BSDName];
-  v4 = v3;
-  [v3 fileSystemRepresentation];
+  bSDName = [(LPMedia *)self BSDName];
+  v4 = bSDName;
+  [bSDName fileSystemRepresentation];
   v5 = APFSVolumeRole();
 
   if (v5)
@@ -252,13 +252,13 @@ uint64_t __34__LPAPFSVolume_setRole_withError___block_invoke(uint64_t result, ui
   v8 = *(v20 + 6);
   if (!v8)
   {
-    v9 = [(LPMedia *)self name];
+    name = [(LPMedia *)self name];
     v10 = objc_opt_class();
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3254779904;
     v14[2] = __20__LPAPFSVolume_role__block_invoke_122;
     v14[3] = &__block_descriptor_48_e8_32s40r_e17_v16__0r____iS___8l;
-    v11 = v9;
+    v11 = name;
     v15 = v11;
     v16 = &v19;
     [v10 enumerateRoleMetadataUsingBlock:v14];
@@ -300,9 +300,9 @@ void __20__LPAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 {
   v8 = *MEMORY[0x29EDCA608];
   v2 = [(LPMedia *)self getStringPropertyWithName:@"VolGroupUUID"];
-  v3 = [v2 UTF8String];
+  uTF8String = [v2 UTF8String];
   memset(uu, 0, sizeof(uu));
-  if (!v3 || uuid_parse(v3, uu) || uuid_is_null(uu))
+  if (!uTF8String || uuid_parse(uTF8String, uu) || uuid_is_null(uu))
   {
     v4 = 0;
   }
@@ -381,8 +381,8 @@ void __20__LPAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (BOOL)isEncrypted
 {
-  v2 = [(LPMedia *)self devNodePath];
-  [v2 fileSystemRepresentation];
+  devNodePath = [(LPMedia *)self devNodePath];
+  [devNodePath fileSystemRepresentation];
   APFSVolumeGetVEKState();
 
   return 0;
@@ -390,8 +390,8 @@ void __20__LPAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (BOOL)isFilevaultEncrypted
 {
-  v2 = [(LPMedia *)self devNodePath];
-  [v2 fileSystemRepresentation];
+  devNodePath = [(LPMedia *)self devNodePath];
+  [devNodePath fileSystemRepresentation];
   APFSVolumeGetVEKState();
 
   return 0;
@@ -399,14 +399,14 @@ void __20__LPAPFSVolume_role__block_invoke_122(uint64_t a1, uint64_t a2)
 
 - (id)pairedVolume
 {
-  v3 = [(LPAPFSVolume *)self role];
-  if (v3 == 1)
+  role = [(LPAPFSVolume *)self role];
+  if (role == 1)
   {
     v4 = 3;
     goto LABEL_5;
   }
 
-  if (v3 == 3)
+  if (role == 3)
   {
     v4 = 1;
 LABEL_5:
@@ -423,10 +423,10 @@ LABEL_7:
 - (id)snapshotMountPoints
 {
   v24[2] = *MEMORY[0x29EDCA608];
-  v2 = [(LPMedia *)self devNodePath];
-  if (v2)
+  devNodePath = [(LPMedia *)self devNodePath];
+  if (devNodePath)
   {
-    v3 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"@%@", v2];
+    v3 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"@%@", devNodePath];
     v22 = 0;
     v4 = getmntinfo_r_np(&v22, 0);
     v5 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:13];
@@ -434,7 +434,7 @@ LABEL_7:
     if (v4 >= 1)
     {
       v20 = v6;
-      v21 = v2;
+      v21 = devNodePath;
       v7 = 0;
       v8 = 0;
       v9 = v4;
@@ -446,15 +446,15 @@ LABEL_7:
         {
           v12 = [v11 substringToIndex:{objc_msgSend(v11, "rangeOfString:options:", @"@", 4)}];
 
-          v13 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v22 + v10 - 1024];
+          1024 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v22 + v10 - 1024];
           v23[0] = LPAPFSVolumeSnapshotMountPointKeyName;
           v23[1] = LPAPFSVolumeSnapshotMountPointKeyMountPoint;
           v24[0] = v12;
-          v24[1] = v13;
+          v24[1] = 1024;
           v14 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
           [v5 addObject:v14];
 
-          v8 = v13;
+          v8 = 1024;
           v7 = v12;
         }
 
@@ -465,7 +465,7 @@ LABEL_7:
       while (v9);
 
       v6 = v20;
-      v2 = v21;
+      devNodePath = v21;
     }
 
     objc_autoreleasePoolPop(v6);
@@ -504,32 +504,32 @@ LABEL_7:
 
 - (BOOL)isMounted
 {
-  v3 = [(LPMedia *)self mountPoint];
-  if (v3)
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (mountPoint)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(LPAPFSVolume *)self snapshotMountPoints];
-    v4 = v5 != 0;
+    snapshotMountPoints = [(LPAPFSVolume *)self snapshotMountPoints];
+    v4 = snapshotMountPoints != 0;
   }
 
   return v4;
 }
 
-- (BOOL)eraseVolumeWithError:(id *)a3
+- (BOOL)eraseVolumeWithError:(id *)error
 {
   v11 = *MEMORY[0x29EDCA608];
-  v4 = [(LPMedia *)self mountPoint];
-  v5 = v4;
-  if (v4)
+  mountPoint = [(LPMedia *)self mountPoint];
+  v5 = mountPoint;
+  if (mountPoint)
   {
-    v6 = _lp2_delete_directory_contents([v4 fileSystemRepresentation]);
-    if (a3 && v6)
+    v6 = _lp2_delete_directory_contents([mountPoint fileSystemRepresentation]);
+    if (error && v6)
     {
-      *a3 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v6 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v6 userInfo:0];
     }
 
     v7 = *__error() == 0;
@@ -537,9 +537,9 @@ LABEL_7:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -554,11 +554,11 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)mountWithError:(id *)a3
+- (BOOL)mountWithError:(id *)error
 {
-  v5 = [(LPMedia *)self mountPoint];
+  mountPoint = [(LPMedia *)self mountPoint];
 
-  if (v5)
+  if (mountPoint)
   {
     return 1;
   }
@@ -566,22 +566,22 @@ LABEL_7:
   v7 = [LPAPFSVolume defaultMountPointGivenRole:[(LPAPFSVolume *)self role]];
   if (v7 && (v8 = [LPMedia mediaForPath:v7], v8, !v8))
   {
-    v6 = [(LPAPFSVolume *)self mountAtPath:v7 error:a3];
+    v6 = [(LPAPFSVolume *)self mountAtPath:v7 error:error];
   }
 
   else
   {
-    v9 = [(LPAPFSVolume *)self mountAtTemporaryPathWithError:a3];
+    v9 = [(LPAPFSVolume *)self mountAtTemporaryPathWithError:error];
     v6 = v9 != 0;
   }
 
   return v6;
 }
 
-- (BOOL)_pathIsTemporaryMount:(id)a3
+- (BOOL)_pathIsTemporaryMount:(id)mount
 {
-  v3 = a3;
-  if ([v3 containsString:@"tmp-mount-"])
+  mountCopy = mount;
+  if ([mountCopy containsString:@"tmp-mount-"])
   {
     if (_is_running_in_ramdisk_onceToken != -1)
     {
@@ -598,11 +598,11 @@ LABEL_7:
       v4 = @"/tmp/";
     }
 
-    v5 = [(__CFString *)v4 stringByResolvingSymlinksInPath];
-    v6 = [v3 stringByResolvingSymlinksInPath];
-    v7 = [v6 stringByDeletingLastPathComponent];
+    stringByResolvingSymlinksInPath = [(__CFString *)v4 stringByResolvingSymlinksInPath];
+    stringByResolvingSymlinksInPath2 = [mountCopy stringByResolvingSymlinksInPath];
+    stringByDeletingLastPathComponent = [stringByResolvingSymlinksInPath2 stringByDeletingLastPathComponent];
 
-    v8 = [v7 isEqualToString:v5];
+    v8 = [stringByDeletingLastPathComponent isEqualToString:stringByResolvingSymlinksInPath];
   }
 
   else
@@ -613,7 +613,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)_createTemporaryMountPointWithError:(id *)a3
+- (id)_createTemporaryMountPointWithError:(id *)error
 {
   v11 = *MEMORY[0x29EDCA608];
   if (_is_running_in_ramdisk_onceToken != -1)
@@ -636,12 +636,12 @@ LABEL_7:
     *v5 = 136315138;
     *(v5 + 4) = v10;
     _LPLogPack(1);
-    if (*a3)
+    if (*error)
     {
       v6 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
       v7 = v6;
       v4 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -655,11 +655,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)mountAtTemporaryPathWithOptions:(id)a3 error:(id *)a4
+- (id)mountAtTemporaryPathWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LPAPFSVolume *)self _createTemporaryMountPointWithError:a4];
-  if (v7 && [(LPAPFSVolume *)self mountAtPath:v7 options:v6 error:a4])
+  optionsCopy = options;
+  v7 = [(LPAPFSVolume *)self _createTemporaryMountPointWithError:error];
+  if (v7 && [(LPAPFSVolume *)self mountAtPath:v7 options:optionsCopy error:error])
   {
     v8 = v7;
   }
@@ -672,19 +672,19 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)mountAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)mountAtPath:(id)path options:(id)options error:(id *)error
 {
   v73[1] = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPMedia *)self devNodePath];
-  if (v10)
+  pathCopy = path;
+  optionsCopy = options;
+  devNodePath = [(LPMedia *)self devNodePath];
+  if (devNodePath)
   {
-    v11 = [(LPMedia *)self mountPoint];
-    v12 = [v11 isEqualToString:v8];
-    if (v9 || !v12)
+    mountPoint = [(LPMedia *)self mountPoint];
+    v12 = [mountPoint isEqualToString:pathCopy];
+    if (optionsCopy || !v12)
     {
-      if (!v11)
+      if (!mountPoint)
       {
         goto LABEL_10;
       }
@@ -692,42 +692,42 @@ LABEL_7:
       _os_log_pack_size();
       v18 = _os_log_pack_fill();
       *v18 = 138412546;
-      *(v18 + 4) = v11;
+      *(v18 + 4) = mountPoint;
       *(v18 + 12) = 2112;
-      *(v18 + 14) = v8;
+      *(v18 + 14) = pathCopy;
       _LPLogPack(2);
       v14 = 0;
-      if ([(LPAPFSVolume *)self unmountWithError:a5])
+      if ([(LPAPFSVolume *)self unmountWithError:error])
       {
 LABEL_10:
-        v19 = mkpath_np([v8 fileSystemRepresentation], 0x1FFu);
+        v19 = mkpath_np([pathCopy fileSystemRepresentation], 0x1FFu);
         if (v19 && v19 != 17)
         {
-          v45 = v9;
-          if (a5)
+          v45 = optionsCopy;
+          if (error)
           {
             v46 = MEMORY[0x29EDB9FA0];
             v47 = *MEMORY[0x29EDB9EF8];
             v48 = v19;
             v72 = *MEMORY[0x29EDB9E60];
-            v73[0] = v8;
+            v73[0] = pathCopy;
             v49 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
-            *a5 = [v46 errorWithDomain:v47 code:v48 userInfo:v49];
+            *error = [v46 errorWithDomain:v47 code:v48 userInfo:v49];
           }
 
           _os_log_pack_size();
           v50 = _os_log_pack_fill();
           v51 = [(LPMedia *)self description];
-          v52 = [v51 UTF8String];
-          v53 = [v8 fileSystemRepresentation];
+          uTF8String = [v51 UTF8String];
+          fileSystemRepresentation = [pathCopy fileSystemRepresentation];
           *v50 = 136380931;
-          *(v50 + 4) = v52;
+          *(v50 + 4) = uTF8String;
           *(v50 + 12) = 2081;
-          *(v50 + 14) = v53;
+          *(v50 + 14) = fileSystemRepresentation;
 
           _LPLogPack(1);
           v14 = 0;
-          v9 = v45;
+          optionsCopy = v45;
         }
 
         else
@@ -738,7 +738,7 @@ LABEL_10:
           v71 = 0;
           v66 = xmmword_29EF6BA18;
           v67 = unk_29EF6BA28;
-          v20 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionReadOnly];
+          v20 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionReadOnly];
           v21 = v20;
           v22 = MEMORY[0x29EDB8EA8];
           if (!v20)
@@ -761,7 +761,7 @@ LABEL_10:
             v24 = 1;
           }
 
-          v25 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionNoBrowse];
+          v25 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionNoBrowse];
           v26 = v25;
           if (!v25)
           {
@@ -779,7 +779,7 @@ LABEL_10:
             *(&v66 + v28) = "nobrowse";
           }
 
-          v29 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionNoFirmlinks];
+          v29 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionNoFirmlinks];
           v30 = v29;
           if (!v29)
           {
@@ -794,10 +794,10 @@ LABEL_10:
             *(&v66 + v24++) = "-n";
           }
 
-          v58 = a5;
-          v32 = [v9 objectForKeyedSubscript:LPAPFSVolumeMountOptionSnapshotName];
+          errorCopy = error;
+          v32 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeMountOptionSnapshotName];
           v57 = [v32 length];
-          v63 = v9;
+          v63 = optionsCopy;
           v59 = v32;
           if (v57)
           {
@@ -807,8 +807,8 @@ LABEL_10:
             *(&v66 + v33) = [v32 fileSystemRepresentation];
           }
 
-          *(&v66 + v24) = [v10 fileSystemRepresentation];
-          *(&v66 + v24 + 1) = [v8 fileSystemRepresentation];
+          *(&v66 + v24) = [devNodePath fileSystemRepresentation];
+          *(&v66 + v24 + 1) = [pathCopy fileSystemRepresentation];
           v34 = _execForLibpartition(&v66);
           if (v34 == 75)
           {
@@ -818,7 +818,7 @@ LABEL_10:
             {
               v36 = _os_log_pack_fill();
               *v36 = 138412802;
-              *(v36 + 4) = v10;
+              *(v36 + 4) = devNodePath;
               *(v36 + 12) = 1024;
               *(v36 + 14) = 75;
               *(v36 + 18) = 1024;
@@ -838,7 +838,7 @@ LABEL_10:
           v14 = v34 == 0;
           if (v34)
           {
-            if (v58)
+            if (errorCopy)
             {
               v38 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"mount_apfs returned : %d", v34];
               v39 = MEMORY[0x29EDB9FA0];
@@ -849,17 +849,17 @@ LABEL_10:
               v65[0] = @"Mount failed";
               v65[1] = v38;
               v42 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v65 forKeys:v64 count:2];
-              *v58 = [v39 errorWithDomain:v40 code:22 userInfo:v42];
+              *errorCopy = [v39 errorWithDomain:v40 code:22 userInfo:v42];
             }
 
             _os_log_pack_size();
             v43 = _os_log_pack_fill();
             *v43 = 138412546;
-            *(v43 + 4) = v10;
+            *(v43 + 4) = devNodePath;
             *(v43 + 12) = 1024;
             *(v43 + 14) = v34;
             _LPLogPack(1);
-            v9 = v63;
+            optionsCopy = v63;
             v44 = v59;
           }
 
@@ -871,19 +871,19 @@ LABEL_10:
             if (v57)
             {
               *v54 = 138412803;
-              *(v54 + 4) = v10;
+              *(v54 + 4) = devNodePath;
               *(v54 + 12) = 2113;
               *(v54 + 14) = v32;
               *(v54 + 22) = 2113;
-              *(v54 + 24) = v8;
+              *(v54 + 24) = pathCopy;
             }
 
             else
             {
               *v54 = 138412547;
-              *(v54 + 4) = v10;
+              *(v54 + 4) = devNodePath;
               *(v54 + 12) = 2113;
-              *(v54 + 14) = v8;
+              *(v54 + 14) = pathCopy;
             }
 
             _LPLogPack(2);
@@ -897,7 +897,7 @@ LABEL_10:
       _os_log_pack_size();
       v13 = _os_log_pack_fill();
       *v13 = 138412290;
-      *(v13 + 4) = v8;
+      *(v13 + 4) = pathCopy;
       _LPLogPack(2);
       v14 = 1;
     }
@@ -905,17 +905,17 @@ LABEL_10:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     _os_log_pack_size();
     v15 = _os_log_pack_fill();
     v16 = [(LPMedia *)self description];
-    v17 = [v16 UTF8String];
+    uTF8String2 = [v16 UTF8String];
     *v15 = 136315138;
-    *(v15 + 4) = v17;
+    *(v15 + 4) = uTF8String2;
 
     _LPLogPack(1);
     v14 = 0;
@@ -925,15 +925,15 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)unmountWithOptions:(id)a3 error:(id *)a4
+- (BOOL)unmountWithOptions:(id)options error:(id *)error
 {
   v87 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  optionsCopy = options;
   v62 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:1];
-  v6 = [v5 objectForKey:LPAPFSVolumeUnmountOptionAll];
-  v7 = [v6 BOOLValue];
+  v6 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionAll];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKey:LPAPFSVolumeUnmountOptionSnapshotName];
+  v8 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionSnapshotName];
   if (v8)
   {
     v9 = 0;
@@ -941,37 +941,37 @@ LABEL_10:
 
   else
   {
-    v9 = v7 == 0;
+    v9 = bOOLValue == 0;
   }
 
-  v73 = self;
+  selfCopy = self;
   if (v9)
   {
-    v28 = [(LPMedia *)self mountPoint];
+    mountPoint = [(LPMedia *)self mountPoint];
 
-    if (!v28)
+    if (!mountPoint)
     {
       goto LABEL_28;
     }
 
-    v10 = [(LPMedia *)self mountPoint];
-    [v62 addObject:v10];
+    mountPoint2 = [(LPMedia *)self mountPoint];
+    [v62 addObject:mountPoint2];
   }
 
   else
   {
-    v10 = [(LPAPFSVolume *)self snapshotMountPoints];
-    v11 = [(LPMedia *)self mountPoint];
-    v12 = v11;
-    if (v10)
+    mountPoint2 = [(LPAPFSVolume *)self snapshotMountPoints];
+    mountPoint3 = [(LPMedia *)self mountPoint];
+    v12 = mountPoint3;
+    if (mountPoint2)
     {
-      v68 = v11;
+      v68 = mountPoint3;
       v83 = 0u;
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v71 = v10;
-      v74 = v10;
+      v71 = mountPoint2;
+      v74 = mountPoint2;
       v13 = [v74 countByEnumeratingWithState:&v81 objects:v86 count:16];
       if (v13)
       {
@@ -989,7 +989,7 @@ LABEL_10:
             }
 
             v17 = *(*(&v81 + 1) + 8 * v16);
-            if (v7)
+            if (bOOLValue)
             {
               v18 = [v17 objectForKey:LPAPFSVolumeSnapshotMountPointKeyMountPoint];
               [v62 addObject:v18];
@@ -997,15 +997,15 @@ LABEL_10:
 
             else
             {
-              v19 = [v5 objectForKey:LPAPFSVolumeSnapshotMountPointKeyName];
+              v19 = [optionsCopy objectForKey:LPAPFSVolumeSnapshotMountPointKeyName];
               v20 = v15;
-              v21 = v7;
+              v21 = bOOLValue;
               v22 = [v17 objectForKey:v19];
-              v23 = [v5 objectForKey:LPAPFSVolumeUnmountOptionSnapshotName];
+              v23 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionSnapshotName];
               v24 = [v22 isEqualToString:v23];
 
               v25 = v22;
-              v7 = v21;
+              bOOLValue = v21;
               v15 = v20;
               v14 = v72;
 
@@ -1014,11 +1014,11 @@ LABEL_10:
                 v26 = [v17 objectForKey:LPAPFSVolumeSnapshotMountPointKeyMountPoint];
                 [v62 addObject:v26];
 
-                if ((v7 & 1) == 0)
+                if ((bOOLValue & 1) == 0)
                 {
 
-                  self = v73;
-                  v10 = v71;
+                  self = selfCopy;
+                  mountPoint2 = v71;
                   v12 = v68;
                   goto LABEL_26;
                 }
@@ -1039,14 +1039,14 @@ LABEL_10:
         }
       }
 
-      self = v73;
-      v10 = v71;
+      self = selfCopy;
+      mountPoint2 = v71;
       v12 = v68;
     }
 
     if (v12)
     {
-      v27 = v7;
+      v27 = bOOLValue;
     }
 
     else
@@ -1063,7 +1063,7 @@ LABEL_26:
   }
 
 LABEL_28:
-  v65 = v5;
+  v65 = optionsCopy;
   if ([v62 count])
   {
     [v62 sortUsingComparator:&__block_literal_global];
@@ -1093,13 +1093,13 @@ LABEL_28:
 
         v69 = v29;
         v30 = *(*(&v77 + 1) + 8 * v29);
-        if (v5)
+        if (optionsCopy)
         {
-          v31 = [v5 objectForKey:LPAPFSVolumeUnmountOptionForce];
+          v31 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionForce];
           v32 = v31 != 0;
 
           v75 = v32 << 19;
-          v33 = [v5 objectForKey:LPAPFSVolumeUnmountOptionDoNotLock];
+          v33 = [optionsCopy objectForKey:LPAPFSVolumeUnmountOptionDoNotLock];
 
           if (v33)
           {
@@ -1110,9 +1110,9 @@ LABEL_28:
               {
                 _os_log_pack_size();
                 v34 = _os_log_pack_fill();
-                v35 = [(LPMedia *)self devNodePath];
+                devNodePath = [(LPMedia *)self devNodePath];
                 *v34 = 138412290;
-                *(v34 + 4) = v35;
+                *(v34 + 4) = devNodePath;
                 v36 = 2;
               }
 
@@ -1120,10 +1120,10 @@ LABEL_28:
               {
                 _os_log_pack_size();
                 v37 = _os_log_pack_fill();
-                v35 = [(LPMedia *)self devNodePath];
+                devNodePath = [(LPMedia *)self devNodePath];
                 v38 = *__error();
                 *v37 = 138412546;
-                *(v37 + 4) = v35;
+                *(v37 + 4) = devNodePath;
                 *(v37 + 12) = 1024;
                 *(v37 + 14) = v38;
                 v36 = 1;
@@ -1143,7 +1143,7 @@ LABEL_28:
         while (unmount([v30 fileSystemRepresentation], v75))
         {
           v40 = *__error();
-          v41 = v73;
+          v41 = selfCopy;
           if (v40 == 22)
           {
             _os_log_pack_size();
@@ -1166,27 +1166,27 @@ LABEL_28:
 
           else
           {
-            if (v39 == 3 && v40 == 16 && [(LPAPFSVolume *)v73 role]!= 12)
+            if (v39 == 3 && v40 == 16 && [(LPAPFSVolume *)selfCopy role]!= 12)
             {
               v75 |= 0x80000u;
               sleep(3u);
               _os_log_pack_size();
               v47 = _os_log_pack_fill();
-              v48 = [(LPMedia *)v73 devNodePath];
+              devNodePath2 = [(LPMedia *)selfCopy devNodePath];
               *v47 = 138412546;
-              *(v47 + 4) = v48;
+              *(v47 + 4) = devNodePath2;
               *(v47 + 12) = 1024;
               *(v47 + 14) = 16;
               v42 = 1;
               _LPLogPack(1);
-              v49 = v48;
-              v41 = v73;
+              v49 = devNodePath2;
+              v41 = selfCopy;
 
               v39 = 4;
               goto LABEL_56;
             }
 
-            if (!a4)
+            if (!error)
             {
 LABEL_55:
               v42 = 0;
@@ -1194,14 +1194,14 @@ LABEL_55:
             }
 
             v42 = 0;
-            *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:v67 code:v40 userInfo:0];
+            *error = [MEMORY[0x29EDB9FA0] errorWithDomain:v67 code:v40 userInfo:0];
           }
 
 LABEL_56:
           _os_log_pack_size();
           v43 = _os_log_pack_fill();
-          v44 = [(LPMedia *)v41 devNodePath];
-          v45 = v44;
+          devNodePath3 = [(LPMedia *)v41 devNodePath];
+          v45 = devNodePath3;
           *v43 = 138412802;
           v46 = "no";
           if (v42)
@@ -1209,7 +1209,7 @@ LABEL_56:
             v46 = "yes";
           }
 
-          *(v43 + 4) = v44;
+          *(v43 + 4) = devNodePath3;
           *(v43 + 12) = 2080;
           *(v43 + 14) = v46;
           *(v43 + 22) = 1024;
@@ -1218,7 +1218,7 @@ LABEL_56:
 
           if ((v42 & 1) == 0)
           {
-            self = v73;
+            self = selfCopy;
             v55 = v69;
             v56 = v40 == 22;
             goto LABEL_67;
@@ -1227,15 +1227,15 @@ LABEL_56:
 
         _os_log_pack_size();
         v50 = _os_log_pack_fill();
-        self = v73;
-        v51 = [(LPMedia *)v73 devNodePath];
+        self = selfCopy;
+        devNodePath4 = [(LPMedia *)selfCopy devNodePath];
         *v50 = 138412547;
-        *(v50 + 4) = v51;
+        *(v50 + 4) = devNodePath4;
         *(v50 + 12) = 2113;
         *(v50 + 14) = v30;
         _LPLogPack(2);
 
-        if ([(LPAPFSVolume *)v73 _pathIsTemporaryMount:v30])
+        if ([(LPAPFSVolume *)selfCopy _pathIsTemporaryMount:v30])
         {
           if (rmdir([v30 fileSystemRepresentation]))
           {
@@ -1261,7 +1261,7 @@ LABEL_56:
         v55 = v69;
 LABEL_67:
         v29 = v55 + 1;
-        v5 = v65;
+        optionsCopy = v65;
       }
 
       while (v29 != v66);
@@ -1277,12 +1277,12 @@ LABEL_72:
 
   _os_log_pack_size();
   v57 = _os_log_pack_fill();
-  v58 = [(LPMedia *)self devNodePath];
+  devNodePath5 = [(LPMedia *)self devNodePath];
   *v57 = 138412290;
-  *(v57 + 4) = v58;
+  *(v57 + 4) = devNodePath5;
   _LPLogPack(2);
-  v59 = v58;
-  v5 = v65;
+  v59 = devNodePath5;
+  optionsCopy = v65;
 
   v56 = 1;
 LABEL_73:
@@ -1291,23 +1291,23 @@ LABEL_73:
   return v56;
 }
 
-- (BOOL)unmountAllWithError:(id *)a3
+- (BOOL)unmountAllWithError:(id *)error
 {
   v9[1] = *MEMORY[0x29EDCA608];
   v8 = LPAPFSVolumeUnmountOptionAll;
   v9[0] = MEMORY[0x29EDB8EB0];
   v5 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  LOBYTE(a3) = [(LPAPFSVolume *)self unmountWithOptions:v5 error:a3];
+  LOBYTE(error) = [(LPAPFSVolume *)self unmountWithOptions:v5 error:error];
 
   v6 = *MEMORY[0x29EDCA608];
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteVolumeWithError:(id *)a3
+- (BOOL)deleteVolumeWithError:(id *)error
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = [(LPMedia *)self devNodePath];
-  if (v4)
+  devNodePath = [(LPMedia *)self devNodePath];
+  if (devNodePath)
   {
     _os_log_pack_size();
     v5 = _os_log_pack_fill();
@@ -1316,9 +1316,9 @@ LABEL_73:
     *v5 = 136315394;
     *(v5 + 4) = "[LPAPFSVolume deleteVolumeWithError:]";
     *(v5 + 12) = 2112;
-    *(v5 + 14) = v4;
+    *(v5 + 14) = devNodePath;
     _LPLogPack(2);
-    [v4 fileSystemRepresentation];
+    [devNodePath fileSystemRepresentation];
     v7 = APFSVolumeDelete();
     if (!v7)
     {
@@ -1337,7 +1337,7 @@ LABEL_73:
       *(v9 + 12) = 1024;
       *(v9 + 14) = v10;
       _LPLogPack(1);
-      if (a3)
+      if (error)
       {
         v11 = MEMORY[0x29EDB9FA0];
         v12 = @"com.apple.IOKit";
@@ -1345,7 +1345,7 @@ LABEL_14:
         v17 = v10;
 LABEL_17:
         v14 = 0;
-        *a3 = [v11 errorWithDomain:v12 code:v17 userInfo:{0, v21}];
+        *error = [v11 errorWithDomain:v12 code:v17 userInfo:{0, v21}];
         goto LABEL_18;
       }
     }
@@ -1363,7 +1363,7 @@ LABEL_17:
         *(v16 + 12) = 1024;
         *(v16 + 14) = v10;
         _LPLogPack(1);
-        if (a3)
+        if (error)
         {
           v11 = MEMORY[0x29EDB9FA0];
           v12 = *MEMORY[0x29EDB9EF8];
@@ -1379,7 +1379,7 @@ LABEL_17:
         *(v18 + 12) = 1024;
         *(v18 + 14) = v8;
         _LPLogPack(1);
-        if (a3)
+        if (error)
         {
           v11 = MEMORY[0x29EDB9FA0];
           v12 = *MEMORY[0x29EDB9EF0];
@@ -1392,9 +1392,9 @@ LABEL_17:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1411,10 +1411,10 @@ LABEL_18:
   return v14;
 }
 
-- (id)snapshotsWithError:(id *)a3
+- (id)snapshotsWithError:(id *)error
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [(LPAPFSVolume *)self snapshotInfoWithError:a3];
+  v3 = [(LPAPFSVolume *)self snapshotInfoWithError:error];
   v4 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:10];
   if (v3)
   {
@@ -1456,16 +1456,16 @@ LABEL_18:
   return v4;
 }
 
-- (id)snapshotInfoWithError:(id *)a3
+- (id)snapshotInfoWithError:(id *)error
 {
   v45[256] = *MEMORY[0x29EDCA608];
-  v5 = [(LPMedia *)self mountPoint];
-  v6 = v5;
-  if (!v5)
+  mountPoint = [(LPMedia *)self mountPoint];
+  v6 = mountPoint;
+  if (!mountPoint)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1480,12 +1480,12 @@ LABEL_18:
     goto LABEL_43;
   }
 
-  v7 = open([v5 fileSystemRepresentation], 0x100000);
+  v7 = open([mountPoint fileSystemRepresentation], 0x100000);
   if (v7 < 0)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1503,7 +1503,7 @@ LABEL_43:
   }
 
   v8 = v7;
-  v38 = a3;
+  errorCopy = error;
   v39 = v6;
   v40 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:10];
   *&v44.volattr = 0;
@@ -1572,7 +1572,7 @@ LABEL_43:
           if ((v15 & 0x20) != 0)
           {
             v23 = *v12;
-            v22 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:*v12 & 0x3FFFFFFFFFFFFFFFLL];
+            0x3FFFFFFFFFFFFFFFLL = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:*v12 & 0x3FFFFFFFFFFFFFFFLL];
             v24 = MEMORY[0x29EDB8EB0];
             v25 = MEMORY[0x29EDB8EA8];
             if ((v23 & 0x4000000000000000) != 0)
@@ -1603,7 +1603,7 @@ LABEL_43:
           {
             v20 = 0;
             v21 = 0;
-            v22 = 0;
+            0x3FFFFFFFFFFFFFFFLL = 0;
           }
 
           v28 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:4];
@@ -1613,9 +1613,9 @@ LABEL_43:
             [v28 setObject:v42 forKey:LPAPFSSnapshotPropertyKeyName[0]];
           }
 
-          if (v22)
+          if (0x3FFFFFFFFFFFFFFFLL)
           {
-            [v29 setObject:v22 forKey:LPAPFSSnapshotPropertyKeyXID[0]];
+            [v29 setObject:0x3FFFFFFFFFFFFFFFLL forKey:LPAPFSSnapshotPropertyKeyXID[0]];
           }
 
           if (v21)
@@ -1659,9 +1659,9 @@ LABEL_43:
     close(v8);
     v30 = v40;
     v31 = 0;
-    if (v38)
+    if (errorCopy)
     {
-      *v38 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v9 userInfo:0];
+      *errorCopy = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v9 userInfo:0];
     }
   }
 
@@ -1680,26 +1680,26 @@ LABEL_47:
   return v31;
 }
 
-- (BOOL)createSnapshot:(id)a3 error:(id *)a4
+- (BOOL)createSnapshot:(id)snapshot error:(id *)error
 {
   v19 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = [(LPMedia *)self mountPoint];
-  if (!v6 || ![v6 length])
+  snapshotCopy = snapshot;
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!mountPoint)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
 LABEL_12:
@@ -1713,12 +1713,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = open([v7 fileSystemRepresentation], 0);
+  v8 = open([mountPoint fileSystemRepresentation], 0);
   if (v8 < 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1726,19 +1726,19 @@ LABEL_13:
     *v18 = 136315395;
     *(v18 + 4) = "[LPAPFSVolume createSnapshot:error:]";
     *(v18 + 12) = 2113;
-    *(v18 + 14) = v7;
+    *(v18 + 14) = mountPoint;
     goto LABEL_13;
   }
 
   v9 = v8;
-  v10 = fs_snapshot_create(v8, [v6 fileSystemRepresentation], 0);
+  v10 = fs_snapshot_create(v8, [snapshotCopy fileSystemRepresentation], 0);
   v11 = v10 == 0;
   if (v10)
   {
     v12 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v12 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v12 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1758,32 +1758,32 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)deleteSnapshots:(id)a3 waitForDeletionFor:(double)a4 error:(id *)a5
+- (BOOL)deleteSnapshots:(id)snapshots waitForDeletionFor:(double)for error:(id *)error
 {
   v37 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = [(LPMedia *)self mountPoint];
-  if (!v8)
+  snapshotsCopy = snapshots;
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (!snapshotsCopy)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     goto LABEL_25;
   }
 
-  if (![v8 count])
+  if (![snapshotsCopy count])
   {
     v21 = 1;
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
 LABEL_25:
@@ -1797,12 +1797,12 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v10 = open([v9 fileSystemRepresentation], 0);
+  v10 = open([mountPoint fileSystemRepresentation], 0);
   if (v10 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1820,13 +1820,13 @@ LABEL_26:
   v34 = 0u;
   v33 = 0u;
   v32 = 0u;
-  v12 = v8;
+  v12 = snapshotsCopy;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
-    v28 = a5;
-    v29 = v9;
+    errorCopy = error;
+    v29 = mountPoint;
     v15 = 0;
     v30 = 0;
     v16 = *v33;
@@ -1866,20 +1866,20 @@ LABEL_26:
 
     while (v14);
 
-    if (v28)
+    if (errorCopy)
     {
       v21 = v30;
       if (v15)
       {
-        *v28 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
+        *errorCopy = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
       }
 
-      v9 = v29;
+      mountPoint = v29;
     }
 
     else
     {
-      v9 = v29;
+      mountPoint = v29;
       v21 = v30;
     }
   }
@@ -1890,7 +1890,7 @@ LABEL_26:
     v21 = 0;
   }
 
-  if (a4 != 0.0)
+  if (for != 0.0)
   {
     v31[2] = 0;
     v31[1] = 0;
@@ -1912,37 +1912,37 @@ LABEL_27:
   return v21 & 1;
 }
 
-- (BOOL)renameSnapshot:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)renameSnapshot:(id)snapshot to:(id)to error:(id *)error
 {
   v22 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPMedia *)self mountPoint];
-  if (!v8 || ![v8 length])
+  snapshotCopy = snapshot;
+  toCopy = to;
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     goto LABEL_17;
   }
 
-  if (!v9 || ![v9 length])
+  if (!toCopy || ![toCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
 LABEL_17:
@@ -1956,12 +1956,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = open([v10 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -1969,19 +1969,19 @@ LABEL_18:
     *v21 = 136315395;
     *(v21 + 4) = "[LPAPFSVolume renameSnapshot:to:error:]";
     *(v21 + 12) = 2113;
-    *(v21 + 14) = v10;
+    *(v21 + 14) = mountPoint;
     goto LABEL_18;
   }
 
   v12 = v11;
-  v13 = fs_snapshot_rename(v11, [v8 fileSystemRepresentation], objc_msgSend(v9, "fileSystemRepresentation"), 0);
+  v13 = fs_snapshot_rename(v11, [snapshotCopy fileSystemRepresentation], objc_msgSend(toCopy, "fileSystemRepresentation"), 0);
   v14 = v13 == 0;
   if (v13)
   {
     v15 = *__error();
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
     }
 
     _os_log_pack_size();
@@ -2001,27 +2001,27 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)revertToSnapshot:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)revertToSnapshot:(id)snapshot options:(id)options error:(id *)error
 {
   v26[1] = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LPMedia *)self mountPoint];
-  if (!v8 || ![v8 length])
+  snapshotCopy = snapshot;
+  optionsCopy = options;
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (!snapshotCopy || ![snapshotCopy length])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!mountPoint)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
     }
 
 LABEL_13:
@@ -2034,12 +2034,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = open([v10 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     _os_log_pack_size();
@@ -2047,7 +2047,7 @@ LABEL_13:
     *v23 = 136315395;
     *(v23 + 4) = "[LPAPFSVolume revertToSnapshot:options:error:]";
     *(v23 + 12) = 2113;
-    *(v23 + 14) = v10;
+    *(v23 + 14) = mountPoint;
     v14 = 1;
     _LPLogPack(1);
   }
@@ -2055,14 +2055,14 @@ LABEL_13:
   else
   {
     v12 = v11;
-    v13 = fs_snapshot_revert(v11, [v8 fileSystemRepresentation], 0);
+    v13 = fs_snapshot_revert(v11, [snapshotCopy fileSystemRepresentation], 0);
     v14 = v13 == 0;
     if (v13)
     {
       v15 = *__error();
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
+        *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
       }
 
       _os_log_pack_size();
@@ -2077,7 +2077,7 @@ LABEL_13:
     }
 
     close(v12);
-    v18 = [v9 objectForKeyedSubscript:LPAPFSVolumeRevertOptionSkipRemount];
+    v18 = [optionsCopy objectForKeyedSubscript:LPAPFSVolumeRevertOptionSkipRemount];
     if ([v18 BOOLValue])
     {
       _os_log_pack_size();
@@ -2085,11 +2085,11 @@ LABEL_13:
       *v19 = 136315394;
       *(v19 + 4) = "[LPAPFSVolume revertToSnapshot:options:error:]";
       *(v19 + 12) = 2112;
-      *(v19 + 14) = v10;
+      *(v19 + 14) = mountPoint;
       _LPLogPack(2);
     }
 
-    else if ([(LPAPFSVolume *)self unmountWithError:a5]&& [(LPAPFSVolume *)self mountAtPath:v10 options:v9 error:a5])
+    else if ([(LPAPFSVolume *)self unmountWithError:error]&& [(LPAPFSVolume *)self mountAtPath:mountPoint options:optionsCopy error:error])
     {
       v14 = 1;
     }
@@ -2114,25 +2114,25 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)rootToSnapshot:(id)a3 error:(id *)a4
+- (BOOL)rootToSnapshot:(id)snapshot error:(id *)error
 {
   v20 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  snapshotCopy = snapshot;
   _os_log_pack_size();
   v7 = _os_log_pack_fill();
   *v7 = 136315138;
   *(v7 + 4) = "[LPAPFSVolume rootToSnapshot:error:]";
   _LPLogPack(3);
-  v8 = [(LPMedia *)self mountPoint];
-  if (v6 && [v6 length])
+  mountPoint = [(LPMedia *)self mountPoint];
+  if (snapshotCopy && [snapshotCopy length])
   {
-    [v6 fileSystemRepresentation];
-    if (!v8)
+    [snapshotCopy fileSystemRepresentation];
+    if (!mountPoint)
     {
 LABEL_4:
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
+        *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:22 userInfo:0];
       }
 
       v9 = _os_log_pack_fill();
@@ -2145,7 +2145,7 @@ LABEL_17:
     }
   }
 
-  else if (!v8)
+  else if (!mountPoint)
   {
     goto LABEL_4;
   }
@@ -2155,21 +2155,21 @@ LABEL_17:
   *v10 = 136315395;
   *(v10 + 4) = "[LPAPFSVolume rootToSnapshot:error:]";
   *(v10 + 12) = 2113;
-  *(v10 + 14) = v8;
+  *(v10 + 14) = mountPoint;
   _LPLogPack(3);
-  v11 = open([v8 fileSystemRepresentation], 0);
+  v11 = open([mountPoint fileSystemRepresentation], 0);
   if (v11 < 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:*__error() userInfo:0];
     }
 
     v17 = _os_log_pack_fill();
     *v17 = 136315395;
     *(v17 + 4) = "[LPAPFSVolume rootToSnapshot:error:]";
     *(v17 + 12) = 2113;
-    *(v17 + 14) = v8;
+    *(v17 + 14) = mountPoint;
     goto LABEL_17;
   }
 
@@ -2179,9 +2179,9 @@ LABEL_17:
   if (v13)
   {
     v15 = *__error();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v15 userInfo:0];
     }
 
     _os_log_pack_size();

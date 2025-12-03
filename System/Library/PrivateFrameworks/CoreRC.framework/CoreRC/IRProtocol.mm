@@ -1,47 +1,47 @@
 @interface IRProtocol
-- (BOOL)isEqual:(id)a3;
-- (IRProtocol)initWithCoder:(id)a3;
-- (IRProtocol)initWithProtocolID:(unsigned __int8)a3 options:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (IRProtocol)initWithCoder:(id)coder;
+- (IRProtocol)initWithProtocolID:(unsigned __int8)d options:(unsigned __int8)options;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRProtocol
 
-- (IRProtocol)initWithProtocolID:(unsigned __int8)a3 options:(unsigned __int8)a4
+- (IRProtocol)initWithProtocolID:(unsigned __int8)d options:(unsigned __int8)options
 {
   v7.receiver = self;
   v7.super_class = IRProtocol;
   result = [(IRProtocol *)&v7 init];
   if (result)
   {
-    result->_protocolID = a3;
-    result->_options = a4;
+    result->_protocolID = d;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (IRProtocol)initWithCoder:(id)a3
+- (IRProtocol)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IRProtocol;
   v4 = [(IRProtocol *)&v6 init];
   if (v4)
   {
-    v4->_protocolID = [a3 decodeIntegerForKey:@"protocolProtocol"];
-    v4->_options = [a3 decodeIntegerForKey:@"protocolOptions"];
+    v4->_protocolID = [coder decodeIntegerForKey:@"protocolProtocol"];
+    v4->_options = [coder decodeIntegerForKey:@"protocolOptions"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:self->_protocolID forKey:@"protocolProtocol"];
+  [coder encodeInt:self->_protocolID forKey:@"protocolProtocol"];
   options = self->_options;
 
-  [a3 encodeInt:options forKey:@"protocolOptions"];
+  [coder encodeInt:options forKey:@"protocolOptions"];
 }
 
 - (id)description
@@ -49,10 +49,10 @@
   v7.receiver = self;
   v7.super_class = IRProtocol;
   v3 = [(IRProtocol *)&v7 description];
-  v4 = [(IRProtocol *)self protocolID];
-  if (v4 <= 0xF)
+  protocolID = [(IRProtocol *)self protocolID];
+  if (protocolID <= 0xF)
   {
-    v5 = v4;
+    v5 = protocolID;
   }
 
   else
@@ -63,9 +63,9 @@
   return [v3 stringByAppendingFormat:@" ID: %s; Options: %u;", IRProtocolName_names[v5], -[IRProtocol options](self, "options")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -76,14 +76,14 @@
     return 0;
   }
 
-  v5 = [(IRProtocol *)self protocolID];
-  if (v5 != [a3 protocolID])
+  protocolID = [(IRProtocol *)self protocolID];
+  if (protocolID != [equal protocolID])
   {
     return 0;
   }
 
-  v6 = [(IRProtocol *)self options];
-  return v6 == [a3 options];
+  options = [(IRProtocol *)self options];
+  return options == [equal options];
 }
 
 @end

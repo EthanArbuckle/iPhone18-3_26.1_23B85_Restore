@@ -1,14 +1,14 @@
 @interface PHAssetResource
 + (NSArray)assetResourcesForLivePhoto:(PHLivePhoto *)livePhoto;
-+ (id)_assetResourcesFromPLResources:(id)a3 includeMetadata:(BOOL)a4 mediaMetadataVirtualResources:(id)a5 asset:(id)a6 photoLibrary:(id)a7 assetHasAdjustments:(BOOL)a8 includeDerivatives:(BOOL)a9 includeAdjustmentOverflowDataBlob:(BOOL)a10;
-+ (id)_resourcesForManagedAsset:(id)a3 includeDerivatives:(BOOL)a4;
-+ (id)assetResourceForAsset:(id)a3 qualityClass:(id)a4;
-+ (id)assetResourcesForAsset:(id)a3 includeDerivatives:(BOOL)a4 includeMetadata:(BOOL)a5 includeAdjustmentOverflowDataBlob:(BOOL)a6;
-+ (id)assetResourcesForAssets:(id)a3 includeDerivatives:(BOOL)a4 includeMetadata:(BOOL)a5 includeAdjustmentOverflowDataBlob:(BOOL)a6;
++ (id)_assetResourcesFromPLResources:(id)resources includeMetadata:(BOOL)metadata mediaMetadataVirtualResources:(id)virtualResources asset:(id)asset photoLibrary:(id)library assetHasAdjustments:(BOOL)adjustments includeDerivatives:(BOOL)derivatives includeAdjustmentOverflowDataBlob:(BOOL)self0;
++ (id)_resourcesForManagedAsset:(id)asset includeDerivatives:(BOOL)derivatives;
++ (id)assetResourceForAsset:(id)asset qualityClass:(id)class;
++ (id)assetResourcesForAsset:(id)asset includeDerivatives:(BOOL)derivatives includeMetadata:(BOOL)metadata includeAdjustmentOverflowDataBlob:(BOOL)blob;
++ (id)assetResourcesForAssets:(id)assets includeDerivatives:(BOOL)derivatives includeMetadata:(BOOL)metadata includeAdjustmentOverflowDataBlob:(BOOL)blob;
 - (NSString)contextualVideoThumbnailIdentifier;
 - (PHAsset)asset;
-- (PHAssetResource)initWithResource:(id)a3 asset:(id)a4 hasAdjustments:(BOOL)a5 photoLibrary:(id)a6;
-- (PHAssetResource)initWithType:(int64_t)a3 livePhoto:(id)a4;
+- (PHAssetResource)initWithResource:(id)resource asset:(id)asset hasAdjustments:(BOOL)adjustments photoLibrary:(id)library;
+- (PHAssetResource)initWithType:(int64_t)type livePhoto:(id)photo;
 - (UTType)contentType;
 - (id)debugDescription;
 - (id)description;
@@ -21,8 +21,8 @@
 - (UTType)contentType
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PHAssetResource *)self uniformTypeIdentifier];
-  v4 = [v2 typeWithIdentifier:v3];
+  uniformTypeIdentifier = [(PHAssetResource *)self uniformTypeIdentifier];
+  v4 = [v2 typeWithIdentifier:uniformTypeIdentifier];
 
   if (v4)
   {
@@ -42,17 +42,17 @@
 - (PHAsset)asset
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHAssetResource *)self photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PHAssetResource *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v5 = [(PHAssetResource *)self assetLocalIdentifier];
-  v10[0] = v5;
+  assetLocalIdentifier = [(PHAssetResource *)self assetLocalIdentifier];
+  v10[0] = assetLocalIdentifier;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v7 = [PHAsset fetchAssetsWithLocalIdentifiers:v6 options:v4];
+  v7 = [PHAsset fetchAssetsWithLocalIdentifiers:v6 options:librarySpecificFetchOptions];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 - (id)debugDescription
@@ -69,15 +69,15 @@
   [v3 appendName:@"width" integerValue:self->_pixelWidth];
   [v3 appendName:@"height" integerValue:self->_pixelHeight];
   [v3 appendName:@"fileSize" unsignedIntegerValue:{-[PHAssetResource fileSize](self, "fileSize")}];
-  v5 = [(PHAssetResource *)self analysisType];
-  if ((v5 - 1) > 2)
+  analysisType = [(PHAssetResource *)self analysisType];
+  if ((analysisType - 1) > 2)
   {
     v6 = @"small";
   }
 
   else
   {
-    v6 = off_1E75A51F0[v5 - 1];
+    v6 = off_1E75A51F0[analysisType - 1];
   }
 
   v7 = v6;
@@ -88,9 +88,9 @@
 
   [v3 appendName:@"isCurrent" BOOLValue:self->_current];
   [v3 appendName:@"isInCloud" BOOLValue:self->_inCloud];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (id)description
@@ -113,13 +113,13 @@
   return v9;
 }
 
-- (PHAssetResource)initWithType:(int64_t)a3 livePhoto:(id)a4
+- (PHAssetResource)initWithType:(int64_t)type livePhoto:(id)photo
 {
-  v7 = a4;
-  if (!v7)
+  photoCopy = photo;
+  if (!photoCopy)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"livePhoto"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"livePhoto"}];
   }
 
   v37.receiver = self;
@@ -128,80 +128,80 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    v10 = [v7 assetLocalIdentifier];
+    v8->_type = type;
+    assetLocalIdentifier = [photoCopy assetLocalIdentifier];
     assetLocalIdentifier = v9->_assetLocalIdentifier;
-    v9->_assetLocalIdentifier = v10;
+    v9->_assetLocalIdentifier = assetLocalIdentifier;
 
-    if (a3 == 9)
+    if (type == 9)
     {
-      v20 = [v7 videoFileLoader];
-      v21 = [v20 copy];
+      videoFileLoader = [photoCopy videoFileLoader];
+      v21 = [videoFileLoader copy];
       privateFileLoader = v9->_privateFileLoader;
       v9->_privateFileLoader = v21;
 
-      v23 = [v7 videoURL];
+      videoURL = [photoCopy videoURL];
       privateFileURL = v9->_privateFileURL;
-      v9->_privateFileURL = v23;
+      v9->_privateFileURL = videoURL;
 
-      v25 = [MEMORY[0x1E696AC08] defaultManager];
-      v26 = [(NSURL *)v9->_privateFileURL path];
-      v9->_locallyAvailable = [v25 fileExistsAtPath:v26];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [(NSURL *)v9->_privateFileURL path];
+      v9->_locallyAvailable = [defaultManager fileExistsAtPath:path];
 
-      v19 = [v7 videoTypeIdentifier];
+      videoTypeIdentifier = [photoCopy videoTypeIdentifier];
     }
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         uniformTypeIdentifier = [MEMORY[0x1E696AAA8] currentHandler];
         [uniformTypeIdentifier handleFailureInMethod:a2 object:v9 file:@"PHAssetResource.m" lineNumber:701 description:@"Live photo asset resources only supports 'Photo' and 'PairedVideo'"];
         goto LABEL_10;
       }
 
-      v12 = [v7 imageFileLoader];
-      v13 = [v12 copy];
+      imageFileLoader = [photoCopy imageFileLoader];
+      v13 = [imageFileLoader copy];
       v14 = v9->_privateFileLoader;
       v9->_privateFileLoader = v13;
 
-      v15 = [v7 imageURL];
+      imageURL = [photoCopy imageURL];
       v16 = v9->_privateFileURL;
-      v9->_privateFileURL = v15;
+      v9->_privateFileURL = imageURL;
 
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
-      v18 = [(NSURL *)v9->_privateFileURL path];
-      v9->_locallyAvailable = [v17 fileExistsAtPath:v18];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [(NSURL *)v9->_privateFileURL path];
+      v9->_locallyAvailable = [defaultManager2 fileExistsAtPath:path2];
 
-      v19 = [v7 imageTypeIdentifier];
+      videoTypeIdentifier = [photoCopy imageTypeIdentifier];
     }
 
     uniformTypeIdentifier = v9->_uniformTypeIdentifier;
-    v9->_uniformTypeIdentifier = v19;
+    v9->_uniformTypeIdentifier = videoTypeIdentifier;
 LABEL_10:
 
     v28 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v9->_uniformTypeIdentifier];
-    v29 = [v28 preferredFilenameExtension];
+    preferredFilenameExtension = [v28 preferredFilenameExtension];
 
-    if (!v29)
+    if (!preferredFilenameExtension)
     {
-      v30 = [(NSURL *)v9->_privateFileURL pathExtension];
-      if (!v30)
+      pathExtension = [(NSURL *)v9->_privateFileURL pathExtension];
+      if (!pathExtension)
       {
         v31 = @"MOV";
-        if (a3 == 1)
+        if (type == 1)
         {
           v31 = @"JPG";
         }
 
-        v30 = v31;
+        pathExtension = v31;
       }
 
-      v29 = v30;
+      preferredFilenameExtension = pathExtension;
     }
 
-    v32 = [v7 originalFilename];
-    v33 = [v32 stringByAppendingPathExtension:v29];
+    originalFilename = [photoCopy originalFilename];
+    v33 = [originalFilename stringByAppendingPathExtension:preferredFilenameExtension];
     originalFilename = v9->_originalFilename;
     v9->_originalFilename = v33;
   }
@@ -209,48 +209,48 @@ LABEL_10:
   return v9;
 }
 
-- (PHAssetResource)initWithResource:(id)a3 asset:(id)a4 hasAdjustments:(BOOL)a5 photoLibrary:(id)a6
+- (PHAssetResource)initWithResource:(id)resource asset:(id)asset hasAdjustments:(BOOL)adjustments photoLibrary:(id)library
 {
-  v7 = a5;
+  adjustmentsCopy = adjustments;
   v119 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  resourceCopy = resource;
+  assetCopy = asset;
+  libraryCopy = library;
+  if (!resourceCopy)
   {
-    v109 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v109 handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:625 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:625 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
 
-    if (v11)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_229:
-    v110 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v110 handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:626 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetResource.m" lineNumber:626 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!assetCopy)
   {
     goto LABEL_229;
   }
 
 LABEL_3:
-  v13 = v10;
-  v14 = v11;
+  v13 = resourceCopy;
+  v14 = assetCopy;
   v15 = &unk_1F102CAA0;
   switch([(__CFString *)v13 resourceType])
   {
     case 0u:
       if (_PHAssetResourceIsTopClassResource(v13))
       {
-        v19 = [(__CFString *)v13 version];
-        if (v19 > 1)
+        version = [(__CFString *)v13 version];
+        if (version > 1)
         {
-          if (v19 == 3)
+          if (version == 3)
           {
             v16 = PLPhotoKitGetLog();
             if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -263,7 +263,7 @@ LABEL_3:
             goto LABEL_104;
           }
 
-          if (v19 != 2)
+          if (version != 2)
           {
             goto LABEL_62;
           }
@@ -271,9 +271,9 @@ LABEL_3:
           v15 = &unk_1F102CBA8;
         }
 
-        else if (v19)
+        else if (version)
         {
-          if (v19 != 1)
+          if (version != 1)
           {
             goto LABEL_62;
           }
@@ -289,10 +289,10 @@ LABEL_3:
         goto LABEL_109;
       }
 
-      v35 = [(__CFString *)v13 dataStore];
-      v36 = [objc_opt_class() storeClassID];
+      dataStore = [(__CFString *)v13 dataStore];
+      storeClassID = [objc_opt_class() storeClassID];
 
-      if (v36 == 1)
+      if (storeClassID == 1)
       {
         v15 = &unk_1F102CBD8;
         goto LABEL_109;
@@ -309,12 +309,12 @@ LABEL_3:
         goto LABEL_108;
       }
 
-      if (v36 == 3)
+      if (storeClassID == 3)
       {
         goto LABEL_94;
       }
 
-      if (v36)
+      if (storeClassID)
       {
         v16 = PLPhotoKitGetLog();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -333,26 +333,26 @@ LABEL_3:
         goto LABEL_94;
       }
 
-      v107 = [(__CFString *)v13 recipeID];
-      if (v7)
+      recipeID = [(__CFString *)v13 recipeID];
+      if (adjustmentsCopy)
       {
         v108 = 65941;
       }
 
       else
       {
-        if (v107 == 65943)
+        if (recipeID == 65943)
         {
 LABEL_233:
           v15 = &unk_1F102CC08;
           goto LABEL_109;
         }
 
-        v107 = [(__CFString *)v13 recipeID];
+        recipeID = [(__CFString *)v13 recipeID];
         v108 = 65951;
       }
 
-      if (v107 != v108)
+      if (recipeID != v108)
       {
         v16 = PLPhotoKitGetLog();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -371,10 +371,10 @@ LABEL_233:
 LABEL_62:
       if (!_PHAssetResourceIsTopClassResource(v13))
       {
-        v40 = [(__CFString *)v13 dataStore];
-        v41 = [objc_opt_class() storeClassID];
+        dataStore2 = [(__CFString *)v13 dataStore];
+        storeClassID2 = [objc_opt_class() storeClassID];
 
-        if (v41 == 3)
+        if (storeClassID2 == 3)
         {
           v16 = PLPhotoKitGetLog();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -387,7 +387,7 @@ LABEL_62:
           goto LABEL_104;
         }
 
-        if (v41 == 2 || !v41 && ([(__CFString *)v13 isCPLResource]& 1) != 0)
+        if (storeClassID2 == 2 || !storeClassID2 && ([(__CFString *)v13 isCPLResource]& 1) != 0)
         {
           goto LABEL_94;
         }
@@ -405,10 +405,10 @@ LABEL_62:
         goto LABEL_105;
       }
 
-      v39 = [(__CFString *)v13 version];
-      if (v39 > 1)
+      version2 = [(__CFString *)v13 version];
+      if (version2 > 1)
       {
-        if (v39 == 3)
+        if (version2 == 3)
         {
           v16 = PLPhotoKitGetLog();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -421,7 +421,7 @@ LABEL_62:
           goto LABEL_104;
         }
 
-        if (v39 != 2)
+        if (version2 != 2)
         {
           goto LABEL_76;
         }
@@ -429,9 +429,9 @@ LABEL_62:
         v15 = &unk_1F102CC38;
       }
 
-      else if (v39)
+      else if (version2)
       {
-        if (v39 != 1)
+        if (version2 != 1)
         {
           goto LABEL_76;
         }
@@ -451,10 +451,10 @@ LABEL_62:
     case 3u:
       if ([(__CFString *)v13 isDerivative])
       {
-        v20 = [(__CFString *)v13 dataStore];
-        v21 = [objc_opt_class() storeClassID];
+        dataStore3 = [(__CFString *)v13 dataStore];
+        storeClassID3 = [objc_opt_class() storeClassID];
 
-        if (v21 == 3)
+        if (storeClassID3 == 3)
         {
           v16 = PLPhotoKitGetLog();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -467,7 +467,7 @@ LABEL_62:
           goto LABEL_104;
         }
 
-        if (v21 || ([(__CFString *)v13 isCPLResource]& 1) == 0)
+        if (storeClassID3 || ([(__CFString *)v13 isCPLResource]& 1) == 0)
         {
           v16 = PLPhotoKitGetLog();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -490,10 +490,10 @@ LABEL_94:
 
       else
       {
-        v37 = [(__CFString *)v13 version];
-        if (v37 > 1)
+        version3 = [(__CFString *)v13 version];
+        if (version3 > 1)
         {
-          if (v37 == 3)
+          if (version3 == 3)
           {
             v16 = PLPhotoKitGetLog();
             if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -506,7 +506,7 @@ LABEL_94:
             goto LABEL_104;
           }
 
-          if (v37 != 2)
+          if (version3 != 2)
           {
             goto LABEL_82;
           }
@@ -514,9 +514,9 @@ LABEL_94:
           v15 = &unk_1F102CB00;
         }
 
-        else if (v37)
+        else if (version3)
         {
-          if (v37 != 1)
+          if (version3 != 1)
           {
             goto LABEL_82;
           }
@@ -536,22 +536,22 @@ LABEL_76:
       v15 = &unk_1F102CC68;
       goto LABEL_109;
     case 5u:
-      v24 = [(__CFString *)v13 uniformTypeIdentifier];
-      v25 = [v24 identifier];
-      v26 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-      [v26 identifier];
+      uniformTypeIdentifier = [(__CFString *)v13 uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier identifier];
+      supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+      [supplementalResourceAAEType identifier];
       v27 = v14;
-      v28 = a6;
-      v30 = v29 = v7;
-      v31 = v12;
-      v32 = [v25 isEqualToString:v30];
+      libraryCopy2 = library;
+      v30 = v29 = adjustmentsCopy;
+      v31 = libraryCopy;
+      v32 = [identifier isEqualToString:v30];
 
-      v7 = v29;
-      a6 = v28;
+      adjustmentsCopy = v29;
+      library = libraryCopy2;
       v14 = v27;
 
       v82 = v32 == 0;
-      v12 = v31;
+      libraryCopy = v31;
       if (v82)
       {
         v15 = 0;
@@ -568,12 +568,12 @@ LABEL_76:
     case 7u:
       goto LABEL_109;
     case 8u:
-      v34 = [(__CFString *)v13 version];
-      if (v34 > 1)
+      version4 = [(__CFString *)v13 version];
+      if (version4 > 1)
       {
-        if (v34 != 3)
+        if (version4 != 3)
         {
-          if (v34 == 2)
+          if (version4 == 2)
           {
             v15 = &unk_1F102CA70;
             goto LABEL_109;
@@ -585,13 +585,13 @@ LABEL_76:
 
       else
       {
-        if (!v34)
+        if (!version4)
         {
           v15 = &unk_1F102CA58;
           goto LABEL_109;
         }
 
-        if (v34 != 1)
+        if (version4 != 1)
         {
 LABEL_52:
           v15 = &unk_1F102CA88;
@@ -632,54 +632,54 @@ LABEL_222:
       v42 = [(PHAssetResource *)&v114 init];
       if (v42)
       {
-        v111 = v7;
-        v112 = v12;
-        v43 = [(__CFString *)v13 uniformTypeIdentifier];
-        v44 = [v43 identifier];
+        v111 = adjustmentsCopy;
+        v112 = libraryCopy;
+        uniformTypeIdentifier2 = [(__CFString *)v13 uniformTypeIdentifier];
+        identifier2 = [uniformTypeIdentifier2 identifier];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v45 = v13;
-          v46 = [(__CFString *)v45 objectID];
+          objectID = [(__CFString *)v45 objectID];
           internalResourceObjectID = v42->_internalResourceObjectID;
-          v42->_internalResourceObjectID = v46;
+          v42->_internalResourceObjectID = objectID;
         }
 
-        v48 = [v14 uuid];
-        v49 = [(PHObject *)PHAsset localIdentifierWithUUID:v48];
+        uuid = [v14 uuid];
+        v49 = [(PHObject *)PHAsset localIdentifierWithUUID:uuid];
         assetLocalIdentifier = v42->_assetLocalIdentifier;
         v42->_assetLocalIdentifier = v49;
 
-        objc_storeStrong(&v42->_uniformTypeIdentifier, v44);
-        v51 = [v15 integerValue];
-        v42->_type = v51;
+        objc_storeStrong(&v42->_uniformTypeIdentifier, identifier2);
+        integerValue = [v15 integerValue];
+        v42->_type = integerValue;
         v52 = v14;
-        self = v44;
+        self = identifier2;
         v53 = 0;
-        if (v51 <= 106)
+        if (integerValue <= 106)
         {
-          switch(v51)
+          switch(integerValue)
           {
             case 1:
             case 2:
             case 3:
             case 19:
-              v54 = [v52 originalFilename];
+              originalFilename = [v52 originalFilename];
               goto LABEL_116;
             case 4:
             case 9:
-              v55 = [v52 originalFilename];
-              v56 = [v55 stringByDeletingPathExtension];
+              originalFilename2 = [v52 originalFilename];
+              stringByDeletingPathExtension = [originalFilename2 stringByDeletingPathExtension];
 
-              v57 = _PHAssetResourceOriginalFilenameFromBasePlusUTI(v56, self);
+              v57 = _PHAssetResourceOriginalFilenameFromBasePlusUTI(stringByDeletingPathExtension, self);
               goto LABEL_141;
             case 5:
               v65 = MEMORY[0x1E69C08F0];
               v66 = [MEMORY[0x1E6982C40] typeWithIdentifier:self];
-              v56 = [v65 preferredOrFallbackFilenameExtensionForType:v66];
+              stringByDeletingPathExtension = [v65 preferredOrFallbackFilenameExtensionForType:v66];
 
-              v57 = [@"FullSizeRender" stringByAppendingPathExtension:v56];
+              v57 = [@"FullSizeRender" stringByAppendingPathExtension:stringByDeletingPathExtension];
 LABEL_141:
               v53 = v57;
 
@@ -700,24 +700,24 @@ LABEL_141:
               goto LABEL_151;
             case 13:
             case 14:
-              v58 = [v52 originalFilename];
-              v59 = [v58 stringByDeletingPathExtension];
-              v60 = [v59 stringByAppendingString:@"S"];
+              originalFilename3 = [v52 originalFilename];
+              stringByDeletingPathExtension2 = [originalFilename3 stringByDeletingPathExtension];
+              v60 = [stringByDeletingPathExtension2 stringByAppendingString:@"S"];
 
               v53 = _PHAssetResourceOriginalFilenameFromBasePlusAsset(v60, v52, 0);
 
               goto LABEL_151;
             case 15:
-              v61 = [v52 originalFilename];
-              v62 = [v61 stringByDeletingPathExtension];
-              v63 = [v62 stringByAppendingString:@"S"];
+              originalFilename4 = [v52 originalFilename];
+              stringByDeletingPathExtension3 = [originalFilename4 stringByDeletingPathExtension];
+              v63 = [stringByDeletingPathExtension3 stringByAppendingString:@"S"];
 
               v64 = _PHAssetResourceOriginalFilenameFromBasePlusUTI(v63, self);
               goto LABEL_145;
             case 16:
-              v67 = [v52 originalFilename];
-              v68 = [v67 stringByDeletingPathExtension];
-              v63 = [v68 stringByAppendingString:@"O"];
+              originalFilename5 = [v52 originalFilename];
+              stringByDeletingPathExtension4 = [originalFilename5 stringByDeletingPathExtension];
+              v63 = [stringByDeletingPathExtension4 stringByAppendingString:@"O"];
 
               v64 = [v63 stringByAppendingPathExtension:*MEMORY[0x1E69C0E18]];
 LABEL_145:
@@ -734,36 +734,36 @@ LABEL_145:
           goto LABEL_151;
         }
 
-        if (v51 > 113)
+        if (integerValue > 113)
         {
-          if (v51 <= 116)
+          if (integerValue <= 116)
           {
-            if (v51 == 114)
+            if (integerValue == 114)
             {
               v53 = @"GenerativePlaygroundFaceResources.dat";
               goto LABEL_151;
             }
 
-            if (v51 != 116)
+            if (integerValue != 116)
             {
               goto LABEL_151;
             }
 
-            v54 = PLResourceAlchemistV2OneUpFilename();
+            originalFilename = PLResourceAlchemistV2OneUpFilename();
           }
 
           else
           {
-            switch(v51)
+            switch(integerValue)
             {
               case 'u':
-                v54 = PLResourceAlchemistV2Widget1x1Filename();
+                originalFilename = PLResourceAlchemistV2Widget1x1Filename();
                 break;
               case 'v':
-                v54 = PLResourceAlchemistV2Widget1x2Filename();
+                originalFilename = PLResourceAlchemistV2Widget1x2Filename();
                 break;
               case 'w':
-                v54 = PLResourceAlchemistV2WallpaperFilename();
+                originalFilename = PLResourceAlchemistV2WallpaperFilename();
                 break;
               default:
                 goto LABEL_151;
@@ -773,9 +773,9 @@ LABEL_145:
 
         else
         {
-          if (v51 > 108)
+          if (integerValue > 108)
           {
-            switch(v51)
+            switch(integerValue)
             {
               case 'm':
                 v53 = @"WallpaperComputeResources.dat";
@@ -793,12 +793,12 @@ LABEL_151:
             originalFilename = v42->_originalFilename;
             v42->_originalFilename = &v53->isa;
 
-            objc_storeStrong(&v42->_photoLibrary, a6);
+            objc_storeStrong(&v42->_photoLibrary, library);
             if ([(__CFString *)v13 localAvailability]>= 1)
             {
               v42->_locallyAvailable = 1;
-              v70 = [(__CFString *)v13 dataStoreKey];
-              v71 = [v70 fileURLForAssetID:v52];
+              dataStoreKey = [(__CFString *)v13 dataStoreKey];
+              v71 = [dataStoreKey fileURLForAssetID:v52];
               privateFileURL = v42->_privateFileURL;
               v42->_privateFileURL = v71;
             }
@@ -806,24 +806,24 @@ LABEL_151:
             v42->_pixelWidth = [(__CFString *)v13 orientedWidth];
             v42->_pixelHeight = [(__CFString *)v13 orientedHeight];
             v42->_fileSize = [(__CFString *)v13 dataLength];
-            v73 = [(__CFString *)v13 trashedDate];
+            trashedDate = [(__CFString *)v13 trashedDate];
             trashedDate = v42->_trashedDate;
-            v42->_trashedDate = v73;
+            v42->_trashedDate = trashedDate;
 
             v42->_trashed = [(__CFString *)v13 trashedState]!= 0;
             v75 = [objc_alloc(MEMORY[0x1E69BE738]) initWithResource:v13];
             backingResourceIdentity = v42->_backingResourceIdentity;
             v42->_backingResourceIdentity = v75;
 
-            v77 = [v52 objectID];
+            objectID2 = [v52 objectID];
             assetObjectID = v42->_assetObjectID;
-            v42->_assetObjectID = v77;
+            v42->_assetObjectID = objectID2;
 
             v42->_orientation = [(__CFString *)v13 orientation];
-            v79 = [(__CFString *)v13 dataStore];
+            dataStore4 = [(__CFString *)v13 dataStore];
             v42->_dataStoreClassID = [objc_opt_class() storeClassID];
 
-            v80 = [(__CFString *)v13 version];
+            version5 = [(__CFString *)v13 version];
             if (v111)
             {
               v81 = 2;
@@ -834,22 +834,22 @@ LABEL_151:
               v81 = 0;
             }
 
-            v82 = v80 == 3 || v81 == v80;
+            v82 = version5 == 3 || v81 == version5;
             v83 = v82;
             v42->_current = v83;
-            v84 = [v52 libraryID];
+            libraryID = [v52 libraryID];
             libraryID = v42->_libraryID;
-            v42->_libraryID = v84;
+            v42->_libraryID = libraryID;
 
             v42->_inCloud = [(__CFString *)v13 isInCloud];
-            v86 = [(__CFString *)v13 cplType];
-            v12 = v112;
-            if (!v86)
+            cplType = [(__CFString *)v13 cplType];
+            libraryCopy = v112;
+            if (!cplType)
             {
               goto LABEL_220;
             }
 
-            v87 = v86;
+            v87 = cplType;
             v88 = 0;
             type = v42->_type;
             if (type > 100)
@@ -866,7 +866,7 @@ LABEL_151:
               {
                 if (type == 11)
                 {
-                  if (v86 == 20)
+                  if (cplType == 20)
                   {
                     v88 = 20;
                     goto LABEL_221;
@@ -894,7 +894,7 @@ LABEL_151:
                     goto LABEL_221;
                   }
 
-                  if (v86 == 25)
+                  if (cplType == 25)
                   {
                     v88 = 25;
                     goto LABEL_221;
@@ -929,7 +929,7 @@ LABEL_219:
               {
                 if (type == 8)
                 {
-                  if (v86 == 15)
+                  if (cplType == 15)
                   {
                     v88 = 15;
                     goto LABEL_221;
@@ -952,7 +952,7 @@ LABEL_219:
 
                 else if (type == 9)
                 {
-                  if (v86 == 18)
+                  if (cplType == 18)
                   {
                     v88 = 18;
                     goto LABEL_221;
@@ -975,7 +975,7 @@ LABEL_219:
 
                 else
                 {
-                  if (v86 == 19)
+                  if (cplType == 19)
                   {
                     v88 = 19;
                     goto LABEL_221;
@@ -1001,7 +1001,7 @@ LABEL_219:
 
               if (type == 6)
               {
-                if (v86 == 16)
+                if (cplType == 16)
                 {
                   v88 = 16;
                   goto LABEL_221;
@@ -1028,7 +1028,7 @@ LABEL_219:
             {
               if ((type - 1) < 3)
               {
-                if (v86 == 1)
+                if (cplType == 1)
                 {
                   v88 = 1;
 LABEL_221:
@@ -1060,7 +1060,7 @@ LABEL_220:
                   goto LABEL_221;
                 }
 
-                if (v86 == 2)
+                if (cplType == 2)
                 {
                   v88 = 2;
                   goto LABEL_221;
@@ -1082,7 +1082,7 @@ LABEL_220:
                 goto LABEL_218;
               }
 
-              if (v86 != 17)
+              if (cplType != 17)
               {
                 v93 = PLImageManagerGetLog();
                 if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
@@ -1102,17 +1102,17 @@ LABEL_220:
             goto LABEL_221;
           }
 
-          if (v51 != 107)
+          if (integerValue != 107)
           {
             v53 = @"Adjustments.data";
             goto LABEL_151;
           }
 
-          v54 = _PHAssetResourceOriginalFilenameFromBasePlusAsset(@"DeferredPreview", v52, 1);
+          originalFilename = _PHAssetResourceOriginalFilenameFromBasePlusAsset(@"DeferredPreview", v52, 1);
         }
 
 LABEL_116:
-        v53 = v54;
+        v53 = originalFilename;
         goto LABEL_151;
       }
 
@@ -1120,14 +1120,14 @@ LABEL_223:
 
       return v42;
     case 9u:
-      v18 = [(__CFString *)v13 version];
-      if (!v18)
+      version6 = [(__CFString *)v13 version];
+      if (!version6)
       {
         v15 = &unk_1F102CC98;
         goto LABEL_109;
       }
 
-      if (v18 == 2)
+      if (version6 == 2)
       {
         v15 = &unk_1F102CCB0;
         goto LABEL_109;
@@ -1191,11 +1191,11 @@ LABEL_105:
       v38 = 2;
       goto LABEL_106;
     case 0xEu:
-      v33 = [(__CFString *)v13 recipeID];
+      recipeID2 = [(__CFString *)v13 recipeID];
       v15 = 0;
-      if ((v33 - 327687) <= 0xE && ((1 << (v33 - 7)) & 0x5545) != 0)
+      if ((recipeID2 - 327687) <= 0xE && ((1 << (recipeID2 - 7)) & 0x5545) != 0)
       {
-        v15 = [MEMORY[0x1E696AD98] numberWithInteger:PHAssetResourceTypeForDataDerivativeRecipeID(v33)];
+        v15 = [MEMORY[0x1E696AD98] numberWithInteger:PHAssetResourceTypeForDataDerivativeRecipeID(recipeID2)];
       }
 
       goto LABEL_109;
@@ -1274,28 +1274,28 @@ LABEL_105:
   return v8;
 }
 
-+ (id)_resourcesForManagedAsset:(id)a3 includeDerivatives:(BOOL)a4
++ (id)_resourcesForManagedAsset:(id)asset includeDerivatives:(BOOL)derivatives
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
+  assetCopy = asset;
+  array = [v5 array];
   v8 = MEMORY[0x1E695DEC8];
-  v9 = [v6 modernResources];
-  v10 = [v9 allObjects];
-  v11 = [v8 arrayWithArray:v10];
+  modernResources = [assetCopy modernResources];
+  allObjects = [modernResources allObjects];
+  v11 = [v8 arrayWithArray:allObjects];
 
-  v12 = [v6 nonPersistedResourcesWithOptions:0];
-  v13 = [v6 virtualResourcesThatReplaceMissingPersistedResources:v11];
+  v12 = [assetCopy nonPersistedResourcesWithOptions:0];
+  v13 = [assetCopy virtualResourcesThatReplaceMissingPersistedResources:v11];
 
-  [v7 addObjectsFromArray:v11];
-  [v7 addObjectsFromArray:v12];
-  [v7 addObjectsFromArray:v13];
+  [array addObjectsFromArray:v11];
+  [array addObjectsFromArray:v12];
+  [array addObjectsFromArray:v13];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___block_invoke;
   v16[3] = &__block_descriptor_33_e22_B16__0___PLResource__8l;
-  v17 = a4;
-  v14 = [v7 _pl_filter:v16];
+  derivativesCopy = derivatives;
+  v14 = [array _pl_filter:v16];
 
   return v14;
 }
@@ -1315,22 +1315,22 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
   return v3 & 1;
 }
 
-+ (id)_assetResourcesFromPLResources:(id)a3 includeMetadata:(BOOL)a4 mediaMetadataVirtualResources:(id)a5 asset:(id)a6 photoLibrary:(id)a7 assetHasAdjustments:(BOOL)a8 includeDerivatives:(BOOL)a9 includeAdjustmentOverflowDataBlob:(BOOL)a10
++ (id)_assetResourcesFromPLResources:(id)resources includeMetadata:(BOOL)metadata mediaMetadataVirtualResources:(id)virtualResources asset:(id)asset photoLibrary:(id)library assetHasAdjustments:(BOOL)adjustments includeDerivatives:(BOOL)derivatives includeAdjustmentOverflowDataBlob:(BOOL)self0
 {
-  v54 = a8;
-  v13 = a4;
-  v14 = a10;
+  adjustmentsCopy = adjustments;
+  metadataCopy = metadata;
+  blobCopy = blob;
   v71 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v50 = a5;
-  v53 = a6;
-  v52 = a7;
+  resourcesCopy = resources;
+  virtualResourcesCopy = virtualResources;
+  assetCopy = asset;
+  libraryCopy = library;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v17 = v15;
+  v17 = resourcesCopy;
   v18 = [v17 countByEnumeratingWithState:&v61 objects:v70 count:16];
   v51 = v17;
   if (v18)
@@ -1350,11 +1350,11 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
 
         v23 = *(*(&v61 + 1) + 8 * v22);
         IsTopClassResource = _PHAssetResourceIsTopClassResource(v23);
-        if ((a9 || IsTopClassResource) && (v13 || [v23 resourceType] != 9 && objc_msgSend(v23, "resourceType") != 13) && (v14 || objc_msgSend(v23, "resourceType") != 6) && (!objc_msgSend(v23, "isDerivative") || objc_msgSend(v23, "version") || !v54))
+        if ((derivatives || IsTopClassResource) && (metadataCopy || [v23 resourceType] != 9 && objc_msgSend(v23, "resourceType") != 13) && (blobCopy || objc_msgSend(v23, "resourceType") != 6) && (!objc_msgSend(v23, "isDerivative") || objc_msgSend(v23, "version") || !adjustmentsCopy))
         {
-          if ([v23 version] != 2 || v54)
+          if ([v23 version] != 2 || adjustmentsCopy)
           {
-            v31 = [objc_alloc(*(v21 + 3664)) initWithResource:v23 asset:v53 hasAdjustments:v54 photoLibrary:v52];
+            v31 = [objc_alloc(*(v21 + 3664)) initWithResource:v23 asset:assetCopy hasAdjustments:adjustmentsCopy photoLibrary:libraryCopy];
             v25 = v31;
             if (v31)
             {
@@ -1375,18 +1375,18 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
             v25 = PLPhotoKitGetLog();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              [v53 uuid];
+              [assetCopy uuid];
               v26 = v16;
-              v27 = v13;
+              v27 = metadataCopy;
               v28 = v21;
-              v30 = v29 = v14;
+              v30 = v29 = blobCopy;
               *buf = 138412290;
               v66 = v30;
               _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEFAULT, "Asset %@ with no adjustments has adjusted resource, resource will be ignored", buf, 0xCu);
 
-              v14 = v29;
+              blobCopy = v29;
               v21 = v28;
-              v13 = v27;
+              metadataCopy = v27;
               v16 = v26;
               v17 = v51;
             }
@@ -1404,14 +1404,14 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
     while (v32);
   }
 
-  v33 = v50;
-  if (v13)
+  v33 = virtualResourcesCopy;
+  if (metadataCopy)
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v34 = v50;
+    v34 = virtualResourcesCopy;
     v35 = [v34 countByEnumeratingWithState:&v57 objects:v69 count:16];
     if (v35)
     {
@@ -1426,7 +1426,7 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
             objc_enumerationMutation(v34);
           }
 
-          v39 = [[PHAssetResource alloc] initWithResource:*(*(&v57 + 1) + 8 * i) asset:v53 hasAdjustments:v54 photoLibrary:v52];
+          v39 = [[PHAssetResource alloc] initWithResource:*(*(&v57 + 1) + 8 * i) asset:assetCopy hasAdjustments:adjustmentsCopy photoLibrary:libraryCopy];
           v55[0] = MEMORY[0x1E69E9820];
           v55[1] = 3221225472;
           v55[2] = __188__PHAssetResource__assetResourcesFromPLResources_includeMetadata_mediaMetadataVirtualResources_asset_photoLibrary_assetHasAdjustments_includeDerivatives_includeAdjustmentOverflowDataBlob___block_invoke;
@@ -1451,7 +1451,7 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
       while (v36);
     }
 
-    v33 = v50;
+    v33 = virtualResourcesCopy;
   }
 
   v42 = [v16 indexesOfObjectsPassingTest:&__block_literal_global_20104];
@@ -1464,16 +1464,16 @@ uint64_t __64__PHAssetResource__resourcesForManagedAsset_includeDerivatives___bl
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       v46 = [v42 count];
-      v47 = [v53 uuid];
+      uuid = [assetCopy uuid];
       *buf = 134218242;
       v66 = v46;
       v67 = 2114;
-      v68 = v47;
+      v68 = uuid;
       _os_log_impl(&dword_19C86F000, v45, OS_LOG_TYPE_ERROR, "%ld original photo image resources found for asset %{public}@, not fatal, picking best and continuing", buf, 0x16u);
     }
 
-    v48 = [v43 lastObject];
-    [v16 addObject:v48];
+    lastObject = [v43 lastObject];
+    [v16 addObject:lastObject];
   }
 
   return v16;
@@ -1541,8 +1541,8 @@ uint64_t __188__PHAssetResource__assetResourcesFromPLResources_includeMetadata_m
   if ([(PHAssetResource *)self type]== (PHAssetResourceTypePhotoProxy|0x60))
   {
     v3 = MEMORY[0x1E69BE6D0];
-    v4 = [(PHAssetResource *)self privateFileURL];
-    v5 = [v3 contextualVideoThumbnailIdentifierFromFileURL:v4];
+    privateFileURL = [(PHAssetResource *)self privateFileURL];
+    v5 = [v3 contextualVideoThumbnailIdentifierFromFileURL:privateFileURL];
   }
 
   else
@@ -1610,32 +1610,32 @@ uint64_t __188__PHAssetResource__assetResourcesFromPLResources_includeMetadata_m
   return v2;
 }
 
-+ (id)assetResourcesForAssets:(id)a3 includeDerivatives:(BOOL)a4 includeMetadata:(BOOL)a5 includeAdjustmentOverflowDataBlob:(BOOL)a6
++ (id)assetResourcesForAssets:(id)assets includeDerivatives:(BOOL)derivatives includeMetadata:(BOOL)metadata includeAdjustmentOverflowDataBlob:(BOOL)blob
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  assetsCopy = assets;
   memset(v33, 0, sizeof(v33));
-  if ([v11 countByEnumeratingWithState:v33 objects:v34 count:16] && (objc_msgSend(**(&v33[0] + 1), "photoLibrary"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([assetsCopy countByEnumeratingWithState:v33 objects:v34 count:16] && (objc_msgSend(**(&v33[0] + 1), "photoLibrary"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
-    v14 = [v12 photoLibrary];
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    photoLibrary = [v12 photoLibrary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __121__PHAssetResource_Private__assetResourcesForAssets_includeDerivatives_includeMetadata_includeAdjustmentOverflowDataBlob___block_invoke;
     v22[3] = &unk_1E75A65F0;
-    v23 = v11;
-    v24 = v14;
+    v23 = assetsCopy;
+    v24 = photoLibrary;
     v27 = a2;
-    v28 = a1;
+    selfCopy = self;
     v25 = v13;
-    v30 = a4;
-    v31 = a5;
-    v32 = a6;
+    derivativesCopy = derivatives;
+    metadataCopy = metadata;
+    blobCopy = blob;
     v29 = 0;
-    v16 = v15;
+    v16 = dictionary;
     v26 = v16;
-    v17 = v14;
+    v17 = photoLibrary;
     v18 = v13;
     [v17 performBlockAndWait:v22];
     v19 = v26;
@@ -1846,27 +1846,27 @@ LABEL_9:
 LABEL_18:
 }
 
-+ (id)assetResourcesForAsset:(id)a3 includeDerivatives:(BOOL)a4 includeMetadata:(BOOL)a5 includeAdjustmentOverflowDataBlob:(BOOL)a6
++ (id)assetResourcesForAsset:(id)asset includeDerivatives:(BOOL)derivatives includeMetadata:(BOOL)metadata includeAdjustmentOverflowDataBlob:(BOOL)blob
 {
-  v10 = a3;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [v10 photoLibrary];
-  v13 = [v12 photoLibrary];
+  assetCopy = asset;
+  array = [MEMORY[0x1E695DF70] array];
+  photoLibrary = [assetCopy photoLibrary];
+  v12PhotoLibrary = [photoLibrary photoLibrary];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __120__PHAssetResource_Private__assetResourcesForAsset_includeDerivatives_includeMetadata_includeAdjustmentOverflowDataBlob___block_invoke;
   v20[3] = &unk_1E75A6578;
-  v21 = v10;
-  v22 = v13;
-  v25 = a5;
-  v24 = a1;
-  v26 = a4;
-  v27 = a6;
-  v14 = v11;
+  v21 = assetCopy;
+  v22 = v12PhotoLibrary;
+  metadataCopy = metadata;
+  selfCopy = self;
+  derivativesCopy = derivatives;
+  blobCopy = blob;
+  v14 = array;
   v23 = v14;
-  v15 = v13;
-  v16 = v10;
+  v15 = v12PhotoLibrary;
+  v16 = assetCopy;
   [v15 performBlockAndWait:v20];
   v17 = v23;
   v18 = v14;
@@ -1928,31 +1928,31 @@ void __120__PHAssetResource_Private__assetResourcesForAsset_includeDerivatives_i
   }
 }
 
-+ (id)assetResourceForAsset:(id)a3 qualityClass:(id)a4
++ (id)assetResourceForAsset:(id)asset qualityClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  classCopy = class;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__20186;
   v25 = __Block_byref_object_dispose__20187;
   v26 = 0;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 photoLibrary];
+  photoLibrary = [assetCopy photoLibrary];
+  v8PhotoLibrary = [photoLibrary photoLibrary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__PHAssetResource_Private__assetResourceForAsset_qualityClass___block_invoke;
   v15[3] = &unk_1E75A9B78;
-  v10 = v6;
+  v10 = assetCopy;
   v16 = v10;
-  v11 = v7;
+  v11 = classCopy;
   v17 = v11;
   v19 = &v21;
-  v20 = a1;
-  v12 = v8;
+  selfCopy = self;
+  v12 = photoLibrary;
   v18 = v12;
-  [v9 performBlockAndWait:v15];
+  [v8PhotoLibrary performBlockAndWait:v15];
 
   v13 = v22[5];
   _Block_object_dispose(&v21, 8);

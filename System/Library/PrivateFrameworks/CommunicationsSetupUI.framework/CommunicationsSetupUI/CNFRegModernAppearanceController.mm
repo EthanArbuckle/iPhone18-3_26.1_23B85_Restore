@@ -124,8 +124,8 @@
   if (!tableCellCheckmarkImage_sTintedImage_0)
   {
     v4 = [MEMORY[0x277D755B8] kitImageNamed:@"UIPreferencesBlueCheck.png"];
-    v5 = [(CNFRegAppearanceController *)self userInteractionColor];
-    v6 = [v4 _flatImageWithColor:v5];
+    userInteractionColor = [(CNFRegAppearanceController *)self userInteractionColor];
+    v6 = [v4 _flatImageWithColor:userInteractionColor];
     v7 = tableCellCheckmarkImage_sTintedImage_0;
     tableCellCheckmarkImage_sTintedImage_0 = v6;
 

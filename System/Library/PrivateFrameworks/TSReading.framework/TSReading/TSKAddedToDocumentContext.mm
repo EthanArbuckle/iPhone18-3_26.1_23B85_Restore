@@ -3,8 +3,8 @@
 + (id)dragCopyContext;
 + (id)dragMoveContext;
 + (id)exportFootnoteContext;
-+ (id)importingContextWithImporterID:(id)a3;
-+ (id)importingMasterTemplateContextWithImporterID:(id)a3;
++ (id)importingContextWithImporterID:(id)d;
++ (id)importingMasterTemplateContextWithImporterID:(id)d;
 + (id)insertingPrototypeContext;
 + (id)movingContext;
 + (id)pastingContext;
@@ -12,7 +12,7 @@
 + (id)unarchivingContext;
 + (id)undoDeleteContext;
 + (id)unhidingContext;
-- (void)setTableIDMap:(__CFDictionary *)a3;
+- (void)setTableIDMap:(__CFDictionary *)map;
 @end
 
 @implementation TSKAddedToDocumentContext
@@ -26,16 +26,16 @@
   return +[TSKAddedToDocumentContext unarchivingContext]::sUnarchivingContext;
 }
 
-+ (id)importingContextWithImporterID:(id)a3
++ (id)importingContextWithImporterID:(id)d
 {
-  v3 = [[TSKAddedToDocumentContext_Importing alloc] initWithImporterID:a3];
+  v3 = [[TSKAddedToDocumentContext_Importing alloc] initWithImporterID:d];
 
   return v3;
 }
 
-+ (id)importingMasterTemplateContextWithImporterID:(id)a3
++ (id)importingMasterTemplateContextWithImporterID:(id)d
 {
-  v3 = [[TSKAddedToDocumentContext_ImportingMasterTemplate alloc] initWithImporterID:a3];
+  v3 = [[TSKAddedToDocumentContext_ImportingMasterTemplate alloc] initWithImporterID:d];
 
   return v3;
 }
@@ -128,13 +128,13 @@
   return +[TSKAddedToDocumentContext changeTrackingSubstorageForCopyContext]::sChangeTrackingSubstorageContext;
 }
 
-- (void)setTableIDMap:(__CFDictionary *)a3
+- (void)setTableIDMap:(__CFDictionary *)map
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAddedToDocumentContext setTableIDMap:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentObjectProtocol.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:721 description:@"Only the pasting context accepts a table ID map."];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:721 description:@"Only the pasting context accepts a table ID map."];
 }
 
 @end

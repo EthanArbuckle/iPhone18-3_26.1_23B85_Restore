@@ -1,61 +1,61 @@
 @interface MIContainerToken
-- (MIContainerToken)initWithCoder:(id)a3;
-- (MIContainerToken)initWithContainer:(id)a3;
+- (MIContainerToken)initWithCoder:(id)coder;
+- (MIContainerToken)initWithContainer:(id)container;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIContainerToken
 
-- (MIContainerToken)initWithContainer:(id)a3
+- (MIContainerToken)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = MIContainerToken;
   v5 = [(MIContainerToken *)&v15 init];
   if (v5)
   {
-    v6 = [v4 rawContainer];
-    if (v6)
+    rawContainer = [containerCopy rawContainer];
+    if (rawContainer)
     {
-      v7 = [v4 identifier];
+      identifier = [containerCopy identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v7;
+      v5->_identifier = identifier;
 
-      v9 = [v4 personaUniqueString];
+      personaUniqueString = [containerCopy personaUniqueString];
       personaUniqueString = v5->_personaUniqueString;
-      v5->_personaUniqueString = v9;
+      v5->_personaUniqueString = personaUniqueString;
 
-      v5->_isTransient = [v4 isTransient];
-      v5->_containerClass = [v4 containerClass];
-      v11 = [v6 serializedContainerRepresentation];
+      v5->_isTransient = [containerCopy isTransient];
+      v5->_containerClass = [containerCopy containerClass];
+      serializedContainerRepresentation = [rawContainer serializedContainerRepresentation];
       v12 = 48;
     }
 
     else
     {
-      v11 = [v4 containerURL];
+      serializedContainerRepresentation = [containerCopy containerURL];
       v12 = 40;
     }
 
     v13 = *(&v5->super.isa + v12);
-    *(&v5->super.isa + v12) = v11;
+    *(&v5->super.isa + v12) = serializedContainerRepresentation;
   }
 
   return v5;
 }
 
-- (MIContainerToken)initWithCoder:(id)a3
+- (MIContainerToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MIContainerToken;
   v5 = [(MIContainerToken *)&v23 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"containerURL"])
+    if ([coderCopy containsValueForKey:@"containerURL"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerURL"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerURL"];
       containerURL = v5->_containerURL;
       v5->_containerURL = v6;
 
@@ -71,7 +71,7 @@ LABEL_12:
 
     else
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       identifier = v5->_identifier;
       v5->_identifier = v11;
 
@@ -82,25 +82,25 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
       personaUniqueString = v5->_personaUniqueString;
       v5->_personaUniqueString = v13;
 
-      v5->_isTransient = [v4 decodeBoolForKey:@"isTransient"];
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerClass"];
+      v5->_isTransient = [coderCopy decodeBoolForKey:@"isTransient"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerClass"];
       v5->_containerClass = [v15 unsignedLongLongValue];
 
       if (v5->_containerClass - 15 <= 0xFFFFFFFFFFFFFFF1)
       {
         _CreateAndLogError("[MIContainerToken initWithCoder:]", 70, @"MIInstallerErrorDomain", 186, 0, 0, @"Serialized container encoded invalid class: %llu", v16, v5->_containerClass);
         v20 = LABEL_13:;
-        [v4 failWithError:v20];
+        [coderCopy failWithError:v20];
 
         v19 = 0;
         goto LABEL_14;
       }
 
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedContainerRepresentation"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedContainerRepresentation"];
       serializedContainerRepresentation = v5->_serializedContainerRepresentation;
       v5->_serializedContainerRepresentation = v17;
 
@@ -119,22 +119,22 @@ LABEL_14:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIContainerToken *)self serializedContainerRepresentation];
+  coderCopy = coder;
+  serializedContainerRepresentation = [(MIContainerToken *)self serializedContainerRepresentation];
 
-  if (v5)
+  if (serializedContainerRepresentation)
   {
-    v6 = [(MIContainerToken *)self identifier];
-    [v4 encodeObject:v6 forKey:@"identifier"];
+    identifier = [(MIContainerToken *)self identifier];
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-    v7 = [(MIContainerToken *)self personaUniqueString];
-    [v4 encodeObject:v7 forKey:@"personaUniqueString"];
+    personaUniqueString = [(MIContainerToken *)self personaUniqueString];
+    [coderCopy encodeObject:personaUniqueString forKey:@"personaUniqueString"];
 
-    [v4 encodeBool:-[MIContainerToken isTransient](self forKey:{"isTransient"), @"isTransient"}];
+    [coderCopy encodeBool:-[MIContainerToken isTransient](self forKey:{"isTransient"), @"isTransient"}];
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MIContainerToken containerClass](self, "containerClass")}];
-    [v4 encodeObject:v8 forKey:@"containerClass"];
+    [coderCopy encodeObject:v8 forKey:@"containerClass"];
 
     [(MIContainerToken *)self serializedContainerRepresentation];
   }
@@ -144,34 +144,34 @@ LABEL_14:
     [(MIContainerToken *)self containerURL];
   }
   v9 = ;
-  [v4 encodeObject:? forKey:?];
+  [coderCopy encodeObject:? forKey:?];
 }
 
 - (id)description
 {
-  v3 = [(MIContainerToken *)self identifier];
+  identifier = [(MIContainerToken *)self identifier];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3)
+  if (identifier)
   {
-    v7 = [(MIContainerToken *)self personaUniqueString];
-    v8 = [(MIContainerToken *)self isTransient];
-    v9 = [(MIContainerToken *)self containerClass];
+    personaUniqueString = [(MIContainerToken *)self personaUniqueString];
+    isTransient = [(MIContainerToken *)self isTransient];
+    containerClass = [(MIContainerToken *)self containerClass];
     v10 = 78;
-    if (v8)
+    if (isTransient)
     {
       v10 = 89;
     }
 
-    v11 = [v4 stringWithFormat:@"<%@ identity:%@/%@ isTransient:%c containerClass:%llu>", v6, v3, v7, v10, v9];
+    v11 = [v4 stringWithFormat:@"<%@ identity:%@/%@ isTransient:%c containerClass:%llu>", v6, identifier, personaUniqueString, v10, containerClass];
   }
 
   else
   {
-    v7 = [(MIContainerToken *)self containerURL];
-    v12 = [v7 path];
-    v11 = [v4 stringWithFormat:@"<%@ containerPath:%@>", v6, v12];
+    personaUniqueString = [(MIContainerToken *)self containerURL];
+    path = [personaUniqueString path];
+    v11 = [v4 stringWithFormat:@"<%@ containerPath:%@>", v6, path];
   }
 
   return v11;

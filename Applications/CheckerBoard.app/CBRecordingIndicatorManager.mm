@@ -1,52 +1,52 @@
 @interface CBRecordingIndicatorManager
 + (BOOL)_supportsSecureIndicator;
-- (CBRecordingIndicatorManager)initWithWindowScene:(id)a3;
+- (CBRecordingIndicatorManager)initWithWindowScene:(id)scene;
 - (UIWindowScene)windowScene;
-- (id)_indicatorIdentifierForSensorType:(int64_t)a3;
-- (unint64_t)_indicatorTypeForSensorType:(int64_t)a3;
+- (id)_indicatorIdentifierForSensorType:(int64_t)type;
+- (unint64_t)_indicatorTypeForSensorType:(int64_t)type;
 - (void)_createRecordingIndicatorForStandaloneLocation;
 - (void)_createRecordingIndicatorForStatusBarLocation;
 - (void)_createRecordingIndicatorForSystemApertureLocation;
-- (void)_dataProviderDidUpdate:(id)a3;
-- (void)_setIndicatorVisible:(BOOL)a3 atLocation:(unint64_t)a4;
-- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)a3;
-- (void)_updateIndicatorViewForSensorType:(int64_t)a3;
+- (void)_dataProviderDidUpdate:(id)update;
+- (void)_setIndicatorVisible:(BOOL)visible atLocation:(unint64_t)location;
+- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)attributions;
+- (void)_updateIndicatorViewForSensorType:(int64_t)type;
 - (void)_updateRecordingIndicatorForStatusBarChanges;
 - (void)_updateRecordingIndicatorLocationIfNecessary;
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3;
-- (void)recordingIndicatorViewController:(id)a3 didUpdateIndicatorState:(unint64_t)a4;
-- (void)setIndicatorVisible:(BOOL)a3;
-- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider;
+- (void)recordingIndicatorViewController:(id)controller didUpdateIndicatorState:(unint64_t)state;
+- (void)setIndicatorVisible:(BOOL)visible;
+- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)location;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation CBRecordingIndicatorManager
 
-- (CBRecordingIndicatorManager)initWithWindowScene:(id)a3
+- (CBRecordingIndicatorManager)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v19.receiver = self;
   v19.super_class = CBRecordingIndicatorManager;
   v5 = [(CBRecordingIndicatorManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v7 = +[UIDevice currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
 
     v9 = +[BSPlatform sharedInstance];
-    v10 = [v9 homeButtonType];
+    homeButtonType = [v9 homeButtonType];
 
-    v11 = [objc_opt_class() _supportsSecureIndicator];
-    v12 = v10 != 2 || v8 == 1;
+    _supportsSecureIndicator = [objc_opt_class() _supportsSecureIndicator];
+    v12 = homeButtonType != 2 || userInterfaceIdiom == 1;
     v13 = 2;
     if (!v12)
     {
       v13 = 0;
     }
 
-    if (v11)
+    if (_supportsSecureIndicator)
     {
       v14 = 1;
     }
@@ -64,11 +64,11 @@
     }
 
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 delegate];
+    delegate = [v15 delegate];
 
-    v17 = [v16 sensorActivityDataProvider];
-    [v17 addObserver:v6];
-    [(CBRecordingIndicatorManager *)v6 activityDidChangeForSensorActivityDataProvider:v17];
+    sensorActivityDataProvider = [delegate sensorActivityDataProvider];
+    [sensorActivityDataProvider addObserver:v6];
+    [(CBRecordingIndicatorManager *)v6 activityDidChangeForSensorActivityDataProvider:sensorActivityDataProvider];
   }
 
   return v6;
@@ -76,8 +76,8 @@
 
 - (void)_createRecordingIndicatorForStandaloneLocation
 {
-  v7 = [(CBRecordingIndicatorManager *)self windowScene];
-  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:v7 debugName:@"Recording Indicator"];
+  windowScene = [(CBRecordingIndicatorManager *)self windowScene];
+  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator"];
   v4 = [[CBRecordingIndicatorViewController alloc] initForLocation:0];
   recordingIndicatorViewController = self->_recordingIndicatorViewController;
   self->_recordingIndicatorViewController = v4;
@@ -92,8 +92,8 @@
 
 - (void)_createRecordingIndicatorForStatusBarLocation
 {
-  v11 = [(CBRecordingIndicatorManager *)self windowScene];
-  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:v11 debugName:@"Recording Indicator (UIKit Status Bar Portal)"];
+  windowScene = [(CBRecordingIndicatorManager *)self windowScene];
+  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator (UIKit Status Bar Portal)"];
   v4 = [[CBRecordingIndicatorViewController alloc] initForLocation:1];
   recordingIndicatorViewControllerUIKitStatusBarPortal = self->_recordingIndicatorViewControllerUIKitStatusBarPortal;
   self->_recordingIndicatorViewControllerUIKitStatusBarPortal = v4;
@@ -107,16 +107,16 @@
   v7 = v3;
 
   v8 = objc_opt_class();
-  v9 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal indicatorView];
+  indicatorView = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal indicatorView];
 
-  v10 = [v11 screen];
-  [v8 registerSensorActivityIndicator:v9 forScreen:v10];
+  screen = [windowScene screen];
+  [v8 registerSensorActivityIndicator:indicatorView forScreen:screen];
 }
 
 - (void)_createRecordingIndicatorForSystemApertureLocation
 {
-  v10 = [(CBRecordingIndicatorManager *)self windowScene];
-  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:v10 debugName:@"Recording Indicator (SystemAperture Portal)"];
+  windowScene = [(CBRecordingIndicatorManager *)self windowScene];
+  v3 = [[CBRecordingIndicatorWindow alloc] initWithWindowScene:windowScene debugName:@"Recording Indicator (SystemAperture Portal)"];
   v4 = [[CBRecordingIndicatorViewController alloc] initForLocation:2];
   recordingIndicatorViewControllerSystemAperturePortal = self->_recordingIndicatorViewControllerSystemAperturePortal;
   self->_recordingIndicatorViewControllerSystemAperturePortal = v4;
@@ -129,15 +129,15 @@
   self->_recordingIndicatorWindowSystemAperturePortal = &v3->super.super.super;
   v7 = v3;
 
-  v8 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorContainerView];
-  v9 = [[_UIPortalView alloc] initWithSourceView:v8];
+  indicatorContainerView = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorContainerView];
+  v9 = [[_UIPortalView alloc] initWithSourceView:indicatorContainerView];
   [v9 setMatchesAlpha:1];
   [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal setDelegate:self];
 }
 
-- (unint64_t)_indicatorTypeForSensorType:(int64_t)a3
+- (unint64_t)_indicatorTypeForSensorType:(int64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     return 0;
   }
@@ -150,9 +150,9 @@
   return 1;
 }
 
-- (id)_indicatorIdentifierForSensorType:(int64_t)a3
+- (id)_indicatorIdentifierForSensorType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"microphone-recording-indicator";
   }
@@ -163,30 +163,30 @@
   }
 }
 
-- (void)_dataProviderDidUpdate:(id)a3
+- (void)_dataProviderDidUpdate:(id)update
 {
-  v5 = a3;
-  objc_storeStrong(&self->_dataProvider, a3);
+  updateCopy = update;
+  objc_storeStrong(&self->_dataProvider, update);
   if (self->_visibilityIsForcedByPrototypeSettings)
   {
-    v6 = CheckerBoardLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    activeCameraAndMicrophoneActivityAttributions = CheckerBoardLogHandleForCategory();
+    if (os_log_type_enabled(activeCameraAndMicrophoneActivityAttributions, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Visibility is forced by prototype settings", buf, 2u);
+      _os_log_impl(&_mh_execute_header, activeCameraAndMicrophoneActivityAttributions, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Visibility is forced by prototype settings", buf, 2u);
     }
 
     goto LABEL_19;
   }
 
-  v6 = [v5 activeCameraAndMicrophoneActivityAttributions];
-  if ([v6 count])
+  activeCameraAndMicrophoneActivityAttributions = [updateCopy activeCameraAndMicrophoneActivityAttributions];
+  if ([activeCameraAndMicrophoneActivityAttributions count])
   {
-    [(CBRecordingIndicatorManager *)self _updateIndicatorStyleForSensorActivityAttributions:v6];
-    v7 = self;
+    [(CBRecordingIndicatorManager *)self _updateIndicatorStyleForSensorActivityAttributions:activeCameraAndMicrophoneActivityAttributions];
+    selfCopy3 = self;
     v8 = 1;
 LABEL_6:
-    [(CBRecordingIndicatorManager *)v7 setIndicatorVisible:v8];
+    [(CBRecordingIndicatorManager *)selfCopy3 setIndicatorVisible:v8];
     goto LABEL_17;
   }
 
@@ -198,10 +198,10 @@ LABEL_6:
 
     if (v11 <= 2.0)
     {
-      v12 = [(NSTimer *)self->_minimumTimeOnScreenTimer isValid];
+      isValid = [(NSTimer *)self->_minimumTimeOnScreenTimer isValid];
       v13 = CheckerBoardLogHandleForCategory();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (isValid)
       {
         if (v14)
         {
@@ -225,8 +225,8 @@ LABEL_6:
         v18 = 3221225472;
         v19 = sub_10001E8C4;
         v20 = &unk_10007DF50;
-        v21 = self;
-        v22 = v5;
+        selfCopy2 = self;
+        v22 = updateCopy;
         v15 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v17 block:2.0 - v11];
         minimumTimeOnScreenTimer = self->_minimumTimeOnScreenTimer;
         self->_minimumTimeOnScreenTimer = v15;
@@ -235,7 +235,7 @@ LABEL_6:
       goto LABEL_17;
     }
 
-    v7 = self;
+    selfCopy3 = self;
     v8 = 0;
     goto LABEL_6;
   }
@@ -249,17 +249,17 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)setIndicatorVisible:(BOOL)a3
+- (void)setIndicatorVisible:(BOOL)visible
 {
-  if (self->_indicatorVisible != a3)
+  if (self->_indicatorVisible != visible)
   {
-    v3 = a3;
-    self->_indicatorVisible = a3;
+    visibleCopy = visible;
+    self->_indicatorVisible = visible;
     v5 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"off";
-      if (v3)
+      if (visibleCopy)
       {
         v6 = @"on";
       }
@@ -274,7 +274,7 @@ LABEL_19:
     self->_minimumTimeOnScreenTimer = 0;
 
     v8 = 0;
-    if (v3)
+    if (visibleCopy)
     {
       v8 = +[NSDate date];
     }
@@ -282,54 +282,54 @@ LABEL_19:
     indicatorDisplayTime = self->_indicatorDisplayTime;
     self->_indicatorDisplayTime = v8;
 
-    v10 = [(CBRecordingIndicatorManager *)self displayMode];
-    if (v10 < 2)
+    displayMode = [(CBRecordingIndicatorManager *)self displayMode];
+    if (displayMode < 2)
     {
-      v11 = self;
-      v12 = v3;
+      selfCopy2 = self;
+      v12 = visibleCopy;
       v13 = 0;
       goto LABEL_12;
     }
 
-    if (v10 - 3 < 2)
+    if (displayMode - 3 < 2)
     {
       [(CBRecordingIndicatorManager *)self _updateSystemApertureElementAssertion];
       return;
     }
 
-    if (v10 == 2)
+    if (displayMode == 2)
     {
-      if (v3)
+      if (visibleCopy)
       {
         v14 = +[CBStatusBarStateAggregator sharedInstance];
-        v15 = [v14 isHidden];
-        [(CBRecordingIndicatorManager *)self _setIndicatorVisible:v15 atLocation:0];
-        [(CBRecordingIndicatorManager *)self _setIndicatorVisible:v15 ^ 1 atLocation:1];
+        isHidden = [v14 isHidden];
+        [(CBRecordingIndicatorManager *)self _setIndicatorVisible:isHidden atLocation:0];
+        [(CBRecordingIndicatorManager *)self _setIndicatorVisible:isHidden ^ 1 atLocation:1];
 
         return;
       }
 
       [(CBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:0];
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
       v13 = 1;
 LABEL_12:
-      [(CBRecordingIndicatorManager *)v11 _setIndicatorVisible:v12 atLocation:v13];
+      [(CBRecordingIndicatorManager *)selfCopy2 _setIndicatorVisible:v12 atLocation:v13];
     }
   }
 }
 
-- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)a3
+- (void)setIndicatorVisibleAtStatusBarLocation:(BOOL)location
 {
-  if (self->_indicatorVisibleAtStatusBarLocation != a3)
+  if (self->_indicatorVisibleAtStatusBarLocation != location)
   {
-    v3 = a3;
-    self->_indicatorVisibleAtStatusBarLocation = a3;
+    locationCopy = location;
+    self->_indicatorVisibleAtStatusBarLocation = location;
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = @"off";
-      if (v3)
+      if (locationCopy)
       {
         v5 = @"on";
       }
@@ -346,10 +346,10 @@ LABEL_12:
 
 - (void)_updateRecordingIndicatorLocationIfNecessary
 {
-  v3 = [(CBRecordingIndicatorManager *)self isIndicatorVisible];
-  if (!v3 || [(CBRecordingIndicatorManager *)self displayMode]- 3 <= 1)
+  isIndicatorVisible = [(CBRecordingIndicatorManager *)self isIndicatorVisible];
+  if (!isIndicatorVisible || [(CBRecordingIndicatorManager *)self displayMode]- 3 <= 1)
   {
-    [(CBRecordingIndicatorManager *)self _setIndicatorVisible:v3 atLocation:0];
+    [(CBRecordingIndicatorManager *)self _setIndicatorVisible:isIndicatorVisible atLocation:0];
     [(CBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:1];
 
     [(CBRecordingIndicatorManager *)self _setIndicatorVisible:0 atLocation:2];
@@ -366,15 +366,15 @@ LABEL_12:
   return byte_1000923B0;
 }
 
-- (void)_setIndicatorVisible:(BOOL)a3 atLocation:(unint64_t)a4
+- (void)_setIndicatorVisible:(BOOL)visible atLocation:(unint64_t)location
 {
-  v4 = a3;
-  if (a4 == 2)
+  visibleCopy = visible;
+  if (location == 2)
   {
-    v9 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
-    if (v4)
+    indicatorState = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal indicatorState];
+    if (visibleCopy)
     {
-      if (v9 - 1 < 2)
+      if (indicatorState - 1 < 2)
       {
         return;
       }
@@ -383,9 +383,9 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    if (v9)
+    if (indicatorState)
     {
-      v11 = v9 == 3;
+      v11 = indicatorState == 3;
     }
 
     else
@@ -402,17 +402,17 @@ LABEL_12:
 
   else
   {
-    if (a4 != 1)
+    if (location != 1)
     {
-      if (a4)
+      if (location)
       {
         return;
       }
 
-      v6 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorState];
-      if (v4)
+      indicatorState2 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorState];
+      if (visibleCopy)
       {
-        if (v6 - 1 < 2)
+        if (indicatorState2 - 1 < 2)
         {
           return;
         }
@@ -426,7 +426,7 @@ LABEL_25:
         return;
       }
 
-      if (!v6 || v6 == 3)
+      if (!indicatorState2 || indicatorState2 == 3)
       {
         return;
       }
@@ -437,18 +437,18 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v8 = a3;
+    visibleCopy2 = visible;
 
-    [(CBRecordingIndicatorManager *)self setIndicatorVisibleAtStatusBarLocation:v8];
+    [(CBRecordingIndicatorManager *)self setIndicatorVisibleAtStatusBarLocation:visibleCopy2];
   }
 }
 
 - (void)_updateRecordingIndicatorForStatusBarChanges
 {
-  v3 = [(CBRecordingIndicatorManager *)self displayMode];
-  if (v3 != 4)
+  displayMode = [(CBRecordingIndicatorManager *)self displayMode];
+  if (displayMode != 4)
   {
-    if (v3 != 2 || ![(CBRecordingIndicatorManager *)self isIndicatorVisible])
+    if (displayMode != 2 || ![(CBRecordingIndicatorManager *)self isIndicatorVisible])
     {
       return;
     }
@@ -481,16 +481,16 @@ LABEL_14:
   [(CBRecordingIndicatorManager *)self _updateRecordingIndicatorLocationIfNecessary];
 }
 
-- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)a3
+- (void)_updateIndicatorStyleForSensorActivityAttributions:(id)attributions
 {
-  v4 = a3;
-  if ([v4 count])
+  attributionsCopy = attributions;
+  if ([attributionsCopy count])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v4;
+    v5 = attributionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -533,83 +533,83 @@ LABEL_14:
 LABEL_12:
 }
 
-- (void)_updateIndicatorViewForSensorType:(int64_t)a3
+- (void)_updateIndicatorViewForSensorType:(int64_t)type
 {
   v5 = [(CBRecordingIndicatorManager *)self _indicatorTypeForSensorType:?];
   [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewController updateIndicatorType:v5];
   [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerUIKitStatusBarPortal updateIndicatorType:v5];
   [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewControllerSystemAperturePortal updateIndicatorType:v5];
-  v7 = [(CBRecordingIndicatorManager *)self _indicatorIdentifierForSensorType:a3];
-  v6 = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorView];
-  [v6 setAccessibilityIdentifier:v7];
+  v7 = [(CBRecordingIndicatorManager *)self _indicatorIdentifierForSensorType:type];
+  indicatorView = [(CBRecordingIndicatorViewController *)self->_recordingIndicatorViewController indicatorView];
+  [indicatorView setAccessibilityIdentifier:v7];
 }
 
-- (void)recordingIndicatorViewController:(id)a3 didUpdateIndicatorState:(unint64_t)a4
+- (void)recordingIndicatorViewController:(id)controller didUpdateIndicatorState:(unint64_t)state
 {
-  v5 = a3;
-  v12 = v5;
-  if (self->_recordingIndicatorViewControllerSystemAperturePortal == v5)
+  controllerCopy = controller;
+  v12 = controllerCopy;
+  if (self->_recordingIndicatorViewControllerSystemAperturePortal == controllerCopy)
   {
     [(CBRecordingIndicatorManager *)self _updateSystemApertureElementAssertion];
-    v5 = v12;
+    controllerCopy = v12;
   }
 
-  v6 = [(CBRecordingIndicatorViewController *)v5 viewIfLoaded];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  viewIfLoaded = [(CBRecordingIndicatorViewController *)controllerCopy viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  v9 = [v8 traitCollection];
-  v10 = [v9 _backlightLuminance];
+  traitCollection = [windowScene traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v10 == 1)
+  if (_backlightLuminance == 1)
   {
-    v11 = [v8 _backlightSceneEnvironment];
-    [v11 invalidateAllTimelinesForReason:@"recording indicator visibility change"];
+    _backlightSceneEnvironment = [windowScene _backlightSceneEnvironment];
+    [_backlightSceneEnvironment invalidateAllTimelinesForReason:@"recording indicator visibility change"];
   }
 }
 
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 activeCameraAndMicrophoneActivityAttributions];
-  if (![(NSSet *)self->_activeCameraAndMicrophoneActivityAttributions isEqualToSet:v5])
+  providerCopy = provider;
+  activeCameraAndMicrophoneActivityAttributions = [providerCopy activeCameraAndMicrophoneActivityAttributions];
+  if (![(NSSet *)self->_activeCameraAndMicrophoneActivityAttributions isEqualToSet:activeCameraAndMicrophoneActivityAttributions])
   {
-    objc_storeStrong(&self->_activeCameraAndMicrophoneActivityAttributions, v5);
+    objc_storeStrong(&self->_activeCameraAndMicrophoneActivityAttributions, activeCameraAndMicrophoneActivityAttributions);
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = activeCameraAndMicrophoneActivityAttributions;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Active camera/microphone activity changed:\n%{public}@", &v7, 0xCu);
     }
 
-    [(CBRecordingIndicatorManager *)self _dataProviderDidUpdate:v4];
+    [(CBRecordingIndicatorManager *)self _dataProviderDidUpdate:providerCopy];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = [CBRecordingIndicatorDomain rootSettings:a3];
-  v6 = [v5 sensorType];
+  v5 = [CBRecordingIndicatorDomain rootSettings:settings];
+  sensorType = [v5 sensorType];
 
-  if (v6 == 1)
+  if (sensorType == 1)
   {
     self->_visibilityIsForcedByPrototypeSettings = 1;
     [(CBRecordingIndicatorManager *)self setIndicatorVisible:1];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_5;
   }
 
-  if (v6 == 2)
+  if (sensorType == 2)
   {
     self->_visibilityIsForcedByPrototypeSettings = 1;
     [(CBRecordingIndicatorManager *)self setIndicatorVisible:1];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
 LABEL_5:
 
-    [(CBRecordingIndicatorManager *)v7 _updateIndicatorViewForSensorType:v8];
+    [(CBRecordingIndicatorManager *)selfCopy2 _updateIndicatorViewForSensorType:v8];
     return;
   }
 

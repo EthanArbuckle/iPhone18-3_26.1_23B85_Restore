@@ -2,7 +2,7 @@
 - (BOOL)isRosettaAvailable;
 - (BOOL)isSupportEnabled;
 - (_TtC11AppStoreKit12AppleSilicon)init;
-- (void)setIsSupportEnabled:(BOOL)a3;
+- (void)setIsSupportEnabled:(BOOL)enabled;
 @end
 
 @implementation AppleSilicon
@@ -14,16 +14,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsSupportEnabled:(BOOL)a3
+- (void)setIsSupportEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR____TtC11AppStoreKit12AppleSilicon_isSupportEnabled;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = enabled;
 }
 
 - (BOOL)isRosettaAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AppleSilicon.isRosettaAvailable.getter();
 
   return v3 & 1;

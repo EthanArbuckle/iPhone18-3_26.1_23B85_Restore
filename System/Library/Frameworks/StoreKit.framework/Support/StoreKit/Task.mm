@@ -1,10 +1,10 @@
 @interface Task
-- (BOOL)runSubTask:(id)a3 returningError:(id *)a4;
-- (BOOL)runTaskReturningError:(id *)a3;
+- (BOOL)runSubTask:(id)task returningError:(id *)error;
+- (BOOL)runTaskReturningError:(id *)error;
 - (Task)init;
 - (Task)initWithoutKeepAlive;
 - (void)_dispatchCompletionBlock;
-- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)error;
 - (void)completeWithSuccess;
 @end
 
@@ -46,13 +46,13 @@
   return v2;
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(NSLock *)self->_lock lock];
   error = self->_error;
-  self->_error = v4;
-  v6 = v4;
+  self->_error = errorCopy;
+  v6 = errorCopy;
 
   self->_success = 0;
   [(NSLock *)self->_lock unlock];
@@ -70,7 +70,7 @@
   [(NSLock *)lock unlock];
 }
 
-- (BOOL)runTaskReturningError:(id *)a3
+- (BOOL)runTaskReturningError:(id *)error
 {
   if ([(Task *)self isAsynchronous])
   {
@@ -84,47 +84,47 @@
     [(Task *)self _dispatchCompletionBlock];
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [(Task *)self error];
+    *error = [(Task *)self error];
   }
 
   return [(Task *)self success];
 }
 
-- (BOOL)runSubTask:(id)a3 returningError:(id *)a4
+- (BOOL)runSubTask:(id)task returningError:(id *)error
 {
-  v5 = a3;
-  if ([v5 isAsynchronous])
+  taskCopy = task;
+  if ([taskCopy isAsynchronous])
   {
     v8 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"Cannot execute asynchronous tasks inline" userInfo:0];
     objc_exception_throw(v8);
   }
 
-  if (([v5 isCancelled] & 1) == 0)
+  if (([taskCopy isCancelled] & 1) == 0)
   {
-    [v5 main];
-    [v5 _dispatchCompletionBlock];
+    [taskCopy main];
+    [taskCopy _dispatchCompletionBlock];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [v5 error];
+    *error = [taskCopy error];
   }
 
-  v6 = [v5 success];
+  success = [taskCopy success];
 
-  return v6;
+  return success;
 }
 
 - (void)_dispatchCompletionBlock
 {
-  v3 = [(Task *)self completionBlock];
+  completionBlock = [(Task *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
-    v4 = [(Task *)self completionBlock];
-    v5 = [v4 copy];
+    completionBlock2 = [(Task *)self completionBlock];
+    v5 = [completionBlock2 copy];
 
     v6 = dispatch_get_global_queue(21, 0);
     block[0] = _NSConcreteStackBlock;

@@ -1,14 +1,14 @@
 @interface APOdmlValidator
-+ (int64_t)permissionCheck:(id)a3 personalizedAdsEnabled:(BOOL)a4 trialKillswitch:(BOOL)a5;
++ (int64_t)permissionCheck:(id)check personalizedAdsEnabled:(BOOL)enabled trialKillswitch:(BOOL)killswitch;
 @end
 
 @implementation APOdmlValidator
 
-+ (int64_t)permissionCheck:(id)a3 personalizedAdsEnabled:(BOOL)a4 trialKillswitch:(BOOL)a5
++ (int64_t)permissionCheck:(id)check personalizedAdsEnabled:(BOOL)enabled trialKillswitch:(BOOL)killswitch
 {
-  v5 = a5;
+  killswitchCopy = killswitch;
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  checkCopy = check;
   v8 = OdmlLogForCategory(5uLL);
   v9 = os_signpost_id_generate(v8);
 
@@ -18,11 +18,11 @@
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 134283521;
-    v107 = objc_msgSend_count(v7, v13, v14);
+    v107 = objc_msgSend_count(checkCopy, v13, v14);
     _os_signpost_emit_with_name_impl(&dword_260ECB000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "Permission Check", "%{private}lu", buf, 0xCu);
   }
 
-  if (!a4)
+  if (!enabled)
   {
     v26 = OdmlLogForCategory(5uLL);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -38,7 +38,7 @@
     v30 = v29;
     if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
     {
-      v33 = objc_msgSend_count(v7, v31, v32);
+      v33 = objc_msgSend_count(checkCopy, v31, v32);
       *buf = 134283521;
       v107 = v33;
       _os_signpost_emit_with_name_impl(&dword_260ECB000, v30, OS_SIGNPOST_INTERVAL_END, v9, "Permission Check", "%{private}lu", buf, 0xCu);
@@ -48,7 +48,7 @@
     goto LABEL_18;
   }
 
-  if (v5)
+  if (killswitchCopy)
   {
     v17 = OdmlLogForCategory(5uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -64,7 +64,7 @@
     v21 = v20;
     if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
     {
-      v24 = objc_msgSend_count(v7, v22, v23);
+      v24 = objc_msgSend_count(checkCopy, v22, v23);
       *buf = 134283521;
       v107 = v24;
       _os_signpost_emit_with_name_impl(&dword_260ECB000, v21, OS_SIGNPOST_INTERVAL_END, v9, "Permission Check", "%{private}lu", buf, 0xCu);
@@ -88,7 +88,7 @@
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v7;
+  obj = checkCopy;
   v40 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v39, &v102, v110, 16);
   if (!v40)
   {
@@ -98,7 +98,7 @@
   v43 = v40;
   v44 = *v103;
   spid = v9;
-  v100 = v7;
+  v100 = checkCopy;
   while (2)
   {
     for (i = 0; i != v43; ++i)
@@ -125,7 +125,7 @@
 
         v76 = OdmlLogForCategory(5uLL);
         v77 = v76;
-        v7 = v100;
+        checkCopy = v100;
         if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v76))
         {
           v80 = objc_msgSend_count(obj, v78, v79);
@@ -155,7 +155,7 @@
 
         v85 = OdmlLogForCategory(5uLL);
         v77 = v85;
-        v7 = v100;
+        checkCopy = v100;
         if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v85))
         {
           v88 = objc_msgSend_count(obj, v86, v87);
@@ -194,7 +194,7 @@
 
         v95 = OdmlLogForCategory(5uLL);
         v77 = v95;
-        v7 = v100;
+        checkCopy = v100;
         if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v95))
         {
           v98 = objc_msgSend_count(obj, v96, v97);
@@ -223,7 +223,7 @@ LABEL_61:
 
     v43 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v41, &v102, v110, 16);
     v9 = spid;
-    v7 = v100;
+    checkCopy = v100;
     if (v43)
     {
       continue;

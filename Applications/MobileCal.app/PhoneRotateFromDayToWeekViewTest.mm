@@ -1,21 +1,21 @@
 @interface PhoneRotateFromDayToWeekViewTest
 - (id)checkTestPreconditions;
-- (void)_setupViewToDate:(id)a3;
+- (void)_setupViewToDate:(id)date;
 @end
 
 @implementation PhoneRotateFromDayToWeekViewTest
 
-- (void)_setupViewToDate:(id)a3
+- (void)_setupViewToDate:(id)date
 {
-  v9 = a3;
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
-  v6 = [v5 resetToMonthView];
+  dateCopy = date;
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToMonthView = [rootNavigationController resetToMonthView];
 
-  v7 = [v9 date];
-  [v6 showDate:v7 animated:0];
+  date = [dateCopy date];
+  [resetToMonthView showDate:date animated:0];
 
-  v8 = [v6 pushedDayViewControllerWithDate:v9 animated:0];
+  v8 = [resetToMonthView pushedDayViewControllerWithDate:dateCopy animated:0];
 }
 
 - (id)checkTestPreconditions

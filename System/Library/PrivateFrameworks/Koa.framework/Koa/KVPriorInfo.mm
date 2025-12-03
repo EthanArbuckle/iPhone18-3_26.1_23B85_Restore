@@ -1,44 +1,44 @@
 @interface KVPriorInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPriorInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPriorInfo:(id)info;
 - (KVPriorInfo)init;
-- (KVPriorInfo)initWithCoder:(id)a3;
-- (KVPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (KVPriorInfo)initWithCoder:(id)coder;
+- (KVPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KVPriorInfo
 
-- (KVPriorInfo)initWithCoder:(id)a3
+- (KVPriorInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = KVPriorInfo;
   v5 = [(KVPriorInfo *)&v22 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"o", v8, v9);
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"o", v8, v9);
     v5->_ordinality = objc_msgSend_unsignedIntValue(v10, v11, v12, v13, v14, v15);
 
-    objc_msgSend_decodeFloatForKey_(v4, v16, @"s", v17, v18, v19);
+    objc_msgSend_decodeFloatForKey_(coderCopy, v16, @"s", v17, v18, v19);
     v5->_score = v20;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_numberWithUnsignedInt_(MEMORY[0x277CCABB0], v4, self->_ordinality, v5, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v17, v9, v8, @"o", v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"o", v10, v11);
 
   *&v12 = self->_score;
-  objc_msgSend_encodeFloat_forKey_(v17, v13, @"s", v14, v15, v16, v12);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v13, @"s", v14, v15, v16, v12);
 }
 
 - (unint64_t)hash
@@ -52,14 +52,14 @@
   return v25 ^ v12;
 }
 
-- (BOOL)isEqualToPriorInfo:(id)a3
+- (BOOL)isEqualToPriorInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   ordinality = self->_ordinality;
-  if (ordinality == objc_msgSend_ordinality(v4, v6, v7, v8, v9, v10))
+  if (ordinality == objc_msgSend_ordinality(infoCopy, v6, v7, v8, v9, v10))
   {
     score = self->_score;
-    objc_msgSend_score(v4, v11, v12, v13, v14, v15);
+    objc_msgSend_score(infoCopy, v11, v12, v13, v14, v15);
     v18 = score == v17;
   }
 
@@ -71,16 +71,16 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToPriorInfo = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToPriorInfo = objc_msgSend_isEqualToPriorInfo_(self, v6, v5, v7, v8, v9);
   }
@@ -103,10 +103,10 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
   *(result + 2) = self->_ordinality;
   *(result + 3) = LODWORD(self->_score);
   return result;
@@ -118,7 +118,7 @@
   objc_exception_throw(v3);
 }
 
-- (KVPriorInfo)initWithOrdinality:(unsigned int)a3 score:(float)a4
+- (KVPriorInfo)initWithOrdinality:(unsigned int)ordinality score:(float)score
 {
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -130,10 +130,10 @@
     goto LABEL_5;
   }
 
-  v6->_score = a4;
-  if (a4 >= 0.0 && a4 <= 1.0)
+  v6->_score = score;
+  if (score >= 0.0 && score <= 1.0)
   {
-    v6->_ordinality = a3;
+    v6->_ordinality = ordinality;
 LABEL_5:
     v8 = v6;
     goto LABEL_9;
@@ -145,7 +145,7 @@ LABEL_5:
     *buf = 136315394;
     v14 = "[KVPriorInfo initWithOrdinality:score:]";
     v15 = 2048;
-    v16 = a4;
+    scoreCopy = score;
     _os_log_error_impl(&dword_2559A5000, v9, OS_LOG_TYPE_ERROR, "%s Invalid score: %f", buf, 0x16u);
   }
 

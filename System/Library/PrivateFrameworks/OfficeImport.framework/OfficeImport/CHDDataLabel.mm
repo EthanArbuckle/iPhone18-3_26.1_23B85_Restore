@@ -1,26 +1,26 @@
 @interface CHDDataLabel
-+ (CHDDataLabel)dataLabelWithResources:(id)a3;
++ (CHDDataLabel)dataLabelWithResources:(id)resources;
 - (BOOL)isCustomLabelBlockingVisibility;
-- (CHDDataLabel)initWithResources:(id)a3;
+- (CHDDataLabel)initWithResources:(id)resources;
 - (id)contentFormat;
 - (id)description;
-- (void)setContentFormat:(id)a3;
-- (void)setGraphicProperties:(id)a3;
-- (void)setLeaderlineGraphicProperties:(id)a3;
+- (void)setContentFormat:(id)format;
+- (void)setGraphicProperties:(id)properties;
+- (void)setLeaderlineGraphicProperties:(id)properties;
 @end
 
 @implementation CHDDataLabel
 
-- (CHDDataLabel)initWithResources:(id)a3
+- (CHDDataLabel)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = CHDDataLabel;
   v5 = [(CHDDataLabel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     *&v6->mDeleted = 0;
     v6->mRotation = 0.0;
     v6->mContentFormatId = -1;
@@ -31,10 +31,10 @@
   return v6;
 }
 
-+ (CHDDataLabel)dataLabelWithResources:(id)a3
++ (CHDDataLabel)dataLabelWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
@@ -42,45 +42,45 @@
 - (id)contentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained contentFormats];
-  v5 = [v4 objectWithKey:self->mContentFormatId];
+  contentFormats = [WeakRetained contentFormats];
+  v5 = [contentFormats objectWithKey:self->mContentFormatId];
 
   return v5;
 }
 
-- (void)setContentFormat:(id)a3
+- (void)setContentFormat:(id)format
 {
-  v8 = a3;
-  v4 = [v8 formatId];
-  if (v4 == -1)
+  formatCopy = format;
+  formatId = [formatCopy formatId];
+  if (formatId == -1)
   {
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained contentFormats];
+    contentFormats = [WeakRetained contentFormats];
 
-    v7 = [v6 objectAtIndex:{objc_msgSend(v6, "addOrEquivalentObject:", v8)}];
+    v7 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", formatCopy)}];
     self->mContentFormatId = [v7 formatId];
   }
 
   else
   {
-    self->mContentFormatId = v4;
+    self->mContentFormatId = formatId;
   }
 }
 
 - (BOOL)isCustomLabelBlockingVisibility
 {
-  v2 = [(CHDDataLabel *)self string];
-  v3 = v2;
+  string = [(CHDDataLabel *)self string];
+  v3 = string;
   v9 = 0;
-  if (v2)
+  if (string)
   {
-    v4 = [v2 string];
+    v2String = [string string];
 
-    if (v4)
+    if (v2String)
     {
-      v5 = [v3 string];
-      v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v7 = [v5 stringByTrimmingCharactersInSet:v6];
+      string2 = [v3 string];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v7 = [string2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       v8 = [v7 length];
       if (!v8)
@@ -93,29 +93,29 @@
   return v9;
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setLeaderlineGraphicProperties:(id)a3
+- (void)setLeaderlineGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mLeaderlineGraphicProperties = self->mLeaderlineGraphicProperties;
   p_mLeaderlineGraphicProperties = &self->mLeaderlineGraphicProperties;
-  if (mLeaderlineGraphicProperties != v5)
+  if (mLeaderlineGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mLeaderlineGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mLeaderlineGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 

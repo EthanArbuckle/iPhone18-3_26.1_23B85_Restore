@@ -2,9 +2,9 @@
 + (id)logCategory;
 + (id)oversizeLogCategory;
 - (BOOL)needsUpdateForTokens;
-- (JaliscoMediaImporter)initWithConnection:(id)a3 supportedMediaKindsHandler:(id)a4;
-- (id)_chapterArtworkURLsForData:(id)a3 baseURL:(id)a4;
-- (id)_chapterDataFromURL:(id)a3;
+- (JaliscoMediaImporter)initWithConnection:(id)connection supportedMediaKindsHandler:(id)handler;
+- (id)_chapterArtworkURLsForData:(id)data baseURL:(id)l;
+- (id)_chapterDataFromURL:(id)l;
 - (id)_supportedMediaKindsDatabasePropertyValue;
 - (id)mediaFilter;
 - (id)purchaseTokens;
@@ -19,25 +19,25 @@
 
 - (id)_supportedMediaKindsDatabasePropertyValue
 {
-  v2 = [(JaliscoMediaImporter *)self mediaFilter];
-  v3 = [v2 supportedMediaKinds];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  mediaFilter = [(JaliscoMediaImporter *)self mediaFilter];
+  supportedMediaKinds = [mediaFilter supportedMediaKinds];
+  v4 = [supportedMediaKinds componentsJoinedByString:{@", "}];
 
   return v4;
 }
 
-- (id)_chapterArtworkURLsForData:(id)a3 baseURL:(id)a4
+- (id)_chapterArtworkURLsForData:(id)data baseURL:(id)l
 {
-  v5 = a3;
-  v27 = a4;
+  dataCopy = data;
+  lCopy = l;
   v28 = +[NSMutableDictionary dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"chapters"];
+  v6 = [dataCopy objectForKeyedSubscript:@"chapters"];
   v7 = [v6 objectForKeyedSubscript:@"chapter-list"];
 
-  v25 = v5;
-  v8 = [v5 objectForKeyedSubscript:@"chapters"];
+  v25 = dataCopy;
+  v8 = [dataCopy objectForKeyedSubscript:@"chapters"];
   v9 = [v8 objectForKeyedSubscript:@"nominal-image-resolutions"];
-  v10 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
   v31 = 0u;
   v32 = 0u;
@@ -60,7 +60,7 @@
 
         v15 = *(*(&v29 + 1) + 8 * i);
         v16 = [v15 objectForKeyedSubscript:@"images"];
-        v17 = [v16 objectForKeyedSubscript:v10];
+        v17 = [v16 objectForKeyedSubscript:lastObject];
         v18 = [v17 objectForKeyedSubscript:@"url"];
 
         if ([v18 length])
@@ -69,7 +69,7 @@
           [v19 floatValue];
           v21 = (v20 * 1000.0);
 
-          v22 = [v27 URLByAppendingPathComponent:v18 isDirectory:0];
+          v22 = [lCopy URLByAppendingPathComponent:v18 isDirectory:0];
           v23 = [NSNumber numberWithUnsignedInt:v21];
           [v28 setObject:v22 forKey:v23];
         }
@@ -84,11 +84,11 @@
   return v28;
 }
 
-- (id)_chapterDataFromURL:(id)a3
+- (id)_chapterDataFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [NSDictionary alloc];
-  v5 = [NSURL URLWithString:v3];
+  v5 = [NSURL URLWithString:lCopy];
 
   v6 = [v4 initWithContentsOfURL:v5];
 
@@ -97,23 +97,23 @@
 
 - (void)clearNeedsUpdateForTokens
 {
-  v2 = [(JaliscoImporter *)self musicLibrary];
-  [v2 setJaliscoNeedsUpdateForTokens:0];
+  musicLibrary = [(JaliscoImporter *)self musicLibrary];
+  [musicLibrary setJaliscoNeedsUpdateForTokens:0];
 }
 
 - (BOOL)needsUpdateForTokens
 {
-  v3 = [(JaliscoImporter *)self musicLibrary];
-  v4 = [v3 jaliscoNeedsUpdateForTokens];
+  musicLibrary = [(JaliscoImporter *)self musicLibrary];
+  jaliscoNeedsUpdateForTokens = [musicLibrary jaliscoNeedsUpdateForTokens];
 
-  if (v4)
+  if (jaliscoNeedsUpdateForTokens)
   {
-    v5 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    jaliscoLastSupportedMediaKinds = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
+    if (os_log_type_enabled(jaliscoLastSupportedMediaKinds, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - JaliscoNeedsUpdateForTokens is YES, forcing a full token refresh.", &v11, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, jaliscoLastSupportedMediaKinds, OS_LOG_TYPE_DEFAULT, "%{public}@ - JaliscoNeedsUpdateForTokens is YES, forcing a full token refresh.", &v11, 0xCu);
     }
 
     v6 = 1;
@@ -121,11 +121,11 @@
 
   else
   {
-    v7 = [(JaliscoImporter *)self musicLibrary];
-    v5 = [v7 jaliscoLastSupportedMediaKinds];
+    musicLibrary2 = [(JaliscoImporter *)self musicLibrary];
+    jaliscoLastSupportedMediaKinds = [musicLibrary2 jaliscoLastSupportedMediaKinds];
 
-    v8 = [(JaliscoMediaImporter *)self _supportedMediaKindsDatabasePropertyValue];
-    if (v5 && ([v5 isEqualToString:v8]& 1) != 0)
+    _supportedMediaKindsDatabasePropertyValue = [(JaliscoMediaImporter *)self _supportedMediaKindsDatabasePropertyValue];
+    if (jaliscoLastSupportedMediaKinds && ([jaliscoLastSupportedMediaKinds isEqualToString:_supportedMediaKindsDatabasePropertyValue]& 1) != 0)
     {
       v6 = 0;
     }
@@ -136,11 +136,11 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v11 = 138543874;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2114;
-        v14 = v5;
+        v14 = jaliscoLastSupportedMediaKinds;
         v15 = 2114;
-        v16 = v8;
+        v16 = _supportedMediaKindsDatabasePropertyValue;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@ - Supported media kinds are different, forcing a full token refresh. lastSupportedMediaKinds=%{public}@, currentSupportedMediaKinds=%{public}@", &v11, 0x20u);
       }
 
@@ -156,10 +156,10 @@
   supportedMediaKinds = self->_supportedMediaKinds;
   if (!supportedMediaKinds)
   {
-    v4 = [(JaliscoMediaImporter *)self mediaFilter];
-    v5 = [v4 supportedMediaKinds];
+    mediaFilter = [(JaliscoMediaImporter *)self mediaFilter];
+    supportedMediaKinds = [mediaFilter supportedMediaKinds];
     v6 = self->_supportedMediaKinds;
-    self->_supportedMediaKinds = v5;
+    self->_supportedMediaKinds = supportedMediaKinds;
 
     supportedMediaKinds = self->_supportedMediaKinds;
   }
@@ -171,9 +171,9 @@
 {
   if ([(JaliscoMediaImporter *)self onDiskRevision])
   {
-    v3 = [(JaliscoImporter *)self connection];
-    v4 = [v3 userIdentity];
-    v5 = [ML3MusicLibrary musicLibraryForUserAccount:v4];
+    connection = [(JaliscoImporter *)self connection];
+    userIdentity = [connection userIdentity];
+    v5 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
     v6 = v5;
     v22 = +[NSMutableDictionary dictionary];
@@ -181,8 +181,8 @@
     v7 = ML3TrackPropertyPurchaseHistoryID;
     v8 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyPurchaseHistoryID value:&off_1001ED8D0 comparison:2];
     v9 = ML3TrackPropertyStoreAccountID;
-    v10 = [v6 jaliscoAccountID];
-    v11 = [ML3ComparisonPredicate predicateWithProperty:v9 value:v10 comparison:1];
+    jaliscoAccountID = [v6 jaliscoAccountID];
+    v11 = [ML3ComparisonPredicate predicateWithProperty:v9 value:jaliscoAccountID comparison:1];
     v28[0] = v11;
     v12 = [ML3ComparisonPredicate predicateWithProperty:v9 value:&off_1001ED8D0 comparison:1];
     v28[1] = v12;
@@ -224,10 +224,10 @@
 
 - (id)queryFilter
 {
-  v2 = [(JaliscoMediaImporter *)self mediaFilter];
-  v3 = [v2 daapQueryFilterString];
+  mediaFilter = [(JaliscoMediaImporter *)self mediaFilter];
+  daapQueryFilterString = [mediaFilter daapQueryFilterString];
 
-  return v3;
+  return daapQueryFilterString;
 }
 
 - (id)mediaFilter
@@ -236,9 +236,9 @@
   if (!mediaFilter)
   {
     v4 = [ICDJaliscoMediaFilter alloc];
-    v5 = [(JaliscoImporter *)self musicLibrary];
-    v6 = [v5 jaliscoLastExcludedMediaKinds];
-    v7 = [(ICDJaliscoMediaFilter *)v4 initWithKindsToExclude:v6 supportedMediaKindsHandler:self->_supportedMediaKindsHandler];
+    musicLibrary = [(JaliscoImporter *)self musicLibrary];
+    jaliscoLastExcludedMediaKinds = [musicLibrary jaliscoLastExcludedMediaKinds];
+    v7 = [(ICDJaliscoMediaFilter *)v4 initWithKindsToExclude:jaliscoLastExcludedMediaKinds supportedMediaKindsHandler:self->_supportedMediaKindsHandler];
     v8 = self->_mediaFilter;
     self->_mediaFilter = v7;
 
@@ -250,10 +250,10 @@
 
 - (unsigned)onDiskRevision
 {
-  v2 = [(JaliscoImporter *)self musicLibrary];
-  v3 = [v2 jaliscoOnDiskDatabaseRevision];
+  musicLibrary = [(JaliscoImporter *)self musicLibrary];
+  jaliscoOnDiskDatabaseRevision = [musicLibrary jaliscoOnDiskDatabaseRevision];
 
-  return v3;
+  return jaliscoOnDiskDatabaseRevision;
 }
 
 - (void)cancel
@@ -274,16 +274,16 @@
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (JaliscoMediaImporter)initWithConnection:(id)a3 supportedMediaKindsHandler:(id)a4
+- (JaliscoMediaImporter)initWithConnection:(id)connection supportedMediaKindsHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = JaliscoMediaImporter;
-  v8 = [(JaliscoImporter *)&v11 initWithConnection:a3];
+  v8 = [(JaliscoImporter *)&v11 initWithConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_supportedMediaKindsHandler, a4);
+    objc_storeStrong(&v8->_supportedMediaKindsHandler, handler);
   }
 
   return v9;

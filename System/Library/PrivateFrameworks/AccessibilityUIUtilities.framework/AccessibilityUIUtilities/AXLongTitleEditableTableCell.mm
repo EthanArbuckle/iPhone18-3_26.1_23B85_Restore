@@ -1,21 +1,21 @@
 @interface AXLongTitleEditableTableCell
-- (AXLongTitleEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (AXLongTitleEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation AXLongTitleEditableTableCell
 
-- (AXLongTitleEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXLongTitleEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = AXLongTitleEditableTableCell;
-  v5 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PSTableCell *)v5 titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel = [(PSTableCell *)v5 titleLabel];
+    [titleLabel setNumberOfLines:0];
   }
 
   return v6;
@@ -27,20 +27,20 @@
   v47.receiver = self;
   v47.super_class = AXLongTitleEditableTableCell;
   [(PSEditableTableCell *)&v47 layoutSubviews];
-  v3 = [(PSTableCell *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  text = [titleLabel text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(AXLongTitleEditableTableCell *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+    traitCollection = [(AXLongTitleEditableTableCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (!IsAccessibilityCategory)
     {
-      v9 = [(AXLongTitleEditableTableCell *)self editableTextField];
-      [v9 frame];
+      editableTextField = [(AXLongTitleEditableTableCell *)self editableTextField];
+      [editableTextField frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -50,26 +50,26 @@
       v49[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
 
-      v20 = [v9 text];
-      [v20 sizeWithAttributes:v19];
+      text2 = [editableTextField text];
+      [text2 sizeWithAttributes:v19];
       v22 = v21;
 
       if (v22 <= v15)
       {
-        [v9 setAdjustsFontSizeToFitWidth:1];
+        [editableTextField setAdjustsFontSizeToFitWidth:1];
       }
 
       else
       {
         v46 = v13;
         v23 = v22 - v15;
-        v24 = [(AXLongTitleEditableTableCell *)self contentView];
-        [v24 bounds];
+        contentView = [(AXLongTitleEditableTableCell *)self contentView];
+        [contentView bounds];
         v26 = v25;
         v28 = v27;
 
-        v29 = [(PSTableCell *)self titleLabel];
-        [v29 frame];
+        titleLabel2 = [(PSTableCell *)self titleLabel];
+        [titleLabel2 frame];
         v31 = v30;
         v33 = v32;
 
@@ -83,10 +83,10 @@
           v34 = v26 * 0.25;
         }
 
-        [v9 setAdjustsFontSizeToFitWidth:0];
+        [editableTextField setAdjustsFontSizeToFitWidth:0];
         v35 = v33 - v34;
-        v36 = [(PSTableCell *)self titleLabel];
-        [v36 sizeThatFits:{v34, v28}];
+        titleLabel3 = [(PSTableCell *)self titleLabel];
+        [titleLabel3 sizeThatFits:{v34, v28}];
         v38 = v37;
         v40 = v39;
 
@@ -103,40 +103,40 @@
           v11 = v11 - v35;
         }
 
-        v44 = [(PSTableCell *)self titleLabel];
-        [v44 setNumberOfLines:0];
+        titleLabel4 = [(PSTableCell *)self titleLabel];
+        [titleLabel4 setNumberOfLines:0];
 
-        v45 = [(PSTableCell *)self titleLabel];
-        [v45 setFrame:{v31, v42, v38, v40}];
+        titleLabel5 = [(PSTableCell *)self titleLabel];
+        [titleLabel5 setFrame:{v31, v42, v38, v40}];
 
-        [v9 setFrame:{v11, v46, v43, v17}];
+        [editableTextField setFrame:{v11, v46, v43, v17}];
       }
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v42[1] = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = AXLongTitleEditableTableCell;
-  [(AXLongTitleEditableTableCell *)&v40 sizeThatFits:a3.width, a3.height];
+  [(AXLongTitleEditableTableCell *)&v40 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(PSTableCell *)self titleLabel];
-  v9 = [v8 text];
-  v10 = [v9 length];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  text = [titleLabel text];
+  v10 = [text length];
 
   if (v10)
   {
-    v11 = [(AXLongTitleEditableTableCell *)self traitCollection];
-    v12 = [v11 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+    traitCollection = [(AXLongTitleEditableTableCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (!IsAccessibilityCategory)
     {
-      v14 = [(AXLongTitleEditableTableCell *)self contentView];
-      [v14 sizeThatFits:{v5, v7}];
+      contentView = [(AXLongTitleEditableTableCell *)self contentView];
+      [contentView sizeThatFits:{v5, v7}];
       v16 = v15;
       v18 = v17;
 
@@ -149,9 +149,9 @@
       v42[0] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
 
-      v25 = [(AXLongTitleEditableTableCell *)self editableTextField];
-      v26 = [v25 text];
-      [v26 sizeWithAttributes:v24];
+      editableTextField = [(AXLongTitleEditableTableCell *)self editableTextField];
+      text2 = [editableTextField text];
+      [text2 sizeWithAttributes:v24];
       v28 = v27;
       v30 = v29;
 
@@ -165,8 +165,8 @@
         v31 = v16 * 0.25;
       }
 
-      v32 = [(PSTableCell *)self titleLabel];
-      [v32 sizeThatFits:{v31, v18}];
+      titleLabel2 = [(PSTableCell *)self titleLabel];
+      [titleLabel2 sizeThatFits:{v31, v18}];
       v34 = v33;
 
       if (v34 < v30)

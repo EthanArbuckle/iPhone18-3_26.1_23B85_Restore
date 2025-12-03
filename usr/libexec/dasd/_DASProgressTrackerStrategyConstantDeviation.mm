@@ -1,12 +1,12 @@
 @interface _DASProgressTrackerStrategyConstantDeviation
 - (BOOL)isDeviated;
-- (_DASProgressTrackerStrategyConstantDeviation)initWithBaselineRateOfProgress:(double)a3 deviatedThresholdPercent:(double)a4 sustainedDeviationDurationSeconds:(double)a5;
-- (void)ingestRateUpdate:(double)a3;
+- (_DASProgressTrackerStrategyConstantDeviation)initWithBaselineRateOfProgress:(double)progress deviatedThresholdPercent:(double)percent sustainedDeviationDurationSeconds:(double)seconds;
+- (void)ingestRateUpdate:(double)update;
 @end
 
 @implementation _DASProgressTrackerStrategyConstantDeviation
 
-- (_DASProgressTrackerStrategyConstantDeviation)initWithBaselineRateOfProgress:(double)a3 deviatedThresholdPercent:(double)a4 sustainedDeviationDurationSeconds:(double)a5
+- (_DASProgressTrackerStrategyConstantDeviation)initWithBaselineRateOfProgress:(double)progress deviatedThresholdPercent:(double)percent sustainedDeviationDurationSeconds:(double)seconds
 {
   v13.receiver = self;
   v13.super_class = _DASProgressTrackerStrategyConstantDeviation;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_expectedProgressRate = a3;
-    v8->_deviatedThresholdPercent = a4;
-    v8->_sustainedDeviationDurationSeconds = a5;
+    v8->_expectedProgressRate = progress;
+    v8->_deviatedThresholdPercent = percent;
+    v8->_sustainedDeviationDurationSeconds = seconds;
     v10 = [_DASDaemonLogger logForCategory:@"ProgressTrackerConstantDeviation"];
     log = v9->_log;
     v9->_log = v10;
@@ -25,10 +25,10 @@
   return v9;
 }
 
-- (void)ingestRateUpdate:(double)a3
+- (void)ingestRateUpdate:(double)update
 {
   deviationStartDate = self->_deviationStartDate;
-  if (self->_expectedProgressRate * (1.0 - self->_deviatedThresholdPercent) <= a3)
+  if (self->_expectedProgressRate * (1.0 - self->_deviatedThresholdPercent) <= update)
   {
     if (!deviationStartDate)
     {

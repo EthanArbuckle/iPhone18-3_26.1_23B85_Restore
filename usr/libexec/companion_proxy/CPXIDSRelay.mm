@@ -1,9 +1,9 @@
 @interface CPXIDSRelay
 - (CPXIDSRelay)init;
-- (id)sendMessage:(id)a3 messageDictionary:(id)a4;
-- (unsigned)acquirePort:(unint64_t)a3 isLowPriority:(BOOL)a4 preferWifi:(BOOL)a5;
-- (unsigned)releasePort:(unint64_t)a3 isLowPriority:(BOOL)a4 preferWifi:(BOOL)a5;
-- (void)handleGenericCPXConnection:(id)a3;
+- (id)sendMessage:(id)message messageDictionary:(id)dictionary;
+- (unsigned)acquirePort:(unint64_t)port isLowPriority:(BOOL)priority preferWifi:(BOOL)wifi;
+- (unsigned)releasePort:(unint64_t)port isLowPriority:(BOOL)priority preferWifi:(BOOL)wifi;
+- (void)handleGenericCPXConnection:(id)connection;
 @end
 
 @implementation CPXIDSRelay
@@ -60,13 +60,13 @@ LABEL_8:
   return v14;
 }
 
-- (unsigned)acquirePort:(unint64_t)a3 isLowPriority:(BOOL)a4 preferWifi:(BOOL)a5
+- (unsigned)acquirePort:(unint64_t)port isLowPriority:(BOOL)priority preferWifi:(BOOL)wifi
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5 || a4)
+  wifiCopy = wifi;
+  priorityCopy = priority;
+  if (!wifi || priority)
   {
-    if (a4)
+    if (priority)
     {
       [(CPXIDSRelay *)self lowPriorityPortConnections];
     }
@@ -75,27 +75,27 @@ LABEL_8:
     {
       [(CPXIDSRelay *)self highPriorityPortConnections];
     }
-    v8 = ;
+    wifiPortConnections = ;
   }
 
   else
   {
-    v8 = [(CPXIDSRelay *)self wifiPortConnections];
+    wifiPortConnections = [(CPXIDSRelay *)self wifiPortConnections];
   }
 
-  v9 = v8;
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = wifiPortConnections;
+  v10 = [NSNumber numberWithUnsignedInteger:port];
   v11 = [v9 objectForKey:v10];
-  v12 = [v11 unsignedIntValue];
+  unsignedIntValue = [v11 unsignedIntValue];
 
-  v13 = [NSNumber numberWithUnsignedInt:v12 + 1];
-  v14 = [NSNumber numberWithUnsignedInteger:a3];
+  v13 = [NSNumber numberWithUnsignedInt:unsignedIntValue + 1];
+  v14 = [NSNumber numberWithUnsignedInteger:port];
   [v9 setObject:v13 forKey:v14];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"High";
-    if (v6)
+    if (priorityCopy)
     {
       v16 = @"Low";
     }
@@ -104,29 +104,29 @@ LABEL_8:
     v19 = v16;
     v17 = @"WiFi";
     v20 = 2112;
-    if (!v5)
+    if (!wifiCopy)
     {
       v17 = @"Bluetooth";
     }
 
     v21 = v17;
     v22 = 2048;
-    v23 = a3;
+    portCopy = port;
     v24 = 2112;
     v25 = v9;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Number of %@ Priority port connections for preferred link (%@) upon acquire of %lu: %@", &v18, 0x2Au);
   }
 
-  return v12 + 1;
+  return unsignedIntValue + 1;
 }
 
-- (unsigned)releasePort:(unint64_t)a3 isLowPriority:(BOOL)a4 preferWifi:(BOOL)a5
+- (unsigned)releasePort:(unint64_t)port isLowPriority:(BOOL)priority preferWifi:(BOOL)wifi
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5 || a4)
+  wifiCopy = wifi;
+  priorityCopy = priority;
+  if (!wifi || priority)
   {
-    if (a4)
+    if (priority)
     {
       [(CPXIDSRelay *)self lowPriorityPortConnections];
     }
@@ -135,36 +135,36 @@ LABEL_8:
     {
       [(CPXIDSRelay *)self highPriorityPortConnections];
     }
-    v8 = ;
+    wifiPortConnections = ;
   }
 
   else
   {
-    v8 = [(CPXIDSRelay *)self wifiPortConnections];
+    wifiPortConnections = [(CPXIDSRelay *)self wifiPortConnections];
   }
 
-  v9 = v8;
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = wifiPortConnections;
+  v10 = [NSNumber numberWithUnsignedInteger:port];
   v11 = [v9 objectForKey:v10];
   v12 = [v11 unsignedIntValue] - 1;
 
   if (v12)
   {
     v13 = [NSNumber numberWithUnsignedInt:v12];
-    v14 = [NSNumber numberWithUnsignedInteger:a3];
+    v14 = [NSNumber numberWithUnsignedInteger:port];
     [v9 setObject:v13 forKey:v14];
   }
 
   else
   {
-    v13 = [NSNumber numberWithUnsignedInteger:a3];
+    v13 = [NSNumber numberWithUnsignedInteger:port];
     [v9 removeObjectForKey:v13];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"High";
-    if (v6)
+    if (priorityCopy)
     {
       v16 = @"Low";
     }
@@ -173,14 +173,14 @@ LABEL_8:
     v19 = v16;
     v17 = @"WiFi";
     v20 = 2112;
-    if (!v5)
+    if (!wifiCopy)
     {
       v17 = @"Bluetooth";
     }
 
     v21 = v17;
     v22 = 2048;
-    v23 = a3;
+    portCopy = port;
     v24 = 2112;
     v25 = v9;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Number of %@ Priority port connections for preferred link (%@) upon release of %lu: %@", &v18, 0x2Au);
@@ -189,22 +189,22 @@ LABEL_8:
   return v12;
 }
 
-- (id)sendMessage:(id)a3 messageDictionary:(id)a4
+- (id)sendMessage:(id)message messageDictionary:(id)dictionary
 {
   v5 = IDSDefaultPairedDevice;
-  v6 = a4;
-  v7 = a3;
+  dictionaryCopy = dictionary;
+  messageCopy = message;
   v8 = [NSSet setWithObject:v5];
   v24[0] = IDSSendMessageOptionTimeoutKey;
   v24[1] = IDSSendMessageOptionForceLocalDeliveryKey;
   v25[0] = &off_1000152E0;
   v25[1] = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
-  v10 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:0];
+  v10 = [NSPropertyListSerialization dataWithPropertyList:dictionaryCopy format:200 options:0 error:0];
 
   v16 = 0;
   v17 = 0;
-  v11 = [v7 sendData:v10 toDestinations:v8 priority:300 options:v9 identifier:&v17 error:&v16];
+  v11 = [messageCopy sendData:v10 toDestinations:v8 priority:300 options:v9 identifier:&v17 error:&v16];
 
   v12 = v17;
   v13 = v16;
@@ -224,9 +224,9 @@ LABEL_8:
   return v12;
 }
 
-- (void)handleGenericCPXConnection:(id)a3
+- (void)handleGenericCPXConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v140 = 0;
   v141 = &v140;
   v142 = 0x3032000000;
@@ -275,8 +275,8 @@ LABEL_8:
   v110[1] = v110;
   v110[2] = 0x2020000000;
   v110[3] = 0;
-  v58 = fcntl([v3 localSocket], 3, 0);
-  v56 = fcntl([v3 bridgeSocket], 3, 0);
+  v58 = fcntl([connectionCopy localSocket], 3, 0);
+  v56 = fcntl([connectionCopy bridgeSocket], 3, 0);
   v59 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.companion_proxy"];
   v4 = [v59 arrayForKey:@"ServiceSocketLogging"];
   v57 = v4;
@@ -302,16 +302,16 @@ LABEL_8:
           }
 
           v10 = *(*(&v106 + 1) + 8 * i);
-          v11 = [v3 serviceName];
-          LODWORD(v10) = [v10 isEqualToString:v11];
+          serviceName = [connectionCopy serviceName];
+          LODWORD(v10) = [v10 isEqualToString:serviceName];
 
           if (v10)
           {
             v12 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
             {
-              v13 = [v3 serviceName];
-              sub_1000099A8(v13, v152, &v153);
+              serviceName2 = [connectionCopy serviceName];
+              sub_1000099A8(serviceName2, v152, &v153);
             }
 
             v6 = 1;
@@ -337,17 +337,17 @@ LABEL_8:
     sub_100009A04();
   }
 
-  if (v58 == -1 || fcntl([v3 localSocket], 4, v58 | 4u) == -1)
+  if (v58 == -1 || fcntl([connectionCopy localSocket], 4, v58 | 4u) == -1)
   {
     v40 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [v3 localSocket];
+      localSocket = [connectionCopy localSocket];
       v42 = *__error();
       v43 = __error();
       v44 = strerror(*v43);
       *buf = 67109634;
-      v147 = v41;
+      v147 = localSocket;
       v148 = 1024;
       v149 = v42;
       v150 = 2080;
@@ -358,17 +358,17 @@ LABEL_8:
     goto LABEL_32;
   }
 
-  if (v56 == -1 || fcntl([v3 bridgeSocket], 4, v56 | 4u) == -1)
+  if (v56 == -1 || fcntl([connectionCopy bridgeSocket], 4, v56 | 4u) == -1)
   {
     v45 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v3 bridgeSocket];
+      bridgeSocket = [connectionCopy bridgeSocket];
       v47 = *__error();
       v48 = __error();
       v49 = strerror(*v48);
       *buf = 67109634;
-      v147 = v46;
+      v147 = bridgeSocket;
       v148 = 1024;
       v149 = v47;
       v150 = 2080;
@@ -381,9 +381,9 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v16 = [v3 localSocket];
+  localSocket2 = [connectionCopy localSocket];
   v17 = dispatch_get_global_queue(0, 0);
-  v18 = dispatch_source_create(&_dispatch_source_type_read, v16, 0, v17);
+  v18 = dispatch_source_create(&_dispatch_source_type_read, localSocket2, 0, v17);
   v19 = v141[5];
   v141[5] = v18;
 
@@ -397,7 +397,7 @@ LABEL_32:
     handler[2] = sub_10000286C;
     handler[3] = &unk_100014570;
     v99 = v121;
-    v22 = v3;
+    v22 = connectionCopy;
     v98 = v22;
     v23 = v6 & 1;
     v104 = v23;
@@ -533,11 +533,11 @@ LABEL_32:
   }
 
 LABEL_33:
-  v50 = [v3 localCompletion];
-  v50[2]();
+  localCompletion = [connectionCopy localCompletion];
+  localCompletion[2]();
 
-  v51 = [v3 bridgeCompletion];
-  v51[2]();
+  bridgeCompletion = [connectionCopy bridgeCompletion];
+  bridgeCompletion[2]();
 
   v52 = v117;
   v53 = v117[3];

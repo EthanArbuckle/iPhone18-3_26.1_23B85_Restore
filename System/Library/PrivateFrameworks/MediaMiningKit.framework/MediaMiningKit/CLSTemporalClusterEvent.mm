@@ -1,55 +1,55 @@
 @interface CLSTemporalClusterEvent
-+ (unsigned)_categoryFromPortraitEventCategory:(unsigned __int8)a3;
-- (CLSTemporalClusterEvent)initWithName:(id)a3 category:(unsigned __int8)a4;
-- (CLSTemporalClusterEvent)initWithPortraitEvent:(id)a3;
++ (unsigned)_categoryFromPortraitEventCategory:(unsigned __int8)category;
+- (CLSTemporalClusterEvent)initWithName:(id)name category:(unsigned __int8)category;
+- (CLSTemporalClusterEvent)initWithPortraitEvent:(id)event;
 @end
 
 @implementation CLSTemporalClusterEvent
 
-- (CLSTemporalClusterEvent)initWithName:(id)a3 category:(unsigned __int8)a4
+- (CLSTemporalClusterEvent)initWithName:(id)name category:(unsigned __int8)category
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CLSTemporalClusterEvent;
   v8 = [(CLSTemporalClusterEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_category = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_category = category;
   }
 
   return v9;
 }
 
-- (CLSTemporalClusterEvent)initWithPortraitEvent:(id)a3
+- (CLSTemporalClusterEvent)initWithPortraitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = CLSTemporalClusterEvent;
   v5 = [(CLSTemporalClusterEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [eventCopy title];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = title;
 
-    v5->_category = [objc_opt_class() _categoryFromPortraitEventCategory:{objc_msgSend(v4, "suggestedEventCategory")}];
+    v5->_category = [objc_opt_class() _categoryFromPortraitEventCategory:{objc_msgSend(eventCopy, "suggestedEventCategory")}];
   }
 
   return v5;
 }
 
-+ (unsigned)_categoryFromPortraitEventCategory:(unsigned __int8)a3
++ (unsigned)_categoryFromPortraitEventCategory:(unsigned __int8)category
 {
-  if (a3 == 8)
+  if (category == 8)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 12);
+    return 2 * (category == 12);
   }
 }
 

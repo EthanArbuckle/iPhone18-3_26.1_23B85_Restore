@@ -1,33 +1,33 @@
 @interface BWIOSurfaceTracking
 + (uint64_t)defaultSurfaceTracking;
-+ (void)noteSurfaceIDInUse:(unsigned int)a3 byClient:(id)a4;
-+ (void)noteSurfaceIDNoLongerInUse:(unsigned int)a3 byClient:(id)a4;
-+ (void)trackPixelBuffer:(__CVBuffer *)a3 surfaceUseCountIsZeroHandler:(id)a4;
++ (void)noteSurfaceIDInUse:(unsigned int)use byClient:(id)client;
++ (void)noteSurfaceIDNoLongerInUse:(unsigned int)use byClient:(id)client;
++ (void)trackPixelBuffer:(__CVBuffer *)buffer surfaceUseCountIsZeroHandler:(id)handler;
 - (BWIOSurfaceTracking)init;
 - (os_unfair_lock_s)noteSurfaceIDNoLongerInUse:(os_unfair_lock_s *)result;
 - (void)dealloc;
-- (void)noteSurfaceIDInUse:(uint64_t)a1;
-- (void)trackPixelBuffer:(uint64_t)a3 surfaceUseCountIsZeroHandler:;
+- (void)noteSurfaceIDInUse:(uint64_t)use;
+- (void)trackPixelBuffer:(uint64_t)buffer surfaceUseCountIsZeroHandler:;
 @end
 
 @implementation BWIOSurfaceTracking
 
-+ (void)trackPixelBuffer:(__CVBuffer *)a3 surfaceUseCountIsZeroHandler:(id)a4
++ (void)trackPixelBuffer:(__CVBuffer *)buffer surfaceUseCountIsZeroHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    if (CVPixelBufferGetIOSurface(a3))
+    if (CVPixelBufferGetIOSurface(buffer))
     {
       v7 = +[BWIOSurfaceTracking defaultSurfaceTracking];
 
-      [(BWIOSurfaceTracking *)v7 trackPixelBuffer:a3 surfaceUseCountIsZeroHandler:a4];
+      [(BWIOSurfaceTracking *)v7 trackPixelBuffer:buffer surfaceUseCountIsZeroHandler:handler];
     }
 
     else
     {
-      v6 = *(a4 + 2);
+      v6 = *(handler + 2);
 
-      v6(a4);
+      v6(handler);
     }
   }
 }
@@ -43,18 +43,18 @@
   return defaultSurfaceTracking_sDefaultSurfaceTracking;
 }
 
-+ (void)noteSurfaceIDInUse:(unsigned int)a3 byClient:(id)a4
++ (void)noteSurfaceIDInUse:(unsigned int)use byClient:(id)client
 {
   v5 = +[BWIOSurfaceTracking defaultSurfaceTracking];
 
-  [(BWIOSurfaceTracking *)v5 noteSurfaceIDInUse:a3];
+  [(BWIOSurfaceTracking *)v5 noteSurfaceIDInUse:use];
 }
 
-+ (void)noteSurfaceIDNoLongerInUse:(unsigned int)a3 byClient:(id)a4
++ (void)noteSurfaceIDNoLongerInUse:(unsigned int)use byClient:(id)client
 {
   v5 = +[BWIOSurfaceTracking defaultSurfaceTracking];
 
-  [(BWIOSurfaceTracking *)v5 noteSurfaceIDNoLongerInUse:a3];
+  [(BWIOSurfaceTracking *)v5 noteSurfaceIDNoLongerInUse:use];
 }
 
 BWIOSurfaceTracking *__45__BWIOSurfaceTracking_defaultSurfaceTracking__block_invoke()
@@ -134,34 +134,34 @@ void __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___b
   }
 }
 
-- (void)trackPixelBuffer:(uint64_t)a3 surfaceUseCountIsZeroHandler:
+- (void)trackPixelBuffer:(uint64_t)buffer surfaceUseCountIsZeroHandler:
 {
-  if (a1)
+  if (self)
   {
     IOSurface = CVPixelBufferGetIOSurface(pixelBuffer);
-    v7 = [[BWTrackedSurface alloc] initWithSurface:IOSurface handler:a3];
-    os_unfair_lock_lock((a1 + 8));
-    [*(a1 + 16) addObject:v7];
-    os_unfair_lock_unlock((a1 + 8));
+    v7 = [[BWTrackedSurface alloc] initWithSurface:IOSurface handler:buffer];
+    os_unfair_lock_lock((self + 8));
+    [*(self + 16) addObject:v7];
+    os_unfair_lock_unlock((self + 8));
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___block_invoke;
     v8[3] = &unk_1E799D4F0;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = v7;
-    v8[6] = a3;
+    v8[6] = buffer;
     v8[7] = IOSurface;
     [BWObjectLifetimeTracker trackAttachmentBearer:pixelBuffer deallocHandler:v8];
   }
 }
 
-- (void)noteSurfaceIDInUse:(uint64_t)a1
+- (void)noteSurfaceIDInUse:(uint64_t)use
 {
-  if (a1)
+  if (use)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((use + 8));
     OUTLINED_FUNCTION_1_13();
-    v4 = *(a1 + 16);
+    v4 = *(use + 16);
     v13 = OUTLINED_FUNCTION_0_0(v5, v6, v7, v8, v9, v10, v11, v12, v26, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58);
     if (v13)
     {
@@ -190,7 +190,7 @@ void __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___b
       while (v14);
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((use + 8));
   }
 }
 
@@ -205,7 +205,7 @@ void __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___b
     if (v13)
     {
       v14 = v13;
-      v15 = 0;
+      indexSet = 0;
       v16 = 0;
       v17 = MEMORY[0];
       do
@@ -224,12 +224,12 @@ void __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___b
             [v19 setClientUseCount:{objc_msgSend(v19, "clientUseCount") - 1}];
             if ([v19 owningPixelBufferDeallocated] && !objc_msgSend(v19, "clientUseCount"))
             {
-              if (!v15)
+              if (!indexSet)
               {
-                v15 = [MEMORY[0x1E696AD50] indexSet];
+                indexSet = [MEMORY[0x1E696AD50] indexSet];
               }
 
-              [v15 addIndex:v16];
+              [indexSet addIndex:v16];
             }
 
             ID = [v19 clientUseCount];
@@ -250,13 +250,13 @@ void __69__BWIOSurfaceTracking_trackPixelBuffer_surfaceUseCountIsZeroHandler___b
 
     else
     {
-      v15 = 0;
+      indexSet = 0;
     }
 
-    if ([v15 count])
+    if ([indexSet count])
     {
-      v28 = [*&v3[4]._os_unfair_lock_opaque objectsAtIndexes:v15];
-      [*&v3[4]._os_unfair_lock_opaque removeObjectsAtIndexes:v15];
+      v28 = [*&v3[4]._os_unfair_lock_opaque objectsAtIndexes:indexSet];
+      [*&v3[4]._os_unfair_lock_opaque removeObjectsAtIndexes:indexSet];
     }
 
     else

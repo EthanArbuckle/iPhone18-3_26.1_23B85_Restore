@@ -1,12 +1,12 @@
 @interface HAPFirmwareUpdateReadiness
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPFirmwareUpdateReadiness)init;
-- (HAPFirmwareUpdateReadiness)initWithStagingNotReadyReasons:(id)a3 updateNotReadyReasons:(id)a4;
+- (HAPFirmwareUpdateReadiness)initWithStagingNotReadyReasons:(id)reasons updateNotReadyReasons:(id)readyReasons;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPFirmwareUpdateReadiness
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
-  v5 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
-  v6 = [v3 stringWithFormat:@"<HAPFirmwareUpdateReadiness stagingNotReadyReasons=%@, updateNotReadyReasons=%@>", v4, v5];
+  stagingNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+  updateNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+  v6 = [v3 stringWithFormat:@"<HAPFirmwareUpdateReadiness stagingNotReadyReasons=%@, updateNotReadyReasons=%@>", stagingNotReadyReasons, updateNotReadyReasons];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
-      v8 = [(HAPFirmwareUpdateReadiness *)v6 stagingNotReadyReasons];
-      if (v7 != v8)
+      v6 = equalCopy;
+      stagingNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+      stagingNotReadyReasons2 = [(HAPFirmwareUpdateReadiness *)v6 stagingNotReadyReasons];
+      if (stagingNotReadyReasons != stagingNotReadyReasons2)
       {
-        v9 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
-        v3 = [(HAPFirmwareUpdateReadiness *)v6 stagingNotReadyReasons];
-        if (![v9 isEqual:v3])
+        stagingNotReadyReasons3 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+        stagingNotReadyReasons4 = [(HAPFirmwareUpdateReadiness *)v6 stagingNotReadyReasons];
+        if (![stagingNotReadyReasons3 isEqual:stagingNotReadyReasons4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = stagingNotReadyReasons3;
       }
 
-      v11 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
-      v12 = [(HAPFirmwareUpdateReadiness *)v6 updateNotReadyReasons];
-      if (v11 == v12)
+      updateNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+      updateNotReadyReasons2 = [(HAPFirmwareUpdateReadiness *)v6 updateNotReadyReasons];
+      if (updateNotReadyReasons == updateNotReadyReasons2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
-        v14 = [(HAPFirmwareUpdateReadiness *)v6 updateNotReadyReasons];
-        v10 = [v13 isEqual:v14];
+        updateNotReadyReasons3 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+        updateNotReadyReasons4 = [(HAPFirmwareUpdateReadiness *)v6 updateNotReadyReasons];
+        v10 = [updateNotReadyReasons3 isEqual:updateNotReadyReasons4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      stagingNotReadyReasons3 = v16;
+      if (stagingNotReadyReasons == stagingNotReadyReasons2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPFirmwareUpdateReadiness allocWithZone:a3];
-  v5 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
-  v6 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
-  v7 = [(HAPFirmwareUpdateReadiness *)v4 initWithStagingNotReadyReasons:v5 updateNotReadyReasons:v6];
+  v4 = [HAPFirmwareUpdateReadiness allocWithZone:zone];
+  stagingNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+  updateNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+  v7 = [(HAPFirmwareUpdateReadiness *)v4 initWithStagingNotReadyReasons:stagingNotReadyReasons updateNotReadyReasons:updateNotReadyReasons];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
   v37 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+  stagingNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
 
-  if (v5)
+  if (stagingNotReadyReasons)
   {
-    v6 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
+    stagingNotReadyReasons2 = [(HAPFirmwareUpdateReadiness *)self stagingNotReadyReasons];
     v17 = 0;
-    v7 = [v6 serializeWithError:&v17];
+    v7 = [stagingNotReadyReasons2 serializeWithError:&v17];
     v8 = v17;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -153,9 +153,9 @@ LABEL_9:
     }
   }
 
-  v10 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+  updateNotReadyReasons = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
 
-  if (!v10)
+  if (!updateNotReadyReasons)
   {
 LABEL_11:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:?];
@@ -163,9 +163,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
+  updateNotReadyReasons2 = [(HAPFirmwareUpdateReadiness *)self updateNotReadyReasons];
   v16 = 0;
-  v7 = [v11 serializeWithError:&v16];
+  v7 = [updateNotReadyReasons2 serializeWithError:&v16];
   v8 = v16;
 
   if (!v8)
@@ -184,11 +184,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -202,11 +202,11 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -219,11 +219,11 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v28 = 0;
@@ -233,10 +233,10 @@ LABEL_14:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v22)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_21;
       }
 
@@ -291,11 +291,11 @@ LABEL_9:
   }
 
 LABEL_18:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v11;
     v18 = 0;
-    *v22 = v11;
+    *errorCopy = v11;
     goto LABEL_21;
   }
 
@@ -306,18 +306,18 @@ LABEL_21:
   return v18;
 }
 
-- (HAPFirmwareUpdateReadiness)initWithStagingNotReadyReasons:(id)a3 updateNotReadyReasons:(id)a4
+- (HAPFirmwareUpdateReadiness)initWithStagingNotReadyReasons:(id)reasons updateNotReadyReasons:(id)readyReasons
 {
-  v7 = a3;
-  v8 = a4;
+  reasonsCopy = reasons;
+  readyReasonsCopy = readyReasons;
   v12.receiver = self;
   v12.super_class = HAPFirmwareUpdateReadiness;
   v9 = [(HAPFirmwareUpdateReadiness *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stagingNotReadyReasons, a3);
-    objc_storeStrong(&v10->_updateNotReadyReasons, a4);
+    objc_storeStrong(&v9->_stagingNotReadyReasons, reasons);
+    objc_storeStrong(&v10->_updateNotReadyReasons, readyReasons);
   }
 
   return v10;
@@ -330,24 +330,24 @@ LABEL_21:
   return [(HAPFirmwareUpdateReadiness *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPFirmwareUpdateReadiness);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPFirmwareUpdateReadiness *)v6 parseFromData:v5 error:&v11];
+    [(HAPFirmwareUpdateReadiness *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,17 +1,17 @@
 @interface WTTextSelectionRect
-+ (id)rectWithRect:(CGRect)a3;
++ (id)rectWithRect:(CGRect)rect;
 - (CGRect)rect;
 - (id)description;
 @end
 
 @implementation WTTextSelectionRect
 
-+ (id)rectWithRect:(CGRect)a3
++ (id)rectWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(WTTextSelectionRect);
   v7->_rect.origin.x = x;
   v7->_rect.origin.y = y;

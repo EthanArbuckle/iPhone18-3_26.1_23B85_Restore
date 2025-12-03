@@ -1,6 +1,6 @@
 @interface ASTAuthInfoResult
-+ (id)authInfoResultWithAttestation:(id)a3 certificate:(id)a4 type:(int64_t)a5 error:(int64_t)a6;
-+ (id)sealedAuthInfoResultWithPayload:(id)a3 signature:(id)a4;
++ (id)authInfoResultWithAttestation:(id)attestation certificate:(id)certificate type:(int64_t)type error:(int64_t)error;
++ (id)sealedAuthInfoResultWithPayload:(id)payload signature:(id)signature;
 - (id)generatePayload;
 @end
 
@@ -8,39 +8,39 @@
 
 - (id)generatePayload
 {
-  v3 = [(ASTAuthInfoResult *)self attestation];
-  if (v3)
+  attestation = [(ASTAuthInfoResult *)self attestation];
+  if (attestation)
   {
-    v4 = [(ASTAuthInfoResult *)self attestation];
-    v5 = [MEMORY[0x277CBEB68] null];
+    attestation2 = [(ASTAuthInfoResult *)self attestation];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v4 == v5)
+    if (attestation2 == null)
     {
-      v3 = 0;
+      attestation = 0;
     }
 
     else
     {
-      v6 = [(ASTAuthInfoResult *)self attestation];
-      v3 = [v6 base64EncodedStringWithOptions:0];
+      attestation3 = [(ASTAuthInfoResult *)self attestation];
+      attestation = [attestation3 base64EncodedStringWithOptions:0];
     }
   }
 
-  v7 = [(ASTAuthInfoResult *)self cert];
-  if (v7)
+  cert = [(ASTAuthInfoResult *)self cert];
+  if (cert)
   {
-    v8 = [(ASTAuthInfoResult *)self cert];
-    v9 = [MEMORY[0x277CBEB68] null];
+    cert2 = [(ASTAuthInfoResult *)self cert];
+    null2 = [MEMORY[0x277CBEB68] null];
 
-    if (v8 == v9)
+    if (cert2 == null2)
     {
-      v7 = 0;
+      cert = 0;
     }
 
     else
     {
-      v10 = [(ASTAuthInfoResult *)self cert];
-      v7 = [v10 base64EncodedStringWithOptions:0];
+      cert3 = [(ASTAuthInfoResult *)self cert];
+      cert = [cert3 base64EncodedStringWithOptions:0];
     }
   }
 
@@ -48,14 +48,14 @@
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ASTAuthInfoResult type](self, "type")}];
   [v11 setObject:v12 forKeyedSubscript:@"type"];
 
-  if (v3)
+  if (attestation)
   {
-    [v11 setObject:v3 forKeyedSubscript:@"attestation"];
+    [v11 setObject:attestation forKeyedSubscript:@"attestation"];
   }
 
-  if (v7)
+  if (cert)
   {
-    [v11 setObject:v7 forKeyedSubscript:@"certificate"];
+    [v11 setObject:cert forKeyedSubscript:@"certificate"];
   }
 
   if ([(ASTAuthInfoResult *)self error])
@@ -69,25 +69,25 @@
   return v14;
 }
 
-+ (id)sealedAuthInfoResultWithPayload:(id)a3 signature:(id)a4
++ (id)sealedAuthInfoResultWithPayload:(id)payload signature:(id)signature
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(ASTSealablePayload *)[ASTAuthInfoResult alloc] initWithPayload:v6 signature:v5];
+  signatureCopy = signature;
+  payloadCopy = payload;
+  v7 = [(ASTSealablePayload *)[ASTAuthInfoResult alloc] initWithPayload:payloadCopy signature:signatureCopy];
 
   return v7;
 }
 
-+ (id)authInfoResultWithAttestation:(id)a3 certificate:(id)a4 type:(int64_t)a5 error:(int64_t)a6
++ (id)authInfoResultWithAttestation:(id)attestation certificate:(id)certificate type:(int64_t)type error:(int64_t)error
 {
-  v9 = a4;
-  v10 = a3;
+  certificateCopy = certificate;
+  attestationCopy = attestation;
   v11 = objc_opt_new();
-  [v11 setAttestation:v10];
+  [v11 setAttestation:attestationCopy];
 
-  [v11 setCert:v9];
-  [v11 setType:a5];
-  [v11 setError:a6];
+  [v11 setCert:certificateCopy];
+  [v11 setType:type];
+  [v11 setError:error];
 
   return v11;
 }

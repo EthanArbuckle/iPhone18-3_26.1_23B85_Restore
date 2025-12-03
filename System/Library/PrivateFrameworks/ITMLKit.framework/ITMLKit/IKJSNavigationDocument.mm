@@ -1,32 +1,32 @@
 @interface IKJSNavigationDocument
-- (IKJSNavigationDocument)initWithAppContext:(id)a3 navigationController:(id)a4;
+- (IKJSNavigationDocument)initWithAppContext:(id)context navigationController:(id)controller;
 - (NSArray)documents;
-- (id)_makeAppDocumentWithDocument:(id)a3;
+- (id)_makeAppDocumentWithDocument:(id)document;
 - (void)clear;
 - (void)dismissModal;
-- (void)insertBeforeDocument:(id)a3 :(id)a4 :(id)a5;
+- (void)insertBeforeDocument:(id)document :(id)a4 :(id)a5;
 - (void)popDocument;
-- (void)popToDocument:(id)a3;
+- (void)popToDocument:(id)document;
 - (void)popToRootDocument;
-- (void)presentModal:(id)a3 :(id)a4;
-- (void)pushDocument:(id)a3 :(id)a4;
-- (void)removeDocument:(id)a3;
-- (void)replaceDocument:(id)a3 :(id)a4 :(id)a5;
-- (void)setDocuments:(id)a3 :(id)a4;
+- (void)presentModal:(id)modal :(id)a4;
+- (void)pushDocument:(id)document :(id)a4;
+- (void)removeDocument:(id)document;
+- (void)replaceDocument:(id)document :(id)a4 :(id)a5;
+- (void)setDocuments:(id)documents :(id)a4;
 @end
 
 @implementation IKJSNavigationDocument
 
-- (IKJSNavigationDocument)initWithAppContext:(id)a3 navigationController:(id)a4
+- (IKJSNavigationDocument)initWithAppContext:(id)context navigationController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = IKJSNavigationDocument;
-  v7 = [(IKJSObject *)&v10 initWithAppContext:a3];
+  v7 = [(IKJSObject *)&v10 initWithAppContext:context];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_navigationControllerDelegate, v6);
+    objc_storeWeak(&v7->_navigationControllerDelegate, controllerCopy);
     v8->_delegateSelectors.hasClear = objc_opt_respondsToSelector() & 1;
     v8->_delegateSelectors.hasSetDocuments = objc_opt_respondsToSelector() & 1;
     v8->_delegateSelectors.hasPresentModal = objc_opt_respondsToSelector() & 1;
@@ -44,14 +44,14 @@
   v10 = __Block_byref_object_copy__25;
   v11 = __Block_byref_object_dispose__25;
   v12 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__IKJSNavigationDocument_documents__block_invoke;
   v6[3] = &unk_279799028;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = [v8[5] valueForKey:@"jsDocument"];
   _Block_object_dispose(&v7, 8);
@@ -68,10 +68,10 @@ void __35__IKJSNavigationDocument_documents__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setDocuments:(id)a3 :(id)a4
+- (void)setDocuments:(id)documents :(id)a4
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  documentsCopy = documents;
   v7 = a4;
   if (self->_delegateSelectors.hasSetDocuments)
   {
@@ -80,7 +80,7 @@ void __35__IKJSNavigationDocument_documents__block_invoke(uint64_t a1)
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v6;
+    v9 = documentsCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -109,7 +109,7 @@ void __35__IKJSNavigationDocument_documents__block_invoke(uint64_t a1)
       while (v11);
     }
 
-    v15 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __40__IKJSNavigationDocument_setDocuments::__block_invoke;
@@ -118,7 +118,7 @@ void __35__IKJSNavigationDocument_documents__block_invoke(uint64_t a1)
     v19 = v8;
     v20 = v7;
     v16 = v8;
-    [v15 evaluateDelegateBlockSync:v18];
+    [appContext evaluateDelegateBlockSync:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -130,23 +130,23 @@ void __40__IKJSNavigationDocument_setDocuments::__block_invoke(uint64_t a1)
   [v2 setDocuments:*(a1 + 40) options:*(a1 + 48)];
 }
 
-- (void)pushDocument:(id)a3 :(id)a4
+- (void)pushDocument:(id)document :(id)a4
 {
-  v6 = a3;
+  documentCopy = document;
   v7 = a4;
   kdebug_trace();
   v8 = [v7 objectForKey:@"TransitionOptionRetainContext"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [(IKJSNavigationDocument *)self documents];
-    v11 = [v10 lastObject];
-    [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v11 toDocument:v6];
+    documents = [(IKJSNavigationDocument *)self documents];
+    lastObject = [documents lastObject];
+    [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:lastObject toDocument:documentCopy];
   }
 
-  v12 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:v6];
-  v13 = [(IKJSObject *)self appContext];
+  v12 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:documentCopy];
+  appContext = [(IKJSObject *)self appContext];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __40__IKJSNavigationDocument_pushDocument::__block_invoke;
@@ -156,7 +156,7 @@ void __40__IKJSNavigationDocument_setDocuments::__block_invoke(uint64_t a1)
   v18 = v7;
   v14 = v7;
   v15 = v12;
-  [v13 evaluateDelegateBlockSync:v16];
+  [appContext evaluateDelegateBlockSync:v16];
 }
 
 void __40__IKJSNavigationDocument_pushDocument::__block_invoke(uint64_t a1)
@@ -165,25 +165,25 @@ void __40__IKJSNavigationDocument_pushDocument::__block_invoke(uint64_t a1)
   [v2 pushDocument:*(a1 + 40) options:*(a1 + 48)];
 }
 
-- (void)presentModal:(id)a3 :(id)a4
+- (void)presentModal:(id)modal :(id)a4
 {
-  v6 = a3;
+  modalCopy = modal;
   v7 = a4;
   v8 = v7;
   if (self->_delegateSelectors.hasPresentModal)
   {
     v9 = [v7 objectForKey:@"TransitionOptionRetainContext"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
-      v11 = [(IKJSNavigationDocument *)self documents];
-      v12 = [v11 lastObject];
-      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v12 toDocument:v6];
+      documents = [(IKJSNavigationDocument *)self documents];
+      lastObject = [documents lastObject];
+      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:lastObject toDocument:modalCopy];
     }
 
-    v13 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:v6];
-    v14 = [(IKJSObject *)self appContext];
+    v13 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:modalCopy];
+    appContext = [(IKJSObject *)self appContext];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __40__IKJSNavigationDocument_presentModal::__block_invoke;
@@ -192,7 +192,7 @@ void __40__IKJSNavigationDocument_pushDocument::__block_invoke(uint64_t a1)
     v17 = v13;
     v18 = v8;
     v15 = v13;
-    [v14 evaluateDelegateBlockSync:v16];
+    [appContext evaluateDelegateBlockSync:v16];
   }
 }
 
@@ -208,13 +208,13 @@ void __40__IKJSNavigationDocument_presentModal::__block_invoke(uint64_t a1)
   {
     v6[7] = v2;
     v6[8] = v3;
-    v5 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__IKJSNavigationDocument_dismissModal__block_invoke;
     v6[3] = &unk_279799AA0;
     v6[4] = self;
-    [v5 evaluateDelegateBlockSync:v6];
+    [appContext evaluateDelegateBlockSync:v6];
   }
 }
 
@@ -224,20 +224,20 @@ void __38__IKJSNavigationDocument_dismissModal__block_invoke(uint64_t a1)
   [v1 dismissModal];
 }
 
-- (void)insertBeforeDocument:(id)a3 :(id)a4 :(id)a5
+- (void)insertBeforeDocument:(id)document :(id)a4 :(id)a5
 {
-  v8 = a3;
+  documentCopy = document;
   v9 = a4;
   v10 = a5;
   v11 = v10;
   if (v9)
   {
     v12 = [v10 objectForKey:@"TransitionOptionRetainContext"];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
-      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v9 toDocument:v8];
+      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v9 toDocument:documentCopy];
     }
 
     v23 = 0;
@@ -246,8 +246,8 @@ void __38__IKJSNavigationDocument_dismissModal__block_invoke(uint64_t a1)
     v26 = __Block_byref_object_copy__25;
     v27 = __Block_byref_object_dispose__25;
     v28 = 0;
-    v14 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:v8];
-    v15 = [(IKJSObject *)self appContext];
+    v14 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:documentCopy];
+    appContext = [(IKJSObject *)self appContext];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __49__IKJSNavigationDocument_insertBeforeDocument_::__block_invoke;
@@ -258,12 +258,12 @@ void __38__IKJSNavigationDocument_dismissModal__block_invoke(uint64_t a1)
     v20 = v16;
     v21 = v11;
     v22 = &v23;
-    [v15 evaluateDelegateBlockSync:v18];
+    [appContext evaluateDelegateBlockSync:v18];
 
     if ([v24[5] length])
     {
-      v17 = [(IKJSObject *)self appContext];
-      [v17 setException:0 withErrorMessage:v24[5]];
+      appContext2 = [(IKJSObject *)self appContext];
+      [appContext2 setException:0 withErrorMessage:v24[5]];
     }
 
     _Block_object_dispose(&v23, 8);
@@ -271,7 +271,7 @@ void __38__IKJSNavigationDocument_dismissModal__block_invoke(uint64_t a1)
 
   else
   {
-    [(IKJSNavigationDocument *)self pushDocument:v8];
+    [(IKJSNavigationDocument *)self pushDocument:documentCopy];
   }
 }
 
@@ -345,9 +345,9 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceDocument:(id)a3 :(id)a4 :(id)a5
+- (void)replaceDocument:(id)document :(id)a4 :(id)a5
 {
-  v8 = a3;
+  documentCopy = document;
   v9 = a4;
   v10 = a5;
   kdebug_trace();
@@ -357,18 +357,18 @@ LABEL_12:
   v25 = __Block_byref_object_copy__25;
   v26 = __Block_byref_object_dispose__25;
   v27 = 0;
-  if (v8 && v9)
+  if (documentCopy && v9)
   {
     v11 = [v10 objectForKey:@"TransitionOptionRetainContext"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
-      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v9 toDocument:v8];
+      [(IKJSNavigationDocument *)self _migrateMediaControllerFromDocument:v9 toDocument:documentCopy];
     }
 
-    v13 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:v8];
-    v14 = [(IKJSObject *)self appContext];
+    v13 = [(IKJSNavigationDocument *)self _makeAppDocumentWithDocument:documentCopy];
+    appContext = [(IKJSObject *)self appContext];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __44__IKJSNavigationDocument_replaceDocument_::__block_invoke;
@@ -379,7 +379,7 @@ LABEL_12:
     v19 = v15;
     v20 = v10;
     v21 = &v22;
-    [v14 evaluateDelegateBlockSync:v17];
+    [appContext evaluateDelegateBlockSync:v17];
   }
 
   else
@@ -390,8 +390,8 @@ LABEL_12:
 
   if ([v23[5] length])
   {
-    v16 = [(IKJSObject *)self appContext];
-    [v16 setException:0 withErrorMessage:v23[5]];
+    appContext2 = [(IKJSObject *)self appContext];
+    [appContext2 setException:0 withErrorMessage:v23[5]];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -469,13 +469,13 @@ LABEL_12:
 
 - (void)popDocument
 {
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__IKJSNavigationDocument_popDocument__block_invoke;
   v4[3] = &unk_279799AA0;
   v4[4] = self;
-  [v3 evaluateDelegateBlockSync:v4];
+  [appContext evaluateDelegateBlockSync:v4];
 }
 
 void __37__IKJSNavigationDocument_popDocument__block_invoke(uint64_t a1)
@@ -484,18 +484,18 @@ void __37__IKJSNavigationDocument_popDocument__block_invoke(uint64_t a1)
   [v1 popDocument];
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(IKJSObject *)self appContext];
+  documentCopy = document;
+  appContext = [(IKJSObject *)self appContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__IKJSNavigationDocument_popToDocument___block_invoke;
   v7[3] = &unk_279799260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluateDelegateBlockSync:v7];
+  v8 = documentCopy;
+  v6 = documentCopy;
+  [appContext evaluateDelegateBlockSync:v7];
 }
 
 void __40__IKJSNavigationDocument_popToDocument___block_invoke(uint64_t a1)
@@ -565,13 +565,13 @@ LABEL_13:
 
 - (void)popToRootDocument
 {
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__IKJSNavigationDocument_popToRootDocument__block_invoke;
   v4[3] = &unk_279799AA0;
   v4[4] = self;
-  [v3 evaluateDelegateBlockSync:v4];
+  [appContext evaluateDelegateBlockSync:v4];
 }
 
 void __43__IKJSNavigationDocument_popToRootDocument__block_invoke(uint64_t a1)
@@ -580,30 +580,30 @@ void __43__IKJSNavigationDocument_popToRootDocument__block_invoke(uint64_t a1)
   [v1 popToRootDocument];
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__25;
   v15 = __Block_byref_object_dispose__25;
   v16 = 0;
-  v5 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__IKJSNavigationDocument_removeDocument___block_invoke;
   v8[3] = &unk_27979B2D8;
   v8[4] = self;
-  v6 = v4;
+  v6 = documentCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 evaluateDelegateBlockSync:v8];
+  [appContext evaluateDelegateBlockSync:v8];
 
   if ([v12[5] length])
   {
-    v7 = [(IKJSObject *)self appContext];
-    [v7 setException:0 withErrorMessage:v12[5]];
+    appContext2 = [(IKJSObject *)self appContext];
+    [appContext2 setException:0 withErrorMessage:v12[5]];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -685,13 +685,13 @@ LABEL_12:
   {
     v6[7] = v2;
     v6[8] = v3;
-    v5 = [(IKJSObject *)self appContext];
+    appContext = [(IKJSObject *)self appContext];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __31__IKJSNavigationDocument_clear__block_invoke;
     v6[3] = &unk_279799AA0;
     v6[4] = self;
-    [v5 evaluateDelegateBlockSync:v6];
+    [appContext evaluateDelegateBlockSync:v6];
   }
 }
 
@@ -701,15 +701,15 @@ void __31__IKJSNavigationDocument_clear__block_invoke(uint64_t a1)
   [v1 clear];
 }
 
-- (id)_makeAppDocumentWithDocument:(id)a3
+- (id)_makeAppDocumentWithDocument:(id)document
 {
-  if (a3)
+  if (document)
   {
-    v4 = a3;
-    [v4 setNavigationDocument:self];
+    documentCopy = document;
+    [documentCopy setNavigationDocument:self];
     v5 = [IKAppDocument alloc];
-    v6 = [(IKJSObject *)self appContext];
-    v7 = [(IKAppDocument *)v5 initWithAppContext:v6 document:v4 owner:self];
+    appContext = [(IKJSObject *)self appContext];
+    v7 = [(IKAppDocument *)v5 initWithAppContext:appContext document:documentCopy owner:self];
   }
 
   else

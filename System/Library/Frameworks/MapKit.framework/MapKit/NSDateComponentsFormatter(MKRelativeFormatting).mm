@@ -9,8 +9,8 @@
 {
   v4 = MEMORY[0x1E695DF00];
   v5 = a3;
-  v6 = [v4 date];
-  v7 = [a1 _mapkit_descriptionForTimeSinceDate:v5 referenceDate:v6];
+  date = [v4 date];
+  v7 = [self _mapkit_descriptionForTimeSinceDate:v5 referenceDate:date];
 
   return v7;
 }

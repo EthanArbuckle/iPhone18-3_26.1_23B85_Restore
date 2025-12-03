@@ -1,8 +1,8 @@
 @interface MFSMTPDelivery
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4;
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients;
 - (void)_openConnection;
 - (void)dealloc;
-- (void)setAccount:(id)a3;
+- (void)setAccount:(id)account;
 @end
 
 @implementation MFSMTPDelivery
@@ -23,10 +23,10 @@
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   connection = self->_connection;
-  if (connection && self->super._account != a3)
+  if (connection && self->super._account != account)
   {
 
     self->_connection = 0;
@@ -34,12 +34,12 @@
 
   v6.receiver = self;
   v6.super_class = MFSMTPDelivery;
-  [(MFMailDelivery *)&v6 setAccount:a3];
+  [(MFMailDelivery *)&v6 setAccount:account];
 }
 
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients
 {
-  v7 = [(MFAccount *)self->super._account hostname];
+  hostname = [(MFAccount *)self->super._account hostname];
   v39 = 1030;
   v37 = 0;
   v38 = 0;
@@ -53,7 +53,7 @@
     [(MFSMTPDelivery *)self _openConnection];
   }
 
-  if (!v7)
+  if (!hostname)
   {
     v39 = 1044;
     v10 = 0;
@@ -66,10 +66,10 @@
   {
 
 LABEL_10:
-    v11 = [(MFMessage *)self->super._message senders];
-    if ([v11 count])
+    senders = [(MFMessage *)self->super._message senders];
+    if ([senders count])
     {
-      v10 = [objc_msgSend(v11 objectAtIndex:{0), "mf_uncommentedAddress"}];
+      v10 = [objc_msgSend(senders objectAtIndex:{0), "mf_uncommentedAddress"}];
     }
 
     else
@@ -92,7 +92,7 @@ LABEL_13:
   {
     if (![v8 error])
     {
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SMTP_NO_CONNECTION", @"The connection to the outgoing server “%@” failed. Additional Outgoing Mail Servers can be configured for Mail accounts in Settings > Accounts & Passwords.", @"Delayed", v7];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SMTP_NO_CONNECTION", @"The connection to the outgoing server “%@” failed. Additional Outgoing Mail Servers can be configured for Mail accounts in Settings > Accounts & Passwords.", @"Delayed", hostname];
       v39 = 1051;
     }
 
@@ -102,20 +102,20 @@ LABEL_13:
 
   [(MFSMTPConnection *)self->_connection setDelegate:self->super._delegate];
   [self->super._delegate setPercentDone:0.1];
-  if (!v7)
+  if (!hostname)
   {
     v20 = 1;
     goto LABEL_24;
   }
 
-  v33 = a4;
-  v12 = [(MFSMTPConnection *)self->_connection maximumMessageBytes];
-  if (v12)
+  recipientsCopy = recipients;
+  maximumMessageBytes = [(MFSMTPConnection *)self->_connection maximumMessageBytes];
+  if (maximumMessageBytes)
   {
-    v13 = v12;
-    v14 = [(MFSMTPConnection *)self->_connection supportsBinaryMime];
-    v15 = [a3 length];
-    v16 = [a3 numberOfNewlinesNeedingConversion:v14] + v15;
+    v13 = maximumMessageBytes;
+    supportsBinaryMime = [(MFSMTPConnection *)self->_connection supportsBinaryMime];
+    v15 = [data length];
+    v16 = [data numberOfNewlinesNeedingConversion:supportsBinaryMime] + v15;
     if (v13 < v16)
     {
       v17 = MEMORY[0x277CCACA8];
@@ -130,34 +130,34 @@ LABEL_24:
     }
   }
 
-  v21 = [(MFMailDelivery *)self archiveAccount];
-  v22 = [(DeliveryAccount *)self->super._account shouldUseSaveSentForAccount:v21];
+  archiveAccount = [(MFMailDelivery *)self archiveAccount];
+  v22 = [(DeliveryAccount *)self->super._account shouldUseSaveSentForAccount:archiveAccount];
   connection = self->_connection;
   if (v22)
   {
-    v24 = [v21 saveSentFolder];
+    saveSentFolder = [archiveAccount saveSentFolder];
   }
 
   else
   {
-    v24 = 0;
+    saveSentFolder = 0;
   }
 
-  [(MFSMTPConnection *)connection setUseSaveSent:v22 toFolder:v24];
+  [(MFSMTPConnection *)connection setUseSaveSent:v22 toFolder:saveSentFolder];
   Current = CFAbsoluteTimeGetCurrent();
   [(MFConnection *)self->_connection enableThroughputMonitoring:1];
-  v20 = [(MFSMTPConnection *)self->_connection mailFrom:v10 recipients:v33 withData:a3 host:v7 errorTitle:&v38 errorMessage:&v37 serverResponse:&v35 displayError:&v34 errorCode:&v39 errorUserInfo:&v36];
+  v20 = [(MFSMTPConnection *)self->_connection mailFrom:v10 recipients:recipientsCopy withData:data host:hostname errorTitle:&v38 errorMessage:&v37 serverResponse:&v35 displayError:&v34 errorCode:&v39 errorUserInfo:&v36];
   [(MFConnection *)self->_connection enableThroughputMonitoring:0];
   v30 = CFAbsoluteTimeGetCurrent();
-  v31 = 0;
+  supportsOutboxCopy = 0;
   account = self->super._account;
   if (v22)
   {
-    v31 = [(MFSMTPConnection *)self->_connection supportsOutboxCopy];
+    supportsOutboxCopy = [(MFSMTPConnection *)self->_connection supportsOutboxCopy];
   }
 
   v25 = v30 - Current;
-  [(DeliveryAccount *)account setSupportsOutboxCopy:v31];
+  [(DeliveryAccount *)account setSupportsOutboxCopy:supportsOutboxCopy];
   if (v20)
   {
     [(MFSMTPConnection *)self->_connection quit];

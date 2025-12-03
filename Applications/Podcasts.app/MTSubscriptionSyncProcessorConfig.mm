@@ -1,14 +1,14 @@
 @interface MTSubscriptionSyncProcessorConfig
-+ (id)configWithSupportsMetrics:(BOOL)a3;
++ (id)configWithSupportsMetrics:(BOOL)metrics;
 @end
 
 @implementation MTSubscriptionSyncProcessorConfig
 
-+ (id)configWithSupportsMetrics:(BOOL)a3
++ (id)configWithSupportsMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc_init(MTSubscriptionSyncProcessorConfig);
-  [(MTSubscriptionSyncProcessorConfig *)v4 setSupportsMetrics:v3];
+  [(MTSubscriptionSyncProcessorConfig *)v4 setSupportsMetrics:metricsCopy];
 
   return v4;
 }

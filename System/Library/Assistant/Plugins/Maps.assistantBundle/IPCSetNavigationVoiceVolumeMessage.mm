@@ -1,20 +1,20 @@
 @interface IPCSetNavigationVoiceVolumeMessage
-- (IPCSetNavigationVoiceVolumeMessage)initWithDictionary:(id)a3;
+- (IPCSetNavigationVoiceVolumeMessage)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryValue;
 @end
 
 @implementation IPCSetNavigationVoiceVolumeMessage
 
-- (IPCSetNavigationVoiceVolumeMessage)initWithDictionary:(id)a3
+- (IPCSetNavigationVoiceVolumeMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = IPCSetNavigationVoiceVolumeMessage;
-  v5 = [(IPCMessageObject *)&v8 initWithDictionary:v4];
+  v5 = [(IPCMessageObject *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kIPCSetNavigationVoiceVolumeMessageRequestedVolumeKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kIPCSetNavigationVoiceVolumeMessageRequestedVolumeKey"];
     [(IPCSetNavigationVoiceVolumeMessage *)v5 setRequestedVolume:v6];
   }
 
@@ -25,11 +25,11 @@
 {
   v9.receiver = self;
   v9.super_class = IPCSetNavigationVoiceVolumeMessage;
-  v3 = [(IPCMessageObject *)&v9 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  dictionaryValue = [(IPCMessageObject *)&v9 dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
-  v5 = [(IPCSetNavigationVoiceVolumeMessage *)self requestedVolume];
-  v6 = [v5 copy];
+  requestedVolume = [(IPCSetNavigationVoiceVolumeMessage *)self requestedVolume];
+  v6 = [requestedVolume copy];
   [v4 setObject:v6 forKeyedSubscript:@"kIPCSetNavigationVoiceVolumeMessageRequestedVolumeKey"];
 
   v7 = [v4 copy];
@@ -42,8 +42,8 @@
   v7.receiver = self;
   v7.super_class = IPCSetNavigationVoiceVolumeMessage;
   v3 = [(IPCSetNavigationVoiceVolumeMessage *)&v7 description];
-  v4 = [(IPCSetNavigationVoiceVolumeMessage *)self dictionaryValue];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryValue = [(IPCSetNavigationVoiceVolumeMessage *)self dictionaryValue];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryValue];
 
   return v5;
 }

@@ -1,11 +1,11 @@
 @interface _UICollectionLayoutSectionDescriptor
 - (double)scrollingUnitVector;
-- (uint64_t)isEqualToSectionDescriptor:(int)a3 comparingContentOffset:;
+- (uint64_t)isEqualToSectionDescriptor:(int)descriptor comparingContentOffset:;
 @end
 
 @implementation _UICollectionLayoutSectionDescriptor
 
-- (uint64_t)isEqualToSectionDescriptor:(int)a3 comparingContentOffset:
+- (uint64_t)isEqualToSectionDescriptor:(int)descriptor comparingContentOffset:
 {
   if (result)
   {
@@ -16,7 +16,7 @@
 
     else
     {
-      if (a3)
+      if (descriptor)
       {
         if (a2)
         {
@@ -113,9 +113,9 @@
 
 - (double)scrollingUnitVector
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 80);
+    return *(self + 80);
   }
 
   else

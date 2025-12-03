@@ -1,7 +1,7 @@
 @interface UARPMetaDataDeviceMinimumRequiredVersion
 - (UARPMetaDataDeviceMinimumRequiredVersion)init;
-- (UARPMetaDataDeviceMinimumRequiredVersion)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataDeviceMinimumRequiredVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataDeviceMinimumRequiredVersion)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataDeviceMinimumRequiredVersion)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,13 +25,13 @@
   return v3;
 }
 
-- (UARPMetaDataDeviceMinimumRequiredVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataDeviceMinimumRequiredVersion)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataDeviceMinimumRequiredVersion *)self init];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [[UARPComponentVersion alloc] initWithVersionString:v5];
+    v7 = [[UARPComponentVersion alloc] initWithVersionString:valueCopy];
     minimumVersion = v6->_minimumVersion;
     v6->_minimumVersion = v7;
 
@@ -46,11 +46,11 @@
   return v9;
 }
 
-- (UARPMetaDataDeviceMinimumRequiredVersion)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDeviceMinimumRequiredVersion)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDeviceMinimumRequiredVersion *)self init];
   v7 = v6;
-  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataDeviceMinimumRequiredVersion, [(UARPMetaData *)&v12 componentVersionWithLength:a3 value:a4], v8 = objc_claimAutoreleasedReturnValue(), minimumVersion = v7->_minimumVersion, v7->_minimumVersion = v8, minimumVersion, v7->_minimumVersion))
+  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataDeviceMinimumRequiredVersion, [(UARPMetaData *)&v12 componentVersionWithLength:length value:value], v8 = objc_claimAutoreleasedReturnValue(), minimumVersion = v7->_minimumVersion, v7->_minimumVersion = v8, minimumVersion, v7->_minimumVersion))
   {
     v10 = v7;
   }
@@ -65,19 +65,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataDeviceMinimumRequiredVersion *)self minimumVersion];
+  minimumVersion = [(UARPMetaDataDeviceMinimumRequiredVersion *)self minimumVersion];
   v6.receiver = self;
   v6.super_class = UARPMetaDataDeviceMinimumRequiredVersion;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:minimumVersion];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataDeviceMinimumRequiredVersion *)self minimumVersion];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  minimumVersion = [(UARPMetaDataDeviceMinimumRequiredVersion *)self minimumVersion];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, minimumVersion];
 
   return v5;
 }

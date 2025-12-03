@@ -1,29 +1,29 @@
 @interface CHSServerSubscription
-- (BOOL)_lock_createServerSubscriptionIfNecessary:(id *)a3 forcing:(BOOL)a4;
-- (BOOL)_lock_updateSubscription:(id *)a3;
+- (BOOL)_lock_createServerSubscriptionIfNecessary:(id *)necessary forcing:(BOOL)forcing;
+- (BOOL)_lock_updateSubscription:(id *)subscription;
 - (BOOL)isSubscribed;
 - (BOOL)resubscribeIfNecessary;
-- (CHSServerSubscription)initWithIdentifier:(id)a3 serverSubscriptionBlock:(id)a4;
+- (CHSServerSubscription)initWithIdentifier:(id)identifier serverSubscriptionBlock:(id)block;
 - (NSObject)cachedValue;
-- (id)subscribeWithResult:(id *)a3 forcingServerUpdate:(BOOL)a4 error:(id *)a5;
-- (id)updateSubscription:(id *)a3;
+- (id)subscribeWithResult:(id *)result forcingServerUpdate:(BOOL)update error:(id *)error;
+- (id)updateSubscription:(id *)subscription;
 - (void)noteConnectionTerminated;
-- (void)setCachedValue:(id)a3;
-- (void)updateCachedValue:(id)a3;
+- (void)setCachedValue:(id)value;
+- (void)updateCachedValue:(id)value;
 @end
 
 @implementation CHSServerSubscription
 
-- (CHSServerSubscription)initWithIdentifier:(id)a3 serverSubscriptionBlock:(id)a4
+- (CHSServerSubscription)initWithIdentifier:(id)identifier serverSubscriptionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = CHSServerSubscription;
   v8 = [(CHSServerSubscription *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
@@ -31,7 +31,7 @@
     lock_cachedValue = v8->_lock_cachedValue;
     v8->_lock_cachedValue = 0;
 
-    v12 = [v7 copy];
+    v12 = [blockCopy copy];
     lock_subscriptionBlock = v8->_lock_subscriptionBlock;
     v8->_lock_subscriptionBlock = v12;
   }
@@ -65,7 +65,7 @@
 
 - (BOOL)isSubscribed
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -77,12 +77,12 @@
   v4[4] = self;
   v4[5] = &v5;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  os_unfair_lock_lock(&v2->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   __37__CHSServerSubscription_isSubscribed__block_invoke(v4);
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = *(v6 + 24);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __37__CHSServerSubscription_isSubscribed__block_invoke(uint64_t a1)
@@ -92,32 +92,32 @@ uint64_t __37__CHSServerSubscription_isSubscribed__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCachedValue:(id)a3
+- (void)setCachedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CHSServerSubscription_setCachedValue___block_invoke;
   v6[3] = &unk_1E7453000;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = valueCopy;
+  v5 = valueCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __40__CHSServerSubscription_setCachedValue___block_invoke(v6);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateCachedValue:(id)a3
+- (void)updateCachedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CHSServerSubscription_updateCachedValue___block_invoke;
   v6[3] = &unk_1E7454278;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = valueCopy;
+  v5 = valueCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __43__CHSServerSubscription_updateCachedValue___block_invoke(v6);
@@ -133,12 +133,12 @@ void __43__CHSServerSubscription_updateCachedValue___block_invoke(uint64_t a1)
   *(v4 + 24) = v3;
 }
 
-- (id)subscribeWithResult:(id *)a3 forcingServerUpdate:(BOOL)a4 error:(id *)a5
+- (id)subscribeWithResult:(id *)result forcingServerUpdate:(BOOL)update error:(id *)error
 {
   v9 = MEMORY[0x1E696AEC0];
   identifier = self->_identifier;
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v9 stringWithFormat:@"<%@: %@>", identifier, v11];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v12 = [v9 stringWithFormat:@"<%@: %@>", identifier, uUID];
 
   v13 = objc_alloc(MEMORY[0x1E698E778]);
   v14 = self->_identifier;
@@ -168,20 +168,20 @@ void __43__CHSServerSubscription_updateCachedValue___block_invoke(uint64_t a1)
   v16 = v15;
   v21 = v16;
   v22 = &v31;
-  v24 = a4;
+  updateCopy = update;
   v23 = &v25;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   __71__CHSServerSubscription_subscribeWithResult_forcingServerUpdate_error___block_invoke_28(v20);
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (result)
   {
-    *a3 = v26[5];
+    *result = v26[5];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v32[5];
+    *error = v32[5];
   }
 
   v17 = v21;
@@ -300,7 +300,7 @@ void __71__CHSServerSubscription_subscribeWithResult_forcingServerUpdate_error__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)updateSubscription:(id *)a3
+- (id)updateSubscription:(id *)subscription
 {
   v14 = 0;
   v15 = &v14;
@@ -325,9 +325,9 @@ void __71__CHSServerSubscription_subscribeWithResult_forcingServerUpdate_error__
   os_unfair_lock_lock(&self->_lock);
   __44__CHSServerSubscription_updateSubscription___block_invoke(v7);
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (subscription)
   {
-    *a3 = v15[5];
+    *subscription = v15[5];
   }
 
   v5 = v9[5];
@@ -458,9 +458,9 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (BOOL)_lock_createServerSubscriptionIfNecessary:(id *)a3 forcing:(BOOL)a4
+- (BOOL)_lock_createServerSubscriptionIfNecessary:(id *)necessary forcing:(BOOL)forcing
 {
-  v4 = a4;
+  forcingCopy = forcing;
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   v7 = [(NSHashTable *)self->_lock_localSubscriptions count];
@@ -468,7 +468,7 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
   {
     if (self->_lock_serverSubscription)
     {
-      v8 = !v4;
+      v8 = !forcingCopy;
     }
 
     else
@@ -495,7 +495,7 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
         _os_log_impl(&dword_195EB2000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Subscribing to server... %{public}@ local subscriptions.", &v14, 0x16u);
       }
 
-      LOBYTE(v7) = [(CHSServerSubscription *)self _lock_updateSubscription:a3];
+      LOBYTE(v7) = [(CHSServerSubscription *)self _lock_updateSubscription:necessary];
     }
   }
 
@@ -503,7 +503,7 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
   return v7;
 }
 
-- (BOOL)_lock_updateSubscription:(id *)a3
+- (BOOL)_lock_updateSubscription:(id *)subscription
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = (*(self->_lock_subscriptionBlock + 2))();
@@ -519,18 +519,18 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
     }
 
     [(BSInvalidatable *)self->_lock_serverSubscription invalidate];
-    v8 = [v5 assertion];
+    assertion = [v5 assertion];
     lock_serverSubscription = self->_lock_serverSubscription;
-    self->_lock_serverSubscription = v8;
+    self->_lock_serverSubscription = assertion;
 
-    v10 = [v5 value];
+    value = [v5 value];
     lock_cachedValue = self->_lock_cachedValue;
-    self->_lock_cachedValue = v10;
+    self->_lock_cachedValue = value;
 
-    if (a3)
+    if (subscription)
     {
-      v12 = [v5 error];
-      v13 = v12 == 0;
+      error = [v5 error];
+      v13 = error == 0;
 
       if (!v13)
       {
@@ -538,16 +538,16 @@ void __47__CHSServerSubscription_resubscribeIfNecessary__block_invoke(void *a1)
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v15 = self->_identifier;
-          v16 = [v5 error];
+          error2 = [v5 error];
           v21 = 138543618;
           v22 = v15;
           v23 = 2114;
-          v24 = v16;
+          v24 = error2;
           _os_log_impl(&dword_195EB2000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating subscription to server: failed: %{public}@", &v21, 0x16u);
         }
       }
 
-      *a3 = [v5 error];
+      *subscription = [v5 error];
     }
   }
 

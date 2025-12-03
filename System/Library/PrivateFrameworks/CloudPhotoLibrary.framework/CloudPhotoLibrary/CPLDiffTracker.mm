@@ -1,7 +1,7 @@
 @interface CPLDiffTracker
-- (BOOL)areObjectsDifferentOnProperty:(id)a3;
+- (BOOL)areObjectsDifferentOnProperty:(id)property;
 - (id)redactedDescription;
-- (void)noteObjectsDifferOnProperty:(id)a3;
+- (void)noteObjectsDifferOnProperty:(id)property;
 @end
 
 @implementation CPLDiffTracker
@@ -16,8 +16,8 @@
   else if ([(NSMutableSet *)self->_differingProperties count])
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = [(NSMutableSet *)self->_differingProperties allObjects];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_differingProperties allObjects];
+    v6 = [allObjects componentsJoinedByString:{@", "}];
     v2 = [v4 initWithFormat:@"[diff. on %@]", v6];
   }
 
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (BOOL)areObjectsDifferentOnProperty:(id)a3
+- (BOOL)areObjectsDifferentOnProperty:(id)property
 {
   if (self->_objectsAreTotallyDifferent)
   {
@@ -38,26 +38,26 @@
 
   else
   {
-    return [(NSMutableSet *)self->_differingProperties containsObject:a3];
+    return [(NSMutableSet *)self->_differingProperties containsObject:property];
   }
 }
 
-- (void)noteObjectsDifferOnProperty:(id)a3
+- (void)noteObjectsDifferOnProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   differingProperties = self->_differingProperties;
-  v8 = v4;
+  v8 = propertyCopy;
   if (!differingProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_differingProperties;
     self->_differingProperties = v6;
 
-    v4 = v8;
+    propertyCopy = v8;
     differingProperties = self->_differingProperties;
   }
 
-  [(NSMutableSet *)differingProperties addObject:v4];
+  [(NSMutableSet *)differingProperties addObject:propertyCopy];
 }
 
 @end

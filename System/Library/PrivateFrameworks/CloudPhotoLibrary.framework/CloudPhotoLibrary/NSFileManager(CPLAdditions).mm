@@ -10,8 +10,8 @@
 
 - (uint64_t)cplFileExistsAtURL:()CPLAdditions
 {
-  v4 = [a3 path];
-  v5 = [a1 fileExistsAtPath:v4];
+  path = [a3 path];
+  v5 = [self fileExistsAtPath:path];
 
   return v5;
 }
@@ -19,8 +19,8 @@
 - (BOOL)cplIsFileDoesNotExistError:()CPLAdditions
 {
   v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [v3 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A250]])
   {
 
     goto LABEL_5;
@@ -34,16 +34,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [v3 code];
+  code = [v3 code];
 
-  if (v7 != 260)
+  if (code != 260)
   {
 LABEL_5:
-    v6 = [v3 cplUnderlyingPOSIXError];
-    v4 = v6;
-    if (v6)
+    cplUnderlyingPOSIXError = [v3 cplUnderlyingPOSIXError];
+    domain = cplUnderlyingPOSIXError;
+    if (cplUnderlyingPOSIXError)
     {
-      v5 = [v6 code] == 2;
+      v5 = [cplUnderlyingPOSIXError code] == 2;
     }
 
     else
@@ -63,12 +63,12 @@ LABEL_11:
 - (BOOL)cplIsFileExistsError:()CPLAdditions
 {
   v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [v3 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v5 = [v3 code];
+    code = [v3 code];
 
-    if (v5 == 516)
+    if (code == 516)
     {
       v6 = 1;
       goto LABEL_9;
@@ -79,11 +79,11 @@ LABEL_11:
   {
   }
 
-  v7 = [v3 cplUnderlyingPOSIXError];
-  v8 = v7;
-  if (v7)
+  cplUnderlyingPOSIXError = [v3 cplUnderlyingPOSIXError];
+  v8 = cplUnderlyingPOSIXError;
+  if (cplUnderlyingPOSIXError)
   {
-    v6 = [v7 code] == 17;
+    v6 = [cplUnderlyingPOSIXError code] == 17;
   }
 
   else
@@ -100,9 +100,9 @@ LABEL_9:
   v28[1] = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a4;
-  v10 = [v8 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
-  rename(v10, v11, v12);
+  fileSystemRepresentation = [v8 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v9 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v12);
   if (!v13)
   {
     goto LABEL_5;
@@ -122,19 +122,19 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![a1 cplCopyItemAtURL:v8 toURL:v9 error:a5])
+  if (![self cplCopyItemAtURL:v8 toURL:v9 error:a5])
   {
     goto LABEL_13;
   }
 
-  [a1 removeItemAtURL:v8 error:0];
+  [self removeItemAtURL:v8 error:0];
 LABEL_5:
   v27 = *MEMORY[0x1E696A3A0];
   v28[0] = *MEMORY[0x1E696A388];
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-  v15 = [v9 path];
+  path = [v9 path];
   v22 = 0;
-  v16 = [a1 setAttributes:v14 ofItemAtPath:v15 error:&v22];
+  v16 = [self setAttributes:v14 ofItemAtPath:path error:&v22];
   v17 = v22;
 
   if ((v16 & 1) == 0 && (_CPLSilentLogging & 1) == 0)
@@ -175,9 +175,9 @@ LABEL_14:
     v22 = *MEMORY[0x1E696A3A0];
     v23[0] = *MEMORY[0x1E696A388];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    v11 = [v8 path];
+    path = [v8 path];
     v17 = 0;
-    v12 = [a1 setAttributes:v10 ofItemAtPath:v11 error:&v17];
+    v12 = [self setAttributes:v10 ofItemAtPath:path error:&v17];
     v13 = v17;
 
     if ((v12 & 1) == 0 && (_CPLSilentLogging & 1) == 0)

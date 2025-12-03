@@ -5,7 +5,7 @@
 - (UIEdgeInsets)layoutMargins;
 - (UIEdgeInsets)peripheryInsets;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)_initWithExtendedTraitCollection:(id)a3;
+- (id)_initWithExtendedTraitCollection:(id)collection;
 @end
 
 @implementation PXExtendedTraitCollectionSnapshot
@@ -80,46 +80,46 @@
   return result;
 }
 
-- (id)_initWithExtendedTraitCollection:(id)a3
+- (id)_initWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(PXExtendedTraitCollectionSnapshot *)self init];
   if (v5)
   {
-    v5->_layoutSizeClass = [v4 layoutSizeClass];
-    v5->_layoutSizeSubclass = [v4 layoutSizeSubclass];
-    v5->_layoutOrientation = [v4 layoutOrientation];
-    v5->_layoutDirection = [v4 layoutDirection];
-    v5->_contentSizeCategory = [v4 contentSizeCategory];
-    v5->_userInterfaceIdiom = [v4 userInterfaceIdiom];
-    v5->_userInterfaceFeature = [v4 userInterfaceFeature];
-    [v4 layoutReferenceSize];
+    v5->_layoutSizeClass = [collectionCopy layoutSizeClass];
+    v5->_layoutSizeSubclass = [collectionCopy layoutSizeSubclass];
+    v5->_layoutOrientation = [collectionCopy layoutOrientation];
+    v5->_layoutDirection = [collectionCopy layoutDirection];
+    v5->_contentSizeCategory = [collectionCopy contentSizeCategory];
+    v5->_userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    v5->_userInterfaceFeature = [collectionCopy userInterfaceFeature];
+    [collectionCopy layoutReferenceSize];
     v5->_layoutReferenceSize.width = v6;
     v5->_layoutReferenceSize.height = v7;
-    [v4 displayScale];
+    [collectionCopy displayScale];
     v5->_displayScale = v8;
-    [v4 safeAreaInsets];
+    [collectionCopy safeAreaInsets];
     v5->_safeAreaInsets.top = v9;
     v5->_safeAreaInsets.left = v10;
     v5->_safeAreaInsets.bottom = v11;
     v5->_safeAreaInsets.right = v12;
-    [v4 peripheryInsets];
+    [collectionCopy peripheryInsets];
     v5->_peripheryInsets.top = v13;
     v5->_peripheryInsets.left = v14;
     v5->_peripheryInsets.bottom = v15;
     v5->_peripheryInsets.right = v16;
-    [v4 layoutMargins];
+    [collectionCopy layoutMargins];
     v5->_layoutMargins.top = v17;
     v5->_layoutMargins.left = v18;
     v5->_layoutMargins.bottom = v19;
     v5->_layoutMargins.right = v20;
-    v5->_userInterfaceStyle = [v4 userInterfaceStyle];
-    v5->_userInterfaceLevel = [v4 userInterfaceLevel];
-    [v4 windowReferenceSize];
+    v5->_userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    v5->_userInterfaceLevel = [collectionCopy userInterfaceLevel];
+    [collectionCopy windowReferenceSize];
     v5->_windowReferenceSize.width = v21;
     v5->_windowReferenceSize.height = v22;
-    v5->_windowOrientation = [v4 windowOrientation];
-    [v4 fullScreenReferenceRect];
+    v5->_windowOrientation = [collectionCopy windowOrientation];
+    [collectionCopy fullScreenReferenceRect];
     v5->_fullScreenReferenceRect.origin.x = v23;
     v5->_fullScreenReferenceRect.origin.y = v24;
     v5->_fullScreenReferenceRect.size.width = v25;

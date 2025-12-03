@@ -52,23 +52,23 @@
   v16 = a3;
   v8 = a4;
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a5];
-  v10 = [a1 _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
-  v11 = [a1 _accessibilityValueForKey:@"AccessibilityActionBlockParameterStorageKey"];
-  if (!v10)
+  dictionary = [self _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
+  v11 = [self _accessibilityValueForKey:@"AccessibilityActionBlockParameterStorageKey"];
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [a1 _accessibilitySetRetainedValue:v10 forKey:@"AccessibilityActionBlockStorageKey"];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [self _accessibilitySetRetainedValue:dictionary forKey:@"AccessibilityActionBlockStorageKey"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
 
-    [a1 _accessibilitySetRetainedValue:v12 forKey:@"AccessibilityActionBlockParameterStorageKey"];
-    v11 = v12;
+    [self _accessibilitySetRetainedValue:dictionary2 forKey:@"AccessibilityActionBlockParameterStorageKey"];
+    v11 = dictionary2;
   }
 
   if (v16)
   {
     v13 = [v16 copy];
     v14 = _Block_copy(v13);
-    [v10 setObject:v14 forKey:v9];
+    [dictionary setObject:v14 forKey:v9];
 
     if (v8)
     {
@@ -77,14 +77,14 @@
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v11 setObject:v15 forKey:v9];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v11 setObject:null forKey:v9];
     }
   }
 
   else
   {
-    [v10 removeObjectForKey:v9];
+    [dictionary removeObjectForKey:v9];
     [v11 removeObjectForKey:v9];
   }
 }
@@ -92,19 +92,19 @@
 - (uint64_t)_accessibilityInternalHandleStartStopToggle
 {
   v53 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69887D8] sharedInstance];
-  v3 = [v2 ignoreLogging];
+  mEMORY[0x1E69887D8] = [MEMORY[0x1E69887D8] sharedInstance];
+  ignoreLogging = [mEMORY[0x1E69887D8] ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v4 = [MEMORY[0x1E69887D8] identifier];
+    identifier = [MEMORY[0x1E69887D8] identifier];
     v5 = AXLoggerForFacility();
 
     v6 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v5, v6))
     {
       v7 = AXColorizeFormatLog();
-      v8 = [a1 _accessibilityApplication];
+      _accessibilityApplication = [self _accessibilityApplication];
       v9 = objc_opt_class();
       v46 = NSStringFromClass(v9);
       v10 = _AXStringForArgs();
@@ -118,13 +118,13 @@
     }
   }
 
-  v11 = [a1 _accessibilityHandleMagicTapForPronunciation];
-  v12 = [MEMORY[0x1E69887D8] sharedInstance];
-  v13 = [v12 ignoreLogging];
+  _accessibilityHandleMagicTapForPronunciation = [self _accessibilityHandleMagicTapForPronunciation];
+  mEMORY[0x1E69887D8]2 = [MEMORY[0x1E69887D8] sharedInstance];
+  ignoreLogging2 = [mEMORY[0x1E69887D8]2 ignoreLogging];
 
-  if ((v13 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E69887D8] identifier];
+    identifier2 = [MEMORY[0x1E69887D8] identifier];
     v15 = AXLoggerForFacility();
 
     v16 = AXOSLogLevelFromAXLogLevel();
@@ -143,18 +143,18 @@
     }
   }
 
-  if (v11)
+  if (_accessibilityHandleMagicTapForPronunciation)
   {
     return 1;
   }
 
-  v19 = [a1 accessibilityStartStopToggle];
-  v20 = [MEMORY[0x1E69887D8] sharedInstance];
-  v21 = [v20 ignoreLogging];
+  accessibilityStartStopToggle = [self accessibilityStartStopToggle];
+  mEMORY[0x1E69887D8]3 = [MEMORY[0x1E69887D8] sharedInstance];
+  ignoreLogging3 = [mEMORY[0x1E69887D8]3 ignoreLogging];
 
-  if ((v21 & 1) == 0)
+  if ((ignoreLogging3 & 1) == 0)
   {
-    v22 = [MEMORY[0x1E69887D8] identifier];
+    identifier3 = [MEMORY[0x1E69887D8] identifier];
     v23 = AXLoggerForFacility();
 
     v24 = AXOSLogLevelFromAXLogLevel();
@@ -173,18 +173,18 @@
     }
   }
 
-  if (v19)
+  if (accessibilityStartStopToggle)
   {
     return 1;
   }
 
-  v27 = [*MEMORY[0x1E69DDA98] accessibilityStartStopToggle];
-  v28 = [MEMORY[0x1E69887D8] sharedInstance];
-  v29 = [v28 ignoreLogging];
+  accessibilityStartStopToggle2 = [*MEMORY[0x1E69DDA98] accessibilityStartStopToggle];
+  mEMORY[0x1E69887D8]4 = [MEMORY[0x1E69887D8] sharedInstance];
+  ignoreLogging4 = [mEMORY[0x1E69887D8]4 ignoreLogging];
 
-  if ((v29 & 1) == 0)
+  if ((ignoreLogging4 & 1) == 0)
   {
-    v30 = [MEMORY[0x1E69887D8] identifier];
+    identifier4 = [MEMORY[0x1E69887D8] identifier];
     v31 = AXLoggerForFacility();
 
     v32 = AXOSLogLevelFromAXLogLevel();
@@ -205,18 +205,18 @@
     }
   }
 
-  if (v27)
+  if (accessibilityStartStopToggle2)
   {
     return 1;
   }
 
-  v37 = [a1 _accessibilityHandleMagicTap];
-  v39 = [MEMORY[0x1E69887D8] sharedInstance];
-  v40 = [v39 ignoreLogging];
+  _accessibilityHandleMagicTap = [self _accessibilityHandleMagicTap];
+  mEMORY[0x1E69887D8]5 = [MEMORY[0x1E69887D8] sharedInstance];
+  ignoreLogging5 = [mEMORY[0x1E69887D8]5 ignoreLogging];
 
-  if ((v40 & 1) == 0)
+  if ((ignoreLogging5 & 1) == 0)
   {
-    v41 = [MEMORY[0x1E69887D8] identifier];
+    identifier5 = [MEMORY[0x1E69887D8] identifier];
     v42 = AXLoggerForFacility();
 
     v43 = AXOSLogLevelFromAXLogLevel();
@@ -235,13 +235,13 @@
     }
   }
 
-  return v37;
+  return _accessibilityHandleMagicTap;
 }
 
 - (BOOL)_accessibilityHasActionBlockForKey:()UIStorage
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-  v3 = [a1 _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
+  v3 = [self _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
   v4 = v3;
   if (v3)
   {
@@ -260,8 +260,8 @@
 - (void)_accessibilityActionBlock:()UIStorage andValue:forKey:
 {
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a5];
-  v8 = [a1 _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
-  v9 = [a1 _accessibilityValueForKey:@"AccessibilityActionBlockParameterStorageKey"];
+  v8 = [self _accessibilityValueForKey:@"AccessibilityActionBlockStorageKey"];
+  v9 = [self _accessibilityValueForKey:@"AccessibilityActionBlockParameterStorageKey"];
   if (v8)
   {
     *a3 = [v8 objectForKey:v11];
@@ -279,19 +279,19 @@
 
 - (uint64_t)_accessibilityRemoveAllActionBlocks
 {
-  [a1 _accessibilitySetRetainedValue:0 forKey:@"AccessibilityActionBlockStorageKey"];
+  [self _accessibilitySetRetainedValue:0 forKey:@"AccessibilityActionBlockStorageKey"];
 
-  return [a1 _accessibilitySetRetainedValue:0 forKey:@"AccessibilityActionBlockParameterStorageKey"];
+  return [self _accessibilitySetRetainedValue:0 forKey:@"AccessibilityActionBlockParameterStorageKey"];
 }
 
 - (void)_accessibilitySetBlock:()UIStorage forAttribute:
 {
-  v7 = [a1 _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
+  v7 = [self _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [a1 _accessibilitySetRetainedValue:v12 forKey:@"AccessibilityAttributeBlockStorageKey"];
-    v7 = v12;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [self _accessibilitySetRetainedValue:dictionary forKey:@"AccessibilityAttributeBlockStorageKey"];
+    v7 = dictionary;
   }
 
   v13 = v7;
@@ -315,7 +315,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [a1 _accessibilityRemoveValueForKey:@"AccessibilityAttributeBlockStorageKey"];
+  [self _accessibilityRemoveValueForKey:@"AccessibilityAttributeBlockStorageKey"];
 
   v11 = 0;
 LABEL_7:
@@ -323,7 +323,7 @@ LABEL_7:
 
 - (uint64_t)_accessibilityGetBlockForAttribute:()UIStorage
 {
-  v4 = [a1 _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
+  v4 = [self _accessibilityValueForKey:@"AccessibilityAttributeBlockStorageKey"];
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
@@ -340,36 +340,36 @@ LABEL_7:
 
 - (uint64_t)_accessibilityFocusRingStyle
 {
-  v1 = [a1 _accessibilityValueForKey:@"AXFocusRingStyle"];
+  v1 = [self _accessibilityValueForKey:@"AXFocusRingStyle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 1;
+    integerValue = 1;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (void)_accessibilitySetFocusRingStyle:()UIStorage
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 _accessibilitySetRetainedValue:v2 forKey:@"AXFocusRingStyle"];
+  [self _accessibilitySetRetainedValue:v2 forKey:@"AXFocusRingStyle"];
 }
 
 - (uint64_t)_accessibilityHandleMagicTapForPronunciation
 {
-  v1 = a1;
-  if (!v1)
+  selfCopy = self;
+  if (!selfCopy)
   {
     return 0;
   }
 
-  v2 = v1;
+  v2 = selfCopy;
   while (1)
   {
     objc_opt_class();
@@ -378,13 +378,13 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [v2 delegate];
+        delegate = [v2 delegate];
         if (objc_opt_respondsToSelector())
         {
-          v4 = [v2 delegate];
-          v5 = [v4 accessibilityPerformMagicTap];
+          delegate2 = [v2 delegate];
+          accessibilityPerformMagicTap = [delegate2 accessibilityPerformMagicTap];
 
-          if (v5)
+          if (accessibilityPerformMagicTap)
           {
             break;
           }
@@ -398,17 +398,17 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v2 delegate];
+        delegate3 = [v2 delegate];
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
 
           goto LABEL_14;
         }
 
-        v7 = [v2 delegate];
-        v8 = [v7 accessibilityPerformMagicTap];
+        delegate4 = [v2 delegate];
+        accessibilityPerformMagicTap2 = [delegate4 accessibilityPerformMagicTap];
 
-        if (v8)
+        if (accessibilityPerformMagicTap2)
         {
           break;
         }
@@ -416,10 +416,10 @@ LABEL_7:
     }
 
 LABEL_14:
-    v9 = [v2 accessibilityContainer];
+    accessibilityContainer = [v2 accessibilityContainer];
 
-    v2 = v9;
-    if (!v9)
+    v2 = accessibilityContainer;
+    if (!accessibilityContainer)
     {
       v10 = 0;
       goto LABEL_18;
@@ -434,16 +434,16 @@ LABEL_18:
 
 - (uint64_t)_accessibilityHandleMagicTap
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
-    while (([v2 accessibilityPerformMagicTap] & 1) == 0)
+    delegate5 = selfCopy;
+    while (([delegate5 accessibilityPerformMagicTap] & 1) == 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [MEMORY[0x1E69DD258] viewControllerForView:v2];
+        v3 = [MEMORY[0x1E69DD258] viewControllerForView:delegate5];
         if ([v3 accessibilityPerformMagicTap])
         {
           goto LABEL_21;
@@ -452,13 +452,13 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v4 = [v2 delegate];
+          delegate = [delegate5 delegate];
           if (objc_opt_respondsToSelector())
           {
-            v5 = [v2 delegate];
-            v6 = [v5 accessibilityPerformMagicTap];
+            delegate2 = [delegate5 delegate];
+            accessibilityPerformMagicTap = [delegate2 accessibilityPerformMagicTap];
 
-            if (v6)
+            if (accessibilityPerformMagicTap)
             {
               goto LABEL_21;
             }
@@ -472,13 +472,13 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v2 delegate];
+          delegate3 = [delegate5 delegate];
           if (objc_opt_respondsToSelector())
           {
-            v8 = [v2 delegate];
-            v9 = [v8 accessibilityPerformMagicTap];
+            delegate4 = [delegate5 delegate];
+            accessibilityPerformMagicTap2 = [delegate4 accessibilityPerformMagicTap];
 
-            if (v9)
+            if (accessibilityPerformMagicTap2)
             {
 LABEL_21:
 
@@ -492,16 +492,16 @@ LABEL_21:
         }
       }
 
-      v10 = [v2 accessibilityContainer];
+      accessibilityContainer = [delegate5 accessibilityContainer];
 
-      v2 = v10;
-      if (!v10)
+      delegate5 = accessibilityContainer;
+      if (!accessibilityContainer)
       {
         goto LABEL_18;
       }
     }
 
-    v12 = 1;
+    accessibilityPerformMagicTap3 = 1;
     goto LABEL_23;
   }
 
@@ -509,11 +509,11 @@ LABEL_18:
   v11 = MEMORY[0x1E69DDA98];
   if (([*MEMORY[0x1E69DDA98] accessibilityPerformMagicTap] & 1) == 0)
   {
-    v2 = [*v11 delegate];
-    v12 = [v2 accessibilityPerformMagicTap];
+    delegate5 = [*v11 delegate];
+    accessibilityPerformMagicTap3 = [delegate5 accessibilityPerformMagicTap];
 LABEL_23:
 
-    return v12;
+    return accessibilityPerformMagicTap3;
   }
 
   return 1;
@@ -521,11 +521,11 @@ LABEL_23:
 
 - (double)_accessibilityScreenPointForSceneReferencePoint:()UIStorage
 {
-  v5 = [a1 _accessibilityWindow];
-  v6 = v5;
-  if (v5)
+  _accessibilityWindow = [self _accessibilityWindow];
+  v6 = _accessibilityWindow;
+  if (_accessibilityWindow)
   {
-    [v5 _convertPointFromSceneReferenceSpace:{a2, a3}];
+    [_accessibilityWindow _convertPointFromSceneReferenceSpace:{a2, a3}];
     [v6 convertPoint:0 toWindow:?];
     a2 = v7;
   }
@@ -535,11 +535,11 @@ LABEL_23:
 
 - (double)_accessibilityScreenRectForSceneReferenceRect:()UIStorage
 {
-  v9 = [a1 _accessibilityWindow];
-  v10 = v9;
-  if (v9)
+  _accessibilityWindow = [self _accessibilityWindow];
+  v10 = _accessibilityWindow;
+  if (_accessibilityWindow)
   {
-    [v9 _convertRectFromSceneReferenceSpace:{a2, a3, a4, a5}];
+    [_accessibilityWindow _convertRectFromSceneReferenceSpace:{a2, a3, a4, a5}];
     [v10 convertRect:0 toWindow:?];
     a2 = v11;
   }
@@ -555,8 +555,8 @@ LABEL_23:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 _accessibilityAllDragSourceDescriptors];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _accessibilityAllDragSourceDescriptors = [self _accessibilityAllDragSourceDescriptors];
+  v6 = [_accessibilityAllDragSourceDescriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -566,7 +566,7 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_accessibilityAllDragSourceDescriptors);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -577,7 +577,7 @@ LABEL_23:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_accessibilityAllDragSourceDescriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -596,8 +596,8 @@ LABEL_11:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 dragDescriptorMatchingDictionary:v6];
-  v9 = [v8 view];
+  v8 = [self dragDescriptorMatchingDictionary:v6];
+  view = [v8 view];
   [v8 point];
   v11 = v10;
   v13 = v12;
@@ -612,7 +612,7 @@ LABEL_11:
     v13 = v18;
   }
 
-  if (v9)
+  if (view)
   {
     if ([MEMORY[0x1E6989430] isValidServiceName:v7])
     {
@@ -650,7 +650,7 @@ LABEL_11:
         v25[3] = &unk_1E78AB458;
         v25[4] = &v30;
         v25[5] = &v26;
-        [v9 _accessibilityBeginDragAtPoint:v22 endpoint:v25 completion:{v11, v13}];
+        [view _accessibilityBeginDragAtPoint:v22 endpoint:v25 completion:{v11, v13}];
         if (*(v31 + 24) == 1)
         {
           v23 = *(v27 + 24);
@@ -706,23 +706,23 @@ LABEL_11:
   InstanceMethod = class_getInstanceMethod(v5, sel_browserAccessibilityInsertTextAtCursor_);
   if ((objc_opt_respondsToSelector() & 1) == 0 || InstanceMethod == _accessibilityInsertTextAtCursor__BaseFrameForBrowserInsertTextMethod)
   {
-    [a1 _accessibilityInsertText:v7 atPosition:-1];
+    [self _accessibilityInsertText:v7 atPosition:-1];
   }
 
   else
   {
-    [a1 browserAccessibilityInsertTextAtCursor:v7];
+    [self browserAccessibilityInsertTextAtCursor:v7];
   }
 }
 
 - (uint64_t)_iosAccessibilityPerformAction:()UIStorage withValue:fencePort:
 {
   v8 = a4;
-  if ([a1 _accessibilityHasActionBlockForKey:a3])
+  if ([self _accessibilityHasActionBlockForKey:a3])
   {
     v84 = 0;
     v85 = 0;
-    [a1 _accessibilityActionBlock:&v85 andValue:&v84 forKey:a3];
+    [self _accessibilityActionBlock:&v85 andValue:&v84 forKey:a3];
     v9 = v85;
     v10 = v84;
     v11 = v10;
@@ -741,27 +741,27 @@ LABEL_11:
     {
       case 2001:
         [v8 pointValue];
-        [a1 _accessibilityScreenPointForSceneReferencePoint:?];
-        [a1 accessibilityZoomInAtPoint:?];
+        [self _accessibilityScreenPointForSceneReferencePoint:?];
+        [self accessibilityZoomInAtPoint:?];
         break;
       case 2002:
         [v8 pointValue];
-        [a1 _accessibilityScreenPointForSceneReferencePoint:?];
-        [a1 accessibilityZoomOutAtPoint:?];
+        [self _accessibilityScreenPointForSceneReferencePoint:?];
+        [self accessibilityZoomOutAtPoint:?];
         break;
       case 2003:
-        v19 = [a1 _accessibilityScrollToVisible];
+        _accessibilityScrollToVisible = [self _accessibilityScrollToVisible];
         goto LABEL_176;
       case 2004:
-        if (![a1 _accessibilityShouldPerformIncrementOrDecrement])
+        if (![self _accessibilityShouldPerformIncrementOrDecrement])
         {
           goto LABEL_197;
         }
 
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v33 = [v8 unsignedIntegerValue];
-          if (!v33)
+          unsignedIntegerValue = [v8 unsignedIntegerValue];
+          if (!unsignedIntegerValue)
           {
             break;
           }
@@ -769,12 +769,12 @@ LABEL_11:
 
         else
         {
-          v33 = 1;
+          unsignedIntegerValue = 1;
         }
 
         do
         {
-          v73 = [a1 _accessibilityGetBlockForAttribute:18];
+          v73 = [self _accessibilityGetBlockForAttribute:18];
           v74 = v73;
           if (v73)
           {
@@ -783,25 +783,25 @@ LABEL_11:
 
           else
           {
-            [a1 accessibilityIncrement];
+            [self accessibilityIncrement];
           }
 
           v12 = 1;
-          --v33;
+          --unsignedIntegerValue;
         }
 
-        while (v33);
+        while (unsignedIntegerValue);
         goto LABEL_219;
       case 2005:
-        if (![a1 _accessibilityShouldPerformIncrementOrDecrement])
+        if (![self _accessibilityShouldPerformIncrementOrDecrement])
         {
           goto LABEL_197;
         }
 
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v26 = [v8 unsignedIntegerValue];
-          if (!v26)
+          unsignedIntegerValue2 = [v8 unsignedIntegerValue];
+          if (!unsignedIntegerValue2)
           {
             break;
           }
@@ -809,12 +809,12 @@ LABEL_11:
 
         else
         {
-          v26 = 1;
+          unsignedIntegerValue2 = 1;
         }
 
         do
         {
-          v71 = [a1 _accessibilityGetBlockForAttribute:19];
+          v71 = [self _accessibilityGetBlockForAttribute:19];
           v72 = v71;
           if (v71)
           {
@@ -823,97 +823,97 @@ LABEL_11:
 
           else
           {
-            [a1 accessibilityDecrement];
+            [self accessibilityDecrement];
           }
 
           v12 = 1;
-          --v26;
+          --unsignedIntegerValue2;
         }
 
-        while (v26);
+        while (unsignedIntegerValue2);
         goto LABEL_219;
       case 2006:
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v34 = [v8 BOOLValue];
-          v35 = a1;
+          bOOLValue = [v8 BOOLValue];
+          selfCopy2 = self;
         }
 
         else
         {
-          v35 = a1;
-          v34 = 1;
+          selfCopy2 = self;
+          bOOLValue = 1;
         }
 
-        v19 = [v35 _accessibilityScrollDownPage:v34];
+        _accessibilityScrollToVisible = [selfCopy2 _accessibilityScrollDownPage:bOOLValue];
         goto LABEL_176;
       case 2007:
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v31 = [v8 BOOLValue];
-          v32 = a1;
+          bOOLValue2 = [v8 BOOLValue];
+          selfCopy4 = self;
         }
 
         else
         {
-          v32 = a1;
-          v31 = 1;
+          selfCopy4 = self;
+          bOOLValue2 = 1;
         }
 
-        v19 = [v32 _accessibilityScrollUpPage:v31];
+        _accessibilityScrollToVisible = [selfCopy4 _accessibilityScrollUpPage:bOOLValue2];
         goto LABEL_176;
       case 2008:
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v38 = [v8 BOOLValue];
-          v39 = a1;
+          bOOLValue3 = [v8 BOOLValue];
+          selfCopy6 = self;
         }
 
         else
         {
-          v39 = a1;
-          v38 = 1;
+          selfCopy6 = self;
+          bOOLValue3 = 1;
         }
 
-        v19 = [v39 _accessibilityScrollRightPage:v38];
+        _accessibilityScrollToVisible = [selfCopy6 _accessibilityScrollRightPage:bOOLValue3];
         goto LABEL_176;
       case 2009:
         if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v36 = [v8 BOOLValue];
-          v37 = a1;
+          bOOLValue4 = [v8 BOOLValue];
+          selfCopy8 = self;
         }
 
         else
         {
-          v37 = a1;
-          v36 = 1;
+          selfCopy8 = self;
+          bOOLValue4 = 1;
         }
 
-        v19 = [v37 _accessibilityScrollLeftPage:v36];
+        _accessibilityScrollToVisible = [selfCopy8 _accessibilityScrollLeftPage:bOOLValue4];
         goto LABEL_176;
       case 2010:
-        v19 = [a1 accessibilityActivate];
+        _accessibilityScrollToVisible = [self accessibilityActivate];
         goto LABEL_176;
       case 2011:
-        v19 = [a1 _accessibilityInternalHandleStartStopToggle];
+        _accessibilityScrollToVisible = [self _accessibilityInternalHandleStartStopToggle];
         goto LABEL_176;
       case 2012:
-        v19 = [a1 _accessibilityTextOperationAction:v8];
+        _accessibilityScrollToVisible = [self _accessibilityTextOperationAction:v8];
         goto LABEL_176;
       case 2013:
-        v19 = [a1 _accessibilityPerformEscape];
+        _accessibilityScrollToVisible = [self _accessibilityPerformEscape];
         goto LABEL_176;
       case 2014:
         [v8 pointValue];
-        [a1 _accessibilityScreenPointForSceneReferencePoint:?];
-        [a1 _accessibilityScrollToPoint:?];
+        [self _accessibilityScreenPointForSceneReferencePoint:?];
+        [self _accessibilityScrollToPoint:?];
         break;
       case 2015:
-        [a1 _accessibilityIncreaseSelection:v8];
+        [self _accessibilityIncreaseSelection:v8];
         break;
       case 2016:
-        [a1 _accessibilityDecreaseSelection:v8];
+        [self _accessibilityDecreaseSelection:v8];
         break;
       case 2017:
         objc_opt_class();
@@ -923,53 +923,53 @@ LABEL_11:
         }
 
         v40 = [v8 objectAtIndex:0];
-        v41 = [v40 BOOLValue];
+        bOOLValue5 = [v40 BOOLValue];
         v42 = [v8 objectAtIndex:1];
-        [a1 _accessibilityFindSearchResult:v41 withString:v42];
+        [self _accessibilityFindSearchResult:bOOLValue5 withString:v42];
 
         v12 = 1;
         goto LABEL_219;
       case 2018:
-        [a1 _accessibilityChangeToKeyplane:v8];
+        [self _accessibilityChangeToKeyplane:v8];
         break;
       case 2019:
-        v19 = [a1 _accessibilityScrollNextPage];
+        _accessibilityScrollToVisible = [self _accessibilityScrollNextPage];
         goto LABEL_176;
       case 2020:
-        v19 = [a1 _accessibilityScrollPreviousPage];
+        _accessibilityScrollToVisible = [self _accessibilityScrollPreviousPage];
         goto LABEL_176;
       case 2021:
-        v19 = [a1 _accessibilityPerformCustomActionWithIdentifier:v8];
+        _accessibilityScrollToVisible = [self _accessibilityPerformCustomActionWithIdentifier:v8];
         goto LABEL_176;
       case 2022:
-        [a1 _accessibilityJumpToTableIndex:v8];
+        [self _accessibilityJumpToTableIndex:v8];
         break;
       case 2023:
-        v19 = [a1 _accessibilityTriggerDictationFromPath:v8];
+        _accessibilityScrollToVisible = [self _accessibilityTriggerDictationFromPath:v8];
         goto LABEL_176;
       case 2024:
-        v19 = [MEMORY[0x1E6988D80] registerRemoteElement:v8 remotePort:a5];
+        _accessibilityScrollToVisible = [MEMORY[0x1E6988D80] registerRemoteElement:v8 remotePort:a5];
         goto LABEL_176;
       case 2025:
-        [a1 _accessibilityAnnouncementComplete:v8];
+        [self _accessibilityAnnouncementComplete:v8];
         break;
       case 2026:
-        v19 = [a1 _accessibilityAutoscrollInDirection:{objc_msgSend(v8, "intValue")}];
+        _accessibilityScrollToVisible = [self _accessibilityAutoscrollInDirection:{objc_msgSend(v8, "intValue")}];
         goto LABEL_176;
       case 2027:
-        [a1 _accessibilityPauseAutoscrolling];
+        [self _accessibilityPauseAutoscrolling];
         break;
       case 2028:
-        [a1 _accessibilityIncreaseAutoscrollSpeed];
+        [self _accessibilityIncreaseAutoscrollSpeed];
         break;
       case 2029:
-        [a1 _accessibilityDecreaseAutoscrollSpeed];
+        [self _accessibilityDecreaseAutoscrollSpeed];
         break;
       case 2030:
-        [a1 _accessibilityAutoscrollScrollToTop];
+        [self _accessibilityAutoscrollScrollToTop];
         break;
       case 2031:
-        [a1 _accessibilityAutoscrollScrollToBottom];
+        [self _accessibilityAutoscrollScrollToBottom];
         break;
       case 2032:
         objc_opt_class();
@@ -979,10 +979,10 @@ LABEL_11:
         }
 
         [v8 floatValue];
-        [a1 _accessibilitySetAutoscrollSpeed:v25];
+        [self _accessibilitySetAutoscrollSpeed:v25];
         break;
       case 2033:
-        v19 = [a1 accessibilityExpandMathEquation:v8];
+        _accessibilityScrollToVisible = [self accessibilityExpandMathEquation:v8];
         goto LABEL_176;
       case 2034:
         objc_opt_class();
@@ -991,25 +991,25 @@ LABEL_11:
           goto LABEL_197;
         }
 
-        v13 = [MEMORY[0x1E6989870] representationWithData:v8];
-        v43 = [a1 _accessibilityDispatchKeyboardAction:v13];
+        firstObject = [MEMORY[0x1E6989870] representationWithData:v8];
+        v43 = [self _accessibilityDispatchKeyboardAction:firstObject];
         goto LABEL_179;
       case 2035:
-        v19 = [a1 _accessibilityDismissAlternativeKeyPicker];
+        _accessibilityScrollToVisible = [self _accessibilityDismissAlternativeKeyPicker];
         goto LABEL_176;
       case 2036:
-        v19 = [a1 _accessibilitySecondaryActivate];
+        _accessibilityScrollToVisible = [self _accessibilitySecondaryActivate];
         goto LABEL_176;
       case 2037:
-        [a1 accessibilityIncreaseTrackingDetail];
+        [self accessibilityIncreaseTrackingDetail];
         break;
       case 2038:
-        [a1 accessibilityDecreaseTrackingDetail];
+        [self accessibilityDecreaseTrackingDetail];
         break;
       case 2039:
         [v8 rectValue];
-        [a1 _accessibilityScreenRectForSceneReferenceRect:?];
-        [a1 _accessibilityScrollRectToVisible:?];
+        [self _accessibilityScreenRectForSceneReferenceRect:?];
+        [self _accessibilityScrollRectToVisible:?];
         break;
       case 2040:
         objc_opt_class();
@@ -1018,7 +1018,7 @@ LABEL_11:
           goto LABEL_197;
         }
 
-        v19 = [a1 _accessibilityLoadURL:v8];
+        _accessibilityScrollToVisible = [self _accessibilityLoadURL:v8];
         goto LABEL_176;
       case 2041:
         objc_opt_class();
@@ -1027,22 +1027,22 @@ LABEL_11:
           goto LABEL_197;
         }
 
-        v19 = [a1 _accessibilityPerformUserTestingAction:v8];
+        _accessibilityScrollToVisible = [self _accessibilityPerformUserTestingAction:v8];
         goto LABEL_176;
       case 2042:
-        v19 = [a1 _accessibilityBeginMonitoringIdleRunLoop];
+        _accessibilityScrollToVisible = [self _accessibilityBeginMonitoringIdleRunLoop];
         goto LABEL_176;
       case 2043:
-        [a1 _accessibilityDetectAnimationsNonActive];
+        [self _accessibilityDetectAnimationsNonActive];
         break;
       case 2044:
-        v19 = [a1 _accessibilitySetNativeFocus];
+        _accessibilityScrollToVisible = [self _accessibilitySetNativeFocus];
         goto LABEL_176;
       case 2045:
-        v19 = [a1 _accessibilityPerformOrbGesture:{objc_msgSend(v8, "intValue")}];
+        _accessibilityScrollToVisible = [self _accessibilityPerformOrbGesture:{objc_msgSend(v8, "intValue")}];
         goto LABEL_176;
       case 2046:
-        v19 = [a1 _accessibilitySavePhotoLabel:v8];
+        _accessibilityScrollToVisible = [self _accessibilitySavePhotoLabel:v8];
         goto LABEL_176;
       case 2047:
         objc_opt_class();
@@ -1091,7 +1091,7 @@ LABEL_11:
           MidY = CGRectGetMidY(v87);
         }
 
-        v19 = [a1 _animateScrollViewWithScrollAmount:v48 point:{MidX, MidY}];
+        _accessibilityScrollToVisible = [self _animateScrollViewWithScrollAmount:v48 point:{MidX, MidY}];
         goto LABEL_176;
       case 2048:
         objc_opt_class();
@@ -1100,7 +1100,7 @@ LABEL_11:
           goto LABEL_197;
         }
 
-        v19 = [a1 _accessibilityAlternateActionForURL:v8];
+        _accessibilityScrollToVisible = [self _accessibilityAlternateActionForURL:v8];
         goto LABEL_176;
       case 2050:
         objc_opt_class();
@@ -1110,27 +1110,27 @@ LABEL_11:
         }
 
         v22 = v8;
-        v13 = [v22 objectAtIndexedSubscript:0];
-        v15 = [v22 objectAtIndexedSubscript:1];
+        firstObject = [v22 objectAtIndexedSubscript:0];
+        lastObject = [v22 objectAtIndexedSubscript:1];
 
-        v16 = [a1 _accessibilityActivateDragWithDescriptorDictionary:v15 forServiceName:v13];
+        v16 = [self _accessibilityActivateDragWithDescriptorDictionary:lastObject forServiceName:firstObject];
         goto LABEL_53;
       case 2051:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = v8;
+          firstObject = v8;
         }
 
         else
         {
-          v13 = 0;
+          firstObject = 0;
         }
 
-        v43 = [a1 _accessibilityShowContextMenuWithTargetPointValue:v13];
+        v43 = [self _accessibilityShowContextMenuWithTargetPointValue:firstObject];
         goto LABEL_179;
       case 2052:
-        if ([a1 _accessibilityActivateKeyboardDeleteKey])
+        if ([self _accessibilityActivateKeyboardDeleteKey])
         {
           goto LABEL_197;
         }
@@ -1147,7 +1147,7 @@ LABEL_11:
         }
 
         v12 = 1;
-        [a1 _accessibilityReplaceCharactersAtCursor:1 withString:0];
+        [self _accessibilityReplaceCharactersAtCursor:1 withString:0];
         goto LABEL_219;
       case 2053:
         objc_opt_class();
@@ -1156,28 +1156,28 @@ LABEL_11:
           goto LABEL_226;
         }
 
-        v20 = v8;
-        v27 = [v20 objectForKey:@"numberofcharacters"];
+        mEMORY[0x1E69DCC68] = v8;
+        v27 = [mEMORY[0x1E69DCC68] objectForKey:@"numberofcharacters"];
         objc_opt_class();
         v28 = objc_opt_isKindOfClass();
 
         if (v28)
         {
-          v29 = [v20 objectForKey:@"numberofcharacters"];
-          v30 = [v29 unsignedIntegerValue];
+          v29 = [mEMORY[0x1E69DCC68] objectForKey:@"numberofcharacters"];
+          unsignedIntegerValue3 = [v29 unsignedIntegerValue];
         }
 
         else
         {
-          v30 = 0;
+          unsignedIntegerValue3 = 0;
         }
 
         objc_opt_class();
-        v76 = [v20 objectForKey:@"replacement"];
+        v76 = [mEMORY[0x1E69DCC68] objectForKey:@"replacement"];
         v77 = __UIAccessibilityCastAsClass();
 
         objc_opt_class();
-        v78 = [v20 objectForKey:@"source"];
+        v78 = [mEMORY[0x1E69DCC68] objectForKey:@"source"];
         v79 = __UIAccessibilityCastAsClass();
 
         if (v28)
@@ -1187,7 +1187,7 @@ LABEL_11:
             _UIAXSetLastKeyboardUsed(v79);
           }
 
-          [a1 _accessibilityReplaceCharactersAtCursor:v30 withString:v77];
+          [self _accessibilityReplaceCharactersAtCursor:unsignedIntegerValue3 withString:v77];
 
           goto LABEL_217;
         }
@@ -1196,14 +1196,14 @@ LABEL_226:
         _AXAssert();
         goto LABEL_197;
       case 2054:
-        v19 = [a1 _accessibilityActivateKeyboardReturnKey];
+        _accessibilityScrollToVisible = [self _accessibilityActivateKeyboardReturnKey];
         goto LABEL_176;
       case 2055:
         objc_opt_class();
-        v20 = __UIAccessibilityCastAsClass();
-        if (([a1 _accessibilityInsertTextWithAlternatives:v20] & 1) == 0)
+        mEMORY[0x1E69DCC68] = __UIAccessibilityCastAsClass();
+        if (([self _accessibilityInsertTextWithAlternatives:mEMORY[0x1E69DCC68]] & 1) == 0)
         {
-          [a1 _accessibilityInsertTextAtCursor:v20];
+          [self _accessibilityInsertTextAtCursor:mEMORY[0x1E69DCC68]];
         }
 
         goto LABEL_217;
@@ -1212,7 +1212,7 @@ LABEL_226:
         if (objc_opt_isKindOfClass())
         {
           objc_opt_class();
-          v20 = __UIAccessibilityCastAsClass();
+          mEMORY[0x1E69DCC68] = __UIAccessibilityCastAsClass();
 LABEL_214:
           v67 = 0;
           goto LABEL_215;
@@ -1221,50 +1221,50 @@ LABEL_214:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v20 = 0;
+          mEMORY[0x1E69DCC68] = 0;
           goto LABEL_214;
         }
 
         v66 = v8;
-        v20 = [v66 objectForKeyedSubscript:*MEMORY[0x1E6989088]];
+        mEMORY[0x1E69DCC68] = [v66 objectForKeyedSubscript:*MEMORY[0x1E6989088]];
         v67 = [v66 objectForKeyedSubscript:*MEMORY[0x1E6989080]];
         v68 = [v66 objectForKeyedSubscript:*MEMORY[0x1E6989078]];
-        v69 = [v68 BOOLValue];
+        bOOLValue6 = [v68 BOOLValue];
 
         if (v67)
         {
           _UIAXSetLastKeyboardUsed(v67);
         }
 
-        if (v69)
+        if (bOOLValue6)
         {
-          [a1 _accessibilityBeginUndoableTextInsertion];
-          [a1 _accessibilityHandwritingAttributeShouldEchoCharacter];
-          [a1 _accessibilityInsertTextAtCursor:v20];
-          [a1 _accessibilityEndUndoableTextInsertion];
+          [self _accessibilityBeginUndoableTextInsertion];
+          [self _accessibilityHandwritingAttributeShouldEchoCharacter];
+          [self _accessibilityInsertTextAtCursor:mEMORY[0x1E69DCC68]];
+          [self _accessibilityEndUndoableTextInsertion];
           goto LABEL_216;
         }
 
 LABEL_215:
-        [a1 _accessibilityHandwritingAttributeShouldEchoCharacter];
-        [a1 _accessibilityInsertTextAtCursor:v20];
+        [self _accessibilityHandwritingAttributeShouldEchoCharacter];
+        [self _accessibilityInsertTextAtCursor:mEMORY[0x1E69DCC68]];
 LABEL_216:
 
 LABEL_217:
         break;
       case 2057:
-        v20 = [MEMORY[0x1E69DCC68] sharedMenuController];
-        v21 = [a1 _accessibilityParentView];
-        if ([v20 isMenuVisible])
+        mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+        _accessibilityParentView = [self _accessibilityParentView];
+        if ([mEMORY[0x1E69DCC68] isMenuVisible])
         {
-          [v20 hideMenuFromView:v21];
+          [mEMORY[0x1E69DCC68] hideMenuFromView:_accessibilityParentView];
         }
 
         else
         {
-          [v21 bounds];
+          [_accessibilityParentView bounds];
           AX_CGRectGetCenter();
-          [v20 showMenuFromView:v21 rect:?];
+          [mEMORY[0x1E69DCC68] showMenuFromView:_accessibilityParentView rect:?];
         }
 
         goto LABEL_217;
@@ -1272,10 +1272,10 @@ LABEL_217:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v57 = [a1 _accessibilityCurrentlyFocusedElementForTechnology:v8];
+          v57 = [self _accessibilityCurrentlyFocusedElementForTechnology:v8];
           [v57 _accessibilityHandleATFocused:0 assistiveTech:v8];
 
-          [a1 _accessibilityDidFocusOnOpaqueElement:0 technology:v8];
+          [self _accessibilityDidFocusOnOpaqueElement:0 technology:v8];
           v12 = 1;
         }
 
@@ -1287,55 +1287,55 @@ LABEL_217:
         goto LABEL_191;
       case 2059:
 LABEL_191:
-        [a1 _accessibilityShowEditingHUD];
+        [self _accessibilityShowEditingHUD];
         goto LABEL_219;
       case 2060:
-        v17 = [a1 _accessibilityTextViewTextOperationResponder];
-        v18 = [v17 _accessibilityBeginUndoableTextInsertion];
+        _accessibilityTextViewTextOperationResponder = [self _accessibilityTextViewTextOperationResponder];
+        _accessibilityBeginUndoableTextInsertion = [_accessibilityTextViewTextOperationResponder _accessibilityBeginUndoableTextInsertion];
         goto LABEL_42;
       case 2061:
-        v17 = [a1 _accessibilityTextViewTextOperationResponder];
-        v18 = [v17 _accessibilityEndUndoableTextInsertion];
+        _accessibilityTextViewTextOperationResponder = [self _accessibilityTextViewTextOperationResponder];
+        _accessibilityBeginUndoableTextInsertion = [_accessibilityTextViewTextOperationResponder _accessibilityEndUndoableTextInsertion];
 LABEL_42:
-        v12 = v18;
+        v12 = _accessibilityBeginUndoableTextInsertion;
 
         goto LABEL_219;
       case 2062:
-        v19 = [a1 _accessibilityResetBannerTimer];
+        _accessibilityScrollToVisible = [self _accessibilityResetBannerTimer];
         goto LABEL_176;
       case 2064:
         [v8 pointValue];
-        v19 = [a1 _accessibilityAdjustScrollOffset:?];
+        _accessibilityScrollToVisible = [self _accessibilityAdjustScrollOffset:?];
         goto LABEL_176;
       case 2065:
-        v19 = [a1 _accessibilityAuthenticatedPasteWithValue:v8];
+        _accessibilityScrollToVisible = [self _accessibilityAuthenticatedPasteWithValue:v8];
         goto LABEL_176;
       case 2066:
-        [a1 _accessibilityShowKeyboard];
+        [self _accessibilityShowKeyboard];
         break;
       case 2067:
-        [a1 _accessibilityHideKeyboard];
+        [self _accessibilityHideKeyboard];
         break;
       case 2068:
-        v19 = [a1 _accessibilityScrollToTop];
+        _accessibilityScrollToVisible = [self _accessibilityScrollToTop];
         goto LABEL_176;
       case 2069:
-        v19 = [a1 _accessibilityScrollToBottom];
+        _accessibilityScrollToVisible = [self _accessibilityScrollToBottom];
         goto LABEL_176;
       case 2070:
-        v56 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v56 postNotificationName:@"UIDictationWillInsertHypothesisNotification" object:0 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"UIDictationWillInsertHypothesisNotification" object:0 userInfo:0];
         goto LABEL_196;
       case 2071:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a1 _accessibilitySetTextInsertionGlowModeEnabled:{objc_msgSend(v8, "BOOLValue")}];
+          [self _accessibilitySetTextInsertionGlowModeEnabled:{objc_msgSend(v8, "BOOLValue")}];
           break;
         }
 
-        v56 = AXLogAppAccessibility();
-        if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+        defaultCenter = AXLogAppAccessibility();
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
         {
           [NSObject(UIStorage) _iosAccessibilityPerformAction:withValue:fencePort:];
         }
@@ -1358,7 +1358,7 @@ LABEL_218:
       {
         if (a3 == 5308)
         {
-          [a1 _accessibilitySetFocusOnElement:{objc_msgSend(v8, "BOOLValue")}];
+          [self _accessibilitySetFocusOnElement:{objc_msgSend(v8, "BOOLValue")}];
         }
 
         else
@@ -1368,7 +1368,7 @@ LABEL_218:
             goto LABEL_219;
           }
 
-          [a1 _accessibilityClearLastFocusedChild];
+          [self _accessibilityClearLastFocusedChild];
         }
 
         goto LABEL_218;
@@ -1381,19 +1381,19 @@ LABEL_218:
           goto LABEL_219;
         }
 
-        [a1 _accessibilityDidFocusOnApplication];
+        [self _accessibilityDidFocusOnApplication];
         goto LABEL_218;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 _accessibilitySetFocusEnabledInApplication:{objc_msgSend(v8, "BOOLValue")}];
+        [self _accessibilitySetFocusEnabledInApplication:{objc_msgSend(v8, "BOOLValue")}];
         goto LABEL_218;
       }
 
-      v56 = AXLogFocusEngine();
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+      defaultCenter = AXLogFocusEngine();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
       {
         [NSObject(UIStorage) _iosAccessibilityPerformAction:withValue:fencePort:];
       }
@@ -1405,17 +1405,17 @@ LABEL_218:
     {
       if (a3 == 5500)
       {
-        if ([a1 conformsToProtocol:&unk_1F1DDB1C0])
+        if ([self conformsToProtocol:&unk_1F1DDB1C0])
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [MEMORY[0x1E69DCA30] moveRingToFocusItem:a1 forClient:v8];
+            [MEMORY[0x1E69DCA30] moveRingToFocusItem:self forClient:v8];
           }
 
           else
           {
-            [MEMORY[0x1E69DCA30] moveRingToFocusItem:a1];
+            [MEMORY[0x1E69DCA30] moveRingToFocusItem:self];
           }
 
           goto LABEL_218;
@@ -1435,17 +1435,17 @@ LABEL_218:
           goto LABEL_219;
         }
 
-        if ([a1 conformsToProtocol:&unk_1F1DDB1C0])
+        if ([self conformsToProtocol:&unk_1F1DDB1C0])
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [MEMORY[0x1E69DCA30] removeRingFromFocusItem:a1 forClient:v8];
+            [MEMORY[0x1E69DCA30] removeRingFromFocusItem:self forClient:v8];
           }
 
           else
           {
-            [MEMORY[0x1E69DCA30] removeRingFromFocusItem:a1];
+            [MEMORY[0x1E69DCA30] removeRingFromFocusItem:self];
           }
 
           goto LABEL_218;
@@ -1471,13 +1471,13 @@ LABEL_200:
         goto LABEL_219;
       }
 
-      [a1 _accessibilitySetCurrentGesture:v8];
+      [self _accessibilitySetCurrentGesture:v8];
       goto LABEL_218;
     }
 
     objc_opt_class();
-    v56 = __UIAccessibilityCastAsClass();
-    v64 = [objc_alloc(MEMORY[0x1E69898A8]) initWithDictionaryRepresentation:v56];
+    defaultCenter = __UIAccessibilityCastAsClass();
+    v64 = [objc_alloc(MEMORY[0x1E69898A8]) initWithDictionaryRepresentation:defaultCenter];
     v65 = +[UIAccessibilityGameController sharedGameController];
     [v65 pressButton:v64];
 
@@ -1491,7 +1491,7 @@ LABEL_196:
     {
       if (a3 == 4020)
       {
-        [a1 _accessibilityMapsExplorationBeginFromCurrentElement];
+        [self _accessibilityMapsExplorationBeginFromCurrentElement];
       }
 
       else
@@ -1501,7 +1501,7 @@ LABEL_196:
           goto LABEL_219;
         }
 
-        [a1 _accessibilityMapsExplorationContinueWithVertexIndex:{objc_msgSend(v8, "unsignedIntegerValue")}];
+        [self _accessibilityMapsExplorationContinueWithVertexIndex:{objc_msgSend(v8, "unsignedIntegerValue")}];
       }
 
       goto LABEL_197;
@@ -1513,11 +1513,11 @@ LABEL_196:
       goto LABEL_197;
     }
 
-    v13 = [v8 objectForKey:@"replacement"];
+    firstObject = [v8 objectForKey:@"replacement"];
     v58 = [v8 objectForKey:@"range"];
     v59 = NSRangeFromString(v58);
 
-    v43 = [a1 _accessibilityReplaceTextInRange:v59.location withString:{v59.length, v13}];
+    v43 = [self _accessibilityReplaceTextInRange:v59.location withString:{v59.length, firstObject}];
 LABEL_179:
     v12 = v43;
 LABEL_180:
@@ -1529,7 +1529,7 @@ LABEL_180:
   {
     if (a3 == 4022)
     {
-      [a1 _accessibilityMapsExplorationEnd];
+      [self _accessibilityMapsExplorationEnd];
     }
 
     else
@@ -1540,7 +1540,7 @@ LABEL_180:
       }
 
       [v8 pointValue];
-      [a1 _accessibilityMapsExplorationRecordTouchpoint:?];
+      [self _accessibilityMapsExplorationRecordTouchpoint:?];
     }
 
 LABEL_197:
@@ -1558,8 +1558,8 @@ LABEL_197:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || [v8 count] != 2)
     {
-      v56 = AXLogFocusEngine();
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+      defaultCenter = AXLogFocusEngine();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
       {
         [NSObject(UIStorage) _iosAccessibilityPerformAction:withValue:fencePort:];
       }
@@ -1567,10 +1567,10 @@ LABEL_197:
       goto LABEL_196;
     }
 
-    v13 = [v8 firstObject];
-    v14 = [v13 unsignedIntegerValue];
-    v15 = [v8 lastObject];
-    v16 = [a1 _accessibilityFocusContainerMoveFocusWithHeading:v14 toElementMatchingQuery:v15];
+    firstObject = [v8 firstObject];
+    unsignedIntegerValue4 = [firstObject unsignedIntegerValue];
+    lastObject = [v8 lastObject];
+    v16 = [self _accessibilityFocusContainerMoveFocusWithHeading:unsignedIntegerValue4 toElementMatchingQuery:lastObject];
 LABEL_53:
     v12 = v16;
 
@@ -1580,8 +1580,8 @@ LABEL_53:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v8 count] != 2)
   {
-    v56 = AXLogFocusEngine();
-    if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+    defaultCenter = AXLogFocusEngine();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       [NSObject(UIStorage) _iosAccessibilityPerformAction:withValue:fencePort:];
     }
@@ -1589,15 +1589,15 @@ LABEL_53:
     goto LABEL_196;
   }
 
-  v60 = [v8 firstObject];
-  v61 = [v60 unsignedIntegerValue];
+  firstObject2 = [v8 firstObject];
+  unsignedIntegerValue5 = [firstObject2 unsignedIntegerValue];
 
-  v62 = [v8 lastObject];
-  v63 = [v62 BOOLValue];
+  lastObject2 = [v8 lastObject];
+  bOOLValue7 = [lastObject2 BOOLValue];
 
-  v19 = [a1 _accessibilityFocusContainerMoveFocusWithHeading:v61 byGroup:v63];
+  _accessibilityScrollToVisible = [self _accessibilityFocusContainerMoveFocusWithHeading:unsignedIntegerValue5 byGroup:bOOLValue7];
 LABEL_176:
-  v12 = v19;
+  v12 = _accessibilityScrollToVisible;
 LABEL_219:
 
   return v12;
@@ -1687,16 +1687,16 @@ LABEL_219:
 
 - (id)_accessibilitySpeakThisElementsAndStrings
 {
-  v2 = [a1 _accessibilitySpeakThisMaximumNumberOfElements];
+  _accessibilitySpeakThisMaximumNumberOfElements = [self _accessibilitySpeakThisMaximumNumberOfElements];
   v3 = +[UIAccessibilityElementTraversalOptions defaultSpeakScreenOptions];
-  v4 = [a1 _accessibilityLeafDescendantsWithCount:v2 options:v3];
+  v4 = [self _accessibilityLeafDescendantsWithCount:_accessibilitySpeakThisMaximumNumberOfElements options:v3];
   v5 = AXLogSpeakScreen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [NSObject(UIStorage) _accessibilitySpeakThisElementsAndStrings];
   }
 
-  if ([v4 count] == v2)
+  if ([v4 count] == _accessibilitySpeakThisMaximumNumberOfElements)
   {
     v6 = UIKitAccessibilityLocalizedString(@"speakthis.too.much.content");
     v7 = [v4 arrayByAddingObject:v6];
@@ -1726,30 +1726,30 @@ LABEL_219:
   v6 = v4;
   v14 = v6;
   [v5 setLeafNodePredicate:v13];
-  v7 = [a1 _accessibilityLeafDescendantsWithCount:1 shouldStopAtRemoteElement:0 options:v5];
-  v8 = [v7 firstObject];
+  v7 = [self _accessibilityLeafDescendantsWithCount:1 shouldStopAtRemoteElement:0 options:v5];
+  firstObject = [v7 firstObject];
   v9 = AXLogSpeakScreen();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 description];
-    v11 = [v8 accessibilityIdentifier];
+    v10 = [firstObject description];
+    accessibilityIdentifier = [firstObject accessibilityIdentifier];
     *buf = 138412802;
     v16 = v10;
     v17 = 2112;
-    v18 = v11;
+    v18 = accessibilityIdentifier;
     v19 = 2112;
     v20 = v6;
     _os_log_impl(&dword_1A9B83000, v9, OS_LOG_TYPE_INFO, "SpeakThisElement %@, accessibilityIdentifier: %@, looking for %@", buf, 0x20u);
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)_accessibilityTextRectsForSpeakThisStringRange:()UIStorage
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v7 = [a1 _accessibilityTextMarkerForPosition:?];
-  v8 = [a1 _accessibilityTextMarkerForPosition:a3 + a4];
+  v7 = [self _accessibilityTextMarkerForPosition:?];
+  v8 = [self _accessibilityTextMarkerForPosition:a3 + a4];
   v9 = AXLogSpeakScreen();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   if (v7 && v8)
@@ -1762,7 +1762,7 @@ LABEL_219:
     v27[0] = v7;
     v27[1] = v8;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-    [a1 accessibilityBoundsForTextMarkers:v11];
+    [self accessibilityBoundsForTextMarkers:v11];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -1781,14 +1781,14 @@ LABEL_219:
     }
 
     v22 = MEMORY[0x1E696B098];
-    if ([a1 _accessibilityBoolValueForKey:@"AXSpeakScreenRectsUseVisibleFrame"])
+    if ([self _accessibilityBoolValueForKey:@"AXSpeakScreenRectsUseVisibleFrame"])
     {
-      [a1 _accessibilityVisibleFrame];
+      [self _accessibilityVisibleFrame];
     }
 
     else
     {
-      [a1 accessibilityFrame];
+      [self accessibilityFrame];
     }
 
     v20 = [v22 valueWithCGRect:?];
@@ -1803,56 +1803,56 @@ LABEL_219:
 
 - (uint64_t)_accessibilitySpeakThisShouldScrollTextRects
 {
-  v1 = [a1 _iosAccessibilityAttributeValue:2301];
-  v2 = [v1 BOOLValue];
+  v1 = [self _iosAccessibilityAttributeValue:2301];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2 ^ 1u;
+  return bOOLValue ^ 1u;
 }
 
 - (BOOL)_accessibilitySpeakThisCanBeHighlighted
 {
-  v1 = [a1 _accessibilityWindow];
-  v2 = v1 != 0;
+  _accessibilityWindow = [self _accessibilityWindow];
+  v2 = _accessibilityWindow != 0;
 
   return v2;
 }
 
 - (uint64_t)_accessibilityHasNativeFocus
 {
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([a1 safeValueForKey:@"_browserAccessibilityStoredValueHasDOMFocus"], v2 = objc_claimAutoreleasedReturnValue(), v2, v2))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([self safeValueForKey:@"_browserAccessibilityStoredValueHasDOMFocus"], v2 = objc_claimAutoreleasedReturnValue(), v2, v2))
   {
 
-    return [a1 safeBoolForKey:@"browserAccessibilityHasDOMFocus"];
+    return [self safeBoolForKey:@"browserAccessibilityHasDOMFocus"];
   }
 
   else
   {
 
-    return [a1 _accessibilityUIKitHasNativeFocus];
+    return [self _accessibilityUIKitHasNativeFocus];
   }
 }
 
 - (BOOL)_accessibilityUIKitHasNativeFocus
 {
-  v2 = [a1 _accessibilityParentView];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _accessibilityNativeFocusElement];
+  _accessibilityParentView = [self _accessibilityParentView];
+  window = [_accessibilityParentView window];
+  windowScene = [window windowScene];
+  _accessibilityNativeFocusElement = [windowScene _accessibilityNativeFocusElement];
 
-  return v5 == a1;
+  return _accessibilityNativeFocusElement == self;
 }
 
 - (uint64_t)_accessibilityViewHierarchyHasNativeFocus
 {
-  v2 = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusElement];
-  if (v2 == a1)
+  _accessibilityNativeFocusElement = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusElement];
+  if (_accessibilityNativeFocusElement == self)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [a1 _accessibilityIsDescendantOfElement:v2];
+    v3 = [self _accessibilityIsDescendantOfElement:_accessibilityNativeFocusElement];
   }
 
   return v3;
@@ -1860,17 +1860,17 @@ LABEL_219:
 
 - (uint64_t)_accessibilitySetNativeFocus
 {
-  v2 = [a1 _accessibilityNativeFocusAncestor];
-  if (!v2)
+  selfCopy = [self _accessibilityNativeFocusAncestor];
+  if (!selfCopy)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 setObject:v2 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFocusedItemUserInfoKey"];
-  [v3 postNotificationName:@"AXWillAssignNativeFocusToElementNotification" object:0 userInfo:v4];
-  if (v2 && ![v2 conformsToProtocol:&unk_1F1DDB1C0])
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:selfCopy forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFocusedItemUserInfoKey"];
+  [defaultCenter postNotificationName:@"AXWillAssignNativeFocusToElementNotification" object:0 userInfo:dictionary];
+  if (selfCopy && ![selfCopy conformsToProtocol:&unk_1F1DDB1C0])
   {
     v6 = 0;
     v5 = 0;
@@ -1878,7 +1878,7 @@ LABEL_219:
 
   else
   {
-    if (([a1 _accessibilityIsFKARunningForFocusItem] & 1) != 0 || objc_msgSend(a1, "_accessibilityShouldSetNativeFocusWhenATVFocused"))
+    if (([self _accessibilityIsFKARunningForFocusItem] & 1) != 0 || objc_msgSend(self, "_accessibilityShouldSetNativeFocusWhenATVFocused"))
     {
       v5 = _UIAXAssignFocusToItem();
     }
@@ -1892,12 +1892,12 @@ LABEL_219:
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  [v4 setObject:v7 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationDidSucceedUserInfoKey"];
+  [dictionary setObject:v7 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationDidSucceedUserInfoKey"];
 
   if ((v6 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FocusTarget is not of type UIFocusItem: %@", v2];
-    [v4 setObject:v10 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFailureReasonUserInfoKey"];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"FocusTarget is not of type UIFocusItem: %@", selfCopy];
+    [dictionary setObject:selfCopy forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFailureReasonUserInfoKey"];
 LABEL_21:
 
     goto LABEL_22;
@@ -1905,21 +1905,21 @@ LABEL_21:
 
   if ((v5 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69DCA18] checkFocusabilityForItem:v2];
+    v8 = [MEMORY[0x1E69DCA18] checkFocusabilityForItem:selfCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 safeValueForKey:@"_outputString"];
+      selfCopy = [v8 safeValueForKey:@"_outputString"];
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
-    if (v10)
+    if (selfCopy)
     {
-      v11 = v10;
+      v11 = selfCopy;
     }
 
     else
@@ -1927,23 +1927,23 @@ LABEL_21:
       v11 = @"Unknown";
     }
 
-    [v4 setObject:v11 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFailureReasonUserInfoKey"];
+    [dictionary setObject:v11 forKeyedSubscript:@"AXAssignNativeFocusToElementNotificationFailureReasonUserInfoKey"];
 
     goto LABEL_21;
   }
 
 LABEL_22:
-  [v3 postNotificationName:@"AXDidAssignNativeFocusToElementNotification" object:0 userInfo:v4];
+  [defaultCenter postNotificationName:@"AXDidAssignNativeFocusToElementNotification" object:0 userInfo:dictionary];
 
   return v5;
 }
 
 - (BOOL)_accessibilityCanBecomeNativeFocused
 {
-  if ([a1 conformsToProtocol:&unk_1F1DDB1C0])
+  if ([self conformsToProtocol:&unk_1F1DDB1C0])
   {
-    v2 = a1;
-    if (![v2 canBecomeFocused])
+    selfCopy = self;
+    if (![selfCopy canBecomeFocused])
     {
       v5 = 0;
 LABEL_13:
@@ -1951,8 +1951,8 @@ LABEL_13:
       return v5;
     }
 
-    v3 = [v2 preferredFocusEnvironments];
-    if ([v3 count] && !objc_msgSend(v3, "containsObject:", v2))
+    preferredFocusEnvironments = [selfCopy preferredFocusEnvironments];
+    if ([preferredFocusEnvironments count] && !objc_msgSend(preferredFocusEnvironments, "containsObject:", selfCopy))
     {
       goto LABEL_10;
     }
@@ -1964,10 +1964,10 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    if ([v2 _accessibilityViewIsVisible])
+    if ([selfCopy _accessibilityViewIsVisible])
     {
-      v4 = [v2 _accessibilityWindow];
-      v5 = v4 != 0;
+      _accessibilityWindow = [selfCopy _accessibilityWindow];
+      v5 = _accessibilityWindow != 0;
     }
 
     else
@@ -1986,7 +1986,7 @@ LABEL_12:
 
 - (uint64_t)_accessibilityViewControllerEnablesFocusEverywhereIndependently
 {
-  v1 = [a1 _accessibilityGetBlockForAttribute:5011];
+  v1 = [self _accessibilityGetBlockForAttribute:5011];
   v2 = v1;
   if (v1)
   {
@@ -2003,7 +2003,7 @@ LABEL_12:
 
 - (uint64_t)_accessibilityViewEnablesFocusEverywhereIndependently
 {
-  v1 = [a1 _accessibilityGetBlockForAttribute:5012];
+  v1 = [self _accessibilityGetBlockForAttribute:5012];
   v2 = v1;
   if (v1)
   {
@@ -2020,35 +2020,35 @@ LABEL_12:
 
 - (id)_accessibilityNativeFocusAncestor
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      if ([v1 _acceessibilityUIKitIsUserInteractionDisabled] & 1) == 0 && (objc_msgSend(v1, "_accessibilityCanBecomeNativeFocused"))
+      if ([selfCopy _acceessibilityUIKitIsUserInteractionDisabled] & 1) == 0 && (objc_msgSend(selfCopy, "_accessibilityCanBecomeNativeFocused"))
       {
         break;
       }
 
-      v2 = [v1 accessibilityContainer];
+      accessibilityContainer = [selfCopy accessibilityContainer];
 
-      v1 = v2;
+      selfCopy = accessibilityContainer;
     }
 
-    while (v2);
+    while (accessibilityContainer);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)_focusRingManagerShouldDrawFocusRingWhenChildrenFocused
 {
-  if (![a1 _accessibilityDrawsFocusRingWhenChildrenFocused])
+  if (![self _accessibilityDrawsFocusRingWhenChildrenFocused])
   {
     return 0;
   }
 
-  v2 = [a1 _accessibilityFindAncestor:&__block_literal_global_3270 startWithSelf:0];
+  v2 = [self _accessibilityFindAncestor:&__block_literal_global_3270 startWithSelf:0];
   v3 = v2 == 0;
 
   return v3;
@@ -2056,7 +2056,7 @@ LABEL_12:
 
 - (BOOL)_accessibilityHasNativeFocusableElements
 {
-  v1 = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusableElements:a1 matchingBlock:0 forExistenceCheckOnly:1];
+  v1 = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusableElements:self matchingBlock:0 forExistenceCheckOnly:1];
   v2 = [v1 count] != 0;
 
   return v2;
@@ -2064,19 +2064,19 @@ LABEL_12:
 
 - (id)_accessibilityFocusContainer
 {
-  v2 = [a1 _accessibilityFindAncestor:&__block_literal_global_3272 startWithSelf:1];
+  v2 = [self _accessibilityFindAncestor:&__block_literal_global_3272 startWithSelf:1];
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    _accessibilityWindowScene = v2;
   }
 
   else
   {
-    v4 = [a1 _accessibilityWindowScene];
+    _accessibilityWindowScene = [self _accessibilityWindowScene];
   }
 
-  v5 = v4;
+  v5 = _accessibilityWindowScene;
 
   return v5;
 }
@@ -2088,13 +2088,13 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [a1 _accessibilityWindow];
-  v3 = [v2 rootViewController];
+  _accessibilityWindow = [self _accessibilityWindow];
+  rootViewController = [_accessibilityWindow rootViewController];
 
   NSClassFromString(&cfstr_Uiviewservicev.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeIntForKey:@"_hostPID"];
+    v4 = [rootViewController safeIntForKey:@"_hostPID"];
   }
 
   else
@@ -2107,16 +2107,16 @@ LABEL_12:
 
 - (BOOL)_accessibilityIsContainedByPreferredNativeFocusElement
 {
-  v2 = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusPreferredElement];
-  v3 = v2;
-  if (v2)
+  _accessibilityNativeFocusPreferredElement = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusPreferredElement];
+  v3 = _accessibilityNativeFocusPreferredElement;
+  if (_accessibilityNativeFocusPreferredElement)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __77__NSObject_UIStorage___accessibilityIsContainedByPreferredNativeFocusElement__block_invoke;
     v7[3] = &unk_1E78AA760;
-    v8 = v2;
-    v4 = [a1 _accessibilityFindAncestor:v7 startWithSelf:1];
+    v8 = _accessibilityNativeFocusPreferredElement;
+    v4 = [self _accessibilityFindAncestor:v7 startWithSelf:1];
     v5 = v4 != 0;
   }
 
@@ -2140,7 +2140,7 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [a1 _accessibilityFindAncestor:&__block_literal_global_3290 startWithSelf:1];
+  v3 = [self _accessibilityFindAncestor:&__block_literal_global_3290 startWithSelf:1];
   v2 = v3 != 0;
 
   return v2;
@@ -2148,18 +2148,18 @@ LABEL_12:
 
 - (BOOL)_isAccessibilityExplorerElement
 {
-  v2 = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusPreferredElement];
-  if (![a1 isAccessibilityElement])
+  _accessibilityNativeFocusPreferredElement = [*MEMORY[0x1E69DDA98] _accessibilityNativeFocusPreferredElement];
+  if (![self isAccessibilityElement])
   {
     goto LABEL_4;
   }
 
-  if ([a1 _accessibilityIsFrameOutOfBoundsConsideringScrollParents:0])
+  if ([self _accessibilityIsFrameOutOfBoundsConsideringScrollParents:0])
   {
     goto LABEL_4;
   }
 
-  v3 = [a1 _accessibilityFindAncestor:&__block_literal_global_3295 startWithSelf:1];
+  v3 = [self _accessibilityFindAncestor:&__block_literal_global_3295 startWithSelf:1];
 
   if (v3)
   {
@@ -2167,7 +2167,7 @@ LABEL_12:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![a1 _accessibilityViewIsVisible])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![self _accessibilityViewIsVisible])
   {
     goto LABEL_4;
   }
@@ -2184,14 +2184,14 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  if ([a1 _accessibilityShouldBeExplorerElementWithoutSystemFocus] && !v2)
+  if ([self _accessibilityShouldBeExplorerElementWithoutSystemFocus] && !_accessibilityNativeFocusPreferredElement)
   {
     v4 = 1;
     goto LABEL_5;
   }
 
-  v6 = [a1 accessibilityTraits];
-  if ((*MEMORY[0x1E69DD9C8] & v6) != 0 || ([a1 _accessibilityNativeFocusAncestor], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  accessibilityTraits = [self accessibilityTraits];
+  if ((*MEMORY[0x1E69DD9C8] & accessibilityTraits) != 0 || ([self _accessibilityNativeFocusAncestor], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
 LABEL_4:
     v4 = 0;
@@ -2199,13 +2199,13 @@ LABEL_4:
 
   else
   {
-    v8 = [a1 _accessibilityAncestorFocusParcel];
+    _accessibilityAncestorFocusParcel = [self _accessibilityAncestorFocusParcel];
     v4 = 1;
-    if (v8)
+    if (_accessibilityAncestorFocusParcel)
     {
-      v9 = [v2 _accessibilityAncestorFocusParcel];
+      _accessibilityAncestorFocusParcel2 = [_accessibilityNativeFocusPreferredElement _accessibilityAncestorFocusParcel];
 
-      if (v9 == v8)
+      if (_accessibilityAncestorFocusParcel2 == _accessibilityAncestorFocusParcel)
       {
         v4 = 0;
       }
@@ -2221,38 +2221,38 @@ LABEL_5:
 {
   v10 = a5;
   v11 = a6;
-  v12 = [MEMORY[0x1E695DFA0] orderedSet];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [a1 _accessibilitySubviews];
-  [v13 axSafelyAddObjectsFromArray:v14];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  array = [MEMORY[0x1E695DF70] array];
+  _accessibilitySubviews = [self _accessibilitySubviews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySubviews];
 
-  if ([v13 count])
+  if ([array count])
   {
     v15 = *MEMORY[0x1E69DD9C8];
     do
     {
-      v16 = [v13 firstObject];
-      [v13 removeObject:v16];
-      if (([v16 accessibilityElementsHidden] & 1) == 0)
+      firstObject = [array firstObject];
+      [array removeObject:firstObject];
+      if (([firstObject accessibilityElementsHidden] & 1) == 0)
       {
-        v17 = [v16 _accessibilityAXAttributedLabel];
-        if ([v17 length] && (objc_msgSend(v10, "containsObject:", v17) & 1) == 0 && (objc_msgSend(v11, "containsObject:", objc_opt_class()) & 1) == 0 && ((a4 & 1) != 0 || (objc_msgSend(v16, "_accessibilityCanBecomeNativeFocused") & 1) == 0) && ((a3 & 1) != 0 || (v15 & objc_msgSend(v16, "accessibilityTraits")) == 0))
+        _accessibilityAXAttributedLabel = [firstObject _accessibilityAXAttributedLabel];
+        if ([_accessibilityAXAttributedLabel length] && (objc_msgSend(v10, "containsObject:", _accessibilityAXAttributedLabel) & 1) == 0 && (objc_msgSend(v11, "containsObject:", objc_opt_class()) & 1) == 0 && ((a4 & 1) != 0 || (objc_msgSend(firstObject, "_accessibilityCanBecomeNativeFocused") & 1) == 0) && ((a3 & 1) != 0 || (v15 & objc_msgSend(firstObject, "accessibilityTraits")) == 0))
         {
-          [v12 addObject:v17];
+          [orderedSet addObject:_accessibilityAXAttributedLabel];
         }
 
-        if (([v16 isAccessibilityElement] & 1) == 0)
+        if (([firstObject isAccessibilityElement] & 1) == 0)
         {
-          v18 = [v16 _accessibilitySortedElementsWithin];
-          [v13 axSafelyAddObjectsFromArray:v18];
+          _accessibilitySortedElementsWithin = [firstObject _accessibilitySortedElementsWithin];
+          [array axSafelyAddObjectsFromArray:_accessibilitySortedElementsWithin];
         }
       }
     }
 
-    while ([v13 count]);
+    while ([array count]);
   }
 
-  v19 = [v12 array];
+  array2 = [orderedSet array];
   v20 = UIAXLabelForElements();
 
   return v20;
@@ -2261,7 +2261,7 @@ LABEL_5:
 - (uint64_t)_accessibilityFocusParcelChildrenCount:()UIStorage
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a1 _accessibilityCanBecomeNativeFocused])
+  if ([self _accessibilityCanBecomeNativeFocused])
   {
     ++a3;
   }
@@ -2272,8 +2272,8 @@ LABEL_5:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [a1 _accessibilitySubviews];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _accessibilitySubviews = [self _accessibilitySubviews];
+    v6 = [_accessibilitySubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2285,14 +2285,14 @@ LABEL_5:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_accessibilitySubviews);
           }
 
           a3 = [*(*(&v11 + 1) + 8 * v9++) _accessibilityFocusParcelChildrenCount:a3];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_accessibilitySubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -2307,12 +2307,12 @@ LABEL_5:
   v4 = a3;
   if (!v4)
   {
-    v14 = [a1 _accessibilityCanBecomeNativeFocused];
-    v7 = [a1 _accessibilityAncestorFocusParcel];
+    _accessibilityCanBecomeNativeFocused = [self _accessibilityCanBecomeNativeFocused];
+    _accessibilityAncestorFocusParcel = [self _accessibilityAncestorFocusParcel];
     v15 = MEMORY[0x1E695DEC8];
-    v12 = [a1 _accessibilityAXAttributedValue];
-    v5 = [v15 axArrayByIgnoringNilElementsWithCount:{1, v12}];
-    v13 = [v7 _accessibilityTextForSubhierarchyIncludingHeaders:v14 focusableItems:0 exclusions:v5];
+    _accessibilityAXAttributedValue = [self _accessibilityAXAttributedValue];
+    v5 = [v15 axArrayByIgnoringNilElementsWithCount:{1, _accessibilityAXAttributedValue}];
+    v13 = [_accessibilityAncestorFocusParcel _accessibilityTextForSubhierarchyIncludingHeaders:_accessibilityCanBecomeNativeFocused focusableItems:0 exclusions:v5];
     goto LABEL_9;
   }
 
@@ -2323,26 +2323,26 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v6 = [a1 _accessibilityAncestorFocusParcel];
-  v7 = v6;
-  if (v6 && v6 != a1)
+  _accessibilityAncestorFocusParcel2 = [self _accessibilityAncestorFocusParcel];
+  _accessibilityAncestorFocusParcel = _accessibilityAncestorFocusParcel2;
+  if (_accessibilityAncestorFocusParcel2 && _accessibilityAncestorFocusParcel2 != self)
   {
-    v8 = [a1 _accessibilityCanBecomeNativeFocused];
+    _accessibilityCanBecomeNativeFocused2 = [self _accessibilityCanBecomeNativeFocused];
     v9 = MEMORY[0x1E695DEC8];
-    v10 = [a1 _accessibilityAXAttributedValue];
-    v11 = [v9 axArrayByIgnoringNilElementsWithCount:{1, v10}];
-    v12 = [v7 _accessibilityTextForSubhierarchyIncludingHeaders:v8 focusableItems:0 exclusions:v11];
+    _accessibilityAXAttributedValue2 = [self _accessibilityAXAttributedValue];
+    v11 = [v9 axArrayByIgnoringNilElementsWithCount:{1, _accessibilityAXAttributedValue2}];
+    _accessibilityAXAttributedValue = [_accessibilityAncestorFocusParcel _accessibilityTextForSubhierarchyIncludingHeaders:_accessibilityCanBecomeNativeFocused2 focusableItems:0 exclusions:v11];
 
-    if ([v5 axContainsString:v12 options:1])
+    if ([v5 axContainsString:_accessibilityAXAttributedValue options:1])
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    if ([v12 axContainsString:v5 options:1])
+    if ([_accessibilityAXAttributedValue axContainsString:v5 options:1])
     {
-      v13 = v12;
+      v13 = _accessibilityAXAttributedValue;
     }
 
     else
@@ -2366,10 +2366,10 @@ LABEL_12:
 
 - (id)_accessibilityAncestorFocusParcel
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     do
     {
       if ([v2 _accessibilityIsFocusParcel])
@@ -2382,23 +2382,23 @@ LABEL_12:
         v3 = 0;
       }
 
-      v4 = [v2 accessibilityContainer];
+      accessibilityContainer = [v2 accessibilityContainer];
 
       if (v3)
       {
         break;
       }
 
-      v2 = v4;
+      v2 = accessibilityContainer;
     }
 
-    while (v4);
+    while (accessibilityContainer);
   }
 
   else
   {
     v3 = 0;
-    v4 = 0;
+    accessibilityContainer = 0;
   }
 
   objc_opt_class();
@@ -2413,53 +2413,53 @@ LABEL_12:
 
 - (id)_accessibilityProxyViewAncestorWhenMissingWindow
 {
-  v1 = [a1 accessibilityContainer];
-  if (v1)
+  accessibilityContainer = [self accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v2 = v1;
+    v2 = accessibilityContainer;
     while (1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [v2 window];
+        window = [v2 window];
 
-        if (v3)
+        if (window)
         {
           break;
         }
       }
 
-      v4 = [v2 _accessibilityProxyView];
-      v5 = [v4 window];
+      _accessibilityProxyView = [v2 _accessibilityProxyView];
+      window2 = [_accessibilityProxyView window];
 
-      if (v5)
+      if (window2)
       {
 
         goto LABEL_10;
       }
 
-      v6 = [v2 accessibilityContainer];
+      accessibilityContainer2 = [v2 accessibilityContainer];
 
-      v2 = v6;
-      if (!v6)
+      v2 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_7;
       }
     }
 
-    v4 = v2;
+    _accessibilityProxyView = v2;
   }
 
   else
   {
 LABEL_7:
-    v4 = 0;
+    _accessibilityProxyView = 0;
   }
 
 LABEL_10:
 
-  return v4;
+  return _accessibilityProxyView;
 }
 
 - (void)_accessibilitySpeakThisElementsAndStrings

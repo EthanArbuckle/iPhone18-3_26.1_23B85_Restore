@@ -1,39 +1,39 @@
 @interface ARImageAnchor
-- (ARImageAnchor)initWithAnchor:(id)a3;
-- (ARImageAnchor)initWithCoder:(id)a3;
-- (ARImageAnchor)initWithReferenceImage:(double)a3 transform:(double)a4 detectionOnly:(double)a5 tracked:(uint64_t)a6;
+- (ARImageAnchor)initWithAnchor:(id)anchor;
+- (ARImageAnchor)initWithCoder:(id)coder;
+- (ARImageAnchor)initWithReferenceImage:(double)image transform:(double)transform detectionOnly:(double)only tracked:(uint64_t)tracked;
 - (NSString)description;
-- (id)copyWithTrackedState:(BOOL)a3;
+- (id)copyWithTrackedState:(BOOL)state;
 - (id)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARImageAnchor
 
-- (ARImageAnchor)initWithReferenceImage:(double)a3 transform:(double)a4 detectionOnly:(double)a5 tracked:(uint64_t)a6
+- (ARImageAnchor)initWithReferenceImage:(double)image transform:(double)transform detectionOnly:(double)only tracked:(uint64_t)tracked
 {
   v13 = a7;
-  v14 = [v13 identifier];
-  v21.receiver = a1;
+  identifier = [v13 identifier];
+  v21.receiver = self;
   v21.super_class = ARImageAnchor;
-  v15 = [(ARAnchor *)&v21 initWithIdentifier:v14 transform:a2, a3, a4, a5];
+  only = [(ARAnchor *)&v21 initWithIdentifier:identifier transform:a2, image, transform, only];
 
-  if (v15)
+  if (only)
   {
-    [(ARImageAnchor *)v15 setIsTracked:a9];
-    objc_storeStrong(&v15->_referenceImage, a7);
-    v15->_detectionOnly = a8;
+    [(ARImageAnchor *)only setIsTracked:a9];
+    objc_storeStrong(&only->_referenceImage, a7);
+    only->_detectionOnly = a8;
   }
 
-  return v15;
+  return only;
 }
 
 - (id)name
 {
-  v2 = [(ARImageAnchor *)self referenceImage];
-  v3 = [v2 name];
+  referenceImage = [(ARImageAnchor *)self referenceImage];
+  name = [referenceImage name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)description
@@ -43,28 +43,28 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARAnchor *)self identifier];
-  [v6 appendFormat:@" identifier=%@", v7];
+  identifier = [(ARAnchor *)self identifier];
+  [v6 appendFormat:@" identifier=%@", identifier];
 
-  v8 = [(ARImageAnchor *)self name];
+  name = [(ARImageAnchor *)self name];
 
-  if (v8)
+  if (name)
   {
-    v9 = [(ARImageAnchor *)self name];
-    [v6 appendFormat:@" name=%@", v9];
+    name2 = [(ARImageAnchor *)self name];
+    [v6 appendFormat:@" name=%@", name2];
   }
 
   [(ARAnchor *)self transform];
   v14 = ARMatrix4x4Description(0, v10, v11, v12, v13);
   [v6 appendFormat:@" transform=%@", v14];
 
-  v15 = [(ARImageAnchor *)self referenceImage];
-  v16 = [v15 description];
+  referenceImage = [(ARImageAnchor *)self referenceImage];
+  v16 = [referenceImage description];
   [v6 appendFormat:@" referenceImage=%@", v16];
 
-  v17 = [(ARImageAnchor *)self isTracked];
+  isTracked = [(ARImageAnchor *)self isTracked];
   v18 = @"NO";
-  if (v17)
+  if (isTracked)
   {
     v18 = @"YES";
   }
@@ -77,75 +77,75 @@
   return v6;
 }
 
-- (id)copyWithTrackedState:(BOOL)a3
+- (id)copyWithTrackedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [(ARImageAnchor *)self copy];
   v5 = v4;
-  if (v4 && [v4 isTracked] != v3)
+  if (v4 && [v4 isTracked] != stateCopy)
   {
-    [v5 setIsTracked:v3];
+    [v5 setIsTracked:stateCopy];
   }
 
   return v5;
 }
 
-- (ARImageAnchor)initWithAnchor:(id)a3
+- (ARImageAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v10.receiver = self;
   v10.super_class = ARImageAnchor;
-  v5 = [(ARAnchor *)&v10 initWithAnchor:v4];
+  v5 = [(ARAnchor *)&v10 initWithAnchor:anchorCopy];
   if (v5)
   {
-    v6 = [v4 referenceImage];
+    referenceImage = [anchorCopy referenceImage];
     referenceImage = v5->_referenceImage;
-    v5->_referenceImage = v6;
+    v5->_referenceImage = referenceImage;
 
-    v5->_detectionOnly = [v4 isDetectionOnly];
-    v5->_isTracked = [v4 isTracked];
-    [v4 estimatedScaleFactor];
+    v5->_detectionOnly = [anchorCopy isDetectionOnly];
+    v5->_isTracked = [anchorCopy isTracked];
+    [anchorCopy estimatedScaleFactor];
     v5->_estimatedScaleFactor = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ARImageAnchor;
-  v4 = a3;
-  [(ARAnchor *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ARAnchor *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ARImageAnchor *)self referenceImage:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"referenceImage"];
+  [coderCopy encodeObject:v5 forKey:@"referenceImage"];
 
-  [v4 encodeObject:self->_referenceImageUUID forKey:@"referenceImageUUID"];
-  [v4 encodeBool:-[ARImageAnchor isDetectionOnly](self forKey:{"isDetectionOnly"), @"detectionOnly"}];
-  [v4 encodeBool:-[ARImageAnchor isTracked](self forKey:{"isTracked"), @"tracked"}];
+  [coderCopy encodeObject:self->_referenceImageUUID forKey:@"referenceImageUUID"];
+  [coderCopy encodeBool:-[ARImageAnchor isDetectionOnly](self forKey:{"isDetectionOnly"), @"detectionOnly"}];
+  [coderCopy encodeBool:-[ARImageAnchor isTracked](self forKey:{"isTracked"), @"tracked"}];
   [(ARImageAnchor *)self estimatedScaleFactor];
-  [v4 encodeDouble:@"estimatedScaleFactor" forKey:?];
+  [coderCopy encodeDouble:@"estimatedScaleFactor" forKey:?];
 }
 
-- (ARImageAnchor)initWithCoder:(id)a3
+- (ARImageAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ARImageAnchor;
-  v5 = [(ARAnchor *)&v12 initWithCoder:v4];
+  v5 = [(ARAnchor *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceImage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceImage"];
     referenceImage = v5->_referenceImage;
     v5->_referenceImage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceImageUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceImageUUID"];
     referenceImageUUID = v5->_referenceImageUUID;
     v5->_referenceImageUUID = v8;
 
-    v5->_detectionOnly = [v4 decodeBoolForKey:@"detectionOnly"];
-    v5->_isTracked = [v4 decodeBoolForKey:@"tracked"];
-    [v4 decodeDoubleForKey:@"estimatedScaleFactor"];
+    v5->_detectionOnly = [coderCopy decodeBoolForKey:@"detectionOnly"];
+    v5->_isTracked = [coderCopy decodeBoolForKey:@"tracked"];
+    [coderCopy decodeDoubleForKey:@"estimatedScaleFactor"];
     v5->_estimatedScaleFactor = v10;
   }
 

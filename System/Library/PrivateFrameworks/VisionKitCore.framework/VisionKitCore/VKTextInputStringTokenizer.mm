@@ -1,42 +1,42 @@
 @interface VKTextInputStringTokenizer
-- (BOOL)isPosition:(id)a3 atBoundary:(int64_t)a4 inDirection:(int64_t)a5;
-- (BOOL)isPosition:(id)a3 withinTextUnit:(int64_t)a4 inDirection:(int64_t)a5;
-- (VKTextInputStringTokenizer)initWithTextInput:(id)a3 recognitionResult:(id)a4;
-- (id)positionFromPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5;
-- (id)rangeEnclosingPosition:(id)a3 withGranularity:(int64_t)a4 inDirection:(int64_t)a5;
+- (BOOL)isPosition:(id)position atBoundary:(int64_t)boundary inDirection:(int64_t)direction;
+- (BOOL)isPosition:(id)position withinTextUnit:(int64_t)unit inDirection:(int64_t)direction;
+- (VKTextInputStringTokenizer)initWithTextInput:(id)input recognitionResult:(id)result;
+- (id)positionFromPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction;
+- (id)rangeEnclosingPosition:(id)position withGranularity:(int64_t)granularity inDirection:(int64_t)direction;
 @end
 
 @implementation VKTextInputStringTokenizer
 
-- (VKTextInputStringTokenizer)initWithTextInput:(id)a3 recognitionResult:(id)a4
+- (VKTextInputStringTokenizer)initWithTextInput:(id)input recognitionResult:(id)result
 {
-  v7 = a4;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = VKTextInputStringTokenizer;
-  v8 = [(UITextInputStringTokenizer *)&v11 initWithTextInput:a3];
+  v8 = [(UITextInputStringTokenizer *)&v11 initWithTextInput:input];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_recognitionResult, a4);
+    objc_storeStrong(&v8->_recognitionResult, result);
   }
 
   return v9;
 }
 
-- (id)rangeEnclosingPosition:(id)a3 withGranularity:(int64_t)a4 inDirection:(int64_t)a5
+- (id)rangeEnclosingPosition:(id)position withGranularity:(int64_t)granularity inDirection:(int64_t)direction
 {
-  v8 = a3;
+  positionCopy = position;
   v9 = objc_opt_class();
   v15.receiver = self;
   v15.super_class = VKTextInputStringTokenizer;
-  v10 = [(UITextInputStringTokenizer *)&v15 rangeEnclosingPosition:v8 withGranularity:a4 inDirection:a5];
+  v10 = [(UITextInputStringTokenizer *)&v15 rangeEnclosingPosition:positionCopy withGranularity:granularity inDirection:direction];
 
   v11 = VKDynamicCast(v9, v10);
 
   if (v11)
   {
-    v12 = [(VKTextInputStringTokenizer *)self recognitionResult];
-    v13 = [v12 adjustTextRangeToSelectableRange:v11];
+    recognitionResult = [(VKTextInputStringTokenizer *)self recognitionResult];
+    v13 = [recognitionResult adjustTextRangeToSelectableRange:v11];
 
     if (v13)
     {
@@ -54,31 +54,31 @@
   return v11;
 }
 
-- (id)positionFromPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5
+- (id)positionFromPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction
 {
-  v8 = a3;
+  positionCopy = position;
   v9 = objc_opt_class();
   v13.receiver = self;
   v13.super_class = VKTextInputStringTokenizer;
-  v10 = [(UITextInputStringTokenizer *)&v13 positionFromPosition:v8 toBoundary:a4 inDirection:a5];
+  v10 = [(UITextInputStringTokenizer *)&v13 positionFromPosition:positionCopy toBoundary:boundary inDirection:direction];
 
   v11 = VKDynamicCast(v9, v10);
 
   return v11;
 }
 
-- (BOOL)isPosition:(id)a3 atBoundary:(int64_t)a4 inDirection:(int64_t)a5
+- (BOOL)isPosition:(id)position atBoundary:(int64_t)boundary inDirection:(int64_t)direction
 {
   v6.receiver = self;
   v6.super_class = VKTextInputStringTokenizer;
-  return [(UITextInputStringTokenizer *)&v6 isPosition:a3 atBoundary:a4 inDirection:a5];
+  return [(UITextInputStringTokenizer *)&v6 isPosition:position atBoundary:boundary inDirection:direction];
 }
 
-- (BOOL)isPosition:(id)a3 withinTextUnit:(int64_t)a4 inDirection:(int64_t)a5
+- (BOOL)isPosition:(id)position withinTextUnit:(int64_t)unit inDirection:(int64_t)direction
 {
   v6.receiver = self;
   v6.super_class = VKTextInputStringTokenizer;
-  return [(UITextInputStringTokenizer *)&v6 isPosition:a3 withinTextUnit:a4 inDirection:a5];
+  return [(UITextInputStringTokenizer *)&v6 isPosition:position withinTextUnit:unit inDirection:direction];
 }
 
 @end

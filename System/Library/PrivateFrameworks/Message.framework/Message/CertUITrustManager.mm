@@ -1,18 +1,18 @@
 @interface CertUITrustManager
-- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5;
-- (void)allowTrust:(__SecTrust *)a3 forHost:(id)a4 service:(id)a5;
+- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service;
+- (void)allowTrust:(__SecTrust *)trust forHost:(id)host service:(id)service;
 @end
 
 @implementation CertUITrustManager
 
-- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)a3 hostname:(id)a4 service:(id)a5
+- (unsigned)rawTrustResultForSSLTrust:(__SecTrust *)trust hostname:(id)hostname service:(id)service
 {
-  v5 = a5;
-  if (!a4)
+  serviceCopy = service;
+  if (!hostname)
   {
     v7 = 0;
     v9 = 0;
-    if (a5)
+    if (service)
     {
       goto LABEL_3;
     }
@@ -24,34 +24,34 @@ LABEL_5:
 
   v7 = sub_1B0E44AD8();
   v9 = v8;
-  if (!v5)
+  if (!serviceCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v10 = sub_1B0E44AD8();
-  v5 = v11;
+  serviceCopy = v11;
 LABEL_6:
-  v12 = a3;
+  trustCopy = trust;
 
-  v13 = CertUITrustManager.rawTrustResult(forSSLTrust:hostname:service:)(a3, v7, v9, v10, v5);
+  v13 = CertUITrustManager.rawTrustResult(forSSLTrust:hostname:service:)(trust, v7, v9, v10, serviceCopy);
 
   return v13;
 }
 
-- (void)allowTrust:(__SecTrust *)a3 forHost:(id)a4 service:(id)a5
+- (void)allowTrust:(__SecTrust *)trust forHost:(id)host service:(id)service
 {
-  v5 = a5;
-  if (a4)
+  serviceCopy = service;
+  if (host)
   {
     v7 = sub_1B0E44AD8();
     v9 = v8;
-    if (v5)
+    if (serviceCopy)
     {
 LABEL_3:
       v10 = sub_1B0E44AD8();
-      v5 = v11;
+      serviceCopy = v11;
       goto LABEL_6;
     }
   }
@@ -60,7 +60,7 @@ LABEL_3:
   {
     v7 = 0;
     v9 = 0;
-    if (a5)
+    if (service)
     {
       goto LABEL_3;
     }
@@ -68,13 +68,13 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v12 = a3;
+  trustCopy = trust;
 
   v13.value._countAndFlagsBits = v7;
   v13.value._object = v9;
   v14.value._countAndFlagsBits = v10;
-  v14.value._object = v5;
-  CertUITrustManager.allow(_:forHost:service:)(a3, v13, v14);
+  v14.value._object = serviceCopy;
+  CertUITrustManager.allow(_:forHost:service:)(trust, v13, v14);
 }
 
 @end

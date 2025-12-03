@@ -24,7 +24,7 @@
   v7[3] = &unk_1E6A1BF48;
   v7[4] = &v14;
   v7[5] = &v8;
-  _LSDNCWithCharacters(a1, v7);
+  _LSDNCWithCharacters(self, v7);
   v4 = v15[5];
   if (a3 && !v4)
   {

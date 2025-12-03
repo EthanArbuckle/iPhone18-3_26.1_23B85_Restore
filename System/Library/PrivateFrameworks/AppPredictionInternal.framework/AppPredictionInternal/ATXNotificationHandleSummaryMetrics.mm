@@ -1,23 +1,23 @@
 @interface ATXNotificationHandleSummaryMetrics
-- (ATXNotificationHandleSummaryMetrics)initWithDimensions:(id)a3;
+- (ATXNotificationHandleSummaryMetrics)initWithDimensions:(id)dimensions;
 - (double)acceptedNotificationAverageHandleTime;
 - (double)acceptedNotificationsPercentage;
 - (double)rejectedNotificationAverageHandleTime;
 - (double)rejectedNotificationsPercentage;
 - (double)unhandledNotificationsPercentage;
 - (id)coreAnalyticsDictionary;
-- (id)popReceiveEventForNotification:(id)a3;
-- (void)handleNotificationEvent:(id)a3;
-- (void)handleTelemetryResult:(id)a3;
+- (id)popReceiveEventForNotification:(id)notification;
+- (void)handleNotificationEvent:(id)event;
+- (void)handleTelemetryResult:(id)result;
 @end
 
 @implementation ATXNotificationHandleSummaryMetrics
 
-- (ATXNotificationHandleSummaryMetrics)initWithDimensions:(id)a3
+- (ATXNotificationHandleSummaryMetrics)initWithDimensions:(id)dimensions
 {
   v8.receiver = self;
   v8.super_class = ATXNotificationHandleSummaryMetrics;
-  v3 = [(_ATXCoreAnalyticsMetric *)&v8 initWithDimensions:a3];
+  v3 = [(_ATXCoreAnalyticsMetric *)&v8 initWithDimensions:dimensions];
   v4 = v3;
   if (v3)
   {
@@ -147,67 +147,67 @@
   return v16;
 }
 
-- (void)handleTelemetryResult:(id)a3
+- (void)handleTelemetryResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   ++self->_notificationsReceivedCount;
-  v14 = v4;
-  v5 = [v4 resolution];
-  v6 = [v5 resolutionType];
+  v14 = resultCopy;
+  resolution = [resultCopy resolution];
+  resolutionType = [resolution resolutionType];
 
-  if (v6)
+  if (resolutionType)
   {
-    v7 = [v14 resolution];
-    v8 = [v7 resolutionType];
+    resolution2 = [v14 resolution];
+    resolutionType2 = [resolution2 resolutionType];
 
-    if (v8 != 1)
+    if (resolutionType2 != 1)
     {
       goto LABEL_6;
     }
 
     ++self->_rejectedNotificationCount;
-    v9 = [v14 resolution];
-    v10 = [v9 resolutionTimestamp];
-    v11 = [v14 receiveTimestamp];
-    [v10 timeIntervalSinceDate:v11];
+    resolution3 = [v14 resolution];
+    resolutionTimestamp = [resolution3 resolutionTimestamp];
+    receiveTimestamp = [v14 receiveTimestamp];
+    [resolutionTimestamp timeIntervalSinceDate:receiveTimestamp];
     self->_rejectedNotificationCount = (v12 + self->_rejectedNotificationCount);
   }
 
   else
   {
     ++self->_acceptedNotificationCount;
-    v9 = [v14 resolution];
-    v10 = [v9 resolutionTimestamp];
-    v11 = [v14 receiveTimestamp];
-    [v10 timeIntervalSinceDate:v11];
+    resolution3 = [v14 resolution];
+    resolutionTimestamp = [resolution3 resolutionTimestamp];
+    receiveTimestamp = [v14 receiveTimestamp];
+    [resolutionTimestamp timeIntervalSinceDate:receiveTimestamp];
     self->_acceptedNotificationTotalHandleTime = v13 + self->_acceptedNotificationTotalHandleTime;
   }
 
 LABEL_6:
 }
 
-- (void)handleNotificationEvent:(id)a3
+- (void)handleNotificationEvent:(id)event
 {
-  v13 = a3;
-  if ([v13 isReceiveEvent])
+  eventCopy = event;
+  if ([eventCopy isReceiveEvent])
   {
     unhandledReceivedNotifications = self->_unhandledReceivedNotifications;
-    v5 = [v13 notificationId];
-    [(NSMutableDictionary *)unhandledReceivedNotifications setObject:v13 forKeyedSubscript:v5];
+    notificationId = [eventCopy notificationId];
+    [(NSMutableDictionary *)unhandledReceivedNotifications setObject:eventCopy forKeyedSubscript:notificationId];
 
     ++self->_notificationsReceivedCount;
     goto LABEL_10;
   }
 
-  v6 = [(ATXNotificationHandleSummaryMetrics *)self popReceiveEventForNotification:v13];
+  v6 = [(ATXNotificationHandleSummaryMetrics *)self popReceiveEventForNotification:eventCopy];
   if (v6)
   {
-    v7 = [v13 eventTime];
-    v8 = [v6 eventTime];
-    [v7 timeIntervalSinceDate:v8];
+    eventTime = [eventCopy eventTime];
+    eventTime2 = [v6 eventTime];
+    [eventTime timeIntervalSinceDate:eventTime2];
     v10 = v9;
 
-    if ([v13 isAcceptEvent])
+    if ([eventCopy isAcceptEvent])
     {
       v11 = &OBJC_IVAR___ATXNotificationHandleSummaryMetrics__acceptedNotificationCount;
       v12 = &OBJC_IVAR___ATXNotificationHandleSummaryMetrics__acceptedNotificationTotalHandleTime;
@@ -217,7 +217,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ([v13 isRejectEvent])
+    if ([eventCopy isRejectEvent])
     {
       v11 = &OBJC_IVAR___ATXNotificationHandleSummaryMetrics__rejectedNotificationCount;
       v12 = &OBJC_IVAR___ATXNotificationHandleSummaryMetrics__rejectedNotificationTotalHandleTime;
@@ -230,17 +230,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)popReceiveEventForNotification:(id)a3
+- (id)popReceiveEventForNotification:(id)notification
 {
   unhandledReceivedNotifications = self->_unhandledReceivedNotifications;
-  v5 = a3;
-  v6 = [v5 notificationId];
-  v7 = [(NSMutableDictionary *)unhandledReceivedNotifications objectForKeyedSubscript:v6];
+  notificationCopy = notification;
+  notificationId = [notificationCopy notificationId];
+  v7 = [(NSMutableDictionary *)unhandledReceivedNotifications objectForKeyedSubscript:notificationId];
 
   v8 = self->_unhandledReceivedNotifications;
-  v9 = [v5 notificationId];
+  notificationId2 = [notificationCopy notificationId];
 
-  [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+  [(NSMutableDictionary *)v8 removeObjectForKey:notificationId2];
 
   return v7;
 }

@@ -7,12 +7,12 @@
 - (BOOL)isReadyToShowCallDetails;
 - (BOOL)isShowingHUD;
 - (BOOL)isShownAboveCoverSheet;
-- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)a3;
+- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)controller;
 - (BOOL)shouldDisconnectOnDismissal;
 - (BOOL)wantsPIPRotationForLocalPreview;
 - (CGRect)frameForRestoreAnimation;
 - (CGRect)mediaPipFrameInWindowScene;
-- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)a3;
+- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)controller;
 - (CGSize)preferredPIPContentAspectRatio;
 - (CGSize)preferredPiPContentAspectRatio;
 - (CNKBannerPresentationManager)bannerPresentationManager;
@@ -22,30 +22,30 @@
 - (TUCall)call;
 - (UIImage)audioRouteGlyphForDevice;
 - (UIView)localParticipantView;
-- (_TtC15ConversationKit22MultiwayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit22MultiwayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtC15ConversationKit33VideoReactionPickerViewController)reactionsViewController;
 - (id)accessibilityConstraintController;
-- (id)audioRouteGlyphFor:(id)a3;
+- (id)audioRouteGlyphFor:(id)for;
 - (id)audioRouteMenu;
 - (id)viewControllerForPiP;
 - (int64_t)fullScreenFocusedParticipantOrientation;
 - (void)bannerDidGetTap;
-- (void)cameraViewController:(id)a3 didChangeEffectsState:(int64_t)a4;
-- (void)cameraViewController:(id)a3 didRenderFrame:(id)a4;
-- (void)cameraViewController:(id)a3 presentationRectWasPinchedWithState:(int64_t)a4 scale:(double)a5 velocity:(double)a6;
-- (void)cameraViewControllerPresentationRectWasDoubleTapped:(id)a3;
-- (void)cancelVideoRecordingWithCompletion:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)didCaptureVideoFrame:(id)a3;
+- (void)cameraViewController:(id)controller didChangeEffectsState:(int64_t)state;
+- (void)cameraViewController:(id)controller didRenderFrame:(id)frame;
+- (void)cameraViewController:(id)controller presentationRectWasPinchedWithState:(int64_t)state scale:(double)scale velocity:(double)velocity;
+- (void)cameraViewControllerPresentationRectWasDoubleTapped:(id)tapped;
+- (void)cancelVideoRecordingWithCompletion:(id)completion;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)didCaptureVideoFrame:(id)frame;
 - (void)didTapChangeLayoutButton;
 - (void)didTapDeskViewButton;
 - (void)didTapOneToOneShutterButton;
 - (void)dismissContactCard;
 - (void)dismissPeoplePicker;
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)effectBrowserViewController:(id)a3 willChangeDockHeight:(double)a4;
-- (void)handleCameraFlipAnimationDidFinish:(id)a3;
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)effectBrowserViewController:(id)controller willChangeDockHeight:(double)height;
+- (void)handleCameraFlipAnimationDidFinish:(id)finish;
 - (void)hideEffectsBrowser;
 - (void)muteVideo;
 - (void)openMessagesConversation;
@@ -54,40 +54,40 @@
 - (void)presentAddParticipantSheet;
 - (void)presentContactCard;
 - (void)resetEffectsState;
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4;
-- (void)serverDidTimeout:(id)a3;
-- (void)setBannerPresentationManager:(id)a3;
-- (void)setControlsState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setDidExpandIncomingCallBanner:(BOOL)a3;
-- (void)setHasParticipantVideo:(BOOL)a3;
-- (void)setIOSDelegate:(id)a3;
-- (void)setInCallControlsDismissTimer:(id)a3;
-- (void)setIsCaptioningEnabled:(BOOL)a3;
-- (void)setIsDisplayedInBanner:(BOOL)a3;
-- (void)setIsFullScreen:(BOOL)a3;
-- (void)setIsInCallEndedBlockAndReportFlow:(BOOL)a3;
-- (void)setIsOnScreen:(BOOL)a3;
-- (void)setIsPipStashed:(BOOL)a3;
-- (void)setMediaPipFrameInWindowScene:(CGRect)a3;
-- (void)setPipState:(int64_t)a3;
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status;
+- (void)serverDidTimeout:(id)timeout;
+- (void)setBannerPresentationManager:(id)manager;
+- (void)setControlsState:(int64_t)state animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setDidExpandIncomingCallBanner:(BOOL)banner;
+- (void)setHasParticipantVideo:(BOOL)video;
+- (void)setIOSDelegate:(id)delegate;
+- (void)setInCallControlsDismissTimer:(id)timer;
+- (void)setIsCaptioningEnabled:(BOOL)enabled;
+- (void)setIsDisplayedInBanner:(BOOL)banner;
+- (void)setIsFullScreen:(BOOL)screen;
+- (void)setIsInCallEndedBlockAndReportFlow:(BOOL)flow;
+- (void)setIsOnScreen:(BOOL)screen;
+- (void)setIsPipStashed:(BOOL)stashed;
+- (void)setMediaPipFrameInWindowScene:(CGRect)scene;
+- (void)setPipState:(int64_t)state;
 - (void)testing_didFinishLocalPreviewRotationAnimation;
 - (void)toggleAudioMute;
 - (void)toggleCinematicFraming;
 - (void)toggleLocalOrientation;
 - (void)toggleReactionsView;
-- (void)toggleVideoMuteWithShouldPauseIfStopped:(BOOL)a3;
+- (void)toggleVideoMuteWithShouldPauseIfStopped:(BOOL)stopped;
 - (void)updateVideoState;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation MultiwayViewController
@@ -101,26 +101,26 @@
 
 - (void)testing_didFinishLocalPreviewRotationAnimation
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.testing_didFinishLocalPreviewRotationAnimation()();
 }
 
 - (void)didTapChangeLayoutButton
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.didTapChangeLayoutButton()();
 }
 
 - (void)didTapDeskViewButton
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.didTapDeskViewButton()();
 }
 
-- (void)setIsInCallEndedBlockAndReportFlow:(BOOL)a3
+- (void)setIsInCallEndedBlockAndReportFlow:(BOOL)flow
 {
-  v4 = self;
-  MultiwayViewController.isInCallEndedBlockAndReportFlow.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.isInCallEndedBlockAndReportFlow.setter(flow);
 }
 
 - (CNKBannerPresentationManager)bannerPresentationManager
@@ -130,17 +130,17 @@
   return v2;
 }
 
-- (void)setBannerPresentationManager:(id)a3
+- (void)setBannerPresentationManager:(id)manager
 {
-  v5 = a3;
-  v6 = self;
-  MultiwayViewController.bannerPresentationManagerBox.setter(a3);
+  managerCopy = manager;
+  selfCopy = self;
+  MultiwayViewController.bannerPresentationManagerBox.setter(manager);
 }
 
-- (void)setDidExpandIncomingCallBanner:(BOOL)a3
+- (void)setDidExpandIncomingCallBanner:(BOOL)banner
 {
-  v4 = self;
-  MultiwayViewController.didExpandIncomingCallBanner.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.didExpandIncomingCallBanner.setter(banner);
 }
 
 - (NSTimer)inCallControlsDismissTimer
@@ -150,11 +150,11 @@
   return v2;
 }
 
-- (void)setInCallControlsDismissTimer:(id)a3
+- (void)setInCallControlsDismissTimer:(id)timer
 {
-  v5 = a3;
-  v6 = self;
-  MultiwayViewController.inCallControlsDismissTimer.setter(a3);
+  timerCopy = timer;
+  selfCopy = self;
+  MultiwayViewController.inCallControlsDismissTimer.setter(timer);
 }
 
 - (TUCall)call
@@ -164,15 +164,15 @@
   return v2;
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  v4 = self;
-  MultiwayViewController.deviceOrientation.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.deviceOrientation.setter(orientation);
 }
 
 - (BOOL)wantsPIPRotationForLocalPreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.wantsPIPRotationForLocalPreview.getter();
 
   return v3;
@@ -180,33 +180,33 @@
 
 - (BOOL)isOnScreen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isOnScreen.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
-  v3 = self;
+  selfCopy = self;
   MultiwayViewController.isOnScreen.setter();
 }
 
-- (void)setHasParticipantVideo:(BOOL)a3
+- (void)setHasParticipantVideo:(BOOL)video
 {
-  v4 = self;
-  MultiwayViewController.isInCallEndedBlockAndReportFlow.setter(a3, &OBJC_IVAR____TtC15ConversationKit22MultiwayViewController_hasParticipantVideo, MultiwayViewController.hasParticipantVideo.didset);
+  selfCopy = self;
+  MultiwayViewController.isInCallEndedBlockAndReportFlow.setter(video, &OBJC_IVAR____TtC15ConversationKit22MultiwayViewController_hasParticipantVideo, MultiwayViewController.hasParticipantVideo.didset);
 }
 
-- (void)setIsDisplayedInBanner:(BOOL)a3
+- (void)setIsDisplayedInBanner:(BOOL)banner
 {
-  v4 = self;
-  MultiwayViewController.isDisplayedInBanner.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.isDisplayedInBanner.setter(banner);
 }
 
 - (BOOL)isInVideoMessageFlow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isInVideoMessageFlow.getter();
 
   return v3 & 1;
@@ -214,50 +214,50 @@
 
 - (BOOL)isShowingHUD
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isShowingHUD.getter();
 
   return v3;
 }
 
-- (void)setIsFullScreen:(BOOL)a3
+- (void)setIsFullScreen:(BOOL)screen
 {
-  v4 = self;
-  MultiwayViewController.isFullScreen.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.isFullScreen.setter(screen);
 }
 
 - (BOOL)isShownAboveCoverSheet
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isShownAboveCoverSheet.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsPipStashed:(BOOL)a3
+- (void)setIsPipStashed:(BOOL)stashed
 {
-  v4 = self;
-  MultiwayViewController.isPipStashed.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.isPipStashed.setter(stashed);
 }
 
-- (void)setPipState:(int64_t)a3
+- (void)setPipState:(int64_t)state
 {
-  v4 = self;
-  MultiwayViewController.pipState.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.pipState.setter(state);
 }
 
 - (BOOL)isCaptioningEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isCaptioningEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsCaptioningEnabled:(BOOL)a3
+- (void)setIsCaptioningEnabled:(BOOL)enabled
 {
-  v4 = self;
-  MultiwayViewController.isCaptioningEnabled.setter(a3);
+  selfCopy = self;
+  MultiwayViewController.isCaptioningEnabled.setter(enabled);
 }
 
 - (UIView)localParticipantView
@@ -281,10 +281,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   MultiwayViewController.delegate.setter();
 }
 
@@ -295,16 +295,16 @@
   return v2;
 }
 
-- (void)setIOSDelegate:(id)a3
+- (void)setIOSDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   MultiwayViewController.iOSDelegate.setter();
 }
 
 - (CGSize)preferredPIPContentAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.preferredPIPContentAspectRatio.getter();
   v5 = v4;
 
@@ -317,7 +317,7 @@
 
 - (int64_t)fullScreenFocusedParticipantOrientation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.fullScreenFocusedParticipantOrientation.getter();
 
   return v3;
@@ -325,7 +325,7 @@
 
 - (BOOL)isOneToOneModeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isOneToOneModeEnabled.getter();
 
   return v3 & 1;
@@ -333,7 +333,7 @@
 
 - (BOOL)shouldDisconnectOnDismissal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.shouldDisconnectOnDismissal.getter();
 
   return v3 & 1;
@@ -349,107 +349,107 @@
   return result;
 }
 
-- (void)setMediaPipFrameInWindowScene:(CGRect)a3
+- (void)setMediaPipFrameInWindowScene:(CGRect)scene
 {
-  v3 = self;
+  selfCopy = self;
   MultiwayViewController.mediaPipFrameInWindowScene.setter();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  MultiwayViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  MultiwayViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  MultiwayViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  MultiwayViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  MultiwayViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  MultiwayViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.viewSafeAreaInsetsDidChange()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.viewDidLayoutSubviews()();
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  MultiwayViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  MultiwayViewController.willMove(toParent:)(controller);
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.updateViewConstraints()();
 }
 
 - (void)toggleAudioMute
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.toggleAudioMute()();
 }
 
-- (void)toggleVideoMuteWithShouldPauseIfStopped:(BOOL)a3
+- (void)toggleVideoMuteWithShouldPauseIfStopped:(BOOL)stopped
 {
-  v4 = self;
-  MultiwayViewController.toggleVideoMute(shouldPauseIfStopped:)(a3);
+  selfCopy = self;
+  MultiwayViewController.toggleVideoMute(shouldPauseIfStopped:)(stopped);
 }
 
 - (void)toggleCinematicFraming
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.toggleCinematicFraming()();
 }
 
 - (void)muteVideo
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.muteVideo()();
 }
 
 - (void)openMessagesConversation
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.openMessagesConversation()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  MultiwayViewController.viewWillTransition(to:with:)(a4);
+  selfCopy = self;
+  MultiwayViewController.viewWillTransition(to:with:)(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)handleCameraFlipAnimationDidFinish:(id)a3
+- (void)handleCameraFlipAnimationDidFinish:(id)finish
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   MultiwayViewController.handleCameraFlipAnimationDidFinish(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -457,13 +457,13 @@
 
 - (void)hideEffectsBrowser
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.hideEffectsBrowser()();
 }
 
 - (void)updateVideoState
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.updateVideoState()();
 }
 
@@ -474,60 +474,60 @@
   return v2;
 }
 
-- (_TtC15ConversationKit22MultiwayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit22MultiwayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MultiwayViewController.init(nibName:bundle:)();
 }
 
 - (BOOL)isReadyToShowCallDetails
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isReadyToShowCallDetails.getter();
 
   return v3;
 }
 
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   MultiwayViewController.screenSharingInteractionController(_:didUpdateRemoteControlStatus:)();
   swift_unknownObjectRelease();
 }
 
 - (void)toggleLocalOrientation
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.toggleLocalOrientation()();
 }
 
 - (void)pipDidRotate
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.pipDidRotate()();
 }
 
 - (void)toggleReactionsView
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.toggleReactionsView()();
 }
 
 - (void)didTapOneToOneShutterButton
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.didTapOneToOneShutterButton()();
 }
 
 - (BOOL)isPresentingEffectsBrowser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.isPresentingEffectsBrowser.getter();
 
   return v3;
@@ -535,109 +535,109 @@
 
 - (void)resetEffectsState
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.resetEffectsState()();
 }
 
 - (id)audioRouteMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.audioRouteMenu()();
 
   return v3;
 }
 
-- (id)audioRouteGlyphFor:(id)a3
+- (id)audioRouteGlyphFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = MultiwayViewController.audioRouteGlyph(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = MultiwayViewController.audioRouteGlyph(for:)(forCopy);
 
   return v6;
 }
 
 - (UIImage)audioRouteGlyphForDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.audioRouteGlyphForDevice.getter();
 
   return v3;
 }
 
-- (void)cameraViewController:(id)a3 didRenderFrame:(id)a4
+- (void)cameraViewController:(id)controller didRenderFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  MultiwayViewController.cameraViewController(_:didRenderFrame:)(v6, v7);
+  controllerCopy = controller;
+  frameCopy = frame;
+  selfCopy = self;
+  MultiwayViewController.cameraViewController(_:didRenderFrame:)(controllerCopy, frameCopy);
 }
 
-- (void)cameraViewControllerPresentationRectWasDoubleTapped:(id)a3
+- (void)cameraViewControllerPresentationRectWasDoubleTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  MultiwayViewController.cameraViewControllerPresentationRectWasDoubleTapped(_:)(v5);
+  tappedCopy = tapped;
+  selfCopy = self;
+  MultiwayViewController.cameraViewControllerPresentationRectWasDoubleTapped(_:)(selfCopy);
 }
 
-- (void)cameraViewController:(id)a3 presentationRectWasPinchedWithState:(int64_t)a4 scale:(double)a5 velocity:(double)a6
+- (void)cameraViewController:(id)controller presentationRectWasPinchedWithState:(int64_t)state scale:(double)scale velocity:(double)velocity
 {
-  v8 = a3;
-  v9 = self;
-  MultiwayViewController.cameraViewController(_:presentationRectWasPinchedWith:scale:velocity:)(a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  MultiwayViewController.cameraViewController(_:presentationRectWasPinchedWith:scale:velocity:)(scale);
 }
 
-- (void)cameraViewController:(id)a3 didChangeEffectsState:(int64_t)a4
+- (void)cameraViewController:(id)controller didChangeEffectsState:(int64_t)state
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   MultiwayViewController.cameraViewController(_:didChange:)();
 }
 
-- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)a3
+- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   LOBYTE(self) = MultiwayViewController.shouldAlwaysPresentExpandedApps(for:)();
 
   return self & 1;
 }
 
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   if (v9)
   {
     *(swift_allocObject() + 16) = v9;
     v9 = thunk for @escaping @callee_unowned @convention(block) () -> ()partial apply;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
   MultiwayViewController.effectBrowserViewController(_:presentExpandedAppViewController:animated:completion:)();
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v9);
 }
 
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   if (v9)
   {
     *(swift_allocObject() + 16) = v9;
     v9 = _sIeyB_Ieg_TRTA_0;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
   MultiwayViewController.effectBrowserViewController(_:dismissExpandedAppViewController:animated:completion:)();
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v9);
 }
 
-- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)a3
+- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = MultiwayViewController.expandedAppViewControllerSize(for:)();
   v8 = v7;
 
@@ -648,74 +648,74 @@
   return result;
 }
 
-- (void)effectBrowserViewController:(id)a3 willChangeDockHeight:(double)a4
+- (void)effectBrowserViewController:(id)controller willChangeDockHeight:(double)height
 {
-  v6 = a3;
-  v7 = self;
-  MultiwayViewController.effectBrowserViewController(_:willChangeDockHeight:)(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  MultiwayViewController.effectBrowserViewController(_:willChangeDockHeight:)(height);
 }
 
-- (void)didCaptureVideoFrame:(id)a3
+- (void)didCaptureVideoFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  MultiwayViewController.didCapture(_:)(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  MultiwayViewController.didCapture(_:)(frameCopy);
 }
 
-- (void)serverDidTimeout:(id)a3
+- (void)serverDidTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = self;
+  timeoutCopy = timeout;
+  selfCopy = self;
   MultiwayViewController.serverDidTimeout(_:)();
 }
 
-- (void)setControlsState:(int64_t)a3 animated:(BOOL)a4
+- (void)setControlsState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = self;
+  selfCopy = self;
   MultiwayViewController.setControlsState(_:animated:)();
 }
 
 - (void)presentAddParticipantSheet
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.presentAddParticipantSheet()(specialized static SpringBoardUtilities.requestPasscodeUnlock(_:));
 }
 
 - (void)dismissPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.dismissPeoplePicker()();
 }
 
 - (void)presentContactCard
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.presentAddParticipantSheet()(specialized static SpringBoardUtilities.requestPasscodeUnlock(_:));
 }
 
 - (void)dismissContactCard
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.dismissContactCard()();
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  MultiwayViewController.contactViewController(_:didCompleteWith:)(v8, v10);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  MultiwayViewController.contactViewController(_:didCompleteWith:)(selfCopy, v10);
 }
 
 - (void)bannerDidGetTap
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.bannerDidGetTap()();
 }
 
 - (CGRect)frameForRestoreAnimation
 {
-  v2 = self;
+  selfCopy = self;
   v11 = MultiwayViewController.frameForRestoreAnimation()();
   x = v11.origin.x;
   y = v11.origin.y;
@@ -735,7 +735,7 @@
 
 - (CGSize)preferredPiPContentAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiwayViewController.preferredPiPContentAspectRatio()();
 
   width = v3.width;
@@ -747,13 +747,13 @@
 
 - (void)prepareForAppSwitcher
 {
-  v2 = self;
+  selfCopy = self;
   MultiwayViewController.prepareForAppSwitcher()();
 }
 
-- (void)cancelVideoRecordingWithCompletion:(id)a3
+- (void)cancelVideoRecordingWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -765,7 +765,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   MultiwayViewController.cancelVideoRecording(completion:)();
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v5);
 }

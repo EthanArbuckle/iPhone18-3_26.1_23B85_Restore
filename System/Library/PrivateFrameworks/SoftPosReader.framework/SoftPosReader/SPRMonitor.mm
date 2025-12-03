@@ -1,29 +1,29 @@
 @interface SPRMonitor
-- (BOOL)signalWithEvent:(id)a3 error:(id *)a4;
-- (BOOL)signalWithEvent:(unsigned __int16)a3 data:(id)a4 error:(id *)a5;
+- (BOOL)signalWithEvent:(id)event error:(id *)error;
+- (BOOL)signalWithEvent:(unsigned __int16)event data:(id)data error:(id *)error;
 @end
 
 @implementation SPRMonitor
 
-- (BOOL)signalWithEvent:(id)a3 error:(id *)a4
+- (BOOL)signalWithEvent:(id)event error:(id *)error
 {
-  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, a4, v4);
+  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, error, v4);
 
-  if (a4 && v6)
+  if (error && v6)
   {
-    *a4 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;
 }
 
-- (BOOL)signalWithEvent:(unsigned __int16)a3 data:(id)a4 error:(id *)a5
+- (BOOL)signalWithEvent:(unsigned __int16)event data:(id)data error:(id *)error
 {
-  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, a4, a5);
+  v6 = objc_msgSend_errorWithCode_(SPRError, a2, 7002, data, error);
 
-  if (a5 && v6)
+  if (error && v6)
   {
-    *a5 = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
+    *error = objc_msgSend_errorWithCode_(SPRError, v7, 7002, v8, v9);
   }
 
   return 0;

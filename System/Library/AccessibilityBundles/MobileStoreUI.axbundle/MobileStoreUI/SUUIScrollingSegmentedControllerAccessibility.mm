@@ -1,23 +1,23 @@
 @interface SUUIScrollingSegmentedControllerAccessibility
-- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)a3;
+- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)subviews;
 @end
 
 @implementation SUUIScrollingSegmentedControllerAccessibility
 
-- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)a3
+- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5 = [(SUUIScrollingSegmentedControllerAccessibility *)self valueForKey:@"_focusedViewControllerIndex"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v9.receiver = self;
   v9.super_class = SUUIScrollingSegmentedControllerAccessibility;
-  [(SUUIScrollingSegmentedControllerAccessibility *)&v9 scrollingSegmentedControllerCollectionViewDidLayoutSubviews:v4];
+  [(SUUIScrollingSegmentedControllerAccessibility *)&v9 scrollingSegmentedControllerCollectionViewDidLayoutSubviews:subviewsCopy];
 
   v7 = [(SUUIScrollingSegmentedControllerAccessibility *)self valueForKey:@"_focusedViewControllerIndex"];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-  if (v6 != v8)
+  if (unsignedIntegerValue != unsignedIntegerValue2)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }

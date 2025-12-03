@@ -1,14 +1,14 @@
 @interface WLCancellationViewController
-- (WLCancellationViewController)initWithWelcomeController:(id)a3;
+- (WLCancellationViewController)initWithWelcomeController:(id)controller;
 - (void)_continue;
 - (void)_retry;
 @end
 
 @implementation WLCancellationViewController
 
-- (WLCancellationViewController)initWithWelcomeController:(id)a3
+- (WLCancellationViewController)initWithWelcomeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = WLLocalizedString();
   v7 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CANCELLATION_DETAIL"];
   v8 = WLLocalizedString();
@@ -21,29 +21,29 @@
 
   if (v12)
   {
-    objc_storeStrong(&v12->_welcomeController, a3);
-    v13 = [MEMORY[0x277D37618] boldButton];
+    objc_storeStrong(&v12->_welcomeController, controller);
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v14 = WLLocalizedString();
-    [v13 setTitle:v14 forState:0];
+    [boldButton setTitle:v14 forState:0];
 
-    [v13 addTarget:v12 action:sel__continue forControlEvents:64];
-    v15 = [(WLCancellationViewController *)v12 buttonTray];
-    [v15 addButton:v13];
+    [boldButton addTarget:v12 action:sel__continue forControlEvents:64];
+    buttonTray = [(WLCancellationViewController *)v12 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v16 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     retryButton = v12->_retryButton;
-    v12->_retryButton = v16;
+    v12->_retryButton = linkButton;
 
     v18 = v12->_retryButton;
     v19 = WLLocalizedString();
     [(OBTrayButton *)v18 setTitle:v19 forState:0];
 
     [(OBTrayButton *)v12->_retryButton addTarget:v12 action:sel__retry forControlEvents:64];
-    v20 = [(WLCancellationViewController *)v12 buttonTray];
-    [v20 addButton:v12->_retryButton];
+    buttonTray2 = [(WLCancellationViewController *)v12 buttonTray];
+    [buttonTray2 addButton:v12->_retryButton];
 
-    v21 = [(OBBaseWelcomeController *)v12 navigationItem];
-    [v21 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)v12 navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 
   return v12;

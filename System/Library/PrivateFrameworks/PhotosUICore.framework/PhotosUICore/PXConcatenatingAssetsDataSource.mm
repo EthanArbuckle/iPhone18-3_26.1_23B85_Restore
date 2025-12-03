@@ -1,9 +1,9 @@
 @interface PXConcatenatingAssetsDataSource
 - (PXAssetReference)startingAssetReference;
 - (PXConcatenatingAssetsDataSource)init;
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3;
-- (id)assetReferenceForAssetReference:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference;
+- (id)assetReferenceForAssetReference:(id)reference;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 @end
 
@@ -11,40 +11,40 @@
 
 - (int64_t)numberOfSections
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4008420();
 
   return v3;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = self;
-  v5 = sub_1A40072A4(a3);
+  selfCopy = self;
+  v5 = sub_1A40072A4(section);
 
   return v5;
 }
 
 - (PXAssetReference)startingAssetReference
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4007564();
 
   return v3;
 }
 
-- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForAssetReference:(SEL)reference
 {
   v5 = a4;
-  v6 = self;
+  selfCopy = self;
   sub_1A4007698();
 }
 
-- (id)assetReferenceForAssetReference:(id)a3
+- (id)assetReferenceForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A4007BD8(v4);
+  referenceCopy = reference;
+  selfCopy = self;
+  v6 = sub_1A4007BD8(referenceCopy);
 
   return v6;
 }

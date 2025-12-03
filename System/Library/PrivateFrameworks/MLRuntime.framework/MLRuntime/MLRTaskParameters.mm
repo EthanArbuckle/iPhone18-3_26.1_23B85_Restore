@@ -1,23 +1,23 @@
 @interface MLRTaskParameters
-- (MLRTaskParameters)initWithCoder:(id)a3;
-- (MLRTaskParameters)initWithDESRecipe:(id)a3;
-- (MLRTaskParameters)initWithParametersDict:(id)a3;
-- (MLRTaskParameters)initWithURL:(id)a3 error:(id *)a4;
+- (MLRTaskParameters)initWithCoder:(id)coder;
+- (MLRTaskParameters)initWithDESRecipe:(id)recipe;
+- (MLRTaskParameters)initWithParametersDict:(id)dict;
+- (MLRTaskParameters)initWithURL:(id)l error:(id *)error;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation MLRTaskParameters
 
-- (MLRTaskParameters)initWithParametersDict:(id)a3
+- (MLRTaskParameters)initWithParametersDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v9.receiver = self;
   v9.super_class = MLRTaskParameters;
   v5 = [(MLRTaskParameters *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictCopy copy];
     recipeUserInfo = v5->_recipeUserInfo;
     v5->_recipeUserInfo = v6;
   }
@@ -25,56 +25,56 @@
   return v5;
 }
 
-- (MLRTaskParameters)initWithDESRecipe:(id)a3
+- (MLRTaskParameters)initWithDESRecipe:(id)recipe
 {
-  if (a3)
+  if (recipe)
   {
-    v4 = [a3 recipeUserInfo];
-    self = [(MLRTaskParameters *)self initWithParametersDict:v4];
+    recipeUserInfo = [recipe recipeUserInfo];
+    self = [(MLRTaskParameters *)self initWithParametersDict:recipeUserInfo];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (MLRTaskParameters)initWithURL:(id)a3 error:(id *)a4
+- (MLRTaskParameters)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Nil fileURL" userInfo:0];
     objc_exception_throw(v12);
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6 options:8 error:a4];
+  v7 = lCopy;
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:8 error:error];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:a4];
+    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:error];
     if (v9)
     {
       self = [(MLRTaskParameters *)self initWithParametersDict:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)description
@@ -94,29 +94,29 @@
   return v2;
 }
 
-- (MLRTaskParameters)initWithCoder:(id)a3
+- (MLRTaskParameters)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v4 setWithObjects:{v6, v7, v8, v9, objc_opt_class(), 0}];
-  v11 = [v5 decodeObjectOfClasses:v10 forKey:@"recipeUserInfo"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"recipeUserInfo"];
 
   if (v11)
   {
     self = [(MLRTaskParameters *)self initWithParametersDict:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface BSTimer
-+ (id)scheduledTimerWithFireInterval:(double)a3 queue:(id)a4 handler:(id)a5;
++ (id)scheduledTimerWithFireInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (BOOL)isScheduled;
-- (BSTimer)initWithFireInterval:(double)a3 repeatInterval:(double)a4 leewayInterval:(double)a5 queue:(id)a6 handler:(id)a7;
+- (BSTimer)initWithFireInterval:(double)interval repeatInterval:(double)repeatInterval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler;
 - (unint64_t)fireCount;
 - (void)_queue_cancel;
 - (void)cancel;
@@ -11,30 +11,30 @@
 
 @implementation BSTimer
 
-+ (id)scheduledTimerWithFireInterval:(double)a3 queue:(id)a4 handler:(id)a5
++ (id)scheduledTimerWithFireInterval:(double)interval queue:(id)queue handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [[a1 alloc] initWithFireInterval:v8 queue:v9 handler:a3];
+  queueCopy = queue;
+  handlerCopy = handler;
+  v10 = [[self alloc] initWithFireInterval:queueCopy queue:handlerCopy handler:interval];
   [v10 schedule];
 
   return v10;
 }
 
-- (BSTimer)initWithFireInterval:(double)a3 repeatInterval:(double)a4 leewayInterval:(double)a5 queue:(id)a6 handler:(id)a7
+- (BSTimer)initWithFireInterval:(double)interval repeatInterval:(double)repeatInterval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler
 {
-  v13 = a6;
-  v14 = a7;
-  if (!v14)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"BSTimer.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSTimer.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
   }
 
-  if (a3 < 0.0 || a3 > 9223372040.0)
+  if (interval < 0.0 || interval > 9223372040.0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"BSTimer.m" lineNumber:49 description:{@"requested a timer with an unsupported duration (%f)", *&a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"BSTimer.m" lineNumber:49 description:{@"requested a timer with an unsupported duration (%f)", *&interval}];
   }
 
   v15 = [(BSTimer *)self init];
@@ -45,9 +45,9 @@
     queue = v15->_queue;
     v15->_queue = Serial;
 
-    if (v13)
+    if (queueCopy)
     {
-      v19 = v13;
+      v19 = queueCopy;
     }
 
     else
@@ -59,27 +59,27 @@
     callOutQueue = v15->_callOutQueue;
     v15->_callOutQueue = v19;
 
-    v22 = [v14 copy];
+    v22 = [handlerCopy copy];
     handler = v15->_handler;
     v15->_handler = v22;
 
-    v24 = 0.0;
-    v25 = fabs(a4) < 2.22044605e-16 || a4 < 0.0;
-    v26 = -1.0;
+    leewayIntervalCopy = 0.0;
+    v25 = fabs(repeatInterval) < 2.22044605e-16 || repeatInterval < 0.0;
+    repeatIntervalCopy = -1.0;
     if (!v25)
     {
-      v26 = a4;
+      repeatIntervalCopy = repeatInterval;
     }
 
-    v15->_fireInterval = a3;
-    v15->_repeatInterval = v26;
-    if (fabs(a5) >= 2.22044605e-16 && a5 >= 0.0)
+    v15->_fireInterval = interval;
+    v15->_repeatInterval = repeatIntervalCopy;
+    if (fabs(leewayInterval) >= 2.22044605e-16 && leewayInterval >= 0.0)
     {
-      v24 = a5;
+      leewayIntervalCopy = leewayInterval;
     }
 
-    v15->_leewayInterval = v24;
-    v15->_oneShot = fabs(v26 + 1.0) < 2.22044605e-16;
+    v15->_leewayInterval = leewayIntervalCopy;
+    v15->_oneShot = fabs(repeatIntervalCopy + 1.0) < 2.22044605e-16;
   }
 
   return v15;
@@ -182,16 +182,16 @@ void __19__BSTimer_schedule__block_invoke(uint64_t a1)
 
 - (void)_queue_cancel
 {
-  if (a1)
+  if (self)
   {
-    BSDispatchQueueAssert(*(a1 + 8));
-    v2 = *(a1 + 32);
+    BSDispatchQueueAssert(*(self + 8));
+    v2 = *(self + 32);
     if (v2)
     {
-      *(a1 + 49) = 0;
+      *(self + 49) = 0;
       [v2 invalidate];
-      v3 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v3 = *(self + 32);
+      *(self + 32) = 0;
     }
   }
 }

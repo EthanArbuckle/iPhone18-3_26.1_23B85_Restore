@@ -1,38 +1,38 @@
 @interface SFPhotosMemoryImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPhotosMemoryImage)initWithCoder:(id)a3;
-- (SFPhotosMemoryImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPhotosMemoryImage)initWithCoder:(id)coder;
+- (SFPhotosMemoryImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPhotosMemoryImage
 
-- (SFPhotosMemoryImage)initWithProtobuf:(id)a3
+- (SFPhotosMemoryImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFPhotosMemoryImage;
   v5 = [(SFPhotosMemoryImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 memoryIdentifier];
+    memoryIdentifier = [protobufCopy memoryIdentifier];
 
-    if (v6)
+    if (memoryIdentifier)
     {
-      v7 = [v4 memoryIdentifier];
-      [(SFPhotosMemoryImage *)v5 setMemoryIdentifier:v7];
+      memoryIdentifier2 = [protobufCopy memoryIdentifier];
+      [(SFPhotosMemoryImage *)v5 setMemoryIdentifier:memoryIdentifier2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(SFPhotosMemoryImage *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFPhotosMemoryImage *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v10 = v5;
@@ -46,34 +46,34 @@
   v9.receiver = self;
   v9.super_class = SFPhotosMemoryImage;
   v3 = [(SFImage *)&v9 hash];
-  v4 = [(SFPhotosMemoryImage *)self memoryIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  memoryIdentifier = [(SFPhotosMemoryImage *)self memoryIdentifier];
+  v5 = [memoryIdentifier hash];
+  applicationBundleIdentifier = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFPhotosMemoryImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFPhotosMemoryImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFPhotosMemoryImage;
-      if ([(SFImage *)&v22 isEqual:v5])
+      if ([(SFImage *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFPhotosMemoryImage *)self memoryIdentifier];
-        v8 = [(SFPhotosMemoryImage *)v6 memoryIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        memoryIdentifier = [(SFPhotosMemoryImage *)self memoryIdentifier];
+        memoryIdentifier2 = [(SFPhotosMemoryImage *)v6 memoryIdentifier];
+        if ((memoryIdentifier != 0) == (memoryIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -81,12 +81,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFPhotosMemoryImage *)self memoryIdentifier];
-        if (v9)
+        memoryIdentifier3 = [(SFPhotosMemoryImage *)self memoryIdentifier];
+        if (memoryIdentifier3)
         {
-          v3 = [(SFPhotosMemoryImage *)self memoryIdentifier];
-          v10 = [(SFPhotosMemoryImage *)v6 memoryIdentifier];
-          if (![v3 isEqual:v10])
+          memoryIdentifier4 = [(SFPhotosMemoryImage *)self memoryIdentifier];
+          memoryIdentifier5 = [(SFPhotosMemoryImage *)v6 memoryIdentifier];
+          if (![memoryIdentifier4 isEqual:memoryIdentifier5])
           {
             v11 = 0;
 LABEL_18:
@@ -95,13 +95,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = memoryIdentifier5;
         }
 
-        v12 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
-        v13 = [(SFPhotosMemoryImage *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFPhotosMemoryImage *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
@@ -109,16 +109,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
-          if (v15)
+          applicationBundleIdentifier3 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
+          if (applicationBundleIdentifier3)
           {
-            v16 = v15;
-            v19 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
+            v16 = applicationBundleIdentifier3;
+            applicationBundleIdentifier4 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
             [(SFPhotosMemoryImage *)v6 applicationBundleIdentifier];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = memoryIdentifier4;
+            v11 = [applicationBundleIdentifier4 isEqual:v17];
 
-            v3 = v20;
+            memoryIdentifier4 = v20;
           }
 
           else
@@ -128,8 +128,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        memoryIdentifier5 = v21;
+        if (!memoryIdentifier3)
         {
           goto LABEL_19;
         }
@@ -146,17 +146,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFPhotosMemoryImage;
-  v4 = [(SFImage *)&v10 copyWithZone:a3];
-  v5 = [(SFPhotosMemoryImage *)self memoryIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v10 copyWithZone:zone];
+  memoryIdentifier = [(SFPhotosMemoryImage *)self memoryIdentifier];
+  v6 = [memoryIdentifier copy];
   [v4 setMemoryIdentifier:v6];
 
-  v7 = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFPhotosMemoryImage *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
   return v4;
@@ -165,31 +165,31 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBPhotosMemoryImage alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosMemoryImage *)v2 jsonData];
+  jsonData = [(_SFPBPhotosMemoryImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPhotosMemoryImage alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosMemoryImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPhotosMemoryImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFPhotosMemoryImage)initWithCoder:(id)a3
+- (SFPhotosMemoryImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;

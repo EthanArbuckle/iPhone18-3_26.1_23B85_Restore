@@ -1,26 +1,26 @@
 @interface SUNavigationHistoryItem
-- (SUNavigationHistoryItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUNavigationHistoryItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation SUNavigationHistoryItem
 
-- (SUNavigationHistoryItem)initWithDictionary:(id)a3
+- (SUNavigationHistoryItem)initWithDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = SUNavigationHistoryItem;
   v4 = [(SUNavigationHistoryItem *)&v10 init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"title"];
+    v5 = [dictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_title = v5;
     }
 
-    v6 = [a3 objectForKey:@"url"];
+    v6 = [dictionary objectForKey:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,11 +43,11 @@
   [(SUNavigationHistoryItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSString *)self->_title copyWithZone:a3];
-  v5[2] = [(SSURLRequestProperties *)self->_urlRequestProperties copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSString *)self->_title copyWithZone:zone];
+  v5[2] = [(SSURLRequestProperties *)self->_urlRequestProperties copyWithZone:zone];
   return v5;
 }
 

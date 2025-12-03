@@ -1,39 +1,39 @@
 @interface CNVCardLine
-+ (id)lineWithName:(id)a3 value:(id)a4 itemSeparator:(id)a5;
-- (BOOL)canSerializeWithStrategy:(id)a3;
-- (CNVCardLine)initWithName:(id)a3 value:(id)a4 itemSeparator:(id)a5;
-- (id)makeGroupingNameWithCounter:(int64_t *)a3;
-- (void)addGroupedLine:(id)a3 withCounter:(int64_t *)a4;
-- (void)addParameterWithName:(id)a3 value:(id)a4;
-- (void)insertParameterWithName:(id)a3 value:(id)a4 atIndex:(unint64_t)a5;
-- (void)serializeValueWithStrategy:(id)a3;
++ (id)lineWithName:(id)name value:(id)value itemSeparator:(id)separator;
+- (BOOL)canSerializeWithStrategy:(id)strategy;
+- (CNVCardLine)initWithName:(id)name value:(id)value itemSeparator:(id)separator;
+- (id)makeGroupingNameWithCounter:(int64_t *)counter;
+- (void)addGroupedLine:(id)line withCounter:(int64_t *)counter;
+- (void)addParameterWithName:(id)name value:(id)value;
+- (void)insertParameterWithName:(id)name value:(id)value atIndex:(unint64_t)index;
+- (void)serializeValueWithStrategy:(id)strategy;
 @end
 
 @implementation CNVCardLine
 
-+ (id)lineWithName:(id)a3 value:(id)a4 itemSeparator:(id)a5
++ (id)lineWithName:(id)name value:(id)value itemSeparator:(id)separator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 value:v9 itemSeparator:v8];
+  separatorCopy = separator;
+  valueCopy = value;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy value:valueCopy itemSeparator:separatorCopy];
 
   return v11;
 }
 
-- (CNVCardLine)initWithName:(id)a3 value:(id)a4 itemSeparator:(id)a5
+- (CNVCardLine)initWithName:(id)name value:(id)value itemSeparator:(id)separator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  valueCopy = value;
+  separatorCopy = separator;
   v11 = [(CNVCardLine *)self init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeStrong(&v11->_value, a4);
+    objc_storeStrong(&v11->_value, value);
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     parameters = v11->_parameters;
     v11->_parameters = v14;
@@ -42,7 +42,7 @@
     groupedLines = v11->_groupedLines;
     v11->_groupedLines = v16;
 
-    v18 = [v10 copy];
+    v18 = [separatorCopy copy];
     itemSeparator = v11->_itemSeparator;
     v11->_itemSeparator = v18;
 
@@ -52,27 +52,27 @@
   return v11;
 }
 
-- (void)addParameterWithName:(id)a3 value:(id)a4
+- (void)addParameterWithName:(id)name value:(id)value
 {
-  v5 = [CNVCardParameter parameterWithName:a3 value:a4];
+  v5 = [CNVCardParameter parameterWithName:name value:value];
   [(NSMutableArray *)self->_parameters _cn_addNonNilObject:v5];
 }
 
-- (void)insertParameterWithName:(id)a3 value:(id)a4 atIndex:(unint64_t)a5
+- (void)insertParameterWithName:(id)name value:(id)value atIndex:(unint64_t)index
 {
-  v7 = [CNVCardParameter parameterWithName:a3 value:a4];
-  [(NSMutableArray *)self->_parameters _cn_insertNonNilObject:v7 atIndex:a5];
+  v7 = [CNVCardParameter parameterWithName:name value:value];
+  [(NSMutableArray *)self->_parameters _cn_insertNonNilObject:v7 atIndex:index];
 }
 
-- (void)addGroupedLine:(id)a3 withCounter:(int64_t *)a4
+- (void)addGroupedLine:(id)line withCounter:(int64_t *)counter
 {
-  v6 = a3;
-  if (v6)
+  lineCopy = line;
+  if (lineCopy)
   {
-    v9 = v6;
+    v9 = lineCopy;
     if (!self->_grouping)
     {
-      v7 = [(CNVCardLine *)self makeGroupingNameWithCounter:a4];
+      v7 = [(CNVCardLine *)self makeGroupingNameWithCounter:counter];
       grouping = self->_grouping;
       self->_grouping = v7;
     }
@@ -83,23 +83,23 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)makeGroupingNameWithCounter:(int64_t *)a3
+- (id)makeGroupingNameWithCounter:(int64_t *)counter
 {
-  v3 = *a3 + 1;
-  *a3 = v3;
+  v3 = *counter + 1;
+  *counter = v3;
   return [MEMORY[0x277CCACA8] stringWithFormat:@"item%ld", v3];
 }
 
-- (BOOL)canSerializeWithStrategy:(id)a3
+- (BOOL)canSerializeWithStrategy:(id)strategy
 {
-  v4 = a3;
+  strategyCopy = strategy;
   value = self->_value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = self->_value;
   if (isKindOfClass)
   {
-    v8 = [v4 canSerializeString:self->_value];
+    v8 = [strategyCopy canSerializeString:self->_value];
   }
 
   else
@@ -109,7 +109,7 @@
     v10 = self->_value;
     if (v9)
     {
-      v8 = [v4 canSerializeArray:self->_value];
+      v8 = [strategyCopy canSerializeArray:self->_value];
     }
 
     else
@@ -121,7 +121,7 @@
         goto LABEL_8;
       }
 
-      v8 = [v4 canSerializeData:self->_value];
+      v8 = [strategyCopy canSerializeData:self->_value];
     }
   }
 
@@ -131,9 +131,9 @@ LABEL_8:
   return v11;
 }
 
-- (void)serializeValueWithStrategy:(id)a3
+- (void)serializeValueWithStrategy:(id)strategy
 {
-  v13 = a3;
+  strategyCopy = strategy;
   objc_opt_class();
   v4 = self->_value;
   if (objc_opt_isKindOfClass())
@@ -150,7 +150,7 @@ LABEL_8:
 
   if (v6)
   {
-    [v13 serializeString:v6];
+    [strategyCopy serializeString:v6];
   }
 
   else
@@ -171,8 +171,8 @@ LABEL_8:
 
     if (v9)
     {
-      v10 = [(CNVCardLine *)self itemSeparator];
-      [v13 serializeArray:v9 withItemSeparator:v10];
+      itemSeparator = [(CNVCardLine *)self itemSeparator];
+      [strategyCopy serializeArray:v9 withItemSeparator:itemSeparator];
     }
 
     else
@@ -189,11 +189,11 @@ LABEL_8:
         v12 = 0;
       }
 
-      v10 = v12;
+      itemSeparator = v12;
 
-      if (v10)
+      if (itemSeparator)
       {
-        [v13 serializeData:v10];
+        [strategyCopy serializeData:itemSeparator];
       }
     }
   }

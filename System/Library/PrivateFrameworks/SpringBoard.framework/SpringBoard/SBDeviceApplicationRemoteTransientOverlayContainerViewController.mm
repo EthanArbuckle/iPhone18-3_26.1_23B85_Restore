@@ -1,5 +1,5 @@
 @interface SBDeviceApplicationRemoteTransientOverlayContainerViewController
-- (SBDeviceApplicationRemoteTransientOverlayContainerViewController)initWithViewProvider:(id)a3;
+- (SBDeviceApplicationRemoteTransientOverlayContainerViewController)initWithViewProvider:(id)provider;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
@@ -8,16 +8,16 @@
 
 @implementation SBDeviceApplicationRemoteTransientOverlayContainerViewController
 
-- (SBDeviceApplicationRemoteTransientOverlayContainerViewController)initWithViewProvider:(id)a3
+- (SBDeviceApplicationRemoteTransientOverlayContainerViewController)initWithViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SBDeviceApplicationRemoteTransientOverlayContainerViewController;
   v5 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewProvider, v4);
+    objc_storeWeak(&v5->_viewProvider, providerCopy);
   }
 
   return v6;
@@ -26,25 +26,25 @@
 - (int64_t)preferredStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-  v3 = [WeakRetained preferredStatusBarStyle];
+  preferredStatusBarStyle = [WeakRetained preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-  v3 = [WeakRetained preferredInterfaceOrientationForPresentation];
+  preferredInterfaceOrientationForPresentation = [WeakRetained preferredInterfaceOrientationForPresentation];
 
-  return v3;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-  v3 = [WeakRetained supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [WeakRetained supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (void)viewWillLayoutSubviews
@@ -53,13 +53,13 @@
   v14.receiver = self;
   v14.super_class = SBDeviceApplicationRemoteTransientOverlayContainerViewController;
   [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self view];
+  view = [(SBDeviceApplicationRemoteTransientOverlayContainerViewController *)self view];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 subviews];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  subviews = [view subviews];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -71,17 +71,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        [v3 bounds];
+        [view bounds];
         [v9 setFrame:?];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);

@@ -1,25 +1,25 @@
 @interface CardDAVUpdateMeCardTaskGroup
-- (CardDAVUpdateMeCardTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4 homeURL:(id)a5 cardURL:(id)a6;
+- (CardDAVUpdateMeCardTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager homeURL:(id)l cardURL:(id)rL;
 - (NSString)description;
 - (id)_newPropPatchTask;
-- (void)propPatchTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
+- (void)propPatchTask:(id)task parsedResponses:(id)responses error:(id)error;
 - (void)startTaskGroup;
 @end
 
 @implementation CardDAVUpdateMeCardTaskGroup
 
-- (CardDAVUpdateMeCardTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4 homeURL:(id)a5 cardURL:(id)a6
+- (CardDAVUpdateMeCardTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager homeURL:(id)l cardURL:(id)rL
 {
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
   v16.receiver = self;
   v16.super_class = CardDAVUpdateMeCardTaskGroup;
-  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:a3 taskManager:a4];
+  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:provider taskManager:manager];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_homeURL, a5);
-    objc_storeStrong(&v14->_cardURL, a6);
+    objc_storeStrong(&v13->_homeURL, l);
+    objc_storeStrong(&v14->_cardURL, rL);
   }
 
   return v14;
@@ -49,27 +49,27 @@
 
 - (void)startTaskGroup
 {
-  v5 = [(CardDAVUpdateMeCardTaskGroup *)self _newPropPatchTask];
-  [v5 setDelegate:self];
+  _newPropPatchTask = [(CardDAVUpdateMeCardTaskGroup *)self _newPropPatchTask];
+  [_newPropPatchTask setDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
-  [v5 setAccountInfoProvider:WeakRetained];
+  [_newPropPatchTask setAccountInfoProvider:WeakRetained];
 
-  [v5 setTimeoutInterval:self->super._timeoutInterval];
-  [(NSMutableSet *)self->super._outstandingTasks addObject:v5];
+  [_newPropPatchTask setTimeoutInterval:self->super._timeoutInterval];
+  [(NSMutableSet *)self->super._outstandingTasks addObject:_newPropPatchTask];
   v4 = objc_loadWeakRetained(&self->super._taskManager);
-  [v4 submitQueuedCoreDAVTask:v5];
+  [v4 submitQueuedCoreDAVTask:_newPropPatchTask];
 }
 
-- (void)propPatchTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propPatchTask:(id)task parsedResponses:(id)responses error:(id)error
 {
-  v8 = a3;
-  v7 = a5;
-  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:v8])
+  taskCopy = task;
+  errorCopy = error;
+  if ([(NSMutableSet *)self->super._outstandingTasks containsObject:taskCopy])
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v8];
-    if (v7)
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+    if (errorCopy)
     {
-      [(CoreDAVTaskGroup *)self bailWithError:v7];
+      [(CoreDAVTaskGroup *)self bailWithError:errorCopy];
     }
 
     else

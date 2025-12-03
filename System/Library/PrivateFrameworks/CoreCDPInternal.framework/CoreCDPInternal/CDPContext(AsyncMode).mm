@@ -7,11 +7,11 @@
 - (uint64_t)disableAsyncModeRequested
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (([MEMORY[0x277CFD4A8] isSubsetOfContextTypeRepair:{objc_msgSend(a1, "type")}] & 1) == 0 && objc_msgSend(a1, "type") != 3 && objc_msgSend(a1, "type") != 4 && objc_msgSend(a1, "type") != 5 && objc_msgSend(a1, "type") != 6 && objc_msgSend(a1, "type") != 7 && objc_msgSend(a1, "type") != 8)
+  if (([MEMORY[0x277CFD4A8] isSubsetOfContextTypeRepair:{objc_msgSend(self, "type")}] & 1) == 0 && objc_msgSend(self, "type") != 3 && objc_msgSend(self, "type") != 4 && objc_msgSend(self, "type") != 5 && objc_msgSend(self, "type") != 6 && objc_msgSend(self, "type") != 7 && objc_msgSend(self, "type") != 8)
   {
-    if ([a1 isLocalSecretCached])
+    if ([self isLocalSecretCached])
     {
-      if ([a1 _disableAsyncSecureBackupEnrollment])
+      if ([self _disableAsyncSecureBackupEnrollment])
       {
         v2 = _CDPLogSystem();
         if (!os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -63,7 +63,7 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [a1 type];
+    type = [self type];
     v3 = "Disabling async secure backup enrollment for CDPContextType: %ld";
     v4 = v2;
     v5 = 12;

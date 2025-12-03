@@ -1,16 +1,16 @@
 @interface ADAdaptiveCorrectionDualCameraCalibrationModel
 - (CGPoint)opticalCenterAux;
 - (CGPoint)opticalCenterRef;
-- (__n128)setRefToAuxExtrinsic:(__n128)a3;
-- (int64_t)computeStereoRectificationHomographiesMappingRectTeleToTele:(id *)a3 rectTeleToWide:(id *)a4 teleToRectTele:(id *)a5;
+- (__n128)setRefToAuxExtrinsic:(__n128)extrinsic;
+- (int64_t)computeStereoRectificationHomographiesMappingRectTeleToTele:(id *)tele rectTeleToWide:(id *)wide teleToRectTele:(id *)rectTele;
 @end
 
 @implementation ADAdaptiveCorrectionDualCameraCalibrationModel
 
-- (__n128)setRefToAuxExtrinsic:(__n128)a3
+- (__n128)setRefToAuxExtrinsic:(__n128)extrinsic
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = extrinsic;
   result[5] = a4;
   result[6] = a5;
   return result;
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (int64_t)computeStereoRectificationHomographiesMappingRectTeleToTele:(id *)a3 rectTeleToWide:(id *)a4 teleToRectTele:(id *)a5
+- (int64_t)computeStereoRectificationHomographiesMappingRectTeleToTele:(id *)tele rectTeleToWide:(id *)wide teleToRectTele:(id *)rectTele
 {
-  if (a3 && a4 && a5)
+  if (tele && wide && rectTele)
   {
     x = self->_opticalCenterRef.x;
     *buf = vcvtq_f64_f32(*&self->_focalLengthPixRef);
@@ -57,7 +57,7 @@
     v12 = vextq_s8(v11, v11, 8uLL);
     v27 = vcvtq_f64_f32(*v6.i8);
     v28 = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(opticalCenterAux, opticalCenterAux, 8uLL), *v12.f32));
-    v13 = AdaptiveCorrection_computeStereoRectificationHomographies(buf, a3, a4, a5, v27, v28.f64[0], v12);
+    v13 = AdaptiveCorrection_computeStereoRectificationHomographies(buf, tele, wide, rectTele, v27, v28.f64[0], v12);
     result = [ADUtils ADReturnFromOSStatus:v14, v13];
     if (result)
     {

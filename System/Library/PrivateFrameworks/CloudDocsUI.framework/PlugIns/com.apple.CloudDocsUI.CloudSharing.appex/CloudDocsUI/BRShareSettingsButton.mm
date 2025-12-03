@@ -1,15 +1,15 @@
 @interface BRShareSettingsButton
-- (BRShareSettingsButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (BRShareSettingsButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation BRShareSettingsButton
 
-- (BRShareSettingsButton)initWithFrame:(CGRect)a3
+- (BRShareSettingsButton)initWithFrame:(CGRect)frame
 {
   v60.receiver = self;
   v60.super_class = BRShareSettingsButton;
-  v3 = [(BRShareSettingsButton *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BRShareSettingsButton *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {
@@ -26,14 +26,14 @@
     [v7 setUserInteractionEnabled:0];
     [v7 setLayoutMarginsRelativeArrangement:1];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(BRShareSettingsButton *)v5 topAnchor];
-    v9 = [v7 topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [(BRShareSettingsButton *)v5 topAnchor];
+    topAnchor2 = [v7 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v59 addObject:v10];
 
-    v11 = [(BRShareSettingsButton *)v5 bottomAnchor];
-    v12 = [v7 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [(BRShareSettingsButton *)v5 bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v59 addObject:v13];
 
     [(BRShareSettingsButton *)v5 addSubview:v7];
@@ -53,18 +53,18 @@
     [v7 addArrangedSubview:v56];
     v16 = objc_alloc_init(BRShareSettingsSeparator);
     [(BRShareSettingsButton *)v5 addSubview:v16];
-    v55 = [(BRShareSettingsButton *)v5 leadingAnchor];
-    v17 = [(BRShareSettingsSeparator *)v16 leadingAnchor];
-    v18 = [v55 constraintEqualToAnchor:v17];
+    leadingAnchor = [(BRShareSettingsButton *)v5 leadingAnchor];
+    leadingAnchor2 = [(BRShareSettingsSeparator *)v16 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v61[0] = v18;
-    v19 = [(BRShareSettingsButton *)v5 trailingAnchor];
+    trailingAnchor = [(BRShareSettingsButton *)v5 trailingAnchor];
     v57 = v16;
-    v20 = [(BRShareSettingsSeparator *)v16 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor2 = [(BRShareSettingsSeparator *)v16 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v61[1] = v21;
-    v22 = [(BRShareSettingsButton *)v5 bottomAnchor];
-    v23 = [(BRShareSettingsSeparator *)v16 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor3 = [(BRShareSettingsButton *)v5 bottomAnchor];
+    bottomAnchor4 = [(BRShareSettingsSeparator *)v16 bottomAnchor];
+    v24 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v61[2] = v24;
     v25 = [NSArray arrayWithObjects:v61 count:3];
     [NSLayoutConstraint activateConstraints:v25];
@@ -142,13 +142,13 @@
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = BRShareSettingsButton;
   [(BRShareSettingsButton *)&v6 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     +[UIColor secondarySystemBackgroundColor];
   }

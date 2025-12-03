@@ -7,9 +7,9 @@
 + (id)fetchVoiceTriggerHeartBeatMetrics
 {
   v2 = +[CSVoiceTriggerXPCService sharedService];
-  v3 = [v2 fetchVoiceTriggerDailyStats];
+  fetchVoiceTriggerDailyStats = [v2 fetchVoiceTriggerDailyStats];
 
-  return v3;
+  return fetchVoiceTriggerDailyStats;
 }
 
 @end

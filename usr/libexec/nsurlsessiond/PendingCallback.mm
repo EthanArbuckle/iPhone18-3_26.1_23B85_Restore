@@ -1,28 +1,28 @@
 @interface PendingCallback
-- (PendingCallback)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PendingCallback)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PendingCallback
 
-- (PendingCallback)initWithCoder:(id)a3
+- (PendingCallback)initWithCoder:(id)coder
 {
-  v4 = a3;
-  -[PendingCallback setType:](self, "setType:", [v4 decodeIntegerForKey:@"type"]);
-  -[PendingCallback setTaskIdentifier:](self, "setTaskIdentifier:", [v4 decodeIntegerForKey:@"taskIdentifier"]);
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"args"];
+  coderCopy = coder;
+  -[PendingCallback setType:](self, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+  -[PendingCallback setTaskIdentifier:](self, "setTaskIdentifier:", [coderCopy decodeIntegerForKey:@"taskIdentifier"]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"args"];
   [(PendingCallback *)self setArgs:v5];
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[PendingCallback type](self forKey:{"type"), @"type"}];
-  [v5 encodeInteger:-[PendingCallback taskIdentifier](self forKey:{"taskIdentifier"), @"taskIdentifier"}];
-  v4 = [(PendingCallback *)self args];
-  [v5 encodeObject:v4 forKey:@"args"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PendingCallback type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[PendingCallback taskIdentifier](self forKey:{"taskIdentifier"), @"taskIdentifier"}];
+  args = [(PendingCallback *)self args];
+  [coderCopy encodeObject:args forKey:@"args"];
 }
 
 @end

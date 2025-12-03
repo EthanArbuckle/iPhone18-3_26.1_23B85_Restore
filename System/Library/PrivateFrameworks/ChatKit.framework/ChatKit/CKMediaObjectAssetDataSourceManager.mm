@@ -1,24 +1,24 @@
 @interface CKMediaObjectAssetDataSourceManager
-- ($DE30A600513D762F9B6AB73D2AED4B95)_additionalCountInMomentShare:(id)a3 representedCounts:(id *)a4;
+- ($DE30A600513D762F9B6AB73D2AED4B95)_additionalCountInMomentShare:(id)share representedCounts:(id *)counts;
 - ($DE30A600513D762F9B6AB73D2AED4B95)additionalItemsCount;
-- (CKMediaObjectAssetDataSourceManager)initWithDataSource:(id)a3;
-- (id)_changeDetailsForDataSource:(id)a3 oldDataSource:(id)a4;
-- (void)_handleMomentShareCacheDidChange:(id)a3;
-- (void)_handlePreviewDidChangeNotification:(id)a3;
-- (void)_mq_handlePreviewDidChangeNotification:(id)a3;
-- (void)_setAdditionalItemsCount:(id)a3;
+- (CKMediaObjectAssetDataSourceManager)initWithDataSource:(id)source;
+- (id)_changeDetailsForDataSource:(id)source oldDataSource:(id)dataSource;
+- (void)_handleMomentShareCacheDidChange:(id)change;
+- (void)_handlePreviewDidChangeNotification:(id)notification;
+- (void)_mq_handlePreviewDidChangeNotification:(id)notification;
+- (void)_setAdditionalItemsCount:(id)count;
 - (void)_updateAdditionalItemsCount;
 - (void)_updateMomentShare;
-- (void)setMediaObjectDataSource:(id)a3 withChangeDetails:(id)a4;
-- (void)setMomentShare:(id)a3;
-- (void)setMomentShareURL:(id)a3;
+- (void)setMediaObjectDataSource:(id)source withChangeDetails:(id)details;
+- (void)setMomentShare:(id)share;
+- (void)setMomentShareURL:(id)l;
 @end
 
 @implementation CKMediaObjectAssetDataSourceManager
 
-- (CKMediaObjectAssetDataSourceManager)initWithDataSource:(id)a3
+- (CKMediaObjectAssetDataSourceManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = CKMediaObjectAssetDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v12 init];
@@ -26,52 +26,52 @@
   if (v6)
   {
     v6->_additionalItemsCount = *MEMORY[0x1E69C4890];
-    objc_storeStrong(&v6->_mediaObjectDataSource, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handlePreviewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
+    objc_storeStrong(&v6->_mediaObjectDataSource, source);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handlePreviewDidChangeNotification_ name:@"CKPreviewDidChangeNotification" object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v7 selector:sel__handleMomentShareCacheDidChange_ name:*MEMORY[0x1E69A59C8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleMomentShareCacheDidChange_ name:*MEMORY[0x1E69A59C8] object:0];
 
-    v10 = [(CKMediaObjectAssetDataSource *)v7->_mediaObjectDataSource momentShareURL];
-    [(CKMediaObjectAssetDataSourceManager *)v7 setMomentShareURL:v10];
+    momentShareURL = [(CKMediaObjectAssetDataSource *)v7->_mediaObjectDataSource momentShareURL];
+    [(CKMediaObjectAssetDataSourceManager *)v7 setMomentShareURL:momentShareURL];
   }
 
   return v7;
 }
 
-- (void)setMediaObjectDataSource:(id)a3 withChangeDetails:(id)a4
+- (void)setMediaObjectDataSource:(id)source withChangeDetails:(id)details
 {
-  v11 = a3;
-  v7 = a4;
-  if (([(CKMediaObjectAssetDataSource *)self->_mediaObjectDataSource isEqual:v11]& 1) == 0)
+  sourceCopy = source;
+  detailsCopy = details;
+  if (([(CKMediaObjectAssetDataSource *)self->_mediaObjectDataSource isEqual:sourceCopy]& 1) == 0)
   {
-    if (v7)
+    if (detailsCopy)
     {
-      v8 = v7;
+      v8 = detailsCopy;
     }
 
     else
     {
-      v8 = [(CKMediaObjectAssetDataSourceManager *)self _changeDetailsForDataSource:v11 oldDataSource:self->_mediaObjectDataSource];
+      v8 = [(CKMediaObjectAssetDataSourceManager *)self _changeDetailsForDataSource:sourceCopy oldDataSource:self->_mediaObjectDataSource];
     }
 
     v9 = v8;
-    objc_storeStrong(&self->_mediaObjectDataSource, a3);
+    objc_storeStrong(&self->_mediaObjectDataSource, source);
     [(PXSectionedDataSourceManager *)self setDataSource:self->_mediaObjectDataSource changeDetails:v9];
-    v10 = [(CKMediaObjectAssetDataSource *)self->_mediaObjectDataSource momentShareURL];
-    [(CKMediaObjectAssetDataSourceManager *)self setMomentShareURL:v10];
+    momentShareURL = [(CKMediaObjectAssetDataSource *)self->_mediaObjectDataSource momentShareURL];
+    [(CKMediaObjectAssetDataSourceManager *)self setMomentShareURL:momentShareURL];
   }
 }
 
-- (id)_changeDetailsForDataSource:(id)a3 oldDataSource:(id)a4
+- (id)_changeDetailsForDataSource:(id)source oldDataSource:(id)dataSource
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  v7 = dataSourceCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (sourceCopy && dataSourceCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -79,7 +79,7 @@
     v27 = __Block_byref_object_copy__57;
     v28 = __Block_byref_object_dispose__57;
     v29 = objc_opt_new();
-    v9 = [v5 chatItems];
+    chatItems = [sourceCopy chatItems];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_oldDataSource___block_invoke;
@@ -87,21 +87,21 @@
     v10 = v7;
     v22 = v10;
     v23 = &v24;
-    [v9 enumerateObjectsUsingBlock:v21];
+    [chatItems enumerateObjectsUsingBlock:v21];
 
     v11 = MEMORY[0x1E69C4478];
-    v12 = [v10 chatItems];
-    v13 = [v5 chatItems];
-    v14 = [v11 changeDetailsFromArray:v12 toArray:v13 changedObjects:v25[5] objectComparator:&__block_literal_global_218];
+    chatItems2 = [v10 chatItems];
+    chatItems3 = [sourceCopy chatItems];
+    v14 = [v11 changeDetailsFromArray:chatItems2 toArray:chatItems3 changedObjects:v25[5] objectComparator:&__block_literal_global_218];
 
     v15 = objc_alloc(MEMORY[0x1E69C45B8]);
-    v16 = [v10 identifier];
-    v17 = [v5 identifier];
-    v18 = [MEMORY[0x1E69C4478] changeDetailsWithNoChanges];
+    identifier = [v10 identifier];
+    identifier2 = [sourceCopy identifier];
+    changeDetailsWithNoChanges = [MEMORY[0x1E69C4478] changeDetailsWithNoChanges];
     v30 = &unk_1F04E8298;
     v31[0] = v14;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-    v8 = [v15 initWithFromDataSourceIdentifier:v16 toDataSourceIdentifier:v17 sectionChanges:v18 itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
+    v8 = [v15 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v19 subitemChangeDetailsByItemBySection:0];
 
     _Block_object_dispose(&v24, 8);
   }
@@ -172,41 +172,41 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
   return v9;
 }
 
-- (void)setMomentShare:(id)a3
+- (void)setMomentShare:(id)share
 {
-  v5 = a3;
-  if (self->_momentShare != v5)
+  shareCopy = share;
+  if (self->_momentShare != shareCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_momentShare, a3);
+    v6 = shareCopy;
+    objc_storeStrong(&self->_momentShare, share);
     [(CKMediaObjectAssetDataSourceManager *)self _updateAdditionalItemsCount];
-    v5 = v6;
+    shareCopy = v6;
   }
 }
 
-- (void)setMomentShareURL:(id)a3
+- (void)setMomentShareURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   momentShareURL = self->_momentShareURL;
-  if (momentShareURL != v5)
+  if (momentShareURL != lCopy)
   {
-    v8 = v5;
-    v7 = [(NSURL *)momentShareURL isEqual:v5];
-    v5 = v8;
+    v8 = lCopy;
+    v7 = [(NSURL *)momentShareURL isEqual:lCopy];
+    lCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_momentShareURL, a3);
+      objc_storeStrong(&self->_momentShareURL, l);
       [(CKMediaObjectAssetDataSourceManager *)self _updateMomentShare];
-      v5 = v8;
+      lCopy = v8;
     }
   }
 }
 
-- (void)_setAdditionalItemsCount:(id)a3
+- (void)_setAdditionalItemsCount:(id)count
 {
-  if (self->_additionalItemsCount.count != a3.var0 || self->_additionalItemsCount.type != a3.var1)
+  if (self->_additionalItemsCount.count != count.var0 || self->_additionalItemsCount.type != count.var1)
   {
-    self->_additionalItemsCount = a3;
+    self->_additionalItemsCount = count;
     [(CKMediaObjectAssetDataSourceManager *)self signalChange:2];
   }
 }
@@ -215,22 +215,22 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19020E000, a2, OS_LOG_TYPE_ERROR, "nil response fetching moment share for URL: %@", &v2, 0xCu);
 }
 
 - (void)_updateAdditionalItemsCount
 {
-  v3 = [(CKMediaObjectAssetDataSourceManager *)self momentShare];
-  if (v3)
+  momentShare = [(CKMediaObjectAssetDataSourceManager *)self momentShare];
+  if (momentShare)
   {
     v11 = 0uLL;
     v12 = 0;
-    v4 = [(CKMediaObjectAssetDataSourceManager *)self mediaObjectDataSource];
-    v5 = v4;
-    if (v4)
+    mediaObjectDataSource = [(CKMediaObjectAssetDataSourceManager *)self mediaObjectDataSource];
+    v5 = mediaObjectDataSource;
+    if (mediaObjectDataSource)
     {
-      [v4 assetTypeCounts];
+      [mediaObjectDataSource assetTypeCounts];
     }
 
     else
@@ -241,7 +241,7 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
 
     v9 = v11;
     v10 = v12;
-    v6 = [(CKMediaObjectAssetDataSourceManager *)self _additionalCountInMomentShare:v3 representedCounts:&v9];
+    v6 = [(CKMediaObjectAssetDataSourceManager *)self _additionalCountInMomentShare:momentShare representedCounts:&v9];
   }
 
   else
@@ -260,21 +260,21 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
   [(CKMediaObjectAssetDataSourceManager *)self performChanges:v8];
 }
 
-- ($DE30A600513D762F9B6AB73D2AED4B95)_additionalCountInMomentShare:(id)a3 representedCounts:(id *)a4
+- ($DE30A600513D762F9B6AB73D2AED4B95)_additionalCountInMomentShare:(id)share representedCounts:(id *)counts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 photosCount];
-  v7 = [v5 videosCount];
-  v8 = [v5 assetCount];
+  shareCopy = share;
+  photosCount = [shareCopy photosCount];
+  videosCount = [shareCopy videosCount];
+  assetCount = [shareCopy assetCount];
 
-  v9 = v8 - (v7 + v6);
-  v10 = v6 - a4->var0;
-  if (v6 >= a4->var0 && (v11 = a4->var1, v12 = v7 >= v11, v13 = v7 - v11, v12) && (v14 = a4->var2, v12 = v9 >= v14, v15 = v9 - v14, v12))
+  v9 = assetCount - (videosCount + photosCount);
+  v10 = photosCount - counts->var0;
+  if (photosCount >= counts->var0 && (v11 = counts->var1, v12 = videosCount >= v11, v13 = videosCount - v11, v12) && (v14 = counts->var2, v12 = v9 >= v14, v15 = v9 - v14, v12))
   {
     if (v13 > 0)
     {
-      v19 = v6 == a4->var0;
+      v19 = photosCount == counts->var0;
       v20 = v10 < 0;
     }
 
@@ -314,7 +314,7 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
 
       else
       {
-        v17 = v6 - a4->var0;
+        v17 = photosCount - counts->var0;
       }
     }
 
@@ -330,15 +330,15 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
     v16 = IMLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      var0 = a4->var0;
-      var1 = a4->var1;
-      var2 = a4->var2;
+      var0 = counts->var0;
+      var1 = counts->var1;
+      var2 = counts->var2;
       v25 = 134219264;
-      v26 = v6;
+      v26 = photosCount;
       v27 = 2048;
       v28 = var0;
       v29 = 2048;
-      v30 = v7;
+      v30 = videosCount;
       v31 = 2048;
       v32 = var1;
       v33 = 2048;
@@ -357,29 +357,29 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
   return result;
 }
 
-- (void)_handleMomentShareCacheDidChange:(id)a3
+- (void)_handleMomentShareCacheDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(CKMediaObjectAssetDataSourceManager *)self momentShareURL];
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  momentShareURL = [(CKMediaObjectAssetDataSourceManager *)self momentShareURL];
+  v5 = momentShareURL;
+  if (momentShareURL)
   {
-    v6 = [v4 absoluteString];
-    v7 = [v9 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A59D0]];
-    if ([v8 containsObject:v6])
+    absoluteString = [momentShareURL absoluteString];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A59D0]];
+    if ([v8 containsObject:absoluteString])
     {
       [(CKMediaObjectAssetDataSourceManager *)self _updateMomentShare];
     }
   }
 }
 
-- (void)_handlePreviewDidChangeNotification:(id)a3
+- (void)_handlePreviewDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    [(CKMediaObjectAssetDataSourceManager *)self _mq_handlePreviewDidChangeNotification:v4];
+    [(CKMediaObjectAssetDataSourceManager *)self _mq_handlePreviewDidChangeNotification:notificationCopy];
   }
 
   else
@@ -389,62 +389,62 @@ uint64_t __81__CKMediaObjectAssetDataSourceManager__changeDetailsForDataSource_o
     v5[2] = __75__CKMediaObjectAssetDataSourceManager__handlePreviewDidChangeNotification___block_invoke;
     v5[3] = &unk_1E72EB8D0;
     v5[4] = self;
-    v6 = v4;
+    v6 = notificationCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)_mq_handlePreviewDidChangeNotification:(id)a3
+- (void)_mq_handlePreviewDidChangeNotification:(id)notification
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetDataSourceManager *)self mediaObjectDataSource];
-  if (v5)
+  notificationCopy = notification;
+  mediaObjectDataSource = [(CKMediaObjectAssetDataSourceManager *)self mediaObjectDataSource];
+  if (mediaObjectDataSource)
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 isAutoloopVideo];
+      isAutoloopVideo = [object isAutoloopVideo];
     }
 
     else
     {
-      v7 = 0;
+      isAutoloopVideo = 0;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ((([v6 isMonoskiAsset] | v7) & 1) == 0)
+      if ((([object isMonoskiAsset] | isAutoloopVideo) & 1) == 0)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v7)
+    else if (!isAutoloopVideo)
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v8 = [v5 mediaObjects];
-    v9 = [v8 indexOfObject:v6];
+    mediaObjects = [mediaObjectDataSource mediaObjects];
+    v9 = [mediaObjects indexOfObject:object];
 
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = [MEMORY[0x1E696AC90] indexSetWithIndex:v9];
-      v11 = [v5 copyRefreshingAssetsAtIndexes:v10];
+      v11 = [mediaObjectDataSource copyRefreshingAssetsAtIndexes:v10];
       v18 = objc_alloc(MEMORY[0x1E69C45B8]);
-      v17 = [v5 identifier];
-      v12 = [v11 identifier];
-      v13 = [MEMORY[0x1E69C4478] changeDetailsWithNoChanges];
+      identifier = [mediaObjectDataSource identifier];
+      identifier2 = [v11 identifier];
+      changeDetailsWithNoChanges = [MEMORY[0x1E69C4478] changeDetailsWithNoChanges];
       v19 = &unk_1F04E8298;
       v14 = [MEMORY[0x1E69C4478] changeDetailsWithChangedIndexes:v10];
       v20[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      v16 = [v18 initWithFromDataSourceIdentifier:v17 toDataSourceIdentifier:v12 sectionChanges:v13 itemChangeDetailsBySection:v15 subitemChangeDetailsByItemBySection:0];
+      v16 = [v18 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v15 subitemChangeDetailsByItemBySection:0];
 
       [(CKMediaObjectAssetDataSourceManager *)self setMediaObjectDataSource:v11 withChangeDetails:v16];
     }

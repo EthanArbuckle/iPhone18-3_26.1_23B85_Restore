@@ -1,10 +1,10 @@
 @interface AppLaunchCounter
-- (id)enrichMessage:(id)a3 messageName:(id)a4;
+- (id)enrichMessage:(id)message messageName:(id)name;
 @end
 
 @implementation AppLaunchCounter
 
-- (id)enrichMessage:(id)a3 messageName:(id)a4
+- (id)enrichMessage:(id)message messageName:(id)name
 {
   v4 = sub_231CA7C68();
   sub_231CA7CC8();

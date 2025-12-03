@@ -3,30 +3,30 @@
 - (UIContextMenuInteraction)contextMenuInteraction;
 - (UITextSelectionDisplayInteraction)textSelectionDisplayInteraction;
 - (UIView)selectionHighlightView;
-- (WKTextInteractionWrapper)initWithView:(id)a3;
+- (WKTextInteractionWrapper)initWithView:(id)view;
 - (id).cxx_construct;
 - (void)activateSelection;
 - (void)deactivateSelection;
 - (void)dealloc;
 - (void)didEndScrollingOrZooming;
-- (void)lookup:(id)a3 withRange:(_NSRange)a4 fromRect:(CGRect)a5;
-- (void)prepareToMoveSelectionContainer:(id)a3;
-- (void)scheduleChineseTransliterationForText:(id)a3;
-- (void)scheduleReplacementsForText:(id)a3;
+- (void)lookup:(id)lookup withRange:(_NSRange)range fromRect:(CGRect)rect;
+- (void)prepareToMoveSelectionContainer:(id)container;
+- (void)scheduleChineseTransliterationForText:(id)text;
+- (void)scheduleReplacementsForText:(id)text;
 - (void)selectionChanged;
-- (void)selectionChangedWithGestureAt:(CGPoint)a3 withGesture:(int64_t)a4 withState:(int64_t)a5 withFlags:(unint64_t)a6;
-- (void)selectionChangedWithTouchAt:(CGPoint)a3 withSelectionTouch:(int64_t)a4 withFlags:(unint64_t)a5;
-- (void)setExternalContextMenuInteractionDelegate:(id)a3;
+- (void)selectionChangedWithGestureAt:(CGPoint)at withGesture:(int64_t)gesture withState:(int64_t)state withFlags:(unint64_t)flags;
+- (void)selectionChangedWithTouchAt:(CGPoint)at withSelectionTouch:(int64_t)touch withFlags:(unint64_t)flags;
+- (void)setExternalContextMenuInteractionDelegate:(id)delegate;
 - (void)setGestureRecognizers;
 - (void)setNeedsSelectionUpdate;
 - (void)showEditMenuTimerFired;
-- (void)showShareSheetFor:(id)a3 fromRect:(CGRect)a4;
-- (void)showTextServiceFor:(id)a3 fromRect:(CGRect)a4;
+- (void)showShareSheetFor:(id)for fromRect:(CGRect)rect;
+- (void)showTextServiceFor:(id)for fromRect:(CGRect)rect;
 - (void)stopShowEditMenuTimer;
-- (void)translate:(id)a3 fromRect:(CGRect)a4;
+- (void)translate:(id)translate fromRect:(CGRect)rect;
 - (void)willBeginDragLift;
 - (void)willStartScrollingOrZooming;
-- (void)willStartScrollingOverflow:(id)a3;
+- (void)willStartScrollingOverflow:(id)overflow;
 @end
 
 @implementation WKTextInteractionWrapper
@@ -64,7 +64,7 @@
   }
 }
 
-- (WKTextInteractionWrapper)initWithView:(id)a3
+- (WKTextInteractionWrapper)initWithView:(id)view
 {
   v11.receiver = self;
   v11.super_class = WKTextInteractionWrapper;
@@ -72,8 +72,8 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_view, a3);
-    if ([a3 shouldUseAsyncInteractions])
+    objc_storeWeak(&v4->_view, view);
+    if ([view shouldUseAsyncInteractions])
     {
       v6 = objc_alloc_init(MEMORY[0x1E695AAA0]);
       m_ptr = v5->_asyncTextInteraction.m_ptr;
@@ -84,13 +84,13 @@
         v6 = v5->_asyncTextInteraction.m_ptr;
       }
 
-      [(BETextInteraction *)v6 setDelegate:a3];
-      [a3 addInteraction:v5->_asyncTextInteraction.m_ptr];
+      [(BETextInteraction *)v6 setDelegate:view];
+      [view addInteraction:v5->_asyncTextInteraction.m_ptr];
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E69DD2B0]) initWithView:a3];
+      v8 = [objc_alloc(MEMORY[0x1E69DD2B0]) initWithView:view];
       v9 = v5->_textInteractionAssistant.m_ptr;
       v5->_textInteractionAssistant.m_ptr = v8;
       if (v9)
@@ -118,8 +118,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [objc_loadWeak(&self->_view) interactions];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    interactions = [objc_loadWeak(&self->_view) interactions];
+    v5 = [interactions countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = *v11;
@@ -130,7 +130,7 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(interactions);
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
@@ -149,7 +149,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [interactions countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -246,39 +246,39 @@
 
 - (UIView)selectionHighlightView
 {
-  v2 = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
+  textSelectionDisplayInteraction = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
 
-  return [(UITextSelectionDisplayInteraction *)v2 highlightView];
+  return [(UITextSelectionDisplayInteraction *)textSelectionDisplayInteraction highlightView];
 }
 
-- (void)prepareToMoveSelectionContainer:(id)a3
+- (void)prepareToMoveSelectionContainer:(id)container
 {
   v116 = *MEMORY[0x1E69E9840];
-  v5 = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
-  v6 = v5;
-  if (v5)
+  textSelectionDisplayInteraction = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
+  v6 = textSelectionDisplayInteraction;
+  if (textSelectionDisplayInteraction)
   {
-    v7 = v5;
+    v7 = textSelectionDisplayInteraction;
   }
 
   v71 = v6;
-  v8 = [(UITextSelectionDisplayInteraction *)v6 highlightView];
-  v9 = v8;
-  if (v8)
+  highlightView = [(UITextSelectionDisplayInteraction *)v6 highlightView];
+  v9 = highlightView;
+  if (highlightView)
   {
-    v10 = v8;
+    v10 = highlightView;
   }
 
   v70 = v9;
-  if ([(UIView *)v9 superview]!= a3)
+  if ([(UIView *)v9 superview]!= container)
   {
     v11 = [MEMORY[0x1E695DFA8] set];
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v12 = [a3 subviews];
-    v13 = [v12 countByEnumeratingWithState:&v108 objects:v115 count:16];
+    subviews = [container subviews];
+    v13 = [subviews countByEnumeratingWithState:&v108 objects:v115 count:16];
     if (v13)
     {
       v14 = *v109;
@@ -288,13 +288,13 @@
         {
           if (*v109 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subviews);
           }
 
           [v11 addObject:*(*(&v108 + 1) + 8 * i)];
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v108 objects:v115 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v108 objects:v115 count:16];
       }
 
       while (v13);
@@ -337,12 +337,12 @@
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v22 = [a3 subviews];
-    v23 = [v22 countByEnumeratingWithState:&v104 objects:v114 count:16];
+    subviews2 = [container subviews];
+    v23 = [subviews2 countByEnumeratingWithState:&v104 objects:v114 count:16];
     if (v23)
     {
       v24 = *v105;
-      obj = v22;
+      obj = subviews2;
       while (2)
       {
         for (j = 0; j != v23; ++j)
@@ -425,16 +425,16 @@
     }
   }
 
-  if (objc_loadWeak(&self->_view) == a3)
+  if (objc_loadWeak(&self->_view) == container)
   {
     goto LABEL_108;
   }
 
-  v34 = [objc_loadWeak(&self->_view) allViewsIntersectingSelectionRange];
-  v35 = v34;
-  if (v34)
+  allViewsIntersectingSelectionRange = [objc_loadWeak(&self->_view) allViewsIntersectingSelectionRange];
+  v35 = allViewsIntersectingSelectionRange;
+  if (allViewsIntersectingSelectionRange)
   {
-    v36 = v34;
+    v36 = allViewsIntersectingSelectionRange;
   }
 
   v37 = objc_opt_new();
@@ -456,22 +456,22 @@
         }
 
         v41 = *(*(&v100 + 1) + 8 * k);
-        if (v41 != a3 && v41 != 0)
+        if (v41 != container && v41 != 0)
         {
           v43 = v41;
           v44 = v41;
           if (v41 != objc_loadWeak(&self->_view))
           {
-            while ([v41 superview] != a3)
+            while ([v41 superview] != container)
             {
-              v45 = [v41 superview];
-              v44 = v45;
-              if (!v45)
+              superview = [v41 superview];
+              v44 = superview;
+              if (!superview)
               {
                 goto LABEL_59;
               }
 
-              v46 = v45;
+              v46 = superview;
 
               v41 = v44;
               if (v44 == objc_loadWeak(&self->_view))
@@ -496,11 +496,11 @@ LABEL_60:
     while (v38);
   }
 
-  v48 = [objc_loadWeak(&self->_view) page];
-  v49 = v48;
-  if (v48)
+  page = [objc_loadWeak(&self->_view) page];
+  v49 = page;
+  if (page)
   {
-    v48 = CFRetain(v48[1]);
+    page = CFRetain(page[1]);
     v50 = v49[4];
     if ((v50[800] & 1) == 0)
     {
@@ -533,7 +533,7 @@ LABEL_115:
   v90 = 0;
   v88 = __Block_byref_object_dispose__7;
   v91 = 1;
-  WebCore::TileController::tileGridContainerLayerName(&v82, v48);
+  WebCore::TileController::tileGridContainerLayerName(&v82, page);
   v52 = v82;
   if (v82)
   {
@@ -558,7 +558,7 @@ LABEL_115:
     WTF::StringImpl::destroy(v55, v53);
   }
 
-  v56 = [a3 subviews];
+  subviews3 = [container subviews];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3321888768;
   v77[2] = __60__WKTextInteractionWrapper_prepareToMoveSelectionContainer___block_invoke;
@@ -584,7 +584,7 @@ LABEL_115:
 
   v81 = v51 & 1;
   v77[5] = &v84;
-  [v56 enumerateObjectsUsingBlock:v77];
+  [subviews3 enumerateObjectsUsingBlock:v77];
   v60 = *(v85 + 56);
   if (v60 == 1 && *(v93 + 56))
   {
@@ -598,8 +598,8 @@ LABEL_84:
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v61 = [(NSArray *)[(WKTextInteractionWrapper *)self managedTextSelectionViews] reverseObjectEnumerator];
-    v62 = [(NSEnumerator *)v61 countByEnumeratingWithState:&v73 objects:v112 count:16];
+    reverseObjectEnumerator = [(NSArray *)[(WKTextInteractionWrapper *)self managedTextSelectionViews] reverseObjectEnumerator];
+    v62 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v73 objects:v112 count:16];
     if (v62)
     {
       v63 = *v74;
@@ -609,22 +609,22 @@ LABEL_84:
         {
           if (*v74 != v63)
           {
-            objc_enumerationMutation(v61);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v65 = *(*(&v73 + 1) + 8 * m);
-          if ([v65 superview] == a3)
+          if ([v65 superview] == container)
           {
             if ((v85[7] & 1) == 0)
             {
               goto LABEL_115;
             }
 
-            [a3 insertSubview:v65 atIndex:v85[6]];
+            [container insertSubview:v65 atIndex:v85[6]];
           }
         }
 
-        v62 = [(NSEnumerator *)v61 countByEnumeratingWithState:&v73 objects:v112 count:16];
+        v62 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v73 objects:v112 count:16];
       }
 
       while (v62);
@@ -713,16 +713,16 @@ LABEL_6:
 
 - (void)setNeedsSelectionUpdate
 {
-  v2 = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
+  textSelectionDisplayInteraction = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
 
-  [(UITextSelectionDisplayInteraction *)v2 setNeedsSelectionUpdate];
+  [(UITextSelectionDisplayInteraction *)textSelectionDisplayInteraction setNeedsSelectionUpdate];
 }
 
 - (void)activateSelection
 {
-  v2 = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
+  textSelectionDisplayInteraction = [(WKTextInteractionWrapper *)self textSelectionDisplayInteraction];
 
-  [(UITextSelectionDisplayInteraction *)v2 setActivated:1];
+  [(UITextSelectionDisplayInteraction *)textSelectionDisplayInteraction setActivated:1];
 }
 
 - (void)deactivateSelection
@@ -777,12 +777,12 @@ LABEL_6:
   }
 }
 
-- (void)willStartScrollingOverflow:(id)a3
+- (void)willStartScrollingOverflow:(id)overflow
 {
   p_hideEditMenuScope = &self->_hideEditMenuScope;
   if (!self->_hideEditMenuScope.__ptr_)
   {
-    v5 = [objc_loadWeak(&self->_view) _shouldHideSelectionDuringOverflowScroll:a3];
+    v5 = [objc_loadWeak(&self->_view) _shouldHideSelectionDuringOverflowScroll:overflow];
     v7 = WebKit::HideEditMenuScope::operator new(0x10, v6);
     WebKit::HideEditMenuScope::HideEditMenuScope(v7, self, v5);
 
@@ -812,90 +812,90 @@ LABEL_6:
   }
 }
 
-- (void)selectionChangedWithGestureAt:(CGPoint)a3 withGesture:(int64_t)a4 withState:(int64_t)a5 withFlags:(unint64_t)a6
+- (void)selectionChangedWithGestureAt:(CGPoint)at withGesture:(int64_t)gesture withState:(int64_t)state withFlags:(unint64_t)flags
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   [UIWKTextInteractionAssistant selectionChangedWithGestureAt:"selectionChangedWithGestureAt:withGesture:withState:withFlags:" withGesture:? withState:? withFlags:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr selectionChangedWithGestureAtPoint:a4 gesture:a5 state:a6 flags:x, y];
+  [(BETextInteraction *)m_ptr selectionChangedWithGestureAtPoint:gesture gesture:state state:flags flags:x, y];
 }
 
-- (void)selectionChangedWithTouchAt:(CGPoint)a3 withSelectionTouch:(int64_t)a4 withFlags:(unint64_t)a5
+- (void)selectionChangedWithTouchAt:(CGPoint)at withSelectionTouch:(int64_t)touch withFlags:(unint64_t)flags
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   [UIWKTextInteractionAssistant selectionChangedWithTouchAt:"selectionChangedWithTouchAt:withSelectionTouch:withFlags:" withSelectionTouch:? withFlags:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr selectionBoundaryAdjustedToPoint:a4 touchPhase:a5 flags:x, y];
+  [(BETextInteraction *)m_ptr selectionBoundaryAdjustedToPoint:touch touchPhase:flags flags:x, y];
 }
 
-- (void)lookup:(id)a3 withRange:(_NSRange)a4 fromRect:(CGRect)a5
+- (void)lookup:(id)lookup withRange:(_NSRange)range fromRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a4.length;
-  location = a4.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
   [UIWKTextInteractionAssistant lookup:"lookup:withRange:fromRect:" withRange:? fromRect:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr showDictionaryForTextInContext:a3 definingTextInRange:location fromRect:length, x, y, width, height];
+  [(BETextInteraction *)m_ptr showDictionaryForTextInContext:lookup definingTextInRange:location fromRect:length, x, y, width, height];
 }
 
-- (void)showShareSheetFor:(id)a3 fromRect:(CGRect)a4
+- (void)showShareSheetFor:(id)for fromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [UIWKTextInteractionAssistant showShareSheetFor:"showShareSheetFor:fromRect:" fromRect:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr shareText:a3 fromRect:x, y, width, height];
+  [(BETextInteraction *)m_ptr shareText:for fromRect:x, y, width, height];
 }
 
-- (void)showTextServiceFor:(id)a3 fromRect:(CGRect)a4
+- (void)showTextServiceFor:(id)for fromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [UIWKTextInteractionAssistant showTextServiceFor:"showTextServiceFor:fromRect:" fromRect:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr addShortcutForText:a3 fromRect:x, y, width, height];
+  [(BETextInteraction *)m_ptr addShortcutForText:for fromRect:x, y, width, height];
 }
 
-- (void)scheduleReplacementsForText:(id)a3
+- (void)scheduleReplacementsForText:(id)text
 {
   [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant.m_ptr scheduleReplacementsForText:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr showReplacementsForText:a3];
+  [(BETextInteraction *)m_ptr showReplacementsForText:text];
 }
 
-- (void)scheduleChineseTransliterationForText:(id)a3
+- (void)scheduleChineseTransliterationForText:(id)text
 {
   [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant.m_ptr scheduleChineseTransliterationForText:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr transliterateChineseForText:a3];
+  [(BETextInteraction *)m_ptr transliterateChineseForText:text];
 }
 
-- (void)translate:(id)a3 fromRect:(CGRect)a4
+- (void)translate:(id)translate fromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [UIWKTextInteractionAssistant translate:"translate:fromRect:" fromRect:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr translateText:a3 fromRect:x, y, width, height];
+  [(BETextInteraction *)m_ptr translateText:translate fromRect:x, y, width, height];
 }
 
 - (void)showEditMenuTimerFired
@@ -917,12 +917,12 @@ LABEL_6:
   return [(BETextInteraction *)m_ptr contextMenuInteraction];
 }
 
-- (void)setExternalContextMenuInteractionDelegate:(id)a3
+- (void)setExternalContextMenuInteractionDelegate:(id)delegate
 {
   [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant.m_ptr setExternalContextMenuInteractionDelegate:?];
   m_ptr = self->_asyncTextInteraction.m_ptr;
 
-  [(BETextInteraction *)m_ptr setContextMenuInteractionDelegate:a3];
+  [(BETextInteraction *)m_ptr setContextMenuInteractionDelegate:delegate];
 }
 
 @end

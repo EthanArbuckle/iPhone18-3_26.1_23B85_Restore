@@ -11,8 +11,8 @@
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 8uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 stringByAppendingPathComponent:@"com.apple.momentsd"];
+    firstObject = [v2 firstObject];
+    v4 = [firstObject stringByAppendingPathComponent:@"com.apple.momentsd"];
 
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 fileExistsAtPath:v4];
@@ -36,8 +36,8 @@
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 stringByAppendingPathComponent:@"com.apple.momentsd"];
+    firstObject = [v2 firstObject];
+    v4 = [firstObject stringByAppendingPathComponent:@"com.apple.momentsd"];
 
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 fileExistsAtPath:v4];
@@ -61,15 +61,15 @@
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 @end

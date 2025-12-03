@@ -11,19 +11,19 @@
   v7.super_class = SBHomeGestureExclusionTrapezoidSettings;
   [(PTSettings *)&v7 setDefaultValues];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setShowExclusionTrapezoidDebugView:0];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidEnabled:(v4 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidEnabled:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setAllowHorizontalSwipesOutsideLandscapeTrapezoid:0];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidHeight:18.5];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidBaseHeight:7.5];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidAdjacentXDistanceFromEdge:236.0];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setLandscapeTrapezoidOpposingXDistanceFromEdge:236.0];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  [(SBHomeGestureExclusionTrapezoidSettings *)self setPortraitTrapezoidEnabled:(v6 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(SBHomeGestureExclusionTrapezoidSettings *)self setPortraitTrapezoidEnabled:(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setPortraitTrapezoidEnabledOnlyForKeyboards:1];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setAllowHorizontalSwipesOutsidePortraitTrapezoid:1];
   [(SBHomeGestureExclusionTrapezoidSettings *)self setPortraitTrapezoidHeight:24.5];

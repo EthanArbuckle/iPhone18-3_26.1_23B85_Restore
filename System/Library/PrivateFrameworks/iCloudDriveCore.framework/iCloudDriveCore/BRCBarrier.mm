@@ -1,6 +1,6 @@
 @interface BRCBarrier
-- (BOOL)waitForBarrierWithTimeout:(unint64_t)a3;
-- (BRCBarrier)initWithName:(id)a3;
+- (BOOL)waitForBarrierWithTimeout:(unint64_t)timeout;
+- (BRCBarrier)initWithName:(id)name;
 - (void)dealloc;
 - (void)signalAndRetakeBarrier;
 - (void)signalBarrier;
@@ -8,16 +8,16 @@
 
 @implementation BRCBarrier
 
-- (BRCBarrier)initWithName:(id)a3
+- (BRCBarrier)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = BRCBarrier;
   v6 = [(BRCBarrier *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = dispatch_group_create();
     barrierGroup = v7->_barrierGroup;
     v7->_barrierGroup = v8;
@@ -39,7 +39,7 @@
 - (void)signalBarrier
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v2, v3, "[DEBUG] Signalling barrier %@%@");
   v4 = *MEMORY[0x277D85DE8];
@@ -48,24 +48,24 @@
 - (void)signalAndRetakeBarrier
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v2, v3, "[DEBUG] Signalling and retaking barrier %@%@");
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)waitForBarrierWithTimeout:(unint64_t)a3
+- (BOOL)waitForBarrierWithTimeout:(unint64_t)timeout
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_barrierGroup;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_barrierGroup;
+  objc_sync_exit(selfCopy);
 
   if (v5)
   {
-    name = v4->_name;
-    p_name = &v4->_name;
+    name = selfCopy->_name;
+    p_name = &selfCopy->_name;
     if (name)
     {
       v8 = brc_bread_crumbs();
@@ -76,7 +76,7 @@
       }
     }
 
-    v10 = dispatch_group_wait(v5, a3);
+    v10 = dispatch_group_wait(v5, timeout);
     v11 = v10 == 0;
     if (*p_name)
     {

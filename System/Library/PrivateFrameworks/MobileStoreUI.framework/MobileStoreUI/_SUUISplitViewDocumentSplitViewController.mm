@@ -1,20 +1,20 @@
 @interface _SUUISplitViewDocumentSplitViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (double)_SUUI_primaryColumnWidthForWidth:(double)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (double)_SUUI_primaryColumnWidthForWidth:(double)width;
 @end
 
 @implementation _SUUISplitViewDocumentSplitViewController
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(_SUUISplitViewDocumentSplitViewController *)self viewControllers];
-  v9 = [v8 firstObject];
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  viewControllers = [(_SUUISplitViewDocumentSplitViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
   [(_SUUISplitViewDocumentSplitViewController *)self _SUUI_primaryColumnWidthForWidth:width];
-  if (v9 != v7)
+  if (firstObject != containerCopy)
   {
     v11 = width - v10;
     [(_SUUISplitViewDocumentSplitViewController *)self gutterWidth];
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (double)_SUUI_primaryColumnWidthForWidth:(double)a3
+- (double)_SUUI_primaryColumnWidthForWidth:(double)width
 {
   [(_SUUISplitViewDocumentSplitViewController *)self preferredPrimaryColumnWidthFraction];
   v6 = *MEMORY[0x277D76EE0];
@@ -37,7 +37,7 @@
     v5 = 0.4;
   }
 
-  v7 = ceil(v5 * a3);
+  v7 = ceil(v5 * width);
   [(_SUUISplitViewDocumentSplitViewController *)self minimumPrimaryColumnWidth];
   if (v8 == v6)
   {

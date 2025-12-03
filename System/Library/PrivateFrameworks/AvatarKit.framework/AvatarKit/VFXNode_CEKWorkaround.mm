@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = VFXNode_CEKWorkaround;
-  v2 = [(VFXNode_CEKWorkaround *)&v4 camera];
-  [v2 _implementCEKWorkaroundIfNeeded];
+  camera = [(VFXNode_CEKWorkaround *)&v4 camera];
+  [camera _implementCEKWorkaroundIfNeeded];
 
-  return v2;
+  return camera;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface MKSearchFoundationRichText
-- (MKSearchFoundationRichText)initWithString:(id)a3;
-- (id)initRichTextTitleWithMapItem:(id)a3 resultsType:(unint64_t)a4;
+- (MKSearchFoundationRichText)initWithString:(id)string;
+- (id)initRichTextTitleWithMapItem:(id)item resultsType:(unint64_t)type;
 - (void)_invokeCompletionHandlers;
-- (void)loadRichTextWithCompletionHandler:(id)a3;
-- (void)setFormattedTextPieces:(id)a3;
-- (void)setText:(id)a3;
+- (void)loadRichTextWithCompletionHandler:(id)handler;
+- (void)setFormattedTextPieces:(id)pieces;
+- (void)setText:(id)text;
 @end
 
 @implementation MKSearchFoundationRichText
@@ -23,40 +23,40 @@
   }
 }
 
-- (void)setFormattedTextPieces:(id)a3
+- (void)setFormattedTextPieces:(id)pieces
 {
   v4.receiver = self;
   v4.super_class = MKSearchFoundationRichText;
-  [(SFRichText *)&v4 setFormattedTextPieces:a3];
+  [(SFRichText *)&v4 setFormattedTextPieces:pieces];
   [(MKSearchFoundationRichText *)self _invokeCompletionHandlers];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = MKSearchFoundationRichText;
-  [(SFText *)&v4 setText:a3];
+  [(SFText *)&v4 setText:text];
   [(MKSearchFoundationRichText *)self _invokeCompletionHandlers];
 }
 
-- (void)loadRichTextWithCompletionHandler:(id)a3
+- (void)loadRichTextWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
     if (![(MKSearchFoundationRichText *)self isRichTextResolved])
     {
-      v6 = [(MKSearchFoundationRichText *)self completionHandlers];
-      v7 = v6;
-      if (v6)
+      completionHandlers = [(MKSearchFoundationRichText *)self completionHandlers];
+      v7 = completionHandlers;
+      if (completionHandlers)
       {
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __64__MKSearchFoundationRichText_loadRichTextWithCompletionHandler___block_invoke;
         v8[3] = &unk_1E76CCF68;
-        v9 = v6;
+        v9 = completionHandlers;
         v10 = v5;
         [(MKSearchFoundationRichText *)self setCompletionHandlers:v8];
       }
@@ -77,20 +77,20 @@ uint64_t __64__MKSearchFoundationRichText_loadRichTextWithCompletionHandler___bl
   return v2();
 }
 
-- (id)initRichTextTitleWithMapItem:(id)a3 resultsType:(unint64_t)a4
+- (id)initRichTextTitleWithMapItem:(id)item resultsType:(unint64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 2)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (type == 2)
   {
-    v8 = [v6 _geoAddress];
-    v9 = [v8 singleLineAddress];
+    _geoAddress = [itemCopy _geoAddress];
+    singleLineAddress = [_geoAddress singleLineAddress];
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
-    if ([v6 _hasTransitDisplayName])
+    if ([itemCopy _hasTransitDisplayName])
     {
       [v7 _transitDisplayName];
     }
@@ -99,23 +99,23 @@ uint64_t __64__MKSearchFoundationRichText_loadRichTextWithCompletionHandler___bl
     {
       [v7 name];
     }
-    v9 = ;
+    singleLineAddress = ;
   }
 
   else
   {
-    v9 = 0;
+    singleLineAddress = 0;
   }
 
   v10 = MKGetMKSearchFoundationResultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v14 = 138477827;
-    v15 = v9;
+    v15 = singleLineAddress;
     _os_log_impl(&dword_1A2EA0000, v10, OS_LOG_TYPE_INFO, "MapItem name: %{private}@", &v14, 0xCu);
   }
 
-  v11 = [(MKSearchFoundationRichText *)self initWithString:v9];
+  v11 = [(MKSearchFoundationRichText *)self initWithString:singleLineAddress];
   v12 = v11;
   if (v11)
   {
@@ -125,16 +125,16 @@ uint64_t __64__MKSearchFoundationRichText_loadRichTextWithCompletionHandler___bl
   return v12;
 }
 
-- (MKSearchFoundationRichText)initWithString:(id)a3
+- (MKSearchFoundationRichText)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = MKSearchFoundationRichText;
   v5 = [(MKSearchFoundationRichText *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MKSearchFoundationRichText *)v5 setText:v4];
+    [(MKSearchFoundationRichText *)v5 setText:stringCopy];
   }
 
   return v6;

@@ -1,43 +1,43 @@
 @interface TKXPCConnectionDefault
-- (BOOL)hasEntitlement:(id)a3;
-- (TKXPCConnectionDefault)initWithConnection:(id)a3;
-- (TKXPCConnectionDefault)initWithListenerEndpoint:(id)a3;
-- (TKXPCConnectionDefault)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (TKXPCConnectionDefault)initWithConnection:(id)connection;
+- (TKXPCConnectionDefault)initWithListenerEndpoint:(id)endpoint;
+- (TKXPCConnectionDefault)initWithMachServiceName:(id)name options:(unint64_t)options;
 - (TKXPCConnectionDelegate)delegate;
 - (void)activate;
-- (void)configureWithConfiguration:(id)a3;
+- (void)configureWithConfiguration:(id)configuration;
 @end
 
 @implementation TKXPCConnectionDefault
 
-- (TKXPCConnectionDefault)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (TKXPCConnectionDefault)initWithMachServiceName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [[NSXPCConnection alloc] initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:options];
 
   v8 = [(TKXPCConnectionDefault *)self initWithConnection:v7];
   return v8;
 }
 
-- (TKXPCConnectionDefault)initWithListenerEndpoint:(id)a3
+- (TKXPCConnectionDefault)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[NSXPCConnection alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = [(TKXPCConnectionDefault *)self initWithConnection:v5];
   return v6;
 }
 
-- (TKXPCConnectionDefault)initWithConnection:(id)a3
+- (TKXPCConnectionDefault)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = TKXPCConnectionDefault;
   v6 = [(TKXPCConnectionDefault *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -46,31 +46,31 @@
 - (void)activate
 {
   [(NSXPCConnection *)self->_connection activate];
-  v3 = [(TKXPCConnectionDefault *)self delegate];
+  delegate = [(TKXPCConnectionDefault *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(TKXPCConnectionDefault *)self delegate];
-    [v5 connectionDidActivate:self];
+    delegate2 = [(TKXPCConnectionDefault *)self delegate];
+    [delegate2 connectionDidActivate:self];
   }
 }
 
-- (void)configureWithConfiguration:(id)a3
+- (void)configureWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 remoteObjectInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
+    v5 = configurationCopy;
+    remoteObjectInterface = [v5 remoteObjectInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:remoteObjectInterface];
 
-    v7 = [v5 exportedInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v7];
+    exportedInterface = [v5 exportedInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:exportedInterface];
 
-    v8 = [v5 exportedObject];
-    [(NSXPCConnection *)self->_connection setExportedObject:v8];
+    exportedObject = [v5 exportedObject];
+    [(NSXPCConnection *)self->_connection setExportedObject:exportedObject];
 
     objc_initWeak(&location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -85,13 +85,13 @@
     v13[3] = &unk_1000389A0;
     objc_copyWeak(&v14, &location);
     [(NSXPCConnection *)self->_connection setInvalidationHandler:v13];
-    v9 = [v5 replyQueue];
+    replyQueue = [v5 replyQueue];
 
-    if (v9)
+    if (replyQueue)
     {
       connection = self->_connection;
-      v11 = [v5 replyQueue];
-      [(NSXPCConnection *)connection _setQueue:v11];
+      replyQueue2 = [v5 replyQueue];
+      [(NSXPCConnection *)connection _setQueue:replyQueue2];
     }
 
     objc_destroyWeak(&v14);
@@ -109,17 +109,17 @@
     v12 = qword_100043448;
     if (os_log_type_enabled(qword_100043448, OS_LOG_TYPE_ERROR))
     {
-      sub_100021B28(self, v4, v12);
+      sub_100021B28(self, configurationCopy, v12);
     }
   }
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:entitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (TKXPCConnectionDelegate)delegate

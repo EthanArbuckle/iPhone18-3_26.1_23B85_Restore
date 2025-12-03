@@ -1,13 +1,13 @@
 @interface NUPaywallEventData
 - (NUPaywallEventData)init;
-- (NUPaywallEventData)initWithPaywallViewData:(id)a3 headline:(id)a4 channel:(id)a5 feed:(id)a6 paywallGroupData:(id)a7 referral:(id)a8 qToken:(id)a9;
+- (NUPaywallEventData)initWithPaywallViewData:(id)data headline:(id)headline channel:(id)channel feed:(id)feed paywallGroupData:(id)groupData referral:(id)referral qToken:(id)token;
 @end
 
 @implementation NUPaywallEventData
 
-- (NUPaywallEventData)initWithPaywallViewData:(id)a3 headline:(id)a4 channel:(id)a5 feed:(id)a6 paywallGroupData:(id)a7 referral:(id)a8 qToken:(id)a9
+- (NUPaywallEventData)initWithPaywallViewData:(id)data headline:(id)headline channel:(id)channel feed:(id)feed paywallGroupData:(id)groupData referral:(id)referral qToken:(id)token
 {
-  if (a9)
+  if (token)
   {
     v15 = sub_219BF5414();
     v17 = v16;
@@ -19,12 +19,12 @@
     v17 = 0;
   }
 
-  v18 = a3;
+  dataCopy = data;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v19 = a6;
-  v20 = a7;
-  v21 = sub_21946C704(v18, a4, a5, a6, a7, a8, v15, v17);
+  feedCopy = feed;
+  groupDataCopy = groupData;
+  v21 = sub_21946C704(dataCopy, headline, channel, feed, groupData, referral, v15, v17);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

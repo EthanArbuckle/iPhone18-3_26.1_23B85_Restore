@@ -1,33 +1,33 @@
 @interface HDDaemonSyncMessageHandler
-- (BOOL)_sendChangesWithError:(uint64_t)a1;
-- (BOOL)sendCodableChange:(id)a3 version:(id)a4 resultAnchor:(int64_t)a5 sequence:(int64_t)a6 done:(BOOL)a7 error:(id *)a8;
-- (HDDaemonSyncMessageHandler)initWithSyncEntityClass:(Class)a3 anchorRange:(HDSyncAnchorRange)a4 session:(id)a5 requiredAnchorMap:(id)a6;
+- (BOOL)_sendChangesWithError:(uint64_t)error;
+- (BOOL)sendCodableChange:(id)change version:(id)version resultAnchor:(int64_t)anchor sequence:(int64_t)sequence done:(BOOL)done error:(id *)error;
+- (HDDaemonSyncMessageHandler)initWithSyncEntityClass:(Class)class anchorRange:(HDSyncAnchorRange)range session:(id)session requiredAnchorMap:(id)map;
 - (id)description;
-- (void)abandonUnsentChangesForError:(id)a3;
+- (void)abandonUnsentChangesForError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation HDDaemonSyncMessageHandler
 
-- (HDDaemonSyncMessageHandler)initWithSyncEntityClass:(Class)a3 anchorRange:(HDSyncAnchorRange)a4 session:(id)a5 requiredAnchorMap:(id)a6
+- (HDDaemonSyncMessageHandler)initWithSyncEntityClass:(Class)class anchorRange:(HDSyncAnchorRange)range session:(id)session requiredAnchorMap:(id)map
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a5;
-  v13 = a6;
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  mapCopy = map;
   v20.receiver = self;
   v20.super_class = HDDaemonSyncMessageHandler;
   v14 = [(HDDaemonSyncMessageHandler *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    v14->_syncEntityClass = a3;
+    v14->_syncEntityClass = class;
     v14->_anchorRange.start = start;
     v14->_anchorRange.end = end;
     v14->_lastAnchor = start;
     v14->_currentAnchor = start;
-    objc_storeStrong(&v14->_session, a5);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_session, session);
+    v16 = [mapCopy copy];
     requiredAnchorMap = v15->_requiredAnchorMap;
     v15->_requiredAnchorMap = v16;
 
@@ -54,7 +54,7 @@
       changes = self->_changes;
       v6 = v3;
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = [(NSMutableArray *)changes count];
       _os_log_fault_impl(&dword_228986000, v6, OS_LOG_TYPE_FAULT, "%@ has %ld changes that must be sent prior to deallocation", buf, 0x16u);
@@ -71,36 +71,36 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDSyncSession *)self->_session shortSessionIdentifier];
+  shortSessionIdentifier = [(HDSyncSession *)self->_session shortSessionIdentifier];
   end = self->_anchorRange.end;
-  v7 = [v3 stringWithFormat:@"<%@:%p %@ %@ %lld -> %lld, %lld>", v4, self, v5, self->_syncEntityClass, self->_anchorRange.start, end, self->_currentAnchor];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@ %@ %lld -> %lld, %lld>", v4, self, shortSessionIdentifier, self->_syncEntityClass, self->_anchorRange.start, end, self->_currentAnchor];
 
   return v7;
 }
 
-- (BOOL)sendCodableChange:(id)a3 version:(id)a4 resultAnchor:(int64_t)a5 sequence:(int64_t)a6 done:(BOOL)a7 error:(id *)a8
+- (BOOL)sendCodableChange:(id)change version:(id)version resultAnchor:(int64_t)anchor sequence:(int64_t)sequence done:(BOOL)done error:(id *)error
 {
-  v8 = a7;
+  doneCopy = done;
   v47 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  changeCopy = change;
   if (self->_done)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HDDaemonSyncMessageHandler.m" lineNumber:94 description:{@"%@ is already done", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemonSyncMessageHandler.m" lineNumber:94 description:{@"%@ is already done", self}];
   }
 
-  self->_done = v8;
+  self->_done = doneCopy;
   _HKInitializeLogging();
   v15 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     syncEntityClass = self->_syncEntityClass;
     v27 = v15;
-    v16 = HDSyncVersionRangeToString(*&a4);
+    v16 = HDSyncVersionRangeToString(*&version);
     v28 = a2;
     start = self->_anchorRange.start;
     end = self->_anchorRange.end;
-    if (v8)
+    if (doneCopy)
     {
       v19 = "final";
     }
@@ -122,31 +122,31 @@
     v39 = 2080;
     v40 = v19;
     v41 = 2048;
-    v42 = a5;
+    anchorCopy = anchor;
     v43 = 2048;
-    v44 = [v14 count];
+    v44 = [changeCopy count];
     v45 = 2048;
-    v46 = a6;
+    sequenceCopy = sequence;
     _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "Sync for %{public}@ (Version: %{public}@) from %lld -> %lld produced %s result anchor %lld and %lu objects with sequence %lld.", buf, 0x52u);
   }
 
-  v20 = [(HDSyncSession *)self->_session syncAnchorMapLimits];
+  syncAnchorMapLimits = [(HDSyncSession *)self->_session syncAnchorMapLimits];
 
-  if (a6 || self->_currentAnchor != a5 || v20)
+  if (sequence || self->_currentAnchor != anchor || syncAnchorMapLimits)
   {
-    if (self->_anchorRange.end < a5)
+    if (self->_anchorRange.end < anchor)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"HDDaemonSyncMessageHandler.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"resultAnchor <= _anchorRange.end"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDaemonSyncMessageHandler.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"resultAnchor <= _anchorRange.end"}];
     }
 
-    v30 = v14;
+    v30 = changeCopy;
     v21 = HKWithAutoreleasePool();
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a8 code:100 format:{@"syncObjectsWithStore failed to update result anchor for entity type %@.", self->_syncEntityClass}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"syncObjectsWithStore failed to update result anchor for entity type %@.", self->_syncEntityClass}];
     [(NSMutableArray *)self->_changes removeAllObjects];
     v21 = 0;
   }
@@ -212,32 +212,32 @@ BOOL __89__HDDaemonSyncMessageHandler_sendCodableChange_version_resultAnchor_seq
   return result;
 }
 
-- (BOOL)_sendChangesWithError:(uint64_t)a1
+- (BOOL)_sendChangesWithError:(uint64_t)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    if ([*(a1 + 64) count])
+    if ([*(error + 64) count])
     {
       _HKInitializeLogging();
       v4 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v5 = "accumulated";
-        if (*(a1 + 48))
+        if (*(error + 48))
         {
           v5 = "final";
         }
 
         *buf = 138543618;
-        *&buf[4] = a1;
+        *&buf[4] = error;
         *&buf[12] = 2080;
         *&buf[14] = v5;
         _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Attempt sending %s changes", buf, 0x16u);
       }
 
-      v6 = *(a1 + 32);
-      v7 = *(a1 + 64);
+      v6 = *(error + 32);
+      v7 = *(error + 64);
       v8 = v6;
       objc_opt_self();
       v31 = 0;
@@ -274,13 +274,13 @@ BOOL __89__HDDaemonSyncMessageHandler_sendCodableChange_version_resultAnchor_seq
 
       _Block_object_dispose(&v31, 8);
       v16 = v13;
-      [*(a1 + 64) removeAllObjects];
+      [*(error + 64) removeAllObjects];
       v17 = v15 != 0;
       if (v15)
       {
         if (v15 == 2)
         {
-          *(a1 + 96) = 2;
+          *(error + 96) = 2;
         }
       }
 
@@ -301,16 +301,16 @@ BOOL __89__HDDaemonSyncMessageHandler_sendCodableChange_version_resultAnchor_seq
             _HKLogDroppedError();
           }
 
-          *(a1 + 96) = 0;
-          objc_storeStrong((a1 + 104), v11);
+          *(error + 96) = 0;
+          objc_storeStrong((error + 104), v11);
         }
 
         else
         {
-          *(a1 + 96) = 0;
+          *(error + 96) = 0;
           v21 = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sending changes failed but did not provide an error."];
-          v22 = *(a1 + 104);
-          *(a1 + 104) = v21;
+          v22 = *(error + 104);
+          *(error + 104) = v21;
         }
       }
     }
@@ -338,10 +338,10 @@ void __57__HDDaemonSyncMessageHandler__sendChanges_session_error___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)abandonUnsentChangesForError:(id)a3
+- (void)abandonUnsentChangesForError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(NSMutableArray *)self->_changes count])
   {
     _HKInitializeLogging();
@@ -351,11 +351,11 @@ void __57__HDDaemonSyncMessageHandler__sendChanges_session_error___block_invoke(
       changes = self->_changes;
       v7 = v5;
       v9 = 138543874;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = [(NSMutableArray *)changes count];
       v13 = 2114;
-      v14 = v4;
+      v14 = errorCopy;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%{public}@ Abandoning %ld due to an error during generation: %{public}@", &v9, 0x20u);
     }
 

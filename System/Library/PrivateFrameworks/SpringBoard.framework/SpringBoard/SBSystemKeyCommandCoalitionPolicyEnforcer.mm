@@ -12,8 +12,8 @@
   if (v2)
   {
     v3 = objc_alloc_init(MEMORY[0x277CF0730]);
-    v4 = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
-    [v3 setEnvironment:v4];
+    systemKeyCommandOverlayEnvironment = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
+    [v3 setEnvironment:systemKeyCommandOverlayEnvironment];
 
     v5 = [(_SBKeyboardFocusCoalitionPolicyEnforcer *)[_SBSystemKeyCommandCoalitionPolicyEnforcer alloc] initWithDeferringRulePredicate:v3 deferringRuleReason:@"systemKeyCommandOverlayEnvironment to root scene" debugName:@"SBSystemKeyCommandPolicyEnforcer-Coalition"];
     enforcer = v2->_enforcer;

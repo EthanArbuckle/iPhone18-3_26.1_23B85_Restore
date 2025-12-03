@@ -9,14 +9,14 @@
 
 + (uint64_t)valueWithCLLocationCoordinate2D:()OFNSValueExtension
 {
-  *v3 = a1;
+  *v3 = self;
   *&v3[1] = a2;
   return [MEMORY[0x277CCAE60] value:v3 withObjCType:"{CLLocationCoordinate2D=dd}"];
 }
 
 + (uint64_t)valueWithMKCoordinateRegion:()OFNSValueExtension
 {
-  *v5 = a1;
+  *v5 = self;
   *&v5[1] = a2;
   *&v5[2] = a3;
   *&v5[3] = a4;
@@ -26,7 +26,7 @@
 - (double)CLLocationCoordinate2DValue
 {
   v2 = *MEMORY[0x277CE4278];
-  [a1 getValue:&v2 size:16];
+  [self getValue:&v2 size:16];
   return *&v2;
 }
 
@@ -35,7 +35,7 @@
   v2 = *MEMORY[0x277CE4278];
   v3 = 0;
   v4 = 0;
-  [a1 getValue:&v2 size:32];
+  [self getValue:&v2 size:32];
   return *&v2;
 }
 

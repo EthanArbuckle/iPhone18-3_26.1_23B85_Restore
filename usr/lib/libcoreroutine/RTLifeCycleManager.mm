@@ -1,16 +1,16 @@
 @interface RTLifeCycleManager
 - (RTLifeCycleManager)init;
-- (id)createSourceForSignal:(int)a3 withBlock:(id)a4;
-- (id)serviceWithClass:(Class)a3;
+- (id)createSourceForSignal:(int)signal withBlock:(id)block;
+- (id)serviceWithClass:(Class)class;
 - (void)_exit;
 - (void)_start;
-- (void)addListener:(id)a3 machPort:(id)a4;
-- (void)addService:(id)a3;
+- (void)addListener:(id)listener machPort:(id)port;
+- (void)addService:(id)service;
 - (void)dealloc;
 - (void)exit;
-- (void)exitWithDelay:(double)a3;
+- (void)exitWithDelay:(double)delay;
 - (void)start;
-- (void)submitUptimeMetricsWithDefaultsMananger:(id)a3;
+- (void)submitUptimeMetricsWithDefaultsMananger:(id)mananger;
 @end
 
 @implementation RTLifeCycleManager
@@ -30,16 +30,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(RTLifeCycleManager *)v5 UTF8String];
+      uTF8String = [(RTLifeCycleManager *)v5 UTF8String];
     }
 
     else
     {
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v5];
-      v7 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
     }
 
-    v9 = dispatch_queue_create(v7, v6);
+    v9 = dispatch_queue_create(uTF8String, v6);
 
     queue = v5->_queue;
     v5->_queue = v9;
@@ -76,12 +76,12 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
   }
 }
 
-- (id)createSourceForSignal:(int)a3 withBlock:(id)a4
+- (id)createSourceForSignal:(int)signal withBlock:(id)block
 {
-  v5 = a4;
-  signal(a3, 1);
-  v6 = dispatch_source_create(MEMORY[0x277D85D30], a3, 0, MEMORY[0x277D85CD0]);
-  dispatch_source_set_event_handler(v6, v5);
+  blockCopy = block;
+  signal(signal, 1);
+  v6 = dispatch_source_create(MEMORY[0x277D85D30], signal, 0, MEMORY[0x277D85CD0]);
+  dispatch_source_set_event_handler(v6, blockCopy);
 
   dispatch_resume(v6);
 
@@ -90,22 +90,22 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
 
 - (void)start
 {
-  v3 = [(RTLifeCycleManager *)self queue];
+  queue = [(RTLifeCycleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__RTLifeCycleManager_start__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTLifeCycleManager *)self watchdogManager];
+  serviceCopy = service;
+  watchdogManager = [(RTLifeCycleManager *)self watchdogManager];
 
-  if (!v5)
+  if (!watchdogManager)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -118,13 +118,13 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
     }
   }
 
-  if (v4)
+  if (serviceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(RTLifeCycleManager *)self services];
-      v8 = [v7 containsObject:v4];
+      services = [(RTLifeCycleManager *)self services];
+      v8 = [services containsObject:serviceCopy];
 
       if (v8)
       {
@@ -139,44 +139,44 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
         }
       }
 
-      v10 = [(RTLifeCycleManager *)self services];
-      [v10 addObject:v4];
+      services2 = [(RTLifeCycleManager *)self services];
+      [services2 addObject:serviceCopy];
 
-      v11 = [(RTLifeCycleManager *)self watchdogManager];
-      [v11 addObject:v4];
+      watchdogManager2 = [(RTLifeCycleManager *)self watchdogManager];
+      [watchdogManager2 addObject:serviceCopy];
     }
   }
 }
 
-- (void)addListener:(id)a3 machPort:(id)a4
+- (void)addListener:(id)listener machPort:(id)port
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  listenerCopy = listener;
+  portCopy = port;
+  if (listenerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(RTLifeCycleManager *)self listeners];
-      [v7 setObject:v9 forKey:v6];
+      listeners = [(RTLifeCycleManager *)self listeners];
+      [listeners setObject:listenerCopy forKey:portCopy];
 
-      v8 = [(RTLifeCycleManager *)self watchdogManager];
-      [v8 addObject:v9];
+      watchdogManager = [(RTLifeCycleManager *)self watchdogManager];
+      [watchdogManager addObject:listenerCopy];
     }
   }
 }
 
-- (id)serviceWithClass:(Class)a3
+- (id)serviceWithClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(RTLifeCycleManager *)self services];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    services = [(RTLifeCycleManager *)self services];
+    v4 = [services countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -187,7 +187,7 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(services);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -198,7 +198,7 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v5 = [services countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -211,11 +211,11 @@ void __29__RTLifeCycleManager_dealloc__block_invoke(int a1, dispatch_source_t so
 
   else
   {
-    v3 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    services = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(services, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v3, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: serviceClass", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, services, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: serviceClass", buf, 2u);
     }
   }
 
@@ -225,21 +225,21 @@ LABEL_15:
   return v9;
 }
 
-- (void)submitUptimeMetricsWithDefaultsMananger:(id)a3
+- (void)submitUptimeMetricsWithDefaultsMananger:(id)mananger
 {
-  v33 = a3;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 processName];
-  v6 = [@"LastLaunchDate" stringByAppendingPathExtension:v5];
-  v7 = [v33 objectForKey:v6];
+  manangerCopy = mananger;
+  date = [MEMORY[0x277CBEAA8] date];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v6 = [@"LastLaunchDate" stringByAppendingPathExtension:processName];
+  v7 = [manangerCopy objectForKey:v6];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 processName];
-    v10 = [@"LastExitDate" stringByAppendingPathExtension:v9];
-    v11 = [v33 objectForKey:v10];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processName2 = [processInfo2 processName];
+    v10 = [@"LastExitDate" stringByAppendingPathExtension:processName2];
+    v11 = [manangerCopy objectForKey:v10];
 
     if (v11)
     {
@@ -248,7 +248,7 @@ LABEL_15:
 
     else
     {
-      v12 = v3;
+      v12 = date;
     }
 
     if (v11)
@@ -263,12 +263,12 @@ LABEL_15:
 
     [v12 timeIntervalSinceDate:v7];
     v15 = v14;
-    [v3 timeIntervalSinceDate:v13];
+    [date timeIntervalSinceDate:v13];
     v17 = v16;
     v18 = objc_opt_new();
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    v20 = [v19 processName];
-    [v18 setObject:v20 forKeyedSubscript:@"processName"];
+    processInfo3 = [MEMORY[0x277CCAC38] processInfo];
+    processName3 = [processInfo3 processName];
+    [v18 setObject:processName3 forKeyedSubscript:@"processName"];
 
     v21 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
     [v18 setObject:v21 forKeyedSubscript:@"processUptime"];
@@ -289,21 +289,21 @@ LABEL_15:
     AnalyticsSendEvent();
   }
 
-  v27 = [MEMORY[0x277CCAC38] processInfo];
-  v28 = [v27 processName];
-  v29 = [@"LastLaunchDate" stringByAppendingPathExtension:v28];
-  [v33 setObject:v3 forKey:v29];
+  processInfo4 = [MEMORY[0x277CCAC38] processInfo];
+  processName4 = [processInfo4 processName];
+  v29 = [@"LastLaunchDate" stringByAppendingPathExtension:processName4];
+  [manangerCopy setObject:date forKey:v29];
 
-  v30 = [MEMORY[0x277CCAC38] processInfo];
-  v31 = [v30 processName];
-  v32 = [@"LastExitDate" stringByAppendingPathExtension:v31];
-  [v33 setObject:0 forKey:v32];
+  processInfo5 = [MEMORY[0x277CCAC38] processInfo];
+  processName5 = [processInfo5 processName];
+  v32 = [@"LastExitDate" stringByAppendingPathExtension:processName5];
+  [manangerCopy setObject:0 forKey:v32];
 }
 
 - (void)_start
 {
   v307 = *MEMORY[0x277D85DE8];
-  v158 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v3 = _rt_log_facility_get_os_log(RTLogFacilityLifeCycle);
@@ -373,14 +373,14 @@ LABEL_15:
   [(RTDiagnostics *)v292 addDiagnosticProvider:v299];
   [(RTDiagnostics *)v292 addDiagnosticProvider:v276];
   objc_initWeak(&location, self);
-  v9 = [(RTLifeCycleManager *)self signals];
+  signals = [(RTLifeCycleManager *)self signals];
   v300[0] = MEMORY[0x277D85DD0];
   v300[1] = 3221225472;
   v300[2] = __28__RTLifeCycleManager__start__block_invoke;
   v300[3] = &unk_2788C5908;
   objc_copyWeak(&v301, &location);
   v10 = [(RTLifeCycleManager *)self createSourceForSignal:15 withBlock:v300];
-  [v9 addObject:v10];
+  [signals addObject:v10];
 
   v11 = objc_alloc_init(RTWiFiManager);
   [(RTLifeCycleManager *)self addService:v11];
@@ -436,17 +436,17 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [@"BatteryManager" UTF8String];
+    uTF8String = [@"BatteryManager" UTF8String];
   }
 
   else
   {
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), @"BatteryManager"];
     v31 = v30;
-    v29 = [v30 UTF8String];
+    uTF8String = [v30 UTF8String];
   }
 
-  v32 = dispatch_queue_create(v29, v28);
+  v32 = dispatch_queue_create(uTF8String, v28);
 
   v282 = [(RTBatteryManager *)v27 initWithQueue:v32];
   [(RTLifeCycleManager *)self addService:v282];
@@ -484,8 +484,8 @@ LABEL_15:
   v293 = [(RTLearnedLocationStore *)v42 initWithDistanceCalculator:v297 expirationEnforcer:v43 mirroringManager:v276];
 
   [(RTLifeCycleManager *)self addService:v293];
-  v44 = [v298 productType];
-  if ([v44 isEqualToString:{@"Watch1, 1"}])
+  productType = [v298 productType];
+  if ([productType isEqualToString:{@"Watch1, 1"}])
   {
 
 LABEL_15:
@@ -493,8 +493,8 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v45 = [v298 productType];
-  v46 = [v45 isEqualToString:{@"Watch1, 2"}];
+  productType2 = [v298 productType];
+  v46 = [productType2 isEqualToString:{@"Watch1, 2"}];
 
   if (v46)
   {
@@ -563,17 +563,17 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v69 = [@"RTLearnedLocationManager" UTF8String];
+    uTF8String2 = [@"RTLearnedLocationManager" UTF8String];
   }
 
   else
   {
     v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), @"RTLearnedLocationManager"];
     v71 = v70;
-    v69 = [v70 UTF8String];
+    uTF8String2 = [v70 UTF8String];
   }
 
-  object = dispatch_queue_create(v69, v68);
+  object = dispatch_queue_create(uTF8String2, v68);
 
   dispatch_suspend(object);
   v72 = [[RTLearnedLocationManager alloc] initWithQueue:object contactsManager:v281 distanceCalculator:v297 learnedLocationStore:v293 learnedPlaceTypeInferenceStore:v231 mapServiceManager:v294];
@@ -594,17 +594,17 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v77 = [@"RTDeviceLocationPredictor" UTF8String];
+    uTF8String3 = [@"RTDeviceLocationPredictor" UTF8String];
   }
 
   else
   {
     v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), @"RTDeviceLocationPredictor"];
     v79 = v78;
-    v77 = [v78 UTF8String];
+    uTF8String3 = [v78 UTF8String];
   }
 
-  v234 = dispatch_queue_create(v77, v76);
+  v234 = dispatch_queue_create(uTF8String3, v76);
 
   v197 = [[RTNextPredictedLocationsOfInterestCache alloc] initWithQueue:v234 dataProtectionManager:v289 starkManager:v230];
   v196 = [[RTPredictedLocationOfInterestProviderStateModel alloc] initWithDataProtectionManager:v289 learnedLocationManager:v296 locationManager:v295 metricManager:v286 cache:v197];
@@ -757,17 +757,17 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v115 = [@"SMEligibilityChecker" UTF8String];
+    uTF8String4 = [@"SMEligibilityChecker" UTF8String];
   }
 
   else
   {
     v116 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), @"SMEligibilityChecker"];
     v117 = v116;
-    v115 = [v116 UTF8String];
+    uTF8String4 = [v116 UTF8String];
   }
 
-  v118 = dispatch_queue_create(v115, v114);
+  v118 = dispatch_queue_create(uTF8String4, v114);
 
   v226 = [v113 initWithQueue:v118];
   v119 = objc_alloc(MEMORY[0x277D4AAB0]);
@@ -775,17 +775,17 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v121 = [@"SMDeviceConfigurationChecker" UTF8String];
+    uTF8String5 = [@"SMDeviceConfigurationChecker" UTF8String];
   }
 
   else
   {
     v122 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), @"SMDeviceConfigurationChecker"];
     v123 = v122;
-    v121 = [v122 UTF8String];
+    uTF8String5 = [v122 UTF8String];
   }
 
-  v124 = dispatch_queue_create(v121, v120);
+  v124 = dispatch_queue_create(uTF8String5, v120);
 
   v225 = [v119 initWithQueue:v124];
   v125 = [RTLocationManager alloc];
@@ -863,8 +863,8 @@ LABEL_17:
     if (os_log_type_enabled(v149, OS_LOG_TYPE_INFO))
     {
       v150 = NSStringFromSelector(a2);
-      v151 = [MEMORY[0x277CBEAA8] date];
-      [v151 timeIntervalSinceDate:v158];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       *buf = 138412546;
       v304 = v150;
       v305 = 2048;
@@ -981,27 +981,27 @@ void __28__RTLifeCycleManager__start__block_invoke_721(uint64_t a1, void *a2)
   }
 }
 
-- (void)exitWithDelay:(double)a3
+- (void)exitWithDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
-  v5 = [(RTLifeCycleManager *)self queue];
+  v4 = dispatch_time(0, (delay * 1000000000.0));
+  queue = [(RTLifeCycleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__RTLifeCycleManager_exitWithDelay___block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, queue, block);
 }
 
 - (void)exit
 {
-  v3 = [(RTLifeCycleManager *)self queue];
+  queue = [(RTLifeCycleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__RTLifeCycleManager_exit__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_exit
@@ -1019,14 +1019,14 @@ void __28__RTLifeCycleManager__start__block_invoke_721(uint64_t a1, void *a2)
     }
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v35 = [(RTLifeCycleManager *)self serviceWithClass:objc_opt_class()];
-  v7 = [(RTLifeCycleManager *)self listeners];
-  v8 = [v7 allValues];
-  v9 = [v8 mutableCopy];
+  listeners = [(RTLifeCycleManager *)self listeners];
+  allValues = [listeners allValues];
+  v9 = [allValues mutableCopy];
 
-  v10 = [(RTLifeCycleManager *)self services];
-  v11 = [v10 mutableCopy];
+  services = [(RTLifeCycleManager *)self services];
+  v11 = [services mutableCopy];
 
   v12 = dispatch_time(0, 10000000000);
   queue = self->_queue;
@@ -1035,7 +1035,7 @@ void __28__RTLifeCycleManager__start__block_invoke_721(uint64_t a1, void *a2)
   block[2] = __27__RTLifeCycleManager__exit__block_invoke;
   block[3] = &unk_2788C4C70;
   v67 = a2;
-  v34 = v6;
+  v34 = date;
   v64 = v34;
   v39 = v11;
   v65 = v39;
@@ -1047,11 +1047,11 @@ void __28__RTLifeCycleManager__start__block_invoke_721(uint64_t a1, void *a2)
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v15 = [(RTLifeCycleManager *)self listeners];
-  v16 = [v15 allValues];
+  listeners2 = [(RTLifeCycleManager *)self listeners];
+  allValues2 = [listeners2 allValues];
 
-  obj = v16;
-  v17 = [v16 countByEnumeratingWithState:&v59 objects:v69 count:16];
+  obj = allValues2;
+  v17 = [allValues2 countByEnumeratingWithState:&v59 objects:v69 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1138,18 +1138,18 @@ void __28__RTLifeCycleManager__start__block_invoke_721(uint64_t a1, void *a2)
     while (v25);
   }
 
-  v31 = [(RTLifeCycleManager *)self queue];
+  queue = [(RTLifeCycleManager *)self queue];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __27__RTLifeCycleManager__exit__block_invoke_732;
   v40[3] = &unk_2788C4C70;
   v41 = v35;
   v42 = v34;
-  v43 = self;
+  selfCopy = self;
   v44 = a2;
   v32 = v34;
   v33 = v35;
-  dispatch_group_notify(v14, v31, v40);
+  dispatch_group_notify(v14, queue, v40);
 }
 
 void __27__RTLifeCycleManager__exit__block_invoke(uint64_t a1)

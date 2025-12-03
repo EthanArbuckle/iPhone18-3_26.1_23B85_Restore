@@ -1,18 +1,18 @@
 @interface BiomeKeyboardClient
-+ (id)processEvents:(id)a3 withCount:(int)a4;
++ (id)processEvents:(id)events withCount:(int)count;
 @end
 
 @implementation BiomeKeyboardClient
 
-+ (id)processEvents:(id)a3 withCount:(int)a4
++ (id)processEvents:(id)events withCount:(int)count
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = +[NSMutableDictionary dictionary];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v7 = v5;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v98 objects:v108 count:16];
   v9 = &selRef_typeConfiguration;
   v69 = v7;
@@ -20,7 +20,7 @@
   {
     v10 = v8;
     v11 = *v99;
-    v66 = a4;
+    countCopy = count;
     v67 = *v99;
     v68 = v6;
     do
@@ -35,20 +35,20 @@
         }
 
         v13 = *(*(&v98 + 1) + 8 * v12);
-        v14 = [v13 eventBody];
-        v15 = [v14 locale];
+        eventBody = [v13 eventBody];
+        locale = [eventBody locale];
 
-        if (v15)
+        if (locale)
         {
           v72 = v12;
-          v16 = [v13 eventBody];
-          v17 = [v16 locale];
-          v18 = [v17 containsString:@"+"];
+          eventBody2 = [v13 eventBody];
+          locale2 = [eventBody2 locale];
+          v18 = [locale2 containsString:@"+"];
 
           if (v18)
           {
-            v19 = [v9 + 435 extension];
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+            extension = [v9 + 435 extension];
+            if (os_log_type_enabled(extension, OS_LOG_TYPE_ERROR))
             {
               sub_10001CADC(&v94, v95);
             }
@@ -56,19 +56,19 @@
 
           else
           {
-            v20 = [v13 eventBody];
-            v21 = [v20 tokenType];
+            eventBody3 = [v13 eventBody];
+            tokenType = [eventBody3 tokenType];
 
             v22 = @"emojis";
-            if (v21 != 2)
+            if (tokenType != 2)
             {
-              v23 = [v13 eventBody];
-              v24 = [v23 tokenType];
+              eventBody4 = [v13 eventBody];
+              tokenType2 = [eventBody4 tokenType];
 
-              if (v24 != 1)
+              if (tokenType2 != 1)
               {
-                v19 = [v9 + 435 extension];
-                if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+                extension = [v9 + 435 extension];
+                if (os_log_type_enabled(extension, OS_LOG_TYPE_ERROR))
                 {
                   sub_10001CAB0(&v92, v93);
                 }
@@ -76,9 +76,9 @@
                 goto LABEL_33;
               }
 
-              v25 = [v13 eventBody];
-              v26 = [v25 locale];
-              v27 = [v26 componentsSeparatedByString:@"_"];
+              eventBody5 = [v13 eventBody];
+              locale3 = [eventBody5 locale];
+              v27 = [locale3 componentsSeparatedByString:@"_"];
               v28 = [NSMutableArray arrayWithArray:v27];
 
               if ([v28 count] >= 2)
@@ -93,7 +93,7 @@
 
             if (!v29)
             {
-              v30 = [FedStatsDataSampler samplerWithCount:v66];
+              v30 = [FedStatsDataSampler samplerWithCount:countCopy];
               [v6 setObject:v30 forKeyedSubscript:v22];
             }
 
@@ -103,11 +103,11 @@
             v89 = 0u;
             v90 = 0u;
             v91 = 0u;
-            v32 = [v13 eventBody];
-            v33 = [v32 tokenFrequencies];
+            eventBody6 = [v13 eventBody];
+            tokenFrequencies = [eventBody6 tokenFrequencies];
 
-            obj = v33;
-            v78 = [v33 countByEnumeratingWithState:&v88 objects:v107 count:16];
+            obj = tokenFrequencies;
+            v78 = [tokenFrequencies countByEnumeratingWithState:&v88 objects:v107 count:16];
             if (v78)
             {
               v76 = *v89;
@@ -121,18 +121,18 @@
                   }
 
                   v35 = *(*(&v88 + 1) + 8 * i);
-                  v36 = [v35 token];
+                  token = [v35 token];
 
-                  if (v36 && [v35 count] >= 1)
+                  if (token && [v35 count] >= 1)
                   {
                     v37 = 0;
                     do
                     {
-                      v38 = [v35 token];
-                      v106[0] = v38;
-                      v39 = [v13 eventBody];
-                      v40 = [v39 locale];
-                      v106[1] = v40;
+                      token2 = [v35 token];
+                      v106[0] = token2;
+                      eventBody7 = [v13 eventBody];
+                      locale4 = [eventBody7 locale];
+                      v106[1] = locale4;
                       v41 = [NSArray arrayWithObjects:v106 count:2];
                       [v31 addItem:v41];
 
@@ -153,7 +153,7 @@
             v7 = v69;
             v9 = &selRef_typeConfiguration;
             v10 = v70;
-            v19 = v71;
+            extension = v71;
             v11 = v67;
           }
 
@@ -162,8 +162,8 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v19 = [v9 + 435 extension];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        extension = [v9 + 435 extension];
+        if (os_log_type_enabled(extension, OS_LOG_TYPE_ERROR))
         {
           sub_10001CB08(&v96, v97);
         }
@@ -207,9 +207,9 @@ LABEL_34:
         v82 = 0u;
         v83 = 0u;
         v45 = [v77 objectForKeyedSubscript:v44];
-        v46 = [v45 getResults];
+        getResults = [v45 getResults];
 
-        v47 = [v46 countByEnumeratingWithState:&v80 objects:v104 count:16];
+        v47 = [getResults countByEnumeratingWithState:&v80 objects:v104 count:16];
         if (v47)
         {
           v48 = v47;
@@ -220,7 +220,7 @@ LABEL_34:
             {
               if (*v81 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(getResults);
               }
 
               v51 = *(*(&v80 + 1) + 8 * j);
@@ -251,7 +251,7 @@ LABEL_34:
               [v62 addObject:v63];
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v80 objects:v104 count:16];
+            v48 = [getResults countByEnumeratingWithState:&v80 objects:v104 count:16];
           }
 
           while (v48);

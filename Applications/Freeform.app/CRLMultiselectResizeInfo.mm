@@ -4,18 +4,18 @@
 - (Class)repClass;
 - (NSSet)representedSelectedBoardItems;
 - (_TtC8Freeform24CRLMultiselectResizeInfo)init;
-- (_TtC8Freeform24CRLMultiselectResizeInfo)initWithParentInfo:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)setRepresentedSelectedBoardItems:(id)a3 currentlyLaidOutWith:(id)a4;
+- (_TtC8Freeform24CRLMultiselectResizeInfo)initWithParentInfo:(id)info;
+- (void)setGeometry:(id)geometry;
+- (void)setParentInfo:(id)info;
+- (void)setRepresentedSelectedBoardItems:(id)items currentlyLaidOutWith:(id)with;
 @end
 
 @implementation CRLMultiselectResizeInfo
 
-- (_TtC8Freeform24CRLMultiselectResizeInfo)initWithParentInfo:(id)a3
+- (_TtC8Freeform24CRLMultiselectResizeInfo)initWithParentInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v4 = sub_100931358(a3);
+  v4 = sub_100931358(info);
   swift_unknownObjectRelease();
   return v4;
 }
@@ -27,19 +27,19 @@
   return v2;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  *(self + OBJC_IVAR____TtC8Freeform24CRLMultiselectResizeInfo_parentInfo) = a3;
+  *(self + OBJC_IVAR____TtC8Freeform24CRLMultiselectResizeInfo_parentInfo) = info;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform24CRLMultiselectResizeInfo_geometry);
-  *(self + OBJC_IVAR____TtC8Freeform24CRLMultiselectResizeInfo_geometry) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform24CRLMultiselectResizeInfo_geometry) = geometry;
+  geometryCopy = geometry;
 }
 
 - (Class)layoutClass
@@ -60,14 +60,14 @@
   return result;
 }
 
-- (void)setRepresentedSelectedBoardItems:(id)a3 currentlyLaidOutWith:(id)a4
+- (void)setRepresentedSelectedBoardItems:(id)items currentlyLaidOutWith:(id)with
 {
   type metadata accessor for CRLBoardItem(0);
   sub_1006D2240();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_1009310A4(v6, v7);
+  withCopy = with;
+  selfCopy = self;
+  sub_1009310A4(v6, withCopy);
 }
 
 - (NSSet)representedSelectedBoardItems

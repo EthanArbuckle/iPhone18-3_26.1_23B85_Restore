@@ -1,20 +1,20 @@
 @interface SmsFilterTrialManager
-- (SmsFilterTrialManager)initWithNamespace:(id)a3;
+- (SmsFilterTrialManager)initWithNamespace:(id)namespace;
 - (double)loadTrialPromoThreshold;
 - (double)loadTrialTransThreshold;
 - (id)getRegexFileNameWithPath;
 - (id)getThresholdMapFilePath;
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4;
-- (id)loadTrialModelByDeletingExistingModel:(id)a3;
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files;
+- (id)loadTrialModelByDeletingExistingModel:(id)model;
 - (int64_t)loadTrialModelTransitionTimer;
 - (void)loadTrialUpdates;
 @end
 
 @implementation SmsFilterTrialManager
 
-- (SmsFilterTrialManager)initWithNamespace:(id)a3
+- (SmsFilterTrialManager)initWithNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v20.receiver = self;
   v20.super_class = SmsFilterTrialManager;
   v5 = [(SmsFilterTrialManager *)&v20 init];
@@ -47,17 +47,17 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Trial Client %@", buf, 0xCu);
   }
 
-  v13 = [[NSString alloc] initWithFormat:@"%@", v4];
+  namespaceCopy = [[NSString alloc] initWithFormat:@"%@", namespaceCopy];
   v21[0] = @"/var/mobile/Library/SmsFilter";
-  v21[1] = v13;
+  v21[1] = namespaceCopy;
   v14 = [NSArray arrayWithObjects:v21 count:2];
   v15 = [NSURL fileURLWithPathComponents:v14];
-  v16 = [v15 path];
+  path = [v15 path];
   smsFilterDirectory = v6->_smsFilterDirectory;
-  v6->_smsFilterDirectory = v16;
+  v6->_smsFilterDirectory = path;
 
   trialNamespaceName = v6->_trialNamespaceName;
-  v6->_trialNamespaceName = v4;
+  v6->_trialNamespaceName = namespaceCopy;
 
   [(SmsFilterTrialManager *)v6 loadTrialUpdates];
   return v6;
@@ -81,11 +81,11 @@
   {
     trialClient = self->_trialClient;
     v9 = log;
-    v10 = [(TRIClient *)trialClient trackingId];
+    trackingId = [(TRIClient *)trialClient trackingId];
     v12 = self->_experimentID;
     trialNamespaceName = self->_trialNamespaceName;
     v13 = 138412802;
-    v14 = v10;
+    v14 = trackingId;
     v15 = 2112;
     v16 = trialNamespaceName;
     v17 = 2112;
@@ -94,20 +94,20 @@
   }
 }
 
-- (id)loadTrialModelByDeletingExistingModel:(id)a3
+- (id)loadTrialModelByDeletingExistingModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = modelCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Loading model from : %@", &v8, 0xCu);
     }
 
-    v6 = [(SmsFilterTrialManager *)self loadModelFromPath:v4 deleteExistingFiles:1];
+    v6 = [(SmsFilterTrialManager *)self loadModelFromPath:modelCopy deleteExistingFiles:1];
   }
 
   else
@@ -134,16 +134,16 @@ LABEL_15:
     }
 
 LABEL_16:
-    v6 = 0;
+    path = 0;
     goto LABEL_17;
   }
 
-  v5 = [v3 fileValue];
-  v6 = [v5 path];
+  fileValue = [v3 fileValue];
+  path = [fileValue path];
 
   v7 = self->_log;
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!path)
   {
     if (v8)
     {
@@ -160,14 +160,14 @@ LABEL_16:
     v16 = 138412546;
     v17 = v4;
     v18 = 2112;
-    v19 = v6;
+    v19 = path;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "regex file name: %@, %@", &v16, 0x16u);
   }
 
-  if (([v6 isAbsolutePath] & 1) == 0)
+  if (([path isAbsolutePath] & 1) == 0)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 pathForResource:v6 ofType:0];
+    v10 = [v9 pathForResource:path ofType:0];
 
     v11 = self->_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -181,13 +181,13 @@ LABEL_16:
     {
       v12 = v10;
 
-      v6 = v12;
+      path = v12;
     }
   }
 
 LABEL_17:
 
-  return v6;
+  return path;
 }
 
 - (id)getThresholdMapFilePath
@@ -206,16 +206,16 @@ LABEL_15:
     }
 
 LABEL_16:
-    v6 = 0;
+    path = 0;
     goto LABEL_17;
   }
 
-  v5 = [v3 fileValue];
-  v6 = [v5 path];
+  fileValue = [v3 fileValue];
+  path = [fileValue path];
 
   v7 = self->_log;
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!path)
   {
     if (v8)
     {
@@ -232,14 +232,14 @@ LABEL_16:
     v16 = 138412546;
     v17 = v4;
     v18 = 2112;
-    v19 = v6;
+    v19 = path;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "threshold file name: %@, %@", &v16, 0x16u);
   }
 
-  if (([v6 isAbsolutePath] & 1) == 0)
+  if (([path isAbsolutePath] & 1) == 0)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 pathForResource:v6 ofType:0];
+    v10 = [v9 pathForResource:path ofType:0];
 
     v11 = self->_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -253,13 +253,13 @@ LABEL_16:
     {
       v12 = v10;
 
-      v6 = v12;
+      path = v12;
     }
   }
 
 LABEL_17:
 
-  return v6;
+  return path;
 }
 
 - (double)loadTrialTransThreshold
@@ -326,33 +326,33 @@ LABEL_17:
     {
       v5 = log;
       v8 = 134217984;
-      v9 = [v3 longValue];
+      longValue = [v3 longValue];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Minimum retry timer for model transition %lld", &v8, 0xCu);
     }
 
-    v6 = [v3 longValue];
+    longValue2 = [v3 longValue];
   }
 
   else
   {
-    v6 = 0;
+    longValue2 = 0;
   }
 
-  return v6;
+  return longValue2;
 }
 
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files
 {
-  v4 = a4;
-  v6 = a3;
+  filesCopy = files;
+  pathCopy = path;
   v7 = os_transaction_create();
-  if (v6)
+  if (pathCopy)
   {
     v77 = v7;
-    if (([v6 isAbsolutePath] & 1) == 0)
+    if (([pathCopy isAbsolutePath] & 1) == 0)
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
-      v9 = [v8 pathForResource:v6 ofType:0];
+      v9 = [v8 pathForResource:pathCopy ofType:0];
 
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -366,13 +366,13 @@ LABEL_17:
       {
         v11 = v9;
 
-        v6 = v11;
+        pathCopy = v11;
       }
     }
 
     v12 = +[NSFileManager defaultManager];
-    v13 = [v6 lastPathComponent];
-    v14 = [NSString stringWithFormat:@"%@%@", v13, @"c"];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v14 = [NSString stringWithFormat:@"%@%@", lastPathComponent, @"c"];
 
     v86 = 0;
     v96[0] = self->_smsFilterDirectory;
@@ -380,19 +380,19 @@ LABEL_17:
     v15 = [NSArray arrayWithObjects:v96 count:2];
     v16 = [NSURL fileURLWithPathComponents:v15];
 
-    if (v4)
+    if (filesCopy)
     {
-      v17 = [v16 path];
+      path = [v16 path];
       v18 = self->_log;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v89 = v17;
+        v89 = path;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Removing existing files from %@", buf, 0xCu);
       }
 
       v85 = 0;
-      v19 = [v12 removeItemAtPath:v17 error:&v85];
+      v19 = [v12 removeItemAtPath:path error:&v85];
       v20 = v85;
       if ((v19 & 1) == 0)
       {
@@ -400,7 +400,7 @@ LABEL_17:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v89 = v17;
+          v89 = path;
           v90 = 2112;
           v91 = v20;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -413,8 +413,8 @@ LABEL_17:
       v20 = 0;
     }
 
-    v24 = [v16 path];
-    v25 = [v12 fileExistsAtPath:v24 isDirectory:&v86];
+    path2 = [v16 path];
+    v25 = [v12 fileExistsAtPath:path2 isDirectory:&v86];
 
     if (v25)
     {
@@ -447,12 +447,12 @@ LABEL_17:
     }
 
     v75 = v14;
-    v29 = [v12 temporaryDirectory];
-    v30 = [v29 path];
-    v95[0] = v30;
+    temporaryDirectory = [v12 temporaryDirectory];
+    path3 = [temporaryDirectory path];
+    v95[0] = path3;
     v31 = +[NSUUID UUID];
-    v32 = [v31 UUIDString];
-    v95[1] = v32;
+    uUIDString = [v31 UUIDString];
+    v95[1] = uUIDString;
     [NSArray arrayWithObjects:v95 count:2];
     v33 = v76 = v12;
     v26 = [NSString pathWithComponents:v33];
@@ -481,18 +481,18 @@ LABEL_17:
     }
 
     v94[0] = v26;
-    v34 = [v6 lastPathComponent];
-    v94[1] = v34;
+    lastPathComponent2 = [pathCopy lastPathComponent];
+    v94[1] = lastPathComponent2;
     v35 = [NSArray arrayWithObjects:v94 count:2];
     v36 = [NSURL fileURLWithPathComponents:v35];
 
     v37 = v36;
-    v38 = [v36 path];
+    path4 = [v36 path];
     v82 = v27;
-    LOBYTE(v34) = [v76 copyItemAtPath:v6 toPath:v38 error:&v82];
+    LOBYTE(lastPathComponent2) = [v76 copyItemAtPath:pathCopy toPath:path4 error:&v82];
     v39 = v82;
 
-    if ((v34 & 1) == 0)
+    if ((lastPathComponent2 & 1) == 0)
     {
       v42 = v39;
       v43 = self->_log;
@@ -501,7 +501,7 @@ LABEL_17:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v89 = v6;
+        v89 = pathCopy;
         v90 = 2112;
         v44 = v37;
         v91 = v37;
@@ -604,12 +604,12 @@ LABEL_57:
     else
     {
       v54 = v50;
-      v55 = [v48 path];
-      v56 = [v55 lastPathComponent];
-      v57 = [v56 stringByDeletingPathExtension];
+      path5 = [v48 path];
+      lastPathComponent3 = [path5 lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent3 stringByDeletingPathExtension];
 
-      v72 = v57;
-      [v57 stringByAppendingPathExtension:@"mlmodelc"];
+      v72 = stringByDeletingPathExtension;
+      [stringByDeletingPathExtension stringByAppendingPathExtension:@"mlmodelc"];
       v71 = v50 = v54;
       v53 = [v54 URLByAppendingPathComponent:?];
 
@@ -657,9 +657,9 @@ LABEL_57:
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
         {
           v66 = v65;
-          v67 = [v58 modelDescription];
-          v68 = [v67 metadata];
-          v69 = [v68 objectForKeyedSubscript:MLModelVersionStringKey];
+          modelDescription = [v58 modelDescription];
+          metadata = [modelDescription metadata];
+          v69 = [metadata objectForKeyedSubscript:MLModelVersionStringKey];
           *buf = 138412546;
           v89 = v58;
           v90 = 2112;

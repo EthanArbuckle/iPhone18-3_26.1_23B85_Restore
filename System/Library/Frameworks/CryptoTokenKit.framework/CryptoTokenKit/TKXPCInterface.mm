@@ -1,47 +1,47 @@
 @interface TKXPCInterface
 + (id)interfaceForSmartCardTokenRegistration;
-+ (id)interfaceForXPCProtocol:(id)a3;
++ (id)interfaceForXPCProtocol:(id)protocol;
 @end
 
 @implementation TKXPCInterface
 
-+ (id)interfaceForXPCProtocol:(id)a3
++ (id)interfaceForXPCProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   if (qword_100043458 != -1)
   {
     sub_100021BB0();
   }
 
-  v5 = [qword_100043450 objectForKey:v4];
+  v5 = [qword_100043450 objectForKey:protocolCopy];
   if (!v5)
   {
-    if (&OBJC_PROTOCOL___TKSmartCardTokenRegistrationXPC == v4)
+    if (&OBJC_PROTOCOL___TKSmartCardTokenRegistrationXPC == protocolCopy)
     {
-      v6 = [a1 interfaceForSmartCardTokenRegistration];
+      interfaceForSmartCardTokenRegistration = [self interfaceForSmartCardTokenRegistration];
     }
 
-    else if (&OBJC_PROTOCOL___TKProtocolSlotClient == v4)
+    else if (&OBJC_PROTOCOL___TKProtocolSlotClient == protocolCopy)
     {
-      v6 = [a1 interfaceForSlotClient];
+      interfaceForSmartCardTokenRegistration = [self interfaceForSlotClient];
     }
 
     else
     {
-      if (&OBJC_PROTOCOL___TKProtocolSlotClientNotification == v4)
+      if (&OBJC_PROTOCOL___TKProtocolSlotClientNotification == protocolCopy)
       {
-        [a1 interfaceForSlotClientNotification];
+        [self interfaceForSlotClientNotification];
       }
 
       else
       {
-        [NSXPCInterface interfaceWithProtocol:v4];
+        [NSXPCInterface interfaceWithProtocol:protocolCopy];
       }
-      v6 = ;
+      interfaceForSmartCardTokenRegistration = ;
     }
 
-    v5 = v6;
-    [qword_100043450 setObject:v6 forKey:v4];
+    v5 = interfaceForSmartCardTokenRegistration;
+    [qword_100043450 setObject:interfaceForSmartCardTokenRegistration forKey:protocolCopy];
   }
 
   v7 = v5;

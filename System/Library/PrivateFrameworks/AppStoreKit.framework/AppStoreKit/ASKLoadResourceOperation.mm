@@ -1,26 +1,26 @@
 @interface ASKLoadResourceOperation
-- (ASKLoadResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5;
-- (void)didCompleteWithResource:(id)a3 error:(id)a4;
+- (ASKLoadResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer;
+- (void)didCompleteWithResource:(id)resource error:(id)error;
 @end
 
 @implementation ASKLoadResourceOperation
 
-- (ASKLoadResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5
+- (ASKLoadResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer
 {
   v6.receiver = self;
   v6.super_class = ASKLoadResourceOperation;
-  return [(ASKLoadResourceOperation *)&v6 init:a3];
+  return [(ASKLoadResourceOperation *)&v6 init:request];
 }
 
-- (void)didCompleteWithResource:(id)a3 error:(id)a4
+- (void)didCompleteWithResource:(id)resource error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(ASKLoadResourceOperation *)self outputBlock];
-  if (v7)
+  resourceCopy = resource;
+  errorCopy = error;
+  outputBlock = [(ASKLoadResourceOperation *)self outputBlock];
+  if (outputBlock)
   {
     [(ASKLoadResourceOperation *)self setOutputBlock:0];
-    (v7)[2](v7, v8, v6);
+    (outputBlock)[2](outputBlock, resourceCopy, errorCopy);
   }
 }
 

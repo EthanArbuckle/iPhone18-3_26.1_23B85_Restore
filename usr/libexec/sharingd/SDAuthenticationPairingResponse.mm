@@ -1,22 +1,22 @@
 @interface SDAuthenticationPairingResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequestArmingUI:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequestArmingUI:(BOOL)i;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAuthenticationPairingResponse
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRequestArmingUI:(BOOL)a3
+- (void)setHasRequestArmingUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = SDAuthenticationPairingResponse;
   v3 = [(SDAuthenticationPairingResponse *)&v7 description];
-  v4 = [(SDAuthenticationPairingResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAuthenticationPairingResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -124,9 +124,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -171,60 +171,60 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[11] = self->_version;
-    *(v4 + 52) |= 4u;
+    toCopy[11] = self->_version;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[10] = self->_type;
-    *(v4 + 52) |= 2u;
+    toCopy[10] = self->_type;
+    *(toCopy + 52) |= 2u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_sessionID)
   {
-    [v4 setSessionID:?];
-    v4 = v7;
+    [toCopy setSessionID:?];
+    toCopy = v7;
   }
 
   if (self->_longTermKey)
   {
     [v7 setLongTermKey:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_token)
   {
     [v7 setToken:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[2] = self->_errorCode;
-    *(v4 + 52) |= 1u;
+    toCopy[2] = self->_errorCode;
+    *(toCopy + 52) |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 8) != 0)
   {
-    *(v4 + 48) = self->_requestArmingUI;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 48) = self->_requestArmingUI;
+    *(toCopy + 52) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -240,15 +240,15 @@
     *(v5 + 52) |= 2u;
   }
 
-  v8 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionID copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
-  v10 = [(NSData *)self->_longTermKey copyWithZone:a3];
+  v10 = [(NSData *)self->_longTermKey copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
-  v12 = [(NSData *)self->_token copyWithZone:a3];
+  v12 = [(NSData *)self->_token copyWithZone:zone];
   v13 = v6[4];
   v6[4] = v12;
 
@@ -269,49 +269,49 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_version != *(v4 + 11))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_version != *(equalCopy + 11))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 3) && ![(NSString *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 3) && ![(NSString *)sessionID isEqual:?])
   {
     goto LABEL_25;
   }
 
   longTermKey = self->_longTermKey;
-  if (longTermKey | *(v4 + 2))
+  if (longTermKey | *(equalCopy + 2))
   {
     if (![(NSData *)longTermKey isEqual:?])
     {
@@ -320,7 +320,7 @@
   }
 
   token = self->_token;
-  if (token | *(v4 + 4))
+  if (token | *(equalCopy + 4))
   {
     if (![(NSData *)token isEqual:?])
     {
@@ -330,21 +330,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_errorCode != *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_25;
   }
 
-  v9 = (*(v4 + 52) & 8) == 0;
+  v9 = (*(equalCopy + 52) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
 LABEL_25:
       v9 = 0;
@@ -353,13 +353,13 @@ LABEL_25:
 
     if (self->_requestArmingUI)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_25;
     }
@@ -423,53 +423,53 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 52);
+  fromCopy = from;
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 11);
+    self->_version = *(fromCopy + 11);
     *&self->_has |= 4u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_type = *(v4 + 10);
+    self->_type = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  v7 = v4;
-  if (*(v4 + 3))
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SDAuthenticationPairingResponse *)self setSessionID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAuthenticationPairingResponse *)self setLongTermKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SDAuthenticationPairingResponse *)self setToken:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if (v6)
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_requestArmingUI = *(v4 + 48);
+    self->_requestArmingUI = *(fromCopy + 48);
     *&self->_has |= 8u;
   }
 }

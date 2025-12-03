@@ -1,28 +1,28 @@
 @interface MSAudioProgressView
-- (MSAudioProgressView)initWithFrame:(CGRect)a3;
+- (MSAudioProgressView)initWithFrame:(CGRect)frame;
 - (id)_newBufferingImageView;
 - (id)_newProgressView;
 - (void)_cancelBufferingTimer;
 - (void)_showBufferingImageView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPlayerStatus:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPlayerStatus:(id)status;
 @end
 
 @implementation MSAudioProgressView
 
-- (MSAudioProgressView)initWithFrame:(CGRect)a3
+- (MSAudioProgressView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = MSAudioProgressView;
-  v3 = [(MSAudioProgressView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MSAudioProgressView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MSAudioProgressView *)v3 _newProgressView];
-    v4->_progressView = v5;
-    [(MSAudioProgressView *)v4 addSubview:v5];
+    _newProgressView = [(MSAudioProgressView *)v3 _newProgressView];
+    v4->_progressView = _newProgressView;
+    [(MSAudioProgressView *)v4 addSubview:_newProgressView];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = objc_alloc(MEMORY[0x277D755E8]);
     v8 = [MEMORY[0x277D755B8] imageNamed:@"StopButton" inBundle:v6];
@@ -44,22 +44,22 @@
   [(MSAudioProgressView *)&v3 dealloc];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(UIImageView *)self->_stopImageView setHighlighted:?];
   }
 }
 
-- (void)setPlayerStatus:(id)a3
+- (void)setPlayerStatus:(id)status
 {
   playerStatus = self->_playerStatus;
-  if (playerStatus != a3)
+  if (playerStatus != status)
   {
 
-    v6 = [a3 copy];
+    v6 = [status copy];
     self->_playerStatus = v6;
     if ([(SUPlayerStatus *)v6 playerState]== 1)
     {
@@ -90,9 +90,9 @@
       self->_bufferingImageView = 0;
       if (!self->_progressView)
       {
-        v11 = [(MSAudioProgressView *)self _newProgressView];
-        self->_progressView = v11;
-        [(MSAudioProgressView *)self insertSubview:v11 belowSubview:self->_stopImageView];
+        _newProgressView = [(MSAudioProgressView *)self _newProgressView];
+        self->_progressView = _newProgressView;
+        [(MSAudioProgressView *)self insertSubview:_newProgressView belowSubview:self->_stopImageView];
       }
 
       [(SUPlayerStatus *)self->_playerStatus duration];
@@ -220,9 +220,9 @@ uint64_t __39__MSAudioProgressView_setPlayerStatus___block_invoke(uint64_t a1)
     bufferingImageView = self->_bufferingImageView;
     if (!bufferingImageView)
     {
-      v4 = [(MSAudioProgressView *)self _newBufferingImageView];
-      self->_bufferingImageView = v4;
-      [(MSAudioProgressView *)self insertSubview:v4 belowSubview:self->_stopImageView];
+      _newBufferingImageView = [(MSAudioProgressView *)self _newBufferingImageView];
+      self->_bufferingImageView = _newBufferingImageView;
+      [(MSAudioProgressView *)self insertSubview:_newBufferingImageView belowSubview:self->_stopImageView];
       bufferingImageView = self->_bufferingImageView;
     }
 

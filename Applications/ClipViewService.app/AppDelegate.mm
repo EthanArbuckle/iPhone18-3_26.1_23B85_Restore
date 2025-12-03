@@ -1,35 +1,35 @@
 @interface AppDelegate
-- (BOOL)_handleUniversalLinkInUserActivity:(id)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)_handleUniversalLinkInUserActivity:(id)activity;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [NSHashTable weakObjectsHashTable:a3];
+  v5 = [NSHashTable weakObjectsHashTable:application];
   [(AppDelegate *)self setViewControllers:v5];
 
   return 1;
 }
 
-- (BOOL)_handleUniversalLinkInUserActivity:(id)a3
+- (BOOL)_handleUniversalLinkInUserActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 activityType];
-  v5 = [v4 isEqual:NSUserActivityTypeBrowsingWeb];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = [activityType isEqual:NSUserActivityTypeBrowsingWeb];
 
   if (v5)
   {
-    v6 = [v3 webpageURL];
-    v7 = v6;
-    if (v6)
+    webpageURL = [activityCopy webpageURL];
+    v7 = webpageURL;
+    if (webpageURL)
     {
-      v8 = [v6 cps_fallbackBundleIdentifier];
-      v9 = v8 != 0;
+      cps_fallbackBundleIdentifier = [webpageURL cps_fallbackBundleIdentifier];
+      v9 = cps_fallbackBundleIdentifier != 0;
       v10 = sub_100001374();
       v11 = v10;
-      if (v8)
+      if (cps_fallbackBundleIdentifier)
       {
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
@@ -44,16 +44,16 @@
         v22 = sub_100001260;
         v23 = sub_100001270;
         v12 = [CPSClipRequest alloc];
-        v13 = [v7 _wp_urlByRemovingTrackingInformation];
-        v24 = [v12 initWithURL:v13];
+        _wp_urlByRemovingTrackingInformation = [v7 _wp_urlByRemovingTrackingInformation];
+        v24 = [v12 initWithURL:_wp_urlByRemovingTrackingInformation];
 
-        v14 = [*(*(&buf + 1) + 40) sessionProxy];
-        v15 = [v14 configuration];
+        sessionProxy = [*(*(&buf + 1) + 40) sessionProxy];
+        configuration = [sessionProxy configuration];
 
-        v16 = [v3 _sourceApplication];
-        [v15 setReferrerBundleID:v16];
+        _sourceApplication = [activityCopy _sourceApplication];
+        [configuration setReferrerBundleID:_sourceApplication];
 
-        [v15 setLaunchReason:CPSSessionLaunchReasonInApp];
+        [configuration setLaunchReason:CPSSessionLaunchReasonInApp];
         v17 = *(*(&buf + 1) + 40);
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;

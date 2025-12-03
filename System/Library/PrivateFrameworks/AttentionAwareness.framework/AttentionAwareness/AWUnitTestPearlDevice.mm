@@ -3,19 +3,19 @@
 + (id)sharedDevice;
 - (AWUnitTestPearlDevice)init;
 - (BKDevicePearlDelegate)delegate;
-- (id)createPresenceDetectOperationWithError:(id *)a3;
-- (void)deliverPearlDeviceEvent:(int64_t)a3;
-- (void)deliverPearlDeviceState:(int64_t)a3;
-- (void)getStatsWithBlock:(id)a3;
+- (id)createPresenceDetectOperationWithError:(id *)error;
+- (void)deliverPearlDeviceEvent:(int64_t)event;
+- (void)deliverPearlDeviceState:(int64_t)state;
+- (void)getStatsWithBlock:(id)block;
 - (void)resetStats;
-- (void)setCarPlayConnected:(BOOL)a3;
-- (void)setCarplayStateChangedCallback:(id)a3;
-- (void)setDisplayCallback:(id)a3;
-- (void)setDisplayState:(BOOL)a3;
-- (void)setPearlErrorState:(BOOL)a3;
-- (void)setSampleState:(BOOL)a3 deliverEvent:(BOOL)a4;
-- (void)setSmartCoverCallback:(id)a3;
-- (void)setSmartCoverClosed:(BOOL)a3;
+- (void)setCarPlayConnected:(BOOL)connected;
+- (void)setCarplayStateChangedCallback:(id)callback;
+- (void)setDisplayCallback:(id)callback;
+- (void)setDisplayState:(BOOL)state;
+- (void)setPearlErrorState:(BOOL)state;
+- (void)setSampleState:(BOOL)state deliverEvent:(BOOL)event;
+- (void)setSmartCoverCallback:(id)callback;
+- (void)setSmartCoverClosed:(BOOL)closed;
 @end
 
 @implementation AWUnitTestPearlDevice
@@ -27,9 +27,9 @@
   return WeakRetained;
 }
 
-- (void)setPearlErrorState:(BOOL)a3
+- (void)setPearlErrorState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v27 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
   {
@@ -48,7 +48,7 @@
       }
 
       v12 = "clear";
-      if (v3)
+      if (stateCopy)
       {
         v12 = "set";
       }
@@ -99,7 +99,7 @@
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (stateCopy)
         {
           v16 = "set";
         }
@@ -127,7 +127,7 @@ LABEL_24:
   v19[2] = __44__AWUnitTestPearlDevice_setPearlErrorState___block_invoke;
   v19[3] = &unk_1E7F37FC8;
   v19[4] = self;
-  v20 = v3;
+  v20 = stateCopy;
   dispatch_sync(awQueue, v19);
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -149,17 +149,17 @@ uint64_t __44__AWUnitTestPearlDevice_setPearlErrorState___block_invoke(uint64_t 
   return [v4 setErrorState:v1 & 1];
 }
 
-- (void)setCarplayStateChangedCallback:(id)a3
+- (void)setCarplayStateChangedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   awQueue = self->_awQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AWUnitTestPearlDevice_setCarplayStateChangedCallback___block_invoke;
   v7[3] = &unk_1E7F37F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(awQueue, v7);
 }
 
@@ -170,9 +170,9 @@ void __56__AWUnitTestPearlDevice_setCarplayStateChangedCallback___block_invoke(u
   [v1 addObject:v2];
 }
 
-- (void)setCarPlayConnected:(BOOL)a3
+- (void)setCarPlayConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v27 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
   {
@@ -191,7 +191,7 @@ void __56__AWUnitTestPearlDevice_setCarplayStateChangedCallback___block_invoke(u
       }
 
       v12 = "DISCONNECTED";
-      if (v3)
+      if (connectedCopy)
       {
         v12 = "CONNECTED";
       }
@@ -242,7 +242,7 @@ void __56__AWUnitTestPearlDevice_setCarplayStateChangedCallback___block_invoke(u
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (connectedCopy)
         {
           v16 = "CONNECTED";
         }
@@ -270,7 +270,7 @@ LABEL_24:
   v19[2] = __45__AWUnitTestPearlDevice_setCarPlayConnected___block_invoke;
   v19[3] = &unk_1E7F37FC8;
   v19[4] = self;
-  v20 = v3;
+  v20 = connectedCopy;
   dispatch_sync(awQueue, v19);
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -325,17 +325,17 @@ void __45__AWUnitTestPearlDevice_setCarPlayConnected___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSmartCoverCallback:(id)a3
+- (void)setSmartCoverCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   awQueue = self->_awQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AWUnitTestPearlDevice_setSmartCoverCallback___block_invoke;
   v7[3] = &unk_1E7F37F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(awQueue, v7);
 }
 
@@ -346,9 +346,9 @@ void __47__AWUnitTestPearlDevice_setSmartCoverCallback___block_invoke(uint64_t a
   [v1 addObject:v2];
 }
 
-- (void)setSmartCoverClosed:(BOOL)a3
+- (void)setSmartCoverClosed:(BOOL)closed
 {
-  v3 = a3;
+  closedCopy = closed;
   v27 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
   {
@@ -367,7 +367,7 @@ void __47__AWUnitTestPearlDevice_setSmartCoverCallback___block_invoke(uint64_t a
       }
 
       v12 = "OPEN";
-      if (v3)
+      if (closedCopy)
       {
         v12 = "CLOSED";
       }
@@ -418,7 +418,7 @@ void __47__AWUnitTestPearlDevice_setSmartCoverCallback___block_invoke(uint64_t a
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (closedCopy)
         {
           v16 = "CLOSED";
         }
@@ -446,7 +446,7 @@ LABEL_24:
   v19[2] = __45__AWUnitTestPearlDevice_setSmartCoverClosed___block_invoke;
   v19[3] = &unk_1E7F37FC8;
   v19[4] = self;
-  v20 = v3;
+  v20 = closedCopy;
   dispatch_sync(awQueue, v19);
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -501,17 +501,17 @@ void __45__AWUnitTestPearlDevice_setSmartCoverClosed___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplayCallback:(id)a3
+- (void)setDisplayCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   awQueue = self->_awQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AWUnitTestPearlDevice_setDisplayCallback___block_invoke;
   v7[3] = &unk_1E7F37F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_sync(awQueue, v7);
 }
 
@@ -522,9 +522,9 @@ void __44__AWUnitTestPearlDevice_setDisplayCallback___block_invoke(uint64_t a1)
   [v1 addObject:v2];
 }
 
-- (void)setDisplayState:(BOOL)a3
+- (void)setDisplayState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v27 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
   {
@@ -543,7 +543,7 @@ void __44__AWUnitTestPearlDevice_setDisplayCallback___block_invoke(uint64_t a1)
       }
 
       v12 = "DISPLAY OFF";
-      if (v3)
+      if (stateCopy)
       {
         v12 = "DISPLAY ON";
       }
@@ -594,7 +594,7 @@ void __44__AWUnitTestPearlDevice_setDisplayCallback___block_invoke(uint64_t a1)
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (stateCopy)
         {
           v16 = "DISPLAY ON";
         }
@@ -622,7 +622,7 @@ LABEL_24:
   v19[2] = __41__AWUnitTestPearlDevice_setDisplayState___block_invoke;
   v19[3] = &unk_1E7F37FC8;
   v19[4] = self;
-  v20 = v3;
+  v20 = stateCopy;
   dispatch_sync(awQueue, v19);
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -677,9 +677,9 @@ void __41__AWUnitTestPearlDevice_setDisplayState___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSampleState:(BOOL)a3 deliverEvent:(BOOL)a4
+- (void)setSampleState:(BOOL)state deliverEvent:(BOOL)event
 {
-  v5 = a3;
+  stateCopy = state;
   v30 = *MEMORY[0x1E69E9840];
   if (currentLogLevel == 5)
   {
@@ -698,7 +698,7 @@ void __41__AWUnitTestPearlDevice_setDisplayState___block_invoke(uint64_t a1)
       }
 
       v14 = "FACE NOT FOUND";
-      if (v5)
+      if (stateCopy)
       {
         v14 = "FACE FOUND";
       }
@@ -749,7 +749,7 @@ void __41__AWUnitTestPearlDevice_setDisplayState___block_invoke(uint64_t a1)
         *buf = 136315906;
         v25 = *&v10;
         v26 = 1024;
-        if (v5)
+        if (stateCopy)
         {
           v18 = "FACE FOUND";
         }
@@ -777,8 +777,8 @@ LABEL_24:
   v21[2] = __53__AWUnitTestPearlDevice_setSampleState_deliverEvent___block_invoke;
   v21[3] = &unk_1E7F37B20;
   v21[4] = self;
-  v22 = v5;
-  v23 = a4;
+  v22 = stateCopy;
+  eventCopy = event;
   dispatch_sync(awQueue, v21);
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -815,17 +815,17 @@ uint64_t __35__AWUnitTestPearlDevice_resetStats__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)getStatsWithBlock:(id)a3
+- (void)getStatsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   awQueue = self->_awQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__AWUnitTestPearlDevice_getStatsWithBlock___block_invoke;
   v7[3] = &unk_1E7F37F78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(awQueue, v7);
 }
 
@@ -840,16 +840,16 @@ uint64_t __43__AWUnitTestPearlDevice_getStatsWithBlock___block_invoke(uint64_t a
   return v3(v1, &v6);
 }
 
-- (void)deliverPearlDeviceState:(int64_t)a3
+- (void)deliverPearlDeviceState:(int64_t)state
 {
-  v5 = [(AWUnitTestPearlDevice *)self queue];
+  queue = [(AWUnitTestPearlDevice *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__AWUnitTestPearlDevice_deliverPearlDeviceState___block_invoke;
   v6[3] = &unk_1E7F37F50;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = state;
+  dispatch_async(queue, v6);
 }
 
 void __49__AWUnitTestPearlDevice_deliverPearlDeviceState___block_invoke(uint64_t a1)
@@ -947,16 +947,16 @@ LABEL_21:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deliverPearlDeviceEvent:(int64_t)a3
+- (void)deliverPearlDeviceEvent:(int64_t)event
 {
-  v5 = [(AWUnitTestPearlDevice *)self queue];
+  queue = [(AWUnitTestPearlDevice *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__AWUnitTestPearlDevice_deliverPearlDeviceEvent___block_invoke;
   v6[3] = &unk_1E7F37F50;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = event;
+  dispatch_async(queue, v6);
 }
 
 void __49__AWUnitTestPearlDevice_deliverPearlDeviceEvent___block_invoke(uint64_t a1)
@@ -1068,7 +1068,7 @@ LABEL_21:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createPresenceDetectOperationWithError:(id *)a3
+- (id)createPresenceDetectOperationWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -1119,17 +1119,17 @@ void __64__AWUnitTestPearlDevice_createPresenceDetectOperationWithError___block_
 
     v2->_sampleStatsPtr = &v2->_sampleStats;
     v2->_pearlError = 0;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     displayCallbacks = v2->_displayCallbacks;
-    v2->_displayCallbacks = v5;
+    v2->_displayCallbacks = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     smarCoverCallbacks = v2->_smarCoverCallbacks;
-    v2->_smarCoverCallbacks = v7;
+    v2->_smarCoverCallbacks = array2;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     carplayCallbacks = v2->_carplayCallbacks;
-    v2->_carplayCallbacks = v9;
+    v2->_carplayCallbacks = array3;
 
     v11 = objc_alloc_init(AVFoundationUnitTestSession);
     AVFoundationSession = v2->_AVFoundationSession;
@@ -1142,9 +1142,9 @@ void __64__AWUnitTestPearlDevice_createPresenceDetectOperationWithError___block_
 + (id)sharedAVFoundationSession
 {
   v2 = +[AWUnitTestPearlDevice sharedDevice];
-  v3 = [v2 AVFoundationSession];
+  aVFoundationSession = [v2 AVFoundationSession];
 
-  return v3;
+  return aVFoundationSession;
 }
 
 + (id)sharedDevice

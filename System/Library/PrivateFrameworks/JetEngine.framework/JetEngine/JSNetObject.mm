@@ -1,15 +1,15 @@
 @interface JSNetObject
 - (_TtC9JetEngine11JSNetObject)init;
-- (id)fetch:(id)a3;
+- (id)fetch:(id)fetch;
 @end
 
 @implementation JSNetObject
 
-- (id)fetch:(id)a3
+- (id)fetch:(id)fetch
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7AA8(v4);
+  fetchCopy = fetch;
+  selfCopy = self;
+  v6 = sub_1AB0B7AA8(fetchCopy);
 
   return v6;
 }

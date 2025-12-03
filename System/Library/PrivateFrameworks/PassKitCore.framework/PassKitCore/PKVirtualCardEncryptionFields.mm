@@ -1,21 +1,21 @@
 @interface PKVirtualCardEncryptionFields
-- (PKVirtualCardEncryptionFields)initWithCertificates:(id)a3;
+- (PKVirtualCardEncryptionFields)initWithCertificates:(id)certificates;
 - (id)dictionaryRepresentation;
-- (void)prepareCertificateWithQueue:(id)a3 completion:(id)a4;
-- (void)prepareOneTimeCertificateWithQueue:(id)a3 completion:(id)a4;
+- (void)prepareCertificateWithQueue:(id)queue completion:(id)completion;
+- (void)prepareOneTimeCertificateWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation PKVirtualCardEncryptionFields
 
-- (PKVirtualCardEncryptionFields)initWithCertificates:(id)a3
+- (PKVirtualCardEncryptionFields)initWithCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   v9.receiver = self;
   v9.super_class = PKVirtualCardEncryptionFields;
   v5 = [(PKVirtualCardEncryptionFields *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [certificatesCopy copy];
     certificates = v5->_certificates;
     v5->_certificates = v6;
 
@@ -26,10 +26,10 @@
   return v5;
 }
 
-- (void)prepareCertificateWithQueue:(id)a3 completion:(id)a4
+- (void)prepareCertificateWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -42,9 +42,9 @@
   v10[2] = __72__PKVirtualCardEncryptionFields_prepareCertificateWithQueue_completion___block_invoke;
   v10[3] = &unk_1E79D58A8;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  PKPersistentBAACertificateAndKey(0, v6, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  PKPersistentBAACertificateAndKey(0, queueCopy, v10);
 }
 
 void __72__PKVirtualCardEncryptionFields_prepareCertificateWithQueue_completion___block_invoke(uint64_t a1, void *a2)
@@ -64,10 +64,10 @@ void __72__PKVirtualCardEncryptionFields_prepareCertificateWithQueue_completion_
   }
 }
 
-- (void)prepareOneTimeCertificateWithQueue:(id)a3 completion:(id)a4
+- (void)prepareOneTimeCertificateWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,9 +80,9 @@ void __72__PKVirtualCardEncryptionFields_prepareCertificateWithQueue_completion_
   v10[2] = __79__PKVirtualCardEncryptionFields_prepareOneTimeCertificateWithQueue_completion___block_invoke;
   v10[3] = &unk_1E79D58A8;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  PKGenerateOneTimeBAACertificate(0, v6, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  PKGenerateOneTimeBAACertificate(0, queueCopy, v10);
 }
 
 void __79__PKVirtualCardEncryptionFields_prepareOneTimeCertificateWithQueue_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -121,22 +121,22 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   os_unfair_lock_lock(&self->_lock);
   if ([(NSArray *)self->_certificates count])
   {
     v4 = [(NSArray *)self->_certificates pk_arrayByApplyingBlock:&__block_literal_global_397];
-    [v3 setObject:v4 forKeyedSubscript:@"certificates"];
+    [dictionary setObject:v4 forKeyedSubscript:@"certificates"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
   encryptionVersion = self->_encryptionVersion;
   if (encryptionVersion)
   {
-    [v3 setObject:encryptionVersion forKeyedSubscript:@"encryptionVersion"];
+    [dictionary setObject:encryptionVersion forKeyedSubscript:@"encryptionVersion"];
   }
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }

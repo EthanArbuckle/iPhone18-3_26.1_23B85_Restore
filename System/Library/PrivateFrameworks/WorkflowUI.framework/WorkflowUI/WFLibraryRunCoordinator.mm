@@ -1,21 +1,21 @@
 @interface WFLibraryRunCoordinator
-- (WFLibraryRunCoordinator)initWithSource:(id)a3 database:(id)a4;
+- (WFLibraryRunCoordinator)initWithSource:(id)source database:(id)database;
 - (WFLibraryRunCoordinatorDelegate)delegate;
 - (id)view;
-- (void)accessibilityAnnounce:(id)a3;
+- (void)accessibilityAnnounce:(id)announce;
 - (void)dealloc;
-- (void)didFinishRunningWorkflow:(id)a3 withError:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openWorkflowReferenceAndRun:(id)a3 fromSource:(id)a4 withInput:(id)a5 state:(id)a6 requestOutput:(BOOL)a7 runViewSource:(id)a8 completionHandler:(id)a9;
-- (void)registerObserver:(id)a3;
-- (void)runAppShortcut:(id)a3 withLNAction:(id)a4 andMetadata:(id)a5;
-- (void)runContextualAction:(id)a3;
-- (void)setRunningWorkflowProgress:(id)a3;
+- (void)didFinishRunningWorkflow:(id)workflow withError:(id)error;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openWorkflowReferenceAndRun:(id)run fromSource:(id)source withInput:(id)input state:(id)state requestOutput:(BOOL)output runViewSource:(id)viewSource completionHandler:(id)handler;
+- (void)registerObserver:(id)observer;
+- (void)runAppShortcut:(id)shortcut withLNAction:(id)action andMetadata:(id)metadata;
+- (void)runContextualAction:(id)action;
+- (void)setRunningWorkflowProgress:(id)progress;
 - (void)stop;
-- (void)unregisterObserver:(id)a3;
-- (void)updateProgress:(double)a3 waiting:(BOOL)a4 cancelled:(BOOL)a5 forWorkflow:(id)a6;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)unregisterObserver:(id)observer;
+- (void)updateProgress:(double)progress waiting:(BOOL)waiting cancelled:(BOOL)cancelled forWorkflow:(id)workflow;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation WFLibraryRunCoordinator
@@ -27,22 +27,22 @@
   return WeakRetained;
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
+  cancelledCopy = cancelled;
   v58[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [(WFLibraryRunCoordinator *)self runningWorkflow];
-  if (v10)
+  runningWorkflow = [(WFLibraryRunCoordinator *)self runningWorkflow];
+  if (errorCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v6;
+    v12 = cancelledCopy;
   }
 
   if (v12)
@@ -55,22 +55,22 @@
     v13 = 1.0;
   }
 
-  v14 = [(WFLibraryRunCoordinator *)self runningWorkflow];
-  [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:v6 cancelled:v14 forWorkflow:v13];
+  runningWorkflow2 = [(WFLibraryRunCoordinator *)self runningWorkflow];
+  [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:cancelledCopy cancelled:runningWorkflow2 forWorkflow:v13];
 
   [(WFLibraryRunCoordinator *)self progress];
   if (v15 != -1.0)
   {
-    v16 = [(WFLibraryRunCoordinator *)self runningWorkflow];
-    [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:0 cancelled:v16 forWorkflow:-1.0];
+    runningWorkflow3 = [(WFLibraryRunCoordinator *)self runningWorkflow];
+    [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:0 cancelled:runningWorkflow3 forWorkflow:-1.0];
   }
 
   [(WFLibraryRunCoordinator *)self setRunningWorkflow:0];
   [(WFLibraryRunCoordinator *)self setRunViewSource:0];
-  v17 = [(WFLibraryRunCoordinator *)self runningAppShortcut];
+  runningAppShortcut = [(WFLibraryRunCoordinator *)self runningAppShortcut];
   [(WFLibraryRunCoordinator *)self setRunningAppShortcut:0];
-  v18 = [v10 userInfo];
-  v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277D7D098]];
+  userInfo = [errorCopy userInfo];
+  v19 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D7D098]];
 
   if (v19)
   {
@@ -93,7 +93,7 @@
 
   v21 = v20;
 
-  if (v10)
+  if (errorCopy)
   {
     if (WFErrorIsRemoteQuarantineDenialError())
     {
@@ -101,29 +101,29 @@
       v52 = 3221225472;
       v53 = __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflowWithOutput_error_cancelled___block_invoke;
       v54 = &unk_279EE8C58;
-      v55 = self;
-      v56 = v11;
+      selfCopy = self;
+      v56 = runningWorkflow;
       v22 = WFAddRecoveryOptionsToRemoteQuarantineDenialError();
 
-      v10 = v22;
+      errorCopy = v22;
     }
 
     else if (v21)
     {
-      v23 = [(WFLibraryRunCoordinator *)self delegate];
+      delegate = [(WFLibraryRunCoordinator *)self delegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v25 = [v10 userInfo];
-        v26 = [v25 mutableCopy];
+        userInfo2 = [errorCopy userInfo];
+        v26 = [userInfo2 mutableCopy];
 
         v27 = WFLocalizedString(@"Show");
         v28 = WFLocalizedString(@"OK");
         v45 = v28;
-        v46 = v17;
+        v46 = runningAppShortcut;
         v44 = v27;
-        if (v17)
+        if (runningAppShortcut)
         {
           v58[0] = v28;
           v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
@@ -146,38 +146,38 @@
         v47[1] = 3221225472;
         v47[2] = __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflowWithOutput_error_cancelled___block_invoke_220;
         v47[3] = &unk_279EE7E38;
-        v48 = v11;
-        v49 = self;
+        v48 = runningWorkflow;
+        selfCopy2 = self;
         v50 = v21;
         v32 = [v31 initWithHandlerBlock:v47];
         [v26 setObject:v32 forKeyedSubscript:*MEMORY[0x277CCA658]];
         v33 = MEMORY[0x277CCA9B8];
-        [v10 domain];
+        [errorCopy domain];
         v35 = v34 = v26;
-        v36 = [v33 errorWithDomain:v35 code:objc_msgSend(v10 userInfo:{"code"), v34}];
+        v36 = [v33 errorWithDomain:v35 code:objc_msgSend(errorCopy userInfo:{"code"), v34}];
 
-        v10 = v36;
-        v17 = v46;
+        errorCopy = v36;
+        runningAppShortcut = v46;
       }
     }
   }
 
-  v37 = [(WFLibraryRunCoordinator *)self completionHandler];
+  completionHandler = [(WFLibraryRunCoordinator *)self completionHandler];
 
-  if (v37)
+  if (completionHandler)
   {
-    v38 = [(WFLibraryRunCoordinator *)self completionHandler];
-    (v38)[2](v38, v9, v6, v10);
+    completionHandler2 = [(WFLibraryRunCoordinator *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, outputCopy, cancelledCopy, errorCopy);
 
     [(WFLibraryRunCoordinator *)self setCompletionHandler:0];
   }
 
-  if (v6)
+  if (cancelledCopy)
   {
-    v39 = [MEMORY[0x277CCA9B8] userCancelledError];
-    [(WFLibraryRunCoordinator *)self didFinishRunningWorkflow:v11 withError:v39];
+    userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+    [(WFLibraryRunCoordinator *)self didFinishRunningWorkflow:runningWorkflow withError:userCancelledError];
 
-    if (v10)
+    if (errorCopy)
     {
       v40 = @"Shortcut stopped";
 LABEL_32:
@@ -191,18 +191,18 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  [(WFLibraryRunCoordinator *)self didFinishRunningWorkflow:v11 withError:v10];
-  if (!v10)
+  [(WFLibraryRunCoordinator *)self didFinishRunningWorkflow:runningWorkflow withError:errorCopy];
+  if (!errorCopy)
   {
     goto LABEL_31;
   }
 
-  if (!v37)
+  if (!completionHandler)
   {
-    v41 = [(WFLibraryRunCoordinator *)self delegate];
-    v42 = [v41 runCoordinator:self userInterfaceForWorkflow:v11];
+    delegate2 = [(WFLibraryRunCoordinator *)self delegate];
+    v42 = [delegate2 runCoordinator:self userInterfaceForWorkflow:runningWorkflow];
 
-    v43 = [MEMORY[0x277CFC218] alertWithError:v10];
+    v43 = [MEMORY[0x277CFC218] alertWithError:errorCopy];
     [v42 presentAlert:v43];
 
 LABEL_33:
@@ -236,59 +236,59 @@ void __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflow
   }
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
-  [(WFLibraryRunCoordinator *)self setRunningWorkflowProgress:a4];
-  v5 = [(WFLibraryRunCoordinator *)self runningWorkflow];
-  [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:0 cancelled:v5 forWorkflow:0.0];
+  [(WFLibraryRunCoordinator *)self setRunningWorkflowProgress:progress];
+  runningWorkflow = [(WFLibraryRunCoordinator *)self runningWorkflow];
+  [(WFLibraryRunCoordinator *)self updateProgress:0 waiting:0 cancelled:runningWorkflow forWorkflow:0.0];
 
   v6 = WFLocalizedString(@"Running shortcut");
   [(WFLibraryRunCoordinator *)self accessibilityAnnounce:v6];
 }
 
-- (void)accessibilityAnnounce:(id)a3
+- (void)accessibilityAnnounce:(id)announce
 {
-  v7 = a3;
-  v4 = [(WFLibraryRunCoordinator *)self delegate];
+  announceCopy = announce;
+  delegate = [(WFLibraryRunCoordinator *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFLibraryRunCoordinator *)self delegate];
-    [v6 runCoordinator:self accessibilityAnnounce:v7];
+    delegate2 = [(WFLibraryRunCoordinator *)self delegate];
+    [delegate2 runCoordinator:self accessibilityAnnounce:announceCopy];
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFLibraryRunCoordinator *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(WFLibraryRunCoordinator *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFLibraryRunCoordinator *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(WFLibraryRunCoordinator *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)updateProgress:(double)a3 waiting:(BOOL)a4 cancelled:(BOOL)a5 forWorkflow:(id)a6
+- (void)updateProgress:(double)progress waiting:(BOOL)waiting cancelled:(BOOL)cancelled forWorkflow:(id)workflow
 {
-  v17 = a5;
-  v6 = a4;
+  cancelledCopy = cancelled;
+  waitingCopy = waiting;
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a6;
+  workflowCopy = workflow;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  *&v10 = a3;
+  *&v10 = progress;
   [(WFLibraryRunCoordinator *)self setProgress:v10];
-  [(WFLibraryRunCoordinator *)self setWaiting:v6];
+  [(WFLibraryRunCoordinator *)self setWaiting:waitingCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(WFLibraryRunCoordinator *)self observers];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  observers = [(WFLibraryRunCoordinator *)self observers];
+  v12 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -300,43 +300,43 @@ void __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflow
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(observers);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 runCoordinator:self didChangeRunningStateWithProgress:v6 waiting:v9 forWorkflow:a3];
+          [v16 runCoordinator:self didChangeRunningStateWithProgress:waitingCopy waiting:workflowCopy forWorkflow:progress];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [v16 runCoordinator:self didChangeRunningStateWithProgress:v6 waiting:v17 cancelled:v9 forWorkflow:a3];
+          [v16 runCoordinator:self didChangeRunningStateWithProgress:waitingCopy waiting:cancelledCopy cancelled:workflowCopy forWorkflow:progress];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [observers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)didFinishRunningWorkflow:(id)a3 withError:(id)a4
+- (void)didFinishRunningWorkflow:(id)workflow withError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  workflowCopy = workflow;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(WFLibraryRunCoordinator *)self observers];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  observers = [(WFLibraryRunCoordinator *)self observers];
+  v9 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -348,20 +348,20 @@ void __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflow
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 runCoordinator:self didFinishRunningWorkflow:v6 withError:v7];
+          [v13 runCoordinator:self didFinishRunningWorkflow:workflowCopy withError:errorCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -373,9 +373,9 @@ void __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflow
   [(WFLibraryRunCoordinator *)self setRunningWorkflowProgress:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (WFWorkflowControllerProgressContext == a6 || WFWorkflowControllerRunningStateContext == a6)
+  if (WFWorkflowControllerProgressContext == context || WFWorkflowControllerRunningStateContext == context)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -389,7 +389,7 @@ void __99__WFLibraryRunCoordinator_workflowRunnerClient_didFinishRunningWorkflow
   {
     v8.receiver = self;
     v8.super_class = WFLibraryRunCoordinator;
-    [(WFLibraryRunCoordinator *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WFLibraryRunCoordinator *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -421,110 +421,110 @@ void __74__WFLibraryRunCoordinator_observeValueForKeyPath_ofObject_change_contex
 
 - (id)view
 {
-  v3 = [(WFLibraryRunCoordinator *)self delegate];
-  v4 = [(WFLibraryRunCoordinator *)self runningWorkflow];
-  v5 = [v3 runCoordinator:self userInterfaceForWorkflow:v4];
+  delegate = [(WFLibraryRunCoordinator *)self delegate];
+  runningWorkflow = [(WFLibraryRunCoordinator *)self runningWorkflow];
+  v5 = [delegate runCoordinator:self userInterfaceForWorkflow:runningWorkflow];
 
-  v6 = [v5 userInterfaceType];
-  LODWORD(v4) = [v6 isEqualToString:*MEMORY[0x277CFC710]];
+  userInterfaceType = [v5 userInterfaceType];
+  LODWORD(runningWorkflow) = [userInterfaceType isEqualToString:*MEMORY[0x277CFC710]];
 
-  if (v4)
+  if (runningWorkflow)
   {
     v7 = WFViewControllerFromUserInterface();
-    v8 = [v7 view];
+    view = [v7 view];
   }
 
   else
   {
-    v8 = 0;
+    view = 0;
   }
 
-  return v8;
+  return view;
 }
 
 - (void)stop
 {
-  v2 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v2 stop];
+  workflowRunnerClient = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient stop];
 }
 
-- (void)openWorkflowReferenceAndRun:(id)a3 fromSource:(id)a4 withInput:(id)a5 state:(id)a6 requestOutput:(BOOL)a7 runViewSource:(id)a8 completionHandler:(id)a9
+- (void)openWorkflowReferenceAndRun:(id)run fromSource:(id)source withInput:(id)input state:(id)state requestOutput:(BOOL)output runViewSource:(id)viewSource completionHandler:(id)handler
 {
-  v10 = a7;
-  v26 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  if (!v15)
+  outputCopy = output;
+  runCopy = run;
+  sourceCopy = source;
+  inputCopy = input;
+  stateCopy = state;
+  viewSourceCopy = viewSource;
+  handlerCopy = handler;
+  if (!sourceCopy)
   {
-    v15 = [(WFLibraryRunCoordinator *)self source];
+    sourceCopy = [(WFLibraryRunCoordinator *)self source];
   }
 
-  [(WFLibraryRunCoordinator *)self setCompletionHandler:v19];
-  v20 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v20 stop];
+  [(WFLibraryRunCoordinator *)self setCompletionHandler:handlerCopy];
+  workflowRunnerClient = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient stop];
 
-  [(WFLibraryRunCoordinator *)self setRunningWorkflow:v26];
-  [(WFLibraryRunCoordinator *)self setRunViewSource:v18];
-  v21 = [objc_alloc(MEMORY[0x277D7C8A0]) initWithWorkflow:v26 state:v17 runSource:v15 input:v16 remoteDialogPresenterEndpoint:0 requestOutput:v10];
+  [(WFLibraryRunCoordinator *)self setRunningWorkflow:runCopy];
+  [(WFLibraryRunCoordinator *)self setRunViewSource:viewSourceCopy];
+  v21 = [objc_alloc(MEMORY[0x277D7C8A0]) initWithWorkflow:runCopy state:stateCopy runSource:sourceCopy input:inputCopy remoteDialogPresenterEndpoint:0 requestOutput:outputCopy];
   [(WFLibraryRunCoordinator *)self setWorkflowRunnerClient:v21];
 
-  v22 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v22 setDelegate:self];
+  workflowRunnerClient2 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient2 setDelegate:self];
 
-  v23 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  v24 = [v23 runRequest];
-  [v24 setRunViewSource:v18];
+  workflowRunnerClient3 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  runRequest = [workflowRunnerClient3 runRequest];
+  [runRequest setRunViewSource:viewSourceCopy];
 
-  v25 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v25 start];
+  workflowRunnerClient4 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient4 start];
 }
 
-- (void)runContextualAction:(id)a3
+- (void)runContextualAction:(id)action
 {
-  v4 = a3;
-  v5 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v5 stop];
+  actionCopy = action;
+  workflowRunnerClient = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient stop];
 
-  v6 = [objc_alloc(MEMORY[0x277D7C8A0]) initWithContextualAction:v4];
+  v6 = [objc_alloc(MEMORY[0x277D7C8A0]) initWithContextualAction:actionCopy];
   [(WFLibraryRunCoordinator *)self setWorkflowRunnerClient:v6];
 
-  v7 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v7 setDelegate:self];
+  workflowRunnerClient2 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient2 setDelegate:self];
 
-  v8 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v8 start];
+  workflowRunnerClient3 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient3 start];
 }
 
-- (void)runAppShortcut:(id)a3 withLNAction:(id)a4 andMetadata:(id)a5
+- (void)runAppShortcut:(id)shortcut withLNAction:(id)action andMetadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v11 stop];
+  metadataCopy = metadata;
+  actionCopy = action;
+  shortcutCopy = shortcut;
+  workflowRunnerClient = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient stop];
 
   v12 = objc_alloc(MEMORY[0x277D23850]);
-  v13 = [v10 underlyingAutoShortcut];
-  v14 = [v13 actionIdentifier];
-  v15 = [v10 underlyingAutoShortcut];
-  v16 = [v15 bundleIdentifier];
-  v22 = [v12 initWithActionIdentifier:v14 bundleIdentifier:v16];
+  underlyingAutoShortcut = [shortcutCopy underlyingAutoShortcut];
+  actionIdentifier = [underlyingAutoShortcut actionIdentifier];
+  underlyingAutoShortcut2 = [shortcutCopy underlyingAutoShortcut];
+  bundleIdentifier = [underlyingAutoShortcut2 bundleIdentifier];
+  v22 = [v12 initWithActionIdentifier:actionIdentifier bundleIdentifier:bundleIdentifier];
 
-  [(WFLibraryRunCoordinator *)self setRunningAppShortcut:v10];
+  [(WFLibraryRunCoordinator *)self setRunningAppShortcut:shortcutCopy];
   v17 = objc_alloc(MEMORY[0x277D7C8A0]);
-  v18 = [v10 triggerPhrase];
+  triggerPhrase = [shortcutCopy triggerPhrase];
 
-  v19 = [v17 initWithIdentifier:v22 name:v18 action:v9 metadata:v8 runSource:*MEMORY[0x277D7A828] remoteDialogPresenterEndpoint:0];
+  v19 = [v17 initWithIdentifier:v22 name:triggerPhrase action:actionCopy metadata:metadataCopy runSource:*MEMORY[0x277D7A828] remoteDialogPresenterEndpoint:0];
   [(WFLibraryRunCoordinator *)self setWorkflowRunnerClient:v19];
 
-  v20 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v20 setDelegate:self];
+  workflowRunnerClient2 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient2 setDelegate:self];
 
-  v21 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
-  [v21 start];
+  workflowRunnerClient3 = [(WFLibraryRunCoordinator *)self workflowRunnerClient];
+  [workflowRunnerClient3 start];
 }
 
 - (void)dealloc
@@ -539,14 +539,14 @@ void __74__WFLibraryRunCoordinator_observeValueForKeyPath_ofObject_change_contex
   [(WFLibraryRunCoordinator *)&v5 dealloc];
 }
 
-- (WFLibraryRunCoordinator)initWithSource:(id)a3 database:(id)a4
+- (WFLibraryRunCoordinator)initWithSource:(id)source database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  sourceCopy = source;
+  databaseCopy = database;
+  if (!sourceCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFLibraryRunCoordinator.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"source"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLibraryRunCoordinator.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"source"}];
   }
 
   v17.receiver = self;
@@ -554,32 +554,32 @@ void __74__WFLibraryRunCoordinator_observeValueForKeyPath_ofObject_change_contex
   v9 = [(WFLibraryRunCoordinator *)&v17 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [sourceCopy copy];
     source = v9->_source;
     v9->_source = v10;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v12;
+    v9->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v9->_database, a4);
+    objc_storeStrong(&v9->_database, database);
     v14 = v9;
   }
 
   return v9;
 }
 
-- (void)setRunningWorkflowProgress:(id)a3
+- (void)setRunningWorkflowProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   [(NSProgress *)self->_runningWorkflowProgress removeObserver:self forKeyPath:@"fractionCompleted" context:WFWorkflowControllerProgressContext];
   runningWorkflowProgress = self->_runningWorkflowProgress;
   v6 = WFNSProgressCreateUserInfoKeyPathForKey();
   [(NSProgress *)runningWorkflowProgress removeObserver:self forKeyPath:v6 context:WFWorkflowControllerRunningStateContext];
 
   v7 = self->_runningWorkflowProgress;
-  self->_runningWorkflowProgress = v4;
-  v8 = v4;
+  self->_runningWorkflowProgress = progressCopy;
+  v8 = progressCopy;
 
   [(NSProgress *)self->_runningWorkflowProgress addObserver:self forKeyPath:@"fractionCompleted" options:4 context:WFWorkflowControllerProgressContext];
   v9 = self->_runningWorkflowProgress;

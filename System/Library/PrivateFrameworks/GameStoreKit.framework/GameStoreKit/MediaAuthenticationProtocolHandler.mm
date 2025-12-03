@@ -1,23 +1,23 @@
 @interface MediaAuthenticationProtocolHandler
-- (_TtC12GameStoreKit34MediaAuthenticationProtocolHandler)initWithTokenService:(id)a3;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6;
+- (_TtC12GameStoreKit34MediaAuthenticationProtocolHandler)initWithTokenService:(id)service;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error;
 @end
 
 @implementation MediaAuthenticationProtocolHandler
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_24F2D88CC(v10, v11, a5, a6);
+  requestCopy = request;
+  taskCopy = task;
+  selfCopy = self;
+  sub_24F2D88CC(requestCopy, taskCopy, redirect, error);
 }
 
-- (_TtC12GameStoreKit34MediaAuthenticationProtocolHandler)initWithTokenService:(id)a3
+- (_TtC12GameStoreKit34MediaAuthenticationProtocolHandler)initWithTokenService:(id)service
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(AMSMediaProtocolHandler *)&v5 initWithTokenService:a3];
+  return [(AMSMediaProtocolHandler *)&v5 initWithTokenService:service];
 }
 
 @end

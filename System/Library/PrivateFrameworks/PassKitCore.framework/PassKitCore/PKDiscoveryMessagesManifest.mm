@@ -1,20 +1,20 @@
 @interface PKDiscoveryMessagesManifest
-- (PKDiscoveryMessagesManifest)initWithDictionary:(id)a3;
+- (PKDiscoveryMessagesManifest)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKDiscoveryMessagesManifest
 
-- (PKDiscoveryMessagesManifest)initWithDictionary:(id)a3
+- (PKDiscoveryMessagesManifest)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = PKDiscoveryMessagesManifest;
   v5 = [(PKDiscoveryMessagesManifest *)&v36 init];
   if (v5)
   {
-    v5->_version = [v4 PKIntegerForKey:@"version"];
-    v6 = [v4 PKArrayForKey:@"engagementMessages"];
+    v5->_version = [dictionaryCopy PKIntegerForKey:@"version"];
+    v6 = [dictionaryCopy PKArrayForKey:@"engagementMessages"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -59,7 +59,7 @@
       v5->_engagementMessages = v14;
     }
 
-    v16 = [v4 PKArrayForKey:@"notifications"];
+    v16 = [dictionaryCopy PKArrayForKey:@"notifications"];
     if (v16)
     {
       v27 = v6;

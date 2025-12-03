@@ -1,16 +1,16 @@
 @interface ICQViewController
-+ (Class)viewControllerClassForPageClassIdentifier:(id)a3;
++ (Class)viewControllerClassForPageClassIdentifier:(id)identifier;
 - (ICQPageDelegate)pageDelegate;
-- (ICQViewController)initWithPageSpecification:(id)a3;
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5;
+- (ICQViewController)initWithPageSpecification:(id)specification;
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters;
 @end
 
 @implementation ICQViewController
 
-+ (Class)viewControllerClassForPageClassIdentifier:(id)a3
++ (Class)viewControllerClassForPageClassIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"_ICQUpgradeOfferPageSpecification"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"_ICQUpgradeCompletePageSpecification"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"_ICQUpgradeOfferPageSpecification"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"_ICQUpgradeCompletePageSpecification"))
   {
     v4 = objc_opt_class();
   }
@@ -25,14 +25,14 @@
   return v4;
 }
 
-- (ICQViewController)initWithPageSpecification:(id)a3
+- (ICQViewController)initWithPageSpecification:(id)specification
 {
-  v5 = a3;
+  specificationCopy = specification;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v9 = [v5 pageClassIdentifier];
-    v10 = [ICQViewController viewControllerClassForPageClassIdentifier:v9];
+    pageClassIdentifier = [specificationCopy pageClassIdentifier];
+    v10 = [ICQViewController viewControllerClassForPageClassIdentifier:pageClassIdentifier];
 
     if (objc_opt_class() == self)
     {
@@ -48,7 +48,7 @@
 
     else
     {
-      v8 = [[v10 alloc] initWithPageSpecification:v5];
+      v8 = [[v10 alloc] initWithPageSpecification:specificationCopy];
     }
   }
 
@@ -60,17 +60,17 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_pageSpecification, a3);
+      objc_storeStrong(&v7->_pageSpecification, specification);
     }
   }
 
   return v8;
 }
 
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  parametersCopy = parameters;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,16 +78,16 @@
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "ICQViewController sender:action:parameters:", &v18, 2u);
   }
 
-  v9 = [(ICQViewController *)self pageDelegate];
+  pageDelegate = [(ICQViewController *)self pageDelegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = _ICQGetLogSystem();
-  v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+  pageDelegate3 = _ICQGetLogSystem();
+  v12 = os_log_type_enabled(pageDelegate3, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
     if (v12)
     {
-      v13 = [(ICQViewController *)self pageDelegate];
+      pageDelegate2 = [(ICQViewController *)self pageDelegate];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = _ICQStringForAction();
@@ -96,20 +96,20 @@
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
-      v23 = v7;
-      _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "pageDelegate %@ being sent action:%@ parameters:%@", &v18, 0x20u);
+      v23 = parametersCopy;
+      _os_log_impl(&dword_275623000, pageDelegate3, OS_LOG_TYPE_DEFAULT, "pageDelegate %@ being sent action:%@ parameters:%@", &v18, 0x20u);
     }
 
-    v11 = [(ICQViewController *)self pageDelegate];
-    [v11 sender:self action:a4 parameters:v7];
+    pageDelegate3 = [(ICQViewController *)self pageDelegate];
+    [pageDelegate3 sender:self action:action parameters:parametersCopy];
   }
 
   else if (v12)
   {
-    v17 = [(ICQViewController *)self pageDelegate];
+    pageDelegate4 = [(ICQViewController *)self pageDelegate];
     v18 = 138412290;
-    v19 = v17;
-    _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "ICQViewController - page delegate %@ does not respond to sender:action:parameters:", &v18, 0xCu);
+    v19 = pageDelegate4;
+    _os_log_impl(&dword_275623000, pageDelegate3, OS_LOG_TYPE_DEFAULT, "ICQViewController - page delegate %@ does not respond to sender:action:parameters:", &v18, 0xCu);
   }
 }
 

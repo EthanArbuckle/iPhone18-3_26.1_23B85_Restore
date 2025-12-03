@@ -1,94 +1,94 @@
 @interface QLItemFetcherFactory
-+ (id)fetcherForPreviewItem:(id)a3;
++ (id)fetcherForPreviewItem:(id)item;
 + (id)possibleFetcherClasses;
 @end
 
 @implementation QLItemFetcherFactory
 
-+ (id)fetcherForPreviewItem:(id)a3
++ (id)fetcherForPreviewItem:(id)item
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isPromisedItem])
+  itemCopy = item;
+  if ([itemCopy isPromisedItem])
   {
 LABEL_2:
     v4 = 0;
     goto LABEL_11;
   }
 
-  v5 = [v3 previewItemType] == 6 || objc_msgSend(v3, "previewItemType") == 4;
-  v6 = [v3 sandboxingURLWrapper];
+  v5 = [itemCopy previewItemType] == 6 || objc_msgSend(itemCopy, "previewItemType") == 4;
+  sandboxingURLWrapper = [itemCopy sandboxingURLWrapper];
 
-  if (v6)
+  if (sandboxingURLWrapper)
   {
     v7 = [QLUbiquitousItemFetcher alloc];
-    v8 = [v3 sandboxingURLWrapper];
-    v9 = [(QLUbiquitousItemFetcher *)v7 initWithSandboxingURLWrapper:v8 shouldZipPackageIfNeeded:v5];
+    sandboxingURLWrapper2 = [itemCopy sandboxingURLWrapper];
+    v9 = [(QLUbiquitousItemFetcher *)v7 initWithSandboxingURLWrapper:sandboxingURLWrapper2 shouldZipPackageIfNeeded:v5];
 LABEL_10:
     v4 = v9;
 
     goto LABEL_11;
   }
 
-  v10 = [v3 previewItemURL];
+  previewItemURL = [itemCopy previewItemURL];
 
-  if (v10)
+  if (previewItemURL)
   {
     v11 = [QLUbiquitousItemFetcher alloc];
-    v8 = [v3 previewItemURL];
-    v9 = [(QLUbiquitousItemFetcher *)v11 initWithURL:v8 shouldZipPackageIfNeeded:v5];
+    sandboxingURLWrapper2 = [itemCopy previewItemURL];
+    v9 = [(QLUbiquitousItemFetcher *)v11 initWithURL:sandboxingURLWrapper2 shouldZipPackageIfNeeded:v5];
     goto LABEL_10;
   }
 
-  v14 = [v3 previewItemData];
+  previewItemData = [itemCopy previewItemData];
 
-  if (v14)
+  if (previewItemData)
   {
     v15 = [QLDataFetcher alloc];
-    v16 = [v3 previewItemData];
-    v17 = [v3 previewItemContentType];
-    v18 = [v3 previewItemTitle];
-    v19 = [(QLDataFetcher *)v15 initWithData:v16 contentType:v17 previewItemTitle:v18];
+    previewItemData2 = [itemCopy previewItemData];
+    previewItemContentType = [itemCopy previewItemContentType];
+    previewItemTitle = [itemCopy previewItemTitle];
+    v19 = [(QLDataFetcher *)v15 initWithData:previewItemData2 contentType:previewItemContentType previewItemTitle:previewItemTitle];
   }
 
   else
   {
-    v20 = [v3 previewItemDataProvider];
+    previewItemDataProvider = [itemCopy previewItemDataProvider];
 
-    if (v20)
+    if (previewItemDataProvider)
     {
       v21 = [QLDataFetcher alloc];
-      v16 = [v3 previewItemContentType];
-      v4 = [(QLDataFetcher *)v21 initWithItem:v3 contentType:v16];
+      previewItemData2 = [itemCopy previewItemContentType];
+      v4 = [(QLDataFetcher *)v21 initWithItem:itemCopy contentType:previewItemData2];
       goto LABEL_21;
     }
 
-    v22 = [v3 previewItemProvider];
+    previewItemProvider = [itemCopy previewItemProvider];
 
-    if (v22)
+    if (previewItemProvider)
     {
       v23 = [QLItemProviderFetcher alloc];
-      v24 = [v3 previewItemContentType];
-      v25 = [v3 itemSize];
-      v4 = [(QLItemProviderFetcher *)v23 initWithContentType:v24 fileSize:v25];
+      previewItemContentType2 = [itemCopy previewItemContentType];
+      itemSize = [itemCopy itemSize];
+      v4 = [(QLItemProviderFetcher *)v23 initWithContentType:previewItemContentType2 fileSize:itemSize];
 
-      v16 = [v3 previewItemProvider];
-      [(QLDataFetcher *)v4 setItemProvider:v16];
+      previewItemData2 = [itemCopy previewItemProvider];
+      [(QLDataFetcher *)v4 setItemProvider:previewItemData2];
       goto LABEL_21;
     }
 
-    v26 = [v3 searchableItemIdentifier];
-    if (!v26 || (v27 = v26, [v3 searchableItemApplicationBundleIdentifier], v28 = objc_claimAutoreleasedReturnValue(), v28, v27, !v28))
+    searchableItemIdentifier = [itemCopy searchableItemIdentifier];
+    if (!searchableItemIdentifier || (v27 = searchableItemIdentifier, [itemCopy searchableItemApplicationBundleIdentifier], v28 = objc_claimAutoreleasedReturnValue(), v28, v27, !v28))
     {
-      v30 = [v3 fpItem];
+      fpItem = [itemCopy fpItem];
 
-      if (!v30)
+      if (!fpItem)
       {
         v32 = QLSLogHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
           v33 = 138412290;
-          v34 = v3;
+          v34 = itemCopy;
           _os_log_impl(&dword_261653000, v32, OS_LOG_TYPE_DEBUG, "No fetcher available for item: %@ #PreviewItem", &v33, 0xCu);
         }
 
@@ -96,16 +96,16 @@ LABEL_10:
       }
 
       v31 = [QLFPItemFetcher alloc];
-      v8 = [v3 fpItem];
-      v9 = [(QLFPItemFetcher *)v31 initWithFPItem:v8 shouldZipPackageIfNeeded:v5];
+      sandboxingURLWrapper2 = [itemCopy fpItem];
+      v9 = [(QLFPItemFetcher *)v31 initWithFPItem:sandboxingURLWrapper2 shouldZipPackageIfNeeded:v5];
       goto LABEL_10;
     }
 
     v29 = [QLSpotlightFetcher alloc];
-    v16 = [v3 searchableItemIdentifier];
-    v17 = [v3 spotlightQueryString];
-    v18 = [v3 searchableItemApplicationBundleIdentifier];
-    v19 = [(QLSpotlightFetcher *)v29 initWithSearchableItemUniqueIdentifier:v16 queryString:v17 applicationBundleIdentifier:v18];
+    previewItemData2 = [itemCopy searchableItemIdentifier];
+    previewItemContentType = [itemCopy spotlightQueryString];
+    previewItemTitle = [itemCopy searchableItemApplicationBundleIdentifier];
+    v19 = [(QLSpotlightFetcher *)v29 initWithSearchableItemUniqueIdentifier:previewItemData2 queryString:previewItemContentType applicationBundleIdentifier:previewItemTitle];
   }
 
   v4 = v19;

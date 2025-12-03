@@ -1,14 +1,14 @@
 @interface PXMediaViewControllerEventTracker
 - (PXMediaViewControllerEventTracker)init;
-- (PXMediaViewControllerEventTracker)initWithViewName:(id)a3;
+- (PXMediaViewControllerEventTracker)initWithViewName:(id)name;
 - (void)_invalidateCurrentlyVisibleMedia;
 - (void)_updateCurrentlyVisibleMedia;
-- (void)logDidEndViewingMedia:(id)a3 mediaKind:(int64_t)a4 duration:(double)a5;
-- (void)logDidStartViewingMedia:(id)a3 mediaKind:(int64_t)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCurrentlyVisibleMediaRecord:(id)a3;
-- (void)setDisplayedAsset:(id)a3;
-- (void)setDisplayedAssetCollection:(id)a3;
+- (void)logDidEndViewingMedia:(id)media mediaKind:(int64_t)kind duration:(double)duration;
+- (void)logDidStartViewingMedia:(id)media mediaKind:(int64_t)kind;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCurrentlyVisibleMediaRecord:(id)record;
+- (void)setDisplayedAsset:(id)asset;
+- (void)setDisplayedAssetCollection:(id)collection;
 @end
 
 @implementation PXMediaViewControllerEventTracker
@@ -18,8 +18,8 @@
   if (!self->_didInvalidateCurrentlyVisibleMediaOnce)
   {
     self->_didInvalidateCurrentlyVisibleMediaOnce = 1;
-    v3 = [(PXUserInterfaceElementEventTracker *)self updater];
-    [v3 addUpdateSelector:sel__updateCurrentlyVisibleMedia];
+    updater = [(PXUserInterfaceElementEventTracker *)self updater];
+    [updater addUpdateSelector:sel__updateCurrentlyVisibleMedia];
   }
 
   v4[0] = MEMORY[0x1E69E9820];
@@ -43,17 +43,17 @@ void __69__PXMediaViewControllerEventTracker__invalidateCurrentlyVisibleMedia__b
     goto LABEL_10;
   }
 
-  v3 = [(PXMediaViewControllerEventTracker *)self displayedAsset];
+  displayedAsset = [(PXMediaViewControllerEventTracker *)self displayedAsset];
 
-  if (!v3)
+  if (!displayedAsset)
   {
-    v6 = [(PXMediaViewControllerEventTracker *)self displayedAssetCollection];
+    displayedAssetCollection = [(PXMediaViewControllerEventTracker *)self displayedAssetCollection];
 
-    if (v6)
+    if (displayedAssetCollection)
     {
-      v4 = [(PXMediaViewControllerEventTracker *)self displayedAssetCollection];
+      displayedAssetCollection2 = [(PXMediaViewControllerEventTracker *)self displayedAssetCollection];
       v5 = 2;
-      if (v4)
+      if (displayedAssetCollection2)
       {
         goto LABEL_7;
       }
@@ -65,27 +65,27 @@ LABEL_10:
     return;
   }
 
-  v4 = [(PXMediaViewControllerEventTracker *)self displayedAsset];
+  displayedAssetCollection2 = [(PXMediaViewControllerEventTracker *)self displayedAsset];
   v5 = 1;
-  if (!v4)
+  if (!displayedAssetCollection2)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  v9 = v4;
+  v9 = displayedAssetCollection2;
   v7 = [_PXTrackedMediaRecord alloc];
   [(PXUserInterfaceElementEventTracker *)self currentTimestamp];
   v8 = [(_PXTrackedMediaRecord *)v7 initWithMedia:v9 mediaKind:v5 timestamp:?];
   [(PXMediaViewControllerEventTracker *)self setCurrentlyVisibleMediaRecord:v8];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (EventTrackerObservationContext == a5)
+  observableCopy = observable;
+  if (EventTrackerObservationContext == context)
   {
-    if ((a4 & 8) != 0)
+    if ((change & 8) != 0)
     {
       [(PXMediaViewControllerEventTracker *)self _invalidateCurrentlyVisibleMedia];
     }
@@ -95,23 +95,23 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = PXMediaViewControllerEventTracker;
-    [(PXViewControllerEventTracker *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXViewControllerEventTracker *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)logDidEndViewingMedia:(id)a3 mediaKind:(int64_t)a4 duration:(double)a5
+- (void)logDidEndViewingMedia:(id)media mediaKind:(int64_t)kind duration:(double)duration
 {
-  v7 = a3;
+  mediaCopy = media;
   v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
   v9 = v8;
-  switch(a4)
+  switch(kind)
   {
     case 2:
-      [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991E08]];
+      [v8 setObject:mediaCopy forKeyedSubscript:*MEMORY[0x1E6991E08]];
       v11 = MEMORY[0x1E6991C48];
       goto LABEL_8;
     case 1:
-      [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991E18]];
+      [v8 setObject:mediaCopy forKeyedSubscript:*MEMORY[0x1E6991E18]];
       v11 = MEMORY[0x1E6991C80];
 LABEL_8:
       v10 = *v11;
@@ -122,13 +122,13 @@ LABEL_8:
 
   v10 = 0;
 LABEL_9:
-  v12 = [(PXMediaViewControllerEventTracker *)self viewName];
-  [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6991E20]];
+  viewName = [(PXMediaViewControllerEventTracker *)self viewName];
+  [v9 setObject:viewName forKeyedSubscript:*MEMORY[0x1E6991E20]];
 
   v13 = [(PXUserInterfaceElementEventTracker *)self finalPayloadWithPayload:v9];
   v14 = MEMORY[0x1E6991F28];
-  v15 = [(PXMediaViewControllerEventTracker *)self mediaViewedSignpost];
-  [v14 endSignpost:v15 forEventName:*MEMORY[0x1E6991CA0] withPayload:v13];
+  mediaViewedSignpost = [(PXMediaViewControllerEventTracker *)self mediaViewedSignpost];
+  [v14 endSignpost:mediaViewedSignpost forEventName:*MEMORY[0x1E6991CA0] withPayload:v13];
   [(PXMediaViewControllerEventTracker *)self setMediaViewedSignpost:0];
   if (v10)
   {
@@ -138,34 +138,34 @@ LABEL_9:
   [(PXMediaViewControllerEventTracker *)self setSpecificMediaViewedSignpost:0];
 }
 
-- (void)logDidStartViewingMedia:(id)a3 mediaKind:(int64_t)a4
+- (void)logDidStartViewingMedia:(id)media mediaKind:(int64_t)kind
 {
-  v7 = a3;
+  mediaCopy = media;
   if ([(PXMediaViewControllerEventTracker *)self mediaViewedSignpost])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"self.mediaViewedSignpost == CPAnalyticsSignpostIDNull"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"self.mediaViewedSignpost == CPAnalyticsSignpostIDNull"}];
   }
 
   -[PXMediaViewControllerEventTracker setMediaViewedSignpost:](self, "setMediaViewedSignpost:", [MEMORY[0x1E6991F28] startSignpost]);
   if ([(PXMediaViewControllerEventTracker *)self specificMediaViewedSignpost])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"self.specificMediaViewedSignpost == CPAnalyticsSignpostIDNull"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"self.specificMediaViewedSignpost == CPAnalyticsSignpostIDNull"}];
   }
 
   -[PXMediaViewControllerEventTracker setSpecificMediaViewedSignpost:](self, "setSpecificMediaViewedSignpost:", [MEMORY[0x1E6991F28] startSignpost]);
-  v8 = [(PXMediaViewControllerEventTracker *)self lastVisibleMedia];
-  v9 = [v8 isEqual:v7];
+  lastVisibleMedia = [(PXMediaViewControllerEventTracker *)self lastVisibleMedia];
+  v9 = [lastVisibleMedia isEqual:mediaCopy];
 
   if ((v9 & 1) == 0)
   {
-    [(PXMediaViewControllerEventTracker *)self setLastVisibleMedia:v7];
+    [(PXMediaViewControllerEventTracker *)self setLastVisibleMedia:mediaCopy];
   }
 
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
   v11 = v10;
-  switch(a4)
+  switch(kind)
   {
     case 2:
       v12 = MEMORY[0x1E6991E08];
@@ -173,14 +173,14 @@ LABEL_9:
     case 1:
       v12 = MEMORY[0x1E6991E18];
 LABEL_13:
-      [v10 setObject:v7 forKeyedSubscript:*v12];
+      [v10 setObject:mediaCopy forKeyedSubscript:*v12];
       break;
     case 0:
       PXAssertGetLog();
   }
 
-  v13 = [(PXMediaViewControllerEventTracker *)self viewName];
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6991E20]];
+  viewName = [(PXMediaViewControllerEventTracker *)self viewName];
+  [v11 setObject:viewName forKeyedSubscript:*MEMORY[0x1E6991E20]];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:v9 ^ 1u];
   [v11 setObject:v14 forKeyedSubscript:@"isFirstAppearance"];
@@ -188,19 +188,19 @@ LABEL_13:
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.mediaAppeared" withPayload:v11];
 }
 
-- (void)setCurrentlyVisibleMediaRecord:(id)a3
+- (void)setCurrentlyVisibleMediaRecord:(id)record
 {
-  v13 = a3;
-  v5 = [v13 media];
-  v6 = [(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord media];
-  v7 = v6;
-  if (v5 == v6)
+  recordCopy = record;
+  media = [recordCopy media];
+  media2 = [(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord media];
+  v7 = media2;
+  if (media == media2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v5 isEqual:v6];
+  v8 = [media isEqual:media2];
 
   if ((v8 & 1) == 0)
   {
@@ -210,65 +210,65 @@ LABEL_13:
       [(_PXTrackedMediaRecord *)currentlyVisibleMediaRecord timestamp];
       [(PXUserInterfaceElementEventTracker *)self timeIntervalSinceTimestamp:?];
       v11 = v10;
-      v12 = [(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord media];
-      [(PXMediaViewControllerEventTracker *)self logDidEndViewingMedia:v12 mediaKind:[(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord mediaKind] duration:v11];
+      media3 = [(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord media];
+      [(PXMediaViewControllerEventTracker *)self logDidEndViewingMedia:media3 mediaKind:[(_PXTrackedMediaRecord *)self->_currentlyVisibleMediaRecord mediaKind] duration:v11];
     }
 
-    objc_storeStrong(&self->_currentlyVisibleMediaRecord, a3);
+    objc_storeStrong(&self->_currentlyVisibleMediaRecord, record);
     if (self->_currentlyVisibleMediaRecord)
     {
-      v5 = [v13 media];
-      -[PXMediaViewControllerEventTracker logDidStartViewingMedia:mediaKind:](self, "logDidStartViewingMedia:mediaKind:", v5, [v13 mediaKind]);
+      media = [recordCopy media];
+      -[PXMediaViewControllerEventTracker logDidStartViewingMedia:mediaKind:](self, "logDidStartViewingMedia:mediaKind:", media, [recordCopy mediaKind]);
 LABEL_8:
     }
   }
 }
 
-- (void)setDisplayedAssetCollection:(id)a3
+- (void)setDisplayedAssetCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayedAssetCollection != v5)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (self->_displayedAssetCollection != collectionCopy)
   {
-    v8 = v5;
-    v7 = [(PXDisplayAssetCollection *)v5 isEqual:?];
+    v8 = collectionCopy;
+    v7 = [(PXDisplayAssetCollection *)collectionCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedAssetCollection, a3);
+      objc_storeStrong(&self->_displayedAssetCollection, collection);
       [(PXMediaViewControllerEventTracker *)self _invalidateCurrentlyVisibleMedia];
       v6 = v8;
     }
   }
 }
 
-- (void)setDisplayedAsset:(id)a3
+- (void)setDisplayedAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayedAsset != v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (self->_displayedAsset != assetCopy)
   {
-    v8 = v5;
-    v7 = [(PXDisplayAsset *)v5 isEqual:?];
+    v8 = assetCopy;
+    v7 = [(PXDisplayAsset *)assetCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedAsset, a3);
+      objc_storeStrong(&self->_displayedAsset, asset);
       [(PXMediaViewControllerEventTracker *)self _invalidateCurrentlyVisibleMedia];
       v6 = v8;
     }
   }
 }
 
-- (PXMediaViewControllerEventTracker)initWithViewName:(id)a3
+- (PXMediaViewControllerEventTracker)initWithViewName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = PXMediaViewControllerEventTracker;
   v5 = [(PXViewControllerEventTracker *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     viewName = v5->_viewName;
     v5->_viewName = v6;
 
@@ -280,8 +280,8 @@ LABEL_8:
 
 - (PXMediaViewControllerEventTracker)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXMediaViewControllerEventTracker init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaViewControllerEventTracker.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXMediaViewControllerEventTracker init]"}];
 
   abort();
 }

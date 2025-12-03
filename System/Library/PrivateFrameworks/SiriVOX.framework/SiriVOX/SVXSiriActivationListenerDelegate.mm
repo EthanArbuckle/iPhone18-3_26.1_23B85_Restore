@@ -1,29 +1,29 @@
 @interface SVXSiriActivationListenerDelegate
-- (SVXSiriActivationListenerDelegate)initWithSiriActivationListener:(id)a3 mainQueuePerformer:(id)a4 siriActivationSupportPredicate:(id)a5 virtualDeviceManager:(id)a6 instrumentationUtils:(id)a7 activationUtils:(id)a8;
-- (SVXSiriActivationListenerDelegate)initWithVirtualDeviceManager:(id)a3;
-- (void)siriActivationListener:(id)a3 activateWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)siriActivationListener:(id)a3 deactivateForReason:(int64_t)a4 options:(unint64_t)a5 context:(id)a6 completion:(id)a7;
-- (void)siriActivationListener:(id)a3 myriadEventWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6;
-- (void)siriActivationListener:(id)a3 prewarmWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6;
+- (SVXSiriActivationListenerDelegate)initWithSiriActivationListener:(id)listener mainQueuePerformer:(id)performer siriActivationSupportPredicate:(id)predicate virtualDeviceManager:(id)manager instrumentationUtils:(id)utils activationUtils:(id)activationUtils;
+- (SVXSiriActivationListenerDelegate)initWithVirtualDeviceManager:(id)manager;
+- (void)siriActivationListener:(id)listener activateWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener myriadEventWithRequestInfo:(id)info context:(id)context completion:(id)completion;
+- (void)siriActivationListener:(id)listener prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion;
 @end
 
 @implementation SVXSiriActivationListenerDelegate
 
-- (void)siriActivationListener:(id)a3 myriadEventWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6
+- (void)siriActivationListener:(id)listener myriadEventWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v23 = "[SVXSiriActivationListenerDelegate siriActivationListener:myriadEventWithRequestInfo:context:completion:]";
     v24 = 2112;
-    v25 = v9;
+    v25 = infoCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = contextCopy;
     _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s requestInfo = %@, context = %@", buf, 0x20u);
   }
 
@@ -33,12 +33,12 @@
   v18[2] = __106__SVXSiriActivationListenerDelegate_siriActivationListener_myriadEventWithRequestInfo_context_completion___block_invoke;
   v18[3] = &unk_279C69038;
   v18[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v21 = v11;
-  v14 = v9;
-  v15 = v11;
-  v16 = v10;
+  v19 = contextCopy;
+  v20 = infoCopy;
+  v21 = completionCopy;
+  v14 = infoCopy;
+  v15 = completionCopy;
+  v16 = contextCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v18 withOptions:2];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -193,11 +193,11 @@ uint64_t __106__SVXSiriActivationListenerDelegate_siriActivationListener_myriadE
   return result;
 }
 
-- (void)siriActivationListener:(id)a3 deactivateForReason:(int64_t)a4 options:(unint64_t)a5 context:(id)a6 completion:(id)a7
+- (void)siriActivationListener:(id)listener deactivateForReason:(int64_t)reason options:(unint64_t)options context:(id)context completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a7;
+  contextCopy = context;
+  completionCopy = completion;
   v13 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -211,7 +211,7 @@ uint64_t __106__SVXSiriActivationListenerDelegate_siriActivationListener_myriadE
     v30 = 2112;
     v31 = v16;
     v32 = 2112;
-    v33 = v11;
+    v33 = contextCopy;
     _os_log_impl(&dword_2695B9000, v14, OS_LOG_TYPE_INFO, "%s reason = %@, options = %@, context = %@", buf, 0x2Au);
   }
 
@@ -221,12 +221,12 @@ uint64_t __106__SVXSiriActivationListenerDelegate_siriActivationListener_myriadE
   v21[2] = __107__SVXSiriActivationListenerDelegate_siriActivationListener_deactivateForReason_options_context_completion___block_invoke;
   v21[3] = &unk_279C66C60;
   v21[4] = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = a4;
-  v25 = a5;
-  v18 = v12;
-  v19 = v11;
+  v22 = contextCopy;
+  v23 = completionCopy;
+  reasonCopy = reason;
+  optionsCopy = options;
+  v18 = completionCopy;
+  v19 = contextCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v21 withOptions:2];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -354,21 +354,21 @@ uint64_t __107__SVXSiriActivationListenerDelegate_siriActivationListener_deactiv
   return result;
 }
 
-- (void)siriActivationListener:(id)a3 activateWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6
+- (void)siriActivationListener:(id)listener activateWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v23 = "[SVXSiriActivationListenerDelegate siriActivationListener:activateWithRequestInfo:context:completion:]";
     v24 = 2112;
-    v25 = v9;
+    v25 = infoCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = contextCopy;
     _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s requestInfo = %@, context = %@", buf, 0x20u);
   }
 
@@ -378,12 +378,12 @@ uint64_t __107__SVXSiriActivationListenerDelegate_siriActivationListener_deactiv
   v18[2] = __103__SVXSiriActivationListenerDelegate_siriActivationListener_activateWithRequestInfo_context_completion___block_invoke;
   v18[3] = &unk_279C69038;
   v18[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v21 = v11;
-  v14 = v9;
-  v15 = v11;
-  v16 = v10;
+  v19 = contextCopy;
+  v20 = infoCopy;
+  v21 = completionCopy;
+  v14 = infoCopy;
+  v15 = completionCopy;
+  v16 = contextCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v18 withOptions:2];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -558,21 +558,21 @@ void __103__SVXSiriActivationListenerDelegate_siriActivationListener_activateWit
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriActivationListener:(id)a3 prewarmWithRequestInfo:(id)a4 context:(id)a5 completion:(id)a6
+- (void)siriActivationListener:(id)listener prewarmWithRequestInfo:(id)info context:(id)context completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
   v12 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v23 = "[SVXSiriActivationListenerDelegate siriActivationListener:prewarmWithRequestInfo:context:completion:]";
     v24 = 2112;
-    v25 = v9;
+    v25 = infoCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = contextCopy;
     _os_log_impl(&dword_2695B9000, v12, OS_LOG_TYPE_INFO, "%s requestInfo = %@, context = %@", buf, 0x20u);
   }
 
@@ -582,12 +582,12 @@ void __103__SVXSiriActivationListenerDelegate_siriActivationListener_activateWit
   v18[2] = __102__SVXSiriActivationListenerDelegate_siriActivationListener_prewarmWithRequestInfo_context_completion___block_invoke;
   v18[3] = &unk_279C69038;
   v18[4] = self;
-  v19 = v10;
-  v20 = v9;
-  v21 = v11;
-  v14 = v9;
-  v15 = v11;
-  v16 = v10;
+  v19 = contextCopy;
+  v20 = infoCopy;
+  v21 = completionCopy;
+  v14 = infoCopy;
+  v15 = completionCopy;
+  v16 = contextCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v18 withOptions:2];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -719,41 +719,41 @@ uint64_t __102__SVXSiriActivationListenerDelegate_siriActivationListener_prewarm
   return result;
 }
 
-- (SVXSiriActivationListenerDelegate)initWithSiriActivationListener:(id)a3 mainQueuePerformer:(id)a4 siriActivationSupportPredicate:(id)a5 virtualDeviceManager:(id)a6 instrumentationUtils:(id)a7 activationUtils:(id)a8
+- (SVXSiriActivationListenerDelegate)initWithSiriActivationListener:(id)listener mainQueuePerformer:(id)performer siriActivationSupportPredicate:(id)predicate virtualDeviceManager:(id)manager instrumentationUtils:(id)utils activationUtils:(id)activationUtils
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  listenerCopy = listener;
+  performerCopy = performer;
+  predicateCopy = predicate;
+  managerCopy = manager;
+  utilsCopy = utils;
+  activationUtilsCopy = activationUtils;
   v24.receiver = self;
   v24.super_class = SVXSiriActivationListenerDelegate;
   v18 = [(SVXSiriActivationListenerDelegate *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_siriActivationListener, a3);
-    objc_storeStrong(&v19->_mainQueuePerformer, a4);
-    objc_storeStrong(&v19->_siriActivationSupportPredicate, a5);
-    objc_storeStrong(&v19->_virtualDeviceManager, a6);
-    objc_storeStrong(&v19->_instrumentationUtils, a7);
-    objc_storeStrong(&v19->_activationUtils, a8);
+    objc_storeStrong(&v18->_siriActivationListener, listener);
+    objc_storeStrong(&v19->_mainQueuePerformer, performer);
+    objc_storeStrong(&v19->_siriActivationSupportPredicate, predicate);
+    objc_storeStrong(&v19->_virtualDeviceManager, manager);
+    objc_storeStrong(&v19->_instrumentationUtils, utils);
+    objc_storeStrong(&v19->_activationUtils, activationUtils);
   }
 
   return v19;
 }
 
-- (SVXSiriActivationListenerDelegate)initWithVirtualDeviceManager:(id)a3
+- (SVXSiriActivationListenerDelegate)initWithVirtualDeviceManager:(id)manager
 {
   v4 = MEMORY[0x277CEF3B8];
-  v5 = a3;
+  managerCopy = manager;
   v6 = [[v4 alloc] initWithServicePort:2];
   v7 = +[SVXQueuePerformer sharedMainQueuePerformer];
   v8 = objc_alloc_init(SVXSiriActivationSupportPredicate);
   v9 = objc_alloc_init(SVXInstrumentationUtilities);
   v10 = objc_alloc_init(SVXActivationUtils);
-  v11 = [(SVXSiriActivationListenerDelegate *)self initWithSiriActivationListener:v6 mainQueuePerformer:v7 siriActivationSupportPredicate:v8 virtualDeviceManager:v5 instrumentationUtils:v9 activationUtils:v10];
+  v11 = [(SVXSiriActivationListenerDelegate *)self initWithSiriActivationListener:v6 mainQueuePerformer:v7 siriActivationSupportPredicate:v8 virtualDeviceManager:managerCopy instrumentationUtils:v9 activationUtils:v10];
 
   return v11;
 }

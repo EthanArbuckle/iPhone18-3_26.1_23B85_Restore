@@ -1,24 +1,24 @@
 @interface CRSUIClusterThemeColor
-- (CRSUIClusterThemeColor)initWithBSXPCCoder:(id)a3;
+- (CRSUIClusterThemeColor)initWithBSXPCCoder:(id)coder;
 - (UIColor)color;
-- (id)_initWithLightModeColor:(id)a3 darkModeColor:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (id)_initWithLightModeColor:(id)color darkModeColor:(id)modeColor;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CRSUIClusterThemeColor
 
-- (id)_initWithLightModeColor:(id)a3 darkModeColor:(id)a4
+- (id)_initWithLightModeColor:(id)color darkModeColor:(id)modeColor
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  modeColorCopy = modeColor;
   v12.receiver = self;
   v12.super_class = CRSUIClusterThemeColor;
   v9 = [(CRSUIClusterThemeColor *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_lightModeColor, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_lightModeColor, color);
+    objc_storeStrong(p_isa + 2, modeColor);
   }
 
   return p_isa;
@@ -60,32 +60,32 @@ id __31__CRSUIClusterThemeColor_color__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   lightModeColor = self->_lightModeColor;
-  v5 = a3;
-  [v5 encodeObject:lightModeColor forKey:@"lightModeColor"];
-  [v5 encodeObject:self->_darkModeColor forKey:@"darkModeColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lightModeColor forKey:@"lightModeColor"];
+  [coderCopy encodeObject:self->_darkModeColor forKey:@"darkModeColor"];
 }
 
-- (CRSUIClusterThemeColor)initWithBSXPCCoder:(id)a3
+- (CRSUIClusterThemeColor)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lightModeColor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"darkModeColor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lightModeColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"darkModeColor"];
 
   if (v5)
   {
     self = [(CRSUIClusterThemeColor *)self initWithLightModeColor:v5 darkModeColor:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

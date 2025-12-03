@@ -1,14 +1,14 @@
 @interface PXGTransitioningLayout
 - (CGRect)contentFrameOverride;
 - (PXGTransitioningLayout)init;
-- (PXGTransitioningLayout)initWithContentLayout:(id)a3;
+- (PXGTransitioningLayout)initWithContentLayout:(id)layout;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_invalidateSublayoutPositions;
 - (void)_updateSublayoutPositions;
 - (void)referenceSizeDidChange;
-- (void)setContentFrameOverride:(CGRect)a3;
+- (void)setContentFrameOverride:(CGRect)override;
 - (void)update;
 @end
 
@@ -63,9 +63,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGTransitioningLayout _invalidateSublayoutPositions]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGTransitioningLayout.m" lineNumber:98 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGTransitioningLayout.m" lineNumber:98 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -96,9 +96,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGTransitioningLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGTransitioningLayout.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGTransitioningLayout.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -115,9 +115,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGTransitioningLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGTransitioningLayout.m" lineNumber:93 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGTransitioningLayout.m" lineNumber:93 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -126,37 +126,37 @@ LABEL_5:
   [(PXGCompositeLayout *)&v9 update];
 }
 
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges
 {
   v7.receiver = self;
   v7.super_class = PXGTransitioningLayout;
-  v4 = [(PXGLayout *)&v7 createAnchorForVisibleAreaIgnoringEdges:a3];
-  v5 = [(PXGTransitioningLayout *)self contentLayout];
-  if ([v5 conformsToProtocol:&unk_282C8A118])
+  v4 = [(PXGLayout *)&v7 createAnchorForVisibleAreaIgnoringEdges:edges];
+  contentLayout = [(PXGTransitioningLayout *)self contentLayout];
+  if ([contentLayout conformsToProtocol:&unk_282C8A118])
   {
-    [v4 setDelegate:v5];
+    [v4 setDelegate:contentLayout];
   }
 
   return v4;
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v7 = a3;
-  v8 = [(PXGTransitioningLayout *)self contentLayout];
-  v9 = [(PXGLayout *)self indexOfSublayout:v8];
+  referenceCopy = reference;
+  contentLayout = [(PXGTransitioningLayout *)self contentLayout];
+  v9 = [(PXGLayout *)self indexOfSublayout:contentLayout];
 
-  v10 = v7;
-  *a5 = v7;
+  v10 = referenceCopy;
+  *objectReference = referenceCopy;
   return v9;
 }
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v3 = [(PXGTransitioningLayout *)self contentLayout];
-  v4 = [v3 scrollableAxis];
+  contentLayout = [(PXGTransitioningLayout *)self contentLayout];
+  scrollableAxis = [contentLayout scrollableAxis];
 
-  if (v4)
+  if (scrollableAxis)
   {
     v9.receiver = self;
     v9.super_class = PXGTransitioningLayout;
@@ -186,14 +186,14 @@ LABEL_5:
   [(PXGTransitioningLayout *)self _invalidateSublayoutPositions];
 }
 
-- (void)setContentFrameOverride:(CGRect)a3
+- (void)setContentFrameOverride:(CGRect)override
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = override.size.height;
+  width = override.size.width;
+  y = override.origin.y;
+  x = override.origin.x;
   p_contentFrameOverride = &self->_contentFrameOverride;
-  if (!CGRectEqualToRect(a3, self->_contentFrameOverride))
+  if (!CGRectEqualToRect(override, self->_contentFrameOverride))
   {
     p_contentFrameOverride->origin.x = x;
     p_contentFrameOverride->origin.y = y;
@@ -204,13 +204,13 @@ LABEL_5:
   }
 }
 
-- (PXGTransitioningLayout)initWithContentLayout:(id)a3
+- (PXGTransitioningLayout)initWithContentLayout:(id)layout
 {
-  v6 = a3;
-  if (!v6)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGTransitioningLayout.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"contentLayout != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTransitioningLayout.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"contentLayout != nil"}];
   }
 
   v12.receiver = self;
@@ -219,11 +219,11 @@ LABEL_5:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contentLayout, a3);
+    objc_storeStrong(&v7->_contentLayout, layout);
     v9 = *(MEMORY[0x277CBF398] + 16);
     v8->_contentFrameOverride.origin = *MEMORY[0x277CBF398];
     v8->_contentFrameOverride.size = v9;
-    [(PXGLayout *)v8 addSublayout:v6];
+    [(PXGLayout *)v8 addSublayout:layoutCopy];
     [(PXGTransitioningLayout *)v8 _invalidateSublayoutPositions];
   }
 
@@ -232,8 +232,8 @@ LABEL_5:
 
 - (PXGTransitioningLayout)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGTransitioningLayout.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXGTransitioningLayout init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTransitioningLayout.m" lineNumber:24 description:{@"%s is not available as initializer", "-[PXGTransitioningLayout init]"}];
 
   abort();
 }

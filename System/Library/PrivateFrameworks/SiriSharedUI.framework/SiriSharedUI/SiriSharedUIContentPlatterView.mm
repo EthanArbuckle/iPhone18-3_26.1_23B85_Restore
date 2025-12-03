@@ -1,47 +1,47 @@
 @interface SiriSharedUIContentPlatterView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)isScrollEnabled;
-- (CGPoint)_contentOffsetForScrollView:(id)a3;
-- (CGSize)_contentSizeForScrollView:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUIContentPlatterView)initWithFrame:(CGRect)a3;
+- (CGPoint)_contentOffsetForScrollView:(id)view;
+- (CGSize)_contentSizeForScrollView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUIContentPlatterView)initWithFrame:(CGRect)frame;
 - (SiriSharedUIContentPlatterViewDelegate)delegate;
-- (UIEdgeInsets)_adjustedContentInsetForScrollView:(id)a3;
+- (UIEdgeInsets)_adjustedContentInsetForScrollView:(id)view;
 - (UIEdgeInsets)contentInsets;
 - (double)_cornerRadiusForPlatter;
 - (double)darkenIntensity;
 - (double)heightForContentSeparators;
-- (void)_animateScrollViewStickyHeaderIfNeededGivenCurrentContentOffset:(double)a3 contentOffsetWhenScrolledToTop:(double)a4;
+- (void)_animateScrollViewStickyHeaderIfNeededGivenCurrentContentOffset:(double)offset contentOffsetWhenScrolledToTop:(double)top;
 - (void)_updateContentFullyScrolled;
 - (void)_updateContentScale;
 - (void)_updateContentViewTransformationForAmbientUpdate;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setAllowAutomaticContentViewsScaling:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setContentViews:(id)a3;
-- (void)setDarkenIntensity:(double)a3;
-- (void)setDismissalGestureRecognizer:(id)a3;
-- (void)setFakeNavigationBarBackgroundHidden:(BOOL)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setMinimumScrollViewBottomInset:(double)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setAllowAutomaticContentViewsScaling:(BOOL)scaling;
+- (void)setBackgroundView:(id)view;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setContentViews:(id)views;
+- (void)setDarkenIntensity:(double)intensity;
+- (void)setDismissalGestureRecognizer:(id)recognizer;
+- (void)setFakeNavigationBarBackgroundHidden:(BOOL)hidden;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setMinimumScrollViewBottomInset:(double)inset;
 - (void)setNeedsLayout;
-- (void)setScrollEnabled:(BOOL)a3;
+- (void)setScrollEnabled:(BOOL)enabled;
 @end
 
 @implementation SiriSharedUIContentPlatterView
 
-- (SiriSharedUIContentPlatterView)initWithFrame:(CGRect)a3
+- (SiriSharedUIContentPlatterView)initWithFrame:(CGRect)frame
 {
   v38.receiver = self;
   v38.super_class = SiriSharedUIContentPlatterView;
-  v3 = [(SiriSharedUIContentPlatterView *)&v38 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriSharedUIContentPlatterView *)&v38 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(SiriSharedUIContentPlatterScrollView);
@@ -118,15 +118,15 @@
     v25 = v3->_platterView;
     [(SiriSharedUIContentPlatterView *)v3 _cornerRadiusForPlatter];
     [(PLPlatterView *)v25 _setContinuousCornerRadius:?];
-    v26 = [(SiriSharedUIContentPlatterView *)v3 platterView];
-    [(SiriSharedUIContentPlatterView *)v3 addSubview:v26];
+    platterView = [(SiriSharedUIContentPlatterView *)v3 platterView];
+    [(SiriSharedUIContentPlatterView *)v3 addSubview:platterView];
 
-    v27 = [(SiriSharedUIContentPlatterView *)v3 _contentHostingView];
-    [(SiriSharedUIContentPlatterView *)v3 addSubview:v27];
+    _contentHostingView = [(SiriSharedUIContentPlatterView *)v3 _contentHostingView];
+    [(SiriSharedUIContentPlatterView *)v3 addSubview:_contentHostingView];
 
     v28 = v3->_contentHostingView;
-    v29 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
-    [(SiriSharedUIStandardView *)v28 addSubview:v29];
+    _scrollView = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
+    [(SiriSharedUIStandardView *)v28 addSubview:_scrollView];
 
     v30 = v3->_scrollView;
     [(PLPlatterView *)v3->_platterView _continuousCornerRadius];
@@ -134,18 +134,18 @@
     v31 = v3->_darkenMaskView;
     [(PLPlatterView *)v3->_platterView _continuousCornerRadius];
     [(SiriSharedUIContentPlatterDarkenMaskView *)v31 _setContinuousCornerRadius:?];
-    v32 = [(PLPlatterView *)v3->_platterView customContentView];
-    [v32 addSubview:v3->_darkenMaskView];
+    customContentView = [(PLPlatterView *)v3->_platterView customContentView];
+    [customContentView addSubview:v3->_darkenMaskView];
 
-    v33 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
-    v34 = [MEMORY[0x277D75348] clearColor];
-    [v33 setBackgroundColor:v34];
+    _scrollView2 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [_scrollView2 setBackgroundColor:clearColor];
 
-    v35 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
-    [v35 setShowsVerticalScrollIndicator:0];
+    _scrollView3 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
+    [_scrollView3 setShowsVerticalScrollIndicator:0];
 
-    v36 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
-    [v36 setContentInsetAdjustmentBehavior:2];
+    _scrollView4 = [(SiriSharedUIContentPlatterView *)v3 _scrollView];
+    [_scrollView4 setContentInsetAdjustmentBehavior:2];
 
     [(SiriSharedUIContentPlatterView *)v3 setScrollEnabled:1];
     if ([(SiriSharedUIContentPlatterView *)v3 _hasScrollViewStickyHeader])
@@ -169,22 +169,22 @@
     return 23.5;
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 traitCollection];
-  [v4 displayCornerRadius];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 layer];
+  viewCopy = view;
+  layer = [viewCopy layer];
   [(SiriSharedUIContentPlatterView *)self _cornerRadiusForPlatter];
-  [v5 setCornerRadius:?];
+  [layer setCornerRadius:?];
 
-  [(PLPlatterView *)self->_platterView setBackgroundView:v4];
+  [(PLPlatterView *)self->_platterView setBackgroundView:viewCopy];
   if (self->_isInAmbient)
   {
     [(PLPlatterView *)self->_platterView setHidden:0];
@@ -209,10 +209,10 @@
   [(SiriSharedUIContentPlatterView *)self _updateContentScale];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -221,7 +221,7 @@
   {
     v7.receiver = self;
     v7.super_class = SiriSharedUIContentPlatterView;
-    v5 = [(SiriSharedUIContentPlatterView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SiriSharedUIContentPlatterView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -242,8 +242,8 @@
     }
 
     v4 = *v3;
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v7 = v4 * v6;
 
     contentHostingView = self->_contentHostingView;
@@ -252,14 +252,14 @@
   }
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    self->_isInAmbient = a3;
+    self->_isInAmbient = ambient;
     [(PLPlatterView *)self->_platterView setHidden:?];
     [(SiriSharedUIContentPlatterView *)self insertSubview:self->_platterView belowSubview:self->_contentHostingView];
-    if (a3)
+    if (ambient)
     {
       [(SiriSharedUIContentPlatterView *)self setScrollEnabled:self->_isNextLevelCard];
       isNextLevelCard = self->_isNextLevelCard;
@@ -277,18 +277,18 @@
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
-  self->_isInAmbientInteractivity = a3;
-  v4 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-  [v4 setIsInAmbientInteractivity:self->_isInAmbientInteractivity];
+  self->_isInAmbientInteractivity = interactivity;
+  _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+  [_scrollView setIsInAmbientInteractivity:self->_isInAmbientInteractivity];
 }
 
-- (void)setAllowAutomaticContentViewsScaling:(BOOL)a3
+- (void)setAllowAutomaticContentViewsScaling:(BOOL)scaling
 {
-  if (self->_allowAutomaticContentViewsScaling != a3)
+  if (self->_allowAutomaticContentViewsScaling != scaling)
   {
-    self->_allowAutomaticContentViewsScaling = a3;
+    self->_allowAutomaticContentViewsScaling = scaling;
     [(SiriSharedUIContentPlatterView *)self _updateContentViewTransformationForAmbientUpdate];
   }
 }
@@ -336,11 +336,11 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SiriSharedUIContentPlatterView *)self platterView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    platterView = [(SiriSharedUIContentPlatterView *)self platterView];
+    [platterView setFrame:{v4, v6, v8, v10}];
 
-    v12 = [(SiriSharedUIContentPlatterView *)self _contentHostingView];
-    [v12 setFrame:{v4, v6, v8, v10}];
+    _contentHostingView = [(SiriSharedUIContentPlatterView *)self _contentHostingView];
+    [_contentHostingView setFrame:{v4, v6, v8, v10}];
 
     if (self->_supportsSAE)
     {
@@ -357,18 +357,18 @@
         [(UIVisualEffectView *)fakeNavigationBarBackgroundView setFrame:0.0, 0.0, v8, v14];
       }
 
-      v15 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
-      if (v15)
+      backgroundMaterialView = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+      if (backgroundMaterialView)
       {
         makeBackgroundPlatterTransparent = self->_makeBackgroundPlatterTransparent;
 
         if (makeBackgroundPlatterTransparent)
         {
-          v17 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
-          [v17 setAlpha:0.0];
+          backgroundMaterialView2 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+          [backgroundMaterialView2 setAlpha:0.0];
 
-          v18 = [(PLPlatterView *)self->_platterView backgroundView];
-          [v18 setAlpha:0.0];
+          backgroundView = [(PLPlatterView *)self->_platterView backgroundView];
+          [backgroundView setAlpha:0.0];
 
           [(PLPlatterView *)self->_platterView setHasShadow:0];
         }
@@ -377,7 +377,7 @@
 
     if (self->_isInAmbient && self->_allowAutomaticContentViewsScaling)
     {
-      v19 = [(SiriSharedUIContentPlatterView *)self _scrollView];
+      _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
       v32.origin.x = v4;
       v32.origin.y = v6;
       v32.size.width = v8;
@@ -390,42 +390,42 @@
       v21 = CGRectGetHeight(v33) * 0.5;
       v22 = 0.0;
       v23 = 0.0;
-      v24 = v19;
+      _scrollView2 = _scrollView;
       v25 = v20;
     }
 
     else
     {
-      v24 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-      v19 = v24;
+      _scrollView2 = [(SiriSharedUIContentPlatterView *)self _scrollView];
+      _scrollView = _scrollView2;
       v22 = v4;
       v23 = v6;
       v25 = v8;
       v21 = v10;
     }
 
-    [v24 setFrame:{v22, v23, v25, v21}];
+    [_scrollView2 setFrame:{v22, v23, v25, v21}];
 
     v26 = v10 == *(MEMORY[0x277CBF3A8] + 8) && v8 == *MEMORY[0x277CBF3A8];
-    v27 = [(SiriSharedUIContentPlatterView *)self platterView];
-    [v27 setHidden:v26];
+    platterView2 = [(SiriSharedUIContentPlatterView *)self platterView];
+    [platterView2 setHidden:v26];
 
-    v28 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-    [v28 setNeedsLayout];
+    _scrollView3 = [(SiriSharedUIContentPlatterView *)self _scrollView];
+    [_scrollView3 setNeedsLayout];
 
-    v29 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-    [v29 layoutIfNeeded];
+    _scrollView4 = [(SiriSharedUIContentPlatterView *)self _scrollView];
+    [_scrollView4 layoutIfNeeded];
 
     [(SiriSharedUIContentPlatterView *)self _updateContentFullyScrolled];
-    v30 = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
-    [v30 setFrame:{v4, v6, v8, v10}];
+    _darkenMaskView = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
+    [_darkenMaskView setFrame:{v4, v6, v8, v10}];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v21 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -433,8 +433,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SiriSharedUIContentPlatterView *)self contentViews];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  contentViews = [(SiriSharedUIContentPlatterView *)self contentViews];
+  v8 = [contentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -446,7 +446,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(contentViews);
         }
 
         [*(*(&v16 + 1) + 8 * v11) sizeThatFits:{width, height}];
@@ -460,7 +460,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [contentViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -480,8 +480,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SiriSharedUIContentPlatterView *)self contentViews];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contentViews = [(SiriSharedUIContentPlatterView *)self contentViews];
+  v3 = [contentViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -493,7 +493,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(contentViews);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -505,7 +505,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [contentViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -521,25 +521,25 @@
 
 - (BOOL)isScrollEnabled
 {
-  v2 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-  v3 = [v2 isAutomaticScrollingEnabled];
+  _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+  isAutomaticScrollingEnabled = [_scrollView isAutomaticScrollingEnabled];
 
-  return v3;
+  return isAutomaticScrollingEnabled;
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-  [v4 setAutomaticScrollingEnabled:v3];
+  enabledCopy = enabled;
+  _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+  [_scrollView setAutomaticScrollingEnabled:enabledCopy];
 }
 
-- (void)setContentViews:(id)a3
+- (void)setContentViews:(id)views
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewsCopy = views;
   contentViews = self->_contentViews;
-  if (contentViews != v5)
+  if (contentViews != viewsCopy)
   {
     v25 = 0u;
     v26 = 0u;
@@ -571,7 +571,7 @@
       while (v9);
     }
 
-    objc_storeStrong(&self->_contentViews, a3);
+    objc_storeStrong(&self->_contentViews, views);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -593,8 +593,8 @@
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
-          v18 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-          [v18 addSubview:v17];
+          _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+          [_scrollView addSubview:v17];
 
           ++v16;
         }
@@ -610,26 +610,26 @@
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  if (a3.bottom < self->_minimumScrollViewBottomInset)
+  if (insets.bottom < self->_minimumScrollViewBottomInset)
   {
-    a3.bottom = self->_minimumScrollViewBottomInset;
+    insets.bottom = self->_minimumScrollViewBottomInset;
   }
 
   p_contentInsets = &self->_contentInsets;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
-  v5.f64[0] = a3.top;
-  v5.f64[1] = a3.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
+  v5.f64[0] = insets.top;
+  v5.f64[1] = insets.left;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v5), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    p_contentInsets->top = a3.top;
-    self->_contentInsets.left = a3.left;
-    self->_contentInsets.bottom = a3.bottom;
-    self->_contentInsets.right = a3.right;
-    v7 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-    [v7 setContentInset:{p_contentInsets->top, p_contentInsets->left, p_contentInsets->bottom, p_contentInsets->right}];
+    p_contentInsets->top = insets.top;
+    self->_contentInsets.left = insets.left;
+    self->_contentInsets.bottom = insets.bottom;
+    self->_contentInsets.right = insets.right;
+    _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+    [_scrollView setContentInset:{p_contentInsets->top, p_contentInsets->left, p_contentInsets->bottom, p_contentInsets->right}];
 
     [(SiriSharedUIContentPlatterView *)self setNeedsLayout];
   }
@@ -649,91 +649,91 @@
   }
 }
 
-- (void)setDismissalGestureRecognizer:(id)a3
+- (void)setDismissalGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_dismissalGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_dismissalGestureRecognizer != recognizerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dismissalGestureRecognizer, a3);
+    v6 = recognizerCopy;
+    objc_storeStrong(&self->_dismissalGestureRecognizer, recognizer);
     [(SiriSharedUIContentPlatterView *)self addGestureRecognizer:v6];
-    v5 = v6;
+    recognizerCopy = v6;
   }
 }
 
-- (void)setFakeNavigationBarBackgroundHidden:(BOOL)a3
+- (void)setFakeNavigationBarBackgroundHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if ([(SiriSharedUIContentPlatterView *)self _hasFakeNavigationBarBackground])
   {
-    [(UIVisualEffectView *)self->_fakeNavigationBarBackgroundView setHidden:v3];
-    self->_ignoreSafeAreaInsetChanges = v3;
+    [(UIVisualEffectView *)self->_fakeNavigationBarBackgroundView setHidden:hiddenCopy];
+    self->_ignoreSafeAreaInsetChanges = hiddenCopy;
   }
 }
 
-- (void)setMinimumScrollViewBottomInset:(double)a3
+- (void)setMinimumScrollViewBottomInset:(double)inset
 {
-  self->_minimumScrollViewBottomInset = a3;
+  self->_minimumScrollViewBottomInset = inset;
   [(SiriSharedUIContentPlatterScrollView *)self->_scrollView contentInset];
-  if (v5 < a3)
+  if (v5 < inset)
   {
 
     [(SiriSharedUIContentPlatterView *)self setContentInsets:?];
   }
 }
 
-- (void)setDarkenIntensity:(double)a3
+- (void)setDarkenIntensity:(double)intensity
 {
   [(SiriSharedUIContentPlatterView *)self darkenIntensity];
-  if (v5 != a3)
+  if (v5 != intensity)
   {
-    v6 = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
-    [v6 setAlpha:a3 * 0.3];
+    _darkenMaskView = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
+    [_darkenMaskView setAlpha:intensity * 0.3];
   }
 }
 
 - (double)darkenIntensity
 {
-  v2 = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
-  [v2 alpha];
+  _darkenMaskView = [(SiriSharedUIContentPlatterView *)self _darkenMaskView];
+  [_darkenMaskView alpha];
   v4 = v3 / 0.3;
 
   return v4;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v54 = a3;
+  scrollCopy = scroll;
   [(SiriSharedUIContentPlatterView *)self _contentOffsetForScrollView:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(SiriSharedUIContentPlatterView *)self delegate];
-  [v8 contentPlatterView:self didScrollWithContentOffset:{v5, v7}];
+  delegate = [(SiriSharedUIContentPlatterView *)self delegate];
+  [delegate contentPlatterView:self didScrollWithContentOffset:{v5, v7}];
 
   [(SiriSharedUIContentPlatterView *)self _currentContentOffset];
   v10 = v9;
-  v11 = [(SiriSharedUIContentPlatterView *)self delegate];
-  [v11 contentPlatterView:self didScrollWithContentOffset:{v5, v7}];
+  delegate2 = [(SiriSharedUIContentPlatterView *)self delegate];
+  [delegate2 contentPlatterView:self didScrollWithContentOffset:{v5, v7}];
 
   if (self->_supportsSAE)
   {
-    v12 = v54;
+    selfCopy = scrollCopy;
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  [(SiriSharedUIContentPlatterView *)v12 bounds];
+  [(SiriSharedUIContentPlatterView *)selfCopy bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [(SiriSharedUIContentPlatterView *)self _adjustedContentInsetForScrollView:v54];
+  [(SiriSharedUIContentPlatterView *)self _adjustedContentInsetForScrollView:scrollCopy];
   v22 = v21;
   v53 = v23;
-  [(SiriSharedUIContentPlatterView *)self _contentSizeForScrollView:v54];
+  [(SiriSharedUIContentPlatterView *)self _contentSizeForScrollView:scrollCopy];
   v25 = v22 + v24;
   v56.origin.x = v14;
   v56.origin.y = v16;
@@ -818,9 +818,9 @@ LABEL_19:
   v49 = v7;
   v50 = v53 + v26;
   v51 = floorf(v49) == floorf(v50);
-  v52 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
+  dismissalGestureRecognizer = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
 
-  if (v52)
+  if (dismissalGestureRecognizer)
   {
     [(SiriSharedUIContentPlatterView *)self _setShouldAllowDismissalWhileScrollable:v51];
   }
@@ -828,36 +828,36 @@ LABEL_19:
   [(SiriSharedUIContentPlatterView *)self _setCurrentContentOffset:v7];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v23 = a3;
+  draggingCopy = dragging;
   if (self->_isInAmbient && !self->_reducedOrbOpacity && (SiriSharedUIIsTextInputEnabled() & 1) == 0)
   {
-    v4 = [(SiriSharedUIContentPlatterView *)self delegate];
-    [v4 contentPlatterViewScrollDidBegin];
+    delegate = [(SiriSharedUIContentPlatterView *)self delegate];
+    [delegate contentPlatterViewScrollDidBegin];
 
     self->_reducedOrbOpacity = 1;
   }
 
-  v5 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
+  dismissalGestureRecognizer = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
 
-  if (v5)
+  if (dismissalGestureRecognizer)
   {
-    [v23 contentSize];
-    [v23 contentSize];
+    [draggingCopy contentSize];
+    [draggingCopy contentSize];
     v7 = v6;
-    [v23 adjustedContentInset];
+    [draggingCopy adjustedContentInset];
     v9 = v7 + v8;
-    [v23 adjustedContentInset];
+    [draggingCopy adjustedContentInset];
     v11 = v9 + v10;
     [(SiriSharedUIContentPlatterView *)self bounds];
     v12 = v11 - CGRectGetHeight(v25);
-    v13 = [v23 panGestureRecognizer];
-    v14 = [v23 superview];
-    [v13 velocityInView:v14];
+    panGestureRecognizer = [draggingCopy panGestureRecognizer];
+    superview = [draggingCopy superview];
+    [panGestureRecognizer velocityInView:superview];
     v16 = v15;
 
-    [v23 contentOffset];
+    [draggingCopy contentOffset];
     v18 = v17;
     *&v17 = v12;
     if (floorf(v18) == floorf(*&v17))
@@ -865,62 +865,62 @@ LABEL_19:
       if (v16 < 0.0)
       {
         [(SiriSharedUIContentPlatterView *)self _setShouldAllowDismissalWhileScrollable:1];
-        v19 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-        [v19 setScrollEnabled:0];
+        _scrollView = [(SiriSharedUIContentPlatterView *)self _scrollView];
+        [_scrollView setScrollEnabled:0];
 
-        v20 = [(SiriSharedUIContentPlatterView *)self _scrollView];
-        [v20 setScrollEnabled:1];
+        _scrollView2 = [(SiriSharedUIContentPlatterView *)self _scrollView];
+        [_scrollView2 setScrollEnabled:1];
       }
 
       if (v16 > 0.0)
       {
         [(SiriSharedUIContentPlatterView *)self _setShouldAllowDismissalWhileScrollable:1];
-        v21 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
-        [v21 setEnabled:0];
+        dismissalGestureRecognizer2 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
+        [dismissalGestureRecognizer2 setEnabled:0];
 
-        v22 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
-        [v22 setEnabled:1];
+        dismissalGestureRecognizer3 = [(SiriSharedUIContentPlatterView *)self dismissalGestureRecognizer];
+        [dismissalGestureRecognizer3 setEnabled:1];
       }
     }
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v8 = a3;
-  if (self->_isInAmbient && !a4 && self->_reducedOrbOpacity && (SiriSharedUIIsTextInputEnabled() & 1) == 0)
+  draggingCopy = dragging;
+  if (self->_isInAmbient && !decelerate && self->_reducedOrbOpacity && (SiriSharedUIIsTextInputEnabled() & 1) == 0)
   {
-    v6 = [(SiriSharedUIContentPlatterView *)self delegate];
-    [v6 contentPlatterViewScrollDidEnd];
+    delegate = [(SiriSharedUIContentPlatterView *)self delegate];
+    [delegate contentPlatterViewScrollDidEnd];
 
     self->_reducedOrbOpacity = 0;
   }
 
-  v7 = [(SiriSharedUIContentPlatterView *)self delegate];
-  [(SiriSharedUIContentPlatterView *)self _contentOffsetForScrollView:v8];
-  [v7 contentPlatterViewScrolledToContentOffset:?];
+  delegate2 = [(SiriSharedUIContentPlatterView *)self delegate];
+  [(SiriSharedUIContentPlatterView *)self _contentOffsetForScrollView:draggingCopy];
+  [delegate2 contentPlatterViewScrolledToContentOffset:?];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = v4;
+  deceleratingCopy = decelerating;
+  v5 = deceleratingCopy;
   if (self->_isInAmbient && self->_reducedOrbOpacity)
   {
-    v7 = v4;
-    v4 = SiriSharedUIIsTextInputEnabled();
+    v7 = deceleratingCopy;
+    deceleratingCopy = SiriSharedUIIsTextInputEnabled();
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((deceleratingCopy & 1) == 0)
     {
-      v6 = [(SiriSharedUIContentPlatterView *)self delegate];
-      [v6 contentPlatterViewScrollDidEnd];
+      delegate = [(SiriSharedUIContentPlatterView *)self delegate];
+      [delegate contentPlatterViewScrollDidEnd];
 
       v5 = v7;
       self->_reducedOrbOpacity = 0;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](deceleratingCopy, v5);
 }
 
 - (void)_updateContentFullyScrolled
@@ -940,25 +940,25 @@ LABEL_19:
   [(SiriSharedUIContentPlatterView *)self _setShouldAllowDismissalWhileScrollable:v12];
 }
 
-- (CGPoint)_contentOffsetForScrollView:(id)a3
+- (CGPoint)_contentOffsetForScrollView:(id)view
 {
-  [a3 contentOffset];
+  [view contentOffset];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGSize)_contentSizeForScrollView:(id)a3
+- (CGSize)_contentSizeForScrollView:(id)view
 {
-  [a3 contentSize];
+  [view contentSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (UIEdgeInsets)_adjustedContentInsetForScrollView:(id)a3
+- (UIEdgeInsets)_adjustedContentInsetForScrollView:(id)view
 {
-  [a3 adjustedContentInset];
+  [view adjustedContentInset];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -966,11 +966,11 @@ LABEL_19:
   return result;
 }
 
-- (void)_animateScrollViewStickyHeaderIfNeededGivenCurrentContentOffset:(double)a3 contentOffsetWhenScrolledToTop:(double)a4
+- (void)_animateScrollViewStickyHeaderIfNeededGivenCurrentContentOffset:(double)offset contentOffsetWhenScrolledToTop:(double)top
 {
   if ([(SiriSharedUIContentPlatterView *)self _hasScrollViewStickyHeader])
   {
-    if (a3 <= a4)
+    if (offset <= top)
     {
       if (!self->_showingScrollViewStickyHeader)
       {

@@ -6,16 +6,16 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v5 = [(UIButtonLabelAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  isAccessibilityUserDefinedElement = [(UIButtonLabelAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (!isAccessibilityUserDefinedElement)
   {
     return 0;
   }
 
-  v4 = [(UIButtonLabelAccessibility *)self isAccessibilityUserDefinedElement];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  isAccessibilityUserDefinedElement2 = [(UIButtonLabelAccessibility *)self isAccessibilityUserDefinedElement];
+  v7 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   return v7;
 }
 

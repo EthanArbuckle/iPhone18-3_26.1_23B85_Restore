@@ -1,22 +1,22 @@
 @interface VFXFixedSizePage
-- (VFXFixedSizePage)initWithBuffer:(id)a3 elementSize:(unint64_t)a4;
-- (id)newSubBufferForAllocator:(id)a3;
+- (VFXFixedSizePage)initWithBuffer:(id)buffer elementSize:(unint64_t)size;
+- (id)newSubBufferForAllocator:(id)allocator;
 - (unint64_t)_allocateElement;
 - (void)dealloc;
 @end
 
 @implementation VFXFixedSizePage
 
-- (VFXFixedSizePage)initWithBuffer:(id)a3 elementSize:(unint64_t)a4
+- (VFXFixedSizePage)initWithBuffer:(id)buffer elementSize:(unint64_t)size
 {
   v15.receiver = self;
   v15.super_class = VFXFixedSizePage;
   v6 = [(VFXFixedSizePage *)&v15 init];
-  v10 = objc_msgSend_length(a3, v7, v8, v9) / a4;
-  v6->_buffer = a3;
+  v10 = objc_msgSend_length(buffer, v7, v8, v9) / size;
+  v6->_buffer = buffer;
   v11 = objc_alloc(MEMORY[0x1E696AD50]);
   v13 = objc_msgSend_initWithIndexesInRange_(v11, v12, 0, v10);
-  v6->_elementSize = a4;
+  v6->_elementSize = size;
   v6->_freeIndices = v13;
   return v6;
 }
@@ -59,10 +59,10 @@
   return v16;
 }
 
-- (id)newSubBufferForAllocator:(id)a3
+- (id)newSubBufferForAllocator:(id)allocator
 {
   v5 = [VFXMTLBufferAllocatorSubBuffer alloc];
-  v7 = objc_msgSend_initWithPage_allocator_(v5, v6, self, a3);
+  v7 = objc_msgSend_initWithPage_allocator_(v5, v6, self, allocator);
   objc_msgSend_setBuffer_(v7, v8, self->_buffer, v9);
   Element = objc_msgSend__allocateElement(self, v10, v11, v12);
   objc_msgSend_setOffset_(v7, v14, Element, v15);

@@ -8,7 +8,7 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 containsPropertyFromExtension:v2];
+  return [self containsPropertyFromExtension:v2];
 }
 
 @end

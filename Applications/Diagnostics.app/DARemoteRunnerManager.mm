@@ -1,19 +1,19 @@
 @interface DARemoteRunnerManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DADeviceConnectionDelegate)delegate;
 - (DARemoteRunnerManager)init;
 - (void)_destroyDevice;
-- (void)cancelTestWithID:(id)a3 completion:(id)a4;
-- (void)createRemoteRunnerDeviceWithSerialNumber:(id)a3 completion:(id)a4;
-- (void)destroyRemoteRunnerDeviceWithCompletion:(id)a3;
+- (void)cancelTestWithID:(id)d completion:(id)completion;
+- (void)createRemoteRunnerDeviceWithSerialNumber:(id)number completion:(id)completion;
+- (void)destroyRemoteRunnerDeviceWithCompletion:(id)completion;
 - (void)end;
-- (void)getReportWithComponents:(id)a3 completion:(id)a4;
+- (void)getReportWithComponents:(id)components completion:(id)completion;
 - (void)initListener;
-- (void)ping:(id)a3;
-- (void)requestAsset:(id)a3 completion:(id)a4;
-- (void)requestUploadAssets:(id)a3 completion:(id)a4;
-- (void)runTestWithID:(id)a3 name:(id)a4 description:(id)a5 parameters:(id)a6 completion:(id)a7;
+- (void)ping:(id)ping;
+- (void)requestAsset:(id)asset completion:(id)completion;
+- (void)requestUploadAssets:(id)assets completion:(id)completion;
+- (void)runTestWithID:(id)d name:(id)name description:(id)description parameters:(id)parameters completion:(id)completion;
 - (void)start;
 @end
 
@@ -50,30 +50,30 @@
   v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.diagnostics.remote-runner-service"];
   [(DARemoteRunnerManager *)self setListener:v3];
 
-  v4 = [(DARemoteRunnerManager *)self listener];
-  [v4 setDelegate:self];
+  listener = [(DARemoteRunnerManager *)self listener];
+  [listener setDelegate:self];
 
-  v5 = [(DARemoteRunnerManager *)self listener];
-  [v5 resume];
+  listener2 = [(DARemoteRunnerManager *)self listener];
+  [listener2 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "New connection %@ requested for remote runner service", &buf, 0xCu);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.diagnostics.remote-runner-service"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.diagnostics.remote-runner-service"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![v9 BOOLValue])
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
 LABEL_9:
     v17 = 1;
     goto LABEL_10;
@@ -101,8 +101,8 @@ LABEL_9:
   v13 = [NSSet setWithArray:v12];
   [v20 setClasses:v13 forSelector:"runTestWithID:name:description:parameters:completion:" argumentIndex:0 ofReply:1];
 
-  [v7 setExportedObject:self];
-  [v7 setExportedInterface:v20];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setExportedInterface:v20];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DARemoteRunnerClientProtocol];
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -110,25 +110,25 @@ LABEL_9:
   v28 = sub_100017E2C;
   v29 = sub_100017E3C;
   v30 = 0;
-  objc_initWeak(&location, v7);
-  [v7 setRemoteObjectInterface:v14];
+  objc_initWeak(&location, connectionCopy);
+  [connectionCopy setRemoteObjectInterface:v14];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100017E44;
   v21[3] = &unk_1001BD048;
   v21[4] = &buf;
   objc_copyWeak(&v22, &location);
-  v15 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v15 = [connectionCopy synchronousRemoteObjectProxyWithErrorHandler:v21];
   v16 = v15;
   if (v15 && !*(*(&buf + 1) + 40))
   {
     [(DARemoteRunnerManager *)self setRemoteClient:v15];
-    [v7 resume];
+    [connectionCopy resume];
     v19 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *v24 = 138412290;
-      v25 = v7;
+      v25 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Connection %@ established with remote runner service", v24, 0xCu);
     }
 
@@ -149,9 +149,9 @@ LABEL_10:
   return v17;
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v3 = a3;
+  pingCopy = ping;
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,24 +159,24 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Remote runner is pinging to see if we are alive", v5, 2u);
   }
 
-  v3[2](v3);
+  pingCopy[2](pingCopy);
 }
 
-- (void)createRemoteRunnerDeviceWithSerialNumber:(id)a3 completion:(id)a4
+- (void)createRemoteRunnerDeviceWithSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v6;
+    v20 = numberCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remote runner create device requested with serial number %@", &v19, 0xCu);
   }
 
-  v9 = [(DARemoteRunnerManager *)self device];
+  device = [(DARemoteRunnerManager *)self device];
 
-  if (v9)
+  if (device)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -185,28 +185,28 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remote runner create device failed - a remote runner device already exists!", &v19, 2u);
     }
 
-    v7[2](v7, &off_1001CC968);
+    completionCopy[2](completionCopy, &off_1001CC968);
   }
 
   else
   {
-    v11 = [[DADeviceLocalRemoteRunner alloc] initWithSerialNumber:v6];
+    v11 = [[DADeviceLocalRemoteRunner alloc] initWithSerialNumber:numberCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [(DADeviceLocal *)v11 state];
+      state = [(DADeviceLocal *)v11 state];
       state = self->_state;
-      self->_state = v13;
+      self->_state = state;
 
       [(DADeviceState *)self->_state setPhase:0];
       [(DARemoteRunnerManager *)self setDevice:v12];
       v15 = +[NSNotificationCenter defaultCenter];
       [v15 postNotificationName:@"DARemoteRunnerDeviceCreatedNotification" object:v12];
 
-      v16 = [(DARemoteRunnerManager *)self device];
-      [v16 start];
+      device2 = [(DARemoteRunnerManager *)self device];
+      [device2 start];
 
-      v7[2](v7, &off_1001CC980);
+      completionCopy[2](completionCopy, &off_1001CC980);
       v17 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -224,14 +224,14 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Remote runner device creation failed", &v19, 2u);
       }
 
-      v7[2](v7, &off_1001CC998);
+      completionCopy[2](completionCopy, &off_1001CC998);
     }
   }
 }
 
-- (void)destroyRemoteRunnerDeviceWithCompletion:(id)a3
+- (void)destroyRemoteRunnerDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,12 +239,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remote runner device destroy requested", v9, 2u);
   }
 
-  v6 = [(DARemoteRunnerManager *)self device];
+  device = [(DARemoteRunnerManager *)self device];
 
-  if (v6)
+  if (device)
   {
-    v7 = [(DARemoteRunnerManager *)self device];
-    [v7 end];
+    device2 = [(DARemoteRunnerManager *)self device];
+    [device2 end];
 
     v8 = &off_1001CC980;
   }
@@ -254,19 +254,19 @@ LABEL_10:
     v8 = &off_1001CC9B0;
   }
 
-  v4[2](v4, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)getReportWithComponents:(id)a3 completion:(id)a4
+- (void)getReportWithComponents:(id)components completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (componentsCopy)
     {
-      v9 = [v6 debugDescription];
+      v9 = [componentsCopy debugDescription];
     }
 
     else
@@ -277,30 +277,30 @@ LABEL_10:
     *buf = 138412290;
     v18 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remote runner device run test requested system report with components: %@", buf, 0xCu);
-    if (v6)
+    if (componentsCopy)
     {
     }
   }
 
-  v10 = [(DARemoteRunnerManager *)self device];
+  device = [(DARemoteRunnerManager *)self device];
 
-  if (v10)
+  if (device)
   {
-    if (v6 && [v6 count])
+    if (componentsCopy && [componentsCopy count])
     {
       v11 = objc_alloc_init(DADeviceConnectionProfileCommand);
       v12 = objc_alloc_init(ASTProfileResult);
       [(DADeviceConnectionProfileCommand *)v11 setProfile:v12];
 
-      [(DADeviceConnectionProfileCommand *)v11 setComponents:v6];
+      [(DADeviceConnectionProfileCommand *)v11 setComponents:componentsCopy];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100018590;
       v15[3] = &unk_1001BD070;
-      v16 = v7;
+      v16 = completionCopy;
       [(DADeviceConnectionProfileCommand *)v11 setCompletion:v15];
-      v13 = [(DARemoteRunnerManager *)self delegate];
-      [v13 deviceConnection:self didRecieveCommand:v11];
+      delegate = [(DARemoteRunnerManager *)self delegate];
+      [delegate deviceConnection:self didRecieveCommand:v11];
     }
   }
 
@@ -313,31 +313,31 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Remote runner device run test failed - a remote runner device does not exist.", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)runTestWithID:(id)a3 name:(id)a4 description:(id)a5 parameters:(id)a6 completion:(id)a7
+- (void)runTestWithID:(id)d name:(id)name description:(id)description parameters:(id)parameters completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  nameCopy = name;
+  descriptionCopy = description;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v17 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v36 = v12;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v13;
+    v38 = nameCopy;
     v39 = 2112;
-    v40 = v14;
+    v40 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Remote runner device run test requested with ID: %@ name: %@ description: %@", buf, 0x20u);
   }
 
-  v18 = [(DARemoteRunnerManager *)self device];
-  v19 = v18 == 0;
+  device = [(DARemoteRunnerManager *)self device];
+  v19 = device == 0;
 
   if (v19)
   {
@@ -349,7 +349,7 @@ LABEL_10:
     }
 
     v25 = [NSError errorWithDomain:@"DADiagnosticsRemoteRunner" code:-3 userInfo:0];
-    v16[2](v16, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
   else
@@ -360,20 +360,20 @@ LABEL_10:
     v32[2] = sub_100018B54;
     v32[3] = &unk_1001BD0D8;
     objc_copyWeak(&v34, buf);
-    v33 = v16;
+    v33 = completionCopy;
     v20 = objc_retainBlock(v32);
     v21 = objc_alloc_init(DADeviceConnectionStartTestCommand);
-    [(DADeviceConnectionStartTestCommand *)v21 setTestID:v12];
-    [(DADeviceConnectionStartTestCommand *)v21 setParameters:v15];
+    [(DADeviceConnectionStartTestCommand *)v21 setTestID:dCopy];
+    [(DADeviceConnectionStartTestCommand *)v21 setParameters:parametersCopy];
     [(DADeviceConnectionStartTestCommand *)v21 setCompletion:v20];
-    v22 = [(DARemoteRunnerManager *)self state];
+    state = [(DARemoteRunnerManager *)self state];
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_100018CCC;
     v29 = &unk_1001BC820;
-    v30 = v13;
-    v31 = v14;
-    [v22 transactionWithBlock:&v26];
+    v30 = nameCopy;
+    v31 = descriptionCopy;
+    [state transactionWithBlock:&v26];
 
     v23 = [(DARemoteRunnerManager *)self delegate:v26];
     [v23 deviceConnection:self didRecieveCommand:v21];
@@ -383,21 +383,21 @@ LABEL_10:
   }
 }
 
-- (void)cancelTestWithID:(id)a3 completion:(id)a4
+- (void)cancelTestWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remote runner device cancel test requested for ID: %@", &v13, 0xCu);
   }
 
-  v9 = [(DARemoteRunnerManager *)self device];
+  device = [(DARemoteRunnerManager *)self device];
 
-  if (!v9)
+  if (!device)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -406,98 +406,98 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remote runner device cancel test failed - a remote runner device does not exist.", &v13, 2u);
     }
 
-    v7[2](v7, &off_1001CC9B0);
+    completionCopy[2](completionCopy, &off_1001CC9B0);
   }
 
   v11 = objc_alloc_init(DADeviceConnectionCancelTestCommand);
-  [(DADeviceConnectionCancelTestCommand *)v11 setTestID:v6];
-  v12 = [(DARemoteRunnerManager *)self delegate];
-  [v12 deviceConnection:self didRecieveCommand:v11];
+  [(DADeviceConnectionCancelTestCommand *)v11 setTestID:dCopy];
+  delegate = [(DARemoteRunnerManager *)self delegate];
+  [delegate deviceConnection:self didRecieveCommand:v11];
 
-  v7[2](v7, &off_1001CC980);
+  completionCopy[2](completionCopy, &off_1001CC980);
 }
 
 - (void)start
 {
-  v3 = [(DARemoteRunnerManager *)self state];
+  state = [(DARemoteRunnerManager *)self state];
   v4 = [NSSet setWithObjects:&off_1001CC9C8, &off_1001CC9E0, &off_1001CC9F8, 0];
-  [v3 removeErrorCodes:v4];
+  [state removeErrorCodes:v4];
 
-  v5 = [(DARemoteRunnerManager *)self state];
-  [v5 setPhase:4];
+  state2 = [(DARemoteRunnerManager *)self state];
+  [state2 setPhase:4];
 }
 
 - (void)end
 {
-  v3 = [(DARemoteRunnerManager *)self remoteClient];
+  remoteClient = [(DARemoteRunnerManager *)self remoteClient];
 
-  if (v3)
+  if (remoteClient)
   {
-    v4 = [(DARemoteRunnerManager *)self remoteClient];
-    [v4 remoteRunnerDeviceEnded];
+    remoteClient2 = [(DARemoteRunnerManager *)self remoteClient];
+    [remoteClient2 remoteRunnerDeviceEnded];
   }
 
   [(DARemoteRunnerManager *)self _destroyDevice];
 }
 
-- (void)requestAsset:(id)a3 completion:(id)a4
+- (void)requestAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = assetCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remote runner device requesting asset %@", &v11, 0xCu);
   }
 
-  v9 = [(DARemoteRunnerManager *)self remoteClient];
+  remoteClient = [(DARemoteRunnerManager *)self remoteClient];
 
-  if (v9)
+  if (remoteClient)
   {
-    v10 = [(DARemoteRunnerManager *)self remoteClient];
-    [v10 requestAsset:v6 completion:v7];
+    remoteClient2 = [(DARemoteRunnerManager *)self remoteClient];
+    [remoteClient2 requestAsset:assetCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)requestUploadAssets:(id)a3 completion:(id)a4
+- (void)requestUploadAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = assetsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remote runner device requesting to upload assets: %@", &v11, 0xCu);
   }
 
-  v9 = [(DARemoteRunnerManager *)self remoteClient];
+  remoteClient = [(DARemoteRunnerManager *)self remoteClient];
 
-  if (v9)
+  if (remoteClient)
   {
-    v10 = [(DARemoteRunnerManager *)self remoteClient];
-    [v10 requestUploadAssets:v6 completion:v7];
+    remoteClient2 = [(DARemoteRunnerManager *)self remoteClient];
+    [remoteClient2 requestUploadAssets:assetsCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [NSError errorWithDomain:@"DADiagnosticsRemoteRunner" code:-6 userInfo:0];
-    v7[2](v7, &off_1001CCD68, v10);
+    remoteClient2 = [NSError errorWithDomain:@"DADiagnosticsRemoteRunner" code:-6 userInfo:0];
+    completionCopy[2](completionCopy, &off_1001CCD68, remoteClient2);
   }
 }
 
 - (void)_destroyDevice
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(DARemoteRunnerManager *)self device];
-  [v3 postNotificationName:@"DARemoteRunnerDeviceDestroyedNotification" object:v4];
+  device = [(DARemoteRunnerManager *)self device];
+  [v3 postNotificationName:@"DARemoteRunnerDeviceDestroyedNotification" object:device];
 
   [(DARemoteRunnerManager *)self setDevice:0];
 }

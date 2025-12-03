@@ -8,13 +8,13 @@
 - (BOOL)isNumber;
 - (BOOL)isWordOrAbbreviation;
 - (id)_indexesOfCharactersInWords;
-- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 parentTreePosition:(id)a5 childIndex:(unint64_t *)a6;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4;
-- (id)latexDescriptionInMathMode:(BOOL)a3;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
+- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth parentTreePosition:(id)position childIndex:(unint64_t *)index;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
+- (id)latexDescriptionInMathMode:(BOOL)mode;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
 - (id)speakableSummary;
 - (int64_t)integerValue;
-- (void)_addSpacingAndChild:(id)a3 toResult:(id)a4 nextChild:(id)a5 previousChild:(id)a6 numberOfOuterRadicals:(unint64_t)a7 treePosition:(id)a8;
+- (void)_addSpacingAndChild:(id)child toResult:(id)result nextChild:(id)nextChild previousChild:(id)previousChild numberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
 @end
 
 @implementation SCRCMathRowExpression
@@ -26,161 +26,161 @@
     return 1;
   }
 
-  v4 = [(SCRCMathArrayExpression *)self children];
-  if ([v4 count] == 1)
+  children = [(SCRCMathArrayExpression *)self children];
+  if ([children count] == 1)
   {
-    v5 = [v4 lastObject];
-    v3 = [v5 isNumber];
+    lastObject = [children lastObject];
+    isNumber = [lastObject isNumber];
   }
 
   else
   {
-    v3 = 0;
+    isNumber = 0;
   }
 
-  return v3;
+  return isNumber;
 }
 
 - (BOOL)isInteger
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 isInteger];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  isInteger = [lastObject isInteger];
 
-  return v7;
+  return isInteger;
 }
 
 - (int64_t)integerValue
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 integerValue];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  integerValue = [lastObject integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (BOOL)isFunctionName
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 isFunctionName];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  isFunctionName = [lastObject isFunctionName];
 
-  return v7;
+  return isFunctionName;
 }
 
 - (BOOL)isWordOrAbbreviation
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 isWordOrAbbreviation];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  isWordOrAbbreviation = [lastObject isWordOrAbbreviation];
 
-  return v7;
+  return isWordOrAbbreviation;
 }
 
 - (BOOL)canBeUsedWithRange
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 canBeUsedWithRange];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  canBeUsedWithRange = [lastObject canBeUsedWithRange];
 
-  return v7;
+  return canBeUsedWithRange;
 }
 
 - (BOOL)canBeUsedWithBase
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (v4 != 1)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 lastObject];
-  v7 = [v6 canBeUsedWithBase];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children2 lastObject];
+  canBeUsedWithBase = [lastObject canBeUsedWithBase];
 
-  return v7;
+  return canBeUsedWithBase;
 }
 
 - (BOOL)beginsWithSpace
 {
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 count];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(SCRCMathArrayExpression *)self children];
-  v6 = [v5 objectAtIndex:0];
-  v7 = [v6 beginsWithSpace];
+  children2 = [(SCRCMathArrayExpression *)self children];
+  v6 = [children2 objectAtIndex:0];
+  beginsWithSpace = [v6 beginsWithSpace];
 
-  return v7;
+  return beginsWithSpace;
 }
 
 - (BOOL)endsWithSpace
 {
-  v2 = [(SCRCMathArrayExpression *)self children];
-  v3 = [v2 lastObject];
-  v4 = [v3 endsWithSpace];
+  children = [(SCRCMathArrayExpression *)self children];
+  lastObject = [children lastObject];
+  endsWithSpace = [lastObject endsWithSpace];
 
-  return v4;
+  return endsWithSpace;
 }
 
 - (id)_indexesOfCharactersInWords
 {
-  v3 = [MEMORY[0x277CCAB58] indexSet];
-  v4 = [(SCRCMathArrayExpression *)self children];
-  v5 = [v4 count];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  children = [(SCRCMathArrayExpression *)self children];
+  v5 = [children count];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     do
     {
-      v8 = [v4 objectAtIndex:v7];
+      v8 = [children objectAtIndex:v7];
       if (v7 + 1 >= v6)
       {
         v9 = 1;
@@ -191,7 +191,7 @@
         v9 = 1;
         while (1)
         {
-          v10 = [v4 objectAtIndex:v7 + v9];
+          v10 = [children objectAtIndex:v7 + v9];
           v11 = [v10 canFormWordStartingWithExpression:v8];
 
           if (!v11)
@@ -208,7 +208,7 @@
 
         if (v9 >= 3)
         {
-          [v3 addIndexesInRange:{v7, v9}];
+          [indexSet addIndexesInRange:{v7, v9}];
         }
       }
 
@@ -218,22 +218,22 @@
     while (v7 < v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
-- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 parentTreePosition:(id)a5 childIndex:(unint64_t *)a6
+- (id)childSpeakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth parentTreePosition:(id)position childIndex:(unint64_t *)index
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = *a6;
-  v12 = [(SCRCMathArrayExpression *)self children];
-  v13 = [v12 count];
-  v14 = [v12 objectAtIndex:v11];
-  v15 = [v14 isRangeSubSuperscript];
-  if (((v15 | [v14 isBaseSubSuperscript]) & 1) != 0 && v11 < v13 - 1)
+  positionCopy = position;
+  v11 = *index;
+  children = [(SCRCMathArrayExpression *)self children];
+  v13 = [children count];
+  v14 = [children objectAtIndex:v11];
+  isRangeSubSuperscript = [v14 isRangeSubSuperscript];
+  if (((isRangeSubSuperscript | [v14 isBaseSubSuperscript]) & 1) != 0 && v11 < v13 - 1)
   {
     v16 = v14;
-    if (v15)
+    if (isRangeSubSuperscript)
     {
       v17 = @"segment.range.firstchild.prefix";
     }
@@ -244,52 +244,52 @@
     }
 
     v18 = @"segment.base.firstchild.suffix";
-    if (v15)
+    if (isRangeSubSuperscript)
     {
       v18 = @"segment.range.firstchild.suffix";
     }
 
     v19 = @"segment.base.secondchild.prefix";
-    if (v15)
+    if (isRangeSubSuperscript)
     {
       v19 = @"segment.range.secondchild.prefix";
     }
 
     v46 = v19;
     v20 = @"segment.base.secondchild.suffix";
-    if (v15)
+    if (isRangeSubSuperscript)
     {
       v20 = @"segment.range.secondchild.suffix";
     }
 
     v50 = v20;
-    v44 = self;
-    v21 = a4;
-    v22 = v12;
+    selfCopy = self;
+    depthCopy = depth;
+    v22 = children;
     v23 = v18;
     v24 = v17;
-    v25 = [v10 indexPathByAddingIndex:v11];
+    v25 = [positionCopy indexPathByAddingIndex:v11];
     v48 = v16;
-    v26 = [v16 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v21 treePosition:v25 localizablePrefix:v24 localizableSuffix:v23];
+    v26 = [v16 speakableSegmentsWithSpeakingStyle:style upToDepth:depthCopy treePosition:v25 localizablePrefix:v24 localizableSuffix:v23];
 
     v27 = v11 + 1;
-    *a6 = v11 + 1;
+    *index = v11 + 1;
     v49 = v22;
     v28 = [v22 objectAtIndex:v11 + 1];
     v29 = v46;
     v30 = v50;
-    v51 = v10;
-    v31 = [v10 indexPathByAddingIndex:v27];
+    v51 = positionCopy;
+    v31 = [positionCopy indexPathByAddingIndex:v27];
     v47 = v29;
     v45 = v30;
-    v32 = [v28 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v21 treePosition:v31 localizablePrefix:v29 localizableSuffix:v30];
+    v32 = [v28 speakableSegmentsWithSpeakingStyle:style upToDepth:depthCopy treePosition:v31 localizablePrefix:v29 localizableSuffix:v30];
 
-    v33 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v34 = [(SCRCMathExpression *)v44 localizedSegmentOrderingForKey:@"RangeAndExpressionAfterRange"];
+    v34 = [(SCRCMathExpression *)selfCopy localizedSegmentOrderingForKey:@"RangeAndExpressionAfterRange"];
     v35 = [v34 countByEnumeratingWithState:&v53 objects:v57 count:16];
     if (v35)
     {
@@ -317,7 +317,7 @@
             }
           }
 
-          [v33 addObjectsFromArray:v41];
+          [array addObjectsFromArray:v41];
         }
 
         v36 = [v34 countByEnumeratingWithState:&v53 objects:v57 count:16];
@@ -326,8 +326,8 @@
       while (v36);
     }
 
-    v12 = v49;
-    v10 = v51;
+    children = v49;
+    positionCopy = v51;
     v14 = v48;
   }
 
@@ -335,40 +335,40 @@
   {
     v52.receiver = self;
     v52.super_class = SCRCMathRowExpression;
-    v33 = [(SCRCMathArrayExpression *)&v52 childSpeakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 parentTreePosition:v10 childIndex:a6];
+    array = [(SCRCMathArrayExpression *)&v52 childSpeakableSegmentsWithSpeakingStyle:style upToDepth:depth parentTreePosition:positionCopy childIndex:index];
   }
 
-  return v33;
+  return array;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = [(SCRCMathArrayExpression *)self children];
-  v7 = [v6 count];
-  v28 = self;
-  v8 = [(SCRCMathRowExpression *)self _indexesOfCharactersInWords];
-  v29 = [MEMORY[0x277CCAB48] scrcString];
+  allowedCopy = allowed;
+  children = [(SCRCMathArrayExpression *)self children];
+  v7 = [children count];
+  selfCopy = self;
+  _indexesOfCharactersInWords = [(SCRCMathRowExpression *)self _indexesOfCharactersInWords];
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
   if (v7)
   {
     v9 = 0;
     v10 = v7 - 1;
-    v27 = v4;
+    v27 = allowedCopy;
     v25 = v7 - 1;
-    v26 = v6;
+    v26 = children;
     do
     {
-      v11 = [v6 objectAtIndex:v9];
-      v12 = [v11 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4 isPartOfWord:{objc_msgSend(v8, "containsIndex:", v9)}];
-      v13 = [v11 isRangeSubSuperscript];
-      if (((v13 | [v11 isBaseSubSuperscript]) & 1) != 0 && v9 < v10)
+      v11 = [children objectAtIndex:v9];
+      v12 = [v11 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy isPartOfWord:{objc_msgSend(_indexesOfCharactersInWords, "containsIndex:", v9)}];
+      isRangeSubSuperscript = [v11 isRangeSubSuperscript];
+      if (((isRangeSubSuperscript | [v11 isBaseSubSuperscript]) & 1) != 0 && v9 < v10)
       {
-        v14 = [v6 objectAtIndex:++v9];
-        [v14 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4 isPartOfWord:{objc_msgSend(v8, "containsIndex:", v9)}];
-        v15 = v8;
+        v14 = [children objectAtIndex:++v9];
+        [v14 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy isPartOfWord:{objc_msgSend(_indexesOfCharactersInWords, "containsIndex:", v9)}];
+        v15 = _indexesOfCharactersInWords;
         v17 = v16 = v7;
         v18 = MEMORY[0x277CCA898];
-        if (v13)
+        if (isRangeSubSuperscript)
         {
           v19 = @"range.sub.superscript.with.next.child.formatter";
         }
@@ -378,35 +378,35 @@
           v19 = @"base.sub.superscript.with.next.child.formatter";
         }
 
-        v20 = [(SCRCMathExpression *)v28 localizedStringForKey:v19];
+        v20 = [(SCRCMathExpression *)selfCopy localizedStringForKey:v19];
         v21 = [v18 scrcStringWithFormat:v20, v12, v17];
 
         v7 = v16;
-        v8 = v15;
+        _indexesOfCharactersInWords = v15;
 
         v12 = v21;
         v10 = v25;
-        v6 = v26;
-        v4 = v27;
+        children = v26;
+        allowedCopy = v27;
       }
 
       if ([v12 length])
       {
-        [v29 appendAttributedString:v12];
-        if (v9 < v10 && ([v8 containsIndex:v9] & 1) == 0)
+        [scrcString appendAttributedString:v12];
+        if (v9 < v10 && ([_indexesOfCharactersInWords containsIndex:v9] & 1) == 0)
         {
-          if (v4 && [v12 scrcContainsPause])
+          if (allowedCopy && [v12 scrcContainsPause])
           {
-            v22 = [MEMORY[0x277CCA898] scrcPauseString];
+            scrcPauseString = [MEMORY[0x277CCA898] scrcPauseString];
           }
 
           else
           {
-            v22 = [MEMORY[0x277CCA898] scrcSpaceString];
+            scrcPauseString = [MEMORY[0x277CCA898] scrcSpaceString];
           }
 
-          v23 = v22;
-          [v29 appendAttributedString:v22];
+          v23 = scrcPauseString;
+          [scrcString appendAttributedString:scrcPauseString];
         }
       }
 
@@ -416,23 +416,23 @@
     while (v9 < v7);
   }
 
-  return v29;
+  return scrcString;
 }
 
-- (void)_addSpacingAndChild:(id)a3 toResult:(id)a4 nextChild:(id)a5 previousChild:(id)a6 numberOfOuterRadicals:(unint64_t)a7 treePosition:(id)a8
+- (void)_addSpacingAndChild:(id)child toResult:(id)result nextChild:(id)nextChild previousChild:(id)previousChild numberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v38 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  if (([v38 isFunctionName] & 1) == 0 && !objc_msgSend(v38, "isWordOrAbbreviation"))
+  childCopy = child;
+  resultCopy = result;
+  nextChildCopy = nextChild;
+  previousChildCopy = previousChild;
+  positionCopy = position;
+  if (([childCopy isFunctionName] & 1) == 0 && !objc_msgSend(childCopy, "isWordOrAbbreviation"))
   {
-    if ([v38 isEllipsis])
+    if ([childCopy isEllipsis])
     {
-      v20 = [v15 isOperationSymbol];
-      v19 = [v14 isOperationSymbol];
-      if ((v20 & 1) == 0)
+      isOperationSymbol = [previousChildCopy isOperationSymbol];
+      isOperationSymbol2 = [nextChildCopy isOperationSymbol];
+      if ((isOperationSymbol & 1) == 0)
       {
         goto LABEL_15;
       }
@@ -443,24 +443,24 @@
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!previousChildCopy)
   {
-    if (v14)
+    if (nextChildCopy)
     {
-      v19 = [v14 beginsWithSpace] ^ 1;
+      isOperationSymbol2 = [nextChildCopy beginsWithSpace] ^ 1;
       goto LABEL_15;
     }
 
 LABEL_12:
-    v19 = 0;
+    isOperationSymbol2 = 0;
     goto LABEL_15;
   }
 
-  v17 = [v15 endsWithSpace];
-  v18 = v17;
-  if (v14)
+  endsWithSpace = [previousChildCopy endsWithSpace];
+  v18 = endsWithSpace;
+  if (nextChildCopy)
   {
-    v19 = [v14 beginsWithSpace] ^ 1;
+    isOperationSymbol2 = [nextChildCopy beginsWithSpace] ^ 1;
     if (v18)
     {
       goto LABEL_15;
@@ -469,27 +469,27 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v19 = 0;
-  if ((v17 & 1) == 0)
+  isOperationSymbol2 = 0;
+  if ((endsWithSpace & 1) == 0)
   {
 LABEL_14:
     v21 = MEMORY[0x277CCA898];
-    v22 = [v16 indexPathByRemovingLastIndex];
-    v23 = [v21 scrcStringWithString:@" " treePosition:v22];
-    [v13 appendAttributedString:v23];
+    indexPathByRemovingLastIndex = [positionCopy indexPathByRemovingLastIndex];
+    v23 = [v21 scrcStringWithString:@" " treePosition:indexPathByRemovingLastIndex];
+    [resultCopy appendAttributedString:v23];
   }
 
 LABEL_15:
-  if ([v15 isNumber] && objc_msgSend(v38, "isSimpleNumericalFraction"))
+  if ([previousChildCopy isNumber] && objc_msgSend(childCopy, "isSimpleNumericalFraction"))
   {
-    v24 = [v38 dollarCodeDescriptionAsMixedNumberFractionWithTreePosition:v16];
+    v24 = [childCopy dollarCodeDescriptionAsMixedNumberFractionWithTreePosition:positionCopy];
     goto LABEL_37;
   }
 
-  if ([v38 isFenceDelimiter] && (objc_msgSend(v14, "isMultiRowTable") & 1) != 0 || objc_msgSend(v15, "isMultiRowTable") && (objc_msgSend(v38, "isFenceDelimiter") & 1) != 0)
+  if ([childCopy isFenceDelimiter] && (objc_msgSend(nextChildCopy, "isMultiRowTable") & 1) != 0 || objc_msgSend(previousChildCopy, "isMultiRowTable") && (objc_msgSend(childCopy, "isFenceDelimiter") & 1) != 0)
   {
 LABEL_31:
-    if (!v19)
+    if (!isOperationSymbol2)
     {
       goto LABEL_33;
     }
@@ -497,9 +497,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (![v38 isMultiRowTable])
+  if (![childCopy isMultiRowTable])
   {
-    v24 = [v38 dollarCodeDescriptionWithNumberOfOuterRadicals:a7 treePosition:v16];
+    v24 = [childCopy dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:positionCopy];
 LABEL_37:
     v33 = v24;
     if (v24)
@@ -510,9 +510,9 @@ LABEL_37:
     goto LABEL_30;
   }
 
-  if ([v15 isFenceDelimiter])
+  if ([previousChildCopy isFenceDelimiter])
   {
-    v25 = v15;
+    v25 = previousChildCopy;
   }
 
   else
@@ -521,9 +521,9 @@ LABEL_37:
   }
 
   v37 = v25;
-  if ([v14 isFenceDelimiter])
+  if ([nextChildCopy isFenceDelimiter])
   {
-    v26 = v14;
+    v26 = nextChildCopy;
   }
 
   else
@@ -532,49 +532,49 @@ LABEL_37:
   }
 
   v27 = v26;
-  v28 = [v16 indexAtPosition:{objc_msgSend(v16, "length") - 1}];
-  v29 = [v16 indexPathByRemovingLastIndex];
-  v30 = [v29 indexPathByAddingIndex:v28 - 1];
+  v28 = [positionCopy indexAtPosition:{objc_msgSend(positionCopy, "length") - 1}];
+  indexPathByRemovingLastIndex2 = [positionCopy indexPathByRemovingLastIndex];
+  v30 = [indexPathByRemovingLastIndex2 indexPathByAddingIndex:v28 - 1];
 
-  v31 = [v16 indexPathByRemovingLastIndex];
-  v32 = [v31 indexPathByAddingIndex:v28 + 1];
+  indexPathByRemovingLastIndex3 = [positionCopy indexPathByRemovingLastIndex];
+  v32 = [indexPathByRemovingLastIndex3 indexPathByAddingIndex:v28 + 1];
 
-  v33 = [v38 dollarCodeDescriptionWithNumberOfOuterRadicals:a7 treePosition:v16 openOperator:v37 openOperatorTreePosition:v30 closeOperator:v27 closeOperatorTreePosition:v32];
+  v33 = [childCopy dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:positionCopy openOperator:v37 openOperatorTreePosition:v30 closeOperator:v27 closeOperatorTreePosition:v32];
 
   if (!v33)
   {
 LABEL_30:
-    NSLog(&cfstr_AxVoiceoverMat_0.isa, v38);
+    NSLog(&cfstr_AxVoiceoverMat_0.isa, childCopy);
     goto LABEL_31;
   }
 
 LABEL_38:
-  [v13 appendAttributedString:v33];
+  [resultCopy appendAttributedString:v33];
 
-  if (v19)
+  if (isOperationSymbol2)
   {
 LABEL_32:
     v34 = MEMORY[0x277CCA898];
-    v35 = [v16 indexPathByRemovingLastIndex];
-    v36 = [v34 scrcStringWithString:@" " treePosition:v35];
-    [v13 appendAttributedString:v36];
+    indexPathByRemovingLastIndex4 = [positionCopy indexPathByRemovingLastIndex];
+    v36 = [v34 scrcStringWithString:@" " treePosition:indexPathByRemovingLastIndex4];
+    [resultCopy appendAttributedString:v36];
   }
 
 LABEL_33:
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v18 = a3;
-  v19 = a4;
-  v5 = [MEMORY[0x277CCAB48] scrcString];
-  v6 = [(SCRCMathArrayExpression *)self children];
-  v7 = [v6 count];
+  radicalsCopy = radicals;
+  positionCopy = position;
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
+  children = [(SCRCMathArrayExpression *)self children];
+  v7 = [children count];
 
   if (v7)
   {
-    v8 = [(SCRCMathArrayExpression *)self children];
-    v9 = [v8 objectAtIndex:0];
+    children2 = [(SCRCMathArrayExpression *)self children];
+    v9 = [children2 objectAtIndex:0];
 
     v10 = 0;
     v11 = 0;
@@ -588,13 +588,13 @@ LABEL_33:
 
       else
       {
-        v12 = [(SCRCMathArrayExpression *)self children];
+        children3 = [(SCRCMathArrayExpression *)self children];
         v13 = v10 + 1;
-        v14 = [v12 objectAtIndex:v10 + 1];
+        v14 = [children3 objectAtIndex:v10 + 1];
       }
 
-      v15 = [v19 indexPathByAddingIndex:{v10, v18}];
-      [(SCRCMathRowExpression *)self _addSpacingAndChild:v9 toResult:v5 nextChild:v14 previousChild:v11 numberOfOuterRadicals:v18 treePosition:v15];
+      v15 = [positionCopy indexPathByAddingIndex:{v10, radicalsCopy}];
+      [(SCRCMathRowExpression *)self _addSpacingAndChild:v9 toResult:scrcString nextChild:v14 previousChild:v11 numberOfOuterRadicals:radicalsCopy treePosition:v15];
 
       v16 = v9;
       v10 = v13;
@@ -605,7 +605,7 @@ LABEL_33:
     while (v13 != v7);
   }
 
-  return v5;
+  return scrcString;
 }
 
 - (id)speakableSummary
@@ -615,8 +615,8 @@ LABEL_33:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(SCRCMathArrayExpression *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  children = [(SCRCMathArrayExpression *)self children];
+  v4 = [children countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v4)
   {
     v15 = 0;
@@ -626,26 +626,26 @@ LABEL_33:
   v5 = v4;
   v6 = 0;
   v7 = *v22;
-  v8 = 1;
+  isTermSeparator = 1;
   do
   {
     for (i = 0; i != v5; ++i)
     {
-      v10 = v8;
+      v10 = isTermSeparator;
       if (*v22 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(children);
       }
 
       v11 = *(*(&v21 + 1) + 8 * i);
-      v8 = [v11 isTermSeparator];
-      if ((v8 & 1) == 0 && ((v10 ^ 1) & 1) == 0)
+      isTermSeparator = [v11 isTermSeparator];
+      if ((isTermSeparator & 1) == 0 && ((v10 ^ 1) & 1) == 0)
       {
         v6 += [v11 isTermSeparator] ^ 1;
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v5 = [children countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v5);
@@ -653,10 +653,10 @@ LABEL_33:
   if (v6 >= 4)
   {
     v12 = MEMORY[0x277CCACA8];
-    v3 = [(SCRCMathExpression *)self localizedStringForKey:@"row.summary.formatter"];
+    children = [(SCRCMathExpression *)self localizedStringForKey:@"row.summary.formatter"];
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
     v14 = [(SCRCMathExpression *)self localizedStringForNumber:v13];
-    v15 = [v12 stringWithFormat:v3, v14];
+    v15 = [v12 stringWithFormat:children, v14];
 
 LABEL_14:
     goto LABEL_16;
@@ -666,19 +666,19 @@ LABEL_14:
 LABEL_16:
   v20.receiver = self;
   v20.super_class = SCRCMathRowExpression;
-  v16 = [(SCRCMathExpression *)&v20 speakableSummary];
-  if (!(v15 | v16))
+  speakableSummary = [(SCRCMathExpression *)&v20 speakableSummary];
+  if (!(v15 | speakableSummary))
   {
     v18 = 0;
     goto LABEL_23;
   }
 
-  v17 = [MEMORY[0x277CCAB68] string];
-  v18 = v17;
+  string = [MEMORY[0x277CCAB68] string];
+  v18 = string;
   if (v15)
   {
-    [v17 appendString:v15];
-    if (!v16)
+    [string appendString:v15];
+    if (!speakableSummary)
     {
       goto LABEL_23;
     }
@@ -686,33 +686,33 @@ LABEL_16:
     [v18 appendString:{@", "}];
   }
 
-  else if (!v16)
+  else if (!speakableSummary)
   {
     goto LABEL_23;
   }
 
-  [v18 appendString:v16];
+  [v18 appendString:speakableSummary];
 LABEL_23:
 
   return v18;
 }
 
-- (id)latexDescriptionInMathMode:(BOOL)a3
+- (id)latexDescriptionInMathMode:(BOOL)mode
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(SCRCMathArrayExpression *)self children];
-  if (![v4 count])
+  children = [(SCRCMathArrayExpression *)self children];
+  if (![children count])
   {
-    v5 = 0;
+    string = 0;
     goto LABEL_25;
   }
 
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = children;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v7)
   {
@@ -721,7 +721,7 @@ LABEL_23:
   }
 
   v8 = v7;
-  v17 = v4;
+  v17 = children;
   v9 = 0;
   v10 = *v19;
   v11 = 1;
@@ -738,7 +738,7 @@ LABEL_23:
       v14 = [v13 latexDescriptionInMathMode:1];
       if (v14)
       {
-        if (!a3)
+        if (!mode)
         {
           if (v9 & 1 | (([v13 canBeWrappedInLatexMathIndicators] & 1) == 0))
           {
@@ -759,17 +759,17 @@ LABEL_23:
             v15 = v9 ^ 1;
           }
 
-          [v5 appendString:@"$"];
+          [string appendString:@"$"];
           v9 = v15;
         }
 
 LABEL_15:
         if ((v11 & 1) == 0)
         {
-          [v5 appendString:@" "];
+          [string appendString:@" "];
         }
 
-        [v5 appendString:v14];
+        [string appendString:v14];
         v11 = 0;
       }
     }
@@ -781,13 +781,13 @@ LABEL_15:
 
   if (v9)
   {
-    [v5 appendString:@"$"];
+    [string appendString:@"$"];
   }
 
-  v4 = v17;
+  children = v17;
 LABEL_25:
 
-  return v5;
+  return string;
 }
 
 @end

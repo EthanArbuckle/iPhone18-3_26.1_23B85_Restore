@@ -8,13 +8,13 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E540();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E934();
 }
 

@@ -1,37 +1,37 @@
 @interface SFSafariTableOfContentsCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSafariTableOfContentsCardSection)initWithCoder:(id)a3;
-- (SFSafariTableOfContentsCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSafariTableOfContentsCardSection)initWithCoder:(id)coder;
+- (SFSafariTableOfContentsCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSafariTableOfContentsCardSection
 
-- (SFSafariTableOfContentsCardSection)initWithProtobuf:(id)a3
+- (SFSafariTableOfContentsCardSection)initWithProtobuf:(id)protobuf
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v23.receiver = self;
   v23.super_class = SFSafariTableOfContentsCardSection;
   v5 = [(SFCardSection *)&v23 init];
   if (v5)
   {
-    if ([v4 tableOfContentsType])
+    if ([protobufCopy tableOfContentsType])
     {
-      -[SFSafariTableOfContentsCardSection setTableOfContentsType:](v5, "setTableOfContentsType:", [v4 tableOfContentsType]);
+      -[SFSafariTableOfContentsCardSection setTableOfContentsType:](v5, "setTableOfContentsType:", [protobufCopy tableOfContentsType]);
     }
 
-    if ([v4 tableOfContentsSource])
+    if ([protobufCopy tableOfContentsSource])
     {
-      -[SFSafariTableOfContentsCardSection setTableOfContentsSource:](v5, "setTableOfContentsSource:", [v4 tableOfContentsSource]);
+      -[SFSafariTableOfContentsCardSection setTableOfContentsSource:](v5, "setTableOfContentsSource:", [protobufCopy tableOfContentsSource]);
     }
 
-    v6 = [v4 tableOfContentsItems];
-    if (v6)
+    tableOfContentsItems = [protobufCopy tableOfContentsItems];
+    if (tableOfContentsItems)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -45,8 +45,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v4 tableOfContentsItems];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    tableOfContentsItems2 = [protobufCopy tableOfContentsItems];
+    v9 = [tableOfContentsItems2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -57,7 +57,7 @@
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tableOfContentsItems2);
           }
 
           v13 = [[SFSafariTableOfContentsItem alloc] initWithProtobuf:*(*(&v19 + 1) + 8 * i)];
@@ -67,19 +67,19 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v10 = [tableOfContentsItems2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v10);
     }
 
     [(SFSafariTableOfContentsCardSection *)v5 setTableOfContentsItems:v7];
-    v14 = [v4 algorithmVersion];
+    algorithmVersion = [protobufCopy algorithmVersion];
 
-    if (v14)
+    if (algorithmVersion)
     {
-      v15 = [v4 algorithmVersion];
-      [(SFSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:v15];
+      algorithmVersion2 = [protobufCopy algorithmVersion];
+      [(SFSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:algorithmVersion2];
     }
 
     v16 = v5;
@@ -94,35 +94,35 @@
   v11.receiver = self;
   v11.super_class = SFSafariTableOfContentsCardSection;
   v3 = [(SFCardSection *)&v11 hash];
-  v4 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsType];
-  v5 = v4 ^ [(SFSafariTableOfContentsCardSection *)self tableOfContentsSource];
-  v6 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
-  v9 = v7 ^ [v8 hash];
+  tableOfContentsType = [(SFSafariTableOfContentsCardSection *)self tableOfContentsType];
+  v5 = tableOfContentsType ^ [(SFSafariTableOfContentsCardSection *)self tableOfContentsSource];
+  tableOfContentsItems = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
+  v7 = v5 ^ [tableOfContentsItems hash];
+  algorithmVersion = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
+  v9 = v7 ^ [algorithmVersion hash];
 
   return v3 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    if ([(SFSafariTableOfContentsCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFSafariTableOfContentsCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v24.receiver = self;
       v24.super_class = SFSafariTableOfContentsCardSection;
-      if ([(SFCardSection *)&v24 isEqual:v5])
+      if ([(SFCardSection *)&v24 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsType];
-        if (v7 != [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsType]|| (v8 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsSource], v8 != [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsSource]))
+        v6 = equalCopy;
+        tableOfContentsType = [(SFSafariTableOfContentsCardSection *)self tableOfContentsType];
+        if (tableOfContentsType != [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsType]|| (v8 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsSource], v8 != [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsSource]))
         {
           v13 = 0;
 LABEL_24:
@@ -130,9 +130,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v9 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
-        v10 = [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsItems];
-        if ((v9 != 0) == (v10 == 0))
+        tableOfContentsItems = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
+        tableOfContentsItems2 = [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsItems];
+        if ((tableOfContentsItems != 0) == (tableOfContentsItems2 == 0))
         {
           v13 = 0;
 LABEL_23:
@@ -140,12 +140,12 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v11 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
-        if (v11)
+        tableOfContentsItems3 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
+        if (tableOfContentsItems3)
         {
-          v3 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
-          v12 = [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsItems];
-          if (![v3 isEqual:v12])
+          tableOfContentsItems4 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
+          tableOfContentsItems5 = [(SFSafariTableOfContentsCardSection *)v6 tableOfContentsItems];
+          if (![tableOfContentsItems4 isEqual:tableOfContentsItems5])
           {
             v13 = 0;
 LABEL_21:
@@ -154,13 +154,13 @@ LABEL_22:
             goto LABEL_23;
           }
 
-          v23 = v12;
+          v23 = tableOfContentsItems5;
         }
 
-        v14 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
-        v15 = [(SFSafariTableOfContentsCardSection *)v6 algorithmVersion];
-        v16 = v15;
-        if ((v14 != 0) == (v15 == 0))
+        algorithmVersion = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
+        algorithmVersion2 = [(SFSafariTableOfContentsCardSection *)v6 algorithmVersion];
+        v16 = algorithmVersion2;
+        if ((algorithmVersion != 0) == (algorithmVersion2 == 0))
         {
 
           v13 = 0;
@@ -168,16 +168,16 @@ LABEL_22:
 
         else
         {
-          v17 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
-          if (v17)
+          algorithmVersion3 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
+          if (algorithmVersion3)
           {
-            v18 = v17;
-            v21 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
+            v18 = algorithmVersion3;
+            algorithmVersion4 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
             [(SFSafariTableOfContentsCardSection *)v6 algorithmVersion];
-            v19 = v22 = v3;
-            v13 = [v21 isEqual:v19];
+            v19 = v22 = tableOfContentsItems4;
+            v13 = [algorithmVersion4 isEqual:v19];
 
-            v3 = v22;
+            tableOfContentsItems4 = v22;
           }
 
           else
@@ -187,8 +187,8 @@ LABEL_22:
           }
         }
 
-        v12 = v23;
-        if (!v11)
+        tableOfContentsItems5 = v23;
+        if (!tableOfContentsItems3)
         {
           goto LABEL_22;
         }
@@ -205,19 +205,19 @@ LABEL_25:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFSafariTableOfContentsCardSection;
-  v4 = [(SFCardSection *)&v10 copyWithZone:a3];
+  v4 = [(SFCardSection *)&v10 copyWithZone:zone];
   [v4 setTableOfContentsType:{-[SFSafariTableOfContentsCardSection tableOfContentsType](self, "tableOfContentsType")}];
   [v4 setTableOfContentsSource:{-[SFSafariTableOfContentsCardSection tableOfContentsSource](self, "tableOfContentsSource")}];
-  v5 = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
-  v6 = [v5 copy];
+  tableOfContentsItems = [(SFSafariTableOfContentsCardSection *)self tableOfContentsItems];
+  v6 = [tableOfContentsItems copy];
   [v4 setTableOfContentsItems:v6];
 
-  v7 = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
-  v8 = [v7 copy];
+  algorithmVersion = [(SFSafariTableOfContentsCardSection *)self algorithmVersion];
+  v8 = [algorithmVersion copy];
   [v4 setAlgorithmVersion:v8];
 
   return v4;
@@ -226,31 +226,31 @@ LABEL_25:
 - (NSData)jsonData
 {
   v2 = [[_SFPBSafariTableOfContentsCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBSafariTableOfContentsCardSection *)v2 jsonData];
+  jsonData = [(_SFPBSafariTableOfContentsCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSafariTableOfContentsCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBSafariTableOfContentsCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSafariTableOfContentsCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFSafariTableOfContentsCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFSafariTableOfContentsCardSection)initWithCoder:(id)a3
+- (SFSafariTableOfContentsCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
@@ -259,95 +259,95 @@ LABEL_25:
   {
     [(SFSafariTableOfContentsCardSection *)v5 setTableOfContentsType:[(SFCardSection *)v8 tableOfContentsType]];
     [(SFSafariTableOfContentsCardSection *)v5 setTableOfContentsSource:[(SFCardSection *)v8 tableOfContentsSource]];
-    v9 = [(SFCardSection *)v8 tableOfContentsItems];
-    [(SFSafariTableOfContentsCardSection *)v5 setTableOfContentsItems:v9];
+    tableOfContentsItems = [(SFCardSection *)v8 tableOfContentsItems];
+    [(SFSafariTableOfContentsCardSection *)v5 setTableOfContentsItems:tableOfContentsItems];
 
-    v10 = [(SFCardSection *)v8 algorithmVersion];
-    [(SFSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:v10];
+    algorithmVersion = [(SFCardSection *)v8 algorithmVersion];
+    [(SFSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:algorithmVersion];
 
-    v11 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v11];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v12 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v12];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v13 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v13];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v14 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v14];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v15 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v15];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v16 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v16];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v17 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v17];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v18 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v18];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v19 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v19];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v20 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v20];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v21 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v21];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v22 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v22];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v23 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v23];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v24 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v24];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v25 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v25];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v26 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v26];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v27 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v27];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v28 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v28];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v29 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v29];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v30 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v30];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v31 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v31];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v32 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v32];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v33 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v33];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v34 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v34];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v35 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v35];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

@@ -1,10 +1,10 @@
 @interface HKClinicalProviderSearchQueryDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalProviderSearchQueryDescription)init;
-- (HKClinicalProviderSearchQueryDescription)initWithCoder:(id)a3;
-- (HKClinicalProviderSearchQueryDescription)initWithSearchString:(id)a3 latitude:(id)a4 longitude:(id)a5 pageOffset:(int64_t)a6 options:(unint64_t)a7;
+- (HKClinicalProviderSearchQueryDescription)initWithCoder:(id)coder;
+- (HKClinicalProviderSearchQueryDescription)initWithSearchString:(id)string latitude:(id)latitude longitude:(id)longitude pageOffset:(int64_t)offset options:(unint64_t)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalProviderSearchQueryDescription
@@ -19,42 +19,42 @@
   return 0;
 }
 
-- (HKClinicalProviderSearchQueryDescription)initWithSearchString:(id)a3 latitude:(id)a4 longitude:(id)a5 pageOffset:(int64_t)a6 options:(unint64_t)a7
+- (HKClinicalProviderSearchQueryDescription)initWithSearchString:(id)string latitude:(id)latitude longitude:(id)longitude pageOffset:(int64_t)offset options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  stringCopy = string;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
   v23.receiver = self;
   v23.super_class = HKClinicalProviderSearchQueryDescription;
   v15 = [(HKClinicalProviderSearchQueryDescription *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [stringCopy copy];
     searchString = v15->_searchString;
     v15->_searchString = v16;
 
-    v18 = [v13 copy];
+    v18 = [latitudeCopy copy];
     latitude = v15->_latitude;
     v15->_latitude = v18;
 
-    v20 = [v14 copy];
+    v20 = [longitudeCopy copy];
     longitude = v15->_longitude;
     v15->_longitude = v20;
 
-    v15->_pageOffset = a6;
-    v15->_options = a7;
+    v15->_pageOffset = offset;
+    v15->_options = options;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -65,20 +65,20 @@ LABEL_37:
     }
 
     searchString = self->_searchString;
-    v9 = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
-    if (searchString != v9)
+    searchString = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
+    if (searchString != searchString)
     {
-      v10 = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
-      if (!v10)
+      searchString2 = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
+      if (!searchString2)
       {
         v13 = 0;
         goto LABEL_36;
       }
 
-      v3 = v10;
+      v3 = searchString2;
       v11 = self->_searchString;
-      v12 = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
-      if (![(NSString *)v11 isEqual:v12])
+      searchString3 = [(HKClinicalProviderSearchQueryDescription *)v7 searchString];
+      if (![(NSString *)v11 isEqual:searchString3])
       {
         v13 = 0;
 LABEL_35:
@@ -86,22 +86,22 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v36 = v12;
+      v36 = searchString3;
     }
 
     latitude = self->_latitude;
-    v15 = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
-    if (latitude != v15)
+    latitude = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
+    if (latitude != latitude)
     {
-      v16 = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
-      if (!v16)
+      latitude2 = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
+      if (!latitude2)
       {
         v13 = 0;
 LABEL_33:
 
 LABEL_34:
-        v12 = v36;
-        if (searchString != v9)
+        searchString3 = v36;
+        if (searchString != searchString)
         {
           goto LABEL_35;
         }
@@ -111,12 +111,12 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v17 = v16;
+      v17 = latitude2;
       v18 = self->_latitude;
-      v19 = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
+      latitude3 = [(HKClinicalProviderSearchQueryDescription *)v7 latitude];
       v20 = v18;
-      v21 = v19;
-      if (([(NSNumber *)v20 isEqual:v19]& 1) == 0)
+      v21 = latitude3;
+      if (([(NSNumber *)v20 isEqual:latitude3]& 1) == 0)
       {
 
         v13 = 0;
@@ -128,8 +128,8 @@ LABEL_36:
     }
 
     longitude = self->_longitude;
-    v23 = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
-    if (longitude == v23)
+    longitude = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
+    if (longitude == longitude)
     {
       pageOffset = self->_pageOffset;
       if (pageOffset == [(HKClinicalProviderSearchQueryDescription *)v7 pageOffset])
@@ -148,19 +148,19 @@ LABEL_36:
 
     else
     {
-      v24 = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
-      if (v24)
+      longitude2 = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
+      if (longitude2)
       {
         v33 = v3;
         v25 = self->_longitude;
-        v32 = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
+        longitude3 = [(HKClinicalProviderSearchQueryDescription *)v7 longitude];
         if (([(NSNumber *)v25 isEqual:?]& 1) == 0)
         {
           v13 = 0;
 LABEL_25:
           v3 = v33;
 
-          if (latitude != v15)
+          if (latitude != latitude)
           {
           }
 
@@ -182,7 +182,7 @@ LABEL_25:
       v13 = 0;
     }
 
-    if (latitude != v15)
+    if (latitude != latitude)
     {
 
       v13 = v30;
@@ -204,37 +204,37 @@ LABEL_38:
   return v4 ^ [(NSNumber *)self->_longitude hash]^ self->_pageOffset ^ self->_options;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   searchString = self->_searchString;
-  v5 = a3;
-  [v5 encodeObject:searchString forKey:@"SearchString"];
-  [v5 encodeObject:self->_latitude forKey:@"Latitude"];
-  [v5 encodeObject:self->_longitude forKey:@"Longitude"];
-  [v5 encodeInteger:self->_pageOffset forKey:@"PageOffset"];
-  [v5 encodeInteger:self->_options forKey:@"Options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:searchString forKey:@"SearchString"];
+  [coderCopy encodeObject:self->_latitude forKey:@"Latitude"];
+  [coderCopy encodeObject:self->_longitude forKey:@"Longitude"];
+  [coderCopy encodeInteger:self->_pageOffset forKey:@"PageOffset"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
 }
 
-- (HKClinicalProviderSearchQueryDescription)initWithCoder:(id)a3
+- (HKClinicalProviderSearchQueryDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SearchString"];
-  if (v5 && [v4 containsValueForKey:@"PageOffset"] && (objc_msgSend(v4, "containsValueForKey:", @"Options") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SearchString"];
+  if (v5 && [coderCopy containsValueForKey:@"PageOffset"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"Options") & 1) != 0)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Latitude"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Longitude"];
-    self = -[HKClinicalProviderSearchQueryDescription initWithSearchString:latitude:longitude:pageOffset:options:](self, "initWithSearchString:latitude:longitude:pageOffset:options:", v5, v6, v7, [v4 decodeIntegerForKey:@"PageOffset"], objc_msgSend(v4, "decodeIntegerForKey:", @"Options"));
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Latitude"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Longitude"];
+    self = -[HKClinicalProviderSearchQueryDescription initWithSearchString:latitude:longitude:pageOffset:options:](self, "initWithSearchString:latitude:longitude:pageOffset:options:", v5, v6, v7, [coderCopy decodeIntegerForKey:@"PageOffset"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"Options"));
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

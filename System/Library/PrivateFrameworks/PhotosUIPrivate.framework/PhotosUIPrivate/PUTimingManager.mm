@@ -1,25 +1,25 @@
 @interface PUTimingManager
 + (id)defaultManager;
 - (PUTimingManager)init;
-- (id)stopwatchForKey:(id)a3;
+- (id)stopwatchForKey:(id)key;
 @end
 
 @implementation PUTimingManager
 
-- (id)stopwatchForKey:(id)a3
+- (id)stopwatchForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stopwatches objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_stopwatches objectForKeyedSubscript:keyCopy];
 
   if (!v5)
   {
     v6 = [PUVFXStopWatch alloc];
     v7 = __log();
     v8 = [(PUVFXStopWatch *)v6 initWithLog:v7];
-    [(NSMutableDictionary *)self->_stopwatches setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_stopwatches setObject:v8 forKeyedSubscript:keyCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_stopwatches objectForKeyedSubscript:v4];
+  v9 = [(NSMutableDictionary *)self->_stopwatches objectForKeyedSubscript:keyCopy];
 
   return v9;
 }

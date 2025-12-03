@@ -1,30 +1,30 @@
 @interface BMAccessDaemon
-- (BMAccessDaemon)initWithQueue:(id)a3 delegate:(id)a4;
+- (BMAccessDaemon)initWithQueue:(id)queue delegate:(id)delegate;
 @end
 
 @implementation BMAccessDaemon
 
-- (BMAccessDaemon)initWithQueue:(id)a3 delegate:(id)a4
+- (BMAccessDaemon)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  dispatch_assert_queue_V2(v7);
+  queueCopy = queue;
+  delegateCopy = delegate;
+  dispatch_assert_queue_V2(queueCopy);
   v18.receiver = self;
   v18.super_class = BMAccessDaemon;
   v9 = [(BMAccessDaemon *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [[BMAccessServiceListener alloc] initLegacyWithQueue:v7];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [[BMAccessServiceListener alloc] initLegacyWithQueue:queueCopy];
     legacyAccessService = v10->_legacyAccessService;
     v10->_legacyAccessService = v11;
 
-    v13 = [[BMAccessServiceListener alloc] initWithDomain:0 queue:v7 delegate:v8];
+    v13 = [[BMAccessServiceListener alloc] initWithDomain:0 queue:queueCopy delegate:delegateCopy];
     userAccessService = v10->_userAccessService;
     v10->_userAccessService = v13;
 
-    v15 = [[BMAccessServiceListener alloc] initWithDomain:1 queue:v7 delegate:v8];
+    v15 = [[BMAccessServiceListener alloc] initWithDomain:1 queue:queueCopy delegate:delegateCopy];
     systemAccessService = v10->_systemAccessService;
     v10->_systemAccessService = v15;
 

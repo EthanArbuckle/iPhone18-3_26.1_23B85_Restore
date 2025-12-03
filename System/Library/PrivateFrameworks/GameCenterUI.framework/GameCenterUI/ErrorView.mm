@@ -1,14 +1,14 @@
 @interface ErrorView
 - (UIEdgeInsets)layoutMargins;
 - (void)layoutSubviews;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation ErrorView
 
 - (UIEdgeInsets)layoutMargins
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1DEFF8();
   v4 = v3;
   v6 = v5;
@@ -26,15 +26,15 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E1DF088();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1DF0A0();
 }
 

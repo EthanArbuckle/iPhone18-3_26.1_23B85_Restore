@@ -1,10 +1,10 @@
 @interface AddPregnancyTileCell
-- (_TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell)initWithCoder:(id)coder;
 @end
 
 @implementation AddPregnancyTileCell
 
-- (_TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell_parentViewController) = 0;
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin20AddPregnancyTileCell_item;

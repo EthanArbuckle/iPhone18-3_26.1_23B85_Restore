@@ -3,11 +3,11 @@
 - (id)trackpadBorderColor;
 - (id)trackpadBorderWidth;
 - (id)trackpadOpacity;
-- (void)setTrackpadBorderColor:(id)a3;
-- (void)setTrackpadBorderWidth:(id)a3;
-- (void)setTrackpadOpacity:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setTrackpadBorderColor:(id)color;
+- (void)setTrackpadBorderWidth:(id)width;
+- (void)setTrackpadOpacity:(id)opacity;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation ASTVirtualTrackpadBorderColorController
@@ -16,11 +16,11 @@
 {
   v15.receiver = self;
   v15.super_class = ASTVirtualTrackpadBorderColorController;
-  v3 = [(ASTVirtualTrackpadColorController *)&v15 specifiers];
+  specifiers = [(ASTVirtualTrackpadColorController *)&v15 specifiers];
   v4 = settingsLocString(@"PointerStrokeWidth", @"Accessibility-hello");
   v5 = [PSSpecifier groupSpecifierWithName:v4];
 
-  [v3 addObject:v5];
+  [specifiers addObject:v5];
   v6 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:"setTrackpadBorderWidth:" get:"trackpadBorderWidth" detail:0 cell:5 edit:0];
   [v6 setProperty:&__kCFBooleanFalse forKey:PSSliderIsSegmented];
   [v6 setProperty:&__kCFBooleanTrue forKey:PSSliderIsContinuous];
@@ -43,11 +43,11 @@ LABEL_5:
 
 LABEL_6:
   [v6 setProperty:@"BORDER_WIDTH" forKey:PSIDKey];
-  [v3 addObject:v6];
+  [specifiers addObject:v6];
   v9 = OBJC_IVAR___PSListController__specifiers;
   v10 = *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] = v3;
-  v11 = v3;
+  *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] = specifiers;
+  v11 = specifiers;
 
   v12 = *&self->super.AXUISettingsBaseListController_opaque[v9];
   v13 = v12;
@@ -65,11 +65,11 @@ LABEL_6:
   return v4;
 }
 
-- (void)setTrackpadOpacity:(id)a3
+- (void)setTrackpadOpacity:(id)opacity
 {
-  v3 = a3;
+  opacityCopy = opacity;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [opacityCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadBorderOpacity:v5];
@@ -85,36 +85,36 @@ LABEL_6:
   return v4;
 }
 
-- (void)setTrackpadBorderWidth:(id)a3
+- (void)setTrackpadBorderWidth:(id)width
 {
-  v3 = a3;
+  widthCopy = width;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [widthCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadBorderWidth:v5];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(ASTVirtualTrackpadBorderColorController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(ASTVirtualTrackpadBorderColorController *)self specifierForIndexPath:path];
   v9 = [v8 propertyForKey:@"ColorKey"];
   if (v9)
   {
-    v10 = v7;
-    v11 = [v9 intValue];
-    v12 = [v9 intValue];
-    v13 = [(ASTVirtualTrackpadBorderColorController *)self trackpadBorderColor];
-    [v10 setChecked:{v12 == objc_msgSend(v13, "intValue")}];
+    v10 = cellCopy;
+    intValue = [v9 intValue];
+    intValue2 = [v9 intValue];
+    trackpadBorderColor = [(ASTVirtualTrackpadBorderColorController *)self trackpadBorderColor];
+    [v10 setChecked:{intValue2 == objc_msgSend(trackpadBorderColor, "intValue")}];
 
     v14 = _ASTVirtualTrackpadColorValues();
     v15 = [(ASTVirtualTrackpadBorderColorController *)self traitCollection:0];
-    v16 = [v15 userInterfaceStyle];
+    userInterfaceStyle = [v15 userInterfaceStyle];
 
     if (v14)
     {
-      v17 = v11 == 1;
+      v17 = intValue == 1;
     }
 
     else
@@ -123,7 +123,7 @@ LABEL_6:
     }
 
     v18 = !v17;
-    if (v16 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v19 = v14 != 0;
     }
@@ -137,28 +137,28 @@ LABEL_6:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = ASTVirtualTrackpadBorderColorController;
-  [(ASTVirtualTrackpadBorderColorController *)&v30 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(ASTVirtualTrackpadBorderColorController *)self specifierForIndexPath:v7];
+  [(ASTVirtualTrackpadBorderColorController *)&v30 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(ASTVirtualTrackpadBorderColorController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ColorKey"];
   if (v9)
   {
     v22 = v8;
-    v23 = v7;
-    v10 = self;
+    v23 = pathCopy;
+    selfCopy = self;
     v21 = v9;
     [(ASTVirtualTrackpadBorderColorController *)self setTrackpadBorderColor:v9];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v24 = v6;
-    obj = [v6 visibleCells];
+    v24 = viewCopy;
+    obj = [viewCopy visibleCells];
     v11 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v11)
     {
@@ -174,14 +174,14 @@ LABEL_6:
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
-          v16 = [v15 specifier];
-          v17 = [v16 propertyForKey:@"ColorKey"];
+          specifier = [v15 specifier];
+          v17 = [specifier propertyForKey:@"ColorKey"];
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 intValue];
-            v20 = [(ASTVirtualTrackpadBorderColorController *)v10 trackpadBorderColor];
-            [v15 setChecked:{v19 == objc_msgSend(v20, "intValue")}];
+            intValue = [v17 intValue];
+            trackpadBorderColor = [(ASTVirtualTrackpadBorderColorController *)selfCopy trackpadBorderColor];
+            [v15 setChecked:{intValue == objc_msgSend(trackpadBorderColor, "intValue")}];
           }
         }
 
@@ -191,8 +191,8 @@ LABEL_6:
       while (v12);
     }
 
-    v7 = v23;
-    v6 = v24;
+    pathCopy = v23;
+    viewCopy = v24;
     v9 = v21;
     v8 = v22;
   }
@@ -206,13 +206,13 @@ LABEL_6:
   return v3;
 }
 
-- (void)setTrackpadBorderColor:(id)a3
+- (void)setTrackpadBorderColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 integerValue];
+  integerValue = [colorCopy integerValue];
 
-  [v5 setAssistiveTouchVirtualTrackpadBorderColor:v4];
+  [v5 setAssistiveTouchVirtualTrackpadBorderColor:integerValue];
 }
 
 @end

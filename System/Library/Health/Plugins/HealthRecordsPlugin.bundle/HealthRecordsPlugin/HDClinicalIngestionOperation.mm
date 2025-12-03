@@ -1,42 +1,42 @@
 @interface HDClinicalIngestionOperation
-- (HDClinicalIngestionOperation)initWithTask:(id)a3 nextOperation:(id)a4;
+- (HDClinicalIngestionOperation)initWithTask:(id)task nextOperation:(id)operation;
 - (HDHealthRecordsXPCServiceClient)healthRecordsServiceClient;
 - (NSString)debugDescription;
 - (void)main;
-- (void)setOperationError:(id)a3;
+- (void)setOperationError:(id)error;
 @end
 
 @implementation HDClinicalIngestionOperation
 
-- (HDClinicalIngestionOperation)initWithTask:(id)a3 nextOperation:(id)a4
+- (HDClinicalIngestionOperation)initWithTask:(id)task nextOperation:(id)operation
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  operationCopy = operation;
   v16.receiver = self;
   v16.super_class = HDClinicalIngestionOperation;
   v9 = [(HDClinicalIngestionOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_task, a3);
-    objc_storeStrong(&v10->_nextOperation, a4);
-    v11 = [v7 profile];
+    objc_storeStrong(&v9->_task, task);
+    objc_storeStrong(&v10->_nextOperation, operation);
+    profile = [taskCopy profile];
     profile = v10->_profile;
-    v10->_profile = v11;
+    v10->_profile = profile;
 
-    v13 = [v7 profileExtension];
+    profileExtension = [taskCopy profileExtension];
     profileExtension = v10->_profileExtension;
-    v10->_profileExtension = v13;
+    v10->_profileExtension = profileExtension;
 
-    [v8 addDependency:v10];
+    [operationCopy addDependency:v10];
   }
 
   return v10;
 }
 
-- (void)setOperationError:(id)a3
+- (void)setOperationError:(id)error
 {
-  v4 = [a3 copy];
+  v4 = [error copy];
   operationError = self->_operationError;
   self->_operationError = v4;
 
@@ -45,17 +45,17 @@
 
 - (HDHealthRecordsXPCServiceClient)healthRecordsServiceClient
 {
-  v2 = [(HDClinicalIngestionOperation *)self task];
-  v3 = [v2 healthRecordsServiceClient];
+  task = [(HDClinicalIngestionOperation *)self task];
+  healthRecordsServiceClient = [task healthRecordsServiceClient];
 
-  return v3;
+  return healthRecordsServiceClient;
 }
 
 - (NSString)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalIngestionTask *)self->_task taskIdentifier];
-  v5 = [NSString stringWithFormat:@"%@ task:%@", v3, v4];
+  taskIdentifier = [(HDClinicalIngestionTask *)self->_task taskIdentifier];
+  v5 = [NSString stringWithFormat:@"%@ task:%@", v3, taskIdentifier];
 
   return v5;
 }

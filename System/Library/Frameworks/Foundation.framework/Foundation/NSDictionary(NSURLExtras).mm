@@ -9,7 +9,7 @@
 
 - (void)_web_intForKey:()NSURLExtras
 {
-  result = [a1 _web_numberForKey:?];
+  result = [self _web_numberForKey:?];
   if (result)
   {
 
@@ -21,7 +21,7 @@
 
 - (uint64_t)_web_stringForKey:()NSURLExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSString())
   {
     return v1;
@@ -35,7 +35,7 @@
 
 - (uint64_t)_web_numberForKey:()NSURLExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSNumber())
   {
     return v1;
@@ -49,7 +49,7 @@
 
 - (uint64_t)_web_objectForMIMEType:()NSURLExtras
 {
-  result = [a1 objectForKey:?];
+  result = [self objectForKey:?];
   if (!result)
   {
     v6 = [a3 rangeOfString:@"/"];
@@ -62,7 +62,7 @@
     {
       v7 = [a3 substringToIndex:v6 + 1];
 
-      return [a1 objectForKey:v7];
+      return [self objectForKey:v7];
     }
   }
 

@@ -3,8 +3,8 @@
 - (UICollectionLayoutListConfiguration)initWithAppearance:(UICollectionLayoutListAppearance)appearance;
 - (UIListSeparatorConfiguration)separatorConfiguration;
 - (id)_spiConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setCornerRadius:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setCornerRadius:(double)radius;
 - (void)setHeaderTopPadding:(CGFloat)headerTopPadding;
 - (void)setSeparatorConfiguration:(UIListSeparatorConfiguration *)separatorConfiguration;
 @end
@@ -153,14 +153,14 @@
   self->_headerTopPadding = headerTopPadding;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  if (a3 < 0.0)
+  if (radius < 0.0)
   {
-    a3 = 1.79769313e308;
+    radius = 1.79769313e308;
   }
 
-  self->_cornerRadius = a3;
+  self->_cornerRadius = radius;
 }
 
 - (void)setSeparatorConfiguration:(UIListSeparatorConfiguration *)separatorConfiguration
@@ -176,9 +176,9 @@
   self->_separatorConfiguration = v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAppearance:", self->_appearance}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAppearance:", self->_appearance}];
   v5 = v4;
   if (v4)
   {

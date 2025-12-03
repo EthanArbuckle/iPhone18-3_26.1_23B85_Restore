@@ -1,128 +1,128 @@
 @interface PlaceSummaryViewModelTemplateFactory
 + (id)addAPlaceAutocompleteViewModel;
 + (id)addAPlaceSearchViewModel;
-+ (id)venueViewModelWithSearchResult:(id)a3 metadata:(id)a4 labelContext:(unint64_t)a5;
-+ (id)viewModelWithCompletion:(id)a3 metadata:(id)a4 currentLocation:(id)a5 userLocationSearchResult:(id)a6 highlightType:(id)a7 availableWidth:(double)a8 clientSourceType:(int64_t)a9 allowsTappableUnits:(BOOL)a10 searchAlongRoute:(BOOL)a11;
-+ (id)viewModelWithHistoryEntryPlaceDisplay:(id)a3 highlightConfiguration:(id)a4 availableWidth:(double)a5 currentLocation:(id)a6 searchAlongRoute:(BOOL)a7;
-+ (id)viewModelWithHistoryEntryPlaceDisplay:(id)a3 highlightConfiguration:(id)a4 availableWidth:(double)a5 currentLocation:(id)a6 searchAlongRoute:(BOOL)a7 recentUnit:(BOOL)a8;
-+ (id)viewModelWithHistoryEntrySearch:(id)a3 highlightConfiguration:(id)a4 searchAlongRoute:(BOOL)a5;
-+ (id)viewModelWithHistoryEntrySearch:(id)a3 highlightConfiguration:(id)a4 searchAlongRoute:(BOOL)a5 recentUnit:(BOOL)a6;
-+ (id)viewModelWithSearchResult:(id)a3 highlightConfiguration:(id)a4 currentLocation:(id)a5 availableWidth:(double)a6 searchAlongRoute:(BOOL)a7;
-+ (id)viewModelWithSearchResult:(id)a3 metadata:(id)a4 currentLocation:(id)a5 searchAlongRoute:(BOOL)a6 openAt:(id)a7;
-+ (id)viewModelWithUserRoute:(id)a3 highlightConfiguration:(id)a4 currentLocation:(id)a5;
-+ (void)updateDistanceViewModelWithCurrentLocation:(id)a3 mapItem:(id)a4 template:(id)a5 searchAlongTheRoute:(BOOL)a6;
++ (id)venueViewModelWithSearchResult:(id)result metadata:(id)metadata labelContext:(unint64_t)context;
++ (id)viewModelWithCompletion:(id)completion metadata:(id)metadata currentLocation:(id)location userLocationSearchResult:(id)result highlightType:(id)type availableWidth:(double)width clientSourceType:(int64_t)sourceType allowsTappableUnits:(BOOL)self0 searchAlongRoute:(BOOL)self1;
++ (id)viewModelWithHistoryEntryPlaceDisplay:(id)display highlightConfiguration:(id)configuration availableWidth:(double)width currentLocation:(id)location searchAlongRoute:(BOOL)route;
++ (id)viewModelWithHistoryEntryPlaceDisplay:(id)display highlightConfiguration:(id)configuration availableWidth:(double)width currentLocation:(id)location searchAlongRoute:(BOOL)route recentUnit:(BOOL)unit;
++ (id)viewModelWithHistoryEntrySearch:(id)search highlightConfiguration:(id)configuration searchAlongRoute:(BOOL)route;
++ (id)viewModelWithHistoryEntrySearch:(id)search highlightConfiguration:(id)configuration searchAlongRoute:(BOOL)route recentUnit:(BOOL)unit;
++ (id)viewModelWithSearchResult:(id)result highlightConfiguration:(id)configuration currentLocation:(id)location availableWidth:(double)width searchAlongRoute:(BOOL)route;
++ (id)viewModelWithSearchResult:(id)result metadata:(id)metadata currentLocation:(id)location searchAlongRoute:(BOOL)route openAt:(id)at;
++ (id)viewModelWithUserRoute:(id)route highlightConfiguration:(id)configuration currentLocation:(id)location;
++ (void)updateDistanceViewModelWithCurrentLocation:(id)location mapItem:(id)item template:(id)template searchAlongTheRoute:(BOOL)route;
 - (_TtC4Maps36PlaceSummaryViewModelTemplateFactory)init;
 @end
 
 @implementation PlaceSummaryViewModelTemplateFactory
 
-+ (id)venueViewModelWithSearchResult:(id)a3 metadata:(id)a4 labelContext:(unint64_t)a5
++ (id)venueViewModelWithSearchResult:(id)result metadata:(id)metadata labelContext:(unint64_t)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = sub_1002DCBF4(v8, a5);
+  resultCopy = result;
+  metadataCopy = metadata;
+  v10 = sub_1002DCBF4(resultCopy, context);
 
   return v10;
 }
 
-+ (id)viewModelWithSearchResult:(id)a3 metadata:(id)a4 currentLocation:(id)a5 searchAlongRoute:(BOOL)a6 openAt:(id)a7
++ (id)viewModelWithSearchResult:(id)result metadata:(id)metadata currentLocation:(id)location searchAlongRoute:(BOOL)route openAt:(id)at
 {
-  v8 = a6;
+  routeCopy = route;
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  sub_1002C2368(v12, a4, a5, v8, a7);
+  resultCopy = result;
+  metadataCopy = metadata;
+  locationCopy = location;
+  atCopy = at;
+  sub_1002C2368(resultCopy, metadata, location, routeCopy, at);
   v17 = v16;
 
   return v17;
 }
 
-+ (id)viewModelWithCompletion:(id)a3 metadata:(id)a4 currentLocation:(id)a5 userLocationSearchResult:(id)a6 highlightType:(id)a7 availableWidth:(double)a8 clientSourceType:(int64_t)a9 allowsTappableUnits:(BOOL)a10 searchAlongRoute:(BOOL)a11
++ (id)viewModelWithCompletion:(id)completion metadata:(id)metadata currentLocation:(id)location userLocationSearchResult:(id)result highlightType:(id)type availableWidth:(double)width clientSourceType:(int64_t)sourceType allowsTappableUnits:(BOOL)self0 searchAlongRoute:(BOOL)self1
 {
   swift_getObjCClassMetadata();
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  sub_1002C33E8(v17, a4, a5, a6, v21, a9, a10, a11, a8);
+  completionCopy = completion;
+  metadataCopy = metadata;
+  locationCopy = location;
+  resultCopy = result;
+  typeCopy = type;
+  sub_1002C33E8(completionCopy, metadata, location, result, typeCopy, sourceType, units, route, width);
   v23 = v22;
 
   return v23;
 }
 
-+ (id)viewModelWithHistoryEntrySearch:(id)a3 highlightConfiguration:(id)a4 searchAlongRoute:(BOOL)a5
++ (id)viewModelWithHistoryEntrySearch:(id)search highlightConfiguration:(id)configuration searchAlongRoute:(BOOL)route
 {
-  v5 = a5;
+  routeCopy = route;
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = sub_1002C44FC(a3, v8, v5, 1);
+  configurationCopy = configuration;
+  v9 = sub_1002C44FC(search, configurationCopy, routeCopy, 1);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-+ (id)viewModelWithHistoryEntrySearch:(id)a3 highlightConfiguration:(id)a4 searchAlongRoute:(BOOL)a5 recentUnit:(BOOL)a6
++ (id)viewModelWithHistoryEntrySearch:(id)search highlightConfiguration:(id)configuration searchAlongRoute:(BOOL)route recentUnit:(BOOL)unit
 {
-  v7 = a5;
+  routeCopy = route;
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = sub_1002C44FC(a3, v10, v7, a6);
+  configurationCopy = configuration;
+  v11 = sub_1002C44FC(search, configurationCopy, routeCopy, unit);
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-+ (id)viewModelWithHistoryEntryPlaceDisplay:(id)a3 highlightConfiguration:(id)a4 availableWidth:(double)a5 currentLocation:(id)a6 searchAlongRoute:(BOOL)a7
++ (id)viewModelWithHistoryEntryPlaceDisplay:(id)display highlightConfiguration:(id)configuration availableWidth:(double)width currentLocation:(id)location searchAlongRoute:(BOOL)route
 {
-  v7 = a7;
+  routeCopy = route;
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v12 = a4;
-  v13 = a6;
-  v14 = sub_1002C58A8(a3, v12, a6, v7, 1, a5);
+  configurationCopy = configuration;
+  locationCopy = location;
+  v14 = sub_1002C58A8(display, configurationCopy, location, routeCopy, 1, width);
   swift_unknownObjectRelease();
 
   return v14;
 }
 
-+ (id)viewModelWithHistoryEntryPlaceDisplay:(id)a3 highlightConfiguration:(id)a4 availableWidth:(double)a5 currentLocation:(id)a6 searchAlongRoute:(BOOL)a7 recentUnit:(BOOL)a8
++ (id)viewModelWithHistoryEntryPlaceDisplay:(id)display highlightConfiguration:(id)configuration availableWidth:(double)width currentLocation:(id)location searchAlongRoute:(BOOL)route recentUnit:(BOOL)unit
 {
-  v9 = a7;
+  routeCopy = route;
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  v14 = a4;
-  v15 = a6;
-  v16 = sub_1002C58A8(a3, v14, a6, v9, a8, a5);
+  configurationCopy = configuration;
+  locationCopy = location;
+  v16 = sub_1002C58A8(display, configurationCopy, location, routeCopy, unit, width);
   swift_unknownObjectRelease();
 
   return v16;
 }
 
-+ (id)viewModelWithSearchResult:(id)a3 highlightConfiguration:(id)a4 currentLocation:(id)a5 availableWidth:(double)a6 searchAlongRoute:(BOOL)a7
++ (id)viewModelWithSearchResult:(id)result highlightConfiguration:(id)configuration currentLocation:(id)location availableWidth:(double)width searchAlongRoute:(BOOL)route
 {
-  v7 = a7;
+  routeCopy = route;
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = sub_1002C9DFC(v12, v13, a5, v7, a6);
+  resultCopy = result;
+  configurationCopy = configuration;
+  locationCopy = location;
+  v15 = sub_1002C9DFC(resultCopy, configurationCopy, location, routeCopy, width);
 
   return v15;
 }
 
-+ (id)viewModelWithUserRoute:(id)a3 highlightConfiguration:(id)a4 currentLocation:(id)a5
++ (id)viewModelWithUserRoute:(id)route highlightConfiguration:(id)configuration currentLocation:(id)location
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_1002CC0E0(v8, v9, a5);
+  routeCopy = route;
+  configurationCopy = configuration;
+  locationCopy = location;
+  v11 = sub_1002CC0E0(routeCopy, configurationCopy, location);
 
   return v11;
 }
@@ -150,12 +150,12 @@
   return [(PlaceSummaryViewModelTemplateFactory *)&v3 init];
 }
 
-+ (void)updateDistanceViewModelWithCurrentLocation:(id)a3 mapItem:(id)a4 template:(id)a5 searchAlongTheRoute:(BOOL)a6
++ (void)updateDistanceViewModelWithCurrentLocation:(id)location mapItem:(id)item template:(id)template searchAlongTheRoute:(BOOL)route
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  sub_1002E20E0(a3, v11, v12, a6);
+  locationCopy = location;
+  itemCopy = item;
+  templateCopy = template;
+  sub_1002E20E0(location, itemCopy, templateCopy, route);
 }
 
 @end

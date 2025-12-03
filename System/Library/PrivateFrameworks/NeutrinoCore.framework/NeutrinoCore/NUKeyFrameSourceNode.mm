@@ -1,32 +1,32 @@
 @interface NUKeyFrameSourceNode
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3;
-- (NUKeyFrameSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4;
-- (NUKeyFrameSourceNode)initWithVideoSource:(id)a3 time:(id *)a4 settings:(id)a5 orientation:(int64_t)a6;
-- (__CVBuffer)_pixelBufferWithAuxiliaryImageType:(int64_t)a3 error:(id *)a4;
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (opaqueCMSampleBuffer)_sampleBufferWithAuxiliaryImageType:(int64_t)a3 error:(id *)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options;
+- (NUKeyFrameSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation;
+- (NUKeyFrameSourceNode)initWithVideoSource:(id)source time:(id *)time settings:(id)settings orientation:(int64_t)orientation;
+- (__CVBuffer)_pixelBufferWithAuxiliaryImageType:(int64_t)type error:(id *)error;
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (opaqueCMSampleBuffer)_sampleBufferWithAuxiliaryImageType:(int64_t)type error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation NUKeyFrameSourceNode
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NUSourceNode *)self auxiliaryImageType];
+  optionsCopy = options;
+  auxiliaryImageType = [(NUSourceNode *)self auxiliaryImageType];
   videoSourceNode = self->_videoSourceNode;
-  if (v5 < 2)
+  if (auxiliaryImageType < 2)
   {
-    v10 = [(NUVideoSourceNode *)videoSourceNode pixelSizeWithSourceOptions:v4];
+    v10 = [(NUVideoSourceNode *)videoSourceNode pixelSizeWithSourceOptions:optionsCopy];
     v12 = v13;
   }
 
   else
   {
-    v7 = [(NUVideoSourceNode *)videoSourceNode auxiliaryVideoTrackProperties];
-    v8 = [(NUSourceNode *)self auxiliaryImageTypeString];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    auxiliaryVideoTrackProperties = [(NUVideoSourceNode *)videoSourceNode auxiliaryVideoTrackProperties];
+    auxiliaryImageTypeString = [(NUSourceNode *)self auxiliaryImageTypeString];
+    v9 = [auxiliaryVideoTrackProperties objectForKeyedSubscript:auxiliaryImageTypeString];
 
     v10 = [v9 size];
     v12 = v11;
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  optionsCopy = options;
+  if (!error)
   {
     v23 = NUAssertLogger_530();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -64,8 +64,8 @@
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(frameTime.value) = 138543618;
         *(&frameTime.value + 4) = v30;
         LOWORD(frameTime.flags) = 2114;
@@ -76,8 +76,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(frameTime.value) = 138543362;
       *(&frameTime.value + 4) = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &frameTime, 0xCu);
@@ -86,16 +86,16 @@
     _NUAssertFailHandler("[NUKeyFrameSourceNode _evaluateImagePropertiesWithSourceOptions:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1381, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NUSourceNode *)self originalNode];
-  v9 = v8;
-  if (!v8)
+  v7 = optionsCopy;
+  originalNode = [(NUSourceNode *)self originalNode];
+  v9 = originalNode;
+  if (!originalNode)
   {
-    v18 = [(NUVideoSourceNode *)self->_videoSourceNode _evaluateImagePropertiesWithSourceOptions:v7 error:a4];
+    v18 = [(NUVideoSourceNode *)self->_videoSourceNode _evaluateImagePropertiesWithSourceOptions:v7 error:error];
     goto LABEL_26;
   }
 
-  v10 = [v8 imageProperties:a4];
+  v10 = [originalNode imageProperties:error];
   if (v10)
   {
     v11 = [[_NUImageProperties alloc] initWithProperties:v10];
@@ -135,13 +135,13 @@
         }
       }
 
-      v21 = [v13 metadataGroup];
+      metadataGroup = [v13 metadataGroup];
       buf = frameTime;
-      v18 = [NUVideoUtilities semanticStylePropertiesFromMetadataGroup:v21 keyTime:&buf error:a4];
+      v18 = [NUVideoUtilities semanticStylePropertiesFromMetadataGroup:metadataGroup keyTime:&buf error:error];
 
       if (!v18)
       {
-        *a4 = [NUError errorWithCode:1 reason:@"Failed to get styles properties from video metadata" object:v13 underlyingError:v17];
+        *error = [NUError errorWithCode:1 reason:@"Failed to get styles properties from video metadata" object:v13 underlyingError:v17];
 LABEL_24:
 
         goto LABEL_25;
@@ -185,10 +185,10 @@ LABEL_26:
   return v18;
 }
 
-- (opaqueCMSampleBuffer)_sampleBufferWithAuxiliaryImageType:(int64_t)a3 error:(id *)a4
+- (opaqueCMSampleBuffer)_sampleBufferWithAuxiliaryImageType:(int64_t)type error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!error)
   {
     v22 = NUAssertLogger_530();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -209,8 +209,8 @@ LABEL_26:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2114;
@@ -221,8 +221,8 @@ LABEL_26:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -231,7 +231,7 @@ LABEL_26:
     _NUAssertFailHandler("[NUKeyFrameSourceNode _sampleBufferWithAuxiliaryImageType:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1345, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "error != NULL");
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     v29 = NUAssertLogger_530();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -252,8 +252,8 @@ LABEL_26:
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v45;
         *&buf[12] = 2114;
@@ -264,8 +264,8 @@ LABEL_26:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -274,22 +274,22 @@ LABEL_26:
     _NUAssertFailHandler("[NUKeyFrameSourceNode _sampleBufferWithAuxiliaryImageType:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1346, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, "auxiliaryImageType != NUAuxiliaryImageTypeNone && auxiliaryImageType != NUAuxiliaryImageTypeUnknown");
   }
 
-  v7 = [(NUVideoSourceNode *)self->_videoSourceNode asset:a4];
+  v7 = [(NUVideoSourceNode *)self->_videoSourceNode asset:error];
   if (v7)
   {
-    v8 = [(NUVideoSourceNode *)self->_videoSourceNode auxiliaryVideoTrackProperties];
-    if (a3 > 0xB)
+    auxiliaryVideoTrackProperties = [(NUVideoSourceNode *)self->_videoSourceNode auxiliaryVideoTrackProperties];
+    if (type > 0xB)
     {
       v9 = @"Invalid";
     }
 
     else
     {
-      v9 = off_1E8109908[a3];
+      v9 = off_1E8109908[type];
     }
 
     v11 = v9;
-    v12 = [v8 objectForKeyedSubscript:v11];
+    v12 = [auxiliaryVideoTrackProperties objectForKeyedSubscript:v11];
 
     if (v12)
     {
@@ -308,31 +308,31 @@ LABEL_26:
         v18 = v54;
         if (!v10)
         {
-          *a4 = [NUError errorWithCode:1 reason:@"Failed to read sample" object:v7 underlyingError:v18];
+          *error = [NUError errorWithCode:1 reason:@"Failed to read sample" object:v7 underlyingError:v18];
         }
       }
 
       else
       {
         [NUError missingError:@"No such track" object:v12];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
     }
 
     else
     {
-      if (a3 > 0xB)
+      if (type > 0xB)
       {
         v19 = @"Invalid";
       }
 
       else
       {
-        v19 = off_1E8109908[a3];
+        v19 = off_1E8109908[type];
       }
 
       v20 = v19;
-      *a4 = [NUError notFoundError:@"No auxiliary video properties" object:v20];
+      *error = [NUError notFoundError:@"No auxiliary video properties" object:v20];
 
       v10 = 0;
     }
@@ -346,11 +346,11 @@ LABEL_26:
   return v10;
 }
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  optionsCopy = options;
+  if (!error)
   {
     v18 = NUAssertLogger_530();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -371,8 +371,8 @@ LABEL_26:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v32;
         *&buf[12] = 2114;
@@ -383,8 +383,8 @@ LABEL_26:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -393,7 +393,7 @@ LABEL_26:
     _NUAssertFailHandler("[NUKeyFrameSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1307, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  if (!a4)
+  if (!factor)
   {
     v25 = NUAssertLogger_530();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -414,8 +414,8 @@ LABEL_26:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v42 callStackSymbols];
+        v45 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2114;
@@ -426,8 +426,8 @@ LABEL_26:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -436,15 +436,15 @@ LABEL_26:
     _NUAssertFailHandler("[NUKeyFrameSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1309, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "subsampleFactor != NULL");
   }
 
-  v9 = v8;
-  *a4 = 1;
+  v9 = optionsCopy;
+  *factor = 1;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v56 = __Block_byref_object_copy__565;
   v57 = __Block_byref_object_dispose__566;
   v58 = 0;
-  v10 = [(NUSourceNode *)self auxiliaryImageType];
+  auxiliaryImageType = [(NUSourceNode *)self auxiliaryImageType];
   v11 = [v9 objectForKeyedSubscript:@"imageType"];
   v12 = [v11 isEqualToString:@"Disparity"];
 
@@ -460,11 +460,11 @@ LABEL_26:
 
   else
   {
-    v14 = v10;
+    v14 = auxiliaryImageType;
   }
 
   v53 = v14;
-  v54 = a5;
+  errorCopy = error;
   v51 = v9;
   v52 = buf;
   block[4] = self;
@@ -516,10 +516,10 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
   }
 }
 
-- (__CVBuffer)_pixelBufferWithAuxiliaryImageType:(int64_t)a3 error:(id *)a4
+- (__CVBuffer)_pixelBufferWithAuxiliaryImageType:(int64_t)type error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!error)
   {
     v31 = NUAssertLogger_530();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -540,8 +540,8 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(range.start.value) = 138543618;
         *(&range.start.value + 4) = v38;
         LOWORD(range.start.flags) = 2114;
@@ -552,8 +552,8 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(range.start.value) = 138543362;
       *(&range.start.value + 4) = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &range, 0xCu);
@@ -565,11 +565,11 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
   result = self->_pixelBuffer;
   if (!result)
   {
-    result = [(NUVideoSourceNode *)self->_videoSourceNode asset:a4];
+    result = [(NUVideoSourceNode *)self->_videoSourceNode asset:error];
     if (result)
     {
       v8 = result;
-      v9 = [NUVideoUtilities firstEnabledVideoTrackInAsset:result error:a4];
+      v9 = [NUVideoUtilities firstEnabledVideoTrackInAsset:result error:error];
       if (!v9)
       {
         goto LABEL_23;
@@ -588,27 +588,27 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
       v11 = v10;
       v12 = +[NUVideoUtilities defaultVideoSettingsForAVAssetReader];
       v13 = v11;
-      if (a3 >= 2)
+      if (type >= 2)
       {
-        v14 = [(NUVideoSourceNode *)self->_videoSourceNode auxiliaryVideoTrackProperties];
+        auxiliaryVideoTrackProperties = [(NUVideoSourceNode *)self->_videoSourceNode auxiliaryVideoTrackProperties];
         v15 = v12;
-        if (a3 > 0xB)
+        if (type > 0xB)
         {
           v16 = @"Invalid";
         }
 
         else
         {
-          v16 = off_1E8109908[a3];
+          v16 = off_1E8109908[type];
         }
 
         v17 = v16;
-        v18 = [v14 objectForKeyedSubscript:v17];
+        v18 = [auxiliaryVideoTrackProperties objectForKeyedSubscript:v17];
 
         if (!v18)
         {
-          v30 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-          *a4 = [NUError errorWithCode:3 reason:@"Failed to find auxiliary video properties" object:v30];
+          v30 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+          *error = [NUError errorWithCode:3 reason:@"Failed to find auxiliary video properties" object:v30];
 
           goto LABEL_20;
         }
@@ -659,7 +659,7 @@ void __78__NUKeyFrameSourceNode__evaluateImageWithSourceOptions_subsampleFactor_
           v29 = [NUError errorWithCode:1 reason:@"Failed to create asset reader output" object:v8 underlyingError:v22];
         }
 
-        *a4 = v29;
+        *error = v29;
 
 LABEL_23:
         return 0;
@@ -668,7 +668,7 @@ LABEL_23:
       v27 = [NUError errorWithCode:1 reason:@"Failed to create asset reader" object:v8 underlyingError:v20];
       v28 = v27;
 
-      *a4 = v27;
+      *error = v27;
 LABEL_20:
 
       goto LABEL_23;
@@ -686,10 +686,10 @@ LABEL_20:
   [(NUKeyFrameSourceNode *)&v3 dealloc];
 }
 
-- (NUKeyFrameSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4
+- (NUKeyFrameSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_415);
@@ -733,8 +733,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -750,8 +750,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -767,12 +767,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUKeyFrameSourceNode initWithSettings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1232, @"Initializer not available: [%@ %@], use designated initializer instead.", v28, v29, v30, v31, v27);
 }
 
-- (NUKeyFrameSourceNode)initWithVideoSource:(id)a3 time:(id *)a4 settings:(id)a5 orientation:(int64_t)a6
+- (NUKeyFrameSourceNode)initWithVideoSource:(id)source time:(id *)time settings:(id)settings orientation:(int64_t)orientation
 {
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  sourceCopy = source;
+  settingsCopy = settings;
+  if (!sourceCopy)
   {
     v20 = NUAssertLogger_530();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -793,8 +793,8 @@ LABEL_14:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v34;
         v55 = 2114;
@@ -805,8 +805,8 @@ LABEL_14:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -815,7 +815,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUKeyFrameSourceNode initWithVideoSource:time:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1218, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "video != nil");
   }
 
-  if ((a4->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     v27 = NUAssertLogger_530();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -836,8 +836,8 @@ LABEL_14:
         v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v44 callStackSymbols];
+        v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v43;
         v55 = 2114;
@@ -848,8 +848,8 @@ LABEL_14:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -858,20 +858,20 @@ LABEL_14:
     _NUAssertFailHandler("[NUKeyFrameSourceNode initWithVideoSource:time:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1219, @"Invalid parameter not satisfying: %s", v48, v49, v50, v51, "CMTIME_IS_VALID(time)");
   }
 
-  v12 = v11;
+  v12 = settingsCopy;
   v52.receiver = self;
   v52.super_class = NUKeyFrameSourceNode;
-  v13 = [(NUVideoFrameSourceNode *)&v52 initWithSettings:v11 orientation:a6];
+  v13 = [(NUVideoFrameSourceNode *)&v52 initWithSettings:settingsCopy orientation:orientation];
   v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v15 = dispatch_queue_create("NUKeyFrameSourceNode", v14);
   queue = v13->_queue;
   v13->_queue = v15;
 
   videoSourceNode = v13->_videoSourceNode;
-  v13->_videoSourceNode = v10;
+  v13->_videoSourceNode = sourceCopy;
 
-  var3 = a4->var3;
-  *&v13->_frameTime.value = *&a4->var0;
+  var3 = time->var3;
+  *&v13->_frameTime.value = *&time->var0;
   v13->_frameTime.epoch = var3;
 
   return v13;

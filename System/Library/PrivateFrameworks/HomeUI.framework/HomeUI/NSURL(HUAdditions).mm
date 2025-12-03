@@ -71,8 +71,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT204893#add", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT204893#add", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -82,8 +82,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT209643", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT209643", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -93,8 +93,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT209643", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT209643", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -121,8 +121,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT210544?cid=iOS_UI_HomeKit_article_HT210544", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT210544?cid=iOS_UI_HomeKit_article_HT210544", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -132,8 +132,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT212183", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/HT212183", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -143,8 +143,8 @@
 {
   v1 = MEMORY[0x277CBEBC0];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 localeString];
-  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/102287?cid=mc-ols-home-article_102287-homeappui-02122025", v3];
+  localeString = [self localeString];
+  v4 = [v2 stringWithFormat:@"https://support.apple.com/%@/102287?cid=mc-ols-home-article_102287-homeappui-02122025", localeString];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -160,9 +160,9 @@
 
   else
   {
-    v2 = [MEMORY[0x277D14CE8] isAnIPad];
+    isAnIPad = [MEMORY[0x277D14CE8] isAnIPad];
     v0 = MEMORY[0x277CBEBC0];
-    if (v2)
+    if (isAnIPad)
     {
       v1 = @"https://support.apple.com/guide/ipad/use-grid-forecast-to-plan-your-energy-usage-ipadc6934c14/ipados";
     }
@@ -180,32 +180,32 @@
 
 - (uint64_t)hu_isHomeKnowledgeBasedArticleURL
 {
-  v2 = [MEMORY[0x277CBEBC0] hu_learnToAddAccessoriesURL];
-  if ([a1 isEqual:v2])
+  hu_learnToAddAccessoriesURL = [MEMORY[0x277CBEBC0] hu_learnToAddAccessoriesURL];
+  if ([self isEqual:hu_learnToAddAccessoriesURL])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBC0] hu_learnAboutUnshareableNetworksURL];
-    if ([a1 isEqual:v4])
+    hu_learnAboutUnshareableNetworksURL = [MEMORY[0x277CBEBC0] hu_learnAboutUnshareableNetworksURL];
+    if ([self isEqual:hu_learnAboutUnshareableNetworksURL])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEBC0] hu_learnAboutNetworksRequiringProfilesURL];
-      if ([a1 isEqual:v5])
+      hu_learnAboutNetworksRequiringProfilesURL = [MEMORY[0x277CBEBC0] hu_learnAboutNetworksRequiringProfilesURL];
+      if ([self isEqual:hu_learnAboutNetworksRequiringProfilesURL])
       {
         v3 = 1;
       }
 
       else
       {
-        v6 = [MEMORY[0x277CBEBC0] hu_learnAboutNetworkProtectionURL];
-        v3 = [a1 isEqual:v6];
+        hu_learnAboutNetworkProtectionURL = [MEMORY[0x277CBEBC0] hu_learnAboutNetworkProtectionURL];
+        v3 = [self isEqual:hu_learnAboutNetworkProtectionURL];
       }
     }
   }

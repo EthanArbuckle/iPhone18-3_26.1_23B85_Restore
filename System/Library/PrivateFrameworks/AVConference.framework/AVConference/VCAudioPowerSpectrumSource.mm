@@ -1,14 +1,14 @@
 @interface VCAudioPowerSpectrumSource
-- (VCAudioPowerSpectrumSource)initWithStreamToken:(int64_t)a3 delegate:(id)a4;
+- (VCAudioPowerSpectrumSource)initWithStreamToken:(int64_t)token delegate:(id)delegate;
 - (void)cleanupAudioPowerSpectrumSinks;
-- (void)cleanupQueue:(opaqueCMSimpleQueue *)a3;
+- (void)cleanupQueue:(opaqueCMSimpleQueue *)queue;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation VCAudioPowerSpectrumSource
 
-- (VCAudioPowerSpectrumSource)initWithStreamToken:(int64_t)a3 delegate:(id)a4
+- (VCAudioPowerSpectrumSource)initWithStreamToken:(int64_t)token delegate:(id)delegate
 {
   v31 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -37,9 +37,9 @@
       v21 = 1024;
       v22 = 35;
       v23 = 2048;
-      v24 = a3;
+      tokenCopy = token;
       v25 = 2048;
-      v26 = a4;
+      delegateCopy = delegate;
       v10 = " [%s] %s:%d streamToken=%ld delegate=%p";
       v11 = v9;
       v12 = 48;
@@ -76,13 +76,13 @@
       v21 = 1024;
       v22 = 35;
       v23 = 2112;
-      v24 = v7;
+      tokenCopy = v7;
       v25 = 2048;
-      v26 = v6;
+      delegateCopy = v6;
       v27 = 2048;
-      v28 = a3;
+      tokenCopy2 = token;
       v29 = 2048;
-      v30 = a4;
+      delegateCopy2 = delegate;
       v10 = " [%s] %s:%d %@(%p) streamToken=%ld delegate=%p";
       v11 = v14;
       v12 = 68;
@@ -90,8 +90,8 @@
 
     _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, v10, buf, v12);
 LABEL_13:
-    v6->_streamToken = a3;
-    objc_storeWeak(&v6->_realtimeContext.powerSpectrumSourceDelegate, a4);
+    v6->_streamToken = token;
+    objc_storeWeak(&v6->_realtimeContext.powerSpectrumSourceDelegate, delegate);
     VCSingleLinkedListInitialize(&v6->_realtimeContext, _VCAudioPowerSpectrumSource_CompareListEntries);
     CMSimpleQueueCreate(*MEMORY[0x1E695E480], 32, &v6->_realtimeContext.eventQueue);
   }
@@ -156,7 +156,7 @@ LABEL_11:
         v20 = 2112;
         v21 = v3;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2048;
         v25 = v12;
         v7 = " [%s] %s:%d %@(%p) streamToken=%ld";
@@ -232,7 +232,7 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v3;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 2048;
         *(&v16 + 2) = v12;
         v7 = " [%s] %s:%d %@(%p) streamToken=%ld";
@@ -248,13 +248,13 @@ LABEL_11:
   objc_storeWeak(&self->_realtimeContext.powerSpectrumSourceDelegate, 0);
 }
 
-- (void)cleanupQueue:(opaqueCMSimpleQueue *)a3
+- (void)cleanupQueue:(opaqueCMSimpleQueue *)queue
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (queue)
   {
-    v4 = *a3;
-    if (*a3)
+    v4 = *queue;
+    if (*queue)
     {
       while (1)
       {
@@ -265,15 +265,15 @@ LABEL_11:
         }
 
         VCAudioPowerSpectrumSource_FreeClient(v5);
-        v4 = *a3;
+        v4 = *queue;
       }
 
-      if (*a3)
+      if (*queue)
       {
-        CFRelease(*a3);
+        CFRelease(*queue);
       }
 
-      *a3 = 0;
+      *queue = 0;
     }
   }
 }

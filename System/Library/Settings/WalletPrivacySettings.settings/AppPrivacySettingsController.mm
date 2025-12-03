@@ -1,14 +1,14 @@
 @interface AppPrivacySettingsController
-- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithCoder:(id)a3;
-- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithCoder:(id)coder;
+- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 @end
 
 @implementation AppPrivacySettingsController
 
-- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_3BA0();
     v7 = v6;
@@ -20,11 +20,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1E64(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1E64(v5, v7, bundle);
 }
 
-- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithCoder:(id)a3
+- (_TtC21WalletPrivacySettings28AppPrivacySettingsController)initWithCoder:(id)coder
 {
   v3 = &self->PSListController_opaque[OBJC_IVAR____TtC21WalletPrivacySettings28AppPrivacySettingsController_bundleIdentifier];
   *v3 = 0;
@@ -38,7 +38,7 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AppPrivacySettingsController.specifiers()();
 
   if (v3)

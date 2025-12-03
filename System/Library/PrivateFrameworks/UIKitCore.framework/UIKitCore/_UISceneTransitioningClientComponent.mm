@@ -6,20 +6,20 @@
 
 - (BOOL)allowedAsMorphTransitionSource
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
 
-  if ([v3 conformsToProtocol:&unk_1F016C5D0])
+  if ([settings conformsToProtocol:&unk_1F016C5D0])
   {
-    v4 = [v3 allowedAsMorphTransitionSource];
+    allowedAsMorphTransitionSource = [settings allowedAsMorphTransitionSource];
   }
 
   else
   {
-    v4 = 0;
+    allowedAsMorphTransitionSource = 0;
   }
 
-  return v4;
+  return allowedAsMorphTransitionSource;
 }
 
 @end

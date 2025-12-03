@@ -1,33 +1,33 @@
 @interface TUISmartGridContentLayout
 - (BOOL)layoutScrollContentShouldClipVertically;
-- (CGSize)layoutScrollContentScrollSizeWithProposedSize:(CGSize)a3;
+- (CGSize)layoutScrollContentScrollSizeWithProposedSize:(CGSize)size;
 - (UIEdgeInsets)layoutAdditionalSafeAreaInsets;
 - (UIEdgeInsets)layoutScrollContentIntrinsicInsets;
 - (UIEdgeInsets)layoutScrollGradientFraction;
 - (UIEdgeInsets)layoutScrollGradientInsets;
 - (double)layoutScrollPageGap;
-- (id)hoverIdentifierWithName:(id)a3 forDescdendent:(id)a4;
+- (id)hoverIdentifierWithName:(id)name forDescdendent:(id)descdendent;
 - (id)scrollPolicy;
-- (void)appendAnchorsToSet:(id)a3 inRoot:(id)a4;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
-- (void)appendHoverRegions:(id)a3 relativeToLayout:(id)a4;
+- (void)appendAnchorsToSet:(id)set inRoot:(id)root;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
+- (void)appendHoverRegions:(id)regions relativeToLayout:(id)layout;
 - (void)computeLayout;
 @end
 
 @implementation TUISmartGridContentLayout
 
-- (id)hoverIdentifierWithName:(id)a3 forDescdendent:(id)a4
+- (id)hoverIdentifierWithName:(id)name forDescdendent:(id)descdendent
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"cell"])
+  nameCopy = name;
+  descdendentCopy = descdendent;
+  if ([nameCopy isEqualToString:@"cell"])
   {
-    v8 = [v7 model];
-    v9 = [v8 parentModel];
+    model = [descdendentCopy model];
+    parentModel = [model parentModel];
 
     v10 = objc_opt_class();
-    v11 = [(TUILayout *)self model];
-    if (v9)
+    model2 = [(TUILayout *)self model];
+    if (parentModel)
     {
       do
       {
@@ -36,152 +36,152 @@
           break;
         }
 
-        if (v9 == v11)
+        if (parentModel == model2)
         {
           break;
         }
 
-        v12 = [v9 parentModel];
+        v9ParentModel = [parentModel parentModel];
 
-        v9 = v12;
+        parentModel = v9ParentModel;
       }
 
-      while (v12);
+      while (v9ParentModel);
     }
 
     v13 = 0;
-    if (v9 != v11 && v9)
+    if (parentModel != model2 && parentModel)
     {
-      v14 = v9;
+      v14 = parentModel;
       v15 = [TUIHoverIdentifier alloc];
-      v16 = [v14 identifier];
+      identifier = [v14 identifier];
 
-      v13 = [(TUIHoverIdentifier *)v15 initWithName:v6 identifier:v16];
+      v13 = [(TUIHoverIdentifier *)v15 initWithName:nameCopy identifier:identifier];
     }
   }
 
   else
   {
-    v9 = [(TUILayout *)self layoutAncestor];
-    v13 = [v9 hoverIdentifierWithName:v6];
+    parentModel = [(TUILayout *)self layoutAncestor];
+    v13 = [parentModel hoverIdentifierWithName:nameCopy];
   }
 
   return v13;
 }
 
-- (void)appendHoverRegions:(id)a3 relativeToLayout:(id)a4
+- (void)appendHoverRegions:(id)regions relativeToLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUILayout *)self layoutAncestor];
-  v9 = [v8 layoutAncestor];
+  layoutCopy = layout;
+  regionsCopy = regions;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v8LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v10 = [v9 layoutManager];
+  layoutManager = [v8LayoutAncestor layoutManager];
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
-  [(TUILayout *)self computedTransformInAncestorLayout:v6];
+  [(TUILayout *)self computedTransformInAncestorLayout:layoutCopy];
 
   v11[0] = v12;
   v11[1] = v13;
   v11[2] = v14;
-  [v10 appendHoverRegions:v7 transform:v11];
+  [layoutManager appendHoverRegions:regionsCopy transform:v11];
 }
 
-- (void)appendAnchorsToSet:(id)a3 inRoot:(id)a4
+- (void)appendAnchorsToSet:(id)set inRoot:(id)root
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUILayout *)self layoutAncestor];
-  v10 = [v8 layoutAncestor];
+  rootCopy = root;
+  setCopy = set;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v8LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v9 = [v10 layoutManager];
-  [v9 appendAnchorsToSet:v7 forLayout:self inRoot:v6];
+  layoutManager = [v8LayoutAncestor layoutManager];
+  [layoutManager appendAnchorsToSet:setCopy forLayout:self inRoot:rootCopy];
 }
 
 - (void)computeLayout
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  v6 = [v3 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v3LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v6 layoutManager];
-  [v4 layoutContent:self];
-  v5 = [(TUILayout *)self layoutAncestor];
-  [v4 positionContainerLayout:v5];
+  layoutManager = [v3LayoutAncestor layoutManager];
+  [layoutManager layoutContent:self];
+  layoutAncestor2 = [(TUILayout *)self layoutAncestor];
+  [layoutManager positionContainerLayout:layoutAncestor2];
 
-  [v4 contentLayoutSize];
+  [layoutManager contentLayoutSize];
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(TUILayout *)self layoutAncestor];
-  v13 = [v12 layoutAncestor];
+  contextCopy = context;
+  modelsCopy = models;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v12LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v14 = [v13 layoutManager];
+  layoutManager = [v12LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    v15 = *&a5->c;
-    *&v31.a = *&a5->a;
+    v15 = *&transform->c;
+    *&v31.a = *&transform->a;
     *&v31.c = v15;
-    *&v31.tx = *&a5->tx;
-    [v14 appendChildRenderModelCompatibleWithKind:a3 context:v10 transform:&v31 toModels:v11];
+    *&v31.tx = *&transform->tx;
+    [layoutManager appendChildRenderModelCompatibleWithKind:kind context:contextCopy transform:&v31 toModels:modelsCopy];
   }
 
   else
   {
     v30.receiver = self;
     v30.super_class = TUISmartGridContentLayout;
-    v16 = *&a5->c;
-    *&v31.a = *&a5->a;
+    v16 = *&transform->c;
+    *&v31.a = *&transform->a;
     *&v31.c = v16;
-    *&v31.tx = *&a5->tx;
-    [(TUILayout *)&v30 appendChildRenderModelCompatibleWithKind:a3 context:v10 transform:&v31 toModels:v11];
+    *&v31.tx = *&transform->tx;
+    [(TUILayout *)&v30 appendChildRenderModelCompatibleWithKind:kind context:contextCopy transform:&v31 toModels:modelsCopy];
   }
 
   y = CGPointZero.y;
-  v18 = a5->tx + y * a5->c + a5->a * CGPointZero.x;
-  v19 = a5->ty + y * a5->d + a5->b * CGPointZero.x;
+  v18 = transform->tx + y * transform->c + transform->a * CGPointZero.x;
+  v19 = transform->ty + y * transform->d + transform->b * CGPointZero.x;
   [(TUILayout *)self computedNaturalSize];
-  v27 = vaddq_f64(*&a5->tx, vmlaq_n_f64(vmulq_n_f64(*&a5->c, v21 * 0.5), *&a5->a, v20 * 0.5));
-  [v10 contentsScale];
+  v27 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v21 * 0.5), *&transform->a, v20 * 0.5));
+  [contextCopy contentsScale];
   v23 = TUIPointRoundedForScale(v27.f64[0], v27.f64[1], v22);
   memset(&v31, 0, sizeof(v31));
   CGAffineTransformMakeTranslation(&t2, -(v18 + v23 - v27.f64[0]), -(v19 + v24 - v27.f64[1]));
-  v25 = *&a5->c;
-  *&t1.a = *&a5->a;
+  v25 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v25;
-  *&t1.tx = *&a5->tx;
+  *&t1.tx = *&transform->tx;
   CGAffineTransformConcat(&v31, &t1, &t2);
-  v26 = [v13 box];
+  v26 = [v12LayoutAncestor box];
   t2 = v31;
-  [v14 appendAdornmentRenderModelsCompatibleWithKind:a3 transform:&t2 context:v10 box:v26 toModels:v11];
+  [layoutManager appendAdornmentRenderModelsCompatibleWithKind:kind transform:&t2 context:contextCopy box:v26 toModels:modelsCopy];
 }
 
-- (CGSize)layoutScrollContentScrollSizeWithProposedSize:(CGSize)a3
+- (CGSize)layoutScrollContentScrollSizeWithProposedSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(TUILayout *)self layoutAncestor];
-  v6 = [v5 layoutAncestor];
+  height = size.height;
+  width = size.width;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v5LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v7 = [v6 layoutManager];
+  layoutManager = [v5LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    [v7 scrollLayoutSizeWithSize:{width, height}];
+    [layoutManager scrollLayoutSizeWithSize:{width, height}];
     width = v8;
     height = v9;
   }
 
   else
   {
-    v10 = [v6 box];
+    v10 = [v5LayoutAncestor box];
     [v10 height];
     if ((v11 & 0x6000000000000) == 0x2000000000000)
     {
-      [v7 contentLayoutSize];
+      [layoutManager contentLayoutSize];
       height = v12;
     }
   }
@@ -195,30 +195,30 @@
 
 - (id)scrollPolicy
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 layoutManager];
+  layoutManager = [v2LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 scrollPolicy];
+    scrollPolicy = [layoutManager scrollPolicy];
   }
 
   else
   {
-    v5 = 0;
+    scrollPolicy = 0;
   }
 
-  return v5;
+  return scrollPolicy;
 }
 
 - (double)layoutScrollPageGap
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 layoutManager];
-  [v4 computedColumnSpacing];
+  layoutManager = [v2LayoutAncestor layoutManager];
+  [layoutManager computedColumnSpacing];
   v6 = v5;
 
   return v6;
@@ -226,13 +226,13 @@
 
 - (UIEdgeInsets)layoutAdditionalSafeAreaInsets
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  v4 = [v3 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v3LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v5 = [v4 layoutManager];
+  layoutManager = [v3LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    [v5 additionalSafeAreaInsetsForLayout:self];
+    [layoutManager additionalSafeAreaInsetsForLayout:self];
     top = v6;
     left = v8;
     bottom = v10;
@@ -260,13 +260,13 @@
 
 - (UIEdgeInsets)layoutScrollContentIntrinsicInsets
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 layoutManager];
+  layoutManager = [v2LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    [v4 scrollContentIntrinsicInsets];
+    [layoutManager scrollContentIntrinsicInsets];
     top = v5;
     left = v7;
     bottom = v9;
@@ -294,13 +294,13 @@
 
 - (UIEdgeInsets)layoutScrollGradientInsets
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 layoutManager];
+  layoutManager = [v2LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    [v4 scrollGradientInsets];
+    [layoutManager scrollGradientInsets];
     top = v5;
     left = v7;
     bottom = v9;
@@ -328,13 +328,13 @@
 
 - (UIEdgeInsets)layoutScrollGradientFraction
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 layoutManager];
+  layoutManager = [v2LayoutAncestor layoutManager];
   if (objc_opt_respondsToSelector())
   {
-    [v4 scrollGradientFraction];
+    [layoutManager scrollGradientFraction];
     top = v5;
     left = v7;
     bottom = v9;
@@ -362,10 +362,10 @@
 
 - (BOOL)layoutScrollContentShouldClipVertically
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = [v2 layoutAncestor];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v2LayoutAncestor = [layoutAncestor layoutAncestor];
 
-  v4 = [v3 box];
+  v4 = [v2LayoutAncestor box];
   [v4 height];
   v6 = (v5 & 0x6000000000000) != 0x2000000000000;
 

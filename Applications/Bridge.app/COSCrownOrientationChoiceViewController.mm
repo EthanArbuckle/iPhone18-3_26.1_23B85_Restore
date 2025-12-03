@@ -1,21 +1,21 @@
 @interface COSCrownOrientationChoiceViewController
 + (BOOL)controllerNeedsToRun;
-+ (void)resumePairingDidFinishIPEWithSavedValue:(id)a3;
-+ (void)resumePairingWithSavedValue:(id)a3;
-+ (void)sendCrownOnRightChoiceToWatch:(BOOL)a3;
++ (void)resumePairingDidFinishIPEWithSavedValue:(id)value;
++ (void)resumePairingWithSavedValue:(id)value;
++ (void)sendCrownOnRightChoiceToWatch:(BOOL)watch;
 - (COSCrownOrientationChoiceViewController)init;
 - (id)detailString;
-- (id)sideBySideImageResource:(id)a3;
+- (id)sideBySideImageResource:(id)resource;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)choiceView:(id)a3 didSelectChoice:(unint64_t)a4;
+- (void)choiceView:(id)view didSelectChoice:(unint64_t)choice;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)selectedCrownOnRight:(BOOL)a3;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)tappedCrownImage:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)selectedCrownOnRight:(BOOL)right;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)tappedCrownImage:(id)image;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSCrownOrientationChoiceViewController
@@ -48,25 +48,25 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 resumePairingController];
-  LOBYTE(a1) = [v4 didRestoreValueForPaneClass:a1];
+  setupController = [UIApp setupController];
+  resumePairingController = [setupController resumePairingController];
+  LOBYTE(self) = [resumePairingController didRestoreValueForPaneClass:self];
 
-  return a1 ^ 1;
+  return self ^ 1;
 }
 
-+ (void)resumePairingWithSavedValue:(id)a3
++ (void)resumePairingWithSavedValue:(id)value
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
 
-  [a1 sendCrownOnRightChoiceToWatch:v4];
+  [self sendCrownOnRightChoiceToWatch:bOOLValue];
 }
 
-+ (void)resumePairingDidFinishIPEWithSavedValue:(id)a3
++ (void)resumePairingDidFinishIPEWithSavedValue:(id)value
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [value BOOLValue];
 
-  [a1 sendCrownOnRightChoiceToWatch:v4];
+  [self sendCrownOnRightChoiceToWatch:bOOLValue];
 }
 
 - (void)viewDidLoad
@@ -82,27 +82,27 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%p CrownOrientationChoiceViewController viewDidLoad", buf, 0xCu);
   }
 
-  v4 = [(COSCrownOrientationChoiceViewController *)self primarySideBySideImage];
+  primarySideBySideImage = [(COSCrownOrientationChoiceViewController *)self primarySideBySideImage];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 activeWatch];
+  activeWatch = [v5 activeWatch];
 
-  if (v6)
+  if (activeWatch)
   {
-    v7 = [PBBridgeWatchAttributeController sizeFromDevice:v6];
+    v7 = [PBBridgeWatchAttributeController sizeFromDevice:activeWatch];
     if (v7 == 25 || v7 == 19)
     {
-      v9 = [(COSCrownOrientationChoiceViewController *)self agaveSideBySideImage];
+      agaveSideBySideImage = [(COSCrownOrientationChoiceViewController *)self agaveSideBySideImage];
 
-      v4 = v9;
+      primarySideBySideImage = agaveSideBySideImage;
     }
   }
 
-  v10 = [[UIImageView alloc] initWithImage:v4];
+  v10 = [[UIImageView alloc] initWithImage:primarySideBySideImage];
   sideBySideImageView = self->_sideBySideImageView;
   self->_sideBySideImageView = v10;
 
-  v12 = [(UIImageView *)self->_sideBySideImageView layer];
-  [v12 setMinificationFilter:kCAFilterTrilinear];
+  layer = [(UIImageView *)self->_sideBySideImageView layer];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
   [(UIImageView *)self->_sideBySideImageView setContentMode:1];
   v13 = [COSHorizontalCheckmarkChoiceView alloc];
@@ -121,45 +121,45 @@
 
   [(UIImageView *)self->_sideBySideImageView addGestureRecognizer:self->_watchTapRecognizer];
   [(UIImageView *)self->_sideBySideImageView setUserInteractionEnabled:1];
-  v22 = [(COSCrownOrientationChoiceViewController *)self contentView];
-  [v22 addSubview:self->_sideBySideImageView];
+  contentView = [(COSCrownOrientationChoiceViewController *)self contentView];
+  [contentView addSubview:self->_sideBySideImageView];
 
   [(UIImageView *)self->_sideBySideImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(COSCrownOrientationChoiceViewController *)self contentView];
-  [v23 addSubview:self->_choiceView];
+  contentView2 = [(COSCrownOrientationChoiceViewController *)self contentView];
+  [contentView2 addSubview:self->_choiceView];
 
   [(COSHorizontalCheckmarkChoiceView *)self->_choiceView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(UIImageView *)self->_sideBySideImageView centerXAnchor];
-  v25 = [(COSCrownOrientationChoiceViewController *)self view];
-  v26 = [v25 centerXAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  centerXAnchor = [(UIImageView *)self->_sideBySideImageView centerXAnchor];
+  view = [(COSCrownOrientationChoiceViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v27 setActive:1];
 
-  v28 = [(UIImageView *)self->_sideBySideImageView topAnchor];
-  v29 = [(COSCrownOrientationChoiceViewController *)self contentView];
-  v30 = [v29 topAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  topAnchor = [(UIImageView *)self->_sideBySideImageView topAnchor];
+  contentView3 = [(COSCrownOrientationChoiceViewController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v31 setActive:1];
 
-  v32 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
-  v33 = [(UIImageView *)self->_sideBySideImageView bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  topAnchor3 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView topAnchor];
+  bottomAnchor = [(UIImageView *)self->_sideBySideImageView bottomAnchor];
+  v34 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v34 setActive:1];
 
-  v35 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView leadingAnchor];
-  v36 = [(UIImageView *)self->_sideBySideImageView leadingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  leadingAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView leadingAnchor];
+  leadingAnchor2 = [(UIImageView *)self->_sideBySideImageView leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v37 setActive:1];
 
-  v38 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView trailingAnchor];
-  v39 = [(UIImageView *)self->_sideBySideImageView trailingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  trailingAnchor = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView trailingAnchor];
+  trailingAnchor2 = [(UIImageView *)self->_sideBySideImageView trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v40 setActive:1];
 
-  v41 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView bottomAnchor];
-  v42 = [(COSCrownOrientationChoiceViewController *)self contentView];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  bottomAnchor2 = [(COSHorizontalCheckmarkChoiceView *)self->_choiceView bottomAnchor];
+  contentView4 = [(COSCrownOrientationChoiceViewController *)self contentView];
+  bottomAnchor3 = [contentView4 bottomAnchor];
+  v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v44 setActive:1];
 
   v55 = &off_100281CD8;
@@ -191,24 +191,24 @@
   [(UIImageView *)v50 setTransform:buf];
 }
 
-- (id)sideBySideImageResource:(id)a3
+- (id)sideBySideImageResource:(id)resource
 {
-  v3 = sub_10002D528(a3);
+  v3 = sub_10002D528(resource);
   v4 = [UIImage imageNamed:v3];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = COSCrownOrientationChoiceViewController;
-  [(COSCrownOrientationChoiceViewController *)&v7 viewWillAppear:a3];
-  v4 = [(COSCrownOrientationChoiceViewController *)self choiceView];
-  v5 = [v4 selectedChoice] != 0;
+  [(COSCrownOrientationChoiceViewController *)&v7 viewWillAppear:appear];
+  choiceView = [(COSCrownOrientationChoiceViewController *)self choiceView];
+  v5 = [choiceView selectedChoice] != 0;
 
-  v6 = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
-  [v6 setEnabled:v5];
+  suggestedChoiceButton = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:v5];
 }
 
 - (id)titleString
@@ -235,17 +235,17 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
-  [v4 setEnabled:0];
+  suggestedChoiceButton = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 activeWatch];
+  activeWatch = [v5 activeWatch];
 
-  v7 = [v6 valueForProperty:NRDevicePropertyPairingID];
+  v7 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
   v8 = NRDevicePropertyLocalPairingDataStorePath;
-  v9 = [v6 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  v9 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
   if (sub_10002D16C())
   {
 LABEL_8:
@@ -253,7 +253,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (v6 && v7)
+  if (activeWatch && v7)
   {
     v10 = pbb_setupflow_log();
     v11 = v10;
@@ -272,10 +272,10 @@ LABEL_8:
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1001898E4(v6, v11);
+      sub_1001898E4(activeWatch, v11);
     }
 
-    objc_storeStrong(&self->_observedDevice, v6);
+    objc_storeStrong(&self->_observedDevice, activeWatch);
     observedDevice = self->_observedDevice;
     v22 = v8;
     v15 = [NSArray arrayWithObjects:&v22 count:1];
@@ -287,14 +287,14 @@ LABEL_8:
     v13 = pbb_setupflow_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10018985C(v6, v7, v13);
+      sub_10018985C(activeWatch, v7, v13);
     }
   }
 
 LABEL_15:
-  v16 = [(COSCrownOrientationChoiceViewController *)self delegate];
-  v17 = [v16 resumePairingController];
-  [v17 saveBoolValue:self->_selectedRightCrown forPaneClass:objc_opt_class()];
+  delegate = [(COSCrownOrientationChoiceViewController *)self delegate];
+  resumePairingController = [delegate resumePairingController];
+  [resumePairingController saveBoolValue:self->_selectedRightCrown forPaneClass:objc_opt_class()];
 
   if (PBLogPerformanceMetrics())
   {
@@ -302,13 +302,13 @@ LABEL_15:
     [v18 beginMacroActivity:@"COSPostWristChoiceUserWaitPhase" beginTime:CFAbsoluteTimeGetCurrent()];
   }
 
-  v19 = [(COSCrownOrientationChoiceViewController *)self delegate];
-  [v19 buddyControllerDone:self];
+  delegate2 = [(COSCrownOrientationChoiceViewController *)self delegate];
+  [delegate2 buddyControllerDone:self];
 }
 
-- (void)tappedCrownImage:(id)a3
+- (void)tappedCrownImage:(id)image
 {
-  [a3 locationInView:self->_sideBySideImageView];
+  [image locationInView:self->_sideBySideImageView];
   v5 = v4;
   [(UIImageView *)self->_sideBySideImageView bounds];
   v6 = CGRectGetWidth(v10) * 0.5;
@@ -322,43 +322,43 @@ LABEL_15:
     v7 = 2;
   }
 
-  v8 = [(COSCrownOrientationChoiceViewController *)self choiceView];
-  [v8 setSelectedChoice:v7];
+  choiceView = [(COSCrownOrientationChoiceViewController *)self choiceView];
+  [choiceView setSelectedChoice:v7];
 }
 
-- (void)choiceView:(id)a3 didSelectChoice:(unint64_t)a4
+- (void)choiceView:(id)view didSelectChoice:(unint64_t)choice
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (choice == 1)
   {
-    v8 = v6;
+    v8 = viewCopy;
     v7 = 0;
   }
 
   else
   {
-    if (a4 != 2)
+    if (choice != 2)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
+    v8 = viewCopy;
     v7 = 1;
   }
 
   [(COSCrownOrientationChoiceViewController *)self selectedCrownOnRight:v7];
-  v6 = v8;
+  viewCopy = v8;
 LABEL_6:
 }
 
-- (void)selectedCrownOnRight:(BOOL)a3
+- (void)selectedCrownOnRight:(BOOL)right
 {
-  v3 = a3;
+  rightCopy = right;
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"Left";
-    if (v3)
+    if (rightCopy)
     {
       v6 = @"Right";
     }
@@ -368,19 +368,19 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Selected Crown on %@", &v8, 0xCu);
   }
 
-  self->_selectedRightCrown = v3;
-  v7 = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
-  [v7 setEnabled:1];
+  self->_selectedRightCrown = rightCopy;
+  suggestedChoiceButton = [(COSCrownOrientationChoiceViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:1];
 }
 
-+ (void)sendCrownOnRightChoiceToWatch:(BOOL)a3
++ (void)sendCrownOnRightChoiceToWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"Left";
-    if (v3)
+    if (watchCopy)
     {
       v5 = @"Right";
     }
@@ -394,21 +394,21 @@ LABEL_6:
 
   if (sub_10002D16C())
   {
-    v6 = +[COSInternalUserStudyDataManager sharedManager];
-    [v6 setCrownChoice:v3 ^ 1];
+    activeWatch = +[COSInternalUserStudyDataManager sharedManager];
+    [activeWatch setCrownChoice:watchCopy ^ 1];
   }
 
   else
   {
     v7 = +[UIApplication sharedApplication];
-    v6 = [v7 activeWatch];
+    activeWatch = [v7 activeWatch];
 
-    v8 = [v6 valueForProperty:NRDevicePropertyPairingID];
-    v9 = [v6 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    v8 = [activeWatch valueForProperty:NRDevicePropertyPairingID];
+    v9 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
     v10 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano" pairingID:v8 pairingDataStore:v9];
-    [v10 setBool:v3 ^ 1 forKey:@"invertUI"];
-    v11 = [v10 synchronize];
-    if (v3)
+    [v10 setBool:watchCopy ^ 1 forKey:@"invertUI"];
+    synchronize = [v10 synchronize];
+    if (watchCopy)
     {
       v12 = 1;
     }
@@ -420,7 +420,7 @@ LABEL_6:
 
     [PBBridgeCAReporter recordPairingInitiatedDeviceOrientationChoice:v12 pairingSelectionType:1];
     v13 = +[NRPairedDeviceRegistry sharedInstance];
-    v14 = [v13 compatibilityState];
+    compatibilityState = [v13 compatibilityState];
 
     v15 = pbb_setupflow_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -428,11 +428,11 @@ LABEL_6:
       v19 = 136315394;
       v20 = "+[COSCrownOrientationChoiceViewController sendCrownOnRightChoiceToWatch:]";
       v21 = 1024;
-      LODWORD(v22) = v14;
+      LODWORD(v22) = compatibilityState;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s NRCompatibilityState is %i", &v19, 0x12u);
     }
 
-    if (v14 >= 3)
+    if (compatibilityState >= 3)
     {
       v16 = pbb_setupflow_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -443,25 +443,25 @@ LABEL_6:
       }
 
       v17 = +[UIApplication sharedApplication];
-      v18 = [v17 bridgeController];
-      [v18 tellGizmoToSetCrownOrientationRight:v3];
+      bridgeController = [v17 bridgeController];
+      [bridgeController tellGizmoToSetCrownOrientationRight:watchCopy];
     }
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  changeCopy = change;
   v9 = NRDevicePropertyLocalPairingDataStorePath;
-  v10 = [v7 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
-  if (v10 && [v8 isEqualToString:v9])
+  v10 = [deviceCopy valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  if (v10 && [changeCopy isEqualToString:v9])
   {
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v7;
+      v15 = deviceCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NRDevice propertyDidChange %@ %@", buf, 0x16u);
@@ -469,7 +469,7 @@ LABEL_6:
 
     v13 = v9;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    [v7 removePropertyObserver:self forPropertyChanges:v12];
+    [deviceCopy removePropertyObserver:self forPropertyChanges:v12];
 
     [COSCrownOrientationChoiceViewController sendCrownOnRightChoiceToWatch:self->_selectedRightCrown];
   }

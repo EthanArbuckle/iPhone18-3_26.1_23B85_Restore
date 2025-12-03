@@ -1,15 +1,15 @@
 @interface SGDCloudKitSyncObserver
-- (SGDCloudKitSyncObserver)initWithCloudKitSyncGetter:(id)a3;
+- (SGDCloudKitSyncObserver)initWithCloudKitSyncGetter:(id)getter;
 - (id)cloudKitSync;
-- (void)confirmEventFromOtherDevice:(id)a3;
-- (void)confirmEventFromThisDevice:(id)a3;
-- (void)rejectEventFromOtherDevice:(id)a3;
-- (void)rejectEventFromThisDevice:(id)a3;
+- (void)confirmEventFromOtherDevice:(id)device;
+- (void)confirmEventFromThisDevice:(id)device;
+- (void)rejectEventFromOtherDevice:(id)device;
+- (void)rejectEventFromThisDevice:(id)device;
 @end
 
 @implementation SGDCloudKitSyncObserver
 
-- (void)rejectEventFromOtherDevice:(id)a3
+- (void)rejectEventFromOtherDevice:(id)device
 {
   v3 = sgLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -19,9 +19,9 @@
   }
 }
 
-- (void)rejectEventFromThisDevice:(id)a3
+- (void)rejectEventFromThisDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -29,11 +29,11 @@
     _os_log_debug_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEBUG, "SGCK rejectEventFromThisDevice", v7, 2u);
   }
 
-  v6 = [(SGDCloudKitSyncObserver *)self cloudKitSync];
-  [v6 deleteStorageEvent:v4];
+  cloudKitSync = [(SGDCloudKitSyncObserver *)self cloudKitSync];
+  [cloudKitSync deleteStorageEvent:deviceCopy];
 }
 
-- (void)confirmEventFromOtherDevice:(id)a3
+- (void)confirmEventFromOtherDevice:(id)device
 {
   v3 = sgLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)confirmEventFromThisDevice:(id)a3
+- (void)confirmEventFromThisDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -53,41 +53,41 @@
     _os_log_debug_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEBUG, "SGCK confirmEventFromThisDevice", v7, 2u);
   }
 
-  v6 = [(SGDCloudKitSyncObserver *)self cloudKitSync];
-  [v6 deleteStorageEvent:v4];
+  cloudKitSync = [(SGDCloudKitSyncObserver *)self cloudKitSync];
+  [cloudKitSync deleteStorageEvent:deviceCopy];
 }
 
 - (id)cloudKitSync
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cksGetter = v2->_cksGetter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cksGetter = selfCopy->_cksGetter;
   if (cksGetter)
   {
     v4 = cksGetter[2]();
-    cks = v2->_cks;
-    v2->_cks = v4;
+    cks = selfCopy->_cks;
+    selfCopy->_cks = v4;
 
-    v6 = v2->_cksGetter;
-    v2->_cksGetter = 0;
+    v6 = selfCopy->_cksGetter;
+    selfCopy->_cksGetter = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_cks;
+  v7 = selfCopy->_cks;
 
   return v7;
 }
 
-- (SGDCloudKitSyncObserver)initWithCloudKitSyncGetter:(id)a3
+- (SGDCloudKitSyncObserver)initWithCloudKitSyncGetter:(id)getter
 {
-  v4 = a3;
+  getterCopy = getter;
   v9.receiver = self;
   v9.super_class = SGDCloudKitSyncObserver;
   v5 = [(SGDCloudKitSyncObserver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [getterCopy copy];
     cksGetter = v5->_cksGetter;
     v5->_cksGetter = v6;
   }

@@ -1,17 +1,17 @@
 @interface TetraSigningKeyWrapper
 + (id)generateKeyForTesting;
-- (TetraSigningKeyWrapper)initWithSigningKey:(id)a3;
+- (TetraSigningKeyWrapper)initWithSigningKey:(id)key;
 - (id)publicKey;
-- (id)signDataWithFormatter:(id)a3 error:(id *)a4;
+- (id)signDataWithFormatter:(id)formatter error:(id *)error;
 @end
 
 @implementation TetraSigningKeyWrapper
 
-- (id)signDataWithFormatter:(id)a3 error:(id *)a4
+- (id)signDataWithFormatter:(id)formatter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TetraSigningKeyWrapper *)self signingKey];
-  v8 = [v7 signDataWithFormatter:v6 error:a4];
+  formatterCopy = formatter;
+  signingKey = [(TetraSigningKeyWrapper *)self signingKey];
+  v8 = [signingKey signDataWithFormatter:formatterCopy error:error];
 
   return v8;
 }
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (TetraSigningKeyWrapper)initWithSigningKey:(id)a3
+- (TetraSigningKeyWrapper)initWithSigningKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = TetraSigningKeyWrapper;
   v6 = [(TetraSigningKeyWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_signingKey, a3);
+    objc_storeStrong(&v6->_signingKey, key);
   }
 
   return v7;
@@ -44,8 +44,8 @@
 - (id)publicKey
 {
   v3 = [TetraPublicSigningKeyWrapper alloc];
-  v4 = [(SigningKey *)self->_signingKey publicKey];
-  v5 = [(TetraPublicSigningKeyWrapper *)v3 initWithSigningPublicKey:v4];
+  publicKey = [(SigningKey *)self->_signingKey publicKey];
+  v5 = [(TetraPublicSigningKeyWrapper *)v3 initWithSigningPublicKey:publicKey];
 
   return v5;
 }

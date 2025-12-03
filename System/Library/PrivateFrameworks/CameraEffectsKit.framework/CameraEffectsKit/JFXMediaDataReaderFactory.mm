@@ -1,7 +1,7 @@
 @interface JFXMediaDataReaderFactory
 + (JFXMediaDataReaderFactory)sharedInstance;
-- (id)createARMetadataReaderWithCreationAttributesProvider:(id)a3 name:(id)a4;
-- (id)createDepthDataReaderWithCreationAttributesProvider:(id)a3 name:(id)a4;
+- (id)createARMetadataReaderWithCreationAttributesProvider:(id)provider name:(id)name;
+- (id)createDepthDataReaderWithCreationAttributesProvider:(id)provider name:(id)name;
 @end
 
 @implementation JFXMediaDataReaderFactory
@@ -25,15 +25,15 @@ uint64_t __43__JFXMediaDataReaderFactory_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)createARMetadataReaderWithCreationAttributesProvider:(id)a3 name:(id)a4
+- (id)createARMetadataReaderWithCreationAttributesProvider:(id)provider name:(id)name
 {
-  v5 = a4;
-  v6 = [a3 arMetadataReaderAssetTrackAttributes];
-  if (v6)
+  nameCopy = name;
+  arMetadataReaderAssetTrackAttributes = [provider arMetadataReaderAssetTrackAttributes];
+  if (arMetadataReaderAssetTrackAttributes)
   {
     v7 = [JFXAVMediaMetaDataReader alloc];
-    v8 = [v6 assetTrack];
-    v9 = [(JFXAVMediaDataReader *)v7 initWithAVAssetTrack:v8 withName:v5];
+    assetTrack = [arMetadataReaderAssetTrackAttributes assetTrack];
+    v9 = [(JFXAVMediaDataReader *)v7 initWithAVAssetTrack:assetTrack withName:nameCopy];
 
     v10 = [[JFXARMetadataMediaReader alloc] initWithMetadataReader:v9];
   }
@@ -46,15 +46,15 @@ uint64_t __43__JFXMediaDataReaderFactory_sharedInstance__block_invoke()
   return v10;
 }
 
-- (id)createDepthDataReaderWithCreationAttributesProvider:(id)a3 name:(id)a4
+- (id)createDepthDataReaderWithCreationAttributesProvider:(id)provider name:(id)name
 {
-  v5 = a4;
-  v6 = [a3 depthDataReaderAssetTrackAttributes];
-  if (v6)
+  nameCopy = name;
+  depthDataReaderAssetTrackAttributes = [provider depthDataReaderAssetTrackAttributes];
+  if (depthDataReaderAssetTrackAttributes)
   {
     v7 = [JFXAVMediaVideoTrackReader alloc];
-    v8 = [v6 assetTrack];
-    v9 = [(JFXAVMediaDataReader *)v7 initWithAVAssetTrack:v8 withName:v5];
+    assetTrack = [depthDataReaderAssetTrackAttributes assetTrack];
+    v9 = [(JFXAVMediaDataReader *)v7 initWithAVAssetTrack:assetTrack withName:nameCopy];
 
     v10 = [[JFXDepthDataMediaReader alloc] initWithVideoTrackReader:v9];
   }

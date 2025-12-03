@@ -4,16 +4,16 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setVisualCodeType:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setVisualCodeType:(int64_t)type;
 @end
 
 @implementation INGetVisualCodeIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INGetVisualCodeIntent *)self _typedBackingStore:a3];
+  v6 = [(INGetVisualCodeIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -22,15 +22,15 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"visualCodeType";
-  v2 = [(INGetVisualCodeIntent *)self visualCodeType];
-  if ((v2 - 1) > 5)
+  visualCodeType = [(INGetVisualCodeIntent *)self visualCodeType];
+  if ((visualCodeType - 1) > 5)
   {
     v3 = @"unknown";
   }
 
   else
   {
-    v3 = off_1E72822F0[v2 - 1];
+    v3 = off_1E72822F0[visualCodeType - 1];
   }
 
   v4 = v3;
@@ -42,30 +42,30 @@
   return v5;
 }
 
-- (void)setVisualCodeType:(int64_t)a3
+- (void)setVisualCodeType:(int64_t)type
 {
-  v4 = [(INGetVisualCodeIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 6)
+  _typedBackingStore = [(INGetVisualCodeIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (type > 6)
   {
-    [v4 setHasVisualCodeType:0];
+    [_typedBackingStore setHasVisualCodeType:0];
   }
 
   else
   {
-    [v4 setVisualCodeType:a3];
+    [_typedBackingStore setVisualCodeType:type];
   }
 }
 
 - (INVisualCodeType)visualCodeType
 {
-  v3 = [(INGetVisualCodeIntent *)self _typedBackingStore];
-  v4 = [v3 hasVisualCodeType];
-  v5 = [(INGetVisualCodeIntent *)self _typedBackingStore];
-  v6 = [v5 visualCodeType];
-  if (((v6 - 1 < 6) & v4) != 0)
+  _typedBackingStore = [(INGetVisualCodeIntent *)self _typedBackingStore];
+  hasVisualCodeType = [_typedBackingStore hasVisualCodeType];
+  _typedBackingStore2 = [(INGetVisualCodeIntent *)self _typedBackingStore];
+  visualCodeType = [_typedBackingStore2 visualCodeType];
+  if (((visualCodeType - 1 < 6) & hasVisualCodeType) != 0)
   {
-    v7 = v6;
+    v7 = visualCodeType;
   }
 
   else
@@ -90,28 +90,28 @@
   return v5;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INGetVisualCodeIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INGetVisualCodeIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INGetVisualCodeIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INGetVisualCodeIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

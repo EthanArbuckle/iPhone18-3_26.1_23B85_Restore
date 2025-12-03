@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceInstallmentBindRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceInstallmentBindRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v6 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v6 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -107,8 +107,8 @@ LABEL_20:
   [v7 setHTTPMethod:@"POST"];
   [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [(NSDecimalNumber *)self->_bindingAmount stringValue];
-  [v8 setObject:v9 forKeyedSubscript:@"bindingAmount"];
+  stringValue = [(NSDecimalNumber *)self->_bindingAmount stringValue];
+  [v8 setObject:stringValue forKeyedSubscript:@"bindingAmount"];
 
   [v8 setObject:self->_merchantIdentifier forKeyedSubscript:@"merchantIdentifier"];
   if (self->_accountIdentifier || self->_applicationIdentifier)

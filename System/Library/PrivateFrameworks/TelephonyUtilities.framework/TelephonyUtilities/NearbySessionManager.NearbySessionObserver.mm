@@ -1,13 +1,13 @@
 @interface NearbySessionManager.NearbySessionObserver
-- (void)didDiscoverNearbySessionInvitationWithId:(id)a3 invitation:(id)a4;
+- (void)didDiscoverNearbySessionInvitationWithId:(id)id invitation:(id)invitation;
 @end
 
 @implementation NearbySessionManager.NearbySessionObserver
 
-- (void)didDiscoverNearbySessionInvitationWithId:(id)a3 invitation:(id)a4
+- (void)didDiscoverNearbySessionInvitationWithId:(id)id invitation:(id)invitation
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = a4;
+  invitationCopy = invitation;
 
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;

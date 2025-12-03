@@ -8,16 +8,16 @@
 - (void)_beginObservingSharingStartedNotification;
 - (void)_endObservingSharingStartedNotification;
 - (void)_sharingDidRestart;
-- (void)_updateUserActivityRequirementsWithBlock:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateUserActivityRequirementsWithBlock:(id)block;
+- (void)addObserver:(id)observer;
 - (void)attemptUnlock;
 - (void)dealloc;
-- (void)handleScreenOff:(BOOL)a3;
+- (void)handleScreenOff:(BOOL)off;
 - (void)handleSignificantUserInteractionOccurred;
 - (void)handleWakeSourceIsUserActive;
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4;
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d;
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBUIPhoneUnlockWithVisionController
@@ -145,16 +145,16 @@ uint64_t __53__SBUIPhoneUnlockWithVisionController_sharedInstance__block_invoke(
   [(SBUIPhoneUnlockWithVisionController *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
-    v9 = v4;
-    v4 = [(NSHashTable *)self->_observers containsObject:v4];
+    v9 = observerCopy;
+    observerCopy = [(NSHashTable *)self->_observers containsObject:observerCopy];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((observerCopy & 1) == 0)
     {
       observers = self->_observers;
       if (!observers)
@@ -166,17 +166,17 @@ uint64_t __53__SBUIPhoneUnlockWithVisionController_sharedInstance__block_invoke(
         observers = self->_observers;
       }
 
-      v4 = [(NSHashTable *)observers addObject:v9];
+      observerCopy = [(NSHashTable *)observers addObject:v9];
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -184,24 +184,24 @@ uint64_t __53__SBUIPhoneUnlockWithVisionController_sharedInstance__block_invoke(
 
 - (BOOL)isPhoneUnlockEnabledAndRequirementsMet
 {
-  v3 = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
-  if (v3)
+  _userActivityUnlockRequirementsMet = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
+  if (_userActivityUnlockRequirementsMet)
   {
 
-    LOBYTE(v3) = [(SBUIPhoneUnlockWithVisionController *)self _isPhoneUnlockWithVisionSupportedAndEnabled];
+    LOBYTE(_userActivityUnlockRequirementsMet) = [(SBUIPhoneUnlockWithVisionController *)self _isPhoneUnlockWithVisionSupportedAndEnabled];
   }
 
-  return v3;
+  return _userActivityUnlockRequirementsMet;
 }
 
-- (void)handleScreenOff:(BOOL)a3
+- (void)handleScreenOff:(BOOL)off
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__SBUIPhoneUnlockWithVisionController_handleScreenOff___block_invoke;
   v3[3] = &unk_1E789DA60;
   v3[4] = self;
-  v4 = a3;
+  offCopy = off;
   [(SBUIPhoneUnlockWithVisionController *)self _updateUserActivityRequirementsWithBlock:v3];
 }
 
@@ -243,17 +243,17 @@ uint64_t __55__SBUIPhoneUnlockWithVisionController_handleScreenOff___block_invok
   return v3;
 }
 
-- (void)_updateUserActivityRequirementsWithBlock:(id)a3
+- (void)_updateUserActivityRequirementsWithBlock:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
-  v4[2](v4);
+  blockCopy = block;
+  _userActivityUnlockRequirementsMet = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
+  blockCopy[2](blockCopy);
 
-  v6 = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
-  if (!v6 || v5)
+  _userActivityUnlockRequirementsMet2 = [(SBUIPhoneUnlockWithVisionController *)self _userActivityUnlockRequirementsMet];
+  if (!_userActivityUnlockRequirementsMet2 || _userActivityUnlockRequirementsMet)
   {
-    if (!v6 && v5)
+    if (!_userActivityUnlockRequirementsMet2 && _userActivityUnlockRequirementsMet)
     {
       v8 = SBLogPhoneUnlockWithVision();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -296,7 +296,7 @@ uint64_t __55__SBUIPhoneUnlockWithVisionController_handleScreenOff___block_invok
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_fault_impl(&dword_1A9A79000, a2, OS_LOG_TYPE_FAULT, "Failed to register for sharing daemon started notification, status: %d", v2, 8u);
 }
 
@@ -351,16 +351,16 @@ void __80__SBUIPhoneUnlockWithVisionController__beginObservingSharingStartedNoti
   }
 }
 
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__SBUIPhoneUnlockWithVisionController_manager_didCompleteAuthenticationForSessionWithID___block_invoke;
   v7[3] = &unk_1E789DD98;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -417,19 +417,19 @@ void __89__SBUIPhoneUnlockWithVisionController_manager_didCompleteAuthentication
   }
 }
 
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__SBUIPhoneUnlockWithVisionController_manager_didFailAuthenticationForSessionWithID_error___block_invoke;
   block[3] = &unk_1E789DD48;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -502,7 +502,7 @@ void __91__SBUIPhoneUnlockWithVisionController_manager_didFailAuthenticationForS
 - (void)attemptUnlock
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138543362;
   v4 = v2;
   _os_log_debug_impl(&dword_1A9A79000, a2, OS_LOG_TYPE_DEBUG, "Phone unlock with vision - not attempting due to in progress attempt with session ID %{public}@", &v3, 0xCu);

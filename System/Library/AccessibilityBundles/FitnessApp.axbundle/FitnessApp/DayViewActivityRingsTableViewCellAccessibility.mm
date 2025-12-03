@@ -1,5 +1,5 @@
 @interface DayViewActivityRingsTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
@@ -7,13 +7,13 @@
 
 @implementation DayViewActivityRingsTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ARUIRingsView"];
-  [v3 validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"ringsView" withSwiftType:"ARUIRingsView"];
-  [v3 validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"pauseRingsDescriptionLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"pauseRingsResumeDateLabel" withSwiftType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ARUIRingsView"];
+  [validationsCopy validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"ringsView" withSwiftType:"ARUIRingsView"];
+  [validationsCopy validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"pauseRingsDescriptionLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"FitnessApp.DayViewActivityRingsTableViewCell" hasSwiftField:@"pauseRingsResumeDateLabel" withSwiftType:"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -50,9 +50,9 @@
 - (id)accessibilityPath
 {
   v2 = [(DayViewActivityRingsTableViewCellAccessibility *)self safeSwiftValueForKey:@"ringsView"];
-  v3 = [v2 _accessibilityCirclePathBasedOnBoundsWidth];
+  _accessibilityCirclePathBasedOnBoundsWidth = [v2 _accessibilityCirclePathBasedOnBoundsWidth];
 
-  return v3;
+  return _accessibilityCirclePathBasedOnBoundsWidth;
 }
 
 @end

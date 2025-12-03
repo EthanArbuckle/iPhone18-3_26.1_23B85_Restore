@@ -2,21 +2,21 @@
 + (BOOL)isAppTrusted;
 + (BOOL)isAppleTV;
 + (BOOL)runningAnInternalBuild;
-+ (id)_arrayByAddingValuesFromArrayOfDictionaries:(id)a3;
-+ (id)_entriesBySectionIndexForArrayOfStringEntries:(id)a3 currentCollation:(id)a4;
-+ (id)sort:(id)a3 options:(id)a4;
++ (id)_arrayByAddingValuesFromArrayOfDictionaries:(id)dictionaries;
++ (id)_entriesBySectionIndexForArrayOfStringEntries:(id)entries currentCollation:(id)collation;
++ (id)sort:(id)sort options:(id)options;
 @end
 
 @implementation IKUtilites
 
-+ (id)sort:(id)a3 options:(id)a4
++ (id)sort:(id)sort options:(id)options
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v29 = a4;
-  v6 = [MEMORY[0x277D75700] currentCollation];
-  v30 = v5;
-  v7 = [objc_opt_class() _entriesBySectionIndexForArrayOfStringEntries:v5 currentCollation:v6];
+  sortCopy = sort;
+  optionsCopy = options;
+  currentCollation = [MEMORY[0x277D75700] currentCollation];
+  v30 = sortCopy;
+  v7 = [objc_opt_class() _entriesBySectionIndexForArrayOfStringEntries:sortCopy currentCollation:currentCollation];
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = IKRequiredVisibilitySetForLocalizedIndexedCollation();
   v34 = 0u;
@@ -42,11 +42,11 @@
         v13 = *(*(&v34 + 1) + 8 * i);
         if (v13 && [*(*(&v34 + 1) + 8 * i) count])
         {
-          v14 = [v6 sectionTitles];
-          v15 = [v14 objectAtIndex:v10];
+          sectionTitles = [currentCollation sectionTitles];
+          v15 = [sectionTitles objectAtIndex:v10];
 
-          v16 = [v6 sectionIndexTitles];
-          v17 = [v16 objectAtIndex:v10];
+          sectionIndexTitles = [currentCollation sectionIndexTitles];
+          v17 = [sectionIndexTitles objectAtIndex:v10];
 
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"systemBucketID-%@", v15];
           v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -71,12 +71,12 @@
     while (v9);
   }
 
-  if (v29)
+  if (optionsCopy)
   {
-    v20 = [v29 objectForKey:@"bucket"];
+    v20 = [optionsCopy objectForKey:@"bucket"];
 
     v21 = v32;
-    if (!v20 || ([v29 objectForKey:@"bucket"], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "BOOLValue"), v22, (v23 & 1) != 0))
+    if (!v20 || ([optionsCopy objectForKey:@"bucket"], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "BOOLValue"), v22, (v23 & 1) != 0))
     {
       v24 = v32;
       goto LABEL_20;
@@ -176,13 +176,13 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
   return v7;
 }
 
-+ (id)_entriesBySectionIndexForArrayOfStringEntries:(id)a3 currentCollation:(id)a4
++ (id)_entriesBySectionIndexForArrayOfStringEntries:(id)entries currentCollation:(id)collation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 sectionIndexTitles];
-  v8 = [v7 count];
+  entriesCopy = entries;
+  collationCopy = collation;
+  sectionIndexTitles = [collationCopy sectionIndexTitles];
+  v8 = [sectionIndexTitles count];
 
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v8];
   if (v8 >= 1)
@@ -190,8 +190,8 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
     v10 = v8;
     do
     {
-      v11 = [MEMORY[0x277CBEB18] array];
-      [v9 addObject:v11];
+      array = [MEMORY[0x277CBEB18] array];
+      [v9 addObject:array];
 
       --v10;
     }
@@ -203,7 +203,7 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v5;
+  v12 = entriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -219,7 +219,7 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v9 objectAtIndex:{objc_msgSend(v6, "sectionForObject:collationStringSelector:", v17, sel_self, v24)}];
+        v18 = [v9 objectAtIndex:{objc_msgSend(collationCopy, "sectionForObject:collationStringSelector:", v17, sel_self, v24)}];
         [v18 addObject:v17];
       }
 
@@ -234,7 +234,7 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
     for (j = 0; j != v8; ++j)
     {
       v20 = [v9 objectAtIndex:{j, v24}];
-      v21 = [v6 sortedArrayFromArray:v20 collationStringSelector:sel_self];
+      v21 = [collationCopy sortedArrayFromArray:v20 collationStringSelector:sel_self];
       [v9 replaceObjectAtIndex:j withObject:v21];
     }
   }
@@ -244,16 +244,16 @@ uint64_t __23__IKUtilites_isAppleTV__block_invoke()
   return v9;
 }
 
-+ (id)_arrayByAddingValuesFromArrayOfDictionaries:(id)a3
++ (id)_arrayByAddingValuesFromArrayOfDictionaries:(id)dictionaries
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

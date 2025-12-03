@@ -1,7 +1,7 @@
 @interface BFFFinishSetupTouchIDController
 + (id)finishSetupTouchIDController;
 - (BFFFinishSetupTouchIDController)init;
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4;
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation BFFFinishSetupTouchIDController
@@ -21,19 +21,19 @@
   return [(BFFFinishSetupBiometricAndPasscodeController *)&v4 initWithFlowSkipIdentifier:v2];
 }
 
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  completionCopy = completion;
   v8 = objc_alloc_init(BFFFinishSetupTouchIDViewController);
-  [(BFFFinishSetupTouchIDViewController *)v8 setPasscode:v6];
+  [(BFFFinishSetupTouchIDViewController *)v8 setPasscode:passcodeCopy];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__BFFFinishSetupTouchIDController_createViewControllerWithPasscode_completion___block_invoke;
   v11[3] = &unk_279BB4C58;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(BFFFinishSetupTouchIDViewController *)v8 setCompletion:v11];
 

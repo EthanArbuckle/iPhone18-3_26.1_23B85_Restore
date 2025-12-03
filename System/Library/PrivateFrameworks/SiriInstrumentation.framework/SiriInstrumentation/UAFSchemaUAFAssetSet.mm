@@ -1,30 +1,30 @@
 @interface UAFSchemaUAFAssetSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (UAFSchemaUAFAssetSet)initWithDictionary:(id)a3;
-- (UAFSchemaUAFAssetSet)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (UAFSchemaUAFAssetSet)initWithDictionary:(id)dictionary;
+- (UAFSchemaUAFAssetSet)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAssets:(id)a3;
-- (void)addMobileAssetDownloadErrorCodeFrequency:(id)a3;
-- (void)setHasExpensiveCellularDownloadRequested:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssets:(id)assets;
+- (void)addMobileAssetDownloadErrorCodeFrequency:(id)frequency;
+- (void)setHasExpensiveCellularDownloadRequested:(BOOL)requested;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UAFSchemaUAFAssetSet
 
-- (UAFSchemaUAFAssetSet)initWithDictionary:(id)a3
+- (UAFSchemaUAFAssetSet)initWithDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = UAFSchemaUAFAssetSet;
   v5 = [(UAFSchemaUAFAssetSet *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assetSetName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assetSetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(UAFSchemaUAFAssetSet *)v5 setAssetSetName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assets"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assets"];
     objc_opt_class();
     v36 = v8;
     v37 = v6;
@@ -75,7 +75,7 @@
       v8 = v36;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"assetType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"assetType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(UAFSchemaUAFAssetSet *)v5 setAssetType:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"assetSetId"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"assetSetId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(UAFSchemaUAFAssetSet *)v5 setAssetSetId:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"audienceId"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"audienceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v35 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"mobileAssetDownloadErrorCodeFrequency"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"mobileAssetDownloadErrorCodeFrequency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,14 +144,14 @@
       v18 = v34;
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"fromPreSoftwareUpdateStaging"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"fromPreSoftwareUpdateStaging"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[UAFSchemaUAFAssetSet setFromPreSoftwareUpdateStaging:](v5, "setFromPreSoftwareUpdateStaging:", [v30 BOOLValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"expensiveCellularDownloadRequested"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"expensiveCellularDownloadRequested"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,30 +164,30 @@
   return v5;
 }
 
-- (UAFSchemaUAFAssetSet)initWithJSON:(id)a3
+- (UAFSchemaUAFAssetSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(UAFSchemaUAFAssetSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(UAFSchemaUAFAssetSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(UAFSchemaUAFAssetSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -201,31 +201,31 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetSetId)
   {
-    v4 = [(UAFSchemaUAFAssetSet *)self assetSetId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetSetId"];
+    assetSetId = [(UAFSchemaUAFAssetSet *)self assetSetId];
+    v5 = [assetSetId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetSetId"];
   }
 
   if (self->_assetSetName)
   {
-    v6 = [(UAFSchemaUAFAssetSet *)self assetSetName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"assetSetName"];
+    assetSetName = [(UAFSchemaUAFAssetSet *)self assetSetName];
+    v7 = [assetSetName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"assetSetName"];
   }
 
   if (self->_assetType)
   {
-    v8 = [(UAFSchemaUAFAssetSet *)self assetType];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"assetType"];
+    assetType = [(UAFSchemaUAFAssetSet *)self assetType];
+    v9 = [assetType copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"assetType"];
   }
 
   if ([(NSArray *)self->_assets count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -245,16 +245,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -264,21 +264,21 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"assets"];
+    [dictionary setObject:array forKeyedSubscript:@"assets"];
   }
 
   if (self->_audienceId)
   {
-    v18 = [(UAFSchemaUAFAssetSet *)self audienceId];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"audienceId"];
+    audienceId = [(UAFSchemaUAFAssetSet *)self audienceId];
+    v19 = [audienceId copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"audienceId"];
   }
 
   v20 = *(&self->_expensiveCellularDownloadRequested + 1);
   if ((v20 & 2) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[UAFSchemaUAFAssetSet expensiveCellularDownloadRequested](self, "expensiveCellularDownloadRequested")}];
-    [v3 setObject:v21 forKeyedSubscript:@"expensiveCellularDownloadRequested"];
+    [dictionary setObject:v21 forKeyedSubscript:@"expensiveCellularDownloadRequested"];
 
     v20 = *(&self->_expensiveCellularDownloadRequested + 1);
   }
@@ -286,12 +286,12 @@
   if (v20)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[UAFSchemaUAFAssetSet fromPreSoftwareUpdateStaging](self, "fromPreSoftwareUpdateStaging")}];
-    [v3 setObject:v22 forKeyedSubscript:@"fromPreSoftwareUpdateStaging"];
+    [dictionary setObject:v22 forKeyedSubscript:@"fromPreSoftwareUpdateStaging"];
   }
 
   if ([(NSArray *)self->_mobileAssetDownloadErrorCodeFrequencys count])
   {
-    v23 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -311,16 +311,16 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          if (v29)
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v23 addObject:v29];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v30 = [MEMORY[0x1E695DFB0] null];
-            [v23 addObject:v30];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -330,12 +330,12 @@
       while (v26);
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"mobileAssetDownloadErrorCodeFrequency"];
+    [dictionary setObject:array2 forKeyedSubscript:@"mobileAssetDownloadErrorCodeFrequency"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v32];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v32];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -370,28 +370,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self assetSetName];
-  v6 = [v4 assetSetName];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self assetSetName];
+  assetSetName2 = [equalCopy assetSetName];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(UAFSchemaUAFAssetSet *)self assetSetName];
-  if (v7)
+  assetSetName3 = [(UAFSchemaUAFAssetSet *)self assetSetName];
+  if (assetSetName3)
   {
-    v8 = v7;
-    v9 = [(UAFSchemaUAFAssetSet *)self assetSetName];
-    v10 = [v4 assetSetName];
-    v11 = [v9 isEqual:v10];
+    v8 = assetSetName3;
+    assetSetName4 = [(UAFSchemaUAFAssetSet *)self assetSetName];
+    assetSetName5 = [equalCopy assetSetName];
+    v11 = [assetSetName4 isEqual:assetSetName5];
 
     if (!v11)
     {
@@ -403,20 +403,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self assets];
-  v6 = [v4 assets];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self assets];
+  assetSetName2 = [equalCopy assets];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(UAFSchemaUAFAssetSet *)self assets];
-  if (v12)
+  assets = [(UAFSchemaUAFAssetSet *)self assets];
+  if (assets)
   {
-    v13 = v12;
-    v14 = [(UAFSchemaUAFAssetSet *)self assets];
-    v15 = [v4 assets];
-    v16 = [v14 isEqual:v15];
+    v13 = assets;
+    assets2 = [(UAFSchemaUAFAssetSet *)self assets];
+    assets3 = [equalCopy assets];
+    v16 = [assets2 isEqual:assets3];
 
     if (!v16)
     {
@@ -428,20 +428,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self assetType];
-  v6 = [v4 assetType];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self assetType];
+  assetSetName2 = [equalCopy assetType];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(UAFSchemaUAFAssetSet *)self assetType];
-  if (v17)
+  assetType = [(UAFSchemaUAFAssetSet *)self assetType];
+  if (assetType)
   {
-    v18 = v17;
-    v19 = [(UAFSchemaUAFAssetSet *)self assetType];
-    v20 = [v4 assetType];
-    v21 = [v19 isEqual:v20];
+    v18 = assetType;
+    assetType2 = [(UAFSchemaUAFAssetSet *)self assetType];
+    assetType3 = [equalCopy assetType];
+    v21 = [assetType2 isEqual:assetType3];
 
     if (!v21)
     {
@@ -453,20 +453,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self assetSetId];
-  v6 = [v4 assetSetId];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self assetSetId];
+  assetSetName2 = [equalCopy assetSetId];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(UAFSchemaUAFAssetSet *)self assetSetId];
-  if (v22)
+  assetSetId = [(UAFSchemaUAFAssetSet *)self assetSetId];
+  if (assetSetId)
   {
-    v23 = v22;
-    v24 = [(UAFSchemaUAFAssetSet *)self assetSetId];
-    v25 = [v4 assetSetId];
-    v26 = [v24 isEqual:v25];
+    v23 = assetSetId;
+    assetSetId2 = [(UAFSchemaUAFAssetSet *)self assetSetId];
+    assetSetId3 = [equalCopy assetSetId];
+    v26 = [assetSetId2 isEqual:assetSetId3];
 
     if (!v26)
     {
@@ -478,20 +478,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self audienceId];
-  v6 = [v4 audienceId];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self audienceId];
+  assetSetName2 = [equalCopy audienceId];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(UAFSchemaUAFAssetSet *)self audienceId];
-  if (v27)
+  audienceId = [(UAFSchemaUAFAssetSet *)self audienceId];
+  if (audienceId)
   {
-    v28 = v27;
-    v29 = [(UAFSchemaUAFAssetSet *)self audienceId];
-    v30 = [v4 audienceId];
-    v31 = [v29 isEqual:v30];
+    v28 = audienceId;
+    audienceId2 = [(UAFSchemaUAFAssetSet *)self audienceId];
+    audienceId3 = [equalCopy audienceId];
+    v31 = [audienceId2 isEqual:audienceId3];
 
     if (!v31)
     {
@@ -503,22 +503,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
-  v6 = [v4 mobileAssetDownloadErrorCodeFrequencys];
-  if ((v5 != 0) == (v6 == 0))
+  assetSetName = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
+  assetSetName2 = [equalCopy mobileAssetDownloadErrorCodeFrequencys];
+  if ((assetSetName != 0) == (assetSetName2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
-  if (v32)
+  mobileAssetDownloadErrorCodeFrequencys = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
+  if (mobileAssetDownloadErrorCodeFrequencys)
   {
-    v33 = v32;
-    v34 = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
-    v35 = [v4 mobileAssetDownloadErrorCodeFrequencys];
-    v36 = [v34 isEqual:v35];
+    v33 = mobileAssetDownloadErrorCodeFrequencys;
+    mobileAssetDownloadErrorCodeFrequencys2 = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
+    mobileAssetDownloadErrorCodeFrequencys3 = [equalCopy mobileAssetDownloadErrorCodeFrequencys];
+    v36 = [mobileAssetDownloadErrorCodeFrequencys2 isEqual:mobileAssetDownloadErrorCodeFrequencys3];
 
     if (!v36)
     {
@@ -531,25 +531,25 @@ LABEL_31:
   }
 
   v39 = *(&self->_expensiveCellularDownloadRequested + 1);
-  v40 = v4[58];
+  v40 = equalCopy[58];
   if ((v39 & 1) == (v40 & 1))
   {
     if (v39)
     {
       fromPreSoftwareUpdateStaging = self->_fromPreSoftwareUpdateStaging;
-      if (fromPreSoftwareUpdateStaging != [v4 fromPreSoftwareUpdateStaging])
+      if (fromPreSoftwareUpdateStaging != [equalCopy fromPreSoftwareUpdateStaging])
       {
         goto LABEL_32;
       }
 
       v39 = *(&self->_expensiveCellularDownloadRequested + 1);
-      v40 = v4[58];
+      v40 = equalCopy[58];
     }
 
     v42 = (v39 >> 1) & 1;
     if (v42 == ((v40 >> 1) & 1))
     {
-      if (!v42 || (expensiveCellularDownloadRequested = self->_expensiveCellularDownloadRequested, expensiveCellularDownloadRequested == [v4 expensiveCellularDownloadRequested]))
+      if (!v42 || (expensiveCellularDownloadRequested = self->_expensiveCellularDownloadRequested, expensiveCellularDownloadRequested == [equalCopy expensiveCellularDownloadRequested]))
       {
         v37 = 1;
         goto LABEL_33;
@@ -564,13 +564,13 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UAFSchemaUAFAssetSet *)self assetSetName];
+  toCopy = to;
+  assetSetName = [(UAFSchemaUAFAssetSet *)self assetSetName];
 
-  if (v5)
+  if (assetSetName)
   {
     PBDataWriterWriteStringField();
   }
@@ -603,23 +603,23 @@ LABEL_33:
     while (v8);
   }
 
-  v11 = [(UAFSchemaUAFAssetSet *)self assetType];
+  assetType = [(UAFSchemaUAFAssetSet *)self assetType];
 
-  if (v11)
+  if (assetType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(UAFSchemaUAFAssetSet *)self assetSetId];
+  assetSetId = [(UAFSchemaUAFAssetSet *)self assetSetId];
 
-  if (v12)
+  if (assetSetId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(UAFSchemaUAFAssetSet *)self audienceId];
+  audienceId = [(UAFSchemaUAFAssetSet *)self audienceId];
 
-  if (v13)
+  if (audienceId)
   {
     PBDataWriterWriteStringField();
   }
@@ -665,9 +665,9 @@ LABEL_33:
   }
 }
 
-- (void)setHasExpensiveCellularDownloadRequested:(BOOL)a3
+- (void)setHasExpensiveCellularDownloadRequested:(BOOL)requested
 {
-  if (a3)
+  if (requested)
   {
     v3 = 2;
   }
@@ -680,54 +680,54 @@ LABEL_33:
   *(&self->_expensiveCellularDownloadRequested + 1) = *(&self->_expensiveCellularDownloadRequested + 1) & 0xFD | v3;
 }
 
-- (void)addMobileAssetDownloadErrorCodeFrequency:(id)a3
+- (void)addMobileAssetDownloadErrorCodeFrequency:(id)frequency
 {
-  v4 = a3;
+  frequencyCopy = frequency;
   mobileAssetDownloadErrorCodeFrequencys = self->_mobileAssetDownloadErrorCodeFrequencys;
-  v8 = v4;
+  v8 = frequencyCopy;
   if (!mobileAssetDownloadErrorCodeFrequencys)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_mobileAssetDownloadErrorCodeFrequencys;
-    self->_mobileAssetDownloadErrorCodeFrequencys = v6;
+    self->_mobileAssetDownloadErrorCodeFrequencys = array;
 
-    v4 = v8;
+    frequencyCopy = v8;
     mobileAssetDownloadErrorCodeFrequencys = self->_mobileAssetDownloadErrorCodeFrequencys;
   }
 
-  [(NSArray *)mobileAssetDownloadErrorCodeFrequencys addObject:v4];
+  [(NSArray *)mobileAssetDownloadErrorCodeFrequencys addObject:frequencyCopy];
 }
 
-- (void)addAssets:(id)a3
+- (void)addAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   assets = self->_assets;
-  v8 = v4;
+  v8 = assetsCopy;
   if (!assets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assets;
-    self->_assets = v6;
+    self->_assets = array;
 
-    v4 = v8;
+    assetsCopy = v8;
     assets = self->_assets;
   }
 
-  [(NSArray *)assets addObject:v4];
+  [(NSArray *)assets addObject:assetsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = UAFSchemaUAFAssetSet;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(UAFSchemaUAFAssetSet *)self assets:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(UAFSchemaUAFAssetSet *)self setAssets:v7];
 
-  v8 = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  mobileAssetDownloadErrorCodeFrequencys = [(UAFSchemaUAFAssetSet *)self mobileAssetDownloadErrorCodeFrequencys];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:mobileAssetDownloadErrorCodeFrequencys underConditions:policyCopy];
 
   [(UAFSchemaUAFAssetSet *)self setMobileAssetDownloadErrorCodeFrequencys:v9];
 

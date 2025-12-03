@@ -1,20 +1,20 @@
 @interface MFMessageWriter
-- (MFMessageWriter)initWithCompositionSpecification:(id)a3;
-- (id)createMessageWithHtmlString:(id)a3 attachments:(id)a4 headers:(id)a5;
-- (id)createMessageWithHtmlString:(id)a3 plainTextAlternative:(id)a4 otherHtmlStringsAndAttachments:(id)a5 charsets:(id)a6 headers:(id)a7;
-- (id)createMessageWithPlainTextDocumentsAndAttachments:(id)a3 headers:(id)a4;
-- (id)createMessageWithString:(id)a3 headers:(id)a4;
-- (void)appendDataForMimePart:(id)a3 toData:(id)a4 withPartData:(id)a5;
+- (MFMessageWriter)initWithCompositionSpecification:(id)specification;
+- (id)createMessageWithHtmlString:(id)string attachments:(id)attachments headers:(id)headers;
+- (id)createMessageWithHtmlString:(id)string plainTextAlternative:(id)alternative otherHtmlStringsAndAttachments:(id)attachments charsets:(id)charsets headers:(id)headers;
+- (id)createMessageWithPlainTextDocumentsAndAttachments:(id)attachments headers:(id)headers;
+- (id)createMessageWithString:(id)string headers:(id)headers;
+- (void)appendDataForMimePart:(id)part toData:(id)data withPartData:(id)partData;
 - (void)dealloc;
-- (void)setAllowsBinaryMimeParts:(BOOL)a3;
-- (void)setAllowsQuotedPrintable:(BOOL)a3;
-- (void)setMessageClassToInstantiate:(Class)a3;
-- (void)setWriteSizeDispositionParameter:(BOOL)a3;
+- (void)setAllowsBinaryMimeParts:(BOOL)parts;
+- (void)setAllowsQuotedPrintable:(BOOL)printable;
+- (void)setMessageClassToInstantiate:(Class)instantiate;
+- (void)setWriteSizeDispositionParameter:(BOOL)parameter;
 @end
 
 @implementation MFMessageWriter
 
-- (MFMessageWriter)initWithCompositionSpecification:(id)a3
+- (MFMessageWriter)initWithCompositionSpecification:(id)specification
 {
   v7.receiver = self;
   v7.super_class = MFMessageWriter;
@@ -24,7 +24,7 @@
   {
     [(MFMessageWriter *)v4 setAllowsQuotedPrintable:1];
     v5->_messageClassToInstantiate = objc_opt_class();
-    v5->_compositionSpecification = [a3 copy];
+    v5->_compositionSpecification = [specification copy];
   }
 
   return v5;
@@ -37,54 +37,54 @@
   [(MFMessageWriter *)&v3 dealloc];
 }
 
-- (void)appendDataForMimePart:(id)a3 toData:(id)a4 withPartData:(id)a5
+- (void)appendDataForMimePart:(id)part toData:(id)data withPartData:(id)partData
 {
-  v9 = [@"multipart" isEqualToString:{objc_msgSend(a3, "type")}];
+  v9 = [@"multipart" isEqualToString:{objc_msgSend(part, "type")}];
   v10 = objc_alloc_init(MEMORY[0x277D24EE8]);
   v13 = v10;
-  if ((v9 & 1) != 0 || (Value = CFDictionaryGetValue(a5, a3), v10 = v13, Value) || ([a3 range], v10 = v13, !v12))
+  if ((v9 & 1) != 0 || (Value = CFDictionaryGetValue(partData, part), v10 = v13, Value) || ([part range], v10 = v13, !v12))
   {
-    _appendPartDataToConsumer(self, a3, v10, a5, 1);
+    _appendPartDataToConsumer(self, part, v10, partData, 1);
   }
 
   else
   {
-    [a4 setLength:{objc_msgSend(a4, "length", v13) - 1}];
-    _appendPartHeadersToConsumer(self, a3, a5);
+    [data setLength:{objc_msgSend(data, "length", v13) - 1}];
+    _appendPartHeadersToConsumer(self, part, partData);
   }
 
   [v13 done];
-  [a4 appendData:{objc_msgSend(v13, "data")}];
+  [data appendData:{objc_msgSend(v13, "data")}];
 }
 
-- (id)createMessageWithString:(id)a3 headers:(id)a4
+- (id)createMessageWithString:(id)string headers:(id)headers
 {
   v12 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x277CBF150]);
-  PartAndDataForString = _createPartAndDataForString(a3, 0, @"plain", Mutable);
-  OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, PartAndDataForString, a4, Mutable);
+  PartAndDataForString = _createPartAndDataForString(string, 0, @"plain", Mutable);
+  OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, PartAndDataForString, headers, Mutable);
 
   CFRelease(Mutable);
   v10 = *MEMORY[0x277D85DE8];
   return OutgoingMessageFromTopLevelMimePart;
 }
 
-- (id)createMessageWithPlainTextDocumentsAndAttachments:(id)a3 headers:(id)a4
+- (id)createMessageWithPlainTextDocumentsAndAttachments:(id)attachments headers:(id)headers
 {
   v26 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x277CBF150]);
-  v20 = [a3 count];
+  v20 = [attachments count];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [attachments countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v8)
   {
     goto LABEL_27;
   }
 
-  v19 = a4;
+  headersCopy = headers;
   v9 = 0;
   v10 = *v22;
   do
@@ -93,7 +93,7 @@
     {
       if (*v22 != v10)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(attachments);
       }
 
       v12 = *(*(&v21 + 1) + 8 * i);
@@ -160,7 +160,7 @@ LABEL_18:
       }
     }
 
-    v8 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v8 = [attachments countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v8);
@@ -171,7 +171,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v9, v19, Mutable);
+  OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v9, headersCopy, Mutable);
 
 LABEL_28:
   CFRelease(Mutable);
@@ -179,16 +179,16 @@ LABEL_28:
   return OutgoingMessageFromTopLevelMimePart;
 }
 
-- (id)createMessageWithHtmlString:(id)a3 plainTextAlternative:(id)a4 otherHtmlStringsAndAttachments:(id)a5 charsets:(id)a6 headers:(id)a7
+- (id)createMessageWithHtmlString:(id)string plainTextAlternative:(id)alternative otherHtmlStringsAndAttachments:(id)attachments charsets:(id)charsets headers:(id)headers
 {
   v71 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x277CBF150]);
-  v56 = a3;
-  if (a3)
+  stringCopy = string;
+  if (string)
   {
-    if ([a6 count])
+    if ([charsets count])
     {
-      v11 = [a6 objectAtIndex:0];
+      v11 = [charsets objectAtIndex:0];
     }
 
     else
@@ -206,7 +206,7 @@ LABEL_28:
       v13 = v11;
     }
 
-    PartAndDataForString = _createPartAndDataForString(a3, v13, @"html", Mutable);
+    PartAndDataForString = _createPartAndDataForString(string, v13, @"html", Mutable);
   }
 
   else
@@ -214,12 +214,12 @@ LABEL_28:
     PartAndDataForString = 0;
   }
 
-  v54 = [a5 count];
+  v54 = [attachments count];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v14 = [a5 countByEnumeratingWithState:&v60 objects:v70 count:16];
+  v14 = [attachments countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (!v14)
   {
     v17 = 0;
@@ -227,10 +227,10 @@ LABEL_28:
     v41 = 1;
 LABEL_73:
     v43 = PartAndDataForString;
-    if (a4)
+    if (alternative)
     {
 LABEL_74:
-      v44 = _createPlainTextPart(a4, Mutable);
+      v44 = _createPlainTextPart(alternative, Mutable);
       if (!((v44 == 0) | v17 & 1))
       {
         v45 = v44;
@@ -255,7 +255,7 @@ LABEL_74:
   }
 
   v15 = v14;
-  v52 = a4;
+  alternativeCopy = alternative;
   cf = Mutable;
   v16 = 0;
   v17 = 0;
@@ -268,7 +268,7 @@ LABEL_74:
     {
       if (*v61 != v18)
       {
-        objc_enumerationMutation(a5);
+        objc_enumerationMutation(attachments);
       }
 
       if (v17)
@@ -284,14 +284,14 @@ LABEL_74:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v16 >= [a6 count])
+        if (v16 >= [charsets count])
         {
           v21 = 0;
         }
 
         else
         {
-          v21 = [a6 objectAtIndex:v16];
+          v21 = [charsets objectAtIndex:v16];
         }
 
         if (v21 == [MEMORY[0x277CBEB68] null])
@@ -314,14 +314,14 @@ LABEL_74:
         v22 = MFLogGeneral();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v24 = [MEMORY[0x277CCACC8] callStackReturnAddresses];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackReturnAddresses = [MEMORY[0x277CCACC8] callStackReturnAddresses];
           *buf = 138412802;
           v65 = v20;
           v66 = 2112;
-          v67 = v23;
+          v67 = callStackSymbols;
           v68 = 2112;
-          v69 = v24;
+          v69 = callStackReturnAddresses;
           v25 = v22;
           v26 = "*** BAD!!! Used old attachments for %@\n\n%@\n\n%@";
           v27 = 32;
@@ -355,7 +355,7 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      if (v56)
+      if (stringCopy)
       {
         v34 = PartAndDataForString == 0;
       }
@@ -394,7 +394,7 @@ LABEL_27:
       {
         if (PartAndDataForString)
         {
-          if (v56)
+          if (stringCopy)
           {
             v32 = v57;
             if (!v57)
@@ -437,7 +437,7 @@ LABEL_59:
     }
 
     while (v15 != v19);
-    v39 = [a5 countByEnumeratingWithState:&v60 objects:v70 count:16];
+    v39 = [attachments countByEnumeratingWithState:&v60 objects:v70 count:16];
     v15 = v39;
     if (v39)
     {
@@ -451,18 +451,18 @@ LABEL_59:
   v41 = v57 == 0;
   if (!(v41 | v17 & 1))
   {
-    v42 = [v57 firstChildPart];
+    firstChildPart = [v57 firstChildPart];
     Mutable = cf;
-    if (v42)
+    if (firstChildPart)
     {
-      [v57 setBodyParameter:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithFormat:", @"%@/%@", objc_msgSend(v42, "type"), objc_msgSend(v42, "subtype")), @"type"}];
+      [v57 setBodyParameter:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithFormat:", @"%@/%@", objc_msgSend(firstChildPart, "type"), objc_msgSend(firstChildPart, "subtype")), @"type"}];
     }
 
     v17 = 0;
     v41 = 0;
     v43 = v57;
-    a4 = v52;
-    if (v52)
+    alternative = alternativeCopy;
+    if (alternativeCopy)
     {
       goto LABEL_74;
     }
@@ -473,13 +473,13 @@ LABEL_59:
 LABEL_69:
   v43 = v40;
   Mutable = cf;
-  a4 = v52;
+  alternative = alternativeCopy;
   if (!v40)
   {
     goto LABEL_73;
   }
 
-  if (v52)
+  if (alternativeCopy)
   {
     goto LABEL_74;
   }
@@ -505,21 +505,21 @@ LABEL_91:
       [v48 addObject:v43];
       while ([v48 count])
       {
-        v49 = [v48 lastObject];
+        lastObject = [v48 lastObject];
         [v48 removeLastObject];
-        if ([objc_msgSend(v49 "type")])
+        if ([objc_msgSend(lastObject "type")])
         {
-          [v48 addObjectsFromArray:{objc_msgSend(v49, "subparts")}];
+          [v48 addObjectsFromArray:{objc_msgSend(lastObject, "subparts")}];
         }
 
-        else if (([objc_msgSend(v49 "disposition")] & 1) != 0 || objc_msgSend(objc_msgSend(v49, "disposition"), "isEqualToString:", @"inline"))
+        else if (([objc_msgSend(lastObject "disposition")] & 1) != 0 || objc_msgSend(objc_msgSend(lastObject, "disposition"), "isEqualToString:", @"inline"))
         {
-          [v49 setContentID:0];
+          [lastObject setContentID:0];
         }
       }
     }
 
-    OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v43, a7, Mutable);
+    OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v43, headers, Mutable);
     if (Mutable)
     {
       goto LABEL_91;
@@ -532,12 +532,12 @@ LABEL_92:
   return OutgoingMessageFromTopLevelMimePart;
 }
 
-- (id)createMessageWithHtmlString:(id)a3 attachments:(id)a4 headers:(id)a5
+- (id)createMessageWithHtmlString:(id)string attachments:(id)attachments headers:(id)headers
 {
   v24 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x277CBF150]);
-  PartAndDataForString = _createPartAndDataForString(a3, 0, @"html", Mutable);
-  if ([a4 count])
+  PartAndDataForString = _createPartAndDataForString(string, 0, @"html", Mutable);
+  if ([attachments count])
   {
     v11 = [objc_allocWithZone(MEMORY[0x277D24F68]) init];
     [v11 setType:@"multipart"];
@@ -546,7 +546,7 @@ LABEL_92:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [a4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v12 = [attachments countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = *v20;
@@ -557,7 +557,7 @@ LABEL_92:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(attachments);
           }
 
           PartForFileWrapper = _createPartForFileWrapper(self, *(*(&v19 + 1) + 8 * v14), Mutable);
@@ -570,7 +570,7 @@ LABEL_92:
         }
 
         while (v12 != v14);
-        v12 = [a4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [attachments countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -581,7 +581,7 @@ LABEL_92:
     if (v11)
     {
 LABEL_12:
-      OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v11, a5, Mutable);
+      OutgoingMessageFromTopLevelMimePart = _createOutgoingMessageFromTopLevelMimePart(self, v11, headers, Mutable);
 
       if (!Mutable)
       {
@@ -613,9 +613,9 @@ LABEL_17:
   return OutgoingMessageFromTopLevelMimePart;
 }
 
-- (void)setAllowsBinaryMimeParts:(BOOL)a3
+- (void)setAllowsBinaryMimeParts:(BOOL)parts
 {
-  if (a3)
+  if (parts)
   {
     v3 = 2;
   }
@@ -628,9 +628,9 @@ LABEL_17:
   *(self + 16) = *(self + 16) & 0xFD | v3;
 }
 
-- (void)setAllowsQuotedPrintable:(BOOL)a3
+- (void)setAllowsQuotedPrintable:(BOOL)printable
 {
-  if (a3)
+  if (printable)
   {
     v3 = 8;
   }
@@ -643,9 +643,9 @@ LABEL_17:
   *(self + 16) = *(self + 16) & 0xF7 | v3;
 }
 
-- (void)setWriteSizeDispositionParameter:(BOOL)a3
+- (void)setWriteSizeDispositionParameter:(BOOL)parameter
 {
-  if (a3)
+  if (parameter)
   {
     v3 = 4;
   }
@@ -658,16 +658,16 @@ LABEL_17:
   *(self + 16) = *(self + 16) & 0xFB | v3;
 }
 
-- (void)setMessageClassToInstantiate:(Class)a3
+- (void)setMessageClassToInstantiate:(Class)instantiate
 {
-  if (self->_messageClassToInstantiate != a3)
+  if (self->_messageClassToInstantiate != instantiate)
   {
-    if (![(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+    if (![(objc_class *)instantiate isSubclassOfClass:objc_opt_class()])
     {
-      [MFMessageWriter setMessageClassToInstantiate:a3];
+      [MFMessageWriter setMessageClassToInstantiate:instantiate];
     }
 
-    self->_messageClassToInstantiate = a3;
+    self->_messageClassToInstantiate = instantiate;
   }
 }
 

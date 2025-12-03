@@ -1,32 +1,32 @@
 @interface CMSContentFailureRequest
-- (CMSContentFailureRequest)initWithContentFailure:(id)a3 whilePlaying:(id)a4 previousContentURL:(id)a5 nextContentURL:(id)a6 userActivityDictionary:(id)a7;
+- (CMSContentFailureRequest)initWithContentFailure:(id)failure whilePlaying:(id)playing previousContentURL:(id)l nextContentURL:(id)rL userActivityDictionary:(id)dictionary;
 - (NSString)description;
 - (id)cmsCoded;
 @end
 
 @implementation CMSContentFailureRequest
 
-- (CMSContentFailureRequest)initWithContentFailure:(id)a3 whilePlaying:(id)a4 previousContentURL:(id)a5 nextContentURL:(id)a6 userActivityDictionary:(id)a7
+- (CMSContentFailureRequest)initWithContentFailure:(id)failure whilePlaying:(id)playing previousContentURL:(id)l nextContentURL:(id)rL userActivityDictionary:(id)dictionary
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  failureCopy = failure;
+  playingCopy = playing;
+  lCopy = l;
+  rLCopy = rL;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = CMSContentFailureRequest;
   v17 = [(CMSContentFailureRequest *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contentFailure, a3);
-    objc_storeStrong(&v18->_whilePlaying, a4);
-    objc_storeStrong(&v18->_previousContentURL, a5);
-    objc_storeStrong(&v18->_nextContentURL, a6);
-    objc_storeStrong(&v18->_userActivityDictionary, a7);
-    v19 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v17->_contentFailure, failure);
+    objc_storeStrong(&v18->_whilePlaying, playing);
+    objc_storeStrong(&v18->_previousContentURL, l);
+    objc_storeStrong(&v18->_nextContentURL, rL);
+    objc_storeStrong(&v18->_userActivityDictionary, dictionary);
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v18->_timestamp;
-    v18->_timestamp = v19;
+    v18->_timestamp = date;
   }
 
   return v18;
@@ -38,18 +38,18 @@
   v4 = CMSCloudExtensionSpecVersion();
   [v3 setObject:v4 forKey:@"version"];
 
-  v5 = [(CMSContentFailure *)self->_contentFailure cmsCoded];
-  [v3 setObject:v5 forKey:@"contentFailure"];
+  cmsCoded = [(CMSContentFailure *)self->_contentFailure cmsCoded];
+  [v3 setObject:cmsCoded forKey:@"contentFailure"];
 
   [v3 cmsSetOptionalCodedObject:self->_whilePlaying forKey:@"whilePlaying"];
-  v6 = [(NSURL *)self->_previousContentURL absoluteString];
-  [v3 cmsSetNullableObject:v6 forKey:@"previousContentUrl"];
+  absoluteString = [(NSURL *)self->_previousContentURL absoluteString];
+  [v3 cmsSetNullableObject:absoluteString forKey:@"previousContentUrl"];
 
-  v7 = [(NSURL *)self->_nextContentURL absoluteString];
-  [v3 cmsSetNullableObject:v7 forKey:@"nextContentUrl"];
+  absoluteString2 = [(NSURL *)self->_nextContentURL absoluteString];
+  [v3 cmsSetNullableObject:absoluteString2 forKey:@"nextContentUrl"];
 
-  v8 = [(NSDate *)self->_timestamp cmsCoded];
-  [v3 setObject:v8 forKey:@"timestamp"];
+  cmsCoded2 = [(NSDate *)self->_timestamp cmsCoded];
+  [v3 setObject:cmsCoded2 forKey:@"timestamp"];
 
   [v3 cmsSetNullableObject:self->_userActivityDictionary forKey:@"userActivity"];
   [v3 cmsSetOptionalObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
@@ -60,8 +60,8 @@
 
 - (NSString)description
 {
-  v2 = [(CMSContentFailureRequest *)self cmsCoded];
-  v3 = [v2 description];
+  cmsCoded = [(CMSContentFailureRequest *)self cmsCoded];
+  v3 = [cmsCoded description];
 
   return v3;
 }

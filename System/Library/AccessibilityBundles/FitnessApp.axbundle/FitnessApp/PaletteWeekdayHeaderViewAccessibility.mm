@@ -1,7 +1,7 @@
 @interface PaletteWeekdayHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PaletteWeekdayHeaderViewAccessibility)initWithNavigationPalette:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PaletteWeekdayHeaderViewAccessibility)initWithNavigationPalette:(id)palette;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -9,18 +9,18 @@
 
 @implementation PaletteWeekdayHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PaletteWeekdayHeaderView" hasInstanceVariable:@"_weekdayLabels" withType:"NSMutableArray"];
-  [v3 validateClass:@"PaletteWeekdayHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PaletteWeekdayHeaderView" hasInstanceVariable:@"_weekdayLabels" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"PaletteWeekdayHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
-- (PaletteWeekdayHeaderViewAccessibility)initWithNavigationPalette:(id)a3
+- (PaletteWeekdayHeaderViewAccessibility)initWithNavigationPalette:(id)palette
 {
   v5.receiver = self;
   v5.super_class = PaletteWeekdayHeaderViewAccessibility;
-  v3 = [(PaletteWeekdayHeaderViewAccessibility *)&v5 initWithNavigationPalette:a3];
+  v3 = [(PaletteWeekdayHeaderViewAccessibility *)&v5 initWithNavigationPalette:palette];
   [(PaletteWeekdayHeaderViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -41,8 +41,8 @@
     [PaletteWeekdayHeaderViewAccessibility _accessibilityLoadAccessibilityInformation];
   }
 
-  v3 = [_accessibilityLoadAccessibilityInformation_DateFormatter standaloneWeekdaySymbols];
-  v4 = [(PaletteWeekdayHeaderViewAccessibility *)self accessibilityElements];
+  standaloneWeekdaySymbols = [_accessibilityLoadAccessibilityInformation_DateFormatter standaloneWeekdaySymbols];
+  accessibilityElements = [(PaletteWeekdayHeaderViewAccessibility *)self accessibilityElements];
   v14 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
@@ -52,11 +52,11 @@
   v10[2] = __83__PaletteWeekdayHeaderViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;
   v10[3] = &unk_1C838;
   v10[4] = self;
-  v11 = v3;
+  v11 = standaloneWeekdaySymbols;
   v12 = v6 / 7.0;
   v13 = v7;
-  v8 = v3;
-  [v4 enumerateObjectsUsingBlock:v10];
+  v8 = standaloneWeekdaySymbols;
+  [accessibilityElements enumerateObjectsUsingBlock:v10];
   v9.receiver = self;
   v9.super_class = PaletteWeekdayHeaderViewAccessibility;
   [(PaletteWeekdayHeaderViewAccessibility *)&v9 _accessibilityLoadAccessibilityInformation];
@@ -117,20 +117,20 @@ double __83__PaletteWeekdayHeaderViewAccessibility__accessibilityLoadAccessibili
   return v13;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  x = a3.x;
-  [(PaletteWeekdayHeaderViewAccessibility *)self bounds:a4];
+  x = test.x;
+  [(PaletteWeekdayHeaderViewAccessibility *)self bounds:event];
   v7 = vcvtmd_u64_f64(x / (v6 / 7.0));
-  v8 = [(PaletteWeekdayHeaderViewAccessibility *)self accessibilityElements];
-  if ([v8 count] <= v7)
+  accessibilityElements = [(PaletteWeekdayHeaderViewAccessibility *)self accessibilityElements];
+  if ([accessibilityElements count] <= v7)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:v7];
+    v9 = [accessibilityElements objectAtIndexedSubscript:v7];
   }
 
   return v9;

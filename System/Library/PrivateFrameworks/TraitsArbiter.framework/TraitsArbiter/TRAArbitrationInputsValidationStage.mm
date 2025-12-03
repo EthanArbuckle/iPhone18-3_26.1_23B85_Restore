@@ -1,33 +1,33 @@
 @interface TRAArbitrationInputsValidationStage
 - (TRAArbiter)arbiter;
-- (TRAArbitrationInputsValidationStage)initWithValidators:(id)a3 arbiter:(id)a4;
+- (TRAArbitrationInputsValidationStage)initWithValidators:(id)validators arbiter:(id)arbiter;
 - (id)_setupStateDump;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)validateInputs:(id)a3 withContext:(id)a4;
-- (void)addInputsValidator:(id)a3 update:(BOOL)a4;
+- (id)validateInputs:(id)inputs withContext:(id)context;
+- (void)addInputsValidator:(id)validator update:(BOOL)update;
 - (void)dealloc;
-- (void)removeInputsValidator:(id)a3 update:(BOOL)a4;
+- (void)removeInputsValidator:(id)validator update:(BOOL)update;
 @end
 
 @implementation TRAArbitrationInputsValidationStage
 
-- (TRAArbitrationInputsValidationStage)initWithValidators:(id)a3 arbiter:(id)a4
+- (TRAArbitrationInputsValidationStage)initWithValidators:(id)validators arbiter:(id)arbiter
 {
-  v6 = a3;
-  v7 = a4;
+  validatorsCopy = validators;
+  arbiterCopy = arbiter;
   v15.receiver = self;
   v15.super_class = TRAArbitrationInputsValidationStage;
   v8 = [(TRAArbitrationInputsValidationStage *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_arbiter, v7);
-    if (v6)
+    objc_storeWeak(&v8->_arbiter, arbiterCopy);
+    if (validatorsCopy)
     {
-      [MEMORY[0x277CBEB18] arrayWithArray:v6];
+      [MEMORY[0x277CBEB18] arrayWithArray:validatorsCopy];
     }
 
     else
@@ -38,9 +38,9 @@
     inputsValidators = v9->_inputsValidators;
     v9->_inputsValidators = v10;
 
-    v12 = [(TRAArbitrationInputsValidationStage *)v9 _setupStateDump];
+    _setupStateDump = [(TRAArbitrationInputsValidationStage *)v9 _setupStateDump];
     stateDumpHandle = v9->_stateDumpHandle;
-    v9->_stateDumpHandle = v12;
+    v9->_stateDumpHandle = _setupStateDump;
   }
 
   return v9;
@@ -54,18 +54,18 @@
   [(TRAArbitrationInputsValidationStage *)&v3 dealloc];
 }
 
-- (void)addInputsValidator:(id)a3 update:(BOOL)a4
+- (void)addInputsValidator:(id)validator update:(BOOL)update
 {
-  v4 = a4;
-  v7 = a3;
-  v12 = v7;
-  if (!v7)
+  updateCopy = update;
+  validatorCopy = validator;
+  v12 = validatorCopy;
+  if (!validatorCopy)
   {
     [TRAArbitrationInputsValidationStage addInputsValidator:update:];
-    v7 = 0;
+    validatorCopy = 0;
   }
 
-  if (([(NSMutableArray *)self->_inputsValidators containsObject:v7]& 1) != 0)
+  if (([(NSMutableArray *)self->_inputsValidators containsObject:validatorCopy]& 1) != 0)
   {
     WeakRetained = [MEMORY[0x277CCA890] currentHandler];
     [WeakRetained handleFailureInMethod:a2 object:self file:@"TRAArbitration.m" lineNumber:99 description:{@"inputsValidator[%@] already added to the stage[%@]", v12, self}];
@@ -79,7 +79,7 @@
     inputsValidators = self->_inputsValidators;
     self->_inputsValidators = v10;
 
-    if (!v4)
+    if (!updateCopy)
     {
       goto LABEL_8;
     }
@@ -101,21 +101,21 @@ uint64_t __65__TRAArbitrationInputsValidationStage_addInputsValidator_update___b
   return v7;
 }
 
-- (void)removeInputsValidator:(id)a3 update:(BOOL)a4
+- (void)removeInputsValidator:(id)validator update:(BOOL)update
 {
-  v4 = a4;
-  v7 = a3;
-  v9 = v7;
-  if (!v7)
+  updateCopy = update;
+  validatorCopy = validator;
+  v9 = validatorCopy;
+  if (!validatorCopy)
   {
     [TRAArbitrationInputsValidationStage removeInputsValidator:update:];
-    v7 = 0;
+    validatorCopy = 0;
   }
 
-  if ([(NSMutableArray *)self->_inputsValidators containsObject:v7])
+  if ([(NSMutableArray *)self->_inputsValidators containsObject:validatorCopy])
   {
     [(NSMutableArray *)self->_inputsValidators removeObject:v9];
-    if (!v4)
+    if (!updateCopy)
     {
       goto LABEL_8;
     }
@@ -135,10 +135,10 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationInputsValidationStage *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationInputsValidationStage *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -150,20 +150,20 @@ LABEL_8:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationInputsValidationStage *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationInputsValidationStage *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(TRAArbitrationInputsValidationStage *)self succinctDescriptionBuilder];
-  [v4 appendArraySection:self->_inputsValidators withName:@"inputs validators" skipIfEmpty:0];
+  succinctDescriptionBuilder = [(TRAArbitrationInputsValidationStage *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendArraySection:self->_inputsValidators withName:@"inputs validators" skipIfEmpty:0];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (id)_setupStateDump
@@ -172,7 +172,7 @@ LABEL_8:
   v3 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_arbiter);
-  v6 = [v4 stringWithFormat:@"TraitsArbiter - %p - Arbitration Pipeline - Inputs Validation Stage", WeakRetained];
+  weakRetained = [v4 stringWithFormat:@"TraitsArbiter - %p - Arbitration Pipeline - Inputs Validation Stage", WeakRetained];
   objc_copyWeak(&v9, &location);
   v7 = BSLogAddStateCaptureBlockWithTitle();
 
@@ -199,11 +199,11 @@ __CFString *__54__TRAArbitrationInputsValidationStage__setupStateDump__block_inv
   return v3;
 }
 
-- (id)validateInputs:(id)a3 withContext:(id)a4
+- (id)validateInputs:(id)inputs withContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  contextCopy = context;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -217,7 +217,7 @@ __CFString *__54__TRAArbitrationInputsValidationStage__setupStateDump__block_inv
     do
     {
       v12 = 0;
-      v13 = v6;
+      v13 = inputsCopy;
       do
       {
         if (*v17 != v11)
@@ -225,10 +225,10 @@ __CFString *__54__TRAArbitrationInputsValidationStage__setupStateDump__block_inv
           objc_enumerationMutation(v8);
         }
 
-        v6 = [*(*(&v16 + 1) + 8 * v12) validateInputs:v13 withContext:{v7, v16}];
+        inputsCopy = [*(*(&v16 + 1) + 8 * v12) validateInputs:v13 withContext:{contextCopy, v16}];
 
         ++v12;
-        v13 = v6;
+        v13 = inputsCopy;
       }
 
       while (v10 != v12);
@@ -240,7 +240,7 @@ __CFString *__54__TRAArbitrationInputsValidationStage__setupStateDump__block_inv
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return inputsCopy;
 }
 
 - (TRAArbiter)arbiter

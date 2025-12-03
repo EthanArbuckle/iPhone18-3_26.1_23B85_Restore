@@ -1,19 +1,19 @@
 @interface HMDAddAccessoryPairingOperation
 + (id)logCategory;
-- (BOOL)addPairingToHAPAccessory:(id)a3 newPairingIdentity:(id)a4 permissions:(unint64_t)a5 error:(id *)a6;
-- (BOOL)mainWithError:(id *)a3;
+- (BOOL)addPairingToHAPAccessory:(id)accessory newPairingIdentity:(id)identity permissions:(unint64_t)permissions error:(id *)error;
+- (BOOL)mainWithError:(id *)error;
 - (id)logIdentifier;
-- (void)associateNewControllerKeyWithAccessory:(id)a3 controllerKeyIdentifierToAssociate:(id)a4 permissions:(unint64_t)a5 withCompletion:(id)a6;
+- (void)associateNewControllerKeyWithAccessory:(id)accessory controllerKeyIdentifierToAssociate:(id)associate permissions:(unint64_t)permissions withCompletion:(id)completion;
 @end
 
 @implementation HMDAddAccessoryPairingOperation
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 void __97__HMDAddAccessoryPairingOperation_addPairingToAirPlayAccessory_newPairingIdentity_isOwner_error___block_invoke(uint64_t a1, void *a2)
@@ -77,11 +77,11 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addPairingToHAPAccessory:(id)a3 newPairingIdentity:(id)a4 permissions:(unint64_t)a5 error:(id *)a6
+- (BOOL)addPairingToHAPAccessory:(id)accessory newPairingIdentity:(id)identity permissions:(unint64_t)permissions error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  accessoryCopy = accessory;
+  identityCopy = identity;
   v12 = dispatch_get_global_queue(-32768, 0);
   v13 = dispatch_group_create();
   dispatch_group_enter(v13);
@@ -96,13 +96,13 @@ LABEL_6:
   aBlock[2] = __97__HMDAddAccessoryPairingOperation_addPairingToHAPAccessory_newPairingIdentity_permissions_error___block_invoke;
   aBlock[3] = &unk_27867B120;
   aBlock[4] = self;
-  v14 = v11;
+  v14 = identityCopy;
   v39 = v14;
-  v15 = v10;
+  v15 = accessoryCopy;
   v40 = v15;
   v16 = v13;
   v42 = &v44;
-  v43 = a5;
+  permissionsCopy = permissions;
   v41 = v16;
   v17 = _Block_copy(aBlock);
   v34[0] = MEMORY[0x277D85DD0];
@@ -126,7 +126,7 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    if (a6)
+    if (error)
     {
       v27 = v28;
       goto LABEL_9;
@@ -138,27 +138,27 @@ LABEL_10:
   }
 
   context = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v32 = a6;
+    errorCopy = error;
     v24 = HMFGetLogIdentifier();
-    v25 = [v18 identifier];
-    v26 = [v15 shortDescription];
+    identifier = [v18 identifier];
+    shortDescription = [v15 shortDescription];
     *buf = 138543874;
     v51 = v24;
     v52 = 2112;
-    v53 = v25;
+    v53 = identifier;
     v54 = 2112;
-    v55 = v26;
+    v55 = shortDescription;
     _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Could not add new pairing %@ to accessory %@", buf, 0x20u);
 
-    a6 = v32;
+    error = errorCopy;
   }
 
   objc_autoreleasePoolPop(context);
-  if (!a6)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -166,7 +166,7 @@ LABEL_10:
   v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:100];
 LABEL_9:
   v29 = 0;
-  *a6 = v27;
+  *error = v27;
 LABEL_12:
 
   _Block_object_dispose(&v44, 8);
@@ -308,63 +308,63 @@ void __97__HMDAddAccessoryPairingOperation_addPairingToHAPAccessory_newPairingId
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associateNewControllerKeyWithAccessory:(id)a3 controllerKeyIdentifierToAssociate:(id)a4 permissions:(unint64_t)a5 withCompletion:(id)a6
+- (void)associateNewControllerKeyWithAccessory:(id)accessory controllerKeyIdentifierToAssociate:(id)associate permissions:(unint64_t)permissions withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accessoryCopy = accessory;
+  associateCopy = associate;
+  completionCopy = completion;
   v13 = objc_alloc(MEMORY[0x277CFEC20]);
-  v14 = [v10 identifier];
+  identifier = [accessoryCopy identifier];
   v15 = objc_alloc(MEMORY[0x277D0F8B0]);
-  v16 = [v10 publicKey];
-  v17 = [v15 initWithPairingKeyData:v16];
-  v18 = [v13 initWithIdentifier:v14 controllerKeyIdentifier:v11 publicKey:v17 privateKey:0 permissions:a5];
+  publicKey = [accessoryCopy publicKey];
+  v17 = [v15 initWithPairingKeyData:publicKey];
+  v18 = [v13 initWithIdentifier:identifier controllerKeyIdentifier:associateCopy publicKey:v17 privateKey:0 permissions:permissions];
 
   v26 = 0;
-  [v10 associateControllerKeyWithAccessory:v18 error:&v26];
+  [accessoryCopy associateControllerKeyWithAccessory:v18 error:&v26];
   v19 = v26;
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v10 shortDescription];
+    shortDescription = [accessoryCopy shortDescription];
     *buf = 138543874;
     v28 = v23;
     v29 = 2112;
-    v30 = v24;
+    v30 = shortDescription;
     v31 = 2112;
     v32 = v19;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Updating new pairing identity to key chain finished for accessory: %@ with error : %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v20);
-  v12[2](v12, v19);
+  completionCopy[2](completionCopy, v19);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v45 = [(HMDAccessoryBackgroundOperation *)self accessoryIdentifier];
-  v4 = [(HMDBackgroundOperation *)self userData];
-  v5 = [v4 objectForKeyedSubscript:@"newPairingIdentifier"];
+  accessoryIdentifier = [(HMDAccessoryBackgroundOperation *)self accessoryIdentifier];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v5 = [userData objectForKeyedSubscript:@"newPairingIdentifier"];
 
-  v6 = [(HMDBackgroundOperation *)self userData];
-  v7 = [v6 objectForKeyedSubscript:@"newPairingPublicKey"];
+  userData2 = [(HMDBackgroundOperation *)self userData];
+  v7 = [userData2 objectForKeyedSubscript:@"newPairingPublicKey"];
 
-  v8 = [(HMDBackgroundOperation *)self userData];
-  v9 = [v8 hmf_numberForKey:@"IsOwnerUser"];
-  v10 = [v9 BOOLValue];
+  userData3 = [(HMDBackgroundOperation *)self userData];
+  v9 = [userData3 hmf_numberForKey:@"IsOwnerUser"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
+  accessoryOperationStatus = [(HMDAccessoryBackgroundOperation *)self accessoryOperationStatus];
   v12 = objc_opt_class();
-  v13 = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
-  v14 = [(HMDBackgroundOperation *)self homeManager];
-  v15 = [v12 findAccessoryUsing:v13 homeManager:v14];
+  accessoryUUID = [(HMDAccessoryBackgroundOperation *)self accessoryUUID];
+  homeManager = [(HMDBackgroundOperation *)self homeManager];
+  v15 = [v12 findAccessoryUsing:accessoryUUID homeManager:homeManager];
 
   v16 = v15;
   objc_opt_class();
@@ -394,25 +394,25 @@ void __97__HMDAddAccessoryPairingOperation_addPairingToHAPAccessory_newPairingId
 
   v21 = v20;
 
-  if (v18 | v21 && v5 && v7 && v11)
+  if (v18 | v21 && v5 && v7 && accessoryOperationStatus)
   {
-    if (v11 == 1)
+    if (accessoryOperationStatus == 1)
     {
       contexta = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         v41 = HMFGetLogIdentifier();
-        v24 = [v19 shortDescription];
-        v25 = [v19 home];
-        v26 = [v25 uuid];
+        shortDescription = [v19 shortDescription];
+        home = [v19 home];
+        uuid = [home uuid];
         *buf = 138543874;
         *&buf[4] = v41;
         v47 = 2112;
-        v48 = v24;
+        v48 = shortDescription;
         v49 = 2112;
-        v50 = v26;
+        v50 = uuid;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Since the accessory [%@] is already added back to this home [%@], there is no way this operation can successfully run in the future as the required parameters will never be true. Hence marking this operation as finished.", buf, 0x20u);
       }
 
@@ -422,22 +422,22 @@ void __97__HMDAddAccessoryPairingOperation_addPairingToHAPAccessory_newPairingId
 
     else
     {
-      v33 = [(HMDBackgroundOperation *)self userData];
-      v34 = [v33 objectForKeyedSubscript:@"newPairingPermission"];
-      v42 = v10;
-      v35 = [v34 unsignedIntValue];
+      userData4 = [(HMDBackgroundOperation *)self userData];
+      v34 = [userData4 objectForKeyedSubscript:@"newPairingPermission"];
+      v42 = bOOLValue;
+      unsignedIntValue = [v34 unsignedIntValue];
 
       v36 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v7];
-      v37 = [objc_alloc(MEMORY[0x277CFEC20]) initWithIdentifier:v5 publicKey:v36 privateKey:0 permissions:v35];
+      v37 = [objc_alloc(MEMORY[0x277CFEC20]) initWithIdentifier:v5 publicKey:v36 privateKey:0 permissions:unsignedIntValue];
       *buf = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Add accessory pairing operation"];
       if (v18)
       {
-        v38 = [(HMDAddAccessoryPairingOperation *)self addPairingToHAPAccessory:v18 newPairingIdentity:v37 permissions:v35 error:a3];
+        v38 = [(HMDAddAccessoryPairingOperation *)self addPairingToHAPAccessory:v18 newPairingIdentity:v37 permissions:unsignedIntValue error:error];
       }
 
       else
       {
-        v38 = [(HMDAddAccessoryPairingOperation *)self addPairingToAirPlayAccessory:v21 newPairingIdentity:v37 isOwner:v42 error:a3];
+        v38 = [(HMDAddAccessoryPairingOperation *)self addPairingToAirPlayAccessory:v21 newPairingIdentity:v37 isOwner:v42 error:error];
       }
 
       v27 = v38;
@@ -448,26 +448,26 @@ void __97__HMDAddAccessoryPairingOperation_addPairingToHAPAccessory_newPairingId
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = HMFGetLogIdentifier();
-      v32 = [(HMDAccessoryBackgroundOperation *)v29 accessoryUUID];
+      accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)selfCopy2 accessoryUUID];
       *buf = 138543874;
       *&buf[4] = v31;
       v47 = 2112;
-      v48 = v32;
+      v48 = accessoryUUID2;
       v49 = 2112;
-      v50 = v45;
+      v50 = accessoryIdentifier;
       _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Required parameters does not exist to properly execute this operation : [%@/%@]", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v28);
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      *a3 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else

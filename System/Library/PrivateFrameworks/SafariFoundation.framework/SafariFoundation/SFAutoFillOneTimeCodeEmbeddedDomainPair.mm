@@ -1,15 +1,15 @@
 @interface SFAutoFillOneTimeCodeEmbeddedDomainPair
-- (BOOL)isEqual:(id)a3;
-- (SFAutoFillOneTimeCodeEmbeddedDomainPair)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SFAutoFillOneTimeCodeEmbeddedDomainPair)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAutoFillOneTimeCodeEmbeddedDomainPair
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -19,13 +19,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)v5 domain];
-      v7 = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)self domain];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      domain = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)v5 domain];
+      domain2 = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)self domain];
+      if ([domain isEqualToString:domain2])
       {
-        v8 = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)v5 strict];
-        v9 = v8 ^ [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)self strict]^ 1;
+        strict = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)v5 strict];
+        v9 = strict ^ [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)self strict]^ 1;
       }
 
       else
@@ -43,27 +43,27 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domain = self->_domain;
-  v5 = a3;
-  [v5 encodeObject:domain forKey:@"domain"];
-  [v5 encodeBool:self->_strict forKey:@"strict"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domain forKey:@"domain"];
+  [coderCopy encodeBool:self->_strict forKey:@"strict"];
 }
 
-- (SFAutoFillOneTimeCodeEmbeddedDomainPair)initWithCoder:(id)a3
+- (SFAutoFillOneTimeCodeEmbeddedDomainPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SFAutoFillOneTimeCodeEmbeddedDomainPair;
   v5 = [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v6;
 
-    v5->_strict = [v4 decodeBoolForKey:@"strict"];
+    v5->_strict = [coderCopy decodeBoolForKey:@"strict"];
     v8 = v5;
   }
 

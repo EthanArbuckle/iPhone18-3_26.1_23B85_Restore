@@ -1,15 +1,15 @@
 @interface IngestionStateChangeListener
 - (_TtC15HealthRecordsUI28IngestionStateChangeListener)init;
-- (void)clinicalIngestionStore:(id)a3 ingestionStateDidUpdateTo:(int64_t)a4;
+- (void)clinicalIngestionStore:(id)store ingestionStateDidUpdateTo:(int64_t)to;
 @end
 
 @implementation IngestionStateChangeListener
 
-- (void)clinicalIngestionStore:(id)a3 ingestionStateDidUpdateTo:(int64_t)a4
+- (void)clinicalIngestionStore:(id)store ingestionStateDidUpdateTo:(int64_t)to
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D10A9AAC(v6, a4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1D10A9AAC(storeCopy, to);
 }
 
 - (_TtC15HealthRecordsUI28IngestionStateChangeListener)init

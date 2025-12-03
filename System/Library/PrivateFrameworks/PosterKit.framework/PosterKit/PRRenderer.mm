@@ -1,22 +1,22 @@
 @interface PRRenderer
-- (BOOL)scriptInterperterShouldBeginExecution:(id)a3 initialStatement:(id)a4;
-- (CATransform3D)createTransformation:(uint64_t)a3@<X8> inputX:(CGFloat)a4@<D0> inputY:(CGFloat)a5@<D1>;
-- (PRRenderer)initWithDelegate:(id)a3;
-- (PRRenderer)initWithScene:(id)a3;
+- (BOOL)scriptInterperterShouldBeginExecution:(id)execution initialStatement:(id)statement;
+- (CATransform3D)createTransformation:(uint64_t)transformation@<X8> inputX:(CGFloat)x@<D0> inputY:(CGFloat)y@<D1>;
+- (PRRenderer)initWithDelegate:(id)delegate;
+- (PRRenderer)initWithScene:(id)scene;
 - (UIView)floatingView;
 - (double)_calculateRealizedAdaptiveTimeHeight;
-- (double)_collectContentSizeForView:(uint64_t)a1;
-- (id)_actionsAfterHandlingAppIntentsHandshakeActionsInActions:(void *)a1;
-- (id)_makeComplicationPreviewSceneWithSpecification:(uint64_t)a1;
+- (double)_collectContentSizeForView:(uint64_t)view;
+- (id)_actionsAfterHandlingAppIntentsHandshakeActionsInActions:(void *)actions;
+- (id)_makeComplicationPreviewSceneWithSpecification:(uint64_t)specification;
 - (id)_makeGraphicComplicationPreviewScene;
 - (id)_makeInlineComplicationPreviewScene;
 - (id)_makeSidebarComplicationPreviewScene;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)_settingsDiffActionsForScene:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)_settingsDiffActionsForScene:(id)scene;
 - (id)_stateCaptureDescription;
-- (id)_viewForLevel:(id)a1;
-- (id)extendRenderSessionForReason:(id)a3;
-- (id)extendRenderingSessionForReason:(id)a3;
+- (id)_viewForLevel:(id)level;
+- (id)extendRenderSessionForReason:(id)reason;
+- (id)extendRenderingSessionForReason:(id)reason;
 - (id)extensionBundleURL;
 - (uint64_t)_derivedInterfaceOrientation;
 - (uint64_t)_isAmbientSupportedForRendererScene;
@@ -25,72 +25,72 @@
 - (uint64_t)_markRotationComplete;
 - (uint64_t)_rendererDynamicRotationIsActive;
 - (void)_cleanupAfterNotifyingDelegateOfInvalidation;
-- (void)_configureProminentDisplay:(uint64_t)a1;
-- (void)_executeSnapshotForDescriptor:(void *)a3 outputURL:(void *)a4 scene:(void *)a5 completion:;
-- (void)_executeStatement:(uint64_t)a1;
-- (void)_handleCandidateSnapshotContextsAction:(uint64_t)a1;
-- (void)_handleRenderingEventAction:(uint64_t)a1;
-- (void)_handleRenderingServiceEndpointDidChangeAction:(uint64_t)a1;
-- (void)_handleScriptExecutionAction:(void *)a3 forScene:;
-- (void)_handleSnapshotAction:(void *)a3 forScene:;
-- (void)_issueEnvironmentOverrides:(void *)a3 transition:;
-- (void)_issueSceneInvalidated:(uint64_t)a1;
-- (void)_moveViewForLevel:(uint64_t)a3 toLevel:;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_configureProminentDisplay:(uint64_t)display;
+- (void)_executeSnapshotForDescriptor:(void *)descriptor outputURL:(void *)l scene:(void *)scene completion:;
+- (void)_executeStatement:(uint64_t)statement;
+- (void)_handleCandidateSnapshotContextsAction:(uint64_t)action;
+- (void)_handleRenderingEventAction:(uint64_t)action;
+- (void)_handleRenderingServiceEndpointDidChangeAction:(uint64_t)action;
+- (void)_handleScriptExecutionAction:(void *)action forScene:;
+- (void)_handleSnapshotAction:(void *)action forScene:;
+- (void)_issueEnvironmentOverrides:(void *)overrides transition:;
+- (void)_issueSceneInvalidated:(uint64_t)invalidated;
+- (void)_moveViewForLevel:(uint64_t)level toLevel:;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)_reapUnusedViews;
 - (void)_registerForAmbientPresentationTraitChangesIfNecessary;
-- (void)_reportUpdatedEnvironmentWithTransition:(uint64_t)a1;
-- (void)_updateAnimatedUnlockProgress:(uint64_t)a1;
-- (void)_updateBacklightLuminanceFrom:(void *)a3 to:(int)a4 animateChanges:;
+- (void)_reportUpdatedEnvironmentWithTransition:(uint64_t)transition;
+- (void)_updateAnimatedUnlockProgress:(uint64_t)progress;
+- (void)_updateBacklightLuminanceFrom:(void *)from to:(int)to animateChanges:;
 - (void)_updateContentSize;
-- (void)_updateDepthEffect:(int)a3 wasDepthEffectDisabled:;
-- (void)_updateDepthEffectIfNeededFrom:(void *)a3 to:;
+- (void)_updateDepthEffect:(int)effect wasDepthEffectDisabled:;
+- (void)_updateDepthEffectIfNeededFrom:(void *)from to:;
 - (void)_updateEnvironmentForUpdatedTraitCollection;
 - (void)_updateHangTracer;
-- (void)_updateHeaderAndComplicationsFrom:(void *)a3 to:(void *)a4 animationSettings:;
-- (void)_updateOrientationIfNeededFrom:(void *)a3 to:;
-- (void)_updateProminentViewSizingAndTransforms:(id *)a1;
+- (void)_updateHeaderAndComplicationsFrom:(void *)from to:(void *)to animationSettings:;
+- (void)_updateOrientationIfNeededFrom:(void *)from to:;
+- (void)_updateProminentViewSizingAndTransforms:(id *)transforms;
 - (void)_updateRenderingExtensions;
-- (void)_updateViewsIfNeededFrom:(void *)a3 to:(void *)a4 headerAnimationSettings:(int)a5 animateBacklightChanges:;
-- (void)_validateCleanupResultedInThingsCleanedUpWithPrememoryUsage:(uint64_t)a1;
-- (void)captureController:(id)a3 needsEnvironmentUpdate:(id)a4;
+- (void)_updateViewsIfNeededFrom:(void *)from to:(void *)to headerAnimationSettings:(int)settings animateBacklightChanges:;
+- (void)_validateCleanupResultedInThingsCleanedUpWithPrememoryUsage:(uint64_t)usage;
+- (void)captureController:(id)controller needsEnvironmentUpdate:(id)update;
 - (void)dealloc;
-- (void)invalidateView:(id)a3;
+- (void)invalidateView:(id)view;
 - (void)noteContentSignificantlyChanged;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scriptInterpreter:(id)a3 executeStatement:(id)a4;
-- (void)scriptInterpreterDidBeginExecution:(id)a3;
-- (void)scriptInterpreterDidFinish:(id)a3;
-- (void)setAttachments:(id)a3;
-- (void)updatePreferences:(id)a3;
-- (void)updateTransformWithFloating:(id)a3 foreground:(id)a4 background:(id)a5 inputX:(double)a6 inputY:(double)a7 types:(id)a8;
-- (void)updatedValuesForView:(id)a3;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scriptInterpreter:(id)interpreter executeStatement:(id)statement;
+- (void)scriptInterpreterDidBeginExecution:(id)execution;
+- (void)scriptInterpreterDidFinish:(id)finish;
+- (void)setAttachments:(id)attachments;
+- (void)updatePreferences:(id)preferences;
+- (void)updateTransformWithFloating:(id)floating foreground:(id)foreground background:(id)background inputX:(double)x inputY:(double)y types:(id)types;
+- (void)updatedValuesForView:(id)view;
 @end
 
 @implementation PRRenderer
 
 - (void)_updateHangTracer
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 environment];
-    v3 = [v2 context];
-    if (([v3 scriptIsExecuting] & 1) == 0)
+    environment = [self environment];
+    context = [environment context];
+    if (([context scriptIsExecuting] & 1) == 0)
     {
-      v4 = [a1 environment];
-      if (([v4 isPreview] & 1) == 0)
+      environment2 = [self environment];
+      if (([environment2 isPreview] & 1) == 0)
       {
-        v5 = [a1 environment];
-        if (([v5 isSnapshot] & 1) == 0)
+        environment3 = [self environment];
+        if (([environment3 isSnapshot] & 1) == 0)
         {
-          v15 = [*(a1 + 264) _FBSScene];
-          v16 = [v15 pui_captureController];
-          v17 = [v16 isSnapshotting];
+          _FBSScene = [*(self + 264) _FBSScene];
+          pui_captureController = [_FBSScene pui_captureController];
+          isSnapshotting = [pui_captureController isSnapshotting];
 
-          if ((v17 & 1) == 0)
+          if ((isSnapshotting & 1) == 0)
           {
-            if (*(a1 + 186))
+            if (*(self + 186))
             {
               return;
             }
@@ -104,7 +104,7 @@
             }
 
             [*MEMORY[0x1E69DDA98] _startHangTracer];
-            *(a1 + 186) = 1;
+            *(self + 186) = 1;
             v25 = PRLogRendering();
             if (!OUTLINED_FUNCTION_15(v25))
             {
@@ -117,7 +117,7 @@
           }
 
 LABEL_8:
-          if (*(a1 + 186) != 1)
+          if (*(self + 186) != 1)
           {
             return;
           }
@@ -130,27 +130,27 @@ LABEL_8:
             _os_log_impl(v7, v8, v9, v10, v11, v12);
           }
 
-          *(a1 + 186) = 0;
+          *(self + 186) = 0;
           [*MEMORY[0x1E69DDA98] _stopHangTracer];
-          v2 = [a1 environment];
-          v13 = [v2 isPreview];
+          environment = [self environment];
+          isPreview = [environment isPreview];
 
-          if ((v13 & 1) == 0)
+          if ((isPreview & 1) == 0)
           {
-            v2 = [a1 environment];
-            v14 = [v2 isSnapshot];
+            environment = [self environment];
+            isSnapshot = [environment isSnapshot];
 
-            if ((v14 & 1) == 0)
+            if ((isSnapshot & 1) == 0)
             {
-              v2 = [a1 environment];
-              v32 = [v2 context];
-              v33 = [v32 scriptIsExecuting];
+              environment = [self environment];
+              context2 = [environment context];
+              scriptIsExecuting = [context2 scriptIsExecuting];
 
-              if ((v33 & 1) == 0)
+              if ((scriptIsExecuting & 1) == 0)
               {
-                v2 = [*(a1 + 264) _FBSScene];
-                v34 = [v2 pui_captureController];
-                [v34 isSnapshotting];
+                environment = [*(self + 264) _FBSScene];
+                pui_captureController2 = [environment pui_captureController];
+                [pui_captureController2 isSnapshotting];
               }
             }
           }
@@ -179,35 +179,35 @@ LABEL_25:
 
 - (uint64_t)_isDepthEffectEffectivelyDisabled
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v3 = [*(a1 + 264) _FBSScene];
-    v4 = [*(v2 + 16) isDepthEffectDisabled];
-    v5 = [*(v2 + 16) isDepthEffectDisallowed];
-    v6 = [v3 settings];
-    [v6 pui_deviceOrientation];
-    v7 = [OUTLINED_FUNCTION_12() pui_isComplicationRowConfigured];
+    _FBSScene = [*(self + 264) _FBSScene];
+    isDepthEffectDisabled = [*(selfCopy + 16) isDepthEffectDisabled];
+    isDepthEffectDisallowed = [*(selfCopy + 16) isDepthEffectDisallowed];
+    settings = [_FBSScene settings];
+    [settings pui_deviceOrientation];
+    pui_isComplicationRowConfigured = [OUTLINED_FUNCTION_12() pui_isComplicationRowConfigured];
     if (PUIFeatureEnabled())
     {
-      LOBYTE(v2) = v4 | v5;
+      LOBYTE(selfCopy) = isDepthEffectDisabled | isDepthEffectDisallowed;
     }
 
     else
     {
-      LOBYTE(v2) = v4 | v5 | ((v1 - 1) < 2) & v7;
+      LOBYTE(selfCopy) = isDepthEffectDisabled | isDepthEffectDisallowed | ((v1 - 1) < 2) & pui_isComplicationRowConfigured;
     }
   }
 
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
 - (void)_reapUnusedViews
 {
-  if (a1)
+  if (self)
   {
     v2 = OUTLINED_FUNCTION_16();
-    v4 = [*(v3 + 40) allKeys];
+    allKeys = [*(v3 + 40) allKeys];
     OUTLINED_FUNCTION_14();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)
@@ -222,10 +222,10 @@ LABEL_25:
           OUTLINED_FUNCTION_28();
           if (v10 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
-          v11 = [*(a1 + 40) objectForKey:*(v12 + 8 * v9)];
+          v11 = [*(self + 40) objectForKey:*(v12 + 8 * v9)];
           if ([v11 isEmpty])
           {
             [v11 invalidate];
@@ -236,7 +236,7 @@ LABEL_25:
 
         while (v7 != v9);
         OUTLINED_FUNCTION_14();
-        v7 = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v7 = [allKeys countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v7);
@@ -247,91 +247,91 @@ LABEL_25:
 - (void)_updateRenderingExtensions
 {
   v50 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (([*(a1 + 56) isActive] & 1) != 0 || objc_msgSend(*(a1 + 232), "isActive"))
+    if (([*(self + 56) isActive] & 1) != 0 || objc_msgSend(*(self + 232), "isActive"))
     {
-      v2 = *(a1 + 64);
-      if (!v2 || (*(a1 + 72) & 1) == 0)
+      v2 = *(self + 64);
+      if (!v2 || (*(self + 72) & 1) == 0)
       {
         v3 = v2;
-        ++*(a1 + 120);
+        ++*(self + 120);
         v4 = PRLogCommon();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
         {
-          v5 = *(a1 + 120);
+          v5 = *(self + 120);
           *buf = 134218240;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2048;
           *&buf[14] = v5;
           _os_log_impl(&dword_1A8AA7000, v4, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Acquiring extended rendering assertion %lu", buf, 0x16u);
         }
 
-        *(a1 + 72) = 1;
+        *(self + 72) = 1;
         v6 = MEMORY[0x1E69C7548];
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%lu", *(a1 + 120)];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%lu", *(self + 120)];
         v8 = [v6 pf_extendRenderSessionWithReason:v7];
-        v9 = *(a1 + 64);
-        *(a1 + 64) = v8;
+        v9 = *(self + 64);
+        *(self + 64) = v8;
 
-        v10 = *(a1 + 64);
+        v10 = *(self + 64);
         v45[0] = MEMORY[0x1E69E9820];
         v45[1] = 3221225472;
         v45[2] = __40__PRRenderer__updateRenderingExtensions__block_invoke;
         v45[3] = &unk_1E7845D80;
-        v45[4] = a1;
+        v45[4] = self;
         [v10 acquireWithInvalidationHandler:v45];
         goto LABEL_14;
       }
     }
 
-    else if (*(a1 + 64))
+    else if (*(self + 64))
     {
       v11 = PRLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = *(a1 + 120);
+        v12 = *(self + 120);
         *buf = 134218240;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2048;
         *&buf[14] = v12;
         _os_log_impl(&dword_1A8AA7000, v11, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Dropping extended rendering assertion %lu", buf, 0x16u);
       }
 
-      v3 = *(a1 + 64);
-      v13 = *(a1 + 64);
-      *(a1 + 64) = 0;
+      v3 = *(self + 64);
+      v13 = *(self + 64);
+      *(self + 64) = 0;
 
-      *(a1 + 72) = 0;
+      *(self + 72) = 0;
 LABEL_14:
-      v14 = *(a1 + 72);
-      v15 = [*(a1 + 56) isActive];
-      v16 = [*(a1 + 264) _FBSScene];
-      v17 = v15 & v14;
+      v14 = *(self + 72);
+      isActive = [*(self + 56) isActive];
+      _FBSScene = [*(self + 264) _FBSScene];
+      v17 = isActive & v14;
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __40__PRRenderer__updateRenderingExtensions__block_invoke_225;
       v43[3] = &__block_descriptor_33_e69_v24__0__FBSMutableSceneClientSettings_8__FBSSceneTransitionContext_16l;
       v44 = v17;
-      [v16 pr_performUpdate:v43];
-      v18 = [*(a1 + 16) role];
-      if (!(v17 & 1 | (([v18 isEqual:@"PRPosterRoleLockScreen"] & 1) == 0)) && (*(a1 + 73) & 1) == 0)
+      [_FBSScene pr_performUpdate:v43];
+      role = [*(self + 16) role];
+      if (!(v17 & 1 | (([role isEqual:@"PRPosterRoleLockScreen"] & 1) == 0)) && (*(self + 73) & 1) == 0)
       {
-        v19 = [*(a1 + 264) _FBSScene];
-        v20 = [v19 pui_captureController];
-        v21 = [v20 isSnapshotting];
+        _FBSScene2 = [*(self + 264) _FBSScene];
+        pui_captureController = [_FBSScene2 pui_captureController];
+        isSnapshotting = [pui_captureController isSnapshotting];
 
-        if (v21)
+        if (isSnapshotting)
         {
           goto LABEL_17;
         }
 
-        v18 = [v16 settings];
-        v22 = [v18 isForeground];
-        [*(a1 + 16) unlockProgress];
-        if ((v22 & BSFloatIsOne()) == 1)
+        role = [_FBSScene settings];
+        isForeground = [role isForeground];
+        [*(self + 16) unlockProgress];
+        if ((isForeground & BSFloatIsOne()) == 1)
         {
-          *(a1 + 73) = 1;
+          *(self + 73) = 1;
           if (objc_opt_respondsToSelector())
           {
             *buf = 0;
@@ -343,7 +343,7 @@ LABEL_14:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *v46 = 134217984;
-              v47 = a1;
+              selfCopy4 = self;
               _os_log_impl(&dword_1A8AA7000, v23, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Posting kCARenderMetalLayerMarkPurgeable notification.", v46, 0xCu);
             }
 
@@ -351,7 +351,7 @@ LABEL_14:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               *v46 = 134217984;
-              v47 = a1;
+              selfCopy4 = self;
               _os_log_impl(&dword_1A8AA7000, v24, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Calling CABackingStoreCollect.", v46, 0xCu);
             }
 
@@ -362,25 +362,25 @@ LABEL_14:
             v42 = buf;
             v25 = v3;
             v40 = v25;
-            v41 = a1;
+            selfCopy3 = self;
             CABackingStoreCollectWithCompletionHandler();
             v26 = PRLogRendering();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *v46 = 134217984;
-              v47 = a1;
+              selfCopy4 = self;
               _os_log_impl(&dword_1A8AA7000, v26, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Notifying renderer delegates to drop excess resources.", v46, 0xCu);
             }
 
-            v27 = *(a1 + 8);
+            v27 = *(self + 8);
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __40__PRRenderer__updateRenderingExtensions__block_invoke_231;
             v32[3] = &unk_1E7845DC8;
             v35 = buf;
             v33 = v25;
-            v34 = a1;
-            [v27 renderer:a1 shouldDropExcessResourcesWithCompletionHandler:v32];
+            selfCopy5 = self;
+            [v27 renderer:self shouldDropExcessResourcesWithCompletionHandler:v32];
 
             _Block_object_dispose(buf, 8);
           }
@@ -391,7 +391,7 @@ LABEL_14:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              *&buf[4] = a1;
+              *&buf[4] = self;
               _os_log_impl(&dword_1A8AA7000, v28, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Posting kCARenderMetalLayerMarkPurgeable notification.", buf, 0xCu);
             }
 
@@ -400,7 +400,7 @@ LABEL_14:
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              *&buf[4] = a1;
+              *&buf[4] = self;
               _os_log_impl(&dword_1A8AA7000, v29, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Posted kCARenderMetalLayerMarkPurgeable notification.", buf, 0xCu);
             }
 
@@ -408,7 +408,7 @@ LABEL_14:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              *&buf[4] = a1;
+              *&buf[4] = self;
               _os_log_impl(&dword_1A8AA7000, v30, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Memory reclamation: Calling CABackingStoreCollect.", buf, 0xCu);
             }
 
@@ -432,10 +432,10 @@ LABEL_18:
   }
 }
 
-- (PRRenderer)initWithDelegate:(id)a3
+- (PRRenderer)initWithDelegate:(id)delegate
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   if (initWithDelegate__onceToken != -1)
   {
     [PRRenderer initWithDelegate:];
@@ -447,7 +447,7 @@ LABEL_18:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = objc_opt_new();
     viewsByLevel = v7->_viewsByLevel;
     v7->_viewsByLevel = v8;
@@ -585,11 +585,11 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
   return v2;
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_attachments isEqualToArray:v4])
+  attachmentsCopy = attachments;
+  if (![(NSArray *)self->_attachments isEqualToArray:attachmentsCopy])
   {
     v30 = 0u;
     v31 = 0u;
@@ -622,8 +622,8 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
       while (v7);
     }
 
-    v23 = v4;
-    v12 = [v4 copy];
+    v23 = attachmentsCopy;
+    v12 = [attachmentsCopy copy];
     attachments = self->_attachments;
     self->_attachments = v12;
 
@@ -664,39 +664,39 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
       while (v16);
     }
 
-    v4 = v23;
+    attachmentsCopy = v23;
   }
 }
 
-- (void)updatePreferences:(id)a3
+- (void)updatePreferences:(id)preferences
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  preferencesCopy = preferences;
   BSDispatchQueueAssertMain();
-  v5 = [(PRPosterPreferencesImpl *)self->_preferences salientContentRectangleUpdatesRequested];
+  salientContentRectangleUpdatesRequested = [(PRPosterPreferencesImpl *)self->_preferences salientContentRectangleUpdatesRequested];
   [(PRPosterPreferencesImpl *)self->_preferences preferredSalientContentRectangle];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = objc_opt_new();
-  v4[2](v4, self->_preferences, v14);
+  preferencesCopy[2](preferencesCopy, self->_preferences, v14);
 
-  v15 = [(PRPosterPreferencesImpl *)self->_preferences salientContentRectangleUpdatesRequested];
+  salientContentRectangleUpdatesRequested2 = [(PRPosterPreferencesImpl *)self->_preferences salientContentRectangleUpdatesRequested];
   [(PRPosterPreferencesImpl *)self->_preferences preferredSalientContentRectangle];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  if (v5 != v15)
+  if (salientContentRectangleUpdatesRequested != salientContentRectangleUpdatesRequested2)
   {
     v24 = PRLogRendering();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v47 = 134218240;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 1024;
-      LODWORD(v50) = v15;
+      LODWORD(v50) = salientContentRectangleUpdatesRequested2;
       _os_log_impl(&dword_1A8AA7000, v24, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> PREFERENCES; salient content rect updates updated: %{BOOL}u", &v47, 0x12u);
     }
   }
@@ -720,7 +720,7 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
       v55.size.height = v23;
       v26 = NSStringFromCGRect(v55);
       v47 = 134218242;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2114;
       v50 = v26;
       _os_log_impl(&dword_1A8AA7000, v25, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> PREFERENCES; preferredSalientContentRectangle: %{public}@", &v47, 0x16u);
@@ -732,16 +732,16 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
-  [(UIWindowScene *)self->_scene pr_updatePreferences:self->_preferences withTransition:v14 configuredSalientRect:v28, v35, v32, v34 + v30 - v35];
+  _calculateRealizedAdaptiveTimeHeight = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
+  [(UIWindowScene *)self->_scene pr_updatePreferences:self->_preferences withTransition:v14 configuredSalientRect:v28, _calculateRealizedAdaptiveTimeHeight, v32, v34 + v30 - _calculateRealizedAdaptiveTimeHeight];
   if ([(PRRenderer *)self _isRenderingAdaptiveTime])
   {
-    v36 = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
-    v37 = [(UIWindowScene *)self->_scene _FBSScene];
-    v38 = [v37 settings];
+    _calculateRealizedAdaptiveTimeHeight2 = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
+    _FBSScene = [(UIWindowScene *)self->_scene _FBSScene];
+    settings = [_FBSScene settings];
     v39 = [(NSDictionary *)self->_currentEnvironmentOverrides objectForKey:@"salientContentRectangle"];
-    [v38 pui_salientContentRectangle];
-    v56.origin.y = v36 + v40;
+    [settings pui_salientContentRectangle];
+    v56.origin.y = _calculateRealizedAdaptiveTimeHeight2 + v40;
     v41 = NSStringFromCGRect(v56);
     if ((BSEqualStrings() & 1) == 0)
     {
@@ -764,7 +764,7 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         v47 = 134218498;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 2112;
         v50 = v39;
         v51 = 2112;
@@ -779,10 +779,10 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
   [(PRRenderer *)self _reapUnusedViews];
 }
 
-- (id)extendRenderingSessionForReason:(id)a3
+- (id)extendRenderingSessionForReason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   if (self->_disableReentrantRenderingExtensionForMemoryReclamation)
   {
@@ -798,27 +798,27 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
 
   else
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%u] %@", ++extendRenderingSessionForReason__count, v4];
+    reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%u] %@", ++extendRenderingSessionForReason__count, reasonCopy];
 
     v8 = PRLogRendering();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v7;
+      v20 = reasonCopy;
       _os_log_impl(&dword_1A8AA7000, v8, OS_LOG_TYPE_DEFAULT, "Extending render session for reason: %{public}@", buf, 0xCu);
     }
 
-    v9 = [(BSCompoundAssertion *)self->_sessionExtensions acquireForReason:v7];
+    v9 = [(BSCompoundAssertion *)self->_sessionExtensions acquireForReason:reasonCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __46__PRRenderer_extendRenderingSessionForReason___block_invoke;
     v16[3] = &unk_1E7845B30;
-    v4 = v7;
-    v17 = v4;
+    reasonCopy = reasonCopy;
+    v17 = reasonCopy;
     v5 = v9;
     v18 = v5;
     v10 = MEMORY[0x1AC574C60](v16);
-    v6 = [[PRRenderingSession alloc] initWithReason:v4 invalidationBlock:v10];
+    v6 = [[PRRenderingSession alloc] initWithReason:reasonCopy invalidationBlock:v10];
     [(PRRenderingSession *)v6 timeRemaining];
     v12 = v11;
     v13 = PRLogRendering();
@@ -826,7 +826,7 @@ id __31__PRRenderer_initWithDelegate___block_invoke_25(uint64_t a1)
     {
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
       *buf = 138543618;
-      v20 = v4;
+      v20 = reasonCopy;
       v21 = 2114;
       v22 = v14;
       _os_log_impl(&dword_1A8AA7000, v13, OS_LOG_TYPE_DEFAULT, "Extend rendering session, reason: %{public}@, %{public}@ seconds", buf, 0x16u);
@@ -851,12 +851,12 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
   return [*(a1 + 40) invalidate];
 }
 
-- (id)extendRenderSessionForReason:(id)a3
+- (id)extendRenderSessionForReason:(id)reason
 {
-  v3 = [(PRRenderer *)self extendRenderingSessionForReason:a3];
-  v4 = [v3 assertion];
+  v3 = [(PRRenderer *)self extendRenderingSessionForReason:reason];
+  assertion = [v3 assertion];
 
-  return v4;
+  return assertion;
 }
 
 - (void)noteContentSignificantlyChanged
@@ -879,28 +879,28 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
   }
 }
 
-- (CATransform3D)createTransformation:(uint64_t)a3@<X8> inputX:(CGFloat)a4@<D0> inputY:(CGFloat)a5@<D1>
+- (CATransform3D)createTransformation:(uint64_t)transformation@<X8> inputX:(CGFloat)x@<D0> inputY:(CGFloat)y@<D1>
 {
   if (result)
   {
     v8 = MEMORY[0x1E69792E8];
     v9 = *(MEMORY[0x1E69792E8] + 80);
-    *(a3 + 64) = *(MEMORY[0x1E69792E8] + 64);
-    *(a3 + 80) = v9;
+    *(transformation + 64) = *(MEMORY[0x1E69792E8] + 64);
+    *(transformation + 80) = v9;
     v10 = v8[7];
-    *(a3 + 96) = v8[6];
-    *(a3 + 112) = v10;
+    *(transformation + 96) = v8[6];
+    *(transformation + 112) = v10;
     v11 = v8[1];
-    *a3 = *v8;
-    *(a3 + 16) = v11;
+    *transformation = *v8;
+    *(transformation + 16) = v11;
     v12 = v8[3];
-    *(a3 + 32) = v8[2];
-    *(a3 + 48) = v12;
+    *(transformation + 32) = v8[2];
+    *(transformation + 48) = v12;
     switch(a2)
     {
       case 2:
 
-        return CATransform3DMakeRotation(a3, a5, 1.0, 0.0, 0.0);
+        return CATransform3DMakeRotation(transformation, y, 1.0, 0.0, 0.0);
       case 1:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -908,42 +908,42 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
           _os_log_impl(&dword_1A8AA7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "TestMicaPoster - applying translation in PRRenderer", v13, 2u);
         }
 
-        return CATransform3DMakeTranslation(a3, a4, a5, 0.0);
+        return CATransform3DMakeTranslation(transformation, x, y, 0.0);
       case 0:
-        *(a3 + 64) = a4;
-        *(a3 + 72) = a5;
+        *(transformation + 64) = x;
+        *(transformation + 72) = y;
         break;
     }
   }
 
   else
   {
-    *(a3 + 96) = 0u;
-    *(a3 + 112) = 0u;
-    *(a3 + 64) = 0u;
-    *(a3 + 80) = 0u;
-    *(a3 + 32) = 0u;
-    *(a3 + 48) = 0u;
-    *a3 = 0u;
-    *(a3 + 16) = 0u;
+    *(transformation + 96) = 0u;
+    *(transformation + 112) = 0u;
+    *(transformation + 64) = 0u;
+    *(transformation + 80) = 0u;
+    *(transformation + 32) = 0u;
+    *(transformation + 48) = 0u;
+    *transformation = 0u;
+    *(transformation + 16) = 0u;
   }
 
   return result;
 }
 
-- (void)updateTransformWithFloating:(id)a3 foreground:(id)a4 background:(id)a5 inputX:(double)a6 inputY:(double)a7 types:(id)a8
+- (void)updateTransformWithFloating:(id)floating foreground:(id)foreground background:(id)background inputX:(double)x inputY:(double)y types:(id)types
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if ([v17 count])
+  floatingCopy = floating;
+  foregroundCopy = foreground;
+  backgroundCopy = background;
+  typesCopy = types;
+  if ([typesCopy count])
   {
     v18 = 0;
     do
     {
-      v19 = [v17 objectAtIndexedSubscript:v18];
-      v20 = [v19 integerValue];
+      v19 = [typesCopy objectAtIndexedSubscript:v18];
+      integerValue = [v19 integerValue];
 
       v35 = 0u;
       v36 = 0u;
@@ -953,7 +953,7 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      [(PRRenderer *)self createTransformation:v20 inputX:&v29 inputY:a6, a7];
+      [(PRRenderer *)self createTransformation:integerValue inputX:&v29 inputY:x, y];
       [MEMORY[0x1E6979518] begin];
       v25 = v33;
       v26 = v34;
@@ -963,7 +963,7 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       v22 = v30;
       v23 = v31;
       v24 = v32;
-      [v14 setSublayerTransform:&v21];
+      [floatingCopy setSublayerTransform:&v21];
       v25 = v33;
       v26 = v34;
       v27 = v35;
@@ -972,7 +972,7 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       v22 = v30;
       v23 = v31;
       v24 = v32;
-      [v15 setSublayerTransform:&v21];
+      [foregroundCopy setSublayerTransform:&v21];
       v25 = v33;
       v26 = v34;
       v27 = v35;
@@ -981,12 +981,12 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       v22 = v30;
       v23 = v31;
       v24 = v32;
-      [v16 setSublayerTransform:&v21];
+      [backgroundCopy setSublayerTransform:&v21];
       [MEMORY[0x1E6979518] commit];
       ++v18;
     }
 
-    while ([v17 count] > v18);
+    while ([typesCopy count] > v18);
   }
 }
 
@@ -1008,16 +1008,16 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
   [(PRRenderer *)&v4 dealloc];
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v8 = [actionsCopy countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1029,28 +1029,28 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v12 = *(*(&v38 + 1) + 8 * v11);
         v13 = objc_opt_self();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v12 isValid];
+          isValid = [v12 isValid];
 
-          if (v14)
+          if (isValid)
           {
-            if (self->_graphicComplicationScene == v6)
+            if (self->_graphicComplicationScene == sceneCopy)
             {
               self->_graphicComplicationsRendered = 1;
             }
 
-            else if (self->_sidebarComplicationScene == v6)
+            else if (self->_sidebarComplicationScene == sceneCopy)
             {
               self->_sidebarComplicationsRendered = 1;
             }
 
-            else if (self->_inlineComplicationScene == v6)
+            else if (self->_inlineComplicationScene == sceneCopy)
             {
               self->_inlineComplicationRendered = 1;
             }
@@ -1065,23 +1065,23 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
       }
 
       while (v9 != v11);
-      v15 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v15 = [actionsCopy countByEnumeratingWithState:&v38 objects:v43 count:16];
       v9 = v15;
     }
 
     while (v15);
   }
 
-  v16 = [(UIWindowScene *)self->_scene _FBSScene];
-  v17 = [v16 settings];
+  _FBSScene = [(UIWindowScene *)self->_scene _FBSScene];
+  settings = [_FBSScene settings];
 
-  v18 = [v17 pui_isInlineComplicationConfigured];
-  v19 = [v17 pui_isComplicationRowConfigured];
-  v20 = [v17 pui_isComplicationSidebarConfigured];
-  v21 = [v17 pui_deviceOrientation];
-  if ((v21 - 1) < 2)
+  pui_isInlineComplicationConfigured = [settings pui_isInlineComplicationConfigured];
+  pui_isComplicationRowConfigured = [settings pui_isComplicationRowConfigured];
+  pui_isComplicationSidebarConfigured = [settings pui_isComplicationSidebarConfigured];
+  pui_deviceOrientation = [settings pui_deviceOrientation];
+  if ((pui_deviceOrientation - 1) < 2)
   {
-    v22 = v19;
+    v22 = pui_isComplicationRowConfigured;
   }
 
   else
@@ -1089,9 +1089,9 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
     v22 = 0;
   }
 
-  if ((v21 - 3) < 2)
+  if ((pui_deviceOrientation - 3) < 2)
   {
-    v23 = v20;
+    v23 = pui_isComplicationSidebarConfigured;
   }
 
   else
@@ -1099,7 +1099,7 @@ uint64_t __46__PRRenderer_extendRenderingSessionForReason___block_invoke(uint64_
     v23 = 0;
   }
 
-  if (v18)
+  if (pui_isInlineComplicationConfigured)
   {
     inlineComplicationRendered = self->_inlineComplicationRendered;
   }
@@ -1131,9 +1131,9 @@ LABEL_29:
 
 LABEL_34:
       v26 = [objc_alloc(MEMORY[0x1E69C5550]) initWithInfo:0 responder:0];
-      v27 = [(UIWindowScene *)self->_scene _FBSScene];
+      _FBSScene2 = [(UIWindowScene *)self->_scene _FBSScene];
       v28 = [MEMORY[0x1E695DFD8] setWithObject:v26];
-      [v27 sendActions:v28];
+      [_FBSScene2 sendActions:v28];
 
       goto LABEL_35;
     }
@@ -1149,8 +1149,8 @@ LABEL_35:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = [(NSMutableDictionary *)self->_viewsByLevel allValues];
-  v30 = [v29 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  allValues = [(NSMutableDictionary *)self->_viewsByLevel allValues];
+  v30 = [allValues countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v30)
   {
     v31 = v30;
@@ -1161,32 +1161,32 @@ LABEL_35:
       {
         if (*v35 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v34 + 1) + 8 * i) setExtensionUserInteractionEnabled:{objc_msgSend(v17, "pui_isExtensionUserInteractionEnabled")}];
+        [*(*(&v34 + 1) + 8 * i) setExtensionUserInteractionEnabled:{objc_msgSend(settings, "pui_isExtensionUserInteractionEnabled")}];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v31 = [allValues countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v31);
   }
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   if (self->_scene)
   {
     [PRRenderer scene:a2 willConnectToSession:self options:?];
   }
 
-  v13 = v12;
-  v14 = v10;
+  v13 = optionsCopy;
+  v14 = sceneCopy;
   NSClassFromString(&cfstr_Uiwindowscene.isa);
   if (!v14)
   {
@@ -1213,9 +1213,9 @@ LABEL_35:
   }
 
   v40 = v13;
-  v41 = v11;
+  v41 = sessionCopy;
 
-  objc_storeStrong(&self->_scene, a3);
+  objc_storeStrong(&self->_scene, scene);
   [(UIWindowScene *)self->_scene setDelegate:self];
   [(UIWindowScene *)self->_scene _registerSceneComponent:self forKey:@"PRRenderer"];
   scene = self->_scene;
@@ -1223,11 +1223,11 @@ LABEL_35:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
   [(UIWindowScene *)scene _registerBSActionResponderArray:v19 forKey:@"PRRenderer"];
 
-  v20 = [(UIWindowScene *)self->_scene _FBSScene];
-  v21 = [v20 backlightSceneEnvironment];
-  [v21 setSupportsAlwaysOn:1];
+  _FBSScene = [(UIWindowScene *)self->_scene _FBSScene];
+  backlightSceneEnvironment = [_FBSScene backlightSceneEnvironment];
+  [backlightSceneEnvironment setSupportsAlwaysOn:1];
 
-  v22 = [v20 settings];
+  settings = [_FBSScene settings];
   v23 = PRLogTelemetrySignposts();
   if (os_signpost_enabled(v23))
   {
@@ -1237,21 +1237,21 @@ LABEL_35:
 
   kdebug_trace();
   v24 = [PRPosterEnvironmentImpl alloc];
-  v25 = [(UIWindowScene *)self->_scene traitCollection];
-  v26 = [(PRRenderer *)self extensionBundleURL];
-  v27 = [(PRPosterEnvironmentImpl *)v24 initWithSceneSettings:v22 traitCollection:v25 targetConfig:0 extensionBundleURL:v26];
+  traitCollection = [(UIWindowScene *)self->_scene traitCollection];
+  extensionBundleURL = [(PRRenderer *)self extensionBundleURL];
+  v27 = [(PRPosterEnvironmentImpl *)v24 initWithSceneSettings:settings traitCollection:traitCollection targetConfig:0 extensionBundleURL:extensionBundleURL];
   environment = self->_environment;
   self->_environment = v27;
 
   [(PRPosterEnvironmentImpl *)self->_environment setOverrides:self->_currentEnvironmentOverrides];
-  v29 = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
-  [(PRRenderer *)self _updateViewsIfNeededFrom:v29 to:0 headerAnimationSettings:0 animateBacklightChanges:?];
+  environmentSnapshot = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
+  [(PRRenderer *)self _updateViewsIfNeededFrom:environmentSnapshot to:0 headerAnimationSettings:0 animateBacklightChanges:?];
   preferences = self->_preferences;
-  v31 = [v20 clientSettings];
-  [(PRPosterPreferencesImpl *)preferences setInitialValuesFromSettings:v31];
+  clientSettings = [_FBSScene clientSettings];
+  [(PRPosterPreferencesImpl *)preferences setInitialValuesFromSettings:clientSettings];
 
-  [(PRRenderingDelegate *)self->_delegate renderer:self didInitializeWithEnvironment:v29];
-  [(PRRenderer *)self didInitializeWithEnvironment:v29];
+  [(PRRenderingDelegate *)self->_delegate renderer:self didInitializeWithEnvironment:environmentSnapshot];
+  [(PRRenderer *)self didInitializeWithEnvironment:environmentSnapshot];
   v32 = PRLogTelemetrySignposts();
   if (os_signpost_enabled(v32))
   {
@@ -1269,17 +1269,17 @@ LABEL_35:
   v35 = self->_backdropView;
   [(PRPosterEnvironmentImpl *)self->_environment backlightProgress];
   [(PRRenderingBackdropView *)v35 setTargetBacklightProgress:?];
-  v36 = [v22 pui_sceneAttachments];
-  [(PRRenderer *)self setAttachments:v36];
+  pui_sceneAttachments = [settings pui_sceneAttachments];
+  [(PRRenderer *)self setAttachments:pui_sceneAttachments];
 
   v37 = objc_opt_respondsToSelector() & 1;
-  v38 = [v14 _FBSScene];
+  _FBSScene2 = [v14 _FBSScene];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __49__PRRenderer_scene_willConnectToSession_options___block_invoke;
   v42[3] = &__block_descriptor_33_e39_v16__0__FBSMutableSceneClientSettings_8l;
   v43 = v37;
-  [v38 updateClientSettingsWithBlock:v42];
+  [_FBSScene2 updateClientSettingsWithBlock:v42];
 
   [(PRRenderer *)self _registerForAmbientPresentationTraitChangesIfNecessary];
   v39 = PRLogRendering();
@@ -1302,7 +1302,7 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
 - (void)_registerForAmbientPresentationTraitChangesIfNecessary
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  if (a1 && [(PRRenderer *)a1 _isAmbientSupportedForRendererScene])
+  if (self && [(PRRenderer *)self _isAmbientSupportedForRendererScene])
   {
     v2 = PRLogRendering();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -1310,8 +1310,8 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
       [PRRenderer _registerForAmbientPresentationTraitChangesIfNecessary];
     }
 
-    objc_initWeak(&location, a1);
-    v3 = a1[33];
+    objc_initWeak(&location, self);
+    v3 = self[33];
     v4 = objc_opt_self();
     v12[0] = v4;
     v5 = objc_opt_self();
@@ -1323,44 +1323,44 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
     v9[3] = &unk_1E7845E38;
     objc_copyWeak(&v10, &location);
     v7 = [v3 registerForTraitChanges:v6 withHandler:v9];
-    v8 = a1[25];
-    a1[25] = v7;
+    v8 = self[25];
+    self[25] = v7;
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_issueSceneInvalidated:(uint64_t)a1
+- (void)_issueSceneInvalidated:(uint64_t)invalidated
 {
   v59 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (invalidated)
   {
     BSDispatchQueueAssertMain();
-    [*(a1 + 216) invalidate];
-    v4 = *(a1 + 216);
-    *(a1 + 216) = 0;
+    [*(invalidated + 216) invalidate];
+    v4 = *(invalidated + 216);
+    *(invalidated + 216) = 0;
 
     v5 = PRLogRendering();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v56 = a1;
+      invalidatedCopy12 = invalidated;
       v57 = 1024;
       *v58 = v3 != 0;
       _os_log_impl(&dword_1A8AA7000, v5, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated called w/ scene invalidation action: %{BOOL}u", buf, 0x12u);
     }
 
-    if ((*(a1 + 24) & 1) != 0 || *(a1 + 25) == 1)
+    if ((*(invalidated + 24) & 1) != 0 || *(invalidated + 25) == 1)
     {
       v6 = PRLogRendering();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = *(a1 + 24);
-        v8 = *(a1 + 25);
+        v7 = *(invalidated + 24);
+        v8 = *(invalidated + 25);
         *buf = 134218496;
-        v56 = a1;
+        invalidatedCopy12 = invalidated;
         v57 = 1024;
         *v58 = v7;
         *&v58[4] = 1024;
@@ -1368,14 +1368,14 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
         _os_log_impl(&dword_1A8AA7000, v6, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated called while disconnected (%{BOOL}u) or disconnecting (%{BOOL}u)", buf, 0x18u);
       }
 
-      if (v3 && (*(a1 + 24) & 1) != 0)
+      if (v3 && (*(invalidated + 24) & 1) != 0)
       {
         v9 = PRLogRendering();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = *(a1 + 24);
+          v10 = *(invalidated + 24);
           *buf = 134218240;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           v57 = 1024;
           *v58 = v10;
           _os_log_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated called while disconnected (%{BOOL}u); will fire sceneInvalidationAction immediately", buf, 0x12u);
@@ -1391,40 +1391,40 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
         [v3 sendResponse:v15];
       }
 
-      else if (v3 && (*(a1 + 25) & 1) != 0)
+      else if (v3 && (*(invalidated + 25) & 1) != 0)
       {
         v16 = PRLogRendering();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = *(a1 + 24);
+          v17 = *(invalidated + 24);
           *buf = 134218240;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           v57 = 1024;
           *v58 = v17;
           _os_log_impl(&dword_1A8AA7000, v16, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated called while disconnecting (%{BOOL}u); will enqueue sceneInvalidationAction for calling after disconnected", buf, 0x12u);
         }
 
-        [*(a1 + 32) addObject:v3];
+        [*(invalidated + 32) addObject:v3];
       }
 
-      if (*(a1 + 8) || *(a1 + 264))
+      if (*(invalidated + 8) || *(invalidated + 264))
       {
         v18 = PRLogRendering();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           _os_log_impl(&dword_1A8AA7000, v18, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated cleaning issuing poster invalidation cleanup because things are in an inconsistent state", buf, 0xCu);
         }
 
-        [(PRRenderer *)a1 _cleanupAfterNotifyingDelegateOfInvalidation];
+        [(PRRenderer *)invalidated _cleanupAfterNotifyingDelegateOfInvalidation];
       }
 
       v19 = PRLogRendering();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v56 = a1;
+        invalidatedCopy12 = invalidated;
         _os_log_impl(&dword_1A8AA7000, v19, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Scene already disconnected; bailing", buf, 0xCu);
       }
     }
@@ -1435,12 +1435,12 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v56 = a1;
+        invalidatedCopy12 = invalidated;
         _os_log_impl(&dword_1A8AA7000, v20, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated; Acquiring runtime assertion to allow for invalidation", buf, 0xCu);
       }
 
       v21 = [MEMORY[0x1E69C7548] pf_extendRenderSessionWithReason:@"Invalidation"];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, invalidated);
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __37__PRRenderer__issueSceneInvalidated___block_invoke;
@@ -1453,7 +1453,7 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v56 = a1;
+        invalidatedCopy12 = invalidated;
         v57 = 2048;
         *v58 = v23;
         _os_log_impl(&dword_1A8AA7000, v24, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> _issueSceneInvalidated; Memory usage prior to invalidation: %llu", buf, 0x16u);
@@ -1463,7 +1463,7 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
       v44[1] = 3221225472;
       v44[2] = __37__PRRenderer__issueSceneInvalidated___block_invoke_85;
       v44[3] = &unk_1E7845B80;
-      v44[4] = a1;
+      v44[4] = invalidated;
       v25 = v22;
       v45 = v25;
       v48 = sel__issueSceneInvalidated_;
@@ -1478,31 +1478,31 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           _os_log_impl(&dword_1A8AA7000, v27, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Scene is disconnecting (async)", buf, 0xCu);
         }
 
-        *(a1 + 25) = 1;
+        *(invalidated + 25) = 1;
         v28 = objc_autoreleasePoolPush();
         Current = CFAbsoluteTimeGetCurrent();
-        v30 = *(a1 + 8);
+        v30 = *(invalidated + 8);
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __37__PRRenderer__issueSceneInvalidated___block_invoke_92;
         v40[3] = &unk_1E7845BD0;
-        v40[4] = a1;
+        v40[4] = invalidated;
         v43 = Current;
         v31 = v26;
         v42 = v31;
         v41 = v19;
-        [v30 rendererDidInvalidate:a1 completion:v40];
+        [v30 rendererDidInvalidate:invalidated completion:v40];
         v32 = dispatch_time(0, 8000000000);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __37__PRRenderer__issueSceneInvalidated___block_invoke_94;
         block[3] = &unk_1E7845BF8;
         v37 = v25;
-        v38 = a1;
+        invalidatedCopy10 = invalidated;
         v39 = v31;
         dispatch_after(v32, MEMORY[0x1E69E96A0], block);
 
@@ -1511,24 +1511,24 @@ void __49__PRRenderer_scene_willConnectToSession_options___block_invoke(uint64_t
 
       else
       {
-        *(a1 + 24) = 1;
+        *(invalidated + 24) = 1;
         v33 = PRLogRendering();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           _os_log_impl(&dword_1A8AA7000, v33, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Scene disconnection (sync)", buf, 0xCu);
         }
 
         v34 = objc_autoreleasePoolPush();
-        [*(a1 + 8) rendererDidInvalidate:a1];
-        [(PRRenderer *)a1 _cleanupAfterNotifyingDelegateOfInvalidation];
+        [*(invalidated + 8) rendererDidInvalidate:invalidated];
+        [(PRRenderer *)invalidated _cleanupAfterNotifyingDelegateOfInvalidation];
         objc_autoreleasePoolPop(v34);
         v35 = PRLogRendering();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v56 = a1;
+          invalidatedCopy12 = invalidated;
           _os_log_impl(&dword_1A8AA7000, v35, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Scene did disconnect (sync)", buf, 0xCu);
         }
 
@@ -1694,9 +1694,9 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
   return result;
 }
 
-- (PRRenderer)initWithScene:(id)a3
+- (PRRenderer)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this should not be called"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -1708,7 +1708,7 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"PRRenderer.m";
     v19 = 1024;
@@ -1724,7 +1724,7 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
   return result;
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = self;
@@ -1733,77 +1733,77 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
   return v3;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v153 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
   if (self->_disconnected || self->_disconnecting)
   {
     goto LABEL_3;
   }
 
   v109 = a2;
-  v112 = v17 == 0;
-  v19 = [v15 settings];
-  if (!(v16 | v17))
+  v112 = settingsCopy == 0;
+  settings = [sSceneCopy settings];
+  if (!(diffCopy | settingsCopy))
   {
-    v16 = [MEMORY[0x1E699FC30] diffFromSettings:0 toSettings:v19];
+    diffCopy = [MEMORY[0x1E699FC30] diffFromSettings:0 toSettings:settings];
   }
 
-  LODWORD(v110) = [v19 pui_isWallpaperObscured] ^ 1;
+  LODWORD(v110) = [settings pui_isWallpaperObscured] ^ 1;
   if ((v110 & 1) == 0)
   {
-    [v18 setAnimationSettings:0];
+    [contextCopy setAnimationSettings:0];
   }
 
   v119 = objc_opt_new();
-  if (-[PRRenderer _rendererDynamicRotationIsActive](self) && ([v18 animationSettings], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+  if (-[PRRenderer _rendererDynamicRotationIsActive](self) && ([contextCopy animationSettings], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
   {
     v22 = MEMORY[0x1E698E608];
-    v23 = [v18 animationSettings];
-    [v23 duration];
+    animationSettings = [contextCopy animationSettings];
+    [animationSettings duration];
     v25 = v24;
     v26 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    v21 = [v22 settingsWithDuration:v26 timingFunction:v25];
+    animationSettings2 = [v22 settingsWithDuration:v26 timingFunction:v25];
   }
 
   else
   {
-    v21 = [v18 animationSettings];
+    animationSettings2 = [contextCopy animationSettings];
   }
 
-  [v119 setAnimationSettings:v21];
+  [v119 setAnimationSettings:animationSettings2];
 
-  v122 = [v18 actions];
-  v27 = [(PRRenderer *)self _actionsAfterHandlingAppIntentsHandshakeActionsInActions:v122];
-  v28 = [v27 allObjects];
-  [v119 setActions:v28];
+  actions = [contextCopy actions];
+  v27 = [(PRRenderer *)self _actionsAfterHandlingAppIntentsHandshakeActionsInActions:actions];
+  allObjects = [v27 allObjects];
+  [v119 setActions:allObjects];
 
-  [v119 setSignificantEvent:{objc_msgSend(v18, "pui_significantEvent")}];
-  [v119 setSettingsDiff:v16];
+  [v119 setSignificantEvent:{objc_msgSend(contextCopy, "pui_significantEvent")}];
+  [v119 setSettingsDiff:diffCopy];
   p_environment = &self->_environment;
-  v29 = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
+  environmentSnapshot = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
   v123 = objc_opt_new();
-  v113 = v15;
-  v114 = v14;
-  v115 = v29;
-  v116 = v17;
-  v118 = v18;
-  v120 = self;
-  if (v16)
+  v113 = sSceneCopy;
+  v114 = sceneCopy;
+  v115 = environmentSnapshot;
+  v116 = settingsCopy;
+  v118 = contextCopy;
+  selfCopy = self;
+  if (diffCopy)
   {
     scene = self->_scene;
     v31 = objc_opt_class();
-    v32 = scene;
+    sceneCopy2 = scene;
     if (v31)
     {
       if (objc_opt_isKindOfClass())
       {
-        v33 = v32;
+        v33 = sceneCopy2;
       }
 
       else
@@ -1819,22 +1819,22 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
 
     v34 = v33;
 
-    v35 = [(UIWindowScene *)v34 traitCollection];
+    traitCollection = [(UIWindowScene *)v34 traitCollection];
 
-    v107 = v35;
+    v107 = traitCollection;
     if (*p_environment)
     {
-      [(PRPosterEnvironmentImpl *)*p_environment updateFromSceneSettings:v19 traitCollection:v35 overrides:self->_currentEnvironmentOverrides, v35, v109, v110];
+      [(PRPosterEnvironmentImpl *)*p_environment updateFromSceneSettings:settings traitCollection:traitCollection overrides:self->_currentEnvironmentOverrides, traitCollection, v109, v110];
     }
 
     else
     {
-      [PRRenderer _performActionsForUIScene:v19 withUpdatedFBSScene:v35 settingsDiff:p_environment fromSettings:? transitionContext:? lifecycleActionType:?];
+      [PRRenderer _performActionsForUIScene:settings withUpdatedFBSScene:traitCollection settingsDiff:p_environment fromSettings:? transitionContext:? lifecycleActionType:?];
     }
 
-    [v119 setSettingsDiff:{v16, v107}];
-    v36 = [v19 pui_sceneAttachments];
-    [(PRRenderer *)self setAttachments:v36];
+    [v119 setSettingsDiff:{diffCopy, v107}];
+    pui_sceneAttachments = [settings pui_sceneAttachments];
+    [(PRRenderer *)self setAttachments:pui_sceneAttachments];
 
     v37 = PRValidRenderingTransitionTypes();
     v144 = 0u;
@@ -1857,12 +1857,12 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
 
           v42 = *(*(&v144 + 1) + 8 * i);
           v43 = SceneSettingForPRRenderingTransitionType(v42);
-          if ([v16 pui_inspect:v43])
+          if ([diffCopy pui_inspect:v43])
           {
-            v44 = v16;
-            v45 = v19;
-            v46 = [v19 otherSettings];
-            v47 = [v46 objectForSetting:v43];
+            v44 = diffCopy;
+            v45 = settings;
+            otherSettings = [settings otherSettings];
+            v47 = [otherSettings objectForSetting:v43];
             v48 = objc_opt_class();
             v49 = v47;
             if (v48)
@@ -1900,8 +1900,8 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
               [v123 addObject:v51];
             }
 
-            v19 = v45;
-            v16 = v44;
+            settings = v45;
+            diffCopy = v44;
           }
         }
 
@@ -1911,14 +1911,14 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
       while (v39);
     }
 
-    v29 = v115;
-    v17 = v116;
-    v18 = v118;
-    self = v120;
+    environmentSnapshot = v115;
+    settingsCopy = v116;
+    contextCopy = v118;
+    self = selfCopy;
   }
 
   *buf = *MEMORY[0x1E695F060];
-  v53 = [v18 pr_finishUnlockingWithParameters:buf];
+  v53 = [contextCopy pr_finishUnlockingWithParameters:buf];
   if (self->_animatingUnlock && v53)
   {
     v54 = PRLogRendering();
@@ -1965,21 +1965,21 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
     goto LABEL_74;
   }
 
-  [v19 pr_unlockProgress];
+  [settings pr_unlockProgress];
   v59 = v58;
-  v60 = [v16 pr_unlockProgressDidChange];
+  pr_unlockProgressDidChange = [diffCopy pr_unlockProgressDidChange];
   if (self->_animatingUnlock)
   {
-    if (v60)
+    if (pr_unlockProgressDidChange)
     {
-      [v17 pr_unlockProgress];
+      [settingsCopy pr_unlockProgress];
       if (v59 < v61)
       {
         v62 = PRLogRendering();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
         {
           *v149 = 134217984;
-          v150 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1A8AA7000, v62, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Interrupting animated unlock!", v149, 0xCu);
         }
 
@@ -1992,12 +1992,12 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
     }
 
     v75 = *p_environment;
-    [v29 unlockProgress];
+    [environmentSnapshot unlockProgress];
     environment = v75;
     goto LABEL_73;
   }
 
-  if (v60)
+  if (pr_unlockProgressDidChange)
   {
     v64 = PRLogRendering();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
@@ -2009,7 +2009,7 @@ uint64_t __37__PRRenderer__issueSceneInvalidated___block_invoke_94(uint64_t a1)
     {
       [(UIViewFloatAnimatableProperty *)self->_unlockAnimator value];
       v67 = v66;
-      [v17 pr_unlockProgress];
+      [settingsCopy pr_unlockProgress];
       v69 = v59 - v68;
       v70 = 0.0;
       if (v59 - v68 <= 0.0)
@@ -2053,29 +2053,29 @@ LABEL_73:
 
 LABEL_74:
   [(PRPosterEnvironmentImpl *)self->_environment setOverrides:self->_currentEnvironmentOverrides];
-  v76 = [(PRPosterEnvironmentImpl *)self->_environment role];
-  v77 = [v76 isEqual:@"PRPosterRoleLockScreen"];
+  role = [(PRPosterEnvironmentImpl *)self->_environment role];
+  v77 = [role isEqual:@"PRPosterRoleLockScreen"];
 
   if (v77)
   {
     [(PRRenderer *)self updatePreferences:&__block_literal_global_115];
   }
 
-  v78 = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
-  v79 = [v18 animationSettings];
-  [(PRRenderer *)self _updateViewsIfNeededFrom:v29 to:v78 headerAnimationSettings:v79 animateBacklightChanges:v110];
+  environmentSnapshot2 = [(PRPosterEnvironmentImpl *)self->_environment environmentSnapshot];
+  animationSettings3 = [contextCopy animationSettings];
+  [(PRRenderer *)self _updateViewsIfNeededFrom:environmentSnapshot to:environmentSnapshot2 headerAnimationSettings:animationSettings3 animateBacklightChanges:v110];
 
-  v111 = [v29 effectiveMotionEffectsMode];
-  v80 = [v78 effectiveMotionEffectsMode];
-  [v29 userTapLocation];
+  effectiveMotionEffectsMode = [environmentSnapshot effectiveMotionEffectsMode];
+  effectiveMotionEffectsMode2 = [environmentSnapshot2 effectiveMotionEffectsMode];
+  [environmentSnapshot userTapLocation];
   v82 = v81;
   v84 = v83;
-  [v78 userTapLocation];
+  [environmentSnapshot2 userTapLocation];
   v86 = v85;
   v88 = v87;
-  v89 = [v29 userTapEventsCounter];
-  v121 = v78;
-  if (v89 == [v78 userTapEventsCounter] && v86 == v82 && v88 == v84)
+  userTapEventsCounter = [environmentSnapshot userTapEventsCounter];
+  v121 = environmentSnapshot2;
+  if (userTapEventsCounter == [environmentSnapshot2 userTapEventsCounter] && v86 == v82 && v88 == v84)
   {
     v90 = 0;
     v86 = *MEMORY[0x1E695EFF8];
@@ -2091,8 +2091,8 @@ LABEL_74:
   v141 = 0u;
   v139 = 0u;
   v138 = 0u;
-  v91 = [(NSMutableDictionary *)self->_viewsByLevel allValues];
-  v92 = [v91 countByEnumeratingWithState:&v138 objects:v148 count:16];
+  allValues = [(NSMutableDictionary *)self->_viewsByLevel allValues];
+  v92 = [allValues countByEnumeratingWithState:&v138 objects:v148 count:16];
   if (v92)
   {
     v93 = v92;
@@ -2103,13 +2103,13 @@ LABEL_74:
       {
         if (*v139 != v94)
         {
-          objc_enumerationMutation(v91);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v138 + 1) + 8 * j) setExtensionUserInteractionEnabled:{objc_msgSend(v19, "pui_isExtensionUserInteractionEnabled")}];
+        [*(*(&v138 + 1) + 8 * j) setExtensionUserInteractionEnabled:{objc_msgSend(settings, "pui_isExtensionUserInteractionEnabled")}];
       }
 
-      v93 = [v91 countByEnumeratingWithState:&v138 objects:v148 count:16];
+      v93 = [allValues countByEnumeratingWithState:&v138 objects:v148 count:16];
     }
 
     while (v93);
@@ -2120,41 +2120,41 @@ LABEL_74:
   v128 = __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke_2_116;
   v129 = &unk_1E7845C40;
   v135 = v112;
-  v130 = v120;
+  v130 = selfCopy;
   v96 = v119;
   v131 = v96;
-  v136 = v111 != v80;
+  v136 = effectiveMotionEffectsMode != effectiveMotionEffectsMode2;
   v137 = v90;
   v133 = v86;
   v134 = v88;
   v97 = v123;
   v132 = v97;
   _UISceneSettingsDiffActionPerformChangesWithTransitionContext();
-  v14 = v114;
-  if ([v19 pui_isInvalidated])
+  sceneCopy = v114;
+  if ([settings pui_isInvalidated])
   {
     v98 = PRLogRendering();
     if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
     {
       *v149 = 134217984;
-      v150 = v120;
+      selfCopy2 = selfCopy;
       _os_log_impl(&dword_1A8AA7000, v98, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> issuing scene settings invalidation", v149, 0xCu);
     }
 
-    v99 = [v19 otherSettings];
-    v100 = [v99 objectForSetting:20469];
+    otherSettings2 = [settings otherSettings];
+    v100 = [otherSettings2 objectForSetting:20469];
 
-    [(PRRenderer *)v120 _issueSceneInvalidated:v100];
+    [(PRRenderer *)selfCopy _issueSceneInvalidated:v100];
   }
 
   [(PRPosterEnvironmentImpl *)*p_environment unlockProgress];
   IsOne = BSFloatIsOne();
-  v102 = [(PRPosterEnvironmentImpl *)*p_environment role];
-  v103 = [v102 isEqual:@"PRPosterRoleLockScreen"];
+  role2 = [(PRPosterEnvironmentImpl *)*p_environment role];
+  v103 = [role2 isEqual:@"PRPosterRoleLockScreen"];
 
   if (v103 && IsOne)
   {
-    v104 = [(PRRenderer *)v120 extendRenderingSessionForReason:@"delaySuspend"];
+    v104 = [(PRRenderer *)selfCopy extendRenderingSessionForReason:@"delaySuspend"];
     v105 = MEMORY[0x1E6979518];
     v124[0] = MEMORY[0x1E69E9820];
     v124[1] = 3221225472;
@@ -2165,9 +2165,9 @@ LABEL_74:
     [v105 bs_performAfterSynchronizedCommit:v124];
   }
 
-  v15 = v113;
-  v17 = v116;
-  v18 = v118;
+  sSceneCopy = v113;
+  settingsCopy = v116;
+  contextCopy = v118;
 LABEL_3:
 }
 
@@ -2226,22 +2226,22 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
   dispatch_after(v2, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_updateOrientationIfNeededFrom:(void *)a3 to:
+- (void)_updateOrientationIfNeededFrom:(void *)from to:
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  fromCopy = from;
+  if (self)
   {
-    v7 = [v5 deviceOrientation];
-    if (v7 != [v6 deviceOrientation])
+    deviceOrientation = [v5 deviceOrientation];
+    if (deviceOrientation != [fromCopy deviceOrientation])
     {
-      v8 = [v5 deviceOrientation];
-      v9 = [v6 deviceOrientation];
+      deviceOrientation2 = [v5 deviceOrientation];
+      deviceOrientation3 = [fromCopy deviceOrientation];
       v10 = PRLogRendering();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        switch(v8)
+        switch(deviceOrientation2)
         {
           case 1:
             v11 = @"UIInterfaceOrientationPortrait";
@@ -2254,7 +2254,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
           default:
             v11 = @"UIInterfaceOrientationPortraitUpsideDown";
-            if (v8 != 2)
+            if (deviceOrientation2 != 2)
             {
               v11 = 0;
             }
@@ -2262,7 +2262,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
         }
 
-        switch(v9)
+        switch(deviceOrientation3)
         {
           case 1:
             v12 = @"UIInterfaceOrientationPortrait";
@@ -2275,7 +2275,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
           default:
             v12 = @"UIInterfaceOrientationPortraitUpsideDown";
-            if (v9 != 2)
+            if (deviceOrientation3 != 2)
             {
               v12 = 0;
             }
@@ -2284,7 +2284,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         }
 
         *buf = 134218498;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2114;
         v29 = v11;
         v30 = 2114;
@@ -2293,15 +2293,15 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
       }
     }
 
-    v13 = [v5 deviceOrientation];
-    if (v13 != [v6 deviceOrientation])
+    deviceOrientation4 = [v5 deviceOrientation];
+    if (deviceOrientation4 != [fromCopy deviceOrientation])
     {
-      v14 = [v5 deviceOrientation];
-      v15 = [v6 deviceOrientation];
+      deviceOrientation5 = [v5 deviceOrientation];
+      deviceOrientation6 = [fromCopy deviceOrientation];
       v16 = PRLogRendering();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        switch(v14)
+        switch(deviceOrientation5)
         {
           case 1:
             v17 = @"UIInterfaceOrientationPortrait";
@@ -2314,7 +2314,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
           default:
             v17 = @"UIInterfaceOrientationPortraitUpsideDown";
-            if (v14 != 2)
+            if (deviceOrientation5 != 2)
             {
               v17 = 0;
             }
@@ -2322,7 +2322,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
         }
 
-        switch(v15)
+        switch(deviceOrientation6)
         {
           case 1:
             v18 = @"UIInterfaceOrientationPortrait";
@@ -2335,7 +2335,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
             break;
           default:
             v18 = @"UIInterfaceOrientationPortraitUpsideDown";
-            if (v15 != 2)
+            if (deviceOrientation6 != 2)
             {
               v18 = 0;
             }
@@ -2344,7 +2344,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         }
 
         *buf = 134218498;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2114;
         v29 = v17;
         v30 = 2114;
@@ -2352,15 +2352,15 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         _os_log_impl(&dword_1A8AA7000, v16, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Device Orientation has updated from %{public}@ -> %{public}@", buf, 0x20u);
       }
 
-      ++a1[24];
-      if ((v14 - 3) >= 2)
+      ++self[24];
+      if ((deviceOrientation5 - 3) >= 2)
       {
         v19 = 0.5;
-        if (((v14 - 1) | (v15 - 1)) >= 2)
+        if (((deviceOrientation5 - 1) | (deviceOrientation6 - 1)) >= 2)
         {
 LABEL_46:
-          v20 = [a1 extendRenderingSessionForReason:@"RotationAnimations"];
-          objc_initWeak(buf, a1);
+          v20 = [self extendRenderingSessionForReason:@"RotationAnimations"];
+          objc_initWeak(buf, self);
           v21 = MEMORY[0x1E6979518];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
@@ -2381,7 +2381,7 @@ LABEL_46:
       else
       {
         v19 = 0.5;
-        if ((v15 - 3) > 1)
+        if ((deviceOrientation6 - 3) > 1)
         {
           goto LABEL_46;
         }
@@ -2421,17 +2421,17 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke(uint64_t 
   objc_destroyWeak(&v5);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v42 = a4;
+  actionsCopy = actions;
+  sceneCopy = scene;
   v39 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v7;
+  obj = actionsCopy;
   v8 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v8)
   {
@@ -2530,7 +2530,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke(uint64_t 
 
             if (v24)
             {
-              [(PRRenderer *)self _handleSnapshotAction:v24 forScene:v42];
+              [(PRRenderer *)self _handleSnapshotAction:v24 forScene:sceneCopy];
             }
 
             else
@@ -2559,8 +2559,8 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke(uint64_t 
 
               if (v28)
               {
-                v29 = [v42 pui_captureController];
-                [v29 handleSceneSnapshotReadinessAction:v28];
+                pui_captureController = [sceneCopy pui_captureController];
+                [pui_captureController handleSceneSnapshotReadinessAction:v28];
               }
 
               else
@@ -2585,11 +2585,11 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke(uint64_t 
                   v32 = 0;
                 }
 
-                v29 = v32;
+                pui_captureController = v32;
 
-                if (v29)
+                if (pui_captureController)
                 {
-                  [(PRRenderer *)self _handleScriptExecutionAction:v29 forScene:v42];
+                  [(PRRenderer *)self _handleScriptExecutionAction:pui_captureController forScene:sceneCopy];
                 }
 
                 else
@@ -2645,42 +2645,42 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke(uint64_t 
   return v39;
 }
 
-- (void)_handleRenderingServiceEndpointDidChangeAction:(uint64_t)a1
+- (void)_handleRenderingServiceEndpointDidChangeAction:(uint64_t)action
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (action)
   {
-    v5 = [v3 endpoint];
+    endpoint = [v3 endpoint];
     v6 = PRLogRendering();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (endpoint)
     {
       if (v7)
       {
-        v8 = [v5 description];
+        v8 = [endpoint description];
         *buf = 138412290;
         v19 = v8;
         _os_log_impl(&dword_1A8AA7000, v6, OS_LOG_TYPE_DEFAULT, "Received PRRenderingServiceEndpointDidChangeAction endpoint: %@", buf, 0xCu);
       }
 
-      v9 = *(a1 + 224);
-      if (!v9 || ([v9 renderingServiceEndpoint], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToServiceEndpoint:", v5), v10, (v11 & 1) == 0))
+      v9 = *(action + 224);
+      if (!v9 || ([v9 renderingServiceEndpoint], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToServiceEndpoint:", endpoint), v10, (v11 & 1) == 0))
       {
-        objc_initWeak(buf, a1);
+        objc_initWeak(buf, action);
         v12 = [PRDeviceMotionRenderer alloc];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_invoke;
         v16[3] = &unk_1E7843FE8;
         objc_copyWeak(&v17, buf);
-        v13 = [(PRDeviceMotionRenderer *)v12 initWithIdentifier:@"PRRenderer.deviceMotionRendering" renderingServiceEndpoint:v5 motionUpdateHandler:v16];
-        v14 = *(a1 + 224);
-        *(a1 + 224) = v13;
+        v13 = [(PRDeviceMotionRenderer *)v12 initWithIdentifier:@"PRRenderer.deviceMotionRendering" renderingServiceEndpoint:endpoint motionUpdateHandler:v16];
+        v14 = *(action + 224);
+        *(action + 224) = v13;
 
-        v15 = *(a1 + 224);
-        [*(a1 + 16) deviceMotionUpdateInterval];
+        v15 = *(action + 224);
+        [*(action + 16) deviceMotionUpdateInterval];
         [v15 setDeviceMotionUpdateInterval:?];
         objc_destroyWeak(&v17);
         objc_destroyWeak(buf);
@@ -2819,37 +2819,37 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
   }
 }
 
-- (BOOL)scriptInterperterShouldBeginExecution:(id)a3 initialStatement:(id)a4
+- (BOOL)scriptInterperterShouldBeginExecution:(id)execution initialStatement:(id)statement
 {
   scriptInterpreter = self->_scriptInterpreter;
-  if (scriptInterpreter == a3)
+  if (scriptInterpreter == execution)
   {
-    v7 = a4;
+    statementCopy = statement;
     v8 = PRLogRendering();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       [PRRenderer scriptInterperterShouldBeginExecution:initialStatement:];
     }
 
-    [(PRRenderer *)self _executeStatement:v7];
+    [(PRRenderer *)self _executeStatement:statementCopy];
   }
 
-  return scriptInterpreter == a3;
+  return scriptInterpreter == execution;
 }
 
-- (void)_executeStatement:(uint64_t)a1
+- (void)_executeStatement:(uint64_t)statement
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (statement && v3)
   {
-    v5 = [v3 transition];
-    v6 = [v4 renderingOverridesForEnvironment:*(a1 + 16)];
-    v7 = [v4 renderingEvent];
+    transition = [v3 transition];
+    v6 = [v4 renderingOverridesForEnvironment:*(statement + 16)];
+    renderingEvent = [v4 renderingEvent];
 
-    if (v7)
+    if (renderingEvent)
     {
-      [(PRRenderer *)v4 _executeStatement:a1];
+      [(PRRenderer *)v4 _executeStatement:statement];
     }
 
     v8 = PRLogRendering();
@@ -2858,11 +2858,11 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
       [PRRenderer _executeStatement:];
     }
 
-    [(PRRenderer *)a1 _issueEnvironmentOverrides:v6 transition:v5];
+    [(PRRenderer *)statement _issueEnvironmentOverrides:v6 transition:transition];
   }
 }
 
-- (void)scriptInterpreterDidBeginExecution:(id)a3
+- (void)scriptInterpreterDidBeginExecution:(id)execution
 {
   v3 = PRLogRendering();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -2871,22 +2871,22 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
   }
 }
 
-- (void)scriptInterpreter:(id)a3 executeStatement:(id)a4
+- (void)scriptInterpreter:(id)interpreter executeStatement:(id)statement
 {
-  v5 = a4;
+  statementCopy = statement;
   v6 = PRLogRendering();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [PRRenderer scriptInterpreter:executeStatement:];
   }
 
-  [(PRRenderer *)self _executeStatement:v5];
+  [(PRRenderer *)self _executeStatement:statementCopy];
 }
 
-- (void)scriptInterpreterDidFinish:(id)a3
+- (void)scriptInterpreterDidFinish:(id)finish
 {
   scriptInterpreter = self->_scriptInterpreter;
-  if (scriptInterpreter == a3)
+  if (scriptInterpreter == finish)
   {
     [(PRPosterScriptInterpreter *)scriptInterpreter invalidate];
     v5 = self->_scriptInterpreter;
@@ -2902,7 +2902,7 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
   }
 }
 
-- (void)updatedValuesForView:(id)a3
+- (void)updatedValuesForView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
@@ -2934,7 +2934,7 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134218496;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v7;
     v15 = 2048;
@@ -2949,25 +2949,25 @@ void __61__PRRenderer__handleRenderingServiceEndpointDidChangeAction___block_inv
   }
 }
 
-- (void)invalidateView:(id)a3
+- (void)invalidateView:(id)view
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = PRLogRendering();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = [v4 level];
+    level = [viewCopy level];
     _os_log_impl(&dword_1A8AA7000, v5, OS_LOG_TYPE_DEFAULT, "<PRRenderer %p> Invalidated view at level %ld", &v8, 0x16u);
   }
 
   viewsByLevel = self->_viewsByLevel;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "level")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(viewCopy, "level")}];
   [(NSMutableDictionary *)viewsByLevel removeObjectForKey:v7];
 
-  [v4 removeFromSuperview];
+  [viewCopy removeFromSuperview];
 }
 
 void __40__PRRenderer__updateRenderingExtensions__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3121,13 +3121,13 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
   [(PRRenderer *)WeakRetained _updateEnvironmentForUpdatedTraitCollection];
 }
 
-- (void)_updateAnimatedUnlockProgress:(uint64_t)a1
+- (void)_updateAnimatedUnlockProgress:(uint64_t)progress
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (progress)
   {
     BSDispatchQueueAssertMain();
-    [*(a1 + 16) unlockProgress];
+    [*(progress + 16) unlockProgress];
     if ((BSFloatEqualToFloat() & 1) == 0)
     {
       v4 = 0.0;
@@ -3144,7 +3144,7 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
         }
       }
 
-      [*(a1 + 16) setUnlockProgress:v4];
+      [*(progress + 16) setUnlockProgress:v4];
       v5 = PRLogRendering();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
@@ -3160,24 +3160,24 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
 
 - (id)_stateCaptureDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[33] _FBSScene];
-    v3 = [v2 settings];
-    v4 = [v3 pui_posterContents];
+    _FBSScene = [self[33] _FBSScene];
+    settings = [_FBSScene settings];
+    pui_posterContents = [settings pui_posterContents];
 
-    v5 = [MEMORY[0x1E698E680] builderWithObject:v1];
-    v6 = [v5 appendObject:v4 withName:@"posterPath"];
-    v7 = [v1 environment];
+    v5 = [MEMORY[0x1E698E680] builderWithObject:selfCopy];
+    v6 = [v5 appendObject:pui_posterContents withName:@"posterPath"];
+    environment = [selfCopy environment];
     v8 = [OUTLINED_FUNCTION_22() appendObject:? withName:?];
 
-    v9 = [v1[33] _FBSScene];
+    _FBSScene2 = [selfCopy[33] _FBSScene];
     v10 = [OUTLINED_FUNCTION_22() appendObject:? withName:?];
 
-    if ([v1[14] count])
+    if ([selfCopy[14] count])
     {
-      v11 = [v1[14] description];
+      v11 = [selfCopy[14] description];
       v12 = [OUTLINED_FUNCTION_22() appendObject:? withName:? skipIfNil:?];
     }
 
@@ -3186,37 +3186,37 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
       v13 = [v5 appendObject:0 withName:@"overrides" skipIfNil:1];
     }
 
-    v14 = [v5 appendBool:*(v1 + 25) withName:@"invalidating"];
-    v15 = [v5 appendBool:*(v1 + 24) withName:@"invalidated"];
-    v16 = [v1[29] reasons];
-    v17 = [v16 bs_array];
+    v14 = [v5 appendBool:*(selfCopy + 25) withName:@"invalidating"];
+    v15 = [v5 appendBool:*(selfCopy + 24) withName:@"invalidated"];
+    reasons = [selfCopy[29] reasons];
+    bs_array = [reasons bs_array];
     v18 = [OUTLINED_FUNCTION_22() appendObject:? withName:?];
 
-    v1 = [v5 build];
+    selfCopy = [v5 build];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)_viewForLevel:(id)a1
+- (id)_viewForLevel:(id)level
 {
-  v2 = a1;
-  if (a1)
+  levelCopy = level;
+  if (level)
   {
     BSDispatchQueueAssertMain();
-    v4 = *(v2 + 5);
+    v4 = *(levelCopy + 5);
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
     v6 = [v4 objectForKey:v5];
 
     if (!v6)
     {
-      v8 = [*(v2 + 33) _FBSScene];
-      v9 = [v8 settings];
+      _FBSScene = [*(levelCopy + 33) _FBSScene];
+      settings = [_FBSScene settings];
 
-      [*(v2 + 2) appliesCountertransformForRotation];
+      [*(levelCopy + 2) appliesCountertransformForRotation];
       v10 = objc_alloc(objc_opt_class());
-      v6 = [v10 initWithOwner:v2 scene:*(v2 + 33) level:a2 dynamicRotationEnabled:-[PRRenderer _rendererDynamicRotationIsActive](v2) extensionUserInteractionEnabled:{objc_msgSend(v9, "pui_isExtensionUserInteractionEnabled")}];
-      v11 = *(v2 + 5);
+      v6 = [v10 initWithOwner:levelCopy scene:*(levelCopy + 33) level:a2 dynamicRotationEnabled:-[PRRenderer _rendererDynamicRotationIsActive](levelCopy) extensionUserInteractionEnabled:{objc_msgSend(settings, "pui_isExtensionUserInteractionEnabled")}];
+      v11 = *(levelCopy + 5);
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
       [v11 setObject:v6 forKey:v12];
 
@@ -3230,10 +3230,10 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
       }
     }
 
-    v2 = [v6 contentContainer];
+    levelCopy = [v6 contentContainer];
   }
 
-  return v2;
+  return levelCopy;
 }
 
 - (UIView)floatingView
@@ -3252,12 +3252,12 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
 
 - (uint64_t)_rendererDynamicRotationIsActive
 {
-  if (!a1 || !PUIDynamicRotationIsActive())
+  if (!self || !PUIDynamicRotationIsActive())
   {
     return 0;
   }
 
-  v2 = [*(a1 + 16) role];
+  role = [*(self + 16) role];
   v3 = PFPosterRoleSupportsDynamicRotation();
 
   return v3;
@@ -3265,19 +3265,19 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
 
 - (double)_calculateRealizedAdaptiveTimeHeight
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = a1[2];
-  v3 = [v2 targetConfiguredProperties];
-  v4 = [v3 titleStyleConfiguration];
+  v2 = self[2];
+  targetConfiguredProperties = [v2 targetConfiguredProperties];
+  titleStyleConfiguration = [targetConfiguredProperties titleStyleConfiguration];
 
-  v5 = [a1[2] deviceOrientation];
-  v6 = v5;
+  deviceOrientation = [self[2] deviceOrientation];
+  v6 = deviceOrientation;
   memset(&v40, 0, sizeof(v40));
-  switch(v5)
+  switch(deviceOrientation)
   {
     case 1:
       v7 = 0.0;
@@ -3290,7 +3290,7 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
       break;
     default:
       v7 = 3.14159265;
-      if (v5 != 2)
+      if (deviceOrientation != 2)
       {
         v7 = 0.0;
       }
@@ -3301,31 +3301,31 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
   CGAffineTransformMakeRotation(&v38, v7);
   UIIntegralTransform();
   CGAffineTransformInvert(&v40, &v39);
-  [a1[2] canvasSize];
+  [self[2] canvasSize];
   BSRectWithSize();
   v39 = v40;
   v42 = CGRectApplyAffineTransform(v41, &v39);
   height = v42.size.height;
-  [a1[6] preferredSalientContentRectangle];
+  [self[6] preferredSalientContentRectangle];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [a1[33] _FBSScene];
-  v18 = [v17 settings];
-  v19 = [v18 pui_posterContents];
+  _FBSScene = [self[33] _FBSScene];
+  settings = [_FBSScene settings];
+  pui_posterContents = [settings pui_posterContents];
 
-  v20 = [v19 serverIdentity];
-  v21 = [v20 type];
+  serverIdentity = [pui_posterContents serverIdentity];
+  type = [serverIdentity type];
 
   IsValidSalientContentRectangle = PUICGRectIsValidSalientContentRectangle();
-  v23 = [a1[6] adaptiveTimeMode];
-  v24 = [MEMORY[0x1E6999638] sharedLayoutController];
-  OUTLINED_FUNCTION_31(v24, v25);
-  OUTLINED_FUNCTION_31(v24, v26);
+  adaptiveTimeMode = [self[6] adaptiveTimeMode];
+  mEMORY[0x1E6999638] = [MEMORY[0x1E6999638] sharedLayoutController];
+  OUTLINED_FUNCTION_31(mEMORY[0x1E6999638], v25);
+  OUTLINED_FUNCTION_31(mEMORY[0x1E6999638], v26);
   MaxY = CGRectGetMaxY(v43);
   v28 = OUTLINED_FUNCTION_30();
-  v30 = ((v21 - 1) <= 1 || v21 == 4) && v23 == 1;
+  v30 = ((type - 1) <= 1 || type == 4) && adaptiveTimeMode == 1;
   if (v30 && IsValidSalientContentRectangle)
   {
     v44.origin.x = v10;
@@ -3337,21 +3337,21 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
   }
 
   v37 = MaxY;
-  [v4 preferredTimeMaxYForOrientation:v6];
+  [titleStyleConfiguration preferredTimeMaxYForOrientation:v6];
   v33 = v32;
-  if (v23 == 1 && v32 > 0.0)
+  if (adaptiveTimeMode == 1 && v32 > 0.0)
   {
     goto LABEL_30;
   }
 
-  if (v23 == 2)
+  if (adaptiveTimeMode == 2)
   {
     goto LABEL_28;
   }
 
-  if (v23 == 4)
+  if (adaptiveTimeMode == 4)
   {
-    if ([v4 isAdaptiveTimeHeightUserConfigured])
+    if ([titleStyleConfiguration isAdaptiveTimeHeightUserConfigured])
     {
       goto LABEL_30;
     }
@@ -3362,7 +3362,7 @@ void __68__PRRenderer__registerForAmbientPresentationTraitChangesIfNecessary__bl
   v34 = 0.0;
   if (BSFloatIsZero())
   {
-    if (v23 == 1)
+    if (adaptiveTimeMode == 1)
     {
 LABEL_28:
       if (IsValidSalientContentRectangle)
@@ -3398,76 +3398,76 @@ LABEL_34:
 
 - (uint64_t)_isRenderingAdaptiveTime
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (![v2 showsHeaderElements] || (objc_msgSend(v2, "isAdaptiveTimeDisabled") & 1) != 0)
     {
       goto LABEL_4;
     }
 
-    v4 = [*(v1 + 48) adaptiveTimeMode];
-    switch(v4)
+    adaptiveTimeMode = [*(selfCopy + 48) adaptiveTimeMode];
+    switch(adaptiveTimeMode)
     {
       case 1:
-        v1 = 1;
+        selfCopy = 1;
         goto LABEL_5;
       case 4:
-        v7 = [*(v1 + 264) _FBSScene];
-        v6 = [v7 clientSettings];
+        _FBSScene = [*(selfCopy + 264) _FBSScene];
+        clientSettings = [_FBSScene clientSettings];
 
-        v1 = [v6 pui_isAdaptiveTimeHeightUserConfigured] ^ 1;
+        selfCopy = [clientSettings pui_isAdaptiveTimeHeightUserConfigured] ^ 1;
         break;
       case 2:
-        v5 = [*(v1 + 264) _FBSScene];
-        v6 = [v5 settings];
+        _FBSScene2 = [*(selfCopy + 264) _FBSScene];
+        clientSettings = [_FBSScene2 settings];
 
-        if ([v6 pui_isComplicationRowConfigured])
+        if ([clientSettings pui_isComplicationRowConfigured])
         {
-          v1 = [v6 pui_isComplicationRowAtBottom];
+          selfCopy = [clientSettings pui_isComplicationRowAtBottom];
         }
 
         else
         {
-          v1 = 1;
+          selfCopy = 1;
         }
 
         break;
       default:
 LABEL_4:
-        v1 = 0;
+        selfCopy = 0;
 LABEL_5:
 
-        return v1;
+        return selfCopy;
     }
 
     goto LABEL_5;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_issueEnvironmentOverrides:(void *)a3 transition:
+- (void)_issueEnvironmentOverrides:(void *)overrides transition:
 {
   v70 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1 && ([*(a1 + 112) isEqual:v6] & 1) == 0)
+  overridesCopy = overrides;
+  if (self && ([*(self + 112) isEqual:v6] & 1) == 0)
   {
-    v55 = (a1 + 112);
+    v55 = (self + 112);
     v56 = a2;
-    v58 = v7;
-    v57 = [*(a1 + 16) environmentSnapshot];
+    v58 = overridesCopy;
+    environmentSnapshot = [*(self + 16) environmentSnapshot];
     context = objc_autoreleasePoolPush();
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [*(a1 + 112) allKeys];
-    v10 = [v8 setWithArray:v9];
+    allKeys = [*(self + 112) allKeys];
+    v10 = [v8 setWithArray:allKeys];
 
     v11 = MEMORY[0x1E695DFD8];
     v59 = v6;
-    v12 = [v6 allKeys];
-    v13 = [v11 setWithArray:v12];
+    allKeys2 = [v6 allKeys];
+    v13 = [v11 setWithArray:allKeys2];
 
     v66 = 0u;
     v67 = 0u;
@@ -3494,7 +3494,7 @@ LABEL_5:
             v20 = OUTLINED_FUNCTION_15(v19);
             if (v20)
             {
-              OUTLINED_FUNCTION_13(v20, v21, v22, v23, v24, v25, v26, v27, context, v55, v56, v57, v58, v59, v28);
+              OUTLINED_FUNCTION_13(v20, v21, v22, v23, v24, v25, v26, v27, context, v55, v56, environmentSnapshot, v58, v59, v28);
               OUTLINED_FUNCTION_8_0();
               _os_log_impl(v29, v30, v31, "<PRRenderer %p> Environment override added: %{public}@", v32, 0x16u);
             }
@@ -3532,7 +3532,7 @@ LABEL_5:
             v39 = OUTLINED_FUNCTION_15(v38);
             if (v39)
             {
-              OUTLINED_FUNCTION_13(v39, v40, v41, v42, v43, v44, v45, v46, context, v55, v56, v57, v58, v59, v47);
+              OUTLINED_FUNCTION_13(v39, v40, v41, v42, v43, v44, v45, v46, context, v55, v56, environmentSnapshot, v58, v59, v47);
               OUTLINED_FUNCTION_8_0();
               _os_log_impl(v48, v49, v50, "<PRRenderer %p> Environment override removed: %{public}@", v51, 0x16u);
             }
@@ -3547,12 +3547,12 @@ LABEL_5:
 
     objc_autoreleasePoolPop(context);
     objc_storeStrong(v55, v56);
-    [*(a1 + 16) setOverrides:*(a1 + 112)];
-    v52 = [*(a1 + 16) environmentSnapshot];
-    v7 = v58;
-    v53 = [v58 animationSettings];
-    [(PRRenderer *)a1 _updateViewsIfNeededFrom:v57 to:v52 headerAnimationSettings:v53 animateBacklightChanges:v53 != 0];
-    [(PRRenderer *)a1 _reportUpdatedEnvironmentWithTransition:v58];
+    [*(self + 16) setOverrides:*(self + 112)];
+    environmentSnapshot2 = [*(self + 16) environmentSnapshot];
+    overridesCopy = v58;
+    animationSettings = [v58 animationSettings];
+    [(PRRenderer *)self _updateViewsIfNeededFrom:environmentSnapshot to:environmentSnapshot2 headerAnimationSettings:animationSettings animateBacklightChanges:animationSettings != 0];
+    [(PRRenderer *)self _reportUpdatedEnvironmentWithTransition:v58];
 
     v6 = v59;
   }
@@ -3577,19 +3577,19 @@ LABEL_5:
   return result;
 }
 
-- (void)_reportUpdatedEnvironmentWithTransition:(uint64_t)a1
+- (void)_reportUpdatedEnvironmentWithTransition:(uint64_t)transition
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (transition)
   {
-    if (*(a1 + 192) >= 1)
+    if (*(transition + 192) >= 1)
     {
       v6 = PRLogRendering();
       if (OUTLINED_FUNCTION_33(v6))
       {
         *buf = 134217984;
-        v34 = a1;
+        transitionCopy2 = transition;
         OUTLINED_FUNCTION_23();
         _os_log_impl(v7, v8, v9, v10, v11, 0xCu);
       }
@@ -3604,31 +3604,31 @@ LABEL_5:
 
     OUTLINED_FUNCTION_27();
     kdebug_trace();
-    v13 = [*(a1 + 232) acquireForReason:@"environment update"];
-    v14 = [v5 animationSettings];
-    if (v14)
+    v13 = [*(transition + 232) acquireForReason:@"environment update"];
+    animationSettings = [v5 animationSettings];
+    if (animationSettings)
     {
       v15 = PRLogRendering();
       if (OUTLINED_FUNCTION_32(v15))
       {
         *buf = 134218242;
-        v34 = a1;
+        transitionCopy2 = transition;
         v35 = 2114;
-        v36 = v14;
+        v36 = animationSettings;
         OUTLINED_FUNCTION_10_0();
         _os_log_impl(v16, v17, v18, v19, v20, v21);
       }
     }
 
-    v22 = *(a1 + 224);
+    v22 = *(transition + 224);
     if (v22)
     {
-      [*(a1 + 16) deviceMotionUpdateInterval];
+      [*(transition + 16) deviceMotionUpdateInterval];
       [v22 setDeviceMotionUpdateInterval:?];
     }
 
-    v23 = [*(a1 + 16) environmentSnapshot];
-    [*(a1 + 8) renderer:a1 didUpdateEnvironment:v23 withTransition:v5];
+    environmentSnapshot = [*(transition + 16) environmentSnapshot];
+    [*(transition + 8) renderer:transition didUpdateEnvironment:environmentSnapshot withTransition:v5];
     v24 = dispatch_time(0, 330000000);
     v25 = dispatch_get_global_queue(21, 0);
     OUTLINED_FUNCTION_0_14();
@@ -3648,15 +3648,15 @@ LABEL_5:
 
     OUTLINED_FUNCTION_27();
     kdebug_trace();
-    [a1 didUpdateEnvironment:v23];
+    [transition didUpdateEnvironment:environmentSnapshot];
   }
 }
 
 - (id)extensionBundleURL
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8))
+    if (*(self + 8))
     {
       v1 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     }
@@ -3666,39 +3666,39 @@ LABEL_5:
       v1 = 0;
     }
 
-    v2 = [v1 bundleURL];
+    bundleURL = [v1 bundleURL];
   }
 
   else
   {
-    v2 = 0;
+    bundleURL = 0;
   }
 
-  return v2;
+  return bundleURL;
 }
 
-- (void)_updateViewsIfNeededFrom:(void *)a3 to:(void *)a4 headerAnimationSettings:(int)a5 animateBacklightChanges:
+- (void)_updateViewsIfNeededFrom:(void *)from to:(void *)to headerAnimationSettings:(int)settings animateBacklightChanges:
 {
-  if (a1)
+  if (self)
   {
-    v9 = a4;
-    v10 = a3;
+    toCopy = to;
+    fromCopy = from;
     v20 = a2;
-    [(PRRenderer *)a1 _updateOrientationIfNeededFrom:v20 to:v10];
+    [(PRRenderer *)self _updateOrientationIfNeededFrom:v20 to:fromCopy];
     v11 = OUTLINED_FUNCTION_17();
     [(PRRenderer *)v11 _updateDepthEffectIfNeededFrom:v12 to:v13];
     v14 = OUTLINED_FUNCTION_17();
-    [(PRRenderer *)v14 _updateHeaderAndComplicationsFrom:v15 to:v16 animationSettings:v9];
+    [(PRRenderer *)v14 _updateHeaderAndComplicationsFrom:v15 to:v16 animationSettings:toCopy];
 
     v17 = OUTLINED_FUNCTION_17();
-    [(PRRenderer *)v17 _updateBacklightLuminanceFrom:v18 to:v19 animateChanges:a5];
+    [(PRRenderer *)v17 _updateBacklightLuminanceFrom:v18 to:v19 animateChanges:settings];
   }
 }
 
 - (void)_updateContentSize
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v3 = *MEMORY[0x1E695F060];
     v2 = *(MEMORY[0x1E695F060] + 8);
@@ -3706,8 +3706,8 @@ LABEL_5:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [*(a1 + 40) allValues];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [*(self + 40) allValues];
+    v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3719,22 +3719,22 @@ LABEL_5:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          [(PRRenderer *)a1 _collectContentSizeForView:?];
+          [(PRRenderer *)self _collectContentSizeForView:?];
           OUTLINED_FUNCTION_26();
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [*(a1 + 264) _FBSScene];
+    _FBSScene = [*(self + 264) _FBSScene];
     OUTLINED_FUNCTION_5();
     v11[1] = 3221225472;
     v11[2] = __32__PRRenderer__updateContentSize__block_invoke;
@@ -3745,26 +3745,26 @@ LABEL_5:
   }
 }
 
-- (void)_configureProminentDisplay:(uint64_t)a1
+- (void)_configureProminentDisplay:(uint64_t)display
 {
   v102[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (display)
   {
-    v3 = *(a1 + 264);
+    v3 = *(display + 264);
     v4 = a2;
-    v5 = [v3 _FBSScene];
-    v6 = [v5 settings];
+    _FBSScene = [v3 _FBSScene];
+    settings = [_FBSScene settings];
 
-    v7 = [v6 pui_isInlineComplicationConfigured];
-    v8 = [v6 pui_isComplicationRowConfigured];
-    v9 = [v6 pui_isComplicationSidebarConfigured];
-    v10 = *(a1 + 16);
-    v11 = [v10 showsHeaderElements];
-    v12 = [v10 showsComplications];
-    v13 = [v10 deviceOrientation];
-    if ((v13 - 1) < 2)
+    pui_isInlineComplicationConfigured = [settings pui_isInlineComplicationConfigured];
+    pui_isComplicationRowConfigured = [settings pui_isComplicationRowConfigured];
+    pui_isComplicationSidebarConfigured = [settings pui_isComplicationSidebarConfigured];
+    v10 = *(display + 16);
+    showsHeaderElements = [v10 showsHeaderElements];
+    showsComplications = [v10 showsComplications];
+    deviceOrientation = [v10 deviceOrientation];
+    if ((deviceOrientation - 1) < 2)
     {
-      v14 = v8;
+      v14 = pui_isComplicationRowConfigured;
     }
 
     else
@@ -3773,18 +3773,18 @@ LABEL_5:
     }
 
     v99 = v14;
-    if ((v13 - 3) >= 2)
+    if ((deviceOrientation - 3) >= 2)
     {
-      v9 = 0;
+      pui_isComplicationSidebarConfigured = 0;
     }
 
-    if (v11)
+    if (showsHeaderElements)
     {
-      v15 = [a1 timePreviewProminentDisplayViewController];
+      timePreviewProminentDisplayViewController = [display timePreviewProminentDisplayViewController];
 
-      if (!v15)
+      if (!timePreviewProminentDisplayViewController)
       {
-        v75 = *(a1 + 8);
+        v75 = *(display + 8);
         if (v75)
         {
           v16 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -3795,33 +3795,33 @@ LABEL_5:
           v16 = 0;
         }
 
-        v77 = v9;
-        v17 = [v10 targetConfiguredProperties];
-        v18 = [v17 titleStyleConfiguration];
+        v77 = pui_isComplicationSidebarConfigured;
+        targetConfiguredProperties = [v10 targetConfiguredProperties];
+        titleStyleConfiguration = [targetConfiguredProperties titleStyleConfiguration];
 
         [v10 role];
         v74 = v85 = v16;
-        v83 = [v18 effectiveTimeFontWithExtensionBundle:v16 forRole:?];
-        v87 = v18;
-        v81 = [v18 effectiveTitleColor];
-        v19 = [*(a1 + 16) traitCollection];
-        v97 = v6;
-        v89 = v11;
-        if ([v19 _backlightLuminance] == 1)
+        v83 = [titleStyleConfiguration effectiveTimeFontWithExtensionBundle:v16 forRole:?];
+        v87 = titleStyleConfiguration;
+        effectiveTitleColor = [titleStyleConfiguration effectiveTitleColor];
+        traitCollection = [*(display + 16) traitCollection];
+        v97 = settings;
+        v89 = showsHeaderElements;
+        if ([traitCollection _backlightLuminance] == 1)
         {
           v20 = 1;
         }
 
         else
         {
-          v21 = [*(a1 + 16) traitCollection];
-          v20 = [v21 _backlightLuminance] == 0;
+          traitCollection2 = [*(display + 16) traitCollection];
+          v20 = [traitCollection2 _backlightLuminance] == 0;
         }
 
         v70 = v20;
         v22 = [v87 vibrancyConfigurationWithExtensionBundle:v16 luminanceReduced:v20];
-        v79 = v7;
-        if (v7 & 1 | ((v12 & 1) == 0))
+        v79 = pui_isInlineComplicationConfigured;
+        if (pui_isInlineComplicationConfigured & 1 | ((showsComplications & 1) == 0))
         {
           v23 = -3;
         }
@@ -3832,170 +3832,170 @@ LABEL_5:
         }
 
         v24 = objc_alloc(MEMORY[0x1E6999630]);
-        [v81 color];
+        [effectiveTitleColor color];
         objc_claimAutoreleasedReturnValue();
-        v25 = [OUTLINED_FUNCTION_12() initWithElements:v23 baseFont:v83 date:0 textColor:v6];
+        v25 = [OUTLINED_FUNCTION_12() initWithElements:v23 baseFont:v83 date:0 textColor:settings];
 
         [v25 setBackgroundType:{objc_msgSend(v22, "backgroundType")}];
         [v25 setEffectType:{objc_msgSend(v22, "effectType")}];
         v26 = v22;
-        v27 = [v22 alternativeVibrancyEffectLUT];
+        alternativeVibrancyEffectLUT = [v22 alternativeVibrancyEffectLUT];
         v28 = objc_opt_respondsToSelector();
-        v29 = [v27 lutIdentifier];
-        v73 = v27;
-        v30 = [v27 bundleURL];
+        lutIdentifier = [alternativeVibrancyEffectLUT lutIdentifier];
+        v73 = alternativeVibrancyEffectLUT;
+        bundleURL = [alternativeVibrancyEffectLUT bundleURL];
         v93 = v10;
         v95 = v4;
-        v91 = v12;
+        v91 = showsComplications;
         if (v28)
         {
-          [v25 setAlternativeVibrancyEffectLUTIdentifier:v29 alternativeVibrancyEffectLUTBundleURL:v30 luminanceReduced:v70];
+          [v25 setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL luminanceReduced:v70];
         }
 
         else
         {
-          [v25 setAlternativeVibrancyEffectLUTIdentifier:v29 alternativeVibrancyEffectLUTBundleURL:v30];
+          [v25 setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL];
         }
 
         v72 = v26;
-        v31 = [v26 groupName];
-        [v25 setGroupName:v31];
+        groupName = [v26 groupName];
+        [v25 setGroupName:groupName];
 
         [v25 pr_setAlternateDateEnabled:{objc_msgSend(v87, "isAlternateDateEnabled")}];
-        v71 = [v87 timeNumberingSystem];
-        [v25 setNumberingSystem:v71];
-        v32 = [(PRRenderer *)a1 _viewForLevel:?];
-        v33 = [v25 view];
-        [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v32 addSubview:v33];
+        timeNumberingSystem = [v87 timeNumberingSystem];
+        [v25 setNumberingSystem:timeNumberingSystem];
+        v32 = [(PRRenderer *)display _viewForLevel:?];
+        view = [v25 view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v32 addSubview:view];
         v64 = MEMORY[0x1E696ACD8];
-        v69 = [v33 leadingAnchor];
-        v68 = [v32 leadingAnchor];
-        v67 = [v69 constraintEqualToAnchor:v68];
+        leadingAnchor = [view leadingAnchor];
+        leadingAnchor2 = [v32 leadingAnchor];
+        v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v102[0] = v67;
-        v66 = [v33 trailingAnchor];
-        v65 = [v32 trailingAnchor];
-        v63 = [v66 constraintEqualToAnchor:v65];
+        trailingAnchor = [view trailingAnchor];
+        trailingAnchor2 = [v32 trailingAnchor];
+        v63 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v102[1] = v63;
-        v62 = [v33 topAnchor];
-        v34 = [v32 topAnchor];
-        v35 = [v62 constraintEqualToAnchor:v34];
+        topAnchor = [view topAnchor];
+        topAnchor2 = [v32 topAnchor];
+        v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v102[2] = v35;
-        v36 = [v33 bottomAnchor];
-        v37 = [v32 bottomAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37];
+        bottomAnchor = [view bottomAnchor];
+        bottomAnchor2 = [v32 bottomAnchor];
+        v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v102[3] = v38;
         v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:4];
         [v64 activateConstraints:v39];
 
-        v40 = [v87 titleContentStyle];
-        [v25 setTitleContentStyle:v40];
+        titleContentStyle = [v87 titleContentStyle];
+        [v25 setTitleContentStyle:titleContentStyle];
 
-        [a1 setTimePreviewProminentDisplayViewController:v25];
+        [display setTimePreviewProminentDisplayViewController:v25];
         v4 = v95;
-        v6 = v97;
+        settings = v97;
         v10 = v93;
-        v11 = v89;
-        v12 = v91;
-        v7 = v79;
-        v9 = v77;
+        showsHeaderElements = v89;
+        showsComplications = v91;
+        pui_isInlineComplicationConfigured = v79;
+        pui_isComplicationSidebarConfigured = v77;
       }
     }
 
-    if ((v12 & (v7 | v99 | v9)) == 1)
+    if ((showsComplications & (pui_isInlineComplicationConfigured | v99 | pui_isComplicationSidebarConfigured)) == 1)
     {
-      v41 = [a1 complicationsPreviewProminentDisplayViewController];
+      complicationsPreviewProminentDisplayViewController = [display complicationsPreviewProminentDisplayViewController];
 
-      if (!v41)
+      if (!complicationsPreviewProminentDisplayViewController)
       {
         v42 = [objc_alloc(MEMORY[0x1E6999630]) initWithElements:28 baseFont:0 date:0 textColor:0];
         if (v99)
         {
-          v43 = [(PRRenderer *)a1 _makeGraphicComplicationPreviewScene];
-          v44 = *(a1 + 128);
-          *(a1 + 128) = v43;
+          _makeGraphicComplicationPreviewScene = [(PRRenderer *)display _makeGraphicComplicationPreviewScene];
+          v44 = *(display + 128);
+          *(display + 128) = _makeGraphicComplicationPreviewScene;
 
-          [*(a1 + 128) setDelegate:a1];
-          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(a1 + 128)];
+          [*(display + 128) setDelegate:display];
+          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(display + 128)];
           [OUTLINED_FUNCTION_18() setComplicationContainerViewController:?];
         }
 
-        if (v9)
+        if (pui_isComplicationSidebarConfigured)
         {
-          v45 = [(PRRenderer *)a1 _makeSidebarComplicationPreviewScene];
-          v46 = *(a1 + 144);
-          *(a1 + 144) = v45;
+          _makeSidebarComplicationPreviewScene = [(PRRenderer *)display _makeSidebarComplicationPreviewScene];
+          v46 = *(display + 144);
+          *(display + 144) = _makeSidebarComplicationPreviewScene;
 
-          [*(a1 + 144) setDelegate:a1];
-          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(a1 + 144)];
+          [*(display + 144) setDelegate:display];
+          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(display + 144)];
           [OUTLINED_FUNCTION_18() setComplicationSidebarViewController:?];
         }
 
-        v90 = v11;
-        v92 = v12;
+        v90 = showsHeaderElements;
+        v92 = showsComplications;
         v94 = v10;
         v96 = v4;
-        v98 = v6;
-        if (v7)
+        v98 = settings;
+        if (pui_isInlineComplicationConfigured)
         {
-          v47 = [(PRRenderer *)a1 _makeInlineComplicationPreviewScene];
-          v48 = *(a1 + 160);
-          *(a1 + 160) = v47;
+          _makeInlineComplicationPreviewScene = [(PRRenderer *)display _makeInlineComplicationPreviewScene];
+          v48 = *(display + 160);
+          *(display + 160) = _makeInlineComplicationPreviewScene;
 
-          [*(a1 + 160) setDelegate:a1];
-          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(a1 + 160)];
+          [*(display + 160) setDelegate:display];
+          [[PRComplicationsSnapshotSceneHostViewController alloc] initWithScene:*(display + 160)];
           [OUTLINED_FUNCTION_18() setSubtitleComplicationViewController:?];
         }
 
-        v49 = [(PRRenderer *)a1 _viewForLevel:?];
-        v50 = [v42 view];
-        [v50 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v49 addSubview:v50];
+        v49 = [(PRRenderer *)display _viewForLevel:?];
+        view2 = [v42 view];
+        [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v49 addSubview:view2];
         v80 = MEMORY[0x1E696ACD8];
-        v100 = [v50 leadingAnchor];
-        v88 = [v49 leadingAnchor];
-        v86 = [v100 constraintEqualToAnchor:v88];
+        leadingAnchor3 = [view2 leadingAnchor];
+        leadingAnchor4 = [v49 leadingAnchor];
+        v86 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v101[0] = v86;
-        v84 = [v50 trailingAnchor];
-        v82 = [v49 trailingAnchor];
-        v78 = [v84 constraintEqualToAnchor:v82];
+        trailingAnchor3 = [view2 trailingAnchor];
+        trailingAnchor4 = [v49 trailingAnchor];
+        v78 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v101[1] = v78;
-        v51 = [v50 topAnchor];
-        v52 = [v49 topAnchor];
-        v53 = [v51 constraintEqualToAnchor:v52];
+        topAnchor3 = [view2 topAnchor];
+        topAnchor4 = [v49 topAnchor];
+        v53 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v101[2] = v53;
-        v54 = [v50 bottomAnchor];
+        bottomAnchor3 = [view2 bottomAnchor];
         [v49 bottomAnchor];
         v55 = v76 = v42;
-        v56 = [v54 constraintEqualToAnchor:v55];
+        v56 = [bottomAnchor3 constraintEqualToAnchor:v55];
         v101[3] = v56;
         v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:4];
         [v80 activateConstraints:v57];
 
-        [a1 setComplicationsPreviewProminentDisplayViewController:v76];
+        [display setComplicationsPreviewProminentDisplayViewController:v76];
         v4 = v96;
-        v6 = v98;
+        settings = v98;
         v10 = v94;
-        v11 = v90;
-        v12 = v92;
+        showsHeaderElements = v90;
+        showsComplications = v92;
       }
     }
 
-    v58 = [a1 timePreviewProminentDisplayViewController];
-    v59 = [v58 view];
-    [v59 setHidden:v11 ^ 1u];
+    timePreviewProminentDisplayViewController2 = [display timePreviewProminentDisplayViewController];
+    view3 = [timePreviewProminentDisplayViewController2 view];
+    [view3 setHidden:showsHeaderElements ^ 1u];
 
-    v60 = [a1 complicationsPreviewProminentDisplayViewController];
-    v61 = [v60 view];
-    [v61 setHidden:v12 ^ 1u];
+    complicationsPreviewProminentDisplayViewController2 = [display complicationsPreviewProminentDisplayViewController];
+    view4 = [complicationsPreviewProminentDisplayViewController2 view];
+    [view4 setHidden:showsComplications ^ 1u];
 
-    [(PRRenderer *)a1 _updateProminentViewSizingAndTransforms:v4];
+    [(PRRenderer *)display _updateProminentViewSizingAndTransforms:v4];
   }
 }
 
 - (void)_cleanupAfterNotifyingDelegateOfInvalidation
 {
-  if (a1)
+  if (self)
   {
     v3 = PRLogRendering();
     if (OUTLINED_FUNCTION_15(v3))
@@ -4005,8 +4005,8 @@ LABEL_5:
     }
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [*(a1 + 40) allValues];
-    v12 = [v11 copy];
+    allValues = [*(self + 40) allValues];
+    v12 = [allValues copy];
 
     v21 = OUTLINED_FUNCTION_29(v13, v14, v15, v16, v17, v18, v19, v20, 0, 0, 0, 0, 0, 0, 0, 0, v53);
     if (v21)
@@ -4023,41 +4023,41 @@ LABEL_5:
             objc_enumerationMutation(v12);
           }
 
-          v26 = [*(v46 + 8 * i) invalidate];
+          invalidate = [*(v46 + 8 * i) invalidate];
         }
 
-        v22 = OUTLINED_FUNCTION_29(v26, v27, v28, v29, v30, v31, v32, v33, v45, v46, v47, v48, v49, v50, v51, v52, v54);
+        v22 = OUTLINED_FUNCTION_29(invalidate, v27, v28, v29, v30, v31, v32, v33, v45, v46, v47, v48, v49, v50, v51, v52, v54);
       }
 
       while (v22);
     }
 
-    [*(a1 + 96) invalidate];
-    [*(a1 + 128) invalidate];
-    [*(a1 + 144) invalidate];
-    [*(a1 + 160) invalidate];
-    [*(a1 + 56) invalidate];
-    [*(a1 + 176) invalidate];
-    [*(a1 + 64) invalidate];
-    [*(a1 + 40) removeAllObjects];
-    if (*(a1 + 200))
+    [*(self + 96) invalidate];
+    [*(self + 128) invalidate];
+    [*(self + 144) invalidate];
+    [*(self + 160) invalidate];
+    [*(self + 56) invalidate];
+    [*(self + 176) invalidate];
+    [*(self + 64) invalidate];
+    [*(self + 40) removeAllObjects];
+    if (*(self + 200))
     {
-      [*(a1 + 264) unregisterForTraitChanges:?];
+      [*(self + 264) unregisterForTraitChanges:?];
     }
 
-    v34 = [*(a1 + 264) _FBSScene];
-    v35 = [v34 pui_captureController];
-    [v35 invalidate];
+    _FBSScene = [*(self + 264) _FBSScene];
+    pui_captureController = [_FBSScene pui_captureController];
+    [pui_captureController invalidate];
 
-    [*(a1 + 264) setDelegate:0];
-    v36 = *(a1 + 264);
-    *(a1 + 264) = 0;
+    [*(self + 264) setDelegate:0];
+    v36 = *(self + 264);
+    *(self + 264) = 0;
 
-    v37 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v37 = *(self + 8);
+    *(self + 8) = 0;
 
-    [__knownRenderers removeObject:a1];
-    [*(a1 + 104) invalidate];
+    [__knownRenderers removeObject:self];
+    [*(self + 104) invalidate];
     objc_autoreleasePoolPop(v10);
     v38 = PRLogRendering();
     if (OUTLINED_FUNCTION_15(v38))
@@ -4068,10 +4068,10 @@ LABEL_5:
   }
 }
 
-- (void)_validateCleanupResultedInThingsCleanedUpWithPrememoryUsage:(uint64_t)a1
+- (void)_validateCleanupResultedInThingsCleanedUpWithPrememoryUsage:(uint64_t)usage
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (usage)
   {
     v4 = PRGetMemoryUsageForCurrentProcess();
     v5 = PRGetMaximumMemoryUsageForCurrentProcess();
@@ -4187,15 +4187,15 @@ void __37__PRRenderer__issueSceneInvalidated___block_invoke_92(uint64_t a1)
   BSDispatchMain();
 }
 
-- (id)_actionsAfterHandlingAppIntentsHandshakeActionsInActions:(void *)a1
+- (id)_actionsAfterHandlingAppIntentsHandshakeActionsInActions:(void *)actions
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v14 = v3;
-  if (a1)
+  if (actions)
   {
     v4 = v3;
-    a1 = [v3 mutableCopy];
+    actions = [v3 mutableCopy];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -4221,12 +4221,12 @@ void __37__PRRenderer__issueSceneInvalidated___block_invoke_92(uint64_t a1)
           {
             if ([v10 isValid])
             {
-              v11 = [MEMORY[0x1E695A868] sharedListener];
-              v12 = [v11 listenerEndpoint];
-              [v10 respondWithListenerEndpoint:v12 error:0];
+              mEMORY[0x1E695A868] = [MEMORY[0x1E695A868] sharedListener];
+              listenerEndpoint = [mEMORY[0x1E695A868] listenerEndpoint];
+              [v10 respondWithListenerEndpoint:listenerEndpoint error:0];
             }
 
-            [a1 removeObject:v10];
+            [actions removeObject:v10];
           }
         }
 
@@ -4237,7 +4237,7 @@ void __37__PRRenderer__issueSceneInvalidated___block_invoke_92(uint64_t a1)
     }
   }
 
-  return a1;
+  return actions;
 }
 
 void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke_2_116(uint64_t a1)
@@ -4290,14 +4290,14 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
   [(PRRenderer *)*(a1 + 32) _reapUnusedViews];
 }
 
-- (void)_updateDepthEffectIfNeededFrom:(void *)a3 to:
+- (void)_updateDepthEffectIfNeededFrom:(void *)from to:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  fromCopy = from;
+  if (self)
   {
-    isDepthEffectEffectively = [(PRRenderer *)a1 _isDepthEffectEffectivelyDisabled];
-    if (*(a1 + 208) != isDepthEffectEffectively)
+    isDepthEffectEffectively = [(PRRenderer *)self _isDepthEffectEffectivelyDisabled];
+    if (*(self + 208) != isDepthEffectEffectively)
     {
       v7 = isDepthEffectEffectively;
       if (isDepthEffectEffectively)
@@ -4310,7 +4310,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         v8 = 1000;
       }
 
-      if (*(a1 + 208))
+      if (*(self + 208))
       {
         v9 = -500;
       }
@@ -4320,73 +4320,73 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         v9 = 1000;
       }
 
-      [(PRRenderer *)a1 _moveViewForLevel:v8 toLevel:v9];
-      *(a1 + 208) = v7;
+      [(PRRenderer *)self _moveViewForLevel:v8 toLevel:v9];
+      *(self + 208) = v7;
     }
   }
 }
 
-- (void)_updateHeaderAndComplicationsFrom:(void *)a3 to:(void *)a4 animationSettings:
+- (void)_updateHeaderAndComplicationsFrom:(void *)from to:(void *)to animationSettings:
 {
   v16 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  fromCopy = from;
+  toCopy = to;
+  if (self)
   {
-    v9 = [v16 isSnapshot];
-    v10 = [v7 isSnapshot];
-    v11 = [v16 showsHeaderElements];
-    v12 = [v7 showsHeaderElements];
-    v13 = [v16 showsComplications];
-    v14 = [v7 showsComplications];
+    isSnapshot = [v16 isSnapshot];
+    isSnapshot2 = [fromCopy isSnapshot];
+    showsHeaderElements = [v16 showsHeaderElements];
+    showsHeaderElements2 = [fromCopy showsHeaderElements];
+    showsComplications = [v16 showsComplications];
+    showsComplications2 = [fromCopy showsComplications];
     [v16 salientContentRectangle];
     OUTLINED_FUNCTION_20();
-    [v7 salientContentRectangle];
+    [fromCopy salientContentRectangle];
     v18.origin.x = OUTLINED_FUNCTION_2_2();
     v15 = CGRectEqualToRect(v18, v19);
-    if (v11 != v12 || ((v13 ^ v14) & 1) != 0 || ((v9 ^ v10) & 1) != 0 || !v15)
+    if (showsHeaderElements != showsHeaderElements2 || ((showsComplications ^ showsComplications2) & 1) != 0 || ((isSnapshot ^ isSnapshot2) & 1) != 0 || !v15)
     {
-      [(PRRenderer *)a1 _configureProminentDisplay:v8];
+      [(PRRenderer *)self _configureProminentDisplay:toCopy];
     }
   }
 }
 
-- (void)_updateBacklightLuminanceFrom:(void *)a3 to:(int)a4 animateChanges:
+- (void)_updateBacklightLuminanceFrom:(void *)from to:(int)to animateChanges:
 {
   v54 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  fromCopy = from;
+  v9 = fromCopy;
+  if (self)
   {
-    v10 = [v8 luminance];
-    if ([v7 luminance] != v10)
+    luminance = [fromCopy luminance];
+    if ([v7 luminance] != luminance)
     {
       v11 = PRLogRendering();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         NSStringFromBLSAdjustedLuminance();
         *buf = 134218242;
-        v47 = a1;
+        selfCopy2 = self;
         v48 = 2114;
         v49 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         OUTLINED_FUNCTION_10_0();
         _os_log_impl(v12, v13, v14, v15, v16, v17);
       }
 
-      v18 = [a1[29] acquireForReason:@"LuminanceDidChange"];
-      [a1[10] invalidate];
-      v19 = a1[10];
-      a1[10] = 0;
+      v18 = [self[29] acquireForReason:@"LuminanceDidChange"];
+      [self[10] invalidate];
+      v19 = self[10];
+      self[10] = 0;
 
-      if (v10 == 2)
+      if (luminance == 2)
       {
-        v20 = [a1 extendRenderingSessionForReason:@"ScreenWake"];
-        v21 = a1[10];
-        a1[10] = v20;
+        v20 = [self extendRenderingSessionForReason:@"ScreenWake"];
+        v21 = self[10];
+        self[10] = v20;
 
         v22 = v20;
-        if (a4)
+        if (to)
         {
           v23 = 3000000000;
         }
@@ -4401,7 +4401,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         block[1] = 3221225472;
         block[2] = __62__PRRenderer__updateBacklightLuminanceFrom_to_animateChanges___block_invoke;
         block[3] = &unk_1E7843070;
-        block[4] = a1;
+        block[4] = self;
         v45 = v22;
         v25 = v22;
         dispatch_after(v24, MEMORY[0x1E69E96A0], block);
@@ -4409,15 +4409,15 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
 
       v26 = 0.0;
       v27 = 0.0;
-      if (a4)
+      if (to)
       {
         v28 = +[PRPosterDomain rootSettings];
         [v28 wakeDuration];
         v27 = v29;
       }
 
-      v31 = v27 > 0.0 && v10 != 0;
-      if (v10 == 2)
+      v31 = v27 > 0.0 && luminance != 0;
+      if (luminance == 2)
       {
         v26 = 1.0;
       }
@@ -4425,11 +4425,11 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
       v32 = PRLogRendering();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        [a1[2] backlightProgress];
+        [self[2] backlightProgress];
         v37 = v36;
-        [a1[2] linearBacklightProgress];
+        [self[2] linearBacklightProgress];
         *buf = 134218752;
-        v47 = a1;
+        selfCopy2 = self;
         v48 = 2048;
         v49 = v26;
         v50 = 2048;
@@ -4439,7 +4439,7 @@ void __124__PRRenderer__performActionsForUIScene_withUpdatedFBSScene_settingsDif
         _os_log_debug_impl(&dword_1A8AA7000, v32, OS_LOG_TYPE_DEBUG, "<PRRenderer %p> updating target backlight progress to %.6f; is %.6f; linear is %.6f", buf, 0x2Au);
       }
 
-      [a1[12] setTargetBacklightProgress:v31 animated:v26];
+      [self[12] setTargetBacklightProgress:v31 animated:v26];
       v33 = dispatch_time(0, (v27 * 1000000000.0));
       v34 = dispatch_get_global_queue(21, 0);
       OUTLINED_FUNCTION_0_14();
@@ -4460,11 +4460,11 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
   [(PRRenderer *)WeakRetained _markRotationComplete];
 }
 
-- (void)_updateDepthEffect:(int)a3 wasDepthEffectDisabled:
+- (void)_updateDepthEffect:(int)effect wasDepthEffectDisabled:
 {
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (effect)
     {
       v3 = -500;
     }
@@ -4484,13 +4484,13 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v4 = 1000;
     }
 
-    [(PRRenderer *)a1 _moveViewForLevel:v3 toLevel:v4];
+    [(PRRenderer *)self _moveViewForLevel:v3 toLevel:v4];
   }
 }
 
-- (void)_moveViewForLevel:(uint64_t)a3 toLevel:
+- (void)_moveViewForLevel:(uint64_t)level toLevel:
 {
-  if (a1)
+  if (self)
   {
     BSDispatchQueueAssertMain();
     [MEMORY[0x1E696AD98] numberWithInteger:a2];
@@ -4499,22 +4499,22 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
     if (v11)
     {
-      [v11 setLevel:a3];
-      v7 = *(a1 + 40);
+      [v11 setLevel:level];
+      v7 = *(self + 40);
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
       [v7 removeObjectForKey:v8];
 
-      v9 = *(a1 + 40);
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = *(self + 40);
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:level];
       [v9 setObject:v11 forKey:v10];
     }
   }
 }
 
-- (void)_handleRenderingEventAction:(uint64_t)a1
+- (void)_handleRenderingEventAction:(uint64_t)action
 {
   v4 = a2;
-  if (a1)
+  if (action)
   {
     v5 = PRLogRendering();
     if (OUTLINED_FUNCTION_33(v5))
@@ -4526,30 +4526,30 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       _os_log_impl(v8, v9, v10, v11, v12, 0x20u);
     }
 
-    v13 = [v4 eventType];
-    v14 = [v13 isEqual:@"PRRenderingEventTypeTap"];
+    eventType = [v4 eventType];
+    v14 = [eventType isEqual:@"PRRenderingEventTypeTap"];
 
     v15 = objc_opt_respondsToSelector();
     if (v14 && (v15 & 1) != 0)
     {
-      v16 = *(a1 + 8);
+      v16 = *(action + 8);
       [v4 location];
-      [v16 renderer:a1 didReceiveTapAtPoint:?];
+      [v16 renderer:action didReceiveTapAtPoint:?];
     }
 
     if (objc_opt_respondsToSelector())
     {
       v17 = [[PRRenderingEvent alloc] initWithAction:v4];
-      [*(a1 + 8) renderer:a1 didReceiveEvent:v17];
+      [*(action + 8) renderer:action didReceiveEvent:v17];
     }
   }
 }
 
-- (void)_handleCandidateSnapshotContextsAction:(uint64_t)a1
+- (void)_handleCandidateSnapshotContextsAction:(uint64_t)action
 {
   v41 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (action)
   {
     v5 = PRLogRendering();
     if (OUTLINED_FUNCTION_15(v5))
@@ -4558,7 +4558,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       NSStringFromClass(v6);
       v36 = v35 = 138543874;
       v37 = 2050;
-      v38 = a1;
+      actionCopy = action;
       v39 = 2114;
       v40 = v4;
       OUTLINED_FUNCTION_8_0();
@@ -4567,12 +4567,12 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v4 inflightSnapshotDescriptor];
-      v13 = [v4 candidateSnapshotContexts];
-      v14 = v13;
-      if (v12 && [v13 count])
+      inflightSnapshotDescriptor = [v4 inflightSnapshotDescriptor];
+      candidateSnapshotContexts = [v4 candidateSnapshotContexts];
+      v14 = candidateSnapshotContexts;
+      if (inflightSnapshotDescriptor && [candidateSnapshotContexts count])
       {
-        v15 = [PRPosterSnapshotContext contextFromSnapshotDescriptor:v12];
+        v15 = [PRPosterSnapshotContext contextFromSnapshotDescriptor:inflightSnapshotDescriptor];
         v16 = objc_opt_new();
         v17 = objc_opt_new();
         OUTLINED_FUNCTION_6();
@@ -4589,7 +4589,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
         v21 = [MEMORY[0x1E695DFD8] setWithArray:v19];
         v22 = [(PRPosterSnapshotHandle *)v20 initWithKnownContexts:v21 inflightContext:v15];
 
-        v23 = [*(a1 + 8) renderer:a1 suitableSnapshotContextForSnapshotHandle:v22];
+        v23 = [*(action + 8) renderer:action suitableSnapshotContextForSnapshotHandle:v22];
         if (v23 && ([v18 objectForKey:v23], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v25 = v24;
@@ -4618,16 +4618,16 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
   }
 }
 
-- (void)_handleSnapshotAction:(void *)a3 forScene:
+- (void)_handleSnapshotAction:(void *)action forScene:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  actionCopy = action;
+  if (self)
   {
     v8 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:@"PRRenderer-Snapshot"];
     v9 = v8;
-    if ((*(a1 + 24) & 1) != 0 || *(a1 + 25) == 1)
+    if ((*(self + 24) & 1) != 0 || *(self + 25) == 1)
     {
       v18 = *MEMORY[0x1E696A588];
       v19[0] = @"PRRendererDelegate forbids snapshotting while scene is disconnecting/disconnected";
@@ -4642,7 +4642,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v11 = [v8 URLByAppendingPathComponent:@"Snapshot"];
       v12 = [v11 URLByAppendingPathExtension:@"pks"];
 
-      v13 = [v6 snapshotDescriptor];
+      snapshotDescriptor = [v6 snapshotDescriptor];
       OUTLINED_FUNCTION_5();
       v14[1] = 3221225472;
       v14[2] = __45__PRRenderer__handleSnapshotAction_forScene___block_invoke;
@@ -4651,21 +4651,21 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v16 = v9;
       v17 = v12;
       v3 = v12;
-      [(PRRenderer *)a1 _executeSnapshotForDescriptor:v13 outputURL:v3 scene:v7 completion:v14];
+      [(PRRenderer *)self _executeSnapshotForDescriptor:snapshotDescriptor outputURL:v3 scene:actionCopy completion:v14];
 
       v10 = v15;
     }
   }
 }
 
-- (void)_handleScriptExecutionAction:(void *)a3 forScene:
+- (void)_handleScriptExecutionAction:(void *)action forScene:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  actionCopy = action;
+  if (self)
   {
-    v7 = *(a1 + 216);
+    v7 = *(self + 216);
     v8 = PRLogRendering();
     v9 = v8;
     if (v7)
@@ -4673,15 +4673,15 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v19 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_ERROR, "<PRRenderer %p> bail on setting up script interpreter; one already setup", buf, 0xCu);
       }
 
       v10 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A588];
       v17 = @"A movie is already in progress.";
-      v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-      [v10 pr_errorWithCode:7 userInfo:v11];
+      response = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+      [v10 pr_errorWithCode:7 userInfo:response];
       objc_claimAutoreleasedReturnValue();
       v12 = [OUTLINED_FUNCTION_12() responseForError:v10];
       [v5 sendResponse:v12];
@@ -4692,70 +4692,70 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v19 = a1;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_DEBUG, "<PRRenderer %p> setting up script interpreter", buf, 0xCu);
       }
 
       v13 = [PRPosterScriptInterpreter alloc];
       [v5 posterScript];
       objc_claimAutoreleasedReturnValue();
-      v14 = [OUTLINED_FUNCTION_12() initWithScript:0 delegate:a1];
-      v15 = *(a1 + 216);
-      *(a1 + 216) = v14;
+      v14 = [OUTLINED_FUNCTION_12() initWithScript:0 delegate:self];
+      v15 = *(self + 216);
+      *(self + 216) = v14;
 
-      v11 = [MEMORY[0x1E698E600] response];
-      [v5 sendResponse:v11];
+      response = [MEMORY[0x1E698E600] response];
+      [v5 sendResponse:response];
     }
   }
 }
 
-- (void)_executeSnapshotForDescriptor:(void *)a3 outputURL:(void *)a4 scene:(void *)a5 completion:
+- (void)_executeSnapshotForDescriptor:(void *)descriptor outputURL:(void *)l scene:(void *)scene completion:
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  descriptorCopy = descriptor;
+  lCopy = l;
+  sceneCopy = scene;
+  if (self)
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v14 = objc_opt_respondsToSelector();
     v15 = objc_opt_respondsToSelector();
     v16 = objc_opt_respondsToSelector();
-    if (v14 & 1) == 0 || ([*(a1 + 8) renderer:a1 shouldAttemptSnapshotForHandle:v13])
+    if (v14 & 1) == 0 || ([*(self + 8) renderer:self shouldAttemptSnapshotForHandle:uUID])
     {
       v20 = v15 & 1;
       LODWORD(v24) = v15 & 1;
       HIDWORD(v24) = v16 & 1;
-      v18 = [v11 pui_captureController];
-      [v18 setDelegate:a1];
-      v21 = [*(a1 + 232) acquireForReason:@"snapshotting"];
-      v27 = [v18 enqueueCaptureForDescriptor:v9 outputURL:v10];
+      pui_captureController = [lCopy pui_captureController];
+      [pui_captureController setDelegate:self];
+      v21 = [*(self + 232) acquireForReason:@"snapshotting"];
+      v27 = [pui_captureController enqueueCaptureForDescriptor:v9 outputURL:descriptorCopy];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __71__PRRenderer__executeSnapshotForDescriptor_outputURL_scene_completion___block_invoke;
       v38[3] = &unk_1E7845D30;
       v42 = v20;
-      v38[4] = a1;
-      v39 = v13;
+      v38[4] = self;
+      v39 = uUID;
       v40 = v21;
-      v41 = v12;
+      v41 = sceneCopy;
       OUTLINED_FUNCTION_6();
       v29 = 3221225472;
       v30 = __71__PRRenderer__executeSnapshotForDescriptor_outputURL_scene_completion___block_invoke_2;
       v31 = &unk_1E7845D58;
       v36 = v26;
       v37 = v25;
-      v32 = a1;
+      selfCopy = self;
       v33 = v39;
       v34 = v40;
       v35 = v41;
       v22 = MEMORY[0x1E69C5268];
       v19 = v40;
-      v23 = [v22 mainThreadScheduler];
-      [v27 addSuccessBlock:v38 andFailureBlock:v28 scheduler:v23];
+      mainThreadScheduler = [v22 mainThreadScheduler];
+      [v27 addSuccessBlock:v38 andFailureBlock:v28 scheduler:mainThreadScheduler];
 
-      [(PRRenderer *)a1 _updateHangTracer];
+      [(PRRenderer *)self _updateHangTracer];
     }
 
     else
@@ -4763,29 +4763,29 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v17 = MEMORY[0x1E696ABC0];
       v43 = *MEMORY[0x1E696A588];
       v44[0] = @"PRRendererDelegate forbids snapshotting at this time";
-      v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-      v19 = [v17 pr_errorWithCode:7 userInfo:v18];
-      (*(v12 + 2))(v12, v19);
+      pui_captureController = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
+      v19 = [v17 pr_errorWithCode:7 userInfo:pui_captureController];
+      (*(sceneCopy + 2))(sceneCopy, v19);
     }
   }
 }
 
-- (void)captureController:(id)a3 needsEnvironmentUpdate:(id)a4
+- (void)captureController:(id)controller needsEnvironmentUpdate:(id)update
 {
-  v24 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  updateCopy = update;
   if ([(PRRenderer *)self _isRenderingAdaptiveTime])
   {
-    v7 = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
-    v8 = [v24 scene];
-    v9 = [v8 settings];
-    [v9 pui_salientContentRectangle];
+    _calculateRealizedAdaptiveTimeHeight = [(PRRenderer *)&self->super.isa _calculateRealizedAdaptiveTimeHeight];
+    scene = [controllerCopy scene];
+    settings = [scene settings];
+    [settings pui_salientContentRectangle];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v26.origin.y = v7 + v13;
+    v26.origin.y = _calculateRealizedAdaptiveTimeHeight + v13;
     v26.origin.x = v11;
     v26.size.width = v15;
     v26.size.height = v17;
@@ -4807,107 +4807,107 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
     [v22 setObject:v18 forKeyedSubscript:@"salientContentRectangle"];
     v23 = [v22 copy];
 
-    v6 = v23;
+    updateCopy = v23;
   }
 
-  [(PRRenderer *)self _issueEnvironmentOverrides:v6 transition:0];
+  [(PRRenderer *)self _issueEnvironmentOverrides:updateCopy transition:0];
 }
 
 - (uint64_t)_derivedInterfaceOrientation
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [(PRRenderer *)a1 _rendererDynamicRotationIsActive];
-  v3 = [*(a1 + 264) _FBSScene];
-  v4 = [v3 settings];
-  v5 = v4;
-  if (v2)
+  _rendererDynamicRotationIsActive = [(PRRenderer *)self _rendererDynamicRotationIsActive];
+  _FBSScene = [*(self + 264) _FBSScene];
+  settings = [_FBSScene settings];
+  v5 = settings;
+  if (_rendererDynamicRotationIsActive)
   {
-    v6 = [v4 pui_deviceOrientation];
+    pui_deviceOrientation = [settings pui_deviceOrientation];
   }
 
   else
   {
-    v6 = [v4 interfaceOrientation];
+    pui_deviceOrientation = [settings interfaceOrientation];
   }
 
-  v7 = v6;
+  v7 = pui_deviceOrientation;
 
   return v7;
 }
 
 - (id)_makeGraphicComplicationPreviewScene
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v3 = objc_alloc_init(PRComplicationsSnapshotSceneSpecification);
     v4 = OUTLINED_FUNCTION_19();
-    v2 = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
+    selfCopy = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_makeSidebarComplicationPreviewScene
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v3 = objc_alloc_init(PRSidebarComplicationsSnapshotSceneSpecification);
     v4 = OUTLINED_FUNCTION_19();
-    v2 = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
+    selfCopy = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_makeInlineComplicationPreviewScene
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v3 = objc_alloc_init(PRInlineComplicationSnapshotSceneSpecification);
     v4 = OUTLINED_FUNCTION_19();
-    v2 = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
+    selfCopy = [(PRRenderer *)v4 _makeComplicationPreviewSceneWithSpecification:v5];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_updateProminentViewSizingAndTransforms:(id *)a1
+- (void)_updateProminentViewSizingAndTransforms:(id *)transforms
 {
   v99 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (transforms)
   {
-    v5 = a1[2];
+    v5 = transforms[2];
     if ([v5 showsHeaderElements])
     {
-      v6 = [v5 context];
-      HIDWORD(v83) = [v6 isSnapshot];
+      context = [v5 context];
+      HIDWORD(v83) = [context isSnapshot];
 
-      v7 = [v5 context];
-      LODWORD(v83) = [v7 isPreview];
+      context2 = [v5 context];
+      LODWORD(v83) = [context2 isPreview];
 
-      v8 = [v5 context];
-      HIDWORD(v81) = [v8 scriptIsExecuting];
+      context3 = [v5 context];
+      HIDWORD(v81) = [context3 scriptIsExecuting];
 
-      v9 = [v5 deviceOrientation];
-      v10 = [(PRRenderer *)a1 _viewForLevel:?];
-      v11 = [a1 timePreviewProminentDisplayViewController];
-      v12 = [v11 view];
+      deviceOrientation = [v5 deviceOrientation];
+      v10 = [(PRRenderer *)transforms _viewForLevel:?];
+      timePreviewProminentDisplayViewController = [transforms timePreviewProminentDisplayViewController];
+      view = [timePreviewProminentDisplayViewController view];
 
-      v13 = [(PRRenderer *)a1 _viewForLevel:?];
-      v14 = [a1 complicationsPreviewProminentDisplayViewController];
-      v85 = [v14 view];
+      v13 = [(PRRenderer *)transforms _viewForLevel:?];
+      complicationsPreviewProminentDisplayViewController = [transforms complicationsPreviewProminentDisplayViewController];
+      view2 = [complicationsPreviewProminentDisplayViewController view];
 
-      [v12 bounds];
+      [view bounds];
       OUTLINED_FUNCTION_20();
-      v15 = (v9 - 3) < 2;
+      v15 = (deviceOrientation - 3) < 2;
       Width = CGRectGetWidth(v100);
       v101.origin.x = OUTLINED_FUNCTION_2_2();
       Height = CGRectGetHeight(v101);
@@ -4945,11 +4945,11 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       *&v97.c = v73;
       v70 = *(MEMORY[0x1E695EFD0] + 32);
       *&v97.tx = v70;
-      v24 = [(PRRenderer *)a1 _rendererDynamicRotationIsActive];
-      if (v24 && ((HIDWORD(v83) | v83 | HIDWORD(v81)) & 1) != 0)
+      _rendererDynamicRotationIsActive = [(PRRenderer *)transforms _rendererDynamicRotationIsActive];
+      if (_rendererDynamicRotationIsActive && ((HIDWORD(v83) | v83 | HIDWORD(v81)) & 1) != 0)
       {
         memset(&v98, 0, sizeof(v98));
-        switch(v9)
+        switch(deviceOrientation)
         {
           case 1:
             v33 = 0.0;
@@ -4962,7 +4962,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
             break;
           default:
             v33 = 3.14159265;
-            if (v9 != 2)
+            if (deviceOrientation != 2)
             {
               v33 = 0.0;
             }
@@ -4972,12 +4972,12 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
         CGAffineTransformMakeRotation(&v96, v33);
         UIIntegralTransform();
-        [v12 bounds];
+        [view bounds];
         OUTLINED_FUNCTION_20();
         *&v96.a = v76;
         *&v96.c = v73;
         *&v96.tx = v70;
-        if ((v9 - 3) <= 1)
+        if ((deviceOrientation - 3) <= 1)
         {
           v35 = v20;
           v36 = v23;
@@ -4992,7 +4992,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
           v40 = v39 * 0.5;
           v41 = -(v39 * 0.5);
-          if (v9 == 3)
+          if (deviceOrientation == 3)
           {
             v41 = v40;
           }
@@ -5006,19 +5006,19 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
         t1 = v96;
         t2 = v98;
-        v24 = CGAffineTransformConcat(&v97, &t1, &t2);
+        _rendererDynamicRotationIsActive = CGAffineTransformConcat(&v97, &t1, &t2);
       }
 
-      v42 = [v12 setTransform:{OUTLINED_FUNCTION_21(v24, v25, v26, v27, v28, v29, v30, v31, v70, *(&v70 + 1), v73, *(&v73 + 1), v76, *(&v76 + 1), v79, v81, v83, v85, v88, v89, v90, v91, v92, v93, *&t2.a, *&t2.b, *&t2.c, *&t2.d, *&t2.tx, *&t2.ty, *&t1.a, *&t1.b, *&t1.c, *&t1.d, *&t1.tx, *&t1.ty, *&v96.a, *&v96.b, *&v96.c, *&v96.d, *&v96.tx, *&v96.ty, *&v97.a, *&v97.c, v32).n128_f64[0]}];
+      v42 = [view setTransform:{OUTLINED_FUNCTION_21(_rendererDynamicRotationIsActive, v25, v26, v27, v28, v29, v30, v31, v70, *(&v70 + 1), v73, *(&v73 + 1), v76, *(&v76 + 1), v79, v81, v83, view2, v88, v89, v90, v91, v92, v93, *&t2.a, *&t2.b, *&t2.c, *&t2.d, *&t2.tx, *&t2.ty, *&t1.a, *&t1.b, *&t1.c, *&t1.d, *&t1.tx, *&t1.ty, *&v96.a, *&v96.b, *&v96.c, *&v96.d, *&v96.tx, *&v96.ty, *&v97.a, *&v97.c, v32).n128_f64[0]}];
       *&v51 = OUTLINED_FUNCTION_21(v42, v43, v44, v45, v46, v47, v48, v49, v71, v72, v74, v75, v77, v78, v80, v82, v84, v86, v88, v89, v90, v91, v92, v93, *&t2.a, *&t2.b, *&t2.c, *&t2.d, *&t2.tx, *&t2.ty, *&t1.a, *&t1.b, *&t1.c, *&t1.d, *&t1.tx, *&t1.ty, *&v96.a, *&v96.b, *&v96.c, *&v96.d, *&v96.tx, *&v96.ty, *&v97.a, *&v97.c, v50).n128_u64[0];
       v52 = v87;
       [v87 setTransform:v51];
-      v53 = [a1 timePreviewProminentDisplayViewController];
-      if ([(PRRenderer *)a1 _isRenderingAdaptiveTime])
+      timePreviewProminentDisplayViewController2 = [transforms timePreviewProminentDisplayViewController];
+      if ([(PRRenderer *)transforms _isRenderingAdaptiveTime])
       {
-        v54 = [(PRRenderer *)a1 _calculateRealizedAdaptiveTimeHeight];
-        [v53 setAdaptsTimeTextHeight:1];
-        [v53 adaptiveTimeTextHeight];
+        _calculateRealizedAdaptiveTimeHeight = [(PRRenderer *)transforms _calculateRealizedAdaptiveTimeHeight];
+        [timePreviewProminentDisplayViewController2 setAdaptsTimeTextHeight:1];
+        [timePreviewProminentDisplayViewController2 adaptiveTimeTextHeight];
         v55 = BSFloatEqualToFloat();
         v56 = PRLogRendering();
         v57 = OUTLINED_FUNCTION_33(v56);
@@ -5027,7 +5027,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
           if (v57)
           {
             LODWORD(v98.a) = 134217984;
-            *(&v98.a + 4) = a1;
+            *(&v98.a + 4) = transforms;
             OUTLINED_FUNCTION_23();
             _os_log_impl(v58, v59, v60, v61, v62, 0xCu);
           }
@@ -5037,13 +5037,13 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
         {
           if (v57)
           {
-            [v53 adaptiveTimeTextHeight];
+            [timePreviewProminentDisplayViewController2 adaptiveTimeTextHeight];
             LODWORD(v98.a) = 134218496;
-            *(&v98.a + 4) = a1;
+            *(&v98.a + 4) = transforms;
             WORD2(v98.b) = 2048;
             *(&v98.b + 6) = v63;
             HIWORD(v98.c) = 2048;
-            v98.d = v54;
+            v98.d = _calculateRealizedAdaptiveTimeHeight;
             OUTLINED_FUNCTION_23();
             _os_log_impl(v64, v65, v66, v67, v68, 0x20u);
           }
@@ -5053,8 +5053,8 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
           v89 = 3221225472;
           v90 = __54__PRRenderer__updateProminentViewSizingAndTransforms___block_invoke;
           v91 = &unk_1E78441A8;
-          v92 = v53;
-          v93 = *&v54;
+          v92 = timePreviewProminentDisplayViewController2;
+          v93 = *&_calculateRealizedAdaptiveTimeHeight;
           [v69 _animateWithAnimationSettings:v4 animations:&v88 completion:0];
         }
 
@@ -5063,17 +5063,17 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
       else
       {
-        [v53 setAdaptsTimeTextHeight:0];
+        [timePreviewProminentDisplayViewController2 setAdaptsTimeTextHeight:0];
       }
     }
   }
 }
 
-- (double)_collectContentSizeForView:(uint64_t)a1
+- (double)_collectContentSizeForView:(uint64_t)view
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (view)
   {
     if (([v3 isHidden] & 1) != 0 || (objc_msgSend(v4, "alpha"), v5 == 0.0))
     {
@@ -5086,7 +5086,7 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v6 = v8;
       if (([v4 clipsToBounds] & 1) == 0)
       {
-        v9 = [v4 subviews];
+        subviews = [v4 subviews];
         OUTLINED_FUNCTION_14();
         v11 = [v10 countByEnumeratingWithState:? objects:? count:?];
         if (v11)
@@ -5100,15 +5100,15 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
               OUTLINED_FUNCTION_28();
               if (v15 != v13)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(subviews);
               }
 
-              [(PRRenderer *)a1 _collectContentSizeForView:?];
+              [(PRRenderer *)view _collectContentSizeForView:?];
               OUTLINED_FUNCTION_26();
             }
 
             OUTLINED_FUNCTION_14();
-            v12 = [v9 countByEnumeratingWithState:? objects:? count:?];
+            v12 = [subviews countByEnumeratingWithState:? objects:? count:?];
           }
 
           while (v12);
@@ -5125,23 +5125,23 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
   return v6;
 }
 
-- (id)_makeComplicationPreviewSceneWithSpecification:(uint64_t)a1
+- (id)_makeComplicationPreviewSceneWithSpecification:(uint64_t)specification
 {
   v3 = a2;
-  if (a1)
+  if (specification)
   {
-    v4 = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
+    pui_posterKitComplicationsWorkspace = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __61__PRRenderer__makeComplicationPreviewSceneWithSpecification___block_invoke;
     v22[3] = &unk_1E7844240;
     v23 = v3;
-    v5 = [v4 pui_createScene:v22];
+    v5 = [pui_posterKitComplicationsWorkspace pui_createScene:v22];
 
-    v6 = [*(a1 + 16) targetConfiguredProperties];
-    v7 = [v6 titleStyleConfiguration];
+    targetConfiguredProperties = [*(specification + 16) targetConfiguredProperties];
+    titleStyleConfiguration = [targetConfiguredProperties titleStyleConfiguration];
 
-    v8 = *(a1 + 8);
+    v8 = *(specification + 8);
     if (v8)
     {
       v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -5152,26 +5152,26 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
       v9 = 0;
     }
 
-    v10 = [*(a1 + 16) traitCollection];
-    if ([v10 _backlightLuminance] == 1)
+    traitCollection = [*(specification + 16) traitCollection];
+    if ([traitCollection _backlightLuminance] == 1)
     {
       v11 = 1;
     }
 
     else
     {
-      v12 = [*(a1 + 16) traitCollection];
-      v11 = [v12 _backlightLuminance] == 0;
+      traitCollection2 = [*(specification + 16) traitCollection];
+      v11 = [traitCollection2 _backlightLuminance] == 0;
     }
 
-    [v7 vibrancyConfigurationWithExtensionBundle:v9 luminanceReduced:v11];
+    [titleStyleConfiguration vibrancyConfigurationWithExtensionBundle:v9 luminanceReduced:v11];
     objc_claimAutoreleasedReturnValue();
     OUTLINED_FUNCTION_0_14();
     v17 = 3221225472;
     v18 = __61__PRRenderer__makeComplicationPreviewSceneWithSpecification___block_invoke_2;
     v19 = &unk_1E7845E10;
     v20 = v13;
-    v21 = a1;
+    specificationCopy = specification;
     v14 = v13;
     [v5 configureParameters:v16];
   }
@@ -5186,10 +5186,10 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
 - (uint64_t)_isAmbientSupportedForRendererScene
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 264) _FBSScene];
-    v2 = [v1 settings];
+    _FBSScene = [*(self + 264) _FBSScene];
+    settings = [_FBSScene settings];
     v3 = objc_opt_respondsToSelector();
   }
 
@@ -5203,33 +5203,33 @@ void __48__PRRenderer__updateOrientationIfNeededFrom_to___block_invoke_2(uint64_
 
 - (void)_updateEnvironmentForUpdatedTraitCollection
 {
-  if (a1)
+  if (self)
   {
-    v17 = [*(a1 + 264) _FBSScene];
-    [*(a1 + 16) backlightProgress];
+    _FBSScene = [*(self + 264) _FBSScene];
+    [*(self + 16) backlightProgress];
     v3 = v2;
-    [*(a1 + 16) linearBacklightProgress];
+    [*(self + 16) linearBacklightProgress];
     v5 = v4;
-    [*(a1 + 16) unlockProgress];
+    [*(self + 16) unlockProgress];
     v7 = v6;
-    [*(a1 + 16) deviceRoll];
+    [*(self + 16) deviceRoll];
     v9 = v8;
-    [*(a1 + 16) devicePitch];
+    [*(self + 16) devicePitch];
     v11 = v10;
-    [*(a1 + 16) deviceYaw];
+    [*(self + 16) deviceYaw];
     v13 = v12;
-    v14 = [*(a1 + 16) appliesCountertransformForRotation];
-    v15 = [v17 settings];
-    v16 = [*(a1 + 264) traitCollection];
+    appliesCountertransformForRotation = [*(self + 16) appliesCountertransformForRotation];
+    settings = [_FBSScene settings];
+    traitCollection = [*(self + 264) traitCollection];
     [OUTLINED_FUNCTION_22() updateFromSceneSettings:? traitCollection:? overrides:?];
 
-    [*(a1 + 16) setBacklightProgress:v3];
-    [*(a1 + 16) setLinearBacklightProgress:v5];
-    [*(a1 + 16) setUnlockProgress:v7];
-    [*(a1 + 16) setDeviceRoll:v9];
-    [*(a1 + 16) setDevicePitch:v11];
-    [*(a1 + 16) setDeviceYaw:v13];
-    [*(a1 + 16) setAppliesCountertransformForRotation:v14];
+    [*(self + 16) setBacklightProgress:v3];
+    [*(self + 16) setLinearBacklightProgress:v5];
+    [*(self + 16) setUnlockProgress:v7];
+    [*(self + 16) setDeviceRoll:v9];
+    [*(self + 16) setDevicePitch:v11];
+    [*(self + 16) setDeviceYaw:v13];
+    [*(self + 16) setAppliesCountertransformForRotation:appliesCountertransformForRotation];
     OUTLINED_FUNCTION_25();
   }
 }

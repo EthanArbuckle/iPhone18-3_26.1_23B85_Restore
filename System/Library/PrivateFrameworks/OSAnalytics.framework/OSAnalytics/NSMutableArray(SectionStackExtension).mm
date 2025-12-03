@@ -6,10 +6,10 @@
 
 - (id)section_pop
 {
-  v2 = [a1 lastObject];
-  [a1 removeLastObject];
+  lastObject = [self lastObject];
+  [self removeLastObject];
 
-  return v2;
+  return lastObject;
 }
 
 @end

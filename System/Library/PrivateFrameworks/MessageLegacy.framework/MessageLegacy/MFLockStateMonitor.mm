@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __36__MFLockStateMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -52,9 +52,9 @@ uint64_t __36__MFLockStateMonitor_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(MFLockStateMonitor *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D07180] observableObserver];
+    observableObserver = [MEMORY[0x277D07180] observableObserver];
     observable = v2->_observable;
-    v2->_observable = v3;
+    v2->_observable = observableObserver;
 
     v5 = dispatch_queue_create("com.apple.message.lockStateMonitor", MEMORY[0x277D85CD8]);
     queue = v2->_queue;
@@ -96,11 +96,11 @@ void __26__MFLockStateMonitor_init__block_invoke(uint64_t a1, int a2)
 - (EFObservable)lockStateObservable
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(EFObserver *)self->_observable distinctUntilChanged];
+  distinctUntilChanged = [(EFObserver *)self->_observable distinctUntilChanged];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[MFLockStateMonitor isLocked](self, "isLocked")}];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [v3 startWith:v5];
+  v6 = [distinctUntilChanged startWith:v5];
 
   v7 = *MEMORY[0x277D85DE8];
 

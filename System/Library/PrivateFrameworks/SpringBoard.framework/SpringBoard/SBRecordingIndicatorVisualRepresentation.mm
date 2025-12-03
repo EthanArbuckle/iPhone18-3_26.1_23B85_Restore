@@ -1,24 +1,24 @@
 @interface SBRecordingIndicatorVisualRepresentation
-+ (CGRect)indicatorFrameForScreenType:(unint64_t)a3 screen:(id)a4 style:(unint64_t)a5;
-- (SBRecordingIndicatorVisualRepresentation)initWithViewType:(unint64_t)a3;
++ (CGRect)indicatorFrameForScreenType:(unint64_t)type screen:(id)screen style:(unint64_t)style;
+- (SBRecordingIndicatorVisualRepresentation)initWithViewType:(unint64_t)type;
 - (double)blurRadius;
-- (id)_indicatorColorForIndicatorType:(unint64_t)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setIndicatorType:(unint64_t)a3;
+- (id)_indicatorColorForIndicatorType:(unint64_t)type;
+- (void)setBlurRadius:(double)radius;
+- (void)setIndicatorType:(unint64_t)type;
 @end
 
 @implementation SBRecordingIndicatorVisualRepresentation
 
-+ (CGRect)indicatorFrameForScreenType:(unint64_t)a3 screen:(id)a4 style:(unint64_t)a5
++ (CGRect)indicatorFrameForScreenType:(unint64_t)type screen:(id)screen style:(unint64_t)style
 {
-  v7 = a4;
-  v8 = v7;
-  switch(a3)
+  screenCopy = screen;
+  v8 = screenCopy;
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
     case 2uLL:
-      [v7 scale];
+      [screenCopy scale];
       goto LABEL_4;
     case 0x15uLL:
     case 0x16uLL:
@@ -35,7 +35,7 @@
     case 0x74uLL:
     case 0x75uLL:
     case 0x76uLL:
-      [v7 scale];
+      [screenCopy scale];
       break;
     default:
 LABEL_4:
@@ -44,12 +44,12 @@ LABEL_4:
       break;
   }
 
-  if (a5 > 2)
+  if (style > 2)
   {
-    if (a5 == 3)
+    if (style == 3)
     {
-      v10 = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
-      [v10 interSensorRegionInWindowSpace];
+      mEMORY[0x277D67E28] = [MEMORY[0x277D67E28] sharedInstanceForEmbeddedDisplay];
+      [mEMORY[0x277D67E28] interSensorRegionInWindowSpace];
       UIRectGetCenter();
 
       UIRoundToScale();
@@ -63,7 +63,7 @@ LABEL_4:
     }
   }
 
-  else if (a5 == 1)
+  else if (style == 1)
   {
     [v8 scale];
     if (fabs(v9 + -2.0) <= 2.22044605e-16)
@@ -75,8 +75,8 @@ LABEL_4:
 
       else
       {
-        v19 = [MEMORY[0x277D75418] currentDevice];
-        [v19 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        [currentDevice userInterfaceIdiom];
       }
     }
   }
@@ -107,7 +107,7 @@ LABEL_18:
   return result;
 }
 
-- (SBRecordingIndicatorVisualRepresentation)initWithViewType:(unint64_t)a3
+- (SBRecordingIndicatorVisualRepresentation)initWithViewType:(unint64_t)type
 {
   v22.receiver = self;
   v22.super_class = SBRecordingIndicatorVisualRepresentation;
@@ -115,12 +115,12 @@ LABEL_18:
   v5 = v4;
   if (v4)
   {
-    v4->_viewType = a3;
+    v4->_viewType = type;
     v6 = +[SBRecordingIndicatorLayer layer];
     highLevelLayer = v5->_highLevelLayer;
     v5->_highLevelLayer = v6;
 
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         v14 = objc_alloc_init(SBRecordingIndicatorView);
@@ -163,14 +163,14 @@ LABEL_18:
   return v5;
 }
 
-- (void)setIndicatorType:(unint64_t)a3
+- (void)setIndicatorType:(unint64_t)type
 {
   v7 = [(SBRecordingIndicatorVisualRepresentation *)self _indicatorColorForIndicatorType:?];
-  [(SBRecordingIndicatorLayer *)self->_highLevelLayer setIndicatorType:a3];
+  [(SBRecordingIndicatorLayer *)self->_highLevelLayer setIndicatorType:type];
   highLevelLayer = self->_highLevelLayer;
   v6 = v7;
   -[SBRecordingIndicatorLayer setBackgroundColor:](highLevelLayer, "setBackgroundColor:", [v7 CGColor]);
-  [(SBRecordingIndicatorView *)self->_contentView setIndicatorType:a3];
+  [(SBRecordingIndicatorView *)self->_contentView setIndicatorType:type];
   [(SBRecordingIndicatorView *)self->_contentView setBackgroundColor:v7];
 }
 
@@ -186,17 +186,17 @@ LABEL_18:
   return result;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   [(SBRecordingIndicatorLayer *)self->_highLevelLayer setBlurRadius:?];
   contentView = self->_contentView;
 
-  [(SBRecordingIndicatorView *)contentView setBlurRadius:a3];
+  [(SBRecordingIndicatorView *)contentView setBlurRadius:radius];
 }
 
-- (id)_indicatorColorForIndicatorType:(unint64_t)a3
+- (id)_indicatorColorForIndicatorType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     [MEMORY[0x277D75348] systemOrangeColor];
   }
@@ -207,11 +207,11 @@ LABEL_18:
   }
   v4 = ;
   v5 = +[SBRecordingIndicatorDomain rootSettings];
-  v6 = [v5 debugBackgroundColorEnabled];
+  debugBackgroundColorEnabled = [v5 debugBackgroundColorEnabled];
 
-  if (v6)
+  if (debugBackgroundColorEnabled)
   {
-    if (a3)
+    if (type)
     {
       [MEMORY[0x277D75348] systemPurpleColor];
     }

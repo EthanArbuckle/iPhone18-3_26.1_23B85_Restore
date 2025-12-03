@@ -1,14 +1,14 @@
 @interface FTLocalMessageProperties
-- (FTLocalMessageProperties)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (FTLocalMessageProperties)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation FTLocalMessageProperties
 
-- (FTLocalMessageProperties)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (FTLocalMessageProperties)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  return FTLocalMessageProperties.init(entity:insertInto:)(v5, a4);
+  entityCopy = entity;
+  contextCopy = context;
+  return FTLocalMessageProperties.init(entity:insertInto:)(entityCopy, context);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface _UIMenuLeafKeyCombination
-+ (id)combinationWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4 keyCodes:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)combinationWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent keyCodes:(id)codes;
+- (BOOL)isEqual:(id)equal;
 - (NSString)displayKeyEquivalentOverride;
-- (_UIMenuLeafKeyCombination)initWithCoder:(id)a3;
-- (_UIMenuLeafKeyCombination)initWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4 keyCodes:(id)a5 displayKeyEquivalentOverride:(id)a6;
+- (_UIMenuLeafKeyCombination)initWithCoder:(id)coder;
+- (_UIMenuLeafKeyCombination)initWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent keyCodes:(id)codes displayKeyEquivalentOverride:(id)override;
 - (__GSKeyboard)_currentGSKeyboard;
 - (id)_keyEquivalentStringFromKeyEquivalentOrKeyCodes;
-- (id)_readableStringForKeyEquivalentUsingWords:(BOOL)a3 forHUD:(BOOL)a4 isSingleCharacterOrKeySymbol:(BOOL *)a5;
-- (id)_readableStringForModifierFlagsUsingWords:(BOOL)a3 forHUD:(BOOL)a4;
-- (id)combinationAddingModifierFlags:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_readableStringForKeyEquivalentUsingWords:(BOOL)words forHUD:(BOOL)d isSingleCharacterOrKeySymbol:(BOOL *)symbol;
+- (id)_readableStringForModifierFlagsUsingWords:(BOOL)words forHUD:(BOOL)d;
+- (id)combinationAddingModifierFlags:(int64_t)flags;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setDisplayKeyEquivalentOverride:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDisplayKeyEquivalentOverride:(id)override;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMenuLeafKeyCombination
@@ -33,91 +33,91 @@
   return v3;
 }
 
-+ (id)combinationWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4 keyCodes:(id)a5
++ (id)combinationWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent keyCodes:(id)codes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithModifierFlags:a3 keyEquivalent:v9 keyCodes:v8 displayKeyEquivalentOverride:0];
+  codesCopy = codes;
+  equivalentCopy = equivalent;
+  v10 = [[self alloc] initWithModifierFlags:flags keyEquivalent:equivalentCopy keyCodes:codesCopy displayKeyEquivalentOverride:0];
 
   return v10;
 }
 
-- (_UIMenuLeafKeyCombination)initWithModifierFlags:(int64_t)a3 keyEquivalent:(id)a4 keyCodes:(id)a5 displayKeyEquivalentOverride:(id)a6
+- (_UIMenuLeafKeyCombination)initWithModifierFlags:(int64_t)flags keyEquivalent:(id)equivalent keyCodes:(id)codes displayKeyEquivalentOverride:(id)override
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  equivalentCopy = equivalent;
+  codesCopy = codes;
+  overrideCopy = override;
   v21.receiver = self;
   v21.super_class = _UIMenuLeafKeyCombination;
   v13 = [(_UIMenuLeafKeyCombination *)&v21 init];
   if (v13)
   {
-    if (!v10 || v11)
+    if (!equivalentCopy || codesCopy)
     {
-      if (!v10)
+      if (!equivalentCopy)
       {
-        if ([v11 count] == 1)
+        if ([codesCopy count] == 1)
         {
-          v10 = _UISpecialKeyEquivalentFromHIDUsage([v11 firstIndex]);
+          equivalentCopy = _UISpecialKeyEquivalentFromHIDUsage([codesCopy firstIndex]);
         }
 
         else
         {
-          v10 = 0;
+          equivalentCopy = 0;
         }
       }
     }
 
     else
     {
-      v14 = _UIHIDUsageFromSpecialKeyEquivalent(v10);
+      v14 = _UIHIDUsageFromSpecialKeyEquivalent(equivalentCopy);
       if (v14)
       {
-        v11 = [MEMORY[0x1E696AC90] indexSetWithIndex:v14];
+        codesCopy = [MEMORY[0x1E696AC90] indexSetWithIndex:v14];
       }
 
       else
       {
-        v11 = 0;
+        codesCopy = 0;
       }
     }
 
-    v13->_modifierFlags = a3;
-    v15 = [v10 copy];
+    v13->_modifierFlags = flags;
+    v15 = [equivalentCopy copy];
     keyEquivalent = v13->_keyEquivalent;
     v13->_keyEquivalent = v15;
 
-    v17 = [v11 copy];
+    v17 = [codesCopy copy];
     keyCodes = v13->_keyCodes;
     v13->_keyCodes = v17;
 
-    v19 = [v12 copy];
+    v19 = [overrideCopy copy];
     [(_UIMenuLeafKeyCombination *)v13 _setDisplayKeyEquivalentOverride:v19];
   }
 
   return v13;
 }
 
-- (void)_setDisplayKeyEquivalentOverride:(id)a3
+- (void)_setDisplayKeyEquivalentOverride:(id)override
 {
-  if (a3 || self->_hasDisplayKeyEquivalentOverride)
+  if (override || self->_hasDisplayKeyEquivalentOverride)
   {
-    v4 = a3 != 0;
-    objc_setAssociatedObject(self, &_UIMenuLeafKeyCombinationDisplayKeyEquivalentOverrideKey, a3, 1);
+    v4 = override != 0;
+    objc_setAssociatedObject(self, &_UIMenuLeafKeyCombinationDisplayKeyEquivalentOverrideKey, override, 1);
     self->_hasDisplayKeyEquivalentOverride = v4;
   }
 }
 
-- (id)_readableStringForModifierFlagsUsingWords:(BOOL)a3 forHUD:(BOOL)a4
+- (id)_readableStringForModifierFlagsUsingWords:(BOOL)words forHUD:(BOOL)d
 {
-  v4 = a4;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(_UIMenuLeafKeyCombination *)self modifierFlags];
-  if (a3)
+  modifierFlags = [(_UIMenuLeafKeyCombination *)self modifierFlags];
+  if (words)
   {
-    if ((v8 & 0x100000) != 0)
+    if ((modifierFlags & 0x100000) != 0)
     {
-      if (v4)
+      if (dCopy)
       {
         v9 = @"⌘  ";
       }
@@ -128,10 +128,10 @@
       }
 
       [v7 appendString:v9];
-      if ((v8 & 0x40000) == 0)
+      if ((modifierFlags & 0x40000) == 0)
       {
 LABEL_4:
-        if ((v8 & 0x80000) == 0)
+        if ((modifierFlags & 0x80000) == 0)
         {
           goto LABEL_5;
         }
@@ -140,16 +140,16 @@ LABEL_4:
       }
     }
 
-    else if ((v8 & 0x40000) == 0)
+    else if ((modifierFlags & 0x40000) == 0)
     {
       goto LABEL_4;
     }
 
     [v7 appendString:@"control "];
-    if ((v8 & 0x80000) == 0)
+    if ((modifierFlags & 0x80000) == 0)
     {
 LABEL_5:
-      if ((v8 & 0x20000) == 0)
+      if ((modifierFlags & 0x20000) == 0)
       {
         goto LABEL_6;
       }
@@ -159,10 +159,10 @@ LABEL_5:
 
 LABEL_19:
     [v7 appendString:@"option "];
-    if ((v8 & 0x20000) == 0)
+    if ((modifierFlags & 0x20000) == 0)
     {
 LABEL_6:
-      if ((v8 & 0x800000) == 0)
+      if ((modifierFlags & 0x800000) == 0)
       {
         goto LABEL_28;
       }
@@ -172,7 +172,7 @@ LABEL_6:
 
 LABEL_20:
     [v7 appendString:@"shift "];
-    if ((v8 & 0x800000) == 0)
+    if ((modifierFlags & 0x800000) == 0)
     {
       goto LABEL_28;
     }
@@ -184,13 +184,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((v8 & 0x40000) != 0)
+  if ((modifierFlags & 0x40000) != 0)
   {
     [v7 appendString:@"⌃ "];
-    if ((v8 & 0x80000) == 0)
+    if ((modifierFlags & 0x80000) == 0)
     {
 LABEL_10:
-      if ((v8 & 0x20000) == 0)
+      if ((modifierFlags & 0x20000) == 0)
       {
         goto LABEL_11;
       }
@@ -199,23 +199,23 @@ LABEL_10:
     }
   }
 
-  else if ((v8 & 0x80000) == 0)
+  else if ((modifierFlags & 0x80000) == 0)
   {
     goto LABEL_10;
   }
 
   [v7 appendString:@"⌥ "];
-  if ((v8 & 0x20000) == 0)
+  if ((modifierFlags & 0x20000) == 0)
   {
 LABEL_11:
-    if ((v8 & 0x100000) == 0)
+    if ((modifierFlags & 0x100000) == 0)
     {
       goto LABEL_12;
     }
 
 LABEL_25:
     [v7 appendString:@"⌘ "];
-    if ((v8 & 0x800000) == 0)
+    if ((modifierFlags & 0x800000) == 0)
     {
       goto LABEL_28;
     }
@@ -225,13 +225,13 @@ LABEL_25:
 
 LABEL_24:
   [v7 appendString:@"⇧ "];
-  if ((v8 & 0x100000) != 0)
+  if ((modifierFlags & 0x100000) != 0)
   {
     goto LABEL_25;
   }
 
 LABEL_12:
-  if ((v8 & 0x800000) != 0)
+  if ((modifierFlags & 0x800000) != 0)
   {
 LABEL_26:
     [v7 appendString:@"globe "];
@@ -251,110 +251,110 @@ LABEL_28:
 - (id)_keyEquivalentStringFromKeyEquivalentOrKeyCodes
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = self->_keyEquivalent;
-  if (!v3)
+  _hardwareKeyboard = self->_keyEquivalent;
+  if (!_hardwareKeyboard)
   {
-    v3 = [UIApp _hardwareKeyboard];
-    if (v3)
+    _hardwareKeyboard = [UIApp _hardwareKeyboard];
+    if (_hardwareKeyboard)
     {
       HIWORD(v5) = 0;
       [(NSIndexSet *)self->_keyCodes firstIndex];
       GSKeyboardTranslateKeyExtendedCommandWithUsagePage();
       [(NSIndexSet *)self->_keyCodes firstIndex:&v5 + 2];
       GSKeyboardTranslateKeyExtendedCommandWithUsagePage();
-      v3 = 0;
+      _hardwareKeyboard = 0;
     }
   }
 
-  return v3;
+  return _hardwareKeyboard;
 }
 
-- (id)_readableStringForKeyEquivalentUsingWords:(BOOL)a3 forHUD:(BOOL)a4 isSingleCharacterOrKeySymbol:(BOOL *)a5
+- (id)_readableStringForKeyEquivalentUsingWords:(BOOL)words forHUD:(BOOL)d isSingleCharacterOrKeySymbol:(BOOL *)symbol
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  wordsCopy = words;
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v10 = [(_UIMenuLeafKeyCombination *)self _keyEquivalentStringFromKeyEquivalentOrKeyCodes];
-  if ([(__CFString *)v10 length]== 1)
+  _keyEquivalentStringFromKeyEquivalentOrKeyCodes = [(_UIMenuLeafKeyCombination *)self _keyEquivalentStringFromKeyEquivalentOrKeyCodes];
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes length]== 1)
   {
-    v11 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+    displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
 
-    if (v11)
+    if (displayKeyEquivalentOverride)
     {
-      v12 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+      displayKeyEquivalentOverride2 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
     }
 
     else
     {
       [(_UIMenuLeafKeyCombination *)self _currentGSKeyboard];
       v13 = GSKeyboardGetLocale();
-      v12 = [(__CFString *)v10 uppercaseStringWithLocale:v13];
+      displayKeyEquivalentOverride2 = [(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes uppercaseStringWithLocale:v13];
 
-      v10 = v13;
+      _keyEquivalentStringFromKeyEquivalentOrKeyCodes = v13;
     }
 
-    v10 = v12;
+    _keyEquivalentStringFromKeyEquivalentOrKeyCodes = displayKeyEquivalentOverride2;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputUpArrow"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputUpArrow"])
   {
     v14 = @"↑";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputDownArrow"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputDownArrow"])
   {
     v14 = @"↓";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputLeftArrow"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputLeftArrow"])
   {
     v14 = @"←";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputRightArrow"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputRightArrow"])
   {
     v14 = @"→";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputEscape"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputEscape"])
   {
     v14 = @"esc";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputPageUp"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputPageUp"])
   {
     v14 = @"page up";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputPageDown"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputPageDown"])
   {
     v14 = @"page down";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputHome"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputHome"])
   {
     v14 = @"home";
     goto LABEL_24;
   }
 
-  if ([(__CFString *)v10 isEqualToString:@"UIKeyInputEnd"])
+  if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputEnd"])
   {
     v14 = @"end";
     goto LABEL_24;
   }
 
-  if (![(__CFString *)v10 isEqualToString:@" "])
+  if (![(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@" "])
   {
-    if ([(__CFString *)v10 isEqualToString:@"\t"])
+    if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"\t"])
     {
-      if (v7)
+      if (wordsCopy)
       {
         v14 = @"tab";
       }
@@ -365,9 +365,9 @@ LABEL_28:
       }
     }
 
-    else if (([(__CFString *)v10 isEqualToString:@"\n"]& 1) != 0 || [(__CFString *)v10 isEqualToString:@"\r"])
+    else if (([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"\n"]& 1) != 0 || [(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"\r"])
     {
-      if (v7)
+      if (wordsCopy)
       {
         v14 = @"return";
       }
@@ -380,69 +380,69 @@ LABEL_28:
 
     else
     {
-      if (![(__CFString *)v10 isEqualToString:@"\b"])
+      if (![(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"\b"])
       {
-        if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF1"])
+        if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF1"])
         {
           v20 = @"f1";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF2"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF2"])
         {
           v20 = @"f2";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF3"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF3"])
         {
           v20 = @"f3";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF4"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF4"])
         {
           v20 = @"f4";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF5"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF5"])
         {
           v20 = @"f5";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF6"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF6"])
         {
           v20 = @"f6";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF7"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF7"])
         {
           v20 = @"f7";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF8"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF8"])
         {
           v20 = @"f8";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF9"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF9"])
         {
           v20 = @"f9";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF10"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF10"])
         {
           v20 = @"f10";
         }
 
-        else if ([(__CFString *)v10 isEqualToString:@"UIKeyInputF11"])
+        else if ([(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF11"])
         {
           v20 = @"f11";
         }
 
         else
         {
-          if (![(__CFString *)v10 isEqualToString:@"UIKeyInputF12"])
+          if (![(__CFString *)_keyEquivalentStringFromKeyEquivalentOrKeyCodes isEqualToString:@"UIKeyInputF12"])
           {
             v15 = v9;
-            v14 = v10;
+            v14 = _keyEquivalentStringFromKeyEquivalentOrKeyCodes;
             goto LABEL_25;
           }
 
@@ -451,7 +451,7 @@ LABEL_28:
 
         [v9 appendString:v20];
         v16 = 1;
-        if (a5)
+        if (symbol)
         {
           goto LABEL_27;
         }
@@ -459,7 +459,7 @@ LABEL_28:
         goto LABEL_31;
       }
 
-      if (v7)
+      if (wordsCopy)
       {
         v14 = @"delete";
       }
@@ -477,7 +477,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     v14 = @"Space";
     goto LABEL_24;
@@ -488,11 +488,11 @@ LABEL_25:
 
 LABEL_26:
   v16 = 0;
-  if (a5)
+  if (symbol)
   {
 LABEL_27:
     v17 = (v16 & 1) != 0 || [v9 length] == 1;
-    *a5 = v17;
+    *symbol = v17;
   }
 
 LABEL_31:
@@ -503,9 +503,9 @@ LABEL_31:
 - (__GSKeyboard)_currentGSKeyboard
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _isHardwareKeyboardAvailable];
+  _isHardwareKeyboardAvailable = [v2 _isHardwareKeyboardAvailable];
 
-  if (!v3)
+  if (!_isHardwareKeyboardAvailable)
   {
     return 0;
   }
@@ -515,58 +515,58 @@ LABEL_31:
   return [v4 _hardwareKeyboard:0];
 }
 
-- (id)combinationAddingModifierFlags:(int64_t)a3
+- (id)combinationAddingModifierFlags:(int64_t)flags
 {
-  if ((a3 & ~self->_modifierFlags) != 0)
+  if ((flags & ~self->_modifierFlags) != 0)
   {
-    v4 = [(_UIMenuLeafKeyCombination *)self copy];
-    v4->_modifierFlags = self->_modifierFlags | a3;
+    selfCopy = [(_UIMenuLeafKeyCombination *)self copy];
+    selfCopy->_modifierFlags = self->_modifierFlags | flags;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_modifierFlags forKey:@"ModifierFlags"];
-  [v5 encodeObject:self->_keyEquivalent forKey:@"KeyEquivalent"];
-  [v5 encodeObject:self->_keyCodes forKey:@"KeyCodes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_modifierFlags forKey:@"ModifierFlags"];
+  [coderCopy encodeObject:self->_keyEquivalent forKey:@"KeyEquivalent"];
+  [coderCopy encodeObject:self->_keyCodes forKey:@"KeyCodes"];
   if (self->_hasDisplayKeyEquivalentOverride)
   {
-    v4 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
-    [v5 encodeObject:v4 forKey:@"DisplayKeyEquivalentOverride"];
+    displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+    [coderCopy encodeObject:displayKeyEquivalentOverride forKey:@"DisplayKeyEquivalentOverride"];
   }
 }
 
-- (_UIMenuLeafKeyCombination)initWithCoder:(id)a3
+- (_UIMenuLeafKeyCombination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UIMenuLeafKeyCombination;
   v5 = [(_UIMenuLeafKeyCombination *)&v15 init];
   if (v5)
   {
-    v5->_modifierFlags = [v4 decodeIntegerForKey:@"ModifierFlags"];
+    v5->_modifierFlags = [coderCopy decodeIntegerForKey:@"ModifierFlags"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"KeyEquivalent"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"KeyEquivalent"];
     keyEquivalent = v5->_keyEquivalent;
     v5->_keyEquivalent = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"KeyCodes"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"KeyCodes"];
     keyCodes = v5->_keyCodes;
     v5->_keyCodes = v10;
 
-    if ([v4 containsValueForKey:@"DisplayKeyEquivalentOverride"])
+    if ([coderCopy containsValueForKey:@"DisplayKeyEquivalentOverride"])
     {
       v12 = objc_opt_self();
-      v13 = [v4 decodeObjectOfClass:v12 forKey:@"DisplayKeyEquivalentOverride"];
+      v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"DisplayKeyEquivalentOverride"];
       [(_UIMenuLeafKeyCombination *)v5 _setDisplayKeyEquivalentOverride:v13];
     }
   }
@@ -574,10 +574,10 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -589,7 +589,7 @@ LABEL_31:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_modifierFlags != v7->_modifierFlags)
       {
@@ -637,10 +637,10 @@ LABEL_19:
           goto LABEL_28;
         }
 
-        v16 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
-        v17 = [(_UIMenuLeafKeyCombination *)v8 displayKeyEquivalentOverride];
-        v10 = v16;
-        v18 = v17;
+        displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+        displayKeyEquivalentOverride2 = [(_UIMenuLeafKeyCombination *)v8 displayKeyEquivalentOverride];
+        v10 = displayKeyEquivalentOverride;
+        v18 = displayKeyEquivalentOverride2;
         v12 = v18;
         if (v10 == v18)
         {
@@ -690,20 +690,20 @@ LABEL_29:
   modifierFlags = self->_modifierFlags;
   v4 = [(NSString *)self->_keyEquivalent hash]^ modifierFlags;
   v5 = [(NSIndexSet *)self->_keyCodes hash];
-  v6 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
-  v7 = v5 ^ [v6 hash];
+  displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+  v7 = v5 ^ [displayKeyEquivalentOverride hash];
 
   return v4 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIMenuLeafKeyCombination alloc];
   modifierFlags = self->_modifierFlags;
   keyEquivalent = self->_keyEquivalent;
   keyCodes = self->_keyCodes;
-  v8 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
-  v9 = [(_UIMenuLeafKeyCombination *)v4 initWithModifierFlags:modifierFlags keyEquivalent:keyEquivalent keyCodes:keyCodes displayKeyEquivalentOverride:v8];
+  displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+  v9 = [(_UIMenuLeafKeyCombination *)v4 initWithModifierFlags:modifierFlags keyEquivalent:keyEquivalent keyCodes:keyCodes displayKeyEquivalentOverride:displayKeyEquivalentOverride];
 
   return v9;
 }
@@ -718,13 +718,13 @@ LABEL_29:
   v5 = [v3 appendObject:self->_keyCodes withName:@"keyCodes" skipIfNil:1];
   if (self->_hasDisplayKeyEquivalentOverride)
   {
-    v6 = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
-    [v3 appendString:v6 withName:@"displayKeyEquivalentOverride" skipIfEmpty:1];
+    displayKeyEquivalentOverride = [(_UIMenuLeafKeyCombination *)self displayKeyEquivalentOverride];
+    [v3 appendString:displayKeyEquivalentOverride withName:@"displayKeyEquivalentOverride" skipIfEmpty:1];
   }
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

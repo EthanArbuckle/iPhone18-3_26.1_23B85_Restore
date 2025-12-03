@@ -1,7 +1,7 @@
 @interface HUQuickControlRingSliderViewProfile
 - (HUQuickControlRingSliderViewProfile)init;
 - (NSArray)gradationMarkingValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlRingSliderViewProfile
@@ -36,17 +36,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = HUQuickControlRingSliderViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v8 copyWithZone:a3];
+  v4 = [(HUQuickControlViewProfile *)&v8 copyWithZone:zone];
   [v4 setHasOffState:{-[HUQuickControlRingSliderViewProfile hasOffState](self, "hasOffState")}];
-  v5 = [(HUQuickControlRingSliderViewProfile *)self primaryValueConstraints];
-  [v4 setPrimaryValueConstraints:v5];
+  primaryValueConstraints = [(HUQuickControlRingSliderViewProfile *)self primaryValueConstraints];
+  [v4 setPrimaryValueConstraints:primaryValueConstraints];
 
-  v6 = [(HUQuickControlRingSliderViewProfile *)self secondaryValueConstraints];
-  [v4 setSecondaryValueConstraints:v6];
+  secondaryValueConstraints = [(HUQuickControlRingSliderViewProfile *)self secondaryValueConstraints];
+  [v4 setSecondaryValueConstraints:secondaryValueConstraints];
 
   [v4 setHasSecondaryValue:{-[HUQuickControlRingSliderViewProfile hasSecondaryValue](self, "hasSecondaryValue")}];
   [v4 setStyle:{-[HUQuickControlRingSliderViewProfile style](self, "style")}];

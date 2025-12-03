@@ -2,18 +2,18 @@
 - (BOOL)_associateContainerPathWithContext;
 - (BOOL)_lookupContainerPathsOnDevice;
 - (BOOL)_purgeContainerizedDataNotInManifest;
-- (MSDApplicationDataPrepareOperation)initWithContext:(id)a3;
+- (MSDApplicationDataPrepareOperation)initWithContext:(id)context;
 - (id)methodSelectors;
-- (void)_createUninstallOperationForContainer:(id)a3 ofType:(id)a4 containerPath:(id)a5 isContainerized:(BOOL)a6;
+- (void)_createUninstallOperationForContainer:(id)container ofType:(id)type containerPath:(id)path isContainerized:(BOOL)containerized;
 @end
 
 @implementation MSDApplicationDataPrepareOperation
 
-- (MSDApplicationDataPrepareOperation)initWithContext:(id)a3
+- (MSDApplicationDataPrepareOperation)initWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = MSDApplicationDataPrepareOperation;
-  v3 = [(MSDOperation *)&v8 initWithContext:a3];
+  v3 = [(MSDOperation *)&v8 initWithContext:context];
   if (v3)
   {
     v4 = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -51,28 +51,28 @@
 
 - (BOOL)_lookupContainerPathsOnDevice
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 identifier];
-  v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
+  v5 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
 
-  v6 = [v5 dataContainerURL];
+  dataContainerURL = [v5 dataContainerURL];
 
-  if (v6)
+  if (dataContainerURL)
   {
-    v7 = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
-    v8 = [v5 dataContainerURL];
-    v9 = [v8 path];
-    v10 = [v5 applicationIdentifier];
-    [v7 setObject:v9 forKey:v10];
+    dataContainerPaths = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
+    dataContainerURL2 = [v5 dataContainerURL];
+    path = [dataContainerURL2 path];
+    applicationIdentifier = [v5 applicationIdentifier];
+    [dataContainerPaths setObject:path forKey:applicationIdentifier];
   }
 
-  v11 = [v5 groupContainerURLs];
+  groupContainerURLs = [v5 groupContainerURLs];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100026E4C;
   v32[3] = &unk_10016A2E0;
   v32[4] = self;
-  [v11 enumerateKeysAndObjectsUsingBlock:v32];
+  [groupContainerURLs enumerateKeysAndObjectsUsingBlock:v32];
 
   v30 = 0u;
   v31 = 0u;
@@ -99,24 +99,24 @@
 
         v14 = *(*(&v28 + 1) + 8 * v16);
 
-        v18 = [v14 dataContainerURL];
+        dataContainerURL3 = [v14 dataContainerURL];
 
-        if (v18)
+        if (dataContainerURL3)
         {
-          v19 = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
-          v20 = [v14 dataContainerURL];
-          v21 = [v20 path];
-          v22 = [v14 pluginIdentifier];
-          [v19 setObject:v21 forKey:v22];
+          plugInContainerPaths = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
+          dataContainerURL4 = [v14 dataContainerURL];
+          path2 = [dataContainerURL4 path];
+          pluginIdentifier = [v14 pluginIdentifier];
+          [plugInContainerPaths setObject:path2 forKey:pluginIdentifier];
         }
 
-        v23 = [v14 groupContainerURLs];
+        groupContainerURLs2 = [v14 groupContainerURLs];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_100026EE0;
         v27[3] = &unk_10016A2E0;
         v27[4] = self;
-        [v23 enumerateKeysAndObjectsUsingBlock:v27];
+        [groupContainerURLs2 enumerateKeysAndObjectsUsingBlock:v27];
 
         v16 = v16 + 1;
         v17 = v14;
@@ -140,17 +140,17 @@
 - (BOOL)_associateContainerPathWithContext
 {
   v3 = objc_alloc_init(NSMutableSet);
-  v4 = [(MSDOperation *)self allDependentOperations];
+  allDependentOperations = [(MSDOperation *)self allDependentOperations];
   v5 = +[MSDTargetDevice sharedInstance];
-  v6 = [v5 demoUserHomePath];
+  demoUserHomePath = [v5 demoUserHomePath];
 
-  v37 = v6;
-  v39 = [v6 stringByAppendingPathComponent:@"PseudoContainers"];
+  v37 = demoUserHomePath;
+  v39 = [demoUserHomePath stringByAppendingPathComponent:@"PseudoContainers"];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = v4;
+  v7 = allDependentOperations;
   v8 = [v7 countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v8)
   {
@@ -166,14 +166,14 @@
         }
 
         v12 = *(*(&v45 + 1) + 8 * i);
-        v13 = [v12 context];
+        context = [v12 context];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v15 = [v12 context];
-          [v3 addObject:v15];
+          context2 = [v12 context];
+          [v3 addObject:context2];
         }
       }
 
@@ -207,8 +207,8 @@
         }
 
         v20 = *(*(&v41 + 1) + 8 * v19);
-        v21 = [v20 identifier];
-        v22 = [v20 containerType];
+        identifier = [v20 identifier];
+        containerType = [v20 containerType];
         if (![v20 containerized])
         {
           v24 = 0;
@@ -216,36 +216,36 @@
           goto LABEL_33;
         }
 
-        v23 = [v20 uniqueName];
-        v24 = [v39 stringByAppendingPathComponent:v23];
+        uniqueName = [v20 uniqueName];
+        v24 = [v39 stringByAppendingPathComponent:uniqueName];
 
-        if ([v22 isEqualToString:@"AppData"])
+        if ([containerType isEqualToString:@"AppData"])
         {
-          v25 = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
-          v26 = [v25 objectForKey:v21];
+          dataContainerPaths = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
+          v26 = [dataContainerPaths objectForKey:identifier];
 
-          v27 = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
+          dataContainerPaths2 = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
           goto LABEL_23;
         }
 
-        if ([v22 isEqualToString:@"ExtensionData"])
+        if ([containerType isEqualToString:@"ExtensionData"])
         {
-          v28 = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
-          v26 = [v28 objectForKey:v21];
+          plugInContainerPaths = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
+          v26 = [plugInContainerPaths objectForKey:identifier];
 
-          v27 = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
+          dataContainerPaths2 = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
           goto LABEL_23;
         }
 
-        if ([v22 isEqualToString:@"GroupData"])
+        if ([containerType isEqualToString:@"GroupData"])
         {
-          v29 = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
-          v26 = [v29 objectForKey:v21];
+          groupContainerPaths = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
+          v26 = [groupContainerPaths objectForKey:identifier];
 
-          v27 = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
+          dataContainerPaths2 = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
 LABEL_23:
-          v30 = v27;
-          [v27 removeObjectForKey:v21];
+          v30 = dataContainerPaths2;
+          [dataContainerPaths2 removeObjectForKey:identifier];
 
           v18 = v38;
           if (v24)
@@ -314,57 +314,57 @@ LABEL_33:
 
 - (BOOL)_purgeContainerizedDataNotInManifest
 {
-  v3 = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
+  dataContainerPaths = [(MSDApplicationDataPrepareOperation *)self dataContainerPaths];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000275B0;
   v9[3] = &unk_10016A308;
   v9[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v9];
+  [dataContainerPaths enumerateKeysAndObjectsUsingBlock:v9];
 
-  v4 = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
+  plugInContainerPaths = [(MSDApplicationDataPrepareOperation *)self plugInContainerPaths];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100027694;
   v8[3] = &unk_10016A308;
   v8[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [plugInContainerPaths enumerateKeysAndObjectsUsingBlock:v8];
 
-  v5 = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
+  groupContainerPaths = [(MSDApplicationDataPrepareOperation *)self groupContainerPaths];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100027778;
   v7[3] = &unk_10016A308;
   v7[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  [groupContainerPaths enumerateKeysAndObjectsUsingBlock:v7];
 
   return 1;
 }
 
-- (void)_createUninstallOperationForContainer:(id)a3 ofType:(id)a4 containerPath:(id)a5 isContainerized:(BOOL)a6
+- (void)_createUninstallOperationForContainer:(id)container ofType:(id)type containerPath:(id)path isContainerized:(BOOL)containerized
 {
-  v6 = a6;
-  v16 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MSDOperation *)self context];
-  v13 = [v12 identifier];
+  containerizedCopy = containerized;
+  pathCopy = path;
+  typeCopy = type;
+  containerCopy = container;
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  if (v6)
+  if (containerizedCopy)
   {
-    v14 = [MSDContentFilesContext defaultContextForContainerizedAppDataItem:v11];
+    v14 = [MSDContentFilesContext defaultContextForContainerizedAppDataItem:containerCopy];
 
-    [v14 setContentRootPath:v16];
+    [v14 setContentRootPath:pathCopy];
   }
 
   else
   {
-    v14 = [MSDContentFilesContext defaultContextForNonContainerizedAppDataItem:v11];
+    v14 = [MSDContentFilesContext defaultContextForNonContainerizedAppDataItem:containerCopy];
   }
 
-  [v14 setContainerType:v10];
+  [v14 setContainerType:typeCopy];
 
-  [v14 setAppIdentifier:v13];
+  [v14 setAppIdentifier:identifier];
   [v14 setUninstallOperation:1];
   v15 = [MSDOperationRepository createOperationFromIdentifier:@"MSDContentFilesUninstallOperation" withContext:v14];
   [(MSDOperation *)self produceNewDependentOperation:v15 forRollback:0];

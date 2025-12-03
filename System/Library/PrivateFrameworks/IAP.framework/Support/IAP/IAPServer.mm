@@ -6,17 +6,17 @@
 - (IAPServer)init;
 - (__CFString)deviceClass;
 - (__CFString)deviceProductType;
-- (id)iapPortManagerForDevPort:(void *)a3;
+- (id)iapPortManagerForDevPort:(void *)port;
 - (void)_pollForDeathAfterPromptCompletes;
-- (void)addNewTransport:(void *)a3;
+- (void)addNewTransport:(void *)transport;
 - (void)bringdownPlatform;
 - (void)dealloc;
 - (void)deleteAllPorts;
-- (void)preventIdleSleep:(int)a3;
-- (void)removeTransport:(void *)a3;
+- (void)preventIdleSleep:(int)sleep;
+- (void)removeTransport:(void *)transport;
 - (void)run;
-- (void)stopServer:(int)a3;
-- (void)stopServer:(int)a3 forceExitingImmediately:(BOOL)a4;
+- (void)stopServer:(int)server;
+- (void)stopServer:(int)server forceExitingImmediately:(BOOL)immediately;
 - (void)updateTransportListStates;
 @end
 
@@ -550,9 +550,9 @@ LABEL_16:
   }
 }
 
-- (void)stopServer:(int)a3
+- (void)stopServer:(int)server
 {
-  if (a3 >= 4)
+  if (server >= 4)
   {
     __break(0x550Au);
   }
@@ -560,14 +560,14 @@ LABEL_16:
   [IAPServer stopServer:"stopServer:forceExitingImmediately:" forceExitingImmediately:?];
 }
 
-- (void)stopServer:(int)a3 forceExitingImmediately:(BOOL)a4
+- (void)stopServer:(int)server forceExitingImmediately:(BOOL)immediately
 {
   if ((&self->serverFlags & 3) != 0)
   {
     goto LABEL_12;
   }
 
-  v4 = a4;
+  immediatelyCopy = immediately;
   *&self->serverFlags |= 2u;
   if (qword_10012B8D8)
   {
@@ -575,7 +575,7 @@ LABEL_16:
     qword_10012B8D8 = 0;
   }
 
-  if (v4)
+  if (immediatelyCopy)
   {
     *&self->serverFlags |= 1u;
     if ((&self->_serverRunLoop & 7) == 0)
@@ -661,7 +661,7 @@ LABEL_12:
   return self;
 }
 
-- (void)preventIdleSleep:(int)a3
+- (void)preventIdleSleep:(int)sleep
 {
   p_disableSleepAssertions = &self->_disableSleepAssertions;
   if ((&self->_disableSleepAssertions & 3) != 0)
@@ -693,7 +693,7 @@ LABEL_12:
     }
 
     hasSleepAssertion = self->_hasSleepAssertion;
-    if (a3 < 1)
+    if (sleep < 1)
     {
       if (hasSleepAssertion > 1)
       {
@@ -758,7 +758,7 @@ LABEL_22:
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    v12 = CFRunLoopTimerCreate(kCFAllocatorDefault, Current + a3, 0.0, 0, 0, sub_10000BD2C, 0);
+    v12 = CFRunLoopTimerCreate(kCFAllocatorDefault, Current + sleep, 0.0, 0, 0, sub_10000BD2C, 0);
     self->_sleepAssertionTimer = v12;
     if ((&self->_serverRunLoop & 7) == 0)
     {
@@ -773,14 +773,14 @@ LABEL_25:
   }
 }
 
-- (id)iapPortManagerForDevPort:(void *)a3
+- (id)iapPortManagerForDevPort:(void *)port
 {
-  if (!a3)
+  if (!port)
   {
     return 0;
   }
 
-  result = [[NSNumber alloc] initWithInt:sub_1000270C8(a3)];
+  result = [[NSNumber alloc] initWithInt:sub_1000270C8(port)];
   if (!result)
   {
     return 0;
@@ -802,19 +802,19 @@ LABEL_25:
   return result;
 }
 
-- (void)addNewTransport:(void *)a3
+- (void)addNewTransport:(void *)transport
 {
-  if (!a3)
+  if (!transport)
   {
     goto LABEL_14;
   }
 
-  if ((a3 & 7) != 0)
+  if ((transport & 7) != 0)
   {
     goto LABEL_14;
   }
 
-  (*(*a3 + 56))(a3, a2);
+  (*(*transport + 56))(transport, a2);
   ServiceWithPrimaryPort = IOAccessoryManagerGetServiceWithPrimaryPort();
   p_iapPortManagers = &self->_iapPortManagers;
   if ((&self->_iapPortManagers & 7) != 0)
@@ -828,7 +828,7 @@ LABEL_25:
     *p_iapPortManagers = objc_alloc_init(NSMutableDictionary);
   }
 
-  v10 = [[NSNumber alloc] initWithLong:(*(*a3 + 56))(a3)];
+  v10 = [[NSNumber alloc] initWithLong:(*(*transport + 56))(transport)];
   if ([*p_iapPortManagers objectForKey:?])
   {
     goto LABEL_9;
@@ -852,7 +852,7 @@ LABEL_9:
   }
 }
 
-- (void)removeTransport:(void *)a3
+- (void)removeTransport:(void *)transport
 {
   p_iapPortManagers = &self->_iapPortManagers;
   if ((&self->_iapPortManagers & 7) != 0)
@@ -865,25 +865,25 @@ LABEL_9:
     return;
   }
 
-  if ((a3 & 7) != 0)
+  if ((transport & 7) != 0)
   {
     goto LABEL_11;
   }
 
-  if (sub_1000270C8(a3) < 6)
+  if (sub_1000270C8(transport) < 6)
   {
     return;
   }
 
   v5 = [NSNumber alloc];
-  if (!a3)
+  if (!transport)
   {
 LABEL_11:
     __break(0x5516u);
     return;
   }
 
-  v6 = [v5 initWithLong:(*(*a3 + 56))(a3)];
+  v6 = [v5 initWithLong:(*(*transport + 56))(transport)];
   if (v6)
   {
     v7 = v6;

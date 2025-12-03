@@ -1,14 +1,14 @@
 @interface PXStorageTipListItem
-+ (unint64_t)storageTipTypeForCloudQuotaUsedBytesIdentifier:(id)a3;
-- (PXStorageTipListItem)initWithStorageTipType:(unint64_t)a3 count:(int64_t)a4 totalSizeInBytes:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (unint64_t)storageTipTypeForCloudQuotaUsedBytesIdentifier:(id)identifier;
+- (PXStorageTipListItem)initWithStorageTipType:(unint64_t)type count:(int64_t)count totalSizeInBytes:(int64_t)bytes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStorageTipListItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PXStorageTipListItem allocWithZone:a3];
+  v4 = [PXStorageTipListItem allocWithZone:zone];
   totalSizeInBytes = self->_totalSizeInBytes;
   storageTipType = self->_storageTipType;
   count = self->_count;
@@ -16,7 +16,7 @@
   return [(PXStorageTipListItem *)v4 initWithStorageTipType:storageTipType count:count totalSizeInBytes:totalSizeInBytes];
 }
 
-- (PXStorageTipListItem)initWithStorageTipType:(unint64_t)a3 count:(int64_t)a4 totalSizeInBytes:(int64_t)a5
+- (PXStorageTipListItem)initWithStorageTipType:(unint64_t)type count:(int64_t)count totalSizeInBytes:(int64_t)bytes
 {
   v19.receiver = self;
   v19.super_class = PXStorageTipListItem;
@@ -24,15 +24,15 @@
   v10 = v9;
   if (v9)
   {
-    v9->_storageTipType = a3;
-    if (a3 > 1)
+    v9->_storageTipType = type;
+    if (type > 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:v10 file:@"PXStorageTipListItem.m" lineNumber:40 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXStorageTipListItem.m" lineNumber:40 description:@"Code which should be unreachable has been reached"];
 
           abort();
         }
@@ -45,13 +45,13 @@
       v13 = @"STORAGE_MANAGEMENT_REVIEW_LARGE_VIDEOS_ALBUM_TITLE";
     }
 
-    else if (a3)
+    else if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
 LABEL_10:
-        v10->_count = a4;
-        v10->_totalSizeInBytes = a5;
+        v10->_count = count;
+        v10->_totalSizeInBytes = bytes;
         return v10;
       }
 
@@ -81,25 +81,25 @@ LABEL_10:
   return v10;
 }
 
-+ (unint64_t)storageTipTypeForCloudQuotaUsedBytesIdentifier:(id)a3
++ (unint64_t)storageTipTypeForCloudQuotaUsedBytesIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([v5 isEqualToString:*MEMORY[0x1E6978D40]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E6978D40]])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E6978D48]])
+  else if ([identifierCopy isEqualToString:*MEMORY[0x1E6978D48]])
   {
     v6 = 1;
   }
 
   else
   {
-    if (([v5 isEqualToString:*MEMORY[0x1E6978D50]] & 1) == 0)
+    if (([identifierCopy isEqualToString:*MEMORY[0x1E6978D50]] & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:a1 file:@"PXStorageTipListItem.m" lineNumber:59 description:@"Attempted to get PXStorageTipType for unknown CloudQuotaUsedBytesIdentifier"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorageTipListItem.m" lineNumber:59 description:@"Attempted to get PXStorageTipType for unknown CloudQuotaUsedBytesIdentifier"];
 
       abort();
     }

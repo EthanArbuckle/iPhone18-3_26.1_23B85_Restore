@@ -1,114 +1,114 @@
 @interface HKInteractiveChartDisplayType
-- (HKInteractiveChartDisplayType)initWithBaseDisplayType:(id)a3 valueFormatter:(id)a4 dataTypeCode:(int64_t)a5 seriesForTimeScopeMapping:(id)a6;
-- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)a3 baseDisplayType:(id)a4 dataTypeCode:(int64_t)a5;
-- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)a3 baseDisplayType:(id)a4 valueFormatter:(id)a5 dataTypeCode:(int64_t)a6;
+- (HKInteractiveChartDisplayType)initWithBaseDisplayType:(id)type valueFormatter:(id)formatter dataTypeCode:(int64_t)code seriesForTimeScopeMapping:(id)mapping;
+- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)series baseDisplayType:(id)type dataTypeCode:(int64_t)code;
+- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)series baseDisplayType:(id)type valueFormatter:(id)formatter dataTypeCode:(int64_t)code;
 - (UIColor)color;
-- (id)_initWithDisplayName:(id)a3 unitDisplayNameOverrides:(id)a4 localizationTableOverride:(id)a5 chartingRules:(id)a6 unitName:(id)a7 valueFormatter:(id)a8 dataTypeCode:(int64_t)a9 baseDisplayType:(id)a10 mainGraphSeries:(id)a11 seriesForTimeScopeMapping:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithDisplayName:(id)name unitDisplayNameOverrides:(id)overrides localizationTableOverride:(id)override chartingRules:(id)rules unitName:(id)unitName valueFormatter:(id)formatter dataTypeCode:(int64_t)code baseDisplayType:(id)self0 mainGraphSeries:(id)self1 seriesForTimeScopeMapping:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)graphSeriesForTimeScope:(int64_t)a3;
-- (id)hk_interactiveChartsFormatterForTimeScope:(int64_t)a3;
+- (id)graphSeriesForTimeScope:(int64_t)scope;
+- (id)hk_interactiveChartsFormatterForTimeScope:(int64_t)scope;
 - (int64_t)_internalDisplayTypeIdentifier;
 @end
 
 @implementation HKInteractiveChartDisplayType
 
-- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)a3 baseDisplayType:(id)a4 dataTypeCode:(int64_t)a5
+- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)series baseDisplayType:(id)type dataTypeCode:(int64_t)code
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 localization];
-  v10 = [v9 displayName];
-  v11 = [v7 localization];
-  v12 = [v11 unitNameKeyOverrides];
-  v13 = [v7 localization];
-  v14 = [v13 localizationTableNameOverride];
-  v15 = [v7 chartingRules];
-  v16 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:v10 unitDisplayNameOverrides:v12 localizationTableOverride:v14 chartingRules:v15 unitName:&stru_1F42FFBE0 valueFormatter:0 dataTypeCode:a5 baseDisplayType:v7 mainGraphSeries:v8 seriesForTimeScopeMapping:0];
+  typeCopy = type;
+  seriesCopy = series;
+  localization = [typeCopy localization];
+  displayName = [localization displayName];
+  localization2 = [typeCopy localization];
+  unitNameKeyOverrides = [localization2 unitNameKeyOverrides];
+  localization3 = [typeCopy localization];
+  localizationTableNameOverride = [localization3 localizationTableNameOverride];
+  chartingRules = [typeCopy chartingRules];
+  v16 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:displayName unitDisplayNameOverrides:unitNameKeyOverrides localizationTableOverride:localizationTableNameOverride chartingRules:chartingRules unitName:&stru_1F42FFBE0 valueFormatter:0 dataTypeCode:code baseDisplayType:typeCopy mainGraphSeries:seriesCopy seriesForTimeScopeMapping:0];
 
   return v16;
 }
 
-- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)a3 baseDisplayType:(id)a4 valueFormatter:(id)a5 dataTypeCode:(int64_t)a6
+- (HKInteractiveChartDisplayType)initWithGraphSeries:(id)series baseDisplayType:(id)type valueFormatter:(id)formatter dataTypeCode:(int64_t)code
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v21 = [v9 localization];
-  v11 = [v21 displayName];
-  v12 = [v9 localization];
-  v13 = [v12 unitNameKeyOverrides];
-  v14 = [v9 localization];
-  v15 = [v14 localizationTableNameOverride];
-  v16 = [v9 chartingRules];
-  v17 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:v11 unitDisplayNameOverrides:v13 localizationTableOverride:v15 chartingRules:v16 unitName:&stru_1F42FFBE0 valueFormatter:v8 dataTypeCode:a6 baseDisplayType:v9 mainGraphSeries:v10 seriesForTimeScopeMapping:0];
+  formatterCopy = formatter;
+  typeCopy = type;
+  seriesCopy = series;
+  localization = [typeCopy localization];
+  displayName = [localization displayName];
+  localization2 = [typeCopy localization];
+  unitNameKeyOverrides = [localization2 unitNameKeyOverrides];
+  localization3 = [typeCopy localization];
+  localizationTableNameOverride = [localization3 localizationTableNameOverride];
+  chartingRules = [typeCopy chartingRules];
+  v17 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:displayName unitDisplayNameOverrides:unitNameKeyOverrides localizationTableOverride:localizationTableNameOverride chartingRules:chartingRules unitName:&stru_1F42FFBE0 valueFormatter:formatterCopy dataTypeCode:code baseDisplayType:typeCopy mainGraphSeries:seriesCopy seriesForTimeScopeMapping:0];
 
   return v17;
 }
 
-- (HKInteractiveChartDisplayType)initWithBaseDisplayType:(id)a3 valueFormatter:(id)a4 dataTypeCode:(int64_t)a5 seriesForTimeScopeMapping:(id)a6
+- (HKInteractiveChartDisplayType)initWithBaseDisplayType:(id)type valueFormatter:(id)formatter dataTypeCode:(int64_t)code seriesForTimeScopeMapping:(id)mapping
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
-  v21 = [v10 localization];
-  v11 = [v21 displayName];
-  v12 = [v10 localization];
-  v13 = [v12 unitNameKeyOverrides];
-  v14 = [v10 localization];
-  v15 = [v14 localizationTableNameOverride];
-  v16 = [v10 chartingRules];
-  v17 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:v11 unitDisplayNameOverrides:v13 localizationTableOverride:v15 chartingRules:v16 unitName:&stru_1F42FFBE0 valueFormatter:v9 dataTypeCode:a5 baseDisplayType:v10 mainGraphSeries:0 seriesForTimeScopeMapping:v8];
+  mappingCopy = mapping;
+  formatterCopy = formatter;
+  typeCopy = type;
+  localization = [typeCopy localization];
+  displayName = [localization displayName];
+  localization2 = [typeCopy localization];
+  unitNameKeyOverrides = [localization2 unitNameKeyOverrides];
+  localization3 = [typeCopy localization];
+  localizationTableNameOverride = [localization3 localizationTableNameOverride];
+  chartingRules = [typeCopy chartingRules];
+  v17 = [(HKInteractiveChartDisplayType *)self _initWithDisplayName:displayName unitDisplayNameOverrides:unitNameKeyOverrides localizationTableOverride:localizationTableNameOverride chartingRules:chartingRules unitName:&stru_1F42FFBE0 valueFormatter:formatterCopy dataTypeCode:code baseDisplayType:typeCopy mainGraphSeries:0 seriesForTimeScopeMapping:mappingCopy];
 
   return v17;
 }
 
-- (id)_initWithDisplayName:(id)a3 unitDisplayNameOverrides:(id)a4 localizationTableOverride:(id)a5 chartingRules:(id)a6 unitName:(id)a7 valueFormatter:(id)a8 dataTypeCode:(int64_t)a9 baseDisplayType:(id)a10 mainGraphSeries:(id)a11 seriesForTimeScopeMapping:(id)a12
+- (id)_initWithDisplayName:(id)name unitDisplayNameOverrides:(id)overrides localizationTableOverride:(id)override chartingRules:(id)rules unitName:(id)unitName valueFormatter:(id)formatter dataTypeCode:(int64_t)code baseDisplayType:(id)self0 mainGraphSeries:(id)self1 seriesForTimeScopeMapping:(id)self2
 {
   v78 = *MEMORY[0x1E69E9840];
-  v70 = a3;
-  v71 = a4;
-  v18 = a5;
-  v19 = a6;
-  v62 = a7;
-  v69 = a7;
-  v63 = a8;
-  v68 = a8;
-  v20 = a10;
-  v66 = a11;
-  v65 = a12;
-  if (!v19)
+  nameCopy = name;
+  overridesCopy = overrides;
+  overrideCopy = override;
+  rulesCopy = rules;
+  unitNameCopy = unitName;
+  unitNameCopy2 = unitName;
+  formatterCopy = formatter;
+  formatterCopy2 = formatter;
+  typeCopy = type;
+  seriesCopy = series;
+  mappingCopy = mapping;
+  if (!rulesCopy)
   {
-    v19 = [[HKDisplayTypeChartingRules alloc] initWithDefaultChartStyle:1];
+    rulesCopy = [[HKDisplayTypeChartingRules alloc] initWithDefaultChartStyle:1];
   }
 
   v21 = [HKDisplayTypeBehavior alloc];
-  v22 = [v20 behavior];
+  behavior = [typeCopy behavior];
   LODWORD(v56) = 65537;
-  v23 = -[HKDisplayTypeBehavior initWithStatisticsMergeStrategy:preferredCalendaryDayAlignment:allowEditView:allowsSourceReordering:unitPreferenceChangeConfirmation:chartsRelativeData:appearsInDataTypeSearch:supportsAssociatedSamples:canBecomeFavorite:hidden:](v21, "initWithStatisticsMergeStrategy:preferredCalendaryDayAlignment:allowEditView:allowsSourceReordering:unitPreferenceChangeConfirmation:chartsRelativeData:appearsInDataTypeSearch:supportsAssociatedSamples:canBecomeFavorite:hidden:", 0, 0, 1, 1, 0, [v22 chartsRelativeData], v56);
+  v23 = -[HKDisplayTypeBehavior initWithStatisticsMergeStrategy:preferredCalendaryDayAlignment:allowEditView:allowsSourceReordering:unitPreferenceChangeConfirmation:chartsRelativeData:appearsInDataTypeSearch:supportsAssociatedSamples:canBecomeFavorite:hidden:](v21, "initWithStatisticsMergeStrategy:preferredCalendaryDayAlignment:allowEditView:allowsSourceReordering:unitPreferenceChangeConfirmation:chartsRelativeData:appearsInDataTypeSearch:supportsAssociatedSamples:canBecomeFavorite:hidden:", 0, 0, 1, 1, 0, [behavior chartsRelativeData], v56);
 
   v24 = [[HKDisplayTypePresentationConfiguration alloc] initWithCurrentValue:0 secondaryValue:0 detailChart:0 singleDailyValue:0];
   v25 = [HKDisplayTypePresentation alloc];
   v26 = v25;
-  v67 = v20;
+  v67 = typeCopy;
   v64 = v24;
-  if (v20)
+  if (typeCopy)
   {
-    v27 = [v20 presentation];
-    [v27 scaleFactor];
+    presentation = [typeCopy presentation];
+    [presentation scaleFactor];
     LOBYTE(v57) = 0;
     v28 = v24;
     v29 = MEMORY[0x1E695E0F8];
     v30 = [(HKDisplayTypePresentation *)v26 initWithDefaultConfiguration:v28 configurationOverrides:MEMORY[0x1E695E0F8] scaleFactor:0 showAllDataHierarchically:0 showAppDataHierarchically:0 shouldDisplayUnitStringOnYAxis:0 useSecondsWhenDisplayingDuration:v57 isCriticalForAutoscale:0 dataTypeIconImageName:0 detailImageName:0 listIconImageNameOverride:0 summaryAttribution:?];
 
     v31 = [HKDisplayTypeLocalization alloc];
-    [v20 localization];
+    [typeCopy localization];
     v32 = v23;
-    v34 = v33 = v19;
-    v35 = [v34 displayNameKey];
-    if (v71)
+    v34 = v33 = rulesCopy;
+    displayNameKey = [v34 displayNameKey];
+    if (overridesCopy)
     {
-      v36 = v71;
+      v36 = overridesCopy;
     }
 
     else
@@ -116,11 +116,11 @@
       v36 = v29;
     }
 
-    v37 = [(HKDisplayTypeLocalization *)v31 initWithDisplayNameKey:v35 labelDisplayNameKey:0 localizationTableNameOverride:v18 localizedKeySuffix:0 unitNameKeyOverrides:v36];
+    v37 = [(HKDisplayTypeLocalization *)v31 initWithDisplayNameKey:displayNameKey labelDisplayNameKey:0 localizationTableNameOverride:overrideCopy localizedKeySuffix:0 unitNameKeyOverrides:v36];
 
-    v19 = v33;
+    rulesCopy = v33;
     v23 = v32;
-    v38 = v70;
+    v38 = nameCopy;
   }
 
   else
@@ -129,10 +129,10 @@
     v39 = MEMORY[0x1E695E0F8];
     v30 = [(HKDisplayTypePresentation *)v25 initWithDefaultConfiguration:v24 configurationOverrides:MEMORY[0x1E695E0F8] scaleFactor:0 showAllDataHierarchically:0 showAppDataHierarchically:0 shouldDisplayUnitStringOnYAxis:0 useSecondsWhenDisplayingDuration:1.0 isCriticalForAutoscale:v57 dataTypeIconImageName:0 detailImageName:0 listIconImageNameOverride:0 summaryAttribution:0];
     v40 = [HKDisplayTypeLocalization alloc];
-    v38 = v70;
-    if (v71)
+    v38 = nameCopy;
+    if (overridesCopy)
     {
-      v41 = v71;
+      v41 = overridesCopy;
     }
 
     else
@@ -140,28 +140,28 @@
       v41 = v39;
     }
 
-    v37 = [(HKDisplayTypeLocalization *)v40 initWithDisplayNameKey:v70 labelDisplayNameKey:0 localizationTableNameOverride:v18 localizedKeySuffix:0 unitNameKeyOverrides:v41];
+    v37 = [(HKDisplayTypeLocalization *)v40 initWithDisplayNameKey:nameCopy labelDisplayNameKey:0 localizationTableNameOverride:overrideCopy localizedKeySuffix:0 unitNameKeyOverrides:v41];
   }
 
-  v42 = [(HKInteractiveChartDisplayType *)self _internalDisplayTypeIdentifier];
-  v43 = [MEMORY[0x1E696C2E0] dataTypeWithCode:a9];
+  _internalDisplayTypeIdentifier = [(HKInteractiveChartDisplayType *)self _internalDisplayTypeIdentifier];
+  v43 = [MEMORY[0x1E696C2E0] dataTypeWithCode:code];
   v76.receiver = self;
   v76.super_class = HKInteractiveChartDisplayType;
-  v44 = [(HKDisplayType *)&v76 initWithDisplayTypeIdentifier:v42 categoryIdentifier:0 secondaryCategoryIdentifiers:MEMORY[0x1E695E0F0] objectType:v43 behavior:v23 presentation:v30 localization:v37 chartingRules:v19 defaultChartingPredicate:0 chartingPredicatesByTimeScope:0];
+  v44 = [(HKDisplayType *)&v76 initWithDisplayTypeIdentifier:_internalDisplayTypeIdentifier categoryIdentifier:0 secondaryCategoryIdentifiers:MEMORY[0x1E695E0F0] objectType:v43 behavior:v23 presentation:v30 localization:v37 chartingRules:rulesCopy defaultChartingPredicate:0 chartingPredicatesByTimeScope:0];
 
   if (v44)
   {
     v58 = v30;
     v59 = v23;
-    v60 = v19;
-    objc_storeStrong(&v44->_specifiedDisplayName, a3);
-    objc_storeStrong(&v44->_specifiedUnitName, v62);
-    objc_storeStrong(&v44->_specifiedValueFormatter, v63);
-    objc_storeStrong(&v44->_baseDisplayType, a10);
-    objc_storeStrong(&v44->_mainGraphSeries, a11);
-    objc_storeStrong(&v44->_seriesForTimeScopeMapping, a12);
-    v45 = [(HKDisplayType *)v44 presentation];
-    -[HKGraphSeries setIsCriticalForAutoscale:](v44->_mainGraphSeries, "setIsCriticalForAutoscale:", [v45 isCriticalForAutoscale]);
+    v60 = rulesCopy;
+    objc_storeStrong(&v44->_specifiedDisplayName, name);
+    objc_storeStrong(&v44->_specifiedUnitName, unitNameCopy);
+    objc_storeStrong(&v44->_specifiedValueFormatter, formatterCopy);
+    objc_storeStrong(&v44->_baseDisplayType, type);
+    objc_storeStrong(&v44->_mainGraphSeries, series);
+    objc_storeStrong(&v44->_seriesForTimeScopeMapping, mapping);
+    presentation2 = [(HKDisplayType *)v44 presentation];
+    -[HKGraphSeries setIsCriticalForAutoscale:](v44->_mainGraphSeries, "setIsCriticalForAutoscale:", [presentation2 isCriticalForAutoscale]);
 
     v74 = 0u;
     v75 = 0u;
@@ -183,10 +183,10 @@
           }
 
           v51 = *(*(&v72 + 1) + 8 * i);
-          v52 = [(HKDisplayType *)v44 presentation];
-          v53 = [v52 isCriticalForAutoscale];
+          presentation3 = [(HKDisplayType *)v44 presentation];
+          isCriticalForAutoscale = [presentation3 isCriticalForAutoscale];
           v54 = [(NSDictionary *)v44->_seriesForTimeScopeMapping objectForKeyedSubscript:v51];
-          [v54 setIsCriticalForAutoscale:v53];
+          [v54 setIsCriticalForAutoscale:isCriticalForAutoscale];
         }
 
         v48 = [(NSDictionary *)v46 countByEnumeratingWithState:&v72 objects:v77 count:16];
@@ -195,20 +195,20 @@
       while (v48);
     }
 
-    v38 = v70;
+    v38 = nameCopy;
     v23 = v59;
-    v19 = v60;
+    rulesCopy = v60;
     v30 = v58;
   }
 
   return v44;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = HKInteractiveChartDisplayType;
-  v4 = [(HKDisplayType *)&v12 copyWithZone:a3];
+  v4 = [(HKDisplayType *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_specifiedDisplayName copy];
   v6 = *(v4 + 19);
   *(v4 + 19) = v5;
@@ -228,23 +228,23 @@
   return v4;
 }
 
-- (id)graphSeriesForTimeScope:(int64_t)a3
+- (id)graphSeriesForTimeScope:(int64_t)scope
 {
-  v5 = [(HKInteractiveChartDisplayType *)self mainGraphSeries];
+  mainGraphSeries = [(HKInteractiveChartDisplayType *)self mainGraphSeries];
 
-  if (v5)
+  if (mainGraphSeries)
   {
-    v6 = [(HKInteractiveChartDisplayType *)self mainGraphSeries];
+    mainGraphSeries2 = [(HKInteractiveChartDisplayType *)self mainGraphSeries];
   }
 
   else
   {
-    v7 = [(HKInteractiveChartDisplayType *)self seriesForTimeScopeMapping];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v6 = [v7 objectForKey:v8];
+    seriesForTimeScopeMapping = [(HKInteractiveChartDisplayType *)self seriesForTimeScopeMapping];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+    mainGraphSeries2 = [seriesForTimeScopeMapping objectForKey:v8];
   }
 
-  return v6;
+  return mainGraphSeries2;
 }
 
 - (UIColor)color
@@ -252,20 +252,20 @@
   color = self->_color;
   if (color)
   {
-    v3 = color;
+    color = color;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = HKInteractiveChartDisplayType;
-    v3 = [(HKDisplayType *)&v5 color];
+    color = [(HKDisplayType *)&v5 color];
   }
 
-  return v3;
+  return color;
 }
 
-- (id)hk_interactiveChartsFormatterForTimeScope:(int64_t)a3
+- (id)hk_interactiveChartsFormatterForTimeScope:(int64_t)scope
 {
   specifiedValueFormatter = self->_specifiedValueFormatter;
   if (specifiedValueFormatter || (baseDisplayType = self->_baseDisplayType) == 0)
@@ -275,7 +275,7 @@
 
   else
   {
-    v4 = [(HKDisplayType *)baseDisplayType hk_interactiveChartsFormatterForTimeScope:a3];
+    v4 = [(HKDisplayType *)baseDisplayType hk_interactiveChartsFormatterForTimeScope:scope];
   }
 
   return v4;
@@ -284,8 +284,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKInteractiveChartDisplayType *)self displayName];
-  v4 = [v2 stringWithFormat:@"HKInteractiveChartInternalDisplayType(%@)", v3];
+  displayName = [(HKInteractiveChartDisplayType *)self displayName];
+  v4 = [v2 stringWithFormat:@"HKInteractiveChartInternalDisplayType(%@)", displayName];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface CSKeywordAnalyzerNDAPIResult
 - (CSKeywordAnalyzerNDAPIResult)init;
 - (NSDictionary)dictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CSKeywordAnalyzerNDAPIResult
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSKeywordAnalyzerNDAPIResult);
   [(CSKeywordAnalyzerNDAPIResult *)v4 setPhId:self->_phId];

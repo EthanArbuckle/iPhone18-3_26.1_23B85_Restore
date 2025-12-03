@@ -1,63 +1,63 @@
 @interface PLRevGeoLocationInfo
-+ (BOOL)isInvalidWithPlistData:(id)a3;
-+ (id)_newRevGeoLocationInfoFromData:(id)a3;
-+ (id)countryCodeWithGEOMapItem:(id)a3;
-+ (id)infoFromPlistData:(id)a3;
-+ (id)newDataFromRevGeoLocationInfo:(id)a3;
++ (BOOL)isInvalidWithPlistData:(id)data;
++ (id)_newRevGeoLocationInfoFromData:(id)data;
++ (id)countryCodeWithGEOMapItem:(id)item;
++ (id)infoFromPlistData:(id)data;
++ (id)newDataFromRevGeoLocationInfo:(id)info;
 - (BOOL)hasLocation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)locationWasResolvedWithBestRevGeoProvider;
-- (PLRevGeoLocationInfo)initWithCoder:(id)a3;
-- (PLRevGeoLocationInfo)initWithGEOMapItem:(id)a3;
-- (PLRevGeoLocationInfo)initWithMapItem:(id)a3 postalAddress:(id)a4 addressString:(id)a5 countryCode:(id)a6 compoundNameInfo:(id)a7 compoundSecondaryNameInfo:(id)a8 isHome:(BOOL)a9 geoServiceProvider:(id)a10;
+- (PLRevGeoLocationInfo)initWithCoder:(id)coder;
+- (PLRevGeoLocationInfo)initWithGEOMapItem:(id)item;
+- (PLRevGeoLocationInfo)initWithMapItem:(id)item postalAddress:(id)address addressString:(id)string countryCode:(id)code compoundNameInfo:(id)info compoundSecondaryNameInfo:(id)nameInfo isHome:(BOOL)home geoServiceProvider:(id)self0;
 - (id)description;
 - (id)localizedDescription;
 - (id)placeNamesForLocalizedDetailedDescription;
 - (id)plistData;
 - (unint64_t)_locationInfoOrderForCurrentLocale;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLRevGeoLocationInfo
 
-- (PLRevGeoLocationInfo)initWithCoder:(id)a3
+- (PLRevGeoLocationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([PLRevGeoLocationInfo isInvalidWithCoder:v4])
+  coderCopy = coder;
+  if ([PLRevGeoLocationInfo isInvalidWithCoder:coderCopy])
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postalAddress"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoServiceProvider"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addressString"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compoundNames"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compoundSecondaryNames"];
-    LOBYTE(v14) = [v4 decodeBoolForKey:@"isHome"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postalAddress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoServiceProvider"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addressString"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compoundNames"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compoundSecondaryNames"];
+    LOBYTE(v14) = [coderCopy decodeBoolForKey:@"isHome"];
     self = [(PLRevGeoLocationInfo *)self initWithMapItem:v6 postalAddress:v7 addressString:v9 countryCode:v10 compoundNameInfo:v11 compoundSecondaryNameInfo:v12 isHome:v14 geoServiceProvider:v8];
 
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:13 forKey:@"version"];
-  [v4 encodeObject:self->_mapItem forKey:@"mapItem"];
-  [v4 encodeObject:self->_postalAddress forKey:@"postalAddress"];
-  [v4 encodeObject:self->_addressString forKey:@"addressString"];
-  [v4 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v4 encodeObject:self->_compoundNameInfo forKey:@"compoundNames"];
-  [v4 encodeObject:self->_compoundSecondaryNameInfo forKey:@"compoundSecondaryNames"];
-  [v4 encodeObject:self->_geoServiceProvider forKey:@"geoServiceProvider"];
-  [v4 encodeBool:self->_isHome forKey:@"isHome"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:13 forKey:@"version"];
+  [coderCopy encodeObject:self->_mapItem forKey:@"mapItem"];
+  [coderCopy encodeObject:self->_postalAddress forKey:@"postalAddress"];
+  [coderCopy encodeObject:self->_addressString forKey:@"addressString"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_compoundNameInfo forKey:@"compoundNames"];
+  [coderCopy encodeObject:self->_compoundSecondaryNameInfo forKey:@"compoundSecondaryNames"];
+  [coderCopy encodeObject:self->_geoServiceProvider forKey:@"geoServiceProvider"];
+  [coderCopy encodeBool:self->_isHome forKey:@"isHome"];
 }
 
 - (id)plistData
@@ -72,7 +72,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v4;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "[ERROR] Could not encode revGeoLocationData %@ with error:%@", buf, 0x16u);
@@ -82,10 +82,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -95,19 +95,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       mapItem = self->_mapItem;
-      v7 = [(PLRevGeoLocationInfo *)v5 mapItem];
-      v8 = v7;
-      if (mapItem == v7)
+      mapItem = [(PLRevGeoLocationInfo *)v5 mapItem];
+      v8 = mapItem;
+      if (mapItem == mapItem)
       {
       }
 
       else
       {
         v9 = self->_mapItem;
-        v10 = [(PLRevGeoLocationInfo *)v5 mapItem];
-        LODWORD(v9) = [(PLRevGeoMapItem *)v9 isEqual:v10];
+        mapItem2 = [(PLRevGeoLocationInfo *)v5 mapItem];
+        LODWORD(v9) = [(PLRevGeoMapItem *)v9 isEqual:mapItem2];
 
         if (!v9)
         {
@@ -116,17 +116,17 @@
       }
 
       addressString = self->_addressString;
-      v13 = [(PLRevGeoLocationInfo *)v5 addressString];
-      v14 = v13;
-      if (addressString == v13)
+      addressString = [(PLRevGeoLocationInfo *)v5 addressString];
+      v14 = addressString;
+      if (addressString == addressString)
       {
       }
 
       else
       {
         v15 = self->_addressString;
-        v16 = [(PLRevGeoLocationInfo *)v5 addressString];
-        LODWORD(v15) = [(NSString *)v15 isEqualToString:v16];
+        addressString2 = [(PLRevGeoLocationInfo *)v5 addressString];
+        LODWORD(v15) = [(NSString *)v15 isEqualToString:addressString2];
 
         if (!v15)
         {
@@ -135,17 +135,17 @@
       }
 
       compoundNameInfo = self->_compoundNameInfo;
-      v18 = [(PLRevGeoLocationInfo *)v5 compoundNameInfo];
-      v19 = v18;
-      if (compoundNameInfo == v18)
+      compoundNameInfo = [(PLRevGeoLocationInfo *)v5 compoundNameInfo];
+      v19 = compoundNameInfo;
+      if (compoundNameInfo == compoundNameInfo)
       {
       }
 
       else
       {
         v20 = self->_compoundNameInfo;
-        v21 = [(PLRevGeoLocationInfo *)v5 compoundNameInfo];
-        LODWORD(v20) = [(PLRevGeoCompoundNameInfo *)v20 isEqual:v21];
+        compoundNameInfo2 = [(PLRevGeoLocationInfo *)v5 compoundNameInfo];
+        LODWORD(v20) = [(PLRevGeoCompoundNameInfo *)v20 isEqual:compoundNameInfo2];
 
         if (!v20)
         {
@@ -154,17 +154,17 @@
       }
 
       compoundSecondaryNameInfo = self->_compoundSecondaryNameInfo;
-      v23 = [(PLRevGeoLocationInfo *)v5 compoundSecondaryNameInfo];
-      v24 = v23;
-      if (compoundSecondaryNameInfo == v23)
+      compoundSecondaryNameInfo = [(PLRevGeoLocationInfo *)v5 compoundSecondaryNameInfo];
+      v24 = compoundSecondaryNameInfo;
+      if (compoundSecondaryNameInfo == compoundSecondaryNameInfo)
       {
       }
 
       else
       {
         v25 = self->_compoundSecondaryNameInfo;
-        v26 = [(PLRevGeoLocationInfo *)v5 compoundSecondaryNameInfo];
-        LODWORD(v25) = [(PLRevGeoCompoundNameInfo *)v25 isEqual:v26];
+        compoundSecondaryNameInfo2 = [(PLRevGeoLocationInfo *)v5 compoundSecondaryNameInfo];
+        LODWORD(v25) = [(PLRevGeoCompoundNameInfo *)v25 isEqual:compoundSecondaryNameInfo2];
 
         if (!v25)
         {
@@ -191,18 +191,18 @@ LABEL_23:
 
 - (BOOL)hasLocation
 {
-  v3 = [(PLRevGeoLocationInfo *)self compoundNameInfo];
-  v4 = [v3 localizedTitleForNameInfo];
-  if ([v4 length])
+  compoundNameInfo = [(PLRevGeoLocationInfo *)self compoundNameInfo];
+  localizedTitleForNameInfo = [compoundNameInfo localizedTitleForNameInfo];
+  if ([localizedTitleForNameInfo length])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PLRevGeoLocationInfo *)self compoundSecondaryNameInfo];
-    v7 = [v6 localizedSortedNames];
-    v5 = [v7 count] != 0;
+    compoundSecondaryNameInfo = [(PLRevGeoLocationInfo *)self compoundSecondaryNameInfo];
+    localizedSortedNames = [compoundSecondaryNameInfo localizedSortedNames];
+    v5 = [localizedSortedNames count] != 0;
   }
 
   return v5;
@@ -211,16 +211,16 @@ LABEL_23:
 - (unint64_t)_locationInfoOrderForCurrentLocale
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  if (![v4 length])
+  if (![firstObject length])
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 languageCode];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    v4 = v6;
+    firstObject = languageCode;
   }
 
   v15 = 0u;
@@ -242,7 +242,7 @@ LABEL_5:
         objc_enumerationMutation(&unk_1F0FBFB98);
       }
 
-      if ([v4 hasPrefix:*(*(&v13 + 1) + 8 * v11)])
+      if ([firstObject hasPrefix:*(*(&v13 + 1) + 8 * v11)])
       {
         break;
       }
@@ -294,10 +294,10 @@ LABEL_11:
         }
 
         v10 = [v3 bestPlaceInfoForOrderType:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "unsignedIntegerValue")}];
-        v11 = [v10 placeName];
-        if (v11)
+        placeName = [v10 placeName];
+        if (placeName)
         {
-          [v4 addObject:v11];
+          [v4 addObject:placeName];
         }
       }
 
@@ -309,16 +309,16 @@ LABEL_11:
 
   if ([(PLRevGeoLocationInfo *)self _locationInfoOrderForCurrentLocale]== 1)
   {
-    v12 = [v4 reversedOrderedSet];
+    reversedOrderedSet = [v4 reversedOrderedSet];
   }
 
   else
   {
-    v12 = v4;
+    reversedOrderedSet = v4;
   }
 
-  v13 = v12;
-  v14 = [v12 copy];
+  v13 = reversedOrderedSet;
+  v14 = [reversedOrderedSet copy];
 
   return v14;
 }
@@ -348,15 +348,15 @@ LABEL_11:
           objc_enumerationMutation(v3);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * i) unsignedIntegerValue];
-        v11 = [v2 bestPlaceInfoForOrderType:v10];
+        unsignedIntegerValue = [*(*(&v27 + 1) + 8 * i) unsignedIntegerValue];
+        v11 = [v2 bestPlaceInfoForOrderType:unsignedIntegerValue];
         v12 = v11;
         if (v11)
         {
           if (!v7)
           {
             v7 = v11;
-            v6 = v10;
+            v6 = unsignedIntegerValue;
           }
 
           if ([v12 hasArea])
@@ -365,7 +365,7 @@ LABEL_11:
             if (v13 >= 500.0)
             {
 
-              v6 = v10;
+              v6 = unsignedIntegerValue;
               v7 = v12;
               goto LABEL_16;
             }
@@ -391,56 +391,56 @@ LABEL_11:
 
 LABEL_16:
 
-  v14 = [v7 placeName];
-  v15 = v14;
-  if (!v14)
+  placeName = [v7 placeName];
+  v15 = placeName;
+  if (!placeName)
   {
-    v21 = 0;
+    localizedTitleForNameInfo = 0;
     goto LABEL_27;
   }
 
-  v31 = v14;
+  v31 = placeName;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
   if (v6 == 3)
   {
     v17 = [v2 bestPlaceInfoForOrderType:5];
-    v18 = [v17 placeName];
-    v19 = [v18 lowercaseString];
+    placeName2 = [v17 placeName];
+    lowercaseString = [placeName2 lowercaseString];
 
-    if (v19)
+    if (lowercaseString)
     {
-      v20 = [v15 lowercaseString];
-      if ([v19 containsString:v20])
+      lowercaseString2 = [v15 lowercaseString];
+      if ([lowercaseString containsString:lowercaseString2])
       {
       }
 
       else
       {
-        v23 = [v15 lowercaseString];
-        v24 = [v23 containsString:v19];
+        lowercaseString3 = [v15 lowercaseString];
+        v24 = [lowercaseString3 containsString:lowercaseString];
 
         if ((v24 & 1) == 0)
         {
-          v22 = [v17 placeName];
+          placeName3 = [v17 placeName];
           goto LABEL_25;
         }
       }
     }
 
-    v22 = 0;
+    placeName3 = 0;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v22 = 0;
+  placeName3 = 0;
 LABEL_26:
-  v25 = [[PLRevGeoCompoundNameInfo alloc] initWithNamePrefix:v22 nameSuffix:0 sortedNames:v16 isContinuation:0 suffixWhenPrefixOnly:0];
-  v21 = [(PLRevGeoCompoundNameInfo *)v25 localizedTitleForNameInfo];
+  v25 = [[PLRevGeoCompoundNameInfo alloc] initWithNamePrefix:placeName3 nameSuffix:0 sortedNames:v16 isContinuation:0 suffixWhenPrefixOnly:0];
+  localizedTitleForNameInfo = [(PLRevGeoCompoundNameInfo *)v25 localizedTitleForNameInfo];
 
 LABEL_27:
 
-  return v21;
+  return localizedTitleForNameInfo;
 }
 
 - (id)description
@@ -454,42 +454,42 @@ LABEL_27:
   return v5;
 }
 
-- (PLRevGeoLocationInfo)initWithMapItem:(id)a3 postalAddress:(id)a4 addressString:(id)a5 countryCode:(id)a6 compoundNameInfo:(id)a7 compoundSecondaryNameInfo:(id)a8 isHome:(BOOL)a9 geoServiceProvider:(id)a10
+- (PLRevGeoLocationInfo)initWithMapItem:(id)item postalAddress:(id)address addressString:(id)string countryCode:(id)code compoundNameInfo:(id)info compoundSecondaryNameInfo:(id)nameInfo isHome:(BOOL)home geoServiceProvider:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  obj = a8;
-  v24 = a8;
-  v19 = a10;
+  itemCopy = item;
+  addressCopy = address;
+  stringCopy = string;
+  codeCopy = code;
+  infoCopy = info;
+  obj = nameInfo;
+  nameInfoCopy = nameInfo;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = PLRevGeoLocationInfo;
   v20 = [(PLRevGeoLocationInfo *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_mapItem, a3);
-    objc_storeStrong(&v21->_postalAddress, a4);
-    objc_storeStrong(&v21->_addressString, a5);
-    objc_storeStrong(&v21->_countryCode, a6);
-    objc_storeStrong(&v21->_compoundNameInfo, a7);
+    objc_storeStrong(&v20->_mapItem, item);
+    objc_storeStrong(&v21->_postalAddress, address);
+    objc_storeStrong(&v21->_addressString, string);
+    objc_storeStrong(&v21->_countryCode, code);
+    objc_storeStrong(&v21->_compoundNameInfo, info);
     objc_storeStrong(&v21->_compoundSecondaryNameInfo, obj);
-    v21->_isHome = a9;
-    objc_storeStrong(&v21->_geoServiceProvider, a10);
+    v21->_isHome = home;
+    objc_storeStrong(&v21->_geoServiceProvider, provider);
   }
 
   return v21;
 }
 
-+ (BOOL)isInvalidWithPlistData:(id)a3
++ (BOOL)isInvalidWithPlistData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  dataCopy = data;
   v11 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v11];
+  v6 = [[v4 alloc] initForReadingFromData:dataCopy error:&v11];
 
   v7 = v11;
   if (v7)
@@ -507,22 +507,22 @@ LABEL_27:
 
   else
   {
-    v9 = [a1 isInvalidWithCoder:v6];
+    v9 = [self isInvalidWithCoder:v6];
     [v6 finishDecoding];
   }
 
   return v9;
 }
 
-+ (id)infoFromPlistData:(id)a3
++ (id)infoFromPlistData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x1E696ACD0];
-    v4 = a3;
+    dataCopy = data;
     v9 = 0;
-    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v6 = v9;
     if (!v5)
@@ -545,13 +545,13 @@ LABEL_27:
   return v5;
 }
 
-+ (id)_newRevGeoLocationInfoFromData:(id)a3
++ (id)_newRevGeoLocationInfoFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:0];
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:0];
     objc_autoreleasePoolPop(v4);
   }
 
@@ -563,13 +563,13 @@ LABEL_27:
   return v5;
 }
 
-+ (id)newDataFromRevGeoLocationInfo:(id)a3
++ (id)newDataFromRevGeoLocationInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:200 options:0 error:0];
+    v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:0];
     objc_autoreleasePoolPop(v4);
   }
 
@@ -581,21 +581,21 @@ LABEL_27:
   return v5;
 }
 
-- (PLRevGeoLocationInfo)initWithGEOMapItem:(id)a3
+- (PLRevGeoLocationInfo)initWithGEOMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [PLRevGeoMapItem mapItemWithGEOMapItem:v4];
-  v6 = [v4 geoAddress];
-  v7 = [v6 postalAddress];
+  itemCopy = item;
+  v5 = [PLRevGeoMapItem mapItemWithGEOMapItem:itemCopy];
+  geoAddress = [itemCopy geoAddress];
+  postalAddress = [geoAddress postalAddress];
 
-  v8 = [v4 addressObject];
-  v9 = [v8 fullAddressWithMultiline:0];
+  addressObject = [itemCopy addressObject];
+  v9 = [addressObject fullAddressWithMultiline:0];
 
-  v10 = [PLRevGeoLocationInfo countryCodeWithGEOMapItem:v4];
+  v10 = [PLRevGeoLocationInfo countryCodeWithGEOMapItem:itemCopy];
 
   v11 = +[PLRevGeoLocationHelper currentRevGeoProvider];
   LOBYTE(v14) = 0;
-  v12 = [(PLRevGeoLocationInfo *)self initWithMapItem:v5 postalAddress:v7 addressString:v9 countryCode:v10 compoundNameInfo:0 compoundSecondaryNameInfo:0 isHome:v14 geoServiceProvider:v11];
+  v12 = [(PLRevGeoLocationInfo *)self initWithMapItem:v5 postalAddress:postalAddress addressString:v9 countryCode:v10 compoundNameInfo:0 compoundSecondaryNameInfo:0 isHome:v14 geoServiceProvider:v11];
 
   return v12;
 }
@@ -603,8 +603,8 @@ LABEL_27:
 - (BOOL)locationWasResolvedWithBestRevGeoProvider
 {
   v3 = +[PLRevGeoLocationHelper currentRevGeoProvider];
-  v4 = [(PLRevGeoLocationInfo *)self geoServiceProvider];
-  if (([v3 isEqualToString:v4] & 1) != 0 || (v5 = +[PLRevGeoLocationHelper isAutoNaviRevGeoProvider:](PLRevGeoLocationHelper, "isAutoNaviRevGeoProvider:", v4), -[PLRevGeoLocationInfo countryCode](self, "countryCode"), v6 = objc_claimAutoreleasedReturnValue(), v7 = +[PLRevGeoLocationHelper isAutoNaviCountryCode:](PLRevGeoLocationHelper, "isAutoNaviCountryCode:", v6), v6, v5 == v7))
+  geoServiceProvider = [(PLRevGeoLocationInfo *)self geoServiceProvider];
+  if (([v3 isEqualToString:geoServiceProvider] & 1) != 0 || (v5 = +[PLRevGeoLocationHelper isAutoNaviRevGeoProvider:](PLRevGeoLocationHelper, "isAutoNaviRevGeoProvider:", geoServiceProvider), -[PLRevGeoLocationInfo countryCode](self, "countryCode"), v6 = objc_claimAutoreleasedReturnValue(), v7 = +[PLRevGeoLocationHelper isAutoNaviCountryCode:](PLRevGeoLocationHelper, "isAutoNaviCountryCode:", v6), v6, v5 == v7))
   {
     LOBYTE(v8) = 1;
   }
@@ -617,17 +617,17 @@ LABEL_27:
   return v8;
 }
 
-+ (id)countryCodeWithGEOMapItem:(id)a3
++ (id)countryCodeWithGEOMapItem:(id)item
 {
-  v3 = [a3 geoAddress];
-  v4 = v3;
-  if (v3 && [v3 hasStructuredAddress])
+  geoAddress = [item geoAddress];
+  v4 = geoAddress;
+  if (geoAddress && [geoAddress hasStructuredAddress])
   {
-    v5 = [v4 structuredAddress];
-    if ([v5 hasCountryCode])
+    structuredAddress = [v4 structuredAddress];
+    if ([structuredAddress hasCountryCode])
     {
-      v6 = [v5 countryCode];
-      v7 = [v6 copy];
+      countryCode = [structuredAddress countryCode];
+      v7 = [countryCode copy];
     }
 
     else

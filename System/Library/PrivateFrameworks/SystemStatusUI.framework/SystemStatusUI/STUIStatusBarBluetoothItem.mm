@@ -1,31 +1,31 @@
 @interface STUIStatusBarBluetoothItem
 + (BOOL)alwaysShowRegulatoryBluetoothIndicator;
 - (STUIStatusBarImageView)batteryImageView;
-- (id)_batteryFillColorForEntry:(id)a3 usingTintColor:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)_batteryFillColorForEntry:(id)entry usingTintColor:(id)color;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)entry;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_batteryImageView;
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4;
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item;
 @end
 
 @implementation STUIStatusBarBluetoothItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 bluetoothEntry];
-  v5 = [v4 state];
+  data = [update data];
+  bluetoothEntry = [data bluetoothEntry];
+  state = [bluetoothEntry state];
 
-  if (v5 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_279D39380[v5];
+    return off_279D39380[state];
   }
 }
 
@@ -48,124 +48,124 @@ uint64_t __68__STUIStatusBarBluetoothItem_alwaysShowRegulatoryBluetoothIndicator
 
 - (id)entry
 {
-  v3 = [(STUIStatusBarItem *)self statusBar];
-  v4 = [v3 currentAggregatedData];
-  v5 = [(STUIStatusBarBluetoothItem *)self indicatorEntryKey];
-  v6 = [v4 valueForKey:v5];
+  statusBar = [(STUIStatusBarItem *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
+  indicatorEntryKey = [(STUIStatusBarBluetoothItem *)self indicatorEntryKey];
+  v6 = [currentAggregatedData valueForKey:indicatorEntryKey];
 
   return v6;
 }
 
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
+  attributesCopy = attributes;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
   v9 = +[(STUIStatusBarItem *)STUIStatusBarExternalBluetoothItem];
 
-  if (v8 != v9)
+  if (identifier != v9)
   {
     v10.receiver = self;
     v10.super_class = STUIStatusBarBluetoothItem;
-    [(STUIStatusBarItem *)&v10 applyStyleAttributes:v6 toDisplayItem:v7];
+    [(STUIStatusBarItem *)&v10 applyStyleAttributes:attributesCopy toDisplayItem:itemCopy];
   }
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v50.receiver = self;
   v50.super_class = STUIStatusBarBluetoothItem;
-  v8 = [(STUIStatusBarIndicatorItem *)&v50 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [(STUIStatusBarBluetoothItem *)self entry];
-  v10 = [v7 identifier];
+  v8 = [(STUIStatusBarIndicatorItem *)&v50 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  entry = [(STUIStatusBarBluetoothItem *)self entry];
+  identifier = [itemCopy identifier];
   v11 = +[(STUIStatusBarItem *)STUIStatusBarBluetoothItem];
 
-  if (v10 == v11)
+  if (identifier == v11)
   {
-    if (![v6 dataChanged])
+    if (![updateCopy dataChanged])
     {
       goto LABEL_30;
     }
 
-    v18 = [v9 batteryEntry];
-    if (([objc_opt_class() alwaysShowRegulatoryBluetoothIndicator] & 1) == 0 && objc_msgSend(v9, "state") != 2 && (objc_msgSend(v18, "isEnabled") & 1) == 0)
+    batteryEntry = [entry batteryEntry];
+    if (([objc_opt_class() alwaysShowRegulatoryBluetoothIndicator] & 1) == 0 && objc_msgSend(entry, "state") != 2 && (objc_msgSend(batteryEntry, "isEnabled") & 1) == 0)
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
   }
 
   else
   {
-    v12 = [v7 identifier];
+    identifier2 = [itemCopy identifier];
     v13 = +[(STUIStatusBarItem *)STUIStatusBarExternalBluetoothItem];
 
-    if (v12 == v13)
+    if (identifier2 == v13)
     {
-      v19 = [v6 styleAttributes];
+      styleAttributes = [updateCopy styleAttributes];
       v49.receiver = self;
       v49.super_class = STUIStatusBarBluetoothItem;
-      [(STUIStatusBarItem *)&v49 applyStyleAttributes:v19 toDisplayItem:v7];
+      [(STUIStatusBarItem *)&v49 applyStyleAttributes:styleAttributes toDisplayItem:itemCopy];
 
-      v20 = [v9 state];
-      if (v20 == 1)
+      state = [entry state];
+      if (state == 1)
       {
-        [v7 setEnabled:1];
-        v18 = [v6 styleAttributes];
-        v21 = [v18 imageTintColor];
+        [itemCopy setEnabled:1];
+        batteryEntry = [updateCopy styleAttributes];
+        imageTintColor = [batteryEntry imageTintColor];
       }
 
       else
       {
-        if (v20)
+        if (state)
         {
           goto LABEL_30;
         }
 
-        [v7 setEnabled:1];
-        v18 = [v6 styleAttributes];
-        v21 = [v18 imageDimmedTintColor];
+        [itemCopy setEnabled:1];
+        batteryEntry = [updateCopy styleAttributes];
+        imageTintColor = [batteryEntry imageDimmedTintColor];
       }
 
-      v22 = v21;
-      v23 = [(STUIStatusBarIndicatorItem *)self imageView];
-      [v23 setTintColor:v22];
+      v22 = imageTintColor;
+      imageView = [(STUIStatusBarIndicatorItem *)self imageView];
+      [imageView setTintColor:v22];
     }
 
     else
     {
-      v14 = [v7 identifier];
+      identifier3 = [itemCopy identifier];
       v15 = +[STUIStatusBarBluetoothItem batteryDisplayIdentifier];
 
-      if (v14 != v15)
+      if (identifier3 != v15)
       {
         goto LABEL_30;
       }
 
-      if (([v6 dataChanged] & 1) != 0 || objc_msgSend(v6, "styleAttributesChanged"))
+      if (([updateCopy dataChanged] & 1) != 0 || objc_msgSend(updateCopy, "styleAttributesChanged"))
       {
-        v16 = [v9 batteryEntry];
-        if ([v7 isEnabled])
+        batteryEntry2 = [entry batteryEntry];
+        if ([itemCopy isEnabled])
         {
-          v17 = [v16 isEnabled];
+          isEnabled = [batteryEntry2 isEnabled];
         }
 
         else
         {
-          v17 = 0;
+          isEnabled = 0;
         }
 
-        [v7 setEnabled:v17];
-        if ([v7 isEnabled])
+        [itemCopy setEnabled:isEnabled];
+        if ([itemCopy isEnabled])
         {
           v24 = +[STUIStatusBarImageProvider sharedProvider];
-          v25 = [v6 styleAttributes];
-          v26 = [v24 imageNamed:@"HeadsetBatteryBG" styleAttributes:v25];
-          [v6 styleAttributes];
-          v27 = v43 = v16;
-          v28 = [v27 imageTintColor];
-          v42 = [v26 _flatImageWithColor:v28];
+          styleAttributes2 = [updateCopy styleAttributes];
+          v26 = [v24 imageNamed:@"HeadsetBatteryBG" styleAttributes:styleAttributes2];
+          [updateCopy styleAttributes];
+          v27 = v43 = batteryEntry2;
+          imageTintColor2 = [v27 imageTintColor];
+          v42 = [v26 _flatImageWithColor:imageTintColor2];
 
           v29 = objc_alloc(MEMORY[0x277D75560]);
           [v42 size];
@@ -176,15 +176,15 @@ uint64_t __68__STUIStatusBarBluetoothItem_alwaysShowRegulatoryBluetoothIndicator
           v44[3] = &unk_279D39360;
           v45 = v42;
           v46 = v43;
-          v31 = v6;
+          v31 = updateCopy;
           v47 = v31;
-          v48 = self;
+          selfCopy = self;
           v32 = v42;
           v33 = [v30 imageWithActions:v44];
-          v34 = [v31 styleAttributes];
-          v35 = [v34 effectiveLayoutDirection];
+          styleAttributes3 = [v31 styleAttributes];
+          effectiveLayoutDirection = [styleAttributes3 effectiveLayoutDirection];
 
-          if (v35)
+          if (effectiveLayoutDirection)
           {
             v36 = 0.0;
           }
@@ -194,7 +194,7 @@ uint64_t __68__STUIStatusBarBluetoothItem_alwaysShowRegulatoryBluetoothIndicator
             v36 = 2.0;
           }
 
-          if (v35)
+          if (effectiveLayoutDirection)
           {
             v37 = 2.0;
           }
@@ -206,16 +206,16 @@ uint64_t __68__STUIStatusBarBluetoothItem_alwaysShowRegulatoryBluetoothIndicator
 
           v38 = [v33 imageWithAlignmentRectInsets:{0.0, v36, 0.0, v37, v42}];
 
-          v39 = [(STUIStatusBarBluetoothItem *)self batteryImageView];
-          [v39 setImage:v38];
+          batteryImageView = [(STUIStatusBarBluetoothItem *)self batteryImageView];
+          [batteryImageView setImage:v38];
 
-          v16 = v43;
+          batteryEntry2 = v43;
         }
       }
 
-      v40 = [v9 state] == 0;
-      v18 = [(STUIStatusBarIndicatorItem *)self imageView];
-      [v18 setUseDisabledAppearanceForAccessibilityHUD:v40];
+      v40 = [entry state] == 0;
+      batteryEntry = [(STUIStatusBarIndicatorItem *)self imageView];
+      [batteryEntry setUseDisabledAppearanceForAccessibilityHUD:v40];
     }
   }
 
@@ -274,28 +274,28 @@ void __56__STUIStatusBarBluetoothItem_applyUpdate_toDisplayItem___block_invoke(u
   UIRectFill(v34);
 }
 
-- (id)_batteryFillColorForEntry:(id)a3 usingTintColor:(id)a4
+- (id)_batteryFillColorForEntry:(id)entry usingTintColor:(id)color
 {
-  v5 = a3;
-  v6 = [a4 colorWithAlphaComponent:1.0];
-  v7 = [v5 capacity];
+  entryCopy = entry;
+  blackColor = [color colorWithAlphaComponent:1.0];
+  capacity = [entryCopy capacity];
 
-  if (v7 > 26)
+  if (capacity > 26)
   {
-    if (!v6)
+    if (!blackColor)
     {
-      v6 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
 
-    v6 = v8;
+    blackColor = systemRedColor;
   }
 
-  return v6;
+  return blackColor;
 }
 
 - (STUIStatusBarImageView)batteryImageView
@@ -320,24 +320,24 @@ void __56__STUIStatusBarBluetoothItem_applyUpdate_toDisplayItem___block_invoke(u
   MEMORY[0x2821F96F8](v4, batteryImageView);
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STUIStatusBarBluetoothItem batteryDisplayIdentifier];
 
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
-    v6 = [(STUIStatusBarBluetoothItem *)self batteryImageView];
+    batteryImageView = [(STUIStatusBarBluetoothItem *)self batteryImageView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = STUIStatusBarBluetoothItem;
-    v6 = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:v4];
+    batteryImageView = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = batteryImageView;
 
   return v7;
 }

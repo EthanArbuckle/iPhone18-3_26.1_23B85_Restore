@@ -5,19 +5,19 @@
 - (CAMNebulaDaemonTimelapseClientProtocol)timelapseClientDelegate;
 - (void)_closeConnectionToDaemon;
 - (void)_ensureConnectionToDaemon;
-- (void)_getProxyForExecutingBlock:(id)a3;
+- (void)_getProxyForExecutingBlock:(id)block;
 - (void)closeConnectionToDaemon;
-- (void)enqueueIrisVideoJobs:(id)a3;
+- (void)enqueueIrisVideoJobs:(id)jobs;
 - (void)ensureConnectionToDaemon;
-- (void)finishCaptureForTimelapseWithUUID:(id)a3;
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3;
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3;
-- (void)performCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)a3;
-- (void)resumeTimelapseWithUUID:(id)a3;
-- (void)startTimelapseWithUUID:(id)a3;
-- (void)stopTimelapseWithUUID:(id)a3;
-- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3;
-- (void)updateTimelapseWithUUID:(id)a3;
+- (void)finishCaptureForTimelapseWithUUID:(id)d;
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons;
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result;
+- (void)performCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)session;
+- (void)resumeTimelapseWithUUID:(id)d;
+- (void)startTimelapseWithUUID:(id)d;
+- (void)stopTimelapseWithUUID:(id)d;
+- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)session;
+- (void)updateTimelapseWithUUID:(id)d;
 @end
 
 @implementation CAMNebulaDaemonProxyManager
@@ -71,10 +71,10 @@
     v5 = self->__connection;
     self->__connection = v4;
 
-    v6 = [objc_opt_class() _daemonProtocolInterface];
-    [(NSXPCConnection *)self->__connection setRemoteObjectInterface:v6];
-    v7 = [objc_opt_class() _clientProtocolInterface];
-    [(NSXPCConnection *)self->__connection setExportedInterface:v7];
+    _daemonProtocolInterface = [objc_opt_class() _daemonProtocolInterface];
+    [(NSXPCConnection *)self->__connection setRemoteObjectInterface:_daemonProtocolInterface];
+    _clientProtocolInterface = [objc_opt_class() _clientProtocolInterface];
+    [(NSXPCConnection *)self->__connection setExportedInterface:_clientProtocolInterface];
     [(NSXPCConnection *)self->__connection setExportedObject:self];
     objc_initWeak(&location, self);
     v9 = MEMORY[0x1E69E9820];
@@ -189,17 +189,17 @@ uint64_t __55__CAMNebulaDaemonProxyManager__closeConnectionToDaemon__block_invok
   return v2;
 }
 
-- (void)_getProxyForExecutingBlock:(id)a3
+- (void)_getProxyForExecutingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->__queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CAMNebulaDaemonProxyManager__getProxyForExecutingBlock___block_invoke;
   v7[3] = &unk_1E76F7E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -254,84 +254,84 @@ void __58__CAMNebulaDaemonProxyManager__getProxyForExecutingBlock___block_invoke
   *(v5 + 40) = v3;
 }
 
-- (void)startTimelapseWithUUID:(id)a3
+- (void)startTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__CAMNebulaDaemonProxyManager_startTimelapseWithUUID___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)resumeTimelapseWithUUID:(id)a3
+- (void)resumeTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CAMNebulaDaemonProxyManager_resumeTimelapseWithUUID___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)updateTimelapseWithUUID:(id)a3
+- (void)updateTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CAMNebulaDaemonProxyManager_updateTimelapseWithUUID___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)finishCaptureForTimelapseWithUUID:(id)a3
+- (void)finishCaptureForTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__CAMNebulaDaemonProxyManager_finishCaptureForTimelapseWithUUID___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)stopTimelapseWithUUID:(id)a3
+- (void)stopTimelapseWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__CAMNebulaDaemonProxyManager_stopTimelapseWithUUID___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)a3
+- (void)updatePendingWorkFromDiskForceEndLastSession:(BOOL)session
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __76__CAMNebulaDaemonProxyManager_updatePendingWorkFromDiskForceEndLastSession___block_invoke;
   v3[3] = &__block_descriptor_33_e47_v24__0___CAMNebulaDaemonProtocol__8__NSError_16l;
-  v4 = a3;
+  sessionCopy = session;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v3];
 }
 
-- (void)forceStopTimelapseCaptureWithReasons:(int64_t)a3
+- (void)forceStopTimelapseCaptureWithReasons:(int64_t)reasons
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__CAMNebulaDaemonProxyManager_forceStopTimelapseCaptureWithReasons___block_invoke;
   v3[3] = &unk_1E76F7A38;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reasons;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -341,28 +341,28 @@ void __68__CAMNebulaDaemonProxyManager_forceStopTimelapseCaptureWithReasons___bl
   [WeakRetained forceStopTimelapseCaptureWithReasons:*(a1 + 40)];
 }
 
-- (void)enqueueIrisVideoJobs:(id)a3
+- (void)enqueueIrisVideoJobs:(id)jobs
 {
-  v4 = a3;
+  jobsCopy = jobs;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__CAMNebulaDaemonProxyManager_enqueueIrisVideoJobs___block_invoke;
   v6[3] = &unk_1E76FBA98;
-  v7 = v4;
-  v5 = v4;
+  v7 = jobsCopy;
+  v5 = jobsCopy;
   [(CAMNebulaDaemonProxyManager *)self _getProxyForExecutingBlock:v6];
 }
 
-- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)a3
+- (void)nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__CAMNebulaDaemonProxyManager_nebulaDaemonDidCompleteLocalVideoPersistenceWithResult___block_invoke;
   v6[3] = &unk_1E76F7960;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -372,12 +372,12 @@ void __86__CAMNebulaDaemonProxyManager_nebulaDaemonDidCompleteLocalVideoPersiste
   [WeakRetained nebulaDaemonDidCompleteLocalVideoPersistenceWithResult:*(a1 + 40)];
 }
 
-- (void)performCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)a3
+- (void)performCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   if (+[CAMTimelapseDiskUtilities hasPendingWork])
   {
-    [(CAMNebulaDaemonProxyManager *)self updatePendingWorkFromDiskForceEndLastSession:v3];
+    [(CAMNebulaDaemonProxyManager *)self updatePendingWorkFromDiskForceEndLastSession:sessionCopy];
   }
 
   if (+[CAMIrisDiskUtilities hasPendingWork])

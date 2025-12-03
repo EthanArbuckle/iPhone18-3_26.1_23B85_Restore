@@ -1,51 +1,51 @@
 @interface SFFlightDateDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFFlightDateDescriptor)initWithCoder:(id)a3;
-- (SFFlightDateDescriptor)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFFlightDateDescriptor)initWithCoder:(id)coder;
+- (SFFlightDateDescriptor)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFFlightDateDescriptor
 
-- (SFFlightDateDescriptor)initWithProtobuf:(id)a3
+- (SFFlightDateDescriptor)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v19.receiver = self;
   v19.super_class = SFFlightDateDescriptor;
   v5 = [(SFFlightDateDescriptor *)&v19 init];
   if (v5)
   {
-    v6 = [v4 scheduled];
+    scheduled = [protobufCopy scheduled];
 
-    if (v6)
+    if (scheduled)
     {
-      v7 = [v4 scheduled];
+      scheduled2 = [protobufCopy scheduled];
       v8 = MEMORY[0x1E695DF00];
-      [v7 secondsSince1970];
+      [scheduled2 secondsSince1970];
       v9 = [v8 dateWithTimeIntervalSince1970:?];
       [(SFFlightDateDescriptor *)v5 setScheduled:v9];
     }
 
-    v10 = [v4 current];
+    current = [protobufCopy current];
 
-    if (v10)
+    if (current)
     {
-      v11 = [v4 current];
+      current2 = [protobufCopy current];
       v12 = MEMORY[0x1E695DF00];
-      [v11 secondsSince1970];
+      [current2 secondsSince1970];
       v13 = [v12 dateWithTimeIntervalSince1970:?];
       [(SFFlightDateDescriptor *)v5 setCurrent:v13];
     }
 
-    [v4 bufferMinutes];
+    [protobufCopy bufferMinutes];
     if (v14 != 0.0)
     {
       v15 = MEMORY[0x1E696AD98];
-      [v4 bufferMinutes];
+      [protobufCopy bufferMinutes];
       v16 = [v15 numberWithFloat:?];
       [(SFFlightDateDescriptor *)v5 setBufferMinutes:v16];
     }
@@ -58,32 +58,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFFlightDateDescriptor *)self scheduled];
-  v4 = [v3 hash];
-  v5 = [(SFFlightDateDescriptor *)self current];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFFlightDateDescriptor *)self bufferMinutes];
-  v8 = [v7 hash];
+  scheduled = [(SFFlightDateDescriptor *)self scheduled];
+  v4 = [scheduled hash];
+  current = [(SFFlightDateDescriptor *)self current];
+  v6 = [current hash] ^ v4;
+  bufferMinutes = [(SFFlightDateDescriptor *)self bufferMinutes];
+  v8 = [bufferMinutes hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFFlightDateDescriptor *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFFlightDateDescriptor *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFFlightDateDescriptor *)self scheduled];
-      v8 = [(SFFlightDateDescriptor *)v6 scheduled];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      scheduled = [(SFFlightDateDescriptor *)self scheduled];
+      scheduled2 = [(SFFlightDateDescriptor *)v6 scheduled];
+      if ((scheduled != 0) == (scheduled2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -91,63 +91,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(SFFlightDateDescriptor *)self scheduled];
-      if (v9)
+      scheduled3 = [(SFFlightDateDescriptor *)self scheduled];
+      if (scheduled3)
       {
-        v3 = [(SFFlightDateDescriptor *)self scheduled];
-        v10 = [(SFFlightDateDescriptor *)v6 scheduled];
-        if (![v3 isEqual:v10])
+        scheduled4 = [(SFFlightDateDescriptor *)self scheduled];
+        scheduled5 = [(SFFlightDateDescriptor *)v6 scheduled];
+        if (![scheduled4 isEqual:scheduled5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = scheduled5;
       }
 
-      v12 = [(SFFlightDateDescriptor *)self current];
-      v13 = [(SFFlightDateDescriptor *)v6 current];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      current = [(SFFlightDateDescriptor *)self current];
+      current2 = [(SFFlightDateDescriptor *)v6 current];
+      v14 = current2;
+      if ((current != 0) == (current2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFFlightDateDescriptor *)self current];
-      if (v15)
+      current3 = [(SFFlightDateDescriptor *)self current];
+      if (current3)
       {
-        v25 = v12;
-        v16 = [(SFFlightDateDescriptor *)self current];
-        v27 = [(SFFlightDateDescriptor *)v6 current];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = current;
+        current4 = [(SFFlightDateDescriptor *)self current];
+        current5 = [(SFFlightDateDescriptor *)v6 current];
+        v28 = current4;
+        if (![current4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          current = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = current3;
+        v30 = scheduled4;
+        current = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = scheduled4;
       }
 
-      v17 = [(SFFlightDateDescriptor *)self bufferMinutes];
-      v18 = [(SFFlightDateDescriptor *)v6 bufferMinutes];
-      if ((v17 != 0) == (v18 == 0))
+      bufferMinutes = [(SFFlightDateDescriptor *)self bufferMinutes];
+      bufferMinutes2 = [(SFFlightDateDescriptor *)v6 bufferMinutes];
+      if ((bufferMinutes != 0) == (bufferMinutes2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        current3 = v29;
+        scheduled4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -156,16 +156,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(SFFlightDateDescriptor *)self bufferMinutes];
-        v15 = v29;
-        if (v19)
+        v24 = bufferMinutes;
+        v26 = bufferMinutes2;
+        bufferMinutes3 = [(SFFlightDateDescriptor *)self bufferMinutes];
+        current3 = v29;
+        if (bufferMinutes3)
         {
-          v23 = v19;
-          v22 = [(SFFlightDateDescriptor *)self bufferMinutes];
-          v20 = [(SFFlightDateDescriptor *)v6 bufferMinutes];
-          v11 = [v22 isEqual:?];
+          v23 = bufferMinutes3;
+          bufferMinutes4 = [(SFFlightDateDescriptor *)self bufferMinutes];
+          bufferMinutes5 = [(SFFlightDateDescriptor *)v6 bufferMinutes];
+          v11 = [bufferMinutes4 isEqual:?];
         }
 
         else
@@ -174,7 +174,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        scheduled4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -185,8 +185,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      scheduled5 = v31;
+      if (!scheduled3)
       {
 LABEL_29:
 
@@ -206,19 +206,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFFlightDateDescriptor *)self scheduled];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  scheduled = [(SFFlightDateDescriptor *)self scheduled];
+  v6 = [scheduled copy];
   [v4 setScheduled:v6];
 
-  v7 = [(SFFlightDateDescriptor *)self current];
-  v8 = [v7 copy];
+  current = [(SFFlightDateDescriptor *)self current];
+  v8 = [current copy];
   [v4 setCurrent:v8];
 
-  v9 = [(SFFlightDateDescriptor *)self bufferMinutes];
-  v10 = [v9 copy];
+  bufferMinutes = [(SFFlightDateDescriptor *)self bufferMinutes];
+  v10 = [bufferMinutes copy];
   [v4 setBufferMinutes:v10];
 
   return v4;
@@ -227,31 +227,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBFlightDateDescriptor alloc] initWithFacade:self];
-  v3 = [(_SFPBFlightDateDescriptor *)v2 jsonData];
+  jsonData = [(_SFPBFlightDateDescriptor *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBFlightDateDescriptor alloc] initWithFacade:self];
-  v3 = [(_SFPBFlightDateDescriptor *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBFlightDateDescriptor *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBFlightDateDescriptor alloc] initWithFacade:self];
-  v5 = [(_SFPBFlightDateDescriptor *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBFlightDateDescriptor *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFFlightDateDescriptor)initWithCoder:(id)a3
+- (SFFlightDateDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBFlightDateDescriptor alloc] initWithData:v5];
   v7 = [(SFFlightDateDescriptor *)self initWithProtobuf:v6];

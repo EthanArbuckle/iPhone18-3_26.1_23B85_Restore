@@ -1,7 +1,7 @@
 @interface ASTLockScreenSuggestionsDetailListController
 - (ASTLockScreenSuggestionsDetailListController)init;
 - (id)specifiers;
-- (void)_handleGlobalToggleChangeWithEnabled:(BOOL)a3;
+- (void)_handleGlobalToggleChangeWithEnabled:(BOOL)enabled;
 @end
 
 @implementation ASTLockScreenSuggestionsDetailListController
@@ -40,9 +40,9 @@
     perAppGroup = v2->_perAppGroup;
     v2->_perAppGroup = v12;
 
-    v14 = [(ASTLockScreenSuggestionSpecifier *)v2->_lockScreenSpecifier specifiers];
+    specifiers = [(ASTLockScreenSuggestionSpecifier *)v2->_lockScreenSpecifier specifiers];
     perAppSpecifiers = v2->_perAppSpecifiers;
-    v2->_perAppSpecifiers = v14;
+    v2->_perAppSpecifiers = specifiers;
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -65,9 +65,9 @@ void __52__ASTLockScreenSuggestionsDetailListController_init__block_invoke(uint6
 
   [v3 addObject:self->_globalSpecifier];
   v5 = [(ASTLockScreenSuggestionsGlobalController *)self->_globalController isLockScreenSuggestionEnabled:self->_globalSpecifier];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     [v3 addObject:self->_perAppGroup];
     [v3 addObjectsFromArray:self->_perAppSpecifiers];
@@ -84,9 +84,9 @@ void __52__ASTLockScreenSuggestionsDetailListController_init__block_invoke(uint6
   return v10;
 }
 
-- (void)_handleGlobalToggleChangeWithEnabled:(BOOL)a3
+- (void)_handleGlobalToggleChangeWithEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(ASTLockScreenSuggestionsDetailListController *)self insertSpecifier:self->_perAppGroup afterSpecifier:self->_globalSpecifier animated:1];
     perAppSpecifiers = self->_perAppSpecifiers;

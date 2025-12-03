@@ -1,12 +1,12 @@
 @interface CKMNavbarCanvasView
 - (CKMNavbarCanvasView)init;
-- (CKMNavbarCanvasView)initWithFrame:(CGRect)a3;
+- (CKMNavbarCanvasView)initWithFrame:(CGRect)frame;
 - (void)_layoutForDisplayBelowToolbar;
 - (void)_layoutForDisplayInNavbar;
 - (void)clearAllItemViews;
 - (void)layoutSubviews;
-- (void)setComposeButtonView:(id)a3;
-- (void)setSearchBarView:(id)a3;
+- (void)setComposeButtonView:(id)view;
+- (void)setSearchBarView:(id)view;
 @end
 
 @implementation CKMNavbarCanvasView
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (CKMNavbarCanvasView)initWithFrame:(CGRect)a3
+- (CKMNavbarCanvasView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [CKUIBehavior sharedBehaviors:a3.origin.x];
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = [CKUIBehavior sharedBehaviors:frame.origin.x];
   [v7 marzNavigationBarHeight];
   v9 = v8;
 
@@ -49,9 +49,9 @@
   v5.super_class = CKMNavbarCanvasView;
   [(CKMNavbarCanvasView *)&v5 layoutSubviews];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 useMacToolbar];
+  useMacToolbar = [v3 useMacToolbar];
 
-  if (v4)
+  if (useMacToolbar)
   {
     [(CKMNavbarCanvasView *)self _layoutForDisplayBelowToolbar];
   }
@@ -64,8 +64,8 @@
 
 - (void)_layoutForDisplayBelowToolbar
 {
-  v40 = +[CKUIBehavior sharedBehaviors];
-  if ([v40 useMacToolbar])
+  searchBarView3 = +[CKUIBehavior sharedBehaviors];
+  if ([searchBarView3 useMacToolbar])
   {
     searchBarView = self->_searchBarView;
 
@@ -87,8 +87,8 @@
     v17 = v6 + v16;
     v18 = v13 - (v8 + v12);
     v20 = v19 - (v6 + v10);
-    v21 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v21 frame];
+    composeButtonView = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView frame];
     v23 = v22;
     v25 = v24;
 
@@ -102,25 +102,25 @@
       v23 = v14 * 0.5 - v28 * 0.5;
     }
 
-    v31 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v31 setHidden:{-[CKMNavbarCanvasView shouldLayoutForCollapsedWidth](self, "shouldLayoutForCollapsedWidth")}];
+    searchBarView = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView setHidden:{-[CKMNavbarCanvasView shouldLayoutForCollapsedWidth](self, "shouldLayoutForCollapsedWidth")}];
 
-    v32 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v32 setHidden:{-[CKMNavbarCanvasView shouldLayoutForCollapsedWidth](self, "shouldLayoutForCollapsedWidth") ^ 1}];
+    composeButtonView2 = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView2 setHidden:{-[CKMNavbarCanvasView shouldLayoutForCollapsedWidth](self, "shouldLayoutForCollapsedWidth") ^ 1}];
 
-    v33 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v33 setFrame:{v23, v25, v28, v30}];
+    composeButtonView3 = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView3 setFrame:{v23, v25, v28, v30}];
 
-    v34 = [(CKMNavbarCanvasView *)self composeButtonView];
-    v35 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v35 center];
+    composeButtonView4 = [(CKMNavbarCanvasView *)self composeButtonView];
+    composeButtonView5 = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView5 center];
     v37 = v36;
-    v38 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v38 center];
-    [v34 setCenter:v37];
+    searchBarView2 = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView2 center];
+    [composeButtonView4 setCenter:v37];
 
-    v40 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v40 setFrame:{v39, v17, v18, v20}];
+    searchBarView3 = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView3 setFrame:{v39, v17, v18, v20}];
   }
 }
 
@@ -147,15 +147,15 @@
     [(CKMNavbarCanvasView *)self bounds];
     v19 = v18;
     v57 = v20;
-    v21 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v21 frame];
+    searchBarView = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView frame];
     v23 = v22;
     v54 = v24;
     v26 = v25;
     v28 = v27;
 
-    v29 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v29 frame];
+    composeButtonView = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView frame];
     v55 = v31;
     v56 = v30;
     v33 = v32;
@@ -187,67 +187,67 @@
       v40 = v19 * 0.5 - v33 * 0.5;
     }
 
-    v44 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v44 setHidden:v35 <= v38];
+    searchBarView2 = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView2 setHidden:v35 <= v38];
 
     if (CKMainScreenScale_once_20 != -1)
     {
       [CKMNavbarCanvasView _layoutForDisplayInNavbar];
     }
 
-    v45 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v45 setFrame:{v23, v54, v26, v53}];
+    searchBarView3 = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView3 setFrame:{v23, v54, v26, v53}];
 
-    v46 = [(CKMNavbarCanvasView *)self searchBarView];
-    v47 = [(CKMNavbarCanvasView *)self searchBarView];
-    [v47 center];
-    [v46 setCenter:?];
+    searchBarView4 = [(CKMNavbarCanvasView *)self searchBarView];
+    searchBarView5 = [(CKMNavbarCanvasView *)self searchBarView];
+    [searchBarView5 center];
+    [searchBarView4 setCenter:?];
 
-    v48 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v48 setFrame:{v40, v56, v39, v55}];
+    composeButtonView2 = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView2 setFrame:{v40, v56, v39, v55}];
 
-    v58 = [(CKMNavbarCanvasView *)self composeButtonView];
-    v49 = [(CKMNavbarCanvasView *)self composeButtonView];
-    [v49 center];
-    [v58 setCenter:?];
+    composeButtonView3 = [(CKMNavbarCanvasView *)self composeButtonView];
+    composeButtonView4 = [(CKMNavbarCanvasView *)self composeButtonView];
+    [composeButtonView4 center];
+    [composeButtonView3 setCenter:?];
   }
 }
 
-- (void)setSearchBarView:(id)a3
+- (void)setSearchBarView:(id)view
 {
-  v5 = a3;
-  if (self->_searchBarView != v5)
+  viewCopy = view;
+  if (self->_searchBarView != viewCopy)
   {
-    v6 = v5;
-    [(UISearchBar *)v5 setAutoresizingMask:0];
+    v6 = viewCopy;
+    [(UISearchBar *)viewCopy setAutoresizingMask:0];
     [(UISearchBar *)self->_searchBarView removeFromSuperview];
-    objc_storeStrong(&self->_searchBarView, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_searchBarView, view);
+    viewCopy = v6;
     if (v6)
     {
       [(UISearchBar *)self->_searchBarView sizeToFit];
       [(CKMNavbarCanvasView *)self addSubview:self->_searchBarView];
-      v5 = v6;
+      viewCopy = v6;
     }
   }
 }
 
-- (void)setComposeButtonView:(id)a3
+- (void)setComposeButtonView:(id)view
 {
-  v5 = a3;
-  if (self->_composeButtonView != v5)
+  viewCopy = view;
+  if (self->_composeButtonView != viewCopy)
   {
-    v6 = v5;
-    [(UIButton *)v5 setAutoresizingMask:0];
+    v6 = viewCopy;
+    [(UIButton *)viewCopy setAutoresizingMask:0];
     [(UIButton *)self->_composeButtonView removeFromSuperview];
-    objc_storeStrong(&self->_composeButtonView, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_composeButtonView, view);
+    viewCopy = v6;
     if (v6)
     {
       [(UIButton *)self->_composeButtonView sizeToFit];
       [(UIButton *)self->_composeButtonView setBounds:0.0, 0.0, 34.0, 21.0];
       [(CKMNavbarCanvasView *)self addSubview:self->_composeButtonView];
-      v5 = v6;
+      viewCopy = v6;
     }
   }
 }

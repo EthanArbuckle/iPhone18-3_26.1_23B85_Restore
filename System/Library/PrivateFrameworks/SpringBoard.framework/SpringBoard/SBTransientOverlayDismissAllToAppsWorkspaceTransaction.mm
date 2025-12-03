@@ -1,39 +1,39 @@
 @interface SBTransientOverlayDismissAllToAppsWorkspaceTransaction
 - (BOOL)_shouldAnimateTransition;
 - (BOOL)_shouldResignActiveForAnimation;
-- (BOOL)_shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:(id)a3;
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (SBTransientOverlayDismissAllToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3;
+- (BOOL)_shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:(id)controller;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (SBTransientOverlayDismissAllToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (id)_setupAnimation;
 - (unint64_t)_concurrentOverlayDismissalOptions;
 - (unint64_t)_serialOverlayPreDismissalOptions;
 - (void)_begin;
 - (void)_didComplete;
 - (void)_handleDismissOverlaysCompletion;
-- (void)_logForInterruptAttemptReason:(id)a3;
+- (void)_logForInterruptAttemptReason:(id)reason;
 - (void)_performDismissal;
 - (void)dealloc;
 @end
 
 @implementation SBTransientOverlayDismissAllToAppsWorkspaceTransaction
 
-- (SBTransientOverlayDismissAllToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBTransientOverlayDismissAllToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = SBTransientOverlayDismissAllToAppsWorkspaceTransaction;
-  v5 = [(SBToAppsWorkspaceTransaction *)&v11 initWithTransitionRequest:v4];
+  v5 = [(SBToAppsWorkspaceTransaction *)&v11 initWithTransitionRequest:requestCopy];
   v6 = v5;
   if (v5)
   {
     [(SBToAppsWorkspaceTransaction *)v5 _setShouldSerialDismissOverlays:0];
-    if (SBMainWorkspaceTransitionSourceIsUserEventDriven([v4 source]))
+    if (SBMainWorkspaceTransitionSourceIsUserEventDriven([requestCopy source]))
     {
-      v7 = [(SBToAppsWorkspaceTransaction *)v6 layoutTransaction];
-      v8 = [v7 options];
+      layoutTransaction = [(SBToAppsWorkspaceTransaction *)v6 layoutTransaction];
+      options = [layoutTransaction options];
 
-      v9 = [(SBToAppsWorkspaceTransaction *)v6 layoutTransaction];
-      [v9 setOptions:v8 | 2];
+      layoutTransaction2 = [(SBToAppsWorkspaceTransaction *)v6 layoutTransaction];
+      [layoutTransaction2 setOptions:options | 2];
     }
   }
 
@@ -58,14 +58,14 @@
   v8.super_class = SBTransientOverlayDismissAllToAppsWorkspaceTransaction;
   [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)&v8 _begin];
   [(SBToAppsWorkspaceTransaction *)self activateApplications];
-  v3 = [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _serialOverlayPreDismissalOptions];
-  v4 = [(SBWorkspaceTransaction *)self windowScene];
-  v5 = [SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:v3 windowScene:v4];
+  _serialOverlayPreDismissalOptions = [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _serialOverlayPreDismissalOptions];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  v5 = [SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:_serialOverlayPreDismissalOptions windowScene:windowScene];
 
   if (v5)
   {
     [(SBToAppsWorkspaceTransaction *)self _delayTransitionCompletionForRequester:@"_SBTransientOverlayDismissAllToAppsWorkspaceTransactionDelayRequesterDismissOverlays"];
-    v6 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:self->super.super.super._transitionRequest options:v3];
+    v6 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:self->super.super.super._transitionRequest options:_serialOverlayPreDismissalOptions];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__block_invoke;
@@ -133,9 +133,9 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
   }
 
   v12 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v13 = [(SBWorkspaceTransaction *)self windowScene];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
   v14 = +[SBKeyboardFocusArbitrationReason transientOverlayDismissAllToAppsWorkspaceTransactionDidComplete];
-  [v12 requestArbitrationForSBWindowScene:v13 forReason:v14];
+  [v12 requestArbitrationForSBWindowScene:windowScene forReason:v14];
 
   v15.receiver = self;
   v15.super_class = SBTransientOverlayDismissAllToAppsWorkspaceTransaction;
@@ -144,31 +144,31 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
 
 - (unint64_t)_serialOverlayPreDismissalOptions
 {
-  v2 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v3 = [v2 source];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  source = [transitionRequest source];
 
-  if (v3 <= 5)
+  if (source <= 5)
   {
-    if (v3 != 2)
+    if (source != 2)
     {
-      return v3 == 5;
+      return source == 5;
     }
 
     return 32;
   }
 
-  if (v3 == 6)
+  if (source == 6)
   {
     return 32;
   }
 
   v4 = 2;
-  if (v3 != 33)
+  if (source != 33)
   {
     v4 = 0;
   }
 
-  if (v3 == 16)
+  if (source == 16)
   {
     return 16;
   }
@@ -181,10 +181,10 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
 
 - (unint64_t)_concurrentOverlayDismissalOptions
 {
-  v2 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v3 = [v2 source];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  source = [transitionRequest source];
 
-  if (v3 == 2)
+  if (source == 2)
   {
     return 9;
   }
@@ -199,11 +199,11 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
 {
   if (self->_isUsingSwitcherAnimation)
   {
-    v3 = [(SBWorkspaceTransaction *)self windowScene];
-    v4 = [v3 switcherController];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    switcherController = [windowScene switcherController];
 
-    v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v6 = [v4 animationControllerForTransitionRequest:v5];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    v6 = [switcherController animationControllerForTransitionRequest:transitionRequest];
   }
 
   else
@@ -216,11 +216,11 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
 
 - (BOOL)_shouldAnimateTransition
 {
-  v2 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v3 = [v2 transientOverlayContext];
-  v4 = [v3 isAnimated];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  isAnimated = [transientOverlayContext isAnimated];
 
-  return v4;
+  return isAnimated;
 }
 
 - (BOOL)_shouldResignActiveForAnimation
@@ -232,32 +232,32 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
     return 0;
   }
 
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 transientOverlayContext];
-  v5 = [v4 transientOverlay];
-  v6 = [v5 viewController];
-  v7 = [v6 preferredSceneDeactivationReasonValue];
-  v8 = v7 != 0;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
+  viewController = [transientOverlay viewController];
+  preferredSceneDeactivationReasonValue = [viewController preferredSceneDeactivationReasonValue];
+  v8 = preferredSceneDeactivationReasonValue != 0;
 
   return v8;
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
-  v7 = [v6 copyMainWorkspaceTransitionRequest];
+  v6 = SBSafeCast(v5, requestCopy);
+  copyMainWorkspaceTransitionRequest = [v6 copyMainWorkspaceTransitionRequest];
   if (![(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self isInterrupted])
   {
-    v10 = [v7 applicationContext];
-    v11 = [v10 isBackground];
+    applicationContext = [copyMainWorkspaceTransitionRequest applicationContext];
+    isBackground = [applicationContext isBackground];
 
-    if (v11)
+    if (isBackground)
     {
       v12 = objc_opt_class();
-      v9 = NSStringFromClass(v12);
-      [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  request is for background activation", v9, self];
+      transientOverlay = NSStringFromClass(v12);
+      [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  request is for background activation", transientOverlay, self];
       goto LABEL_21;
     }
 
@@ -265,13 +265,13 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
     if ([v13 isInSetupMode])
     {
       v14 = +[SBSetupManager sharedInstance];
-      v15 = [v14 isInSetupModeReadyToExit];
+      isInSetupModeReadyToExit = [v14 isInSetupModeReadyToExit];
 
-      if ((v15 & 1) == 0)
+      if ((isInSetupModeReadyToExit & 1) == 0)
       {
         v16 = objc_opt_class();
-        v9 = NSStringFromClass(v16);
-        [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because: we are in setup mode", v9, self];
+        transientOverlay = NSStringFromClass(v16);
+        [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because: we are in setup mode", transientOverlay, self];
         goto LABEL_21;
       }
     }
@@ -280,44 +280,44 @@ uint64_t __64__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__begin__bl
     {
     }
 
-    v17 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v18 = [v17 source];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    source = [transitionRequest source];
 
-    if (v18 == 31)
+    if (source == 31)
     {
       v19 = objc_opt_class();
-      v9 = NSStringFromClass(v19);
-      [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because: we are in a startup transition", v9, self];
+      transientOverlay = NSStringFromClass(v19);
+      [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because: we are in a startup transition", transientOverlay, self];
       goto LABEL_21;
     }
 
     if (!self->_isUsingSwitcherAnimation && self->_beganDismissingTransientOverlays)
     {
-      v20 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v21 = [v20 transientOverlayContext];
-      v9 = [v21 transientOverlay];
+      transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+      transientOverlayContext = [transitionRequest2 transientOverlayContext];
+      transientOverlay = [transientOverlayContext transientOverlay];
 
-      v22 = [v4 transientOverlayContext];
-      v23 = [v22 transientOverlay];
+      transientOverlayContext2 = [requestCopy transientOverlayContext];
+      transientOverlay2 = [transientOverlayContext2 transientOverlay];
 
-      if ([v9 isAnalogousToEntity:v23])
+      if ([transientOverlay isAnalogousToEntity:transientOverlay2])
       {
-        v24 = [v4 transientOverlayContext];
-        v25 = [v24 transitionType];
+        transientOverlayContext3 = [requestCopy transientOverlayContext];
+        transitionType = [transientOverlayContext3 transitionType];
 
-        if (!v25)
+        if (!transitionType)
         {
           v29 = @"<%@:%p> interruptible because:  next request is to present the same transient overlay we're currently dismissing";
           goto LABEL_24;
         }
       }
 
-      v26 = [v9 viewController];
+      viewController = [transientOverlay viewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v4 eventLabel];
-        v28 = [v27 isEqualToString:@"SBSpotlightTransientOverlayInteractiveGestureEventLabel"];
+        eventLabel = [requestCopy eventLabel];
+        v28 = [eventLabel isEqualToString:@"SBSpotlightTransientOverlayInteractiveGestureEventLabel"];
 
         if (v28)
         {
@@ -338,14 +338,14 @@ LABEL_24:
     }
 
     v30 = objc_opt_class();
-    v9 = NSStringFromClass(v30);
-    [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  other", v9, self];
+    transientOverlay = NSStringFromClass(v30);
+    [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  other", transientOverlay, self];
     goto LABEL_21;
   }
 
   v8 = objc_opt_class();
-  v9 = NSStringFromClass(v8);
-  [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  already interrupted", v9, self];
+  transientOverlay = NSStringFromClass(v8);
+  [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _logForInterruptAttemptReason:@"<%@:%p> not interruptible because:  already interrupted", transientOverlay, self];
 LABEL_21:
   v31 = 0;
 LABEL_22:
@@ -355,8 +355,8 @@ LABEL_22:
 
 - (void)_handleDismissOverlaysCompletion
 {
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  if ([(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher]|| ![SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:v3])
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  if ([(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher]|| ![SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:transitionRequest])
   {
     [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _performDismissal];
   }
@@ -372,28 +372,28 @@ LABEL_22:
     autoPIPTransaction = self->_autoPIPTransaction;
     self->_autoPIPTransaction = 0;
 
-    v5 = [SBApp windowSceneManager];
-    v6 = [v3 displayIdentity];
-    v7 = [v5 windowSceneForDisplayIdentity:v6];
+    windowSceneManager = [SBApp windowSceneManager];
+    displayIdentity = [transitionRequest displayIdentity];
+    v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-    v8 = [v7 pictureInPictureManager];
-    v9 = [v7 transientOverlayPresenter];
-    [v9 topmostWindowLevel];
+    pictureInPictureManager = [v7 pictureInPictureManager];
+    transientOverlayPresenter = [v7 transientOverlayPresenter];
+    [transientOverlayPresenter topmostWindowLevel];
     v11 = (v10 + 1.0);
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v8 acquireWindowLevelOverrideAssertionForControllerWithContentType:0 toWindowLevel:v11 withReason:6 identifier:v13];
+    v14 = [pictureInPictureManager acquireWindowLevelOverrideAssertionForControllerWithContentType:0 toWindowLevel:v11 withReason:6 identifier:v13];
     pipWindowLevelOverrideAssertionInvalidatable = self->_pipWindowLevelOverrideAssertionInvalidatable;
     self->_pipWindowLevelOverrideAssertionInvalidatable = v14;
 
     v16 = [SBAutoPIPWorkspaceTransaction alloc];
-    v17 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v18 = [(SBAutoPIPWorkspaceTransaction *)v16 initWithTransitionRequest:v17];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    v18 = [(SBAutoPIPWorkspaceTransaction *)v16 initWithTransitionRequest:transitionRequest2];
     v19 = self->_autoPIPTransaction;
     self->_autoPIPTransaction = v18;
 
-    v20 = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
-    if (v20)
+    entityToPIP = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
+    if (entityToPIP)
     {
       [(SBToAppsWorkspaceTransaction *)self _delayTransitionCompletionForRequester:@"_SBTransientOverlayDismissAllToAppsWorkspaceTransactionDelayRequesterAutoPIP"];
       objc_initWeak(&location, self);
@@ -403,7 +403,7 @@ LABEL_22:
       v22[2] = __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismissOverlaysCompletion__block_invoke;
       v22[3] = &unk_2783ABB98;
       objc_copyWeak(&v24, &location);
-      v23 = v20;
+      v23 = entityToPIP;
       [(SBAutoPIPWorkspaceTransaction *)v21 setCompletionBlock:v22];
       [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self addChildTransaction:self->_autoPIPTransaction];
 
@@ -436,21 +436,21 @@ void __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismiss
 - (void)_performDismissal
 {
   [(SBToAppsWorkspaceTransaction *)self _delayTransitionCompletionForRequester:@"_SBTransientOverlayDismissAllToAppsWorkspaceTransactionDelayRequesterDismissal"];
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 switcherController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 applicationContext];
-  v7 = [SBApp windowSceneManager];
-  v8 = [v5 displayIdentity];
-  v9 = [v7 windowSceneForDisplayIdentity:v8];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [transitionRequest displayIdentity];
+  v9 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v10 = [v9 transientOverlayPresenter];
-  v11 = [v10 topmostPresentedViewController];
-  if (v11 && [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:v11])
+  transientOverlayPresenter = [v9 transientOverlayPresenter];
+  topmostPresentedViewController = [transientOverlayPresenter topmostPresentedViewController];
+  if (topmostPresentedViewController && [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:topmostPresentedViewController])
   {
-    v12 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:v11];
-    v13 = [v4 appLayoutForWorkspaceTransientOverlay:v12];
+    v12 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:topmostPresentedViewController];
+    v13 = [switcherController appLayoutForWorkspaceTransientOverlay:v12];
     v14 = v13 != 0;
   }
 
@@ -464,10 +464,10 @@ void __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismiss
   v40[1] = 3221225472;
   v40[2] = __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDismissal__block_invoke;
   v40[3] = &unk_2783A97D8;
-  v15 = v5;
+  v15 = transitionRequest;
   v43 = v14;
   v41 = v15;
-  v42 = self;
+  selfCopy = self;
   v16 = MEMORY[0x223D6F7F0](v40);
   if (v14)
   {
@@ -481,8 +481,8 @@ void __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismiss
     v30[1] = 3221225472;
     v30[2] = __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDismissal__block_invoke_49;
     v30[3] = &unk_2783AF390;
-    v31 = v4;
-    v32 = v10;
+    v31 = switcherController;
+    v32 = transientOverlayPresenter;
     v33 = &location;
     [v31 enumerateTransientOverlayViewControllersUsingBlock:v30];
     objc_storeStrong(&self->_switcherTransitioningTransientOverlayViewControllers, p_location[5]);
@@ -493,34 +493,34 @@ void __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismiss
 
   else
   {
-    v17 = [v6 previousEntities];
-    v24 = v6;
-    v18 = [v6 entities];
-    v19 = [v17 isEqualToSet:v18];
+    previousEntities = [applicationContext previousEntities];
+    v24 = applicationContext;
+    entities = [applicationContext entities];
+    v19 = [previousEntities isEqualToSet:entities];
 
     if (v19)
     {
-      v20 = [v15 applicationContext];
+      applicationContext2 = [v15 applicationContext];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDismissal__block_invoke_3;
       v25[3] = &unk_2783A9C70;
       v26 = v16;
-      [v4 performTransitionWithContext:v20 animated:0 completion:v25];
+      [switcherController performTransitionWithContext:applicationContext2 animated:0 completion:v25];
     }
 
     else
     {
       [(SBToAppsWorkspaceTransaction *)self _delayTransitionCompletionForRequester:@"SBTransientOverlayDismissToAppsSwitcherAlongsideAnimation"];
-      v21 = [v4 animationControllerForTransitionRequest:v15];
-      v22 = [v21 completionBlock];
+      v21 = [switcherController animationControllerForTransitionRequest:v15];
+      completionBlock = [v21 completionBlock];
       objc_initWeak(&location, self);
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDismissal__block_invoke_2_55;
       v27[3] = &unk_2783AB758;
       objc_copyWeak(&v29, &location);
-      v23 = v22;
+      v23 = completionBlock;
       v28 = v23;
       [v21 setCompletionBlock:v27];
       [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self addChildTransaction:v21 withSchedulingPolicy:0];
@@ -530,7 +530,7 @@ void __90__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__handleDismiss
       objc_destroyWeak(&location);
     }
 
-    v6 = v24;
+    applicationContext = v24;
   }
 }
 
@@ -591,24 +591,24 @@ uint64_t __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDi
   return result;
 }
 
-- (BOOL)_shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:(id)a3
+- (BOOL)_shouldUseSwitcherDismissalAnimationForTransientOverlayViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransaction *)self windowScene];
-  v6 = [v5 switcherController];
+  controllerCopy = controller;
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  if (v4 && [v6 hasAppLayoutForTransientOverlayViewController:v4])
+  if (controllerCopy && [switcherController hasAppLayoutForTransientOverlayViewController:controllerCopy])
   {
-    v7 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v8 = [v7 applicationContext];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    applicationContext = [transitionRequest applicationContext];
 
     v9 = objc_opt_class();
-    v10 = [v8 layoutState];
-    v11 = SBSafeCast(v9, v10);
+    layoutState = [applicationContext layoutState];
+    v11 = SBSafeCast(v9, layoutState);
 
     v12 = objc_opt_class();
-    v13 = [v8 previousLayoutState];
-    v14 = SBSafeCast(v12, v13);
+    previousLayoutState = [applicationContext previousLayoutState];
+    v14 = SBSafeCast(v12, previousLayoutState);
 
     v15 = [v11 unlockedEnvironmentMode] == 2 || objc_msgSend(v14, "unlockedEnvironmentMode") == 2;
   }
@@ -621,16 +621,16 @@ uint64_t __75__SBTransientOverlayDismissAllToAppsWorkspaceTransaction__performDi
   return v15;
 }
 
-- (void)_logForInterruptAttemptReason:(id)a3
+- (void)_logForInterruptAttemptReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
 
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v12];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:reasonCopy arguments:&v12];
     if ([(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
       [(SBTransientOverlayDismissAllToAppsWorkspaceTransaction *)self _addAuditHistoryItem:@"%@", v7];

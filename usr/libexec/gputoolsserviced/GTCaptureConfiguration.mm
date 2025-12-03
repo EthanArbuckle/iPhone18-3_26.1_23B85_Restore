@@ -1,7 +1,7 @@
 @interface GTCaptureConfiguration
 - (GTCaptureConfiguration)init;
-- (GTCaptureConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTCaptureConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureConfiguration
@@ -24,36 +24,36 @@
   return v3;
 }
 
-- (GTCaptureConfiguration)initWithCoder:(id)a3
+- (GTCaptureConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTCaptureConfiguration;
   v5 = [(GTCaptureConfiguration *)&v8 init];
   if (v5)
   {
-    v5->_enablePresentDownload = [v4 decodeBoolForKey:@"enablePresentDownload"];
-    v5->_presentDownloadSize = [v4 decodeInt32ForKey:@"presentDownloadSize"];
-    v5->_enableLogErrors = [v4 decodeBoolForKey:@"enableLogErrors"];
-    v5->_disableHashResources = [v4 decodeBoolForKey:@"disableHashResources"];
-    v5->_waitEventTimeout = [v4 decodeInt32ForKey:@"waitEventTimeout"];
-    v5->_maxDownloadCommandBuffers = [v4 decodeInt32ForKey:@"maxDownloadCommandBuffers"];
+    v5->_enablePresentDownload = [coderCopy decodeBoolForKey:@"enablePresentDownload"];
+    v5->_presentDownloadSize = [coderCopy decodeInt32ForKey:@"presentDownloadSize"];
+    v5->_enableLogErrors = [coderCopy decodeBoolForKey:@"enableLogErrors"];
+    v5->_disableHashResources = [coderCopy decodeBoolForKey:@"disableHashResources"];
+    v5->_waitEventTimeout = [coderCopy decodeInt32ForKey:@"waitEventTimeout"];
+    v5->_maxDownloadCommandBuffers = [coderCopy decodeInt32ForKey:@"maxDownloadCommandBuffers"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   enablePresentDownload = self->_enablePresentDownload;
-  v5 = a3;
-  [v5 encodeBool:enablePresentDownload forKey:@"enablePresentDownload"];
-  [v5 encodeInt32:self->_presentDownloadSize forKey:@"presentDownloadSize"];
-  [v5 encodeBool:self->_enableLogErrors forKey:@"enableLogErrors"];
-  [v5 encodeBool:self->_disableHashResources forKey:@"disableHashResources"];
-  [v5 encodeInt32:self->_waitEventTimeout forKey:@"waitEventTimeout"];
-  [v5 encodeInt32:self->_maxDownloadCommandBuffers forKey:@"maxDownloadCommandBuffers"];
+  coderCopy = coder;
+  [coderCopy encodeBool:enablePresentDownload forKey:@"enablePresentDownload"];
+  [coderCopy encodeInt32:self->_presentDownloadSize forKey:@"presentDownloadSize"];
+  [coderCopy encodeBool:self->_enableLogErrors forKey:@"enableLogErrors"];
+  [coderCopy encodeBool:self->_disableHashResources forKey:@"disableHashResources"];
+  [coderCopy encodeInt32:self->_waitEventTimeout forKey:@"waitEventTimeout"];
+  [coderCopy encodeInt32:self->_maxDownloadCommandBuffers forKey:@"maxDownloadCommandBuffers"];
 }
 
 @end

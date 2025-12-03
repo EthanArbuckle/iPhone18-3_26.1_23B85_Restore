@@ -1,34 +1,34 @@
 @interface AKAuthorizationStore
 - (AKAuthorizationStore)init;
-- (AKAuthorizationStore)initWithExecutor:(id)a3;
-- (AKAuthorizationStore)initWithPath:(id)a3;
-- (BOOL)_shouldUpdateDatabaseToListVersion:(id)a3 withAltDSID:(id)a4;
+- (AKAuthorizationStore)initWithExecutor:(id)executor;
+- (AKAuthorizationStore)initWithPath:(id)path;
+- (BOOL)_shouldUpdateDatabaseToListVersion:(id)version withAltDSID:(id)d;
 - (id)_fetchAllAuthorizedClientIDs;
-- (id)_fetchAppMetadataForClientID:(id)a3;
-- (id)_fetchApplicationsForTeamID:(id)a3;
-- (id)_handleRevokedApplicationsForVersion:(id)a3;
-- (id)_optionalValueWithString:(id)a3;
-- (id)fetchAuthorizationListVersionWithAltDSID:(id)a3;
-- (void)_addTemporaryDeveloperTeam:(id)a3;
+- (id)_fetchAppMetadataForClientID:(id)d;
+- (id)_fetchApplicationsForTeamID:(id)d;
+- (id)_handleRevokedApplicationsForVersion:(id)version;
+- (id)_optionalValueWithString:(id)string;
+- (id)fetchAuthorizationListVersionWithAltDSID:(id)d;
+- (void)_addTemporaryDeveloperTeam:(id)team;
 - (void)_postApplicationsListChangedNotification;
-- (void)_setDatabaseVersionWithAltDSID:(id)a3 toVersion:(int64_t)a4;
-- (void)_storeConsentedApplication:(id)a3 teamID:(id)a4 listVersion:(id)a5;
-- (void)_storeDeveloperTeam:(id)a3 listVersion:(id)a4;
-- (void)_storePrimaryAppAMSMetadata:(id)a3;
-- (void)clearDatabaseWithAltDSID:(id)a3 error:(id *)a4;
-- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)a3 withCompletion:(id)a4;
-- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)a3 withCompletion:(id)a4;
-- (void)fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)perform:(id)a3;
-- (void)performUnsafeVerificationWithUserID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)removeApplicationWithClientID:(id)a3 completion:(id)a4;
-- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)a3 completion:(id)a4;
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4;
-- (void)setListVersionToVersion:(id)a3 withAltDSID:(id)a4;
-- (void)storeAuthorization:(id)a3 withAltDSID:(id)a4 forClient:(id)a5;
-- (void)updateAuthorizationListWithMetadataInfo:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)updatePrimaryAppsWithAMSAppMetadata:(id)a3 withAltDSID:(id)a4 withCompletion:(id)a5;
+- (void)_setDatabaseVersionWithAltDSID:(id)d toVersion:(int64_t)version;
+- (void)_storeConsentedApplication:(id)application teamID:(id)d listVersion:(id)version;
+- (void)_storeDeveloperTeam:(id)team listVersion:(id)version;
+- (void)_storePrimaryAppAMSMetadata:(id)metadata;
+- (void)clearDatabaseWithAltDSID:(id)d error:(id *)error;
+- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)d withCompletion:(id)completion;
+- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)d withCompletion:(id)completion;
+- (void)fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)perform:(id)perform;
+- (void)performUnsafeVerificationWithUserID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)removeApplicationWithClientID:(id)d completion:(id)completion;
+- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)d completion:(id)completion;
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion;
+- (void)setListVersionToVersion:(id)version withAltDSID:(id)d;
+- (void)storeAuthorization:(id)authorization withAltDSID:(id)d forClient:(id)client;
+- (void)updateAuthorizationListWithMetadataInfo:(id)info withAltDSID:(id)d completion:(id)completion;
+- (void)updatePrimaryAppsWithAMSAppMetadata:(id)metadata withAltDSID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation AKAuthorizationStore
@@ -42,119 +42,119 @@
   return v3;
 }
 
-- (AKAuthorizationStore)initWithExecutor:(id)a3
+- (AKAuthorizationStore)initWithExecutor:(id)executor
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, executor);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKAuthorizationStore;
   v6 = [(AKAuthorizationStore *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_executor, location[0]);
+    objc_storeStrong(&selfCopy->_executor, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKAuthorizationStore)initWithPath:(id)a3
+- (AKAuthorizationStore)initWithPath:(id)path
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, path);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKAuthorizationStore;
   v9 = [(AKAuthorizationStore *)&v11 init];
-  v13 = v9;
-  objc_storeStrong(&v13, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
     v10 = objc_alloc_init(AKAuthorizationStoreMigrator);
     v4 = [AKSQLiteExecutor alloc];
     v5 = [(AKSQLiteExecutor *)v4 initWithDatabasePath:location[0] migrationController:v10];
-    executor = v13->_executor;
-    v13->_executor = v5;
+    executor = selfCopy->_executor;
+    selfCopy->_executor = v5;
     _objc_release(executor);
     objc_storeStrong(&v10, 0);
   }
 
-  v8 = _objc_retain(v13);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  (*(location[0] + 2))(location[0], v4);
+  objc_storeStrong(location, perform);
+  (*(location[0] + 2))(location[0], selfCopy);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateAuthorizationListWithMetadataInfo:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)updateAuthorizationListWithMetadataInfo:(id)info withAltDSID:(id)d completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, d);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v28 = [location[0] authorizedAppListVersion];
-  if ([(AKAuthorizationStore *)v32 _shouldUpdateDatabaseToListVersion:v28 withAltDSID:v30])
+  objc_storeStrong(&v29, completion);
+  authorizedAppListVersion = [location[0] authorizedAppListVersion];
+  if ([(AKAuthorizationStore *)selfCopy _shouldUpdateDatabaseToListVersion:authorizedAppListVersion withAltDSID:v30])
   {
-    v5 = [(AKAuthorizationStore *)v32 _fetchAllAuthorizedClientIDs];
+    _fetchAllAuthorizedClientIDs = [(AKAuthorizationStore *)selfCopy _fetchAllAuthorizedClientIDs];
     v23 = [NSMutableSet setWithArray:?];
-    _objc_release(v5);
-    v22 = [location[0] teams];
-    v6 = [v22 allValues];
+    _objc_release(_fetchAllAuthorizedClientIDs);
+    teams = [location[0] teams];
+    allValues = [teams allValues];
     v14 = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
     v17 = sub_100105468;
     v18 = &unk_100323770;
     v19 = _objc_retain(v23);
-    v20 = _objc_retain(v32);
-    v21 = _objc_retain(v28);
-    [v6 enumerateObjectsUsingBlock:&v14];
-    _objc_release(v6);
-    v13 = [(AKAuthorizationStore *)v32 _handleRevokedApplicationsForVersion:v28];
-    [(AKAuthorizationStore *)v32 setListVersionToVersion:v28 withAltDSID:v30];
+    v20 = _objc_retain(selfCopy);
+    v21 = _objc_retain(authorizedAppListVersion);
+    [allValues enumerateObjectsUsingBlock:&v14];
+    _objc_release(allValues);
+    v13 = [(AKAuthorizationStore *)selfCopy _handleRevokedApplicationsForVersion:authorizedAppListVersion];
+    [(AKAuthorizationStore *)selfCopy setListVersionToVersion:authorizedAppListVersion withAltDSID:v30];
     v33[0] = &off_1003390B8;
-    v7 = [v23 allObjects];
-    v34[0] = v7;
+    allObjects = [v23 allObjects];
+    v34[0] = allObjects;
     v33[1] = &off_1003390D0;
     v34[1] = v13;
     v12 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
-    _objc_release(v7);
+    _objc_release(allObjects);
     if (v29)
     {
       (*(v29 + 2))(v29, v12, 0);
     }
 
-    [(AKAuthorizationStore *)v32 _postApplicationsListChangedNotification];
+    [(AKAuthorizationStore *)selfCopy _postApplicationsListChangedNotification];
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v19, 0);
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&teams, 0);
     objc_storeStrong(&v23, 0);
     v24 = 0;
   }
@@ -180,22 +180,22 @@
     v24 = 1;
   }
 
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&authorizedAppListVersion, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)updatePrimaryAppsWithAMSAppMetadata:(id)a3 withAltDSID:(id)a4 withCompletion:(id)a5
+- (void)updatePrimaryAppsWithAMSAppMetadata:(id)metadata withAltDSID:(id)d withCompletion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metadata);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, d);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, completion);
   if ([location[0] count])
   {
     v5 = location[0];
@@ -204,7 +204,7 @@
     v12 = 0;
     v13 = sub_100105864;
     v14 = &unk_100323798;
-    v15 = _objc_retain(v20);
+    v15 = _objc_retain(selfCopy);
     [v5 enumerateKeysAndObjectsUsingBlock:&v10];
     if (v17)
     {
@@ -233,14 +233,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)a3 withCompletion:(id)a4
+- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)d withCompletion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, completion);
   v34 = [AKSQLiteQuery queryWithString:@"SELECT client_id, app_name, app_developer_name, adam_id FROM authorized_primary_applications"];
   v27 = 0;
   v28 = &v27;
@@ -263,7 +263,7 @@
   v18 = &unk_10031F288;
   v19 = &v20;
   [v34 setRowHandler:?];
-  objc_initWeak(v14, v37);
+  objc_initWeak(v14, selfCopy);
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -299,9 +299,9 @@
 - (void)_postApplicationsListChangedNotification
 {
   v3 = +[AKFeatureManager sharedManager];
-  v4 = [v3 isSiwaInPasswordsFeatureEnabled];
+  isSiwaInPasswordsFeatureEnabled = [v3 isSiwaInPasswordsFeatureEnabled];
   _objc_release(v3);
-  if (v4)
+  if (isSiwaInPasswordsFeatureEnabled)
   {
     v2 = +[NSDistributedNotificationCenter defaultCenter];
     [(NSDistributedNotificationCenter *)v2 postNotificationName:AKSignInWithAppleAccountsListChangedNotification object:0 userInfo:0 deliverImmediately:1];
@@ -309,38 +309,38 @@
   }
 }
 
-- (void)storeAuthorization:(id)a3 withAltDSID:(id)a4 forClient:(id)a5
+- (void)storeAuthorization:(id)authorization withAltDSID:(id)d forClient:(id)client
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, d);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
-  v19 = [location[0] authorizedRequest];
+  objc_storeStrong(&v34, client);
+  authorizedRequest = [location[0] authorizedRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  _objc_release(v19);
+  _objc_release(authorizedRequest);
   if (isKindOfClass)
   {
-    v13 = [v34 bundleID];
+    bundleID = [v34 bundleID];
     v28 = 0;
     v14 = 1;
-    if (v13)
+    if (bundleID)
     {
-      v29 = [v34 teamID];
+      teamID = [v34 teamID];
       v28 = 1;
-      v14 = v29 == 0;
+      v14 = teamID == 0;
     }
 
     if (v28)
     {
-      _objc_release(v29);
+      _objc_release(teamID);
     }
 
-    _objc_release(v13);
+    _objc_release(bundleID);
     if (v14)
     {
       v27 = _AKLogSiwa();
@@ -359,34 +359,34 @@
 
     else
     {
-      v24 = [location[0] authorizedRequest];
-      v23 = [location[0] credential];
+      authorizedRequest2 = [location[0] authorizedRequest];
+      credential = [location[0] credential];
       v22 = objc_alloc_init(AKDeveloperTeam);
-      v5 = [v34 teamID];
+      teamID2 = [v34 teamID];
       [v22 setTeamID:?];
-      _objc_release(v5);
-      v6 = [v23 userIdentifier];
+      _objc_release(teamID2);
+      userIdentifier = [credential userIdentifier];
       [v22 setUserIdentifier:?];
-      _objc_release(v6);
+      _objc_release(userIdentifier);
       v21 = objc_alloc_init(AKConsentedApplication);
-      v7 = [v34 bundleID];
+      bundleID2 = [v34 bundleID];
       [v21 setClientID:?];
-      _objc_release(v7);
-      v8 = [v24 requestedScopes];
+      _objc_release(bundleID2);
+      requestedScopes = [authorizedRequest2 requestedScopes];
       [v21 setScopes:?];
-      _objc_release(v8);
-      v10 = [v34 bundleID];
-      v38 = v10;
+      _objc_release(requestedScopes);
+      bundleID3 = [v34 bundleID];
+      v38 = bundleID3;
       v39 = v21;
       v9 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       [v22 setApps:?];
       _objc_release(v9);
-      _objc_release(v10);
-      [(AKAuthorizationStore *)v37 _addTemporaryDeveloperTeam:v22];
+      _objc_release(bundleID3);
+      [(AKAuthorizationStore *)selfCopy _addTemporaryDeveloperTeam:v22];
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v22, 0);
-      objc_storeStrong(&v23, 0);
-      objc_storeStrong(&v24, 0);
+      objc_storeStrong(&credential, 0);
+      objc_storeStrong(&authorizedRequest2, 0);
       v30 = 0;
     }
   }
@@ -412,16 +412,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v54 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v52 = 0;
-  objc_storeStrong(&v52, a4);
+  objc_storeStrong(&v52, iD);
   v51 = 0;
-  objc_storeStrong(&v51, a5);
+  objc_storeStrong(&v51, completion);
   if (location[0])
   {
     v49 = [AKSQLiteQuery queryWithString:@"SELECT team_id, uid FROM authorized_teams WHERE team_id = ?"];
@@ -457,7 +457,7 @@
     v25 = &v35;
     v26 = &v28;
     [v49 setRowHandler:?];
-    objc_initWeak(v20, v54);
+    objc_initWeak(v20, selfCopy);
     v13 = _NSConcreteStackBlock;
     v14 = -1073741824;
     v15 = 0;
@@ -478,7 +478,7 @@
       v12 = objc_alloc_init(AKDeveloperTeam);
       [v12 setTeamID:v36[5]];
       [v12 setUserIdentifier:v29[5]];
-      v5 = [(AKAuthorizationStore *)v54 _fetchApplicationsForTeamID:location[0]];
+      v5 = [(AKAuthorizationStore *)selfCopy _fetchApplicationsForTeamID:location[0]];
       [v12 setApps:?];
       _objc_release(v5);
       (*(v51 + 2))(v51, v12, 0);
@@ -521,16 +521,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, iD);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, completion);
   if (location[0])
   {
     v39 = [AKSQLiteQuery queryWithString:@"SELECT team_id FROM authorized_applications WHERE client_id = ?"];
@@ -558,7 +558,7 @@
     v22 = &unk_10031F288;
     v23 = &v25;
     [v39 setRowHandler:?];
-    objc_initWeak(v18, v44);
+    objc_initWeak(v18, selfCopy);
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
@@ -576,7 +576,7 @@
 
     else if (v26[5])
     {
-      [(AKAuthorizationStore *)v44 fetchDeveloperTeamWithTeamID:v26[5] withAltDSID:v42 completion:v41];
+      [(AKAuthorizationStore *)selfCopy fetchDeveloperTeamWithTeamID:v26[5] withAltDSID:v42 completion:v41];
       v40 = 0;
     }
 
@@ -613,16 +613,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performUnsafeVerificationWithUserID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)performUnsafeVerificationWithUserID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, iD);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, completion);
   v32 = [AKSQLiteQuery queryWithString:@"SELECT team_id FROM authorized_teams WHERE uid = ?"];
   v26[0] = 0;
   v26[1] = v26;
@@ -646,7 +646,7 @@
   v18 = &unk_10031F288;
   v19 = &v21;
   [v32 setRowHandler:?];
-  objc_initWeak(v14, v36);
+  objc_initWeak(v14, selfCopy);
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -669,14 +669,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   if (location[0])
   {
     v26 = [AKSQLiteQuery queryWithString:@"UPDATE authorized_applications SET credential_state = ? WHERE client_id = ?"];
@@ -693,7 +693,7 @@
     v16 = v20[5];
     [v26 bindParameters:v17 error:&v16];
     objc_storeStrong(v4, v16);
-    objc_initWeak(&v15, v30);
+    objc_initWeak(&v15, selfCopy);
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
@@ -738,14 +738,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeApplicationWithClientID:(id)a3 completion:(id)a4
+- (void)removeApplicationWithClientID:(id)d completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, completion);
   if (location[0])
   {
     v29 = _AKLogSiwa();
@@ -768,7 +768,7 @@
     v19 = 0;
     [v27 bindParameter:location[0] error:&v19];
     objc_storeStrong(&v26, v19);
-    objc_initWeak(&from, v33);
+    objc_initWeak(&from, selfCopy);
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
@@ -829,14 +829,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)d completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, completion);
   v29 = [AKSQLiteQuery queryWithString:@"UPDATE authorized_applications SET credential_state = ?, authorizedAppListVersion = 'TEMPORARY'"];
   v22 = 0;
   v23 = &v22;
@@ -852,8 +852,8 @@
   [v6 bindParameter:? error:?];
   objc_storeStrong(v5, v21);
   _objc_release(v4);
-  v20 = [(AKAuthorizationStore *)v32 _fetchAllAuthorizedClientIDs];
-  objc_initWeak(&from, v32);
+  _fetchAllAuthorizedClientIDs = [(AKAuthorizationStore *)selfCopy _fetchAllAuthorizedClientIDs];
+  objc_initWeak(&from, selfCopy);
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
@@ -885,14 +885,14 @@
   else
   {
     v33 = &off_1003390D0;
-    v34 = v20;
+    v34 = _fetchAllAuthorizedClientIDs;
     v8 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     if (v30)
     {
       (*(v30 + 2))(v30, v8, 0);
     }
 
-    [(AKAuthorizationStore *)v32 _postApplicationsListChangedNotification];
+    [(AKAuthorizationStore *)selfCopy _postApplicationsListChangedNotification];
     objc_storeStrong(&v8, 0);
     v9 = 0;
   }
@@ -900,7 +900,7 @@
   objc_storeStrong(v17, 0);
   objc_destroyWeak(&v18);
   objc_destroyWeak(&from);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&_fetchAllAuthorizedClientIDs, 0);
   _Block_object_dispose(&v22, 8);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
@@ -908,14 +908,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)a3 withCompletion:(id)a4
+- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)d withCompletion:(id)completion
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
+  objc_storeStrong(&v49, completion);
   v48 = [AKSQLiteQuery queryWithString:@"SELECT team_id, uid, private_email FROM authorized_teams"];
   v41 = 0;
   v42 = &v41;
@@ -938,7 +938,7 @@
   v32 = &unk_10031F288;
   v33 = &v34;
   [v48 setRowHandler:?];
-  objc_initWeak(from, v51);
+  objc_initWeak(from, selfCopy);
   v21 = _NSConcreteStackBlock;
   v22 = -1073741824;
   v23 = 0;
@@ -982,12 +982,12 @@
         }
 
         v17 = *(__b[1] + 8 * v11);
-        v8 = v51;
-        v7 = [v17 teamID];
+        v8 = selfCopy;
+        teamID = [v17 teamID];
         v6 = [(AKAuthorizationStore *)v8 _fetchApplicationsForTeamID:?];
         [v17 setApps:?];
         _objc_release(v6);
-        _objc_release(v7);
+        _objc_release(teamID);
         ++v11;
         if (v9 + 1 >= v12)
         {
@@ -1021,12 +1021,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_fetchAppMetadataForClientID:(id)a3
+- (id)_fetchAppMetadataForClientID:(id)d
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v35 = [AKSQLiteQuery queryWithString:@"SELECT client_id, app_name, app_developer_name, adam_id FROM authorized_primary_applications WHERE client_id = ?"];
   v28 = 0;
   v29 = &v28;
@@ -1053,7 +1053,7 @@
   v18 = &unk_10031F288;
   v19 = &v21;
   [v35 setRowHandler:?];
-  objc_initWeak(from, v37);
+  objc_initWeak(from, selfCopy);
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -1089,27 +1089,27 @@
   return v4;
 }
 
-- (void)_addTemporaryDeveloperTeam:(id)a3
+- (void)_addTemporaryDeveloperTeam:(id)team
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, team);
   v3 = _objc_retain(@"TEMPORARY");
-  [(AKAuthorizationStore *)v5 _storeDeveloperTeam:location[0] listVersion:v3];
+  [(AKAuthorizationStore *)selfCopy _storeDeveloperTeam:location[0] listVersion:v3];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldUpdateDatabaseToListVersion:(id)a3 withAltDSID:(id)a4
+- (BOOL)_shouldUpdateDatabaseToListVersion:(id)version withAltDSID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(AKAuthorizationStore *)v10 fetchAuthorizationListVersionWithAltDSID:v8];
+  objc_storeStrong(&v8, d);
+  v7 = [(AKAuthorizationStore *)selfCopy fetchAuthorizationListVersionWithAltDSID:v8];
   v6 = [location[0] isEqualToString:v7] == 0;
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
@@ -1117,22 +1117,22 @@
   return v6;
 }
 
-- (void)_storeDeveloperTeam:(id)a3 listVersion:(id)a4
+- (void)_storeDeveloperTeam:(id)team listVersion:(id)version
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, team);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, version);
   v37 = [AKSQLiteQuery queryWithString:@"INSERT OR REPLACE INTO authorized_teams (team_id, uid, private_email) VALUES (?, ?, ?)"];
-  v7 = [location[0] teamID];
-  v6 = [location[0] userIdentifier];
-  v5 = [location[0] privateEmail];
-  v36 = [NSArray arrayWithObjects:v7, v6, v5, 0];
-  _objc_release(v5);
-  _objc_release(v6);
-  _objc_release(v7);
+  teamID = [location[0] teamID];
+  userIdentifier = [location[0] userIdentifier];
+  privateEmail = [location[0] privateEmail];
+  v36 = [NSArray arrayWithObjects:teamID, userIdentifier, privateEmail, 0];
+  _objc_release(privateEmail);
+  _objc_release(userIdentifier);
+  _objc_release(teamID);
   v29 = 0;
   v30 = &v29;
   v31 = 838860800;
@@ -1143,7 +1143,7 @@
   v28 = 0;
   [v37 bindParameters:v36 error:&v28];
   objc_storeStrong(&v35, v28);
-  objc_initWeak(&from, v40);
+  objc_initWeak(&from, selfCopy);
   v20 = _NSConcreteStackBlock;
   v21 = -1073741824;
   v22 = 0;
@@ -1169,17 +1169,17 @@
 
   else
   {
-    v4 = [location[0] apps];
+    apps = [location[0] apps];
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_10010A130;
     v13 = &unk_1003237E8;
-    v14 = _objc_retain(v40);
+    v14 = _objc_retain(selfCopy);
     v15 = _objc_retain(location[0]);
     v16 = _objc_retain(v38);
-    [v4 enumerateKeysAndObjectsUsingBlock:&v9];
-    _objc_release(v4);
+    [apps enumerateKeysAndObjectsUsingBlock:&v9];
+    _objc_release(apps);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v14, 0);
@@ -1197,50 +1197,50 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_storeConsentedApplication:(id)a3 teamID:(id)a4 listVersion:(id)a5
+- (void)_storeConsentedApplication:(id)application teamID:(id)d listVersion:(id)version
 {
-  obj = a4;
-  v58 = a5;
-  v89 = self;
+  obj = d;
+  versionCopy = version;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, application);
   v87 = 0;
   objc_storeStrong(&v87, obj);
   v86 = 0;
-  objc_storeStrong(&v86, v58);
-  v55 = v89;
-  v56 = [location[0] scopes];
-  v53 = v56;
+  objc_storeStrong(&v86, versionCopy);
+  v55 = selfCopy;
+  scopes = [location[0] scopes];
+  v53 = scopes;
   v54 = [v53 componentsJoinedByString:{@", "}];
   v51 = v54;
   v52 = [(AKAuthorizationStore *)v55 _optionalValueWithString:?];
   v85 = v52;
   _objc_release(v51);
   _objc_release(v53);
-  v49 = v89;
-  v50 = [location[0] transferState];
-  v47 = v50;
+  v49 = selfCopy;
+  transferState = [location[0] transferState];
+  v47 = transferState;
   v48 = [(AKAuthorizationStore *)v49 _optionalValueWithString:?];
   v84 = v48;
   _objc_release(v47);
-  v45 = v89;
-  v46 = [location[0] primaryClientID];
-  v43 = v46;
+  v45 = selfCopy;
+  primaryClientID = [location[0] primaryClientID];
+  v43 = primaryClientID;
   v44 = [(AKAuthorizationStore *)v45 _optionalValueWithString:?];
   v83 = v44;
   _objc_release(v43);
-  v41 = v89;
-  v42 = [location[0] origin];
-  v39 = v42;
+  v41 = selfCopy;
+  origin = [location[0] origin];
+  v39 = origin;
   v40 = [(AKAuthorizationStore *)v41 _optionalValueWithString:?];
   v82 = v40;
   _objc_release(v39);
   v38 = [NSNumber numberWithInt:1];
   v81 = v38;
-  v36 = v89;
-  v37 = [location[0] clientName];
-  v34 = v37;
+  v36 = selfCopy;
+  clientName = [location[0] clientName];
+  v34 = clientName;
   v35 = [(AKAuthorizationStore *)v36 _optionalValueWithString:?];
   v80 = v35;
   _objc_release(v34);
@@ -1249,8 +1249,8 @@
   v79 = v33;
   _objc_release(0);
   v31 = NSArray;
-  v32 = [location[0] clientID];
-  v22 = v32;
+  clientID = [location[0] clientID];
+  v22 = clientID;
   v23 = v87;
   v24 = v85;
   v25 = v82;
@@ -1258,8 +1258,8 @@
   v27 = v84;
   v28 = v83;
   v29 = v86;
-  v30 = [location[0] creationDate];
-  v19 = v30;
+  creationDate = [location[0] creationDate];
+  v19 = creationDate;
   v20 = &v8;
   v21 = [NSArray arrayWithObjects:v22, v23, v85, v82, v81, v84, v83, v29, v19, v80, 0];
   v5 = v21;
@@ -1280,7 +1280,7 @@
   v70 = 0;
   [v79 bindParameters:v78 error:&v70];
   objc_storeStrong(v18, v70);
-  objc_initWeak(&from, v89);
+  objc_initWeak(&from, selfCopy);
   v15 = AKSQLiteExecutor;
   v62 = _NSConcreteStackBlock;
   v63 = -1073741824;
@@ -1336,39 +1336,39 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_storePrimaryAppAMSMetadata:(id)a3
+- (void)_storePrimaryAppAMSMetadata:(id)metadata
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metadata);
   v38 = _AKLogSiwa();
   v37 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [location[0] bundleId];
-    sub_1000194D4(v42, v13);
+    bundleId = [location[0] bundleId];
+    sub_1000194D4(v42, bundleId);
     _os_log_debug_impl(&_mh_execute_header, v38, v37, "Storing data for bundle: %@", v42, 0xCu);
-    _objc_release(v13);
+    _objc_release(bundleId);
   }
 
   objc_storeStrong(&v38, 0);
-  v12 = v40;
-  v11 = [location[0] bundleId];
+  v12 = selfCopy;
+  bundleId2 = [location[0] bundleId];
   v36 = [(AKAuthorizationStore *)v12 _optionalValueWithString:?];
-  _objc_release(v11);
-  v10 = v40;
-  v9 = [location[0] appName];
+  _objc_release(bundleId2);
+  v10 = selfCopy;
+  appName = [location[0] appName];
   v35 = [(AKAuthorizationStore *)v10 _optionalValueWithString:?];
-  _objc_release(v9);
-  v8 = v40;
-  v7 = [location[0] appDeveloperName];
+  _objc_release(appName);
+  v8 = selfCopy;
+  appDeveloperName = [location[0] appDeveloperName];
   v34 = [(AKAuthorizationStore *)v8 _optionalValueWithString:?];
-  _objc_release(v7);
-  v6 = v40;
-  v5 = [location[0] adamID];
+  _objc_release(appDeveloperName);
+  v6 = selfCopy;
+  adamID = [location[0] adamID];
   v33 = [(AKAuthorizationStore *)v6 _optionalValueWithString:?];
-  _objc_release(v5);
+  _objc_release(adamID);
   v32 = [AKSQLiteQuery queryWithString:@"INSERT OR REPLACE INTO authorized_primary_applications (client_id, app_name, app_developer_name, adam_id) VALUES (?, ?, ?, ?)"];
   v25 = 0;
   v26 = &v25;
@@ -1382,7 +1382,7 @@
   v23 = v26[5];
   [v32 bindParameters:v24 error:&v23];
   objc_storeStrong(v4, v23);
-  objc_initWeak(&from, v40);
+  objc_initWeak(&from, selfCopy);
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
@@ -1397,10 +1397,10 @@
     oslog = _AKLogSiwa();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v3 = [location[0] bundleId];
-      sub_10001B098(v41, v3, v26[5]);
+      bundleId3 = [location[0] bundleId];
+      sub_10001B098(v41, bundleId3, v26[5]);
       _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Storing AMS app metadata for bundle: %@ failed with error: %@", v41, 0x16u);
-      _objc_release(v3);
+      _objc_release(bundleId3);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -1420,12 +1420,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_handleRevokedApplicationsForVersion:(id)a3
+- (id)_handleRevokedApplicationsForVersion:(id)version
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v44 = [AKSQLiteQuery queryWithString:@"SELECT client_id FROM authorized_applications WHERE authorizedAppListVersion != ? AND authorizedAppListVersion != 'TEMPORARY'"];
   v37 = 0;
   v38 = &v37;
@@ -1453,7 +1453,7 @@
   v25 = v38[5];
   [v28 bindParameters:v26 error:&v25];
   objc_storeStrong(v5, v25);
-  objc_initWeak(&from, v46);
+  objc_initWeak(&from, selfCopy);
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
@@ -1516,12 +1516,12 @@
   return v4;
 }
 
-- (id)_fetchApplicationsForTeamID:(id)a3
+- (id)_fetchApplicationsForTeamID:(id)d
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v35 = 0;
   v36 = &v35;
   v37 = 838860800;
@@ -1547,7 +1547,7 @@
   v24 = &unk_10031F288;
   v25 = &v35;
   [v34 setRowHandler:?];
-  objc_initWeak(from, v43);
+  objc_initWeak(from, selfCopy);
   v13 = _NSConcreteStackBlock;
   v14 = -1073741824;
   v15 = 0;
@@ -1563,7 +1563,7 @@
   v9 = 0;
   v10 = sub_10010C6B0;
   v11 = &unk_100323810;
-  v12[0] = _objc_retain(v43);
+  v12[0] = _objc_retain(selfCopy);
   v12[1] = &v35;
   [v5 enumerateKeysAndObjectsUsingBlock:&v7];
   if (v28[5])
@@ -1593,12 +1593,12 @@
   return v4;
 }
 
-- (id)_optionalValueWithString:(id)a3
+- (id)_optionalValueWithString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   if (location[0])
   {
     v6 = _objc_retain(location[0]);
@@ -1617,7 +1617,7 @@
 
 - (id)_fetchAllAuthorizedClientIDs
 {
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
   v30[0] = [AKSQLiteQuery queryWithString:@"SELECT client_id FROM authorized_applications WHERE credential_state = ?"];
   v23 = 0;
@@ -1640,7 +1640,7 @@
   v18 = &unk_10031F2D8;
   v19 = _objc_retain(v20);
   [v30[0] setRowHandler:&v14];
-  objc_initWeak(&from, v31);
+  objc_initWeak(&from, selfCopy);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
@@ -1676,12 +1676,12 @@
   return v3;
 }
 
-- (id)fetchAuthorizationListVersionWithAltDSID:(id)a3
+- (id)fetchAuthorizationListVersionWithAltDSID:(id)d
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
   v15 = &v14;
   v16 = 838860800;
@@ -1690,7 +1690,7 @@
   v19 = sub_100011230;
   v20 = 0;
   v13 = [NSString stringWithFormat:@"SELECT authorizedAppListVersion FROM version;"];
-  objc_initWeak(v12, v22);
+  objc_initWeak(v12, selfCopy);
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
@@ -1712,14 +1712,14 @@
   return v4;
 }
 
-- (void)setListVersionToVersion:(id)a3 withAltDSID:(id)a4
+- (void)setListVersionToVersion:(id)version withAltDSID:(id)d
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, d);
   v22 = [AKSQLiteQuery queryWithString:@"UPDATE version SET authorizedAppListVersion = ?"];
   v15 = 0;
   v16 = &v15;
@@ -1731,7 +1731,7 @@
   v14 = 0;
   [v22 bindParameter:location[0] error:&v14];
   objc_storeStrong(&v21, v14);
-  objc_initWeak(&from, v25);
+  objc_initWeak(&from, selfCopy);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
@@ -1763,13 +1763,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setDatabaseVersionWithAltDSID:(id)a3 toVersion:(int64_t)a4
+- (void)_setDatabaseVersionWithAltDSID:(id)d toVersion:(int64_t)version
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28 = a4;
+  objc_storeStrong(location, d);
+  versionCopy = version;
   v27 = [AKSQLiteQuery queryWithString:@"UPDATE version SET db_version = ?"];
   v20 = 0;
   v21 = &v20;
@@ -1783,10 +1783,10 @@
   v15 = 0;
   v16 = sub_10010DA88;
   v17 = &unk_100323860;
-  v19 = v28;
+  v19 = versionCopy;
   v18 = &v20;
   [v27 setBindHandler:?];
-  objc_initWeak(from, v30);
+  objc_initWeak(from, selfCopy);
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
@@ -1817,26 +1817,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)clearDatabaseWithAltDSID:(id)a3 error:(id *)a4
+- (void)clearDatabaseWithAltDSID:(id)d error:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   v9 = 0;
-  executor = v12->_executor;
+  executor = selfCopy->_executor;
   obj = 0;
   [(AKSQLiteExecutor *)executor wipeDatabase:&obj];
   objc_storeStrong(&v9, obj);
-  if (v10)
+  if (errorCopy)
   {
     v6 = v9;
     v5 = v9;
-    *v10 = v6;
+    *errorCopy = v6;
   }
 
-  [(AKAuthorizationStore *)v12 _postApplicationsListChangedNotification];
+  [(AKAuthorizationStore *)selfCopy _postApplicationsListChangedNotification];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }

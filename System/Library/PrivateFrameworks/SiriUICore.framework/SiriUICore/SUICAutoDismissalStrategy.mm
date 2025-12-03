@@ -1,28 +1,28 @@
 @interface SUICAutoDismissalStrategy
-- (SUICAutoDismissalStrategy)initWithIdleTimeout:(double)a3 extendedIdleTimeout:(double)a4 deviceSupportsFaceDetection:(BOOL)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6;
+- (SUICAutoDismissalStrategy)initWithIdleTimeout:(double)timeout extendedIdleTimeout:(double)idleTimeout deviceSupportsFaceDetection:(BOOL)detection deviceSupportsRaiseGestureDetection:(BOOL)gestureDetection;
 - (SUICAutoDismissalStrategyDelegate)delegate;
-- (void)_notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:(BOOL)a3;
-- (void)setLatestDeviceMotionEvent:(int64_t)a3;
-- (void)setLatestFaceAwarenessEvent:(int64_t)a3;
-- (void)setUserInteractedWithTouchIDSensor:(BOOL)a3;
-- (void)setUserInteractedWithTouchScreen:(BOOL)a3;
-- (void)setVideoPlaying:(BOOL)a3;
-- (void)setViewRequiringExtendedTimeoutVisible:(BOOL)a3;
+- (void)_notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:(BOOL)permanent;
+- (void)setLatestDeviceMotionEvent:(int64_t)event;
+- (void)setLatestFaceAwarenessEvent:(int64_t)event;
+- (void)setUserInteractedWithTouchIDSensor:(BOOL)sensor;
+- (void)setUserInteractedWithTouchScreen:(BOOL)screen;
+- (void)setVideoPlaying:(BOOL)playing;
+- (void)setViewRequiringExtendedTimeoutVisible:(BOOL)visible;
 @end
 
 @implementation SUICAutoDismissalStrategy
 
-- (SUICAutoDismissalStrategy)initWithIdleTimeout:(double)a3 extendedIdleTimeout:(double)a4 deviceSupportsFaceDetection:(BOOL)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6
+- (SUICAutoDismissalStrategy)initWithIdleTimeout:(double)timeout extendedIdleTimeout:(double)idleTimeout deviceSupportsFaceDetection:(BOOL)detection deviceSupportsRaiseGestureDetection:(BOOL)gestureDetection
 {
   v11.receiver = self;
   v11.super_class = SUICAutoDismissalStrategy;
   result = [(SUICAutoDismissalStrategy *)&v11 init];
   if (result)
   {
-    result->_idleTimeout = a3;
-    result->_extendedIdleTimeout = a4;
-    result->_deviceSupportsFaceDetection = a5;
-    result->_deviceSupportsRaiseGestureDetection = a6;
+    result->_idleTimeout = timeout;
+    result->_extendedIdleTimeout = idleTimeout;
+    result->_deviceSupportsFaceDetection = detection;
+    result->_deviceSupportsRaiseGestureDetection = gestureDetection;
     *&result->_userInteractedWithTouchScreen = 0;
     result->_viewRequiringExtendedTimeoutVisible = 0;
     result->_allowsDismissalWithFaceAttention = 0;
@@ -34,57 +34,57 @@
   return result;
 }
 
-- (void)setUserInteractedWithTouchScreen:(BOOL)a3
+- (void)setUserInteractedWithTouchScreen:(BOOL)screen
 {
-  if (self->_userInteractedWithTouchScreen != a3)
+  if (self->_userInteractedWithTouchScreen != screen)
   {
-    self->_userInteractedWithTouchScreen = a3;
+    self->_userInteractedWithTouchScreen = screen;
     [(SUICAutoDismissalStrategy *)self _notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:0];
   }
 }
 
-- (void)setUserInteractedWithTouchIDSensor:(BOOL)a3
+- (void)setUserInteractedWithTouchIDSensor:(BOOL)sensor
 {
-  if (self->_userInteractedWithTouchIDSensor != a3)
+  if (self->_userInteractedWithTouchIDSensor != sensor)
   {
-    self->_userInteractedWithTouchIDSensor = a3;
+    self->_userInteractedWithTouchIDSensor = sensor;
     [(SUICAutoDismissalStrategy *)self _notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:0];
   }
 }
 
-- (void)setLatestFaceAwarenessEvent:(int64_t)a3
+- (void)setLatestFaceAwarenessEvent:(int64_t)event
 {
-  if (self->_latestFaceAwarenessEvent != a3)
+  if (self->_latestFaceAwarenessEvent != event)
   {
-    self->_latestFaceAwarenessEvent = a3;
+    self->_latestFaceAwarenessEvent = event;
     [(SUICAutoDismissalStrategy *)self _notifyDelegateOfAutoDismissalDecisionChangeIfNeeded];
   }
 }
 
-- (void)setLatestDeviceMotionEvent:(int64_t)a3
+- (void)setLatestDeviceMotionEvent:(int64_t)event
 {
-  if (self->_latestDeviceMotionEvent != a3)
+  if (self->_latestDeviceMotionEvent != event)
   {
-    self->_latestDeviceMotionEvent = a3;
+    self->_latestDeviceMotionEvent = event;
     [(SUICAutoDismissalStrategy *)self _notifyDelegateOfAutoDismissalDecisionChangeIfNeeded];
   }
 }
 
-- (void)setVideoPlaying:(BOOL)a3
+- (void)setVideoPlaying:(BOOL)playing
 {
-  if (self->_videoPlaying != a3)
+  if (self->_videoPlaying != playing)
   {
-    self->_videoPlaying = a3;
+    self->_videoPlaying = playing;
     [(SUICAutoDismissalStrategy *)self _notifyDelegateOfAutoDismissalDecisionChangeIfNeeded];
   }
 }
 
-- (void)setViewRequiringExtendedTimeoutVisible:(BOOL)a3
+- (void)setViewRequiringExtendedTimeoutVisible:(BOOL)visible
 {
-  if (self->_viewRequiringExtendedTimeoutVisible != a3)
+  if (self->_viewRequiringExtendedTimeoutVisible != visible)
   {
-    self->_viewRequiringExtendedTimeoutVisible = a3;
-    if (a3)
+    self->_viewRequiringExtendedTimeoutVisible = visible;
+    if (visible)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       self->_viewRequiringExtendedTimeoutStartTime = v4;
@@ -94,19 +94,19 @@
   }
 }
 
-- (void)_notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:(BOOL)a3
+- (void)_notifyDelegateOfAutoDismissalDecisionChangeIfNeededPermanent:(BOOL)permanent
 {
-  v3 = a3;
-  v5 = [(SUICAutoDismissalStrategy *)self shouldDismiss];
+  permanentCopy = permanent;
+  shouldDismiss = [(SUICAutoDismissalStrategy *)self shouldDismiss];
   lastShouldDismissValue = self->_lastShouldDismissValue;
-  if (!lastShouldDismissValue || v5 != [(NSNumber *)lastShouldDismissValue BOOLValue])
+  if (!lastShouldDismissValue || shouldDismiss != [(NSNumber *)lastShouldDismissValue BOOLValue])
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:shouldDismiss];
     v8 = self->_lastShouldDismissValue;
     self->_lastShouldDismissValue = v7;
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained autoDismissalStrategyDidChangeAutoDismissalDecision:self dismissalReason:-[SUICAutoDismissalStrategy autoDismissalReason](self permanent:{"autoDismissalReason"), v3}];
+    [WeakRetained autoDismissalStrategyDidChangeAutoDismissalDecision:self dismissalReason:-[SUICAutoDismissalStrategy autoDismissalReason](self permanent:{"autoDismissalReason"), permanentCopy}];
   }
 }
 

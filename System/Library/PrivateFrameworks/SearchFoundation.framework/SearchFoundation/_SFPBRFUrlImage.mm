@@ -1,100 +1,100 @@
 @interface _SFPBRFUrlImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBRFSymbolImage)symbol_placeholder_image;
-- (_SFPBRFUrlImage)initWithDictionary:(id)a3;
-- (_SFPBRFUrlImage)initWithFacade:(id)a3;
-- (_SFPBRFUrlImage)initWithJSON:(id)a3;
+- (_SFPBRFUrlImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFUrlImage)initWithFacade:(id)facade;
+- (_SFPBRFUrlImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setDark_mode_url:(id)a3;
-- (void)setUrl:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDark_mode_url:(id)dark_mode_url;
+- (void)setUrl:(id)url;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFUrlImage
 
-- (_SFPBRFUrlImage)initWithFacade:(id)a3
+- (_SFPBRFUrlImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFUrlImage *)self init];
   if (v5)
   {
-    v6 = [v4 url];
+    v6 = [facadeCopy url];
 
     if (v6)
     {
-      v7 = [v4 url];
+      v7 = [facadeCopy url];
       [(_SFPBRFUrlImage *)v5 setUrl:v7];
     }
 
-    v8 = [v4 dark_mode_url];
+    dark_mode_url = [facadeCopy dark_mode_url];
 
-    if (v8)
+    if (dark_mode_url)
     {
-      v9 = [v4 dark_mode_url];
-      [(_SFPBRFUrlImage *)v5 setDark_mode_url:v9];
+      dark_mode_url2 = [facadeCopy dark_mode_url];
+      [(_SFPBRFUrlImage *)v5 setDark_mode_url:dark_mode_url2];
     }
 
-    if ([v4 hasSymbol_placeholder_image])
+    if ([facadeCopy hasSymbol_placeholder_image])
     {
-      v10 = [v4 symbol_placeholder_image];
+      symbol_placeholder_image = [facadeCopy symbol_placeholder_image];
 
-      if (v10)
+      if (symbol_placeholder_image)
       {
         v11 = [_SFPBRFSymbolImage alloc];
-        v12 = [v4 symbol_placeholder_image];
-        v13 = [(_SFPBRFSymbolImage *)v11 initWithFacade:v12];
+        symbol_placeholder_image2 = [facadeCopy symbol_placeholder_image];
+        v13 = [(_SFPBRFSymbolImage *)v11 initWithFacade:symbol_placeholder_image2];
         [(_SFPBRFUrlImage *)v5 setSymbol_placeholder_image:v13];
       }
     }
 
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFUrlImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFUrlImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
-    v14 = [v4 aspect_ratio];
+    aspect_ratio = [facadeCopy aspect_ratio];
 
-    if (v14)
+    if (aspect_ratio)
     {
       v15 = [_SFPBRFAspectRatio alloc];
-      v16 = [v4 aspect_ratio];
-      v17 = [(_SFPBRFAspectRatio *)v15 initWithFacade:v16];
+      aspect_ratio2 = [facadeCopy aspect_ratio];
+      v17 = [(_SFPBRFAspectRatio *)v15 initWithFacade:aspect_ratio2];
       [(_SFPBRFUrlImage *)v5 setAspect_ratio:v17];
     }
 
-    if ([v4 hasSizing_mode])
+    if ([facadeCopy hasSizing_mode])
     {
-      -[_SFPBRFUrlImage setSizing_mode:](v5, "setSizing_mode:", [v4 sizing_mode]);
+      -[_SFPBRFUrlImage setSizing_mode:](v5, "setSizing_mode:", [facadeCopy sizing_mode]);
     }
 
-    if ([v4 hasImage_rendering_mode])
+    if ([facadeCopy hasImage_rendering_mode])
     {
-      -[_SFPBRFUrlImage setImage_rendering_mode:](v5, "setImage_rendering_mode:", [v4 image_rendering_mode]);
+      -[_SFPBRFUrlImage setImage_rendering_mode:](v5, "setImage_rendering_mode:", [facadeCopy image_rendering_mode]);
     }
 
-    v18 = [v4 background_color];
+    background_color = [facadeCopy background_color];
 
-    if (v18)
+    if (background_color)
     {
       v19 = [_SFPBRFColor alloc];
-      v20 = [v4 background_color];
-      v21 = [(_SFPBRFColor *)v19 initWithFacade:v20];
+      background_color2 = [facadeCopy background_color];
+      v21 = [(_SFPBRFColor *)v19 initWithFacade:background_color2];
       [(_SFPBRFUrlImage *)v5 setBackground_color:v21];
     }
 
-    if ([v4 hasCorner_rounding_mode])
+    if ([facadeCopy hasCorner_rounding_mode])
     {
-      -[_SFPBRFUrlImage setCorner_rounding_mode:](v5, "setCorner_rounding_mode:", [v4 corner_rounding_mode]);
+      -[_SFPBRFUrlImage setCorner_rounding_mode:](v5, "setCorner_rounding_mode:", [facadeCopy corner_rounding_mode]);
     }
 
-    v22 = [v4 inset_padding];
+    inset_padding = [facadeCopy inset_padding];
 
-    if (v22)
+    if (inset_padding)
     {
-      v23 = [v4 inset_padding];
-      [v23 floatValue];
+      inset_padding2 = [facadeCopy inset_padding];
+      [inset_padding2 floatValue];
       [(_SFPBRFUrlImage *)v5 setInset_padding:?];
     }
 
@@ -104,15 +104,15 @@
   return v5;
 }
 
-- (_SFPBRFUrlImage)initWithDictionary:(id)a3
+- (_SFPBRFUrlImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = _SFPBRFUrlImage;
   v5 = [(_SFPBRFUrlImage *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"url"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(_SFPBRFUrlImage *)v5 setUrl:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"darkModeUrl"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"darkModeUrl"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,7 +130,7 @@
 
     v23 = v8;
     v24 = v6;
-    v10 = [v4 objectForKeyedSubscript:@"symbolPlaceholderImage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"symbolPlaceholderImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,14 +138,14 @@
       [(_SFPBRFUrlImage *)v5 setSymbol_placeholder_image:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"imageStyle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"imageStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFUrlImage setImage_style:](v5, "setImage_style:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"aspectRatio"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"aspectRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,21 +153,21 @@
       [(_SFPBRFUrlImage *)v5 setAspect_ratio:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"sizingMode"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"sizingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFUrlImage setSizing_mode:](v5, "setSizing_mode:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"imageRenderingMode"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"imageRenderingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFUrlImage setImage_rendering_mode:](v5, "setImage_rendering_mode:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -175,14 +175,14 @@
       [(_SFPBRFUrlImage *)v5 setBackground_color:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"cornerRoundingMode"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"cornerRoundingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFUrlImage setCorner_rounding_mode:](v5, "setCorner_rounding_mode:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"insetPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"insetPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,30 +196,30 @@
   return v5;
 }
 
-- (_SFPBRFUrlImage)initWithJSON:(id)a3
+- (_SFPBRFUrlImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFUrlImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFUrlImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFUrlImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -232,92 +232,92 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aspect_ratio)
   {
-    v4 = [(_SFPBRFUrlImage *)self aspect_ratio];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aspect_ratio = [(_SFPBRFUrlImage *)self aspect_ratio];
+    dictionaryRepresentation = [aspect_ratio dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aspectRatio"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aspectRatio"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aspectRatio"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aspectRatio"];
     }
   }
 
   if (self->_background_color)
   {
-    v7 = [(_SFPBRFUrlImage *)self background_color];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    background_color = [(_SFPBRFUrlImage *)self background_color];
+    dictionaryRepresentation2 = [background_color dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"backgroundColor"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_corner_rounding_mode)
   {
-    v10 = [(_SFPBRFUrlImage *)self corner_rounding_mode];
-    if (v10 >= 3)
+    corner_rounding_mode = [(_SFPBRFUrlImage *)self corner_rounding_mode];
+    if (corner_rounding_mode >= 3)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", corner_rounding_mode];
     }
 
     else
     {
-      v11 = off_1E7ACE548[v10];
+      v11 = off_1E7ACE548[corner_rounding_mode];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"cornerRoundingMode"];
+    [dictionary setObject:v11 forKeyedSubscript:@"cornerRoundingMode"];
   }
 
   if (self->_dark_mode_url)
   {
-    v12 = [(_SFPBRFUrlImage *)self dark_mode_url];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"darkModeUrl"];
+    dark_mode_url = [(_SFPBRFUrlImage *)self dark_mode_url];
+    v13 = [dark_mode_url copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"darkModeUrl"];
   }
 
   if (self->_image_rendering_mode)
   {
-    v14 = [(_SFPBRFUrlImage *)self image_rendering_mode];
-    if (v14 >= 3)
+    image_rendering_mode = [(_SFPBRFUrlImage *)self image_rendering_mode];
+    if (image_rendering_mode >= 3)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_rendering_mode];
     }
 
     else
     {
-      v15 = off_1E7ACE548[v14];
+      v15 = off_1E7ACE548[image_rendering_mode];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"imageRenderingMode"];
+    [dictionary setObject:v15 forKeyedSubscript:@"imageRenderingMode"];
   }
 
   if (self->_image_style)
   {
-    v16 = [(_SFPBRFUrlImage *)self image_style];
-    if (v16 < 0x2A && ((0x3FFDFFFFFFFuLL >> v16) & 1) != 0)
+    image_style = [(_SFPBRFUrlImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v17 = off_1E7ACE270[v16];
+      v17 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v17 forKeyedSubscript:@"imageStyle"];
   }
 
   if (self->_inset_padding != 0.0)
@@ -325,38 +325,38 @@
     v18 = MEMORY[0x1E696AD98];
     [(_SFPBRFUrlImage *)self inset_padding];
     v19 = [v18 numberWithFloat:?];
-    [v3 setObject:v19 forKeyedSubscript:@"insetPadding"];
+    [dictionary setObject:v19 forKeyedSubscript:@"insetPadding"];
   }
 
   if (self->_sizing_mode)
   {
-    v20 = [(_SFPBRFUrlImage *)self sizing_mode];
-    if (v20 >= 3)
+    sizing_mode = [(_SFPBRFUrlImage *)self sizing_mode];
+    if (sizing_mode >= 3)
     {
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sizing_mode];
     }
 
     else
     {
-      v21 = off_1E7ACE548[v20];
+      v21 = off_1E7ACE548[sizing_mode];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"sizingMode"];
+    [dictionary setObject:v21 forKeyedSubscript:@"sizingMode"];
   }
 
   if (self->_symbol_placeholder_image)
   {
-    v22 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    symbol_placeholder_image = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
+    dictionaryRepresentation3 = [symbol_placeholder_image dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"symbolPlaceholderImage"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"symbolPlaceholderImage"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"symbolPlaceholderImage"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"symbolPlaceholderImage"];
     }
   }
 
@@ -364,10 +364,10 @@
   {
     v25 = [(_SFPBRFUrlImage *)self url];
     v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"url"];
+    [dictionary setObject:v26 forKeyedSubscript:@"url"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -418,17 +418,17 @@
   return v4 ^ v3 ^ v5 ^ v7 ^ (2654435761 * image_style) ^ (2654435761 * sizing_mode) ^ (2654435761 * image_rendering_mode) ^ v10 ^ (2654435761 * self->_corner_rounding_mode) ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(_SFPBRFUrlImage *)self url];
-  v6 = [v4 url];
-  if ((v5 != 0) == (v6 == 0))
+  dark_mode_url = [(_SFPBRFUrlImage *)self url];
+  dark_mode_url2 = [equalCopy url];
+  if ((dark_mode_url != 0) == (dark_mode_url2 == 0))
   {
     goto LABEL_29;
   }
@@ -438,7 +438,7 @@
   {
     v8 = v7;
     v9 = [(_SFPBRFUrlImage *)self url];
-    v10 = [v4 url];
+    v10 = [equalCopy url];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -451,20 +451,20 @@
   {
   }
 
-  v5 = [(_SFPBRFUrlImage *)self dark_mode_url];
-  v6 = [v4 dark_mode_url];
-  if ((v5 != 0) == (v6 == 0))
+  dark_mode_url = [(_SFPBRFUrlImage *)self dark_mode_url];
+  dark_mode_url2 = [equalCopy dark_mode_url];
+  if ((dark_mode_url != 0) == (dark_mode_url2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(_SFPBRFUrlImage *)self dark_mode_url];
-  if (v12)
+  dark_mode_url3 = [(_SFPBRFUrlImage *)self dark_mode_url];
+  if (dark_mode_url3)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFUrlImage *)self dark_mode_url];
-    v15 = [v4 dark_mode_url];
-    v16 = [v14 isEqual:v15];
+    v13 = dark_mode_url3;
+    dark_mode_url4 = [(_SFPBRFUrlImage *)self dark_mode_url];
+    dark_mode_url5 = [equalCopy dark_mode_url];
+    v16 = [dark_mode_url4 isEqual:dark_mode_url5];
 
     if (!v16)
     {
@@ -476,20 +476,20 @@
   {
   }
 
-  v5 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
-  v6 = [v4 symbol_placeholder_image];
-  if ((v5 != 0) == (v6 == 0))
+  dark_mode_url = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
+  dark_mode_url2 = [equalCopy symbol_placeholder_image];
+  if ((dark_mode_url != 0) == (dark_mode_url2 == 0))
   {
     goto LABEL_29;
   }
 
-  v17 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
-  if (v17)
+  symbol_placeholder_image = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
+  if (symbol_placeholder_image)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
-    v20 = [v4 symbol_placeholder_image];
-    v21 = [v19 isEqual:v20];
+    v18 = symbol_placeholder_image;
+    symbol_placeholder_image2 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
+    symbol_placeholder_image3 = [equalCopy symbol_placeholder_image];
+    v21 = [symbol_placeholder_image2 isEqual:symbol_placeholder_image3];
 
     if (!v21)
     {
@@ -502,25 +502,25 @@
   }
 
   image_style = self->_image_style;
-  if (image_style != [v4 image_style])
+  if (image_style != [equalCopy image_style])
   {
     goto LABEL_30;
   }
 
-  v5 = [(_SFPBRFUrlImage *)self aspect_ratio];
-  v6 = [v4 aspect_ratio];
-  if ((v5 != 0) == (v6 == 0))
+  dark_mode_url = [(_SFPBRFUrlImage *)self aspect_ratio];
+  dark_mode_url2 = [equalCopy aspect_ratio];
+  if ((dark_mode_url != 0) == (dark_mode_url2 == 0))
   {
     goto LABEL_29;
   }
 
-  v23 = [(_SFPBRFUrlImage *)self aspect_ratio];
-  if (v23)
+  aspect_ratio = [(_SFPBRFUrlImage *)self aspect_ratio];
+  if (aspect_ratio)
   {
-    v24 = v23;
-    v25 = [(_SFPBRFUrlImage *)self aspect_ratio];
-    v26 = [v4 aspect_ratio];
-    v27 = [v25 isEqual:v26];
+    v24 = aspect_ratio;
+    aspect_ratio2 = [(_SFPBRFUrlImage *)self aspect_ratio];
+    aspect_ratio3 = [equalCopy aspect_ratio];
+    v27 = [aspect_ratio2 isEqual:aspect_ratio3];
 
     if (!v27)
     {
@@ -533,33 +533,33 @@
   }
 
   sizing_mode = self->_sizing_mode;
-  if (sizing_mode != [v4 sizing_mode])
+  if (sizing_mode != [equalCopy sizing_mode])
   {
     goto LABEL_30;
   }
 
   image_rendering_mode = self->_image_rendering_mode;
-  if (image_rendering_mode != [v4 image_rendering_mode])
+  if (image_rendering_mode != [equalCopy image_rendering_mode])
   {
     goto LABEL_30;
   }
 
-  v5 = [(_SFPBRFUrlImage *)self background_color];
-  v6 = [v4 background_color];
-  if ((v5 != 0) == (v6 == 0))
+  dark_mode_url = [(_SFPBRFUrlImage *)self background_color];
+  dark_mode_url2 = [equalCopy background_color];
+  if ((dark_mode_url != 0) == (dark_mode_url2 == 0))
   {
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v30 = [(_SFPBRFUrlImage *)self background_color];
-  if (v30)
+  background_color = [(_SFPBRFUrlImage *)self background_color];
+  if (background_color)
   {
-    v31 = v30;
-    v32 = [(_SFPBRFUrlImage *)self background_color];
-    v33 = [v4 background_color];
-    v34 = [v32 isEqual:v33];
+    v31 = background_color;
+    background_color2 = [(_SFPBRFUrlImage *)self background_color];
+    background_color3 = [equalCopy background_color];
+    v34 = [background_color2 isEqual:background_color3];
 
     if (!v34)
     {
@@ -572,10 +572,10 @@ LABEL_29:
   }
 
   corner_rounding_mode = self->_corner_rounding_mode;
-  if (corner_rounding_mode == [v4 corner_rounding_mode])
+  if (corner_rounding_mode == [equalCopy corner_rounding_mode])
   {
     inset_padding = self->_inset_padding;
-    [v4 inset_padding];
+    [equalCopy inset_padding];
     v35 = inset_padding == v39;
     goto LABEL_31;
   }
@@ -587,23 +587,23 @@ LABEL_31:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   v4 = [(_SFPBRFUrlImage *)self url];
   if (v4)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBRFUrlImage *)self dark_mode_url];
-  if (v5)
+  dark_mode_url = [(_SFPBRFUrlImage *)self dark_mode_url];
+  if (dark_mode_url)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
-  if (v6)
+  symbol_placeholder_image = [(_SFPBRFUrlImage *)self symbol_placeholder_image];
+  if (symbol_placeholder_image)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -613,8 +613,8 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_SFPBRFUrlImage *)self aspect_ratio];
-  if (v7)
+  aspect_ratio = [(_SFPBRFUrlImage *)self aspect_ratio];
+  if (aspect_ratio)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -629,8 +629,8 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_SFPBRFUrlImage *)self background_color];
-  if (v8)
+  background_color = [(_SFPBRFUrlImage *)self background_color];
+  if (background_color)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -641,11 +641,11 @@ LABEL_31:
   }
 
   [(_SFPBRFUrlImage *)self inset_padding];
-  v9 = v11;
+  v9 = toCopy;
   if (v10 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -664,18 +664,18 @@ LABEL_31:
   return v3;
 }
 
-- (void)setDark_mode_url:(id)a3
+- (void)setDark_mode_url:(id)dark_mode_url
 {
-  v4 = [a3 copy];
+  v4 = [dark_mode_url copy];
   dark_mode_url = self->_dark_mode_url;
   self->_dark_mode_url = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = [a3 copy];
+  v4 = [url copy];
   url = self->_url;
   self->_url = v4;
 

@@ -1,27 +1,27 @@
 @interface ICSystemPaperWindowSceneDelegate
 - (ICNAWindowSceneEventReporter)eventReporter;
-- (id)contentItemForUserActivity:(id)a3;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)eventReporterLostSession:(id)a3;
-- (void)ic_sceneDidDisconnect:(id)a3;
-- (void)ic_setupWithScene:(id)a3 options:(id)a4;
-- (void)notesSceneDidReceiveCreateNewNoteRequest:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setUpResumeEditingSystemPaperArchive:(id)a3 prefersNewNote:(BOOL)a4;
-- (void)setupSystemPaperWithWindowScene:(id)a3 options:(id)a4;
+- (id)contentItemForUserActivity:(id)activity;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)eventReporterLostSession:(id)session;
+- (void)ic_sceneDidDisconnect:(id)disconnect;
+- (void)ic_setupWithScene:(id)scene options:(id)options;
+- (void)notesSceneDidReceiveCreateNewNoteRequest:(id)request;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setUpResumeEditingSystemPaperArchive:(id)archive prefersNewNote:(BOOL)note;
+- (void)setupSystemPaperWithWindowScene:(id)scene options:(id)options;
 @end
 
 @implementation ICSystemPaperWindowSceneDelegate
 
-- (void)ic_setupWithScene:(id)a3 options:(id)a4
+- (void)ic_setupWithScene:(id)scene options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  sceneCopy = scene;
   v8 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,12 +32,12 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s:%d", &v9, 0x12u);
   }
 
-  [(ICSystemPaperWindowSceneDelegate *)self setupSystemPaperWithWindowScene:v7 options:v6];
+  [(ICSystemPaperWindowSceneDelegate *)self setupSystemPaperWithWindowScene:sceneCopy options:optionsCopy];
 }
 
-- (void)ic_sceneDidDisconnect:(id)a3
+- (void)ic_sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,29 +51,29 @@
   [(ICCommonWindowSceneDelegate *)self sharedDisconnect];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v4 _unregisterSettingsDiffActionArrayForKey:v7];
+  [disconnectCopy _unregisterSettingsDiffActionArrayForKey:v7];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v15 = self;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [NSArray arrayWithObjects:&v15 count:1];
+  selfCopy = self;
+  optionsCopy = options;
+  sessionCopy = session;
+  sceneCopy = scene;
+  v11 = [NSArray arrayWithObjects:&selfCopy count:1];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v10 _registerSettingsDiffActionArray:v11 forKey:v13];
+  [sceneCopy _registerSettingsDiffActionArray:v11 forKey:v13];
 
   v14.receiver = self;
   v14.super_class = ICSystemPaperWindowSceneDelegate;
-  [(ICCommonWindowSceneDelegate *)&v14 scene:v10 willConnectToSession:v9 options:v8];
+  [(ICCommonWindowSceneDelegate *)&v14 scene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
 }
 
-- (id)contentItemForUserActivity:(id)a3
+- (id)contentItemForUserActivity:(id)activity
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
+  userInfo = [activity userInfo];
+  v4 = [userInfo objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
 
   if (v4)
   {
@@ -88,9 +88,9 @@
   return v5;
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,13 +103,13 @@
 
   v6.receiver = self;
   v6.super_class = ICSystemPaperWindowSceneDelegate;
-  [(ICCommonWindowSceneDelegate *)&v6 sceneWillResignActive:v4];
+  [(ICCommonWindowSceneDelegate *)&v6 sceneWillResignActive:activeCopy];
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   v8 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,11 +122,11 @@
 
   if ((ICInternalSettingsIsSystemPaperEnabled() & 1) == 0)
   {
-    v20 = os_log_create("com.apple.notes", "SystemPaper");
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    ic_viewControllerManager = os_log_create("com.apple.notes", "SystemPaper");
+    if (os_log_type_enabled(ic_viewControllerManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Not setting up System Paper UI since SystemPaper isn't enabled.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, ic_viewControllerManager, OS_LOG_TYPE_DEFAULT, "Not setting up System Paper UI since SystemPaper isn't enabled.", buf, 2u);
     }
 
     goto LABEL_44;
@@ -143,78 +143,78 @@
     exit(1);
   }
 
-  v9 = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
-  if (!v9)
+  setupUserActivity = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
+  if (!setupUserActivity)
   {
 LABEL_14:
-    v21 = [(ICCommonWindowSceneDelegate *)self icWindow];
-    v20 = [v21 ic_viewControllerManager];
+    icWindow = [(ICCommonWindowSceneDelegate *)self icWindow];
+    ic_viewControllerManager = [icWindow ic_viewControllerManager];
 
-    if (!v20)
+    if (!ic_viewControllerManager)
     {
       [ICAssert handleFailedAssertWithCondition:"((viewControllerManager) != nil)" functionName:"[ICSystemPaperWindowSceneDelegate scene:continueUserActivity:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "viewControllerManager"];
     }
 
-    v22 = [v7 activityType];
-    v23 = [v22 isEqual:SYNotesUserActivityTypeCreateLink];
+    activityType = [activityCopy activityType];
+    v23 = [activityType isEqual:SYNotesUserActivityTypeCreateLink];
 
     if (v23)
     {
-      v24 = [v7 userInfo];
-      v25 = [v24 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
-      v26 = [v25 BOOLValue];
+      userInfo = [activityCopy userInfo];
+      v25 = [userInfo objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
+      bOOLValue = [v25 BOOLValue];
 
-      v27 = [(ICSystemPaperWindowSceneDelegate *)self contentItemForUserActivity:v7];
-      if (v26)
+      systemPaperViewController = [(ICSystemPaperWindowSceneDelegate *)self contentItemForUserActivity:activityCopy];
+      if (bOOLValue)
       {
-        v28 = [v20 showNewNoteWithApproach:16 sender:self animated:1];
+        v28 = [ic_viewControllerManager showNewNoteWithApproach:16 sender:self animated:1];
       }
 
-      if (!v27)
+      if (!systemPaperViewController)
       {
         goto LABEL_43;
       }
 
-      v29 = [v20 noteEditorViewController];
+      noteEditorViewController = [ic_viewControllerManager noteEditorViewController];
 
-      if (!v29)
+      if (!noteEditorViewController)
       {
         [ICAssert handleFailedAssertWithCondition:"((viewControllerManager.noteEditorViewController) != nil)" functionName:"[ICSystemPaperWindowSceneDelegate scene:continueUserActivity:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "viewControllerManager.noteEditorViewController"];
       }
 
-      v30 = [v20 noteEditorViewController];
-      [v30 addSystemPaperLink:v27 updateFirstResponder:0];
+      noteEditorViewController2 = [ic_viewControllerManager noteEditorViewController];
+      [noteEditorViewController2 addSystemPaperLink:systemPaperViewController updateFirstResponder:0];
     }
 
     else
     {
-      v31 = [v7 activityType];
-      v32 = [v31 isEqual:SYNotesUserActivityTypeInsertImage];
+      activityType2 = [activityCopy activityType];
+      v32 = [activityType2 isEqual:SYNotesUserActivityTypeInsertImage];
 
       if (v32)
       {
-        v33 = [v7 userInfo];
-        v34 = [v33 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
-        v35 = [v34 BOOLValue];
+        userInfo2 = [activityCopy userInfo];
+        v34 = [userInfo2 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
+        bOOLValue2 = [v34 BOOLValue];
 
-        v36 = [v7 userInfo];
-        v27 = [v36 objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
+        userInfo3 = [activityCopy userInfo];
+        systemPaperViewController = [userInfo3 objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
 
-        if (v35)
+        if (bOOLValue2)
         {
-          v37 = [v20 showNewNoteWithApproach:20 sender:self animated:1];
+          v37 = [ic_viewControllerManager showNewNoteWithApproach:20 sender:self animated:1];
         }
 
-        if ([v27 count])
+        if ([systemPaperViewController count])
         {
-          v30 = [v20 noteEditorViewController];
-          [v30 addSystemPaperImageData:v27 updateFirstResponder:0];
+          noteEditorViewController2 = [ic_viewControllerManager noteEditorViewController];
+          [noteEditorViewController2 addSystemPaperImageData:systemPaperViewController updateFirstResponder:0];
         }
 
         else
         {
-          v30 = os_log_create("com.apple.notes", "SystemPaper");
-          if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+          noteEditorViewController2 = os_log_create("com.apple.notes", "SystemPaper");
+          if (os_log_type_enabled(noteEditorViewController2, OS_LOG_TYPE_ERROR))
           {
             sub_1004E1BD0();
           }
@@ -223,58 +223,58 @@ LABEL_14:
 
       else
       {
-        v38 = [v7 activityType];
-        v39 = [v38 isEqual:SYNotesUserActivityTypeEditNote];
+        activityType3 = [activityCopy activityType];
+        v39 = [activityType3 isEqual:SYNotesUserActivityTypeEditNote];
 
         if (v39)
         {
-          v27 = [v20 systemPaperViewController];
-          if (!v27)
+          systemPaperViewController = [ic_viewControllerManager systemPaperViewController];
+          if (!systemPaperViewController)
           {
             [ICAssert handleFailedAssertWithCondition:"((spvc) != nil)" functionName:"[ICSystemPaperWindowSceneDelegate scene:continueUserActivity:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "spvc"];
           }
 
-          v40 = [v7 userInfo];
-          v30 = [v40 objectForKeyedSubscript:SYNotesUserActivityInfoKeyNoteID];
+          userInfo4 = [activityCopy userInfo];
+          noteEditorViewController2 = [userInfo4 objectForKeyedSubscript:SYNotesUserActivityInfoKeyNoteID];
 
-          v41 = [v27 currentNote];
-          v42 = [v41 identifier];
-          v43 = [v42 isEqual:v30];
+          currentNote = [systemPaperViewController currentNote];
+          identifier = [currentNote identifier];
+          v43 = [identifier isEqual:noteEditorViewController2];
 
           if ((v43 & 1) == 0)
           {
             v44 = +[ICNoteContext sharedContext];
-            v45 = [v44 managedObjectContext];
+            managedObjectContext = [v44 managedObjectContext];
 
-            v46 = [ICNote noteWithIdentifier:v30 context:v45];
+            v46 = [ICNote noteWithIdentifier:noteEditorViewController2 context:managedObjectContext];
             if (!v46)
             {
               [ICAssert handleFailedAssertWithCondition:"((resolvedNote) != nil)" functionName:"[ICSystemPaperWindowSceneDelegate scene:continueUserActivity:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "resolvedNote"];
             }
 
-            v47 = [v20 systemPaperViewController];
-            [v47 setCurrentNote:v46];
+            systemPaperViewController2 = [ic_viewControllerManager systemPaperViewController];
+            [systemPaperViewController2 setCurrentNote:v46];
           }
 
-          v48 = [v20 noteEditorViewController];
-          v49 = [v48 isFirstResponder];
+          noteEditorViewController3 = [ic_viewControllerManager noteEditorViewController];
+          isFirstResponder = [noteEditorViewController3 isFirstResponder];
 
-          if (v49)
+          if (isFirstResponder)
           {
-            v50 = [v20 noteEditorViewController];
-            [v50 startEditing];
+            noteEditorViewController4 = [ic_viewControllerManager noteEditorViewController];
+            [noteEditorViewController4 startEditing];
           }
         }
 
         else
         {
-          v30 = os_log_create("com.apple.notes", "SystemPaper");
-          if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+          noteEditorViewController2 = os_log_create("com.apple.notes", "SystemPaper");
+          if (os_log_type_enabled(noteEditorViewController2, OS_LOG_TYPE_ERROR))
           {
-            sub_1004E1B38(v7, v30);
+            sub_1004E1B38(activityCopy, noteEditorViewController2);
           }
 
-          v27 = v30;
+          systemPaperViewController = noteEditorViewController2;
         }
       }
     }
@@ -285,25 +285,25 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v10 = v9;
-  v11 = [v7 activityType];
-  v12 = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
-  v13 = [v12 activityType];
-  if (![v11 isEqual:v13])
+  v10 = setupUserActivity;
+  activityType4 = [activityCopy activityType];
+  setupUserActivity2 = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
+  activityType5 = [setupUserActivity2 activityType];
+  if (![activityType4 isEqual:activityType5])
   {
 
     goto LABEL_14;
   }
 
-  [v7 userInfo];
-  v14 = v7;
-  v16 = v15 = v6;
-  v17 = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
-  v18 = [v17 userInfo];
-  v52 = [v16 isEqual:v18];
+  [activityCopy userInfo];
+  v14 = activityCopy;
+  v16 = v15 = sceneCopy;
+  setupUserActivity3 = [(ICSystemPaperWindowSceneDelegate *)self setupUserActivity];
+  userInfo5 = [setupUserActivity3 userInfo];
+  v52 = [v16 isEqual:userInfo5];
 
-  v6 = v15;
-  v7 = v14;
+  sceneCopy = v15;
+  activityCopy = v14;
 
   if (!v52)
   {
@@ -321,27 +321,27 @@ LABEL_44:
 LABEL_45:
 }
 
-- (void)setUpResumeEditingSystemPaperArchive:(id)a3 prefersNewNote:(BOOL)a4
+- (void)setUpResumeEditingSystemPaperArchive:(id)archive prefersNewNote:(BOOL)note
 {
-  v5 = a3;
+  archiveCopy = archive;
   v6 = +[ICPaperCommonUtilities shouldResumeLastQuickNote];
-  if (a4 || !v6)
+  if (note || !v6)
   {
-    [v5 setNoteCreationApproach:16];
+    [archiveCopy setNoteCreationApproach:16];
   }
 
   else
   {
     v7 = +[ICNoteContext sharedContext];
-    v8 = [v7 managedObjectContext];
+    managedObjectContext = [v7 managedObjectContext];
 
-    v9 = [ICAccount mostRecentSystemPaperNoteInManagedObjectContext:v8];
+    v9 = [ICAccount mostRecentSystemPaperNoteInManagedObjectContext:managedObjectContext];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 objectID];
-      v12 = [v11 URIRepresentation];
-      [v5 setCurrentObjectIDURL:v12];
+      objectID = [v9 objectID];
+      uRIRepresentation = [objectID URIRepresentation];
+      [archiveCopy setCurrentObjectIDURL:uRIRepresentation];
     }
 
     else
@@ -353,15 +353,15 @@ LABEL_45:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "We didn't want a new system paper note, but none was available to use, so creating a new one instead.", v14, 2u);
       }
 
-      [v5 setNoteCreationApproach:19];
+      [archiveCopy setNoteCreationApproach:19];
     }
   }
 }
 
-- (void)setupSystemPaperWithWindowScene:(id)a3 options:(id)a4
+- (void)setupSystemPaperWithWindowScene:(id)scene options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  optionsCopy = options;
   v8 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -390,20 +390,20 @@ LABEL_45:
     [v9 setActiveEditorInEditMode:1];
     [v9 setIsAuxiliaryWindow:1];
     v10 = +[ICAppDelegate sharedInstance];
-    v11 = [v10 lastBackgroundedArchiveState];
+    lastBackgroundedArchiveState = [v10 lastBackgroundedArchiveState];
 
-    if (v11 && [v11 currentNoteContainerViewMode] != -1)
+    if (lastBackgroundedArchiveState && [lastBackgroundedArchiveState currentNoteContainerViewMode] != -1)
     {
-      -[NSObject setPreferredNoteContainerViewMode:](v9, "setPreferredNoteContainerViewMode:", [v11 currentNoteContainerViewMode]);
+      -[NSObject setPreferredNoteContainerViewMode:](v9, "setPreferredNoteContainerViewMode:", [lastBackgroundedArchiveState currentNoteContainerViewMode]);
     }
 
     v12 = +[ICAppDelegate sharedInstance];
-    v13 = [v12 mainWindowIdentifier];
-    v14 = v13;
+    mainWindowIdentifier = [v12 mainWindowIdentifier];
+    v14 = mainWindowIdentifier;
     v15 = @"DefaultIdentifier";
-    if (v13)
+    if (mainWindowIdentifier)
     {
-      v15 = v13;
+      v15 = mainWindowIdentifier;
     }
 
     v16 = v15;
@@ -412,52 +412,52 @@ LABEL_45:
 
     [v9 setToolPickerIdentifier:v17];
     v18 = +[ICNoteContext sharedContext];
-    v19 = [v18 managedObjectContext];
+    managedObjectContext = [v18 managedObjectContext];
 
-    v20 = [v7 userActivities];
-    v21 = [v20 anyObject];
+    userActivities = [optionsCopy userActivities];
+    anyObject = [userActivities anyObject];
 
-    v22 = [v21 activityType];
-    v23 = [v22 isEqual:ICNotesEditNoteUserActivityType];
+    activityType = [anyObject activityType];
+    v23 = [activityType isEqual:ICNotesEditNoteUserActivityType];
 
-    v63 = v11;
+    v63 = lastBackgroundedArchiveState;
     if (v23)
     {
       v24 = +[ICNACoreAnalyticsReporter sharedReporter];
       [v24 setNoteViewApproach:ICCoreAnalyticsNoteViewApproachIOSDeeplinkThumbnail];
 
-      v25 = [v21 userInfo];
-      v26 = [v25 objectForKeyedSubscript:ICUserActivityInfoDictionaryNoteIDKey];
+      userInfo = [anyObject userInfo];
+      v26 = [userInfo objectForKeyedSubscript:ICUserActivityInfoDictionaryNoteIDKey];
 
-      v27 = [ICNote noteWithIdentifier:v26 context:v19];
-      v28 = [v27 objectID];
-      v29 = [v28 URIRepresentation];
-      [v9 setCurrentObjectIDURL:v29];
+      v27 = [ICNote noteWithIdentifier:v26 context:managedObjectContext];
+      objectID = [v27 objectID];
+      uRIRepresentation = [objectID URIRepresentation];
+      [v9 setCurrentObjectIDURL:uRIRepresentation];
     }
 
     else
     {
-      v30 = [v21 activityType];
-      v31 = [v30 isEqual:SYNotesUserActivityTypeCreateLink];
+      activityType2 = [anyObject activityType];
+      v31 = [activityType2 isEqual:SYNotesUserActivityTypeCreateLink];
 
       if (v31)
       {
         v32 = +[ICNACoreAnalyticsReporter sharedReporter];
         [v32 setNoteViewApproach:ICCoreAnalyticsNoteViewApproachIOSSafariMenuAffordance];
 
-        v33 = [v21 userInfo];
-        v34 = [v33 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
-        v35 = [v34 BOOLValue];
+        userInfo2 = [anyObject userInfo];
+        v34 = [userInfo2 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
+        bOOLValue = [v34 BOOLValue];
 
-        [(ICSystemPaperWindowSceneDelegate *)self setUpResumeEditingSystemPaperArchive:v9 prefersNewNote:v35];
-        v36 = [(ICSystemPaperWindowSceneDelegate *)self contentItemForUserActivity:v21];
+        [(ICSystemPaperWindowSceneDelegate *)self setUpResumeEditingSystemPaperArchive:v9 prefersNewNote:bOOLValue];
+        v36 = [(ICSystemPaperWindowSceneDelegate *)self contentItemForUserActivity:anyObject];
         [v9 setInitialSystemPaperLink:v36];
 
         goto LABEL_20;
       }
 
-      v37 = [v21 activityType];
-      v38 = [v37 isEqual:SYNotesUserActivityTypeInsertImage];
+      activityType3 = [anyObject activityType];
+      v38 = [activityType3 isEqual:SYNotesUserActivityTypeInsertImage];
 
       if (!v38)
       {
@@ -468,23 +468,23 @@ LABEL_45:
         goto LABEL_20;
       }
 
-      v39 = [v21 userInfo];
-      v40 = [v39 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
-      v41 = [v40 BOOLValue];
+      userInfo3 = [anyObject userInfo];
+      v40 = [userInfo3 objectForKeyedSubscript:SYNotesUserActivityKeyPreferNewDocument];
+      bOOLValue2 = [v40 BOOLValue];
 
-      v42 = [v21 userInfo];
-      v26 = [v42 objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
+      userInfo4 = [anyObject userInfo];
+      v26 = [userInfo4 objectForKeyedSubscript:SYNotesUserActivityKeyContentItemData];
 
-      [(ICSystemPaperWindowSceneDelegate *)self setUpResumeEditingSystemPaperArchive:v9 prefersNewNote:v41];
+      [(ICSystemPaperWindowSceneDelegate *)self setUpResumeEditingSystemPaperArchive:v9 prefersNewNote:bOOLValue2];
       [v9 setInitialSystemPaperImageData:v26];
     }
 
 LABEL_20:
     v44 = +[UIKeyboard isInHardwareKeyboardMode];
-    v45 = [v7 _launchOptionsDictionary];
-    v46 = [v45 objectForKeyedSubscript:SBSUISystemNotesWindowSceneConnectionOptionsSceneConnectionSourceKey];
+    _launchOptionsDictionary = [optionsCopy _launchOptionsDictionary];
+    v46 = [_launchOptionsDictionary objectForKeyedSubscript:SBSUISystemNotesWindowSceneConnectionOptionsSceneConnectionSourceKey];
 
-    v62 = v21;
+    v62 = anyObject;
     if ([v46 count])
     {
       if ([v46 count] >= 2)
@@ -496,12 +496,12 @@ LABEL_20:
         }
       }
 
-      v61 = v19;
-      v48 = self;
-      v49 = v7;
-      v50 = v6;
-      v51 = [v46 anyObject];
-      v52 = [v51 unsignedIntValue];
+      v61 = managedObjectContext;
+      selfCopy = self;
+      v49 = optionsCopy;
+      v50 = sceneCopy;
+      anyObject2 = [v46 anyObject];
+      unsignedIntValue = [anyObject2 unsignedIntValue];
       v53 = os_log_create("com.apple.notes", "SystemPaper");
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
       {
@@ -511,16 +511,16 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_INFO, "Received connection source: %@", buf, 0xCu);
       }
 
-      v44 = ((v52 - 3 < 0xFFFFFFFE) & v44);
-      v6 = v50;
-      v7 = v49;
-      self = v48;
-      v19 = v61;
+      v44 = ((unsignedIntValue - 3 < 0xFFFFFFFE) & v44);
+      sceneCopy = v50;
+      optionsCopy = v49;
+      self = selfCopy;
+      managedObjectContext = v61;
     }
 
     [v9 setShouldStartEditing:v44];
-    [v6 setDelegate:self];
-    v55 = [[ICWindow alloc] initWithWindowScene:v6 behavior:2];
+    [sceneCopy setDelegate:self];
+    v55 = [[ICWindow alloc] initWithWindowScene:sceneCopy behavior:2];
     v56 = +[NSBundle mainBundle];
     v57 = [v56 localizedStringForKey:@"System Paper Window" value:&stru_100661CF0 table:0];
     [v55 setAccessibilityIdentifier:v57];
@@ -549,9 +549,9 @@ LABEL_20:
 LABEL_29:
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -564,12 +564,12 @@ LABEL_29:
 
   v6.receiver = self;
   v6.super_class = ICSystemPaperWindowSceneDelegate;
-  [(ICCommonWindowSceneDelegate *)&v6 sceneDidBecomeActive:v4];
+  [(ICCommonWindowSceneDelegate *)&v6 sceneDidBecomeActive:activeCopy];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -582,23 +582,23 @@ LABEL_29:
 
   v10.receiver = self;
   v10.super_class = ICSystemPaperWindowSceneDelegate;
-  [(ICCommonWindowSceneDelegate *)&v10 sceneWillEnterForeground:v4];
+  [(ICCommonWindowSceneDelegate *)&v10 sceneWillEnterForeground:foregroundCopy];
   objc_opt_class();
   v6 = ICDynamicCast();
 
   v7 = +[ICAppDelegate sharedInstance];
-  v8 = [v7 analyticsController];
+  analyticsController = [v7 analyticsController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10014B058;
   v9[3] = &unk_100645E30;
   v9[4] = self;
-  [v8 startWindowSceneSessionWithType:1 windowScene:v6 successHandler:v9];
+  [analyticsController startWindowSceneSessionWithType:1 windowScene:v6 successHandler:v9];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -609,16 +609,16 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  v6 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-  v7 = [v6 noteEditorViewController];
-  [v7 donateEditingIntentIfNecessary];
+  viewControllerManager = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+  noteEditorViewController = [viewControllerManager noteEditorViewController];
+  [noteEditorViewController donateEditingIntentIfNecessary];
 
-  v8 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-  v9 = [v8 noteEditorViewController];
-  [v9 setEditing:0 animated:0];
+  viewControllerManager2 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+  noteEditorViewController2 = [viewControllerManager2 noteEditorViewController];
+  [noteEditorViewController2 setEditing:0 animated:0];
 
-  v10 = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
-  [v10 submitWindowSceneEvent];
+  eventReporter = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
+  [eventReporter submitWindowSceneEvent];
 
   objc_opt_class();
   v11 = ICDynamicCast();
@@ -627,20 +627,20 @@ LABEL_29:
 
   v13.receiver = self;
   v13.super_class = ICSystemPaperWindowSceneDelegate;
-  [(ICCommonWindowSceneDelegate *)&v13 sceneDidEnterBackground:v4];
+  [(ICCommonWindowSceneDelegate *)&v13 sceneDidEnterBackground:backgroundCopy];
 }
 
-- (void)notesSceneDidReceiveCreateNewNoteRequest:(id)a3
+- (void)notesSceneDidReceiveCreateNewNoteRequest:(id)request
 {
-  v4 = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
-  v6 = v4;
-  if (!v4)
+  viewControllerManager = [(ICCommonWindowSceneDelegate *)self viewControllerManager];
+  v6 = viewControllerManager;
+  if (!viewControllerManager)
   {
     [ICAssert handleFailedAssertWithCondition:"((viewControllerManager) != nil)" functionName:"[ICSystemPaperWindowSceneDelegate notesSceneDidReceiveCreateNewNoteRequest:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "viewControllerManager"];
-    v4 = 0;
+    viewControllerManager = 0;
   }
 
-  v5 = [v4 showNewNoteWithApproach:19 sender:self animated:1];
+  v5 = [viewControllerManager showNewNoteWithApproach:19 sender:self animated:1];
 }
 
 - (ICNAWindowSceneEventReporter)eventReporter
@@ -650,9 +650,9 @@ LABEL_29:
     v3 = [ICNAWindowSceneEventReporter alloc];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ICCommonWindowSceneDelegate *)self icWindow];
-    v7 = [v6 windowScene];
-    v8 = [v3 initWithSubTrackerName:v5 windowScene:v7];
+    icWindow = [(ICCommonWindowSceneDelegate *)self icWindow];
+    windowScene = [icWindow windowScene];
+    v8 = [v3 initWithSubTrackerName:v5 windowScene:windowScene];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v8;
 
@@ -665,40 +665,40 @@ LABEL_29:
   return v11;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = ICNAEventReporterLostSessionNotification;
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [v8 removeObserver:self name:v6 object:object];
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a6;
-  v11 = [a4 settings];
-  v12 = [v11 deactivationReasons];
+  settingsCopy = settings;
+  settings = [sScene settings];
+  deactivationReasons = [settings deactivationReasons];
 
-  [v10 deactivationReasons];
-  if ((v12 & 0x1000) != 0)
+  [settingsCopy deactivationReasons];
+  if ((deactivationReasons & 0x1000) != 0)
   {
     if (BSEqualBools())
     {
       return;
     }
 
-    v13 = [(ICCommonWindowSceneDelegate *)self icWindow];
-    v14 = [v13 ic_viewControllerManager];
-    v15 = [v14 noteEditorViewController];
-    [v15 setEditing:0 animated:0];
+    icWindow = [(ICCommonWindowSceneDelegate *)self icWindow];
+    ic_viewControllerManager = [icWindow ic_viewControllerManager];
+    noteEditorViewController = [ic_viewControllerManager noteEditorViewController];
+    [noteEditorViewController setEditing:0 animated:0];
 
-    v16 = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
-    [v16 submitWindowSceneEvent];
+    eventReporter = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
+    [eventReporter submitWindowSceneEvent];
   }
 
   else
@@ -708,8 +708,8 @@ LABEL_29:
       return;
     }
 
-    v16 = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
-    [v16 startWindowSceneEventDurationTracking];
+    eventReporter = [(ICSystemPaperWindowSceneDelegate *)self eventReporter];
+    [eventReporter startWindowSceneEventDurationTracking];
   }
 }
 

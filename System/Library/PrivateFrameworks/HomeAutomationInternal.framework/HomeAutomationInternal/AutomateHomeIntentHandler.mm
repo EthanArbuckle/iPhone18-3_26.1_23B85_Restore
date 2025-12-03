@@ -1,54 +1,54 @@
 @interface AutomateHomeIntentHandler
 - (_TtC22HomeAutomationInternal25AutomateHomeIntentHandler)init;
-- (void)confirmAutomateHome:(id)a3 completion:(id)a4;
-- (void)handleAutomateHome:(id)a3 completion:(id)a4;
-- (void)resolveAutomatableTaskForAutomateHome:(id)a3 withCompletion:(id)a4;
-- (void)resolveTriggerForAutomateHome:(id)a3 withCompletion:(id)a4;
+- (void)confirmAutomateHome:(id)home completion:(id)completion;
+- (void)handleAutomateHome:(id)home completion:(id)completion;
+- (void)resolveAutomatableTaskForAutomateHome:(id)home withCompletion:(id)completion;
+- (void)resolveTriggerForAutomateHome:(id)home withCompletion:(id)completion;
 @end
 
 @implementation AutomateHomeIntentHandler
 
-- (void)resolveTriggerForAutomateHome:(id)a3 withCompletion:(id)a4
+- (void)resolveTriggerForAutomateHome:(id)home withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_252DD91C0(v7, v6);
+  homeCopy = home;
+  selfCopy = self;
+  sub_252DD91C0(homeCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)resolveAutomatableTaskForAutomateHome:(id)a3 withCompletion:(id)a4
+- (void)resolveAutomatableTaskForAutomateHome:(id)home withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_252DDA6CC(v7, v8, v6);
+  homeCopy = home;
+  selfCopy = self;
+  sub_252DDA6CC(homeCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)confirmAutomateHome:(id)a3 completion:(id)a4
+- (void)confirmAutomateHome:(id)home completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_252DDC524(v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)handleAutomateHome:(id)a3 completion:(id)a4
+- (void)handleAutomateHome:(id)home completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_252DDCAE0(v8, sub_252CD8440, v7);
+  homeCopy = home;
+  selfCopy = self;
+  sub_252DDCAE0(homeCopy, sub_252CD8440, v7);
 }
 
 - (_TtC22HomeAutomationInternal25AutomateHomeIntentHandler)init

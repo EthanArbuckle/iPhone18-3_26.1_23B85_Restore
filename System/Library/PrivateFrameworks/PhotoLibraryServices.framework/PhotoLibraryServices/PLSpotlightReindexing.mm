@@ -1,35 +1,35 @@
 @interface PLSpotlightReindexing
-+ (BOOL)shouldReindexAllItemsForLibraryIdentifier:(int64_t)a3;
-+ (id)_deleteFileInDirectoryURL:(id)a3;
-+ (id)_mutableReindexingDictionaryInDirectoryURL:(id)a3;
-+ (id)_recordReindexAllItemsForBundleID:(id)a3 directoryURL:(id)a4 reindexReason:(id)a5;
-+ (id)_recordReindexIdentifiersWithIdentifiers:(id)a3 bundleID:(id)a4 directoryURL:(id)a5;
++ (BOOL)shouldReindexAllItemsForLibraryIdentifier:(int64_t)identifier;
++ (id)_deleteFileInDirectoryURL:(id)l;
++ (id)_mutableReindexingDictionaryInDirectoryURL:(id)l;
++ (id)_recordReindexAllItemsForBundleID:(id)d directoryURL:(id)l reindexReason:(id)reason;
++ (id)_recordReindexIdentifiersWithIdentifiers:(id)identifiers bundleID:(id)d directoryURL:(id)l;
 + (id)_searchDirectoryURL;
-+ (id)_writeReindexingDictionary:(id)a3 toDirectoryURL:(id)a4;
-+ (id)deleteProgressFileWithPathManager:(id)a3;
++ (id)_writeReindexingDictionary:(id)dictionary toDirectoryURL:(id)l;
++ (id)deleteProgressFileWithPathManager:(id)manager;
 + (id)eraseReindexIdentifiers;
-+ (id)recordReindexAllItemsForBundleID:(id)a3 reindexReason:(id)a4;
-+ (id)recordReindexIdentifiersWithIdentifiers:(id)a3 bundleID:(id)a4;
++ (id)recordReindexAllItemsForBundleID:(id)d reindexReason:(id)reason;
++ (id)recordReindexIdentifiersWithIdentifiers:(id)identifiers bundleID:(id)d;
 + (id)reindexIdentifiers;
-+ (id)spotlightReasonForReindexingAllItemsForLibraryIdentifier:(int64_t)a3;
++ (id)spotlightReasonForReindexingAllItemsForLibraryIdentifier:(int64_t)identifier;
 + (id)spotlightReindexingContents;
-+ (void)drainSpotlightReindexIdentifiersIfNeededForLibrary:(id)a3;
++ (void)drainSpotlightReindexIdentifiersIfNeededForLibrary:(id)library;
 @end
 
 @implementation PLSpotlightReindexing
 
-+ (id)_writeReindexingDictionary:(id)a3 toDirectoryURL:(id)a4
++ (id)_writeReindexingDictionary:(id)dictionary toDirectoryURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v20 = 0;
-  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v20];
+  v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v20];
   v7 = v20;
   if (v6)
   {
-    v8 = [v5 URLByAppendingPathComponent:@"spotlightProgress.plist"];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [lCopy URLByAppendingPathComponent:@"spotlightProgress.plist"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v19 = 0;
-    v10 = [v9 removeItemAtURL:v8 error:&v19];
+    v10 = [defaultManager removeItemAtURL:v8 error:&v19];
     v11 = v19;
 
     if (v10 & 1) != 0 || (PLIsErrorFileNotFound())
@@ -40,8 +40,8 @@
       v14 = MEMORY[0x1E69BF2D0];
       if (v12)
       {
-        v15 = [MEMORY[0x1E695DFB0] null];
-        v16 = [v14 successWithResult:v15];
+        null = [MEMORY[0x1E695DFB0] null];
+        v16 = [v14 successWithResult:null];
       }
 
       else
@@ -64,9 +64,9 @@
   return v16;
 }
 
-+ (id)_mutableReindexingDictionaryInDirectoryURL:(id)a3
++ (id)_mutableReindexingDictionaryInDirectoryURL:(id)l
 {
-  v3 = [a3 URLByAppendingPathComponent:@"spotlightProgress.plist"];
+  v3 = [l URLByAppendingPathComponent:@"spotlightProgress.plist"];
   v9 = 0;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfURL:v3 error:&v9];
   v5 = v9;
@@ -91,11 +91,11 @@
   return v7;
 }
 
-+ (id)_recordReindexIdentifiersWithIdentifiers:(id)a3 bundleID:(id)a4 directoryURL:(id)a5
++ (id)_recordReindexIdentifiersWithIdentifiers:(id)identifiers bundleID:(id)d directoryURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a1 _mutableReindexingDictionaryInDirectoryURL:v8];
+  identifiersCopy = identifiers;
+  lCopy = l;
+  v9 = [self _mutableReindexingDictionaryInDirectoryURL:lCopy];
   if ([v9 isFailure])
   {
     v10 = v9;
@@ -103,49 +103,49 @@
 
   else
   {
-    v11 = [v9 result];
-    v12 = [v11 objectForKeyedSubscript:@"PLReindexAllEntries"];
-    v13 = [v12 BOOLValue];
+    result = [v9 result];
+    v12 = [result objectForKeyedSubscript:@"PLReindexAllEntries"];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v14 = MEMORY[0x1E69BF2D0];
-      v15 = [MEMORY[0x1E695DFB0] null];
-      v10 = [v14 successWithResult:v15];
+      null = [MEMORY[0x1E695DFB0] null];
+      v10 = [v14 successWithResult:null];
     }
 
     else
     {
-      v15 = [v11 objectForKeyedSubscript:@"PLReindexIdentifiers"];
+      null = [result objectForKeyedSubscript:@"PLReindexIdentifiers"];
       v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v17 = v16;
-      if (v15)
+      if (null)
       {
-        [v16 addObjectsFromArray:v15];
+        [v16 addObjectsFromArray:null];
       }
 
-      [v17 addObjectsFromArray:v7];
-      v18 = [v17 allObjects];
-      [v11 setObject:v18 forKeyedSubscript:@"PLReindexIdentifiers"];
+      [v17 addObjectsFromArray:identifiersCopy];
+      allObjects = [v17 allObjects];
+      [result setObject:allObjects forKeyedSubscript:@"PLReindexIdentifiers"];
 
-      v10 = [a1 _writeReindexingDictionary:v11 toDirectoryURL:v8];
+      v10 = [self _writeReindexingDictionary:result toDirectoryURL:lCopy];
     }
   }
 
   return v10;
 }
 
-+ (id)_recordReindexAllItemsForBundleID:(id)a3 directoryURL:(id)a4 reindexReason:(id)a5
++ (id)_recordReindexAllItemsForBundleID:(id)d directoryURL:(id)l reindexReason:(id)reason
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  if ([v7 length])
+  reasonCopy = reason;
+  lCopy = l;
+  if ([reasonCopy length])
   {
     v18[0] = @"PLReindexAllEntries";
     v18[1] = @"PLReindexAllEntriesReason";
     v19[0] = MEMORY[0x1E695E118];
-    v19[1] = v7;
+    v19[1] = reasonCopy;
     v9 = MEMORY[0x1E695DF20];
     v10 = v19;
     v11 = v18;
@@ -163,24 +163,24 @@
   }
 
   v13 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:v12];
-  v14 = [a1 _writeReindexingDictionary:v13 toDirectoryURL:v8];
+  v14 = [self _writeReindexingDictionary:v13 toDirectoryURL:lCopy];
 
   return v14;
 }
 
-+ (id)_deleteFileInDirectoryURL:(id)a3
++ (id)_deleteFileInDirectoryURL:(id)l
 {
-  v3 = [a3 URLByAppendingPathComponent:@"spotlightProgress.plist"];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [l URLByAppendingPathComponent:@"spotlightProgress.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v11];
+  v5 = [defaultManager removeItemAtURL:v3 error:&v11];
   v6 = v11;
 
   if ((v5 & 1) != 0 || PLIsErrorFileNotFound())
   {
     v7 = MEMORY[0x1E69BF2D0];
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v9 = [v7 successWithResult:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    v9 = [v7 successWithResult:null];
   }
 
   else
@@ -198,21 +198,21 @@
   v4 = [v3 lookupOrCreateBundleForLibraryURL:v2];
 
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [v4 pathManager];
-  v7 = [v6 searchIndexDirectory];
-  v8 = [v5 fileURLWithPath:v7 isDirectory:1];
+  pathManager = [v4 pathManager];
+  searchIndexDirectory = [pathManager searchIndexDirectory];
+  v8 = [v5 fileURLWithPath:searchIndexDirectory isDirectory:1];
 
   return v8;
 }
 
-+ (void)drainSpotlightReindexIdentifiersIfNeededForLibrary:(id)a3
++ (void)drainSpotlightReindexIdentifiersIfNeededForLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 libraryServicesManager];
-  v5 = [v4 wellKnownPhotoLibraryIdentifier];
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v5 != 3 && ![PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:v5])
+  if (wellKnownPhotoLibraryIdentifier != 3 && ![PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:wellKnownPhotoLibraryIdentifier])
   {
     v6 = +[PLSpotlightReindexing reindexIdentifiers];
     if ([v6 isFailure])
@@ -220,17 +220,17 @@
       v7 = PLSearchBackendDonationsGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v6 error];
+        error = [v6 error];
         *buf = 138412290;
-        v19 = v8;
+        v19 = error;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Failed to load spotlight reindex identifiers with error: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v9 = [v6 result];
-      v10 = [v9 count];
+      result = [v6 result];
+      v10 = [result count];
 
       if (!v10)
       {
@@ -244,7 +244,7 @@ LABEL_9:
       v14 = __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibrary___block_invoke;
       v15 = &unk_1E7578848;
       v16 = v6;
-      v17 = v3;
+      v17 = libraryCopy;
       [v17 performTransactionAndWait:&v12];
       v11 = [PLSpotlightReindexing eraseReindexIdentifiers:v12];
 
@@ -302,22 +302,22 @@ void __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibr
 
 + (id)eraseReindexIdentifiers
 {
-  v3 = [a1 _searchDirectoryURL];
-  v4 = [a1 _mutableReindexingDictionaryInDirectoryURL:v3];
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v4 = [self _mutableReindexingDictionaryInDirectoryURL:_searchDirectoryURL];
 
   if ([v4 isFailure])
   {
     v5 = MEMORY[0x1E69BF2D0];
-    v6 = [v4 error];
-    v7 = [v5 failureWithError:v6];
+    error = [v4 error];
+    v7 = [v5 failureWithError:error];
   }
 
   else
   {
-    v6 = [v4 result];
-    [v6 setObject:0 forKeyedSubscript:@"PLReindexIdentifiers"];
-    v8 = [a1 _searchDirectoryURL];
-    v7 = [a1 _writeReindexingDictionary:v6 toDirectoryURL:v8];
+    error = [v4 result];
+    [error setObject:0 forKeyedSubscript:@"PLReindexIdentifiers"];
+    _searchDirectoryURL2 = [self _searchDirectoryURL];
+    v7 = [self _writeReindexingDictionary:error toDirectoryURL:_searchDirectoryURL2];
   }
 
   return v7;
@@ -325,20 +325,20 @@ void __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibr
 
 + (id)reindexIdentifiers
 {
-  v3 = [a1 _searchDirectoryURL];
-  v4 = [a1 _mutableReindexingDictionaryInDirectoryURL:v3];
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v4 = [self _mutableReindexingDictionaryInDirectoryURL:_searchDirectoryURL];
 
   if ([v4 isFailure])
   {
     v5 = MEMORY[0x1E69BF2D0];
-    v6 = [v4 error];
-    v7 = [v5 failureWithError:v6];
+    error = [v4 error];
+    v7 = [v5 failureWithError:error];
   }
 
   else
   {
-    v6 = [v4 result];
-    v8 = [v6 objectForKeyedSubscript:@"PLReindexIdentifiers"];
+    error = [v4 result];
+    v8 = [error objectForKeyedSubscript:@"PLReindexIdentifiers"];
     if (v8)
     {
       v9 = v8;
@@ -355,16 +355,16 @@ void __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibr
   return v7;
 }
 
-+ (id)spotlightReasonForReindexingAllItemsForLibraryIdentifier:(int64_t)a3
++ (id)spotlightReasonForReindexingAllItemsForLibraryIdentifier:(int64_t)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _searchDirectoryURL];
-  v5 = [a1 _mutableReindexingDictionaryInDirectoryURL:v4];
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v5 = [self _mutableReindexingDictionaryInDirectoryURL:_searchDirectoryURL];
 
   if ([v5 isSuccess])
   {
-    v6 = [v5 result];
-    v7 = [v6 objectForKeyedSubscript:@"PLReindexAllEntriesReason"];
+    result = [v5 result];
+    v7 = [result objectForKeyedSubscript:@"PLReindexAllEntriesReason"];
   }
 
   else
@@ -372,9 +372,9 @@ void __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibr
     v8 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v5 error];
+      error = [v5 error];
       v11 = 138412290;
-      v12 = v9;
+      v12 = error;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Failed to read Spotlight's reason for reindexing all items: %@", &v11, 0xCu);
     }
 
@@ -384,81 +384,81 @@ void __76__PLSpotlightReindexing_drainSpotlightReindexIdentifiersIfNeededForLibr
   return v7;
 }
 
-+ (BOOL)shouldReindexAllItemsForLibraryIdentifier:(int64_t)a3
++ (BOOL)shouldReindexAllItemsForLibraryIdentifier:(int64_t)identifier
 {
-  if (a3 == 3 || [PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:?])
+  if (identifier == 3 || [PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:?])
   {
     return 0;
   }
 
-  v5 = [a1 _searchDirectoryURL];
-  v6 = [a1 _mutableReindexingDictionaryInDirectoryURL:v5];
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v6 = [self _mutableReindexingDictionaryInDirectoryURL:_searchDirectoryURL];
 
   if ([v6 isSuccess])
   {
-    v7 = [v6 result];
-    v8 = [v7 objectForKeyedSubscript:@"PLReindexAllEntries"];
-    v4 = [v8 BOOLValue];
+    result = [v6 result];
+    v8 = [result objectForKeyedSubscript:@"PLReindexAllEntries"];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)recordReindexIdentifiersWithIdentifiers:(id)a3 bundleID:(id)a4
++ (id)recordReindexIdentifiersWithIdentifiers:(id)identifiers bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _searchDirectoryURL];
-  v9 = [a1 _recordReindexIdentifiersWithIdentifiers:v7 bundleID:v6 directoryURL:v8];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v9 = [self _recordReindexIdentifiersWithIdentifiers:identifiersCopy bundleID:dCopy directoryURL:_searchDirectoryURL];
 
   return v9;
 }
 
-+ (id)recordReindexAllItemsForBundleID:(id)a3 reindexReason:(id)a4
++ (id)recordReindexAllItemsForBundleID:(id)d reindexReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _searchDirectoryURL];
-  v9 = [a1 _recordReindexAllItemsForBundleID:v7 directoryURL:v8 reindexReason:v6];
+  reasonCopy = reason;
+  dCopy = d;
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v9 = [self _recordReindexAllItemsForBundleID:dCopy directoryURL:_searchDirectoryURL reindexReason:reasonCopy];
 
   return v9;
 }
 
-+ (id)deleteProgressFileWithPathManager:(id)a3
++ (id)deleteProgressFileWithPathManager:(id)manager
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [a3 searchIndexDirectory];
-  v6 = [v4 fileURLWithPath:v5 isDirectory:1];
+  searchIndexDirectory = [manager searchIndexDirectory];
+  v6 = [v4 fileURLWithPath:searchIndexDirectory isDirectory:1];
 
-  v7 = [a1 _deleteFileInDirectoryURL:v6];
+  v7 = [self _deleteFileInDirectoryURL:v6];
 
   return v7;
 }
 
 + (id)spotlightReindexingContents
 {
-  v3 = [a1 _searchDirectoryURL];
-  v4 = [a1 _mutableReindexingDictionaryInDirectoryURL:v3];
+  _searchDirectoryURL = [self _searchDirectoryURL];
+  v4 = [self _mutableReindexingDictionaryInDirectoryURL:_searchDirectoryURL];
 
-  v5 = [v4 isSuccess];
+  isSuccess = [v4 isSuccess];
   v6 = MEMORY[0x1E69BF2D0];
-  if (v5)
+  if (isSuccess)
   {
     v7 = MEMORY[0x1E695DF20];
-    v8 = [v4 result];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    result = [v4 result];
+    v9 = [v7 dictionaryWithDictionary:result];
     v10 = [v6 successWithResult:v9];
   }
 
   else
   {
-    v8 = [v4 error];
-    v10 = [v6 failureWithError:v8];
+    result = [v4 error];
+    v10 = [v6 failureWithError:result];
   }
 
   return v10;

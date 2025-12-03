@@ -7,8 +7,8 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(FKACommandListItemView *)self arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(FKACommandListItemView *)self arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   if (v4 != 2)
   {
@@ -19,17 +19,17 @@
     }
   }
 
-  v6 = [(FKACommandListItemView *)self arrangedSubviews];
-  v7 = [v6 firstObject];
-  v8 = [v7 accessibilityLabel];
+  arrangedSubviews2 = [(FKACommandListItemView *)self arrangedSubviews];
+  firstObject = [arrangedSubviews2 firstObject];
+  accessibilityLabel = [firstObject accessibilityLabel];
 
-  return v8;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(FKACommandListItemView *)self arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(FKACommandListItemView *)self arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   if (v4 != 2)
   {
@@ -40,11 +40,11 @@
     }
   }
 
-  v6 = [(FKACommandListItemView *)self arrangedSubviews];
-  v7 = [v6 lastObject];
-  v8 = [v7 accessibilityLabel];
+  arrangedSubviews2 = [(FKACommandListItemView *)self arrangedSubviews];
+  lastObject = [arrangedSubviews2 lastObject];
+  accessibilityLabel = [lastObject accessibilityLabel];
 
-  return v8;
+  return accessibilityLabel;
 }
 
 @end

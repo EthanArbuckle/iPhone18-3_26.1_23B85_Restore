@@ -1,10 +1,10 @@
 @interface INFlightReservation
-- (BOOL)isEqual:(id)a3;
-- (INFlightReservation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFlightReservation)initWithCoder:(id)coder;
 - (INFlightReservation)initWithItemReference:(INSpeakableString *)itemReference reservationNumber:(NSString *)reservationNumber bookingTime:(NSDate *)bookingTime reservationStatus:(INReservationStatus)reservationStatus reservationHolderName:(NSString *)reservationHolderName actions:(NSArray *)actions URL:(NSURL *)URL reservedSeat:(INSeat *)reservedSeat flight:(INFlight *)flight;
 - (id)_dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INFlightReservation
@@ -14,27 +14,27 @@
   v14[2] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = INFlightReservation;
-  v3 = [(INReservation *)&v12 _dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  _dictionaryRepresentation = [(INReservation *)&v12 _dictionaryRepresentation];
+  v4 = [_dictionaryRepresentation mutableCopy];
 
   v13[0] = @"reservedSeat";
   reservedSeat = self->_reservedSeat;
-  v6 = reservedSeat;
+  null = reservedSeat;
   if (!reservedSeat)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v13[1] = @"flight";
-  v14[0] = v6;
+  v14[0] = null;
   flight = self->_flight;
-  v8 = flight;
+  null2 = flight;
   if (!flight)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   [v4 addEntriesFromDictionary:v9];
 
@@ -61,29 +61,29 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INFlightReservation;
-  v4 = a3;
-  [(INReservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_reservedSeat forKey:{@"reservedSeat", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_flight forKey:@"flight"];
+  coderCopy = coder;
+  [(INReservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_reservedSeat forKey:{@"reservedSeat", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_flight forKey:@"flight"];
 }
 
-- (INFlightReservation)initWithCoder:(id)a3
+- (INFlightReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = INFlightReservation;
-  v5 = [(INReservation *)&v11 initWithCoder:v4];
+  v5 = [(INReservation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reservedSeat"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reservedSeat"];
     reservedSeat = v5->_reservedSeat;
     v5->_reservedSeat = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
     flight = v5->_flight;
     v5->_flight = v8;
   }
@@ -91,10 +91,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -102,9 +102,9 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = INFlightReservation, [(INReservation *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = INFlightReservation, [(INReservation *)&v10 isEqual:equalCopy]))
     {
-      v5 = v4;
+      v5 = equalCopy;
       reservedSeat = self->_reservedSeat;
       v8 = 0;
       if (reservedSeat == v5->_reservedSeat || [(INSeat *)reservedSeat isEqual:?])

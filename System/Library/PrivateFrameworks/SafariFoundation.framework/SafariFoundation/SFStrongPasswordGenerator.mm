@@ -1,6 +1,6 @@
 @interface SFStrongPasswordGenerator
 - (SFStrongPasswordGenerator)init;
-- (id)generatedPasswordForAppWithAssociatedDomains:(id)a3 passwordRules:(id)a4 confirmPasswordRules:(id)a5;
+- (id)generatedPasswordForAppWithAssociatedDomains:(id)domains passwordRules:(id)rules confirmPasswordRules:(id)passwordRules;
 @end
 
 @implementation SFStrongPasswordGenerator
@@ -13,17 +13,17 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277D499D8]);
-    v4 = [MEMORY[0x277CCA8D8] safari_safariCoreBundle];
-    v5 = [v4 URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 safari_autoFillQuirksDownloadDirectoryURL];
-    v8 = [v3 initWithBuiltInQuirksURL:v5 downloadsDirectoryURL:v7 resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:&stru_2875FD420 updateInterval:0.0];
+    safari_safariCoreBundle = [MEMORY[0x277CCA8D8] safari_safariCoreBundle];
+    v5 = [safari_safariCoreBundle URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    safari_autoFillQuirksDownloadDirectoryURL = [defaultManager safari_autoFillQuirksDownloadDirectoryURL];
+    v8 = [v3 initWithBuiltInQuirksURL:v5 downloadsDirectoryURL:safari_autoFillQuirksDownloadDirectoryURL resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:&stru_2875FD420 updateInterval:0.0];
 
     [v8 setShouldAttemptToDownloadConfiguration:0];
     [v8 beginLoadingQuirksFromDisk];
-    v9 = [v8 passwordGenerationManager];
+    passwordGenerationManager = [v8 passwordGenerationManager];
     passwordGenerationManager = v2->_passwordGenerationManager;
-    v2->_passwordGenerationManager = v9;
+    v2->_passwordGenerationManager = passwordGenerationManager;
 
     v11 = v2;
   }
@@ -31,20 +31,20 @@
   return v2;
 }
 
-- (id)generatedPasswordForAppWithAssociatedDomains:(id)a3 passwordRules:(id)a4 confirmPasswordRules:(id)a5
+- (id)generatedPasswordForAppWithAssociatedDomains:(id)domains passwordRules:(id)rules confirmPasswordRules:(id)passwordRules
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 length];
-  v12 = [v10 length];
+  domainsCopy = domains;
+  rulesCopy = rules;
+  passwordRulesCopy = passwordRules;
+  v11 = [rulesCopy length];
+  v12 = [passwordRulesCopy length];
   if (v11 | v12)
   {
     v13 = v12;
     if (v11)
     {
-      v11 = [MEMORY[0x277D49AB0] parsePasswordRules:v9 error:0];
+      v11 = [MEMORY[0x277D49AB0] parsePasswordRules:rulesCopy error:0];
     }
 
     if (!v13)
@@ -52,7 +52,7 @@
       goto LABEL_26;
     }
 
-    v14 = [MEMORY[0x277D49AB0] parsePasswordRules:v10 error:0];
+    v14 = [MEMORY[0x277D49AB0] parsePasswordRules:passwordRulesCopy error:0];
     v13 = v14;
     if (v11 && v14)
     {
@@ -80,7 +80,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (![v8 count])
+  if (![domainsCopy count])
   {
     v24 = [(WBSPasswordGenerationManager *)self->_passwordGenerationManager generatedPasswordMatchingRequirements:MEMORY[0x277CBEC10]];
     goto LABEL_28;
@@ -90,7 +90,7 @@ LABEL_26:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v8;
+  v16 = domainsCopy;
   v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {

@@ -1,20 +1,20 @@
 @interface AVPictureInPictureIndicatorSublayer
 - (AVPictureInPictureIndicatorSublayer)init;
-- (AVPictureInPictureIndicatorSublayer)initWithDisplayScale:(double)a3 placeholderImage:(CGImage *)a4 opaque:(BOOL)a5;
-- (BOOL)canRenderAttributedTextWithoutTruncationInsideRect:(CGRect)a3;
-- (CGRect)textBoundingRectWhenDrawnInRect:(CGRect)a3;
+- (AVPictureInPictureIndicatorSublayer)initWithDisplayScale:(double)scale placeholderImage:(CGImage *)image opaque:(BOOL)opaque;
+- (BOOL)canRenderAttributedTextWithoutTruncationInsideRect:(CGRect)rect;
+- (CGRect)textBoundingRectWhenDrawnInRect:(CGRect)rect;
 - (void)layoutSublayers;
-- (void)layoutSublayersWithTextAndImageUsingInsetBounds:(CGRect)a3;
-- (void)setCustomText:(id)a3;
+- (void)layoutSublayersWithTextAndImageUsingInsetBounds:(CGRect)bounds;
+- (void)setCustomText:(id)text;
 @end
 
 @implementation AVPictureInPictureIndicatorSublayer
 
-- (BOOL)canRenderAttributedTextWithoutTruncationInsideRect:(CGRect)a3
+- (BOOL)canRenderAttributedTextWithoutTruncationInsideRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(NSAttributedString *)self->_attributedText boundingRectWithSize:1 options:0 context:CGRectGetWidth(a3), 1000.0];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(NSAttributedString *)self->_attributedText boundingRectWithSize:1 options:0 context:CGRectGetWidth(rect), 1000.0];
   v6 = v5;
   v8 = v7;
   v9 = *MEMORY[0x1E695EFF8];
@@ -27,9 +27,9 @@
   return CGRectContainsRect(*&v9, *&v13);
 }
 
-- (CGRect)textBoundingRectWhenDrawnInRect:(CGRect)a3
+- (CGRect)textBoundingRectWhenDrawnInRect:(CGRect)rect
 {
-  [(NSAttributedString *)self->_attributedText boundingRectWithSize:1 options:0 context:a3.size.width, a3.size.height];
+  [(NSAttributedString *)self->_attributedText boundingRectWithSize:1 options:0 context:rect.size.width, rect.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -37,12 +37,12 @@
   return result;
 }
 
-- (void)layoutSublayersWithTextAndImageUsingInsetBounds:(CGRect)a3
+- (void)layoutSublayersWithTextAndImageUsingInsetBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVPictureInPictureIndicatorSublayer *)self bounds];
   rect_16 = v8;
   v68 = v10;
@@ -340,18 +340,18 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)setCustomText:(id)a3
+- (void)setCustomText:(id)text
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(__CFString *)v4 isEqualToString:self->_customText]& 1) == 0)
+  textCopy = text;
+  if (([(__CFString *)textCopy isEqualToString:self->_customText]& 1) == 0)
   {
-    v5 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+    aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
     v6 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    if (v4)
+    if (textCopy)
     {
-      v8 = v4;
+      v8 = textCopy;
     }
 
     else
@@ -363,17 +363,17 @@
     v15[0] = *MEMORY[0x1E69DB648];
     v15[1] = v9;
     v16[0] = v6;
-    v16[1] = v5;
+    v16[1] = aV_indicatorForegroundColor;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
     v11 = [v7 initWithString:v8 attributes:v10];
     attributedText = self->_attributedText;
     self->_attributedText = v11;
 
-    v13 = [(__CFString *)v4 copy];
+    v13 = [(__CFString *)textCopy copy];
     customText = self->_customText;
     self->_customText = v13;
 
-    [(CATextLayer *)self->_textLayer setString:v4];
+    [(CATextLayer *)self->_textLayer setString:textCopy];
     [(AVPictureInPictureIndicatorSublayer *)self setNeedsLayout];
   }
 }
@@ -390,25 +390,25 @@
   return [(AVPictureInPictureIndicatorSublayer *)self initWithDisplayScale:0 placeholderImage:0 opaque:1.0];
 }
 
-- (AVPictureInPictureIndicatorSublayer)initWithDisplayScale:(double)a3 placeholderImage:(CGImage *)a4 opaque:(BOOL)a5
+- (AVPictureInPictureIndicatorSublayer)initWithDisplayScale:(double)scale placeholderImage:(CGImage *)image opaque:(BOOL)opaque
 {
-  v5 = a5;
+  opaqueCopy = opaque;
   v32[2] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = AVPictureInPictureIndicatorSublayer;
   v8 = [(AVPictureInPictureIndicatorSublayer *)&v30 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69DC888] AV_indicatorBackgroundColor];
-    v10 = [v9 CGColor];
+    aV_indicatorBackgroundColor = [MEMORY[0x1E69DC888] AV_indicatorBackgroundColor];
+    cGColor = [aV_indicatorBackgroundColor CGColor];
 
-    v11 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+    aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
     v12 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0];
     [v12 lineHeight];
     v8->_lineHeight = v13;
-    if (v5)
+    if (opaqueCopy)
     {
-      v14 = v10;
+      v14 = cGColor;
     }
 
     else
@@ -417,8 +417,8 @@
     }
 
     [(AVPictureInPictureIndicatorSublayer *)v8 setBackgroundColor:v14];
-    Width = CGImageGetWidth(a4);
-    Height = CGImageGetHeight(a4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     v8->_imageSize.width = Width;
     v8->_imageSize.height = Height;
     v17 = AVLocalizedString(@"PICTURE_IN_PICTURE_INDICATOR_LAYER_TITLE");
@@ -427,7 +427,7 @@
     v31[0] = *MEMORY[0x1E69DB648];
     v31[1] = v19;
     v32[0] = v12;
-    v32[1] = v11;
+    v32[1] = aV_indicatorForegroundColor;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
     v21 = [v18 initWithString:v17 attributes:v20];
     attributedText = v8->_attributedText;
@@ -440,26 +440,26 @@
     v8->_languageAwareOutsets.left = 0.0;
     v8->_languageAwareOutsets.bottom = 0.0;
     v8->_languageAwareOutsets.right = 0.0;
-    v24 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     imageLayer = v8->_imageLayer;
-    v8->_imageLayer = v24;
+    v8->_imageLayer = layer;
 
-    [(CALayer *)v8->_imageLayer setContents:a4];
+    [(CALayer *)v8->_imageLayer setContents:image];
     [(CALayer *)v8->_imageLayer setContentsGravity:*MEMORY[0x1E6979DE0]];
-    [(CALayer *)v8->_imageLayer setContentsScale:a3];
+    [(CALayer *)v8->_imageLayer setContentsScale:scale];
     v26 = v8->_imageLayer;
     [(AVPictureInPictureIndicatorSublayer *)v8 bounds];
     [(CALayer *)v26 setBounds:?];
     [(AVPictureInPictureIndicatorSublayer *)v8 addSublayer:v8->_imageLayer];
-    v27 = [MEMORY[0x1E6979508] layer];
+    layer2 = [MEMORY[0x1E6979508] layer];
     textLayer = v8->_textLayer;
-    v8->_textLayer = v27;
+    v8->_textLayer = layer2;
 
     [(CATextLayer *)v8->_textLayer setFont:v12];
     [(CATextLayer *)v8->_textLayer setFontSize:13.0];
-    -[CATextLayer setForegroundColor:](v8->_textLayer, "setForegroundColor:", [v11 CGColor]);
+    -[CATextLayer setForegroundColor:](v8->_textLayer, "setForegroundColor:", [aV_indicatorForegroundColor CGColor]);
     [(CATextLayer *)v8->_textLayer setAlignmentMode:*MEMORY[0x1E6979560]];
-    [(CATextLayer *)v8->_textLayer setContentsScale:a3];
+    [(CATextLayer *)v8->_textLayer setContentsScale:scale];
     [(CATextLayer *)v8->_textLayer setString:v8->_attributedText];
     [(CATextLayer *)v8->_textLayer setTruncationMode:*MEMORY[0x1E697A060]];
     [(CATextLayer *)v8->_textLayer setWrapped:1];

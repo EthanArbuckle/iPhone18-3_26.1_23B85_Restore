@@ -1,21 +1,21 @@
 @interface TUDialRequest
-+ (id)dialRequestForCallProvider:(id)a3 handle:(id)a4;
-+ (id)dialRequestForUserActivity:(id)a3 callProviderManager:(id)a4;
-- (BOOL)canMakeEmergencyCallForSenderIdentity:(id)a3;
-- (id)dialRequestByResolvingDialTypeUsingSenderIdentityClient:(id)a3;
++ (id)dialRequestForCallProvider:(id)provider handle:(id)handle;
++ (id)dialRequestForUserActivity:(id)activity callProviderManager:(id)manager;
+- (BOOL)canMakeEmergencyCallForSenderIdentity:(id)identity;
+- (id)dialRequestByResolvingDialTypeUsingSenderIdentityClient:(id)client;
 @end
 
 @implementation TUDialRequest
 
-+ (id)dialRequestForCallProvider:(id)a3 handle:(id)a4
++ (id)dialRequestForCallProvider:(id)provider handle:(id)handle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 type];
-  if ([v5 supportsHandleType:v7])
+  providerCopy = provider;
+  handleCopy = handle;
+  type = [handleCopy type];
+  if ([providerCopy supportsHandleType:type])
   {
-    v8 = [[TUDialRequest alloc] initWithProvider:v5];
-    [v8 setHandle:v6];
+    v8 = [[TUDialRequest alloc] initWithProvider:providerCopy];
+    [v8 setHandle:handleCopy];
     [v8 setOriginatingUIType:1];
   }
 
@@ -24,7 +24,7 @@
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100255D34(v5, v7, v9);
+      sub_100255D34(providerCopy, type, v9);
     }
 
     v8 = 0;
@@ -33,30 +33,30 @@
   return v8;
 }
 
-+ (id)dialRequestForUserActivity:(id)a3 callProviderManager:(id)a4
++ (id)dialRequestForUserActivity:(id)activity callProviderManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  managerCopy = manager;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = activityCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Attempting to create a dial request for user activity (%@)", &v16, 0xCu);
   }
 
-  v9 = [v6 userInfo];
-  if (v9)
+  userInfo = [activityCopy userInfo];
+  if (userInfo)
   {
-    v10 = [v6 callProviderIdentifier];
-    if (v10)
+    callProviderIdentifier = [activityCopy callProviderIdentifier];
+    if (callProviderIdentifier)
     {
-      v11 = [v7 providerWithIdentifier:v10];
-      v12 = [v6 handle];
+      v11 = [managerCopy providerWithIdentifier:callProviderIdentifier];
+      handle = [activityCopy handle];
       LOBYTE(v16) = 0;
-      if ((v11 || ([v7 providerWithService:objc_msgSend(v6 video:{"callService"), &v16}], (v11 = objc_claimAutoreleasedReturnValue()) != 0)) && v12)
+      if ((v11 || ([managerCopy providerWithService:objc_msgSend(activityCopy video:{"callService"), &v16}], (v11 = objc_claimAutoreleasedReturnValue()) != 0)) && handle)
       {
-        v13 = [a1 dialRequestForCallProvider:v11 handle:v12];
+        v13 = [self dialRequestForCallProvider:v11 handle:handle];
         [v13 setVideo:v16];
         [v13 setOriginatingUIType:37];
       }
@@ -66,7 +66,7 @@
         v14 = sub_100004F84();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_100255E04(v10, v14);
+          sub_100255E04(callProviderIdentifier, v14);
         }
 
         v13 = 0;
@@ -87,10 +87,10 @@
 
   else
   {
-    v10 = sub_100004F84();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    callProviderIdentifier = sub_100004F84();
+    if (os_log_type_enabled(callProviderIdentifier, OS_LOG_TYPE_ERROR))
     {
-      sub_100255EC0(v10);
+      sub_100255EC0(callProviderIdentifier);
     }
 
     v13 = 0;
@@ -99,13 +99,13 @@
   return v13;
 }
 
-- (BOOL)canMakeEmergencyCallForSenderIdentity:(id)a3
+- (BOOL)canMakeEmergencyCallForSenderIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   if (PHIsInAirplaneMode())
   {
-    v4 = [v3 UUID];
-    v5 = [TUCallCapabilities canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:v4];
+    uUID = [identityCopy UUID];
+    v5 = [TUCallCapabilities canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:uUID];
 
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -119,7 +119,7 @@
       v9 = 138412546;
       v10 = v7;
       v11 = 2112;
-      v12 = v3;
+      v12 = identityCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Device is in airplane mode and %@ make an emergency call using sender identity %@", &v9, 0x16u);
     }
   }
@@ -132,21 +132,21 @@
   return v5;
 }
 
-- (id)dialRequestByResolvingDialTypeUsingSenderIdentityClient:(id)a3
+- (id)dialRequestByResolvingDialTypeUsingSenderIdentityClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = [(TUDialRequest *)self copy];
-  v6 = [(TUDialRequest *)self handle];
-  v7 = [v6 value];
-  if ([v7 length])
+  handle = [(TUDialRequest *)self handle];
+  value = [handle value];
+  if ([value length])
   {
   }
 
   else
   {
-    v8 = [(TUDialRequest *)self dialType];
+    dialType = [(TUDialRequest *)self dialType];
 
-    if (v8 != 1)
+    if (dialType != 1)
     {
       goto LABEL_23;
     }
@@ -156,17 +156,17 @@
   v28[1] = 3221225472;
   v28[2] = sub_1000A7C04;
   v28[3] = &unk_1003587A8;
-  v29 = v4;
-  v30 = self;
+  v29 = clientCopy;
+  selfCopy = self;
   v9 = objc_retainBlock(v28);
-  v10 = [(TUDialRequest *)self localSenderIdentityAccountUUID];
-  if (!v10)
+  localSenderIdentityAccountUUID = [(TUDialRequest *)self localSenderIdentityAccountUUID];
+  if (!localSenderIdentityAccountUUID)
   {
     goto LABEL_11;
   }
 
-  v11 = [(TUDialRequest *)self provider];
-  v12 = [v11 senderIdentityForAccountUUID:v10];
+  provider = [(TUDialRequest *)self provider];
+  v12 = [provider senderIdentityForAccountUUID:localSenderIdentityAccountUUID];
 
   if (!v12)
   {
@@ -174,7 +174,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v10;
+      v33 = localSenderIdentityAccountUUID;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Could not find a sender identity that contains account UUID %@", buf, 0xCu);
     }
 
@@ -186,14 +186,14 @@
   if (!v13)
   {
 LABEL_11:
-    v15 = [(TUDialRequest *)self provider];
-    v16 = [v15 prioritizedSenderIdentities];
+    provider2 = [(TUDialRequest *)self provider];
+    prioritizedSenderIdentities = [provider2 prioritizedSenderIdentities];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = v16;
+    v17 = prioritizedSenderIdentities;
     v18 = [v17 countByEnumeratingWithState:&v24 objects:v31 count:16];
     if (v18)
     {

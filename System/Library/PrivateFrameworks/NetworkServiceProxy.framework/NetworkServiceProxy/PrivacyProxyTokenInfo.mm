@@ -1,8 +1,8 @@
 @interface PrivacyProxyTokenInfo
-- (PrivacyProxyTokenInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PrivacyProxyTokenInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyTokenInfo
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PrivacyProxyTokenInfo allocWithZone:?]];
   [(PrivacyProxyTokenInfo *)v4 setCachedTokens:[(PrivacyProxyTokenInfo *)self cachedTokens]];
@@ -36,30 +36,30 @@
   return v4;
 }
 
-- (PrivacyProxyTokenInfo)initWithCoder:(id)a3
+- (PrivacyProxyTokenInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PrivacyProxyTokenInfo;
   v5 = [(PrivacyProxyTokenInfo *)&v7 init];
   if (v5)
   {
-    v5->_cachedTokens = [v4 decodeIntForKey:@"PrivacyProxyInfoCachedTokenCount"];
-    v5->_agentTokens = [v4 decodeIntForKey:@"PrivacyProxyInfoAgentTokenCount"];
-    v5->_cacheLowWaterMark = [v4 decodeIntForKey:@"PrivacyProxyInfoCacheLowWaterMark"];
-    v5->_agentLowWaterMark = [v4 decodeIntForKey:@"PrivacyProxyInfoAgentLowWaterMark"];
+    v5->_cachedTokens = [coderCopy decodeIntForKey:@"PrivacyProxyInfoCachedTokenCount"];
+    v5->_agentTokens = [coderCopy decodeIntForKey:@"PrivacyProxyInfoAgentTokenCount"];
+    v5->_cacheLowWaterMark = [coderCopy decodeIntForKey:@"PrivacyProxyInfoCacheLowWaterMark"];
+    v5->_agentLowWaterMark = [coderCopy decodeIntForKey:@"PrivacyProxyInfoAgentLowWaterMark"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[PrivacyProxyTokenInfo cachedTokens](self forKey:{"cachedTokens"), @"PrivacyProxyInfoCachedTokenCount"}];
-  [v4 encodeInt:-[PrivacyProxyTokenInfo agentTokens](self forKey:{"agentTokens"), @"PrivacyProxyInfoAgentTokenCount"}];
-  [v4 encodeInt:-[PrivacyProxyTokenInfo cacheLowWaterMark](self forKey:{"cacheLowWaterMark"), @"PrivacyProxyInfoCacheLowWaterMark"}];
-  [v4 encodeInt:-[PrivacyProxyTokenInfo agentLowWaterMark](self forKey:{"agentLowWaterMark"), @"PrivacyProxyInfoAgentLowWaterMark"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[PrivacyProxyTokenInfo cachedTokens](self forKey:{"cachedTokens"), @"PrivacyProxyInfoCachedTokenCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyTokenInfo agentTokens](self forKey:{"agentTokens"), @"PrivacyProxyInfoAgentTokenCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyTokenInfo cacheLowWaterMark](self forKey:{"cacheLowWaterMark"), @"PrivacyProxyInfoCacheLowWaterMark"}];
+  [coderCopy encodeInt:-[PrivacyProxyTokenInfo agentLowWaterMark](self forKey:{"agentLowWaterMark"), @"PrivacyProxyInfoAgentLowWaterMark"}];
 }
 
 @end

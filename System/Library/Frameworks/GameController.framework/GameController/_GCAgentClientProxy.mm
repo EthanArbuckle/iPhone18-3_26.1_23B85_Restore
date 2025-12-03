@@ -1,50 +1,50 @@
 @interface _GCAgentClientProxy
-+ (id)clientProxyWithConnection:(id)a3 server:(id)a4 userDefaultsProxy:(id)a5 gameIntentProxy:(id)a6;
++ (id)clientProxyWithConnection:(id)connection server:(id)server userDefaultsProxy:(id)proxy gameIntentProxy:(id)intentProxy;
 - (GCRemoteUserDefaultsProxy)userDefaultsProxy;
 - (_GCAgentClientProxy)init;
-- (id)_initWithConnection:(id)a3 server:(id)a4 userDefaultsProxy:(id)a5 gameIntentProxy:(id)a6;
+- (id)_initWithConnection:(id)connection server:(id)server userDefaultsProxy:(id)proxy gameIntentProxy:(id)intentProxy;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
 - (void)_invalidate;
-- (void)connectToGameIntentLauncherXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToUserDefaultsXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToVideoRelocationXPCProxyServiceWithClient:(id)a3 reply:(id)a4;
+- (void)connectToGameIntentLauncherXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToUserDefaultsXPCProxyServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToVideoRelocationXPCProxyServiceWithClient:(id)client reply:(id)reply;
 - (void)dealloc;
-- (void)observeUserDefaultsValueForKeyPath:(id)a3 change:(id)a4;
-- (void)pingWithReply:(id)a3;
-- (void)userDefaultsCheckIn:(id)a3;
+- (void)observeUserDefaultsValueForKeyPath:(id)path change:(id)change;
+- (void)pingWithReply:(id)reply;
+- (void)userDefaultsCheckIn:(id)in;
 @end
 
 @implementation _GCAgentClientProxy
 
-+ (id)clientProxyWithConnection:(id)a3 server:(id)a4 userDefaultsProxy:(id)a5 gameIntentProxy:(id)a6
++ (id)clientProxyWithConnection:(id)connection server:(id)server userDefaultsProxy:(id)proxy gameIntentProxy:(id)intentProxy
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithConnection:v13 server:v12 userDefaultsProxy:v11 gameIntentProxy:v10];
+  intentProxyCopy = intentProxy;
+  proxyCopy = proxy;
+  serverCopy = server;
+  connectionCopy = connection;
+  v14 = [[self alloc] _initWithConnection:connectionCopy server:serverCopy userDefaultsProxy:proxyCopy gameIntentProxy:intentProxyCopy];
 
   return v14;
 }
 
-- (id)_initWithConnection:(id)a3 server:(id)a4 userDefaultsProxy:(id)a5 gameIntentProxy:(id)a6
+- (id)_initWithConnection:(id)connection server:(id)server userDefaultsProxy:(id)proxy gameIntentProxy:(id)intentProxy
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  serverCopy = server;
+  proxyCopy = proxy;
+  intentProxyCopy = intentProxy;
   v28.receiver = self;
   v28.super_class = _GCAgentClientProxy;
   v15 = [(_GCAgentClientProxy *)&v28 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_server, a4);
-    objc_storeStrong(&v16->_connection, a3);
-    objc_storeWeak(&v16->_userDefaultsProxy, v13);
-    objc_storeWeak(&v16->_gameIntentProxy, v14);
+    objc_storeStrong(&v15->_server, server);
+    objc_storeStrong(&v16->_connection, connection);
+    objc_storeWeak(&v16->_userDefaultsProxy, proxyCopy);
+    objc_storeWeak(&v16->_gameIntentProxy, intentProxyCopy);
     v17 = objc_opt_new();
     invalidationHandlers = v16->_invalidationHandlers;
     v16->_invalidationHandlers = v17;
@@ -82,8 +82,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCAgentClientProxy.m" lineNumber:79 description:{@"%@ is being deallocated, but is still valid.", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCAgentClientProxy.m" lineNumber:79 description:{@"%@ is being deallocated, but is still valid.", a2}];
 }
 
 - (id)description
@@ -101,11 +101,11 @@
     v6 = "";
   }
 
-  v7 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v8 = [v7 processIdentifier];
-  v9 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, v8, v10];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, processIdentifier, bundleIdentifier];
 
   return v11;
 }
@@ -125,11 +125,11 @@
     v6 = "";
   }
 
-  v7 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v8 = [v7 processIdentifier];
-  v9 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, v8, v10];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@%s client.pid: %i, client.bundleIdentifier: %@>", v4, v6, processIdentifier, bundleIdentifier];
 
   return v11;
 }
@@ -150,11 +150,11 @@
     v7 = "";
   }
 
-  v8 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v9 = [v8 processIdentifier];
-  v10 = [(_GCIPCIncomingConnection *)self->_connection process];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v3 stringWithFormat:@"<%@ %p%s client.pid: %i, client.bundleIdentifier: %@>", v5, self, v7, v9, v11];
+  process = [(_GCIPCIncomingConnection *)self->_connection process];
+  processIdentifier = [process processIdentifier];
+  process2 = [(_GCIPCIncomingConnection *)self->_connection process];
+  bundleIdentifier = [process2 bundleIdentifier];
+  v12 = [v3 stringWithFormat:@"<%@ %p%s client.pid: %i, client.bundleIdentifier: %@>", v5, self, v7, processIdentifier, bundleIdentifier];
 
   return v12;
 }
@@ -166,86 +166,86 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1D2CD5000, v2, OS_LOG_TYPE_INFO, "Agent client proxy invalidated: %@", &v4, 0xCu);
   }
 
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pingWithReply:(id)a3
+- (void)pingWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __37___GCAgentClientProxy_pingWithReply___block_invoke;
   activity_block[3] = &unk_1E8419198;
-  v6 = v3;
-  v4 = v3;
+  v6 = replyCopy;
+  v4 = replyCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(App Client) Ping", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToUserDefaultsXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToUserDefaultsXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __76___GCAgentClientProxy_connectToUserDefaultsXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Agent Client) Connect 'User Defaults XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToGameIntentLauncherXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToGameIntentLauncherXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __82___GCAgentClientProxy_connectToGameIntentLauncherXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Agent Client) Connect 'Game Intent Launcher XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)connectToVideoRelocationXPCProxyServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToVideoRelocationXPCProxyServiceWithClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __79___GCAgentClientProxy_connectToVideoRelocationXPCProxyServiceWithClient_reply___block_invoke;
   activity_block[3] = &unk_1E841A968;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = replyCopy;
+  v11 = clientCopy;
+  v8 = replyCopy;
+  v9 = clientCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Agent Client) Connect 'Video Relocation XPC Proxy Service'", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)userDefaultsCheckIn:(id)a3
+- (void)userDefaultsCheckIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   WeakRetained = objc_loadWeakRetained(&self->_userDefaultsProxy);
-  [WeakRetained userDefaultsCheckIn:v4 effectiveUserIdentifier:{-[_GCIPCIncomingConnection peerEffectiveUserIdentifier](self->_connection, "peerEffectiveUserIdentifier")}];
+  [WeakRetained userDefaultsCheckIn:inCopy effectiveUserIdentifier:{-[_GCIPCIncomingConnection peerEffectiveUserIdentifier](self->_connection, "peerEffectiveUserIdentifier")}];
 }
 
-- (void)observeUserDefaultsValueForKeyPath:(id)a3 change:(id)a4
+- (void)observeUserDefaultsValueForKeyPath:(id)path change:(id)change
 {
-  v6 = a4;
-  v7 = a3;
+  changeCopy = change;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_userDefaultsProxy);
-  [WeakRetained observeUserDefaultsValueForKeyPath:v7 change:v6];
+  [WeakRetained observeUserDefaultsValueForKeyPath:pathCopy change:changeCopy];
 }
 
 - (GCRemoteUserDefaultsProxy)userDefaultsProxy

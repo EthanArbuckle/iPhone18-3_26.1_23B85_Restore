@@ -1,25 +1,25 @@
 @interface UIWritingToolsCoordinatorContext
-- (UIWritingToolsCoordinatorContext)initWithAttributedString:(id)a3 range:(_NSRange)a4;
+- (UIWritingToolsCoordinatorContext)initWithAttributedString:(id)string range:(_NSRange)range;
 - (_NSRange)evaluatedRange;
 - (_NSRange)range;
 - (_NSRange)resolvedRange;
 - (id)description;
-- (void)_setWTContext:(id)a3;
+- (void)_setWTContext:(id)context;
 @end
 
 @implementation UIWritingToolsCoordinatorContext
 
-- (UIWritingToolsCoordinatorContext)initWithAttributedString:(id)a3 range:(_NSRange)a4
+- (UIWritingToolsCoordinatorContext)initWithAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = UIWritingToolsCoordinatorContext;
   v8 = [(UIWritingToolsCoordinatorContext *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69E3150]) initWithAttributedText:v7 range:{location, length}];
+    v9 = [objc_alloc(MEMORY[0x1E69E3150]) initWithAttributedText:stringCopy range:{location, length}];
     wtContext = v8->_wtContext;
     v8->_wtContext = v9;
 
@@ -49,23 +49,23 @@
   return result;
 }
 
-- (void)_setWTContext:(id)a3
+- (void)_setWTContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 uuid];
-  v7 = [(WTContext *)self->_wtContext uuid];
-  v8 = v6;
-  v9 = v7;
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  uuid2 = [(WTContext *)self->_wtContext uuid];
+  currentHandler = uuid;
+  v9 = uuid2;
   v10 = v9;
-  if (v8 == v9)
+  if (currentHandler == v9)
   {
   }
 
   else
   {
-    if (v8 && v9)
+    if (currentHandler && v9)
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [currentHandler isEqual:v9];
 
       if (v11)
       {
@@ -77,13 +77,13 @@
     {
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinatorContext.m" lineNumber:58 description:@"Updating UIWritingToolsCoordinatorContext with mismatched WTContext"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinatorContext.m" lineNumber:58 description:@"Updating UIWritingToolsCoordinatorContext with mismatched WTContext"];
   }
 
 LABEL_8:
   wtContext = self->_wtContext;
-  self->_wtContext = v5;
+  self->_wtContext = contextCopy;
 }
 
 - (id)description
@@ -91,9 +91,9 @@ LABEL_8:
   v16.receiver = self;
   v16.super_class = UIWritingToolsCoordinatorContext;
   v3 = [(UIWritingToolsCoordinatorContext *)&v16 description];
-  v4 = [(UIWritingToolsCoordinatorContext *)self range];
+  range = [(UIWritingToolsCoordinatorContext *)self range];
   [(UIWritingToolsCoordinatorContext *)self range];
-  v6 = [v3 stringByAppendingFormat:@" range={%lu, %lu}", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" range={%lu, %lu}", range, v5];
 
   if (self->_resolvedRange.location == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -105,18 +105,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(UIWritingToolsCoordinatorContext *)self range];
+  range2 = [(UIWritingToolsCoordinatorContext *)self range];
   length = self->_resolvedRange.length;
-  if (v8 != self->_resolvedRange.location || v9 != length)
+  if (range2 != self->_resolvedRange.location || v9 != length)
   {
     v7 = [v6 stringByAppendingFormat:@" resolvedRange={%lu, %lu}", self->_resolvedRange.location, length];
     goto LABEL_6;
   }
 
 LABEL_7:
-  v12 = [(UIWritingToolsCoordinatorContext *)self attributedString];
-  v13 = [v12 string];
-  v14 = [v6 stringByAppendingFormat:@" text=%@", v13];
+  attributedString = [(UIWritingToolsCoordinatorContext *)self attributedString];
+  string = [attributedString string];
+  v14 = [v6 stringByAppendingFormat:@" text=%@", string];
 
   return v14;
 }

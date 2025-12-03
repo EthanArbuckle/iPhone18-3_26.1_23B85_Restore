@@ -1,12 +1,12 @@
 @interface CRLiOSInspectorCheckmark
 + (id)checkmark;
 - (CGSize)intrinsicContentSize;
-- (CRLiOSInspectorCheckmark)initWithFrame:(CGRect)a3;
+- (CRLiOSInspectorCheckmark)initWithFrame:(CGRect)frame;
 - (void)p_updateTintColor;
-- (void)setCustomCheckmarkImage:(id)a3;
-- (void)setCustomHighlightedCheckmarkImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setUsesCustomCheckmarkImage:(BOOL)a3;
+- (void)setCustomCheckmarkImage:(id)image;
+- (void)setCustomHighlightedCheckmarkImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setUsesCustomCheckmarkImage:(BOOL)image;
 - (void)setupDefaultCheckmarkImage;
 - (void)tintColorDidChange;
 @end
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (CRLiOSInspectorCheckmark)initWithFrame:(CGRect)a3
+- (CRLiOSInspectorCheckmark)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CRLiOSInspectorCheckmark;
-  v3 = [(CRLiOSInspectorCheckmark *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSInspectorCheckmark *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     if (self->_usesCustomCheckmarkImage)
     {
       [(UIButton *)self->_checkmarkImageButton setHighlighted:?];
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)setUsesCustomCheckmarkImage:(BOOL)a3
+- (void)setUsesCustomCheckmarkImage:(BOOL)image
 {
-  if (self->_usesCustomCheckmarkImage != a3)
+  if (self->_usesCustomCheckmarkImage != image)
   {
-    if (a3)
+    if (image)
     {
       [(UIButton *)self->_checkmarkImageButton setImage:self->_customCheckmarkImage forState:0];
       [(UIButton *)self->_checkmarkImageButton setImage:self->_customHighlightedCheckmarkImage forState:1];
@@ -102,35 +102,35 @@
   [(UIButton *)self->_checkmarkImageButton setFrame:0.0, 0.0, v6, v7];
 }
 
-- (void)setCustomCheckmarkImage:(id)a3
+- (void)setCustomCheckmarkImage:(id)image
 {
-  v5 = a3;
-  if (self->_customCheckmarkImage != v5)
+  imageCopy = image;
+  if (self->_customCheckmarkImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customCheckmarkImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_customCheckmarkImage, image);
     [(CRLiOSInspectorCheckmark *)self setUsesCustomCheckmarkImage:v6 != 0];
     [(CRLiOSInspectorCheckmark *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setCustomHighlightedCheckmarkImage:(id)a3
+- (void)setCustomHighlightedCheckmarkImage:(id)image
 {
-  v5 = a3;
-  if (self->_customHighlightedCheckmarkImage != v5)
+  imageCopy = image;
+  if (self->_customHighlightedCheckmarkImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customHighlightedCheckmarkImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_customHighlightedCheckmarkImage, image);
     [(UIButton *)self->_checkmarkImageButton setImage:v6 forState:1];
     [(CRLiOSInspectorCheckmark *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
 - (void)p_updateTintColor
 {
-  v3 = [(CRLiOSInspectorCheckmark *)self tintColor];
+  tintColor = [(CRLiOSInspectorCheckmark *)self tintColor];
   if (self->_enabled)
   {
     if (!self->_highlighted)
@@ -138,29 +138,29 @@
       goto LABEL_6;
     }
 
-    v8 = v3;
-    v4 = [v3 colorWithAlphaComponent:0.8];
+    v8 = tintColor;
+    v4 = [tintColor colorWithAlphaComponent:0.8];
   }
 
   else
   {
-    v8 = v3;
+    v8 = tintColor;
     v4 = +[UIColor secondaryLabelColor];
   }
 
   v5 = v4;
 
-  v3 = v5;
+  tintColor = v5;
 LABEL_6:
-  if (!v3)
+  if (!tintColor)
   {
-    v3 = +[UIColor labelColor];
+    tintColor = +[UIColor labelColor];
   }
 
-  v9 = v3;
-  v6 = [(CRLiOSInspectorCheckmark *)self checkmarkImageButton];
-  v7 = [v6 imageView];
-  [v7 setTintColor:v9];
+  v9 = tintColor;
+  checkmarkImageButton = [(CRLiOSInspectorCheckmark *)self checkmarkImageButton];
+  imageView = [checkmarkImageButton imageView];
+  [imageView setTintColor:v9];
 }
 
 - (CGSize)intrinsicContentSize

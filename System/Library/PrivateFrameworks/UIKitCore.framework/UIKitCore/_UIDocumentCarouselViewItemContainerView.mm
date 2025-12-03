@@ -1,26 +1,26 @@
 @interface _UIDocumentCarouselViewItemContainerView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIEdgeInsets)_concreteDefaultLayoutMargins;
 - (void)_configureView;
-- (void)setContentConfiguration:(uint64_t)a1;
+- (void)setContentConfiguration:(uint64_t)configuration;
 @end
 
 @implementation _UIDocumentCarouselViewItemContainerView
 
-- (void)setContentConfiguration:(uint64_t)a1
+- (void)setContentConfiguration:(uint64_t)configuration
 {
-  v26 = [*(a1 + 408) configuration];
+  configuration = [*(configuration + 408) configuration];
   v4 = a2;
-  if (v26 == v4)
+  if (configuration == v4)
   {
 LABEL_22:
 
     return;
   }
 
-  if (v4 && v26)
+  if (v4 && configuration)
   {
-    v5 = [v26 isEqual:v4];
+    v5 = [configuration isEqual:v4];
 
     if (v5)
     {
@@ -32,8 +32,8 @@ LABEL_22:
   {
   }
 
-  *(a1 + 424) = *MEMORY[0x1E695F060];
-  v6 = *(a1 + 408);
+  *(configuration + 424) = *MEMORY[0x1E695F060];
+  v6 = *(configuration + 408);
   v7 = v4;
   v8 = v6;
   if (objc_opt_respondsToSelector())
@@ -43,43 +43,43 @@ LABEL_22:
     if (!v9)
     {
 LABEL_9:
-      v10 = [v7 makeContentView];
-      v26 = v10;
+      makeContentView = [v7 makeContentView];
+      configuration = makeContentView;
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v26 _wrappedContentView];
+        _wrappedContentView = [configuration _wrappedContentView];
       }
 
       else
       {
-        v11 = v26;
+        _wrappedContentView = configuration;
       }
 
-      v4 = v11;
-      if (!v11)
+      v4 = _wrappedContentView;
+      if (!_wrappedContentView)
       {
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
-        v24 = [v26 configuration];
-        [v23 handleFailureInMethod:sel_setContentConfiguration_ object:a1 file:@"_UIDocumentCarouselView.m" lineNumber:805 description:{@"Configuration returned a nil content view: %@", v24}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v26Configuration = [configuration configuration];
+        [currentHandler handleFailureInMethod:sel_setContentConfiguration_ object:configuration file:@"_UIDocumentCarouselView.m" lineNumber:805 description:{@"Configuration returned a nil content view: %@", v26Configuration}];
       }
 
       if (([v4 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v25 handleFailureInMethod:sel_setContentConfiguration_ object:a1 file:@"_UIDocumentCarouselView.m" lineNumber:806 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", v4}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_setContentConfiguration_ object:configuration file:@"_UIDocumentCarouselView.m" lineNumber:806 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", v4}];
       }
 
-      v14 = *(a1 + 408);
-      v15 = *(a1 + 416);
-      objc_storeStrong((a1 + 408), v10);
-      objc_storeStrong((a1 + 416), v4);
+      v14 = *(configuration + 408);
+      v15 = *(configuration + 416);
+      objc_storeStrong((configuration + 408), makeContentView);
+      objc_storeStrong((configuration + 416), v4);
       [v15 removeFromSuperview];
       if (v4)
       {
-        [a1 bounds];
+        [configuration bounds];
         [v4 setFrame:?];
         [v4 setAutoresizingMask:18];
-        [a1 addSubview:v4];
+        [configuration addSubview:v4];
       }
 
       goto LABEL_22;
@@ -88,9 +88,9 @@ LABEL_9:
 
   else
   {
-    v12 = [v8 configuration];
+    configuration2 = [v8 configuration];
 
-    v13 = v12;
+    v13 = configuration2;
     if (v13)
     {
       if (objc_opt_respondsToSelector())
@@ -139,43 +139,43 @@ LABEL_9:
     }
   }
 
-  v22 = *(a1 + 408);
+  v22 = *(configuration + 408);
 
   [v22 setConfiguration:v7];
 }
 
 - (void)_configureView
 {
-  v3 = [(UIView *)self layer];
-  [v3 setShadowOffset:{0.0, 3.0}];
+  layer = [(UIView *)self layer];
+  [layer setShadowOffset:{0.0, 3.0}];
 
-  v4 = [(UIView *)self layer];
-  [v4 setShadowRadius:20.0];
+  layer2 = [(UIView *)self layer];
+  [layer2 setShadowRadius:20.0];
 
   v5 = +[UIColor blackColor];
-  v6 = [v5 CGColor];
-  v7 = [(UIView *)self layer];
-  [v7 setShadowColor:v6];
+  cGColor = [v5 CGColor];
+  layer3 = [(UIView *)self layer];
+  [layer3 setShadowColor:cGColor];
 
-  v8 = [(UIView *)self layer];
-  [v8 setShouldRasterize:1];
+  layer4 = [(UIView *)self layer];
+  [layer4 setShouldRasterize:1];
 
-  v9 = [(UIView *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   v11 = v10;
-  v12 = [(UIView *)self layer];
-  [v12 setRasterizationScale:v11];
+  layer5 = [(UIView *)self layer];
+  [layer5 setRasterizationScale:v11];
 
   [(UIView *)self setPreservesSuperviewLayoutMargins:0];
 
   [(UIView *)self setInsetsLayoutMarginsFromSafeArea:0];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  [(UIView *)self->_contentView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:2777777.0 verticalFittingPriority:?];
+  height = size.height;
+  width = size.width;
+  [(UIView *)self->_contentView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:2777777.0 verticalFittingPriority:?];
   if (v8 >= height)
   {
     v9 = v8;

@@ -1,29 +1,29 @@
 @interface APOdmlAppVector
-- (APOdmlAppVector)initWithString:(id)a3 version:(id)a4;
-- (APOdmlAppVector)initWithVersion:(id)a3 header:(APOdmlAppVectorHeader *)a4 floats:(float *)a5;
+- (APOdmlAppVector)initWithString:(id)string version:(id)version;
+- (APOdmlAppVector)initWithVersion:(id)version header:(APOdmlAppVectorHeader *)header floats:(float *)floats;
 - (id)data;
 - (id)description;
 @end
 
 @implementation APOdmlAppVector
 
-- (APOdmlAppVector)initWithVersion:(id)a3 header:(APOdmlAppVectorHeader *)a4 floats:(float *)a5
+- (APOdmlAppVector)initWithVersion:(id)version header:(APOdmlAppVectorHeader *)header floats:(float *)floats
 {
-  v5 = self;
+  selfCopy = self;
   v17 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (header)
   {
-    var2 = a4->var2;
+    var2 = header->var2;
     v14.receiver = self;
     v14.super_class = APOdmlAppVector;
-    v8 = [(APOdmlVector *)&v14 initWithVersion:a3 length:var2 floats:a5];
+    v8 = [(APOdmlVector *)&v14 initWithVersion:version length:var2 floats:floats];
     if (v8)
     {
-      v8->_adamID = a4->var0;
+      v8->_adamID = header->var0;
     }
 
-    v5 = v8;
-    v9 = v5;
+    selfCopy = v8;
+    v9 = selfCopy;
   }
 
   else
@@ -44,20 +44,20 @@
   return v9;
 }
 
-- (APOdmlAppVector)initWithString:(id)a3 version:(id)a4
+- (APOdmlAppVector)initWithString:(id)string version:(id)version
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  stringCopy = string;
+  versionCopy = version;
+  if (stringCopy)
   {
-    v9 = objc_msgSend_componentsSeparatedByString_(v6, v7, @"\t");
+    v9 = objc_msgSend_componentsSeparatedByString_(stringCopy, v7, @"\t");
     v12 = objc_msgSend_firstObject(v9, v10, v11);
     v15 = objc_msgSend_integerValue(v12, v13, v14);
 
     if (objc_msgSend_count(v9, v16, v17) == 2)
     {
-      v58 = v8;
+      v58 = versionCopy;
       v56 = v15;
       if (qword_27FE60370 != -1)
       {
@@ -94,7 +94,7 @@
         }
 
         objc_msgSend_doubleValue(v34, v37, v38);
-        v51 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v49, @"The provided string (%@) for doubleValue %.7lf at index %lu was not able to be converted to a number. Full line:\n%@", v34, v50, v33, v6);
+        v51 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v49, @"The provided string (%@) for doubleValue %.7lf at index %lu was not able to be converted to a number. Full line:\n%@", v34, v50, v33, stringCopy);
         v52 = OdmlLogForCategory(2uLL);
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
@@ -107,8 +107,8 @@
         }
 
         APOdmlSimulateCrash(2880291038, v51, 0);
-        v45 = 0;
-        v8 = v58;
+        selfCopy = 0;
+        versionCopy = v58;
       }
 
       else
@@ -116,7 +116,7 @@
 LABEL_9:
         v59.receiver = self;
         v59.super_class = APOdmlAppVector;
-        v8 = v58;
+        versionCopy = v58;
         v44 = [(APOdmlVector *)&v59 initWithVersion:v58 andArray:v27];
         if (v44)
         {
@@ -124,7 +124,7 @@ LABEL_9:
         }
 
         self = v44;
-        v45 = self;
+        selfCopy = self;
       }
 
       v47 = v57;
@@ -138,12 +138,12 @@ LABEL_9:
         *buf = 138412546;
         v61 = objc_opt_class();
         v62 = 2112;
-        v63 = v6;
+        v63 = stringCopy;
         v48 = v61;
         _os_log_impl(&dword_260ECB000, v47, OS_LOG_TYPE_ERROR, "[%@]: ERROR: The line does not conform to our expectations: %@", buf, 0x16u);
       }
 
-      v45 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -160,11 +160,11 @@ LABEL_9:
       _os_log_impl(&dword_260ECB000, v9, OS_LOG_TYPE_ERROR, "[%@]: ERROR: nil datastring passed into parser: %@.", buf, 0x16u);
     }
 
-    v45 = 0;
+    selfCopy = 0;
   }
 
   v54 = *MEMORY[0x277D85DE8];
-  return v45;
+  return selfCopy;
 }
 
 - (id)data
@@ -177,8 +177,8 @@ LABEL_9:
   objc_msgSend_appendBytes_length_(v6, v11, &v16, 16);
   v15.receiver = self;
   v15.super_class = APOdmlAppVector;
-  v12 = [(APOdmlVector *)&v15 data];
-  objc_msgSend_appendData_(v6, v13, v12);
+  data = [(APOdmlVector *)&v15 data];
+  objc_msgSend_appendData_(v6, v13, data);
 
   return v6;
 }

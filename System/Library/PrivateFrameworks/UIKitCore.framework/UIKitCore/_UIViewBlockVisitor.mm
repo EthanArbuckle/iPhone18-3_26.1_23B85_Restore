@@ -1,6 +1,6 @@
 @interface _UIViewBlockVisitor
-- (BOOL)_visitView:(id)a3;
-- (_UIViewBlockVisitor)initWithTraversalDirection:(unint64_t)a3 visitorBlock:(id)a4;
+- (BOOL)_visitView:(id)view;
+- (_UIViewBlockVisitor)initWithTraversalDirection:(unint64_t)direction visitorBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -18,21 +18,21 @@
   [(_UIViewBlockVisitor *)&v4 dealloc];
 }
 
-- (_UIViewBlockVisitor)initWithTraversalDirection:(unint64_t)a3 visitorBlock:(id)a4
+- (_UIViewBlockVisitor)initWithTraversalDirection:(unint64_t)direction visitorBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = _UIViewBlockVisitor;
-  v5 = [(_UIViewVisitor *)&v8 initWithTraversalDirection:a3];
+  v5 = [(_UIViewVisitor *)&v8 initWithTraversalDirection:direction];
   v6 = v5;
   if (v5)
   {
-    [(_UIViewBlockVisitor *)v5 setVisitorBlock:a4];
+    [(_UIViewBlockVisitor *)v5 setVisitorBlock:block];
   }
 
   return v6;
 }
 
-- (BOOL)_visitView:(id)a3
+- (BOOL)_visitView:(id)view
 {
   if (![(_UIViewBlockVisitor *)self visitorBlock])
   {

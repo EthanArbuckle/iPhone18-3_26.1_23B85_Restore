@@ -1,38 +1,38 @@
 @interface AFOutputVoiceDescriptor
-+ (id)newWithBuilder:(id)a3;
-- (AFOutputVoiceDescriptor)initWithBuilder:(id)a3;
-- (AFOutputVoiceDescriptor)initWithCoder:(id)a3;
-- (AFOutputVoiceDescriptor)initWithLocalizedDisplay:(id)a3 localizedDisplayWithRegion:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFOutputVoiceDescriptor)initWithBuilder:(id)builder;
+- (AFOutputVoiceDescriptor)initWithCoder:(id)coder;
+- (AFOutputVoiceDescriptor)initWithLocalizedDisplay:(id)display localizedDisplayWithRegion:(id)region;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFOutputVoiceDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedDisplay = self->_localizedDisplay;
-  v5 = a3;
-  [v5 encodeObject:localizedDisplay forKey:@"AFOutputVoiceDescriptor::localizedDisplay"];
-  [v5 encodeObject:self->_localizedDisplayWithRegion forKey:@"AFOutputVoiceDescriptor::localizedDisplayWithRegion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localizedDisplay forKey:@"AFOutputVoiceDescriptor::localizedDisplay"];
+  [coderCopy encodeObject:self->_localizedDisplayWithRegion forKey:@"AFOutputVoiceDescriptor::localizedDisplayWithRegion"];
 }
 
-- (AFOutputVoiceDescriptor)initWithCoder:(id)a3
+- (AFOutputVoiceDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceDescriptor::localizedDisplay"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceDescriptor::localizedDisplayWithRegion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceDescriptor::localizedDisplay"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFOutputVoiceDescriptor::localizedDisplayWithRegion"];
 
   v7 = [(AFOutputVoiceDescriptor *)self initWithLocalizedDisplay:v5 localizedDisplayWithRegion:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -42,14 +42,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFOutputVoiceDescriptor *)v5 localizedDisplay];
+      v5 = equalCopy;
+      localizedDisplay = [(AFOutputVoiceDescriptor *)v5 localizedDisplay];
       localizedDisplay = self->_localizedDisplay;
-      if (localizedDisplay == v6 || [(NSString *)localizedDisplay isEqual:v6])
+      if (localizedDisplay == localizedDisplay || [(NSString *)localizedDisplay isEqual:localizedDisplay])
       {
-        v8 = [(AFOutputVoiceDescriptor *)v5 localizedDisplayWithRegion];
+        localizedDisplayWithRegion = [(AFOutputVoiceDescriptor *)v5 localizedDisplayWithRegion];
         localizedDisplayWithRegion = self->_localizedDisplayWithRegion;
-        v10 = localizedDisplayWithRegion == v8 || [(NSString *)localizedDisplayWithRegion isEqual:v8];
+        v10 = localizedDisplayWithRegion == localizedDisplayWithRegion || [(NSString *)localizedDisplayWithRegion isEqual:localizedDisplayWithRegion];
       }
 
       else
@@ -67,7 +67,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -78,18 +78,18 @@
   return v6;
 }
 
-- (AFOutputVoiceDescriptor)initWithLocalizedDisplay:(id)a3 localizedDisplayWithRegion:(id)a4
+- (AFOutputVoiceDescriptor)initWithLocalizedDisplay:(id)display localizedDisplayWithRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  displayCopy = display;
+  regionCopy = region;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__AFOutputVoiceDescriptor_initWithLocalizedDisplay_localizedDisplayWithRegion___block_invoke;
   v12[3] = &unk_1E7342278;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = displayCopy;
+  v14 = regionCopy;
+  v8 = regionCopy;
+  v9 = displayCopy;
   v10 = [(AFOutputVoiceDescriptor *)self initWithBuilder:v12];
 
   return v10;
@@ -103,26 +103,26 @@ void __79__AFOutputVoiceDescriptor_initWithLocalizedDisplay_localizedDisplayWith
   [v4 setLocalizedDisplayWithRegion:*(a1 + 40)];
 }
 
-- (AFOutputVoiceDescriptor)initWithBuilder:(id)a3
+- (AFOutputVoiceDescriptor)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFOutputVoiceDescriptor;
   v5 = [(AFOutputVoiceDescriptor *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFOutputVoiceDescriptorMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFOutputVoiceDescriptorMutation *)v7 isDirty])
     {
-      v8 = [(_AFOutputVoiceDescriptorMutation *)v7 getLocalizedDisplay];
-      v9 = [v8 copy];
+      getLocalizedDisplay = [(_AFOutputVoiceDescriptorMutation *)v7 getLocalizedDisplay];
+      v9 = [getLocalizedDisplay copy];
       localizedDisplay = v6->_localizedDisplay;
       v6->_localizedDisplay = v9;
 
-      v11 = [(_AFOutputVoiceDescriptorMutation *)v7 getLocalizedDisplayWithRegion];
-      v12 = [v11 copy];
+      getLocalizedDisplayWithRegion = [(_AFOutputVoiceDescriptorMutation *)v7 getLocalizedDisplayWithRegion];
+      v12 = [getLocalizedDisplayWithRegion copy];
       localizedDisplayWithRegion = v6->_localizedDisplayWithRegion;
       v6->_localizedDisplayWithRegion = v12;
     }
@@ -131,31 +131,31 @@ void __79__AFOutputVoiceDescriptor_initWithLocalizedDisplay_localizedDisplayWith
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFOutputVoiceDescriptorMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFOutputVoiceDescriptorMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFOutputVoiceDescriptor);
-      v7 = [(_AFOutputVoiceDescriptorMutation *)v5 getLocalizedDisplay];
-      v8 = [v7 copy];
+      getLocalizedDisplay = [(_AFOutputVoiceDescriptorMutation *)v5 getLocalizedDisplay];
+      v8 = [getLocalizedDisplay copy];
       localizedDisplay = v6->_localizedDisplay;
       v6->_localizedDisplay = v8;
 
-      v10 = [(_AFOutputVoiceDescriptorMutation *)v5 getLocalizedDisplayWithRegion];
-      v11 = [v10 copy];
+      getLocalizedDisplayWithRegion = [(_AFOutputVoiceDescriptorMutation *)v5 getLocalizedDisplayWithRegion];
+      v11 = [getLocalizedDisplayWithRegion copy];
       localizedDisplayWithRegion = v6->_localizedDisplayWithRegion;
       v6->_localizedDisplayWithRegion = v11;
     }

@@ -1,38 +1,38 @@
 @interface PKAccountWebServiceExportTransactionDataResponse
-- (PKAccountWebServiceExportTransactionDataResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5;
+- (PKAccountWebServiceExportTransactionDataResponse)initWithData:(id)data account:(id)account request:(id)request;
 @end
 
 @implementation PKAccountWebServiceExportTransactionDataResponse
 
-- (PKAccountWebServiceExportTransactionDataResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5
+- (PKAccountWebServiceExportTransactionDataResponse)initWithData:(id)data account:(id)account request:(id)request
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  requestCopy = request;
   v43.receiver = self;
   v43.super_class = PKAccountWebServiceExportTransactionDataResponse;
-  v8 = [(PKWebServiceResponse *)&v43 initWithData:a3];
+  v8 = [(PKWebServiceResponse *)&v43 initWithData:data];
   p_isa = &v8->super.super.super.super.isa;
   if (!v8)
   {
     goto LABEL_26;
   }
 
-  v10 = [(PKWebServiceResponse *)v8 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v8 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v7;
+      v11 = requestCopy;
       v12 = objc_alloc_init(PKAccountExportedTransactionInfo);
       v13 = p_isa[4];
       p_isa[4] = v12;
 
-      v14 = [v11 type];
-      if (v14 == 1)
+      type = [v11 type];
+      if (type == 1)
       {
-        v32 = [v10 PKArrayContaining:objc_opt_class() forKey:@"transactionMetadata"];
+        v32 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"transactionMetadata"];
         v33 = v32;
         if (v32)
         {
@@ -41,22 +41,22 @@
 
         else
         {
-          v34 = [v10 PKArrayContaining:objc_opt_class() forKey:@"metadata"];
+          v34 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"metadata"];
         }
 
         v20 = v34;
 
         v36 = p_isa[4];
         v37 = [PKAccountStatementMetadata alloc];
-        v22 = [v11 accountIdentifier];
-        v38 = [v11 statementIdentifier];
-        v39 = [(PKAccountStatementMetadata *)v37 initWithArray:v20 accountIdentifier:v22 statementIdentifier:v38];
+        accountIdentifier = [v11 accountIdentifier];
+        statementIdentifier = [v11 statementIdentifier];
+        v39 = [(PKAccountStatementMetadata *)v37 initWithArray:v20 accountIdentifier:accountIdentifier statementIdentifier:statementIdentifier];
         [v36 setStatementMetadata:v39];
 
         goto LABEL_24;
       }
 
-      if (v14)
+      if (type)
       {
 LABEL_25:
 
@@ -66,21 +66,21 @@ LABEL_26:
       }
 
       v15 = p_isa[4];
-      v16 = [v10 PKStringForKey:@"transactionDataFilename"];
+      v16 = [jSONObject PKStringForKey:@"transactionDataFilename"];
       [v15 setTransactionDataFilename:v16];
 
       v17 = p_isa[4];
-      v18 = [v10 PKStringForKey:@"transactionDataHash"];
+      v18 = [jSONObject PKStringForKey:@"transactionDataHash"];
       [v17 setTransactionDataHash:v18];
 
-      v19 = [v10 PKStringForKey:@"transactionData"];
+      v19 = [jSONObject PKStringForKey:@"transactionData"];
       if (v19)
       {
         v20 = v19;
         v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v19 options:0];
         if (v21)
         {
-          v22 = v21;
+          accountIdentifier = v21;
           [p_isa[4] setTransactionData:v21];
 LABEL_24:
 

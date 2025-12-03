@@ -1,54 +1,54 @@
 @interface STUsageReporter
-- (BOOL)generateReport:(id *)a3;
+- (BOOL)generateReport:(id *)report;
 - (NSArray)applicationAndWebUsage;
 - (NSArray)categoryUsage;
 - (NSArray)notifications;
 - (NSArray)pickups;
 - (NSDate)firstPickup;
 - (NSFetchedResultsController)installedAppsController;
-- (STUsageReporter)initWithUsage:(id)a3 dateInterval:(id)a4;
+- (STUsageReporter)initWithUsage:(id)usage dateInterval:(id)interval;
 - (double)totalScreenTime;
 - (id)_categoryUsageWithoutAllUsageItem;
-- (id)_firstPickupFromUsageBlocks:(id)a3;
-- (id)_ratiosForCategory:(id)a3 perCalendarUnit:(unint64_t)a4 useTotalScreenTime:(BOOL)a5;
-- (id)categoryRatiosPerCalendarUnit:(unint64_t)a3 numberOfCategories:(unint64_t)a4;
-- (id)firstPickupOfIntervalWithMostPickups:(unint64_t *)a3 perCalendarUnit:(unint64_t)a4;
-- (id)notificationRatiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4;
-- (id)notificationsPerCalendarUnit:(unint64_t)a3;
-- (id)pickupRatiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4;
-- (id)pickupsPerCalendarUnit:(unint64_t)a3;
-- (id)ratiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4;
-- (id)ratiosForWebDomain:(id)a3 perCalendarUnit:(unint64_t)a4;
-- (id)screenTimeUsagePerCalendarUnit:(unint64_t)a3;
+- (id)_firstPickupFromUsageBlocks:(id)blocks;
+- (id)_ratiosForCategory:(id)category perCalendarUnit:(unint64_t)unit useTotalScreenTime:(BOOL)time;
+- (id)categoryRatiosPerCalendarUnit:(unint64_t)unit numberOfCategories:(unint64_t)categories;
+- (id)firstPickupOfIntervalWithMostPickups:(unint64_t *)pickups perCalendarUnit:(unint64_t)unit;
+- (id)notificationRatiosForApplication:(id)application perCalendarUnit:(unint64_t)unit;
+- (id)notificationsPerCalendarUnit:(unint64_t)unit;
+- (id)pickupRatiosForApplication:(id)application perCalendarUnit:(unint64_t)unit;
+- (id)pickupsPerCalendarUnit:(unint64_t)unit;
+- (id)ratiosForApplication:(id)application perCalendarUnit:(unint64_t)unit;
+- (id)ratiosForWebDomain:(id)domain perCalendarUnit:(unint64_t)unit;
+- (id)screenTimeUsagePerCalendarUnit:(unint64_t)unit;
 - (int64_t)totalNotifications;
 - (int64_t)totalPickups;
-- (void)_enumerateUsageBlocksWithUnitGranularity:(unint64_t)a3 block:(id)a4;
+- (void)_enumerateUsageBlocksWithUnitGranularity:(unint64_t)granularity block:(id)block;
 - (void)_updateInstalledBundleIdentifiers;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controllerDidChangeContent:(id)content;
 - (void)installedAppsController;
 @end
 
 @implementation STUsageReporter
 
-- (STUsageReporter)initWithUsage:(id)a3 dateInterval:(id)a4
+- (STUsageReporter)initWithUsage:(id)usage dateInterval:(id)interval
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = STUsageReporter;
-  v5 = a4;
-  v6 = a3;
+  intervalCopy = interval;
+  usageCopy = usage;
   v7 = [(STUsageReporter *)&v23 init];
-  v8 = [v5 copy];
+  v8 = [intervalCopy copy];
   dateInterval = v7->_dateInterval;
   v7->_dateInterval = v8;
 
-  v10 = [v6 user];
-  v11 = [v10 dsid];
-  v12 = [v11 copy];
+  user = [usageCopy user];
+  dsid = [user dsid];
+  v12 = [dsid copy];
   userDSID = v7->_userDSID;
   v7->_userDSID = v12;
 
-  v14 = [STUsageBlock fetchRequestMatchingUsage:v6 dateInterval:v5];
+  v14 = [STUsageBlock fetchRequestMatchingUsage:usageCopy dateInterval:intervalCopy];
 
   v15 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"startDate" ascending:1];
   v24[0] = v15;
@@ -57,9 +57,9 @@
 
   [v14 setShouldRefreshRefetchedObjects:1];
   v17 = objc_alloc(MEMORY[0x1E695D600]);
-  v18 = [v6 managedObjectContext];
+  managedObjectContext = [usageCopy managedObjectContext];
 
-  v19 = [v17 initWithFetchRequest:v14 managedObjectContext:v18 sectionNameKeyPath:0 cacheName:0];
+  v19 = [v17 initWithFetchRequest:v14 managedObjectContext:managedObjectContext sectionNameKeyPath:0 cacheName:0];
   fetchedResultsController = v7->_fetchedResultsController;
   v7->_fetchedResultsController = v19;
 
@@ -68,12 +68,12 @@
   return v7;
 }
 
-- (BOOL)generateReport:(id *)a3
+- (BOOL)generateReport:(id *)report
 {
-  v4 = [(STUsageReporter *)self fetchedResultsController];
-  LOBYTE(a3) = [v4 performFetch:a3];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  LOBYTE(report) = [fetchedResultsController performFetch:report];
 
-  return a3;
+  return report;
 }
 
 - (NSFetchedResultsController)installedAppsController
@@ -94,24 +94,24 @@
     [v4 setSortDescriptors:v7];
 
     v8 = MEMORY[0x1E696AE18];
-    v9 = [(STUsageReporter *)self userDSID];
-    v10 = [v8 predicateWithFormat:@"%K == %@", @"userDeviceState.user.dsid", v9];
+    userDSID = [(STUsageReporter *)self userDSID];
+    v10 = [v8 predicateWithFormat:@"%K == %@", @"userDeviceState.user.dsid", userDSID];
     [v4 setPredicate:v10];
 
     [v4 setShouldRefreshRefetchedObjects:1];
     v11 = objc_alloc(MEMORY[0x1E695D600]);
-    v12 = [(STUsageReporter *)self fetchedResultsController];
-    v13 = [v12 managedObjectContext];
-    v14 = [v11 initWithFetchRequest:v4 managedObjectContext:v13 sectionNameKeyPath:0 cacheName:0];
+    fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+    managedObjectContext = [fetchedResultsController managedObjectContext];
+    v14 = [v11 initWithFetchRequest:v4 managedObjectContext:managedObjectContext sectionNameKeyPath:0 cacheName:0];
     v15 = self->_installedAppsController;
     self->_installedAppsController = v14;
 
     [(NSFetchedResultsController *)self->_installedAppsController setDelegate:self];
     v16 = self->_installedAppsController;
     v21 = 0;
-    LOBYTE(v12) = [(NSFetchedResultsController *)v16 performFetch:&v21];
+    LOBYTE(fetchedResultsController) = [(NSFetchedResultsController *)v16 performFetch:&v21];
     v17 = v21;
-    if ((v12 & 1) == 0)
+    if ((fetchedResultsController & 1) == 0)
     {
       v18 = +[STLog usage];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -130,9 +130,9 @@
 
 - (double)totalScreenTime
 {
-  v2 = [(STUsageReporter *)self fetchedResultsController];
-  v3 = [v2 fetchedObjects];
-  [STUsageBlock totalScreenTimeForUsageBlocks:v3];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  [STUsageBlock totalScreenTimeForUsageBlocks:fetchedObjects];
   v5 = v4;
 
   return v5;
@@ -140,26 +140,26 @@
 
 - (int64_t)totalPickups
 {
-  v2 = [(STUsageReporter *)self fetchedResultsController];
-  v3 = [v2 fetchedObjects];
-  v4 = [STUsageBlock totalPickupsForUsageBlocks:v3];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v4 = [STUsageBlock totalPickupsForUsageBlocks:fetchedObjects];
 
   return v4;
 }
 
 - (int64_t)totalNotifications
 {
-  v2 = [(STUsageReporter *)self fetchedResultsController];
-  v3 = [v2 fetchedObjects];
-  v4 = [STUsageBlock totalNotificationsForUsageBlocks:v3];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v4 = [STUsageBlock totalNotificationsForUsageBlocks:fetchedObjects];
 
   return v4;
 }
 
 - (NSArray)categoryUsage
 {
-  v3 = [(STUsageReporter *)self _categoryUsageWithoutAllUsageItem];
-  v4 = [v3 mutableCopy];
+  _categoryUsageWithoutAllUsageItem = [(STUsageReporter *)self _categoryUsageWithoutAllUsageItem];
+  v4 = [_categoryUsageWithoutAllUsageItem mutableCopy];
 
   if ([(STUsageReporter *)self includeTotalUsageDetailItem])
   {
@@ -176,9 +176,9 @@
 - (id)_categoryUsageWithoutAllUsageItem
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [(STUsageReporter *)self fetchedResultsController];
-  v3 = [v2 fetchedObjects];
-  v4 = [STUsageBlock usageCategoriesForUsageBlocks:v3];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v4 = [STUsageBlock usageCategoriesForUsageBlocks:fetchedObjects];
 
   v5 = [STUsageCategory categoryItemsExcludingSystemCategories:v4];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"quantity" ascending:0];
@@ -193,9 +193,9 @@
 
 - (NSArray)applicationAndWebUsage
 {
-  v3 = [(STUsageReporter *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [STUsageBlock usageCategoriesForUsageBlocks:v4];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v5 = [STUsageBlock usageCategoriesForUsageBlocks:fetchedObjects];
 
   v6 = [STUsageCategory applicationAndWebItemsExcludingSystemHiddenApplications:v5];
   v7 = [v6 mutableCopy];
@@ -214,22 +214,22 @@
 
 - (NSArray)notifications
 {
-  v3 = [(STUsageReporter *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [STUsageBlock usageCountedItemsForUsageBlocks:v4];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v5 = [STUsageBlock usageCountedItemsForUsageBlocks:fetchedObjects];
 
   v6 = [STUsageCountedItem notificationItemsExcludingSystemHiddenApplications:v5];
   v7 = [v6 mutableCopy];
 
-  v8 = [(STUsageReporter *)self installedBundleIdentifiers];
-  v9 = v8;
-  if (v8)
+  installedBundleIdentifiers = [(STUsageReporter *)self installedBundleIdentifiers];
+  v9 = installedBundleIdentifiers;
+  if (installedBundleIdentifiers)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __32__STUsageReporter_notifications__block_invoke;
     v14[3] = &unk_1E7CE7DC0;
-    v15 = v8;
+    v15 = installedBundleIdentifiers;
     v10 = [v7 indexesOfObjectsPassingTest:v14];
     [v7 removeObjectsAtIndexes:v10];
   }
@@ -261,9 +261,9 @@ uint64_t __32__STUsageReporter_notifications__block_invoke(uint64_t a1, void *a2
 
 - (NSArray)pickups
 {
-  v3 = [(STUsageReporter *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [STUsageBlock usageCountedItemsForUsageBlocks:v4];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v5 = [STUsageBlock usageCountedItemsForUsageBlocks:fetchedObjects];
 
   v6 = [STUsageCountedItem pickupItemsExcludingSystemHiddenApplications:v5];
   v7 = [v6 mutableCopy];
@@ -279,7 +279,7 @@ uint64_t __32__STUsageReporter_notifications__block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (id)screenTimeUsagePerCalendarUnit:(unint64_t)a3
+- (id)screenTimeUsagePerCalendarUnit:(unint64_t)unit
 {
   v5 = objc_opt_new();
   v8[0] = MEMORY[0x1E69E9820];
@@ -288,7 +288,7 @@ uint64_t __32__STUsageReporter_notifications__block_invoke(uint64_t a1, void *a2
   v8[3] = &unk_1E7CE7DE8;
   v6 = v5;
   v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a3 block:v8];
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v8];
 
   return v6;
 }
@@ -305,19 +305,19 @@ void __50__STUsageReporter_screenTimeUsagePerCalendarUnit___block_invoke(uint64_
   [*(a1 + 32) addObject:v5];
 }
 
-- (id)categoryRatiosPerCalendarUnit:(unint64_t)a3 numberOfCategories:(unint64_t)a4
+- (id)categoryRatiosPerCalendarUnit:(unint64_t)unit numberOfCategories:(unint64_t)categories
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [(STUsageReporter *)self _categoryUsageWithoutAllUsageItem];
-  if ([v7 count] >= 4)
+  _categoryUsageWithoutAllUsageItem = [(STUsageReporter *)self _categoryUsageWithoutAllUsageItem];
+  if ([_categoryUsageWithoutAllUsageItem count] >= 4)
   {
-    v8 = [v7 subarrayWithRange:{0, a4}];
+    v8 = [_categoryUsageWithoutAllUsageItem subarrayWithRange:{0, categories}];
 
-    v7 = v8;
+    _categoryUsageWithoutAllUsageItem = v8;
   }
 
   v9 = objc_opt_new();
-  v10 = [v7 valueForKeyPath:@"identifier"];
+  v10 = [_categoryUsageWithoutAllUsageItem valueForKeyPath:@"identifier"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -336,7 +336,7 @@ void __50__STUsageReporter_screenTimeUsagePerCalendarUnit___block_invoke(uint64_
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(STUsageReporter *)self _ratiosForCategory:*(*(&v18 + 1) + 8 * i) perCalendarUnit:a3 useTotalScreenTime:0];
+        v15 = [(STUsageReporter *)self _ratiosForCategory:*(*(&v18 + 1) + 8 * i) perCalendarUnit:unit useTotalScreenTime:0];
         [v9 addObject:v15];
       }
 
@@ -351,20 +351,20 @@ void __50__STUsageReporter_screenTimeUsagePerCalendarUnit___block_invoke(uint64_
   return v9;
 }
 
-- (id)_ratiosForCategory:(id)a3 perCalendarUnit:(unint64_t)a4 useTotalScreenTime:(BOOL)a5
+- (id)_ratiosForCategory:(id)category perCalendarUnit:(unint64_t)unit useTotalScreenTime:(BOOL)time
 {
-  v8 = a3;
+  categoryCopy = category;
   v9 = objc_opt_new();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__STUsageReporter__ratiosForCategory_perCalendarUnit_useTotalScreenTime___block_invoke;
   v15[3] = &unk_1E7CE7E10;
-  v18 = a5;
-  v16 = v8;
+  timeCopy = time;
+  v16 = categoryCopy;
   v10 = v9;
   v17 = v10;
-  v11 = v8;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v15];
+  v11 = categoryCopy;
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v15];
   v12 = v17;
   v13 = v10;
 
@@ -446,19 +446,19 @@ void __73__STUsageReporter__ratiosForCategory_perCalendarUnit_useTotalScreenTime
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)ratiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4
+- (id)ratiosForApplication:(id)application perCalendarUnit:(unint64_t)unit
 {
-  v6 = a3;
+  applicationCopy = application;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__STUsageReporter_ratiosForApplication_perCalendarUnit___block_invoke;
   v13[3] = &unk_1E7CE7E38;
-  v14 = v6;
+  v14 = applicationCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v13];
+  v9 = applicationCopy;
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v13];
   v10 = v15;
   v11 = v8;
 
@@ -562,19 +562,19 @@ void __56__STUsageReporter_ratiosForApplication_perCalendarUnit___block_invoke(u
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)ratiosForWebDomain:(id)a3 perCalendarUnit:(unint64_t)a4
+- (id)ratiosForWebDomain:(id)domain perCalendarUnit:(unint64_t)unit
 {
-  v6 = a3;
+  domainCopy = domain;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__STUsageReporter_ratiosForWebDomain_perCalendarUnit___block_invoke;
   v13[3] = &unk_1E7CE7E38;
-  v14 = v6;
+  v14 = domainCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v13];
+  v9 = domainCopy;
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v13];
   v10 = v15;
   v11 = v8;
 
@@ -678,7 +678,7 @@ void __54__STUsageReporter_ratiosForWebDomain_perCalendarUnit___block_invoke(uin
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)pickupsPerCalendarUnit:(unint64_t)a3
+- (id)pickupsPerCalendarUnit:(unint64_t)unit
 {
   v5 = objc_opt_new();
   v8[0] = MEMORY[0x1E69E9820];
@@ -687,7 +687,7 @@ void __54__STUsageReporter_ratiosForWebDomain_perCalendarUnit___block_invoke(uin
   v8[3] = &unk_1E7CE7DE8;
   v6 = v5;
   v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a3 block:v8];
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v8];
 
   return v6;
 }
@@ -765,19 +765,19 @@ void __42__STUsageReporter_pickupsPerCalendarUnit___block_invoke(uint64_t a1, vo
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)pickupRatiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4
+- (id)pickupRatiosForApplication:(id)application perCalendarUnit:(unint64_t)unit
 {
-  v6 = a3;
+  applicationCopy = application;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__STUsageReporter_pickupRatiosForApplication_perCalendarUnit___block_invoke;
   v13[3] = &unk_1E7CE7E38;
-  v14 = v6;
+  v14 = applicationCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v13];
+  v9 = applicationCopy;
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v13];
   v10 = v15;
   v11 = v8;
 
@@ -877,14 +877,14 @@ void __62__STUsageReporter_pickupRatiosForApplication_perCalendarUnit___block_in
 
 - (NSDate)firstPickup
 {
-  v3 = [(STUsageReporter *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
-  v5 = [(STUsageReporter *)self _firstPickupFromUsageBlocks:v4];
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v5 = [(STUsageReporter *)self _firstPickupFromUsageBlocks:fetchedObjects];
 
   return v5;
 }
 
-- (id)firstPickupOfIntervalWithMostPickups:(unint64_t *)a3 perCalendarUnit:(unint64_t)a4
+- (id)firstPickupOfIntervalWithMostPickups:(unint64_t *)pickups perCalendarUnit:(unint64_t)unit
 {
   v7 = 0;
   v8 = &v7;
@@ -892,15 +892,15 @@ void __62__STUsageReporter_pickupRatiosForApplication_perCalendarUnit___block_in
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  *a3 = 0;
+  *pickups = 0;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__STUsageReporter_firstPickupOfIntervalWithMostPickups_perCalendarUnit___block_invoke;
   v6[3] = &unk_1E7CE7E60;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = pickups;
   v6[4] = self;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v6];
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -922,22 +922,22 @@ void __72__STUsageReporter_firstPickupOfIntervalWithMostPickups_perCalendarUnit_
   }
 }
 
-- (id)_firstPickupFromUsageBlocks:(id)a3
+- (id)_firstPickupFromUsageBlocks:(id)blocks
 {
-  v3 = a3;
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_19];
+  blocksCopy = blocks;
+  v4 = [blocksCopy indexOfObjectPassingTest:&__block_literal_global_19];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    firstPickupDate = 0;
   }
 
   else
   {
-    v6 = [v3 objectAtIndexedSubscript:v4];
-    v5 = [v6 firstPickupDate];
+    v6 = [blocksCopy objectAtIndexedSubscript:v4];
+    firstPickupDate = [v6 firstPickupDate];
   }
 
-  return v5;
+  return firstPickupDate;
 }
 
 BOOL __47__STUsageReporter__firstPickupFromUsageBlocks___block_invoke(uint64_t a1, void *a2)
@@ -948,7 +948,7 @@ BOOL __47__STUsageReporter__firstPickupFromUsageBlocks___block_invoke(uint64_t a
   return v3;
 }
 
-- (id)notificationsPerCalendarUnit:(unint64_t)a3
+- (id)notificationsPerCalendarUnit:(unint64_t)unit
 {
   v5 = objc_opt_new();
   v8[0] = MEMORY[0x1E69E9820];
@@ -957,7 +957,7 @@ BOOL __47__STUsageReporter__firstPickupFromUsageBlocks___block_invoke(uint64_t a
   v8[3] = &unk_1E7CE7DE8;
   v6 = v5;
   v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a3 block:v8];
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v8];
 
   return v6;
 }
@@ -1007,19 +1007,19 @@ void __48__STUsageReporter_notificationsPerCalendarUnit___block_invoke(uint64_t 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)notificationRatiosForApplication:(id)a3 perCalendarUnit:(unint64_t)a4
+- (id)notificationRatiosForApplication:(id)application perCalendarUnit:(unint64_t)unit
 {
-  v6 = a3;
+  applicationCopy = application;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___block_invoke;
   v13[3] = &unk_1E7CE7E38;
-  v14 = v6;
+  v14 = applicationCopy;
   v8 = v7;
   v15 = v8;
-  v9 = v6;
-  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:a4 block:v13];
+  v9 = applicationCopy;
+  [(STUsageReporter *)self _enumerateUsageBlocksWithUnitGranularity:unit block:v13];
   v10 = v15;
   v11 = v8;
 
@@ -1089,27 +1089,27 @@ void __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___bl
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateUsageBlocksWithUnitGranularity:(unint64_t)a3 block:(id)a4
+- (void)_enumerateUsageBlocksWithUnitGranularity:(unint64_t)granularity block:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(STUsageReporter *)self fetchedResultsController];
-  v8 = [v7 fetchedObjects];
-  v27 = [v8 mutableCopy];
+  blockCopy = block;
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
+  v27 = [fetchedObjects mutableCopy];
 
-  v26 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [(STUsageReporter *)self dateInterval];
-  v10 = [v9 endDate];
-  v23 = v9;
-  v11 = [v9 startDate];
-  v25 = v10;
-  if ([v11 compare:v10] == -1)
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  dateInterval = [(STUsageReporter *)self dateInterval];
+  endDate = [dateInterval endDate];
+  v23 = dateInterval;
+  startDate = [dateInterval startDate];
+  v25 = endDate;
+  if ([startDate compare:endDate] == -1)
   {
-    v24 = v6;
+    v24 = blockCopy;
     do
     {
-      v12 = v11;
-      v11 = [v26 dateByAddingUnit:a3 value:1 toDate:v11 options:512];
+      v12 = startDate;
+      startDate = [currentCalendar dateByAddingUnit:granularity value:1 toDate:startDate options:512];
       v13 = objc_opt_new();
       v28 = 0u;
       v29 = 0u;
@@ -1123,7 +1123,7 @@ void __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___bl
         v17 = *v29;
         while (2)
         {
-          v18 = a3;
+          granularityCopy = granularity;
           for (i = 0; i != v16; ++i)
           {
             if (*v29 != v17)
@@ -1132,12 +1132,12 @@ void __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___bl
             }
 
             v20 = *(*(&v28 + 1) + 8 * i);
-            v21 = [v20 startDate];
-            if ([v12 compare:v21] == 1 || objc_msgSend(v21, "compare:", v11) != -1)
+            startDate2 = [v20 startDate];
+            if ([v12 compare:startDate2] == 1 || objc_msgSend(startDate2, "compare:", startDate) != -1)
             {
 
-              a3 = v18;
-              v6 = v24;
+              granularity = granularityCopy;
+              blockCopy = v24;
               goto LABEL_14;
             }
 
@@ -1145,8 +1145,8 @@ void __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___bl
           }
 
           v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
-          a3 = v18;
-          v6 = v24;
+          granularity = granularityCopy;
+          blockCopy = v24;
           if (v16)
           {
             continue;
@@ -1158,22 +1158,22 @@ void __68__STUsageReporter_notificationRatiosForApplication_perCalendarUnit___bl
 
 LABEL_14:
 
-      v6[2](v6, v13);
+      blockCopy[2](blockCopy, v13);
       [v14 removeObjectsInArray:v13];
     }
 
-    while ([v11 compare:v25] == -1);
+    while ([startDate compare:v25] == -1);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v8 = a3;
-  v4 = [(STUsageReporter *)self fetchedResultsController];
+  contentCopy = content;
+  fetchedResultsController = [(STUsageReporter *)self fetchedResultsController];
 
-  if (v4 == v8)
+  if (fetchedResultsController == contentCopy)
   {
     [(STUsageReporter *)self willChangeValueForKey:@"totalScreenTime"];
     [(STUsageReporter *)self willChangeValueForKey:@"totalNotifications"];
@@ -1191,16 +1191,16 @@ LABEL_14:
     [(STUsageReporter *)self didChangeValueForKey:@"pickups"];
     [(STUsageReporter *)self didChangeValueForKey:@"notifications"];
     [(STUsageReporter *)self didChangeValueForKey:@"firstPickup"];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"UsageReporterDidChangeContent" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UsageReporterDidChangeContent" object:self];
   }
 
   else
   {
-    v5 = [(STUsageReporter *)self installedAppsController];
+    installedAppsController = [(STUsageReporter *)self installedAppsController];
 
-    v6 = v8;
-    if (v5 != v8)
+    v6 = contentCopy;
+    if (installedAppsController != contentCopy)
     {
       goto LABEL_6;
     }
@@ -1208,7 +1208,7 @@ LABEL_14:
     [(STUsageReporter *)self _updateInstalledBundleIdentifiers];
   }
 
-  v6 = v8;
+  v6 = contentCopy;
 LABEL_6:
 }
 
@@ -1220,10 +1220,10 @@ LABEL_6:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(STUsageReporter *)self installedAppsController];
-  v5 = [v4 fetchedObjects];
+  installedAppsController = [(STUsageReporter *)self installedAppsController];
+  fetchedObjects = [installedAppsController fetchedObjects];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [fetchedObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1235,32 +1235,32 @@ LABEL_6:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fetchedObjects);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * v9) bundleIdentifier];
-        [v3 addObject:v10];
+        bundleIdentifier = [*(*(&v18 + 1) + 8 * v9) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [fetchedObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [MEMORY[0x1E6993B98] sharedCategories];
-  v12 = [v3 array];
+  mEMORY[0x1E6993B98] = [MEMORY[0x1E6993B98] sharedCategories];
+  array = [v3 array];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__STUsageReporter__updateInstalledBundleIdentifiers__block_invoke;
   v15[3] = &unk_1E7CE7290;
   v16 = v3;
-  v17 = self;
+  selfCopy = self;
   v13 = v3;
-  [v11 categoriesForBundleIDs:v12 completionHandler:v15];
+  [mEMORY[0x1E6993B98] categoriesForBundleIDs:array completionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -1317,7 +1317,7 @@ void __52__STUsageReporter__updateInstalledBundleIdentifiers__block_invoke_2(uin
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B831F000, a2, OS_LOG_TYPE_ERROR, "Failed to fetch installed apps: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

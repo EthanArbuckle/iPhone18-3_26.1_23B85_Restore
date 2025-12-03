@@ -1,49 +1,49 @@
 @interface AVTClippableImageStore
-- (BOOL)saveImage:(id)a3 forItem:(id)a4 scope:(id)a5 clippingRect:(CGRect)a6 error:(id *)a7;
-- (CGRect)resourceClippingRectForItem:(id)a3 scope:(id)a4;
+- (BOOL)saveImage:(id)image forItem:(id)item scope:(id)scope clippingRect:(CGRect)rect error:(id *)error;
+- (CGRect)resourceClippingRectForItem:(id)item scope:(id)scope;
 @end
 
 @implementation AVTClippableImageStore
 
-- (BOOL)saveImage:(id)a3 forItem:(id)a4 scope:(id)a5 clippingRect:(CGRect)a6 error:(id *)a7
+- (BOOL)saveImage:(id)image forItem:(id)item scope:(id)scope clippingRect:(CGRect)rect error:(id *)error
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(AVTImageStore *)self imageEncoder];
-  v19 = [v18 conformsToProtocol:&unk_1F39D7668];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scopeCopy = scope;
+  itemCopy = item;
+  imageCopy = image;
+  imageEncoder = [(AVTImageStore *)self imageEncoder];
+  v19 = [imageEncoder conformsToProtocol:&unk_1F39D7668];
 
-  v20 = [(AVTImageStore *)self imageEncoder];
-  v21 = v20;
+  imageEncoder2 = [(AVTImageStore *)self imageEncoder];
+  v21 = imageEncoder2;
   if (v19)
   {
-    [v20 dataFromImage:v17 clippingRect:{x, y, width, height}];
+    [imageEncoder2 dataFromImage:imageCopy clippingRect:{x, y, width, height}];
   }
 
   else
   {
-    [v20 dataFromImage:v17];
+    [imageEncoder2 dataFromImage:imageCopy];
   }
   v22 = ;
 
   v25.receiver = self;
   v25.super_class = AVTClippableImageStore;
-  v23 = [(AVTImageStore *)&v25 saveImage:v17 withImageData:v22 forItem:v16 scope:v15 error:a7];
+  v23 = [(AVTImageStore *)&v25 saveImage:imageCopy withImageData:v22 forItem:itemCopy scope:scopeCopy error:error];
 
   return v23;
 }
 
-- (CGRect)resourceClippingRectForItem:(id)a3 scope:(id)a4
+- (CGRect)resourceClippingRectForItem:(id)item scope:(id)scope
 {
   x = *MEMORY[0x1E695F058];
   y = *(MEMORY[0x1E695F058] + 8);
   width = *(MEMORY[0x1E695F058] + 16);
   height = *(MEMORY[0x1E695F058] + 24);
-  v8 = [(AVTImageStore *)self resourceURLForItem:a3 scope:a4];
+  v8 = [(AVTImageStore *)self resourceURLForItem:item scope:scope];
   v9 = CGImageSourceCreateWithURL(v8, 0);
   v10 = CGImageSourceCopyPropertiesAtIndex(v9, 0, 0);
   CFRelease(v9);

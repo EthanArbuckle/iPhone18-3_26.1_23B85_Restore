@@ -1,5 +1,5 @@
 @interface IDSOTRSessionInfo
-- (IDSOTRSessionInfo)initWithToken:(id)a3;
+- (IDSOTRSessionInfo)initWithToken:(id)token;
 - (void)_handleNegotiationTimeout;
 - (void)_negotiationTimerFiredOnMain;
 - (void)dealloc;
@@ -9,16 +9,16 @@
 
 @implementation IDSOTRSessionInfo
 
-- (IDSOTRSessionInfo)initWithToken:(id)a3
+- (IDSOTRSessionInfo)initWithToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = IDSOTRSessionInfo;
   v6 = [(IDSOTRSessionInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_token, a3);
+    objc_storeStrong(&v6->_token, token);
   }
 
   return v7;

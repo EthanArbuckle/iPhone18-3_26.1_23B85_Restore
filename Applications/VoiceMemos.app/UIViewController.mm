@@ -1,69 +1,69 @@
 @interface UIViewController
 - (BOOL)rc_canAnimate;
-- (BOOL)rc_isDescendantOfViewController:(id)a3;
-- (BOOL)rc_isPrimaryLayoutAxis:(int64_t)a3;
+- (BOOL)rc_isDescendantOfViewController:(id)controller;
+- (BOOL)rc_isPrimaryLayoutAxis:(int64_t)axis;
 - (BOOL)rc_screenUpdatesDisabled;
 - (BOOL)rc_shouldAutoDisableUpdatesWhenInBackground;
-- (id)_recursiveDescriptionWithInset:(id)a3;
-- (id)rc_navigationItemForPresentingNavigationItem:(id)a3 forViewController:(id)a4;
-- (void)rc_addChildViewWithViewController:(id)a3;
-- (void)rc_addChildViewWithViewController:(id)a3 toView:(id)a4;
+- (id)_recursiveDescriptionWithInset:(id)inset;
+- (id)rc_navigationItemForPresentingNavigationItem:(id)item forViewController:(id)controller;
+- (void)rc_addChildViewWithViewController:(id)controller;
+- (void)rc_addChildViewWithViewController:(id)controller toView:(id)view;
 - (void)rc_applicationDidEnterBackground;
 - (void)rc_applicationWillEnterForeground;
 - (void)rc_automaticallyUpdateScreenUpdatesDisabled;
-- (void)rc_configurePopoverControllerWithSource:(id)a3;
-- (void)rc_ensureIsInterfaceOrientationMask:(unint64_t)a3 preferredOrientation:(int64_t)a4 doneEnsuringBlock:(id)a5;
+- (void)rc_configurePopoverControllerWithSource:(id)source;
+- (void)rc_ensureIsInterfaceOrientationMask:(unint64_t)mask preferredOrientation:(int64_t)orientation doneEnsuringBlock:(id)block;
 - (void)rc_loadViewIfNecessary;
-- (void)rc_setScreenUpdatesDisabled:(BOOL)a3;
+- (void)rc_setScreenUpdatesDisabled:(BOOL)disabled;
 @end
 
 @implementation UIViewController
 
-- (void)rc_addChildViewWithViewController:(id)a3
+- (void)rc_addChildViewWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self view];
-  [(UIViewController *)self rc_addChildViewWithViewController:v4 toView:v5];
+  controllerCopy = controller;
+  view = [(UIViewController *)self view];
+  [(UIViewController *)self rc_addChildViewWithViewController:controllerCopy toView:view];
 }
 
-- (void)rc_addChildViewWithViewController:(id)a3 toView:(id)a4
+- (void)rc_addChildViewWithViewController:(id)controller toView:(id)view
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [v8 view];
-  [v6 addSubview:v7];
+  viewCopy = view;
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [viewCopy addSubview:view];
 
-  [(UIViewController *)self addChildViewController:v8];
-  [v8 didMoveToParentViewController:self];
+  [(UIViewController *)self addChildViewController:controllerCopy];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (BOOL)rc_canAnimate
 {
-  v2 = [(UIViewController *)self view];
-  v3 = [v2 rc_canAnimate];
+  view = [(UIViewController *)self view];
+  rc_canAnimate = [view rc_canAnimate];
 
-  return v3;
+  return rc_canAnimate;
 }
 
-- (BOOL)rc_isPrimaryLayoutAxis:(int64_t)a3
+- (BOOL)rc_isPrimaryLayoutAxis:(int64_t)axis
 {
-  v4 = [(UIViewController *)self view];
-  [v4 frame];
+  view = [(UIViewController *)self view];
+  [view frame];
   v6 = v5;
   v8 = v7;
 
-  return v6 > v8 && a3 == 0;
+  return v6 > v8 && axis == 0;
 }
 
 - (void)rc_loadViewIfNecessary
 {
-  v2 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
 }
 
-- (id)rc_navigationItemForPresentingNavigationItem:(id)a3 forViewController:(id)a4
+- (id)rc_navigationItemForPresentingNavigationItem:(id)item forViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  controllerCopy = controller;
   if (+[UIApplication shouldMakeUIForDefaultPNG])
   {
     v8 = [[UINavigationItem alloc] initWithTitle:&stru_100295BB8];
@@ -71,17 +71,17 @@
 
   else
   {
-    v9 = [(UIViewController *)self parentViewController];
+    parentViewController = [(UIViewController *)self parentViewController];
 
-    if (v9)
+    if (parentViewController)
     {
-      v10 = [(UIViewController *)self parentViewController];
-      v11 = [v10 rc_navigationItemForPresentingNavigationItem:v6 forViewController:v7];
+      parentViewController2 = [(UIViewController *)self parentViewController];
+      v11 = [parentViewController2 rc_navigationItemForPresentingNavigationItem:itemCopy forViewController:controllerCopy];
 
       goto LABEL_7;
     }
 
-    v8 = v6;
+    v8 = itemCopy;
   }
 
   v11 = v8;
@@ -90,42 +90,42 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)rc_isDescendantOfViewController:(id)a3
+- (BOOL)rc_isDescendantOfViewController:(id)controller
 {
-  if (self == a3)
+  if (self == controller)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(UIViewController *)self parentViewController];
-  v6 = [v5 rc_isDescendantOfViewController:v4];
+  controllerCopy = controller;
+  parentViewController = [(UIViewController *)self parentViewController];
+  v6 = [parentViewController rc_isDescendantOfViewController:controllerCopy];
 
   return v6;
 }
 
-- (void)rc_ensureIsInterfaceOrientationMask:(unint64_t)a3 preferredOrientation:(int64_t)a4 doneEnsuringBlock:(id)a5
+- (void)rc_ensureIsInterfaceOrientationMask:(unint64_t)mask preferredOrientation:(int64_t)orientation doneEnsuringBlock:(id)block
 {
-  v8 = a5;
-  if (((1 << [(UIViewController *)self interfaceOrientation]) & a3) != 0)
+  blockCopy = block;
+  if (((1 << [(UIViewController *)self interfaceOrientation]) & mask) != 0)
   {
-    if (v8)
+    if (blockCopy)
     {
-      v8[2](v8);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 delegate];
-    v11 = [v10 window];
-    v12 = [v11 rootViewController];
-    v13 = [v12 view];
-    [v13 setUserInteractionEnabled:0];
+    delegate = [v9 delegate];
+    window = [delegate window];
+    rootViewController = [window rootViewController];
+    view = [rootViewController view];
+    [view setUserInteractionEnabled:0];
 
     v14 = +[UIDevice currentDevice];
-    [v14 setOrientation:a4 animated:1];
+    [v14 setOrientation:orientation animated:1];
 
     [(UIViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
     v15 = dispatch_time(0, 330000000);
@@ -133,7 +133,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_10006D474;
     block[3] = &unk_10028A510;
-    v17 = v8;
+    v17 = blockCopy;
     dispatch_after(v15, &_dispatch_main_q, block);
   }
 }
@@ -150,12 +150,12 @@ LABEL_7:
   }
 }
 
-- (void)rc_setScreenUpdatesDisabled:(BOOL)a3
+- (void)rc_setScreenUpdatesDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  if ([(UIViewController *)self rc_screenUpdatesDisabled]!= a3)
+  disabledCopy = disabled;
+  if ([(UIViewController *)self rc_screenUpdatesDisabled]!= disabled)
   {
-    v5 = [NSNumber numberWithBool:v3];
+    v5 = [NSNumber numberWithBool:disabledCopy];
     objc_setAssociatedObject(self, "_RCUIViewControllerScreenUpdateDisabled", v5, 0x301);
 
     [(UIViewController *)self rc_screenUpdatesDisabledDidChange];
@@ -165,41 +165,41 @@ LABEL_7:
 - (BOOL)rc_screenUpdatesDisabled
 {
   v3 = objc_getAssociatedObject(self, "_RCUIViewControllerScreenUpdateDisabled");
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     return 1;
   }
 
-  v6 = [(UIViewController *)self parentViewController];
-  v7 = v6;
-  if (v6)
+  parentViewController = [(UIViewController *)self parentViewController];
+  v7 = parentViewController;
+  if (parentViewController)
   {
-    v5 = [v6 rc_screenUpdatesDisabled];
+    rc_screenUpdatesDisabled = [parentViewController rc_screenUpdatesDisabled];
   }
 
   else
   {
-    v5 = 0;
+    rc_screenUpdatesDisabled = 0;
   }
 
-  return v5;
+  return rc_screenUpdatesDisabled;
 }
 
 - (BOOL)rc_shouldAutoDisableUpdatesWhenInBackground
 {
-  v3 = [(UIViewController *)self parentViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
 
-  if (!v3)
+  if (!parentViewController)
   {
     return 1;
   }
 
-  v4 = [(UIViewController *)self parentViewController];
-  v5 = [v4 rc_shouldAutoDisableUpdatesWhenInBackground];
+  parentViewController2 = [(UIViewController *)self parentViewController];
+  rc_shouldAutoDisableUpdatesWhenInBackground = [parentViewController2 rc_shouldAutoDisableUpdatesWhenInBackground];
 
-  return v5;
+  return rc_shouldAutoDisableUpdatesWhenInBackground;
 }
 
 - (void)rc_applicationDidEnterBackground
@@ -220,10 +220,10 @@ LABEL_7:
   }
 }
 
-- (void)rc_configurePopoverControllerWithSource:(id)a3
+- (void)rc_configurePopoverControllerWithSource:(id)source
 {
-  v19 = a3;
-  if (v19)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     v4 = +[UIDevice currentDevice];
     if ([v4 userInterfaceIdiom] == 1)
@@ -233,22 +233,22 @@ LABEL_7:
     else
     {
       v5 = +[UIDevice currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-      if (v6)
+      if (userInterfaceIdiom)
       {
         goto LABEL_10;
       }
     }
 
-    v7 = [(UIViewController *)self popoverPresentationController];
-    [v7 _setIgnoreBarButtonItemSiblings:1];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    [popoverPresentationController _setIgnoreBarButtonItemSiblings:1];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(UIViewController *)self popoverPresentationController];
-      [v8 setBarButtonItem:v19];
+      popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+      [popoverPresentationController2 setBarButtonItem:sourceCopy];
     }
 
     else
@@ -259,9 +259,9 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      v9 = v19;
-      v10 = [(UIViewController *)self popoverPresentationController];
-      [v10 setSourceView:v9];
+      v9 = sourceCopy;
+      popoverPresentationController3 = [(UIViewController *)self popoverPresentationController];
+      [popoverPresentationController3 setSourceView:v9];
 
       [v9 bounds];
       v12 = v11;
@@ -269,25 +269,25 @@ LABEL_7:
       v16 = v15;
       v18 = v17;
 
-      v8 = [(UIViewController *)self popoverPresentationController];
-      [v8 setSourceRect:{v12, v14, v16, v18}];
+      popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v12, v14, v16, v18}];
     }
   }
 
 LABEL_10:
 }
 
-- (id)_recursiveDescriptionWithInset:(id)a3
+- (id)_recursiveDescriptionWithInset:(id)inset
 {
-  v4 = a3;
+  insetCopy = inset;
   v5 = +[NSMutableArray array];
-  v6 = [NSString stringWithFormat:@"%@    ", v4];
+  insetCopy = [NSString stringWithFormat:@"%@    ", insetCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(UIViewController *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -298,23 +298,23 @@ LABEL_10:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v12 = [*(*(&v20 + 1) + 8 * i) _recursiveDescriptionWithInset:v6];
+        v12 = [*(*(&v20 + 1) + 8 * i) _recursiveDescriptionWithInset:insetCopy];
         [v5 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 
   v13 = [(UIViewController *)self description];
-  v14 = [(UIViewController *)self view];
-  v15 = [v14 description];
-  v16 = [NSString stringWithFormat:@"%@%@ view:%@", v4, v13, v15];
+  view = [(UIViewController *)self view];
+  v15 = [view description];
+  v16 = [NSString stringWithFormat:@"%@%@ view:%@", insetCopy, v13, v15];
 
   if ([v5 count])
   {

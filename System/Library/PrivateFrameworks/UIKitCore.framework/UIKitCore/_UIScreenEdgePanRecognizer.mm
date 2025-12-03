@@ -1,22 +1,22 @@
 @interface _UIScreenEdgePanRecognizer
 - (CGPoint)_lastTouchLocation;
 - (CGRect)screenBounds;
-- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)a3;
-- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)a3 settings:(id)a4;
-- (unint64_t)touchedEdgesForInterfaceOrientation:(int64_t)a3;
-- (void)_idleTimerElapsed:(id)a3;
-- (void)_incorporateIncrementalSampleAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8;
-- (void)_incorporateInitialTouchAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8;
-- (void)_longPressTimerElapsed:(id)a3;
-- (void)_setState:(int64_t)a3;
+- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)type;
+- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)type settings:(id)settings;
+- (unint64_t)touchedEdgesForInterfaceOrientation:(int64_t)orientation;
+- (void)_idleTimerElapsed:(id)elapsed;
+- (void)_incorporateIncrementalSampleAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state;
+- (void)_incorporateInitialTouchAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state;
+- (void)_longPressTimerElapsed:(id)elapsed;
+- (void)_setState:(int64_t)state;
 - (void)dealloc;
-- (void)incorporateTouchSampleAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8;
+- (void)incorporateTouchSampleAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state;
 - (void)reset;
 @end
 
 @implementation _UIScreenEdgePanRecognizer
 
-- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)a3 settings:(id)a4
+- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)type settings:(id)settings
 {
   v10.receiver = self;
   v10.super_class = _UIScreenEdgePanRecognizer;
@@ -25,8 +25,8 @@
   if (v6)
   {
     [(_UIScreenEdgePanRecognizer *)v6 setTargetEdges:15];
-    v7->_type = a3;
-    objc_storeStrong(&v7->_settings, a4);
+    v7->_type = type;
+    objc_storeStrong(&v7->_settings, settings);
     [(_UIScreenEdgePanRecognizer *)v7 setShouldUseGrapeFlags:1];
     v8 = v7;
   }
@@ -34,10 +34,10 @@
   return v7;
 }
 
-- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)a3
+- (_UIScreenEdgePanRecognizer)initWithType:(int64_t)type
 {
-  v5 = [(_UISettings *)[_UIScreenEdgePanRecognizerSettings alloc] initWithDefaultValues];
-  v6 = [(_UIScreenEdgePanRecognizer *)self initWithType:a3 settings:v5];
+  initWithDefaultValues = [(_UISettings *)[_UIScreenEdgePanRecognizerSettings alloc] initWithDefaultValues];
+  v6 = [(_UIScreenEdgePanRecognizer *)self initWithType:type settings:initWithDefaultValues];
 
   return v6;
 }
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     if (_UIScreenEdgePanRecognizerShouldLog())
     {
@@ -92,12 +92,12 @@
       v10 = [v6 stringWithFormat:@"%f (%@): ", v7, v9];
       v11 = v10;
       v12 = @"possible";
-      if (a3 == 2)
+      if (state == 2)
       {
         v12 = @"failed";
       }
 
-      if (a3 == 1)
+      if (state == 1)
       {
         v12 = @"recognized";
       }
@@ -106,7 +106,7 @@
       NSLog(&stru_1EFB25450.isa, v13);
     }
 
-    self->_state = a3;
+    self->_state = state;
     if (objc_opt_respondsToSelector())
     {
       delegate = self->_delegate;
@@ -116,7 +116,7 @@
   }
 }
 
-- (unint64_t)touchedEdgesForInterfaceOrientation:(int64_t)a3
+- (unint64_t)touchedEdgesForInterfaceOrientation:(int64_t)orientation
 {
   if (self->_state != 1)
   {
@@ -127,22 +127,22 @@
   v4 = 90;
   v5 = -90;
   v6 = 180;
-  if (a3 != 2)
+  if (orientation != 2)
   {
     v6 = 0;
   }
 
-  if (a3 != 4)
+  if (orientation != 4)
   {
     v5 = v6;
   }
 
-  if (a3 != 3)
+  if (orientation != 3)
   {
     v4 = v5;
   }
 
-  if (a3 == 1)
+  if (orientation == 1)
   {
     v7 = 0;
   }
@@ -155,38 +155,38 @@
   return _rotatedEdgesGivenOrientationInDegrees(touchedRegion, v7);
 }
 
-- (void)incorporateTouchSampleAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8
+- (void)incorporateTouchSampleAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state
 {
   if (!self->_state)
   {
-    x = a3.x;
-    if (self->_lastTouchTimestamp != a4)
+    x = location.x;
+    if (self->_lastTouchTimestamp != timestamp)
     {
-      y = a3.y;
+      y = location.y;
       if (self->_hasRecordedData)
       {
-        [(_UIScreenEdgePanRecognizer *)self _incorporateIncrementalSampleAtLocation:a5 timestamp:a6 modifier:a7 region:a8 interfaceOrientation:a3.x forceState:?];
+        [(_UIScreenEdgePanRecognizer *)self _incorporateIncrementalSampleAtLocation:modifier timestamp:region modifier:orientation region:state interfaceOrientation:location.x forceState:?];
       }
 
       else
       {
-        [(_UIScreenEdgePanRecognizer *)self _incorporateInitialTouchAtLocation:a5 timestamp:a6 modifier:a7 region:a8 interfaceOrientation:a3.x forceState:?];
+        [(_UIScreenEdgePanRecognizer *)self _incorporateInitialTouchAtLocation:modifier timestamp:region modifier:orientation region:state interfaceOrientation:location.x forceState:?];
       }
 
       self->_lastTouchLocation.x = x;
       self->_lastTouchLocation.y = y;
-      self->_lastTouchTimestamp = a4;
-      self->_lastTouchModifier = a5;
+      self->_lastTouchTimestamp = timestamp;
+      self->_lastTouchModifier = modifier;
       self->_hasRecordedData = 1;
     }
   }
 }
 
-- (void)_incorporateInitialTouchAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8
+- (void)_incorporateInitialTouchAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state
 {
-  y = a3.y;
-  x = a3.x;
-  if ([(_UIScreenEdgePanRecognizer *)self useGrapeFlags:a5])
+  y = location.y;
+  x = location.x;
+  if ([(_UIScreenEdgePanRecognizer *)self useGrapeFlags:modifier])
   {
     [(_UIScreenEdgePanRecognizer *)self screenBounds];
     v15 = v14 * 0.5;
@@ -204,8 +204,8 @@
 
   else
   {
-    v18 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-    [v18 edgeRegionSize];
+    edgeSettings = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+    [edgeSettings edgeRegionSize];
     v17 = v19;
   }
 
@@ -230,31 +230,31 @@
   }
 
   v20 = _regionForLocation(self->_screenBounds.origin.x, self->_screenBounds.origin.y, self->_screenBounds.size.width, self->_screenBounds.size.height, x, y, v17);
-  v21 = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
-  if (a7 == 4)
+  _targetEdges = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
+  if (orientation == 4)
   {
-    v23 = ((2 * v21) | (v21 >> 3) & 1) & v20;
+    v23 = ((2 * _targetEdges) | (_targetEdges >> 3) & 1) & v20;
     self->_touchedRegion = v23;
     v22 = -90;
   }
 
-  else if (a7 == 3)
+  else if (orientation == 3)
   {
-    v23 = ((8 * v21) | (v21 >> 1) & 7) & v20;
+    v23 = ((8 * _targetEdges) | (_targetEdges >> 1) & 7) & v20;
     self->_touchedRegion = v23;
     v22 = 90;
   }
 
   else
   {
-    if (a7 == 1)
+    if (orientation == 1)
     {
       v22 = 0;
     }
 
     else
     {
-      if (a7 == 2)
+      if (orientation == 2)
       {
         v24 = -180;
       }
@@ -264,7 +264,7 @@
         v24 = 0;
       }
 
-      if (a7 == 2)
+      if (orientation == 2)
       {
         v22 = 180;
       }
@@ -274,16 +274,16 @@
         v22 = 0;
       }
 
-      v21 = _rotatedEdgesGivenOrientationInDegrees(v21, v24);
+      _targetEdges = _rotatedEdgesGivenOrientationInDegrees(_targetEdges, v24);
     }
 
-    v23 = v21 & v20;
+    v23 = _targetEdges & v20;
     self->_touchedRegion = v23;
   }
 
   v25 = _rotatedEdgesGivenOrientationInDegrees(v23, v22);
-  v26 = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
-  if ((a5 - 5) <= 0xFFFFFFFFFFFFFFFBLL && v26)
+  useGrapeFlags = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
+  if ((modifier - 5) <= 0xFFFFFFFFFFFFFFFBLL && useGrapeFlags)
   {
     if (_UIScreenEdgePanRecognizerShouldLog())
     {
@@ -345,16 +345,16 @@ LABEL_30:
 
   self->_initialTouchLocation.x = x;
   self->_initialTouchLocation.y = y;
-  self->_initialTouchTimestamp = a4;
-  self->_initialInterfaceOrientation = a7;
+  self->_initialTouchTimestamp = timestamp;
+  self->_initialInterfaceOrientation = orientation;
   if (!self->_recognizeAlongEdge)
   {
     type = self->_type;
     if (type <= 5 && ((1 << type) & 0x2C) != 0)
     {
       v32 = [UIDelayedAction alloc];
-      v49 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-      [v49 maximumSwipeDuration];
+      edgeSettings2 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+      [edgeSettings2 maximumSwipeDuration];
       v33 = [(UIDelayedAction *)v32 initWithTarget:self action:sel__idleTimerElapsed_ userInfo:0 delay:*MEMORY[0x1E695DA28] mode:?];
       recognitionTimer = self->_recognitionTimer;
       self->_recognitionTimer = v33;
@@ -362,9 +362,9 @@ LABEL_30:
   }
 }
 
-- (void)_incorporateIncrementalSampleAtLocation:(CGPoint)a3 timestamp:(double)a4 modifier:(int64_t)a5 region:(unint64_t)a6 interfaceOrientation:(int64_t)a7 forceState:(int64_t)a8
+- (void)_incorporateIncrementalSampleAtLocation:(CGPoint)location timestamp:(double)timestamp modifier:(int64_t)modifier region:(unint64_t)region interfaceOrientation:(int64_t)orientation forceState:(int64_t)state
 {
-  if (!self->_recognizeAlongEdge && sqrt((self->_lastTouchLocation.x - a3.x) * (self->_lastTouchLocation.x - a3.x) + (self->_lastTouchLocation.y - a3.y) * (self->_lastTouchLocation.y - a3.y)) > 100.0)
+  if (!self->_recognizeAlongEdge && sqrt((self->_lastTouchLocation.x - location.x) * (self->_lastTouchLocation.x - location.x) + (self->_lastTouchLocation.y - location.y) * (self->_lastTouchLocation.y - location.y)) > 100.0)
   {
     type = self->_type;
     if (_UIScreenEdgePanRecognizerShouldLog())
@@ -395,39 +395,39 @@ LABEL_121:
     goto LABEL_8;
   }
 
-  if (!a5 && self->_lastTouchModifier == 3)
+  if (!modifier && self->_lastTouchModifier == 3)
   {
     goto LABEL_8;
   }
 
-  x = a3.x;
-  y = a3.y;
-  v19 = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
-  v20 = a5 == 3 && v19;
-  v21 = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
-  v22 = a5 == 4 && v21;
+  x = location.x;
+  y = location.y;
+  useGrapeFlags = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
+  v20 = modifier == 3 && useGrapeFlags;
+  useGrapeFlags2 = [(_UIScreenEdgePanRecognizer *)self useGrapeFlags];
+  v22 = modifier == 4 && useGrapeFlags2;
   if (!self->_hasDoneInitialBackProjectionTest && !v20)
   {
-    v23 = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
+    _targetEdges = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
     v24 = -90;
     v25 = 90;
     v26 = -180;
-    if (a7 != 2)
+    if (orientation != 2)
     {
       v26 = 0;
     }
 
-    if (a7 != 4)
+    if (orientation != 4)
     {
       v25 = v26;
     }
 
-    if (a7 != 3)
+    if (orientation != 3)
     {
       v24 = v25;
     }
 
-    if (a7 == 1)
+    if (orientation == 1)
     {
       v27 = 0;
     }
@@ -437,8 +437,8 @@ LABEL_121:
       v27 = v24;
     }
 
-    v28 = _rotatedEdgesGivenOrientationInDegrees(v23, v27);
-    if (a6)
+    v28 = _rotatedEdgesGivenOrientationInDegrees(_targetEdges, v27);
+    if (region)
     {
       v29 = v22;
     }
@@ -452,13 +452,13 @@ LABEL_121:
     {
       v30.f64[0] = x;
       v30.f64[1] = y;
-      v115 = vmulq_n_f64(vdivq_f64(vsubq_f64(v30, self->_initialTouchLocation), vdupq_lane_s64(COERCE__INT64(a4 - self->_initialTouchTimestamp), 0)), a4 - self->_initialTouchTimestamp);
+      v115 = vmulq_n_f64(vdivq_f64(vsubq_f64(v30, self->_initialTouchLocation), vdupq_lane_s64(COERCE__INT64(timestamp - self->_initialTouchTimestamp), 0)), timestamp - self->_initialTouchTimestamp);
       initialTouchLocation = self->_initialTouchLocation;
-      v31 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-      [v31 edgeRegionSize];
+      edgeSettings = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+      [edgeSettings edgeRegionSize];
       v33 = v32;
 
-      switch(a7)
+      switch(orientation)
       {
         case 1:
           v34 = 0;
@@ -480,16 +480,16 @@ LABEL_121:
       v117 = vsubq_f64(initialTouchLocation, v115);
       if (_rotatedEdgesGivenOrientationInDegrees(self->_touchedRegion, v34) == 4)
       {
-        v35 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-        [v35 bottomEdgeRegionSize];
+        edgeSettings2 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+        [edgeSettings2 bottomEdgeRegionSize];
         v33 = v36;
       }
 
-      a6 = _regionForLocation(self->_screenBounds.origin.x, self->_screenBounds.origin.y, self->_screenBounds.size.width, self->_screenBounds.size.height, v117.f64[0], v117.f64[1], v33);
+      region = _regionForLocation(self->_screenBounds.origin.x, self->_screenBounds.origin.y, self->_screenBounds.size.width, self->_screenBounds.size.height, v117.f64[0], v117.f64[1], v33);
     }
 
-    self->_touchedRegion = a6 & v28;
-    if ((a6 & v28) == 0)
+    self->_touchedRegion = region & v28;
+    if ((region & v28) == 0)
     {
       if (_UIScreenEdgePanRecognizerShouldLog())
       {
@@ -540,15 +540,15 @@ LABEL_8:
     v39 = vabdd_f64(x, self->_initialTouchLocation.x);
   }
 
-  v40 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-  [v40 edgeAngleWindow];
+  edgeSettings3 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+  [edgeSettings3 edgeAngleWindow];
   v42 = v41;
 
   v43 = self->_touchedRegion;
   if (v43 <= 0xC && ((1 << v43) & 0x1248) != 0)
   {
-    v44 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings cornerSettings];
-    [v44 cornerAngleWindow];
+    cornerSettings = [(_UIScreenEdgePanRecognizerSettings *)self->_settings cornerSettings];
+    [cornerSettings cornerAngleWindow];
     v42 = v45;
   }
 
@@ -557,8 +557,8 @@ LABEL_8:
     v42 = 2.0943951;
   }
 
-  v46 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-  [v46 hysteresis];
+  edgeSettings4 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+  [edgeSettings4 hysteresis];
   v48 = v47;
 
   if (v48 > 0.0)
@@ -672,7 +672,7 @@ LABEL_8:
               v105 = off_1E710B8A8[v49 - 1];
             }
 
-            v108 = [v103 stringWithFormat:@"%f (%@): ", v104, v105];
+            v105 = [v103 stringWithFormat:@"%f (%@): ", v104, v105];
             if (v76 > 3)
             {
               v109 = 0;
@@ -684,8 +684,8 @@ LABEL_8:
             }
 
             v110 = _formatRegion(v109);
-            v111 = [v108 stringByAppendingFormat:@"Corner gesture being interpreted as %@", v110];
-            NSLog(&stru_1EFB25450.isa, v111);
+            v110 = [v105 stringByAppendingFormat:@"Corner gesture being interpreted as %@", v110];
+            NSLog(&stru_1EFB25450.isa, v110);
 
             v20 = v119;
             v50 = v124;
@@ -710,7 +710,7 @@ LABEL_8:
         v55 = v50;
       }
 
-      switch(a7)
+      switch(orientation)
       {
         case 1:
           v78 = 0;
@@ -735,16 +735,16 @@ LABEL_8:
       {
         v80 = v79;
         v81 = self->_type - 6;
-        v82 = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
+        _targetEdges2 = [(_UIScreenEdgePanRecognizer *)self _targetEdges];
         if (v81 > 0xFFFFFFFFFFFFFFFCLL)
         {
-          if ((v82 & v80) == 0)
+          if ((_targetEdges2 & v80) == 0)
           {
             goto LABEL_8;
           }
         }
 
-        else if (v80 != v82)
+        else if (v80 != _targetEdges2)
         {
           goto LABEL_8;
         }
@@ -756,7 +756,7 @@ LABEL_8:
       }
 
       v18 = 1;
-      if (a8 != 2 && self->_type == 4)
+      if (state != 2 && self->_type == 4)
       {
         return;
       }
@@ -765,11 +765,11 @@ LABEL_8:
     }
 
     initialTouchTimestamp = self->_initialTouchTimestamp;
-    v57 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-    [v57 edgeAngleWindowDecayTime];
+    edgeSettings5 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+    [edgeSettings5 edgeAngleWindowDecayTime];
     v66 = v65;
     v60 = v48 / tan(v42 * -0.5 + 1.57079633);
-    v61 = a4 - initialTouchTimestamp;
+    v61 = timestamp - initialTouchTimestamp;
     v62 = 1.0;
     v63 = 1.0 / v66;
 LABEL_66:
@@ -804,14 +804,14 @@ LABEL_66:
   }
 
   v18 = 1;
-  if (a8 != 2 && self->_type == 4)
+  if (state != 2 && self->_type == 4)
   {
     v56 = self->_initialTouchTimestamp;
-    v57 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
-    [v57 edgeAngleWindowDecayTime];
+    edgeSettings5 = [(_UIScreenEdgePanRecognizerSettings *)self->_settings edgeSettings];
+    [edgeSettings5 edgeAngleWindowDecayTime];
     v59 = v58;
     v60 = 10.0 / tan(v42 * -0.5 + 1.57079633);
-    v61 = a4 - v56;
+    v61 = timestamp - v56;
     v62 = 1.0;
     v63 = 1.0 / v59;
     goto LABEL_66;
@@ -822,7 +822,7 @@ LABEL_9:
   [(_UIScreenEdgePanRecognizer *)self _setState:v18];
 }
 
-- (void)_longPressTimerElapsed:(id)a3
+- (void)_longPressTimerElapsed:(id)elapsed
 {
   if (!self->_state)
   {
@@ -850,7 +850,7 @@ LABEL_9:
   }
 }
 
-- (void)_idleTimerElapsed:(id)a3
+- (void)_idleTimerElapsed:(id)elapsed
 {
   if (!self->_state)
   {

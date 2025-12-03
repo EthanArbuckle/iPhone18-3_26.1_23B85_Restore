@@ -2,9 +2,9 @@
 + (void)removeDiagnosticLogFiles;
 - (ABAfibBurdenAnalyzer)init;
 - (id).cxx_construct;
-- (id)determineBurdenForTachogramClassificationBuckets:(id)a3;
-- (id)processResults:(void *)a3 withAlgsAnalytics:(core_analytics_t *)a4;
-- (void)logToFileForTachoList:(id)a3 withBurdenResults:(id)a4;
+- (id)determineBurdenForTachogramClassificationBuckets:(id)buckets;
+- (id)processResults:(void *)results withAlgsAnalytics:(core_analytics_t *)analytics;
+- (void)logToFileForTachoList:(id)list withBurdenResults:(id)results;
 @end
 
 @implementation ABAfibBurdenAnalyzer
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (id)processResults:(void *)a3 withAlgsAnalytics:(core_analytics_t *)a4
+- (id)processResults:(void *)results withAlgsAnalytics:(core_analytics_t *)analytics
 {
   v49 = *MEMORY[0x277D85DE8];
   LOBYTE(v35) = 0;
@@ -40,14 +40,14 @@
   v34 = 0;
   *buf = &v35;
   v48 = &v33;
-  v4 = *(a3 + 1);
+  v4 = *(results + 1);
   if (v4 == -1)
   {
     std::__throw_bad_variant_access[abi:ne200100]();
   }
 
   v37 = buf;
-  (off_285118900[v4])(&v37, a3);
+  (off_285118900[v4])(&v37, results);
   v7 = objc_opt_new();
   v8 = v7;
   if (!v7)
@@ -133,52 +133,52 @@ LABEL_18:
   v32 = ;
   v42 = v32;
   v38[4] = @"AFDensity";
-  if ((LODWORD(a4->var1) & 0x7FFFFFFFu) > 0x7F7FFFFF)
+  if ((LODWORD(analytics->var1) & 0x7FFFFFFFu) > 0x7F7FFFFF)
   {
     [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    *&v18 = a4->var1;
+    *&v18 = analytics->var1;
     [MEMORY[0x277CCABB0] numberWithFloat:v18];
   }
   v31 = ;
   v43 = v31;
   v38[5] = @"timeBetweenTachs";
-  if ((LODWORD(a4->var0) & 0x7FFFFFFFu) > 0x7F7FFFFF)
+  if ((LODWORD(analytics->var0) & 0x7FFFFFFFu) > 0x7F7FFFFF)
   {
     [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    *&v19 = a4->var0;
+    *&v19 = analytics->var0;
     [MEMORY[0x277CCABB0] numberWithFloat:v19];
   }
   v20 = ;
   v44 = v20;
   v38[6] = @"countTimezoneShifts";
-  if ((*&a4->var2 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&analytics->var2 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    [MEMORY[0x277CCABB0] numberWithDouble:a4->var2];
+    [MEMORY[0x277CCABB0] numberWithDouble:analytics->var2];
   }
   v21 = ;
   v45 = v21;
   v38[7] = @"highestTimezoneShift";
-  if ((*&a4->var3 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&analytics->var3 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    [MEMORY[0x277CCABB0] numberWithDouble:a4->var3 / 3600.0];
+    [MEMORY[0x277CCABB0] numberWithDouble:analytics->var3 / 3600.0];
   }
   v22 = ;
   v46 = v22;
@@ -188,8 +188,8 @@ LABEL_18:
   v24 = ab_get_framework_log();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v8 metricsForCoreAnalytics];
-    [(ABAfibBurdenAnalyzer *)v25 processResults:buf withAlgsAnalytics:v24];
+    metricsForCoreAnalytics = [v8 metricsForCoreAnalytics];
+    [(ABAfibBurdenAnalyzer *)metricsForCoreAnalytics processResults:buf withAlgsAnalytics:v24];
   }
 
   v16 = v8;
@@ -200,16 +200,16 @@ LABEL_36:
   return v16;
 }
 
-- (id)determineBurdenForTachogramClassificationBuckets:(id)a3
+- (id)determineBurdenForTachogramClassificationBuckets:(id)buckets
 {
   v76[8] = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  if ([v44 count])
+  bucketsCopy = buckets;
+  if ([bucketsCopy count])
   {
     v73 = 0u;
     v74 = 0u;
     *v72 = 0u;
-    -[ABAfibBurdenAnalyzer setSegmentsCount:](self, "setSegmentsCount:", [v44 count]);
+    -[ABAfibBurdenAnalyzer setSegmentsCount:](self, "setSegmentsCount:", [bucketsCopy count]);
     [(ABAfibBurdenAnalyzer *)self setSegmentsWith5TachCount:0];
     v3 = ab_get_framework_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -222,7 +222,7 @@ LABEL_36:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    obj = v44;
+    obj = bucketsCopy;
     v4 = [obj countByEnumeratingWithState:&v61 objects:v71 count:16];
     if (v4)
     {
@@ -292,23 +292,23 @@ LABEL_36:
                 v12 = ab_get_framework_log();
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
                 {
-                  v13 = [v11 date];
-                  [v13 timeIntervalSince1970];
+                  date = [v11 date];
+                  [date timeIntervalSince1970];
                   v15 = v14;
-                  v16 = [v11 uuid];
+                  uuid = [v11 uuid];
                   *v65 = 67109634;
                   *&v65[4] = v50;
                   v66 = 2048;
                   v67 = v15;
                   v68 = 2112;
-                  v69 = v16;
+                  v69 = uuid;
                   _os_log_impl(&dword_23E83E000, v12, OS_LOG_TYPE_DEFAULT, "%d, %f, %@", v65, 0x1Cu);
                 }
 
                 v65[0] = [v11 aFibDetected];
                 std::vector<BOOL>::push_back(&__p[1], v65);
-                v17 = [v11 date];
-                [v17 timeIntervalSince1970];
+                date2 = [v11 date];
+                [date2 timeIntervalSince1970];
                 v19 = *&buf[8];
                 if (*&buf[8] >= __p[0])
                 {
@@ -436,7 +436,7 @@ LABEL_56:
       self->_rawBurdenValue.__engaged_ = 0;
     }
 
-    [(ABAfibBurdenAnalyzer *)self logToFileForTachoList:v44 withBurdenResults:v32];
+    [(ABAfibBurdenAnalyzer *)self logToFileForTachoList:bucketsCopy withBurdenResults:v32];
     v75[0] = @"reasonNoReport";
     v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "unavailabilityReason")}];
     v76[0] = v34;
@@ -447,8 +447,8 @@ LABEL_56:
     v36 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[ABAfibBurdenAnalyzer segmentsWith5TachCount](self, "segmentsWith5TachCount")}];
     v76[2] = v36;
     v75[3] = @"AFBurden";
-    v37 = [MEMORY[0x277CBEB68] null];
-    v76[3] = v37;
+    null = [MEMORY[0x277CBEB68] null];
+    v76[3] = null;
     v76[4] = &unk_285119790;
     v75[4] = @"AFDensity";
     v75[5] = @"timeBetweenTachs";
@@ -463,8 +463,8 @@ LABEL_56:
     v39 = ab_get_framework_log();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [v32 metricsForCoreAnalytics];
-      [(ABAfibBurdenAnalyzer *)v40 processResults:v72 withAlgsAnalytics:v39];
+      metricsForCoreAnalytics = [v32 metricsForCoreAnalytics];
+      [(ABAfibBurdenAnalyzer *)metricsForCoreAnalytics processResults:v72 withAlgsAnalytics:v39];
     }
   }
 
@@ -483,11 +483,11 @@ uint64_t __73__ABAfibBurdenAnalyzer_determineBurdenForTachogramClassificationBuc
   return v7;
 }
 
-- (void)logToFileForTachoList:(id)a3 withBurdenResults:(id)a4
+- (void)logToFileForTachoList:(id)list withBurdenResults:(id)results
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
+  listCopy = list;
+  resultsCopy = results;
   out_token = -1;
   state64 = 0;
   notify_register_check("com.apple.AfibBurden.ForceAnalysis.WriteToJson", &out_token);
@@ -502,12 +502,12 @@ uint64_t __73__ABAfibBurdenAnalyzer_determineBurdenForTachogramClassificationBuc
       _os_log_impl(&dword_23E83E000, v5, OS_LOG_TYPE_DEFAULT, "ABAfibBurdenAnalyzer : logging to file. notifyState is set to %llu", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v28 = *MEMORY[0x277CCA1B0];
     v29[0] = *MEMORY[0x277CCA198];
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v24 = 0;
-    v8 = [v6 createDirectoryAtPath:@"/var/mobile/Library/Logs/AfBHIDDiagnostics/" withIntermediateDirectories:1 attributes:v7 error:&v24];
+    v8 = [defaultManager createDirectoryAtPath:@"/var/mobile/Library/Logs/AfBHIDDiagnostics/" withIntermediateDirectories:1 attributes:v7 error:&v24];
     v16 = v24;
 
     if (v8)
@@ -566,7 +566,7 @@ uint64_t __73__ABAfibBurdenAnalyzer_determineBurdenForTachogramClassificationBuc
   v3 = 138412546;
   v4 = @"/var/mobile/Library/Logs/AfBHIDDiagnostics/";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23E83E000, a2, OS_LOG_TYPE_ERROR, "Failed to retrieve files at path : %@ with error : %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

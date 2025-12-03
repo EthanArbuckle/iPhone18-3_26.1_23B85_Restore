@@ -1,22 +1,22 @@
 @interface SGChatLengthEstimator
 + (id)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
-- (SGChatLengthEstimator)initWithPath:(id)a3;
++ (void)setSharedInstance:(id)instance;
+- (SGChatLengthEstimator)initWithPath:(id)path;
 - (id)initInMemory;
 - (unint64_t)count;
-- (unint64_t)estimateMessagesInChat:(id)a3;
+- (unint64_t)estimateMessagesInChat:(id)chat;
 - (void)dealloc;
-- (void)recordMessageInChat:(id)a3;
+- (void)recordMessageInChat:(id)chat;
 @end
 
 @implementation SGChatLengthEstimator
 
-- (unint64_t)estimateMessagesInChat:(id)a3
+- (unint64_t)estimateMessagesInChat:(id)chat
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  chatCopy = chat;
+  v6 = chatCopy;
+  if (chatCopy)
   {
     v16 = 0;
     v17 = 0;
@@ -24,15 +24,15 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGChatLengthEstimator.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGChatLengthEstimator.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifier"}];
 
     v16 = 0;
     v17 = 0;
-    v5 = 0;
+    chatCopy = 0;
   }
 
-  SGMurmurhashString(v5, 3203338804, &v16);
+  SGMurmurhashString(chatCopy, 3203338804, &v16);
   pthread_mutex_lock(&sharedInstanceLock);
   v7 = -1;
   v8 = &v16;
@@ -61,12 +61,12 @@
   return v7;
 }
 
-- (void)recordMessageInChat:(id)a3
+- (void)recordMessageInChat:(id)chat
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  chatCopy = chat;
+  v6 = chatCopy;
+  if (chatCopy)
   {
     v20 = 0;
     v21 = 0;
@@ -74,15 +74,15 @@
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"SGChatLengthEstimator.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGChatLengthEstimator.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"domainIdentifier"}];
 
     v20 = 0;
     v21 = 0;
-    v5 = 0;
+    chatCopy = 0;
   }
 
-  SGMurmurhashString(v5, 3203338804, &v20);
+  SGMurmurhashString(chatCopy, 3203338804, &v20);
   pthread_mutex_lock(&sharedInstanceLock);
   countPtr = self->_countPtr;
   v8 = *countPtr + 1;
@@ -169,19 +169,19 @@
     backingData = v3->_backingData;
     v3->_backingData = v4;
 
-    v6 = [(NSMutableData *)v3->_backingData mutableBytes];
-    v3->_countPtr = v6;
-    v3->_sketch = (v6 + 2);
+    mutableBytes = [(NSMutableData *)v3->_backingData mutableBytes];
+    v3->_countPtr = mutableBytes;
+    v3->_sketch = (mutableBytes + 2);
     pthread_mutex_init(&v3->_lock, 0);
   }
 
   return v3;
 }
 
-- (SGChatLengthEstimator)initWithPath:(id)a3
+- (SGChatLengthEstimator)initWithPath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = SGChatLengthEstimator;
   v5 = [(SGChatLengthEstimator *)&v21 init];
@@ -190,11 +190,11 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 copy];
+  v6 = [pathCopy copy];
   path = v5->_path;
   v5->_path = v6;
 
-  v8 = open_dprotected_np([v4 UTF8String], 514, 3, 0, 384);
+  v8 = open_dprotected_np([pathCopy UTF8String], 514, 3, 0, 384);
   v5->_fd = v8;
   if (v8 < 0)
   {
@@ -205,7 +205,7 @@
       v16 = strerror(*v15);
       v17 = *__error();
       *buf = 138412802;
-      v23 = v4;
+      v23 = pathCopy;
       v24 = 2080;
       v25 = v16;
       v26 = 1024;
@@ -237,7 +237,7 @@ LABEL_5:
       v19 = strerror(*v18);
       v20 = *__error();
       *buf = 138412802;
-      v23 = v4;
+      v23 = pathCopy;
       v24 = 2080;
       v25 = v19;
       v26 = 1024;
@@ -256,12 +256,12 @@ LABEL_12:
   return v10;
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  v3 = a3;
+  instanceCopy = instance;
   pthread_mutex_lock(&sharedInstanceLock);
   v4 = sharedInstance;
-  sharedInstance = v3;
+  sharedInstance = instanceCopy;
 
   pthread_mutex_unlock(&sharedInstanceLock);
 }

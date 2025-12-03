@@ -1,31 +1,31 @@
 @interface AMSDelegatePurchaseTask
-- (AMSDelegatePurchaseTask)initWithDelegatePurchaseRequest:(id)a3 bag:(id)a4 account:(id)a5;
+- (AMSDelegatePurchaseTask)initWithDelegatePurchaseRequest:(id)request bag:(id)bag account:(id)account;
 - (BOOL)cancel;
 - (id)_delegateAuthenticateURL;
-- (id)_fetchDelegateAuthResultWithRequest:(id)a3 error:(id *)a4;
-- (id)_finishWithDelegateAuthenticateResult:(id)a3 resultError:(id)a4 outError:(id *)a5;
+- (id)_fetchDelegateAuthResultWithRequest:(id)request error:(id *)error;
+- (id)_finishWithDelegateAuthenticateResult:(id)result resultError:(id)error outError:(id *)outError;
 - (id)_performAuthenticateTaskWithPaymentSheet;
-- (id)_performAuthenticateTaskWithPaymentSheetResult:(id)a3;
+- (id)_performAuthenticateTaskWithPaymentSheetResult:(id)result;
 - (id)_performPaymentSheetTask;
-- (id)_urlRequestForDelegateAuthWithError:(id *)a3;
+- (id)_urlRequestForDelegateAuthWithError:(id *)error;
 - (id)_urlRequestParameters;
 - (id)performDelegatePurchase;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)_parseBiometricsSignatureRequestFromTask:(id)a3;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)_parseBiometricsSignatureRequestFromTask:(id)task;
 @end
 
 @implementation AMSDelegatePurchaseTask
 
-- (AMSDelegatePurchaseTask)initWithDelegatePurchaseRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (AMSDelegatePurchaseTask)initWithDelegatePurchaseRequest:(id)request bag:(id)bag account:(id)account
 {
-  v9 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = AMSDelegatePurchaseTask;
-  v10 = [(AMSDelegateAuthenticateTask *)&v13 initWithBag:a4 account:a5];
+  v10 = [(AMSDelegateAuthenticateTask *)&v13 initWithBag:bag account:account];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_request, a3);
+    objc_storeStrong(&v10->_request, request);
   }
 
   return v11;
@@ -40,8 +40,8 @@
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = AMSLogKey();
     v7 = MEMORY[0x1E696AEC0];
@@ -58,13 +58,13 @@
       [v7 stringWithFormat:@"%@: ", v8];
     }
     v10 = ;
-    v11 = [(AMSDelegatePurchaseTask *)self paymentSheetTask];
-    v12 = AMSHashIfNeeded(v11);
+    paymentSheetTask = [(AMSDelegatePurchaseTask *)self paymentSheetTask];
+    v12 = AMSHashIfNeeded(paymentSheetTask);
     *buf = 138543618;
     v17 = v10;
     v18 = 2114;
     v19 = v12;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment sheet task: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Cancelling payment sheet task: %{public}@", buf, 0x16u);
 
     if (v6)
     {
@@ -73,8 +73,8 @@
     }
   }
 
-  v13 = [(AMSDelegatePurchaseTask *)self paymentSheetTask];
-  [v13 cancel];
+  paymentSheetTask2 = [(AMSDelegatePurchaseTask *)self paymentSheetTask];
+  [paymentSheetTask2 cancel];
 
   v15.receiver = self;
   v15.super_class = AMSDelegatePurchaseTask;
@@ -322,12 +322,12 @@ LABEL_35:
   return v12;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  requestCopy = request;
+  completionCopy = completion;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v13 = +[AMSLogConfig sharedConfig];
@@ -339,28 +339,28 @@ LABEL_35:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
-      v18 = AMSHashIfNeeded(v10);
+      v18 = AMSHashIfNeeded(requestCopy);
       *buf = 138543874;
       v33 = v16;
       v34 = 2114;
       v35 = v17;
       v36 = 2114;
       v37 = v18;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling AMSDelegateAuthenticateRequest. authenticateRequest = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling AMSDelegateAuthenticateRequest. authenticateRequest = %{public}@", buf, 0x20u);
     }
 
-    [(AMSDelegatePurchaseTask *)self _parseBiometricsSignatureRequestFromTask:v9];
-    v19 = [(AMSDelegatePurchaseTask *)self _performAuthenticateTaskWithPaymentSheet];
+    [(AMSDelegatePurchaseTask *)self _parseBiometricsSignatureRequestFromTask:taskCopy];
+    _performAuthenticateTaskWithPaymentSheet = [(AMSDelegatePurchaseTask *)self _performAuthenticateTaskWithPaymentSheet];
     v31 = 0;
-    v20 = [v19 resultWithError:&v31];
+    v20 = [_performAuthenticateTaskWithPaymentSheet resultWithError:&v31];
     v21 = v31;
 
-    v11[2](v11, v20, v21);
+    completionCopy[2](completionCopy, v20, v21);
   }
 
   else
@@ -370,36 +370,36 @@ LABEL_35:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v14 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
-      v25 = AMSHashIfNeeded(v10);
+      v25 = AMSHashIfNeeded(requestCopy);
       *buf = 138543874;
       v33 = v23;
       v34 = 2114;
       v35 = v24;
       v36 = 2114;
       v37 = v25;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling AMSAuthenticateRequest. authenticateRequest = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling AMSAuthenticateRequest. authenticateRequest = %{public}@", buf, 0x20u);
     }
 
-    v21 = [[AMSAuthenticateTask alloc] initWithRequest:v10];
-    v26 = [(AMSAuthenticateTask *)v21 performAuthentication];
+    v21 = [[AMSAuthenticateTask alloc] initWithRequest:requestCopy];
+    performAuthentication = [(AMSAuthenticateTask *)v21 performAuthentication];
     v30 = 0;
-    v27 = [v26 resultWithError:&v30];
+    v27 = [performAuthentication resultWithError:&v30];
     v20 = v30;
 
-    v28 = [v27 account];
+    account = [v27 account];
 
-    if (v28)
+    if (account)
     {
-      v29 = [v27 account];
-      [(AMSDelegateAuthenticateTask *)self setAccount:v29];
+      account2 = [v27 account];
+      [(AMSDelegateAuthenticateTask *)self setAccount:account2];
     }
 
-    v11[2](v11, v27, v20);
+    completionCopy[2](completionCopy, v27, v20);
   }
 }
 
@@ -441,8 +441,8 @@ LABEL_35:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSHashIfNeeded(@"delegateAuthenticateAccount");
@@ -454,7 +454,7 @@ LABEL_35:
       v24 = v14;
       v25 = 2114;
       v26 = v7;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find key: %@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to find key: %@, error: %{public}@", buf, 0x2Au);
     }
 
     v15 = 0;
@@ -468,19 +468,19 @@ LABEL_35:
   return v15;
 }
 
-- (id)_fetchDelegateAuthResultWithRequest:(id)a3 error:(id *)a4
+- (id)_fetchDelegateAuthResultWithRequest:(id)request error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(AMSPromise);
-  v8 = [(AMSDelegateAuthenticateTask *)self session];
+  session = [(AMSDelegateAuthenticateTask *)self session];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __69__AMSDelegatePurchaseTask__fetchDelegateAuthResultWithRequest_error___block_invoke;
   v30[3] = &unk_1E73B6968;
   v30[4] = self;
-  v9 = [(AMSPromise *)v7 completionHandlerAdapter];
-  [v8 createDataTaskWithRequest:v6 activity:0 dataTaskCreationCompletionHandler:v30 requestCompletionHandler:v9];
+  completionHandlerAdapter = [(AMSPromise *)v7 completionHandlerAdapter];
+  [session createDataTaskWithRequest:requestCopy activity:0 dataTaskCreationCompletionHandler:v30 requestCompletionHandler:completionHandlerAdapter];
 
   v29 = 0;
   v10 = [(AMSPromise *)v7 resultWithError:&v29];
@@ -494,8 +494,8 @@ LABEL_35:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -511,24 +511,24 @@ LABEL_35:
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
+      selfCopy = ;
       *buf = 138543618;
-      v32 = v19;
+      v32 = selfCopy;
       v33 = 2114;
       v34 = v11;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@URL request failed with error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@URL request failed with error: %{public}@", buf, 0x16u);
       if (v15)
       {
 
-        v19 = self;
+        selfCopy = self;
       }
     }
 
-    if (a4)
+    if (error)
     {
       v26 = v11;
       v27 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -544,8 +544,8 @@ LABEL_35:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v13 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v21 = AMSLogKey();
       v22 = MEMORY[0x1E696AEC0];
@@ -561,14 +561,14 @@ LABEL_35:
       {
         [v22 stringWithFormat:@"%@: ", v23];
       }
-      v25 = ;
+      selfCopy2 = ;
       *buf = 138543362;
-      v32 = v25;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Completed requesting delegate auth endpoint", buf, 0xCu);
+      v32 = selfCopy2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Completed requesting delegate auth endpoint", buf, 0xCu);
       if (v21)
       {
 
-        v25 = self;
+        selfCopy2 = self;
       }
     }
 
@@ -587,16 +587,16 @@ void __69__AMSDelegatePurchaseTask__fetchDelegateAuthResultWithRequest_error___b
   [v4 resume];
 }
 
-- (id)_finishWithDelegateAuthenticateResult:(id)a3 resultError:(id)a4 outError:(id *)a5
+- (id)_finishWithDelegateAuthenticateResult:(id)result resultError:(id)error outError:(id *)outError
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  errorCopy = error;
+  resultCopy = result;
   v10 = AMSSetLogKeyIfNeeded();
-  v11 = [v9 serverResponse];
+  serverResponse = [resultCopy serverResponse];
 
-  v12 = [(AMSDelegateAuthenticateResult *)[AMSDelegatePurchaseResult alloc] initWithServerResponse:v11];
-  if ([v8 ams_hasDomain:@"AMSErrorDomain" code:6])
+  v12 = [(AMSDelegateAuthenticateResult *)[AMSDelegatePurchaseResult alloc] initWithServerResponse:serverResponse];
+  if ([errorCopy ams_hasDomain:@"AMSErrorDomain" code:6])
   {
     v13 = +[AMSLogConfig sharedPurchaseOversizeConfig];
     if (!v13)
@@ -604,8 +604,8 @@ void __69__AMSDelegatePurchaseTask__fetchDelegateAuthResultWithRequest_error___b
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v47 = v10;
       v15 = AMSLogKey();
@@ -622,17 +622,17 @@ void __69__AMSDelegatePurchaseTask__fetchDelegateAuthResultWithRequest_error___b
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
-      v37 = AMSLogableError(v8);
+      selfCopy = ;
+      v37 = AMSLogableError(errorCopy);
       *buf = 138543618;
-      v50 = v19;
+      v50 = selfCopy;
       v51 = 2114;
       v52 = v37;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@The purchase was canceled. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@The purchase was canceled. error = %{public}@", buf, 0x16u);
       if (v15)
       {
 
-        v19 = self;
+        selfCopy = self;
       }
 
       v10 = v47;
@@ -643,27 +643,27 @@ void __69__AMSDelegatePurchaseTask__fetchDelegateAuthResultWithRequest_error___b
     v29 = 6;
 LABEL_26:
     v38 = AMSError(v29, v27, v28, 0);
-    if (a5)
+    if (outError)
     {
       v38 = v38;
-      *a5 = v38;
+      *outError = v38;
     }
 
     v39 = 0;
     goto LABEL_39;
   }
 
-  v20 = [(AMSDelegateAuthenticateResult *)v12 token];
-  if (v20)
+  token = [(AMSDelegateAuthenticateResult *)v12 token];
+  if (token)
   {
   }
 
   else
   {
-    v21 = [(AMSDelegatePurchaseTask *)self request];
-    v22 = [v21 requiresDelegateToken];
+    request = [(AMSDelegatePurchaseTask *)self request];
+    requiresDelegateToken = [request requiresDelegateToken];
 
-    if (v22)
+    if (requiresDelegateToken)
     {
       v23 = +[AMSLogConfig sharedPurchaseOversizeConfig];
       if (!v23)
@@ -671,8 +671,8 @@ LABEL_26:
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v25 = objc_opt_class();
         v26 = AMSHashIfNeeded(v12);
@@ -682,7 +682,7 @@ LABEL_26:
         v52 = v10;
         v53 = 2114;
         v54 = v26;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Delegate authenticate result missing token: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Delegate authenticate result missing token: %{public}@", buf, 0x20u);
       }
 
       v27 = @"Missing Delegate Token";
@@ -692,7 +692,7 @@ LABEL_26:
     }
   }
 
-  if (v8)
+  if (errorCopy)
   {
     v30 = +[AMSLogConfig sharedPurchaseOversizeConfig];
     if (!v30)
@@ -700,8 +700,8 @@ LABEL_26:
       v30 = +[AMSLogConfig sharedConfig];
     }
 
-    v31 = [v30 OSLogObject];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v30 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v48 = v10;
       v32 = AMSLogKey();
@@ -719,12 +719,12 @@ LABEL_26:
         [v33 stringWithFormat:@"%@: ", v34];
       }
       v36 = ;
-      v40 = AMSLogableError(v8);
+      v40 = AMSLogableError(errorCopy);
       *buf = 138543618;
       v50 = v36;
       v51 = 2114;
       v52 = v40;
-      _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_ERROR, "%{public}@Purchase returned an error but we have a result. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Purchase returned an error but we have a result. error = %{public}@", buf, 0x16u);
       if (v32)
       {
 
@@ -741,19 +741,19 @@ LABEL_26:
     v41 = +[AMSLogConfig sharedConfig];
   }
 
-  v42 = [v41 OSLogObject];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v41 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
     v43 = objc_opt_class();
     *buf = 138543618;
     v50 = v43;
     v51 = 2114;
     v52 = v10;
-    _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Delegate purchase task completed successfully", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Delegate purchase task completed successfully", buf, 0x16u);
   }
 
-  v44 = [(AMSDelegatePurchaseTask *)self request];
-  [(AMSDelegatePurchaseResult *)v12 setRequest:v44];
+  request2 = [(AMSDelegatePurchaseTask *)self request];
+  [(AMSDelegatePurchaseResult *)v12 setRequest:request2];
 
   v39 = v12;
 LABEL_39:
@@ -761,10 +761,10 @@ LABEL_39:
   return v39;
 }
 
-- (void)_parseBiometricsSignatureRequestFromTask:(id)a3
+- (void)_parseBiometricsSignatureRequestFromTask:(id)task
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = objc_alloc_init(AMSKeychainOptions);
   [(AMSKeychainOptions *)v6 setStyle:+[AMSKeychainOptions preferredAttestationStyle]];
@@ -775,29 +775,29 @@ LABEL_39:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v21 = objc_opt_class();
     v22 = 2114;
     v23 = v5;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Proceeding with local authorization for delegate buy", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Proceeding with local authorization for delegate buy", buf, 0x16u);
   }
 
-  v9 = [v4 response];
-  v10 = [(AMSDelegateAuthenticateTask *)self account];
-  v11 = [(AMSDelegateAuthenticateTask *)self session];
+  response = [taskCopy response];
+  account = [(AMSDelegateAuthenticateTask *)self account];
+  session = [(AMSDelegateAuthenticateTask *)self session];
   v12 = +[AMSProcessInfo currentProcess];
   v19 = 0;
-  v13 = [AMSBiometricsSignatureRequest biometricsSignatureRequestForURLResponse:v9 account:v10 session:v11 task:v4 clientInfo:v12 options:v6 error:&v19];
+  v13 = [AMSBiometricsSignatureRequest biometricsSignatureRequestForURLResponse:response account:account session:session task:taskCopy clientInfo:v12 options:v6 error:&v19];
 
   v14 = v19;
   [(AMSDelegatePurchaseTask *)self setBiometricsRequest:v13];
 
-  v15 = [(AMSDelegatePurchaseTask *)self biometricsRequest];
+  biometricsRequest = [(AMSDelegatePurchaseTask *)self biometricsRequest];
 
-  if (!v15)
+  if (!biometricsRequest)
   {
     v16 = +[AMSLogConfig sharedConfig];
     if (!v16)
@@ -805,8 +805,8 @@ LABEL_39:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       *buf = 138543874;
@@ -815,15 +815,15 @@ LABEL_39:
       v23 = v5;
       v24 = 2114;
       v25 = v14;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not create biometrics signature request. error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not create biometrics signature request. error: %{public}@", buf, 0x20u);
     }
   }
 }
 
-- (id)_performAuthenticateTaskWithPaymentSheetResult:(id)a3
+- (id)_performAuthenticateTaskWithPaymentSheetResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
@@ -831,19 +831,19 @@ LABEL_39:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138543618;
     v22 = objc_opt_class();
     v23 = 2114;
     v24 = v5;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting authenticate task", &v21, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting authenticate task", &v21, 0x16u);
   }
 
-  v8 = [v4 passwordEquivalentToken];
+  passwordEquivalentToken = [resultCopy passwordEquivalentToken];
 
-  if (v8)
+  if (passwordEquivalentToken)
   {
     v9 = 1;
   }
@@ -856,15 +856,15 @@ LABEL_39:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v21 = 138543618;
       v22 = v12;
       v23 = 2114;
       v24 = v5;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment sheet result has no password, falling back to silent-preferred authentication.", &v21, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment sheet result has no password, falling back to silent-preferred authentication.", &v21, 0x16u);
     }
 
     v9 = 0;
@@ -880,15 +880,15 @@ LABEL_39:
   [(AMSAuthenticateOptions *)v13 setCredentialSource:2];
   [(AMSAuthenticateOptions *)v13 setDebugReason:@"[AMSDelegatePurchaseTask _performAuthenticateTaskWithPaymentSheetResult:]"];
   v15 = [AMSAuthenticateTask alloc];
-  v16 = [(AMSDelegateAuthenticateTask *)self account];
-  v17 = [(AMSAuthenticateTask *)v15 initWithAccount:v16 options:v13];
+  account = [(AMSDelegateAuthenticateTask *)self account];
+  v17 = [(AMSAuthenticateTask *)v15 initWithAccount:account options:v13];
 
-  v18 = [v4 passwordEquivalentToken];
-  [(AMSAuthenticateTask *)v17 setPassword:v18];
+  passwordEquivalentToken2 = [resultCopy passwordEquivalentToken];
+  [(AMSAuthenticateTask *)v17 setPassword:passwordEquivalentToken2];
 
-  v19 = [(AMSAuthenticateTask *)v17 performAuthentication];
+  performAuthentication = [(AMSAuthenticateTask *)v17 performAuthentication];
 
-  return v19;
+  return performAuthentication;
 }
 
 - (id)_performAuthenticateTaskWithPaymentSheet
@@ -1105,21 +1105,21 @@ LABEL_35:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v43 = objc_opt_class();
     v44 = 2114;
     v45 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting payment sheet task", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting payment sheet task", buf, 0x16u);
   }
 
   if (![(AMSTask *)self isCancelled])
   {
-    v13 = [(AMSDelegatePurchaseTask *)self delegateAuthResult];
-    v14 = [v13 object];
-    v15 = [v14 objectForKeyedSubscript:@"dialog"];
+    delegateAuthResult = [(AMSDelegatePurchaseTask *)self delegateAuthResult];
+    object = [delegateAuthResult object];
+    v15 = [object objectForKeyedSubscript:@"dialog"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1128,8 +1128,8 @@ LABEL_35:
 
       if (v16)
       {
-        v17 = [(AMSDelegatePurchaseTask *)self delegateAuthResult];
-        v11 = [v17 object];
+        delegateAuthResult2 = [(AMSDelegatePurchaseTask *)self delegateAuthResult];
+        object2 = [delegateAuthResult2 object];
         goto LABEL_18;
       }
     }
@@ -1138,38 +1138,38 @@ LABEL_35:
     {
     }
 
-    v18 = [(AMSDelegatePurchaseTask *)self request];
-    v19 = [v18 purchaseResult];
-    v20 = [v19 responseDictionary];
+    request = [(AMSDelegatePurchaseTask *)self request];
+    purchaseResult = [request purchaseResult];
+    responseDictionary = [purchaseResult responseDictionary];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = responseDictionary;
 
       if (v21)
       {
         v40 = @"dialog";
-        v17 = [(AMSDelegatePurchaseTask *)self request];
-        v22 = [v17 purchaseResult];
-        v23 = [v22 responseDictionary];
-        v41 = v23;
-        v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
+        delegateAuthResult2 = [(AMSDelegatePurchaseTask *)self request];
+        purchaseResult2 = [delegateAuthResult2 purchaseResult];
+        responseDictionary2 = [purchaseResult2 responseDictionary];
+        v41 = responseDictionary2;
+        object2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
 
 LABEL_18:
-        if (v11)
+        if (object2)
         {
           v24 = [AMSFinancePaymentSheetResponse alloc];
-          v25 = [(AMSDelegatePurchaseTask *)self biometricsRequest];
-          v26 = [(AMSDelegatePurchaseTask *)self delegateAuthTaskInfo];
-          v27 = [(AMSFinancePaymentSheetResponse *)v24 initWithResponseDictionary:v11 confirmationOnly:0 delegateAuthenticationRequired:1 biometricSignatureRequired:v25 != 0 taskInfo:v26];
+          biometricsRequest = [(AMSDelegatePurchaseTask *)self biometricsRequest];
+          delegateAuthTaskInfo = [(AMSDelegatePurchaseTask *)self delegateAuthTaskInfo];
+          v27 = [(AMSFinancePaymentSheetResponse *)v24 initWithResponseDictionary:object2 confirmationOnly:0 delegateAuthenticationRequired:1 biometricSignatureRequired:biometricsRequest != 0 taskInfo:delegateAuthTaskInfo];
 
           v28 = [AMSPaymentSheetTask alloc];
-          v29 = [(AMSFinancePaymentSheetResponse *)v27 paymentSheetRequest];
+          paymentSheetRequest = [(AMSFinancePaymentSheetResponse *)v27 paymentSheetRequest];
           v30 = [(AMSDelegateAuthenticateTask *)self bag];
-          v31 = [(AMSPaymentSheetTask *)v28 initWithRequest:v29 bag:v30];
+          v31 = [(AMSPaymentSheetTask *)v28 initWithRequest:paymentSheetRequest bag:v30];
 
-          v32 = [(AMSPaymentSheetTask *)v31 _buildPaymentRequest];
+          _buildPaymentRequest = [(AMSPaymentSheetTask *)v31 _buildPaymentRequest];
           v38[0] = MEMORY[0x1E69E9820];
           v38[1] = 3221225472;
           v38[2] = __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke;
@@ -1177,7 +1177,7 @@ LABEL_18:
           v38[4] = self;
           v39 = v27;
           v33 = v27;
-          v6 = [v32 thenWithBlock:v38];
+          v6 = [_buildPaymentRequest thenWithBlock:v38];
 
           goto LABEL_27;
         }
@@ -1194,18 +1194,18 @@ LABEL_18:
       v34 = +[AMSLogConfig sharedConfig];
     }
 
-    v35 = [v34 OSLogObject];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v34 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v36 = objc_opt_class();
       *buf = 138543618;
       v43 = v36;
       v44 = 2114;
       v45 = v3;
-      _os_log_impl(&dword_192869000, v35, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Delegate purchase failed for null response dictionary", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Delegate purchase failed for null response dictionary", buf, 0x16u);
     }
 
-    v11 = AMSError(2, @"Delegate purchase failed", @"Did not receive a response dictionary", 0);
+    object2 = AMSError(2, @"Delegate purchase failed", @"Did not receive a response dictionary", 0);
     v12 = objc_alloc_init(AMSMutablePromise);
     v6 = v12;
     goto LABEL_26;
@@ -1218,8 +1218,8 @@ LABEL_18:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
@@ -1227,13 +1227,13 @@ LABEL_18:
     v43 = v9;
     v44 = 2114;
     v45 = v10;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ending early due to cancelled task", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Ending early due to cancelled task", buf, 0x16u);
   }
 
-  v11 = AMSError(6, @"Interrupted Cancellation", @"The task was cancelled just before presenting the payment sheet.", 0);
+  object2 = AMSError(6, @"Interrupted Cancellation", @"The task was cancelled just before presenting the payment sheet.", 0);
   v12 = v6;
 LABEL_26:
-  [(AMSMutablePromise *)v12 finishWithError:v11];
+  [(AMSMutablePromise *)v12 finishWithError:object2];
 LABEL_27:
 
   return v6;
@@ -1294,7 +1294,7 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
   return v25;
 }
 
-- (id)_urlRequestForDelegateAuthWithError:(id *)a3
+- (id)_urlRequestForDelegateAuthWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = +[AMSLogConfig sharedConfig];
@@ -1303,8 +1303,8 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -1323,7 +1323,7 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
     v12 = ;
     *buf = 138543362;
     v29 = v12;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Begin requesting delegate auth endpoint", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Begin requesting delegate auth endpoint", buf, 0xCu);
     if (v8)
     {
 
@@ -1342,8 +1342,8 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v17 = AMSLogKey();
       v18 = MEMORY[0x1E696AEC0];
@@ -1359,25 +1359,25 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
       {
         [v18 stringWithFormat:@"%@: ", v19];
       }
-      v21 = ;
+      selfCopy = ;
       v24 = AMSLogableError(v14);
       *buf = 138543618;
-      v29 = v21;
+      v29 = selfCopy;
       v30 = 2114;
       v31 = v24;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@Encoding URL request failed with error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Encoding URL request failed with error: %{public}@", buf, 0x16u);
       if (v17)
       {
 
-        v21 = self;
+        selfCopy = self;
       }
     }
 
-    if (a3)
+    if (error)
     {
       v25 = v14;
       v23 = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -1388,8 +1388,8 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
 
   else
   {
-    v22 = [v13 properties];
-    [v22 setDisableBiometricsResponseHandling:1];
+    properties = [v13 properties];
+    [properties setDisableBiometricsResponseHandling:1];
 
     v23 = v13;
   }
@@ -1401,21 +1401,21 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF20]);
-  v4 = [(AMSDelegatePurchaseTask *)self request];
-  v5 = [v4 purchaseResult];
+  request = [(AMSDelegatePurchaseTask *)self request];
+  purchaseResult = [request purchaseResult];
 
-  if (v5)
+  if (purchaseResult)
   {
-    v6 = [(AMSDelegatePurchaseTask *)self request];
-    v7 = [v6 purchaseResult];
-    v8 = [v7 purchase];
-    v9 = [v8 buyParams];
-    v10 = [v9 dictionary];
+    request2 = [(AMSDelegatePurchaseTask *)self request];
+    purchaseResult2 = [request2 purchaseResult];
+    purchase = [purchaseResult2 purchase];
+    buyParams = [purchase buyParams];
+    dictionary = [buyParams dictionary];
 
-    v11 = [(AMSDelegatePurchaseTask *)self request];
-    v12 = [v11 purchaseResult];
-    v13 = [v12 responseDictionary];
-    v14 = [v13 objectForKeyedSubscript:@"delegateParams"];
+    request3 = [(AMSDelegatePurchaseTask *)self request];
+    purchaseResult3 = [request3 purchaseResult];
+    responseDictionary = [purchaseResult3 responseDictionary];
+    v14 = [responseDictionary objectForKeyedSubscript:@"delegateParams"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1428,20 +1428,20 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
       v15 = 0;
     }
 
-    v16 = [v10 ams_dictionaryByAddingEntriesFromDictionary:v15];
+    v16 = [dictionary ams_dictionaryByAddingEntriesFromDictionary:v15];
 
     v3 = v16;
   }
 
-  v17 = [(AMSDelegatePurchaseTask *)self request];
-  v18 = [v17 cacheKey];
+  request4 = [(AMSDelegatePurchaseTask *)self request];
+  cacheKey = [request4 cacheKey];
 
-  if (v18)
+  if (cacheKey)
   {
     v27 = @"cacheKey";
-    v19 = [(AMSDelegatePurchaseTask *)self request];
-    v20 = [v19 cacheKey];
-    v28[0] = v20;
+    request5 = [(AMSDelegatePurchaseTask *)self request];
+    cacheKey2 = [request5 cacheKey];
+    v28[0] = cacheKey2;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v22 = [v3 ams_dictionaryByAddingEntriesFromDictionary:v21];
 
@@ -1450,8 +1450,8 @@ id __51__AMSDelegatePurchaseTask__performPaymentSheetTask__block_invoke(uint64_t
 
   v26.receiver = self;
   v26.super_class = AMSDelegatePurchaseTask;
-  v23 = [(AMSDelegateAuthenticateTask *)&v26 _urlRequestParameters];
-  v24 = [v23 ams_dictionaryByAddingEntriesFromDictionary:v3];
+  _urlRequestParameters = [(AMSDelegateAuthenticateTask *)&v26 _urlRequestParameters];
+  v24 = [_urlRequestParameters ams_dictionaryByAddingEntriesFromDictionary:v3];
 
   return v24;
 }

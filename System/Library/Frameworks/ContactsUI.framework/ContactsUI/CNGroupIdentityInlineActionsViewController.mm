@@ -1,24 +1,24 @@
 @interface CNGroupIdentityInlineActionsViewController
-- (BOOL)contactInlineActionsViewController:(id)a3 canPerformGroupActionOfType:(id)a4;
-- (BOOL)contactInlineActionsViewController:(id)a3 overrideEnabledStateForActionOfType:(id)a4;
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldOverrideEnabledStateForActionOfType:(id)a4;
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldPresentDisambiguationUIForActionOfType:(id)a4;
-- (BOOL)shouldOverrideEnabledStateForActionItem:(id)a3;
-- (CNGroupIdentityInlineActionsViewController)initWithGroupIdentity:(id)a3 actionsViewConfiguration:(id)a4;
+- (BOOL)contactInlineActionsViewController:(id)controller canPerformGroupActionOfType:(id)type;
+- (BOOL)contactInlineActionsViewController:(id)controller overrideEnabledStateForActionOfType:(id)type;
+- (BOOL)contactInlineActionsViewController:(id)controller shouldOverrideEnabledStateForActionOfType:(id)type;
+- (BOOL)contactInlineActionsViewController:(id)controller shouldPresentDisambiguationUIForActionOfType:(id)type;
+- (BOOL)shouldOverrideEnabledStateForActionItem:(id)item;
+- (CNGroupIdentityInlineActionsViewController)initWithGroupIdentity:(id)identity actionsViewConfiguration:(id)configuration;
 - (CNGroupIdentityInlineActionsViewControllerDelegate)delegate;
-- (double)actionsViewHeightThatFits:(CGSize)a3;
+- (double)actionsViewHeightThatFits:(CGSize)fits;
 - (id)actionsContainerView;
 - (id)actionsView;
-- (id)contactInlineActionsViewController:(id)a3 overrideImageForActionOfType:(id)a4;
-- (id)contactInlineActionsViewController:(id)a3 overrideTitleForActionOfType:(id)a4;
-- (id)viewForActionAtIndex:(unint64_t)a3;
+- (id)contactInlineActionsViewController:(id)controller overrideImageForActionOfType:(id)type;
+- (id)contactInlineActionsViewController:(id)controller overrideTitleForActionOfType:(id)type;
+- (id)viewForActionAtIndex:(unint64_t)index;
 - (int64_t)style;
-- (void)contactInlineActionsViewController:(id)a3 didPerformActionOfType:(id)a4 fromDisambiguation:(BOOL)a5;
-- (void)contactInlineActionsViewController:(id)a3 didSelectActionOfType:(id)a4;
-- (void)contactInlineActionsViewController:(id)a3 willPresentDisambiguationUIForActionType:(id)a4;
-- (void)setGroup:(id)a3;
+- (void)contactInlineActionsViewController:(id)controller didPerformActionOfType:(id)type fromDisambiguation:(BOOL)disambiguation;
+- (void)contactInlineActionsViewController:(id)controller didSelectActionOfType:(id)type;
+- (void)contactInlineActionsViewController:(id)controller willPresentDisambiguationUIForActionType:(id)type;
+- (void)setGroup:(id)group;
 - (void)setupActionsView;
-- (void)updateActionsViewForUpdatedActionItem:(id)a3;
+- (void)updateActionsViewForUpdatedActionItem:(id)item;
 - (void)viewDidLoad;
 @end
 
@@ -31,74 +31,74 @@
   return WeakRetained;
 }
 
-- (BOOL)contactInlineActionsViewController:(id)a3 overrideEnabledStateForActionOfType:(id)a4
+- (BOOL)contactInlineActionsViewController:(id)controller overrideEnabledStateForActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
-  LOBYTE(v6) = [v8 overrideEnabledState];
-  return v6;
+  LOBYTE(configuration) = [v8 overrideEnabledState];
+  return configuration;
 }
 
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldOverrideEnabledStateForActionOfType:(id)a4
+- (BOOL)contactInlineActionsViewController:(id)controller shouldOverrideEnabledStateForActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
   LOBYTE(self) = [(CNGroupIdentityInlineActionsViewController *)self shouldOverrideEnabledStateForActionItem:v8];
   return self;
 }
 
-- (id)contactInlineActionsViewController:(id)a3 overrideTitleForActionOfType:(id)a4
+- (id)contactInlineActionsViewController:(id)controller overrideTitleForActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
-  v9 = [v8 title];
+  title = [v8 title];
 
-  return v9;
+  return title;
 }
 
-- (id)contactInlineActionsViewController:(id)a3 overrideImageForActionOfType:(id)a4
+- (id)contactInlineActionsViewController:(id)controller overrideImageForActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
-  v9 = [v8 image];
+  image = [v8 image];
 
-  return v9;
+  return image;
 }
 
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldPresentDisambiguationUIForActionOfType:(id)a4
+- (BOOL)contactInlineActionsViewController:(id)controller shouldPresentDisambiguationUIForActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
-  LOBYTE(v6) = [v8 shouldPresentDisambiguationUI];
-  return v6;
+  LOBYTE(configuration) = [v8 shouldPresentDisambiguationUI];
+  return configuration;
 }
 
-- (BOOL)contactInlineActionsViewController:(id)a3 canPerformGroupActionOfType:(id)a4
+- (BOOL)contactInlineActionsViewController:(id)controller canPerformGroupActionOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v7 = [v6 actionsPerType];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v8 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
   if (v8)
   {
-    v9 = [v8 actionBlock];
-    v10 = v9 != 0;
+    actionBlock = [v8 actionBlock];
+    v10 = actionBlock != 0;
   }
 
   else
@@ -109,59 +109,59 @@
   return v10;
 }
 
-- (void)contactInlineActionsViewController:(id)a3 didSelectActionOfType:(id)a4
+- (void)contactInlineActionsViewController:(id)controller didSelectActionOfType:(id)type
 {
-  v10 = a4;
-  v5 = [(CNGroupIdentityInlineActionsViewController *)self configuration];
-  v6 = [v5 actionsPerType];
-  v7 = [v6 objectForKeyedSubscript:v10];
+  typeCopy = type;
+  configuration = [(CNGroupIdentityInlineActionsViewController *)self configuration];
+  actionsPerType = [configuration actionsPerType];
+  v7 = [actionsPerType objectForKeyedSubscript:typeCopy];
 
   if (v7)
   {
-    v8 = [v7 actionBlock];
+    actionBlock = [v7 actionBlock];
 
-    if (v8)
+    if (actionBlock)
     {
-      v9 = [v7 actionBlock];
-      (v9)[2](v9, v10);
+      actionBlock2 = [v7 actionBlock];
+      (actionBlock2)[2](actionBlock2, typeCopy);
     }
   }
 }
 
-- (void)contactInlineActionsViewController:(id)a3 willPresentDisambiguationUIForActionType:(id)a4
+- (void)contactInlineActionsViewController:(id)controller willPresentDisambiguationUIForActionType:(id)type
 {
-  v8 = a4;
-  v5 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
+  typeCopy = type;
+  delegate = [(CNGroupIdentityInlineActionsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
-    [v7 groupIdentityInlineActionsViewController:self willPresentDisambiguationUIForActionType:v8];
+    delegate2 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
+    [delegate2 groupIdentityInlineActionsViewController:self willPresentDisambiguationUIForActionType:typeCopy];
   }
 }
 
-- (void)contactInlineActionsViewController:(id)a3 didPerformActionOfType:(id)a4 fromDisambiguation:(BOOL)a5
+- (void)contactInlineActionsViewController:(id)controller didPerformActionOfType:(id)type fromDisambiguation:(BOOL)disambiguation
 {
-  v5 = a5;
-  v10 = a4;
-  v7 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
+  disambiguationCopy = disambiguation;
+  typeCopy = type;
+  delegate = [(CNGroupIdentityInlineActionsViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
-    [v9 groupIdentityInlineActionsViewController:self didPerformActionOfType:v10 fromDisambiguation:v5];
+    delegate2 = [(CNGroupIdentityInlineActionsViewController *)self delegate];
+    [delegate2 groupIdentityInlineActionsViewController:self didPerformActionOfType:typeCopy fromDisambiguation:disambiguationCopy];
   }
 }
 
-- (double)actionsViewHeightThatFits:(CGSize)a3
+- (double)actionsViewHeightThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v6 = [v5 actionsView];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  actionsView = [inlineActionsViewController actionsView];
+  [actionsView sizeThatFits:{width, height}];
   v8 = v7;
 
   return v8;
@@ -170,35 +170,35 @@
 - (void)setupActionsView
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v4 = [v3 view];
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  view = [inlineActionsViewController view];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  [(CNGroupIdentityInlineActionsViewController *)self addChildViewController:v5];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  inlineActionsViewController2 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  [(CNGroupIdentityInlineActionsViewController *)self addChildViewController:inlineActionsViewController2];
 
-  v6 = [(CNGroupIdentityInlineActionsViewController *)self view];
-  [v6 addSubview:v4];
+  view2 = [(CNGroupIdentityInlineActionsViewController *)self view];
+  [view2 addSubview:view];
 
-  v22 = [v4 topAnchor];
-  v23 = [(CNGroupIdentityInlineActionsViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor = [view topAnchor];
+  view3 = [(CNGroupIdentityInlineActionsViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v20;
-  v18 = [v4 leadingAnchor];
-  v19 = [(CNGroupIdentityInlineActionsViewController *)self view];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leadingAnchor = [view leadingAnchor];
+  view4 = [(CNGroupIdentityInlineActionsViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v16;
-  v7 = [v4 trailingAnchor];
-  v8 = [(CNGroupIdentityInlineActionsViewController *)self view];
-  v9 = [v8 trailingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  trailingAnchor = [view trailingAnchor];
+  view5 = [(CNGroupIdentityInlineActionsViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v10;
-  v11 = [v4 bottomAnchor];
-  v12 = [(CNGroupIdentityInlineActionsViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(CNGroupIdentityInlineActionsViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
 
@@ -207,107 +207,107 @@
 
 - (int64_t)style
 {
-  v2 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v3 = [v2 viewStyle];
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  viewStyle = [inlineActionsViewController viewStyle];
 
-  return v3;
+  return viewStyle;
 }
 
-- (BOOL)shouldOverrideEnabledStateForActionItem:(id)a3
+- (BOOL)shouldOverrideEnabledStateForActionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNGroupIdentityInlineActionsViewController *)self group];
-  v6 = [v5 contacts];
-  v7 = [v6 count];
+  itemCopy = item;
+  group = [(CNGroupIdentityInlineActionsViewController *)self group];
+  contacts = [group contacts];
+  v7 = [contacts count];
 
-  v8 = [MEMORY[0x1E6996BE8] allActionTypes];
-  v9 = [v4 actionType];
-  v10 = [v8 _cn_containsObject:v9];
+  allActionTypes = [MEMORY[0x1E6996BE8] allActionTypes];
+  actionType = [itemCopy actionType];
+  v10 = [allActionTypes _cn_containsObject:actionType];
 
   if (v7 <= 1 && (v10 & 1) != 0)
   {
-    v11 = 0;
+    shouldOverrideEnabledState = 0;
   }
 
   else
   {
-    v11 = [v4 shouldOverrideEnabledState];
+    shouldOverrideEnabledState = [itemCopy shouldOverrideEnabledState];
   }
 
-  return v11;
+  return shouldOverrideEnabledState;
 }
 
-- (void)updateActionsViewForUpdatedActionItem:(id)a3
+- (void)updateActionsViewForUpdatedActionItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   if ([(CNGroupIdentityInlineActionsViewController *)self shouldOverrideEnabledStateForActionItem:?])
   {
-    v4 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-    v5 = [v8 actionType];
-    v6 = [v4 existingActionItemForType:v5];
+    inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+    actionType = [itemCopy actionType];
+    v6 = [inlineActionsViewController existingActionItemForType:actionType];
 
     if (v6)
     {
-      [v6 setDisabled:{objc_msgSend(v8, "overrideEnabledState") ^ 1}];
-      v7 = [(CNGroupIdentityInlineActionsViewController *)self actionsView];
-      [v7 updateActionItem:v6];
+      [v6 setDisabled:{objc_msgSend(itemCopy, "overrideEnabledState") ^ 1}];
+      actionsView = [(CNGroupIdentityInlineActionsViewController *)self actionsView];
+      [actionsView updateActionItem:v6];
     }
   }
 }
 
 - (id)actionsView
 {
-  v2 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v3 = [v2 actionsView];
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  actionsView = [inlineActionsViewController actionsView];
 
-  return v3;
+  return actionsView;
 }
 
 - (id)actionsContainerView
 {
-  v2 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v3 = [v2 actionsView];
-  v4 = [v3 containerView];
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  actionsView = [inlineActionsViewController actionsView];
+  containerView = [actionsView containerView];
 
-  return v4;
+  return containerView;
 }
 
-- (id)viewForActionAtIndex:(unint64_t)a3
+- (id)viewForActionAtIndex:(unint64_t)index
 {
-  v4 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-  v5 = [v4 actionsView];
-  v6 = [v5 containerView];
+  inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+  actionsView = [inlineActionsViewController actionsView];
+  containerView = [actionsView containerView];
 
-  v7 = [v6 arrangedSubviews];
-  v8 = [v7 count];
+  arrangedSubviews = [containerView arrangedSubviews];
+  v8 = [arrangedSubviews count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [v6 arrangedSubviews];
-    v10 = [v9 objectAtIndex:a3];
+    arrangedSubviews2 = [containerView arrangedSubviews];
+    v10 = [arrangedSubviews2 objectAtIndex:index];
   }
 
   return v10;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v10 = a3;
-  v5 = [(CNGroupIdentity *)self->_group contacts];
-  v6 = [v10 contacts];
-  v7 = [v5 _cn_isIdenticalToArray:v6];
+  groupCopy = group;
+  contacts = [(CNGroupIdentity *)self->_group contacts];
+  contacts2 = [groupCopy contacts];
+  v7 = [contacts _cn_isIdenticalToArray:contacts2];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_group, a3);
-    v8 = [v10 contacts];
-    v9 = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
-    [v9 setContacts:v8];
+    objc_storeStrong(&self->_group, group);
+    contacts3 = [groupCopy contacts];
+    inlineActionsViewController = [(CNGroupIdentityInlineActionsViewController *)self inlineActionsViewController];
+    [inlineActionsViewController setContacts:contacts3];
   }
 }
 
@@ -319,56 +319,56 @@
   [(CNGroupIdentityInlineActionsViewController *)self setupActionsView];
 }
 
-- (CNGroupIdentityInlineActionsViewController)initWithGroupIdentity:(id)a3 actionsViewConfiguration:(id)a4
+- (CNGroupIdentityInlineActionsViewController)initWithGroupIdentity:(id)identity actionsViewConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  configurationCopy = configuration;
   v31.receiver = self;
   v31.super_class = CNGroupIdentityInlineActionsViewController;
   v9 = [(CNGroupIdentityInlineActionsViewController *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_group, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_group, identity);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11 = objc_alloc_init(CNContactInlineActionsViewController);
     inlineActionsViewController = v10->_inlineActionsViewController;
     v10->_inlineActionsViewController = v11;
 
-    -[CNContactInlineActionsViewController setViewStyle:](v10->_inlineActionsViewController, "setViewStyle:", [v8 actionViewStyle]);
-    v13 = [v8 geminiChannelIdentifier];
-    [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setGeminiChannelIdentifier:v13];
+    -[CNContactInlineActionsViewController setViewStyle:](v10->_inlineActionsViewController, "setViewStyle:", [configurationCopy actionViewStyle]);
+    geminiChannelIdentifier = [configurationCopy geminiChannelIdentifier];
+    [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setGeminiChannelIdentifier:geminiChannelIdentifier];
 
     [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setDelegate:v10];
-    v14 = [MEMORY[0x1E6996BE8] allActionTypes];
-    v15 = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
-    -[CNContactInlineActionsViewController setDisplaysUnavailableActionTypes:](v10->_inlineActionsViewController, "setDisplaysUnavailableActionTypes:", [v8 displaysUnavailableActionTypes]);
-    v16 = [v8 supportedActionTypes];
+    allActionTypes = [MEMORY[0x1E6996BE8] allActionTypes];
+    allSupportedActionTypes = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
+    -[CNContactInlineActionsViewController setDisplaysUnavailableActionTypes:](v10->_inlineActionsViewController, "setDisplaysUnavailableActionTypes:", [configurationCopy displaysUnavailableActionTypes]);
+    supportedActionTypes = [configurationCopy supportedActionTypes];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __93__CNGroupIdentityInlineActionsViewController_initWithGroupIdentity_actionsViewConfiguration___block_invoke;
     v28[3] = &unk_1E74E5B78;
-    v29 = v14;
-    v30 = v15;
-    v17 = v15;
-    v18 = v14;
-    v19 = [v16 _cn_filter:v28];
+    v29 = allActionTypes;
+    v30 = allSupportedActionTypes;
+    v17 = allSupportedActionTypes;
+    v18 = allActionTypes;
+    v19 = [supportedActionTypes _cn_filter:v28];
 
     [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setSupportedActionTypes:v19];
     [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setObjectViewControllerDelegate:v10];
     [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setDisplaysTitles:1];
-    v20 = [v7 contacts];
-    [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setContacts:v20];
+    contacts = [identityCopy contacts];
+    [(CNContactInlineActionsViewController *)v10->_inlineActionsViewController setContacts:contacts];
 
-    v21 = [v8 actionsPerType];
-    v22 = [v21 allValues];
+    actionsPerType = [configurationCopy actionsPerType];
+    allValues = [actionsPerType allValues];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __93__CNGroupIdentityInlineActionsViewController_initWithGroupIdentity_actionsViewConfiguration___block_invoke_2;
     v26[3] = &unk_1E74E49E8;
     v23 = v10;
     v27 = v23;
-    [v22 _cn_each:v26];
+    [allValues _cn_each:v26];
 
     v24 = v23;
   }

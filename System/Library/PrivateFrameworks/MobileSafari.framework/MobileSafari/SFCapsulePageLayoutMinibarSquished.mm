@@ -1,11 +1,11 @@
 @interface SFCapsulePageLayoutMinibarSquished
 - (NSArray)supplementaryIdentifiers;
 - (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)init;
-- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)a3;
-- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)a3 baseLayout:(id)a4;
+- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)container;
+- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)container baseLayout:(id)layout;
 - (double)pageWidth;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)topBackdropInfoForPage:(id)a3;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutMinibarSquished
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -25,13 +25,13 @@
   {
     v6 = Strong;
     swift_unknownObjectRetain();
-    v7 = self;
-    v8 = [v6 topBackdropInfoForPage_];
+    selfCopy = self;
+    topBackdropInfoForPage_ = [v6 topBackdropInfoForPage_];
     swift_unknownObjectRelease();
 
     swift_unknownObjectRelease();
 
-    return v8;
+    return topBackdropInfoForPage_;
   }
 
   else
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)a3
+- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)container
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -54,7 +54,7 @@
   return [(SFCapsulePageLayoutMinibarSquished *)&v5 init];
 }
 
-- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)a3 baseLayout:(id)a4
+- (_TtC12MobileSafari34SFCapsulePageLayoutMinibarSquished)initWithContainer:(id)container baseLayout:(id)layout
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -89,8 +89,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    v6 = [v4 supplementaryIdentifiers];
+    selfCopy = self;
+    supplementaryIdentifiers = [v4 supplementaryIdentifiers];
     swift_unknownObjectRelease();
     sub_18BC20D98();
   }
@@ -100,13 +100,13 @@
   return v7;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_18B9EF2D4(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_18B9EF2D4(v6, v8, page);
   swift_unknownObjectRelease();
 
   return v10;

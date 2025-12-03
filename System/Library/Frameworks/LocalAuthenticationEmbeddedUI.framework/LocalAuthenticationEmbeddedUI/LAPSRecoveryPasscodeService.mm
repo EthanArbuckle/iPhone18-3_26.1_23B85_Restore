@@ -1,30 +1,30 @@
 @interface LAPSRecoveryPasscodeService
-- (BOOL)isPasscodeRecoveryAvailableWithError:(id *)a3;
+- (BOOL)isPasscodeRecoveryAvailableWithError:(id *)error;
 - (BOOL)isPasscodeRecoveryEnabled;
 - (BOOL)isPasscodeRecoveryRestricted;
 - (BOOL)isPasscodeRecoverySupported;
-- (LAPSRecoveryPasscodeService)initWithPersistence:(id)a3;
+- (LAPSRecoveryPasscodeService)initWithPersistence:(id)persistence;
 - (id)passcodeType;
 - (int64_t)_failedPasscodeAttempts;
 - (int64_t)_failedPasscodeRecoveryAttempts;
 - (int64_t)_maxPasscodeRecoveryAttempts;
 - (void)_clearRecoveryPasscode;
-- (void)_reportPasscodeChangedTo:(id)a3;
-- (void)verifyPasscode:(id)a3 completion:(id)a4;
+- (void)_reportPasscodeChangedTo:(id)to;
+- (void)verifyPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPSRecoveryPasscodeService
 
-- (LAPSRecoveryPasscodeService)initWithPersistence:(id)a3
+- (LAPSRecoveryPasscodeService)initWithPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = LAPSRecoveryPasscodeService;
   v6 = [(LAPSRecoveryPasscodeService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistence, a3);
+    objc_storeStrong(&v6->_persistence, persistence);
   }
 
   return v7;
@@ -32,36 +32,36 @@
 
 - (BOOL)isPasscodeRecoverySupported
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 isPasscodeRecoverySupported];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  isPasscodeRecoverySupported = [persistence isPasscodeRecoverySupported];
 
-  return v3;
+  return isPasscodeRecoverySupported;
 }
 
 - (BOOL)isPasscodeRecoveryRestricted
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 isPasscodeRecoveryRestricted];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  isPasscodeRecoveryRestricted = [persistence isPasscodeRecoveryRestricted];
 
-  return v3;
+  return isPasscodeRecoveryRestricted;
 }
 
 - (BOOL)isPasscodeRecoveryEnabled
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 isPasscodeRecoveryEnabled];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  isPasscodeRecoveryEnabled = [persistence isPasscodeRecoveryEnabled];
 
-  return v3;
+  return isPasscodeRecoveryEnabled;
 }
 
-- (BOOL)isPasscodeRecoveryAvailableWithError:(id *)a3
+- (BOOL)isPasscodeRecoveryAvailableWithError:(id *)error
 {
-  v5 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v6 = [v5 hasPasscode];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  hasPasscode = [persistence hasPasscode];
 
-  if ((v6 & 1) == 0)
+  if ((hasPasscode & 1) == 0)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -73,16 +73,16 @@ LABEL_14:
     v14 = v13;
     v15 = v13;
     result = 0;
-    *a3 = v14;
+    *error = v14;
     return result;
   }
 
-  v7 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v8 = [v7 isPasscodeLockedOut];
+  persistence2 = [(LAPSRecoveryPasscodeService *)self persistence];
+  isPasscodeLockedOut = [persistence2 isPasscodeLockedOut];
 
-  if ((v8 & 1) == 0)
+  if ((isPasscodeLockedOut & 1) == 0)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -91,12 +91,12 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v9 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v10 = [v9 isPasscodeRecoveryAvailable];
+  persistence3 = [(LAPSRecoveryPasscodeService *)self persistence];
+  isPasscodeRecoveryAvailable = [persistence3 isPasscodeRecoveryAvailable];
 
-  if ((v10 & 1) == 0)
+  if ((isPasscodeRecoveryAvailable & 1) == 0)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -113,15 +113,15 @@ LABEL_14:
     }
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Passcode reset is only available after %d failures", -[LAPSRecoveryPasscodeService _minRequiredPasscodeFailures](self, "_minRequiredPasscodeFailures")];
-    if (a3)
+    if (error)
     {
-      *a3 = [LAPSErrorBuilder genericErrorWithDebugDescription:v16];
+      *error = [LAPSErrorBuilder genericErrorWithDebugDescription:v16];
     }
 
     return 0;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = +[LAPSErrorBuilder tooManyAttemptsError];
     goto LABEL_14;
@@ -132,18 +132,18 @@ LABEL_14:
 
 - (id)passcodeType
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 recoveryPasscodeType];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  recoveryPasscodeType = [persistence recoveryPasscodeType];
 
-  return v3;
+  return recoveryPasscodeType;
 }
 
-- (void)verifyPasscode:(id)a3 completion:(id)a4
+- (void)verifyPasscode:(id)passcode completion:(id)completion
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v8 = [v7 verifyRecoveryPasscode:v6];
+  completionCopy = completion;
+  passcodeCopy = passcode;
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  v8 = [persistence verifyRecoveryPasscode:passcodeCopy];
 
   if (v8)
   {
@@ -159,80 +159,80 @@ LABEL_14:
         [LAPSErrorBuilder genericErrorWithUnderlyingError:v8];
       }
       v9 = ;
-      v10[2](v10, v9);
+      completionCopy[2](completionCopy, v9);
     }
 
     else
     {
       [(LAPSRecoveryPasscodeService *)self _clearRecoveryPasscode];
       v9 = +[LAPSErrorBuilder tooManyAttemptsError];
-      v10[2](v10, v9);
+      completionCopy[2](completionCopy, v9);
     }
   }
 
   else
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (int64_t)_failedPasscodeAttempts
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 failedPasscodeAttempts];
-  v4 = v3;
-  if (!v3)
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  failedPasscodeAttempts = [persistence failedPasscodeAttempts];
+  v4 = failedPasscodeAttempts;
+  if (!failedPasscodeAttempts)
   {
-    v3 = &unk_284B87690;
+    failedPasscodeAttempts = &unk_284B87690;
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [failedPasscodeAttempts integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)_maxPasscodeRecoveryAttempts
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 maxPasscodeRecoveryAttempts];
-  v4 = v3;
-  if (!v3)
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  maxPasscodeRecoveryAttempts = [persistence maxPasscodeRecoveryAttempts];
+  v4 = maxPasscodeRecoveryAttempts;
+  if (!maxPasscodeRecoveryAttempts)
   {
-    v3 = &unk_284B87690;
+    maxPasscodeRecoveryAttempts = &unk_284B87690;
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [maxPasscodeRecoveryAttempts integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)_failedPasscodeRecoveryAttempts
 {
-  v2 = [(LAPSRecoveryPasscodeService *)self persistence];
-  v3 = [v2 failedPasscodeRecoveryAttempts];
-  v4 = v3;
-  if (!v3)
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  failedPasscodeRecoveryAttempts = [persistence failedPasscodeRecoveryAttempts];
+  v4 = failedPasscodeRecoveryAttempts;
+  if (!failedPasscodeRecoveryAttempts)
   {
-    v3 = &unk_284B876A8;
+    failedPasscodeRecoveryAttempts = &unk_284B876A8;
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [failedPasscodeRecoveryAttempts integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (void)_clearRecoveryPasscode
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_238BCD000, a2, OS_LOG_TYPE_ERROR, "Could not clear recovery blob (error: %@)", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportPasscodeChangedTo:(id)a3
+- (void)_reportPasscodeChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = LACLogPasscodeService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,8 +240,8 @@ LABEL_14:
     _os_log_impl(&dword_238BCD000, v5, OS_LOG_TYPE_DEFAULT, "CDP update will start", v7, 2u);
   }
 
-  v6 = [(LAPSRecoveryPasscodeService *)self persistence];
-  [v6 reportPasscodeDidChangeTo:v4 completion:&__block_literal_global_2];
+  persistence = [(LAPSRecoveryPasscodeService *)self persistence];
+  [persistence reportPasscodeDidChangeTo:toCopy completion:&__block_literal_global_2];
 }
 
 void __56__LAPSRecoveryPasscodeService__reportPasscodeChangedTo___block_invoke(uint64_t a1, void *a2)

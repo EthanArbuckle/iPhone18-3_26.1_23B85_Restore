@@ -1,17 +1,17 @@
 @interface PKDashboardPeerPaymentPendingRequestItem
-+ (id)itemWithPendingRequest:(id)a3 transactionSourceCollection:(id)a4;
++ (id)itemWithPendingRequest:(id)request transactionSourceCollection:(id)collection;
 @end
 
 @implementation PKDashboardPeerPaymentPendingRequestItem
 
-+ (id)itemWithPendingRequest:(id)a3 transactionSourceCollection:(id)a4
++ (id)itemWithPendingRequest:(id)request transactionSourceCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
+  collectionCopy = collection;
+  requestCopy = request;
   v7 = objc_alloc_init(PKDashboardPeerPaymentPendingRequestItem);
-  [(PKDashboardPeerPaymentPendingRequestItem *)v7 setPendingRequest:v6];
+  [(PKDashboardPeerPaymentPendingRequestItem *)v7 setPendingRequest:requestCopy];
 
-  [(PKDashboardPeerPaymentPendingRequestItem *)v7 setTransactionSourceCollection:v5];
+  [(PKDashboardPeerPaymentPendingRequestItem *)v7 setTransactionSourceCollection:collectionCopy];
 
   return v7;
 }

@@ -1,19 +1,19 @@
 @interface BKButtonHIDEventProcessor
-- (BKButtonHIDEventProcessor)initWithContext:(id)a3;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)_postEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5 destination:(id)a6 cancelled:(BOOL)a7;
-- (void)_processRingerSwitchEvent:(__IOHIDEvent *)a3 down:(BOOL)a4 sender:(id)a5 dispatcher:(id)a6;
-- (void)cancelButtonForSenderID:(unint64_t)a3 uagePage:(unsigned __int16)a4 usage:(unsigned __int16)a5;
+- (BKButtonHIDEventProcessor)initWithContext:(id)context;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)_postEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher destination:(id)destination cancelled:(BOOL)cancelled;
+- (void)_processRingerSwitchEvent:(__IOHIDEvent *)event down:(BOOL)down sender:(id)sender dispatcher:(id)dispatcher;
+- (void)cancelButtonForSenderID:(unint64_t)d uagePage:(unsigned __int16)page usage:(unsigned __int16)usage;
 @end
 
 @implementation BKButtonHIDEventProcessor
 
-- (void)_processRingerSwitchEvent:(__IOHIDEvent *)a3 down:(BOOL)a4 sender:(id)a5 dispatcher:(id)a6
+- (void)_processRingerSwitchEvent:(__IOHIDEvent *)event down:(BOOL)down sender:(id)sender dispatcher:(id)dispatcher
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
-  self->_ringerState = v7;
+  downCopy = down;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  self->_ringerState = downCopy;
   v12 = sub_100008528();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,7 +23,7 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ringer state changed to:%{public}@", buf, 0xCu);
   }
 
-  v14 = [v11 destinationsForEvent:a3 fromSender:v10];
+  v14 = [dispatcherCopy destinationsForEvent:event fromSender:senderCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -43,7 +43,7 @@
           objc_enumerationMutation(v14);
         }
 
-        [(BKButtonHIDEventProcessor *)self _postEvent:a3 sender:v10 dispatcher:v11 destination:*(*(&v19 + 1) + 8 * v18) cancelled:0];
+        [(BKButtonHIDEventProcessor *)self _postEvent:event sender:senderCopy dispatcher:dispatcherCopy destination:*(*(&v19 + 1) + 8 * v18) cancelled:0];
         v18 = v18 + 1;
       }
 
@@ -55,21 +55,21 @@
   }
 }
 
-- (void)_postEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5 destination:(id)a6 cancelled:(BOOL)a7
+- (void)_postEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher destination:(id)destination cancelled:(BOOL)cancelled
 {
-  v14 = a6;
-  v10 = a5;
-  v11 = a4;
+  destinationCopy = destination;
+  dispatcherCopy = dispatcher;
+  senderCopy = sender;
   Copy = IOHIDEventCreateCopy();
   keyboardEventProcessor = self->_keyboardEventProcessor;
   if (keyboardEventProcessor)
   {
-    [(BKKeyboardHIDEventProcessor *)keyboardEventProcessor eventSourceForSender:v11];
+    [(BKKeyboardHIDEventProcessor *)keyboardEventProcessor eventSourceForSender:senderCopy];
   }
 
   else
   {
-    [v11 eventSource];
+    [senderCopy eventSource];
   }
 
   BKSHIDEventSetSimpleDeliveryInfo();
@@ -82,21 +82,21 @@
   }
 
   kdebug_trace();
-  [v10 postEvent:Copy toDestination:v14];
+  [dispatcherCopy postEvent:Copy toDestination:destinationCopy];
 
   CFRelease(Copy);
 }
 
-- (void)cancelButtonForSenderID:(unint64_t)a3 uagePage:(unsigned __int16)a4 usage:(unsigned __int16)a5
+- (void)cancelButtonForSenderID:(unint64_t)d uagePage:(unsigned __int16)page usage:(unsigned __int16)usage
 {
-  v5 = a5;
-  v6 = a4;
+  usageCopy = usage;
+  pageCopy = page;
   os_unfair_lock_lock(&self->_eventRecordsLock);
   eventRecords = self->_eventRecords;
   if (eventRecords)
   {
-    v10 = [NSNumber numberWithUnsignedLongLong:a3];
-    v11 = [NSNumber numberWithUnsignedInt:v5 | (v6 << 16)];
+    v10 = [NSNumber numberWithUnsignedLongLong:d];
+    v11 = [NSNumber numberWithUnsignedInt:usageCopy | (pageCopy << 16)];
     v12 = [(NSMutableDictionary *)eventRecords->_usagePairsPerSenderID objectForKeyedSubscript:v10];
     v13 = [v12 objectForKeyedSubscript:v11];
     sub_1000141C0(eventRecords, v12, v10, v11);
@@ -116,11 +116,11 @@
     {
       v16 = sub_10000857C(v13);
       *buf = 67109890;
-      v30 = v6;
+      v30 = pageCopy;
       v31 = 1024;
-      v32 = v5;
+      v32 = usageCopy;
       v33 = 2048;
-      v34 = a3;
+      dCopy2 = d;
       v35 = 2114;
       v36 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, " 0x%X/0x%X/%llX soft cancel: %{public}@", buf, 0x22u);
@@ -167,19 +167,19 @@
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109632;
-    v30 = v6;
+    v30 = pageCopy;
     v31 = 1024;
-    v32 = v5;
+    v32 = usageCopy;
     v33 = 2048;
-    v34 = a3;
+    dCopy2 = d;
     _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "0x%X/0x%X/%llX soft cancel: no event found, ignoring request", buf, 0x18u);
   }
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v9 = a4;
-  v10 = a5;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
   if (!self->_keyboardEventProcessor)
   {
     v11 = +[BKHIDEventProcessorRegistry sharedInstance];
@@ -188,7 +188,7 @@
     self->_keyboardEventProcessor = v12;
   }
 
-  v14 = *a3;
+  v14 = *event;
   SenderID = IOHIDEventGetSenderID();
   IntegerValue = IOHIDEventGetIntegerValue();
   v17 = IOHIDEventGetIntegerValue();
@@ -196,11 +196,11 @@
   Phase = IOHIDEventGetPhase();
   if (IntegerValue == 11 && v17 == 46)
   {
-    [(BKButtonHIDEventProcessor *)self _processRingerSwitchEvent:v14 down:v65 != 0 sender:v9 dispatcher:v10];
+    [(BKButtonHIDEventProcessor *)self _processRingerSwitchEvent:v14 down:v65 != 0 sender:senderCopy dispatcher:dispatcherCopy];
     goto LABEL_59;
   }
 
-  obj = a5;
+  obj = dispatcher;
   LODWORD(v61) = IntegerValue;
   os_unfair_lock_lock(&self->_eventRecordsLock);
   eventRecords = self->_eventRecords;
@@ -310,7 +310,7 @@ LABEL_37:
     goto LABEL_49;
   }
 
-  v26 = [v10 destinationsForEvent:v14 fromSender:v9];
+  v26 = [dispatcherCopy destinationsForEvent:v14 fromSender:senderCopy];
   if (!v26)
   {
     v26 = +[NSSet set];
@@ -321,7 +321,7 @@ LABEL_37:
   if (v27)
   {
     objc_storeStrong(&v27->_eventDispatcher, obj);
-    objc_storeStrong((v25 + 16), a4);
+    objc_storeStrong((v25 + 16), sender);
     +[NSDate timeIntervalSinceReferenceDate];
     *(v25 + 40) = v28;
     objc_storeStrong((v25 + 32), v26);
@@ -437,7 +437,7 @@ LABEL_49:
           objc_enumerationMutation(v55);
         }
 
-        [(BKButtonHIDEventProcessor *)self _postEvent:v14 sender:v9 dispatcher:v10 destination:*(*(&v67 + 1) + 8 * i) cancelled:Phase == 8];
+        [(BKButtonHIDEventProcessor *)self _postEvent:v14 sender:senderCopy dispatcher:dispatcherCopy destination:*(*(&v67 + 1) + 8 * i) cancelled:Phase == 8];
       }
 
       v57 = [v55 countByEnumeratingWithState:&v67 objects:v71 count:16];
@@ -450,9 +450,9 @@ LABEL_59:
   return 1;
 }
 
-- (BKButtonHIDEventProcessor)initWithContext:(id)a3
+- (BKButtonHIDEventProcessor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = BKButtonHIDEventProcessor;
   v5 = [(BKButtonHIDEventProcessor *)&v15 init];
@@ -460,12 +460,12 @@ LABEL_59:
   if (v5)
   {
     v5->_eventRecordsLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 systemInterface];
+    systemInterface = [contextCopy systemInterface];
     KeyboardEvent = IOHIDEventCreateKeyboardEvent();
     if (KeyboardEvent)
     {
       v9 = KeyboardEvent;
-      v10 = [v7 systemEventOfType:3 matchingEvent:KeyboardEvent options:0];
+      v10 = [systemInterface systemEventOfType:3 matchingEvent:KeyboardEvent options:0];
       if (v10)
       {
         v11 = v10;

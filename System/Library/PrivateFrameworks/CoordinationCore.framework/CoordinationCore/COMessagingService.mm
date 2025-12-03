@@ -1,48 +1,48 @@
 @interface COMessagingService
-+ (id)serviceWithDelegate:(id)a3;
-- (BOOL)_applicableToCluster:(id)a3;
-- (COMessagingService)initWithListenerProvider:(id)a3 addOnProvider:(id)a4 delegate:(id)a5;
-- (void)_addOnAdded:(id)a3;
-- (void)_addOnRemoved:(id)a3;
-- (void)_clientLost:(id)a3;
-- (void)_completeActivationForClient:(id)a3;
-- (void)_configureServiceInterfacesOnConnection:(id)a3;
-- (void)activateMessageChannelForTopic:(id)a3 cluster:(id)a4 handlers:(id)a5 withCompletion:(id)a6;
-- (void)addOn:(id)a3 receivedRequest:(id)a4 callback:(id)a5;
-- (void)sessionEndedForSubTopic:(id)a3;
++ (id)serviceWithDelegate:(id)delegate;
+- (BOOL)_applicableToCluster:(id)cluster;
+- (COMessagingService)initWithListenerProvider:(id)provider addOnProvider:(id)onProvider delegate:(id)delegate;
+- (void)_addOnAdded:(id)added;
+- (void)_addOnRemoved:(id)removed;
+- (void)_clientLost:(id)lost;
+- (void)_completeActivationForClient:(id)client;
+- (void)_configureServiceInterfacesOnConnection:(id)connection;
+- (void)activateMessageChannelForTopic:(id)topic cluster:(id)cluster handlers:(id)handlers withCompletion:(id)completion;
+- (void)addOn:(id)on receivedRequest:(id)request callback:(id)callback;
+- (void)sessionEndedForSubTopic:(id)topic;
 @end
 
 @implementation COMessagingService
 
-+ (id)serviceWithDelegate:(id)a3
++ (id)serviceWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = [[COServiceListenerProvider alloc] initWithServiceName:@"com.apple.coordination.messaging" entitlement:@"com.apple.private.coordination.messaging"];
   v5 = objc_alloc_init(COMessagingAddOnProvider);
-  v6 = [[COMessagingService alloc] initWithListenerProvider:v4 addOnProvider:v5 delegate:v3];
+  v6 = [[COMessagingService alloc] initWithListenerProvider:v4 addOnProvider:v5 delegate:delegateCopy];
 
   return v6;
 }
 
-- (COMessagingService)initWithListenerProvider:(id)a3 addOnProvider:(id)a4 delegate:(id)a5
+- (COMessagingService)initWithListenerProvider:(id)provider addOnProvider:(id)onProvider delegate:(id)delegate
 {
   v26 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = COMessagingService;
-  v5 = [(COService *)&v21 initWithListenerProvider:a3 addOnProvider:a4 delegate:a5];
+  v5 = [(COService *)&v21 initWithListenerProvider:provider addOnProvider:onProvider delegate:delegate];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     connectedClients = v5->_connectedClients;
-    v5->_connectedClients = v6;
+    v5->_connectedClients = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     requestHandlers = v5->_requestHandlers;
-    v5->_requestHandlers = v8;
+    v5->_requestHandlers = dictionary2;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     outstandingActivateCompletionHandlers = v5->_outstandingActivateCompletionHandlers;
-    v5->_outstandingActivateCompletionHandlers = v10;
+    v5->_outstandingActivateCompletionHandlers = dictionary3;
 
     v12 = objc_alloc_init(_COMessagingServiceMeter);
     meter = v5->_meter;
@@ -51,18 +51,18 @@
     v14 = COCoreLogForCategory(10);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(_COMessagingServiceMeter *)v5->_meter limits];
+      limits = [(_COMessagingServiceMeter *)v5->_meter limits];
       *buf = 134218242;
       v23 = v5;
       v24 = 2112;
-      v25 = v15;
+      v25 = limits;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p limiting %@", buf, 0x16u);
     }
 
-    v16 = [(_COMessagingServiceMeter *)v5->_meter peaks];
-    v17 = [v16 allKeys];
+    peaks = [(_COMessagingServiceMeter *)v5->_meter peaks];
+    allKeys = [peaks allKeys];
 
-    if ([v17 count])
+    if ([allKeys count])
     {
       v18 = COCoreLogForCategory(10);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@
         *buf = 134218242;
         v23 = v5;
         v24 = 2112;
-        v25 = v17;
+        v25 = allKeys;
         _os_log_impl(&dword_244378000, v18, OS_LOG_TYPE_DEFAULT, "%p evaluating sizing for %@", buf, 0x16u);
       }
     }
@@ -82,12 +82,12 @@
   return v5;
 }
 
-- (void)_configureServiceInterfacesOnConnection:(id)a3
+- (void)_configureServiceInterfacesOnConnection:(id)connection
 {
   v14.receiver = self;
   v14.super_class = COMessagingService;
-  v4 = a3;
-  [(COService *)&v14 _configureServiceInterfacesOnConnection:v4];
+  connectionCopy = connection;
+  [(COService *)&v14 _configureServiceInterfacesOnConnection:connectionCopy];
   v5 = MEMORY[0x277CCAE90];
   v6 = &unk_2857D7AB8;
   v7 = [v5 interfaceWithProtocol:v6];
@@ -96,45 +96,45 @@
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0, v14.receiver, v14.super_class}];
   [v7 setClasses:v10 forSelector:sel_sendRequestWithPayload_payloadType_requestType_requestID_members_activityToken_ argumentIndex:4 ofReply:0];
   [v7 setXPCType:MEMORY[0x277D864D0] forSelector:sel_sendRequestWithPayload_payloadType_requestType_requestID_members_activityToken_ argumentIndex:5 ofReply:0];
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
   v11 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
 
   [v7 setClasses:v11 forSelector:sel_sessionStartedForSubTopic_withMember_produced_ argumentIndex:1 ofReply:0];
-  [v4 setExportedInterface:v7];
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
   v12 = &unk_2857E65B8;
 
   v13 = [MEMORY[0x277CCAE90] interfaceWithProtocol:v12];
 
-  [v4 setRemoteObjectInterface:v13];
+  [connectionCopy setRemoteObjectInterface:v13];
 }
 
-- (void)_clientLost:(id)a3
+- (void)_clientLost:(id)lost
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COMessagingService *)self connectedClients];
-  v53 = v4;
-  v6 = [v5 objectForKey:v4];
+  lostCopy = lost;
+  connectedClients = [(COMessagingService *)self connectedClients];
+  v53 = lostCopy;
+  v6 = [connectedClients objectForKey:lostCopy];
 
   v7 = COCoreLogForCategory(10);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 client];
-    v9 = [v8 connection];
+    client = [v6 client];
+    connection = [client connection];
     *buf = 134218240;
-    v74 = self;
+    selfCopy = self;
     v75 = 1024;
-    LODWORD(v76) = [v9 processIdentifier];
+    LODWORD(v76) = [connection processIdentifier];
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p Lost client %d", buf, 0x12u);
   }
 
-  v61 = [v6 topic];
-  v10 = [v6 cluster];
+  topic = [v6 topic];
+  cluster = [v6 cluster];
   group = dispatch_group_create();
-  v49 = v10;
-  v50 = self;
-  v11 = [(COService *)self _addOnForCluster:v10];
+  v49 = cluster;
+  selfCopy2 = self;
+  v11 = [(COService *)self _addOnForCluster:cluster];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -156,12 +156,12 @@
         }
 
         v13 = *(*(&v69 + 1) + 8 * i);
-        v14 = [v6 sessions];
-        v15 = [v14 objectForKey:v13];
+        sessions = [v6 sessions];
+        v15 = [sessions objectForKey:v13];
 
-        v16 = [v15 member];
+        member = [v15 member];
         v17 = [MEMORY[0x277CCA9B8] errorWithDomain:v54 code:-1211 userInfo:0];
-        v18 = [objc_alloc(MEMORY[0x277CFD0E0]) initWithCommandType:2 error:v17 topic:v61 subTopic:v13];
+        v18 = [objc_alloc(MEMORY[0x277CFD0E0]) initWithCommandType:2 error:v17 topic:topic subTopic:v13];
         v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
         if ([v15 producedSession])
         {
@@ -173,15 +173,15 @@
           [MEMORY[0x277CCACA8] _commandTypeForProducerWithSubTopic:v13];
         }
         v20 = ;
-        v21 = [[COMessagingRequest alloc] initWithRequestID:arc4random() requestType:0 payload:v19 payloadType:v20 topic:v61];
+        v21 = [[COMessagingRequest alloc] initWithRequestID:arc4random() requestType:0 payload:v19 payloadType:v20 topic:topic];
         if (v11)
         {
           dispatch_group_enter(group);
-          [MEMORY[0x277CBEB98] setWithObject:v16];
+          [MEMORY[0x277CBEB98] setWithObject:member];
           v60 = v19;
           v22 = v18;
           v23 = v17;
-          v25 = v24 = v16;
+          v25 = v24 = member;
           v67[0] = MEMORY[0x277D85DD0];
           v67[1] = 3221225472;
           v67[2] = __34__COMessagingService__clientLost___block_invoke;
@@ -189,7 +189,7 @@
           v68 = group;
           [v11 sendRequest:v21 members:v25 withCompletionHandler:v67];
 
-          v16 = v24;
+          member = v24;
           v17 = v23;
           v18 = v22;
           v19 = v60;
@@ -206,11 +206,11 @@
 
   v26 = dispatch_walltime(0, 10000000000);
   dispatch_group_wait(group, v26);
-  v27 = v50;
-  v28 = [(COMessagingService *)v50 requestHandlers];
+  v27 = selfCopy2;
+  requestHandlers = [(COMessagingService *)selfCopy2 requestHandlers];
   v29 = v49;
-  v30 = [v28 objectForKey:v49];
-  v31 = [v30 objectForKey:v61];
+  v30 = [requestHandlers objectForKey:v49];
+  v31 = [v30 objectForKey:topic];
 
   if (v31)
   {
@@ -246,7 +246,7 @@
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218498;
-              v74 = v50;
+              selfCopy = selfCopy2;
               v75 = 2112;
               v76 = v53;
               v77 = 2112;
@@ -265,24 +265,24 @@
     }
 
     v42 = [v32 count];
-    v27 = v50;
-    v43 = [(COMessagingService *)v50 requestHandlers];
+    v27 = selfCopy2;
+    requestHandlers2 = [(COMessagingService *)selfCopy2 requestHandlers];
     v29 = v49;
-    v44 = [v43 objectForKey:v49];
-    v45 = v44;
+    v44 = [requestHandlers2 objectForKey:v49];
+    requestHandlers4 = v44;
     if (v42)
     {
-      [v44 setObject:v32 forKey:v61];
+      [v44 setObject:v32 forKey:topic];
     }
 
     else
     {
-      [v44 removeObjectForKey:v61];
+      [v44 removeObjectForKey:topic];
 
-      v46 = [(COMessagingService *)v50 requestHandlers];
-      v43 = [v46 objectForKey:v49];
+      requestHandlers3 = [(COMessagingService *)selfCopy2 requestHandlers];
+      requestHandlers2 = [requestHandlers3 objectForKey:v49];
 
-      if ([v43 count])
+      if ([requestHandlers2 count])
       {
         v6 = v57;
         v11 = v59;
@@ -290,8 +290,8 @@
         goto LABEL_32;
       }
 
-      v45 = [(COMessagingService *)v50 requestHandlers];
-      [v45 removeObjectForKey:v49];
+      requestHandlers4 = [(COMessagingService *)selfCopy2 requestHandlers];
+      [requestHandlers4 removeObjectForKey:v49];
     }
 
     v6 = v57;
@@ -302,8 +302,8 @@ LABEL_32:
   }
 
   [(COService *)v27 _releaseAssertionForCluster:v29];
-  v47 = [(COMessagingService *)v27 connectedClients];
-  [v47 removeObjectForKey:v53];
+  connectedClients2 = [(COMessagingService *)v27 connectedClients];
+  [connectedClients2 removeObjectForKey:v53];
 
   v62.receiver = v27;
   v62.super_class = COMessagingService;
@@ -312,37 +312,37 @@ LABEL_32:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateMessageChannelForTopic:(id)a3 cluster:(id)a4 handlers:(id)a5 withCompletion:(id)a6
+- (void)activateMessageChannelForTopic:(id)topic cluster:(id)cluster handlers:(id)handlers withCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  topicCopy = topic;
+  clusterCopy = cluster;
+  handlersCopy = handlers;
+  completionCopy = completion;
   v14 = COCoreLogForCategory(10);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v10;
+    v27 = topicCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = clusterCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = handlersCopy;
     _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p Activate message channel for topic %@ and cluster %@ with handlers %@", buf, 0x2Au);
   }
 
-  v15 = [(COService *)self currentClient];
-  v16 = [[COMessagingClientInfo alloc] initWithTopic:v10 cluster:v11 handledClasses:v12 client:v15 activateCompletionHanlder:v13];
-  [(COService *)self _takeAssertionForCluster:v11];
+  currentClient = [(COService *)self currentClient];
+  v16 = [[COMessagingClientInfo alloc] initWithTopic:topicCopy cluster:clusterCopy handledClasses:handlersCopy client:currentClient activateCompletionHanlder:completionCopy];
+  [(COService *)self _takeAssertionForCluster:clusterCopy];
   objc_initWeak(buf, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_withCompletion___block_invoke;
   v20[3] = &unk_278E181F8;
   objc_copyWeak(&v23, buf);
-  v17 = v11;
+  v17 = clusterCopy;
   v21 = v17;
   v18 = v16;
   v22 = v18;
@@ -403,33 +403,33 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeActivationForClient:(id)a3
+- (void)_completeActivationForClient:(id)client
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 client];
-  if (v5)
+  clientCopy = client;
+  client = [clientCopy client];
+  if (client)
   {
-    v38 = [v4 completionHandler];
-    [v4 setCompletionHandler:0];
-    v37 = [(COMessagingService *)self meter];
-    v36 = [v5 clientBundleIdentifier];
-    v6 = [v4 topic];
-    v7 = [v4 cluster];
-    v8 = [(COMessagingService *)self connectedClients];
-    v43 = v5;
-    [v8 setObject:v4 forKey:v5];
+    completionHandler = [clientCopy completionHandler];
+    [clientCopy setCompletionHandler:0];
+    meter = [(COMessagingService *)self meter];
+    clientBundleIdentifier = [client clientBundleIdentifier];
+    topic = [clientCopy topic];
+    cluster = [clientCopy cluster];
+    connectedClients = [(COMessagingService *)self connectedClients];
+    v43 = client;
+    [connectedClients setObject:clientCopy forKey:client];
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v39 = v4;
-    v9 = v4;
-    v10 = v6;
+    v39 = clientCopy;
+    v9 = clientCopy;
+    v10 = topic;
     obj = [v9 handledClasses];
     v11 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
-    v41 = v6;
+    v41 = topic;
     if (v11)
     {
       v12 = v11;
@@ -444,13 +444,13 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
           }
 
           v14 = *(*(&v44 + 1) + 8 * i);
-          v15 = [(COMessagingService *)self requestHandlers];
-          v16 = [v15 objectForKey:v7];
+          requestHandlers = [(COMessagingService *)self requestHandlers];
+          v16 = [requestHandlers objectForKey:cluster];
 
           if (v16)
           {
             v17 = [v16 objectForKeyedSubscript:v10];
-            v18 = v17;
+            dictionary = v17;
             if (v17)
             {
               v19 = [v17 objectForKeyedSubscript:v14];
@@ -470,17 +470,17 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
                 v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
                 v34 = [v31 errorWithDomain:v32 code:-1100 userInfo:v33];
 
-                v27 = v36;
-                v26 = v37;
-                v28 = v38;
-                (*(v38 + 16))(v38, v34, [v37 sendLimitForIdentifier:v36], objc_msgSend(v37, "receiveLimitForIdentifier:", v36));
+                v27 = clientBundleIdentifier;
+                v26 = meter;
+                v28 = completionHandler;
+                (*(completionHandler + 16))(completionHandler, v34, [meter sendLimitForIdentifier:clientBundleIdentifier], objc_msgSend(meter, "receiveLimitForIdentifier:", clientBundleIdentifier));
 
                 goto LABEL_20;
               }
 
-              v20 = [(COMessagingService *)self requestHandlers];
-              v21 = [v20 objectForKey:v7];
-              v22 = [v21 objectForKey:v10];
+              requestHandlers2 = [(COMessagingService *)self requestHandlers];
+              requestHandlers3 = [requestHandlers2 objectForKey:cluster];
+              v22 = [requestHandlers3 objectForKey:v10];
               v23 = v22;
               v24 = v43;
               v25 = v14;
@@ -488,13 +488,13 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
 
             else
             {
-              v20 = [MEMORY[0x277CBEB38] dictionary];
-              [v20 setObject:v43 forKey:v14];
-              v21 = [(COMessagingService *)self requestHandlers];
-              v22 = [v21 objectForKey:v7];
+              requestHandlers2 = [MEMORY[0x277CBEB38] dictionary];
+              [requestHandlers2 setObject:v43 forKey:v14];
+              requestHandlers3 = [(COMessagingService *)self requestHandlers];
+              v22 = [requestHandlers3 objectForKey:cluster];
               v25 = v10;
               v23 = v22;
-              v24 = v20;
+              v24 = requestHandlers2;
             }
 
             [v22 setObject:v24 forKey:v25];
@@ -504,12 +504,12 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
 
           else
           {
-            v18 = [MEMORY[0x277CBEB38] dictionary];
-            v20 = [MEMORY[0x277CBEB38] dictionary];
-            [v20 setObject:v43 forKey:v14];
-            [v18 setObject:v20 forKey:v10];
-            v21 = [(COMessagingService *)self requestHandlers];
-            [v21 setObject:v18 forKey:v7];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
+            requestHandlers2 = [MEMORY[0x277CBEB38] dictionary];
+            [requestHandlers2 setObject:v43 forKey:v14];
+            [dictionary setObject:requestHandlers2 forKey:v10];
+            requestHandlers3 = [(COMessagingService *)self requestHandlers];
+            [requestHandlers3 setObject:dictionary forKey:cluster];
           }
         }
 
@@ -523,13 +523,13 @@ void __85__COMessagingService_activateMessageChannelForTopic_cluster_handlers_wi
       }
     }
 
-    v27 = v36;
-    v26 = v37;
-    v28 = v38;
-    (*(v38 + 16))(v38, 0, [v37 sendLimitForIdentifier:v36], objc_msgSend(v37, "receiveLimitForIdentifier:", v36));
+    v27 = clientBundleIdentifier;
+    v26 = meter;
+    v28 = completionHandler;
+    (*(completionHandler + 16))(completionHandler, 0, [meter sendLimitForIdentifier:clientBundleIdentifier], objc_msgSend(meter, "receiveLimitForIdentifier:", clientBundleIdentifier));
 LABEL_20:
-    v4 = v39;
-    v5 = v43;
+    clientCopy = v39;
+    client = v43;
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -819,38 +819,38 @@ void __101__COMessagingService_sendRequestWithPayload_payloadType_requestType_re
   }
 }
 
-- (void)sessionEndedForSubTopic:(id)a3
+- (void)sessionEndedForSubTopic:(id)topic
 {
-  v8 = a3;
-  v4 = [(COService *)self currentClient];
-  v5 = [(COMessagingService *)self connectedClients];
-  v6 = [v5 objectForKey:v4];
+  topicCopy = topic;
+  currentClient = [(COService *)self currentClient];
+  connectedClients = [(COMessagingService *)self connectedClients];
+  v6 = [connectedClients objectForKey:currentClient];
 
   if (v6)
   {
-    v7 = [v6 sessions];
-    [v7 removeObjectForKey:v8];
+    sessions = [v6 sessions];
+    [sessions removeObjectForKey:topicCopy];
   }
 }
 
-- (void)addOn:(id)a3 receivedRequest:(id)a4 callback:(id)a5
+- (void)addOn:(id)on receivedRequest:(id)request callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  requestCopy = request;
+  callbackCopy = callback;
+  dispatchQueue = [(COService *)self dispatchQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__COMessagingService_addOn_receivedRequest_callback___block_invoke;
   v15[3] = &unk_278E15D00;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = requestCopy;
+  selfCopy = self;
+  v18 = onCopy;
+  v19 = callbackCopy;
+  v12 = callbackCopy;
+  v13 = onCopy;
+  v14 = requestCopy;
+  dispatch_async(dispatchQueue, v15);
 }
 
 void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke(uint64_t a1)
@@ -1080,18 +1080,18 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
   v6();
 }
 
-- (void)_addOnAdded:(id)a3
+- (void)_addOnAdded:(id)added
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setDelegate:self];
-  v20 = v4;
-  v5 = [(COService *)self _clustersForAddOn:v4];
+  addedCopy = added;
+  [addedCopy setDelegate:self];
+  v20 = addedCopy;
+  v5 = [(COService *)self _clustersForAddOn:addedCopy];
   v6 = COCoreLogForCategory(10);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 2112;
     v38 = v5;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p Add-on added for clusters %@", buf, 0x16u);
@@ -1118,8 +1118,8 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
 
         v24 = v7;
         v8 = *(*(&v29 + 1) + 8 * v7);
-        v9 = [(COMessagingService *)self outstandingActivateCompletionHandlers];
-        v10 = [v9 objectForKey:v8];
+        outstandingActivateCompletionHandlers = [(COMessagingService *)self outstandingActivateCompletionHandlers];
+        v10 = [outstandingActivateCompletionHandlers objectForKey:v8];
 
         v27 = 0u;
         v28 = 0u;
@@ -1145,7 +1145,7 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218242;
-                v36 = self;
+                selfCopy2 = self;
                 v37 = 2112;
                 v38 = v8;
                 _os_log_impl(&dword_244378000, v17, OS_LOG_TYPE_DEFAULT, "%p Invoking clients waiting on message channel activation for cluster %@", buf, 0x16u);
@@ -1162,8 +1162,8 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
 
         if (v11)
         {
-          v18 = [(COMessagingService *)self outstandingActivateCompletionHandlers];
-          [v18 removeObjectForKey:v8];
+          outstandingActivateCompletionHandlers2 = [(COMessagingService *)self outstandingActivateCompletionHandlers];
+          [outstandingActivateCompletionHandlers2 removeObjectForKey:v8];
         }
 
         v7 = v24 + 1;
@@ -1179,18 +1179,18 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addOnRemoved:(id)a3
+- (void)_addOnRemoved:(id)removed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setDelegate:0];
-  v5 = [(COService *)self _clustersForAddOn:v4];
+  removedCopy = removed;
+  [removedCopy setDelegate:0];
+  v5 = [(COService *)self _clustersForAddOn:removedCopy];
 
   v6 = COCoreLogForCategory(10);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v5;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p Add-on removed for clusters %@", &v8, 0x16u);
@@ -1199,10 +1199,10 @@ void __53__COMessagingService_addOn_receivedRequest_callback___block_invoke_2(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_applicableToCluster:(id)a3
+- (BOOL)_applicableToCluster:(id)cluster
 {
-  v3 = [a3 configuration];
-  v4 = ([v3 requiredServices] >> 3) & 1;
+  configuration = [cluster configuration];
+  v4 = ([configuration requiredServices] >> 3) & 1;
 
   return v4;
 }

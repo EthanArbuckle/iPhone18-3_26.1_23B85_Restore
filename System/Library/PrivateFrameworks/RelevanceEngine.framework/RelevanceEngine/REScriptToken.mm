@@ -1,35 +1,35 @@
 @interface REScriptToken
-- (BOOL)isEqual:(id)a3;
-- (REScriptToken)initWithValue:(id)a3 type:(unint64_t)a4 line:(int64_t)a5 column:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REScriptToken)initWithValue:(id)value type:(unint64_t)type line:(int64_t)line column:(int64_t)column;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REScriptToken
 
-- (REScriptToken)initWithValue:(id)a3 type:(unint64_t)a4 line:(int64_t)a5 column:(int64_t)a6
+- (REScriptToken)initWithValue:(id)value type:(unint64_t)type line:(int64_t)line column:(int64_t)column
 {
-  v10 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = REScriptToken;
   v11 = [(REScriptToken *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [valueCopy copy];
     value = v11->_value;
     v11->_value = v12;
 
-    v11->_type = a4;
-    v11->_line = a5;
-    v11->_column = a6;
+    v11->_type = type;
+    v11->_line = line;
+    v11->_column = column;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_type == v5->_type && self->_line == v5->_line && self->_column == v5->_column)
       {
@@ -73,9 +73,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   value = self->_value;
   type = self->_type;
   line = self->_line;

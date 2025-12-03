@@ -1,12 +1,12 @@
 @interface SFInvokeSiriCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFInvokeSiriCommand)initWithCoder:(id)a3;
-- (SFInvokeSiriCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFInvokeSiriCommand)initWithCoder:(id)coder;
+- (SFInvokeSiriCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFInvokeSiriCommand
@@ -16,33 +16,33 @@
   v8.receiver = self;
   v8.super_class = SFInvokeSiriCommand;
   v3 = [(SFCommand *)&v8 hash];
-  v4 = [(SFInvokeSiriCommand *)self utteranceText];
-  v5 = [v4 hash];
+  utteranceText = [(SFInvokeSiriCommand *)self utteranceText];
+  v5 = [utteranceText hash];
   v6 = v5 ^ [(SFInvokeSiriCommand *)self serviceProvider];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFInvokeSiriCommand *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFInvokeSiriCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFInvokeSiriCommand;
-      if ([(SFCommand *)&v14 isEqual:v6])
+      if ([(SFCommand *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFInvokeSiriCommand *)self utteranceText];
-        v9 = [(SFInvokeSiriCommand *)v7 utteranceText];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        utteranceText = [(SFInvokeSiriCommand *)self utteranceText];
+        utteranceText2 = [(SFInvokeSiriCommand *)v7 utteranceText];
+        if ((utteranceText != 0) == (utteranceText2 == 0))
         {
           v11 = 0;
 LABEL_14:
@@ -50,12 +50,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFInvokeSiriCommand *)self utteranceText];
-        if (!v10 || (-[SFInvokeSiriCommand utteranceText](self, "utteranceText"), v3 = objc_claimAutoreleasedReturnValue(), -[SFInvokeSiriCommand utteranceText](v7, "utteranceText"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        utteranceText3 = [(SFInvokeSiriCommand *)self utteranceText];
+        if (!utteranceText3 || (-[SFInvokeSiriCommand utteranceText](self, "utteranceText"), v3 = objc_claimAutoreleasedReturnValue(), -[SFInvokeSiriCommand utteranceText](v7, "utteranceText"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFInvokeSiriCommand *)self serviceProvider];
-          v11 = v12 == [(SFInvokeSiriCommand *)v7 serviceProvider];
-          if (!v10)
+          serviceProvider = [(SFInvokeSiriCommand *)self serviceProvider];
+          v11 = serviceProvider == [(SFInvokeSiriCommand *)v7 serviceProvider];
+          if (!utteranceText3)
           {
 LABEL_13:
 
@@ -80,13 +80,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFInvokeSiriCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFInvokeSiriCommand *)self utteranceText];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  utteranceText = [(SFInvokeSiriCommand *)self utteranceText];
+  v6 = [utteranceText copy];
   [v4 setUtteranceText:v6];
 
   [v4 setServiceProvider:{-[SFInvokeSiriCommand serviceProvider](self, "serviceProvider")}];
@@ -96,76 +96,76 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBInvokeSiriCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBInvokeSiriCommand *)v2 jsonData];
+  jsonData = [(_SFPBInvokeSiriCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBInvokeSiriCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBInvokeSiriCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBInvokeSiriCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFInvokeSiriCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFInvokeSiriCommand)initWithCoder:(id)a3
+- (SFInvokeSiriCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFInvokeSiriCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 utteranceText];
-    [(SFInvokeSiriCommand *)v5 setUtteranceText:v9];
+    utteranceText = [(SFCommand *)v8 utteranceText];
+    [(SFInvokeSiriCommand *)v5 setUtteranceText:utteranceText];
 
     [(SFInvokeSiriCommand *)v5 setServiceProvider:[(SFCommand *)v8 serviceProvider]];
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFInvokeSiriCommand)initWithProtobuf:(id)a3
+- (SFInvokeSiriCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFInvokeSiriCommand;
   v5 = [(SFInvokeSiriCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 utteranceText];
+    utteranceText = [protobufCopy utteranceText];
 
-    if (v6)
+    if (utteranceText)
     {
-      v7 = [v4 utteranceText];
-      [(SFInvokeSiriCommand *)v5 setUtteranceText:v7];
+      utteranceText2 = [protobufCopy utteranceText];
+      [(SFInvokeSiriCommand *)v5 setUtteranceText:utteranceText2];
     }
 
-    if ([v4 serviceProvider])
+    if ([protobufCopy serviceProvider])
     {
-      -[SFInvokeSiriCommand setServiceProvider:](v5, "setServiceProvider:", [v4 serviceProvider]);
+      -[SFInvokeSiriCommand setServiceProvider:](v5, "setServiceProvider:", [protobufCopy serviceProvider]);
     }
 
     v8 = v5;

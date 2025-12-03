@@ -1,7 +1,7 @@
 @interface JSPlistObject
 - (_TtC9JetEngine13JSPlistObject)init;
-- (id)parse:(id)a3;
-- (id)stringify:(id)a3 :(id)a4;
+- (id)parse:(id)parse;
+- (id)stringify:(id)stringify :(id)a4;
 @end
 
 @implementation JSPlistObject
@@ -13,21 +13,21 @@
   return [(JSPlistObject *)&v3 init];
 }
 
-- (id)parse:(id)a3
+- (id)parse:(id)parse
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB1F7DF4(v4);
+  parseCopy = parse;
+  selfCopy = self;
+  v6 = sub_1AB1F7DF4(parseCopy);
 
   return v6;
 }
 
-- (id)stringify:(id)a3 :(id)a4
+- (id)stringify:(id)stringify :(id)a4
 {
-  v6 = a3;
+  stringifyCopy = stringify;
   v7 = a4;
-  v8 = self;
-  v9 = sub_1AB1F7F58(v6, v7);
+  selfCopy = self;
+  v9 = sub_1AB1F7F58(stringifyCopy, v7);
 
   return v9;
 }

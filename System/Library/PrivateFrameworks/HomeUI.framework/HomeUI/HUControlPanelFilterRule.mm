@@ -1,42 +1,42 @@
 @interface HUControlPanelFilterRule
-+ (id)ruleWithFilter:(id)a3;
-- (BOOL)ruleMatchesItem:(id)a3;
-- (HUControlPanelFilterRule)initWithFilter:(id)a3;
++ (id)ruleWithFilter:(id)filter;
+- (BOOL)ruleMatchesItem:(id)item;
+- (HUControlPanelFilterRule)initWithFilter:(id)filter;
 @end
 
 @implementation HUControlPanelFilterRule
 
-+ (id)ruleWithFilter:(id)a3
++ (id)ruleWithFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFilter:v4];
+  filterCopy = filter;
+  v5 = [[self alloc] initWithFilter:filterCopy];
 
   return v5;
 }
 
-- (HUControlPanelFilterRule)initWithFilter:(id)a3
+- (HUControlPanelFilterRule)initWithFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v8.receiver = self;
   v8.super_class = HUControlPanelFilterRule;
   v5 = [(HUControlPanelFilterRule *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUControlPanelFilterRule *)v5 setFilter:v4];
+    [(HUControlPanelFilterRule *)v5 setFilter:filterCopy];
   }
 
   return v6;
 }
 
-- (BOOL)ruleMatchesItem:(id)a3
+- (BOOL)ruleMatchesItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUControlPanelFilterRule *)self filter];
-  if (v5)
+  itemCopy = item;
+  filter = [(HUControlPanelFilterRule *)self filter];
+  if (filter)
   {
-    v6 = [(HUControlPanelFilterRule *)self filter];
-    v7 = (v6)[2](v6, v4);
+    filter2 = [(HUControlPanelFilterRule *)self filter];
+    v7 = (filter2)[2](filter2, itemCopy);
   }
 
   else

@@ -1,6 +1,6 @@
 @interface FCSportsPrivacyConfiguration
 - (FCSportsPrivacyConfiguration)init;
-- (FCSportsPrivacyConfiguration)initWithConfigDictionary:(id)a3;
+- (FCSportsPrivacyConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCSportsPrivacyConfiguration
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (FCSportsPrivacyConfiguration)initWithConfigDictionary:(id)a3
+- (FCSportsPrivacyConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FCSportsPrivacyConfiguration;
   v5 = [(FCSportsPrivacyConfiguration *)&v11 init];
   if (v5)
   {
-    v5->_isHeadlineExposureTrackingDisabled = [FCFeatureEnablementChecker enabledForCurrentLevel:FCAppConfigurationIntegerValue(v4, @"disableHeadlineExposureTrackingEnabledLevel", 0)];
-    v6 = FCAppConfigurationNumberValue(v4, @"syncEventSamplingRate", &unk_1F2E71BA8);
+    v5->_isHeadlineExposureTrackingDisabled = [FCFeatureEnablementChecker enabledForCurrentLevel:FCAppConfigurationIntegerValue(dictionaryCopy, @"disableHeadlineExposureTrackingEnabledLevel", 0)];
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"syncEventSamplingRate", &unk_1F2E71BA8);
     [v6 floatValue];
     v5->_syncEventSamplingRate = v7;
 
-    v8 = FCAppConfigurationNumberValue(v4, @"headlineExposureNoiseRate", &unk_1F2E71BB8);
+    v8 = FCAppConfigurationNumberValue(dictionaryCopy, @"headlineExposureNoiseRate", &unk_1F2E71BB8);
     [v8 floatValue];
     v5->_headlineExposureNoiseRate = v9;
   }

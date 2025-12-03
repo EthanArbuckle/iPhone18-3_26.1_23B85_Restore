@@ -1,7 +1,7 @@
 @interface AVCaptureMultiCamClientCompositingData
-- (id)_imageForGainMapSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (id)_imageForSampleBuffer:(opaqueCMSampleBuffer *)a3 gainMapMetadata:(id)a4;
-- (id)_initWithPrimarySampleBuffer:(opaqueCMSampleBuffer *)a3 primaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)a4 secondarySampleBuffer:(opaqueCMSampleBuffer *)a5 secondaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)a6 outputSampleBuffer:(opaqueCMSampleBuffer *)a7 outputGainMapSampleBuffer:(opaqueCMSampleBuffer *)a8;
+- (id)_imageForGainMapSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (id)_imageForSampleBuffer:(opaqueCMSampleBuffer *)buffer gainMapMetadata:(id)metadata;
+- (id)_initWithPrimarySampleBuffer:(opaqueCMSampleBuffer *)buffer primaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer secondarySampleBuffer:(opaqueCMSampleBuffer *)secondarySampleBuffer secondaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)mapSampleBuffer outputSampleBuffer:(opaqueCMSampleBuffer *)outputSampleBuffer outputGainMapSampleBuffer:(opaqueCMSampleBuffer *)gainMapSampleBuffer;
 - (id)primaryGainMapImage;
 - (id)primaryImage;
 - (id)secondaryGainMapImage;
@@ -11,16 +11,16 @@
 
 @implementation AVCaptureMultiCamClientCompositingData
 
-- (id)_initWithPrimarySampleBuffer:(opaqueCMSampleBuffer *)a3 primaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)a4 secondarySampleBuffer:(opaqueCMSampleBuffer *)a5 secondaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)a6 outputSampleBuffer:(opaqueCMSampleBuffer *)a7 outputGainMapSampleBuffer:(opaqueCMSampleBuffer *)a8
+- (id)_initWithPrimarySampleBuffer:(opaqueCMSampleBuffer *)buffer primaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer secondarySampleBuffer:(opaqueCMSampleBuffer *)secondarySampleBuffer secondaryGainMapSampleBuffer:(opaqueCMSampleBuffer *)mapSampleBuffer outputSampleBuffer:(opaqueCMSampleBuffer *)outputSampleBuffer outputGainMapSampleBuffer:(opaqueCMSampleBuffer *)gainMapSampleBuffer
 {
   v22.receiver = self;
   v22.super_class = AVCaptureMultiCamClientCompositingData;
   v14 = [(AVCaptureMultiCamClientCompositingData *)&v22 init];
   if (v14)
   {
-    if (a3)
+    if (buffer)
     {
-      v15 = CFRetain(a3);
+      v15 = CFRetain(buffer);
     }
 
     else
@@ -29,9 +29,9 @@
     }
 
     v14->_primarySampleBuffer = v15;
-    if (a4)
+    if (sampleBuffer)
     {
-      v16 = CFRetain(a4);
+      v16 = CFRetain(sampleBuffer);
     }
 
     else
@@ -40,9 +40,9 @@
     }
 
     v14->_primaryGainMapSampleBuffer = v16;
-    if (a5)
+    if (secondarySampleBuffer)
     {
-      v17 = CFRetain(a5);
+      v17 = CFRetain(secondarySampleBuffer);
     }
 
     else
@@ -51,9 +51,9 @@
     }
 
     v14->_secondarySampleBuffer = v17;
-    if (a6)
+    if (mapSampleBuffer)
     {
-      v18 = CFRetain(a6);
+      v18 = CFRetain(mapSampleBuffer);
     }
 
     else
@@ -62,9 +62,9 @@
     }
 
     v14->_secondaryGainMapSampleBuffer = v18;
-    if (a7)
+    if (outputSampleBuffer)
     {
-      v19 = CFRetain(a7);
+      v19 = CFRetain(outputSampleBuffer);
     }
 
     else
@@ -73,9 +73,9 @@
     }
 
     v14->_outputSampleBuffer = v19;
-    if (a8)
+    if (gainMapSampleBuffer)
     {
-      v20 = CFRetain(a8);
+      v20 = CFRetain(gainMapSampleBuffer);
     }
 
     else
@@ -188,13 +188,13 @@
   return v4;
 }
 
-- (id)_imageForSampleBuffer:(opaqueCMSampleBuffer *)a3 gainMapMetadata:(id)a4
+- (id)_imageForSampleBuffer:(opaqueCMSampleBuffer *)buffer gainMapMetadata:(id)metadata
 {
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v6 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990DB0]];
-  v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6990E10]];
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  v6 = [metadata objectForKeyedSubscript:*MEMORY[0x1E6990DB0]];
+  v7 = [metadata objectForKeyedSubscript:*MEMORY[0x1E6990E10]];
   v8 = 0;
-  if (a4)
+  if (metadata)
   {
     if (v6 && v7 != 0)
     {
@@ -224,15 +224,15 @@
   return [v10 imageWithCVPixelBuffer:ImageBuffer options:{v13, v15, v16}];
 }
 
-- (id)_imageForGainMapSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)_imageForGainMapSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v5 = CMGetAttachment(a3, *MEMORY[0x1E6990DA8], 0);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  v5 = CMGetAttachment(buffer, *MEMORY[0x1E6990DA8], 0);
   v6 = MEMORY[0x1E695F658];
   v7 = *MEMORY[0x1E695F990];
   v13[0] = MEMORY[0x1E695E118];

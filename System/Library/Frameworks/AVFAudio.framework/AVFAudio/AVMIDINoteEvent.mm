@@ -1,18 +1,18 @@
 @interface AVMIDINoteEvent
 - (AVMIDINoteEvent)initWithChannel:(UInt32)channel key:(UInt32)keyNum velocity:(UInt32)velocity duration:(AVMusicTimeStamp)duration;
-- (AVMIDINoteEvent)initWithMessage:(MIDINoteMessage *)a3;
+- (AVMIDINoteEvent)initWithMessage:(MIDINoteMessage *)message;
 @end
 
 @implementation AVMIDINoteEvent
 
-- (AVMIDINoteEvent)initWithMessage:(MIDINoteMessage *)a3
+- (AVMIDINoteEvent)initWithMessage:(MIDINoteMessage *)message
 {
   v5.receiver = self;
   v5.super_class = AVMIDINoteEvent;
   result = [(AVMIDINoteEvent *)&v5 init];
   if (result)
   {
-    result->_msg = *a3;
+    result->_msg = *message;
   }
 
   return result;

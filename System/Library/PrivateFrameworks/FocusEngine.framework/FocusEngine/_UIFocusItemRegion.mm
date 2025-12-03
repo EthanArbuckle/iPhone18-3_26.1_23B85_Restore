@@ -1,38 +1,38 @@
 @interface _UIFocusItemRegion
 - (BOOL)_canBeOccludedByRegionsAbove;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIFocusItem)item;
-- (_UIFocusItemRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4 item:(id)a5 focusSystem:(id)a6;
+- (_UIFocusItemRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space item:(id)item focusSystem:(id)system;
 - (id)_debugAssociatedObject;
 - (id)_defaultFocusItem;
 - (id)_descriptionBuilder;
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4;
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space;
 - (int64_t)_preferredDistanceComparisonType;
 - (unint64_t)_focusableBoundaries;
 @end
 
 @implementation _UIFocusItemRegion
 
-- (_UIFocusItemRegion)initWithFrame:(CGRect)a3 coordinateSpace:(id)a4 item:(id)a5 focusSystem:(id)a6
+- (_UIFocusItemRegion)initWithFrame:(CGRect)frame coordinateSpace:(id)space item:(id)item focusSystem:(id)system
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
-  v14 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
+  systemCopy = system;
   v36.receiver = self;
   v36.super_class = _UIFocusItemRegion;
-  v15 = [(_UIFocusRegion *)&v36 initWithFrame:a4 coordinateSpace:x, y, width, height];
-  v16 = v15;
-  if (!v15)
+  height = [(_UIFocusRegion *)&v36 initWithFrame:space coordinateSpace:x, y, width, height];
+  v16 = height;
+  if (!height)
   {
     goto LABEL_23;
   }
 
-  v17 = v15;
-  v18 = v13;
-  v19 = v14;
+  v17 = height;
+  v18 = itemCopy;
+  v19 = systemCopy;
   objc_storeWeak(&v17->_item, v18);
   v37 = 0;
   if (v18)
@@ -51,9 +51,9 @@
   *&v17->_flags = *&v17->_flags & 0xFE | IsEligibleForFocusOcclusion;
   if (!v19 && (v21 & 1) != 0)
   {
-    v35 = v13;
+    v35 = itemCopy;
     v19 = [UIFocusSystem focusSystemForEnvironment:v18];
-    v23 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void _CommonInit(_UIFocusItemRegion *__strong, id<UIFocusItem>  _Nullable __strong, UIFocusSystem *__strong)"}];
     if (v19)
     {
@@ -71,9 +71,9 @@
       v29 = @"(nil)";
     }
 
-    [v23 handleFailureInFunction:v24 file:@"_UIFocusItemRegion.m" lineNumber:38 description:{@"_UIFocusItemRegion got called with a nil focus system. Inferring focus system found %@", v29}];
+    [currentHandler handleFailureInFunction:v24 file:@"_UIFocusItemRegion.m" lineNumber:38 description:{@"_UIFocusItemRegion got called with a nil focus system. Inferring focus system found %@", v29}];
 
-    v13 = v35;
+    itemCopy = v35;
     if ((v37 & 1) == 0)
     {
       goto LABEL_15;
@@ -131,11 +131,11 @@ LABEL_23:
   return v16;
 }
 
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space
 {
   v8.receiver = self;
   v8.super_class = _UIFocusItemRegion;
-  v5 = [(_UIFocusRegion *)&v8 _focusRegionWithAdjustedFrame:a4 coordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(_UIFocusRegion *)&v8 _focusRegionWithAdjustedFrame:space coordinateSpace:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   WeakRetained = objc_loadWeakRetained(&self->_item);
   objc_storeWeak((v5 + 56), WeakRetained);
 
@@ -148,14 +148,14 @@ LABEL_23:
 {
   v13.receiver = self;
   v13.super_class = _UIFocusItemRegion;
-  v3 = [(_UIFocusRegion *)&v13 _descriptionBuilder];
-  v4 = [(_UIFocusItemRegion *)self item];
-  if (v4)
+  _descriptionBuilder = [(_UIFocusRegion *)&v13 _descriptionBuilder];
+  item = [(_UIFocusItemRegion *)self item];
+  if (item)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, v4];
+    v8 = [v5 stringWithFormat:@"<%@: %p>", v7, item];
   }
 
   else
@@ -163,22 +163,22 @@ LABEL_23:
     v8 = @"(nil)";
   }
 
-  v9 = [v3 appendObject:v8 withName:@"item"];
+  v9 = [_descriptionBuilder appendObject:v8 withName:@"item"];
 
-  v10 = [v3 appendBool:(*&self->_flags >> 1) & 1 withName:@"focusable"];
-  v11 = [v3 appendBool:(*&self->_flags >> 2) & 1 withName:@"transparent"];
+  v10 = [_descriptionBuilder appendBool:(*&self->_flags >> 1) & 1 withName:@"focusable"];
+  v11 = [_descriptionBuilder appendBool:(*&self->_flags >> 2) & 1 withName:@"transparent"];
 
-  return v3;
+  return _descriptionBuilder;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = _UIFocusItemRegion;
-  if ([(_UIFocusRegion *)&v15 isEqual:v4])
+  if ([(_UIFocusRegion *)&v15 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_item);
     v7 = objc_loadWeakRetained(v5 + 7);
     v8 = WeakRetained;
@@ -234,8 +234,8 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(_UIFocusItemRegion *)self item];
-  v2 = v3 != 0;
+  item = [(_UIFocusItemRegion *)self item];
+  v2 = item != 0;
 
   return v2;
 }
@@ -244,15 +244,15 @@ LABEL_17:
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v4 = [(_UIFocusItemRegion *)self item];
+    item = [(_UIFocusItemRegion *)self item];
   }
 
   else
   {
-    v4 = 0;
+    item = 0;
   }
 
-  return v4;
+  return item;
 }
 
 - (unint64_t)_focusableBoundaries
@@ -262,9 +262,9 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(_UIFocusItemRegion *)self item];
+  item = [(_UIFocusItemRegion *)self item];
 
-  if (!v3)
+  if (!item)
   {
     return 0;
   }

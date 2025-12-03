@@ -1,30 +1,30 @@
 @interface PersonalizedItemClientRankingFunction
-+ (id)clientRankingFunctionForGEOClientRankingModel:(id)a3;
-- (PersonalizedItemClientRankingFunction)initWithModel:(id)a3;
-- (double)clientRankingScoreForPersonalizedItemSignalPack:(id)a3 withServerScore:(id)a4 hasContributionsFromDiscreteFeaturesResult:(BOOL *)a5;
-- (double)weightedScoreForModelFeatureIdentifier:(id)a3 function:(id)a4 personalizedItemSignalPack:(id)a5;
-- (void)describeInLog:(id)a3 withType:(unsigned __int8)a4;
++ (id)clientRankingFunctionForGEOClientRankingModel:(id)model;
+- (PersonalizedItemClientRankingFunction)initWithModel:(id)model;
+- (double)clientRankingScoreForPersonalizedItemSignalPack:(id)pack withServerScore:(id)score hasContributionsFromDiscreteFeaturesResult:(BOOL *)result;
+- (double)weightedScoreForModelFeatureIdentifier:(id)identifier function:(id)function personalizedItemSignalPack:(id)pack;
+- (void)describeInLog:(id)log withType:(unsigned __int8)type;
 @end
 
 @implementation PersonalizedItemClientRankingFunction
 
-- (void)describeInLog:(id)a3 withType:(unsigned __int8)a4
+- (void)describeInLog:(id)log withType:(unsigned __int8)type
 {
-  v6 = a3;
+  logCopy = log;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v7 = [(PersonalizedItemClientRankingFunction *)self model];
-  v8 = [v7 features];
+  model = [(PersonalizedItemClientRankingFunction *)self model];
+  features = [model features];
 
-  obj = v8;
-  v50 = [v8 countByEnumeratingWithState:&v56 objects:v65 count:16];
+  obj = features;
+  v50 = [features countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v50)
   {
     v49 = *v57;
-    v46 = a4;
-    v45 = v6;
+    typeCopy = type;
+    v45 = logCopy;
     do
     {
       for (i = 0; i != v50; i = i + 1)
@@ -35,29 +35,29 @@
         }
 
         v10 = *(*(&v56 + 1) + 8 * i);
-        v11 = [v10 featureIdentifier];
-        v12 = [v11 featureIdentifierType];
+        featureIdentifier = [v10 featureIdentifier];
+        featureIdentifierType = [featureIdentifier featureIdentifierType];
 
-        if (v12 != 3)
+        if (featureIdentifierType != 3)
         {
-          if (v12 == 2)
+          if (featureIdentifierType == 2)
           {
             v51 = i;
-            v13 = [v10 featureIdentifier];
-            v14 = sub_100ECC484(v13);
+            featureIdentifier2 = [v10 featureIdentifier];
+            v14 = sub_100ECC484(featureIdentifier2);
           }
 
           else
           {
-            if (v12 != 1)
+            if (featureIdentifierType != 1)
             {
               v15 = 0;
               goto LABEL_28;
             }
 
             v51 = i;
-            v13 = [v10 featureIdentifier];
-            v14 = sub_100ECC364(v13);
+            featureIdentifier2 = [v10 featureIdentifier];
+            v14 = sub_100ECC364(featureIdentifier2);
           }
 
           v15 = v14;
@@ -69,10 +69,10 @@
         v55 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v16 = [v10 featureIdentifier];
-        v13 = [v16 unitExponentPairs];
+        featureIdentifier3 = [v10 featureIdentifier];
+        featureIdentifier2 = [featureIdentifier3 unitExponentPairs];
 
-        v15 = [v13 countByEnumeratingWithState:&v52 objects:v64 count:16];
+        v15 = [featureIdentifier2 countByEnumeratingWithState:&v52 objects:v64 count:16];
         if (!v15)
         {
           goto LABEL_26;
@@ -86,27 +86,27 @@
           {
             if (*v53 != v17)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(featureIdentifier2);
             }
 
             v19 = *(*(&v52 + 1) + 8 * j);
-            v20 = [v19 exponent];
-            v21 = [v19 unit];
-            v22 = [v21 featureType];
+            exponent = [v19 exponent];
+            unit = [v19 unit];
+            featureType = [unit featureType];
 
-            if (v22 == 2)
+            if (featureType == 2)
             {
-              v23 = [v19 unit];
-              v24 = [v23 feature];
-              v25 = sub_100ECC484(v24);
+              unit2 = [v19 unit];
+              feature = [unit2 feature];
+              v25 = sub_100ECC484(feature);
               goto LABEL_21;
             }
 
-            if (v22 == 1)
+            if (featureType == 1)
             {
-              v23 = [v19 unit];
-              v24 = [v23 source];
-              v25 = sub_100ECC364(v24);
+              unit2 = [v19 unit];
+              feature = [unit2 source];
+              v25 = sub_100ECC364(feature);
 LABEL_21:
               v26 = v25;
 
@@ -115,47 +115,47 @@ LABEL_21:
 
             v26 = 0;
 LABEL_23:
-            v27 = [@"Composite:" stringByAppendingFormat:@"[Exp:%u, Desc:%@], ", v20, v26];
+            v27 = [@"Composite:" stringByAppendingFormat:@"[Exp:%u, Desc:%@], ", exponent, v26];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v52 objects:v64 count:16];
+          v15 = [featureIdentifier2 countByEnumeratingWithState:&v52 objects:v64 count:16];
         }
 
         while (v15);
-        a4 = v46;
-        v6 = v45;
+        type = typeCopy;
+        logCopy = v45;
         v10 = v47;
 LABEL_26:
 
         i = v51;
 LABEL_28:
-        v28 = [v10 function];
-        v29 = [v28 functionType];
+        function = [v10 function];
+        functionType = [function functionType];
 
-        if (v29 == 2)
+        if (functionType == 2)
         {
-          v30 = [v10 function];
-          [v30 valueThresholdLow];
+          function2 = [v10 function];
+          [function2 valueThresholdLow];
           v37 = v36;
-          [v30 weightLow];
+          [function2 weightLow];
           v39 = v38;
-          [v30 valueThresholdHigh];
+          [function2 valueThresholdHigh];
           v41 = v40;
-          [v30 weightHigh];
+          [function2 weightHigh];
           [NSString stringWithFormat:@"Discrete: ThresholdLow=%f, WeightLow=%f, ThresholdHigh=%f, WeightHigh=%f", *&v37, *&v39, *&v41, v42];
           v43 = LABEL_32:;
         }
 
         else
         {
-          if (v29 == 1)
+          if (functionType == 1)
           {
-            v30 = [v10 function];
-            [v30 weight];
+            function2 = [v10 function];
+            [function2 weight];
             v32 = v31;
-            [v30 meanValue];
+            [function2 meanValue];
             v34 = v33;
-            [v30 maxRelativeValue];
+            [function2 maxRelativeValue];
             [NSString stringWithFormat:@"Weight=%f, Mean=%f, MaxRelative=%f", *&v32, *&v34, v35, v44];
             goto LABEL_32;
           }
@@ -163,13 +163,13 @@ LABEL_28:
           v43 = 0;
         }
 
-        if (os_log_type_enabled(v6, a4))
+        if (os_log_type_enabled(logCopy, type))
         {
           *buf = 138412546;
           v61 = v15;
           v62 = 2112;
           v63 = v43;
-          _os_log_impl(&_mh_execute_header, v6, a4, "Client ranking model feature: %@ -> %@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, logCopy, type, "Client ranking model feature: %@ -> %@", buf, 0x16u);
         }
       }
 
@@ -180,21 +180,21 @@ LABEL_28:
   }
 }
 
-- (double)weightedScoreForModelFeatureIdentifier:(id)a3 function:(id)a4 personalizedItemSignalPack:(id)a5
+- (double)weightedScoreForModelFeatureIdentifier:(id)identifier function:(id)function personalizedItemSignalPack:(id)pack
 {
-  v8 = a3;
-  v9 = a4;
-  v56 = a5;
-  v10 = [v8 featureIdentifierType];
-  if (v10 == 3)
+  identifierCopy = identifier;
+  functionCopy = function;
+  packCopy = pack;
+  featureIdentifierType = [identifierCopy featureIdentifierType];
+  if (featureIdentifierType == 3)
   {
-    v53 = v9;
-    v54 = v8;
+    v53 = functionCopy;
+    v54 = identifierCopy;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v52 = v8;
+    v52 = identifierCopy;
     obj = [v52 unitExponentPairs];
     v18 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (!v18)
@@ -216,31 +216,31 @@ LABEL_28:
         }
 
         v23 = *(*(&v57 + 1) + 8 * i);
-        v24 = [v23 unit];
-        v25 = [v24 featureType];
+        unit = [v23 unit];
+        featureType = [unit featureType];
 
-        if (v25 == 2)
+        if (featureType == 2)
         {
-          v27 = [v23 unit];
-          v28 = [v27 feature];
+          unit2 = [v23 unit];
+          feature = [unit2 feature];
         }
 
         else
         {
           v26 = 0.0;
-          if (v25 != 1)
+          if (featureType != 1)
           {
             goto LABEL_20;
           }
 
-          v27 = [v23 unit];
-          v28 = [v27 source];
+          unit2 = [v23 unit];
+          feature = [unit2 source];
         }
 
-        v29 = v28;
-        v30 = [v23 unit];
-        v31 = [v30 function];
-        [(PersonalizedItemClientRankingFunction *)self weightedScoreForModelFeatureIdentifier:v29 function:v31 personalizedItemSignalPack:v56];
+        v29 = feature;
+        unit3 = [v23 unit];
+        function = [unit3 function];
+        [(PersonalizedItemClientRankingFunction *)self weightedScoreForModelFeatureIdentifier:v29 function:function personalizedItemSignalPack:packCopy];
         v26 = v32;
 
 LABEL_20:
@@ -270,34 +270,34 @@ LABEL_27:
         [v52 featureWeight];
         v11 = v38 * v39;
 
-        v9 = v53;
-        v8 = v54;
+        functionCopy = v53;
+        identifierCopy = v54;
         goto LABEL_39;
       }
     }
   }
 
   v11 = 0.0;
-  if (v10 == 2)
+  if (featureIdentifierType == 2)
   {
-    v16 = [v8 featureType];
-    if (![v56 hasValueForFeatureType:v16])
+    featureType2 = [identifierCopy featureType];
+    if (![packCopy hasValueForFeatureType:featureType2])
     {
       goto LABEL_39;
     }
 
-    [v56 valueForFeatureType:v16];
+    [packCopy valueForFeatureType:featureType2];
     v15 = v17;
 LABEL_29:
-    v40 = [v9 functionType];
-    if (v40 != 2)
+    functionType = [functionCopy functionType];
+    if (functionType != 2)
     {
-      if (v40 != 1)
+      if (functionType != 1)
       {
         goto LABEL_39;
       }
 
-      v41 = v9;
+      v41 = functionCopy;
       [v41 maxRelativeValue];
       v11 = 0.0;
       if (v42 != 0.0)
@@ -315,7 +315,7 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v41 = v9;
+    v41 = functionCopy;
     [v41 valueThresholdLow];
     if (v15 <= v48)
     {
@@ -337,18 +337,18 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v10 != 1)
+  if (featureIdentifierType != 1)
   {
     goto LABEL_39;
   }
 
-  v12 = [v8 suggestionType];
-  v13 = [v8 serverEntryType];
-  v14 = [v8 sourceType];
-  if (v14 == 1)
+  suggestionType = [identifierCopy suggestionType];
+  serverEntryType = [identifierCopy serverEntryType];
+  sourceType = [identifierCopy sourceType];
+  if (sourceType == 1)
   {
     v15 = 1.0;
-    if (v13 != [v56 itemServerEntryTypeSource])
+    if (serverEntryType != [packCopy itemServerEntryTypeSource])
     {
       goto LABEL_39;
     }
@@ -356,10 +356,10 @@ LABEL_38:
     goto LABEL_29;
   }
 
-  if (!v14)
+  if (!sourceType)
   {
     v15 = 1.0;
-    if (v12 == [v56 itemSuggestionTypeSource])
+    if (suggestionType == [packCopy itemSuggestionTypeSource])
     {
       goto LABEL_29;
     }
@@ -370,13 +370,13 @@ LABEL_39:
   return v11;
 }
 
-- (double)clientRankingScoreForPersonalizedItemSignalPack:(id)a3 withServerScore:(id)a4 hasContributionsFromDiscreteFeaturesResult:(BOOL *)a5
+- (double)clientRankingScoreForPersonalizedItemSignalPack:(id)pack withServerScore:(id)score hasContributionsFromDiscreteFeaturesResult:(BOOL *)result
 {
-  v8 = a3;
-  [a4 normalizedScore];
-  if (a5)
+  packCopy = pack;
+  [score normalizedScore];
+  if (result)
   {
-    *a5 = 0;
+    *result = 0;
   }
 
   v10 = v9;
@@ -384,10 +384,10 @@ LABEL_39:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [(PersonalizedItemClientRankingFunction *)self model];
-  v12 = [v11 features];
+  model = [(PersonalizedItemClientRankingFunction *)self model];
+  features = [model features];
 
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v13 = [features countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -398,25 +398,25 @@ LABEL_39:
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(features);
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 featureIdentifier];
-        v19 = [v17 function];
-        [(PersonalizedItemClientRankingFunction *)self weightedScoreForModelFeatureIdentifier:v18 function:v19 personalizedItemSignalPack:v8];
+        featureIdentifier = [v17 featureIdentifier];
+        function = [v17 function];
+        [(PersonalizedItemClientRankingFunction *)self weightedScoreForModelFeatureIdentifier:featureIdentifier function:function personalizedItemSignalPack:packCopy];
         v21 = v20;
 
-        if (a5)
+        if (result)
         {
           if (v21 != 0.0)
           {
-            v22 = [v17 function];
-            v23 = [v22 functionType];
+            function2 = [v17 function];
+            functionType = [function2 functionType];
 
-            if (v23 == 2)
+            if (functionType == 2)
             {
-              *a5 = 1;
+              *result = 1;
             }
           }
         }
@@ -424,7 +424,7 @@ LABEL_39:
         v10 = v21 + v10;
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v14 = [features countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v14);
@@ -434,25 +434,25 @@ LABEL_39:
   return 1.0 / (v24 + 1.0);
 }
 
-- (PersonalizedItemClientRankingFunction)initWithModel:(id)a3
+- (PersonalizedItemClientRankingFunction)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PersonalizedItemClientRankingFunction;
   v6 = [(PersonalizedItemClientRankingFunction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-+ (id)clientRankingFunctionForGEOClientRankingModel:(id)a3
++ (id)clientRankingFunctionForGEOClientRankingModel:(id)model
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModel:v4];
+  modelCopy = model;
+  v5 = [[self alloc] initWithModel:modelCopy];
 
   return v5;
 }

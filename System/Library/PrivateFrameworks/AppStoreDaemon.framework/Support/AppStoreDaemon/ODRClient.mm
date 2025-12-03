@@ -1,16 +1,16 @@
 @interface ODRClient
 + (void)initialize;
-- (void)beginODRSessionWithBundleURL:(id)a3 completionHandler:(id)a4;
-- (void)beginWithBundleURL:(id)a3 completionHandler:(id)a4;
-- (void)conditionallyPinTags:(id)a3 inBundle:(id)a4 completionHandler:(id)a5;
-- (void)hello:(id)a3;
-- (void)okToPurgeAssetPacks:(id)a3;
-- (void)pinTags:(id)a3 inBundle:(id)a4 priority:(double)a5 completionHandler:(id)a6;
-- (void)setAlwaysPreserved:(BOOL)a3 forTags:(id)a4 inBundle:(id)a5;
-- (void)setLoadingPriority:(double)a3 forTags:(id)a4 inBundle:(id)a5;
-- (void)setPreservationPriority:(double)a3 forTags:(id)a4 inBundle:(id)a5;
-- (void)tagStateInBundle:(id)a3 completionHandler:(id)a4;
-- (void)unpinTags:(id)a3 inBundle:(id)a4 completionHandler:(id)a5;
+- (void)beginODRSessionWithBundleURL:(id)l completionHandler:(id)handler;
+- (void)beginWithBundleURL:(id)l completionHandler:(id)handler;
+- (void)conditionallyPinTags:(id)tags inBundle:(id)bundle completionHandler:(id)handler;
+- (void)hello:(id)hello;
+- (void)okToPurgeAssetPacks:(id)packs;
+- (void)pinTags:(id)tags inBundle:(id)bundle priority:(double)priority completionHandler:(id)handler;
+- (void)setAlwaysPreserved:(BOOL)preserved forTags:(id)tags inBundle:(id)bundle;
+- (void)setLoadingPriority:(double)priority forTags:(id)tags inBundle:(id)bundle;
+- (void)setPreservationPriority:(double)priority forTags:(id)tags inBundle:(id)bundle;
+- (void)tagStateInBundle:(id)bundle completionHandler:(id)handler;
+- (void)unpinTags:(id)tags inBundle:(id)bundle completionHandler:(id)handler;
 @end
 
 @implementation ODRClient
@@ -23,10 +23,10 @@
   }
 }
 
-- (void)hello:(id)a3
+- (void)hello:(id)hello
 {
-  v4 = a3;
-  v4[2]();
+  helloCopy = hello;
+  helloCopy[2]();
   if (!self->_isUnsupportedApp)
   {
     [(NSLock *)self->_readyLock lock];
@@ -122,10 +122,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)beginODRSessionWithBundleURL:(id)a3 completionHandler:(id)a4
+- (void)beginODRSessionWithBundleURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if (self->_isUnsupportedApp)
   {
     v9 = ASDLogHandleForCategory();
@@ -136,7 +136,7 @@ LABEL_18:
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Ignoring call from unsupported app (%{public}s)", &v29, 0xCu);
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -232,14 +232,14 @@ LABEL_18:
       }
     }
 
-    (v8)[2](v8, self->_sandboxExtension);
+    (handlerCopy)[2](handlerCopy, self->_sandboxExtension);
   }
 }
 
-- (void)beginWithBundleURL:(id)a3 completionHandler:(id)a4
+- (void)beginWithBundleURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if (self->_isUnsupportedApp)
   {
     v9 = ASDLogHandleForCategory();
@@ -254,7 +254,7 @@ LABEL_18:
     v47 = @"On-Demand Resources are not available to this app";
     v10 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     v11 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:v10];
-    v8[2](v8, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
@@ -372,15 +372,15 @@ LABEL_18:
 
     v28 = self->_sandboxExtension;
     v29 = [_TtC9appstored21ODRPublicErrorMapping publicErrorForError:v11];
-    (v8)[2](v8, v28, v29);
+    (handlerCopy)[2](handlerCopy, v28, v29);
   }
 }
 
-- (void)tagStateInBundle:(id)a3 completionHandler:(id)a4
+- (void)tagStateInBundle:(id)bundle completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  if (bundleCopy)
   {
     if (self->_isUnsupportedApp)
     {
@@ -396,13 +396,13 @@ LABEL_18:
       v41 = @"On-Demand Resources are not available to this app";
       v9 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v10 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:v9];
-      v7[2](v7, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
     }
 
     else
     {
       context = objc_autoreleasePoolPush();
-      v29 = [v6 URLByResolvingSymlinksInPath];
+      uRLByResolvingSymlinksInPath = [bundleCopy URLByResolvingSymlinksInPath];
 
       v13 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -410,13 +410,13 @@ LABEL_18:
         *buf = 136446466;
         *&buf[4] = "[ODRClient tagStateInBundle:completionHandler:]";
         *&buf[12] = 2114;
-        *&buf[14] = v29;
+        *&buf[14] = uRLByResolvingSymlinksInPath;
         _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}s BundleURL [%{public}@]", buf, 0x16u);
       }
 
       v28 = self->_readyLock;
       [(NSLock *)v28 lock];
-      [NSBundle bundleWithURL:v29];
+      [NSBundle bundleWithURL:uRLByResolvingSymlinksInPath];
       v26 = v34[6] = 0;
       v14 = [NSBundleResourceRequest _manifestWithBundle:"_manifestWithBundle:error:" error:?];
       v15 = 0;
@@ -471,19 +471,19 @@ LABEL_18:
           while (v19);
         }
 
-        (v7)[2](v7, v16, 0);
+        (handlerCopy)[2](handlerCopy, v16, 0);
         _Block_object_dispose(buf, 8);
       }
 
       else
       {
         v16 = [_TtC9appstored21ODRPublicErrorMapping publicErrorForError:v15];
-        v7[2](v7, 0, v16);
+        handlerCopy[2](handlerCopy, 0, v16);
       }
 
       [(NSLock *)v28 unlock];
       objc_autoreleasePoolPop(context);
-      v6 = v29;
+      bundleCopy = uRLByResolvingSymlinksInPath;
     }
   }
 
@@ -498,17 +498,17 @@ LABEL_18:
 
     v42 = NSDebugDescriptionErrorKey;
     v43 = @"Required argument was missing";
-    v6 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-    v12 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:v6];
-    v7[2](v7, 0, v12);
+    bundleCopy = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
+    v12 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:bundleCopy];
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 }
 
-- (void)pinTags:(id)a3 inBundle:(id)a4 priority:(double)a5 completionHandler:(id)a6
+- (void)pinTags:(id)tags inBundle:(id)bundle priority:(double)priority completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  tagsCopy = tags;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   if (self->_isUnsupportedApp)
   {
     v13 = ASDLogHandleForCategory();
@@ -523,12 +523,12 @@ LABEL_18:
     v24 = @"On-Demand Resources are not available to this app";
     v14 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v15 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:v14];
-    v12[2](v12, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   else
   {
-    v16 = [v11 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath = [bundleCopy URLByResolvingSymlinksInPath];
 
     v14 = self->_readyLock;
     [(NSLock *)v14 lock];
@@ -538,22 +538,22 @@ LABEL_18:
     v18[2] = sub_10026CB14;
     v18[3] = &unk_10051F320;
     v18[4] = self;
-    v19 = v10;
-    v11 = v16;
-    v20 = v11;
-    v21 = v12;
-    v22 = a5;
+    v19 = tagsCopy;
+    bundleCopy = uRLByResolvingSymlinksInPath;
+    v20 = bundleCopy;
+    v21 = handlerCopy;
+    priorityCopy = priority;
     sub_100221660(v17, v18);
 
     [(NSLock *)v14 unlock];
   }
 }
 
-- (void)conditionallyPinTags:(id)a3 inBundle:(id)a4 completionHandler:(id)a5
+- (void)conditionallyPinTags:(id)tags inBundle:(id)bundle completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tagsCopy = tags;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   if (self->_isUnsupportedApp)
   {
     v11 = ASDLogHandleForCategory();
@@ -564,12 +564,12 @@ LABEL_18:
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Ignoring call from unsupported app (%{public}s)", &buf, 0xCu);
     }
 
-    v10[2](v10, 0, &__NSDictionary0__struct);
+    handlerCopy[2](handlerCopy, 0, &__NSDictionary0__struct);
   }
 
   else
   {
-    v12 = [v9 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath = [bundleCopy URLByResolvingSymlinksInPath];
 
     v13 = self->_readyLock;
     [(NSLock *)v13 lock];
@@ -587,16 +587,16 @@ LABEL_18:
     v27 = &v26;
     v28 = 0x2020000000;
     v29 = 0;
-    v14 = sub_10026D960(self, v8);
+    v14 = sub_10026D960(self, tagsCopy);
     if (![v14 count])
     {
       v15 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *v34 = 138543618;
-        v35 = v12;
+        v35 = uRLByResolvingSymlinksInPath;
         v36 = 2114;
-        v37 = v8;
+        v37 = tagsCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Conditional pin failed with no tags fetched from set for bundleURL: %{public}@, tags in set: %{public}@", v34, 0x16u);
       }
 
@@ -613,24 +613,24 @@ LABEL_18:
     v24 = &v26;
     p_buf = &buf;
     v21 = v17;
-    v22 = self;
+    selfCopy = self;
     v19 = objc_getProperty(self, v18, 72, 1);
     sub_1002213A0(v16, v20, v19);
 
-    v10[2](v10, *(v27 + 24), *(*(&buf + 1) + 40));
+    handlerCopy[2](handlerCopy, *(v27 + 24), *(*(&buf + 1) + 40));
     [(NSLock *)v13 unlock];
 
     _Block_object_dispose(&v26, 8);
     _Block_object_dispose(&buf, 8);
 
     _Block_object_dispose(&v30, 8);
-    v9 = v12;
+    bundleCopy = uRLByResolvingSymlinksInPath;
   }
 }
 
-- (void)setLoadingPriority:(double)a3 forTags:(id)a4 inBundle:(id)a5
+- (void)setLoadingPriority:(double)priority forTags:(id)tags inBundle:(id)bundle
 {
-  v7 = a4;
+  tagsCopy = tags;
   if (self->_isUnsupportedApp)
   {
     v8 = ASDLogHandleForCategory();
@@ -652,19 +652,19 @@ LABEL_18:
     v10[2] = sub_10026EE20;
     v10[3] = &unk_10051F4B0;
     v10[4] = self;
-    v11 = v7;
-    v12 = a3;
+    v11 = tagsCopy;
+    priorityCopy = priority;
     sub_100221660(v9, v10);
 
     [(NSLock *)v8 unlock];
   }
 }
 
-- (void)unpinTags:(id)a3 inBundle:(id)a4 completionHandler:(id)a5
+- (void)unpinTags:(id)tags inBundle:(id)bundle completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tagsCopy = tags;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   if (self->_isUnsupportedApp)
   {
     v11 = ASDLogHandleForCategory();
@@ -679,12 +679,12 @@ LABEL_18:
     v25 = @"On-Demand Resources are not available to this app";
     v12 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v13 = [NSError errorWithDomain:NSCocoaErrorDomain code:4099 userInfo:v12];
-    v10[2](v10, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 
   else
   {
-    v14 = [v9 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath = [bundleCopy URLByResolvingSymlinksInPath];
 
     v12 = self->_readyLock;
     [(NSLock *)v12 lock];
@@ -693,20 +693,20 @@ LABEL_18:
     v17 = 3221225472;
     v18 = sub_10026F298;
     v19 = &unk_10051C7A8;
-    v20 = self;
-    v21 = v8;
-    v9 = v14;
-    v22 = v9;
-    v23 = v10;
+    selfCopy = self;
+    v21 = tagsCopy;
+    bundleCopy = uRLByResolvingSymlinksInPath;
+    v22 = bundleCopy;
+    v23 = handlerCopy;
     sub_100221660(v15, &v16);
 
     [(NSLock *)v12 unlock:v16];
   }
 }
 
-- (void)okToPurgeAssetPacks:(id)a3
+- (void)okToPurgeAssetPacks:(id)packs
 {
-  v4 = a3;
+  packsCopy = packs;
   if (self->_isUnsupportedApp)
   {
     v5 = ASDLogHandleForCategory();
@@ -727,17 +727,17 @@ LABEL_18:
     v8 = 3221225472;
     v9 = sub_10026FBE8;
     v10 = &unk_10051B570;
-    v11 = v4;
-    v12 = self;
+    v11 = packsCopy;
+    selfCopy = self;
     sub_100221660(v6, &v7);
 
     [(NSLock *)v5 unlock:v7];
   }
 }
 
-- (void)setPreservationPriority:(double)a3 forTags:(id)a4 inBundle:(id)a5
+- (void)setPreservationPriority:(double)priority forTags:(id)tags inBundle:(id)bundle
 {
-  v7 = a4;
+  tagsCopy = tags;
   if (self->_isUnsupportedApp)
   {
     v8 = ASDLogHandleForCategory();
@@ -758,18 +758,18 @@ LABEL_18:
     v10[1] = 3221225472;
     v10[2] = sub_10026FEF0;
     v10[3] = &unk_10051F3C0;
-    v11 = v7;
-    v12 = self;
-    v13 = a3;
+    v11 = tagsCopy;
+    selfCopy = self;
+    priorityCopy = priority;
     [v9 modifyUsingTransaction:v10];
 
     [(NSLock *)v8 unlock];
   }
 }
 
-- (void)setAlwaysPreserved:(BOOL)a3 forTags:(id)a4 inBundle:(id)a5
+- (void)setAlwaysPreserved:(BOOL)preserved forTags:(id)tags inBundle:(id)bundle
 {
-  v7 = a4;
+  tagsCopy = tags;
   if (self->_isUnsupportedApp)
   {
     v8 = ASDLogHandleForCategory();
@@ -790,9 +790,9 @@ LABEL_18:
     v10[1] = 3221225472;
     v10[2] = sub_100270434;
     v10[3] = &unk_10051F3E8;
-    v11 = v7;
-    v12 = self;
-    v13 = a3;
+    v11 = tagsCopy;
+    selfCopy = self;
+    preservedCopy = preserved;
     [v9 modifyUsingTransaction:v10];
 
     [(NSLock *)v8 unlock];

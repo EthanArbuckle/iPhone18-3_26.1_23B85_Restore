@@ -1,18 +1,18 @@
 @interface KNPlaybackSession
-+ (double)p_viewScaleByUpdatingShowLayerGeometry:(id)a3 forConfiguration:(id)a4 showSize:(CGSize)a5;
-+ (void)p_updateAnimationContext:(id)a3 fromConfiguration:(id)a4;
++ (double)p_viewScaleByUpdatingShowLayerGeometry:(id)geometry forConfiguration:(id)configuration showSize:(CGSize)size;
++ (void)p_updateAnimationContext:(id)context fromConfiguration:(id)configuration;
 - (BOOL)atBeginningOfDeck;
 - (BOOL)atEndOfDeck;
-- (BOOL)canMakeInfoVisible:(id)a3 allowAudioOnlyMovies:(BOOL)a4;
+- (BOOL)canMakeInfoVisible:(id)visible allowAudioOnlyMovies:(BOOL)movies;
 - (BOOL)isOffscreenPlayback;
 - (BOOL)isPreCachingOperationActive;
 - (BOOL)isPrintingCanvas;
 - (BOOL)isTexturePreCachingThread;
-- (BOOL)p_checkArrayInclusionIncludingUUID:(id)a3 object:(id)a4;
-- (BOOL)p_slideNodeIsPlayable:(id)a3;
+- (BOOL)p_checkArrayInclusionIncludingUUID:(id)d object:(id)object;
+- (BOOL)p_slideNodeIsPlayable:(id)playable;
 - (BOOL)shouldShowInstructionalText;
 - (KNAnimatedSlideView)animatedSlideViewForCurrentSlide;
-- (KNPlaybackSession)initWithShow:(id)a3 configuration:(id)a4 canvasDelegate:(id)a5;
+- (KNPlaybackSession)initWithShow:(id)show configuration:(id)configuration canvasDelegate:(id)delegate;
 - (KNSlide)currentSlide;
 - (KNSlide)nextSlideAfterCurrent;
 - (KNSlideNode)firstSlideNode;
@@ -22,59 +22,59 @@
 - (TSDCanvasDelegate)canvasDelegate;
 - (TSKAccessController)accessController;
 - (double)showScale;
-- (id)animatedSlideViewFor:(id)a3;
+- (id)animatedSlideViewFor:(id)for;
 - (id)breadCrumb;
 - (id)gotoFirstSlide;
 - (id)gotoLastSlide;
 - (id)gotoNextSlide;
 - (id)gotoPreviousSlide;
-- (id)newCanvasForInfos:(id)a3;
-- (id)nextSlideNodeAfterSlideNode:(id)a3;
-- (id)p_intersectArraysWithUUIDEquality:(id)a3 secondArray:(id)a4;
-- (id)p_nextBestSlideNodeToSlideNode:(id)a3;
-- (id)previousSlideNodeBeforeSlideNode:(id)a3;
-- (id)repForInfo:(id)a3 onCanvas:(id)a4;
+- (id)newCanvasForInfos:(id)infos;
+- (id)nextSlideNodeAfterSlideNode:(id)node;
+- (id)p_intersectArraysWithUUIDEquality:(id)equality secondArray:(id)array;
+- (id)p_nextBestSlideNodeToSlideNode:(id)node;
+- (id)previousSlideNodeBeforeSlideNode:(id)node;
+- (id)repForInfo:(id)info onCanvas:(id)canvas;
 - (int64_t)analyticsVisitedSlideCount;
-- (unint64_t)p_findIndexIncludingUUID:(id)a3 object:(id)a4;
-- (unint64_t)slideNumberForSlideNode:(id)a3;
-- (void)analyticsVisitedSlideNode:(id)a3;
+- (unint64_t)p_findIndexIncludingUUID:(id)d object:(id)object;
+- (unint64_t)slideNumberForSlideNode:(id)node;
+- (void)analyticsVisitedSlideNode:(id)node;
 - (void)dealloc;
 - (void)didChangeRootLayerGeometryAndScreenEnvironment;
 - (void)dropABreadCrumb;
-- (void)enableMetalBadge:(BOOL)a3;
-- (void)executeEndShowHandlerAfterDelay:(double)a3;
-- (void)gotoSlideNode:(id)a3;
+- (void)enableMetalBadge:(BOOL)badge;
+- (void)executeEndShowHandlerAfterDelay:(double)delay;
+- (void)gotoSlideNode:(id)node;
 - (void)p_executeEndShowHandler;
-- (void)performSlideRead:(id)a3;
-- (void)setBreadCrumbTrail:(id)a3;
-- (void)setPlayMode:(int64_t)a3;
-- (void)waitUntilSlideTextureRenderingIsCompleteForIdentifier:(id)a3;
+- (void)performSlideRead:(id)read;
+- (void)setBreadCrumbTrail:(id)trail;
+- (void)setPlayMode:(int64_t)mode;
+- (void)waitUntilSlideTextureRenderingIsCompleteForIdentifier:(id)identifier;
 @end
 
 @implementation KNPlaybackSession
 
-- (KNPlaybackSession)initWithShow:(id)a3 configuration:(id)a4 canvasDelegate:(id)a5
+- (KNPlaybackSession)initWithShow:(id)show configuration:(id)configuration canvasDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  showCopy = show;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v66.receiver = self;
   v66.super_class = KNPlaybackSession;
   v12 = [(KNPlaybackSession *)&v66 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_show, a3);
-    objc_storeStrong((v13 + 8), a4);
-    objc_msgSend_size(v9, v14, v15);
+    objc_storeStrong(&v12->_show, show);
+    objc_storeStrong((v13 + 8), configuration);
+    objc_msgSend_size(showCopy, v14, v15);
     v17 = v16;
     v19 = v18;
-    v22 = objc_msgSend_layerHost(v10, v20, v21);
+    v22 = objc_msgSend_layerHost(configurationCopy, v20, v21);
     v25 = objc_msgSend_rootLayer(v22, v23, v24);
 
     v28 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v26, v27);
     v29 = objc_opt_class();
-    objc_msgSend_p_viewScaleByUpdatingShowLayerGeometry_forConfiguration_showSize_(v29, v30, v28, v10, v17, v19);
+    objc_msgSend_p_viewScaleByUpdatingShowLayerGeometry_forConfiguration_showSize_(v29, v30, v28, configurationCopy, v17, v19);
     v32 = v31;
     objc_msgSend_addSublayer_(v25, v33, v28);
     v34 = [KNAnimationContext alloc];
@@ -83,21 +83,21 @@
     *(v13 + 136) = v36;
 
     v38 = objc_opt_class();
-    objc_msgSend_p_updateAnimationContext_fromConfiguration_(v38, v39, *(v13 + 136), v10);
+    objc_msgSend_p_updateAnimationContext_fromConfiguration_(v38, v39, *(v13 + 136), configurationCopy);
     v40 = objc_alloc_init(KNAnimationRegistryWithFallbacks);
     v41 = *(v13 + 144);
     *(v13 + 144) = v40;
 
-    isMetalEnabled = objc_msgSend_isMetalEnabled(v10, v42, v43);
-    objc_storeWeak((v13 + 104), v11);
+    isMetalEnabled = objc_msgSend_isMetalEnabled(configurationCopy, v42, v43);
+    objc_storeWeak((v13 + 104), delegateCopy);
     *(v13 + 79) = 1;
     *(v13 + 74) = 1;
     *(v13 + 85) = 1;
     *(v13 + 200) = isMetalEnabled;
     *(v13 + 69) = 1;
-    objc_msgSend_autoplayBuildDelay(v9, v45, v46);
+    objc_msgSend_autoplayBuildDelay(showCopy, v45, v46);
     *(v13 + 184) = v47;
-    objc_msgSend_autoplayTransitionDelay(v9, v48, v49);
+    objc_msgSend_autoplayTransitionDelay(showCopy, v48, v49);
     *(v13 + 176) = v50;
     v51 = [KNAnimatedTextureManager alloc];
     v53 = objc_msgSend_initWithSession_(v51, v52, v13);
@@ -134,11 +134,11 @@
   [(KNPlaybackSession *)&v2 dealloc];
 }
 
-- (void)setPlayMode:(int64_t)a3
+- (void)setPlayMode:(int64_t)mode
 {
-  if (self->_playMode != a3)
+  if (self->_playMode != mode)
   {
-    self->_playMode = a3;
+    self->_playMode = mode;
   }
 }
 
@@ -167,28 +167,28 @@
   return v8;
 }
 
-- (void)performSlideRead:(id)a3
+- (void)performSlideRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   v7 = objc_msgSend_accessController(self, v5, v6);
   accessControllerReadTicket = self->_accessControllerReadTicket;
   v10 = v7;
   if (accessControllerReadTicket)
   {
-    objc_msgSend_performReadWithTicket_block_(v7, v8, accessControllerReadTicket, v4);
+    objc_msgSend_performReadWithTicket_block_(v7, v8, accessControllerReadTicket, readCopy);
   }
 
   else
   {
-    objc_msgSend_performRead_(v7, v8, v4);
+    objc_msgSend_performRead_(v7, v8, readCopy);
   }
 }
 
-- (void)gotoSlideNode:(id)a3
+- (void)gotoSlideNode:(id)node
 {
-  v4 = a3;
-  v16 = v4;
-  if (!v4)
+  nodeCopy = node;
+  v16 = nodeCopy;
+  if (!nodeCopy)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], 0, "[KNPlaybackSession gotoSlideNode:]");
@@ -196,10 +196,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 232, 0, "invalid nil value for '%{public}s'", "slideNode");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    v4 = 0;
+    nodeCopy = 0;
   }
 
-  v13 = objc_msgSend_p_nextBestSlideNodeToSlideNode_(self, v4, v4);
+  v13 = objc_msgSend_p_nextBestSlideNodeToSlideNode_(self, nodeCopy, nodeCopy);
   if (v13)
   {
     objc_msgSend_p_setCurrentSlideNode_(self, v12, v13);
@@ -219,18 +219,18 @@
   return currentSlideNode;
 }
 
-- (id)nextSlideNodeAfterSlideNode:(id)a3
+- (id)nextSlideNodeAfterSlideNode:(id)node
 {
-  v4 = a3;
-  v7 = v4;
+  nodeCopy = node;
+  v7 = nodeCopy;
   alternateNextSlideNode = self->_alternateNextSlideNode;
-  if (alternateNextSlideNode && self->_currentSlideNode == v4)
+  if (alternateNextSlideNode && self->_currentSlideNode == nodeCopy)
   {
     v34 = alternateNextSlideNode;
     goto LABEL_21;
   }
 
-  if (self->_shouldRespectSkippedSlides || !objc_msgSend_isSkipped(v4, v5, v6))
+  if (self->_shouldRespectSkippedSlides || !objc_msgSend_isSkipped(nodeCopy, v5, v6))
   {
     v9 = objc_msgSend_slideTree(self->_show, v5, v6);
     v12 = objc_msgSend_visibleSlideNodes(v9, v13, v14);
@@ -300,17 +300,17 @@ LABEL_21:
   return v34;
 }
 
-- (id)p_nextBestSlideNodeToSlideNode:(id)a3
+- (id)p_nextBestSlideNodeToSlideNode:(id)node
 {
-  v4 = a3;
-  IsPlayable = objc_msgSend_p_slideNodeIsPlayable_(self, v5, v4);
-  v9 = v4;
-  if (v4)
+  nodeCopy = node;
+  IsPlayable = objc_msgSend_p_slideNodeIsPlayable_(self, v5, nodeCopy);
+  v9 = nodeCopy;
+  if (nodeCopy)
   {
-    v9 = v4;
+    v9 = nodeCopy;
     if ((IsPlayable & 1) == 0)
     {
-      v9 = v4;
+      v9 = nodeCopy;
       do
       {
         v10 = v9;
@@ -322,7 +322,7 @@ LABEL_21:
       while (v9 && !v12);
       if (!v9)
       {
-        v9 = objc_msgSend_next(v4, v7, v8);
+        v9 = objc_msgSend_next(nodeCopy, v7, v8);
         v14 = objc_msgSend_p_slideNodeIsPlayable_(self, v13, v9);
         if (v9 && (v14 & 1) == 0)
         {
@@ -381,22 +381,22 @@ LABEL_21:
   return v9;
 }
 
-- (id)previousSlideNodeBeforeSlideNode:(id)a3
+- (id)previousSlideNodeBeforeSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_playableSlideNodes(self, v5, v6);
-  if ((objc_msgSend_p_slideNodeIsPlayable_(self, v8, v4) & 1) == 0)
+  if ((objc_msgSend_p_slideNodeIsPlayable_(self, v8, nodeCopy) & 1) == 0)
   {
-    v18 = objc_msgSend_p_nextBestSlideNodeToSlideNode_(self, v9, v4);
+    v18 = objc_msgSend_p_nextBestSlideNodeToSlideNode_(self, v9, nodeCopy);
     goto LABEL_10;
   }
 
   v11 = objc_msgSend_firstObject(v7, v9, v10);
-  v13 = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(self, v12, v11, v4);
+  v13 = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(self, v12, v11, nodeCopy);
 
   if (!v13)
   {
-    IndexIncludingUUID_object = objc_msgSend_p_findIndexIncludingUUID_object_(self, v14, v7, v4);
+    IndexIncludingUUID_object = objc_msgSend_p_findIndexIncludingUUID_object_(self, v14, v7, nodeCopy);
     if (!IndexIncludingUUID_object)
     {
       v21 = MEMORY[0x277D81150];
@@ -446,24 +446,24 @@ LABEL_11:
 
 - (BOOL)atBeginningOfDeck
 {
-  v3 = self;
+  selfCopy = self;
   currentSlideNode = self->_currentSlideNode;
   v5 = objc_msgSend_playableSlideNodes(self, a2, v2);
   v8 = objc_msgSend_firstObject(v5, v6, v7);
-  LOBYTE(v3) = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(v3, v9, currentSlideNode, v8);
+  LOBYTE(selfCopy) = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(selfCopy, v9, currentSlideNode, v8);
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)atEndOfDeck
 {
-  v3 = self;
+  selfCopy = self;
   currentSlideNode = self->_currentSlideNode;
   v5 = objc_msgSend_playableSlideNodes(self, a2, v2);
   v8 = objc_msgSend_lastObject(v5, v6, v7);
-  LOBYTE(v3) = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(v3, v9, currentSlideNode, v8);
+  LOBYTE(selfCopy) = objc_msgSend_p_checkNodeEqualityIncludingUUID_secondSlideNode_(selfCopy, v9, currentSlideNode, v8);
 
-  return v3;
+  return selfCopy;
 }
 
 - (KNSlideNode)firstSlideNode
@@ -515,9 +515,9 @@ LABEL_11:
   }
 }
 
-- (void)setBreadCrumbTrail:(id)a3
+- (void)setBreadCrumbTrail:(id)trail
 {
-  v4 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v4 = objc_msgSend_mutableCopy(trail, a2, trail);
   breadCrumbTrail = self->_breadCrumbTrail;
   self->_breadCrumbTrail = v4;
 }
@@ -589,21 +589,21 @@ LABEL_6:
   return v4;
 }
 
-- (id)animatedSlideViewFor:(id)a3
+- (id)animatedSlideViewFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v7 = objc_msgSend_textureManager(self, v5, v6);
-  v9 = objc_msgSend_ASVForSlideNode_(v7, v8, v4);
+  v9 = objc_msgSend_ASVForSlideNode_(v7, v8, forCopy);
 
   return v9;
 }
 
-- (unint64_t)slideNumberForSlideNode:(id)a3
+- (unint64_t)slideNumberForSlideNode:(id)node
 {
   show = self->_show;
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_slideTree(show, v5, v6);
-  v9 = objc_msgSend_slideNumberForSlideNode_(v7, v8, v4);
+  v9 = objc_msgSend_slideNumberForSlideNode_(v7, v8, nodeCopy);
 
   return v9;
 }
@@ -655,10 +655,10 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)canMakeInfoVisible:(id)a3 allowAudioOnlyMovies:(BOOL)a4
+- (BOOL)canMakeInfoVisible:(id)visible allowAudioOnlyMovies:(BOOL)movies
 {
-  v8 = a3;
-  if (!a4)
+  visibleCopy = visible;
+  if (!movies)
   {
     objc_opt_class();
     v9 = TSUDynamicCast();
@@ -779,10 +779,10 @@ LABEL_26:
   return v14;
 }
 
-- (id)newCanvasForInfos:(id)a3
+- (id)newCanvasForInfos:(id)infos
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(MEMORY[0x277D801E0]);
   v8 = objc_msgSend_canvasDelegate(self, v6, v7);
   objc_msgSend_setDelegate_(v5, v9, v8);
@@ -792,7 +792,7 @@ LABEL_26:
   objc_msgSend_setUnscaledSize_(v5, v15, v16, v17, v18);
   objc_msgSend_viewScale(v12, v19, v20);
   objc_msgSend_setViewScale_(v5, v21, v22);
-  objc_msgSend_setInfosToDisplay_(v5, v23, v4);
+  objc_msgSend_setInfosToDisplay_(v5, v23, infosCopy);
   v26 = objc_msgSend_supportsHDR(self, v24, v25);
   objc_msgSend_setSupportsHDR_(v5, v27, v26);
   v55 = 0u;
@@ -840,14 +840,14 @@ LABEL_26:
   return v5;
 }
 
-- (id)repForInfo:(id)a3 onCanvas:(id)a4
+- (id)repForInfo:(id)info onCanvas:(id)canvas
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = objc_msgSend_layoutController(v6, v8, v9);
-  v12 = objc_msgSend_layoutForInfo_(v10, v11, v7);
+  canvasCopy = canvas;
+  infoCopy = info;
+  v10 = objc_msgSend_layoutController(canvasCopy, v8, v9);
+  v12 = objc_msgSend_layoutForInfo_(v10, v11, infoCopy);
 
-  v14 = objc_msgSend_repForLayout_(v6, v13, v12);
+  v14 = objc_msgSend_repForLayout_(canvasCopy, v13, v12);
 
   shouldBeDisplayedInShowMode = objc_msgSend_shouldBeDisplayedInShowMode(v12, v15, v16);
   objc_opt_class();
@@ -873,16 +873,16 @@ LABEL_6:
   return v14;
 }
 
-- (void)waitUntilSlideTextureRenderingIsCompleteForIdentifier:(id)a3
+- (void)waitUntilSlideTextureRenderingIsCompleteForIdentifier:(id)identifier
 {
-  v21 = a3;
-  if (v21)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = objc_msgSend_canvasDelegate(self, v4, v5);
     v9 = objc_msgSend_documentRoot(v6, v7, v8);
     v12 = objc_msgSend_accessController(v9, v10, v11);
 
-    objc_msgSend_waitOnIdentifier_(v12, v13, v21);
+    objc_msgSend_waitOnIdentifier_(v12, v13, identifierCopy);
   }
 
   else
@@ -896,12 +896,12 @@ LABEL_6:
   }
 }
 
-- (void)executeEndShowHandlerAfterDelay:(double)a3
+- (void)executeEndShowHandlerAfterDelay:(double)delay
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v7[0] = *MEMORY[0x277CBE738];
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v7, 1);
-  objc_msgSend_performSelector_withObject_afterDelay_inModes_(self, v6, sel_p_executeEndShowHandler, 0, v5, a3);
+  objc_msgSend_performSelector_withObject_afterDelay_inModes_(self, v6, sel_p_executeEndShowHandler, 0, v5, delay);
 
   self->_hasEndShowHandlerBeenCancelled = 0;
 }
@@ -968,44 +968,44 @@ LABEL_6:
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v31, v32);
 }
 
-+ (double)p_viewScaleByUpdatingShowLayerGeometry:(id)a3 forConfiguration:(id)a4 showSize:(CGSize)a5
++ (double)p_viewScaleByUpdatingShowLayerGeometry:(id)geometry forConfiguration:(id)configuration showSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v9 = a4;
-  objc_msgSend_canvasViewScaleForUnscaledSize_(v9, v10, v11, width, height);
+  height = size.height;
+  width = size.width;
+  geometryCopy = geometry;
+  configurationCopy = configuration;
+  objc_msgSend_canvasViewScaleForUnscaledSize_(configurationCopy, v10, v11, width, height);
   v15 = v14;
   if (v14 < 1.0 && (objc_msgSend_shouldDisableViewScaling(KNAnimationUtils, v12, v13) & 1) != 0)
   {
     TSURectWithSize();
-    objc_msgSend_setFrame_(v8, v16, v17);
+    objc_msgSend_setFrame_(geometryCopy, v16, v17);
     v20 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v18, v19, v15);
-    objc_msgSend_setValue_forKeyPath_(v8, v21, v20, @"transform.scale.xy");
+    objc_msgSend_setValue_forKeyPath_(geometryCopy, v21, v20, @"transform.scale.xy");
 
     v15 = 1.0;
   }
 
   else
   {
-    objc_msgSend_boundsSize(v9, v12, v13);
+    objc_msgSend_boundsSize(configurationCopy, v12, v13);
     TSURectWithSize();
-    objc_msgSend_setFrame_(v8, v22, v23);
+    objc_msgSend_setFrame_(geometryCopy, v22, v23);
   }
 
   return v15;
 }
 
-+ (void)p_updateAnimationContext:(id)a3 fromConfiguration:(id)a4
++ (void)p_updateAnimationContext:(id)context fromConfiguration:(id)configuration
 {
-  v5 = a4;
-  v16 = a3;
-  v8 = objc_msgSend_colorSpace(v5, v6, v7);
-  objc_msgSend_setColorSpace_(v16, v9, v8);
-  objc_msgSend_pixelAspectRatio(v5, v10, v11);
+  configurationCopy = configuration;
+  contextCopy = context;
+  v8 = objc_msgSend_colorSpace(configurationCopy, v6, v7);
+  objc_msgSend_setColorSpace_(contextCopy, v9, v8);
+  objc_msgSend_pixelAspectRatio(configurationCopy, v10, v11);
   v13 = v12;
 
-  objc_msgSend_setPixelAspectRatio_(v16, v14, v15, v13);
+  objc_msgSend_setPixelAspectRatio_(contextCopy, v14, v15, v13);
 }
 
 - (NSArray)playableSlideNodes
@@ -1037,17 +1037,17 @@ LABEL_6:
   return v9;
 }
 
-- (void)enableMetalBadge:(BOOL)a3
+- (void)enableMetalBadge:(BOOL)badge
 {
-  v3 = a3;
-  objc_msgSend_begin(MEMORY[0x277CD9FF0], a2, a3);
+  badgeCopy = badge;
+  objc_msgSend_begin(MEMORY[0x277CD9FF0], a2, badge);
   v5 = 1;
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v6, 1);
   v7 = MEMORY[0x277CD9FF0];
   isMainThread = objc_msgSend_isMainThread(MEMORY[0x277CCACC8], v8, v9);
   objc_msgSend_activateBackground_(v7, v11, isMainThread ^ 1u);
-  objc_msgSend_setHidden_(self->_noMetalBadgeLayer, v12, v3);
-  if (v3)
+  objc_msgSend_setHidden_(self->_noMetalBadgeLayer, v12, badgeCopy);
+  if (badgeCopy)
   {
     v5 = objc_msgSend_isSceneRenderingEnabled(self, v13, v14) ^ 1;
   }
@@ -1058,17 +1058,17 @@ LABEL_6:
   objc_msgSend_commit(v17, v15, v16);
 }
 
-- (id)p_intersectArraysWithUUIDEquality:(id)a3 secondArray:(id)a4
+- (id)p_intersectArraysWithUUIDEquality:(id)equality secondArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  equalityCopy = equality;
+  arrayCopy = array;
   v10 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v6;
+  v11 = equalityCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v20, v24, 16);
   if (v13)
   {
@@ -1084,7 +1084,7 @@ LABEL_6:
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
-        if (objc_msgSend_p_checkArrayInclusionIncludingUUID_object_(self, v14, v7, v18, v20))
+        if (objc_msgSend_p_checkArrayInclusionIncludingUUID_object_(self, v14, arrayCopy, v18, v20))
         {
           objc_msgSend_addObject_(v10, v14, v18);
         }
@@ -1099,19 +1099,19 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)p_slideNodeIsPlayable:(id)a3
+- (BOOL)p_slideNodeIsPlayable:(id)playable
 {
-  v4 = a3;
+  playableCopy = playable;
   v7 = objc_msgSend_playableSlideNodes(self, v5, v6);
-  LOBYTE(self) = objc_msgSend_p_checkArrayInclusionIncludingUUID_object_(self, v8, v7, v4);
+  LOBYTE(self) = objc_msgSend_p_checkArrayInclusionIncludingUUID_object_(self, v8, v7, playableCopy);
 
   return self;
 }
 
-- (BOOL)p_checkArrayInclusionIncludingUUID:(id)a3 object:(id)a4
+- (BOOL)p_checkArrayInclusionIncludingUUID:(id)d object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  objectCopy = object;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1121,20 +1121,20 @@ LABEL_6:
   v11[2] = sub_275DAF684;
   v11[3] = &unk_27A697EB8;
   v11[4] = self;
-  v8 = v7;
+  v8 = objectCopy;
   v12 = v8;
   v13 = &v14;
-  objc_msgSend_enumerateObjectsUsingBlock_(v6, v9, v11);
+  objc_msgSend_enumerateObjectsUsingBlock_(dCopy, v9, v11);
   LOBYTE(self) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
   return self;
 }
 
-- (unint64_t)p_findIndexIncludingUUID:(id)a3 object:(id)a4
+- (unint64_t)p_findIndexIncludingUUID:(id)d object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  objectCopy = object;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1144,10 +1144,10 @@ LABEL_6:
   v12[2] = sub_275DAF7D8;
   v12[3] = &unk_27A697EB8;
   v12[4] = self;
-  v8 = v7;
+  v8 = objectCopy;
   v13 = v8;
   v14 = &v15;
-  objc_msgSend_enumerateObjectsUsingBlock_(v6, v9, v12);
+  objc_msgSend_enumerateObjectsUsingBlock_(dCopy, v9, v12);
   v10 = v16[3];
 
   _Block_object_dispose(&v15, 8);
@@ -1165,22 +1165,22 @@ LABEL_6:
   return result;
 }
 
-- (void)analyticsVisitedSlideNode:(id)a3
+- (void)analyticsVisitedSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   analyticsSlideNodesVisited = self->_analyticsSlideNodesVisited;
-  v9 = v4;
+  v9 = nodeCopy;
   if (!analyticsSlideNodesVisited)
   {
-    v7 = objc_msgSend_set(MEMORY[0x277CBEB58], v4, v5);
+    v7 = objc_msgSend_set(MEMORY[0x277CBEB58], nodeCopy, v5);
     v8 = self->_analyticsSlideNodesVisited;
     self->_analyticsSlideNodesVisited = v7;
 
-    v4 = v9;
+    nodeCopy = v9;
     analyticsSlideNodesVisited = self->_analyticsSlideNodesVisited;
   }
 
-  objc_msgSend_addObject_(analyticsSlideNodesVisited, v4, v4);
+  objc_msgSend_addObject_(analyticsSlideNodesVisited, nodeCopy, nodeCopy);
 }
 
 - (TSDCanvasDelegate)canvasDelegate

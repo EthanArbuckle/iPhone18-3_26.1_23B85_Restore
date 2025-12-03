@@ -1,19 +1,19 @@
 @interface SiriCoreSpeechPacket
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SiriCoreSpeechPacket
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(SiriCoreSpeechPacket *)self packets];
-  [v4 setPackets:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  packets = [(SiriCoreSpeechPacket *)self packets];
+  [v4 setPackets:packets];
 
   [v4 setPacketNumber:{-[SiriCoreSpeechPacket packetNumber](self, "packetNumber")}];
-  v6 = [(SiriCoreSpeechPacket *)self refId];
-  [v4 setRefId:v6];
+  refId = [(SiriCoreSpeechPacket *)self refId];
+  [v4 setRefId:refId];
 
   return v4;
 }

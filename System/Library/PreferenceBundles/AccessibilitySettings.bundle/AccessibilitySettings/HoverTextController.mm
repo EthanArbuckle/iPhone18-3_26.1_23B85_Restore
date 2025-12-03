@@ -1,31 +1,31 @@
 @interface HoverTextController
 - (BOOL)_isLargeTextTypingController;
 - (HoverTextController)init;
-- (id)_colorPickerConfigurationForIdentifier:(id)a3;
-- (id)_selectedColorForIdentifier:(id)a3;
-- (id)hoverTextActivationLock:(id)a3;
-- (id)hoverTextActivationModifier:(id)a3;
-- (id)hoverTextColorForSpecifier:(id)a3;
-- (id)hoverTextContentSizeForSpecifier:(id)a3;
-- (id)hoverTextContentType:(id)a3;
-- (id)hoverTextDisplayMode:(id)a3;
-- (id)hoverTextEnabled:(id)a3;
-- (id)hoverTextFont:(id)a3;
-- (id)hoverTextScrollSpeed:(id)a3;
-- (id)hoverTextTypingDisplayMode:(id)a3;
+- (id)_colorPickerConfigurationForIdentifier:(id)identifier;
+- (id)_selectedColorForIdentifier:(id)identifier;
+- (id)hoverTextActivationLock:(id)lock;
+- (id)hoverTextActivationModifier:(id)modifier;
+- (id)hoverTextColorForSpecifier:(id)specifier;
+- (id)hoverTextContentSizeForSpecifier:(id)specifier;
+- (id)hoverTextContentType:(id)type;
+- (id)hoverTextDisplayMode:(id)mode;
+- (id)hoverTextEnabled:(id)enabled;
+- (id)hoverTextFont:(id)font;
+- (id)hoverTextScrollSpeed:(id)speed;
+- (id)hoverTextTypingDisplayMode:(id)mode;
 - (id)hoverTextTypingEnabled;
-- (id)hoverTextTypingEnabled:(id)a3;
-- (id)hoverTextTypingTextStyle:(id)a3;
-- (id)largerTextEnabled:(id)a3;
+- (id)hoverTextTypingEnabled:(id)enabled;
+- (id)hoverTextTypingTextStyle:(id)style;
+- (id)largerTextEnabled:(id)enabled;
 - (id)specifiers;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
 - (void)resetHoverTypingSettings;
-- (void)setHoverTextActivationLock:(id)a3 specifier:(id)a4;
-- (void)setHoverTextContentSize:(id)a3 forSpecifier:(id)a4;
-- (void)setHoverTextEnabled:(id)a3 specifier:(id)a4;
-- (void)setHoverTextTypingEnabled:(id)a3;
+- (void)setHoverTextActivationLock:(id)lock specifier:(id)specifier;
+- (void)setHoverTextContentSize:(id)size forSpecifier:(id)specifier;
+- (void)setHoverTextEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHoverTextTypingEnabled:(id)enabled;
 - (void)showResetActionSheet;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -162,10 +162,10 @@ void __27__HoverTextController_init__block_invoke_4(uint64_t a1)
   v6.receiver = self;
   v6.super_class = HoverTextController;
   [(HoverTextController *)&v6 viewDidLoad];
-  v3 = [(HoverTextController *)self table];
+  table = [(HoverTextController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXColorPickerCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -205,8 +205,8 @@ void __27__HoverTextController_init__block_invoke_4(uint64_t a1)
       [v91 setProperty:v9 forKey:PSFooterCellClassGroupKey];
 
       v10 = [NSBundle bundleForClass:objc_opt_class()];
-      v11 = [v10 bundlePath];
-      [v91 setProperty:v11 forKey:@"bundlePath"];
+      bundlePath = [v10 bundlePath];
+      [v91 setProperty:bundlePath forKey:@"bundlePath"];
 
       [v91 setProperty:@"Accessibility" forKey:@"table"];
       v113[0] = @"contentLabel";
@@ -264,12 +264,12 @@ void __27__HoverTextController_init__block_invoke_4(uint64_t a1)
 
               v25 = *(*(&v102 + 1) + 8 * i);
               v106[0] = @"headerLabel";
-              v26 = [v25 itemTitle];
-              v107[0] = v26;
+              itemTitle = [v25 itemTitle];
+              v107[0] = itemTitle;
               v106[1] = @"contentLabel";
-              v27 = [v25 itemDescription];
+              itemDescription = [v25 itemDescription];
               v106[2] = @"alreadyLocalized";
-              v107[1] = v27;
+              v107[1] = itemDescription;
               v107[2] = &__kCFBooleanTrue;
               v28 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:3];
               [v18 addObject:v28];
@@ -299,10 +299,10 @@ void __27__HoverTextController_init__block_invoke_4(uint64_t a1)
     v31 = [PSSpecifier groupSpecifierWithName:v30];
 
     [v92 addObject:v31];
-    v32 = [(HoverTextController *)val _isLargeTextTypingController];
+    _isLargeTextTypingController = [(HoverTextController *)val _isLargeTextTypingController];
     v33 = settingsLocString(@"AXHoverTextDisplayModeTitle", @"Accessibility");
-    v34 = v32 == 0;
-    if (v32)
+    v34 = _isLargeTextTypingController == 0;
+    if (_isLargeTextTypingController)
     {
       v35 = @"HoverTextTypingDisplayMode";
     }
@@ -597,26 +597,26 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   [(HoverTextController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)setHoverTextEnabled:(id)a3 specifier:(id)a4
+- (void)setHoverTextEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSHoverTextSetEnabled(v4);
+  __AXSHoverTextSetEnabled(bOOLValue);
 }
 
-- (id)hoverTextEnabled:(id)a3
+- (id)hoverTextEnabled:(id)enabled
 {
   v3 = _AXSHoverTextEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)hoverTextFont:(id)a3
+- (id)hoverTextFont:(id)font
 {
-  v3 = [(HoverTextController *)self _isLargeTextTypingController];
+  _isLargeTextTypingController = [(HoverTextController *)self _isLargeTextTypingController];
   v4 = +[AXSettings sharedInstance];
   v5 = v4;
-  if (v3)
+  if (_isLargeTextTypingController)
   {
     [v4 hoverTextTypingFontName];
   }
@@ -642,24 +642,24 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)hoverTextColorForSpecifier:(id)a3
+- (id)hoverTextColorForSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  v5 = [(HoverTextController *)self _selectedColorForIdentifier:v4];
+  identifier = [specifier identifier];
+  v5 = [(HoverTextController *)self _selectedColorForIdentifier:identifier];
 
   return v5;
 }
 
-- (void)setHoverTextActivationLock:(id)a3 specifier:(id)a4
+- (void)setHoverTextActivationLock:(id)lock specifier:(id)specifier
 {
-  v4 = a3;
+  lockCopy = lock;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [lockCopy BOOLValue];
 
-  [v6 setHoverTextActivationLockEnabled:v5];
+  [v6 setHoverTextActivationLockEnabled:bOOLValue];
 }
 
-- (id)hoverTextActivationLock:(id)a3
+- (id)hoverTextActivationLock:(id)lock
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hoverTextActivationLockEnabled]);
@@ -667,7 +667,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)hoverTextActivationModifier:(id)a3
+- (id)hoverTextActivationModifier:(id)modifier
 {
   v3 = +[AXSettings sharedInstance];
   v4 = hoverTextActivationKeyLocString([v3 hoverTextPreferredActivatorKey]);
@@ -675,7 +675,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)hoverTextScrollSpeed:(id)a3
+- (id)hoverTextScrollSpeed:(id)speed
 {
   v3 = +[AXSettings sharedInstance];
   v4 = hoverTextScrollingSpeedLocString([v3 hoverTextScrollingSpeed]);
@@ -683,7 +683,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)hoverTextDisplayMode:(id)a3
+- (id)hoverTextDisplayMode:(id)mode
 {
   v3 = +[AXSettings sharedInstance];
   v4 = hoverTextDisplayModeLocString([v3 hoverTextDisplayMode]);
@@ -691,7 +691,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)hoverTextContentType:(id)a3
+- (id)hoverTextContentType:(id)type
 {
   v3 = +[AXSettings sharedInstance];
   v4 = hoverTextContentTypeLocString([v3 hoverTextContentType]);
@@ -699,28 +699,28 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)setHoverTextContentSize:(id)a3 forSpecifier:(id)a4
+- (void)setHoverTextContentSize:(id)size forSpecifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 isEqualToString:UIContentSizeCategoryUnspecified])
+  sizeCopy = size;
+  if ([sizeCopy isEqualToString:UIContentSizeCategoryUnspecified])
   {
 
-    v5 = 0;
+    sizeCopy = 0;
   }
 
   v4 = +[AXSettings sharedInstance];
-  [v4 setHoverTextContentSize:v5];
+  [v4 setHoverTextContentSize:sizeCopy];
 }
 
-- (id)hoverTextContentSizeForSpecifier:(id)a3
+- (id)hoverTextContentSizeForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 hoverTextContentSize];
+  hoverTextContentSize = [v3 hoverTextContentSize];
 
-  return v4;
+  return hoverTextContentSize;
 }
 
-- (id)largerTextEnabled:(id)a3
+- (id)largerTextEnabled:(id)enabled
 {
   v3 = _AXSHoverTextCopyContentSize();
   if (v3)
@@ -739,13 +739,13 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (void)setHoverTextTypingEnabled:(id)a3
+- (void)setHoverTextTypingEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v5 setHoverTextTypingEnabled:v4];
+  [v5 setHoverTextTypingEnabled:bOOLValue];
 }
 
 - (id)hoverTextTypingEnabled
@@ -756,7 +756,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)hoverTextTypingDisplayMode:(id)a3
+- (id)hoverTextTypingDisplayMode:(id)mode
 {
   v3 = +[AXSettings sharedInstance];
   v4 = hoverTextDisplayModeLocString([v3 hoverTextTypingDisplayMode]);
@@ -764,16 +764,16 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)hoverTextTypingTextStyle:(id)a3
+- (id)hoverTextTypingTextStyle:(id)style
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 hoverTextTypingTextStyle];
-  v5 = [HoverTypingTextStyleViewController visualTitleForEnumValue:v4];
+  hoverTextTypingTextStyle = [v3 hoverTextTypingTextStyle];
+  v5 = [HoverTypingTextStyleViewController visualTitleForEnumValue:hoverTextTypingTextStyle];
 
   return v5;
 }
 
-- (id)hoverTextTypingEnabled:(id)a3
+- (id)hoverTextTypingEnabled:(id)enabled
 {
   if (_AXSHoverTextTypingEnabled())
   {
@@ -823,20 +823,20 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   [(HoverTextController *)self reloadSpecifiers];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = HoverTextController;
-  [(HoverTextController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HoverTextController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v17.receiver = self;
   v17.super_class = HoverTextController;
-  v8 = [(HoverTextController *)&v17 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 identifier];
+  v8 = [(HoverTextController *)&v17 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  identifier = [specifier identifier];
   selectedIdentifier = self->_selectedIdentifier;
-  self->_selectedIdentifier = v10;
+  self->_selectedIdentifier = identifier;
 
   if (self->_selectedIdentifier)
   {
@@ -847,15 +847,15 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
       v14 = [(HoverTextController *)self _selectedColorForIdentifier:self->_selectedIdentifier];
       [v13 setSelectedColor:v14];
 
-      v15 = [v13 popoverPresentationController];
-      [v15 setPermittedArrowDirections:12];
-      [v15 setSourceRect:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
-      v16 = [v8 control];
-      [v15 setSourceView:v16];
+      popoverPresentationController = [v13 popoverPresentationController];
+      [popoverPresentationController setPermittedArrowDirections:12];
+      [popoverPresentationController setSourceRect:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
+      control = [v8 control];
+      [popoverPresentationController setSourceView:control];
 
       [(HoverTextController *)self presentViewController:v13 animated:1 completion:0];
       [v13 setDelegate:self];
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 }
@@ -865,8 +865,8 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   v3 = AXHasCapability();
   if (v3)
   {
-    v4 = [(HoverTextController *)self specifier];
-    v5 = [v4 propertyForKey:PSIDKey];
+    specifier = [(HoverTextController *)self specifier];
+    v5 = [specifier propertyForKey:PSIDKey];
     v6 = [v5 isEqualToString:@"HOVER_TYPING"];
 
     LOBYTE(v3) = v6;
@@ -875,7 +875,7 @@ id __33__HoverTextController_specifiers__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)_colorPickerConfigurationForIdentifier:(id)a3
+- (id)_colorPickerConfigurationForIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(_UIColorPickerViewControllerConfiguration);
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"HOVER_TEXT_TEXT_COLOR_ID"])
@@ -954,15 +954,15 @@ LABEL_14:
   return v4;
 }
 
-- (id)_selectedColorForIdentifier:(id)a3
+- (id)_selectedColorForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"HOVER_TEXT_TEXT_COLOR_ID"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"HOVER_TEXT_TEXT_COLOR_ID"])
   {
-    v5 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController = [(HoverTextController *)self _isLargeTextTypingController];
     v6 = +[AXSettings sharedInstance];
     v7 = v6;
-    if (v5)
+    if (_isLargeTextTypingController)
     {
       [v6 hoverTextTypingTextColorData];
     }
@@ -973,18 +973,18 @@ LABEL_14:
     }
 
     v21 = LABEL_21:;
-    v13 = v21;
+    hoverTextTypingMisspelledTextColorData = v21;
 
     v14 = +[UIColor whiteColor];
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"HOVER_TEXT_INSERTION_POINT_COLOR_ID"])
+  if ([identifierCopy isEqualToString:@"HOVER_TEXT_INSERTION_POINT_COLOR_ID"])
   {
-    v8 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController2 = [(HoverTextController *)self _isLargeTextTypingController];
     v9 = +[AXSettings sharedInstance];
     v7 = v9;
-    if (v8)
+    if (_isLargeTextTypingController2)
     {
       [v9 hoverTextTypingInsertionPointColorData];
     }
@@ -997,12 +997,12 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  if ([v4 isEqualToString:@"HOVER_TEXT_BACKGROUND_COLOR_ID"])
+  if ([identifierCopy isEqualToString:@"HOVER_TEXT_BACKGROUND_COLOR_ID"])
   {
-    v10 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController3 = [(HoverTextController *)self _isLargeTextTypingController];
     v11 = +[AXSettings sharedInstance];
     v12 = v11;
-    if (v10)
+    if (_isLargeTextTypingController3)
     {
       [v11 hoverTextTypingBackgroundColorData];
     }
@@ -1011,19 +1011,19 @@ LABEL_14:
     {
       [v11 hoverTextBackgroundColorData];
     }
-    v13 = ;
+    hoverTextTypingMisspelledTextColorData = ;
 
     v14 = +[UIColor blackColor];
   }
 
   else
   {
-    if ([v4 isEqualToString:@"HOVER_TEXT_BORDER_COLOR_ID"])
+    if ([identifierCopy isEqualToString:@"HOVER_TEXT_BORDER_COLOR_ID"])
     {
-      v19 = [(HoverTextController *)self _isLargeTextTypingController];
+      _isLargeTextTypingController4 = [(HoverTextController *)self _isLargeTextTypingController];
       v20 = +[AXSettings sharedInstance];
       v7 = v20;
-      if (v19)
+      if (_isLargeTextTypingController4)
       {
         [v20 hoverTextTypingBorderColorData];
       }
@@ -1036,24 +1036,24 @@ LABEL_14:
       goto LABEL_21;
     }
 
-    if ([v4 isEqualToString:@"HOVER_TYPING_MISSPELLED_WORD_COLOR_ID"])
+    if ([identifierCopy isEqualToString:@"HOVER_TYPING_MISSPELLED_WORD_COLOR_ID"])
     {
       v22 = +[AXSettings sharedInstance];
-      v13 = [v22 hoverTextTypingMisspelledTextColorData];
+      hoverTextTypingMisspelledTextColorData = [v22 hoverTextTypingMisspelledTextColorData];
 
       v14 = +[UIColor redColor];
     }
 
     else
     {
-      if (![v4 isEqualToString:@"HOVER_TYPING_AUTOCORRECTED_WORD_COLOR_ID"])
+      if (![identifierCopy isEqualToString:@"HOVER_TYPING_AUTOCORRECTED_WORD_COLOR_ID"])
       {
         v15 = 0;
         goto LABEL_30;
       }
 
       v23 = +[AXSettings sharedInstance];
-      v13 = [v23 hoverTextTypingAutocorrectedTextColorData];
+      hoverTextTypingMisspelledTextColorData = [v23 hoverTextTypingAutocorrectedTextColorData];
 
       v14 = +[UIColor blueColor];
     }
@@ -1061,7 +1061,7 @@ LABEL_14:
 
 LABEL_12:
   v15 = v14;
-  if (!v13)
+  if (!hoverTextTypingMisspelledTextColorData)
   {
 LABEL_30:
     v15 = v15;
@@ -1070,14 +1070,14 @@ LABEL_30:
   }
 
   v25 = 0;
-  v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v13 error:&v25];
+  v16 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:hoverTextTypingMisspelledTextColorData error:&v25];
   v17 = v25;
   if (v17)
   {
     v18 = AXLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(HoverTextController *)v4 _selectedColorForIdentifier:v17, v18];
+      [(HoverTextController *)identifierCopy _selectedColorForIdentifier:v17, v18];
     }
   }
 
@@ -1086,12 +1086,12 @@ LABEL_31:
   return v16;
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  colorCopy = color;
   v23 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v23];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:colorCopy requiringSecureCoding:1 error:&v23];
   v10 = v23;
   if (v10)
   {
@@ -1104,10 +1104,10 @@ LABEL_31:
 
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"HOVER_TEXT_TEXT_COLOR_ID"])
   {
-    v12 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController = [(HoverTextController *)self _isLargeTextTypingController];
     v13 = +[AXSettings sharedInstance];
     v14 = v13;
-    if (v12)
+    if (_isLargeTextTypingController)
     {
       [v13 setHoverTextTypingTextColorData:v9];
     }
@@ -1122,10 +1122,10 @@ LABEL_31:
 
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"HOVER_TEXT_INSERTION_POINT_COLOR_ID"])
   {
-    v15 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController2 = [(HoverTextController *)self _isLargeTextTypingController];
     v16 = +[AXSettings sharedInstance];
     v14 = v16;
-    if (v15)
+    if (_isLargeTextTypingController2)
     {
       [v16 setHoverTextTypingInsertionPointColorData:v9];
     }
@@ -1140,10 +1140,10 @@ LABEL_31:
 
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"HOVER_TEXT_BACKGROUND_COLOR_ID"])
   {
-    v17 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController3 = [(HoverTextController *)self _isLargeTextTypingController];
     v18 = +[AXSettings sharedInstance];
     v14 = v18;
-    if (v17)
+    if (_isLargeTextTypingController3)
     {
       [v18 setHoverTextTypingBackgroundColorData:v9];
     }
@@ -1158,10 +1158,10 @@ LABEL_31:
 
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"HOVER_TEXT_BORDER_COLOR_ID"])
   {
-    v19 = [(HoverTextController *)self _isLargeTextTypingController];
+    _isLargeTextTypingController4 = [(HoverTextController *)self _isLargeTextTypingController];
     v20 = +[AXSettings sharedInstance];
     v14 = v20;
-    if (v19)
+    if (_isLargeTextTypingController4)
     {
       [v20 setHoverTextTypingBorderColorData:v9];
     }
@@ -1195,7 +1195,7 @@ LABEL_26:
   v21 = [(HoverTextController *)self cellForSpecifierID:self->_selectedIdentifier];
   v22 = __UIAccessibilityCastAsClass();
 
-  [v22 setValue:v8];
+  [v22 setValue:colorCopy];
 }
 
 - (void)_selectedColorForIdentifier:(NSObject *)a3 .cold.1(uint64_t a1, uint64_t a2, NSObject *a3)

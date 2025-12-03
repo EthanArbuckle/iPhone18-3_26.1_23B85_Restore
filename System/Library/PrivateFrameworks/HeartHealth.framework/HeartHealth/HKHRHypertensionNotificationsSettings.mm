@@ -1,14 +1,14 @@
 @interface HKHRHypertensionNotificationsSettings
-- (BOOL)_featureOnboardedWithFeatureStatus:(id)a3;
-- (BOOL)_isWatchSettingsVisibleWithFeatureStatus:(id)a3;
-- (BOOL)_notificationsEnabledWithFeatureStatus:(id)a3;
-- (HKHRHypertensionNotificationsSettings)initWithFeatureStatus:(id)a3;
-- (id)_footerDefaultSupportingLink:(BOOL)a3;
-- (id)_footerPostPregnancyModeEnabled:(BOOL)a3;
-- (id)_footerPregnancyModeEnabled:(BOOL)a3;
-- (id)_footerRegionNotSupported:(BOOL)a3;
-- (id)_footerRemoteDisabled:(BOOL)a3;
-- (id)_footerSeedExpired:(BOOL)a3;
+- (BOOL)_featureOnboardedWithFeatureStatus:(id)status;
+- (BOOL)_isWatchSettingsVisibleWithFeatureStatus:(id)status;
+- (BOOL)_notificationsEnabledWithFeatureStatus:(id)status;
+- (HKHRHypertensionNotificationsSettings)initWithFeatureStatus:(id)status;
+- (id)_footerDefaultSupportingLink:(BOOL)link;
+- (id)_footerPostPregnancyModeEnabled:(BOOL)enabled;
+- (id)_footerPregnancyModeEnabled:(BOOL)enabled;
+- (id)_footerRegionNotSupported:(BOOL)supported;
+- (id)_footerRemoteDisabled:(BOOL)disabled;
+- (id)_footerSeedExpired:(BOOL)expired;
 - (id)_footerWristDetectionNotEnabled;
 - (id)bridgeSettings;
 - (id)watchSettings;
@@ -16,16 +16,16 @@
 
 @implementation HKHRHypertensionNotificationsSettings
 
-- (HKHRHypertensionNotificationsSettings)initWithFeatureStatus:(id)a3
+- (HKHRHypertensionNotificationsSettings)initWithFeatureStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = HKHRHypertensionNotificationsSettings;
   v6 = [(HKHRHypertensionNotificationsSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_featureStatus, a3);
+    objc_storeStrong(&v6->_featureStatus, status);
   }
 
   return v7;
@@ -36,21 +36,21 @@
   v40 = *MEMORY[0x277D85DE8];
   v3 = [(HKFeatureStatus *)self->_featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCBF98]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = MEMORY[0x277CCBE70];
-  if (!v5)
+  if (!bOOLValue)
   {
     v6 = &HKFeatureAvailabilityContextNotOnboardedSettingsVisibility;
   }
 
   v7 = *v6;
   v8 = [(HKFeatureStatus *)self->_featureStatus objectForKeyedSubscript:v7];
-  v9 = [v8 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied = [v8 areAllRequirementsSatisfied];
   v10 = [(HKHRHypertensionNotificationsSettings *)self _notificationsEnabledWithFeatureStatus:self->_featureStatus];
   v11 = [(HKHRHypertensionNotificationsSettings *)self _showOnboardingWithFeatureStatus:self->_featureStatus];
   v12 = [(HKFeatureStatus *)self->_featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBE68]];
-  v13 = [v12 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied2 = [v12 areAllRequirementsSatisfied];
   v14 = [(HKHRHypertensionNotificationsSettings *)self _footerWithRequirementsEvaluation:v3 supportsLink:1];
   _HKInitializeLogging();
   v15 = HKLogHeartRateCategory();
@@ -62,7 +62,7 @@
     v24 = v3;
     v17 = v11;
     v18 = v10;
-    v20 = v19 = v9;
+    v20 = v19 = areAllRequirementsSatisfied;
     *buf = 136447746;
     v27 = "[HKHRHypertensionNotificationsSettings bridgeSettings]";
     v28 = 1024;
@@ -72,14 +72,14 @@
     v32 = 1024;
     v33 = v17;
     v34 = 1024;
-    v35 = v13;
+    v35 = areAllRequirementsSatisfied2;
     v36 = 2112;
     v37 = v16;
     v38 = 2112;
     v39 = v20;
     _os_log_impl(&dword_228942000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}s]: settingsVisible: %i enabled: %i showOnboarding: %i userInteractionEnabled: %i visibilityUnsatisfiedRequirements: %@ interactionUnsatisfiedRequirements: %@", buf, 0x38u);
 
-    v9 = v19;
+    areAllRequirementsSatisfied = v19;
     v10 = v18;
     v11 = v17;
     v3 = v24;
@@ -87,7 +87,7 @@
     v7 = v25;
   }
 
-  v21 = [[HKHRHypertensionNotificationsBridgeSettings alloc] initWithSettingsVisible:v9 settingsEnabled:v10 showOnboarding:v11 userInteractionEnabled:v13 footer:v14];
+  v21 = [[HKHRHypertensionNotificationsBridgeSettings alloc] initWithSettingsVisible:areAllRequirementsSatisfied settingsEnabled:v10 showOnboarding:v11 userInteractionEnabled:areAllRequirementsSatisfied2 footer:v14];
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
@@ -99,7 +99,7 @@
   v3 = [(HKHRHypertensionNotificationsSettings *)self _isWatchSettingsVisibleWithFeatureStatus:self->_featureStatus];
   v4 = [(HKHRHypertensionNotificationsSettings *)self _notificationsEnabledWithFeatureStatus:self->_featureStatus];
   v5 = [(HKFeatureStatus *)self->_featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBE68]];
-  v6 = [v5 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied = [v5 areAllRequirementsSatisfied];
   v7 = [(HKFeatureStatus *)self->_featureStatus objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
   v8 = [(HKHRHypertensionNotificationsSettings *)self _footerWithRequirementsEvaluation:v7 supportsLink:0];
 
@@ -107,7 +107,7 @@
   v9 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 unsatisfiedRequirementIdentifiersDescription];
+    unsatisfiedRequirementIdentifiersDescription = [v5 unsatisfiedRequirementIdentifiersDescription];
     v14 = 136447234;
     v15 = "[HKHRHypertensionNotificationsSettings watchSettings]";
     v16 = 1024;
@@ -115,53 +115,53 @@
     v18 = 1024;
     v19 = v4;
     v20 = 1024;
-    v21 = v6;
+    v21 = areAllRequirementsSatisfied;
     v22 = 2112;
-    v23 = v10;
+    v23 = unsatisfiedRequirementIdentifiersDescription;
     _os_log_impl(&dword_228942000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}s]: settingsVisible: %i enabled: %i userInteractionEnabled: %i interactionUnsatisfiedRequirements: %@", &v14, 0x28u);
   }
 
-  v11 = [[HKHRHypertensionNotificationsWatchSettings alloc] initWithSettingsVisible:v3 settingsEnabled:v4 userInteractionEnabled:v6 footer:v8];
+  v11 = [[HKHRHypertensionNotificationsWatchSettings alloc] initWithSettingsVisible:v3 settingsEnabled:v4 userInteractionEnabled:areAllRequirementsSatisfied footer:v8];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (BOOL)_isWatchSettingsVisibleWithFeatureStatus:(id)a3
+- (BOOL)_isWatchSettingsVisibleWithFeatureStatus:(id)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HKHRHypertensionNotificationsSettings *)self _featureOnboardedWithFeatureStatus:v4];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
+  statusCopy = status;
+  v5 = [(HKHRHypertensionNotificationsSettings *)self _featureOnboardedWithFeatureStatus:statusCopy];
+  v6 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
 
-  v7 = [v6 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied = [v6 areAllRequirementsSatisfied];
   _HKInitializeLogging();
   v8 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 unsatisfiedRequirementIdentifiersDescription];
+    unsatisfiedRequirementIdentifiersDescription = [v6 unsatisfiedRequirementIdentifiersDescription];
     v12 = 136446978;
     v13 = "[HKHRHypertensionNotificationsSettings _isWatchSettingsVisibleWithFeatureStatus:]";
     v14 = 1024;
     v15 = v5;
     v16 = 1024;
-    v17 = v7;
+    v17 = areAllRequirementsSatisfied;
     v18 = 2112;
-    v19 = v9;
+    v19 = unsatisfiedRequirementIdentifiersDescription;
     _os_log_impl(&dword_228942000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}s]: onboarded: %i settingsVisible: %i visibilityUnsatisfiedRequirements: %@", &v12, 0x22u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5 & v7;
+  return v5 & areAllRequirementsSatisfied;
 }
 
-- (BOOL)_notificationsEnabledWithFeatureStatus:(id)a3
+- (BOOL)_notificationsEnabledWithFeatureStatus:(id)status
 {
-  v4 = [a3 onboardingRecord];
-  v5 = [v4 featureSettings];
+  onboardingRecord = [status onboardingRecord];
+  featureSettings = [onboardingRecord featureSettings];
 
-  v6 = [v5 numberForKey:*MEMORY[0x277CCC120]];
-  v7 = [v6 BOOLValue];
+  v6 = [featureSettings numberForKey:*MEMORY[0x277CCC120]];
+  bOOLValue = [v6 BOOLValue];
   _HKInitializeLogging();
   v8 = HKLogHeartRateCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -171,25 +171,25 @@
     v10 = HKLogHeartRateCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(HKHRHypertensionNotificationsSettings *)self _notificationsEnabledWithFeatureStatus:v7, v10];
+      [(HKHRHypertensionNotificationsSettings *)self _notificationsEnabledWithFeatureStatus:bOOLValue, v10];
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)_featureOnboardedWithFeatureStatus:(id)a3
+- (BOOL)_featureOnboardedWithFeatureStatus:(id)status
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  v3 = [status objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCBF98]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)_footerDefaultSupportingLink:(BOOL)a3
+- (id)_footerDefaultSupportingLink:(BOOL)link
 {
-  if (a3)
+  if (link)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER";
   }
@@ -221,9 +221,9 @@
   return v7;
 }
 
-- (id)_footerRegionNotSupported:(BOOL)a3
+- (id)_footerRegionNotSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER_REGION_NOT_SUPPORTED";
   }
@@ -241,9 +241,9 @@
   return v7;
 }
 
-- (id)_footerRemoteDisabled:(BOOL)a3
+- (id)_footerRemoteDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER_REMOTE_DISABLED";
   }
@@ -261,9 +261,9 @@
   return v7;
 }
 
-- (id)_footerSeedExpired:(BOOL)a3
+- (id)_footerSeedExpired:(BOOL)expired
 {
-  if (a3)
+  if (expired)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER_SEED_EXPIRED";
   }
@@ -281,9 +281,9 @@
   return v7;
 }
 
-- (id)_footerPregnancyModeEnabled:(BOOL)a3
+- (id)_footerPregnancyModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER_PREGNANCY_MODE_ENABLED";
   }
@@ -301,9 +301,9 @@
   return v7;
 }
 
-- (id)_footerPostPregnancyModeEnabled:(BOOL)a3
+- (id)_footerPostPregnancyModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = @"HEART_NOTIFICATION_HYPERTENSION_NOTIFICATIONS_FOOTER_POST_PREGNANCY_MODE_ENABLED";
   }

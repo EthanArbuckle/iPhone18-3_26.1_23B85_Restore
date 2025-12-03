@@ -1,13 +1,13 @@
 @interface CPSLocationProvider
 + (BOOL)locationServiceEnabled;
 + (id)sharedProvider;
-+ (void)setLocationServiceEnabled:(BOOL)a3;
++ (void)setLocationServiceEnabled:(BOOL)enabled;
 - (CPSLocationProvider)init;
-- (void)confirmCurrentLocationInRegion:(id)a3 completion:(id)a4;
-- (void)getCurrentLocationWithCompletion:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)confirmCurrentLocationInRegion:(id)region completion:(id)completion;
+- (void)getCurrentLocationWithCompletion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CPSLocationProvider
@@ -100,11 +100,11 @@ uint64_t __27__CPSLocationProvider_init__block_invoke(uint64_t a1)
   return CLLocationManagerClass;
 }
 
-+ (void)setLocationServiceEnabled:(BOOL)a3
++ (void)setLocationServiceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   CLLocationManagerClass = getCLLocationManagerClass();
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 3;
   }
@@ -118,18 +118,18 @@ uint64_t __27__CPSLocationProvider_init__block_invoke(uint64_t a1)
   [CLLocationManagerClass setAuthorizationStatusByType:v5 forBundle:v6];
 }
 
-- (void)confirmCurrentLocationInRegion:(id)a3 completion:(id)a4
+- (void)confirmCurrentLocationInRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__CPSLocationProvider_confirmCurrentLocationInRegion_completion___block_invoke;
   v10[3] = &unk_278DCEA80;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = regionCopy;
+  v12 = completionCopy;
+  v8 = regionCopy;
+  v9 = completionCopy;
   [(CPSLocationProvider *)self getCurrentLocationWithCompletion:v10];
 }
 
@@ -163,17 +163,17 @@ void __65__CPSLocationProvider_confirmCurrentLocationInRegion_completion___block
 LABEL_7:
 }
 
-- (void)getCurrentLocationWithCompletion:(id)a3
+- (void)getCurrentLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__CPSLocationProvider_getCurrentLocationWithCompletion___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -207,7 +207,7 @@ void __56__CPSLocationProvider_getCurrentLocationWithCompletion___block_invoke(u
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v4 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -233,17 +233,17 @@ uint64_t __61__CPSLocationProvider_locationManagerDidChangeAuthorization___block
   return result;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  locationsCopy = locations;
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v5 lastObject];
+    lastObject = [locationsCopy lastObject];
     *buf = 138739971;
-    v15 = v8;
+    v15 = lastObject;
     _os_log_impl(&dword_2436ED000, v7, OS_LOG_TYPE_INFO, "CPSLocationProvider: didUpdateLocation: %{sensitive}@", buf, 0xCu);
   }
 
@@ -253,8 +253,8 @@ uint64_t __61__CPSLocationProvider_locationManagerDidChangeAuthorization___block
   v12[2] = __58__CPSLocationProvider_locationManager_didUpdateLocations___block_invoke;
   v12[3] = &unk_278DCDE58;
   v12[4] = self;
-  v13 = v5;
-  v10 = v5;
+  v13 = locationsCopy;
+  v10 = locationsCopy;
   dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -271,13 +271,13 @@ void __58__CPSLocationProvider_locationManager_didUpdateLocations___block_invoke
   *(v4 + 16) = 0;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [CPSLocationProvider locationManager:v5 didFailWithError:v6];
+    [CPSLocationProvider locationManager:errorCopy didFailWithError:v6];
   }
 
   queue = self->_queue;
@@ -286,8 +286,8 @@ void __58__CPSLocationProvider_locationManager_didUpdateLocations___block_invoke
   v9[2] = __56__CPSLocationProvider_locationManager_didFailWithError___block_invoke;
   v9[3] = &unk_278DCDE58;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(queue, v9);
 }
 

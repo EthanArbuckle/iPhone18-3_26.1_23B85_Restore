@@ -1,85 +1,85 @@
 @interface CHSSessionPlatterDescriptor
-- (BOOL)isEqual:(id)a3;
-- (CHSSessionPlatterDescriptor)initWithCoder:(id)a3;
-- (CHSSessionPlatterDescriptor)initWithExtensionIdentity:(id)a3 activityAttributesType:(id)a4;
-- (id)_initWithDescriptor:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSSessionPlatterDescriptor)initWithCoder:(id)coder;
+- (CHSSessionPlatterDescriptor)initWithExtensionIdentity:(id)identity activityAttributesType:(id)type;
+- (id)_initWithDescriptor:(id)descriptor;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)widgetForFamily:(int64_t)a3 activityIdentifier:(id)a4;
+- (id)widgetForFamily:(int64_t)family activityIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSSessionPlatterDescriptor
 
-- (CHSSessionPlatterDescriptor)initWithExtensionIdentity:(id)a3 activityAttributesType:(id)a4
+- (CHSSessionPlatterDescriptor)initWithExtensionIdentity:(id)identity activityAttributesType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = CHSSessionPlatterDescriptor;
-  v8 = [(CHSBaseDescriptor *)&v12 initWithExtensionIdentity:v6];
-  v9 = [v7 copy];
+  v8 = [(CHSBaseDescriptor *)&v12 initWithExtensionIdentity:identityCopy];
+  v9 = [typeCopy copy];
   activityAttributesType = v8->_activityAttributesType;
   v8->_activityAttributesType = v9;
 
   return v8;
 }
 
-- (id)_initWithDescriptor:(id)a3
+- (id)_initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(CHSSessionPlatterDescriptor *)self initWithExtensionIdentity:*(v4 + 1) activityAttributesType:*(v4 + 19)];
-  v6 = [*(v4 + 3) copy];
+  descriptorCopy = descriptor;
+  v5 = [(CHSSessionPlatterDescriptor *)self initWithExtensionIdentity:*(descriptorCopy + 1) activityAttributesType:*(descriptorCopy + 19)];
+  v6 = [*(descriptorCopy + 3) copy];
   displayName = v5->super._displayName;
   v5->super._displayName = v6;
 
-  v8 = [*(v4 + 4) copy];
+  v8 = [*(descriptorCopy + 4) copy];
   widgetDescription = v5->super._widgetDescription;
   v5->super._widgetDescription = v8;
 
-  v10 = [*(v4 + 6) copy];
+  v10 = [*(descriptorCopy + 6) copy];
   localeToken = v5->super._localeToken;
   v5->super._localeToken = v10;
 
-  v12 = [*(v4 + 5) copy];
+  v12 = [*(descriptorCopy + 5) copy];
   eventMachServiceName = v5->super._eventMachServiceName;
   v5->super._eventMachServiceName = v12;
 
-  v5->super._preferredBackgroundStyle = *(v4 + 7);
-  v5->super._supportsVibrantContent = *(v4 + 64);
-  objc_storeStrong(&v5->super._sdkVersion, *(v4 + 10));
-  v5->super._version = *(v4 + 9);
-  v5->super._requestedDataProtection = *(v4 + 15);
+  v5->super._preferredBackgroundStyle = *(descriptorCopy + 7);
+  v5->super._supportsVibrantContent = *(descriptorCopy + 64);
+  objc_storeStrong(&v5->super._sdkVersion, *(descriptorCopy + 10));
+  v5->super._version = *(descriptorCopy + 9);
+  v5->super._requestedDataProtection = *(descriptorCopy + 15);
 
   return v5;
 }
 
-- (id)widgetForFamily:(int64_t)a3 activityIdentifier:(id)a4
+- (id)widgetForFamily:(int64_t)family activityIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (family)
   {
     v7 = [CHSWidget alloc];
-    v8 = [(CHSBaseDescriptor *)self extensionIdentity];
-    a3 = [(CHSWidget *)v7 initWithExtensionIdentity:v8 kind:@"sessionPlatter" family:a3 intent:0 activityIdentifier:v6];
+    extensionIdentity = [(CHSBaseDescriptor *)self extensionIdentity];
+    family = [(CHSWidget *)v7 initWithExtensionIdentity:extensionIdentity kind:@"sessionPlatter" family:family intent:0 activityIdentifier:identifierCopy];
   }
 
-  return a3;
+  return family;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = CHSSessionPlatterDescriptor;
-  if ([(CHSBaseDescriptor *)&v16 isEqual:v4])
+  if ([(CHSBaseDescriptor *)&v16 isEqual:equalCopy])
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -129,22 +129,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v8.receiver = self;
   v8.super_class = CHSSessionPlatterDescriptor;
-  v4 = [v3 appendUnsignedInteger:{-[CHSBaseDescriptor hash](&v8, sel_hash)}];
-  v5 = [v3 appendObject:self->_activityAttributesType];
-  v6 = [v3 hash];
+  v4 = [builder appendUnsignedInteger:{-[CHSBaseDescriptor hash](&v8, sel_hash)}];
+  v5 = [builder appendObject:self->_activityAttributesType];
+  v6 = [builder hash];
 
   return v6;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CHSSessionPlatterDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSSessionPlatterDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -156,24 +156,24 @@
   v7[3] = &unk_1E7453000;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v7];
   v5 = v4;
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSSessionPlatterDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSSessionPlatterDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -181,8 +181,8 @@
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -208,31 +208,31 @@ id __69__CHSSessionPlatterDescriptor_descriptionBuilderWithMultilinePrefix___blo
   return [*(a1 + 32) appendInteger:*(*(a1 + 40) + 120) withName:@"requestedDataProtection"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableSessionPlatterDescriptor alloc];
 
   return [(CHSSessionPlatterDescriptor *)v4 _initWithDescriptor:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = CHSSessionPlatterDescriptor;
-  [(CHSBaseDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_activityAttributesType forKey:@"activityAttributesType"];
+  [(CHSBaseDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_activityAttributesType forKey:@"activityAttributesType"];
 }
 
-- (CHSSessionPlatterDescriptor)initWithCoder:(id)a3
+- (CHSSessionPlatterDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CHSSessionPlatterDescriptor;
-  v5 = [(CHSBaseDescriptor *)&v11 initWithCoder:v4];
+  v5 = [(CHSBaseDescriptor *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityAttributesType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityAttributesType"];
     v7 = v6;
     if (v6)
     {

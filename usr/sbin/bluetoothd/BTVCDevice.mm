@@ -1,14 +1,14 @@
 @interface BTVCDevice
 - (BTVCDevice)init;
-- (BTVCDevice)initWithDeviceAddres:(id)a3;
-- (BTVCDevice)initWithDeviceAddresData:(id)a3;
+- (BTVCDevice)initWithDeviceAddres:(id)addres;
+- (BTVCDevice)initWithDeviceAddresData:(id)data;
 @end
 
 @implementation BTVCDevice
 
-- (BTVCDevice)initWithDeviceAddres:(id)a3
+- (BTVCDevice)initWithDeviceAddres:(id)addres
 {
-  v4 = a3;
+  addresCopy = addres;
   v11.receiver = self;
   v11.super_class = BTVCDevice;
   v5 = [(BTVCDevice *)&v11 init];
@@ -20,11 +20,11 @@
       *buf = 136315394;
       v13 = "[BTVCDevice initWithDeviceAddres:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = addresCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s initWithDeviceAddres %@\n", buf, 0x16u);
     }
 
-    v7 = [[BTVCBluetoothAddress alloc] initWithDeviceAddres:v4];
+    v7 = [[BTVCBluetoothAddress alloc] initWithDeviceAddres:addresCopy];
     bluetoothAddress = v5->_bluetoothAddress;
     v5->_bluetoothAddress = v7;
 
@@ -34,9 +34,9 @@
   return v5;
 }
 
-- (BTVCDevice)initWithDeviceAddresData:(id)a3
+- (BTVCDevice)initWithDeviceAddresData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = BTVCDevice;
   v5 = [(BTVCDevice *)&v8 init];
@@ -48,11 +48,11 @@
       *buf = 136315394;
       v10 = "[BTVCDevice initWithDeviceAddresData:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = dataCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s address %@\n", buf, 0x16u);
     }
 
-    sub_100850198(v5, [[BTVCBluetoothAddress alloc] initWithDeviceAddresData:v4]);
+    sub_100850198(v5, [[BTVCBluetoothAddress alloc] initWithDeviceAddresData:dataCopy]);
   }
 
   return v5;

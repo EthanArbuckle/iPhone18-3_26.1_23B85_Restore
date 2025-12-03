@@ -8,13 +8,13 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   HealthExperienceStoreCleanupOperation.main()();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22855DC6C();
   MEMORY[0x22AAB92A0](0xD000000000000027, 0x800000022856D7D0);
   sub_22855DDDC();

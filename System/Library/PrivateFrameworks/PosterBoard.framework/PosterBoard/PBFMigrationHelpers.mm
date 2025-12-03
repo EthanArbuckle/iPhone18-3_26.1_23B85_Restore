@@ -1,35 +1,35 @@
 @interface PBFMigrationHelpers
-+ (void)updateConfiguredPropertiesForDataStoreURL:(id)a3 extensionToDescriptorMap:(id)a4 migrationKey:(id)a5 reason:(id)a6 match:(id)a7 update:(id)a8;
++ (void)updateConfiguredPropertiesForDataStoreURL:(id)l extensionToDescriptorMap:(id)map migrationKey:(id)key reason:(id)reason match:(id)match update:(id)update;
 @end
 
 @implementation PBFMigrationHelpers
 
-+ (void)updateConfiguredPropertiesForDataStoreURL:(id)a3 extensionToDescriptorMap:(id)a4 migrationKey:(id)a5 reason:(id)a6 match:(id)a7 update:(id)a8
++ (void)updateConfiguredPropertiesForDataStoreURL:(id)l extensionToDescriptorMap:(id)map migrationKey:(id)key reason:(id)reason match:(id)match update:(id)update
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  mapCopy = map;
+  keyCopy = key;
+  reasonCopy = reason;
+  matchCopy = match;
+  updateCopy = update;
   v18 = MEMORY[0x277CBEBC0];
-  v19 = a3;
-  v20 = [v18 pbf_dataStoreExtensionContainerURLForBaseURL:v19 version:{+[PBFPosterExtensionDataStore dataStoreVersion](PBFPosterExtensionDataStore, "dataStoreVersion")}];
+  lCopy = l;
+  v20 = [v18 pbf_dataStoreExtensionContainerURLForBaseURL:lCopy version:{+[PBFPosterExtensionDataStore dataStoreVersion](PBFPosterExtensionDataStore, "dataStoreVersion")}];
 
   v21 = _PBFExtensionStoreCoordinatorsForDataStoreExtensionContainerURL(v20, 0);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __123__PBFMigrationHelpers_updateConfiguredPropertiesForDataStoreURL_extensionToDescriptorMap_migrationKey_reason_match_update___block_invoke;
   v27[3] = &unk_2782C9428;
-  v28 = v13;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v22 = v17;
-  v23 = v15;
-  v24 = v16;
-  v25 = v14;
-  v26 = v13;
+  v28 = mapCopy;
+  v29 = keyCopy;
+  v30 = reasonCopy;
+  v31 = matchCopy;
+  v32 = updateCopy;
+  v22 = updateCopy;
+  v23 = reasonCopy;
+  v24 = matchCopy;
+  v25 = keyCopy;
+  v26 = mapCopy;
   [v21 enumerateObjectsUsingBlock:v27];
 }
 

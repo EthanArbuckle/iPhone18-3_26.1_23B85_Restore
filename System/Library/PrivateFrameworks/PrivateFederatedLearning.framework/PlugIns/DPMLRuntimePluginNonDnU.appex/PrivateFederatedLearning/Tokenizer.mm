@@ -1,32 +1,32 @@
 @interface Tokenizer
-+ (id)getAllEmojis:(id)a3;
-+ (id)processMessagesWithCFStringTokenizer:(id)a3;
-+ (id)processMessagesWithPunctuationAndWhiteSpace:(id)a3;
-+ (id)tokenizeMessages:(id)a3 withType:(int64_t)a4;
++ (id)getAllEmojis:(id)emojis;
++ (id)processMessagesWithCFStringTokenizer:(id)tokenizer;
++ (id)processMessagesWithPunctuationAndWhiteSpace:(id)space;
++ (id)tokenizeMessages:(id)messages withType:(int64_t)type;
 @end
 
 @implementation Tokenizer
 
-+ (id)tokenizeMessages:(id)a3 withType:(int64_t)a4
++ (id)tokenizeMessages:(id)messages withType:(int64_t)type
 {
-  v6 = a3;
-  if (a4)
+  messagesCopy = messages;
+  if (type)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      [a1 getAllEmojis:v6];
+      [self getAllEmojis:messagesCopy];
     }
 
     else
     {
-      [a1 processMessagesWithCFStringTokenizer:v6];
+      [self processMessagesWithCFStringTokenizer:messagesCopy];
     }
     v7 = ;
   }
 
   else
   {
-    v7 = [a1 processMessagesWithPunctuationAndWhiteSpace:v6];
+    v7 = [self processMessagesWithPunctuationAndWhiteSpace:messagesCopy];
   }
 
   v8 = v7;
@@ -34,9 +34,9 @@
   return v8;
 }
 
-+ (id)processMessagesWithPunctuationAndWhiteSpace:(id)a3
++ (id)processMessagesWithPunctuationAndWhiteSpace:(id)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v4 = +[NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
   v5 = +[NSCharacterSet punctuationCharacterSet];
   [v4 formUnionWithCharacterSet:v5];
@@ -47,7 +47,7 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v3;
+  v7 = spaceCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -75,15 +75,15 @@
   return v6;
 }
 
-+ (id)processMessagesWithCFStringTokenizer:(id)a3
++ (id)processMessagesWithCFStringTokenizer:(id)tokenizer
 {
-  v3 = a3;
+  tokenizerCopy = tokenizer;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = tokenizerCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -130,9 +130,9 @@
   return v4;
 }
 
-+ (id)getAllEmojis:(id)a3
++ (id)getAllEmojis:(id)emojis
 {
-  v3 = a3;
+  emojisCopy = emojis;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -143,7 +143,7 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = emojisCopy;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v23 count:16];
   if (v5)
   {

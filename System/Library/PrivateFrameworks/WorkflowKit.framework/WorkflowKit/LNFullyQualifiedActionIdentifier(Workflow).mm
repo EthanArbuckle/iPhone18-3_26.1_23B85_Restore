@@ -7,10 +7,10 @@
 - (id)compositeIdentifier
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v2 = [a1 bundleIdentifier];
-  v8[0] = v2;
-  v3 = [a1 actionIdentifier];
-  v8[1] = v3;
+  bundleIdentifier = [self bundleIdentifier];
+  v8[0] = bundleIdentifier;
+  actionIdentifier = [self actionIdentifier];
+  v8[1] = actionIdentifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
 

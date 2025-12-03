@@ -1,6 +1,6 @@
 @interface PHImageDecoderAsyncDecodeRequestHandle
-- (PHImageDecoderAsyncDecodeRequestHandle)initWithFigRequestID:(unint64_t)a3 container:(CMPhotoDecompressionContainer *)a4 figDecoder:(id)a5;
-- (PHImageDecoderAsyncDecodeRequestHandle)initWithImageIODecoder:(id)a3;
+- (PHImageDecoderAsyncDecodeRequestHandle)initWithFigRequestID:(unint64_t)d container:(CMPhotoDecompressionContainer *)container figDecoder:(id)decoder;
+- (PHImageDecoderAsyncDecodeRequestHandle)initWithImageIODecoder:(id)decoder;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -20,42 +20,42 @@
   if ((atomic_exchange(&self->_cancelFlag._Value, 1u) & 1) == 0)
   {
     self->_cancelRequested = 1;
-    v4 = [(PHImageDecoderAsyncDecodeRequestHandle *)self initialDecoder];
-    [v4 cancelInFlightAsyncDecodeForRequestHandle:self];
+    initialDecoder = [(PHImageDecoderAsyncDecodeRequestHandle *)self initialDecoder];
+    [initialDecoder cancelInFlightAsyncDecodeForRequestHandle:self];
   }
 }
 
-- (PHImageDecoderAsyncDecodeRequestHandle)initWithImageIODecoder:(id)a3
+- (PHImageDecoderAsyncDecodeRequestHandle)initWithImageIODecoder:(id)decoder
 {
-  v5 = a3;
+  decoderCopy = decoder;
   v9.receiver = self;
   v9.super_class = PHImageDecoderAsyncDecodeRequestHandle;
   v6 = [(PHImageDecoderAsyncDecodeRequestHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialDecoder, a3);
+    objc_storeStrong(&v6->_initialDecoder, decoder);
     v7->_figRequestID = 0;
   }
 
   return v7;
 }
 
-- (PHImageDecoderAsyncDecodeRequestHandle)initWithFigRequestID:(unint64_t)a3 container:(CMPhotoDecompressionContainer *)a4 figDecoder:(id)a5
+- (PHImageDecoderAsyncDecodeRequestHandle)initWithFigRequestID:(unint64_t)d container:(CMPhotoDecompressionContainer *)container figDecoder:(id)decoder
 {
-  v9 = a5;
+  decoderCopy = decoder;
   v13.receiver = self;
   v13.super_class = PHImageDecoderAsyncDecodeRequestHandle;
   v10 = [(PHImageDecoderAsyncDecodeRequestHandle *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_initialDecoder, a5);
-    v11->_figRequestID = a3;
+    objc_storeStrong(&v10->_initialDecoder, decoder);
+    v11->_figRequestID = d;
     v11->_figGainMapRequestID = 0;
-    if (a4)
+    if (container)
     {
-      [(PHImageDecoderAsyncDecodeRequestHandle *)v11 setFigDecompressionContainer:a4];
+      [(PHImageDecoderAsyncDecodeRequestHandle *)v11 setFigDecompressionContainer:container];
     }
   }
 

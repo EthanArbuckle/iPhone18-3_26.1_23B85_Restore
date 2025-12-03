@@ -1,52 +1,52 @@
 @interface NCMutableNotificationSectionSettings
-- (void)setDisplayName:(id)a3;
-- (void)setMuteAssertion:(id)a3;
-- (void)setSectionIdentifier:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)setSubSectionIdentifier:(id)a3;
-- (void)setSubSectionSettings:(id)a3;
+- (void)setDisplayName:(id)name;
+- (void)setMuteAssertion:(id)assertion;
+- (void)setSectionIdentifier:(id)identifier;
+- (void)setSettings:(id)settings;
+- (void)setSubSectionIdentifier:(id)identifier;
+- (void)setSubSectionSettings:(id)settings;
 @end
 
 @implementation NCMutableNotificationSectionSettings
 
-- (void)setSectionIdentifier:(id)a3
+- (void)setSectionIdentifier:(id)identifier
 {
-  self->super._sectionIdentifier = [a3 copy];
+  self->super._sectionIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSubSectionIdentifier:(id)a3
+- (void)setSubSectionIdentifier:(id)identifier
 {
-  self->super._subSectionIdentifier = [a3 copy];
+  self->super._subSectionIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  self->super._displayName = [a3 copy];
+  self->super._displayName = [name copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  self->super._settings = [a3 copy];
+  self->super._settings = [settings copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSubSectionSettings:(id)a3
+- (void)setSubSectionSettings:(id)settings
 {
-  self->super._subSectionSettings = [a3 copy];
+  self->super._subSectionSettings = [settings copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setMuteAssertion:(id)a3
+- (void)setMuteAssertion:(id)assertion
 {
-  self->super._muteAssertion = [a3 copyWithZone:0];
+  self->super._muteAssertion = [assertion copyWithZone:0];
 
   MEMORY[0x2821F96F8]();
 }

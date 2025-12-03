@@ -1,11 +1,11 @@
 @interface EDIndexedItems
 - (EDIndexedItems)init;
-- (EDIndexedItems)initWithIndexableItems:(id)a3;
+- (EDIndexedItems)initWithIndexableItems:(id)items;
 @end
 
 @implementation EDIndexedItems
 
-- (EDIndexedItems)initWithIndexableItems:(id)a3
+- (EDIndexedItems)initWithIndexableItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1C3EE0, &qword_1C6473800);
   v3 = sub_1C645CA14();

@@ -1,21 +1,21 @@
 @interface HKMHValenceDistributionSummary
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (BOOL)isEqual:(id)a3;
-- (HKMHValenceDistributionSummary)initWithCoder:(id)a3;
-- (HKMHValenceDistributionSummary)initWithDayIndexRange:(id)a3 valenceDistributions:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKMHValenceDistributionSummary)initWithCoder:(id)coder;
+- (HKMHValenceDistributionSummary)initWithDayIndexRange:(id)range valenceDistributions:(id)distributions;
 - (NSString)hk_redactedDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHValenceDistributionSummary
 
-- (HKMHValenceDistributionSummary)initWithDayIndexRange:(id)a3 valenceDistributions:(id)a4
+- (HKMHValenceDistributionSummary)initWithDayIndexRange:(id)range valenceDistributions:(id)distributions
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  distributionsCopy = distributions;
   v15.receiver = self;
   v15.super_class = HKMHValenceDistributionSummary;
   v8 = [(HKMHValenceDistributionSummary *)&v15 init];
@@ -24,13 +24,13 @@
   {
     v8->_dayIndexRange.start = var0;
     v8->_dayIndexRange.duration = var1;
-    v10 = [v7 copy];
+    v10 = [distributionsCopy copy];
     valenceDistributions = v9->_valenceDistributions;
     v9->_valenceDistributions = v10;
 
-    [v7 hk_sumUsingEvaluationBlock:&__block_literal_global];
+    [distributionsCopy hk_sumUsingEvaluationBlock:&__block_literal_global];
     v9->_countDaily = v12;
-    [v7 hk_sumUsingEvaluationBlock:&__block_literal_global_294];
+    [distributionsCopy hk_sumUsingEvaluationBlock:&__block_literal_global_294];
     v9->_countMomentary = v13;
   }
 
@@ -61,16 +61,16 @@ double __77__HKMHValenceDistributionSummary_initWithDayIndexRange_valenceDistrib
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HKMHValenceDistributionSummary *)self valenceDistributions];
-    v7 = [v5 valenceDistributions];
-    v9 = [v6 isEqualToArray:v7] && self->_countDaily == v5[3] && self->_countMomentary == v5[2] && self->_dayIndexRange.start == v5[4] && self->_dayIndexRange.duration == v5[5];
+    v5 = equalCopy;
+    valenceDistributions = [(HKMHValenceDistributionSummary *)self valenceDistributions];
+    valenceDistributions2 = [v5 valenceDistributions];
+    v9 = [valenceDistributions isEqualToArray:valenceDistributions2] && self->_countDaily == v5[3] && self->_countMomentary == v5[2] && self->_dayIndexRange.start == v5[4] && self->_dayIndexRange.duration == v5[5];
   }
 
   else
@@ -83,8 +83,8 @@ double __77__HKMHValenceDistributionSummary_initWithDayIndexRange_valenceDistrib
 
 - (unint64_t)hash
 {
-  v3 = [(HKMHValenceDistributionSummary *)self valenceDistributions];
-  v4 = [v3 hash];
+  valenceDistributions = [(HKMHValenceDistributionSummary *)self valenceDistributions];
+  v4 = [valenceDistributions hash];
   v5 = veorq_s8(*&self->_countMomentary, self->_dayIndexRange);
   v6 = veor_s8(*v5.i8, *&vextq_s8(v5, v5, 8uLL));
 
@@ -111,32 +111,32 @@ double __77__HKMHValenceDistributionSummary_initWithDayIndexRange_valenceDistrib
   return v2;
 }
 
-- (HKMHValenceDistributionSummary)initWithCoder:(id)a3
+- (HKMHValenceDistributionSummary)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"ValenceDistributions"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ValenceDistributions"];
 
-  v9 = [v5 decodeIntegerForKey:@"DayIndexRangeStart"];
-  v10 = [v5 decodeIntegerForKey:@"DayIndexRangeDuration"];
+  v9 = [coderCopy decodeIntegerForKey:@"DayIndexRangeStart"];
+  v10 = [coderCopy decodeIntegerForKey:@"DayIndexRangeDuration"];
 
   v11 = [(HKMHValenceDistributionSummary *)self initWithDayIndexRange:v9 valenceDistributions:v10, v8];
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   valenceDistributions = self->_valenceDistributions;
-  v5 = a3;
-  [v5 encodeObject:valenceDistributions forKey:@"ValenceDistributions"];
-  [v5 encodeInteger:self->_dayIndexRange.start forKey:@"DayIndexRangeStart"];
-  [v5 encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:valenceDistributions forKey:@"ValenceDistributions"];
+  [coderCopy encodeInteger:self->_dayIndexRange.start forKey:@"DayIndexRangeStart"];
+  [coderCopy encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange

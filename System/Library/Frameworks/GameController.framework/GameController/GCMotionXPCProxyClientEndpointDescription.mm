@@ -1,76 +1,76 @@
 @interface GCMotionXPCProxyClientEndpointDescription
-- (GCMotionXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCMotionXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCMotionXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCMotionXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialSensorsActive:(BOOL)active;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCMotionXPCProxyClientEndpointDescription
 
-- (GCMotionXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4
+- (GCMotionXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialSensorsActive:(BOOL)active
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = GCMotionXPCProxyClientEndpointDescription;
   v7 = [(GCMotionXPCProxyClientEndpointDescription *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [identifierCopy copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_initialSensorsActive = a4;
+    v7->_initialSensorsActive = active;
   }
 
   return v7;
 }
 
-- (GCMotionXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCMotionXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GCMotionXPCProxyClientEndpointDescription;
   v5 = [(GCMotionXPCProxyClientEndpointDescription *)&v10 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v5->_initialSensorsActive = [v4 decodeBoolForKey:@"initialSensorsActive"];
+    v5->_initialSensorsActive = [coderCopy decodeBoolForKey:@"initialSensorsActive"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialSensorsActive = self->_initialSensorsActive;
-  v5 = a3;
-  [v5 encodeInteger:initialSensorsActive forKey:@"initialSensorsActive"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:initialSensorsActive forKey:@"initialSensorsActive"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB2F58];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB2F58];
 
   if (v8)
   {
-    v9 = [v8 motionXPCProxyServiceRemoteServer];
+    motionXPCProxyServiceRemoteServer = [v8 motionXPCProxyServiceRemoteServer];
     v10 = [[GCMotionXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier initialSensorsActive:self->_initialSensorsActive];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -83,7 +83,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 motionXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [motionXPCProxyServiceRemoteServer motionXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

@@ -1,35 +1,35 @@
 @interface ICBulkSetItemPropertyRequest
-- (id)_bodyDataForItemIDs:(id)a3 properties:(id)a4 useLongIDs:(BOOL)a5;
-- (id)_bodyDataForItemKind:(unsigned __int8)a3 cloudLibraryIDs:(id)a4 properties:(id)a5;
+- (id)_bodyDataForItemIDs:(id)ds properties:(id)properties useLongIDs:(BOOL)iDs;
+- (id)_bodyDataForItemKind:(unsigned __int8)kind cloudLibraryIDs:(id)ds properties:(id)properties;
 @end
 
 @implementation ICBulkSetItemPropertyRequest
 
-- (id)_bodyDataForItemKind:(unsigned __int8)a3 cloudLibraryIDs:(id)a4 properties:(id)a5
+- (id)_bodyDataForItemKind:(unsigned __int8)kind cloudLibraryIDs:(id)ds properties:(id)properties
 {
-  v6 = a4;
-  v7 = a5;
+  dsCopy = ds;
+  propertiesCopy = properties;
   +[ICDAAPPropertyInfo sharedItemPropertyInfo];
-  v13 = v6;
-  v15 = v14 = v7;
+  v13 = dsCopy;
+  v15 = v14 = propertiesCopy;
   v8 = v15;
-  v9 = v7;
-  v10 = v6;
+  v9 = propertiesCopy;
+  v10 = dsCopy;
   v11 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v11;
 }
 
-- (id)_bodyDataForItemIDs:(id)a3 properties:(id)a4 useLongIDs:(BOOL)a5
+- (id)_bodyDataForItemIDs:(id)ds properties:(id)properties useLongIDs:(BOOL)iDs
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  propertiesCopy = properties;
   +[ICDAAPPropertyInfo sharedItemPropertyInfo];
-  v13 = v6;
-  v15 = v14 = v7;
+  v13 = dsCopy;
+  v15 = v14 = propertiesCopy;
   v8 = v15;
-  v9 = v7;
-  v10 = v6;
+  v9 = propertiesCopy;
+  v10 = dsCopy;
   v11 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v11;

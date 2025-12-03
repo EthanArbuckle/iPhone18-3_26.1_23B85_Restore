@@ -1,7 +1,7 @@
 @interface PXMemoriesDebugFeature
-+ (id)_tintColorForFeatureType:(unint64_t)a3;
++ (id)_tintColorForFeatureType:(unint64_t)type;
 - (NSString)localizedTypeStringValue;
-- (PXMemoriesDebugFeature)initWithLocalizedTitle:(id)a3 type:(unint64_t)a4;
+- (PXMemoriesDebugFeature)initWithLocalizedTitle:(id)title type:(unint64_t)type;
 - (UIColor)featureTintColor;
 @end
 
@@ -36,29 +36,29 @@
   return featureTintColor;
 }
 
-- (PXMemoriesDebugFeature)initWithLocalizedTitle:(id)a3 type:(unint64_t)a4
+- (PXMemoriesDebugFeature)initWithLocalizedTitle:(id)title type:(unint64_t)type
 {
-  v7 = a3;
+  titleCopy = title;
   v18.receiver = self;
   v18.super_class = PXMemoriesDebugFeature;
   v8 = [(PXMemoriesDebugFeature *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a4;
-    objc_storeStrong(&v8->_localizedTitle, a3);
-    v10 = [v7 length];
+    v8->_type = type;
+    objc_storeStrong(&v8->_localizedTitle, title);
+    v10 = [titleCopy length];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(PXMemoriesDebugFeature *)v9 localizedTypeStringValue];
-    v13 = v12;
+    localizedTypeStringValue = [(PXMemoriesDebugFeature *)v9 localizedTypeStringValue];
+    v13 = localizedTypeStringValue;
     if (v10)
     {
-      [v11 stringWithFormat:@"%@:%@", v12, v7];
+      [v11 stringWithFormat:@"%@:%@", localizedTypeStringValue, titleCopy];
     }
 
     else
     {
-      [v11 stringWithFormat:@"%@", v12, v17];
+      [v11 stringWithFormat:@"%@", localizedTypeStringValue, v17];
     }
     v14 = ;
 
@@ -69,11 +69,11 @@
   return v9;
 }
 
-+ (id)_tintColorForFeatureType:(unint64_t)a3
++ (id)_tintColorForFeatureType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 - 3 < 2)
+    if (type - 3 < 2)
     {
       v3 = MEMORY[0x1E69DC888];
       v4 = 0.685;
@@ -82,7 +82,7 @@
       goto LABEL_13;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v3 = MEMORY[0x1E69DC888];
       v4 = 0.725;
@@ -92,11 +92,11 @@
     }
 
 LABEL_11:
-    v7 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!type)
   {
     v3 = MEMORY[0x1E69DC888];
     v5 = 0.591;
@@ -105,7 +105,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = MEMORY[0x1E69DC888];
     v4 = 0.44;
@@ -114,7 +114,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_11;
   }
@@ -124,10 +124,10 @@ LABEL_11:
   v5 = 0.699;
   v6 = 0.771;
 LABEL_13:
-  v7 = [v3 colorWithRed:v4 green:v5 blue:v6 alpha:1.0];
+  blackColor = [v3 colorWithRed:v4 green:v5 blue:v6 alpha:1.0];
 LABEL_14:
 
-  return v7;
+  return blackColor;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CUINamedMultisizeImageSet
-- (CUINamedMultisizeImageSet)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedMultisizeImageSet)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (id)debugDescription;
 - (id)sizeIndexes;
 @end
@@ -8,19 +8,19 @@
 
 - (id)sizeIndexes
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 sizeIndexes];
+  return [(CUIThemeRendition *)_rendition sizeIndexes];
 }
 
-- (CUINamedMultisizeImageSet)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedMultisizeImageSet)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v14.receiver = self;
   v14.super_class = CUINamedMultisizeImageSet;
-  v6 = [(CUINamedLookup *)&v14 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  v6 = [(CUINamedLookup *)&v14 initWithName:name usingRenditionKey:key fromTheme:theme];
   if ([(CUIThemeRendition *)[(CUINamedLookup *)v6 _rendition] type]!= 1010)
   {
-    _CUILog(4, "CoreUI: attempting to lookup a named image multisize image set '%@' buts its a '%d' instead", v7, v8, v9, v10, v11, v12, a3);
+    _CUILog(4, "CoreUI: attempting to lookup a named image multisize image set '%@' buts its a '%d' instead", v7, v8, v9, v10, v11, v12, name);
 
     return 0;
   }

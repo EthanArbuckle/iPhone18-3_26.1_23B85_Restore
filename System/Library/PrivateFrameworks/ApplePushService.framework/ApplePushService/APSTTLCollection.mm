@@ -1,14 +1,14 @@
 @interface APSTTLCollection
 + (id)suppressedTTRTopics;
-- (APSTTLCollection)initWithQueue:(id)a3 ttlInSeconds:(double)a4;
+- (APSTTLCollection)initWithQueue:(id)queue ttlInSeconds:(double)seconds;
 - (APSTTLCollectionDelegate)delegate;
 - (void)_performEvictionSweep;
 - (void)_startEvictionTimerIfNeeded;
 - (void)_stopEvictionTimer;
 - (void)_stopEvictionTimerIfEmpty;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 - (void)dealloc;
-- (void)removeItem:(id)a3 withFlag:(unsigned int)a4;
+- (void)removeItem:(id)item withFlag:(unsigned int)flag;
 @end
 
 @implementation APSTTLCollection
@@ -25,46 +25,46 @@
   return v3;
 }
 
-- (APSTTLCollection)initWithQueue:(id)a3 ttlInSeconds:(double)a4
+- (APSTTLCollection)initWithQueue:(id)queue ttlInSeconds:(double)seconds
 {
-  v7 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = APSTTLCollection;
   v8 = [(APSTTLCollection *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
+    objc_storeStrong(&v8->_queue, queue);
     v10 = objc_alloc_init(NSMutableDictionary);
     backingStore = v9->_backingStore;
     v9->_backingStore = v10;
 
-    v9->_ttlInSeconds = a4;
+    v9->_ttlInSeconds = seconds;
   }
 
   return v9;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     [APSTTLCollection addItem:"addItem:withInitialState:" withInitialState:?];
   }
 }
 
-- (void)removeItem:(id)a3 withFlag:(unsigned int)a4
+- (void)removeItem:(id)item withFlag:(unsigned int)flag
 {
-  v6 = a3;
-  if (v6)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v10 = v6;
-    v7 = [(NSMutableDictionary *)self->_backingStore objectForKey:v6];
+    v10 = itemCopy;
+    v7 = [(NSMutableDictionary *)self->_backingStore objectForKey:itemCopy];
     LODWORD(v8) = [v7 itemState];
 
-    if ((v8 & a4) != 0)
+    if ((v8 & flag) != 0)
     {
-      v8 = v8 ^ a4;
+      v8 = v8 ^ flag;
       v9 = [(NSMutableDictionary *)self->_backingStore objectForKey:v10];
       [v9 setItemState:v8];
     }
@@ -161,7 +161,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v10;
       v32 = 2112;
@@ -195,7 +195,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v9;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Timed out waiting for tracing enabled. {ttlCollection:%@; suppressedTopicItems:%@}", buf, 0x16u);

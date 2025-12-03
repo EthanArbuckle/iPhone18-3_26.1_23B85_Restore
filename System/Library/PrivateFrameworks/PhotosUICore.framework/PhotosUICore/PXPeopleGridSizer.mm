@@ -1,11 +1,11 @@
 @interface PXPeopleGridSizer
-+ (CGSize)cellSizeForGridClass:(int64_t)a3 width:(double)a4;
-+ (double)marginForGridClass:(int64_t)a3 width:(double)result;
++ (CGSize)cellSizeForGridClass:(int64_t)class width:(double)width;
++ (double)marginForGridClass:(int64_t)class width:(double)result;
 + (id)_gridCColumnInterpolator;
 + (id)_gridCGutterInterpolator;
 + (id)_gridCMarginInterpolator;
 + (id)_peopleHomeColumnInterpolator;
-+ (unint64_t)numberOfColumnsForGridClass:(int64_t)a3 width:(double)a4;
++ (unint64_t)numberOfColumnsForGridClass:(int64_t)class width:(double)width;
 @end
 
 @implementation PXPeopleGridSizer
@@ -114,16 +114,16 @@ uint64_t __45__PXPeopleGridSizer__gridCColumnInterpolator__block_invoke()
   return [v2 setReferenceValue:7.0 forMetric:1195.0];
 }
 
-+ (unint64_t)numberOfColumnsForGridClass:(int64_t)a3 width:(double)a4
++ (unint64_t)numberOfColumnsForGridClass:(int64_t)class width:(double)width
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v5 = +[PXPeopleGridSizer _peopleHomeColumnInterpolator];
   }
 
   else
   {
-    if (a3)
+    if (class)
     {
       return 0;
     }
@@ -132,15 +132,15 @@ uint64_t __45__PXPeopleGridSizer__gridCColumnInterpolator__block_invoke()
   }
 
   v6 = v5;
-  [v5 valueForMetric:a4];
+  [v5 valueForMetric:width];
   v8 = v7;
 
   return v8;
 }
 
-+ (CGSize)cellSizeForGridClass:(int64_t)a3 width:(double)a4
++ (CGSize)cellSizeForGridClass:(int64_t)class width:(double)width
 {
-  if (a3 > 1)
+  if (class > 1)
   {
     v15 = *MEMORY[0x1E695F060];
     v14 = *(MEMORY[0x1E695F060] + 8);
@@ -148,14 +148,14 @@ uint64_t __45__PXPeopleGridSizer__gridCColumnInterpolator__block_invoke()
 
   else
   {
-    v7 = [a1 numberOfColumnsForGridClass:? width:?];
-    [a1 marginForGridClass:a3 width:a4];
+    v7 = [self numberOfColumnsForGridClass:? width:?];
+    [self marginForGridClass:class width:width];
     v9 = v8;
     v10 = +[PXPeopleGridSizer _gridCGutterInterpolator];
-    [v10 valueForMetric:a4];
+    [v10 valueForMetric:width];
     v12 = v11;
 
-    v13 = (a4 - (v7 + -1.0) * v12 - (v9 + v9)) / v7;
+    v13 = (width - (v7 + -1.0) * v12 - (v9 + v9)) / v7;
     v14 = floorf(v13);
     v15 = v14;
   }
@@ -165,9 +165,9 @@ uint64_t __45__PXPeopleGridSizer__gridCColumnInterpolator__block_invoke()
   return result;
 }
 
-+ (double)marginForGridClass:(int64_t)a3 width:(double)result
++ (double)marginForGridClass:(int64_t)class width:(double)result
 {
-  if (a3 <= 1)
+  if (class <= 1)
   {
     v4 = result;
     v5 = +[PXPeopleGridSizer _gridCMarginInterpolator];

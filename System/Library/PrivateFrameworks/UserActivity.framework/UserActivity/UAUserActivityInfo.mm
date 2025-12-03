@@ -1,34 +1,34 @@
 @interface UAUserActivityInfo
-+ (id)encodedInfoToOldEncodedInfo:(id)a3;
-- (BOOL)setPayload:(id)a3 identifier:(id)a4;
++ (id)encodedInfoToOldEncodedInfo:(id)info;
+- (BOOL)setPayload:(id)payload identifier:(id)identifier;
 - (NSDictionary)payloads;
-- (UAUserActivityInfo)initWithArchivedUserActivityInfo:(id)a3;
-- (UAUserActivityInfo)initWithCoder:(id)a3;
-- (UAUserActivityInfo)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5;
-- (UAUserActivityInfo)initWithUserActivityInfo:(id)a3;
+- (UAUserActivityInfo)initWithArchivedUserActivityInfo:(id)info;
+- (UAUserActivityInfo)initWithCoder:(id)coder;
+- (UAUserActivityInfo)initWithUUID:(id)d type:(unint64_t)type options:(id)options;
+- (UAUserActivityInfo)initWithUserActivityInfo:(id)info;
 - (id)archiveUserActivityInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)logString;
 - (id)optionalUserActivityData;
-- (id)payloadForIdentifier:(id)a3;
+- (id)payloadForIdentifier:(id)identifier;
 - (id)payloadIdentifiers;
 - (id)provenance;
 - (id)secondaryUserActivityString;
 - (id)statusString;
 - (id)userActivityString;
-- (void)_createUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPayloads:(id)a3;
+- (void)_createUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPayloads:(id)payloads;
 @end
 
 @implementation UAUserActivityInfo
 
 - (NSDictionary)payloads
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  payloads = v2->_payloads;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  payloads = selfCopy->_payloads;
   if (payloads)
   {
     v4 = [(NSMutableDictionary *)payloads copy];
@@ -39,7 +39,7 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -47,65 +47,65 @@
 - (id)description
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = [(UAUserActivityInfo *)self error];
+  error = [(UAUserActivityInfo *)self error];
 
   v5 = 0x277CCA000uLL;
   v6 = MEMORY[0x277CCACA8];
-  if (v4)
+  if (error)
   {
-    v7 = [(UAUserActivityInfo *)self error];
-    v8 = [v6 stringWithFormat:@"UAUserActivityInfo: error=%@", v7];
+    error2 = [(UAUserActivityInfo *)self error];
+    v8 = [v6 stringWithFormat:@"UAUserActivityInfo: error=%@", error2];
 
     goto LABEL_47;
   }
 
   v9 = suggestedActionTypeString([(UAUserActivityInfo *)self type]);
-  v10 = [(UAUserActivityInfo *)self uuid];
-  v11 = [v10 UUIDString];
-  v60 = [(UAUserActivityInfo *)self activityType];
-  v59 = [(UAUserActivityInfo *)self dynamicActivityType];
-  v58 = [(UAUserActivityInfo *)self teamIdentifier];
-  v52 = [(UAUserActivityInfo *)self persistentIdentifier];
-  if (v52)
+  uuid = [(UAUserActivityInfo *)self uuid];
+  uUIDString = [uuid UUIDString];
+  activityType = [(UAUserActivityInfo *)self activityType];
+  dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+  teamIdentifier = [(UAUserActivityInfo *)self teamIdentifier];
+  persistentIdentifier = [(UAUserActivityInfo *)self persistentIdentifier];
+  if (persistentIdentifier)
   {
-    v56 = [(UAUserActivityInfo *)self persistentIdentifier];
+    persistentIdentifier2 = [(UAUserActivityInfo *)self persistentIdentifier];
   }
 
   else
   {
-    v56 = @"-";
+    persistentIdentifier2 = @"-";
   }
 
-  v51 = [(UAUserActivityInfo *)self payloads];
-  v50 = [v51 objectForKey:@"UAUserActivityUserInfoPayload"];
+  payloads = [(UAUserActivityInfo *)self payloads];
+  v50 = [payloads objectForKey:@"UAUserActivityUserInfoPayload"];
   v57 = trimmedHexStringForData(v50, 0x40uLL);
-  v12 = [(UAUserActivityInfo *)self webpageURL];
+  webpageURL = [(UAUserActivityInfo *)self webpageURL];
   v13 = @" webPageURL=<private>";
   v14 = &stru_283A5A2C8;
-  v48 = v12;
-  if (!v12)
+  v48 = webpageURL;
+  if (!webpageURL)
   {
     v13 = &stru_283A5A2C8;
   }
 
   v44 = v13;
-  v15 = [(UAUserActivityInfo *)self referrerURL];
+  referrerURL = [(UAUserActivityInfo *)self referrerURL];
   v16 = @" referrerURL=<private>";
-  v47 = v15;
-  if (!v15)
+  v47 = referrerURL;
+  if (!referrerURL)
   {
     v16 = &stru_283A5A2C8;
   }
 
   v43 = v16;
-  v46 = [(UAUserActivityInfo *)self payloads];
-  v45 = [v46 objectForKey:@"UAUserActivityStreamsPayload"];
+  payloads2 = [(UAUserActivityInfo *)self payloads];
+  v45 = [payloads2 objectForKey:@"UAUserActivityStreamsPayload"];
   v49 = v6;
   if (v45)
   {
     v17 = MEMORY[0x277CCACA8];
-    v41 = [(UAUserActivityInfo *)self payloads];
-    v40 = [v41 objectForKey:@"UAUserActivityStreamsPayload"];
+    payloads3 = [(UAUserActivityInfo *)self payloads];
+    v40 = [payloads3 objectForKey:@"UAUserActivityStreamsPayload"];
     v39 = trimmedHexStringForData(v40, 0x10uLL);
     v14 = [v17 stringWithFormat:@" streamData=%@", v39];
   }
@@ -115,7 +115,7 @@
   v42 = v18 = &stru_283A5A2C8;
   if (v42)
   {
-    v2 = &stru_283A5A2C8;
+    options2 = &stru_283A5A2C8;
     v19 = MEMORY[0x277CCACA8];
     v38 = [(UAUserActivityInfo *)self payloadForIdentifier:@"UAUserActivityContentAttributeSetPayloadKey"];
     v37 = trimmedHexStringForData(v38, 0x10uLL);
@@ -129,27 +129,27 @@
     v54 = &stru_283A5A2C8;
   }
 
-  v53 = v11;
-  v21 = self;
+  v53 = uUIDString;
+  selfCopy = self;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v22 = [(UAUserActivityInfo *)v21 payloadIdentifiers];
-  v23 = [v22 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  payloadIdentifiers = [(UAUserActivityInfo *)selfCopy payloadIdentifiers];
+  v23 = [payloadIdentifiers countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v23)
   {
-    v2 = v23;
-    v36 = v21;
+    options2 = v23;
+    v36 = selfCopy;
     v24 = 0;
     v25 = *v62;
     do
     {
-      for (i = 0; i != v2; i = (i + 1))
+      for (i = 0; i != options2; i = (i + 1))
       {
         if (*v62 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(payloadIdentifiers);
         }
 
         v27 = *(*(&v61 + 1) + 8 * i);
@@ -168,26 +168,26 @@
         }
       }
 
-      v2 = [v22 countByEnumeratingWithState:&v61 objects:v65 count:16];
+      options2 = [payloadIdentifiers countByEnumeratingWithState:&v61 objects:v65 count:16];
     }
 
-    while (v2);
+    while (options2);
 
     if (!v24)
     {
       v28 = 0;
       v5 = 0x277CCA000uLL;
       v18 = &stru_283A5A2C8;
-      v21 = v36;
+      selfCopy = v36;
       goto LABEL_33;
     }
 
     [v24 appendFormat:@""]);
     v28 = [v24 copy];
-    v22 = v24;
+    payloadIdentifiers = v24;
     v5 = 0x277CCA000;
     v18 = &stru_283A5A2C8;
-    v21 = v36;
+    selfCopy = v36;
   }
 
   else
@@ -206,20 +206,20 @@ LABEL_33:
     v29 = &stru_283A5A2C8;
   }
 
-  v30 = [(UAUserActivityInfo *)v21 options];
-  if (v30)
+  options = [(UAUserActivityInfo *)selfCopy options];
+  if (options)
   {
     v31 = *(v5 + 3240);
-    v2 = [(UAUserActivityInfo *)v21 options];
-    v5 = userActivityInfoOptionsDictionaryString(v2);
+    options2 = [(UAUserActivityInfo *)selfCopy options];
+    v5 = userActivityInfoOptionsDictionaryString(options2);
     v18 = [v31 stringWithFormat:@" opts=%@", v5];
   }
 
-  v32 = [(UAUserActivityInfo *)v21 when];
-  [v49 stringWithFormat:@"UAUserActivityInfo:{ type = %@; uuid = %@; activityType = %@; dynamicActivityType = %@; teamID=%@; %@ userInfo = %@%@%@%@ - %@ - %@ %@; when = %@ }", v9, v53, v60, v59, v58, v56, v57, v44, v43, v55, v54, v29, v18, v32];
+  when = [(UAUserActivityInfo *)selfCopy when];
+  [v49 stringWithFormat:@"UAUserActivityInfo:{ type = %@; uuid = %@; activityType = %@; dynamicActivityType = %@; teamID=%@; %@ userInfo = %@%@%@%@ - %@ - %@ %@; when = %@ }", v9, v53, activityType, dynamicActivityType, teamIdentifier, persistentIdentifier2, v57, v44, v43, v55, v54, v29, v18, when];
   v8 = v33 = v18;
 
-  if (v30)
+  if (options)
   {
   }
 
@@ -231,7 +231,7 @@ LABEL_33:
   {
   }
 
-  if (v52)
+  if (persistentIdentifier)
   {
   }
 
@@ -243,47 +243,47 @@ LABEL_47:
 
 - (id)payloadIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  payloads = v2->_payloads;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  payloads = selfCopy->_payloads;
   if (payloads)
   {
-    v4 = [(NSMutableDictionary *)payloads allKeys];
+    allKeys = [(NSMutableDictionary *)payloads allKeys];
   }
 
   else
   {
-    v4 = 0;
+    allKeys = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allKeys;
 }
 
 - (id)logString
 {
-  v3 = [(UAUserActivityInfo *)self error];
+  error = [(UAUserActivityInfo *)self error];
 
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (error)
   {
-    v5 = [(UAUserActivityInfo *)self error];
-    v6 = [v4 stringWithFormat:@"UAUserActivityInfo: error=%@", v5];
+    error2 = [(UAUserActivityInfo *)self error];
+    v6 = [v4 stringWithFormat:@"UAUserActivityInfo: error=%@", error2];
   }
 
   else
   {
-    v5 = suggestedActionTypeString([(UAUserActivityInfo *)self type]);
-    v27 = [(UAUserActivityInfo *)self uuid];
-    v26 = [v27 UUIDString];
-    v30 = [(UAUserActivityInfo *)self activityType];
-    v25 = [(UAUserActivityInfo *)self dynamicActivityType];
-    if (v25)
+    error2 = suggestedActionTypeString([(UAUserActivityInfo *)self type]);
+    uuid = [(UAUserActivityInfo *)self uuid];
+    uUIDString = [uuid UUIDString];
+    activityType = [(UAUserActivityInfo *)self activityType];
+    dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+    if (dynamicActivityType)
     {
       v7 = MEMORY[0x277CCACA8];
-      v22 = [(UAUserActivityInfo *)self dynamicActivityType];
-      v29 = [v7 stringWithFormat:@":%@", v22];
+      dynamicActivityType2 = [(UAUserActivityInfo *)self dynamicActivityType];
+      v29 = [v7 stringWithFormat:@":%@", dynamicActivityType2];
     }
 
     else
@@ -291,12 +291,12 @@ LABEL_47:
       v29 = &stru_283A5A2C8;
     }
 
-    v24 = [(UAUserActivityInfo *)self teamIdentifier];
-    if (v24)
+    teamIdentifier = [(UAUserActivityInfo *)self teamIdentifier];
+    if (teamIdentifier)
     {
       v8 = MEMORY[0x277CCACA8];
-      v21 = [(UAUserActivityInfo *)self teamIdentifier];
-      v28 = [v8 stringWithFormat:@"(%@)", v21];
+      teamIdentifier2 = [(UAUserActivityInfo *)self teamIdentifier];
+      v28 = [v8 stringWithFormat:@"(%@)", teamIdentifier2];
     }
 
     else
@@ -304,51 +304,51 @@ LABEL_47:
       v28 = &stru_283A5A2C8;
     }
 
-    v9 = [(UAUserActivityInfo *)self encodedUserInfoError];
-    if (v9)
+    encodedUserInfoError = [(UAUserActivityInfo *)self encodedUserInfoError];
+    if (encodedUserInfoError)
     {
-      v23 = [(UAUserActivityInfo *)self encodedUserInfoError];
-      [v23 description];
+      encodedUserInfoError2 = [(UAUserActivityInfo *)self encodedUserInfoError];
+      [encodedUserInfoError2 description];
     }
 
     else
     {
-      v23 = [(UAUserActivityInfo *)self payloads];
-      v20 = [v23 objectForKey:@"UAUserActivityUserInfoPayload"];
+      encodedUserInfoError2 = [(UAUserActivityInfo *)self payloads];
+      v20 = [encodedUserInfoError2 objectForKey:@"UAUserActivityUserInfoPayload"];
       trimmedHexStringForData(v20, 0x10uLL);
     }
     v10 = ;
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(UAUserActivityInfo *)self webpageURL];
+    webpageURL = [(UAUserActivityInfo *)self webpageURL];
     v13 = @"webPageURL=<private>";
-    if (!v12)
+    if (!webpageURL)
     {
       v13 = &stru_283A5A2C8;
     }
 
     v14 = [v11 stringWithFormat:@"%@", v13];
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(UAUserActivityInfo *)self referrerURL];
+    referrerURL = [(UAUserActivityInfo *)self referrerURL];
     v17 = @"referrer=<private>";
-    if (!v16)
+    if (!referrerURL)
     {
       v17 = &stru_283A5A2C8;
     }
 
     v18 = [v15 stringWithFormat:@"%@", v17];
-    v6 = [v4 stringWithFormat:@"UAInfo:{ %@ %@%@%@ %@ userInfo=%@/%@%@}", v5, v26, v30, v29, v28, v10, v14, v18];;
+    v6 = [v4 stringWithFormat:@"UAInfo:{ %@ %@%@%@ %@ userInfo=%@/%@%@}", error2, uUIDString, activityType, v29, v28, v10, v14, v18];;
 
-    if (!v9)
+    if (!encodedUserInfoError)
     {
 
       v10 = v20;
     }
 
-    if (v24)
+    if (teamIdentifier)
     {
     }
 
-    if (v25)
+    if (dynamicActivityType)
     {
     }
   }
@@ -356,18 +356,18 @@ LABEL_47:
   return v6;
 }
 
-- (UAUserActivityInfo)initWithUUID:(id)a3 type:(unint64_t)a4 options:(id)a5
+- (UAUserActivityInfo)initWithUUID:(id)d type:(unint64_t)type options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = UAUserActivityInfo;
   v10 = [(UAUserActivityInfo *)&v18 init];
   if (v10)
   {
-    if (v8)
+    if (dCopy)
     {
-      v11 = [v8 copy];
+      v11 = [dCopy copy];
     }
 
     else
@@ -378,36 +378,36 @@ LABEL_47:
     uuid = v10->_uuid;
     v10->_uuid = v11;
 
-    v10->_type = a4;
-    v13 = [v9 copy];
+    v10->_type = type;
+    v13 = [optionsCopy copy];
     options = v10->_options;
     v10->_options = v13;
 
     v10->_active = 1;
-    v15 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     when = v10->_when;
-    v10->_when = v15;
+    v10->_when = date;
   }
 
   return v10;
 }
 
-- (UAUserActivityInfo)initWithUserActivityInfo:(id)a3
+- (UAUserActivityInfo)initWithUserActivityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v60.receiver = self;
   v60.super_class = UAUserActivityInfo;
   v5 = [(UAUserActivityInfo *)&v60 init];
   if (v5)
   {
-    v6 = [v4 when];
+    when = [infoCopy when];
     when = v5->_when;
-    v5->_when = v6;
+    v5->_when = when;
 
-    v8 = [v4 uuid];
-    if (v8)
+    uuid = [infoCopy uuid];
+    if (uuid)
     {
-      [v4 uuid];
+      [infoCopy uuid];
     }
 
     else
@@ -418,115 +418,115 @@ LABEL_47:
     uuid = v5->_uuid;
     v5->_uuid = v9;
 
-    v5->_type = [v4 type];
-    v11 = [v4 options];
-    v12 = [v11 copy];
+    v5->_type = [infoCopy type];
+    options = [infoCopy options];
+    v12 = [options copy];
     options = v5->_options;
     v5->_options = v12;
 
-    v14 = [v4 activityType];
-    v15 = [v14 copy];
+    activityType = [infoCopy activityType];
+    v15 = [activityType copy];
     activityType = v5->_activityType;
     v5->_activityType = v15;
 
-    v17 = [v4 dynamicActivityType];
-    v18 = [v17 copy];
+    dynamicActivityType = [infoCopy dynamicActivityType];
+    v18 = [dynamicActivityType copy];
     dynamicActivityType = v5->_dynamicActivityType;
     v5->_dynamicActivityType = v18;
 
-    v20 = [v4 teamIdentifier];
-    v21 = [v20 copy];
+    teamIdentifier = [infoCopy teamIdentifier];
+    v21 = [teamIdentifier copy];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v21;
 
-    v23 = [v4 bundleIdentifier];
-    v24 = [v23 copy];
+    bundleIdentifier = [infoCopy bundleIdentifier];
+    v24 = [bundleIdentifier copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v24;
 
-    v26 = [v4 title];
-    v27 = [v26 copy];
+    title = [infoCopy title];
+    v27 = [title copy];
     title = v5->_title;
     v5->_title = v27;
 
-    v29 = [v4 webpageURL];
+    webpageURL = [infoCopy webpageURL];
     webpageURL = v5->_webpageURL;
-    v5->_webpageURL = v29;
+    v5->_webpageURL = webpageURL;
 
-    v31 = [v4 referrerURL];
+    referrerURL = [infoCopy referrerURL];
     referrerURL = v5->_referrerURL;
-    v5->_referrerURL = v31;
+    v5->_referrerURL = referrerURL;
 
-    v33 = [v4 targetContentIdentifier];
+    targetContentIdentifier = [infoCopy targetContentIdentifier];
     targetContentIdentifier = v5->_targetContentIdentifier;
-    v5->_targetContentIdentifier = v33;
+    v5->_targetContentIdentifier = targetContentIdentifier;
 
-    v35 = [v4 payloads];
-    if (v35)
+    payloads = [infoCopy payloads];
+    if (payloads)
     {
-      v36 = [v4 payloads];
-      v37 = [v36 mutableCopy];
+      payloads2 = [infoCopy payloads];
+      v37 = [payloads2 mutableCopy];
       payloads = v5->_payloads;
       v5->_payloads = v37;
     }
 
     else
     {
-      v36 = v5->_payloads;
+      payloads2 = v5->_payloads;
       v5->_payloads = 0;
     }
 
-    v39 = [v4 encodedUserInfoError];
-    v40 = [v39 copy];
+    encodedUserInfoError = [infoCopy encodedUserInfoError];
+    v40 = [encodedUserInfoError copy];
     encodedUserInfoError = v5->_encodedUserInfoError;
     v5->_encodedUserInfoError = v40;
 
-    v5->_eligibleForHandoff = [v4 eligibleForHandoff];
-    v5->_eligibleForSearch = [v4 eligibleForSearch];
-    v5->_eligibleForPublicIndexing = [v4 eligibleForPublicIndexing];
-    v5->_eligibleForReminders = [v4 eligibleForReminders];
-    v42 = [v4 contentUserAction];
-    v43 = [v42 copy];
+    v5->_eligibleForHandoff = [infoCopy eligibleForHandoff];
+    v5->_eligibleForSearch = [infoCopy eligibleForSearch];
+    v5->_eligibleForPublicIndexing = [infoCopy eligibleForPublicIndexing];
+    v5->_eligibleForReminders = [infoCopy eligibleForReminders];
+    contentUserAction = [infoCopy contentUserAction];
+    v43 = [contentUserAction copy];
     contentUserAction = v5->_contentUserAction;
     v5->_contentUserAction = v43;
 
-    v45 = [v4 keywords];
-    v46 = [v45 copy];
+    keywords = [infoCopy keywords];
+    v46 = [keywords copy];
     keywords = v5->_keywords;
     v5->_keywords = v46;
 
-    v48 = [v4 expirationDate];
-    v49 = [v48 copy];
+    expirationDate = [infoCopy expirationDate];
+    v49 = [expirationDate copy];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v49;
 
-    v5->_eligibleForPrediction = [v4 eligibleForPrediction];
-    v51 = [v4 persistentIdentifier];
+    v5->_eligibleForPrediction = [infoCopy eligibleForPrediction];
+    persistentIdentifier = [infoCopy persistentIdentifier];
     persistentIdentifier = v5->_persistentIdentifier;
-    v5->_persistentIdentifier = v51;
+    v5->_persistentIdentifier = persistentIdentifier;
 
-    v53 = [v4 peerDeviceType];
-    v54 = [v53 copy];
+    peerDeviceType = [infoCopy peerDeviceType];
+    v54 = [peerDeviceType copy];
     peerDeviceType = v5->_peerDeviceType;
     v5->_peerDeviceType = v54;
 
-    v56 = [v4 peerDevice];
-    v57 = [v56 copy];
+    peerDevice = [infoCopy peerDevice];
+    v57 = [peerDevice copy];
     peerDevice = v5->_peerDevice;
     v5->_peerDevice = v57;
 
-    v5->_active = [v4 active];
-    v5->_universalLink = [v4 isUniversalLink];
+    v5->_active = [infoCopy active];
+    v5->_universalLink = [infoCopy isUniversalLink];
   }
 
   return v5;
 }
 
-- (UAUserActivityInfo)initWithArchivedUserActivityInfo:(id)a3
+- (UAUserActivityInfo)initWithArchivedUserActivityInfo:(id)info
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:0];
+  infoCopy = info;
+  v6 = [[v4 alloc] initForReadingFromData:infoCopy error:0];
 
   v7 = [(UAUserActivityInfo *)self initWithCoder:v6];
   [v6 finishDecoding];
@@ -534,10 +534,10 @@ LABEL_47:
   return v7;
 }
 
-- (UAUserActivityInfo)initWithCoder:(id)a3
+- (UAUserActivityInfo)initWithCoder:(id)coder
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v74.receiver = self;
   v74.super_class = UAUserActivityInfo;
   v5 = [(UAUserActivityInfo *)&v74 init];
@@ -547,12 +547,12 @@ LABEL_47:
   }
 
   v6 = 0x277CCA000uLL;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
   [(UAUserActivityInfo *)v5 setError:v7];
 
-  v8 = [(UAUserActivityInfo *)v5 error];
+  error = [(UAUserActivityInfo *)v5 error];
 
-  if (v8)
+  if (error)
   {
     goto LABEL_28;
   }
@@ -562,30 +562,30 @@ LABEL_47:
     [UAUserActivityInfo initWithCoder:];
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   uuid = v5->_uuid;
   v5->_uuid = v9;
 
-  v5->_type = [v4 decodeIntegerForKey:@"type"];
-  v11 = [v4 decodeObjectOfClasses:initWithCoder__sAcceptableObjects forKey:@"options"];
+  v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+  v11 = [coderCopy decodeObjectOfClasses:initWithCoder__sAcceptableObjects forKey:@"options"];
   options = v5->_options;
   v5->_options = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   title = v5->_title;
   v5->_title = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webpageURL"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webpageURL"];
   if ([UAUserActivity checkWebpageURL:v15 actionType:[(UAUserActivityInfo *)v5 type] throwIfFailed:0])
   {
     objc_storeStrong(&v5->_webpageURL, v15);
   }
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerURL"];
   referrerURL = v5->_referrerURL;
   v5->_referrerURL = v16;
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
   targetContentIdentifier = v5->_targetContentIdentifier;
   v5->_targetContentIdentifier = v18;
 
@@ -593,17 +593,17 @@ LABEL_47:
   payloads = v5->_payloads;
   v5->_payloads = v20;
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"streamsData"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"streamsData"];
   [(UAUserActivityInfo *)v5 setPayload:v22 identifier:@"UAUserActivityStreamsPayload"];
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
   [(UAUserActivityInfo *)v5 setPayload:v23 identifier:@"UAUserActivityUserInfoPayload"];
 
   v24 = MEMORY[0x277CBEB98];
   v25 = objc_opt_class();
   v26 = objc_opt_class();
   v27 = [v24 setWithObjects:{v25, v26, objc_opt_class(), 0}];
-  v28 = [v4 decodeObjectOfClasses:v27 forKey:@"payloads"];
+  v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"payloads"];
 
   if (v28)
   {
@@ -611,13 +611,13 @@ LABEL_47:
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v29 = [v28 allKeys];
-    v30 = [v29 countByEnumeratingWithState:&v70 objects:v75 count:16];
+    allKeys = [v28 allKeys];
+    v30 = [allKeys countByEnumeratingWithState:&v70 objects:v75 count:16];
     if (v30)
     {
       v31 = v30;
       v68 = v15;
-      v69 = v4;
+      v69 = coderCopy;
       v32 = *v71;
       do
       {
@@ -625,7 +625,7 @@ LABEL_47:
         {
           if (*v71 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(allKeys);
           }
 
           v34 = *(*(&v70 + 1) + 8 * i);
@@ -648,13 +648,13 @@ LABEL_47:
           v28 = 0;
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v70 objects:v75 count:16];
+        v31 = [allKeys countByEnumeratingWithState:&v70 objects:v75 count:16];
       }
 
       while (v31);
 
       v15 = v68;
-      v4 = v69;
+      coderCopy = v69;
       v6 = 0x277CCA000;
       if (!v28)
       {
@@ -670,78 +670,78 @@ LABEL_47:
   }
 
 LABEL_23:
-  v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"when"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"when"];
   when = v5->_when;
   v5->_when = v37;
 
-  v5->_active = [v4 decodeBoolForKey:@"isActive"];
-  v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerDeviceType"];
+  v5->_active = [coderCopy decodeBoolForKey:@"isActive"];
+  v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerDeviceType"];
   peerDeviceType = v5->_peerDeviceType;
   v5->_peerDeviceType = v39;
 
   getSFPeerDeviceClass();
-  v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerDevice"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerDevice"];
   peerDevice = v5->_peerDevice;
   v5->_peerDevice = v41;
 
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v43;
 
-  v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+  v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
   activityType = v5->_activityType;
   v5->_activityType = v45;
 
-  v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicActivityType"];
+  v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicActivityType"];
   dynamicActivityType = v5->_dynamicActivityType;
   v5->_dynamicActivityType = v47;
 
-  v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
+  v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
   teamIdentifier = v5->_teamIdentifier;
   v5->_teamIdentifier = v49;
 
   v51 = *(v6 + 2488);
-  v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payloadError"];
+  v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payloadError"];
   encodedUserInfoError = v5->_encodedUserInfoError;
   v5->_encodedUserInfoError = v52;
 
-  v5->_eligibleForHandoff = [v4 decodeBoolForKey:@"eligibleForHandoff"];
-  v5->_eligibleForSearch = [v4 decodeBoolForKey:@"eligibleForSearch"];
-  v5->_eligibleForPublicIndexing = [v4 decodeBoolForKey:@"eligibleForPublicIndexing"];
-  v5->_eligibleForReminders = [v4 decodeBoolForKey:@"eligibleForReminders"];
+  v5->_eligibleForHandoff = [coderCopy decodeBoolForKey:@"eligibleForHandoff"];
+  v5->_eligibleForSearch = [coderCopy decodeBoolForKey:@"eligibleForSearch"];
+  v5->_eligibleForPublicIndexing = [coderCopy decodeBoolForKey:@"eligibleForPublicIndexing"];
+  v5->_eligibleForReminders = [coderCopy decodeBoolForKey:@"eligibleForReminders"];
   if (initWithCoder__sKeywordsOnce != -1)
   {
     [UAUserActivityInfo initWithCoder:];
   }
 
-  v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentActions"];
+  v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentActions"];
   contentUserAction = v5->_contentUserAction;
   v5->_contentUserAction = v54;
 
-  v56 = [v4 decodeObjectOfClasses:initWithCoder__sKeywordsAcceptableObjects forKey:@"keywords"];
+  v56 = [coderCopy decodeObjectOfClasses:initWithCoder__sKeywordsAcceptableObjects forKey:@"keywords"];
   keywords = v5->_keywords;
   v5->_keywords = v56;
 
-  v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
   expirationDate = v5->_expirationDate;
   v5->_expirationDate = v58;
 
-  v5->_eligibleForPrediction = [v4 decodeBoolForKey:@"eligibleForPrediction"];
-  v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+  v5->_eligibleForPrediction = [coderCopy decodeBoolForKey:@"eligibleForPrediction"];
+  v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
   persistentIdentifier = v5->_persistentIdentifier;
   v5->_persistentIdentifier = v60;
 
-  v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentAttributeSetData"];
+  v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentAttributeSetData"];
   if (v62)
   {
     [(NSMutableDictionary *)v5->_payloads setObject:v62 forKey:@"UAUserActivityContentAttributeSetPayloadKey"];
   }
 
-  v63 = [v4 decodeObjectOfClasses:initWithCoder__sKeywordsAcceptableObjects forKey:@"requiredKeys"];
+  v63 = [coderCopy decodeObjectOfClasses:initWithCoder__sKeywordsAcceptableObjects forKey:@"requiredKeys"];
   requiredUserInfoKeys = v5->_requiredUserInfoKeys;
   v5->_requiredUserInfoKeys = v63;
 
-  v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"universalLink"];
+  v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"universalLink"];
   v5->_universalLink = [v65 BOOLValue];
 
 LABEL_28:
@@ -785,137 +785,137 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v46 = a3;
-  [v46 encodeInt32:1 forKey:@"version"];
-  v4 = [(UAUserActivityInfo *)self error];
+  coderCopy = coder;
+  [coderCopy encodeInt32:1 forKey:@"version"];
+  error = [(UAUserActivityInfo *)self error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [(UAUserActivityInfo *)self error];
-    [v46 encodeObject:v5 forKey:@"error"];
+    error2 = [(UAUserActivityInfo *)self error];
+    [coderCopy encodeObject:error2 forKey:@"error"];
   }
 
   else
   {
-    v6 = [(UAUserActivityInfo *)self uuid];
-    v7 = v46;
+    uuid = [(UAUserActivityInfo *)self uuid];
+    v7 = coderCopy;
     v8 = objc_opt_class();
-    encodeObjectOfType(v7, v6, v8, @"uuid");
+    encodeObjectOfType(v7, uuid, v8, @"uuid");
 
     [v7 encodeInteger:-[UAUserActivityInfo type](self forKey:{"type"), @"type"}];
-    v9 = [(UAUserActivityInfo *)self options];
-    encodeDictionary(v7, v9, @"options");
+    options = [(UAUserActivityInfo *)self options];
+    encodeDictionary(v7, options, @"options");
 
-    v10 = [(UAUserActivityInfo *)self title];
-    encodeString(v7, v10, @"title");
+    title = [(UAUserActivityInfo *)self title];
+    encodeString(v7, title, @"title");
 
-    v11 = [(UAUserActivityInfo *)self webpageURL];
-    encodeURL(v7, v11, @"webpageURL");
+    webpageURL = [(UAUserActivityInfo *)self webpageURL];
+    encodeURL(v7, webpageURL, @"webpageURL");
 
-    v12 = [(UAUserActivityInfo *)self referrerURL];
-    encodeURL(v7, v12, @"referrerURL");
+    referrerURL = [(UAUserActivityInfo *)self referrerURL];
+    encodeURL(v7, referrerURL, @"referrerURL");
 
-    v13 = [(UAUserActivityInfo *)self targetContentIdentifier];
-    encodeString(v7, v13, @"targetContentIdentifier");
+    targetContentIdentifier = [(UAUserActivityInfo *)self targetContentIdentifier];
+    encodeString(v7, targetContentIdentifier, @"targetContentIdentifier");
 
-    v14 = [(UAUserActivityInfo *)self activityType];
-    encodeString(v7, v14, @"activityType");
+    activityType = [(UAUserActivityInfo *)self activityType];
+    encodeString(v7, activityType, @"activityType");
 
-    v15 = [(UAUserActivityInfo *)self dynamicActivityType];
-    encodeString(v7, v15, @"dynamicActivityType");
+    dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+    encodeString(v7, dynamicActivityType, @"dynamicActivityType");
 
-    v16 = [(UAUserActivityInfo *)self teamIdentifier];
-    encodeString(v7, v16, @"teamIdentifier");
+    teamIdentifier = [(UAUserActivityInfo *)self teamIdentifier];
+    encodeString(v7, teamIdentifier, @"teamIdentifier");
 
-    v17 = [(UAUserActivityInfo *)self bundleIdentifier];
-    encodeString(v7, v17, @"bundleIdentifier");
+    bundleIdentifier = [(UAUserActivityInfo *)self bundleIdentifier];
+    encodeString(v7, bundleIdentifier, @"bundleIdentifier");
 
-    v18 = [(UAUserActivityInfo *)self peerDevice];
+    peerDevice = [(UAUserActivityInfo *)self peerDevice];
     SFPeerDeviceClass = getSFPeerDeviceClass();
-    encodeObjectOfType(v7, v18, SFPeerDeviceClass, @"peerDevice");
+    encodeObjectOfType(v7, peerDevice, SFPeerDeviceClass, @"peerDevice");
 
-    v20 = [(UAUserActivityInfo *)self peerDeviceType];
-    encodeString(v7, v20, @"peerDeviceType");
+    peerDeviceType = [(UAUserActivityInfo *)self peerDeviceType];
+    encodeString(v7, peerDeviceType, @"peerDeviceType");
 
-    v21 = [(UAUserActivityInfo *)self when];
+    when = [(UAUserActivityInfo *)self when];
     v22 = objc_opt_class();
-    encodeObjectOfType(v7, v21, v22, @"when");
+    encodeObjectOfType(v7, when, v22, @"when");
 
     [v7 encodeBool:-[UAUserActivityInfo active](self forKey:{"active"), @"isActive"}];
-    v23 = [(UAUserActivityInfo *)self encodingOptions];
-    v24 = [v23 objectForKey:@"NSUserActivityMinimalExtraInfo"];
-    v25 = [v24 BOOLValue];
+    encodingOptions = [(UAUserActivityInfo *)self encodingOptions];
+    v24 = [encodingOptions objectForKey:@"NSUserActivityMinimalExtraInfo"];
+    bOOLValue = [v24 BOOLValue];
 
-    v26 = [(UAUserActivityInfo *)self encodingOptions];
-    v27 = [v26 objectForKey:@"NSUserActivityDontEncodePayload"];
-    v28 = [v27 BOOLValue];
+    encodingOptions2 = [(UAUserActivityInfo *)self encodingOptions];
+    v27 = [encodingOptions2 objectForKey:@"NSUserActivityDontEncodePayload"];
+    bOOLValue2 = [v27 BOOLValue];
 
-    if (v25)
+    if (bOOLValue)
     {
-      v29 = [(UAUserActivityInfo *)self encodingOptions];
-      v30 = [v29 objectForKey:@"NSUserActivityDontEncodeContentAttributes"];
-      v31 = [v30 BOOLValue];
+      encodingOptions3 = [(UAUserActivityInfo *)self encodingOptions];
+      v30 = [encodingOptions3 objectForKey:@"NSUserActivityDontEncodeContentAttributes"];
+      bOOLValue3 = [v30 BOOLValue];
     }
 
     else
     {
-      v31 = 1;
+      bOOLValue3 = 1;
     }
 
-    v32 = [(UAUserActivityInfo *)self payloads];
-    v5 = [v32 mutableCopy];
+    payloads = [(UAUserActivityInfo *)self payloads];
+    error2 = [payloads mutableCopy];
 
-    v33 = [v5 objectForKey:@"UAUserActivityStreamsPayload"];
+    v33 = [error2 objectForKey:@"UAUserActivityStreamsPayload"];
 
     if (v33)
     {
-      v34 = [v5 objectForKey:@"UAUserActivityStreamsPayload"];
+      v34 = [error2 objectForKey:@"UAUserActivityStreamsPayload"];
       encodeData(v7, v34, @"streamsData");
 
-      [v5 removeObjectForKey:@"UAUserActivityStreamsPayload"];
+      [error2 removeObjectForKey:@"UAUserActivityStreamsPayload"];
     }
 
-    if (v31)
+    if (bOOLValue3)
     {
-      v35 = [(UAUserActivityInfo *)self contentUserAction];
-      encodeString(v7, v35, @"contentAction");
+      contentUserAction = [(UAUserActivityInfo *)self contentUserAction];
+      encodeString(v7, contentUserAction, @"contentAction");
 
-      v36 = [(UAUserActivityInfo *)self keywords];
-      encodeSet(v7, v36, @"keywords");
+      keywords = [(UAUserActivityInfo *)self keywords];
+      encodeSet(v7, keywords, @"keywords");
     }
 
-    v37 = [v5 objectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
+    v37 = [error2 objectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
 
     if (v37)
     {
-      v38 = [v5 objectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
+      v38 = [error2 objectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
       encodeData(v7, v38, @"contentAttributeSetData");
 
-      if (v31)
+      if (bOOLValue3)
       {
-        [v5 removeObjectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
+        [error2 removeObjectForKey:@"UAUserActivityContentAttributeSetPayloadKey"];
       }
     }
 
-    if ((v28 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v39 = [(UAUserActivityInfo *)self payloadForIdentifier:@"UAUserActivityUserInfoPayload"];
       if (v39)
       {
         encodeData(v7, v39, @"payload");
-        [v5 removeObjectForKey:@"UAUserActivityUserInfoPayload"];
+        [error2 removeObjectForKey:@"UAUserActivityUserInfoPayload"];
       }
 
-      v40 = [(UAUserActivityInfo *)self encodedUserInfoError];
+      encodedUserInfoError = [(UAUserActivityInfo *)self encodedUserInfoError];
       v41 = objc_opt_class();
-      encodeObjectOfType(v7, v40, v41, @"payloadError");
+      encodeObjectOfType(v7, encodedUserInfoError, v41, @"payloadError");
     }
 
-    if ([v5 count])
+    if ([error2 count])
     {
-      encodeDictionary(v7, v5, @"payloads");
+      encodeDictionary(v7, error2, @"payloads");
     }
 
     [v7 encodeBool:-[UAUserActivityInfo eligibleForHandoff](self forKey:{"eligibleForHandoff"), @"eligibleForHandoff"}];
@@ -923,12 +923,12 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
     [v7 encodeBool:-[UAUserActivityInfo eligibleForPublicIndexing](self forKey:{"eligibleForPublicIndexing"), @"eligibleForPublicIndexing"}];
     [v7 encodeBool:-[UAUserActivityInfo eligibleForReminders](self forKey:{"eligibleForReminders"), @"eligibleForReminders"}];
     [v7 encodeBool:-[UAUserActivityInfo eligibleForPrediction](self forKey:{"eligibleForPrediction"), @"eligibleForPrediction"}];
-    v42 = [(UAUserActivityInfo *)self persistentIdentifier];
-    [v7 encodeObject:v42 forKey:@"persistentIdentifier"];
+    persistentIdentifier = [(UAUserActivityInfo *)self persistentIdentifier];
+    [v7 encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
 
-    v43 = [(UAUserActivityInfo *)self expirationDate];
+    expirationDate = [(UAUserActivityInfo *)self expirationDate];
     v44 = objc_opt_class();
-    encodeObjectOfType(v7, v43, v44, @"expirationDate");
+    encodeObjectOfType(v7, expirationDate, v44, @"expirationDate");
 
     requiredUserInfoKeys = self->_requiredUserInfoKeys;
     if (requiredUserInfoKeys)
@@ -943,45 +943,45 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UAUserActivityInfo allocWithZone:?]];
   if (v4)
   {
-    v5 = [(UAUserActivityInfo *)self uuid];
+    uuid = [(UAUserActivityInfo *)self uuid];
     uuid = v4->_uuid;
-    v4->_uuid = v5;
+    v4->_uuid = uuid;
 
     [(UAUserActivityInfo *)v4 setType:[(UAUserActivityInfo *)self type]];
-    v7 = [(UAUserActivityInfo *)self options];
-    [(UAUserActivityInfo *)v4 setOptions:v7];
+    options = [(UAUserActivityInfo *)self options];
+    [(UAUserActivityInfo *)v4 setOptions:options];
 
-    v8 = [(UAUserActivityInfo *)self title];
-    [(UAUserActivityInfo *)v4 setTitle:v8];
+    title = [(UAUserActivityInfo *)self title];
+    [(UAUserActivityInfo *)v4 setTitle:title];
 
-    v9 = [(UAUserActivityInfo *)self activityType];
-    [(UAUserActivityInfo *)v4 setActivityType:v9];
+    activityType = [(UAUserActivityInfo *)self activityType];
+    [(UAUserActivityInfo *)v4 setActivityType:activityType];
 
-    v10 = [(UAUserActivityInfo *)self dynamicActivityType];
-    [(UAUserActivityInfo *)v4 setDynamicActivityType:v10];
+    dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+    [(UAUserActivityInfo *)v4 setDynamicActivityType:dynamicActivityType];
 
-    v11 = [(UAUserActivityInfo *)self teamIdentifier];
-    [(UAUserActivityInfo *)v4 setTeamIdentifier:v11];
+    teamIdentifier = [(UAUserActivityInfo *)self teamIdentifier];
+    [(UAUserActivityInfo *)v4 setTeamIdentifier:teamIdentifier];
 
-    v12 = [(UAUserActivityInfo *)self webpageURL];
-    [(UAUserActivityInfo *)v4 setWebpageURL:v12];
+    webpageURL = [(UAUserActivityInfo *)self webpageURL];
+    [(UAUserActivityInfo *)v4 setWebpageURL:webpageURL];
 
-    v13 = [(UAUserActivityInfo *)self referrerURL];
-    [(UAUserActivityInfo *)v4 setReferrerURL:v13];
+    referrerURL = [(UAUserActivityInfo *)self referrerURL];
+    [(UAUserActivityInfo *)v4 setReferrerURL:referrerURL];
 
-    v14 = [(UAUserActivityInfo *)self targetContentIdentifier];
-    [(UAUserActivityInfo *)v4 setTargetContentIdentifier:v14];
+    targetContentIdentifier = [(UAUserActivityInfo *)self targetContentIdentifier];
+    [(UAUserActivityInfo *)v4 setTargetContentIdentifier:targetContentIdentifier];
 
-    v15 = [(UAUserActivityInfo *)self payloads];
-    if (v15)
+    payloads = [(UAUserActivityInfo *)self payloads];
+    if (payloads)
     {
-      v16 = [(UAUserActivityInfo *)self payloads];
-      v17 = [v16 mutableCopy];
+      payloads2 = [(UAUserActivityInfo *)self payloads];
+      v17 = [payloads2 mutableCopy];
       payloads = v4->_payloads;
       v4->_payloads = v17;
     }
@@ -989,72 +989,72 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
     else
     {
       v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v16 = v4->_payloads;
+      payloads2 = v4->_payloads;
       v4->_payloads = v19;
     }
 
-    v20 = [(UAUserActivityInfo *)self encodedUserInfoError];
-    [(UAUserActivityInfo *)v4 setEncodedUserInfoError:v20];
+    encodedUserInfoError = [(UAUserActivityInfo *)self encodedUserInfoError];
+    [(UAUserActivityInfo *)v4 setEncodedUserInfoError:encodedUserInfoError];
 
-    v21 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-    [(UAUserActivityInfo *)v4 setRequiredUserInfoKeys:v21];
+    requiredUserInfoKeys = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+    [(UAUserActivityInfo *)v4 setRequiredUserInfoKeys:requiredUserInfoKeys];
 
     [(UAUserActivityInfo *)v4 setUniversalLink:[(UAUserActivityInfo *)self isUniversalLink]];
     [(UAUserActivityInfo *)v4 setEligibleForHandoff:[(UAUserActivityInfo *)self eligibleForHandoff]];
     [(UAUserActivityInfo *)v4 setEligibleForSearch:[(UAUserActivityInfo *)self eligibleForSearch]];
     [(UAUserActivityInfo *)v4 setEligibleForPublicIndexing:[(UAUserActivityInfo *)self eligibleForPublicIndexing]];
-    v22 = [(UAUserActivityInfo *)self contentUserAction];
-    [(UAUserActivityInfo *)v4 setContentUserAction:v22];
+    contentUserAction = [(UAUserActivityInfo *)self contentUserAction];
+    [(UAUserActivityInfo *)v4 setContentUserAction:contentUserAction];
 
-    v23 = [(UAUserActivityInfo *)self keywords];
-    [(UAUserActivityInfo *)v4 setKeywords:v23];
+    keywords = [(UAUserActivityInfo *)self keywords];
+    [(UAUserActivityInfo *)v4 setKeywords:keywords];
 
-    v24 = [(UAUserActivityInfo *)self expirationDate];
-    [(UAUserActivityInfo *)v4 setExpirationDate:v24];
+    expirationDate = [(UAUserActivityInfo *)self expirationDate];
+    [(UAUserActivityInfo *)v4 setExpirationDate:expirationDate];
 
-    v25 = [(UAUserActivityInfo *)self when];
-    [(UAUserActivityInfo *)v4 setWhen:v25];
+    when = [(UAUserActivityInfo *)self when];
+    [(UAUserActivityInfo *)v4 setWhen:when];
 
     [(UAUserActivityInfo *)v4 setActive:[(UAUserActivityInfo *)self active]];
     [(UAUserActivityInfo *)v4 setEligibleForPrediction:[(UAUserActivityInfo *)self eligibleForPrediction]];
-    v26 = [(UAUserActivityInfo *)self persistentIdentifier];
-    [(UAUserActivityInfo *)v4 setPersistentIdentifier:v26];
+    persistentIdentifier = [(UAUserActivityInfo *)self persistentIdentifier];
+    [(UAUserActivityInfo *)v4 setPersistentIdentifier:persistentIdentifier];
 
-    v27 = [(UAUserActivityInfo *)self error];
-    [(UAUserActivityInfo *)v4 setError:v27];
+    error = [(UAUserActivityInfo *)self error];
+    [(UAUserActivityInfo *)v4 setError:error];
   }
 
   return v4;
 }
 
-- (void)setPayloads:(id)a3
+- (void)setPayloads:(id)payloads
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v7;
-  if (v7)
+  payloadsCopy = payloads;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = payloadsCopy;
+  if (payloadsCopy)
   {
-    v5 = [v7 mutableCopy];
+    v5 = [payloadsCopy mutableCopy];
   }
 
-  payloads = v4->_payloads;
-  v4->_payloads = v5;
+  payloads = selfCopy->_payloads;
+  selfCopy->_payloads = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)payloadForIdentifier:(id)a3
+- (id)payloadForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    payloads = v5->_payloads;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    payloads = selfCopy->_payloads;
     if (payloads)
     {
-      v7 = [(NSMutableDictionary *)payloads objectForKey:v4];
+      v7 = [(NSMutableDictionary *)payloads objectForKey:identifierCopy];
     }
 
     else
@@ -1062,7 +1062,7 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
       v7 = 0;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1073,32 +1073,32 @@ void __36__UAUserActivityInfo_initWithCoder___block_invoke_2()
   return v7;
 }
 
-- (BOOL)setPayload:(id)a3 identifier:(id)a4
+- (BOOL)setPayload:(id)payload identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    payloads = v8->_payloads;
-    if (v6)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    payloads = selfCopy->_payloads;
+    if (payloadCopy)
     {
       if (payloads)
       {
-        v10 = [(NSMutableDictionary *)payloads objectForKey:v7];
-        v11 = [v6 isEqual:v10];
+        v10 = [(NSMutableDictionary *)payloads objectForKey:identifierCopy];
+        v11 = [payloadCopy isEqual:v10];
 
-        [(NSMutableDictionary *)v8->_payloads setObject:v6 forKey:v7];
+        [(NSMutableDictionary *)selfCopy->_payloads setObject:payloadCopy forKey:identifierCopy];
 LABEL_11:
-        objc_sync_exit(v8);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_12;
       }
 
-      v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:v6 forKey:v7];
-      v13 = v8->_payloads;
-      v8->_payloads = v12;
+      v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:payloadCopy forKey:identifierCopy];
+      v13 = selfCopy->_payloads;
+      selfCopy->_payloads = v12;
     }
 
     else
@@ -1109,7 +1109,7 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      [(NSMutableDictionary *)payloads removeObjectForKey:v7];
+      [(NSMutableDictionary *)payloads removeObjectForKey:identifierCopy];
     }
 
     v11 = 1;
@@ -1122,120 +1122,120 @@ LABEL_12:
   return v11;
 }
 
-- (void)_createUserActivityStrings:(id)a3 secondaryString:(id)a4 optionalData:(id)a5
+- (void)_createUserActivityStrings:(id)strings secondaryString:(id)string optionalData:(id)data
 {
   v109 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(UAUserActivityInfo *)self payloads];
-  v10 = [v9 objectForKey:@"UAUserActivityUserInfoPayload"];
+  stringsCopy = strings;
+  stringCopy = string;
+  payloads = [(UAUserActivityInfo *)self payloads];
+  v10 = [payloads objectForKey:@"UAUserActivityUserInfoPayload"];
 
   v12 = v11 = _UACopyUnpackedObjectFromData([v10 bytes], objc_msgSend(v10, "length"), 0);
   v13 = v12;
-  if (v7)
+  if (stringsCopy)
   {
     v96 = v12;
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [(UAUserActivityInfo *)self dynamicActivityType];
+    array = [MEMORY[0x277CBEB18] array];
+    dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
 
-    if (v15)
+    if (dynamicActivityType)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [(UAUserActivityInfo *)self dynamicActivityType];
-      v18 = [UAUserActivity _encodeToString:v17];
+      dynamicActivityType2 = [(UAUserActivityInfo *)self dynamicActivityType];
+      v18 = [UAUserActivity _encodeToString:dynamicActivityType2];
       v19 = [v16 stringWithFormat:@"dt=%@", v18];
-      [v14 addObject:v19];
+      [array addObject:v19];
     }
 
-    v20 = [(UAUserActivityInfo *)self title];
-    if (v20)
+    title = [(UAUserActivityInfo *)self title];
+    if (title)
     {
-      v21 = v20;
-      v22 = [(UAUserActivityInfo *)self title];
-      v23 = [v22 length];
+      v21 = title;
+      title2 = [(UAUserActivityInfo *)self title];
+      v23 = [title2 length];
 
       if (v23)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [(UAUserActivityInfo *)self title];
-        v26 = [UAUserActivity _encodeToString:v25];
+        title3 = [(UAUserActivityInfo *)self title];
+        v26 = [UAUserActivity _encodeToString:title3];
         v27 = [v24 stringWithFormat:@"t=%@", v26];
-        [v14 addObject:v27];
+        [array addObject:v27];
       }
     }
 
     if ([(UAUserActivityInfo *)self type]!= 1)
     {
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"type=%ld", -[UAUserActivityInfo type](self, "type")];
-      [v14 addObject:v28];
+      [array addObject:v28];
     }
 
-    v29 = [(UAUserActivityInfo *)self webpageURL];
+    webpageURL = [(UAUserActivityInfo *)self webpageURL];
 
-    if (v29)
+    if (webpageURL)
     {
       v30 = MEMORY[0x277CCACA8];
-      v31 = [(UAUserActivityInfo *)self webpageURL];
-      [v31 absoluteString];
+      webpageURL2 = [(UAUserActivityInfo *)self webpageURL];
+      [webpageURL2 absoluteString];
       v33 = v32 = self;
       v34 = [UAUserActivity _encodeToString:v33];
       v35 = [v30 stringWithFormat:@"url=%@", v34];
-      [v14 addObject:v35];
+      [array addObject:v35];
 
       self = v32;
     }
 
-    v36 = [(UAUserActivityInfo *)self referrerURL];
+    referrerURL = [(UAUserActivityInfo *)self referrerURL];
 
-    if (v36)
+    if (referrerURL)
     {
       v37 = MEMORY[0x277CCACA8];
-      v38 = [(UAUserActivityInfo *)self referrerURL];
-      [v38 absoluteString];
+      referrerURL2 = [(UAUserActivityInfo *)self referrerURL];
+      [referrerURL2 absoluteString];
       v40 = v39 = self;
       v41 = [UAUserActivity _encodeToString:v40];
       v42 = [v37 stringWithFormat:@"referrer=%@", v41];
-      [v14 addObject:v42];
+      [array addObject:v42];
 
       self = v39;
     }
 
-    v43 = [(UAUserActivityInfo *)self targetContentIdentifier];
+    targetContentIdentifier = [(UAUserActivityInfo *)self targetContentIdentifier];
 
-    if (v43)
+    if (targetContentIdentifier)
     {
       v44 = MEMORY[0x277CCACA8];
-      v45 = [(UAUserActivityInfo *)self targetContentIdentifier];
-      v46 = [UAUserActivity _encodeToString:v45];
+      targetContentIdentifier2 = [(UAUserActivityInfo *)self targetContentIdentifier];
+      v46 = [UAUserActivity _encodeToString:targetContentIdentifier2];
       v47 = [v44 stringWithFormat:@"targetIdentifier=%@", v46];
-      [v14 addObject:v47];
+      [array addObject:v47];
     }
 
     if (v11)
     {
-      v48 = [MEMORY[0x277CBEB18] array];
-      v49 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-      v90 = v8;
-      v92 = v7;
-      v89 = self;
-      v94 = v14;
-      if (v49)
+      array2 = [MEMORY[0x277CBEB18] array];
+      requiredUserInfoKeys = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+      v90 = stringCopy;
+      v92 = stringsCopy;
+      selfCopy = self;
+      v94 = array;
+      if (requiredUserInfoKeys)
       {
-        v50 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-        v51 = [v50 allObjects];
+        requiredUserInfoKeys2 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+        allObjects = [requiredUserInfoKeys2 allObjects];
       }
 
       else
       {
-        v51 = [v11 allKeys];
+        allObjects = [v11 allKeys];
       }
 
       v105 = 0u;
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v87 = v51;
-      v52 = sortedArrayOfNSStringValues(v51);
+      v87 = allObjects;
+      v52 = sortedArrayOfNSStringValues(allObjects);
       v53 = [v52 countByEnumeratingWithState:&v103 objects:v108 count:16];
       if (v53)
       {
@@ -1253,7 +1253,7 @@ LABEL_12:
             v57 = *(*(&v103 + 1) + 8 * i);
             v58 = [v11 objectForKey:v57];
             v59 = [UAUserActivity _encodeKeyAndValueIntoString:v57 value:v58];
-            [v48 addObject:v59];
+            [array2 addObject:v59];
           }
 
           v54 = [v52 countByEnumeratingWithState:&v103 objects:v108 count:16];
@@ -1262,57 +1262,57 @@ LABEL_12:
         while (v54);
       }
 
-      if ([v48 count])
+      if ([array2 count])
       {
         v60 = MEMORY[0x277CCACA8];
-        v61 = [v48 componentsJoinedByString:{@", "}];
+        v61 = [array2 componentsJoinedByString:{@", "}];
         v62 = [v60 stringWithFormat:@"u={%@}", v61, v87];
         [v94 addObject:v62];
       }
 
-      v8 = v90;
-      v7 = v92;
-      self = v89;
-      v14 = v94;
+      stringCopy = v90;
+      stringsCopy = v92;
+      self = selfCopy;
+      array = v94;
     }
 
     if ([(UAUserActivityInfo *)self isUniversalLink])
     {
-      [v14 addObject:@"universalLink=1"];
+      [array addObject:@"universalLink=1"];
     }
 
-    v63 = [(UAUserActivityInfo *)self activityType];
+    activityType = [(UAUserActivityInfo *)self activityType];
     v13 = v96;
-    [v63 stringByAddingPercentEncodingWithAllowedCharacters:v96];
-    v65 = v64 = v14;
-    [v7 appendFormat:@"v1.0/%@/", v65];
+    [activityType stringByAddingPercentEncodingWithAllowedCharacters:v96];
+    v65 = v64 = array;
+    [stringsCopy appendFormat:@"v1.0/%@/", v65];
 
     if ([v64 count])
     {
       v66 = [v64 componentsJoinedByString:@"&"];
-      [v7 appendFormat:@"%@", v66];
+      [stringsCopy appendFormat:@"%@", v66];
     }
   }
 
-  if (v8)
+  if (stringCopy)
   {
-    v95 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     if ([v11 count])
     {
-      v67 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-      if (v67)
+      requiredUserInfoKeys3 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+      if (requiredUserInfoKeys3)
       {
-        v68 = v67;
-        v69 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-        v70 = [v69 count];
+        v68 = requiredUserInfoKeys3;
+        requiredUserInfoKeys4 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+        v70 = [requiredUserInfoKeys4 count];
 
         if (v70)
         {
           v97 = v13;
           v98 = v10;
-          v91 = v8;
-          v93 = v7;
-          v71 = [MEMORY[0x277CBEB18] array];
+          v91 = stringCopy;
+          v93 = stringsCopy;
+          array4 = [MEMORY[0x277CBEB18] array];
           [v11 allKeys];
           v99 = 0u;
           v100 = 0u;
@@ -1334,14 +1334,14 @@ LABEL_12:
                 }
 
                 v77 = *(*(&v99 + 1) + 8 * j);
-                v78 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
-                v79 = [v78 containsObject:v77];
+                requiredUserInfoKeys5 = [(UAUserActivityInfo *)self requiredUserInfoKeys];
+                v79 = [requiredUserInfoKeys5 containsObject:v77];
 
                 if ((v79 & 1) == 0)
                 {
                   v80 = [v11 objectForKey:v77];
                   v81 = [UAUserActivity _encodeKeyAndValueIntoString:v77 value:v80];
-                  [v71 addObject:v81];
+                  [array4 addObject:v81];
                 }
               }
 
@@ -1351,26 +1351,26 @@ LABEL_12:
             while (v74);
           }
 
-          if ([v71 count])
+          if ([array4 count])
           {
             v82 = MEMORY[0x277CCACA8];
-            v83 = [v71 componentsJoinedByString:{@", "}];
+            v83 = [array4 componentsJoinedByString:{@", "}];
             v84 = [v82 stringWithFormat:@"ue={%@}", v83, v88];
-            [v95 addObject:v84];
+            [array3 addObject:v84];
           }
 
-          v8 = v91;
-          v7 = v93;
+          stringCopy = v91;
+          stringsCopy = v93;
           v13 = v97;
           v10 = v98;
         }
       }
     }
 
-    if ([v95 count])
+    if ([array3 count])
     {
-      v85 = [v95 componentsJoinedByString:@"&"];
-      [v8 appendFormat:@"%@", v85];
+      v85 = [array3 componentsJoinedByString:@"&"];
+      [stringCopy appendFormat:@"%@", v85];
     }
   }
 
@@ -1379,11 +1379,11 @@ LABEL_12:
 
 - (id)userActivityString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [(UAUserActivityInfo *)self _createUserActivityStrings:v3 secondaryString:0 optionalData:0];
-  if (v3 && [v3 length])
+  string = [MEMORY[0x277CCAB68] string];
+  [(UAUserActivityInfo *)self _createUserActivityStrings:string secondaryString:0 optionalData:0];
+  if (string && [string length])
   {
-    v4 = [v3 copy];
+    v4 = [string copy];
   }
 
   else
@@ -1396,11 +1396,11 @@ LABEL_12:
 
 - (id)secondaryUserActivityString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [(UAUserActivityInfo *)self _createUserActivityStrings:0 secondaryString:v3 optionalData:0];
-  if (v3 && [v3 length])
+  string = [MEMORY[0x277CCAB68] string];
+  [(UAUserActivityInfo *)self _createUserActivityStrings:0 secondaryString:string optionalData:0];
+  if (string && [string length])
   {
-    v4 = [v3 copy];
+    v4 = [string copy];
   }
 
   else
@@ -1413,11 +1413,11 @@ LABEL_12:
 
 - (id)optionalUserActivityData
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  [(UAUserActivityInfo *)self _createUserActivityStrings:0 secondaryString:0 optionalData:v3];
-  if (v3 && [v3 length])
+  data = [MEMORY[0x277CBEB28] data];
+  [(UAUserActivityInfo *)self _createUserActivityStrings:0 secondaryString:0 optionalData:data];
+  if (data && [data length])
   {
-    v4 = [v3 copy];
+    v4 = [data copy];
   }
 
   else
@@ -1433,53 +1433,53 @@ LABEL_12:
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x277CCA308]];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)encodedInfoToOldEncodedInfo:(id)a3
++ (id)encodedInfoToOldEncodedInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  infoCopy = info;
+  bytes = [infoCopy bytes];
+  v5 = [infoCopy length];
 
-  v6 = _UACopyUnpackedObjectFromData(v4, v5, 0);
+  v6 = _UACopyUnpackedObjectFromData(bytes, v5, 0);
   if (v6)
   {
     v7 = v6;
     v8 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
     [v8 encodeObject:v7 forKey:*MEMORY[0x277CCA308]];
     [v8 finishEncoding];
-    v9 = [v8 encodedData];
+    encodedData = [v8 encodedData];
     CFRelease(v7);
   }
 
   else
   {
-    v9 = 0;
+    encodedData = 0;
   }
 
-  return v9;
+  return encodedData;
 }
 
 - (id)statusString
 {
-  v3 = [(UAUserActivityInfo *)self payloads];
-  v4 = [v3 objectForKey:@"UAUserActivityUserInfoPayload"];
+  payloads = [(UAUserActivityInfo *)self payloads];
+  v4 = [payloads objectForKey:@"UAUserActivityUserInfoPayload"];
   v19 = trimmedHexStringForData(v4, 0x10uLL);
 
   v18 = MEMORY[0x277CCACA8];
   v5 = suggestedActionTypeString([(UAUserActivityInfo *)self type]);
-  v6 = [(UAUserActivityInfo *)self uuid];
-  v7 = [v6 UUIDString];
-  v8 = [(UAUserActivityInfo *)self activityType];
-  v9 = [(UAUserActivityInfo *)self dynamicActivityType];
-  if (v9)
+  uuid = [(UAUserActivityInfo *)self uuid];
+  uUIDString = [uuid UUIDString];
+  activityType = [(UAUserActivityInfo *)self activityType];
+  dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+  if (dynamicActivityType)
   {
     v10 = MEMORY[0x277CCACA8];
-    v17 = [(UAUserActivityInfo *)self dynamicActivityType];
-    v11 = [v10 stringWithFormat:@":%@", v17];
+    dynamicActivityType2 = [(UAUserActivityInfo *)self dynamicActivityType];
+    v11 = [v10 stringWithFormat:@":%@", dynamicActivityType2];
   }
 
   else
@@ -1487,9 +1487,9 @@ LABEL_12:
     v11 = &stru_283A5A2C8;
   }
 
-  v12 = [(UAUserActivityInfo *)self type];
-  v13 = [(UAUserActivityInfo *)self webpageURL];
-  if (v13)
+  type = [(UAUserActivityInfo *)self type];
+  webpageURL = [(UAUserActivityInfo *)self webpageURL];
+  if (webpageURL)
   {
     v14 = @" webPageURL=<private>";
   }
@@ -1499,9 +1499,9 @@ LABEL_12:
     v14 = &stru_283A5A2C8;
   }
 
-  v15 = [v18 stringWithFormat:@"UAInfo:%@%@ %@%@ type=%ld %@%@", v5, v7, v8, v11, v12, v19, v14];
+  v15 = [v18 stringWithFormat:@"UAInfo:%@%@ %@%@ type=%ld %@%@", v5, uUIDString, activityType, v11, type, v19, v14];
 
-  if (v9)
+  if (dynamicActivityType)
   {
   }
 
@@ -1511,17 +1511,17 @@ LABEL_12:
 - (id)provenance
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(UAUserActivityInfo *)self uuid];
-  v5 = [(UAUserActivityInfo *)self activityType];
-  v6 = [(UAUserActivityInfo *)self dynamicActivityType];
-  v7 = v6;
+  uuid = [(UAUserActivityInfo *)self uuid];
+  activityType = [(UAUserActivityInfo *)self activityType];
+  dynamicActivityType = [(UAUserActivityInfo *)self dynamicActivityType];
+  v7 = dynamicActivityType;
   v8 = &stru_283A5A2C8;
-  if (v6)
+  if (dynamicActivityType)
   {
-    v8 = v6;
+    v8 = dynamicActivityType;
   }
 
-  v9 = [v3 stringWithFormat:@"UAx:%@/%@-%@", v4, v5, v8];
+  v9 = [v3 stringWithFormat:@"UAx:%@/%@-%@", uuid, activityType, v8];
 
   return v9;
 }

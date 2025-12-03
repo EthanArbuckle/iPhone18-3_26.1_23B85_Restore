@@ -1,73 +1,73 @@
 @interface AFSecurityConnection
-- (AFSecurityConnection)initWithInstanceContext:(id)a3;
+- (AFSecurityConnection)initWithInstanceContext:(id)context;
 - (id)_connection;
 - (void)_connectionInterrupted;
 - (void)_connectionInvalidated;
-- (void)_dispatchCallbackForProcessedData:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_dispatchCallbackForProcessedDataMap:(id)a3 errorMap:(id)a4 completion:(id)a5;
+- (void)_dispatchCallbackForProcessedData:(id)data error:(id)error completion:(id)completion;
+- (void)_dispatchCallbackForProcessedDataMap:(id)map errorMap:(id)errorMap completion:(id)completion;
 - (void)_invalidateConnection;
-- (void)_processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
-- (void)_processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
+- (void)_processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion;
+- (void)_processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion;
 - (void)dealloc;
-- (void)internalAuthAppleConnectServiceTicket:(id)a3;
-- (void)internalAuthSessionToken:(id)a3;
+- (void)internalAuthAppleConnectServiceTicket:(id)ticket;
+- (void)internalAuthSessionToken:(id)token;
 - (void)invalidate;
-- (void)processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
-- (void)processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5;
-- (void)setInternalAuthAppleConnectServiceTicket:(id)a3 completion:(id)a4;
-- (void)setInternalAuthSessionToken:(id)a3 completion:(id)a4;
-- (void)setKeychainValue:(id)a3 forKey:(id)a4 accountIdentifier:(id)a5 completion:(id)a6;
+- (void)processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion;
+- (void)processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion;
+- (void)setInternalAuthAppleConnectServiceTicket:(id)ticket completion:(id)completion;
+- (void)setInternalAuthSessionToken:(id)token completion:(id)completion;
+- (void)setKeychainValue:(id)value forKey:(id)key accountIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation AFSecurityConnection
 
-- (void)_dispatchCallbackForProcessedDataMap:(id)a3 errorMap:(id)a4 completion:(id)a5
+- (void)_dispatchCallbackForProcessedDataMap:(id)map errorMap:(id)errorMap completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  mapCopy = map;
+  errorMapCopy = errorMap;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__AFSecurityConnection__dispatchCallbackForProcessedDataMap_errorMap_completion___block_invoke;
     block[3] = &unk_1E73496E8;
-    v16 = v10;
-    v14 = v8;
-    v15 = v9;
+    v16 = completionCopy;
+    v14 = mapCopy;
+    v15 = errorMapCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)_dispatchCallbackForProcessedData:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_dispatchCallbackForProcessedData:(id)data error:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  dataCopy = data;
+  errorCopy = error;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__AFSecurityConnection__dispatchCallbackForProcessedData_error_completion___block_invoke;
     block[3] = &unk_1E73496E8;
-    v16 = v10;
-    v14 = v8;
-    v15 = v9;
+    v16 = completionCopy;
+    v14 = dataCopy;
+    v15 = errorCopy;
     dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)_processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)_processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AFSecurityConnection *)self _connection];
-  if (v10)
+  mapCopy = map;
+  completionCopy = completion;
+  _connection = [(AFSecurityConnection *)self _connection];
+  if (_connection)
   {
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -75,16 +75,16 @@
     v19[2] = __66__AFSecurityConnection__processDataMap_usingProcedure_completion___block_invoke;
     v19[3] = &unk_1E7341D60;
     objc_copyWeak(&v21, &location);
-    v11 = v9;
+    v11 = completionCopy;
     v20 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v19];
+    v12 = [_connection remoteObjectProxyWithErrorHandler:v19];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __66__AFSecurityConnection__processDataMap_usingProcedure_completion___block_invoke_2;
     v16[3] = &unk_1E7341DB0;
     objc_copyWeak(&v18, &location);
     v17 = v11;
-    [v12 processDataMap:v8 usingProcedure:a4 completion:v16];
+    [v12 processDataMap:mapCopy usingProcedure:procedure completion:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v21);
@@ -97,7 +97,7 @@
     v13 = [AFError errorWithCode:1606];
     v24[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    [(AFSecurityConnection *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v14 completion:v9];
+    [(AFSecurityConnection *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v14 completion:completionCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -124,12 +124,12 @@ void __66__AFSecurityConnection__processDataMap_usingProcedure_completion___bloc
   [WeakRetained _dispatchCallbackForProcessedDataMap:v6 errorMap:v5 completion:*(a1 + 32)];
 }
 
-- (void)_processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)_processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AFSecurityConnection *)self _connection];
-  if (v10)
+  dataCopy = data;
+  completionCopy = completion;
+  _connection = [(AFSecurityConnection *)self _connection];
+  if (_connection)
   {
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
@@ -137,16 +137,16 @@ void __66__AFSecurityConnection__processDataMap_usingProcedure_completion___bloc
     v17[2] = __63__AFSecurityConnection__processData_usingProcedure_completion___block_invoke;
     v17[3] = &unk_1E7341D60;
     objc_copyWeak(&v19, &location);
-    v11 = v9;
+    v11 = completionCopy;
     v18 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
+    v12 = [_connection remoteObjectProxyWithErrorHandler:v17];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __63__AFSecurityConnection__processData_usingProcedure_completion___block_invoke_2;
     v14[3] = &unk_1E7341D88;
     objc_copyWeak(&v16, &location);
     v15 = v11;
-    [v12 processData:v8 usingProcedure:a4 completion:v14];
+    [v12 processData:dataCopy usingProcedure:procedure completion:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v19);
@@ -156,7 +156,7 @@ void __66__AFSecurityConnection__processDataMap_usingProcedure_completion___bloc
   else
   {
     v13 = [AFError errorWithCode:1606];
-    [(AFSecurityConnection *)self _dispatchCallbackForProcessedData:0 error:v13 completion:v9];
+    [(AFSecurityConnection *)self _dispatchCallbackForProcessedData:0 error:v13 completion:completionCopy];
   }
 }
 
@@ -282,18 +282,18 @@ void __35__AFSecurityConnection__connection__block_invoke_2(uint64_t a1)
   [WeakRetained _connectionInvalidated];
 }
 
-- (void)internalAuthSessionToken:(id)a3
+- (void)internalAuthSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = self->_callbackQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__AFSecurityConnection_internalAuthSessionToken___block_invoke;
   v13[3] = &unk_1E7341D10;
   v14 = v5;
-  v15 = v4;
+  v15 = tokenCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = tokenCopy;
   v8 = MEMORY[0x193AFB7B0](v13);
   connectionQueue = self->_connectionQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -342,18 +342,18 @@ void __49__AFSecurityConnection_internalAuthSessionToken___block_invoke_3(uint64
   [v3 internalAuthSessionToken:v4];
 }
 
-- (void)internalAuthAppleConnectServiceTicket:(id)a3
+- (void)internalAuthAppleConnectServiceTicket:(id)ticket
 {
-  v4 = a3;
+  ticketCopy = ticket;
   v5 = self->_callbackQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__AFSecurityConnection_internalAuthAppleConnectServiceTicket___block_invoke;
   v13[3] = &unk_1E7341D10;
   v14 = v5;
-  v15 = v4;
+  v15 = ticketCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = ticketCopy;
   v8 = MEMORY[0x193AFB7B0](v13);
   connectionQueue = self->_connectionQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -402,29 +402,29 @@ void __62__AFSecurityConnection_internalAuthAppleConnectServiceTicket___block_in
   [v3 internalAuthAppleConnectServiceTicket:v4];
 }
 
-- (void)setInternalAuthSessionToken:(id)a3 completion:(id)a4
+- (void)setInternalAuthSessionToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = self->_callbackQueue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __63__AFSecurityConnection_setInternalAuthSessionToken_completion___block_invoke;
   v18[3] = &unk_1E7348AD0;
   v19 = v8;
-  v20 = v7;
+  v20 = completionCopy;
   v9 = v8;
-  v10 = v7;
+  v10 = completionCopy;
   v11 = MEMORY[0x193AFB7B0](v18);
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__AFSecurityConnection_setInternalAuthSessionToken_completion___block_invoke_3;
   block[3] = &unk_1E73496E8;
-  v16 = v6;
+  v16 = tokenCopy;
   v17 = v11;
   block[4] = self;
-  v13 = v6;
+  v13 = tokenCopy;
   v14 = v11;
   dispatch_async(connectionQueue, block);
 }
@@ -464,29 +464,29 @@ void __63__AFSecurityConnection_setInternalAuthSessionToken_completion___block_i
   [v3 setInternalAuthSessionToken:v4 completion:v5];
 }
 
-- (void)setInternalAuthAppleConnectServiceTicket:(id)a3 completion:(id)a4
+- (void)setInternalAuthAppleConnectServiceTicket:(id)ticket completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  ticketCopy = ticket;
+  completionCopy = completion;
   v8 = self->_callbackQueue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__AFSecurityConnection_setInternalAuthAppleConnectServiceTicket_completion___block_invoke;
   v18[3] = &unk_1E7348AD0;
   v19 = v8;
-  v20 = v7;
+  v20 = completionCopy;
   v9 = v8;
-  v10 = v7;
+  v10 = completionCopy;
   v11 = MEMORY[0x193AFB7B0](v18);
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__AFSecurityConnection_setInternalAuthAppleConnectServiceTicket_completion___block_invoke_3;
   block[3] = &unk_1E73496E8;
-  v16 = v6;
+  v16 = ticketCopy;
   v17 = v11;
   block[4] = self;
-  v13 = v6;
+  v13 = ticketCopy;
   v14 = v11;
   dispatch_async(connectionQueue, block);
 }
@@ -526,35 +526,35 @@ void __76__AFSecurityConnection_setInternalAuthAppleConnectServiceTicket_complet
   [v3 setInternalAuthAppleConnectServiceTicket:v4 completion:v5];
 }
 
-- (void)setKeychainValue:(id)a3 forKey:(id)a4 accountIdentifier:(id)a5 completion:(id)a6
+- (void)setKeychainValue:(id)value forKey:(id)key accountIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  keyCopy = key;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = self->_callbackQueue;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __77__AFSecurityConnection_setKeychainValue_forKey_accountIdentifier_completion___block_invoke;
   v28[3] = &unk_1E7348AD0;
   v29 = v14;
-  v30 = v13;
+  v30 = completionCopy;
   v15 = v14;
-  v16 = v13;
+  v16 = completionCopy;
   v17 = MEMORY[0x193AFB7B0](v28);
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__AFSecurityConnection_setKeychainValue_forKey_accountIdentifier_completion___block_invoke_3;
   block[3] = &unk_1E7348AF8;
-  v26 = v12;
+  v26 = identifierCopy;
   v27 = v17;
   block[4] = self;
-  v24 = v10;
-  v25 = v11;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
+  v24 = valueCopy;
+  v25 = keyCopy;
+  v19 = identifierCopy;
+  v20 = keyCopy;
+  v21 = valueCopy;
   v22 = v17;
   dispatch_async(connectionQueue, block);
 }
@@ -596,16 +596,16 @@ void __77__AFSecurityConnection_setKeychainValue_forKey_accountIdentifier_comple
   [v3 setKeychainValue:v4 forKey:v5 accountIdentifier:v6 completion:v7];
 }
 
-- (void)processDataMap:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)processDataMap:(id)map usingProcedure:(int64_t)procedure completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  mapCopy = map;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (a4)
+    if (procedure)
     {
-      if (v8)
+      if (mapCopy)
       {
         connectionQueue = self->_connectionQueue;
         block[0] = MEMORY[0x1E69E9820];
@@ -613,9 +613,9 @@ void __77__AFSecurityConnection_setKeychainValue_forKey_accountIdentifier_comple
         block[2] = __65__AFSecurityConnection_processDataMap_usingProcedure_completion___block_invoke;
         block[3] = &unk_1E7343940;
         block[4] = self;
-        v18 = v8;
-        v20 = a4;
-        v19 = v9;
+        v18 = mapCopy;
+        procedureCopy = procedure;
+        v19 = completionCopy;
         dispatch_async(connectionQueue, block);
 
         goto LABEL_8;
@@ -640,7 +640,7 @@ void __77__AFSecurityConnection_setKeychainValue_forKey_accountIdentifier_comple
     }
 
     v15 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:1];
-    [(AFSecurityConnection *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v15 completion:v9];
+    [(AFSecurityConnection *)self _dispatchCallbackForProcessedDataMap:0 errorMap:v15 completion:completionCopy];
   }
 
 LABEL_8:
@@ -648,15 +648,15 @@ LABEL_8:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processData:(id)a3 usingProcedure:(int64_t)a4 completion:(id)a5
+- (void)processData:(id)data usingProcedure:(int64_t)procedure completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dataCopy = data;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (a4)
+    if (procedure)
     {
-      if (v8)
+      if (dataCopy)
       {
         connectionQueue = self->_connectionQueue;
         v13[0] = MEMORY[0x1E69E9820];
@@ -664,9 +664,9 @@ LABEL_8:
         v13[2] = __62__AFSecurityConnection_processData_usingProcedure_completion___block_invoke;
         v13[3] = &unk_1E7343940;
         v13[4] = self;
-        v14 = v8;
-        v16 = a4;
-        v15 = v9;
+        v14 = dataCopy;
+        procedureCopy = procedure;
+        v15 = completionCopy;
         dispatch_async(connectionQueue, v13);
 
         goto LABEL_8;
@@ -681,7 +681,7 @@ LABEL_8:
     }
 
     v12 = [AFError errorWithCode:v11];
-    [(AFSecurityConnection *)self _dispatchCallbackForProcessedData:0 error:v12 completion:v9];
+    [(AFSecurityConnection *)self _dispatchCallbackForProcessedData:0 error:v12 completion:completionCopy];
   }
 
 LABEL_8:
@@ -706,9 +706,9 @@ LABEL_8:
   [(AFSecurityConnection *)&v3 dealloc];
 }
 
-- (AFSecurityConnection)initWithInstanceContext:(id)a3
+- (AFSecurityConnection)initWithInstanceContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = AFSecurityConnection;
   v6 = [(AFSecurityConnection *)&v14 init];
@@ -726,7 +726,7 @@ LABEL_8:
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v11;
 
-    objc_storeStrong(&v6->_instanceContext, a3);
+    objc_storeStrong(&v6->_instanceContext, context);
   }
 
   return v6;

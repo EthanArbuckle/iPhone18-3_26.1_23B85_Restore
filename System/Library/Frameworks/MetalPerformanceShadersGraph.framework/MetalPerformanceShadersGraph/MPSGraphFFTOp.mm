@@ -1,34 +1,34 @@
 @interface MPSGraphFFTOp
-- (MPSGraphFFTOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphFFTOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphFFTOp
 
-- (MPSGraphFFTOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphFFTOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 copy];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v17 = [descriptorCopy copy];
   desc = self->_desc;
   self->_desc = v17;
 
-  v19 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v19 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v46 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphFFTOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphFourierTransformOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v45 = 260;
   v44[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v44);
+  StringAttr = mlir::Builder::getStringAttr(builder, v44);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x70u, 0);
   if (!v12)
   {
@@ -36,8 +36,8 @@
   }
 
   v15 = v12;
-  v16 = [v12 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v12 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -52,11 +52,11 @@
   HIBYTE(v43) = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &v39);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &v39);
   v20 = v39.__r_.__value_.__r.__words[0];
   if ((v39.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -72,7 +72,7 @@
   }
 
   LOBYTE(v45) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v44);
+  v22 = mlir::Builder::getStringAttr(builder, v44);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v39.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -96,20 +96,20 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  v24 = [(MPSGraphFFTDescriptor *)self->_desc inverse];
-  v25 = [(MPSGraphFFTDescriptor *)self->_desc scalingMode];
-  if (v25 == MPSGraphFFTScalingModeUnitary)
+  inverse = [(MPSGraphFFTDescriptor *)self->_desc inverse];
+  scalingMode = [(MPSGraphFFTDescriptor *)self->_desc scalingMode];
+  if (scalingMode == MPSGraphFFTScalingModeUnitary)
   {
     v26 = 2;
   }
 
   else
   {
-    v26 = v25 == MPSGraphFFTScalingModeSize;
+    v26 = scalingMode == MPSGraphFFTScalingModeSize;
   }
 
-  v27 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  v27 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -128,8 +128,8 @@ LABEL_15:
   }
 
   mlir::OperationState::OperationState(v44, v23, v29);
-  mlir::mps::FastFourierTransformOp::build(a3, v44, *v27, v27[1], v26, v24);
-  v31 = mlir::OpBuilder::create(a3, v44);
+  mlir::mps::FastFourierTransformOp::build(builder, v44, *v27, v27[1], v26, inverse);
+  v31 = mlir::OpBuilder::create(builder, v44);
   v32 = *(v31[6] + 16);
   mlir::OperationState::~OperationState(v44);
   if (v32 != &mlir::detail::TypeIDResolver<mlir::mps::FastFourierTransformOp,void>::id)

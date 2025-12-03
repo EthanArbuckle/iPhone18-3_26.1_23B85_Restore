@@ -1,8 +1,8 @@
 @interface CFXMediaItemAdjustmentsData
 + (NSSet)secureCodingClassWhitelist;
-- (CFXMediaItemAdjustmentsData)initWithCameraMode:(int64_t)a3 metadataURL:(id)a4 cameraPosition:(int64_t)a5 effectStack:(id)a6;
-- (CFXMediaItemAdjustmentsData)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CFXMediaItemAdjustmentsData)initWithCameraMode:(int64_t)mode metadataURL:(id)l cameraPosition:(int64_t)position effectStack:(id)stack;
+- (CFXMediaItemAdjustmentsData)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CFXMediaItemAdjustmentsData
@@ -35,58 +35,58 @@ void __57__CFXMediaItemAdjustmentsData_secureCodingClassWhitelist__block_invoke(
   secureCodingClassWhitelist_secureCodingClassWhitelist = v2;
 }
 
-- (CFXMediaItemAdjustmentsData)initWithCameraMode:(int64_t)a3 metadataURL:(id)a4 cameraPosition:(int64_t)a5 effectStack:(id)a6
+- (CFXMediaItemAdjustmentsData)initWithCameraMode:(int64_t)mode metadataURL:(id)l cameraPosition:(int64_t)position effectStack:(id)stack
 {
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  stackCopy = stack;
   v16.receiver = self;
   v16.super_class = CFXMediaItemAdjustmentsData;
   v13 = [(CFXMediaItemAdjustmentsData *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_cameraMode = a3;
-    objc_storeStrong(&v13->_metadataURL, a4);
-    objc_storeStrong(&v14->_effectStack, a6);
-    v14->_cameraPosition = a5;
+    v13->_cameraMode = mode;
+    objc_storeStrong(&v13->_metadataURL, l);
+    objc_storeStrong(&v14->_effectStack, stack);
+    v14->_cameraPosition = position;
   }
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeInteger:-[CFXMediaItemAdjustmentsData cameraMode](self forKey:{"cameraMode"), @"cameraMode"}];
-  v5 = [(CFXMediaItemAdjustmentsData *)self metadataURL];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CFXMediaItemAdjustmentsData cameraMode](self forKey:{"cameraMode"), @"cameraMode"}];
+  metadataURL = [(CFXMediaItemAdjustmentsData *)self metadataURL];
 
-  if (v5)
+  if (metadataURL)
   {
-    v6 = [(CFXMediaItemAdjustmentsData *)self metadataURL];
-    [v4 encodeObject:v6 forKey:@"metadata"];
+    metadataURL2 = [(CFXMediaItemAdjustmentsData *)self metadataURL];
+    [coderCopy encodeObject:metadataURL2 forKey:@"metadata"];
   }
 
   if ([(CFXMediaItemAdjustmentsData *)self cameraPosition])
   {
-    [v4 encodeInteger:-[CFXMediaItemAdjustmentsData cameraPosition](self forKey:{"cameraPosition"), @"cameraPosition"}];
+    [coderCopy encodeInteger:-[CFXMediaItemAdjustmentsData cameraPosition](self forKey:{"cameraPosition"), @"cameraPosition"}];
   }
 
-  v7 = [(CFXMediaItemAdjustmentsData *)self effectStack];
-  v8 = [v7 count];
+  effectStack = [(CFXMediaItemAdjustmentsData *)self effectStack];
+  v8 = [effectStack count];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
-    v10 = [(CFXMediaItemAdjustmentsData *)self effectStack];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    effectStack2 = [(CFXMediaItemAdjustmentsData *)self effectStack];
+    v11 = [v9 initWithCapacity:{objc_msgSend(effectStack2, "count")}];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [(CFXMediaItemAdjustmentsData *)self effectStack];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    effectStack3 = [(CFXMediaItemAdjustmentsData *)self effectStack];
+    v13 = [effectStack3 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -100,7 +100,7 @@ void __57__CFXMediaItemAdjustmentsData_secureCodingClassWhitelist__block_invoke(
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(effectStack3);
           }
 
           v19 = *(*(&v23 + 1) + 8 * v17);
@@ -129,30 +129,30 @@ void __57__CFXMediaItemAdjustmentsData_secureCodingClassWhitelist__block_invoke(
         }
 
         while (v14 != v17);
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v14 = [effectStack3 countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v14);
     }
 
-    [v4 encodeObject:v11 forKey:@"effectStack"];
+    [coderCopy encodeObject:v11 forKey:@"effectStack"];
   }
 }
 
-- (CFXMediaItemAdjustmentsData)initWithCoder:(id)a3
+- (CFXMediaItemAdjustmentsData)initWithCoder:(id)coder
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"cameraMode"];
-  v6 = [v4 decodeIntegerForKey:@"cameraPosition"];
-  v7 = [v4 decodeObjectForKey:@"metadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"cameraMode"];
+  v6 = [coderCopy decodeIntegerForKey:@"cameraPosition"];
+  v7 = [coderCopy decodeObjectForKey:@"metadata"];
   v8 = MEMORY[0x277CBEB98];
   v47[0] = objc_opt_class();
   v47[1] = objc_opt_class();
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
   v10 = [v8 setWithArray:v9];
   v43 = 0;
-  v11 = [v4 decodeTopLevelObjectOfClasses:v10 forKey:@"effectStack" error:&v43];
+  v11 = [coderCopy decodeTopLevelObjectOfClasses:v10 forKey:@"effectStack" error:&v43];
   v12 = v43;
 
   v13 = 0;
@@ -161,8 +161,8 @@ void __57__CFXMediaItemAdjustmentsData_secureCodingClassWhitelist__block_invoke(
     v31 = v6;
     v32 = v5;
     v33 = v7;
-    v34 = self;
-    v35 = v4;
+    selfCopy = self;
+    v35 = coderCopy;
     v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
     v39 = 0u;
     v40 = 0u;
@@ -231,8 +231,8 @@ void __57__CFXMediaItemAdjustmentsData_secureCodingClassWhitelist__block_invoke(
       while (v15);
     }
 
-    self = v34;
-    v4 = v35;
+    self = selfCopy;
+    coderCopy = v35;
     v5 = v32;
     v7 = v33;
     v11 = v30;

@@ -1,11 +1,11 @@
 @interface VCMediaControlInfoMultiwayAudio
-- (BOOL)hasInfoType:(unsigned int)a3;
+- (BOOL)hasInfoType:(unsigned int)type;
 - (VCMediaControlInfoMultiwayAudio)init;
-- (VCMediaControlInfoMultiwayAudio)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6;
+- (VCMediaControlInfoMultiwayAudio)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version;
 - (id)description;
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5;
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6;
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5;
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info;
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type;
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type;
 @end
 
 @implementation VCMediaControlInfoMultiwayAudio
@@ -25,12 +25,12 @@
   return result;
 }
 
-- (VCMediaControlInfoMultiwayAudio)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6
+- (VCMediaControlInfoMultiwayAudio)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCMediaControlInfoMultiwayAudio;
-  result = [(VCMediaControlInfo *)&v7 initWithBuffer:a3 length:a4 optionalControlInfo:a5 version:a6];
+  result = [(VCMediaControlInfo *)&v7 initWithBuffer:buffer length:length optionalControlInfo:info version:version];
   if (result)
   {
     result->super._vtableC.serializedSize = VCMediaControlInfoMultiwayAudio_SerializedSize;
@@ -58,23 +58,23 @@
   return v3;
 }
 
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type
 {
-  if (a5 >= 0x16)
+  if (type >= 0x16)
   {
     [VCMediaControlInfoMultiwayAudio setInfo:size:type:];
     return v9;
   }
 
-  if (a5 >= 0x13 && a5 != 21)
+  if (type >= 0x13 && type != 21)
   {
-    if (a5 == 20)
+    if (type == 20)
     {
-      if (a4 == 4)
+      if (size == 4)
       {
         v5 = 0;
         self->super._bitmap |= 0x14u;
-        v7 = *a3;
+        v7 = *info;
         v8 = 68;
 LABEL_13:
         *(&self->super.super.isa + v8) = v7;
@@ -82,11 +82,11 @@ LABEL_13:
       }
     }
 
-    else if (a4 == 4)
+    else if (size == 4)
     {
       v5 = 0;
       self->super._bitmap |= 1u;
-      v7 = *a3;
+      v7 = *info;
       v8 = 64;
       goto LABEL_13;
     }
@@ -107,15 +107,15 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)hasInfoType:(unsigned int)a3
+- (BOOL)hasInfoType:(unsigned int)type
 {
-  if (a3 == 19)
+  if (type == 19)
   {
     v3 = 1;
     return (self->super._bitmap & v3) != 0;
   }
 
-  if (a3 == 20)
+  if (type == 20)
   {
     v3 = 2;
     return (self->super._bitmap & v3) != 0;
@@ -124,24 +124,24 @@ LABEL_13:
   return 0;
 }
 
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type
 {
   result = -2144403455;
-  if (a3)
+  if (info)
   {
-    if (a6 == 20)
+    if (type == 20)
     {
       if ((self->super._bitmap & 2) != 0)
       {
-        if (a4 >= 4)
+        if (length >= 4)
         {
           v8 = 68;
 LABEL_12:
-          *a3 = *(&self->super.super.isa + v8);
+          *info = *(&self->super.super.isa + v8);
           result = 0;
-          if (a5)
+          if (size)
           {
-            *a5 = 4;
+            *size = 4;
           }
 
           return result;
@@ -153,14 +153,14 @@ LABEL_12:
 
     else
     {
-      if (a6 != 19)
+      if (type != 19)
       {
         return result;
       }
 
       if (self->super._bitmap)
       {
-        if (a4 >= 4)
+        if (length >= 4)
         {
           v8 = 64;
           goto LABEL_12;
@@ -176,23 +176,23 @@ LABEL_12:
   return result;
 }
 
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info
 {
-  if (!a4)
+  if (!length)
   {
     return 0;
   }
 
   v6 = -2144403413;
-  if (!a3)
+  if (!buffer)
   {
     return -2144403455;
   }
 
-  if (a4 > 7)
+  if (length > 7)
   {
-    [(VCMediaControlInfoMultiwayAudio *)self setInfo:a3 size:4 type:19];
-    [(VCMediaControlInfoMultiwayAudio *)self setInfo:a3 + 4 size:4 type:20];
+    [(VCMediaControlInfoMultiwayAudio *)self setInfo:buffer size:4 type:19];
+    [(VCMediaControlInfoMultiwayAudio *)self setInfo:buffer + 4 size:4 type:20];
     return 0;
   }
 

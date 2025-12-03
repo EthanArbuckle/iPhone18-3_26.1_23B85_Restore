@@ -1,23 +1,23 @@
 @interface STSingleLineHeaderView
 - (PSSpecifier)specifier;
-- (STSingleLineHeaderView)initWithSpecifier:(id)a3 useContentLayoutGuide:(BOOL)a4;
+- (STSingleLineHeaderView)initWithSpecifier:(id)specifier useContentLayoutGuide:(BOOL)guide;
 - (void)reloadFromSpecifier;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation STSingleLineHeaderView
 
-- (STSingleLineHeaderView)initWithSpecifier:(id)a3 useContentLayoutGuide:(BOOL)a4
+- (STSingleLineHeaderView)initWithSpecifier:(id)specifier useContentLayoutGuide:(BOOL)guide
 {
-  v4 = a4;
+  guideCopy = guide;
   v41[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  specifierCopy = specifier;
   v40.receiver = self;
   v40.super_class = STSingleLineHeaderView;
-  v7 = [(STTableViewHeaderFooterView *)&v40 initWithReuseIdentifier:0 useLayoutMarginsGuide:!v4];
+  v7 = [(STTableViewHeaderFooterView *)&v40 initWithReuseIdentifier:0 useLayoutMarginsGuide:!guideCopy];
   if (v7)
   {
-    obj = v6;
+    obj = specifierCopy;
     v8 = objc_opt_new();
     titleLabel = v7->_titleLabel;
     v7->_titleLabel = v8;
@@ -33,52 +33,52 @@
     [(UILabel *)v7->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v12) = 1144750080;
     [(UILabel *)v7->_titleLabel setContentHuggingPriority:0 forAxis:v12];
-    v13 = [(STSingleLineHeaderView *)v7 contentView];
-    [v13 addSubview:v7->_titleLabel];
-    v14 = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
-    v15 = [(STSingleLineHeaderView *)v7 textLabel];
-    v16 = [v15 lastBaselineAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    contentView = [(STSingleLineHeaderView *)v7 contentView];
+    [contentView addSubview:v7->_titleLabel];
+    lastBaselineAnchor = [(UILabel *)v7->_titleLabel lastBaselineAnchor];
+    textLabel = [(STSingleLineHeaderView *)v7 textLabel];
+    lastBaselineAnchor2 = [textLabel lastBaselineAnchor];
+    v17 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
 
     LODWORD(v18) = 1132068864;
     [v17 setPriority:v18];
-    v38 = v13;
-    if (v4)
+    v38 = contentView;
+    if (guideCopy)
     {
-      v19 = v13;
-      v20 = [(STTableViewHeaderFooterView *)v7 contentLayoutGuide];
-      v21 = [v20 leadingAnchor];
+      v19 = contentView;
+      contentLayoutGuide = [(STTableViewHeaderFooterView *)v7 contentLayoutGuide];
+      leadingAnchor = [contentLayoutGuide leadingAnchor];
     }
 
     else
     {
       v19 = v7;
-      v21 = [(STSingleLineHeaderView *)v19 leadingAnchor];
+      leadingAnchor = [(STSingleLineHeaderView *)v19 leadingAnchor];
     }
 
-    v34 = v21;
+    v34 = leadingAnchor;
     v31 = MEMORY[0x277CCAAD0];
     v41[0] = v17;
-    v37 = [(UILabel *)v7->_titleLabel topAnchor];
-    v36 = [(STSingleLineHeaderView *)v19 topAnchor];
-    v35 = [v37 constraintGreaterThanOrEqualToAnchor:v36];
+    topAnchor = [(UILabel *)v7->_titleLabel topAnchor];
+    topAnchor2 = [(STSingleLineHeaderView *)v19 topAnchor];
+    v35 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v41[1] = v35;
-    v32 = [(UILabel *)v7->_titleLabel leadingAnchor];
-    v22 = [v32 constraintEqualToAnchor:v21];
+    leadingAnchor2 = [(UILabel *)v7->_titleLabel leadingAnchor];
+    v22 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor];
     v41[2] = v22;
-    v23 = [(UILabel *)v7->_titleLabel bottomAnchor];
-    v24 = [(STSingleLineHeaderView *)v19 bottomAnchor];
-    v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+    bottomAnchor = [(UILabel *)v7->_titleLabel bottomAnchor];
+    bottomAnchor2 = [(STSingleLineHeaderView *)v19 bottomAnchor];
+    v25 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v41[3] = v25;
-    v26 = [(UILabel *)v7->_titleLabel trailingAnchor];
+    trailingAnchor = [(UILabel *)v7->_titleLabel trailingAnchor];
     [(STSingleLineHeaderView *)v19 centerXAnchor];
     v27 = v33 = v17;
-    v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+    v28 = [trailingAnchor constraintLessThanOrEqualToAnchor:v27];
     v41[4] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:5];
     [v31 activateConstraints:v29];
 
-    v6 = obj;
+    specifierCopy = obj;
     objc_storeWeak(&v7->_specifier, obj);
     [(STSingleLineHeaderView *)v7 reloadFromSpecifier];
   }
@@ -86,9 +86,9 @@
   return v7;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  objc_storeWeak(&self->_specifier, a3);
+  objc_storeWeak(&self->_specifier, specifier);
 
   [(STSingleLineHeaderView *)self reloadFromSpecifier];
 }
@@ -96,20 +96,20 @@
 - (void)reloadFromSpecifier
 {
   v3 = _UISolariumEnabled();
-  v8 = [(STSingleLineHeaderView *)self specifier];
-  v4 = [v8 name];
-  v5 = v4;
+  specifier = [(STSingleLineHeaderView *)self specifier];
+  name = [specifier name];
+  v5 = name;
   if (v3)
   {
-    v6 = [(STSingleLineHeaderView *)self titleLabel];
-    [v6 setText:v5];
+    titleLabel = [(STSingleLineHeaderView *)self titleLabel];
+    [titleLabel setText:v5];
   }
 
   else
   {
-    v6 = [v4 localizedUppercaseString];
-    v7 = [(STSingleLineHeaderView *)self titleLabel];
-    [v7 setText:v6];
+    titleLabel = [name localizedUppercaseString];
+    titleLabel2 = [(STSingleLineHeaderView *)self titleLabel];
+    [titleLabel2 setText:titleLabel];
   }
 }
 

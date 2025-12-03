@@ -1,14 +1,14 @@
 @interface AVOutputContextMonitor
-- (AVOutputContextMonitor)initWithSessionCore:(weak_ptr<avas:(id)a4 :client::SessionCore>)a3 routingContextUID:;
+- (AVOutputContextMonitor)initWithSessionCore:(weak_ptr<avas:(id)core :client::SessionCore>)a3 routingContextUID:;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)handleAVOutputContextOutputDeviceChange:(id)a3;
-- (void)handleAVOutputContextOutputDevicesChange:(id)a3;
+- (void)handleAVOutputContextOutputDeviceChange:(id)change;
+- (void)handleAVOutputContextOutputDevicesChange:(id)change;
 @end
 
 @implementation AVOutputContextMonitor
 
-- (AVOutputContextMonitor)initWithSessionCore:(weak_ptr<avas:(id)a4 :client::SessionCore>)a3 routingContextUID:
+- (AVOutputContextMonitor)initWithSessionCore:(weak_ptr<avas:(id)core :client::SessionCore>)a3 routingContextUID:
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = a3.__cntrl_;
@@ -66,8 +66,8 @@ LABEL_11:
 
     if (v8->mAVOutputContext)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:v8 selector:sel_handleAVOutputContextOutputDeviceChange_ name:@"AVOutputContextOutputDeviceDidChangeNotification" object:v8->mAVOutputContext];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel_handleAVOutputContextOutputDeviceChange_ name:@"AVOutputContextOutputDeviceDidChangeNotification" object:v8->mAVOutputContext];
 
       self = [MEMORY[0x1E696AD88] defaultCenter];
       [(AVOutputContextMonitor *)self addObserver:v8 selector:sel_handleAVOutputContextOutputDevicesChange_ name:@"AVOutputContextOutputDevicesDidChangeNotification" object:v8->mAVOutputContext];
@@ -100,21 +100,21 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"AVOutputContextOutputDevicesDidChangeNotification" object:self->mAVOutputContext];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AVOutputContextOutputDevicesDidChangeNotification" object:self->mAVOutputContext];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"AVOutputContextOutputDeviceDidChangeNotification" object:self->mAVOutputContext];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"AVOutputContextOutputDeviceDidChangeNotification" object:self->mAVOutputContext];
 
   v5.receiver = self;
   v5.super_class = AVOutputContextMonitor;
   [(AVOutputContextMonitor *)&v5 dealloc];
 }
 
-- (void)handleAVOutputContextOutputDeviceChange:(id)a3
+- (void)handleAVOutputContextOutputDeviceChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   cntrl = self->mSessionCore.__cntrl_;
   if (cntrl)
   {
@@ -173,10 +173,10 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAVOutputContextOutputDevicesChange:(id)a3
+- (void)handleAVOutputContextOutputDevicesChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   cntrl = self->mSessionCore.__cntrl_;
   if (cntrl)
   {

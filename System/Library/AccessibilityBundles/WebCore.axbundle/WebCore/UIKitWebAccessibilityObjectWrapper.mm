@@ -1,24 +1,24 @@
 @interface UIKitWebAccessibilityObjectWrapper
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityAlwaysSpeakTableHeaders;
 - (BOOL)_accessibilityHasNativeFocus;
-- (BOOL)_accessibilityHasOtherAccessibleChildElements:(id)a3;
+- (BOOL)_accessibilityHasOtherAccessibleChildElements:(id)elements;
 - (BOOL)_accessibilityHasTextOperations;
-- (BOOL)_accessibilityIsDataEmpty:(id)a3;
+- (BOOL)_accessibilityIsDataEmpty:(id)empty;
 - (BOOL)_accessibilityIsGroupedParent;
 - (BOOL)_accessibilityIsScrollDivDescendent;
 - (BOOL)_accessibilityIsSpeakThisElement;
 - (BOOL)_accessibilityIsTopMostWebElement;
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4;
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3;
-- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)a3 withString:(id)a4;
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query;
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector;
+- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)range withString:(id)string;
 - (BOOL)_accessibilityScrollToVisible;
 - (BOOL)_accessibilitySetNativeFocus;
 - (BOOL)_accessibilityShouldScrollRemoteParent;
 - (BOOL)_accessibilityShouldSpeakMathEquationTrait;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)_accessibilitySupportsTextInsertionAndDeletion;
-- (BOOL)_axHasMultipleAccessibleChildren:(int64_t *)a3;
+- (BOOL)_axHasMultipleAccessibleChildren:(int64_t *)children;
 - (BOOL)_axIsWK2DataDetectorLink;
 - (BOOL)_axIsWebKit2;
 - (BOOL)_axSupportsWebKitNotificationRelay;
@@ -34,60 +34,60 @@
 - (BOOL)accessibilityCanFuzzyHitTest;
 - (BOOL)accessibilityIsMathTopObject;
 - (BOOL)accessibilityRequired;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3;
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point;
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point;
 - (BOOL)canBecomeFocused;
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (BOOL)isAccessibilityElement;
-- (CGPoint)_accessibilityScrollRectToVisible:(CGRect)a3;
+- (CGPoint)_accessibilityScrollRectToVisible:(CGRect)visible;
 - (CGPoint)accessibilityActivationPoint;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)_accessibilityClippingFrame;
-- (CGRect)_accessibilityConvertSystemBoundedScreenRectToContextSpace:(CGRect)a3;
+- (CGRect)_accessibilityConvertSystemBoundedScreenRectToContextSpace:(CGRect)space;
 - (CGRect)_accessibilityVisibleFrame;
 - (CGRect)_axGetClippingFrame;
-- (CGRect)accessibilityBoundsForTextMarkers:(id)a3;
+- (CGRect)accessibilityBoundsForTextMarkers:(id)markers;
 - (CGRect)accessibilityFrame;
 - (CGRect)accessibilityFrameForScrolling;
 - (CGRect)bounds;
 - (CGRect)frame;
 - (NSString)description;
 - (NSString)focusGroupIdentifier;
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityCheckRowRangeForTrait:(unint64_t)a3;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForTextMarker:(id)a3;
-- (_NSRange)_accessibilityRangeForTextMarkers:(id)a3;
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityCheckRowRangeForTrait:(unint64_t)trait;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForTextMarker:(id)marker;
+- (_NSRange)_accessibilityRangeForTextMarkers:(id)markers;
 - (_NSRange)_accessibilitySelectedNSRangeForObject;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (_NSRange)_accessibilitySelectedTextRangeForHandwritingWithValue:(id)a3;
-- (_NSRange)_rangeForWebTextMarkers:(id)a3;
+- (_NSRange)_accessibilitySelectedTextRangeForHandwritingWithValue:(id)value;
+- (_NSRange)_rangeForWebTextMarkers:(id)markers;
 - (_NSRange)accessibilityRowRange;
 - (float)_accessibilityActivationDelay;
 - (id)_accessibilityApplication;
-- (id)_accessibilityAttributedValue:(id)a3;
+- (id)_accessibilityAttributedValue:(id)value;
 - (id)_accessibilityAttributedValueForElement;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
 - (id)_accessibilityColorDescription;
 - (id)_accessibilityContainerTypes;
-- (id)_accessibilityConvertDataArrayToTextMarkerArray:(id)a3;
-- (id)_accessibilityConvertTextMarkersToDataArray:(id)a3;
+- (id)_accessibilityConvertDataArrayToTextMarkerArray:(id)array;
+- (id)_accessibilityConvertTextMarkersToDataArray:(id)array;
 - (id)_accessibilityCurrentStatus;
-- (id)_accessibilityCustomRotor:(int64_t)a3;
+- (id)_accessibilityCustomRotor:(int64_t)rotor;
 - (id)_accessibilityDOMAttributes;
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3;
-- (id)_accessibilityElementsForSearchParameter:(id)a3;
-- (id)_accessibilityHeaderElementsForColumn:(unint64_t)a3;
-- (id)_accessibilityHeaderElementsForRow:(unint64_t)a3;
-- (id)_accessibilityLinePosition:(BOOL)a3 withMarker:(id)a4;
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme;
+- (id)_accessibilityElementsForSearchParameter:(id)parameter;
+- (id)_accessibilityHeaderElementsForColumn:(unint64_t)column;
+- (id)_accessibilityHeaderElementsForRow:(unint64_t)row;
+- (id)_accessibilityLinePosition:(BOOL)position withMarker:(id)marker;
 - (id)_accessibilityMakeScrollStatus;
-- (id)_accessibilityMarkerForPoint:(CGPoint)a3;
-- (id)_accessibilityMarkerPosition:(BOOL)a3 withMarker:(id)a4;
+- (id)_accessibilityMarkerForPoint:(CGPoint)point;
+- (id)_accessibilityMarkerPosition:(BOOL)position withMarker:(id)marker;
 - (id)_accessibilityMathEquationRootObject;
-- (id)_accessibilityNextElementsWithHeading:(unint64_t)a3 queryString:(id)a4 startingFrom:(id)a5;
-- (id)_accessibilityObjectForTextMarker:(id)a3;
-- (id)_accessibilityParentForSubview:(id)a3;
+- (id)_accessibilityNextElementsWithHeading:(unint64_t)heading queryString:(id)string startingFrom:(id)from;
+- (id)_accessibilityObjectForTextMarker:(id)marker;
+- (id)_accessibilityParentForSubview:(id)subview;
 - (id)_accessibilityParentLinkContainer;
 - (id)_accessibilityParentView;
 - (id)_accessibilityProcessRootEquation;
@@ -96,10 +96,10 @@
 - (id)_accessibilityScrollAncestor;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilitySpeakThisString;
-- (id)_accessibilityTextMarkerForPosition:(int64_t)a3;
+- (id)_accessibilityTextMarkerForPosition:(int64_t)position;
 - (id)_accessibilityTextMarkerRange;
 - (id)_accessibilityTextMarkerRangeForSelection;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences;
 - (id)_accessibilityTextViewTextOperationResponder;
 - (id)_accessibilityUserTestingElementBaseType;
 - (id)_accessibilityValueForHandwriting;
@@ -107,18 +107,18 @@
 - (id)_accessibilityWebDocumentView;
 - (id)_accessibilityWebPageParent;
 - (id)_axAncestorTypes;
-- (id)_axDataConvertForNotification:(id)a3;
-- (id)_axWebKitSearchKeyForCustomRotorType:(int64_t)a3;
+- (id)_axDataConvertForNotification:(id)notification;
+- (id)_axWebKitSearchKeyForCustomRotorType:(int64_t)type;
 - (id)_axWebKitTrueLinkParent;
 - (id)_misspelledWordRotor;
 - (id)_preferredFocusRegionCoordinateSpace;
-- (id)accessibilityArrayOfTextForTextMarkers:(id)a3;
+- (id)accessibilityArrayOfTextForTextMarkers:(id)markers;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityContainer;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityHint;
-- (id)accessibilityHitTest:(CGPoint)a3;
+- (id)accessibilityHitTest:(CGPoint)test;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (id)accessibilityLanguage;
@@ -140,17 +140,17 @@
 - (id)accessibilityMathUnderObject;
 - (id)accessibilityPath;
 - (id)accessibilityPlaceholderValue;
-- (id)accessibilityPostProcessHitTest:(CGPoint)a3;
+- (id)accessibilityPostProcessHitTest:(CGPoint)test;
 - (id)accessibilitySortDirection;
 - (id)accessibilitySpeechHint;
-- (id)accessibilityStringForTextMarkers:(id)a3;
-- (id)accessibilityTextNavigationElementInDirection:(int64_t)a3;
+- (id)accessibilityStringForTextMarkers:(id)markers;
+- (id)accessibilityTextNavigationElementInDirection:(int64_t)direction;
 - (id)accessibilityURL;
 - (id)accessibilityValue;
 - (id)accessibilityVisibleText;
 - (id)ariaLandmarkRoleDescription;
 - (id)automationElements;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (int)_accessibilityHostPid;
 - (int64_t)_accessibilityExpandedStatus;
 - (int64_t)_accessibilityLineStartPosition;
@@ -159,25 +159,25 @@
 - (unint64_t)accessibilityTraits;
 - (unsigned)_accessibilityContextId;
 - (void)_accessibilityClippingFrame;
-- (void)_accessibilityInsertText:(id)a3;
-- (void)_accessibilityModifySelection:(id)a3 increase:(BOOL)a4;
-- (void)_accessibilityMoveSelectionToMarker:(id)a3;
-- (void)_accessibilityRelayToChrome:(unsigned int)a3 object:(id)a4;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
+- (void)_accessibilityInsertText:(id)text;
+- (void)_accessibilityModifySelection:(id)selection increase:(BOOL)increase;
+- (void)_accessibilityMoveSelectionToMarker:(id)marker;
+- (void)_accessibilityRelayToChrome:(unsigned int)chrome object:(id)object;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
 - (void)_accessibilityScrollToVisible;
-- (void)_axBuildAXTreeFromElement:(id)a3 outArray:(id)a4;
-- (void)_axHandleNotificationPosting:(unsigned int)a3 data:(id)a4;
+- (void)_axBuildAXTreeFromElement:(id)element outArray:(id)array;
+- (void)_axHandleNotificationPosting:(unsigned int)posting data:(id)data;
 - (void)_axVideoEnterFullscreen;
 - (void)_axVideoToggleMute;
-- (void)_enqueReorderingNotification:(id)a3;
+- (void)_enqueReorderingNotification:(id)notification;
 - (void)_performLiveRegionUpdate;
 - (void)_repostFocusChangeNotification;
-- (void)_repostWebNotification:(id)a3;
+- (void)_repostWebNotification:(id)notification;
 - (void)accessibilityDecrement;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityIncrement;
-- (void)accessibilityOverrideProcessNotification:(id)a3 notificationData:(id)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)accessibilityOverrideProcessNotification:(id)notification notificationData:(id)data;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)postScreenChangeNotification;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
@@ -185,120 +185,120 @@
 
 @implementation UIKitWebAccessibilityObjectWrapper
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIPeripheralHost" hasInstanceMethod:@"isOnScreen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"ariaLandmarkRoleDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathPostscripts" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" isKindOfClass:@"WebAccessibilityObjectWrapperBase"];
-  [v3 validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"initWithData:accessibilityObject:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"handleNotificationRelayToChrome:notificationData:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityColorStringValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollVisibleRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollPosition" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollSize" withFullSignature:{"{CGSize=dd}", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityParentForSubview:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axAdjustableTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axButtonTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axHasTextCursorTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axHeaderTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axImageTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axLinkTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axMenuItemTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axNotEnabledTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axPopupButtonTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSecureTextFieldTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSearchFieldTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTextAreaTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSelectedTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axStaticTextTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTabBarTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTextOperationsAvailableTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axToggleTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axVisitedTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axWebContentTrait" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMathTopObject" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathBaseObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathDenominatorObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathFencedCloseString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathFencedOpenString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathNumeratorObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsComboBox" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathLineThickness" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathOverObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathRadicand" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"accessibilityMathPostscriptPairs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"accessibilityMathPrescriptPairs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathRootIndexObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathSubscriptObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathSuperscriptObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathUnderObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMoveSelectionToMarker:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"arrayOfTextForTextMarkers: attributed:" withFullSignature:{"@", "@", "B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySupportsARIAExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySupportsARIAPressed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsPressed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityModifySelection: increase:" withFullSignature:{"v", "C", "B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsAttachmentElement" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityFindMatchingObjects:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityActivate" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityRoleDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityLandmarkAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityArticleAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityListAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityTableAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityFieldsetAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityFrameAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityTreeAncestor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIAIsBusy" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIALiveRegionIsAtomic" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIALiveRegionStatus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIARelevantStatus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCanFuzzyHitTest" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityDecreaseSelection:" withFullSignature:{"v", "C", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityElementRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIncreaseSelection:" withFullSignature:{"v", "C", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityPlaceholderValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityHasPopup" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"elementTextRange" withFullSignature:{"{_NSRange=QQ}", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"frameForTextMarkers:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineEndMarkerForMarker:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineStartMarkerForMarker:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"positionForTextMarker:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"selectedTextMarker" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"stringForTextMarkers:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textMarkerForPosition:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textMarkerRangeForSelection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"_prepareAccessibilityCall" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityReplaceRange:withText:" withFullSignature:{"B", "{_NSRange=QQ}", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityResolvedEditingStyles" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCanSetValue" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityPageTextMarkerRange" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCurrentState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySortDirection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityRequired" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsDialog" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textRectsFromMarkers:withText:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsShowingValidationMessage" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsWebInteractiveVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityToggleMuteForMedia" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityVideoEnterFullscreen" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMediaPlaying" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMediaMuted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityIsStrongPasswordField" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"attributedStringForElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilitySetFocus:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"misspellingTextMarkerRange:forward:" withFullSignature:{"@", "@", "B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityInsertText:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityReplaceRange:withText:" withFullSignature:{"B", "{_NSRange=QQ}", "@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsIndeterminate" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityWebRoleAsString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityBrailleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityBrailleRoleDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineMarkersForMarker:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIPeripheralHost" hasInstanceMethod:@"isOnScreen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"ariaLandmarkRoleDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathPostscripts" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" isKindOfClass:@"WebAccessibilityObjectWrapperBase"];
+  [validationsCopy validateClass:@"WebAccessibilityTextMarker" hasInstanceMethod:@"initWithData:accessibilityObject:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"handleNotificationRelayToChrome:notificationData:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityColorStringValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollVisibleRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollPosition" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityScrollSize" withFullSignature:{"{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityParentForSubview:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axAdjustableTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axButtonTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axHasTextCursorTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axHeaderTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axImageTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axLinkTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axMenuItemTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axNotEnabledTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axPopupButtonTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSecureTextFieldTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSearchFieldTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTextAreaTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axSelectedTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axStaticTextTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTabBarTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axTextOperationsAvailableTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axToggleTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axVisitedTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_axWebContentTrait" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMathTopObject" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathBaseObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathDenominatorObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathFencedCloseString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathFencedOpenString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathNumeratorObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsComboBox" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathLineThickness" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathOverObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathRadicand" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"accessibilityMathPostscriptPairs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"accessibilityMathPrescriptPairs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathRootIndexObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathSubscriptObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathSuperscriptObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMathUnderObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityMoveSelectionToMarker:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"arrayOfTextForTextMarkers: attributed:" withFullSignature:{"@", "@", "B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySupportsARIAExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySupportsARIAPressed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsPressed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityModifySelection: increase:" withFullSignature:{"v", "C", "B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsAttachmentElement" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityFindMatchingObjects:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityActivate" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityRoleDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityLandmarkAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityArticleAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityListAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityTableAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityFieldsetAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityFrameAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityTreeAncestor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIAIsBusy" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIALiveRegionIsAtomic" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIALiveRegionStatus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityARIARelevantStatus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCanFuzzyHitTest" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityDecreaseSelection:" withFullSignature:{"v", "C", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityElementRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIncreaseSelection:" withFullSignature:{"v", "C", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityPlaceholderValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityHasPopup" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"elementTextRange" withFullSignature:{"{_NSRange=QQ}", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"frameForTextMarkers:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineEndMarkerForMarker:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineStartMarkerForMarker:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"positionForTextMarker:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"selectedTextMarker" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"stringForTextMarkers:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textMarkerForPosition:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textMarkerRangeForSelection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapperBase" hasInstanceMethod:@"_prepareAccessibilityCall" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityReplaceRange:withText:" withFullSignature:{"B", "{_NSRange=QQ}", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityResolvedEditingStyles" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCanSetValue" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityPageTextMarkerRange" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityCurrentState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilitySortDirection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityRequired" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsDialog" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"textRectsFromMarkers:withText:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsShowingValidationMessage" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsWebInteractiveVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityToggleMuteForMedia" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityVideoEnterFullscreen" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMediaPlaying" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsMediaMuted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityIsStrongPasswordField" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"attributedStringForElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilitySetFocus:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"misspellingTextMarkerRange:forward:" withFullSignature:{"@", "@", "B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityInsertText:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityReplaceRange:withText:" withFullSignature:{"B", "{_NSRange=QQ}", "@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityIsIndeterminate" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"_accessibilityWebRoleAsString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityBrailleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"accessibilityBrailleRoleDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebAccessibilityObjectWrapper" hasInstanceMethod:@"lineMarkersForMarker:" withFullSignature:{"@", "@", 0}];
 }
 
 - (BOOL)_prepareAccessibilityCall
@@ -315,15 +315,15 @@
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
-    v3 = 0;
+    _accessibilityWebDocumentView = 0;
   }
 
   else
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+    _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
   }
 
-  return v3;
+  return _accessibilityWebDocumentView;
 }
 
 - (BOOL)_axIsWebKit2
@@ -338,9 +338,9 @@
     [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v3 forKey:@"IsWebKit2"];
   }
 
-  v6 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)_accessibilityWebPageParent
@@ -364,16 +364,16 @@
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
     v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"contextId"];
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
 
-    if (!v4)
+    if (!unsignedIntValue)
     {
       v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
       v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{objc_msgSend(v5, "contextId")}];
       [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v6 forKey:@"contextId"];
 
-      v7 = [v5 contextId];
-      return v7;
+      contextId = [v5 contextId];
+      return contextId;
     }
   }
 
@@ -384,7 +384,7 @@
     return [(UIKitWebAccessibilityObjectWrapper *)&v9 _accessibilityContextId];
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (BOOL)_axWebKitSupportsARIAExpanded
@@ -394,14 +394,14 @@
     return 1;
   }
 
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v4) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
     return 0;
   }
 
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-  v6 = [v5 safeBoolForKey:@"accessibilitySupportsARIAExpanded"];
+  _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+  v6 = [_axWebKitTrueLinkParent safeBoolForKey:@"accessibilitySupportsARIAExpanded"];
 
   return v6;
 }
@@ -411,13 +411,13 @@
   v20 = *MEMORY[0x29EDCA608];
   v18.receiver = self;
   v18.super_class = UIKitWebAccessibilityObjectWrapper;
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)&v18 _accessibilityResolvedEditingStyles];
+  _accessibilityResolvedEditingStyles = [(UIKitWebAccessibilityObjectWrapper *)&v18 _accessibilityResolvedEditingStyles];
   v3 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = _accessibilityResolvedEditingStyles;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
@@ -477,23 +477,23 @@
 
 - (unint64_t)_accessibilityAutomationType
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & accessibilityTraits) != 0)
   {
     return 42;
   }
 
-  if ((*MEMORY[0x29EDC7F88] & v3) != 0)
+  if ((*MEMORY[0x29EDC7F88] & accessibilityTraits) != 0)
   {
     return 43;
   }
 
-  if ((*MEMORY[0x29EDC7FD0] & v3) != 0)
+  if ((*MEMORY[0x29EDC7FD0] & accessibilityTraits) != 0)
   {
     return 48;
   }
 
-  if ((*MEMORY[0x29EDC7F70] & v3) != 0)
+  if ((*MEMORY[0x29EDC7F70] & accessibilityTraits) != 0)
   {
     return 9;
   }
@@ -513,8 +513,8 @@
 
 - (BOOL)_axWebKitIsAriaExpanded
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
 
     return [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsExpanded"];
@@ -522,8 +522,8 @@
 
   else
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-    v5 = [v4 safeBoolForKey:@"accessibilityIsExpanded"];
+    _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+    v5 = [_axWebKitTrueLinkParent safeBoolForKey:@"accessibilityIsExpanded"];
 
     return v5;
   }
@@ -537,18 +537,18 @@
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+    selfCopy = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
   }
 
-  v5 = v4;
+  v5 = selfCopy;
   if (objc_opt_respondsToSelector())
   {
     v8 = v5;
@@ -585,7 +585,7 @@ void __65__UIKitWebAccessibilityObjectWrapper__accessibilityCurrentStatus__block
   v12 = 3221225472;
   v13 = __64__UIKitWebAccessibilityObjectWrapper_accessibilitySortDirection__block_invoke;
   v14 = &unk_29F31F4C0;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   AXPerformSafeBlock();
   v3 = v18[5];
@@ -595,11 +595,11 @@ void __65__UIKitWebAccessibilityObjectWrapper__accessibilityCurrentStatus__block
   {
     v10.receiver = self;
     v10.super_class = UIKitWebAccessibilityObjectWrapper;
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilitySortDirection];
-    if ([(UIKitWebAccessibilityObjectWrapper *)self _accessibilityBoolValueForKey:@"IgnoreTreeForSortDirection"]|| v4 || ([(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    accessibilitySortDirection = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilitySortDirection];
+    if ([(UIKitWebAccessibilityObjectWrapper *)self _accessibilityBoolValueForKey:@"IgnoreTreeForSortDirection"]|| accessibilitySortDirection || ([(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
 LABEL_4:
-      v5 = v4;
+      accessibilitySortDirection2 = accessibilitySortDirection;
     }
 
     else
@@ -608,17 +608,17 @@ LABEL_4:
       while (1)
       {
         [v8 _accessibilitySetBoolValue:1 forKey:@"IgnoreTreeForRequired"];
-        v5 = [v8 accessibilitySortDirection];
-        if ([v5 length])
+        accessibilitySortDirection2 = [v8 accessibilitySortDirection];
+        if ([accessibilitySortDirection2 length])
         {
           break;
         }
 
         [v8 _accessibilitySetBoolValue:0 forKey:@"IgnoreTreeForRequired"];
-        v9 = [v8 accessibilityContainer];
+        accessibilityContainer = [v8 accessibilityContainer];
 
-        v8 = v9;
-        if (!v9)
+        v8 = accessibilityContainer;
+        if (!accessibilityContainer)
         {
           goto LABEL_4;
         }
@@ -628,10 +628,10 @@ LABEL_4:
 
   else
   {
-    v5 = 0;
+    accessibilitySortDirection2 = 0;
   }
 
-  return v5;
+  return accessibilitySortDirection2;
 }
 
 uint64_t __64__UIKitWebAccessibilityObjectWrapper_accessibilitySortDirection__block_invoke(uint64_t a1)
@@ -645,15 +645,15 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper_accessibilitySortDirection__bl
 {
   v10.receiver = self;
   v10.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityRequired];
+  accessibilityRequired = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityRequired];
   v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityBoolValueForKey:@"IgnoreTreeForRequired"];
-  v5 = v4 ^ 1 | v3;
-  if ((v4 & 1) == 0 && (v3 & 1) == 0)
+  v5 = v4 ^ 1 | accessibilityRequired;
+  if ((v4 & 1) == 0 && (accessibilityRequired & 1) == 0)
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-    if (v6)
+    accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+    if (accessibilityContainer)
     {
-      v7 = v6;
+      v7 = accessibilityContainer;
       while (1)
       {
         [v7 _accessibilitySetBoolValue:1 forKey:@"IgnoreTreeForRequired"];
@@ -663,10 +663,10 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper_accessibilitySortDirection__bl
         }
 
         [v7 _accessibilitySetBoolValue:0 forKey:@"IgnoreTreeForRequired"];
-        v8 = [v7 accessibilityContainer];
+        accessibilityContainer2 = [v7 accessibilityContainer];
 
-        v7 = v8;
-        if (!v8)
+        v7 = accessibilityContainer2;
+        if (!accessibilityContainer2)
         {
           goto LABEL_7;
         }
@@ -692,28 +692,28 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v4) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
     return 0;
   }
 
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-  v6 = [v5 safeBoolForKey:@"accessibilitySupportsARIAPressed"];
+  _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+  v6 = [_axWebKitTrueLinkParent safeBoolForKey:@"accessibilitySupportsARIAPressed"];
 
   return v6;
 }
 
 - (id)accessibilityLinkRelationshipType
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v3) == 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) == 0)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-    v5 = v4;
-    if (v4 != self)
+    _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+    v5 = _axWebKitTrueLinkParent;
+    if (_axWebKitTrueLinkParent != self)
     {
-      v6 = [(UIKitWebAccessibilityObjectWrapper *)v4 accessibilityLinkRelationshipType];
+      accessibilityLinkRelationshipType = [(UIKitWebAccessibilityObjectWrapper *)_axWebKitTrueLinkParent accessibilityLinkRelationshipType];
 
       goto LABEL_6;
     }
@@ -721,16 +721,16 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = UIKitWebAccessibilityObjectWrapper;
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)&v8 accessibilityLinkRelationshipType];
+  accessibilityLinkRelationshipType = [(UIKitWebAccessibilityObjectWrapper *)&v8 accessibilityLinkRelationshipType];
 LABEL_6:
 
-  return v6;
+  return accessibilityLinkRelationshipType;
 }
 
 - (BOOL)_axWebKitIsAriaPressed
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
 
     return [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsPressed"];
@@ -738,8 +738,8 @@ LABEL_6:
 
   else
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-    v5 = [v4 safeBoolForKey:@"accessibilityIsPressed"];
+    _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+    v5 = [_axWebKitTrueLinkParent safeBoolForKey:@"accessibilityIsPressed"];
 
     return v5;
   }
@@ -784,12 +784,12 @@ LABEL_6:
       v10 = 3221225472;
       v11 = __67__UIKitWebAccessibilityObjectWrapper__accessibilityRoleDescription__block_invoke;
       v12 = &unk_29F31F4C0;
-      v13 = self;
+      selfCopy = self;
       v14 = &v15;
       AXPerformSafeBlock();
     }
 
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self safeStringForKey:@"accessibilityBrailleRoleDescription", v9, v10, v11, v12, v13, v14];
+    v3 = [(UIKitWebAccessibilityObjectWrapper *)self safeStringForKey:@"accessibilityBrailleRoleDescription", v9, v10, v11, v12, selfCopy, v14];
     if ([v3 length])
     {
       v4 = v16[5];
@@ -834,14 +834,14 @@ void __67__UIKitWebAccessibilityObjectWrapper__accessibilityRoleDescription__blo
 {
   v4.receiver = self;
   v4.super_class = UIKitWebAccessibilityObjectWrapper;
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)&v4 _accessibilitySelectedTextRange];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  _accessibilitySelectedTextRange = [(UIKitWebAccessibilityObjectWrapper *)&v4 _accessibilitySelectedTextRange];
+  if (_accessibilitySelectedTextRange == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v2 = 0;
+    _accessibilitySelectedTextRange = 0;
   }
 
   result.length = v3;
-  result.location = v2;
+  result.location = _accessibilitySelectedTextRange;
   return result;
 }
 
@@ -877,14 +877,14 @@ uint64_t __65__UIKitWebAccessibilityObjectWrapper__accessibilityWebPageObject__b
   NSClassFromString(&cfstr_Webview.isa);
   v15.receiver = self;
   v15.super_class = UIKitWebAccessibilityObjectWrapper;
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)&v15 _accessibilityWebDocumentView];
-  v7 = v6;
-  if (!v6)
+  _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)&v15 _accessibilityWebDocumentView];
+  v7 = _accessibilityWebDocumentView;
+  if (!_accessibilityWebDocumentView)
   {
     goto LABEL_20;
   }
 
-  v8 = v6;
+  v8 = _accessibilityWebDocumentView;
   while (1)
   {
     if (objc_opt_isKindOfClass())
@@ -899,9 +899,9 @@ uint64_t __65__UIKitWebAccessibilityObjectWrapper__accessibilityWebPageObject__b
       break;
     }
 
-    v10 = [v8 accessibilityContainer];
+    accessibilityContainer = [v8 accessibilityContainer];
 LABEL_13:
-    v11 = v10;
+    v11 = accessibilityContainer;
 
     v8 = v11;
     if (!v11)
@@ -918,7 +918,7 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 safeValueForKey:@"superview"];
+    accessibilityContainer = [v8 safeValueForKey:@"superview"];
     goto LABEL_13;
   }
 
@@ -928,14 +928,14 @@ LABEL_13:
   }
 
 LABEL_17:
-  v12 = [v7 _accessibilityValueForKey:@"AXDocumentSeenChildren"];
-  if (!v12)
+  array = [v7 _accessibilityValueForKey:@"AXDocumentSeenChildren"];
+  if (!array)
   {
-    v12 = [MEMORY[0x29EDB8DE8] array];
-    [v7 _accessibilitySetRetainedValue:v12 forKey:@"AXDocumentSeenChildren"];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [v7 _accessibilitySetRetainedValue:array forKey:@"AXDocumentSeenChildren"];
   }
 
-  [v12 addObject:self];
+  [array addObject:self];
   [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetAssignedValue:v7 forKey:@"AXWebDocumentViewKey"];
 
 LABEL_20:
@@ -992,34 +992,34 @@ LABEL_23:
 
   if (v5)
   {
-    v6 = [*v4 objectForKeyedSubscript:v3];
+    accessibilityUserDefinedContainer = [*v4 objectForKeyedSubscript:v3];
   }
 
   else if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityUserDefinedContainer];
-    if (!v6)
+    accessibilityUserDefinedContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityUserDefinedContainer];
+    if (!accessibilityUserDefinedContainer)
     {
       v8.receiver = self;
       v8.super_class = UIKitWebAccessibilityObjectWrapper;
-      v6 = [(UIKitWebAccessibilityObjectWrapper *)&v8 accessibilityContainer];
+      accessibilityUserDefinedContainer = [(UIKitWebAccessibilityObjectWrapper *)&v8 accessibilityContainer];
     }
 
-    [*v4 setObject:v6 forKeyedSubscript:v3];
+    [*v4 setObject:accessibilityUserDefinedContainer forKeyedSubscript:v3];
   }
 
   else
   {
-    v6 = 0;
+    accessibilityUserDefinedContainer = 0;
   }
 
-  return v6;
+  return accessibilityUserDefinedContainer;
 }
 
-- (id)_accessibilityDataDetectorScheme:(CGPoint)a3
+- (id)_accessibilityDataDetectorScheme:(CGPoint)scheme
 {
-  y = a3.y;
-  x = a3.x;
+  y = scheme.y;
+  x = scheme.x;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
     [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageObject];
@@ -1042,18 +1042,18 @@ LABEL_23:
     return 0;
   }
 
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
   {
     return 0;
   }
 
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityURL];
-  v5 = v4;
-  if (v4)
+  accessibilityURL = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityURL];
+  v5 = accessibilityURL;
+  if (accessibilityURL)
   {
-    v6 = [v4 absoluteString];
-    v7 = [v6 hasPrefix:@"x-apple-data-detectors:"];
+    absoluteString = [accessibilityURL absoluteString];
+    v7 = [absoluteString hasPrefix:@"x-apple-data-detectors:"];
   }
 
   else
@@ -1083,9 +1083,9 @@ LABEL_29:
 
     v30.receiver = self;
     v30.super_class = UIKitWebAccessibilityObjectWrapper;
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)&v30 isAccessibilityElement];
-    v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    if (v8)
+    isAccessibilityElement = [(UIKitWebAccessibilityObjectWrapper *)&v30 isAccessibilityElement];
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    if (isAccessibilityElement)
     {
 LABEL_6:
       LODWORD(v10) = 1;
@@ -1093,15 +1093,15 @@ LABEL_6:
     }
 
     v11 = *MEMORY[0x29EDC7F98];
-    if ((*MEMORY[0x29EDC7F98] & v9) != 0)
+    if ((*MEMORY[0x29EDC7F98] & accessibilityTraits) != 0)
     {
-      v12 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-      v13 = [v12 accessibilityTraits] & v11;
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+      v13 = [accessibilityContainer accessibilityTraits] & v11;
 
       if (!v13)
       {
-        v14 = self;
-        v15 = v14;
+        selfCopy = self;
+        v15 = selfCopy;
         while (v15 && [(UIKitWebAccessibilityObjectWrapper *)v15 accessibilityElementCount]== 1)
         {
           v16 = [(UIKitWebAccessibilityObjectWrapper *)v15 accessibilityElementAtIndex:0];
@@ -1110,28 +1110,28 @@ LABEL_6:
           if ([(UIKitWebAccessibilityObjectWrapper *)v16 _accessibilityIsFrameOutOfBounds])
           {
             LODWORD(v10) = 1;
-            [(UIKitWebAccessibilityObjectWrapper *)v14 setIsAccessibilityElement:1];
+            [(UIKitWebAccessibilityObjectWrapper *)selfCopy setIsAccessibilityElement:1];
 
             goto LABEL_23;
           }
         }
       }
 
-      v17 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityLabel];
-      v10 = [v17 length];
+      accessibilityLabel = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityLabel];
+      v10 = [accessibilityLabel length];
 
       if (!v10)
       {
         goto LABEL_23;
       }
 
-      v18 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
-      if (v18 < 1)
+      accessibilityElementCount = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
+      if (accessibilityElementCount < 1)
       {
         goto LABEL_6;
       }
 
-      v19 = v18;
+      v19 = accessibilityElementCount;
       v20 = 0;
       while (1)
       {
@@ -1139,8 +1139,8 @@ LABEL_6:
         if (v21)
         {
           v22 = v21;
-          v23 = [v21 accessibilityLabel];
-          v24 = [v23 length];
+          accessibilityLabel2 = [v21 accessibilityLabel];
+          v24 = [accessibilityLabel2 length];
 
           if (v24)
           {
@@ -1161,9 +1161,9 @@ LABEL_23:
     v7 = 0;
     if (v26 != 0.0 && v25 != 0.0)
     {
-      v27 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMathEquationRootObject];
+      _accessibilityMathEquationRootObject = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMathEquationRootObject];
 
-      if (v27)
+      if (_accessibilityMathEquationRootObject)
       {
         v7 = 0;
       }
@@ -1186,11 +1186,11 @@ LABEL_23:
 
 - (id)_axAncestorTypes
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXContainerTypes"];
-  if (!v3)
+  dictionary = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXContainerTypes"];
+  if (!dictionary)
   {
-    v3 = [MEMORY[0x29EDB8E00] dictionary];
-    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v3 forKey:@"AXContainerTypes"];
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:dictionary forKey:@"AXContainerTypes"];
     v100 = 0;
     v101 = &v100;
     v102 = 0x3032000000;
@@ -1201,13 +1201,13 @@ LABEL_23:
     v95 = 3221225472;
     v96 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke;
     v97 = &unk_29F31F4C0;
-    v98 = self;
+    selfCopy = self;
     v99 = &v100;
     AXPerformSafeBlock();
     v4 = v101[5];
     if (v4)
     {
-      [v3 setObject:v4 forKey:&unk_2A23B6A50];
+      [dictionary setObject:v4 forKey:&unk_2A23B6A50];
     }
 
     v88 = 0;
@@ -1220,13 +1220,13 @@ LABEL_23:
     v83 = 3221225472;
     v84 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_799;
     v85 = &unk_29F31F4C0;
-    v86 = self;
+    selfCopy2 = self;
     v87 = &v88;
     AXPerformSafeBlock();
     v5 = v89[5];
     if (v5)
     {
-      [v3 setObject:v5 forKey:&unk_2A23B6A68];
+      [dictionary setObject:v5 forKey:&unk_2A23B6A68];
     }
 
     v76 = 0;
@@ -1240,12 +1240,12 @@ LABEL_23:
     v72 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_802;
     v73 = &unk_29F31F4C0;
     v75 = &v76;
-    v74 = self;
+    selfCopy3 = self;
     AXPerformSafeBlock();
     v6 = v77[5];
     if (v6)
     {
-      [v3 setObject:v6 forKey:&unk_2A23B6A80];
+      [dictionary setObject:v6 forKey:&unk_2A23B6A80];
     }
 
     v64 = 0;
@@ -1258,13 +1258,13 @@ LABEL_23:
     v59 = 3221225472;
     v60 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_805;
     v61 = &unk_29F31F4C0;
-    v62 = self;
+    selfCopy4 = self;
     v63 = &v64;
     AXPerformSafeBlock();
     v7 = v65[5];
     if (v7)
     {
-      [v3 setObject:v7 forKey:&unk_2A23B6A98];
+      [dictionary setObject:v7 forKey:&unk_2A23B6A98];
     }
 
     v52 = 0;
@@ -1277,13 +1277,13 @@ LABEL_23:
     v47 = 3221225472;
     v48 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_808;
     v49 = &unk_29F31F4C0;
-    v50 = self;
+    selfCopy5 = self;
     v51 = &v52;
     AXPerformSafeBlock();
     v8 = v53[5];
     if (v8)
     {
-      [v3 setObject:v8 forKey:&unk_2A23B6AB0];
+      [dictionary setObject:v8 forKey:&unk_2A23B6AB0];
     }
 
     v40 = 0;
@@ -1296,13 +1296,13 @@ LABEL_23:
     v35 = 3221225472;
     v36 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_811;
     v37 = &unk_29F31F4C0;
-    v38 = self;
+    selfCopy6 = self;
     v39 = &v40;
     AXPerformSafeBlock();
     v9 = v41[5];
     if (v9)
     {
-      [v3 setObject:v9 forKey:&unk_2A23B6AC8];
+      [dictionary setObject:v9 forKey:&unk_2A23B6AC8];
     }
 
     v28 = 0;
@@ -1315,13 +1315,13 @@ LABEL_23:
     v23 = 3221225472;
     v24 = __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_814;
     v25 = &unk_29F31F4C0;
-    v26 = self;
+    selfCopy7 = self;
     v27 = &v28;
     AXPerformSafeBlock();
     v10 = v29[5];
     if (v10)
     {
-      [v3 setObject:v10 forKey:&unk_2A23B6AE0];
+      [dictionary setObject:v10 forKey:&unk_2A23B6AE0];
     }
 
     v16 = 0;
@@ -1335,11 +1335,11 @@ LABEL_23:
     v11 = v17[5];
     if (v11)
     {
-      [v3 setObject:v11 forKey:{&unk_2A23B6AF8, v15, 3221225472, __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_817, &unk_29F31F4C0, self, &v16}];
+      [dictionary setObject:v11 forKey:{&unk_2A23B6AF8, v15, 3221225472, __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke_817, &unk_29F31F4C0, self, &v16}];
     }
 
-    v12 = self;
-    if (v12)
+    selfCopy8 = self;
+    if (selfCopy8)
     {
       do
       {
@@ -1349,18 +1349,18 @@ LABEL_23:
           break;
         }
 
-        if ([(UIKitWebAccessibilityObjectWrapper *)v12 safeBoolForKey:@"accessibilityIsDialog"])
+        if ([(UIKitWebAccessibilityObjectWrapper *)selfCopy8 safeBoolForKey:@"accessibilityIsDialog"])
         {
-          [v3 setObject:v12 forKey:&unk_2A23B6B10];
+          [dictionary setObject:selfCopy8 forKey:&unk_2A23B6B10];
           break;
         }
 
-        v13 = [(UIKitWebAccessibilityObjectWrapper *)v12 accessibilityContainer];
+        accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)selfCopy8 accessibilityContainer];
 
-        v12 = v13;
+        selfCopy8 = accessibilityContainer;
       }
 
-      while (v13);
+      while (accessibilityContainer);
     }
 
     _Block_object_dispose(&v16, 8);
@@ -1376,7 +1376,7 @@ LABEL_23:
     _Block_object_dispose(&v100, 8);
   }
 
-  return v3;
+  return dictionary;
 }
 
 uint64_t __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke(uint64_t a1)
@@ -1439,16 +1439,16 @@ uint64_t __54__UIKitWebAccessibilityObjectWrapper__axAncestorTypes__block_invoke
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _axAncestorTypes];
-    v4 = [v3 allKeys];
+    _axAncestorTypes = [(UIKitWebAccessibilityObjectWrapper *)self _axAncestorTypes];
+    allKeys = [_axAncestorTypes allKeys];
   }
 
   else
   {
-    v4 = 0;
+    allKeys = 0;
   }
 
-  return v4;
+  return allKeys;
 }
 
 - (BOOL)_accessibilityIsGroupedParent
@@ -1470,14 +1470,14 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__accessibilityIsGroupedParent_
   return MEMORY[0x2A1C71028]();
 }
 
-- (BOOL)_accessibilityIsDataEmpty:(id)a3
+- (BOOL)_accessibilityIsDataEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  emptyCopy = empty;
+  bytes = [emptyCopy bytes];
+  v5 = [emptyCopy length];
   if (v5)
   {
-    if (*v4)
+    if (*bytes)
     {
       v6 = 0;
     }
@@ -1496,7 +1496,7 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__accessibilityIsGroupedParent_
         ++v7;
       }
 
-      while (!v4[v8]);
+      while (!bytes[v8]);
       v6 = v8 >= v5;
     }
   }
@@ -1509,18 +1509,18 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__accessibilityIsGroupedParent_
   return v6;
 }
 
-- (id)_accessibilityConvertDataArrayToTextMarkerArray:(id)a3
+- (id)_accessibilityConvertDataArrayToTextMarkerArray:(id)array
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  arrayCopy = array;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v12 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v4;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -1550,7 +1550,7 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__accessibilityIsGroupedParent_
 
             if (v10)
             {
-              [v12 addObject:v10];
+              [array addObject:v10];
             }
           }
         }
@@ -1564,10 +1564,10 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__accessibilityIsGroupedParent_
 
   else
   {
-    v12 = 0;
+    array = 0;
   }
 
-  return v12;
+  return array;
 }
 
 uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArrayToTextMarkerArray___block_invoke(void *a1)
@@ -1577,16 +1577,16 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_accessibilityConvertTextMarkersToDataArray:(id)a3
+- (id)_accessibilityConvertTextMarkersToDataArray:(id)array
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  arrayCopy = array;
+  array = [MEMORY[0x29EDB8DE8] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1604,7 +1604,7 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
         v10 = [*(*(&v12 + 1) + 8 * i) safeValueForKey:{@"dataRepresentation", v12}];
         if (v10)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1614,19 +1614,19 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)_accessibilityObjectForTextMarker:(id)a3
+- (id)_accessibilityObjectForTextMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:{v4, 0}];
+    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:{markerCopy, 0}];
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v5];
 
-    v7 = [v6 lastObject];
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityObjectForTextMarker:v7];
+    lastObject = [v6 lastObject];
+    v8 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityObjectForTextMarker:lastObject];
   }
 
   else
@@ -1637,13 +1637,13 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
   return v8;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v43[2] = *MEMORY[0x29EDCA608];
-  v8 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 length])
+  stringCopy = string;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [stringCopy length])
   {
     v34 = 0;
     v35 = &v34;
@@ -1662,11 +1662,11 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
         [UIKitWebAccessibilityObjectWrapper _accessibilityTextRectsForSpeakThisStringRange:string:wantsSentences:];
       }
 
-      v13 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-      v14 = [v8 stringByTrimmingCharactersInSet:v13];
+      whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+      v14 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-      v15 = [MEMORY[0x29EDB9F50] newlineCharacterSet];
-      v16 = [v14 stringByTrimmingCharactersInSet:v15];
+      newlineCharacterSet = [MEMORY[0x29EDB9F50] newlineCharacterSet];
+      v16 = [v14 stringByTrimmingCharactersInSet:newlineCharacterSet];
 
       if ([v16 hasSuffix:{@", "}] && objc_msgSend(v16, "length") >= 2)
       {
@@ -1684,9 +1684,9 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
       v29 = 3221225472;
       v30 = __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakThisStringRange_string_wantsSentences___block_invoke;
       v31 = &unk_29F31F530;
-      v32 = self;
+      selfCopy = self;
       v33 = v19;
-      v8 = v16;
+      stringCopy = v16;
       AXPerformSafeBlock();
     }
 
@@ -1724,7 +1724,7 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
       v35[5] = v22;
     }
 
-    v23 = v35[5];
+    stringCopy = v35[5];
 
     _Block_object_dispose(&v34, 8);
   }
@@ -1733,10 +1733,10 @@ uint64_t __86__UIKitWebAccessibilityObjectWrapper__accessibilityConvertDataArray
   {
     v40.receiver = self;
     v40.super_class = UIKitWebAccessibilityObjectWrapper;
-    v23 = [(UIKitWebAccessibilityObjectWrapper *)&v40 _accessibilityTextRectsForSpeakThisStringRange:location string:length, v8];
+    stringCopy = [(UIKitWebAccessibilityObjectWrapper *)&v40 _accessibilityTextRectsForSpeakThisStringRange:location string:length, stringCopy];
   }
 
-  return v23;
+  return stringCopy;
 }
 
 void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakThisStringRange_string_wantsSentences___block_invoke(uint64_t a1)
@@ -1762,12 +1762,12 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   }
 }
 
-- (CGRect)accessibilityBoundsForTextMarkers:(id)a3
+- (CGRect)accessibilityBoundsForTextMarkers:(id)markers
 {
-  v4 = a3;
+  markersCopy = markers;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v4];
+    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:markersCopy];
     [(UIKitWebAccessibilityObjectWrapper *)self frameForTextMarkers:v5];
     v7 = v6;
     v9 = v8;
@@ -1794,12 +1794,12 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   return result;
 }
 
-- (id)accessibilityStringForTextMarkers:(id)a3
+- (id)accessibilityStringForTextMarkers:(id)markers
 {
-  v4 = a3;
+  markersCopy = markers;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v4];
+    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:markersCopy];
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self stringForTextMarkers:v5];
   }
 
@@ -1811,12 +1811,12 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   return v6;
 }
 
-- (id)accessibilityArrayOfTextForTextMarkers:(id)a3
+- (id)accessibilityArrayOfTextForTextMarkers:(id)markers
 {
-  v4 = a3;
+  markersCopy = markers;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v4];
+    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:markersCopy];
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self arrayOfTextForTextMarkers:v5 attributed:0];
   }
 
@@ -1860,24 +1860,24 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   return v4;
 }
 
-- (id)_accessibilityMarkerPosition:(BOOL)a3 withMarker:(id)a4
+- (id)_accessibilityMarkerPosition:(BOOL)position withMarker:(id)marker
 {
-  v6 = a4;
+  markerCopy = marker;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:{v6, 0}];
+    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:{markerCopy, 0}];
     v8 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v7];
 
-    v9 = [v8 lastObject];
+    lastObject = [v8 lastObject];
 
-    if (a3)
+    if (position)
     {
-      [(UIKitWebAccessibilityObjectWrapper *)self nextMarkerForMarker:v9];
+      [(UIKitWebAccessibilityObjectWrapper *)self nextMarkerForMarker:lastObject];
     }
 
     else
     {
-      [(UIKitWebAccessibilityObjectWrapper *)self previousMarkerForMarker:v9];
+      [(UIKitWebAccessibilityObjectWrapper *)self previousMarkerForMarker:lastObject];
     }
     v11 = ;
     v10 = [v11 safeValueForKey:@"dataRepresentation"];
@@ -1886,7 +1886,7 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   else
   {
     v10 = 0;
-    v9 = v6;
+    lastObject = markerCopy;
   }
 
   return v10;
@@ -1894,29 +1894,29 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
 
 - (int64_t)_accessibilityLineStartPosition
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySelectedTextRange];
+  _accessibilitySelectedTextRange = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySelectedTextRange];
 
-  return [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityLineRangeForPosition:v3];
+  return [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityLineRangeForPosition:_accessibilitySelectedTextRange];
 }
 
-- (id)_accessibilityLinePosition:(BOOL)a3 withMarker:(id)a4
+- (id)_accessibilityLinePosition:(BOOL)position withMarker:(id)marker
 {
-  v6 = a4;
+  markerCopy = marker;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:{v6, 0}];
+    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:{markerCopy, 0}];
     v8 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v7];
 
-    v9 = [v8 lastObject];
+    lastObject = [v8 lastObject];
 
-    if (a3)
+    if (position)
     {
-      [(UIKitWebAccessibilityObjectWrapper *)self lineStartMarkerForMarker:v9];
+      [(UIKitWebAccessibilityObjectWrapper *)self lineStartMarkerForMarker:lastObject];
     }
 
     else
     {
-      [(UIKitWebAccessibilityObjectWrapper *)self lineEndMarkerForMarker:v9];
+      [(UIKitWebAccessibilityObjectWrapper *)self lineEndMarkerForMarker:lastObject];
     }
     v11 = ;
     v10 = [v11 safeValueForKey:@"dataRepresentation"];
@@ -1925,24 +1925,24 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   else
   {
     v10 = 0;
-    v9 = v6;
+    lastObject = markerCopy;
   }
 
   return v10;
 }
 
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position
 {
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self textMarkerForPosition:a3];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self textMarkerForPosition:position];
   if (v4)
   {
     v5 = [(UIKitWebAccessibilityObjectWrapper *)self nextMarkerForMarker:v4];
     if (v5)
     {
-      v6 = [MEMORY[0x29EDB8DE8] array];
-      [v6 axSafelyAddObject:v4];
-      [v6 axSafelyAddObject:v5];
-      v7 = [(UIKitWebAccessibilityObjectWrapper *)self _rangeForWebTextMarkers:v6];
+      array = [MEMORY[0x29EDB8DE8] array];
+      [array axSafelyAddObject:v4];
+      [array axSafelyAddObject:v5];
+      v7 = [(UIKitWebAccessibilityObjectWrapper *)self _rangeForWebTextMarkers:array];
       v9 = v8;
     }
 
@@ -1966,7 +1966,7 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   return result;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
   v40[2] = *MEMORY[0x29EDCA608];
   v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTextMarkerForPosition:?];
@@ -1975,12 +1975,12 @@ void __107__UIKitWebAccessibilityObjectWrapper__accessibilityTextRectsForSpeakTh
   {
     v38.receiver = self;
     v38.super_class = UIKitWebAccessibilityObjectWrapper;
-    v14 = [(UIKitWebAccessibilityObjectWrapper *)&v38 _accessibilityLineRangeForPosition:a3];
+    v14 = [(UIKitWebAccessibilityObjectWrapper *)&v38 _accessibilityLineRangeForPosition:position];
     v16 = v15;
     goto LABEL_22;
   }
 
-  if (a3)
+  if (position)
   {
     v7 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityPreviousMarker:v5];
     v8 = v7;
@@ -2046,14 +2046,14 @@ LABEL_18:
   v24 = v33[5];
 
   _Block_object_dispose(&v32, 8);
-  if (!v24 || (v32 = 0, v33 = &v32, v34 = 0x3032000000, v35 = __Block_byref_object_copy_, v36 = __Block_byref_object_dispose_, v37 = 0, v30 = v24, AXPerformSafeBlock(), v25 = v33[5], v30, _Block_object_dispose(&v32, 8), v37, [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertTextMarkersToDataArray:v25], v26 = objc_claimAutoreleasedReturnValue(), v25, v30, !v26))
+  if (!v24 || (v32 = 0, v33 = &v32, v34 = 0x3032000000, v35 = __Block_byref_object_copy_, v36 = __Block_byref_object_dispose_, v37 = 0, v30 = v24, AXPerformSafeBlock(), v25 = v33[5], v30, _Block_object_dispose(&v32, 8), v37, [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertTextMarkersToDataArray:v25], array = objc_claimAutoreleasedReturnValue(), v25, v30, !array))
   {
-    v26 = [MEMORY[0x29EDB8DE8] array];
-    [v26 axSafelyAddObject:v13];
-    [v26 axSafelyAddObject:v23];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array axSafelyAddObject:v13];
+    [array axSafelyAddObject:v23];
   }
 
-  v14 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityRangeForTextMarkers:v26];
+  v14 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityRangeForTextMarkers:array];
   v16 = v27;
 
 LABEL_22:
@@ -2078,16 +2078,16 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_accessibilityMarkerForPoint:(CGPoint)a3
+- (id)_accessibilityMarkerForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
-    v7 = [v6 safeValueForKey:@"_accessibilityDocumentView"];
-    v8 = [v6 window];
-    [v8 convertPoint:v6 toView:{x, y}];
+    _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+    v7 = [_accessibilityWebDocumentView safeValueForKey:@"_accessibilityDocumentView"];
+    window = [_accessibilityWebDocumentView window];
+    [window convertPoint:_accessibilityWebDocumentView toView:{x, y}];
     v10 = v9;
     v12 = v11;
 
@@ -2109,13 +2109,13 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
   v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXCheckBoxValue"];
   if (!v3)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetBoolValue:(*MEMORY[0x29EDC7FE8] & ~v4) == 0 forKey:@"AXCheckBoxValue"];
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetBoolValue:(*MEMORY[0x29EDC7FE8] & ~accessibilityTraits) == 0 forKey:@"AXCheckBoxValue"];
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (float)_accessibilityActivationDelay
@@ -2133,11 +2133,11 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if (((*MEMORY[0x29EDC7598] | *MEMORY[0x29EDC7550]) & v3) == 0 && ([(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsComboBox"]& 1) == 0 && ([(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsShowingValidationMessage"]& 1) == 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if (((*MEMORY[0x29EDC7598] | *MEMORY[0x29EDC7550]) & accessibilityTraits) == 0 && ([(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsComboBox"]& 1) == 0 && ([(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsShowingValidationMessage"]& 1) == 0)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityAssistiveTechnologyFocusedIdentifiers];
-    v5 = [v4 containsObject:*MEMORY[0x29EDC7EE8]];
+    accessibilityAssistiveTechnologyFocusedIdentifiers = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityAssistiveTechnologyFocusedIdentifiers];
+    v5 = [accessibilityAssistiveTechnologyFocusedIdentifiers containsObject:*MEMORY[0x29EDC7EE8]];
 
     if (v5)
     {
@@ -2151,8 +2151,8 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F98] & v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F98] & accessibilityTraits) != 0)
   {
     [(UIKitWebAccessibilityObjectWrapper *)self accessibilityActivationPoint];
     UIAccessibilitySceneReferencePointForScreenPoint();
@@ -2169,44 +2169,44 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
     }
   }
 
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7598] & ~v5) == 0)
+  accessibilityTraits2 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7598] & ~accessibilityTraits2) == 0)
   {
     return 0;
   }
 
-  v7 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  return (*MEMORY[0x29EDC7550] & ~v7) != 0;
+  accessibilityTraits3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  return (*MEMORY[0x29EDC7550] & ~accessibilityTraits3) != 0;
 }
 
 - (id)accessibilityPath
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityPath];
-    if (v3)
+    _accessibilityPath = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityPath];
+    if (_accessibilityPath)
     {
-      v3 = [MEMORY[0x29EDC7948] bezierPathWithCGPath:v3];
+      _accessibilityPath = [MEMORY[0x29EDC7948] bezierPathWithCGPath:_accessibilityPath];
     }
   }
 
   else
   {
-    v3 = 0;
+    _accessibilityPath = 0;
   }
 
-  return v3;
+  return _accessibilityPath;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall];
-  if (v3)
+  _prepareAccessibilityCall = [(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall];
+  if (_prepareAccessibilityCall)
   {
     if ([(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySupportsActivateAction])
     {
-      v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-      if ((*MEMORY[0x29EDC7F98] & ~v4) != 0)
+      accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+      if ((*MEMORY[0x29EDC7F98] & ~accessibilityTraits) != 0)
       {
         if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo])
         {
@@ -2224,15 +2224,15 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
           UIAccessibilitySpeakAndDoNotBeInterrupted();
         }
 
-        LOBYTE(v3) = [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"_accessibilityActivate"];
+        LOBYTE(_prepareAccessibilityCall) = [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"_accessibilityActivate"];
       }
 
       else
       {
-        v5 = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
-        v6 = [v5 safeBoolForKey:@"_accessibilityActivate"];
+        _axWebKitTrueLinkParent = [(UIKitWebAccessibilityObjectWrapper *)self _axWebKitTrueLinkParent];
+        v6 = [_axWebKitTrueLinkParent safeBoolForKey:@"_accessibilityActivate"];
 
-        LOBYTE(v3) = v6;
+        LOBYTE(_prepareAccessibilityCall) = v6;
       }
     }
 
@@ -2240,39 +2240,39 @@ uint64_t __73__UIKitWebAccessibilityObjectWrapper__accessibilityLineRangeForPosi
     {
       v10.receiver = self;
       v10.super_class = UIKitWebAccessibilityObjectWrapper;
-      LOBYTE(v3) = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityActivate];
+      LOBYTE(_prepareAccessibilityCall) = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityActivate];
     }
   }
 
-  return v3;
+  return _prepareAccessibilityCall;
 }
 
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
-  v6 = [v5 window];
-  [v6 convertPoint:v5 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+  window = [_accessibilityWebDocumentView window];
+  [window convertPoint:_accessibilityWebDocumentView toView:{x, y}];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(v6) = [v5 accessibilityZoomInAtPoint:{v8, v10}];
-  return v6;
+  LOBYTE(window) = [_accessibilityWebDocumentView accessibilityZoomInAtPoint:{v8, v10}];
+  return window;
 }
 
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
-  v6 = [v5 window];
-  [v6 convertPoint:v5 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+  window = [_accessibilityWebDocumentView window];
+  [window convertPoint:_accessibilityWebDocumentView toView:{x, y}];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(v6) = [v5 accessibilityZoomOutAtPoint:{v8, v10}];
-  return v6;
+  LOBYTE(window) = [_accessibilityWebDocumentView accessibilityZoomOutAtPoint:{v8, v10}];
+  return window;
 }
 
 - (id)accessibilityLanguage
@@ -2301,28 +2301,28 @@ LABEL_10:
 LABEL_5:
   v11.receiver = self;
   v11.super_class = UIKitWebAccessibilityObjectWrapper;
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityLanguage];
-  if ([v4 length])
+  accessibilityLanguage = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityLanguage];
+  if ([accessibilityLanguage length])
   {
-    if ([v4 isEqualToString:@" "])
+    if ([accessibilityLanguage isEqualToString:@" "])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v4;
+      v5 = accessibilityLanguage;
     }
   }
 
   else
   {
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-    v9 = [v8 accessibilityLanguage];
-    v5 = v9;
-    if (v9)
+    _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+    accessibilityLanguage2 = [_accessibilityWebPageParent accessibilityLanguage];
+    v5 = accessibilityLanguage2;
+    if (accessibilityLanguage2)
     {
-      v10 = v9;
+      v10 = accessibilityLanguage2;
     }
 
     else
@@ -2348,9 +2348,9 @@ LABEL_11:
   return [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"_accessibilityIsInBookContent"];
 }
 
-- (id)_accessibilityTextMarkerForPosition:(int64_t)a3
+- (id)_accessibilityTextMarkerForPosition:(int64_t)position
 {
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange];
+  elementTextRange = [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange];
   if ([(UIKitWebAccessibilityObjectWrapper *)self _isIBooks])
   {
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self safeValueForKey:@"_axStartRangeOfCurrentPage"];
@@ -2377,9 +2377,9 @@ LABEL_11:
       }
 
       v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uiwebdocumentv.isa)];
-      v10 = [v9 beginningOfDocument];
-      v11 = [v8 start];
-      v12 = [v9 offsetFromPosition:v10 toPosition:v11];
+      beginningOfDocument = [v9 beginningOfDocument];
+      start = [v8 start];
+      v12 = [v9 offsetFromPosition:beginningOfDocument toPosition:start];
     }
 
     else
@@ -2388,18 +2388,18 @@ LABEL_11:
     }
   }
 
-  else if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (elementTextRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v5;
+    v12 = elementTextRange;
   }
 
-  v13 = [(UIKitWebAccessibilityObjectWrapper *)self textMarkerForPosition:v12 + a3];
-  v14 = [v13 safeValueForKey:@"dataRepresentation"];
+  position = [(UIKitWebAccessibilityObjectWrapper *)self textMarkerForPosition:v12 + position];
+  v14 = [position safeValueForKey:@"dataRepresentation"];
 
   return v14;
 }
@@ -2411,10 +2411,10 @@ uint64_t __74__UIKitWebAccessibilityObjectWrapper__accessibilityTextMarkerForPos
   return MEMORY[0x2A1C71028]();
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (objc_opt_respondsToSelector())
   {
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange]+ location;
@@ -2492,25 +2492,25 @@ uint64_t __74__UIKitWebAccessibilityObjectWrapper__accessibilityTextMarkerForPos
     v3 = [(UIKitWebAccessibilityObjectWrapper *)self safeValueForKey:@"_axStartRangeOfCurrentPage"];
     v4 = __UIAccessibilitySafeClass();
 
-    v5 = [v4 text];
+    text = [v4 text];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIKitWebAccessibilityObjectWrapper;
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)&v7 _accessibilitySpeakThisString];
+    text = [(UIKitWebAccessibilityObjectWrapper *)&v7 _accessibilitySpeakThisString];
   }
 
-  return v5;
+  return text;
 }
 
-- (CGRect)_accessibilityConvertSystemBoundedScreenRectToContextSpace:(CGRect)a3
+- (CGRect)_accessibilityConvertSystemBoundedScreenRectToContextSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
   if (![(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
     v16.receiver = self;
@@ -2535,25 +2535,25 @@ uint64_t __74__UIKitWebAccessibilityObjectWrapper__accessibilityTextMarkerForPos
 
 - (id)automationElements
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7598] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7598] & ~accessibilityTraits) != 0)
   {
     v18.receiver = self;
     v18.super_class = UIKitWebAccessibilityObjectWrapper;
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)&v18 automationElements];
+    automationElements = [(UIKitWebAccessibilityObjectWrapper *)&v18 automationElements];
   }
 
   else
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
-    [(UIKitWebAccessibilityObjectWrapper *)self _axBuildAXTreeFromElement:self outArray:v4];
-    if (![v4 count])
+    automationElements = [MEMORY[0x29EDB8DE8] array];
+    [(UIKitWebAccessibilityObjectWrapper *)self _axBuildAXTreeFromElement:self outArray:automationElements];
+    if (![automationElements count])
     {
       v5 = [MEMORY[0x29EDB8E20] set];
-      v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityAttributedValue];
+      accessibilityAttributedValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityAttributedValue];
       v19 = 0;
       v20 = 0;
-      v7 = [v6 length];
+      v7 = [accessibilityAttributedValue length];
       if (v7)
       {
         v8 = v7;
@@ -2561,7 +2561,7 @@ uint64_t __74__UIKitWebAccessibilityObjectWrapper__accessibilityTextMarkerForPos
         v10 = MEMORY[0x29EDBD868];
         while (1)
         {
-          v11 = [v6 attributesAtIndex:v9 effectiveRange:&v19];
+          v11 = [accessibilityAttributedValue attributesAtIndex:v9 effectiveRange:&v19];
           v12 = v11;
           if (v19 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -2596,39 +2596,39 @@ uint64_t __74__UIKitWebAccessibilityObjectWrapper__accessibilityTextMarkerForPos
       }
 
 LABEL_15:
-      v16 = [v5 allObjects];
-      [v4 addObjectsFromArray:v16];
+      allObjects = [v5 allObjects];
+      [automationElements addObjectsFromArray:allObjects];
     }
   }
 
-  return v4;
+  return automationElements;
 }
 
-- (void)_axBuildAXTreeFromElement:(id)a3 outArray:(id)a4
+- (void)_axBuildAXTreeFromElement:(id)element outArray:(id)array
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v14 && v6)
+  elementCopy = element;
+  arrayCopy = array;
+  v7 = arrayCopy;
+  if (elementCopy && arrayCopy)
   {
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)v14 accessibilityElementCount];
-    v9 = v14;
-    if (v8 <= 0)
+    accessibilityElementCount = [(UIKitWebAccessibilityObjectWrapper *)elementCopy accessibilityElementCount];
+    v9 = elementCopy;
+    if (accessibilityElementCount <= 0)
     {
-      v13 = [(UIKitWebAccessibilityObjectWrapper *)v14 isAccessibilityElement];
-      if (v14 != self && v13)
+      isAccessibilityElement = [(UIKitWebAccessibilityObjectWrapper *)elementCopy isAccessibilityElement];
+      if (elementCopy != self && isAccessibilityElement)
       {
-        [v7 addObject:v14];
+        [v7 addObject:elementCopy];
       }
     }
 
     else
     {
-      v10 = v8;
-      if (v14 != self)
+      v10 = accessibilityElementCount;
+      if (elementCopy != self)
       {
-        [v7 addObject:v14];
-        v9 = v14;
+        [v7 addObject:elementCopy];
+        v9 = elementCopy;
       }
 
       for (i = 0; i != v10; ++i)
@@ -2636,7 +2636,7 @@ LABEL_15:
         v12 = [(UIKitWebAccessibilityObjectWrapper *)v9 accessibilityElementAtIndex:i];
         [(UIKitWebAccessibilityObjectWrapper *)self _axBuildAXTreeFromElement:v12 outArray:v7];
 
-        v9 = v14;
+        v9 = elementCopy;
       }
     }
   }
@@ -2644,20 +2644,20 @@ LABEL_15:
 
 - (id)_accessibilityUserTestingElementBaseType
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F60] & v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F60] & accessibilityTraits) != 0)
   {
-    v4 = @"UISlider";
+    _accessibilityUserTestingElementBaseType = @"UISlider";
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIKitWebAccessibilityObjectWrapper;
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)&v6 _accessibilityUserTestingElementBaseType];
+    _accessibilityUserTestingElementBaseType = [(UIKitWebAccessibilityObjectWrapper *)&v6 _accessibilityUserTestingElementBaseType];
   }
 
-  return v4;
+  return _accessibilityUserTestingElementBaseType;
 }
 
 - (id)_accessibilityDOMAttributes
@@ -2665,8 +2665,8 @@ LABEL_15:
   v3 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:1];
   v6.receiver = self;
   v6.super_class = UIKitWebAccessibilityObjectWrapper;
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityIdentifier];
-  [v3 setObject:v4 forKey:@"id"];
+  accessibilityIdentifier = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityIdentifier];
+  [v3 setObject:accessibilityIdentifier forKey:@"id"];
 
   return v3;
 }
@@ -2676,17 +2676,17 @@ LABEL_15:
   v44 = *MEMORY[0x29EDCA608];
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageObject];
-    v4 = [v3 accessibilityContainer];
+    _accessibilityWebPageObject = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageObject];
+    accessibilityContainer = [_accessibilityWebPageObject accessibilityContainer];
   }
 
   else
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+    _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
     NSClassFromString(&cfstr_Uiwebbrowservi.isa);
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v5 safeValueForKey:@"_overflowScrollViews"];
+      v21 = [_accessibilityWebDocumentView safeValueForKey:@"_overflowScrollViews"];
       if ([v21 count])
       {
         [(UIKitWebAccessibilityObjectWrapper *)self accessibilityActivationPoint];
@@ -2712,7 +2712,7 @@ LABEL_7:
 
             v13 = *(*(&v39 + 1) + 8 * v12);
             v14 = [v13 safeValueForKey:@"_overflowContentView"];
-            v15 = [v5 window];
+            window = [_accessibilityWebDocumentView window];
             v33 = 0;
             v34 = &v33;
             v35 = 0x3010000000;
@@ -2724,7 +2724,7 @@ LABEL_7:
             v27 = __66__UIKitWebAccessibilityObjectWrapper__accessibilityScrollAncestor__block_invoke;
             v28 = &unk_29F31F558;
             v30 = &v33;
-            v16 = v15;
+            v16 = window;
             v29 = v16;
             v31 = v7;
             v32 = v9;
@@ -2752,9 +2752,9 @@ LABEL_7:
             }
           }
 
-          v4 = v13;
+          accessibilityContainer = v13;
 
-          if (v4)
+          if (accessibilityContainer)
           {
             goto LABEL_17;
           }
@@ -2768,7 +2768,7 @@ LABEL_13:
 
       v24.receiver = self;
       v24.super_class = UIKitWebAccessibilityObjectWrapper;
-      v4 = [(UIKitWebAccessibilityObjectWrapper *)&v24 _accessibilityScrollAncestor];
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)&v24 _accessibilityScrollAncestor];
 LABEL_17:
     }
 
@@ -2777,11 +2777,11 @@ LABEL_17:
 
       v23.receiver = self;
       v23.super_class = UIKitWebAccessibilityObjectWrapper;
-      v4 = [(UIKitWebAccessibilityObjectWrapper *)&v23 _accessibilityScrollAncestor];
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)&v23 _accessibilityScrollAncestor];
     }
   }
 
-  return v4;
+  return accessibilityContainer;
 }
 
 uint64_t __66__UIKitWebAccessibilityObjectWrapper__accessibilityScrollAncestor__block_invoke(uint64_t a1)
@@ -2803,7 +2803,7 @@ uint64_t __66__UIKitWebAccessibilityObjectWrapper__accessibilityScrollAncestor__
 
 - (BOOL)_accessibilityScrollToVisible
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityScrollAncestor];
+  _accessibilityScrollAncestor = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityScrollAncestor];
   NSClassFromString(&cfstr_Uiweboverflows.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -2815,17 +2815,17 @@ uint64_t __66__UIKitWebAccessibilityObjectWrapper__accessibilityScrollAncestor__
     v12 = AXLogScrollToVisible();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(UIKitWebAccessibilityObjectWrapper *)v3 _accessibilityScrollToVisible];
+      [(UIKitWebAccessibilityObjectWrapper *)_accessibilityScrollAncestor _accessibilityScrollToVisible];
     }
 
-    [v3 _accessibilityScrollToFrame:0 forView:{v5, v7, v9, v11}];
+    [_accessibilityScrollAncestor _accessibilityScrollToFrame:0 forView:{v5, v7, v9, v11}];
     v13 = AXLogScrollToVisible();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(UIKitWebAccessibilityObjectWrapper *)v3 _accessibilityScrollToVisible];
+      [(UIKitWebAccessibilityObjectWrapper *)_accessibilityScrollAncestor _accessibilityScrollToVisible];
     }
 
-    v14 = 1;
+    _accessibilityBaseScrollToVisible = 1;
 LABEL_7:
     AXPerformBlockOnMainThreadAfterDelay();
     goto LABEL_8;
@@ -2836,9 +2836,9 @@ LABEL_7:
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  if ([(UIKitWebAccessibilityObjectWrapper *)self _accessibilityIsScrollDivDescendent]|| (v14 = 1, v17 >= 0.0) && v19 >= 0.0)
+  if ([(UIKitWebAccessibilityObjectWrapper *)self _accessibilityIsScrollDivDescendent]|| (_accessibilityBaseScrollToVisible = 1, v17 >= 0.0) && v19 >= 0.0)
   {
-    v14 = 1;
+    _accessibilityBaseScrollToVisible = 1;
     if (v21 != 0.0 && v23 != 0.0)
     {
       if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
@@ -2885,7 +2885,7 @@ LABEL_7:
 
         v39.receiver = self;
         v39.super_class = UIKitWebAccessibilityObjectWrapper;
-        v14 = [(UIKitWebAccessibilityObjectWrapper *)&v39 _accessibilityBaseScrollToVisible];
+        _accessibilityBaseScrollToVisible = [(UIKitWebAccessibilityObjectWrapper *)&v39 _accessibilityBaseScrollToVisible];
       }
 
       goto LABEL_7;
@@ -2894,7 +2894,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v14;
+  return _accessibilityBaseScrollToVisible;
 }
 
 void __67__UIKitWebAccessibilityObjectWrapper__accessibilityScrollToVisible__block_invoke_2(uint64_t a1)
@@ -2909,9 +2909,9 @@ void __67__UIKitWebAccessibilityObjectWrapper__accessibilityScrollToVisible__blo
   }
 }
 
-- (CGPoint)_accessibilityScrollRectToVisible:(CGRect)a3
+- (CGPoint)_accessibilityScrollRectToVisible:(CGRect)visible
 {
-  [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityScrollToVisible:a3.origin.x];
+  [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityScrollToVisible:visible.origin.x];
   v3 = *MEMORY[0x29EDB90B8];
   v4 = *(MEMORY[0x29EDB90B8] + 8);
   result.y = v4;
@@ -2931,13 +2931,13 @@ void __67__UIKitWebAccessibilityObjectWrapper__accessibilityScrollToVisible__blo
   v5 = v4;
   v7 = v6;
 
-  v8 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-  if (!v8)
+  accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+  if (!accessibilityContainer)
   {
     return 0;
   }
 
-  v9 = v8;
+  v9 = accessibilityContainer;
   v10 = *MEMORY[0x29EDB90E8];
   v11 = *(MEMORY[0x29EDB90E8] + 8);
   do
@@ -2958,23 +2958,23 @@ void __67__UIKitWebAccessibilityObjectWrapper__accessibilityScrollToVisible__blo
       goto LABEL_16;
     }
 
-    v19 = [v9 accessibilityContainer];
+    accessibilityContainer2 = [v9 accessibilityContainer];
 
-    v9 = v19;
+    v9 = accessibilityContainer2;
     v7 = v16;
     v5 = v14;
   }
 
-  while (v19);
+  while (accessibilityContainer2);
   v20 = 0;
 LABEL_16:
 
   return v20;
 }
 
-- (_NSRange)_accessibilityCheckRowRangeForTrait:(unint64_t)a3
+- (_NSRange)_accessibilityCheckRowRangeForTrait:(unint64_t)trait
 {
-  if ((a3 & ~[(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits]) != 0)
+  if ((trait & ~[(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits]) != 0)
   {
     v13 = 0;
     v10 = 0x7FFFFFFFLL;
@@ -2982,9 +2982,9 @@ LABEL_16:
 
   else
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-    v6 = [v5 accessibilityElementCount];
-    if (v6 < 1)
+    accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+    accessibilityElementCount = [accessibilityContainer accessibilityElementCount];
+    if (accessibilityElementCount < 1)
     {
       v13 = 0;
       v10 = 0x7FFFFFFFLL;
@@ -2992,15 +2992,15 @@ LABEL_16:
 
     else
     {
-      v7 = v6;
+      v7 = accessibilityElementCount;
       v8 = 0;
       v9 = 0;
       v10 = 0x7FFFFFFFLL;
       do
       {
-        v11 = [v5 accessibilityElementAtIndex:v8];
-        v12 = [(UIKitWebAccessibilityObjectWrapper *)v11 accessibilityTraits];
-        if ((v12 & a3) != 0)
+        v11 = [accessibilityContainer accessibilityElementAtIndex:v8];
+        accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)v11 accessibilityTraits];
+        if ((accessibilityTraits & trait) != 0)
         {
           v13 = v9 + 1;
         }
@@ -3010,7 +3010,7 @@ LABEL_16:
           v13 = v9;
         }
 
-        if ((v12 & a3) != 0 && v11 == self)
+        if ((accessibilityTraits & trait) != 0 && v11 == self)
         {
           v10 = v9;
         }
@@ -3032,16 +3032,16 @@ LABEL_16:
 
 - (_NSRange)accessibilityRowRange
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityCheckRowRangeForTrait:*MEMORY[0x29EDC7588]];
-  if (v3 == 0x7FFFFFFF)
+  accessibilityRowRange = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityCheckRowRangeForTrait:*MEMORY[0x29EDC7588]];
+  if (accessibilityRowRange == 0x7FFFFFFF)
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityRowRange];
+    accessibilityRowRange = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityRowRange];
   }
 
   result.length = v4;
-  result.location = v3;
+  result.location = accessibilityRowRange;
   return result;
 }
 
@@ -3049,23 +3049,23 @@ LABEL_16:
 {
   v6.receiver = self;
   v6.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityCanFuzzyHitTest];
-  if (!v3)
+  accessibilityCanFuzzyHitTest = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityCanFuzzyHitTest];
+  if (!accessibilityCanFuzzyHitTest)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    if ((*MEMORY[0x29EDC7598] & v4) != 0)
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    if ((*MEMORY[0x29EDC7598] & accessibilityTraits) != 0)
     {
       return 1;
     }
   }
 
-  return v3;
+  return accessibilityCanFuzzyHitTest;
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v9.receiver = self;
   v9.super_class = UIKitWebAccessibilityObjectWrapper;
   v6 = [(UIKitWebAccessibilityObjectWrapper *)&v9 accessibilityHitTest:?];
@@ -3093,9 +3093,9 @@ LABEL_6:
   v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"MathTopObject"];
   if (v3)
   {
-    v4 = [MEMORY[0x29EDB8E28] null];
+    null = [MEMORY[0x29EDB8E28] null];
 
-    if (v3 == v4)
+    if (v3 == null)
     {
       v5 = 0;
     }
@@ -3108,33 +3108,33 @@ LABEL_6:
 
   else
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+    accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      while (![v6 safeBoolForKey:@"accessibilityIsMathTopObject"])
+      while (![accessibilityContainer safeBoolForKey:@"accessibilityIsMathTopObject"])
       {
-        v7 = [v6 accessibilityContainer];
+        v6AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
         objc_opt_class();
-        v6 = v7;
+        accessibilityContainer = v6AccessibilityContainer;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_10;
         }
       }
 
-      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v6 forKey:@"MathTopObject"];
-      v7 = v6;
-      v5 = v7;
+      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:accessibilityContainer forKey:@"MathTopObject"];
+      v6AccessibilityContainer = accessibilityContainer;
+      v5 = v6AccessibilityContainer;
     }
 
     else
     {
-      v7 = v6;
+      v6AccessibilityContainer = accessibilityContainer;
 LABEL_10:
-      v8 = [MEMORY[0x29EDB8E28] null];
-      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v8 forKey:@"MathTopObject"];
+      null2 = [MEMORY[0x29EDB8E28] null];
+      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:null2 forKey:@"MathTopObject"];
 
       v5 = 0;
     }
@@ -3143,32 +3143,32 @@ LABEL_10:
   return v5;
 }
 
-- (id)accessibilityPostProcessHitTest:(CGPoint)a3
+- (id)accessibilityPostProcessHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-  v7 = [v6 _accessibilityBoolValueForKey:@"AXIgnoreFuzzyHitTesting"];
+  y = test.y;
+  x = test.x;
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+  v7 = [_accessibilityWebPageParent _accessibilityBoolValueForKey:@"AXIgnoreFuzzyHitTesting"];
 
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMathEquationRootObject];
-    v10 = v9;
-    if (v9)
+    _accessibilityMathEquationRootObject = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMathEquationRootObject];
+    v10 = _accessibilityMathEquationRootObject;
+    if (_accessibilityMathEquationRootObject)
     {
-      v8 = v9;
+      selfCopy = _accessibilityMathEquationRootObject;
     }
 
     else
     {
       GSMainScreenScaleFactor();
       v12 = v11 * 100.0;
-      v13 = self;
+      selfCopy2 = self;
       if (fuzzyAccessibilityHitTest_hitQueue)
       {
         [fuzzyAccessibilityHitTest_hitQueue removeAllObjects];
@@ -3191,7 +3191,7 @@ LABEL_10:
       v33 = __Block_byref_object_copy_;
       v34 = __Block_byref_object_dispose_;
       v35 = 0;
-      [fuzzyAccessibilityHitTest_hitQueue addObject:v13];
+      [fuzzyAccessibilityHitTest_hitQueue addObject:selfCopy2];
       v16 = NSClassFromString(&cfstr_Webaccessibili.isa);
       while ([fuzzyAccessibilityHitTest_hitQueue count])
       {
@@ -3223,24 +3223,24 @@ LABEL_10:
 
       else
       {
-        v20 = v13;
+        v20 = selfCopy2;
       }
 
-      v8 = v20;
+      selfCopy = v20;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_accessibilityParentForSubview:(id)a3
+- (id)_accessibilityParentForSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
     v7.receiver = self;
     v7.super_class = UIKitWebAccessibilityObjectWrapper;
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)&v7 _accessibilityParentForSubview:v4];
+    v5 = [(UIKitWebAccessibilityObjectWrapper *)&v7 _accessibilityParentForSubview:subviewCopy];
   }
 
   else
@@ -3257,27 +3257,27 @@ LABEL_10:
   {
     v6.receiver = self;
     v6.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityPlaceholderValue];
-    if ([v3 length])
+    accessibilityPlaceholderValue = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilityPlaceholderValue];
+    if ([accessibilityPlaceholderValue length])
     {
-      v4 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v3];
+      v4 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityPlaceholderValue];
 
       [v4 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD970]];
-      v3 = v4;
+      accessibilityPlaceholderValue = v4;
     }
   }
 
   else
   {
-    v3 = 0;
+    accessibilityPlaceholderValue = 0;
   }
 
-  return v3;
+  return accessibilityPlaceholderValue;
 }
 
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector
 {
-  if (sel_accessibilityAttributedValue == a3)
+  if (sel_accessibilityAttributedValue == selector)
   {
     if (AXDoesRequestingClientDeserveAutomation())
     {
@@ -3286,8 +3286,8 @@ LABEL_10:
 
     else
     {
-      v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-      return (*MEMORY[0x29EDC7598] & ~v5) == 0;
+      accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+      return (*MEMORY[0x29EDC7598] & ~accessibilityTraits) == 0;
     }
   }
 
@@ -3303,12 +3303,12 @@ LABEL_10:
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    if ((*MEMORY[0x29EDC7598] & ~v3) == 0 || (*MEMORY[0x29EDC7FD0] & v3) == *MEMORY[0x29EDC7FD0])
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    if ((*MEMORY[0x29EDC7598] & ~accessibilityTraits) == 0 || (*MEMORY[0x29EDC7FD0] & accessibilityTraits) == *MEMORY[0x29EDC7FD0])
     {
       if (objc_opt_respondsToSelector())
       {
-        v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAttributedValueForElement];
+        _accessibilityAttributedValueForElement = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAttributedValueForElement];
       }
 
       else
@@ -3316,10 +3316,10 @@ LABEL_10:
         [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange];
         v12[0] = 0;
         v12[1] = v7;
-        v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAttributedValueForRange:v12];
+        _accessibilityAttributedValueForElement = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAttributedValueForRange:v12];
       }
 
-      v6 = v5;
+      v6 = _accessibilityAttributedValueForElement;
     }
 
     else
@@ -3331,10 +3331,10 @@ LABEL_10:
     {
       v11.receiver = self;
       v11.super_class = UIKitWebAccessibilityObjectWrapper;
-      v8 = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityValue];
-      if (v8)
+      accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityValue];
+      if (accessibilityValue)
       {
-        v9 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:v8];
+        v9 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:accessibilityValue];
 
         v6 = v9;
       }
@@ -3357,8 +3357,8 @@ LABEL_10:
   }
 
   v3 = objc_alloc(MEMORY[0x29EDBA038]);
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self attributedStringForElement];
-  v5 = [v3 initWithAttributedString:v4];
+  attributedStringForElement = [(UIKitWebAccessibilityObjectWrapper *)self attributedStringForElement];
+  v5 = [v3 initWithAttributedString:attributedStringForElement];
 
   if ([v5 length] == 1)
   {
@@ -3376,8 +3376,8 @@ LABEL_5:
   if (![v5 length])
   {
     v8 = objc_alloc(MEMORY[0x29EDBA038]);
-    v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
-    v10 = [v8 initWithString:v9];
+    accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+    v10 = [v8 initWithString:accessibilityValue];
 
     v5 = v10;
   }
@@ -3387,20 +3387,20 @@ LABEL_5:
   return v11;
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
-  if (a3)
+  if (range)
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    elementTextRange = [(UIKitWebAccessibilityObjectWrapper *)self elementTextRange];
+    if (elementTextRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      a3->location += v5;
+      range->location += elementTextRange;
     }
 
     if (objc_opt_respondsToSelector())
     {
       v6 = objc_alloc(MEMORY[0x29EDBA038]);
-      v7 = [(UIKitWebAccessibilityObjectWrapper *)self attributedStringForRange:a3->location, a3->length];
+      v7 = [(UIKitWebAccessibilityObjectWrapper *)self attributedStringForRange:range->location, range->length];
       v8 = [v6 initWithAttributedString:v7];
     }
 
@@ -3411,14 +3411,14 @@ LABEL_5:
 
     if (![v8 length])
     {
-      v10 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
-      v17.length = [v10 length];
+      accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+      v17.length = [accessibilityValue length];
       v17.location = 0;
-      v11 = NSIntersectionRange(*a3, v17);
+      v11 = NSIntersectionRange(*range, v17);
       if (v11.length)
       {
         v12 = objc_alloc(MEMORY[0x29EDBA038]);
-        v13 = [v10 substringWithRange:{v11.location, v11.length}];
+        v13 = [accessibilityValue substringWithRange:{v11.location, v11.length}];
         v14 = [v12 initWithString:v13];
 
         v8 = v14;
@@ -3436,39 +3436,39 @@ LABEL_5:
   return v9;
 }
 
-- (id)_accessibilityAttributedValue:(id)a3
+- (id)_accessibilityAttributedValue:(id)value
 {
-  v4 = a3;
-  [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertStyleAttributesToAccessibility:v4];
+  valueCopy = value;
+  [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertStyleAttributesToAccessibility:valueCopy];
   if (!AXDoesRequestingClientDeserveAutomation())
   {
-    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAddMispellingsToAttributedString:v4];
+    [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityAddMispellingsToAttributedString:valueCopy];
   }
 
-  return v4;
+  return valueCopy;
 }
 
 - (id)accessibilityURL
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
     v4 = *MEMORY[0x29EDC7F98];
-    if (((*MEMORY[0x29EDC7F98] | *MEMORY[0x29EDC7F88]) & v3) != 0 && ([(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (((*MEMORY[0x29EDC7F98] | *MEMORY[0x29EDC7F88]) & accessibilityTraits) != 0 && ([(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;
       while (([v6 accessibilityTraits] & v4) == 0)
       {
-        v7 = [v6 accessibilityContainer];
+        accessibilityContainer = [v6 accessibilityContainer];
 
-        v6 = v7;
-        if (!v7)
+        v6 = accessibilityContainer;
+        if (!accessibilityContainer)
         {
           goto LABEL_7;
         }
       }
 
-      v8 = [v6 accessibilityURL];
+      accessibilityURL = [v6 accessibilityURL];
     }
 
     else
@@ -3476,16 +3476,16 @@ LABEL_5:
 LABEL_7:
       v10.receiver = self;
       v10.super_class = UIKitWebAccessibilityObjectWrapper;
-      v8 = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityURL];
+      accessibilityURL = [(UIKitWebAccessibilityObjectWrapper *)&v10 accessibilityURL];
     }
   }
 
   else
   {
-    v8 = 0;
+    accessibilityURL = 0;
   }
 
-  return v8;
+  return accessibilityURL;
 }
 
 - (id)accessibilityMathRootIndexObject
@@ -3494,15 +3494,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathRootIndexObject];
+    accessibilityMathRootIndexObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathRootIndexObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathRootIndexObject = 0;
   }
 
-  return v3;
+  return accessibilityMathRootIndexObject;
 }
 
 - (id)accessibilityMathRadicand
@@ -3511,15 +3511,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathRadicand];
+    accessibilityMathRadicand = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathRadicand];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathRadicand = 0;
   }
 
-  return v3;
+  return accessibilityMathRadicand;
 }
 
 - (id)accessibilityMathNumeratorObject
@@ -3528,15 +3528,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathNumeratorObject];
+    accessibilityMathNumeratorObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathNumeratorObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathNumeratorObject = 0;
   }
 
-  return v3;
+  return accessibilityMathNumeratorObject;
 }
 
 - (id)accessibilityMathDenominatorObject
@@ -3545,15 +3545,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathDenominatorObject];
+    accessibilityMathDenominatorObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathDenominatorObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathDenominatorObject = 0;
   }
 
-  return v3;
+  return accessibilityMathDenominatorObject;
 }
 
 - (id)accessibilityMathBaseObject
@@ -3562,15 +3562,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathBaseObject];
+    accessibilityMathBaseObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathBaseObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathBaseObject = 0;
   }
 
-  return v3;
+  return accessibilityMathBaseObject;
 }
 
 - (id)accessibilityMathSubscriptObject
@@ -3579,15 +3579,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathSubscriptObject];
+    accessibilityMathSubscriptObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathSubscriptObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathSubscriptObject = 0;
   }
 
-  return v3;
+  return accessibilityMathSubscriptObject;
 }
 
 - (id)accessibilityMathSuperscriptObject
@@ -3596,15 +3596,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathSuperscriptObject];
+    accessibilityMathSuperscriptObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathSuperscriptObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathSuperscriptObject = 0;
   }
 
-  return v3;
+  return accessibilityMathSuperscriptObject;
 }
 
 - (id)accessibilityMathUnderObject
@@ -3613,15 +3613,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathUnderObject];
+    accessibilityMathUnderObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathUnderObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathUnderObject = 0;
   }
 
-  return v3;
+  return accessibilityMathUnderObject;
 }
 
 - (id)accessibilityMathOverObject
@@ -3630,15 +3630,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathOverObject];
+    accessibilityMathOverObject = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathOverObject];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathOverObject = 0;
   }
 
-  return v3;
+  return accessibilityMathOverObject;
 }
 
 - (id)accessibilityMathFencedOpenString
@@ -3647,15 +3647,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathFencedOpenString];
+    accessibilityMathFencedOpenString = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathFencedOpenString];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathFencedOpenString = 0;
   }
 
-  return v3;
+  return accessibilityMathFencedOpenString;
 }
 
 - (id)accessibilityMathFencedCloseString
@@ -3664,15 +3664,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathFencedCloseString];
+    accessibilityMathFencedCloseString = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathFencedCloseString];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathFencedCloseString = 0;
   }
 
-  return v3;
+  return accessibilityMathFencedCloseString;
 }
 
 - (id)accessibilityMathPostscripts
@@ -3681,15 +3681,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathPostscripts];
+    accessibilityMathPostscripts = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathPostscripts];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathPostscripts = 0;
   }
 
-  return v3;
+  return accessibilityMathPostscripts;
 }
 
 - (id)accessibilityMathPrescripts
@@ -3698,28 +3698,28 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathPrescripts];
+    accessibilityMathPrescripts = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathPrescripts];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathPrescripts = 0;
   }
 
-  return v3;
+  return accessibilityMathPrescripts;
 }
 
 - (BOOL)accessibilityIsMathTopObject
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall];
-  if (v3)
+  _prepareAccessibilityCall = [(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall];
+  if (_prepareAccessibilityCall)
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    LOBYTE(v3) = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityIsMathTopObject];
+    LOBYTE(_prepareAccessibilityCall) = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityIsMathTopObject];
   }
 
-  return v3;
+  return _prepareAccessibilityCall;
 }
 
 - (id)accessibilityMathType
@@ -3728,15 +3728,15 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathType];
+    accessibilityMathType = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityMathType];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityMathType = 0;
   }
 
-  return v3;
+  return accessibilityMathType;
 }
 
 - (id)accessibilitySpeechHint
@@ -3745,11 +3745,11 @@ LABEL_7:
   {
     v6.receiver = self;
     v6.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilitySpeechHint];
+    accessibilitySpeechHint = [(UIKitWebAccessibilityObjectWrapper *)&v6 accessibilitySpeechHint];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = accessibilitySpeechHint;
     }
 
     else
@@ -3768,19 +3768,19 @@ LABEL_7:
 
 - (id)_axWebKitTrueLinkParent
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     v3 = 0;
     v4 = *MEMORY[0x29EDC7F98];
-    while ((v4 & ~[(UIKitWebAccessibilityObjectWrapper *)v2 accessibilityTraits]) == 0)
+    while ((v4 & ~[(UIKitWebAccessibilityObjectWrapper *)selfCopy accessibilityTraits]) == 0)
     {
-      v5 = v2;
+      v5 = selfCopy;
 
-      v2 = [(UIKitWebAccessibilityObjectWrapper *)v5 accessibilityContainer];
+      selfCopy = [(UIKitWebAccessibilityObjectWrapper *)v5 accessibilityContainer];
 
       v3 = v5;
-      if (!v2)
+      if (!selfCopy)
       {
         goto LABEL_8;
       }
@@ -3799,10 +3799,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)_accessibilityHeaderElementsForColumn:(unint64_t)a3
+- (id)_accessibilityHeaderElementsForColumn:(unint64_t)column
 {
   v27 = *MEMORY[0x29EDCA608];
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementForRow:0 andColumn:a3];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementForRow:0 andColumn:column];
   v5 = v4;
   if (v4)
   {
@@ -3810,7 +3810,7 @@ LABEL_8:
     v6 = [v4 safeValueForKey:@"accessibilityHeaderElements"];
     v7 = __UIAccessibilitySafeClass();
 
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -3831,13 +3831,13 @@ LABEL_8:
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 accessibilityColumnRange];
-          if (a3 >= v15 && a3 - v15 < v16)
+          accessibilityColumnRange = [v14 accessibilityColumnRange];
+          if (column >= accessibilityColumnRange && column - accessibilityColumnRange < v16)
           {
-            v18 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-            v19 = [v14 _accessibilityLeafDescendantsWithOptions:v18];
+            defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+            v19 = [v14 _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
 
-            [v8 axSafelyAddObjectsFromArray:v19];
+            [array axSafelyAddObjectsFromArray:v19];
           }
         }
 
@@ -3850,16 +3850,16 @@ LABEL_8:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_accessibilityHeaderElementsForRow:(unint64_t)a3
+- (id)_accessibilityHeaderElementsForRow:(unint64_t)row
 {
   v27 = *MEMORY[0x29EDCA608];
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementForRow:a3 andColumn:0];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementForRow:row andColumn:0];
   v5 = v4;
   if (v4)
   {
@@ -3867,7 +3867,7 @@ LABEL_8:
     v6 = [v4 safeValueForKey:@"accessibilityHeaderElements"];
     v7 = __UIAccessibilitySafeClass();
 
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -3888,13 +3888,13 @@ LABEL_8:
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 accessibilityRowRange];
-          if (a3 >= v15 && a3 - v15 < v16)
+          accessibilityRowRange = [v14 accessibilityRowRange];
+          if (row >= accessibilityRowRange && row - accessibilityRowRange < v16)
           {
-            v18 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-            v19 = [v14 _accessibilityLeafDescendantsWithOptions:v18];
+            defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+            v19 = [v14 _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
 
-            [v8 axSafelyAddObjectsFromArray:v19];
+            [array axSafelyAddObjectsFromArray:v19];
           }
         }
 
@@ -3907,38 +3907,38 @@ LABEL_8:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (id)accessibilityHint
 {
   v11.receiver = self;
   v11.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityHint];
-  if (![v3 length])
+  accessibilityHint = [(UIKitWebAccessibilityObjectWrapper *)&v11 accessibilityHint];
+  if (![accessibilityHint length])
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
     v6 = *MEMORY[0x29EDC7F80] | *MEMORY[0x29EDC7F98];
-    if ((v6 & v5) != 0)
+    if ((v6 & accessibilityTraits) != 0)
     {
-      v7 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-      if (v7)
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+      if (accessibilityContainer)
       {
-        v8 = v7;
+        v8 = accessibilityContainer;
         while (([v8 accessibilityTraits] & v6) != 0)
         {
-          v9 = [v8 accessibilityHint];
+          accessibilityHint2 = [v8 accessibilityHint];
 
-          if (![v9 length])
+          if (![accessibilityHint2 length])
           {
-            v10 = [v8 accessibilityContainer];
+            accessibilityContainer2 = [v8 accessibilityContainer];
 
-            v8 = v10;
-            v3 = v9;
-            if (v10)
+            v8 = accessibilityContainer2;
+            accessibilityHint = accessibilityHint2;
+            if (accessibilityContainer2)
             {
               continue;
             }
@@ -3947,44 +3947,44 @@ LABEL_8:
           goto LABEL_13;
         }
 
-        v9 = v3;
+        accessibilityHint2 = accessibilityHint;
 LABEL_13:
 
-        v3 = v9;
+        accessibilityHint = accessibilityHint2;
       }
     }
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityVisibleText
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDBDC08] & ~v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDBDC08] & ~accessibilityTraits) != 0)
   {
-    v4 = 0;
+    accessibilityValue = 0;
   }
 
   else
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+    accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityValue
 {
   v29.receiver = self;
   v29.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v29 accessibilityValue];
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  v5 = v4;
-  if (v3 && (*MEMORY[0x29EDC7568] & ~v4) == 0)
+  accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)&v29 accessibilityValue];
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  v5 = accessibilityTraits;
+  if (accessibilityValue && (*MEMORY[0x29EDC7568] & ~accessibilityTraits) == 0)
   {
     v6 = [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"_accessibilityIsStrongPasswordField"];
-    v7 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v3];
+    v7 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityValue];
     v8 = v7;
     v9 = MEMORY[0x29EDBD9B0];
     if (v6)
@@ -3994,13 +3994,13 @@ LABEL_13:
 
     [v7 setAttribute:*MEMORY[0x29EDB8F00] forKey:*v9];
 
-    v3 = v8;
+    accessibilityValue = v8;
   }
 
-  if ((*MEMORY[0x29EDC7FE8] & ~v5) == 0 && (([v3 isEqualToString:@"1"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"0") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"2")))
+  if ((*MEMORY[0x29EDC7FE8] & ~v5) == 0 && (([accessibilityValue isEqualToString:@"1"] & 1) != 0 || (objc_msgSend(accessibilityValue, "isEqualToString:", @"0") & 1) != 0 || objc_msgSend(accessibilityValue, "isEqualToString:", @"2")))
   {
-    v10 = v3;
-    v3 = v10;
+    v10 = accessibilityValue;
+    accessibilityValue = v10;
 LABEL_17:
     v11 = v10;
     goto LABEL_34;
@@ -4012,76 +4012,76 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (-[UIKitWebAccessibilityObjectWrapper safeBoolForKey:](self, "safeBoolForKey:", @"accessibilityIsAttachmentElement") && [v3 length])
+  if (-[UIKitWebAccessibilityObjectWrapper safeBoolForKey:](self, "safeBoolForKey:", @"accessibilityIsAttachmentElement") && [accessibilityValue length])
   {
-    [v3 floatValue];
+    [accessibilityValue floatValue];
     v10 = AXFormatFloatWithPercentage();
     goto LABEL_17;
   }
 
-  v12 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7F60] & v12) != 0 && [v3 length])
+  accessibilityTraits2 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7F60] & accessibilityTraits2) != 0 && [accessibilityValue length])
   {
-    v13 = [MEMORY[0x29EDBA0E0] scannerWithString:v3];
+    v13 = [MEMORY[0x29EDBA0E0] scannerWithString:accessibilityValue];
     if ([v13 scanFloat:0])
     {
-      v14 = [v13 isAtEnd];
+      isAtEnd = [v13 isAtEnd];
 
-      if (!v14)
+      if (!isAtEnd)
       {
         goto LABEL_26;
       }
 
-      [v3 floatValue];
+      [accessibilityValue floatValue];
       if (v15 == 0.0)
       {
         goto LABEL_26;
       }
 
-      [v3 floatValue];
+      [accessibilityValue floatValue];
       v17 = roundf(v16);
-      [v3 floatValue];
+      [accessibilityValue floatValue];
       if (v17 != v18)
       {
         goto LABEL_26;
       }
 
       v19 = MEMORY[0x29EDBA0F8];
-      [v3 floatValue];
+      [accessibilityValue floatValue];
       [v19 stringWithFormat:@"%.0f", v20];
-      v3 = v13 = v3;
+      accessibilityValue = v13 = accessibilityValue;
     }
   }
 
 LABEL_26:
-  if (-[UIKitWebAccessibilityObjectWrapper _axIsInteractiveVideo](self, "_axIsInteractiveVideo") && [v3 length])
+  if (-[UIKitWebAccessibilityObjectWrapper _axIsInteractiveVideo](self, "_axIsInteractiveVideo") && [accessibilityValue length])
   {
     v21 = MEMORY[0x29EDBA0F8];
     v22 = accessibilityLocalizedString(@"video.current.time");
-    v23 = [v21 stringWithFormat:v22, v3];
+    v23 = [v21 stringWithFormat:v22, accessibilityValue];
 
-    v3 = v23;
+    accessibilityValue = v23;
   }
 
-  if (![v3 length])
+  if (![accessibilityValue length])
   {
-    v24 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityPlaceholderValue];
+    accessibilityPlaceholderValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityPlaceholderValue];
 
-    v3 = v24;
+    accessibilityValue = accessibilityPlaceholderValue;
   }
 
-  v25 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityColorDescription];
-  if (v25)
+  _accessibilityColorDescription = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityColorDescription];
+  if (_accessibilityColorDescription)
   {
     v28 = AXColorStringForColor();
     v26 = __UIAXStringForVariables();
 
-    v3 = v26;
+    accessibilityValue = v26;
   }
 
-  v3 = v3;
+  accessibilityValue = accessibilityValue;
 
-  v11 = v3;
+  v11 = accessibilityValue;
 LABEL_34:
 
   return v11;
@@ -4091,31 +4091,31 @@ LABEL_34:
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = objc_opt_class();
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityLabel];
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+  accessibilityLabel = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityLabel];
+  accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
   [(UIKitWebAccessibilityObjectWrapper *)self accessibilityFrame];
   v7 = NSStringFromCGRect(v11);
-  v8 = [v3 stringWithFormat:@"%@[%p] L:[%@] V:[%@] F:[%@]", v4, self, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@[%p] L:[%@] V:[%@] F:[%@]", v4, self, accessibilityLabel, accessibilityValue, v7];
 
   return v8;
 }
 
 - (id)ariaLandmarkRoleDescription
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDBDB10] & v3) != 0 || (-[UIKitWebAccessibilityObjectWrapper safeValueForKey:](self, "safeValueForKey:", @"accessibilityRoleDescription"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5))
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDBDB10] & accessibilityTraits) != 0 || (-[UIKitWebAccessibilityObjectWrapper safeValueForKey:](self, "safeValueForKey:", @"accessibilityRoleDescription"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5))
   {
-    v6 = 0;
+    ariaLandmarkRoleDescription = 0;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIKitWebAccessibilityObjectWrapper;
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)&v8 ariaLandmarkRoleDescription];
+    ariaLandmarkRoleDescription = [(UIKitWebAccessibilityObjectWrapper *)&v8 ariaLandmarkRoleDescription];
   }
 
-  return v6;
+  return ariaLandmarkRoleDescription;
 }
 
 - (id)_accessibilityParentLinkContainer
@@ -4128,16 +4128,16 @@ LABEL_34:
 
   else
   {
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-    v6 = self;
-    v7 = v6;
-    if (v5)
+    accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+    selfCopy = self;
+    v7 = selfCopy;
+    if (accessibilityContainer)
     {
       v8 = *MEMORY[0x29EDC7F98];
-      v9 = v6;
+      v9 = selfCopy;
       while (1)
       {
-        if ((v8 & [v5 accessibilityTraits]) == 0)
+        if ((v8 & [accessibilityContainer accessibilityTraits]) == 0)
         {
           v10 = v9;
 LABEL_11:
@@ -4154,17 +4154,17 @@ LABEL_11:
           goto LABEL_16;
         }
 
-        if ([v5 _accessibilityHasOtherAccessibleChildElements:v9])
+        if ([accessibilityContainer _accessibilityHasOtherAccessibleChildElements:v9])
         {
           break;
         }
 
-        v10 = v5;
+        v10 = accessibilityContainer;
 
-        v5 = [(UIKitWebAccessibilityObjectWrapper *)v10 accessibilityContainer];
+        accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)v10 accessibilityContainer];
 
         v9 = v10;
-        if (!v5)
+        if (!accessibilityContainer)
         {
           goto LABEL_11;
         }
@@ -4179,7 +4179,7 @@ LABEL_11:
 
     else
     {
-      v10 = v6;
+      v10 = selfCopy;
     }
 
 LABEL_15:
@@ -4192,24 +4192,24 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)_accessibilityHasOtherAccessibleChildElements:(id)a3
+- (BOOL)_accessibilityHasOtherAccessibleChildElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
-  if (v5 < 1)
+  elementsCopy = elements;
+  accessibilityElementCount = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
+  if (accessibilityElementCount < 1)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = accessibilityElementCount;
     v7 = 0;
     v8 = 1;
     while (1)
     {
       v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:v7];
-      if (([v4 isEqual:v9] & 1) == 0)
+      if (([elementsCopy isEqual:v9] & 1) == 0)
       {
         if ([v9 isAccessibilityElement])
         {
@@ -4255,28 +4255,28 @@ LABEL_11:
   {
     v26.receiver = self;
     v26.super_class = UIKitWebAccessibilityObjectWrapper;
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)&v26 accessibilityLabel];
+    accessibilityLabel = [(UIKitWebAccessibilityObjectWrapper *)&v26 accessibilityLabel];
 
-    v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    if ((*MEMORY[0x29EDC7F98] & v9) != 0 && (*MEMORY[0x29EDBDB10] & v9) == 0 && (processingLabelLogic & 1) == 0)
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    if ((*MEMORY[0x29EDC7F98] & accessibilityTraits) != 0 && (*MEMORY[0x29EDBDB10] & accessibilityTraits) == 0 && (processingLabelLogic & 1) == 0)
     {
       processingLabelLogic = 1;
-      v10 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityParentLinkContainer];
-      v11 = v10;
-      if (v10)
+      _accessibilityParentLinkContainer = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityParentLinkContainer];
+      v11 = _accessibilityParentLinkContainer;
+      if (_accessibilityParentLinkContainer)
       {
-        v12 = [v10 accessibilityLabel];
-        if ([v12 length])
+        accessibilityLabel2 = [_accessibilityParentLinkContainer accessibilityLabel];
+        if ([accessibilityLabel2 length])
         {
-          v13 = v12;
+          v13 = accessibilityLabel2;
 
-          v8 = v13;
+          accessibilityLabel = v13;
         }
       }
 
-      if ([(__CFString *)v8 length]|| (v15 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount], v15 < 1))
+      if ([(__CFString *)accessibilityLabel length]|| (v15 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount], v15 < 1))
       {
-        v14 = v8;
+        v14 = accessibilityLabel;
       }
 
       else
@@ -4284,35 +4284,35 @@ LABEL_11:
         v16 = v15;
         for (i = 0; i != v16; ++i)
         {
-          v18 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:i, v24, v25];
-          v24 = [v18 accessibilityLabel];
+          v18 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:i, accessibilityLabel3, v25];
+          accessibilityLabel3 = [v18 accessibilityLabel];
           v25 = @"__AXStringForVariablesSentinel";
           v14 = __UIAXStringForVariables();
 
-          v8 = v14;
+          accessibilityLabel = v14;
         }
       }
 
       processingLabelLogic = 0;
 
-      v8 = v14;
+      accessibilityLabel = v14;
     }
 
-    v19 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-    v20 = [(__CFString *)v8 stringByTrimmingCharactersInSet:v19];
+    whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+    v20 = [(__CFString *)accessibilityLabel stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v20 length] == 1 && (objc_msgSend(v20, "characterAtIndex:", 0) & 0xFFFE) == 0x200E)
     {
 
-      v8 = 0;
+      accessibilityLabel = 0;
     }
 
     v21 = [(UIKitWebAccessibilityObjectWrapper *)self safeStringForKey:@"accessibilityBrailleLabel"];
     if ([v21 length])
     {
-      if (v8)
+      if (accessibilityLabel)
       {
-        v22 = v8;
+        v22 = accessibilityLabel;
       }
 
       else
@@ -4320,12 +4320,12 @@ LABEL_11:
         v22 = @" ";
       }
 
-      v8 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v22];
-      [(__CFString *)v8 setAttribute:v21 forKey:*MEMORY[0x29EDBD880]];
+      accessibilityLabel = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v22];
+      [(__CFString *)accessibilityLabel setAttribute:v21 forKey:*MEMORY[0x29EDBD880]];
     }
 
     _AXServerCacheInsertPossiblyNilObjectForKey();
-    v7 = v8;
+    v7 = accessibilityLabel;
   }
 
   return v7;
@@ -4333,56 +4333,56 @@ LABEL_11:
 
 - (id)_accessibilityProcessRootEquation
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
-  if (v3 == 1)
+  accessibilityElementCount = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
+  if (accessibilityElementCount == 1)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:0];
-    v5 = _processEquationChild(v4);
+    array = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:0];
+    dictionary = _processEquationChild(array);
 LABEL_8:
 
     goto LABEL_10;
   }
 
-  if (v3 >= 2)
+  if (accessibilityElementCount >= 2)
   {
-    v5 = [MEMORY[0x29EDB8E00] dictionary];
-    [v5 setObject:@"Row" forKey:@"AXMType"];
-    v4 = [MEMORY[0x29EDB8DE8] array];
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
-    if (v6 >= 1)
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    [dictionary setObject:@"Row" forKey:@"AXMType"];
+    array = [MEMORY[0x29EDB8DE8] array];
+    accessibilityElementCount2 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
+    if (accessibilityElementCount2 >= 1)
     {
-      v7 = v6;
+      v7 = accessibilityElementCount2;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:i];
         v10 = _processEquationChild(v9);
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
     }
 
-    [v5 setObject:v4 forKey:@"AXMChildren"];
+    [dictionary setObject:array forKey:@"AXMChildren"];
     goto LABEL_8;
   }
 
-  v5 = 0;
+  dictionary = 0;
 LABEL_10:
 
-  return v5;
+  return dictionary;
 }
 
 - (id)accessibilityMathEquation
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsMathTopObject"])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityProcessRootEquation];
+    _accessibilityProcessRootEquation = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityProcessRootEquation];
   }
 
   else
   {
-    v3 = 0;
+    _accessibilityProcessRootEquation = 0;
   }
 
-  return v3;
+  return _accessibilityProcessRootEquation;
 }
 
 - (void)_axVideoEnterFullscreen
@@ -4422,7 +4422,7 @@ LABEL_10:
   [(UIKitWebAccessibilityObjectWrapper *)&v4 accessibilityIncrement];
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+    accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
     UIAccessibilitySpeakAndDoNotBeInterrupted();
   }
 }
@@ -4434,7 +4434,7 @@ LABEL_10:
   [(UIKitWebAccessibilityObjectWrapper *)&v4 accessibilityDecrement];
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+    accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
     UIAccessibilitySpeakAndDoNotBeInterrupted();
   }
 }
@@ -4443,10 +4443,10 @@ LABEL_10:
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageObject];
-    v4 = [v3 _accessibilityHostPid];
+    _accessibilityWebPageObject = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageObject];
+    _accessibilityHostPid = [_accessibilityWebPageObject _accessibilityHostPid];
 
-    return v4;
+    return _accessibilityHostPid;
   }
 
   else
@@ -4461,31 +4461,31 @@ LABEL_10:
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXWebVideoActions"];
-    if (!v3)
+    array = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXWebVideoActions"];
+    if (!array)
     {
-      v3 = [MEMORY[0x29EDB8DE8] array];
-      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v3 forKey:@"AXWebVideoActions"];
+      array = [MEMORY[0x29EDB8DE8] array];
+      [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:array forKey:@"AXWebVideoActions"];
       v4 = objc_alloc(MEMORY[0x29EDC78E0]);
       v5 = accessibilityLocalizedString(@"video.action.fast.forward");
       v6 = [v4 initWithName:v5 target:self selector:sel_accessibilityIncrement];
 
-      [v3 addObject:v6];
+      [array addObject:v6];
       v7 = objc_alloc(MEMORY[0x29EDC78E0]);
       v8 = accessibilityLocalizedString(@"video.action.rewind");
       v9 = [v7 initWithName:v8 target:self selector:sel_accessibilityDecrement];
 
-      [v3 addObject:v9];
+      [array addObject:v9];
       v10 = objc_alloc(MEMORY[0x29EDC78E0]);
       v11 = accessibilityLocalizedString(@"video.action.toggle.mute");
       v12 = [v10 initWithName:v11 target:self selector:sel__axVideoToggleMute];
 
-      [v3 addObject:v12];
+      [array addObject:v12];
       v13 = objc_alloc(MEMORY[0x29EDC78E0]);
       v14 = accessibilityLocalizedString(@"video.action.enter.fullscreen");
       v15 = [v13 initWithName:v14 target:self selector:sel__axVideoEnterFullscreen];
 
-      [v3 addObject:v15];
+      [array addObject:v15];
     }
   }
 
@@ -4493,13 +4493,13 @@ LABEL_10:
   {
     v17.receiver = self;
     v17.super_class = UIKitWebAccessibilityObjectWrapper;
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)&v17 accessibilityCustomActions];
+    array = [(UIKitWebAccessibilityObjectWrapper *)&v17 accessibilityCustomActions];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)_axWebKitSearchKeyForCustomRotorType:(int64_t)a3
+- (id)_axWebKitSearchKeyForCustomRotorType:(int64_t)type
 {
   if (_axWebKitSearchKeyForCustomRotorType__onceToken != -1)
   {
@@ -4507,7 +4507,7 @@ LABEL_10:
   }
 
   v4 = _axWebKitSearchKeyForCustomRotorType__ConvertType;
-  v5 = [MEMORY[0x29EDBA070] numberWithInteger:a3];
+  v5 = [MEMORY[0x29EDBA070] numberWithInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -4692,13 +4692,13 @@ uint64_t __58__UIKitWebAccessibilityObjectWrapper__misspelledWordRotor__block_in
   return MEMORY[0x2A1C71028]();
 }
 
-- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)a3 withString:(id)a4
+- (BOOL)_accessibilityReplaceTextInRange:(_NSRange)range withString:(id)string
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v6 = a4;
+  stringCopy = string;
   AXPerformSafeBlock();
   v4 = *(v8 + 24);
 
@@ -4713,7 +4713,7 @@ uint64_t __82__UIKitWebAccessibilityObjectWrapper__accessibilityReplaceTextInRan
   return result;
 }
 
-- (id)_accessibilityElementsForSearchParameter:(id)a3
+- (id)_accessibilityElementsForSearchParameter:(id)parameter
 {
   v6 = 0;
   v7 = &v6;
@@ -4721,7 +4721,7 @@ uint64_t __82__UIKitWebAccessibilityObjectWrapper__accessibilityReplaceTextInRan
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v5 = a3;
+  parameterCopy = parameter;
   AXPerformSafeBlock();
   v3 = v7[5];
 
@@ -4737,11 +4737,11 @@ uint64_t __79__UIKitWebAccessibilityObjectWrapper__accessibilityElementsForSearc
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_accessibilityCustomRotor:(int64_t)a3
+- (id)_accessibilityCustomRotor:(int64_t)rotor
 {
-  if (a3 == 13)
+  if (rotor == 13)
   {
-    v4 = [(UIKitWebAccessibilityObjectWrapper *)self _misspelledWordRotor];
+    _misspelledWordRotor = [(UIKitWebAccessibilityObjectWrapper *)self _misspelledWordRotor];
   }
 
   else
@@ -4752,12 +4752,12 @@ uint64_t __79__UIKitWebAccessibilityObjectWrapper__accessibilityElementsForSearc
     v8[2] = __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___block_invoke;
     v8[3] = &unk_29F31F620;
     v8[4] = self;
-    v8[5] = a3;
-    v4 = [v6 initWithSystemType:a3 itemSearchBlock:v8];
-    [v4 setVisibleInTouchRotor:0];
+    v8[5] = rotor;
+    _misspelledWordRotor = [v6 initWithSystemType:rotor itemSearchBlock:v8];
+    [_misspelledWordRotor setVisibleInTouchRotor:0];
   }
 
-  return v4;
+  return _misspelledWordRotor;
 }
 
 id __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___block_invoke(uint64_t a1, void *a2)
@@ -4901,16 +4901,16 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
   if (!v3)
   {
     v4 = MEMORY[0x29EDBA070];
-    v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-    v3 = [v4 numberWithInt:v5 == v6];
+    accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+    _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+    v3 = [v4 numberWithInt:accessibilityContainer == _accessibilityWebPageParent];
 
     [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v3 forKey:@"_accessibilityIsTopMostWebElement"];
   }
 
-  v7 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)accessibilityCustomRotors
@@ -4923,7 +4923,7 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
       v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityValueForKey:@"AXRotors"];
       if (v3)
       {
-        v4 = v3;
+        accessibilityCustomRotors = v3;
       }
 
       else
@@ -4971,7 +4971,7 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
         v37[26] = v15;
         v16 = [MEMORY[0x29EDB8D80] arrayWithObjects:v37 count:27];
 
-        v17 = [MEMORY[0x29EDB8DE8] array];
+        array = [MEMORY[0x29EDB8DE8] array];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -4992,7 +4992,7 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
               }
 
               v23 = -[UIKitWebAccessibilityObjectWrapper _accessibilityCustomRotor:](self, "_accessibilityCustomRotor:", [*(*(&v31 + 1) + 8 * i) integerValue]);
-              [v17 axSafelyAddObject:v23];
+              [array axSafelyAddObject:v23];
             }
 
             v20 = [v18 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -5001,36 +5001,36 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
           while (v20);
         }
 
-        [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:v17 forKey:@"AXRotors"];
-        v4 = v17;
+        [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySetRetainedValue:array forKey:@"AXRotors"];
+        accessibilityCustomRotors = array;
       }
     }
 
     else
     {
-      v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-      if ((*MEMORY[0x29EDC7598] & ~v5) != 0 || (*MEMORY[0x29EDC7528] & ~v5) != 0)
+      accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+      if ((*MEMORY[0x29EDC7598] & ~accessibilityTraits) != 0 || (*MEMORY[0x29EDC7528] & ~accessibilityTraits) != 0)
       {
         v30.receiver = self;
         v30.super_class = UIKitWebAccessibilityObjectWrapper;
-        v4 = [(UIKitWebAccessibilityObjectWrapper *)&v30 accessibilityCustomRotors];
+        accessibilityCustomRotors = [(UIKitWebAccessibilityObjectWrapper *)&v30 accessibilityCustomRotors];
       }
 
       else
       {
         v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityCustomRotor:13];
         v35 = v6;
-        v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v35 count:1];
+        accessibilityCustomRotors = [MEMORY[0x29EDB8D80] arrayWithObjects:&v35 count:1];
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    accessibilityCustomRotors = 0;
   }
 
-  return v4;
+  return accessibilityCustomRotors;
 }
 
 - (BOOL)_accessibilityShouldSpeakMathEquationTrait
@@ -5060,34 +5060,34 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
 - (unint64_t)accessibilityTraits
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTraitsHelper];
+  _accessibilityTraitsHelper = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTraitsHelper];
   objc_autoreleasePoolPop(v3);
-  return v4;
+  return _accessibilityTraitsHelper;
 }
 
 - (unint64_t)_accessibilityTraitsHelper
 {
   v13.receiver = self;
   v13.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v13 accessibilityTraits];
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)&v13 accessibilityTraits];
   if (![(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2])
   {
     v4 = [NSClassFromString(&cfstr_Uiperipheralho.isa) safeValueForKey:@"sharedInstance"];
     v5 = v4;
-    if ((*MEMORY[0x29EDBDAF8] & v3) != 0 && [v4 safeBoolForKey:@"isOffScreen"])
+    if ((*MEMORY[0x29EDBDAF8] & accessibilityTraits) != 0 && [v4 safeBoolForKey:@"isOffScreen"])
     {
-      v3 = _AXTraitsRemoveTrait();
+      accessibilityTraits = _AXTraitsRemoveTrait();
     }
   }
 
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo];
+  _axIsInteractiveVideo = [(UIKitWebAccessibilityObjectWrapper *)self _axIsInteractiveVideo];
   v7 = *MEMORY[0x29EDBDD08];
-  if (!v6)
+  if (!_axIsInteractiveVideo)
   {
     v7 = 0;
   }
 
-  v8 = v7 | v3;
+  v8 = v7 | accessibilityTraits;
   v9 = [(UIKitWebAccessibilityObjectWrapper *)self safeBoolForKey:@"accessibilityIsMathTopObject"];
   v10 = *MEMORY[0x29EDBDB10];
   if (!v9)
@@ -5109,88 +5109,88 @@ uint64_t __64__UIKitWebAccessibilityObjectWrapper__accessibilityCustomRotor___bl
   return v11;
 }
 
-- (void)_accessibilityModifySelection:(id)a3 increase:(BOOL)a4
+- (void)_accessibilityModifySelection:(id)selection increase:(BOOL)increase
 {
-  v5 = a3;
+  selectionCopy = selection;
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    if (([v5 isEqualToString:@"word"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"line") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"page") & 1) == 0)
+    if (([selectionCopy isEqualToString:@"word"] & 1) == 0 && (objc_msgSend(selectionCopy, "isEqualToString:", @"line") & 1) == 0 && (objc_msgSend(selectionCopy, "isEqualToString:", @"page") & 1) == 0)
     {
-      [v5 isEqualToString:@"all"];
+      [selectionCopy isEqualToString:@"all"];
     }
 
     AXPerformSafeBlock();
   }
 }
 
-- (void)_accessibilityMoveSelectionToMarker:(id)a3
+- (void)_accessibilityMoveSelectionToMarker:(id)marker
 {
-  v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:{a3, 0}];
+  v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:{marker, 0}];
   v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v4];
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   if (objc_opt_respondsToSelector())
   {
-    [(UIKitWebAccessibilityObjectWrapper *)self accessibilityMoveSelectionToMarker:v6];
+    [(UIKitWebAccessibilityObjectWrapper *)self accessibilityMoveSelectionToMarker:lastObject];
   }
 }
 
 - (id)_accessibilityWebAreaURL
 {
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     v3 = *MEMORY[0x29EDC7F98];
     while (1)
     {
-      if ((v3 & ~[v2 accessibilityTraits]) != 0)
+      if ((v3 & ~[accessibilityContainer accessibilityTraits]) != 0)
       {
-        v4 = [v2 accessibilityURL];
-        if (v4)
+        accessibilityURL = [accessibilityContainer accessibilityURL];
+        if (accessibilityURL)
         {
           break;
         }
       }
 
-      v5 = [v2 accessibilityContainer];
+      v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-      v2 = v5;
-      if (!v5)
+      accessibilityContainer = v2AccessibilityContainer;
+      if (!v2AccessibilityContainer)
       {
         goto LABEL_9;
       }
     }
 
-    v5 = v4;
+    v2AccessibilityContainer = accessibilityURL;
   }
 
   else
   {
-    v5 = 0;
+    v2AccessibilityContainer = 0;
   }
 
 LABEL_9:
 
-  return v5;
+  return v2AccessibilityContainer;
 }
 
 - (void)_performLiveRegionUpdate
 {
-  v2 = self;
+  selfCopy = self;
   v96 = *MEMORY[0x29EDCA608];
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)v2 safeValueForKey:@"accessibilityARIAIsBusy"];
-    v4 = [v3 BOOLValue];
+    v3 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy safeValueForKey:@"accessibilityARIAIsBusy"];
+    bOOLValue = [v3 BOOLValue];
 
-    if ((v4 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v5 = [(UIKitWebAccessibilityObjectWrapper *)v2 safeValueForKey:@"accessibilityARIALiveRegionStatus"];
+      v5 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy safeValueForKey:@"accessibilityARIALiveRegionStatus"];
       v6 = [v5 isEqualToString:@"polite"];
       if ([v5 isEqualToString:@"off"])
       {
         v7 = _UIAccessibilityFocusedElementForAssistiveTech();
-        v8 = [v7 _accessibilityIsDescendantOfElement:v2];
+        v8 = [v7 _accessibilityIsDescendantOfElement:selfCopy];
 
         if (!v8)
         {
@@ -5207,10 +5207,10 @@ LABEL_76:
         v58 = v6;
       }
 
-      v9 = [(UIKitWebAccessibilityObjectWrapper *)v2 safeValueForKey:@"accessibilityARIALiveRegionIsAtomic"];
-      v10 = [v9 BOOLValue];
+      v9 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy safeValueForKey:@"accessibilityARIALiveRegionIsAtomic"];
+      bOOLValue2 = [v9 BOOLValue];
 
-      v11 = [(UIKitWebAccessibilityObjectWrapper *)v2 safeValueForKey:@"accessibilityARIARelevantStatus"];
+      v11 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy safeValueForKey:@"accessibilityARIARelevantStatus"];
       v12 = [v11 componentsSeparatedByString:@" "];
 
       v63 = v12;
@@ -5240,24 +5240,24 @@ LABEL_76:
       v65 = 1;
 LABEL_13:
       v60 = v14;
-      v16 = [MEMORY[0x29EDB8DE8] array];
-      v17 = [MEMORY[0x29EDB8DE8] arrayWithObject:v2];
+      array = [MEMORY[0x29EDB8DE8] array];
+      v17 = [MEMORY[0x29EDB8DE8] arrayWithObject:selfCopy];
       v69 = v17;
       while ([v17 count])
       {
-        v18 = [v17 lastObject];
+        lastObject = [v17 lastObject];
         [v17 removeLastObject];
-        if ([v18 isAccessibilityElement])
+        if ([lastObject isAccessibilityElement])
         {
-          v19 = [AXLiveRegionNode createNodeFromObject:v18];
-          if ([v16 count])
+          v19 = [AXLiveRegionNode createNodeFromObject:lastObject];
+          if ([array count])
           {
-            [v16 insertObject:v19 atIndex:0];
+            [array insertObject:v19 atIndex:0];
           }
 
           else
           {
-            [v16 addObject:v19];
+            [array addObject:v19];
           }
 
           v17 = v69;
@@ -5270,16 +5270,16 @@ LABEL_13:
           v90[2] = __62__UIKitWebAccessibilityObjectWrapper__performLiveRegionUpdate__block_invoke;
           v90[3] = &unk_29F31F670;
           v91 = v17;
-          [v18 accessibilityEnumerateContainerElementsUsingBlock:v90];
+          [lastObject accessibilityEnumerateContainerElementsUsingBlock:v90];
           v19 = v91;
         }
       }
 
-      v20 = [MEMORY[0x29EDB8DE8] array];
-      v21 = [(UIKitWebAccessibilityObjectWrapper *)v2 _accessibilityValueForKey:@"LiveRegionTree"];
+      array2 = [MEMORY[0x29EDB8DE8] array];
+      v21 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy _accessibilityValueForKey:@"LiveRegionTree"];
       v22 = [v21 objectForKey:@"Nodes"];
       v67 = [v21 objectForKey:@"Text"];
-      v68 = v2;
+      v68 = selfCopy;
       v62 = v21;
       if (v59)
       {
@@ -5304,9 +5304,9 @@ LABEL_13:
               }
 
               v29 = *(*(&v86 + 1) + 8 * i);
-              if (v10 & 1 | (([v16 containsObject:v29] & 1) == 0))
+              if (bOOLValue2 & 1 | (([array containsObject:v29] & 1) == 0))
               {
-                [v20 addObject:v29];
+                [array2 addObject:v29];
                 v26 = 1;
               }
             }
@@ -5322,7 +5322,7 @@ LABEL_13:
           v26 = 0;
         }
 
-        v2 = v68;
+        selfCopy = v68;
       }
 
       else
@@ -5336,7 +5336,7 @@ LABEL_13:
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v30 = v16;
+        v30 = array;
         v31 = [v30 countByEnumeratingWithState:&v82 objects:v94 count:16];
         if (v31)
         {
@@ -5352,9 +5352,9 @@ LABEL_13:
               }
 
               v35 = *(*(&v82 + 1) + 8 * j);
-              if (([v20 containsObject:v35] & 1) == 0 && v10 & 1 | ((objc_msgSend(v22, "containsObject:", v35) & 1) == 0))
+              if (([array2 containsObject:v35] & 1) == 0 && bOOLValue2 & 1 | ((objc_msgSend(v22, "containsObject:", v35) & 1) == 0))
               {
-                [v20 addObject:v35];
+                [array2 addObject:v35];
               }
             }
 
@@ -5364,29 +5364,29 @@ LABEL_13:
           while (v32);
         }
 
-        v2 = v68;
+        selfCopy = v68;
       }
 
       v36 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:2];
-      [v36 setObject:v16 forKey:@"Nodes"];
+      [v36 setObject:array forKey:@"Nodes"];
       v61 = v22;
       v66 = v36;
       if (v60)
       {
-        v37 = [v16 count];
+        v37 = [array count];
         if (v37 == [v22 count] || !v22)
         {
-          v38 = [MEMORY[0x29EDB8DE8] array];
-          [v36 setObject:v38 forKey:@"Text"];
+          array3 = [MEMORY[0x29EDB8DE8] array];
+          [v36 setObject:array3 forKey:@"Text"];
           if (v67)
           {
             v74[0] = MEMORY[0x29EDCA5F8];
             v74[1] = 3221225472;
             v74[2] = __62__UIKitWebAccessibilityObjectWrapper__performLiveRegionUpdate__block_invoke_2;
             v74[3] = &unk_29F31F698;
-            v75 = v16;
-            v76 = v20;
-            v77 = v38;
+            v75 = array;
+            v76 = array2;
+            v77 = array3;
             [v67 enumerateObjectsUsingBlock:v74];
 
             v39 = v75;
@@ -5398,7 +5398,7 @@ LABEL_13:
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v39 = v16;
+            v39 = array;
             v40 = [v39 countByEnumeratingWithState:&v78 objects:v93 count:16];
             if (v40)
             {
@@ -5413,10 +5413,10 @@ LABEL_13:
                     objc_enumerationMutation(v39);
                   }
 
-                  v44 = [*(*(&v78 + 1) + 8 * k) label];
-                  if (v44)
+                  label = [*(*(&v78 + 1) + 8 * k) label];
+                  if (label)
                   {
-                    v45 = v44;
+                    v45 = label;
                   }
 
                   else
@@ -5424,26 +5424,26 @@ LABEL_13:
                     v45 = &stru_2A23B2970;
                   }
 
-                  [v38 addObject:v45];
+                  [array3 addObject:v45];
                 }
 
                 v41 = [v39 countByEnumeratingWithState:&v78 objects:v93 count:16];
               }
 
               while (v41);
-              v2 = v68;
+              selfCopy = v68;
               v36 = v66;
             }
           }
         }
       }
 
-      [(UIKitWebAccessibilityObjectWrapper *)v2 _accessibilitySetRetainedValue:v36 forKey:@"LiveRegionTree"];
+      [(UIKitWebAccessibilityObjectWrapper *)selfCopy _accessibilitySetRetainedValue:v36 forKey:@"LiveRegionTree"];
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v46 = v20;
+      v46 = array2;
       v47 = [v46 countByEnumeratingWithState:&v70 objects:v92 count:16];
       if (v47)
       {
@@ -5461,7 +5461,7 @@ LABEL_13:
               objc_enumerationMutation(v46);
             }
 
-            v56 = [*(*(&v70 + 1) + 8 * v51) label];
+            label2 = [*(*(&v70 + 1) + 8 * v51) label];
             v57 = @"__AXStringForVariablesSentinel";
             v49 = __UIAXStringForVariables();
 
@@ -5470,7 +5470,7 @@ LABEL_13:
           }
 
           while (v48 != v51);
-          v48 = [v46 countByEnumeratingWithState:&v70 objects:v92 count:{16, v56, @"__AXStringForVariablesSentinel"}];
+          v48 = [v46 countByEnumeratingWithState:&v70 objects:v92 count:{16, label2, @"__AXStringForVariablesSentinel"}];
         }
 
         while (v48);
@@ -5524,10 +5524,10 @@ void __62__UIKitWebAccessibilityObjectWrapper__performLiveRegionUpdate__block_in
   [*(a1 + 48) addObject:v7];
 }
 
-- (void)_axHandleNotificationPosting:(unsigned int)a3 data:(id)a4
+- (void)_axHandleNotificationPosting:(unsigned int)posting data:(id)data
 {
-  v4 = *&a3;
-  argument = a4;
+  v4 = *&posting;
+  argument = data;
   if (v4 <= 3031)
   {
     if (v4 != 1026)
@@ -5548,20 +5548,20 @@ void __62__UIKitWebAccessibilityObjectWrapper__performLiveRegionUpdate__block_in
       }
 
       v7 = accessibilityLocalizedString(v6);
-      v8 = argument;
+      _accessibilityCurrentStatus = argument;
       goto LABEL_36;
     }
 
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)self safeStringForKey:@"accessibilityInvalidStatus"];
-    if ([v8 length] && (objc_msgSend(v8, "isEqualToString:", @"false") & 1) == 0)
+    _accessibilityCurrentStatus = [(UIKitWebAccessibilityObjectWrapper *)self safeStringForKey:@"accessibilityInvalidStatus"];
+    if ([_accessibilityCurrentStatus length] && (objc_msgSend(_accessibilityCurrentStatus, "isEqualToString:", @"false") & 1) == 0)
     {
-      if ([v8 isEqualToString:@"grammar"])
+      if ([_accessibilityCurrentStatus isEqualToString:@"grammar"])
       {
         v9 = @"invalidStatusGrammar";
         goto LABEL_34;
       }
 
-      v10 = [v8 isEqualToString:@"spelling"];
+      v10 = [_accessibilityCurrentStatus isEqualToString:@"spelling"];
       v11 = @"invalidStatusGeneral";
       v12 = @"invalidStatusSpelling";
 LABEL_25:
@@ -5583,34 +5583,34 @@ LABEL_25:
 
   if (v4 == 3032)
   {
-    v8 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityCurrentStatus];
-    if ([v8 length] && (objc_msgSend(v8, "isEqualToString:", @"false") & 1) == 0)
+    _accessibilityCurrentStatus = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityCurrentStatus];
+    if ([_accessibilityCurrentStatus length] && (objc_msgSend(_accessibilityCurrentStatus, "isEqualToString:", @"false") & 1) == 0)
     {
-      if ([v8 isEqualToString:@"page"])
+      if ([_accessibilityCurrentStatus isEqualToString:@"page"])
       {
         v9 = @"currentStatusPage";
         goto LABEL_34;
       }
 
-      if ([v8 isEqualToString:@"step"])
+      if ([_accessibilityCurrentStatus isEqualToString:@"step"])
       {
         v9 = @"currentStatusStep";
         goto LABEL_34;
       }
 
-      if ([v8 isEqualToString:@"location"])
+      if ([_accessibilityCurrentStatus isEqualToString:@"location"])
       {
         v9 = @"currentStatusLocation";
         goto LABEL_34;
       }
 
-      if ([v8 isEqualToString:@"date"])
+      if ([_accessibilityCurrentStatus isEqualToString:@"date"])
       {
         v9 = @"currentStatusDate";
         goto LABEL_34;
       }
 
-      v10 = [v8 isEqualToString:@"time"];
+      v10 = [_accessibilityCurrentStatus isEqualToString:@"time"];
       v11 = @"currentStatusGeneral";
       v12 = @"currentStatusTime";
       goto LABEL_25;
@@ -5626,8 +5626,8 @@ LABEL_18:
     goto LABEL_37;
   }
 
-  v8 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilitySortDirection];
-  if ([v8 isEqualToString:@"AXAscendingSortDirection"])
+  _accessibilityCurrentStatus = [(UIKitWebAccessibilityObjectWrapper *)self accessibilitySortDirection];
+  if ([_accessibilityCurrentStatus isEqualToString:@"AXAscendingSortDirection"])
   {
     v9 = @"sortUp";
 LABEL_34:
@@ -5635,7 +5635,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"AXDescendingSortDirection"])
+  if ([_accessibilityCurrentStatus isEqualToString:@"AXDescendingSortDirection"])
   {
     v9 = @"sortDown";
     goto LABEL_34;
@@ -5683,35 +5683,35 @@ uint64_t __72__UIKitWebAccessibilityObjectWrapper__axSupportsWebKitNotificationR
   return result;
 }
 
-- (id)_axDataConvertForNotification:(id)a3
+- (id)_axDataConvertForNotification:(id)notification
 {
   v32 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 attributedString];
+    attributedString = [notificationCopy attributedString];
 LABEL_6:
-    Data = v5;
+    Data = attributedString;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v4;
+    attributedString = notificationCopy;
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    Data = [v4 mutableCopy];
+    Data = [notificationCopy mutableCopy];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = v4;
+    v8 = notificationCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
@@ -5747,12 +5747,12 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    Data = [v4 mutableCopy];
+    Data = [notificationCopy mutableCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v4;
+    v8 = notificationCopy;
     v16 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v16)
     {
@@ -5780,7 +5780,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (v4)
+  if (notificationCopy)
   {
     v21 = _AXCreateAXUIElementWithElement();
     Data = _AXUIElementCreateData();
@@ -5800,10 +5800,10 @@ LABEL_7:
   return Data;
 }
 
-- (void)_accessibilityRelayToChrome:(unsigned int)a3 object:(id)a4
+- (void)_accessibilityRelayToChrome:(unsigned int)chrome object:(id)object
 {
-  v4 = *&a3;
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)self _axDataConvertForNotification:a4];
+  v4 = *&chrome;
+  v6 = [(UIKitWebAccessibilityObjectWrapper *)self _axDataConvertForNotification:object];
   v12 = 0;
   v7 = [MEMORY[0x29EDB9FF8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v12];
   v8 = v12;
@@ -5825,32 +5825,32 @@ LABEL_7:
 {
   v4.receiver = self;
   v4.super_class = UIKitWebAccessibilityObjectWrapper;
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)&v4 accessibilityValue];
+  accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)&v4 accessibilityValue];
 
-  return v2;
+  return accessibilityValue;
 }
 
-- (_NSRange)_accessibilitySelectedTextRangeForHandwritingWithValue:(id)a3
+- (_NSRange)_accessibilitySelectedTextRangeForHandwritingWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDBDB88] & ~v5) != 0)
+  valueCopy = value;
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDBDB88] & ~accessibilityTraits) != 0)
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilitySelectedTextRange];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = UIKitWebAccessibilityObjectWrapper;
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)&v12 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [(UIKitWebAccessibilityObjectWrapper *)&v12 _accessibilitySelectedTextRange];
   }
 
-  v8 = v6;
+  v8 = _accessibilitySelectedTextRange;
   v9 = v7;
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (_accessibilitySelectedTextRange == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v4 length];
+    v8 = [valueCopy length];
     v9 = 0;
   }
 
@@ -5861,24 +5861,24 @@ LABEL_7:
   return result;
 }
 
-- (void)_accessibilityInsertText:(id)a3
+- (void)_accessibilityInsertText:(id)text
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  textCopy = text;
+  v4 = textCopy;
+  if (textCopy)
   {
-    v5 = v3;
+    v5 = textCopy;
     AXPerformSafeBlock();
   }
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
-  v4 = a4;
+  stringCopy = string;
   v5 = &stru_2A23B2970;
-  if (v4)
+  if (stringCopy)
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   v7 = v5;
@@ -5927,10 +5927,10 @@ void __89__UIKitWebAccessibilityObjectWrapper__accessibilityReplaceCharactersAtC
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-  v3 = [v2 _accessibilityTextViewTextOperationResponder];
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+  _accessibilityTextViewTextOperationResponder = [_accessibilityWebPageParent _accessibilityTextViewTextOperationResponder];
 
-  return v3;
+  return _accessibilityTextViewTextOperationResponder;
 }
 
 - (BOOL)_accessibilityHasTextOperations
@@ -5947,15 +5947,15 @@ void __89__UIKitWebAccessibilityObjectWrapper__accessibilityReplaceCharactersAtC
 
 - (BOOL)_accessibilitySupportsTextInsertionAndDeletion
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-  if (((*MEMORY[0x29EDBDAD0] | *MEMORY[0x29EDBDB08]) & v3) != 0)
+  accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+  if (((*MEMORY[0x29EDBDAD0] | *MEMORY[0x29EDBDB08]) & accessibilityTraits) != 0)
   {
     return 0;
   }
 
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-  v6 = [v5 _accessibilityResponderElement];
-  v4 = v6 == self;
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+  _accessibilityResponderElement = [_accessibilityWebPageParent _accessibilityResponderElement];
+  v4 = _accessibilityResponderElement == self;
 
   return v4;
 }
@@ -5978,21 +5978,21 @@ void __89__UIKitWebAccessibilityObjectWrapper__accessibilityReplaceCharactersAtC
     {
       v5.receiver = self;
       v5.super_class = UIKitWebAccessibilityObjectWrapper;
-      v3 = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityIdentifier];
+      accessibilityIdentifier = [(UIKitWebAccessibilityObjectWrapper *)&v5 accessibilityIdentifier];
     }
 
     else
     {
-      v3 = 0;
+      accessibilityIdentifier = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    accessibilityIdentifier = 0;
   }
 
-  return v3;
+  return accessibilityIdentifier;
 }
 
 uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block_invoke(uint64_t a1)
@@ -6002,33 +6002,33 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2];
-  if (v5)
+  _axIsWebKit2 = [(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2];
+  if (_axIsWebKit2)
   {
-    LastScrollDirection = a3;
+    LastScrollDirection = scroll;
     v7.receiver = self;
     v7.super_class = UIKitWebAccessibilityObjectWrapper;
-    LOBYTE(v5) = [(UIKitWebAccessibilityObjectWrapper *)&v7 accessibilityScroll:a3];
+    LOBYTE(_axIsWebKit2) = [(UIKitWebAccessibilityObjectWrapper *)&v7 accessibilityScroll:scroll];
   }
 
-  return v5;
+  return _axIsWebKit2;
 }
 
 - (id)_accessibilityScrollStatus
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall])
   {
-    v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMakeScrollStatus];
+    _accessibilityMakeScrollStatus = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMakeScrollStatus];
   }
 
   else
   {
-    v3 = 0;
+    _accessibilityMakeScrollStatus = 0;
   }
 
-  return v3;
+  return _accessibilityMakeScrollStatus;
 }
 
 - (id)_accessibilityMakeScrollStatus
@@ -6075,21 +6075,21 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
   return v22;
 }
 
-- (void)_repostWebNotification:(id)a3
+- (void)_repostWebNotification:(id)notification
 {
-  v4 = [a3 unsignedIntValue];
+  unsignedIntValue = [notification unsignedIntValue];
 
-  [(UIKitWebAccessibilityObjectWrapper *)self _axHandleNotificationPosting:v4 data:0];
+  [(UIKitWebAccessibilityObjectWrapper *)self _axHandleNotificationPosting:unsignedIntValue data:0];
 }
 
-- (void)_enqueReorderingNotification:(id)a3
+- (void)_enqueReorderingNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!TextEditingReorderQueue)
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v6 = TextEditingReorderQueue;
-    TextEditingReorderQueue = v5;
+    TextEditingReorderQueue = array;
 
     v7 = objc_alloc(MEMORY[0x29EDBD6A0]);
     v8 = [v7 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
@@ -6097,16 +6097,16 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
     TextEditingReorderTimer = v8;
   }
 
-  v10 = [v4 objectForKey:@"notification"];
-  v11 = [v10 unsignedIntValue];
+  v10 = [notificationCopy objectForKey:@"notification"];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  if (v11 == 1017)
+  if (unsignedIntValue == 1017)
   {
-    v12 = self;
-    if (v12)
+    selfCopy = self;
+    if (selfCopy)
     {
-      v13 = v12;
-      v14 = v12;
+      v13 = selfCopy;
+      v14 = selfCopy;
       do
       {
         if ([v13 isAccessibilityElement])
@@ -6116,12 +6116,12 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
           v14 = v15;
         }
 
-        v16 = [v13 accessibilityContainer];
+        accessibilityContainer = [v13 accessibilityContainer];
 
-        v13 = v16;
+        v13 = accessibilityContainer;
       }
 
-      while (v16);
+      while (accessibilityContainer);
     }
 
     else
@@ -6129,8 +6129,8 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
       v14 = 0;
     }
 
-    v17 = [(UIKitWebAccessibilityObjectWrapper *)v14 accessibilityTraits];
-    if ((*MEMORY[0x29EDBDAF8] & v17) != 0)
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)v14 accessibilityTraits];
+    if ((*MEMORY[0x29EDBDAF8] & accessibilityTraits) != 0)
     {
       v18 = &unk_2A23B6E28;
     }
@@ -6145,7 +6145,7 @@ uint64_t __61__UIKitWebAccessibilityObjectWrapper_accessibilityIdentifier__block
 
   else
   {
-    [TextEditingReorderQueue addObject:v4];
+    [TextEditingReorderQueue addObject:notificationCopy];
   }
 
   [TextEditingReorderTimer cancel];
@@ -6284,8 +6284,8 @@ uint64_t __67__UIKitWebAccessibilityObjectWrapper__enqueReorderingNotification__
 
   if (v5)
   {
-    v6 = [*v4 objectForKeyedSubscript:v3];
-    [v6 CGRectValue];
+    _accessibilityWebDocumentView = [*v4 objectForKeyedSubscript:v3];
+    [_accessibilityWebDocumentView CGRectValue];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -6306,15 +6306,15 @@ LABEL_25:
       didInitIAdCheck = 1;
     }
 
-    v16 = [(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2];
-    if (v16)
+    _axIsWebKit2 = [(UIKitWebAccessibilityObjectWrapper *)self _axIsWebKit2];
+    if (_axIsWebKit2)
     {
-      v6 = 0;
+      _accessibilityWebDocumentView = 0;
     }
 
     else
     {
-      v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
+      _accessibilityWebDocumentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebDocumentView];
     }
 
     if (isIADs == 1)
@@ -6330,8 +6330,8 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v17 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-    if ((*MEMORY[0x29EDC7F98] & v17) != 0 && [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount]== 1)
+    accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+    if ((*MEMORY[0x29EDC7F98] & accessibilityTraits) != 0 && [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount]== 1)
     {
       v18 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:0];
       [v18 accessibilityFrame];
@@ -6350,10 +6350,10 @@ LABEL_23:
       v10 = v24;
       v12 = v25;
       v14 = v26;
-      if (!v16)
+      if (!_axIsWebKit2)
       {
-        v36 = [v6 window];
-        [v6 convertRect:v36 fromView:{v8, v10, v12, v14}];
+        window = [_accessibilityWebDocumentView window];
+        [_accessibilityWebDocumentView convertRect:window fromView:{v8, v10, v12, v14}];
         v38 = v37;
         v40 = v39;
 
@@ -6363,10 +6363,10 @@ LABEL_23:
           v38 = 0.0;
         }
 
-        [v6 bounds];
+        [_accessibilityWebDocumentView bounds];
         if (v38 > v41 - v40)
         {
-          [v6 bounds];
+          [_accessibilityWebDocumentView bounds];
         }
 
         goto LABEL_23;
@@ -6443,14 +6443,14 @@ LABEL_26:
     [(UIKitWebAccessibilityObjectWrapper *)self _axGetClippingFrame];
     if (CGRectIsEmpty(v25))
     {
-      v3 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
       v4 = *MEMORY[0x29EDB90E0];
       v5 = *(MEMORY[0x29EDB90E0] + 8);
       v6 = *(MEMORY[0x29EDB90E0] + 16);
       v7 = *(MEMORY[0x29EDB90E0] + 24);
       if (objc_opt_respondsToSelector())
       {
-        [v3 _accessibilityClippingFrame];
+        [accessibilityContainer _accessibilityClippingFrame];
         v9 = v8;
         v11 = v10;
         v13 = v12;
@@ -6463,7 +6463,7 @@ LABEL_26:
         v15 = v7;
         v11 = v5;
         v9 = v4;
-        if (v3)
+        if (accessibilityContainer)
         {
           v16 = AXLogCommon();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -6523,7 +6523,7 @@ LABEL_14:
   v8 = v7;
   v10 = v9;
   NSClassFromString(&cfstr_Wkaccessibilit.isa);
-  v11 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
+  accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityContainer];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -6559,19 +6559,19 @@ LABEL_14:
 
 - (id)_accessibilityApplication
 {
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-  v3 = [v2 _accessibilityApplication];
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+  _accessibilityApplication = [_accessibilityWebPageParent _accessibilityApplication];
 
-  return v3;
+  return _accessibilityApplication;
 }
 
-- (_NSRange)_accessibilityRangeForTextMarker:(id)a3
+- (_NSRange)_accessibilityRangeForTextMarker:(id)marker
 {
-  v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:{a3, 0}];
+  v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:{marker, 0}];
   v5 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v4];
 
-  v6 = [v5 lastObject];
-  v7 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:v6];
+  lastObject = [v5 lastObject];
+  v7 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:lastObject];
 
   v8 = v7;
   v9 = 0;
@@ -6580,9 +6580,9 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)_accessibilityRangeForTextMarkers:(id)a3
+- (_NSRange)_accessibilityRangeForTextMarkers:(id)markers
 {
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:a3];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:markers];
   if ([v4 count] == 2)
   {
     v5 = [(UIKitWebAccessibilityObjectWrapper *)self _rangeForWebTextMarkers:v4];
@@ -6602,15 +6602,15 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)_rangeForWebTextMarkers:(id)a3
+- (_NSRange)_rangeForWebTextMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:v5];
+  markersCopy = markers;
+  firstObject = [markersCopy firstObject];
+  v6 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:firstObject];
 
-  v7 = [v4 lastObject];
+  lastObject = [markersCopy lastObject];
 
-  v8 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:v7];
+  v8 = [(UIKitWebAccessibilityObjectWrapper *)self positionForTextMarker:lastObject];
   if (v8 >= v6)
   {
     v9 = v8 - v6;
@@ -6638,8 +6638,8 @@ LABEL_14:
 
 - (_NSRange)_accessibilitySelectedNSRangeForObject
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTextMarkerRangeForSelection];
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v3];
+  _accessibilityTextMarkerRangeForSelection = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTextMarkerRangeForSelection];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:_accessibilityTextMarkerRangeForSelection];
 
   if ([v4 count] == 2)
   {
@@ -6649,8 +6649,8 @@ LABEL_14:
 
     if ((v7 & 1) == 0)
     {
-      v10 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTextMarkerRange];
-      v11 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v10];
+      _accessibilityTextMarkerRange = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityTextMarkerRange];
+      v11 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:_accessibilityTextMarkerRange];
 
       if ([v11 count] == 2 && (objc_msgSend(v11, "objectAtIndex:", 0), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectAtIndex:", 1), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqual:", v13), v13, v12, (v14 & 1) == 0))
       {
@@ -6713,19 +6713,19 @@ LABEL_9:
     v10 = v6;
     if (isIADs != 1)
     {
-      v13 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-      if ((*MEMORY[0x29EDC7558] & v13) != 0)
+      accessibilityTraits = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+      if ((*MEMORY[0x29EDC7558] & accessibilityTraits) != 0)
       {
         AX_CGRectGetCenter();
       }
 
       else
       {
-        v15 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
-        if ((*MEMORY[0x29EDC7598] & ~v15) == 0)
+        accessibilityTraits2 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits];
+        if ((*MEMORY[0x29EDC7598] & ~accessibilityTraits2) == 0)
         {
-          v16 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
-          v17 = [v16 length];
+          accessibilityValue = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityValue];
+          v17 = [accessibilityValue length];
 
           if (v17)
           {
@@ -6765,17 +6765,17 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_axHasMultipleAccessibleChildren:(int64_t *)a3
+- (BOOL)_axHasMultipleAccessibleChildren:(int64_t *)children
 {
-  v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
-  if (v5 < 1)
+  accessibilityElementCount = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementCount];
+  if (accessibilityElementCount < 1)
   {
     return 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = accessibilityElementCount;
     v7 = 0;
     v8 = 1;
     do
@@ -6783,18 +6783,18 @@ LABEL_12:
       v9 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElementAtIndex:v7];
       if ([v9 isAccessibilityElement])
       {
-        v10 = *a3 + 1;
-        *a3 = v10;
+        v10 = *children + 1;
+        *children = v10;
       }
 
       else
       {
         if (objc_opt_respondsToSelector())
         {
-          [v9 _axHasMultipleAccessibleChildren:a3];
+          [v9 _axHasMultipleAccessibleChildren:children];
         }
 
-        v10 = *a3;
+        v10 = *children;
       }
 
       if (v10 >= 2)
@@ -6828,22 +6828,22 @@ BOOL __78__UIKitWebAccessibilityObjectWrapper__accessibilityUnignoredVisibleDesc
   return v5;
 }
 
-- (id)accessibilityTextNavigationElementInDirection:(int64_t)a3
+- (id)accessibilityTextNavigationElementInDirection:(int64_t)direction
 {
   if ([(UIKitWebAccessibilityObjectWrapper *)self _prepareAccessibilityCall]&& (v5 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityTraits], (*MEMORY[0x29EDC7598] & v5) == 0))
   {
-    v8 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-    [v8 setDirection:a3];
-    v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityElementsInDirectionWithCount:1 options:v8];
-    v6 = [v9 firstObject];
+    defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+    [defaultVoiceOverOptions setDirection:direction];
+    v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityElementsInDirectionWithCount:1 options:defaultVoiceOverOptions];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (void)_repostFocusChangeNotification
@@ -6853,27 +6853,27 @@ BOOL __78__UIKitWebAccessibilityObjectWrapper__accessibilityUnignoredVisibleDesc
   {
     v4 = [(UIKitWebAccessibilityObjectWrapper *)self safeValueForKey:@"accessibilityFocusedUIElement"];
     v13 = 0;
-    v5 = [v4 _accessibilityUnignoredDescendant];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 _axHasMultipleAccessibleChildren:&v13] && (-[UIKitWebAccessibilityObjectWrapper safeBoolForKey:](self, "safeBoolForKey:", @"accessibilityIsDialog") & 1) == 0 && (v13 > 4 || !v5))
+    _accessibilityUnignoredDescendant = [v4 _accessibilityUnignoredDescendant];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 _axHasMultipleAccessibleChildren:&v13] && (-[UIKitWebAccessibilityObjectWrapper safeBoolForKey:](self, "safeBoolForKey:", @"accessibilityIsDialog") & 1) == 0 && (v13 > 4 || !_accessibilityUnignoredDescendant))
     {
       v9 = v4;
     }
 
     else
     {
-      if (v4 != v5)
+      if (v4 != _accessibilityUnignoredDescendant)
       {
-        v6 = [v4 _accessibilityUnignoredVisibleDescendant];
-        v7 = v6;
-        if (v6)
+        _accessibilityUnignoredVisibleDescendant = [v4 _accessibilityUnignoredVisibleDescendant];
+        v7 = _accessibilityUnignoredVisibleDescendant;
+        if (_accessibilityUnignoredVisibleDescendant)
         {
-          v8 = v6;
+          v8 = _accessibilityUnignoredVisibleDescendant;
 
-          v5 = v8;
+          _accessibilityUnignoredDescendant = v8;
         }
       }
 
-      v9 = v5;
+      v9 = _accessibilityUnignoredDescendant;
 
       if (([v9 accessibilityElementIsFocused] & 1) == 0)
       {
@@ -6892,52 +6892,52 @@ BOOL __78__UIKitWebAccessibilityObjectWrapper__accessibilityUnignoredVisibleDesc
         [(UIKitWebAccessibilityObjectWrapper *)self _axHandleNotificationPosting:*v12 data:v11];
       }
 
-      v5 = v9;
+      _accessibilityUnignoredDescendant = v9;
     }
   }
 }
 
-- (void)accessibilityOverrideProcessNotification:(id)a3 notificationData:(id)a4
+- (void)accessibilityOverrideProcessNotification:(id)notification notificationData:(id)data
 {
   v17[2] = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = AXWebNotificationWithName(a3);
-  v8 = [v7 unsignedIntValue];
-  if (v8 <= 1025)
+  dataCopy = data;
+  v7 = AXWebNotificationWithName(notification);
+  unsignedIntValue = [v7 unsignedIntValue];
+  if (unsignedIntValue <= 1025)
   {
-    if (v8 > 1008)
+    if (unsignedIntValue > 1008)
     {
-      switch(v8)
+      switch(unsignedIntValue)
       {
         case 1009:
-          v15 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMakeScrollStatus];
+          _accessibilityMakeScrollStatus = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityMakeScrollStatus];
           LastScrollDirection = 0;
-          [(UIKitWebAccessibilityObjectWrapper *)self performSelectorOnMainThread:sel__performPostScrollStatus_ withObject:v15 waitUntilDone:0];
+          [(UIKitWebAccessibilityObjectWrapper *)self performSelectorOnMainThread:sel__performPostScrollStatus_ withObject:_accessibilityMakeScrollStatus waitUntilDone:0];
 
           break;
         case 1017:
           v9 = sel__enqueReorderingNotification_;
           v11 = &unk_2A23B6E78;
-          v10 = self;
+          selfCopy2 = self;
           goto LABEL_27;
         case 1020:
           v9 = sel__repostFocusChangeNotification;
 LABEL_12:
-          v10 = self;
+          selfCopy2 = self;
           v11 = 0;
 LABEL_27:
-          [(UIKitWebAccessibilityObjectWrapper *)v10 performSelectorOnMainThread:v9 withObject:v11 waitUntilDone:0];
+          [(UIKitWebAccessibilityObjectWrapper *)selfCopy2 performSelectorOnMainThread:v9 withObject:v11 waitUntilDone:0];
           goto LABEL_29;
       }
 
       goto LABEL_29;
     }
 
-    if (v8 != 1005)
+    if (unsignedIntValue != 1005)
     {
-      if (v8 == 1008)
+      if (unsignedIntValue == 1008)
       {
-        v12 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithData:v6 encoding:4];
+        v12 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithData:dataCopy encoding:4];
         if ([v12 length])
         {
           UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v12);
@@ -6959,11 +6959,11 @@ LABEL_22:
     goto LABEL_29;
   }
 
-  if (v8 <= 3031)
+  if (unsignedIntValue <= 3031)
   {
-    if (v8 != 1026)
+    if (unsignedIntValue != 1026)
     {
-      if (v8 != 1046)
+      if (unsignedIntValue != 1046)
       {
         goto LABEL_29;
       }
@@ -6978,12 +6978,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v8 == 3032 || v8 == 3033)
+  if (unsignedIntValue == 3032 || unsignedIntValue == 3033)
   {
     goto LABEL_28;
   }
 
-  if (v8 == 3034)
+  if (unsignedIntValue == 3034)
   {
     v9 = sel__performLiveRegionUpdate;
     goto LABEL_12;
@@ -7005,13 +7005,13 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query
 {
-  v6 = a4;
-  v7 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
-  v8 = [v7 safeValueForKey:@"accessibilityFocusedUIElement"];
+  queryCopy = query;
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWebPageParent];
+  v8 = [_accessibilityWebPageParent safeValueForKey:@"accessibilityFocusedUIElement"];
 
-  v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityNextElementsWithHeading:a3 queryString:v6 startingFrom:v8];
+  v9 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityNextElementsWithHeading:heading queryString:queryCopy startingFrom:v8];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -7025,10 +7025,10 @@ LABEL_29:
   v10 = v8;
   v13 = v10;
   [v9 enumerateObjectsUsingBlock:v12];
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(_accessibilityWebPageParent) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v7;
+  return _accessibilityWebPageParent;
 }
 
 void __96__UIKitWebAccessibilityObjectWrapper__accessibilityMoveFocusWithHeading_toElementMatchingQuery___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -7045,16 +7045,16 @@ void __96__UIKitWebAccessibilityObjectWrapper__accessibilityMoveFocusWithHeading
   }
 }
 
-- (id)_accessibilityNextElementsWithHeading:(unint64_t)a3 queryString:(id)a4 startingFrom:(id)a5
+- (id)_accessibilityNextElementsWithHeading:(unint64_t)heading queryString:(id)string startingFrom:(id)from
 {
-  v6 = a3;
+  headingCopy = heading;
   v22[5] = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = a5;
-  if ((v6 & 0x330) != 0)
+  stringCopy = string;
+  fromCopy = from;
+  if ((headingCopy & 0x330) != 0)
   {
     v9 = @"AXDirectionNext";
-    if ((v6 & 0x110) == 0)
+    if ((headingCopy & 0x110) == 0)
     {
       v9 = @"AXDirectionPrevious";
     }
@@ -7072,14 +7072,14 @@ void __96__UIKitWebAccessibilityObjectWrapper__accessibilityMoveFocusWithHeading
     v10 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v22 forKeys:v21 count:5];
     v11 = [v10 mutableCopy];
 
-    if ((v6 & 0x30) != 0 && v8)
+    if ((headingCopy & 0x30) != 0 && fromCopy)
     {
-      [v11 setObject:v8 forKey:@"AXStartElement"];
+      [v11 setObject:fromCopy forKey:@"AXStartElement"];
     }
 
-    if (v7)
+    if (stringCopy)
     {
-      [v11 setObject:v7 forKey:@"AXSearchText"];
+      [v11 setObject:stringCopy forKey:@"AXSearchText"];
     }
 
     v15 = 0;
@@ -7112,24 +7112,24 @@ uint64_t __101__UIKitWebAccessibilityObjectWrapper__accessibilityNextElementsWit
 
 - (BOOL)_accessibilityHasNativeFocus
 {
-  v2 = self;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)v2 _accessibilityWebPageParent];
-  v4 = [v3 safeValueForKey:@"accessibilityFocusedUIElement"];
+  selfCopy = self;
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)selfCopy _accessibilityWebPageParent];
+  v4 = [_accessibilityWebPageParent safeValueForKey:@"accessibilityFocusedUIElement"];
 
-  if (v2)
+  if (selfCopy)
   {
     do
     {
-      v5 = [v4 isEqual:v2];
+      v5 = [v4 isEqual:selfCopy];
       if (v5)
       {
         break;
       }
 
-      v6 = [(UIKitWebAccessibilityObjectWrapper *)v2 accessibilityContainer];
+      accessibilityContainer = [(UIKitWebAccessibilityObjectWrapper *)selfCopy accessibilityContainer];
       v7 = __UIAccessibilitySafeClass();
 
-      v2 = v7;
+      selfCopy = v7;
     }
 
     while (v7);
@@ -7145,13 +7145,13 @@ uint64_t __101__UIKitWebAccessibilityObjectWrapper__accessibilityNextElementsWit
 
 - (BOOL)_accessibilitySetNativeFocus
 {
-  v2 = self;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)v2 _accessibilityWebPageParent];
-  v4 = [v3 safeValueForKey:@"accessibilityFocusedUIElement"];
+  selfCopy = self;
+  _accessibilityWebPageParent = [(UIKitWebAccessibilityObjectWrapper *)selfCopy _accessibilityWebPageParent];
+  v4 = [_accessibilityWebPageParent safeValueForKey:@"accessibilityFocusedUIElement"];
 
-  if (v2)
+  if (selfCopy)
   {
-    v5 = v2;
+    v5 = selfCopy;
     while (1)
     {
       v6 = [v4 _accessibilityIsDescendantOfElement:v5];
@@ -7171,15 +7171,15 @@ uint64_t __101__UIKitWebAccessibilityObjectWrapper__accessibilityNextElementsWit
         break;
       }
 
-      v10 = [(UIKitWebAccessibilityObjectWrapper *)v2 _accessibilityWebPageParent];
-      v12 = [v10 safeValueForKey:@"accessibilityFocusedUIElement"];
+      _accessibilityWebPageParent2 = [(UIKitWebAccessibilityObjectWrapper *)selfCopy _accessibilityWebPageParent];
+      v12 = [_accessibilityWebPageParent2 safeValueForKey:@"accessibilityFocusedUIElement"];
 
       if ([v12 isEqual:v7])
       {
         goto LABEL_11;
       }
 
-      v11 = [v7 accessibilityContainer];
+      accessibilityContainer = [v7 accessibilityContainer];
       v5 = __UIAccessibilitySafeClass();
 
       v4 = v12;
@@ -7232,18 +7232,18 @@ LABEL_12:
 {
   v9.receiver = self;
   v9.super_class = UIKitWebAccessibilityObjectWrapper;
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)&v9 focusGroupIdentifier];
-  if (v3 || (-[UIKitWebAccessibilityObjectWrapper _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  focusGroupIdentifier = [(UIKitWebAccessibilityObjectWrapper *)&v9 focusGroupIdentifier];
+  if (focusGroupIdentifier || (-[UIKitWebAccessibilityObjectWrapper _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = v3;
+    _accessibilityDefaultFocusGroupIdentifier = focusGroupIdentifier;
   }
 
   else
   {
-    v6 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityDefaultFocusGroupIdentifier];
   }
 
-  v7 = v6;
+  v7 = _accessibilityDefaultFocusGroupIdentifier;
 
   return v7;
 }
@@ -7262,17 +7262,17 @@ LABEL_12:
   [(UIKitWebAccessibilityObjectWrapper *)self _updateFocusLayerFrame];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __107__UIKitWebAccessibilityObjectWrapper_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v8[3] = &unk_29F31F6C0;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 addCoordinatedAnimations:v8 completion:0];
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
+  [coordinator addCoordinatedAnimations:v8 completion:0];
 }
 
 uint64_t __107__UIKitWebAccessibilityObjectWrapper_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -7305,28 +7305,28 @@ LABEL_7:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIKitWebAccessibilityObjectWrapper *)self isAccessibilityElement];
-  if (v3)
+  isAccessibilityElement = [(UIKitWebAccessibilityObjectWrapper *)self isAccessibilityElement];
+  if (isAccessibilityElement)
   {
 
-    LOBYTE(v3) = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityRespondsToUserInteraction];
+    LOBYTE(isAccessibilityElement) = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityRespondsToUserInteraction];
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)_preferredFocusRegionCoordinateSpace
 {
-  v2 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityParentView];
-  v3 = [v2 _screen];
-  v4 = [v3 coordinateSpace];
+  _accessibilityParentView = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityParentView];
+  _screen = [_accessibilityParentView _screen];
+  coordinateSpace = [_screen coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElements:a3.origin.x];
+  v4 = [(UIKitWebAccessibilityObjectWrapper *)self accessibilityElements:rect.origin.x];
   if (v4)
   {
     v12[0] = MEMORY[0x29EDCA5F8];
@@ -7418,9 +7418,9 @@ uint64_t __75__UIKitWebAccessibilityObjectWrapper_UIFocusConformance__focusItems
   return [(UIKitWebAccessibilityObjectWrapper *)self shouldGroupAccessibilityChildren];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (&unk_2A23B83B8 == a3 || &unk_2A23B8080 == a3 || &unk_2A23B8510 == a3 || &unk_2A23B8938 == a3)
+  if (&unk_2A23B83B8 == protocol || &unk_2A23B8080 == protocol || &unk_2A23B8510 == protocol || &unk_2A23B8938 == protocol)
   {
     return 1;
   }
@@ -7439,13 +7439,13 @@ uint64_t __75__UIKitWebAccessibilityObjectWrapper_UIFocusConformance__focusItems
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWindow];
-  v12 = [(UIKitWebAccessibilityObjectWrapper *)self coordinateSpace];
-  v13 = [v11 coordinateSpace];
-  if (v13)
+  _accessibilityWindow = [(UIKitWebAccessibilityObjectWrapper *)self _accessibilityWindow];
+  coordinateSpace = [(UIKitWebAccessibilityObjectWrapper *)self coordinateSpace];
+  coordinateSpace2 = [_accessibilityWindow coordinateSpace];
+  if (coordinateSpace2)
   {
-    [v11 convertRect:0 fromWindow:{v4, v6, v8, v10}];
-    [v12 convertRect:v13 fromCoordinateSpace:?];
+    [_accessibilityWindow convertRect:0 fromWindow:{v4, v6, v8, v10}];
+    [coordinateSpace convertRect:coordinateSpace2 fromCoordinateSpace:?];
     v4 = v14;
     v6 = v15;
     v8 = v16;
@@ -7475,7 +7475,7 @@ uint64_t __75__UIKitWebAccessibilityObjectWrapper_UIFocusConformance__focusItems
 - (void)_accessibilityScrollToVisible
 {
   v5 = *MEMORY[0x29EDCA608];
-  [a1 _accessibilityContentOffset];
+  [self _accessibilityContentOffset];
   v3 = NSStringFromCGPoint(v6);
   OUTLINED_FUNCTION_2();
   _os_log_debug_impl(&dword_29C788000, a2, OS_LOG_TYPE_DEBUG, "Final content offset was %{public}@", v4, 0xCu);

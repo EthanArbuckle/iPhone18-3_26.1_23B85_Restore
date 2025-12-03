@@ -1,28 +1,28 @@
 @interface _SFPBOpenWebClipCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBOpenWebClipCommand)initWithDictionary:(id)a3;
-- (_SFPBOpenWebClipCommand)initWithFacade:(id)a3;
-- (_SFPBOpenWebClipCommand)initWithJSON:(id)a3;
+- (_SFPBOpenWebClipCommand)initWithDictionary:(id)dictionary;
+- (_SFPBOpenWebClipCommand)initWithFacade:(id)facade;
+- (_SFPBOpenWebClipCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setClipIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setClipIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBOpenWebClipCommand
 
-- (_SFPBOpenWebClipCommand)initWithFacade:(id)a3
+- (_SFPBOpenWebClipCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBOpenWebClipCommand *)self init];
   if (v5)
   {
-    v6 = [v4 clipIdentifier];
+    clipIdentifier = [facadeCopy clipIdentifier];
 
-    if (v6)
+    if (clipIdentifier)
     {
-      v7 = [v4 clipIdentifier];
-      [(_SFPBOpenWebClipCommand *)v5 setClipIdentifier:v7];
+      clipIdentifier2 = [facadeCopy clipIdentifier];
+      [(_SFPBOpenWebClipCommand *)v5 setClipIdentifier:clipIdentifier2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBOpenWebClipCommand)initWithDictionary:(id)a3
+- (_SFPBOpenWebClipCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBOpenWebClipCommand;
   v5 = [(_SFPBOpenWebClipCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clipIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clipIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBOpenWebClipCommand)initWithJSON:(id)a3
+- (_SFPBOpenWebClipCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBOpenWebClipCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBOpenWebClipCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBOpenWebClipCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clipIdentifier)
   {
-    v4 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"clipIdentifier"];
+    clipIdentifier = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
+    v5 = [clipIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"clipIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
-    v6 = [v4 clipIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    clipIdentifier = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
+    clipIdentifier2 = [equalCopy clipIdentifier];
+    v7 = clipIdentifier2;
+    if ((clipIdentifier != 0) != (clipIdentifier2 == 0))
     {
-      v8 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
-      if (!v8)
+      clipIdentifier3 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
+      if (!clipIdentifier3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
-      v11 = [v4 clipIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = clipIdentifier3;
+      clipIdentifier4 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
+      clipIdentifier5 = [equalCopy clipIdentifier];
+      v12 = [clipIdentifier4 isEqual:clipIdentifier5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
-  if (v4)
+  toCopy = to;
+  clipIdentifier = [(_SFPBOpenWebClipCommand *)self clipIdentifier];
+  if (clipIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setClipIdentifier:(id)a3
+- (void)setClipIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   clipIdentifier = self->_clipIdentifier;
   self->_clipIdentifier = v4;
 

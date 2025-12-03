@@ -1,63 +1,63 @@
 @interface LPiTunesMediaSoftwareMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesMediaSoftwareMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)storeIdentifierForTransformer:(id)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesMediaSoftwareMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)storeIdentifierForTransformer:(id)transformer;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesMediaSoftwareMetadata
 
-- (LPiTunesMediaSoftwareMetadata)initWithCoder:(id)a3
+- (LPiTunesMediaSoftwareMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = LPiTunesMediaSoftwareMetadata;
   v5 = [(LPiTunesMediaSoftwareMetadata *)&v28 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     v7 = *&v5->_isMessagesOnlyApp;
     *&v5->_isMessagesOnlyApp = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"name");
+    v10 = decodeStringForKey(coderCopy, @"name");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v10;
 
-    v12 = decodeStringForKey(v4, @"subtitle");
+    v12 = decodeStringForKey(coderCopy, @"subtitle");
     name = v5->_name;
     v5->_name = v12;
 
-    v14 = decodeStringForKey(v4, @"genre");
+    v14 = decodeStringForKey(coderCopy, @"genre");
     subtitle = v5->_subtitle;
     v5->_subtitle = v14;
 
-    v16 = decodeStringForKey(v4, @"platform");
+    v16 = decodeStringForKey(coderCopy, @"platform");
     genre = v5->_genre;
     v5->_genre = v16;
 
-    v18 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v18 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     platform = v5->_platform;
     v5->_platform = v18;
 
-    v20 = [v4 _lp_strictlyDecodeArrayOfLPImagesForKey:@"screenshots"];
+    v20 = [coderCopy _lp_strictlyDecodeArrayOfLPImagesForKey:@"screenshots"];
     icon = v5->_icon;
     v5->_icon = v20;
 
-    v22 = [v4 _lp_strictlyDecodeLPVideoForKey:@"previewVideo"];
+    v22 = [coderCopy _lp_strictlyDecodeLPVideoForKey:@"previewVideo"];
     screenshots = v5->_screenshots;
     v5->_screenshots = v22;
 
-    *(&v5->super.__disallowsURLOverrideByDelegate + 1) = [v4 decodeBoolForKey:@"isMessagesOnlyApp"];
-    v24 = [v4 _lp_strictlyDecodeLPImageForKey:@"messagesAppIcon"];
+    *(&v5->super.__disallowsURLOverrideByDelegate + 1) = [coderCopy decodeBoolForKey:@"isMessagesOnlyApp"];
+    v24 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"messagesAppIcon"];
     previewVideo = v5->_previewVideo;
     v5->_previewVideo = v24;
 
@@ -67,57 +67,57 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:*&self->_isMessagesOnlyApp forKey:@"storeFrontIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"name"];
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"subtitle"];
-  [v4 _lp_encodeStringIfNotNil:self->_subtitle forKey:@"genre"];
-  [v4 _lp_encodeStringIfNotNil:self->_genre forKey:@"platform"];
-  [v4 _lp_encodeObjectIfNotNil:self->_platform forKey:@"icon"];
-  [v4 _lp_encodeObjectIfNotNil:self->_icon forKey:@"screenshots"];
-  [v4 _lp_encodeObjectIfNotNil:self->_screenshots forKey:@"previewVideo"];
-  [v4 encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"isMessagesOnlyApp"];
-  [v4 _lp_encodeObjectIfNotNil:self->_previewVideo forKey:@"messagesAppIcon"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:*&self->_isMessagesOnlyApp forKey:@"storeFrontIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"name"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"subtitle"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_subtitle forKey:@"genre"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_genre forKey:@"platform"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_platform forKey:@"icon"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_icon forKey:@"screenshots"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_screenshots forKey:@"previewVideo"];
+  [coderCopy encodeBool:*(&self->super.__disallowsURLOverrideByDelegate + 1) forKey:@"isMessagesOnlyApp"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_previewVideo forKey:@"messagesAppIcon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesMediaSoftwareMetadata allocWithZone:a3];
+  v4 = [LPiTunesMediaSoftwareMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesMediaSoftwareMetadata *)self storeFrontIdentifier];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(LPiTunesMediaSoftwareMetadata *)self storeFrontIdentifier];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(LPiTunesMediaSoftwareMetadata *)self storeIdentifier];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(LPiTunesMediaSoftwareMetadata *)self storeIdentifier];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(LPiTunesMediaSoftwareMetadata *)self name];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setName:v7];
+    name = [(LPiTunesMediaSoftwareMetadata *)self name];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setName:name];
 
-    v8 = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setSubtitle:v8];
+    subtitle = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setSubtitle:subtitle];
 
-    v9 = [(LPiTunesMediaSoftwareMetadata *)self genre];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setGenre:v9];
+    genre = [(LPiTunesMediaSoftwareMetadata *)self genre];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setGenre:genre];
 
-    v10 = [(LPiTunesMediaSoftwareMetadata *)self platform];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setPlatform:v10];
+    platform = [(LPiTunesMediaSoftwareMetadata *)self platform];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setPlatform:platform];
 
-    v11 = [(LPiTunesMediaSoftwareMetadata *)self icon];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setIcon:v11];
+    icon = [(LPiTunesMediaSoftwareMetadata *)self icon];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setIcon:icon];
 
-    v12 = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setScreenshots:v12];
+    screenshots = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setScreenshots:screenshots];
 
-    v13 = [(LPiTunesMediaSoftwareMetadata *)self previewVideo];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setPreviewVideo:v13];
+    previewVideo = [(LPiTunesMediaSoftwareMetadata *)self previewVideo];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setPreviewVideo:previewVideo];
 
     [(LPiTunesMediaSoftwareMetadata *)v4 setIsMessagesOnlyApp:[(LPiTunesMediaSoftwareMetadata *)self isMessagesOnlyApp]];
-    v14 = [(LPiTunesMediaSoftwareMetadata *)self messagesAppIcon];
-    [(LPiTunesMediaSoftwareMetadata *)v4 setMessagesAppIcon:v14];
+    messagesAppIcon = [(LPiTunesMediaSoftwareMetadata *)self messagesAppIcon];
+    [(LPiTunesMediaSoftwareMetadata *)v4 setMessagesAppIcon:messagesAppIcon];
 
     v15 = v4;
   }
@@ -125,12 +125,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesMediaSoftwareMetadata;
-  if ([(LPiTunesMediaSoftwareMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesMediaSoftwareMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -140,7 +140,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], *&self->_isMessagesOnlyApp) & 1) != 0 && objectsAreEqual_0(v6[3], self->_storeFrontIdentifier) && objectsAreEqual_0(v6[4], self->_storeIdentifier) && objectsAreEqual_0(v6[5], self->_name) && objectsAreEqual_0(v6[6], self->_subtitle) && objectsAreEqual_0(v6[7], self->_genre) && objectsAreEqual_0(v6[8], self->_platform) && objectsAreEqual_0(v6[9], self->_icon) && objectsAreEqual_0(v6[10], self->_screenshots) && *(v6 + 11) == *(&self->super.__disallowsURLOverrideByDelegate + 1))
       {
         v5 = objectsAreEqual_0(v6[11], self->_previewVideo);
@@ -161,18 +161,18 @@
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = a3;
-  v3[2](v3, @"icon");
-  v3[2](v3, @"screenshots");
-  v3[2](v3, @"messagesAppIcon");
-  v3[2](v3, @"previewVideo");
+  fieldsCopy = fields;
+  fieldsCopy[2](fieldsCopy, @"icon");
+  fieldsCopy[2](fieldsCopy, @"screenshots");
+  fieldsCopy[2](fieldsCopy, @"messagesAppIcon");
+  fieldsCopy[2](fieldsCopy, @"previewVideo");
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
+  transformerCopy = transformer;
   if ([(LPiTunesMediaSoftwareMetadata *)self isMessagesOnlyApp])
   {
     v5 = 4;
@@ -181,8 +181,8 @@
 
   else
   {
-    v7 = [(LPiTunesMediaSoftwareMetadata *)self platform];
-    v8 = [v7 isEqualToString:@"iOS"];
+    platform = [(LPiTunesMediaSoftwareMetadata *)self platform];
+    v8 = [platform isEqualToString:@"iOS"];
 
     v9 = v8 == 0;
     if (v8)
@@ -208,25 +208,25 @@
   aBlock[3] = &__block_descriptor_40_e26___LPImage_16__0__LPImage_8l;
   aBlock[4] = v5;
   v10 = _Block_copy(aBlock);
-  v11 = [v4 commonPresentationPropertiesForStyle:v6];
+  v11 = [transformerCopy commonPresentationPropertiesForStyle:v6];
   v12 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v11 setCaptionBar:v12];
 
-  v13 = [(LPiTunesMediaSoftwareMetadata *)self name];
-  v14 = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
-  v15 = v14;
-  if (!v14)
+  name = [(LPiTunesMediaSoftwareMetadata *)self name];
+  subtitle = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
+  genre = subtitle;
+  if (!subtitle)
   {
-    v15 = [(LPiTunesMediaSoftwareMetadata *)self genre];
+    genre = [(LPiTunesMediaSoftwareMetadata *)self genre];
   }
 
-  populateCaptionBar(v11, v13, v15, 0, 0, v4);
-  if (!v14)
+  populateCaptionBar(v11, name, genre, 0, 0, transformerCopy);
+  if (!subtitle)
   {
   }
 
-  v16 = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
-  if (v16)
+  subtitle2 = [(LPiTunesMediaSoftwareMetadata *)self subtitle];
+  if (subtitle2)
   {
     v17 = &unk_1F2483488;
   }
@@ -236,24 +236,24 @@
     v17 = &unk_1F24834A0;
   }
 
-  v18 = [v11 captionBar];
-  v19 = [v18 bottom];
-  v20 = [v19 leading];
-  [v20 setMaximumNumberOfLines:v17];
+  captionBar = [v11 captionBar];
+  bottom = [captionBar bottom];
+  leading = [bottom leading];
+  [leading setMaximumNumberOfLines:v17];
 
   if (![(LPiTunesMediaSoftwareMetadata *)self isMessagesOnlyApp]|| ([(LPiTunesMediaSoftwareMetadata *)self messagesAppIcon], v21 = objc_claimAutoreleasedReturnValue(), v10[2](v10, v21), v22 = objc_claimAutoreleasedReturnValue(), v21, !v22))
   {
-    v23 = [(LPiTunesMediaSoftwareMetadata *)self icon];
-    v22 = v10[2](v10, v23);
+    icon = [(LPiTunesMediaSoftwareMetadata *)self icon];
+    v22 = v10[2](v10, icon);
   }
 
-  [v4 _populateProperties:v11 withPrimaryIcon:v22 iconProperties:0 canBecomeImage:0];
-  v24 = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
-  v25 = [v24 firstObject];
-  [v11 setImage:v25];
+  [transformerCopy _populateProperties:v11 withPrimaryIcon:v22 iconProperties:0 canBecomeImage:0];
+  screenshots = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
+  firstObject = [screenshots firstObject];
+  [v11 setImage:firstObject];
 
-  v26 = [(LPiTunesMediaSoftwareMetadata *)self previewVideo];
-  [v11 setVideo:v26];
+  previewVideo = [(LPiTunesMediaSoftwareMetadata *)self previewVideo];
+  [v11 setVideo:previewVideo];
 
   return v11;
 }
@@ -290,35 +290,35 @@ id __83__LPiTunesMediaSoftwareMetadata_Transformer__presentationPropertiesForTra
   return v6;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"App Store: %@");
-  v6 = [(LPiTunesMediaSoftwareMetadata *)self name];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  name = [(LPiTunesMediaSoftwareMetadata *)self name];
+  v7 = [v4 localizedStringWithFormat:v5, name];
 
   return v7;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v8 = a3;
-  v4 = [(LPiTunesMediaSoftwareMetadata *)self name];
-  [v8 setTitle:v4];
+  compatibilityCopy = compatibility;
+  name = [(LPiTunesMediaSoftwareMetadata *)self name];
+  [compatibilityCopy setTitle:name];
 
-  v5 = [(LPiTunesMediaSoftwareMetadata *)self icon];
-  [v8 setIcon:v5];
+  icon = [(LPiTunesMediaSoftwareMetadata *)self icon];
+  [compatibilityCopy setIcon:icon];
 
-  v6 = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
-  v7 = [v6 firstObject];
-  [v8 setImage:v7];
+  screenshots = [(LPiTunesMediaSoftwareMetadata *)self screenshots];
+  firstObject = [screenshots firstObject];
+  [compatibilityCopy setImage:firstObject];
 }
 
-- (id)storeIdentifierForTransformer:(id)a3
+- (id)storeIdentifierForTransformer:(id)transformer
 {
-  v3 = [(LPiTunesMediaSoftwareMetadata *)self storeIdentifier];
+  storeIdentifier = [(LPiTunesMediaSoftwareMetadata *)self storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 @end

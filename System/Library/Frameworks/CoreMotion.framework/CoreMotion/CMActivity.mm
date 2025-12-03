@@ -1,35 +1,35 @@
 @interface CMActivity
 - (BOOL)isDriving;
 - (CLMotionActivity)activity;
-- (CMActivity)initWithCoder:(id)a3;
-- (CMActivity)initWithMotionActivity:(CLMotionActivity *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMActivity)initWithCoder:(id)coder;
+- (CMActivity)initWithMotionActivity:(CLMotionActivity *)activity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMActivity
 
-- (CMActivity)initWithMotionActivity:(CLMotionActivity *)a3
+- (CMActivity)initWithMotionActivity:(CLMotionActivity *)activity
 {
-  timestamp = a3->timestamp;
+  timestamp = activity->timestamp;
   v21.receiver = self;
   v21.super_class = CMActivity;
   result = [(CMLogItem *)&v21 initWithTimestamp:timestamp, a10];
   if (result)
   {
-    *&result->fActivity.type = *&a3->type;
-    v15 = *&a3->vehicleType;
-    v17 = *&a3->mountedConfidence;
-    v16 = *&a3->isStanding;
-    *&result->fActivity.isVehicleConnected = *&a3->isVehicleConnected;
+    *&result->fActivity.type = *&activity->type;
+    v15 = *&activity->vehicleType;
+    v17 = *&activity->mountedConfidence;
+    v16 = *&activity->isStanding;
+    *&result->fActivity.isVehicleConnected = *&activity->isVehicleConnected;
     *&result->fActivity.vehicleType = v15;
     *&result->fActivity.mountedConfidence = v17;
     *&result->fActivity.isStanding = v16;
-    v19 = *&a3[1].mountedConfidence;
-    v18 = *&a3[1].isStanding;
-    v20 = *&a3[1].type;
-    *&result[1].fActivity.isStanding = *&a3[1].isVehicleConnected;
+    v19 = *&activity[1].mountedConfidence;
+    v18 = *&activity[1].isStanding;
+    v20 = *&activity[1].type;
+    *&result[1].fActivity.isStanding = *&activity[1].isVehicleConnected;
     *&result[1].fActivity.type = v19;
     *&result[1].fActivity.mountedConfidence = v18;
     result[1].super = v20;
@@ -38,26 +38,26 @@
   return result;
 }
 
-- (CMActivity)initWithCoder:(id)a3
+- (CMActivity)initWithCoder:(id)coder
 {
   v29.receiver = self;
   v29.super_class = CMActivity;
   v5 = [(CMLogItem *)&v29 initWithCoder:?];
   if (v5)
   {
-    v6 = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMActivityCodingKeyType");
-    v8 = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMActivityCodingKeyConfidence");
-    v10 = objc_msgSend_decodeIntegerForKey_(a3, v9, @"kCMActivityCodingKeyMounted");
-    v12 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"kCMActivityCodingKeyMountedConfidence");
-    v14 = objc_msgSend_decodeBoolForKey_(a3, v13, @"kCMActivityCodingKeyIsStanding");
-    objc_msgSend_decodeFloatForKey_(a3, v15, @"kCMActivityCodingKeyTiltAngle");
+    v6 = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMActivityCodingKeyType");
+    v8 = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMActivityCodingKeyConfidence");
+    v10 = objc_msgSend_decodeIntegerForKey_(coder, v9, @"kCMActivityCodingKeyMounted");
+    v12 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"kCMActivityCodingKeyMountedConfidence");
+    v14 = objc_msgSend_decodeBoolForKey_(coder, v13, @"kCMActivityCodingKeyIsStanding");
+    objc_msgSend_decodeFloatForKey_(coder, v15, @"kCMActivityCodingKeyTiltAngle");
     v17 = v16;
-    objc_msgSend_decodeDoubleForKey_(a3, v18, @"kCMActivityCodingKeyTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v18, @"kCMActivityCodingKeyTimestamp");
     v20 = v19;
-    v22 = objc_msgSend_decodeIntegerForKey_(a3, v21, @"kCMActivityCodingKeyVehicleExitState");
-    objc_msgSend_decodeDoubleForKey_(a3, v23, @"kCMActivityCodingKeyEstExitTime");
+    v22 = objc_msgSend_decodeIntegerForKey_(coder, v21, @"kCMActivityCodingKeyVehicleExitState");
+    objc_msgSend_decodeDoubleForKey_(coder, v23, @"kCMActivityCodingKeyEstExitTime");
     v25 = v24;
-    objc_msgSend_decodeDoubleForKey_(a3, v26, @"kCMActivityCodingKeyStartTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v26, @"kCMActivityCodingKeyStartTime");
     *(v5 + 4) = v6;
     *(v5 + 5) = v8;
     *(v5 + 6) = 0;
@@ -87,31 +87,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   v16.receiver = self;
   v16.super_class = CMActivity;
   [(CMLogItem *)&v16 encodeWithCoder:?];
-  v4 = (v4 + 16);
-  objc_msgSend_encodeInteger_forKey_(a3, v5, LODWORD(v4->super.super.isa), @"kCMActivityCodingKeyType");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, HIDWORD(v4->super.super.isa), @"kCMActivityCodingKeyConfidence");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, HIDWORD(v4->super._internalLogItem), @"kCMActivityCodingKeyMounted");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, v4->fActivity.type, @"kCMActivityCodingKeyMountedConfidence");
-  objc_msgSend_encodeBool_forKey_(a3, v9, LOBYTE(v4->fActivity.mountedConfidence), @"kCMActivityCodingKeyIsStanding");
-  LODWORD(v10) = v4->fActivity.conservativeMountedState;
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"kCMActivityCodingKeyTiltAngle", v10);
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"kCMActivityCodingKeyTimestamp", v4->fActivity.conservativeMountedProbability);
-  objc_msgSend_encodeInteger_forKey_(a3, v13, LODWORD(v4->fActivity.tilt), @"kCMActivityCodingKeyVehicleExitState");
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"kCMActivityCodingKeyEstExitTime", v4->fActivity.timestamp);
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"kCMActivityCodingKeyStartTime", *&v4->fActivity.vehicleType);
+  selfCopy = (selfCopy + 16);
+  objc_msgSend_encodeInteger_forKey_(coder, v5, LODWORD(selfCopy->super.super.isa), @"kCMActivityCodingKeyType");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, HIDWORD(selfCopy->super.super.isa), @"kCMActivityCodingKeyConfidence");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, HIDWORD(selfCopy->super._internalLogItem), @"kCMActivityCodingKeyMounted");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, selfCopy->fActivity.type, @"kCMActivityCodingKeyMountedConfidence");
+  objc_msgSend_encodeBool_forKey_(coder, v9, LOBYTE(selfCopy->fActivity.mountedConfidence), @"kCMActivityCodingKeyIsStanding");
+  LODWORD(v10) = selfCopy->fActivity.conservativeMountedState;
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"kCMActivityCodingKeyTiltAngle", v10);
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"kCMActivityCodingKeyTimestamp", selfCopy->fActivity.conservativeMountedProbability);
+  objc_msgSend_encodeInteger_forKey_(coder, v13, LODWORD(selfCopy->fActivity.tilt), @"kCMActivityCodingKeyVehicleExitState");
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"kCMActivityCodingKeyEstExitTime", selfCopy->fActivity.timestamp);
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"kCMActivityCodingKeyStartTime", *&selfCopy->fActivity.vehicleType);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CMActivity;
-  result = [(CMLogItem *)&v11 copyWithZone:a3];
+  result = [(CMLogItem *)&v11 copyWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->fActivity.type;

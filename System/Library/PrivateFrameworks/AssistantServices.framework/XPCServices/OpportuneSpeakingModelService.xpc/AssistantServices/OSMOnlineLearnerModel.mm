@@ -1,8 +1,8 @@
 @interface OSMOnlineLearnerModel
 - (OSMOnlineLearnerModel)init;
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakable:(id)a4;
-- (void)setSpeakable:(id)a3;
-- (void)startWithDelegate:(id)a3;
+- (void)recordFeedbackOfType:(int64_t)type forSpeakable:(id)speakable;
+- (void)setSpeakable:(id)speakable;
+- (void)startWithDelegate:(id)delegate;
 - (void)stop;
 @end
 
@@ -22,54 +22,54 @@
   self->_delegate = 0;
 }
 
-- (void)recordFeedbackOfType:(int64_t)a3 forSpeakable:(id)a4
+- (void)recordFeedbackOfType:(int64_t)type forSpeakable:(id)speakable
 {
-  v6 = a4;
+  speakableCopy = speakable;
   v7 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v11 = v7;
     v12 = AFOpportuneSpeakingModelFeedbackGetDescription();
-    v13 = [v6 speakableIdentifier];
+    speakableIdentifier = [speakableCopy speakableIdentifier];
     v14 = 136315650;
     v15 = "[OSMOnlineLearnerModel recordFeedbackOfType:forSpeakable:]";
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v13;
+    v19 = speakableIdentifier;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s feedback: %@, speakable id: %@", &v14, 0x20u);
   }
 
   v8 = +[AFOpportuneSpeakingModuleDataCollection sharedCollector];
-  v9 = [v6 speakableIdentifier];
-  [v8 logFeedbackOfType:a3 forSpeakableId:v9 withModelId:self->_identifier];
+  speakableIdentifier2 = [speakableCopy speakableIdentifier];
+  [v8 logFeedbackOfType:type forSpeakableId:speakableIdentifier2 withModelId:self->_identifier];
 
   v10 = +[OSMRelevanceEngine sharedEngine];
-  [v10 processFeedback:a3];
+  [v10 processFeedback:type];
 }
 
-- (void)setSpeakable:(id)a3
+- (void)setSpeakable:(id)speakable
 {
-  v4 = a3;
+  speakableCopy = speakable;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v152 = v5;
-    v153 = [v4 speakableDescription];
+    speakableDescription = [speakableCopy speakableDescription];
     *buf = 136315394;
     v269 = "[OSMOnlineLearnerModel setSpeakable:]";
     v270 = 2112;
-    v271 = v153;
+    v271 = speakableDescription;
     _os_log_debug_impl(&_mh_execute_header, v152, OS_LOG_TYPE_DEBUG, "%s speakable: %@", buf, 0x16u);
   }
 
   v6 = +[NSMutableArray array];
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = v4;
+  v8 = speakableCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v205 = self;
+    selfCopy = self;
     v207 = v6;
     v206 = [v8 copy];
     v9 = [[OSMNotificationFeatureMap alloc] initWithNotification:v206];
@@ -92,11 +92,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v154 = v16;
-      v155 = [v10 int64Value];
+      int64Value = [v10 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v155;
+      v271 = int64Value;
       _os_log_debug_impl(&_mh_execute_header, v154, OS_LOG_TYPE_DEBUG, "%s sender is in contacts: %llu", buf, 0x16u);
     }
 
@@ -117,11 +117,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v156 = v21;
-      v157 = [v17 int64Value];
+      int64Value2 = [v17 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v157;
+      v271 = int64Value2;
       _os_log_debug_impl(&_mh_execute_header, v156, OS_LOG_TYPE_DEBUG, "%s sender is favorite: %llu", buf, 0x16u);
     }
 
@@ -143,11 +143,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v158 = v27;
-      v159 = [v23 int64Value];
+      int64Value3 = [v23 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v159;
+      v271 = int64Value3;
       _os_log_debug_impl(&_mh_execute_header, v158, OS_LOG_TYPE_DEBUG, "%s not sent to group: %llu", buf, 0x16u);
     }
 
@@ -170,11 +170,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v160 = v33;
-      v161 = [v29 int64Value];
+      int64Value4 = [v29 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v161;
+      v271 = int64Value4;
       _os_log_debug_impl(&_mh_execute_header, v160, OS_LOG_TYPE_DEBUG, "%s has ongoing event: %llu", buf, 0x16u);
     }
 
@@ -197,22 +197,22 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v162 = v38;
-      v163 = [v28 motionActivity];
-      v164 = [v28 motionConfidence];
+      motionActivity = [v28 motionActivity];
+      motionConfidence = [v28 motionConfidence];
       *buf = 136315650;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v163;
+      v271 = motionActivity;
       v272 = 2112;
-      v273 = v164;
+      v273 = motionConfidence;
       _os_log_debug_impl(&_mh_execute_header, v162, OS_LOG_TYPE_DEBUG, "%s motion activity: %lu confidence: %@", buf, 0x20u);
 
       v28 = v230;
     }
 
     v203 = v29;
-    v201 = [v28 musicPlayingState];
-    v40 = +[REFeatureValue featureValueWithInt64:](REFeatureValue, "featureValueWithInt64:", [v201 state] == 1);
+    musicPlayingState = [v28 musicPlayingState];
+    v40 = +[REFeatureValue featureValueWithInt64:](REFeatureValue, "featureValueWithInt64:", [musicPlayingState state] == 1);
     v41 = +[OSMRelevanceEngineFeatures isMusicPlayingFeature];
     v224 = [RERelevanceProvider customRelevanceProviderForFeature:v41 withValue:v40];
 
@@ -228,11 +228,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v165 = v44;
-      v166 = [v40 int64Value];
+      int64Value5 = [v40 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v166;
+      v271 = int64Value5;
       _os_log_debug_impl(&_mh_execute_header, v165, OS_LOG_TYPE_DEBUG, "%s is music playing: %llu", buf, 0x16u);
     }
 
@@ -254,11 +254,11 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v167 = v49;
-      v168 = [v45 int64Value];
+      int64Value6 = [v45 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v168;
+      v271 = int64Value6;
       _os_log_debug_impl(&_mh_execute_header, v167, OS_LOG_TYPE_DEBUG, "%s media type: %llu", buf, 0x16u);
     }
 
@@ -292,8 +292,8 @@
     v261[0] = @"RecentInteractions";
     v260[0] = v22;
     v260[1] = v13;
-    v55 = [(OSMNotificationFeatureMap *)v9 recentInteractionsWithSender];
-    v56 = [v55 componentsJoinedByString:{@", "}];
+    recentInteractionsWithSender = [(OSMNotificationFeatureMap *)v9 recentInteractionsWithSender];
+    v56 = [recentInteractionsWithSender componentsJoinedByString:{@", "}];
     v261[1] = v56;
     [NSDictionary dictionaryWithObjects:v261 forKeys:v260 count:2];
     v57 = v231 = v22;
@@ -303,18 +303,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v171 = v58;
-      v172 = [(OSMNotificationFeatureMap *)v9 recentInteractionsWithSender];
+      recentInteractionsWithSender2 = [(OSMNotificationFeatureMap *)v9 recentInteractionsWithSender];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2112;
-      v271 = v172;
+      v271 = recentInteractionsWithSender2;
       _os_log_debug_impl(&_mh_execute_header, v171, OS_LOG_TYPE_DEBUG, "%s recent interactions buffer: %@", buf, 0x16u);
     }
 
-    v59 = [v232 speakableDate];
-    v60 = [v59 dateByAddingTimeInterval:-60.0];
-    v61 = [v232 speakableDate];
-    v62 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v9 numberOfInteractionsBetweenDate:v60 andDate:v61]];
+    speakableDate = [v232 speakableDate];
+    v60 = [speakableDate dateByAddingTimeInterval:-60.0];
+    speakableDate2 = [v232 speakableDate];
+    v62 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v9 numberOfInteractionsBetweenDate:v60 andDate:speakableDate2]];
 
     v63 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastMinuteFeature];
     v221 = [RERelevanceProvider customRelevanceProviderForFeature:v63 withValue:v62];
@@ -331,19 +331,19 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v173 = v66;
-      v174 = [v62 int64Value];
+      int64Value7 = [v62 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v174;
+      v271 = int64Value7;
       _os_log_debug_impl(&_mh_execute_header, v173, OS_LOG_TYPE_DEBUG, "%s number of interactions in last minute: %llu", buf, 0x16u);
     }
 
     v199 = v62;
-    v67 = [v232 speakableDate];
-    v68 = [v67 dateByAddingTimeInterval:-1800.0];
-    v69 = [v232 speakableDate];
-    v70 = [v69 dateByAddingTimeInterval:-60.0];
+    speakableDate3 = [v232 speakableDate];
+    v68 = [speakableDate3 dateByAddingTimeInterval:-1800.0];
+    speakableDate4 = [v232 speakableDate];
+    v70 = [speakableDate4 dateByAddingTimeInterval:-60.0];
     v71 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v9 numberOfInteractionsBetweenDate:v68 andDate:v70]];
 
     v72 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastHalfHourFeature];
@@ -363,18 +363,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v175 = v75;
-      v176 = [v212 int64Value];
+      int64Value8 = [v212 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v176;
+      v271 = int64Value8;
       _os_log_debug_impl(&_mh_execute_header, v175, OS_LOG_TYPE_DEBUG, "%s number of interactions in last half hour: %llu", buf, 0x16u);
     }
 
-    v77 = [v232 speakableDate];
-    v78 = [v77 dateByAddingTimeInterval:-3600.0];
-    v79 = [v232 speakableDate];
-    v80 = [v79 dateByAddingTimeInterval:-1800.0];
+    speakableDate5 = [v232 speakableDate];
+    v78 = [speakableDate5 dateByAddingTimeInterval:-3600.0];
+    speakableDate6 = [v232 speakableDate];
+    v80 = [speakableDate6 dateByAddingTimeInterval:-1800.0];
     v81 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v78 andDate:v80]];
 
     v82 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastHourFeature];
@@ -392,18 +392,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v177 = v85;
-      v178 = [v81 int64Value];
+      int64Value9 = [v81 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v178;
+      v271 = int64Value9;
       _os_log_debug_impl(&_mh_execute_header, v177, OS_LOG_TYPE_DEBUG, "%s number of interactions in last hour: %llu", buf, 0x16u);
     }
 
-    v86 = [v232 speakableDate];
-    v87 = [v86 dateByAddingTimeInterval:-21600.0];
-    v88 = [v232 speakableDate];
-    v89 = [v88 dateByAddingTimeInterval:-3600.0];
+    speakableDate7 = [v232 speakableDate];
+    v87 = [speakableDate7 dateByAddingTimeInterval:-21600.0];
+    speakableDate8 = [v232 speakableDate];
+    v89 = [speakableDate8 dateByAddingTimeInterval:-3600.0];
     v90 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v87 andDate:v89]];
 
     v91 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastSixHoursFeature];
@@ -423,18 +423,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v179 = v94;
-      v180 = [v90 int64Value];
+      int64Value10 = [v90 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v180;
+      v271 = int64Value10;
       _os_log_debug_impl(&_mh_execute_header, v179, OS_LOG_TYPE_DEBUG, "%s number of interactions in last six hours: %llu", buf, 0x16u);
     }
 
-    v95 = [v232 speakableDate];
-    v96 = [v95 dateByAddingTimeInterval:-86400.0];
-    v97 = [v232 speakableDate];
-    v98 = [v97 dateByAddingTimeInterval:-21600.0];
+    speakableDate9 = [v232 speakableDate];
+    v96 = [speakableDate9 dateByAddingTimeInterval:-86400.0];
+    speakableDate10 = [v232 speakableDate];
+    v98 = [speakableDate10 dateByAddingTimeInterval:-21600.0];
     v99 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v96 andDate:v98]];
 
     v100 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastDayFeature];
@@ -452,18 +452,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v181 = v103;
-      v182 = [v99 int64Value];
+      int64Value11 = [v99 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v182;
+      v271 = int64Value11;
       _os_log_debug_impl(&_mh_execute_header, v181, OS_LOG_TYPE_DEBUG, "%s number of interactions in last day: %llu", buf, 0x16u);
     }
 
-    v104 = [v232 speakableDate];
-    v105 = [v104 dateByAddingTimeInterval:-604800.0];
-    v106 = [v232 speakableDate];
-    v107 = [v106 dateByAddingTimeInterval:-86400.0];
+    speakableDate11 = [v232 speakableDate];
+    v105 = [speakableDate11 dateByAddingTimeInterval:-604800.0];
+    speakableDate12 = [v232 speakableDate];
+    v107 = [speakableDate12 dateByAddingTimeInterval:-86400.0];
     v108 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v105 andDate:v107]];
 
     v109 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastWeekFeature];
@@ -483,18 +483,18 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v183 = v112;
-      v184 = [v210 int64Value];
+      int64Value12 = [v210 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v184;
+      v271 = int64Value12;
       _os_log_debug_impl(&_mh_execute_header, v183, OS_LOG_TYPE_DEBUG, "%s number of interactions in last week: %llu", buf, 0x16u);
     }
 
-    v114 = [v232 speakableDate];
-    v115 = [v114 dateByAddingTimeInterval:-1209600.0];
-    v116 = [v232 speakableDate];
-    v117 = [v116 dateByAddingTimeInterval:-604800.0];
+    speakableDate13 = [v232 speakableDate];
+    v115 = [speakableDate13 dateByAddingTimeInterval:-1209600.0];
+    speakableDate14 = [v232 speakableDate];
+    v117 = [speakableDate14 dateByAddingTimeInterval:-604800.0];
     v118 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v115 andDate:v117]];
 
     v119 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastFortnightFeature];
@@ -512,19 +512,19 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v185 = v122;
-      v186 = [v118 int64Value];
+      int64Value13 = [v118 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v186;
+      v271 = int64Value13;
       _os_log_debug_impl(&_mh_execute_header, v185, OS_LOG_TYPE_DEBUG, "%s number of interactions in last fortnight: %llu", buf, 0x16u);
     }
 
     v197 = v118;
-    v123 = [v232 speakableDate];
-    v124 = [v123 dateByAddingTimeInterval:-2419200.0];
-    v125 = [v232 speakableDate];
-    v126 = [v125 dateByAddingTimeInterval:-1209600.0];
+    speakableDate15 = [v232 speakableDate];
+    v124 = [speakableDate15 dateByAddingTimeInterval:-2419200.0];
+    speakableDate16 = [v232 speakableDate];
+    v126 = [speakableDate16 dateByAddingTimeInterval:-1209600.0];
     v127 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v124 andDate:v126]];
 
     v128 = +[OSMRelevanceEngineFeatures numberOfInteractionsInLastMonthFeature];
@@ -543,17 +543,17 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v187 = v131;
-      v188 = [v127 int64Value];
+      int64Value14 = [v127 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v188;
+      v271 = int64Value14;
       _os_log_debug_impl(&_mh_execute_header, v187, OS_LOG_TYPE_DEBUG, "%s number of interactions in last month: %llu", buf, 0x16u);
     }
 
     v132 = +[NSDate distantPast];
-    v133 = [v232 speakableDate];
-    v134 = [v133 dateByAddingTimeInterval:-2419200.0];
+    speakableDate17 = [v232 speakableDate];
+    v134 = [speakableDate17 dateByAddingTimeInterval:-2419200.0];
     v135 = [REFeatureValue featureValueWithInt64:[(OSMNotificationFeatureMap *)v234 numberOfInteractionsBetweenDate:v132 andDate:v134]];
 
     v136 = +[OSMRelevanceEngineFeatures numberOfInteractionsOlderThanLastMonthFeature];
@@ -572,16 +572,16 @@
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {
       v189 = v139;
-      v190 = [v135 int64Value];
+      int64Value15 = [v135 int64Value];
       *buf = 136315394;
       v269 = "[OSMOnlineLearnerModel setSpeakable:]";
       v270 = 2048;
-      v271 = v190;
+      v271 = int64Value15;
       _os_log_debug_impl(&_mh_execute_header, v189, OS_LOG_TYPE_DEBUG, "%s number of interactions older than last month: %llu", buf, 0x16u);
     }
 
-    v140 = [v230 feedbackManager];
-    v141 = [v140 lastNegativeFeedbackForContact:0];
+    feedbackManager = [v230 feedbackManager];
+    v141 = [feedbackManager lastNegativeFeedbackForContact:0];
 
     v142 = +[NSDate date];
     v143 = v142;
@@ -647,7 +647,7 @@
     v7 = v113;
     v236 = v232;
     v237 = v234;
-    v238 = v205;
+    v238 = selfCopy;
     v239 = v113;
     v151 = v234;
     [v150 predictionForSpeakable:v236 withRelevanceProviders:v207 handler:v235];
@@ -657,21 +657,21 @@
   }
 }
 
-- (void)startWithDelegate:(id)a3
+- (void)startWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315394;
     v8 = "[OSMOnlineLearnerModel startWithDelegate:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = delegateCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s delegate: %@", &v7, 0x16u);
   }
 
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
 - (OSMOnlineLearnerModel)init
@@ -683,8 +683,8 @@
   {
     v3 = [NSString alloc];
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
-    v6 = [v3 initWithFormat:@"OnlineLearnerModel-%@", v5];
+    uUIDString = [v4 UUIDString];
+    v6 = [v3 initWithFormat:@"OnlineLearnerModel-%@", uUIDString];
     identifier = v2->_identifier;
     v2->_identifier = v6;
 

@@ -7,7 +7,7 @@
 
 - (void)sf_displayedWebViewGeometry
 {
-  v3 = objc_getAssociatedObject(a1, "sf_displayedWebViewGeometry");
+  v3 = objc_getAssociatedObject(self, "sf_displayedWebViewGeometry");
   v4 = v3;
   if (v3)
   {
@@ -62,7 +62,7 @@
   v13[2] = a3[2];
   v13[3] = v11;
   v12 = [MEMORY[0x277CCAE60] valueWithBytes:v13 objCType:"{?={CGRect={CGPoint=dd}{CGSize=dd}}{UIEdgeInsets=dddd}{UIEdgeInsets=dddd}{SFScrollIndicatorInsets={UIEdgeInsets=dddd}{UIEdgeInsets=dddd}}{CGSize=dd}{CGSize=dd}{CGSize=dd}{UIEdgeInsets=dddd}Bd}"];
-  objc_setAssociatedObject(a1, "sf_displayedWebViewGeometry", v12, 1);
+  objc_setAssociatedObject(self, "sf_displayedWebViewGeometry", v12, 1);
 }
 
 @end

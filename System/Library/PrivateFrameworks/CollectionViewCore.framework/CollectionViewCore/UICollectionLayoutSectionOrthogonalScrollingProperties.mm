@@ -1,8 +1,8 @@
 @interface UICollectionLayoutSectionOrthogonalScrollingProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UICollectionLayoutSectionOrthogonalScrollingProperties)init;
 - (id)_descriptionProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       decelerationRate = self->_decelerationRate;
       [(UICollectionLayoutSectionOrthogonalScrollingProperties *)v5 decelerationRate];
       if (decelerationRate == v7)
@@ -59,9 +59,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 1) = *&self->_decelerationRate;
@@ -132,11 +132,11 @@ LABEL_15:
 
 - (id)description
 {
-  v3 = [(UICollectionLayoutSectionOrthogonalScrollingProperties *)self _descriptionProperties];
+  _descriptionProperties = [(UICollectionLayoutSectionOrthogonalScrollingProperties *)self _descriptionProperties];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v3 componentsJoinedByString:@" "];;
+  v7 = [_descriptionProperties componentsJoinedByString:@" "];;
   v8 = [v4 stringWithFormat:@"<%@: %p %@>", v6, self, v7];;
 
   return v8;

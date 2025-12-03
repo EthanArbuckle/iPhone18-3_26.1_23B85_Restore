@@ -12,14 +12,14 @@
 
 - (VUIViewElementDataSource)vui_DataSource
 {
-  v2 = [a1 objectForKeyedSubscript:@"ViewElementDataSourceKey"];
+  v2 = [self objectForKeyedSubscript:@"ViewElementDataSourceKey"];
   if (!v2)
   {
-    v3 = [a1 dataDictionary];
-    v2 = [[VUIViewElementDataSource alloc] initWithDataDictionary:v3 viewElement:a1];
+    dataDictionary = [self dataDictionary];
+    v2 = [[VUIViewElementDataSource alloc] initWithDataDictionary:dataDictionary viewElement:self];
     if (v2)
     {
-      [a1 setObject:v2 forKeyedSubscript:@"ViewElementDataSourceKey"];
+      [self setObject:v2 forKeyedSubscript:@"ViewElementDataSourceKey"];
     }
   }
 
@@ -30,13 +30,13 @@
 {
   v51 = *MEMORY[0x1E69E9840];
   v38 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v1 = [a1 attributes];
-  v2 = [v1 vui_stringForKey:@"vui-update-events"];
+  attributes = [self attributes];
+  v2 = [attributes vui_stringForKey:@"vui-update-events"];
   v3 = v2;
   if (v2)
   {
     v33 = v2;
-    v34 = v1;
+    v34 = attributes;
     v4 = [v2 componentsSeparatedByString:{@", "}];
     v46 = 0u;
     v47 = 0u;
@@ -67,8 +67,8 @@
           v11 = v10;
           v45 = 0;
           v12 = [v9 objectAtIndex:0];
-          v13 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v14 = [v12 stringByTrimmingCharactersInSet:v13];
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           if (!VUIAppDocumentUpdateEventTypeFromStringRepresentation(v14, &v45))
           {
@@ -89,14 +89,14 @@
             }
 
             v16 = [v9 objectAtIndex:1];
-            v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v15 = [v16 stringByTrimmingCharactersInSet:v17];
+            whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v15 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
             v18 = [MEMORY[0x1E696AB90] decimalNumberWithString:v15];
-            v19 = [v18 unsignedIntegerValue];
-            if (v19)
+            unsignedIntegerValue = [v18 unsignedIntegerValue];
+            if (unsignedIntegerValue)
             {
-              v20 = v19;
+              v20 = unsignedIntegerValue;
               if (v11 < 3)
               {
                 v22 = 0;
@@ -105,8 +105,8 @@
               else
               {
                 v35 = [v9 objectAtIndex:2];
-                v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-                v22 = [v35 stringByTrimmingCharactersInSet:v21];
+                whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                v22 = [v35 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
               }
 
               v29 = [VUIAppDocumentRefreshEventDescriptor alloc];
@@ -151,8 +151,8 @@ LABEL_33:
               }
 
               v26 = [v9 objectAtIndex:1];
-              v27 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-              v28 = [v26 stringByTrimmingCharactersInSet:v27];
+              whitespaceCharacterSet4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              v28 = [v26 stringByTrimmingCharactersInSet:whitespaceCharacterSet4];
 
               v4 = v36;
               v15 = [[VUIAppDocumentPurchaseEventDescriptor alloc] initWithCanonicalID:v28];
@@ -184,7 +184,7 @@ LABEL_34:
 LABEL_36:
 
         v3 = v33;
-        v1 = v34;
+        attributes = v34;
         break;
       }
     }
@@ -197,23 +197,23 @@ LABEL_36:
 
 - (id)vui_title
 {
-  [a1 _parseElementIfNecessary];
+  [self _parseElementIfNecessary];
 
-  return objc_getAssociatedObject(a1, @"VideosTitle");
+  return objc_getAssociatedObject(self, @"VideosTitle");
 }
 
 - (id)vui_description
 {
-  [a1 _parseElementIfNecessary];
+  [self _parseElementIfNecessary];
 
-  return objc_getAssociatedObject(a1, @"VideosDescription");
+  return objc_getAssociatedObject(self, @"VideosDescription");
 }
 
 - (id)vui_imageURL
 {
-  [a1 _parseElementIfNecessary];
+  [self _parseElementIfNecessary];
 
-  return objc_getAssociatedObject(a1, @"VideosImageURL");
+  return objc_getAssociatedObject(self, @"VideosImageURL");
 }
 
 + (id)_vui_updateEventDescriptorWithType:()VideosUI
@@ -285,16 +285,16 @@ LABEL_36:
 - (void)_parseElementIfNecessary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, @"VideosHasParsedElement");
-  v3 = [v2 BOOLValue];
+  v2 = objc_getAssociatedObject(self, @"VideosHasParsedElement");
+  bOOLValue = [v2 BOOLValue];
 
-  if ((v3 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    objc_setAssociatedObject(a1, @"VideosHasParsedElement", MEMORY[0x1E695E118], 1);
+    objc_setAssociatedObject(self, @"VideosHasParsedElement", MEMORY[0x1E695E118], 1);
     if (objc_opt_respondsToSelector())
     {
-      v4 = a1;
-      [a1 relatedContent];
+      selfCopy = self;
+      [self relatedContent];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
@@ -326,8 +326,8 @@ LABEL_36:
           }
 
           v12 = *(*(&v43 + 1) + 8 * v11);
-          v13 = [v12 elementName];
-          v14 = [v13 isEqualToString:v8];
+          elementName = [v12 elementName];
+          v14 = [elementName isEqualToString:v8];
 
           if (v14)
           {
@@ -336,8 +336,8 @@ LABEL_36:
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v15 = [v12 children];
-            v16 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+            children = [v12 children];
+            v16 = [children countByEnumeratingWithState:&v39 objects:v47 count:16];
             if (!v16)
             {
               goto LABEL_26;
@@ -351,12 +351,12 @@ LABEL_36:
               {
                 if (*v40 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(children);
                 }
 
                 v20 = *(*(&v39 + 1) + 8 * i);
-                v21 = [v20 elementName];
-                v22 = [v21 isEqualToString:v9];
+                elementName2 = [v20 elementName];
+                v22 = [elementName2 isEqualToString:v9];
 
                 if (v22)
                 {
@@ -366,16 +366,16 @@ LABEL_36:
                     continue;
                   }
 
-                  v23 = [v20 text];
-                  v24 = [v23 string];
+                  text = [v20 text];
+                  string = [text string];
 
-                  v25 = v4;
+                  v25 = selfCopy;
                   v26 = @"VideosTitle";
                   goto LABEL_23;
                 }
 
-                v27 = [v20 elementName];
-                v28 = [v27 isEqualToString:v10];
+                elementName3 = [v20 elementName];
+                v28 = [elementName3 isEqualToString:v10];
 
                 if (v28)
                 {
@@ -385,34 +385,34 @@ LABEL_36:
                     continue;
                   }
 
-                  v29 = [v20 text];
-                  v24 = [v29 string];
+                  text2 = [v20 text];
+                  string = [text2 string];
 
-                  v25 = v4;
+                  v25 = selfCopy;
                   v26 = @"VideosDescription";
                   goto LABEL_23;
                 }
 
-                v30 = [v20 elementName];
-                v31 = [v30 isEqualToString:v38];
+                elementName4 = [v20 elementName];
+                v31 = [elementName4 isEqualToString:v38];
 
                 if (v31)
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v24 = [v20 url];
-                    v25 = v4;
+                    string = [v20 url];
+                    v25 = selfCopy;
                     v26 = @"VideosImageURL";
 LABEL_23:
-                    objc_setAssociatedObject(v25, v26, v24, 1);
+                    objc_setAssociatedObject(v25, v26, string, 1);
 
                     continue;
                   }
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v39 objects:v47 count:16];
+              v17 = [children countByEnumeratingWithState:&v39 objects:v47 count:16];
               if (!v17)
               {
 LABEL_26:

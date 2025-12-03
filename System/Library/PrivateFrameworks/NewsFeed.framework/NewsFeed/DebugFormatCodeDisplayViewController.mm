@@ -1,6 +1,6 @@
 @interface DebugFormatCodeDisplayViewController
-- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewWillLayoutSubviews;
@@ -8,7 +8,7 @@
 
 @implementation DebugFormatCodeDisplayViewController
 
-- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed36DebugFormatCodeDisplayViewController_textView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DD168]) initWithFrame_];
@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6C0E9D8();
 }
 
@@ -30,11 +30,11 @@
   v2 = v14.receiver;
   [(DebugFormatCodeDisplayViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed36DebugFormatCodeDisplayViewController_textView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -56,11 +56,11 @@
   v2 = v14.receiver;
   [(DebugFormatCodeDisplayViewController *)&v14 viewLayoutMarginsDidChange];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed36DebugFormatCodeDisplayViewController_textView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 layoutMargins];
+    v5 = view;
+    [view layoutMargins];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -77,7 +77,7 @@
   }
 }
 
-- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed36DebugFormatCodeDisplayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

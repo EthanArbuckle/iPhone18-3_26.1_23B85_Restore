@@ -1,35 +1,35 @@
 @interface RKBundleDataProvider
-- (RKBundleDataProvider)initWithAssetPlist:(id)a3;
-- (RKBundleDataProvider)initWithBundle:(id)a3;
-- (id)displayStringsForPlatform:(id)a3 languageID:(id)a4;
-- (id)stringsFromTable:(id)a3 forLanguageIdentifier:(id)a4;
+- (RKBundleDataProvider)initWithAssetPlist:(id)plist;
+- (RKBundleDataProvider)initWithBundle:(id)bundle;
+- (id)displayStringsForPlatform:(id)platform languageID:(id)d;
+- (id)stringsFromTable:(id)table forLanguageIdentifier:(id)identifier;
 @end
 
 @implementation RKBundleDataProvider
 
-- (RKBundleDataProvider)initWithBundle:(id)a3
+- (RKBundleDataProvider)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v19.receiver = self;
   v19.super_class = RKBundleDataProvider;
   v6 = [(RKBundleDataProvider *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
     v8 = MEMORY[0x277CBEBC0];
-    v9 = [v5 pathForResource:@"RKAssetsConstantClasses" ofType:@"plist"];
+    v9 = [bundleCopy pathForResource:@"RKAssetsConstantClasses" ofType:@"plist"];
     v10 = [v8 URLWithString:v9];
     assetPlistURL = v7->_assetPlistURL;
     v7->_assetPlistURL = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     displayStringsByPlatformByLanguage = v7->_displayStringsByPlatformByLanguage;
-    v7->_displayStringsByPlatformByLanguage = v12;
+    v7->_displayStringsByPlatformByLanguage = dictionary;
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     polarityMapsByLanguageID = v7->_polarityMapsByLanguageID;
-    v7->_polarityMapsByLanguageID = v14;
+    v7->_polarityMapsByLanguageID = dictionary2;
 
     v16 = objc_alloc_init(RKAssets);
     assets = v7->_assets;
@@ -39,9 +39,9 @@
   return v7;
 }
 
-- (RKBundleDataProvider)initWithAssetPlist:(id)a3
+- (RKBundleDataProvider)initWithAssetPlist:(id)plist
 {
-  v5 = a3;
+  plistCopy = plist;
   v18.receiver = self;
   v18.super_class = RKBundleDataProvider;
   v6 = [(RKBundleDataProvider *)&v18 init];
@@ -51,18 +51,18 @@
     bundle = v6->_bundle;
     v6->_bundle = 0;
 
-    objc_storeStrong(&v7->_assetPlistURL, a3);
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v7->_assetPlistURL, plist);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     displayStringsByPlatformByLanguage = v7->_displayStringsByPlatformByLanguage;
-    v7->_displayStringsByPlatformByLanguage = v9;
+    v7->_displayStringsByPlatformByLanguage = dictionary;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     polarityMapsByLanguageID = v7->_polarityMapsByLanguageID;
-    v7->_polarityMapsByLanguageID = v11;
+    v7->_polarityMapsByLanguageID = dictionary2;
 
     v13 = [RKAssets alloc];
-    v14 = [v5 path];
-    v15 = [(RKAssets *)v13 initWithPlistURL:v14];
+    path = [plistCopy path];
+    v15 = [(RKAssets *)v13 initWithPlistURL:path];
     assets = v7->_assets;
     v7->_assets = v15;
   }
@@ -70,39 +70,39 @@
   return v7;
 }
 
-- (id)stringsFromTable:(id)a3 forLanguageIdentifier:(id)a4
+- (id)stringsFromTable:(id)table forLanguageIdentifier:(id)identifier
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  identifierCopy = identifier;
   v7 = +[RKAssets localizedStrings];
-  v8 = v6;
+  v8 = identifierCopy;
   v9 = MEMORY[0x277CCA8D8];
   v31[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
   v11 = [v9 preferredLocalizationsFromArray:&unk_2874E7108 forPreferences:v10];
-  v12 = [v11 firstObject];
-  v13 = [&unk_2874E70F0 containsObject:v12];
+  firstObject = [v11 firstObject];
+  v13 = [&unk_2874E70F0 containsObject:firstObject];
 
-  v14 = v8;
+  firstObject2 = v8;
   if (v13)
   {
     v15 = MEMORY[0x277CCA8D8];
-    v16 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v17 = [v15 preferredLocalizationsFromArray:&unk_2874E7120 forPreferences:v16];
-    v14 = [v17 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v17 = [v15 preferredLocalizationsFromArray:&unk_2874E7120 forPreferences:preferredLanguages];
+    firstObject2 = [v17 firstObject];
 
-    if ([(__CFString *)v14 isEqualToString:@"yue"])
+    if ([(__CFString *)firstObject2 isEqualToString:@"yue"])
     {
 
-      v14 = @"zh_HK";
+      firstObject2 = @"zh_HK";
     }
   }
 
   v18 = @"zh_CN";
-  if (([(__CFString *)v14 hasPrefix:@"zh-Hans"]& 1) == 0 && ![(__CFString *)v14 hasPrefix:@"zh_Hans"])
+  if (([(__CFString *)firstObject2 hasPrefix:@"zh-Hans"]& 1) == 0 && ![(__CFString *)firstObject2 hasPrefix:@"zh_Hans"])
   {
-    v18 = v14;
+    v18 = firstObject2;
   }
 
   v19 = v18;
@@ -118,7 +118,7 @@
   }
 
   v23 = [v7 objectForKeyedSubscript:v19];
-  v24 = [v5 stringByAppendingString:@".strings"];
+  v24 = [tableCopy stringByAppendingString:@".strings"];
   v25 = [v23 objectForKeyedSubscript:v24];
 
   if (!v25)
@@ -126,7 +126,7 @@
     v26 = [(__CFString *)v19 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
     v27 = [v7 objectForKeyedSubscript:v26];
-    v28 = [v5 stringByAppendingString:@".strings"];
+    v28 = [tableCopy stringByAppendingString:@".strings"];
     v25 = [v27 objectForKeyedSubscript:v28];
 
     v19 = v26;
@@ -137,43 +137,43 @@
   return v25;
 }
 
-- (id)displayStringsForPlatform:(id)a3 languageID:(id)a4
+- (id)displayStringsForPlatform:(id)platform languageID:(id)d
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:a4];
-  v8 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  platformCopy = platform;
+  v7 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:d];
+  displayStringsByPlatformByLanguage = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
+  v9 = [displayStringsByPlatformByLanguage objectForKeyedSubscript:platformCopy];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    v11 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
-    [v11 setObject:v10 forKeyedSubscript:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    displayStringsByPlatformByLanguage2 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
+    [displayStringsByPlatformByLanguage2 setObject:dictionary forKeyedSubscript:platformCopy];
   }
 
-  v12 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
-  v13 = [v12 objectForKeyedSubscript:v6];
+  displayStringsByPlatformByLanguage3 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
+  v13 = [displayStringsByPlatformByLanguage3 objectForKeyedSubscript:platformCopy];
   v14 = [v13 objectForKeyedSubscript:v7];
 
   if (!v14)
   {
-    v15 = [(RKBundleDataProvider *)self stringsFromTable:v6 forLanguageIdentifier:v7];
+    v15 = [(RKBundleDataProvider *)self stringsFromTable:platformCopy forLanguageIdentifier:v7];
     v16 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v7];
     if (([v7 isEqualToString:v16] & 1) != 0 || objc_msgSend(v15, "count"))
     {
       v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF != ''"];
-      v18 = [MEMORY[0x277CBEB38] dictionary];
-      v19 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
-      v20 = [v19 objectForKeyedSubscript:v6];
-      [v20 setObject:v18 forKeyedSubscript:v7];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      displayStringsByPlatformByLanguage4 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
+      v20 = [displayStringsByPlatformByLanguage4 objectForKeyedSubscript:platformCopy];
+      [v20 setObject:dictionary2 forKeyedSubscript:v7];
 
       v28 = MEMORY[0x277D85DD0];
       v29 = 3221225472;
       v30 = __61__RKBundleDataProvider_displayStringsForPlatform_languageID___block_invoke;
       v31 = &unk_279B10B48;
       v32 = v17;
-      v33 = self;
-      v34 = v6;
+      selfCopy = self;
+      v34 = platformCopy;
       v35 = v7;
       v21 = v17;
       [v15 enumerateKeysAndObjectsUsingBlock:&v28];
@@ -181,15 +181,15 @@
 
     else
     {
-      v21 = [(RKBundleDataProvider *)self displayStringsForPlatform:v6 languageID:v16];
-      v26 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
-      v27 = [v26 objectForKeyedSubscript:v6];
+      v21 = [(RKBundleDataProvider *)self displayStringsForPlatform:platformCopy languageID:v16];
+      displayStringsByPlatformByLanguage5 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage];
+      v27 = [displayStringsByPlatformByLanguage5 objectForKeyedSubscript:platformCopy];
       [v27 setObject:v21 forKeyedSubscript:v7];
     }
   }
 
   v22 = [(RKBundleDataProvider *)self displayStringsByPlatformByLanguage:v28];
-  v23 = [v22 objectForKeyedSubscript:v6];
+  v23 = [v22 objectForKeyedSubscript:platformCopy];
   v24 = [v23 objectForKeyedSubscript:v7];
 
   return v24;

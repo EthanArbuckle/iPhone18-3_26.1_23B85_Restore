@@ -1,7 +1,7 @@
 @interface PHReportTableViewCell
 + (NSString)reuseIdentifier;
-- (PHReportTableViewCell)initWithCoder:(id)a3;
-- (PHReportTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHReportTableViewCell)initWithCoder:(id)coder;
+- (PHReportTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PHReportTableViewCell
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (PHReportTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHReportTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -23,7 +23,7 @@
   return specialized ReportTableViewCell.init(style:reuseIdentifier:)();
 }
 
-- (PHReportTableViewCell)initWithCoder:(id)a3
+- (PHReportTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___PHReportTableViewCell____lazy_storage___cellContentConfiguration;
   v5 = type metadata accessor for UIListContentConfiguration();

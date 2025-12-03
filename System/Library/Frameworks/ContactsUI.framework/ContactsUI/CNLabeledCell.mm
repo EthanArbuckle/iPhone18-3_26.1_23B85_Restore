@@ -1,5 +1,5 @@
 @interface CNLabeledCell
-- (CNLabeledCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNLabeledCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UILabel)standardLabelView;
 - (UILabel)standardValueView;
 - (UIView)rightMostView;
@@ -14,10 +14,10 @@
 - (id)variableConstraintsForVerticalLayout;
 - (void)addChevron;
 - (void)removeChevron;
-- (void)setLabelTextAttributes:(id)a3;
-- (void)setLabelViewNeedsHuggingContent:(BOOL)a3;
-- (void)setValueTextAttributes:(id)a3;
-- (void)setValueViewNeedsHuggingContent:(BOOL)a3;
+- (void)setLabelTextAttributes:(id)attributes;
+- (void)setLabelViewNeedsHuggingContent:(BOOL)content;
+- (void)setValueTextAttributes:(id)attributes;
+- (void)setValueViewNeedsHuggingContent:(BOOL)content;
 - (void)tintColorDidChange;
 @end
 
@@ -31,49 +31,49 @@
   [(CNLabeledCell *)&v6 tintColorDidChange];
   v7 = *MEMORY[0x1E69DB650];
   v3 = +[CNContactStyle currentStyle];
-  v4 = [v3 textColor];
-  v8[0] = v4;
+  textColor = [v3 textColor];
+  v8[0] = textColor;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   [self cn_updateDictionaryForKey:@"labelTextAttributes" withChanges:v5];
 }
 
-- (void)setValueTextAttributes:(id)a3
+- (void)setValueTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_valueTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_valueTextAttributes != attributesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_valueTextAttributes, a3);
-    v6 = [(CNLabeledCell *)self valueView];
-    [v6 setAb_textAttributes:v7];
+    v7 = attributesCopy;
+    objc_storeStrong(&self->_valueTextAttributes, attributes);
+    valueView = [(CNLabeledCell *)self valueView];
+    [valueView setAb_textAttributes:v7];
 
-    v5 = v7;
+    attributesCopy = v7;
   }
 }
 
-- (void)setLabelTextAttributes:(id)a3
+- (void)setLabelTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_labelTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_labelTextAttributes != attributesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_labelTextAttributes, a3);
-    v6 = [(CNLabeledCell *)self labelView];
-    [v6 setAb_textAttributes:v7];
+    v7 = attributesCopy;
+    objc_storeStrong(&self->_labelTextAttributes, attributes);
+    labelView = [(CNLabeledCell *)self labelView];
+    [labelView setAb_textAttributes:v7];
 
-    v5 = v7;
+    attributesCopy = v7;
   }
 }
 
-- (void)setValueViewNeedsHuggingContent:(BOOL)a3
+- (void)setValueViewNeedsHuggingContent:(BOOL)content
 {
-  v3 = a3;
-  self->_valueViewNeedsHuggingContent = a3;
+  contentCopy = content;
+  self->_valueViewNeedsHuggingContent = content;
   objc_opt_class();
-  v7 = [(CNLabeledCell *)self valueView];
+  valueView = [(CNLabeledCell *)self valueView];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v7;
+    v5 = valueView;
   }
 
   else
@@ -82,18 +82,18 @@
   }
 
   v6 = v5;
-  CNSetLabelNeedsHuggingContent(v6, v3);
+  CNSetLabelNeedsHuggingContent(v6, contentCopy);
 }
 
-- (void)setLabelViewNeedsHuggingContent:(BOOL)a3
+- (void)setLabelViewNeedsHuggingContent:(BOOL)content
 {
-  v3 = a3;
-  self->_labelViewNeedsHuggingContent = a3;
+  contentCopy = content;
+  self->_labelViewNeedsHuggingContent = content;
   objc_opt_class();
-  v7 = [(CNLabeledCell *)self labelView];
+  labelView = [(CNLabeledCell *)self labelView];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v7;
+    v5 = labelView;
   }
 
   else
@@ -102,7 +102,7 @@
   }
 
   v6 = v5;
-  CNSetLabelNeedsHuggingContent(v6, v3);
+  CNSetLabelNeedsHuggingContent(v6, contentCopy);
 }
 
 - (UILabel)standardValueView
@@ -134,19 +134,19 @@
 
 - (UIView)rightMostView
 {
-  v3 = [(CNLabeledCell *)self chevron];
-  v4 = [v3 superview];
+  chevron = [(CNLabeledCell *)self chevron];
+  superview = [chevron superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(CNLabeledCell *)self chevron];
+    chevron2 = [(CNLabeledCell *)self chevron];
   }
 
   else
   {
-    v6 = [(CNLabeledCell *)self valueView];
+    valueView = [(CNLabeledCell *)self valueView];
 
-    if (v6)
+    if (valueView)
     {
       [(CNLabeledCell *)self valueView];
     }
@@ -155,10 +155,10 @@
     {
       [(CNLabeledCell *)self labelView];
     }
-    v5 = ;
+    chevron2 = ;
   }
 
-  return v5;
+  return chevron2;
 }
 
 - (id)variableConstraintsForHorizontalLayout
@@ -166,18 +166,18 @@
   v3 = MEMORY[0x1E695DF70];
   v13.receiver = self;
   v13.super_class = CNLabeledCell;
-  v4 = [(CNContactCell *)&v13 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNContactCell *)&v13 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [(CNLabeledCell *)self chevron];
-  v7 = [v6 superview];
+  chevron = [(CNLabeledCell *)self chevron];
+  superview = [chevron superview];
 
-  if (!v7)
+  if (!superview)
   {
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(CNLabeledCell *)self rightMostView];
-    v10 = [(CNLabeledCell *)self contentView];
-    v11 = [v8 constraintWithItem:v9 attribute:6 relatedBy:0 toItem:v10 attribute:18 multiplier:1.0 constant:0.0];
+    rightMostView = [(CNLabeledCell *)self rightMostView];
+    contentView = [(CNLabeledCell *)self contentView];
+    v11 = [v8 constraintWithItem:rightMostView attribute:6 relatedBy:0 toItem:contentView attribute:18 multiplier:1.0 constant:0.0];
     [v5 addObject:v11];
   }
 
@@ -189,83 +189,83 @@
   v3 = MEMORY[0x1E695DF70];
   v67.receiver = self;
   v67.super_class = CNLabeledCell;
-  v4 = [(CNContactCell *)&v67 constantConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  constantConstraints = [(CNContactCell *)&v67 constantConstraints];
+  v5 = [v3 arrayWithArray:constantConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(CNLabeledCell *)self labelView];
-  v8 = [(CNLabeledCell *)self contentView];
-  v9 = [v6 constraintWithItem:v7 attribute:5 relatedBy:0 toItem:v8 attribute:17 multiplier:1.0 constant:0.0];
+  labelView = [(CNLabeledCell *)self labelView];
+  contentView = [(CNLabeledCell *)self contentView];
+  v9 = [v6 constraintWithItem:labelView attribute:5 relatedBy:0 toItem:contentView attribute:17 multiplier:1.0 constant:0.0];
   [v5 addObject:v9];
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(CNLabeledCell *)self labelView];
-  v12 = [v10 constraintWithItem:v11 attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:44.0];
+  labelView2 = [(CNLabeledCell *)self labelView];
+  v12 = [v10 constraintWithItem:labelView2 attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:44.0];
   [v5 addObject:v12];
 
-  v13 = [(CNLabeledCell *)self valueView];
+  valueView = [(CNLabeledCell *)self valueView];
 
-  if (v13)
+  if (valueView)
   {
     v14 = MEMORY[0x1E696ACD8];
-    v15 = [(CNLabeledCell *)self valueView];
-    v16 = [(CNLabeledCell *)self labelView];
-    v17 = [v14 constraintWithItem:v15 attribute:5 relatedBy:0 toItem:v16 attribute:6 multiplier:1.0 constant:16.0];
+    valueView2 = [(CNLabeledCell *)self valueView];
+    labelView3 = [(CNLabeledCell *)self labelView];
+    v17 = [v14 constraintWithItem:valueView2 attribute:5 relatedBy:0 toItem:labelView3 attribute:6 multiplier:1.0 constant:16.0];
     [v5 addObject:v17];
   }
 
-  v18 = [(CNLabeledCell *)self chevron];
-  v19 = [v18 superview];
+  chevron = [(CNLabeledCell *)self chevron];
+  superview = [chevron superview];
 
-  if (v19)
+  if (superview)
   {
     v20 = MEMORY[0x1E696ACD8];
-    v21 = [(CNLabeledCell *)self chevron];
-    v22 = [(CNLabeledCell *)self contentView];
-    v23 = [v20 constraintWithItem:v21 attribute:10 relatedBy:0 toItem:v22 attribute:10 multiplier:1.0 constant:0.0];
+    chevron2 = [(CNLabeledCell *)self chevron];
+    contentView2 = [(CNLabeledCell *)self contentView];
+    v23 = [v20 constraintWithItem:chevron2 attribute:10 relatedBy:0 toItem:contentView2 attribute:10 multiplier:1.0 constant:0.0];
     [v5 addObject:v23];
 
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [(CNLabeledCell *)self chevron];
-    v26 = [(CNLabeledCell *)self valueView];
-    v27 = [v24 constraintWithItem:v25 attribute:5 relatedBy:1 toItem:v26 attribute:6 multiplier:1.0 constant:16.0];
+    chevron3 = [(CNLabeledCell *)self chevron];
+    valueView3 = [(CNLabeledCell *)self valueView];
+    v27 = [v24 constraintWithItem:chevron3 attribute:5 relatedBy:1 toItem:valueView3 attribute:6 multiplier:1.0 constant:16.0];
     [v5 addObject:v27];
 
     v28 = MEMORY[0x1E696ACD8];
-    v29 = [(CNLabeledCell *)self chevron];
-    v30 = [(CNLabeledCell *)self contentView];
-    v31 = [v28 constraintWithItem:v29 attribute:6 relatedBy:0 toItem:v30 attribute:18 multiplier:1.0 constant:0.0];
+    chevron4 = [(CNLabeledCell *)self chevron];
+    contentView3 = [(CNLabeledCell *)self contentView];
+    v31 = [v28 constraintWithItem:chevron4 attribute:6 relatedBy:0 toItem:contentView3 attribute:18 multiplier:1.0 constant:0.0];
     [v5 addObject:v31];
   }
 
-  v32 = [(CNLabeledCell *)self valueView];
+  valueView4 = [(CNLabeledCell *)self valueView];
 
   v33 = MEMORY[0x1E696ACD8];
-  if (v32)
+  if (valueView4)
   {
-    v34 = [(CNLabeledCell *)self valueView];
-    v35 = [(CNLabeledCell *)self contentView];
-    v36 = [v33 constraintWithItem:v34 attribute:3 relatedBy:0 toItem:v35 attribute:15 multiplier:1.0 constant:0.0];
+    valueView5 = [(CNLabeledCell *)self valueView];
+    contentView4 = [(CNLabeledCell *)self contentView];
+    v36 = [v33 constraintWithItem:valueView5 attribute:3 relatedBy:0 toItem:contentView4 attribute:15 multiplier:1.0 constant:0.0];
     [v5 addObject:v36];
 
-    v37 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     LODWORD(v38) = 1148813312;
-    [v37 setPriority:v38];
+    [lastObject setPriority:v38];
 
     v39 = MEMORY[0x1E696ACD8];
-    v40 = [(CNLabeledCell *)self contentView];
-    v41 = [(CNLabeledCell *)self valueView];
-    v42 = [v39 constraintWithItem:v40 attribute:16 relatedBy:0 toItem:v41 attribute:4 multiplier:1.0 constant:0.0];
+    contentView5 = [(CNLabeledCell *)self contentView];
+    valueView6 = [(CNLabeledCell *)self valueView];
+    v42 = [v39 constraintWithItem:contentView5 attribute:16 relatedBy:0 toItem:valueView6 attribute:4 multiplier:1.0 constant:0.0];
     [v5 addObject:v42];
 
-    v43 = [v5 lastObject];
+    lastObject2 = [v5 lastObject];
     LODWORD(v44) = 1148813312;
-    [v43 setPriority:v44];
+    [lastObject2 setPriority:v44];
 
     v45 = MEMORY[0x1E696ACD8];
-    v46 = [(CNLabeledCell *)self labelView];
-    v47 = [(CNLabeledCell *)self valueView];
-    v48 = [v45 constraintWithItem:v46 attribute:11 relatedBy:0 toItem:v47 attribute:11 multiplier:1.0 constant:0.0];
+    labelView4 = [(CNLabeledCell *)self labelView];
+    valueView7 = [(CNLabeledCell *)self valueView];
+    v48 = [v45 constraintWithItem:labelView4 attribute:11 relatedBy:0 toItem:valueView7 attribute:11 multiplier:1.0 constant:0.0];
     [v5 addObject:v48];
 
     v49 = MEMORY[0x1E696ACD8];
@@ -274,36 +274,36 @@
 
   else
   {
-    v50 = [(CNLabeledCell *)self labelView];
-    v51 = [(CNLabeledCell *)self contentView];
-    v52 = [v33 constraintWithItem:v50 attribute:3 relatedBy:0 toItem:v51 attribute:15 multiplier:1.0 constant:0.0];
+    labelView5 = [(CNLabeledCell *)self labelView];
+    contentView6 = [(CNLabeledCell *)self contentView];
+    v52 = [v33 constraintWithItem:labelView5 attribute:3 relatedBy:0 toItem:contentView6 attribute:15 multiplier:1.0 constant:0.0];
     [v5 addObject:v52];
 
-    v53 = [v5 lastObject];
+    lastObject3 = [v5 lastObject];
     LODWORD(v54) = 1148813312;
-    [v53 setPriority:v54];
+    [lastObject3 setPriority:v54];
 
     v55 = MEMORY[0x1E696ACD8];
-    v56 = [(CNLabeledCell *)self contentView];
-    v57 = [(CNLabeledCell *)self labelView];
-    v58 = [v55 constraintWithItem:v56 attribute:16 relatedBy:0 toItem:v57 attribute:4 multiplier:1.0 constant:0.0];
+    contentView7 = [(CNLabeledCell *)self contentView];
+    labelView6 = [(CNLabeledCell *)self labelView];
+    v58 = [v55 constraintWithItem:contentView7 attribute:16 relatedBy:0 toItem:labelView6 attribute:4 multiplier:1.0 constant:0.0];
     [v5 addObject:v58];
 
-    v59 = [v5 lastObject];
+    lastObject4 = [v5 lastObject];
     LODWORD(v60) = 1148813312;
-    [v59 setPriority:v60];
+    [lastObject4 setPriority:v60];
 
     v49 = MEMORY[0x1E696ACD8];
     [(CNLabeledCell *)self labelView];
   }
   v61 = ;
-  v62 = [(CNLabeledCell *)self contentView];
-  v63 = [v49 constraintWithItem:v61 attribute:10 relatedBy:0 toItem:v62 attribute:10 multiplier:1.0 constant:0.0];
+  contentView8 = [(CNLabeledCell *)self contentView];
+  v63 = [v49 constraintWithItem:v61 attribute:10 relatedBy:0 toItem:contentView8 attribute:10 multiplier:1.0 constant:0.0];
   [v5 addObject:v63];
 
-  v64 = [v5 lastObject];
+  lastObject5 = [v5 lastObject];
   LODWORD(v65) = 1148796928;
-  [v64 setPriority:v65];
+  [lastObject5 setPriority:v65];
 
   return v5;
 }
@@ -313,40 +313,40 @@
   v3 = MEMORY[0x1E695DF70];
   v20.receiver = self;
   v20.super_class = CNLabeledCell;
-  v4 = [(CNContactCell *)&v20 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNContactCell *)&v20 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-  v7 = [(CNLabeledCell *)self chevron];
-  v8 = [v7 superview];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  chevron = [(CNLabeledCell *)self chevron];
+  superview = [chevron superview];
 
-  if (v8)
+  if (superview)
   {
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [(CNLabeledCell *)self chevron];
-    if (v6)
+    chevron2 = [(CNLabeledCell *)self chevron];
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
-      v11 = [(CNLabeledCell *)self labelView];
-      v12 = [v9 constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v11 attribute:10 multiplier:1.0 constant:0.0];
+      labelView = [(CNLabeledCell *)self labelView];
+      v12 = [v9 constraintWithItem:chevron2 attribute:10 relatedBy:0 toItem:labelView attribute:10 multiplier:1.0 constant:0.0];
       [v5 addObject:v12];
 
       v13 = MEMORY[0x1E696ACD8];
-      v14 = [(CNLabeledCell *)self chevron];
+      chevron3 = [(CNLabeledCell *)self chevron];
       [(CNLabeledCell *)self labelView];
     }
 
     else
     {
-      v15 = [(CNLabeledCell *)self contentView];
-      v16 = [v9 constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v15 attribute:10 multiplier:1.0 constant:0.0];
+      contentView = [(CNLabeledCell *)self contentView];
+      v16 = [v9 constraintWithItem:chevron2 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
       [v5 addObject:v16];
 
       v13 = MEMORY[0x1E696ACD8];
-      v14 = [(CNLabeledCell *)self chevron];
+      chevron3 = [(CNLabeledCell *)self chevron];
       [(CNLabeledCell *)self valueView];
     }
     v17 = ;
-    v18 = [v13 constraintWithItem:v14 attribute:5 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:16.0];
+    v18 = [v13 constraintWithItem:chevron3 attribute:5 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:16.0];
     [v5 addObject:v18];
   }
 
@@ -358,93 +358,93 @@
   v3 = MEMORY[0x1E695DF70];
   v58.receiver = self;
   v58.super_class = CNLabeledCell;
-  v4 = [(CNContactCell *)&v58 constantConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  constantConstraints = [(CNContactCell *)&v58 constantConstraints];
+  v5 = [v3 arrayWithArray:constantConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(CNLabeledCell *)self labelView];
-  v8 = [(CNLabeledCell *)self contentView];
-  v9 = [v6 constraintWithItem:v7 attribute:5 relatedBy:0 toItem:v8 attribute:17 multiplier:1.0 constant:0.0];
+  labelView = [(CNLabeledCell *)self labelView];
+  contentView = [(CNLabeledCell *)self contentView];
+  v9 = [v6 constraintWithItem:labelView attribute:5 relatedBy:0 toItem:contentView attribute:17 multiplier:1.0 constant:0.0];
   [v5 addObject:v9];
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(CNLabeledCell *)self labelView];
-  v12 = [(CNLabeledCell *)self contentView];
-  v13 = [v10 constraintWithItem:v11 attribute:6 relatedBy:-1 toItem:v12 attribute:18 multiplier:1.0 constant:0.0];
+  labelView2 = [(CNLabeledCell *)self labelView];
+  contentView2 = [(CNLabeledCell *)self contentView];
+  v13 = [v10 constraintWithItem:labelView2 attribute:6 relatedBy:-1 toItem:contentView2 attribute:18 multiplier:1.0 constant:0.0];
   [v5 addObject:v13];
 
   v14 = MEMORY[0x1E696ACD8];
-  v15 = [(CNLabeledCell *)self labelView];
-  v16 = [(CNLabeledCell *)self valueView];
-  v17 = [v14 constraintWithItem:v15 attribute:6 relatedBy:0 toItem:v16 attribute:6 multiplier:1.0 constant:0.0];
+  labelView3 = [(CNLabeledCell *)self labelView];
+  valueView = [(CNLabeledCell *)self valueView];
+  v17 = [v14 constraintWithItem:labelView3 attribute:6 relatedBy:0 toItem:valueView attribute:6 multiplier:1.0 constant:0.0];
   [v5 addObject:v17];
 
-  v18 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   LODWORD(v19) = 1144750080;
-  [v18 setPriority:v19];
+  [lastObject setPriority:v19];
 
   v20 = MEMORY[0x1E696ACD8];
-  v21 = [(CNLabeledCell *)self valueView];
-  v22 = [(CNLabeledCell *)self labelView];
-  v23 = [v20 constraintWithItem:v21 attribute:5 relatedBy:0 toItem:v22 attribute:5 multiplier:1.0 constant:0.0];
+  valueView2 = [(CNLabeledCell *)self valueView];
+  labelView4 = [(CNLabeledCell *)self labelView];
+  v23 = [v20 constraintWithItem:valueView2 attribute:5 relatedBy:0 toItem:labelView4 attribute:5 multiplier:1.0 constant:0.0];
   [v5 addObject:v23];
 
-  v24 = [(CNLabeledCell *)self rightMostView];
-  v25 = [(CNLabeledCell *)self valueView];
+  rightMostView = [(CNLabeledCell *)self rightMostView];
+  valueView3 = [(CNLabeledCell *)self valueView];
 
-  if (v24 == v25)
+  if (rightMostView == valueView3)
   {
     v26 = MEMORY[0x1E696ACD8];
-    v27 = [(CNLabeledCell *)self valueView];
-    v28 = [(CNLabeledCell *)self contentView];
-    v29 = [v26 constraintWithItem:v27 attribute:6 relatedBy:0 toItem:v28 attribute:18 multiplier:1.0 constant:0.0];
+    valueView4 = [(CNLabeledCell *)self valueView];
+    contentView3 = [(CNLabeledCell *)self contentView];
+    v29 = [v26 constraintWithItem:valueView4 attribute:6 relatedBy:0 toItem:contentView3 attribute:18 multiplier:1.0 constant:0.0];
     [v5 addObject:v29];
 
-    v30 = [v5 lastObject];
+    lastObject2 = [v5 lastObject];
     LODWORD(v31) = 1144750080;
-    [v30 setPriority:v31];
+    [lastObject2 setPriority:v31];
   }
 
   v32 = MEMORY[0x1E696ACD8];
-  v33 = [(CNLabeledCell *)self rightMostView];
-  v34 = [(CNLabeledCell *)self contentView];
-  v35 = [v32 constraintWithItem:v33 attribute:6 relatedBy:0 toItem:v34 attribute:18 multiplier:1.0 constant:0.0];
+  rightMostView2 = [(CNLabeledCell *)self rightMostView];
+  contentView4 = [(CNLabeledCell *)self contentView];
+  v35 = [v32 constraintWithItem:rightMostView2 attribute:6 relatedBy:0 toItem:contentView4 attribute:18 multiplier:1.0 constant:0.0];
   [v5 addObject:v35];
 
-  v36 = [v5 lastObject];
+  lastObject3 = [v5 lastObject];
   LODWORD(v37) = 1144750080;
-  [v36 setPriority:v37];
+  [lastObject3 setPriority:v37];
 
   v38 = MEMORY[0x1E696ACD8];
-  v39 = [(CNLabeledCell *)self labelView];
-  v40 = [(CNLabeledCell *)self contentView];
-  v41 = [v38 constraintWithItem:v39 attribute:3 relatedBy:0 toItem:v40 attribute:15 multiplier:1.0 constant:0.0];
+  labelView5 = [(CNLabeledCell *)self labelView];
+  contentView5 = [(CNLabeledCell *)self contentView];
+  v41 = [v38 constraintWithItem:labelView5 attribute:3 relatedBy:0 toItem:contentView5 attribute:15 multiplier:1.0 constant:0.0];
   [v5 addObject:v41];
 
-  v42 = [v5 lastObject];
+  lastObject4 = [v5 lastObject];
   LODWORD(v43) = 1148829696;
-  [v42 setPriority:v43];
+  [lastObject4 setPriority:v43];
 
   v44 = MEMORY[0x1E696ACD8];
-  v45 = [(CNLabeledCell *)self valueView];
-  v46 = [(CNLabeledCell *)self labelView];
-  v47 = [v44 constraintWithItem:v45 attribute:3 relatedBy:0 toItem:v46 attribute:4 multiplier:1.0 constant:4.0];
+  valueView5 = [(CNLabeledCell *)self valueView];
+  labelView6 = [(CNLabeledCell *)self labelView];
+  v47 = [v44 constraintWithItem:valueView5 attribute:3 relatedBy:0 toItem:labelView6 attribute:4 multiplier:1.0 constant:4.0];
   [v5 addObject:v47];
 
-  v48 = [v5 lastObject];
+  lastObject5 = [v5 lastObject];
   LODWORD(v49) = 1148846080;
-  [v48 setPriority:v49];
+  [lastObject5 setPriority:v49];
 
   v50 = MEMORY[0x1E696ACD8];
-  v51 = [(CNLabeledCell *)self contentView];
-  v52 = [(CNLabeledCell *)self valueView];
+  contentView6 = [(CNLabeledCell *)self contentView];
+  valueView6 = [(CNLabeledCell *)self valueView];
   [(CNLabeledCell *)self valueViewBottomMargin];
-  v54 = [v50 constraintWithItem:v51 attribute:16 relatedBy:0 toItem:v52 attribute:4 multiplier:1.0 constant:v53];
+  v54 = [v50 constraintWithItem:contentView6 attribute:16 relatedBy:0 toItem:valueView6 attribute:4 multiplier:1.0 constant:v53];
   [v5 addObject:v54];
 
-  v55 = [v5 lastObject];
+  lastObject6 = [v5 lastObject];
   LODWORD(v56) = 1132003328;
-  [v55 setPriority:v56];
+  [lastObject6 setPriority:v56];
 
   return v5;
 }
@@ -453,30 +453,30 @@
 {
   if (([objc_opt_class() wantsHorizontalLayout] & 1) != 0 || (-[CNLabeledCell valueView](self, "valueView"), v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(CNLabeledCell *)self variableConstraintsForHorizontalLayout];
+    variableConstraintsForHorizontalLayout = [(CNLabeledCell *)self variableConstraintsForHorizontalLayout];
   }
 
   else
   {
-    v4 = [(CNLabeledCell *)self variableConstraintsForVerticalLayout];
+    variableConstraintsForHorizontalLayout = [(CNLabeledCell *)self variableConstraintsForVerticalLayout];
   }
 
-  return v4;
+  return variableConstraintsForHorizontalLayout;
 }
 
 - (id)constantConstraintsForStandardLayout
 {
   if (([objc_opt_class() wantsHorizontalLayout] & 1) != 0 || (-[CNLabeledCell valueView](self, "valueView"), v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(CNLabeledCell *)self constantConstraintsForHorizontalLayout];
+    constantConstraintsForHorizontalLayout = [(CNLabeledCell *)self constantConstraintsForHorizontalLayout];
   }
 
   else
   {
-    v4 = [(CNLabeledCell *)self constantConstraintsForVerticalLayout];
+    constantConstraintsForHorizontalLayout = [(CNLabeledCell *)self constantConstraintsForVerticalLayout];
   }
 
-  return v4;
+  return constantConstraintsForHorizontalLayout;
 }
 
 - (id)variableConstraints
@@ -485,19 +485,19 @@
   {
     v8.receiver = self;
     v8.super_class = CNLabeledCell;
-    v3 = [(CNContactCell *)&v8 variableConstraints];
-    v4 = [(CNLabeledCell *)self variableConstraintsForStandardLayout];
-    v5 = [v3 arrayByAddingObjectsFromArray:v4];
+    variableConstraints = [(CNContactCell *)&v8 variableConstraints];
+    variableConstraintsForStandardLayout = [(CNLabeledCell *)self variableConstraintsForStandardLayout];
+    variableConstraints2 = [variableConstraints arrayByAddingObjectsFromArray:variableConstraintsForStandardLayout];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CNLabeledCell;
-    v5 = [(CNContactCell *)&v7 variableConstraints];
+    variableConstraints2 = [(CNContactCell *)&v7 variableConstraints];
   }
 
-  return v5;
+  return variableConstraints2;
 }
 
 - (id)constantConstraints
@@ -506,26 +506,26 @@
   {
     v8.receiver = self;
     v8.super_class = CNLabeledCell;
-    v3 = [(CNContactCell *)&v8 constantConstraints];
-    v4 = [(CNLabeledCell *)self constantConstraintsForStandardLayout];
-    v5 = [v3 arrayByAddingObjectsFromArray:v4];
+    constantConstraints = [(CNContactCell *)&v8 constantConstraints];
+    constantConstraintsForStandardLayout = [(CNLabeledCell *)self constantConstraintsForStandardLayout];
+    constantConstraints2 = [constantConstraints arrayByAddingObjectsFromArray:constantConstraintsForStandardLayout];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CNLabeledCell;
-    v5 = [(CNContactCell *)&v7 constantConstraints];
+    constantConstraints2 = [(CNContactCell *)&v7 constantConstraints];
   }
 
-  return v5;
+  return constantConstraints2;
 }
 
 - (double)minCellHeight
 {
-  v2 = [objc_opt_class() wantsHorizontalLayout];
+  wantsHorizontalLayout = [objc_opt_class() wantsHorizontalLayout];
   result = 60.0;
-  if (v2)
+  if (wantsHorizontalLayout)
   {
     return 44.0;
   }
@@ -535,17 +535,17 @@
 
 - (void)removeChevron
 {
-  v3 = [(CNLabeledCell *)self chevron];
+  chevron = [(CNLabeledCell *)self chevron];
 
-  if (v3)
+  if (chevron)
   {
-    v4 = [(CNLabeledCell *)self chevron];
-    v5 = [v4 superview];
+    chevron2 = [(CNLabeledCell *)self chevron];
+    superview = [chevron2 superview];
 
-    if (v5)
+    if (superview)
     {
-      v6 = [(CNLabeledCell *)self chevron];
-      [v6 removeFromSuperview];
+      chevron3 = [(CNLabeledCell *)self chevron];
+      [chevron3 removeFromSuperview];
 
       [(CNLabeledCell *)self needsUpdateConstraints];
     }
@@ -554,49 +554,49 @@
 
 - (void)addChevron
 {
-  v3 = [(CNLabeledCell *)self chevron];
+  chevron = [(CNLabeledCell *)self chevron];
 
-  if (v3)
+  if (chevron)
   {
-    v4 = [(CNLabeledCell *)self chevron];
-    v5 = [v4 superview];
+    chevron2 = [(CNLabeledCell *)self chevron];
+    superview = [chevron2 superview];
 
-    if (!v5)
+    if (!superview)
     {
-      v6 = [(CNLabeledCell *)self contentView];
-      v7 = [(CNLabeledCell *)self chevron];
-      [v6 addSubview:v7];
+      contentView = [(CNLabeledCell *)self contentView];
+      chevron3 = [(CNLabeledCell *)self chevron];
+      [contentView addSubview:chevron3];
 
       [(CNLabeledCell *)self needsUpdateConstraints];
     }
   }
 }
 
-- (CNLabeledCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNLabeledCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = CNLabeledCell;
-  v4 = [(CNContactCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNContactCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v4->_labelViewNeedsHuggingContent = [objc_opt_class() wantsHorizontalLayout];
     v4->_valueViewNeedsHuggingContent = [objc_opt_class() wantsHorizontalLayout];
-    v5 = [(CNLabeledCell *)v4 contentView];
-    v6 = [(CNLabeledCell *)v4 labelView];
-    [v5 addSubview:v6];
+    contentView = [(CNLabeledCell *)v4 contentView];
+    labelView = [(CNLabeledCell *)v4 labelView];
+    [contentView addSubview:labelView];
 
-    v7 = [(CNLabeledCell *)v4 valueView];
-    if (v7)
+    valueView = [(CNLabeledCell *)v4 valueView];
+    if (valueView)
     {
-      v8 = [(CNLabeledCell *)v4 contentView];
-      v9 = [(CNLabeledCell *)v4 valueView];
-      [v8 addSubview:v9];
+      contentView2 = [(CNLabeledCell *)v4 contentView];
+      valueView2 = [(CNLabeledCell *)v4 valueView];
+      [contentView2 addSubview:valueView2];
     }
 
     if ([objc_opt_class() wantsChevron])
     {
-      v10 = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardChevron];
-      v11 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
+      cnui_symbolImageForContactCardChevron = [MEMORY[0x1E69DCAB8] cnui_symbolImageForContactCardChevron];
+      v11 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:cnui_symbolImageForContactCardChevron];
       chevron = v4->_chevron;
       v4->_chevron = v11;
 

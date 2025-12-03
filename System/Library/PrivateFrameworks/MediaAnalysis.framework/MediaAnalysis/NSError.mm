@@ -6,13 +6,13 @@
 
 - (BOOL)mad_isDownloadThrottling
 {
-  v3 = [(NSError *)self domain];
+  domain = [(NSError *)self domain];
   v4 = CPLErrorDomain;
-  if ([v3 isEqual:CPLErrorDomain])
+  if ([domain isEqual:CPLErrorDomain])
   {
-    v5 = [(NSError *)self code];
+    code = [(NSError *)self code];
 
-    if (v5 == 1004)
+    if (code == 1004)
     {
       return 1;
     }
@@ -26,8 +26,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(NSError *)self underlyingErrors];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  underlyingErrors = [(NSError *)self underlyingErrors];
+  v8 = [underlyingErrors countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -38,16 +38,16 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 domain];
-        if ([v13 isEqual:v4])
+        domain2 = [v12 domain];
+        if ([domain2 isEqual:v4])
         {
-          v14 = [v12 code];
+          code2 = [v12 code];
 
-          if (v14 == 1004)
+          if (code2 == 1004)
           {
             v6 = 1;
             goto LABEL_17;
@@ -59,7 +59,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [underlyingErrors countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

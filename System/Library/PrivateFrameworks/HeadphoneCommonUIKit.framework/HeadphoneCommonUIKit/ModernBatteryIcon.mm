@@ -1,13 +1,13 @@
 @interface ModernBatteryIcon
 - (UIView)_micaView;
 - (double)chargePercent;
-- (void)setChargePercent:(double)a3;
-- (void)setIsCharging:(BOOL)a3;
+- (void)setChargePercent:(double)percent;
+- (void)setIsCharging:(BOOL)charging;
 @end
 
 @implementation ModernBatteryIcon
 
-- (void)setIsCharging:(BOOL)a3
+- (void)setIsCharging:(BOOL)charging
 {
   MEMORY[0x1E69E5928](self);
   sub_1AC3B72C4();
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (void)setChargePercent:(double)a3
+- (void)setChargePercent:(double)percent
 {
   MEMORY[0x1E69E5928](self);
-  sub_1AC368B90(a3);
+  sub_1AC368B90(percent);
   MEMORY[0x1E69E5920](self);
 }
 

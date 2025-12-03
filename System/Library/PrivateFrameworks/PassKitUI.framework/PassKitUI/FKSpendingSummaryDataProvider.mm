@@ -1,13 +1,13 @@
 @interface FKSpendingSummaryDataProvider
 - (FKSpendingSummaryDataProvider)init;
-- (FKSpendingSummaryDataProvider)initWithAccountIdentifier:(id)a3;
+- (FKSpendingSummaryDataProvider)initWithAccountIdentifier:(id)identifier;
 - (NSUUID)accountID;
-- (void)startAndCacheCurrentlySelectedSpendingSummaryWithCompletion:(id)a3;
+- (void)startAndCacheCurrentlySelectedSpendingSummaryWithCompletion:(id)completion;
 @end
 
 @implementation FKSpendingSummaryDataProvider
 
-- (FKSpendingSummaryDataProvider)initWithAccountIdentifier:(id)a3
+- (FKSpendingSummaryDataProvider)initWithAccountIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   v4 = sub_1BE04AFE4();
@@ -51,12 +51,12 @@
   return v9;
 }
 
-- (void)startAndCacheCurrentlySelectedSpendingSummaryWithCompletion:(id)a3
+- (void)startAndCacheCurrentlySelectedSpendingSummaryWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -72,7 +72,7 @@
   v13[3] = 0;
   v13[4] = &unk_1BE107FA0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v8, &unk_1BE0C7F30, v13);
 }
 

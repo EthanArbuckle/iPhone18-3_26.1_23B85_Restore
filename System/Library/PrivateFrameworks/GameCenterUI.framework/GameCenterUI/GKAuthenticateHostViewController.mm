@@ -1,10 +1,10 @@
 @interface GKAuthenticateHostViewController
 + (id)authenticateExtension;
 - (GKHostedAuthenticateViewController)delegate;
-- (void)applicationWillTerminate:(id)a3;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)extensionIsCanceling;
 - (void)extensionIsFinishing;
-- (void)messageFromExtension:(id)a3;
+- (void)messageFromExtension:(id)extension;
 - (void)viewDidLoad;
 @end
 
@@ -50,18 +50,18 @@ void __57__GKAuthenticateHostViewController_authenticateExtension__block_invoke(
   v5.receiver = self;
   v5.super_class = GKAuthenticateHostViewController;
   [(GKExtensionRemoteViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277D0BFD8] willTerminate];
-  [v3 addObserver:self selector:sel_applicationWillTerminate_ name:v4 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  willTerminate = [MEMORY[0x277D0BFD8] willTerminate];
+  [defaultCenter addObserver:self selector:sel_applicationWillTerminate_ name:willTerminate object:0];
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = MEMORY[0x277CCAAC8];
   v6 = GKExtensionProtocolSecureCodedClasses();
   v15 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v15];
+  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v15];
   v8 = v15;
 
   if (v8)
@@ -79,26 +79,26 @@ void __57__GKAuthenticateHostViewController_authenticateExtension__block_invoke(
   }
 
   v11 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12 == 46)
+  if (integerValue == 46)
   {
-    v13 = [(GKAuthenticateHostViewController *)self delegate];
-    [v13 onboardingFlowDidSignOut];
+    delegate = [(GKAuthenticateHostViewController *)self delegate];
+    [delegate onboardingFlowDidSignOut];
   }
 
   else
   {
-    if (v12 != 44)
+    if (integerValue != 44)
     {
       v14.receiver = self;
       v14.super_class = GKAuthenticateHostViewController;
-      [(GKExtensionRemoteViewController *)&v14 messageFromExtension:v4];
+      [(GKExtensionRemoteViewController *)&v14 messageFromExtension:extensionCopy];
       goto LABEL_12;
     }
 
-    v13 = [(GKAuthenticateHostViewController *)self delegate];
-    [v13 setRotationLocked:0];
+    delegate = [(GKAuthenticateHostViewController *)self delegate];
+    [delegate setRotationLocked:0];
   }
 
 LABEL_12:
@@ -106,8 +106,8 @@ LABEL_12:
 
 - (void)extensionIsFinishing
 {
-  v3 = [(GKAuthenticateHostViewController *)self delegate];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  delegate = [(GKAuthenticateHostViewController *)self delegate];
+  [delegate dismissViewControllerAnimated:1 completion:0];
 
   v4.receiver = self;
   v4.super_class = GKAuthenticateHostViewController;
@@ -117,18 +117,18 @@ LABEL_12:
 - (void)extensionIsCanceling
 {
   v3 = [MEMORY[0x277CCA9B8] userErrorForCode:2 underlyingError:0];
-  v4 = [(GKAuthenticateHostViewController *)self delegate];
-  [v4 setError:v3];
+  delegate = [(GKAuthenticateHostViewController *)self delegate];
+  [delegate setError:v3];
 
-  v5 = [(GKAuthenticateHostViewController *)self delegate];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  delegate2 = [(GKAuthenticateHostViewController *)self delegate];
+  [delegate2 dismissViewControllerAnimated:1 completion:0];
 
   v6.receiver = self;
   v6.super_class = GKAuthenticateHostViewController;
   [(GKExtensionRemoteViewController *)&v6 extensionIsCanceling];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"MessageCommandKey";
@@ -136,8 +136,8 @@ LABEL_12:
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v4];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (GKHostedAuthenticateViewController)delegate

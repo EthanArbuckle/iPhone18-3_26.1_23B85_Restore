@@ -1,12 +1,12 @@
 @interface PCProtobufReader
 - (BOOL)closeFile;
-- (BOOL)openFileWithName:(id)a3 error:(id *)a4;
-- (BOOL)readRecord:(id *)a3 error:(id *)a4;
+- (BOOL)openFileWithName:(id)name error:(id *)error;
+- (BOOL)readRecord:(id *)record error:(id *)error;
 - (PCProtobufReader)init;
 - (id)findNextMessageStart;
 - (id)readRemainingBytes;
 - (id)readUntilNextMessageStart;
-- (id)unescapeMessage:(id)a3;
+- (id)unescapeMessage:(id)message;
 @end
 
 @implementation PCProtobufReader
@@ -24,16 +24,16 @@
   return result;
 }
 
-- (BOOL)openFileWithName:(id)a3 error:(id *)a4
+- (BOOL)openFileWithName:(id)name error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   if (self->_fileHandle)
   {
     [(PCProtobufReader *)self closeFile];
   }
 
-  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:nameCopy];
   v17 = 0;
   v8 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v7 error:&v17];
   v9 = v17;
@@ -46,12 +46,12 @@
     self->_eofReached = 0;
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v9)
     {
       v14 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -60,7 +60,7 @@
       v18 = *MEMORY[0x1E696A578];
       v19[0] = @"Unable to open file";
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a4 = [v15 errorWithDomain:@"PCProtobufReader" code:2 userInfo:v16];
+      *error = [v15 errorWithDomain:@"PCProtobufReader" code:2 userInfo:v16];
     }
   }
 
@@ -68,41 +68,41 @@
   return v11 != 0;
 }
 
-- (BOOL)readRecord:(id *)a3 error:(id *)a4
+- (BOOL)readRecord:(id *)record error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
   if (!self->_fileHandle)
   {
-    if (a4)
+    if (error)
     {
       v8 = MEMORY[0x1E696ABC0];
       v51 = *MEMORY[0x1E696A578];
       v52[0] = @"File not opened";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
-      *a4 = [v8 errorWithDomain:@"PCProtobufReader" code:3 userInfo:v9];
+      *error = [v8 errorWithDomain:@"PCProtobufReader" code:3 userInfo:v9];
     }
 
-    if (!a3)
+    if (!record)
     {
       goto LABEL_4;
     }
 
 LABEL_8:
     v7 = 0;
-    *a3 = 0;
+    *record = 0;
     goto LABEL_49;
   }
 
   if (!self->_eofReached)
   {
-    v10 = [(PCProtobufReader *)self findNextMessageStart];
-    if (v10)
+    findNextMessageStart = [(PCProtobufReader *)self findNextMessageStart];
+    if (findNextMessageStart)
     {
-      v11 = [(PCProtobufReader *)self readUntilNextMessageStart];
-      if (v11 || ([(PCProtobufReader *)self readRemainingBytes], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+      readUntilNextMessageStart = [(PCProtobufReader *)self readUntilNextMessageStart];
+      if (readUntilNextMessageStart || ([(PCProtobufReader *)self readRemainingBytes], (readUntilNextMessageStart = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v12 = v11;
-        v13 = [(PCProtobufReader *)self unescapeMessage:v11];
+        v12 = readUntilNextMessageStart;
+        v13 = [(PCProtobufReader *)self unescapeMessage:readUntilNextMessageStart];
         v40 = 0;
         v39 = 0;
         if (PCDecodeVarintFromData(v13, &v39, &v40))
@@ -113,7 +113,7 @@ LABEL_8:
             v15 = [v13 subdataWithRange:{v40, v39}];
             v16 = [v13 subdataWithRange:{v40 + v39, 4}];
             v17 = PCDecodeLittleEndianUInt32(v16);
-            v18 = [v15 bytes];
+            bytes = [v15 bytes];
             v19 = [v15 length];
             if (v19)
             {
@@ -121,7 +121,7 @@ LABEL_8:
               v21 = 1;
               do
               {
-                v22 = *v18++;
+                v22 = *bytes++;
                 v21 = (v21 + v22) % 0xFFF1;
                 v20 = (v21 + v20) % 0xFFF1;
                 --v19;
@@ -138,19 +138,19 @@ LABEL_8:
 
             if (v17 != v23)
             {
-              if (a4)
+              if (error)
               {
                 v33 = MEMORY[0x1E696ABC0];
                 v43 = *MEMORY[0x1E696A578];
                 v44 = @"Checksum verification failed";
                 v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-                *a4 = [v33 errorWithDomain:@"PCProtobufReader" code:7 userInfo:v34];
+                *error = [v33 errorWithDomain:@"PCProtobufReader" code:7 userInfo:v34];
               }
 
               v7 = 0;
-              if (a3)
+              if (record)
               {
-                *a3 = 0;
+                *record = 0;
               }
 
               goto LABEL_46;
@@ -161,7 +161,7 @@ LABEL_8:
             v7 = v30 != 0;
             if (v30)
             {
-              if (!a3)
+              if (!record)
               {
 LABEL_45:
 
@@ -174,35 +174,35 @@ LABEL_46:
 
             else
             {
-              if (a4)
+              if (error)
               {
                 v38 = MEMORY[0x1E696ABC0];
                 v41 = *MEMORY[0x1E696A578];
                 v42 = @"Failed to parse protobuf";
                 v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-                *a4 = [v38 errorWithDomain:@"PCProtobufReader" code:8 userInfo:v35];
+                *error = [v38 errorWithDomain:@"PCProtobufReader" code:8 userInfo:v35];
               }
 
-              if (!a3)
+              if (!record)
               {
                 goto LABEL_45;
               }
             }
 
-            *a3 = v31;
+            *record = v31;
             goto LABEL_45;
           }
 
-          if (a4)
+          if (error)
           {
             v26 = MEMORY[0x1E696ABC0];
             v45 = *MEMORY[0x1E696A578];
             v46 = @"Size mismatch in message";
             v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-            *a4 = [v26 errorWithDomain:@"PCProtobufReader" code:6 userInfo:v27];
+            *error = [v26 errorWithDomain:@"PCProtobufReader" code:6 userInfo:v27];
           }
 
-          if (!a3)
+          if (!record)
           {
             goto LABEL_27;
           }
@@ -210,16 +210,16 @@ LABEL_46:
 
         else
         {
-          if (a4)
+          if (error)
           {
             v24 = MEMORY[0x1E696ABC0];
             v47 = *MEMORY[0x1E696A578];
             v48 = @"Failed to decode length varint";
             v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-            *a4 = [v24 errorWithDomain:@"PCProtobufReader" code:5 userInfo:v25];
+            *error = [v24 errorWithDomain:@"PCProtobufReader" code:5 userInfo:v25];
           }
 
-          if (!a3)
+          if (!record)
           {
 LABEL_27:
             v7 = 0;
@@ -228,22 +228,22 @@ LABEL_27:
         }
 
         v7 = 0;
-        *a3 = 0;
+        *record = 0;
 LABEL_47:
 
         goto LABEL_48;
       }
 
-      if (a4)
+      if (error)
       {
         v28 = MEMORY[0x1E696ABC0];
         v49 = *MEMORY[0x1E696A578];
         v50 = @"No data after message start";
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-        *a4 = [v28 errorWithDomain:@"PCProtobufReader" code:4 userInfo:v29];
+        *error = [v28 errorWithDomain:@"PCProtobufReader" code:4 userInfo:v29];
       }
 
-      if (!a3)
+      if (!record)
       {
         goto LABEL_31;
       }
@@ -252,7 +252,7 @@ LABEL_47:
     else
     {
       self->_eofReached = 1;
-      if (!a3)
+      if (!record)
       {
 LABEL_31:
         v7 = 0;
@@ -261,13 +261,13 @@ LABEL_31:
     }
 
     v7 = 0;
-    *a3 = 0;
+    *record = 0;
 LABEL_48:
 
     goto LABEL_49;
   }
 
-  if (a3)
+  if (record)
   {
     goto LABEL_8;
   }
@@ -295,7 +295,7 @@ LABEL_49:
 - (id)findNextMessageStart
 {
   v3 = [MEMORY[0x1E695DF88] dataWithCapacity:0x2000];
-  v4 = [(NSFileHandle *)self->_fileHandle offsetInFile];
+  offsetInFile = [(NSFileHandle *)self->_fileHandle offsetInFile];
   v5 = [(NSFileHandle *)self->_fileHandle readDataOfLength:0x2000];
   if ([v5 length])
   {
@@ -316,8 +316,8 @@ LABEL_49:
         v10 = [v3 subdataWithRange:{objc_msgSend(v3, "length") - 2, 2}];
         v11 = [MEMORY[0x1E695DF88] dataWithData:v10];
 
-        v12 = [(NSFileHandle *)self->_fileHandle offsetInFile];
-        v4 = v12 - [v10 length];
+        offsetInFile2 = [(NSFileHandle *)self->_fileHandle offsetInFile];
+        offsetInFile = offsetInFile2 - [v10 length];
 
         v3 = v11;
       }
@@ -329,7 +329,7 @@ LABEL_49:
       }
     }
 
-    [(NSFileHandle *)self->_fileHandle seekToFileOffset:v9 + v4 + v7];
+    [(NSFileHandle *)self->_fileHandle seekToFileOffset:v9 + offsetInFile + v7];
     v13 = [v3 subdataWithRange:{v7, v9}];
   }
 
@@ -344,16 +344,16 @@ LABEL_6:
 
 - (id)readUntilNextMessageStart
 {
-  v3 = [MEMORY[0x1E695DF88] data];
-  v4 = [(NSFileHandle *)self->_fileHandle offsetInFile];
+  data = [MEMORY[0x1E695DF88] data];
+  offsetInFile = [(NSFileHandle *)self->_fileHandle offsetInFile];
   v5 = [(NSFileHandle *)self->_fileHandle readDataOfLength:0x2000];
   if ([v5 length])
   {
     while (1)
     {
-      [v3 appendData:v5];
+      [data appendData:v5];
       v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&kPCProtobufIOMessageStartSeq length:3];
-      v7 = PCFindData(v6, v3);
+      v7 = PCFindData(v6, data);
 
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -367,16 +367,16 @@ LABEL_6:
       }
     }
 
-    v8 = [v3 subdataWithRange:{0, v7}];
-    [(NSFileHandle *)self->_fileHandle seekToFileOffset:v7 + v4];
+    v8 = [data subdataWithRange:{0, v7}];
+    [(NSFileHandle *)self->_fileHandle seekToFileOffset:v7 + offsetInFile];
   }
 
   else
   {
 LABEL_4:
-    if ([v3 length])
+    if ([data length])
     {
-      v8 = [v3 copy];
+      v8 = [data copy];
     }
 
     else
@@ -390,10 +390,10 @@ LABEL_4:
 
 - (id)readRemainingBytes
 {
-  v2 = [(NSFileHandle *)self->_fileHandle readDataToEndOfFile];
-  if ([v2 length])
+  readDataToEndOfFile = [(NSFileHandle *)self->_fileHandle readDataToEndOfFile];
+  if ([readDataToEndOfFile length])
   {
-    v3 = v2;
+    v3 = readDataToEndOfFile;
   }
 
   else
@@ -404,12 +404,12 @@ LABEL_4:
   return v3;
 }
 
-- (id)unescapeMessage:(id)a3
+- (id)unescapeMessage:(id)message
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF88] data];
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  messageCopy = message;
+  data = [MEMORY[0x1E695DF88] data];
+  bytes = [messageCopy bytes];
+  v6 = [messageCopy length];
   if (v6)
   {
     v7 = v6;
@@ -417,15 +417,15 @@ LABEL_4:
     do
     {
       v9 = v8 + 1;
-      if (v8 + 1 < v7 && *(v5 + v8) == 126 && *(v5 + v9) == 93)
+      if (v8 + 1 < v7 && *(bytes + v8) == 126 && *(bytes + v9) == 93)
       {
-        [v4 appendBytes:&kPCProtobufIOUnescapedByte length:1];
+        [data appendBytes:&kPCProtobufIOUnescapedByte length:1];
         v9 = v8 + 2;
       }
 
       else
       {
-        [v4 appendBytes:v5 + v8 length:1];
+        [data appendBytes:bytes + v8 length:1];
       }
 
       v8 = v9;
@@ -434,7 +434,7 @@ LABEL_4:
     while (v9 < v7);
   }
 
-  return v4;
+  return data;
 }
 
 @end

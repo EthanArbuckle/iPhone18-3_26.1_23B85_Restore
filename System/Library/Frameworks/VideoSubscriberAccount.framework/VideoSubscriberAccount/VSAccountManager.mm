@@ -1,12 +1,12 @@
 @interface VSAccountManager
-- (BOOL)viewServiceRequestOperation:(id)a3 shouldAuthenticateAccountProviderWithIdentifier:(id)a4;
+- (BOOL)viewServiceRequestOperation:(id)operation shouldAuthenticateAccountProviderWithIdentifier:(id)identifier;
 - (VSAccountManager)init;
 - (VSAccountManagerResult)enqueueAccountMetadataRequest:(VSAccountMetadataRequest *)request completionHandler:(void *)completionHandler;
-- (id)_enqueueViewServiceRequest:(id)a3 completionHandler:(id)a4;
+- (id)_enqueueViewServiceRequest:(id)request completionHandler:(id)handler;
 - (id)delegate;
 - (void)checkAccessStatusWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler;
-- (void)viewServiceRequestOperation:(id)a3 dismissViewController:(id)a4;
-- (void)viewServiceRequestOperation:(id)a3 presentViewController:(id)a4;
+- (void)viewServiceRequestOperation:(id)operation dismissViewController:(id)controller;
+- (void)viewServiceRequestOperation:(id)operation presentViewController:(id)controller;
 @end
 
 @implementation VSAccountManager
@@ -38,10 +38,10 @@
   return v2;
 }
 
-- (void)viewServiceRequestOperation:(id)a3 presentViewController:(id)a4
+- (void)viewServiceRequestOperation:(id)operation presentViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -57,8 +57,8 @@
   v9[2] = __70__VSAccountManager_viewServiceRequestOperation_presentViewController___block_invoke;
   v9[3] = &unk_278B73708;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = controllerCopy;
+  v7 = controllerCopy;
   __70__VSAccountManager_viewServiceRequestOperation_presentViewController___block_invoke(v9);
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -77,10 +77,10 @@ void __70__VSAccountManager_viewServiceRequestOperation_presentViewController___
   [v2 accountManager:*(a1 + 32) presentViewController:*(a1 + 40)];
 }
 
-- (void)viewServiceRequestOperation:(id)a3 dismissViewController:(id)a4
+- (void)viewServiceRequestOperation:(id)operation dismissViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,8 +96,8 @@ void __70__VSAccountManager_viewServiceRequestOperation_presentViewController___
   v9[2] = __70__VSAccountManager_viewServiceRequestOperation_dismissViewController___block_invoke;
   v9[3] = &unk_278B73708;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = controllerCopy;
+  v7 = controllerCopy;
   __70__VSAccountManager_viewServiceRequestOperation_dismissViewController___block_invoke(v9);
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -116,13 +116,13 @@ void __70__VSAccountManager_viewServiceRequestOperation_dismissViewController___
   [v2 accountManager:*(a1 + 32) dismissViewController:*(a1 + 40)];
 }
 
-- (BOOL)viewServiceRequestOperation:(id)a3 shouldAuthenticateAccountProviderWithIdentifier:(id)a4
+- (BOOL)viewServiceRequestOperation:(id)operation shouldAuthenticateAccountProviderWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(VSAccountManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(VSAccountManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 accountManager:self shouldAuthenticateAccountProviderWithIdentifier:v5];
+    v7 = [delegate accountManager:self shouldAuthenticateAccountProviderWithIdentifier:identifierCopy];
   }
 
   else
@@ -167,26 +167,26 @@ void __70__VSAccountManager_viewServiceRequestOperation_dismissViewController___
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
 LABEL_5:
   [(NSDictionary *)v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_9];
-  v9 = [(VSAccountManager *)self securityTask];
+  securityTask = [(VSAccountManager *)self securityTask];
   v34 = 0;
-  v10 = VSCheckEntitlementForTask(v9, &v34);
+  v10 = VSCheckEntitlementForTask(securityTask, &v34);
   v11 = v34;
 
   if (v10)
   {
-    v12 = [(VSAccountManager *)self privacyInfoCenter];
-    v13 = [v12 accountAccessStatus];
-    v14 = v13;
-    if ((v13 - 1) < 3)
+    privacyInfoCenter = [(VSAccountManager *)self privacyInfoCenter];
+    accountAccessStatus = [privacyInfoCenter accountAccessStatus];
+    v14 = accountAccessStatus;
+    if ((accountAccessStatus - 1) < 3)
     {
-      v15 = [(VSAccountManager *)self requestCenter];
+      requestCenter = [(VSAccountManager *)self requestCenter];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __67__VSAccountManager_checkAccessStatusWithOptions_completionHandler___block_invoke_90;
       v28[3] = &unk_278B73B58;
       v30 = v14;
       v29 = v7;
-      v16 = [v15 enqueueCompletionHandlerBlock:v28];
+      v16 = [requestCenter enqueueCompletionHandlerBlock:v28];
 
       v17 = v29;
 LABEL_15:
@@ -194,22 +194,22 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (!v13)
+    if (!accountAccessStatus)
     {
       v17 = objc_alloc_init(VSViewServiceRequest);
       v21 = [(NSDictionary *)v6 objectForKey:@"VSCheckAccessOptionPrompt"];
-      v22 = [v21 BOOLValue];
+      bOOLValue = [v21 BOOLValue];
 
-      [(VSViewServiceRequest *)v17 setAllowsPrivacyUI:v22];
-      [(VSViewServiceRequest *)v17 setRequiresPrivacyUI:v22];
-      v23 = [(VSAccountManager *)self linkedOnOrAfterChecker];
-      -[VSViewServiceRequest setShouldReturnErrorOnTVProviderFeatureUnsupportedByStorefront:](v17, "setShouldReturnErrorOnTVProviderFeatureUnsupportedByStorefront:", [v23 shouldPerformBehavior:2]);
+      [(VSViewServiceRequest *)v17 setAllowsPrivacyUI:bOOLValue];
+      [(VSViewServiceRequest *)v17 setRequiresPrivacyUI:bOOLValue];
+      linkedOnOrAfterChecker = [(VSAccountManager *)self linkedOnOrAfterChecker];
+      -[VSViewServiceRequest setShouldReturnErrorOnTVProviderFeatureUnsupportedByStorefront:](v17, "setShouldReturnErrorOnTVProviderFeatureUnsupportedByStorefront:", [linkedOnOrAfterChecker shouldPerformBehavior:2]);
 
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __67__VSAccountManager_checkAccessStatusWithOptions_completionHandler___block_invoke_2;
       v31[3] = &unk_278B73988;
-      v32 = v12;
+      v32 = privacyInfoCenter;
       v33 = v7;
       v24 = [(VSAccountManager *)self _enqueueViewServiceRequest:v17 completionHandler:v31];
 
@@ -225,16 +225,16 @@ LABEL_15:
       [VSAccountManager checkAccessStatusWithOptions:v11 completionHandler:v18];
     }
 
-    v19 = [(VSAccountManager *)self requestCenter];
+    requestCenter2 = [(VSAccountManager *)self requestCenter];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __67__VSAccountManager_checkAccessStatusWithOptions_completionHandler___block_invoke_91;
     v25[3] = &unk_278B737F8;
     v27 = v7;
     v26 = v11;
-    v20 = [v19 enqueueCompletionHandlerBlock:v25];
+    v20 = [requestCenter2 enqueueCompletionHandlerBlock:v25];
 
-    v12 = v27;
+    privacyInfoCenter = v27;
   }
 
 LABEL_16:
@@ -324,22 +324,22 @@ void __67__VSAccountManager_checkAccessStatusWithOptions_completionHandler___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_enqueueViewServiceRequest:(id)a3 completionHandler:(id)a4
+- (id)_enqueueViewServiceRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSAccountManager *)self privacyInfoCenter];
-  v9 = [(VSAccountManager *)self requestCenter];
-  v10 = [v8 accountAccessStatus];
-  if ((v10 - 1) < 2)
+  requestCopy = request;
+  handlerCopy = handler;
+  privacyInfoCenter = [(VSAccountManager *)self privacyInfoCenter];
+  requestCenter = [(VSAccountManager *)self requestCenter];
+  accountAccessStatus = [privacyInfoCenter accountAccessStatus];
+  if ((accountAccessStatus - 1) < 2)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __65__VSAccountManager__enqueueViewServiceRequest_completionHandler___block_invoke;
     v18[3] = &unk_278B73938;
     v12 = &v19;
-    v19 = v7;
-    v13 = [v9 enqueueCompletionHandlerBlock:v18];
+    v19 = handlerCopy;
+    v13 = [requestCenter enqueueCompletionHandlerBlock:v18];
 LABEL_6:
 
     if (v13)
@@ -350,17 +350,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v10 || v10 == 3)
+  if (!accountAccessStatus || accountAccessStatus == 3)
   {
-    v11 = [(VSAccountManager *)self delegate];
+    delegate = [(VSAccountManager *)self delegate];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __65__VSAccountManager__enqueueViewServiceRequest_completionHandler___block_invoke_2;
     v15[3] = &unk_278B73988;
     v12 = &v16;
-    v16 = v8;
-    v17 = v7;
-    v13 = [v9 enqueueRequest:v6 withAccountManagerDelegate:v11 operationDelegate:self completionHandler:v15];
+    v16 = privacyInfoCenter;
+    v17 = handlerCopy;
+    v13 = [requestCenter enqueueRequest:requestCopy withAccountManagerDelegate:delegate operationDelegate:self completionHandler:v15];
 
     goto LABEL_6;
   }
@@ -451,21 +451,21 @@ void __65__VSAccountManager__enqueueViewServiceRequest_completionHandler___block
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
 LABEL_5:
-  v9 = [(VSAccountManager *)self securityTask];
+  securityTask = [(VSAccountManager *)self securityTask];
   v24 = 0;
-  v10 = VSCheckEntitlementForTask(v9, &v24);
+  v10 = VSCheckEntitlementForTask(securityTask, &v24);
   v11 = v24;
 
   if (v10)
   {
     v12 = objc_alloc_init(VSViewServiceRequest);
     [(VSViewServiceRequest *)v12 setAccountMetadataRequest:v6];
-    v13 = [(VSAccountManager *)self linkedOnOrAfterChecker];
-    -[VSViewServiceRequest setShouldInferFeaturedProviders:](v12, "setShouldInferFeaturedProviders:", [v13 shouldPerformBehavior:1] ^ 1);
+    linkedOnOrAfterChecker = [(VSAccountManager *)self linkedOnOrAfterChecker];
+    -[VSViewServiceRequest setShouldInferFeaturedProviders:](v12, "setShouldInferFeaturedProviders:", [linkedOnOrAfterChecker shouldPerformBehavior:1] ^ 1);
 
     [(VSViewServiceRequest *)v12 setAllowsPrivacyUI:[(VSAccountMetadataRequest *)v6 isInterruptionAllowed]];
     [(VSViewServiceRequest *)v12 setRequiresPrivacyUI:0];
-    v14 = [(VSAccountManager *)self delegate];
+    delegate = [(VSAccountManager *)self delegate];
     [(VSViewServiceRequest *)v12 setCanVetoAuthentication:objc_opt_respondsToSelector() & 1];
 
     v22[0] = MEMORY[0x277D85DD0];
@@ -484,14 +484,14 @@ LABEL_5:
       [VSAccountManager enqueueAccountMetadataRequest:v11 completionHandler:v16];
     }
 
-    v17 = [(VSAccountManager *)self requestCenter];
+    requestCenter = [(VSAccountManager *)self requestCenter];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __68__VSAccountManager_enqueueAccountMetadataRequest_completionHandler___block_invoke_101;
     v19[3] = &unk_278B737F8;
     v21 = v7;
     v20 = v11;
-    v15 = [v17 enqueueCompletionHandlerBlock:v19];
+    v15 = [requestCenter enqueueCompletionHandlerBlock:v19];
 
     v12 = v21;
   }

@@ -5,66 +5,66 @@
 + (id)serverRemoteObjectInterface;
 - (id)pairingQueue;
 - (id)pairingServicesDelegate;
-- (void)xpcAbortPairingReason:(id)a3 withBlock:(id)a4;
-- (void)xpcActiveDeviceAssertions:(id)a3;
-- (void)xpcBeginDiscoveryWithBlock:(id)a3;
-- (void)xpcBeginMigrationWithCompletion:(id)a3;
-- (void)xpcBeginMigrationWithDeviceID:(id)a3 completion:(id)a4;
-- (void)xpcBeginMigrationWithDeviceID:(id)a3 passcode:(id)a4 withBlock:(id)a5;
-- (void)xpcCheckIfFlaggedForRecoveryWithCompletion:(id)a3;
-- (void)xpcClearRecoveryFlagWithCompletion:(id)a3;
-- (void)xpcClearWatchNeedsGraduation:(id)a3;
-- (void)xpcCompanionOOBDiscoverAndPairWithName:(id)a3 withOutOfBandPairingKey:(id)a4 withOptions:(id)a5 operationHasBegun:(id)a6;
-- (void)xpcCompanionPasscodePairWithDeviceID:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5;
-- (void)xpcEndDiscoveryWithBlock:(id)a3;
-- (void)xpcEnterCompatibilityState:(unsigned __int16)a3 withDeviceID:(id)a4;
-- (void)xpcFakePairedSyncIsCompleteWithCompletion:(id)a3;
-- (void)xpcGetInitialSyncCompletedForPairingID:(id)a3 completion:(id)a4;
-- (void)xpcGetLastMigrationRequestPhoneNameWithCompletion:(id)a3;
-- (void)xpcGetLastSwitchIndex:(id)a3;
-- (void)xpcGetMigrationCountForPairingID:(id)a3 completion:(id)a4;
-- (void)xpcGetMigrationPairingCharacteristicReadDataWithCompletion:(id)a3;
-- (void)xpcGizmoOOBAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4;
-- (void)xpcGizmoPasscodeAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4;
-- (void)xpcInvalidateSwitchAssertionWithIdentifier:(id)a3 block:(id)a4;
-- (void)xpcIsAssertionActive:(id)a3 withCompletion:(id)a4;
-- (void)xpcIsPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4;
-- (void)xpcKeepPhoneUnlockedInternalTestSPI:(id)a3;
-- (void)xpcListWatchStagedForTransferWithCompletion:(id)a3;
-- (void)xpcNotifyActivationCompleted:(id)a3 withSuccess:(BOOL)a4;
-- (void)xpcNotifyPasscode:(id)a3 withDeviceID:(id)a4;
-- (void)xpcPairWithSimulator:(id)a3 withCompletion:(id)a4;
-- (void)xpcPairingClientDidEnterPhase:(id)a3 withBlock:(id)a4;
-- (void)xpcPairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forPairingID:(id)a5 completion:(id)a6;
-- (void)xpcPairingClientSetPairingParentName:(id)a3 pairingParentAltDSID:(id)a4 forPairingID:(id)a5 completion:(id)a6;
+- (void)xpcAbortPairingReason:(id)reason withBlock:(id)block;
+- (void)xpcActiveDeviceAssertions:(id)assertions;
+- (void)xpcBeginDiscoveryWithBlock:(id)block;
+- (void)xpcBeginMigrationWithCompletion:(id)completion;
+- (void)xpcBeginMigrationWithDeviceID:(id)d completion:(id)completion;
+- (void)xpcBeginMigrationWithDeviceID:(id)d passcode:(id)passcode withBlock:(id)block;
+- (void)xpcCheckIfFlaggedForRecoveryWithCompletion:(id)completion;
+- (void)xpcClearRecoveryFlagWithCompletion:(id)completion;
+- (void)xpcClearWatchNeedsGraduation:(id)graduation;
+- (void)xpcCompanionOOBDiscoverAndPairWithName:(id)name withOutOfBandPairingKey:(id)key withOptions:(id)options operationHasBegun:(id)begun;
+- (void)xpcCompanionPasscodePairWithDeviceID:(id)d withOptions:(id)options operationHasBegun:(id)begun;
+- (void)xpcEndDiscoveryWithBlock:(id)block;
+- (void)xpcEnterCompatibilityState:(unsigned __int16)state withDeviceID:(id)d;
+- (void)xpcFakePairedSyncIsCompleteWithCompletion:(id)completion;
+- (void)xpcGetInitialSyncCompletedForPairingID:(id)d completion:(id)completion;
+- (void)xpcGetLastMigrationRequestPhoneNameWithCompletion:(id)completion;
+- (void)xpcGetLastSwitchIndex:(id)index;
+- (void)xpcGetMigrationCountForPairingID:(id)d completion:(id)completion;
+- (void)xpcGetMigrationPairingCharacteristicReadDataWithCompletion:(id)completion;
+- (void)xpcGizmoOOBAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun;
+- (void)xpcGizmoPasscodeAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun;
+- (void)xpcInvalidateSwitchAssertionWithIdentifier:(id)identifier block:(id)block;
+- (void)xpcIsAssertionActive:(id)active withCompletion:(id)completion;
+- (void)xpcIsPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion;
+- (void)xpcKeepPhoneUnlockedInternalTestSPI:(id)i;
+- (void)xpcListWatchStagedForTransferWithCompletion:(id)completion;
+- (void)xpcNotifyActivationCompleted:(id)completed withSuccess:(BOOL)success;
+- (void)xpcNotifyPasscode:(id)passcode withDeviceID:(id)d;
+- (void)xpcPairWithSimulator:(id)simulator withCompletion:(id)completion;
+- (void)xpcPairingClientDidEnterPhase:(id)phase withBlock:(id)block;
+- (void)xpcPairingClientSetAltAccountName:(id)name altDSID:(id)d forPairingID:(id)iD completion:(id)completion;
+- (void)xpcPairingClientSetPairingParentName:(id)name pairingParentAltDSID:(id)d forPairingID:(id)iD completion:(id)completion;
 - (void)xpcPairingShouldContinue;
-- (void)xpcPingActiveGizmoWithPriority:(int)a3 withMessageSize:(int64_t)a4 withBlock:(id)a5;
-- (void)xpcPutMigrationChallengeCharacteristicWriteData:(id)a3 completion:(id)a4;
-- (void)xpcResumePairingClientCrashMonitoring:(id)a3;
-- (void)xpcRetriggerUnpairInfoDialogWithBlock:(id)a3;
-- (void)xpcScanForMigratableWatchesWithBlock:(id)a3;
-- (void)xpcSetWatchNeedsGraduation:(id)a3;
-- (void)xpcStageWatchForGraduationWithDeviceID:(id)a3 completion:(id)a4;
-- (void)xpcStageWatchForTransferWithDeviceID:(id)a3 completion:(id)a4;
+- (void)xpcPingActiveGizmoWithPriority:(int)priority withMessageSize:(int64_t)size withBlock:(id)block;
+- (void)xpcPutMigrationChallengeCharacteristicWriteData:(id)data completion:(id)completion;
+- (void)xpcResumePairingClientCrashMonitoring:(id)monitoring;
+- (void)xpcRetriggerUnpairInfoDialogWithBlock:(id)block;
+- (void)xpcScanForMigratableWatchesWithBlock:(id)block;
+- (void)xpcSetWatchNeedsGraduation:(id)graduation;
+- (void)xpcStageWatchForGraduationWithDeviceID:(id)d completion:(id)completion;
+- (void)xpcStageWatchForTransferWithDeviceID:(id)d completion:(id)completion;
 - (void)xpcStartAdvertisingForMigration;
-- (void)xpcStartWatchSetupPushWithBlock:(id)a3;
+- (void)xpcStartWatchSetupPushWithBlock:(id)block;
 - (void)xpcStopAdvertisingForMigration;
-- (void)xpcStopWatchSetupPushWithBlock:(id)a3;
-- (void)xpcSubmitAlbertPairingReport:(id)a3;
-- (void)xpcSubmitRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4;
-- (void)xpcSubmitServerRequestReportWithRequestType:(id)a3 duration:(double)a4 errorCode:(unsigned int)a5 block:(id)a6;
-- (void)xpcSuspendPairingClientCrashMonitoring:(id)a3;
-- (void)xpcSwitchActiveDeviceWithDeviceID:(id)a3 isMagicSwitch:(BOOL)a4 operationHasCompleted:(id)a5;
-- (void)xpcSwitchActiveDeviceWithDeviceID:(id)a3 withAssertionHandler:(id)a4;
-- (void)xpcSwitchToSimulator:(id)a3 withCompletion:(id)a4;
-- (void)xpcTriggerTailspinFrom:(unint64_t)a3 forApp:(id)a4;
+- (void)xpcStopWatchSetupPushWithBlock:(id)block;
+- (void)xpcSubmitAlbertPairingReport:(id)report;
+- (void)xpcSubmitRTCPairingMetricForMetricID:(id)d withSuccess:(id)success;
+- (void)xpcSubmitServerRequestReportWithRequestType:(id)type duration:(double)duration errorCode:(unsigned int)code block:(id)block;
+- (void)xpcSuspendPairingClientCrashMonitoring:(id)monitoring;
+- (void)xpcSwitchActiveDeviceWithDeviceID:(id)d isMagicSwitch:(BOOL)switch operationHasCompleted:(id)completed;
+- (void)xpcSwitchActiveDeviceWithDeviceID:(id)d withAssertionHandler:(id)handler;
+- (void)xpcSwitchToSimulator:(id)simulator withCompletion:(id)completion;
+- (void)xpcTriggerTailspinFrom:(unint64_t)from forApp:(id)app;
 - (void)xpcTriggerVersion4Workaround;
-- (void)xpcUnpairWithDeviceID:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5;
-- (void)xpcUnpairWithSimulator:(id)a3 withCompletion:(id)a4;
-- (void)xpcUpdateWatchBuddyStage:(unsigned int)a3 forPairingID:(id)a4;
-- (void)xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4;
-- (void)xpcWatchBuddyCompletedSetupSteps:(id)a3;
-- (void)xpcWatchNeedsGraduation:(id)a3;
+- (void)xpcUnpairWithDeviceID:(id)d withOptions:(id)options operationHasBegun:(id)begun;
+- (void)xpcUnpairWithSimulator:(id)simulator withCompletion:(id)completion;
+- (void)xpcUpdateWatchBuddyStage:(unsigned int)stage forPairingID:(id)d;
+- (void)xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion;
+- (void)xpcWatchBuddyCompletedSetupSteps:(id)steps;
+- (void)xpcWatchNeedsGraduation:(id)graduation;
 @end
 
 @implementation NRPairingProxy
@@ -128,29 +128,29 @@ uint64_t __41__NRPairingProxy_clientExportedInterface__block_invoke()
 
 - (id)pairingQueue
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 target];
-    v2 = [v1 pairingQueue];
+    target = [self target];
+    pairingQueue = [target pairingQueue];
   }
 
   else
   {
-    v2 = 0;
+    pairingQueue = 0;
   }
 
-  return v2;
+  return pairingQueue;
 }
 
 - (id)pairingServicesDelegate
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 target];
+    self = [self target];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (id)serverExportedInterface
@@ -227,40 +227,40 @@ uint64_t __45__NRPairingProxy_serverRemoteObjectInterface__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)xpcCompanionOOBDiscoverAndPairWithName:(id)a3 withOutOfBandPairingKey:(id)a4 withOptions:(id)a5 operationHasBegun:(id)a6
+- (void)xpcCompanionOOBDiscoverAndPairWithName:(id)name withOutOfBandPairingKey:(id)key withOptions:(id)options operationHasBegun:(id)begun
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  keyCopy = key;
+  optionsCopy = options;
+  begunCopy = begun;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v14 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __111__NRPairingProxy_xpcCompanionOOBDiscoverAndPairWithName_withOutOfBandPairingKey_withOptions_operationHasBegun___block_invoke;
     block[3] = &unk_1E86DB468;
     block[4] = self;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v22 = nameCopy;
+    v23 = keyCopy;
+    v24 = optionsCopy;
+    v25 = begunCopy;
+    v15 = begunCopy;
+    dispatch_async(pairingQueue, block);
 
     v16 = v22;
   }
 
   else
   {
-    v17 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __111__NRPairingProxy_xpcCompanionOOBDiscoverAndPairWithName_withOutOfBandPairingKey_withOptions_operationHasBegun___block_invoke_4;
     v19[3] = &unk_1E86DAE70;
-    v20 = v13;
-    v18 = v13;
-    [v17 runCompletionBlock:v19];
+    v20 = begunCopy;
+    v18 = begunCopy;
+    [connection runCompletionBlock:v19];
 
     v16 = v20;
   }
@@ -306,38 +306,38 @@ void __111__NRPairingProxy_xpcCompanionOOBDiscoverAndPairWithName_withOutOfBandP
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcCompanionPasscodePairWithDeviceID:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5
+- (void)xpcCompanionPasscodePairWithDeviceID:(id)d withOptions:(id)options operationHasBegun:(id)begun
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  begunCopy = begun;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v11 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85__NRPairingProxy_xpcCompanionPasscodePairWithDeviceID_withOptions_operationHasBegun___block_invoke;
     block[3] = &unk_1E86DB490;
     block[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
-    v12 = v10;
-    dispatch_async(v11, block);
+    v19 = dCopy;
+    v20 = optionsCopy;
+    v21 = begunCopy;
+    v12 = begunCopy;
+    dispatch_async(pairingQueue, block);
 
     v13 = v19;
   }
 
   else
   {
-    v14 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __85__NRPairingProxy_xpcCompanionPasscodePairWithDeviceID_withOptions_operationHasBegun___block_invoke_4;
     v16[3] = &unk_1E86DAE70;
-    v17 = v10;
-    v15 = v10;
-    [v14 runCompletionBlock:v16];
+    v17 = begunCopy;
+    v15 = begunCopy;
+    [connection runCompletionBlock:v16];
 
     v13 = v17;
   }
@@ -382,36 +382,36 @@ void __85__NRPairingProxy_xpcCompanionPasscodePairWithDeviceID_withOptions_opera
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcGizmoOOBAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4
+- (void)xpcGizmoOOBAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  begunCopy = begun;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__NRPairingProxy_xpcGizmoOOBAdvertiseAndPairWithName_operationHasBegun___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = nameCopy;
+    v17 = begunCopy;
+    v9 = begunCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __72__NRPairingProxy_xpcGizmoOOBAdvertiseAndPairWithName_operationHasBegun___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = begunCopy;
+    v12 = begunCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -455,36 +455,36 @@ void __72__NRPairingProxy_xpcGizmoOOBAdvertiseAndPairWithName_operationHasBegun_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcGizmoPasscodeAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4
+- (void)xpcGizmoPasscodeAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  begunCopy = begun;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__NRPairingProxy_xpcGizmoPasscodeAdvertiseAndPairWithName_operationHasBegun___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = nameCopy;
+    v17 = begunCopy;
+    v9 = begunCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __77__NRPairingProxy_xpcGizmoPasscodeAdvertiseAndPairWithName_operationHasBegun___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = begunCopy;
+    v12 = begunCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -528,40 +528,40 @@ void __77__NRPairingProxy_xpcGizmoPasscodeAdvertiseAndPairWithName_operationHasB
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcPairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forPairingID:(id)a5 completion:(id)a6
+- (void)xpcPairingClientSetAltAccountName:(id)name altDSID:(id)d forPairingID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v14 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __84__NRPairingProxy_xpcPairingClientSetAltAccountName_altDSID_forPairingID_completion___block_invoke;
     block[3] = &unk_1E86DB468;
     block[4] = self;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v22 = nameCopy;
+    v23 = dCopy;
+    v24 = iDCopy;
+    v25 = completionCopy;
+    v15 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v16 = v22;
   }
 
   else
   {
-    v17 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __84__NRPairingProxy_xpcPairingClientSetAltAccountName_altDSID_forPairingID_completion___block_invoke_4;
     v19[3] = &unk_1E86DAE70;
-    v20 = v13;
-    v18 = v13;
-    [v17 runCompletionBlock:v19];
+    v20 = completionCopy;
+    v18 = completionCopy;
+    [connection runCompletionBlock:v19];
 
     v16 = v20;
   }
@@ -604,40 +604,40 @@ void __84__NRPairingProxy_xpcPairingClientSetAltAccountName_altDSID_forPairingID
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcPairingClientSetPairingParentName:(id)a3 pairingParentAltDSID:(id)a4 forPairingID:(id)a5 completion:(id)a6
+- (void)xpcPairingClientSetPairingParentName:(id)name pairingParentAltDSID:(id)d forPairingID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v14 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __100__NRPairingProxy_xpcPairingClientSetPairingParentName_pairingParentAltDSID_forPairingID_completion___block_invoke;
     block[3] = &unk_1E86DB468;
     block[4] = self;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
-    v15 = v13;
-    dispatch_async(v14, block);
+    v22 = nameCopy;
+    v23 = dCopy;
+    v24 = iDCopy;
+    v25 = completionCopy;
+    v15 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v16 = v22;
   }
 
   else
   {
-    v17 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __100__NRPairingProxy_xpcPairingClientSetPairingParentName_pairingParentAltDSID_forPairingID_completion___block_invoke_4;
     v19[3] = &unk_1E86DAE70;
-    v20 = v13;
-    v18 = v13;
-    [v17 runCompletionBlock:v19];
+    v20 = completionCopy;
+    v18 = completionCopy;
+    [connection runCompletionBlock:v19];
 
     v16 = v20;
   }
@@ -680,19 +680,19 @@ void __100__NRPairingProxy_xpcPairingClientSetPairingParentName_pairingParentAlt
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcWatchNeedsGraduation:(id)a3
+- (void)xpcWatchNeedsGraduation:(id)graduation
 {
-  v4 = a3;
+  graduationCopy = graduation;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__NRPairingProxy_xpcWatchNeedsGraduation___block_invoke;
     v6[3] = &unk_1E86DB530;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = graduationCopy;
+    dispatch_async(pairingQueue, v6);
   }
 }
 
@@ -721,19 +721,19 @@ void __42__NRPairingProxy_xpcWatchNeedsGraduation___block_invoke_2(uint64_t a1, 
   [v4 runCompletionBlock:v5];
 }
 
-- (void)xpcClearWatchNeedsGraduation:(id)a3
+- (void)xpcClearWatchNeedsGraduation:(id)graduation
 {
-  v4 = a3;
+  graduationCopy = graduation;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__NRPairingProxy_xpcClearWatchNeedsGraduation___block_invoke;
     v6[3] = &unk_1E86DB530;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = graduationCopy;
+    dispatch_async(pairingQueue, v6);
   }
 }
 
@@ -765,9 +765,9 @@ void __47__NRPairingProxy_xpcClearWatchNeedsGraduation___block_invoke_2(uint64_t
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcSetWatchNeedsGraduation:(id)a3
+- (void)xpcSetWatchNeedsGraduation:(id)graduation
 {
-  v4 = a3;
+  graduationCopy = graduation;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -783,14 +783,14 @@ void __47__NRPairingProxy_xpcClearWatchNeedsGraduation___block_invoke_2(uint64_t
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__NRPairingProxy_xpcSetWatchNeedsGraduation___block_invoke;
     v9[3] = &unk_1E86DB530;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = graduationCopy;
+    dispatch_async(pairingQueue, v9);
   }
 }
 
@@ -835,9 +835,9 @@ void __45__NRPairingProxy_xpcSetWatchNeedsGraduation___block_invoke_192(uint64_t
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcWatchBuddyCompletedSetupSteps:(id)a3
+- (void)xpcWatchBuddyCompletedSetupSteps:(id)steps
 {
-  v4 = a3;
+  stepsCopy = steps;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -853,29 +853,29 @@ void __45__NRPairingProxy_xpcSetWatchNeedsGraduation___block_invoke_192(uint64_t
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__NRPairingProxy_xpcWatchBuddyCompletedSetupSteps___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v16 = v4;
-    v9 = v4;
-    dispatch_async(v8, block);
+    v16 = stepsCopy;
+    v9 = stepsCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __51__NRPairingProxy_xpcWatchBuddyCompletedSetupSteps___block_invoke_3;
     v13[3] = &unk_1E86DAE70;
-    v14 = v4;
-    v12 = v4;
-    [v11 runCompletionBlock:v13];
+    v14 = stepsCopy;
+    v12 = stepsCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -943,36 +943,36 @@ void __51__NRPairingProxy_xpcWatchBuddyCompletedSetupSteps___block_invoke_3(uint
   }
 }
 
-- (void)xpcBeginMigrationWithDeviceID:(id)a3 completion:(id)a4
+- (void)xpcBeginMigrationWithDeviceID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__NRPairingProxy_xpcBeginMigrationWithDeviceID_completion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = dCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __59__NRPairingProxy_xpcBeginMigrationWithDeviceID_completion___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -1013,34 +1013,34 @@ void __59__NRPairingProxy_xpcBeginMigrationWithDeviceID_completion___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcBeginMigrationWithCompletion:(id)a3
+- (void)xpcBeginMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__NRPairingProxy_xpcBeginMigrationWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __50__NRPairingProxy_xpcBeginMigrationWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -1081,39 +1081,39 @@ void __50__NRPairingProxy_xpcBeginMigrationWithCompletion___block_invoke_4(uint6
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcAbortPairingReason:(id)a3 withBlock:(id)a4
+- (void)xpcAbortPairingReason:(id)reason withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"reason=%@", v7];
-  [(NRRegistryProxy *)self logCaller:a2 args:v9];
+  reasonCopy = reason;
+  blockCopy = block;
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"reason=%@", reasonCopy];
+  [(NRRegistryProxy *)self logCaller:a2 args:reasonCopy];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v10 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__NRPairingProxy_xpcAbortPairingReason_withBlock___block_invoke;
     block[3] = &unk_1E86DB4B8;
     v11 = v18;
-    v18[0] = v7;
+    v18[0] = reasonCopy;
     v18[1] = self;
-    v19 = v8;
-    v12 = v8;
-    dispatch_async(v10, block);
+    v19 = blockCopy;
+    v12 = blockCopy;
+    dispatch_async(pairingQueue, block);
   }
 
   else
   {
-    v13 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__NRPairingProxy_xpcAbortPairingReason_withBlock___block_invoke_2;
     v15[3] = &unk_1E86DAE70;
     v11 = &v16;
-    v16 = v8;
-    v14 = v8;
-    [v13 runCompletionBlock:v15];
+    v16 = blockCopy;
+    v14 = blockCopy;
+    [connection runCompletionBlock:v15];
   }
 }
 
@@ -1164,49 +1164,49 @@ LABEL_8:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcUnpairWithDeviceID:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5
+- (void)xpcUnpairWithDeviceID:(id)d withOptions:(id)options operationHasBegun:(id)begun
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  begunCopy = begun;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v9 UUIDString];
-  v14 = [v12 stringWithFormat:@"deviceID=%@ options=%@", v13, v10];
-  [(NRRegistryProxy *)self logCaller:a2 args:v14];
+  uUIDString = [dCopy UUIDString];
+  optionsCopy = [v12 stringWithFormat:@"deviceID=%@ options=%@", uUIDString, optionsCopy];
+  [(NRRegistryProxy *)self logCaller:a2 args:optionsCopy];
 
   if (![(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v16 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __70__NRPairingProxy_xpcUnpairWithDeviceID_withOptions_operationHasBegun___block_invoke_3;
     v54[3] = &unk_1E86DAE70;
-    v55 = v11;
-    v17 = v11;
-    [v16 runCompletionBlock:v54];
+    v55 = begunCopy;
+    v17 = begunCopy;
+    [connection runCompletionBlock:v54];
 
     v18 = v55;
     goto LABEL_42;
   }
 
-  v53 = v11;
-  v52 = self;
-  if ([v10 count])
+  v53 = begunCopy;
+  selfCopy = self;
+  if ([optionsCopy count])
   {
-    v15 = [v10 objectForKeyedSubscript:@"obliterate"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"obliterate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v51 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
     }
 
     else
     {
-      v51 = 1;
+      bOOLValue = 1;
     }
 
-    v23 = [v10 objectForKeyedSubscript:@"brick"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"brick"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 BOOLValue])
@@ -1225,9 +1225,9 @@ LABEL_8:
         v26 = nr_daemon_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v48 = [(NRXPCProxy *)self appPath];
+          appPath = [(NRXPCProxy *)self appPath];
           *buf = 138543874;
-          v59 = v48;
+          v59 = appPath;
           v60 = 2112;
           v61 = @"com.apple.nano.nanoregistry.unpairwithbrick";
           v62 = 2112;
@@ -1239,7 +1239,7 @@ LABEL_8:
 
     v50 = 0;
 LABEL_17:
-    v27 = [v10 objectForKeyedSubscript:@"store"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"store"];
 
     v28 = nr_daemon_log();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
@@ -1249,9 +1249,9 @@ LABEL_17:
       v30 = nr_daemon_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v47 = [(NRXPCProxy *)self appPath];
+        appPath2 = [(NRXPCProxy *)self appPath];
         *buf = 138543618;
-        v59 = v47;
+        v59 = appPath2;
         v60 = 2112;
         v61 = v27;
         _os_log_error_impl(&dword_1E0ADF000, v30, OS_LOG_TYPE_ERROR, "%{public}@ valueID=%@", buf, 0x16u);
@@ -1261,15 +1261,15 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [(__CFString *)v27 BOOLValue];
+      bOOLValue2 = [(__CFString *)v27 BOOLValue];
     }
 
     else
     {
-      v20 = 0;
+      bOOLValue2 = 0;
     }
 
-    v31 = [v10 objectForKeyedSubscript:@"BDE85C67-0FDD-4A95-A9B9-3CB5DD0C06A2"];
+    v31 = [optionsCopy objectForKeyedSubscript:@"BDE85C67-0FDD-4A95-A9B9-3CB5DD0C06A2"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v31 BOOLValue])
@@ -1278,7 +1278,7 @@ LABEL_17:
       {
         v19 = 1;
 LABEL_33:
-        v34 = [v10 objectForKeyedSubscript:@"unpairAbortErrorReason"];
+        v34 = [optionsCopy objectForKeyedSubscript:@"unpairAbortErrorReason"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1293,7 +1293,7 @@ LABEL_33:
 
         v21 = v50;
 
-        v22 = v51;
+        v22 = bOOLValue;
         goto LABEL_37;
       }
 
@@ -1308,9 +1308,9 @@ LABEL_33:
       v33 = nr_daemon_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v49 = [(NRXPCProxy *)self appPath];
+        appPath3 = [(NRXPCProxy *)self appPath];
         *buf = 138543874;
-        v59 = v49;
+        v59 = appPath3;
         v60 = 2112;
         v61 = @"com.apple.nanoregistry.BDE85C67-0FDD-4A95-A9B9-3CB5DD0C06A2";
         v62 = 2112;
@@ -1325,14 +1325,14 @@ LABEL_33:
 
   v17 = 0;
   v19 = 0;
-  v20 = 0;
+  bOOLValue2 = 0;
   v21 = 0;
   v22 = 1;
 LABEL_37:
   v35 = objc_alloc(MEMORY[0x1E695DF90]);
   v36 = [MEMORY[0x1E696AD98] numberWithBool:v21];
   v37 = [MEMORY[0x1E696AD98] numberWithBool:v22];
-  v38 = [MEMORY[0x1E696AD98] numberWithBool:v20];
+  v38 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue2];
   v39 = [MEMORY[0x1E696AD98] numberWithBool:v19];
   v18 = [v35 initWithObjectsAndKeys:{v36, @"brick", v37, @"obliterate", v38, @"store", v39, @"BDE85C67-0FDD-4A95-A9B9-3CB5DD0C06A2", 0}];
 
@@ -1345,27 +1345,27 @@ LABEL_37:
     v41 = nr_daemon_log();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      v46 = [(NRXPCProxy *)v52 appPath];
+      appPath4 = [(NRXPCProxy *)selfCopy appPath];
       *buf = 138543618;
-      v59 = v46;
+      v59 = appPath4;
       v60 = 2112;
       v61 = v18;
       _os_log_error_impl(&dword_1E0ADF000, v41, OS_LOG_TYPE_ERROR, "%{public}@ options again=%@", buf, 0x16u);
     }
   }
 
-  v42 = [(NRPairingProxy *)v52 pairingServicesDelegate];
-  [v42 proxyWillBeginUnpairing:v52];
+  pairingServicesDelegate = [(NRPairingProxy *)selfCopy pairingServicesDelegate];
+  [pairingServicesDelegate proxyWillBeginUnpairing:selfCopy];
 
-  v43 = [(NRPairingProxy *)v52 pairingServicesDelegate];
+  pairingServicesDelegate2 = [(NRPairingProxy *)selfCopy pairingServicesDelegate];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __70__NRPairingProxy_xpcUnpairWithDeviceID_withOptions_operationHasBegun___block_invoke;
   v56[3] = &unk_1E86DAD10;
-  v56[4] = v52;
+  v56[4] = selfCopy;
   v57 = v53;
   v44 = v53;
-  [v43 xpcUnpairWithDeviceID:v9 withOptions:v18 operationHasBegun:v56];
+  [pairingServicesDelegate2 xpcUnpairWithDeviceID:dCopy withOptions:v18 operationHasBegun:v56];
 
 LABEL_42:
   v45 = *MEMORY[0x1E69E9840];
@@ -1393,25 +1393,25 @@ void __70__NRPairingProxy_xpcUnpairWithDeviceID_withOptions_operationHasBegun___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcNotifyActivationCompleted:(id)a3 withSuccess:(BOOL)a4
+- (void)xpcNotifyActivationCompleted:(id)completed withSuccess:(BOOL)success
 {
-  v7 = a3;
+  completedCopy = completed;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v7 UUIDString];
-  v10 = [v8 stringWithFormat:@"deviceID=%@", v9];
+  uUIDString = [completedCopy UUIDString];
+  v10 = [v8 stringWithFormat:@"deviceID=%@", uUIDString];
   [(NRRegistryProxy *)self logCaller:a2 args:v10];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v11 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__NRPairingProxy_xpcNotifyActivationCompleted_withSuccess___block_invoke;
     block[3] = &unk_1E86DB558;
     block[4] = self;
-    v13 = v7;
-    v14 = a4;
-    dispatch_async(v11, block);
+    v13 = completedCopy;
+    successCopy = success;
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -1421,26 +1421,26 @@ void __59__NRPairingProxy_xpcNotifyActivationCompleted_withSuccess___block_invok
   [v2 xpcNotifyActivationCompleted:*(a1 + 40) withSuccess:*(a1 + 48)];
 }
 
-- (void)xpcNotifyPasscode:(id)a3 withDeviceID:(id)a4
+- (void)xpcNotifyPasscode:(id)passcode withDeviceID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  passcodeCopy = passcode;
+  dCopy = d;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v8 UUIDString];
-  v11 = [v9 stringWithFormat:@"deviceID=%@", v10];
+  uUIDString = [dCopy UUIDString];
+  v11 = [v9 stringWithFormat:@"deviceID=%@", uUIDString];
   [(NRRegistryProxy *)self logCaller:a2 args:v11];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v12 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__NRPairingProxy_xpcNotifyPasscode_withDeviceID___block_invoke;
     block[3] = &unk_1E86DAEE8;
     block[4] = self;
-    v14 = v7;
-    v15 = v8;
-    dispatch_async(v12, block);
+    v14 = passcodeCopy;
+    v15 = dCopy;
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -1454,13 +1454,13 @@ void __49__NRPairingProxy_xpcNotifyPasscode_withDeviceID___block_invoke(uint64_t
 {
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v3 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__NRPairingProxy_xpcPairingShouldContinue__block_invoke;
     block[3] = &unk_1E86DAE98;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -1470,20 +1470,20 @@ void __42__NRPairingProxy_xpcPairingShouldContinue__block_invoke(uint64_t a1)
   [v1 xpcPairingShouldContinue];
 }
 
-- (void)xpcEnterCompatibilityState:(unsigned __int16)a3 withDeviceID:(id)a4
+- (void)xpcEnterCompatibilityState:(unsigned __int16)state withDeviceID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v7 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__NRPairingProxy_xpcEnterCompatibilityState_withDeviceID___block_invoke;
     block[3] = &unk_1E86DB580;
     block[4] = self;
-    v10 = a3;
-    v9 = v6;
-    dispatch_async(v7, block);
+    stateCopy = state;
+    v9 = dCopy;
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -1493,42 +1493,42 @@ void __58__NRPairingProxy_xpcEnterCompatibilityState_withDeviceID___block_invoke
   [v2 xpcEnterCompatibilityState:*(a1 + 48) withDeviceID:*(a1 + 40)];
 }
 
-- (void)xpcSwitchActiveDeviceWithDeviceID:(id)a3 isMagicSwitch:(BOOL)a4 operationHasCompleted:(id)a5
+- (void)xpcSwitchActiveDeviceWithDeviceID:(id)d isMagicSwitch:(BOOL)switch operationHasCompleted:(id)completed
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  completedCopy = completed;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v9 UUIDString];
-  v13 = [v11 stringWithFormat:@"deviceID=%@", v12];
+  uUIDString = [dCopy UUIDString];
+  v13 = [v11 stringWithFormat:@"deviceID=%@", uUIDString];
   [(NRRegistryProxy *)self logCaller:a2 args:v13];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v14 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __88__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_isMagicSwitch_operationHasCompleted___block_invoke;
     block[3] = &unk_1E86DB5A8;
     block[4] = self;
-    v24 = a4;
-    v22 = v9;
-    v23 = v10;
-    v15 = v10;
-    dispatch_async(v14, block);
+    switchCopy = switch;
+    v22 = dCopy;
+    v23 = completedCopy;
+    v15 = completedCopy;
+    dispatch_async(pairingQueue, block);
 
     v16 = v22;
   }
 
   else
   {
-    v17 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __88__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_isMagicSwitch_operationHasCompleted___block_invoke_4;
     v19[3] = &unk_1E86DAE70;
-    v20 = v10;
-    v18 = v10;
-    [v17 runCompletionBlock:v19];
+    v20 = completedCopy;
+    v18 = completedCopy;
+    [connection runCompletionBlock:v19];
 
     v16 = v20;
   }
@@ -1573,41 +1573,41 @@ void __88__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_isMagicSwitch_operat
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcSwitchActiveDeviceWithDeviceID:(id)a3 withAssertionHandler:(id)a4
+- (void)xpcSwitchActiveDeviceWithDeviceID:(id)d withAssertionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v7 UUIDString];
-  v11 = [v9 stringWithFormat:@"deviceID=%@", v10];
+  uUIDString = [dCopy UUIDString];
+  v11 = [v9 stringWithFormat:@"deviceID=%@", uUIDString];
   [(NRRegistryProxy *)self logCaller:a2 args:v11];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v12 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_withAssertionHandler___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v20 = v7;
-    v21 = v8;
-    v13 = v8;
-    dispatch_async(v12, block);
+    v20 = dCopy;
+    v21 = handlerCopy;
+    v13 = handlerCopy;
+    dispatch_async(pairingQueue, block);
 
     v14 = v20;
   }
 
   else
   {
-    v15 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __73__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_withAssertionHandler___block_invoke_4;
     v17[3] = &unk_1E86DAE70;
-    v18 = v8;
-    v16 = v8;
-    [v15 runCompletionBlock:v17];
+    v18 = handlerCopy;
+    v16 = handlerCopy;
+    [connection runCompletionBlock:v17];
 
     v14 = v18;
   }
@@ -1654,39 +1654,39 @@ void __73__NRPairingProxy_xpcSwitchActiveDeviceWithDeviceID_withAssertionHandler
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)xpcInvalidateSwitchAssertionWithIdentifier:(id)a3 block:(id)a4
+- (void)xpcInvalidateSwitchAssertionWithIdentifier:(id)identifier block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"assertionID=%@", v7];
-  [(NRRegistryProxy *)self logCaller:a2 args:v9];
+  identifierCopy = identifier;
+  blockCopy = block;
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"assertionID=%@", identifierCopy];
+  [(NRRegistryProxy *)self logCaller:a2 args:identifierCopy];
 
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v10 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__NRPairingProxy_xpcInvalidateSwitchAssertionWithIdentifier_block___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v18 = v7;
-    v19 = v8;
-    v11 = v8;
-    dispatch_async(v10, block);
+    v18 = identifierCopy;
+    v19 = blockCopy;
+    v11 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v12 = v18;
   }
 
   else
   {
-    v13 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__NRPairingProxy_xpcInvalidateSwitchAssertionWithIdentifier_block___block_invoke_4;
     v15[3] = &unk_1E86DAE70;
-    v16 = v8;
-    v14 = v8;
-    [v13 runCompletionBlock:v15];
+    v16 = blockCopy;
+    v14 = blockCopy;
+    [connection runCompletionBlock:v15];
 
     v12 = v16;
   }
@@ -1730,35 +1730,35 @@ void __67__NRPairingProxy_xpcInvalidateSwitchAssertionWithIdentifier_block___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcBeginDiscoveryWithBlock:(id)a3
+- (void)xpcBeginDiscoveryWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(NRRegistryProxy *)self logCaller:a2 args:0];
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v6 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__NRPairingProxy_xpcBeginDiscoveryWithBlock___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v14 = v5;
-    v7 = v5;
-    dispatch_async(v6, block);
+    v14 = blockCopy;
+    v7 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v8 = v14;
   }
 
   else
   {
-    v9 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__NRPairingProxy_xpcBeginDiscoveryWithBlock___block_invoke_4;
     v11[3] = &unk_1E86DAE70;
-    v12 = v5;
-    v10 = v5;
-    [v9 runCompletionBlock:v11];
+    v12 = blockCopy;
+    v10 = blockCopy;
+    [connection runCompletionBlock:v11];
 
     v8 = v12;
   }
@@ -1791,34 +1791,34 @@ void __45__NRPairingProxy_xpcBeginDiscoveryWithBlock___block_invoke_2(uint64_t a
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcEndDiscoveryWithBlock:(id)a3
+- (void)xpcEndDiscoveryWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__NRPairingProxy_xpcEndDiscoveryWithBlock___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = blockCopy;
+    v6 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__NRPairingProxy_xpcEndDiscoveryWithBlock___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = blockCopy;
+    v9 = blockCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -1853,13 +1853,13 @@ void __43__NRPairingProxy_xpcEndDiscoveryWithBlock___block_invoke_2(uint64_t a1)
 
 - (void)xpcTriggerVersion4Workaround
 {
-  v3 = [(NRPairingProxy *)self pairingQueue];
+  pairingQueue = [(NRPairingProxy *)self pairingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__NRPairingProxy_xpcTriggerVersion4Workaround__block_invoke;
   block[3] = &unk_1E86DAE98;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(pairingQueue, block);
 }
 
 void __46__NRPairingProxy_xpcTriggerVersion4Workaround__block_invoke(uint64_t a1)
@@ -1868,34 +1868,34 @@ void __46__NRPairingProxy_xpcTriggerVersion4Workaround__block_invoke(uint64_t a1
   [v1 xpcTriggerVersion4Workaround];
 }
 
-- (void)xpcSubmitAlbertPairingReport:(id)a3
+- (void)xpcSubmitAlbertPairingReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.internal"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__NRPairingProxy_xpcSubmitAlbertPairingReport___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = reportCopy;
+    v6 = reportCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __47__NRPairingProxy_xpcSubmitAlbertPairingReport___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = reportCopy;
+    v9 = reportCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -1925,36 +1925,36 @@ void __47__NRPairingProxy_xpcSubmitAlbertPairingReport___block_invoke_2(uint64_t
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcSubmitRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4
+- (void)xpcSubmitRTCPairingMetricForMetricID:(id)d withSuccess:(id)success
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  successCopy = success;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.submitrtcpairingmetric"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__NRPairingProxy_xpcSubmitRTCPairingMetricForMetricID_withSuccess___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = dCopy;
+    v17 = successCopy;
+    v9 = successCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __67__NRPairingProxy_xpcSubmitRTCPairingMetricForMetricID_withSuccess___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = successCopy;
+    v12 = successCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -1989,36 +1989,36 @@ void __67__NRPairingProxy_xpcSubmitRTCPairingMetricForMetricID_withSuccess___blo
   [v6 runCompletionBlock:v9];
 }
 
-- (void)xpcPairingClientDidEnterPhase:(id)a3 withBlock:(id)a4
+- (void)xpcPairingClientDidEnterPhase:(id)phase withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  phaseCopy = phase;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__NRPairingProxy_xpcPairingClientDidEnterPhase_withBlock___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = phaseCopy;
+    v17 = blockCopy;
+    v9 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __58__NRPairingProxy_xpcPairingClientDidEnterPhase_withBlock___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = blockCopy;
+    v12 = blockCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2048,38 +2048,38 @@ void __58__NRPairingProxy_xpcPairingClientDidEnterPhase_withBlock___block_invoke
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcSuspendPairingClientCrashMonitoring:(id)a3
+- (void)xpcSuspendPairingClientCrashMonitoring:(id)monitoring
 {
-  v5 = a3;
+  monitoringCopy = monitoring;
   [(NRRegistryProxy *)self logCaller:a2 args:0];
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v6 = [(NRPairingProxy *)self pairingServicesDelegate];
-    v7 = [v6 setPairingClientCrashMonitoringCache:1 proxy:self];
+    pairingServicesDelegate = [(NRPairingProxy *)self pairingServicesDelegate];
+    v7 = [pairingServicesDelegate setPairingClientCrashMonitoringCache:1 proxy:self];
 
     if (v7)
     {
-      v8 = [(NRXPCProxy *)self connection];
+      connection = [(NRXPCProxy *)self connection];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __57__NRPairingProxy_xpcSuspendPairingClientCrashMonitoring___block_invoke_4;
       v14[3] = &unk_1E86DAE70;
-      v15 = v5;
-      [v8 runCompletionBlock:v14];
+      v15 = monitoringCopy;
+      [connection runCompletionBlock:v14];
 
       v9 = v15;
     }
 
     else
     {
-      v11 = [(NRPairingProxy *)self pairingQueue];
+      pairingQueue = [(NRPairingProxy *)self pairingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __57__NRPairingProxy_xpcSuspendPairingClientCrashMonitoring___block_invoke;
       block[3] = &unk_1E86DB530;
       block[4] = self;
-      v17 = v5;
-      dispatch_async(v11, block);
+      v17 = monitoringCopy;
+      dispatch_async(pairingQueue, block);
 
       v9 = v17;
     }
@@ -2087,13 +2087,13 @@ void __58__NRPairingProxy_xpcPairingClientDidEnterPhase_withBlock___block_invoke
 
   else
   {
-    v10 = [(NRXPCProxy *)self connection];
+    connection2 = [(NRXPCProxy *)self connection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__NRPairingProxy_xpcSuspendPairingClientCrashMonitoring___block_invoke_5;
     v12[3] = &unk_1E86DAE70;
-    v13 = v5;
-    [v10 runCompletionBlock:v12];
+    v13 = monitoringCopy;
+    [connection2 runCompletionBlock:v12];
 
     v9 = v13;
   }
@@ -2126,38 +2126,38 @@ void __57__NRPairingProxy_xpcSuspendPairingClientCrashMonitoring___block_invoke_
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcResumePairingClientCrashMonitoring:(id)a3
+- (void)xpcResumePairingClientCrashMonitoring:(id)monitoring
 {
-  v5 = a3;
+  monitoringCopy = monitoring;
   [(NRRegistryProxy *)self logCaller:a2 args:0];
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v6 = [(NRPairingProxy *)self pairingServicesDelegate];
-    v7 = [v6 setPairingClientCrashMonitoringCache:0 proxy:self];
+    pairingServicesDelegate = [(NRPairingProxy *)self pairingServicesDelegate];
+    v7 = [pairingServicesDelegate setPairingClientCrashMonitoringCache:0 proxy:self];
 
     if (v7)
     {
-      v8 = [(NRXPCProxy *)self connection];
+      connection = [(NRXPCProxy *)self connection];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __56__NRPairingProxy_xpcResumePairingClientCrashMonitoring___block_invoke_4;
       v14[3] = &unk_1E86DAE70;
-      v15 = v5;
-      [v8 runCompletionBlock:v14];
+      v15 = monitoringCopy;
+      [connection runCompletionBlock:v14];
 
       v9 = v15;
     }
 
     else
     {
-      v11 = [(NRPairingProxy *)self pairingQueue];
+      pairingQueue = [(NRPairingProxy *)self pairingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __56__NRPairingProxy_xpcResumePairingClientCrashMonitoring___block_invoke;
       block[3] = &unk_1E86DB530;
       block[4] = self;
-      v17 = v5;
-      dispatch_async(v11, block);
+      v17 = monitoringCopy;
+      dispatch_async(pairingQueue, block);
 
       v9 = v17;
     }
@@ -2165,13 +2165,13 @@ void __57__NRPairingProxy_xpcSuspendPairingClientCrashMonitoring___block_invoke_
 
   else
   {
-    v10 = [(NRXPCProxy *)self connection];
+    connection2 = [(NRXPCProxy *)self connection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__NRPairingProxy_xpcResumePairingClientCrashMonitoring___block_invoke_5;
     v12[3] = &unk_1E86DAE70;
-    v13 = v5;
-    [v10 runCompletionBlock:v12];
+    v13 = monitoringCopy;
+    [connection2 runCompletionBlock:v12];
 
     v9 = v13;
   }
@@ -2204,35 +2204,35 @@ void __56__NRPairingProxy_xpcResumePairingClientCrashMonitoring___block_invoke_2
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcRetriggerUnpairInfoDialogWithBlock:(id)a3
+- (void)xpcRetriggerUnpairInfoDialogWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(NRRegistryProxy *)self logCaller:a2 args:0];
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v6 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__NRPairingProxy_xpcRetriggerUnpairInfoDialogWithBlock___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v14 = v5;
-    v7 = v5;
-    dispatch_async(v6, block);
+    v14 = blockCopy;
+    v7 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v8 = v14;
   }
 
   else
   {
-    v9 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__NRPairingProxy_xpcRetriggerUnpairInfoDialogWithBlock___block_invoke_4;
     v11[3] = &unk_1E86DAE70;
-    v12 = v5;
-    v10 = v5;
-    [v9 runCompletionBlock:v11];
+    v12 = blockCopy;
+    v10 = blockCopy;
+    [connection runCompletionBlock:v11];
 
     v8 = v12;
   }
@@ -2262,34 +2262,34 @@ void __56__NRPairingProxy_xpcRetriggerUnpairInfoDialogWithBlock___block_invoke_2
   [v2 runCompletionBlock:v3];
 }
 
-- (void)xpcActiveDeviceAssertions:(id)a3
+- (void)xpcActiveDeviceAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__NRPairingProxy_xpcActiveDeviceAssertions___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = assertionsCopy;
+    v6 = assertionsCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __44__NRPairingProxy_xpcActiveDeviceAssertions___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = assertionsCopy;
+    v9 = assertionsCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -2323,36 +2323,36 @@ void __44__NRPairingProxy_xpcActiveDeviceAssertions___block_invoke_2(uint64_t a1
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcPairWithSimulator:(id)a3 withCompletion:(id)a4
+- (void)xpcPairWithSimulator:(id)simulator withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  simulatorCopy = simulator;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__NRPairingProxy_xpcPairWithSimulator_withCompletion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = simulatorCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __54__NRPairingProxy_xpcPairWithSimulator_withCompletion___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2393,36 +2393,36 @@ void __54__NRPairingProxy_xpcPairWithSimulator_withCompletion___block_invoke_4(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcUnpairWithSimulator:(id)a3 withCompletion:(id)a4
+- (void)xpcUnpairWithSimulator:(id)simulator withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  simulatorCopy = simulator;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__NRPairingProxy_xpcUnpairWithSimulator_withCompletion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = simulatorCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__NRPairingProxy_xpcUnpairWithSimulator_withCompletion___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2463,36 +2463,36 @@ void __56__NRPairingProxy_xpcUnpairWithSimulator_withCompletion___block_invoke_4
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcSwitchToSimulator:(id)a3 withCompletion:(id)a4
+- (void)xpcSwitchToSimulator:(id)simulator withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  simulatorCopy = simulator;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__NRPairingProxy_xpcSwitchToSimulator_withCompletion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = simulatorCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __54__NRPairingProxy_xpcSwitchToSimulator_withCompletion___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2533,36 +2533,36 @@ void __54__NRPairingProxy_xpcSwitchToSimulator_withCompletion___block_invoke_4(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcPutMigrationChallengeCharacteristicWriteData:(id)a3 completion:(id)a4
+- (void)xpcPutMigrationChallengeCharacteristicWriteData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.ids.plugin"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__NRPairingProxy_xpcPutMigrationChallengeCharacteristicWriteData_completion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = dataCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __77__NRPairingProxy_xpcPutMigrationChallengeCharacteristicWriteData_completion___block_invoke_4;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2593,34 +2593,34 @@ void __77__NRPairingProxy_xpcPutMigrationChallengeCharacteristicWriteData_comple
   [v4 runCompletionBlock:v5];
 }
 
-- (void)xpcGetMigrationPairingCharacteristicReadDataWithCompletion:(id)a3
+- (void)xpcGetMigrationPairingCharacteristicReadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.ids.plugin"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __77__NRPairingProxy_xpcGetMigrationPairingCharacteristicReadDataWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__NRPairingProxy_xpcGetMigrationPairingCharacteristicReadDataWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -2654,38 +2654,38 @@ void __77__NRPairingProxy_xpcGetMigrationPairingCharacteristicReadDataWithComple
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcBeginMigrationWithDeviceID:(id)a3 passcode:(id)a4 withBlock:(id)a5
+- (void)xpcBeginMigrationWithDeviceID:(id)d passcode:(id)passcode withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  passcodeCopy = passcode;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v11 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__NRPairingProxy_xpcBeginMigrationWithDeviceID_passcode_withBlock___block_invoke;
     block[3] = &unk_1E86DB490;
     block[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
-    v12 = v10;
-    dispatch_async(v11, block);
+    v19 = dCopy;
+    v20 = passcodeCopy;
+    v21 = blockCopy;
+    v12 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v13 = v19;
   }
 
   else
   {
-    v14 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__NRPairingProxy_xpcBeginMigrationWithDeviceID_passcode_withBlock___block_invoke_4;
     v16[3] = &unk_1E86DAE70;
-    v17 = v10;
-    v15 = v10;
-    [v14 runCompletionBlock:v16];
+    v17 = blockCopy;
+    v15 = blockCopy;
+    [connection runCompletionBlock:v16];
 
     v13 = v17;
   }
@@ -2720,13 +2720,13 @@ void __67__NRPairingProxy_xpcBeginMigrationWithDeviceID_passcode_withBlock___blo
 {
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.ids.plugin"])
   {
-    v3 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__NRPairingProxy_xpcStartAdvertisingForMigration__block_invoke;
     block[3] = &unk_1E86DAE98;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -2740,13 +2740,13 @@ void __49__NRPairingProxy_xpcStartAdvertisingForMigration__block_invoke(uint64_t
 {
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.ids.plugin"])
   {
-    v3 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__NRPairingProxy_xpcStopAdvertisingForMigration__block_invoke;
     block[3] = &unk_1E86DAE98;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -2756,36 +2756,36 @@ void __48__NRPairingProxy_xpcStopAdvertisingForMigration__block_invoke(uint64_t 
   [v1 xpcStopAdvertisingForMigration];
 }
 
-- (void)xpcStageWatchForGraduationWithDeviceID:(id)a3 completion:(id)a4
+- (void)xpcStageWatchForGraduationWithDeviceID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__NRPairingProxy_xpcStageWatchForGraduationWithDeviceID_completion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = dCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __68__NRPairingProxy_xpcStageWatchForGraduationWithDeviceID_completion___block_invoke_2;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2804,36 +2804,36 @@ void __68__NRPairingProxy_xpcStageWatchForGraduationWithDeviceID_completion___bl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcStageWatchForTransferWithDeviceID:(id)a3 completion:(id)a4
+- (void)xpcStageWatchForTransferWithDeviceID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__NRPairingProxy_xpcStageWatchForTransferWithDeviceID_completion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = dCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__NRPairingProxy_xpcStageWatchForTransferWithDeviceID_completion___block_invoke_2;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -2852,34 +2852,34 @@ void __66__NRPairingProxy_xpcStageWatchForTransferWithDeviceID_completion___bloc
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)xpcListWatchStagedForTransferWithCompletion:(id)a3
+- (void)xpcListWatchStagedForTransferWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__NRPairingProxy_xpcListWatchStagedForTransferWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__NRPairingProxy_xpcListWatchStagedForTransferWithCompletion___block_invoke_2;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -2898,34 +2898,34 @@ void __62__NRPairingProxy_xpcListWatchStagedForTransferWithCompletion___block_in
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)xpcGetLastMigrationRequestPhoneNameWithCompletion:(id)a3
+- (void)xpcGetLastMigrationRequestPhoneNameWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__NRPairingProxy_xpcGetLastMigrationRequestPhoneNameWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__NRPairingProxy_xpcGetLastMigrationRequestPhoneNameWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -2959,18 +2959,18 @@ void __68__NRPairingProxy_xpcGetLastMigrationRequestPhoneNameWithCompletion___bl
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcKeepPhoneUnlockedInternalTestSPI:(id)a3
+- (void)xpcKeepPhoneUnlockedInternalTestSPI:(id)i
 {
-  v4 = a3;
-  v5 = [(NRPairingProxy *)self pairingQueue];
+  iCopy = i;
+  pairingQueue = [(NRPairingProxy *)self pairingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__NRPairingProxy_xpcKeepPhoneUnlockedInternalTestSPI___block_invoke;
   v7[3] = &unk_1E86DB530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = iCopy;
+  v6 = iCopy;
+  dispatch_async(pairingQueue, v7);
 }
 
 void __54__NRPairingProxy_xpcKeepPhoneUnlockedInternalTestSPI___block_invoke(uint64_t a1)
@@ -3006,36 +3006,36 @@ void __54__NRPairingProxy_xpcKeepPhoneUnlockedInternalTestSPI___block_invoke_2(u
   [v2 runCompletionBlock:*(a1 + 40)];
 }
 
-- (void)xpcPingActiveGizmoWithPriority:(int)a3 withMessageSize:(int64_t)a4 withBlock:(id)a5
+- (void)xpcPingActiveGizmoWithPriority:(int)priority withMessageSize:(int64_t)size withBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v9 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__NRPairingProxy_xpcPingActiveGizmoWithPriority_withMessageSize_withBlock___block_invoke;
     block[3] = &unk_1E86DB710;
-    v19 = a3;
-    v17 = v8;
-    v18 = a4;
+    priorityCopy = priority;
+    v17 = blockCopy;
+    sizeCopy = size;
     block[4] = self;
-    v10 = v8;
-    dispatch_async(v9, block);
+    v10 = blockCopy;
+    dispatch_async(pairingQueue, block);
 
     v11 = v17;
   }
 
   else
   {
-    v12 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__NRPairingProxy_xpcPingActiveGizmoWithPriority_withMessageSize_withBlock___block_invoke_4;
     v14[3] = &unk_1E86DAE70;
-    v15 = v8;
-    v13 = v8;
-    [v12 runCompletionBlock:v14];
+    v15 = blockCopy;
+    v13 = blockCopy;
+    [connection runCompletionBlock:v14];
 
     v11 = v15;
   }
@@ -3070,25 +3070,25 @@ void __75__NRPairingProxy_xpcPingActiveGizmoWithPriority_withMessageSize_withBlo
   [v8 runCompletionBlock:v9];
 }
 
-- (void)xpcScanForMigratableWatchesWithBlock:(id)a3
+- (void)xpcScanForMigratableWatchesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__NRPairingProxy_xpcScanForMigratableWatchesWithBlock___block_invoke;
     v7[3] = &unk_1E86DB530;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = blockCopy;
+    dispatch_async(pairingQueue, v7);
   }
 
   else
   {
-    v6 = [(NRXPCProxy *)self connection];
-    [v6 runCompletionBlock:v4];
+    connection = [(NRXPCProxy *)self connection];
+    [connection runCompletionBlock:blockCopy];
   }
 }
 
@@ -3114,25 +3114,25 @@ void __55__NRPairingProxy_xpcScanForMigratableWatchesWithBlock___block_invoke_2(
   [v2 runCompletionBlock:*(a1 + 40)];
 }
 
-- (void)xpcStartWatchSetupPushWithBlock:(id)a3
+- (void)xpcStartWatchSetupPushWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__NRPairingProxy_xpcStartWatchSetupPushWithBlock___block_invoke;
     v7[3] = &unk_1E86DB530;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = blockCopy;
+    dispatch_async(pairingQueue, v7);
   }
 
   else
   {
-    v6 = [(NRXPCProxy *)self connection];
-    [v6 runCompletionBlock:v4];
+    connection = [(NRXPCProxy *)self connection];
+    [connection runCompletionBlock:blockCopy];
   }
 }
 
@@ -3158,25 +3158,25 @@ void __50__NRPairingProxy_xpcStartWatchSetupPushWithBlock___block_invoke_2(uint6
   [v2 runCompletionBlock:*(a1 + 40)];
 }
 
-- (void)xpcStopWatchSetupPushWithBlock:(id)a3
+- (void)xpcStopWatchSetupPushWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__NRPairingProxy_xpcStopWatchSetupPushWithBlock___block_invoke;
     v7[3] = &unk_1E86DB530;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = blockCopy;
+    dispatch_async(pairingQueue, v7);
   }
 
   else
   {
-    v6 = [(NRXPCProxy *)self connection];
-    [v6 runCompletionBlock:v4];
+    connection = [(NRXPCProxy *)self connection];
+    [connection runCompletionBlock:blockCopy];
   }
 }
 
@@ -3202,36 +3202,36 @@ void __49__NRPairingProxy_xpcStopWatchSetupPushWithBlock___block_invoke_2(uint64
   [v2 runCompletionBlock:*(a1 + 40)];
 }
 
-- (void)xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4
+- (void)xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85__NRPairingProxy_xpcWaitForWatchPairingExtendedMetadataForAdvertisedName_completion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v9 = v7;
-    dispatch_async(v8, block);
+    v16 = nameCopy;
+    v17 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v10 = v16;
   }
 
   else
   {
-    v11 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __85__NRPairingProxy_xpcWaitForWatchPairingExtendedMetadataForAdvertisedName_completion___block_invoke_2;
     v13[3] = &unk_1E86DAE70;
-    v14 = v7;
-    v12 = v7;
-    [v11 runCompletionBlock:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [connection runCompletionBlock:v13];
 
     v10 = v14;
   }
@@ -3243,29 +3243,29 @@ void __85__NRPairingProxy_xpcWaitForWatchPairingExtendedMetadataForAdvertisedNam
   [v2 xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)xpcSubmitServerRequestReportWithRequestType:(id)a3 duration:(double)a4 errorCode:(unsigned int)a5 block:(id)a6
+- (void)xpcSubmitServerRequestReportWithRequestType:(id)type duration:(double)duration errorCode:(unsigned int)code block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  typeCopy = type;
+  blockCopy = block;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v12 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __87__NRPairingProxy_xpcSubmitServerRequestReportWithRequestType_duration_errorCode_block___block_invoke;
     block[3] = &unk_1E86DB738;
     block[4] = self;
-    v15 = v10;
-    v17 = a4;
-    v18 = a5;
-    v16 = v11;
-    dispatch_async(v12, block);
+    v15 = typeCopy;
+    durationCopy = duration;
+    codeCopy = code;
+    v16 = blockCopy;
+    dispatch_async(pairingQueue, block);
   }
 
   else
   {
-    v13 = [(NRXPCProxy *)self connection];
-    [v13 runCompletionBlock:v11];
+    connection = [(NRXPCProxy *)self connection];
+    [connection runCompletionBlock:blockCopy];
   }
 }
 
@@ -3290,34 +3290,34 @@ void __87__NRPairingProxy_xpcSubmitServerRequestReportWithRequestType_duration_e
   [v2 runCompletionBlock:*(a1 + 40)];
 }
 
-- (void)xpcCheckIfFlaggedForRecoveryWithCompletion:(id)a3
+- (void)xpcCheckIfFlaggedForRecoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.internal"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__NRPairingProxy_xpcCheckIfFlaggedForRecoveryWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__NRPairingProxy_xpcCheckIfFlaggedForRecoveryWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -3352,34 +3352,34 @@ void __61__NRPairingProxy_xpcCheckIfFlaggedForRecoveryWithCompletion___block_inv
   [v6 runCompletionBlock:v9];
 }
 
-- (void)xpcClearRecoveryFlagWithCompletion:(id)a3
+- (void)xpcClearRecoveryFlagWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.internal"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__NRPairingProxy_xpcClearRecoveryFlagWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__NRPairingProxy_xpcClearRecoveryFlagWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -3413,34 +3413,34 @@ void __53__NRPairingProxy_xpcClearRecoveryFlagWithCompletion___block_invoke_2(ui
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcFakePairedSyncIsCompleteWithCompletion:(id)a3
+- (void)xpcFakePairedSyncIsCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v5 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__NRPairingProxy_xpcFakePairedSyncIsCompleteWithCompletion___block_invoke;
     block[3] = &unk_1E86DB530;
     block[4] = self;
-    v13 = v4;
-    v6 = v4;
-    dispatch_async(v5, block);
+    v13 = completionCopy;
+    v6 = completionCopy;
+    dispatch_async(pairingQueue, block);
 
     v7 = v13;
   }
 
   else
   {
-    v8 = [(NRXPCProxy *)self connection];
+    connection = [(NRXPCProxy *)self connection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__NRPairingProxy_xpcFakePairedSyncIsCompleteWithCompletion___block_invoke_4;
     v10[3] = &unk_1E86DAE70;
-    v11 = v4;
-    v9 = v4;
-    [v8 runCompletionBlock:v10];
+    v11 = completionCopy;
+    v9 = completionCopy;
+    [connection runCompletionBlock:v10];
 
     v7 = v11;
   }
@@ -3474,16 +3474,16 @@ void __60__NRPairingProxy_xpcFakePairedSyncIsCompleteWithCompletion___block_invo
   [v4 runCompletionBlock:v7];
 }
 
-- (void)xpcTriggerTailspinFrom:(unint64_t)a3 forApp:(id)a4
+- (void)xpcTriggerTailspinFrom:(unint64_t)from forApp:(id)app
 {
-  v6 = [(NRPairingProxy *)self pairingQueue];
+  pairingQueue = [(NRPairingProxy *)self pairingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke;
   v7[3] = &unk_1E86DB760;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_async(v6, v7);
+  v7[5] = from;
+  dispatch_async(pairingQueue, v7);
 }
 
 void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t a1)
@@ -3495,45 +3495,45 @@ void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t 
   [v5 xpcTriggerTailspinFrom:v2 forApp:v4];
 }
 
-- (void)xpcGetLastSwitchIndex:(id)a3
+- (void)xpcGetLastSwitchIndex:(id)index
 {
-  v7 = a3;
+  indexCopy = index;
   v3 = *MEMORY[0x1E695E898];
   CFPreferencesSynchronize(@"com.apple.pairedsyncd", @"mobile", *MEMORY[0x1E695E898]);
   v4 = CFPreferencesCopyValue(@"lastSwitchIndex", @"com.apple.pairedsyncd", @"mobile", v3);
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  v7[2](v7, v6, 0);
+  indexCopy[2](indexCopy, intValue, 0);
 }
 
-- (void)xpcGetMigrationCountForPairingID:(id)a3 completion:(id)a4
+- (void)xpcGetMigrationCountForPairingID:(id)d completion:(id)completion
 {
   v5 = *MEMORY[0x1E695E898];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   CFPreferencesSynchronize(@"com.apple.pairedsyncd", @"mobile", v5);
   v10 = CFPreferencesCopyValue(@"pairingIDMigrationCountDictionary", @"com.apple.pairedsyncd", @"mobile", v5);
-  v8 = [v7 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v9 = [v10 objectForKeyedSubscript:v8];
+  v9 = [v10 objectForKeyedSubscript:uUIDString];
 
-  v6[2](v6, [v9 integerValue], 0);
+  completionCopy[2](completionCopy, [v9 integerValue], 0);
 }
 
-- (void)xpcGetInitialSyncCompletedForPairingID:(id)a3 completion:(id)a4
+- (void)xpcGetInitialSyncCompletedForPairingID:(id)d completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = *MEMORY[0x1E695E898];
   CFPreferencesSynchronize(@"com.apple.pairedsyncd", @"mobile", *MEMORY[0x1E695E898]);
   v8 = CFPreferencesCopyValue(@"pairingIDInitialSyncSet", @"com.apple.pairedsyncd", @"mobile", v7);
@@ -3545,11 +3545,11 @@ void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t 
     v11 = nr_daemon_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 UUIDString];
+      uUIDString = [dCopy UUIDString];
       v23 = 136316162;
       v24 = "[NRPairingProxy xpcGetInitialSyncCompletedForPairingID:completion:]";
       v25 = 2114;
-      v26 = v12;
+      v26 = uUIDString;
       v27 = 2114;
       v28 = v8;
       v29 = 2114;
@@ -3562,8 +3562,8 @@ void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t 
 
   if (v8)
   {
-    v13 = [v5 UUIDString];
-    v14 = [v8 objectForKeyedSubscript:v13];
+    uUIDString2 = [dCopy UUIDString];
+    v14 = [v8 objectForKeyedSubscript:uUIDString2];
     v15 = v14 != 0;
   }
 
@@ -3580,8 +3580,8 @@ void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t 
     v18 = nr_daemon_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v5 UUIDString];
-      v20 = v19;
+      uUIDString3 = [dCopy UUIDString];
+      v20 = uUIDString3;
       v21 = "NO";
       v24 = "[NRPairingProxy xpcGetInitialSyncCompletedForPairingID:completion:]";
       v23 = 136315650;
@@ -3591,33 +3591,33 @@ void __48__NRPairingProxy_xpcTriggerTailspinFrom_forApp___block_invoke(uint64_t 
       }
 
       v25 = 2114;
-      v26 = v19;
+      v26 = uUIDString3;
       v27 = 2080;
       v28 = v21;
       _os_log_impl(&dword_1E0ADF000, v18, OS_LOG_TYPE_DEFAULT, "%s[%{public}@]: returning hasCompleted=%s", &v23, 0x20u);
     }
   }
 
-  v6[2](v6, v15, 0);
+  completionCopy[2](completionCopy, v15, 0);
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcIsPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4
+- (void)xpcIsPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__NRPairingProxy_xpcIsPhoneReadyToMigrateDevice_withCompletion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = deviceCopy;
+    v11 = completionCopy;
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -3649,21 +3649,21 @@ void __64__NRPairingProxy_xpcIsPhoneReadyToMigrateDevice_withCompletion___block_
   [v6 runCompletionBlock:v8];
 }
 
-- (void)xpcIsAssertionActive:(id)a3 withCompletion:(id)a4
+- (void)xpcIsAssertionActive:(id)active withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activeCopy = active;
+  completionCopy = completion;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v8 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__NRPairingProxy_xpcIsAssertionActive_withCompletion___block_invoke;
     block[3] = &unk_1E86DB4B8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = activeCopy;
+    v11 = completionCopy;
+    dispatch_async(pairingQueue, block);
   }
 }
 
@@ -3696,21 +3696,21 @@ void __54__NRPairingProxy_xpcIsAssertionActive_withCompletion___block_invoke_2(u
   [v6 runCompletionBlock:v9];
 }
 
-- (void)xpcUpdateWatchBuddyStage:(unsigned int)a3 forPairingID:(id)a4
+- (void)xpcUpdateWatchBuddyStage:(unsigned int)stage forPairingID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dCopy = d;
   if ([(NRRegistryProxy *)self loudHasEntitlement:@"com.apple.nano.nanoregistry.pairunpairobliterate"])
   {
-    v7 = [(NRPairingProxy *)self pairingQueue];
+    pairingQueue = [(NRPairingProxy *)self pairingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__NRPairingProxy_xpcUpdateWatchBuddyStage_forPairingID___block_invoke;
     block[3] = &unk_1E86DB7D8;
-    v14 = a3;
+    stageCopy = stage;
     block[4] = self;
-    v13 = v6;
-    dispatch_async(v7, block);
+    v13 = dCopy;
+    dispatch_async(pairingQueue, block);
   }
 
   else

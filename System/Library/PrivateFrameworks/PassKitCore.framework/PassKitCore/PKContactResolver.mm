@@ -1,21 +1,21 @@
 @interface PKContactResolver
-+ (id)contactForFamilyMember:(id)a3 nameComponents:(id)a4 imageData:(id)a5;
++ (id)contactForFamilyMember:(id)member nameComponents:(id)components imageData:(id)data;
 + (id)defaultContactResolver;
-- (BOOL)hasCachedResultForAccountUser:(id)a3;
-- (BOOL)hasCachedResultForHandle:(id)a3;
-- (PKContactResolver)initWithContactStore:(id)a3 keysToFetch:(id)a4;
-- (id)_predicateForHandle:(id)a3;
-- (id)contactForAccountUser:(id)a3;
-- (id)contactForHandle:(id)a3;
-- (id)contactForIdentifier:(id)a3;
-- (void)_accessDelegatesWithHandler:(id)a3;
-- (void)_handleContactStoreDidChangeNotification:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)contactForAccountUser:(id)a3 withCompletion:(id)a4;
-- (void)contactForHandle:(id)a3 withCompletion:(id)a4;
-- (void)contactForHandles:(id)a3 withCompletion:(id)a4;
+- (BOOL)hasCachedResultForAccountUser:(id)user;
+- (BOOL)hasCachedResultForHandle:(id)handle;
+- (PKContactResolver)initWithContactStore:(id)store keysToFetch:(id)fetch;
+- (id)_predicateForHandle:(id)handle;
+- (id)contactForAccountUser:(id)user;
+- (id)contactForHandle:(id)handle;
+- (id)contactForIdentifier:(id)identifier;
+- (void)_accessDelegatesWithHandler:(id)handler;
+- (void)_handleContactStoreDidChangeNotification:(id)notification;
+- (void)addDelegate:(id)delegate;
+- (void)contactForAccountUser:(id)user withCompletion:(id)completion;
+- (void)contactForHandle:(id)handle withCompletion:(id)completion;
+- (void)contactForHandles:(id)handles withCompletion:(id)completion;
 - (void)invalidateCache;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation PKContactResolver
@@ -27,11 +27,11 @@
   v12[0] = v2;
   v3 = [(objc_class *)_MergedGlobals_173() descriptorForRequiredKeysWithThreeDTouchEnabled:1];
   v12[1] = v3;
-  v4 = [off_1ED6D10C0() descriptorForRequiredKeys];
-  v12[2] = v4;
-  v5 = [off_1ED6D10C8() descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [off_1ED6D10C0() descriptorForRequiredKeys];
+  v12[2] = descriptorForRequiredKeys;
+  descriptorForRequiredKeys2 = [off_1ED6D10C8() descriptorForRequiredKeys];
   v6 = *MEMORY[0x1E695C208];
-  v12[3] = v5;
+  v12[3] = descriptorForRequiredKeys2;
   v12[4] = v6;
   v12[5] = *MEMORY[0x1E695C330];
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:6];
@@ -43,10 +43,10 @@
   return v10;
 }
 
-- (PKContactResolver)initWithContactStore:(id)a3 keysToFetch:(id)a4
+- (PKContactResolver)initWithContactStore:(id)store keysToFetch:(id)fetch
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  fetchCopy = fetch;
   v23.receiver = self;
   v23.super_class = PKContactResolver;
   v9 = [(PKContactResolver *)&v23 init];
@@ -54,7 +54,7 @@
   if (v9)
   {
     v9->_delegatesLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_contactStore, a3);
+    objc_storeStrong(&v9->_contactStore, store);
     v11 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     handleToContactCache = v10->_handleToContactCache;
     v10->_handleToContactCache = v11;
@@ -71,52 +71,52 @@
     workQueue = v10->_workQueue;
     v10->_workQueue = v17;
 
-    objc_storeStrong(&v10->_keysToFetch, a4);
-    v19 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    objc_storeStrong(&v10->_keysToFetch, fetch);
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     delegates = v10->_delegates;
-    v10->_delegates = v19;
+    v10->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v10 selector:sel__handleContactStoreDidChangeNotification_ name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleContactStoreDidChangeNotification_ name:*MEMORY[0x1E695C3D8] object:0];
   }
 
   return v10;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
-  [(NSHashTable *)self->_delegates addObject:v4];
+  [(NSHashTable *)self->_delegates addObject:delegateCopy];
 
   os_unfair_lock_unlock(&self->_delegatesLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
   os_unfair_lock_lock(&self->_delegatesLock);
 }
 
-- (void)_accessDelegatesWithHandler:(id)a3
+- (void)_accessDelegatesWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_delegatesLock);
-    v5 = [(NSHashTable *)self->_delegates allObjects];
+    allObjects = [(NSHashTable *)self->_delegates allObjects];
     os_unfair_lock_unlock(&self->_delegatesLock);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __49__PKContactResolver__accessDelegatesWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }
@@ -164,7 +164,7 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
   [(NSCache *)altDSIDToContactCache removeAllObjects];
 }
 
-- (void)_handleContactStoreDidChangeNotification:(id)a3
+- (void)_handleContactStoreDidChangeNotification:(id)notification
 {
   [(PKContactResolver *)self invalidateCache];
   v4[0] = MEMORY[0x1E69E9820];
@@ -175,14 +175,14 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
   [(PKContactResolver *)self _accessDelegatesWithHandler:v4];
 }
 
-- (id)_predicateForHandle:(id)a3
+- (id)_predicateForHandle:(id)handle
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (handleCopy)
   {
-    if ([v3 containsString:@"@"])
+    if ([handleCopy containsString:@"@"])
     {
       v5 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v4];
     }
@@ -218,9 +218,9 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
   return v5;
 }
 
-- (BOOL)hasCachedResultForHandle:(id)a3
+- (BOOL)hasCachedResultForHandle:(id)handle
 {
-  if (!a3)
+  if (!handle)
   {
     return 0;
   }
@@ -231,11 +231,11 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
   return v4;
 }
 
-- (id)contactForHandle:(id)a3
+- (id)contactForHandle:(id)handle
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     v11 = 0;
     goto LABEL_19;
@@ -247,11 +247,11 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
   v23 = __Block_byref_object_copy__40;
   v24 = __Block_byref_object_dispose__40;
   v25 = 0;
-  v5 = [(NSCache *)self->_handleToContactCache objectForKey:v4];
+  v5 = [(NSCache *)self->_handleToContactCache objectForKey:handleCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
-    if (v5 == v6)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (v5 == null)
     {
       v7 = 0;
     }
@@ -268,11 +268,11 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
     goto LABEL_17;
   }
 
-  v6 = [(PKContactResolver *)self _predicateForHandle:v4];
-  if (v6)
+  null = [(PKContactResolver *)self _predicateForHandle:handleCopy];
+  if (null)
   {
     v10 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:self->_keysToFetch];
-    [v10 setPredicate:v6];
+    [v10 setPredicate:null];
     contactStore = self->_contactStore;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -284,12 +284,12 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
     v13 = v19;
     if (v13)
     {
-      v14 = PKLogFacilityTypeGetObject(0xCuLL);
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      null2 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(null2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v27 = v13;
-        _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Error fetching contact: %@", buf, 0xCu);
+        _os_log_impl(&dword_1AD337000, null2, OS_LOG_TYPE_DEFAULT, "Error fetching contact: %@", buf, 0xCu);
       }
     }
 
@@ -297,13 +297,13 @@ void __49__PKContactResolver__accessDelegatesWithHandler___block_invoke(uint64_t
     {
       handleToContactCache = self->_handleToContactCache;
       v16 = v21[5];
-      v14 = v16;
+      null2 = v16;
       if (!v16)
       {
-        v14 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [(NSCache *)handleToContactCache setObject:v14 forKey:v4];
+      [(NSCache *)handleToContactCache setObject:null2 forKey:handleCopy];
       if (v16)
       {
         goto LABEL_16;
@@ -322,15 +322,15 @@ LABEL_19:
   return v11;
 }
 
-- (id)contactForIdentifier:(id)a3
+- (id)contactForIdentifier:(id)identifier
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     v6 = MEMORY[0x1E695CD58];
-    v25[0] = v4;
+    v25[0] = identifierCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     v8 = [v6 predicateForContactsWithIdentifiers:v7];
 
@@ -374,27 +374,27 @@ LABEL_19:
   return v13;
 }
 
-- (BOOL)hasCachedResultForAccountUser:(id)a3
+- (BOOL)hasCachedResultForAccountUser:(id)user
 {
-  if (!a3)
+  if (!user)
   {
     return 0;
   }
 
   altDSIDToContactCache = self->_altDSIDToContactCache;
-  v4 = [a3 altDSID];
-  v5 = [(NSCache *)altDSIDToContactCache objectForKey:v4];
+  altDSID = [user altDSID];
+  v5 = [(NSCache *)altDSIDToContactCache objectForKey:altDSID];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)contactForAccountUser:(id)a3
+- (id)contactForAccountUser:(id)user
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v31 = v4;
-  if (v4)
+  userCopy = user;
+  v31 = userCopy;
+  if (userCopy)
   {
     v38 = 0;
     v39 = &v38;
@@ -402,15 +402,15 @@ LABEL_19:
     v41 = __Block_byref_object_copy__40;
     v42 = __Block_byref_object_dispose__40;
     v43 = 0;
-    v5 = [v4 altDSID];
-    [(NSCache *)self->_altDSIDToContactCache objectForKey:v5];
-    v30 = v29 = v5;
+    altDSID = [userCopy altDSID];
+    [(NSCache *)self->_altDSIDToContactCache objectForKey:altDSID];
+    v30 = v29 = altDSID;
     if (v30)
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v7 = v30;
-      v8 = v6;
-      if (v30 == v6)
+      v8 = null;
+      if (v30 == null)
       {
         v7 = 0;
       }
@@ -424,17 +424,17 @@ LABEL_19:
     else
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v14 = [v31 addressableHandles];
-      if (v14)
+      addressableHandles = [v31 addressableHandles];
+      if (addressableHandles)
       {
-        [v13 unionSet:v14];
+        [v13 unionSet:addressableHandles];
       }
 
-      v27 = v14;
-      v28 = [v31 appleID];
-      if (v28)
+      v27 = addressableHandles;
+      appleID = [v31 appleID];
+      if (appleID)
       {
-        [v13 addObject:v28];
+        [v13 addObject:appleID];
       }
 
       v36 = 0u;
@@ -502,13 +502,13 @@ LABEL_27:
 
       altDSIDToContactCache = self->_altDSIDToContactCache;
       v24 = v39[5];
-      v25 = v24;
+      null2 = v24;
       if (!v24)
       {
-        v25 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
-      [(NSCache *)altDSIDToContactCache setObject:v25 forKey:v29];
+      [(NSCache *)altDSIDToContactCache setObject:null2 forKey:v29];
       if (!v24)
       {
       }
@@ -528,11 +528,11 @@ LABEL_27:
   return v12;
 }
 
-- (void)contactForAccountUser:(id)a3 withCompletion:(id)a4
+- (void)contactForAccountUser:(id)user withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  userCopy = user;
+  completionCopy = completion;
+  if (completionCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -540,8 +540,8 @@ LABEL_27:
     block[2] = __58__PKContactResolver_contactForAccountUser_withCompletion___block_invoke;
     block[3] = &unk_1E79C4D60;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = userCopy;
+    v11 = completionCopy;
     dispatch_async(workQueue, block);
   }
 }
@@ -561,20 +561,20 @@ void __58__PKContactResolver_contactForAccountUser_withCompletion___block_invoke
   dispatch_async(v3, v6);
 }
 
-- (void)contactForHandles:(id)a3 withCompletion:(id)a4
+- (void)contactForHandles:(id)handles withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handlesCopy = handles;
+  completionCopy = completion;
+  if (completionCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__PKContactResolver_contactForHandles_withCompletion___block_invoke;
     block[3] = &unk_1E79C4D60;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = handlesCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(workQueue, block);
   }
 }
@@ -684,11 +684,11 @@ void __54__PKContactResolver_contactForHandles_withCompletion___block_invoke_2(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)contactForHandle:(id)a3 withCompletion:(id)a4
+- (void)contactForHandle:(id)handle withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handleCopy = handle;
+  completionCopy = completion;
+  if (completionCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -696,8 +696,8 @@ void __54__PKContactResolver_contactForHandles_withCompletion___block_invoke_2(u
     block[2] = __53__PKContactResolver_contactForHandle_withCompletion___block_invoke;
     block[3] = &unk_1E79C4D60;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = handleCopy;
+    v11 = completionCopy;
     dispatch_async(workQueue, block);
   }
 }
@@ -717,42 +717,42 @@ void __53__PKContactResolver_contactForHandle_withCompletion___block_invoke(uint
   dispatch_async(v3, v6);
 }
 
-+ (id)contactForFamilyMember:(id)a3 nameComponents:(id)a4 imageData:(id)a5
++ (id)contactForFamilyMember:(id)member nameComponents:(id)components imageData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!(v7 | v8))
+  memberCopy = member;
+  componentsCopy = components;
+  dataCopy = data;
+  if (!(memberCopy | componentsCopy))
   {
     v13 = 0;
     goto LABEL_9;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  if (v7)
+  if (memberCopy)
   {
-    v11 = [v7 firstName];
-    [v10 setGivenName:v11];
+    firstName = [memberCopy firstName];
+    [v10 setGivenName:firstName];
 
-    v12 = [v7 lastName];
+    lastName = [memberCopy lastName];
 LABEL_7:
-    v15 = v12;
-    [v10 setFamilyName:v12];
+    v15 = lastName;
+    [v10 setFamilyName:lastName];
 
     goto LABEL_8;
   }
 
-  if (v8)
+  if (componentsCopy)
   {
-    v14 = [v8 givenName];
-    [v10 setGivenName:v14];
+    givenName = [componentsCopy givenName];
+    [v10 setGivenName:givenName];
 
-    v12 = [v8 familyName];
+    lastName = [componentsCopy familyName];
     goto LABEL_7;
   }
 
 LABEL_8:
-  [v10 setImageData:v9];
+  [v10 setImageData:dataCopy];
   v13 = [v10 copy];
 
 LABEL_9:

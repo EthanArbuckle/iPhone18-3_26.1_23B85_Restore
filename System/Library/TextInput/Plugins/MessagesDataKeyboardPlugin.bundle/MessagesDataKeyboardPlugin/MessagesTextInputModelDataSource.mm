@@ -64,7 +64,7 @@
         IMDMessageRecordBulkCopy();
         if (!v25)
         {
-          v12 = [v23 unsignedLongLongValue];
+          unsignedLongLongValue = [v23 unsignedLongLongValue];
           v13 = IMDMessageRecordCopyHandle();
           if (v13)
           {
@@ -90,7 +90,7 @@
           if (v27[0] && CFStringGetLength(v27[0]) && v14 && CFStringGetLength(v14) && v15)
           {
             v16 = v10;
-            v17 = (v12 >> 2) & 1;
+            v17 = (unsignedLongLongValue >> 2) & 1;
             v18 = [MessagesDataSourceMessage alloc];
             v19 = [(MessagesDataSourceMessage *)v18 initWithDate:v15 recipient:v14 body:v27[0]];
             v20 = v17;

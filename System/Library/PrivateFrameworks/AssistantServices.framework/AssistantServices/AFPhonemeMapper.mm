@@ -1,18 +1,18 @@
 @interface AFPhonemeMapper
-+ (id)_buildRegexMatchingSubstrings:(id)a3;
-+ (id)_mapForLanguageCode:(id)a3;
-- (AFPhonemeMapper)initWithLanguageCode:(id)a3;
-- (id)stringByReplacingPhonemesInString:(id)a3;
++ (id)_buildRegexMatchingSubstrings:(id)substrings;
++ (id)_mapForLanguageCode:(id)code;
+- (AFPhonemeMapper)initWithLanguageCode:(id)code;
+- (id)stringByReplacingPhonemesInString:(id)string;
 @end
 
 @implementation AFPhonemeMapper
 
-- (id)stringByReplacingPhonemesInString:(id)a3
+- (id)stringByReplacingPhonemesInString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v4, "length")}];
+    v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(stringCopy, "length")}];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3010000000;
@@ -20,7 +20,7 @@
     v26 = 0;
     v24 = &unk_19152ACD1;
     regex = self->_regex;
-    v7 = [v4 length];
+    v7 = [stringCopy length];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __53__AFPhonemeMapper_stringByReplacingPhonemesInString___block_invoke;
@@ -28,9 +28,9 @@
     v20 = &v21;
     v8 = v5;
     v17 = v8;
-    v9 = v4;
+    v9 = stringCopy;
     v18 = v9;
-    v19 = self;
+    selfCopy = self;
     [(NSRegularExpression *)regex enumerateMatchesInString:v9 options:0 range:0 usingBlock:v7, &v13];
     v10 = [v9 substringFromIndex:{v22[5] + v22[4], v13, v14, v15, v16}];
     [v8 appendString:v10];
@@ -97,15 +97,15 @@ void __53__AFPhonemeMapper_stringByReplacingPhonemesInString___block_invoke(uint
   }
 }
 
-- (AFPhonemeMapper)initWithLanguageCode:(id)a3
+- (AFPhonemeMapper)initWithLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v15.receiver = self;
   v15.super_class = AFPhonemeMapper;
   v5 = [(AFPhonemeMapper *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     languageCode = v5->_languageCode;
     v5->_languageCode = v6;
 
@@ -116,15 +116,15 @@ void __53__AFPhonemeMapper_stringByReplacingPhonemesInString___block_invoke(uint
     v10 = v5->_phonemeMap;
     if (v10)
     {
-      v11 = [(NSDictionary *)v10 allKeys];
-      v12 = [AFPhonemeMapper _buildRegexMatchingSubstrings:v11];
+      allKeys = [(NSDictionary *)v10 allKeys];
+      v12 = [AFPhonemeMapper _buildRegexMatchingSubstrings:allKeys];
       regex = v5->_regex;
       v5->_regex = v12;
     }
 
     else
     {
-      v11 = v5;
+      allKeys = v5;
       v5 = 0;
     }
   }
@@ -132,18 +132,18 @@ void __53__AFPhonemeMapper_stringByReplacingPhonemesInString___block_invoke(uint
   return v5;
 }
 
-+ (id)_buildRegexMatchingSubstrings:(id)a3
++ (id)_buildRegexMatchingSubstrings:(id)substrings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  substringsCopy = substrings;
+  if ([substringsCopy count])
   {
     v4 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"(");
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = substringsCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -184,14 +184,14 @@ void __53__AFPhonemeMapper_stringByReplacingPhonemesInString___block_invoke(uint
   return v11;
 }
 
-+ (id)_mapForLanguageCode:(id)a3
++ (id)_mapForLanguageCode:(id)code
 {
-  if (a3)
+  if (code)
   {
     v3 = MEMORY[0x1E696AAE8];
-    v4 = a3;
+    codeCopy = code;
     v5 = [v3 bundleForClass:objc_opt_class()];
-    v6 = [v5 pathForResource:v4 ofType:@"plist" inDirectory:@"PhonemeMaps"];
+    v6 = [v5 pathForResource:codeCopy ofType:@"plist" inDirectory:@"PhonemeMaps"];
 
     v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v6];
   }

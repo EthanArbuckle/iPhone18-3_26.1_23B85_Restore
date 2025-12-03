@@ -1,9 +1,9 @@
 @interface VFXAuthoringEnvironment2
-+ (id)authoringEnvironmentForWorld:(id)a3 createIfNeeded:(BOOL)a4;
-- (BOOL)_isPartOfSelection:(__CFXNode *)a3;
-- (BOOL)_proximityHidden:(uint64_t)a3;
-- (VFXAuthoringEnvironment2)initWithWorld:(id)a3;
-- (id)authoringCamera:(int64_t)a3;
++ (id)authoringEnvironmentForWorld:(id)world createIfNeeded:(BOOL)needed;
+- (BOOL)_isPartOfSelection:(__CFXNode *)selection;
+- (BOOL)_proximityHidden:(uint64_t)hidden;
+- (VFXAuthoringEnvironment2)initWithWorld:(id)world;
+- (id)authoringCamera:(int64_t)camera;
 - (id)cameraFocusPlaneModel;
 - (id)cameraFrustumModel;
 - (id)cameraModel;
@@ -11,51 +11,51 @@
 - (id)cameraOrthographicFrustumModel;
 - (id)effectModel;
 - (id)fieldModel;
-- (id)modelForLightType:(unsigned __int8)a3;
+- (id)modelForLightType:(unsigned __int8)type;
 - (unsigned)debugOptions;
-- (void)_resetLightAuthoringWithContainerNode:(id)a3 source:(__CFXNode *)a4 light:(__CFXLight *)a5;
-- (void)addCameraNode:(__CFXNode *)a3;
-- (void)addEffectNode:(__CFXNode *)a3;
-- (void)addEyeSightFrameNode:(__CFXNode *)a3;
-- (void)addForceFieldNode:(__CFXNode *)a3;
-- (void)addLightNode:(__CFXNode *)a3;
-- (void)addedNode:(__CFXNode *)a3;
+- (void)_resetLightAuthoringWithContainerNode:(id)node source:(__CFXNode *)source light:(__CFXLight *)light;
+- (void)addCameraNode:(__CFXNode *)node;
+- (void)addEffectNode:(__CFXNode *)node;
+- (void)addEyeSightFrameNode:(__CFXNode *)node;
+- (void)addForceFieldNode:(__CFXNode *)node;
+- (void)addLightNode:(__CFXNode *)node;
+- (void)addedNode:(__CFXNode *)node;
 - (void)cancelSelection;
 - (void)dealloc;
-- (void)didSetPointOfView:(id)a3;
-- (void)prepareWorld:(id)a3;
-- (void)removeCameraNode:(__CFXNode *)a3;
-- (void)removeEffectNode:(__CFXNode *)a3;
-- (void)removeEyesightFrameNode:(__CFXNode *)a3;
-- (void)removeForceFieldNode:(__CFXNode *)a3;
-- (void)removeLightNode:(__CFXNode *)a3;
-- (void)removedNode:(__CFXNode *)a3;
-- (void)selectNodes:(id)a3;
-- (void)setAuthoringCamera:(int64_t)a3 forView:(id)a4;
-- (void)updateCameraNode:(id)a3 withSourceNode:(__CFXNode *)a4;
-- (void)updateEffectNode:(id)a3 withSourceNode:(__CFXNode *)a4;
-- (void)updateFieldNode:(id)a3 withSourceNode:(__CFXNode *)a4;
-- (void)updateLightNode:(id)a3 withSourceNode:(__CFXNode *)a4;
-- (void)updateLightTypeForNode:(id)a3 source:(__CFXNode *)a4 light:(__CFXLight *)a5 screenspaceScalingFactor:(float)a6;
-- (void)updateWithRenderer:(id)a3;
+- (void)didSetPointOfView:(id)view;
+- (void)prepareWorld:(id)world;
+- (void)removeCameraNode:(__CFXNode *)node;
+- (void)removeEffectNode:(__CFXNode *)node;
+- (void)removeEyesightFrameNode:(__CFXNode *)node;
+- (void)removeForceFieldNode:(__CFXNode *)node;
+- (void)removeLightNode:(__CFXNode *)node;
+- (void)removedNode:(__CFXNode *)node;
+- (void)selectNodes:(id)nodes;
+- (void)setAuthoringCamera:(int64_t)camera forView:(id)view;
+- (void)updateCameraNode:(id)node withSourceNode:(__CFXNode *)sourceNode;
+- (void)updateEffectNode:(id)node withSourceNode:(__CFXNode *)sourceNode;
+- (void)updateFieldNode:(id)node withSourceNode:(__CFXNode *)sourceNode;
+- (void)updateLightNode:(id)node withSourceNode:(__CFXNode *)sourceNode;
+- (void)updateLightTypeForNode:(id)node source:(__CFXNode *)source light:(__CFXLight *)light screenspaceScalingFactor:(float)factor;
+- (void)updateWithRenderer:(id)renderer;
 @end
 
 @implementation VFXAuthoringEnvironment2
 
-+ (id)authoringEnvironmentForWorld:(id)a3 createIfNeeded:(BOOL)a4
++ (id)authoringEnvironmentForWorld:(id)world createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v9 = objc_msgSend_authoringEnvironment2(a3, a2, a3, a4);
-  if (!v9 && v4)
+  neededCopy = needed;
+  v9 = objc_msgSend_authoringEnvironment2(world, a2, world, needed);
+  if (!v9 && neededCopy)
   {
-    v10 = objc_msgSend_worldRef(a3, v6, v7, v8);
+    v10 = objc_msgSend_worldRef(world, v6, v7, v8);
     if (v10)
     {
       v11 = v10;
       sub_1AF1CEA20(v10);
       v9 = sub_1AF1D1084(v11, 1, v12, v13);
       sub_1AF1CEA9C(v11);
-      objc_msgSend_setAuthoringEnvironment2_(a3, v14, v9, v15);
+      objc_msgSend_setAuthoringEnvironment2_(world, v14, v9, v15);
     }
 
     else
@@ -67,7 +67,7 @@
   return v9;
 }
 
-- (VFXAuthoringEnvironment2)initWithWorld:(id)a3
+- (VFXAuthoringEnvironment2)initWithWorld:(id)world
 {
   v9.receiver = self;
   v9.super_class = VFXAuthoringEnvironment2;
@@ -75,7 +75,7 @@
   v7 = v4;
   if (v4)
   {
-    objc_msgSend_prepareWorld_(v4, v5, a3, v6);
+    objc_msgSend_prepareWorld_(v4, v5, world, v6);
   }
 
   return v7;
@@ -123,10 +123,10 @@
   [(VFXAuthoringEnvironment2 *)&v8 dealloc];
 }
 
-- (void)prepareWorld:(id)a3
+- (void)prepareWorld:(id)world
 {
   v354[1] = *MEMORY[0x1E69E9840];
-  self->_world = objc_msgSend_worldRef(a3, a2, a3, v3);
+  self->_world = objc_msgSend_worldRef(world, a2, world, v3);
   self->_manipulator = objc_alloc_init(VFXManipulator);
   self->_selection = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v5 = MEMORY[0x1E695E9D8];
@@ -232,8 +232,8 @@
   objc_msgSend_setHidden_(self->_cameraRoot, v165, 0, v166);
   objc_msgSend_setHidden_(self->_effectRoot, v167, 0, v168);
   objc_msgSend_setHidden_(self->_forceFieldsRoot, v169, 0, v170);
-  objc_msgSend_setRootNode_forLayer_(a3, v171, self->_layerRoot, 1);
-  objc_msgSend_setRootNode_forLayer_(a3, v172, self->_overlayLayerRoot, 2);
+  objc_msgSend_setRootNode_forLayer_(world, v171, self->_layerRoot, 1);
+  objc_msgSend_setRootNode_forLayer_(world, v172, self->_overlayLayerRoot, 2);
   objc_msgSend_addChildNode_(self->_layerRoot, v173, self->_lightRoot, v174);
   objc_msgSend_addChildNode_(self->_layerRoot, v175, self->_cameraRoot, v176);
   objc_msgSend_addChildNode_(self->_layerRoot, v177, self->_effectRoot, v178);
@@ -241,10 +241,10 @@
   objc_msgSend_addChildNode_(self->_layerRoot, v181, self->_cameraTarget, v182);
   objc_msgSend_addChildNode_(self->_layerRoot, v183, self->_pointsOfViewRoot, v184);
   objc_msgSend_addChildNode_(self->_layerRoot, v185, self->_grid, v186);
-  v335 = objc_msgSend_rootNode(a3, v187, v188, v189);
+  v335 = objc_msgSend_rootNode(world, v187, v188, v189);
   objc_msgSend_begin(VFXTransaction, v190, v191, v192);
   objc_msgSend_setAnimationDuration_(VFXTransaction, v193, v194, v195, 0.0);
-  v199 = objc_msgSend_worldRef(a3, v196, v197, v198);
+  v199 = objc_msgSend_worldRef(world, v196, v197, v198);
   v346[0] = MEMORY[0x1E69E9820];
   v346[1] = 3221225472;
   v346[2] = sub_1AF104BF4;
@@ -253,7 +253,7 @@
   v346[5] = v199;
   objc_msgSend_enumerateChildNodesUsingBlock_(v335, v200, v346, v201);
   objc_msgSend_commit(VFXTransaction, v202, v203, v204);
-  v352 = objc_msgSend_rootNode(a3, v205, v206, v207);
+  v352 = objc_msgSend_rootNode(world, v205, v206, v207);
   v209 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v208, &v352, 1);
   VFXNodeGetBoundingSphere(v209, 0x10000, v210, v211);
   v344 = v212;
@@ -402,9 +402,9 @@
   return v4;
 }
 
-- (id)modelForLightType:(unsigned __int8)a3
+- (id)modelForLightType:(unsigned __int8)type
 {
-  if (a3 == 4)
+  if (type == 4)
   {
     return 0;
   }
@@ -440,16 +440,16 @@
     lightModel = self->_lightModel;
   }
 
-  v8 = objc_msgSend_copy(lightModel, a2, a3, v3);
+  v8 = objc_msgSend_copy(lightModel, a2, type, v3);
   Material = objc_msgSend_firstMaterial(self->_lightModel, v9, v10, v11);
   v16 = objc_msgSend_copy(Material, v13, v14, v15);
   objc_msgSend_setFirstMaterial_(v8, v17, v16, v18);
   return v8;
 }
 
-- (void)addLightNode:(__CFXNode *)a3
+- (void)addLightNode:(__CFXNode *)node
 {
-  if (CFDictionaryContainsKey(self->_lightsDictionary, a3))
+  if (CFDictionaryContainsKey(self->_lightsDictionary, node))
   {
     v5 = sub_1AF0D5194();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -460,16 +460,16 @@
 
   else
   {
-    v6 = sub_1AF1B75E8(a3);
+    v6 = sub_1AF1B75E8(node);
     v7 = sub_1AF19CBB4(v6);
     v10 = objc_msgSend_modelForLightType_(self, v8, v7, v9);
     v13 = objc_msgSend_nodeWithModel_(VFXNode, v11, v10, v12);
     objc_msgSend_setName_(v13, v14, @"lightAuth", v15);
-    sub_1AF104E8C(v13, a3, v16, v17);
+    sub_1AF104E8C(v13, node, v16, v17);
     objc_msgSend_addChildNode_(self->_lightRoot, v18, v13, v19);
     lightsDictionary = self->_lightsDictionary;
 
-    CFDictionaryAddValue(lightsDictionary, a3, v13);
+    CFDictionaryAddValue(lightsDictionary, node, v13);
   }
 }
 
@@ -527,9 +527,9 @@
   return v7;
 }
 
-- (void)addEffectNode:(__CFXNode *)a3
+- (void)addEffectNode:(__CFXNode *)node
 {
-  if (CFDictionaryContainsKey(self->_effectsDictionary, a3))
+  if (CFDictionaryContainsKey(self->_effectsDictionary, node))
   {
     v8 = sub_1AF0D5194();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -544,13 +544,13 @@
     v13 = objc_msgSend_effectModel(self, v10, v11, v12);
     v16 = objc_msgSend_nodeWithModel_(VFXNode, v14, v13, v15);
     objc_msgSend_setName_(v16, v17, @"particlesAuth", v18);
-    sub_1AF104E8C(v16, a3, v19, v20);
+    sub_1AF104E8C(v16, node, v19, v20);
     objc_msgSend_setIsAuthoring_(v9, v21, 1, v22);
     objc_msgSend_addChildNode_(v9, v23, v16, v24);
     objc_msgSend_addChildNode_(self->_effectRoot, v25, v9, v26);
     effectsDictionary = self->_effectsDictionary;
 
-    CFDictionaryAddValue(effectsDictionary, a3, v9);
+    CFDictionaryAddValue(effectsDictionary, node, v9);
   }
 }
 
@@ -626,18 +626,18 @@
   return result;
 }
 
-- (void)addCameraNode:(__CFXNode *)a3
+- (void)addCameraNode:(__CFXNode *)node
 {
-  if (!CFDictionaryContainsKey(self->_camerasDictionary, a3) && !sub_1AF1BC2B8(a3))
+  if (!CFDictionaryContainsKey(self->_camerasDictionary, node) && !sub_1AF1BC2B8(node))
   {
-    v5 = sub_1AF1B955C(a3);
-    if ((!v5 || objc_msgSend_compare_(v5, v6, @"kVFXFreeViewCameraName", v7)) && (sub_1AF1BC2E4(a3) & 1) == 0)
+    v5 = sub_1AF1B955C(node);
+    if ((!v5 || objc_msgSend_compare_(v5, v6, @"kVFXFreeViewCameraName", v7)) && (sub_1AF1BC2E4(node) & 1) == 0)
     {
       v11 = objc_msgSend_cameraModel(self, v8, v9, v10);
       v14 = objc_msgSend_nodeWithModel_(VFXNode, v12, v11, v13);
       objc_msgSend_setName_(v14, v15, @"cameraAuth", v16);
-      sub_1AF104E8C(v14, a3, v17, v18);
-      v19 = sub_1AF1BB260(a3);
+      sub_1AF104E8C(v14, node, v17, v18);
+      v19 = sub_1AF1BB260(node);
       if (sub_1AF15D5F0(v19))
       {
         v23 = objc_msgSend_cameraOrthographicFrustumModel(self, v20, v21, v22);
@@ -668,23 +668,23 @@
       objc_msgSend_addChildNode_(v26, v65, v52, v66);
       camerasDictionary = self->_camerasDictionary;
 
-      CFDictionaryAddValue(camerasDictionary, a3, v14);
+      CFDictionaryAddValue(camerasDictionary, node, v14);
     }
   }
 }
 
-- (void)removeCameraNode:(__CFXNode *)a3
+- (void)removeCameraNode:(__CFXNode *)node
 {
-  Value = CFDictionaryGetValue(self->_camerasDictionary, a3);
+  Value = CFDictionaryGetValue(self->_camerasDictionary, node);
   objc_msgSend_removeFromParentNode(Value, v6, v7, v8);
   camerasDictionary = self->_camerasDictionary;
 
-  CFDictionaryRemoveValue(camerasDictionary, a3);
+  CFDictionaryRemoveValue(camerasDictionary, node);
 }
 
-- (void)addForceFieldNode:(__CFXNode *)a3
+- (void)addForceFieldNode:(__CFXNode *)node
 {
-  if (CFDictionaryContainsKey(self->_forceFieldsDictionary, a3))
+  if (CFDictionaryContainsKey(self->_forceFieldsDictionary, node))
   {
     v8 = sub_1AF0D5194();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -698,15 +698,15 @@
     v9 = objc_msgSend_fieldModel(self, v5, v6, v7);
     v12 = objc_msgSend_nodeWithModel_(VFXNode, v10, v9, v11);
     objc_msgSend_setName_(v12, v13, @"fieldAuth", v14);
-    sub_1AF104E8C(v12, a3, v15, v16);
+    sub_1AF104E8C(v12, node, v15, v16);
     objc_msgSend_addChildNode_(self->_forceFieldsRoot, v17, v12, v18);
     forceFieldsDictionary = self->_forceFieldsDictionary;
 
-    CFDictionaryAddValue(forceFieldsDictionary, a3, v12);
+    CFDictionaryAddValue(forceFieldsDictionary, node, v12);
   }
 }
 
-- (void)addEyeSightFrameNode:(__CFXNode *)a3
+- (void)addEyeSightFrameNode:(__CFXNode *)node
 {
   eyeSightDictionary = self->_eyeSightDictionary;
   if (!eyeSightDictionary)
@@ -715,7 +715,7 @@
     self->_eyeSightDictionary = eyeSightDictionary;
   }
 
-  if (CFDictionaryContainsKey(eyeSightDictionary, a3))
+  if (CFDictionaryContainsKey(eyeSightDictionary, node))
   {
     v6 = sub_1AF0D5194();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -777,9 +777,9 @@
     objc_msgSend_addChildNode_(v41, v57, v20, v58);
     objc_msgSend_addChildNode_(v41, v59, v29, v60);
     objc_msgSend_addChildNode_(v37, v61, v41, v62);
-    sub_1AF104E8C(v37, a3, v63, v64);
+    sub_1AF104E8C(v37, node, v63, v64);
     objc_msgSend_addChildNode_(self->_layerRoot, v65, v37, v66);
-    CFDictionaryAddValue(self->_eyeSightDictionary, a3, v37);
+    CFDictionaryAddValue(self->_eyeSightDictionary, node, v37);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -854,120 +854,120 @@
   }
 }
 
-- (void)removeForceFieldNode:(__CFXNode *)a3
+- (void)removeForceFieldNode:(__CFXNode *)node
 {
-  Value = CFDictionaryGetValue(self->_forceFieldsDictionary, a3);
+  Value = CFDictionaryGetValue(self->_forceFieldsDictionary, node);
   objc_msgSend_removeFromParentNode(Value, v6, v7, v8);
   forceFieldsDictionary = self->_forceFieldsDictionary;
 
-  CFDictionaryRemoveValue(forceFieldsDictionary, a3);
+  CFDictionaryRemoveValue(forceFieldsDictionary, node);
 }
 
-- (void)removeLightNode:(__CFXNode *)a3
+- (void)removeLightNode:(__CFXNode *)node
 {
-  Value = CFDictionaryGetValue(self->_lightsDictionary, a3);
+  Value = CFDictionaryGetValue(self->_lightsDictionary, node);
   objc_msgSend_removeFromParentNode(Value, v6, v7, v8);
   lightsDictionary = self->_lightsDictionary;
 
-  CFDictionaryRemoveValue(lightsDictionary, a3);
+  CFDictionaryRemoveValue(lightsDictionary, node);
 }
 
-- (void)removeEffectNode:(__CFXNode *)a3
+- (void)removeEffectNode:(__CFXNode *)node
 {
-  Value = CFDictionaryGetValue(self->_effectsDictionary, a3);
+  Value = CFDictionaryGetValue(self->_effectsDictionary, node);
   objc_msgSend_removeFromParentNode(Value, v6, v7, v8);
   effectsDictionary = self->_effectsDictionary;
 
-  CFDictionaryRemoveValue(effectsDictionary, a3);
+  CFDictionaryRemoveValue(effectsDictionary, node);
 }
 
-- (void)removeEyesightFrameNode:(__CFXNode *)a3
+- (void)removeEyesightFrameNode:(__CFXNode *)node
 {
   eyeSightDictionary = self->_eyeSightDictionary;
   if (eyeSightDictionary)
   {
-    Value = CFDictionaryGetValue(eyeSightDictionary, a3);
+    Value = CFDictionaryGetValue(eyeSightDictionary, node);
     objc_msgSend_removeFromParentNode(Value, v7, v8, v9);
     v10 = self->_eyeSightDictionary;
 
-    CFDictionaryRemoveValue(v10, a3);
+    CFDictionaryRemoveValue(v10, node);
   }
 }
 
-- (void)addedNode:(__CFXNode *)a3
+- (void)addedNode:(__CFXNode *)node
 {
-  if (sub_1AF1BB0BC(a3))
+  if (sub_1AF1BB0BC(node))
   {
-    objc_msgSend_addLightNode_(self, v5, a3, v6);
+    objc_msgSend_addLightNode_(self, v5, node, v6);
   }
 
-  if (sub_1AF1B83E8(a3) || sub_1AF1BC05C(a3))
+  if (sub_1AF1B83E8(node) || sub_1AF1BC05C(node))
   {
-    objc_msgSend_addEffectNode_(self, v7, a3, v8);
+    objc_msgSend_addEffectNode_(self, v7, node, v8);
   }
 
-  if (sub_1AF1BB2C8(a3))
+  if (sub_1AF1BB2C8(node))
   {
-    objc_msgSend_addCameraNode_(self, v9, a3, v10);
+    objc_msgSend_addCameraNode_(self, v9, node, v10);
   }
 
-  if (sub_1AF1BBE9C(a3))
+  if (sub_1AF1BBE9C(node))
   {
-    objc_msgSend_addForceFieldNode_(self, v11, a3, v12);
+    objc_msgSend_addForceFieldNode_(self, v11, node, v12);
   }
 
-  if (sub_1AF1BB028(a3))
+  if (sub_1AF1BB028(node))
   {
 
-    MEMORY[0x1EEE66B58](self, sel_addEyeSightFrameNode_, a3, v13);
+    MEMORY[0x1EEE66B58](self, sel_addEyeSightFrameNode_, node, v13);
   }
 }
 
-- (void)removedNode:(__CFXNode *)a3
+- (void)removedNode:(__CFXNode *)node
 {
-  if (sub_1AF1BC2E4(a3))
+  if (sub_1AF1BC2E4(node))
   {
-    if (sub_1AF1BB0BC(a3))
+    if (sub_1AF1BB0BC(node))
     {
-      objc_msgSend_removeLightNode_(self, v5, a3, v6);
+      objc_msgSend_removeLightNode_(self, v5, node, v6);
     }
 
-    if (sub_1AF1B83E8(a3) || sub_1AF1BC05C(a3))
+    if (sub_1AF1B83E8(node) || sub_1AF1BC05C(node))
     {
-      objc_msgSend_removeEffectNode_(self, v7, a3, v8);
+      objc_msgSend_removeEffectNode_(self, v7, node, v8);
     }
 
-    if (sub_1AF1BB2C8(a3))
+    if (sub_1AF1BB2C8(node))
     {
-      objc_msgSend_removeCameraNode_(self, v9, a3, v10);
+      objc_msgSend_removeCameraNode_(self, v9, node, v10);
     }
 
-    if (sub_1AF1BBE9C(a3))
+    if (sub_1AF1BBE9C(node))
     {
-      objc_msgSend_removeForceFieldNode_(self, v11, a3, v12);
+      objc_msgSend_removeForceFieldNode_(self, v11, node, v12);
     }
 
-    if (sub_1AF1BB028(a3))
+    if (sub_1AF1BB028(node))
     {
-      objc_msgSend_removeEyesightFrameNode_(self, v13, a3, v14);
+      objc_msgSend_removeEyesightFrameNode_(self, v13, node, v14);
     }
 
-    sub_1AF1BC2C4(a3, 0);
+    sub_1AF1BC2C4(node, 0);
   }
 }
 
-- (void)selectNodes:(id)a3
+- (void)selectNodes:(id)nodes
 {
   v25 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   objc_msgSend_removeAllObjects(self->_selection, v5, v6, v7);
-  if (a3)
+  if (nodes)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v8, &v20, v24, 16);
+    v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodes, v8, &v20, v24, 16);
     if (v12)
     {
       v13 = *v21;
@@ -977,7 +977,7 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(nodes);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -989,7 +989,7 @@
           }
         }
 
-        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v20, v24, 16);
+        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodes, v9, &v20, v24, 16);
       }
 
       while (v12);
@@ -1007,15 +1007,15 @@
   objc_sync_exit(self);
 }
 
-- (void)_resetLightAuthoringWithContainerNode:(id)a3 source:(__CFXNode *)a4 light:(__CFXLight *)a5
+- (void)_resetLightAuthoringWithContainerNode:(id)node source:(__CFXNode *)source light:(__CFXLight *)light
 {
-  objc_msgSend_removeAllChilds(a3, a2, a3, a4);
+  objc_msgSend_removeAllChilds(node, a2, node, source);
   v9 = MEMORY[0x1E696AD98];
-  v10 = sub_1AF19CBB4(a5);
+  v10 = sub_1AF19CBB4(light);
   v13 = objc_msgSend_numberWithUnsignedChar_(v9, v11, v10, v12);
-  objc_msgSend_setValue_forKey_(a3, v14, v13, @"VFXDebugLightTypeKey");
-  objc_msgSend_setValue_forKey_(a3, v15, 0, @"VFXDebugLightSubTypeKey");
-  v16 = sub_1AF19CBB4(a5);
+  objc_msgSend_setValue_forKey_(node, v14, v13, @"VFXDebugLightTypeKey");
+  objc_msgSend_setValue_forKey_(node, v15, 0, @"VFXDebugLightSubTypeKey");
+  v16 = sub_1AF19CBB4(light);
   if (!v16)
   {
     return;
@@ -1034,7 +1034,7 @@
     objc_msgSend_setName_(v24, v25, @"lightInnerAuth", v26);
     objc_msgSend_setIsAuthoring_(v24, v27, 1, v28);
     objc_msgSend_setHittable_(v24, v29, 0, v30);
-    objc_msgSend_addChildNode_(a3, v31, v24, v32);
+    objc_msgSend_addChildNode_(node, v31, v24, v32);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -1064,7 +1064,7 @@
     objc_msgSend_setName_(v37, v38, @"lightOuterAuth", v39);
     objc_msgSend_setIsAuthoring_(v37, v40, 1, v41);
     objc_msgSend_setHittable_(v37, v42, 0, v43);
-    objc_msgSend_addChildNode_(a3, v44, v37, v45);
+    objc_msgSend_addChildNode_(node, v44, v37, v45);
 LABEL_18:
     if (__p[0])
     {
@@ -1104,7 +1104,7 @@ LABEL_18:
 
     objc_msgSend_setScale_(v50, v63, v64, v65, *&_Q0);
     objc_msgSend_setHittable_(v50, v66, 0, v67);
-    objc_msgSend_addChildNode_(a3, v68, v50, v69);
+    objc_msgSend_addChildNode_(node, v68, v50, v69);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -1136,7 +1136,7 @@ LABEL_18:
     objc_msgSend_setName_(v74, v78, @"lightShadowAuth", v79);
     objc_msgSend_setIsAuthoring_(v74, v80, 1, v81);
     objc_msgSend_setHittable_(v74, v82, 0, v83);
-    objc_msgSend_addChildNode_(a3, v84, v74, v85);
+    objc_msgSend_addChildNode_(node, v84, v74, v85);
     goto LABEL_18;
   }
 
@@ -1145,9 +1145,9 @@ LABEL_18:
     case 5:
       v242 = 0u;
       memset(v241, 0, sizeof(v241));
-      *&v152 = sub_1AF19D5A0(a5, v241).n128_u64[0];
+      *&v152 = sub_1AF19D5A0(light, v241).n128_u64[0];
       v155 = objc_msgSend_numberWithUnsignedChar_(MEMORY[0x1E696AD98], v153, v241[0].u8[0], v154, v152);
-      objc_msgSend_setValue_forKey_(a3, v156, v155, @"VFXDebugLightSubTypeKey");
+      objc_msgSend_setValue_forKey_(node, v156, v155, @"VFXDebugLightSubTypeKey");
       v159 = 0;
       if (v241[0].u8[0] <= 1u)
       {
@@ -1251,9 +1251,9 @@ LABEL_72:
             v227 = objc_msgSend_nodeWithModel_(VFXNode, v157, v159, v158);
             objc_msgSend_setName_(v227, v228, @"lightAreaAuth", v229);
             objc_msgSend_setIsAuthoring_(v227, v230, 1, v231);
-            v232 = sub_1AF16CDEC(a4);
+            v232 = sub_1AF16CDEC(source);
             objc_msgSend_setAuthoringTargetNode_(v227, v233, v232, v234);
-            objc_msgSend_addChildNode_(a3, v235, v227, v236);
+            objc_msgSend_addChildNode_(node, v235, v227, v236);
             return;
         }
       }
@@ -1262,7 +1262,7 @@ LABEL_72:
       sub_1AF104BA0(v244);
       goto LABEL_72;
     case 4:
-      LODWORD(v95) = dword_1AFE206D0[sub_1AF19D968(a5) == 1];
+      LODWORD(v95) = dword_1AFE206D0[sub_1AF19D968(light) == 1];
       v99 = objc_msgSend_sphereWithRadius_(VFXParametricModel, v96, v97, v98, v95);
       objc_msgSend_setName_(v99, v100, @"probeGeometry", v101);
       *__p = 0u;
@@ -1279,7 +1279,7 @@ LABEL_72:
       objc_msgSend_setName_(v107, v108, @"lightInnerAuth", v109);
       objc_msgSend_setIsAuthoring_(v107, v110, 1, v111);
       objc_msgSend_setHittable_(v107, v112, 0, v113);
-      objc_msgSend_addChildNode_(a3, v114, v107, v115);
+      objc_msgSend_addChildNode_(node, v114, v107, v115);
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -1312,7 +1312,7 @@ LABEL_72:
       objc_msgSend_setName_(v121, v122, @"lightOuterAuth", v123);
       objc_msgSend_setIsAuthoring_(v121, v124, 1, v125);
       objc_msgSend_setHittable_(v121, v126, 0, v127);
-      objc_msgSend_addChildNode_(a3, v128, v121, v129);
+      objc_msgSend_addChildNode_(node, v128, v121, v129);
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -1331,7 +1331,7 @@ LABEL_72:
         operator delete(v244[0]);
       }
 
-      if (sub_1AF19D968(a5))
+      if (sub_1AF19D968(light))
       {
         *__p = 0u;
         v248 = 0u;
@@ -1347,7 +1347,7 @@ LABEL_72:
         objc_msgSend_setName_(v135, v136, @"lightProbeExtents", v137);
         objc_msgSend_setIsAuthoring_(v135, v138, 1, v139);
         objc_msgSend_setHittable_(v135, v140, 0, v141);
-        objc_msgSend_addChildNode_(a3, v142, v135, v143);
+        objc_msgSend_addChildNode_(node, v142, v135, v143);
         if (__p[0])
         {
           __p[1] = __p[0];
@@ -1372,7 +1372,7 @@ LABEL_72:
 
       else
       {
-        v168 = sub_1AF19D8B8(a5);
+        v168 = sub_1AF19D8B8(light);
         white = self->_white;
         v173 = objc_msgSend_material(v99, v170, v171, v172);
         v177 = objc_msgSend_diffuse(v173, v174, v175, v176);
@@ -1393,7 +1393,7 @@ LABEL_72:
           v243[1] = 3221225472;
           v243[2] = sub_1AF106860;
           v243[3] = &unk_1E7A79758;
-          v243[4] = a5;
+          v243[4] = light;
           objc_msgSend_handleBindingOfBufferNamed_frequency_usingBlock_(v187, v207, @"sh", 1, v243);
           v211 = objc_msgSend_material(v99, v208, v209, v210);
           objc_msgSend_setProgram_(v211, v212, v187, v213);
@@ -1402,9 +1402,9 @@ LABEL_72:
 
       v214 = objc_msgSend_nodeWithModel_(VFXNode, v150, v99, v151);
       objc_msgSend_setName_(v214, v215, @"probe", v216);
-      sub_1AF104E8C(v214, a4, v217, v218);
+      sub_1AF104E8C(v214, source, v217, v218);
       objc_msgSend_setHittable_(v214, v219, 1, v220);
-      objc_msgSend_addChildNode_(a3, v221, v214, v222);
+      objc_msgSend_addChildNode_(node, v221, v214, v222);
       *__p = 0u;
       v248 = 0u;
       *v245 = 0u;
@@ -1419,17 +1419,17 @@ LABEL_72:
       objc_msgSend_setIsAuthoring_(v86, v89, 1, v90);
       objc_msgSend_setHittable_(v86, v91, 0, v92);
 
-      objc_msgSend_addChildNode_(a3, v93, v86, v94);
+      objc_msgSend_addChildNode_(node, v93, v86, v94);
       break;
   }
 }
 
-- (BOOL)_isPartOfSelection:(__CFXNode *)a3
+- (BOOL)_isPartOfSelection:(__CFXNode *)selection
 {
-  v4 = a3;
-  if (objc_msgSend_count(self->_selection, a2, a3, v3))
+  selectionCopy = selection;
+  if (objc_msgSend_count(self->_selection, a2, selection, v3))
   {
-    v8 = v4 == 0;
+    v8 = selectionCopy == 0;
   }
 
   else
@@ -1444,57 +1444,57 @@ LABEL_72:
 
   do
   {
-    v9 = objc_msgSend_containsObject_(self->_selection, v6, v4, v7);
+    v9 = objc_msgSend_containsObject_(self->_selection, v6, selectionCopy, v7);
     if (v9)
     {
       break;
     }
 
-    v4 = sub_1AF1B9A6C(v4);
+    selectionCopy = sub_1AF1B9A6C(selectionCopy);
   }
 
-  while (v4);
+  while (selectionCopy);
   return v9;
 }
 
-- (BOOL)_proximityHidden:(uint64_t)a3
+- (BOOL)_proximityHidden:(uint64_t)hidden
 {
-  v8 = objc_msgSend_pointOfView(*(a1 + 136), a2, a3, a4);
+  v8 = objc_msgSend_pointOfView(*(self + 136), a2, hidden, a4);
   objc_msgSend_worldPosition(v8, v9, v10, v11);
   v13 = vsubq_f32(v12, a8);
   v14 = vmulq_f32(v13, v13);
   return (v14.f32[2] + vaddv_f32(*v14.f32)) < 0.0001;
 }
 
-- (void)updateLightTypeForNode:(id)a3 source:(__CFXNode *)a4 light:(__CFXLight *)a5 screenspaceScalingFactor:(float)a6
+- (void)updateLightTypeForNode:(id)node source:(__CFXNode *)source light:(__CFXLight *)light screenspaceScalingFactor:(float)factor
 {
-  v8 = a4;
-  v11 = objc_msgSend_valueForKey_(a3, a2, @"VFXDebugLightTypeKey", a4);
+  sourceCopy = source;
+  v11 = objc_msgSend_valueForKey_(node, a2, @"VFXDebugLightTypeKey", source);
   v15 = objc_msgSend_intValue(v11, v12, v13, v14);
-  v18 = objc_msgSend_valueForKey_(a3, v16, @"VFXDebugLightSubTypeKey", v17);
-  v21 = objc_msgSend_valueForKey_(a3, v19, @"disabled", v20);
+  v18 = objc_msgSend_valueForKey_(node, v16, @"VFXDebugLightSubTypeKey", v17);
+  v21 = objc_msgSend_valueForKey_(node, v19, @"disabled", v20);
   v25 = objc_msgSend_BOOLValue(v21, v22, v23, v24);
-  isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v26, v8, v27);
+  isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v26, sourceCopy, v27);
   v349 = isPartOfSelection ^ 1;
-  v31 = sub_1AF1B7348(v8) & (isPartOfSelection ^ 1);
+  v31 = sub_1AF1B7348(sourceCopy) & (isPartOfSelection ^ 1);
   v32 = v25 ^ v31;
   if (v32 == 1)
   {
     v33 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], v28, v31, v30);
-    objc_msgSend_setValue_forKey_(a3, v34, v33, @"disabled");
+    objc_msgSend_setValue_forKey_(node, v34, v33, @"disabled");
   }
 
-  v35 = objc_msgSend_childNodes(a3, v28, v29, v30);
+  v35 = objc_msgSend_childNodes(node, v28, v29, v30);
   if (objc_msgSend_count(v35, v36, v37, v38))
   {
-    v39 = sub_1AF19CBB4(a5) == 4 ? v32 : 1;
+    v39 = sub_1AF19CBB4(light) == 4 ? v32 : 1;
     if ((v39 & 1) == 0)
     {
-      v356 = v8;
-      v40 = self;
-      v353 = sub_1AF19D8B8(a5);
-      v41 = sub_1AF19B558(a5, 0);
-      v43 = objc_msgSend_childNodeWithName_recursively_(a3, v42, @"probe", 1);
+      v356 = sourceCopy;
+      selfCopy = self;
+      v353 = sub_1AF19D8B8(light);
+      v41 = sub_1AF19B558(light, 0);
+      v43 = objc_msgSend_childNodeWithName_recursively_(node, v42, @"probe", 1);
       v47 = objc_msgSend_model(v43, v44, v45, v46);
       Material = objc_msgSend_firstMaterial(v47, v48, v49, v50);
       v55 = Material;
@@ -1510,12 +1510,12 @@ LABEL_72:
         v56 = 0;
       }
 
-      if (sub_1AF19D968(a5))
+      if (sub_1AF19D968(light))
       {
         v64 = v55 == (v41 != 0);
       }
 
-      else if (a5)
+      else if (light)
       {
         v64 = v56 == (v353 != 0);
       }
@@ -1526,37 +1526,37 @@ LABEL_72:
       }
 
       LOBYTE(v32) = !v64;
-      self = v40;
-      v8 = v356;
+      self = selfCopy;
+      sourceCopy = v356;
     }
   }
 
-  if (sub_1AF19CBB4(a5) == 5)
+  if (sub_1AF19CBB4(light) == 5)
   {
-    *&v66 = sub_1AF19D5A0(a5, v362).n128_u64[0];
+    *&v66 = sub_1AF19D5A0(light, v362).n128_u64[0];
     v67 = LOBYTE(v362[0]);
     LOBYTE(v32) = (objc_msgSend_integerValue(v18, v68, v69, v70, v66) != v67) | v32;
   }
 
-  *&v65 = fmaxf(a6, 0.001);
+  *&v65 = fmaxf(factor, 0.001);
   v357 = v65;
-  if (sub_1AF19CBB4(a5) != v15 || (v32 & 1) != 0)
+  if (sub_1AF19CBB4(light) != v15 || (v32 & 1) != 0)
   {
-    objc_msgSend__resetLightAuthoringWithContainerNode_source_light_(self, v71, a3, v8, a5);
+    objc_msgSend__resetLightAuthoringWithContainerNode_source_light_(self, v71, node, sourceCopy, light);
   }
 
   v72.i32[1] = HIDWORD(v357);
   *v72.i32 = 1.0 / *&v357;
   v354 = v72;
-  if (sub_1AF19CBB4(a5) == 1)
+  if (sub_1AF19CBB4(light) == 1)
   {
-    v76 = objc_msgSend_childNodes(a3, v73, v74, v75);
+    v76 = objc_msgSend_childNodes(node, v73, v74, v75);
     v79 = objc_msgSend_objectAtIndexedSubscript_(v76, v77, 0, v78);
     objc_msgSend_setScale_(v79, v80, v81, v82, 0.0);
     objc_msgSend_setHidden_(v79, v83, 1, v84);
-    v88 = objc_msgSend_childNodes(a3, v85, v86, v87);
+    v88 = objc_msgSend_childNodes(node, v85, v86, v87);
     v91 = objc_msgSend_objectAtIndexedSubscript_(v88, v89, 1, v90);
-    *v95.i32 = *v354.i32 * sub_1AF19C1FC(a5);
+    *v95.i32 = *v354.i32 * sub_1AF19C1FC(light);
     if (*v95.i32 < 0.0)
     {
       *v95.i32 = 0.0;
@@ -1565,7 +1565,7 @@ LABEL_72:
     v355 = *&v95;
     objc_msgSend_setScale_(v91, v92, v93, v94, *vdupq_lane_s32(v95, 0).i64);
     objc_msgSend_setHidden_(v91, v96, (*&v355 == 0.0) | (v349 & 1), v97, v355);
-    if (sub_1AF1B7348(v8))
+    if (sub_1AF1B7348(sourceCopy))
     {
       v101 = 288;
       if (isPartOfSelection)
@@ -1574,7 +1574,7 @@ LABEL_72:
       }
 
       v102 = *(&self->super.isa + v101);
-      v103 = objc_msgSend_model(a3, v98, v99, v100);
+      v103 = objc_msgSend_model(node, v98, v99, v100);
       v107 = objc_msgSend_firstMaterial(v103, v104, v105, v106);
       v111 = objc_msgSend_diffuse(v107, v108, v109, v110);
       objc_msgSend_setColor_(v111, v112, v102, v113);
@@ -1603,7 +1603,7 @@ LABEL_72:
         v169 = 264;
       }
 
-      v170 = objc_msgSend_model(a3, v98, v99, v100);
+      v170 = objc_msgSend_model(node, v98, v99, v100);
       v174 = objc_msgSend_firstMaterial(v170, v171, v172, v173);
       v178 = objc_msgSend_diffuse(v174, v175, v176, v177);
       objc_msgSend_setColor_(v178, v179, v168, v180);
@@ -1623,11 +1623,11 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  if (sub_1AF19CBB4(a5) == 3)
+  if (sub_1AF19CBB4(light) == 3)
   {
-    v131 = v8;
-    v132 = fmin(sub_1AF19BFD8(a5) / 180.0 * 3.14159265, 3.13159265);
-    v133 = sub_1AF19C9F0(a5) / 180.0 * 3.14159265;
+    v131 = sourceCopy;
+    v132 = fmin(sub_1AF19BFD8(light) / 180.0 * 3.14159265, 3.13159265);
+    v133 = sub_1AF19C9F0(light) / 180.0 * 3.14159265;
     if (v133 >= v132)
     {
       v134 = v132;
@@ -1638,8 +1638,8 @@ LABEL_82:
       v134 = v133;
     }
 
-    v135 = sub_1AF19C1FC(a5);
-    v139 = objc_msgSend_childNodes(a3, v136, v137, v138);
+    v135 = sub_1AF19C1FC(light);
+    v139 = objc_msgSend_childNodes(node, v136, v137, v138);
     v144 = objc_msgSend_objectAtIndexedSubscript_(v139, v140, 0, v141);
     if (isPartOfSelection)
     {
@@ -1733,7 +1733,7 @@ LABEL_82:
       }
     }
 
-    v228 = objc_msgSend_model(a3, v162, v163, v164);
+    v228 = objc_msgSend_model(node, v162, v163, v164);
     v232 = objc_msgSend_firstMaterial(v228, v229, v230, v231);
     v236 = objc_msgSend_diffuse(v232, v233, v234, v235);
     objc_msgSend_setColor_(v236, v237, v166, v238);
@@ -1742,35 +1742,35 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  if (sub_1AF19CBB4(a5) == 2 || sub_1AF19CBB4(a5) == 6)
+  if (sub_1AF19CBB4(light) == 2 || sub_1AF19CBB4(light) == 6)
   {
-    v203 = v8;
-    v204 = objc_msgSend_childNodes(a3, v200, v201, v202);
+    v203 = sourceCopy;
+    v204 = objc_msgSend_childNodes(node, v200, v201, v202);
     v208 = objc_msgSend_count(v204, v205, v206, v207);
-    v212 = objc_msgSend_childNodes(a3, v209, v210, v211);
+    v212 = objc_msgSend_childNodes(node, v209, v210, v211);
     v215 = objc_msgSend_objectAtIndexedSubscript_(v212, v213, 0, v214);
     objc_msgSend_setHidden_(v215, v216, v31, v217);
-    v221 = objc_msgSend_childNodes(a3, v218, v219, v220);
+    v221 = objc_msgSend_childNodes(node, v218, v219, v220);
     v224 = objc_msgSend_objectAtIndexedSubscript_(v221, v222, v208 - 1, v223);
-    if (sub_1AF19E90C(a5))
+    if (sub_1AF19E90C(light))
     {
       objc_msgSend_setHidden_(v224, v225, 1, v226);
     }
 
     else
     {
-      v242 = sub_1AF19B994(a5) ^ 1;
+      v242 = sub_1AF19B994(light) ^ 1;
       objc_msgSend_setHidden_(v224, v243, v242, v244);
     }
 
-    if ((sub_1AF19E90C(a5) & 1) == 0)
+    if ((sub_1AF19E90C(light) & 1) == 0)
     {
-      sub_1AF19CC98(a5);
+      sub_1AF19CC98(light);
       objc_msgSend_setPosition_(v224, v247, v248, v249, 0.0);
-      v350 = sub_1AF19C56C(a5);
-      v351 = COERCE_DOUBLE(vmul_n_f32(__PAIR64__(COERCE_UNSIGNED_INT(sub_1AF19C56C(a5)), LODWORD(v350)), *v354.i32));
-      sub_1AF19CBFC(a5);
-      sub_1AF19CC98(a5);
+      v350 = sub_1AF19C56C(light);
+      v351 = COERCE_DOUBLE(vmul_n_f32(__PAIR64__(COERCE_UNSIGNED_INT(sub_1AF19C56C(light)), LODWORD(v350)), *v354.i32));
+      sub_1AF19CBFC(light);
+      sub_1AF19CC98(light);
       objc_msgSend_setScale_(v224, v250, v251, v252, v351);
     }
 
@@ -1781,7 +1781,7 @@ LABEL_82:
     v359 = isPartOfSelection;
     v358[4] = self;
     v358[5] = v203;
-    objc_msgSend_enumerateChildNodesUsingBlock_(a3, v245, v358, v246);
+    objc_msgSend_enumerateChildNodesUsingBlock_(node, v245, v358, v246);
     v253 = sub_1AF1B7348(v203);
     v257 = isPartOfSelection == 0;
     if (v253)
@@ -1801,11 +1801,11 @@ LABEL_79:
     }
 
     v102 = *(&self->super.isa + v258);
-    v196 = objc_msgSend_model(a3, v254, v255, v256);
+    v196 = objc_msgSend_model(node, v254, v255, v256);
     goto LABEL_82;
   }
 
-  if (sub_1AF19CBB4(a5) == 4)
+  if (sub_1AF19CBB4(light) == 4)
   {
     v281 = 304;
     if (isPartOfSelection)
@@ -1814,43 +1814,43 @@ LABEL_79:
     }
 
     v282 = *(&self->super.isa + v281);
-    v283 = objc_msgSend_model(a3, v278, v279, v280);
+    v283 = objc_msgSend_model(node, v278, v279, v280);
     v287 = objc_msgSend_firstMaterial(v283, v284, v285, v286);
     v291 = objc_msgSend_diffuse(v287, v288, v289, v290);
     objc_msgSend_setColor_(v291, v292, v282, v293);
     hasDebugOption = objc_msgSend_hasDebugOption_(self, v294, 8, v295);
-    objc_msgSend_setHidden_(a3, v297, hasDebugOption ^ 1u, v298);
-    v300 = objc_msgSend_childNodeWithName_recursively_(a3, v299, @"lightInnerAuth", 0);
+    objc_msgSend_setHidden_(node, v297, hasDebugOption ^ 1u, v298);
+    v300 = objc_msgSend_childNodeWithName_recursively_(node, v299, @"lightInnerAuth", 0);
     objc_msgSend_setHidden_(v300, v301, v349, v302);
-    *v303.i32 = fmaxf(sub_1AF19CC98(a5), 0.0);
+    *v303.i32 = fmaxf(sub_1AF19CC98(light), 0.0);
     objc_msgSend_setScale_(v300, v304, v305, v306, *vdupq_lane_s32(v303, 0).i64);
-    v308 = objc_msgSend_childNodeWithName_recursively_(a3, v307, @"lightOuterAuth", 0);
+    v308 = objc_msgSend_childNodeWithName_recursively_(node, v307, @"lightOuterAuth", 0);
     objc_msgSend_setHidden_(v308, v309, v349, v310);
-    *v311.i32 = fmaxf(sub_1AF19CBFC(a5), 0.0);
+    *v311.i32 = fmaxf(sub_1AF19CBFC(light), 0.0);
     objc_msgSend_setScale_(v308, v312, v313, v314, *vdupq_lane_s32(v311, 0).i64);
-    v316 = objc_msgSend_childNodeWithName_recursively_(a3, v315, @"lightProbeExtents", 0);
-    v317 = sub_1AF19DDEC(a5);
+    v316 = objc_msgSend_childNodeWithName_recursively_(node, v315, @"lightProbeExtents", 0);
+    v317 = sub_1AF19DDEC(light);
     v318.i64[0] = 0x3F0000003F000000;
     v318.i64[1] = 0x3F0000003F000000;
     objc_msgSend_setScale_(v316, v319, v320, v321, *vmulq_f32(v317, v318).i64);
-    v323 = objc_msgSend_childNodeWithName_recursively_(a3, v322, @"probe", 0);
-    *&v324 = sub_1AF19DEB0(a5).n128_u64[0];
+    v323 = objc_msgSend_childNodeWithName_recursively_(node, v322, @"probe", 0);
+    *&v324 = sub_1AF19DEB0(light).n128_u64[0];
     objc_msgSend_setPosition_(v323, v325, v326, v327, v324);
     objc_msgSend_setHidden_(v316, v328, v349, v329);
   }
 
-  else if (sub_1AF19CBB4(a5) == 5)
+  else if (sub_1AF19CBB4(light) == 5)
   {
     *v363 = 0u;
     v364 = 0u;
     *v362 = 0u;
-    *&v330 = sub_1AF19D5A0(a5, v362).n128_u64[0];
-    v334 = objc_msgSend_childNodes(a3, v331, v332, v333, v330);
+    *&v330 = sub_1AF19D5A0(light, v362).n128_u64[0];
+    v334 = objc_msgSend_childNodes(node, v331, v332, v333, v330);
     v337 = objc_msgSend_objectAtIndexedSubscript_(v334, v335, 0, v336);
     objc_msgSend_setScale_(v337, v338, v339, v340, *vdupq_lane_s32(v354, 0).i64);
     objc_msgSend_scale(v337, v341, v342, v343);
     objc_msgSend_setScale_(v337, v345, v346, v347, *vmulq_f32(v344, *v363).i64);
-    v348 = sub_1AF1B7348(v8);
+    v348 = sub_1AF1B7348(sourceCopy);
     v258 = 256;
     if (v348)
     {
@@ -1862,37 +1862,37 @@ LABEL_79:
   }
 
 LABEL_83:
-  if (a5)
+  if (light)
   {
-    if (sub_1AF19CBB4(a5) != 4)
+    if (sub_1AF19CBB4(light) != 4)
     {
-      objc_msgSend_scale(a3, v266, v267, v268);
-      objc_msgSend_setScale_(a3, v270, v271, v272, *vmulq_n_f32(v269, *&v357).i64);
+      objc_msgSend_scale(node, v266, v267, v268);
+      objc_msgSend_setScale_(node, v270, v271, v272, *vmulq_n_f32(v269, *&v357).i64);
       v275 = objc_msgSend_hasDebugOption_(self, v273, 4, v274);
-      objc_msgSend_setHidden_(a3, v276, v275 ^ 1u, v277);
+      objc_msgSend_setHidden_(node, v276, v275 ^ 1u, v277);
     }
   }
 }
 
-- (void)updateLightNode:(id)a3 withSourceNode:(__CFXNode *)a4
+- (void)updateLightNode:(id)node withSourceNode:(__CFXNode *)sourceNode
 {
-  v7 = sub_1AF1B75E8(a4);
+  v7 = sub_1AF1B75E8(sourceNode);
   if (v7)
   {
     v10 = v7;
-    v11 = sub_1AF1BA900(a4);
+    v11 = sub_1AF1BA900(sourceNode);
     v15 = objc_msgSend_pointOfView(self->_renderer, v12, v13, v14);
     v19 = objc_msgSend_nodeRef(v15, v16, v17, v18);
     v22 = 1;
-    if ((v11 & 1) != 0 || v19 == a4)
+    if ((v11 & 1) != 0 || v19 == sourceNode)
     {
 LABEL_11:
 
-      objc_msgSend_setHidden_(a3, v20, v22, v21);
+      objc_msgSend_setHidden_(node, v20, v22, v21);
       return;
     }
 
-    v23 = sub_1AF1B9B04(a4);
+    v23 = sub_1AF1B9B04(sourceNode);
     v38 = v23[1];
     v39 = *v23;
     v36 = v23[3];
@@ -1904,7 +1904,7 @@ LABEL_5:
       goto LABEL_11;
     }
 
-    isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v20, a4, v21);
+    isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v20, sourceNode, v21);
     v28 = sub_1AF19CBB4(v10);
     if ((isPartOfSelection & 1) == 0)
     {
@@ -1922,35 +1922,35 @@ LABEL_5:
       }
     }
 
-    objc_msgSend_setWorldTransform_(a3, v20, v29, v21, v39.n128_f64[0], v38.n128_f64[0], v37.n128_f64[0], v36.n128_f64[0]);
+    objc_msgSend_setWorldTransform_(node, v20, v29, v21, v39.n128_f64[0], v38.n128_f64[0], v37.n128_f64[0], v36.n128_f64[0]);
     v33 = objc_msgSend__engineContext(self->_renderer, v30, v31, v32);
     LODWORD(v34) = 25.0;
     sub_1AF27F708(v33, v34, v39, v38, v37, v36);
-    objc_msgSend_updateLightTypeForNode_source_light_screenspaceScalingFactor_(self, v35, a3, a4, v10);
+    objc_msgSend_updateLightTypeForNode_source_light_screenspaceScalingFactor_(self, v35, node, sourceNode, v10);
     v22 = 0;
     goto LABEL_11;
   }
 
-  objc_msgSend_removeLightNode_(self, v8, a4, v9);
+  objc_msgSend_removeLightNode_(self, v8, sourceNode, v9);
 }
 
-- (void)updateEffectNode:(id)a3 withSourceNode:(__CFXNode *)a4
+- (void)updateEffectNode:(id)node withSourceNode:(__CFXNode *)sourceNode
 {
-  if (sub_1AF1BC054(a4))
+  if (sub_1AF1BC054(sourceNode))
   {
-    if (sub_1AF1B7348(a4) & 1) != 0 || (v11 = sub_1AF1B9B04(a4), v58 = v11[1], v59 = *v11, v56 = v11[3], v57 = v11[2], (objc_msgSend__proximityHidden_(self, v12, v13, v14)) || (isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v9, a4, v10), !objc_msgSend_hasDebugOption_(self, v16, 2048, v17)))
+    if (sub_1AF1B7348(sourceNode) & 1) != 0 || (v11 = sub_1AF1B9B04(sourceNode), v58 = v11[1], v59 = *v11, v56 = v11[3], v57 = v11[2], (objc_msgSend__proximityHidden_(self, v12, v13, v14)) || (isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v9, sourceNode, v10), !objc_msgSend_hasDebugOption_(self, v16, 2048, v17)))
     {
       v55 = 1;
     }
 
     else
     {
-      objc_msgSend_setTransform_(a3, v9, v18, v10, v59.n128_f64[0], v58.n128_f64[0], v57.n128_f64[0], v56.n128_f64[0]);
+      objc_msgSend_setTransform_(node, v9, v18, v10, v59.n128_f64[0], v58.n128_f64[0], v57.n128_f64[0], v56.n128_f64[0]);
       v22 = objc_msgSend__engineContext(self->_renderer, v19, v20, v21);
       LODWORD(v23) = 25.0;
       sub_1AF27F708(v22, v23, v59, v58, v57, v56);
       v60 = v24;
-      v28 = objc_msgSend_childNodes(a3, v25, v26, v27);
+      v28 = objc_msgSend_childNodes(node, v25, v26, v27);
       v31 = objc_msgSend_objectAtIndexedSubscript_(v28, v29, 0, v30);
       isHidden = objc_msgSend_isHidden(v31, v32, v33, v34);
       v39 = 256;
@@ -1973,32 +1973,32 @@ LABEL_5:
       v55 = 0;
     }
 
-    objc_msgSend_setHidden_(a3, v9, v55, v10);
+    objc_msgSend_setHidden_(node, v9, v55, v10);
   }
 
   else
   {
 
-    objc_msgSend_removeEffectNode_(self, v7, a4, v8);
+    objc_msgSend_removeEffectNode_(self, v7, sourceNode, v8);
   }
 }
 
-- (void)updateCameraNode:(id)a3 withSourceNode:(__CFXNode *)a4
+- (void)updateCameraNode:(id)node withSourceNode:(__CFXNode *)sourceNode
 {
-  v7 = sub_1AF1BB260(a4);
+  v7 = sub_1AF1BB260(sourceNode);
   if (v7)
   {
     v10 = v7;
-    v11 = sub_1AF1BA900(a4);
+    v11 = sub_1AF1BA900(sourceNode);
     v15 = objc_msgSend_pointOfView(self->_renderer, v12, v13, v14);
     v19 = objc_msgSend_nodeRef(v15, v16, v17, v18);
     v22 = 1;
-    if ((v11 & 1) == 0 && v19 != a4)
+    if ((v11 & 1) == 0 && v19 != sourceNode)
     {
-      isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v20, a4, v21);
-      if (isPartOfSelection & 1) == 0 && !objc_msgSend_hasDebugOption_(self, v23, 1024, v24) || (v28 = sub_1AF1B9B04(a4), v171 = v28[1], v173 = *v28, __x = v28[3], v169 = v28[2], v32 = objc_msgSend__proximityHidden_(self, v29, v30, v31), objc_msgSend_setTransform_(a3, v33, v34, v35, v173.n128_f64[0], v171.n128_f64[0], v169.n128_f64[0], __x.n128_f64[0]), (v32))
+      isPartOfSelection = objc_msgSend__isPartOfSelection_(self, v20, sourceNode, v21);
+      if (isPartOfSelection & 1) == 0 && !objc_msgSend_hasDebugOption_(self, v23, 1024, v24) || (v28 = sub_1AF1B9B04(sourceNode), v171 = v28[1], v173 = *v28, __x = v28[3], v169 = v28[2], v32 = objc_msgSend__proximityHidden_(self, v29, v30, v31), objc_msgSend_setTransform_(node, v33, v34, v35, v173.n128_f64[0], v171.n128_f64[0], v169.n128_f64[0], __x.n128_f64[0]), (v32))
       {
-        objc_msgSend_setHidden_(a3, v26, 1, v27);
+        objc_msgSend_setHidden_(node, v26, 1, v27);
         return;
       }
 
@@ -2006,12 +2006,12 @@ LABEL_5:
       LODWORD(v38) = 25.0;
       sub_1AF27F708(v37, v38, v173, v171, v169, __x);
       v174.n128_u64[0] = v39;
-      objc_msgSend_setScale_(a3, v40, v41, v42, *vdupq_lane_s32(v39, 0).i64);
+      objc_msgSend_setScale_(node, v40, v41, v42, *vdupq_lane_s32(v39, 0).i64);
       v43 = sub_1AF15D724(v10);
       v44 = sub_1AF15D6DC(v10);
       v45 = sub_1AF15D9E8(v10);
       v46 = sub_1AF15D5F0(v10);
-      v50 = objc_msgSend_childNodes(a3, v47, v48, v49);
+      v50 = objc_msgSend_childNodes(node, v47, v48, v49);
       v56 = objc_msgSend_objectAtIndexedSubscript_(v50, v51, 0, v52);
       if (v46)
       {
@@ -2058,7 +2058,7 @@ LABEL_5:
       objc_msgSend_setScale_(v98, v99, v100, v101, *vdupq_lane_s32(v175, 0).i64);
       objc_msgSend_setHidden_(v56, v102, isPartOfSelection ^ 1u, v103);
       grayMedium = self->_grayMedium;
-      v108 = objc_msgSend_model(a3, v105, v106, v107);
+      v108 = objc_msgSend_model(node, v105, v106, v107);
       Material = objc_msgSend_firstMaterial(v108, v109, v110, v111);
       v116 = objc_msgSend_diffuse(Material, v113, v114, v115);
       objc_msgSend_setColor_(v116, v117, grayMedium, v118);
@@ -2101,26 +2101,26 @@ LABEL_5:
       v22 = 0;
     }
 
-    objc_msgSend_setHidden_(a3, v20, v22, v21);
+    objc_msgSend_setHidden_(node, v20, v22, v21);
   }
 
   else
   {
 
-    objc_msgSend_removeCameraNode_(self, v8, a4, v9);
+    objc_msgSend_removeCameraNode_(self, v8, sourceNode, v9);
   }
 }
 
-- (void)updateFieldNode:(id)a3 withSourceNode:(__CFXNode *)a4
+- (void)updateFieldNode:(id)node withSourceNode:(__CFXNode *)sourceNode
 {
-  if (sub_1AF1BBE9C(a4))
+  if (sub_1AF1BBE9C(sourceNode))
   {
-    if (sub_1AF1B7348(a4))
+    if (sub_1AF1B7348(sourceNode))
     {
       goto LABEL_4;
     }
 
-    v11 = sub_1AF1B9B04(a4);
+    v11 = sub_1AF1B9B04(sourceNode);
     v35 = v11[1];
     v36 = *v11;
     v33 = v11[3];
@@ -2130,7 +2130,7 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    if (objc_msgSend__isPartOfSelection_(self, v9, a4, v10))
+    if (objc_msgSend__isPartOfSelection_(self, v9, sourceNode, v10))
     {
       v17 = 272;
     }
@@ -2143,16 +2143,16 @@ LABEL_4:
         v15 = 1;
 LABEL_5:
 
-        objc_msgSend_setHidden_(a3, v9, v15, v10);
+        objc_msgSend_setHidden_(node, v9, v15, v10);
         return;
       }
 
       v17 = 216;
     }
 
-    objc_msgSend_setTransform_(a3, v9, v16, v10, *&v36, *&v35, *&v34, *&v33);
+    objc_msgSend_setTransform_(node, v9, v16, v10, *&v36, *&v35, *&v34, *&v33);
     v18 = *(&self->super.isa + v17);
-    v22 = objc_msgSend_model(a3, v19, v20, v21);
+    v22 = objc_msgSend_model(node, v19, v20, v21);
     Material = objc_msgSend_firstMaterial(v22, v23, v24, v25);
     v30 = objc_msgSend_diffuse(Material, v27, v28, v29);
     objc_msgSend_setColor_(v30, v31, v18, v32);
@@ -2160,14 +2160,14 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  objc_msgSend_removeForceFieldNode_(self, v7, a4, v8);
+  objc_msgSend_removeForceFieldNode_(self, v7, sourceNode, v8);
 }
 
-- (void)updateWithRenderer:(id)a3
+- (void)updateWithRenderer:(id)renderer
 {
   objc_sync_enter(self);
-  self->_renderer = a3;
-  v8 = objc_msgSend__engineContext(a3, v5, v6, v7);
+  self->_renderer = renderer;
+  v8 = objc_msgSend__engineContext(renderer, v5, v6, v7);
   v9 = sub_1AF12E2AC(v8);
   if (v9 && objc_msgSend_showsAuthoringEnvironment(v9, v10, v11, v12))
   {
@@ -2181,7 +2181,7 @@ LABEL_5:
       CFDictionaryApplyFunction(eyeSightDictionary, sub_1AF107EBC, self);
     }
 
-    v17 = objc_msgSend_privateRendererOwner(a3, v13, v14, v15);
+    v17 = objc_msgSend_privateRendererOwner(renderer, v13, v14, v15);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2209,7 +2209,7 @@ LABEL_5:
     }
 
     objc_msgSend_updateManipulatorPosition_(self->_manipulator, v34, v8, v36);
-    v40 = objc_msgSend_privateRendererOwner(a3, v37, v38, v39);
+    v40 = objc_msgSend_privateRendererOwner(renderer, v37, v38, v39);
     v44 = v40;
     if (v40 && objc_msgSend_pointOfView(v40, v41, v42, v43))
     {
@@ -2253,10 +2253,10 @@ LABEL_5:
   objc_sync_exit(self);
 }
 
-- (void)didSetPointOfView:(id)a3
+- (void)didSetPointOfView:(id)view
 {
-  v6 = objc_msgSend_authoringCameraType(a3, a2, a3, v3);
-  isAuthoring = objc_msgSend_isAuthoring(a3, v7, v8, v9);
+  v6 = objc_msgSend_authoringCameraType(view, a2, view, v3);
+  isAuthoring = objc_msgSend_isAuthoring(view, v7, v8, v9);
   v14 = 3217625051;
   v15 = &xmmword_1AFE20400;
   v16 = &xmmword_1AFE20420;
@@ -2294,17 +2294,17 @@ LABEL_8:
   objc_msgSend_setValue_forKey_(v37, v41, v42, @"colorV");
 }
 
-- (void)setAuthoringCamera:(int64_t)a3 forView:(id)a4
+- (void)setAuthoringCamera:(int64_t)camera forView:(id)view
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_world(a4, a2, a3, a4))
+  if (objc_msgSend_world(view, a2, camera, view))
   {
-    v10 = objc_msgSend_defaultCameraController(a4, v7, v8, v9);
+    v10 = objc_msgSend_defaultCameraController(view, v7, v8, v9);
     objc_msgSend_simdTarget(v10, v11, v12, v13);
     v83 = v14;
     v18 = objc_msgSend_childNodes(self->_pointsOfViewRoot, v15, v16, v17);
-    v21 = objc_msgSend_objectAtIndexedSubscript_(v18, v19, a3, v20);
-    v25 = objc_msgSend_world(a4, v22, v23, v24);
+    v21 = objc_msgSend_objectAtIndexedSubscript_(v18, v19, camera, v20);
+    v25 = objc_msgSend_world(view, v22, v23, v24);
     v84[0] = objc_msgSend_rootNode(v25, v26, v27, v28);
     v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v29, v84, 1);
     VFXNodeGetBoundingSphere(v30, 0x10000, v31, v32);
@@ -2321,9 +2321,9 @@ LABEL_8:
     objc_msgSend_localRight(VFXNode, v50, v51, v52);
     v80 = v53;
     objc_msgSend_localFront(VFXNode, v54, v55, v56);
-    if (a3 > 3)
+    if (camera > 3)
     {
-      switch(a3)
+      switch(camera)
       {
         case 4:
           objc_msgSend_setEulerAngles_(v21, v57, v58, v59, 0.195796371);
@@ -2338,8 +2338,8 @@ LABEL_8:
           break;
         default:
 LABEL_19:
-          objc_msgSend_setPointOfView_(a4, v57, v21, v59);
-          v76 = objc_msgSend_defaultCameraController(a4, v73, v74, v75);
+          objc_msgSend_setPointOfView_(view, v57, v21, v59);
+          v76 = objc_msgSend_defaultCameraController(view, v73, v74, v75);
           objc_msgSend_setPointOfView_(v76, v77, v21, v78);
           return;
       }
@@ -2351,9 +2351,9 @@ LABEL_19:
 
     else
     {
-      if (a3 != 1)
+      if (camera != 1)
       {
-        if (a3 == 2)
+        if (camera == 2)
         {
           objc_msgSend_setEulerAngles_(v21, v57, v58, v59, COERCE_DOUBLE(1070141403));
           v71 = v82;
@@ -2364,7 +2364,7 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        if (a3 == 3)
+        if (camera == 3)
         {
           objc_msgSend_setEulerAngles_(v21, v57, v58, v59, -0.195796371);
 LABEL_17:
@@ -2388,11 +2388,11 @@ LABEL_17:
   }
 }
 
-- (id)authoringCamera:(int64_t)a3
+- (id)authoringCamera:(int64_t)camera
 {
-  v5 = objc_msgSend_childNodes(self->_pointsOfViewRoot, a2, a3, v3);
+  v5 = objc_msgSend_childNodes(self->_pointsOfViewRoot, a2, camera, v3);
 
-  return objc_msgSend_objectAtIndexedSubscript_(v5, v6, a3, v7);
+  return objc_msgSend_objectAtIndexedSubscript_(v5, v6, camera, v7);
 }
 
 @end

@@ -6,7 +6,7 @@
 
 + (id)_systemTextSearchTextAttributesForStyle:()_UITextSearchingStyles
 {
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (a3 == 2)
   {
     v5 = +[UIColor yellowColor];
@@ -28,11 +28,11 @@
   }
 
   v6 = v5;
-  [v4 setObject:v5 forKeyedSubscript:*off_1E70EC8D0];
+  [dictionary setObject:v5 forKeyedSubscript:*off_1E70EC8D0];
 
 LABEL_8:
 
-  return v4;
+  return dictionary;
 }
 
 @end

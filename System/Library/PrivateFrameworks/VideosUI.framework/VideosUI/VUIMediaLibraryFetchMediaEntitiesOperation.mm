@@ -1,12 +1,12 @@
 @interface VUIMediaLibraryFetchMediaEntitiesOperation
-- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)a3;
-- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)a3 requests:(id)a4;
+- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)library;
+- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)library requests:(id)requests;
 - (void)executionDidBegin;
 @end
 
 @implementation VUIMediaLibraryFetchMediaEntitiesOperation
 
-- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)a3
+- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)library
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)a3 requests:(id)a4
+- (VUIMediaLibraryFetchMediaEntitiesOperation)initWithMediaLibrary:(id)library requests:(id)requests
 {
-  v6 = a4;
+  requestsCopy = requests;
   v11.receiver = self;
   v11.super_class = VUIMediaLibraryFetchMediaEntitiesOperation;
-  v7 = [(VUIMediaLibraryOperation *)&v11 initWithMediaLibrary:a3];
+  v7 = [(VUIMediaLibraryOperation *)&v11 initWithMediaLibrary:library];
   if (v7)
   {
-    v8 = [v6 vui_deepCopy];
+    vui_deepCopy = [requestsCopy vui_deepCopy];
     requests = v7->_requests;
-    v7->_requests = v8;
+    v7->_requests = vui_deepCopy;
   }
 
   return v7;
@@ -35,14 +35,14 @@
 - (void)executionDidBegin
 {
   objc_initWeak(&location, self);
-  v3 = [(VUIMediaLibraryOperation *)self mediaLibrary];
-  v4 = [(VUIMediaLibraryFetchMediaEntitiesOperation *)self requests];
+  mediaLibrary = [(VUIMediaLibraryOperation *)self mediaLibrary];
+  requests = [(VUIMediaLibraryFetchMediaEntitiesOperation *)self requests];
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __63__VUIMediaLibraryFetchMediaEntitiesOperation_executionDidBegin__block_invoke;
   v9 = &unk_1E872E738;
   objc_copyWeak(&v10, &location);
-  v5 = [v3 enqueueFetchRequests:v4 completionHandler:&v6];
+  v5 = [mediaLibrary enqueueFetchRequests:requests completionHandler:&v6];
 
   [(VUIMediaLibraryOperation *)self setAsyncWorkToken:v5, v6, v7, v8, v9];
   objc_destroyWeak(&v10);

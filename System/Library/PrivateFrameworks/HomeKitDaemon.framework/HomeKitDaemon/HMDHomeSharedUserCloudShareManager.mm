@@ -1,35 +1,35 @@
 @interface HMDHomeSharedUserCloudShareManager
 + (id)logCategory;
-- (BOOL)_onlyShareOwnerInShare:(id)a3;
-- (HMDHomeSharedUserCloudShareManager)initWithCloudShareService:(id)a3;
-- (HMDHomeSharedUserCloudShareManager)initWithContainer:(id)a3 sharedStore:(id)a4 privateStore:(id)a5 moc:(id)a6;
-- (id)_createShareForSharedUserDataWithHomeModelID:(id)a3 logEventBuilder:(id)a4;
-- (id)_existingShareForSharedUserDataWithHomeModelID:(id)a3 error:(id *)a4;
-- (id)_existingSharedUserDataRootWithHomeModelID:(id)a3 error:(id *)a4;
-- (id)_existingSharedUserDataRootWithoutShareWithHomeModelID:(id)a3 error:(id *)a4;
-- (id)_existingSharedUserPrivateRootWithHomeModelID:(id)a3 error:(id *)a4;
-- (id)_existingSharesForSharedUserDataWithHomeModelID:(id)a3 error:(id *)a4;
-- (id)_shareForSharedUserDataWithHomeModelID:(id)a3 logEventBuilder:(id)a4;
-- (id)acceptShareInvitation:(id)a3 homeWithHomeModelID:(id)a4;
-- (id)fetchUserRecordIDForOwner:(id)a3 home:(id)a4;
-- (id)grantAccessForOwner:(id)a3 sharedUserDataWithHomeModelID:(id)a4 logEventBuilder:(id)a5;
-- (id)leaveShareWithSharedHomeModelID:(id)a3;
-- (void)_deleteDanglingShare:(id)a3 homeModelID:(id)a4;
-- (void)_removeSharedUserDataRootsForHomeWithModelID:(id)a3;
-- (void)_verifyMKFCKSharedUserDataRootExistsForHomeModelID:(id)a3;
-- (void)removeShareForSharedUserDataWithHomeModelID:(id)a3;
-- (void)removeSharesWithNoParticipantForHomeWithModelID:(id)a3;
-- (void)revokeAccessForOwner:(id)a3 sharedUserDataWithHomeModelID:(id)a4;
+- (BOOL)_onlyShareOwnerInShare:(id)share;
+- (HMDHomeSharedUserCloudShareManager)initWithCloudShareService:(id)service;
+- (HMDHomeSharedUserCloudShareManager)initWithContainer:(id)container sharedStore:(id)store privateStore:(id)privateStore moc:(id)moc;
+- (id)_createShareForSharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder;
+- (id)_existingShareForSharedUserDataWithHomeModelID:(id)d error:(id *)error;
+- (id)_existingSharedUserDataRootWithHomeModelID:(id)d error:(id *)error;
+- (id)_existingSharedUserDataRootWithoutShareWithHomeModelID:(id)d error:(id *)error;
+- (id)_existingSharedUserPrivateRootWithHomeModelID:(id)d error:(id *)error;
+- (id)_existingSharesForSharedUserDataWithHomeModelID:(id)d error:(id *)error;
+- (id)_shareForSharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder;
+- (id)acceptShareInvitation:(id)invitation homeWithHomeModelID:(id)d;
+- (id)fetchUserRecordIDForOwner:(id)owner home:(id)home;
+- (id)grantAccessForOwner:(id)owner sharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder;
+- (id)leaveShareWithSharedHomeModelID:(id)d;
+- (void)_deleteDanglingShare:(id)share homeModelID:(id)d;
+- (void)_removeSharedUserDataRootsForHomeWithModelID:(id)d;
+- (void)_verifyMKFCKSharedUserDataRootExistsForHomeModelID:(id)d;
+- (void)removeShareForSharedUserDataWithHomeModelID:(id)d;
+- (void)removeSharesWithNoParticipantForHomeWithModelID:(id)d;
+- (void)revokeAccessForOwner:(id)owner sharedUserDataWithHomeModelID:(id)d;
 @end
 
 @implementation HMDHomeSharedUserCloudShareManager
 
-- (void)_verifyMKFCKSharedUserDataRootExistsForHomeModelID:(id)a3
+- (void)_verifyMKFCKSharedUserDataRootExistsForHomeModelID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -37,24 +37,24 @@
     *buf = 138543618;
     v20 = v8;
     v21 = 2112;
-    v22 = v4;
+    v22 = dCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Verifying MKFCKSharedUserDataRoot exists for home %@ after 1-minute delay", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCoreDataCloudShareService *)v6->_shareService managedObjectContext];
-  v10 = [(HMDCoreDataCloudShareService *)v6->_shareService privateStore];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)selfCopy->_shareService managedObjectContext];
+  privateStore = [(HMDCoreDataCloudShareService *)selfCopy->_shareService privateStore];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__HMDHomeSharedUserCloudShareManager__verifyMKFCKSharedUserDataRootExistsForHomeModelID___block_invoke;
   v15[3] = &unk_2786891E0;
-  v15[4] = v6;
-  v16 = v4;
-  v17 = v10;
-  v18 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v4;
+  v15[4] = selfCopy;
+  v16 = dCopy;
+  v17 = privateStore;
+  v18 = managedObjectContext;
+  v11 = managedObjectContext;
+  v12 = privateStore;
+  v13 = dCopy;
   [v11 performBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -136,22 +136,22 @@ void __89__HMDHomeSharedUserCloudShareManager__verifyMKFCKSharedUserDataRootExis
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchUserRecordIDForOwner:(id)a3 home:(id)a4
+- (id)fetchUserRecordIDForOwner:(id)owner home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  homeCopy = home;
   v8 = MEMORY[0x277D0F7C0];
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__HMDHomeSharedUserCloudShareManager_fetchUserRecordIDForOwner_home___block_invoke;
   v14[3] = &unk_278686828;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = [v8 inContext:v9 perform:v14];
+  v15 = homeCopy;
+  v16 = ownerCopy;
+  v10 = ownerCopy;
+  v11 = homeCopy;
+  v12 = [v8 inContext:managedObjectContext perform:v14];
 
   return v12;
 }
@@ -202,15 +202,15 @@ uint64_t __69__HMDHomeSharedUserCloudShareManager_fetchUserRecordIDForOwner_home
   }
 }
 
-- (BOOL)_onlyShareOwnerInShare:(id)a3
+- (BOOL)_onlyShareOwnerInShare:(id)share
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 participants];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  participants = [share participants];
+  v4 = [participants countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -221,7 +221,7 @@ uint64_t __69__HMDHomeSharedUserCloudShareManager_fetchUserRecordIDForOwner_home
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) role] != 1)
@@ -231,7 +231,7 @@ uint64_t __69__HMDHomeSharedUserCloudShareManager_fetchUserRecordIDForOwner_home
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [participants countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -248,24 +248,24 @@ LABEL_11:
   return v8;
 }
 
-- (void)_deleteDanglingShare:(id)a3 homeModelID:(id)a4
+- (void)_deleteDanglingShare:(id)share homeModelID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   shareService = self->_shareService;
-  v8 = a3;
-  v9 = [(HMDCoreDataCloudShareService *)shareService container];
-  v10 = [v8 recordID];
+  shareCopy = share;
+  container = [(HMDCoreDataCloudShareService *)shareService container];
+  recordID = [shareCopy recordID];
 
-  v11 = [v10 zoneID];
-  v12 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  zoneID = [recordID zoneID];
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__HMDHomeSharedUserCloudShareManager__deleteDanglingShare_homeModelID___block_invoke;
   v14[3] = &unk_278686A28;
   v14[4] = self;
-  v15 = v6;
-  v13 = v6;
-  [v9 purgeObjectsAndRecordsInZoneWithID:v11 inPersistentStore:v12 completion:v14];
+  v15 = dCopy;
+  v13 = dCopy;
+  [container purgeObjectsAndRecordsInZoneWithID:zoneID inPersistentStore:privateStore completion:v14];
 }
 
 void __71__HMDHomeSharedUserCloudShareManager__deleteDanglingShare_homeModelID___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -317,12 +317,12 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSharesWithNoParticipantForHomeWithModelID:(id)a3
+- (void)removeSharesWithNoParticipantForHomeWithModelID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -330,21 +330,21 @@ LABEL_6:
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v4;
+    v19 = dCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Looking for dangling shares to remove for home %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = MEMORY[0x277D0F7C0];
-  v10 = [(HMDCoreDataCloudShareService *)v6->_shareService managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)selfCopy->_shareService managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantForHomeWithModelID___block_invoke;
   v14[3] = &unk_2786898D8;
-  v14[4] = v6;
-  v15 = v4;
-  v11 = v4;
-  v12 = [v9 inContext:v10 perform:v14];
+  v14[4] = selfCopy;
+  v15 = dCopy;
+  v11 = dCopy;
+  v12 = [v9 inContext:managedObjectContext perform:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -492,23 +492,23 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
   return 1;
 }
 
-- (id)_createShareForSharedUserDataWithHomeModelID:(id)a3 logEventBuilder:(id)a4
+- (id)_createShareForSharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
-  [v7 markCreateMKFCKSharedUserDataRootBegin];
+  dCopy = d;
+  builderCopy = builder;
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  [builderCopy markCreateMKFCKSharedUserDataRootBegin];
   v70 = 0;
-  v10 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharedUserDataRootWithoutShareWithHomeModelID:v6 error:&v70];
+  v10 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharedUserDataRootWithoutShareWithHomeModelID:dCopy error:&v70];
   v11 = v70;
   v61 = v10;
   if (v11)
   {
     v12 = v11;
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -523,10 +523,10 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
     objc_autoreleasePoolPop(v13);
     v17 = MEMORY[0x277CCA9B8];
     v18 = HMDSanitizeCoreDataError(v12);
-    v19 = [v17 hmInternalErrorWithCode:3507 underlyingError:v18];
+    firstObject = [v17 hmInternalErrorWithCode:3507 underlyingError:v18];
 
     v20 = MEMORY[0x277D0F7C0];
-    v21 = HMDSanitizeCoreDataError(v19);
+    v21 = HMDSanitizeCoreDataError(firstObject);
     v22 = [v20 futureWithError:v21];
   }
 
@@ -534,7 +534,7 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
   {
     v23 = [v10 count];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_INFO);
     if (v23)
@@ -545,12 +545,12 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
         *buf = 138543618;
         *&buf[4] = v28;
         v73 = 2112;
-        v74 = v6;
+        v74 = dCopy;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Will attempt to re-share existing MKFCKSharedUserDataRoot for home %@ that doesn't have an associated share", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v24);
-      v19 = [v61 firstObject];
+      firstObject = [v61 firstObject];
     }
 
     else
@@ -561,33 +561,33 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
         *buf = 138543618;
         *&buf[4] = v29;
         v73 = 2112;
-        v74 = v6;
+        v74 = dCopy;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Creating MKFCKSharedUserDataRoot for home %@ since none was found", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v24);
-      v19 = [MKFCKSharedUserDataRoot createWithHomeModelID:v6 persistentStore:v9 context:v8];
+      firstObject = [MKFCKSharedUserDataRoot createWithHomeModelID:dCopy persistentStore:privateStore context:managedObjectContext];
       v30 = dispatch_time(0, 60000000000);
       v31 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithHomeModelID_logEventBuilder___block_invoke;
       block[3] = &unk_27868A750;
-      block[4] = v25;
-      v69 = v6;
+      block[4] = selfCopy2;
+      v69 = dCopy;
       dispatch_after(v30, v31, block);
     }
 
     v67 = 0;
-    v21 = [(HMDHomeSharedUserCloudShareManager *)v25 _existingSharedUserPrivateRootWithHomeModelID:v6 error:&v67];
+    v21 = [(HMDHomeSharedUserCloudShareManager *)selfCopy2 _existingSharedUserPrivateRootWithHomeModelID:dCopy error:&v67];
     v32 = v67;
     if (v32)
     {
       v12 = v32;
-      v58 = v9;
-      v33 = v8;
+      v58 = privateStore;
+      v33 = managedObjectContext;
       v34 = objc_autoreleasePoolPush();
-      v35 = v25;
+      v35 = selfCopy2;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -608,8 +608,8 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
       v42 = HMDSanitizeCoreDataError(v40);
       v22 = [v41 futureWithError:v42];
 
-      v8 = v33;
-      v9 = v58;
+      managedObjectContext = v33;
+      privateStore = v58;
     }
 
     else
@@ -617,64 +617,64 @@ uint64_t __86__HMDHomeSharedUserCloudShareManager_removeSharesWithNoParticipantF
       if (!v21)
       {
         context = objc_autoreleasePoolPush();
-        v43 = v25;
+        v43 = selfCopy2;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
-          v59 = v9;
-          v46 = v45 = v8;
+          v59 = privateStore;
+          v46 = v45 = managedObjectContext;
           *buf = 138543618;
           *&buf[4] = v46;
           v73 = 2112;
-          v74 = v6;
+          v74 = dCopy;
           _os_log_impl(&dword_229538000, v44, OS_LOG_TYPE_INFO, "%{public}@Creating MKFCKSharedUserPrivateRoot for home %@ since none was found", buf, 0x16u);
 
-          v8 = v45;
-          v9 = v59;
+          managedObjectContext = v45;
+          privateStore = v59;
         }
 
         objc_autoreleasePoolPop(context);
-        v47 = [MKFCKSharedUserPrivateRoot createWithHomeModelID:v6 persistentStore:v9 context:v8];
+        v47 = [MKFCKSharedUserPrivateRoot createWithHomeModelID:dCopy persistentStore:privateStore context:managedObjectContext];
       }
 
-      [v7 markCreateMKFCKSharedUserDataRootEnd];
+      [builderCopy markCreateMKFCKSharedUserDataRootEnd];
       v48 = objc_autoreleasePoolPush();
-      v49 = v25;
+      v49 = selfCopy2;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v60 = v9;
-        v52 = v51 = v8;
+        v60 = privateStore;
+        v52 = v51 = managedObjectContext;
         *buf = 138543618;
         *&buf[4] = v52;
         v73 = 2112;
-        v74 = v6;
+        v74 = dCopy;
         _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_INFO, "%{public}@Creating reverse share for shared user data for home %@", buf, 0x16u);
 
-        v8 = v51;
-        v9 = v60;
+        managedObjectContext = v51;
+        privateStore = v60;
       }
 
       objc_autoreleasePoolPop(v48);
-      [v7 markCreateReverseShareBegin];
+      [builderCopy markCreateReverseShareBegin];
       *buf = 0;
       v22 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-      v53 = [(HMDCoreDataCloudShareService *)self->_shareService container];
-      v71 = v19;
+      container = [(HMDCoreDataCloudShareService *)self->_shareService container];
+      v71 = firstObject;
       v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v71 count:1];
       v62[0] = MEMORY[0x277D85DD0];
       v62[1] = 3221225472;
       v62[2] = __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithHomeModelID_logEventBuilder___block_invoke_160;
       v62[3] = &unk_278686AE0;
       v62[4] = v49;
-      v63 = v6;
-      v64 = v7;
+      v63 = dCopy;
+      v64 = builderCopy;
       v65 = *buf;
-      v19 = v19;
-      v66 = v19;
-      [v53 shareManagedObjects:v54 toShare:0 completion:v62];
+      firstObject = firstObject;
+      v66 = firstObject;
+      [container shareManagedObjects:v54 toShare:0 completion:v62];
 
       v12 = 0;
     }
@@ -760,38 +760,38 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingSharedUserPrivateRootWithHomeModelID:(id)a3 error:(id *)a4
+- (id)_existingSharedUserPrivateRootWithHomeModelID:(id)d error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = +[MKFCKSharedUserPrivateRoot fetchRequest];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v6];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", dCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
-  v16[0] = v9;
+  [v7 setPredicate:dCopy];
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  v16[0] = privateStore;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   [v7 setAffectedStores:v10];
 
   [v7 setFetchLimit:1];
-  v11 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
-  v12 = [v11 executeFetchRequest:v7 error:a4];
-  v13 = [v12 firstObject];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  v12 = [managedObjectContext executeFetchRequest:v7 error:error];
+  firstObject = [v12 firstObject];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return firstObject;
 }
 
-- (id)_existingShareForSharedUserDataWithHomeModelID:(id)a3 error:(id *)a4
+- (id)_existingShareForSharedUserDataWithHomeModelID:(id)d error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharesForSharedUserDataWithHomeModelID:v6 error:a4];
+  dCopy = d;
+  v7 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharesForSharedUserDataWithHomeModelID:dCopy error:error];
   if ([v7 count] >= 2)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -799,41 +799,41 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@More than one shared data root with home modelID %@ is found, using the first one", &v15, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
   }
 
-  v12 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)_existingSharesForSharedUserDataWithHomeModelID:(id)a3 error:(id *)a4
+- (id)_existingSharesForSharedUserDataWithHomeModelID:(id)d error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v43 = [MEMORY[0x277CBEB18] array];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = +[MKFCKSharedUserDataRoot fetchRequest];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v6];
-  [v7 setPredicate:v8];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", dCopy];
+  [v7 setPredicate:dCopy];
 
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
-  v61[0] = v9;
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  v61[0] = privateStore;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
   [v7 setAffectedStores:v10];
 
-  v11 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
-  v12 = [v11 executeFetchRequest:v7 error:a4];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  v12 = [managedObjectContext executeFetchRequest:v7 error:error];
 
-  if (*a4 || ![v12 count])
+  if (*error || ![v12 count])
   {
     v13 = 0;
-    v14 = v43;
+    v14 = array;
   }
 
   else
@@ -859,8 +859,8 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v51 + 1) + 8 * i) objectID];
-          [v15 addObject:v21];
+          objectID = [*(*(&v51 + 1) + 8 * i) objectID];
+          [v15 addObject:objectID];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v51 objects:v60 count:16];
@@ -869,12 +869,12 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
       while (v18);
     }
 
-    v22 = [(HMDCoreDataCloudShareService *)self->_shareService container];
+    container = [(HMDCoreDataCloudShareService *)self->_shareService container];
     v23 = [v15 copy];
-    v24 = [v22 fetchSharesMatchingObjectIDs:v23 error:a4];
+    v24 = [container fetchSharesMatchingObjectIDs:v23 error:error];
 
-    v14 = v43;
-    if (*a4)
+    v14 = array;
+    if (*error)
     {
       v13 = 0;
     }
@@ -882,7 +882,7 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
     else
     {
       v40 = v7;
-      v41 = v6;
+      v41 = dCopy;
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
@@ -917,8 +917,8 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
               v31 = v27;
               v32 = v24;
               v33 = objc_autoreleasePoolPush();
-              v34 = self;
-              v35 = self;
+              selfCopy = self;
+              selfCopy2 = self;
               v36 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
               {
@@ -929,11 +929,11 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
                 v58 = v29;
                 _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@No CKShare for objectID %@ in map", buf, 0x16u);
 
-                v14 = v43;
+                v14 = array;
               }
 
               objc_autoreleasePoolPop(v33);
-              self = v34;
+              self = selfCopy;
               v24 = v32;
               v27 = v31;
               v15 = v44;
@@ -952,7 +952,7 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
 
       v13 = [v14 copy];
       v7 = v40;
-      v6 = v41;
+      dCopy = v41;
     }
 
     v12 = v42;
@@ -963,11 +963,11 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
   return v13;
 }
 
-- (id)_existingSharedUserDataRootWithoutShareWithHomeModelID:(id)a3 error:(id *)a4
+- (id)_existingSharedUserDataRootWithoutShareWithHomeModelID:(id)d error:(id *)error
 {
-  v6 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharedUserDataRootWithHomeModelID:a3 error:?];
+  v6 = [(HMDHomeSharedUserCloudShareManager *)self _existingSharedUserDataRootWithHomeModelID:d error:?];
   v7 = v6;
-  if (*a4 || ![v6 count])
+  if (*error || ![v6 count])
   {
     v8 = 0;
   }
@@ -975,10 +975,10 @@ void __99__HMDHomeSharedUserCloudShareManager__createShareForSharedUserDataWithH
   else
   {
     v9 = [v7 na_map:&__block_literal_global_158_256707];
-    v10 = [(HMDCoreDataCloudShareService *)self->_shareService container];
-    v11 = [v10 fetchSharesMatchingObjectIDs:v9 error:a4];
+    container = [(HMDCoreDataCloudShareService *)self->_shareService container];
+    v11 = [container fetchSharesMatchingObjectIDs:v9 error:error];
 
-    if (*a4)
+    if (*error)
     {
       v8 = 0;
     }
@@ -1007,34 +1007,34 @@ BOOL __99__HMDHomeSharedUserCloudShareManager__existingSharedUserDataRootWithout
   return v5;
 }
 
-- (id)_existingSharedUserDataRootWithHomeModelID:(id)a3 error:(id *)a4
+- (id)_existingSharedUserDataRootWithHomeModelID:(id)d error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = +[MKFCKSharedUserDataRoot fetchRequest];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v6];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", dCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
-  v15[0] = v9;
+  [v7 setPredicate:dCopy];
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  v15[0] = privateStore;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   [v7 setAffectedStores:v10];
 
-  v11 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
-  v12 = [v11 executeFetchRequest:v7 error:a4];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  v12 = [managedObjectContext executeFetchRequest:v7 error:error];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)_shareForSharedUserDataWithHomeModelID:(id)a3 logEventBuilder:(id)a4
+- (id)_shareForSharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  builderCopy = builder;
   v20 = 0;
-  v8 = [(HMDHomeSharedUserCloudShareManager *)self _existingShareForSharedUserDataWithHomeModelID:v6 error:&v20];
+  v8 = [(HMDHomeSharedUserCloudShareManager *)self _existingShareForSharedUserDataWithHomeModelID:dCopy error:&v20];
   v9 = v20;
   if (v9)
   {
@@ -1044,7 +1044,7 @@ BOOL __99__HMDHomeSharedUserCloudShareManager__existingSharedUserDataRootWithout
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
     if (v8)
@@ -1055,15 +1055,15 @@ BOOL __99__HMDHomeSharedUserCloudShareManager__existingSharedUserDataRootWithout
         *buf = 138543618;
         v22 = v15;
         v23 = 2112;
-        v24 = v6;
+        v24 = dCopy;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Found existing reverse share for home %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
-      [v7 markCreateMKFCKSharedUserDataRootBegin];
-      [v7 markCreateMKFCKSharedUserDataRootEnd];
-      [v7 markCreateReverseShareBegin];
-      [v7 markCreateReverseShareEnd];
+      [builderCopy markCreateMKFCKSharedUserDataRootBegin];
+      [builderCopy markCreateMKFCKSharedUserDataRootEnd];
+      [builderCopy markCreateReverseShareBegin];
+      [builderCopy markCreateReverseShareEnd];
       v10 = [MEMORY[0x277D0F7C0] futureWithValue:v8];
     }
 
@@ -1075,12 +1075,12 @@ BOOL __99__HMDHomeSharedUserCloudShareManager__existingSharedUserDataRootWithout
         *buf = 138543618;
         v22 = v16;
         v23 = 2112;
-        v24 = v6;
+        v24 = dCopy;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@No reverse share for home found, creating a new reverse share with owner for home %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
-      v10 = [(HMDHomeSharedUserCloudShareManager *)v12 _createShareForSharedUserDataWithHomeModelID:v6 logEventBuilder:v7];
+      v10 = [(HMDHomeSharedUserCloudShareManager *)selfCopy _createShareForSharedUserDataWithHomeModelID:dCopy logEventBuilder:builderCopy];
     }
   }
 
@@ -1091,24 +1091,24 @@ BOOL __99__HMDHomeSharedUserCloudShareManager__existingSharedUserDataRootWithout
   return v17;
 }
 
-- (id)leaveShareWithSharedHomeModelID:(id)a3
+- (id)leaveShareWithSharedHomeModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_shareService;
   v16 = 0;
   v6 = [MEMORY[0x277D0F7C0] futureWithPromise:&v16];
-  v7 = [(HMDCoreDataCloudShareService *)v5 managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)v5 managedObjectContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___block_invoke;
   v11[3] = &unk_2786891E0;
-  v12 = v4;
+  v12 = dCopy;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   v15 = v16;
   v8 = v5;
-  v9 = v4;
-  [v7 performBlock:v11];
+  v9 = dCopy;
+  [managedObjectContext performBlock:v11];
 
   return v6;
 }
@@ -1308,44 +1308,44 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)acceptShareInvitation:(id)a3 homeWithHomeModelID:(id)a4
+- (id)acceptShareInvitation:(id)invitation homeWithHomeModelID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  invitationCopy = invitation;
   v8 = +[HMDCoreData sharedInstance];
   v9 = +[MKFCKSharedHome entity];
-  v10 = [v8 applyVoucherForModel:v9 withModelID:v6 eventType:1 storeType:1];
+  v10 = [v8 applyVoucherForModel:v9 withModelID:dCopy eventType:1 storeType:1];
 
-  v11 = [(HMDCoreDataCloudShareService *)self->_shareService acceptShareInvitation:v7];
+  v11 = [(HMDCoreDataCloudShareService *)self->_shareService acceptShareInvitation:invitationCopy];
 
-  v12 = [v11 ignoreResult];
+  ignoreResult = [v11 ignoreResult];
 
-  return v12;
+  return ignoreResult;
 }
 
-- (void)_removeSharedUserDataRootsForHomeWithModelID:(id)a3
+- (void)_removeSharedUserDataRootsForHomeWithModelID:(id)d
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[MKFCKSharedUserPrivateRoot fetchRequest];
-  v65 = v4;
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v4];
-  [v5 setPredicate:v6];
+  v65 = dCopy;
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", dCopy];
+  [v5 setPredicate:dCopy];
 
-  v7 = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
-  v81[0] = v7;
+  privateStore = [(HMDCoreDataCloudShareService *)self->_shareService privateStore];
+  v81[0] = privateStore;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:1];
   [v5 setAffectedStores:v8];
 
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
   v73 = 0;
-  v10 = [v9 executeFetchRequest:v5 error:&v73];
+  v10 = [managedObjectContext executeFetchRequest:v5 error:&v73];
   v11 = v73;
 
   if (!v10 || ![v10 count])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1368,9 +1368,9 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
   v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v65];
   [v18 setPredicate:v19];
 
-  v20 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  managedObjectContext2 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
   v72 = 0;
-  v21 = [v20 executeFetchRequest:v18 error:&v72];
+  v21 = [managedObjectContext2 executeFetchRequest:v18 error:&v72];
   v22 = v72;
 
   v63 = v22;
@@ -1380,7 +1380,7 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
     v23 = v11;
     v24 = v21;
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -1435,8 +1435,8 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
 
           v37 = *(*(&v68 + 1) + 8 * i);
           v38 = objc_autoreleasePoolPush();
-          v39 = self;
-          v40 = self;
+          selfCopy3 = self;
+          selfCopy4 = self;
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
@@ -1451,9 +1451,9 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
           }
 
           objc_autoreleasePoolPop(v38);
-          self = v39;
-          v43 = [(HMDCoreDataCloudShareService *)v39->_shareService managedObjectContext];
-          [v43 deleteObject:v37];
+          self = selfCopy3;
+          managedObjectContext3 = [(HMDCoreDataCloudShareService *)selfCopy3->_shareService managedObjectContext];
+          [managedObjectContext3 deleteObject:v37];
         }
 
         v34 = [obj countByEnumeratingWithState:&v68 objects:v80 count:16];
@@ -1462,13 +1462,13 @@ void __70__HMDHomeSharedUserCloudShareManager_leaveShareWithSharedHomeModelID___
       while (v34);
     }
 
-    v44 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+    managedObjectContext4 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
     v67 = 0;
-    v45 = [v44 hmd_saveWithTransactionAuthor:9 error:&v67];
+    v45 = [managedObjectContext4 hmd_saveWithTransactionAuthor:9 error:&v67];
     v46 = v67;
 
     v47 = objc_autoreleasePoolPush();
-    v48 = self;
+    selfCopy5 = self;
     v49 = HMFGetOSLogHandle();
     v50 = v49;
     if (v45)
@@ -1517,8 +1517,8 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(v47);
-    v56 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
-    [v56 reset];
+    managedObjectContext5 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+    [managedObjectContext5 reset];
 
     v18 = v60;
     v11 = v61;
@@ -1528,22 +1528,22 @@ LABEL_26:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeShareForSharedUserDataWithHomeModelID:(id)a3
+- (void)removeShareForSharedUserDataWithHomeModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_shareService;
   v6 = MEMORY[0x277D0F7C0];
-  v7 = [(HMDCoreDataCloudShareService *)v5 managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)v5 managedObjectContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__HMDHomeSharedUserCloudShareManager_removeShareForSharedUserDataWithHomeModelID___block_invoke;
   v11[3] = &unk_278686828;
   v11[4] = self;
-  v12 = v4;
+  v12 = dCopy;
   v13 = v5;
   v8 = v5;
-  v9 = v4;
-  v10 = [v6 inContext:v7 perform:v11];
+  v9 = dCopy;
+  v10 = [v6 inContext:managedObjectContext perform:v11];
 }
 
 uint64_t __82__HMDHomeSharedUserCloudShareManager_removeShareForSharedUserDataWithHomeModelID___block_invoke(uint64_t a1)
@@ -1674,22 +1674,22 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeAccessForOwner:(id)a3 sharedUserDataWithHomeModelID:(id)a4
+- (void)revokeAccessForOwner:(id)owner sharedUserDataWithHomeModelID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  dCopy = d;
   v8 = MEMORY[0x277D0F7C0];
-  v9 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__HMDHomeSharedUserCloudShareManager_revokeAccessForOwner_sharedUserDataWithHomeModelID___block_invoke;
   v13[3] = &unk_278686828;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = [v8 inContext:v9 perform:v13];
+  v14 = dCopy;
+  v15 = ownerCopy;
+  v10 = ownerCopy;
+  v11 = dCopy;
+  v12 = [v8 inContext:managedObjectContext perform:v13];
 }
 
 uint64_t __89__HMDHomeSharedUserCloudShareManager_revokeAccessForOwner_sharedUserDataWithHomeModelID___block_invoke(uint64_t a1)
@@ -1761,25 +1761,25 @@ LABEL_8:
   return 1;
 }
 
-- (id)grantAccessForOwner:(id)a3 sharedUserDataWithHomeModelID:(id)a4 logEventBuilder:(id)a5
+- (id)grantAccessForOwner:(id)owner sharedUserDataWithHomeModelID:(id)d logEventBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ownerCopy = owner;
+  dCopy = d;
+  builderCopy = builder;
   v11 = MEMORY[0x277D0F7C0];
-  v12 = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudShareService *)self->_shareService managedObjectContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __104__HMDHomeSharedUserCloudShareManager_grantAccessForOwner_sharedUserDataWithHomeModelID_logEventBuilder___block_invoke;
   v18[3] = &unk_2786886F0;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
-  v21 = v8;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
-  v16 = [v11 inContext:v12 perform:v18];
+  v19 = dCopy;
+  v20 = builderCopy;
+  v21 = ownerCopy;
+  v13 = ownerCopy;
+  v14 = builderCopy;
+  v15 = dCopy;
+  v16 = [v11 inContext:managedObjectContext perform:v18];
 
   return v16;
 }
@@ -1829,28 +1829,28 @@ HMDHomeSharedUserCloudShareManager *__104__HMDHomeSharedUserCloudShareManager_gr
   }
 }
 
-- (HMDHomeSharedUserCloudShareManager)initWithContainer:(id)a3 sharedStore:(id)a4 privateStore:(id)a5 moc:(id)a6
+- (HMDHomeSharedUserCloudShareManager)initWithContainer:(id)container sharedStore:(id)store privateStore:(id)privateStore moc:(id)moc
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[HMDCoreDataCloudShareService alloc] initWithContainer:v13 sharedStore:v12 privateStore:v11 moc:v10];
+  mocCopy = moc;
+  privateStoreCopy = privateStore;
+  storeCopy = store;
+  containerCopy = container;
+  v14 = [[HMDCoreDataCloudShareService alloc] initWithContainer:containerCopy sharedStore:storeCopy privateStore:privateStoreCopy moc:mocCopy];
 
   v15 = [(HMDHomeSharedUserCloudShareManager *)self initWithCloudShareService:v14];
   return v15;
 }
 
-- (HMDHomeSharedUserCloudShareManager)initWithCloudShareService:(id)a3
+- (HMDHomeSharedUserCloudShareManager)initWithCloudShareService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = HMDHomeSharedUserCloudShareManager;
   v6 = [(HMDHomeSharedUserCloudShareManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shareService, a3);
+    objc_storeStrong(&v6->_shareService, service);
   }
 
   return v7;

@@ -1,11 +1,11 @@
 @interface SSReadingList
 + (SSReadingList)defaultReadingList;
-- (BOOL)_addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5;
+- (BOOL)_addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text;
 - (BOOL)addReadingListItemWithURL:(NSURL *)URL title:(NSString *)title previewText:(NSString *)previewText error:(NSError *)error;
 - (SSReadingList)init;
 - (id)_init;
 - (void)_setUpConnectionIfNeeded;
-- (void)connection:(id)a3 didCloseWithError:(id)a4;
+- (void)connection:(id)connection didCloseWithError:(id)error;
 @end
 
 @implementation SSReadingList
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __35__SSReadingList_defaultReadingList__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[SSReadingList defaultReadingList]::onceToken != -1)
   {
     dispatch_once(&+[SSReadingList defaultReadingList]::onceToken, block);
@@ -117,26 +117,26 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5
+- (BOOL)_addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  titleCopy = title;
+  textCopy = text;
   [(SSReadingList *)self _setUpConnectionIfNeeded];
   v11 = xpc_dictionary_create(0, 0, 0);
-  v12 = [v8 safari_userVisibleString];
-  v13 = [v12 UTF8String];
+  safari_userVisibleString = [lCopy safari_userVisibleString];
+  uTF8String = [safari_userVisibleString UTF8String];
 
-  if (v9)
+  if (titleCopy)
   {
-    v14 = [getWebBookmarkClass() _trimmedTitle:v9];
-    v15 = [v14 UTF8String];
+    v14 = [getWebBookmarkClass() _trimmedTitle:titleCopy];
+    uTF8String2 = [v14 UTF8String];
 
-    if (v10)
+    if (textCopy)
     {
 LABEL_3:
-      v16 = [getWebBookmarkClass() _trimmedPreviewText:v10];
-      v17 = [v16 UTF8String];
+      v16 = [getWebBookmarkClass() _trimmedPreviewText:textCopy];
+      uTF8String3 = [v16 UTF8String];
 
       goto LABEL_6;
     }
@@ -144,14 +144,14 @@ LABEL_3:
 
   else
   {
-    v15 = "";
-    if (v10)
+    uTF8String2 = "";
+    if (textCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = "";
+  uTF8String3 = "";
 LABEL_6:
   v39 = 0;
   v40 = &v39;
@@ -177,7 +177,7 @@ LABEL_6:
     goto LABEL_24;
   }
 
-  xpc_dictionary_set_string(v11, *v18, v13);
+  xpc_dictionary_set_string(v11, *v18, uTF8String);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -202,7 +202,7 @@ LABEL_6:
     goto LABEL_24;
   }
 
-  xpc_dictionary_set_string(v11, *v20, v15);
+  xpc_dictionary_set_string(v11, *v20, uTF8String2);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -227,7 +227,7 @@ LABEL_6:
     goto LABEL_24;
   }
 
-  xpc_dictionary_set_string(v11, *v22, v17);
+  xpc_dictionary_set_string(v11, *v22, uTF8String3);
   connection = self->_connection;
   v39 = 0;
   v40 = &v39;
@@ -370,14 +370,14 @@ LABEL_24:
   }
 }
 
-- (void)connection:(id)a3 didCloseWithError:(id)a4
+- (void)connection:(id)connection didCloseWithError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = WBS_LOG_CHANNEL_PREFIXReadingList();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 description];
+    v7 = [errorCopy description];
     [(SSReadingList *)v7 connection:v9 didCloseWithError:v6];
   }
 

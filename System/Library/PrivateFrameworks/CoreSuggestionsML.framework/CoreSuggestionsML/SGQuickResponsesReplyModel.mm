@@ -1,15 +1,15 @@
 @interface SGQuickResponsesReplyModel
-+ (id)semanticClassesForArray:(id)a3;
-- (SGQuickResponsesReplyModel)initWithDictionary:(id)a3 index:(unint64_t)a4;
++ (id)semanticClassesForArray:(id)array;
+- (SGQuickResponsesReplyModel)initWithDictionary:(id)dictionary index:(unint64_t)index;
 @end
 
 @implementation SGQuickResponsesReplyModel
 
-- (SGQuickResponsesReplyModel)initWithDictionary:(id)a3 index:(unint64_t)a4
+- (SGQuickResponsesReplyModel)initWithDictionary:(id)dictionary index:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (dictionaryCopy)
   {
 
     v26.receiver = self;
@@ -24,7 +24,7 @@
     if (v8)
     {
       v9 = v8;
-      self->_semanticClassIndex = a4;
+      self->_semanticClassIndex = index;
       v10 = [SGQuickResponsesReplyModel semanticClassesForArray:v8];
       if (!v10)
       {
@@ -116,7 +116,7 @@ LABEL_24:
 
 LABEL_28:
       self = self;
-      v24 = self;
+      selfCopy = self;
       goto LABEL_29;
     }
 
@@ -139,23 +139,23 @@ LABEL_15:
   }
 
 LABEL_26:
-  v24 = 0;
+  selfCopy = 0;
 LABEL_29:
 
-  return v24;
+  return selfCopy;
 }
 
-+ (id)semanticClassesForArray:(id)a3
++ (id)semanticClassesForArray:(id)array
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = 0x277CBE000uLL;
   v5 = objc_opt_new();
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v6 = v3;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v7)
   {

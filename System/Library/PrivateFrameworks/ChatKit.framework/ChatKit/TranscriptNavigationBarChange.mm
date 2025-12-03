@@ -7,8 +7,8 @@
 + (_TtC7ChatKit29TranscriptNavigationBarChange)titleDisplayModeChange;
 + (_TtC7ChatKit29TranscriptNavigationBarChange)titleViewInteractabilityChange;
 + (_TtC7ChatKit29TranscriptNavigationBarChange)unreadBadgeCountChange;
-+ (id)locationChangeWithLocationText:(id)a3;
-+ (id)sendProgressChange:(double)a3 color:(id)a4;
++ (id)locationChangeWithLocationText:(id)text;
++ (id)sendProgressChange:(double)change color:(id)color;
 - (NSString)name;
 - (_TtC7ChatKit29TranscriptNavigationBarChange)init;
 @end
@@ -132,9 +132,9 @@
   return v6;
 }
 
-+ (id)locationChangeWithLocationText:(id)a3
++ (id)locationChangeWithLocationText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v3 = sub_190D56F10();
     v5 = v4;
@@ -164,11 +164,11 @@
   return v11;
 }
 
-+ (id)sendProgressChange:(double)a3 color:(id)a4
++ (id)sendProgressChange:(double)change color:(id)color
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a3;
-  *(v6 + 24) = a4;
+  *(v6 + 16) = change;
+  *(v6 + 24) = color;
   v7 = type metadata accessor for TranscriptNavigationBarChange();
   v8 = objc_allocWithZone(v7);
   v9 = &v8[OBJC_IVAR____TtC7ChatKit29TranscriptNavigationBarChange_name];
@@ -179,7 +179,7 @@
   v10[1] = v6;
   v14.receiver = v8;
   v14.super_class = v7;
-  v11 = a4;
+  colorCopy = color;
   v12 = objc_msgSendSuper2(&v14, sel_init);
 
   return v12;

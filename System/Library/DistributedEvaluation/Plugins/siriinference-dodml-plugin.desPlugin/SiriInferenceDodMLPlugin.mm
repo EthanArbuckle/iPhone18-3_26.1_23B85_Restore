@@ -1,14 +1,14 @@
 @interface SiriInferenceDodMLPlugin
-- (void)performEvaluation:(id)a3;
+- (void)performEvaluation:(id)evaluation;
 @end
 
 @implementation SiriInferenceDodMLPlugin
 
-- (void)performEvaluation:(id)a3
+- (void)performEvaluation:(id)evaluation
 {
-  v4 = a3;
-  v5 = self;
-  sub_14D0(v4);
+  evaluationCopy = evaluation;
+  selfCopy = self;
+  sub_14D0(evaluationCopy);
 }
 
 @end

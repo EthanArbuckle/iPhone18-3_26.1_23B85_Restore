@@ -1,17 +1,17 @@
 @interface PXSharedLibraryUIParticipant
-+ (int)_fetchImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 resultHandler:(id)a7;
-+ (int)_fetchImageForEmailAddress:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 resultHandler:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (int)_fetchImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
++ (int)_fetchImageForEmailAddress:(id)address targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (NSPersonNameComponents)nameComponents;
 - (NSString)appleIDAddress;
 - (NSString)description;
 - (NSString)name;
-- (PXSharedLibraryUIParticipant)initWithEmailAddress:(id)a3 contact:(id)a4;
-- (PXSharedLibraryUIParticipant)initWithPhoneNumber:(id)a3 contact:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)fetchImageForTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6;
+- (PXSharedLibraryUIParticipant)initWithEmailAddress:(id)address contact:(id)contact;
+- (PXSharedLibraryUIParticipant)initWithPhoneNumber:(id)number contact:(id)contact;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)fetchImageForTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
 - (unint64_t)hash;
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6;
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler;
 @end
 
 @implementation PXSharedLibraryUIParticipant
@@ -24,24 +24,24 @@
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PXSharedLibraryUIParticipant *)self contact];
-  v7 = [v5 stringWithFormat:@"contact: %@, \n", v6];
+  contact = [(PXSharedLibraryUIParticipant *)self contact];
+  v7 = [v5 stringWithFormat:@"contact: %@, \n", contact];
   [v4 appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
-  v10 = [v8 stringWithFormat:@"address: %@, \n", v9];
+  appleIDAddress = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+  v10 = [v8 stringWithFormat:@"address: %@, \n", appleIDAddress];
   [v4 appendString:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(PXSharedLibraryUIParticipant *)self addressKind];
+  addressKind = [(PXSharedLibraryUIParticipant *)self addressKind];
   v13 = @"PXSharedLibraryUIParticipantAddressKindInvalid";
-  if (v12 == 1)
+  if (addressKind == 1)
   {
     v13 = @"PXSharedLibraryUIParticipantAddressKindEmail";
   }
 
-  if (v12 == 2)
+  if (addressKind == 2)
   {
     v13 = @"PXSharedLibraryUIParticipantAddressKindPhone";
   }
@@ -52,19 +52,19 @@
   return v4;
 }
 
-- (void)px_requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6
+- (void)px_requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  v6 = a5;
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displayScale_isRTL_resultHandler___block_invoke;
   v13[3] = &unk_1E774B680;
-  v14 = v11;
-  v12 = v11;
-  [(PXSharedLibraryUIParticipant *)self fetchImageForTargetSize:v6 displayScale:v13 isRTL:width resultHandler:height, a4];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(PXSharedLibraryUIParticipant *)self fetchImageForTargetSize:lCopy displayScale:v13 isRTL:width resultHandler:height, scale];
 }
 
 uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displayScale_isRTL_resultHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -78,7 +78,7 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PXSharedLibraryUIParticipant allocWithZone:?]];
   objc_storeStrong(&v4->_contact, self->_contact);
@@ -89,29 +89,29 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
 
 - (unint64_t)hash
 {
-  v2 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
-  v3 = [v2 hash];
+  appleIDAddress = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+  v3 = [appleIDAddress hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
-    v7 = [v5 appleIDAddress];
-    if (v6 == v7)
+    v5 = equalCopy;
+    appleIDAddress = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+    appleIDAddress2 = [v5 appleIDAddress];
+    if (appleIDAddress == appleIDAddress2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqualToString:v7];
+      v8 = [appleIDAddress isEqualToString:appleIDAddress2];
     }
   }
 
@@ -123,49 +123,49 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
   return v8;
 }
 
-- (int)fetchImageForTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 resultHandler:(id)a6
+- (int)fetchImageForTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  v6 = a5;
-  height = a3.height;
-  width = a3.width;
-  v12 = a6;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"!CGSizeEqualToSize(targetSize, CGSizeZero)"}];
   }
 
-  if (a4 < 1.0)
+  if (scale < 1.0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"displayScale >= 1"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"displayScale >= 1"}];
   }
 
-  v14 = [(PXSharedLibraryUIParticipant *)self contact];
+  contact = [(PXSharedLibraryUIParticipant *)self contact];
 
-  if (v14)
+  if (contact)
   {
-    v15 = [(PXSharedLibraryUIParticipant *)self contact];
-    v16 = [PXSharedLibraryUIParticipant _fetchImageForContact:v15 targetSize:v6 displayScale:v12 isRTL:width resultHandler:height, a4];
+    contact2 = [(PXSharedLibraryUIParticipant *)self contact];
+    scale = [PXSharedLibraryUIParticipant _fetchImageForContact:contact2 targetSize:lCopy displayScale:handlerCopy isRTL:width resultHandler:height, scale];
   }
 
   else
   {
-    v17 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+    appleIDAddress = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
 
-    if (!v17)
+    if (!appleIDAddress)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:121 description:@"Code which should be unreachable has been reached"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:121 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v15 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
-    v16 = [PXSharedLibraryUIParticipant _fetchImageForEmailAddress:v15 targetSize:v6 displayScale:v12 isRTL:width resultHandler:height, a4];
+    contact2 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+    scale = [PXSharedLibraryUIParticipant _fetchImageForEmailAddress:contact2 targetSize:lCopy displayScale:handlerCopy isRTL:width resultHandler:height, scale];
   }
 
-  v18 = v16;
+  v18 = scale;
 
   return v18;
 }
@@ -177,8 +177,8 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
   {
     v13 = v3;
     v14 = v2;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -188,14 +188,14 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
 
 - (NSPersonNameComponents)nameComponents
 {
-  v2 = [(PXSharedLibraryUIParticipant *)self contact];
-  v3 = [v2 givenName];
-  v4 = [v2 familyName];
-  if ([v3 length] || objc_msgSend(v4, "length"))
+  contact = [(PXSharedLibraryUIParticipant *)self contact];
+  givenName = [contact givenName];
+  familyName = [contact familyName];
+  if ([givenName length] || objc_msgSend(familyName, "length"))
   {
     v5 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    [v5 setGivenName:v3];
-    [v5 setFamilyName:v4];
+    [v5 setGivenName:givenName];
+    [v5 setFamilyName:familyName];
   }
 
   else
@@ -208,101 +208,101 @@ uint64_t __95__PXSharedLibraryUIParticipant_px_requestImageWithTargetSize_displa
 
 - (NSString)name
 {
-  v4 = [(PXSharedLibraryUIParticipant *)self contact];
-  v5 = [v4 givenName];
-  v6 = [v4 familyName];
-  if ([v5 length] || objc_msgSend(v6, "length"))
+  contact = [(PXSharedLibraryUIParticipant *)self contact];
+  givenName = [contact givenName];
+  familyName = [contact familyName];
+  if ([givenName length] || objc_msgSend(familyName, "length"))
   {
     v7 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    [v7 setGivenName:v5];
-    [v7 setFamilyName:v6];
-    v8 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v7 style:0 options:0];
+    [v7 setGivenName:givenName];
+    [v7 setFamilyName:familyName];
+    appleIDAddress2 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v7 style:0 options:0];
   }
 
   else
   {
-    v10 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+    appleIDAddress = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
 
-    if (!v10)
+    if (!appleIDAddress)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:69 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:69 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
+    appleIDAddress2 = [(PXSharedLibraryUIParticipant *)self appleIDAddress];
   }
 
-  return v8;
+  return appleIDAddress2;
 }
 
-- (PXSharedLibraryUIParticipant)initWithPhoneNumber:(id)a3 contact:(id)a4
+- (PXSharedLibraryUIParticipant)initWithPhoneNumber:(id)number contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
+  numberCopy = number;
+  contactCopy = contact;
   v13.receiver = self;
   v13.super_class = PXSharedLibraryUIParticipant;
   v10 = [(PXSharedLibraryUIParticipant *)&v13 init];
   if (v10)
   {
-    if (![v8 length])
+    if (![numberCopy length])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v10 file:@"PXSharedLibraryUIParticipant.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"phoneNumber.length > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXSharedLibraryUIParticipant.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"phoneNumber.length > 0"}];
     }
 
-    objc_storeStrong(&v10->_appleIDAddress, a3);
+    objc_storeStrong(&v10->_appleIDAddress, number);
     v10->_addressKind = 2;
-    objc_storeStrong(&v10->_contact, a4);
+    objc_storeStrong(&v10->_contact, contact);
   }
 
   return v10;
 }
 
-- (PXSharedLibraryUIParticipant)initWithEmailAddress:(id)a3 contact:(id)a4
+- (PXSharedLibraryUIParticipant)initWithEmailAddress:(id)address contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
+  addressCopy = address;
+  contactCopy = contact;
   v13.receiver = self;
   v13.super_class = PXSharedLibraryUIParticipant;
   v10 = [(PXSharedLibraryUIParticipant *)&v13 init];
   if (v10)
   {
-    if (![v8 length])
+    if (![addressCopy length])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v10 file:@"PXSharedLibraryUIParticipant.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"emailAddress.length > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXSharedLibraryUIParticipant.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"emailAddress.length > 0"}];
     }
 
-    objc_storeStrong(&v10->_appleIDAddress, a3);
+    objc_storeStrong(&v10->_appleIDAddress, address);
     v10->_addressKind = 1;
-    objc_storeStrong(&v10->_contact, a4);
+    objc_storeStrong(&v10->_contact, contact);
   }
 
   return v10;
 }
 
-+ (int)_fetchImageForEmailAddress:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 resultHandler:(id)a7
++ (int)_fetchImageForEmailAddress:(id)address targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  if (!v14)
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  addressCopy = address;
+  handlerCopy = handler;
+  if (!addressCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryUIParticipant.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __103__PXSharedLibraryUIParticipant__fetchImageForEmailAddress_targetSize_displayScale_isRTL_resultHandler___block_invoke;
   v20[3] = &unk_1E774B658;
-  v21 = v15;
-  v16 = v15;
-  [PXActivityUtilities requestMonogramForEmailAddress:v14 targetSize:v8 displayScale:v20 isRTL:width completion:height, a5];
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  [PXActivityUtilities requestMonogramForEmailAddress:addressCopy targetSize:lCopy displayScale:v20 isRTL:width completion:height, scale];
   v17 = +[PXPeopleFaceCropManager generateUniqueRequestID];
 
   return v17;
@@ -332,26 +332,26 @@ void __103__PXSharedLibraryUIParticipant__fetchImageForEmailAddress_targetSize_d
   }
 }
 
-+ (int)_fetchImageForContact:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 isRTL:(BOOL)a6 resultHandler:(id)a7
++ (int)_fetchImageForContact:(id)contact targetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l resultHandler:(id)handler
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  if (!v14)
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  contactCopy = contact;
+  handlerCopy = handler;
+  if (!contactCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PXSharedLibraryUIParticipant.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryUIParticipant.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __98__PXSharedLibraryUIParticipant__fetchImageForContact_targetSize_displayScale_isRTL_resultHandler___block_invoke;
   v20[3] = &unk_1E774B658;
-  v21 = v15;
-  v16 = v15;
-  [PXActivityUtilities requestImageForContact:v14 targetSize:v8 displayScale:0 isRTL:v20 deliverOnce:width completion:height, a5];
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  [PXActivityUtilities requestImageForContact:contactCopy targetSize:lCopy displayScale:0 isRTL:v20 deliverOnce:width completion:height, scale];
   v17 = +[PXPeopleFaceCropManager generateUniqueRequestID];
 
   return v17;

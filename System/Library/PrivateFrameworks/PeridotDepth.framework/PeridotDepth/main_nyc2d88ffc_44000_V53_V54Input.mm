@@ -1,17 +1,17 @@
 @interface main_nyc2d88ffc_44000_V53_V54Input
-- (id)featureValueForName:(id)a3;
-- (main_nyc2d88ffc_44000_V53_V54Input)initWithJasper:(id)a3;
+- (id)featureValueForName:(id)name;
+- (main_nyc2d88ffc_44000_V53_V54Input)initWithJasper:(id)jasper;
 @end
 
 @implementation main_nyc2d88ffc_44000_V53_V54Input
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"jasper"])
+  if ([name isEqualToString:@"jasper"])
   {
     v4 = MEMORY[0x277CBFEF8];
-    v5 = [(main_nyc2d88ffc_44000_V53_V54Input *)self jasper];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    jasper = [(main_nyc2d88ffc_44000_V53_V54Input *)self jasper];
+    v6 = [v4 featureValueWithMultiArray:jasper];
 
     v7 = v6;
   }
@@ -24,16 +24,16 @@
   return v7;
 }
 
-- (main_nyc2d88ffc_44000_V53_V54Input)initWithJasper:(id)a3
+- (main_nyc2d88ffc_44000_V53_V54Input)initWithJasper:(id)jasper
 {
-  v5 = a3;
+  jasperCopy = jasper;
   v9.receiver = self;
   v9.super_class = main_nyc2d88ffc_44000_V53_V54Input;
   v6 = [(main_nyc2d88ffc_44000_V53_V54Input *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_jasper, a3);
+    objc_storeStrong(&v6->_jasper, jasper);
   }
 
   return v7;

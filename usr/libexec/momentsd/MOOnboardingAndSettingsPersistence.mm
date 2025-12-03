@@ -1,27 +1,27 @@
 @interface MOOnboardingAndSettingsPersistence
-- (BOOL)_getFallbackStateForSetting_postlaunch:(unint64_t)a3;
-- (BOOL)_getStateForSetting_postlaunch:(unint64_t)a3;
-- (BOOL)_updateCachedRoutineStateWithCurrentTime:(double)a3;
-- (BOOL)getStateForSettingFast:(unint64_t)a3;
-- (MOOnboardingAndSettingsPersistence)initWithUniverse:(id)a3;
-- (id)_getSettingKey:(unint64_t)a3;
-- (id)_getSettingName:(unint64_t)a3;
+- (BOOL)_getFallbackStateForSetting_postlaunch:(unint64_t)setting_postlaunch;
+- (BOOL)_getStateForSetting_postlaunch:(unint64_t)setting_postlaunch;
+- (BOOL)_updateCachedRoutineStateWithCurrentTime:(double)time;
+- (BOOL)getStateForSettingFast:(unint64_t)fast;
+- (MOOnboardingAndSettingsPersistence)initWithUniverse:(id)universe;
+- (id)_getSettingKey:(unint64_t)key;
+- (id)_getSettingName:(unint64_t)name;
 - (id)getSnapshotDictionaryForAnalytics;
 - (int64_t)_fetchSignificantLocationEnablementStatus;
-- (unint64_t)_MOStatusFromSTStatus:(int64_t)a3;
+- (unint64_t)_MOStatusFromSTStatus:(int64_t)status;
 - (unint64_t)determineOnboardingDurationBinRange;
 - (unint64_t)fetchScreenTimeEnablementStatus;
 - (unint64_t)getCollectAndComputeAuthorization;
 - (unint64_t)getOnboardingFlowCompletionStatus;
 - (unint64_t)getOnboardingFlowRefreshCompletionStatus;
-- (void)_onRoutineStateUpdate:(int64_t)a3 error:(id)a4 currentTime:(double)a5 hasTimedout:(BOOL)a6;
-- (void)_peopleAwarenessSubscribe:(BOOL)a3;
+- (void)_onRoutineStateUpdate:(int64_t)update error:(id)error currentTime:(double)time hasTimedout:(BOOL)timedout;
+- (void)_peopleAwarenessSubscribe:(BOOL)subscribe;
 - (void)determineOnboardingDurationBinRange;
 - (void)fetchScreenTimeEnablementStatus;
 - (void)postRefreshTriggerAfterOnboarding;
 - (void)postRefreshTriggerAfterSettingChange;
 - (void)publishOnboardingStatusAnalytics;
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3;
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status;
 @end
 
 @implementation MOOnboardingAndSettingsPersistence
@@ -35,30 +35,30 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "getOnboardingFlowCompletionStatus", v7, 2u);
   }
 
-  v4 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-  v5 = [v4 getIntegerSettingForKey:@"OnboardingStatus" withFallback:0];
+  configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
+  v5 = [configManager getIntegerSettingForKey:@"OnboardingStatus" withFallback:0];
 
   return v5;
 }
 
-- (MOOnboardingAndSettingsPersistence)initWithUniverse:(id)a3
+- (MOOnboardingAndSettingsPersistence)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v5 getService:v10];
+  v11 = [universeCopy getService:v10];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v5 getService:v13];
+  v14 = [universeCopy getService:v13];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v5 getService:v16];
+  v17 = [universeCopy getService:v16];
 
   v36.receiver = self;
   v36.super_class = MOOnboardingAndSettingsPersistence;
@@ -70,7 +70,7 @@
     v21 = *(v18 + 1);
     *(v18 + 1) = v20;
 
-    objc_storeStrong(v18 + 10, a3);
+    objc_storeStrong(v18 + 10, universe);
     objc_storeStrong(v18 + 11, v8);
     objc_storeStrong(v18 + 12, v11);
     objc_storeStrong(v18 + 13, v14);
@@ -92,10 +92,10 @@
     v27 = *(v18 + 8);
     *(v18 + 8) = v26;
 
-    v28 = [v18 defaultsManager];
-    v29 = [v18 defaultsManager];
-    v30 = [v29 objectForKey:@"OnboardingStatus"];
-    [v28 setObject:v30 forKey:@"OnboardingRefreshStatus"];
+    defaultsManager = [v18 defaultsManager];
+    defaultsManager2 = [v18 defaultsManager];
+    v30 = [defaultsManager2 objectForKey:@"OnboardingStatus"];
+    [defaultsManager setObject:v30 forKey:@"OnboardingRefreshStatus"];
 
     objc_initWeak(&location, v18);
     v31 = *(v18 + 1);
@@ -118,9 +118,9 @@ void __55__MOOnboardingAndSettingsPersistence_initWithUniverse___block_invoke(ui
   [WeakRetained _peopleAwarenessSubscribe:{objc_msgSend(WeakRetained, "getStateForSetting:", 6)}];
 }
 
-- (void)_peopleAwarenessSubscribe:(BOOL)a3
+- (void)_peopleAwarenessSubscribe:(BOOL)subscribe
 {
-  v3 = a3;
+  subscribeCopy = subscribe;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPeopleDiscovery);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -129,17 +129,17 @@ void __55__MOOnboardingAndSettingsPersistence_initWithUniverse___block_invoke(ui
   }
 
   self->_peopleAwarenessRegistrationTrigger = 0;
-  v6 = [(MOOnboardingAndSettingsPersistence *)self routineServiceManager];
-  v7 = [v6 routineManager];
-  v8 = v7;
-  if (v3)
+  routineServiceManager = [(MOOnboardingAndSettingsPersistence *)self routineServiceManager];
+  routineManager = [routineServiceManager routineManager];
+  v8 = routineManager;
+  if (subscribeCopy)
   {
-    [v7 startMonitoringForPeopleDiscovery:self->_peopleAwarenessConfiguration handler:&__block_literal_global_58];
+    [routineManager startMonitoringForPeopleDiscovery:self->_peopleAwarenessConfiguration handler:&__block_literal_global_58];
   }
 
   else
   {
-    [v7 stopMonitoringForPeopleDiscoveryWithHandler:&__block_literal_global_128];
+    [routineManager stopMonitoringForPeopleDiscoveryWithHandler:&__block_literal_global_128];
   }
 }
 
@@ -179,29 +179,29 @@ void __64__MOOnboardingAndSettingsPersistence__peopleAwarenessSubscribe___block_
   }
 }
 
-- (id)_getSettingName:(unint64_t)a3
+- (id)_getSettingName:(unint64_t)name
 {
-  if (a3 > 0xA)
+  if (name > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_100340090 + a3);
+    return *(&off_100340090 + name);
   }
 }
 
-- (id)_getSettingKey:(unint64_t)a3
+- (id)_getSettingKey:(unint64_t)key
 {
-  if (a3 > 0xA)
+  if (key > 0xA)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *(&off_1003400E8 + a3);
+    v3 = *(&off_1003400E8 + key);
     v4 = [(MOOnboardingAndSettingsPersistence *)self _getSettingName:?];
     v5 = [NSString stringWithFormat:v3, v4];
   }
@@ -209,7 +209,7 @@ void __64__MOOnboardingAndSettingsPersistence__peopleAwarenessSubscribe___block_
   return v5;
 }
 
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status
 {
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -218,13 +218,13 @@ void __64__MOOnboardingAndSettingsPersistence__peopleAwarenessSubscribe___block_
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "setOnboardingFlowCompletionStatus", &v61, 2u);
   }
 
-  v6 = [(MOOnboardingAndSettingsPersistence *)self getOnboardingFlowCompletionStatus];
-  if (v6 == a3)
+  getOnboardingFlowCompletionStatus = [(MOOnboardingAndSettingsPersistence *)self getOnboardingFlowCompletionStatus];
+  if (getOnboardingFlowCompletionStatus == status)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [NSNumber numberWithUnsignedInteger:a3];
+      v8 = [NSNumber numberWithUnsignedInteger:status];
       v61 = 138412290;
       *v62 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "No-op onboarding transtion requested with state %@", &v61, 0xCu);
@@ -235,18 +235,18 @@ LABEL_34:
     return;
   }
 
-  v9 = v6;
-  if (v6 <= 1)
+  v9 = getOnboardingFlowCompletionStatus;
+  if (getOnboardingFlowCompletionStatus <= 1)
   {
-    if (v6)
+    if (getOnboardingFlowCompletionStatus)
     {
-      if (v6 == 1 && a3 == 2)
+      if (getOnboardingFlowCompletionStatus == 1 && status == 2)
       {
         goto LABEL_17;
       }
     }
 
-    else if (a3 - 1 < 2)
+    else if (status - 1 < 2)
     {
       goto LABEL_17;
     }
@@ -254,9 +254,9 @@ LABEL_34:
     goto LABEL_32;
   }
 
-  if (v6 == 2)
+  if (getOnboardingFlowCompletionStatus == 2)
   {
-    if (a3 == 3)
+    if (status == 3)
     {
       goto LABEL_17;
     }
@@ -265,13 +265,13 @@ LABEL_32:
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(MOOnboardingAndSettingsPersistence *)v9 setOnboardingFlowCompletionStatus:a3, v7];
+      [(MOOnboardingAndSettingsPersistence *)v9 setOnboardingFlowCompletionStatus:status, v7];
     }
 
     goto LABEL_34;
   }
 
-  if (v6 == 4)
+  if (getOnboardingFlowCompletionStatus == 4)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -282,7 +282,7 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  if (v6 != 5 || a3 != 1)
+  if (getOnboardingFlowCompletionStatus != 5 || status != 1)
   {
     goto LABEL_32;
   }
@@ -292,7 +292,7 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = [NSNumber numberWithUnsignedInteger:v9];
-    v12 = [NSNumber numberWithUnsignedInteger:a3];
+    v12 = [NSNumber numberWithUnsignedInteger:status];
     v61 = 138412546;
     *v62 = v11;
     *&v62[8] = 2112;
@@ -300,11 +300,11 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Onboarding transtion requested from %@ -> %@", &v61, 0x16u);
   }
 
-  v13 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-  v14 = [NSNumber numberWithUnsignedInteger:a3];
-  [v13 setObject:v14 forKey:@"OnboardingStatus"];
+  defaultsManager = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+  v14 = [NSNumber numberWithUnsignedInteger:status];
+  [defaultsManager setObject:v14 forKey:@"OnboardingStatus"];
 
-  v15 = [(MOOnboardingAndSettingsPersistence *)self fetchSignificantLocationEnablementStatus];
+  fetchSignificantLocationEnablementStatus = [(MOOnboardingAndSettingsPersistence *)self fetchSignificantLocationEnablementStatus];
   LODWORD(v16) = 14.0;
   [(MOConfigurationManagerBase *)self->_configManager getFloatSettingForKey:@"Visit_PreOnboardingLookBackWindow" withFallback:v16];
   self->_maxAllowedDaysForVisitLookback = v17;
@@ -313,83 +313,83 @@ LABEL_17:
   {
     maxAllowedDaysForVisitLookback = self->_maxAllowedDaysForVisitLookback;
     v61 = 67109376;
-    *v62 = v15;
+    *v62 = fetchSignificantLocationEnablementStatus;
     *&v62[4] = 2048;
     *&v62[6] = maxAllowedDaysForVisitLookback;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "setOnboardingFlowCompletionStatus,Onboarding, isVisitPreOnboardingEnabled,%d,maxAllowedDaysForVisitLookback,%f", &v61, 0x12u);
   }
 
-  if (a3 - 1 <= 1)
+  if (status - 1 <= 1)
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [NSNumber numberWithUnsignedInteger:a3];
+      v21 = [NSNumber numberWithUnsignedInteger:status];
       v61 = 138412290;
       *v62 = v21;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Posting onboarding refresh request after transition to %@", &v61, 0xCu);
     }
 
-    if (a3 == 2)
+    if (status == 2)
     {
       v22 = +[NSDate date];
-      v23 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      defaultsManager2 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
       v24 = [NSDate dateWithTimeInterval:v22 sinceDate:0.0];
-      [v23 setObject:v24 forKey:@"OnboardingDate"];
+      [defaultsManager2 setObject:v24 forKey:@"OnboardingDate"];
 
-      v25 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v26 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      defaultsManager3 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
       LODWORD(v27) = 1234413568;
-      [v26 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowActivity" withFallback:v27];
+      [configManager getFloatSettingForKey:@"OnboardingOverrideLookBackWindowActivity" withFallback:v27];
       v29 = [NSDate dateWithTimeInterval:v22 sinceDate:-v28];
-      [v25 setObject:v29 forKey:@"OnboardingEarliestCollectDateActivity"];
+      [defaultsManager3 setObject:v29 forKey:@"OnboardingEarliestCollectDateActivity"];
 
-      v30 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v31 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      defaultsManager4 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager2 = [(MOOnboardingAndSettingsPersistence *)self configManager];
       LODWORD(v32) = 1234413568;
-      [v31 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowMedia" withFallback:v32];
+      [configManager2 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowMedia" withFallback:v32];
       v34 = [NSDate dateWithTimeInterval:v22 sinceDate:-v33];
-      [v30 setObject:v34 forKey:@"OnboardingEarliestCollectDateMedia"];
+      [defaultsManager4 setObject:v34 forKey:@"OnboardingEarliestCollectDateMedia"];
 
-      v35 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v36 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      defaultsManager5 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager3 = [(MOOnboardingAndSettingsPersistence *)self configManager];
       LODWORD(v37) = 1234413568;
-      [v36 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowCommunication" withFallback:v37];
+      [configManager3 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowCommunication" withFallback:v37];
       v39 = [NSDate dateWithTimeInterval:v22 sinceDate:-v38];
-      [v35 setObject:v39 forKey:@"OnboardingEarliestCollectDateCommunication"];
+      [defaultsManager5 setObject:v39 forKey:@"OnboardingEarliestCollectDateCommunication"];
 
-      v40 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v41 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      defaultsManager6 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager4 = [(MOOnboardingAndSettingsPersistence *)self configManager];
       LODWORD(v42) = 1234413568;
-      [v41 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowPhoto" withFallback:v42];
+      [configManager4 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowPhoto" withFallback:v42];
       v44 = [NSDate dateWithTimeInterval:v22 sinceDate:-v43];
-      [v40 setObject:v44 forKey:@"OnboardingEarliestCollectDatePhoto"];
+      [defaultsManager6 setObject:v44 forKey:@"OnboardingEarliestCollectDatePhoto"];
 
-      v45 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v46 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-      v47 = v46;
+      defaultsManager7 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager5 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      v47 = configManager5;
       v48 = 0.0;
-      if (v15)
+      if (fetchSignificantLocationEnablementStatus)
       {
         *&v48 = self->_maxAllowedDaysForVisitLookback * 86400.0;
       }
 
-      [v46 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowLocation" withFallback:v48];
+      [configManager5 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowLocation" withFallback:v48];
       v50 = [NSDate dateWithTimeInterval:v22 sinceDate:-v49];
-      [v45 setObject:v50 forKey:@"OnboardingEarliestCollectDateLocation"];
+      [defaultsManager7 setObject:v50 forKey:@"OnboardingEarliestCollectDateLocation"];
 
-      v51 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v52 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-      [v52 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowPeople" withFallback:0.0];
+      defaultsManager8 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager6 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      [configManager6 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowPeople" withFallback:0.0];
       v54 = [NSDate dateWithTimeInterval:v22 sinceDate:-v53];
-      [v51 setObject:v54 forKey:@"OnboardingEarliestCollectDatePeople"];
+      [defaultsManager8 setObject:v54 forKey:@"OnboardingEarliestCollectDatePeople"];
 
-      v55 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-      v56 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      defaultsManager9 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+      configManager7 = [(MOOnboardingAndSettingsPersistence *)self configManager];
       LODWORD(v57) = 1234413568;
-      [v56 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowStateOfMind" withFallback:v57];
+      [configManager7 getFloatSettingForKey:@"OnboardingOverrideLookBackWindowStateOfMind" withFallback:v57];
       v59 = [NSDate dateWithTimeInterval:v22 sinceDate:-v58];
-      [v55 setObject:v59 forKey:@"OnboardingEarliestCollectDateStateOfMind"];
+      [defaultsManager9 setObject:v59 forKey:@"OnboardingEarliestCollectDateStateOfMind"];
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -400,8 +400,8 @@ LABEL_17:
 
 - (unint64_t)getOnboardingFlowRefreshCompletionStatus
 {
-  v2 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-  v3 = [v2 getIntegerSettingForKey:@"OnboardingRefreshStatus" withFallback:0];
+  configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
+  v3 = [configManager getIntegerSettingForKey:@"OnboardingRefreshStatus" withFallback:0];
 
   return v3;
 }
@@ -416,8 +416,8 @@ LABEL_17:
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MOOnboardingAndSettingsPersistence *)self universe];
-  v6 = [v5 getService:@"DaemonClient"];
+  universe = [(MOOnboardingAndSettingsPersistence *)self universe];
+  v6 = [universe getService:@"DaemonClient"];
 
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -425,7 +425,7 @@ LABEL_17:
   v9[2] = __71__MOOnboardingAndSettingsPersistence_postRefreshTriggerAfterOnboarding__block_invoke;
   v9[3] = &unk_100335B08;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   dispatch_async(queue, v9);
 
@@ -632,37 +632,37 @@ void __79__MOOnboardingAndSettingsPersistence__fetchSignificantLocationEnablemen
   dispatch_group_leave(v4);
 }
 
-- (void)_onRoutineStateUpdate:(int64_t)a3 error:(id)a4 currentTime:(double)a5 hasTimedout:(BOOL)a6
+- (void)_onRoutineStateUpdate:(int64_t)update error:(id)error currentTime:(double)time hasTimedout:(BOOL)timedout
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v6)
+  timedoutCopy = timedout;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (timedoutCopy)
   {
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      v13 = [NSNumber numberWithInteger:a3];
+      v13 = [NSNumber numberWithInteger:update];
       [MOOnboardingAndSettingsPersistence _onRoutineStateUpdate:v13 error:buf currentTime:v12 hasTimedout:?];
     }
 
     goto LABEL_7;
   }
 
-  if (v10)
+  if (errorCopy)
   {
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [NSNumber numberWithInteger:a3];
-      [MOOnboardingAndSettingsPersistence _onRoutineStateUpdate:v14 error:v10 currentTime:buf hasTimedout:v12];
+      v14 = [NSNumber numberWithInteger:update];
+      [MOOnboardingAndSettingsPersistence _onRoutineStateUpdate:v14 error:errorCopy currentTime:buf hasTimedout:v12];
     }
 
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!update)
   {
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -673,12 +673,12 @@ void __79__MOOnboardingAndSettingsPersistence__fetchSignificantLocationEnablemen
 
 LABEL_7:
 
-    if (!v11->_cachedRoutineState)
+    if (!selfCopy->_cachedRoutineState)
     {
-      v15 = [(MOOnboardingAndSettingsPersistence *)v11 _updateCachedRoutineStateWithCurrentTime:a5];
-      if (v6)
+      v15 = [(MOOnboardingAndSettingsPersistence *)selfCopy _updateCachedRoutineStateWithCurrentTime:time];
+      if (timedoutCopy)
       {
-        v11->_cachedRoutineStateTimestamp = CFAbsoluteTimeGetCurrent();
+        selfCopy->_cachedRoutineStateTimestamp = CFAbsoluteTimeGetCurrent();
       }
 
       if (v15)
@@ -696,7 +696,7 @@ LABEL_25:
   v16 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [NSNumber numberWithInteger:a3];
+    v17 = [NSNumber numberWithInteger:update];
     *buf = 138412546;
     v29 = v17;
     v30 = 2112;
@@ -704,52 +704,52 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received RT state response with state: %@ and error: %@", buf, 0x16u);
   }
 
-  if (v11->_cachedRoutineState != a3)
+  if (selfCopy->_cachedRoutineState != update)
   {
-    v11->_cachedRoutineState = a3;
-    v21 = [(MOOnboardingAndSettingsPersistence *)v11 defaultsManager];
-    v22 = [NSNumber numberWithInteger:a3];
-    [v21 setObject:v22 forKey:@"SettingsSignificantLocationMasterSwitchCache"];
+    selfCopy->_cachedRoutineState = update;
+    defaultsManager = [(MOOnboardingAndSettingsPersistence *)selfCopy defaultsManager];
+    v22 = [NSNumber numberWithInteger:update];
+    [defaultsManager setObject:v22 forKey:@"SettingsSignificantLocationMasterSwitchCache"];
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [NSNumber numberWithInteger:a3];
+      v24 = [NSNumber numberWithInteger:update];
       *buf = 138412290;
       v29 = v24;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Updated and persisted RT state: %@", buf, 0xCu);
     }
 
-    v11->_cachedRoutineStateTimestamp = a5;
+    selfCopy->_cachedRoutineStateTimestamp = time;
     goto LABEL_25;
   }
 
-  v11->_cachedRoutineStateTimestamp = a5;
+  selfCopy->_cachedRoutineStateTimestamp = time;
 LABEL_17:
   v18 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [NSNumber numberWithInteger:v11->_cachedRoutineState];
+    v19 = [NSNumber numberWithInteger:selfCopy->_cachedRoutineState];
     v26 = 138412290;
     v27 = v19;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Keeping cached RT state: %@", &v26, 0xCu);
   }
 
 LABEL_26:
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_updateCachedRoutineStateWithCurrentTime:(double)a3
+- (BOOL)_updateCachedRoutineStateWithCurrentTime:(double)time
 {
-  v5 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-  v6 = [v5 objectForKey:@"SettingsSignificantLocationMasterSwitchCache"];
+  defaultsManager = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"SettingsSignificantLocationMasterSwitchCache"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [v6 intValue], (v7 - 1) <= 1))
   {
     v8 = v7;
     self->_cachedRoutineState = v7;
-    self->_cachedRoutineStateTimestamp = a3;
+    self->_cachedRoutineStateTimestamp = time;
     v9 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -770,16 +770,16 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)_getFallbackStateForSetting_postlaunch:(unint64_t)a3
+- (BOOL)_getFallbackStateForSetting_postlaunch:(unint64_t)setting_postlaunch
 {
-  v4 = [(MOOnboardingAndSettingsPersistence *)self getOnboardingFlowCompletionStatus];
-  v5 = v4 < 4;
-  if (a3 > 7)
+  getOnboardingFlowCompletionStatus = [(MOOnboardingAndSettingsPersistence *)self getOnboardingFlowCompletionStatus];
+  v5 = getOnboardingFlowCompletionStatus < 4;
+  if (setting_postlaunch > 7)
   {
-    if (a3 - 8 >= 2 && a3 == 10)
+    if (setting_postlaunch - 8 >= 2 && setting_postlaunch == 10)
     {
-      v5 = v4 < 4;
-      v6 = v4 & 0xF;
+      v5 = getOnboardingFlowCompletionStatus < 4;
+      v6 = getOnboardingFlowCompletionStatus & 0xF;
       v7 = 14;
       return v5 & (v7 >> v6);
     }
@@ -789,19 +789,19 @@ LABEL_7:
     return v8;
   }
 
-  if (a3 >= 7)
+  if (setting_postlaunch >= 7)
   {
     goto LABEL_7;
   }
 
-  v6 = v4 & 0xF;
+  v6 = getOnboardingFlowCompletionStatus & 0xF;
   v7 = 12;
   return v5 & (v7 >> v6);
 }
 
-- (BOOL)_getStateForSetting_postlaunch:(unint64_t)a3
+- (BOOL)_getStateForSetting_postlaunch:(unint64_t)setting_postlaunch
 {
-  if (a3 == 11)
+  if (setting_postlaunch == 11)
   {
 
     return [(MOOnboardingAndSettingsPersistence *)self fetchSignificantLocationEnablementStatus];
@@ -809,8 +809,8 @@ LABEL_7:
 
   else
   {
-    v4 = a3;
-    if (a3 == 8)
+    setting_postlaunchCopy = setting_postlaunch;
+    if (setting_postlaunch == 8)
     {
       v5 = _mo_log_facility_get_os_log(&MOLogFacilityPermissions);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -819,16 +819,16 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MOSettingDiscoverableByNearbyContacts is a disabled setting, will read from MOSettingNearbyPeople instead", v10, 2u);
       }
 
-      v4 = 6;
+      setting_postlaunchCopy = 6;
     }
 
-    v6 = [(MOOnboardingAndSettingsPersistence *)self _getSettingKey:v4];
+    v6 = [(MOOnboardingAndSettingsPersistence *)self _getSettingKey:setting_postlaunchCopy];
     if (v6)
     {
-      v7 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-      v8 = [v7 getBoolSettingForKey:v6 withFallback:{-[MOOnboardingAndSettingsPersistence _getFallbackStateForSetting_postlaunch:](self, "_getFallbackStateForSetting_postlaunch:", v4)}];
+      configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
+      v8 = [configManager getBoolSettingForKey:v6 withFallback:{-[MOOnboardingAndSettingsPersistence _getFallbackStateForSetting_postlaunch:](self, "_getFallbackStateForSetting_postlaunch:", setting_postlaunchCopy)}];
 
-      if (v4 == 5)
+      if (setting_postlaunchCopy == 5)
       {
         v8 &= [(MOOnboardingAndSettingsPersistence *)self fetchSignificantLocationEnablementStatus];
       }
@@ -843,9 +843,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)getStateForSettingFast:(unint64_t)a3
+- (BOOL)getStateForSettingFast:(unint64_t)fast
 {
-  if (a3 == 11 || a3 == 5)
+  if (fast == 11 || fast == 5)
   {
     if ([(MOOnboardingAndSettingsPersistence *)self _updateCachedRoutineStateWithCurrentTime:CFAbsoluteTimeGetCurrent()])
     {
@@ -857,7 +857,7 @@ LABEL_7:
       v5 = 0;
     }
 
-    if (a3 == 11)
+    if (fast == 11)
     {
       v6 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -879,11 +879,11 @@ LABEL_7:
 
     else
     {
-      v9 = [(MOOnboardingAndSettingsPersistence *)self _getSettingKey:a3];
+      v9 = [(MOOnboardingAndSettingsPersistence *)self _getSettingKey:fast];
       if (v9)
       {
-        v10 = [(MOOnboardingAndSettingsPersistence *)self configManager];
-        v11 = [v10 getBoolSettingForKey:v9 withFallback:{-[MOOnboardingAndSettingsPersistence _getFallbackStateForSetting_postlaunch:](self, "_getFallbackStateForSetting_postlaunch:", a3)}];
+        configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
+        v11 = [configManager getBoolSettingForKey:v9 withFallback:{-[MOOnboardingAndSettingsPersistence _getFallbackStateForSetting_postlaunch:](self, "_getFallbackStateForSetting_postlaunch:", fast)}];
 
         v12 = _mo_log_facility_get_os_log(&MOLogFacilitySettings);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -939,8 +939,8 @@ LABEL_7:
   v14[4] = self;
   v4 = objc_retainBlock(v14);
   v5 = objc_autoreleasePoolPush();
-  v6 = [(MOOnboardingAndSettingsPersistence *)self universe];
-  v7 = [v6 getService:@"DaemonClient"];
+  universe = [(MOOnboardingAndSettingsPersistence *)self universe];
+  v7 = [universe getService:@"DaemonClient"];
 
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
@@ -1148,21 +1148,21 @@ void __74__MOOnboardingAndSettingsPersistence_postRefreshTriggerAfterSettingChan
 
 - (unint64_t)getCollectAndComputeAuthorization
 {
-  v3 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+  configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
   LODWORD(v4) = 1256029184;
-  [v3 getFloatSettingForKey:@"ProcessingDurationForApplicationsWithDataAccess" withFallback:v4];
+  [configManager getFloatSettingForKey:@"ProcessingDurationForApplicationsWithDataAccess" withFallback:v4];
   v6 = v5;
 
-  v7 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+  configManager2 = [(MOOnboardingAndSettingsPersistence *)self configManager];
   LODWORD(v8) = 1242802176;
-  [v7 getFloatSettingForKey:@"ProcessingDurationForClientsWithDataAccess" withFallback:v8];
+  [configManager2 getFloatSettingForKey:@"ProcessingDurationForClientsWithDataAccess" withFallback:v8];
   v10 = v9;
 
-  v11 = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
-  v12 = [v11 hasAnyApplicationsWithDataAccessWithinTimeInterval:v6];
+  dataAccessManager = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
+  v12 = [dataAccessManager hasAnyApplicationsWithDataAccessWithinTimeInterval:v6];
 
-  v13 = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
-  v14 = [v13 hasAnyClientsWithDataAccessWithinTimeInterval:v10];
+  dataAccessManager2 = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
+  v14 = [dataAccessManager2 hasAnyClientsWithDataAccessWithinTimeInterval:v10];
 
   v15 = _mo_log_facility_get_os_log(&MOLogFacilityOnboarding);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1221,8 +1221,8 @@ LABEL_12:
 
 - (unint64_t)determineOnboardingDurationBinRange
 {
-  v2 = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
-  v3 = [v2 objectForKey:@"OnboardingDate"];
+  defaultsManager = [(MOOnboardingAndSettingsPersistence *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"OnboardingDate"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1253,12 +1253,12 @@ LABEL_12:
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 0;
-  v3 = [(MOOnboardingAndSettingsPersistence *)self configManager];
+  configManager = [(MOOnboardingAndSettingsPersistence *)self configManager];
   LODWORD(v4) = 1242802176;
-  [v3 getFloatSettingForKey:@"AnalyticsOverrideAppUsageLookbackWindow" withFallback:v4];
+  [configManager getFloatSettingForKey:@"AnalyticsOverrideAppUsageLookbackWindow" withFallback:v4];
   v6 = v5;
 
-  v7 = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
+  dataAccessManager = [(MOOnboardingAndSettingsPersistence *)self dataAccessManager];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = __71__MOOnboardingAndSettingsPersistence_getSnapshotDictionaryForAnalytics__block_invoke;
@@ -1266,15 +1266,15 @@ LABEL_12:
   *&v36[6] = v6;
   v36[4] = &v41;
   v36[5] = &v37;
-  [v7 getApplicationsWithDataAccess:v36];
+  [dataAccessManager getApplicationsWithDataAccess:v36];
 
   v27 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.journal" allowPlaceholder:0 error:0];
-  v8 = [(MOOnboardingAndSettingsPersistence *)self fetchScreenTimeEnablementStatus];
-  v9 = [(MOOnboardingAndSettingsPersistence *)self universe];
+  fetchScreenTimeEnablementStatus = [(MOOnboardingAndSettingsPersistence *)self fetchScreenTimeEnablementStatus];
+  universe = [(MOOnboardingAndSettingsPersistence *)self universe];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v35 = [v9 getService:v11];
-  v23 = v8;
+  v35 = [universe getService:v11];
+  v23 = fetchScreenTimeEnablementStatus;
 
   v45[0] = @"onboardingStatus";
   v34 = [NSNumber numberWithUnsignedInteger:[(MOOnboardingAndSettingsPersistence *)self getOnboardingFlowCompletionStatus]];
@@ -1406,15 +1406,15 @@ void __71__MOOnboardingAndSettingsPersistence_getSnapshotDictionaryForAnalytics_
   _os_log_debug_impl(&_mh_execute_header, v1, OS_LOG_TYPE_DEBUG, "Publishing onboarding status for analytics %@ : %@", v2, 0x16u);
 }
 
-- (unint64_t)_MOStatusFromSTStatus:(int64_t)a3
+- (unint64_t)_MOStatusFromSTStatus:(int64_t)status
 {
   v3 = 2;
-  if (a3 != 1)
+  if (status != 1)
   {
     v3 = 3;
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }
@@ -1579,7 +1579,7 @@ void __74__MOOnboardingAndSettingsPersistence_postRefreshTriggerAfterSettingChan
 
 - (void)fetchScreenTimeEnablementStatus
 {
-  v6 = *(*a1 + 40);
+  v6 = *(*self + 40);
   OUTLINED_FUNCTION_0_5();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 }

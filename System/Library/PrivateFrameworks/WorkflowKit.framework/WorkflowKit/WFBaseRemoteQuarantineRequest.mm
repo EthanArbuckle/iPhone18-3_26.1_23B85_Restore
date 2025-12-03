@@ -17,15 +17,15 @@
     appVersion = v2->_appVersion;
     v2->_appVersion = v4;
 
-    v6 = [MEMORY[0x1E69E0A90] currentDevice];
-    v7 = [v6 systemVersion];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    systemVersion = [currentDevice systemVersion];
     osVersion = v2->_osVersion;
-    v2->_osVersion = v7;
+    v2->_osVersion = systemVersion;
 
-    v9 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    v10 = [v9 localeIdentifier];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    localeIdentifier = [autoupdatingCurrentLocale localeIdentifier];
     userLocale = v2->_userLocale;
-    v2->_userLocale = v10;
+    v2->_userLocale = localeIdentifier;
 
     v12 = v2;
   }

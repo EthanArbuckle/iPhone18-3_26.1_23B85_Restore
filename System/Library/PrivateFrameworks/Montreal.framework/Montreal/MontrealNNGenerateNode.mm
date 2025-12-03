@@ -1,13 +1,13 @@
 @interface MontrealNNGenerateNode
-- (MontrealNNGenerateNode)initWithParameters:(id *)a3 weightDataFormat:(unint64_t)a4;
-- (unint64_t)generateNode:(id)a3 node:(id)a4 weightIter:(unint64_t)a5 inputs:(id)a6 outputs:(id)a7;
-- (void)setInput:(id)a3 inputIndex:(int64_t)a4;
-- (void)setInputs:(id)a3;
+- (MontrealNNGenerateNode)initWithParameters:(id *)parameters weightDataFormat:(unint64_t)format;
+- (unint64_t)generateNode:(id)node node:(id)a4 weightIter:(unint64_t)iter inputs:(id)inputs outputs:(id)outputs;
+- (void)setInput:(id)input inputIndex:(int64_t)index;
+- (void)setInputs:(id)inputs;
 @end
 
 @implementation MontrealNNGenerateNode
 
-- (MontrealNNGenerateNode)initWithParameters:(id *)a3 weightDataFormat:(unint64_t)a4
+- (MontrealNNGenerateNode)initWithParameters:(id *)parameters weightDataFormat:(unint64_t)format
 {
   v8.receiver = self;
   v8.super_class = MontrealNNGenerateNode;
@@ -15,22 +15,22 @@
   if (result)
   {
     v7 = result;
-    memcpy(&result->_parameters, a3, sizeof(result->_parameters));
+    memcpy(&result->_parameters, parameters, sizeof(result->_parameters));
     result = v7;
-    v7->_weightDataFormat = a4;
+    v7->_weightDataFormat = format;
   }
 
   return result;
 }
 
-- (unint64_t)generateNode:(id)a3 node:(id)a4 weightIter:(unint64_t)a5 inputs:(id)a6 outputs:(id)a7
+- (unint64_t)generateNode:(id)node node:(id)a4 weightIter:(unint64_t)iter inputs:(id)inputs outputs:(id)outputs
 {
   v221[1] = *MEMORY[0x1E69E9840];
-  v198 = a3;
+  nodeCopy = node;
   v194 = a4;
-  v196 = a6;
-  v197 = a7;
-  self->_weightIter = a5;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  self->_weightIter = iter;
   v203 = 0;
   v204 = &v203;
   v205 = 0x2F012000000;
@@ -333,9 +333,9 @@ LABEL_42:
   objc_msgSend_addObject_(v143, v166, v165, v167);
 
   v168 = [MontrealNNModelNode alloc];
-  if (v198)
+  if (nodeCopy)
   {
-    v169 = v198;
+    v169 = nodeCopy;
   }
 
   else
@@ -350,10 +350,10 @@ LABEL_42:
   self->_node = v176;
 
   v181 = objc_msgSend_node(self, v178, v179, v180);
-  objc_msgSend_setInputs_(v181, v182, v196, v183);
+  objc_msgSend_setInputs_(v181, v182, inputsCopy, v183);
 
   v187 = objc_msgSend_node(self, v184, v185, v186);
-  objc_msgSend_setOutputs_(v187, v188, v197, v189);
+  objc_msgSend_setOutputs_(v187, v188, outputsCopy, v189);
 
   weightIter = self->_weightIter;
   _Block_object_dispose(&v203, 8);
@@ -361,21 +361,21 @@ LABEL_42:
   return weightIter;
 }
 
-- (void)setInputs:(id)a3
+- (void)setInputs:(id)inputs
 {
-  v10 = a3;
+  inputsCopy = inputs;
   v7 = objc_msgSend_node(self, v4, v5, v6);
-  objc_msgSend_setInputs_(v7, v8, v10, v9);
+  objc_msgSend_setInputs_(v7, v8, inputsCopy, v9);
 }
 
-- (void)setInput:(id)a3 inputIndex:(int64_t)a4
+- (void)setInput:(id)input inputIndex:(int64_t)index
 {
-  v29 = a3;
+  inputCopy = input;
   v9 = objc_msgSend_node(self, v6, v7, v8);
   v13 = objc_msgSend_inputs(v9, v10, v11, v12);
   v17 = objc_msgSend_mutableCopy(v13, v14, v15, v16);
 
-  objc_msgSend_setObject_atIndexedSubscript_(v17, v18, v29, a4);
+  objc_msgSend_setObject_atIndexedSubscript_(v17, v18, inputCopy, index);
   v22 = objc_msgSend_copy(v17, v19, v20, v21);
   v26 = objc_msgSend_node(self, v23, v24, v25);
   objc_msgSend_setInputs_(v26, v27, v22, v28);

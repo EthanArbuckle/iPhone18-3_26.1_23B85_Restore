@@ -1,36 +1,36 @@
 @interface CSVibrantContentStyleRenderer
-- (BOOL)_shouldUseGlassMaterialsForStyle:(id)a3;
+- (BOOL)_shouldUseGlassMaterialsForStyle:(id)style;
 - (CGRect)styleBoundingRect;
-- (CSVibrantContentStyleRenderer)initWithVibrancyView:(id)a3 styleBoundingRect:(CGRect)a4;
-- (void)_applyVibrantCompatibleStyle:(id)a3;
+- (CSVibrantContentStyleRenderer)initWithVibrancyView:(id)view styleBoundingRect:(CGRect)rect;
+- (void)_applyVibrantCompatibleStyle:(id)style;
 - (void)_removeGradientIfNeeded;
 - (void)_updateForGlassStyle;
-- (void)_updateForVibrantStyle:(id)a3;
+- (void)_updateForVibrantStyle:(id)style;
 - (void)clearAllStyling;
-- (void)renderGlassMaterialStyle:(id)a3;
-- (void)renderGradientStyle:(id)a3;
-- (void)setStyleBoundingRect:(CGRect)a3;
+- (void)renderGlassMaterialStyle:(id)style;
+- (void)renderGradientStyle:(id)style;
+- (void)setStyleBoundingRect:(CGRect)rect;
 @end
 
 @implementation CSVibrantContentStyleRenderer
 
-- (CSVibrantContentStyleRenderer)initWithVibrancyView:(id)a3 styleBoundingRect:(CGRect)a4
+- (CSVibrantContentStyleRenderer)initWithVibrancyView:(id)view styleBoundingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = CSVibrantContentStyleRenderer;
   v11 = [(CSVibrantContentStyleRenderer *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_vibrancyView, a3);
-    v13 = [v10 contentView];
+    objc_storeStrong(&v11->_vibrancyView, view);
+    contentView = [viewCopy contentView];
     contentView = v12->_contentView;
-    v12->_contentView = v13;
+    v12->_contentView = contentView;
 
     v21.origin.x = x;
     v21.origin.y = y;
@@ -54,13 +54,13 @@
   return v12;
 }
 
-- (void)setStyleBoundingRect:(CGRect)a3
+- (void)setStyleBoundingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_styleBoundingRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_styleBoundingRect))
   {
     self->_styleBoundingRect.origin.x = x;
     self->_styleBoundingRect.origin.y = y;
@@ -87,16 +87,16 @@
   self->_gradientView = 0;
 }
 
-- (void)_updateForVibrantStyle:(id)a3
+- (void)_updateForVibrantStyle:(id)style
 {
-  v9 = a3;
+  styleCopy = style;
   [(CSVibrantContentStyleRenderer *)self _removeGradientIfNeeded];
   if (!self->_vibrancyConfiguration)
   {
     v4 = objc_alloc(MEMORY[0x1E698E810]);
-    v5 = [v9 vibrancyEffectType];
-    v6 = [v9 vibrancyEffectColor];
-    v7 = [v4 initWithEffectType:v5 backgroundType:0 color:v6];
+    vibrancyEffectType = [styleCopy vibrancyEffectType];
+    vibrancyEffectColor = [styleCopy vibrancyEffectColor];
+    v7 = [v4 initWithEffectType:vibrancyEffectType backgroundType:0 color:vibrancyEffectColor];
     vibrancyConfiguration = self->_vibrancyConfiguration;
     self->_vibrancyConfiguration = v7;
   }
@@ -113,38 +113,38 @@
   [(BSUIVibrancyEffectView *)vibrancyView setIsEnabled:0];
 }
 
-- (BOOL)_shouldUseGlassMaterialsForStyle:(id)a3
+- (BOOL)_shouldUseGlassMaterialsForStyle:(id)style
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v5 BOOLForKey:@"SBSensitiveUIEnabled"])
+  styleCopy = style;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"SBSensitiveUIEnabled"])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 objectForKey:@"SBSensitiveUIEnabled"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults2 objectForKey:@"SBSensitiveUIEnabled"];
     v6 = v8 != 0;
   }
 
   if (_os_feature_enabled_impl() && !(v6 | ((_os_feature_enabled_impl() & 1) == 0)) && [(CSVibrantContentStyleRenderer *)self _supportsRenderingStylesWithGlassMaterial])
   {
-    v9 = [v4 supportsGlassAppearance];
+    supportsGlassAppearance = [styleCopy supportsGlassAppearance];
   }
 
   else
   {
-    v9 = 0;
+    supportsGlassAppearance = 0;
   }
 
-  return v9;
+  return supportsGlassAppearance;
 }
 
-- (void)_applyVibrantCompatibleStyle:(id)a3
+- (void)_applyVibrantCompatibleStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if ([(CSVibrantContentStyleRenderer *)self _shouldUseGlassMaterialsForStyle:?])
   {
     [(CSVibrantContentStyleRenderer *)self _updateForGlassStyle];
@@ -152,13 +152,13 @@
 
   else
   {
-    [(CSVibrantContentStyleRenderer *)self _updateForVibrantStyle:v4];
+    [(CSVibrantContentStyleRenderer *)self _updateForVibrantStyle:styleCopy];
   }
 }
 
-- (void)renderGradientStyle:(id)a3
+- (void)renderGradientStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (self->_useComplicationRenderStyle)
   {
     [(CSVibrantContentStyleRenderer *)self clearAllStyling];
@@ -169,8 +169,8 @@
   else
   {
     [(BSUIVibrancyEffectView *)self->_vibrancyView setIsEnabled:0];
-    v6 = [v4 colors];
-    v5 = [v6 bs_map:&__block_literal_global_0];
+    colors = [styleCopy colors];
+    v5 = [colors bs_map:&__block_literal_global_0];
 
     [(UIView *)self->_contentView bounds];
     x = v29.origin.x;
@@ -185,7 +185,7 @@
     MinX = CGRectGetMinX(v30);
     v13 = CGRectGetWidth(self->_styleBoundingRect);
     v14 = CGRectGetMinX(self->_styleBoundingRect);
-    v15 = [v4 locations];
+    locations = [styleCopy locations];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __53__CSVibrantContentStyleRenderer_renderGradientStyle___block_invoke_2;
@@ -194,23 +194,23 @@
     *&v28[5] = v14;
     *&v28[6] = MinX;
     *&v28[7] = v11;
-    v16 = [v15 bs_map:v28];
+    v16 = [locations bs_map:v28];
 
     gradientView = self->_gradientView;
     if (!gradientView)
     {
-      v18 = [[CSContentStyleGradientView alloc] initWithFrame:x, y, width, height];
-      v19 = [(CSContentStyleGradientView *)v18 layer];
-      [v19 setCompositingFilter:*MEMORY[0x1E6979D28]];
+      height = [[CSContentStyleGradientView alloc] initWithFrame:x, y, width, height];
+      layer = [(CSContentStyleGradientView *)height layer];
+      [layer setCompositingFilter:*MEMORY[0x1E6979D28]];
 
-      [v4 startPoint];
+      [styleCopy startPoint];
       v21 = v20;
       v23 = v22;
-      [v4 endPoint];
-      [(CSContentStyleGradientView *)v18 setStartPoint:v21 endPoint:v23, v24, v25];
+      [styleCopy endPoint];
+      [(CSContentStyleGradientView *)height setStartPoint:v21 endPoint:v23, v24, v25];
       v26 = self->_gradientView;
-      self->_gradientView = v18;
-      v27 = v18;
+      self->_gradientView = height;
+      v27 = height;
 
       [(UIView *)self->_contentView addSubview:v27];
       [(CSContentStyleGradientView *)self->_gradientView setAutoresizingMask:18];
@@ -249,7 +249,7 @@ id __53__CSVibrantContentStyleRenderer_renderGradientStyle___block_invoke_2(doub
   return v7;
 }
 
-- (void)renderGlassMaterialStyle:(id)a3
+- (void)renderGlassMaterialStyle:(id)style
 {
   if (self->_useComplicationRenderStyle)
   {

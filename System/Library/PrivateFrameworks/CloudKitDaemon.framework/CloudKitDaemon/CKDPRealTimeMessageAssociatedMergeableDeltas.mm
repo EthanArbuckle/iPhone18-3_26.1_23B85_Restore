@@ -1,33 +1,33 @@
 @interface CKDPRealTimeMessageAssociatedMergeableDeltas
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMergeableDeltas:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMergeableDeltas:(id)deltas;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRealTimeMessageAssociatedMergeableDeltas
 
-- (void)addMergeableDeltas:(id)a3
+- (void)addMergeableDeltas:(id)deltas
 {
-  v4 = a3;
+  deltasCopy = deltas;
   mergeableDeltas = self->_mergeableDeltas;
-  v8 = v4;
+  v8 = deltasCopy;
   if (!mergeableDeltas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_mergeableDeltas;
     self->_mergeableDeltas = v6;
 
-    v4 = v8;
+    deltasCopy = v8;
     mergeableDeltas = self->_mergeableDeltas;
   }
 
-  objc_msgSend_addObject_(mergeableDeltas, v4, v4);
+  objc_msgSend_addObject_(mergeableDeltas, deltasCopy, deltasCopy);
 }
 
 - (id)description
@@ -109,10 +109,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_recordIdentifier)
   {
     PBDataWriterWriteSubmessage();
@@ -163,30 +163,30 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   recordIdentifier = self->_recordIdentifier;
   if (recordIdentifier)
   {
-    objc_msgSend_setRecordIdentifier_(v18, v4, recordIdentifier);
+    objc_msgSend_setRecordIdentifier_(toCopy, v4, recordIdentifier);
   }
 
   fieldIdentifier = self->_fieldIdentifier;
   if (fieldIdentifier)
   {
-    objc_msgSend_setFieldIdentifier_(v18, v4, fieldIdentifier);
+    objc_msgSend_setFieldIdentifier_(toCopy, v4, fieldIdentifier);
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v18, v4, identifier);
+    objc_msgSend_setIdentifier_(toCopy, v4, identifier);
   }
 
   if (objc_msgSend_mergeableDeltasCount(self, v4, identifier))
   {
-    objc_msgSend_clearMergeableDeltas(v18, v8, v9);
+    objc_msgSend_clearMergeableDeltas(toCopy, v8, v9);
     v12 = objc_msgSend_mergeableDeltasCount(self, v10, v11);
     if (v12)
     {
@@ -194,27 +194,27 @@
       for (i = 0; i != v14; ++i)
       {
         v16 = objc_msgSend_mergeableDeltasAtIndex_(self, v13, i);
-        objc_msgSend_addMergeableDeltas_(v18, v17, v16);
+        objc_msgSend_addMergeableDeltas_(toCopy, v17, v16);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, zone);
   v13 = v10[4];
   v10[4] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_fieldIdentifier, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_fieldIdentifier, v14, zone);
   v16 = v10[1];
   v10[1] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_identifier, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_identifier, v17, zone);
   v19 = v10[2];
   v10[2] = v18;
 
@@ -238,7 +238,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, a3, v31);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, zone, v31);
         objc_msgSend_addMergeableDeltas_(v10, v28, v27);
 
         ++v26;
@@ -255,14 +255,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((recordIdentifier = self->_recordIdentifier, v9 = v4[4], !(recordIdentifier | v9)) || objc_msgSend_isEqual_(recordIdentifier, v7, v9)) && ((fieldIdentifier = self->_fieldIdentifier, v11 = v4[1], !(fieldIdentifier | v11)) || objc_msgSend_isEqual_(fieldIdentifier, v7, v11)) && ((identifier = self->_identifier, v13 = v4[2], !(identifier | v13)) || objc_msgSend_isEqual_(identifier, v7, v13)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((recordIdentifier = self->_recordIdentifier, v9 = equalCopy[4], !(recordIdentifier | v9)) || objc_msgSend_isEqual_(recordIdentifier, v7, v9)) && ((fieldIdentifier = self->_fieldIdentifier, v11 = equalCopy[1], !(fieldIdentifier | v11)) || objc_msgSend_isEqual_(fieldIdentifier, v7, v11)) && ((identifier = self->_identifier, v13 = equalCopy[2], !(identifier | v13)) || objc_msgSend_isEqual_(identifier, v7, v13)))
   {
     mergeableDeltas = self->_mergeableDeltas;
-    v15 = v4[3];
+    v15 = equalCopy[3];
     if (mergeableDeltas | v15)
     {
       isEqual = objc_msgSend_isEqual_(mergeableDeltas, v7, v15);
@@ -290,12 +290,12 @@
   return v7 ^ v10 ^ objc_msgSend_hash(self->_mergeableDeltas, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   recordIdentifier = self->_recordIdentifier;
-  v7 = *(v5 + 4);
+  v7 = *(fromCopy + 4);
   if (recordIdentifier)
   {
     if (v7)
@@ -310,7 +310,7 @@
   }
 
   fieldIdentifier = self->_fieldIdentifier;
-  v9 = *(v5 + 1);
+  v9 = *(fromCopy + 1);
   if (fieldIdentifier)
   {
     if (v9)
@@ -325,7 +325,7 @@
   }
 
   identifier = self->_identifier;
-  v11 = *(v5 + 2);
+  v11 = *(fromCopy + 2);
   if (identifier)
   {
     if (v11)
@@ -343,7 +343,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = *(v5 + 3);
+  v12 = *(fromCopy + 3);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v20, v24, 16);
   if (v14)
   {

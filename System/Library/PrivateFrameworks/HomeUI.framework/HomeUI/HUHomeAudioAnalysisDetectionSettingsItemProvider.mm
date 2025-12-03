@@ -1,21 +1,21 @@
 @interface HUHomeAudioAnalysisDetectionSettingsItemProvider
 - (HUHomeAudioAnalysisDetectionSettingsItemProvider)init;
-- (HUHomeAudioAnalysisDetectionSettingsItemProvider)initWithHome:(id)a3;
+- (HUHomeAudioAnalysisDetectionSettingsItemProvider)initWithHome:(id)home;
 - (id)reloadItems;
 @end
 
 @implementation HUHomeAudioAnalysisDetectionSettingsItemProvider
 
-- (HUHomeAudioAnalysisDetectionSettingsItemProvider)initWithHome:(id)a3
+- (HUHomeAudioAnalysisDetectionSettingsItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUHomeAudioAnalysisDetectionSettingsItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_opt_new();
     items = v7->_items;
     v7->_items = v8;
@@ -26,9 +26,9 @@
 
 - (HUHomeAudioAnalysisDetectionSettingsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUHomeAudioAnalysisDetectionSettingsItemProvider.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[HUHomeAudioAnalysisDetectionSettingsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeAudioAnalysisDetectionSettingsItemProvider.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[HUHomeAudioAnalysisDetectionSettingsItemProvider init]", v5}];
 
   return 0;
 }

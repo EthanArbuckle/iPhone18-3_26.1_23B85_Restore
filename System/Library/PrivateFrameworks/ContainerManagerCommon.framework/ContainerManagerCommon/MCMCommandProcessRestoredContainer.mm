@@ -6,8 +6,8 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandProcessRestoredContainer)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5;
-- (MCMCommandProcessRestoredContainer)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandProcessRestoredContainer)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise;
+- (MCMCommandProcessRestoredContainer)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
 - (void)execute;
 @end
@@ -59,20 +59,20 @@
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = [MCMCommandRecreateContainerStructure alloc];
-  v5 = [(MCMCommandProcessRestoredContainer *)self concreteContainerIdentity];
-  v6 = [(MCMCommand *)self context];
-  v7 = [(MCMCommand *)self resultPromise];
-  v8 = [(MCMCommandRecreateContainerStructure *)v4 initWithConcreteContainerIdentity:v5 context:v6 resultPromise:v7];
+  concreteContainerIdentity = [(MCMCommandProcessRestoredContainer *)self concreteContainerIdentity];
+  context = [(MCMCommand *)self context];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  v8 = [(MCMCommandRecreateContainerStructure *)v4 initWithConcreteContainerIdentity:concreteContainerIdentity context:context resultPromise:resultPromise];
 
   [(MCMCommandRecreateContainerStructure *)v8 execute];
   v9 = container_log_handle_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MCMCommand *)self resultPromise];
-    v12 = [v11 result];
-    v13 = [v12 error];
+    resultPromise2 = [(MCMCommand *)self resultPromise];
+    result = [resultPromise2 result];
+    error = [result error];
     v14 = 138412290;
-    v15 = v13;
+    v15 = error;
     _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "Process restored container result; error = %@", &v14, 0xCu);
   }
 
@@ -83,43 +83,43 @@
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToRestoreContainer];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToRestoreContainer = [clientIdentity isAllowedToRestoreContainer];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToRestoreContainer;
 }
 
-- (MCMCommandProcessRestoredContainer)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandProcessRestoredContainer)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandProcessRestoredContainer;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (MCMCommandProcessRestoredContainer)initWithConcreteContainerIdentity:(id)a3 context:(id)a4 resultPromise:(id)a5
+- (MCMCommandProcessRestoredContainer)initWithConcreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise
 {
   v15 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = MCMCommandProcessRestoredContainer;
-  v10 = [(MCMCommand *)&v14 initWithContext:a4 resultPromise:a5];
+  v10 = [(MCMCommand *)&v14 initWithContext:context resultPromise:promise];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_concreteContainerIdentity, a3);
+    objc_storeStrong(&v10->_concreteContainerIdentity, identity);
   }
 
   v12 = *MEMORY[0x1E69E9840];

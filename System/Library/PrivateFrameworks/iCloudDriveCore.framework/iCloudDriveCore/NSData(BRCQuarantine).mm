@@ -7,10 +7,10 @@
 
 - (uint64_t)br_qtnFlags
 {
-  v2 = [a1 bytes];
-  if ([a1 length] >= 7 && *v2 == 113 && *(v2 + 1) == 47 && *(v2 + 6) == 59)
+  bytes = [self bytes];
+  if ([self length] >= 7 && *bytes == 113 && *(bytes + 1) == 47 && *(bytes + 6) == 59)
   {
-    return strtol((v2 + 2), 0, 16);
+    return strtol((bytes + 2), 0, 16);
   }
 
   v4 = brc_bread_crumbs();

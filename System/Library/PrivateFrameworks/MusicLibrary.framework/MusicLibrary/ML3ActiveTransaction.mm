@@ -1,6 +1,6 @@
 @interface ML3ActiveTransaction
 - (ML3ActiveTransaction)init;
-- (ML3ActiveTransaction)initWithLibrary:(id)a3 connection:(id)a4 client:(id)a5;
+- (ML3ActiveTransaction)initWithLibrary:(id)library connection:(id)connection client:(id)client;
 - (ML3DatabaseConnection)connection;
 - (id)_relinquishConnection;
 - (id)debugDescription;
@@ -29,10 +29,10 @@
 
 - (id)debugDescription
 {
-  v3 = [(ML3Client *)self->_client processID];
+  processID = [(ML3Client *)self->_client processID];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   v7 = @"YES";
   if (self->_readOnly)
   {
@@ -44,24 +44,24 @@
     v8 = @"NO";
   }
 
-  v9 = [(ML3Client *)self->_client bundleID];
+  bundleID = [(ML3Client *)self->_client bundleID];
   if (!self->_pendingCancel)
   {
     v7 = @"NO";
   }
 
   v10 = [(ML3DatabaseConnection *)self->_connection debugDescription];
-  v11 = [v4 stringWithFormat:@"<%@ %p\n\tidentifier:             %@\n\treadonly:               %@\n\toriginating process:    %@ [%d]\n\tpendingCancel:          %@\n\tconnection:             %@\n\tlast used time:         %f", v5, self, v6, v8, v9, v3, v7, v10, *&self->_lastUsedTime];
+  v11 = [v4 stringWithFormat:@"<%@ %p\n\tidentifier:             %@\n\treadonly:               %@\n\toriginating process:    %@ [%d]\n\tpendingCancel:          %@\n\tconnection:             %@\n\tlast used time:         %f", v5, self, uUIDString, v8, bundleID, processID, v7, v10, *&self->_lastUsedTime];
 
   return v11;
 }
 
 - (id)description
 {
-  v3 = [(ML3Client *)self->_client processID];
+  processID = [(ML3Client *)self->_client processID];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   if (self->_readOnly)
   {
     v7 = @"YES";
@@ -72,8 +72,8 @@
     v7 = @"NO";
   }
 
-  v8 = [(ML3Client *)self->_client bundleID];
-  v9 = v8;
+  bundleID = [(ML3Client *)self->_client bundleID];
+  v9 = bundleID;
   if (self->_pendingCancel)
   {
     v10 = @"YES";
@@ -84,19 +84,19 @@
     v10 = @"NO";
   }
 
-  v11 = [v4 stringWithFormat:@"<%@ %p\n\tidentifier:             %@\n\treadonly:               %@\n\toriginating process:    %@ [%d]\n\tpendingCancel:          %@\n\tconnection:             %@\n\tlast used time:         %f", v5, self, v6, v7, v8, v3, v10, self->_connection, *&self->_lastUsedTime];
+  v11 = [v4 stringWithFormat:@"<%@ %p\n\tidentifier:             %@\n\treadonly:               %@\n\toriginating process:    %@ [%d]\n\tpendingCancel:          %@\n\tconnection:             %@\n\tlast used time:         %f", v5, self, uUIDString, v7, bundleID, processID, v10, self->_connection, *&self->_lastUsedTime];
 
   return v11;
 }
 
-- (ML3ActiveTransaction)initWithLibrary:(id)a3 connection:(id)a4 client:(id)a5
+- (ML3ActiveTransaction)initWithLibrary:(id)library connection:(id)connection client:(id)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  libraryCopy = library;
+  connectionCopy = connection;
+  clientCopy = client;
+  if (connectionCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -104,17 +104,17 @@
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"ML3ActiveTransaction.m" lineNumber:32 description:@"Tried to create a transaction object with a nil connection."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3ActiveTransaction.m" lineNumber:32 description:@"Tried to create a transaction object with a nil connection."];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"ML3ActiveTransaction.m" lineNumber:33 description:@"Tried to create a transaction object without a library."];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3ActiveTransaction.m" lineNumber:33 description:@"Tried to create a transaction object without a library."];
 
 LABEL_3:
   v28.receiver = self;
@@ -123,14 +123,14 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_library, a3);
-    objc_storeStrong(&v14->_client, a5);
-    objc_storeStrong(&v14->_connection, a4);
-    v15 = [(ML3DatabaseConnection *)v14->_connection currentTransactionID];
-    v16 = v15;
-    if (v15)
+    objc_storeStrong(&v13->_library, library);
+    objc_storeStrong(&v14->_client, client);
+    objc_storeStrong(&v14->_connection, connection);
+    currentTransactionID = [(ML3DatabaseConnection *)v14->_connection currentTransactionID];
+    v16 = currentTransactionID;
+    if (currentTransactionID)
     {
-      v17 = v15;
+      v17 = currentTransactionID;
     }
 
     else

@@ -1,9 +1,9 @@
 @interface PKFaceIDBannerHandleRequest
 + (id)create;
-+ (id)createForRecordingType:(unsigned __int8)a3;
-+ (id)registerElementForRecording:(unsigned __int8)a3 withCompletion:(id)a4;
-- (PKFaceIDBannerHandleRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForRecordingType:(unsigned __int8)type;
++ (id)registerElementForRecording:(unsigned __int8)recording withCompletion:(id)completion;
+- (PKFaceIDBannerHandleRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFaceIDBannerHandleRequest
@@ -25,9 +25,9 @@
   return result;
 }
 
-+ (id)createForRecordingType:(unsigned __int8)a3
++ (id)createForRecordingType:(unsigned __int8)type
 {
-  if (a3)
+  if (type)
   {
     result = [PKFaceIDBannerHandleRequest alloc];
     if (result)
@@ -41,7 +41,7 @@
       }
     }
 
-    *(result + 16) = a3;
+    *(result + 16) = type;
   }
 
   else
@@ -52,37 +52,37 @@
   return result;
 }
 
-- (PKFaceIDBannerHandleRequest)initWithCoder:(id)a3
+- (PKFaceIDBannerHandleRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKFaceIDBannerHandleRequest;
-  v5 = [(PKBannerHandleRequest *)&v7 initWithCoder:v4];
+  v5 = [(PKBannerHandleRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_recordingType = [v4 decodeInt32ForKey:@"recordingType"];
+    v5->_recordingType = [coderCopy decodeInt32ForKey:@"recordingType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFaceIDBannerHandleRequest;
-  v4 = a3;
-  [(PKBannerHandleRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_recordingType forKey:{@"recordingType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKBannerHandleRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_recordingType forKey:{@"recordingType", v5.receiver, v5.super_class}];
 }
 
-+ (id)registerElementForRecording:(unsigned __int8)a3 withCompletion:(id)a4
++ (id)registerElementForRecording:(unsigned __int8)recording withCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [PKFaceIDBannerHandleRequest createForRecordingType:v4];
+  recordingCopy = recording;
+  completionCopy = completion;
+  v6 = [PKFaceIDBannerHandleRequest createForRecordingType:recordingCopy];
   v7 = [PKBannerHandle createHandleForRequest:v6 queue:MEMORY[0x1E69E96A0]];
 
-  [v7 displayWithCompletion:v5];
+  [v7 displayWithCompletion:completionCopy];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface NSConstantIntegerNumber
 - ($2F068FC02377E22BA03580A8162C781E)decimalValue;
 - (BOOL)BOOLValue;
-- (void)getValue:(void *)a3;
-- (void)getValue:(void *)a3 size:(unint64_t)a4;
+- (void)getValue:(void *)value;
+- (void)getValue:(void *)value size:(unint64_t)size;
 @end
 
 @implementation NSConstantIntegerNumber
@@ -28,7 +28,7 @@
   return self;
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   v3 = *self->_encoding;
   v4 = 1;
@@ -79,7 +79,7 @@ LABEL_15:
     }
 
 LABEL_19:
-    memmove(a3, &self->_value, v4);
+    memmove(value, &self->_value, v4);
     return;
   }
 
@@ -100,7 +100,7 @@ LABEL_20:
   __break(1u);
 }
 
-- (void)getValue:(void *)a3 size:(unint64_t)a4
+- (void)getValue:(void *)value size:(unint64_t)size
 {
   v5 = *self->_encoding;
   v6 = 1;
@@ -169,13 +169,13 @@ LABEL_24:
   }
 
 LABEL_19:
-  if (v6 != a4)
+  if (v6 != size)
   {
-    v7 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", a4, "d", v6];
+    v7 = [NSString stringWithFormat:@"Cannot get value with size %zu. The type encoded as %s is expected to be %zu bytes", size, "d", v6];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v7 userInfo:0]);
   }
 
-  memmove(a3, &self->_value, a4);
+  memmove(value, &self->_value, size);
 }
 
 - ($2F068FC02377E22BA03580A8162C781E)decimalValue

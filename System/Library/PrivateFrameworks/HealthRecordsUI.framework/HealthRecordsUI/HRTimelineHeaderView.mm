@@ -2,16 +2,16 @@
 + (NSString)reuseIdentifier;
 - (BOOL)floating;
 - (BOOL)separatorViewHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HRTimelineHeaderView)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HRTimelineHeaderView)initWithReuseIdentifier:(id)identifier;
 - (HRTimelineHeaderViewDelegate)delegate;
-- (void)applyStyleFromNavigationBar:(id)a3;
-- (void)applyTitle:(id)a3 subtitle:(id)a4;
+- (void)applyStyleFromNavigationBar:(id)bar;
+- (void)applyTitle:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFloating:(BOOL)a3;
-- (void)setSeparatorViewHidden:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFloating:(BOOL)floating;
+- (void)setSeparatorViewHidden:(BOOL)hidden;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HRTimelineHeaderView
@@ -40,19 +40,19 @@
   return *(self + v3);
 }
 
-- (void)setSeparatorViewHidden:(BOOL)a3
+- (void)setSeparatorViewHidden:(BOOL)hidden
 {
   v5 = OBJC_IVAR___HRTimelineHeaderView_separatorViewHidden;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = hidden;
+  selfCopy = self;
   v7 = sub_1D1108680();
   [v7 setHidden_];
 }
 
-- (HRTimelineHeaderView)initWithReuseIdentifier:(id)a3
+- (HRTimelineHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1D139016C();
   }
@@ -66,22 +66,22 @@
   return TimelineHeaderView.init(reuseIdentifier:)(v3, v4);
 }
 
-- (void)applyTitle:(id)a3 subtitle:(id)a4
+- (void)applyTitle:(id)title subtitle:(id)subtitle
 {
   v5 = sub_1D139016C();
   v7 = v6;
   v8 = sub_1D139016C();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1D1108B44(v5, v7, v8, v10);
 }
 
-- (void)applyStyleFromNavigationBar:(id)a3
+- (void)applyStyleFromNavigationBar:(id)bar
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  barCopy = bar;
   v6 = sub_1D11085D0();
-  if (v5 && (v7 = [v5 _backdropViewLayerGroupName]) != 0)
+  if (barCopy && (v7 = [barCopy _backdropViewLayerGroupName]) != 0)
   {
     v8 = v7;
     sub_1D139016C();
@@ -102,7 +102,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1108E34();
 }
 
@@ -113,33 +113,33 @@
   return [(HRTimelineHeaderView *)&v3 floating];
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  v3 = a3;
+  floatingCopy = floating;
   v5 = type metadata accessor for TimelineHeaderView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(HRTimelineHeaderView *)&v9 floating];
-  v8.receiver = v6;
+  selfCopy = self;
+  floating = [(HRTimelineHeaderView *)&v9 floating];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(HRTimelineHeaderView *)&v8 setFloating:v3];
-  sub_1D1109018(v7);
+  [(HRTimelineHeaderView *)&v8 setFloating:floatingCopy];
+  sub_1D1109018(floating);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D11091D0();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  [(HRTimelineHeaderView *)v4 layoutMargins];
+  width = fits.width;
+  selfCopy = self;
+  [(HRTimelineHeaderView *)selfCopy layoutMargins];
   v6 = width - v5;
-  [(HRTimelineHeaderView *)v4 layoutMargins];
+  [(HRTimelineHeaderView *)selfCopy layoutMargins];
   v8 = v6 - v7;
   v9 = sub_1D1108450();
   [v9 sizeThatFits_];
@@ -156,11 +156,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D11096B4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D11096B4(change);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface HKCodableCellHeaderViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDetailsVisibility:(BOOL)a3;
-- (void)setHasForceDayGranularity:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDetailsVisibility:(BOOL)visibility;
+- (void)setHasForceDayGranularity:(BOOL)granularity;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableCellHeaderViewModel
 
-- (void)setHasForceDayGranularity:(BOOL)a3
+- (void)setHasForceDayGranularity:(BOOL)granularity
 {
-  if (a3)
+  if (granularity)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDetailsVisibility:(BOOL)a3
+- (void)setHasDetailsVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableCellHeaderViewModel;
   v4 = [(HKCodableCellHeaderViewModel *)&v8 description];
-  v5 = [(HKCodableCellHeaderViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableCellHeaderViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   titleText = self->_titleText;
   if (titleText)
   {
-    [v3 setObject:titleText forKey:@"titleText"];
+    [dictionary setObject:titleText forKey:@"titleText"];
   }
 
   systemImageName = self->_systemImageName;
@@ -74,8 +74,8 @@
   foregroundColor = self->_foregroundColor;
   if (foregroundColor)
   {
-    v8 = [(HKCodableColorRepresentation *)foregroundColor dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"foregroundColor"];
+    dictionaryRepresentation = [(HKCodableColorRepresentation *)foregroundColor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"foregroundColor"];
   }
 
   has = self->_has;
@@ -108,15 +108,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_titleText)
   {
     [HKCodableCellHeaderViewModel writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_systemImageName)
   {
@@ -156,39 +156,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setTitleText:self->_titleText];
+  toCopy = to;
+  [toCopy setTitleText:self->_titleText];
   if (self->_systemImageName)
   {
-    [v6 setSystemImageName:?];
+    [toCopy setSystemImageName:?];
   }
 
   if (self->_foregroundColor)
   {
-    [v6 setForegroundColor:?];
+    [toCopy setForegroundColor:?];
   }
 
   has = self->_has;
-  v5 = v6;
+  v5 = toCopy;
   if (has)
   {
-    *(v6 + 1) = *&self->_detailDate;
-    *(v6 + 60) |= 1u;
+    *(toCopy + 1) = *&self->_detailDate;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v6 + 56) = self->_forceDayGranularity;
-    *(v6 + 60) |= 4u;
+    *(toCopy + 56) = self->_forceDayGranularity;
+    *(toCopy + 60) |= 4u;
   }
 
   if (self->_detailText)
   {
-    [v6 setDetailText:?];
-    v5 = v6;
+    [toCopy setDetailText:?];
+    v5 = toCopy;
   }
 
   if ((*&self->_has & 2) != 0)
@@ -198,18 +198,18 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_titleText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_titleText copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_systemImageName copyWithZone:a3];
+  v8 = [(NSString *)self->_systemImageName copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(HKCodableColorRepresentation *)self->_foregroundColor copyWithZone:a3];
+  v10 = [(HKCodableColorRepresentation *)self->_foregroundColor copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -227,7 +227,7 @@
     *(v5 + 60) |= 4u;
   }
 
-  v13 = [(NSString *)self->_detailText copyWithZone:a3];
+  v13 = [(NSString *)self->_detailText copyWithZone:zone];
   v14 = *(v5 + 24);
   *(v5 + 24) = v13;
 
@@ -240,16 +240,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   titleText = self->_titleText;
-  if (titleText | *(v4 + 6))
+  if (titleText | *(equalCopy + 6))
   {
     if (![(NSString *)titleText isEqual:?])
     {
@@ -258,7 +258,7 @@
   }
 
   systemImageName = self->_systemImageName;
-  if (systemImageName | *(v4 + 5))
+  if (systemImageName | *(equalCopy + 5))
   {
     if (![(NSString *)systemImageName isEqual:?])
     {
@@ -267,7 +267,7 @@
   }
 
   foregroundColor = self->_foregroundColor;
-  if (foregroundColor | *(v4 + 4))
+  if (foregroundColor | *(equalCopy + 4))
   {
     if (![(HKCodableColorRepresentation *)foregroundColor isEqual:?])
     {
@@ -278,45 +278,45 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_detailDate != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_detailDate != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_23;
     }
 
     if (self->_forceDayGranularity)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   detailText = self->_detailText;
-  if (!(detailText | *(v4 + 3)))
+  if (!(detailText | *(equalCopy + 3)))
   {
     goto LABEL_18;
   }
@@ -330,10 +330,10 @@ LABEL_23:
 
   has = self->_has;
 LABEL_18:
-  v10 = (*(v4 + 60) & 2) == 0;
+  v10 = (*(equalCopy + 60) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_detailsVisibility != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_detailsVisibility != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
@@ -408,24 +408,24 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(HKCodableCellHeaderViewModel *)self setTitleText:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HKCodableCellHeaderViewModel *)self setSystemImageName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   foregroundColor = self->_foregroundColor;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (foregroundColor)
   {
     if (!v6)
@@ -446,35 +446,35 @@ LABEL_24:
     foregroundColor = [(HKCodableCellHeaderViewModel *)self setForegroundColor:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_11:
-  v7 = *(v4 + 60);
+  v7 = *(fromCopy + 60);
   if (v7)
   {
-    self->_detailDate = *(v4 + 1);
+    self->_detailDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 60);
+    v7 = *(fromCopy + 60);
   }
 
   if ((v7 & 4) != 0)
   {
-    self->_forceDayGranularity = *(v4 + 56);
+    self->_forceDayGranularity = *(fromCopy + 56);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     foregroundColor = [(HKCodableCellHeaderViewModel *)self setDetailText:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_detailsVisibility = *(v4 + 2);
+    self->_detailsVisibility = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  MEMORY[0x1EEE66BB8](foregroundColor, v4);
+  MEMORY[0x1EEE66BB8](foregroundColor, fromCopy);
 }
 
 @end

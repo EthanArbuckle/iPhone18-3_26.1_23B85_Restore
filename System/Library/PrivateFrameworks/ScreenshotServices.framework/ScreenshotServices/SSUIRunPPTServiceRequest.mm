@@ -1,33 +1,33 @@
 @interface SSUIRunPPTServiceRequest
-- (SSUIRunPPTServiceRequest)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSUIRunPPTServiceRequest)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSUIRunPPTServiceRequest
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SSUIRunPPTServiceRequest;
-  v4 = a3;
-  [(SSUIServiceRequest *)&v6 encodeWithBSXPCCoder:v4];
+  coderCopy = coder;
+  [(SSUIServiceRequest *)&v6 encodeWithBSXPCCoder:coderCopy];
   v5 = [(SSUIRunPPTServiceRequest *)self testName:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"SSUIRunPPTServiceRequestTestName"];
+  [coderCopy encodeObject:v5 forKey:@"SSUIRunPPTServiceRequestTestName"];
 
-  [v4 encodeUInt64:-[SSUIRunPPTServiceRequest numberOfRequiredScreenshots](self forKey:{"numberOfRequiredScreenshots"), @"SSUIRunPPTServiceRequestNumberOfRequiredScreenshots"}];
+  [coderCopy encodeUInt64:-[SSUIRunPPTServiceRequest numberOfRequiredScreenshots](self forKey:{"numberOfRequiredScreenshots"), @"SSUIRunPPTServiceRequestNumberOfRequiredScreenshots"}];
 }
 
-- (SSUIRunPPTServiceRequest)initWithBSXPCCoder:(id)a3
+- (SSUIRunPPTServiceRequest)initWithBSXPCCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SSUIRunPPTServiceRequest;
-  v3 = a3;
-  v4 = [(SSUIServiceRequest *)&v9 initWithBSXPCCoder:v3];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"SSUIRunPPTServiceRequestTestName", v9.receiver, v9.super_class}];
+  coderCopy = coder;
+  v4 = [(SSUIServiceRequest *)&v9 initWithBSXPCCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"SSUIRunPPTServiceRequestTestName", v9.receiver, v9.super_class}];
   testName = v4->_testName;
   v4->_testName = v5;
 
-  v7 = [v3 decodeUInt64ForKey:@"SSUIRunPPTServiceRequestNumberOfRequiredScreenshots"];
+  v7 = [coderCopy decodeUInt64ForKey:@"SSUIRunPPTServiceRequestNumberOfRequiredScreenshots"];
   v4->_numberOfRequiredScreenshots = v7;
   return v4;
 }

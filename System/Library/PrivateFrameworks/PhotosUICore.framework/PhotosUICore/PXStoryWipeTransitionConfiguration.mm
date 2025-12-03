@@ -1,10 +1,10 @@
 @interface PXStoryWipeTransitionConfiguration
 - (CGSize)viewportSize;
 - (PXStoryWipeTransitionConfiguration)init;
-- (PXStoryWipeTransitionConfiguration)initWithDuration:(id *)a3;
-- (void)addClipLayout:(id)a3 configurationBlock:(id)a4;
+- (PXStoryWipeTransitionConfiguration)initWithDuration:(id *)duration;
+- (void)addClipLayout:(id)layout configurationBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateLayoutsUsingBlock:(id)a3;
+- (void)enumerateLayoutsUsingBlock:(id)block;
 @end
 
 @implementation PXStoryWipeTransitionConfiguration
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (void)enumerateLayoutsUsingBlock:(id)a3
+- (void)enumerateLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v38 = 0;
   if (self->_count >= 1)
   {
@@ -34,7 +34,7 @@
       v10 = &self->_targetStates[v5];
       v11 = &self->_primaryDividerInfos[v6];
       v12 = &self->_secondaryDividerInfos[v6];
-      v13 = v4[2];
+      v13 = blockCopy[2];
       size = v9->var0.size;
       v37[0] = v9->var0.origin;
       v37[1] = size;
@@ -85,7 +85,7 @@
       v34[4] = v33;
       v34[1] = v31;
       v34[2] = v32;
-      v13(v4, v8, v37, v36, v35, v34, &v38);
+      v13(blockCopy, v8, v37, v36, v35, v34, &v38);
 
       if (v38 == 1)
       {
@@ -101,10 +101,10 @@
   }
 }
 
-- (void)addClipLayout:(id)a3 configurationBlock:(id)a4
+- (void)addClipLayout:(id)layout configurationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   clipLayouts = self->_clipLayouts;
   if (!clipLayouts)
   {
@@ -115,7 +115,7 @@
     clipLayouts = self->_clipLayouts;
   }
 
-  [(NSMutableArray *)clipLayouts addObject:v6];
+  [(NSMutableArray *)clipLayouts addObject:layoutCopy];
   capacity = self->_capacity;
   ++self->_count;
   *&v12 = capacity;
@@ -133,15 +133,15 @@
   [(PXStoryWipeTransitionConfiguration *)&v3 dealloc];
 }
 
-- (PXStoryWipeTransitionConfiguration)initWithDuration:(id *)a3
+- (PXStoryWipeTransitionConfiguration)initWithDuration:(id *)duration
 {
   v6.receiver = self;
   v6.super_class = PXStoryWipeTransitionConfiguration;
   result = [(PXStoryWipeTransitionConfiguration *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0;
-    result->_duration.epoch = a3->var3;
+    v5 = *&duration->var0;
+    result->_duration.epoch = duration->var3;
     *&result->_duration.value = v5;
   }
 
@@ -150,8 +150,8 @@
 
 - (PXStoryWipeTransitionConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:384 description:{@"%s is not available as initializer", "-[PXStoryWipeTransitionConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:384 description:{@"%s is not available as initializer", "-[PXStoryWipeTransitionConfiguration init]"}];
 
   abort();
 }

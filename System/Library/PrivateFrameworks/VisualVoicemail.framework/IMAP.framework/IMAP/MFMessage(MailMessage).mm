@@ -6,10 +6,10 @@
 
 - (id)attachmentStorageLocation
 {
-  v1 = [a1 messageStore];
-  v2 = [v1 storagePath];
+  messageStore = [self messageStore];
+  storagePath = [messageStore storagePath];
 
-  return v2;
+  return storagePath;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface ChildItemsViewModel
-- (BOOL)isEqual:(id)a3;
-- (ChildItemsViewModel)initWithChildItems:(id)a3 childItemsSpacing:(double)a4 font:(id)a5 maxWidth:(double)a6 buttonContentEdgeInsets:(UIEdgeInsets)a7;
-- (void)calculateModelWithChildItemsSpacing:(double)a3 font:(id)a4 maxWidth:(double)a5 buttonContentEdgeInsets:(UIEdgeInsets)a6;
+- (BOOL)isEqual:(id)equal;
+- (ChildItemsViewModel)initWithChildItems:(id)items childItemsSpacing:(double)spacing font:(id)font maxWidth:(double)width buttonContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)calculateModelWithChildItemsSpacing:(double)spacing font:(id)font maxWidth:(double)width buttonContentEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation ChildItemsViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -19,12 +19,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ChildItemsViewModel *)self numberOfRows];
-      if (v6 == [(ChildItemsViewModel *)v5 numberOfRows]&& (v7 = [(ChildItemsViewModel *)self numberOfColumns], v7 == [(ChildItemsViewModel *)v5 numberOfColumns]))
+      v5 = equalCopy;
+      numberOfRows = [(ChildItemsViewModel *)self numberOfRows];
+      if (numberOfRows == [(ChildItemsViewModel *)v5 numberOfRows]&& (v7 = [(ChildItemsViewModel *)self numberOfColumns], v7 == [(ChildItemsViewModel *)v5 numberOfColumns]))
       {
-        v8 = [(ChildItemsViewModel *)self childItemsCount];
-        v9 = v8 == [(ChildItemsViewModel *)v5 childItemsCount];
+        childItemsCount = [(ChildItemsViewModel *)self childItemsCount];
+        v9 = childItemsCount == [(ChildItemsViewModel *)v5 childItemsCount];
       }
 
       else
@@ -42,18 +42,18 @@
   return v9;
 }
 
-- (void)calculateModelWithChildItemsSpacing:(double)a3 font:(id)a4 maxWidth:(double)a5 buttonContentEdgeInsets:(UIEdgeInsets)a6
+- (void)calculateModelWithChildItemsSpacing:(double)spacing font:(id)font maxWidth:(double)width buttonContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  left = a6.left;
-  v11 = a4;
+  right = insets.right;
+  left = insets.left;
+  fontCopy = font;
   v12 = [NSMutableArray arrayWithCapacity:[(ChildItemsViewModel *)self childItemsCount]];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = [(ChildItemsViewModel *)self childItems];
-  v14 = [v13 countByEnumeratingWithState:&v36 objects:v43 count:16];
+  childItems = [(ChildItemsViewModel *)self childItems];
+  v14 = [childItems countByEnumeratingWithState:&v36 objects:v43 count:16];
   if (v14)
   {
     v15 = v14;
@@ -64,7 +64,7 @@
       {
         if (*v37 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(childItems);
         }
 
         v18 = [ChildItemButton buttonTitleWithChildItem:*(*(&v36 + 1) + 8 * i)];
@@ -74,7 +74,7 @@
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v36 objects:v43 count:16];
+      v15 = [childItems countByEnumeratingWithState:&v36 objects:v43 count:16];
     }
 
     while (v15);
@@ -102,7 +102,7 @@
 
         v25 = *(*(&v32 + 1) + 8 * j);
         v40 = NSFontAttributeName;
-        v41 = v11;
+        v41 = fontCopy;
         v26 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1, v32];
         [v25 sizeWithAttributes:v26];
         v28 = ceil(v27);
@@ -122,54 +122,54 @@
   }
 
   v29 = left + right + v23;
-  if (([(ChildItemsViewModel *)self childItemsCount]== 3 || [(ChildItemsViewModel *)self childItemsCount]== 5 || [(ChildItemsViewModel *)self childItemsCount]== 6) && a3 + a3 + v29 * 3.0 < a5)
+  if (([(ChildItemsViewModel *)self childItemsCount]== 3 || [(ChildItemsViewModel *)self childItemsCount]== 5 || [(ChildItemsViewModel *)self childItemsCount]== 6) && spacing + spacing + v29 * 3.0 < width)
   {
     [(ChildItemsViewModel *)self setNumberOfColumns:3];
     if ([(ChildItemsViewModel *)self childItemsCount]<= 3)
     {
-      v30 = 1;
+      childItemsCount = 1;
     }
 
     else
     {
-      v30 = 2;
+      childItemsCount = 2;
     }
   }
 
-  else if (([(ChildItemsViewModel *)self childItemsCount]& 1) != 0 || a3 + v29 * 2.0 >= a5)
+  else if (([(ChildItemsViewModel *)self childItemsCount]& 1) != 0 || spacing + v29 * 2.0 >= width)
   {
     [(ChildItemsViewModel *)self setNumberOfColumns:1];
-    v30 = [(ChildItemsViewModel *)self childItemsCount];
+    childItemsCount = [(ChildItemsViewModel *)self childItemsCount];
   }
 
   else
   {
     [(ChildItemsViewModel *)self setNumberOfColumns:2];
-    v31 = [(ChildItemsViewModel *)self childItemsCount];
-    v30 = ([(ChildItemsViewModel *)self childItemsCount]& 1) + (v31 >> 1);
+    childItemsCount2 = [(ChildItemsViewModel *)self childItemsCount];
+    childItemsCount = ([(ChildItemsViewModel *)self childItemsCount]& 1) + (childItemsCount2 >> 1);
   }
 
-  [(ChildItemsViewModel *)self setNumberOfRows:v30, v32];
+  [(ChildItemsViewModel *)self setNumberOfRows:childItemsCount, v32];
 }
 
-- (ChildItemsViewModel)initWithChildItems:(id)a3 childItemsSpacing:(double)a4 font:(id)a5 maxWidth:(double)a6 buttonContentEdgeInsets:(UIEdgeInsets)a7
+- (ChildItemsViewModel)initWithChildItems:(id)items childItemsSpacing:(double)spacing font:(id)font maxWidth:(double)width buttonContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  v15 = a3;
-  v16 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  itemsCopy = items;
+  fontCopy = font;
   v21.receiver = self;
   v21.super_class = ChildItemsViewModel;
   v17 = [(ChildItemsViewModel *)&v21 init];
   if (v17)
   {
-    v18 = [v15 copy];
+    v18 = [itemsCopy copy];
     childItems = v17->_childItems;
     v17->_childItems = v18;
 
-    [(ChildItemsViewModel *)v17 calculateModelWithChildItemsSpacing:v16 font:a4 maxWidth:a6 buttonContentEdgeInsets:top, left, bottom, right];
+    [(ChildItemsViewModel *)v17 calculateModelWithChildItemsSpacing:fontCopy font:spacing maxWidth:width buttonContentEdgeInsets:top, left, bottom, right];
   }
 
   return v17;

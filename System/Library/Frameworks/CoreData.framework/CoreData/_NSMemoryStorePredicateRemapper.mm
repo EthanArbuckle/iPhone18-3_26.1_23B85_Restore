@@ -1,9 +1,9 @@
 @interface _NSMemoryStorePredicateRemapper
 + (id)defaultInstance;
 - (_NSMemoryStorePredicateRemapper)init;
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4;
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context;
 - (void)dealloc;
-- (void)visitPredicate:(id)a3;
+- (void)visitPredicate:(id)predicate;
 @end
 
 @implementation _NSMemoryStorePredicateRemapper
@@ -34,11 +34,11 @@
   [(_NSMemoryStorePredicateRemapper *)&v3 dealloc];
 }
 
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context
 {
-  v6 = [a3 copy];
+  v6 = [predicate copy];
   v7 = v6;
-  if (a4 && *(*(a4 + 21) + 8))
+  if (context && *(*(context + 21) + 8))
   {
     v8 = [_NSMemoryStorePredicateRemapper alloc];
     if (v8)
@@ -46,7 +46,7 @@
       v9 = [(_NSMemoryStorePredicateRemapper *)v8 init];
       if (v9)
       {
-        v9->_context = a4;
+        v9->_context = context;
       }
     }
 
@@ -66,26 +66,26 @@
   return v7;
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 predicateOperator];
-    v6 = [a3 predicateOperatorType];
-    if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    predicateOperator = [predicate predicateOperator];
+    predicateOperatorType = [predicate predicateOperatorType];
+    if ((predicateOperatorType & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
-      v7 = -[NSEqualityPredicateOperator initWithOperatorType:modifier:negate:options:]([NSMemoryStoreEqualityPredicateOperator alloc], "initWithOperatorType:modifier:negate:options:", v6, [v5 modifier], objc_msgSend(v5, "isNegation"), objc_msgSend(a3, "options"));
+      v7 = -[NSEqualityPredicateOperator initWithOperatorType:modifier:negate:options:]([NSMemoryStoreEqualityPredicateOperator alloc], "initWithOperatorType:modifier:negate:options:", predicateOperatorType, [predicateOperator modifier], objc_msgSend(predicateOperator, "isNegation"), objc_msgSend(predicate, "options"));
     }
 
     else
     {
-      if (v6 != 10)
+      if (predicateOperatorType != 10)
       {
         return;
       }
 
-      v7 = -[NSPredicateOperator initWithOperatorType:modifier:options:]([NSMemoryStoreInPredicateOperator alloc], "initWithOperatorType:modifier:options:", 10, [v5 modifier], objc_msgSend(v5, "options"));
+      v7 = -[NSPredicateOperator initWithOperatorType:modifier:options:]([NSMemoryStoreInPredicateOperator alloc], "initWithOperatorType:modifier:options:", 10, [predicateOperator modifier], objc_msgSend(predicateOperator, "options"));
     }
 
     v8 = v7;
@@ -98,7 +98,7 @@
         v8 = v9;
       }
 
-      [a3 setPredicateOperator:v8];
+      [predicate setPredicateOperator:v8];
     }
   }
 }

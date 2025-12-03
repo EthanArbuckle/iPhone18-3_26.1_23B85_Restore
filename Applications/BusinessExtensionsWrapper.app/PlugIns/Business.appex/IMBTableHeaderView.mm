@@ -1,11 +1,11 @@
 @interface IMBTableHeaderView
-- (_TtC8Business18IMBTableHeaderView)initWithCoder:(id)a3;
-- (_TtC8Business18IMBTableHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC8Business18IMBTableHeaderView)initWithCoder:(id)coder;
+- (_TtC8Business18IMBTableHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation IMBTableHeaderView
 
-- (_TtC8Business18IMBTableHeaderView)initWithCoder:(id)a3
+- (_TtC8Business18IMBTableHeaderView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Business18IMBTableHeaderView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Business18IMBTableHeaderView____lazy_storage___subtitleLabel) = 0;
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (_TtC8Business18IMBTableHeaderView)initWithFrame:(CGRect)a3
+- (_TtC8Business18IMBTableHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

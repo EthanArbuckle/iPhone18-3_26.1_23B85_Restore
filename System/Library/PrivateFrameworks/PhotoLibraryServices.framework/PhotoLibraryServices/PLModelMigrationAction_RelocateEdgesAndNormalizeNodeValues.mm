@@ -1,26 +1,26 @@
 @interface PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues
-+ (void)_encloseActor:(id)a3 fromEdge:(id)a4 isSource:(BOOL)a5 actorLabel:(id)a6 cache:(id)a7;
-- (BOOL)_migrateEdgesToNativelyModeledObjectsWithError:(id *)a3 context:(id)a4;
-- (BOOL)_migrateGraphEdgeValuesWithError:(id *)a3 context:(id)a4;
-- (BOOL)_migrateGraphNodeValuesWithError:(id *)a3 context:(id)a4;
-- (BOOL)_migrateNodePropertiesWithError:(id *)a3 context:(id)a4;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (void)_encloseActor:(id)actor fromEdge:(id)edge isSource:(BOOL)source actorLabel:(id)label cache:(id)cache;
+- (BOOL)_migrateEdgesToNativelyModeledObjectsWithError:(id *)error context:(id)context;
+- (BOOL)_migrateGraphEdgeValuesWithError:(id *)error context:(id)context;
+- (BOOL)_migrateGraphNodeValuesWithError:(id *)error context:(id)context;
+- (BOOL)_migrateNodePropertiesWithError:(id *)error context:(id)context;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 - (void)setup;
 @end
 
 @implementation PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v22 = 0;
-  v7 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateGraphNodeValuesWithError:&v22 context:v6];
+  v7 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateGraphNodeValuesWithError:&v22 context:contextCopy];
   v8 = v22;
   v9 = v8;
   if (v7)
   {
     v21 = v8;
-    v10 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateGraphEdgeValuesWithError:&v21 context:v6];
+    v10 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateGraphEdgeValuesWithError:&v21 context:contextCopy];
     v11 = v21;
 
     if (!v10)
@@ -32,13 +32,13 @@ LABEL_9:
     }
 
     v20 = v11;
-    v12 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateNodePropertiesWithError:&v20 context:v6];
+    v12 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateNodePropertiesWithError:&v20 context:contextCopy];
     v9 = v20;
 
     if (v12)
     {
       v19 = v9;
-      v13 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateEdgesToNativelyModeledObjectsWithError:&v19 context:v6];
+      v13 = [(PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues *)self _migrateEdgesToNativelyModeledObjectsWithError:&v19 context:contextCopy];
       v11 = v19;
 
       if (v13)
@@ -60,23 +60,23 @@ LABEL_10:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v15 = v9;
   v16 = v15;
-  if (v14 != 1 && a4)
+  if (v14 != 1 && error)
   {
     v17 = v15;
-    *a4 = v16;
+    *error = v16;
   }
 
   return v14;
 }
 
-- (BOOL)_migrateEdgesToNativelyModeledObjectsWithError:(id *)a3 context:(id)a4
+- (BOOL)_migrateEdgesToNativelyModeledObjectsWithError:(id *)error context:(id)context
 {
   v112 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  contextCopy = context;
+  v8 = contextCopy;
+  if (error)
   {
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -84,8 +84,8 @@ LABEL_10:
 
   else
   {
-    v62 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v62 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
 
     if (v8)
     {
@@ -93,8 +93,8 @@ LABEL_10:
     }
   }
 
-  v63 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v63 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
 LABEL_3:
   v70 = 0;
@@ -106,8 +106,8 @@ LABEL_3:
 
   if (v10)
   {
-    v11 = [(PLModelMigrationActionCore *)self logger];
-    v12 = v11 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v12 = logger == 0;
 
     if (v12)
     {
@@ -202,19 +202,19 @@ LABEL_3:
     v66[4] = self;
     v66[5] = &v70;
     v66[6] = &v78;
-    v66[7] = a3;
+    v66[7] = error;
     v26 = [(PLEnumerateAndSaveController *)v23 initWithName:v25 fetchRequest:v21 context:v68 options:4 generateContextBlock:v67 didFetchObjectIDsBlock:0 processResultsBlock:v66];
 
     [(PLEnumerateAndSaveController *)v26 setItemsPerBatch:4000];
-    if ([(PLEnumerateAndSaveController *)v26 processObjectsWithError:a3])
+    if ([(PLEnumerateAndSaveController *)v26 processObjectsWithError:error])
     {
       v27 = PLMigrationGetLog();
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
 
       if (v28)
       {
-        v29 = [(PLModelMigrationActionCore *)self logger];
-        v30 = v29 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v30 = logger2 == 0;
 
         if (v30)
         {
@@ -287,8 +287,8 @@ LABEL_3:
 
       if (v43)
       {
-        v44 = [(PLModelMigrationActionCore *)self logger];
-        v45 = v44 == 0;
+        logger3 = [(PLModelMigrationActionCore *)self logger];
+        v45 = logger3 == 0;
 
         if (v45)
         {
@@ -297,7 +297,7 @@ LABEL_3:
           {
             v58 = objc_opt_class();
             v59 = NSStringFromClass(v58);
-            v60 = *a3;
+            v60 = *error;
             *buf = 138543618;
             *&buf[4] = v59;
             *&buf[12] = 2114;
@@ -343,7 +343,7 @@ LABEL_3:
           os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
           v47 = objc_opt_class();
           v48 = NSStringFromClass(v47);
-          v49 = *a3;
+          v49 = *error;
           v74 = 138543618;
           v75 = v48;
           v76 = 2114;
@@ -376,8 +376,8 @@ LABEL_3:
 
     if (v36)
     {
-      v37 = [(PLModelMigrationActionCore *)self logger];
-      v38 = v37 == 0;
+      logger4 = [(PLModelMigrationActionCore *)self logger];
+      v38 = logger4 == 0;
 
       if (v38)
       {
@@ -441,7 +441,7 @@ LABEL_3:
     }
 
     v53 = v20;
-    *a3 = v20;
+    *error = v20;
 
     v54 = 0;
   }
@@ -451,14 +451,14 @@ LABEL_3:
   return v54 & 1;
 }
 
-- (BOOL)_migrateNodePropertiesWithError:(id *)a3 context:(id)a4
+- (BOOL)_migrateNodePropertiesWithError:(id *)error context:(id)context
 {
   v95 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  contextCopy = context;
+  v8 = contextCopy;
+  if (error)
   {
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -466,8 +466,8 @@ LABEL_3:
 
   else
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:897 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:897 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
 
     if (v8)
     {
@@ -475,19 +475,19 @@ LABEL_3:
     }
   }
 
-  v53 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v53 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:898 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:898 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
 LABEL_3:
-  v9 = [v8 pl_graphCache];
+  pl_graphCache = [v8 pl_graphCache];
   v10 = PLMigrationGetLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
   if (v11)
   {
-    v12 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v12)
+    if (logger)
     {
       v93 = 0u;
       v94 = 0u;
@@ -554,13 +554,13 @@ LABEL_3:
   v20 = v19;
   if (v18)
   {
-    v21 = self;
+    selfCopy = self;
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __102__PLModelMigrationAction_RelocateEdgesAndNormalizeNodeValues__migrateNodePropertiesWithError_context___block_invoke;
     v56[3] = &unk_1E7567FE8;
-    v55 = v9;
-    v57 = v9;
+    v55 = pl_graphCache;
+    v57 = pl_graphCache;
     v58 = v8;
     v22 = [v58 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v56];
     v23 = v22;
@@ -568,15 +568,15 @@ LABEL_3:
     if (v22)
     {
       v25 = v22;
-      *a3 = v23;
+      *error = v23;
       v26 = PLMigrationGetLog();
       v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
 
       if (v27)
       {
-        v28 = [(PLModelMigrationActionCore *)v21 logger];
+        logger2 = [(PLModelMigrationActionCore *)selfCopy logger];
 
-        if (v28)
+        if (logger2)
         {
           v93 = 0u;
           v94 = 0u;
@@ -610,7 +610,7 @@ LABEL_3:
           v65 = 0u;
           memset(buf, 0, sizeof(buf));
           v29 = PLMigrationGetLog();
-          v30 = v21;
+          v30 = selfCopy;
           os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
           v31 = objc_opt_class();
           v32 = NSStringFromClass(v31);
@@ -647,21 +647,21 @@ LABEL_3:
       }
     }
 
-    v9 = v55;
+    pl_graphCache = v55;
   }
 
   else
   {
     v35 = v19;
-    *a3 = v20;
+    *error = v20;
     v36 = PLMigrationGetLog();
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_ERROR);
 
     if (v37)
     {
-      v38 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v38)
+      if (logger3)
       {
         v93 = 0u;
         v94 = 0u;
@@ -703,10 +703,10 @@ LABEL_3:
         v62 = 2114;
         v63 = v20;
         LODWORD(v54) = 22;
-        v42 = self;
+        selfCopy2 = self;
         v43 = _os_log_send_and_compose_impl();
 
-        v44 = [(PLModelMigrationActionCore *)v42 logger:&v60];
+        v44 = [(PLModelMigrationActionCore *)selfCopy2 logger:&v60];
         [v44 logWithMessage:v43 fromCodeLocation:"PLModelMigrationActions_19000.m" type:{933, 16}];
 
         if (v43 != buf)
@@ -737,14 +737,14 @@ LABEL_3:
   return v24;
 }
 
-- (BOOL)_migrateGraphEdgeValuesWithError:(id *)a3 context:(id)a4
+- (BOOL)_migrateGraphEdgeValuesWithError:(id *)error context:(id)context
 {
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  contextCopy = context;
+  v8 = contextCopy;
+  if (error)
   {
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -752,8 +752,8 @@ LABEL_3:
 
   else
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:855 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:855 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
 
     if (v8)
     {
@@ -761,8 +761,8 @@ LABEL_3:
     }
   }
 
-  v48 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v48 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:856 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:856 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
 LABEL_3:
   v9 = PLMigrationGetLog();
@@ -770,9 +770,9 @@ LABEL_3:
 
   if (v10)
   {
-    v11 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v11)
+    if (logger)
     {
       v85 = 0u;
       v86 = 0u;
@@ -850,15 +850,15 @@ LABEL_3:
     if (v20)
     {
       v23 = v20;
-      *a3 = v21;
+      *error = v21;
       v24 = PLMigrationGetLog();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
 
       if (v25)
       {
-        v26 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v26)
+        if (logger2)
         {
           v85 = 0u;
           v86 = 0u;
@@ -932,15 +932,15 @@ LABEL_3:
   else
   {
     v32 = v18;
-    *a3 = v19;
+    *error = v19;
     v33 = PLMigrationGetLog();
     v22 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
 
     if (v22)
     {
-      v34 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v34)
+      if (logger3)
       {
         v85 = 0u;
         v86 = 0u;
@@ -1015,14 +1015,14 @@ LABEL_3:
   return v22;
 }
 
-- (BOOL)_migrateGraphNodeValuesWithError:(id *)a3 context:(id)a4
+- (BOOL)_migrateGraphNodeValuesWithError:(id *)error context:(id)context
 {
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (a3)
+  contextCopy = context;
+  v8 = contextCopy;
+  if (error)
   {
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -1030,8 +1030,8 @@ LABEL_3:
 
   else
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:813 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:813 description:{@"Invalid parameter not satisfying: %@", @"localError"}];
 
     if (v8)
     {
@@ -1039,8 +1039,8 @@ LABEL_3:
     }
   }
 
-  v48 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v48 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:814 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:814 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
 LABEL_3:
   v9 = PLMigrationGetLog();
@@ -1048,9 +1048,9 @@ LABEL_3:
 
   if (v10)
   {
-    v11 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v11)
+    if (logger)
     {
       v85 = 0u;
       v86 = 0u;
@@ -1128,15 +1128,15 @@ LABEL_3:
     if (v20)
     {
       v23 = v20;
-      *a3 = v21;
+      *error = v21;
       v24 = PLMigrationGetLog();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
 
       if (v25)
       {
-        v26 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v26)
+        if (logger2)
         {
           v85 = 0u;
           v86 = 0u;
@@ -1210,15 +1210,15 @@ LABEL_3:
   else
   {
     v32 = v18;
-    *a3 = v19;
+    *error = v19;
     v33 = PLMigrationGetLog();
     v22 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
 
     if (v22)
     {
-      v34 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v34)
+      if (logger3)
       {
         v85 = 0u;
         v86 = 0u;
@@ -1299,33 +1299,33 @@ LABEL_3:
   self->_nameCodesByStringName = &unk_1F0FC05F0;
 }
 
-+ (void)_encloseActor:(id)a3 fromEdge:(id)a4 isSource:(BOOL)a5 actorLabel:(id)a6 cache:(id)a7
++ (void)_encloseActor:(id)actor fromEdge:(id)edge isSource:(BOOL)source actorLabel:(id)label cache:(id)cache
 {
-  v9 = a5;
-  v37 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (!v14)
+  sourceCopy = source;
+  actorCopy = actor;
+  edgeCopy = edge;
+  labelCopy = label;
+  cacheCopy = cache;
+  if (!labelCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActions_19000.m" lineNumber:774 description:{@"Invalid parameter not satisfying: %@", @"actorLabel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:774 description:{@"Invalid parameter not satisfying: %@", @"actorLabel"}];
   }
 
-  v16 = v37;
-  if (v13)
+  v16 = actorCopy;
+  if (edgeCopy)
   {
-    if (v15)
+    if (cacheCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_23:
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActions_19000.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"actorNodesByActingObjectID"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:776 description:{@"Invalid parameter not satisfying: %@", @"actorNodesByActingObjectID"}];
 
-    v16 = v37;
-    if (!v37)
+    v16 = actorCopy;
+    if (!actorCopy)
     {
       goto LABEL_19;
     }
@@ -1333,11 +1333,11 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"PLModelMigrationActions_19000.m" lineNumber:775 description:{@"Invalid parameter not satisfying: %@", @"edge"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_19000.m" lineNumber:775 description:{@"Invalid parameter not satisfying: %@", @"edge"}];
 
-  v16 = v37;
-  if (!v15)
+  v16 = actorCopy;
+  if (!cacheCopy)
   {
     goto LABEL_23;
   }
@@ -1349,18 +1349,18 @@ LABEL_5:
   }
 
 LABEL_6:
-  v17 = [v16 objectID];
-  v18 = [v15 objectForKeyedSubscript:v17];
+  objectID = [v16 objectID];
+  v18 = [cacheCopy objectForKeyedSubscript:objectID];
 
   if (!v18)
   {
-    v19 = [v37 managedObjectContext];
-    v18 = [PLGraphNode insertGraphNodeInContext:v19 withPrimaryLabel:v14];
+    managedObjectContext = [actorCopy managedObjectContext];
+    v18 = [PLGraphNode insertGraphNodeInContext:managedObjectContext withPrimaryLabel:labelCopy];
 
-    v20 = [v37 entity];
-    v21 = [v20 name];
+    entity = [actorCopy entity];
+    name = [entity name];
     v22 = +[PLManagedAsset entityName];
-    v23 = [v21 isEqualToString:v22];
+    v23 = [name isEqualToString:v22];
 
     if (v23)
     {
@@ -1369,10 +1369,10 @@ LABEL_6:
 
     else
     {
-      v25 = [v37 entity];
-      v26 = [v25 name];
+      entity2 = [actorCopy entity];
+      name2 = [entity2 name];
       v27 = +[PLMoment entityName];
-      v28 = [v26 isEqualToString:v27];
+      v28 = [name2 isEqualToString:v27];
 
       if (v28)
       {
@@ -1381,10 +1381,10 @@ LABEL_6:
 
       else
       {
-        v29 = [v37 entity];
-        v30 = [v29 name];
+        entity3 = [actorCopy entity];
+        name3 = [entity3 name];
         v31 = +[PLPerson entityName];
-        v32 = [v30 isEqualToString:v31];
+        v32 = [name3 isEqualToString:v31];
 
         if (v32)
         {
@@ -1398,19 +1398,19 @@ LABEL_6:
       }
     }
 
-    [v18 pl_setValue:v37 forKey:v24 valueDidChangeHandler:0];
-    v33 = [v37 objectID];
-    [v15 setObject:v18 forKeyedSubscript:v33];
+    [v18 pl_setValue:actorCopy forKey:v24 valueDidChangeHandler:0];
+    objectID2 = [actorCopy objectID];
+    [cacheCopy setObject:v18 forKeyedSubscript:objectID2];
   }
 
-  if (v9)
+  if (sourceCopy)
   {
-    [v13 setSourceNode:v18];
+    [edgeCopy setSourceNode:v18];
   }
 
   else
   {
-    [v13 setTargetNode:v18];
+    [edgeCopy setTargetNode:v18];
   }
 
 LABEL_19:

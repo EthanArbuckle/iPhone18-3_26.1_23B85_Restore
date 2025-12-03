@@ -1,16 +1,16 @@
 @interface CKDetailsShowMoreContactsLargeTextCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetailsShowMoreContactsLargeTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetailsShowMoreContactsLargeTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_initConstraints;
 @end
 
 @implementation CKDetailsShowMoreContactsLargeTextCell
 
-- (CKDetailsShowMoreContactsLargeTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsShowMoreContactsLargeTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CKDetailsShowMoreContactsLargeTextCell;
-  v4 = [(CKDetailsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -23,44 +23,44 @@
 - (void)_initConstraints
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
+  [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v15 = MEMORY[0x1E696ACD8];
-  v22 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
-  v20 = [v22 leadingAnchor];
-  v21 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
-  v19 = [v21 layoutMarginsGuide];
-  v18 = [v19 leadingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v18];
+  textLabel2 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
+  leadingAnchor = [textLabel2 leadingAnchor];
+  contentView = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[0] = v17;
-  v16 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
-  v14 = [v16 trailingAnchor];
-  v4 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
-  v5 = [v4 layoutMarginsGuide];
-  v6 = [v5 trailingAnchor];
-  v7 = [v14 constraintEqualToAnchor:v6];
+  textLabel3 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
+  trailingAnchor = [textLabel3 trailingAnchor];
+  contentView2 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v7;
-  v8 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
-  v9 = [v8 topAnchor];
-  v10 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:10.0];
+  textLabel4 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
+  topAnchor = [textLabel4 topAnchor];
+  contentView3 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v23[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   [v15 activateConstraints:v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v5 = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  [v6 layoutFrame];
+  height = fits.height;
+  contentView = [(CKDetailsShowMoreContactsLargeTextCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v8 = v7;
 
-  v9 = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
-  [v9 sizeThatFits:{v8, height}];
+  textLabel = [(CKDetailsShowMoreContactsLargeTextCell *)self textLabel];
+  [textLabel sizeThatFits:{v8, height}];
   v11 = v10;
 
   v12 = v11 + 20.0;

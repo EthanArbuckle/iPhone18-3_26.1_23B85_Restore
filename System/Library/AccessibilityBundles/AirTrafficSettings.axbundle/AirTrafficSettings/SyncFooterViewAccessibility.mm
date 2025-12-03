@@ -1,26 +1,26 @@
 @interface SyncFooterViewAccessibility
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)updateProgress:(id)a3 dataSource:(id)a4;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)updateProgress:(id)progress dataSource:(id)source;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
 @end
 
 @implementation SyncFooterViewAccessibility
 
-- (BOOL)updateProgress:(id)a3 dataSource:(id)a4
+- (BOOL)updateProgress:(id)progress dataSource:(id)source
 {
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
   v14[2] = __57__SyncFooterViewAccessibility_updateProgress_dataSource___block_invoke;
   v14[3] = &unk_29F29C9A0;
   v14[4] = self;
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  progressCopy = progress;
   v8 = MEMORY[0x29C2C7D90](v14);
   v9 = v8[2]();
   v13.receiver = self;
   v13.super_class = SyncFooterViewAccessibility;
-  v10 = [(SyncFooterViewAccessibility *)&v13 updateProgress:v7 dataSource:v6];
+  v10 = [(SyncFooterViewAccessibility *)&v13 updateProgress:progressCopy dataSource:sourceCopy];
 
   v11 = (v8[2])(v8);
   if (([v9 isEqualToSet:v11] & 1) == 0)
@@ -107,47 +107,47 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(SyncFooterViewAccessibility *)self subviews];
+    subviews = [(SyncFooterViewAccessibility *)self subviews];
   }
 
   else
   {
-    v3 = 0;
+    subviews = 0;
   }
 
-  return v3;
+  return subviews;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v7 = kIsHitTestingSyncFooterView;
-  v8 = a4;
+  eventCopy = event;
   v9 = [(SyncFooterViewAccessibility *)self _accessibilityBoolValueForKey:v7];
   [(SyncFooterViewAccessibility *)self _accessibilitySetBoolValue:1 forKey:kIsHitTestingSyncFooterView];
   v12.receiver = self;
   v12.super_class = SyncFooterViewAccessibility;
-  v10 = [(SyncFooterViewAccessibility *)&v12 _accessibilityHitTest:v8 withEvent:x, y];
+  v10 = [(SyncFooterViewAccessibility *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
 
   [(SyncFooterViewAccessibility *)self _accessibilitySetBoolValue:v9 forKey:kIsHitTestingSyncFooterView];
 
   return v10;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v24 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   if ([(SyncFooterViewAccessibility *)self _accessibilityBoolValueForKey:kIsHitTestingSyncFooterView])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = self;
-      [(SyncFooterViewAccessibility *)v8 subviews];
+      selfCopy = self;
+      [(SyncFooterViewAccessibility *)selfCopy subviews];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -167,8 +167,8 @@ LABEL_19:
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            [(SyncFooterViewAccessibility *)v8 convertPoint:v14 toView:x, y];
-            if ([v14 pointInside:v7 withEvent:?])
+            [(SyncFooterViewAccessibility *)selfCopy convertPoint:v14 toView:x, y];
+            if ([v14 pointInside:eventCopy withEvent:?])
             {
 
               v15 = 1;
@@ -190,7 +190,7 @@ LABEL_19:
 
   v18.receiver = self;
   v18.super_class = SyncFooterViewAccessibility;
-  v15 = [(SyncFooterViewAccessibility *)&v18 pointInside:v7 withEvent:x, y];
+  v15 = [(SyncFooterViewAccessibility *)&v18 pointInside:eventCopy withEvent:x, y];
 LABEL_13:
 
   v16 = *MEMORY[0x29EDCA608];

@@ -1,12 +1,12 @@
 @interface ListPickerSectionHeader
-- (_TtC8Business23ListPickerSectionHeader)initWithReuseIdentifier:(id)a3;
+- (_TtC8Business23ListPickerSectionHeader)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation ListPickerSectionHeader
 
-- (_TtC8Business23ListPickerSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC8Business23ListPickerSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_1000AC06C();
   }

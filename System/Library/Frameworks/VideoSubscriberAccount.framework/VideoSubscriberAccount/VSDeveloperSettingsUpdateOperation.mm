@@ -1,21 +1,21 @@
 @interface VSDeveloperSettingsUpdateOperation
 - (VSDeveloperServiceConnection)connection;
-- (VSDeveloperSettingsUpdateOperation)initWithSettings:(id)a3;
+- (VSDeveloperSettingsUpdateOperation)initWithSettings:(id)settings;
 - (void)executionDidBegin;
 @end
 
 @implementation VSDeveloperSettingsUpdateOperation
 
-- (VSDeveloperSettingsUpdateOperation)initWithSettings:(id)a3
+- (VSDeveloperSettingsUpdateOperation)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = VSDeveloperSettingsUpdateOperation;
   v6 = [(VSDeveloperSettingsUpdateOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = objc_alloc_init(VSOptional);
     v9 = v7->_result;
     v7->_result = v8;
@@ -26,16 +26,16 @@
 
 - (VSDeveloperServiceConnection)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_connection;
   if (!v3)
   {
     v3 = objc_alloc_init(VSDeveloperServiceConnection);
-    objc_storeStrong(&v2->_connection, v3);
+    objc_storeStrong(&selfCopy->_connection, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -47,21 +47,21 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSDeveloperSettingsUpdateOperation *)self settings];
-  if (!v3)
+  settings = [(VSDeveloperSettingsUpdateOperation *)self settings];
+  if (!settings)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Developer settings operation invoked with nil settings."];
   }
 
-  v4 = [(VSDeveloperSettingsUpdateOperation *)self connection];
+  connection = [(VSDeveloperSettingsUpdateOperation *)self connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__VSDeveloperSettingsUpdateOperation_executionDidBegin__block_invoke;
   v7[3] = &unk_278B732E0;
   v7[4] = self;
-  v5 = [v4 serviceWithErrorHandler:v7];
+  v5 = [connection serviceWithErrorHandler:v7];
 
-  if (!v3)
+  if (!settings)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The settingsOrNil parameter must not be nil."];
   }
@@ -71,7 +71,7 @@
   v6[2] = __55__VSDeveloperSettingsUpdateOperation_executionDidBegin__block_invoke_2;
   v6[3] = &unk_278B73308;
   v6[4] = self;
-  [v5 updateDeveloperSettings:v3 completionHandler:v6];
+  [v5 updateDeveloperSettings:settings completionHandler:v6];
 }
 
 uint64_t __55__VSDeveloperSettingsUpdateOperation_executionDidBegin__block_invoke(uint64_t a1, uint64_t a2)

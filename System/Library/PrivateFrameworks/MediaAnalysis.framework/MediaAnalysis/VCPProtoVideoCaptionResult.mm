@@ -1,13 +1,13 @@
 @interface VCPProtoVideoCaptionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoVideoCaptionResult
@@ -18,53 +18,53 @@
   v8.receiver = self;
   v8.super_class = VCPProtoVideoCaptionResult;
   v4 = [(VCPProtoVideoCaptionResult *)&v8 description];
-  v5 = [(VCPProtoVideoCaptionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoVideoCaptionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_confidence;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteStringField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_confidence;
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_confidence == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_confidence == *(equalCopy + 2))
   {
     text = self->_text;
-    if (text | v4[2])
+    if (text | equalCopy[2])
     {
       v6 = [(NSString *)text isEqual:?];
     }
@@ -118,18 +118,18 @@
   return [(NSString *)self->_text hash]^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_confidence = *(a3 + 2);
-  if (*(a3 + 2))
+  self->_confidence = *(from + 2);
+  if (*(from + 2))
   {
     [(VCPProtoVideoCaptionResult *)self setText:?];
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = v3;
   if (v3)
   {
@@ -183,17 +183,17 @@
 - (id)exportToLegacyDictionary
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = MEMORY[0x1E696AD98];
   [(VCPProtoVideoCaptionResult *)self confidence];
   v5 = [v4 numberWithFloat:?];
-  [v3 setObject:v5 forKeyedSubscript:@"videoCaptionConfidence"];
+  [dictionary setObject:v5 forKeyedSubscript:@"videoCaptionConfidence"];
 
-  v6 = [(VCPProtoVideoCaptionResult *)self text];
-  [v3 setObject:v6 forKeyedSubscript:@"videoCaptionText"];
+  text = [(VCPProtoVideoCaptionResult *)self text];
+  [dictionary setObject:text forKeyedSubscript:@"videoCaptionText"];
 
   v9 = @"attributes";
-  v10[0] = v3;
+  v10[0] = dictionary;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   return v7;

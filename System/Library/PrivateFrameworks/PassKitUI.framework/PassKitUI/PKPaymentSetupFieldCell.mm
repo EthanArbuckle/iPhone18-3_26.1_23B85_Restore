@@ -1,127 +1,127 @@
 @interface PKPaymentSetupFieldCell
-+ (id)paymentSetupFieldCellForField:(id)a3 fromTableView:(id)a4;
++ (id)paymentSetupFieldCellForField:(id)field fromTableView:(id)view;
 + (id)reuseIdentifier;
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BOOL)usesCustomInputView;
 - (CGRect)_separatorFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPaymentSetupFieldCell)init;
-- (PKPaymentSetupFieldCell)initWithSetupField:(id)a3;
+- (PKPaymentSetupFieldCell)initWithSetupField:(id)field;
 - (PKPaymentSetupFieldCellDelegate)delegate;
 - (double)_minimumHeight;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_applyDefaultValues;
 - (void)_clearKeyboardAccessories;
 - (void)_configureKeyboardAccessories;
-- (void)_editableTextFieldDidBeginEditing:(id)a3;
-- (void)_editableTextFieldDidEndEditing:(id)a3;
-- (void)_editableTextFieldValueChanged:(id)a3;
-- (void)_keyboardAccessoryButtonTapped:(id)a3;
-- (void)_keyboardDidHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_paymentSetupFieldCurrentValueChangedNotification:(id)a3;
+- (void)_editableTextFieldDidBeginEditing:(id)editing;
+- (void)_editableTextFieldDidEndEditing:(id)editing;
+- (void)_editableTextFieldValueChanged:(id)changed;
+- (void)_keyboardAccessoryButtonTapped:(id)tapped;
+- (void)_keyboardDidHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_paymentSetupFieldCurrentValueChangedNotification:(id)notification;
 - (void)_pullCurrentValueFromField;
 - (void)_pushCurrentValueToField;
 - (void)_removeObserversForKeyboardState;
 - (void)_setUpObserversForKeyboardState;
-- (void)_updateDisplay:(BOOL)a3;
-- (void)_updateDisplayForFieldTypeDate:(id)a3;
-- (void)_updateDisplayForFieldTypePicker:(id)a3;
-- (void)_updateDisplayForFieldTypeText:(id)a3;
-- (void)_updateTextFieldStylingWithForceUpdate:(BOOL)a3;
-- (void)datePicker:(id)a3 didChangeDate:(id)a4;
+- (void)_updateDisplay:(BOOL)display;
+- (void)_updateDisplayForFieldTypeDate:(id)date;
+- (void)_updateDisplayForFieldTypePicker:(id)picker;
+- (void)_updateDisplayForFieldTypeText:(id)text;
+- (void)_updateTextFieldStylingWithForceUpdate:(BOOL)update;
+- (void)datePicker:(id)picker didChangeDate:(id)date;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)pk_applyAppearance:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)pk_applyAppearance:(id)appearance;
 - (void)prepareForReuse;
 - (void)resetTextFieldStyling;
-- (void)setEditableTextFieldCameraCapturedTextColor:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHidePrediction:(BOOL)a3;
-- (void)setMinimumTextLabelWidth:(double)a3;
-- (void)setPaymentSetupField:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setEditableTextFieldCameraCapturedTextColor:(id)color;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHidePrediction:(BOOL)prediction;
+- (void)setMinimumTextLabelWidth:(double)width;
+- (void)setPaymentSetupField:(id)field;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updatePaymentSetupFieldWithCurrentCellValue;
 - (void)updatePaymentSetupFieldWithFormatting;
 @end
 
 @implementation PKPaymentSetupFieldCell
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupFieldCell;
-  v4 = a3;
-  [(PKTableViewCell *)&v6 pk_applyAppearance:v4];
-  v5 = [v4 tintColor];
+  appearanceCopy = appearance;
+  [(PKTableViewCell *)&v6 pk_applyAppearance:appearanceCopy];
+  tintColor = [appearanceCopy tintColor];
 
-  [(PKPaymentSetupFieldCell *)self setEditableTextFieldCameraCapturedTextColor:v5];
+  [(PKPaymentSetupFieldCell *)self setEditableTextFieldCameraCapturedTextColor:tintColor];
 }
 
-+ (id)paymentSetupFieldCellForField:(id)a3 fromTableView:(id)a4
++ (id)paymentSetupFieldCellForField:(id)field fromTableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E69BC220]];
+  fieldCopy = field;
+  viewCopy = view;
+  identifier = [fieldCopy identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x1E69BC220]];
 
   if (v9)
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  v10 = [v6 identifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69BC1B8]];
+  identifier2 = [fieldCopy identifier];
+  v11 = [identifier2 isEqualToString:*MEMORY[0x1E69BC1B8]];
 
   if (v11)
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  if ([v6 isFieldTypeLabel])
+  if ([fieldCopy isFieldTypeLabel])
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  if ([v6 isFieldTypePicker])
+  if ([fieldCopy isFieldTypePicker])
   {
-    v12 = [v6 pickerFieldObject];
-    v13 = [v12 pickerType];
+    pickerFieldObject = [fieldCopy pickerFieldObject];
+    pickerType = [pickerFieldObject pickerType];
 
-    if (v13 == 3)
+    if (pickerType == 3)
     {
-      a1 = objc_opt_class();
+      self = objc_opt_class();
     }
   }
 
-  v14 = [a1 reuseIdentifier];
-  v15 = [v7 dequeueReusableCellWithIdentifier:v14];
+  reuseIdentifier = [self reuseIdentifier];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier];
 
   if (!v15)
   {
-    v15 = objc_alloc_init(a1);
+    v15 = objc_alloc_init(self);
   }
 
-  [v15 setPaymentSetupField:v6];
-  v16 = [v6 identifier];
-  [v15 setAccessibilityIdentifier:v16];
+  [v15 setPaymentSetupField:fieldCopy];
+  identifier3 = [fieldCopy identifier];
+  [v15 setAccessibilityIdentifier:identifier3];
 
   return v15;
 }
 
 - (PKPaymentSetupFieldCell)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
   v31.receiver = self;
   v31.super_class = PKPaymentSetupFieldCell;
-  v4 = [(PKPaymentSetupFieldCell *)&v31 initWithStyle:0 reuseIdentifier:v3];
+  v4 = [(PKPaymentSetupFieldCell *)&v31 initWithStyle:0 reuseIdentifier:reuseIdentifier];
 
   if (v4)
   {
@@ -130,53 +130,53 @@
     v4->_textField = v5;
 
     [(PKUITextField *)v4->_textField setAllowsTextFromCamera:0];
-    v7 = [(PKPaymentSetupFieldCell *)v4 contentView];
-    [v7 addSubview:v4->_textField];
+    contentView = [(PKPaymentSetupFieldCell *)v4 contentView];
+    [contentView addSubview:v4->_textField];
 
     [(PKPaymentSetupFieldCell *)v4 setEnabled:1];
     [(PKPaymentSetupFieldCell *)v4 setPreservesSuperviewLayoutMargins:0];
     [(PKPaymentSetupFieldCell *)v4 setLayoutMargins:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-    v8 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    [v8 addTarget:v4 action:sel__editableTextFieldDidBeginEditing_ forControlEvents:0x10000];
+    editableTextField = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    [editableTextField addTarget:v4 action:sel__editableTextFieldDidBeginEditing_ forControlEvents:0x10000];
 
-    v9 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    [v9 addTarget:v4 action:sel__editableTextFieldValueChanged_ forControlEvents:0x20000];
+    editableTextField2 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    [editableTextField2 addTarget:v4 action:sel__editableTextFieldValueChanged_ forControlEvents:0x20000];
 
-    v10 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    [v10 addTarget:v4 action:sel__editableTextFieldDidEndEditing_ forControlEvents:0x40000];
+    editableTextField3 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    [editableTextField3 addTarget:v4 action:sel__editableTextFieldDidEndEditing_ forControlEvents:0x40000];
 
     [(PKPaymentSetupFieldCell *)v4 setSelectionStyle:0];
     [(PKPaymentSetupFieldCell *)v4 setShouldDrawFullWidthSeperator:0];
     [(PKPaymentSetupFieldCell *)v4 setShouldDrawSeperator:1];
-    v11 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    v12 = [v11 inputAssistantItem];
-    v13 = [v12 leadingBarButtonGroups];
+    editableTextField4 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    inputAssistantItem = [editableTextField4 inputAssistantItem];
+    leadingBarButtonGroups = [inputAssistantItem leadingBarButtonGroups];
     defaultLeadingBarButtonGroups = v4->_defaultLeadingBarButtonGroups;
-    v4->_defaultLeadingBarButtonGroups = v13;
+    v4->_defaultLeadingBarButtonGroups = leadingBarButtonGroups;
 
-    v15 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    v16 = [v15 inputAssistantItem];
-    v17 = [v16 trailingBarButtonGroups];
+    editableTextField5 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    inputAssistantItem2 = [editableTextField5 inputAssistantItem];
+    trailingBarButtonGroups = [inputAssistantItem2 trailingBarButtonGroups];
     defaultTrailingBarButtonGroups = v4->_defaultTrailingBarButtonGroups;
-    v4->_defaultTrailingBarButtonGroups = v17;
+    v4->_defaultTrailingBarButtonGroups = trailingBarButtonGroups;
 
-    v19 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
-    v20 = [v19 inputAssistantItem];
-    v21 = [v20 _centerBarButtonGroups];
+    editableTextField6 = [(PKPaymentSetupFieldCell *)v4 editableTextField];
+    inputAssistantItem3 = [editableTextField6 inputAssistantItem];
+    _centerBarButtonGroups = [inputAssistantItem3 _centerBarButtonGroups];
     defaultCenterBarButtonGroups = v4->_defaultCenterBarButtonGroups;
-    v4->_defaultCenterBarButtonGroups = v21;
+    v4->_defaultCenterBarButtonGroups = _centerBarButtonGroups;
 
-    v23 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     editableTextFieldTextColor = v4->_editableTextFieldTextColor;
-    v4->_editableTextFieldTextColor = v23;
+    v4->_editableTextFieldTextColor = labelColor;
 
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     editableTextFieldDisabledTextColor = v4->_editableTextFieldDisabledTextColor;
-    v4->_editableTextFieldDisabledTextColor = v25;
+    v4->_editableTextFieldDisabledTextColor = secondaryLabelColor;
 
-    v27 = [(PKPaymentSetupFieldCell *)v4 tintColor];
+    tintColor = [(PKPaymentSetupFieldCell *)v4 tintColor];
     editableTextFieldCameraCapturedTextColor = v4->_editableTextFieldCameraCapturedTextColor;
-    v4->_editableTextFieldCameraCapturedTextColor = v27;
+    v4->_editableTextFieldCameraCapturedTextColor = tintColor;
 
     v29 = PKProvisioningSecondaryBackgroundColor();
     [(PKPaymentSetupFieldCell *)v4 setBackgroundColor:v29];
@@ -189,14 +189,14 @@
   return v4;
 }
 
-- (PKPaymentSetupFieldCell)initWithSetupField:(id)a3
+- (PKPaymentSetupFieldCell)initWithSetupField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v5 = [(PKPaymentSetupFieldCell *)self init];
   v6 = v5;
   if (v5)
   {
-    [(PKPaymentSetupFieldCell *)v5 setPaymentSetupField:v4];
+    [(PKPaymentSetupFieldCell *)v5 setPaymentSetupField:fieldCopy];
   }
 
   return v6;
@@ -204,8 +204,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPaymentSetupFieldCell;
@@ -217,25 +217,25 @@
   v48.receiver = self;
   v48.super_class = PKPaymentSetupFieldCell;
   [(PKPaymentSetupFieldCell *)&v48 layoutSubviews];
-  v3 = [(PKPaymentSetupFieldCell *)self textLabel];
-  v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  if (v4)
+  textLabel = [(PKPaymentSetupFieldCell *)self textLabel];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  if (editableTextField)
   {
-    v5 = [(PKPaymentSetupFieldCell *)self contentView];
-    [v5 bounds];
+    contentView = [(PKPaymentSetupFieldCell *)self contentView];
+    [contentView bounds];
     v46 = v7;
     v47 = v6;
     v9 = v8;
     v11 = v10;
-    [v3 frame];
-    [v4 sizeThatFits:{v9, v11}];
-    v12 = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
+    [textLabel frame];
+    [editableTextField sizeThatFits:{v9, v11}];
+    _shouldReverseLayoutDirection = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
     PKOBKListInlineCellContentEdgeInsets();
     v16 = v15;
     v17 = v13;
     v19 = v18;
     v20 = v14;
-    if (v12)
+    if (_shouldReverseLayoutDirection)
     {
       v21 = v14;
     }
@@ -245,24 +245,24 @@
       v21 = v13;
     }
 
-    if ([v4 textAlignment] != 2 || v12)
+    if ([editableTextField textAlignment] != 2 || _shouldReverseLayoutDirection)
     {
-      if (!v12)
+      if (!_shouldReverseLayoutDirection)
       {
         v17 = v20;
       }
 
-      [v4 textAlignment];
+      [editableTextField textAlignment];
     }
 
     v45 = v47 + v21;
     v22 = v9 - (v21 + v17);
     v44 = v11 - (v16 + v19);
-    [v3 sizeThatFits:v22];
+    [textLabel sizeThatFits:v22];
     v42 = v23;
-    v24 = [(PKPaymentSetupFieldCell *)self traitCollection];
-    v25 = [v24 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v25);
+    traitCollection = [(PKPaymentSetupFieldCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     minimumTextLabelWidth = 0.0;
     if (!IsAccessibilityCategory)
@@ -280,7 +280,7 @@
     {
       v35 = v45;
       v36 = v45;
-      if (v12)
+      if (_shouldReverseLayoutDirection)
       {
         v49.origin.x = v45;
         v49.origin.y = v43;
@@ -289,7 +289,7 @@
         v36 = CGRectGetMaxX(v49) - v22;
       }
 
-      [v3 setFrame:{v36, v46 + 22.0, v22, v34}];
+      [textLabel setFrame:{v36, v46 + 22.0, v22, v34}];
       v50.origin.x = v36;
       v50.origin.y = v46 + 22.0;
       v50.size.width = v22;
@@ -302,7 +302,7 @@
       v37 = v32;
       v38 = fmin(fmax(v42, minimumTextLabelWidth), v22 + -122.0);
       v35 = v45;
-      if (v12)
+      if (_shouldReverseLayoutDirection)
       {
         v51.origin.x = v45;
         v51.origin.y = v43;
@@ -310,13 +310,13 @@
         v51.size.width = v22;
         MaxX = CGRectGetMaxX(v51);
         v40 = MaxX - v38;
-        [v3 setFrame:{MaxX - v38, v37, v38, v34}];
+        [textLabel setFrame:{MaxX - v38, v37, v38, v34}];
         v22 = v40 - v45 + -22.0;
       }
 
       else
       {
-        [v3 setFrame:{v45, v32, v38, v33}];
+        [textLabel setFrame:{v45, v32, v38, v33}];
         v52.origin.x = v45;
         v52.origin.y = v37;
         v52.size.width = v38;
@@ -331,7 +331,7 @@
       }
     }
 
-    [v4 setFrame:{v35, MaxY, v22, v31}];
+    [editableTextField setFrame:{v35, MaxY, v22, v31}];
   }
 }
 
@@ -347,98 +347,98 @@
   return [(PKPaymentSetupField *)paymentSetupField isFieldTypePicker];
 }
 
-- (void)setPaymentSetupField:(id)a3
+- (void)setPaymentSetupField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   paymentSetupField = self->_paymentSetupField;
-  if (paymentSetupField != v5)
+  if (paymentSetupField != fieldCopy)
   {
-    v10 = v5;
+    v10 = fieldCopy;
     v7 = MEMORY[0x1E69BC188];
     if (paymentSetupField)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:*v7 object:self->_paymentSetupField];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*v7 object:self->_paymentSetupField];
     }
 
-    objc_storeStrong(&self->_paymentSetupField, a3);
+    objc_storeStrong(&self->_paymentSetupField, field);
     if (self->_paymentSetupField)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__paymentSetupFieldCurrentValueChangedNotification_ name:*v7 object:self->_paymentSetupField];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__paymentSetupFieldCurrentValueChangedNotification_ name:*v7 object:self->_paymentSetupField];
     }
 
     [(PKPaymentSetupFieldCell *)self _updateDisplay:1];
-    v5 = v10;
+    fieldCopy = v10;
   }
 }
 
-- (void)setMinimumTextLabelWidth:(double)a3
+- (void)setMinimumTextLabelWidth:(double)width
 {
-  if (self->_minimumTextLabelWidth != a3)
+  if (self->_minimumTextLabelWidth != width)
   {
-    self->_minimumTextLabelWidth = a3;
+    self->_minimumTextLabelWidth = width;
     [(PKPaymentSetupFieldCell *)self setNeedsLayout];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     if ([(PKPaymentSetupField *)self->_paymentSetupField source]== 1 && [(PKPaymentSetupFieldCell *)self isEnabled])
     {
-      v7 = [(PKPaymentSetupFieldCell *)self editableTextField];
-      [v7 setTextColor:self->_editableTextFieldCameraCapturedTextColor];
+      editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+      [editableTextField setTextColor:self->_editableTextFieldCameraCapturedTextColor];
     }
 
     else
     {
-      v7 = [(PKPaymentSetupFieldCell *)self editableTextField];
-      v5 = [(PKPaymentSetupFieldCell *)self isEnabled];
+      editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+      isEnabled = [(PKPaymentSetupFieldCell *)self isEnabled];
       v6 = 5;
-      if (v5)
+      if (isEnabled)
       {
         v6 = 4;
       }
 
-      [v7 setTextColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKPaymentSetupFieldCell__textField[v6])];
+      [editableTextField setTextColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKPaymentSetupFieldCell__textField[v6])];
     }
   }
 }
 
-- (void)setHidePrediction:(BOOL)a3
+- (void)setHidePrediction:(BOOL)prediction
 {
-  if (self->_hidePrediction != a3)
+  if (self->_hidePrediction != prediction)
   {
-    self->_hidePrediction = a3;
-    v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    [v4 setHidePrediction:self->_hidePrediction];
+    self->_hidePrediction = prediction;
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    [editableTextField setHidePrediction:self->_hidePrediction];
   }
 }
 
-- (void)setEditableTextFieldCameraCapturedTextColor:(id)a3
+- (void)setEditableTextFieldCameraCapturedTextColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_editableTextFieldCameraCapturedTextColor != v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (self->_editableTextFieldCameraCapturedTextColor != colorCopy)
   {
-    v11 = v4;
-    v6 = [(UIColor *)v4 copy];
+    v11 = colorCopy;
+    v6 = [(UIColor *)colorCopy copy];
     editableTextFieldCameraCapturedTextColor = self->_editableTextFieldCameraCapturedTextColor;
     self->_editableTextFieldCameraCapturedTextColor = v6;
 
-    v8 = [(PKPaymentSetupField *)self->_paymentSetupField source];
+    source = [(PKPaymentSetupField *)self->_paymentSetupField source];
     v5 = v11;
-    if (v8 == 1)
+    if (source == 1)
     {
-      v9 = [(PKPaymentSetupFieldCell *)self isEnabled];
+      isEnabled = [(PKPaymentSetupFieldCell *)self isEnabled];
       v5 = v11;
-      if (v9)
+      if (isEnabled)
       {
-        v10 = [(PKPaymentSetupFieldCell *)self editableTextField];
-        [v10 setTextColor:self->_editableTextFieldCameraCapturedTextColor];
+        editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+        [editableTextField setTextColor:self->_editableTextFieldCameraCapturedTextColor];
 
         v5 = v11;
       }
@@ -446,9 +446,9 @@
   }
 }
 
-- (void)_updateDisplay:(BOOL)a3
+- (void)_updateDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     [(PKPaymentSetupFieldCell *)self _applyDefaultValues];
   }
@@ -465,42 +465,42 @@
     [(PKPaymentSetupField *)paymentSetupField compactLocalizedDisplayName];
   }
   v6 = ;
-  v7 = [(PKPaymentSetupFieldCell *)self textLabel];
-  [v7 setText:v6];
+  textLabel = [(PKPaymentSetupFieldCell *)self textLabel];
+  [textLabel setText:v6];
 
-  v8 = [(PKPaymentSetupField *)self->_paymentSetupField localizedPlaceholder];
-  v9 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v9 setPlaceholder:v8];
+  localizedPlaceholder = [(PKPaymentSetupField *)self->_paymentSetupField localizedPlaceholder];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField setPlaceholder:localizedPlaceholder];
 
-  v10 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v10 setDelegate:self];
+  editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField2 setDelegate:self];
 
-  v11 = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeText];
+  isFieldTypeText = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeText];
   v12 = self->_paymentSetupField;
-  if (v11)
+  if (isFieldTypeText)
   {
-    v13 = [(PKPaymentSetupField *)v12 textFieldObject];
-    [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypeText:v13];
+    textFieldObject = [(PKPaymentSetupField *)v12 textFieldObject];
+    [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypeText:textFieldObject];
   }
 
   else
   {
-    v14 = [(PKPaymentSetupField *)v12 isFieldTypeDate];
+    isFieldTypeDate = [(PKPaymentSetupField *)v12 isFieldTypeDate];
     v15 = self->_paymentSetupField;
-    if (v14)
+    if (isFieldTypeDate)
     {
-      v13 = [(PKPaymentSetupField *)v15 dateFieldObject];
-      [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypeDate:v13];
+      textFieldObject = [(PKPaymentSetupField *)v15 dateFieldObject];
+      [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypeDate:textFieldObject];
     }
 
     else
     {
-      v16 = [(PKPaymentSetupField *)v15 isFieldTypePicker];
+      isFieldTypePicker = [(PKPaymentSetupField *)v15 isFieldTypePicker];
       v17 = self->_paymentSetupField;
-      if (v16)
+      if (isFieldTypePicker)
       {
-        v13 = [(PKPaymentSetupField *)v17 pickerFieldObject];
-        [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypePicker:v13];
+        textFieldObject = [(PKPaymentSetupField *)v17 pickerFieldObject];
+        [(PKPaymentSetupFieldCell *)self _updateDisplayForFieldTypePicker:textFieldObject];
       }
 
       else
@@ -510,56 +510,56 @@
           goto LABEL_13;
         }
 
-        v13 = PKLogFacilityTypeGetObject();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        textFieldObject = PKLogFacilityTypeGetObject();
+        if (os_log_type_enabled(textFieldObject, OS_LOG_TYPE_DEFAULT))
         {
           *v19 = 0;
-          _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Error: PKPaymentSetupFieldTypeUnknown field type cells are not currently supported!", v19, 2u);
+          _os_log_impl(&dword_1BD026000, textFieldObject, OS_LOG_TYPE_DEFAULT, "Error: PKPaymentSetupFieldTypeUnknown field type cells are not currently supported!", v19, 2u);
         }
       }
     }
   }
 
 LABEL_13:
-  v18 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v18 setIsAccessibilityElement:{-[PKPaymentSetupField preventVoiceOver](self->_paymentSetupField, "preventVoiceOver") ^ 1}];
+  editableTextField3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField3 setIsAccessibilityElement:{-[PKPaymentSetupField preventVoiceOver](self->_paymentSetupField, "preventVoiceOver") ^ 1}];
 
   [(PKPaymentSetupFieldCell *)self _pullCurrentValueFromField];
 }
 
 - (void)_applyDefaultValues
 {
-  v18 = [(PKPaymentSetupFieldCell *)self textLabel];
+  textLabel = [(PKPaymentSetupFieldCell *)self textLabel];
   v3 = PKOBKListTextFieldCellLabelFont();
-  [v18 setFont:v3];
+  [textLabel setFont:v3];
 
-  [v18 setBaselineAdjustment:1];
-  [v18 setAdjustsFontSizeToFitWidth:1];
-  [v18 setText:0];
-  v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [textLabel setBaselineAdjustment:1];
+  [textLabel setAdjustsFontSizeToFitWidth:1];
+  [textLabel setText:0];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
   v5 = PKOBKListTextFieldCellTextFieldFont();
-  [v4 setFont:v5];
+  [editableTextField setFont:v5];
 
-  [v4 setText:0];
-  [v4 setSecureTextEntry:0];
-  [v4 setDisplaySecureTextUsingPlainText:0];
+  [editableTextField setText:0];
+  [editableTextField setSecureTextEntry:0];
+  [editableTextField setDisplaySecureTextUsingPlainText:0];
   v6 = MEMORY[0x1E696AAB0];
   v7 = PKLocalizedPaymentString(&cfstr_Required.isa);
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC50]);
   v9 = [v6 pkui_attriutedStringWithString:v7 font:v8 paragraphStyle:0];
 
-  [v4 setAttributedPlaceholder:v9];
-  [v4 setClearButtonMode:1];
-  [v4 setAutocorrectionType:1];
-  [v4 setAutocapitalizationType:1];
-  [v4 setKeyboardType:0];
-  [v4 setInputView:0];
-  [v4 setAdjustsFontForContentSizeCategory:1];
-  [v4 setHidePrediction:self->_hidePrediction];
-  v10 = [v4 inputAssistantItem];
-  [v10 setTrailingBarButtonGroups:self->_defaultTrailingBarButtonGroups];
-  [v10 setLeadingBarButtonGroups:self->_defaultLeadingBarButtonGroups];
-  [v10 _setCenterBarButtonGroups:self->_defaultCenterBarButtonGroups];
+  [editableTextField setAttributedPlaceholder:v9];
+  [editableTextField setClearButtonMode:1];
+  [editableTextField setAutocorrectionType:1];
+  [editableTextField setAutocapitalizationType:1];
+  [editableTextField setKeyboardType:0];
+  [editableTextField setInputView:0];
+  [editableTextField setAdjustsFontForContentSizeCategory:1];
+  [editableTextField setHidePrediction:self->_hidePrediction];
+  inputAssistantItem = [editableTextField inputAssistantItem];
+  [inputAssistantItem setTrailingBarButtonGroups:self->_defaultTrailingBarButtonGroups];
+  [inputAssistantItem setLeadingBarButtonGroups:self->_defaultLeadingBarButtonGroups];
+  [inputAssistantItem _setCenterBarButtonGroups:self->_defaultCenterBarButtonGroups];
   if ([(PKPaymentSetupField *)self->_paymentSetupField source]== 1 && [(PKPaymentSetupFieldCell *)self isEnabled])
   {
     v11 = &OBJC_IVAR___PKPaymentSetupFieldCell__editableTextFieldCameraCapturedTextColor;
@@ -567,9 +567,9 @@ LABEL_13:
 
   else
   {
-    v12 = [(PKPaymentSetupFieldCell *)self isEnabled];
+    isEnabled = [(PKPaymentSetupFieldCell *)self isEnabled];
     v13 = 5;
-    if (v12)
+    if (isEnabled)
     {
       v13 = 4;
     }
@@ -577,7 +577,7 @@ LABEL_13:
     v11 = &OBJC_IVAR___PKPaymentSetupFieldCell__textField[v13];
   }
 
-  [v4 setTextColor:*(&self->super.super.super.super.super.isa + *v11)];
+  [editableTextField setTextColor:*(&self->super.super.super.super.super.isa + *v11)];
   dateInputView = self->_dateInputView;
   if (dateInputView)
   {
@@ -596,19 +596,19 @@ LABEL_13:
   }
 }
 
-- (void)_updateDisplayForFieldTypeText:(id)a3
+- (void)_updateDisplayForFieldTypeText:(id)text
 {
-  v24 = a3;
-  v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v5 = [v24 displayString];
-  [v4 setText:v5];
+  textCopy = text;
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  displayString = [textCopy displayString];
+  [editableTextField setText:displayString];
 
-  if ([v24 isNumericFractional])
+  if ([textCopy isNumericFractional])
   {
     v6 = 8;
   }
 
-  else if ([v24 isNumeric])
+  else if ([textCopy isNumeric])
   {
     v6 = 11;
   }
@@ -618,8 +618,8 @@ LABEL_13:
     v6 = 0;
   }
 
-  v7 = [v24 identifier];
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC1D0]])
+  identifier = [textCopy identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC1D0]])
   {
     v8 = MEMORY[0x1E69DE4E8];
 LABEL_15:
@@ -628,13 +628,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC220]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC220]])
   {
     v8 = MEMORY[0x1E69DE480];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC210]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC210]])
   {
     v9 = *MEMORY[0x1E69DE578];
     v10 = 1;
@@ -642,61 +642,61 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (([v7 isEqualToString:*MEMORY[0x1E69BC238]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69BC198]))
+  if (([identifier isEqualToString:*MEMORY[0x1E69BC238]] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", *MEMORY[0x1E69BC198]))
   {
     v8 = MEMORY[0x1E69DE540];
     goto LABEL_15;
   }
 
-  if (([v7 isEqualToString:*MEMORY[0x1E69BC240]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69BC1A0]))
+  if (([identifier isEqualToString:*MEMORY[0x1E69BC240]] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", *MEMORY[0x1E69BC1A0]))
   {
     v8 = MEMORY[0x1E69DE548];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC248]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC248]])
   {
     v8 = MEMORY[0x1E69DE550];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC218]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC218]])
   {
     v8 = MEMORY[0x1E69DE530];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC1D8]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC1D8]])
   {
     v8 = MEMORY[0x1E69DE3F8];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC230]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC230]])
   {
     v8 = MEMORY[0x1E69DE408];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC1F0]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC1F0]])
   {
     v8 = MEMORY[0x1E69DE4C8];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC1F8]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC1F8]])
   {
     v8 = MEMORY[0x1E69DE4B0];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC1E8]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC1E8]])
   {
     v8 = MEMORY[0x1E69DE4A0];
     goto LABEL_15;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BC250]])
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC250]])
   {
     v9 = 0;
     v10 = 0;
@@ -707,40 +707,40 @@ LABEL_15:
   {
     v9 = 0;
     v10 = 0;
-    if ([v7 isEqualToString:*MEMORY[0x1E69BC200]])
+    if ([identifier isEqualToString:*MEMORY[0x1E69BC200]])
     {
       v6 = 8;
     }
   }
 
 LABEL_16:
-  v11 = [v24 isSecureText];
-  v12 = [v24 isSecureVisibleText];
+  isSecureText = [textCopy isSecureText];
+  isSecureVisibleText = [textCopy isSecureVisibleText];
   v13 = PKSensitiveFieldBroadcastingEnabled();
-  v14 = (v13 ^ 1) & v11;
-  v15 = (v13 ^ 1) & v12;
-  v16 = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
-  v17 = [v4 textAlignment];
-  v18 = [v4 clearButtonMode];
-  v19 = [v24 alignment];
+  v14 = (v13 ^ 1) & isSecureText;
+  v15 = (v13 ^ 1) & isSecureVisibleText;
+  _shouldReverseLayoutDirection = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
+  textAlignment = [editableTextField textAlignment];
+  clearButtonMode = [editableTextField clearButtonMode];
+  alignment = [textCopy alignment];
   v20 = 2;
-  if (v16)
+  if (_shouldReverseLayoutDirection)
   {
     v20 = 0;
   }
 
   v21 = 2;
-  if (!v16)
+  if (!_shouldReverseLayoutDirection)
   {
     v21 = 0;
   }
 
-  if (v19 != 1)
+  if (alignment != 1)
   {
-    v21 = v17;
+    v21 = textAlignment;
   }
 
-  if (v19 == 2)
+  if (alignment == 2)
   {
     v22 = v20;
   }
@@ -750,39 +750,39 @@ LABEL_16:
     v22 = v21;
   }
 
-  if (v19 == 2)
+  if (alignment == 2)
   {
     v23 = 0;
   }
 
   else
   {
-    v23 = v18;
+    v23 = clearButtonMode;
   }
 
-  [v4 setKeyboardType:v6];
-  [v4 setTextContentType:v9];
-  [v4 setContentsIsSingleValue:v10];
-  [v4 setSecureTextEntry:v14];
-  [v4 setDisplaySecureTextUsingPlainText:v15];
-  [v4 setSmartInsertDeleteType:1];
-  [v4 setTextAlignment:v22];
-  [v4 setClearButtonMode:v23];
+  [editableTextField setKeyboardType:v6];
+  [editableTextField setTextContentType:v9];
+  [editableTextField setContentsIsSingleValue:v10];
+  [editableTextField setSecureTextEntry:v14];
+  [editableTextField setDisplaySecureTextUsingPlainText:v15];
+  [editableTextField setSmartInsertDeleteType:1];
+  [editableTextField setTextAlignment:v22];
+  [editableTextField setClearButtonMode:v23];
   if ((v14 & v15) == 1)
   {
-    [v4 setAutocapitalizationType:1];
+    [editableTextField setAutocapitalizationType:1];
   }
 
-  [v4 pkui_setExcludedFromScreenCapture:v14 & v15 andBroadcasting:v14 & v15];
-  if ([v24 hasDisplayFormat])
+  [editableTextField pkui_setExcludedFromScreenCapture:v14 & v15 andBroadcasting:v14 & v15];
+  if ([textCopy hasDisplayFormat])
   {
-    [v4 setAutocapitalizationType:3];
+    [editableTextField setAutocapitalizationType:3];
   }
 }
 
-- (void)_updateDisplayForFieldTypeDate:(id)a3
+- (void)_updateDisplayForFieldTypeDate:(id)date
 {
-  v28 = a3;
+  dateCopy = date;
   if (!self->_dateInputView)
   {
     v4 = objc_alloc_init(PKDatePicker);
@@ -790,21 +790,21 @@ LABEL_16:
     self->_dateInputView = v4;
   }
 
-  v6 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v6 setSecureTextEntry:1];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField setSecureTextEntry:1];
 
-  v7 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v7 setDisplaySecureTextUsingPlainText:1];
+  editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField2 setDisplaySecureTextUsingPlainText:1];
 
-  if (([v28 isOptional] & 1) == 0)
+  if (([dateCopy isOptional] & 1) == 0)
   {
-    v8 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    [v8 setClearButtonMode:0];
+    editableTextField3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    [editableTextField3 setClearButtonMode:0];
   }
 
-  -[UIView pkui_setExcludedFromScreenCapture:andBroadcasting:](self->_dateInputView, "pkui_setExcludedFromScreenCapture:andBroadcasting:", [v28 isSecureText], objc_msgSend(v28, "isSecureText"));
-  v9 = [v28 identifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69BC1B0]];
+  -[UIView pkui_setExcludedFromScreenCapture:andBroadcasting:](self->_dateInputView, "pkui_setExcludedFromScreenCapture:andBroadcasting:", [dateCopy isSecureText], objc_msgSend(dateCopy, "isSecureText"));
+  identifier = [dateCopy identifier];
+  v10 = [identifier isEqualToString:*MEMORY[0x1E69BC1B0]];
 
   if (v10)
   {
@@ -813,8 +813,8 @@ LABEL_16:
 
   else
   {
-    v12 = [v28 identifier];
-    v13 = [v12 isEqualToString:*MEMORY[0x1E69BC1E0]];
+    identifier2 = [dateCopy identifier];
+    v13 = [identifier2 isEqualToString:*MEMORY[0x1E69BC1E0]];
 
     if (v13)
     {
@@ -828,34 +828,34 @@ LABEL_16:
   }
 
   v14 = self->_dateInputView;
-  v15 = [v28 showsDay];
-  v16 = [v28 showsMonth];
-  v17 = [v28 showsYear];
-  v18 = [v28 locale];
-  v19 = [v28 calendar];
-  [(PKDatePicker *)v14 reconfigureToShowDay:v15 month:v16 year:v17 style:v11 locale:v18 calendar:v19];
+  showsDay = [dateCopy showsDay];
+  showsMonth = [dateCopy showsMonth];
+  showsYear = [dateCopy showsYear];
+  locale = [dateCopy locale];
+  calendar = [dateCopy calendar];
+  [(PKDatePicker *)v14 reconfigureToShowDay:showsDay month:showsMonth year:showsYear style:v11 locale:locale calendar:calendar];
 
   [(PKDatePicker *)self->_dateInputView setDelegate:self];
-  v20 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v20 setInputView:self->_dateInputView];
+  editableTextField4 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField4 setInputView:self->_dateInputView];
 
-  v21 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v22 = [v21 inputAssistantItem];
+  editableTextField5 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem = [editableTextField5 inputAssistantItem];
   v23 = MEMORY[0x1E695E0F0];
-  [v22 setTrailingBarButtonGroups:MEMORY[0x1E695E0F0]];
+  [inputAssistantItem setTrailingBarButtonGroups:MEMORY[0x1E695E0F0]];
 
-  v24 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v25 = [v24 inputAssistantItem];
-  [v25 _setCenterBarButtonGroups:v23];
+  editableTextField6 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem2 = [editableTextField6 inputAssistantItem];
+  [inputAssistantItem2 _setCenterBarButtonGroups:v23];
 
-  v26 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v27 = [v26 inputAssistantItem];
-  [v27 setLeadingBarButtonGroups:v23];
+  editableTextField7 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem3 = [editableTextField7 inputAssistantItem];
+  [inputAssistantItem3 setLeadingBarButtonGroups:v23];
 }
 
-- (void)_updateDisplayForFieldTypePicker:(id)a3
+- (void)_updateDisplayForFieldTypePicker:(id)picker
 {
-  v19 = a3;
+  pickerCopy = picker;
   if (!self->_pickerInputView)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCD78]);
@@ -863,45 +863,45 @@ LABEL_16:
     self->_pickerInputView = v4;
   }
 
-  v6 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v6 setSecureTextEntry:1];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField setSecureTextEntry:1];
 
-  v7 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v7 setDisplaySecureTextUsingPlainText:1];
+  editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField2 setDisplaySecureTextUsingPlainText:1];
 
   [(UIPickerView *)self->_pickerInputView setDelegate:self];
   [(UIPickerView *)self->_pickerInputView setDataSource:self];
   v8 = self->_pickerInputView;
-  v9 = [(PKTableViewCell *)self customAccessoryColor];
-  if (v9)
+  customAccessoryColor = [(PKTableViewCell *)self customAccessoryColor];
+  if (customAccessoryColor)
   {
-    [(UIPickerView *)v8 setBackgroundColor:v9];
+    [(UIPickerView *)v8 setBackgroundColor:customAccessoryColor];
   }
 
   else
   {
-    v10 = [(PKPaymentSetupFieldCell *)self backgroundColor];
-    [(UIPickerView *)v8 setBackgroundColor:v10];
+    backgroundColor = [(PKPaymentSetupFieldCell *)self backgroundColor];
+    [(UIPickerView *)v8 setBackgroundColor:backgroundColor];
   }
 
-  v11 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  [v11 setInputView:self->_pickerInputView];
+  editableTextField3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  [editableTextField3 setInputView:self->_pickerInputView];
 
-  v12 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v13 = [v12 inputAssistantItem];
+  editableTextField4 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem = [editableTextField4 inputAssistantItem];
   v14 = MEMORY[0x1E695E0F0];
-  [v13 setTrailingBarButtonGroups:MEMORY[0x1E695E0F0]];
+  [inputAssistantItem setTrailingBarButtonGroups:MEMORY[0x1E695E0F0]];
 
-  v15 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v16 = [v15 inputAssistantItem];
-  [v16 _setCenterBarButtonGroups:v14];
+  editableTextField5 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem2 = [editableTextField5 inputAssistantItem];
+  [inputAssistantItem2 _setCenterBarButtonGroups:v14];
 
-  v17 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v18 = [v17 inputAssistantItem];
-  [v18 setLeadingBarButtonGroups:v14];
+  editableTextField6 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  inputAssistantItem3 = [editableTextField6 inputAssistantItem];
+  [inputAssistantItem3 setLeadingBarButtonGroups:v14];
 }
 
-- (void)_paymentSetupFieldCurrentValueChangedNotification:(id)a3
+- (void)_paymentSetupFieldCurrentValueChangedNotification:(id)notification
 {
   if (!self->_ignoreCurrentValueChangedNotifications)
   {
@@ -914,13 +914,13 @@ LABEL_16:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PKPaymentSetupFieldCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(PKPaymentSetupFieldCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v9.n128_f64[0] = width;
   PKFloatCeilToPixel(v9, v10);
@@ -931,8 +931,8 @@ LABEL_16:
   if (IsAccessibilityCategory)
   {
     v13 = v13 + -22.0;
-    v17 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    [v17 sizeThatFits:{v13, v16}];
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    [editableTextField sizeThatFits:{v13, v16}];
     v19 = v18;
 
     v20.n128_u64[0] = v19;
@@ -945,8 +945,8 @@ LABEL_16:
     v23 = 0.0;
   }
 
-  v24 = [(PKPaymentSetupFieldCell *)self textLabel];
-  [v24 pkui_sizeThatFits:1 forceWordWrap:{v13, v16}];
+  textLabel = [(PKPaymentSetupFieldCell *)self textLabel];
+  [textLabel pkui_sizeThatFits:1 forceWordWrap:{v13, v16}];
   v26 = v25;
 
   v27.n128_u64[0] = v26;
@@ -968,9 +968,9 @@ LABEL_16:
 
 - (double)_minimumHeight
 {
-  v3 = [MEMORY[0x1E69DCC28] cellConfiguration];
-  v4 = [(PKPaymentSetupFieldCell *)self traitCollection];
-  [v3 _minimumHeightForTraitCollection:v4];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+  traitCollection = [(PKPaymentSetupFieldCell *)self traitCollection];
+  [cellConfiguration _minimumHeightForTraitCollection:traitCollection];
   v6 = v5;
 
   return v6;
@@ -989,14 +989,14 @@ LABEL_16:
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
 
-  if (v3)
+  if (editableTextField)
   {
-    v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v5 = [v4 becomeFirstResponder];
+    editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    becomeFirstResponder = [editableTextField2 becomeFirstResponder];
 
-    return v5;
+    return becomeFirstResponder;
   }
 
   else
@@ -1011,17 +1011,17 @@ LABEL_16:
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldCell;
-  v3 = [(PKPaymentSetupFieldCell *)&v8 resignFirstResponder];
-  v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v5 = [v4 isUserInteractionEnabled];
+  resignFirstResponder = [(PKPaymentSetupFieldCell *)&v8 resignFirstResponder];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  isUserInteractionEnabled = [editableTextField isUserInteractionEnabled];
 
-  if (v5)
+  if (isUserInteractionEnabled)
   {
-    v6 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v3 = [v6 resignFirstResponder];
+    editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    resignFirstResponder = [editableTextField2 resignFirstResponder];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 + (id)reuseIdentifier
@@ -1052,7 +1052,7 @@ LABEL_16:
       PKOBKListInlineCellContentEdgeInsets();
       v8 = v13;
       v15 = v14;
-      v16 = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [(PKPaymentSetupFieldCell *)self _shouldReverseLayoutDirection];
       [(PKPaymentSetupFieldCell *)self bounds];
       Width = CGRectGetWidth(v19) - v8;
       if (_UISolariumFeatureFlagEnabled())
@@ -1060,7 +1060,7 @@ LABEL_16:
         Width = Width - v15;
       }
 
-      if (v16)
+      if (_shouldReverseLayoutDirection)
       {
         if (_UISolariumFeatureFlagEnabled())
         {
@@ -1103,53 +1103,53 @@ LABEL_16:
 
 - (void)updatePaymentSetupFieldWithFormatting
 {
-  v6 = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
-  v3 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v4 = [v3 text];
-  v5 = [v6 stringByApplyingDisplayFormat:v4 allowPartialFractional:0];
+  textFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  text = [editableTextField text];
+  v5 = [textFieldObject stringByApplyingDisplayFormat:text allowPartialFractional:0];
 
-  [v3 setText:v5];
-  [v3 sendActionsForControlEvents:0x20000];
+  [editableTextField setText:v5];
+  [editableTextField sendActionsForControlEvents:0x20000];
 }
 
-- (void)_updateTextFieldStylingWithForceUpdate:(BOOL)a3
+- (void)_updateTextFieldStylingWithForceUpdate:(BOOL)update
 {
-  if (self->_shouldUpdateTextFieldStyling || a3)
+  if (self->_shouldUpdateTextFieldStyling || update)
   {
-    v13 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v4 = [v13 text];
-    v5 = [v4 length];
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    text = [editableTextField text];
+    v5 = [text length];
 
     if (v5)
     {
-      v6 = [(PKPaymentSetupField *)self->_paymentSetupField isReadonly];
-      v7 = [(PKPaymentSetupField *)self->_paymentSetupField isOptional];
-      v8 = [(PKPaymentSetupField *)self->_paymentSetupField submissionStringMeetsAllRequirements];
-      v9 = [(PKPaymentSetupField *)self->_paymentSetupField submissionStringMeetsValidationRegex];
-      if (v7)
+      isReadonly = [(PKPaymentSetupField *)self->_paymentSetupField isReadonly];
+      isOptional = [(PKPaymentSetupField *)self->_paymentSetupField isOptional];
+      submissionStringMeetsAllRequirements = [(PKPaymentSetupField *)self->_paymentSetupField submissionStringMeetsAllRequirements];
+      submissionStringMeetsValidationRegex = [(PKPaymentSetupField *)self->_paymentSetupField submissionStringMeetsValidationRegex];
+      if (isOptional)
       {
-        v10 = v9;
+        v10 = submissionStringMeetsValidationRegex;
       }
 
       else
       {
-        v10 = v8;
+        v10 = submissionStringMeetsAllRequirements;
       }
 
-      if (v6 & 1) != 0 || (v10)
+      if (isReadonly & 1) != 0 || (v10)
       {
         self->_isShowingError = 0;
-        v11 = [MEMORY[0x1E69DC888] labelColor];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
       }
 
       else
       {
         self->_isShowingError = 1;
-        v11 = [MEMORY[0x1E69DC888] systemRedColor];
+        labelColor = [MEMORY[0x1E69DC888] systemRedColor];
       }
 
-      v12 = v11;
-      [v13 setTextColor:v11];
+      v12 = labelColor;
+      [editableTextField setTextColor:labelColor];
     }
 
     else
@@ -1161,9 +1161,9 @@ LABEL_16:
 
 - (void)resetTextFieldStyling
 {
-  v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  [v4 setTextColor:v3];
+  editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [editableTextField setTextColor:labelColor];
 
   self->_shouldUpdateTextFieldStyling = 0;
   self->_isShowingError = 0;
@@ -1172,11 +1172,11 @@ LABEL_16:
 - (void)_pushCurrentValueToField
 {
   self->_ignoreCurrentValueChangedNotifications = 1;
-  v3 = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
-  v23 = v3;
-  if (v3)
+  textFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
+  v23 = textFieldObject;
+  if (textFieldObject)
   {
-    v4 = [v3 secureTextVisibility] == 0;
+    v4 = [textFieldObject secureTextVisibility] == 0;
   }
 
   else
@@ -1184,14 +1184,14 @@ LABEL_16:
     v4 = 0;
   }
 
-  v5 = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate];
+  isFieldTypeDate = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate];
   paymentSetupField = self->_paymentSetupField;
-  if (v5)
+  if (isFieldTypeDate)
   {
-    v7 = [(PKDatePicker *)self->_dateInputView date];
+    date = [(PKDatePicker *)self->_dateInputView date];
     v8 = paymentSetupField;
 LABEL_6:
-    [(PKPaymentSetupField *)v8 setCurrentValue:v7];
+    [(PKPaymentSetupField *)v8 setCurrentValue:date];
 LABEL_11:
 
     goto LABEL_12;
@@ -1199,28 +1199,28 @@ LABEL_11:
 
   if ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypePicker])
   {
-    v9 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-    v7 = [v9 pickerFieldObject];
+    paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+    date = [paymentSetupField pickerFieldObject];
 
     v10 = [(UIPickerView *)self->_pickerInputView selectedRowInComponent:0];
-    v11 = [v7 pickerItems];
+    pickerItems = [date pickerItems];
     v12 = 0;
-    if (v10 < [v11 count])
+    if (v10 < [pickerItems count])
     {
-      v12 = [v11 objectAtIndex:v10];
+      v12 = [pickerItems objectAtIndex:v10];
     }
 
-    [v7 setCurrentValue:v12];
+    [date setCurrentValue:v12];
 
     goto LABEL_11;
   }
 
   if (!v4)
   {
-    v13 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v7 = [v13 text];
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    date = [editableTextField text];
 
-    v14 = [v7 length];
+    v14 = [date length];
     v15 = self->_paymentSetupField;
     if (!v14)
     {
@@ -1231,23 +1231,23 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v16 = [(PKPaymentSetupField *)v15 source];
-    if (v16 > 4)
+    source = [(PKPaymentSetupField *)v15 source];
+    if (source > 4)
     {
 LABEL_22:
       v8 = self->_paymentSetupField;
       goto LABEL_6;
     }
 
-    if (((1 << v16) & 0x13) != 0)
+    if (((1 << source) & 0x13) != 0)
     {
       v15 = self->_paymentSetupField;
       goto LABEL_20;
     }
 
-    v18 = [(PKPaymentSetupField *)self->_paymentSetupField defaultValue];
-    v19 = v7;
-    v20 = v18;
+    defaultValue = [(PKPaymentSetupField *)self->_paymentSetupField defaultValue];
+    v19 = date;
+    v20 = defaultValue;
     v21 = v20;
     if (v19 == v20)
     {
@@ -1283,42 +1283,42 @@ LABEL_12:
 
 - (void)_pullCurrentValueFromField
 {
-  v3 = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate];
+  isFieldTypeDate = [(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate];
   paymentSetupField = self->_paymentSetupField;
-  if (v3)
+  if (isFieldTypeDate)
   {
-    v5 = [(PKPaymentSetupField *)paymentSetupField currentValue];
+    currentValue = [(PKPaymentSetupField *)paymentSetupField currentValue];
 
-    v6 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v7 = v6;
-    if (v5)
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    v7 = editableTextField;
+    if (currentValue)
     {
-      v8 = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
-      [v7 setText:v8];
+      displayString = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
+      [v7 setText:displayString];
     }
 
     else
     {
-      [v6 setText:0];
+      [editableTextField setText:0];
     }
 
-    v18 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
-    if (v18)
+    currentValue2 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
+    if (currentValue2)
     {
-      v16 = v18;
+      defaultDate = currentValue2;
       goto LABEL_12;
     }
 
-    v19 = [(PKPaymentSetupField *)self->_paymentSetupField dateFieldObject];
-    v16 = [v19 defaultDate];
+    dateFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField dateFieldObject];
+    defaultDate = [dateFieldObject defaultDate];
 
-    if (v16)
+    if (defaultDate)
     {
 LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(PKDatePicker *)self->_dateInputView setDate:v16];
+        [(PKDatePicker *)self->_dateInputView setDate:defaultDate];
       }
     }
 
@@ -1329,25 +1329,25 @@ LABEL_14:
 
   if (![(PKPaymentSetupField *)paymentSetupField isFieldTypePicker])
   {
-    v16 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v17 = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
-    [v16 setText:v17];
+    defaultDate = [(PKPaymentSetupFieldCell *)self editableTextField];
+    displayString2 = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
+    [defaultDate setText:displayString2];
 
     goto LABEL_14;
   }
 
-  v9 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
+  currentValue3 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
 
-  if (v9)
+  if (currentValue3)
   {
-    v10 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v11 = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
-    [v10 setText:v11];
+    editableTextField2 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    displayString3 = [(PKPaymentSetupField *)self->_paymentSetupField displayString];
+    [editableTextField2 setText:displayString3];
 
-    v12 = [(PKPaymentSetupField *)self->_paymentSetupField pickerFieldObject];
-    v13 = [v12 pickerItems];
-    v14 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
-    v15 = [v13 indexOfObject:v14];
+    pickerFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField pickerFieldObject];
+    pickerItems = [pickerFieldObject pickerItems];
+    currentValue4 = [(PKPaymentSetupField *)self->_paymentSetupField currentValue];
+    v15 = [pickerItems indexOfObject:currentValue4];
 
     [(UIPickerView *)self->_pickerInputView selectRow:v15 inComponent:0 animated:0];
   }
@@ -1355,25 +1355,25 @@ LABEL_14:
 LABEL_15:
   if ([(PKPaymentSetupField *)self->_paymentSetupField source]== 1 && [(PKPaymentSetupFieldCell *)self isEnabled])
   {
-    v22 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    [v22 setTextColor:self->_editableTextFieldCameraCapturedTextColor];
+    editableTextField3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    [editableTextField3 setTextColor:self->_editableTextFieldCameraCapturedTextColor];
   }
 
   else
   {
-    v22 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v20 = [(PKPaymentSetupFieldCell *)self isEnabled];
+    editableTextField3 = [(PKPaymentSetupFieldCell *)self editableTextField];
+    isEnabled = [(PKPaymentSetupFieldCell *)self isEnabled];
     v21 = 5;
-    if (v20)
+    if (isEnabled)
     {
       v21 = 4;
     }
 
-    [v22 setTextColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKPaymentSetupFieldCell__textField[v21])];
+    [editableTextField3 setTextColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKPaymentSetupFieldCell__textField[v21])];
   }
 }
 
-- (void)_editableTextFieldDidBeginEditing:(id)a3
+- (void)_editableTextFieldDidBeginEditing:(id)editing
 {
   if ([(PKPaymentSetupFieldCell *)self usesCustomInputView])
   {
@@ -1382,9 +1382,9 @@ LABEL_15:
 
   if ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeText])
   {
-    v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    v5 = [v4 text];
-    v6 = [v5 length];
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    text = [editableTextField text];
+    v6 = [text length];
 
     self->_shouldUpdateTextFieldStyling = v6 != 0;
   }
@@ -1399,7 +1399,7 @@ LABEL_15:
   }
 }
 
-- (void)_editableTextFieldDidEndEditing:(id)a3
+- (void)_editableTextFieldDidEndEditing:(id)editing
 {
   if ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeText])
   {
@@ -1416,7 +1416,7 @@ LABEL_15:
   }
 }
 
-- (void)_editableTextFieldValueChanged:(id)a3
+- (void)_editableTextFieldValueChanged:(id)changed
 {
   if (([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate]& 1) == 0 && ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypePicker]& 1) == 0)
   {
@@ -1441,8 +1441,8 @@ LABEL_15:
 - (void)_configureKeyboardAccessories
 {
   v50 = *MEMORY[0x1E69E9840];
-  v35 = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
-  if (v35 || _UISolariumFeatureFlagEnabled() && ([(PKPaymentSetupField *)self->_paymentSetupField fieldType]== 2 || [(PKPaymentSetupField *)self->_paymentSetupField fieldType]== 5))
+  textFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
+  if (textFieldObject || _UISolariumFeatureFlagEnabled() && ([(PKPaymentSetupField *)self->_paymentSetupField fieldType]== 2 || [(PKPaymentSetupField *)self->_paymentSetupField fieldType]== 5))
   {
     v3 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -1459,7 +1459,7 @@ LABEL_15:
       }
 
       v46 = 2048;
-      v47 = self;
+      selfCopy2 = self;
       v48 = 2112;
       v49 = v33;
       _os_log_debug_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEBUG, "Configuring keyboard accessories for <%@: %p>. HW keyboard?: %@", buf, 0x20u);
@@ -1471,11 +1471,11 @@ LABEL_15:
       goto LABEL_32;
     }
 
-    v4 = [v35 keyboardAccessories];
-    v5 = v4;
-    if (v4)
+    keyboardAccessories = [textFieldObject keyboardAccessories];
+    v5 = keyboardAccessories;
+    if (keyboardAccessories)
     {
-      v6 = v4;
+      v6 = keyboardAccessories;
     }
 
     else
@@ -1495,7 +1495,7 @@ LABEL_15:
         *buf = 138412802;
         v45 = v8;
         v46 = 2048;
-        v47 = self;
+        selfCopy2 = self;
         v48 = 2112;
         v49 = configuredKeyboardAccessories;
         v10 = v8;
@@ -1527,8 +1527,8 @@ LABEL_30:
         objc_copyWeak(&v38, buf);
         v37[4] = self;
         v28 = [v27 actionWithHandler:v37];
-        v29 = [(PKPaymentSetupFieldCell *)self editableTextField];
-        [v29 pkui_attachDoneToolbarWithAdditionalItems:v36 doneAction:v28];
+        editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+        [editableTextField pkui_attachDoneToolbarWithAdditionalItems:v36 doneAction:v28];
 
         objc_destroyWeak(&v38);
         objc_destroyWeak(buf);
@@ -1542,7 +1542,7 @@ LABEL_31:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      WeakRetained = [v35 keyboardAccessories];
+      WeakRetained = [textFieldObject keyboardAccessories];
       v14 = [WeakRetained countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v14)
       {
@@ -1556,11 +1556,11 @@ LABEL_31:
               objc_enumerationMutation(WeakRetained);
             }
 
-            v17 = [*(*(&v39 + 1) + 8 * i) unsignedIntegerValue];
+            unsignedIntegerValue = [*(*(&v39 + 1) + 8 * i) unsignedIntegerValue];
             v18 = objc_loadWeakRetained(&self->_delegate);
-            v19 = [v18 fieldCell:self supportsKeyboardAccessory:v17];
+            v19 = [v18 fieldCell:self supportsKeyboardAccessory:unsignedIntegerValue];
 
-            if (v17 == 2)
+            if (unsignedIntegerValue == 2)
             {
               v20 = v19;
             }
@@ -1572,21 +1572,21 @@ LABEL_31:
 
             if (v20 == 1)
             {
-              v21 = [MEMORY[0x1E69DC740] pkui_createPlainMinimalButtonConfiguration];
+              pkui_createPlainMinimalButtonConfiguration = [MEMORY[0x1E69DC740] pkui_createPlainMinimalButtonConfiguration];
               v22 = PKLocalizedPaymentString(&cfstr_ManualEntryCam.isa);
-              [v21 setTitle:v22];
+              [pkui_createPlainMinimalButtonConfiguration setTitle:v22];
 
               v23 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"creditcard.viewfinder"];
-              [v21 setImage:v23];
+              [pkui_createPlainMinimalButtonConfiguration setImage:v23];
 
-              [v21 setImagePlacement:2];
-              [v21 setImagePadding:8.0];
-              v24 = [MEMORY[0x1E69DC888] labelColor];
-              [v21 setBaseForegroundColor:v24];
+              [pkui_createPlainMinimalButtonConfiguration setImagePlacement:2];
+              [pkui_createPlainMinimalButtonConfiguration setImagePadding:8.0];
+              labelColor = [MEMORY[0x1E69DC888] labelColor];
+              [pkui_createPlainMinimalButtonConfiguration setBaseForegroundColor:labelColor];
 
-              [v21 setContentInsets:{0.0, 8.0, 0.0, 8.0}];
+              [pkui_createPlainMinimalButtonConfiguration setContentInsets:{0.0, 8.0, 0.0, 8.0}];
               v25 = [MEMORY[0x1E69DC738] buttonWithType:1];
-              [v25 setConfiguration:v21];
+              [v25 setConfiguration:pkui_createPlainMinimalButtonConfiguration];
               [v25 addTarget:self action:sel__keyboardAccessoryButtonTapped_ forControlEvents:0x2000];
               [v25 setTag:2];
               v26 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v25];
@@ -1654,31 +1654,31 @@ LABEL_9:
   {
     self->_configuredKeyboardAccessories = 0;
 
-    v4 = [(PKPaymentSetupFieldCell *)self editableTextField];
-    [v4 setInputAccessoryView:0];
+    editableTextField = [(PKPaymentSetupFieldCell *)self editableTextField];
+    [editableTextField setInputAccessoryView:0];
     if ([(PKPaymentSetupFieldCell *)self isFirstResponder])
     {
-      [v4 reloadInputViews];
+      [editableTextField reloadInputViews];
     }
   }
 }
 
-- (void)_keyboardAccessoryButtonTapped:(id)a3
+- (void)_keyboardAccessoryButtonTapped:(id)tapped
 {
-  v7 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 fieldCell:self didTapKeyboardAccessory:{objc_msgSend(v7, "tag")}];
+    [v6 fieldCell:self didTapKeyboardAccessory:{objc_msgSend(tappedCopy, "tag")}];
   }
 }
 
-- (void)datePicker:(id)a3 didChangeDate:(id)a4
+- (void)datePicker:(id)picker didChangeDate:(id)date
 {
-  [(PKPaymentSetupFieldCell *)self updatePaymentSetupFieldWithCurrentCellValue:a3];
+  [(PKPaymentSetupFieldCell *)self updatePaymentSetupFieldWithCurrentCellValue:picker];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -1689,9 +1689,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  if (-[PKPaymentSetupFieldCell isEnabled](self, "isEnabled", a3) && ((WeakRetained = objc_loadWeakRetained(&self->_delegate), v5 = objc_opt_respondsToSelector(), WeakRetained, (v5 & 1) == 0) || (v6 = objc_loadWeakRetained(&self->_delegate), v7 = [v6 fieldCellEditableTextFieldShouldBeginEditing:self], v6, v7)))
+  if (-[PKPaymentSetupFieldCell isEnabled](self, "isEnabled", editing) && ((WeakRetained = objc_loadWeakRetained(&self->_delegate), v5 = objc_opt_respondsToSelector(), WeakRetained, (v5 & 1) == 0) || (v6 = objc_loadWeakRetained(&self->_delegate), v7 = [v6 fieldCellEditableTextFieldShouldBeginEditing:self], v6, v7)))
   {
     if ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate]&& [(PKPaymentSetupField *)self->_paymentSetupField source]== 1)
     {
@@ -1711,7 +1711,7 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -1736,7 +1736,7 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -1752,41 +1752,41 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v130 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  fieldCopy = field;
+  stringCopy = string;
   if (([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypeDate]& 1) == 0 && ([(PKPaymentSetupField *)self->_paymentSetupField isFieldTypePicker]& 1) == 0)
   {
-    v12 = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
-    v13 = v12;
+    textFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
+    v13 = textFieldObject;
     v116 = length;
-    if (v12 && ![v12 secureTextVisibility])
+    if (textFieldObject && ![textFieldObject secureTextVisibility])
     {
-      v15 = [v13 currentValue];
-      v16 = v15;
+      currentValue = [v13 currentValue];
+      v16 = currentValue;
       v17 = &stru_1F3BD7330;
-      if (v15)
+      if (currentValue)
       {
-        v17 = v15;
+        v17 = currentValue;
       }
 
-      v14 = v17;
+      text = v17;
 
       v118 = 1;
     }
 
     else
     {
-      v14 = [v9 text];
+      text = [fieldCopy text];
       v118 = 0;
     }
 
-    v18 = [(__CFString *)v14 length];
-    v19 = v10;
+    v18 = [(__CFString *)text length];
+    v19 = stringCopy;
     v20 = [(__CFString *)v19 length];
     v113 = v20;
     v107 = v19;
@@ -1798,8 +1798,8 @@ LABEL_9:
 
     else
     {
-      v22 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v23 = [(__CFString *)v19 stringByTrimmingCharactersInSet:v22];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v23 = [(__CFString *)v19 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       v24 = v19;
       v19 = v23;
 
@@ -1814,10 +1814,10 @@ LABEL_9:
       v109 = v25 >= v113;
     }
 
-    v26 = [v13 maxLength];
+    maxLength = [v13 maxLength];
     if (v13)
     {
-      v27 = v26 == 0;
+      v27 = maxLength == 0;
     }
 
     else
@@ -1838,22 +1838,22 @@ LABEL_9:
 
     else
     {
-      v103 = v26;
+      v103 = maxLength;
       v105 = v19;
-      v29 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:v116, v19];
-      v30 = [v13 keepPaddingCharactersForSubmission];
-      if ((v30 & 1) == 0 && [v13 hasDisplayFormat])
+      v29 = [(__CFString *)text stringByReplacingCharactersInRange:location withString:v116, v19];
+      keepPaddingCharactersForSubmission = [v13 keepPaddingCharactersForSubmission];
+      if ((keepPaddingCharactersForSubmission & 1) == 0 && [v13 hasDisplayFormat])
       {
         v110 = v21;
-        v97 = v10;
-        v99 = v9;
+        v97 = stringCopy;
+        v99 = fieldCopy;
         v126 = 0u;
         v127 = 0u;
         v124 = 0u;
         v125 = 0u;
         v101 = v13;
-        v31 = [v13 displayFormatPaddingCharacters];
-        v32 = [v31 countByEnumeratingWithState:&v124 objects:v129 count:16];
+        displayFormatPaddingCharacters = [v13 displayFormatPaddingCharacters];
+        v32 = [displayFormatPaddingCharacters countByEnumeratingWithState:&v124 objects:v129 count:16];
         if (v32)
         {
           v33 = v32;
@@ -1866,7 +1866,7 @@ LABEL_9:
             {
               if (*v125 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(displayFormatPaddingCharacters);
               }
 
               v29 = [v36 stringByReplacingOccurrencesOfString:*(*(&v124 + 1) + 8 * v35) withString:&stru_1F3BD7330];
@@ -1876,14 +1876,14 @@ LABEL_9:
             }
 
             while (v33 != v35);
-            v33 = [v31 countByEnumeratingWithState:&v124 objects:v129 count:16];
+            v33 = [displayFormatPaddingCharacters countByEnumeratingWithState:&v124 objects:v129 count:16];
           }
 
           while (v33);
         }
 
-        v10 = v97;
-        v9 = v99;
+        stringCopy = v97;
+        fieldCopy = v99;
         v13 = v101;
         v21 = v110;
       }
@@ -1900,11 +1900,11 @@ LABEL_9:
     if (v11)
     {
       v111 = v21;
-      v37 = [(PKPaymentSetupField *)self->_paymentSetupField source];
-      if ((v37 - 2) >= 2)
+      source = [(PKPaymentSetupField *)self->_paymentSetupField source];
+      if ((source - 2) >= 2)
       {
         v40 = v116;
-        if (v37 != 1)
+        if (source != 1)
         {
           goto LABEL_44;
         }
@@ -1914,7 +1914,7 @@ LABEL_9:
 
       else
       {
-        v38 = [(__CFString *)v14 length];
+        v38 = [(__CFString *)text length];
         paymentSetupField = self->_paymentSetupField;
         v40 = v116;
         if (location || v116 != v38)
@@ -1923,7 +1923,7 @@ LABEL_9:
 LABEL_43:
           [(PKPaymentSetupField *)paymentSetupField setSource:v41];
 LABEL_44:
-          v42 = [(__CFString *)v14 length];
+          v42 = [(__CFString *)text length];
           if (location || v40 != v42)
           {
             [(PKPaymentSetupFieldCell *)self _updateTextFieldStylingWithForceUpdate:0];
@@ -1934,12 +1934,12 @@ LABEL_44:
             [(PKPaymentSetupFieldCell *)self resetTextFieldStyling];
           }
 
-          v43 = [v13 allowedCharacters];
-          v44 = v43;
+          allowedCharacters = [v13 allowedCharacters];
+          v44 = allowedCharacters;
           v11 = 1;
-          if (v43 && v19)
+          if (allowedCharacters && v19)
           {
-            [v43 invertedSet];
+            [allowedCharacters invertedSet];
             v46 = v45 = v19;
             v11 = [(__CFString *)v45 rangeOfCharacterFromSet:v46 options:0]== 0x7FFFFFFFFFFFFFFFLL;
 
@@ -1974,7 +1974,7 @@ LABEL_52:
       {
         if ([v13 hasDisplayFormat])
         {
-          v56 = [v13 displayFormatPaddingCharacters];
+          displayFormatPaddingCharacters2 = [v13 displayFormatPaddingCharacters];
           v112 = v21;
           if (location)
           {
@@ -1982,8 +1982,8 @@ LABEL_52:
             v58 = v116;
             do
             {
-              v59 = [(__CFString *)v14 substringWithRange:location, v58 != 0];
-              v60 = [v56 containsObject:v59];
+              v59 = [(__CFString *)text substringWithRange:location, v58 != 0];
+              v60 = [displayFormatPaddingCharacters2 containsObject:v59];
 
               if (!v60)
               {
@@ -2013,33 +2013,33 @@ LABEL_52:
             v61 = &stru_1F3BD7330;
           }
 
-          v62 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:v58, v61];
-          [v9 selectedTextRange];
+          v62 = [(__CFString *)text stringByReplacingCharactersInRange:location withString:v58, v61];
+          [fieldCopy selectedTextRange];
           v96 = v95 = v62;
           v63 = [v13 stringByApplyingDisplayFormat:v62];
           v104 = v63;
-          if ([v13 isNumericFractional] && (v64 = objc_msgSend(v63, "length"), v64 == -[__CFString length](v14, "length")))
+          if ([v13 isNumericFractional] && (v64 = objc_msgSend(v63, "length"), v64 == -[__CFString length](text, "length")))
           {
             v65 = 0;
             v11 = 1;
-            v66 = v56;
+            v66 = displayFormatPaddingCharacters2;
             v67 = v95;
           }
 
           else
           {
-            [v9 setText:v63];
+            [fieldCopy setText:v63];
             v106 = v19;
-            if ([(__CFString *)v14 length]&& v58 + location == [(__CFString *)v14 length])
+            if ([(__CFString *)text length]&& v58 + location == [(__CFString *)text length])
             {
-              v68 = [v9 endOfDocument];
-              v66 = v56;
+              endOfDocument = [fieldCopy endOfDocument];
+              v66 = displayFormatPaddingCharacters2;
             }
 
             else
             {
               v117 = v58;
-              v69 = [(__CFString *)v14 substringToIndex:location];
+              v69 = [(__CFString *)text substringToIndex:location];
               v70 = v113;
               v102 = v13;
               v119 = v69;
@@ -2067,28 +2067,28 @@ LABEL_52:
                 v74 = 0;
               }
 
-              v115 = v14;
+              v115 = text;
               v75 = location + v70 + v74;
-              v76 = v56;
+              v76 = displayFormatPaddingCharacters2;
               if (v75 >= [v63 length])
               {
                 v75 = [v63 length];
               }
 
               v77 = [v63 substringToIndex:v75];
-              v98 = v10;
+              v98 = stringCopy;
               if ([v13 isNumericFractional])
               {
-                v78 = [v13 decimalSeparator];
-                if (([v56 containsObject:v78] & 1) == 0)
+                decimalSeparator = [v13 decimalSeparator];
+                if (([displayFormatPaddingCharacters2 containsObject:decimalSeparator] & 1) == 0)
                 {
-                  v79 = [v56 arrayByAddingObject:v78];
+                  v79 = [displayFormatPaddingCharacters2 arrayByAddingObject:decimalSeparator];
 
                   v76 = v79;
                 }
               }
 
-              v100 = v9;
+              v100 = fieldCopy;
               v122 = 0u;
               v123 = 0u;
               v120 = 0u;
@@ -2134,24 +2134,24 @@ LABEL_52:
               }
 
               v91 = [v96 end];
-              v9 = v100;
-              v68 = [v100 positionFromPosition:v91 offset:v112 - v117 - v82 + v83];
+              fieldCopy = v100;
+              endOfDocument = [v100 positionFromPosition:v91 offset:v112 - v117 - v82 + v83];
 
-              if (!v68)
+              if (!endOfDocument)
               {
-                v68 = [v100 endOfDocument];
+                endOfDocument = [v100 endOfDocument];
               }
 
-              v10 = v98;
+              stringCopy = v98;
               v13 = v102;
-              v14 = v115;
+              text = v115;
             }
 
             v67 = v95;
-            v92 = [v9 textRangeFromPosition:v68 toPosition:v68];
-            [v9 setSelectedTextRange:v92];
+            v92 = [fieldCopy textRangeFromPosition:endOfDocument toPosition:endOfDocument];
+            [fieldCopy setSelectedTextRange:v92];
 
-            [v9 sendActionsForControlEvents:0x20000];
+            [fieldCopy sendActionsForControlEvents:0x20000];
             v11 = 0;
             v65 = 1;
             v19 = v106;
@@ -2170,18 +2170,18 @@ LABEL_52:
         }
       }
 
-      if (v109 || !v11 || v108 || [v9 isSecureTextEntry] && !objc_msgSend(v9, "displaySecureTextUsingPlainText"))
+      if (v109 || !v11 || v108 || [fieldCopy isSecureTextEntry] && !objc_msgSend(fieldCopy, "displaySecureTextUsingPlainText"))
       {
         goto LABEL_113;
       }
 
-      v114 = v14;
-      [v9 setText:v19];
-      v49 = [v9 endOfDocument];
-      v93 = [v9 textRangeFromPosition:v49 toPosition:v49];
-      [v9 setSelectedTextRange:v93];
+      v114 = text;
+      [fieldCopy setText:v19];
+      endOfDocument2 = [fieldCopy endOfDocument];
+      v93 = [fieldCopy textRangeFromPosition:endOfDocument2 toPosition:endOfDocument2];
+      [fieldCopy setSelectedTextRange:v93];
 
-      [v9 sendActionsForControlEvents:0x20000];
+      [fieldCopy sendActionsForControlEvents:0x20000];
     }
 
     else
@@ -2196,27 +2196,27 @@ LABEL_52:
         v48 = &stru_1F3BD7330;
       }
 
-      v114 = v14;
-      v49 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:v116, v48];
+      v114 = text;
+      endOfDocument2 = [(__CFString *)text stringByReplacingCharactersInRange:location withString:v116, v48];
       self->_ignoreCurrentValueChangedNotifications = 1;
-      [v13 setCurrentValue:v49];
+      [v13 setCurrentValue:endOfDocument2];
       self->_ignoreCurrentValueChangedNotifications = 0;
-      v50 = [&stru_1F3BD7330 stringByPaddingToLength:objc_msgSend(v49 withString:"length") startingAtIndex:{@"•", 0}];
-      [v9 setText:v50];
-      [v9 endOfDocument];
+      v50 = [&stru_1F3BD7330 stringByPaddingToLength:objc_msgSend(endOfDocument2 withString:"length") startingAtIndex:{@"•", 0}];
+      [fieldCopy setText:v50];
+      [fieldCopy endOfDocument];
       v52 = v51 = v19;
-      [v9 textRangeFromPosition:v52 toPosition:v52];
+      [fieldCopy textRangeFromPosition:v52 toPosition:v52];
       v54 = v53 = v13;
-      [v9 setSelectedTextRange:v54];
+      [fieldCopy setSelectedTextRange:v54];
 
       v13 = v53;
-      [v9 sendActionsForControlEvents:0x20000];
+      [fieldCopy sendActionsForControlEvents:0x20000];
 
       v19 = v51;
     }
 
     LOBYTE(v11) = 0;
-    v14 = v114;
+    text = v114;
 LABEL_113:
 
     goto LABEL_114;
@@ -2228,12 +2228,12 @@ LABEL_114:
   return v11;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
-  v5 = [v4 isNumericFractional];
+  textFieldObject = [(PKPaymentSetupField *)self->_paymentSetupField textFieldObject];
+  isNumericFractional = [textFieldObject isNumericFractional];
 
-  if (v5)
+  if (isNumericFractional)
   {
     [(PKPaymentSetupFieldCell *)self updatePaymentSetupFieldWithFormatting];
   }
@@ -2247,8 +2247,8 @@ LABEL_114:
 {
   v12 = *MEMORY[0x1E69E9840];
   hasKeyboardObservers = self->_hasKeyboardObservers;
-  v4 = PKLogFacilityTypeGetObject();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
+  defaultCenter = PKLogFacilityTypeGetObject();
+  v5 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEBUG);
   if (hasKeyboardObservers)
   {
     if (v5)
@@ -2256,9 +2256,9 @@ LABEL_114:
       v8 = 138412546;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy2 = self;
       v6 = v9;
-      _os_log_debug_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEBUG, "Already added keyboard observers to <%@: %p>.", &v8, 0x16u);
+      _os_log_debug_impl(&dword_1BD026000, defaultCenter, OS_LOG_TYPE_DEBUG, "Already added keyboard observers to <%@: %p>.", &v8, 0x16u);
     }
   }
 
@@ -2269,15 +2269,15 @@ LABEL_114:
       v8 = 138412546;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy2 = self;
       v7 = v9;
-      _os_log_debug_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEBUG, "Adding keyboard observers to <%@: %p>.", &v8, 0x16u);
+      _os_log_debug_impl(&dword_1BD026000, defaultCenter, OS_LOG_TYPE_DEBUG, "Adding keyboard observers to <%@: %p>.", &v8, 0x16u);
     }
 
     self->_hasKeyboardObservers = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v4 addObserver:self selector:sel__keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
   }
 }
 
@@ -2290,18 +2290,18 @@ LABEL_114:
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v5 = v7;
     _os_log_debug_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEBUG, "Removing keyboard observers from <%@: %p>.", &v6, 0x16u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
   self->_hasKeyboardObservers = 0;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
@@ -2319,7 +2319,7 @@ LABEL_114:
     }
 
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v8;
     _os_log_debug_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEBUG, "Keyboard will show for <%@: %p>. HW keyboard?: %@", &v9, 0x20u);
@@ -2328,7 +2328,7 @@ LABEL_114:
   [(PKPaymentSetupFieldCell *)self _configureKeyboardAccessories];
 }
 
-- (void)_keyboardDidHide:(id)a3
+- (void)_keyboardDidHide:(id)hide
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
@@ -2346,7 +2346,7 @@ LABEL_114:
     }
 
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v8;
     _os_log_debug_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEBUG, "Keyboard did hide for <%@: %p>. HW keyboard?: %@", &v9, 0x20u);
@@ -2355,49 +2355,49 @@ LABEL_114:
   [(PKPaymentSetupFieldCell *)self _clearKeyboardAccessories];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = [(PKPaymentSetupFieldCell *)self paymentSetupField:a3];
-  v6 = [v5 isFieldTypePicker];
+  v5 = [(PKPaymentSetupFieldCell *)self paymentSetupField:view];
+  isFieldTypePicker = [v5 isFieldTypePicker];
 
-  if (!v6)
+  if (!isFieldTypePicker)
   {
     return 0;
   }
 
-  v7 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v8 = [v7 pickerFieldObject];
-  v9 = [v8 pickerItems];
-  v10 = [v9 count];
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  pickerFieldObject = [paymentSetupField pickerFieldObject];
+  pickerItems = [pickerFieldObject pickerItems];
+  v10 = [pickerItems count];
 
   return v10;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = [(PKPaymentSetupFieldCell *)self paymentSetupField:a3];
-  v8 = [v7 isFieldTypePicker];
+  v7 = [(PKPaymentSetupFieldCell *)self paymentSetupField:view];
+  isFieldTypePicker = [v7 isFieldTypePicker];
 
-  if (v8)
+  if (isFieldTypePicker)
   {
-    v9 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-    v10 = [v9 pickerFieldObject];
-    v11 = [v10 pickerItems];
-    v12 = [v11 objectAtIndex:a4];
-    v13 = [v12 localizedDisplayName];
+    paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+    pickerFieldObject = [paymentSetupField pickerFieldObject];
+    pickerItems = [pickerFieldObject pickerItems];
+    v12 = [pickerItems objectAtIndex:row];
+    localizedDisplayName = [v12 localizedDisplayName];
   }
 
   else
   {
-    v13 = 0;
+    localizedDisplayName = 0;
   }
 
-  return v13;
+  return localizedDisplayName;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  [(PKPaymentSetupFieldCell *)self updatePaymentSetupFieldWithCurrentCellValue:a3];
+  [(PKPaymentSetupFieldCell *)self updatePaymentSetupFieldWithCurrentCellValue:view];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 

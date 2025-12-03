@@ -4,25 +4,25 @@
 - (AVQueuePlayer)init;
 - (AVQueuePlayer)initWithItems:(NSArray *)items;
 - (BOOL)canInsertItem:(AVPlayerItem *)item afterItem:(AVPlayerItem *)afterItem;
-- (BOOL)canOverlapPlaybackFromPlayerItem:(id)a3 toPlayerItem:(id)a4;
+- (BOOL)canOverlapPlaybackFromPlayerItem:(id)item toPlayerItem:(id)playerItem;
 - (NSArray)items;
-- (int)_canOverlapPlaybackFromPlayerItem:(id)a3 toPlayerItem:(id)a4;
-- (int)_getChannelCountInFirstAudioTrackForItem:(id)a3;
-- (int)_updateCurrentOverlapStateGiven:(int)a3 hasStateChanged:(BOOL *)a4;
-- (void)_canOverlapPlaybackConditionsChangedFor:(id)a3 dueTo:(id)a4;
+- (int)_canOverlapPlaybackFromPlayerItem:(id)item toPlayerItem:(id)playerItem;
+- (int)_getChannelCountInFirstAudioTrackForItem:(id)item;
+- (int)_updateCurrentOverlapStateGiven:(int)given hasStateChanged:(BOOL *)changed;
+- (void)_canOverlapPlaybackConditionsChangedFor:(id)for dueTo:(id)to;
 - (void)advanceToNextItem;
 - (void)dealloc;
 - (void)insertItem:(AVPlayerItem *)item afterItem:(AVPlayerItem *)afterItem;
 - (void)removeAllItems;
 - (void)removeItem:(AVPlayerItem *)item;
-- (void)setActionAtItemEnd:(int64_t)a3;
+- (void)setActionAtItemEnd:(int64_t)end;
 @end
 
 @implementation AVQueuePlayer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -67,7 +67,7 @@
 
 + (AVQueuePlayer)queuePlayerWithItems:(NSArray *)items
 {
-  v3 = [[a1 alloc] initWithItems:items];
+  v3 = [[self alloc] initWithItems:items];
 
   return v3;
 }
@@ -124,11 +124,11 @@
   [(AVPlayer *)&v3 dealloc];
 }
 
-- (void)setActionAtItemEnd:(int64_t)a3
+- (void)setActionAtItemEnd:(int64_t)end
 {
   v3.receiver = self;
   v3.super_class = AVQueuePlayer;
-  [(AVPlayer *)&v3 _setActionAtItemEnd:a3 allowingAdvance:1];
+  [(AVPlayer *)&v3 _setActionAtItemEnd:end allowingAdvance:1];
 }
 
 - (NSArray)items
@@ -150,8 +150,8 @@
 - (BOOL)canInsertItem:(AVPlayerItem *)item afterItem:(AVPlayerItem *)afterItem
 {
   v11 = [[AVTelemetryInterval alloc] initAndStartWith:142];
-  v7 = [(AVPlayer *)self _items];
-  if (([v7 containsObject:item] & 1) == 0)
+  _items = [(AVPlayer *)self _items];
+  if (([_items containsObject:item] & 1) == 0)
   {
     v8 = [(AVPlayerItem *)item _canBeAttachedToPlayer:self];
     if (afterItem)
@@ -171,7 +171,7 @@ LABEL_5:
   }
 
 LABEL_3:
-  v9 = [v7 containsObject:afterItem];
+  v9 = [_items containsObject:afterItem];
 LABEL_6:
   AVTelemetryIntervalEnd(&v11);
   return v8 & v9;
@@ -211,15 +211,15 @@ LABEL_6:
   AVTelemetryIntervalEnd(&v3);
 }
 
-- (int)_canOverlapPlaybackFromPlayerItem:(id)a3 toPlayerItem:(id)a4
+- (int)_canOverlapPlaybackFromPlayerItem:(id)item toPlayerItem:(id)playerItem
 {
   if ([(AVPlayer *)self actionAtItemEnd])
   {
     return 256;
   }
 
-  v8 = [(AVPlayer *)self multichannelAudioStrategy];
-  if ([(NSString *)v8 isEqualToString:@"PreferExclusivePassthrough"]|| [(NSString *)v8 isEqualToString:@"PreferAC3ViaExclusivePassthrough"])
+  multichannelAudioStrategy = [(AVPlayer *)self multichannelAudioStrategy];
+  if ([(NSString *)multichannelAudioStrategy isEqualToString:@"PreferExclusivePassthrough"]|| [(NSString *)multichannelAudioStrategy isEqualToString:@"PreferAC3ViaExclusivePassthrough"])
   {
     return 512;
   }
@@ -234,29 +234,29 @@ LABEL_6:
     return 1024;
   }
 
-  v9 = [a3 asset];
-  v10 = [a4 asset];
-  if (!-[AVPlayer _supportsAdvanceTimeForOverlappedPlayback](self, "_supportsAdvanceTimeForOverlappedPlayback") && (_os_feature_enabled_impl() & 1) == 0 && (([v9 _isStreaming] & 1) != 0 || (objc_msgSend(v10, "_isStreaming") & 1) != 0))
+  asset = [item asset];
+  asset2 = [playerItem asset];
+  if (!-[AVPlayer _supportsAdvanceTimeForOverlappedPlayback](self, "_supportsAdvanceTimeForOverlappedPlayback") && (_os_feature_enabled_impl() & 1) == 0 && (([asset _isStreaming] & 1) != 0 || (objc_msgSend(asset2, "_isStreaming") & 1) != 0))
   {
     return 1280;
   }
 
-  if (([v9 _isStreaming] & 1) == 0 && objc_msgSend(objc_msgSend(v9, "tracks"), "count") != 1)
+  if (([asset _isStreaming] & 1) == 0 && objc_msgSend(objc_msgSend(asset, "tracks"), "count") != 1)
   {
     return 1536;
   }
 
-  if (([v10 _isStreaming] & 1) == 0 && objc_msgSend(objc_msgSend(v10, "tracks"), "count") != 1)
+  if (([asset2 _isStreaming] & 1) == 0 && objc_msgSend(objc_msgSend(asset2, "tracks"), "count") != 1)
   {
     return 1792;
   }
 
-  if (([v9 _isStreaming] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v9, "tracks"), "firstObject"), "mediaType"), "isEqual:", @"soun"))
+  if (([asset _isStreaming] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(asset, "tracks"), "firstObject"), "mediaType"), "isEqual:", @"soun"))
   {
     return 1536;
   }
 
-  if (([v10 _isStreaming] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v10, "tracks"), "firstObject"), "mediaType"), "isEqual:", @"soun"))
+  if (([asset2 _isStreaming] & 1) == 0 && !objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(asset2, "tracks"), "firstObject"), "mediaType"), "isEqual:", @"soun"))
   {
     return 2560;
   }
@@ -266,8 +266,8 @@ LABEL_6:
     return 1;
   }
 
-  v11 = [(AVQueuePlayer *)self _getChannelCountInFirstAudioTrackForItem:a3];
-  v12 = [(AVQueuePlayer *)self _getChannelCountInFirstAudioTrackForItem:a4];
+  v11 = [(AVQueuePlayer *)self _getChannelCountInFirstAudioTrackForItem:item];
+  v12 = [(AVQueuePlayer *)self _getChannelCountInFirstAudioTrackForItem:playerItem];
   result = 2;
   if (v11 >= 1 && v12 >= 1)
   {
@@ -305,7 +305,7 @@ LABEL_6:
   return result;
 }
 
-- (int)_updateCurrentOverlapStateGiven:(int)a3 hasStateChanged:(BOOL *)a4
+- (int)_updateCurrentOverlapStateGiven:(int)given hasStateChanged:(BOOL *)changed
 {
   FigSimpleMutexLock();
   queuePlayer = self->_queuePlayer;
@@ -320,30 +320,30 @@ LABEL_6:
     v9 = 3328;
   }
 
-  if (a3 == 2)
+  if (given == 2)
   {
-    a3 = v9;
+    given = v9;
   }
 
-  v10 = a3 != 0;
+  v10 = given != 0;
   if (isOverlapCurrentlyAllowed != v10)
   {
     queuePlayer->isOverlapCurrentlyAllowed = v10;
   }
 
   FigSimpleMutexUnlock();
-  if (a4)
+  if (changed)
   {
-    *a4 = isOverlapCurrentlyAllowed != v10;
+    *changed = isOverlapCurrentlyAllowed != v10;
   }
 
-  return a3;
+  return given;
 }
 
-- (BOOL)canOverlapPlaybackFromPlayerItem:(id)a3 toPlayerItem:(id)a4
+- (BOOL)canOverlapPlaybackFromPlayerItem:(id)item toPlayerItem:(id)playerItem
 {
   v6 = [AVQueuePlayer _canOverlapPlaybackFromPlayerItem:"_canOverlapPlaybackFromPlayerItem:toPlayerItem:" toPlayerItem:?];
-  if ([(AVPlayer *)self currentItem]== a3)
+  if ([(AVPlayer *)self currentItem]== item)
   {
     LOBYTE(v6) = [(AVQueuePlayer *)self _updateCurrentOverlapStateGiven:v6 hasStateChanged:0];
   }
@@ -358,11 +358,11 @@ LABEL_6:
   return v6 != 0;
 }
 
-- (void)_canOverlapPlaybackConditionsChangedFor:(id)a3 dueTo:(id)a4
+- (void)_canOverlapPlaybackConditionsChangedFor:(id)for dueTo:(id)to
 {
-  if ([@"AVPlayerItemTracksDidChangeNotification" isEqual:a4] && -[AVQueuePlayer supportsAdvanceTimeForOverlappedPlayback](self, "supportsAdvanceTimeForOverlappedPlayback"))
+  if ([@"AVPlayerItemTracksDidChangeNotification" isEqual:to] && -[AVQueuePlayer supportsAdvanceTimeForOverlappedPlayback](self, "supportsAdvanceTimeForOverlappedPlayback"))
   {
-    [a3 _cacheTrackInformation];
+    [for _cacheTrackInformation];
   }
 
   global_queue = dispatch_get_global_queue(0, 0);
@@ -371,8 +371,8 @@ LABEL_6:
   v8[2] = __99__AVQueuePlayer_AVPlayer_OverlapPlaybackConditions___canOverlapPlaybackConditionsChangedFor_dueTo___block_invoke;
   v8[3] = &unk_1E7460E90;
   v8[4] = self;
-  v8[5] = a4;
-  v8[6] = a3;
+  v8[5] = to;
+  v8[6] = for;
   AVSerializeOnQueueAsyncIfNecessary(global_queue, v8);
 }
 
@@ -464,19 +464,19 @@ uint64_t __99__AVQueuePlayer_AVPlayer_OverlapPlaybackConditions___canOverlapPlay
   return [v2 postNotificationName:@"AVQueuePlayerCanOverlapPlaybackConditionsDidChangeNotification" object:v3];
 }
 
-- (int)_getChannelCountInFirstAudioTrackForItem:(id)a3
+- (int)_getChannelCountInFirstAudioTrackForItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
-  [a3 _setClientCaresAboutOverlappedPlayback];
-  LODWORD(v4) = [a3 _isReadyForInspectionOfTracks];
+  [item _setClientCaresAboutOverlappedPlayback];
+  LODWORD(v4) = [item _isReadyForInspectionOfTracks];
   if (v4)
   {
-    v5 = [a3 tracks];
+    tracks = [item tracks];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [tracks countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v6 = v4;
@@ -488,19 +488,19 @@ uint64_t __99__AVQueuePlayer_AVPlayer_OverlapPlaybackConditions___canOverlapPlay
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tracks);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * v8) assetTrack];
-          if ([objc_msgSend(v9 "mediaType")])
+          assetTrack = [*(*(&v11 + 1) + 8 * v8) assetTrack];
+          if ([objc_msgSend(assetTrack "mediaType")])
           {
-            if (v9)
+            if (assetTrack)
             {
-              LODWORD(v4) = [a3 _audioChannelCountForTrack:v9];
+              LODWORD(v4) = [item _audioChannelCountForTrack:assetTrack];
               if (!v4)
               {
-                [a3 _cacheTrackInformation];
-                LODWORD(v4) = [a3 _audioChannelCountForTrack:v9];
+                [item _cacheTrackInformation];
+                LODWORD(v4) = [item _audioChannelCountForTrack:assetTrack];
               }
             }
 
@@ -516,7 +516,7 @@ uint64_t __99__AVQueuePlayer_AVPlayer_OverlapPlaybackConditions___canOverlapPlay
         }
 
         while (v6 != v8);
-        v4 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [tracks countByEnumeratingWithState:&v11 objects:v15 count:16];
         v6 = v4;
         if (v4)
         {

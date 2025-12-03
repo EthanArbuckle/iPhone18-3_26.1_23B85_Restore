@@ -1,21 +1,21 @@
 @interface HMFNetMonitor
 + (id)logCategory;
 - (BOOL)isReachable;
-- (HMFNetMonitor)initWithNetAddress:(id)a3;
-- (HMFNetMonitor)initWithNetService:(id)a3;
+- (HMFNetMonitor)initWithNetAddress:(id)address;
+- (HMFNetMonitor)initWithNetService:(id)service;
 - (HMFNetMonitorDelegate)delegate;
-- (void)setReachable:(BOOL)a3;
+- (void)setReachable:(BOOL)reachable;
 @end
 
 @implementation HMFNetMonitor
 
-- (HMFNetMonitor)initWithNetAddress:(id)a3
+- (HMFNetMonitor)initWithNetAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [[__HMFNetAddressMonitor alloc] initWithNetAddress:v4];
+    v6 = [[__HMFNetAddressMonitor alloc] initWithNetAddress:addressCopy];
   }
 
   else
@@ -31,13 +31,13 @@
   return p_super;
 }
 
-- (HMFNetMonitor)initWithNetService:(id)a3
+- (HMFNetMonitor)initWithNetService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [[__HMFNetServiceMonitor alloc] initWithNetService:v4];
+    v6 = [[__HMFNetServiceMonitor alloc] initWithNetService:serviceCopy];
   }
 
   else
@@ -61,12 +61,12 @@
   return reachable;
 }
 
-- (void)setReachable:(BOOL)a3
+- (void)setReachable:(BOOL)reachable
 {
-  v3 = a3;
+  reachableCopy = reachable;
   v25 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (self->_reachable == v3)
+  if (self->_reachable == reachableCopy)
   {
     v5 = *MEMORY[0x277D85DE8];
 
@@ -75,15 +75,15 @@
 
   else
   {
-    self->_reachable = v3;
+    self->_reachable = reachableCopy;
     os_unfair_lock_unlock(&self->_lock);
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = HMFGetLogIdentifier(v7);
-      v10 = HMFBooleanToString(v3);
+      v9 = HMFGetLogIdentifier(selfCopy);
+      v10 = HMFBooleanToString(reachableCopy);
       v21 = 138543618;
       v22 = v9;
       v23 = 2112;
@@ -92,13 +92,13 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(HMFNetMonitor *)v7 delegate];
-    if (v3)
+    delegate = [(HMFNetMonitor *)selfCopy delegate];
+    if (reachableCopy)
     {
       if (objc_opt_respondsToSelector())
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = v7;
+        v13 = selfCopy;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
@@ -109,14 +109,14 @@
         }
 
         objc_autoreleasePoolPop(v12);
-        [v11 networkMonitorIsReachable:v13];
+        [delegate networkMonitorIsReachable:v13];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = v7;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -127,7 +127,7 @@
       }
 
       objc_autoreleasePoolPop(v16);
-      [v11 networkMonitorIsUnreachable:v17];
+      [delegate networkMonitorIsUnreachable:v17];
     }
 
     v20 = *MEMORY[0x277D85DE8];

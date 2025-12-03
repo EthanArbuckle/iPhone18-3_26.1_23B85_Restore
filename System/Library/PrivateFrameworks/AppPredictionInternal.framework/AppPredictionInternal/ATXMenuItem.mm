@@ -1,8 +1,8 @@
 @interface ATXMenuItem
-+ (id)fullMenuPathStringFromMenuPathWithMenuPath:(id)a3;
++ (id)fullMenuPathStringFromMenuPathWithMenuPath:(id)path;
 - (ATXMenuItem)init;
-- (ATXMenuItem)initWithBundleID:(id)a3 identifier:(id)a4 localizedTitle:(id)a5 standaloneTitle:(id)a6 menuHierarchyComponents:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (ATXMenuItem)initWithBundleID:(id)d identifier:(id)identifier localizedTitle:(id)title standaloneTitle:(id)standaloneTitle menuHierarchyComponents:(id)components;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)fullMenuPath;
 - (NSArray)menuHierarchyComponents;
 - (NSString)bundleID;
@@ -11,7 +11,7 @@
 - (NSString)fullMenuPathString;
 - (NSString)identifierForIndexing;
 - (int64_t)hash;
-- (void)setIdentifierForIndexing:(id)a3;
+- (void)setIdentifierForIndexing:(id)indexing;
 @end
 
 @implementation ATXMenuItem
@@ -37,7 +37,7 @@
 
 - (NSArray)fullMenuPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_22679D174();
 
   v3 = sub_226836558();
@@ -48,7 +48,7 @@
 - (NSString)fullMenuPathString
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x80);
-  v3 = self;
+  selfCopy = self;
   v2();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D7A1CC0, qword_226873D50);
   sub_2267A0610(&qword_27D7A1A90, &unk_27D7A1CC0, qword_226873D50);
@@ -61,7 +61,7 @@
 
 - (NSString)identifierForIndexing
 {
-  v2 = self;
+  selfCopy = self;
   sub_22679D5C0();
 
   v3 = sub_2268363F8();
@@ -69,7 +69,7 @@
   return v3;
 }
 
-- (void)setIdentifierForIndexing:(id)a3
+- (void)setIdentifierForIndexing:(id)indexing
 {
   v4 = sub_226836408();
   v5 = (self + OBJC_IVAR___ATXMenuItem____lazy_storage___identifierForIndexing);
@@ -78,22 +78,22 @@
   v5[1] = v7;
 }
 
-- (ATXMenuItem)initWithBundleID:(id)a3 identifier:(id)a4 localizedTitle:(id)a5 standaloneTitle:(id)a6 menuHierarchyComponents:(id)a7
+- (ATXMenuItem)initWithBundleID:(id)d identifier:(id)identifier localizedTitle:(id)title standaloneTitle:(id)standaloneTitle menuHierarchyComponents:(id)components
 {
   v11 = sub_226836408();
   v13 = v12;
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_226836408();
+    identifier = sub_226836408();
     v15 = v14;
-    if (a5)
+    if (title)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v17 = 0;
-    if (a6)
+    if (standaloneTitle)
     {
       goto LABEL_4;
     }
@@ -104,21 +104,21 @@ LABEL_7:
   }
 
   v15 = 0;
-  if (!a5)
+  if (!title)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  a5 = sub_226836408();
+  title = sub_226836408();
   v17 = v16;
-  if (!a6)
+  if (!standaloneTitle)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  a6 = sub_226836408();
+  standaloneTitle = sub_226836408();
   v19 = v18;
 LABEL_8:
   v20 = sub_226836568();
@@ -129,13 +129,13 @@ LABEL_8:
   *v22 = v11;
   v22[1] = v13;
   v23 = (self + OBJC_IVAR___ATXMenuItem_identifier);
-  *v23 = a4;
+  *v23 = identifier;
   v23[1] = v15;
   v24 = (self + OBJC_IVAR___ATXMenuItem_localizedTitle);
-  *v24 = a5;
+  *v24 = title;
   v24[1] = v17;
   v25 = (self + OBJC_IVAR___ATXMenuItem_standaloneTitle);
-  *v25 = a6;
+  *v25 = standaloneTitle;
   v25[1] = v19;
   *(self + OBJC_IVAR___ATXMenuItem_menuHierarchyComponents) = v20;
   v27.receiver = self;
@@ -152,7 +152,7 @@ LABEL_8:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22679E59C();
 
   v3 = sub_2268363F8();
@@ -164,7 +164,7 @@ LABEL_8:
 {
   sub_226836C58();
   v3 = *((*MEMORY[0x277D85000] & *self) + 0x90);
-  v4 = self;
+  selfCopy = self;
   v3();
   sub_226836498();
 
@@ -173,7 +173,7 @@ LABEL_8:
   return v5;
 }
 
-+ (id)fullMenuPathStringFromMenuPathWithMenuPath:(id)a3
++ (id)fullMenuPathStringFromMenuPathWithMenuPath:(id)path
 {
   sub_226836568();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D7A1CC0, qword_226873D50);
@@ -185,11 +185,11 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_226836878();
     swift_unknownObjectRelease();
@@ -198,7 +198,7 @@ LABEL_8:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_22679EA58(v8);

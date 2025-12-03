@@ -1,20 +1,20 @@
 @interface ACHCurrentActivitySummaryQueryServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields;
 @end
 
 @implementation ACHCurrentActivitySummaryQueryServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HDQueryServer *)[ACHCurrentActivitySummaryQueryServer alloc] initWithUUID:v13 configuration:v12 client:v11 delegate:v10];
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
+  v14 = [(HDQueryServer *)[ACHCurrentActivitySummaryQueryServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
 
   return v14;
 }
@@ -24,9 +24,9 @@
   v5.receiver = self;
   v5.super_class = ACHCurrentActivitySummaryQueryServer;
   [(HDQueryServer *)&v5 _queue_start];
-  v3 = [(HDQueryServer *)self profile];
-  v4 = [v3 currentActivitySummaryHelper];
-  [v4 addObserver:self];
+  profile = [(HDQueryServer *)self profile];
+  currentActivitySummaryHelper = [profile currentActivitySummaryHelper];
+  [currentActivitySummaryHelper addObserver:self];
 }
 
 - (void)_queue_stop
@@ -34,19 +34,19 @@
   v5.receiver = self;
   v5.super_class = ACHCurrentActivitySummaryQueryServer;
   [(HDQueryServer *)&v5 _queue_stop];
-  v3 = [(HDQueryServer *)self profile];
-  v4 = [v3 currentActivitySummaryHelper];
-  [v4 removeObserver:self];
+  profile = [(HDQueryServer *)self profile];
+  currentActivitySummaryHelper = [profile currentActivitySummaryHelper];
+  [currentActivitySummaryHelper removeObserver:self];
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(HDQueryServer *)self clientProxy];
-  if (v8)
+  summaryCopy = summary;
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  if (clientProxy)
   {
-    if (([(HKActivitySummary *)self->_lastTodaySummary _allFieldsAreEqual:v7]& 1) == 0)
+    if (([(HKActivitySummary *)self->_lastTodaySummary _allFieldsAreEqual:summaryCopy]& 1) == 0)
     {
       v9 = ACHLogXPC();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -54,10 +54,10 @@
         [ACHCurrentActivitySummaryQueryServer currentActivitySummaryHelper:didUpdateTodayActivitySummary:changedFields:];
       }
 
-      v10 = [(HDQueryServer *)self queryUUID];
-      [v8 client_deliverTodaySummary:v7 changedTodayFields:a5 yesterdaySummary:0 changedYesterdayFields:0 queryUUID:v10];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [clientProxy client_deliverTodaySummary:summaryCopy changedTodayFields:fields yesterdaySummary:0 changedYesterdayFields:0 queryUUID:queryUUID];
 
-      v11 = [v7 copy];
+      v11 = [summaryCopy copy];
       p_super = &self->_lastTodaySummary->super;
       self->_lastTodaySummary = v11;
       goto LABEL_11;
@@ -77,7 +77,7 @@
   if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = summaryCopy;
     _os_log_impl(&dword_221DDC000, p_super, OS_LOG_TYPE_DEFAULT, "Not calling query client with todayActivitySummary: %@, same as lastTodaySummary.", &v15, 0xCu);
   }
 
@@ -86,14 +86,14 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(HDQueryServer *)self clientProxy];
-  if (v8)
+  summaryCopy = summary;
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  if (clientProxy)
   {
-    if (([(HKActivitySummary *)self->_lastYesterdaySummary _allFieldsAreEqual:v7]& 1) == 0)
+    if (([(HKActivitySummary *)self->_lastYesterdaySummary _allFieldsAreEqual:summaryCopy]& 1) == 0)
     {
       v9 = ACHLogXPC();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -101,10 +101,10 @@ LABEL_11:
         [ACHCurrentActivitySummaryQueryServer currentActivitySummaryHelper:didUpdateYesterdayActivitySummary:changedFields:];
       }
 
-      v10 = [(HDQueryServer *)self queryUUID];
-      [v8 client_deliverTodaySummary:0 changedTodayFields:0 yesterdaySummary:v7 changedYesterdayFields:a5 queryUUID:v10];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [clientProxy client_deliverTodaySummary:0 changedTodayFields:0 yesterdaySummary:summaryCopy changedYesterdayFields:fields queryUUID:queryUUID];
 
-      v11 = [v7 copy];
+      v11 = [summaryCopy copy];
       p_super = &self->_lastYesterdaySummary->super;
       self->_lastYesterdaySummary = v11;
       goto LABEL_11;
@@ -124,7 +124,7 @@ LABEL_11:
   if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = summaryCopy;
     _os_log_impl(&dword_221DDC000, p_super, OS_LOG_TYPE_DEFAULT, "Not calling query client with yesterdayActivitySummary: %@, same as lastYesterdaySummary.", &v15, 0xCu);
   }
 

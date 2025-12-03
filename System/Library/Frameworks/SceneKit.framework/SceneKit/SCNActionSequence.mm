@@ -1,12 +1,12 @@
 @interface SCNActionSequence
-+ (id)sequenceWithActions:(id)a3;
++ (id)sequenceWithActions:(id)actions;
 - (BOOL)isCustom;
 - (SCNActionSequence)init;
-- (SCNActionSequence)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionSequence)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionSequence
@@ -23,7 +23,7 @@
   return 0;
 }
 
-- (SCNActionSequence)initWithCoder:(id)a3
+- (SCNActionSequence)initWithCoder:(id)coder
 {
   v5 = *MEMORY[0x277D85DE8];
   v4.receiver = self;
@@ -43,13 +43,13 @@
   [(SCNAction *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionSequence;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedLong:", *(self->_mycaction + 21)), @"_mycaction->_animIndex"}];
-  [a3 encodeObject:self->_actions forKey:@"_actions"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedLong:", *(self->_mycaction + 21)), @"_mycaction->_animIndex"}];
+  [coder encodeObject:self->_actions forKey:@"_actions"];
 }
 
 - (BOOL)isCustom
@@ -99,18 +99,18 @@
   return v3;
 }
 
-+ (id)sequenceWithActions:(id)a3
++ (id)sequenceWithActions:(id)actions
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  if (a3 && [a3 count])
+  if (actions && [actions count])
   {
     objc_opt_class();
-    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(actions, "count")}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v5 = [actions countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v5)
     {
       v6 = v5;
@@ -121,7 +121,7 @@
         {
           if (*v29 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(actions);
           }
 
           v9 = *(*(&v28 + 1) + 8 * i);
@@ -137,7 +137,7 @@
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v6 = [actions countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v6);
@@ -167,8 +167,8 @@
 
           v18 = *(*(&v24 + 1) + 8 * j);
           mycaction = v11->_mycaction;
-          v23 = [v18 caction];
-          std::vector<Statement *>::push_back[abi:nn200100](mycaction + 144, &v23);
+          caction = [v18 caction];
+          std::vector<Statement *>::push_back[abi:nn200100](mycaction + 144, &caction);
           [v18 duration];
           v16 = v16 + v20;
         }
@@ -202,7 +202,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCNActionSequence sequenceWithActions:self->_actions];
   [(SCNAction *)v4 setTimingMode:[(SCNAction *)self timingMode]];

@@ -11,13 +11,13 @@
 
 - (void)_configureBlurFilterIfNecessary
 {
-  if (([a1 isSauiBlurConfigured] & 1) == 0)
+  if (([self isSauiBlurConfigured] & 1) == 0)
   {
-    v9 = [a1 layer];
+    layer = [self layer];
     v2 = objc_alloc(MEMORY[0x277CD9EA0]);
     v3 = [v2 initWithType:*MEMORY[0x277CDA328]];
-    v4 = [v9 filters];
-    v5 = [v4 mutableCopy];
+    filters = [layer filters];
+    v5 = [filters mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -32,15 +32,15 @@
     v8 = v7;
 
     [v8 addObject:v3];
-    [v9 setFilters:v8];
+    [layer setFilters:v8];
   }
 }
 
 - (BOOL)isSauiBlurConfigured
 {
-  v1 = [a1 layer];
-  v2 = [objc_opt_class() _sauiBlurKeyPath];
-  v3 = [v1 valueForKeyPath:v2];
+  layer = [self layer];
+  _sauiBlurKeyPath = [objc_opt_class() _sauiBlurKeyPath];
+  v3 = [layer valueForKeyPath:_sauiBlurKeyPath];
   v4 = v3 != 0;
 
   return v4;
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = __64__UIView_SystemApertureUIAdditions___sauiBlurInputRadiusKeyPath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sauiBlurInputRadiusKeyPath_onceToken != -1)
   {
     dispatch_once(&_sauiBlurInputRadiusKeyPath_onceToken, block);
@@ -78,11 +78,11 @@
 - (double)sauiBlurRadius
 {
   v2 = 0.0;
-  if ([a1 isSauiBlurConfigured])
+  if ([self isSauiBlurConfigured])
   {
-    v3 = [a1 layer];
-    v4 = [objc_opt_class() _sauiBlurInputRadiusKeyPath];
-    v5 = [v3 valueForKeyPath:v4];
+    layer = [self layer];
+    _sauiBlurInputRadiusKeyPath = [objc_opt_class() _sauiBlurInputRadiusKeyPath];
+    v5 = [layer valueForKeyPath:_sauiBlurInputRadiusKeyPath];
     [v5 floatValue];
     v2 = v6;
   }
@@ -94,15 +94,15 @@
 {
   if (a2 > 0.0)
   {
-    [a1 _configureBlurFilterIfNecessary];
+    [self _configureBlurFilterIfNecessary];
   }
 
-  if ([a1 isSauiBlurConfigured])
+  if ([self isSauiBlurConfigured])
   {
-    v6 = [a1 layer];
+    layer = [self layer];
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:a2];
-    v5 = [objc_opt_class() _sauiBlurInputRadiusKeyPath];
-    [v6 setValue:v4 forKeyPath:v5];
+    _sauiBlurInputRadiusKeyPath = [objc_opt_class() _sauiBlurInputRadiusKeyPath];
+    [layer setValue:v4 forKeyPath:_sauiBlurInputRadiusKeyPath];
   }
 }
 

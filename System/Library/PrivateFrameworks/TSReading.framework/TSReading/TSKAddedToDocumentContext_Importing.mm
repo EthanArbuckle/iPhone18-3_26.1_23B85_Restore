@@ -1,5 +1,5 @@
 @interface TSKAddedToDocumentContext_Importing
-- (TSKAddedToDocumentContext_Importing)initWithImporterID:(id)a3;
+- (TSKAddedToDocumentContext_Importing)initWithImporterID:(id)d;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(TSKAddedToDocumentContext_Importing *)&v3 dealloc];
 }
 
-- (TSKAddedToDocumentContext_Importing)initWithImporterID:(id)a3
+- (TSKAddedToDocumentContext_Importing)initWithImporterID:(id)d
 {
   v6.receiver = self;
   v6.super_class = TSKAddedToDocumentContext_Importing;
   v4 = [(TSKAddedToDocumentContext_Importing *)&v6 init];
   if (v4)
   {
-    v4->mImporterID = a3;
+    v4->mImporterID = d;
   }
 
   return v4;

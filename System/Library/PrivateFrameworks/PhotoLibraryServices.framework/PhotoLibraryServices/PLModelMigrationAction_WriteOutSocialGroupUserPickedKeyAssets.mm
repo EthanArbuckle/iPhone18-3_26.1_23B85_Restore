@@ -1,27 +1,27 @@
 @interface PLModelMigrationAction_WriteOutSocialGroupUserPickedKeyAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_WriteOutSocialGroupUserPickedKeyAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v102 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contextCopy = context;
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLGraphLabel entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"code == %d", 1003];
-  [v10 setPredicate:v11];
+  1003 = [MEMORY[0x1E696AE18] predicateWithFormat:@"code == %d", 1003];
+  [v10 setPredicate:1003];
 
   v67 = 0;
-  v12 = [v7 executeFetchRequest:v10 error:&v67];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v67];
   v13 = v67;
   if (v12)
   {
-    v14 = [v12 firstObject];
-    if (!v14)
+    firstObject = [v12 firstObject];
+    if (!firstObject)
     {
       v27 = PLMigrationGetLog();
       v28 = 1;
@@ -37,13 +37,13 @@
 
     v61 = a2;
     v64 = v13;
-    v65 = self;
+    selfCopy = self;
     v63 = v12;
-    v15 = v7;
-    v16 = [(PLManagedObject *)PLGraphEdge entityInManagedObjectContext:v7];
-    v17 = [v16 relationshipsByName];
+    v15 = contextCopy;
+    v16 = [(PLManagedObject *)PLGraphEdge entityInManagedObjectContext:contextCopy];
+    relationshipsByName = [v16 relationshipsByName];
     v18 = @"labels";
-    v19 = [v17 objectForKey:@"labels"];
+    v19 = [relationshipsByName objectForKey:@"labels"];
 
     v62 = v16;
     if (v19)
@@ -53,8 +53,8 @@
 
     else
     {
-      v29 = [v16 relationshipsByName];
-      v30 = [v29 objectForKey:@"additionalLabels"];
+      relationshipsByName2 = [v16 relationshipsByName];
+      v30 = [relationshipsByName2 objectForKey:@"additionalLabels"];
 
       v20 = v30 == 0;
       if (v30)
@@ -73,7 +73,7 @@
     v33 = [v31 fetchRequestWithEntityName:v32];
 
     [v33 setResultType:1];
-    v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K = %@", v18, v14];
+    v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K = %@", v18, firstObject];
     [v33 setPredicate:v34];
 
     if (v20)
@@ -81,13 +81,13 @@
       v35 = PLMigrationGetLog();
       v36 = os_log_type_enabled(v35, OS_LOG_TYPE_ERROR);
 
-      v7 = v15;
+      contextCopy = v15;
       if (v36)
       {
-        self = v65;
-        v37 = [(PLModelMigrationActionCore *)v65 logger];
+        self = selfCopy;
+        logger = [(PLModelMigrationActionCore *)selfCopy logger];
 
-        if (v37)
+        if (logger)
         {
           v100 = 0u;
           v101 = 0u;
@@ -127,7 +127,7 @@
           LODWORD(v59) = 2;
           v39 = _os_log_send_and_compose_impl();
 
-          v40 = [(PLModelMigrationActionCore *)v65 logger:&v68];
+          v40 = [(PLModelMigrationActionCore *)selfCopy logger:&v68];
           [v40 logWithMessage:v39 fromCodeLocation:"PLModelMigrationActionPreSchema.m" type:{99, 16}];
 
           v12 = v63;
@@ -155,7 +155,7 @@
       {
         v28 = 1;
         v12 = v63;
-        self = v65;
+        self = selfCopy;
       }
 
       v27 = v62;
@@ -163,22 +163,22 @@
     }
 
     v66 = 0;
-    v7 = v15;
+    contextCopy = v15;
     v41 = [v15 executeFetchRequest:v33 error:&v66];
     v60 = v66;
     if (v41)
     {
-      v42 = [(PLModelMigrationActionCore *)v65 migrationContextUserInfo];
+      migrationContextUserInfo = [(PLModelMigrationActionCore *)selfCopy migrationContextUserInfo];
 
       v12 = v63;
-      if (!v42)
+      if (!migrationContextUserInfo)
       {
-        v57 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v57 handleFailureInMethod:v61 object:v65 file:@"PLModelMigrationActionPreSchema.m" lineNumber:90 description:@"migrationContextUserInfo should not be nil."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v61 object:selfCopy file:@"PLModelMigrationActionPreSchema.m" lineNumber:90 description:@"migrationContextUserInfo should not be nil."];
       }
 
-      v43 = [(PLModelMigrationActionCore *)v65 migrationContextUserInfo];
-      [v43 setObject:v41 forKeyedSubscript:@"socialGroupUserPickAssetEdgeIDs"];
+      migrationContextUserInfo2 = [(PLModelMigrationActionCore *)selfCopy migrationContextUserInfo];
+      [migrationContextUserInfo2 setObject:v41 forKeyedSubscript:@"socialGroupUserPickAssetEdgeIDs"];
 
       v28 = 1;
     }
@@ -190,9 +190,9 @@
 
       if (v45)
       {
-        v46 = [(PLModelMigrationActionCore *)v65 logger];
+        logger2 = [(PLModelMigrationActionCore *)selfCopy logger];
 
-        if (!v46)
+        if (!logger2)
         {
           v56 = PLMigrationGetLog();
           v27 = v62;
@@ -247,7 +247,7 @@
         LODWORD(v59) = 12;
         v48 = _os_log_send_and_compose_impl();
 
-        v49 = [(PLModelMigrationActionCore *)v65 logger:&v68];
+        v49 = [(PLModelMigrationActionCore *)selfCopy logger:&v68];
         [v49 logWithMessage:v48 fromCodeLocation:"PLModelMigrationActionPreSchema.m" type:{94, 16}];
 
         if (v48 != buf)
@@ -263,7 +263,7 @@
     v27 = v62;
 LABEL_30:
 
-    self = v65;
+    self = selfCopy;
 LABEL_40:
 
     v13 = v64;
@@ -277,9 +277,9 @@ LABEL_41:
 
   if (v22)
   {
-    v23 = [(PLModelMigrationActionCore *)self logger];
+    logger3 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v23)
+    if (logger3)
     {
       v100 = 0u;
       v101 = 0u;
@@ -346,10 +346,10 @@ LABEL_42:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v52 = v13;
   v53 = v52;
-  if (v28 != 1 && a4)
+  if (v28 != 1 && error)
   {
     v54 = v52;
-    *a4 = v53;
+    *error = v53;
   }
 
   return v28;

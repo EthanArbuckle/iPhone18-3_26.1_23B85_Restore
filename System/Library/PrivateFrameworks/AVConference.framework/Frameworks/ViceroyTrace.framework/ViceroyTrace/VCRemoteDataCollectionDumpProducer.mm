@@ -1,19 +1,19 @@
 @interface VCRemoteDataCollectionDumpProducer
-- (BOOL)writeVCRCMLDumpToCSVPath:(id)a3;
-- (VCRemoteDataCollectionDumpProducer)initWithDataStore:(id)a3;
+- (BOOL)writeVCRCMLDumpToCSVPath:(id)path;
+- (VCRemoteDataCollectionDumpProducer)initWithDataStore:(id)store;
 - (id)newHeaderString;
-- (void)coreAnalyticsCallback:(id)a3 fileHandle:(id)a4;
+- (void)coreAnalyticsCallback:(id)callback fileHandle:(id)handle;
 - (void)createDumpAndSubmitToCoreAnalytics;
 - (void)dealloc;
 - (void)newHeaderString;
 - (void)removeDatabaseFile;
-- (void)runPostProcessing:(id)a3;
-- (void)submitToCoreAnalytics:(id)a3;
+- (void)runPostProcessing:(id)processing;
+- (void)submitToCoreAnalytics:(id)analytics;
 @end
 
 @implementation VCRemoteDataCollectionDumpProducer
 
-- (VCRemoteDataCollectionDumpProducer)initWithDataStore:(id)a3
+- (VCRemoteDataCollectionDumpProducer)initWithDataStore:(id)store
 {
   v10.receiver = self;
   v10.super_class = VCRemoteDataCollectionDumpProducer;
@@ -21,8 +21,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_dataStore = a3;
-    v6 = a3;
+    v4->_dataStore = store;
+    storeCopy = store;
     v7 = [VCWeakObjectHolder weakObjectHolderWithObject:v5];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -54,10 +54,10 @@ uint64_t __56__VCRemoteDataCollectionDumpProducer_initWithDataStore___block_invo
   [(VCRemoteDataCollectionDumpProducer *)&v3 dealloc];
 }
 
-- (void)runPostProcessing:(id)a3
+- (void)runPostProcessing:(id)processing
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [processing copy];
   self->_databasePath = v4;
   v5 = sqlite3_open([(NSString *)v4 UTF8String], &self->_database);
   if (!v5 || (v6 = v5, v5 == 101))
@@ -190,10 +190,10 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitToCoreAnalytics:(id)a3
+- (void)submitToCoreAnalytics:(id)analytics
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9[5] = a3;
+  v9[5] = analytics;
   v10 = 0;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -251,7 +251,7 @@ LABEL_9:
           v17 = 2112;
           v18 = v5;
           v19 = 2048;
-          v20 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_23D4DF000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Submission to Core Analytics failed", buf, 0x30u);
         }
       }
@@ -261,15 +261,15 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreAnalyticsCallback:(id)a3 fileHandle:(id)a4
+- (void)coreAnalyticsCallback:(id)callback fileHandle:(id)handle
 {
   v37 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v7 = fopen([a3 UTF8String], "r");
+  v7 = fopen([callback UTF8String], "r");
   if (v7)
   {
     v8 = v7;
-    v9 = fdopen([a4 fileDescriptor], "w");
+    v9 = fdopen([handle fileDescriptor], "w");
     if (v9)
     {
       v10 = v9;
@@ -310,7 +310,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v14 = [v22 localizedDescription];
+      localizedDescription = [v22 localizedDescription];
       *buf = 136316162;
       v24 = v12;
       v25 = 2080;
@@ -318,9 +318,9 @@ LABEL_9:
       v27 = 1024;
       v28 = 127;
       v29 = 2112;
-      v30 = a3;
+      callbackCopy = callback;
       v31 = 2112;
-      v32 = v14;
+      selfCopy = localizedDescription;
       v15 = " [%s] %s:%d Failed to delete file on csvPath=%@, error=%@";
       v16 = v13;
       v17 = 48;
@@ -350,7 +350,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v21 = [v22 localizedDescription];
+      localizedDescription2 = [v22 localizedDescription];
       *buf = 136316674;
       v24 = v18;
       v25 = 2080;
@@ -358,13 +358,13 @@ LABEL_9:
       v27 = 1024;
       v28 = 127;
       v29 = 2112;
-      v30 = v11;
+      callbackCopy = v11;
       v31 = 2048;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
-      v34 = a3;
+      callbackCopy2 = callback;
       v35 = 2112;
-      v36 = v21;
+      v36 = localizedDescription2;
       v15 = " [%s] %s:%d %@(%p) Failed to delete file on csvPath=%@, error=%@";
       v16 = v19;
       v17 = 68;
@@ -377,7 +377,7 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)writeVCRCMLDumpToCSVPath:(id)a3
+- (BOOL)writeVCRCMLDumpToCSVPath:(id)path
 {
   v37 = *MEMORY[0x277D85DE8];
   p_database = &self->_database;
@@ -398,15 +398,15 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v6 = [(VCRemoteDataCollectionDumpProducer *)self newHeaderString];
-  if (!v6)
+  newHeaderString = [(VCRemoteDataCollectionDumpProducer *)self newHeaderString];
+  if (!newHeaderString)
   {
     [VCRemoteDataCollectionDumpProducer writeVCRCMLDumpToCSVPath:];
     goto LABEL_13;
   }
 
-  v7 = v6;
-  v8 = fopen([a3 UTF8String], "w");
+  v7 = newHeaderString;
+  v8 = fopen([path UTF8String], "w");
   if (!v8)
   {
     if (objc_opt_class() == self)
@@ -448,9 +448,9 @@ LABEL_14:
           v31 = 2112;
           v32 = v13;
           v33 = 2048;
-          v34 = self;
+          selfCopy3 = self;
           v35 = 2112;
-          v36 = a3;
+          pathCopy = path;
           _os_log_error_impl(&dword_23D4DF000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to open fileName=%@", v26, 0x3Au);
         }
       }
@@ -510,9 +510,9 @@ LABEL_14:
     v31 = 2112;
     v32 = v14;
     v33 = 2048;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2080;
-    v36 = v22;
+    pathCopy = v22;
     v23 = " [%s] %s:%d %@(%p) SQLite Error: Failed to execute header printing with errorMessage=%s";
     goto LABEL_46;
   }
@@ -561,9 +561,9 @@ LABEL_44:
     v31 = 2112;
     v32 = v15;
     v33 = 2048;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2080;
-    v36 = v25;
+    pathCopy = v25;
     v23 = " [%s] %s:%d %@(%p) SQLite Error: Failed to execute combination query with errorMessage=%s";
 LABEL_46:
     _os_log_error_impl(&dword_23D4DF000, v21, OS_LOG_TYPE_ERROR, v23, v26, 0x3Au);
@@ -647,7 +647,7 @@ LABEL_9:
           v25 = 2112;
           v26 = v14;
           v27 = 2048;
-          v28 = self;
+          selfCopy = self;
           v29 = 1024;
           v30 = v13;
           _os_log_error_impl(&dword_23D4DF000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) SQLite Error: could not read metadata status=%d", buf, 0x36u);
@@ -688,7 +688,7 @@ LABEL_9:
     }
 
     databasePath = self->_databasePath;
-    v7 = [v16 localizedDescription];
+    localizedDescription = [v16 localizedDescription];
     *buf = 136316162;
     v18 = v4;
     v19 = 2080;
@@ -698,7 +698,7 @@ LABEL_9:
     v23 = 2112;
     v24 = databasePath;
     v25 = 2112;
-    v26 = v7;
+    selfCopy = localizedDescription;
     v8 = " [%s] %s:%d Failed to delete RemoteDataCollectionDumpProducer database with databasePath=%@, error=%@";
     v9 = v5;
     v10 = 48;
@@ -724,7 +724,7 @@ LABEL_13:
     if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_ERROR))
     {
       v14 = self->_databasePath;
-      v15 = [v16 localizedDescription];
+      localizedDescription2 = [v16 localizedDescription];
       *buf = 136316674;
       v18 = v11;
       v19 = 2080;
@@ -734,11 +734,11 @@ LABEL_13:
       v23 = 2112;
       v24 = v3;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v14;
       v29 = 2112;
-      v30 = v15;
+      v30 = localizedDescription2;
       v8 = " [%s] %s:%d %@(%p) Failed to delete RemoteDataCollectionDumpProducer database with databasePath=%@, error=%@";
       v9 = v12;
       v10 = 68;

@@ -1,5 +1,5 @@
 @interface NCBannerTransitionBlockingPrototypeRecipe
-- (NCBannerTransitionBlockingPrototypeRecipe)initWithNotificationAlertDestination:(id)a3;
+- (NCBannerTransitionBlockingPrototypeRecipe)initWithNotificationAlertDestination:(id)destination;
 - (NCNotificationAlertDestinationPrototyping)notificationAlertDestination;
 - (void)_popTopAssertion;
 - (void)_pushNewAssertion;
@@ -7,16 +7,16 @@
 
 @implementation NCBannerTransitionBlockingPrototypeRecipe
 
-- (NCBannerTransitionBlockingPrototypeRecipe)initWithNotificationAlertDestination:(id)a3
+- (NCBannerTransitionBlockingPrototypeRecipe)initWithNotificationAlertDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v15.receiver = self;
   v15.super_class = NCBannerTransitionBlockingPrototypeRecipe;
   v5 = [(NCBannerTransitionBlockingPrototypeRecipe *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_notificationAlertDestination, v4);
+    objc_storeWeak(&v5->_notificationAlertDestination, destinationCopy);
     objc_initWeak(&location, v6);
     v7 = MEMORY[0x277D431D0];
     v12[0] = MEMORY[0x277D85DD0];
@@ -54,23 +54,23 @@ void __82__NCBannerTransitionBlockingPrototypeRecipe_initWithNotificationAlertDe
 
 - (void)_pushNewAssertion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_assertions)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_assertions)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    assertions = v2->_assertions;
-    v2->_assertions = v3;
+    assertions = selfCopy->_assertions;
+    selfCopy->_assertions = v3;
   }
 
-  WeakRetained = objc_loadWeakRetained(&v2->_notificationAlertDestination);
-  v6 = [WeakRetained activeNotificationRequestPresenter];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_notificationAlertDestination);
+  activeNotificationRequestPresenter = [WeakRetained activeNotificationRequestPresenter];
 
-  if (v6)
+  if (activeNotificationRequestPresenter)
   {
-    objc_initWeak(&location, v2);
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"transitionBlockingPrototypeRecipe-%ld", -[NSMutableArray count](v2->_assertions, "count")];
-    v8 = [v6 requestTransitionBlockingAssertionWithReason:v7];
+    objc_initWeak(&location, selfCopy);
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"transitionBlockingPrototypeRecipe-%ld", -[NSMutableArray count](selfCopy->_assertions, "count")];
+    v8 = [activeNotificationRequestPresenter requestTransitionBlockingAssertionWithReason:v7];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -80,7 +80,7 @@ void __82__NCBannerTransitionBlockingPrototypeRecipe_initWithNotificationAlertDe
     [v8 addInvalidationBlock:v9];
     if (v8)
     {
-      [(NSMutableArray *)v2->_assertions addObject:v8];
+      [(NSMutableArray *)selfCopy->_assertions addObject:v8];
     }
 
     objc_destroyWeak(&v10);
@@ -88,7 +88,7 @@ void __82__NCBannerTransitionBlockingPrototypeRecipe_initWithNotificationAlertDe
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __62__NCBannerTransitionBlockingPrototypeRecipe__pushNewAssertion__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -110,9 +110,9 @@ void __62__NCBannerTransitionBlockingPrototypeRecipe__pushNewAssertion__block_in
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(NSMutableArray *)obj->_assertions lastObject];
+  lastObject = [(NSMutableArray *)obj->_assertions lastObject];
   [(NSMutableArray *)obj->_assertions removeLastObject];
-  [v2 invalidateWithReason:@"popTopAssertion"];
+  [lastObject invalidateWithReason:@"popTopAssertion"];
 
   objc_sync_exit(obj);
 }

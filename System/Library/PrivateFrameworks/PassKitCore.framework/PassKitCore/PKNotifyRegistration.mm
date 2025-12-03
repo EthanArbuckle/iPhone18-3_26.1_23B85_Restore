@@ -1,10 +1,10 @@
 @interface PKNotifyRegistration
 - (BOOL)hasSubregistrations;
-- (PKNotifyRegistration)initWithName:(id)a3;
-- (id)subregisterWithHandler:(id)a3;
+- (PKNotifyRegistration)initWithName:(id)name;
+- (id)subregisterWithHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeInvalidatedSubregistration:(id)a3;
+- (void)removeInvalidatedSubregistration:(id)subregistration;
 @end
 
 @implementation PKNotifyRegistration
@@ -94,10 +94,10 @@
   [(PKNotifyRegistration *)&v3 dealloc];
 }
 
-- (PKNotifyRegistration)initWithName:(id)a3
+- (PKNotifyRegistration)initWithName:(id)name
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = PKNotifyRegistration;
   v5 = [(PKNotifyRegistration *)&v23 init];
@@ -112,7 +112,7 @@
     queue = v6->_queue;
     v6->_queue = v9;
 
-    v11 = [v4 copy];
+    v11 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v11;
 
@@ -128,7 +128,7 @@
     v15 = v6;
     v22 = v15;
     v16 = _Block_copy(aBlock);
-    v17 = notify_register_dispatch([v4 UTF8String], &v6->_token, v6->_queue, v16);
+    v17 = notify_register_dispatch([nameCopy UTF8String], &v6->_token, v6->_queue, v16);
     p_super = PKLogFacilityTypeGetObject(0);
     v19 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -136,7 +136,7 @@
       if (v19)
       {
         *buf = 138543618;
-        v25 = v4;
+        v25 = nameCopy;
         v26 = 1024;
         v27 = v17;
         _os_log_impl(&dword_1AD337000, p_super, OS_LOG_TYPE_DEFAULT, "PKNotifyCoalescer: failed to register for notification %{public}@ with status %u.", buf, 0x12u);
@@ -150,7 +150,7 @@
     else if (v19)
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = nameCopy;
       _os_log_impl(&dword_1AD337000, p_super, OS_LOG_TYPE_DEFAULT, "PKNotifyCoalescer: registered for notification %{public}@.", buf, 0xCu);
     }
   }
@@ -209,9 +209,9 @@ void __37__PKNotifyRegistration_initWithName___block_invoke(uint64_t a1)
   }
 }
 
-- (id)subregisterWithHandler:(id)a3
+- (id)subregisterWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated || !self->_subregistrations)
   {
@@ -220,7 +220,7 @@ void __37__PKNotifyRegistration_initWithName___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [[PKNotifySubregistration alloc] initWithParent:self handler:v4];
+    v5 = [[PKNotifySubregistration alloc] initWithParent:self handler:handlerCopy];
     [(NSMutableArray *)self->_subregistrations addObject:v5];
   }
 
@@ -229,11 +229,11 @@ void __37__PKNotifyRegistration_initWithName___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)removeInvalidatedSubregistration:(id)a3
+- (void)removeInvalidatedSubregistration:(id)subregistration
 {
-  v4 = a3;
+  subregistrationCopy = subregistration;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_subregistrations removeObjectIdenticalTo:v4];
+  [(NSMutableArray *)self->_subregistrations removeObjectIdenticalTo:subregistrationCopy];
 
   subregistrations = self->_subregistrations;
   if (subregistrations)
@@ -251,15 +251,15 @@ void __37__PKNotifyRegistration_initWithName___block_invoke(uint64_t a1)
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v9 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&_MergedGlobals_214);
-  if (![(PKNotifyRegistration *)v9 hasSubregistrations])
+  if (![(PKNotifyRegistration *)selfCopy hasSubregistrations])
   {
     v7 = qword_1ED6D19C8;
-    v8 = [(PKNotifyRegistration *)v9 name];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    name = [(PKNotifyRegistration *)selfCopy name];
+    [v7 setObject:0 forKeyedSubscript:name];
 
-    [(PKNotifyRegistration *)v9 invalidate];
+    [(PKNotifyRegistration *)selfCopy invalidate];
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_214);

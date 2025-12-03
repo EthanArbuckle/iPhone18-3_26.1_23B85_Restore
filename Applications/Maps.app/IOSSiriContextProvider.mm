@@ -10,26 +10,26 @@
 - (SiriMapItemConvertible)selectedResult
 {
   v2 = +[SearchSession currentSearchSession];
-  v3 = [v2 currentResultsSearchInfo];
-  v4 = [v3 selectedResult];
+  currentResultsSearchInfo = [v2 currentResultsSearchInfo];
+  selectedResult = [currentResultsSearchInfo selectedResult];
 
-  return v4;
+  return selectedResult;
 }
 
 - (NSArray)searchResults
 {
   v2 = +[SearchSession currentSearchSession];
-  v3 = [v2 currentResults];
+  currentResults = [v2 currentResults];
 
-  return v3;
+  return currentResults;
 }
 
 - (SiriMapItemConvertible)selectedPOI
 {
-  v2 = [(IOSSiriContextProvider *)self mapView];
-  v3 = [v2 _selectedLabelMarker];
+  mapView = [(IOSSiriContextProvider *)self mapView];
+  _selectedLabelMarker = [mapView _selectedLabelMarker];
 
-  if (!v3 || ([v3 isTrafficIncident] & 1) != 0 || (objc_msgSend(v3, "isTransitLine") & 1) != 0)
+  if (!_selectedLabelMarker || ([_selectedLabelMarker isTrafficIncident] & 1) != 0 || (objc_msgSend(_selectedLabelMarker, "isTransitLine") & 1) != 0)
   {
     v4 = 0;
   }
@@ -37,14 +37,14 @@
   else
   {
     v6 = +[UIApplication sharedMapsDelegate];
-    v7 = [v6 poiSearchManager];
+    poiSearchManager = [v6 poiSearchManager];
 
-    v8 = [v3 identifier];
-    v4 = [v7 searchResultForIdentifier:v8];
+    identifier = [_selectedLabelMarker identifier];
+    v4 = [poiSearchManager searchResultForIdentifier:identifier];
 
     if (!v4)
     {
-      v4 = [[POIPlaceholderSearchResult alloc] initWithLabelMarker:v3];
+      v4 = [[POIPlaceholderSearchResult alloc] initWithLabelMarker:_selectedLabelMarker];
     }
   }
 
@@ -54,10 +54,10 @@
 - (MKMapView)mapView
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [v2 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 @end

@@ -1,57 +1,57 @@
 @interface NCCompanionCamera
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NCCompanionCamera)init;
 - (void)_cameraPreviewIDSSocketCreationFailed;
-- (void)_queue_setCompanionCameraOpenStatePreference:(BOOL)a3;
-- (void)_sendCameraStateChangedRequest:(id)a3;
+- (void)_queue_setCompanionCameraOpenStatePreference:(BOOL)preference;
+- (void)_sendCameraStateChangedRequest:(id)request;
 - (void)_sendCurrentCameraState;
-- (void)_setCompanionCameraOpenStatePreference:(int)a3;
-- (void)beginBurstCapture:(id)a3;
-- (void)cancelCountdown:(id)a3;
+- (void)_setCompanionCameraOpenStatePreference:(int)preference;
+- (void)beginBurstCapture:(id)capture;
+- (void)cancelCountdown:(id)countdown;
 - (void)checkin;
-- (void)closeCamera:(id)a3;
-- (void)connectionDidTearDown:(id)a3;
+- (void)closeCamera:(id)camera;
+- (void)connectionDidTearDown:(id)down;
 - (void)dealloc;
-- (void)endBurstCapture:(id)a3;
-- (void)messageCenter:(id)a3 didChangeConnectedState:(BOOL)a4;
-- (void)openCamera:(id)a3;
-- (void)pauseCapture:(id)a3;
-- (void)pressShutter:(id)a3;
-- (void)resumeCapture:(id)a3;
-- (void)setCaptureDevice:(id)a3;
-- (void)setCaptureMode:(id)a3;
-- (void)setFlashMode:(id)a3;
-- (void)setFocusPoint:(id)a3;
-- (void)setHDRMode:(id)a3;
-- (void)setIrisMode:(id)a3;
-- (void)setSharedLibraryMode:(id)a3;
-- (void)setZoomMagnification:(id)a3;
-- (void)startCapture:(id)a3;
-- (void)stopCapture:(id)a3;
-- (void)toggleCameraDevice:(id)a3;
-- (void)userDidTakeScreenshot:(id)a3;
+- (void)endBurstCapture:(id)capture;
+- (void)messageCenter:(id)center didChangeConnectedState:(BOOL)state;
+- (void)openCamera:(id)camera;
+- (void)pauseCapture:(id)capture;
+- (void)pressShutter:(id)shutter;
+- (void)resumeCapture:(id)capture;
+- (void)setCaptureDevice:(id)device;
+- (void)setCaptureMode:(id)mode;
+- (void)setFlashMode:(id)mode;
+- (void)setFocusPoint:(id)point;
+- (void)setHDRMode:(id)mode;
+- (void)setIrisMode:(id)mode;
+- (void)setSharedLibraryMode:(id)mode;
+- (void)setZoomMagnification:(id)magnification;
+- (void)startCapture:(id)capture;
+- (void)stopCapture:(id)capture;
+- (void)toggleCameraDevice:(id)device;
+- (void)userDidTakeScreenshot:(id)screenshot;
 - (void)xpc_burstCaptureDidStop;
 - (void)xpc_burstCaptureWillStart;
 - (void)xpc_captureDeviceDidChange;
-- (void)xpc_captureDeviceDidChange:(int64_t)a3;
-- (void)xpc_captureModeSelected:(int64_t)a3;
+- (void)xpc_captureDeviceDidChange:(int64_t)change;
+- (void)xpc_captureModeSelected:(int64_t)selected;
 - (void)xpc_countdownCanceled;
-- (void)xpc_didPauseCaptureTimerWithDate:(id)a3;
-- (void)xpc_didResumeCaptureTimerWithDate:(id)a3;
-- (void)xpc_didStartCaptureTimerWithDate:(id)a3;
+- (void)xpc_didPauseCaptureTimerWithDate:(id)date;
+- (void)xpc_didResumeCaptureTimerWithDate:(id)date;
+- (void)xpc_didStartCaptureTimerWithDate:(id)date;
 - (void)xpc_didStopCapture;
-- (void)xpc_didUpdateShallowDepthOfFieldStatus:(int64_t)a3;
-- (void)xpc_didUpdateStereoCaptureStatus:(int64_t)a3;
-- (void)xpc_flashModeDidChange:(int64_t)a3;
-- (void)xpc_hdrModeDidChange:(int64_t)a3;
-- (void)xpc_irisModeDidChange:(int64_t)a3;
-- (void)xpc_orientationChanged:(int64_t)a3;
-- (void)xpc_sharedLibraryModeDidChange:(int64_t)a3;
-- (void)xpc_sharedLibrarySupportDidChange:(int64_t)a3;
-- (void)xpc_viewfinderSessionStateDidChange:(unint64_t)a3;
+- (void)xpc_didUpdateShallowDepthOfFieldStatus:(int64_t)status;
+- (void)xpc_didUpdateStereoCaptureStatus:(int64_t)status;
+- (void)xpc_flashModeDidChange:(int64_t)change;
+- (void)xpc_hdrModeDidChange:(int64_t)change;
+- (void)xpc_irisModeDidChange:(int64_t)change;
+- (void)xpc_orientationChanged:(int64_t)changed;
+- (void)xpc_sharedLibraryModeDidChange:(int64_t)change;
+- (void)xpc_sharedLibrarySupportDidChange:(int64_t)change;
+- (void)xpc_viewfinderSessionStateDidChange:(unint64_t)change;
 - (void)xpc_willStartCapturing;
-- (void)xpc_zoomChanged:(float)a3;
-- (void)zoom:(id)a3;
+- (void)xpc_zoomChanged:(float)changed;
+- (void)zoom:(id)zoom;
 @end
 
 @implementation NCCompanionCamera
@@ -165,13 +165,13 @@
     [(NSXPCListener *)v4->_cameraListener setDelegate:v4];
     [(NSXPCListener *)v4->_cameraListener resume];
     objc_initWeak(buf, v4);
-    v43 = [(NMSMessageCenter *)v4->_messageCenter actionQ];
+    actionQ = [(NMSMessageCenter *)v4->_messageCenter actionQ];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100001974;
     handler[3] = &unk_100034530;
     objc_copyWeak(&v46, buf);
-    notify_register_dispatch("com.apple.fignero.CameraPreviewIDSSocketCreationFailed", &v4->_cameraPreviewIDSSocketCreationFailedToken, v43, handler);
+    notify_register_dispatch("com.apple.fignero.CameraPreviewIDSSocketCreationFailed", &v4->_cameraPreviewIDSSocketCreationFailedToken, actionQ, handler);
 
     objc_destroyWeak(&v46);
     objc_destroyWeak(buf);
@@ -190,15 +190,15 @@
   [(NCCompanionCamera *)&v3 dealloc];
 }
 
-- (void)openCamera:(id)a3
+- (void)openCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 idsIdentifier];
+    idsIdentifier = [cameraCopy idsIdentifier];
     *buf = 138412290;
-    v41 = v6;
+    v41 = idsIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "openCamera. IDS ID %@", buf, 0xCu);
   }
 
@@ -207,23 +207,23 @@
 
   self->_remoteCameraState = 1;
   self->_pendingSwitchToSupportedMode = 0;
-  v8 = [v4 pbRequest];
-  v9 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v8 supportedCaptureModesCount]);
-  if ([v8 supportedCaptureModesCount])
+  pbRequest = [cameraCopy pbRequest];
+  v9 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [pbRequest supportedCaptureModesCount]);
+  if ([pbRequest supportedCaptureModesCount])
   {
     v10 = 0;
     do
     {
-      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_10002477C([v8 supportedCaptureModeAtIndex:v10]));
+      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_10002477C([pbRequest supportedCaptureModeAtIndex:v10]));
       [v9 addObject:v11];
 
       ++v10;
     }
 
-    while (v10 < [v8 supportedCaptureModesCount]);
+    while (v10 < [pbRequest supportedCaptureModesCount]);
   }
 
-  if (![v8 supportedCaptureModesCount])
+  if (![pbRequest supportedCaptureModesCount])
   {
     [v9 addObject:&off_100036718];
   }
@@ -236,14 +236,14 @@
   {
     v19 = objc_alloc_init(NCOpenCameraResponse);
     [(NCOpenCameraResponse *)v19 setOpenState:1];
-    v20 = [v4 response];
-    [v20 setPbResponse:v19];
+    response = [cameraCopy response];
+    [response setPbResponse:v19];
 
-    v21 = [v4 response];
-    [v21 setFireAndForget:1];
+    response2 = [cameraCopy response];
+    [response2 setFireAndForget:1];
 
-    v22 = [v4 response];
-    [v22 send];
+    response3 = [cameraCopy response];
+    [response3 send];
 
     self->_pendingSwitchToSupportedMode = 1;
     v33 = 0;
@@ -301,7 +301,7 @@ LABEL_17:
   v36[1] = 3221225472;
   v36[2] = sub_100001F40;
   v36[3] = &unk_100034558;
-  v16 = v4;
+  v16 = cameraCopy;
   v37 = v16;
   v17 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v36];
   [v17 xpc_setPreviewEndpoint:@"proxy"];
@@ -318,15 +318,15 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)closeCamera:(id)a3
+- (void)closeCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 idsIdentifier];
+    idsIdentifier = [cameraCopy idsIdentifier];
     *buf = 138412290;
-    v16 = v6;
+    v16 = idsIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "closeCamera. IDS ID %@", buf, 0xCu);
   }
 
@@ -369,9 +369,9 @@ LABEL_10:
   }
 }
 
-- (void)pressShutter:(id)a3
+- (void)pressShutter:(id)shutter
 {
-  v4 = a3;
+  shutterCopy = shutter;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -385,27 +385,27 @@ LABEL_10:
   }
 
   self->_shutterLastPressed = CFAbsoluteTimeGetCurrent();
-  v6 = [v4 pbRequest];
+  pbRequest = [shutterCopy pbRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000281C;
   v11[3] = &unk_100034658;
-  v7 = v4;
+  v7 = shutterCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   activeCamera = self->_activeCamera;
   if (activeCamera)
   {
     v10 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:&stru_100034678];
-    [v10 takePhotoWithCountdown:{objc_msgSend(v6, "countdown")}];
+    [v10 takePhotoWithCountdown:{objc_msgSend(pbRequest, "countdown")}];
   }
 
   (v8[2])(v8, activeCamera != 0);
 }
 
-- (void)beginBurstCapture:(id)a3
+- (void)beginBurstCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -422,7 +422,7 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = sub_100002B4C;
   v16[3] = &unk_100034658;
-  v6 = v4;
+  v6 = captureCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = v7;
@@ -450,9 +450,9 @@ LABEL_10:
   }
 }
 
-- (void)endBurstCapture:(id)a3
+- (void)endBurstCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -471,7 +471,7 @@ LABEL_10:
   v17[2] = sub_100002EB8;
   v17[3] = &unk_1000346F0;
   v19 = lastBurstCaptureNumberOfPhotos;
-  v7 = v4;
+  v7 = captureCopy;
   v18 = v7;
   v8 = objc_retainBlock(v17);
   v9 = v8;
@@ -499,7 +499,7 @@ LABEL_10:
   }
 }
 
-- (void)cancelCountdown:(id)a3
+- (void)cancelCountdown:(id)countdown
 {
   v4 = sub_1000145AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -517,9 +517,9 @@ LABEL_10:
   [v5 xpc_cancelCountdown];
 }
 
-- (void)setCaptureDevice:(id)a3
+- (void)setCaptureDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -532,14 +532,14 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
-  v7 = [v6 captureDevice];
+  pbRequest = [deviceCopy pbRequest];
+  captureDevice = [pbRequest captureDevice];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000033AC;
   v19[3] = &unk_100034738;
   v19[4] = self;
-  v8 = v4;
+  v8 = deviceCopy;
   v20 = v8;
   v9 = objc_retainBlock(v19);
   v10 = v9;
@@ -553,7 +553,7 @@ LABEL_10:
     v12 = v9;
     v18 = v12;
     v13 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v17];
-    v14 = sub_10002474C(v7);
+    v14 = sub_10002474C(captureDevice);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10000352C;
@@ -568,9 +568,9 @@ LABEL_10:
   }
 }
 
-- (void)setCaptureMode:(id)a3
+- (void)setCaptureMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -583,14 +583,14 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
-  v7 = [v6 captureMode];
+  pbRequest = [modeCopy pbRequest];
+  captureMode = [pbRequest captureMode];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000037B4;
   v19[3] = &unk_100034738;
   v19[4] = self;
-  v8 = v4;
+  v8 = modeCopy;
   v20 = v8;
   v9 = objc_retainBlock(v19);
   v10 = v9;
@@ -604,7 +604,7 @@ LABEL_10:
     v12 = v9;
     v18 = v12;
     v13 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v17];
-    v14 = sub_10002477C(v7);
+    v14 = sub_10002477C(captureMode);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000039B0;
@@ -619,9 +619,9 @@ LABEL_10:
   }
 }
 
-- (void)startCapture:(id)a3
+- (void)startCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -634,12 +634,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [captureCopy pbRequest];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100003C2C;
   v18[3] = &unk_100034658;
-  v7 = v4;
+  v7 = captureCopy;
   v19 = v7;
   v8 = objc_retainBlock(v18);
   v9 = v8;
@@ -653,7 +653,7 @@ LABEL_10:
     v11 = v8;
     v17 = v11;
     v12 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v16];
-    v13 = sub_10002477C([v6 captureMode]);
+    v13 = sub_10002477C([pbRequest captureMode]);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100003D48;
@@ -668,9 +668,9 @@ LABEL_10:
   }
 }
 
-- (void)pauseCapture:(id)a3
+- (void)pauseCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -687,7 +687,7 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = sub_100003F8C;
   v16[3] = &unk_100034658;
-  v6 = v4;
+  v6 = captureCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = v7;
@@ -715,9 +715,9 @@ LABEL_10:
   }
 }
 
-- (void)resumeCapture:(id)a3
+- (void)resumeCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -734,7 +734,7 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = sub_1000042EC;
   v16[3] = &unk_100034658;
-  v6 = v4;
+  v6 = captureCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = v7;
@@ -762,9 +762,9 @@ LABEL_10:
   }
 }
 
-- (void)stopCapture:(id)a3
+- (void)stopCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -781,7 +781,7 @@ LABEL_10:
   v16[1] = 3221225472;
   v16[2] = sub_10000464C;
   v16[3] = &unk_100034658;
-  v6 = v4;
+  v6 = captureCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = v7;
@@ -809,9 +809,9 @@ LABEL_10:
   }
 }
 
-- (void)setFocusPoint:(id)a3
+- (void)setFocusPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -824,12 +824,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", v11, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [pointCopy pbRequest];
 
-  if ([v6 pointsCount] == 2)
+  if ([pbRequest pointsCount] == 2)
   {
-    v7 = *[v6 points];
-    v8 = *([v6 points] + 1);
+    v7 = *[pbRequest points];
+    v8 = *([pbRequest points] + 1);
     *v11 = v7;
     *&v11[8] = v8;
     v9 = [NSValue valueWithBytes:v11 objCType:"{CGPoint=dd}"];
@@ -838,9 +838,9 @@ LABEL_10:
   }
 }
 
-- (void)zoom:(id)a3
+- (void)zoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -853,12 +853,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [zoomCopy pbRequest];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100004BB0;
   v20[3] = &unk_100034780;
-  v7 = v4;
+  v7 = zoomCopy;
   v21 = v7;
   v8 = objc_retainBlock(v20);
   v9 = v8;
@@ -872,7 +872,7 @@ LABEL_10:
     v11 = v8;
     v19 = v11;
     v12 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v18];
-    [v6 zoomAmount];
+    [pbRequest zoomAmount];
     v14 = v13;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -889,9 +889,9 @@ LABEL_10:
   }
 }
 
-- (void)setZoomMagnification:(id)a3
+- (void)setZoomMagnification:(id)magnification
 {
-  v4 = a3;
+  magnificationCopy = magnification;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -904,12 +904,12 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [magnificationCopy pbRequest];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100004F5C;
   v20[3] = &unk_100034780;
-  v7 = v4;
+  v7 = magnificationCopy;
   v21 = v7;
   v8 = objc_retainBlock(v20);
   v9 = v8;
@@ -923,7 +923,7 @@ LABEL_10:
     v11 = v8;
     v19 = v11;
     v12 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:v18];
-    [v6 zoomMagnificationAmount];
+    [pbRequest zoomMagnificationAmount];
     v14 = v13;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -940,9 +940,9 @@ LABEL_10:
   }
 }
 
-- (void)setFlashMode:(id)a3
+- (void)setFlashMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -955,27 +955,27 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [modeCopy pbRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005270;
   v11[3] = &unk_1000347D0;
-  v7 = v4;
+  v7 = modeCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   activeCamera = self->_activeCamera;
   if (activeCamera)
   {
     v10 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:&stru_1000347F0];
-    [v10 xpc_setFlashMode:{sub_1000247B8(objc_msgSend(v6, "flashMode"))}];
+    [v10 xpc_setFlashMode:{sub_1000247B8(objc_msgSend(pbRequest, "flashMode"))}];
   }
 
-  (v8[2])(v8, activeCamera != 0, [v6 flashMode]);
+  (v8[2])(v8, activeCamera != 0, [pbRequest flashMode]);
 }
 
-- (void)setHDRMode:(id)a3
+- (void)setHDRMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -988,27 +988,27 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [modeCopy pbRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005544;
   v11[3] = &unk_1000347D0;
-  v7 = v4;
+  v7 = modeCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   activeCamera = self->_activeCamera;
   if (activeCamera)
   {
     v10 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:&stru_100034810];
-    [v10 xpc_setHDRMode:{sub_1000247B8(objc_msgSend(v6, "hdrMode"))}];
+    [v10 xpc_setHDRMode:{sub_1000247B8(objc_msgSend(pbRequest, "hdrMode"))}];
   }
 
-  (v8[2])(v8, activeCamera != 0, [v6 hdrMode]);
+  (v8[2])(v8, activeCamera != 0, [pbRequest hdrMode]);
 }
 
-- (void)setIrisMode:(id)a3
+- (void)setIrisMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1021,27 +1021,27 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [modeCopy pbRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005818;
   v11[3] = &unk_1000347D0;
-  v7 = v4;
+  v7 = modeCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   activeCamera = self->_activeCamera;
   if (activeCamera)
   {
     v10 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:&stru_100034830];
-    [v10 xpc_setIrisMode:{sub_1000247B8(objc_msgSend(v6, "irisMode"))}];
+    [v10 xpc_setIrisMode:{sub_1000247B8(objc_msgSend(pbRequest, "irisMode"))}];
   }
 
-  (v8[2])(v8, activeCamera != 0, [v6 irisMode]);
+  (v8[2])(v8, activeCamera != 0, [pbRequest irisMode]);
 }
 
-- (void)setSharedLibraryMode:(id)a3
+- (void)setSharedLibraryMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1054,25 +1054,25 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [v4 pbRequest];
+  pbRequest = [modeCopy pbRequest];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005AEC;
   v11[3] = &unk_1000347D0;
-  v7 = v4;
+  v7 = modeCopy;
   v12 = v7;
   v8 = objc_retainBlock(v11);
   activeCamera = self->_activeCamera;
   if (activeCamera)
   {
     v10 = [(NSXPCConnection *)activeCamera remoteObjectProxyWithErrorHandler:&stru_100034850];
-    [v10 xpc_setSharedLibraryMode:{sub_10002474C(objc_msgSend(v6, "sharedLibraryMode"))}];
+    [v10 xpc_setSharedLibraryMode:{sub_10002474C(objc_msgSend(pbRequest, "sharedLibraryMode"))}];
   }
 
-  (v8[2])(v8, activeCamera != 0, [v6 sharedLibraryMode]);
+  (v8[2])(v8, activeCamera != 0, [pbRequest sharedLibraryMode]);
 }
 
-- (void)toggleCameraDevice:(id)a3
+- (void)toggleCameraDevice:(id)device
 {
   v4 = sub_1000145AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1090,18 +1090,18 @@ LABEL_10:
   [v5 xpc_toggleCameraDevice];
 
   v6 = dispatch_time(0, 100000000);
-  v7 = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005DC0;
   block[3] = &unk_100034898;
   block[4] = self;
-  dispatch_after(v6, v7, block);
+  dispatch_after(v6, actionQ, block);
 }
 
-- (void)userDidTakeScreenshot:(id)a3
+- (void)userDidTakeScreenshot:(id)screenshot
 {
-  v3 = a3;
+  screenshotCopy = screenshot;
   v4 = sub_1000145AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1185,9 +1185,9 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v4];
 }
 
-- (void)xpc_didStartCaptureTimerWithDate:(id)a3
+- (void)xpc_didStartCaptureTimerWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1201,7 +1201,7 @@ LABEL_10:
   }
 
   v6 = objc_alloc_init(NCCameraStateChangedRequest);
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
 
   [(NCCameraStateChangedRequest *)v6 setCaptureStartDate:v8];
@@ -1209,9 +1209,9 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v6];
 }
 
-- (void)xpc_didPauseCaptureTimerWithDate:(id)a3
+- (void)xpc_didPauseCaptureTimerWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1225,7 +1225,7 @@ LABEL_10:
   }
 
   v6 = objc_alloc_init(NCCameraStateChangedRequest);
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
 
   [(NCCameraStateChangedRequest *)v6 setCapturePauseDate:v8];
@@ -1233,9 +1233,9 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v6];
 }
 
-- (void)xpc_didResumeCaptureTimerWithDate:(id)a3
+- (void)xpc_didResumeCaptureTimerWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1249,7 +1249,7 @@ LABEL_10:
   }
 
   v6 = objc_alloc_init(NCCameraStateChangedRequest);
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
 
   [(NCCameraStateChangedRequest *)v6 setCaptureStartDate:v8];
@@ -1312,7 +1312,7 @@ LABEL_10:
   self->_lastBurstCaptureNumberOfPhotos = 0;
 }
 
-- (void)xpc_captureDeviceDidChange:(int64_t)a3
+- (void)xpc_captureDeviceDidChange:(int64_t)change
 {
   v4 = sub_1000145AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1329,7 +1329,7 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCurrentCameraState];
 }
 
-- (void)xpc_captureModeSelected:(int64_t)a3
+- (void)xpc_captureModeSelected:(int64_t)selected
 {
   v4 = sub_1000145AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1346,12 +1346,12 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCurrentCameraState];
 }
 
-- (void)xpc_orientationChanged:(int64_t)a3
+- (void)xpc_orientationChanged:(int64_t)changed
 {
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1000247F8(a3);
+    v6 = sub_1000247F8(changed);
     if (v6 >= 5)
     {
       v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
@@ -1368,7 +1368,7 @@ LABEL_10:
   }
 
   v8 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v8 setOrientation:sub_1000247F8(a3)];
+  [(NCCameraStateChangedRequest *)v8 setOrientation:sub_1000247F8(changed)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v8];
 }
 
@@ -1414,28 +1414,28 @@ LABEL_10:
   }
 }
 
-- (void)xpc_zoomChanged:(float)a3
+- (void)xpc_zoomChanged:(float)changed
 {
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%f", &v8, 0xCu);
   }
 
   v6 = objc_alloc_init(NCCameraStateChangedRequest);
-  *&v7 = a3;
+  *&v7 = changed;
   [(NCCameraStateChangedRequest *)v6 setZoomAmount:v7];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v6];
 }
 
-- (void)xpc_didUpdateShallowDepthOfFieldStatus:(int64_t)a3
+- (void)xpc_didUpdateShallowDepthOfFieldStatus:(int64_t)status
 {
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1000247E0(a3);
+    v6 = sub_1000247E0(status);
     if (v6 >= 0x10)
     {
       v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
@@ -1452,17 +1452,17 @@ LABEL_10:
   }
 
   v8 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v8 setShallowDepthOfFieldStatus:sub_1000247E0(a3)];
+  [(NCCameraStateChangedRequest *)v8 setShallowDepthOfFieldStatus:sub_1000247E0(status)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v8];
 }
 
-- (void)xpc_didUpdateStereoCaptureStatus:(int64_t)a3
+- (void)xpc_didUpdateStereoCaptureStatus:(int64_t)status
 {
-  v3 = a3;
+  statusCopy = status;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = sub_1000247F0(v3);
+    v6 = sub_1000247F0(statusCopy);
     if (v6 < 5 && ((0x17u >> v6) & 1) != 0)
     {
       v7 = *(&off_100034BA0 + v6);
@@ -1479,41 +1479,41 @@ LABEL_10:
   }
 
   v8 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v8 setStereoCaptureStatus:sub_1000247F0(v3)];
+  [(NCCameraStateChangedRequest *)v8 setStereoCaptureStatus:sub_1000247F0(statusCopy)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v8];
 }
 
 - (void)xpc_captureDeviceDidChange
 {
-  v3 = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000072E8;
   block[3] = &unk_100034898;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(actionQ, block);
 }
 
-- (void)xpc_flashModeDidChange:(int64_t)a3
+- (void)xpc_flashModeDidChange:(int64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v5 setFlashMode:sub_1000247A0(a3)];
+  [(NCCameraStateChangedRequest *)v5 setFlashMode:sub_1000247A0(change)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v5];
 }
 
-- (void)xpc_hdrModeDidChange:(int64_t)a3
+- (void)xpc_hdrModeDidChange:(int64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v5 setHdrMode:sub_1000247A0(a3)];
+  [(NCCameraStateChangedRequest *)v5 setHdrMode:sub_1000247A0(change)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v5];
 }
 
-- (void)xpc_irisModeDidChange:(int64_t)a3
+- (void)xpc_irisModeDidChange:(int64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v5 setIrisMode:sub_1000247A0(a3)];
-  v6 = [(NMSMessageCenter *)self->_messageCenter connectedDevice];
-  if (!v6 || (v7 = v6, [v6 operatingSystemVersion], v7, v8 <= 4))
+  [(NCCameraStateChangedRequest *)v5 setIrisMode:sub_1000247A0(change)];
+  connectedDevice = [(NMSMessageCenter *)self->_messageCenter connectedDevice];
+  if (!connectedDevice || (v7 = connectedDevice, [connectedDevice operatingSystemVersion], v7, v8 <= 4))
   {
     if ([(NCCameraStateChangedRequest *)v5 irisMode]== 2)
     {
@@ -1524,31 +1524,31 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v5];
 }
 
-- (void)xpc_sharedLibrarySupportDidChange:(int64_t)a3
+- (void)xpc_sharedLibrarySupportDidChange:(int64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v5 setSharedLibrarySupport:sub_100024740(a3)];
+  [(NCCameraStateChangedRequest *)v5 setSharedLibrarySupport:sub_100024740(change)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v5];
 }
 
-- (void)xpc_sharedLibraryModeDidChange:(int64_t)a3
+- (void)xpc_sharedLibraryModeDidChange:(int64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
-  [(NCCameraStateChangedRequest *)v5 setSharedLibraryMode:sub_100024740(a3)];
+  [(NCCameraStateChangedRequest *)v5 setSharedLibraryMode:sub_100024740(change)];
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v5];
 }
 
-- (void)xpc_viewfinderSessionStateDidChange:(unint64_t)a3
+- (void)xpc_viewfinderSessionStateDidChange:(unint64_t)change
 {
   v5 = objc_alloc_init(NCCameraStateChangedRequest);
   v6 = v5;
-  if (a3)
+  if (change)
   {
-    [(NCCameraStateChangedRequest *)v5 setViewfinderSessionActive:a3 == 1];
+    [(NCCameraStateChangedRequest *)v5 setViewfinderSessionActive:change == 1];
   }
 
-  v7 = [(NMSMessageCenter *)self->_messageCenter connectedDevice];
-  if (!v7 || (v8 = v7, [v7 operatingSystemVersion], v8, v9 <= 11))
+  connectedDevice = [(NMSMessageCenter *)self->_messageCenter connectedDevice];
+  if (!connectedDevice || (v8 = connectedDevice, [connectedDevice operatingSystemVersion], v8, v9 <= 11))
   {
     if (![(NCCameraStateChangedRequest *)v6 hasViewfinderSessionActive])
     {
@@ -1559,18 +1559,18 @@ LABEL_10:
   [(NCCompanionCamera *)self _sendCameraStateChangedRequest:v6];
 }
 
-- (void)_sendCameraStateChangedRequest:(id)a3
+- (void)_sendCameraStateChangedRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  requestCopy = request;
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000077A8;
   v7[3] = &unk_100034580;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  dispatch_async(actionQ, v7);
 }
 
 - (void)_sendCurrentCameraState
@@ -1593,17 +1593,17 @@ LABEL_10:
   }
 }
 
-- (void)_setCompanionCameraOpenStatePreference:(int)a3
+- (void)_setCompanionCameraOpenStatePreference:(int)preference
 {
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = a3 == 0;
+    v11 = preference == 0;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting NPS companion camera open state preference: %{BOOL}d", buf, 8u);
   }
 
-  v6 = a3 == 0;
+  v6 = preference == 0;
 
   v7 = dispatch_get_global_queue(25, 0);
   v8[0] = _NSConcreteStackBlock;
@@ -1615,17 +1615,17 @@ LABEL_10:
   dispatch_async(v7, v8);
 }
 
-- (void)_queue_setCompanionCameraOpenStatePreference:(BOOL)a3
+- (void)_queue_setCompanionCameraOpenStatePreference:(BOOL)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v5 = &kCFBooleanFalse;
-  if (a3)
+  if (preference)
   {
     v5 = &kCFBooleanTrue;
   }
 
   CFPreferencesSetAppValue(@"CompanionCameraApplicationOpen", *v5, @"com.apple.NanoCamera");
-  if (v3)
+  if (preferenceCopy)
   {
     CFPreferencesSetAppValue(@"CompanionCameraApplicationLastOpenDate", +[NSDate date], @"com.apple.NanoCamera");
   }
@@ -1642,23 +1642,23 @@ LABEL_10:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = preferenceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Completed setting NPS companion camera open state preference: %{BOOL}d", v10, 8u);
   }
 }
 
-- (void)messageCenter:(id)a3 didChangeConnectedState:(BOOL)a4
+- (void)messageCenter:(id)center didChangeConnectedState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "isConnected: %d", v7, 8u);
   }
 
-  if (v4)
+  if (stateCopy)
   {
     v6 = "com.apple.companion.camera.device-connected";
   }
@@ -1671,9 +1671,9 @@ LABEL_10:
   notify_post(v6);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_1000145AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1690,24 +1690,24 @@ LABEL_10:
   [v7 logEvent:5];
 
   v8 = os_transaction_create();
-  v9 = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000943C;
   block[3] = &unk_1000349C0;
   v14 = v8;
-  v15 = self;
-  v16 = v5;
-  v10 = v5;
+  selfCopy = self;
+  v16 = connectionCopy;
+  v10 = connectionCopy;
   v11 = v8;
-  dispatch_async(v9, block);
+  dispatch_async(actionQ, block);
 
   return 1;
 }
 
-- (void)connectionDidTearDown:(id)a3
+- (void)connectionDidTearDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = sub_1000145AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1720,15 +1720,15 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100009CE4;
   v8[3] = &unk_100034580;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = downCopy;
+  selfCopy = self;
+  v7 = downCopy;
+  dispatch_async(actionQ, v8);
 }
 
 @end

@@ -6,10 +6,10 @@
 
 - (void)_willAppearInRemoteViewController
 {
-  v3 = [MEMORY[0x1E69DC888] sf_safariAccentColor];
-  v4 = [(SFPasswordServiceViewController *)self view];
-  v5 = [v4 window];
-  [v5 setTintColor:v3];
+  sf_safariAccentColor = [MEMORY[0x1E69DC888] sf_safariAccentColor];
+  view = [(SFPasswordServiceViewController *)self view];
+  window = [view window];
+  [window setTintColor:sf_safariAccentColor];
 
   [(SFPasswordServiceViewController *)self _hostAuditToken];
   v6 = WBSApplicationIdentifierFromAuditToken();

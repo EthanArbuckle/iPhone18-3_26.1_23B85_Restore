@@ -1,15 +1,15 @@
 @interface EpicShowcaseViewContainer
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (void)pageChangeEventWithSender:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (void)pageChangeEventWithSender:(id)sender;
 @end
 
 @implementation EpicShowcaseViewContainer
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E411A2D4(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E411A2D4(only, width);
 
   v7 = OUTLINED_FUNCTION_17_4();
   result.height = v8;
@@ -17,11 +17,11 @@
   return result;
 }
 
-- (void)pageChangeEventWithSender:(id)a3
+- (void)pageChangeEventWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E411AC28(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1E411AC28(senderCopy);
 }
 
 @end

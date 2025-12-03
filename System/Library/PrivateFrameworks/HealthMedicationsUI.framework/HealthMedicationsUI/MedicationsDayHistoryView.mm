@@ -7,7 +7,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI25MedicationsDayHistoryView_timer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];

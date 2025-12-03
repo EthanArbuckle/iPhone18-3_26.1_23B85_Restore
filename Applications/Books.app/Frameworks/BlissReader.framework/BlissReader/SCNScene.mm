@@ -1,22 +1,22 @@
 @interface SCNScene
-- (id)p_groupNodes:(id)a3;
+- (id)p_groupNodes:(id)nodes;
 @end
 
 @implementation SCNScene
 
-- (id)p_groupNodes:(id)a3
+- (id)p_groupNodes:(id)nodes
 {
-  v4 = +[NSSet setWithArray:](NSSet, "setWithArray:", [a3 valueForKey:@"parentNode"]);
+  v4 = +[NSSet setWithArray:](NSSet, "setWithArray:", [nodes valueForKey:@"parentNode"]);
   if ([(NSSet *)v4 count]== &dword_0 + 1)
   {
-    v5 = [(NSSet *)v4 anyObject];
+    anyObject = [(NSSet *)v4 anyObject];
     v6 = +[SCNNode node];
-    [v5 addChildNode:v6];
+    [anyObject addChildNode:v6];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [nodes countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -27,7 +27,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(nodes);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -35,7 +35,7 @@
           [(SCNNode *)v6 addChildNode:v11];
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [nodes countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);

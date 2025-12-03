@@ -1,7 +1,7 @@
 @interface HDClinicalAuthorizationSessionEntity
 + (id)checkConstraints;
 + (id)foreignKeys;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)joinClausesForProperty:(id)property;
 @end
 
 @implementation HDClinicalAuthorizationSessionEntity
@@ -30,12 +30,12 @@
   return v3;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = v4;
+  v6 = propertyCopy;
   v7 = objc_opt_self();
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
   v30[0] = @"account.identifier";
@@ -47,8 +47,8 @@
   if (v9)
   {
     v12 = MEMORY[0x277D10B50];
-    v13 = [v7 disambiguatedDatabaseTable];
-    v14 = [v12 innerJoinClauseFromTable:v13 toTargetEntity:objc_opt_class() as:@"account" localReference:@"account_id" targetKey:*v11];
+    disambiguatedDatabaseTable = [v7 disambiguatedDatabaseTable];
+    v14 = [v12 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:objc_opt_class() as:@"account" localReference:@"account_id" targetKey:*v11];
 
     v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v14, 0}];
   }
@@ -70,8 +70,8 @@
   if (v19)
   {
     v21 = MEMORY[0x277D10B50];
-    v22 = [v17 disambiguatedDatabaseTable];
-    v23 = [v21 innerJoinClauseFromTable:v22 toTargetEntity:objc_opt_class() as:@"gateway" localReference:@"gateway_id" targetKey:*v11];
+    disambiguatedDatabaseTable2 = [v17 disambiguatedDatabaseTable];
+    v23 = [v21 innerJoinClauseFromTable:disambiguatedDatabaseTable2 toTargetEntity:objc_opt_class() as:@"gateway" localReference:@"gateway_id" targetKey:*v11];
 
     v24 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v23, 0}];
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v29.receiver = a1;
+    v29.receiver = self;
     v29.super_class = &OBJC_METACLASS___HDClinicalAuthorizationSessionEntity;
     v25 = objc_msgSendSuper2(&v29, sel_joinClausesForProperty_, v16);
   }

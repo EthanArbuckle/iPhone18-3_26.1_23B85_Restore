@@ -1,29 +1,29 @@
 @interface PRXCrossDissolveTransition
 - (CGSize)maxSize;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PRXCrossDissolveTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 containerView];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
   v6 = PRXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [PRXCrossDissolveTransition animateTransition:v6];
   }
 
-  v7 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
   v8 = (objc_opt_respondsToSelector() & 1);
-  v9 = [v4 viewForKey:*MEMORY[0x277D77248]];
-  v50 = [v4 viewForKey:*MEMORY[0x277D77238]];
+  v9 = [transitionCopy viewForKey:*MEMORY[0x277D77248]];
+  v50 = [transitionCopy viewForKey:*MEMORY[0x277D77238]];
   v10 = [v50 snapshotViewAfterScreenUpdates:0];
-  [v5 addSubview:v10];
+  [containerView addSubview:v10];
   [v9 setAlpha:0.0];
-  [v5 addSubview:v9];
+  [containerView addSubview:v9];
   v11 = MEMORY[0x277D75D18];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
@@ -32,9 +32,9 @@
   v12 = v9;
   v68 = v12;
   [v11 performWithoutAnimation:v67];
-  v13 = [(PRXCrossDissolveTransition *)self cardStyle];
-  v14 = [v7 traitCollection];
-  v15 = PRXCardPreferredSize(v13, [v14 prx_cardSizeClass]);
+  cardStyle = [(PRXCrossDissolveTransition *)self cardStyle];
+  traitCollection = [v7 traitCollection];
+  v15 = PRXCardPreferredSize(cardStyle, [traitCollection prx_cardSizeClass]);
   v17 = v16;
 
   [v7 preferredContentSize];
@@ -86,15 +86,15 @@
   {
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v27 = MEMORY[0x277CCAAD0];
-    v28 = [v12 widthAnchor];
-    [v28 constraintEqualToConstant:v15];
+    widthAnchor = [v12 widthAnchor];
+    [widthAnchor constraintEqualToConstant:v15];
     v48 = v7;
-    v49 = v4;
-    v47 = self;
+    v49 = transitionCopy;
+    selfCopy = self;
     v8 = v29 = v8;
     v69[0] = v8;
     [v12 heightAnchor];
-    v31 = v30 = v5;
+    v31 = v30 = containerView;
     [v31 constraintGreaterThanOrEqualToConstant:v17];
     v33 = v32 = v10;
     v69[1] = v33;
@@ -102,12 +102,12 @@
     [v27 activateConstraints:v34];
 
     v10 = v32;
-    v5 = v30;
+    containerView = v30;
 
     LODWORD(v8) = v29;
-    self = v47;
+    self = selfCopy;
     v7 = v48;
-    v4 = v49;
+    transitionCopy = v49;
   }
 
   v35 = MEMORY[0x277D75D18];
@@ -118,7 +118,7 @@
   v36 = v12;
   v66 = v36;
   [v35 performWithoutAnimation:v65];
-  [(PRXCrossDissolveTransition *)self transitionDuration:v4];
+  [(PRXCrossDissolveTransition *)self transitionDuration:transitionCopy];
   v38 = v37;
   if (v8)
   {
@@ -131,7 +131,7 @@
   v58[2] = __48__PRXCrossDissolveTransition_animateTransition___block_invoke_2;
   v58[3] = &unk_279ACC1D8;
   v59 = v36;
-  v40 = v5;
+  v40 = containerView;
   v60 = v40;
   v61 = v20;
   v62 = v21;
@@ -150,7 +150,7 @@
   v57 = v8;
   v44 = v7;
   v55 = v44;
-  v45 = v4;
+  v45 = transitionCopy;
   v56 = v45;
   [v39 transitionWithView:v40 duration:0 options:v58 animations:v51 completion:v38];
   if (self->_additionalAnimations)
@@ -162,24 +162,6 @@
 uint64_t __48__PRXCrossDissolveTransition_animateTransition___block_invoke_3(uint64_t a1)
 {
   return [*(a1 + 32) layoutIfNeeded];
-}
-
-{
-  [*(a1 + 32) removeFromSuperview];
-  [*(a1 + 40) removeFromSuperview];
-  [*(a1 + 48) setNeedsLayout];
-  if (*(a1 + 72) == 1)
-  {
-    [*(a1 + 56) setTransitioningSize:0];
-  }
-
-  v2 = PRXDefaultLog();
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
-  {
-    __48__PRXCrossDissolveTransition_animateTransition___block_invoke_3_cold_1(v2);
-  }
-
-  return [*(a1 + 64) completeTransition:1];
 }
 
 uint64_t __48__PRXCrossDissolveTransition_animateTransition___block_invoke_2(uint64_t a1)

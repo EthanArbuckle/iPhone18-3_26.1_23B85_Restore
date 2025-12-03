@@ -1,24 +1,24 @@
 @interface CHXErrorBar
-+ (id)chdErrorBarFromXmlErrorBarElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)chxErrorBarTypeFromEnum:(int)a3;
-+ (id)chxErrorBarValueTypeFromEnum:(int)a3;
-+ (int)chdErrorBarDirectionFromXmlElement:(_xmlNode *)a3;
-+ (int)chdErrorBarTypeFromXmlElement:(_xmlNode *)a3;
-+ (int)chdErrorBarValueTypeFromXmlElement:(_xmlNode *)a3;
++ (id)chdErrorBarFromXmlErrorBarElement:(_xmlNode *)element state:(id)state;
++ (id)chxErrorBarTypeFromEnum:(int)enum;
++ (id)chxErrorBarValueTypeFromEnum:(int)enum;
++ (int)chdErrorBarDirectionFromXmlElement:(_xmlNode *)element;
++ (int)chdErrorBarTypeFromXmlElement:(_xmlNode *)element;
++ (int)chdErrorBarValueTypeFromXmlElement:(_xmlNode *)element;
 @end
 
 @implementation CHXErrorBar
 
-+ (id)chdErrorBarFromXmlErrorBarElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdErrorBarFromXmlErrorBarElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = [CHDErrorBar alloc];
-  v8 = [v6 chart];
-  v9 = [(CHDErrorBar *)v7 initWithChart:v8];
+  chart = [stateCopy chart];
+  v9 = [(CHDErrorBar *)v7 initWithChart:chart];
 
-  v10 = [v6 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "val");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace, "val");
 
   if (v12)
   {
@@ -29,66 +29,66 @@
     }
   }
 
-  v13 = [v6 drawingState];
-  v14 = [v13 OAXChartNamespace];
-  v15 = OCXFindChild(a3, v14, "errBarType");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v15 = OCXFindChild(element, oAXChartNamespace2, "errBarType");
 
-  -[CHDErrorBar setType:](v9, "setType:", [a1 chdErrorBarTypeFromXmlElement:v15]);
-  v16 = [v6 drawingState];
-  v17 = [v16 OAXChartNamespace];
-  v18 = OCXFindChild(a3, v17, "errValType");
+  -[CHDErrorBar setType:](v9, "setType:", [self chdErrorBarTypeFromXmlElement:v15]);
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v18 = OCXFindChild(element, oAXChartNamespace3, "errValType");
 
-  -[CHDErrorBar setValueType:](v9, "setValueType:", [a1 chdErrorBarValueTypeFromXmlElement:v18]);
-  v19 = [v6 drawingState];
-  v20 = [v19 OAXChartNamespace];
-  v21 = OCXFindChild(a3, v20, "errDir");
+  -[CHDErrorBar setValueType:](v9, "setValueType:", [self chdErrorBarValueTypeFromXmlElement:v18]);
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v21 = OCXFindChild(element, oAXChartNamespace4, "errDir");
 
-  -[CHDErrorBar setDirection:](v9, "setDirection:", [a1 chdErrorBarDirectionFromXmlElement:v21]);
-  v22 = [v6 drawingState];
-  v23 = [v22 OAXChartNamespace];
-  v24 = OCXFindChild(a3, v23, "noEndCap");
+  -[CHDErrorBar setDirection:](v9, "setDirection:", [self chdErrorBarDirectionFromXmlElement:v21]);
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v24 = OCXFindChild(element, oAXChartNamespace5, "noEndCap");
 
   if (v24)
   {
     [(CHDErrorBar *)v9 setNoEndCap:CXRequiredBoolAttribute(v24, CXNoNamespace, "val")];
   }
 
-  v25 = [v6 drawingState];
-  v26 = [v25 OAXChartNamespace];
-  v27 = OCXFindChild(a3, v26, "minus");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v27 = OCXFindChild(element, oAXChartNamespace6, "minus");
 
   if (v27)
   {
-    v28 = [CHXData chdDataFromXmlDataElement:v27 state:v6];
+    v28 = [CHXData chdDataFromXmlDataElement:v27 state:stateCopy];
     [(CHDErrorBar *)v9 setMinusValues:v28];
   }
 
-  v29 = [v6 drawingState];
-  v30 = [v29 OAXChartNamespace];
-  v31 = OCXFindChild(a3, v30, "plus");
+  drawingState7 = [stateCopy drawingState];
+  oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+  v31 = OCXFindChild(element, oAXChartNamespace7, "plus");
 
   if (v31)
   {
-    v32 = [CHXData chdDataFromXmlDataElement:v31 state:v6];
+    v32 = [CHXData chdDataFromXmlDataElement:v31 state:stateCopy];
     [(CHDErrorBar *)v9 setPlusValues:v32];
   }
 
   v33 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v33 element:a3 state:v6];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v33 element:element state:stateCopy];
   [(CHDErrorBar *)v9 setGraphicProperties:v33];
 
   return v9;
 }
 
-+ (int)chdErrorBarTypeFromXmlElement:(_xmlNode *)a3
++ (int)chdErrorBarTypeFromXmlElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v7 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v7);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v7);
   v4 = v7;
   v5 = v4;
   if (v3)
@@ -104,15 +104,15 @@
   return v3;
 }
 
-+ (int)chdErrorBarValueTypeFromXmlElement:(_xmlNode *)a3
++ (int)chdErrorBarValueTypeFromXmlElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 2;
   }
 
   v15 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v15);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v15);
   v4 = v15;
   v5 = v4;
   if (v3)
@@ -171,15 +171,15 @@
   return v13;
 }
 
-+ (int)chdErrorBarDirectionFromXmlElement:(_xmlNode *)a3
++ (int)chdErrorBarDirectionFromXmlElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 1;
   }
 
   v9 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v9);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v9);
   v4 = v9;
   v5 = v4;
   if (v3)
@@ -196,15 +196,15 @@
   return v7;
 }
 
-+ (id)chxErrorBarTypeFromEnum:(int)a3
++ (id)chxErrorBarTypeFromEnum:(int)enum
 {
   v3 = @"both";
-  if (a3 == 1)
+  if (enum == 1)
   {
     v3 = @"minus";
   }
 
-  if (a3 == 2)
+  if (enum == 2)
   {
     return @"plus";
   }
@@ -215,16 +215,16 @@
   }
 }
 
-+ (id)chxErrorBarValueTypeFromEnum:(int)a3
++ (id)chxErrorBarValueTypeFromEnum:(int)enum
 {
-  if ((a3 - 1) > 4)
+  if ((enum - 1) > 4)
   {
     return @"fixedVal";
   }
 
   else
   {
-    return off_2799CD2C0[a3 - 1];
+    return off_2799CD2C0[enum - 1];
   }
 }
 

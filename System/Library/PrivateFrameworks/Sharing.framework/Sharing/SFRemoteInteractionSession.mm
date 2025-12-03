@@ -1,24 +1,24 @@
 @interface SFRemoteInteractionSession
 - (SFRemoteInteractionSession)init;
-- (SFRemoteInteractionSession)initWithCoder:(id)a3;
+- (SFRemoteInteractionSession)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_sessionHandleEvent:(id)a3;
-- (void)_sessionSendPayload:(id)a3;
+- (void)_sessionHandleEvent:(id)event;
+- (void)_sessionSendPayload:(id)payload;
 - (void)_sessionStart;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)remoteInteractionSessionRemoteTextEvent:(id)a3;
-- (void)remoteInteractionSessionTextSessionDidBegin:(id)a3;
-- (void)remoteInteractionSessionTextSessionDidChange:(id)a3;
-- (void)remoteInteractionSessionTextSessionDidEnd:(id)a3;
-- (void)sendPayload:(id)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)remoteInteractionSessionRemoteTextEvent:(id)event;
+- (void)remoteInteractionSessionTextSessionDidBegin:(id)begin;
+- (void)remoteInteractionSessionTextSessionDidChange:(id)change;
+- (void)remoteInteractionSessionTextSessionDidEnd:(id)end;
+- (void)sendPayload:(id)payload;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation SFRemoteInteractionSession
@@ -39,12 +39,12 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   peerDevice = self->_peerDevice;
   if (peerDevice)
   {
-    [a3 encodeObject:peerDevice forKey:@"peerDevice"];
+    [coder encodeObject:peerDevice forKey:@"peerDevice"];
   }
 }
 
@@ -65,9 +65,9 @@
   return v4;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -79,35 +79,35 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__SFRemoteInteractionSession_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteInteractionSession <= 30 && (gLogCategory_SFRemoteInteractionSession != -1 || _LogCategory_Initialize()))
   {
@@ -118,7 +118,7 @@
   {
     v13 = 4294960572;
 LABEL_13:
-    [(SFRemoteInteractionSession *)v4 _activateWithCompletion:v13, &v22, v23];
+    [(SFRemoteInteractionSession *)completionCopy _activateWithCompletion:v13, &v22, v23];
     goto LABEL_10;
   }
 
@@ -161,7 +161,7 @@ LABEL_13:
     v17[2] = __54__SFRemoteInteractionSession__activateWithCompletion___block_invoke_4;
     v17[3] = &unk_1E788BF88;
     v17[4] = self;
-    v18 = v4;
+    v18 = completionCopy;
     [(SFSession *)v7 activateWithCompletion:v17];
   }
 
@@ -177,7 +177,7 @@ LABEL_13:
     v14[1] = 3221225472;
     v14[2] = __54__SFRemoteInteractionSession__activateWithCompletion___block_invoke_5;
     v14[3] = &unk_1E788B6D8;
-    v10 = v4;
+    v10 = completionCopy;
     v15 = v10;
     v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
     [v11 remoteInteractionSessionActivate:self completion:v10];
@@ -320,17 +320,17 @@ LABEL_10:
   }
 }
 
-- (void)sendPayload:(id)a3
+- (void)sendPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SFRemoteInteractionSession_sendPayload___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = payloadCopy;
+  v6 = payloadCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -360,26 +360,26 @@ void __42__SFRemoteInteractionSession_sendPayload___block_invoke(uint64_t a1)
 - (void)_sessionStart
 {
   v4 = objc_alloc_init(SFEventMessage);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(SFMessage *)v4 setIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(SFMessage *)v4 setIdentifier:uUID];
 
   [(SFMessage *)v4 setHeaderFields:&unk_1F1D7D718];
   [(SFMessage *)v4 setPeerDevice:self->_peerDevice];
   [(SFSession *)self->_remoteSession sendEvent:v4];
 }
 
-- (void)_sessionSendPayload:(id)a3
+- (void)_sessionSendPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = 0;
-  if (v4)
+  if (payloadCopy)
   {
-    v6 = SFRTIDataPayloadForData(v4);
+    v6 = SFRTIDataPayloadForData(payloadCopy);
     if (v6)
     {
       v7 = v6;
-      [v5 setObject:v4 forKeyedSubscript:@"rp"];
+      [v5 setObject:payloadCopy forKeyedSubscript:@"rp"];
       v15 = 0;
       SFRemoteTextInputPayloadToLegacyAPI(v7, &v16, &v15);
       v8 = v15;
@@ -412,8 +412,8 @@ void __42__SFRemoteInteractionSession_sendPayload___block_invoke(uint64_t a1)
 
       v12 = objc_alloc_init(SFEventMessage);
       [(SFMessage *)v12 setHeaderFields:v5];
-      v13 = [MEMORY[0x1E696AFB0] UUID];
-      [(SFMessage *)v12 setIdentifier:v13];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      [(SFMessage *)v12 setIdentifier:uUID];
 
       [(SFMessage *)v12 setPeerDevice:self->_peerDevice];
       [(SFSession *)self->_remoteSession sendEvent:v12];
@@ -431,11 +431,11 @@ void __42__SFRemoteInteractionSession_sendPayload___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sessionHandleEvent:(id)a3
+- (void)_sessionHandleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v20 = 0;
-  v5 = [v4 headerFields];
+  headerFields = [eventCopy headerFields];
   CFDictionaryGetTypeID();
   v6 = CFDictionaryGetTypedValue();
 
@@ -457,7 +457,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [v4 headerFields];
+  headerFields2 = [eventCopy headerFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   v10 = Int64Ranged;
@@ -478,7 +478,7 @@ LABEL_12:
 
   if (((1 << Int64Ranged) & 0xC0) != 0)
   {
-    v14 = [v4 headerFields];
+    headerFields3 = [eventCopy headerFields];
     CFDictionaryGetTypeID();
     v11 = CFDictionaryGetTypedValue();
 
@@ -490,10 +490,10 @@ LABEL_12:
       {
         if (self->_agent)
         {
-          v16 = [v4 peerDevice];
-          if (v16)
+          peerDevice = [eventCopy peerDevice];
+          if (peerDevice)
           {
-            [(SDRemoteInteractionAgent *)self->_agent clientTextSessionDidBegin:v12 device:v16];
+            [(SDRemoteInteractionAgent *)self->_agent clientTextSessionDidBegin:v12 device:peerDevice];
           }
         }
 
@@ -562,7 +562,7 @@ LABEL_60:
     goto LABEL_12;
   }
 
-  v18 = [v4 headerFields];
+  headerFields4 = [eventCopy headerFields];
   CFStringGetTypeID();
   v13 = CFDictionaryGetTypedValue();
 
@@ -641,8 +641,8 @@ LABEL_15:
     }
 
     [(SFRemoteInteractionSession *)self _ensureXPCStarted];
-    v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v5 remoteInteractionSessionActivate:self completion:&__block_literal_global_64];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy remoteInteractionSessionActivate:self completion:&__block_literal_global_64];
 
     os_activity_scope_leave(&v6);
   }
@@ -663,9 +663,9 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)remoteInteractionSessionRemoteTextEvent:(id)a3
+- (void)remoteInteractionSessionRemoteTextEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteInteractionSession <= 30 && (gLogCategory_SFRemoteInteractionSession != -1 || _LogCategory_Initialize()))
   {
@@ -673,17 +673,17 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
   }
 
   remoteTextEventHandler = self->_remoteTextEventHandler;
-  v5 = v6;
+  v5 = eventCopy;
   if (remoteTextEventHandler)
   {
-    remoteTextEventHandler[2](remoteTextEventHandler, v6);
-    v5 = v6;
+    remoteTextEventHandler[2](remoteTextEventHandler, eventCopy);
+    v5 = eventCopy;
   }
 }
 
-- (void)remoteInteractionSessionTextSessionDidBegin:(id)a3
+- (void)remoteInteractionSessionTextSessionDidBegin:(id)begin
 {
-  v6 = a3;
+  beginCopy = begin;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteInteractionSession <= 30 && (gLogCategory_SFRemoteInteractionSession != -1 || _LogCategory_Initialize()))
   {
@@ -691,17 +691,17 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
   }
 
   textSessionDidBegin = self->_textSessionDidBegin;
-  v5 = v6;
+  v5 = beginCopy;
   if (textSessionDidBegin)
   {
-    textSessionDidBegin[2](textSessionDidBegin, v6);
-    v5 = v6;
+    textSessionDidBegin[2](textSessionDidBegin, beginCopy);
+    v5 = beginCopy;
   }
 }
 
-- (void)remoteInteractionSessionTextSessionDidEnd:(id)a3
+- (void)remoteInteractionSessionTextSessionDidEnd:(id)end
 {
-  v6 = a3;
+  endCopy = end;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteInteractionSession <= 30 && (gLogCategory_SFRemoteInteractionSession != -1 || _LogCategory_Initialize()))
   {
@@ -709,17 +709,17 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
   }
 
   textSessionDidEnd = self->_textSessionDidEnd;
-  v5 = v6;
+  v5 = endCopy;
   if (textSessionDidEnd)
   {
-    textSessionDidEnd[2](textSessionDidEnd, v6);
-    v5 = v6;
+    textSessionDidEnd[2](textSessionDidEnd, endCopy);
+    v5 = endCopy;
   }
 }
 
-- (void)remoteInteractionSessionTextSessionDidChange:(id)a3
+- (void)remoteInteractionSessionTextSessionDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteInteractionSession <= 10 && (gLogCategory_SFRemoteInteractionSession != -1 || _LogCategory_Initialize()))
   {
@@ -727,17 +727,17 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
   }
 
   textSessionDidChange = self->_textSessionDidChange;
-  v5 = v6;
+  v5 = changeCopy;
   if (textSessionDidChange)
   {
-    textSessionDidChange[2](textSessionDidChange, v6);
-    v5 = v6;
+    textSessionDidChange[2](textSessionDidChange, changeCopy);
+    v5 = changeCopy;
   }
 }
 
-- (SFRemoteInteractionSession)initWithCoder:(id)a3
+- (SFRemoteInteractionSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SFRemoteInteractionSession;
   v5 = [(SFRemoteInteractionSession *)&v13 init];
@@ -748,9 +748,9 @@ void __42__SFRemoteInteractionSession__interrupted__block_invoke(uint64_t a1, vo
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v7;
 
-    if ([v4 containsValueForKey:@"peerDevice"])
+    if ([coderCopy containsValueForKey:@"peerDevice"])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerDevice"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerDevice"];
       peerDevice = v6->_peerDevice;
       v6->_peerDevice = v9;
     }

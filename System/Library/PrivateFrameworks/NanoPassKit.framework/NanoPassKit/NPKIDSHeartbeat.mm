@@ -1,5 +1,5 @@
 @interface NPKIDSHeartbeat
-- (NPKIDSHeartbeat)initWithPendingStatusProtobuf:(id)a3 service:(id)a4 priority:(int64_t)a5 maxUpdates:(unint64_t)a6 responseIdentifier:(id)a7 sendOptions:(id)a8 queue:(id)a9 updateInterval:(double)a10;
+- (NPKIDSHeartbeat)initWithPendingStatusProtobuf:(id)protobuf service:(id)service priority:(int64_t)priority maxUpdates:(unint64_t)updates responseIdentifier:(id)identifier sendOptions:(id)options queue:(id)queue updateInterval:(double)self0;
 - (void)_sendHeartbeat;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,43 +7,43 @@
 
 @implementation NPKIDSHeartbeat
 
-- (NPKIDSHeartbeat)initWithPendingStatusProtobuf:(id)a3 service:(id)a4 priority:(int64_t)a5 maxUpdates:(unint64_t)a6 responseIdentifier:(id)a7 sendOptions:(id)a8 queue:(id)a9 updateInterval:(double)a10
+- (NPKIDSHeartbeat)initWithPendingStatusProtobuf:(id)protobuf service:(id)service priority:(int64_t)priority maxUpdates:(unint64_t)updates responseIdentifier:(id)identifier sendOptions:(id)options queue:(id)queue updateInterval:(double)self0
 {
   v51 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v40 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  protobufCopy = protobuf;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  queueCopy = queue;
   v44.receiver = self;
   v44.super_class = NPKIDSHeartbeat;
   v21 = [(NPKIDSHeartbeat *)&v44 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_pendingStatusProtobuf, a3);
-    objc_storeStrong(&v22->_service, a4);
-    v22->_messagePriority = a5;
-    objc_storeStrong(&v22->_responseIdentifier, a7);
-    v23 = [v19 copy];
+    objc_storeStrong(&v21->_pendingStatusProtobuf, protobuf);
+    objc_storeStrong(&v22->_service, service);
+    v22->_messagePriority = priority;
+    objc_storeStrong(&v22->_responseIdentifier, identifier);
+    v23 = [optionsCopy copy];
     sendOptions = v22->_sendOptions;
     v22->_sendOptions = v23;
 
-    objc_storeStrong(&v22->_queue, a9);
+    objc_storeStrong(&v22->_queue, queue);
     v22->_updatesSent = 0;
-    v22->_maxUpdates = a6;
+    v22->_maxUpdates = updates;
     v25 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v22->_queue);
     statusTimer = v22->_statusTimer;
     v22->_statusTimer = v25;
 
-    if (a10 <= 0.0)
+    if (interval <= 0.0)
     {
       v27 = 30000000000;
     }
 
     else
     {
-      v27 = (a10 * 1000000000.0);
+      v27 = (interval * 1000000000.0);
     }
 
     v28 = v22->_statusTimer;
@@ -66,16 +66,16 @@
       v33 = pk_Payment_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [(NPKIDSHeartbeat *)v31 service];
-        v35 = [(NPKIDSHeartbeat *)v31 pendingStatusProtobuf];
-        v36 = [v35 type];
-        v37 = [(NPKIDSHeartbeat *)v31 responseIdentifier];
+        service = [(NPKIDSHeartbeat *)v31 service];
+        pendingStatusProtobuf = [(NPKIDSHeartbeat *)v31 pendingStatusProtobuf];
+        type = [pendingStatusProtobuf type];
+        responseIdentifier = [(NPKIDSHeartbeat *)v31 responseIdentifier];
         *buf = 138412802;
-        v46 = v34;
+        v46 = service;
         v47 = 1024;
-        v48 = v36;
+        v48 = type;
         v49 = 2112;
-        v50 = v37;
+        v50 = responseIdentifier;
         _os_log_impl(&dword_25B300000, v33, OS_LOG_TYPE_DEFAULT, "Notice: Started providing periodic updates:\n\tservice: %@\n\tmessage type: %u\n\tresponse identifier: %@", buf, 0x1Cu);
       }
     }
@@ -96,18 +96,18 @@
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKIDSHeartbeat *)self responseIdentifier];
+      responseIdentifier = [(NPKIDSHeartbeat *)self responseIdentifier];
       v10 = 138412290;
-      v11 = v6;
+      v11 = responseIdentifier;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning service agent status updater invalidating: %@", &v10, 0xCu);
     }
   }
 
-  v7 = [(NPKIDSHeartbeat *)self statusTimer];
-  v8 = v7;
-  if (v7)
+  statusTimer = [(NPKIDSHeartbeat *)self statusTimer];
+  v8 = statusTimer;
+  if (statusTimer)
   {
-    dispatch_source_cancel(v7);
+    dispatch_source_cancel(statusTimer);
     [(NPKIDSHeartbeat *)self setStatusTimer:0];
   }
 
@@ -133,44 +133,44 @@
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKIDSHeartbeat *)self responseIdentifier];
+      responseIdentifier = [(NPKIDSHeartbeat *)self responseIdentifier];
       *buf = 138412290;
-      v26 = v6;
+      v26 = responseIdentifier;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Sending heartbeat for response identifer: %@", buf, 0xCu);
     }
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(NPKIDSHeartbeat *)self sendOptions];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  sendOptions = [(NPKIDSHeartbeat *)self sendOptions];
 
-  if (v8)
+  if (sendOptions)
   {
-    v9 = [(NPKIDSHeartbeat *)self sendOptions];
-    [v7 addEntriesFromDictionary:v9];
+    sendOptions2 = [(NPKIDSHeartbeat *)self sendOptions];
+    [dictionary addEntriesFromDictionary:sendOptions2];
   }
 
-  v10 = [(NPKIDSHeartbeat *)self responseIdentifier];
+  responseIdentifier2 = [(NPKIDSHeartbeat *)self responseIdentifier];
 
-  if (v10)
+  if (responseIdentifier2)
   {
-    v11 = [(NPKIDSHeartbeat *)self responseIdentifier];
-    [v7 setObject:v11 forKey:*MEMORY[0x277D18630]];
+    responseIdentifier3 = [(NPKIDSHeartbeat *)self responseIdentifier];
+    [dictionary setObject:responseIdentifier3 forKey:*MEMORY[0x277D18630]];
   }
 
-  v12 = [(NPKIDSHeartbeat *)self service];
-  v13 = [(NPKIDSHeartbeat *)self pendingStatusProtobuf];
-  v14 = [(NPKIDSHeartbeat *)self messagePriority];
-  v15 = [(NPKIDSHeartbeat *)self responseIdentifier];
+  service = [(NPKIDSHeartbeat *)self service];
+  pendingStatusProtobuf = [(NPKIDSHeartbeat *)self pendingStatusProtobuf];
+  messagePriority = [(NPKIDSHeartbeat *)self messagePriority];
+  responseIdentifier4 = [(NPKIDSHeartbeat *)self responseIdentifier];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __33__NPKIDSHeartbeat__sendHeartbeat__block_invoke;
   v24[3] = &unk_279945058;
   v24[4] = self;
-  v16 = NPKProtoSendWithOptions(v12, v13, v14, v15, 0, v24, v7);
+  v16 = NPKProtoSendWithOptions(service, pendingStatusProtobuf, messagePriority, responseIdentifier4, 0, v24, dictionary);
 
   [(NPKIDSHeartbeat *)self setUpdatesSent:[(NPKIDSHeartbeat *)self updatesSent]+ 1];
-  v17 = [(NPKIDSHeartbeat *)self updatesSent];
-  if (v17 >= [(NPKIDSHeartbeat *)self maxUpdates])
+  updatesSent = [(NPKIDSHeartbeat *)self updatesSent];
+  if (updatesSent >= [(NPKIDSHeartbeat *)self maxUpdates])
   {
     v18 = pk_Payment_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -180,12 +180,12 @@
       v20 = pk_Payment_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(NPKIDSHeartbeat *)self maxUpdates];
-        v22 = [(NPKIDSHeartbeat *)self responseIdentifier];
+        maxUpdates = [(NPKIDSHeartbeat *)self maxUpdates];
+        responseIdentifier5 = [(NPKIDSHeartbeat *)self responseIdentifier];
         *buf = 134218242;
-        v26 = v21;
+        v26 = maxUpdates;
         v27 = 2112;
-        v28 = v22;
+        v28 = responseIdentifier5;
         _os_log_impl(&dword_25B300000, v20, OS_LOG_TYPE_DEFAULT, "Warning: Reached limit of %lu heartbeats for response identifier %@; will not send further updates.", buf, 0x16u);
       }
     }

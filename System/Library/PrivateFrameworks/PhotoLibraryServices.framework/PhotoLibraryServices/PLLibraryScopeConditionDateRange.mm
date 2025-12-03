@@ -1,5 +1,5 @@
 @interface PLLibraryScopeConditionDateRange
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4;
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria;
 - (id)conditionQuery;
 - (id)description;
 @end
@@ -25,23 +25,23 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E69BF2C0]) initWithConjunction:0];
   [v3 addDateRangeQueryKey:200 between:self->_startDate and:self->_endDate];
-  v4 = [v3 query];
+  query = [v3 query];
 
-  return v4;
+  return query;
 }
 
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCriteria:v4];
-  v8 = [v6 firstObject];
+  criteriaCopy = criteria;
+  queriesCopy = queries;
+  v7 = [[self alloc] initWithCriteria:criteriaCopy];
+  firstObject = [queriesCopy firstObject];
 
-  v9 = [v8 dateValue];
-  [v7 setStartDate:v9];
+  dateValue = [firstObject dateValue];
+  [v7 setStartDate:dateValue];
 
-  v10 = [v8 secondDateValue];
-  [v7 setEndDate:v10];
+  secondDateValue = [firstObject secondDateValue];
+  [v7 setEndDate:secondDateValue];
 
   return v7;
 }

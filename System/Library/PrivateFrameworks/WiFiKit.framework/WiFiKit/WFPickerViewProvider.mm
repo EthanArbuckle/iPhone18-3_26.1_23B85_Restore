@@ -1,19 +1,19 @@
 @interface WFPickerViewProvider
-- (WFPickerViewProvider)initWithRootViewController:(id)a3;
+- (WFPickerViewProvider)initWithRootViewController:(id)controller;
 - (WFPickerViewProviderDelegate)delegate;
-- (id)_promptForEnterpriseJoin:(id)a3;
-- (id)credentialsViewControllerWithContext:(id)a3;
-- (id)networkErrorViewControllerWithContext:(id)a3;
+- (id)_promptForEnterpriseJoin:(id)join;
+- (id)credentialsViewControllerWithContext:(id)context;
+- (id)networkErrorViewControllerWithContext:(id)context;
 @end
 
 @implementation WFPickerViewProvider
 
-- (id)_promptForEnterpriseJoin:(id)a3
+- (id)_promptForEnterpriseJoin:(id)join
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  joinCopy = join;
   v5 = [WFEnterpriseJoinPromptOperation enterpriseJoinPromptOperationWithDeviceCapability:WFCurrentDeviceCapability()];
-  v6 = [v4 network];
+  network = [joinCopy network];
   v7 = WFLogForCategory(3uLL);
   v8 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v7 && os_log_type_enabled(v7, v8))
@@ -23,13 +23,13 @@
     v26 = 2112;
     v27 = v5;
     v28 = 2112;
-    v29 = v6;
+    v29 = network;
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: prompt (%@) for enterprise join %@", buf, 0x20u);
   }
 
   objc_initWeak(buf, v5);
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
+  objc_initWeak(&from, network);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__WFPickerViewProvider__promptForEnterpriseJoin___block_invoke;
@@ -37,13 +37,13 @@
   objc_copyWeak(&v19, buf);
   objc_copyWeak(&v20, &location);
   objc_copyWeak(&v21, &from);
-  v9 = v6;
+  v9 = network;
   v17 = v9;
-  v10 = v4;
+  v10 = joinCopy;
   v18 = v10;
   [v5 setCompletionBlock:v16];
-  v11 = [MEMORY[0x277CCABD8] mainQueue];
-  [v11 addOperation:v5];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  [mainQueue addOperation:v5];
 
   v12 = v18;
   v13 = v5;
@@ -146,13 +146,13 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)credentialsViewControllerWithContext:(id)a3
+- (id)credentialsViewControllerWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(WFPickerViewProvider *)self _canHandleCredentialsContext:v4])
+  contextCopy = context;
+  if ([(WFPickerViewProvider *)self _canHandleCredentialsContext:contextCopy])
   {
-    v5 = [WFPasswordPromptOperation passwordPromptOperationWithCredentialsContext:v4];
+    v5 = [WFPasswordPromptOperation passwordPromptOperationWithCredentialsContext:contextCopy];
     v6 = WFLogForCategory(3uLL);
     v7 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v6 && os_log_type_enabled(v6, v7))
@@ -160,14 +160,14 @@ LABEL_11:
       v13 = 136315650;
       v14 = "[WFPickerViewProvider credentialsViewControllerWithContext:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = contextCopy;
       v17 = 2112;
       v18 = v5;
       _os_log_impl(&dword_273ECD000, v6, v7, "%s: can handle credentials context %@, using prompt %@", &v13, 0x20u);
     }
 
-    v8 = [MEMORY[0x277CCABD8] mainQueue];
-    [v8 addOperation:v5];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue addOperation:v5];
   }
 
   else
@@ -179,11 +179,11 @@ LABEL_11:
       v13 = 136315394;
       v14 = "[WFPickerViewProvider credentialsViewControllerWithContext:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = contextCopy;
       _os_log_impl(&dword_273ECD000, v9, v10, "%s: unhandled credentials context %@, launching settings", &v13, 0x16u);
     }
 
-    v5 = [(WFPickerViewProvider *)self _promptForEnterpriseJoin:v4];
+    v5 = [(WFPickerViewProvider *)self _promptForEnterpriseJoin:contextCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -191,11 +191,11 @@ LABEL_11:
   return v5;
 }
 
-- (id)networkErrorViewControllerWithContext:(id)a3
+- (id)networkErrorViewControllerWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [WFErrorPromptOperation errorPromptOperationWithContext:v3];
+  contextCopy = context;
+  v4 = [WFErrorPromptOperation errorPromptOperationWithContext:contextCopy];
   v5 = WFLogForCategory(3uLL);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel())
@@ -218,12 +218,12 @@ LABEL_11:
       v15 = 2112;
       v16 = v4;
       v17 = 2112;
-      v18 = v3;
+      v18 = contextCopy;
       _os_log_impl(&dword_273ECD000, v5, v6, "%s: error prompt %@ for context %@", &v13, 0x20u);
     }
 
-    v9 = [MEMORY[0x277CCABD8] mainQueue];
-    [v9 addOperation:v4];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue addOperation:v4];
 
     v10 = v4;
   }
@@ -235,7 +235,7 @@ LABEL_11:
       v13 = 136315394;
       v14 = "[WFPickerViewProvider networkErrorViewControllerWithContext:]";
       v15 = 2112;
-      v16 = v3;
+      v16 = contextCopy;
       _os_log_impl(&dword_273ECD000, v5, v6, "%s: failed to create error alert for context %@", &v13, 0x16u);
     }
   }
@@ -252,16 +252,16 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (WFPickerViewProvider)initWithRootViewController:(id)a3
+- (WFPickerViewProvider)initWithRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = WFPickerViewProvider;
   v6 = [(WFPickerViewProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootViewController, a3);
+    objc_storeStrong(&v6->_rootViewController, controller);
   }
 
   return v7;

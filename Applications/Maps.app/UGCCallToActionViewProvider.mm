@@ -1,46 +1,46 @@
 @interface UGCCallToActionViewProvider
 - (MUPlaceCallToActionAppearance)submissionStatusAppearance;
-- (UGCCallToActionViewProvider)initWithDelegate:(id)a3;
-- (void)_finishResolvingWithBlock:(id)a3;
-- (void)_handleLookupSubmissionCompletion:(id)a3 lookupError:(id)a4;
+- (UGCCallToActionViewProvider)initWithDelegate:(id)delegate;
+- (void)_finishResolvingWithBlock:(id)block;
+- (void)_handleLookupSubmissionCompletion:(id)completion lookupError:(id)error;
 - (void)_resolveForCurrentState;
-- (void)_resolveForEditWithCompletion:(id)a3;
+- (void)_resolveForEditWithCompletion:(id)completion;
 - (void)_restart;
-- (void)_retrievePhotoURLWithCompletion:(id)a3;
-- (void)_updateWithPOIEnrichment:(id)a3;
+- (void)_retrievePhotoURLWithCompletion:(id)completion;
+- (void)_updateWithPOIEnrichment:(id)enrichment;
 - (void)cancel;
 - (void)dealloc;
-- (void)feedbackSubmissionManagerCompletedSubmissionWithMUID:(unint64_t)a3 withError:(id)a4;
-- (void)refineUserSubmissionForMapItem:(id)a3;
+- (void)feedbackSubmissionManagerCompletedSubmissionWithMUID:(unint64_t)d withError:(id)error;
+- (void)refineUserSubmissionForMapItem:(id)item;
 - (void)resolveForUserEdit;
-- (void)setAlwaysRefinesUserSubmission:(BOOL)a3;
-- (void)setMapItem:(id)a3;
-- (void)updateWithFetchedLookupResult:(id)a3;
+- (void)setAlwaysRefinesUserSubmission:(BOOL)submission;
+- (void)setMapItem:(id)item;
+- (void)updateWithFetchedLookupResult:(id)result;
 @end
 
 @implementation UGCCallToActionViewProvider
 
-- (void)feedbackSubmissionManagerCompletedSubmissionWithMUID:(unint64_t)a3 withError:(id)a4
+- (void)feedbackSubmissionManagerCompletedSubmissionWithMUID:(unint64_t)d withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (MapsFeature_IsEnabled_SydneyARP())
   {
     v7 = sub_1007996E8();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 134218242;
-      v11 = a3;
+      dCopy = d;
       v12 = 2112;
-      v13 = v6;
+      v13 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "FeedbackSubmissionManager did complete photo submission for muid: %llu error: %@", &v10, 0x16u);
     }
 
-    if (!v6)
+    if (!errorCopy)
     {
-      v8 = [(UGCCallToActionViewProvider *)self mapItem];
-      v9 = [v8 _muid];
+      mapItem = [(UGCCallToActionViewProvider *)self mapItem];
+      _muid = [mapItem _muid];
 
-      if (v9 == a3)
+      if (_muid == d)
       {
         [(UGCCallToActionViewProvider *)self resolveForUserEdit];
       }
@@ -48,35 +48,35 @@
   }
 }
 
-- (void)_finishResolvingWithBlock:(id)a3
+- (void)_finishResolvingWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(UGCCallToActionViewProvider *)self setIsResolving:0];
-  v4 = v5;
-  if (v5)
+  v4 = blockCopy;
+  if (blockCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(blockCopy + 2))(blockCopy);
+    v4 = blockCopy;
   }
 }
 
-- (void)_retrievePhotoURLWithCompletion:(id)a3
+- (void)_retrievePhotoURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
+  firstPhotoURL = [(UGCCallToActionViewProvider *)self firstPhotoURL];
 
-  if (v5)
+  if (firstPhotoURL)
   {
-    v6 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
-    v7 = [(UGCCallToActionViewProvider *)self firstPhotoID];
-    v4[2](v4, v6, v7, [(UGCCallToActionViewProvider *)self numberOfPhotosAddedForSubmission]);
+    firstPhotoURL2 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
+    firstPhotoID = [(UGCCallToActionViewProvider *)self firstPhotoID];
+    completionCopy[2](completionCopy, firstPhotoURL2, firstPhotoID, [(UGCCallToActionViewProvider *)self numberOfPhotosAddedForSubmission]);
   }
 
   else
   {
-    v8 = [(UGCCallToActionViewProvider *)self mapItem];
-    v9 = [v8 _muid];
+    mapItem = [(UGCCallToActionViewProvider *)self mapItem];
+    _muid = [mapItem _muid];
 
     [(UGCSubmissionLookupManager *)self->_lookupManager cancelIfNeeded];
     v10 = objc_alloc_init(_TtC4Maps26UGCSubmissionLookupManager);
@@ -90,25 +90,25 @@
     v13[2] = sub_100CB6B3C;
     v13[3] = &unk_1016502C0;
     objc_copyWeak(&v15, &location);
-    v14 = v4;
-    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:v9 completion:v13];
+    v14 = completionCopy;
+    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:_muid completion:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_updateWithPOIEnrichment:(id)a3
+- (void)_updateWithPOIEnrichment:(id)enrichment
 {
-  v23 = a3;
+  enrichmentCopy = enrichment;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v4 = [v23 scorecard];
-  v5 = [v4 hasRecommended];
+  scorecard = [enrichmentCopy scorecard];
+  hasRecommended = [scorecard hasRecommended];
 
-  if (v5)
+  if (hasRecommended)
   {
-    v6 = [v23 scorecard];
-    if ([v6 recommended])
+    scorecard2 = [enrichmentCopy scorecard];
+    if ([scorecard2 recommended])
     {
       v7 = 2;
     }
@@ -126,47 +126,47 @@
     [(UGCCallToActionViewProvider *)self setCurrentRatingCategoryState:0];
   }
 
-  v8 = [v23 images];
-  -[UGCCallToActionViewProvider setNumberOfPhotosAddedForSubmission:](self, "setNumberOfPhotosAddedForSubmission:", [v8 count]);
+  images = [enrichmentCopy images];
+  -[UGCCallToActionViewProvider setNumberOfPhotosAddedForSubmission:](self, "setNumberOfPhotosAddedForSubmission:", [images count]);
 
-  v9 = [v23 images];
-  v10 = [v9 firstObject];
+  images2 = [enrichmentCopy images];
+  firstObject = [images2 firstObject];
 
-  v11 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
-  v12 = v11 | v10;
+  firstPhotoURL = [(UGCCallToActionViewProvider *)self firstPhotoURL];
+  v12 = firstPhotoURL | firstObject;
 
   if (v12)
   {
-    v13 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
-    v14 = [v13 absoluteString];
-    v15 = [v10 url];
-    v16 = [v14 isEqual:v15];
+    firstPhotoURL2 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
+    absoluteString = [firstPhotoURL2 absoluteString];
+    v15 = [firstObject url];
+    v16 = [absoluteString isEqual:v15];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [v10 url];
+      v17 = [firstObject url];
       v18 = [NSURL URLWithString:v17];
       [(UGCCallToActionViewProvider *)self setFirstPhotoURL:v18];
 
-      v19 = [v10 imageId];
-      [(UGCCallToActionViewProvider *)self setFirstPhotoID:v19];
+      imageId = [firstObject imageId];
+      [(UGCCallToActionViewProvider *)self setFirstPhotoID:imageId];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v21 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
-      v22 = [v10 imageId];
-      [WeakRetained callToActionViewProviderDidUpdateWithPreferredUserUploadedPhoto:v21 photoID:v22 numberOfPhotos:{-[UGCCallToActionViewProvider numberOfPhotosAddedForSubmission](self, "numberOfPhotosAddedForSubmission")}];
+      firstPhotoURL3 = [(UGCCallToActionViewProvider *)self firstPhotoURL];
+      imageId2 = [firstObject imageId];
+      [WeakRetained callToActionViewProviderDidUpdateWithPreferredUserUploadedPhoto:firstPhotoURL3 photoID:imageId2 numberOfPhotos:{-[UGCCallToActionViewProvider numberOfPhotosAddedForSubmission](self, "numberOfPhotosAddedForSubmission")}];
     }
   }
 }
 
-- (void)_handleLookupSubmissionCompletion:(id)a3 lookupError:(id)a4
+- (void)_handleLookupSubmissionCompletion:(id)completion lookupError:(id)error
 {
-  v5 = a3;
-  [(UGCCallToActionViewProvider *)self setLookupResult:v5];
-  if ([v5 status] == 1)
+  completionCopy = completion;
+  [(UGCCallToActionViewProvider *)self setLookupResult:completionCopy];
+  if ([completionCopy status] == 1)
   {
-    v6 = [v5 previousSubmission];
-    [(UGCCallToActionViewProvider *)self _updateWithPOIEnrichment:v6];
+    previousSubmission = [completionCopy previousSubmission];
+    [(UGCCallToActionViewProvider *)self _updateWithPOIEnrichment:previousSubmission];
 
     v7 = v11;
     v11[0] = _NSConcreteStackBlock;
@@ -188,9 +188,9 @@
   [(UGCCallToActionViewProvider *)self _finishResolvingWithBlock:v9, v10];
 }
 
-- (void)refineUserSubmissionForMapItem:(id)a3
+- (void)refineUserSubmissionForMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   [(UGCSubmissionLookupManager *)self->_lookupManager cancelIfNeeded];
   v5 = objc_alloc_init(_TtC4Maps26UGCSubmissionLookupManager);
@@ -201,15 +201,15 @@
   {
     objc_initWeak(&location, self);
     v7 = self->_lookupManager;
-    v8 = [v4 _muid];
-    v9 = [v4 _geoMapItem];
-    v10 = [v9 _identifierHistory];
+    _muid = [itemCopy _muid];
+    _geoMapItem = [itemCopy _geoMapItem];
+    _identifierHistory = [_geoMapItem _identifierHistory];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100CB7378;
     v16[3] = &unk_101654F50;
     objc_copyWeak(&v17, &location);
-    [(UGCSubmissionLookupManager *)v7 fetchSubmissionWithCommunityIDAndICloudIDFor:v8 identifierHistory:v10 completion:v16];
+    [(UGCSubmissionLookupManager *)v7 fetchSubmissionWithCommunityIDAndICloudIDFor:_muid identifierHistory:_identifierHistory completion:v16];
 
     v11 = &v17;
   }
@@ -218,13 +218,13 @@
   {
     objc_initWeak(&location, self);
     v12 = self->_lookupManager;
-    v13 = [v4 _muid];
+    _muid2 = [itemCopy _muid];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100CB7450;
     v14[3] = &unk_101654F50;
     objc_copyWeak(&v15, &location);
-    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:v13 completion:v14];
+    [(UGCSubmissionLookupManager *)v12 fetchSubmissionWithICloudIDFor:_muid2 completion:v14];
     v11 = &v15;
   }
 
@@ -232,17 +232,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)updateWithFetchedLookupResult:(id)a3
+- (void)updateWithFetchedLookupResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if ([v4 status] == 1)
+  if ([resultCopy status] == 1)
   {
     [(UGCCallToActionViewProvider *)self cancel];
     [(UGCCallToActionViewProvider *)self setHasUserAlreadyRatedThisPlace:1];
-    [(UGCCallToActionViewProvider *)self setLookupResult:v4];
-    v5 = [v4 previousSubmission];
-    [(UGCCallToActionViewProvider *)self _updateWithPOIEnrichment:v5];
+    [(UGCCallToActionViewProvider *)self setLookupResult:resultCopy];
+    previousSubmission = [resultCopy previousSubmission];
+    [(UGCCallToActionViewProvider *)self _updateWithPOIEnrichment:previousSubmission];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained callToActionViewProviderDidFinishResolvingEditState:self];
@@ -276,22 +276,22 @@
   [(UGCCallToActionViewProvider *)self _resolveForCurrentState];
 }
 
-- (void)_resolveForEditWithCompletion:(id)a3
+- (void)_resolveForEditWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
-    v5 = [(MKMapItem *)self->_mapItem _muid];
-    v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v7 = [v6 _identifierHistory];
+    _muid = [(MKMapItem *)self->_mapItem _muid];
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _identifierHistory = [_geoMapItem _identifierHistory];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100CB790C;
     v8[3] = &unk_101650298;
-    v9 = v4;
+    v9 = completionCopy;
     objc_copyWeak(&v10, location);
-    [UGCReviewedPlaceManager fetchReviewedPlaceForMUID:v5 withIdentifierHistory:v7 completion:v8];
+    [UGCReviewedPlaceManager fetchReviewedPlaceForMUID:_muid withIdentifierHistory:_identifierHistory completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(location);
@@ -383,24 +383,24 @@
   [(UGCCallToActionViewProvider *)self _resolveForCurrentState];
 }
 
-- (void)setAlwaysRefinesUserSubmission:(BOOL)a3
+- (void)setAlwaysRefinesUserSubmission:(BOOL)submission
 {
-  if (self->_alwaysRefinesUserSubmission != a3)
+  if (self->_alwaysRefinesUserSubmission != submission)
   {
-    self->_alwaysRefinesUserSubmission = a3;
+    self->_alwaysRefinesUserSubmission = submission;
     [(UGCCallToActionViewProvider *)self _restart];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
     [(UGCCallToActionViewProvider *)self _restart];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -415,15 +415,15 @@
   {
     if ([(UGCCallToActionViewProvider *)self currentRatingCategoryState]|| (v3 = [(UGCCallToActionViewProvider *)self numberOfPhotosAddedForSubmission]) != 0)
     {
-      v4 = [(UGCCallToActionViewProvider *)self currentRatingCategoryState];
-      if (v4 == 2)
+      currentRatingCategoryState = [(UGCCallToActionViewProvider *)self currentRatingCategoryState];
+      if (currentRatingCategoryState == 2)
       {
         v5 = 2;
       }
 
       else
       {
-        v5 = v4 == 1;
+        v5 = currentRatingCategoryState == 1;
       }
 
       v3 = [MUPlaceCallToActionAppearance userRecommendedAppearanceForRatingState:v5 numberOfPhotosAdded:[(UGCCallToActionViewProvider *)self numberOfPhotosAddedForSubmission]];
@@ -442,27 +442,27 @@
 {
   [(UGCSubmissionLookupManager *)self->_lookupManager cancelIfNeeded];
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 submissionManager];
-  [v4 removeObserver:self];
+  submissionManager = [v3 submissionManager];
+  [submissionManager removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = UGCCallToActionViewProvider;
   [(UGCCallToActionViewProvider *)&v5 dealloc];
 }
 
-- (UGCCallToActionViewProvider)initWithDelegate:(id)a3
+- (UGCCallToActionViewProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = UGCCallToActionViewProvider;
   v5 = [(UGCCallToActionViewProvider *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[UIApplication sharedMapsDelegate];
-    v8 = [v7 submissionManager];
-    [v8 addObserver:v6];
+    submissionManager = [v7 submissionManager];
+    [submissionManager addObserver:v6];
   }
 
   return v6;

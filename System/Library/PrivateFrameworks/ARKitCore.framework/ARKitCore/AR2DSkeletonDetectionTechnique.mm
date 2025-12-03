@@ -2,9 +2,9 @@
 + (CGSize)inputDimensionsForMLModel;
 - (AR2DSkeletonDetectionTechnique)init;
 - (double)requiredTimeInterval;
-- (id)processImageDataThroughNeuralNetwork:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (void)_prepareOnce:(BOOL)a3;
+- (id)processImageDataThroughNeuralNetwork:(id)network originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (void)_prepareOnce:(BOOL)once;
 @end
 
 @implementation AR2DSkeletonDetectionTechnique
@@ -39,7 +39,7 @@
         v17 = 138543618;
         v18 = v12;
         v19 = 2048;
-        v20 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to initialize config for ABPK 2D Detection module", &v17, 0x16u);
       }
     }
@@ -51,7 +51,7 @@
       v17 = 138543618;
       v18 = v14;
       v19 = 2048;
-      v20 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to initialize config for ABPK 2D Detection module", &v17, 0x16u);
     }
 
@@ -77,7 +77,7 @@
     *buf = 138543618;
     v12 = v5;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Initializing", buf, 0x16u);
   }
 
@@ -95,7 +95,7 @@
   return v8;
 }
 
-- (void)_prepareOnce:(BOOL)a3
+- (void)_prepareOnce:(BOOL)once
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E698A8E8]) initWithAlgorithmMode:1];
@@ -122,7 +122,7 @@
         *buf = 138543618;
         v19 = v11;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: ABPK2DDetection could not be initialized!", buf, 0x16u);
       }
     }
@@ -134,7 +134,7 @@
       *buf = 138543618;
       v19 = v13;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: ABPK2DDetection could not be initialized!", buf, 0x16u);
     }
 
@@ -184,12 +184,12 @@ uint64_t __54__AR2DSkeletonDetectionTechnique_requiredTimeInterval__block_invoke
   return result;
 }
 
-- (id)processImageDataThroughNeuralNetwork:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)processImageDataThroughNeuralNetwork:(id)network originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  [v9 timestamp];
+  networkCopy = network;
+  dataCopy = data;
+  [networkCopy timestamp];
   [(AR2DSkeletonDetectionTechnique *)self _startMLRunNetworkSignpostWithTimestamp:?];
   v11 = _ARLogGeneral();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -199,40 +199,40 @@ uint64_t __54__AR2DSkeletonDetectionTechnique_requiredTimeInterval__block_invoke
     v31 = 138543618;
     v32 = v13;
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: processImageDataThroughNeuralNetwork", &v31, 0x16u);
   }
 
-  v14 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:v10];
-  [v10 imageResolution];
+  v14 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:dataCopy];
+  [dataCopy imageResolution];
   v16 = v15;
   v18 = v17;
-  [v9 imageResolution];
+  [networkCopy imageResolution];
   v21 = [objc_alloc(MEMORY[0x1E698A938]) initWithType:1 inputResolution:v16 outputResolution:{v18, v19, v20}];
   v22 = objc_alloc(MEMORY[0x1E698A940]);
-  v23 = [v9 pixelBuffer];
-  [v9 timestamp];
-  v24 = [v22 initWithPixelBuffer:v23 timestamp:v14 abpkDeviceOrientation:v21 preprocessingParameters:?];
+  pixelBuffer = [networkCopy pixelBuffer];
+  [networkCopy timestamp];
+  v24 = [v22 initWithPixelBuffer:pixelBuffer timestamp:v14 abpkDeviceOrientation:v21 preprocessingParameters:?];
   v25 = objc_alloc(MEMORY[0x1E698A930]);
-  v26 = [v10 pixelBuffer];
-  [v10 timestamp];
-  v27 = [v25 initWithPixelBuffer:v26 timestamp:?];
+  pixelBuffer2 = [dataCopy pixelBuffer];
+  [dataCopy timestamp];
+  v27 = [v25 initWithPixelBuffer:pixelBuffer2 timestamp:?];
   algorithm = self->_algorithm;
   [v24 timestamp];
-  v29 = [(ABPK2DDetection *)algorithm runWithMLImage:v24 originalImage:v27 abpkOrientation:v14 atTimestamp:a6 rotationOfResultTensor:?];
-  [v9 timestamp];
+  v29 = [(ABPK2DDetection *)algorithm runWithMLImage:v24 originalImage:v27 abpkOrientation:v14 atTimestamp:tensor rotationOfResultTensor:?];
+  [networkCopy timestamp];
   [(AR2DSkeletonDetectionTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
 
   return v29;
 }
 
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
+  height = interest.height;
+  width = interest.width;
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  dataCopy = data;
+  imageDataCopy = imageData;
   v13 = _ARLogGeneral();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -241,13 +241,13 @@ uint64_t __54__AR2DSkeletonDetectionTechnique_requiredTimeInterval__block_invoke
     *buf = 138543618;
     v22 = v15;
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: runNeuralNetworkWithImageData", buf, 0x16u);
   }
 
   if (self->_algorithm)
   {
-    v16 = v11 == 0;
+    v16 = dataCopy == 0;
   }
 
   else
@@ -262,14 +262,14 @@ uint64_t __54__AR2DSkeletonDetectionTechnique_requiredTimeInterval__block_invoke
 
   else
   {
-    [v12 timestamp];
+    [imageDataCopy timestamp];
     [(AR2DSkeletonDetectionTechnique *)self _startMLProcessingSignpostWithTimestamp:?];
-    v18 = [(AR2DSkeletonDetectionTechnique *)self processImageDataThroughNeuralNetwork:v11 originalImageData:v12 regionOfInterest:a6 rotationOfResultTensor:width, height];
-    [v12 timestamp];
+    height = [(AR2DSkeletonDetectionTechnique *)self processImageDataThroughNeuralNetwork:dataCopy originalImageData:imageDataCopy regionOfInterest:tensor rotationOfResultTensor:width, height];
+    [imageDataCopy timestamp];
     [(AR2DSkeletonDetectionTechnique *)self _endMLProcessingSignpostWithTimestamp:?];
-    if (v18)
+    if (height)
     {
-      v20 = v18;
+      v20 = height;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     }
 

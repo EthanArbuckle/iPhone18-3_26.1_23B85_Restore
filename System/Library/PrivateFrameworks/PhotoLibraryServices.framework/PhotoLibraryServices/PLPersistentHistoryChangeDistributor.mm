@@ -1,19 +1,19 @@
 @interface PLPersistentHistoryChangeDistributor
-- (PLPersistentHistoryChangeDistributor)initWithPersistentStoreCoordinator:(id)a3 bundle:(id)a4 changeMerger:(id)a5;
-- (id)_inq_fetchTransactionsSinceLastTokenWithDebugEvent:(id)a3;
-- (id)localEventFromTransactions:(id)a3;
+- (PLPersistentHistoryChangeDistributor)initWithPersistentStoreCoordinator:(id)coordinator bundle:(id)bundle changeMerger:(id)merger;
+- (id)_inq_fetchTransactionsSinceLastTokenWithDebugEvent:(id)event;
+- (id)localEventFromTransactions:(id)transactions;
 - (id)makeManagedObjectContext;
 - (id)stateCaptureDictionary;
 - (void)_advanceTokenToCurrent;
-- (void)_inq_distributeNewTransactionsSinceLastTokenWithReason:(id)a3 xpcTransaction:(id)a4;
-- (void)_inq_distributeTransactions:(id)a3 withXPCTransaction:(id)a4 debugEvent:(id)a5;
+- (void)_inq_distributeNewTransactionsSinceLastTokenWithReason:(id)reason xpcTransaction:(id)transaction;
+- (void)_inq_distributeTransactions:(id)transactions withXPCTransaction:(id)transaction debugEvent:(id)event;
 - (void)_inq_forceUserInterfaceReload;
-- (void)_inq_setLastToken:(id)a3;
+- (void)_inq_setLastToken:(id)token;
 - (void)_inq_startObservingRemoteNotifications;
 - (void)beginObservingChanges;
 - (void)dealloc;
 - (void)distributeNewTransactionsSinceLastToken;
-- (void)handleRemoteNotificationOfType:(int64_t)a3 withTransaction:(id)a4;
+- (void)handleRemoteNotificationOfType:(int64_t)type withTransaction:(id)transaction;
 - (void)invalidate;
 - (void)startObservingRemoteNotifications;
 - (void)stopObservingRemoteNotifications;
@@ -251,22 +251,22 @@ void __78__PLPersistentHistoryChangeDistributor__inq_startObservingRemoteNotific
 
 - (id)stateCaptureDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PFStateCaptureEventLog *)self->_eventLog eventDescriptions];
-  [v3 setObject:v4 forKeyedSubscript:@"events"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  eventDescriptions = [(PFStateCaptureEventLog *)self->_eventLog eventDescriptions];
+  [dictionary setObject:eventDescriptions forKeyedSubscript:@"events"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)localEventFromTransactions:(id)a3
+- (id)localEventFromTransactions:(id)transactions
 {
-  v3 = a3;
+  transactionsCopy = transactions;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___block_invoke;
   v7[3] = &unk_1E756FDC0;
-  v8 = v3;
-  v4 = v3;
+  v8 = transactionsCopy;
+  v4 = transactionsCopy;
   v5 = [PLLocalChangeEventBuilder localEventWithBuilderBlock:v7];
 
   return v5;
@@ -279,27 +279,27 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
   [v3 recordAllTransactionsFromIterator:*(a1 + 32)];
 }
 
-- (void)_inq_distributeTransactions:(id)a3 withXPCTransaction:(id)a4 debugEvent:(id)a5
+- (void)_inq_distributeTransactions:(id)transactions withXPCTransaction:(id)transaction debugEvent:(id)event
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionsCopy = transactions;
+  transactionCopy = transaction;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v11 = qos_class_self();
-  [v10 setTransactionCount:{objc_msgSend(v8, "count")}];
-  if ([v8 count] || v11 > 0x18)
+  [eventCopy setTransactionCount:{objc_msgSend(transactionsCopy, "count")}];
+  if ([transactionsCopy count] || v11 > 0x18)
   {
     v13 = v11 > 0x18;
-    v14 = [(PLPersistentHistoryChangeDistributor *)self localEventFromTransactions:v8];
-    [v10 setLocalEventCount:{objc_msgSend(v14, "count")}];
+    v14 = [(PLPersistentHistoryChangeDistributor *)self localEventFromTransactions:transactionsCopy];
+    [eventCopy setLocalEventCount:{objc_msgSend(v14, "count")}];
     if ([v14 count] != 0 || v13)
     {
       v15 = [v14 objectForKeyedSubscript:@"PLUnknownMergeEvent"];
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
 
-      [v10 setUnknownMergeEvent:v16];
-      if (v16)
+      [eventCopy setUnknownMergeEvent:bOOLValue];
+      if (bOOLValue)
       {
         v17 = PLPersistentHistoryGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -309,7 +309,7 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
         }
 
         [(PLPersistentHistoryChangeDistributor *)self _inq_forceUserInterfaceReload];
-        [v10 end];
+        [eventCopy end];
       }
 
       else
@@ -324,7 +324,7 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
         if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
         {
           *buf = 134217984;
-          v42 = [v8 count];
+          v42 = [transactionsCopy count];
           _os_signpost_emit_with_name_impl(&dword_19BF1F000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "DistributeTransactions", "transaction count: %lu", buf, 0xCu);
         }
 
@@ -333,9 +333,9 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
         v24 = PLPersistentHistoryGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [v14 _pl_prettyDescription];
+          _pl_prettyDescription = [v14 _pl_prettyDescription];
           *buf = 138412290;
-          v42 = v25;
+          v42 = _pl_prettyDescription;
           _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "Distributing local event: %@", buf, 0xCu);
         }
 
@@ -348,22 +348,22 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
         }
 
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-        [v10 setMergeTimestamp:?];
+        [eventCopy setMergeTimestamp:?];
         changeMerger = self->_changeMerger;
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __98__PLPersistentHistoryChangeDistributor__inq_distributeTransactions_withXPCTransaction_debugEvent___block_invoke;
         v39[3] = &unk_1E75781E8;
-        v29 = v9;
+        v29 = transactionCopy;
         v40 = v29;
-        [(PLCoreDataChangeMerger *)changeMerger mergeIntoAllContextsChangesFromRemoteContextSave:v14 debugEvent:v10 completionHandler:v39];
-        v30 = [v8 lastIteratedToken];
-        v31 = [PLPersistentHistoryUtilities transactionNumberFromToken:v30];
-        [v10 setIteratedTransaction:v31];
+        [(PLCoreDataChangeMerger *)changeMerger mergeIntoAllContextsChangesFromRemoteContextSave:v14 debugEvent:eventCopy completionHandler:v39];
+        lastIteratedToken = [transactionsCopy lastIteratedToken];
+        v31 = [PLPersistentHistoryUtilities transactionNumberFromToken:lastIteratedToken];
+        [eventCopy setIteratedTransaction:v31];
 
-        if (v30)
+        if (lastIteratedToken)
         {
-          [(PLPersistentHistoryChangeDistributor *)self _inq_setLastToken:v30];
+          [(PLPersistentHistoryChangeDistributor *)self _inq_setLastToken:lastIteratedToken];
           v32 = PLPersistentHistoryGetLog();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
@@ -397,7 +397,7 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Not distributing empty local event", buf, 2u);
       }
 
-      [v10 end];
+      [eventCopy end];
     }
   }
 
@@ -410,7 +410,7 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "Not distributing empty transaction iterator", buf, 2u);
     }
 
-    [v10 end];
+    [eventCopy end];
   }
 }
 
@@ -447,10 +447,10 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
   }
 }
 
-- (id)_inq_fetchTransactionsSinceLastTokenWithDebugEvent:(id)a3
+- (id)_inq_fetchTransactionsSinceLastTokenWithDebugEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = PLPersistentHistoryGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -462,21 +462,21 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
   }
 
   v7 = [PLPersistentHistoryUtilities transactionNumberFromToken:self->_lastToken];
-  [v4 setLastTransaction:v7];
+  [eventCopy setLastTransaction:v7];
 
   if (self->_lastToken)
   {
-    v8 = [(PLPersistentHistoryChangeDistributor *)self makeManagedObjectContext];
+    makeManagedObjectContext = [(PLPersistentHistoryChangeDistributor *)self makeManagedObjectContext];
     v9 = self->_lastToken;
     v15 = 0;
-    v10 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v9 withManagedObjectObjectContext:v8 error:&v15];
+    v10 = [PLPersistentHistoryTransactionIterator iteratorSinceToken:v9 withManagedObjectObjectContext:makeManagedObjectContext error:&v15];
     v11 = v15;
-    [v4 setIteratorPointer:v10];
+    [eventCopy setIteratorPointer:v10];
     if (!v10)
     {
       if (PLIsErrorEqualToCode())
       {
-        [v4 setForceUserInterfaceReload:1];
+        [eventCopy setForceUserInterfaceReload:1];
         [(PLPersistentHistoryChangeDistributor *)self _inq_forceUserInterfaceReload];
       }
 
@@ -498,11 +498,11 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
 
   else
   {
-    v8 = PLPersistentHistoryGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    makeManagedObjectContext = PLPersistentHistoryGetLog();
+    if (os_log_type_enabled(makeManagedObjectContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "_lastKnownToken is unexpectedly nil, not fetching all history", buf, 2u);
+      _os_log_impl(&dword_19BF1F000, makeManagedObjectContext, OS_LOG_TYPE_ERROR, "_lastKnownToken is unexpectedly nil, not fetching all history", buf, 2u);
     }
 
     v10 = 0;
@@ -511,21 +511,21 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
   return v10;
 }
 
-- (void)_inq_distributeNewTransactionsSinceLastTokenWithReason:(id)a3 xpcTransaction:(id)a4
+- (void)_inq_distributeNewTransactionsSinceLastTokenWithReason:(id)reason xpcTransaction:(id)transaction
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v8 = [(PFStateCaptureEventLog *)self->_eventLog addEvent];
-  [v8 startDistributionWithReason:v6];
+  addEvent = [(PFStateCaptureEventLog *)self->_eventLog addEvent];
+  [addEvent startDistributionWithReason:reasonCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
   v13 = MEMORY[0x1E69E9820];
-  v9 = v8;
-  v10 = v6;
+  v9 = addEvent;
+  v10 = reasonCopy;
   PLRunWithUnfairLock();
   [v9 setShouldDistributeTransactions:{*(v15 + 24), v13, 3221225472, __110__PLPersistentHistoryChangeDistributor__inq_distributeNewTransactionsSinceLastTokenWithReason_xpcTransaction___block_invoke, &unk_1E75778C0}];
   if (*(v15 + 24) == 1)
@@ -541,7 +541,7 @@ void __67__PLPersistentHistoryChangeDistributor_localEventFromTransactions___blo
     v12 = [(PLPersistentHistoryChangeDistributor *)self _inq_fetchTransactionsSinceLastTokenWithDebugEvent:v9];
     if (v12)
     {
-      [(PLPersistentHistoryChangeDistributor *)self _inq_distributeTransactions:v12 withXPCTransaction:v7 debugEvent:v9];
+      [(PLPersistentHistoryChangeDistributor *)self _inq_distributeTransactions:v12 withXPCTransaction:transactionCopy debugEvent:v9];
     }
 
     else
@@ -610,7 +610,7 @@ void __79__PLPersistentHistoryChangeDistributor_distributeNewTransactionsSinceLa
     *buf = 138412546;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p invalidate", buf, 0x16u);
   }
 
@@ -630,16 +630,16 @@ void __50__PLPersistentHistoryChangeDistributor_invalidate__block_invoke(uint64_
   *(v1 + 8) = 0;
 }
 
-- (void)_inq_setLastToken:(id)a3
+- (void)_inq_setLastToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 copy];
+  v5 = [tokenCopy copy];
   lastToken = self->_lastToken;
   self->_lastToken = v5;
 
-  v8 = v4;
-  v7 = v4;
+  v8 = tokenCopy;
+  v7 = tokenCopy;
   PLRunWithUnfairLock();
 }
 
@@ -652,18 +652,18 @@ void __58__PLPersistentHistoryChangeDistributor__inq_setLastToken___block_invoke
   *(v3 + 64) = v2;
 }
 
-- (void)handleRemoteNotificationOfType:(int64_t)a3 withTransaction:(id)a4
+- (void)handleRemoteNotificationOfType:(int64_t)type withTransaction:(id)transaction
 {
-  v6 = a4;
+  transactionCopy = transaction;
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PLPersistentHistoryChangeDistributor_handleRemoteNotificationOfType_withTransaction___block_invoke;
   block[3] = &unk_1E75782F8;
-  v10 = v6;
-  v11 = a3;
+  v10 = transactionCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = transactionCopy;
   dispatch_sync(isolationQueue, block);
 }
 
@@ -703,7 +703,7 @@ uint64_t __87__PLPersistentHistoryChangeDistributor_handleRemoteNotificationOfTy
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -713,25 +713,25 @@ uint64_t __87__PLPersistentHistoryChangeDistributor_handleRemoteNotificationOfTy
   [(PLPersistentHistoryChangeDistributor *)&v4 dealloc];
 }
 
-- (PLPersistentHistoryChangeDistributor)initWithPersistentStoreCoordinator:(id)a3 bundle:(id)a4 changeMerger:(id)a5
+- (PLPersistentHistoryChangeDistributor)initWithPersistentStoreCoordinator:(id)coordinator bundle:(id)bundle changeMerger:(id)merger
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  coordinatorCopy = coordinator;
+  bundleCopy = bundle;
+  mergerCopy = merger;
+  v13 = mergerCopy;
+  if (coordinatorCopy)
   {
-    if (v12)
+    if (mergerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"changeMerger != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"changeMerger != nil"}];
 
-    if (v11)
+    if (bundleCopy)
     {
       goto LABEL_4;
     }
@@ -739,8 +739,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"persistentStoreCoordinator != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"persistentStoreCoordinator != nil"}];
 
   if (!v13)
   {
@@ -748,14 +748,14 @@ LABEL_10:
   }
 
 LABEL_3:
-  if (v11)
+  if (bundleCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"bundle != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLPersistentHistoryChangeDistributor.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"bundle != nil"}];
 
 LABEL_4:
   v32.receiver = self;
@@ -764,14 +764,14 @@ LABEL_4:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_persistentStoreCoordinator, a3);
-    objc_storeStrong(&v15->_changeMerger, a5);
+    objc_storeStrong(&v14->_persistentStoreCoordinator, coordinator);
+    objc_storeStrong(&v15->_changeMerger, merger);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("PLPersistentHistoryChangeDistributor.isolationQueue", v16);
     isolationQueue = v15->_isolationQueue;
     v15->_isolationQueue = v17;
 
-    v19 = [v11 makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:4.0];
+    v19 = [bundleCopy makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:4.0];
     notificationObserver = v15->_notificationObserver;
     v15->_notificationObserver = v19;
 
@@ -794,7 +794,7 @@ LABEL_4:
       v35 = 2048;
       v36 = v15;
       v37 = 2112;
-      v38 = v10;
+      v38 = coordinatorCopy;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEBUG, "%@ %p initWithPersistentStoreCoordinator:%@", buf, 0x20u);
     }
 

@@ -1,18 +1,18 @@
 @interface AKURLBag
-+ (BOOL)looksLikeiForgotURLKey:(id)a3;
-+ (id)_currentBagsUnderLockWithBlock:(id)a3;
-+ (id)_requestEnvironmentsWithBag:(id)a3;
-+ (id)bagForAltDSID:(id)a3;
++ (BOOL)looksLikeiForgotURLKey:(id)key;
++ (id)_currentBagsUnderLockWithBlock:(id)block;
++ (id)_requestEnvironmentsWithBag:(id)bag;
++ (id)bagForAltDSID:(id)d;
 + (id)sharedBag;
-+ (unint64_t)IDMSEnvironmentFromBag:(id)a3;
-+ (unint64_t)_IDMSEnvironmentFromString:(id)a3;
-+ (void)setSharedMemorySpaceBagProvider:(id)a3;
-- (AKURLBag)initWithAltDSID:(id)a3;
++ (unint64_t)IDMSEnvironmentFromBag:(id)bag;
++ (unint64_t)_IDMSEnvironmentFromString:(id)string;
++ (void)setSharedMemorySpaceBagProvider:(id)provider;
+- (AKURLBag)initWithAltDSID:(id)d;
 - (AKURLBagDictionaryProvider)bagProvider;
 - (BOOL)IsInlineFlowSupportedConfig;
 - (BOOL)disablePSCreateAndForgetLink;
 - (BOOL)isAccountAccessTelemetryOptInEnabled;
-- (BOOL)isBaaEnabledForKey:(id)a3;
+- (BOOL)isBaaEnabledForKey:(id)key;
 - (BOOL)isBackgroundiCloudSignInEnabled;
 - (BOOL)isClientBackoffDisabled;
 - (BOOL)isEasyStudentSignInDisabled;
@@ -24,7 +24,7 @@
 - (BOOL)isSettingsInlineLogoViewDisabled;
 - (BOOL)isTokenCacheDisabled;
 - (BOOL)isTrustedDeviceListHashDisabled;
-- (BOOL)requestNewURLBagIfNecessaryWithError:(id *)a3;
+- (BOOL)requestNewURLBagIfNecessaryWithError:(id *)error;
 - (NSArray)allKeys;
 - (NSSet)allowListDomainsForSharingKey;
 - (NSSet)appleIDAuthorizationURLs;
@@ -32,31 +32,31 @@
 - (NSString)APSEnvironment;
 - (NSString)baaCertIssuer;
 - (NSString)continuationHeaderPrefix;
-- (id)_configurationsFromCache:(BOOL)a3 withError:(id *)a4;
-- (id)_requestEnvironmentsWithError:(id *)a3;
-- (id)_requestNewURLBagIfNecessaryWithError:(id *)a3;
-- (id)_urlAtKey:(id)a3;
-- (id)_urlAtKey:(id)a3 fromURLBag:(id)a4;
-- (id)_urlBagFromCache:(BOOL)a3 withError:(id *)a4;
-- (id)_urlConfigurationAtKey:(id)a3 fromURLBag:(id)a4;
-- (id)configurationAtKey:(id)a3;
-- (id)configurationAtKey:(id)a3 fromCache:(BOOL)a4;
-- (id)ttrConfigurationAtKey:(id)a3;
-- (id)urlAtKey:(id)a3;
-- (id)urlDictionaryAtKey:(id)a3;
+- (id)_configurationsFromCache:(BOOL)cache withError:(id *)error;
+- (id)_requestEnvironmentsWithError:(id *)error;
+- (id)_requestNewURLBagIfNecessaryWithError:(id *)error;
+- (id)_urlAtKey:(id)key;
+- (id)_urlAtKey:(id)key fromURLBag:(id)bag;
+- (id)_urlBagFromCache:(BOOL)cache withError:(id *)error;
+- (id)_urlConfigurationAtKey:(id)key fromURLBag:(id)bag;
+- (id)configurationAtKey:(id)key;
+- (id)configurationAtKey:(id)key fromCache:(BOOL)cache;
+- (id)ttrConfigurationAtKey:(id)key;
+- (id)urlAtKey:(id)key;
+- (id)urlDictionaryAtKey:(id)key;
 - (unint64_t)IDMSEnvironment;
 - (unint64_t)baaValidity;
 - (unint64_t)lastKnownIDMSEnvironment;
-- (void)_fetchURLBagFromCache:(BOOL)a3 withCompletion:(id)a4;
-- (void)configurationValueForKey:(id)a3 completion:(id)a4;
-- (void)configurationValueForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5;
-- (void)environmentValueForKey:(id)a3 completion:(id)a4;
-- (void)forceUpdateBagWithUrlSwitchData:(id)a3 completion:(id)a4;
-- (void)grandSlamEndpointIdentifiersWithCompletion:(id)a3;
-- (void)requestNewURLBagIfNecessaryWithCompletion:(id)a3;
-- (void)urlConfigurationForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5;
-- (void)urlForKey:(id)a3 completion:(id)a4;
-- (void)urlForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5;
+- (void)_fetchURLBagFromCache:(BOOL)cache withCompletion:(id)completion;
+- (void)configurationValueForKey:(id)key completion:(id)completion;
+- (void)configurationValueForKey:(id)key fromCache:(BOOL)cache completion:(id)completion;
+- (void)environmentValueForKey:(id)key completion:(id)completion;
+- (void)forceUpdateBagWithUrlSwitchData:(id)data completion:(id)completion;
+- (void)grandSlamEndpointIdentifiersWithCompletion:(id)completion;
+- (void)requestNewURLBagIfNecessaryWithCompletion:(id)completion;
+- (void)urlConfigurationForKey:(id)key fromCache:(BOOL)cache completion:(id)completion;
+- (void)urlForKey:(id)key completion:(id)completion;
+- (void)urlForKey:(id)key fromCache:(BOOL)cache completion:(id)completion;
 @end
 
 @implementation AKURLBag
@@ -101,9 +101,9 @@
 - (unint64_t)lastKnownIDMSEnvironment
 {
   v3 = +[AKConfiguration sharedConfiguration];
-  v4 = [v3 lastKnownIDMSEnvironment];
+  lastKnownIDMSEnvironment = [v3 lastKnownIDMSEnvironment];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return lastKnownIDMSEnvironment;
 }
 
 - (unint64_t)baaValidity
@@ -112,10 +112,10 @@
   v5[1] = a2;
   v5[0] = [(AKURLBag *)self baaConfiguration];
   v3 = [v5[0] objectForKeyedSubscript:@"cert-validity-in-days"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v3);
   objc_storeStrong(v5, 0);
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isClientBackoffDisabled
@@ -137,33 +137,33 @@
   return v4 & 1;
 }
 
-+ (id)bagForAltDSID:(id)a3
++ (id)bagForAltDSID:(id)d
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if ([location[0] length])
   {
-    v5 = v14;
+    v5 = selfCopy;
     v6 = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
     v9 = __26__AKURLBag_bagForAltDSID___block_invoke;
     v10 = &unk_1E73D77A0;
     v11 = MEMORY[0x1E69E5928](location[0]);
-    v15 = [v5 _currentBagsUnderLockWithBlock:&v6];
+    sharedBag = [v5 _currentBagsUnderLockWithBlock:&v6];
     objc_storeStrong(&v11, 0);
   }
 
   else
   {
-    v15 = [v14 sharedBag];
+    sharedBag = [selfCopy sharedBag];
   }
 
   v12 = 1;
   objc_storeStrong(location, 0);
-  v3 = v15;
+  v3 = sharedBag;
 
   return v3;
 }
@@ -197,12 +197,12 @@ uint64_t __21__AKURLBag_sharedBag__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-+ (id)_currentBagsUnderLockWithBlock:(id)a3
++ (id)_currentBagsUnderLockWithBlock:(id)block
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v8 = &_currentBagsUnderLockWithBlock__onceToken;
   v7 = 0;
   objc_storeStrong(&v7, &__block_literal_global_421);
@@ -231,37 +231,37 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (AKURLBag)initWithAltDSID:(id)a3
+- (AKURLBag)initWithAltDSID:(id)d
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKURLBag;
   v6 = [(AKURLBag *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_altDSID, location[0]);
+    objc_storeStrong(&selfCopy->_altDSID, location[0]);
   }
 
-  v5 = MEMORY[0x1E69E5928](v9);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-+ (void)setSharedMemorySpaceBagProvider:(id)a3
++ (void)setSharedMemorySpaceBagProvider:(id)provider
 {
   v6 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -275,12 +275,12 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)looksLikeiForgotURLKey:(id)a3
++ (BOOL)looksLikeiForgotURLKey:(id)key
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v4 = 1;
   if (([location[0] isEqualToString:@"iForgotAppleIdLocked"] & 1) == 0)
   {
@@ -298,17 +298,17 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
 - (BOOL)isPhoneNumberSupportedConfig
 {
   v3 = [(AKURLBag *)self configurationAtKey:@"is-phone-number-supported"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isBackgroundiCloudSignInEnabled
 {
   v3 = [(AKURLBag *)self configurationAtKey:@"background-iCloud-SignIn-enable"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)disablePSCreateAndForgetLink
@@ -340,13 +340,13 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return v5;
 }
 
-- (void)grandSlamEndpointIdentifiersWithCompletion:(id)a3
+- (void)grandSlamEndpointIdentifiersWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKURLBag *)v4 configurationValueForKey:@"gsEndpointIdentifiers" fromCache:1 completion:location[0]];
+  objc_storeStrong(location, completion);
+  [(AKURLBag *)selfCopy configurationValueForKey:@"gsEndpointIdentifiers" fromCache:1 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
@@ -384,25 +384,25 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
 - (BOOL)IsInlineFlowSupportedConfig
 {
   v3 = [(AKURLBag *)self configurationAtKey:@"is-in-line-flow-supported"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSettingsInlineLogoViewDisabled
 {
   v3 = [(AKURLBag *)self configurationAtKey:@"settingsInlineLogoViewDisabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isEasyStudentSignInDisabled
 {
   v3 = [(AKURLBag *)self configurationAtKey:@"easyStudentSignInDisabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)continuationHeaderPrefix
@@ -424,27 +424,27 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return v4;
 }
 
-+ (unint64_t)IDMSEnvironmentFromBag:(id)a3
++ (unint64_t)IDMSEnvironmentFromBag:(id)bag
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [v8 _requestEnvironmentsWithBag:location[0]];
+  objc_storeStrong(location, bag);
+  v4 = [selfCopy _requestEnvironmentsWithBag:location[0]];
   v6 = [v4 objectForKeyedSubscript:@"idmsEnv"];
   MEMORY[0x1E69E5920](v4);
-  v5 = [v8 _IDMSEnvironmentFromString:v6];
+  v5 = [selfCopy _IDMSEnvironmentFromString:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-+ (unint64_t)_IDMSEnvironmentFromString:(id)a3
++ (unint64_t)_IDMSEnvironmentFromString:(id)string
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   if ([location[0] isEqual:@"IdMS1"])
   {
     v5 = 1;
@@ -469,27 +469,27 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return v5;
 }
 
-- (id)configurationAtKey:(id)a3
+- (id)configurationAtKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKURLBag *)v6 configurationAtKey:location[0] fromCache:0];
+  objc_storeStrong(location, key);
+  v4 = [(AKURLBag *)selfCopy configurationAtKey:location[0] fromCache:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)configurationAtKey:(id)a3 fromCache:(BOOL)a4
+- (id)configurationAtKey:(id)key fromCache:(BOOL)cache
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
-    v6 = [(AKURLBag *)v9 _configurationsFromCache:a4 withError:0];
+    v6 = [(AKURLBag *)selfCopy _configurationsFromCache:cache withError:0];
     v10 = [v6 objectForKeyedSubscript:location[0]];
     MEMORY[0x1E69E5920](v6);
   }
@@ -505,13 +505,13 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return v4;
 }
 
-- (id)ttrConfigurationAtKey:(id)a3
+- (id)ttrConfigurationAtKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKURLBag *)v9 configurationAtKey:@"ttr-cfgs"];
+  objc_storeStrong(location, key);
+  v7 = [(AKURLBag *)selfCopy configurationAtKey:@"ttr-cfgs"];
   v4 = objc_opt_class();
   v5 = [v7 objectForKeyedSubscript:location[0]];
   v6 = _AKSafeCast_13(v4, v5);
@@ -522,13 +522,13 @@ uint64_t __43__AKURLBag__currentBagsUnderLockWithBlock___block_invoke()
   return v6;
 }
 
-- (void)requestNewURLBagIfNecessaryWithCompletion:(id)a3
+- (void)requestNewURLBagIfNecessaryWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -556,38 +556,38 @@ void __54__AKURLBag_requestNewURLBagIfNecessaryWithCompletion___block_invoke(voi
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)requestNewURLBagIfNecessaryWithError:(id *)a3
+- (BOOL)requestNewURLBagIfNecessaryWithError:(id *)error
 {
-  v3 = [(AKURLBag *)self _requestNewURLBagIfNecessaryWithError:a3];
+  v3 = [(AKURLBag *)self _requestNewURLBagIfNecessaryWithError:error];
   v5 = v3 != 0;
   MEMORY[0x1E69E5920](v3);
   return v5;
 }
 
-- (void)configurationValueForKey:(id)a3 completion:(id)a4
+- (void)configurationValueForKey:(id)key completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKURLBag *)v7 configurationValueForKey:location[0] fromCache:0 completion:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKURLBag *)selfCopy configurationValueForKey:location[0] fromCache:0 completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)configurationValueForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5
+- (void)configurationValueForKey:(id)key fromCache:(BOOL)cache completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, key);
+  cacheCopy = cache;
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v8 = v14;
-  v7 = v12;
+  objc_storeStrong(&v11, completion);
+  v8 = selfCopy;
+  v7 = cacheCopy;
   v9 = MEMORY[0x1E69E5928](location[0]);
   v10 = MEMORY[0x1E69E5928](v11);
   [(AKURLBag *)v8 _fetchURLBagFromCache:v7 withCompletion:?];
@@ -641,28 +641,28 @@ void __58__AKURLBag_configurationValueForKey_fromCache_completion___block_invoke
   objc_storeStrong(location, 0);
 }
 
-- (void)urlForKey:(id)a3 completion:(id)a4
+- (void)urlForKey:(id)key completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKURLBag *)v7 urlForKey:location[0] fromCache:0 completion:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKURLBag *)selfCopy urlForKey:location[0] fromCache:0 completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)urlDictionaryAtKey:(id)a3
+- (id)urlDictionaryAtKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
-    v7 = [(AKURLBag *)v9 _requestNewURLBagIfNecessaryWithError:?];
+    v7 = [(AKURLBag *)selfCopy _requestNewURLBagIfNecessaryWithError:?];
     v5 = objc_opt_class();
     v6 = [v7 objectForKeyedSubscript:location[0]];
     v10 = _AKSafeCast_13(v5, v6);
@@ -681,18 +681,18 @@ void __58__AKURLBag_configurationValueForKey_fromCache_completion___block_invoke
   return v3;
 }
 
-- (void)urlForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5
+- (void)urlForKey:(id)key fromCache:(BOOL)cache completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, key);
+  cacheCopy = cache;
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v9 = v14;
+  objc_storeStrong(&v11, completion);
+  v9 = selfCopy;
   v7 = location[0];
-  v8 = v12;
+  v8 = cacheCopy;
   v10 = MEMORY[0x1E69E5928](v11);
   [(AKURLBag *)v9 urlConfigurationForKey:v7 fromCache:v8 completion:?];
   objc_storeStrong(&v10, 0);
@@ -719,16 +719,16 @@ void __43__AKURLBag_urlForKey_fromCache_completion___block_invoke(void *a1, void
   objc_storeStrong(location, 0);
 }
 
-- (void)urlConfigurationForKey:(id)a3 fromCache:(BOOL)a4 completion:(id)a5
+- (void)urlConfigurationForKey:(id)key fromCache:(BOOL)cache completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, key);
+  cacheCopy = cache;
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -738,14 +738,14 @@ void __43__AKURLBag_urlForKey_fromCache_completion___block_invoke(void *a1, void
   }
 
   objc_storeStrong(&v18, 0);
-  v6 = v22;
-  v5 = v20;
+  v6 = selfCopy;
+  v5 = cacheCopy;
   v9 = MEMORY[0x1E69E9820];
   v10 = -1073741824;
   v11 = 0;
   v12 = __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke;
   v13 = &unk_1E73D6340;
-  v14 = MEMORY[0x1E69E5928](v22);
+  v14 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E5928](location[0]);
   v16 = MEMORY[0x1E69E5928](v19);
   [(AKURLBag *)v6 _fetchURLBagFromCache:v5 withCompletion:&v9];
@@ -803,28 +803,28 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
   objc_storeStrong(location, 0);
 }
 
-- (id)urlAtKey:(id)a3
+- (id)urlAtKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKURLBag *)v6 _urlAtKey:location[0]];
+  objc_storeStrong(location, key);
+  v4 = [(AKURLBag *)selfCopy _urlAtKey:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)_urlAtKey:(id)a3
+- (id)_urlAtKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
-    v5 = [(AKURLBag *)v7 _requestNewURLBagIfNecessaryWithError:?];
-    v8 = [(AKURLBag *)v7 _urlAtKey:location[0] fromURLBag:v5];
+    v5 = [(AKURLBag *)selfCopy _requestNewURLBagIfNecessaryWithError:?];
+    v8 = [(AKURLBag *)selfCopy _urlAtKey:location[0] fromURLBag:v5];
     objc_storeStrong(&v5, 0);
   }
 
@@ -839,15 +839,15 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
   return v3;
 }
 
-- (id)_urlAtKey:(id)a3 fromURLBag:(id)a4
+- (id)_urlAtKey:(id)key fromURLBag:(id)bag
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v6 = [(AKURLBag *)v10 _urlConfigurationAtKey:location[0] fromURLBag:v8];
+  objc_storeStrong(&v8, bag);
+  v6 = [(AKURLBag *)selfCopy _urlConfigurationAtKey:location[0] fromURLBag:v8];
   v7 = [v6 url];
   MEMORY[0x1E69E5920](v6);
   objc_storeStrong(&v8, 0);
@@ -856,14 +856,14 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
   return v7;
 }
 
-- (id)_urlConfigurationAtKey:(id)a3 fromURLBag:(id)a4
+- (id)_urlConfigurationAtKey:(id)key fromURLBag:(id)bag
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, bag);
   v8 = [v11 objectForKeyedSubscript:location[0]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -888,12 +888,12 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
   return v5;
 }
 
-- (BOOL)isBaaEnabledForKey:(id)a3
+- (BOOL)isBaaEnabledForKey:(id)key
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
     v8 = +[AKDevice currentDevice];
@@ -912,8 +912,8 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
 
     else
     {
-      v12 = 0;
-      v11 = [(AKURLBag *)v15 _requestNewURLBagIfNecessaryWithError:0];
+      isBaaEnabled = 0;
+      v11 = [(AKURLBag *)selfCopy _requestNewURLBagIfNecessaryWithError:0];
       v6 = [v11 objectForKeyedSubscript:location[0]];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -923,12 +923,12 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
         v10 = [v11 objectForKeyedSubscript:location[0]];
         v3 = [AKURLConfiguration alloc];
         v5 = [(AKURLConfiguration *)v3 initWithDictionary:v10];
-        v12 = [(AKURLConfiguration *)v5 isBaaEnabled];
+        isBaaEnabled = [(AKURLConfiguration *)v5 isBaaEnabled];
         MEMORY[0x1E69E5920](v5);
         objc_storeStrong(&v10, 0);
       }
 
-      v16 = v12;
+      v16 = isBaaEnabled;
       v13 = 1;
       objc_storeStrong(&v11, 0);
     }
@@ -955,24 +955,24 @@ void __56__AKURLBag_urlConfigurationForKey_fromCache_completion___block_invoke(v
   return v3;
 }
 
-- (id)_requestNewURLBagIfNecessaryWithError:(id *)a3
+- (id)_requestNewURLBagIfNecessaryWithError:(id *)error
 {
-  v4 = [(AKURLBag *)self _urlBagFromCache:0 withError:a3];
+  v4 = [(AKURLBag *)self _urlBagFromCache:0 withError:error];
   v5 = [v4 objectForKeyedSubscript:@"urls"];
   MEMORY[0x1E69E5920](v4);
 
   return v5;
 }
 
-- (void)environmentValueForKey:(id)a3 completion:(id)a4
+- (void)environmentValueForKey:(id)key completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v5 = v15;
+  objc_storeStrong(&v13, completion);
+  v5 = selfCopy;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -1031,62 +1031,62 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   objc_storeStrong(location, 0);
 }
 
-- (id)_requestEnvironmentsWithError:(id *)a3
+- (id)_requestEnvironmentsWithError:(id *)error
 {
   v4 = objc_opt_class();
-  v5 = [(AKURLBag *)self _urlBagFromCache:0 withError:a3];
+  v5 = [(AKURLBag *)self _urlBagFromCache:0 withError:error];
   v6 = [v4 _requestEnvironmentsWithBag:?];
   MEMORY[0x1E69E5920](v5);
 
   return v6;
 }
 
-+ (id)_requestEnvironmentsWithBag:(id)a3
++ (id)_requestEnvironmentsWithBag:(id)bag
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bag);
   v4 = [location[0] objectForKeyedSubscript:@"env"];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)_configurationsFromCache:(BOOL)a3 withError:(id *)a4
+- (id)_configurationsFromCache:(BOOL)cache withError:(id *)error
 {
-  v5 = [(AKURLBag *)self _urlBagFromCache:a3 withError:a4];
+  v5 = [(AKURLBag *)self _urlBagFromCache:cache withError:error];
   v6 = [v5 objectForKeyedSubscript:@"cfgs"];
   MEMORY[0x1E69E5920](v5);
 
   return v6;
 }
 
-- (id)_urlBagFromCache:(BOOL)a3 withError:(id *)a4
+- (id)_urlBagFromCache:(BOOL)cache withError:(id *)error
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12[1] = a4;
-  v11 = [(AKURLBag *)self bagProvider];
-  MEMORY[0x1E69E5920](v11);
-  if (v11)
+  cacheCopy = cache;
+  v12[1] = error;
+  bagProvider = [(AKURLBag *)self bagProvider];
+  MEMORY[0x1E69E5920](bagProvider);
+  if (bagProvider)
   {
-    v10 = [(AKURLBag *)v15 bagProvider];
-    v9 = [(AKURLBag *)v15 altDSID];
-    v16 = [AKURLBagDictionaryProvider urlBagFromCache:v10 altDSID:"urlBagFromCache:altDSID:error:" error:v13];
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
+    bagProvider2 = [(AKURLBag *)selfCopy bagProvider];
+    altDSID = [(AKURLBag *)selfCopy altDSID];
+    v16 = [AKURLBagDictionaryProvider urlBagFromCache:bagProvider2 altDSID:"urlBagFromCache:altDSID:error:" error:cacheCopy];
+    MEMORY[0x1E69E5920](altDSID);
+    MEMORY[0x1E69E5920](bagProvider2);
   }
 
   else
   {
     v12[0] = objc_alloc_init(AKAppleIDAuthenticationController);
     v7 = v12[0];
-    v6 = v13;
-    v8 = [(AKURLBag *)v15 altDSID];
+    v6 = cacheCopy;
+    altDSID2 = [(AKURLBag *)selfCopy altDSID];
     v16 = [v7 _urlBagFromCache:v6 altDSID:? withError:?];
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](altDSID2);
     objc_storeStrong(v12, 0);
   }
 
@@ -1095,31 +1095,31 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   return v4;
 }
 
-- (void)_fetchURLBagFromCache:(BOOL)a3 withCompletion:(id)a4
+- (void)_fetchURLBagFromCache:(BOOL)cache withCompletion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  cacheCopy = cache;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v19)
+  objc_storeStrong(&location, completion);
+  if (cacheCopy)
   {
-    v12 = [(AKURLBag *)v21 bagProvider];
-    MEMORY[0x1E69E5920](v12);
-    if (v12)
+    bagProvider = [(AKURLBag *)selfCopy bagProvider];
+    MEMORY[0x1E69E5920](bagProvider);
+    if (bagProvider)
     {
-      v11 = [(AKURLBag *)v21 bagProvider];
-      v10 = [(AKURLBag *)v21 altDSID];
-      [AKURLBagDictionaryProvider fetchURLBagForAltDSID:v11 fromCache:"fetchURLBagForAltDSID:fromCache:completion:" completion:?];
-      MEMORY[0x1E69E5920](v10);
-      MEMORY[0x1E69E5920](v11);
+      bagProvider2 = [(AKURLBag *)selfCopy bagProvider];
+      altDSID = [(AKURLBag *)selfCopy altDSID];
+      [AKURLBagDictionaryProvider fetchURLBagForAltDSID:bagProvider2 fromCache:"fetchURLBagForAltDSID:fromCache:completion:" completion:?];
+      MEMORY[0x1E69E5920](altDSID);
+      MEMORY[0x1E69E5920](bagProvider2);
     }
 
     else
     {
       v17 = 0;
       v15 = 0;
-      v9 = [(AKURLBag *)v21 _urlBagFromCache:1 withError:&v15];
+      v9 = [(AKURLBag *)selfCopy _urlBagFromCache:1 withError:&v15];
       objc_storeStrong(&v17, v15);
       v16 = v9;
       if (location)
@@ -1136,15 +1136,15 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
 
   else
   {
-    v8 = [(AKURLBag *)v21 bagProvider];
-    MEMORY[0x1E69E5920](v8);
-    if (v8)
+    bagProvider3 = [(AKURLBag *)selfCopy bagProvider];
+    MEMORY[0x1E69E5920](bagProvider3);
+    if (bagProvider3)
     {
-      v7 = [(AKURLBag *)v21 bagProvider];
-      v6 = [(AKURLBag *)v21 altDSID];
-      [AKURLBagDictionaryProvider fetchURLBagForAltDSID:v7 completion:"fetchURLBagForAltDSID:completion:"];
-      MEMORY[0x1E69E5920](v6);
-      MEMORY[0x1E69E5920](v7);
+      bagProvider4 = [(AKURLBag *)selfCopy bagProvider];
+      altDSID2 = [(AKURLBag *)selfCopy altDSID];
+      [AKURLBagDictionaryProvider fetchURLBagForAltDSID:bagProvider4 completion:"fetchURLBagForAltDSID:completion:"];
+      MEMORY[0x1E69E5920](altDSID2);
+      MEMORY[0x1E69E5920](bagProvider4);
       v14 = 1;
     }
 
@@ -1152,9 +1152,9 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
     {
       v13 = objc_alloc_init(AKAppleIDAuthenticationController);
       v4 = v13;
-      v5 = [(AKURLBag *)v21 altDSID];
+      altDSID3 = [(AKURLBag *)selfCopy altDSID];
       [AKAppleIDAuthenticationController fetchURLBagForAltDSID:v4 completion:"fetchURLBagForAltDSID:completion:"];
-      MEMORY[0x1E69E5920](v5);
+      MEMORY[0x1E69E5920](altDSID3);
       v14 = 1;
       objc_storeStrong(&v13, 0);
     }
@@ -1163,31 +1163,31 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   objc_storeStrong(&location, 0);
 }
 
-- (void)forceUpdateBagWithUrlSwitchData:(id)a3 completion:(id)a4
+- (void)forceUpdateBagWithUrlSwitchData:(id)data completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v9 = [(AKURLBag *)v13 bagProvider];
-  MEMORY[0x1E69E5920](v9);
-  if (v9)
+  objc_storeStrong(&v11, completion);
+  bagProvider = [(AKURLBag *)selfCopy bagProvider];
+  MEMORY[0x1E69E5920](bagProvider);
+  if (bagProvider)
   {
-    bagProvider = v13->_bagProvider;
-    v7 = [(AKURLBag *)v13 altDSID];
+    bagProvider = selfCopy->_bagProvider;
+    altDSID = [(AKURLBag *)selfCopy altDSID];
     [AKURLBagDictionaryProvider forceURLBagUpdateForAltDSID:"forceURLBagUpdateForAltDSID:urlSwitchData:completion:" urlSwitchData:? completion:?];
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](altDSID);
   }
 
   else
   {
     v10 = objc_alloc_init(AKAppleIDAuthenticationController);
     v4 = v10;
-    v5 = [(AKURLBag *)v13 altDSID];
+    altDSID2 = [(AKURLBag *)selfCopy altDSID];
     [AKAppleIDAuthenticationController forceURLBagUpdateForAltDSID:v4 urlSwitchData:"forceURLBagUpdateForAltDSID:urlSwitchData:completion:" completion:?];
-    MEMORY[0x1E69E5920](v5);
+    MEMORY[0x1E69E5920](altDSID2);
     objc_storeStrong(&v10, 0);
   }
 
@@ -1219,10 +1219,10 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   v3 = objc_opt_class();
   v5 = [(AKURLBag *)self configurationAtKey:@"firstPartyURLEntitlementCheckDisabled"];
   v4 = _AKSafeCast_13(v3, v5);
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
   MEMORY[0x1E69E5920](v4);
   MEMORY[0x1E69E5920](v5);
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isTokenCacheDisabled
@@ -1230,10 +1230,10 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   v3 = objc_opt_class();
   v5 = [(AKURLBag *)self configurationAtKey:@"tokenCacheDisabled"];
   v4 = _AKSafeCast_13(v3, v5);
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
   MEMORY[0x1E69E5920](v4);
   MEMORY[0x1E69E5920](v5);
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isMIDDriftTTRDisabled
@@ -1241,10 +1241,10 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   v3 = objc_opt_class();
   v5 = [(AKURLBag *)self configurationAtKey:@"midDriftTTRDisabled"];
   v4 = _AKSafeCast_13(v3, v5);
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
   MEMORY[0x1E69E5920](v4);
   MEMORY[0x1E69E5920](v5);
-  return v6;
+  return bOOLValue;
 }
 
 - (NSArray)allKeys
@@ -1252,10 +1252,10 @@ void __46__AKURLBag_environmentValueForKey_completion___block_invoke(void *a1, v
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(AKURLBag *)self _requestNewURLBagIfNecessaryWithError:?];
-  v3 = [v4[0] allKeys];
+  allKeys = [v4[0] allKeys];
   objc_storeStrong(v4, 0);
 
-  return v3;
+  return allKeys;
 }
 
 - (BOOL)isTrustedDeviceListHashDisabled

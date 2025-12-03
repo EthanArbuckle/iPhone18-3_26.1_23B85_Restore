@@ -4,14 +4,14 @@
 - (NSXPCConnection)connection;
 - (WCPrivateXPCManager)init;
 - (WCPrivateXPCManagerDelegate)delegate;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)dealloc;
-- (void)fakeIncomingPayloadOnSubService:(id)a3 ofType:(id)a4 clientData:(id)a5 resource:(id)a6 resourceSandboxToken:(id)a7 completionHandler:(id)a8;
-- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a3;
-- (void)handlePingForExtensionBundleID:(id)a3;
-- (void)isExtensionPrivileged:(id)a3 completionHandler:(id)a4;
+- (void)fakeIncomingPayloadOnSubService:(id)service ofType:(id)type clientData:(id)data resource:(id)resource resourceSandboxToken:(id)token completionHandler:(id)handler;
+- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler;
+- (void)handlePingForExtensionBundleID:(id)d;
+- (void)isExtensionPrivileged:(id)privileged completionHandler:(id)handler;
 - (void)setupConnection;
-- (void)shouldWakeAppWithBundleID:(id)a3 completionHandler:(id)a4;
+- (void)shouldWakeAppWithBundleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation WCPrivateXPCManager
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __36__WCPrivateXPCManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -70,13 +70,13 @@ uint64_t __36__WCPrivateXPCManager_sharedManager__block_invoke(uint64_t a1)
     v14 = &unk_278B7C4D0;
     objc_copyWeak(&v15, &location);
     v5 = MEMORY[0x23EE9A170](&v11);
-    v6 = [@"com.apple.wcd.listener.resumed" UTF8String];
+    uTF8String = [@"com.apple.wcd.listener.resumed" UTF8String];
     v7 = MEMORY[0x277D85CD0];
     v8 = MEMORY[0x277D85CD0];
-    notify_register_dispatch(v6, &v2->_listenerResumedToken, v7, v5);
+    notify_register_dispatch(uTF8String, &v2->_listenerResumedToken, v7, v5);
 
-    v9 = [@"com.apple.wcd.listener.private.should-connect" UTF8String];
-    notify_register_dispatch(v9, &v2->_privateServiceShouldConnectToken, MEMORY[0x277D85CD0], v5);
+    uTF8String2 = [@"com.apple.wcd.listener.private.should-connect" UTF8String];
+    notify_register_dispatch(uTF8String2, &v2->_privateServiceShouldConnectToken, MEMORY[0x277D85CD0], v5);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -196,33 +196,33 @@ void __38__WCPrivateXPCManager_setupConnection__block_invoke_68(uint64_t a1)
   *(v1 + 16) = 0;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v6 = a4;
-  [v6 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__WCPrivateXPCManager_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_278B7BF78;
-  v10 = v6;
-  v8 = v6;
+  v10 = invocationCopy;
+  v8 = invocationCopy;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)fakeIncomingPayloadOnSubService:(id)a3 ofType:(id)a4 clientData:(id)a5 resource:(id)a6 resourceSandboxToken:(id)a7 completionHandler:(id)a8
+- (void)fakeIncomingPayloadOnSubService:(id)service ofType:(id)type clientData:(id)data resource:(id)resource resourceSandboxToken:(id)token completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
+  serviceCopy = service;
+  typeCopy = type;
+  resourceCopy = resource;
+  handlerCopy = handler;
+  tokenCopy = token;
+  dataCopy = data;
   v20 = wc_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    if (v19)
+    if (dataCopy)
     {
       v21 = "YES";
     }
@@ -232,24 +232,24 @@ void __38__WCPrivateXPCManager_setupConnection__block_invoke_68(uint64_t a1)
       v21 = "NO";
     }
 
-    v22 = [v16 path];
+    path = [resourceCopy path];
     v26 = 136447234;
     v27 = "[WCPrivateXPCManager fakeIncomingPayloadOnSubService:ofType:clientData:resource:resourceSandboxToken:completionHandler:]";
     v28 = 2114;
-    v29 = v14;
+    v29 = serviceCopy;
     v30 = 2114;
-    v31 = v15;
+    v31 = typeCopy;
     v32 = 2080;
     v33 = v21;
     v34 = 2114;
-    v35 = v22;
+    v35 = path;
     _os_log_impl(&dword_23B2FA000, v20, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@, transferType: %{public}@, clientData: %s, URL: %{public}@", &v26, 0x34u);
   }
 
-  v23 = [(WCPrivateXPCManager *)self connection];
-  v24 = [v23 remoteObjectProxyWithErrorHandler:&__block_literal_global_72];
+  connection = [(WCPrivateXPCManager *)self connection];
+  v24 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_72];
 
-  [v24 fakeIncomingPayloadOnSubService:v14 ofType:v15 clientData:v19 resource:v16 resourceSandboxToken:v18 completionHandler:v17];
+  [v24 fakeIncomingPayloadOnSubService:serviceCopy ofType:typeCopy clientData:dataCopy resource:resourceCopy resourceSandboxToken:tokenCopy completionHandler:handlerCopy];
   v25 = *MEMORY[0x277D85DE8];
 }
 
@@ -263,34 +263,34 @@ void __121__WCPrivateXPCManager_fakeIncomingPayloadOnSubService_ofType_clientDat
   }
 }
 
-- (void)handlePingForExtensionBundleID:(id)a3
+- (void)handlePingForExtensionBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCPrivateXPCManager *)self delegate];
-  [v5 xpcManager:self handlePingForExtensionBundleID:v4];
+  dCopy = d;
+  delegate = [(WCPrivateXPCManager *)self delegate];
+  [delegate xpcManager:self handlePingForExtensionBundleID:dCopy];
 }
 
-- (void)isExtensionPrivileged:(id)a3 completionHandler:(id)a4
+- (void)isExtensionPrivileged:(id)privileged completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WCPrivateXPCManager *)self delegate];
-  [v8 xpcManager:self isExtensionPrivileged:v7 completionHandler:v6];
+  handlerCopy = handler;
+  privilegedCopy = privileged;
+  delegate = [(WCPrivateXPCManager *)self delegate];
+  [delegate xpcManager:self isExtensionPrivileged:privilegedCopy completionHandler:handlerCopy];
 }
 
-- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)a3
+- (void)handlePairedSyncComplicationsStartedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WCPrivateXPCManager *)self delegate];
-  [v5 xpcManager:self handlePairedSyncComplicationsStartedWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(WCPrivateXPCManager *)self delegate];
+  [delegate xpcManager:self handlePairedSyncComplicationsStartedWithCompletionHandler:handlerCopy];
 }
 
-- (void)shouldWakeAppWithBundleID:(id)a3 completionHandler:(id)a4
+- (void)shouldWakeAppWithBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WCPrivateXPCManager *)self delegate];
-  [v8 xpcManager:self shouldWakeAppWithBundleID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(WCPrivateXPCManager *)self delegate];
+  [delegate xpcManager:self shouldWakeAppWithBundleID:dCopy completionHandler:handlerCopy];
 }
 
 - (WCPrivateXPCManagerDelegate)delegate

@@ -1,17 +1,17 @@
 @interface WGMajorListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation WGMajorListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGMajorListViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"WGMajorListViewController" hasInstanceMethod:@"footerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WGWidgetListFooterView" hasInstanceMethod:@"customizeButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGMajorListViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"WGMajorListViewController" hasInstanceMethod:@"footerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WGWidgetListFooterView" hasInstanceMethod:@"customizeButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,8 +21,8 @@
   [(WGMajorListViewControllerAccessibility *)&v8 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
-  [v4 setAccessibilityIdentifier:@"WGMajorListViewControllerView"];
+  view = [v3 view];
+  [view setAccessibilityIdentifier:@"WGMajorListViewControllerView"];
 
   v5 = [(WGMajorListViewControllerAccessibility *)self safeUIViewForKey:@"footerView"];
   v6 = [v5 safeUIViewForKey:@"customizeButton"];

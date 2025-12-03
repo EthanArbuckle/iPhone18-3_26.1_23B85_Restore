@@ -1,20 +1,20 @@
 @interface IMWritePushNotificationSettingsService
-- (IMWritePushNotificationSettingsService)initWithData:(id)a3;
+- (IMWritePushNotificationSettingsService)initWithData:(id)data;
 - (id)urlRequest;
 @end
 
 @implementation IMWritePushNotificationSettingsService
 
-- (IMWritePushNotificationSettingsService)initWithData:(id)a3
+- (IMWritePushNotificationSettingsService)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = IMWritePushNotificationSettingsService;
   v5 = [(IMBaseStoreService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IMWritePushNotificationSettingsService *)v5 setData:v4];
+    [(IMWritePushNotificationSettingsService *)v5 setData:dataCopy];
     [(IMBaseStoreService *)v6 setPersonalizeRequests:1];
   }
 

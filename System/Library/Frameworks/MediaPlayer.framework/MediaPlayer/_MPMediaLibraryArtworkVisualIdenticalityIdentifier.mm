@@ -1,7 +1,7 @@
 @interface _MPMediaLibraryArtworkVisualIdenticalityIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_MPMediaLibraryArtworkVisualIdenticalityIdentifier)initWithArtworkType:(int64_t)a3 availableArtworkToken:(id)a4 fetchableArtworkToken:(id)a5;
+- (_MPMediaLibraryArtworkVisualIdenticalityIdentifier)initWithArtworkType:(int64_t)type availableArtworkToken:(id)token fetchableArtworkToken:(id)artworkToken;
 - (id)stringRepresentation;
 - (unint64_t)hash;
 @end
@@ -10,23 +10,23 @@
 
 - (id)stringRepresentation
 {
-  v3 = [(_MPMediaLibraryArtworkVisualIdenticalityIdentifier *)self fetchableArtworkToken];
-  if (![v3 length])
+  fetchableArtworkToken = [(_MPMediaLibraryArtworkVisualIdenticalityIdentifier *)self fetchableArtworkToken];
+  if (![fetchableArtworkToken length])
   {
-    v4 = [(_MPMediaLibraryArtworkVisualIdenticalityIdentifier *)self availableArtworkToken];
+    availableArtworkToken = [(_MPMediaLibraryArtworkVisualIdenticalityIdentifier *)self availableArtworkToken];
 
-    v3 = v4;
+    fetchableArtworkToken = availableArtworkToken;
   }
 
-  v5 = [v3 copy];
+  v5 = [fetchableArtworkToken copy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_availableArtworkToken length])
       {
         availableArtworkToken = self->_availableArtworkToken;
@@ -317,22 +317,22 @@ LABEL_38:
   return v6;
 }
 
-- (_MPMediaLibraryArtworkVisualIdenticalityIdentifier)initWithArtworkType:(int64_t)a3 availableArtworkToken:(id)a4 fetchableArtworkToken:(id)a5
+- (_MPMediaLibraryArtworkVisualIdenticalityIdentifier)initWithArtworkType:(int64_t)type availableArtworkToken:(id)token fetchableArtworkToken:(id)artworkToken
 {
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  artworkTokenCopy = artworkToken;
   v17.receiver = self;
   v17.super_class = _MPMediaLibraryArtworkVisualIdenticalityIdentifier;
   v10 = [(_MPMediaLibraryArtworkVisualIdenticalityIdentifier *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_artworkType = a3;
-    v12 = [v8 copy];
+    v10->_artworkType = type;
+    v12 = [tokenCopy copy];
     availableArtworkToken = v11->_availableArtworkToken;
     v11->_availableArtworkToken = v12;
 
-    v14 = [v9 copy];
+    v14 = [artworkTokenCopy copy];
     fetchableArtworkToken = v11->_fetchableArtworkToken;
     v11->_fetchableArtworkToken = v14;
   }

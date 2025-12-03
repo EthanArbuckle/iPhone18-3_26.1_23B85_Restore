@@ -1,33 +1,33 @@
 @interface CHStrokeGroupingVisualization
-- (CGColor)newColorForStrokeInGroup:(id)a3;
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGColor)newColorForStrokeInGroup:(id)group;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHStrokeGroupingVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
   v3.receiver = self;
   v3.super_class = CHStrokeGroupingVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v3 dirtyRectForStrokeGroup:a3];
+  [(CHStrokeGroupBasedVisualization *)&v3 dirtyRectForStrokeGroup:group];
   return CGRectInset(v4, -1.5, -1.5);
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v105 = *MEMORY[0x1E69E9840];
   v102.receiver = self;
   v102.super_class = CHStrokeGroupingVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v102 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupBasedVisualization *)&v102 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v16 = objc_msgSend_recognitionSession(self, v11, v12, v13, v14, v15);
   v92 = objc_msgSend_latestStrokeProvider(v16, v17, v18, v19, v20, v21);
 
-  v90 = self;
+  selfCopy = self;
   v27 = objc_msgSend_resultDrawn(self, v22, v23, v24, v25, v26);
   v33 = objc_msgSend_strokeGroupingResult(v27, v28, v29, v30, v31, v32);
 
@@ -100,15 +100,15 @@
                   v93[3] = &unk_1E6DDE2D8;
                   v93[4] = Mutable;
                   objc_msgSend_enumeratePointsForStroke_interpolationType_resolution_usingBlock_(CHStrokeUtilities, v78, v76, 1, 1, v93);
-                  CGContextSetStrokeColorWithColor(a4, color);
-                  CGContextSetLineWidth(a4, 3.0);
-                  CGContextAddPath(a4, Mutable);
-                  CGContextStrokePath(a4);
-                  CGContextSetLineWidth(a4, 1.5);
-                  v83 = objc_msgSend_newColorForStrokeInGroup_(v90, v79, v61, v80, v81, v82);
-                  CGContextSetStrokeColorWithColor(a4, v83);
-                  CGContextAddPath(a4, Mutable);
-                  CGContextStrokePath(a4);
+                  CGContextSetStrokeColorWithColor(context, color);
+                  CGContextSetLineWidth(context, 3.0);
+                  CGContextAddPath(context, Mutable);
+                  CGContextStrokePath(context);
+                  CGContextSetLineWidth(context, 1.5);
+                  v83 = objc_msgSend_newColorForStrokeInGroup_(selfCopy, v79, v61, v80, v81, v82);
+                  CGContextSetStrokeColorWithColor(context, v83);
+                  CGContextAddPath(context, Mutable);
+                  CGContextStrokePath(context);
                   CGColorRelease(v83);
                   CGPathRelease(Mutable);
                 }
@@ -139,11 +139,11 @@
   CGColorRelease(color);
 }
 
-- (CGColor)newColorForStrokeInGroup:(id)a3
+- (CGColor)newColorForStrokeInGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v10 = objc_msgSend_delegate(self, v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_visualizationIndexForStrokeGroup_(v10, v11, v4, v12, v13, v14);
+  v15 = objc_msgSend_visualizationIndexForStrokeGroup_(v10, v11, groupCopy, v12, v13, v14);
 
   return objc_msgSend_newColorForVisualizedItemAtIndex_(CHVisualizationManager, v16, v15, v17, v18, v19);
 }

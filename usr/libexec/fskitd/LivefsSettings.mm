@@ -1,16 +1,16 @@
 @interface LivefsSettings
-+ (id)deserializedError:(id)a3;
-+ (id)serializedError:(id)a3;
-- (BOOL)load:(id *)a3;
-- (BOOL)save:(id *)a3;
++ (id)deserializedError:(id)error;
++ (id)serializedError:(id)error;
+- (BOOL)load:(id *)load;
+- (BOOL)save:(id *)save;
 - (LivefsSettings)init;
 - (NSArray)mounts;
-- (id)removeMountNamed:(id)a3 provider:(id)a4;
-- (id)updateMountEntry:(id)a3 provider:(id)a4 settingsDictionary:(id *)a5 updateBlock:(id)a6;
+- (id)removeMountNamed:(id)named provider:(id)provider;
+- (id)updateMountEntry:(id)entry provider:(id)provider settingsDictionary:(id *)dictionary updateBlock:(id)block;
 - (void)cleanupConfigFromLastBoot;
 - (void)doneWork;
 - (void)initFresh;
-- (void)removeReferencesToTask:(id)a3;
+- (void)removeReferencesToTask:(id)task;
 - (void)startedWork;
 - (void)updateWorkTransaction;
 @end
@@ -99,9 +99,9 @@
 
 - (void)startedWork
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_workTransaction)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_workTransaction)
   {
     v3 = livefs_std_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -112,17 +112,17 @@
     }
 
     v4 = os_transaction_create();
-    workTransaction = v2->_workTransaction;
-    v2->_workTransaction = v4;
+    workTransaction = selfCopy->_workTransaction;
+    selfCopy->_workTransaction = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)doneWork
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = livefs_std_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
@@ -131,10 +131,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s: invalidate work transaction", &v5, 0xCu);
   }
 
-  workTransaction = v2->_workTransaction;
-  v2->_workTransaction = 0;
+  workTransaction = selfCopy->_workTransaction;
+  selfCopy->_workTransaction = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cleanupConfigFromLastBoot
@@ -150,7 +150,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v13 = self;
+  selfCopy = self;
   v5 = self->_mounts;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
@@ -182,11 +182,11 @@
     while (v7);
   }
 
-  [(NSMutableArray *)v13->_mounts removeObjectsInArray:v3];
-  [(LivefsSettings *)v13 save:0];
+  [(NSMutableArray *)selfCopy->_mounts removeObjectsInArray:v3];
+  [(LivefsSettings *)selfCopy save:0];
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
   v5 = os_transaction_create();
   v26 = 0;
@@ -195,10 +195,10 @@
   if (v7)
   {
     v8 = v7;
-    if (a3)
+    if (load)
     {
       v9 = v7;
-      *a3 = v8;
+      *load = v8;
     }
 
     v10 = 0;
@@ -209,8 +209,8 @@
     v11 = [v6 URLByAppendingPathComponent:@"settings.plist"];
 
     v12 = +[NSFileManager defaultManager];
-    v13 = [v11 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    path = [v11 path];
+    v14 = [v12 fileExistsAtPath:path];
 
     if (v14)
     {
@@ -220,10 +220,10 @@
       v8 = v16;
       if (v16 || !v15)
       {
-        if (a3)
+        if (load)
         {
           v22 = v16;
-          *a3 = v8;
+          *load = v8;
         }
 
         v10 = 0;
@@ -285,7 +285,7 @@
   return v10;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v5 = os_transaction_create();
   v22 = 0;
@@ -294,11 +294,11 @@
   if (v7)
   {
     v8 = v7;
-    if (a3)
+    if (save)
     {
       v9 = v7;
       v10 = 0;
-      *a3 = v8;
+      *save = v8;
     }
 
     else
@@ -332,10 +332,10 @@
       [v15 writeToURL:v11 error:&v20];
       v16 = v20;
       v8 = v16;
-      if (a3 && v16)
+      if (save && v16)
       {
         v17 = v16;
-        *a3 = v8;
+        *save = v8;
       }
 
       v10 = v8 == 0;
@@ -364,34 +364,34 @@
   return v10;
 }
 
-+ (id)serializedError:(id)a3
++ (id)serializedError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
 
-    if (v5)
+    if (userInfo)
     {
       v13[0] = @"errorDomain";
-      v6 = [v4 domain];
-      v14[0] = v6;
+      domain = [v4 domain];
+      v14[0] = domain;
       v13[1] = @"errorCode";
       v7 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v4 code]);
       v14[1] = v7;
       v13[2] = @"errorInfo";
-      v8 = [v4 userInfo];
-      v14[2] = v8;
+      userInfo2 = [v4 userInfo];
+      v14[2] = userInfo2;
       v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
     }
 
     else
     {
       v11[0] = @"errorDomain";
-      v6 = [v4 domain];
+      domain = [v4 domain];
       v11[1] = @"errorCode";
-      v12[0] = v6;
+      v12[0] = domain;
       v7 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v4 code]);
       v12[1] = v7;
       v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
@@ -406,25 +406,25 @@
   return v9;
 }
 
-+ (id)deserializedError:(id)a3
++ (id)deserializedError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"errorCode"];
-  v5 = [v3 objectForKeyedSubscript:@"errorInfo"];
-  v6 = [v3 objectForKeyedSubscript:@"errorDomain"];
+  errorCopy = error;
+  v4 = [errorCopy objectForKeyedSubscript:@"errorCode"];
+  v5 = [errorCopy objectForKeyedSubscript:@"errorInfo"];
+  v6 = [errorCopy objectForKeyedSubscript:@"errorDomain"];
 
   v7 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v6, [v4 longValue], v5);
 
   return v7;
 }
 
-- (id)updateMountEntry:(id)a3 provider:(id)a4 settingsDictionary:(id *)a5 updateBlock:(id)a6
+- (id)updateMountEntry:(id)entry provider:(id)provider settingsDictionary:(id *)dictionary updateBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
+  entryCopy = entry;
+  providerCopy = provider;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -435,14 +435,14 @@
   v34 = sub_100029620;
   v35 = sub_100029630;
   v36 = 0;
-  mounts = v13->_mounts;
+  mounts = selfCopy->_mounts;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100029638;
   v26[3] = &unk_100061A10;
-  v15 = v11;
+  v15 = providerCopy;
   v27 = v15;
-  v16 = v10;
+  v16 = entryCopy;
   v28 = v16;
   v29 = &v37;
   v30 = &v31;
@@ -456,12 +456,12 @@
   else
   {
     v17 = [NSMutableDictionary dictionaryWithDictionary:v32[5]];
-    v12[2](v12, v17);
-    [(NSMutableArray *)v13->_mounts replaceObjectAtIndex:v38[3] withObject:v17];
+    blockCopy[2](blockCopy, v17);
+    [(NSMutableArray *)selfCopy->_mounts replaceObjectAtIndex:v38[3] withObject:v17];
     v18 = v17;
-    *a5 = v17;
+    *dictionary = v17;
     v25 = 0;
-    v19 = [(LivefsSettings *)v13 save:&v25];
+    v19 = [(LivefsSettings *)selfCopy save:&v25];
     v20 = v25;
     v21 = v20;
     if (v19)
@@ -480,29 +480,29 @@
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(&v37, 8);
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   return v23;
 }
 
-- (id)removeMountNamed:(id)a3 provider:(id)a4
+- (id)removeMountNamed:(id)named provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  namedCopy = named;
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = -1;
-  mounts = v8->_mounts;
+  mounts = selfCopy->_mounts;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000298D8;
   v18[3] = &unk_100061A38;
-  v10 = v7;
+  v10 = providerCopy;
   v19 = v10;
-  v11 = v6;
+  v11 = namedCopy;
   v20 = v11;
   v21 = &v22;
   [(NSMutableArray *)mounts enumerateObjectsUsingBlock:v18];
@@ -514,9 +514,9 @@
 
   else
   {
-    [(NSMutableArray *)v8->_mounts removeObjectAtIndex:?];
+    [(NSMutableArray *)selfCopy->_mounts removeObjectAtIndex:?];
     v17 = 0;
-    v12 = [(LivefsSettings *)v8 save:&v17];
+    v12 = [(LivefsSettings *)selfCopy save:&v17];
     v13 = v17;
     v14 = v13;
     if (v12)
@@ -528,22 +528,22 @@
   v15 = v13;
 
   _Block_object_dispose(&v22, 8);
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
 
-- (void)removeReferencesToTask:(id)a3
+- (void)removeReferencesToTask:(id)task
 {
-  v6 = a3;
+  taskCopy = task;
   v4 = self->_tasks;
   objc_sync_enter(v4);
-  [(NSMutableDictionary *)self->_tasks removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_tasks removeObjectForKey:taskCopy];
   objc_sync_exit(v4);
 
   v5 = self->_resourceManager;
   objc_sync_enter(v5);
-  [(FSResourceManager *)self->_resourceManager removeTaskUUID:v6];
+  [(FSResourceManager *)self->_resourceManager removeTaskUUID:taskCopy];
   objc_sync_exit(v5);
 
   [(LivefsSettings *)self updateWorkTransaction];

@@ -1,20 +1,20 @@
 @interface FigRoutingSessionUpdateState
-- (FigRoutingSessionUpdateState)initWithNewSession:(OpaqueFigRoutingSession *)a3;
+- (FigRoutingSessionUpdateState)initWithNewSession:(OpaqueFigRoutingSession *)session;
 - (void)dealloc;
 @end
 
 @implementation FigRoutingSessionUpdateState
 
-- (FigRoutingSessionUpdateState)initWithNewSession:(OpaqueFigRoutingSession *)a3
+- (FigRoutingSessionUpdateState)initWithNewSession:(OpaqueFigRoutingSession *)session
 {
   v7.receiver = self;
   v7.super_class = FigRoutingSessionUpdateState;
   v4 = [(FigRoutingSessionUpdateState *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (session)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(session);
     }
 
     else

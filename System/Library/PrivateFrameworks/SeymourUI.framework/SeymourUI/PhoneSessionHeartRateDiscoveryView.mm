@@ -1,37 +1,37 @@
 @interface PhoneSessionHeartRateDiscoveryView
-- (_TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)didTapContinueButton:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)didTapContinueButton:(id)button;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PhoneSessionHeartRateDiscoveryView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B9644C4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20B9644C4(change);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_20B964620(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_20B964620(event, x, y);
 
   return v10;
 }
 
-- (void)didTapContinueButton:(id)a3
+- (void)didTapContinueButton:(id)button
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20C13DA64();
   swift_unknownObjectRelease();
-  v5 = (*(&v4->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView_presenter))[4];
+  v5 = (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView_presenter))[4];
   if (v5)
   {
 
@@ -39,12 +39,12 @@
     sub_20B583ECC(v5);
   }
 
-  [(PhoneSessionHeartRateDiscoveryView *)v4 removeFromSuperview];
+  [(PhoneSessionHeartRateDiscoveryView *)selfCopy removeFromSuperview];
 
   __swift_destroy_boxed_opaque_existential_1(&v7);
 }
 
-- (_TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI34PhoneSessionHeartRateDiscoveryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

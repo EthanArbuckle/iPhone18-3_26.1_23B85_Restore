@@ -1,8 +1,8 @@
 @interface PXGFocusEffectViewConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)contentMotionRotation;
 - (CGPoint)contentMotionTranslation;
-- (PXGFocusEffectViewConfiguration)initWithConfiguration:(id)a3;
+- (PXGFocusEffectViewConfiguration)initWithConfiguration:(id)configuration;
 - (unint64_t)hash;
 @end
 
@@ -26,10 +26,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v32.receiver = self;
       v32.super_class = PXGFocusEffectViewConfiguration;
       if (![(PXGFocusableViewConfiguration *)&v32 isEqual:v5])
@@ -123,30 +123,30 @@ LABEL_16:
   return *&veor_s8(*v6.i8, *&vextq_s8(v6, v6, 8uLL)) ^ v3;
 }
 
-- (PXGFocusEffectViewConfiguration)initWithConfiguration:(id)a3
+- (PXGFocusEffectViewConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = PXGFocusEffectViewConfiguration;
-  v5 = [(PXGFocusableViewConfiguration *)&v21 initWithConfiguration:v4];
+  v5 = [(PXGFocusableViewConfiguration *)&v21 initWithConfiguration:configurationCopy];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (configurationCopy)
     {
-      [v4 cornerRadius];
+      [configurationCopy cornerRadius];
       v6->_cornerRadius = v7;
-      [v4 contentMotionRotation];
+      [configurationCopy contentMotionRotation];
       v6->_contentMotionRotation.x = v8;
       v6->_contentMotionRotation.y = v9;
-      [v4 contentMotionTranslation];
+      [configurationCopy contentMotionTranslation];
       v6->_contentMotionTranslation.x = v10;
       v6->_contentMotionTranslation.y = v11;
-      [v4 focusedSizeIncrease];
+      [configurationCopy focusedSizeIncrease];
       v6->_focusedSizeIncrease = v12;
-      [v4 shadowVerticalOffset];
+      [configurationCopy shadowVerticalOffset];
       v6->_shadowVerticalOffset = v13;
-      [v4 shadowOpacity];
+      [configurationCopy shadowOpacity];
     }
 
     else

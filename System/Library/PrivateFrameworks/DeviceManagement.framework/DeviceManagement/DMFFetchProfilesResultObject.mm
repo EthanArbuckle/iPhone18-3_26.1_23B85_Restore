@@ -1,21 +1,21 @@
 @interface DMFFetchProfilesResultObject
-- (DMFFetchProfilesResultObject)initWithCoder:(id)a3;
-- (DMFFetchProfilesResultObject)initWithProfiles:(id)a3;
+- (DMFFetchProfilesResultObject)initWithCoder:(id)coder;
+- (DMFFetchProfilesResultObject)initWithProfiles:(id)profiles;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchProfilesResultObject
 
-- (DMFFetchProfilesResultObject)initWithProfiles:(id)a3
+- (DMFFetchProfilesResultObject)initWithProfiles:(id)profiles
 {
-  v4 = a3;
+  profilesCopy = profiles;
   v9.receiver = self;
   v9.super_class = DMFFetchProfilesResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [profilesCopy copy];
     profiles = v5->_profiles;
     v5->_profiles = v6;
   }
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (DMFFetchProfilesResultObject)initWithCoder:(id)a3
+- (DMFFetchProfilesResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DMFFetchProfilesResultObject;
-  v5 = [(CATTaskResultObject *)&v12 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"profiles"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"profiles"];
     profiles = v5->_profiles;
     v5->_profiles = v9;
   }
@@ -42,21 +42,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchProfilesResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchProfilesResultObject *)self profiles:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"profiles"];
+  [coderCopy encodeObject:v5 forKey:@"profiles"];
 }
 
 - (id)description
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(DMFFetchProfilesResultObject *)self profiles];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_12];
+  profiles = [(DMFFetchProfilesResultObject *)self profiles];
+  v3 = [profiles sortedArrayUsingComparator:&__block_literal_global_12];
 
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v13 = 0u;

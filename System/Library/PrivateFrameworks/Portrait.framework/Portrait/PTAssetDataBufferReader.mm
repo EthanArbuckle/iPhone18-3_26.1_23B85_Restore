@@ -1,9 +1,9 @@
 @interface PTAssetDataBufferReader
-- (BOOL)_startReadingMovieWithError:(id *)a3;
-- (BOOL)_startReadingSequenceWithError:(id *)a3;
-- (BOOL)startReadingWithError:(id *)a3;
-- (PTAssetDataBufferReader)initWithURL:(id)a3;
-- (__CVBuffer)_copyPixelBufferFromURL:(id)a3;
+- (BOOL)_startReadingMovieWithError:(id *)error;
+- (BOOL)_startReadingSequenceWithError:(id *)error;
+- (BOOL)startReadingWithError:(id *)error;
+- (PTAssetDataBufferReader)initWithURL:(id)l;
+- (__CVBuffer)_copyPixelBufferFromURL:(id)l;
 - (id)_copyNextFrame_movie;
 - (id)_copyNextFrame_sequence;
 - (id)_frameInstance;
@@ -13,15 +13,15 @@
 
 @implementation PTAssetDataBufferReader
 
-- (PTAssetDataBufferReader)initWithURL:(id)a3
+- (PTAssetDataBufferReader)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PTAssetDataBufferReader;
   v5 = [(PTAssetDataBufferReader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     dataURL = v5->_dataURL;
     v5->_dataURL = v6;
   }
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (BOOL)startReadingWithError:(id *)a3
+- (BOOL)startReadingWithError:(id *)error
 {
-  v5 = [(NSURL *)self->_dataURL pathExtension];
-  v6 = [objc_opt_class() _movieExtension];
-  v7 = [v5 isEqualToString:v6];
+  pathExtension = [(NSURL *)self->_dataURL pathExtension];
+  _movieExtension = [objc_opt_class() _movieExtension];
+  v7 = [pathExtension isEqualToString:_movieExtension];
 
   dataURL = self->_dataURL;
   if (v7)
@@ -42,14 +42,14 @@
     movieURL = self->_movieURL;
     self->_movieURL = v9;
 
-    return [(PTAssetDataBufferReader *)self _startReadingMovieWithError:a3];
+    return [(PTAssetDataBufferReader *)self _startReadingMovieWithError:error];
   }
 
   else
   {
-    v12 = [(NSURL *)dataURL pathExtension];
-    v13 = [objc_opt_class() _sequenceExtension];
-    v14 = [v12 isEqualToString:v13];
+    pathExtension2 = [(NSURL *)dataURL pathExtension];
+    _sequenceExtension = [objc_opt_class() _sequenceExtension];
+    v14 = [pathExtension2 isEqualToString:_sequenceExtension];
 
     v15 = self->_dataURL;
     if (v14)
@@ -58,36 +58,36 @@
       sequenceURL = self->_sequenceURL;
       self->_sequenceURL = v16;
 
-      return [(PTAssetDataBufferReader *)self _startReadingSequenceWithError:a3];
+      return [(PTAssetDataBufferReader *)self _startReadingSequenceWithError:error];
     }
 
     else
     {
-      v18 = [objc_opt_class() _movieFilename];
-      v19 = [(NSURL *)v15 URLByAppendingPathComponent:v18];
+      _movieFilename = [objc_opt_class() _movieFilename];
+      v19 = [(NSURL *)v15 URLByAppendingPathComponent:_movieFilename];
 
       if ([v19 checkResourceIsReachableAndReturnError:0])
       {
         objc_storeStrong(&self->_movieURL, v19);
-        v20 = [(PTAssetDataBufferReader *)self _startReadingMovieWithError:a3];
+        v20 = [(PTAssetDataBufferReader *)self _startReadingMovieWithError:error];
       }
 
       else
       {
         v21 = self->_dataURL;
-        v22 = [objc_opt_class() _sequenceDirectoryName];
-        v23 = [(NSURL *)v21 URLByAppendingPathComponent:v22];
+        _sequenceDirectoryName = [objc_opt_class() _sequenceDirectoryName];
+        v23 = [(NSURL *)v21 URLByAppendingPathComponent:_sequenceDirectoryName];
 
         if ([v23 checkResourceIsReachableAndReturnError:0])
         {
           objc_storeStrong(&self->_sequenceURL, v23);
-          v20 = [(PTAssetDataBufferReader *)self _startReadingSequenceWithError:a3];
+          v20 = [(PTAssetDataBufferReader *)self _startReadingSequenceWithError:error];
         }
 
         else
         {
           _ErrorForDataBufferNotFoundAtURL(self->_dataURL);
-          *a3 = v20 = 0;
+          *error = v20 = 0;
         }
       }
 
@@ -96,7 +96,7 @@
   }
 }
 
-- (BOOL)_startReadingSequenceWithError:(id *)a3
+- (BOOL)_startReadingSequenceWithError:(id *)error
 {
   sequenceURL = self->_sequenceURL;
   if (!sequenceURL)
@@ -108,7 +108,7 @@
   v34 = 0;
   if (!-[NSURL getResourceValue:forKey:error:](v6, "getResourceValue:forKey:error:", &v34, *MEMORY[0x277CBE868], 0) || ([v34 BOOLValue] & 1) == 0)
   {
-    *a3 = _ErrorForDataBufferNotFoundAtURL(v6);
+    *error = _ErrorForDataBufferNotFoundAtURL(v6);
 
     dataURL = self->_sequenceURL;
     if (dataURL)
@@ -117,7 +117,7 @@ LABEL_12:
       v23 = _ErrorForDataBufferNotFoundAtURL(dataURL);
       v24 = v23;
       result = 0;
-      *a3 = v23;
+      *error = v23;
       return result;
     }
 
@@ -127,8 +127,8 @@ LABEL_11:
   }
 
   v7 = self->_sequenceURL;
-  v8 = [objc_opt_class() _sequenceInfoFilename];
-  v9 = [(NSURL *)v7 URLByAppendingPathComponent:v8];
+  _sequenceInfoFilename = [objc_opt_class() _sequenceInfoFilename];
+  v9 = [(NSURL *)v7 URLByAppendingPathComponent:_sequenceInfoFilename];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v10];
@@ -167,11 +167,11 @@ LABEL_11:
 
   else
   {
-    v26 = [(NSString *)self->_filenameFormat pathExtension];
-    v27 = [&unk_2837F3A28 objectForKeyedSubscript:v26];
-    v28 = [v27 unsignedIntegerValue];
+    pathExtension = [(NSString *)self->_filenameFormat pathExtension];
+    v27 = [&unk_2837F3A28 objectForKeyedSubscript:pathExtension];
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-    self->_pixelFormat = v28;
+    self->_pixelFormat = unsignedIntegerValue;
   }
 
   v29 = [v12 objectForKeyedSubscript:@"width"];
@@ -195,7 +195,7 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)_startReadingMovieWithError:(id *)a3
+- (BOOL)_startReadingMovieWithError:(id *)error
 {
   if (self->_movieURL)
   {
@@ -209,9 +209,9 @@ LABEL_11:
     if (self->_assetReader)
     {
       v9 = objc_alloc(MEMORY[0x277CE6430]);
-      v10 = [v5 tracks];
-      v11 = [v10 firstObject];
-      v12 = [v9 initWithTrack:v11 outputSettings:0];
+      tracks = [v5 tracks];
+      firstObject = [tracks firstObject];
+      v12 = [v9 initWithTrack:firstObject outputSettings:0];
       disparityTrackOutput = self->_disparityTrackOutput;
       self->_disparityTrackOutput = v12;
 
@@ -235,14 +235,14 @@ LABEL_8:
   }
 
   _ErrorForDataBufferNotFoundAtURL(self->_dataURL);
-  *a3 = v14 = 0;
+  *error = v14 = 0;
   return v14;
 }
 
-- (__CVBuffer)_copyPixelBufferFromURL:(id)a3
+- (__CVBuffer)_copyPixelBufferFromURL:(id)l
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   pixelBufferOut = 0;
   v5 = *MEMORY[0x277CBECE8];
   width = self->_width;
@@ -251,8 +251,8 @@ LABEL_8:
   v40 = *MEMORY[0x277CC4DE8];
   v41[0] = MEMORY[0x277CBEC10];
   CVPixelBufferCreate(v5, width, height, pixelFormat, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1], &pixelBufferOut);
-  v9 = [v4 fileSystemRepresentation];
-  if (!v9)
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     goto LABEL_37;
   }
@@ -263,7 +263,7 @@ LABEL_8:
     goto LABEL_37;
   }
 
-  v11 = v9;
+  v11 = fileSystemRepresentation;
   isVector3Format = self->_isVector3Format;
   PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBufferOut);
   v14 = CVPixelBufferGetWidth(v10);
@@ -449,16 +449,16 @@ LABEL_38:
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:self->_filenameFormat, self->_nextIndex];
   v4 = [(NSURL *)self->_sequenceURL URLByAppendingPathComponent:v3];
-  v5 = [(PTAssetDataBufferReader *)self _frameInstance];
-  [v5 setIndex:self->_nextIndex];
+  _frameInstance = [(PTAssetDataBufferReader *)self _frameInstance];
+  [_frameInstance setIndex:self->_nextIndex];
   CMTimeMake(&v9, self->_nextIndex, self->_framesPerSecond);
   v8 = v9;
-  [v5 setTime:&v8];
-  [v5 setDataBuffer:{-[PTAssetDataBufferReader _copyPixelBufferFromURL:](self, "_copyPixelBufferFromURL:", v4)}];
-  if ([v5 dataBuffer])
+  [_frameInstance setTime:&v8];
+  [_frameInstance setDataBuffer:{-[PTAssetDataBufferReader _copyPixelBufferFromURL:](self, "_copyPixelBufferFromURL:", v4)}];
+  if ([_frameInstance dataBuffer])
   {
     ++self->_nextIndex;
-    v6 = v5;
+    v6 = _frameInstance;
   }
 
   else
@@ -471,9 +471,9 @@ LABEL_38:
 
 - (id)_copyNextFrame_movie
 {
-  v3 = [(AVAssetReaderTrackOutput *)self->_disparityTrackOutput copyNextSampleBuffer];
-  ImageBuffer = CMSampleBufferGetImageBuffer(v3);
-  if (!v3)
+  copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_disparityTrackOutput copyNextSampleBuffer];
+  ImageBuffer = CMSampleBufferGetImageBuffer(copyNextSampleBuffer);
+  if (!copyNextSampleBuffer)
   {
     return 0;
   }
@@ -481,9 +481,9 @@ LABEL_38:
   v5 = ImageBuffer;
   if (!ImageBuffer)
   {
-    if (self->_nextIndex || (CFRelease(v3), v3 = [(AVAssetReaderTrackOutput *)self->_disparityTrackOutput copyNextSampleBuffer], (v5 = CMSampleBufferGetImageBuffer(v3)) == 0))
+    if (self->_nextIndex || (CFRelease(copyNextSampleBuffer), copyNextSampleBuffer = [(AVAssetReaderTrackOutput *)self->_disparityTrackOutput copyNextSampleBuffer], (v5 = CMSampleBufferGetImageBuffer(copyNextSampleBuffer)) == 0))
     {
-      CFRelease(v3);
+      CFRelease(copyNextSampleBuffer);
       return 0;
     }
   }
@@ -491,11 +491,11 @@ LABEL_38:
   v6 = objc_alloc_init([objc_opt_class() frameClass]);
   ++self->_nextIndex;
   [v6 setIndex:?];
-  CMSampleBufferGetPresentationTimeStamp(&v9, v3);
+  CMSampleBufferGetPresentationTimeStamp(&v9, copyNextSampleBuffer);
   v8 = v9;
   [v6 setTime:&v8];
   [v6 setDataBuffer:CVPixelBufferRetain(v5)];
-  CFRelease(v3);
+  CFRelease(copyNextSampleBuffer);
   return v6;
 }
 
@@ -504,15 +504,15 @@ LABEL_38:
   v3 = objc_autoreleasePoolPush();
   if (self->_sequenceURL)
   {
-    v4 = [(PTAssetDataBufferReader *)self _copyNextFrame_sequence];
+    _copyNextFrame_sequence = [(PTAssetDataBufferReader *)self _copyNextFrame_sequence];
 LABEL_5:
-    v5 = v4;
+    v5 = _copyNextFrame_sequence;
     goto LABEL_6;
   }
 
   if (self->_assetReader)
   {
-    v4 = [(PTAssetDataBufferReader *)self _copyNextFrame_movie];
+    _copyNextFrame_sequence = [(PTAssetDataBufferReader *)self _copyNextFrame_movie];
     goto LABEL_5;
   }
 
@@ -541,8 +541,8 @@ LABEL_6:
 - (void)_frameInstance
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() frameClass];
-  v4 = NSStringFromClass(v3);
+  frameClass = [objc_opt_class() frameClass];
+  v4 = NSStringFromClass(frameClass);
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = 138412546;

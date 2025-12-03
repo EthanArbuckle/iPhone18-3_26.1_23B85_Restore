@@ -1,32 +1,32 @@
 @interface AEAConcreteAuditToken
-+ (id)auditTokenWithData:(id)a3;
++ (id)auditTokenWithData:(id)data;
 + (id)invalidAuditToken;
 - ($115C4C562B26FF47E01F9F4EA65B5887)underlyingToken;
-- (AEAConcreteAuditToken)initWithAuditToken:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (AEAConcreteAuditToken)initWithAuditToken:(id *)token;
+- (BOOL)isEqual:(id)equal;
 - (id)dataRepresentation;
 @end
 
 @implementation AEAConcreteAuditToken
 
-- (AEAConcreteAuditToken)initWithAuditToken:(id *)a3
+- (AEAConcreteAuditToken)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = AEAConcreteAuditToken;
   result = [(AEAConcreteAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0[4];
-    *result->_underlyingToken.val = *a3->var0;
+    v5 = *&token->var0[4];
+    *result->_underlyingToken.val = *token->var0;
     *&result->_underlyingToken.val[4] = v5;
   }
 
   return result;
 }
 
-+ (id)auditTokenWithData:(id)a3
++ (id)auditTokenWithData:(id)data
 {
-  v3 = [NSValue ae_valueFromData:a3 ofObjCType:"{?=[8I]}"];
+  v3 = [NSValue ae_valueFromData:data ofObjCType:"{?=[8I]}"];
   v4 = v3;
   if (v3)
   {
@@ -65,24 +65,24 @@
 {
   [(AEAConcreteAuditToken *)self underlyingToken:0];
   v2 = [NSValue value:&v5 withObjCType:"{?=[8I]}"];
-  v3 = [v2 ae_dataRepresentation];
+  ae_dataRepresentation = [v2 ae_dataRepresentation];
 
-  return v3;
+  return ae_dataRepresentation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    if ([(AEAConcreteAuditToken *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(AEAConcreteAuditToken *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = sub_10007C288(self, v5);
       goto LABEL_6;

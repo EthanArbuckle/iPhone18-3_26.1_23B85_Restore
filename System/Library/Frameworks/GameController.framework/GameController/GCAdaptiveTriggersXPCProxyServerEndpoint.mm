@@ -1,53 +1,53 @@
 @interface GCAdaptiveTriggersXPCProxyServerEndpoint
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5;
-- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithIdentifier:(id)a3 initialStatuses:(id)a4;
-- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithInitialStatuses:(id)a3;
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error;
+- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithIdentifier:(id)identifier initialStatuses:(id)statuses;
+- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithInitialStatuses:(id)statuses;
 - (GCAdaptiveTriggersXPCProxyServerEndpointDelegate)delegate;
 - (NSArray)statuses;
 - (_GCControllerComponentDescription)receiverDescription;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
-- (void)fetchStatusesWithReply:(id)a3;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
+- (void)fetchStatusesWithReply:(id)reply;
 - (void)invalidateClient;
 - (void)invalidateConnection;
-- (void)newAdaptiveTriggerPayload:(id)a3 index:(int)a4;
-- (void)setStatuses:(id)a3;
+- (void)newAdaptiveTriggerPayload:(id)payload index:(int)index;
+- (void)setStatuses:(id)statuses;
 @end
 
 @implementation GCAdaptiveTriggersXPCProxyServerEndpoint
 
-- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithIdentifier:(id)a3 initialStatuses:(id)a4
+- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithIdentifier:(id)identifier initialStatuses:(id)statuses
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  statusesCopy = statuses;
   v16.receiver = self;
   v16.super_class = GCAdaptiveTriggersXPCProxyServerEndpoint;
   v8 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+    initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
     leftTrigger = v8->_leftTrigger;
-    v8->_leftTrigger = v11;
+    v8->_leftTrigger = initOff;
 
-    v13 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+    initOff2 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
     rightTrigger = v8->_rightTrigger;
-    v8->_rightTrigger = v13;
+    v8->_rightTrigger = initOff2;
 
-    objc_storeStrong(&v8->_statuses, a4);
+    objc_storeStrong(&v8->_statuses, statuses);
   }
 
   return v8;
 }
 
-- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithInitialStatuses:(id)a3
+- (GCAdaptiveTriggersXPCProxyServerEndpoint)initWithInitialStatuses:(id)statuses
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)self initWithIdentifier:v6 initialStatuses:v5];
+  statusesCopy = statuses;
+  uUID = [v4 UUID];
+  v7 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)self initWithIdentifier:uUID initialStatuses:statusesCopy];
 
   return v7;
 }
@@ -83,10 +83,10 @@
   [(GCAdaptiveTriggersXPCProxyRemoteClientEndpointInterface *)v5 invalidateConnection];
 }
 
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = 0;
@@ -106,16 +106,16 @@
   v24 = &unk_1E8418D18;
   objc_copyWeak(&v25, &location);
   v14 = _Block_copy(&v21);
-  v15 = [v9 addInterruptionHandler:{v14, v21, v22, v23, v24}];
+  v15 = [connectionCopy addInterruptionHandler:{v14, v21, v22, v23, v24}];
   v16 = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v15;
 
-  v17 = [v9 addInvalidationHandler:v14];
+  v17 = [connectionCopy addInvalidationHandler:v14];
   v18 = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v17;
 
-  objc_storeStrong(&self->_connection, a4);
-  objc_storeStrong(&self->_clientEndpoint, a3);
+  objc_storeStrong(&self->_connection, connection);
+  objc_storeStrong(&self->_clientEndpoint, client);
   self->_pendingUpdates = 0;
   if (gc_isInternalBuild())
   {
@@ -152,34 +152,34 @@ void __76__GCAdaptiveTriggersXPCProxyServerEndpoint_acceptClient_onConnection_er
 
 - (NSArray)statuses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_statuses;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_statuses;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setStatuses:(id)a3
+- (void)setStatuses:(id)statuses
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([v5 isEqualToArray:v6->_statuses])
+  statusesCopy = statuses;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([statusesCopy isEqualToArray:selfCopy->_statuses])
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v6->_statuses, a3);
-    objc_sync_exit(v6);
+    objc_storeStrong(&selfCopy->_statuses, statuses);
+    objc_sync_exit(selfCopy);
 
-    v7 = v6->_clientEndpoint;
+    v7 = selfCopy->_clientEndpoint;
     if (v7)
     {
-      v8 = v6->_pendingUpdates + 1;
-      v6->_pendingUpdates = v8;
+      v8 = selfCopy->_pendingUpdates + 1;
+      selfCopy->_pendingUpdates = v8;
       if (v8 <= 6)
       {
         isInternalBuild = gc_isInternalBuild();
@@ -200,15 +200,15 @@ void __76__GCAdaptiveTriggersXPCProxyServerEndpoint_acceptClient_onConnection_er
             [GCAdaptiveTriggersXPCProxyServerEndpoint setStatuses:];
           }
 
-          [(GCAdaptiveTriggersXPCProxyRemoteClientEndpointInterface *)v7 newStatuses:v5];
-          if (v6->_pendingUpdates == 3)
+          [(GCAdaptiveTriggersXPCProxyRemoteClientEndpointInterface *)v7 newStatuses:statusesCopy];
+          if (selfCopy->_pendingUpdates == 3)
           {
-            connection = v6->_connection;
+            connection = selfCopy->_connection;
             v11[0] = MEMORY[0x1E69E9820];
             v11[1] = 3221225472;
             v11[2] = __56__GCAdaptiveTriggersXPCProxyServerEndpoint_setStatuses___block_invoke;
             v11[3] = &unk_1E8418C28;
-            v11[4] = v6;
+            v11[4] = selfCopy;
             [(_GCIPCEndpointConnection *)connection scheduleSendBarrierBlock:v11];
           }
         }
@@ -217,16 +217,16 @@ void __76__GCAdaptiveTriggersXPCProxyServerEndpoint_acceptClient_onConnection_er
   }
 }
 
-- (void)fetchStatusesWithReply:(id)a3
+- (void)fetchStatusesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__GCAdaptiveTriggersXPCProxyServerEndpoint_fetchStatusesWithReply___block_invoke;
   v6[3] = &unk_1E8418D68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = replyCopy;
+  v5 = replyCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Adaptive Trigger XPC Proxy Server Endpoint) Fetch Statuses", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -237,17 +237,17 @@ void __67__GCAdaptiveTriggersXPCProxyServerEndpoint_fetchStatusesWithReply___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)newAdaptiveTriggerPayload:(id)a3 index:(int)a4
+- (void)newAdaptiveTriggerPayload:(id)payload index:(int)index
 {
-  v6 = a3;
+  payloadCopy = payload;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __76__GCAdaptiveTriggersXPCProxyServerEndpoint_newAdaptiveTriggerPayload_index___block_invoke;
   activity_block[3] = &unk_1E841ADE0;
-  v10 = a4;
+  indexCopy = index;
   activity_block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = payloadCopy;
+  v7 = payloadCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Adaptive Trigger XPC Proxy Server Endpoint) New Adaptive Trigger Payload", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -293,11 +293,11 @@ void __64__GCAdaptiveTriggersXPCProxyServerEndpoint_invalidateConnection__block_
   *(v8 + 8) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (GCAdaptiveTriggersXPCProxyServerEndpointDelegate)delegate

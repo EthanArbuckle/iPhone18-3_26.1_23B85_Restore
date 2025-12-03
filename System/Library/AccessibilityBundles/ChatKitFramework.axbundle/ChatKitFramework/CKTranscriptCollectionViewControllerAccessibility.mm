@@ -1,31 +1,31 @@
 @interface CKTranscriptCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)axIsShowingChatController;
 - (id)_accessibilitySpeakThisElementsAndStrings;
 - (void)_accessibilityLoadMessagesIfNeeded;
-- (void)chatItemsDidChange:(id)a3;
-- (void)effectManager:(id)a3 didStartEffect:(id)a4;
+- (void)chatItemsDidChange:(id)change;
+- (void)effectManager:(id)manager didStartEffect:(id)effect;
 @end
 
 @implementation CKTranscriptCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptBalloonCell" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"balloonViewForChatItem:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"effectManager:didStartEffect:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"_loadMessagesIfNeededWithTargetContentOffset:forKeyboardNavigation:" withFullSignature:{"v", "{CGPoint=dd}", "B", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"chatItemsDidChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMChat" hasInstanceMethod:@"lastIncomingMessage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"isTypingMessage" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0, 0, 0}];
-  [v3 validateClass:@"CKMessagesController" hasInstanceMethod:@"isShowingChatController" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptBalloonCell" hasInstanceMethod:@"balloonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"balloonViewForChatItem:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"effectManager:didStartEffect:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"_loadMessagesIfNeededWithTargetContentOffset:forKeyboardNavigation:" withFullSignature:{"v", "{CGPoint=dd}", "B", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"chatItemsDidChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMChat" hasInstanceMethod:@"lastIncomingMessage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"isTypingMessage" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKMessagesController" hasInstanceMethod:@"isShowingChatController" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadMessagesIfNeeded
@@ -49,8 +49,8 @@
 
   if (v4)
   {
-    v5 = [v4 indexPathsForVisibleItems];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_6];
+    indexPathsForVisibleItems = [v4 indexPathsForVisibleItems];
+    v6 = [indexPathsForVisibleItems sortedArrayUsingComparator:&__block_literal_global_6];
 
     v20 = 0u;
     v21 = 0u;
@@ -134,10 +134,10 @@ uint64_t __94__CKTranscriptCollectionViewControllerAccessibility__accessibilityS
   }
 }
 
-- (void)effectManager:(id)a3 didStartEffect:(id)a4
+- (void)effectManager:(id)manager didStartEffect:(id)effect
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  effectCopy = effect;
   LOBYTE(v30) = 0;
   v8 = __UIAccessibilitySafeClass();
   v36 = 0;
@@ -153,8 +153,8 @@ uint64_t __94__CKTranscriptCollectionViewControllerAccessibility__accessibilityS
   v25 = __82__CKTranscriptCollectionViewControllerAccessibility_effectManager_didStartEffect___block_invoke;
   v26 = &unk_29F2B09A8;
   v29 = &v30;
-  v27 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = effectCopy;
   v28 = v9;
   AXPerformSafeBlock();
   v10 = v31[5];
@@ -169,11 +169,11 @@ uint64_t __94__CKTranscriptCollectionViewControllerAccessibility__accessibilityS
 
   v22.receiver = self;
   v22.super_class = CKTranscriptCollectionViewControllerAccessibility;
-  [(CKTranscriptCollectionViewControllerAccessibility *)&v22 effectManager:v6 didStartEffect:v9];
+  [(CKTranscriptCollectionViewControllerAccessibility *)&v22 effectManager:managerCopy didStartEffect:v9];
   if (v8 && v11)
   {
-    v12 = [v9 identifier];
-    v13 = _AXCKFullScreenEffectString(v12, 1);
+    identifier = [v9 identifier];
+    v13 = _AXCKFullScreenEffectString(identifier, 1);
     if ([v13 length])
     {
       v14 = MEMORY[0x29EDBA0F8];
@@ -181,9 +181,9 @@ uint64_t __94__CKTranscriptCollectionViewControllerAccessibility__accessibilityS
       v16 = accessibilityLocalizedString(v13);
       v17 = [v14 stringWithFormat:v15, v16];
 
-      v18 = [v11 _axMessageSender];
+      _axMessageSender = [v11 _axMessageSender];
       v19 = [v11 safeValueForKey:@"textView"];
-      v20 = [v19 accessibilityValue];
+      accessibilityValue = [v19 accessibilityValue];
 
       v21 = __UIAXStringForVariables();
       UIAccessibilitySpeakAndDoNotBeInterrupted();
@@ -219,23 +219,23 @@ void __82__CKTranscriptCollectionViewControllerAccessibility_effectManager_didSt
   return v4;
 }
 
-- (void)chatItemsDidChange:(id)a3
+- (void)chatItemsDidChange:(id)change
 {
   v31[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  changeCopy = change;
   v5 = [(CKTranscriptCollectionViewControllerAccessibility *)self safeValueForKey:@"conversation"];
   v6 = [v5 safeValueForKey:@"chat"];
 
-  v7 = [v4 object];
-  v8 = [(CKTranscriptCollectionViewControllerAccessibility *)self axIsShowingChatController];
-  if ([v6 isEqual:v7] && v8)
+  object = [changeCopy object];
+  axIsShowingChatController = [(CKTranscriptCollectionViewControllerAccessibility *)self axIsShowingChatController];
+  if ([v6 isEqual:object] && axIsShowingChatController)
   {
     v29 = 0;
     v9 = [v6 safeValueForKey:@"lastIncomingMessage"];
     v10 = __UIAccessibilitySafeClass();
 
-    v11 = [v10 sender];
-    v12 = [v11 displayNameForChat:v6];
+    sender = [v10 sender];
+    v12 = [sender displayNameForChat:v6];
 
     if (v12)
     {
@@ -244,30 +244,30 @@ void __82__CKTranscriptCollectionViewControllerAccessibility_effectManager_didSt
 
     else
     {
-      v14 = [v10 sender];
-      v15 = [v14 firstName];
-      v16 = v15;
-      if (v15)
+      sender2 = [v10 sender];
+      firstName = [sender2 firstName];
+      v16 = firstName;
+      if (firstName)
       {
-        v13 = v15;
+        v13 = firstName;
       }
 
       else
       {
-        v27 = [v10 sender];
-        v17 = [v27 nickname];
-        v18 = v17;
-        if (v17)
+        sender3 = [v10 sender];
+        nickname = [sender3 nickname];
+        v18 = nickname;
+        if (nickname)
         {
-          v19 = v17;
+          senderName = nickname;
         }
 
         else
         {
-          v19 = [v10 senderName];
+          senderName = [v10 senderName];
         }
 
-        v13 = v19;
+        v13 = senderName;
       }
     }
 
@@ -331,7 +331,7 @@ LABEL_24:
 
   v28.receiver = self;
   v28.super_class = CKTranscriptCollectionViewControllerAccessibility;
-  [(CKTranscriptCollectionViewControllerAccessibility *)&v28 chatItemsDidChange:v4];
+  [(CKTranscriptCollectionViewControllerAccessibility *)&v28 chatItemsDidChange:changeCopy];
 }
 
 @end

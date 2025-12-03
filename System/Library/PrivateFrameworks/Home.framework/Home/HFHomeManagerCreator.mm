@@ -1,7 +1,7 @@
 @interface HFHomeManagerCreator
 - (BOOL)_shouldCreateHomeManager;
 - (HFHomeManagerCreator)init;
-- (HFHomeManagerCreator)initWithHostProcess:(int64_t)a3 configuration:(id)a4 homeStatus:(id)a5 delegate:(id)a6;
+- (HFHomeManagerCreator)initWithHostProcess:(int64_t)process configuration:(id)configuration homeStatus:(id)status delegate:(id)delegate;
 - (HFHomeManagerCreatorDelegate)delegate;
 - (id)_createHomeManager;
 - (id)createHomeManagerIfNeeded;
@@ -11,33 +11,33 @@
 
 @implementation HFHomeManagerCreator
 
-- (HFHomeManagerCreator)initWithHostProcess:(int64_t)a3 configuration:(id)a4 homeStatus:(id)a5 delegate:(id)a6
+- (HFHomeManagerCreator)initWithHostProcess:(int64_t)process configuration:(id)configuration homeStatus:(id)status delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  statusCopy = status;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = HFHomeManagerCreator;
   v13 = [(HFHomeManagerCreator *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_hostProcessType = a3;
-    objc_storeStrong(&v13->_homeStatus, a5);
-    objc_storeWeak(&v14->_delegate, v12);
+    v13->_hostProcessType = process;
+    objc_storeStrong(&v13->_homeStatus, status);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v14->_creationPolicy = [(HFHomeManagerCreator *)v14 _homeManagerCreationPolicy];
-    if (v10)
+    if (configurationCopy)
     {
-      v15 = v10;
+      defaultPrivateConfiguration = configurationCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
+      defaultPrivateConfiguration = [MEMORY[0x277CD1A98] defaultPrivateConfiguration];
     }
 
     configuration = v14->_configuration;
-    v14->_configuration = v15;
+    v14->_configuration = defaultPrivateConfiguration;
   }
 
   return v14;
@@ -45,9 +45,9 @@
 
 - (HFHomeManagerCreator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHostProcess_configuration_homeStatus_delegate_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFHomeManagerCreator.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HFHomeManagerCreator init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFHomeManagerCreator.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HFHomeManagerCreator init]", v5}];
 
   return 0;
 }
@@ -56,15 +56,15 @@
 {
   if ([(HFHomeManagerCreator *)self _shouldCreateHomeManager])
   {
-    v3 = [(HFHomeManagerCreator *)self _createHomeManager];
+    _createHomeManager = [(HFHomeManagerCreator *)self _createHomeManager];
   }
 
   else
   {
-    v3 = 0;
+    _createHomeManager = 0;
   }
 
-  return v3;
+  return _createHomeManager;
 }
 
 - (id)_createHomeManager
@@ -78,8 +78,8 @@
   else
   {
     v4 = objc_alloc(MEMORY[0x277CD1A90]);
-    v5 = [(HFHomeManagerCreator *)self configuration];
-    v3 = [v4 initWithHomeMangerConfiguration:v5];
+    configuration = [(HFHomeManagerCreator *)self configuration];
+    v3 = [v4 initWithHomeMangerConfiguration:configuration];
   }
 
   return v3;
@@ -116,21 +116,21 @@ void __49__HFHomeManagerCreator__createHomeManagerOnQueue__block_invoke(uint64_t
   v13 = *MEMORY[0x277D85DE8];
   if (+[HFUtilities isInternalTest](HFUtilities, "isInternalTest") && ![objc_opt_class() allowCreationInTest])
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(areHomesConfigured) = 0;
     goto LABEL_13;
   }
 
-  v3 = [(HFHomeManagerCreator *)self creationPolicy];
-  if (v3 != 1)
+  creationPolicy = [(HFHomeManagerCreator *)self creationPolicy];
+  if (creationPolicy != 1)
   {
-    if (v3 != 2)
+    if (creationPolicy != 2)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(areHomesConfigured) = 1;
       goto LABEL_13;
     }
 
-    v4 = [(HFHomeManagerCreator *)self homeStatus];
-    v5 = [v4 areHomesConfigured];
+    homeStatus = [(HFHomeManagerCreator *)self homeStatus];
+    areHomesConfigured = [homeStatus areHomesConfigured];
 
     v6 = HFLogForCategory(0x27uLL);
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -139,19 +139,19 @@ void __49__HFHomeManagerCreator__createHomeManagerOnQueue__block_invoke(uint64_t
     }
 
     v11 = 67109120;
-    v12 = v5;
+    v12 = areHomesConfigured;
     v7 = "areAnyHomesConfigured: %d";
     goto LABEL_9;
   }
 
-  v8 = [(HFHomeManagerCreator *)self homeStatus];
-  v5 = [v8 areAnyAccessoriesConfigured];
+  homeStatus2 = [(HFHomeManagerCreator *)self homeStatus];
+  areHomesConfigured = [homeStatus2 areAnyAccessoriesConfigured];
 
   v6 = HFLogForCategory(0x27uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 67109120;
-    v12 = v5;
+    v12 = areHomesConfigured;
     v7 = "areAnyAccessoriesConfigured: %d";
 LABEL_9:
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, v7, &v11, 8u);
@@ -161,7 +161,7 @@ LABEL_10:
 
 LABEL_13:
   v9 = *MEMORY[0x277D85DE8];
-  return v5;
+  return areHomesConfigured;
 }
 
 - (unint64_t)_homeManagerCreationPolicy

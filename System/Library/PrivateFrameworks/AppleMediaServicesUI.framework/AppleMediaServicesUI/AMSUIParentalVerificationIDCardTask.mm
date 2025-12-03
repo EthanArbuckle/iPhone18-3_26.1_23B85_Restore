@@ -1,39 +1,39 @@
 @interface AMSUIParentalVerificationIDCardTask
-+ (id)_descriptorForMinimumAge:(int64_t)a3;
++ (id)_descriptorForMinimumAge:(int64_t)age;
 + (id)_identityController;
-+ (id)_identityRequestWithDescriptor:(id)a3 nonce:(id)a4;
-+ (id)_requestDictFromMinimumAge:(int64_t)a3 walletData:(id)a4 nonce:(id)a5;
-+ (int64_t)_minAgeFromObject:(id)a3;
-- (AMSUIParentalVerificationIDCardTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8;
-- (id)_dataFromIDCardForMinimumAge:(int64_t)a3 nonce:(id)a4;
-- (id)_promiseToFetchIDCardTokenURL:(id)a3 requestBody:(id)a4;
-- (id)_promiseToLoadPVTURLWithBody:(id)a3;
++ (id)_identityRequestWithDescriptor:(id)descriptor nonce:(id)nonce;
++ (id)_requestDictFromMinimumAge:(int64_t)age walletData:(id)data nonce:(id)nonce;
++ (int64_t)_minAgeFromObject:(id)object;
+- (AMSUIParentalVerificationIDCardTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller;
+- (id)_dataFromIDCardForMinimumAge:(int64_t)age nonce:(id)nonce;
+- (id)_promiseToFetchIDCardTokenURL:(id)l requestBody:(id)body;
+- (id)_promiseToLoadPVTURLWithBody:(id)body;
 - (id)_promiseToRequestIDCardData;
 - (id)performTask;
 @end
 
 @implementation AMSUIParentalVerificationIDCardTask
 
-- (AMSUIParentalVerificationIDCardTask)initWithAccount:(id)a3 accountParameters:(id)a4 bag:(id)a5 displayName:(id)a6 metrics:(id)a7 viewController:(id)a8
+- (AMSUIParentalVerificationIDCardTask)initWithAccount:(id)account accountParameters:(id)parameters bag:(id)bag displayName:(id)name metrics:(id)metrics viewController:(id)controller
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  accountCopy = account;
+  parametersCopy = parameters;
+  bagCopy = bag;
+  nameCopy = name;
+  metricsCopy = metrics;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = AMSUIParentalVerificationIDCardTask;
   v18 = [(AMSTask *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_originalAccount, a3);
-    objc_storeStrong(&v19->_accountParameters, a4);
-    objc_storeStrong(&v19->_bag, a5);
-    objc_storeStrong(&v19->_displayName, a6);
-    objc_storeStrong(&v19->_metrics, a7);
-    objc_storeStrong(&v19->_viewController, a8);
+    objc_storeStrong(&v18->_originalAccount, account);
+    objc_storeStrong(&v19->_accountParameters, parameters);
+    objc_storeStrong(&v19->_bag, bag);
+    objc_storeStrong(&v19->_displayName, name);
+    objc_storeStrong(&v19->_metrics, metrics);
+    objc_storeStrong(&v19->_viewController, controller);
   }
 
   return v19;
@@ -42,14 +42,14 @@
 - (id)performTask
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -57,32 +57,32 @@
     v22 = v5;
     v23 = 2114;
     v24 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AMSUIParentalVerificationIDCardTask", &v21, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running AMSUIParentalVerificationIDCardTask", &v21, 0x16u);
   }
 
   v7 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:*MEMORY[0x1E698C4C0]];
-  v8 = [(AMSUIParentalVerificationIDCardTask *)self originalAccount];
-  v9 = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
-  v10 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:v8 accountParameters:v9 accountStore:v7];
+  originalAccount = [(AMSUIParentalVerificationIDCardTask *)self originalAccount];
+  accountParameters = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
+  v10 = [AMSUIPaymentVerificationProtocolHandler _accountToUseFromGivenAccount:originalAccount accountParameters:accountParameters accountStore:v7];
 
   if (v10)
   {
     [(AMSUIParentalVerificationIDCardTask *)self setAccount:v10];
-    v11 = [(AMSUIParentalVerificationIDCardTask *)self _promiseToRequestIDCardData];
+    _promiseToRequestIDCardData = [(AMSUIParentalVerificationIDCardTask *)self _promiseToRequestIDCardData];
   }
 
   else
   {
     v12 = *MEMORY[0x1E698C548];
     v13 = AMSCustomError();
-    v14 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v14)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v14 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -92,30 +92,30 @@
       v24 = v17;
       v25 = 2114;
       v26 = v13;
-      _os_log_impl(&dword_1BB036000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", &v21, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", &v21, 0x20u);
     }
 
-    v11 = [MEMORY[0x1E698CAD0] promiseWithError:v13];
-    v18 = [(AMSUIParentalVerificationIDCardTask *)self metrics];
-    [v18 setDisplayReason:@"Missing account"];
+    _promiseToRequestIDCardData = [MEMORY[0x1E698CAD0] promiseWithError:v13];
+    metrics = [(AMSUIParentalVerificationIDCardTask *)self metrics];
+    [metrics setDisplayReason:@"Missing account"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return _promiseToRequestIDCardData;
 }
 
 - (id)_promiseToRequestIDCardData
 {
-  v3 = [(AMSUIParentalVerificationIDCardTask *)self account];
-  v4 = [v3 ams_altDSID];
+  account = [(AMSUIParentalVerificationIDCardTask *)self account];
+  ams_altDSID = [account ams_altDSID];
 
-  v5 = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
-  v6 = [AMSUIParentalVerificationCore _minimumAgeFrom:v5];
+  accountParameters = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
+  v6 = [AMSUIParentalVerificationCore _minimumAgeFrom:accountParameters];
 
   if (v6)
   {
-    v7 = -[AMSUIParentalVerificationIDCardTask _dataFromIDCardForMinimumAge:nonce:](self, "_dataFromIDCardForMinimumAge:nonce:", [v6 integerValue], v4);
+    v7 = -[AMSUIParentalVerificationIDCardTask _dataFromIDCardForMinimumAge:nonce:](self, "_dataFromIDCardForMinimumAge:nonce:", [v6 integerValue], ams_altDSID);
   }
 
   else
@@ -123,14 +123,14 @@
     v8 = [(AMSUIParentalVerificationIDCardTask *)self bag];
     v9 = [v8 dictionaryForKey:@"parental-verification"];
 
-    v10 = [v9 valuePromise];
+    valuePromise = [v9 valuePromise];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__AMSUIParentalVerificationIDCardTask__promiseToRequestIDCardData__block_invoke;
     v12[3] = &unk_1E7F25470;
     v12[4] = self;
-    v13 = v4;
-    v7 = [v10 thenWithBlock:v12];
+    v13 = ams_altDSID;
+    v7 = [valuePromise thenWithBlock:v12];
   }
 
   return v7;
@@ -148,25 +148,25 @@ uint64_t __66__AMSUIParentalVerificationIDCardTask__promiseToRequestIDCardData__
   return [v6 _dataFromIDCardForMinimumAge:v5 nonce:v7];
 }
 
-- (id)_dataFromIDCardForMinimumAge:(int64_t)a3 nonce:(id)a4
+- (id)_dataFromIDCardForMinimumAge:(int64_t)age nonce:(id)nonce
 {
-  v6 = a4;
+  nonceCopy = nonce;
   v7 = objc_alloc_init(MEMORY[0x1E698CA58]);
-  v8 = [objc_opt_class() _descriptorForMinimumAge:a3];
-  v9 = [objc_opt_class() _identityController];
+  v8 = [objc_opt_class() _descriptorForMinimumAge:age];
+  _identityController = [objc_opt_class() _identityController];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__AMSUIParentalVerificationIDCardTask__dataFromIDCardForMinimumAge_nonce___block_invoke;
   v17[3] = &unk_1E7F25578;
   v17[4] = self;
   v18 = v8;
-  v19 = v6;
-  v20 = v9;
+  v19 = nonceCopy;
+  v20 = _identityController;
   v10 = v7;
   v21 = v10;
-  v22 = a3;
-  v11 = v9;
-  v12 = v6;
+  ageCopy = age;
+  v11 = _identityController;
+  v12 = nonceCopy;
   v13 = v8;
   [v11 checkCanRequestDocument:v13 completion:v17];
   v14 = v21;
@@ -298,28 +298,28 @@ void __74__AMSUIParentalVerificationIDCardTask__dataFromIDCardForMinimumAge_nonc
   v35 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_descriptorForMinimumAge:(int64_t)a3
++ (id)_descriptorForMinimumAge:(int64_t)age
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69B8930] ageThresholdElementWithAge:a3];
+  v3 = [MEMORY[0x1E69B8930] ageThresholdElementWithAge:age];
   v4 = objc_alloc_init(getPKIdentityDriversLicenseDescriptorClass[0]());
   v20[0] = v3;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v6 = [MEMORY[0x1E69B8938] willNotStoreIntent];
-  [v4 addElements:v5 withIntentToStore:v6];
+  willNotStoreIntent = [MEMORY[0x1E69B8938] willNotStoreIntent];
+  [v4 addElements:v5 withIntentToStore:willNotStoreIntent];
 
   v7 = objc_alloc_init(getPKIdentityPhotoIDDescriptorClass[0]());
   v19 = v3;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-  v9 = [MEMORY[0x1E69B8938] willNotStoreIntent];
-  [v7 addElements:v8 withIntentToStore:v9];
+  willNotStoreIntent2 = [MEMORY[0x1E69B8938] willNotStoreIntent];
+  [v7 addElements:v8 withIntentToStore:willNotStoreIntent2];
 
   v10 = objc_alloc_init(getPKIdentityNationalIDCardDescriptorClass[0]());
   [v10 setRegionCode:@"JP"];
   v18 = v3;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-  v12 = [MEMORY[0x1E69B8938] willNotStoreIntent];
-  [v10 addElements:v11 withIntentToStore:v12];
+  willNotStoreIntent3 = [MEMORY[0x1E69B8938] willNotStoreIntent];
+  [v10 addElements:v11 withIntentToStore:willNotStoreIntent3];
 
   v17[0] = v4;
   v17[1] = v7;
@@ -339,15 +339,15 @@ void __74__AMSUIParentalVerificationIDCardTask__dataFromIDCardForMinimumAge_nonc
   return v2;
 }
 
-+ (id)_identityRequestWithDescriptor:(id)a3 nonce:(id)a4
++ (id)_identityRequestWithDescriptor:(id)descriptor nonce:(id)nonce
 {
   v6 = getPKIdentityRequestClass[0];
-  v7 = a4;
-  v8 = a3;
+  nonceCopy = nonce;
+  descriptorCopy = descriptor;
   v9 = objc_alloc_init(v6());
-  [v9 setDescriptor:v8];
+  [v9 setDescriptor:descriptorCopy];
 
-  v10 = [a1 _nonceFromString:v7];
+  v10 = [self _nonceFromString:nonceCopy];
 
   [v9 setNonce:v10];
   [v9 setMerchantIdentifier:@"com.apple.ams-identity-verification"];
@@ -355,36 +355,36 @@ void __74__AMSUIParentalVerificationIDCardTask__dataFromIDCardForMinimumAge_nonc
   return v9;
 }
 
-- (id)_promiseToLoadPVTURLWithBody:(id)a3
+- (id)_promiseToLoadPVTURLWithBody:(id)body
 {
-  v4 = a3;
-  v5 = [(AMSUIParentalVerificationIDCardTask *)self metrics];
-  [v5 enqueueEventWithPageId:@"ParentalVerificationIDCard" displayReason:0];
+  bodyCopy = body;
+  metrics = [(AMSUIParentalVerificationIDCardTask *)self metrics];
+  [metrics enqueueEventWithPageId:@"ParentalVerificationIDCard" displayReason:0];
 
   v6 = [(AMSUIParentalVerificationIDCardTask *)self bag];
   v7 = [v6 URLForKey:@"verifyAgeMeadPvt"];
 
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__AMSUIParentalVerificationIDCardTask__promiseToLoadPVTURLWithBody___block_invoke;
   v12[3] = &unk_1E7F25470;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v8 thenWithBlock:v12];
+  v13 = bodyCopy;
+  v9 = bodyCopy;
+  v10 = [valuePromise thenWithBlock:v12];
 
   return v10;
 }
 
-- (id)_promiseToFetchIDCardTokenURL:(id)a3 requestBody:(id)a4
+- (id)_promiseToFetchIDCardTokenURL:(id)l requestBody:(id)body
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSUIParentalVerificationIDCardTask *)self account];
-  v9 = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
+  bodyCopy = body;
+  lCopy = l;
+  account = [(AMSUIParentalVerificationIDCardTask *)self account];
+  accountParameters = [(AMSUIParentalVerificationIDCardTask *)self accountParameters];
   v10 = [(AMSUIParentalVerificationIDCardTask *)self bag];
-  v11 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:v8 accountParameters:v9 url:v7 bag:v10 requestBody:v6 bodyEncoding:3 contentType:0];
+  v11 = [AMSUIPaymentVerificationProtocolHandler _promiseToFetchURLResponseForAccount:account accountParameters:accountParameters url:lCopy bag:v10 requestBody:bodyCopy bodyEncoding:3 contentType:0];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -489,13 +489,13 @@ LABEL_10:
   return v16;
 }
 
-+ (id)_requestDictFromMinimumAge:(int64_t)a3 walletData:(id)a4 nonce:(id)a5
++ (id)_requestDictFromMinimumAge:(int64_t)age walletData:(id)data nonce:(id)nonce
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a4 base64EncodedStringWithOptions:1];
+  nonceCopy = nonce;
+  v8 = [data base64EncodedStringWithOptions:1];
   v16[0] = @"ageThreshold";
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:age];
   v10 = v9;
   if (v8)
   {
@@ -511,9 +511,9 @@ LABEL_10:
   v17[1] = v11;
   v16[1] = @"digitalId";
   v16[2] = @"nonce";
-  if (v7)
+  if (nonceCopy)
   {
-    v12 = v7;
+    v12 = nonceCopy;
   }
 
   else
@@ -529,13 +529,13 @@ LABEL_10:
   return v13;
 }
 
-+ (int64_t)_minAgeFromObject:(id)a3
++ (int64_t)_minAgeFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -559,21 +559,21 @@ LABEL_10:
 
     if (v6)
     {
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
 
     else
     {
-      v7 = 18;
+      integerValue = 18;
     }
   }
 
   else
   {
-    v7 = 18;
+    integerValue = 18;
   }
 
-  return v7;
+  return integerValue;
 }
 
 @end

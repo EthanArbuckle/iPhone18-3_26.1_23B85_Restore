@@ -7,50 +7,50 @@
 
 - (BOOL)needsAssetURLRefresh
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 assetURLsDate];
-    if (v2)
+    assetURLsDate = [self assetURLsDate];
+    if (assetURLsDate)
     {
       v3 = MEMORY[0x1E695DF00];
-      v4 = [v1 assetURLsDate];
-      v5 = [v3 dateWithPBDate:v4];
+      assetURLsDate2 = [selfCopy assetURLsDate];
+      v5 = [v3 dateWithPBDate:assetURLsDate2];
       [v5 fc_timeIntervalUntilNow];
-      v1 = v6 >= 604800.0;
+      selfCopy = v6 >= 604800.0;
     }
 
     else
     {
-      v1 = 1;
+      selfCopy = 1;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)hasExpiredAssetURLs
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 assetURLsDate];
-    if (v2)
+    assetURLsDate = [self assetURLsDate];
+    if (assetURLsDate)
     {
       v3 = MEMORY[0x1E695DF00];
-      v4 = [v1 assetURLsDate];
-      v5 = [v3 dateWithPBDate:v4];
+      assetURLsDate2 = [selfCopy assetURLsDate];
+      v5 = [v3 dateWithPBDate:assetURLsDate2];
       [v5 fc_timeIntervalUntilNow];
-      v1 = v6 >= 2592000.0;
+      selfCopy = v6 >= 2592000.0;
     }
 
     else
     {
-      v1 = 1;
+      selfCopy = 1;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

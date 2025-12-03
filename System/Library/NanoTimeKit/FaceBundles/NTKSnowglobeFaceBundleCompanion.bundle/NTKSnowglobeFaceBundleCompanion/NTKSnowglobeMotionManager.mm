@@ -62,13 +62,13 @@
     objc_sync_exit(obj);
     objc_initWeak(buf, obj);
     motionManager = obj->_motionManager;
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = sub_23C080EF0;
     v6[3] = &unk_278BAC578;
     objc_copyWeak(&v7, buf);
-    [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:v4 withHandler:v6];
+    [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:mainQueue withHandler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
@@ -107,13 +107,13 @@
 
 - (id)acquireToken
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  ++v2->_activeTokens;
-  [(NTKSnowglobeMotionManager *)v2 resume];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ++selfCopy->_activeTokens;
+  [(NTKSnowglobeMotionManager *)selfCopy resume];
+  objc_sync_exit(selfCopy);
 
-  v3 = [[NTKSnowglobeMotionToken alloc] initWithMotionManager:v2];
+  v3 = [[NTKSnowglobeMotionToken alloc] initWithMotionManager:selfCopy];
 
   return v3;
 }

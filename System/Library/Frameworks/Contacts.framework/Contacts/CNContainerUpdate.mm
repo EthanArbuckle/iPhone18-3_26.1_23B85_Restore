@@ -1,33 +1,33 @@
 @interface CNContainerUpdate
-+ (id)updateWithValue:(id)a3 property:(id)a4;
-- (CNContainerUpdate)initWithProperty:(id)a3 value:(id)a4;
++ (id)updateWithValue:(id)value property:(id)property;
+- (CNContainerUpdate)initWithProperty:(id)property value:(id)value;
 - (NSString)description;
-- (void)applyToMutableContainer:(id)a3;
+- (void)applyToMutableContainer:(id)container;
 @end
 
 @implementation CNContainerUpdate
 
-+ (id)updateWithValue:(id)a3 property:(id)a4
++ (id)updateWithValue:(id)value property:(id)property
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProperty:v6 value:v7];
+  propertyCopy = property;
+  valueCopy = value;
+  v8 = [[self alloc] initWithProperty:propertyCopy value:valueCopy];
 
   return v8;
 }
 
-- (CNContainerUpdate)initWithProperty:(id)a3 value:(id)a4
+- (CNContainerUpdate)initWithProperty:(id)property value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = CNContainerUpdate;
   v9 = [(CNContainerUpdate *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_property, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_property, property);
+    objc_storeStrong(&v10->_value, value);
     v11 = v10;
   }
 
@@ -41,16 +41,16 @@
   v5 = [v3 appendName:@"property" object:v4];
 
   v6 = [v3 appendName:@"value" object:self->_value];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)applyToMutableContainer:(id)a3
+- (void)applyToMutableContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(CNContainerUpdate *)self property];
-  [v5 setCNValue:self->_value onContainer:v4];
+  containerCopy = container;
+  property = [(CNContainerUpdate *)self property];
+  [property setCNValue:self->_value onContainer:containerCopy];
 }
 
 @end

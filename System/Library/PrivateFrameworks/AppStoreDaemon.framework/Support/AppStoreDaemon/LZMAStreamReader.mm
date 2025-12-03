@@ -1,10 +1,10 @@
 @interface LZMAStreamReader
 - (BOOL)hasBytesAvailable;
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation LZMAStreamReader
@@ -15,7 +15,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "(LZMAStreamReader) Reader deallocated: %@", buf, 0xCu);
   }
 
@@ -61,21 +61,21 @@
   [(Stream *)&v3 open];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a4;
+    *(&buf + 4) = event;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "(LZMAStreamReader) Upstream event code %lu", &buf, 0xCu);
   }
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v15 = 0x2020000000;
-  v16 = a4;
+  eventCopy = event;
   lock = self->_lock;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -88,27 +88,27 @@
   {
     if ([(Stream *)self streamStatus]< 2 || [(Stream *)self streamStatus]> 5)
     {
-      v9 = ASDLogHandleForCategory();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      delegate = ASDLogHandleForCategory();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEBUG))
       {
         v10 = *(*(&buf + 1) + 24);
         *v12 = 134217984;
         v13 = v10;
-        _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "(LZMAStreamReader) Not forwarding event code %lu", v12, 0xCu);
+        _os_log_debug_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEBUG, "(LZMAStreamReader) Not forwarding event code %lu", v12, 0xCu);
       }
     }
 
     else
     {
-      v9 = [(Stream *)self delegate];
-      [v9 stream:self handleEvent:*(*(&buf + 1) + 24)];
+      delegate = [(Stream *)self delegate];
+      [delegate stream:self handleEvent:*(*(&buf + 1) + 24)];
     }
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (int64_t)readBytes:(char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)readBytes:(char *)bytes length:(unint64_t)length error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -127,14 +127,14 @@
   v9[3] = &unk_10051F0E0;
   v9[4] = self;
   v9[5] = &v10;
-  v9[7] = a4;
-  v9[8] = a3;
+  v9[7] = length;
+  v9[8] = bytes;
   v9[6] = &v16;
   sub_100379C5C(lock, v9);
   v7 = v17[3];
-  if (a5 && v7 < 0)
+  if (error && v7 < 0)
   {
-    *a5 = v11[5];
+    *error = v11[5];
     v7 = v17[3];
   }
 

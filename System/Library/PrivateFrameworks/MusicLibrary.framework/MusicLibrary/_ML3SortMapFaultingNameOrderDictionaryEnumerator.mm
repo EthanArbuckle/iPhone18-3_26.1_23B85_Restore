@@ -1,5 +1,5 @@
 @interface _ML3SortMapFaultingNameOrderDictionaryEnumerator
-- (_ML3SortMapFaultingNameOrderDictionaryEnumerator)initWithDirtyInsertsEnumerator:(id)a3 connection:(id)a4;
+- (_ML3SortMapFaultingNameOrderDictionaryEnumerator)initWithDirtyInsertsEnumerator:(id)enumerator connection:(id)connection;
 - (id)nextObject;
 @end
 
@@ -13,7 +13,7 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6467;
   v17 = __Block_byref_object_dispose__6468;
-  v18 = [(NSEnumerator *)self->_dirtyInsertsEnumerator nextObject];
+  nextObject = [(NSEnumerator *)self->_dirtyInsertsEnumerator nextObject];
   v4 = v14[5];
   if (!v4)
   {
@@ -43,18 +43,18 @@
   return v10;
 }
 
-- (_ML3SortMapFaultingNameOrderDictionaryEnumerator)initWithDirtyInsertsEnumerator:(id)a3 connection:(id)a4
+- (_ML3SortMapFaultingNameOrderDictionaryEnumerator)initWithDirtyInsertsEnumerator:(id)enumerator connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = _ML3SortMapFaultingNameOrderDictionaryEnumerator;
   v9 = [(_ML3SortMapFaultingNameOrderDictionaryEnumerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a4);
-    objc_storeStrong(&v10->_dirtyInsertsEnumerator, a3);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_dirtyInsertsEnumerator, enumerator);
   }
 
   return v10;

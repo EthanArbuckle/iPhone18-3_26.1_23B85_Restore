@@ -54,8 +54,8 @@
   v17 = [v16 mutableCopy];
   [v5 setVpnProfileNames:v17];
 
-  v18 = [v5 analyticsBaseUrl];
-  if (v18)
+  analyticsBaseUrl = [v5 analyticsBaseUrl];
+  if (analyticsBaseUrl)
   {
     v19 = v5;
   }

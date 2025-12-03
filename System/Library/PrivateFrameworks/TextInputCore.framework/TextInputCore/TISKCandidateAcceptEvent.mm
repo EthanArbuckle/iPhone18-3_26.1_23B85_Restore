@@ -1,30 +1,30 @@
 @interface TISKCandidateAcceptEvent
-- (void)reportToSession:(id)a3;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKCandidateAcceptEvent
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
-  v24 = a3;
+  sessionCopy = session;
   v4 = [(TISKEvent *)self isValidCandidate:self->_candidate];
-  v5 = v24;
+  v5 = sessionCopy;
   if (!v4)
   {
     goto LABEL_37;
   }
 
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfWordsCounter];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfWordsCounter];
   if ([(TISKCandidateAcceptEvent *)self isAutocorrection])
   {
-    [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfAutoCorrections];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfAutoCorrections];
   }
 
-  v6 = [(TIKeyboardCandidate *)self->_candidate usageTrackingMask];
-  v7 = v6;
-  if ((v6 & 0x10) != 0)
+  usageTrackingMask = [(TIKeyboardCandidate *)self->_candidate usageTrackingMask];
+  v7 = usageTrackingMask;
+  if ((usageTrackingMask & 0x10) != 0)
   {
-    [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfSpaceCorrections];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfSpaceCorrections];
     if ((v7 & 0x20) == 0)
     {
 LABEL_6:
@@ -37,12 +37,12 @@ LABEL_6:
     }
   }
 
-  else if ((v6 & 0x20) == 0)
+  else if ((usageTrackingMask & 0x20) == 0)
   {
     goto LABEL_6;
   }
 
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfRetroCorrections];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfRetroCorrections];
   if ((v7 & 0x400) == 0)
   {
 LABEL_7:
@@ -55,7 +55,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfTranspositionCorrections];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfTranspositionCorrections];
   if ((v7 & 0x800) == 0)
   {
 LABEL_8:
@@ -68,7 +68,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfInsertKeyCorrections];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfInsertKeyCorrections];
   if ((v7 & 0x1000) == 0)
   {
 LABEL_9:
@@ -81,7 +81,7 @@ LABEL_9:
   }
 
 LABEL_20:
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfSkipTouchCorrections];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfSkipTouchCorrections];
   if ((v7 & 0x4000) == 0)
   {
 LABEL_10:
@@ -91,7 +91,7 @@ LABEL_10:
     }
 
 LABEL_22:
-    [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfSubstitutionCorrections];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfSubstitutionCorrections];
     if ((v7 & 0x10000) == 0)
     {
       goto LABEL_13;
@@ -101,7 +101,7 @@ LABEL_22:
   }
 
 LABEL_21:
-  [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfNearKeyCorrections];
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfNearKeyCorrections];
   if ((v7 & 0x8000) != 0)
   {
     goto LABEL_22;
@@ -111,20 +111,20 @@ LABEL_11:
   if ((v7 & 0x10000) != 0)
   {
 LABEL_12:
-    [v24 addSample:&unk_28400BF10 forKey:kTISKNumberOfHitTestCorrections];
+    [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfHitTestCorrections];
   }
 
 LABEL_13:
-  v8 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+  wordBucketCategory = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
 
-  v5 = v24;
-  if (!v8)
+  v5 = sessionCopy;
+  if (!wordBucketCategory)
   {
     goto LABEL_37;
   }
 
-  v9 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-  v10 = [v9 isEqualToString:@"absolutistWord"];
+  wordBucketCategory2 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+  v10 = [wordBucketCategory2 isEqualToString:@"absolutistWord"];
 
   if (v10)
   {
@@ -133,8 +133,8 @@ LABEL_13:
 
   else
   {
-    v12 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-    v13 = [v12 isEqualToString:@"downWord"];
+    wordBucketCategory3 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+    v13 = [wordBucketCategory3 isEqualToString:@"downWord"];
 
     if (v13)
     {
@@ -143,8 +143,8 @@ LABEL_13:
 
     else
     {
-      v14 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-      v15 = [v14 isEqualToString:@"deathWord"];
+      wordBucketCategory4 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+      v15 = [wordBucketCategory4 isEqualToString:@"deathWord"];
 
       if (v15)
       {
@@ -153,8 +153,8 @@ LABEL_13:
 
       else
       {
-        v16 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-        v17 = [v16 isEqualToString:@"anxietyWord"];
+        wordBucketCategory5 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+        v17 = [wordBucketCategory5 isEqualToString:@"anxietyWord"];
 
         if (v17)
         {
@@ -163,8 +163,8 @@ LABEL_13:
 
         else
         {
-          v18 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-          v19 = [v18 isEqualToString:@"angerWord"];
+          wordBucketCategory6 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+          v19 = [wordBucketCategory6 isEqualToString:@"angerWord"];
 
           if (v19)
           {
@@ -173,8 +173,8 @@ LABEL_13:
 
           else
           {
-            v20 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-            v21 = [v20 isEqualToString:@"healthFeelingWord"];
+            wordBucketCategory7 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+            v21 = [wordBucketCategory7 isEqualToString:@"healthFeelingWord"];
 
             if (v21)
             {
@@ -183,10 +183,10 @@ LABEL_13:
 
             else
             {
-              v22 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
-              v23 = [v22 isEqualToString:@"positiveWord"];
+              wordBucketCategory8 = [(TISKCandidateAcceptEvent *)self wordBucketCategory];
+              v23 = [wordBucketCategory8 isEqualToString:@"positiveWord"];
 
-              v5 = v24;
+              v5 = sessionCopy;
               if (!v23)
               {
                 goto LABEL_37;
@@ -200,8 +200,8 @@ LABEL_13:
     }
   }
 
-  v4 = [v24 addSample:&unk_28400BF10 forKey:*v11];
-  v5 = v24;
+  v4 = [sessionCopy addSample:&unk_28400BF10 forKey:*v11];
+  v5 = sessionCopy;
 LABEL_37:
 
   MEMORY[0x2821F96F8](v4, v5);

@@ -1,6 +1,6 @@
 @interface BackgroundSimulationView
 + (Class)layerClass;
-- (_TtC23MonogramPosterExtension24BackgroundSimulationView)initWithCoder:(id)a3;
+- (_TtC23MonogramPosterExtension24BackgroundSimulationView)initWithCoder:(id)coder;
 @end
 
 @implementation BackgroundSimulationView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC23MonogramPosterExtension24BackgroundSimulationView)initWithCoder:(id)a3
+- (_TtC23MonogramPosterExtension24BackgroundSimulationView)initWithCoder:(id)coder
 {
   sub_100026690();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23MonogramPosterExtension24BackgroundSimulationView_motion) = 0;

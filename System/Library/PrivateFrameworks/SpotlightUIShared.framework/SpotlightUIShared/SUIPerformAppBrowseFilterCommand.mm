@@ -1,8 +1,8 @@
 @interface SUIPerformAppBrowseFilterCommand
 - (_TtC17SpotlightUIShared32SUIPerformAppBrowseFilterCommand)init;
-- (_TtC17SpotlightUIShared32SUIPerformAppBrowseFilterCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC17SpotlightUIShared32SUIPerformAppBrowseFilterCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUIPerformAppBrowseFilterCommand
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26B93AE5C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26B93AE5C(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for SUIPerformAppBrowseFilterCommand();
   v4 = v11.receiver;
-  [(SSPerformEntityQueryCommand *)&v11 copyWithZone:a3];
+  [(SSPerformEntityQueryCommand *)&v11 copyWithZone:zone];
   sub_26B9ACAD4();
   swift_unknownObjectRelease();
   v5 = swift_dynamicCast();
@@ -45,7 +45,7 @@
   return v10;
 }
 
-- (_TtC17SpotlightUIShared32SUIPerformAppBrowseFilterCommand)initWithProtobuf:(id)a3
+- (_TtC17SpotlightUIShared32SUIPerformAppBrowseFilterCommand)initWithProtobuf:(id)protobuf
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

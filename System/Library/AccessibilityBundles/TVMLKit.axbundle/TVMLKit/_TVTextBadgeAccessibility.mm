@@ -1,5 +1,5 @@
 @interface _TVTextBadgeAccessibility
-- (id)_processTextBadgeAXLabel:(id)a3;
+- (id)_processTextBadgeAXLabel:(id)label;
 - (id)accessibilityLabel;
 @end
 
@@ -9,40 +9,40 @@
 {
   v6.receiver = self;
   v6.super_class = _TVTextBadgeAccessibility;
-  v3 = [(_TVTextBadgeAccessibility *)&v6 accessibilityLabel];
-  if (!v3)
+  accessibilityLabel = [(_TVTextBadgeAccessibility *)&v6 accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v3 = accessibilityLocalizedString(@"unknown.badge");
+    accessibilityLabel = accessibilityLocalizedString(@"unknown.badge");
   }
 
-  v4 = [(_TVTextBadgeAccessibility *)self _processTextBadgeAXLabel:v3];
+  v4 = [(_TVTextBadgeAccessibility *)self _processTextBadgeAXLabel:accessibilityLabel];
 
   return v4;
 }
 
-- (id)_processTextBadgeAXLabel:(id)a3
+- (id)_processTextBadgeAXLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ATV.Search.Product.ADAvailable"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"ATV.Search.Product.ADAvailable"])
   {
-    v4 = [MEMORY[0x29EDBDDF0] sharedInstance];
-    v5 = v4;
+    mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
+    v5 = mEMORY[0x29EDBDDF0];
     v6 = @"axid.icon.ad";
 LABEL_5:
-    v7 = [v4 atvaccessibilityLocalizedString:v6];
+    v7 = [mEMORY[0x29EDBDDF0] atvaccessibilityLocalizedString:v6];
 
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"ATV.Search.Product.SDHAvailable"])
+  if ([labelCopy isEqualToString:@"ATV.Search.Product.SDHAvailable"])
   {
-    v4 = [MEMORY[0x29EDBDDF0] sharedInstance];
-    v5 = v4;
+    mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
+    v5 = mEMORY[0x29EDBDDF0];
     v6 = @"axid.icon.sdh";
     goto LABEL_5;
   }
 
-  v7 = v3;
+  v7 = labelCopy;
 LABEL_7:
 
   return v7;

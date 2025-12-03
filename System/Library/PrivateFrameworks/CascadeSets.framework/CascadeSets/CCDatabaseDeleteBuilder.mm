@@ -1,30 +1,30 @@
 @interface CCDatabaseDeleteBuilder
 - (id)build;
-- (void)setCommandCriterion:(id)a3;
-- (void)setReturningColumns:(id)a3;
+- (void)setCommandCriterion:(id)criterion;
+- (void)setReturningColumns:(id)columns;
 @end
 
 @implementation CCDatabaseDeleteBuilder
 
 - (id)build
 {
-  v3 = [(CCDatabaseCommandBuilder *)self tableName];
-  v4 = [(CCDatabaseCommandBuilder *)self criterion];
-  v5 = [CCSQLCommandGenerator deleteFromTableWithName:v3 criterion:v4 returningColumns:self->_returningColumns];
+  tableName = [(CCDatabaseCommandBuilder *)self tableName];
+  criterion = [(CCDatabaseCommandBuilder *)self criterion];
+  v5 = [CCSQLCommandGenerator deleteFromTableWithName:tableName criterion:criterion returningColumns:self->_returningColumns];
 
   return v5;
 }
 
-- (void)setCommandCriterion:(id)a3
+- (void)setCommandCriterion:(id)criterion
 {
   v3.receiver = self;
   v3.super_class = CCDatabaseDeleteBuilder;
-  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:a3];
+  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:criterion];
 }
 
-- (void)setReturningColumns:(id)a3
+- (void)setReturningColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   returningColumns = self->_returningColumns;
   self->_returningColumns = v4;
 

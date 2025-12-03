@@ -1,34 +1,34 @@
 @interface CARWirelessPairingSession
 - (CARWirelessPairingDelegate)delegate;
-- (CARWirelessPairingSession)initWithVehicleAddress:(id)a3 supportedCapabilites:(unint64_t)a4 keyIdentifier:(id)a5;
-- (void)_delegate_handleCompletedWithResult:(unint64_t)a3;
-- (void)_delegate_handleRequestedPairingWithDeviceAddress:(id)a3 forIntent:(unint64_t)a4 C192:(id)a5 R192:(id)a6 C256:(id)a7 R256:(id)a8;
-- (void)_servicePerform:(id)a3;
+- (CARWirelessPairingSession)initWithVehicleAddress:(id)address supportedCapabilites:(unint64_t)capabilites keyIdentifier:(id)identifier;
+- (void)_delegate_handleCompletedWithResult:(unint64_t)result;
+- (void)_delegate_handleRequestedPairingWithDeviceAddress:(id)address forIntent:(unint64_t)intent C192:(id)c192 R192:(id)r192 C256:(id)c256 R256:(id)r256;
+- (void)_servicePerform:(id)perform;
 - (void)_setupConnection;
-- (void)_synchronous_servicePerform:(id)a3;
+- (void)_synchronous_servicePerform:(id)perform;
 - (void)cancelPairing;
 - (void)dealloc;
-- (void)handleVehicleReportedResult:(BOOL)a3;
+- (void)handleVehicleReportedResult:(BOOL)result;
 - (void)invalidate;
 - (void)requestPairing;
-- (void)setupVehicleDataC192:(id)a3 r192:(id)a4 c256:(id)a5 r256:(id)a6;
+- (void)setupVehicleDataC192:(id)c192 r192:(id)r192 c256:(id)c256 r256:(id)r256;
 @end
 
 @implementation CARWirelessPairingSession
 
-- (CARWirelessPairingSession)initWithVehicleAddress:(id)a3 supportedCapabilites:(unint64_t)a4 keyIdentifier:(id)a5
+- (CARWirelessPairingSession)initWithVehicleAddress:(id)address supportedCapabilites:(unint64_t)capabilites keyIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
+  addressCopy = address;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = CARWirelessPairingSession;
   v11 = [(CARWirelessPairingSession *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_vehicleAddress, a3);
-    v12->_supportedCapabilities = a4;
-    objc_storeStrong(&v12->_keyIdentifier, a5);
+    objc_storeStrong(&v11->_vehicleAddress, address);
+    v12->_supportedCapabilities = capabilites;
+    objc_storeStrong(&v12->_keyIdentifier, identifier);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_DEFAULT, 0);
 
@@ -123,12 +123,12 @@ void __43__CARWirelessPairingSession_requestPairing__block_invoke_22(uint64_t a1
   }
 }
 
-- (void)setupVehicleDataC192:(id)a3 r192:(id)a4 c256:(id)a5 r256:(id)a6
+- (void)setupVehicleDataC192:(id)c192 r192:(id)r192 c256:(id)c256 r256:(id)r256
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  c192Copy = c192;
+  r192Copy = r192;
+  c256Copy = c256;
+  r256Copy = r256;
   v14 = CarPairingLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,13 +142,13 @@ void __43__CARWirelessPairingSession_requestPairing__block_invoke_22(uint64_t a1
   v19[2] = __65__CARWirelessPairingSession_setupVehicleDataC192_r192_c256_r256___block_invoke;
   v19[3] = &unk_1E82FD418;
   v19[4] = self;
-  v15 = v10;
+  v15 = c192Copy;
   v20 = v15;
-  v16 = v11;
+  v16 = r192Copy;
   v21 = v16;
-  v17 = v12;
+  v17 = c256Copy;
   v22 = v17;
-  v18 = v13;
+  v18 = r256Copy;
   v23 = v18;
   objc_copyWeak(&v24, buf);
   [(CARWirelessPairingSession *)self _servicePerform:v19];
@@ -220,12 +220,12 @@ void __65__CARWirelessPairingSession_setupVehicleDataC192_r192_c256_r256___block
   [WeakRetained _delegate_handleCompletedWithResult:a2];
 }
 
-- (void)handleVehicleReportedResult:(BOOL)a3
+- (void)handleVehicleReportedResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v5 = CarPairingLogging();
   v6 = v5;
-  if (v3)
+  if (resultCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -260,8 +260,8 @@ void __65__CARWirelessPairingSession_setupVehicleDataC192_r192_c256_r256___block
 - (void)invalidate
 {
   [(CARWirelessPairingSession *)self cancelPairing];
-  v3 = [(CARWirelessPairingSession *)self connection];
-  [v3 invalidate];
+  connection = [(CARWirelessPairingSession *)self connection];
+  [connection invalidate];
 
   [(CARWirelessPairingSession *)self setConnection:0];
 }
@@ -349,13 +349,13 @@ void __45__CARWirelessPairingSession__setupConnection__block_invoke_2(uint64_t a
   }
 }
 
-- (void)_servicePerform:(id)a3
+- (void)_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARWirelessPairingSession *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_91];
+  performCopy = perform;
+  connection = [(CARWirelessPairingSession *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_91];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
 void __45__CARWirelessPairingSession__servicePerform___block_invoke(uint64_t a1, void *a2)
@@ -368,13 +368,13 @@ void __45__CARWirelessPairingSession__servicePerform___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_synchronous_servicePerform:(id)a3
+- (void)_synchronous_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARWirelessPairingSession *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_93_0];
+  performCopy = perform;
+  connection = [(CARWirelessPairingSession *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_93_0];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
 void __57__CARWirelessPairingSession__synchronous_servicePerform___block_invoke(uint64_t a1, void *a2)
@@ -387,31 +387,31 @@ void __57__CARWirelessPairingSession__synchronous_servicePerform___block_invoke(
   }
 }
 
-- (void)_delegate_handleRequestedPairingWithDeviceAddress:(id)a3 forIntent:(unint64_t)a4 C192:(id)a5 R192:(id)a6 C256:(id)a7 R256:(id)a8
+- (void)_delegate_handleRequestedPairingWithDeviceAddress:(id)address forIntent:(unint64_t)intent C192:(id)c192 R192:(id)r192 C256:(id)c256 R256:(id)r256
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(CARWirelessPairingSession *)self clientQueue];
+  addressCopy = address;
+  c192Copy = c192;
+  r192Copy = r192;
+  c256Copy = c256;
+  r256Copy = r256;
+  clientQueue = [(CARWirelessPairingSession *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__CARWirelessPairingSession__delegate_handleRequestedPairingWithDeviceAddress_forIntent_C192_R192_C256_R256___block_invoke;
   block[3] = &unk_1E82FD488;
   block[4] = self;
-  v26 = v14;
-  v30 = v18;
-  v31 = a4;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  dispatch_async(v19, block);
+  v26 = addressCopy;
+  v30 = r256Copy;
+  intentCopy = intent;
+  v27 = c192Copy;
+  v28 = r192Copy;
+  v29 = c256Copy;
+  v20 = r256Copy;
+  v21 = c256Copy;
+  v22 = r192Copy;
+  v23 = c192Copy;
+  v24 = addressCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __109__CARWirelessPairingSession__delegate_handleRequestedPairingWithDeviceAddress_forIntent_C192_R192_C256_R256___block_invoke(uint64_t a1)
@@ -431,16 +431,16 @@ void __109__CARWirelessPairingSession__delegate_handleRequestedPairingWithDevice
   }
 }
 
-- (void)_delegate_handleCompletedWithResult:(unint64_t)a3
+- (void)_delegate_handleCompletedWithResult:(unint64_t)result
 {
-  v5 = [(CARWirelessPairingSession *)self clientQueue];
+  clientQueue = [(CARWirelessPairingSession *)self clientQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__CARWirelessPairingSession__delegate_handleCompletedWithResult___block_invoke;
   v6[3] = &unk_1E82FD2C8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = result;
+  dispatch_async(clientQueue, v6);
 }
 
 uint64_t __65__CARWirelessPairingSession__delegate_handleCompletedWithResult___block_invoke(uint64_t a1)

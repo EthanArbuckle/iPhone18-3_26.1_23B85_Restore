@@ -1,26 +1,26 @@
 @interface LookAroundPIPViewController
 - (LookAroundActionCoordination)actionCoordinator;
-- (LookAroundPIPViewController)initWithDataCoordinator:(id)a3 lookAroundView:(id)a4;
-- (void)_captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5;
+- (LookAroundPIPViewController)initWithDataCoordinator:(id)coordinator lookAroundView:(id)view;
+- (void)_captureUserAction:(int)action onTarget:(int)target eventValue:(id)value;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)_updateLookAroundAvailability:(int64_t)a3 imageryError:(BOOL)a4;
+- (void)_updateLookAroundAvailability:(int64_t)availability imageryError:(BOOL)error;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectImageryInfo:(id)a4;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectReportAnIssue:(id)a4;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectToggleLabels:(id)a4;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapDoneButton:(id)a4;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapMaximizeButton:(id)a4;
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapMinimizeButton:(id)a4;
-- (void)lookAroundPIPDataCoordinatorDidChangeLookAroundAvailability:(id)a3;
-- (void)lookAroundPIPDataCoordinatorDidEndMovingLookAroundView:(id)a3;
-- (void)lookAroundPIPDataCoordinatorDidEndPanningMapView:(id)a3;
-- (void)lookAroundPIPDataCoordinatorDidStartPanningMapView:(id)a3;
-- (void)lookAroundPIPDataCoordinatorDidSynchronizeMapView:(id)a3;
-- (void)lookAroundPIPDataCoordinatorFailedToEnterLookArounPIP:(id)a3;
-- (void)lookAroundPIPDataCoordinatorIsPanningMapView:(id)a3;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectImageryInfo:(id)info;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectReportAnIssue:(id)issue;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectToggleLabels:(id)labels;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapDoneButton:(id)button;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapMaximizeButton:(id)button;
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapMinimizeButton:(id)button;
+- (void)lookAroundPIPDataCoordinatorDidChangeLookAroundAvailability:(id)availability;
+- (void)lookAroundPIPDataCoordinatorDidEndMovingLookAroundView:(id)view;
+- (void)lookAroundPIPDataCoordinatorDidEndPanningMapView:(id)view;
+- (void)lookAroundPIPDataCoordinatorDidStartPanningMapView:(id)view;
+- (void)lookAroundPIPDataCoordinatorDidSynchronizeMapView:(id)view;
+- (void)lookAroundPIPDataCoordinatorFailedToEnterLookArounPIP:(id)p;
+- (void)lookAroundPIPDataCoordinatorIsPanningMapView:(id)view;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -34,41 +34,41 @@
   return WeakRetained;
 }
 
-- (void)_captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5
+- (void)_captureUserAction:(int)action onTarget:(int)target eventValue:(id)value
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v23 = a5;
-  v8 = [(LookAroundPIPViewController *)self dataCoordinator];
-  v9 = [v8 mapView];
+  v5 = *&target;
+  v6 = *&action;
+  valueCopy = value;
+  dataCoordinator = [(LookAroundPIPViewController *)self dataCoordinator];
+  mapView = [dataCoordinator mapView];
 
-  v10 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v9 centerCoordinate];
+  lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+  [mapView centerCoordinate];
   v13 = [[GEOLocation alloc] initWithLatitude:v11 longitude:v12];
-  v14 = [v9 camera];
-  [v14 heading];
+  camera = [mapView camera];
+  [camera heading];
   v16 = v15;
-  [v9 _zoomLevel];
+  [mapView _zoomLevel];
   v18 = v17;
-  v19 = [v10 visiblePlaceMUIDs];
-  v20 = [v19 count];
-  if ([v10 showsRoadLabels])
+  visiblePlaceMUIDs = [lookAroundView visiblePlaceMUIDs];
+  v20 = [visiblePlaceMUIDs count];
+  if ([lookAroundView showsRoadLabels])
   {
-    v21 = 1;
+    showsPointLabels = 1;
   }
 
   else
   {
-    v21 = [v10 showsPointLabels];
+    showsPointLabels = [lookAroundView showsPointLabels];
   }
 
-  LOBYTE(v22) = v21;
-  [GEOAPPortal captureLookAroundUserAction:v6 onTarget:v5 eventValue:v23 location:v13 heading:v16 zoom:v20 numberPoisInView:v18 labelingShown:v22];
+  LOBYTE(v22) = showsPointLabels;
+  [GEOAPPortal captureLookAroundUserAction:v6 onTarget:v5 eventValue:valueCopy location:v13 heading:v16 zoom:v20 numberPoisInView:v18 labelingShown:v22];
 }
 
-- (void)_updateLookAroundAvailability:(int64_t)a3 imageryError:(BOOL)a4
+- (void)_updateLookAroundAvailability:(int64_t)availability imageryError:(BOOL)error
 {
-  if (a3 == 1 && !a4)
+  if (availability == 1 && !error)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
@@ -79,7 +79,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a3 && !a4)
+  if (!availability && !error)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
@@ -87,7 +87,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     v8 = +[LookAroundErrorStringBuilder buildBestErrorStringForCurrentNetworkState];
   }
@@ -112,29 +112,29 @@ LABEL_8:
 
 - (void)_setupViews
 {
-  v19 = [(CardView *)self->_cardView contentView];
+  contentView = [(CardView *)self->_cardView contentView];
   v3 = [MKLookAroundContainerView alloc];
-  v4 = [(LookAroundPIPViewController *)self lookAroundView];
-  v5 = [v3 initWithLookAroundView:v4];
+  lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+  v5 = [v3 initWithLookAroundView:lookAroundView];
   lookAroundContainerView = self->_lookAroundContainerView;
   self->_lookAroundContainerView = v5;
 
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setBadgeHidden:0];
-  [v19 addSubview:self->_lookAroundContainerView];
-  v7 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v7 setNavigatingEnabled:1];
+  [contentView addSubview:self->_lookAroundContainerView];
+  lookAroundView2 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView2 setNavigatingEnabled:1];
 
-  v8 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v8 setPanningEnabled:1];
+  lookAroundView3 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView3 setPanningEnabled:1];
 
-  v9 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v9 setZoomingEnabled:1];
+  lookAroundView4 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView4 setZoomingEnabled:1];
 
-  v10 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v10 setShowsPointLabels:1];
+  lookAroundView5 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView5 setShowsPointLabels:1];
 
-  v11 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v11 setShowsRoadLabels:1];
+  lookAroundView6 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView6 setShowsRoadLabels:1];
 
   v12 = [[LookAroundFloatingButtonsViewController alloc] initWithShowsMinimizeButton:0 groupButtonsIfNeeded:1];
   floatingButtonsViewController = self->_floatingButtonsViewController;
@@ -143,11 +143,11 @@ LABEL_8:
   [(LookAroundPIPViewController *)self addChildViewController:self->_floatingButtonsViewController];
   [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setDelegate:self];
   [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setMaximizedButtonEnabled:0];
-  v14 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  [v19 addSubview:v15];
+  view2 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  [contentView addSubview:view2];
 
   [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController didMoveToParentViewController:self];
   v16 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -163,34 +163,34 @@ LABEL_8:
   [(UILabel *)self->_statusMessageLabel setTextColor:v18];
 
   [(UILabel *)self->_statusMessageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v19 addSubview:self->_statusMessageLabel];
+  [contentView addSubview:self->_statusMessageLabel];
   [(MapsThemeViewController *)self updateTheme];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(CardView *)self->_cardView contentView];
-  v4 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  v5 = [v4 topAnchor];
-  v6 = [v3 safeAreaLayoutGuide];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentView = [(CardView *)self->_cardView contentView];
+  view = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  topAnchor = [view topAnchor];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   floatingButtonsTopConstraint = self->_floatingButtonsTopConstraint;
   self->_floatingButtonsTopConstraint = v8;
 
-  v10 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  v11 = [v10 leadingAnchor];
-  v12 = [v3 safeAreaLayoutGuide];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view2 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  leadingAnchor = [view2 leadingAnchor];
+  safeAreaLayoutGuide2 = [contentView safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   floatingButtonsLeadingConstraint = self->_floatingButtonsLeadingConstraint;
   self->_floatingButtonsLeadingConstraint = v14;
 
-  v16 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  v17 = [v16 trailingAnchor];
-  v18 = [v3 safeAreaLayoutGuide];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  view3 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  trailingAnchor = [view3 trailingAnchor];
+  safeAreaLayoutGuide3 = [contentView safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   floatingButtonsTrailingConstraint = self->_floatingButtonsTrailingConstraint;
   self->_floatingButtonsTrailingConstraint = v20;
 
@@ -199,111 +199,111 @@ LABEL_8:
   v44[0] = self->_floatingButtonsTopConstraint;
   v44[1] = v22;
   v44[2] = v23;
-  v42 = [(UILabel *)self->_statusMessageLabel topAnchor];
-  v43 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
-  v41 = [v43 bottomAnchor];
-  v40 = [v42 constraintGreaterThanOrEqualToAnchor:v41];
+  topAnchor3 = [(UILabel *)self->_statusMessageLabel topAnchor];
+  view4 = [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController view];
+  bottomAnchor = [view4 bottomAnchor];
+  v40 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor];
   v44[3] = v40;
-  v39 = [(UILabel *)self->_statusMessageLabel bottomAnchor];
-  v38 = [v3 bottomAnchor];
-  v37 = [v39 constraintLessThanOrEqualToAnchor:v38];
+  bottomAnchor2 = [(UILabel *)self->_statusMessageLabel bottomAnchor];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v37 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v44[4] = v37;
-  v36 = [(UILabel *)self->_statusMessageLabel centerXAnchor];
-  v35 = [v3 centerXAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  centerXAnchor = [(UILabel *)self->_statusMessageLabel centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v44[5] = v34;
-  v33 = [(UILabel *)self->_statusMessageLabel centerYAnchor];
-  v24 = [v3 centerYAnchor];
-  v25 = [v33 constraintEqualToAnchor:v24];
+  centerYAnchor = [(UILabel *)self->_statusMessageLabel centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v44[6] = v25;
-  v26 = [(UILabel *)self->_statusMessageLabel leadingAnchor];
-  v27 = [v3 leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:16.0];
+  leadingAnchor3 = [(UILabel *)self->_statusMessageLabel leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v44[7] = v28;
-  v29 = [(UILabel *)self->_statusMessageLabel trailingAnchor];
-  v30 = [v3 trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:-16.0];
+  trailingAnchor3 = [(UILabel *)self->_statusMessageLabel trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v44[8] = v31;
   v32 = [NSArray arrayWithObjects:v44 count:9];
   [NSLayoutConstraint activateConstraints:v32];
 }
 
-- (void)lookAroundPIPDataCoordinatorDidEndMovingLookAroundView:(id)a3
+- (void)lookAroundPIPDataCoordinatorDidEndMovingLookAroundView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 isMapViewInSyncWithLookAroundView];
-  v6 = v5 & [v4 isLookAroundDataAvailable];
+  viewCopy = view;
+  isMapViewInSyncWithLookAroundView = [viewCopy isMapViewInSyncWithLookAroundView];
+  v6 = isMapViewInSyncWithLookAroundView & [viewCopy isLookAroundDataAvailable];
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:v6 ^ 1 animated:1];
-  v7 = [v4 mapView];
+  mapView = [viewCopy mapView];
 
-  -[LookAroundPIPViewController _updateLookAroundAvailability:](self, "_updateLookAroundAvailability:", [v7 _lookAroundAvailability]);
+  -[LookAroundPIPViewController _updateLookAroundAvailability:](self, "_updateLookAroundAvailability:", [mapView _lookAroundAvailability]);
 
   [(LookAroundPIPViewController *)self _updateEnterLookAroundFullScreenEnabled:v6];
 }
 
-- (void)lookAroundPIPDataCoordinatorDidSynchronizeMapView:(id)a3
+- (void)lookAroundPIPDataCoordinatorDidSynchronizeMapView:(id)view
 {
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:2 animated:1];
 
   [(LookAroundPIPViewController *)self _updateLookAroundAvailability:2];
 }
 
-- (void)lookAroundPIPDataCoordinatorDidEndPanningMapView:(id)a3
+- (void)lookAroundPIPDataCoordinatorDidEndPanningMapView:(id)view
 {
   lookAroundContainerView = self->_lookAroundContainerView;
-  v5 = a3;
+  viewCopy = view;
   [(MKLookAroundContainerView *)lookAroundContainerView setDimmingState:1 animated:1];
-  v6 = [v5 mapView];
+  mapView = [viewCopy mapView];
 
-  -[LookAroundPIPViewController _updateLookAroundAvailability:](self, "_updateLookAroundAvailability:", [v6 _lookAroundAvailability]);
+  -[LookAroundPIPViewController _updateLookAroundAvailability:](self, "_updateLookAroundAvailability:", [mapView _lookAroundAvailability]);
   muninMarker = self->_muninMarker;
   self->_muninMarker = 0;
 }
 
-- (void)lookAroundPIPDataCoordinatorIsPanningMapView:(id)a3
+- (void)lookAroundPIPDataCoordinatorIsPanningMapView:(id)view
 {
-  v8 = a3;
-  v4 = [(LookAroundPIPDataCoordinator *)self->_dataCoordinator muninMarker];
+  viewCopy = view;
+  muninMarker = [(LookAroundPIPDataCoordinator *)self->_dataCoordinator muninMarker];
   muninMarker = self->_muninMarker;
-  if ((v4 != 0) != (muninMarker != 0))
+  if ((muninMarker != 0) != (muninMarker != 0))
   {
-    v6 = [v8 mapView];
-    v7 = [v6 _lookAroundAvailability];
+    mapView = [viewCopy mapView];
+    _lookAroundAvailability = [mapView _lookAroundAvailability];
 
-    [(LookAroundPIPViewController *)self _updateLookAroundAvailability:v7];
+    [(LookAroundPIPViewController *)self _updateLookAroundAvailability:_lookAroundAvailability];
     muninMarker = self->_muninMarker;
   }
 
-  self->_muninMarker = v4;
+  self->_muninMarker = muninMarker;
 }
 
-- (void)lookAroundPIPDataCoordinatorDidStartPanningMapView:(id)a3
+- (void)lookAroundPIPDataCoordinatorDidStartPanningMapView:(id)view
 {
-  v4 = [(LookAroundPIPDataCoordinator *)self->_dataCoordinator muninMarker];
+  muninMarker = [(LookAroundPIPDataCoordinator *)self->_dataCoordinator muninMarker];
   muninMarker = self->_muninMarker;
-  self->_muninMarker = v4;
+  self->_muninMarker = muninMarker;
 
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:1 animated:1];
 
   [(LookAroundPIPViewController *)self _updateEnterLookAroundFullScreenEnabled:0];
 }
 
-- (void)lookAroundPIPDataCoordinatorDidChangeLookAroundAvailability:(id)a3
+- (void)lookAroundPIPDataCoordinatorDidChangeLookAroundAvailability:(id)availability
 {
-  v4 = a3;
-  v5 = [v4 mapView];
-  v6 = [v5 _lookAroundAvailability];
+  availabilityCopy = availability;
+  mapView = [availabilityCopy mapView];
+  _lookAroundAvailability = [mapView _lookAroundAvailability];
 
-  v7 = [v4 isMapViewInSyncWithLookAroundView];
-  v8 = [v4 isPanningMapView];
+  isMapViewInSyncWithLookAroundView = [availabilityCopy isMapViewInSyncWithLookAroundView];
+  isPanningMapView = [availabilityCopy isPanningMapView];
 
-  [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:v8 & 1 | (((v6 == 2) & v7) == 0) animated:1];
-  [(LookAroundPIPViewController *)self _updateLookAroundAvailability:v6];
+  [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:isPanningMapView & 1 | (((_lookAroundAvailability == 2) & isMapViewInSyncWithLookAroundView) == 0) animated:1];
+  [(LookAroundPIPViewController *)self _updateLookAroundAvailability:_lookAroundAvailability];
 
-  [(LookAroundPIPViewController *)self _updateEnterLookAroundFullScreenEnabled:(v6 == 2) & v7 & (v8 ^ 1)];
+  [(LookAroundPIPViewController *)self _updateEnterLookAroundFullScreenEnabled:(_lookAroundAvailability == 2) & isMapViewInSyncWithLookAroundView & (isPanningMapView ^ 1)];
 }
 
-- (void)lookAroundPIPDataCoordinatorFailedToEnterLookArounPIP:(id)a3
+- (void)lookAroundPIPDataCoordinatorFailedToEnterLookArounPIP:(id)p
 {
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setDimmingState:1 animated:1];
   [(LookAroundPIPViewController *)self _updateLookAroundAvailability:0 imageryError:1];
@@ -311,9 +311,9 @@ LABEL_8:
   [(LookAroundPIPViewController *)self _updateEnterLookAroundFullScreenEnabled:0];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectImageryInfo:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectImageryInfo:(id)info
 {
-  v5 = [NSBundle mainBundle:a3];
+  v5 = [NSBundle mainBundle:controller];
   v20 = [v5 localizedStringForKey:@"Last Updated [LookAround]" value:@"localized string not found" table:0];
 
   dateFormatter = self->_dateFormatter;
@@ -324,9 +324,9 @@ LABEL_8:
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"Imagery [LookAround]" value:@"localized string not found" table:0];
   v11 = self->_dateFormatter;
-  v12 = [(LookAroundPIPViewController *)self lookAroundView];
-  v13 = [v12 collectionDate];
-  v14 = [(NSDateFormatter *)v11 stringFromDate:v13];
+  lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+  collectionDate = [lookAroundView collectionDate];
+  v14 = [(NSDateFormatter *)v11 stringFromDate:collectionDate];
   v15 = [NSString stringWithFormat:v20, v14];
   v16 = [UIAlertController alertControllerWithTitle:v10 message:v15 preferredStyle:1];
 
@@ -339,14 +339,14 @@ LABEL_8:
   [(LookAroundPIPViewController *)self presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectToggleLabels:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectToggleLabels:(id)labels
 {
-  v5 = a3;
-  v6 = [(LookAroundPIPViewController *)self lookAroundView];
-  v7 = [v6 showsPointLabels];
+  controllerCopy = controller;
+  lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+  showsPointLabels = [lookAroundView showsPointLabels];
 
-  [v5 setHidingLabels:v7];
-  if (v7)
+  [controllerCopy setHidingLabels:showsPointLabels];
+  if (showsPointLabels)
   {
     v8 = 6066;
   }
@@ -357,28 +357,28 @@ LABEL_8:
   }
 
   [(LookAroundPIPViewController *)self _captureUserAction:v8 onTarget:1701 eventValue:0];
-  v9 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v9 setShowsPointLabels:v7 ^ 1];
+  lookAroundView2 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView2 setShowsPointLabels:showsPointLabels ^ 1];
 
-  v10 = [(LookAroundPIPViewController *)self lookAroundView];
-  [v10 setShowsRoadLabels:v7 ^ 1];
+  lookAroundView3 = [(LookAroundPIPViewController *)self lookAroundView];
+  [lookAroundView3 setShowsRoadLabels:showsPointLabels ^ 1];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didSelectReportAnIssue:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didSelectReportAnIssue:(id)issue
 {
   [(LookAroundPIPViewController *)self _captureUserAction:5013 onTarget:1701 eventValue:0];
   v5 = [RAPLookAroundContextImpl alloc];
-  v6 = [(LookAroundPIPViewController *)self lookAroundView];
-  v9 = [(RAPLookAroundContextImpl *)v5 initWithLookAroundView:v6];
+  lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+  v9 = [(RAPLookAroundContextImpl *)v5 initWithLookAroundView:lookAroundView];
 
-  v7 = [(LookAroundPIPViewController *)self _maps_mapsSceneDelegate];
-  v8 = [v7 rapPresenter];
-  [v8 presentLookAroundRAPWithContext:v9 completion:0];
+  _maps_mapsSceneDelegate = [(LookAroundPIPViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  [rapPresenter presentLookAroundRAPWithContext:v9 completion:0];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapDoneButton:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapDoneButton:(id)button
 {
-  if ([(LookAroundPIPViewController *)self showsMinimizedButton:a3])
+  if ([(LookAroundPIPViewController *)self showsMinimizedButton:controller])
   {
     v5 = 1702;
   }
@@ -389,26 +389,26 @@ LABEL_8:
   }
 
   [(LookAroundPIPViewController *)self _captureUserAction:6063 onTarget:v5 eventValue:0];
-  v6 = [(LookAroundPIPViewController *)self actionCoordinator];
-  [v6 exitLookAround];
+  actionCoordinator = [(LookAroundPIPViewController *)self actionCoordinator];
+  [actionCoordinator exitLookAround];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapMinimizeButton:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapMinimizeButton:(id)button
 {
-  [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setShowsMinimizedButton:0, a4];
-  v5 = [(LookAroundPIPViewController *)self actionCoordinator];
-  [v5 viewControllerPresentLookAround:self showsFullScreen:0];
+  [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setShowsMinimizedButton:0, button];
+  actionCoordinator = [(LookAroundPIPViewController *)self actionCoordinator];
+  [actionCoordinator viewControllerPresentLookAround:self showsFullScreen:0];
 
   [(MKLookAroundView *)self->_lookAroundView recordTriggerAction:6064];
 
   [(LookAroundPIPViewController *)self _captureUserAction:6064 onTarget:1702 eventValue:0];
 }
 
-- (void)lookAroundFloatingButtonsViewController:(id)a3 didTapMaximizeButton:(id)a4
+- (void)lookAroundFloatingButtonsViewController:(id)controller didTapMaximizeButton:(id)button
 {
-  [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setShowsMinimizedButton:1, a4];
-  v5 = [(LookAroundPIPViewController *)self actionCoordinator];
-  [v5 viewControllerPresentLookAround:self showsFullScreen:1];
+  [(LookAroundFloatingButtonsViewController *)self->_floatingButtonsViewController setShowsMinimizedButton:1, button];
+  actionCoordinator = [(LookAroundPIPViewController *)self actionCoordinator];
+  [actionCoordinator viewControllerPresentLookAround:self showsFullScreen:1];
 
   [(MKLookAroundView *)self->_lookAroundView recordTriggerAction:6062];
 
@@ -420,8 +420,8 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = LookAroundPIPViewController;
   [(LookAroundPIPViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(LookAroundPIPViewController *)self view];
-  [v3 bounds];
+  view = [(LookAroundPIPViewController *)self view];
+  [view bounds];
   [(MKLookAroundContainerView *)self->_lookAroundContainerView setFrame:?];
 
   [(NSLayoutConstraint *)self->_floatingButtonsTopConstraint setConstant:16.0];
@@ -429,19 +429,19 @@ LABEL_8:
   [(NSLayoutConstraint *)self->_floatingButtonsTrailingConstraint setConstant:-16.0];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = LookAroundPIPViewController;
   [(LookAroundPIPViewController *)&v9 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(LookAroundPIPViewController *)self actionCoordinator];
-    v6 = [v5 currentMapItem];
+    actionCoordinator = [(LookAroundPIPViewController *)self actionCoordinator];
+    currentMapItem = [actionCoordinator currentMapItem];
 
-    v7 = [(LookAroundPIPViewController *)self dataCoordinator];
-    v8 = [(LookAroundPIPViewController *)self lookAroundView];
-    [v7 enterLookAroundPIPWithLookAroundView:v8 mapItem:v6];
+    dataCoordinator = [(LookAroundPIPViewController *)self dataCoordinator];
+    lookAroundView = [(LookAroundPIPViewController *)self lookAroundView];
+    [dataCoordinator enterLookAroundPIPWithLookAroundView:lookAroundView mapItem:currentMapItem];
   }
 }
 
@@ -473,19 +473,19 @@ LABEL_8:
   [(LookAroundPIPViewController *)&v3 dealloc];
 }
 
-- (LookAroundPIPViewController)initWithDataCoordinator:(id)a3 lookAroundView:(id)a4
+- (LookAroundPIPViewController)initWithDataCoordinator:(id)coordinator lookAroundView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = LookAroundPIPViewController;
   v9 = [(LookAroundPIPViewController *)&v14 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataCoordinator, a3);
+    objc_storeStrong(&v9->_dataCoordinator, coordinator);
     [(LookAroundPIPDataCoordinator *)v10->_dataCoordinator addObserver:v10];
-    objc_storeStrong(&v10->_lookAroundView, a4);
+    objc_storeStrong(&v10->_lookAroundView, view);
     v11 = objc_alloc_init(NSDateFormatter);
     dateFormatter = v10->_dateFormatter;
     v10->_dateFormatter = v11;

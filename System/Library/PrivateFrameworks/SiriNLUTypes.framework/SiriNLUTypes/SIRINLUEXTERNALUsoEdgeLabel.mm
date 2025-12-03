@@ -1,33 +1,33 @@
 @interface SIRINLUEXTERNALUsoEdgeLabel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)usoElementId;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUsoElementId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUsoElementId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoEdgeLabel
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 24);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 24);
   if ((v6 & 2) != 0)
   {
-    self->_usoElementId = v4[5];
+    self->_usoElementId = fromCopy[5];
     *&self->_has |= 2u;
-    v6 = *(v4 + 24);
+    v6 = *(fromCopy + 24);
   }
 
   if (v6)
   {
-    self->_enumeration = v4[4];
+    self->_enumeration = fromCopy[4];
     *&self->_has |= 1u;
   }
 
@@ -75,24 +75,24 @@ LABEL_3:
   return v7 ^ v6 ^ [(SIRINLUEXTERNALUsoLabel *)self->_baseEdgeLabel hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_usoElementId != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_usoElementId != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -101,19 +101,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_enumeration != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_enumeration != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
   baseEdgeLabel = self->_baseEdgeLabel;
-  if (baseEdgeLabel | *(v4 + 1))
+  if (baseEdgeLabel | *(equalCopy + 1))
   {
     v7 = [(SIRINLUEXTERNALUsoLabel *)baseEdgeLabel isEqual:?];
   }
@@ -128,9 +128,9 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -146,48 +146,48 @@ LABEL_15:
     *(v5 + 24) |= 1u;
   }
 
-  v8 = [(SIRINLUEXTERNALUsoLabel *)self->_baseEdgeLabel copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUsoLabel *)self->_baseEdgeLabel copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_usoElementId;
-    *(v4 + 24) |= 2u;
+    toCopy[5] = self->_usoElementId;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = self->_enumeration;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_enumeration;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_baseEdgeLabel)
   {
-    v6 = v4;
-    [v4 setBaseEdgeLabel:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBaseEdgeLabel:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     usoElementId = self->_usoElementId;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -195,24 +195,24 @@ LABEL_15:
   {
     enumeration = self->_enumeration;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_baseEdgeLabel)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_usoElementId];
-    [v3 setObject:v5 forKey:@"uso_element_id"];
+    [dictionary setObject:v5 forKey:@"uso_element_id"];
 
     has = self->_has;
   }
@@ -220,17 +220,17 @@ LABEL_15:
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_enumeration];
-    [v3 setObject:v6 forKey:@"enumeration"];
+    [dictionary setObject:v6 forKey:@"enumeration"];
   }
 
   baseEdgeLabel = self->_baseEdgeLabel;
   if (baseEdgeLabel)
   {
-    v8 = [(SIRINLUEXTERNALUsoLabel *)baseEdgeLabel dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"base_edge_label"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUsoLabel *)baseEdgeLabel dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"base_edge_label"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -239,15 +239,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoEdgeLabel;
   v4 = [(SIRINLUEXTERNALUsoEdgeLabel *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoEdgeLabel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoEdgeLabel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUsoElementId:(BOOL)a3
+- (void)setHasUsoElementId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }

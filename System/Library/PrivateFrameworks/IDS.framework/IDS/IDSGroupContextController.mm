@@ -1,21 +1,21 @@
 @interface IDSGroupContextController
-- (IDSGroupContextController)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5;
-- (void)_contentWithCompletion:(id)a3;
+- (IDSGroupContextController)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate;
+- (void)_contentWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didCacheGroup:(id)a3 completion:(id)a4;
-- (void)didCreateGroup:(id)a3 completion:(id)a4;
-- (void)didReceiveDecryptionFailureForGroup:(id)a3 completion:(id)a4;
-- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)a3;
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4 completion:(id)a5;
-- (void)groupContextWithCompletion:(id)a3;
-- (void)qGroupContextWithDeviceIdentity:(id)a3 completion:(id)a4;
+- (void)didCacheGroup:(id)group completion:(id)completion;
+- (void)didCreateGroup:(id)group completion:(id)completion;
+- (void)didReceiveDecryptionFailureForGroup:(id)group completion:(id)completion;
+- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)completion;
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup completion:(id)completion;
+- (void)groupContextWithCompletion:(id)completion;
+- (void)qGroupContextWithDeviceIdentity:(id)identity completion:(id)completion;
 - (void)qSetupSeal;
-- (void)scheduleTransactionLogTask:(id)a3;
-- (void)taskHandler:(id)a3 accountInfoForAliases:(id)a4 completion:(id)a5;
-- (void)taskHandler:(id)a3 groupsWithGroupIDs:(id)a4 completion:(id)a5;
-- (void)taskHandler:(id)a3 messagesFromToken:(id)a4 completion:(id)a5;
-- (void)taskHandler:(id)a3 participantsWithDestinations:(id)a4 completion:(id)a5;
-- (void)taskHandler:(id)a3 persistToken:(id)a4 completion:(id)a5;
+- (void)scheduleTransactionLogTask:(id)task;
+- (void)taskHandler:(id)handler accountInfoForAliases:(id)aliases completion:(id)completion;
+- (void)taskHandler:(id)handler groupsWithGroupIDs:(id)ds completion:(id)completion;
+- (void)taskHandler:(id)handler messagesFromToken:(id)token completion:(id)completion;
+- (void)taskHandler:(id)handler participantsWithDestinations:(id)destinations completion:(id)completion;
+- (void)taskHandler:(id)handler persistToken:(id)token completion:(id)completion;
 @end
 
 @implementation IDSGroupContextController
@@ -24,28 +24,28 @@
 {
   self->_delegate = 0;
   v3 = +[IDSDaemonProtocolController sharedInstance];
-  v4 = [v3 observer];
-  [v4 removeDelegate:self];
+  observer = [v3 observer];
+  [observer removeDelegate:self];
 
   v5.receiver = self;
   v5.super_class = IDSGroupContextController;
   [(IDSGroupContextController *)&v5 dealloc];
 }
 
-- (IDSGroupContextController)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5
+- (IDSGroupContextController)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   if (_IDSRunningInDaemon())
   {
-    v12 = [MEMORY[0x1E699BB90] groupContext];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    groupContext = [MEMORY[0x1E699BB90] groupContext];
+    if (os_log_type_enabled(groupContext, OS_LOG_TYPE_ERROR))
     {
-      sub_195B268D8(self, v12);
+      sub_195B268D8(self, groupContext);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -56,254 +56,254 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_queue, a4);
-      v15->_delegate = v11;
-      objc_storeStrong(&v15->_serviceName, a3);
+      objc_storeStrong(&v14->_queue, queue);
+      v15->_delegate = delegateCopy;
+      objc_storeStrong(&v15->_serviceName, name);
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)groupContextWithCompletion:(id)a3
+- (void)groupContextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A6E6C0;
   v6[3] = &unk_1E7440C08;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(IDSGroupContextController *)self _contentWithCompletion:v6];
 }
 
-- (void)scheduleTransactionLogTask:(id)a3
+- (void)scheduleTransactionLogTask:(id)task
 {
-  v4 = a3;
-  v5 = [(IDSGroupContextController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  taskCopy = task;
+  queue = [(IDSGroupContextController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSGroupContextController *)self queue];
-  v7 = [IDSTransactionLogTaskHandler handlerWithTask:v4 delegate:self queue:v6];
+  queue2 = [(IDSGroupContextController *)self queue];
+  v7 = [IDSTransactionLogTaskHandler handlerWithTask:taskCopy delegate:self queue:queue2];
 
   [v7 perform];
 }
 
-- (void)taskHandler:(id)a3 groupsWithGroupIDs:(id)a4 completion:(id)a5
+- (void)taskHandler:(id)handler groupsWithGroupIDs:(id)ds completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(IDSGroupContextController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  dsCopy = ds;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [MEMORY[0x1E699BB90] groupContext];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  groupContext = [MEMORY[0x1E699BB90] groupContext];
+  if (os_log_type_enabled(groupContext, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v19 = [v7 count];
-    _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_INFO, "Fetching groups from groupIDs {groupIDs.count: %ld}", buf, 0xCu);
+    v19 = [dsCopy count];
+    _os_log_impl(&dword_1959FF000, groupContext, OS_LOG_TYPE_INFO, "Fetching groups from groupIDs {groupIDs.count: %ld}", buf, 0xCu);
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_195A6E94C;
   v14[3] = &unk_1E7440CA8;
-  v15 = v7;
-  v16 = self;
-  v17 = v8;
-  v11 = v8;
-  v12 = v7;
+  v15 = dsCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dsCopy;
   [(IDSGroupContextController *)self groupContextWithCompletion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)taskHandler:(id)a3 participantsWithDestinations:(id)a4 completion:(id)a5
+- (void)taskHandler:(id)handler participantsWithDestinations:(id)destinations completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IDSGroupContextController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  completionCopy = completion;
+  destinationsCopy = destinations;
+  queue = [(IDSGroupContextController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = +[IDSIDQueryController sharedInstance];
-  v11 = [(IDSGroupContextController *)self queue];
+  queue2 = [(IDSGroupContextController *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A6EF64;
   v13[3] = &unk_1E7440CD0;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v10 participantsForDestinations:v8 service:@"com.apple.madrid" listenerID:@"kIDSGroupContextControllerListenerID" queue:v11 completionBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v10 participantsForDestinations:destinationsCopy service:@"com.apple.madrid" listenerID:@"kIDSGroupContextControllerListenerID" queue:queue2 completionBlock:v13];
 }
 
-- (void)taskHandler:(id)a3 messagesFromToken:(id)a4 completion:(id)a5
+- (void)taskHandler:(id)handler messagesFromToken:(id)token completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(IDSGroupContextController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  tokenCopy = token;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [MEMORY[0x1E699BB90] groupContext];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  groupContext = [MEMORY[0x1E699BB90] groupContext];
+  if (os_log_type_enabled(groupContext, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_INFO, "Fetching transport log messages", buf, 2u);
+    _os_log_impl(&dword_1959FF000, groupContext, OS_LOG_TYPE_INFO, "Fetching transport log messages", buf, 2u);
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A6F100;
   v13[3] = &unk_1E7440D20;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = tokenCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = tokenCopy;
   [(IDSGroupContextController *)self _contentWithCompletion:v13];
 }
 
-- (void)taskHandler:(id)a3 persistToken:(id)a4 completion:(id)a5
+- (void)taskHandler:(id)handler persistToken:(id)token completion:(id)completion
 {
   v6 = MEMORY[0x1E696ACC8];
-  v7 = a5;
-  v9 = [v6 archivedDataWithRootObject:a4 requiringSecureCoding:0 error:0];
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setObject:v9 forKey:@"kIDSGroupContextControllerPersistedToken"];
+  completionCopy = completion;
+  v9 = [v6 archivedDataWithRootObject:token requiringSecureCoding:0 error:0];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:v9 forKey:@"kIDSGroupContextControllerPersistedToken"];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)taskHandler:(id)a3 accountInfoForAliases:(id)a4 completion:(id)a5
+- (void)taskHandler:(id)handler accountInfoForAliases:(id)aliases completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  aliasesCopy = aliases;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A6F418;
   v11[3] = &unk_1E7440D48;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = aliasesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = aliasesCopy;
   [(IDSGroupContextController *)self _contentWithCompletion:v11];
 }
 
-- (void)didCreateGroup:(id)a3 completion:(id)a4
+- (void)didCreateGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSGroupContextController *)self queue];
+  groupCopy = group;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_195A6F684;
   block[3] = &unk_1E743E9B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)didCacheGroup:(id)a3 completion:(id)a4
+- (void)didCacheGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSGroupContextController *)self queue];
+  groupCopy = group;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_195A6F808;
   block[3] = &unk_1E743E9B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4 completion:(id)a5
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IDSGroupContextController *)self queue];
+  groupCopy = group;
+  newGroupCopy = newGroup;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_195A6F9B4;
   v15[3] = &unk_1E743F318;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = groupCopy;
+  v17 = newGroupCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = newGroupCopy;
+  v14 = groupCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)didReceiveDecryptionFailureForGroup:(id)a3 completion:(id)a4
+- (void)didReceiveDecryptionFailureForGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSGroupContextController *)self queue];
+  groupCopy = group;
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_195A6FB50;
   block[3] = &unk_1E743E9B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)a3
+- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)completion
 {
-  v4 = [(IDSGroupContextController *)self queue];
+  queue = [(IDSGroupContextController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_195A6FC84;
   block[3] = &unk_1E743E878;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)qSetupSeal
 {
   v3 = objc_alloc(MEMORY[0x1E69956D0]);
-  v5 = [(IDSGroupContextController *)self queue];
-  v4 = [v3 initWithQueue:v5];
+  queue = [(IDSGroupContextController *)self queue];
+  v4 = [v3 initWithQueue:queue];
   [(IDSGroupContextController *)self setSeal:v4];
 }
 
-- (void)qGroupContextWithDeviceIdentity:(id)a3 completion:(id)a4
+- (void)qGroupContextWithDeviceIdentity:(id)identity completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E699BB68];
-  v6 = a3;
+  identityCopy = identity;
   v7 = [v5 alloc];
-  v8 = [v6 accountIdentity];
-  v9 = [v7 initWithAccountKey:v8 deviceKey:v6];
+  accountIdentity = [identityCopy accountIdentity];
+  v9 = [v7 initWithAccountKey:accountIdentity deviceKey:identityCopy];
 
   v10 = [IDSGroupContextDataSource alloc];
-  v11 = [(IDSGroupContextController *)self queue];
-  v12 = [(IDSGroupContextDataSource *)v10 initWithQueue:v11];
+  queue = [(IDSGroupContextController *)self queue];
+  v12 = [(IDSGroupContextDataSource *)v10 initWithQueue:queue];
 
   v13 = objc_alloc(MEMORY[0x1E699BB78]);
-  v14 = [(IDSGroupContextController *)self queue];
-  v15 = [v13 initWithAccountIdentity:v9 dataSource:v12 queue:v14];
+  queue2 = [(IDSGroupContextController *)self queue];
+  v15 = [v13 initWithAccountIdentity:v9 dataSource:v12 queue:queue2];
 
   v16 = [MEMORY[0x1E6995700] weakRefWithObject:self];
   v17 = objc_alloc(MEMORY[0x1E699BB80]);
-  v18 = [(IDSGroupContextController *)self queue];
-  v19 = [v17 initWithQueue:v18];
+  queue3 = [(IDSGroupContextController *)self queue];
+  v19 = [v17 initWithQueue:queue3];
 
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
@@ -311,53 +311,53 @@
   v30 = &unk_1E7440D98;
   v20 = v16;
   v31 = v20;
-  v32 = self;
+  selfCopy = self;
   [v19 setOnGroupCreate:&v27];
   [v15 appendMiddleware:{v19, v27, v28, v29, v30}];
   [v15 appendMiddleware:v12];
   v21 = objc_alloc_init(IDSGroupContextControllerContent);
   [(IDSGroupContextControllerContent *)v21 setGroupContext:v15];
   [(IDSGroupContextControllerContent *)v21 setAccountIdentity:v9];
-  v22 = [(IDSGroupContextController *)self seal];
-  [v22 fulfillWithValue:v21];
+  seal = [(IDSGroupContextController *)self seal];
+  [seal fulfillWithValue:v21];
 
   v23 = +[IDSDaemonProtocolController sharedInstance];
-  v24 = [v23 observer];
-  [v24 addDelegate:self];
+  observer = [v23 observer];
+  [observer addDelegate:self];
 
-  v25 = [MEMORY[0x1E699BB90] groupContext];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+  groupContext = [MEMORY[0x1E699BB90] groupContext];
+  if (os_log_type_enabled(groupContext, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
     v34 = v15;
-    _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_INFO, "Group Context Created %@", buf, 0xCu);
+    _os_log_impl(&dword_1959FF000, groupContext, OS_LOG_TYPE_INFO, "Group Context Created %@", buf, 0xCu);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_contentWithCompletion:(id)a3
+- (void)_contentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSGroupContextController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSGroupContextController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSGroupContextController *)self seal];
+  seal = [(IDSGroupContextController *)self seal];
 
-  if (!v6)
+  if (!seal)
   {
     [(IDSGroupContextController *)self qSetupSeal];
   }
 
-  v7 = [(IDSGroupContextController *)self seal];
-  v8 = [v7 promise];
+  seal2 = [(IDSGroupContextController *)self seal];
+  promise = [seal2 promise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A701D4;
   v10[3] = &unk_1E7440DC0;
-  v11 = v4;
-  v9 = v4;
-  [v8 registerResultBlock:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [promise registerResultBlock:v10];
 }
 
 @end

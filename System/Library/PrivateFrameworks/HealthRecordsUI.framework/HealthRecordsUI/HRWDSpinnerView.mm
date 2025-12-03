@@ -1,8 +1,8 @@
 @interface HRWDSpinnerView
 - (HRWDSpinnerView)init;
 - (void)_setupSubviews;
-- (void)setMessageFont:(id)a3;
-- (void)setMessageWhileSpinning:(id)a3;
+- (void)setMessageFont:(id)font;
+- (void)setMessageWhileSpinning:(id)spinning;
 - (void)startSpinner;
 - (void)stopSpinner;
 - (void)updateConstraints;
@@ -47,68 +47,68 @@
   v9 = HBXLocalizedString(@"CONNECTING");
   [(UILabel *)self->_label setText:v9];
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_label setTextColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_label setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_label setTextAlignment:1];
   [(UILabel *)self->_label setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addSubview:self->_label];
-  v11 = [(UIActivityIndicatorView *)self->_spinner topAnchor];
-  v12 = [v3 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(UIActivityIndicatorView *)self->_spinner topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   spinnerTopConstraint = self->_spinnerTopConstraint;
   self->_spinnerTopConstraint = v13;
 
   v38 = MEMORY[0x1E696ACD8];
-  v53 = [v3 topAnchor];
-  v52 = [(HRWDSpinnerView *)self topAnchor];
-  v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52];
+  topAnchor3 = [v3 topAnchor];
+  topAnchor4 = [(HRWDSpinnerView *)self topAnchor];
+  v51 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v54[0] = v51;
-  v50 = [v3 bottomAnchor];
-  v49 = [(HRWDSpinnerView *)self bottomAnchor];
-  v48 = [v50 constraintLessThanOrEqualToAnchor:v49];
+  bottomAnchor = [v3 bottomAnchor];
+  bottomAnchor2 = [(HRWDSpinnerView *)self bottomAnchor];
+  v48 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v54[1] = v48;
-  v47 = [v3 leftAnchor];
-  v46 = [(HRWDSpinnerView *)self leftAnchor];
-  v45 = [v47 constraintGreaterThanOrEqualToAnchor:v46];
+  leftAnchor = [v3 leftAnchor];
+  leftAnchor2 = [(HRWDSpinnerView *)self leftAnchor];
+  v45 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
   v54[2] = v45;
-  v44 = [v3 rightAnchor];
-  v43 = [(HRWDSpinnerView *)self rightAnchor];
-  v42 = [v44 constraintLessThanOrEqualToAnchor:v43];
+  rightAnchor = [v3 rightAnchor];
+  rightAnchor2 = [(HRWDSpinnerView *)self rightAnchor];
+  v42 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2];
   v54[3] = v42;
-  v41 = [v3 centerXAnchor];
-  v40 = [(HRWDSpinnerView *)self centerXAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerXAnchor = [v3 centerXAnchor];
+  centerXAnchor2 = [(HRWDSpinnerView *)self centerXAnchor];
+  v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v54[4] = v39;
-  v37 = [v3 centerYAnchor];
-  v36 = [(HRWDSpinnerView *)self centerYAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  centerYAnchor = [v3 centerYAnchor];
+  centerYAnchor2 = [(HRWDSpinnerView *)self centerYAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v54[5] = v35;
-  v34 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v33 = [v3 centerXAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  centerXAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  centerXAnchor4 = [v3 centerXAnchor];
+  v32 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v54[6] = v32;
-  v31 = [(UILabel *)self->_label centerXAnchor];
-  v30 = [v3 centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor5 = [(UILabel *)self->_label centerXAnchor];
+  centerXAnchor6 = [v3 centerXAnchor];
+  v29 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v54[7] = v29;
-  v28 = [(UILabel *)self->_label leadingAnchor];
-  v27 = [v3 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor = [(UILabel *)self->_label leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v54[8] = v26;
-  v25 = [(UILabel *)self->_label trailingAnchor];
-  v15 = [v3 trailingAnchor];
-  v16 = [v25 constraintEqualToAnchor:v15];
+  trailingAnchor = [(UILabel *)self->_label trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v17 = self->_spinnerTopConstraint;
   v54[9] = v16;
   v54[10] = v17;
-  v18 = [(UILabel *)self->_label topAnchor];
-  v19 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:14.0];
+  topAnchor5 = [(UILabel *)self->_label topAnchor];
+  bottomAnchor3 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+  v20 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:14.0];
   v54[11] = v20;
-  v21 = [(UILabel *)self->_label bottomAnchor];
-  v22 = [v3 bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  bottomAnchor4 = [(UILabel *)self->_label bottomAnchor];
+  bottomAnchor5 = [v3 bottomAnchor];
+  v23 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v54[12] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:13];
   [v38 activateConstraints:v24];
@@ -123,29 +123,29 @@
   [(NSLayoutConstraint *)self->_spinnerTopConstraint setConstant:CGRectGetHeight(v4) * 0.4];
 }
 
-- (void)setMessageWhileSpinning:(id)a3
+- (void)setMessageWhileSpinning:(id)spinning
 {
-  v4 = a3;
+  spinningCopy = spinning;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__HRWDSpinnerView_setMessageWhileSpinning___block_invoke;
   v6[3] = &unk_1E83DD1A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = spinningCopy;
+  v5 = spinningCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)setMessageFont:(id)a3
+- (void)setMessageFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__HRWDSpinnerView_setMessageFont___block_invoke;
   v6[3] = &unk_1E83DD1A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = fontCopy;
+  v5 = fontCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

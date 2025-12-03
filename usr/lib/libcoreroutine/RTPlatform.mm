@@ -1,10 +1,10 @@
 @interface RTPlatform
-+ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromString:(SEL)a3;
-+ (BOOL)operatingSystemAtLeastVersion:(id *)a3;
-+ (BOOL)operatingSystemNoGreaterThanVersion:(id *)a3;
-+ (BOOL)version:(id *)a3 atLeastVersion:(id *)a4;
-+ (BOOL)version:(id *)a3 noGreaterThanVersion:(id *)a4;
-+ (RTPlatform)allocWithZone:(_NSZone *)a3;
++ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromString:(SEL)string;
++ (BOOL)operatingSystemAtLeastVersion:(id *)version;
++ (BOOL)operatingSystemNoGreaterThanVersion:(id *)version;
++ (BOOL)version:(id *)version atLeastVersion:(id *)leastVersion;
++ (BOOL)version:(id *)version noGreaterThanVersion:(id *)thanVersion;
++ (RTPlatform)allocWithZone:(_NSZone *)zone;
 + (id)currentPlatform;
 - (id)buildVersion;
 - (id)serialNumber;
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __29__RTPlatform_currentPlatform__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_119 != -1)
   {
     dispatch_once(&_MergedGlobals_119, block);
@@ -37,19 +37,19 @@ uint64_t __29__RTPlatform_currentPlatform__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (RTPlatform)allocWithZone:(_NSZone *)a3
++ (RTPlatform)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTPlatform_MobileGestalt allocWithZone:a3];
+    return [RTPlatform_MobileGestalt allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTPlatform;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -130,107 +130,107 @@ LABEL_5:
   return v8;
 }
 
-+ (BOOL)version:(id *)a3 noGreaterThanVersion:(id *)a4
++ (BOOL)version:(id *)version noGreaterThanVersion:(id *)thanVersion
 {
-  if (a3->var0 > a4->var0)
+  if (version->var0 > thanVersion->var0)
   {
     return 0;
   }
 
-  if (a3->var0 < a4->var0)
+  if (version->var0 < thanVersion->var0)
   {
     return 1;
   }
 
-  var1 = a3->var1;
-  v6 = a4->var1;
+  var1 = version->var1;
+  v6 = thanVersion->var1;
   if (var1 > v6)
   {
     return 0;
   }
 
-  return var1 < v6 || a3->var2 <= a4->var2;
+  return var1 < v6 || version->var2 <= thanVersion->var2;
 }
 
-+ (BOOL)operatingSystemNoGreaterThanVersion:(id *)a3
++ (BOOL)operatingSystemNoGreaterThanVersion:(id *)version
 {
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = v4;
-  if (v4)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v5 = processInfo;
+  if (processInfo)
   {
-    [v4 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
-  if (a3->var0 < 0)
+  if (version->var0 < 0)
   {
     return 0;
   }
 
-  if (a3->var0 > 0)
+  if (version->var0 > 0)
   {
     return 1;
   }
 
-  var1 = a3->var1;
+  var1 = version->var1;
   if (var1 < 0)
   {
     return 0;
   }
 
-  return var1 > 0 || a3->var2 >= 0;
+  return var1 > 0 || version->var2 >= 0;
 }
 
-+ (BOOL)operatingSystemAtLeastVersion:(id *)a3
++ (BOOL)operatingSystemAtLeastVersion:(id *)version
 {
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = v4;
-  if (v4)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v5 = processInfo;
+  if (processInfo)
   {
-    [v4 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
-  if (a3->var0 > 0)
+  if (version->var0 > 0)
   {
     return 0;
   }
 
-  if (a3->var0 < 0)
+  if (version->var0 < 0)
   {
     return 1;
   }
 
-  var1 = a3->var1;
+  var1 = version->var1;
   if (var1 > 0)
   {
     return 0;
   }
 
-  return var1 < 0 || a3->var2 <= 0;
+  return var1 < 0 || version->var2 <= 0;
 }
 
-+ (BOOL)version:(id *)a3 atLeastVersion:(id *)a4
++ (BOOL)version:(id *)version atLeastVersion:(id *)leastVersion
 {
-  if (a3->var0 < a4->var0)
+  if (version->var0 < leastVersion->var0)
   {
     return 0;
   }
 
-  if (a3->var0 > a4->var0)
+  if (version->var0 > leastVersion->var0)
   {
     return 1;
   }
 
-  var1 = a3->var1;
-  v6 = a4->var1;
+  var1 = version->var1;
+  v6 = leastVersion->var1;
   if (var1 < v6)
   {
     return 0;
   }
 
-  return var1 > v6 || a3->var2 >= a4->var2;
+  return var1 > v6 || version->var2 >= leastVersion->var2;
 }
 
-+ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromString:(SEL)a3
++ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromString:(SEL)string
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = a4;

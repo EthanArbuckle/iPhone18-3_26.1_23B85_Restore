@@ -1,18 +1,18 @@
 @interface _TVStackBackdropMaskingView
-- (_TVStackBackdropMaskingView)initWithFrame:(CGRect)a3;
+- (_TVStackBackdropMaskingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackdropView:(id)a3;
-- (void)setGradientScale:(double)a3;
-- (void)setGradientStop:(double)a3;
+- (void)setBackdropView:(id)view;
+- (void)setGradientScale:(double)scale;
+- (void)setGradientStop:(double)stop;
 @end
 
 @implementation _TVStackBackdropMaskingView
 
-- (_TVStackBackdropMaskingView)initWithFrame:(CGRect)a3
+- (_TVStackBackdropMaskingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVStackBackdropMaskingView;
-  v3 = [(_TVStackBackdropMaskingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVStackBackdropMaskingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,44 +23,44 @@
   return v4;
 }
 
-- (void)setBackdropView:(id)a3
+- (void)setBackdropView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backdropView = self->_backdropView;
-  if (backdropView != v5)
+  if (backdropView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(_TVStackBackdropView *)backdropView layer];
-    [v7 setMask:0];
+    v8 = viewCopy;
+    layer = [(_TVStackBackdropView *)backdropView layer];
+    [layer setMask:0];
 
     [(_TVStackBackdropView *)self->_backdropView removeFromSuperview];
-    objc_storeStrong(&self->_backdropView, a3);
+    objc_storeStrong(&self->_backdropView, view);
     if (self->_backdropView)
     {
       [(_TVStackBackdropMaskingView *)self addSubview:?];
     }
 
     backdropView = [(_TVStackBackdropMaskingView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](backdropView, v5);
+  MEMORY[0x2821F96F8](backdropView, viewCopy);
 }
 
-- (void)setGradientScale:(double)a3
+- (void)setGradientScale:(double)scale
 {
-  if (self->_gradientScale != a3)
+  if (self->_gradientScale != scale)
   {
-    self->_gradientScale = a3;
+    self->_gradientScale = scale;
     [(_TVStackBackdropMaskingView *)self setNeedsLayout];
   }
 }
 
-- (void)setGradientStop:(double)a3
+- (void)setGradientStop:(double)stop
 {
-  if (self->_gradientStop != a3)
+  if (self->_gradientStop != stop)
   {
-    self->_gradientStop = a3;
+    self->_gradientStop = stop;
     [(_TVStackBackdropMaskingView *)self setNeedsLayout];
   }
 }
@@ -80,8 +80,8 @@
   [(_TVStackBackdropMaskingView *)self gradientScale];
   if (v9 <= 0.0)
   {
-    v31 = [(_TVStackBackdropView *)self->_backdropView layer];
-    [v31 setMask:0];
+    layer = [(_TVStackBackdropView *)self->_backdropView layer];
+    [layer setMask:0];
 
     gradientLayer = self->_gradientLayer;
     self->_gradientLayer = 0;
@@ -92,20 +92,20 @@
     v10 = self->_gradientLayer;
     if (!v10)
     {
-      v11 = [MEMORY[0x277CD9EB0] layer];
+      layer2 = [MEMORY[0x277CD9EB0] layer];
       v12 = self->_gradientLayer;
-      self->_gradientLayer = v11;
+      self->_gradientLayer = layer2;
 
-      v13 = [(_TVStackBackdropView *)self->_backdropView layer];
-      [v13 setMask:self->_gradientLayer];
+      layer3 = [(_TVStackBackdropView *)self->_backdropView layer];
+      [layer3 setMask:self->_gradientLayer];
 
       v10 = self->_gradientLayer;
     }
 
     [(CAGradientLayer *)v10 setFrame:0.0, v8 - v6, v4, v6];
     v14 = self->_gradientLayer;
-    v15 = [MEMORY[0x277D75348] clearColor];
-    v34[0] = [v15 CGColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v34[0] = [clearColor CGColor];
     v16 = MEMORY[0x277D75348];
     [(_TVStackBackdropMaskingView *)self gradientStop];
     v18 = [v16 colorWithRed:1.0 green:1.0 blue:1.0 alpha:v17 * 0.3];

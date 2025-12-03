@@ -1,15 +1,15 @@
 @interface MFMarkReadMutedThreadMessageRule
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4;
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager;
 @end
 
 @implementation MFMarkReadMutedThreadMessageRule
 
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager
 {
-  v8 = a3;
-  v5 = a4;
+  messagesCopy = messages;
+  managerCopy = manager;
   v6 = +[ECMessageFlagChange setRead];
-  v7 = [v5 applyFlagChange:v6 toMessages:v8];
+  v7 = [managerCopy applyFlagChange:v6 toMessages:messagesCopy];
 }
 
 @end

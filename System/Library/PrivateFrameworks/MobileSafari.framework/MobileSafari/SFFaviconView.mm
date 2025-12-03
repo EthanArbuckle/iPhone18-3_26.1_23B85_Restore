@@ -1,12 +1,12 @@
 @interface SFFaviconView
 - (CGSize)intrinsicContentSize;
-- (SFFaviconView)initWithFrame:(CGRect)a3;
-- (id)_determineIconBackingColorAndInsets:(UIEdgeInsets *)a3;
+- (SFFaviconView)initWithFrame:(CGRect)frame;
+- (id)_determineIconBackingColorAndInsets:(UIEdgeInsets *)insets;
 - (void)_updateIconBackingColorAndInset;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
-- (void)setThemeColor:(id)a3;
-- (void)setTrailingInset:(double)a3;
+- (void)setIcon:(id)icon;
+- (void)setThemeColor:(id)color;
+- (void)setTrailingInset:(double)inset;
 @end
 
 @implementation SFFaviconView
@@ -31,15 +31,15 @@
   v12 = 3221225472;
   v13 = __48__SFFaviconView__updateIconBackingColorAndInset__block_invoke;
   v14 = &unk_1E721B400;
-  v15 = self;
+  selfCopy = self;
   v16 = v3;
   v5 = v3;
   [v4 performWithoutAnimation:&v11];
   [(UIImage *)self->_icon size:v11];
   v7 = v6;
-  v8 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   v9 = fmax(v7 - *(&v18 + 1), 0.0);
-  if (v8)
+  if (_sf_usesLeftToRightLayout)
   {
     v10 = v9;
   }
@@ -70,11 +70,11 @@ uint64_t __48__SFFaviconView__updateIconBackingColorAndInset__block_invoke(uint6
   return [v5 setClipsToBounds:v3];
 }
 
-- (SFFaviconView)initWithFrame:(CGRect)a3
+- (SFFaviconView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SFFaviconView;
-  v3 = [(SFFaviconView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFFaviconView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -101,32 +101,32 @@ uint64_t __48__SFFaviconView__updateIconBackingColorAndInset__block_invoke(uint6
   return result;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_icon, a3);
-    [(UIImageView *)self->_imageView setImage:v5];
+    objc_storeStrong(&self->_icon, icon);
+    [(UIImageView *)self->_imageView setImage:iconCopy];
     [(SFFaviconView *)self _updateIconBackingColorAndInset];
   }
 }
 
-- (void)setThemeColor:(id)a3
+- (void)setThemeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_themeColor, a3);
+    objc_storeStrong(&self->_themeColor, color);
     [(SFFaviconView *)self _updateIconBackingColorAndInset];
   }
 }
 
-- (void)setTrailingInset:(double)a3
+- (void)setTrailingInset:(double)inset
 {
-  if (self->_trailingInset != a3)
+  if (self->_trailingInset != inset)
   {
-    self->_trailingInset = a3;
+    self->_trailingInset = inset;
     trailingInsetChangeHandler = self->_trailingInsetChangeHandler;
     if (trailingInsetChangeHandler)
     {
@@ -135,15 +135,15 @@ uint64_t __48__SFFaviconView__updateIconBackingColorAndInset__block_invoke(uint6
   }
 }
 
-- (id)_determineIconBackingColorAndInsets:(UIEdgeInsets *)a3
+- (id)_determineIconBackingColorAndInsets:(UIEdgeInsets *)insets
 {
-  if (a3)
+  if (insets)
   {
     [(UIImage *)self->_icon size];
-    a3->top = 0.0;
-    a3->left = 0.0;
-    a3->bottom = v6;
-    a3->right = v5;
+    insets->top = 0.0;
+    insets->left = 0.0;
+    insets->bottom = v6;
+    insets->right = v5;
   }
 
   if ([(UIImage *)self->_icon isSymbolImage]|| [(UIImage *)self->_icon sf_isMonogram]|| [(UIImage *)self->_icon renderingMode]== UIImageRenderingModeAlwaysTemplate)
@@ -171,26 +171,26 @@ uint64_t __48__SFFaviconView__updateIconBackingColorAndInset__block_invoke(uint6
 
 LABEL_23:
     v7 = 0;
-    if (a3)
+    if (insets)
     {
       v18 = v20;
-      *&a3->top = v19;
-      *&a3->bottom = v18;
+      *&insets->top = v19;
+      *&insets->bottom = v18;
     }
 
     goto LABEL_25;
   }
 
-  v16 = [(SFFaviconView *)self traitCollection];
-  if ([v16 userInterfaceStyle] != 2)
+  traitCollection = [(SFFaviconView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] != 2)
   {
 
     goto LABEL_23;
   }
 
-  v17 = [(UIImage *)self->_icon sf_shouldApplyBackingForDarkBackdrop];
+  sf_shouldApplyBackingForDarkBackdrop = [(UIImage *)self->_icon sf_shouldApplyBackingForDarkBackdrop];
 
-  if (!v17)
+  if (!sf_shouldApplyBackingForDarkBackdrop)
   {
     goto LABEL_23;
   }

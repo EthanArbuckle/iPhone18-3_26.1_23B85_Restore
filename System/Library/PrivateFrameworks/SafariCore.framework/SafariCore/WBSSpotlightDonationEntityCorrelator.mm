@@ -1,10 +1,10 @@
 @interface WBSSpotlightDonationEntityCorrelator
 - (WBSSpotlightDonationEntityCorrelator)init;
 - (id)initIfAvailable;
-- (void)correlateBookmarkEntityForItem:(id)a3 withUUIDString:(id)a4;
-- (void)correlateHistoryEntityForItem:(id)a3;
-- (void)correlateReadingListEntityForItem:(id)a3 withUUIDString:(id)a4;
-- (void)correlateTabEntityForItem:(id)a3;
+- (void)correlateBookmarkEntityForItem:(id)item withUUIDString:(id)string;
+- (void)correlateHistoryEntityForItem:(id)item;
+- (void)correlateReadingListEntityForItem:(id)item withUUIDString:(id)string;
+- (void)correlateTabEntityForItem:(id)item;
 @end
 
 @implementation WBSSpotlightDonationEntityCorrelator
@@ -32,46 +32,46 @@
   return [(WBSSpotlightDonationEntityCorrelator *)&v3 init];
 }
 
-- (void)correlateHistoryEntityForItem:(id)a3
+- (void)correlateHistoryEntityForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B855A77C(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1B855A77C(itemCopy);
 }
 
-- (void)correlateBookmarkEntityForItem:(id)a3 withUUIDString:(id)a4
+- (void)correlateBookmarkEntityForItem:(id)item withUUIDString:(id)string
 {
   sub_1B8565DA8();
-  v10 = a3;
-  v6 = self;
-  v7 = [v10 attributeSet];
-  v8 = [v7 title];
+  itemCopy = item;
+  selfCopy = self;
+  attributeSet = [itemCopy attributeSet];
+  title = [attributeSet title];
 
-  if (v8)
+  if (title)
   {
     sub_1B8565DA8();
 
-    v9 = [v10 attributeSet];
+    attributeSet2 = [itemCopy attributeSet];
     sub_1B855A52C(MEMORY[0x1E69E7CC0]);
     sub_1B8566258();
 
-    v6 = v9;
+    selfCopy = attributeSet2;
   }
 }
 
-- (void)correlateReadingListEntityForItem:(id)a3 withUUIDString:(id)a4
+- (void)correlateReadingListEntityForItem:(id)item withUUIDString:(id)string
 {
   sub_1B8565DA8();
-  v6 = a3;
-  v7 = self;
-  sub_1B855A63C(v6);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1B855A63C(itemCopy);
 }
 
-- (void)correlateTabEntityForItem:(id)a3
+- (void)correlateTabEntityForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B855A77C(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_1B855A77C(itemCopy);
 }
 
 @end

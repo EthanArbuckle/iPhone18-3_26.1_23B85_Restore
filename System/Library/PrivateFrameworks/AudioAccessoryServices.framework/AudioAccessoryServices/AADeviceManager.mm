@@ -1,38 +1,38 @@
 @interface AADeviceManager
 - (AADeviceManager)init;
-- (AADeviceManager)initWithCoder:(id)a3;
+- (AADeviceManager)initWithCoder:(id)coder;
 - (BOOL)direct;
 - (BOOL)isTemporaryPairingConnectionAllowed;
 - (NSArray)discoveredDevices;
 - (id)_ensureXPCStarted;
-- (id)_syncXPCFetchAADeviceBatteryInfoForAddress:(id)a3;
-- (id)_syncXPCFetchAADeviceBatteryInfoForIdentifier:(id)a3;
+- (id)_syncXPCFetchAADeviceBatteryInfoForAddress:(id)address;
+- (id)_syncXPCFetchAADeviceBatteryInfoForIdentifier:(id)identifier;
 - (id)description;
-- (id)fetchAADeviceBatteryInfoForAddress:(id)a3;
-- (id)fetchAADeviceBatteryInfoForIdentifier:(id)a3;
-- (id)fetchAudioAccessoryDeviceForBTAddress:(id)a3;
+- (id)fetchAADeviceBatteryInfoForAddress:(id)address;
+- (id)fetchAADeviceBatteryInfoForIdentifier:(id)identifier;
+- (id)fetchAudioAccessoryDeviceForBTAddress:(id)address;
 - (id)fetchPairedAudioAccessoryDevices;
-- (void)_activateDirect:(id)a3;
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateDirect:(id)direct;
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate;
 - (void)_interrupted;
 - (void)_invalidateDirect;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_reset;
-- (void)_sendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_sendDeviceConfigXPC:(id)a3 identifier:(id)a4 completion:(id)a5;
+- (void)_sendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion;
+- (void)_sendDeviceConfigXPC:(id)c identifier:(id)identifier completion:(id)completion;
 - (void)aaServicesRequireReset;
-- (void)activateWithCompletion:(id)a3;
-- (void)deviceHeadGestureDetected:(id)a3;
-- (void)deviceManagerFoundBatteryInfo:(id)a3;
-- (void)deviceManagerFoundDevice:(id)a3;
-- (void)deviceManagerLostBatteryInfo:(id)a3;
-- (void)deviceManagerLostDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)deviceHeadGestureDetected:(id)detected;
+- (void)deviceManagerFoundBatteryInfo:(id)info;
+- (void)deviceManagerFoundDevice:(id)device;
+- (void)deviceManagerLostBatteryInfo:(id)info;
+- (void)deviceManagerLostDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)sendDeviceConfig:(id)a3 device:(id)a4 completion:(id)a5;
-- (void)sendDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)setHeadGestureUpdateFlags:(unsigned int)a3;
+- (void)sendDeviceConfig:(id)config device:(id)device completion:(id)completion;
+- (void)sendDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)setHeadGestureUpdateFlags:(unsigned int)flags;
 @end
 
 @implementation AADeviceManager
@@ -70,19 +70,19 @@
 
 - (BOOL)direct
 {
-  v2 = [(AADeviceManager *)self internalServicesDaemon];
-  v3 = v2 != 0;
+  internalServicesDaemon = [(AADeviceManager *)self internalServicesDaemon];
+  v3 = internalServicesDaemon != 0;
 
   return v3;
 }
 
 - (id)_ensureXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_xpcCnx)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_xpcCnx)
   {
-    v3 = v2->_testListenerEndpoint;
+    v3 = selfCopy->_testListenerEndpoint;
     if (v3)
     {
       v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v3];
@@ -93,41 +93,41 @@
       v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.AudioAccessoryServices" options:0];
     }
 
-    xpcCnx = v2->_xpcCnx;
-    v2->_xpcCnx = v4;
+    xpcCnx = selfCopy->_xpcCnx;
+    selfCopy->_xpcCnx = v4;
 
-    [(NSXPCConnection *)v2->_xpcCnx _setQueue:v2->_dispatchQueue];
+    [(NSXPCConnection *)selfCopy->_xpcCnx _setQueue:selfCopy->_dispatchQueue];
     v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28533BD50];
-    [(NSXPCConnection *)v2->_xpcCnx setExportedInterface:v6];
+    [(NSXPCConnection *)selfCopy->_xpcCnx setExportedInterface:v6];
 
-    [(NSXPCConnection *)v2->_xpcCnx setExportedObject:v2];
+    [(NSXPCConnection *)selfCopy->_xpcCnx setExportedObject:selfCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __36__AADeviceManager__ensureXPCStarted__block_invoke;
     v16[3] = &unk_278CDD728;
-    v16[4] = v2;
-    [(NSXPCConnection *)v2->_xpcCnx setInterruptionHandler:v16];
+    v16[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_xpcCnx setInterruptionHandler:v16];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __36__AADeviceManager__ensureXPCStarted__block_invoke_2;
     v15[3] = &unk_278CDD728;
-    v15[4] = v2;
-    [(NSXPCConnection *)v2->_xpcCnx setInvalidationHandler:v15];
+    v15[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_xpcCnx setInvalidationHandler:v15];
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285345C18];
-    [(NSXPCConnection *)v2->_xpcCnx setRemoteObjectInterface:v7];
+    [(NSXPCConnection *)selfCopy->_xpcCnx setRemoteObjectInterface:v7];
 
-    v8 = [(NSXPCConnection *)v2->_xpcCnx remoteObjectInterface];
+    remoteObjectInterface = [(NSXPCConnection *)selfCopy->_xpcCnx remoteObjectInterface];
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v9 setWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
-    [v8 setClasses:v13 forSelector:sel_deviceManagerFetchPairedAudioAccessoryDevices_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface setClasses:v13 forSelector:sel_deviceManagerFetchPairedAudioAccessoryDevices_ argumentIndex:0 ofReply:1];
 
-    [(NSXPCConnection *)v2->_xpcCnx resume];
+    [(NSXPCConnection *)selfCopy->_xpcCnx resume];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
@@ -135,12 +135,12 @@
 - (NSArray)discoveredDevices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (gLogCategory_AADeviceManager <= 30 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
   {
-    v12 = [(NSMutableDictionary *)v2->_deviceDictionary count];
-    clientID = v2->_clientID;
+    v12 = [(NSMutableDictionary *)selfCopy->_deviceDictionary count];
+    clientID = selfCopy->_clientID;
     LogPrintF();
   }
 
@@ -148,7 +148,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)v2->_deviceDictionary allValues:v12];
+  v3 = [(NSMutableDictionary *)selfCopy->_deviceDictionary allValues:v12];
   v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
@@ -178,27 +178,27 @@
     while (v4);
   }
 
-  deviceDictionary = v2->_deviceDictionary;
+  deviceDictionary = selfCopy->_deviceDictionary;
   if (deviceDictionary)
   {
-    v9 = [(NSMutableDictionary *)deviceDictionary allValues];
+    allValues = [(NSMutableDictionary *)deviceDictionary allValues];
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return allValues;
 }
 
-- (AADeviceManager)initWithCoder:(id)a3
+- (AADeviceManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AADeviceManager *)self init];
   if (v5)
   {
@@ -218,47 +218,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   clientID = self->_clientID;
-  v7 = v4;
+  v7 = coderCopy;
   if (clientID)
   {
-    [v4 encodeInt64:clientID forKey:@"cid"];
-    v4 = v7;
+    [coderCopy encodeInt64:clientID forKey:@"cid"];
+    coderCopy = v7;
   }
 
   headGestureUpdateFlags = self->_headGestureUpdateFlags;
   if (headGestureUpdateFlags)
   {
     [v7 encodeInt64:headGestureUpdateFlags forKey:@"cmcf"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (void)setHeadGestureUpdateFlags:(unsigned int)a3
+- (void)setHeadGestureUpdateFlags:(unsigned int)flags
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__AADeviceManager_setHeadGestureUpdateFlags___block_invoke;
     v6[3] = &unk_278CDD5E8;
-    v6[4] = v4;
-    v7 = a3;
+    v6[4] = selfCopy;
+    flagsCopy = flags;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_headGestureUpdateFlags = a3;
+    selfCopy->_headGestureUpdateFlags = flags;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __45__AADeviceManager_setHeadGestureUpdateFlags___block_invoke(uint64_t a1)
@@ -324,17 +324,17 @@ void __45__AADeviceManager_setHeadGestureUpdateFlags___block_invoke_3(uint64_t a
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__AADeviceManager_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -415,44 +415,44 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)_activateDirect:(id)a3
+- (void)_activateDirect:(id)direct
 {
-  v5 = a3;
+  directCopy = direct;
   if (gLogCategory_AADeviceManager <= 30 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
   {
     [AADeviceManager _activateDirect:?];
   }
 
-  v4 = [(AADeviceManager *)self internalServicesDaemon];
-  [v4 deviceManagerActivateDirect:self completion:v5];
+  internalServicesDaemon = [(AADeviceManager *)self internalServicesDaemon];
+  [internalServicesDaemon deviceManagerActivateDirect:self completion:directCopy];
 }
 
-- (void)_activateXPC:(id)a3 reactivate:(BOOL)a4
+- (void)_activateXPC:(id)c reactivate:(BOOL)reactivate
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
+  cCopy = c;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (gLogCategory_AADeviceManager <= 30 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
   {
-    clientID = v7->_clientID;
+    clientID = selfCopy->_clientID;
     LogPrintF();
   }
 
-  v8 = [(AADeviceManager *)v7 _ensureXPCStarted];
-  if (v8)
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v6[2](v6, v8);
+    cCopy[2](cCopy, _ensureXPCStarted);
   }
 
   else
   {
-    xpcCnx = v7->_xpcCnx;
+    xpcCnx = selfCopy->_xpcCnx;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __43__AADeviceManager__activateXPC_reactivate___block_invoke;
     v15[3] = &unk_278CDD6D8;
-    v17 = a4;
-    v10 = v6;
+    reactivateCopy = reactivate;
+    v10 = cCopy;
     v16 = v10;
     v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v15];
     v13[0] = MEMORY[0x277D85DD0];
@@ -460,10 +460,10 @@ LABEL_17:
     v13[2] = __43__AADeviceManager__activateXPC_reactivate___block_invoke_2;
     v13[3] = &unk_278CDD700;
     v14 = v10;
-    [v11 deviceManagerActivate:v7 completion:v13];
+    [v11 deviceManagerActivate:selfCopy completion:v13];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 void __43__AADeviceManager__activateXPC_reactivate___block_invoke(uint64_t a1, void *a2)
@@ -573,8 +573,8 @@ void __29__AADeviceManager_invalidate__block_invoke(uint64_t a1)
 
 - (void)_invalidateDirect
 {
-  v3 = [(AADeviceManager *)self internalServicesDaemon];
-  [v3 deviceManagerInvalidateDirect:self];
+  internalServicesDaemon = [(AADeviceManager *)self internalServicesDaemon];
+  [internalServicesDaemon deviceManagerInvalidateDirect:self];
 }
 
 - (void)_invalidated
@@ -586,16 +586,16 @@ void __29__AADeviceManager_invalidate__block_invoke(uint64_t a1)
       [AADeviceManager _invalidated];
     }
 
-    v3 = self;
-    objc_sync_enter(v3);
-    xpcCnx = v3->_xpcCnx;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    objc_sync_exit(selfCopy);
 
     if (!xpcCnx)
     {
-      v15 = MEMORY[0x245CE9060](v3->_activateCompletion);
-      activateCompletion = v3->_activateCompletion;
-      v3->_activateCompletion = 0;
+      v15 = MEMORY[0x245CE9060](selfCopy->_activateCompletion);
+      activateCompletion = selfCopy->_activateCompletion;
+      selfCopy->_activateCompletion = 0;
 
       if (v15)
       {
@@ -603,32 +603,32 @@ void __29__AADeviceManager_invalidate__block_invoke(uint64_t a1)
         v15[2](v15, v6);
       }
 
-      v7 = MEMORY[0x245CE9060](v3->_invalidationHandler);
-      invalidationHandler = v3->_invalidationHandler;
-      v3->_invalidationHandler = 0;
+      v7 = MEMORY[0x245CE9060](selfCopy->_invalidationHandler);
+      invalidationHandler = selfCopy->_invalidationHandler;
+      selfCopy->_invalidationHandler = 0;
 
       if (v7)
       {
         v7[2](v7);
       }
 
-      [(NSMutableDictionary *)v3->_deviceDictionary removeAllObjects];
-      deviceDictionary = v3->_deviceDictionary;
-      v3->_deviceDictionary = 0;
+      [(NSMutableDictionary *)selfCopy->_deviceDictionary removeAllObjects];
+      deviceDictionary = selfCopy->_deviceDictionary;
+      selfCopy->_deviceDictionary = 0;
 
-      deviceFoundHandler = v3->_deviceFoundHandler;
-      v3->_deviceFoundHandler = 0;
+      deviceFoundHandler = selfCopy->_deviceFoundHandler;
+      selfCopy->_deviceFoundHandler = 0;
 
-      deviceLostHandler = v3->_deviceLostHandler;
-      v3->_deviceLostHandler = 0;
+      deviceLostHandler = selfCopy->_deviceLostHandler;
+      selfCopy->_deviceLostHandler = 0;
 
-      interruptionHandler = v3->_interruptionHandler;
-      v3->_interruptionHandler = 0;
+      interruptionHandler = selfCopy->_interruptionHandler;
+      selfCopy->_interruptionHandler = 0;
 
-      v13 = v3;
+      v13 = selfCopy;
       objc_sync_enter(v13);
-      v14 = v3->_xpcCnx;
-      v3->_xpcCnx = 0;
+      v14 = selfCopy->_xpcCnx;
+      selfCopy->_xpcCnx = 0;
 
       objc_sync_exit(v13);
       self->_invalidateDone = 1;
@@ -685,41 +685,41 @@ void __25__AADeviceManager__reset__block_invoke_2(uint64_t a1, void *a2, void *a
   [*(a1 + 32) deviceManagerLostDevice:v5];
 }
 
-- (void)sendDeviceConfig:(id)a3 device:(id)a4 completion:(id)a5
+- (void)sendDeviceConfig:(id)config device:(id)device completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [a4 identifier];
-  if (v9)
+  configCopy = config;
+  completionCopy = completion;
+  identifier = [device identifier];
+  if (identifier)
   {
-    [(AADeviceManager *)self sendDeviceConfig:v12 identifier:v9 completion:v8];
+    [(AADeviceManager *)self sendDeviceConfig:configCopy identifier:identifier completion:completionCopy];
   }
 
   else
   {
     v10 = *MEMORY[0x277CCA590];
     v11 = NSErrorF();
-    v8[2](v8, v11);
+    completionCopy[2](completionCopy, v11);
   }
 }
 
-- (void)sendDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)sendDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__AADeviceManager_sendDeviceConfig_identifier_completion___block_invoke;
   v15[3] = &unk_278CDDBF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = configCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = identifierCopy;
+  v13 = configCopy;
+  v14 = completionCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -754,19 +754,19 @@ void __58__AADeviceManager_sendDeviceConfig_identifier_completion___block_invoke
   }
 }
 
-- (void)_sendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_sendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AADeviceManager *)self internalServicesDaemon];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  directCopy = direct;
+  internalServicesDaemon = [(AADeviceManager *)self internalServicesDaemon];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__AADeviceManager__sendDeviceConfigDirect_identifier_completion___block_invoke;
   v13[3] = &unk_278CDD700;
-  v14 = v8;
-  v12 = v8;
-  [v11 deviceManagerSendDeviceConfigDirect:v10 identifier:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [internalServicesDaemon deviceManagerSendDeviceConfigDirect:directCopy identifier:identifierCopy completion:v13];
 }
 
 uint64_t __65__AADeviceManager__sendDeviceConfigDirect_identifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -795,27 +795,27 @@ uint64_t __65__AADeviceManager__sendDeviceConfigDirect_identifier_completion___b
   return MEMORY[0x2821F96F8](v5, v3);
 }
 
-- (void)_sendDeviceConfigXPC:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_sendDeviceConfigXPC:(id)c identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(AADeviceManager *)v11 _ensureXPCStarted];
-  if (v12)
+  cCopy = c;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, _ensureXPCStarted);
   }
 
   else
   {
-    xpcCnx = v11->_xpcCnx;
+    xpcCnx = selfCopy->_xpcCnx;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___block_invoke;
     v18[3] = &unk_278CDD700;
-    v14 = v10;
+    v14 = completionCopy;
     v19 = v14;
     v15 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x277D85DD0];
@@ -823,10 +823,10 @@ uint64_t __65__AADeviceManager__sendDeviceConfigDirect_identifier_completion___b
     v16[2] = __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___block_invoke_2;
     v16[3] = &unk_278CDD700;
     v17 = v14;
-    [v15 deviceManagerSendDeviceConfig:v8 identifier:v9 completion:v16];
+    [v15 deviceManagerSendDeviceConfig:cCopy identifier:identifierCopy completion:v16];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -878,9 +878,9 @@ uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___bloc
   return MEMORY[0x2821F96F8](v5, v3);
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
   {
     [AADeviceManager _reportError:];
@@ -892,7 +892,7 @@ uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___bloc
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 
@@ -907,10 +907,10 @@ uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___bloc
     goto LABEL_10;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(AADeviceManager *)v3 _ensureXPCStarted];
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
     if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -922,7 +922,7 @@ uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___bloc
 
   else
   {
-    xpcCnx = v3->_xpcCnx;
+    xpcCnx = selfCopy->_xpcCnx;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __54__AADeviceManager_isTemporaryPairingConnectionAllowed__block_invoke;
@@ -937,8 +937,8 @@ uint64_t __62__AADeviceManager__sendDeviceConfigXPC_identifier_completion___bloc
     [v6 isTemporaryPairingConnectionAllowed:v8];
   }
 
-  objc_sync_exit(v3);
-  if (!v4)
+  objc_sync_exit(selfCopy);
+  if (!_ensureXPCStarted)
   {
 LABEL_10:
     LOBYTE(v6) = *(v11 + 24);
@@ -998,88 +998,88 @@ LABEL_13:
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)deviceManagerFoundBatteryInfo:(id)a3
+- (void)deviceManagerFoundBatteryInfo:(id)info
 {
-  v10 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v10 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [infoCopy identifier];
+  if (identifier)
   {
-    batteryDictionary = v4->_batteryDictionary;
+    batteryDictionary = selfCopy->_batteryDictionary;
     if (!batteryDictionary)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v8 = v4->_batteryDictionary;
-      v4->_batteryDictionary = v7;
+      v8 = selfCopy->_batteryDictionary;
+      selfCopy->_batteryDictionary = v7;
 
-      batteryDictionary = v4->_batteryDictionary;
+      batteryDictionary = selfCopy->_batteryDictionary;
     }
 
-    [(NSMutableDictionary *)batteryDictionary setObject:v10 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)batteryDictionary setObject:infoCopy forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
-    deviceBatteryInfoUpdatedHandler = v4->_deviceBatteryInfoUpdatedHandler;
+    objc_sync_exit(selfCopy);
+    deviceBatteryInfoUpdatedHandler = selfCopy->_deviceBatteryInfoUpdatedHandler;
     if (deviceBatteryInfoUpdatedHandler)
     {
-      deviceBatteryInfoUpdatedHandler[2](deviceBatteryInfoUpdatedHandler, v10);
+      deviceBatteryInfoUpdatedHandler[2](deviceBatteryInfoUpdatedHandler, infoCopy);
     }
 
     else if (gLogCategory_AADeviceManager <= 10 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
-      [AADeviceManager deviceManagerFoundBatteryInfo:v4];
+      [AADeviceManager deviceManagerFoundBatteryInfo:selfCopy];
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)deviceManagerLostBatteryInfo:(id)a3
+- (void)deviceManagerLostBatteryInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v8 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [infoCopy identifier];
+  if (identifier)
   {
-    [(NSMutableDictionary *)v4->_batteryDictionary setObject:0 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)selfCopy->_batteryDictionary setObject:0 forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     if (gLogCategory_AADeviceManager <= 30 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
-      clientID = v4->_clientID;
+      clientID = selfCopy->_clientID;
       LogPrintF();
     }
 
-    deviceBatteryInfoLostHandler = v4->_deviceBatteryInfoLostHandler;
+    deviceBatteryInfoLostHandler = selfCopy->_deviceBatteryInfoLostHandler;
     if (deviceBatteryInfoLostHandler)
     {
-      deviceBatteryInfoLostHandler[2](deviceBatteryInfoLostHandler, v8);
+      deviceBatteryInfoLostHandler[2](deviceBatteryInfoLostHandler, infoCopy);
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)fetchAADeviceBatteryInfoForAddress:(id)a3
+- (id)fetchAADeviceBatteryInfoForAddress:(id)address
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
-    v19 = v4;
-    v5 = [v4 uppercaseString];
-    v6 = self;
-    objc_sync_enter(v6);
-    [(NSMutableDictionary *)v6->_batteryDictionary allValues];
+    v19 = addressCopy;
+    uppercaseString = [addressCopy uppercaseString];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_batteryDictionary allValues];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -1098,10 +1098,10 @@ LABEL_13:
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 bluetoothAddress];
-          v13 = v5;
+          bluetoothAddress = [v11 bluetoothAddress];
+          v13 = uppercaseString;
           v14 = v13;
-          if (v12 == v13)
+          if (bluetoothAddress == v13)
           {
 
 LABEL_16:
@@ -1110,9 +1110,9 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          if ((v5 == 0) != (v12 != 0))
+          if ((uppercaseString == 0) != (bluetoothAddress != 0))
           {
-            v15 = [v12 isEqual:v13];
+            v15 = [bluetoothAddress isEqual:v13];
 
             if (v15)
             {
@@ -1138,13 +1138,13 @@ LABEL_16:
     v16 = 1;
 LABEL_17:
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     if (v16)
     {
-      v8 = [(AADeviceManager *)v6 _syncXPCFetchAADeviceBatteryInfoForAddress:v5];
+      v8 = [(AADeviceManager *)selfCopy _syncXPCFetchAADeviceBatteryInfoForAddress:uppercaseString];
     }
 
-    v4 = v19;
+    addressCopy = v19;
   }
 
   else
@@ -1157,24 +1157,24 @@ LABEL_17:
   return v8;
 }
 
-- (id)fetchAADeviceBatteryInfoForIdentifier:(id)a3
+- (id)fetchAADeviceBatteryInfoForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    batteryDictionary = v5->_batteryDictionary;
-    if (batteryDictionary && ([(NSMutableDictionary *)batteryDictionary objectForKeyedSubscript:v4], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    batteryDictionary = selfCopy->_batteryDictionary;
+    if (batteryDictionary && ([(NSMutableDictionary *)batteryDictionary objectForKeyedSubscript:identifierCopy], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
 
-      v7 = [(AADeviceManager *)v5 _syncXPCFetchAADeviceBatteryInfoForIdentifier:v4];
+      v7 = [(AADeviceManager *)selfCopy _syncXPCFetchAADeviceBatteryInfoForIdentifier:identifierCopy];
     }
   }
 
@@ -1186,19 +1186,19 @@ LABEL_17:
   return v7;
 }
 
-- (id)_syncXPCFetchAADeviceBatteryInfoForIdentifier:(id)a3
+- (id)_syncXPCFetchAADeviceBatteryInfoForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v6 = [(AADeviceManager *)v5 _ensureXPCStarted];
-  if (v6)
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
     if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -1210,12 +1210,12 @@ LABEL_17:
 
   else
   {
-    xpcCnx = v5->_xpcCnx;
+    xpcCnx = selfCopy->_xpcCnx;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __65__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForIdentifier___block_invoke;
     v19[3] = &unk_278CDD750;
-    v8 = v4;
+    v8 = identifierCopy;
     v20 = v8;
     v9 = [(NSXPCConnection *)xpcCnx synchronousRemoteObjectProxyWithErrorHandler:v19];
     v16[0] = MEMORY[0x277D85DD0];
@@ -1227,14 +1227,14 @@ LABEL_17:
     v17 = v10;
     [v9 deviceManagerFetchAADeviceBatteryInfoForIdentifier:v10 deviceHandler:v16];
 
-    batteryDictionary = v5->_batteryDictionary;
+    batteryDictionary = selfCopy->_batteryDictionary;
     if (!batteryDictionary)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v13 = v5->_batteryDictionary;
-      v5->_batteryDictionary = v12;
+      v13 = selfCopy->_batteryDictionary;
+      selfCopy->_batteryDictionary = v12;
 
-      batteryDictionary = v5->_batteryDictionary;
+      batteryDictionary = selfCopy->_batteryDictionary;
     }
 
     [(NSMutableDictionary *)batteryDictionary setObject:v22[5] forKeyedSubscript:v10];
@@ -1242,7 +1242,7 @@ LABEL_17:
   }
 
   _Block_object_dispose(&v21, 8);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -1275,19 +1275,19 @@ void __65__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForIdentifier___block
   }
 }
 
-- (id)_syncXPCFetchAADeviceBatteryInfoForAddress:(id)a3
+- (id)_syncXPCFetchAADeviceBatteryInfoForAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  addressCopy = address;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v6 = [(AADeviceManager *)v5 _ensureXPCStarted];
-  if (v6)
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
     if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -1299,12 +1299,12 @@ void __65__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForIdentifier___block
 
   else
   {
-    xpcCnx = v5->_xpcCnx;
+    xpcCnx = selfCopy->_xpcCnx;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_invoke;
     v19[3] = &unk_278CDD750;
-    v8 = v4;
+    v8 = addressCopy;
     v20 = v8;
     v9 = [(NSXPCConnection *)xpcCnx synchronousRemoteObjectProxyWithErrorHandler:v19];
     v16[0] = MEMORY[0x277D85DD0];
@@ -1318,26 +1318,26 @@ void __65__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForIdentifier___block
     v10 = v22[5];
     if (v10)
     {
-      batteryDictionary = v5->_batteryDictionary;
+      batteryDictionary = selfCopy->_batteryDictionary;
       if (!batteryDictionary)
       {
         v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v13 = v5->_batteryDictionary;
-        v5->_batteryDictionary = v12;
+        v13 = selfCopy->_batteryDictionary;
+        selfCopy->_batteryDictionary = v12;
 
         v10 = v22[5];
-        batteryDictionary = v5->_batteryDictionary;
+        batteryDictionary = selfCopy->_batteryDictionary;
       }
 
-      v14 = [v10 identifier];
-      [(NSMutableDictionary *)batteryDictionary setObject:v10 forKeyedSubscript:v14];
+      identifier = [v10 identifier];
+      [(NSMutableDictionary *)batteryDictionary setObject:v10 forKeyedSubscript:identifier];
 
       v10 = v22[5];
     }
   }
 
   _Block_object_dispose(&v21, 8);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
@@ -1370,78 +1370,78 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
   }
 }
 
-- (void)deviceManagerFoundDevice:(id)a3
+- (void)deviceManagerFoundDevice:(id)device
 {
-  v9 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v9 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    deviceDictionary = v4->_deviceDictionary;
+    deviceDictionary = selfCopy->_deviceDictionary;
     if (!deviceDictionary)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v8 = v4->_deviceDictionary;
-      v4->_deviceDictionary = v7;
+      v8 = selfCopy->_deviceDictionary;
+      selfCopy->_deviceDictionary = v7;
 
-      deviceDictionary = v4->_deviceDictionary;
+      deviceDictionary = selfCopy->_deviceDictionary;
     }
 
-    [(NSMutableDictionary *)deviceDictionary setObject:v9 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)deviceDictionary setObject:deviceCopy forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
-    if (v4->_deviceFoundHandler)
+    objc_sync_exit(selfCopy);
+    if (selfCopy->_deviceFoundHandler)
     {
       if (gLogCategory_AADeviceManager <= 10 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
       {
-        [AADeviceManager deviceManagerFoundDevice:v4];
+        [AADeviceManager deviceManagerFoundDevice:selfCopy];
       }
 
-      (*(v4->_deviceFoundHandler + 2))();
+      (*(selfCopy->_deviceFoundHandler + 2))();
     }
 
     else if (gLogCategory_AADeviceManager <= 10 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
-      [AADeviceManager deviceManagerFoundDevice:v4];
+      [AADeviceManager deviceManagerFoundDevice:selfCopy];
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)deviceManagerLostDevice:(id)a3
+- (void)deviceManagerLostDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v8 identifier];
-  if (v5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    [(NSMutableDictionary *)v4->_deviceDictionary setObject:0 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)selfCopy->_deviceDictionary setObject:0 forKeyedSubscript:identifier];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     if (gLogCategory_AADeviceManager <= 30 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
-      clientID = v4->_clientID;
+      clientID = selfCopy->_clientID;
       LogPrintF();
     }
 
-    deviceLostHandler = v4->_deviceLostHandler;
+    deviceLostHandler = selfCopy->_deviceLostHandler;
     if (deviceLostHandler)
     {
-      deviceLostHandler[2](deviceLostHandler, v8);
+      deviceLostHandler[2](deviceLostHandler, deviceCopy);
     }
   }
 
   else
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1456,14 +1456,14 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
   [(AADeviceManager *)self _reset];
 }
 
-- (void)deviceHeadGestureDetected:(id)a3
+- (void)deviceHeadGestureDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   headGestureUpdatedHandler = self->_headGestureUpdatedHandler;
   if (headGestureUpdatedHandler)
   {
-    headGestureUpdatedHandler[2](headGestureUpdatedHandler, v5);
+    headGestureUpdatedHandler[2](headGestureUpdatedHandler, detectedCopy);
   }
 
   else if (gLogCategory_AADeviceManager <= 10 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
@@ -1472,9 +1472,9 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
   }
 }
 
-- (id)fetchAudioAccessoryDeviceForBTAddress:(id)a3
+- (id)fetchAudioAccessoryDeviceForBTAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if (_os_feature_enabled_impl())
   {
     v17 = 0;
@@ -1483,10 +1483,10 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
     v20 = __Block_byref_object_copy__0;
     v21 = __Block_byref_object_dispose__0;
     v22 = 0;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(AADeviceManager *)v5 _ensureXPCStarted];
-    if (v6)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
       {
@@ -1498,12 +1498,12 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
 
     else
     {
-      xpcCnx = v5->_xpcCnx;
+      xpcCnx = selfCopy->_xpcCnx;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __57__AADeviceManager_fetchAudioAccessoryDeviceForBTAddress___block_invoke;
       v15[3] = &unk_278CDD750;
-      v9 = v4;
+      v9 = addressCopy;
       v16 = v9;
       v10 = [(NSXPCConnection *)xpcCnx synchronousRemoteObjectProxyWithErrorHandler:v15];
       v12[0] = MEMORY[0x277D85DD0];
@@ -1517,7 +1517,7 @@ void __62__AADeviceManager__syncXPCFetchAADeviceBatteryInfoForAddress___block_in
       v7 = v18[5];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     _Block_object_dispose(&v17, 8);
   }
 
@@ -1559,16 +1559,16 @@ void __57__AADeviceManager_fetchAudioAccessoryDeviceForBTAddress___block_invoke_
 
 - (id)fetchPairedAudioAccessoryDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v3 = [(AADeviceManager *)v2 _ensureXPCStarted];
-  if (v3)
+  _ensureXPCStarted = [(AADeviceManager *)selfCopy _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
     if (gLogCategory_AADeviceManager <= 90 && (gLogCategory_AADeviceManager != -1 || _LogCategory_Initialize()))
     {
@@ -1580,7 +1580,7 @@ void __57__AADeviceManager_fetchAudioAccessoryDeviceForBTAddress___block_invoke_
 
   else
   {
-    v4 = [(NSXPCConnection *)v2->_xpcCnx synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+    v4 = [(NSXPCConnection *)selfCopy->_xpcCnx synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__AADeviceManager_fetchPairedAudioAccessoryDevices__block_invoke_2;
@@ -1592,7 +1592,7 @@ void __57__AADeviceManager_fetchAudioAccessoryDeviceForBTAddress___block_invoke_
   }
 
   _Block_object_dispose(&v8, 8);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }

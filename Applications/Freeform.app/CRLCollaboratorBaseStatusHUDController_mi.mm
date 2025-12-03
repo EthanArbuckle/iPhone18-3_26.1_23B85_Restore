@@ -6,41 +6,41 @@
 - (_TtP8Freeform23CRLStatusHUDManaging_mi_)manager;
 - (double)timeLeftToShow;
 - (void)action;
-- (void)setAccessibilityAnnouncement:(id)a3;
-- (void)setContainerView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setHeightConstraint:(id)a3;
-- (void)setHideTimer:(id)a3;
-- (void)setHudView:(id)a3;
-- (void)setShowing:(BOOL)a3;
-- (void)setSwipeGestureRecognizer:(id)a3;
-- (void)setTimeStartedShowing:(id)a3;
-- (void)swipedWithSender:(id)a3;
-- (void)touchedHUDWithSender:(id)a3;
+- (void)setAccessibilityAnnouncement:(id)announcement;
+- (void)setContainerView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setHeightConstraint:(id)constraint;
+- (void)setHideTimer:(id)timer;
+- (void)setHudView:(id)view;
+- (void)setShowing:(BOOL)showing;
+- (void)setSwipeGestureRecognizer:(id)recognizer;
+- (void)setTimeStartedShowing:(id)showing;
+- (void)swipedWithSender:(id)sender;
+- (void)touchedHUDWithSender:(id)sender;
 - (void)updateForAppearance;
 @end
 
 @implementation CRLCollaboratorBaseStatusHUDController_mi
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_contentView);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_contentView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_contentView) = view;
+  viewCopy = view;
 }
 
-- (void)setHudView:(id)a3
+- (void)setHudView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hudView);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hudView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hudView) = view;
+  viewCopy = view;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_containerView);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_containerView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_containerView) = view;
+  viewCopy = view;
 }
 
 - (_TtP8Freeform23CRLStatusHUDManaging_mi_)manager
@@ -53,7 +53,7 @@
 - (NSString)message
 {
   v2 = *((swift_isaMask & *self) + 0x2D8);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = String._bridgeToObjectiveC()();
@@ -83,12 +83,12 @@
   return v10;
 }
 
-- (void)setTimeStartedShowing:(id)a3
+- (void)setTimeStartedShowing:(id)showing
 {
   v5 = sub_1005B981C(&qword_101A0A320);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (showing)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Date();
@@ -103,31 +103,31 @@
 
   v10 = OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_timeStartedShowing;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_100015CDC(v7, self + v10);
   swift_endAccess();
 }
 
 - (double)timeLeftToShow
 {
-  v2 = self;
+  selfCopy = self;
   sub_100805AC0();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHideTimer:(id)a3
+- (void)setHideTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hideTimer);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hideTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hideTimer) = timer;
+  timerCopy = timer;
 }
 
-- (void)setShowing:(BOOL)a3
+- (void)setShowing:(BOOL)showing
 {
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_showing) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_showing) = showing;
+  selfCopy = self;
   sub_100805D40();
 }
 
@@ -147,9 +147,9 @@
   return v2;
 }
 
-- (void)setAccessibilityAnnouncement:(id)a3
+- (void)setAccessibilityAnnouncement:(id)announcement
 {
-  if (a3)
+  if (announcement)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -165,34 +165,34 @@
   v6[1] = v5;
 }
 
-- (void)setSwipeGestureRecognizer:(id)a3
+- (void)setSwipeGestureRecognizer:(id)recognizer
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_swipeGestureRecognizer);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_swipeGestureRecognizer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_swipeGestureRecognizer) = recognizer;
+  recognizerCopy = recognizer;
 }
 
-- (void)swipedWithSender:(id)a3
+- (void)swipedWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v5 = self;
-    v4 = a3;
+    selfCopy = self;
+    senderCopy = sender;
     sub_100B08A30(1);
   }
 }
 
-- (void)setHeightConstraint:(id)a3
+- (void)setHeightConstraint:(id)constraint
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_heightConstraint);
-  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_heightConstraint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_heightConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
-- (void)touchedHUDWithSender:(id)a3
+- (void)touchedHUDWithSender:(id)sender
 {
   v3 = *(self + OBJC_IVAR____TtC8Freeform41CRLCollaboratorBaseStatusHUDController_mi_hideOnTouch);
-  v5 = self;
+  selfCopy = self;
   if (v3 == 1)
   {
     sub_100B08A30(1);
@@ -208,7 +208,7 @@
 
 - (void)updateForAppearance
 {
-  v2 = self;
+  selfCopy = self;
   sub_10105B41C();
 }
 

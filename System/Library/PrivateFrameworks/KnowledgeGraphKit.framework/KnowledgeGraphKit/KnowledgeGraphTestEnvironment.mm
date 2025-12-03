@@ -2,17 +2,17 @@
 + (NSArray)matisseGraphs;
 + (NSArray)testEnvironmentsForExistingStores;
 + (NSArray)testEnvironmentsForOnDiskExistingStores;
-+ (id)environmentWithTestDBWithStoreType:(Class)a3 extraOptions:(unint64_t)a4;
-+ (id)temporaryURLWithFileExtension:(id)a3;
-- (BOOL)deleteEdge:(id)a3;
-- (BOOL)deleteNode:(id)a3;
-- (KnowledgeGraphTestEnvironment)initWithKGGraph:(id)a3;
-- (id)addEdgeWithLabels:(id)a3 properties:(id)a4 sourceNode:(id)a5 targetNode:(id)a6;
-- (id)addNodeWithLabels:(id)a3 properties:(id)a4;
-- (id)placeholderEdgeWithLabels:(id)a3 properties:(id)a4 sourceNode:(id)a5 targetNode:(id)a6;
-- (id)placeholderNodeWithLabels:(id)a3 properties:(id)a4;
-- (id)refetchEdge:(id)a3;
-- (id)refetchNode:(id)a3;
++ (id)environmentWithTestDBWithStoreType:(Class)type extraOptions:(unint64_t)options;
++ (id)temporaryURLWithFileExtension:(id)extension;
+- (BOOL)deleteEdge:(id)edge;
+- (BOOL)deleteNode:(id)node;
+- (KnowledgeGraphTestEnvironment)initWithKGGraph:(id)graph;
+- (id)addEdgeWithLabels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode;
+- (id)addNodeWithLabels:(id)labels properties:(id)properties;
+- (id)placeholderEdgeWithLabels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode;
+- (id)placeholderNodeWithLabels:(id)labels properties:(id)properties;
+- (id)refetchEdge:(id)edge;
+- (id)refetchNode:(id)node;
 - (unint64_t)edgeCount;
 - (unint64_t)nodeCount;
 - (void)beginTransaction;
@@ -72,50 +72,50 @@
   [(KnowledgeGraphTestEnvironment *)self commitTransaction];
 }
 
-- (BOOL)deleteEdge:(id)a3
+- (BOOL)deleteEdge:(id)edge
 {
-  v4 = a3;
+  edgeCopy = edge;
   v5 = objc_alloc_init(KGGraphChangeRequest);
-  [(KGGraphChangeRequest *)v5 removeEdge:v4];
+  [(KGGraphChangeRequest *)v5 removeEdge:edgeCopy];
 
   LOBYTE(self) = [(KGMutableGraph *)self->_graph performChangesAndWait:v5 error:0];
   return self;
 }
 
-- (BOOL)deleteNode:(id)a3
+- (BOOL)deleteNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = objc_alloc_init(KGGraphChangeRequest);
-  [(KGGraphChangeRequest *)v5 removeNode:v4];
+  [(KGGraphChangeRequest *)v5 removeNode:nodeCopy];
 
   LOBYTE(self) = [(KGMutableGraph *)self->_graph performChangesAndWait:v5 error:0];
   return self;
 }
 
-- (id)refetchEdge:(id)a3
+- (id)refetchEdge:(id)edge
 {
   graph = self->_graph;
-  v4 = [a3 identifier];
+  identifier = [edge identifier];
 
-  return [(KGGraph *)graph edgeForIdentifier:v4];
+  return [(KGGraph *)graph edgeForIdentifier:identifier];
 }
 
-- (id)refetchNode:(id)a3
+- (id)refetchNode:(id)node
 {
   graph = self->_graph;
-  v4 = [a3 identifier];
+  identifier = [node identifier];
 
-  return [(KGGraph *)graph nodeForIdentifier:v4];
+  return [(KGGraph *)graph nodeForIdentifier:identifier];
 }
 
-- (id)addEdgeWithLabels:(id)a3 properties:(id)a4 sourceNode:(id)a5 targetNode:(id)a6
+- (id)addEdgeWithLabels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  propertiesCopy = properties;
+  labelsCopy = labels;
   v14 = objc_alloc_init(KGGraphChangeRequest);
-  v15 = [(KnowledgeGraphTestEnvironment *)self placeholderEdgeWithLabels:v13 properties:v12 sourceNode:v11 targetNode:v10];
+  v15 = [(KnowledgeGraphTestEnvironment *)self placeholderEdgeWithLabels:labelsCopy properties:propertiesCopy sourceNode:nodeCopy targetNode:targetNodeCopy];
 
   [(KGGraphChangeRequest *)v14 insertEdge:v15];
   [(KGMutableGraph *)self->_graph performChangesAndWait:v14 error:0];
@@ -123,12 +123,12 @@
   return v15;
 }
 
-- (id)addNodeWithLabels:(id)a3 properties:(id)a4
+- (id)addNodeWithLabels:(id)labels properties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
+  propertiesCopy = properties;
+  labelsCopy = labels;
   v8 = objc_alloc_init(KGGraphChangeRequest);
-  v9 = [(KnowledgeGraphTestEnvironment *)self placeholderNodeWithLabels:v7 properties:v6];
+  v9 = [(KnowledgeGraphTestEnvironment *)self placeholderNodeWithLabels:labelsCopy properties:propertiesCopy];
 
   [(KGGraphChangeRequest *)v8 insertNode:v9];
   [(KGMutableGraph *)self->_graph performChangesAndWait:v8 error:0];
@@ -136,42 +136,42 @@
   return v9;
 }
 
-- (id)placeholderEdgeWithLabels:(id)a3 properties:(id)a4 sourceNode:(id)a5 targetNode:(id)a6
+- (id)placeholderEdgeWithLabels:(id)labels properties:(id)properties sourceNode:(id)node targetNode:(id)targetNode
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [KGPropertyValue kgPropertiesWithMAProperties:a4];
-  v14 = [(KGGraph *)self->_graph entityFactory];
-  v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v12];
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  labelsCopy = labels;
+  v13 = [KGPropertyValue kgPropertiesWithMAProperties:properties];
+  entityFactory = [(KGGraph *)self->_graph entityFactory];
+  v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:labelsCopy];
 
-  v16 = [v14 edgeWithIdentifier:0 labels:v15 properties:v13 sourceNode:v11 targetNode:v10];
+  v16 = [entityFactory edgeWithIdentifier:0 labels:v15 properties:v13 sourceNode:nodeCopy targetNode:targetNodeCopy];
 
   return v16;
 }
 
-- (id)placeholderNodeWithLabels:(id)a3 properties:(id)a4
+- (id)placeholderNodeWithLabels:(id)labels properties:(id)properties
 {
-  v6 = a3;
-  v7 = [KGPropertyValue kgPropertiesWithMAProperties:a4];
-  v8 = [(KGGraph *)self->_graph entityFactory];
-  v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v6];
+  labelsCopy = labels;
+  v7 = [KGPropertyValue kgPropertiesWithMAProperties:properties];
+  entityFactory = [(KGGraph *)self->_graph entityFactory];
+  v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:labelsCopy];
 
-  v10 = [v8 nodeWithIdentifier:0 labels:v9 properties:v7];
+  v10 = [entityFactory nodeWithIdentifier:0 labels:v9 properties:v7];
 
   return v10;
 }
 
 - (void)commitTransaction
 {
-  v2 = [(KGStoredGraph *)self->_graph store];
-  [v2 commitTransactionWithError:0];
+  store = [(KGStoredGraph *)self->_graph store];
+  [store commitTransactionWithError:0];
 }
 
 - (void)beginTransaction
 {
-  v2 = [(KGStoredGraph *)self->_graph store];
-  [v2 beginTransactionWithError:0];
+  store = [(KGStoredGraph *)self->_graph store];
+  [store beginTransactionWithError:0];
 }
 
 - (void)closeAndDeleteEnvironment
@@ -179,13 +179,13 @@
   graph = self->_graph;
   if (graph)
   {
-    v4 = [(KGStoredGraph *)graph store];
-    [v4 close];
+    store = [(KGStoredGraph *)graph store];
+    [store close];
 
-    v5 = [(KGStoredGraph *)self->_graph store];
+    store2 = [(KGStoredGraph *)self->_graph store];
     v6 = objc_opt_class();
-    v7 = [(KGStoredGraph *)self->_graph store];
-    v8 = [v7 url];
+    store3 = [(KGStoredGraph *)self->_graph store];
+    v8 = [store3 url];
     [v6 destroyAtURL:v8 error:0];
 
     v9 = self->_graph;
@@ -193,16 +193,16 @@
   }
 }
 
-- (KnowledgeGraphTestEnvironment)initWithKGGraph:(id)a3
+- (KnowledgeGraphTestEnvironment)initWithKGGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = KnowledgeGraphTestEnvironment;
   v6 = [(KnowledgeGraphTestEnvironment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graph, a3);
+    objc_storeStrong(&v6->_graph, graph);
   }
 
   return v7;
@@ -211,13 +211,13 @@
 + (NSArray)testEnvironmentsForOnDiskExistingStores
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [a1 testEnvironmentsForExistingStores];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  testEnvironmentsForExistingStores = [self testEnvironmentsForExistingStores];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(testEnvironmentsForExistingStores, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = testEnvironmentsForExistingStores;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -233,11 +233,11 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 graph];
-        v11 = [v10 store];
-        v12 = [objc_opt_class() persistentStoreFileExtension];
+        graph = [v9 graph];
+        store = [graph store];
+        persistentStoreFileExtension = [objc_opt_class() persistentStoreFileExtension];
 
-        if (v12)
+        if (persistentStoreFileExtension)
         {
           [v3 addObject:v9];
         }
@@ -273,7 +273,7 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [MAKGTestGraph alloc];
-  v4 = [a1 temporaryURLWithFileExtension:@"kgdb"];
+  v4 = [self temporaryURLWithFileExtension:@"kgdb"];
   v5 = [(MAGraph *)v3 initWithPersistentStoreURL:v4 options:0 error:0];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
@@ -283,30 +283,30 @@
   return v6;
 }
 
-+ (id)environmentWithTestDBWithStoreType:(Class)a3 extraOptions:(unint64_t)a4
++ (id)environmentWithTestDBWithStoreType:(Class)type extraOptions:(unint64_t)options
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == type)
   {
-    v9 = objc_alloc_init(a3);
+    v9 = objc_alloc_init(type);
   }
 
   else
   {
-    v7 = [(objc_class *)a3 persistentStoreFileExtension];
-    v8 = [a1 temporaryURLWithFileExtension:v7];
+    persistentStoreFileExtension = [(objc_class *)type persistentStoreFileExtension];
+    v8 = [self temporaryURLWithFileExtension:persistentStoreFileExtension];
 
-    v9 = [[a3 alloc] initWithURL:v8];
+    v9 = [[type alloc] initWithURL:v8];
   }
 
   v17 = 0;
-  v10 = [v9 openWithMode:a4 | 6 error:&v17];
+  v10 = [v9 openWithMode:options | 6 error:&v17];
   v11 = v17;
   if (v10)
   {
     v12 = objc_alloc_init(KGLabelBasedEntityFactory);
     v13 = [[KGStoredGraph alloc] initGraphWithStore:v9 entityFactory:v12];
-    v14 = [[a1 alloc] initWithKGGraph:v13];
+    v14 = [[self alloc] initWithKGGraph:v13];
   }
 
   else
@@ -327,17 +327,17 @@
   return v14;
 }
 
-+ (id)temporaryURLWithFileExtension:(id)a3
++ (id)temporaryURLWithFileExtension:(id)extension
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@.%@", v7, v5];
+  extensionCopy = extension;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  extensionCopy = [v3 stringWithFormat:@"%@.%@", uUIDString, extensionCopy];
 
   v9 = NSTemporaryDirectory();
-  v10 = [v9 stringByAppendingString:v8];
+  v10 = [v9 stringByAppendingString:extensionCopy];
 
   v11 = [MEMORY[0x277CBEBC0] URLWithString:v10];
 

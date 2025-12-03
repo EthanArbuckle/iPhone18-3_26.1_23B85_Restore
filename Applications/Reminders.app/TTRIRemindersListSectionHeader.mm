@@ -1,16 +1,16 @@
 @interface TTRIRemindersListSectionHeader
 - (BOOL)floating;
-- (_TtC9Reminders30TTRIRemindersListSectionHeader)initWithReuseIdentifier:(id)a3;
-- (void)didTap:(id)a3;
-- (void)setAccessibilityHint:(id)a3;
-- (void)setFloating:(BOOL)a3;
+- (_TtC9Reminders30TTRIRemindersListSectionHeader)initWithReuseIdentifier:(id)identifier;
+- (void)didTap:(id)tap;
+- (void)setAccessibilityHint:(id)hint;
+- (void)setFloating:(BOOL)floating;
 @end
 
 @implementation TTRIRemindersListSectionHeader
 
-- (_TtC9Reminders30TTRIRemindersListSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC9Reminders30TTRIRemindersListSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -31,37 +31,37 @@
   return [(TTRIRemindersListSectionHeader *)&v3 floating];
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  v4 = self;
-  sub_1002992EC(a3);
+  selfCopy = self;
+  sub_1002992EC(floating);
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_10029A3EC();
 }
 
-- (void)setAccessibilityHint:(id)a3
+- (void)setAccessibilityHint:(id)hint
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (hint)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
-    a3 = String._bridgeToObjectiveC()();
+    selfCopy = self;
+    hint = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TTRIRemindersListSectionHeader *)&v8 setAccessibilityHint:a3];
+  [(TTRIRemindersListSectionHeader *)&v8 setAccessibilityHint:hint];
 }
 
 @end

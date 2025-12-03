@@ -1,23 +1,23 @@
 @interface JETreatmentContext
-- (JETreatmentContext)initWithTreatment:(id)a3 metrics:(id)a4;
+- (JETreatmentContext)initWithTreatment:(id)treatment metrics:(id)metrics;
 - (uint64_t)metrics;
-- (void)setMetrics:(void *)a1;
+- (void)setMetrics:(void *)metrics;
 @end
 
 @implementation JETreatmentContext
 
-- (JETreatmentContext)initWithTreatment:(id)a3 metrics:(id)a4
+- (JETreatmentContext)initWithTreatment:(id)treatment metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
+  treatmentCopy = treatment;
+  metricsCopy = metrics;
   v14.receiver = self;
   v14.super_class = JETreatmentContext;
   v9 = [(JETreatmentContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_treatment, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_treatment, treatment);
+    v11 = [metricsCopy copy];
     metrics = v10->_metrics;
     v10->_metrics = v11;
   }
@@ -35,11 +35,11 @@
   return result;
 }
 
-- (void)setMetrics:(void *)a1
+- (void)setMetrics:(void *)metrics
 {
-  if (a1)
+  if (metrics)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(metrics, newValue, newValue, 16);
   }
 }
 

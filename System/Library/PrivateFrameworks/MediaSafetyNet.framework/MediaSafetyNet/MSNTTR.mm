@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)TTRInProgress;
 - (uint64_t)continueTTR;
-- (void)beginTTRWithTitle:(id)a3;
-- (void)beginTTRWithTitle:(id)a3 date:(id)a4;
-- (void)completeTTR:(id)a3;
+- (void)beginTTRWithTitle:(id)title;
+- (void)beginTTRWithTitle:(id)title date:(id)date;
+- (void)completeTTR:(id)r;
 - (void)continueTTR;
-- (void)handleCallback:(unint64_t)a3;
+- (void)handleCallback:(unint64_t)callback;
 @end
 
 @implementation MSNTTR
@@ -38,19 +38,19 @@ uint64_t __24__MSNTTR_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)beginTTRWithTitle:(id)a3
+- (void)beginTTRWithTitle:(id)title
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [(MSNTTR *)self beginTTRWithTitle:v5 date:v6];
+  titleCopy = title;
+  date = [v4 date];
+  [(MSNTTR *)self beginTTRWithTitle:titleCopy date:date];
 }
 
-- (void)beginTTRWithTitle:(id)a3 date:(id)a4
+- (void)beginTTRWithTitle:(id)title date:(id)date
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  dateCopy = date;
   if ((os_variant_allows_internal_security_policies() & 1) == 0)
   {
     qword_27F958928 = "TTR instance should not exist on customer build.";
@@ -79,10 +79,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = [(MSNTTR *)self TTRInProgress];
+  tTRInProgress = [(MSNTTR *)self TTRInProgress];
   v10 = MSNLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (tTRInProgress)
   {
     if (v11)
     {
@@ -93,40 +93,40 @@ LABEL_21:
 
   else
   {
-    v31 = self;
-    v33 = v7;
+    selfCopy = self;
+    v33 = dateCopy;
     if (v11)
     {
       *buf = 138412290;
-      v35 = v6;
+      v35 = titleCopy;
       _os_log_impl(&dword_258731000, v10, OS_LOG_TYPE_INFO, "Attemting TTR: %@", buf, 0xCu);
     }
 
     v10 = objc_alloc_init(MEMORY[0x277CCAB50]);
-    v12 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-    [v10 formUnionWithCharacterSet:v12];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    [v10 formUnionWithCharacterSet:uRLQueryAllowedCharacterSet];
 
     [v10 removeCharactersInString:@"&"];
     v13 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v13 setDateFormat:@"HH:mm:ss"];
-    v14 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [v13 setTimeZone:v14];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [v13 setTimeZone:systemTimeZone];
 
     v15 = MEMORY[0x277CCACA8];
-    [v6 stringByAddingPercentEncodingWithAllowedCharacters:v10];
-    v17 = v16 = v6;
+    [titleCopy stringByAddingPercentEncodingWithAllowedCharacters:v10];
+    v17 = v16 = titleCopy;
     v18 = [@"MediaSafetyNet" stringByAddingPercentEncodingWithAllowedCharacters:v10];
     v19 = [@"all" stringByAddingPercentEncodingWithAllowedCharacters:v10];
     v20 = [@"1066524" stringByAddingPercentEncodingWithAllowedCharacters:v10];
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v13 stringFromDate:v7];
+    v22 = [v13 stringFromDate:dateCopy];
     v32 = v16;
     v23 = [v21 stringWithFormat:@"The mic or camera was unexpectedly used on the home/lock screen. Describe what you were doing, especially whether you were intentionally recording. Say what apps you were using and whether you noticed any indicators (such as double-height status bar or pill). The recorded device state was:\n\n%@\n\nThe event occurred at: %@", v16, v22];
     v24 = [v23 stringByAddingPercentEncodingWithAllowedCharacters:v10];
     v25 = [v15 stringWithFormat:@"tap-to-radar://new?Title=%@&ComponentName=%@&ComponentVersion=%@&Reproducibility=Not%%20Applicable&ComponentID=%@&Classification=Crash/Hang/Data%%20Loss&Description=%@", v17, v18, v19, v20, v24];
 
     v26 = [MEMORY[0x277CBEBC0] URLWithString:v25];
-    [(MSNTTR *)v31 setUrl:v26];
+    [(MSNTTR *)selfCopy setUrl:v26];
 
     v27 = MSNLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -139,23 +139,23 @@ LABEL_21:
     if (g_uiState == 1)
     {
       v28 = MSNLog();
-      v7 = v33;
+      dateCopy = v33;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         _os_log_impl(&dword_258731000, v28, OS_LOG_TYPE_INFO, "Delaying TTR due to lockscreen.", buf, 2u);
       }
 
-      [(MSNTTR *)v31 setPendedTTR:1];
+      [(MSNTTR *)selfCopy setPendedTTR:1];
     }
 
     else
     {
-      [(MSNTTR *)v31 continueTTR];
-      v7 = v33;
+      [(MSNTTR *)selfCopy continueTTR];
+      dateCopy = v33;
     }
 
-    v6 = v32;
+    titleCopy = v32;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -172,19 +172,19 @@ LABEL_21:
 - (void)continueTTR
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCallback:(unint64_t)a3
+- (void)handleCallback:(unint64_t)callback
 {
   v5 = [(MSNTTR *)self url];
   [(MSNTTR *)self setUrl:0];
   CFPreferencesSetAppValue(@"MediaSafetyNetWaitingTTR", 0, @"com.apple.mediaserverd");
   CFPreferencesAppSynchronize(@"com.apple.mediaserverd");
-  if (a3 == 1)
+  if (callback == 1)
   {
     v8 = MSNLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -194,7 +194,7 @@ LABEL_21:
     }
   }
 
-  else if (a3 == 2)
+  else if (callback == 2)
   {
     v6 = MSNLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -221,15 +221,15 @@ LABEL_21:
   }
 }
 
-- (void)completeTTR:(id)a3
+- (void)completeTTR:(id)r
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  rCopy = r;
   v4 = MSNLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = rCopy;
     _os_log_impl(&dword_258731000, v4, OS_LOG_TYPE_INFO, "Completing TTR: %@.", &buf, 0xCu);
   }
 
@@ -251,8 +251,8 @@ LABEL_21:
 
   v6 = v5;
   _Block_object_dispose(&v9, 8);
-  v7 = [v5 defaultWorkspace];
-  [v7 openURL:v3 configuration:0 completionHandler:&__block_literal_global_57];
+  defaultWorkspace = [v5 defaultWorkspace];
+  [defaultWorkspace openURL:rCopy configuration:0 completionHandler:&__block_literal_global_57];
 
   v8 = *MEMORY[0x277D85DE8];
 }

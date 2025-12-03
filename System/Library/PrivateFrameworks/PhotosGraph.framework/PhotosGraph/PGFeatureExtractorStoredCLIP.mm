@@ -1,16 +1,16 @@
 @interface PGFeatureExtractorStoredCLIP
 - (NSArray)featureNames;
 - (PGFeatureExtractorStoredCLIP)init;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorStoredCLIP
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_22F2E5D58(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  sub_22F2E5D58(entityCopy);
   v8 = v7;
 
   return v8;

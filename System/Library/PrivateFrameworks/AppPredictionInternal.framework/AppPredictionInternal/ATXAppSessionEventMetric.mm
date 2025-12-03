@@ -1,22 +1,22 @@
 @interface ATXAppSessionEventMetric
-- (ATXAppSessionEventMetric)initWithDimensions:(id)a3 bundleId:(id)a4 interruptingAppBundleId:(id)a5 duration:(double)a6;
+- (ATXAppSessionEventMetric)initWithDimensions:(id)dimensions bundleId:(id)id interruptingAppBundleId:(id)bundleId duration:(double)duration;
 - (id)coreAnalyticsDictionary;
 @end
 
 @implementation ATXAppSessionEventMetric
 
-- (ATXAppSessionEventMetric)initWithDimensions:(id)a3 bundleId:(id)a4 interruptingAppBundleId:(id)a5 duration:(double)a6
+- (ATXAppSessionEventMetric)initWithDimensions:(id)dimensions bundleId:(id)id interruptingAppBundleId:(id)bundleId duration:(double)duration
 {
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  bundleIdCopy = bundleId;
   v20.receiver = self;
   v20.super_class = ATXAppSessionEventMetric;
-  v13 = [(_ATXCoreAnalyticsMetric *)&v20 initWithDimensions:a3];
+  v13 = [(_ATXCoreAnalyticsMetric *)&v20 initWithDimensions:dimensions];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_appBundleId, a4);
-    objc_storeStrong(&v14->_interruptingAppBundleId, a5);
+    objc_storeStrong(&v13->_appBundleId, id);
+    objc_storeStrong(&v14->_interruptingAppBundleId, bundleId);
     if (v14->_appBundleId)
     {
       v15 = [ATXSessionTaggingAppEntity genreIdForBundleId:?];
@@ -31,7 +31,7 @@
       v14->_interruptingAppCategory = v17;
     }
 
-    v14->_appSessionDuration = a6;
+    v14->_appSessionDuration = duration;
   }
 
   return v14;
@@ -41,41 +41,41 @@
 {
   v17[5] = *MEMORY[0x277D85DE8];
   v16[0] = @"appBundleId";
-  v3 = [(ATXAppSessionEventMetric *)self appBundleId];
-  v4 = v3;
-  if (!v3)
+  appBundleId = [(ATXAppSessionEventMetric *)self appBundleId];
+  null = appBundleId;
+  if (!appBundleId)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v17[0] = v4;
+  v17[0] = null;
   v16[1] = @"appCategory";
-  v5 = [(ATXAppSessionEventMetric *)self appCategory];
-  v6 = v5;
-  if (!v5)
+  appCategory = [(ATXAppSessionEventMetric *)self appCategory];
+  null2 = appCategory;
+  if (!appCategory)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v17[1] = v6;
+  v17[1] = null2;
   v16[2] = @"interruptingAppBundleId";
-  v7 = [(ATXAppSessionEventMetric *)self interruptingAppBundleId];
-  v8 = v7;
-  if (!v7)
+  interruptingAppBundleId = [(ATXAppSessionEventMetric *)self interruptingAppBundleId];
+  null3 = interruptingAppBundleId;
+  if (!interruptingAppBundleId)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v17[2] = v8;
+  v17[2] = null3;
   v16[3] = @"interruptingAppCategory";
-  v9 = [(ATXAppSessionEventMetric *)self interruptingAppCategory];
-  v10 = v9;
-  if (!v9)
+  interruptingAppCategory = [(ATXAppSessionEventMetric *)self interruptingAppCategory];
+  null4 = interruptingAppCategory;
+  if (!interruptingAppCategory)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v17[3] = v10;
+  v17[3] = null4;
   v16[4] = @"duration";
   v11 = MEMORY[0x277CCABB0];
   [(ATXAppSessionEventMetric *)self appSessionDuration];
@@ -83,19 +83,19 @@
   v17[4] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:5];
 
-  if (!v9)
+  if (!interruptingAppCategory)
   {
   }
 
-  if (!v7)
+  if (!interruptingAppBundleId)
   {
   }
 
-  if (!v5)
+  if (!appCategory)
   {
   }
 
-  if (!v3)
+  if (!appBundleId)
   {
   }
 

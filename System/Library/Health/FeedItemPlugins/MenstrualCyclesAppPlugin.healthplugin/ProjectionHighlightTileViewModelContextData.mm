@@ -1,21 +1,21 @@
 @interface ProjectionHighlightTileViewModelContextData
 - (_TtC24MenstrualCyclesAppPlugin43ProjectionHighlightTileViewModelContextData)init;
-- (_TtC24MenstrualCyclesAppPlugin43ProjectionHighlightTileViewModelContextData)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin43ProjectionHighlightTileViewModelContextData)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ProjectionHighlightTileViewModelContextData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29DF2A53C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29DF2A53C(coderCopy);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin43ProjectionHighlightTileViewModelContextData)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin43ProjectionHighlightTileViewModelContextData)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_29DF2A8BC();
 
   return v4;

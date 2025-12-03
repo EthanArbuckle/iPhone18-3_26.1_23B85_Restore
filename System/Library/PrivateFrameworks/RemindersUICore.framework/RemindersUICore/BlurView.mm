@@ -1,12 +1,12 @@
 @interface BlurView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BlurView
 
-- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView)initWithCoder:(id)a3
+- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);
@@ -24,12 +24,12 @@
   [*&v2[OBJC_IVAR____TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView_label] setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB8BlurView_label);
-  v6 = self;
+  selfCopy = self;
   [v5 sizeThatFits_];
   v14.size.width = v7;
   v14.size.height = v8;

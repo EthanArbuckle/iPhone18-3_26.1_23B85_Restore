@@ -1,17 +1,17 @@
 @interface ATXCategoricalFeatureLocationPOICategory
-+ (BOOL)ignorePoiCategoryForUsersCurrentLOI:(id)a3;
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
++ (BOOL)ignorePoiCategoryForUsersCurrentLOI:(id)i;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureLocationPOICategory
 
-+ (BOOL)ignorePoiCategoryForUsersCurrentLOI:(id)a3
++ (BOOL)ignorePoiCategoryForUsersCurrentLOI:(id)i
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  iCopy = i;
+  v4 = iCopy;
+  if (iCopy)
   {
-    if ([v3 type])
+    if ([iCopy type])
     {
       v5 = [v4 type] == 1;
     }
@@ -30,22 +30,22 @@
   return v5;
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 poiCategory];
-  v6 = [v4 locationMotionContext];
+  contextCopy = context;
+  poiCategory = [contextCopy poiCategory];
+  locationMotionContext = [contextCopy locationMotionContext];
 
-  v7 = [v6 currentLOI];
+  currentLOI = [locationMotionContext currentLOI];
 
-  if ([objc_opt_class() ignorePoiCategoryForUsersCurrentLOI:v7])
+  if ([objc_opt_class() ignorePoiCategoryForUsersCurrentLOI:currentLOI])
   {
     v8 = @"POI Category Ignored";
   }
 
-  else if (v5)
+  else if (poiCategory)
   {
-    v8 = v5;
+    v8 = poiCategory;
   }
 
   else

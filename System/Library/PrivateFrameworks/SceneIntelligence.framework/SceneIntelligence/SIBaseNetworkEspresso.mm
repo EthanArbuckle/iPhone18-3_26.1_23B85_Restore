@@ -1,8 +1,8 @@
 @interface SIBaseNetworkEspresso
 + (NSDictionary)tracingEntryFormat;
 - ($C4732ECC957FA13B9B3DF4A51A95735B)network;
-- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)a3;
-- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)a3 withInputName:(id)a4;
+- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)name;
+- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)buffer withInputName:(id)name;
 - (BOOL)buildPlan;
 - (BOOL)initContext;
 - (BOOL)initMLNetwork;
@@ -12,85 +12,85 @@
 - (BOOL)isUsingANE;
 - (BOOL)prepare;
 - (BOOL)validateNetworkOutputDimension;
-- (CGSize)getResolutionByBlobName:(const char *)a3;
+- (CGSize)getResolutionByBlobName:(const char *)name;
 - (NSDictionary)tracingEntry;
 - (NSString)description;
-- (SIBaseNetworkEspresso)initWithNetworkConfiguration:(id)a3;
-- (SIBaseNetworkEspresso)initWithNetworkPath:(id)a3 andEngine:(int64_t)a4 networkMode:(id)a5;
-- (__CVBuffer)getOutPixelBufferByName:(const char *)a3;
+- (SIBaseNetworkEspresso)initWithNetworkConfiguration:(id)configuration;
+- (SIBaseNetworkEspresso)initWithNetworkPath:(id)path andEngine:(int64_t)engine networkMode:(id)mode;
+- (__CVBuffer)getOutPixelBufferByName:(const char *)name;
 - (id).cxx_construct;
 - (id)getOpsForLibrary;
 - (id)networkVersion;
-- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)a3 inputPools:(id)a4 outputPools:(id)a5 clearWiredBuffer:(BOOL)a6;
+- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)name inputPools:(id)pools outputPools:(id)outputPools clearWiredBuffer:(BOOL)buffer;
 - (int64_t)runNetwork;
-- (int64_t)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4;
-- (int64_t)setInput:(id)a3 fromRawPointer:(const void *)a4;
-- (int64_t)switchConfiguration:(id)a3;
+- (int64_t)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer;
+- (int64_t)setInput:(id)input fromRawPointer:(const void *)pointer;
+- (int64_t)switchConfiguration:(id)configuration;
 - (int64_t)unwirePrewiringBuffers;
-- (int64_t)unwirePrewiringBuffersForFunctionName:(id)a3;
-- (unint64_t)getInputBatchNum:(id)a3;
-- (unint64_t)getInputChannels:(id)a3;
-- (unint64_t)getInputHeight:(id)a3;
-- (unint64_t)getInputLength:(id)a3;
-- (unint64_t)getInputWidth:(id)a3;
-- (unint64_t)getOutputBytePerRow:(id)a3;
-- (unint64_t)getOutputChannels:(id)a3;
-- (unint64_t)getOutputComponentSize:(id)a3;
-- (unint64_t)getOutputHeight:(id)a3;
-- (unint64_t)getOutputLength:(id)a3;
-- (unint64_t)getOutputRowElements:(id)a3;
-- (unint64_t)getOutputWidth:(id)a3;
-- (void)bindNetworkInputWithImage:(__CVBuffer *)a3 withInputName:(id)a4;
-- (void)bindNetworkOutput:(const char *)a3;
+- (int64_t)unwirePrewiringBuffersForFunctionName:(id)name;
+- (unint64_t)getInputBatchNum:(id)num;
+- (unint64_t)getInputChannels:(id)channels;
+- (unint64_t)getInputHeight:(id)height;
+- (unint64_t)getInputLength:(id)length;
+- (unint64_t)getInputWidth:(id)width;
+- (unint64_t)getOutputBytePerRow:(id)row;
+- (unint64_t)getOutputChannels:(id)channels;
+- (unint64_t)getOutputComponentSize:(id)size;
+- (unint64_t)getOutputHeight:(id)height;
+- (unint64_t)getOutputLength:(id)length;
+- (unint64_t)getOutputRowElements:(id)elements;
+- (unint64_t)getOutputWidth:(id)width;
+- (void)bindNetworkInputWithImage:(__CVBuffer *)image withInputName:(id)name;
+- (void)bindNetworkOutput:(const char *)output;
 - (void)cleanUpOutputPixelBufferMap;
 - (void)dealloc;
-- (void)getBlobDimensionByName:(const char *)a3 andDestination:(unint64_t *)a4;
-- (void)getRawOutput:(id)a3;
-- (void)setPreprocessor:(id *)a3;
+- (void)getBlobDimensionByName:(const char *)name andDestination:(unint64_t *)destination;
+- (void)getRawOutput:(id)output;
+- (void)setPreprocessor:(id *)preprocessor;
 - (void)updateOutputBlobMap;
 @end
 
 @implementation SIBaseNetworkEspresso
 
-- (SIBaseNetworkEspresso)initWithNetworkConfiguration:(id)a3
+- (SIBaseNetworkEspresso)initWithNetworkConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = SIBaseNetworkEspresso;
   v5 = [(SIBaseNetworkEspresso *)&v20 init];
   if (v5)
   {
-    v6 = [v4 networkName];
+    networkName = [configurationCopy networkName];
     modelName = v5->_modelName;
-    v5->_modelName = v6;
+    v5->_modelName = networkName;
 
-    v8 = [v4 networkPath];
+    networkPath = [configurationCopy networkPath];
 
-    if (v8)
+    if (networkPath)
     {
-      v9 = [v4 networkPath];
+      networkPath2 = [configurationCopy networkPath];
       netPath = v5->_netPath;
-      v5->_netPath = v9;
+      v5->_netPath = networkPath2;
     }
 
     else
     {
       netPath = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v11 = [v4 networkName];
-      v12 = SIMLEIRModelPath(netPath, v11);
+      networkName2 = [configurationCopy networkName];
+      v12 = SIMLEIRModelPath(netPath, networkName2);
       v13 = v5->_netPath;
       v5->_netPath = v12;
     }
 
-    v5->_engineType = [v4 engineType];
-    v14 = [v4 networkMode];
+    v5->_engineType = [configurationCopy engineType];
+    networkMode = [configurationCopy networkMode];
     networkMode = v5->_networkMode;
-    v5->_networkMode = v14;
+    v5->_networkMode = networkMode;
 
     v5->_isPrepared = 0;
-    v16 = [v4 resources];
+    resources = [configurationCopy resources];
     resources = v5->_resources;
-    v5->_resources = v16;
+    v5->_resources = resources;
 
     v18 = v5;
   }
@@ -98,14 +98,14 @@
   return v5;
 }
 
-- (SIBaseNetworkEspresso)initWithNetworkPath:(id)a3 andEngine:(int64_t)a4 networkMode:(id)a5
+- (SIBaseNetworkEspresso)initWithNetworkPath:(id)path andEngine:(int64_t)engine networkMode:(id)mode
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  modeCopy = mode;
   v10 = objc_alloc_init(SINetworkConfiguration);
-  [(SINetworkConfiguration *)v10 setNetworkPath:v8];
-  [(SINetworkConfiguration *)v10 setEngineType:a4];
-  [(SINetworkConfiguration *)v10 setNetworkMode:v9];
+  [(SINetworkConfiguration *)v10 setNetworkPath:pathCopy];
+  [(SINetworkConfiguration *)v10 setEngineType:engine];
+  [(SINetworkConfiguration *)v10 setNetworkMode:modeCopy];
   v11 = [(SIBaseNetworkEspresso *)self initWithNetworkConfiguration:v10];
 
   return v11;
@@ -115,15 +115,15 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   [(SIBaseNetworkEspresso *)self preSetup];
-  v3 = [(SIBaseNetworkEspresso *)self initMLNetwork];
-  if (v3)
+  initMLNetwork = [(SIBaseNetworkEspresso *)self initMLNetwork];
+  if (initMLNetwork)
   {
     [(SIBaseNetworkEspresso *)self postSetup];
     v4 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       modelName = self->_modelName;
-      v6 = [(SIBaseNetworkEspresso *)self networkVersion];
+      networkVersion = [(SIBaseNetworkEspresso *)self networkVersion];
       v9 = 136381443;
       v10 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIBaseNetworkEspresso.mm";
       v11 = 1025;
@@ -131,7 +131,7 @@
       v13 = 2113;
       v14 = modelName;
       v15 = 2113;
-      v16 = v6;
+      v16 = networkVersion;
       _os_log_impl(&dword_21DE0D000, v4, OS_LOG_TYPE_INFO, " %{private}s:%{private}d *** [Initialization] Model: %{private}@. Version: %{private}@ ***", &v9, 0x26u);
     }
 
@@ -139,7 +139,7 @@
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v3;
+  return initMLNetwork;
 }
 
 - (id)networkVersion
@@ -360,7 +360,7 @@
   return 1;
 }
 
-- (void)getBlobDimensionByName:(const char *)a3 andDestination:(unint64_t *)a4
+- (void)getBlobDimensionByName:(const char *)name andDestination:(unint64_t *)destination
 {
   plan = self->_network.plan;
   v5 = *&self->_network.network_index;
@@ -383,47 +383,47 @@
   return 1;
 }
 
-- (void)bindNetworkInputWithImage:(__CVBuffer *)a3 withInputName:(id)a4
+- (void)bindNetworkInputWithImage:(__CVBuffer *)image withInputName:(id)name
 {
-  v6 = a4;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v8 = [(SIBaseNetworkEspresso *)self isUsingANE];
-  v9 = PixelFormatType != 1278226488 || v8;
+  nameCopy = name;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
+  isUsingANE = [(SIBaseNetworkEspresso *)self isUsingANE];
+  v9 = PixelFormatType != 1278226488 || isUsingANE;
   if (v9)
   {
     plan = self->_network.plan;
     v10 = *&self->_network.network_index;
-    [v6 UTF8String];
+    [nameCopy UTF8String];
     espresso_network_bind_cvpixelbuffer();
   }
 
   else
   {
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
-    CVPixelBufferGetBytesPerRow(a3);
-    CVPixelBufferLockBaseAddress(a3, 0);
-    CVPixelBufferGetBaseAddress(a3);
-    CVPixelBufferUnlockBaseAddress(a3, 0);
+    CVPixelBufferGetWidth(image);
+    CVPixelBufferGetHeight(image);
+    CVPixelBufferGetBytesPerRow(image);
+    CVPixelBufferLockBaseAddress(image, 0);
+    CVPixelBufferGetBaseAddress(image);
+    CVPixelBufferUnlockBaseAddress(image, 0);
     v12 = self->_network.plan;
     v13 = *&self->_network.network_index;
-    [v6 UTF8String];
+    [nameCopy UTF8String];
     espresso_network_bind_input_vimagebuffer_planar8();
   }
 }
 
-- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)a3 withInputName:(id)a4
+- (BOOL)bindNetworkInputWithEspressoBuffer:(id *)buffer withInputName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   plan = self->_network.plan;
   v7 = *&self->_network.network_index;
-  [v5 UTF8String];
+  [nameCopy UTF8String];
   v8 = espresso_network_bind_buffer() == 0;
 
   return v8;
 }
 
-- (void)bindNetworkOutput:(const char *)a3
+- (void)bindNetworkOutput:(const char *)output
 {
   disabledOutputSet = self->_disabledOutputSet;
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:?];
@@ -431,7 +431,7 @@
 
   if ((disabledOutputSet & 1) == 0)
   {
-    std::string::basic_string[abi:nn200100]<0>(__p, a3);
+    std::string::basic_string[abi:nn200100]<0>(__p, output);
     if (!std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p))
     {
       abort();
@@ -448,9 +448,9 @@
   }
 }
 
-- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)a3
+- ($FD4688982923A924290ECB669CAF1EC2)getTensorByName:(const char *)name
 {
-  std::string::basic_string[abi:nn200100]<0>(__p, a3);
+  std::string::basic_string[abi:nn200100]<0>(__p, name);
   v8 = __p;
   v4 = std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p);
   if (v7 < 0)
@@ -461,9 +461,9 @@
   return (v4 + 5);
 }
 
-- (__CVBuffer)getOutPixelBufferByName:(const char *)a3
+- (__CVBuffer)getOutPixelBufferByName:(const char *)name
 {
-  std::string::basic_string[abi:nn200100]<0>(__p, a3);
+  std::string::basic_string[abi:nn200100]<0>(__p, name);
   v8 = __p;
   v4 = std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputPixelBufMap.__table_.__bucket_list_.__ptr_, __p)[5];
   if (v7 < 0)
@@ -474,10 +474,10 @@
   return v4;
 }
 
-- (CGSize)getResolutionByBlobName:(const char *)a3
+- (CGSize)getResolutionByBlobName:(const char *)name
 {
   v6[4] = *MEMORY[0x277D85DE8];
-  [(SIBaseNetworkEspresso *)self getBlobDimensionByName:a3 andDestination:v6];
+  [(SIBaseNetworkEspresso *)self getBlobDimensionByName:name andDestination:v6];
   v3 = *MEMORY[0x277D85DE8];
   v4 = v6[0];
   v5 = v6[1];
@@ -486,12 +486,12 @@
   return result;
 }
 
-- (int64_t)switchConfiguration:(id)a3
+- (int64_t)switchConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SIBaseNetworkEspresso *)self networkMode];
-  v6 = [v5 isEqualToString:v4];
+  configurationCopy = configuration;
+  networkMode = [(SIBaseNetworkEspresso *)self networkMode];
+  v6 = [networkMode isEqualToString:configurationCopy];
 
   if (v6)
   {
@@ -503,7 +503,7 @@
   espresso_plan_build_clean();
   plan = self->_network.plan;
   v9 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [configurationCopy UTF8String];
   if (espresso_network_select_configuration())
   {
     v10 = __SceneIntelligenceLogSharedInstance();
@@ -581,7 +581,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  [(SIBaseNetworkEspresso *)self setNetworkMode:v4];
+  [(SIBaseNetworkEspresso *)self setNetworkMode:configurationCopy];
 LABEL_2:
   v7 = 0;
 LABEL_19:
@@ -590,13 +590,13 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getInputBatchNum:(id)a3
+- (unint64_t)getInputBatchNum:(id)num
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numCopy = num;
   plan = self->_network.plan;
   v6 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [numCopy UTF8String];
   if (espresso_network_query_blob_dimensions())
   {
     v7 = -1;
@@ -611,13 +611,13 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getInputChannels:(id)a3
+- (unint64_t)getInputChannels:(id)channels
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelsCopy = channels;
   plan = self->_network.plan;
   v6 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [channelsCopy UTF8String];
   if (espresso_network_query_blob_dimensions())
   {
     v7 = -1;
@@ -632,13 +632,13 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getInputHeight:(id)a3
+- (unint64_t)getInputHeight:(id)height
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  heightCopy = height;
   plan = self->_network.plan;
   v6 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [heightCopy UTF8String];
   if (espresso_network_query_blob_dimensions())
   {
     v7 = -1;
@@ -653,13 +653,13 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getInputWidth:(id)a3
+- (unint64_t)getInputWidth:(id)width
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  widthCopy = width;
   plan = self->_network.plan;
   v6 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [widthCopy UTF8String];
   if (espresso_network_query_blob_dimensions())
   {
     v7 = -1;
@@ -674,11 +674,11 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getInputLength:(id)a3
+- (unint64_t)getInputLength:(id)length
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  lengthCopy = length;
+  std::string::basic_string[abi:nn200100]<0>(__p, [lengthCopy UTF8String]);
   *buf = __p;
   std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p);
   if (v18 < 0)
@@ -699,7 +699,7 @@ LABEL_19:
       v13 = 1024;
       v14 = v5;
       v15 = 2113;
-      v16 = v4;
+      v16 = lengthCopy;
       _os_log_impl(&dword_21DE0D000, v6, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** getInputLength failed with status: %d for name %{private}@ ***", buf, 0x22u);
     }
 
@@ -715,13 +715,13 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getOutputChannels:(id)a3
+- (unint64_t)getOutputChannels:(id)channels
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelsCopy = channels;
   plan = self->_network.plan;
   v6 = *&self->_network.network_index;
-  [v4 UTF8String];
+  [channelsCopy UTF8String];
   if (espresso_network_query_blob_dimensions())
   {
     v7 = -1;
@@ -736,10 +736,10 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)getOutputHeight:(id)a3
+- (unint64_t)getOutputHeight:(id)height
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  heightCopy = height;
+  std::string::basic_string[abi:nn200100]<0>(__p, [heightCopy UTF8String]);
   v9 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p)[16];
   if (v8 < 0)
@@ -750,10 +750,10 @@ LABEL_19:
   return v5;
 }
 
-- (unint64_t)getOutputRowElements:(id)a3
+- (unint64_t)getOutputRowElements:(id)elements
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  elementsCopy = elements;
+  std::string::basic_string[abi:nn200100]<0>(__p, [elementsCopy UTF8String]);
   v9 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p)[15];
   if (v8 < 0)
@@ -764,10 +764,10 @@ LABEL_19:
   return v5;
 }
 
-- (unint64_t)getOutputWidth:(id)a3
+- (unint64_t)getOutputWidth:(id)width
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  widthCopy = width;
+  std::string::basic_string[abi:nn200100]<0>(__p, [widthCopy UTF8String]);
   v9 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p)[15];
   if (v8 < 0)
@@ -778,18 +778,18 @@ LABEL_19:
   return v5;
 }
 
-- (void)getRawOutput:(id)a3
+- (void)getRawOutput:(id)output
 {
-  v4 = a3;
-  v5 = *-[SIBaseNetworkEspresso getTensorByName:](self, "getTensorByName:", [v4 UTF8String]);
+  outputCopy = output;
+  v5 = *-[SIBaseNetworkEspresso getTensorByName:](self, "getTensorByName:", [outputCopy UTF8String]);
 
   return v5;
 }
 
-- (unint64_t)getOutputBytePerRow:(id)a3
+- (unint64_t)getOutputBytePerRow:(id)row
 {
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  rowCopy = row;
+  std::string::basic_string[abi:nn200100]<0>(__p, [rowCopy UTF8String]);
   v9 = __p;
   v5 = std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p)[11];
   if (v8 < 0)
@@ -800,11 +800,11 @@ LABEL_19:
   return v5;
 }
 
-- (unint64_t)getOutputComponentSize:(id)a3
+- (unint64_t)getOutputComponentSize:(id)size
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  std::string::basic_string[abi:nn200100]<0>(__p, [v4 UTF8String]);
+  sizeCopy = size;
+  std::string::basic_string[abi:nn200100]<0>(__p, [sizeCopy UTF8String]);
   v5 = *(std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&self->_outputBufferMap.__table_.__bucket_list_.__ptr_, __p) + 50);
   if (v12 < 0)
   {
@@ -828,11 +828,11 @@ LABEL_19:
   return 4;
 }
 
-- (unint64_t)getOutputLength:(id)a3
+- (unint64_t)getOutputLength:(id)length
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  -[SIBaseNetworkEspresso getTensorByName:](self, "getTensorByName:", [v4 UTF8String]);
+  lengthCopy = length;
+  -[SIBaseNetworkEspresso getTensorByName:](self, "getTensorByName:", [lengthCopy UTF8String]);
   v5 = espresso_buffer_unpack_tensor_shape();
   if (v5)
   {
@@ -846,7 +846,7 @@ LABEL_19:
       v14 = 1024;
       v15 = v5;
       v16 = 2113;
-      v17 = v4;
+      v17 = lengthCopy;
       _os_log_impl(&dword_21DE0D000, v6, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** getOutputLength failed with status: %d for name %{private}@ ***", buf, 0x22u);
     }
 
@@ -907,10 +907,10 @@ LABEL_19:
   return result;
 }
 
-- (int64_t)setInput:(id)a3 fromCVPixelBuffer:(__CVBuffer *)a4
+- (int64_t)setInput:(id)input fromCVPixelBuffer:(__CVBuffer *)buffer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  inputCopy = input;
   if (!self->_isPrepared)
   {
     v8 = __SceneIntelligenceLogSharedInstance();
@@ -926,9 +926,9 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a4) != 1111970369 && CVPixelBufferGetPixelFormatType(a4) != 1278226488)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1111970369 && CVPixelBufferGetPixelFormatType(buffer) != 1278226488)
   {
-    std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [inputCopy UTF8String]);
     if (std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p))
     {
       goto LABEL_12;
@@ -936,8 +936,8 @@ LABEL_19:
 
     *buf = __p;
     *(std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p) + 50) = 65568;
-    v12 = v6;
-    -[SIBaseNetworkEspresso getBlobDimensionByName:andDestination:](self, "getBlobDimensionByName:andDestination:", [v6 UTF8String], buf);
+    v12 = inputCopy;
+    -[SIBaseNetworkEspresso getBlobDimensionByName:andDestination:](self, "getBlobDimensionByName:andDestination:", [inputCopy UTF8String], buf);
     v16 = vextq_s8(*&buf[16], *&buf[16], 8uLL);
     v17 = vextq_s8(*buf, *buf, 8uLL);
     v15 = __p;
@@ -945,12 +945,12 @@ LABEL_19:
     if (!espresso_buffer_pack_tensor_shape())
     {
 LABEL_12:
-      CVPixelBufferLockBaseAddress(a4, 0);
-      BaseAddress = CVPixelBufferGetBaseAddress(a4);
+      CVPixelBufferLockBaseAddress(buffer, 0);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
       *buf = __p;
       std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p)[5] = BaseAddress;
       *buf = __p;
-      [(SIBaseNetworkEspresso *)self bindNetworkInputWithEspressoBuffer:std::__hash_table<std::__hash_value_type<std::string withInputName:espresso_buffer_t>, std::__unordered_map_hasher<std::string, std::__hash_value_type<std::string, espresso_buffer_t>, std::hash<std::string>, std::equal_to<std::string>, true>, std::__unordered_map_equal<std::string, std::__hash_value_type<std::string, espresso_buffer_t>, std::equal_to<std::string>, std::hash<std::string>, true>, std::allocator<std::__hash_value_type<std::string, espresso_buffer_t>>>::__emplace_unique_key_args<std::string, std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<>>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p) + 5, v6];
+      [(SIBaseNetworkEspresso *)self bindNetworkInputWithEspressoBuffer:std::__hash_table<std::__hash_value_type<std::string withInputName:espresso_buffer_t>, std::__unordered_map_hasher<std::string, std::__hash_value_type<std::string, espresso_buffer_t>, std::hash<std::string>, std::equal_to<std::string>, true>, std::__unordered_map_equal<std::string, std::__hash_value_type<std::string, espresso_buffer_t>, std::equal_to<std::string>, std::hash<std::string>, true>, std::allocator<std::__hash_value_type<std::string, espresso_buffer_t>>>::__emplace_unique_key_args<std::string, std::piecewise_construct_t const&, std::tuple<std::string const&>, std::tuple<>>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p) + 5, inputCopy];
       if (v14 < 0)
       {
         operator delete(__p[0]);
@@ -969,7 +969,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [(SIBaseNetworkEspresso *)self bindNetworkInputWithImage:a4 withInputName:v6];
+  [(SIBaseNetworkEspresso *)self bindNetworkInputWithImage:buffer withInputName:inputCopy];
 LABEL_5:
   v7 = 0;
 LABEL_10:
@@ -978,19 +978,19 @@ LABEL_10:
   return v7;
 }
 
-- (int64_t)setInput:(id)a3 fromRawPointer:(const void *)a4
+- (int64_t)setInput:(id)input fromRawPointer:(const void *)pointer
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  inputCopy = input;
+  v7 = inputCopy;
   if (self->_isPrepared)
   {
-    std::string::basic_string[abi:nn200100]<0>(__p, [v6 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [inputCopy UTF8String]);
     v8 = std::__hash_table<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,e5rt_execution_stream_operation *>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,e5rt_execution_stream_operation *>>>::find<std::string>(&self->_input_espresso_buffer.__table_.__bucket_list_.__ptr_, __p);
     if (v8)
     {
       v9 = 0;
-      v8[5] = a4;
+      v8[5] = pointer;
     }
 
     else
@@ -1045,7 +1045,7 @@ LABEL_10:
   std::__hash_table<std::__hash_value_type<std::string,espresso_buffer_t>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,espresso_buffer_t>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,espresso_buffer_t>>>::clear(&self->_outputPixelBufMap);
 }
 
-- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)a3 inputPools:(id)a4 outputPools:(id)a5 clearWiredBuffer:(BOOL)a6
+- (int64_t)addPrewiringBuffersToStreamForFunctionName:(id)name inputPools:(id)pools outputPools:(id)outputPools clearWiredBuffer:(BOOL)buffer
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = __SceneIntelligenceLogSharedInstance();
@@ -1062,7 +1062,7 @@ LABEL_10:
   return 4;
 }
 
-- (int64_t)unwirePrewiringBuffersForFunctionName:(id)a3
+- (int64_t)unwirePrewiringBuffersForFunctionName:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = __SceneIntelligenceLogSharedInstance();
@@ -1110,8 +1110,8 @@ LABEL_10:
 
 - (NSString)description
 {
-  v2 = [(SIBaseNetworkEspresso *)self tracingEntry];
-  v3 = [v2 description];
+  tracingEntry = [(SIBaseNetworkEspresso *)self tracingEntry];
+  v3 = [tracingEntry description];
 
   return v3;
 }
@@ -1130,11 +1130,11 @@ LABEL_10:
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_enablePreprocess];
   v11[3] = v4;
   v10[4] = @"networkVersion";
-  v5 = [(SIBaseNetworkEspresso *)self networkVersion];
-  v11[4] = v5;
+  networkVersion = [(SIBaseNetworkEspresso *)self networkVersion];
+  v11[4] = networkVersion;
   v10[5] = @"networkMode";
-  v6 = [(SIBaseNetworkEspresso *)self networkMode];
-  v11[5] = v6;
+  networkMode = [(SIBaseNetworkEspresso *)self networkMode];
+  v11[5] = networkMode;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:6];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1169,10 +1169,10 @@ void __43__SIBaseNetworkEspresso_tracingEntryFormat__block_invoke()
   return result;
 }
 
-- (void)setPreprocessor:(id *)a3
+- (void)setPreprocessor:(id *)preprocessor
 {
-  v3 = *&a3->var0;
-  *&self->_preprocessor.network_wants_bgr = *&a3->var4;
+  v3 = *&preprocessor->var0;
+  *&self->_preprocessor.network_wants_bgr = *&preprocessor->var4;
   *&self->_preprocessor.bias_r = v3;
 }
 

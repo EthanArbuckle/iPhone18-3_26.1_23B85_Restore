@@ -1,49 +1,49 @@
 @interface SBKeyboardFocusService
-- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)a3 sceneResolver:(id)a4 serviceListenerFactory:(id)a5;
-- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)a3 systemUIScenesCoordinator:(id)a4;
+- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)controller sceneResolver:(id)resolver serviceListenerFactory:(id)factory;
+- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)controller systemUIScenesCoordinator:(id)coordinator;
 - (void)_lock_updateExternalSceneIdentities;
-- (void)client:(id)a3 deferAdditionalEnvironments:(id)a4 whenSceneHasKeyboardFocus:(id)a5 pid:(id)a6;
-- (void)client:(id)a3 removeKeyboardFocusFromSceneIdentity:(id)a4 pid:(id)a5;
-- (void)client:(id)a3 requestKeyboardFocusForSceneIdentity:(id)a4 pid:(id)a5 completion:(id)a6;
-- (void)client:(id)a3 setExternalSceneIdentities:(id)a4;
-- (void)client:(id)a3 stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)a4 pid:(id)a5;
-- (void)clientDidDisconnect:(id)a3;
+- (void)client:(id)client deferAdditionalEnvironments:(id)environments whenSceneHasKeyboardFocus:(id)focus pid:(id)pid;
+- (void)client:(id)client removeKeyboardFocusFromSceneIdentity:(id)identity pid:(id)pid;
+- (void)client:(id)client requestKeyboardFocusForSceneIdentity:(id)identity pid:(id)pid completion:(id)completion;
+- (void)client:(id)client setExternalSceneIdentities:(id)identities;
+- (void)client:(id)client stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)focus pid:(id)pid;
+- (void)clientDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBKeyboardFocusService
 
-- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)a3 systemUIScenesCoordinator:(id)a4
+- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)controller systemUIScenesCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
   v8 = objc_alloc_init(_SBKeyboardServiceSceneResolver);
-  [(_SBKeyboardServiceSceneResolver *)v8 setSystemUIScenesCoordinator:v6];
+  [(_SBKeyboardServiceSceneResolver *)v8 setSystemUIScenesCoordinator:coordinatorCopy];
 
   v9 = objc_alloc_init(SBKeyboardServiceConnectionListenerFactory);
-  v10 = [(SBKeyboardFocusService *)self initWithKeyboardFocusController:v7 sceneResolver:v8 serviceListenerFactory:v9];
+  v10 = [(SBKeyboardFocusService *)self initWithKeyboardFocusController:controllerCopy sceneResolver:v8 serviceListenerFactory:v9];
 
   return v10;
 }
 
-- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)a3 sceneResolver:(id)a4 serviceListenerFactory:(id)a5
+- (SBKeyboardFocusService)initWithKeyboardFocusController:(id)controller sceneResolver:(id)resolver serviceListenerFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  resolverCopy = resolver;
+  factoryCopy = factory;
   v19.receiver = self;
   v19.super_class = SBKeyboardFocusService;
   v12 = [(SBKeyboardFocusService *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keyboardFocusController, a3);
-    objc_storeStrong(&v13->_sceneResolver, a4);
+    objc_storeStrong(&v12->_keyboardFocusController, controller);
+    objc_storeStrong(&v13->_sceneResolver, resolver);
     v13->_lock._os_unfair_lock_opaque = 0;
     v14 = BSDispatchQueueCreateWithQualityOfService();
     serviceQueue = v13->_serviceQueue;
     v13->_serviceQueue = v14;
 
-    v16 = [v11 newKeyboardServiceListenerForDelegate:v13 serviceQueue:v13->_serviceQueue];
+    v16 = [factoryCopy newKeyboardServiceListenerForDelegate:v13 serviceQueue:v13->_serviceQueue];
     serviceConnectionListener = v13->_serviceConnectionListener;
     v13->_serviceConnectionListener = v16;
 
@@ -53,14 +53,14 @@
   return v13;
 }
 
-- (void)client:(id)a3 requestKeyboardFocusForSceneIdentity:(id)a4 pid:(id)a5 completion:(id)a6
+- (void)client:(id)client requestKeyboardFocusForSceneIdentity:(id)identity pid:(id)pid completion:(id)completion
 {
-  v8 = a4;
-  v12 = a5;
-  v13 = a6;
-  v9 = v13;
-  v10 = v12;
-  v11 = v8;
+  identityCopy = identity;
+  pidCopy = pid;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = pidCopy;
+  v11 = identityCopy;
   BSDispatchMain();
 }
 
@@ -141,12 +141,12 @@ void __85__SBKeyboardFocusService_client_requestKeyboardFocusForSceneIdentity_pi
   (*(v6 + 16))(v6, v7, 0);
 }
 
-- (void)client:(id)a3 removeKeyboardFocusFromSceneIdentity:(id)a4 pid:(id)a5
+- (void)client:(id)client removeKeyboardFocusFromSceneIdentity:(id)identity pid:(id)pid
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  identityCopy = identity;
+  pidCopy = pid;
+  v7 = pidCopy;
+  v8 = identityCopy;
   BSDispatchMain();
 }
 
@@ -195,17 +195,17 @@ void __74__SBKeyboardFocusService_client_removeKeyboardFocusFromSceneIdentity_pi
   }
 }
 
-- (void)client:(id)a3 deferAdditionalEnvironments:(id)a4 whenSceneHasKeyboardFocus:(id)a5 pid:(id)a6
+- (void)client:(id)client deferAdditionalEnvironments:(id)environments whenSceneHasKeyboardFocus:(id)focus pid:(id)pid
 {
-  v9 = a3;
-  v10 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v10;
-  v11 = v9;
-  v12 = v10;
-  v13 = v16;
-  v14 = v15;
+  clientCopy = client;
+  environmentsCopy = environments;
+  focusCopy = focus;
+  pidCopy = pid;
+  v17 = environmentsCopy;
+  v11 = clientCopy;
+  v12 = environmentsCopy;
+  v13 = pidCopy;
+  v14 = focusCopy;
   BSDispatchMain();
 }
 
@@ -275,42 +275,42 @@ void __91__SBKeyboardFocusService_client_deferAdditionalEnvironments_whenSceneHa
   }
 }
 
-- (void)client:(id)a3 setExternalSceneIdentities:(id)a4
+- (void)client:(id)client setExternalSceneIdentities:(id)identities
 {
-  v11 = a3;
-  v6 = a4;
+  clientCopy = client;
+  identitiesCopy = identities;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_externalSceneIdentitiesByClient)
   {
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lock_externalSceneIdentitiesByClient = self->_lock_externalSceneIdentitiesByClient;
-    self->_lock_externalSceneIdentitiesByClient = v7;
+    self->_lock_externalSceneIdentitiesByClient = strongToStrongObjectsMapTable;
   }
 
-  v9 = [v6 count];
+  v9 = [identitiesCopy count];
   v10 = self->_lock_externalSceneIdentitiesByClient;
   if (v9)
   {
-    [(NSMapTable *)v10 setObject:v6 forKey:v11];
+    [(NSMapTable *)v10 setObject:identitiesCopy forKey:clientCopy];
   }
 
   else
   {
-    [(NSMapTable *)v10 removeObjectForKey:v11];
+    [(NSMapTable *)v10 removeObjectForKey:clientCopy];
   }
 
   [(SBKeyboardFocusService *)self _lock_updateExternalSceneIdentities];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)client:(id)a3 stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)a4 pid:(id)a5
+- (void)client:(id)client stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)focus pid:(id)pid
 {
-  v8 = a4;
-  v9 = a3;
-  v12 = +[SBKeyboardFocusTarget targetForSceneIdentityToken:pid:](SBKeyboardFocusTarget, "targetForSceneIdentityToken:pid:", v8, [a5 intValue]);
+  focusCopy = focus;
+  clientCopy = client;
+  v12 = +[SBKeyboardFocusTarget targetForSceneIdentityToken:pid:](SBKeyboardFocusTarget, "targetForSceneIdentityToken:pid:", focusCopy, [pid intValue]);
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMapTable *)self->_lock_additionalDeferringRulesByClient objectForKey:v9];
+  v10 = [(NSMapTable *)self->_lock_additionalDeferringRulesByClient objectForKey:clientCopy];
 
   v11 = [v10 objectForKey:v12];
   if (v11)
@@ -322,19 +322,19 @@ void __91__SBKeyboardFocusService_client_deferAdditionalEnvironments_whenSceneHa
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)clientDidDisconnect:(id)a3
+- (void)clientDidDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMapTable *)self->_lock_additionalDeferringRulesByClient objectForKey:v4, 0];
-  v6 = [v5 allValues];
+  v5 = [(NSMapTable *)self->_lock_additionalDeferringRulesByClient objectForKey:disconnectCopy, 0];
+  allValues = [v5 allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -346,21 +346,21 @@ void __91__SBKeyboardFocusService_client_deferAdditionalEnvironments_whenSceneHa
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v10++) invalidate];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  [(NSMapTable *)self->_lock_additionalDeferringRulesByClient removeObjectForKey:v4];
-  [(NSMapTable *)self->_lock_externalSceneIdentitiesByClient removeObjectForKey:v4];
+  [(NSMapTable *)self->_lock_additionalDeferringRulesByClient removeObjectForKey:disconnectCopy];
+  [(NSMapTable *)self->_lock_externalSceneIdentitiesByClient removeObjectForKey:disconnectCopy];
   [(SBKeyboardFocusService *)self _lock_updateExternalSceneIdentities];
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -374,8 +374,8 @@ void __91__SBKeyboardFocusService_client_deferAdditionalEnvironments_whenSceneHa
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMapTable *)self->_lock_externalSceneIdentitiesByClient objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_lock_externalSceneIdentitiesByClient objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -387,14 +387,14 @@ void __91__SBKeyboardFocusService_client_deferAdditionalEnvironments_whenSceneHa
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v3 unionSet:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v6);

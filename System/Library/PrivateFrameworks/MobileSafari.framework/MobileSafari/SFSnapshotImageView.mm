@@ -17,8 +17,8 @@
     return 1;
   }
 
-  v5 = [(SFSnapshotImageView *)self image];
-  v4 = v5 == 0;
+  image = [(SFSnapshotImageView *)self image];
+  v4 = image == 0;
 
   return v4;
 }

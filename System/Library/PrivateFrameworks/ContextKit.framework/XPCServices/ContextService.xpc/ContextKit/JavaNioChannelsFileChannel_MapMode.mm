@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaNioChannelsFileChannel_MapMode alloc];
     JreStrongAssign(&v2->displayName_, @"PRIVATE");

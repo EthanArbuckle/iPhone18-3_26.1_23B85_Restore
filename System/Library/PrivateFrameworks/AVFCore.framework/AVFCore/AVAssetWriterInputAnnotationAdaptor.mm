@@ -1,26 +1,26 @@
 @interface AVAssetWriterInputAnnotationAdaptor
-+ (id)assetWriterInputAnnotationAdaptorWithAssetWriterInput:(id)a3;
++ (id)assetWriterInputAnnotationAdaptorWithAssetWriterInput:(id)input;
 + (opaqueCMFormatDescription)annotationFormatDescription;
 - (AVAssetWriterInput)assetWriterInput;
 - (AVAssetWriterInputAnnotationAdaptor)init;
-- (AVAssetWriterInputAnnotationAdaptor)initWithAssetWriterInput:(id)a3;
-- (BOOL)appendAnnotation:(id)a3;
+- (AVAssetWriterInputAnnotationAdaptor)initWithAssetWriterInput:(id)input;
+- (BOOL)appendAnnotation:(id)annotation;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVAssetWriterInputAnnotationAdaptor
 
-+ (id)assetWriterInputAnnotationAdaptorWithAssetWriterInput:(id)a3
++ (id)assetWriterInputAnnotationAdaptorWithAssetWriterInput:(id)input
 {
-  v3 = [[a1 alloc] initWithAssetWriterInput:a3];
+  v3 = [[self alloc] initWithAssetWriterInput:input];
 
   return v3;
 }
 
 + (opaqueCMFormatDescription)annotationFormatDescription
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = objc_alloc_init(AVMutableMetadataItem);
   [(AVMutableMetadataItem *)v3 setIdentifier:@"mdta/com.apple.quicktime.annotation.body"];
   *&v11.start.value = *MEMORY[0x1E6960C70];
@@ -29,24 +29,24 @@
   epoch = v11.start.epoch;
   [(AVMutableMetadataItem *)v3 setTime:&v11];
   [(AVMutableMetadataItem *)v3 setDataType:*MEMORY[0x1E6960228]];
-  [v2 addObject:v3];
+  [array addObject:v3];
   v5 = objc_alloc_init(AVMutableMetadataItem);
   [(AVMutableMetadataItem *)v5 setIdentifier:@"mdta/com.apple.quicktime.annotation.representation"];
   *&v11.start.value = v8;
   v11.start.epoch = epoch;
   [(AVMutableMetadataItem *)v5 setTime:&v11];
   [(AVMutableMetadataItem *)v5 setDataType:*MEMORY[0x1E6960260]];
-  [v2 addObject:v5];
+  [array addObject:v5];
   v6 = [AVMutableTimedMetadataGroup alloc];
   CMTimeMake(&duration, 1, 1000);
   start = **&MEMORY[0x1E6960CC0];
   CMTimeRangeMake(&v11, &start, &duration);
-  return [(AVTimedMetadataGroup *)[(AVMutableTimedMetadataGroup *)v6 initWithItems:v2 timeRange:&v11] copyFormatDescription];
+  return [(AVTimedMetadataGroup *)[(AVMutableTimedMetadataGroup *)v6 initWithItems:array timeRange:&v11] copyFormatDescription];
 }
 
 - (AVAssetWriterInputAnnotationAdaptor)init
 {
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D920];
   v7 = NSStringFromSelector(sel_initWithAssetWriterInput_);
@@ -54,7 +54,7 @@
   objc_exception_throw(v13);
 }
 
-- (AVAssetWriterInputAnnotationAdaptor)initWithAssetWriterInput:(id)a3
+- (AVAssetWriterInputAnnotationAdaptor)initWithAssetWriterInput:(id)input
 {
   v28.receiver = self;
   v28.super_class = AVAssetWriterInputAnnotationAdaptor;
@@ -62,11 +62,11 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (input)
     {
-      if ([objc_msgSend(a3 "mediaType")])
+      if ([objc_msgSend(input "mediaType")])
       {
-        if ([a3 _isAttachedToAdaptor])
+        if ([input _isAttachedToAdaptor])
         {
           v19 = v6;
           v14 = MEMORY[0x1E695DF30];
@@ -76,11 +76,11 @@
 
         else
         {
-          if (![a3 _status])
+          if (![input _status])
           {
-            v6->_assetWriterInputMetadataAdaptor = [AVAssetWriterInputMetadataAdaptor assetWriterInputMetadataAdaptorWithAssetWriterInput:a3];
-            v6->_assetWriterInput = a3;
-            [a3 _setAttachedAdaptor:v6];
+            v6->_assetWriterInputMetadataAdaptor = [AVAssetWriterInputMetadataAdaptor assetWriterInputMetadataAdaptorWithAssetWriterInput:input];
+            v6->_assetWriterInput = input;
+            [input _setAttachedAdaptor:v6];
             return v6;
           }
 
@@ -137,14 +137,14 @@ LABEL_14:
   return v2;
 }
 
-- (BOOL)appendAnnotation:(id)a3
+- (BOOL)appendAnnotation:(id)annotation
 {
   v59 = *MEMORY[0x1E69E9840];
   v57 = 0;
-  if (!a3)
+  if (!annotation)
   {
     v30 = MEMORY[0x1E695DF30];
-    v31 = *MEMORY[0x1E695D940];
+    name = *MEMORY[0x1E695D940];
     v32 = "annotation != nil";
 LABEL_33:
     v40 = v32;
@@ -152,56 +152,56 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  [a3 timeRange];
+  [annotation timeRange];
   if ((v56 & 0x1D) != 1)
   {
     v30 = MEMORY[0x1E695DF30];
-    v31 = *MEMORY[0x1E695D940];
+    name = *MEMORY[0x1E695D940];
     v32 = "CMTIME_IS_NUMERIC([annotation timeRange].start)";
     goto LABEL_33;
   }
 
-  [a3 timeRange];
+  [annotation timeRange];
   if (v55)
   {
-    [a3 timeRange];
+    [annotation timeRange];
     if ((v54 & 8) != 0)
     {
       v30 = MEMORY[0x1E695DF30];
-      v31 = *MEMORY[0x1E695D940];
+      name = *MEMORY[0x1E695D940];
       v32 = "! CMTIME_IS_NEGATIVE_INFINITY([annotation timeRange].duration)";
       goto LABEL_33;
     }
   }
 
-  v11 = [[(AVAssetWriterInputAnnotationAdaptor *)self assetWriterInput] _status];
-  if ((v11 - 1) >= 4)
+  _status = [[(AVAssetWriterInputAnnotationAdaptor *)self assetWriterInput] _status];
+  if ((_status - 1) >= 4)
   {
-    if (v11)
+    if (_status)
     {
       return 1;
     }
 
     v30 = MEMORY[0x1E695DF30];
-    v31 = *MEMORY[0x1E695D930];
+    name = *MEMORY[0x1E695D930];
     v36 = @"Cannot invoke method before the attached asset writer input has been added to an asset writer and -startWriting has been called on that asset writer";
 LABEL_34:
-    v37 = self;
+    selfCopy = self;
     v38 = a2;
     goto LABEL_37;
   }
 
   v41 = a2;
-  v42 = self;
+  selfCopy2 = self;
   [[(AVAssetWriterInputAnnotationAdaptor *)self assetWriterInput] sourceFormatHint];
   v52 = 0;
   v53 = 0;
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  [a3 timeRange];
-  v12 = [MEMORY[0x1E695DF70] array];
-  [a3 getJSONData:&v53 representationBinaryDataBindings:&v52];
+  [annotation timeRange];
+  array = [MEMORY[0x1E695DF70] array];
+  [annotation getJSONData:&v53 representationBinaryDataBindings:&v52];
   v13 = objc_alloc_init(AVMutableMetadataItem);
   [(AVMutableMetadataItem *)v13 setIdentifier:0x1F0A91D10];
   [(AVMutableMetadataItem *)v13 setDataType:*MEMORY[0x1E6960228]];
@@ -209,12 +209,12 @@ LABEL_34:
   if (!v14)
   {
 LABEL_24:
-    v27 = v42;
+    v27 = selfCopy2;
     goto LABEL_25;
   }
 
   [(AVMutableMetadataItem *)v13 setValue:v14];
-  [v12 addObject:v13];
+  [array addObject:v13];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -267,7 +267,7 @@ LABEL_24:
       [(AVMutableMetadataItem *)v25 setIdentifier:0x1F0A91D30];
       [(AVMutableMetadataItem *)v25 setDataType:v18];
       [(AVMutableMetadataItem *)v25 setValue:v24];
-      [v12 addObject:v25];
+      [array addObject:v25];
     }
 
     v16 = [obj countByEnumeratingWithState:&v45 objects:v58 count:16];
@@ -279,8 +279,8 @@ LABEL_19:
   v44[0] = v49;
   v44[1] = v50;
   v44[2] = v51;
-  v27 = v42;
-  if ([(AVAssetWriterInputMetadataAdaptor *)v42->_assetWriterInputMetadataAdaptor appendTimedMetadataGroup:[(AVTimedMetadataGroup *)v26 initWithItems:v12 timeRange:v44]])
+  v27 = selfCopy2;
+  if ([(AVAssetWriterInputMetadataAdaptor *)selfCopy2->_assetWriterInputMetadataAdaptor appendTimedMetadataGroup:[(AVTimedMetadataGroup *)v26 initWithItems:array timeRange:v44]])
   {
     return 1;
   }
@@ -289,12 +289,12 @@ LABEL_25:
   if ([v57 code] == -11999)
   {
     v33 = [objc_msgSend(v57 "userInfo")];
-    v34 = [v33 reason];
+    reason = [v33 reason];
     v30 = MEMORY[0x1E695DF30];
-    v31 = [v33 name];
-    if (v34)
+    name = [v33 name];
+    if (reason)
     {
-      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", v34];
+      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", reason];
     }
 
     else
@@ -305,14 +305,14 @@ LABEL_25:
     v40 = v35;
     v36 = @"Cannot write annotation to file %@";
     v38 = v41;
-    v37 = v42;
+    selfCopy = selfCopy2;
 LABEL_37:
-    v39 = [v30 exceptionWithName:v31 reason:AVMethodExceptionReasonWithObjectAndSelector(v37 userInfo:{v38, v36, v3, v4, v5, v6, v7, v40), 0}];
+    v39 = [v30 exceptionWithName:name reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy userInfo:{v38, v36, v3, v4, v5, v6, v7, v40), 0}];
     objc_exception_throw(v39);
   }
 
-  v29 = [(AVAssetWriterInputAnnotationAdaptor *)v27 assetWriterInput];
-  [(AVAssetWriterInput *)v29 _tellAssetWriterToTransitionToFailedStatusWithError:v57];
+  assetWriterInput = [(AVAssetWriterInputAnnotationAdaptor *)v27 assetWriterInput];
+  [(AVAssetWriterInput *)assetWriterInput _tellAssetWriterToTransitionToFailedStatusWithError:v57];
   return 0;
 }
 

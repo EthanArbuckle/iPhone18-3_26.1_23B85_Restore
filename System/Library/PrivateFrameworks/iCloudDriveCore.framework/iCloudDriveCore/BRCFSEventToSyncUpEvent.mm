@@ -28,8 +28,8 @@
 - (id)subDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BRCItemID *)self->_itemID debugItemIDString];
-  v5 = v4;
+  debugItemIDString = [(BRCItemID *)self->_itemID debugItemIDString];
+  v5 = debugItemIDString;
   if (self->_isPackage)
   {
     v6 = "pkg ";
@@ -41,7 +41,7 @@
   }
 
   contentSize = self->_contentSize;
-  v8 = [v3 stringWithFormat:@" i:%@ %ssz:%lld su-batch:%lld", v4, v6, contentSize, self->_syncUpBatchSize];
+  v8 = [v3 stringWithFormat:@" i:%@ %ssz:%lld su-batch:%lld", debugItemIDString, v6, contentSize, self->_syncUpBatchSize];
 
   return v8;
 }

@@ -1,25 +1,25 @@
 @interface HSServiceDirectory
-- (BOOL)_addClient:(FileDescriptor *)a3;
-- (BOOL)_removeClient:(shared_ptr<Client>)a3;
-- (BOOL)addClient:(FileDescriptor *)a3;
-- (BOOL)addService:(id)a3;
-- (BOOL)removeService:(id)a3;
+- (BOOL)_addClient:(FileDescriptor *)client;
+- (BOOL)_removeClient:(shared_ptr<Client>)client;
+- (BOOL)addClient:(FileDescriptor *)client;
+- (BOOL)addService:(id)service;
+- (BOOL)removeService:(id)service;
 - (HSServiceDirectory)init;
-- (HSServiceDirectory)initWithReceiveRight:(ReceiveRight *)a3 authorizer:(id)a4;
-- (SendRight)_handleNewClient:(__SecTask *)a3;
+- (HSServiceDirectory)initWithReceiveRight:(ReceiveRight *)right authorizer:(id)authorizer;
+- (SendRight)_handleNewClient:(__SecTask *)client;
 - (id).cxx_construct;
-- (void)_handleDataFromClient:(shared_ptr<Client>)a3;
-- (void)_handleMessage:(void *)a3 fromClient:(shared_ptr<Client>)a4;
-- (void)setRemoteAccessSocket:(FileDescriptor *)a3;
+- (void)_handleDataFromClient:(shared_ptr<Client>)client;
+- (void)_handleMessage:(void *)message fromClient:(shared_ptr<Client>)client;
+- (void)setRemoteAccessSocket:(FileDescriptor *)socket;
 @end
 
 @implementation HSServiceDirectory
 
-- (HSServiceDirectory)initWithReceiveRight:(ReceiveRight *)a3 authorizer:(id)a4
+- (HSServiceDirectory)initWithReceiveRight:(ReceiveRight *)right authorizer:(id)authorizer
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3->var1 - 1 >= 0xFFFFFFFE)
+  authorizerCopy = authorizer;
+  v8 = authorizerCopy;
+  if (right->var1 - 1 >= 0xFFFFFFFE)
   {
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"HSServiceDirectory.mm" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"receiveRight"}];
@@ -30,7 +30,7 @@
     }
   }
 
-  else if (v7)
+  else if (authorizerCopy)
   {
     goto LABEL_3;
   }
@@ -60,7 +60,7 @@ LABEL_3:
     v22[2] = __54__HSServiceDirectory_initWithReceiveRight_authorizer___block_invoke;
     v22[3] = &unk_10A708;
     objc_copyWeak(&v23, &location);
-    v16 = [(HSMachPortListener *)v14 initWithReceiveRight:a3 queue:v15 clientHandler:v22];
+    v16 = [(HSMachPortListener *)v14 initWithReceiveRight:right queue:v15 clientHandler:v22];
     v17 = *(v9 + 3);
     *(v9 + 3) = v16;
 
@@ -105,19 +105,19 @@ void __54__HSServiceDirectory_initWithReceiveRight_authorizer___block_invoke(uin
   return v2;
 }
 
-- (BOOL)addService:(id)a3
+- (BOOL)addService:(id)service
 {
-  v5 = a3;
-  if (!v5)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"HSServiceDirectory.mm" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"service"}];
   }
 
   std::mutex::lock((self + 32));
-  v10 = [v5 serviceName];
-  objc_initWeak(&v11, v5);
-  std::__tree<std::__value_type<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>,std::__map_value_compare<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak},HSUtil::ObjectLess<NSString>,true>,std::allocator<objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>>::__emplace_unique_key_args<NSString * {__strong},std::pair<NSString * const {__strong},objc_object  {objcproto22HSServiceDirectoryable}*>>(self + 96, &v10);
+  serviceName = [serviceCopy serviceName];
+  objc_initWeak(&v11, serviceCopy);
+  std::__tree<std::__value_type<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>,std::__map_value_compare<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak},HSUtil::ObjectLess<NSString>,true>,std::allocator<objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>>::__emplace_unique_key_args<NSString * {__strong},std::pair<NSString * const {__strong},objc_object  {objcproto22HSServiceDirectoryable}*>>(self + 96, &serviceName);
   v7 = v6;
   objc_destroyWeak(&v11);
 
@@ -125,18 +125,18 @@ void __54__HSServiceDirectory_initWithReceiveRight_authorizer___block_invoke(uin
   return v7 & 1;
 }
 
-- (BOOL)removeService:(id)a3
+- (BOOL)removeService:(id)service
 {
-  v5 = a3;
-  if (!v5)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"HSServiceDirectory.mm" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"service"}];
   }
 
   std::mutex::lock((self + 32));
-  v9 = [v5 serviceName];
-  v6 = std::__tree<std::__value_type<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>,std::__map_value_compare<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak},HSUtil::ObjectLess<NSString>,true>,std::allocator<objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>>::find<NSString * {__strong}>(self + 96, &v9);
+  serviceName = [serviceCopy serviceName];
+  v6 = std::__tree<std::__value_type<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>,std::__map_value_compare<NSString * {__strong},objc_object  {objcproto22HSServiceDirectoryable}* {__weak},HSUtil::ObjectLess<NSString>,true>,std::allocator<objc_object  {objcproto22HSServiceDirectoryable}* {__weak}>>::find<NSString * {__strong}>(self + 96, &serviceName);
 
   if ((self + 104) == v6)
   {
@@ -157,22 +157,22 @@ void __54__HSServiceDirectory_initWithReceiveRight_authorizer___block_invoke(uin
   return (self + 104) != v6;
 }
 
-- (BOOL)addClient:(FileDescriptor *)a3
+- (BOOL)addClient:(FileDescriptor *)client
 {
   std::mutex::lock((self + 32));
-  LOBYTE(a3) = [(HSServiceDirectory *)self _addClient:a3];
+  LOBYTE(client) = [(HSServiceDirectory *)self _addClient:client];
   std::mutex::unlock((self + 32));
-  return a3;
+  return client;
 }
 
-- (void)setRemoteAccessSocket:(FileDescriptor *)a3
+- (void)setRemoteAccessSocket:(FileDescriptor *)socket
 {
   std::mutex::lock((self + 32));
   [*(self + 18) close];
   v5 = *(self + 18);
   *(self + 18) = 0;
 
-  if ((a3->_fd & 0x80000000) == 0)
+  if ((socket->_fd & 0x80000000) == 0)
   {
     objc_initWeak(&location, self);
     v6 = [HSSocketListener alloc];
@@ -182,7 +182,7 @@ void __54__HSServiceDirectory_initWithReceiveRight_authorizer___block_invoke(uin
     v10[2] = __44__HSServiceDirectory_setRemoteAccessSocket___block_invoke;
     v10[3] = &unk_10A318;
     objc_copyWeak(&v11, &location);
-    v8 = [(HSSocketListener *)v6 initWithSocket:a3 queue:v7 clientHandler:v10];
+    v8 = [(HSSocketListener *)v6 initWithSocket:socket queue:v7 clientHandler:v10];
     v9 = *(self + 18);
     *(self + 18) = v8;
 
@@ -208,12 +208,12 @@ void __44__HSServiceDirectory_setRemoteAccessSocket___block_invoke(uint64_t a1, 
   [WeakRetained addClient:a2];
 }
 
-- (BOOL)_addClient:(FileDescriptor *)a3
+- (BOOL)_addClient:(FileDescriptor *)client
 {
   *v4 = &off_1093A0;
   v5 = &off_1093D0;
-  LODWORD(v6) = a3->_fd;
-  a3->_fd = -1;
+  LODWORD(v6) = client->_fd;
+  client->_fd = -1;
   v7 = 0;
   v8 = &off_108FA0;
   v9 = &off_108FF8;
@@ -255,10 +255,10 @@ void __33__HSServiceDirectory__addClient___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_removeClient:(shared_ptr<Client>)a3
+- (BOOL)_removeClient:(shared_ptr<Client>)client
 {
-  var0 = a3.var0;
-  *v8 = HSUtil::FileDescriptor::fd(*a3.var0);
+  var0 = client.var0;
+  *v8 = HSUtil::FileDescriptor::fd(*client.var0);
   v5 = std::__tree<std::__value_type<int,std::shared_ptr<Client>>,std::__map_value_compare<int,std::__value_type<int,std::shared_ptr<Client>>,std::less<int>,true>,std::allocator<std::__value_type<int,std::shared_ptr<Client>>>>::__erase_unique<int>(self + 120, v8);
   if (v5 == 1)
   {
@@ -279,7 +279,7 @@ void __33__HSServiceDirectory__addClient___block_invoke(uint64_t a1)
   return v5 == 1;
 }
 
-- (SendRight)_handleNewClient:(__SecTask *)a3
+- (SendRight)_handleNewClient:(__SecTask *)client
 {
   v5 = v3;
   v6 = (*(*(self + 2) + 16))();
@@ -339,9 +339,9 @@ LABEL_13:
   return result;
 }
 
-- (void)_handleDataFromClient:(shared_ptr<Client>)a3
+- (void)_handleDataFromClient:(shared_ptr<Client>)client
 {
-  var0 = a3.var0;
+  var0 = client.var0;
   std::mutex::lock((self + 32));
   v5 = *var0;
   v6 = *var0 + 32;
@@ -477,11 +477,11 @@ LABEL_29:
   std::mutex::unlock((self + 32));
 }
 
-- (void)_handleMessage:(void *)a3 fromClient:(shared_ptr<Client>)a4
+- (void)_handleMessage:(void *)message fromClient:(shared_ptr<Client>)client
 {
-  var0 = a4.var0;
-  HSUtil::Decoder::decodeArray(a3, v48);
-  if (*a3)
+  var0 = client.var0;
+  HSUtil::Decoder::decodeArray(message, v48);
+  if (*message)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "decoder.decodeArray() failed");
@@ -523,19 +523,19 @@ LABEL_29:
           if (!v12)
           {
             v13 = objc_loadWeakRetained(&v51 + 1);
-            v14 = [v13 serviceName];
+            serviceName = [v13 serviceName];
             v15 = v8[1];
-            v8[1] = v14;
+            v8[1] = serviceName;
 
             v16 = objc_loadWeakRetained(&v51 + 1);
-            v17 = [v16 serviceDescription];
+            serviceDescription = [v16 serviceDescription];
             v18 = v8[2];
-            v8[2] = v17;
+            v8[2] = serviceDescription;
 
             v19 = objc_loadWeakRetained(&v51 + 1);
-            v20 = [v19 serviceProtocol];
+            serviceProtocol = [v19 serviceProtocol];
             v21 = v8[3];
-            v8[3] = v20;
+            v8[3] = serviceProtocol;
 
             v22 = objc_loadWeakRetained(&v51 + 1);
             v8[4] = [v22 serviceVersion];

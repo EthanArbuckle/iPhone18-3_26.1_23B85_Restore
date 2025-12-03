@@ -4,17 +4,17 @@
 + (id)_tabGroupManager;
 + (id)defaultContentBlockerManager;
 + (id)defaultWebExtensionsController;
-- (BOOL)_extensionIsEnabledInAnyProfile:(id)a3;
-- (BOOL)extensionIsEnabled:(id)a3 inProfileWithServerID:(id)a4;
-- (id)_contentBlockerStateURLForProfileServerID:(id)a3;
-- (id)_extensionWithIdentifier:(id)a3 inAppWithDisplayIdentifier:(id)a4;
+- (BOOL)_extensionIsEnabledInAnyProfile:(id)profile;
+- (BOOL)extensionIsEnabled:(id)enabled inProfileWithServerID:(id)d;
+- (id)_contentBlockerStateURLForProfileServerID:(id)d;
+- (id)_extensionWithIdentifier:(id)identifier inAppWithDisplayIdentifier:(id)displayIdentifier;
 - (id)applicationStateMonitor;
-- (void)_fetchDisplayIdentifierOfCallingAppWithCompletion:(id)a3;
-- (void)_loadContentBlockerExtension:(id)a3 reply:(id)a4;
+- (void)_fetchDisplayIdentifierOfCallingAppWithCompletion:(id)completion;
+- (void)_loadContentBlockerExtension:(id)extension reply:(id)reply;
 - (void)dealloc;
-- (void)getStateOfContentBlockerWithIdentifier:(id)a3 reply:(id)a4;
-- (void)loadContentBlockerWithIdentifier:(id)a3 reply:(id)a4;
-- (void)removeContentBlockerWithIdentifierIfNecessary:(id)a3;
+- (void)getStateOfContentBlockerWithIdentifier:(id)identifier reply:(id)reply;
+- (void)loadContentBlockerWithIdentifier:(id)identifier reply:(id)reply;
+- (void)removeContentBlockerWithIdentifierIfNecessary:(id)necessary;
 @end
 
 @implementation ContentBlockerLoader
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001508;
   block[3] = &unk_100008390;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10000CA98 != -1)
   {
     dispatch_once(&qword_10000CA98, block);
@@ -78,7 +78,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001798;
   block[3] = &unk_100008390;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10000CAC8 != -1)
   {
     dispatch_once(&qword_10000CAC8, block);
@@ -112,12 +112,12 @@
   [(ContentBlockerLoader *)&v3 dealloc];
 }
 
-- (id)_extensionWithIdentifier:(id)a3 inAppWithDisplayIdentifier:(id)a4
+- (id)_extensionWithIdentifier:(id)identifier inAppWithDisplayIdentifier:(id)displayIdentifier
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  displayIdentifierCopy = displayIdentifier;
   v28 = 0;
-  v7 = [LSBundleRecord bundleRecordWithApplicationIdentifier:v6 error:&v28];
+  v7 = [LSBundleRecord bundleRecordWithApplicationIdentifier:displayIdentifierCopy error:&v28];
   v8 = v28;
   if (v7)
   {
@@ -135,7 +135,7 @@
       v25[1] = 3221225472;
       v25[2] = sub_100001BD4;
       v25[3] = &unk_100008438;
-      v26 = v5;
+      v26 = identifierCopy;
       v27 = v11;
       v16 = [v15 safari_firstObjectPassingTest:v25];
     }
@@ -156,7 +156,7 @@
     v17 = qword_10000CA70;
     if (os_log_type_enabled(qword_10000CA70, OS_LOG_TYPE_ERROR))
     {
-      sub_100004468(v6, v17, v18, v19, v20, v21, v22, v23);
+      sub_100004468(displayIdentifierCopy, v17, v18, v19, v20, v21, v22, v23);
     }
 
     v16 = 0;
@@ -165,14 +165,14 @@
   return v16;
 }
 
-- (void)_fetchDisplayIdentifierOfCallingAppWithCompletion:(id)a3
+- (void)_fetchDisplayIdentifierOfCallingAppWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [v5 processIdentifier];
+  processIdentifier = [v5 processIdentifier];
 
   v7 = +[PKManager defaultManager];
-  v8 = [v7 containingAppForPlugInWithPid:v6];
+  v8 = [v7 containingAppForPlugInWithPid:processIdentifier];
 
   if (v8)
   {
@@ -181,29 +181,29 @@
     block[2] = sub_100001E74;
     block[3] = &unk_100008460;
     v9 = &v15;
-    v15 = v4;
+    v15 = completionCopy;
     v14 = v8;
     dispatch_async(&_dispatch_main_q, block);
-    v10 = v14;
+    applicationStateMonitor = v14;
   }
 
   else
   {
-    v10 = [(ContentBlockerLoader *)self applicationStateMonitor];
+    applicationStateMonitor = [(ContentBlockerLoader *)self applicationStateMonitor];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100001E88;
     v11[3] = &unk_100008488;
-    v12 = v4;
-    [v10 applicationInfoForPID:v6 completion:v11];
+    v12 = completionCopy;
+    [applicationStateMonitor applicationInfoForPID:processIdentifier completion:v11];
     v9 = &v12;
   }
 }
 
-- (void)loadContentBlockerWithIdentifier:(id)a3 reply:(id)a4
+- (void)loadContentBlockerWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (qword_10000CA68 != -1)
   {
     sub_1000044D4();
@@ -213,27 +213,27 @@
   if (os_log_type_enabled(qword_10000CA60, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v25 = v6;
+    v25 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Loading content blocker with identifier %{private}@", buf, 0xCu);
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000022CC;
     v20[3] = &unk_1000084B0;
-    v9 = v6;
+    v9 = identifierCopy;
     v21 = v9;
-    v10 = v7;
-    v22 = self;
+    v10 = replyCopy;
+    selfCopy = self;
     v23 = v10;
     v11 = objc_retainBlock(v20);
     v12 = +[NSXPCConnection currentConnection];
     v13 = [v12 valueForEntitlement:@"com.apple.private.can-load-any-content-blocker"];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       (v11[2])(v11);
     }
@@ -267,21 +267,21 @@
     }
 
     v16 = [NSError errorWithDomain:SFErrorDomain code:1 userInfo:0];
-    (*(v7 + 2))(v7, v16);
+    (*(replyCopy + 2))(replyCopy, v16);
   }
 }
 
-- (void)_loadContentBlockerExtension:(id)a3 reply:(id)a4
+- (void)_loadContentBlockerExtension:(id)extension reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 optedIn] & 1) == 0)
+  extensionCopy = extension;
+  replyCopy = reply;
+  if (([extensionCopy optedIn] & 1) == 0)
   {
-    [v6 attemptOptIn:0];
+    [extensionCopy attemptOptIn:0];
   }
 
-  v8 = [v6 identifier];
-  if ([(NSMutableSet *)self->_identifiersOfContentBlockersBeingCompiled containsObject:v8])
+  identifier = [extensionCopy identifier];
+  if ([(NSMutableSet *)self->_identifiersOfContentBlockersBeingCompiled containsObject:identifier])
   {
     if (qword_10000CA68 != -1)
     {
@@ -292,11 +292,11 @@
     if (os_log_type_enabled(qword_10000CA60, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v42 = v8;
+      v42 = identifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Skipping compilation of %{private}@ because it's already compiling", buf, 0xCu);
     }
 
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -311,17 +311,17 @@
       identifiersOfContentBlockersBeingCompiled = self->_identifiersOfContentBlockersBeingCompiled;
     }
 
-    [(NSMutableSet *)identifiersOfContentBlockersBeingCompiled addObject:v8];
+    [(NSMutableSet *)identifiersOfContentBlockersBeingCompiled addObject:identifier];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_100002AC4;
     v38[3] = &unk_100008500;
     v38[4] = self;
-    v13 = v8;
+    v13 = identifier;
     v39 = v13;
-    v40 = v7;
+    v40 = replyCopy;
     v14 = objc_retainBlock(v38);
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, extensionCopy);
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100002B3C;
@@ -330,7 +330,7 @@
     v35 = v15;
     v16 = v14;
     v36 = v16;
-    [v6 setRequestCompletionBlock:v34];
+    [extensionCopy setRequestCompletionBlock:v34];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000032DC;
@@ -339,7 +339,7 @@
     v32 = v17;
     v18 = v16;
     v33 = v18;
-    [v6 setRequestCancellationBlock:v31];
+    [extensionCopy setRequestCancellationBlock:v31];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000033F4;
@@ -349,7 +349,7 @@
     v20 = v18;
     v29 = v20;
     objc_copyWeak(&v30, &location);
-    [v6 setRequestInterruptionBlock:v27];
+    [extensionCopy setRequestInterruptionBlock:v27];
     if (qword_10000CA68 != -1)
     {
       sub_1000044E8();
@@ -359,7 +359,7 @@
     if (os_log_type_enabled(qword_10000CA60, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v42 = v6;
+      v42 = extensionCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Calling beginExtensionRequestWithInputItems for content blocker: %{private}@", buf, 0xCu);
     }
 
@@ -371,7 +371,7 @@
     v22 = v20;
     v25 = v22;
     objc_copyWeak(&v26, &location);
-    [v6 beginExtensionRequestWithInputItems:0 completion:v23];
+    [extensionCopy beginExtensionRequestWithInputItems:0 completion:v23];
     objc_destroyWeak(&v26);
 
     objc_destroyWeak(&v30);
@@ -379,11 +379,11 @@
   }
 }
 
-- (void)removeContentBlockerWithIdentifierIfNecessary:(id)a3
+- (void)removeContentBlockerWithIdentifierIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v12 = 0;
-  v5 = [NSExtension extensionWithIdentifier:v4 error:&v12];
+  v5 = [NSExtension extensionWithIdentifier:necessaryCopy error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -398,7 +398,7 @@
       if (os_log_type_enabled(qword_10000CA60, OS_LOG_TYPE_INFO))
       {
         *buf = 138477827;
-        v14 = v4;
+        v14 = necessaryCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Skipping removing content blocker %{private}@ because it's still on in one profile", buf, 0xCu);
       }
     }
@@ -414,7 +414,7 @@
       if (os_log_type_enabled(qword_10000CA60, OS_LOG_TYPE_INFO))
       {
         *buf = 138477827;
-        v14 = v4;
+        v14 = necessaryCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Removing content blocker %{private}@", buf, 0xCu);
       }
 
@@ -423,7 +423,7 @@
       v10[1] = 3221225472;
       v10[2] = sub_1000038AC;
       v10[3] = &unk_100008668;
-      v11 = v4;
+      v11 = necessaryCopy;
       dispatch_async(&_dispatch_main_q, v10);
     }
   }
@@ -445,31 +445,31 @@
   }
 }
 
-- (void)getStateOfContentBlockerWithIdentifier:(id)a3 reply:(id)a4
+- (void)getStateOfContentBlockerWithIdentifier:(id)identifier reply:(id)reply
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003B40;
   v7[3] = &unk_1000084D8;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(ContentBlockerLoader *)v8 _fetchDisplayIdentifierOfCallingAppWithCompletion:v7];
+  selfCopy = self;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = identifierCopy;
+  [(ContentBlockerLoader *)selfCopy _fetchDisplayIdentifierOfCallingAppWithCompletion:v7];
 }
 
-- (BOOL)_extensionIsEnabledInAnyProfile:(id)a3
+- (BOOL)_extensionIsEnabledInAnyProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v5 = +[ContentBlockerLoader _tabGroupManager];
-  v6 = [v5 profiles];
+  profiles = [v5 profiles];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [profiles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -479,11 +479,11 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(profiles);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) identifierForExtensions];
-        v11 = [(ContentBlockerLoader *)self extensionIsEnabled:v4 inProfileWithServerID:v10];
+        identifierForExtensions = [*(*(&v14 + 1) + 8 * i) identifierForExtensions];
+        v11 = [(ContentBlockerLoader *)self extensionIsEnabled:profileCopy inProfileWithServerID:identifierForExtensions];
 
         if (v11)
         {
@@ -492,7 +492,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [profiles countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -508,11 +508,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)_contentBlockerStateURLForProfileServerID:(id)a3
+- (id)_contentBlockerStateURLForProfileServerID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _SFSafariGroupContainerURL();
-  if ([WBSWebExtensionUtilities isProfileServerIDForDefaultProfile:v3])
+  if ([WBSWebExtensionUtilities isProfileServerIDForDefaultProfile:dCopy])
   {
     v5 = [v4 URLByAppendingPathComponent:@"Library/Safari" isDirectory:1];
   }
@@ -520,7 +520,7 @@ LABEL_11:
   else
   {
     v6 = +[NSFileManager defaultManager];
-    v7 = [v6 safari_profileDirectoryURLWithID:v3 createIfNeeded:0];
+    v7 = [v6 safari_profileDirectoryURLWithID:dCopy createIfNeeded:0];
 
     if (!v7)
     {
@@ -539,13 +539,13 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)extensionIsEnabled:(id)a3 inProfileWithServerID:(id)a4
+- (BOOL)extensionIsEnabled:(id)enabled inProfileWithServerID:(id)d
 {
-  v6 = a3;
-  v7 = [(ContentBlockerLoader *)self _contentBlockerStateURLForProfileServerID:a4];
+  enabledCopy = enabled;
+  v7 = [(ContentBlockerLoader *)self _contentBlockerStateURLForProfileServerID:d];
   v8 = [[WBSPersistentPropertyListStore alloc] initWithBackingStoreURL:v7];
   v9 = +[ContentBlockerLoader defaultWebExtensionsController];
-  v10 = [v9 composedIdentifierForExtensionStateForExtension:v6];
+  v10 = [v9 composedIdentifierForExtensionStateForExtension:enabledCopy];
 
   v11 = [v8 dictionaryForKey:v10];
   v12 = [v11 safari_BOOLForKey:WBSSafariExtensionStateEnabledKey];

@@ -1,28 +1,28 @@
 @interface HKWorkoutBuilderStatistics
 - (BOOL)isEmpty;
-- (HKWorkoutBuilderStatistics)initWithCoder:(id)a3;
+- (HKWorkoutBuilderStatistics)initWithCoder:(id)coder;
 - (NSDictionary)activitiesStatistics;
 - (NSDictionary)workoutStatistics;
 - (NSSet)allTypes;
-- (void)addActivityStatistics:(id)a3 forType:(id)a4 activityUUID:(id)a5;
-- (void)addWorkoutStatistics:(id)a3 forType:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addActivityStatistics:(id)statistics forType:(id)type activityUUID:(id)d;
+- (void)addWorkoutStatistics:(id)statistics forType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutBuilderStatistics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   workoutStatistics = self->_workoutStatistics;
-  v5 = a3;
-  [v5 encodeObject:workoutStatistics forKey:@"workout_stats"];
-  [v5 encodeObject:self->_activitiesStatistics forKey:@"activities_stats"];
+  coderCopy = coder;
+  [coderCopy encodeObject:workoutStatistics forKey:@"workout_stats"];
+  [coderCopy encodeObject:self->_activitiesStatistics forKey:@"activities_stats"];
 }
 
-- (HKWorkoutBuilderStatistics)initWithCoder:(id)a3
+- (HKWorkoutBuilderStatistics)initWithCoder:(id)coder
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HKWorkoutBuilderStatistics;
   v5 = [(HKWorkoutBuilderStatistics *)&v18 init];
@@ -35,7 +35,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"workout_stats"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"workout_stats"];
     workoutStatistics = v5->_workoutStatistics;
     v5->_workoutStatistics = v9;
 
@@ -47,7 +47,7 @@
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
     v13 = [v11 setWithArray:v12];
 
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"activities_stats"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"activities_stats"];
     activitiesStatistics = v5->_activitiesStatistics;
     v5->_activitiesStatistics = v14;
   }
@@ -131,8 +131,8 @@ LABEL_13:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(NSMutableDictionary *)self->_workoutStatistics allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_workoutStatistics allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   v17 = 0u;
   v18 = 0u;
@@ -154,8 +154,8 @@ LABEL_13:
         }
 
         v11 = [(NSMutableDictionary *)self->_activitiesStatistics objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i), v15];
-        v12 = [v11 allKeys];
-        [v5 addObjectsFromArray:v12];
+        allKeys2 = [v11 allKeys];
+        [v5 addObjectsFromArray:allKeys2];
       }
 
       v8 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -169,10 +169,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)addWorkoutStatistics:(id)a3 forType:(id)a4
+- (void)addWorkoutStatistics:(id)statistics forType:(id)type
 {
-  v10 = a3;
-  v6 = a4;
+  statisticsCopy = statistics;
+  typeCopy = type;
   workoutStatistics = self->_workoutStatistics;
   if (!workoutStatistics)
   {
@@ -183,14 +183,14 @@ LABEL_13:
     workoutStatistics = self->_workoutStatistics;
   }
 
-  [(NSMutableDictionary *)workoutStatistics setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)workoutStatistics setObject:statisticsCopy forKeyedSubscript:typeCopy];
 }
 
-- (void)addActivityStatistics:(id)a3 forType:(id)a4 activityUUID:(id)a5
+- (void)addActivityStatistics:(id)statistics forType:(id)type activityUUID:(id)d
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  statisticsCopy = statistics;
+  typeCopy = type;
+  dCopy = d;
   activitiesStatistics = self->_activitiesStatistics;
   if (!activitiesStatistics)
   {
@@ -201,16 +201,16 @@ LABEL_13:
     activitiesStatistics = self->_activitiesStatistics;
   }
 
-  v13 = [(NSMutableDictionary *)activitiesStatistics objectForKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)activitiesStatistics objectForKeyedSubscript:dCopy];
 
   if (!v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_activitiesStatistics setObject:v14 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_activitiesStatistics setObject:v14 forKeyedSubscript:dCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_activitiesStatistics objectForKeyedSubscript:v9];
-  [v15 setObject:v16 forKeyedSubscript:v8];
+  v15 = [(NSMutableDictionary *)self->_activitiesStatistics objectForKeyedSubscript:dCopy];
+  [v15 setObject:statisticsCopy forKeyedSubscript:typeCopy];
 }
 
 @end

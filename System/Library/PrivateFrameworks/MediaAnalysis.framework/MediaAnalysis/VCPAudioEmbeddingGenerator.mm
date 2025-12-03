@@ -1,55 +1,55 @@
 @interface VCPAudioEmbeddingGenerator
-- (VCPAudioEmbeddingGenerator)initWithTrackStart:(id *)a3 threshold:(float)a4 resultsKey:(id)a5 version:(int)a6;
+- (VCPAudioEmbeddingGenerator)initWithTrackStart:(id *)start threshold:(float)threshold resultsKey:(id)key version:(int)version;
 - (id)results;
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 embedding:(id)a5;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime embedding:(id)embedding;
+- (void)request:(id)request didProduceResult:(id)result;
 @end
 
 @implementation VCPAudioEmbeddingGenerator
 
-- (VCPAudioEmbeddingGenerator)initWithTrackStart:(id *)a3 threshold:(float)a4 resultsKey:(id)a5 version:(int)a6
+- (VCPAudioEmbeddingGenerator)initWithTrackStart:(id *)start threshold:(float)threshold resultsKey:(id)key version:(int)version
 {
-  v10 = a5;
-  if (v10)
+  keyCopy = key;
+  if (keyCopy)
   {
     v17.receiver = self;
     v17.super_class = VCPAudioEmbeddingGenerator;
     v11 = [(VCPAudioEmbeddingGenerator *)&v17 init];
     if (v11)
     {
-      v12 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       results = v11->_results;
-      v11->_results = v12;
+      v11->_results = array;
 
-      v14 = *&a3->var0;
-      v11->_trackStart.epoch = a3->var3;
+      v14 = *&start->var0;
+      v11->_trackStart.epoch = start->var3;
       *&v11->_trackStart.value = v14;
-      objc_storeStrong(&v11->_resultsKey, a5);
-      v11->_version = a6;
+      objc_storeStrong(&v11->_resultsKey, key);
+      v11->_version = version;
     }
 
     self = v11;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)addDetectionFromTime:(id *)a3 toTime:(id *)a4 embedding:(id)a5
+- (void)addDetectionFromTime:(id *)time toTime:(id *)toTime embedding:(id)embedding
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  embeddingCopy = embedding;
   memset(&v22, 0, sizeof(v22));
   lhs.start = self->_trackStart;
-  rhs = *a3;
+  rhs = *time;
   CMTimeAdd(&start, &lhs.start, &rhs);
   lhs.start = self->_trackStart;
-  rhs = *a4;
+  rhs = *toTime;
   CMTimeAdd(&end, &lhs.start, &rhs);
   CMTimeRangeFromTimeToTime(&v22, &start, &end);
   if ((v22.start.flags & 1) != 0 && (v22.duration.flags & 1) != 0 && !v22.duration.epoch && (v22.duration.value & 0x8000000000000000) == 0)
@@ -67,8 +67,8 @@
     v18[2] = __68__VCPAudioEmbeddingGenerator_addDetectionFromTime_toTime_embedding___block_invoke;
     v18[3] = &unk_1E834CE50;
     v18[4] = &lhs;
-    [v8 getBytesWithHandler:v18];
-    if ([v8 dataType] == 65568)
+    [embeddingCopy getBytesWithHandler:v18];
+    if ([embeddingCopy dataType] == 65568)
     {
       v10 = MediaAnalysisConvertFloat32ToFloat16(*(*&lhs.start.timescale + 40));
       v11 = *(*&lhs.start.timescale + 40);
@@ -111,16 +111,16 @@ void __68__VCPAudioEmbeddingGenerator_addDetectionFromTime_toTime_embedding___bl
   }
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  resultCopy = result;
+  if (resultCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = resultCopy;
       memset(v13, 0, sizeof(v13));
       v12 = 0u;
       [v8 timeRange];
@@ -134,8 +134,8 @@ void __68__VCPAudioEmbeddingGenerator_addDetectionFromTime_toTime_embedding___bl
       lhs = v11;
       if (CMTimeGetSeconds(&lhs) >= 0.0)
       {
-        v9 = [v8 featureVector];
-        [(VCPAudioEmbeddingGenerator *)self addDetectionFromTime:&v11 toTime:&v10 embedding:v9];
+        featureVector = [v8 featureVector];
+        [(VCPAudioEmbeddingGenerator *)self addDetectionFromTime:&v11 toTime:&v10 embedding:featureVector];
       }
     }
   }

@@ -1,21 +1,21 @@
 @interface NDFCoreShim
 + (id)idsDeviceIdentifier;
 + (id)sharedInstance;
-- (void)clientHasActiveSubscription:(BOOL)a3 forConnection:(id)a4;
-- (void)dnsServer:(id)a3 isResponding:(BOOL)a4;
-- (void)listNDFDeviceObjectsWithIdentifier:(id)a3 reply:(id)a4;
-- (void)networkRestrictsMulticastTrafficWithReply:(id)a3;
-- (void)noteBackhaulIsBroken:(BOOL)a3;
-- (void)noteDNSAllOutWithServers:(id)a3;
-- (void)noteDNSConfigurationWithServers:(id)a3 forWiFi:(BOOL)a4;
-- (void)noteDeviceRecordUpdates:(id)a3 reply:(id)a4;
-- (void)noteIPAddressAcquisitionFailed:(BOOL)a3 forInterface:(id)a4;
-- (void)noteInterfaceOfInterest:(id)a3 isRemoved:(BOOL)a4;
-- (void)noteWiFiIsDisassociated:(BOOL)a3;
-- (void)pingEndpoints:(id)a3 reply:(id)a4;
-- (void)sendMessage:(id)a3 toEndpoints:(id)a4 reply:(id)a5;
-- (void)triggerSendPayloadToDistributedSymptomsWithInterval:(int64_t)a3 leeway:(int64_t)a4 reply:(id)a5;
-- (void)updateDeviceWithStateDictionary:(id)a3 removalKeys:(id)a4;
+- (void)clientHasActiveSubscription:(BOOL)subscription forConnection:(id)connection;
+- (void)dnsServer:(id)server isResponding:(BOOL)responding;
+- (void)listNDFDeviceObjectsWithIdentifier:(id)identifier reply:(id)reply;
+- (void)networkRestrictsMulticastTrafficWithReply:(id)reply;
+- (void)noteBackhaulIsBroken:(BOOL)broken;
+- (void)noteDNSAllOutWithServers:(id)servers;
+- (void)noteDNSConfigurationWithServers:(id)servers forWiFi:(BOOL)fi;
+- (void)noteDeviceRecordUpdates:(id)updates reply:(id)reply;
+- (void)noteIPAddressAcquisitionFailed:(BOOL)failed forInterface:(id)interface;
+- (void)noteInterfaceOfInterest:(id)interest isRemoved:(BOOL)removed;
+- (void)noteWiFiIsDisassociated:(BOOL)disassociated;
+- (void)pingEndpoints:(id)endpoints reply:(id)reply;
+- (void)sendMessage:(id)message toEndpoints:(id)endpoints reply:(id)reply;
+- (void)triggerSendPayloadToDistributedSymptomsWithInterval:(int64_t)interval leeway:(int64_t)leeway reply:(id)reply;
+- (void)updateDeviceWithStateDictionary:(id)dictionary removalKeys:(id)keys;
 @end
 
 @implementation NDFCoreShim
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (void)noteIPAddressAcquisitionFailed:(BOOL)a3 forInterface:(id)a4
+- (void)noteIPAddressAcquisitionFailed:(BOOL)failed forInterface:(id)interface
 {
-  v5 = a3;
+  failedCopy = failed;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0540, &qword_2328172B8);
   v8 = *(v7 - 8);
   v9 = (*(v8 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
@@ -45,16 +45,16 @@
   v14 = (*(v13 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v16 = v21 - v15;
-  if (a4)
+  if (interface)
   {
     v17 = sub_2327D73C8();
     v19 = v18;
     (*(v8 + 16))(v11, *(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + *(**(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + 96), v7);
-    v21[0] = v5;
+    v21[0] = failedCopy;
     v21[1] = v17;
     v21[2] = v19;
     v22 = 2;
-    v20 = self;
+    selfCopy = self;
     sub_2327D7438();
     (*(v8 + 8))(v11, v7);
     (*(v13 + 8))(v16, v12);
@@ -82,7 +82,7 @@
   return v12;
 }
 
-- (void)updateDeviceWithStateDictionary:(id)a3 removalKeys:(id)a4
+- (void)updateDeviceWithStateDictionary:(id)dictionary removalKeys:(id)keys
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0520, &qword_232817298);
   v6 = *(v5 - 8);
@@ -101,13 +101,13 @@
   v24[1] = v22;
   v24[2] = 0;
   v25 = 0;
-  v23 = self;
+  selfCopy = self;
   sub_2327D7438();
   (*(v6 + 8))(v12, v5);
   (*(v14 + 8))(v20, v13);
 }
 
-- (void)noteDeviceRecordUpdates:(id)a3 reply:(id)a4
+- (void)noteDeviceRecordUpdates:(id)updates reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0520, &qword_232817298);
   v7 = *(v6 - 8);
@@ -119,7 +119,7 @@
   v16 = *(v15 + 64);
   MEMORY[0x28223BE20](v14, v17, v18, v19);
   v21 = v26 - v20;
-  v22 = _Block_copy(a4);
+  v22 = _Block_copy(reply);
   v23 = sub_2327D73E8();
   v24 = swift_allocObject();
   *(v24 + 16) = v22;
@@ -128,20 +128,20 @@
   v26[1] = sub_2327CFA0C;
   v26[2] = v24;
   v27 = 1;
-  v25 = self;
+  selfCopy = self;
   sub_2327D7438();
   (*(v7 + 8))(v13, v6);
   (*(v15 + 8))(v21, v14);
 }
 
-- (void)noteDNSConfigurationWithServers:(id)a3 forWiFi:(BOOL)a4
+- (void)noteDNSConfigurationWithServers:(id)servers forWiFi:(BOOL)fi
 {
   v6 = sub_2327D74A8();
-  v7 = self;
-  sub_2327C83EC(v6, a4);
+  selfCopy = self;
+  sub_2327C83EC(v6, fi);
 }
 
-- (void)dnsServer:(id)a3 isResponding:(BOOL)a4
+- (void)dnsServer:(id)server isResponding:(BOOL)responding
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0530, &qword_2328172A8);
   v7 = *(v6 - 8);
@@ -158,16 +158,16 @@
   (*(v7 + 16))(v13, *(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkConfigProcessor) + *(**(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkConfigProcessor) + 96), v6);
   v26[1] = v22;
   v26[2] = v24;
-  v27 = a4 | 0x40;
-  v25 = self;
+  v27 = responding | 0x40;
+  selfCopy = self;
   sub_2327D7438();
   (*(v7 + 8))(v13, v6);
   (*(v15 + 8))(v21, v14);
 }
 
-- (void)noteDNSAllOutWithServers:(id)a3
+- (void)noteDNSAllOutWithServers:(id)servers
 {
-  if (a3)
+  if (servers)
   {
     v4 = sub_2327D74A8();
   }
@@ -177,13 +177,13 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_2327C8AA4(v4);
 }
 
-- (void)noteBackhaulIsBroken:(BOOL)a3
+- (void)noteBackhaulIsBroken:(BOOL)broken
 {
-  v3 = a3;
+  brokenCopy = broken;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0540, &qword_2328172B8);
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -197,17 +197,17 @@
   (*(v6 + 16))(v12, *(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + *(**(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + 96), v5);
   v22[1] = 0;
   v22[2] = 0;
-  v22[0] = v3;
+  v22[0] = brokenCopy;
   v23 = 0;
-  v21 = self;
+  selfCopy = self;
   sub_2327D7438();
   (*(v6 + 8))(v12, v5);
   (*(v14 + 8))(v20, v13);
 }
 
-- (void)noteWiFiIsDisassociated:(BOOL)a3
+- (void)noteWiFiIsDisassociated:(BOOL)disassociated
 {
-  v3 = a3;
+  disassociatedCopy = disassociated;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0540, &qword_2328172B8);
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -221,17 +221,17 @@
   (*(v6 + 16))(v12, *(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + *(**(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + 96), v5);
   v22[1] = 0;
   v22[2] = 0;
-  v22[0] = v3;
+  v22[0] = disassociatedCopy;
   v23 = 1;
-  v21 = self;
+  selfCopy = self;
   sub_2327D7438();
   (*(v6 + 8))(v12, v5);
   (*(v14 + 8))(v20, v13);
 }
 
-- (void)noteInterfaceOfInterest:(id)a3 isRemoved:(BOOL)a4
+- (void)noteInterfaceOfInterest:(id)interest isRemoved:(BOOL)removed
 {
-  v4 = a4;
+  removedCopy = removed;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0540, &qword_2328172B8);
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
@@ -247,25 +247,25 @@
   (*(v7 + 16))(v13, *(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + *(**(&self->super.isa + OBJC_IVAR___NDFCoreShim_networkStatusProcessor) + 96), v6);
   v26[0] = v22;
   v26[1] = v24;
-  v26[2] = v4;
+  v26[2] = removedCopy;
   v27 = 3;
-  v25 = self;
+  selfCopy = self;
   sub_2327D7438();
   (*(v7 + 8))(v13, v6);
   (*(v15 + 8))(v21, v14);
 }
 
-- (void)listNDFDeviceObjectsWithIdentifier:(id)a3 reply:(id)a4
+- (void)listNDFDeviceObjectsWithIdentifier:(id)identifier reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0518, &qword_232817270);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9, v10, v11);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a4);
-  if (a3)
+  v14 = _Block_copy(reply);
+  if (identifier)
   {
     v15 = sub_2327D73C8();
-    a3 = v16;
+    identifier = v16;
   }
 
   else
@@ -285,7 +285,7 @@
     v20[3] = 0;
     v20[4] = v18;
     v20[5] = v15;
-    v20[6] = a3;
+    v20[6] = identifier;
     v20[7] = sub_2327CFF70;
     v20[8] = v17;
 
@@ -294,7 +294,7 @@
 
   else
   {
-    v21 = self;
+    selfCopy = self;
     _Block_copy(v14);
 
     (*(v14 + 2))(v14, 0);
@@ -303,7 +303,7 @@
   }
 }
 
-- (void)clientHasActiveSubscription:(BOOL)a3 forConnection:(id)a4
+- (void)clientHasActiveSubscription:(BOOL)subscription forConnection:(id)connection
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0518, &qword_232817270);
   v8 = *(*(v7 - 8) + 64);
@@ -318,47 +318,47 @@
     *(v16 + 16) = 0;
     *(v16 + 24) = 0;
     *(v16 + 32) = v14;
-    *(v16 + 40) = a3;
-    *(v16 + 48) = a4;
-    v17 = a4;
+    *(v16 + 40) = subscription;
+    *(v16 + 48) = connection;
+    connectionCopy = connection;
 
     sub_2327C7494(0, 0, v13, &unk_2328175F8, v16);
   }
 }
 
-- (void)sendMessage:(id)a3 toEndpoints:(id)a4 reply:(id)a5
+- (void)sendMessage:(id)message toEndpoints:(id)endpoints reply:(id)reply
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(reply);
   v7 = sub_2327D73C8();
   v9 = v8;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA05B8, &qword_2328175E0);
   v10 = sub_2327D73E8();
   _Block_copy(v6);
-  v11 = self;
-  sub_2327CF048(v7, v9, v10, v11, v6);
+  selfCopy = self;
+  sub_2327CF048(v7, v9, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)pingEndpoints:(id)a3 reply:(id)a4
+- (void)pingEndpoints:(id)endpoints reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA05B8, &qword_2328175E0);
   v6 = sub_2327D73E8();
   _Block_copy(v5);
-  v7 = self;
-  sub_2327CF2C0(v6, v7, v5);
+  selfCopy = self;
+  sub_2327CF2C0(v6, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)triggerSendPayloadToDistributedSymptomsWithInterval:(int64_t)a3 leeway:(int64_t)a4 reply:(id)a5
+- (void)triggerSendPayloadToDistributedSymptomsWithInterval:(int64_t)interval leeway:(int64_t)leeway reply:(id)reply
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDA0518, &qword_232817270);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8, v11, v12, v13);
   v15 = &v21 - v14;
-  v16 = _Block_copy(a5);
+  v16 = _Block_copy(reply);
   v17 = swift_allocObject();
   *(v17 + 16) = v16;
   v18 = *(&self->super.isa + OBJC_IVAR___NDFCoreShim_ndfController);
@@ -370,8 +370,8 @@
     v20[2] = 0;
     v20[3] = 0;
     v20[4] = v18;
-    v20[5] = a3;
-    v20[6] = a4;
+    v20[5] = interval;
+    v20[6] = leeway;
     v20[7] = sub_2327CF758;
     v20[8] = v17;
 
@@ -387,12 +387,12 @@
   }
 }
 
-- (void)networkRestrictsMulticastTrafficWithReply:(id)a3
+- (void)networkRestrictsMulticastTrafficWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   _Block_copy(v4);
-  v5 = self;
-  sub_2327CF518(v5, v4);
+  selfCopy = self;
+  sub_2327CF518(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

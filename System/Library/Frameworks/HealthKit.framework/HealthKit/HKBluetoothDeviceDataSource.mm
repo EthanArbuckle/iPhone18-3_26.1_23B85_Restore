@@ -1,14 +1,14 @@
 @interface HKBluetoothDeviceDataSource
 - (HKBluetoothDeviceDataSource)init;
-- (HKBluetoothDeviceDataSource)initWithDiscoveryType:(Class)a3;
-- (id)_beginDiscoveryWithObserver:(id)a1;
-- (id)_devicesWithError:(uint64_t)a1;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
-- (id)pairedDevicesWithError:(id *)a3;
+- (HKBluetoothDeviceDataSource)initWithDiscoveryType:(Class)type;
+- (id)_beginDiscoveryWithObserver:(id)observer;
+- (id)_devicesWithError:(uint64_t)error;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
+- (id)pairedDevicesWithError:(id *)error;
 - (void)_endDiscovery;
 - (void)dealloc;
-- (void)registerObserverForDevicePairingChanges:(id)a3 updateHandler:(id)a4;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
+- (void)registerObserverForDevicePairingChanges:(id)changes updateHandler:(id)handler;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKBluetoothDeviceDataSource
@@ -20,7 +20,7 @@
   return [(HKBluetoothDeviceDataSource *)self initWithDiscoveryType:v3];
 }
 
-- (HKBluetoothDeviceDataSource)initWithDiscoveryType:(Class)a3
+- (HKBluetoothDeviceDataSource)initWithDiscoveryType:(Class)type
 {
   v5.receiver = self;
   v5.super_class = HKBluetoothDeviceDataSource;
@@ -28,7 +28,7 @@
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
-    result->_DiscoveryType = a3;
+    result->_DiscoveryType = type;
     result->_lock_isDiscoveryActive = 0;
   }
 
@@ -136,25 +136,25 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserverForDevicePairingChanges:(id)a3 updateHandler:(id)a4
+- (void)registerObserverForDevicePairingChanges:(id)changes updateHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__HKBluetoothDeviceDataSource_registerObserverForDevicePairingChanges_updateHandler___block_invoke;
   v8[3] = &unk_1E737B448;
-  v9 = v6;
-  v7 = v6;
-  [(HKObserverBridge *)self registerObserver:a3 forKey:@"CBDiscoveryObservation" newValueHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(HKObserverBridge *)self registerObserver:changes forKey:@"CBDiscoveryObservation" newValueHandler:v8];
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"CBDiscoveryObservation"])
+  keyCopy = key;
+  handleCopy = handle;
+  if ([keyCopy isEqualToString:@"CBDiscoveryObservation"])
   {
-    v9 = [(HKBluetoothDeviceDataSource *)self _beginDiscoveryWithObserver:v7];
+    selfCopy = [(HKBluetoothDeviceDataSource *)self _beginDiscoveryWithObserver:handleCopy];
   }
 
   else
@@ -166,18 +166,18 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
       [HKBluetoothDeviceDataSource makeAndRegisterBridgedObserverForKey:handle:];
     }
 
-    v9 = self;
+    selfCopy = self;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"CBDiscoveryObservation"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"CBDiscoveryObservation"])
   {
     [(HKBluetoothDeviceDataSource *)self _endDiscovery];
   }
@@ -195,38 +195,38 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
 
 - (void)_endDiscovery
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    [*(a1 + 40) invalidate];
-    v2 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    os_unfair_lock_lock((self + 32));
+    [*(self + 40) invalidate];
+    v2 = *(self + 40);
+    *(self + 40) = 0;
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 
-- (id)_devicesWithError:(uint64_t)a1
+- (id)_devicesWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     v4 = +[_HKBehavior sharedBehavior];
-    v5 = [v4 supportsBluetoothDiscovery];
+    supportsBluetoothDiscovery = [v4 supportsBluetoothDiscovery];
 
-    if (v5)
+    if (supportsBluetoothDiscovery)
     {
-      os_unfair_lock_lock((a1 + 32));
-      if (*(a1 + 48))
+      os_unfair_lock_lock((error + 32));
+      if (*(error + 48))
       {
-        [*(a1 + 40) discoveredDevices];
+        [*(error + 40) discoveredDevices];
       }
 
       else
       {
-        [*(a1 + 56) devicesWithDiscoveryFlags:0x800000 error:a2];
+        [*(error + 56) devicesWithDiscoveryFlags:0x800000 error:a2];
       }
       v6 = ;
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_unlock((error + 32));
     }
 
     else
@@ -243,22 +243,22 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
   return v6;
 }
 
-- (id)pairedDevicesWithError:(id *)a3
+- (id)pairedDevicesWithError:(id *)error
 {
-  v3 = [(HKBluetoothDeviceDataSource *)self _devicesWithError:a3];
+  v3 = [(HKBluetoothDeviceDataSource *)self _devicesWithError:error];
   v4 = [v3 hk_filter:&__block_literal_global_116];
 
   return v4;
 }
 
-- (id)_beginDiscoveryWithObserver:(id)a1
+- (id)_beginDiscoveryWithObserver:(id)observer
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (observer)
   {
-    os_unfair_lock_lock(a1 + 8);
-    if (*(a1 + 5))
+    os_unfair_lock_lock(observer + 8);
+    if (*(observer + 5))
     {
       _HKInitializeLogging();
       v4 = HKLogInfrastructure();
@@ -270,11 +270,11 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
         _os_log_fault_impl(&dword_19197B000, v4, OS_LOG_TYPE_FAULT, "[%{public}@] CBDiscovery beginning while another is currently running", buf, 0xCu);
       }
 
-      [*(a1 + 5) invalidate];
-      *(a1 + 48) = 0;
+      [*(observer + 5) invalidate];
+      *(observer + 48) = 0;
     }
 
-    v5 = *(a1 + 7);
+    v5 = *(observer + 7);
     v6 = objc_alloc_init(objc_opt_class());
     v7 = objc_opt_class();
     [v6 setDiscoveryFlags:0x800000];
@@ -304,19 +304,19 @@ void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invok
     v14[1] = 3221225472;
     v14[2] = __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invoke_16;
     v14[3] = &unk_1E7380648;
-    v14[4] = a1;
+    v14[4] = observer;
     v9 = v6;
     v15 = v9;
     [v9 activateWithCompletion:v14];
-    objc_storeStrong(a1 + 5, v6);
-    os_unfair_lock_unlock(a1 + 8);
+    objc_storeStrong(observer + 5, v6);
+    os_unfair_lock_unlock(observer + 8);
     v10 = v15;
-    a1 = v9;
+    observer = v9;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return observer;
 }
 
 void __59__HKBluetoothDeviceDataSource__beginDiscoveryWithObserver___block_invoke_13_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

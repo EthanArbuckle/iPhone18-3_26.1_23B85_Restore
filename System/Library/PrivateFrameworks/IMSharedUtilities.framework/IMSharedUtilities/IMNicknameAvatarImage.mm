@@ -1,75 +1,75 @@
 @interface IMNicknameAvatarImage
-- (BOOL)_writeImageData:(id)a3 path:(id)a4 error:(id *)a5;
+- (BOOL)_writeImageData:(id)data path:(id)path error:(id *)error;
 - (BOOL)hasImage;
 - (BOOL)imageExists;
-- (IMNicknameAvatarImage)initWithCoder:(id)a3;
-- (IMNicknameAvatarImage)initWithDictionaryRepresentation:(id)a3;
-- (IMNicknameAvatarImage)initWithImageName:(id)a3 imageData:(id)a4 imageFilePath:(id)a5 contentIsSensitive:(BOOL)a6 error:(id *)a7;
-- (IMNicknameAvatarImage)initWithImageName:(id)a3 imageFilePath:(id)a4 contentIsSensitive:(BOOL)a5;
-- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)a3;
-- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)a3 imageData:(id)a4 imageFilePath:(id)a5 contentIsSensitive:(BOOL)a6 error:(id *)a7;
+- (IMNicknameAvatarImage)initWithCoder:(id)coder;
+- (IMNicknameAvatarImage)initWithDictionaryRepresentation:(id)representation;
+- (IMNicknameAvatarImage)initWithImageName:(id)name imageData:(id)data imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive error:(id *)error;
+- (IMNicknameAvatarImage)initWithImageName:(id)name imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive;
+- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)representation;
+- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)representation imageData:(id)data imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive error:(id *)error;
 - (id)dictionaryRepresentation;
 - (id)imageData;
 - (id)publicDictionaryMetadataRepresentation;
 - (id)publicDictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMNicknameAvatarImage
 
-- (IMNicknameAvatarImage)initWithImageName:(id)a3 imageFilePath:(id)a4 contentIsSensitive:(BOOL)a5
+- (IMNicknameAvatarImage)initWithImageName:(id)name imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = IMNicknameAvatarImage;
   v10 = [(IMNicknameAvatarImage *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     imageName = v10->_imageName;
     v10->_imageName = v11;
 
-    v13 = [v9 copy];
+    v13 = [pathCopy copy];
     imageFilePath = v10->_imageFilePath;
     v10->_imageFilePath = v13;
 
-    v10->_contentIsSensitive = a5;
+    v10->_contentIsSensitive = sensitive;
   }
 
   return v10;
 }
 
-- (IMNicknameAvatarImage)initWithImageName:(id)a3 imageData:(id)a4 imageFilePath:(id)a5 contentIsSensitive:(BOOL)a6 error:(id *)a7
+- (IMNicknameAvatarImage)initWithImageName:(id)name imageData:(id)data imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive error:(id *)error
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a3;
-  [(IMNicknameAvatarImage *)self _writeImageData:a4 path:v12 error:a7];
-  v14 = [(IMNicknameAvatarImage *)self initWithImageName:v13 imageFilePath:v12 contentIsSensitive:v8];
+  sensitiveCopy = sensitive;
+  pathCopy = path;
+  nameCopy = name;
+  [(IMNicknameAvatarImage *)self _writeImageData:data path:pathCopy error:error];
+  v14 = [(IMNicknameAvatarImage *)self initWithImageName:nameCopy imageFilePath:pathCopy contentIsSensitive:sensitiveCopy];
 
   return v14;
 }
 
-- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)a3
+- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)representation
 {
-  v4 = [a3 objectForKey:@"imageName"];
+  v4 = [representation objectForKey:@"imageName"];
   v5 = [(IMNicknameAvatarImage *)self initWithImageName:v4 imageFilePath:0 contentIsSensitive:0];
 
   return v5;
 }
 
-- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)a3 imageData:(id)a4 imageFilePath:(id)a5 contentIsSensitive:(BOOL)a6 error:(id *)a7
+- (IMNicknameAvatarImage)initWithPublicDictionaryMetadataRepresentation:(id)representation imageData:(id)data imageFilePath:(id)path contentIsSensitive:(BOOL)sensitive error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  [(IMNicknameAvatarImage *)self _writeImageData:a4 path:v12 error:a7];
-  self->_contentIsSensitive = a6;
-  v14 = [(IMNicknameAvatarImage *)self initWithPublicDictionaryMetadataRepresentation:v13];
+  pathCopy = path;
+  representationCopy = representation;
+  [(IMNicknameAvatarImage *)self _writeImageData:data path:pathCopy error:error];
+  self->_contentIsSensitive = sensitive;
+  v14 = [(IMNicknameAvatarImage *)self initWithPublicDictionaryMetadataRepresentation:representationCopy];
 
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [pathCopy copy];
     imageFilePath = v14->_imageFilePath;
     v14->_imageFilePath = v15;
   }
@@ -77,12 +77,12 @@
   return v14;
 }
 
-- (IMNicknameAvatarImage)initWithDictionaryRepresentation:(id)a3
+- (IMNicknameAvatarImage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"imageName"];
-  v6 = [v4 objectForKey:@"imageFilePath"];
-  v7 = [v4 objectForKey:@"contentIsSensitive"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"imageName"];
+  v6 = [representationCopy objectForKey:@"imageFilePath"];
+  v7 = [representationCopy objectForKey:@"contentIsSensitive"];
 
   v8 = -[IMNicknameAvatarImage initWithImageName:imageFilePath:contentIsSensitive:](self, "initWithImageName:imageFilePath:contentIsSensitive:", v5, v6, [v7 BOOLValue]);
   return v8;
@@ -139,16 +139,16 @@
   return v4;
 }
 
-- (BOOL)_writeImageData:(id)a3 path:(id)a4 error:(id *)a5
+- (BOOL)_writeImageData:(id)data path:(id)path error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 stringByDeletingLastPathComponent];
-  IMSharedHelperEnsureDirectoryExistsAtPath(v9);
+  dataCopy = data;
+  pathCopy = path;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  IMSharedHelperEnsureDirectoryExistsAtPath(stringByDeletingLastPathComponent);
 
   v15 = 0;
-  v10 = [v7 writeToFile:v8 options:1073741825 error:&v15];
+  v10 = [dataCopy writeToFile:pathCopy options:1073741825 error:&v15];
   v11 = v15;
   if ((v10 & 1) == 0)
   {
@@ -158,17 +158,17 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v17 = v8;
+        v17 = pathCopy;
         v18 = 2112;
         v19 = v11;
         _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Failed to write avatar image data to path %@ with error %@ (imageExists will be NO)", buf, 0x16u);
       }
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -177,12 +177,12 @@
 
 - (BOOL)hasImage
 {
-  v3 = [(IMNicknameAvatarImage *)self imageFilePath];
-  if ([v3 length])
+  imageFilePath = [(IMNicknameAvatarImage *)self imageFilePath];
+  if ([imageFilePath length])
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(IMNicknameAvatarImage *)self imageFilePath];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    imageFilePath2 = [(IMNicknameAvatarImage *)self imageFilePath];
+    v6 = [defaultManager fileExistsAtPath:imageFilePath2];
   }
 
   else
@@ -224,11 +224,11 @@
 
 - (BOOL)imageExists
 {
-  v2 = [(IMNicknameAvatarImage *)self imageFilePath];
-  if ([v2 length])
+  imageFilePath = [(IMNicknameAvatarImage *)self imageFilePath];
+  if ([imageFilePath length])
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 fileExistsAtPath:v2];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager fileExistsAtPath:imageFilePath];
   }
 
   else
@@ -239,27 +239,27 @@
   return v4;
 }
 
-- (IMNicknameAvatarImage)initWithCoder:(id)a3
+- (IMNicknameAvatarImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageFilePath"];
-  v7 = [v4 decodeBoolForKey:@"contentIsSensitive"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageFilePath"];
+  v7 = [coderCopy decodeBoolForKey:@"contentIsSensitive"];
 
   v8 = [(IMNicknameAvatarImage *)self initWithImageName:v5 imageFilePath:v6 contentIsSensitive:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(IMNicknameAvatarImage *)self imageName];
-  [v6 encodeObject:v4 forKey:@"imageName"];
+  coderCopy = coder;
+  imageName = [(IMNicknameAvatarImage *)self imageName];
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
 
-  v5 = [(IMNicknameAvatarImage *)self imageFilePath];
-  [v6 encodeObject:v5 forKey:@"imageFilePath"];
+  imageFilePath = [(IMNicknameAvatarImage *)self imageFilePath];
+  [coderCopy encodeObject:imageFilePath forKey:@"imageFilePath"];
 
-  [v6 encodeBool:-[IMNicknameAvatarImage contentIsSensitive](self forKey:{"contentIsSensitive"), @"contentIsSensitive"}];
+  [coderCopy encodeBool:-[IMNicknameAvatarImage contentIsSensitive](self forKey:{"contentIsSensitive"), @"contentIsSensitive"}];
 }
 
 @end

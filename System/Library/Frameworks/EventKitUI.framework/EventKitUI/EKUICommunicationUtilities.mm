@@ -1,14 +1,14 @@
 @interface EKUICommunicationUtilities
-+ (id)attendeesIgnoringMe:(id)a3;
++ (id)attendeesIgnoringMe:(id)me;
 @end
 
 @implementation EKUICommunicationUtilities
 
-+ (id)attendeesIgnoringMe:(id)a3
++ (id)attendeesIgnoringMe:(id)me
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  meCopy = me;
   v5 = objc_alloc_init(v3);
   v6 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -17,20 +17,20 @@
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEBUG, "Extracting all attendees except 'me.'", buf, 2u);
   }
 
-  v7 = [v4 organizer];
-  v8 = [v4 attendees];
+  organizer = [meCopy organizer];
+  attendees = [meCopy attendees];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__EKUICommunicationUtilities_attendeesIgnoringMe___block_invoke;
   v15[3] = &unk_1E843FA88;
-  v9 = v7;
+  v9 = organizer;
   v16 = v9;
-  v10 = [v8 indexesOfObjectsPassingTest:v15];
-  v11 = [v8 objectsAtIndexes:v10];
+  v10 = [attendees indexesOfObjectsPassingTest:v15];
+  v11 = [attendees objectsAtIndexes:v10];
   [v5 addObjectsFromArray:v11];
-  v12 = [v4 isSelfOrganized];
+  isSelfOrganized = [meCopy isSelfOrganized];
 
-  if ((v12 & 1) == 0)
+  if ((isSelfOrganized & 1) == 0)
   {
     v13 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))

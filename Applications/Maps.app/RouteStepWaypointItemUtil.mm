@@ -1,22 +1,22 @@
 @interface RouteStepWaypointItemUtil
-+ (id)attributedSubtitleForLeg:(id)a3 waypoint:(id)a4 isOrigin:(BOOL)a5 attributes:(id)a6;
++ (id)attributedSubtitleForLeg:(id)leg waypoint:(id)waypoint isOrigin:(BOOL)origin attributes:(id)attributes;
 @end
 
 @implementation RouteStepWaypointItemUtil
 
-+ (id)attributedSubtitleForLeg:(id)a3 waypoint:(id)a4 isOrigin:(BOOL)a5 attributes:(id)a6
++ (id)attributedSubtitleForLeg:(id)leg waypoint:(id)waypoint isOrigin:(BOOL)origin attributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (a5)
+  legCopy = leg;
+  waypointCopy = waypoint;
+  attributesCopy = attributes;
+  if (origin)
   {
-    [v9 originListSecondaryInstructions];
+    [legCopy originListSecondaryInstructions];
   }
 
   else
   {
-    [v9 destinationListSecondaryInstructions];
+    [legCopy destinationListSecondaryInstructions];
   }
   v12 = ;
   if ([v12 count])
@@ -25,9 +25,9 @@
     v21[1] = 3221225472;
     v21[2] = sub_1009CEA44;
     v21[3] = &unk_1016312D0;
-    v22 = v9;
-    v23 = v10;
-    v24 = v11;
+    v22 = legCopy;
+    v23 = waypointCopy;
+    v24 = attributesCopy;
     v13 = [v12 _geo_compactMap:v21];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;

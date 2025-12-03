@@ -1,39 +1,39 @@
 @interface RMSBeginDiscoveryMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPairedNetworkNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasPairedNetworkNames:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPairedNetworkNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasPairedNetworkNames:(BOOL)names;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSBeginDiscoveryMessage
 
-- (void)addPairedNetworkNames:(id)a3
+- (void)addPairedNetworkNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   pairedNetworkNames = self->_pairedNetworkNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!pairedNetworkNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_pairedNetworkNames;
     self->_pairedNetworkNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     pairedNetworkNames = self->_pairedNetworkNames;
   }
 
-  [(NSMutableArray *)pairedNetworkNames addObject:v4];
+  [(NSMutableArray *)pairedNetworkNames addObject:namesCopy];
 }
 
-- (void)setHasHasPairedNetworkNames:(BOOL)a3
+- (void)setHasHasPairedNetworkNames:(BOOL)names
 {
-  if (a3)
+  if (names)
   {
     v3 = 2;
   }
@@ -52,40 +52,40 @@
   v8.receiver = self;
   v8.super_class = RMSBeginDiscoveryMessage;
   v4 = [(RMSBeginDiscoveryMessage *)&v8 description];
-  v5 = [(RMSBeginDiscoveryMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSBeginDiscoveryMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_discoveryTypes];
-    [v3 setObject:v4 forKey:@"discoveryTypes"];
+    [dictionary setObject:v4 forKey:@"discoveryTypes"];
   }
 
   pairedNetworkNames = self->_pairedNetworkNames;
   if (pairedNetworkNames)
   {
-    [v3 setObject:pairedNetworkNames forKey:@"pairedNetworkNames"];
+    [dictionary setObject:pairedNetworkNames forKey:@"pairedNetworkNames"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasPairedNetworkNames];
-    [v3 setObject:v6 forKey:@"hasPairedNetworkNames"];
+    [dictionary setObject:v6 forKey:@"hasPairedNetworkNames"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -128,23 +128,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_discoveryTypes;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_discoveryTypes;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(RMSBeginDiscoveryMessage *)self pairedNetworkNamesCount])
   {
     [v9 clearPairedNetworkNames];
-    v5 = [(RMSBeginDiscoveryMessage *)self pairedNetworkNamesCount];
-    if (v5)
+    pairedNetworkNamesCount = [(RMSBeginDiscoveryMessage *)self pairedNetworkNamesCount];
+    if (pairedNetworkNamesCount)
     {
-      v6 = v5;
+      v6 = pairedNetworkNamesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(RMSBeginDiscoveryMessage *)self pairedNetworkNamesAtIndex:i];
@@ -160,10 +160,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -191,7 +191,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addPairedNetworkNames:v12];
 
         ++v11;
@@ -213,10 +213,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
@@ -224,19 +224,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_discoveryTypes != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_discoveryTypes != *(equalCopy + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_12;
   }
 
   pairedNetworkNames = self->_pairedNetworkNames;
-  if (pairedNetworkNames | *(v4 + 2))
+  if (pairedNetworkNames | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)pairedNetworkNames isEqual:?])
     {
@@ -246,20 +246,20 @@
     has = self->_has;
   }
 
-  v7 = (*(v4 + 28) & 2) == 0;
+  v7 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) != 0)
+    if ((*(equalCopy + 28) & 2) != 0)
     {
       if (self->_hasPairedNetworkNames)
       {
-        if ((*(v4 + 24) & 1) == 0)
+        if ((*(equalCopy + 24) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(v4 + 24))
+      else if (*(equalCopy + 24))
       {
         goto LABEL_12;
       }
@@ -303,14 +303,14 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_discoveryTypes = *(v4 + 2);
+    self->_discoveryTypes = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -318,7 +318,7 @@ LABEL_13:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

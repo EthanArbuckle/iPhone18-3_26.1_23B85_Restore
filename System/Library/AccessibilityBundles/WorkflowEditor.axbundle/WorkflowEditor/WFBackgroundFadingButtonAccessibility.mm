@@ -1,16 +1,16 @@
 @interface WFBackgroundFadingButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
 @end
 
 @implementation WFBackgroundFadingButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFBackgroundFadingButton" hasInstanceMethod:@"backgroundColorsByState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFBackgroundFadingButton" hasInstanceMethod:@"setBackgroundColor:forState:" withFullSignature:{"v", "@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFBackgroundFadingButton" hasInstanceMethod:@"backgroundColorsByState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFBackgroundFadingButton" hasInstanceMethod:@"setBackgroundColor:forState:" withFullSignature:{"v", "@", "Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,7 +31,7 @@
   v19 = 3221225472;
   v20 = __83__WFBackgroundFadingButtonAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v21 = &unk_29F322FB8;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   AXPerformSafeBlock();
   v3 = v25[5];
@@ -48,8 +48,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v32 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v32 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -59,17 +59,17 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v4 objectForKey:v9];
-        v11 = [v9 unsignedIntegerValue];
-        v12 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v11 | 8];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        v12 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:unsignedIntegerValue | 8];
         [v4 setObject:v10 forKey:v12];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v32 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v32 count:16];
     }
 
     while (v6);
@@ -88,11 +88,11 @@ uint64_t __83__WFBackgroundFadingButtonAccessibility__accessibilityLoadAccessibi
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = WFBackgroundFadingButtonAccessibility;
-  [(WFBackgroundFadingButtonAccessibility *)&v5 setBackgroundColor:a3 forState:a4];
+  [(WFBackgroundFadingButtonAccessibility *)&v5 setBackgroundColor:color forState:state];
   [(WFBackgroundFadingButtonAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

@@ -1,20 +1,20 @@
 @interface _EARAppLmData
 + (void)initialize;
-- (BOOL)setProns:(id)a3 forWord:(id)a4 pronIsXsampa:(BOOL)a5;
+- (BOOL)setProns:(id)prons forWord:(id)word pronIsXsampa:(BOOL)xsampa;
 - (NSArray)orderedOovs;
-- (_EARAppLmData)initWithAppLmData:(shared_ptr<quasar::AppLmData>)a3;
-- (_EARAppLmData)initWithConfiguration:(id)a3 ncsRoot:(id)a4 recognizerConfigPath:(id)a5;
+- (_EARAppLmData)initWithAppLmData:(shared_ptr<quasar::AppLmData>)data;
+- (_EARAppLmData)initWithConfiguration:(id)configuration ncsRoot:(id)root recognizerConfigPath:(id)path;
 - (id).cxx_construct;
-- (id)addOovTokensFromSentence:(id)a3;
+- (id)addOovTokensFromSentence:(id)sentence;
 - (id)metrics;
 - (id)supportedSlots;
-- (int64_t)canAddProns:(id)a3 forWord:(id)a4 pronIsXsampa:(BOOL)a5;
+- (int64_t)canAddProns:(id)prons forWord:(id)word pronIsXsampa:(BOOL)xsampa;
 - (shared_ptr<quasar::AppLmData>)data;
-- (void)addLineWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5;
-- (void)addNgramCountWithType:(unint64_t)a3 content:(id)a4;
-- (void)addSentenceWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5 hasWeights:(BOOL)a6;
-- (void)generateLmeData:(id)a3;
-- (void)setInputFormat:(int64_t)a3;
+- (void)addLineWithType:(unint64_t)type uuid:(id)uuid content:(id)content;
+- (void)addNgramCountWithType:(unint64_t)type content:(id)content;
+- (void)addSentenceWithType:(unint64_t)type uuid:(id)uuid content:(id)content hasWeights:(BOOL)weights;
+- (void)generateLmeData:(id)data;
+- (void)setInputFormat:(int64_t)format;
 @end
 
 @implementation _EARAppLmData
@@ -22,19 +22,19 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARAppLmData)initWithAppLmData:(shared_ptr<quasar::AppLmData>)a3
+- (_EARAppLmData)initWithAppLmData:(shared_ptr<quasar::AppLmData>)data
 {
-  ptr = a3.__ptr_;
+  ptr = data.__ptr_;
   v11.receiver = self;
   v11.super_class = _EARAppLmData;
-  v4 = [(_EARAppLmData *)&v11 init:a3.__ptr_];
+  v4 = [(_EARAppLmData *)&v11 init:data.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -62,7 +62,7 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   quasar::AppLmData::getOrderedOovs(self->data.__ptr_, &v9);
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = v9;
   for (i = v10; v3 != i; v3 += 56)
   {
@@ -81,7 +81,7 @@
     std::set<std::string>::set[abi:ne200100](v12, (v3 + 24));
     v13 = *(v3 + 48);
     v6 = _earOovToken(&v11);
-    [v2 addObject:v6];
+    [array addObject:v6];
 
     std::__tree<std::string>::destroy(v12, v12[1]);
     if (SHIBYTE(v11.__r_.__value_.__r.__words[2]) < 0)
@@ -90,7 +90,7 @@
     }
   }
 
-  v7 = [v2 copy];
+  v7 = [array copy];
 
   v11.__r_.__value_.__r.__words[0] = &v9;
   std::vector<quasar::AppLmData::Oov>::__destroy_vector::operator()[abi:ne200100](&v11);
@@ -98,42 +98,42 @@
   return v7;
 }
 
-- (_EARAppLmData)initWithConfiguration:(id)a3 ncsRoot:(id)a4 recognizerConfigPath:(id)a5
+- (_EARAppLmData)initWithConfiguration:(id)configuration ncsRoot:(id)root recognizerConfigPath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  rootCopy = root;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = _EARAppLmData;
   v11 = [(_EARAppLmData *)&v19 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
-      v15 = [v14 fileExistsAtPath:v10];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v15 = [defaultManager2 fileExistsAtPath:pathCopy];
 
       if (v15)
       {
-        if (v9)
+        if (rootCopy)
         {
-          [_EARQuasarTokenizer tokenizerWithNcsRoot:v9];
+          [_EARQuasarTokenizer tokenizerWithNcsRoot:rootCopy];
         }
 
         else
         {
-          [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:v10];
+          [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:pathCopy];
         }
 
         *&buf = 0;
-        if (v8)
+        if (configurationCopy)
         {
-          [v8 ear_toString];
-          if (!v10)
+          [configurationCopy ear_toString];
+          if (!pathCopy)
           {
             goto LABEL_17;
           }
@@ -143,14 +143,14 @@
         {
           buf = 0uLL;
           v21 = 0;
-          if (!v10)
+          if (!pathCopy)
           {
 LABEL_17:
             std::allocate_shared[abi:ne200100]<quasar::AppLmData,std::allocator<quasar::AppLmData>,std::string,char const(&)[1],std::unique_ptr<quasar::TextTokenizer>,std::string,0>();
           }
         }
 
-        [v10 ear_toString];
+        [pathCopy ear_toString];
         goto LABEL_17;
       }
 
@@ -158,7 +158,7 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v10;
+        *(&buf + 4) = pathCopy;
         _os_log_impl(&dword_1B501D000, v16, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
       }
     }
@@ -169,7 +169,7 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = configurationCopy;
         _os_log_impl(&dword_1B501D000, v16, OS_LOG_TYPE_DEFAULT, "File does not exist %@", &buf, 0xCu);
       }
     }
@@ -185,18 +185,18 @@ LABEL_17:
   return v17;
 }
 
-- (void)addLineWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5
+- (void)addLineWithType:(unint64_t)type uuid:(id)uuid content:(id)content
 {
-  v6 = a3;
+  typeCopy = type;
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  uuidCopy = uuid;
+  contentCopy = content;
+  v10 = contentCopy;
   ptr = self->data.__ptr_;
-  v14 = v6;
-  if (v8)
+  v14 = typeCopy;
+  if (uuidCopy)
   {
-    [v8 ear_toString];
+    [uuidCopy ear_toString];
     if (v10)
     {
 LABEL_3:
@@ -210,7 +210,7 @@ LABEL_3:
     v15[0] = 0;
     v15[1] = 0;
     v16 = 0;
-    if (v9)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -232,19 +232,19 @@ LABEL_6:
   }
 }
 
-- (void)addSentenceWithType:(unint64_t)a3 uuid:(id)a4 content:(id)a5 hasWeights:(BOOL)a6
+- (void)addSentenceWithType:(unint64_t)type uuid:(id)uuid content:(id)content hasWeights:(BOOL)weights
 {
-  v6 = a6;
-  v8 = a3;
+  weightsCopy = weights;
+  typeCopy = type;
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  uuidCopy = uuid;
+  contentCopy = content;
+  v12 = contentCopy;
   ptr = self->data.__ptr_;
-  v16 = v8;
-  if (v10)
+  v16 = typeCopy;
+  if (uuidCopy)
   {
-    [v10 ear_toString];
+    [uuidCopy ear_toString];
     if (v12)
     {
 LABEL_3:
@@ -258,7 +258,7 @@ LABEL_3:
     v17[0] = 0;
     v17[1] = 0;
     v18 = 0;
-    if (v11)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -268,7 +268,7 @@ LABEL_3:
   __p[1] = 0;
   v15 = 0;
 LABEL_6:
-  (*(*ptr + 24))(ptr, &v16, v17, __p, v6, 0, 0);
+  (*(*ptr + 24))(ptr, &v16, v17, __p, weightsCopy, 0, 0);
   if (SHIBYTE(v15) < 0)
   {
     operator delete(__p[0]);
@@ -280,15 +280,15 @@ LABEL_6:
   }
 }
 
-- (void)addNgramCountWithType:(unint64_t)a3 content:(id)a4
+- (void)addNgramCountWithType:(unint64_t)type content:(id)content
 {
-  v4 = a3;
+  typeCopy = type;
   __p[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contentCopy = content;
   ptr = self->data.__ptr_;
-  if (v6)
+  if (contentCopy)
   {
-    [v6 ear_toString];
+    [contentCopy ear_toString];
   }
 
   else
@@ -296,10 +296,10 @@ LABEL_6:
     memset(__p, 0, 24);
   }
 
-  quasar::LmData::addNgramCount(ptr, v4, __p);
+  quasar::LmData::addNgramCount(ptr, typeCopy, __p);
 }
 
-- (void)setInputFormat:(int64_t)a3
+- (void)setInputFormat:(int64_t)format
 {
   cntrl = self->data.__cntrl_;
   v6[0] = self->data.__ptr_;
@@ -309,24 +309,24 @@ LABEL_6:
     atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
   }
 
-  setInputFormatHelper(v6, a3);
+  setInputFormatHelper(v6, format);
   if (cntrl)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
   }
 
-  self->inputType = a3;
+  self->inputType = format;
 }
 
-- (id)addOovTokensFromSentence:(id)a3
+- (id)addOovTokensFromSentence:(id)sentence
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  sentenceCopy = sentence;
+  v5 = sentenceCopy;
   ptr = self->data.__ptr_;
-  if (v4)
+  if (sentenceCopy)
   {
-    [v4 ear_toString];
+    [sentenceCopy ear_toString];
   }
 
   else
@@ -344,22 +344,22 @@ LABEL_6:
     operator delete(__p[0]);
   }
 
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-- (BOOL)setProns:(id)a3 forWord:(id)a4 pronIsXsampa:(BOOL)a5
+- (BOOL)setProns:(id)prons forWord:(id)word pronIsXsampa:(BOOL)xsampa
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  v24 = a5;
+  pronsCopy = prons;
+  wordCopy = word;
+  v10 = wordCopy;
+  xsampaCopy = xsampa;
   ptr = self->data.__ptr_;
-  if (v9)
+  if (wordCopy)
   {
-    [v9 ear_toString];
+    [wordCopy ear_toString];
   }
 
   else
@@ -369,7 +369,7 @@ LABEL_6:
     v23 = 0;
   }
 
-  v12 = v8;
+  v12 = pronsCopy;
   *&v21.__r_.__value_.__r.__words[1] = 0uLL;
   v21.__r_.__value_.__r.__words[0] = &v21.__r_.__value_.__l.__size_;
   v25 = 0u;
@@ -417,7 +417,7 @@ LABEL_6:
     while (v14);
   }
 
-  v19 = quasar::AppLmData::setPronsForWord(ptr, v22, &v21, &v24);
+  v19 = quasar::AppLmData::setPronsForWord(ptr, v22, &v21, &xsampaCopy);
   std::__tree<std::string>::destroy(&v21, v21.__r_.__value_.__l.__size_);
   if (SHIBYTE(v23) < 0)
   {
@@ -427,17 +427,17 @@ LABEL_6:
   return v19;
 }
 
-- (int64_t)canAddProns:(id)a3 forWord:(id)a4 pronIsXsampa:(BOOL)a5
+- (int64_t)canAddProns:(id)prons forWord:(id)word pronIsXsampa:(BOOL)xsampa
 {
-  v5 = a5;
+  xsampaCopy = xsampa;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  pronsCopy = prons;
+  wordCopy = word;
+  v10 = wordCopy;
   ptr = self->data.__ptr_;
-  if (v9)
+  if (wordCopy)
   {
-    [v9 ear_toString];
+    [wordCopy ear_toString];
   }
 
   else
@@ -447,7 +447,7 @@ LABEL_6:
     v23 = 0;
   }
 
-  v12 = v8;
+  v12 = pronsCopy;
   v21[0] = 0;
   v21[1] = 0;
   v24 = 0u;
@@ -495,7 +495,7 @@ LABEL_6:
     while (v14);
   }
 
-  LODWORD(v13) = quasar::AppLmData::canAddProns(ptr, v22, &v20, v5);
+  LODWORD(v13) = quasar::AppLmData::canAddProns(ptr, v22, &v20, xsampaCopy);
   std::__tree<std::string>::destroy(&v20, v21[0]);
   if (SHIBYTE(v23) < 0)
   {
@@ -515,14 +515,14 @@ LABEL_6:
   return v13;
 }
 
-- (void)generateLmeData:(id)a3
+- (void)generateLmeData:(id)data
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   ptr = self->data.__ptr_;
-  if (v4)
+  if (dataCopy)
   {
-    [v4 ear_toString];
+    [dataCopy ear_toString];
   }
 
   else
@@ -538,9 +538,9 @@ LABEL_6:
   quasar::AppLmData::getSupportedSlots(self->data.__ptr_, v5);
   v2 = EARHelpers::ContainerToNSSet<std::set<std::string>>(v5);
   std::__tree<std::string>::destroy(v5, v5[1]);
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)metrics

@@ -1,35 +1,35 @@
 @interface PUPXPhotoKitAddToAlbumActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-- (id)_addAssetsActionForAssets:(id)a3 assetCollection:(id)a4;
-- (void)_dismissPickerControllerAndCompleteTaskWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_handlePickedAlbum:(id)a3 assets:(id)a4;
-- (void)_handleUserInteractionTaskResult:(BOOL)a3 error:(id)a4;
-- (void)_presentAlbumPickerForAssets:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
+- (id)_addAssetsActionForAssets:(id)assets assetCollection:(id)collection;
+- (void)_dismissPickerControllerAndCompleteTaskWithSuccess:(BOOL)success error:(id)error;
+- (void)_handlePickedAlbum:(id)album assets:(id)assets;
+- (void)_handleUserInteractionTaskResult:(BOOL)result error:(id)error;
+- (void)_presentAlbumPickerForAssets:(id)assets;
 - (void)performUserInteractionTask;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation PUPXPhotoKitAddToAlbumActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
   v6 = MEMORY[0x1E69DC708];
-  v7 = a3;
+  targetCopy = target;
   v8 = [v6 alloc];
   v9 = PULocalizedString(@"ADD_TO_ALBUM_BUTTON_TITLE");
-  v10 = [v8 initWithTitle:v9 style:0 target:v7 action:a4];
+  v10 = [v8 initWithTitle:v9 style:0 target:targetCopy action:action];
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 sourceType];
-  if ([v7 isTrashed] & 1) != 0 || (objc_msgSend(v7, "isRecoveredAsset"))
+  assetCopy = asset;
+  collectionCopy = collection;
+  sourceType = [assetCopy sourceType];
+  if ([assetCopy isTrashed] & 1) != 0 || (objc_msgSend(assetCopy, "isRecoveredAsset"))
   {
     LOBYTE(v10) = 0;
   }
@@ -37,40 +37,40 @@
   else
   {
     LOBYTE(v10) = 0;
-    if (v9 != 2 && v9 != 8)
+    if (sourceType != 2 && sourceType != 8)
     {
-      LOBYTE(v10) = [v8 assetCollectionType] != 7;
+      LOBYTE(v10) = [collectionCopy assetCollectionType] != 7;
     }
   }
 
   if ((PFIsPhotosAppAnyPlatform() & 1) == 0 && (PFIsCameraAppAnyPlatform() & 1) == 0)
   {
-    v10 = [v7 px_isUnsavedSyndicatedAsset] ^ 1;
+    v10 = [assetCopy px_isUnsavedSyndicatedAsset] ^ 1;
   }
 
   return v10;
 }
 
-- (void)_handleUserInteractionTaskResult:(BOOL)a3 error:(id)a4
+- (void)_handleUserInteractionTaskResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAddToAlbumActionPerformer.m" lineNumber:188 description:{@"%s must be called on the main thread", "-[PUPXPhotoKitAddToAlbumActionPerformer _handleUserInteractionTaskResult:error:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAddToAlbumActionPerformer.m" lineNumber:188 description:{@"%s must be called on the main thread", "-[PUPXPhotoKitAddToAlbumActionPerformer _handleUserInteractionTaskResult:error:]"}];
   }
 
   objc_initWeak(&location, self);
-  v8 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
+  albumPickerViewController = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PUPXPhotoKitAddToAlbumActionPerformer__handleUserInteractionTaskResult_error___block_invoke;
   v10[3] = &unk_1E7B80638;
   objc_copyWeak(&v11, &location);
-  [(PXActionPerformer *)self dismissViewController:v8 completionHandler:v10];
+  [(PXActionPerformer *)self dismissViewController:albumPickerViewController completionHandler:v10];
 
-  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:v4 error:v7];
+  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:resultCopy error:errorCopy];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
@@ -81,12 +81,12 @@ void __80__PUPXPhotoKitAddToAlbumActionPerformer__handleUserInteractionTaskResul
   [WeakRetained setAlbumPickerViewController:0];
 }
 
-- (void)_handlePickedAlbum:(id)a3 assets:(id)a4
+- (void)_handlePickedAlbum:(id)album assets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  assetsCopy = assets;
   objc_initWeak(&location, self);
-  if (!v6)
+  if (!albumCopy)
   {
     v10 = @"Missing asset collection";
 LABEL_6:
@@ -97,7 +97,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self _addAssetsActionForAssets:v7 assetCollection:v6];
+  v8 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self _addAssetsActionForAssets:assetsCopy assetCollection:albumCopy];
   if (!v8)
   {
     v10 = @"Failed to create add to asset collection action";
@@ -105,15 +105,15 @@ LABEL_6:
   }
 
   [objc_opt_class() _configureAction:v8];
-  v9 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__PUPXPhotoKitAddToAlbumActionPerformer__handlePickedAlbum_assets___block_invoke;
   v12[3] = &unk_1E7B7CEB0;
-  v13 = v7;
-  v14 = v6;
+  v13 = assetsCopy;
+  v14 = albumCopy;
   objc_copyWeak(&v15, &location);
-  [v8 executeWithUndoManager:v9 completionHandler:v12];
+  [v8 executeWithUndoManager:undoManager completionHandler:v12];
 
   objc_destroyWeak(&v15);
 LABEL_7:
@@ -162,34 +162,34 @@ void __67__PUPXPhotoKitAddToAlbumActionPerformer__handlePickedAlbum_assets___blo
   [WeakRetained _handleUserInteractionTaskResult:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (id)_addAssetsActionForAssets:(id)a3 assetCollection:(id)a4
+- (id)_addAssetsActionForAssets:(id)assets assetCollection:(id)collection
 {
   v5 = MEMORY[0x1E69C3318];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithAssets:v7 assetCollection:v6];
+  collectionCopy = collection;
+  assetsCopy = assets;
+  v8 = [[v5 alloc] initWithAssets:assetsCopy assetCollection:collectionCopy];
 
   [v8 setShouldSortAssetsByCreationDate:1];
 
   return v8;
 }
 
-- (void)_dismissPickerControllerAndCompleteTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_dismissPickerControllerAndCompleteTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
-  [(PXActionPerformer *)self dismissViewController:v6 completionHandler:0];
+  successCopy = success;
+  errorCopy = error;
+  albumPickerViewController = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
+  [(PXActionPerformer *)self dismissViewController:albumPickerViewController completionHandler:0];
 
-  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:v4 error:v7];
+  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:successCopy error:errorCopy];
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  pickerCopy = picker;
+  pickingCopy = picking;
+  v8 = pickingCopy;
   if (self->_pickerDidFinishPicking)
   {
     v9 = PLUIGetLog();
@@ -203,24 +203,24 @@ void __67__PUPXPhotoKitAddToAlbumActionPerformer__handlePickedAlbum_assets___blo
   else
   {
     self->_pickerDidFinishPicking = 1;
-    if ([v7 count])
+    if ([pickingCopy count])
     {
-      v10 = [(PXPhotoKitAssetActionPerformer *)self assets];
-      v11 = [v10 firstObject];
-      v12 = [v11 photoLibrary];
-      v13 = [v12 librarySpecificFetchOptions];
+      assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+      firstObject = [assets firstObject];
+      photoLibrary = [firstObject photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      v14 = [v8 firstObject];
-      v15 = [v14 itemIdentifier];
+      firstObject2 = [v8 firstObject];
+      itemIdentifier = [firstObject2 itemIdentifier];
 
       v16 = MEMORY[0x1E6978650];
-      v22[0] = v15;
+      v22[0] = itemIdentifier;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-      v18 = [v16 fetchAssetCollectionsWithLocalIdentifiers:v17 options:v13];
-      v19 = [v18 firstObject];
+      v18 = [v16 fetchAssetCollectionsWithLocalIdentifiers:v17 options:librarySpecificFetchOptions];
+      firstObject3 = [v18 firstObject];
 
-      v20 = [(PXPhotoKitAssetActionPerformer *)self assets];
-      [(PUPXPhotoKitAddToAlbumActionPerformer *)self _handlePickedAlbum:v19 assets:v20];
+      assets2 = [(PXPhotoKitAssetActionPerformer *)self assets];
+      [(PUPXPhotoKitAddToAlbumActionPerformer *)self _handlePickedAlbum:firstObject3 assets:assets2];
     }
 
     else
@@ -230,7 +230,7 @@ void __67__PUPXPhotoKitAddToAlbumActionPerformer__handlePickedAlbum_assets___blo
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   if (self->_pickerDidFinishPicking)
   {
@@ -253,8 +253,8 @@ void __67__PUPXPhotoKitAddToAlbumActionPerformer__handlePickedAlbum_assets___blo
 - (void)performUserInteractionTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   objc_copyWeak(&v5, &location);
   PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary();
 
@@ -280,19 +280,19 @@ void __67__PUPXPhotoKitAddToAlbumActionPerformer_performUserInteractionTask__blo
   }
 }
 
-- (void)_presentAlbumPickerForAssets:(id)a3
+- (void)_presentAlbumPickerForAssets:(id)assets
 {
   v9 = PXEnsureAllSavedSyndicatedAssetsAreFromUserLibrary();
   v4 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self _pickerConfigurationForAssets:v9];
   v5 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v4];
   [v5 setDelegate:self];
   [(PUPXPhotoKitAddToAlbumActionPerformer *)self setAlbumPickerViewController:v5];
-  v6 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
-  v7 = [v6 presentationController];
-  [v7 setDelegate:self];
+  albumPickerViewController = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
+  presentationController = [albumPickerViewController presentationController];
+  [presentationController setDelegate:self];
 
-  v8 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
-  [(PXActionPerformer *)self presentViewController:v8];
+  albumPickerViewController2 = [(PUPXPhotoKitAddToAlbumActionPerformer *)self albumPickerViewController];
+  [(PXActionPerformer *)self presentViewController:albumPickerViewController2];
 }
 
 @end

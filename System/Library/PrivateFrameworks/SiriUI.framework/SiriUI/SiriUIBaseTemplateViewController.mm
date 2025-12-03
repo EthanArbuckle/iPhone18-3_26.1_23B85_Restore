@@ -6,8 +6,8 @@
 
 - (void)loadView
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SiriUIBaseTemplateViewController.m" lineNumber:16 description:@"-templateViewClass must return a subclass of SiriUIBaseTemplateView!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SiriUIBaseTemplateViewController.m" lineNumber:16 description:@"-templateViewClass must return a subclass of SiriUIBaseTemplateView!"];
 }
 
 @end

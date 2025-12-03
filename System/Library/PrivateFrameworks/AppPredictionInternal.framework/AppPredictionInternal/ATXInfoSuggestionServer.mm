@@ -1,18 +1,18 @@
 @interface ATXInfoSuggestionServer
 + (id)sharedInstance;
-- (ATXInfoSuggestionServer)initWithInfoEngine:(id)a3 rsSuggestionProducer:(id)a4 infoHeuristics:(id)a5 criterionRegistry:(id)a6 xpcListener:(id)a7;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_processIncomingSuggestion:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5;
-- (id)_processIncomingSuggestions:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5;
-- (void)_addSuggestions:(id)a3 forSourceIdentifier:(id)a4 needReset:(BOOL)a5 errorHandler:(id)a6;
-- (void)clearSuggestionsForInfoSourceIdentifier:(id)a3 errorHandler:(id)a4;
+- (ATXInfoSuggestionServer)initWithInfoEngine:(id)engine rsSuggestionProducer:(id)producer infoHeuristics:(id)heuristics criterionRegistry:(id)registry xpcListener:(id)listener;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_processIncomingSuggestion:(id)suggestion sourceIdentifier:(id)identifier error:(id *)error;
+- (id)_processIncomingSuggestions:(id)suggestions sourceIdentifier:(id)identifier error:(id *)error;
+- (void)_addSuggestions:(id)suggestions forSourceIdentifier:(id)identifier needReset:(BOOL)reset errorHandler:(id)handler;
+- (void)clearSuggestionsForInfoSourceIdentifier:(id)identifier errorHandler:(id)handler;
 - (void)dealloc;
-- (void)getSuggestionsForInfoSourceIdentifier:(id)a3 withReply:(id)a4;
-- (void)informationHeuristics:(id)a3 didUpdateSuggestions:(id)a4 forHeuristic:(id)a5;
-- (void)overwriteSuggestionsWithProactiveSuggestions:(id)a3 forClientModelIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)refreshInfoSuggestionsWithCompletionHandler:(id)a3;
-- (void)retrieveAvailableCriterionIdentifiersForSourceIdentifier:(id)a3 reply:(id)a4;
-- (void)timelineDidReloadForWidget:(id)a3 parentApp:(id)a4 withEntries:(id)a5 completion:(id)a6;
+- (void)getSuggestionsForInfoSourceIdentifier:(id)identifier withReply:(id)reply;
+- (void)informationHeuristics:(id)heuristics didUpdateSuggestions:(id)suggestions forHeuristic:(id)heuristic;
+- (void)overwriteSuggestionsWithProactiveSuggestions:(id)suggestions forClientModelIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)refreshInfoSuggestionsWithCompletionHandler:(id)handler;
+- (void)retrieveAvailableCriterionIdentifiersForSourceIdentifier:(id)identifier reply:(id)reply;
+- (void)timelineDidReloadForWidget:(id)widget parentApp:(id)app withEntries:(id)entries completion:(id)completion;
 @end
 
 @implementation ATXInfoSuggestionServer
@@ -46,24 +46,24 @@ void __41__ATXInfoSuggestionServer_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (ATXInfoSuggestionServer)initWithInfoEngine:(id)a3 rsSuggestionProducer:(id)a4 infoHeuristics:(id)a5 criterionRegistry:(id)a6 xpcListener:(id)a7
+- (ATXInfoSuggestionServer)initWithInfoEngine:(id)engine rsSuggestionProducer:(id)producer infoHeuristics:(id)heuristics criterionRegistry:(id)registry xpcListener:(id)listener
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  engineCopy = engine;
+  producerCopy = producer;
+  heuristicsCopy = heuristics;
+  registryCopy = registry;
+  listenerCopy = listener;
   v21.receiver = self;
   v21.super_class = ATXInfoSuggestionServer;
   v17 = [(ATXInfoSuggestionServer *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_xpcListener, a7);
-    objc_storeStrong(&v18->_criterionRegistry, a6);
-    objc_storeStrong(&v18->_engine, a3);
-    objc_storeStrong(&v18->_relevantShortcutSuggestionProducer, a4);
-    objc_storeStrong(&v18->_informationHeuristics, a5);
+    objc_storeStrong(&v17->_xpcListener, listener);
+    objc_storeStrong(&v18->_criterionRegistry, registry);
+    objc_storeStrong(&v18->_engine, engine);
+    objc_storeStrong(&v18->_relevantShortcutSuggestionProducer, producer);
+    objc_storeStrong(&v18->_informationHeuristics, heuristics);
     [(NSXPCListener *)v18->_xpcListener setDelegate:v18];
     [(NSXPCListener *)v18->_xpcListener resume];
     [(ATXInformationHeuristics *)v18->_informationHeuristics setDelegate:v18];
@@ -93,16 +93,16 @@ void __112__ATXInfoSuggestionServer_initWithInfoEngine_rsSuggestionProducer_info
   [(ATXInfoSuggestionServer *)&v3 dealloc];
 }
 
-- (void)refreshInfoSuggestionsWithCompletionHandler:(id)a3
+- (void)refreshInfoSuggestionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   informationHeuristics = self->_informationHeuristics;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_27859A480;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ATXInformationHeuristics *)informationHeuristics refreshResultsForAllHeuristicsWithCompletionHandler:v7];
 }
 
@@ -120,17 +120,17 @@ uint64_t __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandl
   return (*(*(a1 + 32) + 16))();
 }
 
-- (id)_processIncomingSuggestion:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5
+- (id)_processIncomingSuggestion:(id)suggestion sourceIdentifier:(id)identifier error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (![(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:v9])
+  suggestionCopy = suggestion;
+  identifierCopy = identifier;
+  if (![(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:identifierCopy])
   {
-    if (a5)
+    if (error)
     {
       v24 = MEMORY[0x277CCACA8];
-      v25 = v9;
+      v25 = identifierCopy;
       v26 = [[v24 alloc] initWithFormat:@"source ID %@ is invalid", v25];
 
       v27 = MEMORY[0x277CCA9B8];
@@ -143,7 +143,7 @@ uint64_t __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandl
       v31 = [v29 initWithDomain:@"ATXInfoSuggestionServerErrorDomain" code:-1 userInfo:v30];
       v32 = v31;
       v33 = 0;
-      *a5 = v31;
+      *error = v31;
       goto LABEL_14;
     }
 
@@ -151,20 +151,20 @@ uint64_t __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandl
   }
 
   criterionRegistry = self->_criterionRegistry;
-  v11 = [v8 criterion];
-  v12 = [(ATXInfoSuggestionCriterionRegistry *)criterionRegistry confidenceLevelForCriterion:v11 sourceIdentifier:v9];
+  criterion = [suggestionCopy criterion];
+  v12 = [(ATXInfoSuggestionCriterionRegistry *)criterionRegistry confidenceLevelForCriterion:criterion sourceIdentifier:identifierCopy];
 
   if ((v12 + 1) <= 1)
   {
-    if (a5)
+    if (error)
     {
-      v13 = [v8 criterion];
+      criterion2 = [suggestionCopy criterion];
       v14 = MEMORY[0x277CCACA8];
-      v15 = v9;
+      v15 = identifierCopy;
       v16 = [v14 alloc];
       if (v12)
       {
-        v17 = [v16 initWithFormat:@"criterion %@ of %@ is disabled", v13, v15];
+        v17 = [v16 initWithFormat:@"criterion %@ of %@ is disabled", criterion2, v15];
 
         v18 = MEMORY[0x277CCA9B8];
         v19 = v17;
@@ -179,7 +179,7 @@ uint64_t __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandl
 
       else
       {
-        v37 = [v16 initWithFormat:@"criterion %@ of %@ is invalid", v13, v15];
+        v37 = [v16 initWithFormat:@"criterion %@ of %@ is invalid", criterion2, v15];
 
         v38 = MEMORY[0x277CCA9B8];
         v19 = v37;
@@ -195,7 +195,7 @@ uint64_t __71__ATXInfoSuggestionServer_refreshInfoSuggestionsWithCompletionHandl
       v40 = [v22 initWithDomain:@"ATXInfoSuggestionServerErrorDomain" code:v23 userInfo:v21];
 
       v41 = v40;
-      *a5 = v40;
+      *error = v40;
     }
 
 LABEL_13:
@@ -203,18 +203,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v8 setConfidenceLevel:v12];
-  [v8 setSourceIdentifier:v9];
-  v34 = [v8 suggestionIdentifier];
+  [suggestionCopy setConfidenceLevel:v12];
+  [suggestionCopy setSourceIdentifier:identifierCopy];
+  suggestionIdentifier = [suggestionCopy suggestionIdentifier];
 
-  if (!v34)
+  if (!suggestionIdentifier)
   {
-    v35 = [MEMORY[0x277CCAD78] UUID];
-    v36 = [v35 UUIDString];
-    [v8 setSuggestionIdentifier:v36];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [suggestionCopy setSuggestionIdentifier:uUIDString];
   }
 
-  v33 = v8;
+  v33 = suggestionCopy;
 LABEL_14:
 
   v42 = *MEMORY[0x277D85DE8];
@@ -222,17 +222,17 @@ LABEL_14:
   return v33;
 }
 
-- (id)_processIncomingSuggestions:(id)a3 sourceIdentifier:(id)a4 error:(id *)a5
+- (id)_processIncomingSuggestions:(id)suggestions sourceIdentifier:(id)identifier error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v8;
+  v11 = suggestionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -247,7 +247,7 @@ LABEL_14:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestion:*(*(&v21 + 1) + 8 * i) sourceIdentifier:v9 error:a5, v21];
+        v16 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestion:*(*(&v21 + 1) + 8 * i) sourceIdentifier:identifierCopy error:error, v21];
         if (!v16)
         {
 
@@ -277,25 +277,25 @@ LABEL_11:
   return v18;
 }
 
-- (void)_addSuggestions:(id)a3 forSourceIdentifier:(id)a4 needReset:(BOOL)a5 errorHandler:(id)a6
+- (void)_addSuggestions:(id)suggestions forSourceIdentifier:(id)identifier needReset:(BOOL)reset errorHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
+  resetCopy = reset;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16 = 0;
-  v12 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestions:a3 sourceIdentifier:v10 error:&v16];
+  v12 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestions:suggestions sourceIdentifier:identifierCopy error:&v16];
   v13 = v16;
   if (v12)
   {
     engine = self->_engine;
-    if (v7)
+    if (resetCopy)
     {
-      [(ATXInformationEngine *)engine resetSuggestionsTo:v12 forInfoSourceIdentifier:v10 completionHandler:v11];
+      [(ATXInformationEngine *)engine resetSuggestionsTo:v12 forInfoSourceIdentifier:identifierCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      [(ATXInformationEngine *)engine insertSuggestions:v12 forInfoSourceIdentifier:v10 completionHandler:v11];
+      [(ATXInformationEngine *)engine insertSuggestions:v12 forInfoSourceIdentifier:identifierCopy completionHandler:handlerCopy];
     }
   }
 
@@ -307,24 +307,24 @@ LABEL_11:
       [ATXInfoSuggestionServer _addSuggestions:forSourceIdentifier:needReset:errorHandler:];
     }
 
-    v11[2](v11, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 }
 
-- (void)getSuggestionsForInfoSourceIdentifier:(id)a3 withReply:(id)a4
+- (void)getSuggestionsForInfoSourceIdentifier:(id)identifier withReply:(id)reply
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:v6])
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if ([(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:identifierCopy])
   {
-    [(ATXInformationEngine *)self->_engine getSuggestionsForInfoSourceIdentifier:v6 withReply:v7];
+    [(ATXInformationEngine *)self->_engine getSuggestionsForInfoSourceIdentifier:identifierCopy withReply:replyCopy];
   }
 
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = v6;
+    v9 = identifierCopy;
     v10 = [[v8 alloc] initWithFormat:@"source ID %@ is invalid", v9];
 
     v11 = MEMORY[0x277CCA9B8];
@@ -341,26 +341,26 @@ LABEL_11:
       [ATXInfoSuggestionServer getSuggestionsForInfoSourceIdentifier:withReply:];
     }
 
-    v7[2](v7, 0, v15);
+    replyCopy[2](replyCopy, 0, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearSuggestionsForInfoSourceIdentifier:(id)a3 errorHandler:(id)a4
+- (void)clearSuggestionsForInfoSourceIdentifier:(id)identifier errorHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:v6])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry isSourceIdentifierRegistered:identifierCopy])
   {
-    [(ATXInformationEngine *)self->_engine clearSuggestionsForInfoSourceIdentifier:v6 completionHandler:v7];
+    [(ATXInformationEngine *)self->_engine clearSuggestionsForInfoSourceIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = v6;
+    v9 = identifierCopy;
     v10 = [[v8 alloc] initWithFormat:@"source ID %@ is invalid", v9];
 
     v11 = MEMORY[0x277CCA9B8];
@@ -377,34 +377,34 @@ LABEL_11:
       [ATXInfoSuggestionServer clearSuggestionsForInfoSourceIdentifier:errorHandler:];
     }
 
-    v7[2](v7, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overwriteSuggestionsWithProactiveSuggestions:(id)a3 forClientModelIdentifier:(id)a4 completionHandler:(id)a5
+- (void)overwriteSuggestionsWithProactiveSuggestions:(id)suggestions forClientModelIdentifier:(id)identifier completionHandler:(id)handler
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = __atxlog_handle_gi();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *&buf[4] = [v7 count];
+    *&buf[4] = [suggestionsCopy count];
     v49 = 2114;
-    v50 = v8;
+    v50 = identifierCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "ATXInfoSuggestionServer: receive %d suggestion(s) from ATXClientModel %{public}@", buf, 0x12u);
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v11 = v7;
+  v11 = suggestionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v12)
   {
@@ -442,8 +442,8 @@ LABEL_11:
             [ATXInfoSuggestionServer overwriteSuggestionsWithProactiveSuggestions:forClientModelIdentifier:completionHandler:];
           }
 
-          v24 = v37;
-          (*(v37 + 2))(v37, 0, v32);
+          v24 = handlerCopy;
+          (*(handlerCopy + 2))(handlerCopy, 0, v32);
 
           objc_autoreleasePoolPop(v17);
           v22 = v11;
@@ -469,7 +469,7 @@ LABEL_11:
   }
 
   v42 = 0;
-  v21 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestions:v10 sourceIdentifier:v8 error:&v42];
+  v21 = [(ATXInfoSuggestionServer *)self _processIncomingSuggestions:v10 sourceIdentifier:identifierCopy error:&v42];
   v22 = v42;
   if (v21)
   {
@@ -479,22 +479,22 @@ LABEL_11:
     v38[2] = __115__ATXInfoSuggestionServer_overwriteSuggestionsWithProactiveSuggestions_forClientModelIdentifier_completionHandler___block_invoke;
     v38[3] = &unk_2785A0280;
     v39 = v21;
-    v40 = v8;
-    v24 = v37;
-    v41 = v37;
+    v40 = identifierCopy;
+    v24 = handlerCopy;
+    v41 = handlerCopy;
     [(ATXInformationEngine *)engine resetSuggestionsTo:v39 forInfoSourceIdentifier:v40 completionHandler:v38];
   }
 
   else
   {
     v34 = __atxlog_handle_gi();
-    v24 = v37;
+    v24 = handlerCopy;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       [ATXInfoSuggestionServer overwriteSuggestionsWithProactiveSuggestions:forClientModelIdentifier:completionHandler:];
     }
 
-    (*(v37 + 2))(v37, 0, v22);
+    (*(handlerCopy + 2))(handlerCopy, 0, v22);
   }
 
 LABEL_20:
@@ -569,22 +569,22 @@ LABEL_17:
   }
 }
 
-- (void)retrieveAvailableCriterionIdentifiersForSourceIdentifier:(id)a3 reply:(id)a4
+- (void)retrieveAvailableCriterionIdentifiersForSourceIdentifier:(id)identifier reply:(id)reply
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   criterionRegistry = self->_criterionRegistry;
-  v8 = a4;
-  if ([(ATXInfoSuggestionCriterionRegistry *)criterionRegistry isSourceIdentifierRegistered:v6])
+  replyCopy = reply;
+  if ([(ATXInfoSuggestionCriterionRegistry *)criterionRegistry isSourceIdentifierRegistered:identifierCopy])
   {
-    v9 = [(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry availableCriterionIdentifiersForSourceIdentifier:v6];
-    v8[2](v8, v9, 0);
+    v9 = [(ATXInfoSuggestionCriterionRegistry *)self->_criterionRegistry availableCriterionIdentifiersForSourceIdentifier:identifierCopy];
+    replyCopy[2](replyCopy, v9, 0);
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = [[v10 alloc] initWithFormat:@"source ID %@ is invalid", v11];
 
     v13 = MEMORY[0x277CCA9B8];
@@ -601,32 +601,32 @@ LABEL_17:
       [ATXInfoSuggestionServer retrieveAvailableCriterionIdentifiersForSourceIdentifier:reply:];
     }
 
-    (v8)[2](v8, 0, v9);
+    (replyCopy)[2](replyCopy, 0, v9);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = *MEMORY[0x277D42120];
-  v7 = [v5 valueForEntitlement:*MEMORY[0x277D42120]];
+  v7 = [connectionCopy valueForEntitlement:*MEMORY[0x277D42120]];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = ATXInfoSuggestionXPCInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_38_1];
-    [v5 setInvalidationHandler:&__block_literal_global_41_1];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_38_1];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_41_1];
+    [connectionCopy resume];
     v9 = __atxlog_handle_gi();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v5;
+      v14 = connectionCopy;
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "ATXInfoSuggestionServer: accepts XPC connection: %{public}@", &v13, 0xCu);
     }
 
@@ -638,7 +638,7 @@ LABEL_17:
     v9 = __atxlog_handle_gi();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXInfoSuggestionServer *)v5 listener:v6 shouldAcceptNewConnection:v9];
+      [(ATXInfoSuggestionServer *)connectionCopy listener:v6 shouldAcceptNewConnection:v9];
     }
 
     v10 = 0;
@@ -667,13 +667,13 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
   }
 }
 
-- (void)timelineDidReloadForWidget:(id)a3 parentApp:(id)a4 withEntries:(id)a5 completion:(id)a6
+- (void)timelineDidReloadForWidget:(id)widget parentApp:(id)app withEntries:(id)entries completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  widgetCopy = widget;
+  appCopy = app;
+  entriesCopy = entries;
+  completionCopy = completion;
   v14 = __atxlog_handle_xpc();
   v15 = os_signpost_id_generate(v14);
 
@@ -687,7 +687,7 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
   }
 
   v19 = @"entries";
-  if ([v12 count] && objc_msgSend(v12, "count") <= 1)
+  if ([entriesCopy count] && objc_msgSend(entriesCopy, "count") <= 1)
   {
     v19 = @"entry";
   }
@@ -697,11 +697,11 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
   v21 = __atxlog_handle_timeline();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v12 count];
+    v22 = [entriesCopy count];
     *buf = 138413058;
-    v44 = v10;
+    v44 = widgetCopy;
     v45 = 2112;
-    v46 = v11;
+    v46 = appCopy;
     v47 = 2048;
     v48 = v22;
     v49 = 2112;
@@ -710,22 +710,22 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
   }
 
   v40 = v20;
-  v41 = v11;
+  v41 = appCopy;
 
   v23 = [ATXTimelineRelevance alloc];
   criterionRegistry = self->_criterionRegistry;
-  v25 = [(ATXInformationEngine *)self->_engine abuseControlConfig];
-  v42 = v10;
-  v26 = [(ATXTimelineRelevance *)v23 initWithWidget:v10 criterionRegistry:criterionRegistry abuseControlConfig:v25];
+  abuseControlConfig = [(ATXInformationEngine *)self->_engine abuseControlConfig];
+  v42 = widgetCopy;
+  v26 = [(ATXTimelineRelevance *)v23 initWithWidget:widgetCopy criterionRegistry:criterionRegistry abuseControlConfig:abuseControlConfig];
 
   [(ATXTimelineRelevance *)v26 setDelegate:self->_engine];
-  v27 = [(ATXTimelineRelevance *)v26 sourceId];
-  v28 = [(ATXInformationEngine *)self->_engine latestInfoSuggestionRelevantNowForSourceId:v27];
+  sourceId = [(ATXTimelineRelevance *)v26 sourceId];
+  v28 = [(ATXInformationEngine *)self->_engine latestInfoSuggestionRelevantNowForSourceId:sourceId];
   engine = self->_engine;
-  v30 = [v28 suggestionIdentifier];
-  [(ATXInformationEngine *)engine deleteAllSuggestionsForSourceId:v27 excludingSuggestionId:v30];
+  suggestionIdentifier = [v28 suggestionIdentifier];
+  [(ATXInformationEngine *)engine deleteAllSuggestionsForSourceId:sourceId excludingSuggestionId:suggestionIdentifier];
 
-  v31 = [(ATXTimelineRelevance *)v26 infoSuggestionsFromTimelineEntries:v12 latestInfoSuggestionRelevantNow:v28];
+  v31 = [(ATXTimelineRelevance *)v26 infoSuggestionsFromTimelineEntries:entriesCopy latestInfoSuggestionRelevantNow:v28];
   v32 = @"suggestions";
   if ([v31 count] <= 1 && objc_msgSend(v31, "count"))
   {
@@ -744,7 +744,7 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
     _os_log_impl(&dword_2263AA000, v34, OS_LOG_TYPE_DEFAULT, "ATXInfoSuggestionServer: Sending %lu %@ to the InformationEngine", buf, 0x16u);
   }
 
-  [(ATXInformationEngine *)self->_engine insertSuggestions:v31 forInfoSourceIdentifier:v27 completionHandler:v13];
+  [(ATXInformationEngine *)self->_engine insertSuggestions:v31 forInfoSourceIdentifier:sourceId completionHandler:completionCopy];
   v36 = __atxlog_handle_xpc();
   v37 = v36;
   if (v18 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
@@ -756,16 +756,16 @@ void __62__ATXInfoSuggestionServer_listener_shouldAcceptNewConnection___block_in
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)informationHeuristics:(id)a3 didUpdateSuggestions:(id)a4 forHeuristic:(id)a5
+- (void)informationHeuristics:(id)heuristics didUpdateSuggestions:(id)suggestions forHeuristic:(id)heuristic
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [MEMORY[0x277CE8990] sourceIdentifierForHeuristicWithName:a5];
+  suggestionsCopy = suggestions;
+  v8 = [MEMORY[0x277CE8990] sourceIdentifierForHeuristicWithName:heuristic];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = suggestionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {

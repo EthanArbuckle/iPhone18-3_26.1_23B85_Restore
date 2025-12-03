@@ -1,7 +1,7 @@
 @interface UserNotificationsCloudSenderPriorityObserver
 - (_TtC21UserNotificationsCore44UserNotificationsCloudSenderPriorityObserver)init;
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4;
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3;
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion;
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep;
 @end
 
 @implementation UserNotificationsCloudSenderPriorityObserver
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)systemSleepMonitor:(id)a3 prepareForSleepWithCompletion:(id)a4
+- (void)systemSleepMonitor:(id)monitor prepareForSleepWithCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
-  v6 = self;
+  v5 = _Block_copy(completion);
+  selfCopy = self;
   sub_1DA84B55C("systemSleepMonitorPrepareForSleep(): %s waking = false", 0);
   v5[2](v5);
 
   _Block_release(v5);
 }
 
-- (void)systemSleepMonitorDidWakeFromSleep:(id)a3
+- (void)systemSleepMonitorDidWakeFromSleep:(id)sleep
 {
-  v3 = self;
+  selfCopy = self;
   sub_1DA84B55C("systemSleepMonitorDidWakeFromSleep(): %s waking = true", 1);
 }
 

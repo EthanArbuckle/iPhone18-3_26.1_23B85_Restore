@@ -1,15 +1,15 @@
 @interface AVTAttributeEditorToActionsTransitionAnimator
-+ (UIEdgeInsets)adjustedSafeAreaInsetsForView:(id)a3;
-- (AVTAttributeEditorToActionsTransitionAnimator)initWithAVTViewLayoutInfo:(id)a3 userInfoViewHeight:(double)a4 RTL:(BOOL)a5 environment:(id)a6;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
++ (UIEdgeInsets)adjustedSafeAreaInsetsForView:(id)view;
+- (AVTAttributeEditorToActionsTransitionAnimator)initWithAVTViewLayoutInfo:(id)info userInfoViewHeight:(double)height RTL:(BOOL)l environment:(id)environment;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AVTAttributeEditorToActionsTransitionAnimator
 
-+ (UIEdgeInsets)adjustedSafeAreaInsetsForView:(id)a3
++ (UIEdgeInsets)adjustedSafeAreaInsetsForView:(id)view
 {
-  [a3 safeAreaInsets];
+  [view safeAreaInsets];
   if (v3 > 40.0)
   {
     v3 = v3 + -40.0;
@@ -22,30 +22,30 @@
   return result;
 }
 
-- (AVTAttributeEditorToActionsTransitionAnimator)initWithAVTViewLayoutInfo:(id)a3 userInfoViewHeight:(double)a4 RTL:(BOOL)a5 environment:(id)a6
+- (AVTAttributeEditorToActionsTransitionAnimator)initWithAVTViewLayoutInfo:(id)info userInfoViewHeight:(double)height RTL:(BOOL)l environment:(id)environment
 {
-  v11 = a3;
-  v12 = a6;
+  infoCopy = info;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = AVTAttributeEditorToActionsTransitionAnimator;
   v13 = [(AVTAttributeEditorToActionsTransitionAnimator *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_environment, a6);
-    objc_storeStrong(&v14->_avtViewLayoutInfo, a3);
-    v14->_RTL = a5;
-    v14->_userInfoViewHeight = a4;
+    objc_storeStrong(&v13->_environment, environment);
+    objc_storeStrong(&v14->_avtViewLayoutInfo, info);
+    v14->_RTL = l;
+    v14->_userInfoViewHeight = height;
   }
 
   return v14;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -60,25 +60,25 @@
   }
 
   v107 = v5;
-  v8 = [v7 currentLayout];
-  v105 = [v8 buttonCount];
+  currentLayout = [v7 currentLayout];
+  buttonCount = [currentLayout buttonCount];
 
   v104 = v7;
-  [v4 finalFrameForViewController:v7];
+  [transitionCopy finalFrameForViewController:v7];
   v10 = v9;
   v12 = v11;
-  v13 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
-  v14 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
-  v15 = [v14 backgroundColor];
-  v16 = [v4 containerView];
-  v106 = v15;
-  [v16 setBackgroundColor:v15];
+  v13 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
+  v14 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
+  backgroundColor = [v14 backgroundColor];
+  containerView = [transitionCopy containerView];
+  v106 = backgroundColor;
+  [containerView setBackgroundColor:backgroundColor];
 
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [v14 setBackgroundColor:v17];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v14 setBackgroundColor:clearColor];
 
-  v18 = [v4 containerView];
-  [v18 addSubview:v14];
+  containerView2 = [transitionCopy containerView];
+  [containerView2 addSubview:v14];
 
   [objc_opt_class() adjustedSafeAreaInsetsForView:v13];
   v20 = v19;
@@ -87,10 +87,10 @@
   v26 = v25;
   userInfoViewHeight = self->_userInfoViewHeight;
   v28 = [(AVTAttributeEditorToActionsTransitionAnimator *)self RTL];
-  v29 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
+  environment = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
   v102 = v10;
   v108 = v12;
-  v30 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v28 insets:v29 userInfoViewHeight:v10 RTL:v12 environment:v20, v22, v24, v26, userInfoViewHeight];
+  userInfoViewHeight = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v28 insets:environment userInfoViewHeight:v10 RTL:v12 environment:v20, v22, v24, v26, userInfoViewHeight];
 
   [objc_opt_class() adjustedSafeAreaInsetsForView:v13];
   v32 = v31;
@@ -99,8 +99,8 @@
   v38 = v37;
   v39 = self->_userInfoViewHeight;
   v40 = [(AVTAttributeEditorToActionsTransitionAnimator *)self RTL];
-  v41 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
-  v103 = [AVTAvatarAttributeEditorLayoutProvider editorToActionsTransitionStartingLayoutInContainerOfSize:v40 insets:v41 userInfoViewHeight:v10 RTL:v12 environment:v32, v34, v36, v38, v39];
+  environment2 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
+  v103 = [AVTAvatarAttributeEditorLayoutProvider editorToActionsTransitionStartingLayoutInContainerOfSize:v40 insets:environment2 userInfoViewHeight:v10 RTL:v12 environment:v32, v34, v36, v38, v39];
 
   [objc_opt_class() adjustedSafeAreaInsetsForView:v13];
   v101 = v42;
@@ -109,16 +109,16 @@
   v48 = v47;
   v49 = self->_userInfoViewHeight;
   v50 = [(AVTAttributeEditorToActionsTransitionAnimator *)self RTL];
-  [v30 avatarContainerFrame];
+  [userInfoViewHeight avatarContainerFrame];
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
-  v60 = [AVTAvatarAttributeEditorLayoutProvider actionsToEditorTransitionStartingLayoutInContainerOfSize:v50 attributesContentViewExtraHeight:v59 insets:v102 userInfoViewHeight:v108 RTL:0.0 avatarViewStartFrame:v101 avatarViewAlpha:v44 environment:v46, v48, v49, v52, v54, v56, v58, 0];
+  environment3 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
+  v60 = [AVTAvatarAttributeEditorLayoutProvider actionsToEditorTransitionStartingLayoutInContainerOfSize:v50 attributesContentViewExtraHeight:environment3 insets:v102 userInfoViewHeight:v108 RTL:0.0 avatarViewStartFrame:v101 avatarViewAlpha:v44 environment:v46, v48, v49, v52, v54, v56, v58, 0];
 
-  v61 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
-  if ([v61 deviceIsPad])
+  environment4 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
+  if ([environment4 deviceIsPad])
   {
 
     v62 = off_1E7F398B0;
@@ -127,11 +127,11 @@
 
   else
   {
-    v64 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
-    v65 = [v64 deviceIsMac];
+    environment5 = [(AVTAttributeEditorToActionsTransitionAnimator *)self environment];
+    deviceIsMac = [environment5 deviceIsMac];
 
     v63 = off_1E7F398C0;
-    if (v65)
+    if (deviceIsMac)
     {
       v63 = off_1E7F398B8;
       v62 = off_1E7F398B0;
@@ -149,9 +149,9 @@
   v70 = v69;
   v72 = v71;
   v74 = v73;
-  v75 = [(AVTAttributeEditorToActionsTransitionAnimator *)self avtViewLayoutInfo];
-  [v30 avatarContainerFrame];
-  v80 = [v66 initWithContainerSize:v105 insets:v75 buttonCount:v102 avtViewLayoutInfo:v108 startingAvatarViewFrame:{v68, v70, v72, v74, v76, v77, v78, v79}];
+  avtViewLayoutInfo = [(AVTAttributeEditorToActionsTransitionAnimator *)self avtViewLayoutInfo];
+  [userInfoViewHeight avatarContainerFrame];
+  v80 = [v66 initWithContainerSize:buttonCount insets:avtViewLayoutInfo buttonCount:v102 avtViewLayoutInfo:v108 startingAvatarViewFrame:{v68, v70, v72, v74, v76, v77, v78, v79}];
 
   v81 = objc_alloc(*v62);
   [v14 safeAreaInsets];
@@ -159,16 +159,16 @@
   v85 = v84;
   v87 = v86;
   v89 = v88;
-  v90 = [(AVTAttributeEditorToActionsTransitionAnimator *)self avtViewLayoutInfo];
-  v91 = [v81 initWithContainerSize:v105 insets:v90 buttonCount:v102 avtViewLayoutInfo:{v108, v83, v85, v87, v89}];
+  avtViewLayoutInfo2 = [(AVTAttributeEditorToActionsTransitionAnimator *)self avtViewLayoutInfo];
+  v91 = [v81 initWithContainerSize:buttonCount insets:avtViewLayoutInfo2 buttonCount:v102 avtViewLayoutInfo:{v108, v83, v85, v87, v89}];
 
   v110[0] = MEMORY[0x1E69E9820];
   v110[1] = 3221225472;
   v110[2] = __67__AVTAttributeEditorToActionsTransitionAnimator_animateTransition___block_invoke;
   v110[3] = &unk_1E7F3BB90;
   v110[4] = self;
-  v111 = v4;
-  v109 = v30;
+  v111 = transitionCopy;
+  v109 = userInfoViewHeight;
   v112 = v107;
   v113 = v103;
   v114 = v60;
@@ -185,7 +185,7 @@
   v97 = v60;
   v98 = v103;
   v99 = v107;
-  v100 = v4;
+  v100 = transitionCopy;
   [v95 prepareForAnimatedTransitionWithLayout:v80 completionBlock:v110];
 }
 
@@ -249,7 +249,7 @@ uint64_t __67__AVTAttributeEditorToActionsTransitionAnimator_animateTransition__
   return [v4 completeTransition:v5];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v3 = +[AVTUIEnvironment defaultEnvironment];
   [v3 actionAnimationsMultiplier];

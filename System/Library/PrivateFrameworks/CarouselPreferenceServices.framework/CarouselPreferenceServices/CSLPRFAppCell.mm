@@ -1,5 +1,5 @@
 @interface CSLPRFAppCell
-- (CSLPRFAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CSLPRFAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)blankIcon;
 @end
 
@@ -7,22 +7,22 @@
 
 - (id)blankIcon
 {
-  v3 = [(CSLPRFAppTableCellHelper *)self->_cellHelper blankIcon];
-  if (!v3)
+  blankIcon = [(CSLPRFAppTableCellHelper *)self->_cellHelper blankIcon];
+  if (!blankIcon)
   {
     v5.receiver = self;
     v5.super_class = CSLPRFAppCell;
-    v3 = [(PSTableCell *)&v5 blankIcon];
+    blankIcon = [(PSTableCell *)&v5 blankIcon];
   }
 
-  return v3;
+  return blankIcon;
 }
 
-- (CSLPRFAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CSLPRFAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CSLPRFAppCell;
-  v4 = [(PSTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[CSLPRFAppTableCellHelper alloc] initWithTableCell:v4];

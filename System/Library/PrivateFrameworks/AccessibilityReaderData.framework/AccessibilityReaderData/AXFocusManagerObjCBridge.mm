@@ -23,12 +23,12 @@
 - (AXElement)currentApplication
 {
   AXOverrideRequestingClientType();
-  v3 = [(AXFocusManagerObjCBridge *)self focusManager];
-  v4 = [v3 currentApplication];
+  focusManager = [(AXFocusManagerObjCBridge *)self focusManager];
+  currentApplication = [focusManager currentApplication];
 
   AXOverrideRequestingClientType();
 
-  return v4;
+  return currentApplication;
 }
 
 @end

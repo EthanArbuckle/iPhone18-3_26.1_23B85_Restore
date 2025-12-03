@@ -1,28 +1,28 @@
 @interface NRKeychainSyncStatusManager
-+ (id)newService:(id)a3;
++ (id)newService:(id)service;
 - (BOOL)enabled;
 - (BOOL)enabledFlag;
 - (BOOL)outstandingRequest;
 - (BOOL)queryInProgress;
 - (BOOL)skipNotificationOnLaunch;
-- (NRKeychainSyncStatusManager)initWithQueue:(id)a3;
-- (void)addObserver:(id)a3;
+- (NRKeychainSyncStatusManager)initWithQueue:(id)queue;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)setEnabledFlag:(BOOL)a3;
-- (void)setOutstandingRequest:(BOOL)a3;
-- (void)setQueryInProgress:(BOOL)a3;
-- (void)setSkipNotificationOnLaunch:(BOOL)a3;
+- (void)setEnabledFlag:(BOOL)flag;
+- (void)setOutstandingRequest:(BOOL)request;
+- (void)setQueryInProgress:(BOOL)progress;
+- (void)setSkipNotificationOnLaunch:(BOOL)launch;
 @end
 
 @implementation NRKeychainSyncStatusManager
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 queue];
+  serviceCopy = service;
+  v5 = [self alloc];
+  queue = [serviceCopy queue];
 
-  v7 = [v5 initWithQueue:v6];
+  v7 = [v5 initWithQueue:queue];
   return v7;
 }
 
@@ -45,7 +45,7 @@
   return v3;
 }
 
-- (void)setQueryInProgress:(BOOL)a3
+- (void)setQueryInProgress:(BOOL)progress
 {
   propertyQueue = self->_propertyQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -53,7 +53,7 @@
   v4[2] = sub_1000F40B0;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  progressCopy = progress;
   dispatch_async(propertyQueue, v4);
 }
 
@@ -76,7 +76,7 @@
   return v3;
 }
 
-- (void)setSkipNotificationOnLaunch:(BOOL)a3
+- (void)setSkipNotificationOnLaunch:(BOOL)launch
 {
   propertyQueue = self->_propertyQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -84,7 +84,7 @@
   v4[2] = sub_1000F41F8;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  launchCopy = launch;
   dispatch_async(propertyQueue, v4);
 }
 
@@ -107,7 +107,7 @@
   return v3;
 }
 
-- (void)setEnabledFlag:(BOOL)a3
+- (void)setEnabledFlag:(BOOL)flag
 {
   propertyQueue = self->_propertyQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -115,7 +115,7 @@
   v4[2] = sub_1000F4340;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  flagCopy = flag;
   dispatch_async(propertyQueue, v4);
 }
 
@@ -138,7 +138,7 @@
   return v3;
 }
 
-- (void)setOutstandingRequest:(BOOL)a3
+- (void)setOutstandingRequest:(BOOL)request
 {
   propertyQueue = self->_propertyQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -146,20 +146,20 @@
   v4[2] = sub_1000F4488;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_async(propertyQueue, v4);
 }
 
-- (NRKeychainSyncStatusManager)initWithQueue:(id)a3
+- (NRKeychainSyncStatusManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = NRKeychainSyncStatusManager;
   v6 = [(NRKeychainSyncStatusManager *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[NSMutableArray array];
     updateBlocks = v7->_updateBlocks;
     v7->_updateBlocks = v8;
@@ -237,19 +237,19 @@
     }
   }
 
-  v7 = [(NRKeychainSyncStatusManager *)self enabledFlag];
+  enabledFlag = [(NRKeychainSyncStatusManager *)self enabledFlag];
 
   _Block_object_dispose(&v15, 8);
-  return v7;
+  return enabledFlag;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(NSHashTable *)self->_observers addObject:?];
   if ([(NRKeychainSyncStatusManager *)self skipNotificationOnLaunch])
   {
-    [v4 keychainSyncStatusDidChange:{-[NRKeychainSyncStatusManager enabled](self, "enabled")}];
+    [observerCopy keychainSyncStatusDidChange:{-[NRKeychainSyncStatusManager enabled](self, "enabled")}];
   }
 }
 

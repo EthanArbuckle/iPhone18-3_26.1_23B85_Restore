@@ -1,30 +1,30 @@
 @interface CSLObjCHex
-- (BOOL)isEqual:(id)a3;
-- (CSLObjCHex)initWithCoder:(id)a3;
-- (CSLObjCHex)initWithHex:(Hex)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSLObjCHex)initWithCoder:(id)coder;
+- (CSLObjCHex)initWithHex:(Hex)hex;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSLObjCHex
 
-- (CSLObjCHex)initWithHex:(Hex)a3
+- (CSLObjCHex)initWithHex:(Hex)hex
 {
   v5.receiver = self;
   v5.super_class = CSLObjCHex;
   result = [(CSLObjCHex *)&v5 init];
   if (result)
   {
-    *&result->_q = a3;
+    *&result->_q = hex;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -34,7 +34,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(CSLObjCHex *)self r];
       if (v6 == [(CSLObjCHex *)v5 r])
       {
@@ -57,9 +57,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 2) = self->_q;
@@ -69,26 +69,26 @@
   return result;
 }
 
-- (CSLObjCHex)initWithCoder:(id)a3
+- (CSLObjCHex)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CSLObjCHex;
   v5 = [(CSLObjCHex *)&v7 init];
   if (v5)
   {
-    v5->_q = [v4 decodeIntForKey:@"q"];
-    v5->_r = [v4 decodeIntForKey:@"r"];
+    v5->_q = [coderCopy decodeIntForKey:@"q"];
+    v5->_r = [coderCopy decodeIntForKey:@"r"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[CSLObjCHex q](self forKey:{"q"), @"q"}];
-  [v4 encodeInt:-[CSLObjCHex r](self forKey:{"r"), @"r"}];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[CSLObjCHex q](self forKey:{"q"), @"q"}];
+  [coderCopy encodeInt:-[CSLObjCHex r](self forKey:{"r"), @"r"}];
 }
 
 @end

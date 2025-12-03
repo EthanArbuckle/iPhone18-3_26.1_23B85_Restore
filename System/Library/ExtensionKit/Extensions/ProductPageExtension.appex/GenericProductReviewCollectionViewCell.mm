@@ -1,12 +1,12 @@
 @interface GenericProductReviewCollectionViewCell
-- (_TtC20ProductPageExtension38GenericProductReviewCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension38GenericProductReviewCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation GenericProductReviewCollectionViewCell
 
-- (_TtC20ProductPageExtension38GenericProductReviewCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension38GenericProductReviewCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension38GenericProductReviewCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -20,13 +20,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100167044();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001672D4();
 }
 

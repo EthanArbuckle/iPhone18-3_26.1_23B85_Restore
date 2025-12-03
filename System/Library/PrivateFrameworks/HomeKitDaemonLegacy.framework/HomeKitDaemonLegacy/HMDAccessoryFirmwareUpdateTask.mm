@@ -4,7 +4,7 @@
 - (BOOL)shouldRunOnCurrentDevice;
 - (HMDAccessoryFirmwareUpdateProfile)profile;
 - (HMDAccessoryFirmwareUpdateSession)session;
-- (HMDAccessoryFirmwareUpdateTask)initWithSession:(id)a3 profile:(id)a4 initialDelay:(double)a5;
+- (HMDAccessoryFirmwareUpdateTask)initWithSession:(id)session profile:(id)profile initialDelay:(double)delay;
 - (HMDHAPAccessory)accessory;
 - (NSString)description;
 - (OS_xpc_object)criteria;
@@ -31,20 +31,20 @@
 
 - (int64_t)accessoryActiveTransport
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self accessory];
-  if ([v2 isReachable])
+  accessory = [(HMDAccessoryFirmwareUpdateTask *)self accessory];
+  if ([accessory isReachable])
   {
-    if ([v2 isThreadTheCurrentlyActiveTransport])
+    if ([accessory isThreadTheCurrentlyActiveTransport])
     {
       v3 = 4;
     }
 
-    else if ([v2 hasBTLELink])
+    else if ([accessory hasBTLELink])
     {
       v3 = 3;
     }
 
-    else if ([v2 hasIPLink])
+    else if ([accessory hasIPLink])
     {
       v3 = 2;
     }
@@ -78,18 +78,18 @@
 
 - (HMDHAPAccessory)accessory
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self session];
-  v3 = [v2 hapAccessory];
+  session = [(HMDAccessoryFirmwareUpdateTask *)self session];
+  hapAccessory = [session hapAccessory];
 
-  return v3;
+  return hapAccessory;
 }
 
 - (BOOL)shouldRunOnCurrentDevice
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self accessory];
-  v3 = [v2 isReachable];
+  accessory = [(HMDAccessoryFirmwareUpdateTask *)self accessory];
+  isReachable = [accessory isReachable];
 
-  return v3;
+  return isReachable;
 }
 
 - (BOOL)shouldRun
@@ -146,19 +146,19 @@
   return v8;
 }
 
-- (HMDAccessoryFirmwareUpdateTask)initWithSession:(id)a3 profile:(id)a4 initialDelay:(double)a5
+- (HMDAccessoryFirmwareUpdateTask)initWithSession:(id)session profile:(id)profile initialDelay:(double)delay
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HMDAccessoryFirmwareUpdateTask;
   v10 = [(HMDAccessoryFirmwareUpdateTask *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_session, v8);
-    objc_storeWeak(&v11->_profile, v9);
-    v11->_initialDelay = a5;
+    objc_storeWeak(&v10->_session, sessionCopy);
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v11->_initialDelay = delay;
   }
 
   return v11;

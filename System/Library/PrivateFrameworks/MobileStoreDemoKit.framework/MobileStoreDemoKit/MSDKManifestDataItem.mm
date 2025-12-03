@@ -1,19 +1,19 @@
 @interface MSDKManifestDataItem
-- (MSDKManifestDataItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5;
+- (MSDKManifestDataItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component;
 @end
 
 @implementation MSDKManifestDataItem
 
-- (MSDKManifestDataItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5
+- (MSDKManifestDataItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component
 {
-  v9 = a4;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MSDKManifestDataItem;
-  v10 = [(MSDKManifestItem *)&v13 initWithIdentifier:a3 andDictionary:v9 forComponent:a5];
+  v10 = [(MSDKManifestItem *)&v13 initWithIdentifier:identifier andDictionary:dictionaryCopy forComponent:component];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_data, a4);
+    objc_storeStrong(&v10->_data, dictionary);
   }
 
   return v11;

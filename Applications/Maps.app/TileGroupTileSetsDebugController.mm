@@ -1,9 +1,9 @@
 @interface TileGroupTileSetsDebugController
 - (id)_tileGroup;
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
 @end
 
 @implementation TileGroupTileSetsDebugController
@@ -15,16 +15,16 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TileGroupTileSetsDebugController *)self _tileGroup];
-  if ([v7 row] <= 5)
+  viewCopy = view;
+  pathCopy = path;
+  _tileGroup = [(TileGroupTileSetsDebugController *)self _tileGroup];
+  if ([pathCopy row] <= 5)
   {
-    if ([v7 row] == 4 || objc_msgSend(v7, "row") == 5)
+    if ([pathCopy row] == 4 || objc_msgSend(pathCopy, "row") == 5)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"TileSetInfoWithSubtitleCell"];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"TileSetInfoWithSubtitleCell"];
       if (v10)
       {
         goto LABEL_10;
@@ -37,7 +37,7 @@
 
     else
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"TileSetInfoCell"];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"TileSetInfoCell"];
       if (v10)
       {
         goto LABEL_10;
@@ -51,36 +51,36 @@
     v10 = [v11 initWithStyle:v13 reuseIdentifier:v12];
 LABEL_10:
     v9 = v10;
-    v14 = [v8 tileSets];
-    v15 = &v14[8 * [v7 section]];
-    v16 = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
-    v17 = [v16 tileSetAtIndex:v15[1]];
+    tileSets = [_tileGroup tileSets];
+    v15 = &tileSets[8 * [pathCopy section]];
+    resources = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
+    v17 = [resources tileSetAtIndex:v15[1]];
 
-    v18 = [v7 row];
+    v18 = [pathCopy row];
     if (v18 > 2)
     {
       switch(v18)
       {
         case 3:
-          v26 = [v9 textLabel];
-          [v26 setText:@"Version"];
+          textLabel = [v9 textLabel];
+          [textLabel setText:@"Version"];
 
           [NSString stringWithFormat:@"%i", *v15];
-          v23 = LABEL_27:;
+          baseURL = LABEL_27:;
           goto LABEL_29;
         case 4:
-          v28 = [v9 textLabel];
-          [v28 setText:@"Base URL"];
+          textLabel2 = [v9 textLabel];
+          [textLabel2 setText:@"Base URL"];
 
-          v23 = [v17 baseURL];
+          baseURL = [v17 baseURL];
           goto LABEL_29;
         case 5:
-          v22 = [v9 textLabel];
-          [v22 setText:@"Localization URL"];
+          textLabel3 = [v9 textLabel];
+          [textLabel3 setText:@"Localization URL"];
 
-          v23 = [v17 localizationURL];
+          baseURL = [v17 localizationURL];
 LABEL_29:
-          v25 = v23;
+          v25 = baseURL;
           goto LABEL_30;
       }
     }
@@ -90,12 +90,12 @@ LABEL_29:
       switch(v18)
       {
         case 0:
-          v24 = [v9 textLabel];
-          [v24 setText:@"Style"];
+          textLabel4 = [v9 textLabel];
+          [textLabel4 setText:@"Style"];
 
-          v20 = [v17 style];
+          style = [v17 style];
           v25 = @"RASTER_STANDARD";
-          switch(v20)
+          switch(style)
           {
             case 0:
               goto LABEL_30;
@@ -447,11 +447,11 @@ LABEL_29:
 
           goto LABEL_30;
         case 1:
-          v27 = [v9 textLabel];
-          [v27 setText:@"Size"];
+          textLabel5 = [v9 textLabel];
+          [textLabel5 setText:@"Size"];
 
-          v20 = [v17 size];
-          if (v20 < 3)
+          style = [v17 size];
+          if (style < 3)
           {
             v21 = &off_1016301B8;
             goto LABEL_25;
@@ -459,31 +459,31 @@ LABEL_29:
 
           goto LABEL_26;
         case 2:
-          v19 = [v9 textLabel];
-          [v19 setText:@"Scale"];
+          textLabel6 = [v9 textLabel];
+          [textLabel6 setText:@"Scale"];
 
-          v20 = [v17 scale];
-          if (v20 < 3)
+          style = [v17 scale];
+          if (style < 3)
           {
             v21 = &off_1016301D0;
 LABEL_25:
-            v25 = v21[v20];
+            v25 = v21[style];
 LABEL_30:
-            v29 = [v9 detailTextLabel];
-            [v29 setText:v25];
+            detailTextLabel = [v9 detailTextLabel];
+            [detailTextLabel setText:v25];
 
             break;
           }
 
 LABEL_26:
-          [NSString stringWithFormat:@"(unknown: %i)", v20];
+          [NSString stringWithFormat:@"(unknown: %i)", style];
           goto LABEL_27;
       }
     }
 
-    v30 = [v9 detailTextLabel];
-    v31 = [v30 text];
-    if ([v31 length])
+    detailTextLabel2 = [v9 detailTextLabel];
+    text = [detailTextLabel2 text];
+    if ([text length])
     {
       +[UIColor labelColor];
     }
@@ -493,8 +493,8 @@ LABEL_26:
       +[UIColor secondaryLabelColor];
     }
     v32 = ;
-    v33 = [v9 textLabel];
-    [v33 setTextColor:v32];
+    textLabel7 = [v9 textLabel];
+    [textLabel7 setTextColor:v32];
 
     goto LABEL_35;
   }
@@ -505,18 +505,18 @@ LABEL_35:
   return v9;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(TileGroupTileSetsDebugController *)self _tileGroup];
-  v4 = [v3 tileSetsCount];
+  _tileGroup = [(TileGroupTileSetsDebugController *)self _tileGroup];
+  tileSetsCount = [_tileGroup tileSetsCount];
 
-  return v4;
+  return tileSetsCount;
 }
 
 - (id)_tileGroup
 {
-  v3 = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
-  if (![v3 tileGroupsCount])
+  resources = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
+  if (![resources tileGroupsCount])
   {
 LABEL_12:
     v11 = 0;
@@ -529,8 +529,8 @@ LABEL_12:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [v3 tileGroups];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    tileGroups = [resources tileGroups];
+    v5 = [tileGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -541,12 +541,12 @@ LABEL_12:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(tileGroups);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          if ([(TileGroupTileSetsDebugController *)self tileGroupIdentifier]== v10)
+          identifier = [v9 identifier];
+          if ([(TileGroupTileSetsDebugController *)self tileGroupIdentifier]== identifier)
           {
             v11 = v9;
 
@@ -554,7 +554,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [tileGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -567,16 +567,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [v3 tileGroupAtIndex:0];
+  v11 = [resources tileGroupAtIndex:0];
 LABEL_15:
 
   return v11;
 }
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
-  v3 = [(TileGroupTileSetsDebugController *)self tableView];
-  [v3 reloadData];
+  tableView = [(TileGroupTileSetsDebugController *)self tableView];
+  [tableView reloadData];
 }
 
 @end

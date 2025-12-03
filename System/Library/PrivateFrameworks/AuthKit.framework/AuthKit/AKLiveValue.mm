@@ -1,14 +1,14 @@
 @interface AKLiveValue
-+ (id)liveValueWithAsyncProducer:(id)a3;
-+ (id)liveValueWithSyncProducer:(id)a3;
++ (id)liveValueWithAsyncProducer:(id)producer;
++ (id)liveValueWithSyncProducer:(id)producer;
 - (AKLiveValue)init;
-- (AKLiveValue)initWithAsyncProducer:(id)a3;
-- (AKLiveValue)initWithSyncProducer:(id)a3;
+- (AKLiveValue)initWithAsyncProducer:(id)producer;
+- (AKLiveValue)initWithSyncProducer:(id)producer;
 - (id)captureCurrentValue;
 - (id)newTrigger;
-- (id)newTriggerWithCleanup:(id)a3;
+- (id)newTriggerWithCleanup:(id)cleanup;
 - (void)_onqueue_updateValue;
-- (void)_setValue:(id)a3;
+- (void)_setValue:(id)value;
 - (void)_updateValue;
 - (void)dealloc;
 @end
@@ -30,9 +30,9 @@
     v10->_queue = v2;
     MEMORY[0x1E69E5920](queue);
     v10->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     cleanupBlocks = v10->_cleanupBlocks;
-    v10->_cleanupBlocks = v4;
+    v10->_cleanupBlocks = array;
     MEMORY[0x1E69E5920](cleanupBlocks);
   }
 
@@ -41,76 +41,76 @@
   return v7;
 }
 
-- (AKLiveValue)initWithSyncProducer:(id)a3
+- (AKLiveValue)initWithSyncProducer:(id)producer
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
-  v9 = [(AKLiveValue *)v3 init];
-  objc_storeStrong(&v9, v9);
-  if (v9)
+  objc_storeStrong(location, producer);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKLiveValue *)v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = MEMORY[0x193B165F0](location[0]);
-    syncProducer = v9->_syncProducer;
-    v9->_syncProducer = v4;
+    syncProducer = selfCopy->_syncProducer;
+    selfCopy->_syncProducer = v4;
     MEMORY[0x1E69E5920](syncProducer);
-    [(AKLiveValue *)v9 _updateValue];
+    [(AKLiveValue *)selfCopy _updateValue];
   }
 
-  v7 = MEMORY[0x1E69E5928](v9);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKLiveValue)initWithAsyncProducer:(id)a3
+- (AKLiveValue)initWithAsyncProducer:(id)producer
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
-  v9 = [(AKLiveValue *)v3 init];
-  objc_storeStrong(&v9, v9);
-  if (v9)
+  objc_storeStrong(location, producer);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKLiveValue *)v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = MEMORY[0x193B165F0](location[0]);
-    asyncProducer = v9->_asyncProducer;
-    v9->_asyncProducer = v4;
+    asyncProducer = selfCopy->_asyncProducer;
+    selfCopy->_asyncProducer = v4;
     MEMORY[0x1E69E5920](asyncProducer);
-    [(AKLiveValue *)v9 _updateValue];
+    [(AKLiveValue *)selfCopy _updateValue];
   }
 
-  v7 = MEMORY[0x1E69E5928](v9);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-+ (id)liveValueWithSyncProducer:(id)a3
++ (id)liveValueWithSyncProducer:(id)producer
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [v7 alloc];
+  objc_storeStrong(location, producer);
+  v3 = [selfCopy alloc];
   v5 = [v3 initWithSyncProducer:location[0]];
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-+ (id)liveValueWithAsyncProducer:(id)a3
++ (id)liveValueWithAsyncProducer:(id)producer
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [v7 alloc];
+  objc_storeStrong(location, producer);
+  v3 = [selfCopy alloc];
   v5 = [v3 initWithAsyncProducer:location[0]];
   objc_storeStrong(location, 0);
 
@@ -119,20 +119,20 @@
 
 - (void)dealloc
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   os_unfair_lock_lock(&self->_lock);
-  cleanupBlocks = v10->_cleanupBlocks;
+  cleanupBlocks = selfCopy->_cleanupBlocks;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __22__AKLiveValue_dealloc__block_invoke;
   v8 = &unk_1E73D96F8;
-  v9[0] = MEMORY[0x1E69E5928](v10);
+  v9[0] = MEMORY[0x1E69E5928](selfCopy);
   [(NSMutableArray *)cleanupBlocks enumerateObjectsUsingBlock:?];
-  os_unfair_lock_unlock(&v10->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   objc_storeStrong(v9, 0);
-  v3.receiver = v10;
+  v3.receiver = selfCopy;
   v3.super_class = AKLiveValue;
   [(AKLiveValue *)&v3 dealloc];
 }
@@ -173,32 +173,32 @@ void __25__AKLiveValue_newTrigger__block_invoke(id *a1)
   objc_storeStrong(v1, 0);
 }
 
-- (id)newTriggerWithCleanup:(id)a3
+- (id)newTriggerWithCleanup:(id)cleanup
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  os_unfair_lock_lock(v8 + 4);
-  v4 = *&v8[12]._os_unfair_lock_opaque;
+  objc_storeStrong(location, cleanup);
+  os_unfair_lock_lock(selfCopy + 4);
+  v4 = *&selfCopy[12]._os_unfair_lock_opaque;
   v5 = MEMORY[0x193B165F0](location[0]);
   [v4 addObject:?];
   MEMORY[0x1E69E5920](v5);
-  os_unfair_lock_unlock(v8 + 4);
-  v6 = [(os_unfair_lock_s *)v8 newTrigger];
+  os_unfair_lock_unlock(selfCopy + 4);
+  newTrigger = [(os_unfair_lock_s *)selfCopy newTrigger];
   objc_storeStrong(location, 0);
 
-  return v6;
+  return newTrigger;
 }
 
 - (id)captureCurrentValue
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = 0;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(v4, v5->_value);
-  os_unfair_lock_unlock(&v5->_lock);
+  objc_storeStrong(v4, selfCopy->_value);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v3 = MEMORY[0x1E69E5928](v4[0]);
   objc_storeStrong(v4, 0);
 
@@ -223,19 +223,19 @@ void __25__AKLiveValue_newTrigger__block_invoke(id *a1)
 - (void)_onqueue_updateValue
 {
   v14 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_syncProducer)
   {
-    location[0] = (*(v12->_syncProducer + 2))();
-    [(AKLiveValue *)v12 _setValue:location[0]];
+    location[0] = (*(selfCopy->_syncProducer + 2))();
+    [(AKLiveValue *)selfCopy _setValue:location[0]];
     objc_storeStrong(location, 0);
   }
 
-  else if (v12->_asyncProducer)
+  else if (selfCopy->_asyncProducer)
   {
-    objc_initWeak(&from, v12);
-    asyncProducer = v12->_asyncProducer;
+    objc_initWeak(&from, selfCopy);
+    asyncProducer = selfCopy->_asyncProducer;
     v4 = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
@@ -252,7 +252,7 @@ void __25__AKLiveValue_newTrigger__block_invoke(id *a1)
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
     {
-      __os_log_helper_16_2_1_8_64(v13, v12);
+      __os_log_helper_16_2_1_8_64(v13, selfCopy);
       _os_log_fault_impl(&dword_193225000, oslog, OS_LOG_TYPE_FAULT, "%@: Expected nonnull sync or async producer", v13, 0xCu);
     }
 
@@ -274,15 +274,15 @@ void __35__AKLiveValue__onqueue_updateValue__block_invoke(id *a1, void *a2)
   objc_storeStrong(location, 0);
 }
 
-- (void)_setValue:(id)a3
+- (void)_setValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  os_unfair_lock_lock(&v4->_lock);
-  objc_storeStrong(&v4->_value, location[0]);
-  os_unfair_lock_unlock(&v4->_lock);
+  objc_storeStrong(location, value);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  objc_storeStrong(&selfCopy->_value, location[0]);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   objc_storeStrong(location, 0);
 }
 

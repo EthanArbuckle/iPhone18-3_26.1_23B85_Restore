@@ -1,12 +1,12 @@
 @interface DuplicateSheet.Coordinator
 - (_TtCV7Preview14DuplicateSheet11Coordinator)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 @end
 
 @implementation DuplicateSheet.Coordinator
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -18,12 +18,12 @@
 
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_100080078(v6);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

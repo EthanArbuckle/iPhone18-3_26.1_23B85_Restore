@@ -1,23 +1,23 @@
 @interface UIInterfaceActionSection
-+ (id)actionsFromSections:(id)a3;
-- (UIInterfaceActionSection)initWithActions:(id)a3;
++ (id)actionsFromSections:(id)sections;
+- (UIInterfaceActionSection)initWithActions:(id)actions;
 - (id)copyOfActions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation UIInterfaceActionSection
 
-+ (id)actionsFromSections:(id)a3
++ (id)actionsFromSections:(id)sections
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  sectionsCopy = sections;
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = sectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) actions];
-        [v4 addObjectsFromArray:v10];
+        actions = [*(*(&v12 + 1) + 8 * i) actions];
+        [array addObjectsFromArray:actions];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -42,25 +42,25 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (UIInterfaceActionSection)initWithActions:(id)a3
+- (UIInterfaceActionSection)initWithActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v12.receiver = self;
   v12.super_class = UIInterfaceActionSection;
   v5 = [(UIInterfaceActionSection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [actionsCopy copy];
     actions = v5->_actions;
     v5->_actions = v6;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     sectionID = v5->_sectionID;
-    v5->_sectionID = v9;
+    v5->_sectionID = uUIDString;
   }
 
   return v5;
@@ -77,11 +77,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIInterfaceActionSection alloc];
-  v5 = [(UIInterfaceActionSection *)self copyOfActions];
-  v6 = [(UIInterfaceActionSection *)v4 initWithActions:v5];
+  copyOfActions = [(UIInterfaceActionSection *)self copyOfActions];
+  v6 = [(UIInterfaceActionSection *)v4 initWithActions:copyOfActions];
 
   return v6;
 }
@@ -90,15 +90,15 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(UIInterfaceActionSection *)self actions];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  actions = [(UIInterfaceActionSection *)self actions];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(actions, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(UIInterfaceActionSection *)self actions];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  actions2 = [(UIInterfaceActionSection *)self actions];
+  v7 = [actions2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -110,7 +110,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actions2);
         }
 
         v11 = [*(*(&v13 + 1) + 8 * v10) copy];
@@ -120,7 +120,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [actions2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

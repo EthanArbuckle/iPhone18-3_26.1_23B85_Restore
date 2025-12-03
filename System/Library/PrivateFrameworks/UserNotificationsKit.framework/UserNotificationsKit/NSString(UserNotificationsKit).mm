@@ -7,19 +7,19 @@
 - (__CFString)nc_stringByRemovingCharactersFromSet:()UserNotificationsKit
 {
   v4 = a3;
-  v5 = [(__CFString *)a1 length];
-  if (v5 << 32 && (v11.length = v5, v11.location = 0, CFStringFindCharacterFromSet(a1, v4, v11, 0, 0)))
+  v5 = [(__CFString *)self length];
+  if (v5 << 32 && (v11.length = v5, v11.location = 0, CFStringFindCharacterFromSet(self, v4, v11, 0, 0)))
   {
-    v6 = [(__CFString *)a1 mutableCopy];
-    v7 = [(__CFString *)v6 length];
+    selfCopy = [(__CFString *)self mutableCopy];
+    v7 = [(__CFString *)selfCopy length];
     if (v7 - 1 >= 0)
     {
       v8 = v7;
       do
       {
-        if ([v4 characterIsMember:{-[__CFString characterAtIndex:](v6, "characterAtIndex:", --v8)}])
+        if ([v4 characterIsMember:{-[__CFString characterAtIndex:](selfCopy, "characterAtIndex:", --v8)}])
         {
-          [(__CFString *)v6 deleteCharactersInRange:v8, 1];
+          [(__CFString *)selfCopy deleteCharactersInRange:v8, 1];
         }
       }
 
@@ -29,10 +29,10 @@
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

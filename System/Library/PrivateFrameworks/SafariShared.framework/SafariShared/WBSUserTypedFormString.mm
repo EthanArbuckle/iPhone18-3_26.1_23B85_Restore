@@ -1,18 +1,18 @@
 @interface WBSUserTypedFormString
-- (WBSUserTypedFormString)initWithUserTypedString:(id)a3;
+- (WBSUserTypedFormString)initWithUserTypedString:(id)string;
 @end
 
 @implementation WBSUserTypedFormString
 
-- (WBSUserTypedFormString)initWithUserTypedString:(id)a3
+- (WBSUserTypedFormString)initWithUserTypedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WBSUserTypedFormString;
   v5 = [(WBSUserTypedFormString *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     userTypedString = v5->_userTypedString;
     v5->_userTypedString = v6;
 

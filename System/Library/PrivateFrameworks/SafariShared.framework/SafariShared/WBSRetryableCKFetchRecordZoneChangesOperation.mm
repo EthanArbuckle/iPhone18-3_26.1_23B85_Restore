@@ -8,15 +8,15 @@
 - (id)recordWithIDWasDeletedBlock;
 - (id)recordZoneChangeTokensUpdatedBlock;
 - (id)recordZoneFetchCompletionBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setConfigurationsByRecordZoneID:(id)a3;
-- (void)setFetchAllChanges:(BOOL)a3;
-- (void)setFetchRecordZoneChangesCompletionBlock:(id)a3;
-- (void)setRecordWasChangedBlock:(id)a3;
-- (void)setRecordWithIDWasDeletedBlock:(id)a3;
-- (void)setRecordZoneChangeTokensUpdatedBlock:(id)a3;
-- (void)setRecordZoneFetchCompletionBlock:(id)a3;
-- (void)setRecordZoneIDs:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setConfigurationsByRecordZoneID:(id)d;
+- (void)setFetchAllChanges:(BOOL)changes;
+- (void)setFetchRecordZoneChangesCompletionBlock:(id)block;
+- (void)setRecordWasChangedBlock:(id)block;
+- (void)setRecordWithIDWasDeletedBlock:(id)block;
+- (void)setRecordZoneChangeTokensUpdatedBlock:(id)block;
+- (void)setRecordZoneFetchCompletionBlock:(id)block;
+- (void)setRecordZoneIDs:(id)ds;
 @end
 
 @implementation WBSRetryableCKFetchRecordZoneChangesOperation
@@ -30,11 +30,11 @@
   return v3;
 }
 
-- (void)setRecordZoneIDs:(id)a3
+- (void)setRecordZoneIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dsCopy copy];
 
   recordZoneIDs = self->_recordZoneIDs;
   self->_recordZoneIDs = v5;
@@ -53,11 +53,11 @@
   return v3;
 }
 
-- (void)setConfigurationsByRecordZoneID:(id)a3
+- (void)setConfigurationsByRecordZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   configurationsByRecordZoneID = self->_configurationsByRecordZoneID;
   self->_configurationsByRecordZoneID = v5;
@@ -75,10 +75,10 @@
   return fetchAllChanges;
 }
 
-- (void)setFetchAllChanges:(BOOL)a3
+- (void)setFetchAllChanges:(BOOL)changes
 {
   os_unfair_lock_lock(&self->super.super._internalLock);
-  self->_fetchAllChanges = a3;
+  self->_fetchAllChanges = changes;
   [(NSMutableSet *)self->super.super._explicitlySetProperties addObject:@"fetchAllChanges"];
 
   os_unfair_lock_unlock(&self->super.super._internalLock);
@@ -93,11 +93,11 @@
   return v3;
 }
 
-- (void)setRecordWasChangedBlock:(id)a3
+- (void)setRecordWasChangedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordWasChangedBlock = self->_recordWasChangedBlock;
   self->_recordWasChangedBlock = v5;
@@ -116,11 +116,11 @@
   return v3;
 }
 
-- (void)setRecordWithIDWasDeletedBlock:(id)a3
+- (void)setRecordWithIDWasDeletedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordWithIDWasDeletedBlock = self->_recordWithIDWasDeletedBlock;
   self->_recordWithIDWasDeletedBlock = v5;
@@ -139,11 +139,11 @@
   return v3;
 }
 
-- (void)setRecordZoneChangeTokensUpdatedBlock:(id)a3
+- (void)setRecordZoneChangeTokensUpdatedBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneChangeTokensUpdatedBlock = self->_recordZoneChangeTokensUpdatedBlock;
   self->_recordZoneChangeTokensUpdatedBlock = v5;
@@ -162,11 +162,11 @@
   return v3;
 }
 
-- (void)setRecordZoneFetchCompletionBlock:(id)a3
+- (void)setRecordZoneFetchCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   recordZoneFetchCompletionBlock = self->_recordZoneFetchCompletionBlock;
   self->_recordZoneFetchCompletionBlock = v5;
@@ -185,11 +185,11 @@
   return v3;
 }
 
-- (void)setFetchRecordZoneChangesCompletionBlock:(id)a3
+- (void)setFetchRecordZoneChangesCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchRecordZoneChangesCompletionBlock = self->_fetchRecordZoneChangesCompletionBlock;
   self->_fetchRecordZoneChangesCompletionBlock = v5;
@@ -206,25 +206,25 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v16.receiver = self;
   v16.super_class = WBSRetryableCKFetchRecordZoneChangesOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v16 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v16 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordZoneIDs"])
   {
-    [v4 setRecordZoneIDs:self->_recordZoneIDs];
+    [operationCopy setRecordZoneIDs:self->_recordZoneIDs];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"configurationsByRecordZoneID"])
   {
-    [v4 setConfigurationsByRecordZoneID:self->_configurationsByRecordZoneID];
+    [operationCopy setConfigurationsByRecordZoneID:self->_configurationsByRecordZoneID];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"fetchAllChanges"])
   {
-    [v4 setFetchAllChanges:self->_fetchAllChanges];
+    [operationCopy setFetchAllChanges:self->_fetchAllChanges];
   }
 
   if (self->_recordWasChangedBlock)
@@ -235,7 +235,7 @@
     v13[2] = __65__WBSRetryableCKFetchRecordZoneChangesOperation__setUpOperation___block_invoke;
     v13[3] = &unk_1E7FC9F28;
     objc_copyWeak(&v14, &location);
-    [v4 setRecordWasChangedBlock:v13];
+    [operationCopy setRecordWasChangedBlock:v13];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
@@ -248,7 +248,7 @@
     v11[2] = __65__WBSRetryableCKFetchRecordZoneChangesOperation__setUpOperation___block_invoke_3;
     v11[3] = &unk_1E7FC9F50;
     objc_copyWeak(&v12, &location);
-    [v4 setRecordWithIDWasDeletedBlock:v11];
+    [operationCopy setRecordWithIDWasDeletedBlock:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -261,7 +261,7 @@
     v9[2] = __65__WBSRetryableCKFetchRecordZoneChangesOperation__setUpOperation___block_invoke_5;
     v9[3] = &unk_1E7FC9F78;
     objc_copyWeak(&v10, &location);
-    [v4 setRecordZoneChangeTokensUpdatedBlock:v9];
+    [operationCopy setRecordZoneChangeTokensUpdatedBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -274,7 +274,7 @@
     v7[2] = __65__WBSRetryableCKFetchRecordZoneChangesOperation__setUpOperation___block_invoke_7;
     v7[3] = &unk_1E7FC9FC8;
     objc_copyWeak(&v8, &location);
-    [v4 setRecordZoneFetchCompletionBlock:v7];
+    [operationCopy setRecordZoneFetchCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -285,7 +285,7 @@
   v5[2] = __65__WBSRetryableCKFetchRecordZoneChangesOperation__setUpOperation___block_invoke_9;
   v5[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchRecordZoneChangesCompletionBlock:v5];
+  [operationCopy setFetchRecordZoneChangesCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

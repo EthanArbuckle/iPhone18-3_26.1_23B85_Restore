@@ -1,14 +1,14 @@
 @interface SYDKeyID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SYDKeyID)init;
-- (SYDKeyID)initWithKey:(id)a3 storeIdentifier:(id)a4;
+- (SYDKeyID)initWithKey:(id)key storeIdentifier:(id)identifier;
 - (int64_t)hash;
 @end
 
 @implementation SYDKeyID
 
-- (SYDKeyID)initWithKey:(id)a3 storeIdentifier:(id)a4
+- (SYDKeyID)initWithKey:(id)key storeIdentifier:(id)identifier
 {
   v5 = sub_26C3BD2C4();
   v7 = v6;
@@ -26,17 +26,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SYDKeyID.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_26C3BD2F4();
     swift_unknownObjectRelease();
@@ -45,7 +45,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SYDKeyID.isEqual(_:)(v8);
@@ -56,7 +56,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SYDKeyID.description.getter();
 
   v3 = sub_26C3BD2B4();

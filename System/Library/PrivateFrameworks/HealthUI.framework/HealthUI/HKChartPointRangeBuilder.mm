@@ -1,7 +1,7 @@
 @interface HKChartPointRangeBuilder
 - (HKChartPointRangeBuilder)init;
-- (id)suggestedValueRangeWithRounding:(BOOL)a3;
-- (void)visitChartPoint:(id)a3;
+- (id)suggestedValueRangeWithRounding:(BOOL)rounding;
+- (void)visitChartPoint:(id)point;
 @end
 
 @implementation HKChartPointRangeBuilder
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (id)suggestedValueRangeWithRounding:(BOOL)a3
+- (id)suggestedValueRangeWithRounding:(BOOL)rounding
 {
   if (self->_numChartPoints)
   {
@@ -38,7 +38,7 @@
 
     v6 = floor(minimumMin);
     v7 = ceil(maximumMax);
-    if (a3)
+    if (rounding)
     {
       v8 = v7;
     }
@@ -48,7 +48,7 @@
       v8 = maximumMax;
     }
 
-    if (a3)
+    if (rounding)
     {
       minimumMin = v6;
     }
@@ -66,16 +66,16 @@
   return v11;
 }
 
-- (void)visitChartPoint:(id)a3
+- (void)visitChartPoint:(id)point
 {
-  v4 = a3;
-  v5 = [v4 maxYValue];
-  [v5 doubleValue];
+  pointCopy = point;
+  maxYValue = [pointCopy maxYValue];
+  [maxYValue doubleValue];
   v18 = v6;
 
-  v7 = [v4 minYValue];
+  minYValue = [pointCopy minYValue];
 
-  [v7 doubleValue];
+  [minYValue doubleValue];
   v17 = v8;
 
   if (v18 > -1.79769313e308 && v17 < 1.79769313e308)

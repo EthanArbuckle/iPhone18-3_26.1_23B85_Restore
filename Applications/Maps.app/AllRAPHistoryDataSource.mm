@@ -1,22 +1,22 @@
 @interface AllRAPHistoryDataSource
-- (AllRAPHistoryDataSource)initWithCollectionView:(id)a3 reportSection:(unint64_t)a4;
+- (AllRAPHistoryDataSource)initWithCollectionView:(id)view reportSection:(unint64_t)section;
 - (BOOL)_isInternalInstall;
-- (id)_reportHistoryContentForReportSection:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
+- (id)_reportHistoryContentForReportSection:(unint64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
 - (void)_loadReports;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation AllRAPHistoryDataSource
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
-  if (-[AllRAPHistoryDataSource _isInternalInstall](self, "_isInternalInstall") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"__internal__EnableTapRAPForReportID"], v7, v8) && objc_msgSend(v6, "count") == 1)
+  pathsCopy = paths;
+  if (-[AllRAPHistoryDataSource _isInternalInstall](self, "_isInternalInstall") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"__internal__EnableTapRAPForReportID"], v7, v8) && objc_msgSend(pathsCopy, "count") == 1)
   {
-    v9 = [v6 firstObject];
-    v10 = -[NSArray objectAtIndexedSubscript:](self->_reports, "objectAtIndexedSubscript:", [v9 row]);
+    firstObject = [pathsCopy firstObject];
+    v10 = -[NSArray objectAtIndexedSubscript:](self->_reports, "objectAtIndexedSubscript:", [firstObject row]);
     v11 = v10;
     if (v10)
     {
@@ -45,34 +45,34 @@
 - (BOOL)_isInternalInstall
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
+  viewCopy = view;
+  pathCopy = path;
+  v7 = pathCopy;
   if (self->_reportSection == 3)
   {
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_reports, "objectAtIndexedSubscript:", [v6 row]);
-    v9 = [(DataSource *)self delegate];
-    [v9 dataSource:self itemTapped:v8];
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_reports, "objectAtIndexedSubscript:", [pathCopy row]);
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSource:self itemTapped:v8];
   }
 
-  [v10 deselectItemAtIndexPath:v7 animated:1];
+  [viewCopy deselectItemAtIndexPath:v7 animated:1];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   reports = self->_reports;
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndexedSubscript:](reports, "objectAtIndexedSubscript:", [v6 row]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndexedSubscript:](reports, "objectAtIndexedSubscript:", [pathCopy row]);
   v9 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
   v11 = [TwoLinesContentViewModelComposer cellModelForRAPReportsHistory:v8 allowDisclosureIndicator:1];
   [v10 setViewModel:v11];
@@ -80,14 +80,14 @@
   return v10;
 }
 
-- (id)_reportHistoryContentForReportSection:(unint64_t)a3
+- (id)_reportHistoryContentForReportSection:(unint64_t)section
 {
   v5 = +[NSArray array];
   reports = self->_reports;
   self->_reports = v5;
 
   v7 = +[UserProfileReportHistoryManager sharedInstance];
-  v8 = [v7 rapHistory];
+  rapHistory = [v7 rapHistory];
 
   v9 = +[NSMutableArray array];
   v10 = +[NSMutableArray array];
@@ -95,7 +95,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = v8;
+  v11 = rapHistory;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
@@ -111,11 +111,11 @@
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [v16 reportStatus];
+        reportStatus = [v16 reportStatus];
         v18 = v9;
-        if (v17)
+        if (reportStatus)
         {
-          if (v17 != 1)
+          if (reportStatus != 1)
           {
             continue;
           }
@@ -134,7 +134,7 @@
 
   v19 = [[NSSortDescriptor alloc] initWithKey:@"dateOfReportCreation" ascending:0];
   v20 = [NSArray arrayWithObject:v19];
-  switch(a3)
+  switch(section)
   {
     case 4uLL:
       v22 = v11;
@@ -165,22 +165,22 @@ LABEL_19:
   reports = self->_reports;
   self->_reports = v3;
 
-  v5 = [(DataSource *)self delegate];
-  [v5 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (AllRAPHistoryDataSource)initWithCollectionView:(id)a3 reportSection:(unint64_t)a4
+- (AllRAPHistoryDataSource)initWithCollectionView:(id)view reportSection:(unint64_t)section
 {
   v11.receiver = self;
   v11.super_class = AllRAPHistoryDataSource;
-  v5 = [(DataSource *)&v11 initWithCollectionView:a3 updateLocation:0];
+  v5 = [(DataSource *)&v11 initWithCollectionView:view updateLocation:0];
   v6 = v5;
   if (v5)
   {
-    v5->_reportSection = a4;
+    v5->_reportSection = section;
     v7 = +[UserProfileReportHistoryManager sharedInstance];
-    v8 = [v7 observers];
-    [v8 registerObserver:v6];
+    observers = [v7 observers];
+    [observers registerObserver:v6];
 
     v9 = +[UserProfileReportHistoryManager sharedInstance];
     [v9 refineRAPHistory];

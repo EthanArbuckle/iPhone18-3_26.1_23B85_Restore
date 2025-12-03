@@ -1,15 +1,15 @@
 @interface IEPatternizer
-- (BOOL)generateCATs:(id)a3 noOverwrite:(BOOL)a4 deleteText:(BOOL)a5 userParamTypes:(id)a6;
-- (BOOL)generatePatterns:(id)a3 noOverwrite:(BOOL)a4 deleteText:(BOOL)a5 userParamTypes:(id)a6;
-- (BOOL)updateCATMetadata:(id)a3 withMeta:(id)a4;
+- (BOOL)generateCATs:(id)ts noOverwrite:(BOOL)overwrite deleteText:(BOOL)text userParamTypes:(id)types;
+- (BOOL)generatePatterns:(id)patterns noOverwrite:(BOOL)overwrite deleteText:(BOOL)text userParamTypes:(id)types;
+- (BOOL)updateCATMetadata:(id)metadata withMeta:(id)meta;
 @end
 
 @implementation IEPatternizer
 
-- (BOOL)generatePatterns:(id)a3 noOverwrite:(BOOL)a4 deleteText:(BOOL)a5 userParamTypes:(id)a6
+- (BOOL)generatePatterns:(id)patterns noOverwrite:(BOOL)overwrite deleteText:(BOOL)text userParamTypes:(id)types
 {
-  v7 = a3;
-  v8 = a6;
+  patternsCopy = patterns;
+  typesCopy = types;
   if ((atomic_load_explicit(&qword_280AF4428, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4428))
   {
     _MergedGlobals_11 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -43,10 +43,10 @@ void __72__IEPatternizer_generatePatterns_noOverwrite_deleteText_userParamTypes_
   }
 }
 
-- (BOOL)generateCATs:(id)a3 noOverwrite:(BOOL)a4 deleteText:(BOOL)a5 userParamTypes:(id)a6
+- (BOOL)generateCATs:(id)ts noOverwrite:(BOOL)overwrite deleteText:(BOOL)text userParamTypes:(id)types
 {
-  v7 = a3;
-  v8 = a6;
+  tsCopy = ts;
+  typesCopy = types;
   if ((atomic_load_explicit(&qword_280AF4438, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4438))
   {
     qword_280AF4430 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -80,10 +80,10 @@ void __68__IEPatternizer_generateCATs_noOverwrite_deleteText_userParamTypes___bl
   }
 }
 
-- (BOOL)updateCATMetadata:(id)a3 withMeta:(id)a4
+- (BOOL)updateCATMetadata:(id)metadata withMeta:(id)meta
 {
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  metaCopy = meta;
   if ((atomic_load_explicit(&qword_280AF4448, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4448))
   {
     qword_280AF4440 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

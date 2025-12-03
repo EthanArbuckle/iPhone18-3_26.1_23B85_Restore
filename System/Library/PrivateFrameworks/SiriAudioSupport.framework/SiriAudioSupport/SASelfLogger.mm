@@ -1,15 +1,15 @@
 @interface SASelfLogger
 - (SASelfLogger)init;
-- (id)collectVMCPUStatsWithStage:(int64_t)a3 requestId:(id)a4;
-- (id)getSiriRequestUUIDFor:(id)a3;
-- (void)emitMWTCheckPointWithMwtCheckpoint:(int64_t)a3 requestId:(id)a4 timeStamp:(unint64_t)a5;
-- (void)emitMWTMusicMetadata:(id)a3 requestId:(id)a4;
-- (void)emitVMCPUStatsWithVmCpuStatsData:(id)a3;
+- (id)collectVMCPUStatsWithStage:(int64_t)stage requestId:(id)id;
+- (id)getSiriRequestUUIDFor:(id)for;
+- (void)emitMWTCheckPointWithMwtCheckpoint:(int64_t)checkpoint requestId:(id)id timeStamp:(unint64_t)stamp;
+- (void)emitMWTMusicMetadata:(id)metadata requestId:(id)id;
+- (void)emitVMCPUStatsWithVmCpuStatsData:(id)data;
 @end
 
 @implementation SASelfLogger
 
-- (void)emitMWTCheckPointWithMwtCheckpoint:(int64_t)a3 requestId:(id)a4 timeStamp:(unint64_t)a5
+- (void)emitMWTCheckPointWithMwtCheckpoint:(int64_t)checkpoint requestId:(id)id timeStamp:(unint64_t)stamp
 {
   v8 = sub_2664DE4A8();
   v9 = *(v8 - 8);
@@ -17,12 +17,12 @@
   MEMORY[0x28223BE20](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2664DE488();
-  v13 = self;
-  v14 = sub_266475DC8(a3, v12);
+  selfCopy = self;
+  v14 = sub_266475DC8(checkpoint, v12);
   if (v14)
   {
     v15 = v14;
-    [(*((*MEMORY[0x277D85000] & v13->super.isa) + 0x50))() emitMessage:v14 timestamp:a5];
+    [(*((*MEMORY[0x277D85000] & selfCopy->super.isa) + 0x50))() emitMessage:v14 timestamp:stamp];
 
     swift_unknownObjectRelease();
   }
@@ -34,7 +34,7 @@
   (*(v9 + 8))(v12, v8);
 }
 
-- (id)getSiriRequestUUIDFor:(id)a3
+- (id)getSiriRequestUUIDFor:(id)for
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280073C60, &unk_2664EE400);
   v4 = *(*(v3 - 8) + 64);
@@ -57,7 +57,7 @@
   return v10;
 }
 
-- (void)emitMWTMusicMetadata:(id)a3 requestId:(id)a4
+- (void)emitMWTMusicMetadata:(id)metadata requestId:(id)id
 {
   v6 = sub_2664DE4A8();
   v7 = *(v6 - 8);
@@ -65,17 +65,17 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2664DE488();
-  v11 = a3;
-  v12 = self;
-  sub_26646C500(v11, v10);
+  metadataCopy = metadata;
+  selfCopy = self;
+  sub_26646C500(metadataCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)emitVMCPUStatsWithVmCpuStatsData:(id)a3
+- (void)emitVMCPUStatsWithVmCpuStatsData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_2664DE2F8();
   v7 = v6;
 
@@ -83,7 +83,7 @@
   sub_266348774(v5, v7);
 }
 
-- (id)collectVMCPUStatsWithStage:(int64_t)a3 requestId:(id)a4
+- (id)collectVMCPUStatsWithStage:(int64_t)stage requestId:(id)id
 {
   v5 = sub_2664DE4A8();
   v6 = *(v5 - 8);
@@ -91,7 +91,7 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2664DE488();
-  v10 = sub_2664765F8(a3, v9);
+  v10 = sub_2664765F8(stage, v9);
   v12 = v11;
   (*(v6 + 8))(v9, v5);
   v13 = 0;

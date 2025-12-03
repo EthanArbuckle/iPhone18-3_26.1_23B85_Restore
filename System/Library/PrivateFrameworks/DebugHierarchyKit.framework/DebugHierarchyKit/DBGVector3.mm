@@ -1,6 +1,6 @@
 @interface DBGVector3
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withVector3:(id)a1;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withVector3:(id)vector3;
 - (DBGVector3)initWithVector3:(DBGVector3 *)self;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -11,12 +11,12 @@
 
 @implementation DBGVector3
 
-+ (id)withVector3:(id)a1
++ (id)withVector3:(id)vector3
 {
   v5 = v2[1];
   v6[0] = *v2;
   v6[1] = v5;
-  v3 = [[a1 alloc] initWithVector3:v6];
+  v3 = [[vector3 alloc] initWithVector3:v6];
 
   return v3;
 }
@@ -55,8 +55,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGVector3 *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGVector3 *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -79,7 +79,7 @@
   objc_copyStruct(self->_vector3, v4, 32, 1, 0);
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v26 = 0;
   v7 = DBGDecodeValueFromJSONCompatibleValue();
@@ -87,10 +87,10 @@
   v9 = v8;
   if (v8)
   {
-    if (a5)
+    if (error)
     {
       v10 = v8;
-      *a5 = v9;
+      *error = v9;
     }
 
     v11 = 0uLL;
@@ -120,7 +120,7 @@
 
   v25[0] = v11;
   v25[1] = v12;
-  v19 = [a1 withVector3:{v25, v21}];
+  v19 = [self withVector3:{v25, v21}];
 
   return v19;
 }

@@ -1,19 +1,19 @@
 @interface OBBundleManager
 + (id)sharedManager;
-- (BOOL)_isPreconditionSatisfiedForReplacementBundle:(id)a3;
+- (BOOL)_isPreconditionSatisfiedForReplacementBundle:(id)bundle;
 - (id)_allLinkBundles;
 - (id)_allPrivacyBundles;
 - (id)_bundleSearchPath;
-- (id)_bundlesInSearchPath:(id)a3 withBundleCreationBlock:(id)a4;
-- (id)_subarrayHavingPreconditionSatisfiedOfReplacementBundles:(id)a3;
+- (id)_bundlesInSearchPath:(id)path withBundleCreationBlock:(id)block;
+- (id)_subarrayHavingPreconditionSatisfiedOfReplacementBundles:(id)bundles;
 - (id)allBundles;
 - (id)allReplacementBundles;
-- (id)bundleWithIdentifier:(id)a3;
-- (id)bundlesWithIdentifiers:(id)a3;
-- (id)orderedPrivacyBundlesWithInclusionOptions:(unint64_t)a3;
-- (id)privacyLinkBundleForBundles:(id)a3;
-- (id)privacyLinkBundleForIdentifiers:(id)a3;
-- (void)_modifyBundles:(id)a3 asNecessaryWithReplacementBundles:(id)a4;
+- (id)bundleWithIdentifier:(id)identifier;
+- (id)bundlesWithIdentifiers:(id)identifiers;
+- (id)orderedPrivacyBundlesWithInclusionOptions:(unint64_t)options;
+- (id)privacyLinkBundleForBundles:(id)bundles;
+- (id)privacyLinkBundleForIdentifiers:(id)identifiers;
+- (void)_modifyBundles:(id)bundles asNecessaryWithReplacementBundles:(id)replacementBundles;
 @end
 
 @implementation OBBundleManager
@@ -39,8 +39,8 @@ uint64_t __32__OBBundleManager_sharedManager__block_invoke()
 
 - (id)allReplacementBundles
 {
-  v3 = [(OBBundleManager *)self _bundleSearchPath];
-  v4 = [v3 stringByAppendingPathComponent:@"ReplacementBundles"];
+  _bundleSearchPath = [(OBBundleManager *)self _bundleSearchPath];
+  v4 = [_bundleSearchPath stringByAppendingPathComponent:@"ReplacementBundles"];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -56,30 +56,30 @@ uint64_t __32__OBBundleManager_sharedManager__block_invoke()
 
 - (id)_bundleSearchPath
 {
-  v3 = [(OBBundleManager *)self overrideBundleSearchPath];
+  overrideBundleSearchPath = [(OBBundleManager *)self overrideBundleSearchPath];
 
-  if (v3)
+  if (overrideBundleSearchPath)
   {
-    v4 = [(OBBundleManager *)self overrideBundleSearchPath];
+    overrideBundleSearchPath2 = [(OBBundleManager *)self overrideBundleSearchPath];
   }
 
   else
   {
-    v4 = @"/System/Library/OnBoardingBundles";
+    overrideBundleSearchPath2 = @"/System/Library/OnBoardingBundles";
   }
 
-  return v4;
+  return overrideBundleSearchPath2;
 }
 
 - (id)allBundles
 {
   v38 = *MEMORY[0x1E69E9840];
   v29 = objc_opt_new();
-  v3 = [(OBBundleManager *)self _bundleSearchPath];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  _bundleSearchPath = [(OBBundleManager *)self _bundleSearchPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v34 = 0;
-  v28 = v3;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v34];
+  v28 = _bundleSearchPath;
+  v5 = [defaultManager contentsOfDirectoryAtPath:_bundleSearchPath error:&v34];
   v6 = v34;
 
   if (v6)
@@ -122,33 +122,33 @@ uint64_t __32__OBBundleManager_sharedManager__block_invoke()
           }
 
           v15 = *(*(&v30 + 1) + 8 * i);
-          v16 = [v15 pathExtension];
-          v17 = [v16 lowercaseString];
-          v18 = [v17 isEqualToString:@"bundle"];
+          pathExtension = [v15 pathExtension];
+          lowercaseString = [pathExtension lowercaseString];
+          v18 = [lowercaseString isEqualToString:@"bundle"];
 
           if (v18)
           {
-            v19 = [(OBBundleManager *)self _providersByBundleNames];
-            v20 = [v19 objectForKeyedSubscript:v15];
-            v21 = [v20 path];
+            _providersByBundleNames = [(OBBundleManager *)self _providersByBundleNames];
+            v20 = [_providersByBundleNames objectForKeyedSubscript:v15];
+            path = [v20 path];
 
-            if (v21)
+            if (path)
             {
               v22 = _OBLoggingFacility();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v37 = v21;
+                v37 = path;
                 _os_log_impl(&dword_1B4FB6000, v22, OS_LOG_TYPE_DEFAULT, "OBPrivacy: Using bundle path %@", buf, 0xCu);
               }
             }
 
             else
             {
-              v21 = [v28 stringByAppendingPathComponent:v15];
+              path = [v28 stringByAppendingPathComponent:v15];
             }
 
-            v23 = [OBBundle bundleAtPath:v21];
+            v23 = [OBBundle bundleAtPath:path];
             [v29 addObject:v23];
           }
         }
@@ -185,8 +185,8 @@ LABEL_23:
 
 - (id)_allPrivacyBundles
 {
-  v2 = [(OBBundleManager *)self allBundles];
-  v3 = [v2 mutableCopy];
+  allBundles = [(OBBundleManager *)self allBundles];
+  v3 = [allBundles mutableCopy];
 
   v4 = [v3 count];
   if (v4 - 1 >= 0)
@@ -195,9 +195,9 @@ LABEL_23:
     do
     {
       v6 = [v3 objectAtIndexedSubscript:--v5];
-      v7 = [v6 privacyFlow];
+      privacyFlow = [v6 privacyFlow];
 
-      if (!v7)
+      if (!privacyFlow)
       {
         [v3 removeObjectAtIndex:v5];
       }
@@ -209,41 +209,41 @@ LABEL_23:
   return v3;
 }
 
-- (id)orderedPrivacyBundlesWithInclusionOptions:(unint64_t)a3
+- (id)orderedPrivacyBundlesWithInclusionOptions:(unint64_t)options
 {
-  v3 = a3;
-  v5 = [(OBBundleManager *)self _allPrivacyBundles];
-  v6 = [v5 count];
+  optionsCopy = options;
+  _allPrivacyBundles = [(OBBundleManager *)self _allPrivacyBundles];
+  v6 = [_allPrivacyBundles count];
   if (v6 - 1 >= 0)
   {
     v7 = v6;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:--v7];
-      v9 = [v8 identifier];
-      if ([v9 isEqualToString:@"com.apple.onboarding.privacypane"])
+      v8 = [_allPrivacyBundles objectAtIndexedSubscript:--v7];
+      identifier = [v8 identifier];
+      if ([identifier isEqualToString:@"com.apple.onboarding.privacypane"])
       {
       }
 
       else
       {
-        v10 = [v8 identifier];
-        v11 = [v10 isEqualToString:@"com.apple.onboarding.privacypanemini"];
+        identifier2 = [v8 identifier];
+        v11 = [identifier2 isEqualToString:@"com.apple.onboarding.privacypanemini"];
 
         if (!v11)
         {
-          if (v3)
+          if (optionsCopy)
           {
             goto LABEL_8;
           }
 
 LABEL_7:
-          [v5 removeObjectAtIndex:v7];
+          [_allPrivacyBundles removeObjectAtIndex:v7];
           goto LABEL_8;
         }
       }
 
-      if ((v3 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_7;
       }
@@ -254,15 +254,15 @@ LABEL_8:
     while (v7 > 0);
   }
 
-  if ((v3 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
-    v12 = [(OBBundleManager *)self _allLinkBundles];
-    [v5 addObjectsFromArray:v12];
+    _allLinkBundles = [(OBBundleManager *)self _allLinkBundles];
+    [_allPrivacyBundles addObjectsFromArray:_allLinkBundles];
 
-    if ((v3 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_14:
-      if ((v3 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_21;
       }
@@ -271,32 +271,32 @@ LABEL_14:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_14;
   }
 
-  v13 = [(OBBundleManager *)self allReplacementBundles];
-  [v5 addObjectsFromArray:v13];
+  allReplacementBundles = [(OBBundleManager *)self allReplacementBundles];
+  [_allPrivacyBundles addObjectsFromArray:allReplacementBundles];
 
-  if ((v3 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     goto LABEL_21;
   }
 
 LABEL_18:
-  v14 = [(OBBundleManager *)self allReplacementBundles];
-  v15 = [(OBBundleManager *)self _subarrayHavingPreconditionSatisfiedOfReplacementBundles:v14];
+  allReplacementBundles2 = [(OBBundleManager *)self allReplacementBundles];
+  v15 = [(OBBundleManager *)self _subarrayHavingPreconditionSatisfiedOfReplacementBundles:allReplacementBundles2];
 
   if ([v15 count])
   {
-    [(OBBundleManager *)self _modifyBundles:v5 asNecessaryWithReplacementBundles:v15];
+    [(OBBundleManager *)self _modifyBundles:_allPrivacyBundles asNecessaryWithReplacementBundles:v15];
   }
 
 LABEL_21:
-  [v5 sortUsingComparator:&__block_literal_global_16];
+  [_allPrivacyBundles sortUsingComparator:&__block_literal_global_16];
 
-  return v5;
+  return _allPrivacyBundles;
 }
 
 uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -317,17 +317,17 @@ uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block
   return v13;
 }
 
-- (id)bundlesWithIdentifiers:(id)a3
+- (id)bundlesWithIdentifiers:(id)identifiers
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(OBBundleManager *)self allReplacementBundles];
+  identifiersCopy = identifiers;
+  allReplacementBundles = [(OBBundleManager *)self allReplacementBundles];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v5;
+  v7 = allReplacementBundles;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v8)
   {
@@ -342,8 +342,8 @@ uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v33 + 1) + 8 * i) identifier];
-        [v6 addObject:v12];
+        identifier = [*(*(&v33 + 1) + 8 * i) identifier];
+        [v6 addObject:identifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v33 objects:v40 count:16];
@@ -359,7 +359,7 @@ uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v14 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v14)
   {
@@ -385,8 +385,8 @@ uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block
             _os_log_impl(&dword_1B4FB6000, v19, OS_LOG_TYPE_DEFAULT, "OBPrivacy: Client directly requested placeholder bundle %@", buf, 0xCu);
           }
 
-          v20 = [(OBBundleManager *)self _bundleSearchPath];
-          v21 = [v20 stringByAppendingPathComponent:@"ReplacementBundles"];
+          _bundleSearchPath = [(OBBundleManager *)self _bundleSearchPath];
+          v21 = [_bundleSearchPath stringByAppendingPathComponent:@"ReplacementBundles"];
           v22 = [(OBBundleManager *)self _bundleWithIdentifier:v18 usingSearchPath:v21 includePlaceholder:0 isLinkBundle:0 isReplacementBundle:1];
 
           if (v22)
@@ -395,8 +395,8 @@ uint64_t __61__OBBundleManager_orderedPrivacyBundlesWithInclusionOptions___block
           }
         }
 
-        v23 = [(OBBundleManager *)self _bundleSearchPath];
-        v22 = [(OBBundleManager *)self _bundleWithIdentifier:v18 usingSearchPath:v23 includePlaceholder:1 isLinkBundle:0 isReplacementBundle:0];
+        _bundleSearchPath2 = [(OBBundleManager *)self _bundleSearchPath];
+        v22 = [(OBBundleManager *)self _bundleWithIdentifier:v18 usingSearchPath:_bundleSearchPath2 includePlaceholder:1 isLinkBundle:0 isReplacementBundle:0];
 
         if (v22)
         {
@@ -421,32 +421,32 @@ LABEL_18:
   return v13;
 }
 
-- (id)bundleWithIdentifier:(id)a3
+- (id)bundleWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v11 count:1];
+  identifierCopy2 = identifier;
+  v6 = [v4 arrayWithObjects:&identifierCopy count:1];
 
-  v7 = [(OBBundleManager *)self bundlesWithIdentifiers:v6, v11, v12];
+  v7 = [(OBBundleManager *)self bundlesWithIdentifiers:v6, identifierCopy, v12];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)_bundlesInSearchPath:(id)a3 withBundleCreationBlock:(id)a4
+- (id)_bundlesInSearchPath:(id)path withBundleCreationBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v25 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = 0;
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:&v30];
+  v7 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v30];
   v8 = v30;
 
   if (v8)
@@ -454,9 +454,9 @@ LABEL_18:
     v9 = _OBLoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 lastPathComponent];
+      lastPathComponent = [pathCopy lastPathComponent];
       *buf = 138412546;
-      v33 = v10;
+      v33 = lastPathComponent;
       v34 = 2112;
       v35 = v8;
       _os_log_impl(&dword_1B4FB6000, v9, OS_LOG_TYPE_DEFAULT, "OBPrivacy: Failed to get contents of %@ directory: %@", buf, 0x16u);
@@ -479,7 +479,7 @@ LABEL_18:
     if (v11)
     {
       v12 = v11;
-      v23 = v5;
+      v23 = pathCopy;
       v13 = *v27;
       do
       {
@@ -491,14 +491,14 @@ LABEL_18:
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
-          v16 = [v15 pathExtension];
-          v17 = [v16 lowercaseString];
-          v18 = [v17 isEqualToString:@"bundle"];
+          pathExtension = [v15 pathExtension];
+          lowercaseString = [pathExtension lowercaseString];
+          v18 = [lowercaseString isEqualToString:@"bundle"];
 
           if (v18)
           {
-            v19 = [v15 stringByDeletingPathExtension];
-            v20 = v25[2](v25, v19);
+            stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
+            v20 = blockCopy[2](blockCopy, stringByDeletingPathExtension);
             [v24 addObject:v20];
           }
         }
@@ -507,7 +507,7 @@ LABEL_18:
       }
 
       while (v12);
-      v5 = v23;
+      pathCopy = v23;
       v8 = 0;
     }
   }
@@ -518,16 +518,16 @@ LABEL_16:
   return v24;
 }
 
-- (id)privacyLinkBundleForBundles:(id)a3
+- (id)privacyLinkBundleForBundles:(id)bundles
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = bundlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -542,8 +542,8 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) identifier];
-        [v5 addObject:v11];
+        identifier = [*(*(&v18 + 1) + 8 * i) identifier];
+        [v5 addObject:identifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -556,26 +556,26 @@ LABEL_16:
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    firstObject = v12;
   }
 
   else
   {
-    v14 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  v15 = v14;
+  v15 = firstObject;
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (id)privacyLinkBundleForIdentifiers:(id)a3
+- (id)privacyLinkBundleForIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] < 2)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] < 2)
   {
     v16 = 0;
   }
@@ -587,7 +587,7 @@ LABEL_16:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = identifiersCopy;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -615,8 +615,8 @@ LABEL_16:
     [v5 sortUsingComparator:&__block_literal_global_34];
     v12 = [v5 componentsJoinedByString:@"."];
     v13 = [OBBundle identifierWithName:v12];
-    v14 = [(OBBundleManager *)self _bundleSearchPath];
-    v15 = [v14 stringByAppendingPathComponent:@"LinkBundles"];
+    _bundleSearchPath = [(OBBundleManager *)self _bundleSearchPath];
+    v15 = [_bundleSearchPath stringByAppendingPathComponent:@"LinkBundles"];
 
     v16 = [(OBBundleManager *)self _bundleWithIdentifier:v13 usingSearchPath:v15 includePlaceholder:0 isLinkBundle:1 isReplacementBundle:0];
   }
@@ -628,8 +628,8 @@ LABEL_16:
 
 - (id)_allLinkBundles
 {
-  v3 = [(OBBundleManager *)self _bundleSearchPath];
-  v4 = [v3 stringByAppendingPathComponent:@"LinkBundles"];
+  _bundleSearchPath = [(OBBundleManager *)self _bundleSearchPath];
+  v4 = [_bundleSearchPath stringByAppendingPathComponent:@"LinkBundles"];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -643,16 +643,16 @@ LABEL_16:
   return v6;
 }
 
-- (id)_subarrayHavingPreconditionSatisfiedOfReplacementBundles:(id)a3
+- (id)_subarrayHavingPreconditionSatisfiedOfReplacementBundles:(id)bundles
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = bundlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -685,40 +685,40 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)_isPreconditionSatisfiedForReplacementBundle:(id)a3
+- (BOOL)_isPreconditionSatisfiedForReplacementBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 replacementPreconditionCache];
-  v5 = [v4 isEqualToString:@"chlorine"];
+  bundleCopy = bundle;
+  replacementPreconditionCache = [bundleCopy replacementPreconditionCache];
+  v5 = [replacementPreconditionCache isEqualToString:@"chlorine"];
 
   if (!v5)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v3 identifier];
-    v11 = [v3 replacementPreconditionCache];
-    v12 = [v9 stringWithFormat:@"Replacement bundle %@ has unsupported precondition %@", v10, v11];
+    identifier = [bundleCopy identifier];
+    replacementPreconditionCache2 = [bundleCopy replacementPreconditionCache];
+    v12 = [v9 stringWithFormat:@"Replacement bundle %@ has unsupported precondition %@", identifier, replacementPreconditionCache2];
 
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v12 userInfo:0];
     objc_exception_throw(v13);
   }
 
   v6 = +[OBCapabilities sharedCapabilities];
-  v7 = [v6 eligibleForChlorine];
+  eligibleForChlorine = [v6 eligibleForChlorine];
 
-  return v7;
+  return eligibleForChlorine;
 }
 
-- (void)_modifyBundles:(id)a3 asNecessaryWithReplacementBundles:(id)a4
+- (void)_modifyBundles:(id)bundles asNecessaryWithReplacementBundles:(id)replacementBundles
 {
   v84 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bundlesCopy = bundles;
+  replacementBundlesCopy = replacementBundles;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v5;
+  obj = bundlesCopy;
   v8 = [obj countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v8)
   {
@@ -733,8 +733,8 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v74 + 1) + 8 * i) identifier];
-        [v7 addObject:v12];
+        identifier = [*(*(&v74 + 1) + 8 * i) identifier];
+        [v7 addObject:identifier];
       }
 
       v9 = [obj countByEnumeratingWithState:&v74 objects:v83 count:16];
@@ -749,7 +749,7 @@ LABEL_16:
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v46 = v6;
+  v46 = replacementBundlesCopy;
   v13 = [v46 countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v13)
   {
@@ -769,8 +769,8 @@ LABEL_16:
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v18 = [v17 replaceeIdentifierSetsCache];
-        v19 = [v18 countByEnumeratingWithState:&v66 objects:v81 count:16];
+        replaceeIdentifierSetsCache = [v17 replaceeIdentifierSetsCache];
+        v19 = [replaceeIdentifierSetsCache countByEnumeratingWithState:&v66 objects:v81 count:16];
         if (v19)
         {
           v20 = v19;
@@ -781,7 +781,7 @@ LABEL_16:
             {
               if (*v67 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(replaceeIdentifierSetsCache);
               }
 
               v23 = *(*(&v66 + 1) + 8 * k);
@@ -792,7 +792,7 @@ LABEL_16:
               }
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v66 objects:v81 count:16];
+            v20 = [replaceeIdentifierSetsCache countByEnumeratingWithState:&v66 objects:v81 count:16];
           }
 
           while (v20);
@@ -832,8 +832,8 @@ LABEL_16:
           }
 
           v29 = *(*(&v62 + 1) + 8 * v28);
-          v30 = [v29 identifier];
-          v31 = [v52 containsObject:v30];
+          identifier2 = [v29 identifier];
+          v31 = [v52 containsObject:identifier2];
 
           if (v31)
           {
@@ -861,8 +861,8 @@ LABEL_16:
                   v55 = 0u;
                   v56 = 0u;
                   v57 = 0u;
-                  v34 = [v33 replaceeIdentifierSetsCache];
-                  v35 = [v34 countByEnumeratingWithState:&v54 objects:v78 count:16];
+                  replaceeIdentifierSetsCache2 = [v33 replaceeIdentifierSetsCache];
+                  v35 = [replaceeIdentifierSetsCache2 countByEnumeratingWithState:&v54 objects:v78 count:16];
                   if (v35)
                   {
                     v36 = v35;
@@ -873,12 +873,12 @@ LABEL_16:
                       {
                         if (*v55 != v37)
                         {
-                          objc_enumerationMutation(v34);
+                          objc_enumerationMutation(replaceeIdentifierSetsCache2);
                         }
 
                         v39 = *(*(&v54 + 1) + 8 * n);
-                        v40 = [v29 identifier];
-                        if ([v39 containsObject:v40])
+                        identifier3 = [v29 identifier];
+                        if ([v39 containsObject:identifier3])
                         {
                           v41 = [v39 isSubsetOfSet:v7];
 
@@ -895,7 +895,7 @@ LABEL_16:
                         }
                       }
 
-                      v36 = [v34 countByEnumeratingWithState:&v54 objects:v78 count:16];
+                      v36 = [replaceeIdentifierSetsCache2 countByEnumeratingWithState:&v54 objects:v78 count:16];
                     }
 
                     while (v36);

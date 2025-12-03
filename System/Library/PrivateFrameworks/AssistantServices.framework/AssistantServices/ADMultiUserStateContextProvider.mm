@@ -1,36 +1,36 @@
 @interface ADMultiUserStateContextProvider
-- (ADMultiUserStateContextProvider)initWithDonationService:(id)a3 instanceContext:(id)a4;
-- (void)handleMultiUserDidReceiveScoresNotification:(id)a3;
+- (ADMultiUserStateContextProvider)initWithDonationService:(id)service instanceContext:(id)context;
+- (void)handleMultiUserDidReceiveScoresNotification:(id)notification;
 @end
 
 @implementation ADMultiUserStateContextProvider
 
-- (void)handleMultiUserDidReceiveScoresNotification:(id)a3
+- (void)handleMultiUserDidReceiveScoresNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v20 = v5;
-    v21 = [v4 object];
+    object = [notificationCopy object];
     v22 = 136315394;
     v23 = "[ADMultiUserStateContextProvider handleMultiUserDidReceiveScoresNotification:]";
     v24 = 2112;
-    v25 = v21;
+    v25 = object;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s #hal %@", &v22, 0x16u);
   }
 
-  v6 = [v4 object];
+  object2 = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 object];
-    if (v8)
+    object3 = [notificationCopy object];
+    if (object3)
     {
-      v9 = v8;
-      v10 = [v8 objectForKey:@"vtSatScore"];
+      v9 = object3;
+      v10 = [object3 objectForKey:@"vtSatScore"];
       if (v10 && (v11 = [[AFMultiUserStateSnapshot alloc] initWithVtSatScore:v10]) != 0)
       {
         v12 = v11;
@@ -66,20 +66,20 @@
   }
 }
 
-- (ADMultiUserStateContextProvider)initWithDonationService:(id)a3 instanceContext:(id)a4
+- (ADMultiUserStateContextProvider)initWithDonationService:(id)service instanceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = ADMultiUserStateContextProvider;
   v8 = [(ADMultiUserStateContextProvider *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_donationService, v6);
-    if (v7)
+    objc_storeWeak(&v8->_donationService, serviceCopy);
+    if (contextCopy)
     {
-      v10 = v7;
+      v10 = contextCopy;
     }
 
     else

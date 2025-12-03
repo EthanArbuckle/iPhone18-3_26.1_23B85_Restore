@@ -1,7 +1,7 @@
 @interface SSActiveInterfaceOrientationObserver
 - (SSActiveInterfaceOrientationObserverDelegate)delegate;
 - (id)_sbUIUserAgent;
-- (void)_observeActiveInterfaceOrientationChangeToOrientation:(int64_t)a3 withDuration:(double)a4;
+- (void)_observeActiveInterfaceOrientationChangeToOrientation:(int64_t)orientation withDuration:(double)duration;
 - (void)_registerForActiveInterfaceOrientationChanges;
 - (void)_unregisterForActiveInterfaceOrientationChanges;
 - (void)beginObserving;
@@ -12,16 +12,16 @@
 - (void)beginObserving
 {
   [(SSActiveInterfaceOrientationObserver *)self _registerForActiveInterfaceOrientationChanges];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 activeInterfaceOrientation];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  activeInterfaceOrientation = [mEMORY[0x1E69DC668] activeInterfaceOrientation];
 
-  [(SSActiveInterfaceOrientationObserver *)self _observeActiveInterfaceOrientationChangeToOrientation:v4 withDuration:0.0];
+  [(SSActiveInterfaceOrientationObserver *)self _observeActiveInterfaceOrientationChangeToOrientation:activeInterfaceOrientation withDuration:0.0];
 }
 
-- (void)_observeActiveInterfaceOrientationChangeToOrientation:(int64_t)a3 withDuration:(double)a4
+- (void)_observeActiveInterfaceOrientationChangeToOrientation:(int64_t)orientation withDuration:(double)duration
 {
-  v7 = [(SSActiveInterfaceOrientationObserver *)self delegate];
-  [v7 activeInterfaceOrientationObserver:self observedChangeToInterfaceOrientation:a3 withDuration:a4];
+  delegate = [(SSActiveInterfaceOrientationObserver *)self delegate];
+  [delegate activeInterfaceOrientationObserver:self observedChangeToInterfaceOrientation:orientation withDuration:duration];
 }
 
 - (id)_sbUIUserAgent
@@ -57,25 +57,25 @@
 
 - (void)_registerForActiveInterfaceOrientationChanges
 {
-  v3 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
+  _sbUIUserAgent = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
-    [v5 addActiveInterfaceOrientationObserver:self];
+    _sbUIUserAgent2 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
+    [_sbUIUserAgent2 addActiveInterfaceOrientationObserver:self];
   }
 }
 
 - (void)_unregisterForActiveInterfaceOrientationChanges
 {
-  v3 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
+  _sbUIUserAgent = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
-    [v5 removeActiveInterfaceOrientationObserver:self];
+    _sbUIUserAgent2 = [(SSActiveInterfaceOrientationObserver *)self _sbUIUserAgent];
+    [_sbUIUserAgent2 removeActiveInterfaceOrientationObserver:self];
   }
 }
 

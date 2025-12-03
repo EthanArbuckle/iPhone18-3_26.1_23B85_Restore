@@ -1,44 +1,44 @@
 @interface REMTemplateSectionsDataView
-- (REMTemplateSectionsDataView)initWithStore:(id)a3;
-- (id)fetchTemplateSectionWithObjectID:(id)a3 error:(id *)a4;
-- (id)fetchTemplateSectionsInTemplate:(id)a3 error:(id *)a4;
-- (id)fetchTemplateSectionsWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)fetchTemplateSectionsWithTemplateObjectID:(id)a3 error:(id *)a4;
-- (id)templateSectionsFromTemplateStorages:(id)a3 templateSectionStorages:(id)a4 store:(id)a5;
+- (REMTemplateSectionsDataView)initWithStore:(id)store;
+- (id)fetchTemplateSectionWithObjectID:(id)d error:(id *)error;
+- (id)fetchTemplateSectionsInTemplate:(id)template error:(id *)error;
+- (id)fetchTemplateSectionsWithObjectIDs:(id)ds error:(id *)error;
+- (id)fetchTemplateSectionsWithTemplateObjectID:(id)d error:(id *)error;
+- (id)templateSectionsFromTemplateStorages:(id)storages templateSectionStorages:(id)sectionStorages store:(id)store;
 @end
 
 @implementation REMTemplateSectionsDataView
 
-- (REMTemplateSectionsDataView)initWithStore:(id)a3
+- (REMTemplateSectionsDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMTemplateSectionsDataView;
   v6 = [(REMTemplateSectionsDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchTemplateSectionsWithTemplateObjectID:(id)a3 error:(id *)a4
+- (id)fetchTemplateSectionsWithTemplateObjectID:(id)d error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [[REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate alloc] initWithParentTemplateObjectID:v7];
-    v9 = [(REMTemplateSectionsDataView *)self store];
-    v10 = [v9 resultFromPerformingInvocation:v8 error:a4];
+    v8 = [[REMTemplateSectionsDataViewInvocation_fetchTemplateSectionsInTemplate alloc] initWithParentTemplateObjectID:dCopy];
+    store = [(REMTemplateSectionsDataView *)self store];
+    v10 = [store resultFromPerformingInvocation:v8 error:error];
 
     v11 = objc_opt_class();
     v12 = REMDynamicCast(v11, v10);
-    v13 = [v12 templateStorages];
-    v14 = [v12 templateSectionStorages];
-    v15 = [(REMTemplateSectionsDataView *)self store];
-    v16 = [(REMTemplateSectionsDataView *)self templateSectionsFromTemplateStorages:v13 templateSectionStorages:v14 store:v15];
+    templateStorages = [v12 templateStorages];
+    templateSectionStorages = [v12 templateSectionStorages];
+    store2 = [(REMTemplateSectionsDataView *)self store];
+    v16 = [(REMTemplateSectionsDataView *)self templateSectionsFromTemplateStorages:templateStorages templateSectionStorages:templateSectionStorages store:store2];
   }
 
   else
@@ -56,33 +56,33 @@
   return v16;
 }
 
-- (id)fetchTemplateSectionsInTemplate:(id)a3 error:(id *)a4
+- (id)fetchTemplateSectionsInTemplate:(id)template error:(id *)error
 {
-  v6 = [a3 objectID];
-  v7 = [(REMTemplateSectionsDataView *)self fetchTemplateSectionsWithTemplateObjectID:v6 error:a4];
+  objectID = [template objectID];
+  v7 = [(REMTemplateSectionsDataView *)self fetchTemplateSectionsWithTemplateObjectID:objectID error:error];
 
   return v7;
 }
 
-- (id)fetchTemplateSectionsWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchTemplateSectionsWithObjectIDs:(id)ds error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  dsCopy = ds;
+  v8 = dsCopy;
+  if (dsCopy)
   {
-    if ([v7 count])
+    if ([dsCopy count])
     {
       v9 = [[REMTemplateSectionsDataViewInvocation_fetchByObjectIDs alloc] initWithObjectIDs:v8];
-      v10 = [(REMTemplateSectionsDataView *)self store];
-      v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+      store = [(REMTemplateSectionsDataView *)self store];
+      v11 = [store resultFromPerformingInvocation:v9 error:error];
 
       v12 = objc_opt_class();
       v13 = REMDynamicCast(v12, v11);
-      v14 = [v13 templateStorages];
-      v15 = [v13 templateSectionStorages];
-      v16 = [(REMTemplateSectionsDataView *)self store];
-      v17 = [(REMTemplateSectionsDataView *)self templateSectionsFromTemplateStorages:v14 templateSectionStorages:v15 store:v16];
+      templateStorages = [v13 templateStorages];
+      templateSectionStorages = [v13 templateSectionStorages];
+      store2 = [(REMTemplateSectionsDataView *)self store];
+      v17 = [(REMTemplateSectionsDataView *)self templateSectionsFromTemplateStorages:templateStorages templateSectionStorages:templateSectionStorages store:store2];
 
       if (v17)
       {
@@ -109,8 +109,8 @@
               }
 
               v24 = *(*(&v31 + 1) + 8 * i);
-              v25 = [v24 objectID];
-              [v18 setObject:v24 forKeyedSubscript:v25];
+              objectID = [v24 objectID];
+              [v18 setObject:v24 forKeyedSubscript:objectID];
             }
 
             v21 = [v19 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -152,16 +152,16 @@
   return v18;
 }
 
-- (id)fetchTemplateSectionWithObjectID:(id)a3 error:(id *)a4
+- (id)fetchTemplateSectionWithObjectID:(id)d error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  v8 = dCopy;
+  if (dCopy)
   {
-    v16[0] = v7;
+    v16[0] = dCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v10 = [(REMTemplateSectionsDataView *)self fetchTemplateSectionsWithObjectIDs:v9 error:a4];
+    v10 = [(REMTemplateSectionsDataView *)self fetchTemplateSectionsWithObjectIDs:v9 error:error];
 
     if (v10)
     {
@@ -179,10 +179,10 @@ LABEL_12:
         [REMTemplateSectionsDataView fetchTemplateSectionWithObjectID:v8 error:v12];
       }
 
-      if (a4)
+      if (error)
       {
         [REMError noSuchObjectErrorWithObjectID:v8];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_12;
       }
     }
@@ -206,18 +206,18 @@ LABEL_13:
   return v11;
 }
 
-- (id)templateSectionsFromTemplateStorages:(id)a3 templateSectionStorages:(id)a4 store:(id)a5
+- (id)templateSectionsFromTemplateStorages:(id)storages templateSectionStorages:(id)sectionStorages store:(id)store
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  storagesCopy = storages;
+  sectionStoragesCopy = sectionStorages;
+  storeCopy = store;
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(storagesCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = storagesCopy;
   v11 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v11)
   {
@@ -232,9 +232,9 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v15 = [[REMTemplate alloc] initWithStore:v9 storage:*(*(&v35 + 1) + 8 * i)];
-        v16 = [(REMTemplate *)v15 objectID];
-        [v10 setObject:v15 forKeyedSubscript:v16];
+        v15 = [[REMTemplate alloc] initWithStore:storeCopy storage:*(*(&v35 + 1) + 8 * i)];
+        objectID = [(REMTemplate *)v15 objectID];
+        [v10 setObject:v15 forKeyedSubscript:objectID];
       }
 
       v12 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -243,12 +243,12 @@ LABEL_13:
     while (v12);
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sectionStoragesCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v29 = v8;
+  v29 = sectionStoragesCopy;
   v18 = [v29 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v18)
   {
@@ -264,16 +264,16 @@ LABEL_13:
         }
 
         v22 = *(*(&v31 + 1) + 8 * j);
-        v23 = [v22 parentTemplateID];
+        parentTemplateID = [v22 parentTemplateID];
 
-        if (!v23)
+        if (!parentTemplateID)
         {
           NSLog(&cfstr_SIsUnexpectedl.isa, "templateSectionStorage.parentTemplateID");
         }
 
-        v24 = [v22 parentTemplateID];
-        v25 = [v10 objectForKeyedSubscript:v24];
-        v26 = [[REMTemplateSection alloc] initWithStore:v9 parentTemplate:v25 storage:v22];
+        parentTemplateID2 = [v22 parentTemplateID];
+        v25 = [v10 objectForKeyedSubscript:parentTemplateID2];
+        v26 = [[REMTemplateSection alloc] initWithStore:storeCopy parentTemplate:v25 storage:v22];
         [v17 addObject:v26];
       }
 

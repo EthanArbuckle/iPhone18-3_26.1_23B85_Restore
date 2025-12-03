@@ -1,32 +1,32 @@
 @interface CLBarometerCalibrationBiasEstimator
-+ (void)getLocationSampleAltitudeAndUncertainty:(void *)a3 andRefAltitude:(double *)a4 andRefUncertainty:(double *)a5;
-- (BOOL)getLastPressureSample:(double *)a3;
++ (void)getLocationSampleAltitudeAndUncertainty:(void *)uncertainty andRefAltitude:(double *)altitude andRefUncertainty:(double *)refUncertainty;
+- (BOOL)getLastPressureSample:(double *)sample;
 - (BOOL)isIHAAuthorized;
-- (BOOL)updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:(double)a3 andEndTime:(double)a4 andNextTrackStartTime:(double)a5;
-- (BiasEstimatorLocation)centroidOfLocationVector:(const void *)a3;
-- (CLBarometerCalibrationBiasEstimator)initWithUniverse:(id)a3 delegate:(id)a4 buffers:(void *)a5 contextManager:(id)a6;
-- (CLBarometerCalibrationPressureData)getClosestEntryToRefTime:(double)a3 inPressureQueue:()deque<std:(std::allocator<std::shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>>> *)a4 :shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>;
-- (double)crossEntropyOfreference:(ReferencePairedWithPressure *)a3;
+- (BOOL)updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:(double)time andEndTime:(double)endTime andNextTrackStartTime:(double)startTime;
+- (BiasEstimatorLocation)centroidOfLocationVector:(const void *)vector;
+- (CLBarometerCalibrationBiasEstimator)initWithUniverse:(id)universe delegate:(id)delegate buffers:(void *)buffers contextManager:(id)manager;
+- (CLBarometerCalibrationPressureData)getClosestEntryToRefTime:(double)time inPressureQueue:()deque<std:(std::allocator<std::shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>>> *)std :shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>;
+- (double)crossEntropyOfreference:(ReferencePairedWithPressure *)ofreference;
 - (id).cxx_construct;
 - (id)copyCurrentBias;
-- (int)selectReferenceWithReference:(void *)a3 withBaroElevation:(double)a4 betweenStartTime:(double)a5 andEndTime:(double)a6;
-- (void)computeMeanSeaLevelPressureWithRebasingLocationData:(id)a3 referenceMap:(void *)a4 andLocationType:(int)a5;
-- (void)cumulateReference:(void *)a3 andRefAltitude:(double)a4 andRefVariance:(double)a5 andBaroElevation:(double)a6 andType:(int)a7;
+- (int)selectReferenceWithReference:(void *)reference withBaroElevation:(double)elevation betweenStartTime:(double)time andEndTime:(double)endTime;
+- (void)computeMeanSeaLevelPressureWithRebasingLocationData:(id)data referenceMap:(void *)map andLocationType:(int)type;
+- (void)cumulateReference:(void *)reference andRefAltitude:(double)altitude andRefVariance:(double)variance andBaroElevation:(double)elevation andType:(int)type;
 - (void)dealloc;
-- (void)rebaseSignificantElevationWithEndTime:(double)a3;
+- (void)rebaseSignificantElevationWithEndTime:(double)time;
 - (void)retrieveBiasInfo;
 - (void)saveBiasInfo;
-- (void)sendRebaseAnalyticsWithAltitudeError:(double)a3 andUncertainty:(double)a4 andRefUncertainty:(double)a5 andDemAvailable:(BOOL)a6 andWorkout:(BOOL)a7 andReferenceSource:(int)a8 andCorrection:(double)a9 andDistance:(double)a10;
-- (void)sendVisitExitAnalyticsWithDuration:(double)a3 andRebaseEvent:(void *)a4 andUncertaintyAtEntry:(double)a5;
-- (void)sendVisitExitWifiImprovementAnalyticsEventWithDuration:(double)a3 uncertaintyAtVisitEntry:(double)a4 uncertaintyAtVisitExit:(double)a5 timeDiffBtwArrivalAndLastRebase:(double)a6;
-- (void)updateBiasUncertaintyWithAbsSigElevation:(double)a3 withCompanion:(BOOL)a4;
-- (void)updateBiasUncertaintyWithPressure:(double)a3 andTime:(double)a4 andLat:(double)a5 andLon:(double)a6;
-- (void)updateElevationBiasBetweenStartTime:(double)a3 andEndTime:(double)a4 andNextTrackStartTime:(double)a5;
-- (void)updateEstimatedWeatherWithCumulativeAscendingDelta:(unsigned int)a3 andDescendingDelta:(unsigned int)a4 andIosTimestamp:(double)a5;
-- (void)updateHistoricalMslpArray:(id)a3;
-- (void)updateLoiInfo:(const void *)a3;
-- (void)updatePressureUncertaintyWithPressure:(double)a3 andTime:(double)a4 andLat:(double)a5 andLon:(double)a6;
-- (void)updateVisitState:(BOOL)a3 arrivalTime:(double)a4 departureTime:(double)a5;
+- (void)sendRebaseAnalyticsWithAltitudeError:(double)error andUncertainty:(double)uncertainty andRefUncertainty:(double)refUncertainty andDemAvailable:(BOOL)available andWorkout:(BOOL)workout andReferenceSource:(int)source andCorrection:(double)correction andDistance:(double)self0;
+- (void)sendVisitExitAnalyticsWithDuration:(double)duration andRebaseEvent:(void *)event andUncertaintyAtEntry:(double)entry;
+- (void)sendVisitExitWifiImprovementAnalyticsEventWithDuration:(double)duration uncertaintyAtVisitEntry:(double)entry uncertaintyAtVisitExit:(double)exit timeDiffBtwArrivalAndLastRebase:(double)rebase;
+- (void)updateBiasUncertaintyWithAbsSigElevation:(double)elevation withCompanion:(BOOL)companion;
+- (void)updateBiasUncertaintyWithPressure:(double)pressure andTime:(double)time andLat:(double)lat andLon:(double)lon;
+- (void)updateElevationBiasBetweenStartTime:(double)time andEndTime:(double)endTime andNextTrackStartTime:(double)startTime;
+- (void)updateEstimatedWeatherWithCumulativeAscendingDelta:(unsigned int)delta andDescendingDelta:(unsigned int)descendingDelta andIosTimestamp:(double)timestamp;
+- (void)updateHistoricalMslpArray:(id)array;
+- (void)updateLoiInfo:(const void *)info;
+- (void)updatePressureUncertaintyWithPressure:(double)pressure andTime:(double)time andLat:(double)lat andLon:(double)lon;
+- (void)updateVisitState:(BOOL)state arrivalTime:(double)time departureTime:(double)departureTime;
 @end
 
 @implementation CLBarometerCalibrationBiasEstimator
@@ -143,16 +143,16 @@
   return v3;
 }
 
-- (CLBarometerCalibrationBiasEstimator)initWithUniverse:(id)a3 delegate:(id)a4 buffers:(void *)a5 contextManager:(id)a6
+- (CLBarometerCalibrationBiasEstimator)initWithUniverse:(id)universe delegate:(id)delegate buffers:(void *)buffers contextManager:(id)manager
 {
   v11.receiver = self;
   v11.super_class = CLBarometerCalibrationBiasEstimator;
   v9 = [(CLBarometerCalibrationBiasEstimator *)&v11 init];
   if (v9)
   {
-    v9->_delegate = a4;
-    v9->_universe = a3;
-    v9->_dataBuffers = a5;
+    v9->_delegate = delegate;
+    v9->_universe = universe;
+    v9->_dataBuffers = buffers;
     *&v9->_biasPressure = xmmword_101C88A60;
     *&v9->_biasUncertaintyTimestamp = xmmword_101C88A70;
     v9->_estimatedMeanSeaLevelPressure = 101325.0;
@@ -180,15 +180,15 @@
   [(CLBarometerCalibrationBiasEstimator *)&v3 dealloc];
 }
 
-- (CLBarometerCalibrationPressureData)getClosestEntryToRefTime:(double)a3 inPressureQueue:()deque<std:(std::allocator<std::shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>>> *)a4 :shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>
+- (CLBarometerCalibrationPressureData)getClosestEntryToRefTime:(double)time inPressureQueue:()deque<std:(std::allocator<std::shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>>> *)std :shared_ptr<CLBarometerCalibration_Types::CLBarometerCalibrationData>
 {
-  begin = a4->__map_.__begin_;
-  if (a4->__map_.__end_ != begin)
+  begin = std->__map_.__begin_;
+  if (std->__map_.__end_ != begin)
   {
-    start = a4->__start_;
+    start = std->__start_;
     v6 = &begin[start >> 8];
     v7 = *v6 + 16 * start;
-    v8 = *(begin + (((a4->__size_ + start) >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * (LOBYTE(a4->__size_) + start);
+    v8 = *(begin + (((std->__size_ + start) >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * (LOBYTE(std->__size_) + start);
     if (v7 != v8)
     {
       v10 = 1.79769313e308;
@@ -203,7 +203,7 @@
           atomic_fetch_add_explicit(&v13->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
-        v15 = vabdd_f64(a3, *v14);
+        v15 = vabdd_f64(time, *v14);
         if (v15 < v10 && v15 <= 5.0)
         {
           break;
@@ -293,26 +293,26 @@ LABEL_30:
   return result;
 }
 
-- (void)updateEstimatedWeatherWithCumulativeAscendingDelta:(unsigned int)a3 andDescendingDelta:(unsigned int)a4 andIosTimestamp:(double)a5
+- (void)updateEstimatedWeatherWithCumulativeAscendingDelta:(unsigned int)delta andDescendingDelta:(unsigned int)descendingDelta andIosTimestamp:(double)timestamp
 {
   Current = CFAbsoluteTimeGetCurrent();
   previousCumulativeDeltaIOSTime = self->_previousCumulativeDeltaIOSTime;
   if (previousCumulativeDeltaIOSTime == 1.79769313e308)
   {
-    self->_offSetAscendedDelta = a3;
-    self->_offSetDescendedDelta = a4;
-    previousCumulativeDeltaIOSTime = a5;
-    self->_previousCumulativeDeltaIOSTime = a5;
+    self->_offSetAscendedDelta = delta;
+    self->_offSetDescendedDelta = descendingDelta;
+    previousCumulativeDeltaIOSTime = timestamp;
+    self->_previousCumulativeDeltaIOSTime = timestamp;
   }
 
-  if (vabdd_f64(a5, previousCumulativeDeltaIOSTime) > 18.0)
+  if (vabdd_f64(timestamp, previousCumulativeDeltaIOSTime) > 18.0)
   {
     sub_10085BC68(self->_fSignificantElevationEstimatorRebase.__ptr_);
   }
 
-  sub_1000A589C(self->_fSignificantElevationEstimatorRebase.__ptr_, a3 - self->_offSetAscendedDelta, a4 - self->_offSetDescendedDelta, 1000, [(CLBarometerCalibrationContextClient *)self->_delegate isInVisit], a5);
+  sub_1000A589C(self->_fSignificantElevationEstimatorRebase.__ptr_, delta - self->_offSetAscendedDelta, descendingDelta - self->_offSetDescendedDelta, 1000, [(CLBarometerCalibrationContextClient *)self->_delegate isInVisit], timestamp);
   self->_weatherEstimateInMeter = *(self->_fSignificantElevationEstimatorRebase.__ptr_ + 80) - *(self->_fSignificantElevationEstimatorRebase.__ptr_ + 83);
-  self->_previousCumulativeDeltaIOSTime = a5;
+  self->_previousCumulativeDeltaIOSTime = timestamp;
   v25 = 0.0;
   if ([(CLBarometerCalibrationBiasEstimator *)self getLastPressureSample:&v25])
   {
@@ -342,7 +342,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (vabdd_f64(Current, a5) < 10.0 && vabdd_f64(Current, self->_lastTimestampSavedRecovery) > 180.0)
+  if (vabdd_f64(Current, timestamp) < 10.0 && vabdd_f64(Current, self->_lastTimestampSavedRecovery) > 180.0)
   {
     [(CLBarometerCalibrationBiasEstimator *)self saveBiasInfo];
   }
@@ -365,9 +365,9 @@ LABEL_10:
     v40 = 2048;
     v41 = v17;
     v42 = 2048;
-    v43 = a3;
+    deltaCopy = delta;
     v44 = 2048;
-    v45 = a4;
+    descendingDeltaCopy = descendingDelta;
     _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_DEBUG, "weatherEstimateWithRebase is %f weatherEstimateFromSigElevation is %f timestamp is %f cumulativeAscendingDelta is %f cumulativeDescendingDelta is %f", buf, 0x34u);
   }
 
@@ -389,9 +389,9 @@ LABEL_10:
     v30 = 2048;
     v31 = v23;
     v32 = 2048;
-    v33 = a3;
+    deltaCopy2 = delta;
     v34 = 2048;
-    v35 = a4;
+    descendingDeltaCopy2 = descendingDelta;
     v24 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateEstimatedWeatherWithCumulativeAscendingDelta:andDescendingDelta:andIosTimestamp:]", "%s\n", v24);
     if (v24 != buf)
@@ -401,9 +401,9 @@ LABEL_10:
   }
 }
 
-- (double)crossEntropyOfreference:(ReferencePairedWithPressure *)a3
+- (double)crossEntropyOfreference:(ReferencePairedWithPressure *)ofreference
 {
-  v4 = a3->var0.var0 - a3->var1.var0;
+  v4 = ofreference->var0.var0 - ofreference->var1.var0;
   p_inVisitStatus = &self->_inVisitStatus;
   v6 = 1.0;
   if (!self->_inVisitStatus)
@@ -436,85 +436,85 @@ LABEL_10:
     sub_101909578(p_inVisitStatus, v6);
   }
 
-  var1 = a3->var0.var1;
+  var1 = ofreference->var0.var1;
   v10 = log(var1 * 17.0794684);
-  v11 = a3->var1.var1;
+  v11 = ofreference->var1.var1;
   return v10 + v6 * ((v4 * v4 + var1) / v11 + log(v11 / var1) + -1.0);
 }
 
-+ (void)getLocationSampleAltitudeAndUncertainty:(void *)a3 andRefAltitude:(double *)a4 andRefUncertainty:(double *)a5
++ (void)getLocationSampleAltitudeAndUncertainty:(void *)uncertainty andRefAltitude:(double *)altitude andRefUncertainty:(double *)refUncertainty
 {
-  v5 = *a3;
+  v5 = *uncertainty;
   v6 = 24;
-  if (*(*a3 + 120) > 0.0)
+  if (*(*uncertainty + 120) > 0.0)
   {
     v6 = 112;
   }
 
-  *a4 = *(v5 + v6);
+  *altitude = *(v5 + v6);
   v7 = 40;
   if (*(v5 + 120) > 0.0)
   {
     v7 = 120;
   }
 
-  *a5 = *(v5 + v7);
+  *refUncertainty = *(v5 + v7);
 }
 
-- (void)cumulateReference:(void *)a3 andRefAltitude:(double)a4 andRefVariance:(double)a5 andBaroElevation:(double)a6 andType:(int)a7
+- (void)cumulateReference:(void *)reference andRefAltitude:(double)altitude andRefVariance:(double)variance andBaroElevation:(double)elevation andType:(int)type
 {
-  v20 = a7;
-  if (a5 <= 9.0 || a7 != 4)
+  typeCopy = type;
+  if (variance <= 9.0 || type != 4)
   {
-    v12 = a3 + 8;
-    v13 = *(a3 + 1);
+    v12 = reference + 8;
+    v13 = *(reference + 1);
     if (!v13)
     {
       goto LABEL_12;
     }
 
-    v14 = a3 + 8;
+    v14 = reference + 8;
     do
     {
-      if (*(v13 + 8) >= a7)
+      if (*(v13 + 8) >= type)
       {
         v14 = v13;
       }
 
-      v13 = *&v13[8 * (*(v13 + 8) < a7)];
+      v13 = *&v13[8 * (*(v13 + 8) < type)];
     }
 
     while (v13);
-    if (v14 == v12 || *(v14 + 8) > a7)
+    if (v14 == v12 || *(v14 + 8) > type)
     {
 LABEL_12:
-      v14 = a3 + 8;
+      v14 = reference + 8;
     }
 
-    if (a5 > 0.0 && v14 == v12)
+    if (variance > 0.0 && v14 == v12)
     {
-      sub_1006BAC64(a3, &v20);
+      sub_1006BAC64(reference, &typeCopy);
     }
 
-    if (a5 > 0.0)
+    if (variance > 0.0)
     {
-      v16 = sub_1003DD9F8(a3, &v20);
-      *v16 = *v16 + a4;
-      v17 = sub_1003DD9F8(a3, &v20);
-      *(v17 + 1) = *(v17 + 1) + a5;
-      v18 = sub_1003DD9F8(a3, &v20);
-      *(v18 + 2) = *(v18 + 2) + a6;
-      v19 = sub_1003DD9F8(a3, &v20);
+      v16 = sub_1003DD9F8(reference, &typeCopy);
+      *v16 = *v16 + altitude;
+      v17 = sub_1003DD9F8(reference, &typeCopy);
+      *(v17 + 1) = *(v17 + 1) + variance;
+      v18 = sub_1003DD9F8(reference, &typeCopy);
+      *(v18 + 2) = *(v18 + 2) + elevation;
+      v19 = sub_1003DD9F8(reference, &typeCopy);
       ++*(v19 + 8);
     }
   }
 }
 
-- (BiasEstimatorLocation)centroidOfLocationVector:(const void *)a3
+- (BiasEstimatorLocation)centroidOfLocationVector:(const void *)vector
 {
-  v3 = *a3;
-  v4 = *(a3 + 1);
-  if (*a3 == v4)
+  v3 = *vector;
+  v4 = *(vector + 1);
+  if (*vector == v4)
   {
     goto LABEL_14;
   }
@@ -595,14 +595,14 @@ LABEL_14:
   return result;
 }
 
-- (void)updatePressureUncertaintyWithPressure:(double)a3 andTime:(double)a4 andLat:(double)a5 andLon:(double)a6
+- (void)updatePressureUncertaintyWithPressure:(double)pressure andTime:(double)time andLat:(double)lat andLon:(double)lon
 {
-  if (a5 != 1.79769313e308 && a6 != 1.79769313e308)
+  if (lat != 1.79769313e308 && lon != 1.79769313e308)
   {
     latitude = self->_biasLocation.latitude;
     if (latitude != 1.79769313e308)
     {
-      v13 = fabs(sub_100117154(latitude, self->_biasLocation.longitude, a5, a6));
+      v13 = fabs(sub_100117154(latitude, self->_biasLocation.longitude, lat, lon));
       self->_distanceTraveled = v13;
       p_distanceTraveled = &self->_distanceTraveled;
       self->_pressureUncertainty = self->_pressureUncertainty + v13 * 0.00200000009;
@@ -632,8 +632,8 @@ LABEL_14:
       }
     }
 
-    self->_biasLocation.latitude = a5;
-    self->_biasLocation.longitude = a6;
+    self->_biasLocation.latitude = lat;
+    self->_biasLocation.longitude = lon;
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -643,9 +643,9 @@ LABEL_14:
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134545921;
-      *v40 = a5;
+      *v40 = lat;
       *&v40[8] = 2053;
-      *&v40[10] = a6;
+      *&v40[10] = lon;
       _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_DEBUG, "updated bias location latitude %{sensitive}f longitude %{sensitive}f", buf, 0x16u);
     }
 
@@ -655,10 +655,10 @@ LABEL_14:
     }
   }
 
-  if (self->_biasUncertaintyTimestamp < a4)
+  if (self->_biasUncertaintyTimestamp < time)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    if (vabdd_f64(Current, a4) < 10.0)
+    if (vabdd_f64(Current, time) < 10.0)
     {
       self->_inVisitStatus = [(CLBarometerCalibrationContextClient *)self->_delegate isInVisit];
       if (qword_1025D4410 != -1)
@@ -673,7 +673,7 @@ LABEL_14:
         *buf = 67109632;
         *v40 = inVisitStatus;
         *&v40[4] = 2048;
-        *&v40[6] = a4;
+        *&v40[6] = time;
         *&v40[14] = 2048;
         *&v40[16] = Current;
         _os_log_impl(dword_100000000, v21, OS_LOG_TYPE_DEBUG, "updated visit status for bias estimator, %d, step count timestamp, %f, current time, %f", buf, 0x1Cu);
@@ -711,15 +711,15 @@ LABEL_14:
       v23 = 0.0277777778;
     }
 
-    v24 = a3;
-    v25 = sub_1000A6C00(v24, 101320.0) < 3000.0;
+    pressureCopy = pressure;
+    v25 = sub_1000A6C00(pressureCopy, 101320.0) < 3000.0;
     v26 = 0.05;
     if (v25)
     {
       v26 = v23;
     }
 
-    if (a4 - self->_biasUncertaintyTimestamp <= 60.0)
+    if (time - self->_biasUncertaintyTimestamp <= 60.0)
     {
       v27 = v26;
     }
@@ -739,7 +739,7 @@ LABEL_14:
     {
       v29 = *(self->_fSignificantElevationEstimatorRebase.__ptr_ + 156);
       v30 = self->_inVisitStatus;
-      v31 = sub_1000A6C00(v24, 101320.0);
+      v31 = sub_1000A6C00(pressureCopy, 101320.0);
       *buf = 134218752;
       *v40 = v27;
       *&v40[8] = 1024;
@@ -759,7 +759,7 @@ LABEL_14:
         sub_101909358();
       }
 
-      sub_1000A6C00(v24, 101320.0);
+      sub_1000A6C00(pressureCopy, 101320.0);
       v36 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updatePressureUncertaintyWithPressure:andTime:andLat:andLon:]", "%s\n", v36);
       if (v36 != buf)
@@ -768,7 +768,7 @@ LABEL_14:
       }
     }
 
-    self->_pressureUncertainty = self->_pressureUncertainty + v27 * (a4 - self->_biasUncertaintyTimestamp);
+    self->_pressureUncertainty = self->_pressureUncertainty + v27 * (time - self->_biasUncertaintyTimestamp);
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -781,13 +781,13 @@ LABEL_14:
       biasUncertaintyTimestamp = self->_biasUncertaintyTimestamp;
       v35 = self->_pressureUncertainty;
       *buf = 134219008;
-      *v40 = a4;
+      *v40 = time;
       *&v40[8] = 2048;
       *&v40[10] = biasTimestamp;
       *&v40[18] = 2048;
       *&v40[20] = biasUncertaintyTimestamp;
       *&v40[28] = 2048;
-      v41 = v27 * (a4 - biasUncertaintyTimestamp);
+      v41 = v27 * (time - biasUncertaintyTimestamp);
       v42 = 2048;
       v43 = v35;
       _os_log_impl(dword_100000000, v32, OS_LOG_TYPE_DEBUG, "updated pressure uncertainty due to time: timestamp %f _biasTimestamp %f _biasUncertaintyTimestamp %f by %f uncertainty now is %f", buf, 0x34u);
@@ -809,11 +809,11 @@ LABEL_14:
       }
     }
 
-    self->_biasUncertaintyTimestamp = a4;
+    self->_biasUncertaintyTimestamp = time;
   }
 }
 
-- (void)updateBiasUncertaintyWithPressure:(double)a3 andTime:(double)a4 andLat:(double)a5 andLon:(double)a6
+- (void)updateBiasUncertaintyWithPressure:(double)pressure andTime:(double)time andLat:(double)lat andLon:(double)lon
 {
   if (self->_biasUncertaintyTimestamp == 1.79769313e308)
   {
@@ -841,9 +841,9 @@ LABEL_14:
     }
   }
 
-  [(CLBarometerCalibrationBiasEstimator *)self updatePressureUncertaintyWithPressure:a3 andTime:a4 andLat:a5 andLon:a6];
-  v15 = a3;
-  v16 = sub_1000A6C38(v15, 0.0065, 288.15);
+  [(CLBarometerCalibrationBiasEstimator *)self updatePressureUncertaintyWithPressure:pressure andTime:time andLat:lat andLon:lon];
+  pressureCopy = pressure;
+  v16 = sub_1000A6C38(pressureCopy, 0.0065, 288.15);
   v17 = fabs(self->_pressureUncertainty);
   if (qword_1025D4410 != -1)
   {
@@ -854,8 +854,8 @@ LABEL_14:
   v19 = qword_1025D4418;
   if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEBUG))
   {
-    v20 = a3;
-    v21 = sub_1000A6C38(v20, 0.0065, 288.15);
+    pressureCopy2 = pressure;
+    v21 = sub_1000A6C38(pressureCopy2, 0.0065, 288.15);
     v22 = fabs(self->_pressureUncertainty);
     *buf = 134218752;
     v47 = v18;
@@ -864,7 +864,7 @@ LABEL_14:
     v50 = 2048;
     v51 = v22;
     v52 = 2048;
-    v53 = a3;
+    pressureCopy3 = pressure;
     _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_DEBUG, "term1 %f, dElevationdPresure(pmeas) %f std::abs(_pressureUncertainty) %f pmeas %f", buf, 0x2Au);
   }
 
@@ -876,8 +876,8 @@ LABEL_14:
       sub_101909358();
     }
 
-    v41 = a3;
-    sub_1000A6C38(v41, 0.0065, 288.15);
+    pressureCopy4 = pressure;
+    sub_1000A6C38(pressureCopy4, 0.0065, 288.15);
     v42 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateBiasUncertaintyWithPressure:andTime:andLat:andLon:]", "%s\n", v42);
     if (v42 != buf)
@@ -888,7 +888,7 @@ LABEL_14:
 
   biasPressure = self->_biasPressure;
   v24 = sub_1000A6C9C(biasPressure);
-  v25 = vabdd_f64(a3, self->_biasPressure);
+  v25 = vabdd_f64(pressure, self->_biasPressure);
   if (qword_1025D4410 != -1)
   {
     sub_101909358();
@@ -900,7 +900,7 @@ LABEL_14:
   {
     v28 = self->_biasPressure;
     v29 = sub_1000A6C9C(v28);
-    v30 = vabdd_f64(a3, self->_biasPressure);
+    v30 = vabdd_f64(pressure, self->_biasPressure);
     *buf = 134218496;
     v47 = v26;
     v48 = 2048;
@@ -928,8 +928,8 @@ LABEL_14:
     }
   }
 
-  v31 = a3;
-  v32 = sub_1000A6C9C(v31);
+  pressureCopy5 = pressure;
+  v32 = sub_1000A6C9C(pressureCopy5);
   v33 = fabs(self->_pressureUncertainty);
   if (qword_1025D4410 != -1)
   {
@@ -940,7 +940,7 @@ LABEL_14:
   v35 = qword_1025D4418;
   if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEBUG))
   {
-    v36 = sub_1000A6C9C(v15);
+    v36 = sub_1000A6C9C(pressureCopy);
     v37 = fabs(self->_pressureUncertainty);
     *buf = 134218496;
     v47 = v34;
@@ -959,7 +959,7 @@ LABEL_14:
       sub_101909358();
     }
 
-    sub_1000A6C9C(v15);
+    sub_1000A6C9C(pressureCopy);
     v45 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateBiasUncertaintyWithPressure:andTime:andLat:andLon:]", "%s\n", v45);
     if (v45 != buf)
@@ -990,14 +990,14 @@ LABEL_14:
   }
 }
 
-- (BOOL)updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:(double)a3 andEndTime:(double)a4 andNextTrackStartTime:(double)a5
+- (BOOL)updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:(double)time andEndTime:(double)endTime andNextTrackStartTime:(double)startTime
 {
   dataBuffers = self->_dataBuffers;
   v8 = dataBuffers[1];
   p_info = &OBJC_METACLASS___CLMotionHintLoggerAdapter.info;
   if (dataBuffers[2] == v8)
   {
-    v62 = self;
+    selfCopy8 = self;
     v136 = 0.0;
     v137 = 0.0;
     LODWORD(v14) = 0;
@@ -1049,7 +1049,7 @@ LABEL_14:
   {
     v21 = *v12;
     v22 = **v12;
-    if (v22 < a3 || v22 >= a4)
+    if (v22 < time || v22 >= endTime)
     {
       goto LABEL_39;
     }
@@ -1201,11 +1201,11 @@ LABEL_14:
       *&v176[8] = 2048;
       *&v176[10] = v45;
       *&v176[18] = 2048;
-      *&v176[20] = a3;
+      *&v176[20] = time;
       *&v176[28] = 2048;
-      *&v176[30] = a4;
+      *&v176[30] = endTime;
       *&v176[38] = 2048;
-      *&v176[40] = a5;
+      *&v176[40] = startTime;
       _os_log_impl(dword_100000000, v40, OS_LOG_TYPE_DEBUG, "pressure too far from reference data,locationTime,%f,firstPsTime,%f,lastPsTime,%f,startTime,%f,endTime,%f,nextTrackStartTime,%f", buf, 0x3Eu);
     }
 
@@ -1225,11 +1225,11 @@ LABEL_14:
       *&v145[8] = 2048;
       *&v145[10] = v60;
       *&v145[18] = 2048;
-      *&v145[20] = a3;
+      *&v145[20] = time;
       *&v145[28] = 2048;
-      *&v145[30] = a4;
+      *&v145[30] = endTime;
       *&v145[38] = 2048;
-      *&v145[40] = a5;
+      *&v145[40] = startTime;
       v61 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v61);
       if (v61 != buf)
@@ -1260,11 +1260,11 @@ LABEL_39:
   if (!v134)
   {
 LABEL_64:
-    v62 = self;
+    selfCopy8 = self;
     goto LABEL_65;
   }
 
-  v62 = self;
+  selfCopy8 = self;
   [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator setCurrentLatitude:v19 / v134];
   [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator setCurrentLongitude:v20 / v134];
   if (qword_1025D4410 != -1)
@@ -1302,13 +1302,13 @@ LABEL_64:
       free(v129);
     }
 
-    v62 = self;
+    selfCopy8 = self;
     p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
   }
 
-  [(CLMeanSeaLevelPressureEstimator *)v62->_meanSeaLevelPressureEstimator refreshHistoricalMeanSeaLevelPressureWithStartTime:a4 + -10800.0 andEndTime:a4];
+  [(CLMeanSeaLevelPressureEstimator *)selfCopy8->_meanSeaLevelPressureEstimator refreshHistoricalMeanSeaLevelPressureWithStartTime:endTime + -10800.0 andEndTime:endTime];
 LABEL_65:
-  v62->_inOutdoorWorkoutStatus = v16 > 119;
+  selfCopy8->_inOutdoorWorkoutStatus = v16 > 119;
   if (qword_1025D4410 != -1)
   {
     sub_101909358();
@@ -1317,7 +1317,7 @@ LABEL_65:
   v67 = p_info[131];
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {
-    inOutdoorWorkoutStatus = v62->_inOutdoorWorkoutStatus;
+    inOutdoorWorkoutStatus = selfCopy8->_inOutdoorWorkoutStatus;
     *buf = 136316930;
     *&buf[4] = "inOutdoorWorkoutPoint";
     v175 = 1024;
@@ -1329,18 +1329,18 @@ LABEL_65:
     *&v176[20] = 2080;
     *&v176[22] = "trackStartTime";
     *&v176[30] = 2048;
-    *&v176[32] = a3;
+    *&v176[32] = time;
     *&v176[40] = 2080;
     *&v176[42] = "trackEndTime";
     *&v176[50] = 2048;
-    *&v176[52] = a4;
+    *&v176[52] = endTime;
     _os_log_impl(dword_100000000, v67, OS_LOG_TYPE_DEFAULT, "in outdoor workout info,%s,%u,%s,%d,%s,%f,%s,%f", buf, 0x4Au);
   }
 
   if (sub_10000A100(121, 2))
   {
     sub_1019099D4(buf);
-    v111 = v62->_inOutdoorWorkoutStatus;
+    v111 = selfCopy8->_inOutdoorWorkoutStatus;
     *v143 = 136316930;
     *&v143[4] = "inOutdoorWorkoutPoint";
     v144 = 1024;
@@ -1352,11 +1352,11 @@ LABEL_65:
     *&v145[20] = 2080;
     *&v145[22] = "trackStartTime";
     *&v145[30] = 2048;
-    *&v145[32] = a3;
+    *&v145[32] = time;
     *&v145[40] = 2080;
     *&v145[42] = "trackEndTime";
     *&v145[50] = 2048;
-    *&v145[52] = a4;
+    *&v145[52] = endTime;
     v112 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v112);
     if (v112 != buf)
@@ -1364,7 +1364,7 @@ LABEL_65:
       free(v112);
     }
 
-    v62 = self;
+    selfCopy8 = self;
     if (!v14)
     {
       goto LABEL_84;
@@ -1408,31 +1408,31 @@ LABEL_71:
         free(v113);
       }
 
-      v62 = self;
+      selfCopy8 = self;
     }
 
     v70 = objc_opt_new();
-    [v70 setTimestamp:a4];
+    [v70 setTimestamp:endTime];
     if (v14 == v15)
     {
       v71 = v137 / v15;
       v72 = v136 / v15;
       v73 = v133 / v15;
-      bias = v62->_bias;
-      weatherEstimateInMeter = v62->_weatherEstimateInMeter;
-      v62->_biasUncertaintyAtRebase = v73;
+      bias = selfCopy8->_bias;
+      weatherEstimateInMeter = selfCopy8->_weatherEstimateInMeter;
+      selfCopy8->_biasUncertaintyAtRebase = v73;
       v76 = v135 / v15;
-      v62->_bias = v72 - v71;
-      v62->_biasPressure = v76;
+      selfCopy8->_bias = v72 - v71;
+      selfCopy8->_biasPressure = v76;
       v77 = v72;
       v78 = v76;
       v79 = sub_1012C280C(v77, v78);
-      v62->_estimatedAbsoluteAltitudeUncertainty = v73;
-      v62->_estimatedMeanSeaLevelPressure = v79;
-      biasPressure = v62->_biasPressure;
+      selfCopy8->_estimatedAbsoluteAltitudeUncertainty = v73;
+      selfCopy8->_estimatedMeanSeaLevelPressure = v79;
+      biasPressure = selfCopy8->_biasPressure;
       v81 = v72;
       [v70 setUncertainty:{v73 * sub_1012C28A0(v81, biasPressure)}];
-      [v70 setMeanSeaLevelPressure:v62->_estimatedMeanSeaLevelPressure];
+      [v70 setMeanSeaLevelPressure:selfCopy8->_estimatedMeanSeaLevelPressure];
       v82 = v71 + bias - weatherEstimateInMeter - v72;
       v83 = 4294967294;
     }
@@ -1442,32 +1442,32 @@ LABEL_71:
       v71 = v137 / v14;
       v84 = v132 / v14;
       v85 = v131 / v14;
-      v86 = v71 + v62->_bias - v62->_weatherEstimateInMeter;
+      v86 = v71 + selfCopy8->_bias - selfCopy8->_weatherEstimateInMeter;
       if (v86 <= v136 / v14 + 100.0 || v86 <= v85 + v84)
       {
 
         goto LABEL_84;
       }
 
-      v62->_biasUncertaintyAtRebase = v85;
+      selfCopy8->_biasUncertaintyAtRebase = v85;
       v90 = v135 / v14;
-      v62->_bias = v84 - v71;
-      v62->_biasPressure = v90;
+      selfCopy8->_bias = v84 - v71;
+      selfCopy8->_biasPressure = v90;
       v91 = v84;
       v92 = v90;
       v93 = sub_1012C280C(v91, v92);
-      v62->_estimatedAbsoluteAltitudeUncertainty = v85;
-      v62->_estimatedMeanSeaLevelPressure = v93;
-      v94 = v62->_biasPressure;
+      selfCopy8->_estimatedAbsoluteAltitudeUncertainty = v85;
+      selfCopy8->_estimatedMeanSeaLevelPressure = v93;
+      v94 = selfCopy8->_biasPressure;
       v95 = v84;
       [v70 setUncertainty:{v85 * sub_1012C28A0(v95, v94)}];
-      [v70 setMeanSeaLevelPressure:v62->_estimatedMeanSeaLevelPressure];
+      [v70 setMeanSeaLevelPressure:selfCopy8->_estimatedMeanSeaLevelPressure];
       v82 = v86 - v84;
       v83 = 4294967293;
     }
 
-    v62->_forceCalibrate = 1;
-    [(CLBarometerCalibrationBiasEstimator *)v62 updateHistoricalMslpArray:v70];
+    selfCopy8->_forceCalibrate = 1;
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy8 updateHistoricalMslpArray:v70];
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -1500,11 +1500,11 @@ LABEL_71:
       v177 = 2080;
       v178 = "startAt";
       v179 = 2048;
-      v180 = a3;
+      timeCopy = time;
       v181 = 2080;
       v182 = "endAt";
       v183 = 2048;
-      v184 = a4;
+      endTimeCopy = endTime;
       _os_log_impl(dword_100000000, v96, OS_LOG_TYPE_DEFAULT, "update mean sea level pressure array with location data after rebasing,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x76u);
     }
 
@@ -1535,11 +1535,11 @@ LABEL_71:
       v146 = 2080;
       v147 = "startAt";
       v148 = 2048;
-      v149 = a3;
+      timeCopy2 = time;
       v150 = 2080;
       v151 = "endAt";
       v152 = 2048;
-      v153 = a4;
+      endTimeCopy2 = endTime;
       v119 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v119);
       if (v119 != buf)
@@ -1547,17 +1547,17 @@ LABEL_71:
         free(v119);
       }
 
-      v62 = self;
+      selfCopy8 = self;
     }
 
-    v62->_biasTimestamp = a4;
-    v62->_pressureUncertainty = 0.0;
-    v62->_distanceTraveled = 0.0;
-    v62->_biasLocation = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
-    sub_10085C118(v62->_fSignificantElevationEstimatorRebase.__ptr_);
-    [(CLBarometerCalibrationBiasEstimator *)v62 rebaseSignificantElevationWithEndTime:a4];
-    [(CLBarometerCalibrationBiasEstimator *)v62 updateBiasUncertaintyWithAbsSigElevation:0 withCompanion:sub_10085BD8C(v62->_fSignificantElevationEstimatorRebase.__ptr_, v102, v103, v104)];
-    [(CLBarometerCalibrationBiasEstimator *)v62 sendRebaseAnalyticsWithAltitudeError:1 andUncertainty:v62->_inOutdoorWorkoutStatus andRefUncertainty:v83 andDemAvailable:v82 andWorkout:v62->_biasUncertainty andReferenceSource:v62->_biasUncertaintyAtRebase andCorrection:v82 andDistance:v62->_distanceSinceLastRebase];
+    selfCopy8->_biasTimestamp = endTime;
+    selfCopy8->_pressureUncertainty = 0.0;
+    selfCopy8->_distanceTraveled = 0.0;
+    selfCopy8->_biasLocation = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
+    sub_10085C118(selfCopy8->_fSignificantElevationEstimatorRebase.__ptr_);
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy8 rebaseSignificantElevationWithEndTime:endTime];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy8 updateBiasUncertaintyWithAbsSigElevation:0 withCompanion:sub_10085BD8C(selfCopy8->_fSignificantElevationEstimatorRebase.__ptr_, v102, v103, v104)];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy8 sendRebaseAnalyticsWithAltitudeError:1 andUncertainty:selfCopy8->_inOutdoorWorkoutStatus andRefUncertainty:v83 andDemAvailable:v82 andWorkout:selfCopy8->_biasUncertainty andReferenceSource:selfCopy8->_biasUncertaintyAtRebase andCorrection:v82 andDistance:selfCopy8->_distanceSinceLastRebase];
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -1566,11 +1566,11 @@ LABEL_71:
     v105 = p_info[131];
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
     {
-      v106 = v62->_bias;
-      biasUncertaintyAtRebase = v62->_biasUncertaintyAtRebase;
-      biasUncertainty = v62->_biasUncertainty;
-      v109 = v62->_weatherEstimateInMeter;
-      v110 = v62->_inOutdoorWorkoutStatus;
+      v106 = selfCopy8->_bias;
+      biasUncertaintyAtRebase = selfCopy8->_biasUncertaintyAtRebase;
+      biasUncertainty = selfCopy8->_biasUncertainty;
+      v109 = selfCopy8->_weatherEstimateInMeter;
+      v110 = selfCopy8->_inOutdoorWorkoutStatus;
       *buf = 136320514;
       *&buf[4] = "type";
       v175 = 1024;
@@ -1590,11 +1590,11 @@ LABEL_71:
       v177 = 2080;
       v178 = "oldRefAltitude";
       v179 = 2048;
-      v180 = v71 + v106;
+      timeCopy = v71 + v106;
       v181 = 2080;
       v182 = "oldBaroUncertainty";
       v183 = 2048;
-      v184 = biasUncertainty;
+      endTimeCopy = biasUncertainty;
       v185 = 2080;
       v186 = "oldRefUncertainty";
       v187 = 2048;
@@ -1610,22 +1610,22 @@ LABEL_71:
       v197 = 2080;
       v198 = "calculatedFromTrackStartAt";
       v199 = 2048;
-      v200 = a3;
+      timeCopy3 = time;
       v201 = 2080;
       v202 = "endAt";
       v203 = 2048;
-      v204 = a4;
+      endTimeCopy3 = endTime;
       _os_log_impl(dword_100000000, v105, OS_LOG_TYPE_DEFAULT, "pressure height rebase to,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%d,%s,%f,%s,%f", buf, 0xD6u);
     }
 
     if (sub_10000A100(121, 2))
     {
       sub_1019099D4(buf);
-      v120 = v62->_bias;
-      v121 = v62->_biasUncertaintyAtRebase;
-      v122 = v62->_biasUncertainty;
-      v123 = v62->_weatherEstimateInMeter;
-      v124 = v62->_inOutdoorWorkoutStatus;
+      v120 = selfCopy8->_bias;
+      v121 = selfCopy8->_biasUncertaintyAtRebase;
+      v122 = selfCopy8->_biasUncertainty;
+      v123 = selfCopy8->_weatherEstimateInMeter;
+      v124 = selfCopy8->_inOutdoorWorkoutStatus;
       *v143 = 136320514;
       *&v143[4] = "type";
       v144 = 1024;
@@ -1645,11 +1645,11 @@ LABEL_71:
       v146 = 2080;
       v147 = "oldRefAltitude";
       v148 = 2048;
-      v149 = v71 + v120;
+      timeCopy2 = v71 + v120;
       v150 = 2080;
       v151 = "oldBaroUncertainty";
       v152 = 2048;
-      v153 = v122;
+      endTimeCopy2 = v122;
       v154 = 2080;
       v155 = "oldRefUncertainty";
       v156 = 2048;
@@ -1665,11 +1665,11 @@ LABEL_71:
       v166 = 2080;
       v167 = "calculatedFromTrackStartAt";
       v168 = 2048;
-      v169 = a3;
+      timeCopy4 = time;
       v170 = 2080;
       v171 = "endAt";
       v172 = 2048;
-      v173 = a4;
+      endTimeCopy4 = endTime;
       v125 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v125);
       if (v125 != buf)
@@ -1677,10 +1677,10 @@ LABEL_71:
         free(v125);
       }
 
-      v62 = self;
+      selfCopy8 = self;
     }
 
-    v62->_forceCalibrate = 0;
+    selfCopy8->_forceCalibrate = 0;
     v88 = 1;
     if (v18)
     {
@@ -1707,9 +1707,9 @@ LABEL_84:
   return v88;
 }
 
-- (void)updateElevationBiasBetweenStartTime:(double)a3 andEndTime:(double)a4 andNextTrackStartTime:(double)a5
+- (void)updateElevationBiasBetweenStartTime:(double)time andEndTime:(double)endTime andNextTrackStartTime:(double)startTime
 {
-  if (a4 - a3 > 1800.0)
+  if (endTime - time > 1800.0)
   {
     if (qword_1025D4410 != -1)
     {
@@ -1720,9 +1720,9 @@ LABEL_84:
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = time;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = endTime;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "track is too old, don't rebase,startTime,%f,endTime,%f", buf, 0x16u);
     }
 
@@ -1734,7 +1734,7 @@ LABEL_84:
     return;
   }
 
-  v9 = self;
+  selfCopy = self;
   dataBuffers = self->_dataBuffers;
   v289 = 0.0;
   if (![(CLBarometerCalibrationBiasEstimator *)self getLastPressureSample:&v289])
@@ -1748,9 +1748,9 @@ LABEL_84:
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = time;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = endTime;
       _os_log_impl(dword_100000000, v68, OS_LOG_TYPE_DEFAULT, "filtered pressure queue is empty,startTime,%f,endTime,%f", buf, 0x16u);
     }
 
@@ -1762,8 +1762,8 @@ LABEL_84:
     return;
   }
 
-  [(CLMeanSeaLevelPressureEstimator *)v9->_meanSeaLevelPressureEstimator setNumberOfTrackEndedBtwRefresh:[(CLMeanSeaLevelPressureEstimator *)v9->_meanSeaLevelPressureEstimator numberOfTrackEndedBtwRefresh]+ 1];
-  if ([(CLBarometerCalibrationBiasEstimator *)v9 updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:a3 andEndTime:a4 andNextTrackStartTime:a5])
+  [(CLMeanSeaLevelPressureEstimator *)selfCopy->_meanSeaLevelPressureEstimator setNumberOfTrackEndedBtwRefresh:[(CLMeanSeaLevelPressureEstimator *)selfCopy->_meanSeaLevelPressureEstimator numberOfTrackEndedBtwRefresh]+ 1];
+  if ([(CLBarometerCalibrationBiasEstimator *)selfCopy updateElevationBiasUnderDEMOrLatchedHighBetweenStartTime:time andEndTime:endTime andNextTrackStartTime:startTime])
   {
     return;
   }
@@ -1772,7 +1772,7 @@ LABEL_84:
   v287 = 0;
   v288 = 0;
   v11 = dataBuffers[25];
-  v273 = v9;
+  v273 = selfCopy;
   v12 = dataBuffers;
   if (dataBuffers[26] == v11 || (v13 = dataBuffers[28], v14 = (v11 + 8 * (v13 >> 8)), v15 = *v14 + 16 * v13, v16 = *(v11 + (((dataBuffers[29] + v13) >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * (*(dataBuffers + 232) + v13), v15 == v16))
   {
@@ -1794,7 +1794,7 @@ LABEL_84:
   {
     v18 = *v15;
     v19 = **v15;
-    if (v19 < a3 || v19 >= a4)
+    if (v19 < time || v19 >= endTime)
     {
       goto LABEL_63;
     }
@@ -1891,7 +1891,7 @@ LABEL_84:
     if (v30 == 1.79769313e308)
     {
 LABEL_54:
-      v9 = v273;
+      selfCopy = v273;
 LABEL_55:
       if (qword_1025D4410 != -1)
       {
@@ -1923,7 +1923,7 @@ LABEL_55:
     v36 = v18[1];
     v37 = v17[1];
     v38 = v37 * 1000.0;
-    v9 = v273;
+    selfCopy = v273;
     v39 = sub_1000A6C00(v38, 101320.0);
     v40 = v18[1];
     if (qword_1025D4410 != -1)
@@ -1975,7 +1975,7 @@ LABEL_55:
         free(v67);
       }
 
-      v9 = v273;
+      selfCopy = v273;
       dataBuffers = v12;
     }
 
@@ -2015,7 +2015,7 @@ LABEL_55:
       *&v314[18] = 2080;
       *&v314[20] = "locVerticalUnc";
       v315 = 2048;
-      v316 = v52;
+      endTimeCopy3 = v52;
       v317 = 2080;
       v318 = "locHorizontalUnc";
       v319 = 2048;
@@ -2067,7 +2067,7 @@ LABEL_55:
       *&v295[18] = 2080;
       *&v295[20] = "locVerticalUnc";
       v296 = 2048;
-      v297 = v56;
+      endTimeCopy4 = v56;
       v298 = 2080;
       v299 = "locHorizontalUnc";
       v300 = 2048;
@@ -2087,7 +2087,7 @@ LABEL_55:
         free(v57);
       }
 
-      v9 = v273;
+      selfCopy = v273;
       dataBuffers = v12;
     }
 
@@ -2113,24 +2113,24 @@ LABEL_63:
   {
     v145 = objc_opt_new();
     v146 = v272;
-    v9->_biasTimestamp = a4;
+    selfCopy->_biasTimestamp = endTime;
     v147 = v267 / v272;
-    v9->_bias = v270 / v272;
-    v9->_biasPressure = v147;
-    v9->_biasUncertaintyAtRebase = v268 / v272;
+    selfCopy->_bias = v270 / v272;
+    selfCopy->_biasPressure = v147;
+    selfCopy->_biasUncertaintyAtRebase = v268 / v272;
     v148 = v269 / v272;
     v149 = v148;
     *&v147 = v147;
     v150 = sub_1012C280C(v149, *&v147);
-    v9->_estimatedAbsoluteAltitudeUncertainty = v9->_biasUncertaintyAtRebase;
-    v9->_estimatedMeanSeaLevelPressure = v150;
-    biasPressure = v9->_biasPressure;
+    selfCopy->_estimatedAbsoluteAltitudeUncertainty = selfCopy->_biasUncertaintyAtRebase;
+    selfCopy->_estimatedMeanSeaLevelPressure = v150;
+    biasPressure = selfCopy->_biasPressure;
     v152 = v148;
-    [v145 setUncertainty:{v9->_biasUncertaintyAtRebase * sub_1012C28A0(v152, biasPressure)}];
-    [v145 setMeanSeaLevelPressure:v9->_estimatedMeanSeaLevelPressure];
-    [v145 setTimestamp:a4];
-    v9->_companionRebase = 1;
-    [(CLBarometerCalibrationBiasEstimator *)v9 updateHistoricalMslpArray:v145];
+    [v145 setUncertainty:{selfCopy->_biasUncertaintyAtRebase * sub_1012C28A0(v152, biasPressure)}];
+    [v145 setMeanSeaLevelPressure:selfCopy->_estimatedMeanSeaLevelPressure];
+    [v145 setTimestamp:endTime];
+    selfCopy->_companionRebase = 1;
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy updateHistoricalMslpArray:v145];
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -2163,11 +2163,11 @@ LABEL_63:
       v313 = 2080;
       *v314 = "startAt";
       *&v314[8] = 2048;
-      *&v314[10] = a3;
+      *&v314[10] = time;
       *&v314[18] = 2080;
       *&v314[20] = "endAt";
       v315 = 2048;
-      v316 = a4;
+      endTimeCopy3 = endTime;
       _os_log_impl(dword_100000000, v153, OS_LOG_TYPE_DEFAULT, "update mean sea level pressure array with location data after rebasing,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x76u);
     }
 
@@ -2198,11 +2198,11 @@ LABEL_63:
       v294 = 2080;
       *v295 = "startAt";
       *&v295[8] = 2048;
-      *&v295[10] = a3;
+      *&v295[10] = time;
       *&v295[18] = 2080;
       *&v295[20] = "endAt";
       v296 = 2048;
-      v297 = a4;
+      endTimeCopy4 = endTime;
       v256 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v256);
       if (v256 != buf)
@@ -2210,13 +2210,13 @@ LABEL_63:
         free(v256);
       }
 
-      v9 = v273;
+      selfCopy = v273;
     }
 
-    v9->_pressureUncertainty = 0.0;
-    v9->_distanceTraveled = 0.0;
-    v9->_biasLocation = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
-    sub_10085C118(v9->_fSignificantElevationEstimatorRebase.__ptr_);
+    selfCopy->_pressureUncertainty = 0.0;
+    selfCopy->_distanceTraveled = 0.0;
+    selfCopy->_biasLocation = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
+    sub_10085C118(selfCopy->_fSignificantElevationEstimatorRebase.__ptr_);
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -2225,11 +2225,11 @@ LABEL_63:
     v159 = qword_1025D4418;
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
     {
-      bias = v9->_bias;
-      biasUncertaintyAtRebase = v9->_biasUncertaintyAtRebase;
-      biasUncertainty = v9->_biasUncertainty;
-      weatherEstimateInMeter = v9->_weatherEstimateInMeter;
-      inOutdoorWorkoutStatus = v9->_inOutdoorWorkoutStatus;
+      bias = selfCopy->_bias;
+      biasUncertaintyAtRebase = selfCopy->_biasUncertaintyAtRebase;
+      biasUncertainty = selfCopy->_biasUncertainty;
+      weatherEstimateInMeter = selfCopy->_weatherEstimateInMeter;
+      inOutdoorWorkoutStatus = selfCopy->_inOutdoorWorkoutStatus;
       *buf = 67111680;
       *&buf[4] = -1;
       *&buf[8] = 2048;
@@ -2249,20 +2249,20 @@ LABEL_63:
       v313 = 1024;
       *v314 = inOutdoorWorkoutStatus;
       *&v314[4] = 2048;
-      *&v314[6] = a3;
+      *&v314[6] = time;
       *&v314[14] = 2048;
-      *&v314[16] = a4;
+      *&v314[16] = endTime;
       _os_log_impl(dword_100000000, v159, OS_LOG_TYPE_DEFAULT, "pressure height rebase to,type,%d,newBias,%f,newBiasUncertainty,%f,oldBaroAltitude,%f,oldRefAltitude,%f,oldBaroUncertainty,%f,oldRefUncertainty,%f,weatherEstimateInMeter,%f,inOutdoorWorkout,%d,calculatedFromTrackStartAt,%f,endAt,%f", buf, 0x68u);
     }
 
     if (sub_10000A100(121, 2))
     {
       sub_1019099D4(buf);
-      v257 = v9->_bias;
-      v258 = v9->_biasUncertaintyAtRebase;
-      v259 = v9->_biasUncertainty;
-      v260 = v9->_weatherEstimateInMeter;
-      v261 = v9->_inOutdoorWorkoutStatus;
+      v257 = selfCopy->_bias;
+      v258 = selfCopy->_biasUncertaintyAtRebase;
+      v259 = selfCopy->_biasUncertainty;
+      v260 = selfCopy->_weatherEstimateInMeter;
+      v261 = selfCopy->_inOutdoorWorkoutStatus;
       v290 = 67111680;
       *v291 = -1;
       *&v291[4] = 2048;
@@ -2282,9 +2282,9 @@ LABEL_63:
       v294 = 1024;
       *v295 = v261;
       *&v295[4] = 2048;
-      *&v295[6] = a3;
+      *&v295[6] = time;
       *&v295[14] = 2048;
-      *&v295[16] = a4;
+      *&v295[16] = endTime;
       v262 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v262);
       if (v262 != buf)
@@ -2292,7 +2292,7 @@ LABEL_63:
         free(v262);
       }
 
-      v9 = v273;
+      selfCopy = v273;
     }
 
     if (qword_1025D4410 != -1)
@@ -2303,9 +2303,9 @@ LABEL_63:
     v165 = qword_1025D4418;
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
     {
-      v166 = v9->_bias;
-      v167 = v9->_biasPressure;
-      biasTimestamp = v9->_biasTimestamp;
+      v166 = selfCopy->_bias;
+      v167 = selfCopy->_biasPressure;
+      biasTimestamp = selfCopy->_biasTimestamp;
       *buf = 134219008;
       *&buf[4] = v166;
       *&buf[12] = 2048;
@@ -2322,9 +2322,9 @@ LABEL_63:
     if (sub_10000A100(121, 2))
     {
       sub_1019099D4(buf);
-      v263 = v9->_bias;
-      v264 = v9->_biasPressure;
-      v265 = v9->_biasTimestamp;
+      v263 = selfCopy->_bias;
+      v264 = selfCopy->_biasPressure;
+      v265 = selfCopy->_biasTimestamp;
       v290 = 134219008;
       *v291 = v263;
       *&v291[8] = 2048;
@@ -2342,29 +2342,29 @@ LABEL_63:
         free(v266);
       }
 
-      v9 = v273;
+      selfCopy = v273;
     }
 
-    [(CLBarometerCalibrationBiasEstimator *)v9 rebaseSignificantElevationWithEndTime:a4];
-    [(CLBarometerCalibrationBiasEstimator *)v9 updateBiasUncertaintyWithAbsSigElevation:1 withCompanion:sub_10085BD8C(v9->_fSignificantElevationEstimatorRebase.__ptr_, v169, v170, v171)];
-    v172 = [(CLBarometerCalibrationContextClient *)v9->_delegate latestAbsoluteAltitude];
-    v173 = v172;
-    if (v172)
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy rebaseSignificantElevationWithEndTime:endTime];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy updateBiasUncertaintyWithAbsSigElevation:1 withCompanion:sub_10085BD8C(selfCopy->_fSignificantElevationEstimatorRebase.__ptr_, v169, v170, v171)];
+    latestAbsoluteAltitude = [(CLBarometerCalibrationContextClient *)selfCopy->_delegate latestAbsoluteAltitude];
+    v173 = latestAbsoluteAltitude;
+    if (latestAbsoluteAltitude)
     {
-      [v172 timestamp];
+      [latestAbsoluteAltitude timestamp];
       if (v174 != 1.79769313e308)
       {
         [v173 altitude];
         v176 = v175;
-        v177 = v9->_biasUncertainty;
-        v178 = v9->_biasUncertaintyAtRebase;
-        v179 = v9->_inOutdoorWorkoutStatus;
+        v177 = selfCopy->_biasUncertainty;
+        v178 = selfCopy->_biasUncertaintyAtRebase;
+        v179 = selfCopy->_inOutdoorWorkoutStatus;
         [v173 altitude];
-        [(CLBarometerCalibrationBiasEstimator *)v9 sendRebaseAnalyticsWithAltitudeError:0 andUncertainty:v179 andRefUncertainty:0xFFFFFFFFLL andDemAvailable:v176 - v148 andWorkout:v177 andReferenceSource:v178 andCorrection:v180 - v148 andDistance:v9->_distanceSinceLastRebase];
+        [(CLBarometerCalibrationBiasEstimator *)selfCopy sendRebaseAnalyticsWithAltitudeError:0 andUncertainty:v179 andRefUncertainty:0xFFFFFFFFLL andDemAvailable:v176 - v148 andWorkout:v177 andReferenceSource:v178 andCorrection:v180 - v148 andDistance:selfCopy->_distanceSinceLastRebase];
       }
     }
 
-    v9->_companionRebase = 0;
+    selfCopy->_companionRebase = 0;
     goto LABEL_217;
   }
 
@@ -2376,7 +2376,7 @@ LABEL_81:
   v281 = v282;
   v282[0] = 0;
 
-  v9->_queriedMeanSeaLevelPressureData = [(CLMeanSeaLevelPressureEstimator *)v9->_meanSeaLevelPressureEstimator getEstimatedMeanSeaLevelPressure];
+  selfCopy->_queriedMeanSeaLevelPressureData = [(CLMeanSeaLevelPressureEstimator *)selfCopy->_meanSeaLevelPressureEstimator getEstimatedMeanSeaLevelPressure];
   if (qword_1025D4410 != -1)
   {
     sub_101909358();
@@ -2386,11 +2386,11 @@ LABEL_81:
   v70 = qword_1025D4418;
   if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
   {
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
     v72 = v71;
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData uncertainty];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData uncertainty];
     v74 = v73;
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData timestamp];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData timestamp];
     *buf = 136316418;
     *&buf[4] = "meanSeaLevelPressure";
     *&buf[12] = 2048;
@@ -2409,11 +2409,11 @@ LABEL_81:
   if (sub_10000A100(121, 2))
   {
     sub_1019099D4(buf);
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
     v234 = v233;
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData uncertainty];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData uncertainty];
     v236 = v235;
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData timestamp];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData timestamp];
     v290 = 136316418;
     *v291 = "meanSeaLevelPressure";
     *&v291[8] = 2048;
@@ -2433,7 +2433,7 @@ LABEL_81:
       free(v238);
     }
 
-    v9 = v273;
+    selfCopy = v273;
     dataBuffers = v12;
   }
 
@@ -2450,7 +2450,7 @@ LABEL_81:
       while (1)
       {
         v81 = **v79;
-        if (v81 >= a3 && v81 < a4)
+        if (v81 >= time && v81 < endTime)
         {
           break;
         }
@@ -2520,7 +2520,7 @@ LABEL_131:
             free(v100);
           }
 
-          v9 = v273;
+          selfCopy = v273;
           p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
           dataBuffers = v12;
         }
@@ -2606,7 +2606,7 @@ LABEL_124:
           p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
           if (v89 == 1.79769313e308)
           {
-            v9 = v273;
+            selfCopy = v273;
             goto LABEL_124;
           }
 
@@ -2667,7 +2667,7 @@ LABEL_124:
           v115 = v17[1] * 1000.0;
           v116 = sub_1000A6C00(v115, 101320.0);
           v117 = v17[1];
-          v9 = v273;
+          selfCopy = v273;
           [(CLMeanSeaLevelPressureData *)v273->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
           v118 = v117 * 1000.0;
           v120 = v119;
@@ -2708,20 +2708,20 @@ LABEL_124:
 LABEL_156:
   if (v285)
   {
-    [(CLBarometerCalibrationBiasEstimator *)v9 centroidOfLocationVector:&__src];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy centroidOfLocationVector:&__src];
     v128 = v127;
     v129 = v126;
     if (v127 != 1.79769313e308)
     {
-      latitude = v9->_biasLocation.latitude;
+      latitude = selfCopy->_biasLocation.latitude;
       if (latitude != 1.79769313e308)
       {
-        v9->_distanceSinceLastRebase = fabs(sub_100117154(latitude, v9->_biasLocation.longitude, v128, v126));
+        selfCopy->_distanceSinceLastRebase = fabs(sub_100117154(latitude, selfCopy->_biasLocation.longitude, v128, v126));
       }
     }
 
-    [(CLBarometerCalibrationBiasEstimator *)v9 updateBiasUncertaintyWithPressure:v289 andTime:0.0 andLat:v128 andLon:v129];
-    [(CLBarometerCalibrationBiasEstimator *)v9 getAbsoluteAltitudeUncertainty];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy updateBiasUncertaintyWithPressure:v289 andTime:0.0 andLat:v128 andLon:v129];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy getAbsoluteAltitudeUncertainty];
     v132 = v131;
     v133 = v283;
     if (v283 == &v284)
@@ -2741,15 +2741,15 @@ LABEL_156:
         v133[6] = v137;
         v138 = v133[7] / v136;
         v133[7] = v138;
-        v139 = v138 + v9->_bias;
+        v139 = v138 + selfCopy->_bias;
         v133[7] = v139;
-        v133[7] = v139 - v9->_weatherEstimateInMeter;
+        v133[7] = v139 - selfCopy->_weatherEstimateInMeter;
         v133[8] = v132 * v132;
         v140 = *(v133 + 7);
         *buf = *(v133 + 5);
         *&buf[16] = v140;
         *&buf[32] = v133[9];
-        [(CLBarometerCalibrationBiasEstimator *)v9 crossEntropyOfreference:buf];
+        [(CLBarometerCalibrationBiasEstimator *)selfCopy crossEntropyOfreference:buf];
         if (v134 >= v141)
         {
           v135 = *(v133 + 8);
@@ -2806,19 +2806,19 @@ LABEL_156:
     while (v181);
     if (v182 != &v284 && v135 >= *(v182 + 8))
     {
-      v209 = v9->_bias;
-      v210 = v182[7] + v9->_weatherEstimateInMeter - v209;
-      v9->_biasPressure = sub_1012C27C8(v210, 101320.0);
-      v211 = v9->_bias + v182[8] * (v182[5] - v182[7]) / (v182[8] + v182[6]);
-      v9->_bias = v211 - v9->_weatherEstimateInMeter;
-      v9->_biasUncertaintyAtRebase = sqrt(v182[8] * v182[6] / (v182[8] + v182[6]));
-      v9->_pressureUncertainty = 0.0;
-      v9->_distanceTraveled = 0.0;
-      v9->_biasTimestamp = a4;
-      sub_10085C118(v9->_fSignificantElevationEstimatorRebase.__ptr_);
-      [(CLBarometerCalibrationBiasEstimator *)v9 rebaseSignificantElevationWithEndTime:a4];
-      [(CLBarometerCalibrationBiasEstimator *)v9 updateBiasUncertaintyWithAbsSigElevation:0 withCompanion:sub_10085BD8C(v9->_fSignificantElevationEstimatorRebase.__ptr_, v212, v213, v214)];
-      [(CLBarometerCalibrationBiasEstimator *)v9 sendRebaseAnalyticsWithAltitudeError:v275 andUncertainty:v9->_inOutdoorWorkoutStatus andRefUncertainty:v135 andDemAvailable:v182[5] - v182[7] andWorkout:sqrt(v182[8]) andReferenceSource:sqrt(v182[6]) andCorrection:v211 - v209 andDistance:v9->_distanceSinceLastRebase];
+      v209 = selfCopy->_bias;
+      v210 = v182[7] + selfCopy->_weatherEstimateInMeter - v209;
+      selfCopy->_biasPressure = sub_1012C27C8(v210, 101320.0);
+      v211 = selfCopy->_bias + v182[8] * (v182[5] - v182[7]) / (v182[8] + v182[6]);
+      selfCopy->_bias = v211 - selfCopy->_weatherEstimateInMeter;
+      selfCopy->_biasUncertaintyAtRebase = sqrt(v182[8] * v182[6] / (v182[8] + v182[6]));
+      selfCopy->_pressureUncertainty = 0.0;
+      selfCopy->_distanceTraveled = 0.0;
+      selfCopy->_biasTimestamp = endTime;
+      sub_10085C118(selfCopy->_fSignificantElevationEstimatorRebase.__ptr_);
+      [(CLBarometerCalibrationBiasEstimator *)selfCopy rebaseSignificantElevationWithEndTime:endTime];
+      [(CLBarometerCalibrationBiasEstimator *)selfCopy updateBiasUncertaintyWithAbsSigElevation:0 withCompanion:sub_10085BD8C(selfCopy->_fSignificantElevationEstimatorRebase.__ptr_, v212, v213, v214)];
+      [(CLBarometerCalibrationBiasEstimator *)selfCopy sendRebaseAnalyticsWithAltitudeError:v275 andUncertainty:selfCopy->_inOutdoorWorkoutStatus andRefUncertainty:v135 andDemAvailable:v182[5] - v182[7] andWorkout:sqrt(v182[8]) andReferenceSource:sqrt(v182[6]) andCorrection:v211 - v209 andDistance:selfCopy->_distanceSinceLastRebase];
       if (qword_1025D4410 != -1)
       {
         sub_101909358();
@@ -2827,14 +2827,14 @@ LABEL_156:
       v215 = p_info[131];
       if (os_log_type_enabled(v215, OS_LOG_TYPE_DEFAULT))
       {
-        v216 = v9->_bias;
-        v217 = v9->_biasUncertaintyAtRebase;
+        v216 = selfCopy->_bias;
+        v217 = selfCopy->_biasUncertaintyAtRebase;
         v218 = *(v182 + 7);
         v219 = *(v182 + 5);
         v220 = sqrt(v182[8]);
         v221 = v182[6];
-        v222 = v9->_weatherEstimateInMeter;
-        v223 = v9->_inOutdoorWorkoutStatus;
+        v222 = selfCopy->_weatherEstimateInMeter;
+        v223 = selfCopy->_inOutdoorWorkoutStatus;
         *buf = 67111680;
         *&buf[4] = v135;
         *&buf[8] = 2048;
@@ -2854,9 +2854,9 @@ LABEL_156:
         v313 = 1024;
         *v314 = v223;
         *&v314[4] = 2048;
-        *&v314[6] = a3;
+        *&v314[6] = time;
         *&v314[14] = 2048;
-        *&v314[16] = a4;
+        *&v314[16] = endTime;
         _os_log_impl(dword_100000000, v215, OS_LOG_TYPE_DEFAULT, "pressure height rebase to,type,%d,newBias,%f,newBiasUncertainty,%f,oldBaroAltitude,%f,oldRefAltitude,%f,oldBaroUncertainty,%f,oldRefUncertainty,%f,weatherEstimateInMeter,%f,inOutdoorWorkout,%d,calculatedFromTrackStartAt,%f,endAt,%f", buf, 0x68u);
       }
 
@@ -2866,14 +2866,14 @@ LABEL_156:
       }
 
       sub_1019099D4(buf);
-      v224 = v9->_bias;
-      v225 = v9->_biasUncertaintyAtRebase;
+      v224 = selfCopy->_bias;
+      v225 = selfCopy->_biasUncertaintyAtRebase;
       v226 = *(v182 + 7);
       v227 = *(v182 + 5);
       v228 = sqrt(v182[8]);
       v229 = v182[6];
-      v230 = v9->_weatherEstimateInMeter;
-      v231 = v9->_inOutdoorWorkoutStatus;
+      v230 = selfCopy->_weatherEstimateInMeter;
+      v231 = selfCopy->_inOutdoorWorkoutStatus;
       v290 = 67111680;
       *v291 = v135;
       *&v291[4] = 2048;
@@ -2893,9 +2893,9 @@ LABEL_156:
       v294 = 1024;
       *v295 = v231;
       *&v295[4] = 2048;
-      *&v295[6] = a3;
+      *&v295[6] = time;
       *&v295[14] = 2048;
-      *&v295[16] = a4;
+      *&v295[16] = endTime;
       v232 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v232);
     }
@@ -2911,9 +2911,9 @@ LABEL_199:
       v183 = p_info[131];
       if (os_log_type_enabled(v183, OS_LOG_TYPE_DEFAULT))
       {
-        v184 = v9->_bias;
-        v185 = v9->_weatherEstimateInMeter;
-        v186 = v9->_inOutdoorWorkoutStatus;
+        v184 = selfCopy->_bias;
+        v185 = selfCopy->_weatherEstimateInMeter;
+        v186 = selfCopy->_inOutdoorWorkoutStatus;
         *buf = 67111680;
         *&buf[4] = v135;
         *&buf[8] = 2048;
@@ -2933,9 +2933,9 @@ LABEL_199:
         v313 = 1024;
         *v314 = v186;
         *&v314[4] = 2048;
-        *&v314[6] = a3;
+        *&v314[6] = time;
         *&v314[14] = 2048;
-        *&v314[16] = a4;
+        *&v314[16] = endTime;
         _os_log_impl(dword_100000000, v183, OS_LOG_TYPE_DEFAULT, "pressure height rebase to,type,%d,newBias,%f,newBiasUncertainty,%f,oldBaroAltitude,%f,oldRefAltitude,%f,oldBaroUncertainty,%f,oldRefUncertainty,%f,weatherEstimateInMeter,%f,inOutdoorWorkout,%d,calculatedFromTrackStartAt,%f,endAt,%f", buf, 0x68u);
       }
 
@@ -2945,9 +2945,9 @@ LABEL_199:
       }
 
       sub_1019099D4(buf);
-      v248 = v9->_bias;
-      v249 = v9->_weatherEstimateInMeter;
-      v250 = v9->_inOutdoorWorkoutStatus;
+      v248 = selfCopy->_bias;
+      v249 = selfCopy->_weatherEstimateInMeter;
+      v250 = selfCopy->_inOutdoorWorkoutStatus;
       v290 = 67111680;
       *v291 = v135;
       *&v291[4] = 2048;
@@ -2967,9 +2967,9 @@ LABEL_199:
       v294 = 1024;
       *v295 = v250;
       *&v295[4] = 2048;
-      *&v295[6] = a3;
+      *&v295[6] = time;
       *&v295[14] = 2048;
-      *&v295[16] = a4;
+      *&v295[16] = endTime;
       v232 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v232);
     }
@@ -2979,24 +2979,24 @@ LABEL_199:
       free(v232);
     }
 
-    v9 = v273;
+    selfCopy = v273;
     p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
   }
 
 LABEL_204:
   v187 = v289;
-  [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
+  [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
   v188 = v187;
   v190 = v189;
   v191 = sub_1000A6C00(v188, v190);
-  [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
-  v9->_estimatedMeanSeaLevelPressure = v192;
+  [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData meanSeaLevelPressure];
+  selfCopy->_estimatedMeanSeaLevelPressure = v192;
   v193 = v289;
   v194 = v192;
   sub_1012C2850(v193, v194);
   v196 = v195;
-  [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData uncertainty];
-  v9->_estimatedAbsoluteAltitudeUncertainty = v197 * v196;
+  [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData uncertainty];
+  selfCopy->_estimatedAbsoluteAltitudeUncertainty = v197 * v196;
   if (qword_1025D4410 != -1)
   {
     sub_101909358();
@@ -3005,8 +3005,8 @@ LABEL_204:
   v198 = p_info[131];
   if (os_log_type_enabled(v198, OS_LOG_TYPE_DEFAULT))
   {
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData uncertainty];
-    estimatedAbsoluteAltitudeUncertainty = v9->_estimatedAbsoluteAltitudeUncertainty;
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData uncertainty];
+    estimatedAbsoluteAltitudeUncertainty = selfCopy->_estimatedAbsoluteAltitudeUncertainty;
     *buf = 136315906;
     *&buf[4] = "estimatedMslpUncertainty";
     *&buf[12] = 2048;
@@ -3021,7 +3021,7 @@ LABEL_204:
   if (sub_10000A100(121, 2))
   {
     sub_1019099D4(buf);
-    [(CLMeanSeaLevelPressureData *)v9->_queriedMeanSeaLevelPressureData uncertainty];
+    [(CLMeanSeaLevelPressureData *)selfCopy->_queriedMeanSeaLevelPressureData uncertainty];
     v239 = v273->_estimatedAbsoluteAltitudeUncertainty;
     v290 = 136315906;
     *v291 = "estimatedMslpUncertainty";
@@ -3038,17 +3038,17 @@ LABEL_204:
       free(v241);
     }
 
-    v9 = v273;
+    selfCopy = v273;
     p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
   }
 
-  v201 = [(CLBarometerCalibrationBiasEstimator *)v9 selectReferenceWithReference:&v281 withBaroElevation:v191 betweenStartTime:a3 andEndTime:a4];
+  v201 = [(CLBarometerCalibrationBiasEstimator *)selfCopy selectReferenceWithReference:&v281 withBaroElevation:v191 betweenStartTime:time andEndTime:endTime];
   v202 = objc_opt_new();
-  [v202 setTimestamp:a4];
-  [(CLBarometerCalibrationBiasEstimator *)v9 computeMeanSeaLevelPressureWithRebasingLocationData:v202 referenceMap:&v281 andLocationType:v201];
+  [v202 setTimestamp:endTime];
+  [(CLBarometerCalibrationBiasEstimator *)selfCopy computeMeanSeaLevelPressureWithRebasingLocationData:v202 referenceMap:&v281 andLocationType:v201];
   if (v201)
   {
-    [(CLBarometerCalibrationBiasEstimator *)v9 updateHistoricalMslpArray:v202];
+    [(CLBarometerCalibrationBiasEstimator *)selfCopy updateHistoricalMslpArray:v202];
   }
 
   if (qword_1025D4410 != -1)
@@ -3083,11 +3083,11 @@ LABEL_204:
     v313 = 2080;
     *v314 = "startAt";
     *&v314[8] = 2048;
-    *&v314[10] = a3;
+    *&v314[10] = time;
     *&v314[18] = 2080;
     *&v314[20] = "endAt";
     v315 = 2048;
-    v316 = a4;
+    endTimeCopy3 = endTime;
     _os_log_impl(dword_100000000, v203, OS_LOG_TYPE_DEFAULT, "update mean sea level pressure array with location data after rebasing,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x76u);
   }
 
@@ -3118,11 +3118,11 @@ LABEL_204:
     v294 = 2080;
     *v295 = "startAt";
     *&v295[8] = 2048;
-    *&v295[10] = a3;
+    *&v295[10] = time;
     *&v295[18] = 2080;
     *&v295[20] = "endAt";
     v296 = 2048;
-    v297 = a4;
+    endTimeCopy4 = endTime;
     v247 = _os_log_send_and_compose_impl();
     sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator updateElevationBiasBetweenStartTime:andEndTime:andNextTrackStartTime:]", "%s\n", v247);
     if (v247 != buf)
@@ -3146,17 +3146,17 @@ LABEL_217:
   }
 }
 
-- (void)updateHistoricalMslpArray:(id)a3
+- (void)updateHistoricalMslpArray:(id)array
 {
   v5 = self->_inOutdoorWorkoutStatus || self->_companionRebase || self->_loiRebase || self->_forceCalibrate;
   if (self->_forceCalibrate)
   {
-    [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator cleanHistoricalMslpArrayForForceRebase:a3];
+    [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator cleanHistoricalMslpArrayForForceRebase:array];
   }
 
   if (v5 || ![(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator inVisitStatus])
   {
-    if ([(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator updateHistoricalMslpArray:a3 from:0])
+    if ([(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator updateHistoricalMslpArray:array from:0])
     {
       if (qword_1025D4410 != -1)
       {
@@ -3166,13 +3166,13 @@ LABEL_217:
       v7 = qword_1025D4418;
       if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
       {
-        [a3 timestamp];
+        [array timestamp];
         v9 = v8;
-        [a3 meanSeaLevelPressure];
+        [array meanSeaLevelPressure];
         v11 = v10;
-        [a3 uncertainty];
+        [array uncertainty];
         v13 = v12;
-        [a3 pressureMeasurement];
+        [array pressureMeasurement];
         v15 = 134218752;
         v16 = v9;
         v17 = 2048;
@@ -3186,7 +3186,7 @@ LABEL_217:
 
       if (sub_10000A100(121, 2))
       {
-        sub_101909C20(a3);
+        sub_101909C20(array);
       }
 
       [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator setNumberOfRebaseBtwRefresh:[(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator numberOfRebaseBtwRefresh]+ 1];
@@ -3198,40 +3198,40 @@ LABEL_217:
   {
     meanSeaLevelPressureEstimator = self->_meanSeaLevelPressureEstimator;
 
-    [(CLMeanSeaLevelPressureEstimator *)meanSeaLevelPressureEstimator updateInVisitRebasedMslp:a3];
+    [(CLMeanSeaLevelPressureEstimator *)meanSeaLevelPressureEstimator updateInVisitRebasedMslp:array];
   }
 }
 
-- (void)computeMeanSeaLevelPressureWithRebasingLocationData:(id)a3 referenceMap:(void *)a4 andLocationType:(int)a5
+- (void)computeMeanSeaLevelPressureWithRebasingLocationData:(id)data referenceMap:(void *)map andLocationType:(int)type
 {
-  if (!a5)
+  if (!type)
   {
-    [a3 setMeanSeaLevelPressure:{a3, a4, 1.0}];
+    [data setMeanSeaLevelPressure:{data, map, 1.0}];
     v11 = -1.0;
 LABEL_12:
 
-    [a3 setUncertainty:v11];
+    [data setUncertainty:v11];
     return;
   }
 
-  v8 = *(a4 + 1);
-  v6 = a4 + 8;
+  v8 = *(map + 1);
+  v6 = map + 8;
   v7 = v8;
   if (v8)
   {
     v10 = v6;
     do
     {
-      if (*(v7 + 8) >= a5)
+      if (*(v7 + 8) >= type)
       {
         v10 = v7;
       }
 
-      v7 = *&v7[*(v7 + 8) < a5];
+      v7 = *&v7[*(v7 + 8) < type];
     }
 
     while (v7);
-    if (v10 != v6 && *(v10 + 8) <= a5)
+    if (v10 != v6 && *(v10 + 8) <= type)
     {
       v12 = v10[7];
       v13 = v10[8];
@@ -3246,7 +3246,7 @@ LABEL_12:
       v21 = v16;
       self->_estimatedMeanSeaLevelPressure = sub_1012C280C(v21, v20);
       *&v13 = v14;
-      [a3 setMeanSeaLevelPressure:{sub_1012C280C(*&v13, v20)}];
+      [data setMeanSeaLevelPressure:{sub_1012C280C(*&v13, v20)}];
       v22 = v14;
       v11 = sqrt(v15) * sub_1012C28A0(v22, v20);
       goto LABEL_12;
@@ -3254,11 +3254,11 @@ LABEL_12:
   }
 }
 
-- (int)selectReferenceWithReference:(void *)a3 withBaroElevation:(double)a4 betweenStartTime:(double)a5 andEndTime:(double)a6
+- (int)selectReferenceWithReference:(void *)reference withBaroElevation:(double)elevation betweenStartTime:(double)time andEndTime:(double)endTime
 {
   v52 = 0;
   self->_loiRebase = 0;
-  if (*(a3 + 2))
+  if (*(reference + 2))
   {
     v10 = log(self->_estimatedAbsoluteAltitudeUncertainty * (self->_estimatedAbsoluteAltitudeUncertainty * 17.0794684));
     if (qword_1025D4410 != -1)
@@ -3281,7 +3281,7 @@ LABEL_12:
       *&buf[38] = 2080;
       v86 = "fromBaroAlt";
       v87 = 2048;
-      v88 = -1.0;
+      elevationCopy = -1.0;
       v89 = 2080;
       v90 = "fromRefAlt";
       v91 = 2048;
@@ -3297,11 +3297,11 @@ LABEL_12:
       v101 = 2080;
       v102 = "trackStartTime";
       v103 = 2048;
-      v104 = a5;
+      timeCopy5 = time;
       v105 = 2080;
       v106 = "trackEndTime";
       v107 = 2048;
-      v108 = a6;
+      endTimeCopy5 = endTime;
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "altimeter2 cross entropy of,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x9Eu);
     }
 
@@ -3325,7 +3325,7 @@ LABEL_12:
       v61 = 2080;
       v62 = "fromBaroAlt";
       v63 = 2048;
-      v64 = -1.0;
+      elevationCopy2 = -1.0;
       v65 = 2080;
       v66 = "fromRefAlt";
       v67 = 2048;
@@ -3341,11 +3341,11 @@ LABEL_12:
       v77 = 2080;
       v78 = "trackStartTime";
       v79 = 2048;
-      v80 = a5;
+      timeCopy6 = time;
       v81 = 2080;
       v82 = "trackEndTime";
       v83 = 2048;
-      v84 = a6;
+      endTimeCopy6 = endTime;
       v47 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator selectReferenceWithReference:withBaroElevation:betweenStartTime:andEndTime:]", "%s\n", v47);
       if (v47 != buf)
@@ -3354,8 +3354,8 @@ LABEL_12:
       }
     }
 
-    v13 = *a3;
-    if (*a3 != a3 + 8)
+    v13 = *reference;
+    if (*reference != reference + 8)
     {
       do
       {
@@ -3401,7 +3401,7 @@ LABEL_12:
           *&buf[38] = 2080;
           v86 = "fromBaroAlt";
           v87 = 2048;
-          v88 = v21;
+          elevationCopy = v21;
           v89 = 2080;
           v90 = "fromRefAlt";
           v91 = 2048;
@@ -3417,11 +3417,11 @@ LABEL_12:
           v101 = 2080;
           v102 = "trackStartTime";
           v103 = 2048;
-          v104 = a5;
+          timeCopy5 = time;
           v105 = 2080;
           v106 = "trackEndTime";
           v107 = 2048;
-          v108 = a6;
+          endTimeCopy5 = endTime;
           _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_DEFAULT, "altimeter2 cross entropy of,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x9Eu);
         }
 
@@ -3449,7 +3449,7 @@ LABEL_12:
           v61 = 2080;
           v62 = "fromBaroAlt";
           v63 = 2048;
-          v64 = v29;
+          elevationCopy2 = v29;
           v65 = 2080;
           v66 = "fromRefAlt";
           v67 = 2048;
@@ -3465,11 +3465,11 @@ LABEL_12:
           v77 = 2080;
           v78 = "trackStartTime";
           v79 = 2048;
-          v80 = a5;
+          timeCopy6 = time;
           v81 = 2080;
           v82 = "trackEndTime";
           v83 = 2048;
-          v84 = a6;
+          endTimeCopy6 = endTime;
           v33 = _os_log_send_and_compose_impl();
           sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator selectReferenceWithReference:withBaroElevation:betweenStartTime:andEndTime:]", "%s\n", v33);
           if (v33 != buf)
@@ -3505,7 +3505,7 @@ LABEL_12:
         v13 = v26;
       }
 
-      while (v26 != (a3 + 8));
+      while (v26 != (reference + 8));
     }
   }
 
@@ -3516,11 +3516,11 @@ LABEL_12:
     if (end != begin)
     {
       v36 = log(self->_estimatedAbsoluteAltitudeUncertainty * (self->_estimatedAbsoluteAltitudeUncertainty * 17.0794684));
-      v37 = (a3 + 8);
+      v37 = (reference + 8);
       do
       {
         v49 = *begin;
-        *&v50 = a4;
+        *&v50 = elevation;
         *(&v50 + 1) = self->_estimatedAbsoluteAltitudeUncertainty * self->_estimatedAbsoluteAltitudeUncertainty;
         LODWORD(v51) = 1;
         *buf = *begin;
@@ -3547,7 +3547,7 @@ LABEL_12:
           *&buf[38] = 2080;
           v86 = "fromBaroAlt";
           v87 = 2048;
-          v88 = a4;
+          elevationCopy = elevation;
           v89 = 2080;
           v90 = "fromRefAlt";
           v91 = 2048;
@@ -3563,11 +3563,11 @@ LABEL_12:
           v101 = 2080;
           v102 = "trackStartTime";
           v103 = 2048;
-          v104 = a5;
+          timeCopy5 = time;
           v105 = 2080;
           v106 = "trackEndTime";
           v107 = 2048;
-          v108 = a6;
+          endTimeCopy5 = endTime;
           _os_log_impl(dword_100000000, v40, OS_LOG_TYPE_DEFAULT, "altimeter2 cross entropy of,%s,%d,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f,%s,%f", buf, 0x9Eu);
         }
 
@@ -3590,7 +3590,7 @@ LABEL_12:
           v61 = 2080;
           v62 = "fromBaroAlt";
           v63 = 2048;
-          v64 = a4;
+          elevationCopy2 = elevation;
           v65 = 2080;
           v66 = "fromRefAlt";
           v67 = 2048;
@@ -3606,11 +3606,11 @@ LABEL_12:
           v77 = 2080;
           v78 = "trackStartTime";
           v79 = 2048;
-          v80 = a5;
+          timeCopy6 = time;
           v81 = 2080;
           v82 = "trackEndTime";
           v83 = 2048;
-          v84 = a6;
+          endTimeCopy6 = endTime;
           v44 = _os_log_send_and_compose_impl();
           sub_100152C7C("Generic", 1, 0, 2, "[CLBarometerCalibrationBiasEstimator selectReferenceWithReference:withBaroElevation:betweenStartTime:andEndTime:]", "%s\n", v44);
           if (v44 != buf)
@@ -3628,7 +3628,7 @@ LABEL_12:
             goto LABEL_42;
           }
 
-          v42 = (a3 + 8);
+          v42 = (reference + 8);
           do
           {
             if (v41[8] >= 13)
@@ -3642,7 +3642,7 @@ LABEL_12:
           while (v41);
           if (v42 != v37 && v42[8] < 14)
           {
-            v43 = sub_1003DD9F8(a3, &v52);
+            v43 = sub_1003DD9F8(reference, &v52);
             *v43 = v49;
             *(v43 + 1) = v50;
             *(v43 + 8) = 1;
@@ -3651,7 +3651,7 @@ LABEL_12:
           else
           {
 LABEL_42:
-            sub_1006BAC64(a3, &v52);
+            sub_1006BAC64(reference, &v52);
           }
 
           self->_loiRebase = 1;
@@ -3668,9 +3668,9 @@ LABEL_42:
   return v52;
 }
 
-- (void)updateBiasUncertaintyWithAbsSigElevation:(double)a3 withCompanion:(BOOL)a4
+- (void)updateBiasUncertaintyWithAbsSigElevation:(double)elevation withCompanion:(BOOL)companion
 {
-  v4 = a4;
+  companionCopy = companion;
   dataBuffers = self->_dataBuffers;
   v8 = dataBuffers[11] + dataBuffers[10] - 1;
   v9 = (*(dataBuffers[7] + ((v8 >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * v8);
@@ -3683,7 +3683,7 @@ LABEL_42:
 
   v12 = *(v10 + 8) * 1000.0;
   v13 = sub_1000A6C00(v12, 101320.0);
-  if (a3 != 1.79769313e308)
+  if (elevation != 1.79769313e308)
   {
     bias = self->_bias;
     if (qword_1025D4410 != -1)
@@ -3699,7 +3699,7 @@ LABEL_42:
       *buf = 136316418;
       v21 = "takeMaxForPhone";
       v22 = 1024;
-      v23 = v4;
+      v23 = companionCopy;
       v24 = 2080;
       v25 = "bayesianInferenceResult";
       v26 = 2048;
@@ -3707,7 +3707,7 @@ LABEL_42:
       v28 = 2080;
       v29 = "diffOfAbsSigElevationAndAbsAltitude";
       v30 = 2048;
-      v31 = vabdd_f64(a3, v15);
+      v31 = vabdd_f64(elevation, v15);
       _os_log_impl(dword_100000000, v16, OS_LOG_TYPE_DEFAULT, "re-initialize bias uncertainty with,%s,%d,%s,%f,%s,%f", buf, 0x3Au);
     }
 
@@ -3722,8 +3722,8 @@ LABEL_42:
       }
     }
 
-    v18 = vabdd_f64(a3, v15);
-    if (v4)
+    v18 = vabdd_f64(elevation, v15);
+    if (companionCopy)
     {
       if (self->_biasUncertaintyAtRebase >= v18)
       {
@@ -3745,7 +3745,7 @@ LABEL_42:
   }
 }
 
-- (void)rebaseSignificantElevationWithEndTime:(double)a3
+- (void)rebaseSignificantElevationWithEndTime:(double)time
 {
   if (([(CLBarometerCalibrationContextClient *)self->_delegate isInVisit]& 1) == 0)
   {
@@ -3766,7 +3766,7 @@ LABEL_42:
         *buf = 136315394;
         v12 = "endTrackTime";
         v13 = 2048;
-        v14 = a3;
+        timeCopy = time;
         _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "significant elevation rebase: %s,%f", buf, 0x16u);
       }
 
@@ -3778,7 +3778,7 @@ LABEL_42:
   }
 }
 
-- (BOOL)getLastPressureSample:(double *)a3
+- (BOOL)getLastPressureSample:(double *)sample
 {
   dataBuffers = self->_dataBuffers;
   v4 = dataBuffers[11];
@@ -3790,27 +3790,27 @@ LABEL_42:
     if (v6)
     {
       atomic_fetch_add_explicit(&v6->__shared_owners_, 1uLL, memory_order_relaxed);
-      *a3 = *(v7 + 8) * 1000.0;
+      *sample = *(v7 + 8) * 1000.0;
       sub_100008080(v6);
     }
 
     else
     {
-      *a3 = *(v7 + 8) * 1000.0;
+      *sample = *(v7 + 8) * 1000.0;
     }
   }
 
   return v4 != 0;
 }
 
-- (void)updateLoiInfo:(const void *)a3
+- (void)updateLoiInfo:(const void *)info
 {
   Current = CFAbsoluteTimeGetCurrent();
   if ([(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator inVisitStatus])
   {
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    if (v7 == *a3)
+    v6 = *info;
+    v7 = *(info + 1);
+    if (v7 == *info)
     {
       if (qword_1025D4410 != -1)
       {
@@ -3834,11 +3834,11 @@ LABEL_42:
     else
     {
       p_loiVisitAltitudes = &self->_loiVisitAltitudes;
-      if (self->_enableLoiRebase && p_loiVisitAltitudes != a3)
+      if (self->_enableLoiRebase && p_loiVisitAltitudes != info)
       {
-        sub_1006BA434(p_loiVisitAltitudes, v6, v7, &v7[-*a3] >> 4);
-        v6 = *a3;
-        v7 = *(a3 + 1);
+        sub_1006BA434(p_loiVisitAltitudes, v6, v7, &v7[-*info] >> 4);
+        v6 = *info;
+        v7 = *(info + 1);
       }
 
       if (v7 != v6)
@@ -3855,7 +3855,7 @@ LABEL_42:
           v12 = qword_1025D4418;
           if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = (*a3 + v10);
+            v13 = (*info + v10);
             v15 = *v13;
             v14 = v13[1];
             *buf = 134218496;
@@ -3887,13 +3887,13 @@ LABEL_42:
           v10 += 16;
         }
 
-        while (v11 < (*(a3 + 1) - *a3) >> 4);
+        while (v11 < (*(info + 1) - *info) >> 4);
       }
     }
   }
 }
 
-- (void)sendVisitExitWifiImprovementAnalyticsEventWithDuration:(double)a3 uncertaintyAtVisitEntry:(double)a4 uncertaintyAtVisitExit:(double)a5 timeDiffBtwArrivalAndLastRebase:(double)a6
+- (void)sendVisitExitWifiImprovementAnalyticsEventWithDuration:(double)duration uncertaintyAtVisitEntry:(double)entry uncertaintyAtVisitExit:(double)exit timeDiffBtwArrivalAndLastRebase:(double)rebase
 {
   if (qword_1025D4410 != -1)
   {
@@ -3904,13 +3904,13 @@ LABEL_42:
   if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218752;
-    v13 = a3;
+    durationCopy = duration;
     v14 = 2048;
-    v15 = a4;
+    entryCopy = entry;
     v16 = 2048;
-    v17 = a5;
+    exitCopy = exit;
     v18 = 2048;
-    v19 = a6;
+    rebaseCopy = rebase;
     _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEFAULT, "sent visit exit information to CoreAnalytics,visitDuration,%f,arrivalUncertainty,%f,exitUncertainty,%f,timeDiffBtwArrivalAndLastRebase,%f", buf, 0x2Au);
   }
 
@@ -3933,15 +3933,15 @@ LABEL_42:
   AnalyticsSendEventLazy();
 }
 
-- (void)updateVisitState:(BOOL)a3 arrivalTime:(double)a4 departureTime:(double)a5
+- (void)updateVisitState:(BOOL)state arrivalTime:(double)time departureTime:(double)departureTime
 {
-  v7 = a3;
+  stateCopy = state;
   Current = CFAbsoluteTimeGetCurrent();
   p_meanSeaLevelPressureEstimator = &self->_meanSeaLevelPressureEstimator;
-  if ([(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator inVisitStatus]!= v7)
+  if ([(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator inVisitStatus]!= stateCopy)
   {
     v11 = *p_meanSeaLevelPressureEstimator;
-    if (v7)
+    if (stateCopy)
     {
       [v11 setCumulativeStartTime:1.79769313e308];
     }
@@ -3950,7 +3950,7 @@ LABEL_42:
     {
       [v11 setFirstRefreshAfterVisit:1];
       [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator resetInVisitRebasedMslp];
-      [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator setExitVisitTimestamp:a5];
+      [(CLMeanSeaLevelPressureEstimator *)self->_meanSeaLevelPressureEstimator setExitVisitTimestamp:departureTime];
       self->_loiVisitAltitudes.__end_ = self->_loiVisitAltitudes.__begin_;
       if (qword_1025D4410 != -1)
       {
@@ -3972,7 +3972,7 @@ LABEL_42:
       }
     }
 
-    [*p_meanSeaLevelPressureEstimator setInVisitStatus:v7];
+    [*p_meanSeaLevelPressureEstimator setInVisitStatus:stateCopy];
     if (qword_1025D4410 != -1)
     {
       sub_101909358();
@@ -3982,13 +3982,13 @@ LABEL_42:
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109888;
-      *v34 = v7;
+      *v34 = stateCopy;
       *&v34[4] = 2048;
       *&v34[6] = Current;
       *&v34[14] = 2048;
-      *&v34[16] = a4;
+      *&v34[16] = time;
       *&v34[24] = 2048;
-      *&v34[26] = a5;
+      *&v34[26] = departureTime;
       _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_DEFAULT, "visit state changed,visitState,%d,timestamp,%f,arrival,%f,departure,%f", buf, 0x26u);
     }
 
@@ -4011,14 +4011,14 @@ LABEL_42:
     [*p_meanSeaLevelPressureEstimator saveInVisitStateToPlist];
   }
 
-  v15 = [(CLBarometerCalibrationContextClient *)self->_delegate latestAbsoluteAltitude];
-  v16 = v15;
-  if (v7)
+  latestAbsoluteAltitude = [(CLBarometerCalibrationContextClient *)self->_delegate latestAbsoluteAltitude];
+  v16 = latestAbsoluteAltitude;
+  if (stateCopy)
   {
     self->_lastVisitEntryTime = Current;
-    if (v15)
+    if (latestAbsoluteAltitude)
     {
-      [v15 timestamp];
+      [latestAbsoluteAltitude timestamp];
       if (v17 != 1.79769313e308 && self->_lastRebaseTimestamp != 1.79769313e308)
       {
         [v16 accuracy];
@@ -4066,7 +4066,7 @@ LABEL_42:
 
   else
   {
-    if (!v15 || ([v15 timestamp], v24 == 1.79769313e308) || (v25 = self->_visitArrivalTimestamp, v25 == 1.79769313e308))
+    if (!latestAbsoluteAltitude || ([latestAbsoluteAltitude timestamp], v24 == 1.79769313e308) || (v25 = self->_visitArrivalTimestamp, v25 == 1.79769313e308))
     {
       if (qword_1025D4410 != -1)
       {
@@ -4118,9 +4118,9 @@ LABEL_42:
         }
       }
 
-      if (a4 > 0.0)
+      if (time > 0.0)
       {
-        [(CLBarometerCalibrationBiasEstimator *)self sendVisitExitAnalyticsWithDuration:&self->_firstRebaseEventInVisit andRebaseEvent:(a5 - a4) / 60.0 andUncertaintyAtEntry:self->_uncertaintyAtVisitEntry];
+        [(CLBarometerCalibrationBiasEstimator *)self sendVisitExitAnalyticsWithDuration:&self->_firstRebaseEventInVisit andRebaseEvent:(departureTime - time) / 60.0 andUncertaintyAtEntry:self->_uncertaintyAtVisitEntry];
       }
     }
 
@@ -4128,10 +4128,10 @@ LABEL_42:
   }
 }
 
-- (void)sendRebaseAnalyticsWithAltitudeError:(double)a3 andUncertainty:(double)a4 andRefUncertainty:(double)a5 andDemAvailable:(BOOL)a6 andWorkout:(BOOL)a7 andReferenceSource:(int)a8 andCorrection:(double)a9 andDistance:(double)a10
+- (void)sendRebaseAnalyticsWithAltitudeError:(double)error andUncertainty:(double)uncertainty andRefUncertainty:(double)refUncertainty andDemAvailable:(BOOL)available andWorkout:(BOOL)workout andReferenceSource:(int)source andCorrection:(double)correction andDistance:(double)self0
 {
-  v18 = a3;
-  v19 = fabsf(v18);
+  errorCopy = error;
+  v19 = fabsf(errorCopy);
   v70 = 0;
   v71 = 0;
   v69 = 0;
@@ -4147,8 +4147,8 @@ LABEL_42:
   v67 = 0;
   v65 = 0;
   sub_10038EB38(&v65, qword_102658AC8, qword_102658AD0, (qword_102658AD0 - qword_102658AC8) >> 2);
-  v20 = a5;
-  sub_1003F6558(&v65, &v68, v20);
+  refUncertaintyCopy = refUncertainty;
+  sub_1003F6558(&v65, &v68, refUncertaintyCopy);
   if (v65)
   {
     v66 = v65;
@@ -4159,8 +4159,8 @@ LABEL_42:
   __p = 0;
   v62 = 0;
   sub_10038EB38(&__p, qword_102658AC8, qword_102658AD0, (qword_102658AD0 - qword_102658AC8) >> 2);
-  v21 = a4;
-  sub_1003F6558(&__p, &v64, v21);
+  uncertaintyCopy = uncertainty;
+  sub_1003F6558(&__p, &v64, uncertaintyCopy);
   if (__p)
   {
     v62 = __p;
@@ -4171,8 +4171,8 @@ LABEL_42:
   v57 = 0;
   v58 = 0;
   sub_10038EB38(&v57, qword_102658AE0, qword_102658AE8, (qword_102658AE8 - qword_102658AE0) >> 2);
-  v22 = a9;
-  sub_1003F6558(&v57, &v60, fabsf(v22));
+  correctionCopy = correction;
+  sub_1003F6558(&v57, &v60, fabsf(correctionCopy));
   if (v57)
   {
     v58 = v57;
@@ -4244,8 +4244,8 @@ LABEL_42:
   v43 = 0;
   v41 = 0;
   sub_10038EB38(&v41, qword_102658B40, qword_102658B48, (qword_102658B48 - qword_102658B40) >> 2);
-  v28 = a10;
-  sub_1003F6558(&v41, &v44, v28);
+  distanceCopy = distance;
+  sub_1003F6558(&v41, &v44, distanceCopy);
   if (v41)
   {
     v42 = v41;
@@ -4254,11 +4254,11 @@ LABEL_42:
 
   *&v31 = vcvt_f32_f64(self->_biasLocation);
   BYTE8(v31) = [(CLBarometerCalibrationContextClient *)self->_delegate isInVisit];
-  BYTE9(v31) = a6;
+  BYTE9(v31) = available;
   v29 = self->_lastForcedGpsTime != 1.79769313e308 && CFAbsoluteTimeGetCurrent() - self->_lastForcedGpsTime < 546.0;
   BYTE10(v31) = v29;
-  HIDWORD(v31) = a8;
-  LOBYTE(v32) = a7;
+  HIDWORD(v31) = source;
+  LOBYTE(v32) = workout;
   HIBYTE(v32) = self->_previousBiasTimestamp == 1.79769313e308;
   if (SHIBYTE(v72.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -4402,14 +4402,14 @@ LABEL_42:
   }
 }
 
-- (void)sendVisitExitAnalyticsWithDuration:(double)a3 andRebaseEvent:(void *)a4 andUncertaintyAtEntry:(double)a5
+- (void)sendVisitExitAnalyticsWithDuration:(double)duration andRebaseEvent:(void *)event andUncertaintyAtEntry:(double)entry
 {
-  v7 = a3;
+  durationCopy = duration;
   v59 = 0;
   v60 = 0;
   v58 = 0;
   sub_10038EB38(&v58, qword_102658B58, qword_102658B60, (qword_102658B60 - qword_102658B58) >> 2);
-  sub_1003F6558(&v58, &v61, v7);
+  sub_1003F6558(&v58, &v61, durationCopy);
   if (v58)
   {
     v59 = v58;
@@ -4420,8 +4420,8 @@ LABEL_42:
   v55 = 0;
   v53 = 0;
   sub_10038EB38(&v53, qword_102658AC8, qword_102658AD0, (qword_102658AD0 - qword_102658AC8) >> 2);
-  v8 = a5;
-  sub_1003F6558(&v53, &v56, v8);
+  entryCopy = entry;
+  sub_1003F6558(&v53, &v56, entryCopy);
   if (v53)
   {
     v54 = v53;

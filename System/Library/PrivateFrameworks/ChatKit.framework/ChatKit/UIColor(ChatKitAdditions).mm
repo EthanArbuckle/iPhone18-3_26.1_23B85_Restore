@@ -44,11 +44,11 @@
 {
   v4 = MEMORY[0x1E69DD1B8];
   v5 = a3;
-  v6 = [v4 _currentTraitCollection];
+  _currentTraitCollection = [v4 _currentTraitCollection];
   [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v5];
 
-  v7 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(a1, "CGColor")}];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v6];
+  v7 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(self, "CGColor")}];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
 
   return v7;
 }
@@ -143,10 +143,10 @@
   v14[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DD1B8];
   v6 = a3;
-  v7 = [v5 _currentTraitCollection];
+  _currentTraitCollection = [v5 _currentTraitCollection];
   v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:a4];
   v9 = MEMORY[0x1E69DD1B8];
-  v14[0] = v7;
+  v14[0] = _currentTraitCollection;
   v14[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v11 = [v9 traitCollectionWithTraitsFromCollections:v10];

@@ -1,13 +1,13 @@
 @interface MTDateParser
 + (id)dateFormatters;
-- (id)dateFromRSSDateString:(id)a3;
+- (id)dateFromRSSDateString:(id)string;
 @end
 
 @implementation MTDateParser
 
-- (id)dateFromRSSDateString:(id)a3
+- (id)dateFromRSSDateString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -28,7 +28,7 @@ LABEL_3:
 
       v8 = *(*(&v11 + 1) + 8 * v7);
       objc_sync_enter(v8);
-      v9 = [v8 dateFromString:v3];
+      v9 = [v8 dateFromString:stringCopy];
       objc_sync_exit(v8);
 
       if (v9)

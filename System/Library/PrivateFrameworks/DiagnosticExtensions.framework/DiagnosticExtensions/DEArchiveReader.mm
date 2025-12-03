@@ -1,14 +1,14 @@
 @interface DEArchiveReader
-- (DEArchiveReader)initWithURL:(id)a3;
+- (DEArchiveReader)initWithURL:(id)l;
 - (id)listContainedPaths;
 - (void)closeArchive;
 @end
 
 @implementation DEArchiveReader
 
-- (DEArchiveReader)initWithURL:(id)a3
+- (DEArchiveReader)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = DEArchiveReader;
   v5 = [(DEArchiveReader *)&v13 init];
@@ -22,8 +22,8 @@
   archive = v5->_archive;
   archive_read_support_format_all();
   v7 = v5->_archive;
-  v8 = [v4 path];
-  [v8 UTF8String];
+  path = [lCopy path];
+  [path UTF8String];
   open_filename = archive_read_open_filename();
 
   if (open_filename)
@@ -31,7 +31,7 @@
     v10 = +[DELogging fwHandle];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(DEArchiveReader *)v4 initWithURL:v10];
+      [(DEArchiveReader *)lCopy initWithURL:v10];
     }
 
     v11 = 0;

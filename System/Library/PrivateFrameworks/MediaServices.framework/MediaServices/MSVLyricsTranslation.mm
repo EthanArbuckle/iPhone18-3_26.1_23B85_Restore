@@ -1,19 +1,19 @@
 @interface MSVLyricsTranslation
-+ (int64_t)_translationTypeForText:(id)a3;
++ (int64_t)_translationTypeForText:(id)text;
 - (id)description;
-- (id)translationForLine:(id)a3;
-- (void)setTypeText:(id)a3;
+- (id)translationForLine:(id)line;
+- (void)setTypeText:(id)text;
 @end
 
 @implementation MSVLyricsTranslation
 
-- (id)translationForLine:(id)a3
+- (id)translationForLine:(id)line
 {
-  v4 = a3;
-  v5 = [(MSVLyricsTranslation *)self linesMap];
-  v6 = [v4 translationKey];
+  lineCopy = line;
+  linesMap = [(MSVLyricsTranslation *)self linesMap];
+  translationKey = [lineCopy translationKey];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [linesMap objectForKeyedSubscript:translationKey];
 
   return v7;
 }
@@ -22,28 +22,28 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MSVLyricsTranslation *)self language];
-  v6 = [v3 stringWithFormat:@"<%@ %p> language: %@", v4, self, v5];
+  language = [(MSVLyricsTranslation *)self language];
+  v6 = [v3 stringWithFormat:@"<%@ %p> language: %@", v4, self, language];
 
   return v6;
 }
 
-- (void)setTypeText:(id)a3
+- (void)setTypeText:(id)text
 {
-  objc_storeStrong(&self->_typeText, a3);
-  v5 = a3;
-  v6 = [MSVLyricsTranslation _translationTypeForText:v5];
+  objc_storeStrong(&self->_typeText, text);
+  textCopy = text;
+  v6 = [MSVLyricsTranslation _translationTypeForText:textCopy];
 
   [(MSVLyricsTranslation *)self setType:v6];
 }
 
-+ (int64_t)_translationTypeForText:(id)a3
++ (int64_t)_translationTypeForText:(id)text
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  textCopy = text;
+  v4 = textCopy;
+  if (textCopy)
   {
-    if (![v3 caseInsensitiveCompare:@"subtitle"])
+    if (![textCopy caseInsensitiveCompare:@"subtitle"])
     {
       v5 = 1;
       goto LABEL_6;

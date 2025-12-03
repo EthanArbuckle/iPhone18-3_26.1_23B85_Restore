@@ -1,18 +1,18 @@
 @interface MKAddressFilter
 + (MKAddressFilter)filterExcludingAll;
 + (MKAddressFilter)filterIncludingAll;
-- (BOOL)excludesOptions:(unint64_t)a3;
-- (BOOL)includesOptions:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddressFilter:(id)a3;
-- (MKAddressFilter)initWithCoder:(id)a3;
-- (id)_commaSeparatedListOfOptions:(unint64_t)a3;
+- (BOOL)excludesOptions:(unint64_t)options;
+- (BOOL)includesOptions:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddressFilter:(id)filter;
+- (MKAddressFilter)initWithCoder:(id)coder;
+- (id)_commaSeparatedListOfOptions:(unint64_t)options;
 - (id)_geoAddressFilter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initExcludingOptions:(unint64_t)a3;
-- (id)initIncludingOptions:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initExcludingOptions:(unint64_t)options;
+- (id)initIncludingOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKAddressFilter
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (id)_commaSeparatedListOfOptions:(unint64_t)a3
+- (id)_commaSeparatedListOfOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v5 = v4;
-  if (v3)
+  if (optionsCopy)
   {
     [v4 appendString:{@"Country, "}];
-    if ((v3 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -44,16 +44,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((optionsCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 appendString:{@"Administrative Area, "}];
-  if ((v3 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -63,10 +63,10 @@ LABEL_4:
 
 LABEL_15:
   [v5 appendString:{@"Subadministrative Area, "}];
-  if ((v3 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -76,10 +76,10 @@ LABEL_5:
 
 LABEL_16:
   [v5 appendString:{@"Locality, "}];
-  if ((v3 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -89,7 +89,7 @@ LABEL_6:
 
 LABEL_17:
   [v5 appendString:{@"Sublocality, "}];
-  if ((v3 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
 LABEL_7:
     [v5 appendString:{@"Postal Code, "}];
@@ -144,35 +144,35 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)isEqualToAddressFilter:(id)a3
+- (BOOL)isEqualToAddressFilter:(id)filter
 {
-  v4 = a3;
-  v5 = v4 && self->_includedOptions == v4[1] && self->_excludedOptions == v4[2];
+  filterCopy = filter;
+  v5 = filterCopy && self->_includedOptions == filterCopy[1] && self->_excludedOptions == filterCopy[2];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKAddressFilter *)self isEqualToAddressFilter:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKAddressFilter *)self isEqualToAddressFilter:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_includedOptions;
   *(result + 2) = self->_excludedOptions;
   return result;
 }
 
-- (MKAddressFilter)initWithCoder:(id)a3
+- (MKAddressFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"inclusions"];
-  v6 = [v4 decodeInt64ForKey:@"exclusions"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"inclusions"];
+  v6 = [coderCopy decodeInt64ForKey:@"exclusions"];
 
   if (v5 | v6)
   {
@@ -201,54 +201,54 @@ LABEL_8:
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   includedOptions = self->_includedOptions;
-  v5 = a3;
-  [v5 encodeInt64:includedOptions forKey:@"inclusions"];
-  [v5 encodeInt64:self->_excludedOptions forKey:@"exclusions"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:includedOptions forKey:@"inclusions"];
+  [coderCopy encodeInt64:self->_excludedOptions forKey:@"exclusions"];
 }
 
-- (BOOL)excludesOptions:(unint64_t)a3
+- (BOOL)excludesOptions:(unint64_t)options
 {
   excludedOptions = self->_excludedOptions;
   if (excludedOptions)
   {
-    return (a3 & ~excludedOptions) == 0;
+    return (options & ~excludedOptions) == 0;
   }
 
   else
   {
-    return (a3 & ~self->_includedOptions) != 0;
+    return (options & ~self->_includedOptions) != 0;
   }
 }
 
-- (BOOL)includesOptions:(unint64_t)a3
+- (BOOL)includesOptions:(unint64_t)options
 {
   includedOptions = self->_includedOptions;
   if (includedOptions)
   {
-    return (a3 & ~includedOptions) == 0;
+    return (options & ~includedOptions) == 0;
   }
 
   else
   {
-    return (a3 & ~self->_excludedOptions) != 0;
+    return (options & ~self->_excludedOptions) != 0;
   }
 }
 
-- (id)initExcludingOptions:(unint64_t)a3
+- (id)initExcludingOptions:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = MKAddressFilter;
@@ -256,24 +256,24 @@ LABEL_8:
   if (result)
   {
     v5 = 16;
-    if (a3)
+    if (options)
     {
-      v6 = a3;
+      optionsCopy = options;
     }
 
     else
     {
       v5 = 8;
-      v6 = -1;
+      optionsCopy = -1;
     }
 
-    *(result + v5) = v6;
+    *(result + v5) = optionsCopy;
   }
 
   return result;
 }
 
-- (id)initIncludingOptions:(unint64_t)a3
+- (id)initIncludingOptions:(unint64_t)options
 {
   v7.receiver = self;
   v7.super_class = MKAddressFilter;
@@ -281,18 +281,18 @@ LABEL_8:
   if (result)
   {
     v5 = 8;
-    if (a3)
+    if (options)
     {
-      v6 = a3;
+      optionsCopy = options;
     }
 
     else
     {
       v5 = 16;
-      v6 = -1;
+      optionsCopy = -1;
     }
 
-    *(result + v5) = v6;
+    *(result + v5) = optionsCopy;
   }
 
   return result;

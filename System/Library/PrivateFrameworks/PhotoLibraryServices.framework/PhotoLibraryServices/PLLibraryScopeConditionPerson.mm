@@ -1,22 +1,22 @@
 @interface PLLibraryScopeConditionPerson
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4;
-- (BOOL)removePersonUUID:(id)a3;
-- (BOOL)replaceTombstonePersonUUID:(id)a3 withPersonUUID:(id)a4;
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria;
+- (BOOL)removePersonUUID:(id)d;
+- (BOOL)replaceTombstonePersonUUID:(id)d withPersonUUID:(id)iD;
 - (id)conditionQuery;
 - (id)description;
 @end
 
 @implementation PLLibraryScopeConditionPerson
 
-- (BOOL)removePersonUUID:(id)a3
+- (BOOL)removePersonUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLLibraryScopeConditionPerson *)self personUUIDs];
-  v6 = [v5 indexOfObject:v4];
+  dCopy = d;
+  personUUIDs = [(PLLibraryScopeConditionPerson *)self personUUIDs];
+  v6 = [personUUIDs indexOfObject:dCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [personUUIDs mutableCopy];
     [v7 removeObjectAtIndex:v6];
     [(PLLibraryScopeConditionPerson *)self setPersonUUIDs:v7];
   }
@@ -24,24 +24,24 @@
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)replaceTombstonePersonUUID:(id)a3 withPersonUUID:(id)a4
+- (BOOL)replaceTombstonePersonUUID:(id)d withPersonUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLLibraryScopeConditionPerson *)self personUUIDs];
-  v9 = [v8 indexOfObject:v7];
+  iDCopy = iD;
+  dCopy = d;
+  personUUIDs = [(PLLibraryScopeConditionPerson *)self personUUIDs];
+  v9 = [personUUIDs indexOfObject:dCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v8 mutableCopy];
-    if ([v8 containsObject:v6])
+    v10 = [personUUIDs mutableCopy];
+    if ([personUUIDs containsObject:iDCopy])
     {
       [v10 removeObjectAtIndex:v9];
     }
 
     else
     {
-      [v10 replaceObjectAtIndex:v9 withObject:v6];
+      [v10 replaceObjectAtIndex:v9 withObject:iDCopy];
     }
 
     [(PLLibraryScopeConditionPerson *)self setPersonUUIDs:v10];
@@ -100,8 +100,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PLLibraryScopeConditionPerson *)self personUUIDs];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  personUUIDs = [(PLLibraryScopeConditionPerson *)self personUUIDs];
+  v5 = [personUUIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -112,36 +112,36 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(personUUIDs);
         }
 
         [v3 addPersonUUIDInMomentQuery:*(*(&v11 + 1) + 8 * i) comparator:22];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [personUUIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [v3 query];
+  query = [v3 query];
 
-  return v9;
+  return query;
 }
 
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria
 {
-  v4 = a4;
+  criteriaCopy = criteria;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCriteria:v4];
+  queriesCopy = queries;
+  v7 = [[self alloc] initWithCriteria:criteriaCopy];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = queriesCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -156,11 +156,11 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) stringValue];
-        if (([v9 containsObject:v15] & 1) == 0)
+        stringValue = [*(*(&v17 + 1) + 8 * i) stringValue];
+        if (([v9 containsObject:stringValue] & 1) == 0)
         {
-          [v9 addObject:v15];
-          [v8 addObject:v15];
+          [v9 addObject:stringValue];
+          [v8 addObject:stringValue];
         }
       }
 

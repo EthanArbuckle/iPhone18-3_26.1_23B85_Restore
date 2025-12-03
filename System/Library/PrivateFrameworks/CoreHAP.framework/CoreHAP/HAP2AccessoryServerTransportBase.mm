@@ -1,38 +1,38 @@
 @interface HAP2AccessoryServerTransportBase
 + (id)new;
-- (BOOL)mergeWithNewTransport:(id)a3;
+- (BOOL)mergeWithNewTransport:(id)transport;
 - (HAP2AccessoryServerTransportBase)init;
-- (HAP2AccessoryServerTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4;
+- (HAP2AccessoryServerTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue;
 - (HAP2AccessoryServerTransportCommon)underlyingTransport;
 - (double)maxRequestTimeout;
-- (id)endpointForCharacteristic:(id)a3;
-- (id)endpointForCharacteristics:(id)a3;
+- (id)endpointForCharacteristic:(id)characteristic;
+- (id)endpointForCharacteristics:(id)characteristics;
 - (id)mimeTypeForCharacteristicRequests;
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3;
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint;
 - (id)queuedCloseOperation;
-- (id)wellKnownEndpoint:(unint64_t)a3;
-- (unint64_t)protocolFeaturesForVersion:(id)a3;
+- (id)wellKnownEndpoint:(unint64_t)endpoint;
+- (unint64_t)protocolFeaturesForVersion:(id)version;
 - (unint64_t)state;
-- (void)_closeWithError:(void *)a3 completion:;
-- (void)closeWithError:(id)a3 completion:(id)a4;
-- (void)didChangeStateWithError:(id)a3;
-- (void)didDisconnectWithError:(id)a3;
-- (void)doCloseWithError:(id)a3 completion:(id)a4;
-- (void)doOpenWithCompletion:(id)a3;
-- (void)doSendRequest:(id)a3 completion:(id)a4;
-- (void)doUpdateMaxRequestTimeout:(double)a3;
+- (void)_closeWithError:(void *)error completion:;
+- (void)closeWithError:(id)error completion:(id)completion;
+- (void)didChangeStateWithError:(id)error;
+- (void)didDisconnectWithError:(id)error;
+- (void)doCloseWithError:(id)error completion:(id)completion;
+- (void)doOpenWithCompletion:(id)completion;
+- (void)doSendRequest:(id)request completion:(id)completion;
+- (void)doUpdateMaxRequestTimeout:(double)timeout;
 - (void)internalState;
-- (void)openWithCompletion:(id)a3;
-- (void)sendRequest:(id)a3 completion:(id)a4;
-- (void)setInternalState:(void *)a1;
-- (void)setMaxRequestTimeout:(double)a3;
-- (void)setQueuedCloseOperation:(id *)a1;
-- (void)updateMaxRequestTimeout:(double)a3;
+- (void)openWithCompletion:(id)completion;
+- (void)sendRequest:(id)request completion:(id)completion;
+- (void)setInternalState:(void *)state;
+- (void)setMaxRequestTimeout:(double)timeout;
+- (void)setQueuedCloseOperation:(id *)operation;
+- (void)updateMaxRequestTimeout:(double)timeout;
 @end
 
 @implementation HAP2AccessoryServerTransportBase
 
-- (void)doUpdateMaxRequestTimeout:(double)a3
+- (void)doUpdateMaxRequestTimeout:(double)timeout
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -45,10 +45,10 @@
   objc_exception_throw(v8);
 }
 
-- (void)didDisconnectWithError:(id)a3
+- (void)didDisconnectWithError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -58,49 +58,49 @@
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_error_impl(&dword_22AADC000, v5, OS_LOG_TYPE_ERROR, "%@ (Base) Disconnected with error: %@", &v7, 0x16u);
   }
 
-  [(HAP2AccessoryServerTransportBase *)self _closeWithError:v4 completion:&__block_literal_global_6709];
+  [(HAP2AccessoryServerTransportBase *)self _closeWithError:errorCopy completion:&__block_literal_global_6709];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_closeWithError:(void *)a3 completion:
+- (void)_closeWithError:(void *)error completion:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    errorCopy = error;
     v6 = a2;
-    v7 = [[HAP2AccessoryServerTransportBaseOperationClose alloc] initWithTransport:a1 desiredError:v6 completion:v5];
+    v7 = [[HAP2AccessoryServerTransportBaseOperationClose alloc] initWithTransport:self desiredError:v6 completion:errorCopy];
 
-    v8 = [a1 propertyLock];
+    propertyLock = [self propertyLock];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __63__HAP2AccessoryServerTransportBase__closeWithError_completion___block_invoke;
     v14 = &unk_2786D7050;
-    v15 = a1;
+    selfCopy = self;
     v16 = v7;
     v9 = v7;
-    [v8 performWritingBlock:&v11];
+    [propertyLock performWritingBlock:&v11];
 
-    v10 = [a1 operationQueue];
-    [v10 addOperation:v9];
+    operationQueue = [self operationQueue];
+    [operationQueue addOperation:v9];
   }
 }
 
-- (void)setQueuedCloseOperation:(id *)a1
+- (void)setQueuedCloseOperation:(id *)operation
 {
   v5 = a2;
-  if (a1)
+  if (operation)
   {
-    v4 = [a1 propertyLock];
-    [v4 assertOwner];
+    propertyLock = [operation propertyLock];
+    [propertyLock assertOwner];
 
-    objc_storeStrong(a1 + 2, a2);
+    objc_storeStrong(operation + 2, a2);
   }
 }
 
@@ -207,33 +207,33 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInternalState:(void *)a1
+- (void)setInternalState:(void *)state
 {
-  if (a1)
+  if (state)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [state operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    v5 = [a1 propertyLock];
-    [v5 assertOwner];
+    propertyLock = [state propertyLock];
+    [propertyLock assertOwner];
 
-    a1[1] = a2;
+    state[1] = a2;
   }
 }
 
 - (id)queuedCloseOperation
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 propertyLock];
-    [v3 assertOwner];
+    selfCopy = self;
+    propertyLock = [self propertyLock];
+    [propertyLock assertOwner];
 
-    a1 = v2[2];
+    self = selfCopy[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)internalState
@@ -241,8 +241,8 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   if (result)
   {
     v1 = result;
-    v2 = [result propertyLock];
-    [v2 assertOwner];
+    propertyLock = [result propertyLock];
+    [propertyLock assertOwner];
 
     return v1[1];
   }
@@ -250,10 +250,10 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   return result;
 }
 
-- (void)doCloseWithError:(id)a3 completion:(id)a4
+- (void)doCloseWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -265,10 +265,10 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   objc_exception_throw(v13);
 }
 
-- (void)doSendRequest:(id)a3 completion:(id)a4
+- (void)doSendRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -280,9 +280,9 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   objc_exception_throw(v13);
 }
 
-- (void)doOpenWithCompletion:(id)a3
+- (void)doOpenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -294,9 +294,9 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   objc_exception_throw(v10);
 }
 
-- (void)didChangeStateWithError:(id)a3
+- (void)didChangeStateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -308,7 +308,7 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   objc_exception_throw(v10);
 }
 
-- (void)updateMaxRequestTimeout:(double)a3
+- (void)updateMaxRequestTimeout:(double)timeout
 {
   v19 = *MEMORY[0x277D85DE8];
   if (hap2LogInitialize_onceToken != -1)
@@ -322,7 +322,7 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = timeout;
     _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_INFO, "%@ (Base) Scheduling max request timeout change: %f", buf, 0x16u);
   }
 
@@ -336,7 +336,7 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   v14[1] = 3221225472;
   v14[2] = __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_invoke;
   v14[3] = &unk_2786D5778;
-  *&v14[6] = a3;
+  *&v14[6] = timeout;
   v14[4] = self;
   v14[5] = buf;
   v7 = MEMORY[0x231885210](v14);
@@ -346,8 +346,8 @@ void __56__HAP2AccessoryServerTransportBase__closeWithOperation___block_invoke_3
   v11 = *(*&buf[8] + 40);
   *(*&buf[8] + 40) = v10;
 
-  v12 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v12 addOperation:*(*&buf[8] + 40)];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue addOperation:*(*&buf[8] + 40)];
 
   _Block_object_dispose(buf, 8);
   v13 = *MEMORY[0x277D85DE8];
@@ -362,9 +362,9 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   return [v2 finish];
 }
 
-- (BOOL)mergeWithNewTransport:(id)a3
+- (BOOL)mergeWithNewTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -376,7 +376,7 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v10);
 }
 
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -402,9 +402,9 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v7);
 }
 
-- (id)endpointForCharacteristics:(id)a3
+- (id)endpointForCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -416,9 +416,9 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v10);
 }
 
-- (id)endpointForCharacteristic:(id)a3
+- (id)endpointForCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -430,7 +430,7 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v10);
 }
 
-- (id)wellKnownEndpoint:(unint64_t)a3
+- (id)wellKnownEndpoint:(unint64_t)endpoint
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -443,9 +443,9 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v8);
 }
 
-- (unint64_t)protocolFeaturesForVersion:(id)a3
+- (unint64_t)protocolFeaturesForVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -457,11 +457,11 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   objc_exception_throw(v10);
 }
 
-- (void)closeWithError:(id)a3 completion:(id)a4
+- (void)closeWithError:(id)error completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  errorCopy = error;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -471,20 +471,20 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%@ (Base) Scheduling close", &v10, 0xCu);
   }
 
-  [(HAP2AccessoryServerTransportBase *)self _closeWithError:v7 completion:v6];
+  [(HAP2AccessoryServerTransportBase *)self _closeWithError:errorCopy completion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequest:(id)a3 completion:(id)a4
+- (void)sendRequest:(id)request completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -494,16 +494,16 @@ uint64_t __60__HAP2AccessoryServerTransportBase_updateMaxRequestTimeout___block_
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%@ (Base) Scheduling send for request %@", &v12, 0x16u);
   }
 
-  v9 = [[HAP2AccessoryServerTransportBaseOperationSendRequest alloc] initWithTransport:self request:v6 completion:v7];
+  v9 = [[HAP2AccessoryServerTransportBaseOperationSendRequest alloc] initWithTransport:self request:requestCopy completion:completionCopy];
 
-  v10 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v10 addOperation:v9];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue addOperation:v9];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -636,10 +636,10 @@ void __62__HAP2AccessoryServerTransportBase__sendRequestWithOperation___block_in
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openWithCompletion:(id)a3
+- (void)openWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -649,14 +649,14 @@ void __62__HAP2AccessoryServerTransportBase__sendRequestWithOperation___block_in
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "%@ (Base) Scheduling open", &v9, 0xCu);
   }
 
-  v6 = [[HAP2AccessoryServerTransportBaseOperationOpen alloc] initWithTransport:self completion:v4];
+  v6 = [[HAP2AccessoryServerTransportBaseOperationOpen alloc] initWithTransport:self completion:completionCopy];
 
-  v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v7 addOperation:v6];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue addOperation:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -840,19 +840,19 @@ void __55__HAP2AccessoryServerTransportBase__openWithOperation___block_invoke_23
   objc_exception_throw(v7);
 }
 
-- (void)setMaxRequestTimeout:(double)a3
+- (void)setMaxRequestTimeout:(double)timeout
 {
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HAP2AccessoryServerTransportBase_setMaxRequestTimeout___block_invoke;
   v7[3] = &unk_2786D63C8;
   v7[4] = self;
-  *&v7[5] = a3;
-  [v6 performWritingBlock:v7];
+  *&v7[5] = timeout;
+  [propertyLock performWritingBlock:v7];
 }
 
 double __57__HAP2AccessoryServerTransportBase_setMaxRequestTimeout___block_invoke(uint64_t a1)
@@ -868,14 +868,14 @@ double __57__HAP2AccessoryServerTransportBase_setMaxRequestTimeout___block_invok
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__HAP2AccessoryServerTransportBase_maxRequestTimeout__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -895,14 +895,14 @@ double __53__HAP2AccessoryServerTransportBase_maxRequestTimeout__block_invoke(ui
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(HAP2AccessoryServerTransportBase *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerTransportBase *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__HAP2AccessoryServerTransportBase_state__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -916,10 +916,10 @@ void *__41__HAP2AccessoryServerTransportBase_state__block_invoke(uint64_t a1)
   return result;
 }
 
-- (HAP2AccessoryServerTransportBase)initWithOperationQueue:(id)a3 delegateQueue:(id)a4
+- (HAP2AccessoryServerTransportBase)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateQueueCopy = delegateQueue;
   v17.receiver = self;
   v17.super_class = HAP2AccessoryServerTransportBase;
   v9 = [(HAP2AccessoryServerTransportBase *)&v17 init];
@@ -934,8 +934,8 @@ void *__41__HAP2AccessoryServerTransportBase_state__block_invoke(uint64_t a1)
     propertyLock = v9->_propertyLock;
     v9->_propertyLock = v14;
 
-    objc_storeStrong(&v9->_operationQueue, a3);
-    objc_storeStrong(&v9->_delegateQueue, a4);
+    objc_storeStrong(&v9->_operationQueue, queue);
+    objc_storeStrong(&v9->_delegateQueue, delegateQueue);
     v9->_internalState = 0;
   }
 

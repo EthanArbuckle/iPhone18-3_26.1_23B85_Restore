@@ -1,5 +1,5 @@
 @interface SUUIOnboardingProgressViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
 - (id)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation SUUIOnboardingProgressViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIOnboardingProgressView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIOnboardingProgressView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIOnboardingProgressView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIOnboardingProgressView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityPath

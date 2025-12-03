@@ -2,42 +2,42 @@
 + (NSString)actionsContainer;
 + (NSString)infoContainer;
 + (NSString)levelOfDetailButton;
-+ (id)metadataRowWithLabel:(id)a3;
++ (id)metadataRowWithLabel:(id)label;
 @end
 
 @implementation _DOCItemInfoViewAXIdentifier
 
 + (NSString)infoContainer
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"infoContainer");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"infoContainer");
 
   return v3;
 }
 
 + (NSString)actionsContainer
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"actionsContainer");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"actionsContainer");
 
   return v3;
 }
 
 + (NSString)levelOfDetailButton
 {
-  v2 = [a1 idBase];
-  v3 = composedID(v2, @"levelOfDetailButton");
+  idBase = [self idBase];
+  v3 = composedID(idBase, @"levelOfDetailButton");
 
   return v3;
 }
 
-+ (id)metadataRowWithLabel:(id)a3
++ (id)metadataRowWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(@"metadata", v4);
+  labelCopy = label;
+  idBase = [self idBase];
+  v6 = composedID(@"metadata", labelCopy);
 
-  v7 = composedID(v5, v6);
+  v7 = composedID(idBase, v6);
 
   return v7;
 }

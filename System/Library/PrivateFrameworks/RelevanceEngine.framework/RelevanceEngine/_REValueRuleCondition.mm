@@ -1,10 +1,10 @@
 @interface _REValueRuleCondition
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (_REValueRuleCondition)initWithFeature:(id)a3 relation:(int64_t)a4 value:(unint64_t)a5;
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation;
+- (BOOL)isEqual:(id)equal;
+- (_REValueRuleCondition)initWithFeature:(id)feature relation:(int64_t)relation value:(unint64_t)value;
 - (id)_inflectionFeatureValuePairs;
 - (id)_notCondition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -26,33 +26,33 @@
   [(_REValueRuleCondition *)&v3 dealloc];
 }
 
-- (_REValueRuleCondition)initWithFeature:(id)a3 relation:(int64_t)a4 value:(unint64_t)a5
+- (_REValueRuleCondition)initWithFeature:(id)feature relation:(int64_t)relation value:(unint64_t)value
 {
-  v9 = a3;
+  featureCopy = feature;
   v13.receiver = self;
   v13.super_class = _REValueRuleCondition;
   v10 = [(_REValueRuleCondition *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_feature, a3);
-    v11->_relation = a4;
-    v11->_value = a5;
-    RERetainFeatureValueTaggedPointer(a5);
+    objc_storeStrong(&v10->_feature, feature);
+    v11->_relation = relation;
+    v11->_value = value;
+    RERetainFeatureValueTaggedPointer(value);
     v11->_allowsEmptyValueForFeature = 0;
   }
 
   return v11;
 }
 
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation
 {
-  v7 = a3;
+  mapCopy = map;
   allowsEmptyValueForFeature = 16;
-  if (([v7 hasValueForFeature:self->_feature] & 1) == 0)
+  if (([mapCopy hasValueForFeature:self->_feature] & 1) == 0)
   {
     allowsEmptyValueForFeature = self->_allowsEmptyValueForFeature;
-    if (!a5)
+    if (!explanation)
     {
       goto LABEL_28;
     }
@@ -60,7 +60,7 @@
     goto LABEL_26;
   }
 
-  v9 = [v7 valueForFeature:self->_feature];
+  v9 = [mapCopy valueForFeature:self->_feature];
   relation = self->_relation;
   v11 = RECompareFeatureValues(v9, self->_value);
   if (relation > 0)
@@ -82,7 +82,7 @@
 
 LABEL_16:
     allowsEmptyValueForFeature = !v13;
-    if (a5)
+    if (explanation)
     {
       goto LABEL_26;
     }
@@ -110,12 +110,12 @@ LABEL_16:
   v12 = v11 == 0;
 LABEL_22:
   allowsEmptyValueForFeature = v12;
-  if (a5)
+  if (explanation)
   {
 LABEL_26:
     if (allowsEmptyValueForFeature)
     {
-      *a5 = [REMLExplanation explanationForCondition:self];
+      *explanation = [REMLExplanation explanationForCondition:self];
       allowsEmptyValueForFeature = 1;
     }
   }
@@ -134,10 +134,10 @@ LABEL_28:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -147,7 +147,7 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       feature = v5->_feature;
       v7 = self->_feature;
       v8 = v7;
@@ -202,9 +202,9 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   feature = self->_feature;
   relation = self->_relation;
   value = self->_value;

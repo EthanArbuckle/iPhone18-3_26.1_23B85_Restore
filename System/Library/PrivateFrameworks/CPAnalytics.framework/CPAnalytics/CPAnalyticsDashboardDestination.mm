@@ -1,13 +1,13 @@
 @interface CPAnalyticsDashboardDestination
-- (BOOL)isMediaEvent:(id)a3;
+- (BOOL)isMediaEvent:(id)event;
 - (CPAnalytics)cpAnalyticsInstance;
-- (CPAnalyticsDashboardDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4;
+- (CPAnalyticsDashboardDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance;
 - (NSArray)allErrorProperties;
 - (NSArray)allMediaProperties;
 - (NSArray)allStandardProperties;
-- (id)buildCoreAnalyticsEventPayloadWithProperties:(id)a3 fromSourceEvent:(id)a4 intoTargetEventPayload:(id)a5;
-- (void)reportMalformedEvent:(id)a3 malformationDescriptionWithFormat:(id)a4;
-- (void)sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:(id)a3 fromSourceEvent:(id)a4 payload:(id)a5;
+- (id)buildCoreAnalyticsEventPayloadWithProperties:(id)properties fromSourceEvent:(id)event intoTargetEventPayload:(id)payload;
+- (void)reportMalformedEvent:(id)event malformationDescriptionWithFormat:(id)format;
+- (void)sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:(id)name fromSourceEvent:(id)event payload:(id)payload;
 @end
 
 @implementation CPAnalyticsDashboardDestination
@@ -19,22 +19,22 @@
   return WeakRetained;
 }
 
-- (void)reportMalformedEvent:(id)a3 malformationDescriptionWithFormat:(id)a4
+- (void)reportMalformedEvent:(id)event malformationDescriptionWithFormat:(id)format
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventCopy = event;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithFormat:v7 arguments:&v19];
+  formatCopy = format;
+  v8 = [[v6 alloc] initWithFormat:formatCopy arguments:&v19];
 
   v9 = CPAnalyticsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v5 copyRawPayload];
+    copyRawPayload = [eventCopy copyRawPayload];
     *buf = 138412802;
-    v13 = v5;
+    v13 = eventCopy;
     v14 = 2112;
-    v15 = v11;
+    v15 = copyRawPayload;
     v16 = 2112;
     v17 = v8;
     _os_log_error_impl(&dword_24260A000, v9, OS_LOG_TYPE_ERROR, "Malformed event %@ with payload %@: %@", buf, 0x20u);
@@ -43,18 +43,18 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)buildCoreAnalyticsEventPayloadWithProperties:(id)a3 fromSourceEvent:(id)a4 intoTargetEventPayload:(id)a5
+- (id)buildCoreAnalyticsEventPayloadWithProperties:(id)properties fromSourceEvent:(id)event intoTargetEventPayload:(id)payload
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v9];
+  propertiesCopy = properties;
+  eventCopy = event;
+  payloadCopy = payload;
+  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:payloadCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v7;
+  v11 = propertiesCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -74,7 +74,7 @@
 
         if (!v17)
         {
-          v18 = [v8 propertyForKey:v16];
+          v18 = [eventCopy propertyForKey:v16];
           if (v18)
           {
             [v10 setObject:v18 forKeyedSubscript:v16];
@@ -104,20 +104,20 @@
   return v19;
 }
 
-- (void)sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:(id)a3 fromSourceEvent:(id)a4 payload:(id)a5
+- (void)sendCoreAnalyticsEventWithStandardPropertiesForEventWithName:(id)name fromSourceEvent:(id)event payload:(id)payload
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CPAnalyticsDashboardDestination *)self allStandardProperties];
-  v12 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:v11 fromSourceEvent:v9 intoTargetEventPayload:v8];
+  payloadCopy = payload;
+  eventCopy = event;
+  nameCopy = name;
+  allStandardProperties = [(CPAnalyticsDashboardDestination *)self allStandardProperties];
+  v12 = [(CPAnalyticsDashboardDestination *)self buildCoreAnalyticsEventPayloadWithProperties:allStandardProperties fromSourceEvent:eventCopy intoTargetEventPayload:payloadCopy];
 
-  [CPAnalyticsCoreAnalyticsHelper sendCoreAnalyticsEvent:v10 withPayload:v12 shouldSanitize:0];
+  [CPAnalyticsCoreAnalyticsHelper sendCoreAnalyticsEvent:nameCopy withPayload:v12 shouldSanitize:0];
 }
 
-- (BOOL)isMediaEvent:(id)a3
+- (BOOL)isMediaEvent:(id)event
 {
-  v3 = [a3 propertyForKey:@"cpa_media_localIdentifier"];
+  v3 = [event propertyForKey:@"cpa_media_localIdentifier"];
   v4 = [v3 length] != 0;
 
   return v4;
@@ -187,16 +187,16 @@
   return v2;
 }
 
-- (CPAnalyticsDashboardDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (CPAnalyticsDashboardDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance
 {
-  v5 = a4;
+  instanceCopy = instance;
   v9.receiver = self;
   v9.super_class = CPAnalyticsDashboardDestination;
   v6 = [(CPAnalyticsDashboardDestination *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_cpAnalyticsInstance, v5);
+    objc_storeWeak(&v6->_cpAnalyticsInstance, instanceCopy);
   }
 
   return v7;

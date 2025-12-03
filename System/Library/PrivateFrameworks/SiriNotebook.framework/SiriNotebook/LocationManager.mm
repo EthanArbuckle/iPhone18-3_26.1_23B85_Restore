@@ -1,14 +1,14 @@
 @interface LocationManager
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationManager
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_2683B6938(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_2683B6938(authorizationCopy);
 }
 
 @end

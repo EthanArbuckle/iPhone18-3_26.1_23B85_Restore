@@ -1,20 +1,20 @@
 @interface PGLayerHostView
-- (PGLayerHostView)initWithFrame:(CGRect)a3;
+- (PGLayerHostView)initWithFrame:(CGRect)frame;
 - (void)_manageSharingOfTouchesBetweenClientAndHostContext;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHostedWindowHostingHandle:(id)a3;
-- (void)setSceneView:(id)a3;
+- (void)setHostedWindowHostingHandle:(id)handle;
+- (void)setSceneView:(id)view;
 @end
 
 @implementation PGLayerHostView
 
-- (PGLayerHostView)initWithFrame:(CGRect)a3
+- (PGLayerHostView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -39,20 +39,20 @@
   [(PGLayerHostView *)&v4 dealloc];
 }
 
-- (void)setHostedWindowHostingHandle:(id)a3
+- (void)setHostedWindowHostingHandle:(id)handle
 {
-  v4 = a3;
-  if (v4)
+  handleCopy = handle;
+  if (handleCopy)
   {
     remoteView = self->_remoteView;
     if (remoteView)
     {
-      [(_UIRemoteView *)remoteView setHostedWindowHostingHandle:v4];
+      [(_UIRemoteView *)remoteView setHostedWindowHostingHandle:handleCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DD660] viewWithHostedWindowHostingHandle:v4];
+      v6 = [MEMORY[0x1E69DD660] viewWithHostedWindowHostingHandle:handleCopy];
       v7 = self->_remoteView;
       self->_remoteView = v6;
 
@@ -65,15 +65,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSceneView:(id)a3
+- (void)setSceneView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   sceneView = self->_sceneView;
-  if (sceneView != v5)
+  if (sceneView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)sceneView removeFromSuperview];
-    objc_storeStrong(&self->_sceneView, a3);
+    objc_storeStrong(&self->_sceneView, view);
     if (v7)
     {
       [(PGLayerHostView *)self addSubview:v7];
@@ -98,22 +98,22 @@
   touchDeliveryPolicyAssertion = self->_touchDeliveryPolicyAssertion;
   self->_touchDeliveryPolicyAssertion = 0;
 
-  v4 = [(PGLayerHostView *)self hostedWindowHostingHandle];
-  if (v4)
+  hostedWindowHostingHandle = [(PGLayerHostView *)self hostedWindowHostingHandle];
+  if (hostedWindowHostingHandle)
   {
-    v5 = v4;
-    v6 = [(PGLayerHostView *)self window];
+    v5 = hostedWindowHostingHandle;
+    window = [(PGLayerHostView *)self window];
 
-    if (v6)
+    if (window)
     {
-      v7 = [(_UIRemoteView *)self->_remoteView contextID];
-      v8 = [(PGLayerHostView *)self window];
-      v9 = [v8 _contextId];
+      contextID = [(_UIRemoteView *)self->_remoteView contextID];
+      window2 = [(PGLayerHostView *)self window];
+      _contextId = [window2 _contextId];
 
       v10 = objc_alloc_init(MEMORY[0x1E698E440]);
-      v11 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:v7 withHostContextId:v9];
-      v12 = [v10 endpoint];
-      [v11 setAssertionEndpoint:v12];
+      v11 = [MEMORY[0x1E698E438] policyRequiringSharingOfTouchesDeliveredToChildContextId:contextID withHostContextId:_contextId];
+      endpoint = [v10 endpoint];
+      [v11 setAssertionEndpoint:endpoint];
 
       v13 = v11;
       v14 = BKSTouchDeliveryPolicyServerGetProxyWithErrorHandler();

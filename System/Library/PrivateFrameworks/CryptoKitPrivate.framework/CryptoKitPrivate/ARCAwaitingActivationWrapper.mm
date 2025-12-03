@@ -1,16 +1,16 @@
 @interface ARCAwaitingActivationWrapper
 - (_TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper)init;
-- (_TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper)initWithRequestContext:(id)a3 serverPublicKeyData:(id)a4 error:(id *)a5;
-- (id)makeCredentialWithResponseData:(id)a3 error:(id *)a4;
+- (_TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper)initWithRequestContext:(id)context serverPublicKeyData:(id)data error:(id *)error;
+- (id)makeCredentialWithResponseData:(id)data error:(id *)error;
 - (id)makeRequest;
 @end
 
 @implementation ARCAwaitingActivationWrapper
 
-- (_TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper)initWithRequestContext:(id)a3 serverPublicKeyData:(id)a4 error:(id *)a5
+- (_TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper)initWithRequestContext:(id)context serverPublicKeyData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dataCopy = data;
   v8 = sub_1C0D7832C();
   v10 = v9;
 
@@ -28,7 +28,7 @@
   v5 = *&self->precredential[OBJC_IVAR____TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper_precredential + 88];
   v6 = *&self->precredential[OBJC_IVAR____TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper_precredential + 32];
   v7 = *&self->precredential[OBJC_IVAR____TtC16CryptoKitPrivate28ARCAwaitingActivationWrapper_precredential + 40];
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1C0D10F0C(v6, v7, v2, v3, v4, v5);
   v11 = v10;
 
@@ -38,10 +38,10 @@
   return v12;
 }
 
-- (id)makeCredentialWithResponseData:(id)a3 error:(id *)a4
+- (id)makeCredentialWithResponseData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = sub_1C0D7832C();
   v9 = v8;
 

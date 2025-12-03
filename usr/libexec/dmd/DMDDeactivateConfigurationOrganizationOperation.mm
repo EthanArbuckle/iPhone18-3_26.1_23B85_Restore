@@ -1,7 +1,7 @@
 @interface DMDDeactivateConfigurationOrganizationOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,44 +21,44 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
 
-  if (v5)
+  if (configurationEngine)
   {
-    v6 = [(DMDTaskOperation *)self configurationEngine];
+    configurationEngine2 = [(DMDTaskOperation *)self configurationEngine];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100034364;
     v7[3] = &unk_1000CEE68;
     v7[4] = self;
-    [v6 handleDeactivateConfigurationOrganizationRequest:v4 completionHandler:v7];
+    [configurationEngine2 handleDeactivateConfigurationOrganizationRequest:requestCopy completionHandler:v7];
   }
 
   else
   {
-    v6 = DMFErrorWithCodeAndUserInfo();
-    [(DMDDeactivateConfigurationOrganizationOperation *)self endOperationWithError:v6];
+    configurationEngine2 = DMFErrorWithCodeAndUserInfo();
+    [(DMDDeactivateConfigurationOrganizationOperation *)self endOperationWithError:configurationEngine2];
   }
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDDeactivateConfigurationOrganizationOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 organizationIdentifier];
+  organizationIdentifier = [requestCopy organizationIdentifier];
 
-  if (!v7)
+  if (!organizationIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -66,17 +66,17 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.organizationIdentifier";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
 @end

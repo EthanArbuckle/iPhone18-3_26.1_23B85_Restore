@@ -1,17 +1,17 @@
 @interface EPSagaTransactionWallClockWait
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)cancelTimer;
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4;
+- (void)setTimerDuration:(double)duration withBlock:(id)block;
 @end
 
 @implementation EPSagaTransactionWallClockWait
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"timeoutDuration"];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [entryCopy objectForKeyedSubscript:@"timeoutDuration"];
   if (v8)
   {
     objc_initWeak(&location, self);
@@ -29,14 +29,14 @@
 
   else
   {
-    v11 = [(EPSagaTransactionWallClockWait *)self delegate];
-    [v11 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionWallClockWait *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
-- (void)setTimerDuration:(double)a3 withBlock:(id)a4
+- (void)setTimerDuration:(double)duration withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   currentTimer = self->_currentTimer;
   if (currentTimer)
   {
@@ -45,19 +45,19 @@
     self->_currentTimer = 0;
   }
 
-  if (v6)
+  if (blockCopy)
   {
     v9 = +[EPFactory queue];
     v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
 
-    v11 = dispatch_time(0, (a3 * 1000000000.0));
+    v11 = dispatch_time(0, (duration * 1000000000.0));
     dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000CAD8C;
     v14[3] = &unk_100175FA0;
     v14[4] = self;
-    v15 = v6;
+    v15 = blockCopy;
     dispatch_source_set_event_handler(v10, v14);
     dispatch_resume(v10);
     v12 = self->_currentTimer;
@@ -75,8 +75,8 @@
     v4 = self->_currentTimer;
     self->_currentTimer = 0;
 
-    v5 = [(EPSagaTransactionWallClockWait *)self delegate];
-    [v5 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionWallClockWait *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 

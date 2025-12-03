@@ -1,33 +1,33 @@
 @interface SOClockAlarmObserver
 + (void)initialize;
 - (SOClockAlarmObserver)init;
-- (SOClockAlarmObserver)initWithInstanceContext:(id)a3;
+- (SOClockAlarmObserver)initWithInstanceContext:(id)context;
 - (id)_alarmSnapshot;
 - (void)_beginGroup;
 - (void)_consolidateNotifiedFiringAlarms;
 - (void)_endGroup;
-- (void)_enumerateListenersUsingBlock:(id)a3;
-- (void)_fetchAlarmsForReason:(id)a3 completion:(id)a4;
-- (void)_handleFetchAlarmsForReason:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_handleFetchAlarmsForReason:(id)a3 result:(id)a4 completion:(id)a5;
+- (void)_enumerateListenersUsingBlock:(id)block;
+- (void)_fetchAlarmsForReason:(id)reason completion:(id)completion;
+- (void)_handleFetchAlarmsForReason:(id)reason error:(id)error completion:(id)completion;
+- (void)_handleFetchAlarmsForReason:(id)reason result:(id)result completion:(id)completion;
 - (void)_reset;
 - (void)_setUp;
 - (void)_tearDown;
-- (void)addListener:(id)a3;
-- (void)alarmFired:(id)a3;
-- (void)alarmsAdded:(id)a3;
-- (void)alarmsChanged:(id)a3;
-- (void)alarmsRemoved:(id)a3;
-- (void)alarmsUpdated:(id)a3;
-- (void)clockItemStorageDidUpdate:(id)a3 insertedItemIDs:(id)a4 updatedItemIDs:(id)a5 deletedItemIDs:(id)a6;
+- (void)addListener:(id)listener;
+- (void)alarmFired:(id)fired;
+- (void)alarmsAdded:(id)added;
+- (void)alarmsChanged:(id)changed;
+- (void)alarmsRemoved:(id)removed;
+- (void)alarmsUpdated:(id)updated;
+- (void)clockItemStorageDidUpdate:(id)update insertedItemIDs:(id)ds updatedItemIDs:(id)iDs deletedItemIDs:(id)itemIDs;
 - (void)dealloc;
-- (void)firingAlarmChanged:(id)a3;
-- (void)firingAlarmDismissed:(id)a3;
-- (void)getAlarmSnapshotWithCompletion:(id)a3;
-- (void)getFiringAlarmIDsWithCompletion:(id)a3;
+- (void)firingAlarmChanged:(id)changed;
+- (void)firingAlarmDismissed:(id)dismissed;
+- (void)getAlarmSnapshotWithCompletion:(id)completion;
+- (void)getFiringAlarmIDsWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)removeListener:(id)a3;
-- (void)stateReset:(id)a3;
+- (void)removeListener:(id)listener;
+- (void)stateReset:(id)reset;
 @end
 
 @implementation SOClockAlarmObserver
@@ -35,18 +35,18 @@
 - (void)_consolidateNotifiedFiringAlarms
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(AFClockItemStorage *)self->_alarmStorage itemsByID];
+  itemsByID = [(AFClockItemStorage *)self->_alarmStorage itemsByID];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__SOClockAlarmObserver__consolidateNotifiedFiringAlarms__block_invoke;
   v23[3] = &unk_279C3CF10;
   v23[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v23];
+  [itemsByID enumerateKeysAndObjectsUsingBlock:v23];
   if ([(NSMutableOrderedSet *)self->_notifiedFiringAlarmIDs count])
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [v3 allKeys];
-    v6 = [v4 setWithArray:v5];
+    allKeys = [itemsByID allKeys];
+    v6 = [v4 setWithArray:allKeys];
 
     v7 = MEMORY[0x277CBEB58];
     v8 = [(NSMutableOrderedSet *)self->_notifiedFiringAlarmIDs set];
@@ -130,11 +130,11 @@ LABEL_7:
   }
 }
 
-- (void)_enumerateListenersUsingBlock:(id)a3
+- (void)_enumerateListenersUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -156,7 +156,7 @@ LABEL_7:
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+          blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
@@ -170,23 +170,23 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchAlarmsForReason:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_handleFetchAlarmsForReason:(id)reason error:(id)error completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  errorCopy = error;
+  completionCopy = completion;
   v10 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
     v12 = 136315650;
     v13 = "[SOClockAlarmObserver _handleFetchAlarmsForReason:error:completion:]";
     v14 = 2112;
-    v15 = v7;
+    v15 = reasonCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = errorCopy;
     _os_log_error_impl(&dword_26858F000, v10, OS_LOG_TYPE_ERROR, "%s reason = %@, error = %@", &v12, 0x20u);
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -194,10 +194,10 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  if (v9)
+  if (completionCopy)
   {
 LABEL_3:
-    v9[2](v9, 0, v8);
+    completionCopy[2](completionCopy, 0, errorCopy);
   }
 
 LABEL_4:
@@ -205,19 +205,19 @@ LABEL_4:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchAlarmsForReason:(id)a3 result:(id)a4 completion:(id)a5
+- (void)_handleFetchAlarmsForReason:(id)reason result:(id)result completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = SOClockAlarmCreateFromMTAlarms(a4);
+  reasonCopy = reason;
+  completionCopy = completion;
+  v10 = SOClockAlarmCreateFromMTAlarms(result);
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v13 = 136315650;
     v14 = "[SOClockAlarmObserver _handleFetchAlarmsForReason:result:completion:]";
     v15 = 2112;
-    v16 = v8;
+    v16 = reasonCopy;
     v17 = 2112;
     v18 = v10;
     _os_log_impl(&dword_26858F000, v11, OS_LOG_TYPE_INFO, "%s reason = %@, alarms = %@", &v13, 0x20u);
@@ -227,26 +227,26 @@ LABEL_4:
   [(AFClockItemStorage *)self->_alarmStorage deleteAllItems];
   [(AFClockItemStorage *)self->_alarmStorage insertOrUpdateItems:v10];
   [(AFClockItemStorage *)self->_alarmStorage endGroupingWithOptions:0];
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAlarmsForReason:(id)a3 completion:(id)a4
+- (void)_fetchAlarmsForReason:(id)reason completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v29 = "[SOClockAlarmObserver _fetchAlarmsForReason:completion:]";
     v30 = 2112;
-    v31 = v6;
+    v31 = reasonCopy;
     _os_log_impl(&dword_26858F000, v8, OS_LOG_TYPE_INFO, "%s reason = %@", buf, 0x16u);
   }
 
@@ -259,12 +259,12 @@ LABEL_4:
     v23[1] = 3221225472;
     v23[2] = __57__SOClockAlarmObserver__fetchAlarmsForReason_completion___block_invoke;
     v23[3] = &unk_279C3D3C0;
-    v11 = v6;
+    v11 = reasonCopy;
     v24 = v11;
     v12 = v10;
     v25 = v12;
     objc_copyWeak(&v27, buf);
-    v13 = v7;
+    v13 = completionCopy;
     v26 = v13;
     v14 = [v9 addSuccessBlock:v23];
     v18[0] = MEMORY[0x277D85DD0];
@@ -285,7 +285,7 @@ LABEL_4:
   else
   {
     v15 = [MEMORY[0x277CEF2A0] errorWithCode:2105];
-    [(SOClockAlarmObserver *)self _handleFetchAlarmsForReason:v6 error:v15 completion:v7];
+    [(SOClockAlarmObserver *)self _handleFetchAlarmsForReason:reasonCopy error:v15 completion:completionCopy];
   }
 
   objc_destroyWeak(buf);
@@ -652,17 +652,17 @@ void __38__SOClockAlarmObserver__alarmSnapshot__block_invoke(uint64_t a1, void *
   ++self->_alarmSnapshotGroupDepth;
 }
 
-- (void)alarmsChanged:(id)a3
+- (void)alarmsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SOClockAlarmObserver_alarmsChanged___block_invoke;
   v7[3] = &unk_279C3D598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -743,17 +743,17 @@ uint64_t __38__SOClockAlarmObserver_alarmsChanged___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)stateReset:(id)a3
+- (void)stateReset:(id)reset
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[SOClockAlarmObserver stateReset:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = resetCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -797,17 +797,17 @@ uint64_t __35__SOClockAlarmObserver_stateReset___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)firingAlarmDismissed:(id)a3
+- (void)firingAlarmDismissed:(id)dismissed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dismissedCopy = dismissed;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver firingAlarmDismissed:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = dismissedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -817,8 +817,8 @@ uint64_t __35__SOClockAlarmObserver_stateReset___block_invoke_2(uint64_t a1)
   v9[2] = __45__SOClockAlarmObserver_firingAlarmDismissed___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = dismissedCopy;
+  v7 = dismissedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -893,17 +893,17 @@ void __45__SOClockAlarmObserver_firingAlarmDismissed___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)firingAlarmChanged:(id)a3
+- (void)firingAlarmChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver firingAlarmChanged:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = changedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -913,24 +913,24 @@ void __45__SOClockAlarmObserver_firingAlarmDismissed___block_invoke(uint64_t a1)
   v9[2] = __43__SOClockAlarmObserver_firingAlarmChanged___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = changedCopy;
+  v7 = changedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alarmFired:(id)a3
+- (void)alarmFired:(id)fired
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  firedCopy = fired;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver alarmFired:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = firedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -940,8 +940,8 @@ void __45__SOClockAlarmObserver_firingAlarmDismissed___block_invoke(uint64_t a1)
   v9[2] = __35__SOClockAlarmObserver_alarmFired___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = firedCopy;
+  v7 = firedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1016,17 +1016,17 @@ void __35__SOClockAlarmObserver_alarmFired___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alarmsRemoved:(id)a3
+- (void)alarmsRemoved:(id)removed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removedCopy = removed;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver alarmsRemoved:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = removedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -1036,8 +1036,8 @@ void __35__SOClockAlarmObserver_alarmFired___block_invoke(uint64_t a1)
   v9[2] = __38__SOClockAlarmObserver_alarmsRemoved___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = removedCopy;
+  v7 = removedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1112,17 +1112,17 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alarmsUpdated:(id)a3
+- (void)alarmsUpdated:(id)updated
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver alarmsUpdated:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = updatedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -1132,24 +1132,24 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
   v9[2] = __38__SOClockAlarmObserver_alarmsUpdated___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = updatedCopy;
+  v7 = updatedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)alarmsAdded:(id)a3
+- (void)alarmsAdded:(id)added
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SOClockAlarmObserver alarmsAdded:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = addedCopy;
     _os_log_impl(&dword_26858F000, v5, OS_LOG_TYPE_INFO, "%s alarms = %@", buf, 0x16u);
   }
 
@@ -1159,20 +1159,20 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
   v9[2] = __36__SOClockAlarmObserver_alarmsAdded___block_invoke;
   v9[3] = &unk_279C3D598;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = addedCopy;
+  v7 = addedCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clockItemStorageDidUpdate:(id)a3 insertedItemIDs:(id)a4 updatedItemIDs:(id)a5 deletedItemIDs:(id)a6
+- (void)clockItemStorageDidUpdate:(id)update insertedItemIDs:(id)ds updatedItemIDs:(id)iDs deletedItemIDs:(id)itemIDs
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (self->_alarmStorage == a3)
+  dsCopy = ds;
+  iDsCopy = iDs;
+  itemIDsCopy = itemIDs;
+  if (self->_alarmStorage == update)
   {
     dispatch_assert_queue_V2(self->_queue);
     v13 = MEMORY[0x277CEF098];
@@ -1182,7 +1182,7 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
       *buf = 136315394;
       v23 = "[SOClockAlarmObserver clockItemStorageDidUpdate:insertedItemIDs:updatedItemIDs:deletedItemIDs:]";
       v24 = 2112;
-      v25 = v10;
+      v25 = dsCopy;
       _os_log_impl(&dword_26858F000, v14, OS_LOG_TYPE_INFO, "%s insertedItemIDs = %@", buf, 0x16u);
       v14 = *v13;
     }
@@ -1192,7 +1192,7 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
       *buf = 136315394;
       v23 = "[SOClockAlarmObserver clockItemStorageDidUpdate:insertedItemIDs:updatedItemIDs:deletedItemIDs:]";
       v24 = 2112;
-      v25 = v11;
+      v25 = iDsCopy;
       _os_log_impl(&dword_26858F000, v14, OS_LOG_TYPE_INFO, "%s  updatedItemIDs = %@", buf, 0x16u);
       v14 = *v13;
     }
@@ -1202,7 +1202,7 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
       *buf = 136315394;
       v23 = "[SOClockAlarmObserver clockItemStorageDidUpdate:insertedItemIDs:updatedItemIDs:deletedItemIDs:]";
       v24 = 2112;
-      v25 = v12;
+      v25 = itemIDsCopy;
       _os_log_impl(&dword_26858F000, v14, OS_LOG_TYPE_INFO, "%s  deletedItemIDs = %@", buf, 0x16u);
     }
 
@@ -1211,8 +1211,8 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
     self->_alarmSnapshot = 0;
 
     [(SOClockAlarmObserver *)self _consolidateNotifiedFiringAlarms];
-    v17 = [(SOClockAlarmObserver *)self _alarmSnapshot];
-    if (v15 != v17 && ([(AFClockAlarmSnapshot *)v15 isEqual:v17]& 1) == 0)
+    _alarmSnapshot = [(SOClockAlarmObserver *)self _alarmSnapshot];
+    if (v15 != _alarmSnapshot && ([(AFClockAlarmSnapshot *)v15 isEqual:_alarmSnapshot]& 1) == 0)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
@@ -1220,7 +1220,7 @@ void __38__SOClockAlarmObserver_alarmsRemoved___block_invoke(uint64_t a1)
       v19[3] = &unk_279C3CE70;
       v19[4] = self;
       v20 = v15;
-      v21 = v17;
+      v21 = _alarmSnapshot;
       [(SOClockAlarmObserver *)self _enumerateListenersUsingBlock:v19];
     }
   }
@@ -1247,11 +1247,11 @@ uint64_t __34__SOClockAlarmObserver_invalidate__block_invoke(uint64_t a1)
   return [v2 _tearDown];
 }
 
-- (void)getFiringAlarmIDsWithCompletion:(id)a3
+- (void)getFiringAlarmIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1259,7 +1259,7 @@ uint64_t __34__SOClockAlarmObserver_invalidate__block_invoke(uint64_t a1)
     v7[2] = __56__SOClockAlarmObserver_getFiringAlarmIDsWithCompletion___block_invoke;
     v7[3] = &unk_279C3D548;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1271,11 +1271,11 @@ void __56__SOClockAlarmObserver_getFiringAlarmIDsWithCompletion___block_invoke(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getAlarmSnapshotWithCompletion:(id)a3
+- (void)getAlarmSnapshotWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -1291,7 +1291,7 @@ void __56__SOClockAlarmObserver_getFiringAlarmIDsWithCompletion___block_invoke(u
     v8[2] = __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke;
     v8[3] = &unk_279C3D548;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(queue, v8);
   }
 
@@ -1353,11 +1353,11 @@ void __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke_2(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1365,16 +1365,16 @@ void __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke_2(
     v7[2] = __39__SOClockAlarmObserver_removeListener___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1382,7 +1382,7 @@ void __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke_2(
     v7[2] = __36__SOClockAlarmObserver_addListener___block_invoke;
     v7[3] = &unk_279C3D598;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1395,10 +1395,10 @@ void __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke_2(
   [(SOClockAlarmObserver *)&v3 dealloc];
 }
 
-- (SOClockAlarmObserver)initWithInstanceContext:(id)a3
+- (SOClockAlarmObserver)initWithInstanceContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = SOClockAlarmObserver;
   v5 = [(SOClockAlarmObserver *)&v20 init];
@@ -1419,18 +1419,18 @@ void __55__SOClockAlarmObserver_getAlarmSnapshotWithCompletion___block_invoke_2(
     queue = v5->_queue;
     v5->_queue = v9;
 
-    if (v4)
+    if (contextCopy)
     {
-      v11 = v4;
+      defaultContext = contextCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CEF2C8] defaultContext];
+      defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
     }
 
     instanceContext = v5->_instanceContext;
-    v5->_instanceContext = v11;
+    v5->_instanceContext = defaultContext;
 
     v13 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:5 capacity:0];
     listeners = v5->_listeners;
@@ -1480,15 +1480,15 @@ uint64_t __48__SOClockAlarmObserver_initWithInstanceContext___block_invoke_2(uin
 
 - (SOClockAlarmObserver)init
 {
-  v3 = [MEMORY[0x277CEF2C8] currentContext];
-  v4 = [(SOClockAlarmObserver *)self initWithInstanceContext:v3];
+  currentContext = [MEMORY[0x277CEF2C8] currentContext];
+  v4 = [(SOClockAlarmObserver *)self initWithInstanceContext:currentContext];
 
   return v4;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[SOClockAlarmManager warmUp];

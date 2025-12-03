@@ -1,12 +1,12 @@
 @interface HKNanoHostAuthorizationController
 - (HKHealthPrivacyHostAuthorizationControllerDelegate)delegate;
 - (HKNanoHostAuthorizationController)init;
-- (void)_remoteObjectProxyWithCompletion:(id)a3 errorHandler:(id)a4;
+- (void)_remoteObjectProxyWithCompletion:(id)completion errorHandler:(id)handler;
 - (void)connectionDidInterrupt;
 - (void)connectionDidInvalidate;
-- (void)didFinishWithError:(id)a3;
+- (void)didFinishWithError:(id)error;
 - (void)invalidate;
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4;
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests;
 @end
 
 @implementation HKNanoHostAuthorizationController
@@ -134,35 +134,35 @@ void __41__HKNanoHostAuthorizationController_init__block_invoke_2(uint64_t a1)
   [(HKNanoHostAuthorizationController *)self didFinishWithError:0];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_1C3942000, v5, OS_LOG_TYPE_DEFAULT, "HKNanoHostAuthorizationController: Finished with error: %{public}@", &v7, 0xCu);
   }
 
-  v6 = [(HKNanoHostAuthorizationController *)self delegate];
-  [v6 healthPrivacyHostAuthorizationControllerDidFinishWithError:v4];
+  delegate = [(HKNanoHostAuthorizationController *)self delegate];
+  [delegate healthPrivacyHostAuthorizationControllerDidFinishWithError:errorCopy];
 }
 
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  requestsCopy = requests;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__HKNanoHostAuthorizationController_setRequestRecord_presentationRequests___block_invoke;
   v10[3] = &unk_1E81B9168;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = recordCopy;
+  v12 = requestsCopy;
+  v8 = requestsCopy;
+  v9 = recordCopy;
   [(HKNanoHostAuthorizationController *)self _remoteObjectProxyWithCompletion:v10 errorHandler:&__block_literal_global_56];
 }
 
@@ -207,13 +207,13 @@ void __41__HKNanoHostAuthorizationController_show__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)_remoteObjectProxyWithCompletion:(id)a3 errorHandler:(id)a4
+- (void)_remoteObjectProxyWithCompletion:(id)completion errorHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  if (v9)
+  completionCopy = completion;
+  handlerCopy = handler;
+  if (completionCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -222,7 +222,7 @@ void __41__HKNanoHostAuthorizationController_show__block_invoke_2(uint64_t a1, v
   else
   {
     [HKNanoHostAuthorizationController _remoteObjectProxyWithCompletion:a2 errorHandler:self];
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -230,8 +230,8 @@ void __41__HKNanoHostAuthorizationController_show__block_invoke_2(uint64_t a1, v
 
   [HKNanoHostAuthorizationController _remoteObjectProxyWithCompletion:a2 errorHandler:self];
 LABEL_3:
-  v8 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:v7];
-  v9[2](v9, v8);
+  v8 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
+  completionCopy[2](completionCopy, v8);
 }
 
 - (HKHealthPrivacyHostAuthorizationControllerDelegate)delegate

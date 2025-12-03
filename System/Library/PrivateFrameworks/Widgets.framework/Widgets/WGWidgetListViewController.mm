@@ -1,37 +1,37 @@
 @interface WGWidgetListViewController
-- (BOOL)isWidgetExtensionVisible:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (CGRect)_visibleContentFrameForBounds:(CGRect)a3 withContentOccludingInsets:(UIEdgeInsets)a4;
-- (CGRect)visibleFrameForWidget:(id)a3;
+- (BOOL)isWidgetExtensionVisible:(id)visible;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (CGRect)_visibleContentFrameForBounds:(CGRect)bounds withContentOccludingInsets:(UIEdgeInsets)insets;
+- (CGRect)visibleFrameForWidget:(id)widget;
 - (CGSize)_maxVisibleContentSize;
-- (CGSize)maxSizeForWidget:(id)a3 forDisplayMode:(int64_t)a4;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)maxSizeForWidget:(id)widget forDisplayMode:(int64_t)mode;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (NSString)_group;
 - (UIControl)editButton;
-- (UIEdgeInsets)layoutMarginForWidget:(id)a3;
-- (UIEdgeInsets)marginInsetsForWidget:(id)a3;
+- (UIEdgeInsets)layoutMarginForWidget:(id)widget;
+- (UIEdgeInsets)marginInsetsForWidget:(id)widget;
 - (UIScrollView)widgetListView;
-- (WGWidgetListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WGWidgetListViewController)initWithWidgetDiscoveryController:(id)a3;
+- (WGWidgetListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WGWidgetListViewController)initWithWidgetDiscoveryController:(id)controller;
 - (WGWidgetListViewControllerDelegatePrivate)delegate;
 - (id)_animatablePropertiesForStackViewUpdate;
-- (id)_beginInsertion:(BOOL)a3 ofListItem:(id)a4 withOrderedIdentifiers:(id)a5 removingViewIfPossible:(BOOL)a6;
-- (id)_identifierForCell:(id)a3;
-- (id)_insert:(BOOL)a3 listItem:(id)a4 withOrderedIdentifiers:(id)a5 animated:(BOOL)a6;
-- (id)_listItemViewControllerForWidgetWithIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4;
+- (id)_beginInsertion:(BOOL)insertion ofListItem:(id)item withOrderedIdentifiers:(id)identifiers removingViewIfPossible:(BOOL)possible;
+- (id)_identifierForCell:(id)cell;
+- (id)_insert:(BOOL)_insert listItem:(id)item withOrderedIdentifiers:(id)identifiers animated:(BOOL)animated;
+- (id)_listItemViewControllerForWidgetWithIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary;
 - (id)_newCaptureOnlyMaterialView;
-- (id)_platterViewAtLocation:(CGPoint)a3;
-- (id)_platterViewForWidgetWithIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4;
-- (id)_scrollViewLoadingIfNecessary:(BOOL)a3;
+- (id)_platterViewAtLocation:(CGPoint)location;
+- (id)_platterViewForWidgetWithIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary;
+- (id)_scrollViewLoadingIfNecessary:(BOOL)necessary;
 - (id)_widgetIdentifiersForPlatterViewsVisibleInBounds;
-- (id)_wrapperViewForWidgetPlatterView:(id)a3;
+- (id)_wrapperViewForWidgetPlatterView:(id)view;
 - (id)visibleWidgetIdentifiers;
-- (id)widgetListItemViewController:(id)a3 widgetHostWithIdentifier:(id)a4;
-- (unint64_t)_insertionIndexofListItem:(id)a3 intoWidgetViews:(id)a4 withOrderedIdentifiers:(id)a5;
-- (void)_adjustContentOffsetToInsideContent:(BOOL)a3;
+- (id)widgetListItemViewController:(id)controller widgetHostWithIdentifier:(id)identifier;
+- (unint64_t)_insertionIndexofListItem:(id)item intoWidgetViews:(id)views withOrderedIdentifiers:(id)identifiers;
+- (void)_adjustContentOffsetToInsideContent:(BOOL)content;
 - (void)_cancelTouchesForHitWidgetIfNecessaryAndDisableTouchesOnAllWidgets;
-- (void)_cancelTouchesForWidget:(id)a3;
-- (void)_configureAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)a3;
+- (void)_cancelTouchesForWidget:(id)widget;
+- (void)_configureAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)style;
 - (void)_configureCaptureOnlyMaterialView;
 - (void)_configureScrollView;
 - (void)_configureStackView;
@@ -39,56 +39,56 @@
 - (void)_didUpdateStackViewArrangedSubviews;
 - (void)_invalidateAllAlternateCaptureOnlyMaterialViews;
 - (void)_invalidateAllCancelTouchesAssertions;
-- (void)_invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)a3;
-- (void)_invokeBlock:(id)a3 withPlatterViewsPassingTest:(id)a4;
-- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)a3;
-- (void)_invokeBlockWithPlatterViewsVisibleInRect:(CGRect)a3 block:(id)a4;
+- (void)_invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)style;
+- (void)_invokeBlock:(id)block withPlatterViewsPassingTest:(id)test;
+- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)bounds;
+- (void)_invokeBlockWithPlatterViewsVisibleInRect:(CGRect)rect block:(id)block;
 - (void)_pruneAlternateCaptureOnlyMaterialViews;
 - (void)_repopulateStackView;
-- (void)_repopulateStackViewWithWidgetIdentifiers:(id)a3;
-- (void)_resizeCell:(id)a3;
+- (void)_repopulateStackViewWithWidgetIdentifiers:(id)identifiers;
+- (void)_resizeCell:(id)cell;
 - (void)_scrollViewDidStop;
 - (void)_stackViewArrangedSubviewsTransformPresentationValueChanged;
-- (void)_updateWidgetViewStateWithPreviouslyVisibleWidgetIdentifiers:(id)a3;
-- (void)brokenViewDidAppearForWidget:(id)a3;
+- (void)_updateWidgetViewStateWithPreviouslyVisibleWidgetIdentifiers:(id)identifiers;
+- (void)brokenViewDidAppearForWidget:(id)widget;
 - (void)dealloc;
-- (void)makeVisibleWidgetWithIdentifier:(id)a3 completion:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)registerWidgetForRefreshEvents:(id)a3;
-- (void)remoteViewControllerViewDidAppearForWidget:(id)a3;
-- (void)remoteViewControllerViewDidHideForWidget:(id)a3;
-- (void)resizeWidgetWrapperView:(id)a3 toSize:(CGSize)a4 withTransitionContext:(id)a5 completion:(id)a6;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setEditingIcons:(BOOL)a3;
-- (void)setShouldBlurContent:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)unregisterWidgetForRefreshEvents:(id)a3;
+- (void)makeVisibleWidgetWithIdentifier:(id)identifier completion:(id)completion;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)registerWidgetForRefreshEvents:(id)events;
+- (void)remoteViewControllerViewDidAppearForWidget:(id)widget;
+- (void)remoteViewControllerViewDidHideForWidget:(id)widget;
+- (void)resizeWidgetWrapperView:(id)view toSize:(CGSize)size withTransitionContext:(id)context completion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setEditingIcons:(BOOL)icons;
+- (void)setShouldBlurContent:(BOOL)content;
+- (void)traitCollectionDidChange:(id)change;
+- (void)unregisterWidgetForRefreshEvents:(id)events;
 - (void)updatePreviouslyVisibleWidgetIDs;
 - (void)updateWidgetViewState;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)widget:(id)a3 didChangeLargestSupportedDisplayMode:(int64_t)a4;
-- (void)widgetDiscoveryController:(id)a3 orderDidChangeForWidgetIdentifiers:(id)a4;
-- (void)widgetDiscoveryControllerSignificantWidgetsChange:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)widget:(id)widget didChangeLargestSupportedDisplayMode:(int64_t)mode;
+- (void)widgetDiscoveryController:(id)controller orderDidChangeForWidgetIdentifiers:(id)identifiers;
+- (void)widgetDiscoveryControllerSignificantWidgetsChange:(id)change;
 @end
 
 @implementation WGWidgetListViewController
 
-- (WGWidgetListViewController)initWithWidgetDiscoveryController:(id)a3
+- (WGWidgetListViewController)initWithWidgetDiscoveryController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [WGWidgetListViewController initWithWidgetDiscoveryController:];
   }
@@ -99,25 +99,25 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_discoveryController, a3);
+    objc_storeStrong(&v6->_discoveryController, controller);
     v7->_shouldIncludeScrollView = 0;
   }
 
   return v7;
 }
 
-- (WGWidgetListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WGWidgetListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"WGWidgetListViewController.m" lineNumber:67 description:@"Not a valid initializer."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WGWidgetListViewController.m" lineNumber:67 description:@"Not a valid initializer."];
 
   return 0;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(WGWidgetListViewController *)self _invalidateAllCancelTouchesAssertions];
   v4.receiver = self;
@@ -129,7 +129,7 @@
 {
   if ([(WGWidgetListViewController *)self shouldIncludeScrollView])
   {
-    v3 = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
+    _scrollViewIfLoaded = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
   }
 
   else
@@ -137,30 +137,30 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v3 = [WeakRetained scrollViewForWidgetListViewController:self];
+      _scrollViewIfLoaded = [WeakRetained scrollViewForWidgetListViewController:self];
     }
 
     else
     {
-      v3 = 0;
+      _scrollViewIfLoaded = 0;
     }
   }
 
-  return v3;
+  return _scrollViewIfLoaded;
 }
 
-- (void)setShouldBlurContent:(BOOL)a3
+- (void)setShouldBlurContent:(BOOL)content
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_shouldBlurContent != a3)
+  if (self->_shouldBlurContent != content)
   {
-    self->_shouldBlurContent = a3;
+    self->_shouldBlurContent = content;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSMutableDictionary *)self->_widgetIDsToItemVCs allValues];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allValues = [(NSMutableDictionary *)self->_widgetIDsToItemVCs allValues];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -172,17 +172,17 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * v8) platterView];
-          [(WGWidgetListViewController *)self _updateBackgroundViewForPlatter:v9];
+          platterView = [*(*(&v10 + 1) + 8 * v8) platterView];
+          [(WGWidgetListViewController *)self _updateBackgroundViewForPlatter:platterView];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -192,17 +192,17 @@
 
 - (NSString)_group
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"WGWidgetListViewController.m" lineNumber:107 description:@"Abstract"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WGWidgetListViewController.m" lineNumber:107 description:@"Abstract"];
 
   return 0;
 }
 
-- (id)_listItemViewControllerForWidgetWithIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4
+- (id)_listItemViewControllerForWidgetWithIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     widgetIDsToItemVCs = self->_widgetIDsToItemVCs;
     if (!widgetIDsToItemVCs)
@@ -214,7 +214,7 @@
       widgetIDsToItemVCs = self->_widgetIDsToItemVCs;
     }
 
-    v10 = [(NSMutableDictionary *)widgetIDsToItemVCs objectForKey:v6];
+    v10 = [(NSMutableDictionary *)widgetIDsToItemVCs objectForKey:identifierCopy];
     if (v10)
     {
       v11 = 1;
@@ -222,18 +222,18 @@
 
     else
     {
-      v11 = !v4;
+      v11 = !necessaryCopy;
     }
 
     if (!v11)
     {
-      v10 = [[WGWidgetListItemViewController alloc] initWithWidgetIdentifier:v6];
+      v10 = [[WGWidgetListItemViewController alloc] initWithWidgetIdentifier:identifierCopy];
       [(WGWidgetListItemViewController *)v10 setDelegate:self];
       [(WGWidgetListItemViewController *)v10 setAdjustsFontForContentSizeCategory:1];
-      v12 = [(WGWidgetListItemViewController *)v10 platterView];
-      [(WGWidgetListViewController *)self _updateBackgroundViewForPlatter:v12];
+      platterView = [(WGWidgetListItemViewController *)v10 platterView];
+      [(WGWidgetListViewController *)self _updateBackgroundViewForPlatter:platterView];
 
-      [(NSMutableDictionary *)self->_widgetIDsToItemVCs setObject:v10 forKey:v6];
+      [(NSMutableDictionary *)self->_widgetIDsToItemVCs setObject:v10 forKey:identifierCopy];
     }
   }
 
@@ -245,18 +245,18 @@
   return v10;
 }
 
-- (id)_platterViewForWidgetWithIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4
+- (id)_platterViewForWidgetWithIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary
 {
-  v4 = [(WGWidgetListViewController *)self _listItemViewControllerForWidgetWithIdentifier:a3 creatingIfNecessary:a4];
-  v5 = [v4 platterView];
+  v4 = [(WGWidgetListViewController *)self _listItemViewControllerForWidgetWithIdentifier:identifier creatingIfNecessary:necessary];
+  platterView = [v4 platterView];
 
-  return v5;
+  return platterView;
 }
 
 - (void)_configureStackView
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 integerForKey:@"WGAzulWidgetsType"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:@"WGAzulWidgetsType"];
 
   v5 = objc_alloc_init(MEMORY[0x277D75A68]);
   stackView = self->_stackView;
@@ -276,40 +276,40 @@
   }
   v24 = ;
   [v24 addSubview:self->_stackView];
-  v7 = [(UIStackView *)self->_stackView leadingAnchor];
-  v8 = [v24 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [v24 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 setActive:1];
 
   v10 = self->_stackView;
   if (v4 == 1)
   {
-    v11 = [(UIStackView *)v10 widthAnchor];
-    v12 = [v11 constraintEqualToConstant:200.0];
-    [v12 setActive:1];
+    widthAnchor = [(UIStackView *)v10 widthAnchor];
+    widthAnchor2 = [widthAnchor constraintEqualToConstant:200.0];
+    [widthAnchor2 setActive:1];
   }
 
   else
   {
-    v13 = [(UIStackView *)v10 trailingAnchor];
-    v14 = [v24 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UIStackView *)v10 trailingAnchor];
+    trailingAnchor2 = [v24 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v15 setActive:1];
 
-    v11 = [(UIStackView *)self->_stackView widthAnchor];
-    v12 = [v24 widthAnchor];
-    v16 = [v11 constraintEqualToAnchor:v12];
+    widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+    widthAnchor2 = [v24 widthAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v16 setActive:1];
   }
 
-  v17 = [(UIStackView *)self->_stackView topAnchor];
-  v18 = [v24 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [v24 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v19 setActive:1];
 
-  v20 = [(UIStackView *)self->_stackView bottomAnchor];
-  v21 = [v24 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [v24 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   stackViewBottomConstraint = self->_stackViewBottomConstraint;
   self->_stackViewBottomConstraint = v22;
 
@@ -317,16 +317,16 @@
   [(UIStackView *)self->_stackView setAxis:1];
 }
 
-- (void)_repopulateStackViewWithWidgetIdentifiers:(id)a3
+- (void)_repopulateStackViewWithWidgetIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -338,14 +338,14 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v22 + 1) + 8 * v9++) removeFromSuperview];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -356,7 +356,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v4;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
@@ -391,15 +391,15 @@
   }
 }
 
-- (unint64_t)_insertionIndexofListItem:(id)a3 intoWidgetViews:(id)a4 withOrderedIdentifiers:(id)a5
+- (unint64_t)_insertionIndexofListItem:(id)item intoWidgetViews:(id)views withOrderedIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  itemCopy = item;
+  viewsCopy = views;
+  identifiersCopy = identifiers;
+  if (itemCopy)
   {
-    v10 = [v7 widgetIdentifier];
-    v11 = [v9 indexOfObject:v10];
+    widgetIdentifier = [itemCopy widgetIdentifier];
+    v11 = [identifiersCopy indexOfObject:widgetIdentifier];
 
     if (v11 && v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -413,14 +413,14 @@
       {
         do
         {
-          v13 = [v9 objectAtIndex:v12];
+          v13 = [identifiersCopy objectAtIndex:v12];
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = __95__WGWidgetListViewController__insertionIndexofListItem_intoWidgetViews_withOrderedIdentifiers___block_invoke;
           v18[3] = &unk_279ED11C8;
           v19 = v13;
           v14 = v13;
-          v15 = [v8 indexOfObjectPassingTest:v18];
+          v15 = [viewsCopy indexOfObjectPassingTest:v18];
 
           v16 = v12-- != 0;
         }
@@ -463,30 +463,30 @@ uint64_t __95__WGWidgetListViewController__insertionIndexofListItem_intoWidgetVi
   return v11;
 }
 
-- (id)_beginInsertion:(BOOL)a3 ofListItem:(id)a4 withOrderedIdentifiers:(id)a5 removingViewIfPossible:(BOOL)a6
+- (id)_beginInsertion:(BOOL)insertion ofListItem:(id)item withOrderedIdentifiers:(id)identifiers removingViewIfPossible:(BOOL)possible
 {
-  v6 = a6;
-  v8 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  possibleCopy = possible;
+  insertionCopy = insertion;
+  itemCopy = item;
+  identifiersCopy = identifiers;
+  if (itemCopy)
   {
     if ([(WGWidgetListViewController *)self isViewLoaded])
     {
-      if (!v8)
+      if (!insertionCopy)
       {
-        if (v6)
+        if (possibleCopy)
         {
           widgetIDsToItemVCs = self->_widgetIDsToItemVCs;
-          v22 = [v11 widgetIdentifier];
-          [(NSMutableDictionary *)widgetIDsToItemVCs removeObjectForKey:v22];
+          widgetIdentifier = [itemCopy widgetIdentifier];
+          [(NSMutableDictionary *)widgetIDsToItemVCs removeObjectForKey:widgetIdentifier];
         }
 
         goto LABEL_15;
       }
 
-      v13 = [(UIStackView *)self->_stackView arrangedSubviews];
-      v14 = [(WGWidgetListViewController *)self _insertionIndexofListItem:v11 intoWidgetViews:v13 withOrderedIdentifiers:v12];
+      arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+      v14 = [(WGWidgetListViewController *)self _insertionIndexofListItem:itemCopy intoWidgetViews:arrangedSubviews withOrderedIdentifiers:identifiersCopy];
 
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -495,22 +495,22 @@ LABEL_15:
         v33 = 3221225472;
         v34 = __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIdentifiers_removingViewIfPossible___block_invoke_2;
         v35 = &unk_279ED0BD0;
-        v38 = v8;
-        v36 = self;
-        v37 = v11;
+        v38 = insertionCopy;
+        selfCopy = self;
+        v37 = itemCopy;
         v29 = MEMORY[0x2743E8C10](&v32);
 
         goto LABEL_18;
       }
 
-      v15 = [v11 parentViewController];
+      parentViewController = [itemCopy parentViewController];
 
-      if (v15 == self)
+      if (parentViewController == self)
       {
 LABEL_14:
         v24 = [WGWidgetWrapperView alloc];
-        v25 = [v11 platterView];
-        v26 = [(WGWidgetWrapperView *)v24 initWithPlatterView:v25];
+        platterView = [itemCopy platterView];
+        v26 = [(WGWidgetWrapperView *)v24 initWithPlatterView:platterView];
 
         v27 = MEMORY[0x277D75D18];
         v39[0] = MEMORY[0x277D85DD0];
@@ -526,19 +526,19 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      [(WGWidgetListViewController *)self addChildViewController:v11];
-      v16 = [v11 widgetIdentifier];
-      v17 = WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(v16, @"10.0");
+      [(WGWidgetListViewController *)self addChildViewController:itemCopy];
+      widgetIdentifier2 = [itemCopy widgetIdentifier];
+      v17 = WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(widgetIdentifier2, @"10.0");
 
       if (v17)
       {
-        v18 = [v11 widgetIdentifier];
-        v19 = WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(v18, @"13.0");
+        widgetIdentifier3 = [itemCopy widgetIdentifier];
+        v19 = WGIsWidgetWithBundleIdentifierBuiltOnOrAfterSystemVersion(widgetIdentifier3, @"13.0");
 
         if (v19)
         {
 LABEL_13:
-          [v11 didMoveToParentViewController:self];
+          [itemCopy didMoveToParentViewController:self];
           goto LABEL_14;
         }
 
@@ -551,7 +551,7 @@ LABEL_13:
       }
 
       v23 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v20];
-      [(WGWidgetListViewController *)self setOverrideTraitCollection:v23 forChildViewController:v11];
+      [(WGWidgetListViewController *)self setOverrideTraitCollection:v23 forChildViewController:itemCopy];
 
       [(WGWidgetListViewController *)self _configureAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:v20];
       goto LABEL_13;
@@ -599,20 +599,20 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
 {
   [(WGWidgetListViewController *)self _createPropertiesForStackViewUpdate];
   v3 = MEMORY[0x277D75D18];
-  v4 = [(WGWidgetListViewController *)self _animatablePropertiesForStackViewUpdate];
+  _animatablePropertiesForStackViewUpdate = [(WGWidgetListViewController *)self _animatablePropertiesForStackViewUpdate];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__WGWidgetListViewController__didUpdateStackViewArrangedSubviews__block_invoke;
   v5[3] = &unk_279ED0948;
   v5[4] = self;
-  [v3 _createTransformerWithInputAnimatableProperties:v4 presentationValueChangedCallback:v5];
+  [v3 _createTransformerWithInputAnimatableProperties:_animatablePropertiesForStackViewUpdate presentationValueChangedCallback:v5];
 }
 
 - (void)_createPropertiesForStackViewUpdate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WGWidgetListViewController *)self resizeContexts];
-  v4 = [v3 count];
+  resizeContexts = [(WGWidgetListViewController *)self resizeContexts];
+  v4 = [resizeContexts count];
 
   if (v4)
   {
@@ -620,10 +620,10 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(WGWidgetListViewController *)self resizeContexts];
-    v6 = [v5 allValues];
+    resizeContexts2 = [(WGWidgetListViewController *)self resizeContexts];
+    allValues = [resizeContexts2 allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -635,17 +635,17 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) resizeProgress];
-          [v11 invalidate];
+          resizeProgress = [*(*(&v14 + 1) + 8 * v10) resizeProgress];
+          [resizeProgress invalidate];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -654,9 +654,9 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
     [(WGWidgetListViewController *)self setResizeContexts:0];
   }
 
-  v12 = [(WGWidgetListViewController *)self resizeContexts];
+  resizeContexts3 = [(WGWidgetListViewController *)self resizeContexts];
 
-  if (!v12)
+  if (!resizeContexts3)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(WGWidgetListViewController *)self setResizeContexts:v13];
@@ -666,7 +666,7 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
 - (id)_animatablePropertiesForStackViewUpdate
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(UIStackView *)self->_stackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__block_invoke;
@@ -674,7 +674,7 @@ void __103__WGWidgetListViewController__beginInsertion_ofListItem_withOrderedIde
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [arrangedSubviews enumerateObjectsUsingBlock:v9];
   v6 = v10;
   v7 = v5;
 
@@ -706,26 +706,26 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
   }
 }
 
-- (void)_resizeCell:(id)a3
+- (void)_resizeCell:(id)cell
 {
-  v18 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v18 platterView];
-    v5 = [v4 listItem];
-    v6 = [v5 widgetIdentifier];
+    platterView = [cellCopy platterView];
+    listItem = [platterView listItem];
+    widgetIdentifier = [listItem widgetIdentifier];
 
-    v7 = [(WGWidgetListViewController *)self resizeContexts];
-    v8 = [v7 objectForKey:v6];
+    resizeContexts = [(WGWidgetListViewController *)self resizeContexts];
+    v8 = [resizeContexts objectForKey:widgetIdentifier];
 
     v9 = -1.0;
     if ([v8 isActive])
     {
       [v8 compactHeight];
       v11 = v10;
-      v12 = [v8 resizeProgress];
-      [v12 presentationValue];
+      resizeProgress = [v8 resizeProgress];
+      [resizeProgress presentationValue];
       v14 = v13;
       [v8 expandedHeight];
       v16 = v15;
@@ -733,19 +733,19 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
       v9 = v11 + v14 * (v16 - v17);
     }
 
-    [v18 setOverrideIntrinsicContentHeight:v9];
+    [cellCopy setOverrideIntrinsicContentHeight:v9];
   }
 }
 
 - (void)_stackViewArrangedSubviewsTransformPresentationValueChanged
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -757,14 +757,14 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [(WGWidgetListViewController *)self _resizeCell:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -773,26 +773,26 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
   [(UIStackView *)self->_stackView layoutIfNeeded];
 }
 
-- (id)_insert:(BOOL)a3 listItem:(id)a4 withOrderedIdentifiers:(id)a5 animated:(BOOL)a6
+- (id)_insert:(BOOL)_insert listItem:(id)item withOrderedIdentifiers:(id)identifiers animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  animatedCopy = animated;
+  _insertCopy = _insert;
+  itemCopy = item;
+  identifiersCopy = identifiers;
+  if (itemCopy)
   {
     if ([(WGWidgetListViewController *)self isViewLoaded])
     {
-      v13 = [(WGWidgetListViewController *)self _beginInsertion:v8 ofListItem:v11 withOrderedIdentifiers:v12 removingViewIfPossible:1];
-      if (!v6)
+      v13 = [(WGWidgetListViewController *)self _beginInsertion:_insertCopy ofListItem:itemCopy withOrderedIdentifiers:identifiersCopy removingViewIfPossible:1];
+      if (!animatedCopy)
       {
         goto LABEL_8;
       }
 
-      v14 = [v11 platterView];
-      v15 = [(WGWidgetListViewController *)self _wrapperViewForWidgetPlatterView:v14];
+      platterView = [itemCopy platterView];
+      v15 = [(WGWidgetListViewController *)self _wrapperViewForWidgetPlatterView:platterView];
 
-      if (v8)
+      if (_insertCopy)
       {
         v16 = MEMORY[0x277D75D18];
         v27[0] = MEMORY[0x277D85DD0];
@@ -800,7 +800,7 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
         v27[2] = __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifiers_animated___block_invoke;
         v27[3] = &unk_279ED0A40;
         v28 = v15;
-        v29 = self;
+        selfCopy = self;
         [v16 performWithoutAnimation:v27];
       }
 
@@ -809,9 +809,9 @@ void __69__WGWidgetListViewController__animatablePropertiesForStackViewUpdate__b
       v23[1] = 3221225472;
       v23[2] = __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifiers_animated___block_invoke_2;
       v23[3] = &unk_279ED0BD0;
-      v26 = v8;
+      v26 = _insertCopy;
       v24 = v15;
-      v25 = self;
+      selfCopy2 = self;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifiers_animated___block_invoke_3;
@@ -889,10 +889,10 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
           v10 = v9;
           if (v9)
           {
-            v11 = [v9 userInterfaceStyle];
-            if (v11)
+            userInterfaceStyle = [v9 userInterfaceStyle];
+            if (userInterfaceStyle)
             {
-              v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+              v12 = [MEMORY[0x277CCABB0] numberWithInteger:userInterfaceStyle];
               [v3 addObject:v12];
             }
           }
@@ -908,8 +908,8 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
     }
 
     v13 = objc_alloc(MEMORY[0x277CBEB58]);
-    v14 = [(NSMutableDictionary *)self->_userInterfaceStylesToCaptureOnlyMaterialViews allKeys];
-    v15 = [v13 initWithArray:v14];
+    allKeys = [(NSMutableDictionary *)self->_userInterfaceStylesToCaptureOnlyMaterialViews allKeys];
+    v15 = [v13 initWithArray:allKeys];
 
     [v15 minusSet:v3];
     v23 = 0u;
@@ -955,26 +955,26 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
 
 - (void)_configureCaptureOnlyMaterialView
 {
-  v3 = [(WGWidgetListViewController *)self _newCaptureOnlyMaterialView];
+  _newCaptureOnlyMaterialView = [(WGWidgetListViewController *)self _newCaptureOnlyMaterialView];
   captureOnlyMaterialView = self->_captureOnlyMaterialView;
-  self->_captureOnlyMaterialView = v3;
+  self->_captureOnlyMaterialView = _newCaptureOnlyMaterialView;
 
-  v6 = [(WGWidgetListViewController *)self view];
+  view = [(WGWidgetListViewController *)self view];
   v5 = self->_captureOnlyMaterialView;
-  [v6 bounds];
+  [view bounds];
   [(MTMaterialView *)v5 setFrame:?];
-  [v6 insertSubview:self->_captureOnlyMaterialView atIndex:0];
+  [view insertSubview:self->_captureOnlyMaterialView atIndex:0];
 }
 
-- (void)_configureAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)a3
+- (void)_configureAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)style
 {
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v5 = [(NSMutableDictionary *)self->_userInterfaceStylesToCaptureOnlyMaterialViews objectForKey:?];
 
   if (!v5)
   {
-    v6 = [(WGWidgetListViewController *)self _newCaptureOnlyMaterialView];
-    [v6 setOverrideUserInterfaceStyle:a3];
+    _newCaptureOnlyMaterialView = [(WGWidgetListViewController *)self _newCaptureOnlyMaterialView];
+    [_newCaptureOnlyMaterialView setOverrideUserInterfaceStyle:style];
     userInterfaceStylesToCaptureOnlyMaterialViews = self->_userInterfaceStylesToCaptureOnlyMaterialViews;
     if (!userInterfaceStylesToCaptureOnlyMaterialViews)
     {
@@ -985,19 +985,19 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
       userInterfaceStylesToCaptureOnlyMaterialViews = self->_userInterfaceStylesToCaptureOnlyMaterialViews;
     }
 
-    [(NSMutableDictionary *)userInterfaceStylesToCaptureOnlyMaterialViews setObject:v6 forKey:v11];
-    v10 = [(WGWidgetListViewController *)self view];
-    [v10 bounds];
-    [v6 setFrame:?];
-    [v10 insertSubview:v6 aboveSubview:self->_captureOnlyMaterialView];
+    [(NSMutableDictionary *)userInterfaceStylesToCaptureOnlyMaterialViews setObject:_newCaptureOnlyMaterialView forKey:v11];
+    view = [(WGWidgetListViewController *)self view];
+    [view bounds];
+    [_newCaptureOnlyMaterialView setFrame:?];
+    [view insertSubview:_newCaptureOnlyMaterialView aboveSubview:self->_captureOnlyMaterialView];
   }
 }
 
-- (void)_invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)a3
+- (void)_invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:(int64_t)style
 {
   if (self->_userInterfaceStylesToCaptureOnlyMaterialViews)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:style];
     v4 = [(NSMutableDictionary *)self->_userInterfaceStylesToCaptureOnlyMaterialViews objectForKey:?];
     v5 = v4;
     if (v4)
@@ -1023,8 +1023,8 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(NSMutableDictionary *)userInterfaceStylesToCaptureOnlyMaterialViews allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allKeys = [(NSMutableDictionary *)userInterfaceStylesToCaptureOnlyMaterialViews allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1035,13 +1035,13 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           -[WGWidgetListViewController _invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:](self, "_invalidateAlternateCaptureOnlyMaterialViewWithUserInterfaceStyle:", [*(*(&v9 + 1) + 8 * i) integerValue]);
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -1055,8 +1055,8 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
   scrollView = self->_scrollView;
   self->_scrollView = &v3->super;
 
-  v5 = [(UIScrollView *)self->_scrollView layer];
-  [v5 setHitTestsAsOpaque:1];
+  layer = [(UIScrollView *)self->_scrollView layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(UIScrollView *)self->_scrollView setDelegate:self];
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
@@ -1065,16 +1065,16 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
   [(UIScrollView *)self->_scrollView setPreservesSuperviewLayoutMargins:1];
   [(UIScrollView *)self->_scrollView setClipsToBounds:0];
   [(UIScrollView *)self->_scrollView setAutoresizingMask:18];
-  v7 = [(WGWidgetListViewController *)self view];
+  view = [(WGWidgetListViewController *)self view];
   v6 = self->_scrollView;
-  [v7 bounds];
+  [view bounds];
   [(UIScrollView *)v6 setFrame:?];
-  [v7 addSubview:self->_scrollView];
+  [view addSubview:self->_scrollView];
 }
 
-- (id)_scrollViewLoadingIfNecessary:(BOOL)a3
+- (id)_scrollViewLoadingIfNecessary:(BOOL)necessary
 {
-  if (a3 && ([(WGWidgetListViewController *)self isViewLoaded]& 1) == 0)
+  if (necessary && ([(WGWidgetListViewController *)self isViewLoaded]& 1) == 0)
   {
     [(WGWidgetListViewController *)self loadViewIfNeeded];
   }
@@ -1086,22 +1086,22 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
 
 - (void)_repopulateStackView
 {
-  v3 = [(WGWidgetListViewController *)self visibleWidgetIdentifiers];
-  [(WGWidgetListViewController *)self _repopulateStackViewWithWidgetIdentifiers:v3];
+  visibleWidgetIdentifiers = [(WGWidgetListViewController *)self visibleWidgetIdentifiers];
+  [(WGWidgetListViewController *)self _repopulateStackViewWithWidgetIdentifiers:visibleWidgetIdentifiers];
 }
 
-- (id)_platterViewAtLocation:(CGPoint)a3
+- (id)_platterViewAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  v6 = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
-  stackView = v6;
+  _scrollViewIfLoaded = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
+  stackView = _scrollViewIfLoaded;
   if (!self->_shouldIncludeScrollView)
   {
     stackView = self->_stackView;
@@ -1110,7 +1110,7 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
   v8 = stackView;
   if (v8)
   {
-    v9 = [(UIStackView *)self->_stackView arrangedSubviews];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__WGWidgetListViewController__platterViewAtLocation___block_invoke;
@@ -1119,7 +1119,7 @@ uint64_t __79__WGWidgetListViewController__insert_listItem_withOrderedIdentifier
     v16 = y;
     v13 = v8;
     v14 = &v17;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [arrangedSubviews enumerateObjectsUsingBlock:v12];
   }
 
   v10 = v18[5];
@@ -1155,12 +1155,12 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
 
 - (void)_cancelTouchesForHitWidgetIfNecessaryAndDisableTouchesOnAllWidgets
 {
-  v3 = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
-  v12 = v3;
-  if (v3)
+  _scrollViewIfLoaded = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
+  v12 = _scrollViewIfLoaded;
+  if (_scrollViewIfLoaded)
   {
-    v4 = [v3 panGestureRecognizer];
-    [v4 locationInView:v12];
+    panGestureRecognizer = [_scrollViewIfLoaded panGestureRecognizer];
+    [panGestureRecognizer locationInView:v12];
     v6 = v5;
     v8 = v7;
 
@@ -1168,25 +1168,25 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 widgetHost];
-      [(WGWidgetListViewController *)self _cancelTouchesForWidget:v11];
+      widgetHost = [v9 widgetHost];
+      [(WGWidgetListViewController *)self _cancelTouchesForWidget:widgetHost];
     }
   }
 
   [(WGWidgetListViewController *)self _disableTouchesOnAllWidgets];
 }
 
-- (void)_cancelTouchesForWidget:(id)a3
+- (void)_cancelTouchesForWidget:(id)widget
 {
-  v9 = a3;
-  v4 = [v9 widgetIdentifier];
-  if ([v4 length])
+  widgetCopy = widget;
+  widgetIdentifier = [widgetCopy widgetIdentifier];
+  if ([widgetIdentifier length])
   {
-    v5 = [(NSMutableDictionary *)self->_cancelTouchesAssertionsByWidgetID objectForKey:v4];
-    if (!v5)
+    _cancelTouches = [(NSMutableDictionary *)self->_cancelTouchesAssertionsByWidgetID objectForKey:widgetIdentifier];
+    if (!_cancelTouches)
     {
-      v5 = [v9 _cancelTouches];
-      if (v5)
+      _cancelTouches = [widgetCopy _cancelTouches];
+      if (_cancelTouches)
       {
         cancelTouchesAssertionsByWidgetID = self->_cancelTouchesAssertionsByWidgetID;
         if (!cancelTouchesAssertionsByWidgetID)
@@ -1198,7 +1198,7 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
           cancelTouchesAssertionsByWidgetID = self->_cancelTouchesAssertionsByWidgetID;
         }
 
-        [(NSMutableDictionary *)cancelTouchesAssertionsByWidgetID setObject:v5 forKey:v4];
+        [(NSMutableDictionary *)cancelTouchesAssertionsByWidgetID setObject:_cancelTouches forKey:widgetIdentifier];
       }
     }
   }
@@ -1244,14 +1244,14 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
   [(WGWidgetListViewController *)self _enableTouchesOnAllWidgets];
 }
 
-- (void)_adjustContentOffsetToInsideContent:(BOOL)a3
+- (void)_adjustContentOffsetToInsideContent:(BOOL)content
 {
   if (self->_shouldIncludeScrollView)
   {
     scrollView = self->_scrollView;
     if (scrollView)
     {
-      v5 = a3;
+      contentCopy = content;
       [(UIScrollView *)scrollView contentSize];
       v7 = v6;
       [(UIScrollView *)self->_scrollView bounds];
@@ -1264,7 +1264,7 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
       [(UIScrollView *)self->_scrollView contentOffset];
       if (v15 > v14)
       {
-        v16 = v11 >= 0.0 && v5;
+        v16 = v11 >= 0.0 && contentCopy;
         v17 = self->_scrollView;
 
         [(UIScrollView *)v17 setContentOffset:v16 animated:0.0, v14];
@@ -1289,19 +1289,19 @@ uint64_t __53__WGWidgetListViewController__platterViewAtLocation___block_invoke(
   [(WGWidgetDiscoveryController *)self->_discoveryController addDiscoveryObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = WGWidgetListViewController;
   [(WGWidgetListViewController *)&v8 viewWillAppear:?];
-  [(WGWidgetListViewController *)self _adjustContentOffsetToInsideContent:v3];
+  [(WGWidgetListViewController *)self _adjustContentOffsetToInsideContent:appearCopy];
   [(WGWidgetListViewController *)self _invalidateAllCancelTouchesAssertions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__WGWidgetListViewController_viewWillAppear___block_invoke;
   v6[3] = &__block_descriptor_33_e33_v24__0__WGWidgetPlatterView_8_B16l;
-  v7 = v3;
+  v7 = appearCopy;
   [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInBounds:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -1323,7 +1323,7 @@ void __45__WGWidgetListViewController_viewWillAppear___block_invoke_2(uint64_t a
   [v3 managingContainerWillAppear:*(a1 + 32)];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WGWidgetListViewController;
@@ -1332,7 +1332,7 @@ void __45__WGWidgetListViewController_viewWillAppear___block_invoke_2(uint64_t a
   v5[1] = 3221225472;
   v5[2] = __44__WGWidgetListViewController_viewDidAppear___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v24__0__WGWidgetPlatterView_8_B16l;
-  v6 = a3;
+  appearCopy = appear;
   [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInBounds:v5];
 }
 
@@ -1365,11 +1365,11 @@ void __44__WGWidgetListViewController_viewDidAppear___block_invoke(uint64_t a1, 
   [v7 widget:v8 didAppearInMode:{objc_msgSend(v4, "activeDisplayMode")}];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = WGWidgetListViewController;
-  [(WGWidgetListViewController *)&v5 viewWillDisappear:a3];
+  [(WGWidgetListViewController *)&v5 viewWillDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__WGWidgetListViewController_viewWillDisappear___block_invoke;
@@ -1385,7 +1385,7 @@ void __48__WGWidgetListViewController_viewWillDisappear___block_invoke(uint64_t 
   [*(a1 + 32) _cancelTouchesForWidget:v3];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = WGWidgetListViewController;
@@ -1394,7 +1394,7 @@ void __48__WGWidgetListViewController_viewWillDisappear___block_invoke(uint64_t 
   v5[1] = 3221225472;
   v5[2] = __47__WGWidgetListViewController_viewDidDisappear___block_invoke;
   v5[3] = &unk_279ED12A8;
-  v6 = a3;
+  disappearCopy = disappear;
   v5[4] = self;
   [(WGWidgetListViewController *)self _invokeBlock:v5 withPlatterViewsPassingTest:0];
   [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInBounds:&__block_literal_global_68];
@@ -1420,15 +1420,15 @@ void __47__WGWidgetListViewController_viewDidDisappear___block_invoke_2(uint64_t
   [v2 widget:v3 didDisappearInMode:{objc_msgSend(v4, "activeDisplayMode")}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = WGWidgetListViewController;
-  [(WGWidgetListViewController *)&v15 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
-  v7 = [(WGWidgetListViewController *)self view];
-  [v7 bounds];
+  [(WGWidgetListViewController *)&v15 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
+  view = [(WGWidgetListViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
 
@@ -1459,15 +1459,15 @@ void __81__WGWidgetListViewController_viewWillTransitionToSize_withTransitionCoo
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = containerCopy;
   }
 
   else
@@ -1483,29 +1483,29 @@ void __81__WGWidgetListViewController_viewWillTransitionToSize_withTransitionCoo
     v12 = v11;
     if (width == 0.0 && height == 0.0 && [(WGWidgetListViewController *)self isViewLoaded])
     {
-      v13 = [(WGWidgetListViewController *)self view];
-      [v13 bounds];
+      view = [(WGWidgetListViewController *)self view];
+      [view bounds];
       width = CGRectGetWidth(v35);
     }
 
     [v10 contentSizeForPreferredContentSize:{width, v12}];
     v15 = v14;
     v17 = v16;
-    v18 = [v10 widgetHost];
-    [(WGWidgetListViewController *)self maxSizeForWidget:v18 forDisplayMode:0];
+    widgetHost = [v10 widgetHost];
+    [(WGWidgetListViewController *)self maxSizeForWidget:widgetHost forDisplayMode:0];
     v20 = v19;
 
-    v21 = [v10 widgetHost];
-    if ([v21 activeDisplayMode] < 1)
+    widgetHost2 = [v10 widgetHost];
+    if ([widgetHost2 activeDisplayMode] < 1)
     {
       v25 = v20;
     }
 
     else
     {
-      v22 = [v10 widgetHost];
-      v23 = [v10 widgetHost];
-      -[WGWidgetListViewController maxSizeForWidget:forDisplayMode:](self, "maxSizeForWidget:forDisplayMode:", v22, [v23 activeDisplayMode]);
+      widgetHost3 = [v10 widgetHost];
+      widgetHost4 = [v10 widgetHost];
+      -[WGWidgetListViewController maxSizeForWidget:forDisplayMode:](self, "maxSizeForWidget:forDisplayMode:", widgetHost3, [widgetHost4 activeDisplayMode]);
       v25 = v24;
     }
 
@@ -1547,13 +1547,13 @@ void __81__WGWidgetListViewController_viewWillTransitionToSize_withTransitionCoo
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = containerCopy;
   }
 
   else
@@ -1564,26 +1564,26 @@ void __81__WGWidgetListViewController_viewWillTransitionToSize_withTransitionCoo
   v6 = v5;
   if (v6)
   {
-    v7 = [(WGWidgetListViewController *)self view];
-    [v7 bounds];
-    [(WGWidgetListViewController *)self sizeForChildContentContainer:v4 withParentContainerSize:v8, v9];
+    view = [(WGWidgetListViewController *)self view];
+    [view bounds];
+    [(WGWidgetListViewController *)self sizeForChildContentContainer:containerCopy withParentContainerSize:v8, v9];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v6 widgetIdentifier];
-    v15 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:v14 creatingIfNecessary:0];
+    widgetIdentifier = [v6 widgetIdentifier];
+    v15 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:widgetIdentifier creatingIfNecessary:0];
 
     v16 = [(WGWidgetListViewController *)self _wrapperViewForWidgetPlatterView:v15];
     [v16 invalidateIntrinsicContentSize];
     ADClientPushValueForDistributionKey();
     v17 = [(WGWidgetListViewController *)self _appearState]== 2;
-    v18 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
-    [(WGWidgetListViewController *)self _setPreviouslyVisibleWidgetIDs:v18];
+    _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+    [(WGWidgetListViewController *)self _setPreviouslyVisibleWidgetIDs:_widgetIdentifiersForPlatterViewsVisibleInBounds];
 
     v19 = objc_alloc_init(MEMORY[0x277D763A0]);
     [v19 _setIsAnimated:v17];
-    v20 = [v19 _transitionCoordinator];
-    [v4 viewWillTransitionToSize:v20 withTransitionCoordinator:{v11, v13}];
+    _transitionCoordinator = [v19 _transitionCoordinator];
+    [containerCopy viewWillTransitionToSize:_transitionCoordinator withTransitionCoordinator:{v11, v13}];
 
     objc_initWeak(&location, self);
     v23[0] = MEMORY[0x277D85DD0];
@@ -1610,10 +1610,10 @@ void __84__WGWidgetListViewController_preferredContentSizeDidChangeForChildConte
   [*(a1 + 32) completeTransition:a2];
 }
 
-- (id)_identifierForCell:(id)a3
+- (id)_identifierForCell:(id)cell
 {
-  v3 = a3;
-  if (!v3)
+  cellCopy = cell;
+  if (!cellCopy)
   {
     goto LABEL_13;
   }
@@ -1622,7 +1622,7 @@ void __84__WGWidgetListViewController_preferredContentSizeDidChangeForChildConte
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
-    v5 = v3;
+    v5 = cellCopy;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -1643,12 +1643,12 @@ void __84__WGWidgetListViewController_preferredContentSizeDidChangeForChildConte
 
     v9 = v6;
 
-    v10 = [v9 platterView];
+    platterView = [v9 platterView];
 
-    v11 = [v10 listItem];
-    v8 = [v11 widgetIdentifier];
+    listItem = [platterView listItem];
+    widgetIdentifier = [listItem widgetIdentifier];
 
-    if (v8)
+    if (widgetIdentifier)
     {
       goto LABEL_14;
     }
@@ -1657,46 +1657,46 @@ void __84__WGWidgetListViewController_preferredContentSizeDidChangeForChildConte
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v7 = objc_opt_class(), NSStringFromClass(v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v7 = objc_opt_class(), NSStringFromClass(v7), (widgetIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_12:
-    [WGWidgetListViewController _identifierForCell:v3];
+    [WGWidgetListViewController _identifierForCell:cellCopy];
 LABEL_13:
-    v8 = 0;
+    widgetIdentifier = 0;
   }
 
 LABEL_14:
 
-  return v8;
+  return widgetIdentifier;
 }
 
-- (void)resizeWidgetWrapperView:(id)a3 toSize:(CGSize)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)resizeWidgetWrapperView:(id)view toSize:(CGSize)size withTransitionContext:(id)context completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v76 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  viewCopy = view;
+  contextCopy = context;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (viewCopy)
   {
-    v15 = [v12 isAnimated];
-    v16 = [(WGWidgetListViewController *)self _identifierForCell:v11];
+    isAnimated = [contextCopy isAnimated];
+    v16 = [(WGWidgetListViewController *)self _identifierForCell:viewCopy];
     v17 = [(NSMutableDictionary *)self->_resizeContexts objectForKey:v16];
     v18 = v17;
-    if ((v15 & 1) == 0)
+    if ((isAnimated & 1) == 0)
     {
       if ([v17 isActive])
       {
         [v18 setActive:0];
-        [v11 setOverrideIntrinsicContentHeight:-1.0];
+        [viewCopy setOverrideIntrinsicContentHeight:-1.0];
       }
 
-      v21 = [(WGWidgetListViewController *)self widgetListView];
-      [v21 setNeedsLayout];
+      widgetListView = [(WGWidgetListViewController *)self widgetListView];
+      [widgetListView setNeedsLayout];
 
-      [v12 __runAlongsideAnimations];
+      [contextCopy __runAlongsideAnimations];
       if (v14)
       {
         v14[2](v14, 1);
@@ -1705,10 +1705,10 @@ LABEL_14:
       goto LABEL_40;
     }
 
-    v19 = [v17 resizeProgress];
+    resizeProgress = [v17 resizeProgress];
     if ([v18 isActive])
     {
-      [v19 value];
+      [resizeProgress value];
       if (BSFloatIsZero())
       {
         [v18 compactHeight];
@@ -1724,7 +1724,7 @@ LABEL_14:
 
     else
     {
-      [v11 bounds];
+      [viewCopy bounds];
       v23 = v22;
     }
 
@@ -1734,7 +1734,7 @@ LABEL_14:
       if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
       {
         v25 = v24;
-        v26 = [(WGWidgetListViewController *)self _identifierForCell:v11];
+        v26 = [(WGWidgetListViewController *)self _identifierForCell:viewCopy];
         *buf = 138412802;
         *&buf[4] = v26;
         v68 = 2048;
@@ -1770,7 +1770,7 @@ LABEL_40:
       v28 = height;
     }
 
-    if ([v18 isActive] && ((objc_msgSend(v18, "compactHeight"), !BSFloatEqualToFloat()) ? (v29 = 0) : (objc_msgSend(v18, "expandedHeight"), v29 = BSFloatEqualToFloat()), objc_msgSend(v19, "value"), IsOne = BSFloatIsOne(), (v29 & 1) != 0))
+    if ([v18 isActive] && ((objc_msgSend(v18, "compactHeight"), !BSFloatEqualToFloat()) ? (v29 = 0) : (objc_msgSend(v18, "expandedHeight"), v29 = BSFloatEqualToFloat()), objc_msgSend(resizeProgress, "value"), IsOne = BSFloatIsOne(), (v29 & 1) != 0))
     {
       if (((height > v23) ^ IsOne))
       {
@@ -1782,7 +1782,7 @@ LABEL_34:
         if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
         {
           v43 = v34;
-          v44 = [(WGWidgetListViewController *)self _identifierForCell:v11];
+          v44 = [(WGWidgetListViewController *)self _identifierForCell:viewCopy];
           *buf = 134219010;
           *&buf[4] = v33;
           v68 = 2112;
@@ -1803,7 +1803,7 @@ LABEL_34:
         v64[1] = 3221225472;
         v64[2] = __94__WGWidgetListViewController_resizeWidgetWrapperView_toSize_withTransitionContext_completion___block_invoke;
         v64[3] = &unk_279ED10D8;
-        v65 = v19;
+        v65 = resizeProgress;
         v66 = height > v23;
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
@@ -1811,7 +1811,7 @@ LABEL_34:
         v59[3] = &unk_279ED1318;
         v63 = v33;
         v60 = v18;
-        v37 = v11;
+        v37 = viewCopy;
         v61 = v37;
         v38 = v35;
         v62 = v38;
@@ -1831,7 +1831,7 @@ LABEL_34:
         v53 = v37;
         v55 = width;
         v56 = height;
-        v54 = v12;
+        v54 = contextCopy;
         v48[0] = MEMORY[0x277D85DD0];
         v48[1] = 3221225472;
         v48[2] = __94__WGWidgetListViewController_resizeWidgetWrapperView_toSize_withTransitionContext_completion___block_invoke_2_81;
@@ -1868,13 +1868,13 @@ LABEL_34:
       v32 = 0.0;
     }
 
-    [v19 setValue:v32];
-    [v11 setOverrideIntrinsicContentHeight:v23];
+    [resizeProgress setValue:v32];
+    [viewCopy setOverrideIntrinsicContentHeight:v23];
     v31 = 0;
     goto LABEL_34;
   }
 
-  (*(v13 + 2))(v13, 1);
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_41:
 }
 
@@ -1954,17 +1954,17 @@ uint64_t __94__WGWidgetListViewController_resizeWidgetWrapperView_toSize_withTra
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = WGWidgetListViewController;
-  v4 = a3;
-  [(WGWidgetListViewController *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(WGWidgetListViewController *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(WGWidgetListViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(WGWidgetListViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
@@ -1978,23 +1978,23 @@ void __55__WGWidgetListViewController_traitCollectionDidChange___block_invoke(ui
   [v2 adjustForContentSizeCategoryChange];
 }
 
-- (void)_invokeBlock:(id)a3 withPlatterViewsPassingTest:(id)a4
+- (void)_invokeBlock:(id)block withPlatterViewsPassingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  blockCopy = block;
+  testCopy = test;
+  if (blockCopy)
   {
-    v8 = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
-    if (v8 || !self->_shouldIncludeScrollView)
+    _scrollViewIfLoaded = [(WGWidgetListViewController *)self _scrollViewIfLoaded];
+    if (_scrollViewIfLoaded || !self->_shouldIncludeScrollView)
     {
-      v9 = [(UIStackView *)self->_stackView arrangedSubviews];
+      arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __71__WGWidgetListViewController__invokeBlock_withPlatterViewsPassingTest___block_invoke;
       v10[3] = &unk_279ED13B8;
-      v11 = v7;
-      v12 = v6;
-      [v9 enumerateObjectsUsingBlock:v10];
+      v11 = testCopy;
+      v12 = blockCopy;
+      [arrangedSubviews enumerateObjectsUsingBlock:v10];
     }
   }
 }
@@ -2020,14 +2020,14 @@ uint64_t __71__WGWidgetListViewController__invokeBlock_withPlatterViewsPassingTe
   return MEMORY[0x2821F96F8](isKindOfClass, v4);
 }
 
-- (void)_invokeBlockWithPlatterViewsVisibleInRect:(CGRect)a3 block:(id)a4
+- (void)_invokeBlockWithPlatterViewsVisibleInRect:(CGRect)rect block:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  if (blockCopy)
   {
     v11.origin.x = x;
     v11.origin.y = y;
@@ -2044,7 +2044,7 @@ uint64_t __71__WGWidgetListViewController__invokeBlock_withPlatterViewsPassingTe
       *&v10[6] = y;
       *&v10[7] = width;
       *&v10[8] = height;
-      [(WGWidgetListViewController *)self _invokeBlock:v9 withPlatterViewsPassingTest:v10];
+      [(WGWidgetListViewController *)self _invokeBlock:blockCopy withPlatterViewsPassingTest:v10];
     }
   }
 }
@@ -2094,12 +2094,12 @@ BOOL __78__WGWidgetListViewController__invokeBlockWithPlatterViewsVisibleInRect_
   return v25;
 }
 
-- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)a3
+- (void)_invokeBlockWithPlatterViewsVisibleInBounds:(id)bounds
 {
-  v4 = a3;
-  v5 = [(WGWidgetListViewController *)self widgetListView];
-  [v5 bounds];
-  [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInRect:v4 block:?];
+  boundsCopy = bounds;
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView bounds];
+  [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInRect:boundsCopy block:?];
 }
 
 - (id)_widgetIdentifiersForPlatterViewsVisibleInBounds
@@ -2142,17 +2142,17 @@ void __78__WGWidgetListViewController__widgetIdentifiersForPlatterViewsVisibleIn
 
 - (void)updatePreviouslyVisibleWidgetIDs
 {
-  v3 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+  _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
   previouslyVisibleWidgetIDs = self->_previouslyVisibleWidgetIDs;
-  self->_previouslyVisibleWidgetIDs = v3;
+  self->_previouslyVisibleWidgetIDs = _widgetIdentifiersForPlatterViewsVisibleInBounds;
 
-  MEMORY[0x2821F96F8](v3, previouslyVisibleWidgetIDs);
+  MEMORY[0x2821F96F8](_widgetIdentifiersForPlatterViewsVisibleInBounds, previouslyVisibleWidgetIDs);
 }
 
-- (void)_updateWidgetViewStateWithPreviouslyVisibleWidgetIdentifiers:(id)a3
+- (void)_updateWidgetViewStateWithPreviouslyVisibleWidgetIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ([(WGWidgetListViewController *)self _appearState]== 2)
   {
     v23 = 0;
@@ -2167,7 +2167,7 @@ void __78__WGWidgetListViewController__widgetIdentifiersForPlatterViewsVisibleIn
     v22[3] = &unk_279ED1408;
     v22[4] = &v23;
     [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInBounds:v22];
-    v5 = [MEMORY[0x277CBEB58] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB58] setWithArray:identifiersCopy];
     [v5 minusSet:v24[5]];
     v20 = 0u;
     v21 = 0u;
@@ -2197,8 +2197,8 @@ void __78__WGWidgetListViewController__widgetIdentifiersForPlatterViewsVisibleIn
           v14 = [(WGWidgetDiscoveryController *)discoveryController widgetWithIdentifier:v9 delegate:self forRequesterWithIdentifier:v13];
 
           v15 = +[WGWidgetEventTracker sharedInstance];
-          v16 = [v14 widgetIdentifier];
-          [v15 widget:v16 didDisappearInMode:{objc_msgSend(v14, "activeDisplayMode")}];
+          widgetIdentifier = [v14 widgetIdentifier];
+          [v15 widget:widgetIdentifier didDisappearInMode:{objc_msgSend(v14, "activeDisplayMode")}];
         }
 
         v6 = [obj countByEnumeratingWithState:&v18 objects:v29 count:16];
@@ -2274,12 +2274,12 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   }
 }
 
-- (id)_wrapperViewForWidgetPlatterView:(id)a3
+- (id)_wrapperViewForWidgetPlatterView:(id)view
 {
-  v3 = [a3 superview];
-  v4 = [v3 superview];
+  superview = [view superview];
+  v3Superview = [superview superview];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = v3Superview;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -2298,14 +2298,14 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   return v5;
 }
 
-- (void)setEditingIcons:(BOOL)a3
+- (void)setEditingIcons:(BOOL)icons
 {
-  self->_editingIcons = a3;
+  self->_editingIcons = icons;
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__WGWidgetListViewController_setEditingIcons___block_invoke;
   v3[3] = &__block_descriptor_33_e33_v24__0__WGWidgetPlatterView_8_B16l;
-  v4 = a3;
+  iconsCopy = icons;
   [(WGWidgetListViewController *)self _invokeBlockWithAllPlatterViews:v3];
 }
 
@@ -2331,48 +2331,48 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   return editButton;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidScroll_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidScroll_ withObject:scrollCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
+  draggingCopy = dragging;
   [(WGWidgetListViewController *)self _cancelTouchesForHitWidgetIfNecessaryAndDisableTouchesOnAllWidgets];
-  v4 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+  _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
   previouslyVisibleWidgetIDs = self->_previouslyVisibleWidgetIDs;
-  self->_previouslyVisibleWidgetIDs = v4;
+  self->_previouslyVisibleWidgetIDs = _widgetIdentifiersForPlatterViewsVisibleInBounds;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewWillBeginDragging_ withObject:v7];
+    [WeakRetained performSelector:sel_scrollViewWillBeginDragging_ withObject:draggingCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewWillEndDragging:v10 withVelocity:a5 targetContentOffset:{x, y}];
+    [WeakRetained scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v4 && ([v7 isDecelerating] & 1) == 0)
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  if (!decelerateCopy && ([draggingCopy isDecelerating] & 1) == 0)
   {
     [(WGWidgetListViewController *)self _scrollViewDidStop];
   }
@@ -2380,56 +2380,56 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained scrollViewDidEndDragging:v7 willDecelerate:v4];
+    [WeakRetained scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewWillBeginDecelerating_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewWillBeginDecelerating_ withObject:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   [(WGWidgetListViewController *)self _scrollViewDidStop];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidEndDecelerating_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidEndDecelerating_ withObject:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   [(WGWidgetListViewController *)self _scrollViewDidStop];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:animationCopy];
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
+  topCopy = top;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![WeakRetained scrollViewShouldScrollToTop:v4])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![WeakRetained scrollViewShouldScrollToTop:topCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+    _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
     previouslyVisibleWidgetIDs = self->_previouslyVisibleWidgetIDs;
-    self->_previouslyVisibleWidgetIDs = v6;
+    self->_previouslyVisibleWidgetIDs = _widgetIdentifiersForPlatterViewsVisibleInBounds;
 
     v8 = 1;
   }
@@ -2437,14 +2437,14 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   return v8;
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v5 = a3;
+  topCopy = top;
   [(WGWidgetListViewController *)self _scrollViewDidStop];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained performSelector:sel_scrollViewDidScrollToTop_ withObject:v5];
+    [WeakRetained performSelector:sel_scrollViewDidScrollToTop_ withObject:topCopy];
   }
 }
 
@@ -2457,33 +2457,33 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
   [(WGWidgetListViewController *)self _invalidateAllCancelTouchesAssertions];
 }
 
-- (void)widgetDiscoveryControllerSignificantWidgetsChange:(id)a3
+- (void)widgetDiscoveryControllerSignificantWidgetsChange:(id)change
 {
-  v4 = [(WGWidgetListViewController *)self widgetListView];
-  [v4 contentOffset];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView contentOffset];
   v6 = v5;
   v8 = v7;
 
   [(WGWidgetListViewController *)self _repopulateStackView];
-  v9 = [(WGWidgetListViewController *)self widgetListView];
-  [v9 setContentOffset:{v6, v8}];
+  widgetListView2 = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView2 setContentOffset:{v6, v8}];
 }
 
-- (void)widgetDiscoveryController:(id)a3 orderDidChangeForWidgetIdentifiers:(id)a4
+- (void)widgetDiscoveryController:(id)controller orderDidChangeForWidgetIdentifiers:(id)identifiers
 {
   v31 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
-  v7 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+  _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
   previouslyVisibleWidgetIDs = self->_previouslyVisibleWidgetIDs;
-  self->_previouslyVisibleWidgetIDs = v7;
+  self->_previouslyVisibleWidgetIDs = _widgetIdentifiersForPlatterViewsVisibleInBounds;
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = identifiersCopy;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -2499,8 +2499,8 @@ void __91__WGWidgetListViewController__updateWidgetViewStateWithPreviouslyVisibl
         }
 
         v11 = [(WGWidgetListViewController *)self _listItemViewControllerForWidgetWithIdentifier:*(*(&v25 + 1) + 8 * v10) creatingIfNecessary:0];
-        v12 = [v11 platterView];
-        v13 = [(WGWidgetListViewController *)self _wrapperViewForWidgetPlatterView:v12];
+        platterView = [v11 platterView];
+        v13 = [(WGWidgetListViewController *)self _wrapperViewForWidgetPlatterView:platterView];
         v14 = MEMORY[0x277D75D18];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
@@ -2556,10 +2556,10 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   [WeakRetained _updateWidgetViewStateWithPreviouslyVisibleWidgetIdentifiers:v1];
 }
 
-- (CGRect)_visibleContentFrameForBounds:(CGRect)a3 withContentOccludingInsets:(UIEdgeInsets)a4
+- (CGRect)_visibleContentFrameForBounds:(CGRect)bounds withContentOccludingInsets:(UIEdgeInsets)insets
 {
-  v4 = [(WGWidgetListViewController *)self widgetListView];
-  [v4 contentInset];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView contentInset];
 
   UIRectInset();
   result.size.height = v8;
@@ -2576,10 +2576,10 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   height = self->_maxVisibleContentSize.height;
   if (width == 0.0 && height == 0.0)
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = 4;
     }
@@ -2597,8 +2597,8 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
 
     else
     {
-      v10 = [(WGWidgetListViewController *)self view];
-      [v10 bounds];
+      view = [(WGWidgetListViewController *)self view];
+      [view bounds];
     }
 
     if (objc_opt_respondsToSelector())
@@ -2620,22 +2620,22 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   return result;
 }
 
-- (CGSize)maxSizeForWidget:(id)a3 forDisplayMode:(int64_t)a4
+- (CGSize)maxSizeForWidget:(id)widget forDisplayMode:(int64_t)mode
 {
-  v6 = a3;
+  widgetCopy = widget;
   [(WGWidgetListViewController *)self _maxVisibleContentSize];
   v8 = v7;
   v10 = v9;
   +[WGWidgetInfo maximumContentHeightForCompactDisplayMode];
   v12 = v11;
-  if (a4)
+  if (mode)
   {
     [MEMORY[0x277CD9378] defaultWidgetRowHeight];
     v14 = v13;
     [MEMORY[0x277CD9378] widgetRowHeight];
     v16 = v15;
-    v17 = [v6 widgetIdentifier];
-    v18 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:v17 creatingIfNecessary:1];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v18 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:widgetIdentifier creatingIfNecessary:1];
     [v18 contentSizeForSize:{v8, v10}];
     if (v14 <= v16)
     {
@@ -2662,25 +2662,25 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   return result;
 }
 
-- (void)registerWidgetForRefreshEvents:(id)a3
+- (void)registerWidgetForRefreshEvents:(id)events
 {
   discoveryController = self->_discoveryController;
-  v4 = [a3 widgetIdentifier];
-  [(WGWidgetDiscoveryController *)discoveryController registerIdentifierForRefreshEvents:v4];
+  widgetIdentifier = [events widgetIdentifier];
+  [(WGWidgetDiscoveryController *)discoveryController registerIdentifierForRefreshEvents:widgetIdentifier];
 }
 
-- (void)unregisterWidgetForRefreshEvents:(id)a3
+- (void)unregisterWidgetForRefreshEvents:(id)events
 {
   discoveryController = self->_discoveryController;
-  v4 = [a3 widgetIdentifier];
-  [(WGWidgetDiscoveryController *)discoveryController unregisterIdentifierForRefreshEvents:v4];
+  widgetIdentifier = [events widgetIdentifier];
+  [(WGWidgetDiscoveryController *)discoveryController unregisterIdentifierForRefreshEvents:widgetIdentifier];
 }
 
-- (UIEdgeInsets)marginInsetsForWidget:(id)a3
+- (UIEdgeInsets)marginInsetsForWidget:(id)widget
 {
-  v3 = [(WGWidgetListViewController *)self view];
-  v4 = [v3 _shouldReverseLayoutDirection];
-  if (v4)
+  view = [(WGWidgetListViewController *)self view];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v5 = 0.0;
   }
@@ -2690,7 +2690,7 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
     v5 = 15.0;
   }
 
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v6 = 15.0;
   }
@@ -2711,7 +2711,7 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   return result;
 }
 
-- (UIEdgeInsets)layoutMarginForWidget:(id)a3
+- (UIEdgeInsets)layoutMarginForWidget:(id)widget
 {
   v3 = *MEMORY[0x277CD9380];
   v4 = *(MEMORY[0x277CD9380] + 8);
@@ -2729,18 +2729,18 @@ void __91__WGWidgetListViewController_widgetDiscoveryController_orderDidChangeFo
   return result;
 }
 
-- (void)widget:(id)a3 didChangeLargestSupportedDisplayMode:(int64_t)a4
+- (void)widget:(id)widget didChangeLargestSupportedDisplayMode:(int64_t)mode
 {
-  v6 = a3;
+  widgetCopy = widget;
   v7 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__WGWidgetListViewController_widget_didChangeLargestSupportedDisplayMode___block_invoke;
   v9[3] = &unk_279ED1088;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = widgetCopy;
+  modeCopy = mode;
+  v8 = widgetCopy;
   [v7 animateWithDuration:v9 animations:0.5];
 }
 
@@ -2752,14 +2752,14 @@ void __74__WGWidgetListViewController_widget_didChangeLargestSupportedDisplayMod
   [v3 setShowMoreButtonVisible:*(a1 + 48) == 1];
 }
 
-- (void)remoteViewControllerViewDidAppearForWidget:(id)a3
+- (void)remoteViewControllerViewDidAppearForWidget:(id)widget
 {
-  v4 = a3;
-  if (-[UIViewController wg_isAppearingOrAppeared](self, "wg_isAppearingOrAppeared") && [v4 isRemoteViewVisible])
+  widgetCopy = widget;
+  if (-[UIViewController wg_isAppearingOrAppeared](self, "wg_isAppearingOrAppeared") && [widgetCopy isRemoteViewVisible])
   {
-    [v4 _invalidateVisibleFrame];
-    v5 = [v4 widgetIdentifier];
-    v6 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:v5 creatingIfNecessary:0];
+    [widgetCopy _invalidateVisibleFrame];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v6 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:widgetIdentifier creatingIfNecessary:0];
 
     if (v6)
     {
@@ -2780,21 +2780,21 @@ void __73__WGWidgetListViewController_remoteViewControllerViewDidAppearForWidget
   [v1 setAlpha:1.0];
 }
 
-- (void)remoteViewControllerViewDidHideForWidget:(id)a3
+- (void)remoteViewControllerViewDidHideForWidget:(id)widget
 {
   cancelTouchesAssertionsByWidgetID = self->_cancelTouchesAssertionsByWidgetID;
-  v5 = [a3 widgetIdentifier];
-  v4 = [(NSMutableDictionary *)cancelTouchesAssertionsByWidgetID objectForKey:v5];
+  widgetIdentifier = [widget widgetIdentifier];
+  v4 = [(NSMutableDictionary *)cancelTouchesAssertionsByWidgetID objectForKey:widgetIdentifier];
   [v4 invalidate];
 }
 
-- (void)brokenViewDidAppearForWidget:(id)a3
+- (void)brokenViewDidAppearForWidget:(id)widget
 {
-  v4 = a3;
-  if (-[UIViewController wg_isAppearingOrAppeared](self, "wg_isAppearingOrAppeared") && ([v4 isSnapshotLoaded] & 1) == 0 && (objc_msgSend(v4, "isRemoteViewVisible") & 1) == 0)
+  widgetCopy = widget;
+  if (-[UIViewController wg_isAppearingOrAppeared](self, "wg_isAppearingOrAppeared") && ([widgetCopy isSnapshotLoaded] & 1) == 0 && (objc_msgSend(widgetCopy, "isRemoteViewVisible") & 1) == 0)
   {
-    v5 = [v4 widgetIdentifier];
-    v6 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:v5 creatingIfNecessary:0];
+    widgetIdentifier = [widgetCopy widgetIdentifier];
+    v6 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:widgetIdentifier creatingIfNecessary:0];
 
     if (v6)
     {
@@ -2815,14 +2815,14 @@ void __59__WGWidgetListViewController_brokenViewDidAppearForWidget___block_invok
   [v1 setAlpha:1.0];
 }
 
-- (CGRect)visibleFrameForWidget:(id)a3
+- (CGRect)visibleFrameForWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
-  if (v4)
+  if (widgetCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -2838,15 +2838,15 @@ void __59__WGWidgetListViewController_brokenViewDidAppearForWidget___block_invok
     v16 = v15;
     v18 = v17;
 
-    v19 = [(WGWidgetListViewController *)self widgetListView];
-    v20 = [v4 view];
-    [v20 frame];
+    widgetListView = [(WGWidgetListViewController *)self widgetListView];
+    view = [widgetCopy view];
+    [view frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [v20 superview];
-    [v19 convertRect:v29 fromView:{v22, v24, v26, v28}];
+    superview = [view superview];
+    [widgetListView convertRect:superview fromView:{v22, v24, v26, v28}];
     v31 = v30;
     v33 = v32;
     v35 = v34;
@@ -2871,8 +2871,8 @@ void __59__WGWidgetListViewController_brokenViewDidAppearForWidget___block_invok
     v7 = v52;
     if (!CGRectIsNull(v56))
     {
-      v42 = [v4 view];
-      [v42 convertRect:v19 fromView:{x, y, width, height}];
+      view2 = [widgetCopy view];
+      [view2 convertRect:widgetListView fromView:{x, y, width, height}];
       v5 = v43;
       v6 = v44;
       v7 = v45;
@@ -2891,20 +2891,20 @@ void __59__WGWidgetListViewController_brokenViewDidAppearForWidget___block_invok
   return result;
 }
 
-- (id)widgetListItemViewController:(id)a3 widgetHostWithIdentifier:(id)a4
+- (id)widgetListItemViewController:(id)controller widgetHostWithIdentifier:(id)identifier
 {
   discoveryController = self->_discoveryController;
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(WGWidgetDiscoveryController *)discoveryController widgetWithIdentifier:v6 delegate:self forRequesterWithIdentifier:v8];
+  v9 = [(WGWidgetDiscoveryController *)discoveryController widgetWithIdentifier:identifierCopy delegate:self forRequesterWithIdentifier:v8];
 
   return v9;
 }
 
-- (BOOL)isWidgetExtensionVisible:(id)a3
+- (BOOL)isWidgetExtensionVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -2915,7 +2915,7 @@ void __59__WGWidgetListViewController_brokenViewDidAppearForWidget___block_invok
     v7[1] = 3221225472;
     v7[2] = __55__WGWidgetListViewController_isWidgetExtensionVisible___block_invoke;
     v7[3] = &unk_279ED1458;
-    v8 = v4;
+    v8 = visibleCopy;
     v9 = &v10;
     [(WGWidgetListViewController *)self _invokeBlockWithPlatterViewsVisibleInBounds:v7];
   }
@@ -2949,39 +2949,39 @@ void __55__WGWidgetListViewController_isWidgetExtensionVisible___block_invoke(ui
 - (id)visibleWidgetIdentifiers
 {
   discoveryController = self->_discoveryController;
-  v3 = [(WGWidgetListViewController *)self _group];
-  v4 = [(WGWidgetDiscoveryController *)discoveryController visibleWidgetIdentifiersForGroup:v3];
+  _group = [(WGWidgetListViewController *)self _group];
+  v4 = [(WGWidgetDiscoveryController *)discoveryController visibleWidgetIdentifiersForGroup:_group];
 
   return v4;
 }
 
-- (void)makeVisibleWidgetWithIdentifier:(id)a3 completion:(id)a4
+- (void)makeVisibleWidgetWithIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 length])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
-    v7 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:v11 creatingIfNecessary:0];
+    v7 = [(WGWidgetListViewController *)self _platterViewForWidgetWithIdentifier:identifierCopy creatingIfNecessary:0];
     if (v7)
     {
-      v8 = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
+      _widgetIdentifiersForPlatterViewsVisibleInBounds = [(WGWidgetListViewController *)self _widgetIdentifiersForPlatterViewsVisibleInBounds];
       previouslyVisibleWidgetIDs = self->_previouslyVisibleWidgetIDs;
-      self->_previouslyVisibleWidgetIDs = v8;
+      self->_previouslyVisibleWidgetIDs = _widgetIdentifiersForPlatterViewsVisibleInBounds;
 
-      v10 = [(WGWidgetListViewController *)self widgetListView];
+      widgetListView = [(WGWidgetListViewController *)self widgetListView];
       [v7 frame];
-      [v10 scrollRectToVisible:1 animated:?];
+      [widgetListView scrollRectToVisible:1 animated:?];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v7 != 0);
+      completionCopy[2](completionCopy, v7 != 0);
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

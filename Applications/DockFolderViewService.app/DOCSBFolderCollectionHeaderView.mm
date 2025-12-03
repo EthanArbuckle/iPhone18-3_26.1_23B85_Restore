@@ -1,13 +1,13 @@
 @interface DOCSBFolderCollectionHeaderView
-- (void)actionViewTappedWithSender:(id)a3;
+- (void)actionViewTappedWithSender:(id)sender;
 @end
 
 @implementation DOCSBFolderCollectionHeaderView
 
-- (void)actionViewTappedWithSender:(id)a3
+- (void)actionViewTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100005D90();
 }
 

@@ -1,16 +1,16 @@
 @interface HMCoreAnalyticsIntegerFieldData
-- (HMCoreAnalyticsIntegerFieldData)initWithName:(id)a3 integerValue:(int64_t)a4;
+- (HMCoreAnalyticsIntegerFieldData)initWithName:(id)name integerValue:(int64_t)value;
 @end
 
 @implementation HMCoreAnalyticsIntegerFieldData
 
-- (HMCoreAnalyticsIntegerFieldData)initWithName:(id)a3 integerValue:(int64_t)a4
+- (HMCoreAnalyticsIntegerFieldData)initWithName:(id)name integerValue:(int64_t)value
 {
-  v6 = a3;
-  if (v6)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v7 = nameCopy;
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:value];
     v13.receiver = self;
     v13.super_class = HMCoreAnalyticsIntegerFieldData;
     v9 = [(HMCoreAnalyticsFieldData *)&v13 initWithName:v7 value:v8];

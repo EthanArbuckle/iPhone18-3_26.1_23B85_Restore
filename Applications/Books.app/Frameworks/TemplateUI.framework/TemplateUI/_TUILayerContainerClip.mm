@@ -1,29 +1,29 @@
 @interface _TUILayerContainerClip
-- (_TUILayerContainerClip)initWithLayer:(id)a3;
-- (void)addAnimation:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (_TUILayerContainerClip)initWithLayer:(id)layer;
+- (void)addAnimation:(id)animation;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation _TUILayerContainerClip
 
-- (_TUILayerContainerClip)initWithLayer:(id)a3
+- (_TUILayerContainerClip)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = _TUILayerContainerClip;
   v6 = [(_TUILayerContainerClip *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layer, a3);
+    objc_storeStrong(&v6->_layer, layer);
   }
 
   return v7;
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
-  [a3 setDelegate:self];
+  [animation setDelegate:self];
   count = self->_count;
   if (!count)
   {
@@ -34,9 +34,9 @@
   self->_count = count + 1;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   count = self->_count;
   if (count)
   {
@@ -44,9 +44,9 @@
     self->_count = v7;
     if (!v7)
     {
-      v8 = v5;
+      v8 = stopCopy;
       [(CALayer *)self->_layer setMasksToBounds:0];
-      v5 = v8;
+      stopCopy = v8;
     }
   }
 }

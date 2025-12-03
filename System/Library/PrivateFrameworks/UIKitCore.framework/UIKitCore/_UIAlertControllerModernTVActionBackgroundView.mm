@@ -1,13 +1,13 @@
 @interface _UIAlertControllerModernTVActionBackgroundView
 + (CGSize)backgroundInsetAmount;
-- (BOOL)vibrantCompositing:(unint64_t)a3;
+- (BOOL)vibrantCompositing:(unint64_t)compositing;
 - (CGSize)_shadowOffset;
-- (_UIAlertControllerModernTVActionBackgroundView)initWithFrame:(CGRect)a3;
+- (_UIAlertControllerModernTVActionBackgroundView)initWithFrame:(CGRect)frame;
 - (void)_updateBackgroundColor;
 - (void)_userInterfaceStyleChanged;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setVibrantCompositing:(BOOL)a3 forState:(unint64_t)a4;
-- (void)updateCompositingForHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setVibrantCompositing:(BOOL)compositing forState:(unint64_t)state;
+- (void)updateCompositingForHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _UIAlertControllerModernTVActionBackgroundView
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (_UIAlertControllerModernTVActionBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerModernTVActionBackgroundView)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = _UIAlertControllerModernTVActionBackgroundView;
-  v3 = [(_UIAlertControllerTVBackgroundView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIAlertControllerTVBackgroundView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_UIAlertControllerTVBackgroundView *)v3 shadowView];
-    [v5 setShadowExpansion:35.0];
+    shadowView = [(_UIAlertControllerTVBackgroundView *)v3 shadowView];
+    [shadowView setShadowExpansion:35.0];
 
     [(_UIAlertControllerTVBackgroundView *)v4 setAlpha:0 forState:1.0];
     [(_UIAlertControllerTVBackgroundView *)v4 setAlpha:1 forState:0.75];
@@ -46,30 +46,30 @@
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
-  v6 = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
-  if (v3 && ![(_UIAlertControllerModernTVActionBackgroundView *)self shouldUseTintColorAsHighlightColor])
+  isHighlighted = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
+  backgroundView = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
+  if (isHighlighted && ![(_UIAlertControllerModernTVActionBackgroundView *)self shouldUseTintColorAsHighlightColor])
   {
-    v4 = +[UIColor whiteColor];
+    tintColor = +[UIColor whiteColor];
   }
 
   else
   {
-    v4 = [(UIView *)self tintColor];
+    tintColor = [(UIView *)self tintColor];
   }
 
-  v5 = v4;
-  [v6 setBackgroundColor:v4];
+  v5 = tintColor;
+  [backgroundView setBackgroundColor:tintColor];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(_UIAlertControllerTVBackgroundView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(_UIAlertControllerTVBackgroundView *)self isHighlighted]!= highlighted)
   {
     [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:[(_UIAlertControllerTVBackgroundView *)self isHighlighted] pressed:[(_UIAlertControllerTVBackgroundView *)self isPressed]];
     v6 = v5;
-    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:v3 pressed:[(_UIAlertControllerTVBackgroundView *)self isPressed]];
+    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:highlightedCopy pressed:[(_UIAlertControllerTVBackgroundView *)self isPressed]];
     v8 = v7;
     if ([(_UIAlertControllerModernTVActionBackgroundView *)self shouldUseTintColorAsHighlightColor])
     {
@@ -82,14 +82,14 @@
     }
     v9 = ;
     v10 = v9;
-    if (v3)
+    if (highlightedCopy)
     {
-      v11 = v9;
+      tintColor = v9;
     }
 
     else
     {
-      v11 = [(UIView *)self tintColor];
+      tintColor = [(UIView *)self tintColor];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -97,14 +97,14 @@
     aBlock[2] = __65___UIAlertControllerModernTVActionBackgroundView_setHighlighted___block_invoke;
     aBlock[3] = &unk_1E7102A70;
     aBlock[4] = self;
-    v12 = v11;
+    v12 = tintColor;
     v19 = v12;
-    v21 = v3;
+    v21 = highlightedCopy;
     v20 = v8;
     v13 = _Block_copy(aBlock);
     if (+[UIView areAnimationsEnabled])
     {
-      if (v3)
+      if (highlightedCopy)
       {
         v14 = 0.1;
       }
@@ -114,8 +114,8 @@
         v14 = 0.2;
       }
 
-      v15 = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
-      [v15 setAlpha:v6];
+      backgroundView = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
+      [backgroundView setAlpha:v6];
 
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -130,26 +130,26 @@
       v13[2](v13);
     }
 
-    [(_UIAlertControllerTVBackgroundView *)self setIsHighlighted:v3];
+    [(_UIAlertControllerTVBackgroundView *)self setIsHighlighted:highlightedCopy];
   }
 }
 
-- (void)updateCompositingForHighlighted:(BOOL)a3
+- (void)updateCompositingForHighlighted:(BOOL)highlighted
 {
-  if (a3 || ![(_UIAlertControllerModernTVActionBackgroundView *)self vibrantCompositing:0])
+  if (highlighted || ![(_UIAlertControllerModernTVActionBackgroundView *)self vibrantCompositing:0])
   {
-    v9 = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
-    v10 = [v9 layer];
-    [v10 setCompositingFilter:0];
+    backgroundView = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
+    layer = [backgroundView layer];
+    [layer setCompositingFilter:0];
     v11 = 1;
   }
 
   else
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v6 = v5 == 1000 || v5 == 2;
+    v6 = userInterfaceStyle == 1000 || userInterfaceStyle == 2;
     v7 = MEMORY[0x1E6979CF8];
     if (!v6)
     {
@@ -157,30 +157,30 @@
     }
 
     v8 = *v7;
-    v9 = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
-    v10 = [v9 layer];
-    [v10 setCompositingFilter:v8];
+    backgroundView = [(_UIAlertControllerTVBackgroundView *)self backgroundView];
+    layer = [backgroundView layer];
+    [layer setCompositingFilter:v8];
 
     v11 = 0;
   }
 
-  v12 = [(UIView *)self layer];
-  [v12 setAllowsGroupOpacity:v11];
+  layer2 = [(UIView *)self layer];
+  [layer2 setAllowsGroupOpacity:v11];
 
-  v13 = [(UIView *)self layer];
-  [v13 setAllowsGroupBlending:v11];
+  layer3 = [(UIView *)self layer];
+  [layer3 setAllowsGroupBlending:v11];
 }
 
 - (void)_userInterfaceStyleChanged
 {
-  v3 = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
+  isHighlighted = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
 
-  [(_UIAlertControllerModernTVActionBackgroundView *)self updateCompositingForHighlighted:v3];
+  [(_UIAlertControllerModernTVActionBackgroundView *)self updateCompositingForHighlighted:isHighlighted];
 }
 
-- (void)setVibrantCompositing:(BOOL)a3 forState:(unint64_t)a4
+- (void)setVibrantCompositing:(BOOL)compositing forState:(unint64_t)state
 {
-  v5 = a3;
+  compositingCopy = compositing;
   vibrancies = self->_vibrancies;
   if (!vibrancies)
   {
@@ -191,23 +191,23 @@
     vibrancies = self->_vibrancies;
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:compositingCopy];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)vibrancies setObject:v10 forKey:v11];
 
-  v12 = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
+  isHighlighted = [(_UIAlertControllerTVBackgroundView *)self isHighlighted];
 
-  [(_UIAlertControllerModernTVActionBackgroundView *)self updateCompositingForHighlighted:v12];
+  [(_UIAlertControllerModernTVActionBackgroundView *)self updateCompositingForHighlighted:isHighlighted];
 }
 
-- (BOOL)vibrantCompositing:(unint64_t)a3
+- (BOOL)vibrantCompositing:(unint64_t)compositing
 {
   vibrancies = self->_vibrancies;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:compositing];
   v5 = [(NSMutableDictionary *)vibrancies objectForKey:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (CGSize)_shadowOffset

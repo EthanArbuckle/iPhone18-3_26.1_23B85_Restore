@@ -1,52 +1,52 @@
 @interface OrgApacheLuceneIndexFilterLeafReader
 - (id)description;
 - (id)fields;
-- (id)getBinaryDocValuesWithNSString:(id)a3;
-- (id)getDocsWithFieldWithNSString:(id)a3;
+- (id)getBinaryDocValuesWithNSString:(id)string;
+- (id)getDocsWithFieldWithNSString:(id)string;
 - (id)getFieldInfos;
 - (id)getLiveDocs;
-- (id)getNormValuesWithNSString:(id)a3;
-- (id)getNumericDocValuesWithNSString:(id)a3;
-- (id)getSortedDocValuesWithNSString:(id)a3;
-- (id)getSortedNumericDocValuesWithNSString:(id)a3;
-- (id)getSortedSetDocValuesWithNSString:(id)a3;
+- (id)getNormValuesWithNSString:(id)string;
+- (id)getNumericDocValuesWithNSString:(id)string;
+- (id)getSortedDocValuesWithNSString:(id)string;
+- (id)getSortedNumericDocValuesWithNSString:(id)string;
+- (id)getSortedSetDocValuesWithNSString:(id)string;
 - (int)maxDoc;
 - (int)numDocs;
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 - (void)checkIntegrity;
 - (void)dealloc;
 - (void)doClose;
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 @end
 
 @implementation OrgApacheLuceneIndexFilterLeafReader
 
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   in = self->in_;
-  v6 = [(OrgApacheLuceneIndexIndexReader *)self getCoreCacheKey];
+  getCoreCacheKey = [(OrgApacheLuceneIndexIndexReader *)self getCoreCacheKey];
   v7 = self->in_;
   if (!v7)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = sub_100097D60(a3, v6, [(OrgApacheLuceneIndexIndexReader *)v7 getCoreCacheKey]);
+  v8 = sub_100097D60(listener, getCoreCacheKey, [(OrgApacheLuceneIndexIndexReader *)v7 getCoreCacheKey]);
 
   [(OrgApacheLuceneIndexLeafReader *)in addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:v8];
 }
 
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   in = self->in_;
-  v6 = [(OrgApacheLuceneIndexIndexReader *)self getCoreCacheKey];
+  getCoreCacheKey = [(OrgApacheLuceneIndexIndexReader *)self getCoreCacheKey];
   v7 = self->in_;
   if (!v7)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = sub_100097D60(a3, v6, [(OrgApacheLuceneIndexIndexReader *)v7 getCoreCacheKey]);
+  v8 = sub_100097D60(listener, getCoreCacheKey, [(OrgApacheLuceneIndexIndexReader *)v7 getCoreCacheKey]);
 
   [(OrgApacheLuceneIndexLeafReader *)in removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:v8];
 }
@@ -128,7 +128,7 @@
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (id)getNumericDocValuesWithNSString:(id)a3
+- (id)getNumericDocValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -137,10 +137,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getNumericDocValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getNumericDocValuesWithNSString:string];
 }
 
-- (id)getBinaryDocValuesWithNSString:(id)a3
+- (id)getBinaryDocValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -149,10 +149,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getBinaryDocValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getBinaryDocValuesWithNSString:string];
 }
 
-- (id)getSortedDocValuesWithNSString:(id)a3
+- (id)getSortedDocValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -161,10 +161,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getSortedDocValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getSortedDocValuesWithNSString:string];
 }
 
-- (id)getSortedNumericDocValuesWithNSString:(id)a3
+- (id)getSortedNumericDocValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -173,10 +173,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getSortedNumericDocValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getSortedNumericDocValuesWithNSString:string];
 }
 
-- (id)getSortedSetDocValuesWithNSString:(id)a3
+- (id)getSortedSetDocValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -185,10 +185,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getSortedSetDocValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getSortedSetDocValuesWithNSString:string];
 }
 
-- (id)getNormValuesWithNSString:(id)a3
+- (id)getNormValuesWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -197,10 +197,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getNormValuesWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getNormValuesWithNSString:string];
 }
 
-- (id)getDocsWithFieldWithNSString:(id)a3
+- (id)getDocsWithFieldWithNSString:(id)string
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   in = self->in_;
@@ -209,7 +209,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexLeafReader *)in getDocsWithFieldWithNSString:a3];
+  return [(OrgApacheLuceneIndexLeafReader *)in getDocsWithFieldWithNSString:string];
 }
 
 - (void)checkIntegrity

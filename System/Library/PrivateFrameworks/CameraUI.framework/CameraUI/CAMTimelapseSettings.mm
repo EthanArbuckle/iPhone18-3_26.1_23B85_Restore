@@ -1,11 +1,11 @@
 @interface CAMTimelapseSettings
 + (id)sharedInstance;
 - (CAMTimelapseSettings)init;
-- (double)waitTimeBeforeNextWriteForNumberOfPreviousAttempts:(int64_t)a3;
-- (id)_outputSettingsPresetForWidth:(int64_t)a3 height:(int64_t)a4;
-- (id)outputSettingsForWidth:(int64_t)a3 height:(int64_t)a4 videoFormatDescription:(opaqueCMFormatDescription *)a5 framesPerSecond:(int64_t)a6 frameCount:(int64_t)a7 useHEVC:(BOOL)a8;
-- (int64_t)_averageMovieBitrateForWidth:(int64_t)a3 height:(int64_t)a4 useHEVC:(BOOL)a5;
-- (int64_t)maxMovieFileLengthForWidth:(int64_t)a3 height:(int64_t)a4 useHEVC:(BOOL)a5;
+- (double)waitTimeBeforeNextWriteForNumberOfPreviousAttempts:(int64_t)attempts;
+- (id)_outputSettingsPresetForWidth:(int64_t)width height:(int64_t)height;
+- (id)outputSettingsForWidth:(int64_t)width height:(int64_t)height videoFormatDescription:(opaqueCMFormatDescription *)description framesPerSecond:(int64_t)second frameCount:(int64_t)count useHEVC:(BOOL)c;
+- (int64_t)_averageMovieBitrateForWidth:(int64_t)width height:(int64_t)height useHEVC:(BOOL)c;
+- (int64_t)maxMovieFileLengthForWidth:(int64_t)width height:(int64_t)height useHEVC:(BOOL)c;
 - (int64_t)maxOutputFrames;
 @end
 
@@ -54,73 +54,73 @@ uint64_t __38__CAMTimelapseSettings_sharedInstance__block_invoke()
   return (v4 * v5);
 }
 
-- (int64_t)_averageMovieBitrateForWidth:(int64_t)a3 height:(int64_t)a4 useHEVC:(BOOL)a5
+- (int64_t)_averageMovieBitrateForWidth:(int64_t)width height:(int64_t)height useHEVC:(BOOL)c
 {
-  if (a5)
+  if (c)
   {
     return 15000000;
   }
 
-  v6 = self;
-  v7 = [(CAMTimelapseSettings *)self _outputSettingsPresetForWidth:a3 height:a4];
+  selfCopy = self;
+  v7 = [(CAMTimelapseSettings *)self _outputSettingsPresetForWidth:width height:height];
   v8 = [MEMORY[0x1E6988080] outputSettingsAssistantWithPreset:v7];
-  LODWORD(v6) = v6->_maxOutputFPS;
-  CMTimeMake(&v13, 1, v6);
+  LODWORD(selfCopy) = selfCopy->_maxOutputFPS;
+  CMTimeMake(&v13, 1, selfCopy);
   [v8 setSourceVideoAverageFrameDuration:&v13];
-  CMTimeMake(&v13, 1, v6);
+  CMTimeMake(&v13, 1, selfCopy);
   [v8 setSourceVideoMinFrameDuration:&v13];
-  v9 = [v8 videoSettings];
-  v10 = [v9 objectForKey:*MEMORY[0x1E6987D30]];
+  videoSettings = [v8 videoSettings];
+  v10 = [videoSettings objectForKey:*MEMORY[0x1E6987D30]];
   v11 = [v10 objectForKey:*MEMORY[0x1E6987C60]];
   v5 = ([v11 integerValue] * 1.25);
 
   return v5;
 }
 
-- (int64_t)maxMovieFileLengthForWidth:(int64_t)a3 height:(int64_t)a4 useHEVC:(BOOL)a5
+- (int64_t)maxMovieFileLengthForWidth:(int64_t)width height:(int64_t)height useHEVC:(BOOL)c
 {
-  v6 = [(CAMTimelapseSettings *)self _averageMovieBitrateForWidth:a3 height:a4 useHEVC:a5];
+  v6 = [(CAMTimelapseSettings *)self _averageMovieBitrateForWidth:width height:height useHEVC:c];
   [(CAMTimelapseSettings *)self maxOutputLength];
   return (v7 * v6 * 1.05 * 0.125);
 }
 
-- (id)_outputSettingsPresetForWidth:(int64_t)a3 height:(int64_t)a4
+- (id)_outputSettingsPresetForWidth:(int64_t)width height:(int64_t)height
 {
-  v6 = [MEMORY[0x1E6988080] availableOutputSettingsPresets];
-  v7 = v6;
-  if (a3 >= a4)
+  availableOutputSettingsPresets = [MEMORY[0x1E6988080] availableOutputSettingsPresets];
+  v7 = availableOutputSettingsPresets;
+  if (width >= height)
   {
-    v8 = a4;
+    widthCopy = height;
   }
 
   else
   {
-    v8 = a3;
+    widthCopy = width;
   }
 
-  if (a3 <= a4)
+  if (width <= height)
   {
-    v9 = a4;
+    widthCopy2 = height;
   }
 
   else
   {
-    v9 = a3;
+    widthCopy2 = width;
   }
 
-  if (v9 == 1920 && v8 == 1080)
+  if (widthCopy2 == 1920 && widthCopy == 1080)
   {
     v10 = MEMORY[0x1E6987948];
   }
 
-  else if (v9 == 1280 && v8 == 720)
+  else if (widthCopy2 == 1280 && widthCopy == 720)
   {
     v10 = MEMORY[0x1E6987940];
   }
 
   else
   {
-    if (v9 != 960 || v8 != 540)
+    if (widthCopy2 != 960 || widthCopy != 540)
     {
       goto LABEL_17;
     }
@@ -129,7 +129,7 @@ uint64_t __38__CAMTimelapseSettings_sharedInstance__block_invoke()
   }
 
   v11 = *v10;
-  if (([v6 containsObject:*v10] & 1) == 0)
+  if (([availableOutputSettingsPresets containsObject:*v10] & 1) == 0)
   {
 LABEL_17:
     v11 = *MEMORY[0x1E6987958];
@@ -140,73 +140,73 @@ LABEL_17:
   return v11;
 }
 
-- (id)outputSettingsForWidth:(int64_t)a3 height:(int64_t)a4 videoFormatDescription:(opaqueCMFormatDescription *)a5 framesPerSecond:(int64_t)a6 frameCount:(int64_t)a7 useHEVC:(BOOL)a8
+- (id)outputSettingsForWidth:(int64_t)width height:(int64_t)height videoFormatDescription:(opaqueCMFormatDescription *)description framesPerSecond:(int64_t)second frameCount:(int64_t)count useHEVC:(BOOL)c
 {
-  v28 = a8;
-  v13 = a7 / a6;
+  cCopy = c;
+  v13 = count / second;
   v30 = [CAMTimelapseSettings _outputSettingsPresetForWidth:"_outputSettingsPresetForWidth:height:" height:?];
   v14 = [MEMORY[0x1E6988080] outputSettingsAssistantWithPreset:?];
-  CMTimeMake(&v31, 1, a6);
+  CMTimeMake(&v31, 1, second);
   [v14 setSourceVideoAverageFrameDuration:&v31];
-  CMTimeMake(&v31, 1, a6);
+  CMTimeMake(&v31, 1, second);
   [v14 setSourceVideoMinFrameDuration:&v31];
-  [v14 setSourceVideoFormat:a5];
-  v15 = [v14 videoSettings];
-  v16 = [v15 mutableCopy];
+  [v14 setSourceVideoFormat:description];
+  videoSettings = [v14 videoSettings];
+  v16 = [videoSettings mutableCopy];
 
   [v16 setObject:*MEMORY[0x1E6987DE0] forKey:*MEMORY[0x1E6987DC8]];
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:width];
   [v16 setObject:v17 forKey:*MEMORY[0x1E6987E08]];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   [v16 setObject:v18 forKey:*MEMORY[0x1E6987D70]];
 
   v19 = *MEMORY[0x1E6987D30];
   v20 = [v16 objectForKey:*MEMORY[0x1E6987D30]];
-  v21 = [v20 mutableCopy];
+  dictionary = [v20 mutableCopy];
 
-  if (!v21)
+  if (!dictionary)
   {
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:a7];
-  [v21 setObject:v22 forKey:*MEMORY[0x1E6983820]];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+  [dictionary setObject:v22 forKey:*MEMORY[0x1E6983820]];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-  [v21 setObject:v23 forKey:*MEMORY[0x1E6983638]];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:second];
+  [dictionary setObject:v23 forKey:*MEMORY[0x1E6983638]];
 
   v24 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  [v21 setObject:v24 forKey:*MEMORY[0x1E6983630]];
+  [dictionary setObject:v24 forKey:*MEMORY[0x1E6983630]];
 
-  if (v28)
+  if (cCopy)
   {
     [v16 setObject:*MEMORY[0x1E6987CF0] forKey:*MEMORY[0x1E6987CB0]];
-    [v21 setObject:*MEMORY[0x1E6983FA0] forKey:*MEMORY[0x1E6987DB8]];
-    [v21 removeObjectForKey:*MEMORY[0x1E6987D68]];
-    [v21 setObject:&unk_1F16C8108 forKey:*MEMORY[0x1E69836F0]];
-    [v21 setObject:&unk_1F16C8120 forKey:*MEMORY[0x1E6983710]];
+    [dictionary setObject:*MEMORY[0x1E6983FA0] forKey:*MEMORY[0x1E6987DB8]];
+    [dictionary removeObjectForKey:*MEMORY[0x1E6987D68]];
+    [dictionary setObject:&unk_1F16C8108 forKey:*MEMORY[0x1E69836F0]];
+    [dictionary setObject:&unk_1F16C8120 forKey:*MEMORY[0x1E6983710]];
   }
 
-  v25 = [(CAMTimelapseSettings *)self _averageMovieBitrateForWidth:a3 height:a4 useHEVC:v28];
+  v25 = [(CAMTimelapseSettings *)self _averageMovieBitrateForWidth:width height:height useHEVC:cCopy];
   v26 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
-  [v21 setObject:v26 forKey:*MEMORY[0x1E6987C60]];
+  [dictionary setObject:v26 forKey:*MEMORY[0x1E6987C60]];
 
-  [v16 setObject:v21 forKey:v19];
+  [v16 setObject:dictionary forKey:v19];
 
   return v16;
 }
 
-- (double)waitTimeBeforeNextWriteForNumberOfPreviousAttempts:(int64_t)a3
+- (double)waitTimeBeforeNextWriteForNumberOfPreviousAttempts:(int64_t)attempts
 {
-  if (a3 < 1)
+  if (attempts < 1)
   {
     return 0.0;
   }
 
   else
   {
-    return (10 * (1 << (a3 - 1)));
+    return (10 * (1 << (attempts - 1)));
   }
 }
 

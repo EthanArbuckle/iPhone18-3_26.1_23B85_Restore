@@ -1,8 +1,8 @@
 @interface BTSDeviceConfigDigitalCrownController
-- (id)getRotationImageFileName:(int64_t)a3;
-- (void)listItemSelected:(id)a3;
+- (id)getRotationImageFileName:(int64_t)name;
+- (void)listItemSelected:(id)selected;
 - (void)setupTableViewHeader;
-- (void)updateRotateImage:(int64_t)a3;
+- (void)updateRotateImage:(int64_t)image;
 @end
 
 @implementation BTSDeviceConfigDigitalCrownController
@@ -26,24 +26,24 @@
 
   [(UIImageView *)self->_rotationImageView setImage:self->_rotationImage];
   [(UIImageView *)self->_rotationImageView setContentMode:6];
-  v13 = [(BTSDeviceConfigDigitalCrownController *)self table];
-  [v13 setTableHeaderView:self->_rotationImageView];
+  table = [(BTSDeviceConfigDigitalCrownController *)self table];
+  [table setTableHeaderView:self->_rotationImageView];
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
   v6.receiver = self;
   v6.super_class = BTSDeviceConfigDigitalCrownController;
-  v4 = a3;
-  [(PSListItemsController *)&v6 listItemSelected:v4];
-  v5 = [v4 row];
+  selectedCopy = selected;
+  [(PSListItemsController *)&v6 listItemSelected:selectedCopy];
+  v5 = [selectedCopy row];
 
   [(BTSDeviceConfigDigitalCrownController *)self updateRotateImage:v5 + 1];
 }
 
-- (void)updateRotateImage:(int64_t)a3
+- (void)updateRotateImage:(int64_t)image
 {
-  v8 = [(BTSDeviceConfigDigitalCrownController *)self getRotationImageFileName:a3];
+  v8 = [(BTSDeviceConfigDigitalCrownController *)self getRotationImageFileName:image];
   v4 = MEMORY[0x277D755B8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v4 imageNamed:v8 inBundle:v5];
@@ -53,10 +53,10 @@
   [(UIImageView *)self->_rotationImageView setImage:self->_rotationImage];
 }
 
-- (id)getRotationImageFileName:(int64_t)a3
+- (id)getRotationImageFileName:(int64_t)name
 {
   v3 = "RotateBackToFrontGraphic";
-  if (a3 == 2)
+  if (name == 2)
   {
     v3 = "RotateFrontToBackGraphic";
   }

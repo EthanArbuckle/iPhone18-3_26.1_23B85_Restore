@@ -1,21 +1,21 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DTConditionInducerSupportServiceProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  v6 = [[DTConditionInducerSupportService alloc] initWithConnection:v4];
-  [v4 setExportedObject:v6];
+  v6 = [[DTConditionInducerSupportService alloc] initWithConnection:connectionCopy];
+  [connectionCopy setExportedObject:v6];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DTConditionInducerSupportUpdatesProtocol];
-  [v4 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

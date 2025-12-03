@@ -1,7 +1,7 @@
 @interface FTWidgetLingerEventTracker
 - (FTWidgetLingerEventTracker)init;
-- (void)_trackWidgetLingerEventWithEndTodaySource:(id)a3 endAppConfigTreatmentID:(id)a4 endWidgetDisplayMode:(unint64_t)a5 endAppearanceType:(unint64_t)a6 endPropertiesChanged:(BOOL)a7 lingerInterval:(double)a8;
-- (void)trackWidgetLingerEventExtremity:(unint64_t)a3 atDate:(id)a4 withTodaySource:(id)a5 appConfigTreatmentID:(id)a6 widgetDisplayMode:(unint64_t)a7 appearanceType:(unint64_t)a8;
+- (void)_trackWidgetLingerEventWithEndTodaySource:(id)source endAppConfigTreatmentID:(id)d endWidgetDisplayMode:(unint64_t)mode endAppearanceType:(unint64_t)type endPropertiesChanged:(BOOL)changed lingerInterval:(double)interval;
+- (void)trackWidgetLingerEventExtremity:(unint64_t)extremity atDate:(id)date withTodaySource:(id)source appConfigTreatmentID:(id)d widgetDisplayMode:(unint64_t)mode appearanceType:(unint64_t)type;
 @end
 
 @implementation FTWidgetLingerEventTracker
@@ -33,22 +33,22 @@
   return v2;
 }
 
-- (void)trackWidgetLingerEventExtremity:(unint64_t)a3 atDate:(id)a4 withTodaySource:(id)a5 appConfigTreatmentID:(id)a6 widgetDisplayMode:(unint64_t)a7 appearanceType:(unint64_t)a8
+- (void)trackWidgetLingerEventExtremity:(unint64_t)extremity atDate:(id)date withTodaySource:(id)source appConfigTreatmentID:(id)d widgetDisplayMode:(unint64_t)mode appearanceType:(unint64_t)type
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a5;
+  dateCopy = date;
+  dCopy = d;
+  sourceCopy = source;
   +[NSThread isMainThread];
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!dateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C5934();
-    if (v16)
+    if (sourceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (sourceCopy)
   {
     goto LABEL_6;
   }
@@ -59,33 +59,33 @@
   }
 
 LABEL_6:
-  v17 = [[FTWidgetLingerState alloc] initWithTodaySource:v16 appConfigTreatmentID:v15 widgetDisplayMode:a7 appearanceType:a8];
+  v17 = [[FTWidgetLingerState alloc] initWithTodaySource:sourceCopy appConfigTreatmentID:dCopy widgetDisplayMode:mode appearanceType:type];
 
-  if (a3 != 1)
+  if (extremity != 1)
   {
-    if (!a3)
+    if (!extremity)
     {
       if ([(FTWidgetLingerEventTracker *)self isLingerInProgress]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000C5D18();
       }
 
-      v18 = [(FTWidgetLingerEventTracker *)self startState];
+      startState = [(FTWidgetLingerEventTracker *)self startState];
 
-      if (v18 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+      if (startState && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000C5DEC();
       }
 
-      v19 = [(FTWidgetLingerEventTracker *)self startDate];
+      startDate = [(FTWidgetLingerEventTracker *)self startDate];
 
-      if (v19 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+      if (startDate && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_1000C5EB0();
       }
 
       [(FTWidgetLingerEventTracker *)self setStartState:v17];
-      [(FTWidgetLingerEventTracker *)self setStartDate:v14];
+      [(FTWidgetLingerEventTracker *)self setStartDate:dateCopy];
       [(FTWidgetLingerEventTracker *)self setLingerInProgress:1];
     }
 
@@ -99,12 +99,12 @@ LABEL_6:
 
   if ([(FTWidgetLingerEventTracker *)self isLingerInProgress])
   {
-    v20 = [(FTWidgetLingerEventTracker *)self startState];
-    v21 = [(FTWidgetLingerEventTracker *)self startDate];
-    if (!v20 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    startState2 = [(FTWidgetLingerEventTracker *)self startState];
+    startDate2 = [(FTWidgetLingerEventTracker *)self startDate];
+    if (!startState2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000C5B90();
-      if (!v21)
+      if (!startDate2)
       {
 LABEL_25:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -114,18 +114,18 @@ LABEL_25:
       }
     }
 
-    else if (!v21)
+    else if (!startDate2)
     {
       goto LABEL_25;
     }
 
-    v22 = [(FTWidgetLingerState *)v17 todaySourceIdentifier];
-    v23 = [(FTWidgetLingerState *)v17 appConfigTreatmentID];
-    v24 = [(FTWidgetLingerState *)v17 widgetDisplayMode];
-    v25 = [(FTWidgetLingerState *)v17 appearanceType];
-    v26 = FTWidgetLingerStatePropertiesAreDifferent(v20, v17);
-    [v14 timeIntervalSinceDate:v21];
-    [(FTWidgetLingerEventTracker *)self _trackWidgetLingerEventWithEndTodaySource:v22 endAppConfigTreatmentID:v23 endWidgetDisplayMode:v24 endAppearanceType:v25 endPropertiesChanged:v26 lingerInterval:?];
+    todaySourceIdentifier = [(FTWidgetLingerState *)v17 todaySourceIdentifier];
+    appConfigTreatmentID = [(FTWidgetLingerState *)v17 appConfigTreatmentID];
+    widgetDisplayMode = [(FTWidgetLingerState *)v17 widgetDisplayMode];
+    appearanceType = [(FTWidgetLingerState *)v17 appearanceType];
+    v26 = FTWidgetLingerStatePropertiesAreDifferent(startState2, v17);
+    [dateCopy timeIntervalSinceDate:startDate2];
+    [(FTWidgetLingerEventTracker *)self _trackWidgetLingerEventWithEndTodaySource:todaySourceIdentifier endAppConfigTreatmentID:appConfigTreatmentID endWidgetDisplayMode:widgetDisplayMode endAppearanceType:appearanceType endPropertiesChanged:v26 lingerInterval:?];
 
     [(FTWidgetLingerEventTracker *)self setLingerInProgress:0];
     [(FTWidgetLingerEventTracker *)self setStartState:0];
@@ -135,27 +135,27 @@ LABEL_25:
 LABEL_28:
 }
 
-- (void)_trackWidgetLingerEventWithEndTodaySource:(id)a3 endAppConfigTreatmentID:(id)a4 endWidgetDisplayMode:(unint64_t)a5 endAppearanceType:(unint64_t)a6 endPropertiesChanged:(BOOL)a7 lingerInterval:(double)a8
+- (void)_trackWidgetLingerEventWithEndTodaySource:(id)source endAppConfigTreatmentID:(id)d endWidgetDisplayMode:(unint64_t)mode endAppearanceType:(unint64_t)type endPropertiesChanged:(BOOL)changed lingerInterval:(double)interval
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  changedCopy = changed;
+  sourceCopy = source;
+  dCopy = d;
+  if (!sourceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C5F74();
   }
 
-  v16 = [(FTWidgetLingerEventTracker *)self widgetLingerEventTracker];
-  v17 = FTHeadlineSourcePropertyValueWithTodaySource(v14);
-  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(v15);
-  v19 = [NSNumber numberWithUnsignedInteger:a5, v17, v18];
+  widgetLingerEventTracker = [(FTWidgetLingerEventTracker *)self widgetLingerEventTracker];
+  v17 = FTHeadlineSourcePropertyValueWithTodaySource(sourceCopy);
+  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(dCopy);
+  v19 = [NSNumber numberWithUnsignedInteger:mode, v17, v18];
   v23[2] = v19;
-  v20 = [NSNumber numberWithUnsignedInteger:a6];
+  v20 = [NSNumber numberWithUnsignedInteger:type];
   v23[3] = v20;
-  v21 = FTBooleanPropertyValue(v9);
+  v21 = FTBooleanPropertyValue(changedCopy);
   v23[4] = v21;
   v22 = [NSArray arrayWithObjects:v23 count:5];
-  [v16 trackEventWithPropertyValues:v22 value:a8];
+  [widgetLingerEventTracker trackEventWithPropertyValues:v22 value:interval];
 }
 
 @end

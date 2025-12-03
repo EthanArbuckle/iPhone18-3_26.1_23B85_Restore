@@ -1,15 +1,15 @@
 @interface CKActionMenuItem
-+ (id)itemWithImageTemplate:(id)a3 tintColor:(id)a4 highlightedTintColor:(id)a5 target:(id)a6 action:(SEL)a7;
++ (id)itemWithImageTemplate:(id)template tintColor:(id)color highlightedTintColor:(id)tintColor target:(id)target action:(SEL)action;
 - (CKActionMenuItem)init;
-- (CKActionMenuItem)initWithView:(id)a3 label:(id)a4 target:(id)a5 action:(SEL)a6;
+- (CKActionMenuItem)initWithView:(id)view label:(id)label target:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)description;
 - (void)sendAction;
-- (void)setAction:(SEL)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateForState:(int64_t)a3 touchInside:(BOOL)a4;
+- (void)setAction:(SEL)action;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)updateForState:(int64_t)state touchInside:(BOOL)inside;
 @end
 
 @implementation CKActionMenuItem
@@ -26,81 +26,81 @@
   return v6;
 }
 
-+ (id)itemWithImageTemplate:(id)a3 tintColor:(id)a4 highlightedTintColor:(id)a5 target:(id)a6 action:(SEL)a7
++ (id)itemWithImageTemplate:(id)template tintColor:(id)color highlightedTintColor:(id)tintColor target:(id)target action:(SEL)action
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  if ([v11 renderingMode] != 2)
+  templateCopy = template;
+  targetCopy = target;
+  tintColorCopy = tintColor;
+  colorCopy = color;
+  if ([templateCopy renderingMode] != 2)
   {
-    v15 = [v11 imageWithRenderingMode:2];
+    v15 = [templateCopy imageWithRenderingMode:2];
 
-    v11 = v15;
+    templateCopy = v15;
   }
 
-  v16 = [[CKActionMenuItemImageView alloc] initWithImage:v11 tintColor:v14 highlightedTintColor:v13];
+  v16 = [[CKActionMenuItemImageView alloc] initWithImage:templateCopy tintColor:colorCopy highlightedTintColor:tintColorCopy];
 
-  v17 = [objc_alloc(objc_opt_class()) initWithView:v16 label:0 target:v12 action:a7];
+  v17 = [objc_alloc(objc_opt_class()) initWithView:v16 label:0 target:targetCopy action:action];
 
   return v17;
 }
 
-- (CKActionMenuItem)initWithView:(id)a3 label:(id)a4 target:(id)a5 action:(SEL)a6
+- (CKActionMenuItem)initWithView:(id)view label:(id)label target:(id)target action:(SEL)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  viewCopy = view;
+  labelCopy = label;
+  targetCopy = target;
   v20.receiver = self;
   v20.super_class = CKActionMenuItem;
   v13 = [(CKActionMenuItem *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    [(CKActionMenuItem *)v13 setView:v10];
-    [(CKActionMenuItem *)v14 setLabel:v11];
-    [(CKActionMenuItem *)v14 setTarget:v12];
-    [(CKActionMenuItem *)v14 setAction:a6];
+    [(CKActionMenuItem *)v13 setView:viewCopy];
+    [(CKActionMenuItem *)v14 setLabel:labelCopy];
+    [(CKActionMenuItem *)v14 setTarget:targetCopy];
+    [(CKActionMenuItem *)v14 setAction:action];
     v14->_enabled = 1;
     if (objc_opt_respondsToSelector())
     {
-      [v10 setEnabled:-[CKActionMenuItem isEnabled](v14 animated:{"isEnabled"), 0}];
+      [viewCopy setEnabled:-[CKActionMenuItem isEnabled](v14 animated:{"isEnabled"), 0}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 setHighlighted:-[CKActionMenuItem isHighlighted](v14 animated:{"isHighlighted"), 0}];
+      [viewCopy setHighlighted:-[CKActionMenuItem isHighlighted](v14 animated:{"isHighlighted"), 0}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 setSelected:-[CKActionMenuItem isSelected](v14 animated:{"isSelected"), 0}];
+      [viewCopy setSelected:-[CKActionMenuItem isSelected](v14 animated:{"isSelected"), 0}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setEnabled:-[CKActionMenuItem isEnabled](v14 animated:{"isEnabled"), 0}];
+      [labelCopy setEnabled:-[CKActionMenuItem isEnabled](v14 animated:{"isEnabled"), 0}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setHighlighted:-[CKActionMenuItem isHighlighted](v14 animated:{"isHighlighted"), 0}];
+      [labelCopy setHighlighted:-[CKActionMenuItem isHighlighted](v14 animated:{"isHighlighted"), 0}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 setSelected:-[CKActionMenuItem isSelected](v14 animated:{"isSelected"), 0}];
+      [labelCopy setSelected:-[CKActionMenuItem isSelected](v14 animated:{"isSelected"), 0}];
     }
 
-    v15 = [v11 layer];
+    layer = [labelCopy layer];
     LODWORD(v16) = 0.75;
-    [v15 setShadowOpacity:v16];
+    [layer setShadowOpacity:v16];
 
-    v17 = [v11 layer];
-    [v17 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    layer2 = [labelCopy layer];
+    [layer2 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
 
-    v18 = [v11 layer];
-    [v18 setShadowRadius:3.0];
+    layer3 = [labelCopy layer];
+    [layer3 setShadowRadius:3.0];
   }
 
   return v14;
@@ -116,96 +116,96 @@
   return 0;
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_enabled = a3;
-    v9 = [(CKActionMenuItem *)self view];
+    animatedCopy = animated;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
+    view = [(CKActionMenuItem *)self view];
     if (objc_opt_respondsToSelector())
     {
-      [v9 setEnabled:v6 animated:v5];
+      [view setEnabled:enabledCopy animated:animatedCopy];
     }
 
-    v8 = [(CKActionMenuItem *)self label];
+    label = [(CKActionMenuItem *)self label];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setEnabled:v6 animated:v5];
+      [label setEnabled:enabledCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_highlighted = a3;
-    v9 = [(CKActionMenuItem *)self view];
+    animatedCopy = animated;
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
+    view = [(CKActionMenuItem *)self view];
     if (objc_opt_respondsToSelector())
     {
-      [v9 setHighlighted:v6 animated:v5];
+      [view setHighlighted:highlightedCopy animated:animatedCopy];
     }
 
-    v8 = [(CKActionMenuItem *)self label];
+    label = [(CKActionMenuItem *)self label];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setHighlighted:v6 animated:v5];
+      [label setHighlighted:highlightedCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_selected = a3;
-    v9 = [(CKActionMenuItem *)self view];
+    animatedCopy = animated;
+    selectedCopy = selected;
+    self->_selected = selected;
+    view = [(CKActionMenuItem *)self view];
     if (objc_opt_respondsToSelector())
     {
-      [v9 setSelected:v6 animated:v5];
+      [view setSelected:selectedCopy animated:animatedCopy];
     }
 
-    v8 = [(CKActionMenuItem *)self label];
+    label = [(CKActionMenuItem *)self label];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setSelected:v6 animated:v5];
+      [label setSelected:selectedCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)updateForState:(int64_t)a3 touchInside:(BOOL)a4
+- (void)updateForState:(int64_t)state touchInside:(BOOL)inside
 {
-  v4 = a4;
-  if ((a3 - 1) < 2)
+  insideCopy = inside;
+  if ((state - 1) < 2)
   {
-    v6 = a4;
+    insideCopy2 = inside;
     v7 = 1;
 LABEL_6:
 
-    [(CKActionMenuItem *)self setHighlighted:v6 animated:v7];
+    [(CKActionMenuItem *)self setHighlighted:insideCopy2 animated:v7];
     return;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
       return;
     }
 
-    v6 = 0;
+    insideCopy2 = 0;
     v7 = 0;
     goto LABEL_6;
   }
 
   [(CKActionMenuItem *)self setHighlighted:0 animated:1];
-  if (v4)
+  if (insideCopy)
   {
 
     [(CKActionMenuItem *)self sendAction];
@@ -216,10 +216,10 @@ LABEL_6:
 {
   if ([(CKActionMenuItem *)self action])
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v3 = [(CKActionMenuItem *)self action];
-    v4 = [(CKActionMenuItem *)self target];
-    [v5 sendAction:v3 to:v4 from:self forEvent:0];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    action = [(CKActionMenuItem *)self action];
+    target = [(CKActionMenuItem *)self target];
+    [mEMORY[0x1E69DC668] sendAction:action to:target from:self forEvent:0];
   }
 }
 
@@ -236,19 +236,19 @@ LABEL_6:
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

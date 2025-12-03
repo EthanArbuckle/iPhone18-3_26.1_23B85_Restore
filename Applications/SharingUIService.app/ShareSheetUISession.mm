@@ -1,7 +1,7 @@
 @interface ShareSheetUISession
 - (_TtC16SharingUIService19ShareSheetUISession)init;
 - (void)connectionInterrupted;
-- (void)dataSourceUpdatedWithSessionConfiguration:(id)a3;
+- (void)dataSourceUpdatedWithSessionConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)didSelectCollaborativeAction;
 - (void)didSelectSendCopyAction;
@@ -10,19 +10,19 @@
 - (void)handleClose;
 - (void)handleCollaborationOptions;
 - (void)handleCustomHeaderButton;
-- (void)handleInfoSuggestionPress:(id)a3;
+- (void)handleInfoSuggestionPress:(id)press;
 - (void)handleNext;
 - (void)handleOptions;
-- (void)performShareActivityProxy:(id)a3 activityIdentifier:(id)a4;
-- (void)performUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5 activityCategory:(int64_t)a6;
-- (void)removePeopleSuggestionProxy:(id)a3;
-- (void)updateUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5;
-- (void)userDefaultsViewController:(id)a3 didFavoriteActivity:(BOOL)a4 withIdentifier:(id)a5 activityCategory:(int64_t)a6;
-- (void)userDefaultsViewController:(id)a3 didSelectActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5 disabled:(BOOL)a6;
-- (void)userDefaultsViewController:(id)a3 didToggleActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5;
-- (void)userDefaultsViewController:(id)a3 didUpdateFavoritesProxies:(id)a4 activityCategory:(int64_t)a5;
-- (void)userDefaultsViewControllerDidDisappear:(id)a3;
-- (void)userDefaultsViewControllerDidRequestDismissal:(id)a3;
+- (void)performShareActivityProxy:(id)proxy activityIdentifier:(id)identifier;
+- (void)performUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds activityCategory:(int64_t)category;
+- (void)removePeopleSuggestionProxy:(id)proxy;
+- (void)updateUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds;
+- (void)userDefaultsViewController:(id)controller didFavoriteActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)userDefaultsViewController:(id)controller didSelectActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category disabled:(BOOL)disabled;
+- (void)userDefaultsViewController:(id)controller didToggleActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category;
+- (void)userDefaultsViewController:(id)controller didUpdateFavoritesProxies:(id)proxies activityCategory:(int64_t)category;
+- (void)userDefaultsViewControllerDidDisappear:(id)disappear;
+- (void)userDefaultsViewControllerDidRequestDismissal:(id)dismissal;
 @end
 
 @implementation ShareSheetUISession
@@ -31,7 +31,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16SharingUIService19ShareSheetUISession_slotManager);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 invalidate];
@@ -52,7 +52,7 @@
 - (void)connectionInterrupted
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC16SharingUIService19ShareSheetUISession_slotManager);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     [v2 invalidate];
@@ -61,50 +61,50 @@
   sub_10001B71C();
 }
 
-- (void)dataSourceUpdatedWithSessionConfiguration:(id)a3
+- (void)dataSourceUpdatedWithSessionConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001C450(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_10001C450(configurationCopy);
 }
 
-- (void)performUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5 activityCategory:(int64_t)a6
+- (void)performUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds activityCategory:(int64_t)category
 {
   sub_10000A598(0, &unk_1000479E0, _UIUserDefaultsActivityProxy_ptr);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for UUID();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
-  sub_10001C9B0(v8, v9, v10, a6);
+  selfCopy = self;
+  sub_10001C9B0(v8, v9, v10, category);
 }
 
-- (void)updateUserDefaultsWithFavoritesProxies:(id)a3 suggestionProxies:(id)a4 orderedUUIDs:(id)a5
+- (void)updateUserDefaultsWithFavoritesProxies:(id)proxies suggestionProxies:(id)suggestionProxies orderedUUIDs:(id)ds
 {
   sub_10000A598(0, &unk_1000479E0, _UIUserDefaultsActivityProxy_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for UUID();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10001D18C(v6, v7, v8);
 }
 
-- (void)removePeopleSuggestionProxy:(id)a3
+- (void)removePeopleSuggestionProxy:(id)proxy
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10001D88C(a3);
+  selfCopy = self;
+  sub_10001D88C(proxy);
   swift_unknownObjectRelease();
 }
 
-- (void)performShareActivityProxy:(id)a3 activityIdentifier:(id)a4
+- (void)performShareActivityProxy:(id)proxy activityIdentifier:(id)identifier
 {
   v7 = sub_1000025C4(&qword_100046C08, &unk_10002E280);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v14 - v9;
-  if (a4)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -118,8 +118,8 @@
   }
 
   swift_unknownObjectRetain();
-  v13 = self;
-  sub_10001DC0C(a3, v10);
+  selfCopy = self;
+  sub_10001DC0C(proxy, v10);
   swift_unknownObjectRelease();
 
   sub_100009C18(v10, &qword_100046C08, &unk_10002E280);
@@ -127,73 +127,73 @@
 
 - (void)handleActionsEdit
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001EB20();
 }
 
 - (void)handleOptions
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("handle options", 1);
 }
 
 - (void)didUpdateSheetSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001ED2C();
 }
 
 - (void)handleClose
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("handle close", 5);
 }
 
 - (void)handleNext
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("handle next button", 7);
 }
 
 - (void)handleCollaborationOptions
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("handle collaboration options", 2);
 }
 
 - (void)handleCustomHeaderButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("handle custom header button", 0);
 }
 
-- (void)handleInfoSuggestionPress:(id)a3
+- (void)handleInfoSuggestionPress:(id)press
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_10001F150();
 }
 
 - (void)didSelectCollaborativeAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("did select collaborative action", 3);
 }
 
 - (void)didSelectSendCopyAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002026C("did select send copy action", 4);
 }
 
-- (void)userDefaultsViewControllerDidRequestDismissal:(id)a3
+- (void)userDefaultsViewControllerDidRequestDismissal:(id)dismissal
 {
-  v4 = a3;
-  v5 = self;
+  dismissalCopy = dismissal;
+  selfCopy = self;
   sub_10002026C("userDefaultsViewControllerDidRequestDismissal", 13);
 }
 
-- (void)userDefaultsViewController:(id)a3 didToggleActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5
+- (void)userDefaultsViewController:(id)controller didToggleActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -201,59 +201,59 @@
   __chkstk_darwin(v8);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = self;
-  sub_10002040C(v12, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10002040C(v12, category);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)userDefaultsViewController:(id)a3 didFavoriteActivity:(BOOL)a4 withIdentifier:(id)a5 activityCategory:(int64_t)a6
+- (void)userDefaultsViewController:(id)controller didFavoriteActivity:(BOOL)activity withIdentifier:(id)identifier activityCategory:(int64_t)category
 {
-  v7 = a4;
+  activityCopy = activity;
   v10 = type metadata accessor for UUID();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   __chkstk_darwin(v10);
   v14 = &v17 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = self;
-  sub_1000206FC(v7, v14, a6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000206FC(activityCopy, v14, category);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)userDefaultsViewController:(id)a3 didUpdateFavoritesProxies:(id)a4 activityCategory:(int64_t)a5
+- (void)userDefaultsViewController:(id)controller didUpdateFavoritesProxies:(id)proxies activityCategory:(int64_t)category
 {
   sub_10000A598(0, &unk_1000479E0, _UIUserDefaultsActivityProxy_ptr);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = self;
-  sub_1000209F4(v8, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000209F4(v8, category);
 }
 
-- (void)userDefaultsViewController:(id)a3 didSelectActivityWithIdentifier:(id)a4 activityCategory:(int64_t)a5 disabled:(BOOL)a6
+- (void)userDefaultsViewController:(id)controller didSelectActivityWithIdentifier:(id)identifier activityCategory:(int64_t)category disabled:(BOOL)disabled
 {
-  v6 = a6;
+  disabledCopy = disabled;
   v10 = type metadata accessor for UUID();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   __chkstk_darwin(v10);
   v14 = &v17 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = self;
-  sub_100020C34(v14, a5, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100020C34(v14, category, disabledCopy);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)userDefaultsViewControllerDidDisappear:(id)a3
+- (void)userDefaultsViewControllerDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001F888(v4);
+  disappearCopy = disappear;
+  selfCopy = self;
+  sub_10001F888(disappearCopy);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface PKSharePreviewAdditionalSecuritySectionController
-- (id)_initWithMode:(unint64_t)a3 activationOptions:(id)a4 context:(id)a5 delegate:(id)a6;
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4;
-- (id)footerAttributedStringForIdentifier:(id)a3;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (void)_activationCodeSwitchValueChanged:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
-- (void)setContext:(id)a3;
+- (id)_initWithMode:(unint64_t)mode activationOptions:(id)options context:(id)context delegate:(id)delegate;
+- (id)decorateListCell:(id)cell forRowItem:(id)item;
+- (id)footerAttributedStringForIdentifier:(id)identifier;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (void)_activationCodeSwitchValueChanged:(id)changed;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
+- (void)setContext:(id)context;
 @end
 
 @implementation PKSharePreviewAdditionalSecuritySectionController
 
-- (id)_initWithMode:(unint64_t)a3 activationOptions:(id)a4 context:(id)a5 delegate:(id)a6
+- (id)_initWithMode:(unint64_t)mode activationOptions:(id)options context:(id)context delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  optionsCopy = options;
+  contextCopy = context;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = PKSharePreviewAdditionalSecuritySectionController;
   v14 = [(PKPassShareSectionController *)&v26 initWithIdentifiers:&unk_1F3CC87B0];
   p_isa = &v14->super.super.super.isa;
   if (v14)
   {
-    v14->_mode = a3;
-    objc_storeStrong(&v14->_activationOptions, a4);
-    objc_storeStrong(p_isa + 11, a5);
-    objc_storeWeak(p_isa + 12, v13);
+    v14->_mode = mode;
+    objc_storeStrong(&v14->_activationOptions, options);
+    objc_storeStrong(p_isa + 11, context);
+    objc_storeWeak(p_isa + 12, delegateCopy);
     objc_initWeak(&location, p_isa);
     v16 = MEMORY[0x1E69DC800];
     v17 = objc_opt_class();
@@ -57,46 +57,46 @@ void __102__PKSharePreviewAdditionalSecuritySectionController__initWithMode_acti
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
+  objc_storeStrong(&self->_context, context);
 
   [(PKSharePreviewAdditionalSecuritySectionController *)self reloadItemsAnimated:0];
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
   activationOptions = self->_activationOptions;
-  v44 = a3;
+  animatedCopy = animated;
   if (activationOptions)
   {
-    v5 = activationOptions;
+    activationOptions = activationOptions;
 LABEL_4:
     v7 = 1;
-    v43 = v5;
+    v43 = activationOptions;
     v8 = v43;
     goto LABEL_5;
   }
 
-  v6 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v5 = [v6 activationOptions];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  activationOptions = [composedShare activationOptions];
 
-  if (v5)
+  if (activationOptions)
   {
     goto LABEL_4;
   }
 
-  v41 = [(PKPassShareInitiationContext *)self->_context availableActivationOptions];
-  if (v41)
+  availableActivationOptions = [(PKPassShareInitiationContext *)self->_context availableActivationOptions];
+  if (availableActivationOptions)
   {
-    v8 = v41;
+    v8 = availableActivationOptions;
     v7 = 0;
     v43 = 0;
 LABEL_5:
     v9 = PKPassShareActivationOptionActivationCodeTypes();
     v10 = [v8 optionOfTypes:v9];
 
-    v46 = [v10 value];
+    value = [v10 value];
     v45 = [v8 optionsOfType:3];
     footerText = self->_footerText;
     self->_footerText = 0;
@@ -104,9 +104,9 @@ LABEL_5:
     context = self->_context;
     if (context)
     {
-      v13 = [(PKPassShareInitiationContext *)context areActivationOptionsUserEditable];
+      areActivationOptionsUserEditable = [(PKPassShareInitiationContext *)context areActivationOptionsUserEditable];
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (v13)
+      if (areActivationOptionsUserEditable)
       {
         v15 = [[PKSharePreviewRowItem alloc] initWithIdentifier:@"ActivationCodeToggleRowItem"];
         v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"number.circle.fill" withConfiguration:0];
@@ -181,7 +181,7 @@ LABEL_16:
       [(PKSharePreviewRowItem *)v24 setTitle:v26];
 
       [(PKSharePreviewRowItem *)v24 setIsShowingSensitiveContent:1];
-      v27 = v46;
+      v27 = value;
       if (v27 && (v28 = v27, v29 = [v27 length], v28, v29))
       {
         [(PKSharePreviewRowItem *)v24 setSubtitle:v28];
@@ -225,15 +225,15 @@ LABEL_16:
     }
 
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [v8 localizationKeyPostfixForInitiation];
-    v37 = [v35 stringWithFormat:@"SHARE_OVERVIEW_ACTIVATION_FOOTER_%@", v36];
+    localizationKeyPostfixForInitiation = [v8 localizationKeyPostfixForInitiation];
+    v37 = [v35 stringWithFormat:@"SHARE_OVERVIEW_ACTIVATION_FOOTER_%@", localizationKeyPostfixForInitiation];
     v38 = PKLocalizedShareableCredentialString(v37);
     v39 = self->_footerText;
     self->_footerText = v38;
 
     [(PKPaymentSetupListSectionController *)self setItems:v14];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained reloadDataAnimated:v44];
+    [WeakRetained reloadDataAnimated:animatedCopy];
 
     return;
   }
@@ -243,46 +243,46 @@ LABEL_16:
   [(PKPaymentSetupListSectionController *)self setItems:v42];
 }
 
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)decorateListCell:(id)cell forRowItem:(id)item
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v9 = [v7 title];
-  [v8 setText:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v10 = [v7 subtitle];
-  [v8 setSecondaryText:v10];
+  subtitle = [itemCopy subtitle];
+  [valueCellConfiguration setSecondaryText:subtitle];
 
-  v11 = [v8 secondaryTextProperties];
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v11 setColor:v12];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v8 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-  v13 = [v7 icon];
+  [valueCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+  icon = [itemCopy icon];
 
-  if (v13)
+  if (icon)
   {
-    v14 = [v7 icon];
-    [v8 setImage:v14];
+    icon2 = [itemCopy icon];
+    [valueCellConfiguration setImage:icon2];
 
-    v15 = [v8 imageProperties];
+    imageProperties = [valueCellConfiguration imageProperties];
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
   else
   {
     v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"number.circle.fill" withConfiguration:0];
-    [v8 setImage:v16];
+    [valueCellConfiguration setImage:v16];
 
-    v15 = [v8 imageProperties];
+    imageProperties = [valueCellConfiguration imageProperties];
     [MEMORY[0x1E69DC888] clearColor];
   }
   v17 = ;
-  [v15 setTintColor:v17];
+  [imageProperties setTintColor:v17];
 
-  [v6 setContentConfiguration:v8];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
   if (self->_mode == 2)
   {
     [MEMORY[0x1E69DC888] systemBackgroundColor];
@@ -299,18 +299,18 @@ LABEL_16:
   v30[3] = &unk_1E8012AC8;
   v19 = v18;
   v31 = v19;
-  [v6 setConfigurationUpdateHandler:v30];
-  if (![v7 displayChevron])
+  [cellCopy setConfigurationUpdateHandler:v30];
+  if (![itemCopy displayChevron])
   {
-    v21 = [v7 displayToggleState];
-    if (!v21)
+    displayToggleState = [itemCopy displayToggleState];
+    if (!displayToggleState)
     {
       goto LABEL_15;
     }
 
-    v22 = v21;
+    v22 = displayToggleState;
     v23 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-    v24 = [v7 identifier];
+    identifier = [itemCopy identifier];
     v25 = PKEqualObjects();
 
     if (v25)
@@ -330,7 +330,7 @@ LABEL_16:
 LABEL_14:
     v32[0] = v20;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-    [v6 setAccessories:v26];
+    [cellCopy setAccessories:v26];
 
     goto LABEL_16;
   }
@@ -342,13 +342,13 @@ LABEL_14:
   }
 
 LABEL_15:
-  [v6 setAccessories:MEMORY[0x1E695E0F0]];
+  [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
 LABEL_16:
-  v27 = [v7 isShowingSensitiveContent];
-  v28 = [v6 contentView];
-  [v28 pkui_setExcludedFromScreenCapture:v27 andBroadcasting:v27];
+  isShowingSensitiveContent = [itemCopy isShowingSensitiveContent];
+  contentView = [cellCopy contentView];
+  [contentView pkui_setExcludedFromScreenCapture:isShowingSensitiveContent andBroadcasting:isShowingSensitiveContent];
 
-  return v8;
+  return valueCellConfiguration;
 }
 
 void __81__PKSharePreviewAdditionalSecuritySectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -371,7 +371,7 @@ void __81__PKSharePreviewAdditionalSecuritySectionController_decorateListCell_fo
   [v6 setBackgroundConfiguration:v7];
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x1E69E9840];
   if ((self->_mode & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -393,15 +393,15 @@ void __81__PKSharePreviewAdditionalSecuritySectionController_decorateListCell_fo
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC58], 2, 0);
   v14[0] = v8;
   v13[1] = *MEMORY[0x1E69DB650];
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v14[1] = v9;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v14[1] = secondaryLabelColor;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v11 = [v6 initWithString:v7 attributes:v10];
 
   return v11;
 }
 
-- (id)footerAttributedStringForIdentifier:(id)a3
+- (id)footerAttributedStringForIdentifier:(id)identifier
 {
   v12[2] = *MEMORY[0x1E69E9840];
   if (self->_footerText)
@@ -412,8 +412,8 @@ void __81__PKSharePreviewAdditionalSecuritySectionController_decorateListCell_fo
     v6 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC60]);
     v12[0] = v6;
     v11[1] = *MEMORY[0x1E69DB650];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v12[1] = v7;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v12[1] = secondaryLabelColor;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v9 = [v4 initWithString:footerText attributes:v8];
   }
@@ -426,26 +426,26 @@ void __81__PKSharePreviewAdditionalSecuritySectionController_decorateListCell_fo
   return v9;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained deselectCells];
 }
 
-- (void)_activationCodeSwitchValueChanged:(id)a3
+- (void)_activationCodeSwitchValueChanged:(id)changed
 {
-  v4 = [a3 isOn];
-  v5 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v6 = v5;
-  if (v4)
+  isOn = [changed isOn];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  v6 = composedShare;
+  if (isOn)
   {
-    v7 = [(PKPassShareInitiationContext *)self->_context availableActivationOptions];
-    [v6 setActivationOptions:v7];
+    availableActivationOptions = [(PKPassShareInitiationContext *)self->_context availableActivationOptions];
+    [v6 setActivationOptions:availableActivationOptions];
   }
 
   else
   {
-    [v5 setActivationOptions:0];
+    [composedShare setActivationOptions:0];
   }
 
   [(PKSharePreviewAdditionalSecuritySectionController *)self reloadItemsAnimated:1];

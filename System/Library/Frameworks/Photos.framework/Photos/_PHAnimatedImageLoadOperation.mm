@@ -1,10 +1,10 @@
 @interface _PHAnimatedImageLoadOperation
 + (id)_animatedImageSharedLoadingQueue;
 + (id)_inq_animatedImageLoadingOperations;
-+ (id)_removeOperation:(int64_t)a3;
++ (id)_removeOperation:(int64_t)operation;
 + (id)_requestIsolationQueue;
-+ (void)_registerOperation:(id)a3 forRequestID:(int64_t)a4;
-- (_PHAnimatedImageLoadOperation)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useSharedDecoding:(BOOL)a5;
++ (void)_registerOperation:(id)operation forRequestID:(int64_t)d;
+- (_PHAnimatedImageLoadOperation)initWithURL:(id)l cachingStrategy:(int64_t)strategy useSharedDecoding:(BOOL)decoding;
 - (void)main;
 @end
 
@@ -19,20 +19,20 @@
   }
 }
 
-- (_PHAnimatedImageLoadOperation)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useSharedDecoding:(BOOL)a5
+- (_PHAnimatedImageLoadOperation)initWithURL:(id)l cachingStrategy:(int64_t)strategy useSharedDecoding:(BOOL)decoding
 {
-  v8 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = _PHAnimatedImageLoadOperation;
   v9 = [(_PHAnimatedImageLoadOperation *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [lCopy copy];
     animatedImageURL = v9->_animatedImageURL;
     v9->_animatedImageURL = v10;
 
-    v9->_cacheStrategy = a4;
-    v9->_useSharedImageDecoding = a5;
+    v9->_cacheStrategy = strategy;
+    v9->_useSharedImageDecoding = decoding;
   }
 
   return v9;
@@ -74,7 +74,7 @@
   return v3;
 }
 
-+ (id)_removeOperation:(int64_t)a3
++ (id)_removeOperation:(int64_t)operation
 {
   v9 = 0;
   v10 = &v9;
@@ -82,15 +82,15 @@
   v12 = __Block_byref_object_copy__2842;
   v13 = __Block_byref_object_dispose__2843;
   v14 = 0;
-  v5 = [a1 _requestIsolationQueue];
+  _requestIsolationQueue = [self _requestIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50___PHAnimatedImageLoadOperation__removeOperation___block_invoke;
   block[3] = &unk_1E75A87C8;
   block[4] = &v9;
-  block[5] = a1;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[5] = self;
+  block[6] = operation;
+  dispatch_sync(_requestIsolationQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -98,19 +98,19 @@
   return v6;
 }
 
-+ (void)_registerOperation:(id)a3 forRequestID:(int64_t)a4
++ (void)_registerOperation:(id)operation forRequestID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _requestIsolationQueue];
+  operationCopy = operation;
+  _requestIsolationQueue = [self _requestIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65___PHAnimatedImageLoadOperation__registerOperation_forRequestID___block_invoke;
   block[3] = &unk_1E75A7EB0;
-  v10 = v6;
-  v11 = a1;
-  v12 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = operationCopy;
+  selfCopy = self;
+  dCopy = d;
+  v8 = operationCopy;
+  dispatch_sync(_requestIsolationQueue, block);
 }
 
 @end

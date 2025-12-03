@@ -7,7 +7,7 @@
 
 + (id)vui_imageViewWithFrame:()VideosUICore
 {
-  v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{a1, a2, a3, a4}];
+  v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{self, a2, a3, a4}];
 
   return v4;
 }

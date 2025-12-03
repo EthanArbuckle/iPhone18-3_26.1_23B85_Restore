@@ -1,22 +1,22 @@
 @interface AXUISettingsLeftRightSliderCell
-- (AXUISettingsLeftRightSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXUISettingsLeftRightSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)labelColor;
 - (id)newControl;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setAccessibilityLabel:(id)label;
 - (void)updateValue;
 @end
 
 @implementation AXUISettingsLeftRightSliderCell
 
-- (AXUISettingsLeftRightSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXUISettingsLeftRightSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v76 = *MEMORY[0x1E69E9840];
   v73.receiver = self;
   v73.super_class = AXUISettingsLeftRightSliderCell;
-  v4 = [(PSSliderTableCell *)&v73 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSSliderTableCell *)&v73 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -31,11 +31,11 @@
     [(UILabel *)v4->_leftLabel setText:v9];
 
     [(UILabel *)v4->_leftLabel setAdjustsFontForContentSizeCategory:1];
-    v10 = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
-    [(UILabel *)v4->_leftLabel setTextColor:v10];
+    labelColor = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
+    [(UILabel *)v4->_leftLabel setTextColor:labelColor];
 
-    v11 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-    [v11 addSubview:v4->_leftLabel];
+    contentView = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+    [contentView addSubview:v4->_leftLabel];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     rightLabel = v4->_rightLabel;
@@ -49,11 +49,11 @@
     v15 = AXUILocalizedStringForKey(@"RightStereoBalanceIdentifier");
     [(UILabel *)v4->_rightLabel setText:v15];
 
-    v16 = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
-    [(UILabel *)v4->_rightLabel setTextColor:v16];
+    labelColor2 = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
+    [(UILabel *)v4->_rightLabel setTextColor:labelColor2];
 
-    v17 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-    [v17 addSubview:v4->_rightLabel];
+    contentView2 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+    [contentView2 addSubview:v4->_rightLabel];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     valueLabel = v4->_valueLabel;
@@ -63,20 +63,20 @@
     v20 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v7];
     [(UILabel *)v4->_valueLabel setFont:v20];
 
-    v21 = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
-    [(UILabel *)v4->_valueLabel setTextColor:v21];
+    labelColor3 = [(AXUISettingsLeftRightSliderCell *)v4 labelColor];
+    [(UILabel *)v4->_valueLabel setTextColor:labelColor3];
 
-    v22 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-    [v22 addSubview:v4->_valueLabel];
+    contentView3 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+    [contentView3 addSubview:v4->_valueLabel];
 
     [(UILabel *)v4->_leftLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_rightLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v23 = *MEMORY[0x1E69C5798];
     [*(&v4->super.super.super.super.super.super.super.isa + v23) setTranslatesAutoresizingMaskIntoConstraints:0];
-    v24 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-    v25 = [v24 constraints];
-    v26 = [v25 copy];
+    contentView4 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+    constraints = [contentView4 constraints];
+    v26 = [constraints copy];
 
     v71 = 0u;
     v72 = 0u;
@@ -103,25 +103,25 @@
         }
 
         v31 = *(*(&v69 + 1) + 8 * v30);
-        v32 = [v31 firstAnchor];
-        v33 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
-        v34 = v33;
-        if (v32 != v33)
+        firstAnchor = [v31 firstAnchor];
+        topAnchor = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
+        v34 = topAnchor;
+        if (firstAnchor != topAnchor)
         {
 
 LABEL_9:
           goto LABEL_11;
         }
 
-        v35 = [v31 secondAnchor];
-        v36 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-        v37 = [v36 topAnchor];
+        secondAnchor = [v31 secondAnchor];
+        contentView5 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+        topAnchor2 = [contentView5 topAnchor];
 
         v4 = p_isa;
-        if (v35 == v37)
+        if (secondAnchor == topAnchor2)
         {
-          v32 = [p_isa contentView];
-          [v32 removeConstraint:v31];
+          firstAnchor = [p_isa contentView];
+          [firstAnchor removeConstraint:v31];
           goto LABEL_9;
         }
 
@@ -136,39 +136,39 @@ LABEL_11:
       {
 LABEL_15:
 
-        v64 = [*(&v4->super.super.super.super.super.super.super.isa + v23) bottomAnchor];
-        v65 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
-        v63 = [v65 bottomAnchor];
-        v62 = [v64 constraintEqualToAnchor:v63 constant:-10.0];
+        bottomAnchor = [*(&v4->super.super.super.super.super.super.super.isa + v23) bottomAnchor];
+        contentView6 = [(AXUISettingsLeftRightSliderCell *)v4 contentView];
+        bottomAnchor2 = [contentView6 bottomAnchor];
+        v62 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
         v74[0] = v62;
-        v61 = [(UILabel *)v4->_leftLabel bottomAnchor];
-        v60 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
-        v59 = [v61 constraintEqualToAnchor:v60 constant:-10.0];
+        bottomAnchor3 = [(UILabel *)v4->_leftLabel bottomAnchor];
+        topAnchor3 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
+        v59 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:-10.0];
         v74[1] = v59;
-        v58 = [(UILabel *)v4->_rightLabel bottomAnchor];
-        v57 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
-        v56 = [v58 constraintEqualToAnchor:v57 constant:-10.0];
+        bottomAnchor4 = [(UILabel *)v4->_rightLabel bottomAnchor];
+        topAnchor4 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
+        v56 = [bottomAnchor4 constraintEqualToAnchor:topAnchor4 constant:-10.0];
         v74[2] = v56;
-        v55 = [(UILabel *)v4->_valueLabel bottomAnchor];
-        v54 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
-        v53 = [v55 constraintEqualToAnchor:v54 constant:-10.0];
+        bottomAnchor5 = [(UILabel *)v4->_valueLabel bottomAnchor];
+        topAnchor5 = [*(&v4->super.super.super.super.super.super.super.isa + v23) topAnchor];
+        v53 = [bottomAnchor5 constraintEqualToAnchor:topAnchor5 constant:-10.0];
         v74[3] = v53;
-        v52 = [(UILabel *)v4->_leftLabel leftAnchor];
-        v51 = [*(&v4->super.super.super.super.super.super.super.isa + v23) leftAnchor];
-        v50 = [v52 constraintEqualToAnchor:v51 constant:5.0];
+        leftAnchor = [(UILabel *)v4->_leftLabel leftAnchor];
+        leftAnchor2 = [*(&v4->super.super.super.super.super.super.super.isa + v23) leftAnchor];
+        v50 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:5.0];
         v74[4] = v50;
-        v39 = [(UILabel *)v4->_rightLabel rightAnchor];
-        v66 = [*(&v4->super.super.super.super.super.super.super.isa + v23) rightAnchor];
-        v40 = [v39 constraintEqualToAnchor:v66 constant:-5.0];
+        rightAnchor = [(UILabel *)v4->_rightLabel rightAnchor];
+        rightAnchor2 = [*(&v4->super.super.super.super.super.super.super.isa + v23) rightAnchor];
+        v40 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
         v74[5] = v40;
-        v41 = [(UILabel *)v4->_valueLabel centerXAnchor];
-        v42 = [*(&v4->super.super.super.super.super.super.super.isa + v23) centerXAnchor];
-        v43 = [v41 constraintEqualToAnchor:v42 constant:0.0];
+        centerXAnchor = [(UILabel *)v4->_valueLabel centerXAnchor];
+        centerXAnchor2 = [*(&v4->super.super.super.super.super.super.super.isa + v23) centerXAnchor];
+        v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
         v74[6] = v43;
-        v44 = [p_isa contentView];
-        v45 = [v44 topAnchor];
-        v46 = [p_isa[153] topAnchor];
-        v47 = [v45 constraintEqualToAnchor:v46 constant:-10.0];
+        contentView7 = [p_isa contentView];
+        topAnchor6 = [contentView7 topAnchor];
+        topAnchor7 = [p_isa[153] topAnchor];
+        v47 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:-10.0];
         v74[7] = v47;
         v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:8];
 
@@ -183,14 +183,14 @@ LABEL_15:
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = AXUISettingsLeftRightSliderCell;
-  [(PSSliderTableCell *)&v5 refreshCellContentsWithSpecifier:a3];
-  v4 = [(PSControlTableCell *)self control];
-  [v4 setTicks:&unk_1F4051C60];
-  [v4 setSnappingDistance:0.003];
+  [(PSSliderTableCell *)&v5 refreshCellContentsWithSpecifier:specifier];
+  control = [(PSControlTableCell *)self control];
+  [control setTicks:&unk_1F4051C60];
+  [control setSnappingDistance:0.003];
 }
 
 - (void)prepareForReuse
@@ -265,21 +265,21 @@ LABEL_7:
   return v7;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = AXUISettingsLeftRightSliderCell;
-  v4 = a3;
-  [(AXUISettingsLeftRightSliderCell *)&v5 setAccessibilityLabel:v4];
-  [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x1E69C5798]) setAccessibilityLabel:{v4, v5.receiver, v5.super_class}];
+  labelCopy = label;
+  [(AXUISettingsLeftRightSliderCell *)&v5 setAccessibilityLabel:labelCopy];
+  [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x1E69C5798]) setAccessibilityLabel:{labelCopy, v5.receiver, v5.super_class}];
 }
 
 - (id)labelColor
 {
-  v2 = [MEMORY[0x1E69C5710] appearance];
-  v3 = [v2 usesDarkTheme];
+  appearance = [MEMORY[0x1E69C5710] appearance];
+  usesDarkTheme = [appearance usesDarkTheme];
 
-  if (v3)
+  if (usesDarkTheme)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }

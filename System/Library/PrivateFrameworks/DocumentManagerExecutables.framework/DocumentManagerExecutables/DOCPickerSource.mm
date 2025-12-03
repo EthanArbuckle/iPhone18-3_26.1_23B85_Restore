@@ -1,76 +1,76 @@
 @interface DOCPickerSource
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidForConfiguration:(id)a3;
-- (BOOL)supportsInteractionMode:(unint64_t)a3;
-- (DOCPickerSource)initWithPicker:(id)a3 providerDomain:(id)a4;
-- (DOCPickerSource)initWithTitle:(id)a3 attributes:(id)a4 optedIn:(BOOL)a5 identifier:(id)a6 providerDomain:(id)a7 pickerExtension:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidForConfiguration:(id)configuration;
+- (BOOL)supportsInteractionMode:(unint64_t)mode;
+- (DOCPickerSource)initWithPicker:(id)picker providerDomain:(id)domain;
+- (DOCPickerSource)initWithTitle:(id)title attributes:(id)attributes optedIn:(BOOL)in identifier:(id)identifier providerDomain:(id)domain pickerExtension:(id)extension;
 - (NSString)fileProviderDocumentGroup;
 - (NSString)hostApplicationBundleIdentifier;
-- (id)loadIconForSize:(int64_t)a3;
+- (id)loadIconForSize:(int64_t)size;
 @end
 
 @implementation DOCPickerSource
 
-- (DOCPickerSource)initWithPicker:(id)a3 providerDomain:(id)a4
+- (DOCPickerSource)initWithPicker:(id)picker providerDomain:(id)domain
 {
-  v7 = a3;
+  pickerCopy = picker;
   v8 = MEMORY[0x277CC1E50];
-  v9 = a4;
+  domainCopy = domain;
   v10 = [v8 alloc];
-  v11 = [v7 identifier];
-  v12 = [v10 initWithBundleIdentifier:v11 error:0];
+  identifier = [pickerCopy identifier];
+  v12 = [v10 initWithBundleIdentifier:identifier error:0];
 
-  v13 = [v12 localizedName];
-  v14 = [v7 attributes];
-  v15 = [v7 optedIn];
-  v16 = [v12 bundleIdentifier];
+  localizedName = [v12 localizedName];
+  attributes = [pickerCopy attributes];
+  optedIn = [pickerCopy optedIn];
+  bundleIdentifier = [v12 bundleIdentifier];
 
-  if (v16)
+  if (bundleIdentifier)
   {
-    v17 = [v12 bundleIdentifier];
+    bundleIdentifier2 = [v12 bundleIdentifier];
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"DOCPickerSource.m" lineNumber:54 description:@"Picker doesn't have an identifier"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCPickerSource.m" lineNumber:54 description:@"Picker doesn't have an identifier"];
 
-    v17 = 0;
+    bundleIdentifier2 = 0;
   }
 
-  v19 = [(DOCPickerSource *)self initWithTitle:v13 attributes:v14 optedIn:v15 identifier:v17 providerDomain:v9 pickerExtension:v7];
+  v19 = [(DOCPickerSource *)self initWithTitle:localizedName attributes:attributes optedIn:optedIn identifier:bundleIdentifier2 providerDomain:domainCopy pickerExtension:pickerCopy];
 
   return v19;
 }
 
-- (DOCPickerSource)initWithTitle:(id)a3 attributes:(id)a4 optedIn:(BOOL)a5 identifier:(id)a6 providerDomain:(id)a7 pickerExtension:(id)a8
+- (DOCPickerSource)initWithTitle:(id)title attributes:(id)attributes optedIn:(BOOL)in identifier:(id)identifier providerDomain:(id)domain pickerExtension:(id)extension
 {
-  v11 = a5;
+  inCopy = in;
   v52 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  titleCopy = title;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  extensionCopy = extension;
   v49.receiver = self;
   v49.super_class = DOCPickerSource;
   v19 = [(DOCPickerSource *)&v49 init];
   v20 = v19;
   if (v19)
   {
-    [(DOCPickerSource *)v19 setProviderDomain:v17];
-    [(DOCPickerSource *)v20 setPickerExtension:v18];
-    [(DOCPickerSource *)v20 setDisplayName:v14];
-    [(DOCPickerSource *)v20 setProviderName:v14];
-    [(DOCPickerSource *)v20 setIdentifier:v16];
-    v21 = [v15 objectForKeyedSubscript:@"UIDocumentPickerModes"];
+    [(DOCPickerSource *)v19 setProviderDomain:domainCopy];
+    [(DOCPickerSource *)v20 setPickerExtension:extensionCopy];
+    [(DOCPickerSource *)v20 setDisplayName:titleCopy];
+    [(DOCPickerSource *)v20 setProviderName:titleCopy];
+    [(DOCPickerSource *)v20 setIdentifier:identifierCopy];
+    v21 = [attributesCopy objectForKeyedSubscript:@"UIDocumentPickerModes"];
     v22 = v21;
     if (v21)
     {
-      v41 = v11;
+      v41 = inCopy;
       v42 = v20;
-      v43 = v16;
-      v44 = v14;
+      v43 = identifierCopy;
+      v44 = titleCopy;
       v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v21, "count")}];
       v45 = 0u;
       v46 = 0u;
@@ -127,9 +127,9 @@
       v20 = v42;
       [(DOCPickerSource *)v42 setSupportedInteractionModes:v23];
 
-      v14 = v44;
-      v16 = v43;
-      v11 = v41;
+      titleCopy = v44;
+      identifierCopy = v43;
+      inCopy = v41;
       v22 = v40;
     }
 
@@ -138,8 +138,8 @@
       [(DOCPickerSource *)v20 setSupportedInteractionModes:MEMORY[0x277CBEBF8]];
     }
 
-    [(DOCPickerSource *)v20 setIsExtensionOptedIn:v11, v40];
-    v35 = [v15 objectForKeyedSubscript:@"UIDocumentPickerSupportedFileTypes"];
+    [(DOCPickerSource *)v20 setIsExtensionOptedIn:inCopy, v40];
+    v35 = [attributesCopy objectForKeyedSubscript:@"UIDocumentPickerSupportedFileTypes"];
     if (!v35 || ([MEMORY[0x277CE1CB8] doc_contentTypesForIdentifiers:v35], (v36 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v37 = *MEMORY[0x277CE1DB8];
@@ -160,17 +160,17 @@
   hostApplicationBundleIdentifier = self->_hostApplicationBundleIdentifier;
   if (!hostApplicationBundleIdentifier)
   {
-    v4 = [(DOCPickerSource *)self pickerExtension];
-    v5 = [v4 identifier];
+    pickerExtension = [(DOCPickerSource *)self pickerExtension];
+    identifier = [pickerExtension identifier];
 
-    v6 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v5 error:0];
-    v7 = [v6 containingBundleRecord];
+    v6 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:identifier error:0];
+    containingBundleRecord = [v6 containingBundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 bundleIdentifier];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
       v9 = self->_hostApplicationBundleIdentifier;
-      self->_hostApplicationBundleIdentifier = v8;
+      self->_hostApplicationBundleIdentifier = bundleIdentifier;
     }
 
     hostApplicationBundleIdentifier = self->_hostApplicationBundleIdentifier;
@@ -184,12 +184,12 @@
   if (!self->_loadedFileProviderDocumentGroup)
   {
     self->_loadedFileProviderDocumentGroup = 1;
-    v3 = [(DOCPickerSource *)self providerDomain];
-    v4 = [v3 extensionBundleIdentifier];
+    providerDomain = [(DOCPickerSource *)self providerDomain];
+    extensionBundleIdentifier = [providerDomain extensionBundleIdentifier];
 
-    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v4 error:0];
-    v6 = [v5 infoDictionary];
-    v7 = [v6 objectForKey:@"NSExtensionFileProviderDocumentGroup" ofClass:objc_opt_class()];
+    v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:extensionBundleIdentifier error:0];
+    infoDictionary = [v5 infoDictionary];
+    v7 = [infoDictionary objectForKey:@"NSExtensionFileProviderDocumentGroup" ofClass:objc_opt_class()];
     fileProviderDocumentGroup = self->_fileProviderDocumentGroup;
     self->_fileProviderDocumentGroup = v7;
   }
@@ -199,15 +199,15 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = DOCPickerSource;
-  if ([(DOCPickerSource *)&v8 isEqual:v4])
+  if ([(DOCPickerSource *)&v8 isEqual:equalCopy])
   {
-    v5 = [v4 isExtensionOptedIn];
-    v6 = v5 ^ [(DOCPickerSource *)self isExtensionOptedIn]^ 1;
+    isExtensionOptedIn = [equalCopy isExtensionOptedIn];
+    v6 = isExtensionOptedIn ^ [(DOCPickerSource *)self isExtensionOptedIn]^ 1;
   }
 
   else
@@ -218,26 +218,26 @@
   return v6;
 }
 
-- (id)loadIconForSize:(int64_t)a3
+- (id)loadIconForSize:(int64_t)size
 {
   v5 = objc_opt_class();
-  v6 = [(DOCPickerSource *)self hostApplicationBundleIdentifier];
-  v7 = [v5 applicationIconForBundleIdentifier:v6 size:a3];
+  hostApplicationBundleIdentifier = [(DOCPickerSource *)self hostApplicationBundleIdentifier];
+  v7 = [v5 applicationIconForBundleIdentifier:hostApplicationBundleIdentifier size:size];
 
   return v7;
 }
 
-- (BOOL)isValidForConfiguration:(id)a3
+- (BOOL)isValidForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NSExtension *)self->_pickerExtension attributes];
-  v6 = [v5 valueForKey:@"UIDocumentPickerVisibilityUserManageable"];
+  configurationCopy = configuration;
+  attributes = [(NSExtension *)self->_pickerExtension attributes];
+  v6 = [attributes valueForKey:@"UIDocumentPickerVisibilityUserManageable"];
 
-  v7 = [(DOCPickerSource *)self pickerExtension];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D773A0]];
+  pickerExtension = [(DOCPickerSource *)self pickerExtension];
+  identifier = [pickerExtension identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x277D773A0]];
 
-  if ((v9 & 1) != 0 || [v4 forPickingDocuments] && !-[DOCPickerSource supportsInteractionMode:](self, "supportsInteractionMode:", objc_msgSend(v4, "interactionMode")))
+  if ((v9 & 1) != 0 || [configurationCopy forPickingDocuments] && !-[DOCPickerSource supportsInteractionMode:](self, "supportsInteractionMode:", objc_msgSend(configurationCopy, "interactionMode")))
   {
     v10 = 0;
   }
@@ -246,21 +246,21 @@
   {
     v12.receiver = self;
     v12.super_class = DOCPickerSource;
-    v10 = [(DOCPickerSource *)&v12 isValidForConfiguration:v4];
+    v10 = [(DOCPickerSource *)&v12 isValidForConfiguration:configurationCopy];
   }
 
   return v10;
 }
 
-- (BOOL)supportsInteractionMode:(unint64_t)a3
+- (BOOL)supportsInteractionMode:(unint64_t)mode
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(DOCPickerSource *)self supportedInteractionModes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  supportedInteractionModes = [(DOCPickerSource *)self supportedInteractionModes];
+  v5 = [supportedInteractionModes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,17 +271,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(supportedInteractionModes);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) unsignedIntegerValue] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) unsignedIntegerValue] == mode)
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [supportedInteractionModes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

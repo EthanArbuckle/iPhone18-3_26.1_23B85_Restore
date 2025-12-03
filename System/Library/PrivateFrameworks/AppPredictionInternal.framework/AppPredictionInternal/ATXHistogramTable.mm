@@ -1,55 +1,55 @@
 @interface ATXHistogramTable
-- (ATXHistogramTable)initWithCoder:(id)a3;
-- (ATXHistogramTable)initWithDatastore:(id)a3;
-- (ATXHistogramTable)initWithDatastore:(id)a3 blobType:(int64_t)a4;
-- (ATXHistogramTable)initWithDict:(id)a3 usedIds:(id)a4 datastore:(id)a5 blobType:(int64_t)a6;
-- (BOOL)lookup:(id)a3 into:(unsigned __int16 *)a4;
+- (ATXHistogramTable)initWithCoder:(id)coder;
+- (ATXHistogramTable)initWithDatastore:(id)datastore;
+- (ATXHistogramTable)initWithDatastore:(id)datastore blobType:(int64_t)type;
+- (ATXHistogramTable)initWithDict:(id)dict usedIds:(id)ids datastore:(id)datastore blobType:(int64_t)type;
+- (BOOL)lookup:(id)lookup into:(unsigned __int16 *)into;
 - (id).cxx_construct;
 - (id)allKeys;
-- (id)allKeysFilteredBy:(id)a3;
+- (id)allKeysFilteredBy:(id)by;
 - (id)histogramTableDict;
-- (unsigned)intern:(id)a3;
-- (unsigned)remove:(id)a3;
+- (unsigned)intern:(id)intern;
+- (unsigned)remove:(id)remove;
 - (void)clear;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)flush;
 @end
 
 @implementation ATXHistogramTable
 
-- (ATXHistogramTable)initWithDatastore:(id)a3
+- (ATXHistogramTable)initWithDatastore:(id)datastore
 {
-  v5 = a3;
-  if (!v5)
+  datastoreCopy = datastore;
+  if (!datastoreCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"datastore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:652 description:{@"Invalid parameter not satisfying: %@", @"datastore"}];
   }
 
-  v6 = [(ATXHistogramTable *)self initWithDict:0 usedIds:0 datastore:v5 blobType:1];
+  v6 = [(ATXHistogramTable *)self initWithDict:0 usedIds:0 datastore:datastoreCopy blobType:1];
 
   return v6;
 }
 
-- (ATXHistogramTable)initWithDatastore:(id)a3 blobType:(int64_t)a4
+- (ATXHistogramTable)initWithDatastore:(id)datastore blobType:(int64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  datastoreCopy = datastore;
+  if (!datastoreCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"datastore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"datastore"}];
   }
 
-  v8 = [(ATXHistogramTable *)self initWithDict:0 usedIds:0 datastore:v7 blobType:a4];
+  v8 = [(ATXHistogramTable *)self initWithDict:0 usedIds:0 datastore:datastoreCopy blobType:type];
 
   return v8;
 }
 
-- (ATXHistogramTable)initWithDict:(id)a3 usedIds:(id)a4 datastore:(id)a5 blobType:(int64_t)a6
+- (ATXHistogramTable)initWithDict:(id)dict usedIds:(id)ids datastore:(id)datastore blobType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dictCopy = dict;
+  idsCopy = ids;
+  datastoreCopy = datastore;
   v19.receiver = self;
   v19.super_class = ATXHistogramTable;
   v12 = [(ATXHistogramTable *)&v19 init];
@@ -93,16 +93,16 @@ void __61__ATXHistogramTable_initWithDict_usedIds_datastore_blobType___block_inv
   [WeakRetained flush];
 }
 
-- (unsigned)intern:(id)a3
+- (unsigned)intern:(id)intern
 {
-  v5 = a3;
+  internCopy = intern;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  v7 = [*(*ptr + 16) isEqual:v5];
+  v7 = [*(*ptr + 16) isEqual:internCopy];
   v8 = *ptr;
   if (v7)
   {
@@ -112,12 +112,12 @@ void __61__ATXHistogramTable_initWithDict_usedIds_datastore_blobType___block_inv
 
   else
   {
-    v10 = [*v8 objectForKeyedSubscript:v5];
+    v10 = [*v8 objectForKeyedSubscript:internCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 unsignedShortValue];
-      *(v18 + 12) = v12;
+      unsignedShortValue = [v10 unsignedShortValue];
+      *(v18 + 12) = unsignedShortValue;
     }
 
     else
@@ -130,13 +130,13 @@ void __61__ATXHistogramTable_initWithDict_usedIds_datastore_blobType___block_inv
       v16[4] = &v17;
       [v13 enumerateRangesUsingBlock:v16];
       v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v18 + 12)];
-      [**ptr setObject:v14 forKeyedSubscript:v5];
+      [**ptr setObject:v14 forKeyedSubscript:internCopy];
 
       [*(*ptr + 8) addIndex:*(v18 + 12)];
       [(ATXBackgroundSaver *)self->_saver scheduleSave];
     }
 
-    objc_storeStrong((*ptr + 16), a3);
+    objc_storeStrong((*ptr + 16), intern);
     *(*ptr + 24) = *(v18 + 12);
 
     v9 = *(v18 + 12);
@@ -155,16 +155,16 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
   return result;
 }
 
-- (BOOL)lookup:(id)a3 into:(unsigned __int16 *)a4
+- (BOOL)lookup:(id)lookup into:(unsigned __int16 *)into
 {
-  v7 = a3;
+  lookupCopy = lookup;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  if ([*(*ptr + 16) isEqual:v7])
+  if ([*(*ptr + 16) isEqual:lookupCopy])
   {
-    if (a4)
+    if (into)
     {
-      *a4 = *(*ptr + 24);
+      *into = *(*ptr + 24);
     }
 
     v9 = 1;
@@ -172,19 +172,19 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
 
   else
   {
-    v10 = [**ptr objectForKeyedSubscript:v7];
+    v10 = [**ptr objectForKeyedSubscript:lookupCopy];
     v11 = v10;
     v9 = v10 != 0;
     if (v10)
     {
-      v12 = [v10 unsignedShortValue];
-      v13 = v12;
-      if (a4)
+      unsignedShortValue = [v10 unsignedShortValue];
+      v13 = unsignedShortValue;
+      if (into)
       {
-        *a4 = v12;
+        *into = unsignedShortValue;
       }
 
-      objc_storeStrong((*ptr + 16), a3);
+      objc_storeStrong((*ptr + 16), lookup);
       *(*ptr + 24) = v13;
     }
   }
@@ -194,14 +194,14 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
   return v9;
 }
 
-- (id)allKeysFilteredBy:(id)a3
+- (id)allKeysFilteredBy:(id)by
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  byCopy = by;
+  if (!byCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:764 description:{@"Invalid parameter not satisfying: %@", @"filter"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:764 description:{@"Invalid parameter not satisfying: %@", @"filter"}];
   }
 
   v6 = objc_opt_new();
@@ -226,7 +226,7 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if (v5[2](v5, v12))
+        if (byCopy[2](byCopy, v12))
         {
           [v6 addObject:v12];
         }
@@ -250,25 +250,25 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
 {
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  v3 = [**ptr allKeys];
+  allKeys = [**ptr allKeys];
   pthread_mutex_unlock((ptr + 8));
 
-  return v3;
+  return allKeys;
 }
 
-- (unsigned)remove:(id)a3
+- (unsigned)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  v6 = [**ptr objectForKeyedSubscript:v4];
+  v6 = [**ptr objectForKeyedSubscript:removeCopy];
   if (v6)
   {
-    [**ptr removeObjectForKey:v4];
+    [**ptr removeObjectForKey:removeCopy];
     [*(*ptr + 8) removeIndex:{objc_msgSend(v6, "unsignedIntegerValue")}];
   }
 
-  if ([*(*ptr + 16) isEqual:v4])
+  if ([*(*ptr + 16) isEqual:removeCopy])
   {
     v7 = *(*ptr + 16);
     *(*ptr + 16) = 0;
@@ -280,15 +280,15 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
   if (v6)
   {
     [(ATXBackgroundSaver *)self->_saver scheduleSaveImmediately];
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (void)clear
@@ -305,30 +305,30 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
   pthread_mutex_unlock((ptr + 8));
 }
 
-- (ATXHistogramTable)initWithCoder:(id)a3
+- (ATXHistogramTable)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"dict"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usedIds"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"dict"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usedIds"];
   v11 = [(ATXHistogramTable *)self initWithDict:v9 usedIds:v10 datastore:0 blobType:1];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v5 = [**ptr mutableCopy];
-  [v7 encodeObject:v5 forKey:@"dict"];
+  [coderCopy encodeObject:v5 forKey:@"dict"];
 
   v6 = [*(*ptr + 8) mutableCopy];
-  [v7 encodeObject:v6 forKey:@"usedIds"];
+  [coderCopy encodeObject:v6 forKey:@"usedIds"];
 
   pthread_mutex_unlock((ptr + 8));
 }
@@ -341,8 +341,8 @@ uint64_t __28__ATXHistogramTable_intern___block_invoke(uint64_t result, __int16 
     v4 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
     [v4 encodeObject:self forKey:*MEMORY[0x277CCA308]];
     datastore = self->_datastore;
-    v6 = [v4 encodedData];
-    [(_ATXDataStore *)datastore writeBlob:v6 type:self->_blobType expirationDate:0];
+    encodedData = [v4 encodedData];
+    [(_ATXDataStore *)datastore writeBlob:encodedData type:self->_blobType expirationDate:0];
 
     objc_autoreleasePoolPop(v3);
   }

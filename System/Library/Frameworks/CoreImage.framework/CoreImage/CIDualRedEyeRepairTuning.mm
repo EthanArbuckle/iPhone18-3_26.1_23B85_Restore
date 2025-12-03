@@ -1,26 +1,26 @@
 @interface CIDualRedEyeRepairTuning
 + (id)defaultRepairParameters;
 + (id)defaultSessionParameters;
-+ (id)repairParametersForTuning:(unint64_t)a3;
-+ (id)sessionParametersForTuning:(unint64_t)a3;
-- (CIDualRedEyeRepairTuning)initWithTuning:(unint64_t)a3;
-- (unint64_t)tuningFromCameraModel:(id)a3 portType:(id)a4;
++ (id)repairParametersForTuning:(unint64_t)tuning;
++ (id)sessionParametersForTuning:(unint64_t)tuning;
+- (CIDualRedEyeRepairTuning)initWithTuning:(unint64_t)tuning;
+- (unint64_t)tuningFromCameraModel:(id)model portType:(id)type;
 - (void)dealloc;
-- (void)setTuningParametersByPortType:(id)a3 withCameraMetadata:(id)a4;
-- (void)updateWithCaptureSetup:(id)a3 portType:(id)a4;
+- (void)setTuningParametersByPortType:(id)type withCameraMetadata:(id)metadata;
+- (void)updateWithCaptureSetup:(id)setup portType:(id)type;
 @end
 
 @implementation CIDualRedEyeRepairTuning
 
-- (CIDualRedEyeRepairTuning)initWithTuning:(unint64_t)a3
+- (CIDualRedEyeRepairTuning)initWithTuning:(unint64_t)tuning
 {
   v6.receiver = self;
   v6.super_class = CIDualRedEyeRepairTuning;
   v4 = [(CIDualRedEyeRepairTuning *)&v6 init];
   if (v4)
   {
-    [(CIDualRedEyeRepairTuning *)v4 setRepairTuning:[CIDualRedEyeRepairTuning repairParametersForTuning:a3]];
-    [(CIDualRedEyeRepairTuning *)v4 setSessionTuning:[CIDualRedEyeRepairTuning sessionParametersForTuning:a3]];
+    [(CIDualRedEyeRepairTuning *)v4 setRepairTuning:[CIDualRedEyeRepairTuning repairParametersForTuning:tuning]];
+    [(CIDualRedEyeRepairTuning *)v4 setSessionTuning:[CIDualRedEyeRepairTuning sessionParametersForTuning:tuning]];
   }
 
   return v4;
@@ -33,16 +33,16 @@
   [(CIDualRedEyeRepairTuning *)&v3 dealloc];
 }
 
-- (unint64_t)tuningFromCameraModel:(id)a3 portType:(id)a4
+- (unint64_t)tuningFromCameraModel:(id)model portType:(id)type
 {
-  if ([a3 isEqualToString:@"N841"])
+  if ([model isEqualToString:@"N841"])
   {
     return 4;
   }
 
-  if (([a3 isEqualToString:@"D321"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"D331") & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"D331p"))
+  if (([model isEqualToString:@"D321"] & 1) != 0 || (objc_msgSend(model, "isEqualToString:", @"D331") & 1) != 0 || objc_msgSend(model, "isEqualToString:", @"D331p"))
   {
-    if ([a4 isEqualToString:@"PortTypeBackTelephoto"])
+    if ([type isEqualToString:@"PortTypeBackTelephoto"])
     {
       return 3;
     }
@@ -53,7 +53,7 @@
     }
   }
 
-  else if (([a3 isEqualToString:@"D421"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"D431") & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"N104"))
+  else if (([model isEqualToString:@"D421"] & 1) != 0 || (objc_msgSend(model, "isEqualToString:", @"D431") & 1) != 0 || objc_msgSend(model, "isEqualToString:", @"N104"))
   {
     return 5;
   }
@@ -64,15 +64,15 @@
   }
 }
 
-- (void)setTuningParametersByPortType:(id)a3 withCameraMetadata:(id)a4
+- (void)setTuningParametersByPortType:(id)type withCameraMetadata:(id)metadata
 {
-  v7 = [a4 objectForKey:@"Tuning"];
-  v8 = [a4 objectForKey:@"DeviceModelName"];
-  v9 = [a4 objectForKeyedSubscript:@"DeviceModelName"];
-  v10 = [a4 objectForKeyedSubscript:@"PortType"];
+  v7 = [metadata objectForKey:@"Tuning"];
+  v8 = [metadata objectForKey:@"DeviceModelName"];
+  v9 = [metadata objectForKeyedSubscript:@"DeviceModelName"];
+  v10 = [metadata objectForKeyedSubscript:@"PortType"];
   if (v7)
   {
-    v8 = [objc_msgSend(a4 objectForKey:{@"Tuning", "unsignedIntegerValue"}];
+    v8 = [objc_msgSend(metadata objectForKey:{@"Tuning", "unsignedIntegerValue"}];
     if (v8 == 999)
     {
       return;
@@ -86,22 +86,22 @@
 
   [(CIDualRedEyeRepairTuning *)self setRepairTuning:[CIDualRedEyeRepairTuning repairParametersForTuning:v8]];
   [(CIDualRedEyeRepairTuning *)self setSessionTuning:[CIDualRedEyeRepairTuning sessionParametersForTuning:v8]];
-  if (!a3)
+  if (!type)
   {
-    v11 = [a4 objectForKeyedSubscript:@"TuningParametersByPortType"];
+    v11 = [metadata objectForKeyedSubscript:@"TuningParametersByPortType"];
     if (!v11)
     {
-      v11 = [a4 objectForKeyedSubscript:@"RedEye"];
+      v11 = [metadata objectForKeyedSubscript:@"RedEye"];
       if (!v11)
       {
         return;
       }
     }
 
-    a3 = v11;
+    type = v11;
   }
 
-  [(CIDualRedEyeRepairTuning *)self updateWithCaptureSetup:a3 portType:v10];
+  [(CIDualRedEyeRepairTuning *)self updateWithCaptureSetup:type portType:v10];
 }
 
 + (id)defaultSessionParameters
@@ -153,13 +153,13 @@
   return +[CIDualRedEyeRepairTuning defaultRepairParameters]::parms;
 }
 
-+ (id)repairParametersForTuning:(unint64_t)a3
++ (id)repairParametersForTuning:(unint64_t)tuning
 {
   v4 = [+[CIDualRedEyeRepairTuning defaultRepairParameters](CIDualRedEyeRepairTuning "defaultRepairParameters")];
   v5 = CI_LOG_DUALRED();
-  if (a3 > 3)
+  if (tuning > 3)
   {
-    if (a3 == 4)
+    if (tuning == 4)
     {
       if (v5)
       {
@@ -180,7 +180,7 @@
       goto LABEL_32;
     }
 
-    if (a3 == 5)
+    if (tuning == 5)
     {
       if (v5)
       {
@@ -217,7 +217,7 @@
       goto LABEL_32;
     }
 
-    if (a3 != 999)
+    if (tuning != 999)
     {
       goto LABEL_22;
     }
@@ -234,7 +234,7 @@
 
   else
   {
-    switch(a3)
+    switch(tuning)
     {
       case 1uLL:
         if (v5)
@@ -317,13 +317,13 @@ LABEL_22:
   return v4;
 }
 
-+ (id)sessionParametersForTuning:(unint64_t)a3
++ (id)sessionParametersForTuning:(unint64_t)tuning
 {
   v4 = [+[CIDualRedEyeRepairTuning defaultSessionParameters](CIDualRedEyeRepairTuning "defaultSessionParameters")];
   v5 = v4;
-  if (a3 <= 2)
+  if (tuning <= 2)
   {
-    if (a3 == 1)
+    if (tuning == 1)
     {
       if (CI_LOG_DUALRED())
       {
@@ -337,7 +337,7 @@ LABEL_22:
       return v5;
     }
 
-    if (a3 != 2)
+    if (tuning != 2)
     {
 LABEL_25:
       if (CI_LOG_DUALRED())
@@ -368,7 +368,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 == 3)
+  if (tuning == 3)
   {
     if (CI_LOG_DUALRED())
     {
@@ -385,9 +385,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 != 4)
+  if (tuning != 4)
   {
-    if (a3 == 5)
+    if (tuning == 5)
     {
       [v4 setObject:&unk_1F1081C20 forKeyedSubscript:@"kMaxFaceJunkinessThreshold"];
       [v5 setObject:&unk_1F1081C08 forKeyedSubscript:@"kMinLaplacianVariance"];
@@ -416,9 +416,9 @@ LABEL_17:
   return v5;
 }
 
-- (void)updateWithCaptureSetup:(id)a3 portType:(id)a4
+- (void)updateWithCaptureSetup:(id)setup portType:(id)type
 {
-  v7 = updatedTuningFromSetup([(CIDualRedEyeRepairTuning *)self sessionTuning], a3, a4, &cfstr_K.isa, &cfstr_Session.isa);
+  v7 = updatedTuningFromSetup([(CIDualRedEyeRepairTuning *)self sessionTuning], setup, type, &cfstr_K.isa, &cfstr_Session.isa);
   if (v7)
   {
     [(CIDualRedEyeRepairTuning *)self setSessionTuning:v7];
@@ -433,7 +433,7 @@ LABEL_17:
     }
   }
 
-  v9 = updatedTuningFromSetup([(CIDualRedEyeRepairTuning *)self repairTuning], a3, a4, &cfstr_Input.isa, &cfstr_Repair_0.isa);
+  v9 = updatedTuningFromSetup([(CIDualRedEyeRepairTuning *)self repairTuning], setup, type, &cfstr_Input.isa, &cfstr_Repair_0.isa);
   if (v9)
   {
     [(CIDualRedEyeRepairTuning *)self setRepairTuning:v9];

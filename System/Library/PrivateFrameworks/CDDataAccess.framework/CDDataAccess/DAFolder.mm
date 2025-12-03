@@ -1,5 +1,5 @@
 @interface DAFolder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,49 +11,49 @@
   v12.receiver = self;
   v12.super_class = DAFolder;
   v3 = [(DAFolder *)&v12 description];
-  v4 = [(DAFolder *)self folderID];
-  v5 = [(DAFolder *)self folderName];
-  v6 = [(DAFolder *)self parentFolderID];
-  v7 = [(DAFolder *)self dataclass];
-  v8 = [(DAFolder *)self isDefault];
+  folderID = [(DAFolder *)self folderID];
+  folderName = [(DAFolder *)self folderName];
+  parentFolderID = [(DAFolder *)self parentFolderID];
+  dataclass = [(DAFolder *)self dataclass];
+  isDefault = [(DAFolder *)self isDefault];
   v9 = @"NO";
-  if (v8)
+  if (isDefault)
   {
     v9 = @"YES";
   }
 
-  v10 = [v3 stringByAppendingFormat:@" folderID = %@, name = %@, _parentFolderID %@, _dataclass %ld, _isDefault %@", v4, v5, v6, v7, v9];
+  v10 = [v3 stringByAppendingFormat:@" folderID = %@, name = %@, _parentFolderID %@, _dataclass %ld, _isDefault %@", folderID, folderName, parentFolderID, dataclass, v9];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DAFolder *)self folderID];
-  v3 = [v2 hash];
+  folderID = [(DAFolder *)self folderID];
+  v3 = [folderID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [v9 folderName];
-    if (v10 || ([(DAFolder *)self folderName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v9 = equalCopy;
+    folderName = [v9 folderName];
+    if (folderName || ([(DAFolder *)self folderName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v11 = [v9 folderName];
-      v4 = [(DAFolder *)self folderName];
-      if (![v11 isEqualToString:v4])
+      folderName2 = [v9 folderName];
+      folderName3 = [(DAFolder *)self folderName];
+      if (![folderName2 isEqualToString:folderName3])
       {
         LOBYTE(v13) = 0;
         goto LABEL_39;
       }
 
-      v27 = v11;
+      v27 = folderName2;
       v12 = 1;
     }
 
@@ -62,12 +62,12 @@
       v12 = 0;
     }
 
-    v14 = [v9 folderID];
-    if (v14 || ([(DAFolder *)self folderID], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    folderID = [v9 folderID];
+    if (folderID || ([(DAFolder *)self folderID], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = [v9 folderID];
-      v6 = [(DAFolder *)self folderID];
-      if (![v5 isEqualToString:v6])
+      folderID2 = [v9 folderID];
+      folderID3 = [(DAFolder *)self folderID];
+      if (![folderID2 isEqualToString:folderID3])
       {
         LOBYTE(v13) = 0;
         goto LABEL_30;
@@ -84,14 +84,14 @@
       v23 = 0;
     }
 
-    v24 = v6;
-    v25 = v5;
-    v15 = [v9 parentFolderID];
-    if (v15 || ([(DAFolder *)self parentFolderID], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    v24 = folderID3;
+    v25 = folderID2;
+    parentFolderID = [v9 parentFolderID];
+    if (parentFolderID || ([(DAFolder *)self parentFolderID], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v6 = [v9 parentFolderID];
-      v5 = [(DAFolder *)self parentFolderID];
-      if (![v6 isEqualToString:v5])
+      folderID3 = [v9 parentFolderID];
+      folderID2 = [(DAFolder *)self parentFolderID];
+      if (![folderID3 isEqualToString:folderID2])
       {
         LOBYTE(v13) = 0;
         goto LABEL_26;
@@ -108,11 +108,11 @@
       v20 = 0;
     }
 
-    v16 = [v9 dataclass];
-    if (v16 == [(DAFolder *)self dataclass])
+    dataclass = [v9 dataclass];
+    if (dataclass == [(DAFolder *)self dataclass])
     {
-      v17 = [v9 isDefault];
-      v13 = v17 ^ [(DAFolder *)self isDefault]^ 1;
+      isDefault = [v9 isDefault];
+      v13 = isDefault ^ [(DAFolder *)self isDefault]^ 1;
       if ((v20 & 1) == 0)
       {
 LABEL_23:
@@ -134,9 +134,9 @@ LABEL_23:
 LABEL_26:
 
 LABEL_27:
-    v6 = v24;
-    v5 = v25;
-    if (v15)
+    folderID3 = v24;
+    folderID2 = v25;
+    if (parentFolderID)
     {
 
       if (v23)
@@ -145,7 +145,7 @@ LABEL_29:
         v12 = v26;
 LABEL_30:
 
-        if (v14)
+        if (folderID)
         {
           goto LABEL_31;
         }
@@ -164,7 +164,7 @@ LABEL_30:
     }
 
     v12 = v26;
-    if (v14)
+    if (folderID)
     {
 LABEL_31:
 
@@ -174,10 +174,10 @@ LABEL_31:
       }
 
 LABEL_38:
-      v11 = v27;
+      folderName2 = v27;
 LABEL_39:
 
-      if (v10)
+      if (folderName)
       {
         goto LABEL_33;
       }
@@ -190,7 +190,7 @@ LABEL_37:
     if ((v12 & 1) == 0)
     {
 LABEL_32:
-      if (v10)
+      if (folderName)
       {
 LABEL_33:
 

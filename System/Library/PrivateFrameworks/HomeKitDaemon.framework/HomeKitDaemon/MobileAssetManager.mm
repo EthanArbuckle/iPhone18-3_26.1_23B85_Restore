@@ -1,21 +1,21 @@
 @interface MobileAssetManager
 - (id)dumpState;
-- (void)clearLocalInfoWithCompletion:(id)a3;
-- (void)getCurrentContentVersionWithCompletion:(id)a3;
-- (void)purgeAllInstalledAssetsWithCompletion:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)updateAssetsWithForce:(BOOL)a3 allowCatalogDownloadFailure:(BOOL)a4 completion:(id)a5;
+- (void)clearLocalInfoWithCompletion:(id)completion;
+- (void)getCurrentContentVersionWithCompletion:(id)completion;
+- (void)purgeAllInstalledAssetsWithCompletion:(id)completion;
+- (void)startWithCompletion:(id)completion;
+- (void)updateAssetsWithForce:(BOOL)force allowCatalogDownloadFailure:(BOOL)failure completion:(id)completion;
 @end
 
 @implementation MobileAssetManager
 
-- (void)purgeAllInstalledAssetsWithCompletion:(id)a3
+- (void)purgeAllInstalledAssetsWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -35,13 +35,13 @@
   sub_229859F70(0, 0, v8, &unk_22A57BD58, v13);
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -61,13 +61,13 @@
   sub_229859F70(0, 0, v8, &unk_22A57BD38, v13);
 }
 
-- (void)getCurrentContentVersionWithCompletion:(id)a3
+- (void)getCurrentContentVersionWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -87,16 +87,16 @@
   sub_229859F70(0, 0, v8, &unk_22A57BD18, v13);
 }
 
-- (void)updateAssetsWithForce:(BOOL)a3 allowCatalogDownloadFailure:(BOOL)a4 completion:(id)a5
+- (void)updateAssetsWithForce:(BOOL)force allowCatalogDownloadFailure:(BOOL)failure completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v18 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 17) = a4;
+  *(v14 + 16) = force;
+  *(v14 + 17) = failure;
   *(v14 + 24) = v13;
   *(v14 + 32) = self;
   v15 = sub_22A4DD9DC();
@@ -115,13 +115,13 @@
   sub_229859F70(0, 0, v12, &unk_22A57BCF8, v17);
 }
 
-- (void)clearLocalInfoWithCompletion:(id)a3
+- (void)clearLocalInfoWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

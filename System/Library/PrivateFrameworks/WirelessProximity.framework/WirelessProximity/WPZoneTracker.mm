@@ -1,31 +1,31 @@
 @interface WPZoneTracker
-- (WPZoneTracker)initWithDelegate:(id)a3 queue:(id)a4;
+- (WPZoneTracker)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPZoneTrackerDelegate)delegate;
 - (id)description;
-- (void)enteredZone:(id)a3 manufacturerData:(id)a4;
-- (void)exitedZone:(id)a3;
-- (void)failedToRegisterZones:(id)a3 withError:(id)a4;
-- (void)fetchedCurrentlyTrackedZones:(id)a3;
+- (void)enteredZone:(id)zone manufacturerData:(id)data;
+- (void)exitedZone:(id)zone;
+- (void)failedToRegisterZones:(id)zones withError:(id)error;
+- (void)fetchedCurrentlyTrackedZones:(id)zones;
 - (void)getCurrentTrackedZones;
 - (void)invalidate;
-- (void)registerForZoneChangesMatching:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
+- (void)registerForZoneChangesMatching:(id)matching;
+- (void)stateDidChange:(int64_t)change;
 - (void)unregisterAllZoneChanges;
-- (void)unregisterForZoneChanges:(id)a3;
+- (void)unregisterForZoneChanges:(id)changes;
 @end
 
 @implementation WPZoneTracker
 
-- (WPZoneTracker)initWithDelegate:(id)a3 queue:(id)a4
+- (WPZoneTracker)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WPZoneTracker;
-  v7 = [(WPClient *)&v10 initWithQueue:a4 machName:0];
+  v7 = [(WPClient *)&v10 initWithQueue:queue machName:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v8->_wantEntry = 1;
     v8->_wantExit = 1;
   }
@@ -74,26 +74,26 @@
   return v5;
 }
 
-- (void)registerForZoneChangesMatching:(id)a3
+- (void)registerForZoneChangesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   [(WPZoneTracker *)self setWantEntry:1];
   [(WPZoneTracker *)self setWantExit:1];
-  v5 = [v4 allKeys];
-  v6 = [v5 containsObject:@"ZTZoneEntry"];
+  allKeys = [matchingCopy allKeys];
+  v6 = [allKeys containsObject:@"ZTZoneEntry"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"ZTZoneEntry"];
+    v7 = [matchingCopy objectForKeyedSubscript:@"ZTZoneEntry"];
     -[WPZoneTracker setWantEntry:](self, "setWantEntry:", [v7 BOOLValue]);
   }
 
-  v8 = [v4 allKeys];
-  v9 = [v8 containsObject:@"ZTZoneExit"];
+  allKeys2 = [matchingCopy allKeys];
+  v9 = [allKeys2 containsObject:@"ZTZoneExit"];
 
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"ZTZoneExit"];
+    v10 = [matchingCopy objectForKeyedSubscript:@"ZTZoneExit"];
     -[WPZoneTracker setWantExit:](self, "setWantExit:", [v10 BOOLValue]);
   }
 
@@ -103,7 +103,7 @@
   v17 = 30;
   [v11 setScanningRates:&v16];
   v12 = MEMORY[0x277CBEB58];
-  v13 = [v4 objectForKeyedSubscript:@"ZTZonesArray"];
+  v13 = [matchingCopy objectForKeyedSubscript:@"ZTZonesArray"];
   v14 = [v12 setWithArray:v13];
   [v11 setZones:v14];
 
@@ -112,9 +112,9 @@
   [(WPClient *)&v15 startTrackingZone:v11];
 }
 
-- (void)unregisterForZoneChanges:(id)a3
+- (void)unregisterForZoneChanges:(id)changes
 {
-  v4 = [a3 objectForKeyedSubscript:@"ZTZonesArray"];
+  v4 = [changes objectForKeyedSubscript:@"ZTZonesArray"];
   v5.receiver = self;
   v5.super_class = WPZoneTracker;
   [(WPClient *)&v5 stopTrackingZones:v4];
@@ -134,34 +134,34 @@
   [(WPClient *)&v2 getAllTrackedZones];
 }
 
-- (void)enteredZone:(id)a3 manufacturerData:(id)a4
+- (void)enteredZone:(id)zone manufacturerData:(id)data
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  dataCopy = data;
   if ([(WPZoneTracker *)self wantEntry])
   {
-    v8 = [(WPZoneTracker *)self delegate];
+    delegate = [(WPZoneTracker *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(WPZoneTracker *)self delegate];
-      [v10 zoneTracker:self enteredZone:v6];
+      delegate2 = [(WPZoneTracker *)self delegate];
+      [delegate2 zoneTracker:self enteredZone:zoneCopy];
     }
   }
 
   if ([(WPZoneTracker *)self wantEntry])
   {
-    v11 = [(WPZoneTracker *)self delegate];
+    delegate3 = [(WPZoneTracker *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
       v46 = 0uLL;
-      v13 = [v7 bytes];
-      v14 = [v7 length];
-      if (v14 < 0x10 || (v46 = *v13, v14 < 0x12))
+      bytes = [dataCopy bytes];
+      v14 = [dataCopy length];
+      if (v14 < 0x10 || (v46 = *bytes, v14 < 0x12))
       {
         v16 = 0;
         v15 = 0;
@@ -169,7 +169,7 @@
 
       else
       {
-        v15 = __rev16(*(v13 + 16));
+        v15 = __rev16(*(bytes + 16));
         if (v14 < 0x14)
         {
           v16 = 0;
@@ -177,10 +177,10 @@
 
         else
         {
-          v16 = __rev16(*(v13 + 18));
+          v16 = __rev16(*(bytes + 18));
           if (v14 != 20)
           {
-            v17 = *(v13 + 20);
+            v17 = *(bytes + 20);
 LABEL_13:
             v18 = [MEMORY[0x277CBEA90] dataWithBytes:&v46 length:16];
             if (v18)
@@ -231,15 +231,15 @@ LABEL_13:
                 _os_log_impl(&dword_274327000, v23, OS_LOG_TYPE_DEFAULT, "dicToSend: %@", buf, 0xCu);
               }
 
-              v24 = [(WPZoneTracker *)self delegate];
-              v31[0] = v6;
+              delegate4 = [(WPZoneTracker *)self delegate];
+              v31[0] = zoneCopy;
               v25 = [MEMORY[0x277CCABB0] numberWithInteger:{v15, @"WPZoneTrackerKeyZone", @"WPZoneTrackerKeyMajor"}];
               v31[1] = v25;
               v30[2] = @"WPZoneTrackerKeyMinor";
               v26 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
               v31[2] = v26;
               v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
-              [v24 zoneTracker:self enteredZoneInfo:v27];
+              [delegate4 zoneTracker:self enteredZoneInfo:v27];
             }
 
             else
@@ -271,67 +271,67 @@ LABEL_28:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)exitedZone:(id)a3
+- (void)exitedZone:(id)zone
 {
-  v7 = a3;
+  zoneCopy = zone;
   if ([(WPZoneTracker *)self wantExit])
   {
-    v4 = [(WPZoneTracker *)self delegate];
+    delegate = [(WPZoneTracker *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(WPZoneTracker *)self delegate];
-      [v6 zoneTracker:self exitedZone:v7];
+      delegate2 = [(WPZoneTracker *)self delegate];
+      [delegate2 zoneTracker:self exitedZone:zoneCopy];
     }
   }
 }
 
-- (void)failedToRegisterZones:(id)a3 withError:(id)a4
+- (void)failedToRegisterZones:(id)zones withError:(id)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WPZoneTracker *)self delegate];
+  zonesCopy = zones;
+  errorCopy = error;
+  delegate = [(WPZoneTracker *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(WPZoneTracker *)self delegate];
+    delegate2 = [(WPZoneTracker *)self delegate];
     v13 = @"ZTZonesArray";
-    v14[0] = v6;
+    v14[0] = zonesCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v10 zoneTracker:self didFailToRegisterZones:v11 withError:v7];
+    [delegate2 zoneTracker:self didFailToRegisterZones:v11 withError:errorCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchedCurrentlyTrackedZones:(id)a3
+- (void)fetchedCurrentlyTrackedZones:(id)zones
 {
-  v7 = a3;
-  v4 = [(WPZoneTracker *)self delegate];
+  zonesCopy = zones;
+  delegate = [(WPZoneTracker *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPZoneTracker *)self delegate];
-    [v6 infoForCurrentlyTrackedZones:v7];
+    delegate2 = [(WPZoneTracker *)self delegate];
+    [delegate2 infoForCurrentlyTrackedZones:zonesCopy];
   }
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPZoneTracker;
-  [(WPClient *)&v7 stateDidChange:a3];
-  v4 = [(WPZoneTracker *)self delegate];
+  [(WPClient *)&v7 stateDidChange:change];
+  delegate = [(WPZoneTracker *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPZoneTracker *)self delegate];
-    [v6 zoneTrackerDidUpdateState:self];
+    delegate2 = [(WPZoneTracker *)self delegate];
+    [delegate2 zoneTrackerDidUpdateState:self];
   }
 }
 

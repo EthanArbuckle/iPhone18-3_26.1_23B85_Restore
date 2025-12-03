@@ -6,7 +6,7 @@
 
 - (void)monitorMemoryPressure
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DC2B013C();
 }
 

@@ -1,49 +1,49 @@
 @interface HMIVideoFrameSelectorDelegateAdapter
-- (opaqueCMSampleBuffer)frameSelector:(id)a3 prepareFrame:(opaqueCMSampleBuffer *)a4;
-- (void)frameSelector:(id)a3 didSelectFrame:(opaqueCMSampleBuffer *)a4 reference:(opaqueCMSampleBuffer *)a5;
-- (void)frameSelector:(id)a3 didSkipFrame:(opaqueCMSampleBuffer *)a4;
+- (opaqueCMSampleBuffer)frameSelector:(id)selector prepareFrame:(opaqueCMSampleBuffer *)frame;
+- (void)frameSelector:(id)selector didSelectFrame:(opaqueCMSampleBuffer *)frame reference:(opaqueCMSampleBuffer *)reference;
+- (void)frameSelector:(id)selector didSkipFrame:(opaqueCMSampleBuffer *)frame;
 @end
 
 @implementation HMIVideoFrameSelectorDelegateAdapter
 
-- (void)frameSelector:(id)a3 didSelectFrame:(opaqueCMSampleBuffer *)a4 reference:(opaqueCMSampleBuffer *)a5
+- (void)frameSelector:(id)selector didSelectFrame:(opaqueCMSampleBuffer *)frame reference:(opaqueCMSampleBuffer *)reference
 {
-  v10 = a3;
-  v8 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSelectFrame];
+  selectorCopy = selector;
+  frameSelectorDidSelectFrame = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSelectFrame];
 
-  if (v8)
+  if (frameSelectorDidSelectFrame)
   {
-    v9 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSelectFrame];
-    (v9)[2](v9, v10, a4, a5);
+    frameSelectorDidSelectFrame2 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSelectFrame];
+    (frameSelectorDidSelectFrame2)[2](frameSelectorDidSelectFrame2, selectorCopy, frame, reference);
   }
 }
 
-- (void)frameSelector:(id)a3 didSkipFrame:(opaqueCMSampleBuffer *)a4
+- (void)frameSelector:(id)selector didSkipFrame:(opaqueCMSampleBuffer *)frame
 {
-  v8 = a3;
-  v6 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSkipFrame];
+  selectorCopy = selector;
+  frameSelectorDidSkipFrame = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSkipFrame];
 
-  if (v6)
+  if (frameSelectorDidSkipFrame)
   {
-    v7 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSkipFrame];
-    (v7)[2](v7, v8, a4);
+    frameSelectorDidSkipFrame2 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorDidSkipFrame];
+    (frameSelectorDidSkipFrame2)[2](frameSelectorDidSkipFrame2, selectorCopy, frame);
   }
 }
 
-- (opaqueCMSampleBuffer)frameSelector:(id)a3 prepareFrame:(opaqueCMSampleBuffer *)a4
+- (opaqueCMSampleBuffer)frameSelector:(id)selector prepareFrame:(opaqueCMSampleBuffer *)frame
 {
-  v6 = a3;
-  v7 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorPrepareFrame];
+  selectorCopy = selector;
+  frameSelectorPrepareFrame = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorPrepareFrame];
 
-  if (v7)
+  if (frameSelectorPrepareFrame)
   {
-    v8 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorPrepareFrame];
-    v9 = (v8)[2](v8, v6, a4);
+    frameSelectorPrepareFrame2 = [(HMIVideoFrameSelectorDelegateAdapter *)self frameSelectorPrepareFrame];
+    v9 = (frameSelectorPrepareFrame2)[2](frameSelectorPrepareFrame2, selectorCopy, frame);
   }
 
   else
   {
-    v9 = CFRetain(a4);
+    v9 = CFRetain(frame);
   }
 
   return v9;

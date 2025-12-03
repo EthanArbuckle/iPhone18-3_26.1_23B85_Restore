@@ -1,40 +1,40 @@
 @interface _CPLCloudKitSimpleRecordUpdatePlanner
-- (_CPLCloudKitSimpleRecordUpdatePlanner)initWithTask:(id)a3 scopedIdentifiers:(id)a4 destinationZoneIdentification:(id)a5 sharedZoneIdentification:(id)a6 targetMapping:(id)a7 propertyMapping:(id)a8 fingerprintContext:(id)a9;
-- (id)cloudKitScopeForScopeIdentifier:(id)a3;
-- (id)scopeIdentifierFromZoneID:(id)a3;
-- (id)zoneIDFromScopeIdentifier:(id)a3;
+- (_CPLCloudKitSimpleRecordUpdatePlanner)initWithTask:(id)task scopedIdentifiers:(id)identifiers destinationZoneIdentification:(id)identification sharedZoneIdentification:(id)zoneIdentification targetMapping:(id)mapping propertyMapping:(id)propertyMapping fingerprintContext:(id)context;
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier;
+- (id)scopeIdentifierFromZoneID:(id)d;
+- (id)zoneIDFromScopeIdentifier:(id)identifier;
 @end
 
 @implementation _CPLCloudKitSimpleRecordUpdatePlanner
 
-- (_CPLCloudKitSimpleRecordUpdatePlanner)initWithTask:(id)a3 scopedIdentifiers:(id)a4 destinationZoneIdentification:(id)a5 sharedZoneIdentification:(id)a6 targetMapping:(id)a7 propertyMapping:(id)a8 fingerprintContext:(id)a9
+- (_CPLCloudKitSimpleRecordUpdatePlanner)initWithTask:(id)task scopedIdentifiers:(id)identifiers destinationZoneIdentification:(id)identification sharedZoneIdentification:(id)zoneIdentification targetMapping:(id)mapping propertyMapping:(id)propertyMapping fingerprintContext:(id)context
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v62 = a6;
-  v61 = a7;
-  v60 = a8;
-  v59 = a9;
+  taskCopy = task;
+  identifiersCopy = identifiers;
+  identificationCopy = identification;
+  zoneIdentificationCopy = zoneIdentification;
+  mappingCopy = mapping;
+  propertyMappingCopy = propertyMapping;
+  contextCopy = context;
   v72.receiver = self;
   v72.super_class = _CPLCloudKitSimpleRecordUpdatePlanner;
-  v19 = v17;
+  v19 = identifiersCopy;
   v20 = [(_CPLCloudKitSimpleRecordUpdatePlanner *)&v72 init];
   v21 = v20;
   if (v20)
   {
-    v55 = v18;
-    v57 = v16;
-    objc_storeStrong(&v20->_task, a3);
+    v55 = identificationCopy;
+    v57 = taskCopy;
+    objc_storeStrong(&v20->_task, task);
     v22 = [v19 copy];
     scopedIdentifiers = v21->_scopedIdentifiers;
     v21->_scopedIdentifiers = v22;
 
-    objc_storeStrong(&v21->_destinationZoneIdentification, a5);
-    objc_storeStrong(&v21->_sharedZoneIdentification, a6);
-    objc_storeStrong(&v21->_targetMapping, a7);
-    objc_storeStrong(&v21->_propertyMapping, a8);
-    objc_storeStrong(&v21->_fingerprintContext, a9);
+    objc_storeStrong(&v21->_destinationZoneIdentification, identification);
+    objc_storeStrong(&v21->_sharedZoneIdentification, zoneIdentification);
+    objc_storeStrong(&v21->_targetMapping, mapping);
+    objc_storeStrong(&v21->_propertyMapping, propertyMapping);
+    objc_storeStrong(&v21->_fingerprintContext, context);
     v24 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
     v67 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
     if (v21->_sharedZoneIdentification)
@@ -80,9 +80,9 @@
 
           v31 = v30;
           destinationZoneIdentification = v21->_destinationZoneIdentification;
-          v33 = [v30 scopedIdentifier];
-          v34 = [v33 identifier];
-          v35 = [(CPLCloudKitZoneIdentification *)destinationZoneIdentification recordIDWithRecordName:v34];
+          scopedIdentifier = [v30 scopedIdentifier];
+          identifier = [scopedIdentifier identifier];
+          v35 = [(CPLCloudKitZoneIdentification *)destinationZoneIdentification recordIDWithRecordName:identifier];
 
           [v24 setObject:v29 forKeyedSubscript:v35];
           sharedZoneIdentification = v21->_sharedZoneIdentification;
@@ -92,32 +92,32 @@
             goto LABEL_19;
           }
 
-          v37 = [v31 otherScopedIdentifier];
-          v38 = [v37 identifier];
-          v39 = [(CPLCloudKitZoneIdentification *)sharedZoneIdentification recordIDWithRecordName:v38];
+          otherScopedIdentifier = [v31 otherScopedIdentifier];
+          identifier2 = [otherScopedIdentifier identifier];
+          v39 = [(CPLCloudKitZoneIdentification *)sharedZoneIdentification recordIDWithRecordName:identifier2];
 
-          v40 = [v31 otherScopedIdentifier];
-          [v24 setObject:v40 forKeyedSubscript:v39];
+          otherScopedIdentifier2 = [v31 otherScopedIdentifier];
+          [v24 setObject:otherScopedIdentifier2 forKeyedSubscript:v39];
 
-          v41 = [v31 scopedIdentifier];
-          [v66 setObject:v41 forKeyedSubscript:v35];
+          scopedIdentifier2 = [v31 scopedIdentifier];
+          [v66 setObject:scopedIdentifier2 forKeyedSubscript:v35];
 
-          v42 = [v31 scopedIdentifier];
-          [v66 setObject:v42 forKeyedSubscript:v39];
+          scopedIdentifier3 = [v31 scopedIdentifier];
+          [v66 setObject:scopedIdentifier3 forKeyedSubscript:v39];
 
-          v43 = [v31 targetState];
-          if (v43 < 2)
+          targetState = [v31 targetState];
+          if (targetState < 2)
           {
             goto LABEL_15;
           }
 
-          if (v43 == 2)
+          if (targetState == 2)
           {
             [v63 setObject:v35 forKeyedSubscript:v39];
             goto LABEL_18;
           }
 
-          if (v43 == 3)
+          if (targetState == 3)
           {
 LABEL_15:
             [v67 addObject:v35];
@@ -165,24 +165,24 @@ LABEL_19:
     sharedRecordIDs = v21->_sharedRecordIDs;
     v21->_sharedRecordIDs = v52;
 
-    v16 = v57;
-    v18 = v55;
+    taskCopy = v57;
+    identificationCopy = v55;
   }
 
   return v21;
 }
 
-- (id)cloudKitScopeForScopeIdentifier:(id)a3
+- (id)cloudKitScopeForScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitZoneIdentification *)self->_destinationZoneIdentification scopeIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [(CPLCloudKitZoneIdentification *)self->_destinationZoneIdentification scopeIdentifier];
+  v6 = [identifierCopy isEqualToString:scopeIdentifier];
 
   if (v6)
   {
     p_destinationZoneIdentification = &self->_destinationZoneIdentification;
 LABEL_5:
-    v12 = [(CPLCloudKitZoneIdentification *)*p_destinationZoneIdentification cloudKitScope];
+    cloudKitScope = [(CPLCloudKitZoneIdentification *)*p_destinationZoneIdentification cloudKitScope];
     goto LABEL_7;
   }
 
@@ -191,8 +191,8 @@ LABEL_5:
   v8 = sharedZoneIdentification;
   if (sharedZoneIdentification)
   {
-    v10 = [(CPLCloudKitZoneIdentification *)v8 scopeIdentifier];
-    v11 = [v4 isEqualToString:v10];
+    scopeIdentifier2 = [(CPLCloudKitZoneIdentification *)v8 scopeIdentifier];
+    v11 = [identifierCopy isEqualToString:scopeIdentifier2];
 
     if (v11)
     {
@@ -200,31 +200,31 @@ LABEL_5:
     }
   }
 
-  v12 = 0;
+  cloudKitScope = 0;
 LABEL_7:
 
-  return v12;
+  return cloudKitScope;
 }
 
-- (id)scopeIdentifierFromZoneID:(id)a3
+- (id)scopeIdentifierFromZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [(CPLCloudKitZoneIdentification *)self->_destinationZoneIdentification zoneID];
-  v6 = [v5 isEqual:v4];
+  dCopy = d;
+  zoneID = [(CPLCloudKitZoneIdentification *)self->_destinationZoneIdentification zoneID];
+  v6 = [zoneID isEqual:dCopy];
 
   if (v6)
   {
     destinationZoneIdentification = self->_destinationZoneIdentification;
 LABEL_6:
-    v11 = [(CPLCloudKitZoneIdentification *)destinationZoneIdentification scopeIdentifier];
+    scopeIdentifier = [(CPLCloudKitZoneIdentification *)destinationZoneIdentification scopeIdentifier];
     goto LABEL_8;
   }
 
   sharedZoneIdentification = self->_sharedZoneIdentification;
   if (sharedZoneIdentification)
   {
-    v9 = [(CPLCloudKitZoneIdentification *)sharedZoneIdentification zoneID];
-    v10 = [v9 isEqual:v4];
+    zoneID2 = [(CPLCloudKitZoneIdentification *)sharedZoneIdentification zoneID];
+    v10 = [zoneID2 isEqual:dCopy];
 
     if (v10)
     {
@@ -233,19 +233,19 @@ LABEL_6:
     }
   }
 
-  v11 = [(CPLCloudKitTransportTask *)self->_task scopeIdentifierFromZoneID:v4];
+  scopeIdentifier = [(CPLCloudKitTransportTask *)self->_task scopeIdentifierFromZoneID:dCopy];
 LABEL_8:
-  v12 = v11;
+  v12 = scopeIdentifier;
 
   return v12;
 }
 
-- (id)zoneIDFromScopeIdentifier:(id)a3
+- (id)zoneIDFromScopeIdentifier:(id)identifier
 {
-  v3 = [(_CPLCloudKitSimpleRecordUpdatePlanner *)self cloudKitScopeForScopeIdentifier:a3];
-  v4 = [v3 zoneID];
+  v3 = [(_CPLCloudKitSimpleRecordUpdatePlanner *)self cloudKitScopeForScopeIdentifier:identifier];
+  zoneID = [v3 zoneID];
 
-  return v4;
+  return zoneID;
 }
 
 @end

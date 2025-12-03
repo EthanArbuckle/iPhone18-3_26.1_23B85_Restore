@@ -1,15 +1,15 @@
 @interface AAPCommandFilterNonRestricted
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation AAPCommandFilterNonRestricted
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v5 = [(AAPCommandFilterNonRestricted *)self appIds];
-  v48 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
-  v6 = [(AAPCommandFilterNonRestricted *)self executionEnvironment];
-  if ([v6 isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
+  appIds = [(AAPCommandFilterNonRestricted *)self appIds];
+  v48 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [appIds count]);
+  executionEnvironment = [(AAPCommandFilterNonRestricted *)self executionEnvironment];
+  if ([executionEnvironment isEqualToString:SAAppsLaunchAppSTARK_EXECUTION_ENVValue])
   {
     v7 = +[FBSOpenApplicationService dashboardService];
   }
@@ -23,12 +23,12 @@
   v9 = &AFSiriLogContextPlugin;
   if (v7)
   {
-    v43 = a3;
+    completionCopy = completion;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v10 = [v5 countByEnumeratingWithState:&v50 objects:v67 count:16];
+    v10 = [appIds countByEnumeratingWithState:&v50 objects:v67 count:16];
     if (v10)
     {
       v11 = v10;
@@ -43,7 +43,7 @@
         {
           if (*v51 != v12)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(appIds);
           }
 
           v14 = *(*(&v50 + 1) + 8 * i);
@@ -59,7 +59,7 @@
               v57 = 2114;
               v58 = v16;
               v59 = 2048;
-              v60 = self;
+              selfCopy7 = self;
               v61 = 2112;
               v62 = v14;
               _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can be launched - filtering", buf, 0x2Au);
@@ -83,7 +83,7 @@
                 v57 = 2114;
                 v58 = v26;
                 v59 = 2048;
-                v60 = self;
+                selfCopy7 = self;
                 v61 = 2112;
                 v62 = v14;
                 _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can not be launched because it is restricted - not filtering", buf, 0x2Au);
@@ -97,7 +97,7 @@
               if (v24)
               {
                 v27 = objc_opt_class();
-                v28 = v5;
+                v28 = appIds;
                 v29 = v9;
                 v30 = v49;
                 v31 = FBSOpenApplicationErrorCodeToString();
@@ -106,13 +106,13 @@
                 v57 = 2114;
                 v58 = v27;
                 v59 = 2048;
-                v60 = self;
+                selfCopy7 = self;
                 v61 = 2112;
                 v62 = v14;
                 v63 = 2048;
                 v64 = v30;
                 v9 = v29;
-                v5 = v28;
+                appIds = v28;
                 v65 = 2112;
                 v66 = v31;
                 _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can not be launched with result=%li(%@) (restricted) - not filtering", buf, 0x3Eu);
@@ -141,7 +141,7 @@
                 v57 = 2114;
                 v58 = v40;
                 v59 = 2048;
-                v60 = self;
+                selfCopy7 = self;
                 v61 = 2112;
                 v62 = v14;
                 v63 = 2048;
@@ -151,7 +151,7 @@
                 _os_log_error_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "%s com.apple.siri.applications: <%{public}@:%p> app (%@) can not be launched with result=%li(%@) - bailing", buf, 0x3Eu);
               }
 
-              a3 = v43;
+              completion = completionCopy;
               goto LABEL_32;
             }
 
@@ -166,7 +166,7 @@
               v57 = 2114;
               v58 = v18;
               v59 = 2048;
-              v60 = self;
+              selfCopy7 = self;
               v61 = 2112;
               v62 = v14;
               v63 = 2048;
@@ -183,7 +183,7 @@
           }
         }
 
-        v11 = [v5 countByEnumeratingWithState:&v50 objects:v67 count:16];
+        v11 = [appIds countByEnumeratingWithState:&v50 objects:v67 count:16];
         if (v11)
         {
           continue;
@@ -196,7 +196,7 @@
     v32 = objc_alloc_init(SAAppsGetRestrictedAppsResponse);
     [v32 setAppToItsRestrictionsMap:v48];
     [v32 setRestrictedApps:{-[NSMutableDictionary allKeys](v48, "allKeys")}];
-    a3 = v43;
+    completion = completionCopy;
   }
 
   else
@@ -204,18 +204,18 @@
     v33 = AFSiriLogContextPlugin;
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
     {
-      sub_12364(self, v5, v33);
+      sub_12364(self, appIds, v33);
     }
 
 LABEL_32:
     v32 = objc_alloc_init(SACommandFailed);
   }
 
-  v35 = [v32 dictionary];
+  dictionary = [v32 dictionary];
 
   v36 = *v9;
   v37 = os_log_type_enabled(*v9, OS_LOG_TYPE_INFO);
-  if (a3)
+  if (completion)
   {
     if (v37)
     {
@@ -225,13 +225,13 @@ LABEL_32:
       v57 = 2114;
       v58 = v38;
       v59 = 2048;
-      v60 = self;
+      selfCopy7 = self;
       v61 = 2112;
-      v62 = v35;
+      v62 = dictionary;
       _os_log_impl(&dword_0, v36, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> sending response = %@", buf, 0x2Au);
     }
 
-    (*(a3 + 2))(a3, v35);
+    (*(completion + 2))(completion, dictionary);
   }
 
   else if (v37)
@@ -242,9 +242,9 @@ LABEL_32:
     v57 = 2114;
     v58 = v39;
     v59 = 2048;
-    v60 = self;
+    selfCopy7 = self;
     v61 = 2112;
-    v62 = v35;
+    v62 = dictionary;
     _os_log_impl(&dword_0, v36, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: <%{public}@:%p> no completion block - dropping response = %@", buf, 0x2Au);
   }
 }

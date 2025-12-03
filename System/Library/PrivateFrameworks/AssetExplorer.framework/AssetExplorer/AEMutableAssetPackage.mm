@@ -1,37 +1,37 @@
 @interface AEMutableAssetPackage
-- (AEMutableAssetPackage)initWithAssetIdentifier:(id)a3;
-- (id)_copyMetadataFromDisplayAsset:(id)a3;
-- (void)addSidecarEntriesFromDictionary:(id)a3;
+- (AEMutableAssetPackage)initWithAssetIdentifier:(id)identifier;
+- (id)_copyMetadataFromDisplayAsset:(id)asset;
+- (void)addSidecarEntriesFromDictionary:(id)dictionary;
 - (void)beginSupressingLivePhoto;
 - (void)endSuppressingLivePhoto;
-- (void)expressURLForType:(id)a3;
-- (void)removeSidecarObjectForKey:(id)a3;
-- (void)removeURLForType:(id)a3;
-- (void)replaceURLForType:(id)a3 withURL:(id)a4;
-- (void)setMediaOrigin:(int64_t)a3;
-- (void)setSidecarObject:(id)a3 forKey:(id)a4;
-- (void)storeMetadataFromPHAsset:(id)a3 imageURL:(id)a4 adjustmentURL:(id)a5;
-- (void)storeMetadataFromReviewAsset:(id)a3;
-- (void)storeURL:(id)a3 forType:(id)a4;
-- (void)suppressURLForType:(id)a3;
+- (void)expressURLForType:(id)type;
+- (void)removeSidecarObjectForKey:(id)key;
+- (void)removeURLForType:(id)type;
+- (void)replaceURLForType:(id)type withURL:(id)l;
+- (void)setMediaOrigin:(int64_t)origin;
+- (void)setSidecarObject:(id)object forKey:(id)key;
+- (void)storeMetadataFromPHAsset:(id)asset imageURL:(id)l adjustmentURL:(id)rL;
+- (void)storeMetadataFromReviewAsset:(id)asset;
+- (void)storeURL:(id)l forType:(id)type;
+- (void)suppressURLForType:(id)type;
 @end
 
 @implementation AEMutableAssetPackage
 
-- (void)removeSidecarObjectForKey:(id)a3
+- (void)removeSidecarObjectForKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(AEAssetPackage *)self _packageContentQueue];
+    _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__AEMutableAssetPackage_removeSidecarObjectForKey___block_invoke;
     v8[3] = &unk_278CC76A8;
     v8[4] = self;
-    v9 = v4;
-    dispatch_barrier_sync(v5, v8);
+    v9 = keyCopy;
+    dispatch_barrier_sync(_packageContentQueue, v8);
   }
 
   else
@@ -54,18 +54,18 @@ void __51__AEMutableAssetPackage_removeSidecarObjectForKey___block_invoke(uint64
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)addSidecarEntriesFromDictionary:(id)a3
+- (void)addSidecarEntriesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(AEAssetPackage *)self _packageContentQueue];
+  dictionaryCopy = dictionary;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__AEMutableAssetPackage_addSidecarEntriesFromDictionary___block_invoke;
   v7[3] = &unk_278CC76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v7);
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  dispatch_barrier_sync(_packageContentQueue, v7);
 }
 
 void __57__AEMutableAssetPackage_addSidecarEntriesFromDictionary___block_invoke(uint64_t a1)
@@ -74,18 +74,18 @@ void __57__AEMutableAssetPackage_addSidecarEntriesFromDictionary___block_invoke(
   [v2 addEntriesFromDictionary:*(a1 + 40)];
 }
 
-- (void)setSidecarObject:(id)a3 forKey:(id)a4
+- (void)setSidecarObject:(id)object forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (!keyCopy)
   {
     v9 = PLAssetExplorerGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = v6;
+      v16 = objectCopy;
       v17 = 2114;
       v18 = 0;
       v10 = "Attempting to store a sidecar object %{public}@ for an invalid key %{public}@";
@@ -98,7 +98,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!objectCopy)
   {
     v9 = PLAssetExplorerGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -106,7 +106,7 @@ LABEL_9:
       *buf = 138543618;
       v16 = 0;
       v17 = 2114;
-      v18 = v7;
+      v18 = keyCopy;
       v10 = "Attempting to store an invalid sidecar object %{public}@ for key %{public}@";
       goto LABEL_8;
     }
@@ -114,15 +114,15 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(AEAssetPackage *)self _packageContentQueue];
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__AEMutableAssetPackage_setSidecarObject_forKey___block_invoke;
   block[3] = &unk_278CC7658;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  dispatch_barrier_sync(v8, block);
+  v13 = objectCopy;
+  v14 = keyCopy;
+  dispatch_barrier_sync(_packageContentQueue, block);
 
 LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
@@ -134,21 +134,21 @@ void __49__AEMutableAssetPackage_setSidecarObject_forKey___block_invoke(uint64_t
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)replaceURLForType:(id)a3 withURL:(id)a4
+- (void)replaceURLForType:(id)type withURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEAssetPackage *)self _packageContentQueue];
+  typeCopy = type;
+  lCopy = l;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__AEMutableAssetPackage_replaceURLForType_withURL___block_invoke;
   block[3] = &unk_278CC7658;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_barrier_sync(v8, block);
+  v12 = lCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = lCopy;
+  dispatch_barrier_sync(_packageContentQueue, block);
 }
 
 void __51__AEMutableAssetPackage_replaceURLForType_withURL___block_invoke(uint64_t a1)
@@ -157,18 +157,18 @@ void __51__AEMutableAssetPackage_replaceURLForType_withURL___block_invoke(uint64
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (void)removeURLForType:(id)a3
+- (void)removeURLForType:(id)type
 {
-  v4 = a3;
-  v5 = [(AEAssetPackage *)self _packageContentQueue];
+  typeCopy = type;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__AEMutableAssetPackage_removeURLForType___block_invoke;
   v7[3] = &unk_278CC76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_barrier_sync(_packageContentQueue, v7);
 }
 
 void __42__AEMutableAssetPackage_removeURLForType___block_invoke(uint64_t a1)
@@ -180,21 +180,21 @@ void __42__AEMutableAssetPackage_removeURLForType___block_invoke(uint64_t a1)
   [v3 removeObject:*(a1 + 40)];
 }
 
-- (void)storeURL:(id)a3 forType:(id)a4
+- (void)storeURL:(id)l forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEAssetPackage *)self _packageContentQueue];
+  lCopy = l;
+  typeCopy = type;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__AEMutableAssetPackage_storeURL_forType___block_invoke;
   block[3] = &unk_278CC7658;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_sync(v8, block);
+  v12 = lCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = lCopy;
+  dispatch_barrier_sync(_packageContentQueue, block);
 }
 
 void __42__AEMutableAssetPackage_storeURL_forType___block_invoke(uint64_t a1)
@@ -206,25 +206,25 @@ void __42__AEMutableAssetPackage_storeURL_forType___block_invoke(uint64_t a1)
   [v3 removeObject:*(a1 + 48)];
 }
 
-- (AEMutableAssetPackage)initWithAssetIdentifier:(id)a3
+- (AEMutableAssetPackage)initWithAssetIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = AEMutableAssetPackage;
-  return [(AEAssetPackage *)&v4 initWithAssetIdentifier:a3 durableURLs:0 sidecar:0];
+  return [(AEAssetPackage *)&v4 initWithAssetIdentifier:identifier durableURLs:0 sidecar:0];
 }
 
-- (void)expressURLForType:(id)a3
+- (void)expressURLForType:(id)type
 {
-  v4 = a3;
-  v5 = [(AEAssetPackage *)self _packageContentQueue];
+  typeCopy = type;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__AEMutableAssetPackage_AEURLSuppression__expressURLForType___block_invoke;
   v7[3] = &unk_278CC76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_barrier_sync(_packageContentQueue, v7);
 }
 
 void __61__AEMutableAssetPackage_AEURLSuppression__expressURLForType___block_invoke(uint64_t a1)
@@ -239,18 +239,18 @@ void __61__AEMutableAssetPackage_AEURLSuppression__expressURLForType___block_inv
   }
 }
 
-- (void)suppressURLForType:(id)a3
+- (void)suppressURLForType:(id)type
 {
-  v4 = a3;
-  v5 = [(AEAssetPackage *)self _packageContentQueue];
+  typeCopy = type;
+  _packageContentQueue = [(AEAssetPackage *)self _packageContentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_invoke;
   v7[3] = &unk_278CC76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_barrier_sync(_packageContentQueue, v7);
 }
 
 void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_invoke(uint64_t a1)
@@ -265,25 +265,25 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
   }
 }
 
-- (void)storeMetadataFromPHAsset:(id)a3 imageURL:(id)a4 adjustmentURL:(id)a5
+- (void)storeMetadataFromPHAsset:(id)asset imageURL:(id)l adjustmentURL:(id)rL
 {
-  v27 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AEMutableAssetPackage *)self _copyMetadataFromDisplayAsset:v27];
-  [v27 isMediaSubtype:1024];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v27, "mediaSubtypes")}];
+  assetCopy = asset;
+  lCopy = l;
+  rLCopy = rL;
+  v10 = [(AEMutableAssetPackage *)self _copyMetadataFromDisplayAsset:assetCopy];
+  [assetCopy isMediaSubtype:1024];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "mediaSubtypes")}];
   [v10 setValue:v11 forKey:@"AEAssetPackageDisplayMediaSubtypes"];
 
-  if (v8)
+  if (lCopy)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v8 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
-      v15 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v8 options:1 error:0];
+      v15 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:lCopy options:1 error:0];
       if ([(__CFData *)v15 length])
       {
         v16 = CGImageSourceCreateWithData(v15, 0);
@@ -298,18 +298,18 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
     }
   }
 
-  v19 = [v27 isHighFramerateVideo];
-  if (v9 && v19)
+  isHighFramerateVideo = [assetCopy isHighFramerateVideo];
+  if (rLCopy && isHighFramerateVideo)
   {
-    v20 = [objc_alloc(MEMORY[0x277D3B518]) initWithURL:v9];
+    v20 = [objc_alloc(MEMORY[0x277D3B518]) initWithURL:rLCopy];
     if ([v20 isRecognizedFormat])
     {
-      v21 = [v20 propertyListDictionary];
-      [v10 setValue:v21 forKey:@"com.apple.video.slomo"];
+      propertyListDictionary = [v20 propertyListDictionary];
+      [v10 setValue:propertyListDictionary forKey:@"com.apple.video.slomo"];
     }
   }
 
-  if ([v27 playbackStyle] == 5 && objc_msgSend(v27, "mediaType") == 1)
+  if ([assetCopy playbackStyle] == 5 && objc_msgSend(assetCopy, "mediaType") == 1)
   {
     [v10 setValue:&unk_2852F95A8 forKey:@"AEAssetPackageDisplayMediaType"];
     v22 = [v10 objectForKey:@"AEAssetPackageDisplayMediaSubtypes"];
@@ -317,7 +317,7 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
     if (v22)
     {
       v23 = [v10 objectForKey:@"AEAssetPackageDisplayMediaSubtypes"];
-      v24 = [v23 unsignedIntegerValue];
+      unsignedIntegerValue = [v23 unsignedIntegerValue];
 
       v25 = MEMORY[0x277CCABB0];
     }
@@ -325,31 +325,31 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
     else
     {
       v25 = MEMORY[0x277CCABB0];
-      v24 = [v27 mediaSubtypes];
+      unsignedIntegerValue = [assetCopy mediaSubtypes];
     }
 
-    v26 = [v25 numberWithUnsignedInteger:v24 & 0xFFFFFFFFFFFFFFF7];
-    [v10 setValue:v26 forKey:@"AEAssetPackageDisplayMediaSubtypes"];
+    0xFFFFFFFFFFFFFFF7 = [v25 numberWithUnsignedInteger:unsignedIntegerValue & 0xFFFFFFFFFFFFFFF7];
+    [v10 setValue:0xFFFFFFFFFFFFFFF7 forKey:@"AEAssetPackageDisplayMediaSubtypes"];
   }
 
   [(AEMutableAssetPackage *)self addSidecarEntriesFromDictionary:v10];
 }
 
-- (void)storeMetadataFromReviewAsset:(id)a3
+- (void)storeMetadataFromReviewAsset:(id)asset
 {
-  v10 = a3;
-  v4 = [(AEMutableAssetPackage *)self _copyMetadataFromDisplayAsset:v10];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "mediaSubtypes")}];
+  assetCopy = asset;
+  v4 = [(AEMutableAssetPackage *)self _copyMetadataFromDisplayAsset:assetCopy];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "mediaSubtypes")}];
   [v4 setValue:v5 forKey:@"AEAssetPackageDisplayMediaSubtypes"];
 
-  v6 = [v10 providedImageMetadata];
-  [v4 setValue:v6 forKey:@"AEAssetPackageDisplayImageMetadata"];
+  providedImageMetadata = [assetCopy providedImageMetadata];
+  [v4 setValue:providedImageMetadata forKey:@"AEAssetPackageDisplayImageMetadata"];
 
-  v7 = [v10 assetAdjustments];
-  v8 = [v7 propertyListDictionary];
-  if (v8)
+  assetAdjustments = [assetCopy assetAdjustments];
+  propertyListDictionary = [assetAdjustments propertyListDictionary];
+  if (propertyListDictionary)
   {
-    if (([v10 mediaSubtypes] & 0x20000) != 0)
+    if (([assetCopy mediaSubtypes] & 0x20000) != 0)
     {
       v9 = @"com.apple.video.slomo";
     }
@@ -359,52 +359,52 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
       v9 = @"com.apple.assetexplorer.editedadjustments";
     }
 
-    [v4 setValue:v8 forKey:v9];
+    [v4 setValue:propertyListDictionary forKey:v9];
   }
 
   [(AEMutableAssetPackage *)self addSidecarEntriesFromDictionary:v4];
 }
 
-- (id)_copyMetadataFromDisplayAsset:(id)a3
+- (id)_copyMetadataFromDisplayAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "mediaType")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "mediaType")}];
   [v4 setValue:v5 forKey:@"AEAssetPackageDisplayMediaType"];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "pixelWidth")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "pixelWidth")}];
   [v4 setValue:v6 forKey:@"AEAssetPackageDisplayPixelWidth"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "pixelHeight")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "pixelHeight")}];
   [v4 setValue:v7 forKey:@"AEAssetPackageDisplayPixelHeight"];
 
   v8 = MEMORY[0x277CCABB0];
-  [v3 duration];
+  [assetCopy duration];
   v9 = [v8 numberWithDouble:?];
   [v4 setValue:v9 forKey:@"AEAssetPackageDisplayDuration"];
 
-  v10 = [v3 creationDate];
-  [v4 setValue:v10 forKey:@"AEAssetPackageDisplayCreationDate"];
+  creationDate = [assetCopy creationDate];
+  [v4 setValue:creationDate forKey:@"AEAssetPackageDisplayCreationDate"];
 
-  v11 = [v3 modificationDate];
-  [v4 setValue:v11 forKey:@"AEAssetPackageDisplayModificationDate"];
+  modificationDate = [assetCopy modificationDate];
+  [v4 setValue:modificationDate forKey:@"AEAssetPackageDisplayModificationDate"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isPhotoIrisPlaceholder")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(assetCopy, "isPhotoIrisPlaceholder")}];
   [v4 setValue:v12 forKey:@"AEAssetPackageDisplayIsLivePhotoPlaceholder"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "hasPhotoColorAdjustments")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(assetCopy, "hasPhotoColorAdjustments")}];
   [v4 setValue:v13 forKey:@"AEAssetPackageDisplayHasPhotoColorAdjustments"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "playbackStyle")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(assetCopy, "playbackStyle")}];
   [v4 setValue:v14 forKey:@"AEAssetPackageDisplayPlaybackStyle"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v3, "playbackVariation")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(assetCopy, "playbackVariation")}];
   [v4 setValue:v15 forKey:@"AEAssetPackageDisplayPlaybackVariation"];
 
   memset(&v24, 0, sizeof(v24));
-  if (v3)
+  if (assetCopy)
   {
-    [v3 photoIrisStillDisplayTime];
+    [assetCopy photoIrisStillDisplayTime];
     v16 = MEMORY[0x277CBECE8];
     if (v24.flags)
     {
@@ -415,7 +415,7 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
     }
 
     memset(&time, 0, sizeof(time));
-    [v3 photoIrisVideoDuration];
+    [assetCopy photoIrisVideoDuration];
     if (time.flags)
     {
       v19 = *v16;
@@ -430,26 +430,26 @@ void __62__AEMutableAssetPackage_AEURLSuppression__suppressURLForType___block_in
 
 - (void)endSuppressingLivePhoto
 {
-  v3 = [*MEMORY[0x277CE1E00] identifier];
-  [(AEMutableAssetPackage *)self expressURLForType:v3];
+  identifier = [*MEMORY[0x277CE1E00] identifier];
+  [(AEMutableAssetPackage *)self expressURLForType:identifier];
 }
 
 - (void)beginSupressingLivePhoto
 {
   v3 = *MEMORY[0x277CE1E00];
-  v4 = [*MEMORY[0x277CE1E00] identifier];
-  v6 = [(AEAssetPackage *)self currentURLForType:v4];
+  identifier = [*MEMORY[0x277CE1E00] identifier];
+  v6 = [(AEAssetPackage *)self currentURLForType:identifier];
 
   if (v6)
   {
-    v5 = [v3 identifier];
-    [(AEMutableAssetPackage *)self suppressURLForType:v5];
+    identifier2 = [v3 identifier];
+    [(AEMutableAssetPackage *)self suppressURLForType:identifier2];
   }
 }
 
-- (void)setMediaOrigin:(int64_t)a3
+- (void)setMediaOrigin:(int64_t)origin
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:origin];
   [(AEMutableAssetPackage *)self setSidecarObject:v4 forKey:@"AEAssetPackageMediaOrigin"];
 }
 

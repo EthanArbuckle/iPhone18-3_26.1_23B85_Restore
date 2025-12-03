@@ -1,13 +1,13 @@
 @interface STLaunchDates
 + (id)sharedDates;
 - (STLaunchDates)init;
-- (id)launchDateForApp:(id)a3;
-- (void)_writeDatesPref:(id)a3;
+- (id)launchDateForApp:(id)app;
+- (void)_writeDatesPref:(id)pref;
 - (void)addBiomeDates;
 - (void)addSpotlightDates;
 - (void)load;
 - (void)readDatesPref;
-- (void)updateDates:(id)a3;
+- (void)updateDates:(id)dates;
 - (void)writeDatesPref;
 @end
 
@@ -43,31 +43,31 @@ uint64_t __28__STLaunchDates_sharedDates__block_invoke()
   v2 = [(STLaunchDates *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     launchDatesByApp = v2->_launchDatesByApp;
-    v2->_launchDatesByApp = v3;
+    v2->_launchDatesByApp = dictionary;
   }
 
   return v2;
 }
 
-- (id)launchDateForApp:(id)a3
+- (id)launchDateForApp:(id)app
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_launchDatesByApp objectForKey:v4];
-  objc_sync_exit(v5);
+  appCopy = app;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_launchDatesByApp objectForKey:appCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_writeDatesPref:(id)a3
+- (void)_writeDatesPref:(id)pref
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_launchDatesByApp copy];
+  prefCopy = pref;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_launchDatesByApp copy];
   v7 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -77,7 +77,7 @@ uint64_t __28__STLaunchDates_sharedDates__block_invoke()
   v8 = v6;
   dispatch_async(v7, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __33__STLaunchDates__writeDatesPref___block_invoke(uint64_t a1)
@@ -102,12 +102,12 @@ uint64_t __33__STLaunchDates__writeDatesPref___block_invoke(uint64_t a1)
   [(STLaunchDates *)self updateDates:v3];
 }
 
-- (void)updateDates:(id)a3
+- (void)updateDates:(id)dates
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  datesCopy = dates;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -116,12 +116,12 @@ uint64_t __33__STLaunchDates__writeDatesPref___block_invoke(uint64_t a1)
   v21[1] = 3221225472;
   v21[2] = __29__STLaunchDates_updateDates___block_invoke;
   v21[3] = &unk_279D1D570;
-  v21[4] = v5;
+  v21[4] = selfCopy;
   v21[5] = &v22;
-  [v4 enumerateKeysAndObjectsUsingBlock:v21];
+  [datesCopy enumerateKeysAndObjectsUsingBlock:v21];
   if (*(v23 + 24))
   {
-    [(NSMutableDictionary *)v5->_launchDatesByApp allValues];
+    [(NSMutableDictionary *)selfCopy->_launchDatesByApp allValues];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -164,10 +164,10 @@ uint64_t __33__STLaunchDates__writeDatesPref___block_invoke(uint64_t a1)
         v13 = v8;
         v14 = v13;
 LABEL_16:
-        latestDate = v5->_latestDate;
-        v5->_latestDate = v13;
+        latestDate = selfCopy->_latestDate;
+        selfCopy->_latestDate = v13;
 
-        [(STLaunchDates *)v5 writeDatesPref];
+        [(STLaunchDates *)selfCopy writeDatesPref];
         goto LABEL_17;
       }
     }
@@ -183,7 +183,7 @@ LABEL_16:
 
 LABEL_17:
   _Block_object_dispose(&v22, 8);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -204,7 +204,7 @@ void __29__STLaunchDates_updateDates___block_invoke(uint64_t a1, void *a2, void 
 - (void)addSpotlightDates
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -259,8 +259,8 @@ void __29__STLaunchDates_updateDates___block_invoke(uint64_t a1, void *a2, void 
   v18[1] = 3221225472;
   v18[2] = __34__STLaunchDates_addSpotlightDates__block_invoke;
   v18[3] = &unk_279D1D598;
-  v19 = v3;
-  v13 = v3;
+  v19 = dictionary;
+  v13 = dictionary;
   [v11 setFoundItemsHandler:v18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -329,9 +329,9 @@ void __34__STLaunchDates_addSpotlightDates__block_invoke(uint64_t a1, void *a2)
 
 - (void)addBiomeDates
 {
-  v3 = [MEMORY[0x277CF1B58] appLaunch];
+  appLaunch = [MEMORY[0x277CF1B58] appLaunch];
   [(NSDate *)self->_latestDate timeIntervalSinceReferenceDate];
-  v4 = [v3 publisherFromStartTime:?];
+  v4 = [appLaunch publisherFromStartTime:?];
   v5 = dispatch_semaphore_create(0);
   v6 = [v4 filterWithIsIncluded:&__block_literal_global_23];
   v7 = objc_opt_new();

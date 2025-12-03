@@ -1,5 +1,5 @@
 @interface VNCanceller
-- (BOOL)tryToPerformBlock:(id)a3 usingSignallingBlock:(id)a4;
+- (BOOL)tryToPerformBlock:(id)block usingSignallingBlock:(id)signallingBlock;
 - (BOOL)wasSignalled;
 - (VNCanceller)init;
 - (void)_releaseSignallingBlock;
@@ -47,10 +47,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)tryToPerformBlock:(id)a3 usingSignallingBlock:(id)a4
+- (BOOL)tryToPerformBlock:(id)block usingSignallingBlock:(id)signallingBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  signallingBlockCopy = signallingBlock;
   os_unfair_lock_lock(&self->_lock);
   signalled = self->_signalled;
   if (signalled)
@@ -60,14 +60,14 @@
 
   else
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(signallingBlockCopy);
     signallingBlock = self->_signallingBlock;
     self->_signallingBlock = v9;
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     [(VNCanceller *)self _releaseSignallingBlock];

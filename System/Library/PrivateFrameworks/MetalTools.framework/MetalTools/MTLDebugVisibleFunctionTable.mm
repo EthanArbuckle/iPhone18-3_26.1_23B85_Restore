@@ -1,12 +1,12 @@
 @interface MTLDebugVisibleFunctionTable
-- (MTLDebugVisibleFunctionTable)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 pipelineState:(id)a6 stage:(unint64_t)a7;
-- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 stage:(unint64_t)a6;
-- (id)formattedDescription:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (MTLDebugVisibleFunctionTable)initWithBaseObject:(id)object parent:(id)parent;
+- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor pipelineState:(id)state stage:(unint64_t)stage;
+- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)formattedDescription:(unint64_t)description;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (void)dealloc;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
 @end
 
 @implementation MTLDebugVisibleFunctionTable
@@ -18,46 +18,46 @@
   [(MTLToolsResource *)&v3 dealloc];
 }
 
-- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 stage:(unint64_t)a6
+- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor stage:(unint64_t)stage
 {
   v11.receiver = self;
   v11.super_class = MTLDebugVisibleFunctionTable;
-  v8 = [(MTLToolsResource *)&v11 initWithBaseObject:a3 parent:a4];
+  v8 = [(MTLToolsResource *)&v11 initWithBaseObject:table parent:parent];
   v9 = v8;
   if (v8)
   {
     atomic_store(0, &v8->_purgeableStateToken);
     v8->_purgeableStateHasBeenSet = 0;
-    v8->_functionCount = [a5 functionCount];
-    v9->_stage = a6;
+    v8->_functionCount = [descriptor functionCount];
+    v9->_stage = stage;
   }
 
   return v9;
 }
 
-- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)a3 parent:(id)a4 descriptor:(id)a5 pipelineState:(id)a6 stage:(unint64_t)a7
+- (MTLDebugVisibleFunctionTable)initWithVisibleFunctionTable:(id)table parent:(id)parent descriptor:(id)descriptor pipelineState:(id)state stage:(unint64_t)stage
 {
   v13.receiver = self;
   v13.super_class = MTLDebugVisibleFunctionTable;
-  v10 = [(MTLToolsResource *)&v13 initWithBaseObject:a3 parent:a4];
+  v10 = [(MTLToolsResource *)&v13 initWithBaseObject:table parent:parent];
   v11 = v10;
   if (v10)
   {
     atomic_store(0, &v10->_purgeableStateToken);
     v10->_purgeableStateHasBeenSet = 0;
-    v10->_functionCount = [a5 functionCount];
-    v11->_pipelineState = a6;
-    v11->_stage = a7;
+    v10->_functionCount = [descriptor functionCount];
+    v11->_pipelineState = state;
+    v11->_stage = stage;
   }
 
   return v11;
 }
 
-- (MTLDebugVisibleFunctionTable)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLDebugVisibleFunctionTable)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLDebugVisibleFunctionTable;
-  result = [(MTLToolsResource *)&v5 initWithBaseObject:a3 parent:a4];
+  result = [(MTLToolsResource *)&v5 initWithBaseObject:object parent:parent];
   if (result)
   {
     atomic_store(0, &result->_purgeableStateToken);
@@ -68,16 +68,16 @@
   return result;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   if ([-[MTLToolsObject baseObject](self "baseObject")])
   {
     [MTLDebugVisibleFunctionTable setPurgeableState:];
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       if (atomic_load(&self->_purgeableStateToken))
       {
@@ -88,23 +88,23 @@
     self->_purgeableStateHasBeenSet = 1;
   }
 
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 setPurgeableState:a3];
+  return [baseObject setPurgeableState:state];
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  if (self->_functionCount <= a4)
+  if (self->_functionCount <= index)
   {
-    v15 = a4;
+    indexCopy = index;
     functionCount = self->_functionCount;
     MTLReportFailure();
   }
 
   if ([-[MTLDevice baseObject](-[MTLToolsObject device](self device])
   {
-    if (!a3)
+    if (!function)
     {
       goto LABEL_18;
     }
@@ -113,7 +113,7 @@
   else
   {
     [MTLDebugVisibleFunctionTable setFunction:atIndex:];
-    if (!a3)
+    if (!function)
     {
       goto LABEL_18;
     }
@@ -122,9 +122,9 @@
   if (self->_pipelineState)
   {
     stage = self->_stage;
-    if (stage && stage != [a3 stage])
+    if (stage && stage != [function stage])
     {
-      [MTLDebugVisibleFunctionTable setFunction:a3 atIndex:&self->_stage];
+      [MTLDebugVisibleFunctionTable setFunction:function atIndex:&self->_stage];
     }
 
     pipelineState = self->_pipelineState;
@@ -154,29 +154,29 @@
       v12 = self->_pipelineState;
     }
 
-    [(MTLToolsObject *)v12 validateHandleForSetFunction:a3];
+    [(MTLToolsObject *)v12 validateHandleForSetFunction:function];
   }
 
 LABEL_16:
-  if ([a3 functionType] != 5)
+  if ([function functionType] != 5)
   {
-    [MTLDebugVisibleFunctionTable setFunction:a3 atIndex:?];
+    [MTLDebugVisibleFunctionTable setFunction:function atIndex:?];
   }
 
 LABEL_18:
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [function baseObject];
 
-  [v13 setFunction:v14 atIndex:a4];
+  [baseObject setFunction:baseObject2 atIndex:index];
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_functionCount)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_functionCount)
   {
-    v9 = a4.location + a4.length;
+    v9 = range.location + range.length;
     functionCount = self->_functionCount;
     MTLReportFailure();
   }
@@ -200,7 +200,7 @@ LABEL_18:
 
   do
   {
-    v8 = *a3++;
+    v8 = *functions++;
     [(MTLDebugVisibleFunctionTable *)self setFunction:v8 atIndex:location++];
     --length;
   }
@@ -208,10 +208,10 @@ LABEL_18:
   while (length);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x277CCACA8];
   v9.receiver = self;
   v9.super_class = MTLDebugVisibleFunctionTable;

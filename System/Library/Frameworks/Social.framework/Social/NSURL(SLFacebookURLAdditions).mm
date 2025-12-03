@@ -42,7 +42,7 @@
 + (id)URLForFacebookRESTMethod:()SLFacebookURLAdditions
 {
   v4 = a3;
-  v5 = [a1 _isBetaSwitchEnabledForKey:@"SLFacebookRESTAPIShouldUseBeta"];
+  v5 = [self _isBetaSwitchEnabledForKey:@"SLFacebookRESTAPIShouldUseBeta"];
   v6 = @"api.facebook.com";
   if (v5)
   {
@@ -63,7 +63,7 @@
   v7 = a4;
   if (!v6)
   {
-    if ([a1 _isBetaSwitchEnabledForKey:@"SLFacebookGraphAPIShouldUseBeta"])
+    if ([self _isBetaSwitchEnabledForKey:@"SLFacebookGraphAPIShouldUseBeta"])
     {
       v6 = @"graph.beta.facebook.com";
     }
@@ -84,7 +84,7 @@
 + (id)URLForFacebookPageAtPath:()SLFacebookURLAdditions
 {
   v4 = a3;
-  v5 = [a1 _isBetaSwitchEnabledForKey:@"SLFacebookRESTAPIShouldUseBeta"];
+  v5 = [self _isBetaSwitchEnabledForKey:@"SLFacebookRESTAPIShouldUseBeta"];
   v6 = @"m.facebook.com";
   if (v5)
   {
@@ -101,36 +101,36 @@
 
 - (uint64_t)isMusicStoreURL
 {
-  v2 = [a1 host];
+  host = [self host];
   v3 = 1;
-  if ([v2 compare:@"itun.es" options:1])
+  if ([host compare:@"itun.es" options:1])
   {
-    if ([v2 compare:@"itunes.apple.com" options:1])
+    if ([host compare:@"itunes.apple.com" options:1])
     {
       v3 = 0;
       goto LABEL_13;
     }
 
-    v4 = [a1 path];
-    v5 = [v4 rangeOfString:@"/"];
+    path = [self path];
+    v5 = [path rangeOfString:@"/"];
     if (!v6)
     {
       goto LABEL_10;
     }
 
-    v7 = [v4 substringFromIndex:v5 + v6];
+    v7 = [path substringFromIndex:v5 + v6];
 
     v8 = [v7 rangeOfString:@"/"];
     if (!v9)
     {
       v3 = 0;
-      v4 = v7;
+      path = v7;
       goto LABEL_12;
     }
 
-    v4 = [v7 substringFromIndex:v8 + v9];
+    path = [v7 substringFromIndex:v8 + v9];
 
-    if (([v4 hasPrefix:@"album/"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"movie/") & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"tv-season"))
+    if (([path hasPrefix:@"album/"] & 1) != 0 || (objc_msgSend(path, "hasPrefix:", @"movie/") & 1) != 0 || objc_msgSend(path, "hasPrefix:", @"tv-season"))
     {
       v3 = 1;
     }
@@ -151,35 +151,35 @@ LABEL_13:
 
 - (uint64_t)isAppStoreURL
 {
-  v2 = [a1 host];
+  host = [self host];
   v3 = 1;
-  if ([v2 compare:@"appsto.re" options:1])
+  if ([host compare:@"appsto.re" options:1])
   {
-    if ([v2 compare:@"itunes.apple.com" options:1])
+    if ([host compare:@"itunes.apple.com" options:1])
     {
       v3 = 0;
     }
 
     else
     {
-      v4 = [a1 path];
-      v5 = [v4 rangeOfString:@"/"];
+      path = [self path];
+      v5 = [path rangeOfString:@"/"];
       if (v6)
       {
-        v7 = [v4 substringFromIndex:v5 + v6];
+        v7 = [path substringFromIndex:v5 + v6];
 
         v8 = [v7 rangeOfString:@"/"];
         if (v9)
         {
-          v4 = [v7 substringFromIndex:v8 + v9];
+          path = [v7 substringFromIndex:v8 + v9];
 
-          v3 = [v4 hasPrefix:@"app/"];
+          v3 = [path hasPrefix:@"app/"];
         }
 
         else
         {
           v3 = 0;
-          v4 = v7;
+          path = v7;
         }
       }
 
@@ -195,22 +195,22 @@ LABEL_13:
 
 - (BOOL)isAssetURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 compare:@"assets-library" options:1] == 0;
+  scheme = [self scheme];
+  v2 = [scheme compare:@"assets-library" options:1] == 0;
 
   return v2;
 }
 
 - (uint64_t)loadingInUIWebViewWillLaunchAnotherApp
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v4 = [v3 URLOverrideForURL:a1];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v4 = [defaultWorkspace URLOverrideForURL:self];
 
-  v5 = [v4 scheme];
-  v6 = v5;
-  if (v5)
+  scheme = [v4 scheme];
+  v6 = scheme;
+  if (scheme)
   {
-    if (![v5 compare:@"http" options:1] || (v7 = 1, !objc_msgSend(v6, "compare:options:", @"https", 1)))
+    if (![scheme compare:@"http" options:1] || (v7 = 1, !objc_msgSend(v6, "compare:options:", @"https", 1)))
     {
       v7 = 0;
     }

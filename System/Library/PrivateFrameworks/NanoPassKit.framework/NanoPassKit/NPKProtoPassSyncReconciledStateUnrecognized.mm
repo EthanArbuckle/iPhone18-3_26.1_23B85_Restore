@@ -1,12 +1,12 @@
 @interface NPKProtoPassSyncReconciledStateUnrecognized
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassSyncReconciledStateUnrecognized
@@ -17,27 +17,27 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassSyncReconciledStateUnrecognized;
   v4 = [(NPKProtoPassSyncReconciledStateUnrecognized *)&v8 description];
-  v5 = [(NPKProtoPassSyncReconciledStateUnrecognized *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassSyncReconciledStateUnrecognized *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   unrecognizedReconciledStateHash = self->_unrecognizedReconciledStateHash;
   if (unrecognizedReconciledStateHash)
   {
-    [v3 setObject:unrecognizedReconciledStateHash forKey:@"unrecognizedReconciledStateHash"];
+    [dictionary setObject:unrecognizedReconciledStateHash forKey:@"unrecognizedReconciledStateHash"];
   }
 
   libraryPassSyncState = self->_libraryPassSyncState;
   if (libraryPassSyncState)
   {
-    v7 = [(NPKProtoPassSyncState *)libraryPassSyncState dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"libraryPassSyncState"];
+    dictionaryRepresentation = [(NPKProtoPassSyncState *)libraryPassSyncState dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"libraryPassSyncState"];
   }
 
   if (*&self->_has)
@@ -49,61 +49,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_unrecognizedReconciledStateHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_libraryPassSyncState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     unrecognizedReconciledStateVersion = self->_unrecognizedReconciledStateVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_unrecognizedReconciledStateHash)
   {
-    [v4 setUnrecognizedReconciledStateHash:?];
-    v4 = v5;
+    [toCopy setUnrecognizedReconciledStateHash:?];
+    toCopy = v5;
   }
 
   if (self->_libraryPassSyncState)
   {
     [v5 setLibraryPassSyncState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_unrecognizedReconciledStateVersion;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 6) = self->_unrecognizedReconciledStateVersion;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_unrecognizedReconciledStateHash copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_unrecognizedReconciledStateHash copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NPKProtoPassSyncState *)self->_libraryPassSyncState copyWithZone:a3];
+  v8 = [(NPKProtoPassSyncState *)self->_libraryPassSyncState copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -116,16 +116,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   unrecognizedReconciledStateHash = self->_unrecognizedReconciledStateHash;
-  if (unrecognizedReconciledStateHash | *(v4 + 2))
+  if (unrecognizedReconciledStateHash | *(equalCopy + 2))
   {
     if (![(NSData *)unrecognizedReconciledStateHash isEqual:?])
     {
@@ -134,7 +134,7 @@
   }
 
   libraryPassSyncState = self->_libraryPassSyncState;
-  if (libraryPassSyncState | *(v4 + 1))
+  if (libraryPassSyncState | *(equalCopy + 1))
   {
     if (![(NPKProtoPassSyncState *)libraryPassSyncState isEqual:?])
     {
@@ -142,10 +142,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_unrecognizedReconciledStateVersion == *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_unrecognizedReconciledStateVersion == *(equalCopy + 6))
     {
       v7 = 1;
       goto LABEL_11;
@@ -177,18 +177,18 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoPassSyncReconciledStateUnrecognized *)self setUnrecognizedReconciledStateHash:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   libraryPassSyncState = self->_libraryPassSyncState;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (libraryPassSyncState)
   {
     if (!v6)
@@ -209,11 +209,11 @@ LABEL_11:
     [(NPKProtoPassSyncReconciledStateUnrecognized *)self setLibraryPassSyncState:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
-  if (v4[7])
+  if (fromCopy[7])
   {
-    self->_unrecognizedReconciledStateVersion = v4[6];
+    self->_unrecognizedReconciledStateVersion = fromCopy[6];
     *&self->_has |= 1u;
   }
 }

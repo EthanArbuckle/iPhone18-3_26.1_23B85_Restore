@@ -1,24 +1,24 @@
 @interface SHLLibraryLabel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualLabel:(id)a3;
-- (SHLLibraryLabel)initWithCoder:(id)a3;
-- (SHLLibraryLabel)initWithName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualLabel:(id)label;
+- (SHLLibraryLabel)initWithCoder:(id)coder;
+- (SHLLibraryLabel)initWithName:(id)name;
 - (int64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation SHLLibraryLabel
 
-- (SHLLibraryLabel)initWithName:(id)a3
+- (SHLLibraryLabel)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SHLLibraryLabel;
   v6 = [(SHLLibraryLabel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -26,25 +26,25 @@
 
 - (int64_t)type
 {
-  v2 = [(SHLLibraryLabel *)self name];
-  v3 = [v2 hasPrefix:@"platform"];
+  name = [(SHLLibraryLabel *)self name];
+  v3 = [name hasPrefix:@"platform"];
 
   return v3 ^ 1;
 }
 
-- (SHLLibraryLabel)initWithCoder:(id)a3
+- (SHLLibraryLabel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryLabelName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHLLibraryLabelName"];
 
   v6 = [(SHLLibraryLabel *)self initWithName:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SHLLibraryLabel *)self isEqualLabel:v4];
+      v5 = [(SHLLibraryLabel *)self isEqualLabel:equalCopy];
     }
 
     else
@@ -66,23 +66,23 @@
   return v5;
 }
 
-- (BOOL)isEqualLabel:(id)a3
+- (BOOL)isEqualLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SHLLibraryLabel *)self name];
-  v6 = [v5 lowercaseString];
-  v7 = [v4 name];
+  labelCopy = label;
+  name = [(SHLLibraryLabel *)self name];
+  lowercaseString = [name lowercaseString];
+  name2 = [labelCopy name];
 
-  v8 = [v7 lowercaseString];
-  v9 = [v6 isEqualToString:v8];
+  lowercaseString2 = [name2 lowercaseString];
+  v9 = [lowercaseString isEqualToString:lowercaseString2];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SHLLibraryLabel *)self name];
-  v3 = [v2 hash];
+  name = [(SHLLibraryLabel *)self name];
+  v3 = [name hash];
 
   return v3;
 }

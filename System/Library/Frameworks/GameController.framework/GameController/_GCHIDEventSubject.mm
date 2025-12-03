@@ -2,9 +2,9 @@
 - (BOOL)isPaused;
 - (NSSet)pausedForReasons;
 - (_GCHIDEventSubject)init;
-- (id)observeHIDEvents:(id)a3 forService:(id)a4;
-- (void)publishHIDEvent:(__IOHIDEvent *)a3;
-- (void)setPausedForReasons:(id)a3;
+- (id)observeHIDEvents:(id)events forService:(id)service;
+- (void)publishHIDEvent:(__IOHIDEvent *)event;
+- (void)setPausedForReasons:(id)reasons;
 @end
 
 @implementation _GCHIDEventSubject
@@ -49,24 +49,24 @@
   return v3;
 }
 
-- (void)setPausedForReasons:(id)a3
+- (void)setPausedForReasons:(id)reasons
 {
-  v4 = a3;
-  if (!v4)
+  reasonsCopy = reasons;
+  if (!reasonsCopy)
   {
-    v4 = objc_opt_new();
+    reasonsCopy = objc_opt_new();
   }
 
   os_unfair_lock_lock(&self->_lock);
   pausedForReasons = self->_pausedForReasons;
-  self->_pausedForReasons = v4;
-  v6 = v4;
+  self->_pausedForReasons = reasonsCopy;
+  v6 = reasonsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   [_GCHIDEventSubjectAuditor noteEventPublicationPausedForReasonsChanged:?];
 }
 
-- (void)publishHIDEvent:(__IOHIDEvent *)a3
+- (void)publishHIDEvent:(__IOHIDEvent *)event
 {
   v31 = *MEMORY[0x1E69E9840];
   [_GCHIDEventSubjectAuditor noteHIDEventReceived:?];
@@ -83,7 +83,7 @@
       v20[1] = 3221225472;
       v20[2] = __38___GCHIDEventSubject_publishHIDEvent___block_invoke;
       v20[3] = &__block_descriptor_40_e34_v32__0__NSNumber_8__NSArray_16_B24l;
-      v20[4] = a3;
+      v20[4] = event;
       [(NSDictionary *)v5 enumerateKeysAndObjectsUsingBlock:v20];
     }
 
@@ -157,16 +157,16 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)observeHIDEvents:(id)a3 forService:(id)a4
+- (id)observeHIDEvents:(id)events forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  serviceCopy = service;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy_;
   v24[4] = __Block_byref_object_dispose_;
-  v25 = [v6 copy];
+  v25 = [eventsCopy copy];
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSDictionary *)self->_handlersByService mutableCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -178,13 +178,13 @@
   v23 = v24;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v7)
+  if (serviceCopy)
   {
-    v12 = [v7 registryID];
-    v13 = v12;
-    if (v12)
+    registryID = [serviceCopy registryID];
+    v13 = registryID;
+    if (registryID)
     {
-      v14 = v12;
+      v14 = registryID;
     }
 
     else
@@ -192,12 +192,12 @@
       v14 = &unk_1F4E8E018;
     }
 
-    (v11)[2](v11, v14, v6);
+    (v11)[2](v11, v14, eventsCopy);
   }
 
   else
   {
-    (*(v10 + 2))(v10, &unk_1F4E8E018, v6);
+    (*(v10 + 2))(v10, &unk_1F4E8E018, eventsCopy);
   }
 
   v15 = [v9 copy];
@@ -213,7 +213,7 @@
   v20[4] = self;
   v20[5] = v24;
   v18 = [(_GCObservation *)v17 initWithCleanupHandler:v20];
-  [(_GCHIDEventSubjectAuditor *)self->_auditor noteObserverAddedForService:v7];
+  [(_GCHIDEventSubjectAuditor *)self->_auditor noteObserverAddedForService:serviceCopy];
   _Block_object_dispose(v24, 8);
 
   return v18;

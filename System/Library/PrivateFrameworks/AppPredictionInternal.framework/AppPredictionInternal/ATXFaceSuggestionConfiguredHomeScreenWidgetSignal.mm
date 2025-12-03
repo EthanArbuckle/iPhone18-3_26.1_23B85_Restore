@@ -1,6 +1,6 @@
 @interface ATXFaceSuggestionConfiguredHomeScreenWidgetSignal
 - (ATXFaceSuggestionConfiguredHomeScreenWidgetSignal)init;
-- (double)valueForDescriptor:(id)a3;
+- (double)valueForDescriptor:(id)descriptor;
 - (void)_prepare;
 @end
 
@@ -26,18 +26,18 @@
   v3 = 136315394;
   v4 = "[ATXFaceSuggestionConfiguredHomeScreenWidgetSignal _prepare]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "%s: error loading home screen page configurations: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 containerBundleIdentifier];
-  if (v4)
+  containerBundleIdentifier = [descriptor containerBundleIdentifier];
+  if (containerBundleIdentifier)
   {
-    v5 = [(NSMutableSet *)self->_configuredWidgetContainerBundleIdentifiers containsObject:v4];
+    v5 = [(NSMutableSet *)self->_configuredWidgetContainerBundleIdentifiers containsObject:containerBundleIdentifier];
     v6 = __atxlog_handle_lock_screen();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5)
@@ -48,7 +48,7 @@
         v14 = 136315394;
         v15 = "[ATXFaceSuggestionConfiguredHomeScreenWidgetSignal valueForDescriptor:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = containerBundleIdentifier;
         v9 = "%s: containerBundleId contains widgets on home screen: %@";
 LABEL_9:
         v10 = v6;
@@ -65,7 +65,7 @@ LABEL_9:
         v14 = 136315394;
         v15 = "[ATXFaceSuggestionConfiguredHomeScreenWidgetSignal valueForDescriptor:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = containerBundleIdentifier;
         v9 = "%s: containerBundleId does not contain widgets on home screen: %@";
         goto LABEL_9;
       }

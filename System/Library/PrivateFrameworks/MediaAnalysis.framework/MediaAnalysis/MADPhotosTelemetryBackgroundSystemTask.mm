@@ -1,7 +1,7 @@
 @interface MADPhotosTelemetryBackgroundSystemTask
 + (id)sharedTask;
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
-- (void)submitTask:(id *)a3;
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler;
+- (void)submitTask:(id *)task;
 @end
 
 @implementation MADPhotosTelemetryBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000C00BC;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B82D0 != -1)
   {
     dispatch_once(&qword_1002B82D0, block);
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler
 {
-  v34 = a3;
-  v33 = a4;
-  v8 = a5;
+  taskCopy = task;
+  blockCopy = block;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [objc_opt_class() identifier];
-  v35 = [NSString stringWithFormat:@"[%@][%@]", v10, v11];
+  identifier = [objc_opt_class() identifier];
+  v35 = [NSString stringWithFormat:@"[%@][%@]", v10, identifier];
 
   v12 = +[VCPPhotoLibraryManager sharedManager];
-  v13 = [v12 allPhotoLibraries];
+  allPhotoLibraries = [v12 allPhotoLibraries];
 
-  if ([v13 count])
+  if ([allPhotoLibraries count])
   {
     +[NSDate now];
     v49[0] = _NSConcreteStackBlock;
@@ -46,14 +46,14 @@
     v14 = v49[4] = self;
     v50 = v14;
     v31 = [VCPTimer timerWithIntervalSeconds:60 isOneShot:0 andBlock:v49];
-    v15 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], v34);
+    v15 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], taskCopy);
     *&buf = 0;
     *(&buf + 1) = &buf;
     v54 = 0x3032000000;
     v55 = sub_1000C0840;
     v56 = sub_1000C0850;
-    v16 = [objc_opt_class() identifier];
-    v57 = VCPTransactionWithName(v16);
+    identifier2 = [objc_opt_class() identifier];
+    v57 = VCPTransactionWithName(identifier2);
 
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
@@ -70,34 +70,34 @@
     v41 = v30;
     v18 = v17;
     v42 = v18;
-    v43 = self;
+    selfCopy = self;
     v19 = v15;
     v44 = v19;
     p_buf = &buf;
-    v45 = v8;
+    v45 = handlerCopy;
     v20 = objc_retainBlock(v40);
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1000C0AD8;
     v38[3] = &unk_100282A08;
-    v39 = v33;
+    v39 = blockCopy;
     v21 = objc_retainBlock(v38);
     v22 = objc_autoreleasePoolPush();
     if (VCPIsRemoteIOSTask())
     {
-      v23 = [objc_opt_class() taskID];
+      taskID = [objc_opt_class() taskID];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_1000C0AE8;
       v36[3] = &unk_100282858;
       v37 = v20;
-      v24 = [VCPMADRemoteActivityTask taskWithActivityType:v23 andCompletionHandler:v36];
+      v24 = [VCPMADRemoteActivityTask taskWithActivityType:taskID andCompletionHandler:v36];
       [v24 setCancelBlock:v21];
     }
 
     else
     {
-      v24 = [MADPhotosTelemetryProcessingTask taskWithPhotoLibraries:v13 andProgressHandler:v32 andCompletionHandler:v20 andCancelBlock:v21];
+      v24 = [MADPhotosTelemetryProcessingTask taskWithPhotoLibraries:allPhotoLibraries andProgressHandler:v32 andCompletionHandler:v20 andCancelBlock:v21];
     }
 
     v26 = +[VCPMADTaskScheduler sharedInstance];
@@ -147,27 +147,27 @@
       }
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)submitTask:(id *)a3
+- (void)submitTask:(id *)task
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   if (MediaAnalysisLogLevel() >= 7)
   {
     v6 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
       *buf = 138412290;
-      v23 = v5;
+      v23 = identifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[%@] Try submit the repeating BGST task", buf, 0xCu);
     }
   }
 
   v7 = +[BGSystemTaskScheduler sharedScheduler];
-  v8 = [v7 taskRequestForIdentifier:v5];
+  v8 = [v7 taskRequestForIdentifier:identifier];
 
   if (v8)
   {
@@ -177,7 +177,7 @@
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 138412290;
-        v23 = v5;
+        v23 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[%@] the repeating BGST task already existed, bailing out.", buf, 0xCu);
       }
     }
@@ -187,7 +187,7 @@
     goto LABEL_24;
   }
 
-  v11 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:v5];
+  v11 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:identifier];
   [v11 setGroupName:MediaAnalysisDaemonDomain];
   [v11 setRequiresBuddyComplete:{objc_msgSend(objc_opt_class(), "buddyCheckRequired")}];
   [v11 setGroupConcurrencyLimit:1];
@@ -203,10 +203,10 @@
 
   [v11 setRequiresInexpensiveNetworkConnectivity:{objc_msgSend(objc_opt_class(), "inexpensiveNetworkConnectivityRequired")}];
   [v11 setRequiresNetworkConnectivity:{objc_msgSend(objc_opt_class(), "networkConnectivityRequired")}];
-  v12 = [objc_opt_class() rateLimitConfigurationName];
-  if (v12)
+  rateLimitConfigurationName = [objc_opt_class() rateLimitConfigurationName];
+  if (rateLimitConfigurationName)
   {
-    [v11 setRateLimitConfigurationName:v12];
+    [v11 setRateLimitConfigurationName:rateLimitConfigurationName];
   }
 
   [v11 setRequiresExternalPower:{objc_msgSend(objc_opt_class(), "externalPowerRequired")}];
@@ -227,7 +227,7 @@
       if (os_log_type_enabled(&_os_log_default, v16))
       {
         *buf = 138412290;
-        v23 = v5;
+        v23 = identifier;
         v17 = "[%@] Submitted repeating BGST task successfully.";
         v18 = v16;
         v19 = 12;
@@ -243,7 +243,7 @@ LABEL_20:
     if (os_log_type_enabled(&_os_log_default, v20))
     {
       *buf = 138412546;
-      v23 = v5;
+      v23 = identifier;
       v24 = 2112;
       v25 = v10;
       v17 = "[%@] Failed to submit the repeating BGST task with error: %@";
@@ -254,9 +254,9 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v4);
-  if (a3 && v10)
+  if (task && v10)
   {
-    *a3 = [v10 copy];
+    *task = [v10 copy];
   }
 
 LABEL_24:

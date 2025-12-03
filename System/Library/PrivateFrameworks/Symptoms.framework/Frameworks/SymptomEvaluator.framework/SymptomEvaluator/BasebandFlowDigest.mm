@@ -1,21 +1,21 @@
 @interface BasebandFlowDigest
-- (BOOL)_initSockaddr:(id *)a3 fromDict:(id)a4;
-- (BOOL)_primeFromLocalAddress:(id)a3 remoteAddress:(id)a4;
-- (BOOL)primeFromQUICLocalAddress:(id)a3 remoteAddress:(id)a4;
-- (BOOL)primeFromSnapshot:(id)a3;
-- (BasebandFlowDigest)initWithDictionary:(id)a3;
+- (BOOL)_initSockaddr:(id *)sockaddr fromDict:(id)dict;
+- (BOOL)_primeFromLocalAddress:(id)address remoteAddress:(id)remoteAddress;
+- (BOOL)primeFromQUICLocalAddress:(id)address remoteAddress:(id)remoteAddress;
+- (BOOL)primeFromSnapshot:(id)snapshot;
+- (BasebandFlowDigest)initWithDictionary:(id)dictionary;
 - (NSData)encodedData;
 - (NSDictionary)dictionaryForm;
-- (id)_addrDictFromStruct:(id *)a3;
+- (id)_addrDictFromStruct:(id *)struct;
 - (id)description;
-- (void)setActive:(BOOL)a3;
-- (void)setIsBalanced:(BOOL)a3;
-- (void)setIsDownload:(BOOL)a3;
-- (void)setIsElephant:(BOOL)a3;
-- (void)setIsForeground:(BOOL)a3;
-- (void)setIsQUIC:(BOOL)a3;
-- (void)setIsUpload:(BOOL)a3;
-- (void)setWasStartedInForeground:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setIsBalanced:(BOOL)balanced;
+- (void)setIsDownload:(BOOL)download;
+- (void)setIsElephant:(BOOL)elephant;
+- (void)setIsForeground:(BOOL)foreground;
+- (void)setIsQUIC:(BOOL)c;
+- (void)setIsUpload:(BOOL)upload;
+- (void)setWasStartedInForeground:(BOOL)foreground;
 @end
 
 @implementation BasebandFlowDigest
@@ -135,9 +135,9 @@
   return encodedData;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 1;
   }
@@ -153,9 +153,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsElephant:(BOOL)a3
+- (void)setIsElephant:(BOOL)elephant
 {
-  if (a3)
+  if (elephant)
   {
     v3 = 2;
   }
@@ -171,12 +171,12 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsUpload:(BOOL)a3
+- (void)setIsUpload:(BOOL)upload
 {
   flow_flags = self->_infoBlock.flow_flags;
   v4 = flow_flags & 0xFFFFFFFD;
   v5 = flow_flags & 0xFFFFFFF8 | 2;
-  if (!a3)
+  if (!upload)
   {
     v5 = v4;
   }
@@ -187,12 +187,12 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsDownload:(BOOL)a3
+- (void)setIsDownload:(BOOL)download
 {
   flow_flags = self->_infoBlock.flow_flags;
   v4 = flow_flags & 0xFFFFFFFE;
   v5 = flow_flags & 0xFFFFFFF8;
-  if (a3)
+  if (download)
   {
     v6 = v5 + 1;
   }
@@ -208,12 +208,12 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsBalanced:(BOOL)a3
+- (void)setIsBalanced:(BOOL)balanced
 {
   flow_flags = self->_infoBlock.flow_flags;
   v4 = flow_flags & 0xFFFFFFFB;
   v5 = flow_flags & 0xFFFFFFF8 | 4;
-  if (!a3)
+  if (!balanced)
   {
     v5 = v4;
   }
@@ -224,9 +224,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsForeground:(BOOL)a3
+- (void)setIsForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v3 = 8;
   }
@@ -242,9 +242,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setWasStartedInForeground:(BOOL)a3
+- (void)setWasStartedInForeground:(BOOL)foreground
 {
-  if (a3)
+  if (foreground)
   {
     v3 = 16;
   }
@@ -260,9 +260,9 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIsQUIC:(BOOL)a3
+- (void)setIsQUIC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 32;
   }
@@ -278,15 +278,15 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_primeFromLocalAddress:(id)a3 remoteAddress:(id)a4
+- (BOOL)_primeFromLocalAddress:(id)address remoteAddress:(id)remoteAddress
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length] <= 0x1C)
+  addressCopy = address;
+  remoteAddressCopy = remoteAddress;
+  if (addressCopy && [addressCopy length] <= 0x1C)
   {
-    memcpy(&self->_infoBlock, [v6 bytes], objc_msgSend(v6, "length"));
+    memcpy(&self->_infoBlock, [addressCopy bytes], objc_msgSend(addressCopy, "length"));
     v8 = 1;
-    if (!v7)
+    if (!remoteAddressCopy)
     {
       goto LABEL_8;
     }
@@ -295,7 +295,7 @@
   else
   {
     v8 = 0;
-    if (!v7)
+    if (!remoteAddressCopy)
     {
 LABEL_8:
       v8 = 0;
@@ -303,33 +303,33 @@ LABEL_8:
     }
   }
 
-  if ([v7 length] > 0x1C)
+  if ([remoteAddressCopy length] > 0x1C)
   {
     goto LABEL_8;
   }
 
-  memcpy(&self->_infoBlock.remote, [v7 bytes], objc_msgSend(v7, "length"));
+  memcpy(&self->_infoBlock.remote, [remoteAddressCopy bytes], objc_msgSend(remoteAddressCopy, "length"));
 LABEL_9:
 
   return v8;
 }
 
-- (BOOL)primeFromQUICLocalAddress:(id)a3 remoteAddress:(id)a4
+- (BOOL)primeFromQUICLocalAddress:(id)address remoteAddress:(id)remoteAddress
 {
   self->_infoBlock.protocol = 17;
   self->_infoBlock.flow_flags |= 0x20u;
-  return [(BasebandFlowDigest *)self _primeFromLocalAddress:a3 remoteAddress:a4];
+  return [(BasebandFlowDigest *)self _primeFromLocalAddress:address remoteAddress:remoteAddress];
 }
 
-- (BOOL)primeFromSnapshot:(id)a3
+- (BOOL)primeFromSnapshot:(id)snapshot
 {
-  v4 = a3;
-  if ([v4 startAppStateIsForeground])
+  snapshotCopy = snapshot;
+  if ([snapshotCopy startAppStateIsForeground])
   {
     self->_infoBlock.flow_flags |= 0x10u;
   }
 
-  if ([v4 snapshotAppStateIsForeground])
+  if ([snapshotCopy snapshotAppStateIsForeground])
   {
     self->_infoBlock.flow_flags |= 8u;
   }
@@ -337,9 +337,9 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 localAddress];
-    v6 = [v4 remoteAddress];
-    v7 = [(BasebandFlowDigest *)self primeFromTCPLocalAddress:v5 remoteAddress:v6];
+    localAddress = [snapshotCopy localAddress];
+    remoteAddress = [snapshotCopy remoteAddress];
+    v7 = [(BasebandFlowDigest *)self primeFromTCPLocalAddress:localAddress remoteAddress:remoteAddress];
   }
 
   else
@@ -347,9 +347,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 localAddress];
-      v6 = [v4 remoteAddress];
-      v7 = [(BasebandFlowDigest *)self primeFromUDPLocalAddress:v5 remoteAddress:v6];
+      localAddress = [snapshotCopy localAddress];
+      remoteAddress = [snapshotCopy remoteAddress];
+      v7 = [(BasebandFlowDigest *)self primeFromUDPLocalAddress:localAddress remoteAddress:remoteAddress];
     }
 
     else
@@ -361,9 +361,9 @@ LABEL_9:
         goto LABEL_12;
       }
 
-      v5 = [v4 localAddress];
-      v6 = [v4 remoteAddress];
-      v7 = [(BasebandFlowDigest *)self primeFromQUICLocalAddress:v5 remoteAddress:v6];
+      localAddress = [snapshotCopy localAddress];
+      remoteAddress = [snapshotCopy remoteAddress];
+      v7 = [(BasebandFlowDigest *)self primeFromQUICLocalAddress:localAddress remoteAddress:remoteAddress];
     }
   }
 
@@ -373,18 +373,18 @@ LABEL_12:
   return v8;
 }
 
-- (id)_addrDictFromStruct:(id *)a3
+- (id)_addrDictFromStruct:(id *)struct
 {
-  v3 = a3;
+  structCopy = struct;
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (struct)
   {
-    sa_family = a3->var0.sa_family;
+    sa_family = struct->var0.sa_family;
     if (sa_family == 30)
     {
-      if (a3->var0.sa_len == 28)
+      if (struct->var0.sa_len == 28)
       {
-        v9 = inet_ntop(30, &a3->var2.sin6_addr, v19, 0x2Eu);
+        v9 = inet_ntop(30, &struct->var2.sin6_addr, v19, 0x2Eu);
         if (v9)
         {
           v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v9];
@@ -394,17 +394,17 @@ LABEL_12:
             v16[0] = v10;
             v15[0] = @"addr";
             v15[1] = @"port";
-            v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v3 + 2)];
+            v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(structCopy + 2)];
             v16[1] = v8;
             v16[2] = &unk_2847EF6B0;
             v15[2] = @"family";
             v15[3] = @"flowInfo";
-            v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v3 + 4)];
+            v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(structCopy + 4)];
             v16[3] = v11;
             v15[4] = @"scopeId";
-            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v3 + 24)];
+            v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(structCopy + 24)];
             v16[4] = v12;
-            v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
+            structCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
 
             goto LABEL_12;
           }
@@ -412,9 +412,9 @@ LABEL_12:
       }
     }
 
-    else if (sa_family == 2 && a3->var0.sa_len == 16)
+    else if (sa_family == 2 && struct->var0.sa_len == 16)
     {
-      v5 = inet_ntop(2, &a3->var2.sin6_flowinfo, v19, 0x2Eu);
+      v5 = inet_ntop(2, &struct->var2.sin6_flowinfo, v19, 0x2Eu);
       if (v5)
       {
         v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v5];
@@ -424,11 +424,11 @@ LABEL_12:
           v18[0] = v6;
           v17[0] = @"addr";
           v17[1] = @"port";
-          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v3 + 2)];
+          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(structCopy + 2)];
           v17[2] = @"family";
           v18[1] = v8;
           v18[2] = &unk_2847EF698;
-          v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
+          structCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 LABEL_12:
 
           goto LABEL_14;
@@ -436,27 +436,27 @@ LABEL_12:
       }
     }
 
-    v3 = 0;
+    structCopy = 0;
   }
 
 LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return structCopy;
 }
 
-- (BOOL)_initSockaddr:(id *)a3 fromDict:(id)a4
+- (BOOL)_initSockaddr:(id *)sockaddr fromDict:(id)dict
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (!a3)
+  dictCopy = dict;
+  v6 = dictCopy;
+  if (!sockaddr)
   {
     v13 = @"No dest to init";
     goto LABEL_21;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!dictCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v13 = @"No valid dictionary";
     goto LABEL_21;
@@ -482,13 +482,13 @@ LABEL_20:
   v9 = [v6 objectForKeyedSubscript:@"addr"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v9 UTF8String];
-    if (v10)
+    uTF8String = [v9 UTF8String];
+    if (uTF8String)
     {
-      v11 = v10;
-      v12 = [v7 intValue];
-      a3->var0.sa_family = v12;
-      if (v12 == 30)
+      v11 = uTF8String;
+      intValue = [v7 intValue];
+      sockaddr->var0.sa_family = intValue;
+      if (intValue == 30)
       {
         v18 = [v6 objectForKeyedSubscript:@"flowInfo"];
         if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -496,11 +496,11 @@ LABEL_20:
           v19 = [v6 objectForKeyedSubscript:@"scopeId"];
           if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            a3->var0.sa_len = 28;
-            a3->var1.sin_port = [v8 intValue];
-            a3->var1.sin_addr.s_addr = [v18 intValue];
-            a3->var2.sin6_scope_id = [v19 intValue];
-            if (inet_pton(30, v11, &a3->var2.sin6_addr))
+            sockaddr->var0.sa_len = 28;
+            sockaddr->var1.sin_port = [v8 intValue];
+            sockaddr->var1.sin_addr.s_addr = [v18 intValue];
+            sockaddr->var2.sin6_scope_id = [v19 intValue];
+            if (inet_pton(30, v11, &sockaddr->var2.sin6_addr))
             {
               v13 = 0;
             }
@@ -523,11 +523,11 @@ LABEL_20:
         }
       }
 
-      else if (v12 == 2)
+      else if (intValue == 2)
       {
-        a3->var0.sa_len = 16;
-        a3->var1.sin_port = [v8 intValue];
-        if (inet_pton(2, v11, &a3->var2.sin6_flowinfo))
+        sockaddr->var0.sa_len = 16;
+        sockaddr->var1.sin_port = [v8 intValue];
+        if (inet_pton(2, v11, &sockaddr->var2.sin6_flowinfo))
         {
           v13 = 0;
         }
@@ -649,17 +649,17 @@ LABEL_14:
   return v4;
 }
 
-- (BasebandFlowDigest)initWithDictionary:(id)a3
+- (BasebandFlowDigest)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v14 = @"No valid dictionary";
     goto LABEL_34;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"local"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"local"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v14 = @"No valid local address";
@@ -668,7 +668,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"remote"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"remote"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -676,20 +676,20 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"protocol"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"protocol"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v14 = @"No valid protocol";
     goto LABEL_58;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"flowType"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"flowType"];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v4 objectForKeyedSubscript:@"flowFlags"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"flowFlags"];
       if (v9)
       {
         objc_opt_class();
@@ -702,7 +702,7 @@ LABEL_56:
         }
       }
 
-      v10 = [v4 objectForKeyedSubscript:@"foreground"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"foreground"];
       if (v10)
       {
         objc_opt_class();
@@ -715,7 +715,7 @@ LABEL_55:
         }
       }
 
-      v11 = [v4 objectForKeyedSubscript:@"startedForeground"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"startedForeground"];
       if (v11)
       {
         objc_opt_class();
@@ -728,7 +728,7 @@ LABEL_54:
         }
       }
 
-      v21 = [v4 objectForKeyedSubscript:@"quic"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"quic"];
       if (v21)
       {
         objc_opt_class();
@@ -741,7 +741,7 @@ LABEL_53:
         }
       }
 
-      v20 = [v4 objectForKeyedSubscript:@"direction"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"direction"];
       if (v20)
       {
         objc_opt_class();
@@ -754,7 +754,7 @@ LABEL_52:
         }
       }
 
-      v12 = [v4 objectForKeyedSubscript:@"flowState"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"flowState"];
       if (!v12)
       {
         v14 = @"No valid flow state";
@@ -845,7 +845,7 @@ LABEL_57:
 LABEL_58:
   if (!v14)
   {
-    v16 = self;
+    selfCopy = self;
     goto LABEL_37;
   }
 
@@ -856,15 +856,15 @@ LABEL_34:
     *buf = 138412546;
     v23 = v14;
     v24 = 2114;
-    v25 = v4;
+    v25 = dictionaryCopy;
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_ERROR, "BasebandFlowDigest initWithDictionary failure: %@ with input %{public}@", buf, 0x16u);
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_37:
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 @end

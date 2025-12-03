@@ -1,16 +1,16 @@
 @interface SCRCComposedCharacter
 - (BOOL)_formKCContaintsUpperCase;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUChar32:(int)a3;
-- (SCRCComposedCharacter)initWithCharacter:(int)a3;
-- (SCRCComposedCharacter)initWithComposedCharacter:(__CFString *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUChar32:(int)char32;
+- (SCRCComposedCharacter)initWithCharacter:(int)character;
+- (SCRCComposedCharacter)initWithComposedCharacter:(__CFString *)character;
 - (__CFString)copyUnicodeDescriptionString;
-- (id)_initWithCharacter:(int)a3;
-- (id)_initWithComposedCharacter:(__CFString *)a3;
-- (id)_initWithSimpleCharacter:(int)a3;
-- (int)formDCharAtIndex:(unint64_t)a3;
-- (int)formKCCharAtIndex:(unint64_t)a3;
-- (int)originalFromCharAtIndex:(unint64_t)a3;
+- (id)_initWithCharacter:(int)character;
+- (id)_initWithComposedCharacter:(__CFString *)character;
+- (id)_initWithSimpleCharacter:(int)character;
+- (int)formDCharAtIndex:(unint64_t)index;
+- (int)formKCCharAtIndex:(unint64_t)index;
+- (int)originalFromCharAtIndex:(unint64_t)index;
 - (unint64_t)formDLength;
 - (unint64_t)formKCLength;
 - (void)_buildFormD;
@@ -20,15 +20,15 @@
 
 @implementation SCRCComposedCharacter
 
-- (id)_initWithCharacter:(int)a3
+- (id)_initWithCharacter:(int)character
 {
-  *bytes = a3;
+  *bytes = character;
   v4 = [(SCRCComposedCharacter *)self init];
   if (v4)
   {
     v5 = malloc_type_malloc(4uLL, 0x100004052888210uLL);
     v4->_originalRepresentation = v5;
-    *v5 = a3;
+    *v5 = character;
     v6 = SCRCUTF32Encoding();
     v7 = CFStringCreateWithBytes(0, bytes, 4, v6, 0);
     if (*bytes < 0x10000)
@@ -49,9 +49,9 @@
   return v4;
 }
 
-- (id)_initWithSimpleCharacter:(int)a3
+- (id)_initWithSimpleCharacter:(int)character
 {
-  result = [(SCRCComposedCharacter *)self _initWithCharacter:*&a3];
+  result = [(SCRCComposedCharacter *)self _initWithCharacter:*&character];
   if (result)
   {
     v4 = *(result + 4);
@@ -65,9 +65,9 @@
   return result;
 }
 
-- (SCRCComposedCharacter)initWithCharacter:(int)a3
+- (SCRCComposedCharacter)initWithCharacter:(int)character
 {
-  if (a3 > 127)
+  if (character > 127)
   {
     v3 = [(SCRCComposedCharacter *)self _initWithCharacter:?];
   }
@@ -82,35 +82,35 @@
   return v4;
 }
 
-- (id)_initWithComposedCharacter:(__CFString *)a3
+- (id)_initWithComposedCharacter:(__CFString *)character
 {
   v4 = [(SCRCComposedCharacter *)self init];
   v5 = v4;
-  if (a3 && v4)
+  if (character && v4)
   {
-    CFRetain(a3);
-    v5->_originalCombinedCharacter = a3;
-    v5->_originalCombinedCharacterLength = CFStringGetLength(a3);
+    CFRetain(character);
+    v5->_originalCombinedCharacter = character;
+    v5->_originalCombinedCharacterLength = CFStringGetLength(character);
     v5->_originalRepresentation = SCRCCopyStringToUChar32Array(v5->_originalCombinedCharacter, &v5->_originalRepresentationLength);
   }
 
   return v5;
 }
 
-- (SCRCComposedCharacter)initWithComposedCharacter:(__CFString *)a3
+- (SCRCComposedCharacter)initWithComposedCharacter:(__CFString *)character
 {
-  if ([(__CFString *)a3 scrc_containsOnlyOneGlyph])
+  if ([(__CFString *)character scrc_containsOnlyOneGlyph])
   {
-    self = [(SCRCComposedCharacter *)self _initWithComposedCharacter:a3];
-    v5 = self;
+    self = [(SCRCComposedCharacter *)self _initWithComposedCharacter:character];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -160,13 +160,13 @@
   [(SCRCComposedCharacter *)&v7 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -174,7 +174,7 @@
     else
     {
       originalCombinedCharacter = self->_originalCombinedCharacter;
-      v7 = originalCombinedCharacter && (v6 = v4->_originalCombinedCharacter) != 0 && CFStringCompare(originalCombinedCharacter, v6, 0x10uLL) == kCFCompareEqualTo;
+      v7 = originalCombinedCharacter && (v6 = equalCopy->_originalCombinedCharacter) != 0 && CFStringCompare(originalCombinedCharacter, v6, 0x10uLL) == kCFCompareEqualTo;
     }
   }
 
@@ -182,15 +182,15 @@
   {
     v9.receiver = self;
     v9.super_class = SCRCComposedCharacter;
-    v7 = [(SCRCComposedCharacter *)&v9 isEqual:v4];
+    v7 = [(SCRCComposedCharacter *)&v9 isEqual:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToUChar32:(int)a3
+- (BOOL)isEqualToUChar32:(int)char32
 {
-  v4 = [[SCRCComposedCharacter alloc] initWithCharacter:*&a3];
+  v4 = [[SCRCComposedCharacter alloc] initWithCharacter:*&char32];
   LOBYTE(self) = [(SCRCComposedCharacter *)self isEqual:v4];
 
   return self;
@@ -237,10 +237,10 @@
 
 - (void)_buildFormD
 {
-  v3 = self;
-  v4 = v3;
-  originalCombinedCharacter = v3->_originalCombinedCharacter;
-  if (originalCombinedCharacter && (MutableCopy = CFStringCreateMutableCopy(0, v3->_originalCombinedCharacterLength, originalCombinedCharacter)) != 0)
+  selfCopy = self;
+  v4 = selfCopy;
+  originalCombinedCharacter = selfCopy->_originalCombinedCharacter;
+  if (originalCombinedCharacter && (MutableCopy = CFStringCreateMutableCopy(0, selfCopy->_originalCombinedCharacterLength, originalCombinedCharacter)) != 0)
   {
     v7 = MutableCopy;
     CFStringNormalize(MutableCopy, kCFStringNormalizationFormD);
@@ -258,10 +258,10 @@
 
 - (void)_buildFormKC
 {
-  v3 = self;
-  v4 = v3;
-  originalCombinedCharacter = v3->_originalCombinedCharacter;
-  if (originalCombinedCharacter && (MutableCopy = CFStringCreateMutableCopy(0, v3->_originalCombinedCharacterLength, originalCombinedCharacter)) != 0)
+  selfCopy = self;
+  v4 = selfCopy;
+  originalCombinedCharacter = selfCopy->_originalCombinedCharacter;
+  if (originalCombinedCharacter && (MutableCopy = CFStringCreateMutableCopy(0, selfCopy->_originalCombinedCharacterLength, originalCombinedCharacter)) != 0)
   {
     v7 = MutableCopy;
     CFStringNormalize(MutableCopy, kCFStringNormalizationFormKC);
@@ -277,7 +277,7 @@
   v4->_normalFormKCRepresentation = v8;
 }
 
-- (int)formDCharAtIndex:(unint64_t)a3
+- (int)formDCharAtIndex:(unint64_t)index
 {
   normalFormDRepresentationLength = self->_normalFormDRepresentationLength;
   if (!normalFormDRepresentationLength)
@@ -286,18 +286,18 @@
     normalFormDRepresentationLength = self->_normalFormDRepresentationLength;
   }
 
-  if (normalFormDRepresentationLength <= a3)
+  if (normalFormDRepresentationLength <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_normalFormDRepresentation[a3];
+    return self->_normalFormDRepresentation[index];
   }
 }
 
-- (int)formKCCharAtIndex:(unint64_t)a3
+- (int)formKCCharAtIndex:(unint64_t)index
 {
   normalFormKCRepresentationLength = self->_normalFormKCRepresentationLength;
   if (!normalFormKCRepresentationLength)
@@ -306,23 +306,23 @@
     normalFormKCRepresentationLength = self->_normalFormKCRepresentationLength;
   }
 
-  if (normalFormKCRepresentationLength <= a3)
+  if (normalFormKCRepresentationLength <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_normalFormKCRepresentation[a3];
+    return self->_normalFormKCRepresentation[index];
   }
 }
 
-- (int)originalFromCharAtIndex:(unint64_t)a3
+- (int)originalFromCharAtIndex:(unint64_t)index
 {
   originalRepresentation = self->_originalRepresentation;
-  if (originalRepresentation && self->_originalRepresentationLength > a3)
+  if (originalRepresentation && self->_originalRepresentationLength > index)
   {
-    return originalRepresentation[a3];
+    return originalRepresentation[index];
   }
 
   else
@@ -338,13 +338,13 @@
     [(SCRCComposedCharacter *)self _buildFormKC];
   }
 
-  v3 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+  uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
   if (self->_normalFormKCRepresentationLength)
   {
     v4 = 0;
     do
     {
-      v5 = [v3 longCharacterIsMember:self->_normalFormKCRepresentation[v4]];
+      v5 = [uppercaseLetterCharacterSet longCharacterIsMember:self->_normalFormKCRepresentation[v4]];
       if (v5)
       {
         break;

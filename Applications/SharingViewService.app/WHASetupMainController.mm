@@ -1,42 +1,42 @@
 @interface WHASetupMainController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_handleHomeButtonPressed;
-- (void)_pairSetupTryPIN:(id)a3;
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4;
+- (void)_pairSetupTryPIN:(id)n;
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info;
 - (void)_sessionStart;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)logUsageDone:(int)a3;
-- (void)logUsageStart:(int)a3;
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
-- (void)showDoneUI:(int)a3 error:(id)a4;
-- (void)showHomePickerUI:(id)a3 defaultIndex:(int64_t)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)logUsageDone:(int)done;
+- (void)logUsageStart:(int)start;
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (void)showDoneUI:(int)i error:(id)error;
+- (void)showHomePickerUI:(id)i defaultIndex:(int64_t)index;
 - (void)showProgressUI;
-- (void)showRoomPickerUI:(id)a3 firstSuggestedIndex:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showRoomPickerUI:(id)i firstSuggestedIndex:(int64_t)index;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation WHASetupMainController
 
-- (void)_pairSetupTryPIN:(id)a3
+- (void)_pairSetupTryPIN:(id)n
 {
-  v7 = a3;
+  nCopy = n;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     v4 = IsAppleInternalBuild();
     v5 = @"*";
     if (v4)
     {
-      v5 = v7;
+      v5 = nCopy;
     }
 
     v6 = v5;
     LogPrintF();
   }
 
-  [(SFDeviceSetupWHASession *)self->_setupSession pairSetupTryPIN:v7, v6];
+  [(SFDeviceSetupWHASession *)self->_setupSession pairSetupTryPIN:nCopy, v6];
 }
 
 - (void)showProgressUI
@@ -62,9 +62,9 @@
   sub_100127D6C(vcNav, vcProgress, 0);
 }
 
-- (void)showRoomPickerUI:(id)a3 firstSuggestedIndex:(int64_t)a4
+- (void)showRoomPickerUI:(id)i firstSuggestedIndex:(int64_t)index
 {
-  v9 = a3;
+  iCopy = i;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -81,14 +81,14 @@
     vcRoomPicker = self->_vcRoomPicker;
   }
 
-  [(WHASetupRoomPickerViewController *)vcRoomPicker setRooms:v9];
-  [(WHASetupRoomPickerViewController *)self->_vcRoomPicker setFirstSuggestedIndex:a4];
+  [(WHASetupRoomPickerViewController *)vcRoomPicker setRooms:iCopy];
+  [(WHASetupRoomPickerViewController *)self->_vcRoomPicker setFirstSuggestedIndex:index];
   sub_100127D6C(self->_vcNav, self->_vcRoomPicker, 0);
 }
 
-- (void)showHomePickerUI:(id)a3 defaultIndex:(int64_t)a4
+- (void)showHomePickerUI:(id)i defaultIndex:(int64_t)index
 {
-  v9 = a3;
+  iCopy = i;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -105,19 +105,19 @@
     vcHomePicker = self->_vcHomePicker;
   }
 
-  [(WHASetupHomePickerViewController *)vcHomePicker setHomes:v9];
-  [(WHASetupHomePickerViewController *)self->_vcHomePicker setDefaultHomeIndex:a4];
+  [(WHASetupHomePickerViewController *)vcHomePicker setHomes:iCopy];
+  [(WHASetupHomePickerViewController *)self->_vcHomePicker setDefaultHomeIndex:index];
   sub_100127D6C(self->_vcNav, self->_vcHomePicker, 0);
 }
 
-- (void)showDoneUI:(int)a3 error:(id)a4
+- (void)showDoneUI:(int)i error:(id)error
 {
-  v4 = *&a3;
-  v13 = a4;
+  v4 = *&i;
+  errorCopy = error;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     v11 = v4;
-    v12 = v13;
+    v12 = errorCopy;
     LogPrintF();
   }
 
@@ -147,18 +147,18 @@
   }
 
   [(WHASetupDoneViewController *)vcDone setStatus:v4];
-  [(WHASetupDoneViewController *)self->_vcDone setError:v13];
+  [(WHASetupDoneViewController *)self->_vcDone setError:errorCopy];
   sub_100127D6C(self->_vcNav, self->_vcDone, 0);
   [(WHASetupMainController *)self logUsageDone:v4];
 }
 
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   vcAuth = self->_vcAuth;
   if (vcAuth)
   {
 
-    [(WHASetupAuthViewController *)vcAuth showWithFlags:*&a3 throttleSeconds:*&a4];
+    [(WHASetupAuthViewController *)vcAuth showWithFlags:*&flags throttleSeconds:*&seconds];
   }
 
   else
@@ -180,12 +180,12 @@
   }
 }
 
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = v6;
-  v14 = v6;
+  v4 = *&progress;
+  infoCopy = info;
+  v7 = infoCopy;
+  v14 = infoCopy;
   if (dword_1001BF408 > 30)
   {
     goto LABEL_218;
@@ -193,9 +193,9 @@
 
   if (dword_1001BF408 == -1)
   {
-    v6 = _LogCategory_Initialize();
+    infoCopy = _LogCategory_Initialize();
     v7 = v14;
-    if (!v6)
+    if (!infoCopy)
     {
       goto LABEL_218;
     }
@@ -887,7 +887,7 @@ LABEL_215:
 
   v12 = v8;
   v13 = v9;
-  v6 = LogPrintF();
+  infoCopy = LogPrintF();
   v7 = v14;
 LABEL_218:
   if (!self->_setupSession)
@@ -906,8 +906,8 @@ LABEL_218:
         }
 
         [(WHASetupMainController *)self showDoneUI:0, v12, v13];
-        v11 = [(WHASetupMainController *)self _remoteViewControllerProxy];
-        [v11 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.WHASetup"];
+        _remoteViewControllerProxy = [(WHASetupMainController *)self _remoteViewControllerProxy];
+        [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.WHASetup"];
 
         goto LABEL_223;
       case 0x1E:
@@ -922,21 +922,21 @@ LABEL_218:
 
         goto LABEL_223;
       case 0x46:
-        v6 = [(WHASetupMainController *)self showProgressUI];
+        infoCopy = [(WHASetupMainController *)self showProgressUI];
         goto LABEL_223;
     }
   }
 
   else if ((v4 - 200) <= 0x1E && ((1 << (v4 + 56)) & 0x40100401) != 0)
   {
-    v6 = [(WHASetupProgressViewController *)self->_vcProgress handleProgressEvent:v4];
+    infoCopy = [(WHASetupProgressViewController *)self->_vcProgress handleProgressEvent:v4];
 LABEL_223:
     v7 = v14;
   }
 
 LABEL_224:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(infoCopy, v7);
 }
 
 - (void)_sessionStart
@@ -983,8 +983,8 @@ LABEL_224:
       [(SFDeviceSetupWHASession *)self->_setupSession setPromptForRoomHandler:v9];
       [(SFDeviceSetupWHASession *)self->_setupSession activate];
       [(WHASetupMainController *)self logUsageStart:9];
-      v8 = [(WHASetupMainController *)self _remoteViewControllerProxy];
-      [v8 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.WHASetup"];
+      _remoteViewControllerProxy = [(WHASetupMainController *)self _remoteViewControllerProxy];
+      [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.WHASetup"];
     }
 
     else if (dword_1001BF408 <= 90 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
@@ -999,11 +999,11 @@ LABEL_224:
   }
 }
 
-- (void)logUsageDone:(int)a3
+- (void)logUsageDone:(int)done
 {
   if (!self->_loggedUsageDone)
   {
-    v3 = *&a3;
+    v3 = *&done;
     self->_loggedUsageDone = 1;
     CFStringGetTypeID();
     v5 = CFDictionaryGetTypedValue();
@@ -1048,11 +1048,11 @@ LABEL_224:
   }
 }
 
-- (void)logUsageStart:(int)a3
+- (void)logUsageStart:(int)start
 {
   if (!self->_loggedUsageStart)
   {
-    v3 = *&a3;
+    v3 = *&start;
     self->_loggedUsageStart = 1;
     CFStringGetTypeID();
     v4 = CFDictionaryGetTypedValue();
@@ -1118,14 +1118,14 @@ LABEL_224:
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1136,7 +1136,7 @@ LABEL_224:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -1150,23 +1150,23 @@ LABEL_224:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismiss:(int)a3 completion:(id)a4
+- (void)dismiss:(int)dismiss completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&dismiss;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
     [(WHASetupMainController *)self logUsageStart:v4];
-    v7 = [(WHASetupMainController *)self _remoteViewControllerProxy];
-    v8 = v7;
+    _remoteViewControllerProxy = [(WHASetupMainController *)self _remoteViewControllerProxy];
+    v8 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -1174,28 +1174,28 @@ LABEL_224:
       v10[1] = 3221225472;
       v10[2] = sub_10012FB80;
       v10[3] = &unk_1001959D0;
-      v12 = v6;
+      v12 = completionCopy;
       v11 = v8;
       [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:1 completion:v10];
     }
 
     else
     {
-      [v7 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(WHASetupMainController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.WHASetup"];
+  _remoteViewControllerProxy = [(WHASetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.WHASetup"];
 
   if (!self->_dismissed)
   {
@@ -1250,12 +1250,12 @@ LABEL_224:
 
   v16.receiver = self;
   v16.super_class = WHASetupMainController;
-  [(SVSBaseMainController *)&v16 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v16 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -1264,7 +1264,7 @@ LABEL_224:
   v19 = 0;
   v18.receiver = self;
   v18.super_class = WHASetupMainController;
-  [(WHASetupMainController *)&v18 viewDidAppear:v3];
+  [(WHASetupMainController *)&v18 viewDidAppear:appearCopy];
   self->_viewAppearedTicks = mach_absolute_time();
   Int64 = CFPrefs_GetInt64();
   if (v19)
@@ -1283,25 +1283,25 @@ LABEL_224:
   storyboard = self->_storyboard;
   self->_storyboard = v8;
 
-  v10 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v10;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
-  v14 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v15 = [v14 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v15;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(WHASetupMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
@@ -1315,18 +1315,18 @@ LABEL_224:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(WHASetupMainController *)self view];
-  v3 = [v2 window];
+  view = [(WHASetupMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -1337,13 +1337,13 @@ LABEL_224:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v12 = a4;
+  completionCopy = completion;
   self->_dismissNotifyToken = -1;
-  v6 = [a3 userInfo];
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
@@ -1356,7 +1356,7 @@ LABEL_224:
   {
     v9 = 1;
 LABEL_25:
-    v10 = v12;
+    v10 = completionCopy;
 LABEL_26:
     self->_testMode = v9;
     goto LABEL_27;
@@ -1417,7 +1417,7 @@ LABEL_26:
   }
 
   v11 = [v8 isEqual:@"00000000-0000-0000-0000-00000000000B"];
-  v10 = v12;
+  v10 = completionCopy;
   if (v11)
   {
     v9 = 11;
@@ -1427,7 +1427,7 @@ LABEL_26:
 LABEL_27:
   if (v10)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 

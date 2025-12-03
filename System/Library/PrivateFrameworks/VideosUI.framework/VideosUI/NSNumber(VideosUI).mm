@@ -6,11 +6,11 @@
 
 - (id)vui_languageAwareDescription
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [a1 descriptionWithLocale:v2];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v3 = [self descriptionWithLocale:currentLocale];
   v4 = MEMORY[0x1E695DF58];
-  v5 = [v2 languageCode];
-  v6 = [v4 characterDirectionForLanguage:v5];
+  languageCode = [currentLocale languageCode];
+  v6 = [v4 characterDirectionForLanguage:languageCode];
 
   if (v6 == 2)
   {

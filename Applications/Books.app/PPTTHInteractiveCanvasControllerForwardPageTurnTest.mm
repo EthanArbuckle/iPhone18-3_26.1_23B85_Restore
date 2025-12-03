@@ -6,8 +6,8 @@
 
 - (void)turnPage
 {
-  v2 = [(PPTBasicTest *)self bookController];
-  [THTestDriver turnPageWithBookController:v2 direction:1];
+  bookController = [(PPTBasicTest *)self bookController];
+  [THTestDriver turnPageWithBookController:bookController direction:1];
 }
 
 @end

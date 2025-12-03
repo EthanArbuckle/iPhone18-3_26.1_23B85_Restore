@@ -43,7 +43,7 @@
     v23 = v10;
     v24 = &v28;
     v26 = a2;
-    v27 = a1;
+    selfCopy = self;
     v25 = buf;
     [v14 computeFinderResizedSizesForImages:v9 inSizes:v23 completion:v22];
     v16 = v17;

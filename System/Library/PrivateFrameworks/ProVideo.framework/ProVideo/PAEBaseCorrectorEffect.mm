@@ -1,27 +1,27 @@
 @interface PAEBaseCorrectorEffect
-+ (unint64_t)colorPrimaries:(id)a3;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (BOOL)renderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (PAEBaseCorrectorEffect)initWithAPIManager:(id)a3;
++ (unint64_t)colorPrimaries:(id)primaries;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (BOOL)renderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (PAEBaseCorrectorEffect)initWithAPIManager:(id)manager;
 - (PROAPIAccessing)apiManager;
-- (id)customChannelData:(id)a3 ofParamID:(unsigned int)a4 time:(id *)a5;
+- (id)customChannelData:(id)data ofParamID:(unsigned int)d time:(id *)time;
 - (id)properties;
-- (void)_resyncAtTime:(id *)a3 apiManager:(id)a4;
-- (void)_resyncOnceAtTime:(id *)a3 apiManager:(id)a4;
+- (void)_resyncAtTime:(id *)time apiManager:(id)manager;
+- (void)_resyncOnceAtTime:(id *)time apiManager:(id)manager;
 - (void)dealloc;
 @end
 
 @implementation PAEBaseCorrectorEffect
 
-- (PAEBaseCorrectorEffect)initWithAPIManager:(id)a3
+- (PAEBaseCorrectorEffect)initWithAPIManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = PAEBaseCorrectorEffect;
   v4 = [(PAEBaseCorrectorEffect *)&v6 init];
   if (v4)
   {
-    v4->_apiManager = a3;
+    v4->_apiManager = manager;
     v4->_resyncQueue = dispatch_queue_create("com.apple.paeft.effect", 0);
     operator new();
   }
@@ -73,35 +73,35 @@ uint64_t __36__PAEBaseCorrectorEffect_properties__block_invoke()
   return result;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  if (a3)
+  if (width)
   {
-    *a3 = a5->var0;
+    *width = input->var0;
   }
 
-  if (a4)
+  if (height)
   {
-    *a4 = a5->var1;
+    *height = input->var1;
   }
 
   return 1;
 }
 
-- (void)_resyncOnceAtTime:(id *)a3 apiManager:(id)a4
+- (void)_resyncOnceAtTime:(id *)time apiManager:(id)manager
 {
   resyncOnce = self->_resyncOnce;
   if ([(PAEBaseCorrectorEffect *)self hostIsFCP])
   {
-    v8 = [a4 apiForProtocol:&unk_28736D5F0];
+    v8 = [manager apiForProtocol:&unk_28736D5F0];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = *"";
     v16[2] = __55__PAEBaseCorrectorEffect__resyncOnceAtTime_apiManager___block_invoke;
     v16[3] = &unk_279AA7EA8;
     v16[4] = self;
-    v16[5] = a4;
+    v16[5] = manager;
     v16[6] = resyncOnce;
-    v16[7] = a3;
+    v16[7] = time;
     [v8 performBlockWithinReadLock:v16];
   }
 
@@ -141,8 +141,8 @@ uint64_t __36__PAEBaseCorrectorEffect_properties__block_invoke()
       block[2] = __55__PAEBaseCorrectorEffect__resyncOnceAtTime_apiManager___block_invoke_2;
       block[3] = &unk_279AA7ED0;
       block[4] = self;
-      block[5] = a4;
-      block[6] = a3;
+      block[5] = manager;
+      block[6] = time;
       dispatch_sync(resyncQueue, block);
       atomic_fetch_and(resyncOnce, 0xFFFFFFFC);
       pthread_cond_broadcast(&self->_resyncCondition);
@@ -169,7 +169,7 @@ uint64_t __55__PAEBaseCorrectorEffect__resyncOnceAtTime_apiManager___block_invok
   return result;
 }
 
-- (void)_resyncAtTime:(id *)a3 apiManager:(id)a4
+- (void)_resyncAtTime:(id *)time apiManager:(id)manager
 {
   if (atomic_load(self->_actionCount))
   {
@@ -178,38 +178,38 @@ uint64_t __55__PAEBaseCorrectorEffect__resyncOnceAtTime_apiManager___block_invok
 
   else
   {
-    v5 = a3->var1 == 0;
+    v5 = time->var1 == 0;
   }
 
   if (!v5)
   {
     if ([(PAEBaseCorrectorEffect *)self hostIsFCP])
     {
-      v9 = [a4 apiForProtocol:&unk_28736D5F0];
+      v9 = [manager apiForProtocol:&unk_28736D5F0];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = *"";
       v11[2] = __51__PAEBaseCorrectorEffect__resyncAtTime_apiManager___block_invoke;
       v11[3] = &unk_279AA7ED0;
       v11[4] = self;
-      v11[5] = a4;
-      v11[6] = a3;
+      v11[5] = manager;
+      v11[6] = time;
       [v9 performBlockWithinReadLock:v11];
     }
 
     else
     {
-      var1 = a3->var1;
+      var1 = time->var1;
 
-      [(PAEBaseCorrectorEffect *)self resync:a4 atTime:var1];
+      [(PAEBaseCorrectorEffect *)self resync:manager atTime:var1];
     }
   }
 }
 
-- (BOOL)renderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)renderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -217,26 +217,26 @@ uint64_t __55__PAEBaseCorrectorEffect__resyncOnceAtTime_apiManager___block_invok
     v20 = 0;
   }
 
-  [(PAEBaseCorrectorEffect *)self _resyncOnceAtTime:a5 apiManager:self->_apiManager];
-  [(PAEBaseCorrectorEffect *)self _resyncAtTime:a5 apiManager:self->_apiManager];
+  [(PAEBaseCorrectorEffect *)self _resyncOnceAtTime:info apiManager:self->_apiManager];
+  [(PAEBaseCorrectorEffect *)self _resyncAtTime:info apiManager:self->_apiManager];
   apiManager = self->_apiManager;
-  v10 = *&a5->var2;
-  v17 = *&a5->var0.var0;
+  v10 = *&info->var2;
+  v17 = *&info->var0.var0;
   v18 = v10;
-  v19 = *&a5->var4;
-  if ([(PAEBaseCorrectorEffect *)self overrideRender:apiManager withOutputImage:a3 inputImage:a4 input:v20 withInfo:&v17])
+  v19 = *&info->var4;
+  if ([(PAEBaseCorrectorEffect *)self overrideRender:apiManager withOutputImage:output inputImage:input input:v20 withInfo:&v17])
   {
 LABEL_11:
     v15 = 1;
     goto LABEL_12;
   }
 
-  v11 = [(PAEBaseCorrectorEffect *)self newNodeForCorrector];
-  if (v11)
+  newNodeForCorrector = [(PAEBaseCorrectorEffect *)self newNodeForCorrector];
+  if (newNodeForCorrector)
   {
     v12 = self->_apiManager;
-    var1 = a5->var0.var1;
-    if (!a5->var0.var1)
+    var1 = info->var0.var1;
+    if (!info->var0.var1)
     {
       var1 = MEMORY[0x277CC08F0];
     }
@@ -244,17 +244,17 @@ LABEL_11:
     v14 = *(var1 + 2);
     v17 = *var1;
     *&v18 = v14;
-    [(PAEBaseCorrectorEffect *)self setParameters:v12 onNodeCorrector:v11 time:&v17];
-    (*(*v11 + 120))(v11, 0, v20);
-    (*(*v11 + 16))(v11);
-    *&v17 = v11;
-    [a3 setHeliumRef:&v17];
+    [(PAEBaseCorrectorEffect *)self setParameters:v12 onNodeCorrector:newNodeForCorrector time:&v17];
+    (*(*newNodeForCorrector + 120))(newNodeForCorrector, 0, v20);
+    (*(*newNodeForCorrector + 16))(newNodeForCorrector);
+    *&v17 = newNodeForCorrector;
+    [output setHeliumRef:&v17];
     if (v17)
     {
       (*(*v17 + 24))(v17);
     }
 
-    (*(*v11 + 24))(v11);
+    (*(*newNodeForCorrector + 24))(newNodeForCorrector);
     goto LABEL_11;
   }
 
@@ -268,25 +268,25 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  if (a6)
+  if (software)
   {
-    *a6 = 0;
+    *software = 0;
   }
 
-  if (a5)
+  if (hardware)
   {
-    *a5 = 1;
+    *hardware = 1;
   }
 
   return 1;
 }
 
-- (id)customChannelData:(id)a3 ofParamID:(unsigned int)a4 time:(id *)a5
+- (id)customChannelData:(id)data ofParamID:(unsigned int)d time:(id *)time
 {
   v6 = 0;
-  [(PAEBaseCorrectorEffect *)self resync:a3 atTime:a5 paramID:*&a4 customChannelData:&v6];
+  [(PAEBaseCorrectorEffect *)self resync:data atTime:time paramID:*&d customChannelData:&v6];
   return v6;
 }
 
@@ -297,9 +297,9 @@ LABEL_12:
   return v2;
 }
 
-+ (unint64_t)colorPrimaries:(id)a3
++ (unint64_t)colorPrimaries:(id)primaries
 {
-  v3 = [a3 apiForProtocol:&unk_287359A98];
+  v3 = [primaries apiForProtocol:&unk_287359A98];
 
   return [v3 colorPrimaries];
 }

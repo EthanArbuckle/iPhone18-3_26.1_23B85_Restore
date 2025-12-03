@@ -1,14 +1,14 @@
 @interface SBSLockScreenBackgroundContentAssertion
-+ (id)acquireBackgroundContentAssertionWithDefinition:(id)a3 errorHandler:(id)a4;
++ (id)acquireBackgroundContentAssertionWithDefinition:(id)definition errorHandler:(id)handler;
 @end
 
 @implementation SBSLockScreenBackgroundContentAssertion
 
-+ (id)acquireBackgroundContentAssertionWithDefinition:(id)a3 errorHandler:(id)a4
++ (id)acquireBackgroundContentAssertionWithDefinition:(id)definition errorHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  definitionCopy = definition;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v8 = SBLogCoverSheet();
@@ -18,7 +18,7 @@
       _os_log_impl(&dword_19169D000, v8, OS_LOG_TYPE_DEFAULT, "Acquiring SBSLockScreenBackgroundContentAssertion", &v14, 2u);
     }
 
-    v9 = [a1 acquireContentProviderAssertionForType:2 slot:@"Background" identifier:@"SBDashBoardBackgroundContentAssertionIdentifier" configurationObject:v6 errorHandler:v7];
+    v9 = [self acquireContentProviderAssertionForType:2 slot:@"Background" identifier:@"SBDashBoardBackgroundContentAssertionIdentifier" configurationObject:definitionCopy errorHandler:handlerCopy];
   }
 
   else
@@ -35,9 +35,9 @@
       _os_log_impl(&dword_19169D000, v12, OS_LOG_TYPE_DEFAULT, "Failed to acquire SBSLockScreenBackgroundContentAssertion: %@", &v14, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
 
     v9 = 0;

@@ -1,29 +1,29 @@
 @interface _UIStatusBarBluetoothItem
 + (BOOL)alwaysShowRegulatoryBluetoothIndicator;
 - (_UIStatusBarImageView)batteryImageView;
-- (id)_batteryFillColorForEntry:(id)a3 usingTintColor:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)_batteryFillColorForEntry:(id)entry usingTintColor:(id)color;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_batteryImageView;
 @end
 
 @implementation _UIStatusBarBluetoothItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 bluetoothEntry];
-  v5 = [v4 state];
+  data = [update data];
+  bluetoothEntry = [data bluetoothEntry];
+  state = [bluetoothEntry state];
 
-  if (v5 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E711FB90[v5];
+    return off_1E711FB90[state];
   }
 }
 
@@ -37,66 +37,66 @@
   return _MergedGlobals_1276;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v43.receiver = self;
   v43.super_class = _UIStatusBarBluetoothItem;
-  v8 = [(_UIStatusBarIndicatorItem *)&v43 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 bluetoothEntry];
+  v8 = [(_UIStatusBarIndicatorItem *)&v43 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  bluetoothEntry = [data bluetoothEntry];
 
-  v11 = [v7 identifier];
+  identifier = [itemCopy identifier];
   v12 = +[(_UIStatusBarItem *)_UIStatusBarBluetoothItem];
 
-  if (v11 == v12)
+  if (identifier == v12)
   {
-    if (![v6 dataChanged])
+    if (![updateCopy dataChanged])
     {
       goto LABEL_24;
     }
 
-    v17 = [v10 batteryEntry];
-    if (([objc_opt_class() alwaysShowRegulatoryBluetoothIndicator] & 1) == 0 && objc_msgSend(v10, "state") != 2 && (objc_msgSend(v17, "isEnabled") & 1) == 0)
+    batteryEntry = [bluetoothEntry batteryEntry];
+    if (([objc_opt_class() alwaysShowRegulatoryBluetoothIndicator] & 1) == 0 && objc_msgSend(bluetoothEntry, "state") != 2 && (objc_msgSend(batteryEntry, "isEnabled") & 1) == 0)
     {
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
     }
   }
 
   else
   {
-    v13 = [v7 identifier];
+    identifier2 = [itemCopy identifier];
     v14 = +[_UIStatusBarBluetoothItem batteryDisplayIdentifier];
 
-    if (v13 != v14)
+    if (identifier2 != v14)
     {
       goto LABEL_24;
     }
 
-    if (([v6 dataChanged] & 1) != 0 || objc_msgSend(v6, "styleAttributesChanged"))
+    if (([updateCopy dataChanged] & 1) != 0 || objc_msgSend(updateCopy, "styleAttributesChanged"))
     {
-      v15 = [v10 batteryEntry];
-      if ([v7 isEnabled])
+      batteryEntry2 = [bluetoothEntry batteryEntry];
+      if ([itemCopy isEnabled])
       {
-        v16 = [v15 isEnabled];
+        isEnabled = [batteryEntry2 isEnabled];
       }
 
       else
       {
-        v16 = 0;
+        isEnabled = 0;
       }
 
-      [v7 setEnabled:v16];
-      if ([v7 isEnabled])
+      [itemCopy setEnabled:isEnabled];
+      if ([itemCopy isEnabled])
       {
         v18 = +[_UIStatusBarImageProvider sharedProvider];
-        v19 = [v6 styleAttributes];
-        v20 = [v18 imageNamed:@"HeadsetBatteryBG" styleAttributes:v19];
-        [v6 styleAttributes];
-        v21 = v37 = v15;
-        v22 = [v21 imageTintColor];
-        v36 = [v20 _flatImageWithColor:v22];
+        styleAttributes = [updateCopy styleAttributes];
+        v20 = [v18 imageNamed:@"HeadsetBatteryBG" styleAttributes:styleAttributes];
+        [updateCopy styleAttributes];
+        v21 = v37 = batteryEntry2;
+        imageTintColor = [v21 imageTintColor];
+        v36 = [v20 _flatImageWithColor:imageTintColor];
 
         v23 = [UIGraphicsImageRenderer alloc];
         [v36 size];
@@ -107,15 +107,15 @@
         v38[3] = &unk_1E711FB70;
         v39 = v36;
         v40 = v37;
-        v25 = v6;
+        v25 = updateCopy;
         v41 = v25;
-        v42 = self;
+        selfCopy = self;
         v26 = v36;
         v27 = [(UIGraphicsImageRenderer *)v24 imageWithActions:v38];
-        v28 = [v25 styleAttributes];
-        v29 = [v28 effectiveLayoutDirection];
+        styleAttributes2 = [v25 styleAttributes];
+        effectiveLayoutDirection = [styleAttributes2 effectiveLayoutDirection];
 
-        if (v29)
+        if (effectiveLayoutDirection)
         {
           v30 = 0.0;
         }
@@ -125,7 +125,7 @@
           v30 = 2.0;
         }
 
-        if (v29)
+        if (effectiveLayoutDirection)
         {
           v31 = 2.0;
         }
@@ -137,16 +137,16 @@
 
         v32 = [v27 imageWithAlignmentRectInsets:{0.0, v30, 0.0, v31, v36}];
 
-        v33 = [(_UIStatusBarBluetoothItem *)self batteryImageView];
-        [v33 setImage:v32];
+        batteryImageView = [(_UIStatusBarBluetoothItem *)self batteryImageView];
+        [batteryImageView setImage:v32];
 
-        v15 = v37;
+        batteryEntry2 = v37;
       }
     }
 
-    v34 = [v10 state] == 0;
-    v17 = [(_UIStatusBarIndicatorItem *)self imageView];
-    [v17 setUseDisabledAppearanceForAccessibilityHUD:v34];
+    v34 = [bluetoothEntry state] == 0;
+    batteryEntry = [(_UIStatusBarIndicatorItem *)self imageView];
+    [batteryEntry setUseDisabledAppearanceForAccessibilityHUD:v34];
   }
 
 LABEL_24:
@@ -154,13 +154,13 @@ LABEL_24:
   return v8;
 }
 
-- (id)_batteryFillColorForEntry:(id)a3 usingTintColor:(id)a4
+- (id)_batteryFillColorForEntry:(id)entry usingTintColor:(id)color
 {
-  v5 = a3;
-  v6 = [a4 colorWithAlphaComponent:1.0];
-  v7 = [v5 capacity];
+  entryCopy = entry;
+  v6 = [color colorWithAlphaComponent:1.0];
+  capacity = [entryCopy capacity];
 
-  if (v7 > 26)
+  if (capacity > 26)
   {
     if (!v6)
     {
@@ -198,24 +198,24 @@ LABEL_24:
   self->_batteryImageView = v4;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[_UIStatusBarBluetoothItem batteryDisplayIdentifier];
 
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
-    v6 = [(_UIStatusBarBluetoothItem *)self batteryImageView];
+    batteryImageView = [(_UIStatusBarBluetoothItem *)self batteryImageView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarBluetoothItem;
-    v6 = [(_UIStatusBarIndicatorItem *)&v9 viewForIdentifier:v4];
+    batteryImageView = [(_UIStatusBarIndicatorItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = batteryImageView;
 
   return v7;
 }

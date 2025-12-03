@@ -1,9 +1,9 @@
 @interface VUIPlistSeasonMediaCollection
-- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)a3 databaseSeason:(id)a4 requestedProperties:(id)a5;
-- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6;
-- (id)_valueForPropertyDescriptor:(id)a3;
+- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)library databaseSeason:(id)season requestedProperties:(id)properties;
+- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind;
+- (id)_valueForPropertyDescriptor:(id)descriptor;
 - (id)coverArtImageIdentifier;
-- (id)imageLoadParamsWithImageType:(unint64_t)a3;
+- (id)imageLoadParamsWithImageType:(unint64_t)type;
 - (id)mediaItemCount;
 - (id)seasonNumber;
 - (id)showIdentifier;
@@ -12,29 +12,29 @@
 
 @implementation VUIPlistSeasonMediaCollection
 
-- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)a3 databaseSeason:(id)a4 requestedProperties:(id)a5
+- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)library databaseSeason:(id)season requestedProperties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  seasonCopy = season;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v12 = [VUIPlistMediaEntityIdentifier alloc];
-  v13 = [v9 identifier];
-  v14 = [(VUIPlistMediaEntityIdentifier *)v12 initWithIdentifier:v13 type:5];
+  identifier = [seasonCopy identifier];
+  v14 = [(VUIPlistMediaEntityIdentifier *)v12 initWithIdentifier:identifier type:5];
 
   v15 = VUIPlistSeasonMediaKind();
   v18.receiver = self;
   v18.super_class = VUIPlistSeasonMediaCollection;
-  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:v11 identifier:v14 requestedProperties:v10 kind:v15];
+  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:libraryCopy identifier:v14 requestedProperties:propertiesCopy kind:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_databaseSeason, a4);
+    objc_storeStrong(&v16->_databaseSeason, season);
   }
 
   return v16;
 }
 
-- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6
+- (VUIPlistSeasonMediaCollection)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind
 {
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
@@ -46,54 +46,54 @@
 
 - (id)coverArtImageIdentifier
 {
-  v2 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-  v3 = [v2 coverArtURL];
-  v4 = [v3 absoluteString];
+  databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+  coverArtURL = [databaseSeason coverArtURL];
+  absoluteString = [coverArtURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (id)showIdentifier
 {
-  v2 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-  v3 = [v2 show];
-  v4 = [v3 identifier];
+  databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+  show = [databaseSeason show];
+  identifier = [show identifier];
 
-  v5 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:v4 type:4];
+  v5 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:identifier type:4];
 
   return v5;
 }
 
 - (id)showTitle
 {
-  v2 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-  v3 = [v2 show];
-  v4 = [v3 title];
+  databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+  show = [databaseSeason show];
+  title = [show title];
 
-  return v4;
+  return title;
 }
 
 - (id)seasonNumber
 {
-  v2 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-  v3 = [v2 seasonNumber];
+  databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+  seasonNumber = [databaseSeason seasonNumber];
 
-  return v3;
+  return seasonNumber;
 }
 
-- (id)_valueForPropertyDescriptor:(id)a3
+- (id)_valueForPropertyDescriptor:(id)descriptor
 {
-  v4 = [a3 sourcePropertyNames];
-  v5 = [v4 allObjects];
+  sourcePropertyNames = [descriptor sourcePropertyNames];
+  allObjects = [sourcePropertyNames allObjects];
 
-  if ([v5 count] == 1)
+  if ([allObjects count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-    NSSelectorFromString(v6);
+    firstObject = [allObjects firstObject];
+    databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+    NSSelectorFromString(firstObject);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 valueForKey:v6];
+      v8 = [databaseSeason valueForKey:firstObject];
     }
 
     else
@@ -113,27 +113,27 @@
 - (id)mediaItemCount
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-  v4 = [v3 episodes];
-  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+  databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+  episodes = [databaseSeason episodes];
+  v5 = [v2 numberWithUnsignedInteger:{objc_msgSend(episodes, "count")}];
 
   return v5;
 }
 
-- (id)imageLoadParamsWithImageType:(unint64_t)a3
+- (id)imageLoadParamsWithImageType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
-    v6 = [v5 coverArtURL];
+    databaseSeason = [(VUIPlistSeasonMediaCollection *)self databaseSeason];
+    coverArtURL = [databaseSeason coverArtURL];
 
-    v7 = [(VUIPlistSeasonMediaCollection *)self coverArtImageIdentifier];
-    v3 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:v6 baseImageIdentifier:v7 imageType:0];
+    coverArtImageIdentifier = [(VUIPlistSeasonMediaCollection *)self coverArtImageIdentifier];
+    v3 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:coverArtURL baseImageIdentifier:coverArtImageIdentifier imageType:0];
   }
 
   return v3;

@@ -1,9 +1,9 @@
 @interface VSPrivacyInfoCenter
 + (id)sharedPrivacyInfoCenter;
 - (VSPrivacyInfoCenter)init;
-- (id)updateAccountAccessStatusWithError:(id)a3;
+- (id)updateAccountAccessStatusWithError:(id)error;
 - (void)dealloc;
-- (void)updateAccountAccessStatusWithResponse:(id)a3;
+- (void)updateAccountAccessStatusWithResponse:(id)response;
 @end
 
 @implementation VSPrivacyInfoCenter
@@ -55,14 +55,14 @@ uint64_t __46__VSPrivacyInfoCenter_sharedPrivacyInfoCenter__block_invoke()
       }
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __27__VSPrivacyInfoCenter_init__block_invoke_6;
     v11[3] = &unk_278B73400;
     objc_copyWeak(&v12, &location);
-    v8 = [v6 addObserverForName:@"UIApplicationDidEnterBackgroundNotification" object:0 queue:v7 usingBlock:v11];
+    v8 = [defaultCenter addObserverForName:@"UIApplicationDidEnterBackgroundNotification" object:0 queue:mainQueue usingBlock:v11];
 
     v9 = +[VSManagedProfileConnection sharedConnection];
     [v9 registerObserver:v2];
@@ -108,8 +108,8 @@ void __27__VSPrivacyInfoCenter_init__block_invoke_6(uint64_t a1)
     notify_cancel(self->_registrationToken);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[VSManagedProfileConnection sharedConnection];
   [v4 unregisterObserver:self];
@@ -119,7 +119,7 @@ void __27__VSPrivacyInfoCenter_init__block_invoke_6(uint64_t a1)
   [(VSPrivacyInfoCenter *)&v5 dealloc];
 }
 
-- (void)updateAccountAccessStatusWithResponse:(id)a3
+- (void)updateAccountAccessStatusWithResponse:(id)response
 {
   [(VSPrivacyInfoCenter *)self willChangeValueForKey:@"accountAccessStatus"];
   [(VSPrivacyInfoCenter *)self setAccountAccessStatus:3];
@@ -127,42 +127,42 @@ void __27__VSPrivacyInfoCenter_init__block_invoke_6(uint64_t a1)
   [(VSPrivacyInfoCenter *)self didChangeValueForKey:@"accountAccessStatus"];
 }
 
-- (id)updateAccountAccessStatusWithError:(id)a3
+- (id)updateAccountAccessStatusWithError:(id)error
 {
-  v4 = a3;
-  if (VSErrorIsPrivateError(v4, -13))
+  errorCopy = error;
+  if (VSErrorIsPrivateError(errorCopy, -13))
   {
-    [VSPrivacyInfoCenter updateAccountAccessStatusWithError:v4];
+    [VSPrivacyInfoCenter updateAccountAccessStatusWithError:errorCopy];
   }
 
-  if (VSErrorIsPrivateError(v4, -11))
+  if (VSErrorIsPrivateError(errorCopy, -11))
   {
     v5 = 2;
 LABEL_8:
-    v6 = VSPublicError(0, 0, v4);
+    v6 = VSPublicError(0, 0, errorCopy);
 
 LABEL_9:
     [(VSPrivacyInfoCenter *)self setAccountAccessStatus:v5];
     goto LABEL_10;
   }
 
-  if (VSErrorIsPrivateError(v4, -12))
+  if (VSErrorIsPrivateError(errorCopy, -12))
   {
     v5 = 0;
     goto LABEL_8;
   }
 
-  if (VSErrorIsPrivateError(v4, -23))
+  if (VSErrorIsPrivateError(errorCopy, -23))
   {
     v5 = 1;
     goto LABEL_8;
   }
 
-  v6 = v4;
-  if (VSErrorIsPublicError(v4, 7))
+  v6 = errorCopy;
+  if (VSErrorIsPublicError(errorCopy, 7))
   {
     v5 = 0;
-    v6 = v4;
+    v6 = errorCopy;
     goto LABEL_9;
   }
 

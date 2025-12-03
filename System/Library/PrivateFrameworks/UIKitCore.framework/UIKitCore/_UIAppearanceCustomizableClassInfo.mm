@@ -1,6 +1,6 @@
 @interface _UIAppearanceCustomizableClassInfo
-+ (id)_cachedClassInfoForViewClass:(Class)a3 withGuideClass:(Class)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_cachedClassInfoForViewClass:(Class)class withGuideClass:(Class)guideClass;
+- (BOOL)isEqual:(id)equal;
 - (Class)_guideClass;
 - (id)_superClassInfo;
 - (id)description;
@@ -44,7 +44,7 @@
   return [_UIAppearanceCustomizableClassInfo _customizableClassInfoForViewClass:v5 withGuideClass:Superclass];
 }
 
-+ (id)_cachedClassInfoForViewClass:(Class)a3 withGuideClass:(Class)a4
++ (id)_cachedClassInfoForViewClass:(Class)class withGuideClass:(Class)guideClass
 {
   v7 = qword_1ED49E600;
   if (!qword_1ED49E600)
@@ -54,32 +54,32 @@
     v7 = qword_1ED49E600;
   }
 
-  v8 = [v7 objectForKey:a3];
+  v8 = [v7 objectForKey:class];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:514 valueOptions:0 capacity:0];
-    [qword_1ED49E600 setObject:v8 forKey:a3];
+    [qword_1ED49E600 setObject:v8 forKey:class];
   }
 
-  if (a4)
+  if (guideClass)
   {
-    v9 = a4;
+    guideClassCopy = guideClass;
   }
 
   else
   {
-    v9 = qword_1ED49E608;
+    guideClassCopy = qword_1ED49E608;
   }
 
-  v10 = [v8 objectForKey:v9];
+  v10 = [v8 objectForKey:guideClassCopy];
   if (!v10)
   {
-    v10 = objc_alloc_init(a1);
-    v10[4] = a3;
-    v10[5] = a4;
-    if (a4)
+    v10 = objc_alloc_init(self);
+    v10[4] = class;
+    v10[5] = guideClass;
+    if (guideClass)
     {
-      v11 = [MEMORY[0x1E696AAE8] bundleForClass:a4];
+      v11 = [MEMORY[0x1E696AAE8] bundleForClass:guideClass];
       v12 = v11 == _UIKitBundle();
     }
 
@@ -89,42 +89,42 @@
     }
 
     *(v10 + 8) = v12;
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == class)
     {
       v14 = 1;
     }
 
     else
     {
-      Superclass = class_getSuperclass(a3);
+      Superclass = class_getSuperclass(class);
       v14 = Superclass == objc_opt_class();
     }
 
     *(v10 + 9) = v14;
-    if (a4)
+    if (guideClass)
     {
       v15 = MEMORY[0x1E696AEC0];
-      v16 = NSStringFromClass(a3);
-      v17 = [v15 stringWithFormat:@"%@-%@", v16, NSStringFromClass(a4)];
+      v16 = NSStringFromClass(class);
+      v17 = [v15 stringWithFormat:@"%@-%@", v16, NSStringFromClass(guideClass)];
     }
 
     else
     {
-      v17 = NSStringFromClass(a3);
+      v17 = NSStringFromClass(class);
     }
 
     v18 = v17;
     v10[2] = v17;
     v10[3] = [(NSString *)v18 hash];
-    [v8 setObject:v10 forKey:v9];
+    [v8 setObject:v10 forKey:guideClassCopy];
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -136,9 +136,9 @@
   }
 
   classReferenceKey = self->_classReferenceKey;
-  v6 = [a3 _classReferenceKey];
+  _classReferenceKey = [equal _classReferenceKey];
 
-  return [(NSString *)classReferenceKey isEqualToString:v6];
+  return [(NSString *)classReferenceKey isEqualToString:_classReferenceKey];
 }
 
 - (id)description

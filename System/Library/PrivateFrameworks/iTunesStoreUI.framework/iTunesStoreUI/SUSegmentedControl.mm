@@ -1,48 +1,48 @@
 @interface SUSegmentedControl
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)items;
-- (SUSegmentedControl)initWithFrame:(CGRect)a3;
+- (SUSegmentedControl)initWithFrame:(CGRect)frame;
 - (id)_titlesForMoreList;
 - (int64_t)numberOfVisibleSegments;
 - (void)_applyStyling;
 - (void)_destroyMenuViewController;
 - (void)_destroyPopoverController;
-- (void)_presentPopoverAnimated:(BOOL)a3;
+- (void)_presentPopoverAnimated:(BOOL)animated;
 - (void)_reloadData;
-- (void)_setValue:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)_showMoreList:(BOOL)a3;
-- (void)_valueChangedEvent:(id)a3;
-- (void)_windowDidRotateNotification:(id)a3;
-- (void)_windowWillRotateNotification:(id)a3;
+- (void)_setValue:(id)value forSegmentAtIndex:(unint64_t)index;
+- (void)_showMoreList:(BOOL)list;
+- (void)_valueChangedEvent:(id)event;
+- (void)_windowDidRotateNotification:(id)notification;
+- (void)_windowWillRotateNotification:(id)notification;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)menuViewControllerDidCancel:(id)a3;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setClientInterface:(id)a3;
-- (void)setItems:(id)a3;
-- (void)setMaximumNumberOfItems:(int64_t)a3;
-- (void)setMaximumWidth:(double)a3;
-- (void)setMoreListTitle:(id)a3;
-- (void)setSegmentedControlStyle:(int64_t)a3;
-- (void)setSelectedItemIndex:(int64_t)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTintStyle:(int64_t)a3;
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)showMoreList:(BOOL)a3 animated:(BOOL)a4;
-- (void)showPopover:(id)a3 fromSegmentIndex:(int64_t)a4 animated:(BOOL)a5;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)menuViewControllerDidCancel:(id)cancel;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setClientInterface:(id)interface;
+- (void)setItems:(id)items;
+- (void)setMaximumNumberOfItems:(int64_t)items;
+- (void)setMaximumWidth:(double)width;
+- (void)setMoreListTitle:(id)title;
+- (void)setSegmentedControlStyle:(int64_t)style;
+- (void)setSelectedItemIndex:(int64_t)index;
+- (void)setTintColor:(id)color;
+- (void)setTintStyle:(int64_t)style;
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)showMoreList:(BOOL)list animated:(BOOL)animated;
+- (void)showPopover:(id)popover fromSegmentIndex:(int64_t)index animated:(BOOL)animated;
 - (void)sizeToFitUserInterfaceIdiom;
-- (void)sizeToFitWithMinimumSegmentWidth:(double)a3 maximumTotalWidth:(double)a4;
+- (void)sizeToFitWithMinimumSegmentWidth:(double)width maximumTotalWidth:(double)totalWidth;
 @end
 
 @implementation SUSegmentedControl
 
-- (SUSegmentedControl)initWithFrame:(CGRect)a3
+- (SUSegmentedControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUSegmentedControl;
-  v3 = [(SUSegmentedControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUSegmentedControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF38]);
@@ -59,9 +59,9 @@
     v3->_selectionIndex = [(UISegmentedControl *)v3->_segmentedControl selectedSegmentIndex];
     v3->_showsMoreListAutomatically = 1;
     v3->_tintStyle = _UIApplicationUsesLegacyUI();
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel__windowDidRotateNotification_ name:*MEMORY[0x1E69DE7D0] object:0];
-    [v6 addObserver:v3 selector:sel__windowWillRotateNotification_ name:*MEMORY[0x1E69DE828] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__windowDidRotateNotification_ name:*MEMORY[0x1E69DE7D0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__windowWillRotateNotification_ name:*MEMORY[0x1E69DE828] object:0];
   }
 
   return v3;
@@ -69,9 +69,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE7D0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE7D0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
   [(UISegmentedControl *)self->_segmentedControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   [(SUMenuViewController *)self->_menuViewController setDelegate:0];
@@ -101,41 +101,41 @@
   return result;
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
   cancelButtonTitle = self->_cancelButtonTitle;
-  if (cancelButtonTitle != a3)
+  if (cancelButtonTitle != title)
   {
 
-    self->_cancelButtonTitle = [a3 copy];
+    self->_cancelButtonTitle = [title copy];
     if (![objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")])
     {
       menuViewController = self->_menuViewController;
 
-      [(SUSimpleMenuViewController *)menuViewController setCancelButtonTitle:a3];
+      [(SUSimpleMenuViewController *)menuViewController setCancelButtonTitle:title];
     }
   }
 }
 
-- (void)setClientInterface:(id)a3
+- (void)setClientInterface:(id)interface
 {
   clientInterface = self->_clientInterface;
-  if (clientInterface != a3)
+  if (clientInterface != interface)
   {
 
-    self->_clientInterface = a3;
+    self->_clientInterface = interface;
 
     [(SUSegmentedControl *)self _applyStyling];
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   items = self->_items;
-  if (items != a3)
+  if (items != items)
   {
 
-    v6 = [a3 mutableCopy];
+    v6 = [items mutableCopy];
     self->_items = v6;
     selectionIndex = self->_selectionIndex;
     if (selectionIndex >= [(NSMutableArray *)v6 count])
@@ -147,34 +147,34 @@
   }
 }
 
-- (void)setMaximumNumberOfItems:(int64_t)a3
+- (void)setMaximumNumberOfItems:(int64_t)items
 {
-  if (self->_maximumNumberOfItems != a3)
+  if (self->_maximumNumberOfItems != items)
   {
-    self->_maximumNumberOfItems = a3;
+    self->_maximumNumberOfItems = items;
     [(SUSegmentedControl *)self _reloadData];
   }
 }
 
-- (void)setMoreListTitle:(id)a3
+- (void)setMoreListTitle:(id)title
 {
   moreListTitle = self->_moreListTitle;
-  if (moreListTitle != a3)
+  if (moreListTitle != title)
   {
 
-    self->_moreListTitle = [a3 copy];
+    self->_moreListTitle = [title copy];
 
     [(SUSegmentedControl *)self _reloadData];
   }
 }
 
-- (void)setMaximumWidth:(double)a3
+- (void)setMaximumWidth:(double)width
 {
-  if (self->_maximumWidth != a3)
+  if (self->_maximumWidth != width)
   {
     [(SUSegmentedControl *)self frame];
-    self->_maximumWidth = a3;
-    if (a3 > 0.00000011920929 && v5 > a3)
+    self->_maximumWidth = width;
+    if (width > 0.00000011920929 && v5 > width)
     {
 
       [(SUSegmentedControl *)self setFrame:?];
@@ -182,16 +182,16 @@
   }
 }
 
-- (void)setSegmentedControlStyle:(int64_t)a3
+- (void)setSegmentedControlStyle:(int64_t)style
 {
-  [(UISegmentedControl *)self->_segmentedControl setSegmentedControlStyle:a3];
+  [(UISegmentedControl *)self->_segmentedControl setSegmentedControlStyle:style];
 
   [(SUSegmentedControl *)self _applyStyling];
 }
 
-- (void)setSelectedItemIndex:(int64_t)a3
+- (void)setSelectedItemIndex:(int64_t)index
 {
-  self->_selectionIndex = a3;
+  self->_selectionIndex = index;
   v4 = [(NSMutableArray *)self->_items count];
   maximumNumberOfItems = self->_maximumNumberOfItems;
   if (self->_selectionIndex >= (maximumNumberOfItems - 1) && v4 > maximumNumberOfItems)
@@ -209,59 +209,59 @@
   [(UISegmentedControl *)segmentedControl setSelectedSegmentIndex:selectionIndex];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  [(UISegmentedControl *)self->_segmentedControl setTintColor:a3];
+  [(UISegmentedControl *)self->_segmentedControl setTintColor:color];
 
   [(SUSegmentedControl *)self _applyStyling];
 }
 
-- (void)setTintStyle:(int64_t)a3
+- (void)setTintStyle:(int64_t)style
 {
-  if (self->_tintStyle != a3)
+  if (self->_tintStyle != style)
   {
-    self->_tintStyle = a3;
+    self->_tintStyle = style;
     [(SUSegmentedControl *)self _applyStyling];
   }
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
   v7 = objc_opt_respondsToSelector();
   segmentedControl = self->_segmentedControl;
   if (v7)
   {
 
-    [(UISegmentedControl *)segmentedControl _setTitleTextAttributes:a3 forState:a4];
+    [(UISegmentedControl *)segmentedControl _setTitleTextAttributes:attributes forState:state];
   }
 
   else
   {
 
-    [(UISegmentedControl *)segmentedControl setTitleTextAttributes:a3 forState:a4];
+    [(UISegmentedControl *)segmentedControl setTitleTextAttributes:attributes forState:state];
   }
 }
 
-- (void)showMoreList:(BOOL)a3 animated:(BOOL)a4
+- (void)showMoreList:(BOOL)list animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  listCopy = list;
   if ([(NSMutableArray *)self->_items count]> self->_maximumNumberOfItems)
   {
     menuViewController = self->_menuViewController;
-    if (v5)
+    if (listCopy)
     {
       if (!menuViewController)
       {
 
-        [(SUSegmentedControl *)self _showMoreList:v4];
+        [(SUSegmentedControl *)self _showMoreList:animatedCopy];
       }
     }
 
     else if (menuViewController)
     {
       [(SUSegmentedControl *)self setSelectedItemIndex:self->_selectionIndex];
-      [(UIViewController *)self->_menuViewController dismissAnimated:v4];
+      [(UIViewController *)self->_menuViewController dismissAnimated:animatedCopy];
       [(SUSegmentedControl *)self _destroyMenuViewController];
 
       [(SUSegmentedControl *)self _destroyPopoverController];
@@ -269,15 +269,15 @@
   }
 }
 
-- (void)showPopover:(id)a3 fromSegmentIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)showPopover:(id)popover fromSegmentIndex:(int64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   [(SUSegmentedControl *)self bounds];
   v10 = v9;
   v12 = v11 / [(SUSegmentedControl *)self numberOfVisibleSegments];
-  v13 = a4 * floorf(v12);
+  v13 = index * floorf(v12);
 
-  [a3 presentPopoverFromRect:self inView:1 permittedArrowDirections:v5 animated:{v13, v10}];
+  [popover presentPopoverFromRect:self inView:1 permittedArrowDirections:animatedCopy animated:{v13, v10}];
 }
 
 - (void)sizeToFitUserInterfaceIdiom
@@ -298,7 +298,7 @@
   [(SUSegmentedControl *)self sizeToFitWithMinimumSegmentWidth:100.0 maximumTotalWidth:v5];
 }
 
-- (void)sizeToFitWithMinimumSegmentWidth:(double)a3 maximumTotalWidth:(double)a4
+- (void)sizeToFitWithMinimumSegmentWidth:(double)width maximumTotalWidth:(double)totalWidth
 {
   [(SUSegmentedControl *)self sizeToFit];
   [(SUSegmentedControl *)self frame];
@@ -306,33 +306,33 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (a3 > 0.00000011920929)
+  if (width > 0.00000011920929)
   {
-    v15 = [(SUSegmentedControl *)self numberOfVisibleSegments];
-    if (v12 < v15 * a3)
+    numberOfVisibleSegments = [(SUSegmentedControl *)self numberOfVisibleSegments];
+    if (v12 < numberOfVisibleSegments * width)
     {
-      v12 = v15 * a3;
+      v12 = numberOfVisibleSegments * width;
     }
   }
 
-  if (v12 >= a4)
+  if (v12 >= totalWidth)
   {
-    v16 = a4;
+    totalWidthCopy = totalWidth;
   }
 
   else
   {
-    v16 = v12;
+    totalWidthCopy = v12;
   }
 
-  if (a4 <= 0.00000011920929)
+  if (totalWidth <= 0.00000011920929)
   {
     v17 = v12;
   }
 
   else
   {
-    v17 = v16;
+    v17 = totalWidthCopy;
   }
 
   [(SUSegmentedControl *)self setFrame:v8, v10, v17, v14];
@@ -348,9 +348,9 @@
   [(SUSegmentedControl *)&v4 layoutSubviews];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UISegmentedControl *)self->_segmentedControl sizeThatFits:a3.width, a3.height];
+  [(UISegmentedControl *)self->_segmentedControl sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if ([(UISegmentedControl *)self->_segmentedControl segmentControlStyle]== 7)
@@ -371,14 +371,14 @@
   return result;
 }
 
-- (void)_valueChangedEvent:(id)a3
+- (void)_valueChangedEvent:(id)event
 {
-  v4 = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+  selectedSegmentIndex = [(UISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
   [(UIPopoverController *)self->_popoverController dismissPopoverAnimated:1];
   [(SUSegmentedControl *)self _destroyPopoverController];
   v5 = [(NSMutableArray *)self->_items count];
   maximumNumberOfItems = self->_maximumNumberOfItems;
-  if (v5 > maximumNumberOfItems && v4 == maximumNumberOfItems - 1)
+  if (v5 > maximumNumberOfItems && selectedSegmentIndex == maximumNumberOfItems - 1)
   {
     if ([(SUSegmentedControl *)self showsMoreListAutomatically])
     {
@@ -388,7 +388,7 @@
 
   else
   {
-    self->_selectionIndex = v4;
+    self->_selectionIndex = selectedSegmentIndex;
     [(UIViewController *)self->_menuViewController dismissAnimated:1];
     [(SUSegmentedControl *)self _destroyMenuViewController];
     [(SUSegmentedControl *)self _destroyPopoverController];
@@ -397,7 +397,7 @@
   [(SUSegmentedControl *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_windowDidRotateNotification:(id)a3
+- (void)_windowDidRotateNotification:(id)notification
 {
   if (self->_hidingPopoverForRotation)
   {
@@ -418,10 +418,10 @@
   }
 }
 
-- (void)_windowWillRotateNotification:(id)a3
+- (void)_windowWillRotateNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (self->_popoverController && [(SUSegmentedControl *)self isDescendantOfView:v4])
+  object = [notification object];
+  if (self->_popoverController && [(SUSegmentedControl *)self isDescendantOfView:object])
   {
     self->_hidingPopoverForRotation = 1;
     popoverController = self->_popoverController;
@@ -430,30 +430,30 @@
   }
 }
 
-- (void)menuViewControllerDidCancel:(id)a3
+- (void)menuViewControllerDidCancel:(id)cancel
 {
   [(SUSegmentedControl *)self setSelectedItemIndex:self->_selectionIndex];
-  [a3 dismissAnimated:1];
+  [cancel dismissAnimated:1];
   [(SUSegmentedControl *)self _destroyMenuViewController];
 
   [(SUSegmentedControl *)self _destroyPopoverController];
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
-  if (a4 + self->_maximumNumberOfItems - 1 != self->_selectionIndex)
+  if (index + self->_maximumNumberOfItems - 1 != self->_selectionIndex)
   {
     [(SUSegmentedControl *)self setSelectedItemIndex:?];
     [(SUSegmentedControl *)self sendActionsForControlEvents:4096];
   }
 
-  [a3 dismissAnimated:1];
+  [controller dismissAnimated:1];
   [(SUSegmentedControl *)self _destroyMenuViewController];
 
   [(SUSegmentedControl *)self _destroyPopoverController];
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(SUSegmentedControl *)self setSelectedItemIndex:self->_selectionIndex];
   [(SUSegmentedControl *)self _destroyMenuViewController];
@@ -487,16 +487,16 @@
 
   else
   {
-    v4 = [(SUClientInterface *)[(SUSegmentedControl *)self clientInterface] appearance];
-    if (!v4)
+    appearance = [(SUClientInterface *)[(SUSegmentedControl *)self clientInterface] appearance];
+    if (!appearance)
     {
-      v4 = +[SUUIAppearance defaultAppearance];
+      appearance = +[SUUIAppearance defaultAppearance];
     }
 
     v5 = self->_segmentedControl;
     tintStyle = self->_tintStyle;
 
-    [(SUUIAppearance *)v4 styleSegmentedControl:v5 tintStyle:tintStyle];
+    [(SUUIAppearance *)appearance styleSegmentedControl:v5 tintStyle:tintStyle];
   }
 }
 
@@ -514,11 +514,11 @@
   self->_popoverController = 0;
 }
 
-- (void)_presentPopoverAnimated:(BOOL)a3
+- (void)_presentPopoverAnimated:(BOOL)animated
 {
   if (self->_popoverController)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if ([(UISegmentedControl *)self->_segmentedControl window])
     {
       v5 = [(UISegmentedControl *)self->_segmentedControl infoViewForSegment:self->_maximumNumberOfItems - 1];
@@ -529,7 +529,7 @@
       popoverController = self->_popoverController;
       segmentedControl = self->_segmentedControl;
 
-      [(UIPopoverController *)popoverController presentPopoverFromRect:segmentedControl inView:1 permittedArrowDirections:v3 animated:v11];
+      [(UIPopoverController *)popoverController presentPopoverFromRect:segmentedControl inView:1 permittedArrowDirections:animatedCopy animated:v11];
     }
   }
 }
@@ -591,23 +591,23 @@
   [(SUSegmentedControl *)self setNeedsLayout];
 }
 
-- (void)_setValue:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)_setValue:(id)value forSegmentAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (value)
   {
-    [(NSMutableArray *)self->_items replaceObjectAtIndex:a4 withObject:a3];
-    if ([(UISegmentedControl *)self->_segmentedControl numberOfSegments]> a4)
+    [(NSMutableArray *)self->_items replaceObjectAtIndex:index withObject:value];
+    if ([(UISegmentedControl *)self->_segmentedControl numberOfSegments]> index)
     {
       segmentedControl = self->_segmentedControl;
 
-      [(UISegmentedControl *)segmentedControl setImage:a3 forSegmentAtIndex:a4];
+      [(UISegmentedControl *)segmentedControl setImage:value forSegmentAtIndex:index];
     }
   }
 }
 
-- (void)_showMoreList:(BOOL)a3
+- (void)_showMoreList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   v5 = [[SUSimpleMenuViewController alloc] initWithTitles:[(SUSegmentedControl *)self _titlesForMoreList]];
   self->_menuViewController = v5;
   [(SUViewController *)v5 setClientInterface:[(SUSegmentedControl *)self clientInterface]];
@@ -629,7 +629,7 @@
     [(UIPopoverController *)self->_popoverController setDelegate:self];
     -[UIPopoverController setPassthroughViews:](self->_popoverController, "setPassthroughViews:", [MEMORY[0x1E695DEC8] arrayWithObject:self->_segmentedControl]);
 
-    [(SUSegmentedControl *)self _presentPopoverAnimated:v3];
+    [(SUSegmentedControl *)self _presentPopoverAnimated:listCopy];
   }
 
   else

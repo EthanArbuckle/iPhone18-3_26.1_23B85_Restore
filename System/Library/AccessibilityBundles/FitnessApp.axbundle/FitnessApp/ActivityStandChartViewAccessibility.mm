@@ -1,16 +1,16 @@
 @interface ActivityStandChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ActivityStandChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.ActivityStandChartView" hasInstanceMethod:@"standChartPoints" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.ActivityStandChartView" hasInstanceMethod:@"reloadDataWithAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.ActivityStandChartView" hasInstanceMethod:@"standChartPoints" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.ActivityStandChartView" hasInstanceMethod:@"reloadDataWithAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)accessibilityElements
@@ -18,8 +18,8 @@
   v3 = [(ActivityStandChartViewAccessibility *)self _accessibilityValueForKey:kUIAccessibilityStorageKeyChildren];
   if (!v3)
   {
-    v4 = [(ActivityStandChartViewAccessibility *)self _accessibilityGraphData];
-    v5 = [v4 count];
+    _accessibilityGraphData = [(ActivityStandChartViewAccessibility *)self _accessibilityGraphData];
+    v5 = [_accessibilityGraphData count];
     v6 = [NSMutableArray arrayWithCapacity:v5];
     [ActivityStandChartViewAccessibility _accessibilitySetRetainedValue:"_accessibilitySetRetainedValue:forKey:" forKey:?];
     v7 = objc_alloc_init(NSDateIntervalFormatter);
@@ -32,7 +32,7 @@
     v37 = v6;
     v11 = v10;
     v12 = v38;
-    if (v4)
+    if (_accessibilityGraphData)
     {
       if (v38)
       {
@@ -48,12 +48,12 @@
           v20 = v15 / v5;
           v21 = ceilf(v20);
           v33 = v5 - 1;
-          v34 = v4;
+          v34 = _accessibilityGraphData;
           v35 = v11;
           v36 = v5;
           do
           {
-            v22 = [v4 objectAtIndex:v17];
+            v22 = [_accessibilityGraphData objectAtIndex:v17];
             [v22 CGPointValue];
             v24 = v23;
             if (v24 <= 0.0)
@@ -88,7 +88,7 @@
             [v37 addObject:v31];
 
             v12 = v38;
-            v4 = v34;
+            _accessibilityGraphData = v34;
 
             v11 = v35;
             ++v17;
@@ -117,17 +117,17 @@
   v4 = v3;
   if (v3 && [v3 count] && (objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
-  [(ActivityStandChartViewAccessibility *)v7 _accessibilitySetRetainedValue:v8 forKey:@"kAXDayViewCellGraphElements"];
+  [(ActivityStandChartViewAccessibility *)selfCopy2 _accessibilitySetRetainedValue:v8 forKey:@"kAXDayViewCellGraphElements"];
   [(ActivityStandChartViewAccessibility *)self _accessibilitySetRetainedValue:0 forKey:kUIAccessibilityStorageKeyChildren];
 }
 

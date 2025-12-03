@@ -1,16 +1,16 @@
 @interface IMThumbnailUtilities
-+ (CGSize)proportionalScaleSize:(CGSize)a3 toDestinationSize:(CGSize)a4 options:(int64_t)a5;
-+ (id)scaleImage:(id)a3 toSize:(CGSize)a4 options:(int64_t)a5;
++ (CGSize)proportionalScaleSize:(CGSize)size toDestinationSize:(CGSize)destinationSize options:(int64_t)options;
++ (id)scaleImage:(id)image toSize:(CGSize)size options:(int64_t)options;
 @end
 
 @implementation IMThumbnailUtilities
 
-+ (CGSize)proportionalScaleSize:(CGSize)a3 toDestinationSize:(CGSize)a4 options:(int64_t)a5
++ (CGSize)proportionalScaleSize:(CGSize)size toDestinationSize:(CGSize)destinationSize options:(int64_t)options
 {
-  width = a3.width;
-  v6 = a4.width / width;
-  height = a3.height;
-  v8 = a4.height / height;
+  width = size.width;
+  v6 = destinationSize.width / width;
+  height = size.height;
+  v8 = destinationSize.height / height;
   if (v6 >= v8)
   {
     v6 = v8;
@@ -18,7 +18,7 @@
 
   v9 = v6 * width;
   v10 = v6 * height;
-  if ((a5 & 2) != 0 && v9 / v10 + 0.072 >= 0.667 && v9 / v10 + -0.072 <= 0.667)
+  if ((options & 2) != 0 && v9 / v10 + 0.072 >= 0.667 && v9 / v10 + -0.072 <= 0.667)
   {
     v9 = v10 * 0.667;
   }
@@ -34,21 +34,21 @@
   return result;
 }
 
-+ (id)scaleImage:(id)a3 toSize:(CGSize)a4 options:(int64_t)a5
++ (id)scaleImage:(id)image toSize:(CGSize)size options:(int64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  [v8 size];
-  if (!a5 && (v9 == width ? (v11 = v10 == height) : (v11 = 0), v11))
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  [imageCopy size];
+  if (!options && (v9 == width ? (v11 = v10 == height) : (v11 = 0), v11))
   {
-    v12 = v8;
+    v12 = imageCopy;
   }
 
-  else if (v8)
+  else if (imageCopy)
   {
-    [v8 size];
-    [IMThumbnailUtilities proportionalScaleSize:"proportionalScaleSize:toDestinationSize:options:" toDestinationSize:a5 options:?];
+    [imageCopy size];
+    [IMThumbnailUtilities proportionalScaleSize:"proportionalScaleSize:toDestinationSize:options:" toDestinationSize:options options:?];
     v14 = v13;
     v16 = v15;
     v17 = +[UIGraphicsImageRendererFormat preferredFormat];
@@ -63,7 +63,7 @@
     v25 = 0;
     v26 = v14;
     v27 = v16;
-    v21 = v8;
+    v21 = imageCopy;
     v12 = [v18 imageWithActions:v20];
   }
 

@@ -1,39 +1,39 @@
 @interface ICGalleryAttachmentViewCollectionViewLayout
-+ (double)contentWidthForAttachmentGalleryModel:(id)a3 itemHeight:(double)a4 itemSpacing:(double)a5;
++ (double)contentWidthForAttachmentGalleryModel:(id)model itemHeight:(double)height itemSpacing:(double)spacing;
 - (CGSize)cachedContentSize;
 - (CGSize)margins;
-- (ICGalleryAttachmentViewCollectionViewLayout)initWithAttachmentGalleryModel:(id)a3 itemHeight:(double)a4 itemSpacing:(double)a5 margins:(CGSize)a6;
-- (void)invalidateLayoutWithNewItemHeight:(double)a3;
+- (ICGalleryAttachmentViewCollectionViewLayout)initWithAttachmentGalleryModel:(id)model itemHeight:(double)height itemSpacing:(double)spacing margins:(CGSize)margins;
+- (void)invalidateLayoutWithNewItemHeight:(double)height;
 @end
 
 @implementation ICGalleryAttachmentViewCollectionViewLayout
 
-- (ICGalleryAttachmentViewCollectionViewLayout)initWithAttachmentGalleryModel:(id)a3 itemHeight:(double)a4 itemSpacing:(double)a5 margins:(CGSize)a6
+- (ICGalleryAttachmentViewCollectionViewLayout)initWithAttachmentGalleryModel:(id)model itemHeight:(double)height itemSpacing:(double)spacing margins:(CGSize)margins
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a3;
+  height = margins.height;
+  width = margins.width;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = ICGalleryAttachmentViewCollectionViewLayout;
   v12 = [(UICollectionViewFlowLayout *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(ICGalleryAttachmentViewCollectionViewLayout *)v12 setAttachmentModel:v11];
-    [(ICGalleryAttachmentViewCollectionViewLayout *)v13 setItemHeight:a4];
-    [(ICGalleryAttachmentViewCollectionViewLayout *)v13 setItemSpacing:a5];
+    [(ICGalleryAttachmentViewCollectionViewLayout *)v12 setAttachmentModel:modelCopy];
+    [(ICGalleryAttachmentViewCollectionViewLayout *)v13 setItemHeight:height];
+    [(ICGalleryAttachmentViewCollectionViewLayout *)v13 setItemSpacing:spacing];
     [(ICGalleryAttachmentViewCollectionViewLayout *)v13 setMargins:width, height];
-    [(UICollectionViewFlowLayout *)v13 setMinimumInteritemSpacing:a5];
-    [(UICollectionViewFlowLayout *)v13 setItemSize:a4, a4];
+    [(UICollectionViewFlowLayout *)v13 setMinimumInteritemSpacing:spacing];
+    [(UICollectionViewFlowLayout *)v13 setItemSize:height, height];
     [(UICollectionViewFlowLayout *)v13 setScrollDirection:1];
   }
 
   return v13;
 }
 
-+ (double)contentWidthForAttachmentGalleryModel:(id)a3 itemHeight:(double)a4 itemSpacing:(double)a5
++ (double)contentWidthForAttachmentGalleryModel:(id)model itemHeight:(double)height itemSpacing:(double)spacing
 {
-  v7 = a3;
+  modelCopy = model;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -43,17 +43,17 @@
   v11[2] = __108__ICGalleryAttachmentViewCollectionViewLayout_contentWidthForAttachmentGalleryModel_itemHeight_itemSpacing___block_invoke;
   v11[3] = &unk_2781AFBB0;
   v11[4] = &v12;
-  *&v11[5] = a4;
-  [v7 enumerateSubAttachmentsWithBlock:v11];
-  if ([v7 subAttachmentCount] <= 1)
+  *&v11[5] = height;
+  [modelCopy enumerateSubAttachmentsWithBlock:v11];
+  if ([modelCopy subAttachmentCount] <= 1)
   {
     v9 = v13[3];
   }
 
   else
   {
-    v8 = [v7 subAttachmentCount];
-    v9 = v13[3] + (v8 - 1) * a5;
+    subAttachmentCount = [modelCopy subAttachmentCount];
+    v9 = v13[3] + (subAttachmentCount - 1) * spacing;
     v13[3] = v9;
   }
 
@@ -77,10 +77,10 @@ double __108__ICGalleryAttachmentViewCollectionViewLayout_contentWidthForAttachm
   return result;
 }
 
-- (void)invalidateLayoutWithNewItemHeight:(double)a3
+- (void)invalidateLayoutWithNewItemHeight:(double)height
 {
   [(ICGalleryAttachmentViewCollectionViewLayout *)self setItemHeight:?];
-  [(UICollectionViewFlowLayout *)self setItemSize:a3, a3];
+  [(UICollectionViewFlowLayout *)self setItemSize:height, height];
 
   [(ICGalleryAttachmentViewCollectionViewLayout *)self invalidateLayout];
 }

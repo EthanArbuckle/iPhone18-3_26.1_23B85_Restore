@@ -1,31 +1,31 @@
 @interface PKAccountWebServicePhysicalCardsResponse
-- (PKAccountWebServicePhysicalCardsResponse)initWithData:(id)a3;
+- (PKAccountWebServicePhysicalCardsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServicePhysicalCardsResponse
 
-- (PKAccountWebServicePhysicalCardsResponse)initWithData:(id)a3
+- (PKAccountWebServicePhysicalCardsResponse)initWithData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = PKAccountWebServicePhysicalCardsResponse;
-  v3 = [(PKWebServiceResponse *)&v19 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v19 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKSetContaining:objc_opt_class() forKey:@"physicalCards"];
+    v6 = [jSONObject PKSetContaining:objc_opt_class() forKey:@"physicalCards"];
     v7 = [v6 pk_setByApplyingBlock:&__block_literal_global_693];
     physicalCards = v4->_physicalCards;
     v4->_physicalCards = v7;
 
-    v9 = [v5 PKSetContaining:objc_opt_class() forKey:@"physicalCardExpirationMessaging"];
+    v9 = [jSONObject PKSetContaining:objc_opt_class() forKey:@"physicalCardExpirationMessaging"];
     v10 = [v9 pk_setBySafelyApplyingBlock:&__block_literal_global_699];
     expirationMessaging = v4->_expirationMessaging;
     v4->_expirationMessaging = v10;

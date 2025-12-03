@@ -1,23 +1,23 @@
 @interface PKPassTileValueForeignReference
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileValueForeignReference)initWithCoder:(id)a3;
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4;
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileValueForeignReference)initWithCoder:(id)coder;
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileValueForeignReference
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKPassTileValueForeignReference;
-  if (-[PKPassTileValue _setUpWithDictionary:](&v10, sel__setUpWithDictionary_, v4) && ([v4 PKStringForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
+  if (-[PKPassTileValue _setUpWithDictionary:](&v10, sel__setUpWithDictionary_, dictionaryCopy) && ([dictionaryCopy PKStringForKey:@"content"], v5 = objc_claimAutoreleasedReturnValue(), content = self->_content, self->_content = v5, content, self->_content))
   {
-    v7 = [v4 PKStringForKey:@"foreignReferenceType"];
+    v7 = [dictionaryCopy PKStringForKey:@"foreignReferenceType"];
     v8 = PKPassTileForeignReferenceTypeFromString(v7);
     self->_foreignReferenceType = v8;
   }
@@ -30,43 +30,43 @@
   return v8;
 }
 
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v7.receiver = self;
   v7.super_class = PKPassTileValueForeignReference;
-  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:a3 privateBundle:a4];
+  v5 = [(PKPassTileValue *)&v7 createResolvedValueWithBundle:bundle privateBundle:privateBundle];
   objc_storeStrong(v5 + 3, self->_content);
   v5[4] = self->_foreignReferenceType;
   return v5;
 }
 
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context
 {
-  v6 = a3;
-  v7 = v6;
+  stateCopy = state;
+  v7 = stateCopy;
   if (self->_foreignReferenceType != 1 || !self->_content)
   {
     v11 = 0;
     goto LABEL_14;
   }
 
-  v8 = [v6 balanceModel];
-  v9 = [v8 balanceForIdentifier:self->_content];
+  balanceModel = [stateCopy balanceModel];
+  v9 = [balanceModel balanceForIdentifier:self->_content];
 
   if (v9)
   {
-    switch(a4)
+    switch(context)
     {
       case 2:
-        v10 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         goto LABEL_12;
       case 1:
-        v10 = [v9 formattedValue];
+        localizedDescription = [v9 formattedValue];
         goto LABEL_12;
       case 0:
-        v10 = [v9 localizedTitle];
+        localizedDescription = [v9 localizedTitle];
 LABEL_12:
-        v11 = v10;
+        v11 = localizedDescription;
         goto LABEL_13;
     }
   }
@@ -79,32 +79,32 @@ LABEL_14:
   return v11;
 }
 
-- (PKPassTileValueForeignReference)initWithCoder:(id)a3
+- (PKPassTileValueForeignReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassTileValueForeignReference;
-  v5 = [(PKPassTileValue *)&v10 initWithCoder:v4];
+  v5 = [(PKPassTileValue *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
     content = v5->_content;
     v5->_content = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foreignReferenceType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foreignReferenceType"];
     v5->_foreignReferenceType = PKPassTileForeignReferenceTypeFromString(v8);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKPassTileValueForeignReference;
-  v4 = a3;
-  [(PKPassTileValue *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_content forKey:{@"content", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(PKPassTileValue *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_content forKey:{@"content", v6.receiver, v6.super_class}];
   if (self->_foreignReferenceType == 1)
   {
     v5 = @"balance";
@@ -115,7 +115,7 @@ LABEL_14:
     v5 = 0;
   }
 
-  [v4 encodeObject:v5 forKey:@"foreignReferenceType"];
+  [coderCopy encodeObject:v5 forKey:@"foreignReferenceType"];
 }
 
 - (unint64_t)hash
@@ -130,14 +130,14 @@ LABEL_14:
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = PKPassTileValueForeignReference;
-  if ([(PKPassTileValue *)&v14 _isEqual:v4])
+  if ([(PKPassTileValue *)&v14 _isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     content = self->_content;
     v7 = v5[3];
     v8 = content;

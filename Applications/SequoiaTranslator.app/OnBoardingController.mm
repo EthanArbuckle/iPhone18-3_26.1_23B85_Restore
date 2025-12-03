@@ -1,9 +1,9 @@
 @interface OnBoardingController
 - (NSArray)keyCommands;
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithRootViewController:(id)a3;
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithRootViewController:(id)controller;
 - (void)_primaryActionKeyTriggered;
 - (void)continueButtonPressed;
 - (void)viewDidLoad;
@@ -11,7 +11,7 @@
 
 @implementation OnBoardingController
 
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithCoder:(id)coder
 {
   v4 = type metadata accessor for TranslationTaskHint();
   __chkstk_darwin(v4);
@@ -62,14 +62,14 @@
 
 - (void)_primaryActionKeyTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_10019BAF8();
 }
 
 - (void)continueButtonPressed
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator20OnBoardingController_whatsNew);
-  v3 = self;
+  selfCopy = self;
   if (v2 == 1)
   {
     sub_10019BCF4();
@@ -80,27 +80,27 @@
     sub_10019BED8();
     if (swift_unknownObjectWeakLoadStrong())
     {
-      sub_10019DE48(v3);
+      sub_10019DE48(selfCopy);
       swift_unknownObjectRelease();
     }
   }
 }
 
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithRootViewController:(id)a3
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC17SequoiaTranslator20OnBoardingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator20OnBoardingController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

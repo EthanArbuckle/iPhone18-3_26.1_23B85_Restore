@@ -1,23 +1,23 @@
 @interface CalLocation
-+ (id)coordinatesFromGeoURLString:(id)a3;
-+ (id)displayStringForAddress:(id)a3 withoutTitle:(id)a4;
-+ (id)fullDisplayStringWithTitle:(id)a3 address:(id)a4;
-+ (id)geoURLStringFromCoordinates:(id)a3;
-+ (id)routeTypeStringForCalLocationRoutingMode:(int64_t)a3;
-+ (int64_t)routingModeEnumForCalRouteType:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)coordinatesFromGeoURLString:(id)string;
++ (id)displayStringForAddress:(id)address withoutTitle:(id)title;
++ (id)fullDisplayStringWithTitle:(id)title address:(id)address;
++ (id)geoURLStringFromCoordinates:(id)coordinates;
++ (id)routeTypeStringForCalLocationRoutingMode:(int64_t)mode;
++ (int64_t)routingModeEnumForCalRouteType:(id)type;
+- (BOOL)isEqual:(id)equal;
 - (CLLocation)location;
-- (CalLocation)initWithCoder:(id)a3;
-- (double)distanceFromLocation:(id)a3;
+- (CalLocation)initWithCoder:(id)coder;
+- (double)distanceFromLocation:(id)location;
 - (double)radius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayString;
 - (id)fullTitleAndAddressString;
 - (id)geoURLString;
 - (id)typeString;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocation:(id)location;
 @end
 
 @implementation CalLocation
@@ -27,35 +27,35 @@
   location = self->_location;
   if (location)
   {
-    v3 = location;
+    location2 = location;
   }
 
   else
   {
-    v5 = [(CalLocation *)self placemark];
-    if (!v5)
+    placemark = [(CalLocation *)self placemark];
+    if (!placemark)
     {
       goto LABEL_6;
     }
 
-    v6 = v5;
-    v7 = [(CalLocation *)self placemark];
-    v8 = [v7 location];
+    v6 = placemark;
+    placemark2 = [(CalLocation *)self placemark];
+    location = [placemark2 location];
 
-    if (v8)
+    if (location)
     {
-      v9 = [(CalLocation *)self placemark];
-      v3 = [v9 location];
+      placemark3 = [(CalLocation *)self placemark];
+      location2 = [placemark3 location];
     }
 
     else
     {
 LABEL_6:
-      v3 = 0;
+      location2 = 0;
     }
   }
 
-  return v3;
+  return location2;
 }
 
 - (double)radius
@@ -64,13 +64,13 @@ LABEL_6:
   v3 = radius;
   if (fabsf(v3) < 0.00000011921)
   {
-    v4 = [(CalLocation *)self placemark];
-    v5 = [v4 region];
+    placemark = [(CalLocation *)self placemark];
+    region = [placemark region];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v5)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && region)
     {
-      [v5 radius];
+      [region radius];
       radius = v6;
     }
   }
@@ -85,26 +85,26 @@ LABEL_6:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ %p>", v5, self];
 
-  v7 = [(CalLocation *)self displayName];
-  [v6 appendFormat:@"\n\tdisplayName: %@", v7];
+  displayName = [(CalLocation *)self displayName];
+  [v6 appendFormat:@"\n\tdisplayName: %@", displayName];
 
-  v8 = [(CalLocation *)self title];
-  [v6 appendFormat:@"\n\ttitle: %@", v8];
+  title = [(CalLocation *)self title];
+  [v6 appendFormat:@"\n\ttitle: %@", title];
 
-  v9 = [(CalLocation *)self address];
-  [v6 appendFormat:@"\n\taddress: %@", v9];
+  address = [(CalLocation *)self address];
+  [v6 appendFormat:@"\n\taddress: %@", address];
 
-  v10 = [(CalLocation *)self location];
-  [v6 appendFormat:@"\n\tlocation: %@", v10];
+  location = [(CalLocation *)self location];
+  [v6 appendFormat:@"\n\tlocation: %@", location];
 
-  v11 = [(CalLocation *)self typeString];
-  [v6 appendFormat:@"\n\ttype: %@", v11];
+  typeString = [(CalLocation *)self typeString];
+  [v6 appendFormat:@"\n\ttype: %@", typeString];
 
-  v12 = [(CalLocation *)self geoURLString];
-  [v6 appendFormat:@"\n\tgeoURLString: %@", v12];
+  geoURLString = [(CalLocation *)self geoURLString];
+  [v6 appendFormat:@"\n\tgeoURLString: %@", geoURLString];
 
-  v13 = [(CalLocation *)self abURLString];
-  [v6 appendFormat:@"\n\tabURLString: %@", v13];
+  abURLString = [(CalLocation *)self abURLString];
+  [v6 appendFormat:@"\n\tabURLString: %@", abURLString];
 
   [v6 appendFormat:@"\n\tisCurrentLocation: %d", -[CalLocation isCurrentLocation](self, "isCurrentLocation")];
   [(CalLocation *)self radius];
@@ -115,152 +115,152 @@ LABEL_6:
 
 - (id)typeString
 {
-  v2 = [(CalLocation *)self type];
-  if (v2 > 8)
+  type = [(CalLocation *)self type];
+  if (type > 8)
   {
     return &stru_1F379FFA8;
   }
 
   else
   {
-    return off_1E7EC7940[v2];
+    return off_1E7EC7940[type];
   }
 }
 
 - (id)geoURLString
 {
-  v3 = [(CalLocation *)self location];
+  location = [(CalLocation *)self location];
 
-  if (v3)
+  if (location)
   {
-    v3 = [(CalLocation *)self location];
+    location = [(CalLocation *)self location];
   }
 
-  v4 = [(CalLocation *)self placemark];
-  if (v4)
+  placemark = [(CalLocation *)self placemark];
+  if (placemark)
   {
-    v5 = v4;
-    v6 = [(CalLocation *)self placemark];
-    v7 = [v6 location];
+    v5 = placemark;
+    placemark2 = [(CalLocation *)self placemark];
+    location2 = [placemark2 location];
 
-    if (v7)
+    if (location2)
     {
-      v8 = [(CalLocation *)self placemark];
-      v9 = [v8 location];
+      placemark3 = [(CalLocation *)self placemark];
+      location3 = [placemark3 location];
 
-      v3 = v9;
+      location = location3;
     }
   }
 
-  v10 = [objc_opt_class() geoURLStringFromCoordinates:v3];
+  v10 = [objc_opt_class() geoURLStringFromCoordinates:location];
 
   return v10;
 }
 
 - (id)displayString
 {
-  v3 = [(CalLocation *)self displayName];
+  displayName = [(CalLocation *)self displayName];
 
-  if (v3)
+  if (displayName)
   {
-    v4 = [(CalLocation *)self displayName];
+    displayName2 = [(CalLocation *)self displayName];
   }
 
   else
   {
-    v5 = [(CalLocation *)self title];
+    title = [(CalLocation *)self title];
 
-    if (v5)
+    if (title)
     {
-      v4 = [(CalLocation *)self title];
+      displayName2 = [(CalLocation *)self title];
     }
 
     else
     {
-      v4 = 0;
+      displayName2 = 0;
     }
   }
 
-  return v4;
+  return displayName2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CalLocation);
-  v5 = [(CalLocation *)self location];
-  [(CalLocation *)v4 setLocation:v5];
+  location = [(CalLocation *)self location];
+  [(CalLocation *)v4 setLocation:location];
 
-  v6 = [(CalLocation *)self address];
-  [(CalLocation *)v4 setAddress:v6];
+  address = [(CalLocation *)self address];
+  [(CalLocation *)v4 setAddress:address];
 
-  v7 = [(CalLocation *)self title];
-  [(CalLocation *)v4 setTitle:v7];
+  title = [(CalLocation *)self title];
+  [(CalLocation *)v4 setTitle:title];
 
-  v8 = [(CalLocation *)self displayName];
-  [(CalLocation *)v4 setDisplayName:v8];
+  displayName = [(CalLocation *)self displayName];
+  [(CalLocation *)v4 setDisplayName:displayName];
 
-  v9 = [(CalLocation *)self abURLString];
-  [(CalLocation *)v4 setAbURLString:v9];
+  abURLString = [(CalLocation *)self abURLString];
+  [(CalLocation *)v4 setAbURLString:abURLString];
 
   [(CalLocation *)v4 setType:[(CalLocation *)self type]];
   [(CalLocation *)self radius];
   [(CalLocation *)v4 setRadius:?];
-  v10 = [(CalLocation *)self routeType];
-  [(CalLocation *)v4 setRouteType:v10];
+  routeType = [(CalLocation *)self routeType];
+  [(CalLocation *)v4 setRouteType:routeType];
 
-  v11 = [(CalLocation *)self mapKitHandle];
-  [(CalLocation *)v4 setMapKitHandle:v11];
+  mapKitHandle = [(CalLocation *)self mapKitHandle];
+  [(CalLocation *)v4 setMapKitHandle:mapKitHandle];
 
   return v4;
 }
 
-- (CalLocation)initWithCoder:(id)a3
+- (CalLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CalLocation;
   v5 = [(CalLocation *)&v31 init];
   if (v5)
   {
-    if ([v4 decodeBoolForKey:@"hasValidLocation"])
+    if ([coderCopy decodeBoolForKey:@"hasValidLocation"])
     {
-      [v4 decodeDoubleForKey:@"longitude"];
+      [coderCopy decodeDoubleForKey:@"longitude"];
       v7 = v6;
-      [v4 decodeDoubleForKey:@"latitude"];
+      [coderCopy decodeDoubleForKey:@"latitude"];
       v9 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:v8 longitude:v7];
       location = v5->_location;
       v5->_location = v9;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     v12 = [v11 copy];
     address = v5->_address;
     v5->_address = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     v15 = [v14 copy];
     title = v5->_title;
     v5->_title = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"abURLString"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abURLString"];
     v18 = [v17 copy];
     abURLString = v5->_abURLString;
     v5->_abURLString = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     v21 = [v20 copy];
     displayName = v5->_displayName;
     v5->_displayName = v21;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    [v4 decodeDoubleForKey:@"radius"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    [coderCopy decodeDoubleForKey:@"radius"];
     v5->_radius = v23;
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeType"];
     v25 = [v24 copy];
     routeType = v5->_routeType;
     v5->_routeType = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapKitHandle"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapKitHandle"];
     v28 = [v27 copy];
     mapKitHandle = v5->_mapKitHandle;
     v5->_mapKitHandle = v28;
@@ -269,49 +269,49 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(CalLocation *)self location];
+  coderCopy = coder;
+  location = [(CalLocation *)self location];
 
-  if (v4)
+  if (location)
   {
-    [v14 encodeBool:1 forKey:@"hasValidLocation"];
-    v5 = [(CalLocation *)self location];
-    [v5 coordinate];
-    [v14 encodeDouble:@"latitude" forKey:?];
+    [coderCopy encodeBool:1 forKey:@"hasValidLocation"];
+    location2 = [(CalLocation *)self location];
+    [location2 coordinate];
+    [coderCopy encodeDouble:@"latitude" forKey:?];
 
-    v6 = [(CalLocation *)self location];
-    [v6 coordinate];
-    [v14 encodeDouble:@"longitude" forKey:v7];
+    location3 = [(CalLocation *)self location];
+    [location3 coordinate];
+    [coderCopy encodeDouble:@"longitude" forKey:v7];
   }
 
-  [v14 encodeInteger:-[CalLocation type](self forKey:{"type"), @"type"}];
-  v8 = [(CalLocation *)self address];
-  [v14 encodeObject:v8 forKey:@"address"];
+  [coderCopy encodeInteger:-[CalLocation type](self forKey:{"type"), @"type"}];
+  address = [(CalLocation *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
-  v9 = [(CalLocation *)self title];
-  [v14 encodeObject:v9 forKey:@"title"];
+  title = [(CalLocation *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v10 = [(CalLocation *)self abURLString];
-  [v14 encodeObject:v10 forKey:@"abURLString"];
+  abURLString = [(CalLocation *)self abURLString];
+  [coderCopy encodeObject:abURLString forKey:@"abURLString"];
 
-  v11 = [(CalLocation *)self displayName];
-  [v14 encodeObject:v11 forKey:@"displayName"];
+  displayName = [(CalLocation *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
   [(CalLocation *)self radius];
-  [v14 encodeDouble:@"radius" forKey:?];
-  v12 = [(CalLocation *)self routeType];
-  [v14 encodeObject:v12 forKey:@"routeType"];
+  [coderCopy encodeDouble:@"radius" forKey:?];
+  routeType = [(CalLocation *)self routeType];
+  [coderCopy encodeObject:routeType forKey:@"routeType"];
 
-  v13 = [(CalLocation *)self mapKitHandle];
-  [v14 encodeObject:v13 forKey:@"mapKitHandle"];
+  mapKitHandle = [(CalLocation *)self mapKitHandle];
+  [coderCopy encodeObject:mapKitHandle forKey:@"mapKitHandle"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
     goto LABEL_51;
@@ -324,11 +324,11 @@ LABEL_6:
     goto LABEL_51;
   }
 
-  v8 = [(CalLocation *)self address];
-  if (!v8)
+  address = [(CalLocation *)self address];
+  if (!address)
   {
-    v3 = [(CalLocation *)v5 address];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy address];
+    if (!address2)
     {
       v11 = 1;
 LABEL_10:
@@ -337,135 +337,135 @@ LABEL_10:
     }
   }
 
-  v9 = [(CalLocation *)self address];
-  v10 = [(CalLocation *)v5 address];
-  v11 = [v9 isEqual:v10];
+  address3 = [(CalLocation *)self address];
+  address4 = [(CalLocation *)equalCopy address];
+  v11 = [address3 isEqual:address4];
 
-  if (!v8)
+  if (!address)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  v12 = [(CalLocation *)self title];
-  if (!v12)
+  title = [(CalLocation *)self title];
+  if (!title)
   {
-    v3 = [(CalLocation *)v5 title];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy title];
+    if (!address2)
     {
       goto LABEL_16;
     }
   }
 
-  v13 = [(CalLocation *)self title];
-  v14 = [(CalLocation *)v5 title];
-  if (![v13 isEqual:v14])
+  title2 = [(CalLocation *)self title];
+  title3 = [(CalLocation *)equalCopy title];
+  if (![title2 isEqual:title3])
   {
     v11 = 0;
   }
 
-  if (!v12)
+  if (!title)
   {
 LABEL_16:
   }
 
-  v15 = [(CalLocation *)self displayName];
-  if (!v15)
+  displayName = [(CalLocation *)self displayName];
+  if (!displayName)
   {
-    v3 = [(CalLocation *)v5 displayName];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy displayName];
+    if (!address2)
     {
       goto LABEL_22;
     }
   }
 
-  v16 = [(CalLocation *)self displayName];
-  v17 = [(CalLocation *)v5 displayName];
-  if (![v16 isEqual:v17])
+  displayName2 = [(CalLocation *)self displayName];
+  displayName3 = [(CalLocation *)equalCopy displayName];
+  if (![displayName2 isEqual:displayName3])
   {
     v11 = 0;
   }
 
-  if (!v15)
+  if (!displayName)
   {
 LABEL_22:
   }
 
-  v18 = [(CalLocation *)self abURLString];
-  if (!v18)
+  abURLString = [(CalLocation *)self abURLString];
+  if (!abURLString)
   {
-    v3 = [(CalLocation *)v5 abURLString];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy abURLString];
+    if (!address2)
     {
       goto LABEL_28;
     }
   }
 
-  v19 = [(CalLocation *)self abURLString];
-  v20 = [(CalLocation *)v5 abURLString];
-  if (![v19 isEqual:v20])
+  abURLString2 = [(CalLocation *)self abURLString];
+  abURLString3 = [(CalLocation *)equalCopy abURLString];
+  if (![abURLString2 isEqual:abURLString3])
   {
     v11 = 0;
   }
 
-  if (!v18)
+  if (!abURLString)
   {
 LABEL_28:
   }
 
-  v21 = [(CalLocation *)self placemark];
-  if (!v21)
+  placemark = [(CalLocation *)self placemark];
+  if (!placemark)
   {
-    v3 = [(CalLocation *)v5 placemark];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy placemark];
+    if (!address2)
     {
       goto LABEL_34;
     }
   }
 
-  v22 = [(CalLocation *)self placemark];
-  v23 = [(CalLocation *)v5 placemark];
-  if (![v22 isEqual:v23])
+  placemark2 = [(CalLocation *)self placemark];
+  placemark3 = [(CalLocation *)equalCopy placemark];
+  if (![placemark2 isEqual:placemark3])
   {
     v11 = 0;
   }
 
-  if (!v21)
+  if (!placemark)
   {
 LABEL_34:
   }
 
-  v24 = [(CalLocation *)self type];
-  v26 = v24 == [(CalLocation *)v5 type]&& v11 != 0;
+  type = [(CalLocation *)self type];
+  v26 = type == [(CalLocation *)equalCopy type]&& v11 != 0;
   [(CalLocation *)self radius];
   v28 = v27;
-  [(CalLocation *)v5 radius];
+  [(CalLocation *)equalCopy radius];
   v30 = vabdd_f64(v28, v29) < 2.22044605e-16 && v26;
-  v31 = [(CalLocation *)self routeType];
-  v32 = [(CalLocation *)v5 routeType];
-  if (v31 != v32)
+  routeType = [(CalLocation *)self routeType];
+  routeType2 = [(CalLocation *)equalCopy routeType];
+  if (routeType != routeType2)
   {
     v30 = 0;
   }
 
-  v33 = [(CalLocation *)self isCurrentLocation];
-  v7 = v30 & (v33 ^ [(CalLocation *)v5 isCurrentLocation]^ 1);
-  v34 = [(CalLocation *)self mapKitHandle];
-  if (!v34)
+  isCurrentLocation = [(CalLocation *)self isCurrentLocation];
+  v7 = v30 & (isCurrentLocation ^ [(CalLocation *)equalCopy isCurrentLocation]^ 1);
+  mapKitHandle = [(CalLocation *)self mapKitHandle];
+  if (!mapKitHandle)
   {
-    v3 = [(CalLocation *)v5 mapKitHandle];
-    if (!v3)
+    address2 = [(CalLocation *)equalCopy mapKitHandle];
+    if (!address2)
     {
       goto LABEL_49;
     }
   }
 
-  v35 = [(CalLocation *)self mapKitHandle];
-  v36 = [(CalLocation *)v5 mapKitHandle];
-  v7 &= [v35 isEqual:v36];
+  mapKitHandle2 = [(CalLocation *)self mapKitHandle];
+  mapKitHandle3 = [(CalLocation *)equalCopy mapKitHandle];
+  v7 &= [mapKitHandle2 isEqual:mapKitHandle3];
 
-  if (!v34)
+  if (!mapKitHandle)
   {
 LABEL_49:
   }
@@ -474,26 +474,26 @@ LABEL_51:
   return v7;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   location = self->_location;
   p_location = &self->_location;
-  if (location != v5)
+  if (location != locationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_location, a3);
-    v5 = v8;
+    v8 = locationCopy;
+    objc_storeStrong(p_location, location);
+    locationCopy = v8;
   }
 }
 
-- (double)distanceFromLocation:(id)a3
+- (double)distanceFromLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CalLocation *)self location];
-  v6 = [v4 location];
+  locationCopy = location;
+  location = [(CalLocation *)self location];
+  location2 = [locationCopy location];
 
-  [v5 distanceFromLocation:v6];
+  [location distanceFromLocation:location2];
   v8 = v7;
 
   return v8;
@@ -502,22 +502,22 @@ LABEL_51:
 - (id)fullTitleAndAddressString
 {
   v3 = objc_opt_class();
-  v4 = [(CalLocation *)self title];
-  v5 = [(CalLocation *)self address];
-  v6 = [v3 fullDisplayStringWithTitle:v4 address:v5];
+  title = [(CalLocation *)self title];
+  address = [(CalLocation *)self address];
+  v6 = [v3 fullDisplayStringWithTitle:title address:address];
 
   return v6;
 }
 
-+ (id)geoURLStringFromCoordinates:(id)a3
++ (id)geoURLStringFromCoordinates:(id)coordinates
 {
-  if (a3)
+  if (coordinates)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = a3;
-    [v5 coordinate];
+    coordinatesCopy = coordinates;
+    [coordinatesCopy coordinate];
     v7 = v6;
-    [v5 coordinate];
+    [coordinatesCopy coordinate];
     v9 = v8;
 
     v10 = [v4 stringWithFormat:@"geo:%f, %f", v7, v9];
@@ -531,9 +531,9 @@ LABEL_51:
   return v10;
 }
 
-+ (id)coordinatesFromGeoURLString:(id)a3
++ (id)coordinatesFromGeoURLString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v13 = 0.0;
     v14 = 0.0;
@@ -567,65 +567,65 @@ LABEL_51:
   return v7;
 }
 
-+ (id)fullDisplayStringWithTitle:(id)a3 address:(id)a4
++ (id)fullDisplayStringWithTitle:(id)title address:(id)address
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
-  if (!v8)
+  titleCopy = title;
+  addressCopy = address;
+  string = [titleCopy mutableCopy];
+  if (!string)
   {
-    v8 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
   }
 
-  if ([v7 length])
+  if ([addressCopy length])
   {
-    if (![v6 length])
+    if (![titleCopy length])
     {
-      v9 = v7;
+      v9 = addressCopy;
       goto LABEL_8;
     }
 
-    v9 = [a1 displayStringForAddress:v7 withoutTitle:v6];
+    v9 = [self displayStringForAddress:addressCopy withoutTitle:titleCopy];
 
     if ([v9 length])
     {
-      [v8 appendString:@"\n"];
-      v7 = v9;
+      [string appendString:@"\n"];
+      addressCopy = v9;
 LABEL_8:
-      [v8 appendString:v9];
+      [string appendString:v9];
       goto LABEL_10;
     }
 
-    v7 = v9;
+    addressCopy = v9;
   }
 
 LABEL_10:
 
-  return v8;
+  return string;
 }
 
-+ (id)displayStringForAddress:(id)a3 withoutTitle:(id)a4
++ (id)displayStringForAddress:(id)address withoutTitle:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:v6])
+  addressCopy = address;
+  titleCopy = title;
+  if ([addressCopy hasPrefix:titleCopy])
   {
-    v7 = [v5 stringByReplacingOccurrencesOfString:v6 withString:&stru_1F379FFA8];
+    v7 = [addressCopy stringByReplacingOccurrencesOfString:titleCopy withString:&stru_1F379FFA8];
 
-    v8 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    v9 = [v7 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
-    v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v5 = [v9 stringByTrimmingCharactersInSet:v10];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    addressCopy = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
-  return v5;
+  return addressCopy;
 }
 
-+ (id)routeTypeStringForCalLocationRoutingMode:(int64_t)a3
++ (id)routeTypeStringForCalLocationRoutingMode:(int64_t)mode
 {
-  v4 = a3 + 1;
-  if (a3 + 1) <= 5 && ((0x3Du >> v4))
+  v4 = mode + 1;
+  if (mode + 1) <= 5 && ((0x3Du >> v4))
   {
     v5 = *off_1E7EC7988[v4];
   }
@@ -638,11 +638,11 @@ LABEL_10:
   return v5;
 }
 
-+ (int64_t)routingModeEnumForCalRouteType:(id)a3
++ (int64_t)routingModeEnumForCalRouteType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy && [typeCopy length])
   {
     if ([v4 isEqualToString:CalRouteType_Driving])
     {

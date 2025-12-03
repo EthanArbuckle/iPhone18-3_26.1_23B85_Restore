@@ -1,13 +1,13 @@
 @interface VUIMobileGestaltLookup
-+ (BOOL)BOOLValueForKey:(__CFString *)a3;
-+ (id)stringValueForKey:(__CFString *)a3;
++ (BOOL)BOOLValueForKey:(__CFString *)key;
++ (id)stringValueForKey:(__CFString *)key;
 @end
 
 @implementation VUIMobileGestaltLookup
 
-+ (id)stringValueForKey:(__CFString *)a3
++ (id)stringValueForKey:(__CFString *)key
 {
-  if (a3 && (v3 = MGCopyAnswer()) != 0)
+  if (key && (v3 = MGCopyAnswer()) != 0)
   {
     v4 = v3;
     v5 = CFGetTypeID(v3);
@@ -32,9 +32,9 @@
   return v6;
 }
 
-+ (BOOL)BOOLValueForKey:(__CFString *)a3
++ (BOOL)BOOLValueForKey:(__CFString *)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }

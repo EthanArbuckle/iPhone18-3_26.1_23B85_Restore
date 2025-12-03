@@ -1,8 +1,8 @@
 @interface LPSharingMetadataWrapper
-- (LPSharingMetadataWrapper)initWithCoder:(id)a3;
+- (LPSharingMetadataWrapper)initWithCoder:(id)coder;
 - (id)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation LPSharingMetadataWrapper
@@ -11,46 +11,46 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x1E696A508]];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (LPSharingMetadataWrapper)initWithCoder:(id)a3
+- (LPSharingMetadataWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = LPSharingMetadataWrapper;
   v5 = [(LPSharingMetadataWrapper *)&v10 init];
   if (v5)
   {
-    v6 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v6 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v6;
 
-    v5->_hasFetchedSubresources = [v4 decodeBoolForKey:@"hasFetchedSubresources"];
-    v5->_hasCompletedFetch = [v4 decodeBoolForKey:@"hasCompletedFetch"];
+    v5->_hasFetchedSubresources = [coderCopy decodeBoolForKey:@"hasFetchedSubresources"];
+    v5->_hasCompletedFetch = [coderCopy decodeBoolForKey:@"hasCompletedFetch"];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_metadata forKey:@"metadata"];
-  [v4 encodeBool:self->_hasFetchedSubresources forKey:@"hasFetchedSubresources"];
-  [v4 encodeBool:self->_hasCompletedFetch forKey:@"hasCompletedFetch"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeBool:self->_hasFetchedSubresources forKey:@"hasFetchedSubresources"];
+  [coderCopy encodeBool:self->_hasCompletedFetch forKey:@"hasCompletedFetch"];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  objc_storeStrong(&self->_metadata, a3);
-  v5 = a3;
-  v6 = [(LPLinkMetadata *)self->_metadata _isCurrentlyLoadingOrIncomplete];
+  objc_storeStrong(&self->_metadata, metadata);
+  metadataCopy = metadata;
+  _isCurrentlyLoadingOrIncomplete = [(LPLinkMetadata *)self->_metadata _isCurrentlyLoadingOrIncomplete];
 
-  self->_hasCompletedFetch = !v6;
+  self->_hasCompletedFetch = !_isCurrentlyLoadingOrIncomplete;
 }
 
 @end

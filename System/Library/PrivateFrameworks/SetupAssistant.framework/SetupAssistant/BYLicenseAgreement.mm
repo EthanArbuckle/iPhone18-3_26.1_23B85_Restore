@@ -2,7 +2,7 @@
 + (unint64_t)versionOfAcceptedAgreement;
 + (unint64_t)versionOfOnDiskAgreement;
 + (void)_clearAcceptedLicenseVersion;
-+ (void)recordUserAcceptedAgreementVersion:(unint64_t)a3;
++ (void)recordUserAcceptedAgreementVersion:(unint64_t)version;
 @end
 
 @implementation BYLicenseAgreement
@@ -76,21 +76,21 @@ void __46__BYLicenseAgreement_versionOfOnDiskAgreement__block_invoke()
   }
 }
 
-+ (void)recordUserAcceptedAgreementVersion:(unint64_t)a3
++ (void)recordUserAcceptedAgreementVersion:(unint64_t)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a1 versionOfAcceptedAgreement];
+  versionOfAcceptedAgreement = [self versionOfAcceptedAgreement];
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = a3;
+    versionCopy = version;
     v9 = 2048;
-    v10 = v4;
+    v10 = versionOfAcceptedAgreement;
     _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "SLA: Accepted software license version %llu! Previous version was %llu.", &v7, 0x16u);
   }
 
-  CFPreferencesSetAppValue(@"acceptedSLAVersion", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3], @"com.apple.purplebuddy.notbackedup");
+  CFPreferencesSetAppValue(@"acceptedSLAVersion", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version], @"com.apple.purplebuddy.notbackedup");
   CFPreferencesAppSynchronize(@"com.apple.purplebuddy.notbackedup");
   v6 = *MEMORY[0x1E69E9840];
 }

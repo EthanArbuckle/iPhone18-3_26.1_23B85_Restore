@@ -1,16 +1,16 @@
 @interface ConversationHUDControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation ConversationHUDControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"dismissPresentedBannerForReason:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"presentedBanner" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"dismissPresentedBannerForReason:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"presentedBanner" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden
@@ -25,10 +25,10 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
-  v3 = [v2 delegate];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  delegate = [mEMORY[0x29EDC7938] delegate];
 
-  v4 = [v3 safeValueForKey:@"bannerPresentationManager"];
+  v4 = [delegate safeValueForKey:@"bannerPresentationManager"];
   v5 = [v4 safeValueForKey:@"presentedBanner"];
   if (v5)
   {

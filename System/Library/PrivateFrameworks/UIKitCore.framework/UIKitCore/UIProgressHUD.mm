@@ -1,26 +1,26 @@
 @interface UIProgressHUD
-- (UIProgressHUD)initWithFrame:(CGRect)a3;
-- (UIProgressHUD)initWithWindow:(id)a3;
+- (UIProgressHUD)initWithFrame:(CGRect)frame;
+- (UIProgressHUD)initWithWindow:(id)window;
 - (void)dealloc;
 - (void)done;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)hide;
 - (void)layoutSubviews;
-- (void)setFontSize:(int)a3;
-- (void)setShowsText:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)show:(BOOL)a3;
-- (void)showInView:(id)a3;
+- (void)setFontSize:(int)size;
+- (void)setShowsText:(BOOL)text;
+- (void)setText:(id)text;
+- (void)show:(BOOL)show;
+- (void)showInView:(id)view;
 @end
 
 @implementation UIProgressHUD
 
-- (UIProgressHUD)initWithFrame:(CGRect)a3
+- (UIProgressHUD)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = UIProgressHUD;
   v7 = [(UIView *)&v19 initWithFrame:?];
@@ -66,25 +66,25 @@
   return v8;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   progressMessage = self->_progressMessage;
-  if (!a3)
+  if (!text)
   {
-    a3 = _UINSLocalizedStringWithDefaultValue(@"Loading", @"Loading");
+    text = _UINSLocalizedStringWithDefaultValue(@"Loading", @"Loading");
   }
 
-  [(UILabel *)progressMessage setText:a3];
+  [(UILabel *)progressMessage setText:text];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setShowsText:(BOOL)a3
+- (void)setShowsText:(BOOL)text
 {
-  v3 = a3;
-  [(UIView *)self->_progressMessage setHidden:!a3];
+  textCopy = text;
+  [(UIView *)self->_progressMessage setHidden:!text];
   v5 = 2;
-  if (!v3)
+  if (!textCopy)
   {
     v5 = 0;
   }
@@ -94,16 +94,16 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setFontSize:(int)a3
+- (void)setFontSize:(int)size
 {
-  -[UILabel setFont:](self->_progressMessage, "setFont:", [off_1E70ECC18 boldSystemFontOfSize:{*&a3, 24.0}]);
+  -[UILabel setFont:](self->_progressMessage, "setFont:", [off_1E70ECC18 boldSystemFontOfSize:{*&size, 24.0}]);
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v3 = [UIBezierPath roundedRectBezierPath:"roundedRectBezierPath:withRoundedCorners:withCornerRadius:" withRoundedCorners:-1 withCornerRadius:?];
   [+[UIColor colorWithWhite:alpha:](UIColor set:0.0];
 
@@ -190,10 +190,10 @@
   [(UILabel *)progressMessage setFrame:v27, v4 + 26.0 + 8.0, v28, v14];
 }
 
-- (void)showInView:(id)a3
+- (void)showInView:(id)view
 {
   *&self->_progressHUDFlags |= 1uLL;
-  [a3 addSubview:self];
+  [view addSubview:self];
   progressIndicator = self->_progressIndicator;
 
   [(UIActivityIndicatorView *)progressIndicator startAnimating];
@@ -239,20 +239,20 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (UIProgressHUD)initWithWindow:(id)a3
+- (UIProgressHUD)initWithWindow:(id)window
 {
   v4 = [(UIView *)self init];
   if (v4)
   {
-    v4->_parentWindow = a3;
+    v4->_parentWindow = window;
   }
 
   return v4;
 }
 
-- (void)show:(BOOL)a3
+- (void)show:(BOOL)show
 {
-  if (a3)
+  if (show)
   {
     [(UIProgressHUD *)self showInView:self->_parentWindow];
   }

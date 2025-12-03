@@ -1,30 +1,30 @@
 @interface CPPreformatter
-+ (void)preformatInPage:(id)a3;
-- (void)preformatIn:(id)a3;
-- (void)preformatInParagraph:(id)a3;
++ (void)preformatInPage:(id)page;
+- (void)preformatIn:(id)in;
+- (void)preformatInParagraph:(id)paragraph;
 @end
 
 @implementation CPPreformatter
 
-- (void)preformatIn:(id)a3
+- (void)preformatIn:(id)in
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    [(CPPreformatter *)self preformatInParagraph:a3];
+    [(CPPreformatter *)self preformatInParagraph:in];
   }
 
   else
   {
-    v5 = [a3 count];
+    v5 = [in count];
     if (v5)
     {
       v6 = v5;
       v7 = 0;
       do
       {
-        v8 = [a3 childAtIndex:v7];
+        v8 = [in childAtIndex:v7];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -39,21 +39,21 @@
   }
 }
 
-- (void)preformatInParagraph:(id)a3
+- (void)preformatInParagraph:(id)paragraph
 {
   v11 = 0;
-  if ([a3 isPreformattedWithUnitWidth:&v11])
+  if ([paragraph isPreformattedWithUnitWidth:&v11])
   {
-    [objc_msgSend(a3 "parent")];
+    [objc_msgSend(paragraph "parent")];
     v5 = v4;
-    v6 = [a3 count];
+    v6 = [paragraph count];
     if (v6)
     {
       v7 = v6;
       v8 = 0;
       do
       {
-        v9 = [a3 childAtIndex:v8];
+        v9 = [paragraph childAtIndex:v8];
         v10[0] = v9;
         v10[1] = v11;
         v10[2] = v5;
@@ -70,10 +70,10 @@
   }
 }
 
-+ (void)preformatInPage:(id)a3
++ (void)preformatInPage:(id)page
 {
   v4 = objc_alloc_init(CPPreformatter);
-  [(CPPreformatter *)v4 preformatIn:a3];
+  [(CPPreformatter *)v4 preformatIn:page];
 }
 
 @end

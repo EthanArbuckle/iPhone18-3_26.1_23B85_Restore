@@ -1,17 +1,17 @@
 @interface SKUIModernChartHeaderView
-- (SKUIModernChartHeaderView)initWithFrame:(CGRect)a3;
+- (SKUIModernChartHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIModernChartHeaderView
 
-- (SKUIModernChartHeaderView)initWithFrame:(CGRect)a3
+- (SKUIModernChartHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIModernChartHeaderView initWithFrame:];
@@ -19,37 +19,37 @@
 
   v14.receiver = self;
   v14.super_class = SKUIModernChartHeaderView;
-  v8 = [(SKUIModernChartHeaderView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIModernChartHeaderView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-    contentView = v8->_contentView;
-    v8->_contentView = v9;
+    contentView = height->_contentView;
+    height->_contentView = v9;
 
-    [(SKUIModernChartHeaderView *)v8 addSubview:v8->_contentView];
+    [(SKUIModernChartHeaderView *)height addSubview:height->_contentView];
     v11 = objc_alloc_init(MEMORY[0x277D756B8]);
-    label = v8->_label;
-    v8->_label = v11;
+    label = height->_label;
+    height->_label = v11;
 
-    [(UIView *)v8->_contentView addSubview:v8->_label];
+    [(UIView *)height->_contentView addSubview:height->_label];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = MEMORY[0x277D74310];
   v5 = *MEMORY[0x277D76940];
-  v6 = a3;
+  titleCopy = title;
   v21 = [v4 preferredFontDescriptorWithTextStyle:v5 addingSymbolicTraits:2 options:2];
   v7 = [MEMORY[0x277D74300] fontWithDescriptor:v21 size:0.0];
   v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:1.3];
   v9 = objc_alloc(MEMORY[0x277CBEAC0]);
   v10 = [v9 initWithObjectsAndKeys:{v7, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D740D0], 0}];
-  v11 = [v6 uppercaseString];
+  uppercaseString = [titleCopy uppercaseString];
 
-  v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v11 attributes:v10];
+  v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:uppercaseString attributes:v10];
   [(UILabel *)self->_label setAttributedText:v12];
   [v7 _scaledValueForValue:16.0];
   v14 = v13;

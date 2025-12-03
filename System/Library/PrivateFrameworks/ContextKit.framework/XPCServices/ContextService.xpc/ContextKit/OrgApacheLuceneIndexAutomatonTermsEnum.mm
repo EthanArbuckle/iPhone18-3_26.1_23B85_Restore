@@ -1,26 +1,26 @@
 @interface OrgApacheLuceneIndexAutomatonTermsEnum
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (uint64_t)nextString;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexAutomatonTermsEnum
 
-- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)acceptWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = *(&self->runAutomaton_ + 1);
-  if (v5 && !OrgApacheLuceneUtilStringHelper_endsWithWithOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneUtilBytesRef_(a3, v5))
+  if (v5 && !OrgApacheLuceneUtilStringHelper_endsWithWithOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneUtilBytesRef_(ref, v5))
   {
     if (BYTE1(self->seekBytesRef_) != 1)
     {
       goto LABEL_16;
     }
 
-    if (a3)
+    if (ref)
     {
 LABEL_15:
-      if (([a3 compareToWithId:*(&self->linear_ + 1)] & 0x80000000) != 0)
+      if (([ref compareToWithId:*(&self->linear_ + 1)] & 0x80000000) != 0)
       {
         v10 = &qword_1005578E0;
         if (atomic_load_explicit(OrgApacheLuceneIndexFilteredTermsEnum_AcceptStatusEnum__initialized, memory_order_acquire))
@@ -46,12 +46,12 @@ LABEL_20:
   }
 
   v6 = *(&self->super.doSeek_ + 1);
-  if (!v6 || !a3)
+  if (!v6 || !ref)
   {
     goto LABEL_20;
   }
 
-  v7 = [v6 runWithByteArray:*(a3 + 1) withInt:*(a3 + 4) withInt:*(a3 + 5)];
+  v7 = [v6 runWithByteArray:*(ref + 1) withInt:*(ref + 4) withInt:*(ref + 5)];
   v8 = BYTE1(self->seekBytesRef_);
   if (!v7)
   {
@@ -83,9 +83,9 @@ LABEL_10:
   return *v10;
 }
 
-- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (a3)
+  if (ref)
   {
     v4 = *(&self->curGen_ + 1);
     if (!v4)
@@ -131,13 +131,13 @@ LABEL_9:
 - (uint64_t)nextString
 {
   v1 = &OBJC_IVAR___OrgApacheLuceneSearchDisjunctionMaxScorer_tieBreakerMultiplier_;
-  v2 = *(a1 + 121);
+  v2 = *(self + 121);
   if (!v2)
   {
     goto LABEL_30;
   }
 
-  v4 = *(a1 + 89);
+  v4 = *(self + 89);
   if (!v4)
   {
     goto LABEL_30;
@@ -145,25 +145,25 @@ LABEL_9:
 
   [v2 growWithInt:{objc_msgSend(v4, "length") + 1}];
   v5 = &OBJC_IVAR___OrgApacheLuceneSearchDisjunctionMaxScorer_tieBreakerMultiplier_;
-  v6 = *(a1 + 41);
+  v6 = *(self + 41);
   if (!v6)
   {
     goto LABEL_30;
   }
 
-  [*(a1 + 121) setIntAtWithInt:0 withInt:{objc_msgSend(v6, "getInitialState")}];
+  [*(self + 121) setIntAtWithInt:0 withInt:{objc_msgSend(v6, "getInitialState")}];
   v7 = 0;
   v8 = &OBJC_IVAR___OrgApacheLuceneSearchDisjunctionMaxScorer_tieBreakerMultiplier_;
   while (1)
   {
-    ++*(a1 + 81);
-    *(a1 + v8[283]) = 0;
-    v9 = [*(a1 + v1[289]) intAtWithInt:v7];
-    if (v7 < [*(a1 + 89) length])
+    ++*(self + 81);
+    *(self + v8[283]) = 0;
+    v9 = [*(self + v1[289]) intAtWithInt:v7];
+    if (v7 < [*(self + 89) length])
     {
       while (1)
       {
-        v10 = *(a1 + 73);
+        v10 = *(self + 73);
         if (!v10)
         {
           break;
@@ -175,8 +175,8 @@ LABEL_9:
           IOSArray_throwOutOfBoundsWithMsg(v11, v9);
         }
 
-        *(v10 + 16 + 8 * v9) = *(a1 + 81);
-        v12 = [*(a1 + v5[282]) stepWithInt:v9 withInt:{objc_msgSend(*(a1 + 89), "byteAtWithInt:", v7)}];
+        *(v10 + 16 + 8 * v9) = *(self + 81);
+        v12 = [*(self + v5[282]) stepWithInt:v9 withInt:{objc_msgSend(*(self + 89), "byteAtWithInt:", v7)}];
         if (v12 == -1)
         {
           goto LABEL_20;
@@ -185,13 +185,13 @@ LABEL_9:
         v13 = v12;
         v9 = v12;
         v14 = (v7 + 1);
-        [*(a1 + v1[289]) setIntAtWithInt:v14 withInt:v12];
-        if ((*(a1 + 57) & 1) == 0 && (*(a1 + v8[283]) & 1) == 0)
+        [*(self + v1[289]) setIntAtWithInt:v14 withInt:v12];
+        if ((*(self + 57) & 1) == 0 && (*(self + v8[283]) & 1) == 0)
         {
           v15 = v8;
           v16 = v5;
           v17 = v1;
-          v18 = *(a1 + 73);
+          v18 = *(self + 73);
           v19 = *(v18 + 8);
           if ((v9 & 0x80000000) != 0 || v13 >= v19)
           {
@@ -202,14 +202,14 @@ LABEL_9:
           v1 = v17;
           v5 = v16;
           v8 = v15;
-          if (v20 == *(a1 + 81))
+          if (v20 == *(self + 81))
           {
-            sub_100103174(a1, v7);
+            sub_100103174(self, v7);
           }
         }
 
         v7 = (v7 + 1);
-        if (v14 >= [*(a1 + 89) length])
+        if (v14 >= [*(self + 89) length])
         {
           goto LABEL_21;
         }
@@ -222,25 +222,25 @@ LABEL_30:
 LABEL_20:
     v14 = v7;
 LABEL_21:
-    if (sub_100103404(a1, v9, v14))
+    if (sub_100103404(self, v9, v14))
     {
       return 1;
     }
 
-    v21 = sub_1001037A4(a1, v14);
+    v21 = sub_1001037A4(self, v14);
     if ((v21 & 0x80000000) != 0)
     {
       return 0;
     }
 
     LODWORD(v7) = v21;
-    v22 = [*(a1 + v5[282]) stepWithInt:objc_msgSend(*(a1 + v1[289]) withInt:{"intAtWithInt:", v21), objc_msgSend(*(a1 + 89), "byteAtWithInt:", v21)}];
-    if (v22 & 0x80000000) == 0 && ([*(a1 + v5[282]) isAcceptWithInt:v22])
+    v22 = [*(self + v5[282]) stepWithInt:objc_msgSend(*(self + v1[289]) withInt:{"intAtWithInt:", v21), objc_msgSend(*(self + 89), "byteAtWithInt:", v21)}];
+    if (v22 & 0x80000000) == 0 && ([*(self + v5[282]) isAcceptWithInt:v22])
     {
       return 1;
     }
 
-    if (*(a1 + 57))
+    if (*(self + 57))
     {
       v7 = v7;
     }

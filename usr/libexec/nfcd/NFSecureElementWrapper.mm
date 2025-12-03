@@ -2,7 +2,7 @@
 - (BOOL)hasMultiOS;
 - (BOOL)isOperational;
 - (BOOL)isProd;
-- (NFSecureElementWrapper)initWithHandle:(id)a3;
+- (NFSecureElementWrapper)initWithHandle:(id)handle;
 - (NFSecureElementWrapperDelegate)delegate;
 - (NSData)serialNumberAsData;
 - (NSData)systemOSSerialNumberAsData;
@@ -11,23 +11,23 @@
 - (NSString)rsaCertificate;
 - (NSString)serialNumber;
 - (NSString)systemOSSerialNumber;
-- (id)_crsGetSharingRequest:(id *)a3 signature:(id *)a4;
-- (id)_crsSetSharingResult:(id)a3 signature:(id)a4;
+- (id)_crsGetSharingRequest:(id *)request signature:(id *)signature;
+- (id)_crsSetSharingResult:(id)result signature:(id)signature;
 - (id)checkPairing;
 - (id)checkPerBootAuthKeysAreStillPresent;
-- (id)getData:(id *)a3 updateKUD:(char *)a4 outWriteLimit:(unsigned int *)a5 outWriteCount:(unsigned int *)a6 appletResult:(unsigned __int16 *)a7;
-- (id)getHash:(id *)a3 appletResult:(unsigned __int16 *)a4;
+- (id)getData:(id *)data updateKUD:(char *)d outWriteLimit:(unsigned int *)limit outWriteCount:(unsigned int *)count appletResult:(unsigned __int16 *)result;
+- (id)getHash:(id *)hash appletResult:(unsigned __int16 *)result;
 - (id)negotiatePerBootAuthKeys;
 - (id)performSharing;
 - (id)recoverSLAM;
-- (unint64_t)_crsGetPersoState:(id *)a3;
+- (unint64_t)_crsGetPersoState:(id *)state;
 - (unint64_t)getPairingVersion;
 - (unint64_t)supportedTechnologies;
 @end
 
 @implementation NFSecureElementWrapper
 
-- (id)getData:(id *)a3 updateKUD:(char *)a4 outWriteLimit:(unsigned int *)a5 outWriteCount:(unsigned int *)a6 appletResult:(unsigned __int16 *)a7
+- (id)getData:(id *)data updateKUD:(char *)d outWriteLimit:(unsigned int *)limit outWriteCount:(unsigned int *)count appletResult:(unsigned __int16 *)result
 {
   v13 = [[NSData alloc] initWithBytes:&unk_100296BE0 length:8];
   v120 = 0;
@@ -44,41 +44,41 @@
 
       if (v16)
       {
-        *a7 = [v16 status];
-        v17 = [v16 response];
-        if ([v17 length] >= 0x15)
+        *result = [v16 status];
+        response = [v16 response];
+        if ([response length] >= 0x15)
         {
-          v73 = [v16 status];
+          status = [v16 status];
 
-          if (v73 == 36864)
+          if (status == 36864)
           {
-            v74 = [v16 response];
-            *a6 = *[v74 bytes];
+            response2 = [v16 response];
+            *count = *[response2 bytes];
 
-            v75 = [v16 response];
-            *a5 = *([v75 bytes] + 1);
+            response3 = [v16 response];
+            *limit = *([response3 bytes] + 1);
 
-            v76 = [v16 response];
-            *a4 = *([v76 bytes] + 8);
+            response4 = [v16 response];
+            *d = *([response4 bytes] + 8);
 
-            v77 = [v16 response];
-            v78 = [v77 length];
+            response5 = [v16 response];
+            v78 = [response5 length];
 
             if (v78 < 0xA)
             {
-              *a3 = +[NSData data];
+              *data = +[NSData data];
             }
 
             else
             {
-              v79 = [v16 response];
-              v80 = [v16 response];
-              *a3 = [v79 subdataWithRange:{9, objc_msgSend(v80, "length") - 9}];
+              response6 = [v16 response];
+              response7 = [v16 response];
+              *data = [response6 subdataWithRange:{9, objc_msgSend(response7, "length") - 9}];
             }
 
             v58 = 0;
-            *a6 = bswap32(*a6);
-            *a5 = bswap32(*a5);
+            *count = bswap32(*count);
+            *limit = bswap32(*limit);
 LABEL_62:
             v15 = v117;
             goto LABEL_63;
@@ -98,16 +98,16 @@ LABEL_62:
           isMetaClass = class_isMetaClass(Class);
           ClassName = object_getClassName(self);
           Name = sel_getName(a2);
-          v87 = [v16 response];
-          v115 = [v87 length];
-          v116 = [v16 status];
+          response8 = [v16 response];
+          v115 = [response8 length];
+          status2 = [v16 status];
           v88 = 45;
           if (isMetaClass)
           {
             v88 = 43;
           }
 
-          v82(3, "%c[%{public}s %{public}s]:%i Invalid response length: %lu or status 0x%x", v88, ClassName, Name, 313, v115, v116);
+          v82(3, "%c[%{public}s %{public}s]:%i Invalid response length: %lu or status 0x%x", v88, ClassName, Name, 313, v115, status2);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -127,9 +127,9 @@ LABEL_62:
 
           v92 = object_getClassName(self);
           v93 = sel_getName(a2);
-          v94 = [v16 response];
-          v95 = [v94 length];
-          v96 = [v16 status];
+          response9 = [v16 response];
+          v95 = [response9 length];
+          status3 = [v16 status];
           *buf = 67110402;
           v124 = v91;
           v125 = 2082;
@@ -141,7 +141,7 @@ LABEL_62:
           v131 = 2048;
           v132 = v95;
           v133 = 1024;
-          v134 = v96;
+          v134 = status3;
           _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid response length: %lu or status 0x%x", buf, 0x32u);
         }
 
@@ -214,19 +214,19 @@ LABEL_62:
       v15 = [NSString stringWithUTF8String:"nfcd"];
       if (v117)
       {
-        v71 = [v117 code];
+        code = [v117 code];
         v137[0] = NSLocalizedDescriptionKey;
         if ([v117 code] > 75)
         {
-          v72 = 76;
+          code2 = 76;
         }
 
         else
         {
-          v72 = [v117 code];
+          code2 = [v117 code];
         }
 
-        v106 = [NSString stringWithUTF8String:off_1003158C8[v72]];
+        v106 = [NSString stringWithUTF8String:off_1003158C8[code2]];
         v138[0] = v106;
         v138[1] = v117;
         v137[1] = NSUnderlyingErrorKey;
@@ -239,7 +239,7 @@ LABEL_62:
         v108 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 306];
         v138[4] = v108;
         v109 = [NSDictionary dictionaryWithObjects:v138 forKeys:v137 count:5];
-        v58 = [v70 initWithDomain:v15 code:v71 userInfo:v109];
+        v58 = [v70 initWithDomain:v15 code:code userInfo:v109];
 
         v16 = v15;
         v15 = v117;
@@ -265,7 +265,7 @@ LABEL_62:
 
     else
     {
-      *a7 = [v14 status];
+      *result = [v14 status];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v31 = NFLogGetLogger();
       if (v31)
@@ -275,14 +275,14 @@ LABEL_62:
         v34 = class_isMetaClass(v33);
         v35 = object_getClassName(self);
         v36 = sel_getName(a2);
-        v114 = [v14 status];
+        status4 = [v14 status];
         v37 = 45;
         if (v34)
         {
           v37 = 43;
         }
 
-        v32(3, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", v37, v35, v36, 291, v114);
+        v32(3, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", v37, v35, v36, 291, status4);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -302,7 +302,7 @@ LABEL_62:
 
         v41 = object_getClassName(self);
         v42 = sel_getName(a2);
-        v43 = [v14 status];
+        status5 = [v14 status];
         *buf = 67110146;
         v124 = v40;
         v125 = 2082;
@@ -312,14 +312,14 @@ LABEL_62:
         v129 = 1024;
         v130 = 291;
         v131 = 1024;
-        LODWORD(v132) = v43;
+        LODWORD(v132) = status5;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", buf, 0x28u);
       }
 
-      v44 = [v14 status];
+      status6 = [v14 status];
       v45 = [NSError alloc];
       v46 = [NSString stringWithUTF8String:"nfcd"];
-      if (v44 == 26277)
+      if (status6 == 26277)
       {
         v141[0] = NSLocalizedDescriptionKey;
         v47 = [NSString stringWithUTF8String:"Restricted Mode"];
@@ -415,19 +415,19 @@ LABEL_62:
 
     v28 = [NSError alloc];
     v16 = [NSString stringWithUTF8String:"nfcd"];
-    v29 = [v15 code];
+    code3 = [v15 code];
     v143[0] = NSLocalizedDescriptionKey;
     if ([v15 code] > 75)
     {
-      v30 = 76;
+      code4 = 76;
     }
 
     else
     {
-      v30 = [v15 code];
+      code4 = [v15 code];
     }
 
-    v54 = [NSString stringWithUTF8String:off_1003158C8[v30]];
+    v54 = [NSString stringWithUTF8String:off_1003158C8[code4]];
     v144[0] = v54;
     v144[1] = v15;
     v143[1] = NSUnderlyingErrorKey;
@@ -440,7 +440,7 @@ LABEL_62:
     v56 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 287];
     v144[4] = v56;
     v57 = [NSDictionary dictionaryWithObjects:v144 forKeys:v143 count:5];
-    v58 = [v28 initWithDomain:v16 code:v29 userInfo:v57];
+    v58 = [v28 initWithDomain:v16 code:code3 userInfo:v57];
   }
 
 LABEL_63:
@@ -448,7 +448,7 @@ LABEL_63:
   return v58;
 }
 
-- (id)getHash:(id *)a3 appletResult:(unsigned __int16 *)a4
+- (id)getHash:(id *)hash appletResult:(unsigned __int16 *)result
 {
   v8 = [[NSData alloc] initWithBytes:&unk_100296BE0 length:8];
   v103 = 0;
@@ -465,15 +465,15 @@ LABEL_63:
 
       if (v11)
       {
-        *a4 = [v11 status];
-        v13 = [v11 response];
-        v14 = [v13 length];
+        *result = [v11 status];
+        response = [v11 response];
+        v14 = [response length];
 
         if (v14 > 0x1F)
         {
-          v31 = [v11 response];
-          [v31 subdataWithRange:{0, 32}];
-          *a3 = v36 = 0;
+          response2 = [v11 response];
+          [response2 subdataWithRange:{0, 32}];
+          *hash = v36 = 0;
           v10 = v12;
         }
 
@@ -489,8 +489,8 @@ LABEL_63:
             isMetaClass = class_isMetaClass(Class);
             ClassName = object_getClassName(self);
             Name = sel_getName(a2);
-            v21 = [v11 response];
-            v99 = [v21 length];
+            response3 = [v11 response];
+            v99 = [response3 length];
             v22 = 45;
             if (isMetaClass)
             {
@@ -517,8 +517,8 @@ LABEL_63:
 
             v26 = object_getClassName(self);
             v27 = sel_getName(a2);
-            v28 = [v11 response];
-            v29 = [v28 length];
+            response4 = [v11 response];
+            v29 = [response4 length];
             *buf = 67110146;
             v117 = v25;
             v118 = 2082;
@@ -533,7 +533,7 @@ LABEL_63:
           }
 
           v30 = [NSError alloc];
-          v31 = [NSString stringWithUTF8String:"nfcd"];
+          response2 = [NSString stringWithUTF8String:"nfcd"];
           v104[0] = NSLocalizedDescriptionKey;
           v32 = [NSString stringWithUTF8String:"Unexpected Result"];
           v105[0] = v32;
@@ -546,7 +546,7 @@ LABEL_63:
           v34 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 372];
           v105[3] = v34;
           v35 = [NSDictionary dictionaryWithObjects:v105 forKeys:v104 count:4];
-          v36 = [v30 initWithDomain:v31 code:13 userInfo:v35];
+          v36 = [v30 initWithDomain:response2 code:13 userInfo:v35];
 
           v10 = v101;
         }
@@ -604,20 +604,20 @@ LABEL_63:
         v10 = [NSString stringWithUTF8String:"nfcd"];
         if (v12)
         {
-          v87 = [v12 code];
+          code = [v12 code];
           v108[0] = NSLocalizedDescriptionKey;
           if ([v12 code] > 75)
           {
-            v88 = 76;
+            code2 = 76;
           }
 
           else
           {
-            v88 = [v12 code];
+            code2 = [v12 code];
           }
 
-          v31 = [NSString stringWithUTF8String:off_1003158C8[v88]];
-          v109[0] = v31;
+          response2 = [NSString stringWithUTF8String:off_1003158C8[code2]];
+          v109[0] = response2;
           v109[1] = v12;
           v108[1] = NSUnderlyingErrorKey;
           v108[2] = @"Line";
@@ -630,7 +630,7 @@ LABEL_63:
           v109[4] = v92;
           [NSDictionary dictionaryWithObjects:v109 forKeys:v108 count:5];
           v94 = v93 = v12;
-          v36 = [v86 initWithDomain:v10 code:v87 userInfo:v94];
+          v36 = [v86 initWithDomain:v10 code:code userInfo:v94];
 
           v11 = v10;
           v10 = v93;
@@ -644,8 +644,8 @@ LABEL_63:
           v107[1] = &off_10032FFB8;
           v106[1] = @"Line";
           v106[2] = @"Method";
-          v31 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
-          v107[2] = v31;
+          response2 = [[NSString alloc] initWithFormat:@"%s", sel_getName(a2)];
+          v107[2] = response2;
           v106[3] = NSDebugDescriptionErrorKey;
           v89 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 364];
           v107[3] = v89;
@@ -657,7 +657,7 @@ LABEL_63:
 
     else
     {
-      *a4 = [v9 status];
+      *result = [v9 status];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v50 = NFLogGetLogger();
       if (v50)
@@ -667,14 +667,14 @@ LABEL_63:
         v53 = class_isMetaClass(v52);
         v54 = object_getClassName(self);
         v55 = sel_getName(a2);
-        v100 = [v9 status];
+        status = [v9 status];
         v56 = 45;
         if (v53)
         {
           v56 = 43;
         }
 
-        v51(3, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", v56, v54, v55, 349, v100);
+        v51(3, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", v56, v54, v55, 349, status);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -694,7 +694,7 @@ LABEL_63:
 
         v60 = object_getClassName(self);
         v61 = sel_getName(a2);
-        v62 = [v9 status];
+        status2 = [v9 status];
         *buf = 67110146;
         v117 = v59;
         v118 = 2082;
@@ -704,14 +704,14 @@ LABEL_63:
         v122 = 1024;
         v123 = 349;
         v124 = 1024;
-        LODWORD(v125) = v62;
+        LODWORD(v125) = status2;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to select applet: 0x%04x", buf, 0x28u);
       }
 
-      v63 = [v9 status];
+      status3 = [v9 status];
       v64 = [NSError alloc];
-      v31 = [NSString stringWithUTF8String:"nfcd"];
-      if (v63 == 26277)
+      response2 = [NSString stringWithUTF8String:"nfcd"];
+      if (status3 == 26277)
       {
         v112[0] = NSLocalizedDescriptionKey;
         v65 = [NSString stringWithUTF8String:"Restricted Mode"];
@@ -726,7 +726,7 @@ LABEL_63:
         v113[3] = v67;
         v68 = [NSDictionary dictionaryWithObjects:v113 forKeys:v112 count:4];
         v69 = v64;
-        v70 = v31;
+        v70 = response2;
         v71 = 24;
       }
 
@@ -745,7 +745,7 @@ LABEL_63:
         v111[3] = v67;
         v68 = [NSDictionary dictionaryWithObjects:v111 forKeys:v110 count:4];
         v69 = v64;
-        v70 = v31;
+        v70 = response2;
         v71 = 16;
       }
 
@@ -807,20 +807,20 @@ LABEL_63:
 
     v47 = [NSError alloc];
     v11 = [NSString stringWithUTF8String:"nfcd"];
-    v48 = [v10 code];
+    code3 = [v10 code];
     v114[0] = NSLocalizedDescriptionKey;
     if ([v10 code] > 75)
     {
-      v49 = 76;
+      code4 = 76;
     }
 
     else
     {
-      v49 = [v10 code];
+      code4 = [v10 code];
     }
 
-    v31 = [NSString stringWithUTF8String:off_1003158C8[v49]];
-    v115[0] = v31;
+    response2 = [NSString stringWithUTF8String:off_1003158C8[code4]];
+    v115[0] = response2;
     v115[1] = v10;
     v114[1] = NSUnderlyingErrorKey;
     v114[2] = @"Line";
@@ -832,7 +832,7 @@ LABEL_63:
     v73 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 345];
     v115[4] = v73;
     v74 = [NSDictionary dictionaryWithObjects:v115 forKeys:v114 count:5];
-    v36 = [v47 initWithDomain:v11 code:v48 userInfo:v74];
+    v36 = [v47 initWithDomain:v11 code:code3 userInfo:v74];
   }
 
   return v36;
@@ -840,7 +840,7 @@ LABEL_63:
 
 - (id)recoverSLAM
 {
-  v3 = self;
+  selfCopy = self;
   objc_opt_self();
   v4 = objc_opt_new();
   v5 = v4;
@@ -854,16 +854,16 @@ LABEL_63:
   return v6;
 }
 
-- (NFSecureElementWrapper)initWithHandle:(id)a3
+- (NFSecureElementWrapper)initWithHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = NFSecureElementWrapper;
   v6 = [(NFSecureElementWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handle, a3);
+    objc_storeStrong(&v6->_handle, handle);
   }
 
   return v7;
@@ -871,8 +871,8 @@ LABEL_63:
 
 - (BOOL)isProd
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 signingKeyType] == 2;
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  v3 = [info signingKeyType] == 2;
 
   return v3;
 }
@@ -884,8 +884,8 @@ LABEL_63:
     return 0;
   }
 
-  v3 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v4 = [v3 seType] == 6;
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  v4 = [info seType] == 6;
 
   return v4;
 }
@@ -898,13 +898,13 @@ LABEL_63:
     return 1;
   }
 
-  v4 = [(NFSecureElementHandleInterface *)handle info];
-  if ([v4 OSMode] == 2)
+  info = [(NFSecureElementHandleInterface *)handle info];
+  if ([info OSMode] == 2)
   {
-    v5 = [(NFSecureElementHandleInterface *)self->_handle info];
-    v6 = [v5 migrationState];
+    info2 = [(NFSecureElementHandleInterface *)self->_handle info];
+    migrationState = [info2 migrationState];
 
-    if (v6 == 1)
+    if (migrationState == 1)
     {
       return 1;
     }
@@ -919,68 +919,68 @@ LABEL_63:
 
 - (NSString)serialNumber
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 serialNumber];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  serialNumber = [info serialNumber];
 
-  return v3;
+  return serialNumber;
 }
 
 - (NSData)serialNumberAsData
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 serialNumber];
-  v4 = [NSData NF_dataWithHexString:v3];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  serialNumber = [info serialNumber];
+  v4 = [NSData NF_dataWithHexString:serialNumber];
 
   return v4;
 }
 
 - (NSString)systemOSSerialNumber
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 systemOSSerialNumber];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  systemOSSerialNumber = [info systemOSSerialNumber];
 
-  return v3;
+  return systemOSSerialNumber;
 }
 
 - (NSData)systemOSSerialNumberAsData
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 systemOSSerialNumber];
-  v4 = [NSData NF_dataWithHexString:v3];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  systemOSSerialNumber = [info systemOSSerialNumber];
+  v4 = [NSData NF_dataWithHexString:systemOSSerialNumber];
 
   return v4;
 }
 
 - (NSString)rsaCertificate
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 rsaCertificate];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  rsaCertificate = [info rsaCertificate];
 
-  return v3;
+  return rsaCertificate;
 }
 
 - (NSString)eccCertificate
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 ecdsaCertificate];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  ecdsaCertificate = [info ecdsaCertificate];
 
-  return v3;
+  return ecdsaCertificate;
 }
 
 - (NSString)eckaCertificate
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 eckaCertificate];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  eckaCertificate = [info eckaCertificate];
 
-  return v3;
+  return eckaCertificate;
 }
 
 - (unint64_t)supportedTechnologies
 {
-  v2 = [(NFSecureElementHandleInterface *)self->_handle info];
-  v3 = [v2 supportedTechnologies];
+  info = [(NFSecureElementHandleInterface *)self->_handle info];
+  supportedTechnologies = [info supportedTechnologies];
 
-  return v3;
+  return supportedTechnologies;
 }
 
 - (NFSecureElementWrapperDelegate)delegate
@@ -990,12 +990,12 @@ LABEL_63:
   return WeakRetained;
 }
 
-- (unint64_t)_crsGetPersoState:(id *)a3
+- (unint64_t)_crsGetPersoState:(id *)state
 {
-  *a3 = 0;
-  v6 = sub_100158A28(&self->super.isa, 128, 211, 0, a3);
+  *state = 0;
+  v6 = sub_100158A28(&self->super.isa, 128, 211, 0, state);
   v7 = v6;
-  if (*a3)
+  if (*state)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -1012,7 +1012,7 @@ LABEL_63:
         v14 = 43;
       }
 
-      v9(3, "%c[%{public}s %{public}s]:%i Failed to get data: %{public}@", v14, ClassName, Name, 58, *a3);
+      v9(3, "%c[%{public}s %{public}s]:%i Failed to get data: %{public}@", v14, ClassName, Name, 58, *state);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1032,7 +1032,7 @@ LABEL_63:
 
       v18 = object_getClassName(self);
       v19 = sel_getName(a2);
-      v20 = *a3;
+      v20 = *state;
       *buf = 67110146;
       v118 = v17;
       v119 = 2082;
@@ -1124,14 +1124,14 @@ LABEL_63:
       v62 = class_isMetaClass(v61);
       v63 = object_getClassName(self);
       v64 = sel_getName(a2);
-      v105 = [v7 status];
+      status = [v7 status];
       v65 = 45;
       if (v62)
       {
         v65 = 43;
       }
 
-      v60(3, "%c[%{public}s %{public}s]:%i Failed to get perso request, expecting 0x9000, got 0x%x", v65, v63, v64, 67, v105);
+      v60(3, "%c[%{public}s %{public}s]:%i Failed to get perso request, expecting 0x9000, got 0x%x", v65, v63, v64, 67, status);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1183,7 +1183,7 @@ LABEL_50:
     v71 = v15;
     v72 = 16;
 LABEL_51:
-    *a3 = [v70 initWithDomain:v71 code:v72 userInfo:v69];
+    *state = [v70 initWithDomain:v71 code:v72 userInfo:v69];
 
 LABEL_52:
     v22 = 0;
@@ -1192,8 +1192,8 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v21 = [v7 response];
-  v22 = [NFTLV TLVWithData:v21];
+  response = [v7 response];
+  v22 = [NFTLV TLVWithData:response];
 
   if (!v22)
   {
@@ -1284,17 +1284,17 @@ LABEL_53:
     goto LABEL_77;
   }
 
-  v23 = [v22 value];
-  if (![v23 length])
+  value = [v22 value];
+  if (![value length])
   {
 
     goto LABEL_67;
   }
 
-  v24 = [v22 value];
-  v25 = [v24 bytes];
+  value2 = [v22 value];
+  bytes = [value2 bytes];
 
-  if (!v25)
+  if (!bytes)
   {
 LABEL_67:
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1358,7 +1358,7 @@ LABEL_67:
     v91 = v107;
 LABEL_77:
     v101 = [NSDictionary dictionaryWithObjects:v90 forKeys:v91 count:4];
-    *a3 = [v85 initWithDomain:v86 code:13 userInfo:v101];
+    *state = [v85 initWithDomain:v86 code:13 userInfo:v101];
 
     goto LABEL_53;
   }
@@ -1372,8 +1372,8 @@ LABEL_77:
     v29 = class_isMetaClass(v28);
     v30 = object_getClassName(self);
     v31 = sel_getName(a2);
-    v32 = [v22 value];
-    v104 = *[v32 bytes];
+    value3 = [v22 value];
+    v104 = *[value3 bytes];
     v33 = 45;
     if (v29)
     {
@@ -1400,8 +1400,8 @@ LABEL_77:
 
     v37 = object_getClassName(self);
     v38 = sel_getName(a2);
-    v39 = [v22 value];
-    v40 = *[v39 bytes];
+    value4 = [v22 value];
+    v40 = *[value4 bytes];
     *buf = 67110146;
     v118 = v36;
     v119 = 2082;
@@ -1415,8 +1415,8 @@ LABEL_77:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Perso state is %x", buf, 0x28u);
   }
 
-  v41 = [v22 value];
-  v42 = *[v41 bytes];
+  value5 = [v22 value];
+  v42 = *[value5 bytes];
 
   if (v42 == 90)
   {
@@ -1441,7 +1441,7 @@ LABEL_54:
   return v43;
 }
 
-- (id)_crsGetSharingRequest:(id *)a3 signature:(id *)a4
+- (id)_crsGetSharingRequest:(id *)request signature:(id *)signature
 {
   v76 = 0;
   v8 = sub_10015837C(&self->super.isa, 128, 229, 0, 0, 0, 0, 0, &v76);
@@ -1450,20 +1450,20 @@ LABEL_54:
   {
     if ([v8 status] == 36864)
     {
-      v24 = [v8 response];
-      v25 = [v24 length];
+      response = [v8 response];
+      v25 = [response length];
 
       if (v25 > 0x41)
       {
-        v68 = [v8 response];
-        v69 = [v68 length] - 65;
+        response2 = [v8 response];
+        v69 = [response2 length] - 65;
 
-        v70 = [v8 response];
-        *a3 = [v70 subdataWithRange:{0, 65}];
+        response3 = [v8 response];
+        *request = [response3 subdataWithRange:{0, 65}];
 
-        v21 = [v8 response];
-        [v21 subdataWithRange:{65, v69}];
-        *a4 = v53 = 0;
+        response4 = [v8 response];
+        [response4 subdataWithRange:{65, v69}];
+        *signature = v53 = 0;
         goto LABEL_39;
       }
 
@@ -1476,8 +1476,8 @@ LABEL_54:
         isMetaClass = class_isMetaClass(Class);
         ClassName = object_getClassName(self);
         Name = sel_getName(a2);
-        v32 = [v8 response];
-        v74 = [v32 length];
+        response5 = [v8 response];
+        v74 = [response5 length];
         v33 = 45;
         if (isMetaClass)
         {
@@ -1504,8 +1504,8 @@ LABEL_54:
 
         v37 = object_getClassName(self);
         v38 = sel_getName(a2);
-        v39 = [v8 response];
-        v40 = [v39 length];
+        response6 = [v8 response];
+        v40 = [response6 length];
         *buf = 67110146;
         v84 = v36;
         v85 = 2082;
@@ -1520,7 +1520,7 @@ LABEL_54:
       }
 
       v41 = [NSError alloc];
-      v21 = [NSString stringWithUTF8String:"nfcd"];
+      response4 = [NSString stringWithUTF8String:"nfcd"];
       v77[0] = NSLocalizedDescriptionKey;
       v42 = [NSString stringWithUTF8String:"Unexpected Result"];
       v78[0] = v42;
@@ -1534,7 +1534,7 @@ LABEL_54:
       v78[3] = v44;
       v45 = [NSDictionary dictionaryWithObjects:v78 forKeys:v77 count:4];
       v46 = v41;
-      v47 = v21;
+      v47 = response4;
       v48 = 13;
     }
 
@@ -1549,14 +1549,14 @@ LABEL_54:
         v57 = class_isMetaClass(v56);
         v58 = object_getClassName(self);
         v59 = sel_getName(a2);
-        v75 = [v8 status];
+        status = [v8 status];
         v60 = 45;
         if (v57)
         {
           v60 = 43;
         }
 
-        v55(3, "%c[%{public}s %{public}s]:%i Failed to get sharing request, expecting 0x9000, got 0x%x", v60, v58, v59, 124, v75);
+        v55(3, "%c[%{public}s %{public}s]:%i Failed to get sharing request, expecting 0x9000, got 0x%x", v60, v58, v59, 124, status);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1576,7 +1576,7 @@ LABEL_54:
 
         v64 = object_getClassName(self);
         v65 = sel_getName(a2);
-        v66 = [v8 status];
+        status2 = [v8 status];
         *buf = 67110146;
         v84 = v63;
         v85 = 2082;
@@ -1586,12 +1586,12 @@ LABEL_54:
         v89 = 1024;
         v90 = 124;
         v91 = 1024;
-        LODWORD(v92) = v66;
+        LODWORD(v92) = status2;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to get sharing request, expecting 0x9000, got 0x%x", buf, 0x28u);
       }
 
       v67 = [NSError alloc];
-      v21 = [NSString stringWithUTF8String:"nfcd"];
+      response4 = [NSString stringWithUTF8String:"nfcd"];
       v79[0] = NSLocalizedDescriptionKey;
       v42 = [NSString stringWithUTF8String:"Command Error"];
       v80[0] = v42;
@@ -1605,7 +1605,7 @@ LABEL_54:
       v80[3] = v44;
       v45 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:4];
       v46 = v67;
-      v47 = v21;
+      v47 = response4;
       v48 = 16;
     }
 
@@ -1663,20 +1663,20 @@ LABEL_54:
   }
 
   v20 = [NSError alloc];
-  v21 = [NSString stringWithUTF8String:"nfcd"];
-  v22 = [v9 code];
+  response4 = [NSString stringWithUTF8String:"nfcd"];
+  code = [v9 code];
   v81[0] = NSLocalizedDescriptionKey;
   if ([v9 code] > 75)
   {
-    v23 = 76;
+    code2 = 76;
   }
 
   else
   {
-    v23 = [v9 code];
+    code2 = [v9 code];
   }
 
-  v49 = [NSString stringWithUTF8String:(&off_10031C5D0)[v23]];
+  v49 = [NSString stringWithUTF8String:(&off_10031C5D0)[code2]];
   v82[0] = v49;
   v82[1] = v9;
   v81[1] = NSUnderlyingErrorKey;
@@ -1689,21 +1689,21 @@ LABEL_54:
   v51 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 120];
   v82[4] = v51;
   v52 = [NSDictionary dictionaryWithObjects:v82 forKeys:v81 count:5];
-  v53 = [v20 initWithDomain:v21 code:v22 userInfo:v52];
+  v53 = [v20 initWithDomain:response4 code:code userInfo:v52];
 
 LABEL_39:
 
   return v53;
 }
 
-- (id)_crsSetSharingResult:(id)a3 signature:(id)a4
+- (id)_crsSetSharingResult:(id)result signature:(id)signature
 {
-  v7 = a4;
-  v8 = a3;
+  signatureCopy = signature;
+  resultCopy = result;
   v9 = +[NSMutableData data];
-  [v9 appendData:v8];
+  [v9 appendData:resultCopy];
 
-  [v9 appendData:v7];
+  [v9 appendData:signatureCopy];
   v66 = 0;
   v10 = sub_10015837C(&self->super.isa, 128, 230, 0, 0, v9, 0, 0, &v66);
   v11 = v66;
@@ -1759,19 +1759,19 @@ LABEL_39:
 
     v22 = [NSError alloc];
     v23 = [NSString stringWithUTF8String:"nfcd"];
-    v24 = [v11 code];
+    code = [v11 code];
     v71[0] = NSLocalizedDescriptionKey;
     if ([v11 code] > 75)
     {
-      v25 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v25 = [v11 code];
+      code2 = [v11 code];
     }
 
-    v27 = [NSString stringWithUTF8String:(&off_10031C5D0)[v25]];
+    v27 = [NSString stringWithUTF8String:(&off_10031C5D0)[code2]];
     v72[0] = v27;
     v72[1] = v11;
     v71[1] = NSUnderlyingErrorKey;
@@ -1786,7 +1786,7 @@ LABEL_39:
     v30 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:5];
     v31 = v22;
     v32 = v23;
-    v33 = v24;
+    v33 = code;
   }
 
   else
@@ -1808,14 +1808,14 @@ LABEL_39:
         v51 = class_isMetaClass(v50);
         v52 = object_getClassName(self);
         v53 = sel_getName(a2);
-        v65 = [v10 status];
+        status = [v10 status];
         v54 = 45;
         if (v51)
         {
           v54 = 43;
         }
 
-        v49(3, "%c[%{public}s %{public}s]:%i Failed to set sharing result, expecting 0x9000, got 0x%x", v54, v52, v53, 167, v65);
+        v49(3, "%c[%{public}s %{public}s]:%i Failed to set sharing result, expecting 0x9000, got 0x%x", v54, v52, v53, 167, status);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1835,7 +1835,7 @@ LABEL_39:
 
         v58 = object_getClassName(self);
         v59 = sel_getName(a2);
-        v60 = [v10 status];
+        status2 = [v10 status];
         *buf = 67110146;
         v74 = v57;
         v75 = 2082;
@@ -1845,7 +1845,7 @@ LABEL_39:
         v79 = 1024;
         v80 = 167;
         v81 = 1024;
-        LODWORD(v82) = v60;
+        LODWORD(v82) = status2;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to set sharing result, expecting 0x9000, got 0x%x", buf, 0x28u);
       }
 
@@ -1956,20 +1956,20 @@ LABEL_40:
   {
     v7 = [NSError alloc];
     v8 = [NSString stringWithUTF8String:"nfcd"];
-    v9 = [v4 code];
+    code = [v4 code];
     v37[0] = NSLocalizedDescriptionKey;
     v10 = v5;
     if ([v4 code] > 75)
     {
-      v11 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v11 = [v4 code];
+      code2 = [v4 code];
     }
 
-    v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[v11]];
+    v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[code2]];
     v38[0] = v17;
     v38[1] = v4;
     v37[1] = NSUnderlyingErrorKey;
@@ -1982,7 +1982,7 @@ LABEL_40:
     v19 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 184];
     v38[4] = v19;
     v20 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:5];
-    v21 = [v7 initWithDomain:v8 code:v9 userInfo:v20];
+    v21 = [v7 initWithDomain:v8 code:code userInfo:v20];
     v14 = 0;
     v15 = 0;
   }
@@ -1990,10 +1990,10 @@ LABEL_40:
   else
   {
     v12 = v6;
-    v13 = [(NFSecureElementWrapper *)self serialNumberAsData];
+    serialNumberAsData = [(NFSecureElementWrapper *)self serialNumberAsData];
     v29 = 0;
     v30 = 0;
-    v4 = sub_10022E394(NFSSEWrapper, v5, v12, v13, &v30, &v29);
+    v4 = sub_10022E394(NFSSEWrapper, v5, v12, serialNumberAsData, &v30, &v29);
     v14 = v30;
     v15 = v29;
 
@@ -2001,20 +2001,20 @@ LABEL_40:
     {
       v27 = [NSError alloc];
       v8 = [NSString stringWithUTF8String:"nfcd"];
-      v26 = [v4 code];
+      code3 = [v4 code];
       v35[0] = NSLocalizedDescriptionKey;
       v10 = v5;
       if ([v4 code] > 75)
       {
-        v16 = 76;
+        code4 = 76;
       }
 
       else
       {
-        v16 = [v4 code];
+        code4 = [v4 code];
       }
 
-      v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[v16]];
+      v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[code4]];
       v36[0] = v17;
       v36[1] = v4;
       v35[1] = NSUnderlyingErrorKey;
@@ -2041,20 +2041,20 @@ LABEL_40:
 
       v27 = [NSError alloc];
       v8 = [NSString stringWithUTF8String:"nfcd"];
-      v26 = [v4 code];
+      code3 = [v4 code];
       v33[0] = NSLocalizedDescriptionKey;
       v10 = v5;
       if ([v4 code] > 75)
       {
-        v22 = 76;
+        code5 = 76;
       }
 
       else
       {
-        v22 = [v4 code];
+        code5 = [v4 code];
       }
 
-      v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[v22]];
+      v17 = [NSString stringWithUTF8String:(&off_10031C5D0)[code5]];
       v34[0] = v17;
       v34[1] = v4;
       v33[1] = NSUnderlyingErrorKey;
@@ -2071,7 +2071,7 @@ LABEL_40:
     }
 
     v20 = [NSDictionary dictionaryWithObjects:v23 forKeys:v24 count:5];
-    v21 = [v27 initWithDomain:v8 code:v26 userInfo:v20];
+    v21 = [v27 initWithDomain:v8 code:code3 userInfo:v20];
   }
 
   v5 = v10;
@@ -2149,8 +2149,8 @@ LABEL_19:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v5 = NFSharedLogGetLogger();
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    serialNumberAsData = NFSharedLogGetLogger();
+    if (!os_log_type_enabled(serialNumberAsData, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_35;
     }
@@ -2176,7 +2176,7 @@ LABEL_19:
     v70 = 229;
     v25 = "%c[%{public}s %{public}s]:%i JCOP doesn't support per boot auth keys";
 LABEL_33:
-    v34 = v5;
+    v34 = serialNumberAsData;
     v35 = 34;
     goto LABEL_34;
   }
@@ -2202,8 +2202,8 @@ LABEL_33:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v5 = NFSharedLogGetLogger();
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    serialNumberAsData = NFSharedLogGetLogger();
+    if (!os_log_type_enabled(serialNumberAsData, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_35;
     }
@@ -2231,10 +2231,10 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v4 = [(NFSecureElementWrapper *)self pairedState];
-  if (v4 != 2)
+  pairedState = [(NFSecureElementWrapper *)self pairedState];
+  if (pairedState != 2)
   {
-    v37 = v4;
+    v37 = pairedState;
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v38 = NFLogGetLogger();
     if (v38)
@@ -2254,8 +2254,8 @@ LABEL_33:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v5 = NFSharedLogGetLogger();
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    serialNumberAsData = NFSharedLogGetLogger();
+    if (!os_log_type_enabled(serialNumberAsData, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_35;
     }
@@ -2282,7 +2282,7 @@ LABEL_33:
     v71 = 2048;
     v72 = v37;
     v25 = "%c[%{public}s %{public}s]:%i Pairing state is %lu, not re-negotiating";
-    v34 = v5;
+    v34 = serialNumberAsData;
     v35 = 44;
 LABEL_34:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, v25, buf, v35);
@@ -2291,8 +2291,8 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v5 = [(NFSecureElementWrapper *)self serialNumberAsData];
-  v6 = sub_10022D948(NFSSEWrapper, v5);
+  serialNumberAsData = [(NFSecureElementWrapper *)self serialNumberAsData];
+  v6 = sub_10022D948(NFSSEWrapper, serialNumberAsData);
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v7 = NFLogGetLogger();
   v8 = v7;
@@ -2455,7 +2455,7 @@ LABEL_36:
 
   if (!sub_10015CAD8(self))
   {
-    v20 = [(NFSecureElementWrapper *)self checkPairing];
+    checkPairing = [(NFSecureElementWrapper *)self checkPairing];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v21 = NFLogGetLogger();
     if (v21)
@@ -2512,7 +2512,7 @@ LABEL_36:
   if (!sub_10022D900())
   {
     sub_10015C944();
-    v20 = [(NFSecureElementWrapper *)self checkPairing];
+    checkPairing = [(NFSecureElementWrapper *)self checkPairing];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v36 = NFLogGetLogger();
     if (v36)
@@ -2528,7 +2528,7 @@ LABEL_36:
         v40 = 43;
       }
 
-      v37(6, "%c[%{public}s %{public}s]:%i V2 pairing not supported per SEP. Forcing entanglement. Pairing check failed : %@", v40, v152, v159, 278, v20);
+      v37(6, "%c[%{public}s %{public}s]:%i V2 pairing not supported per SEP. Forcing entanglement. Pairing check failed : %@", v40, v152, v159, 278, checkPairing);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2560,7 +2560,7 @@ LABEL_36:
     v181 = 1024;
     v182 = 278;
     v183 = 2112;
-    v184 = v20;
+    v184 = checkPairing;
     v32 = "%c[%{public}s %{public}s]:%i V2 pairing not supported per SEP. Forcing entanglement. Pairing check failed : %@";
     v33 = v27;
     v34 = OS_LOG_TYPE_DEFAULT;
@@ -2570,7 +2570,7 @@ LABEL_34:
 LABEL_35:
 
 LABEL_36:
-    v45 = 0;
+    checkPairing2 = 0;
     goto LABEL_37;
   }
 
@@ -2582,19 +2582,19 @@ LABEL_36:
     v15 = v14;
     v16 = [NSError alloc];
     v17 = [NSString stringWithUTF8String:"nfcd"];
-    v18 = [v15 code];
+    code = [v15 code];
     v175[0] = NSLocalizedDescriptionKey;
     if ([v15 code] > 75)
     {
-      v19 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v19 = [v15 code];
+      code2 = [v15 code];
     }
 
-    v59 = [NSString stringWithUTF8String:(&off_10031C5D0)[v19]];
+    v59 = [NSString stringWithUTF8String:(&off_10031C5D0)[code2]];
     v176[0] = v59;
     v176[1] = v15;
     v175[1] = NSUnderlyingErrorKey;
@@ -2607,7 +2607,7 @@ LABEL_36:
     v61 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 284];
     v176[4] = v61;
     v62 = [NSDictionary dictionaryWithObjects:v176 forKeys:v175 count:5];
-    v45 = [v16 initWithDomain:v17 code:v18 userInfo:v62];
+    checkPairing2 = [v16 initWithDomain:v17 code:code userInfo:v62];
 
 LABEL_53:
     goto LABEL_37;
@@ -2665,7 +2665,7 @@ LABEL_53:
     }
 
     sub_10015C944();
-    v45 = [(NFSecureElementWrapper *)self checkPairing];
+    checkPairing2 = [(NFSecureElementWrapper *)self checkPairing];
     goto LABEL_53;
   }
 
@@ -2716,8 +2716,8 @@ LABEL_53:
 
   if (v47 - 1 < 2)
   {
-    v168 = [(NFSecureElementWrapper *)self serialNumberAsData];
-    v71 = sub_10022D948(NFSSEWrapper, v168);
+    serialNumberAsData = [(NFSecureElementWrapper *)self serialNumberAsData];
+    v71 = sub_10022D948(NFSSEWrapper, serialNumberAsData);
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v72 = NFLogGetLogger();
     v73 = v72;
@@ -2740,7 +2740,7 @@ LABEL_53:
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v116 = NFSharedLogGetLogger();
-      v100 = v168;
+      v100 = serialNumberAsData;
       if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
       {
         v117 = object_getClass(self);
@@ -2782,7 +2782,7 @@ LABEL_53:
       v125 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 315];
       v172[3] = v125;
       v126 = [NSDictionary dictionaryWithObjects:v172 forKeys:v171 count:4];
-      v45 = [v121 initWithDomain:v122 code:12 userInfo:v126];
+      checkPairing2 = [v121 initWithDomain:v122 code:12 userInfo:v126];
 
       goto LABEL_135;
     }
@@ -2880,10 +2880,10 @@ LABEL_53:
         _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Setting key", buf, 0x22u);
       }
 
-      v93 = sub_10022DB28(NFSSEWrapper, v168);
+      v93 = sub_10022DB28(NFSSEWrapper, serialNumberAsData);
       if (v93)
       {
-        v45 = v93;
+        checkPairing2 = v93;
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v94 = NFLogGetLogger();
         if (v94)
@@ -2899,12 +2899,12 @@ LABEL_53:
             v98 = 43;
           }
 
-          v95(3, "%c[%{public}s %{public}s]:%i Failed to set SE public key : %{public}@", v98, v155, v164, 324, v45);
+          v95(3, "%c[%{public}s %{public}s]:%i Failed to set SE public key : %{public}@", v98, v155, v164, 324, checkPairing2);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v99 = NFSharedLogGetLogger();
-        v100 = v168;
+        v100 = serialNumberAsData;
         if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
         {
           v101 = object_getClass(self);
@@ -2929,7 +2929,7 @@ LABEL_53:
           v181 = 1024;
           v182 = 324;
           v183 = 2114;
-          v184 = v45;
+          v184 = checkPairing2;
           _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to set SE public key : %{public}@", buf, 0x2Cu);
         }
 
@@ -2939,7 +2939,7 @@ LABEL_135:
         goto LABEL_37;
       }
 
-      LODWORD(v71) = sub_10022D948(NFSSEWrapper, v168);
+      LODWORD(v71) = sub_10022D948(NFSSEWrapper, serialNumberAsData);
     }
 
     if (v71 != 2 && v47 == 2)
@@ -2993,10 +2993,10 @@ LABEL_135:
       _os_log_impl(&_mh_execute_header, v133, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Performing sharing", buf, 0x22u);
     }
 
-    v138 = [(NFSecureElementWrapper *)self performSharing];
-    if (v138)
+    performSharing = [(NFSecureElementWrapper *)self performSharing];
+    if (performSharing)
     {
-      v139 = v138;
+      v139 = performSharing;
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v140 = NFLogGetLogger();
       if (v140)
@@ -3017,7 +3017,7 @@ LABEL_135:
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v145 = NFSharedLogGetLogger();
-      v100 = v168;
+      v100 = serialNumberAsData;
       if (os_log_type_enabled(v145, OS_LOG_TYPE_ERROR))
       {
         v146 = object_getClass(self);
@@ -3046,20 +3046,20 @@ LABEL_135:
         _os_log_impl(&_mh_execute_header, v145, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Perform sharing failed : %{public}@", buf, 0x2Cu);
       }
 
-      v150 = [v139 localizedDescription];
-      v151 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Error: %@, Code: %ld", v150, [v139 code]);
+      localizedDescription = [v139 localizedDescription];
+      v151 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Error: %@, Code: %ld", localizedDescription, [v139 code]);
 
       sub_100199974(NFBugCapture, @"SSE Sharing failed", v151, 0);
       [(NFSecureElementWrapper *)self setUnpairedState];
-      v45 = v139;
+      checkPairing2 = v139;
     }
 
     else
     {
 LABEL_134:
       [(NFSecureElementWrapper *)self storePairedState];
-      v45 = 0;
-      v100 = v168;
+      checkPairing2 = 0;
+      v100 = serialNumberAsData;
     }
 
     goto LABEL_135;
@@ -3089,17 +3089,17 @@ LABEL_134:
     v110 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 306];
     v174[3] = v110;
     v111 = [NSDictionary dictionaryWithObjects:v174 forKeys:v173 count:4];
-    v45 = [v106 initWithDomain:v107 code:10 userInfo:v111];
+    checkPairing2 = [v106 initWithDomain:v107 code:10 userInfo:v111];
   }
 
   else
   {
-    v45 = [(NFSecureElementWrapper *)self checkPairing];
+    checkPairing2 = [(NFSecureElementWrapper *)self checkPairing];
   }
 
 LABEL_37:
 
-  return v45;
+  return checkPairing2;
 }
 
 - (unint64_t)getPairingVersion

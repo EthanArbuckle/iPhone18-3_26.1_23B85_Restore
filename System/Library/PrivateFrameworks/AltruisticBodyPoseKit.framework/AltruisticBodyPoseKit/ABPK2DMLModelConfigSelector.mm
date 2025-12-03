@@ -1,17 +1,17 @@
 @interface ABPK2DMLModelConfigSelector
-+ (CGSize)inputDimensionsForModelWithABPKNetworkConfig:(id)a3;
-+ (CGSize)inputDimensionsForModelWithNetworkConfig:(id)a3;
-+ (id)getModelWithNetworkConfig:(id)a3;
++ (CGSize)inputDimensionsForModelWithABPKNetworkConfig:(id)config;
++ (CGSize)inputDimensionsForModelWithNetworkConfig:(id)config;
++ (id)getModelWithNetworkConfig:(id)config;
 @end
 
 @implementation ABPK2DMLModelConfigSelector
 
-+ (id)getModelWithNetworkConfig:(id)a3
++ (id)getModelWithNetworkConfig:(id)config
 {
-  v3 = a3;
-  if ([v3 algMode] == 4 || objc_msgSend(v3, "algMode") == 1)
+  configCopy = config;
+  if ([configCopy algMode] == 4 || objc_msgSend(configCopy, "algMode") == 1)
   {
-    if ([v3 deviceANEVersionPriorOrEqualToH12])
+    if ([configCopy deviceANEVersionPriorOrEqualToH12])
     {
       v4 = ABPKMLModelConfiguration2DStandard;
 LABEL_10:
@@ -24,13 +24,13 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if ([v3 algMode] == 2 || !objc_msgSend(v3, "algMode"))
+  if ([configCopy algMode] == 2 || !objc_msgSend(configCopy, "algMode"))
   {
     v4 = ABPKMLModelConfiguration2DBreakthrough;
     goto LABEL_10;
   }
 
-  if ([v3 algMode] == 10)
+  if ([configCopy algMode] == 10)
   {
     goto LABEL_8;
   }
@@ -48,13 +48,13 @@ LABEL_11:
   return v5;
 }
 
-+ (CGSize)inputDimensionsForModelWithNetworkConfig:(id)a3
++ (CGSize)inputDimensionsForModelWithNetworkConfig:(id)config
 {
-  v3 = a3;
-  v4 = [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:v3];
-  v5 = [v3 abpkDeviceOrientation];
+  configCopy = config;
+  v4 = [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:configCopy];
+  abpkDeviceOrientation = [configCopy abpkDeviceOrientation];
 
-  [v4 inputDimensionsForABPKDeviceOrientation:v5];
+  [v4 inputDimensionsForABPKDeviceOrientation:abpkDeviceOrientation];
   v7 = v6;
   v9 = v8;
 
@@ -65,13 +65,13 @@ LABEL_11:
   return result;
 }
 
-+ (CGSize)inputDimensionsForModelWithABPKNetworkConfig:(id)a3
++ (CGSize)inputDimensionsForModelWithABPKNetworkConfig:(id)config
 {
-  v3 = a3;
-  v4 = [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:v3];
-  v5 = [v3 abpkDeviceOrientation];
+  configCopy = config;
+  v4 = [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:configCopy];
+  abpkDeviceOrientation = [configCopy abpkDeviceOrientation];
 
-  [v4 inputDimensionsForABPKDeviceOrientation:v5];
+  [v4 inputDimensionsForABPKDeviceOrientation:abpkDeviceOrientation];
   v7 = v6;
   v9 = v8;
 

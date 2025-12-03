@@ -1,24 +1,24 @@
 @interface IMNotifyRecipientCommandProcessingPipelineComponent
-- (IMNotifyRecipientCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
+- (IMNotifyRecipientCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
 - (id)_account;
 - (id)_idsAccount;
 - (id)_messageStore;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_markMessageAsNotifiedRecipientAndNotify:(id)a3 session:(id)a4 chat:(id)a5;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_markMessageAsNotifiedRecipientAndNotify:(id)notify session:(id)session chat:(id)chat;
 @end
 
 @implementation IMNotifyRecipientCommandProcessingPipelineComponent
 
-- (IMNotifyRecipientCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMNotifyRecipientCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMNotifyRecipientCommandProcessingPipelineComponent;
   v6 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
@@ -26,51 +26,51 @@
 
 - (id)_idsAccount
 {
-  v2 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 idsAccount];
+    idsAccount = [imdAccount idsAccount];
   }
 
   else
   {
-    v4 = 0;
+    idsAccount = 0;
   }
 
-  return v4;
+  return idsAccount;
 }
 
 - (id)_account
 {
-  v2 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 imdAccount];
+  pipelineResources = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+  imdAccount = [pipelineResources imdAccount];
 
-  return v3;
+  return imdAccount;
 }
 
 - (id)_messageStore
 {
-  v2 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-  v3 = [v2 messageStore];
+  pipelineResources = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
 
-  return v3;
+  return messageStore;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v52 = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v40 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412290;
-      v49 = v5;
+      v49 = gUID;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "<IMNotifyRecipientCommandProcessingPipelineComponent> Started processing for Message GUID: %@", buf, 0xCu);
     }
   }
@@ -82,27 +82,27 @@
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v40 GUID];
+        gUID2 = [inputCopy GUID];
         *buf = 138412290;
-        v49 = v7;
+        v49 = gUID2;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "    Ignoring notify recipient command for message: %@", buf, 0xCu);
       }
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v40];
+    v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
   {
-    v9 = [v40 GUID];
+    gUID3 = [inputCopy GUID];
 
-    if (v9)
+    if (gUID3)
     {
-      v10 = [v40 GUID];
+      gUID4 = [inputCopy GUID];
       v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v11 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-      v12 = [v11 messageStore];
-      v13 = [v12 chatsForMessageGUID:v10];
+      pipelineResources = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+      messageStore = [pipelineResources messageStore];
+      v13 = [messageStore chatsForMessageGUID:gUID4];
 
       if (IMOSLoggingEnabled())
       {
@@ -110,7 +110,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v49 = v10;
+          v49 = gUID4;
           v50 = 2112;
           v51 = v13;
           _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Found chats for messageID: %@   chats: %@", buf, 0x16u);
@@ -136,23 +136,23 @@
             }
 
             v19 = *(*(&v42 + 1) + 8 * i);
-            v20 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-            v21 = [v20 messageStore];
-            v22 = [v21 messageWithGUID:v10];
+            pipelineResources2 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+            messageStore2 = [pipelineResources2 messageStore];
+            v22 = [messageStore2 messageWithGUID:gUID4];
 
             if (v22)
             {
               [v41 addObject:v22];
-              v23 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _account];
-              v24 = [v23 session];
-              [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _markMessageAsNotifiedRecipientAndNotify:v22 session:v24 chat:v19];
+              _account = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _account];
+              session = [_account session];
+              [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _markMessageAsNotifiedRecipientAndNotify:v22 session:session chat:v19];
 
               if (([v22 isFromMe] & 1) == 0)
               {
-                v25 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _messageStore];
-                v46 = v10;
+                _messageStore = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self _messageStore];
+                v46 = gUID4;
                 v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-                [v25 postUrgentNotificationsForMessageGUIDs:v26];
+                [_messageStore postUrgentNotificationsForMessageGUIDs:v26];
               }
             }
           }
@@ -172,9 +172,9 @@
           v34 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
-            v35 = [v40 GUID];
+            gUID5 = [inputCopy GUID];
             *buf = 138412290;
-            v49 = v35;
+            v49 = gUID5;
             _os_log_impl(&dword_22B4CC000, v34, OS_LOG_TYPE_INFO, "Unable to mark message notified recipient with GUID=%@: message not found", buf, 0xCu);
           }
         }
@@ -191,28 +191,28 @@
           v29 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v40 GUID];
+            gUID6 = [inputCopy GUID];
             *buf = 138412290;
-            v49 = v30;
+            v49 = gUID6;
             _os_log_impl(&dword_22B4CC000, v29, OS_LOG_TYPE_INFO, "Marked message with GUID=%@ as notified recipient", buf, 0xCu);
           }
         }
 
-        v31 = [v15 firstObject];
-        [v40 setChat:v31];
+        firstObject = [v15 firstObject];
+        [inputCopy setChat:firstObject];
 
         v32 = [v41 copy];
-        [v40 setMessageItems:v32];
+        [inputCopy setMessageItems:v32];
 
-        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v40];
+        v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
       }
     }
 
     else
     {
       v33 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v10 = [v33 initWithDomain:*MEMORY[0x277D18DF8] code:3 userInfo:0];
-      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v10];
+      gUID4 = [v33 initWithDomain:*MEMORY[0x277D18DF8] code:3 userInfo:0];
+      v8 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:gUID4];
     }
   }
 
@@ -221,36 +221,36 @@
   return v8;
 }
 
-- (void)_markMessageAsNotifiedRecipientAndNotify:(id)a3 session:(id)a4 chat:(id)a5
+- (void)_markMessageAsNotifiedRecipientAndNotify:(id)notify session:(id)session chat:(id)chat
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notifyCopy = notify;
+  sessionCopy = session;
+  chatCopy = chat;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v18 = 138412290;
-      v19 = v8;
+      v19 = notifyCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Mark message as notified recipient: %@", &v18, 0xCu);
     }
   }
 
-  [v8 setFlags:{objc_msgSend(v8, "flags") | 0x800000000}];
-  if ([v8 errorCode])
+  [notifyCopy setFlags:{objc_msgSend(notifyCopy, "flags") | 0x800000000}];
+  if ([notifyCopy errorCode])
   {
-    [v8 setErrorCode:0];
+    [notifyCopy setErrorCode:0];
   }
 
-  v12 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-  v13 = [v12 messageStore];
-  v14 = [v13 storeMessage:v8 forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x800000000];
+  pipelineResources = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
+  v14 = [messageStore storeMessage:notifyCopy forceReplace:0 modifyError:1 modifyFlags:1 flagMask:0x800000000];
 
-  v15 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
-  v16 = [v15 chatRegistry];
-  [v16 updateStateForChat:v10 hintMessage:0 shouldRebuildFailedMessageDate:0];
+  pipelineResources2 = [(IMNotifyRecipientCommandProcessingPipelineComponent *)self pipelineResources];
+  chatRegistry = [pipelineResources2 chatRegistry];
+  [chatRegistry updateStateForChat:chatCopy hintMessage:0 shouldRebuildFailedMessageDate:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }

@@ -1,28 +1,28 @@
 @interface PXGPPTTextRenderingTester
-- (void)runRenderTextTestWithOptions:(id)a3 latencyMeter:(id)a4 completionHandler:(id)a5 failureHandler:(id)a6;
-- (void)textureProvider:(id)a3 didProvideCGImage:(CGImage *)a4 options:(id)a5 adjustment:(id)a6 isDegraded:(BOOL)a7 forRequestID:(int)a8;
+- (void)runRenderTextTestWithOptions:(id)options latencyMeter:(id)meter completionHandler:(id)handler failureHandler:(id)failureHandler;
+- (void)textureProvider:(id)provider didProvideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d;
 @end
 
 @implementation PXGPPTTextRenderingTester
 
-- (void)textureProvider:(id)a3 didProvideCGImage:(CGImage *)a4 options:(id)a5 adjustment:(id)a6 isDegraded:(BOOL)a7 forRequestID:(int)a8
+- (void)textureProvider:(id)provider didProvideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d
 {
-  v10 = [(PXGPPTTextRenderingTester *)self textureProviderDidProvideCGImageHandler:a3];
+  v10 = [(PXGPPTTextRenderingTester *)self textureProviderDidProvideCGImageHandler:provider];
 
   if (v10)
   {
-    v11 = [(PXGPPTTextRenderingTester *)self textureProviderDidProvideCGImageHandler];
-    v11[2](v11, a4);
+    textureProviderDidProvideCGImageHandler = [(PXGPPTTextRenderingTester *)self textureProviderDidProvideCGImageHandler];
+    textureProviderDidProvideCGImageHandler[2](textureProviderDidProvideCGImageHandler, image);
   }
 }
 
-- (void)runRenderTextTestWithOptions:(id)a3 latencyMeter:(id)a4 completionHandler:(id)a5 failureHandler:(id)a6
+- (void)runRenderTextTestWithOptions:(id)options latencyMeter:(id)meter completionHandler:(id)handler failureHandler:(id)failureHandler
 {
-  v28 = a3;
-  v30 = a4;
-  v31 = a5;
-  v10 = a6;
-  [v30 setMeasurementsUnit:@"ms"];
+  optionsCopy = options;
+  meterCopy = meter;
+  handlerCopy = handler;
+  failureHandlerCopy = failureHandler;
+  [meterCopy setMeasurementsUnit:@"ms"];
   v11 = objc_alloc_init(off_1E77216E8);
   v12 = MEMORY[0x1E69E96A0];
   [v11 setRequestQueue:MEMORY[0x1E69E96A0]];
@@ -35,15 +35,15 @@
   [(PXGPPTStringsLayout *)v13 updateIfNeeded];
   [(PXGPPTTextRenderingTester *)self setStringTextureProvider:v11];
   [(PXGPPTTextRenderingTester *)self setStringsLayout:v13];
-  v29 = [(PXGItemsLayout *)v13 numberOfItems];
-  v14 = [(PXGPPTStringsLayout *)v13 spriteDataStore];
-  v15 = [v14 geometries];
+  numberOfItems = [(PXGItemsLayout *)v13 numberOfItems];
+  spriteDataStore = [(PXGPPTStringsLayout *)v13 spriteDataStore];
+  geometries = [spriteDataStore geometries];
 
-  v16 = [(PXGPPTStringsLayout *)v13 spriteDataStore];
-  v17 = [v16 styles];
+  spriteDataStore2 = [(PXGPPTStringsLayout *)v13 spriteDataStore];
+  styles = [spriteDataStore2 styles];
 
-  v18 = [(PXGPPTStringsLayout *)v13 spriteDataStore];
-  v19 = [v18 infos];
+  spriteDataStore3 = [(PXGPPTStringsLayout *)v13 spriteDataStore];
+  infos = [spriteDataStore3 infos];
 
   v52[0] = 0;
   v52[1] = v52;
@@ -61,9 +61,9 @@
   v20 = v11;
   v44 = v20;
   v47 = v52;
-  v48 = v15;
-  v49 = v17;
-  v50 = v19;
+  v48 = geometries;
+  v49 = styles;
+  v50 = infos;
   v21 = v13;
   v45 = v21;
   v22 = _Block_copy(aBlock);
@@ -72,25 +72,25 @@
   v41[2] = 0x3032000000;
   v41[3] = __Block_byref_object_copy__251461;
   v41[4] = __Block_byref_object_dispose__251462;
-  v23 = self;
-  v42 = v23;
+  selfCopy = self;
+  v42 = selfCopy;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __104__PXGPPTTextRenderingTester_runRenderTextTestWithOptions_latencyMeter_completionHandler_failureHandler___block_invoke_13;
   v32[3] = &unk_1E774B3E8;
-  v24 = v10;
+  v24 = failureHandlerCopy;
   v34 = v24;
   v37 = v52;
   v38 = v51;
-  v25 = v30;
+  v25 = meterCopy;
   v39 = v41;
-  v40 = v29;
+  v40 = numberOfItems;
   v33 = v25;
-  v26 = v31;
+  v26 = handlerCopy;
   v35 = v26;
   v27 = v22;
   v36 = v27;
-  [(PXGPPTTextRenderingTester *)v23 setTextureProviderDidProvideCGImageHandler:v32];
+  [(PXGPPTTextRenderingTester *)selfCopy setTextureProviderDidProvideCGImageHandler:v32];
   v27[2](v27);
 
   _Block_object_dispose(v41, 8);

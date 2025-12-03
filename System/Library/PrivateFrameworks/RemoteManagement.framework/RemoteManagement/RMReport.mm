@@ -1,13 +1,13 @@
 @interface RMReport
-+ (id)internalStateArchiveWithContext:(id)a3;
++ (id)internalStateArchiveWithContext:(id)context;
 + (id)managementSources;
 + (id)orphanedEntities;
-+ (id)reportWithContext:(id)a3 allInformation:(BOOL)a4;
++ (id)reportWithContext:(id)context allInformation:(BOOL)information;
 @end
 
 @implementation RMReport
 
-+ (id)reportWithContext:(id)a3 allInformation:(BOOL)a4
++ (id)reportWithContext:(id)context allInformation:(BOOL)information
 {
   v11 = 0;
   v12 = &v11;
@@ -20,10 +20,10 @@
   v7[2] = sub_100060E40;
   v7[3] = &unk_1000D2978;
   v9 = &v11;
-  v10 = a4;
-  v4 = a3;
-  v8 = v4;
-  [v4 performBlockAndWait:v7];
+  informationCopy = information;
+  contextCopy = context;
+  v8 = contextCopy;
+  [contextCopy performBlockAndWait:v7];
   v5 = [v12[5] copy];
 
   _Block_object_dispose(&v11, 8);
@@ -60,8 +60,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) reportDetails];
-          [v6 addObject:v12];
+          reportDetails = [*(*(&v16 + 1) + 8 * i) reportDetails];
+          [v6 addObject:reportDetails];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -113,10 +113,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v3 = [*(*(&v116 + 1) + 8 * i) fetchRequest];
-        [v3 setPredicate:v113];
+        fetchRequest = [*(*(&v116 + 1) + 8 * i) fetchRequest];
+        [fetchRequest setPredicate:v113];
         v4 = v112;
-        v5 = v3;
+        v5 = fetchRequest;
         v120 = 0;
         v6 = [v5 execute:&v120];
         v7 = v120;
@@ -144,8 +144,8 @@
                   objc_enumerationMutation(v10);
                 }
 
-                v15 = [*(*(&v124 + 1) + 8 * j) reportDetails];
-                [v9 addObject:v15];
+                reportDetails = [*(*(&v124 + 1) + 8 * j) reportDetails];
+                [v9 addObject:reportDetails];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -168,9 +168,9 @@
 
         if ([v16 count])
         {
-          v17 = [v5 entity];
-          v18 = [v17 managedObjectClassName];
-          [v4 setObject:v16 forKeyedSubscript:v18];
+          entity = [v5 entity];
+          managedObjectClassName = [entity managedObjectClassName];
+          [v4 setObject:v16 forKeyedSubscript:managedObjectClassName];
         }
       }
 
@@ -212,8 +212,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v124 + 1) + 8 * k) reportDetails];
-          [v26 addObject:v32];
+          reportDetails2 = [*(*(&v124 + 1) + 8 * k) reportDetails];
+          [v26 addObject:reportDetails2];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -235,9 +235,9 @@
 
   if ([v33 count])
   {
-    v34 = [v22 entity];
-    v35 = [v34 managedObjectClassName];
-    [v21 setObject:v33 forKeyedSubscript:v35];
+    entity2 = [v22 entity];
+    managedObjectClassName2 = [entity2 managedObjectClassName];
+    [v21 setObject:v33 forKeyedSubscript:managedObjectClassName2];
   }
 
   v36 = +[RMAssetPayloadReference fetchRequest];
@@ -272,8 +272,8 @@
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v124 + 1) + 8 * m) reportDetails];
-          [v43 addObject:v49];
+          reportDetails3 = [*(*(&v124 + 1) + 8 * m) reportDetails];
+          [v43 addObject:reportDetails3];
         }
 
         v46 = [v44 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -297,9 +297,9 @@
 
   if ([v51 count])
   {
-    v52 = [v39 entity];
-    v53 = [v52 managedObjectClassName];
-    [v38 setObject:v51 forKeyedSubscript:v53];
+    entity3 = [v39 entity];
+    managedObjectClassName3 = [entity3 managedObjectClassName];
+    [v38 setObject:v51 forKeyedSubscript:managedObjectClassName3];
   }
 
   v54 = +[RMStatusSubscription fetchRequest];
@@ -334,8 +334,8 @@
             objc_enumerationMutation(v62);
           }
 
-          v67 = [*(*(&v124 + 1) + 8 * n) reportDetails];
-          [v61 addObject:v67];
+          reportDetails4 = [*(*(&v124 + 1) + 8 * n) reportDetails];
+          [v61 addObject:reportDetails4];
         }
 
         v64 = [v62 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -359,9 +359,9 @@
 
   if ([v69 count])
   {
-    v70 = [v57 entity];
-    v71 = [v70 managedObjectClassName];
-    [v56 setObject:v69 forKeyedSubscript:v71];
+    entity4 = [v57 entity];
+    managedObjectClassName4 = [entity4 managedObjectClassName];
+    [v56 setObject:v69 forKeyedSubscript:managedObjectClassName4];
   }
 
   v72 = +[RMStatusSubscriptionItem fetchRequest];
@@ -396,8 +396,8 @@
             objc_enumerationMutation(v80);
           }
 
-          v85 = [*(*(&v124 + 1) + 8 * ii) reportDetails];
-          [v79 addObject:v85];
+          reportDetails5 = [*(*(&v124 + 1) + 8 * ii) reportDetails];
+          [v79 addObject:reportDetails5];
         }
 
         v82 = [v80 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -421,9 +421,9 @@
 
   if ([v87 count])
   {
-    v88 = [v75 entity];
-    v89 = [v88 managedObjectClassName];
-    [v74 setObject:v87 forKeyedSubscript:v89];
+    entity5 = [v75 entity];
+    managedObjectClassName5 = [entity5 managedObjectClassName];
+    [v74 setObject:v87 forKeyedSubscript:managedObjectClassName5];
   }
 
   v90 = +[RMSubscribedStatusKeyPath fetchRequest];
@@ -458,8 +458,8 @@
             objc_enumerationMutation(v98);
           }
 
-          v103 = [*(*(&v124 + 1) + 8 * jj) reportDetails];
-          [v97 addObject:v103];
+          reportDetails6 = [*(*(&v124 + 1) + 8 * jj) reportDetails];
+          [v97 addObject:reportDetails6];
         }
 
         v100 = [v98 countByEnumeratingWithState:&v124 objects:v123 count:16];
@@ -483,9 +483,9 @@
 
   if ([v105 count])
   {
-    v106 = [v93 entity];
-    v107 = [v106 managedObjectClassName];
-    [v92 setObject:v105 forKeyedSubscript:v107];
+    entity6 = [v93 entity];
+    managedObjectClassName6 = [entity6 managedObjectClassName];
+    [v92 setObject:v105 forKeyedSubscript:managedObjectClassName6];
   }
 
   v108 = [v92 copy];
@@ -493,13 +493,13 @@
   return v108;
 }
 
-+ (id)internalStateArchiveWithContext:(id)a3
++ (id)internalStateArchiveWithContext:(id)context
 {
-  v3 = [a3 persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
-  v5 = [v4 firstObject];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v6 = [v3 metadataForPersistentStore:v5];
+  v6 = [persistentStoreCoordinator metadataForPersistentStore:firstObject];
   v7 = [v6 objectForKeyedSubscript:@"InternalStateArchiver.DeviceStatusByKeyPath"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())

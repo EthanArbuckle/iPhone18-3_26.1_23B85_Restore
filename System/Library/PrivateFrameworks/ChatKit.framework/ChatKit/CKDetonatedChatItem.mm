@@ -6,9 +6,9 @@
 
 - (unint64_t)balloonCorners
 {
-  v2 = [(CKChatItem *)self attachmentContiguousType];
+  attachmentContiguousType = [(CKChatItem *)self attachmentContiguousType];
 
-  return CKBalloonCornersForAttachmentContiguousType(v2);
+  return CKBalloonCornersForAttachmentContiguousType(attachmentContiguousType);
 }
 
 @end

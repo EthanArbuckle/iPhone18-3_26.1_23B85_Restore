@@ -1,12 +1,12 @@
 @interface _EARNgramLmModel
 + (void)initialize;
-- (BOOL)writeToDirectory:(id)a3;
+- (BOOL)writeToDirectory:(id)directory;
 - (NSString)arpaFileName;
-- (_EARNgramLmModel)initWithConfiguration:(id)a3 root:(id)a4;
+- (_EARNgramLmModel)initWithConfiguration:(id)configuration root:(id)root;
 - (id).cxx_construct;
-- (id)_initWithModel:(shared_ptr<quasar:(shared_ptr<quasar::NgramFstConfig>)a4 :NgramLmModel2>)a3 config:;
-- (id)generateNgramCounts:(id)a3;
-- (id)initFromDirectory:(id)a3;
+- (id)_initWithModel:(shared_ptr<quasar:(shared_ptr<quasar::NgramFstConfig>)model :NgramLmModel2>)a3 config:;
+- (id)generateNgramCounts:(id)counts;
+- (id)initFromDirectory:(id)directory;
 - (shared_ptr<quasar::NgramFstConfig>)ngramBuildConfig;
 - (shared_ptr<quasar::NgramLmModel2>)ngramModel;
 @end
@@ -16,14 +16,14 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)_initWithModel:(shared_ptr<quasar:(shared_ptr<quasar::NgramFstConfig>)a4 :NgramLmModel2>)a3 config:
+- (id)_initWithModel:(shared_ptr<quasar:(shared_ptr<quasar::NgramFstConfig>)model :NgramLmModel2>)a3 config:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -68,13 +68,13 @@
   return v7;
 }
 
-- (_EARNgramLmModel)initWithConfiguration:(id)a3 root:(id)a4
+- (_EARNgramLmModel)initWithConfiguration:(id)configuration root:(id)root
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  rootCopy = root;
   v18.receiver = self;
   v18.super_class = _EARNgramLmModel;
-  v8 = [(_EARLmModel *)&v18 initWithConfiguration:v6 root:v7];
+  v8 = [(_EARLmModel *)&v18 initWithConfiguration:configurationCopy root:rootCopy];
   v9 = v8;
   if (v8)
   {
@@ -135,12 +135,12 @@
   return v13;
 }
 
-- (id)initFromDirectory:(id)a3
+- (id)initFromDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v15.receiver = self;
   v15.super_class = _EARNgramLmModel;
-  v5 = [(_EARLmModel *)&v15 initFromDirectory:v4];
+  v5 = [(_EARLmModel *)&v15 initFromDirectory:directoryCopy];
   v6 = v5;
   if (v5)
   {
@@ -201,10 +201,10 @@
   return v10;
 }
 
-- (BOOL)writeToDirectory:(id)a3
+- (BOOL)writeToDirectory:(id)directory
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   [(_EARLmModel *)self model];
   v5 = lpsrc;
   {
@@ -237,9 +237,9 @@
   ptr = p_ngramModel->__ptr_;
   if (ptr)
   {
-    if (v4)
+    if (directoryCopy)
     {
-      [v4 ear_toString];
+      [directoryCopy ear_toString];
     }
 
     else
@@ -262,10 +262,10 @@
   return 0;
 }
 
-- (id)generateNgramCounts:(id)a3
+- (id)generateNgramCounts:(id)counts
 {
   v10[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  countsCopy = counts;
   ptr = self->_ngramBuildConfig.__ptr_;
   cntrl = self->_ngramBuildConfig.__cntrl_;
   if (cntrl)
@@ -275,7 +275,7 @@
 
   v10[0] = ptr;
   v10[1] = cntrl;
-  [v4 data];
+  [countsCopy data];
   quasar::generateNgramCountsStr(v10, v9, v7);
 }
 

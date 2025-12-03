@@ -2,7 +2,7 @@
 - (NPTOPhotosAppFeaturedPhotosContentProvider)init;
 - (NPTOSyncContentProviderDelegate)delegate;
 - (id)assetCollections;
-- (id)assetsForAssetCollection:(id)a3;
+- (id)assetsForAssetCollection:(id)collection;
 @end
 
 @implementation NPTOPhotosAppFeaturedPhotosContentProvider
@@ -17,16 +17,16 @@
 
 - (id)assetCollections
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000B068();
 
   return v3;
 }
 
-- (id)assetsForAssetCollection:(id)a3
+- (id)assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = sub_10000E8F0();
 
   return v6;

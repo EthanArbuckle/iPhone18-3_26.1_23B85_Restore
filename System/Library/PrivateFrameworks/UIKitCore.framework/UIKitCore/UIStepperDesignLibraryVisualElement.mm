@@ -1,20 +1,20 @@
 @interface UIStepperDesignLibraryVisualElement
 + (UIEdgeInsets)initialAlignmentRectInsets;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (UIEdgeInsets)alignmentRectInsetsForControl:(id)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (UIEdgeInsets)alignmentRectInsetsForControl:(id)control;
 - (UIStepperControl)stepperControl;
-- (UIStepperDesignLibraryVisualElement)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (UIStepperDesignLibraryVisualElement)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setMaximumValue:(double)a3;
-- (void)setMinimumValue:(double)a3;
-- (void)setStepValue:(double)a3;
-- (void)setStepperControl:(id)a3;
-- (void)setValue:(double)a3;
-- (void)setWraps:(BOOL)a3;
-- (void)updateCount:(id)a3;
+- (void)setMaximumValue:(double)value;
+- (void)setMinimumValue:(double)value;
+- (void)setStepValue:(double)value;
+- (void)setStepperControl:(id)control;
+- (void)setValue:(double)value;
+- (void)setWraps:(BOOL)wraps;
+- (void)updateCount:(id)count;
 @end
 
 @implementation UIStepperDesignLibraryVisualElement
@@ -26,53 +26,53 @@
   return v2;
 }
 
-- (void)setStepperControl:(id)a3
+- (void)setStepperControl:(id)control
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepperControl) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepperControl) = control;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_value) = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_value) = value;
+  selfCopy = self;
   sub_1890F2C00();
-  v3 = v5;
-  v4 = *(&v5->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepperControl);
+  v3 = selfCopy;
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepperControl);
   if (v4)
   {
     [v4 visualElementDidSetValue_];
-    v3 = v5;
+    v3 = selfCopy;
   }
 }
 
-- (void)setMinimumValue:(double)a3
+- (void)setMinimumValue:(double)value
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_minimumValue) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_minimumValue) = value;
+  selfCopy = self;
   sub_1890F2C00();
 }
 
-- (void)setMaximumValue:(double)a3
+- (void)setMaximumValue:(double)value
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_maximumValue) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_maximumValue) = value;
+  selfCopy = self;
   sub_1890F2C00();
 }
 
-- (void)setStepValue:(double)a3
+- (void)setStepValue:(double)value
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepValue) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_stepValue) = value;
+  selfCopy = self;
   sub_1890F2C00();
 }
 
-- (void)setWraps:(BOOL)a3
+- (void)setWraps:(BOOL)wraps
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_wraps) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___UIStepperDesignLibraryVisualElement_wraps) = wraps;
+  selfCopy = self;
   sub_1890F2C00();
 }
 
@@ -104,7 +104,7 @@
   return result;
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForControl:(id)a3
+- (UIEdgeInsets)alignmentRectInsetsForControl:(id)control
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UIStepperDesignLibraryVisualElement();
@@ -116,10 +116,10 @@
   return result;
 }
 
-- (void)updateCount:(id)a3
+- (void)updateCount:(id)count
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A7DE8();
   swift_unknownObjectRelease();
   sub_1890F313C(v5);
@@ -127,45 +127,45 @@
   __swift_destroy_boxed_opaque_existential_0Tm(v5);
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
   sub_1890F30BC();
-  [v6 locationInView_];
-  sub_1890F374C(v7, v9, v10);
+  [touchCopy locationInView_];
+  sub_1890F374C(eventCopy, v9, v10);
 
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  [v6 locationInView_];
-  sub_1890F374C(v7, v9, v10);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  [touchCopy locationInView_];
+  sub_1890F374C(eventCopy, v9, v10);
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
   sub_1890F40E4();
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_1890F417C();
 }
 
-- (UIStepperDesignLibraryVisualElement)initWithFrame:(CGRect)a3
+- (UIStepperDesignLibraryVisualElement)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

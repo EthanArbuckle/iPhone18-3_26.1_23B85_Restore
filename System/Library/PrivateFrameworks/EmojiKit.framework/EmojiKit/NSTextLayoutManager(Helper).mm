@@ -12,8 +12,8 @@
 - (uint64_t)_rangeFromTextRange_emk:()Helper
 {
   v4 = a3;
-  v5 = [a1 textContentManager];
-  v6 = [v5 _rangeFromTextRange_emk:v4];
+  textContentManager = [self textContentManager];
+  v6 = [textContentManager _rangeFromTextRange_emk:v4];
 
   return v6;
 }
@@ -27,21 +27,21 @@
   v11[3] = &unk_2781C20C0;
   v12 = v8;
   v9 = v8;
-  v10 = [a1 enumerateTextLayoutFragmentsFromLocation:a3 options:a4 usingBlock:v11];
+  v10 = [self enumerateTextLayoutFragmentsFromLocation:a3 options:a4 usingBlock:v11];
 }
 
 - (void)enumerateAllTextParagraphsUsingBlock_emk:()Helper
 {
   v4 = a3;
-  v5 = [a1 documentRange];
-  v6 = [v5 location];
+  documentRange = [self documentRange];
+  location = [documentRange location];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__NSTextLayoutManager_Helper__enumerateAllTextParagraphsUsingBlock_emk___block_invoke;
   v8[3] = &unk_2781C20E8;
   v9 = v4;
   v7 = v4;
-  [a1 enumerateTextParagraphsFromLocation:v6 options:4 usingBlock_emk:v8];
+  [self enumerateTextParagraphsFromLocation:location options:4 usingBlock_emk:v8];
 }
 
 - (void)_enumerateTextLineFragmentsInTextRange:()Helper usingBlock:
@@ -52,18 +52,18 @@
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v17[3] = 0;
-  v8 = [v6 location];
+  location = [v6 location];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__NSTextLayoutManager_Helper___enumerateTextLineFragmentsInTextRange_usingBlock___block_invoke;
   v12[3] = &unk_2781C2110;
   v9 = v6;
   v13 = v9;
-  v14 = a1;
+  selfCopy = self;
   v10 = v7;
   v15 = v10;
   v16 = v17;
-  v11 = [a1 enumerateTextLayoutFragmentsFromLocation:v8 options:4 usingBlock:v12];
+  v11 = [self enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v12];
 
   _Block_object_dispose(v17, 8);
 }
@@ -71,17 +71,17 @@
 - (void)_enumerateAllTokenListsUsingBlock_emk:()Helper
 {
   v4 = a3;
-  v5 = [a1 documentRange];
+  documentRange = [self documentRange];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__NSTextLayoutManager_Helper___enumerateAllTokenListsUsingBlock_emk___block_invoke;
   v8[3] = &unk_2781C2160;
-  v8[4] = a1;
-  v9 = v5;
+  v8[4] = self;
+  v9 = documentRange;
   v10 = v4;
   v6 = v4;
-  v7 = v5;
-  [a1 enumerateAllTextParagraphsUsingBlock_emk:v8];
+  v7 = documentRange;
+  [self enumerateAllTextParagraphsUsingBlock_emk:v8];
 }
 
 - (uint64_t)animatingGlyphCount_emk
@@ -90,14 +90,14 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = [a1 documentRange];
-  v3 = [v2 location];
+  documentRange = [self documentRange];
+  location = [documentRange location];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NSTextLayoutManager_Helper__animatingGlyphCount_emk__block_invoke;
   v7[3] = &unk_2781C2188;
   v7[4] = &v8;
-  v4 = [a1 enumerateTextLayoutFragmentsFromLocation:v3 options:4 usingBlock:v7];
+  v4 = [self enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);

@@ -1,34 +1,34 @@
 @interface DAResolvedRecipient
 - (id)description;
-- (void)addCert:(id)a3 forEmailAddress:(id)a4;
+- (void)addCert:(id)cert forEmailAddress:(id)address;
 @end
 
 @implementation DAResolvedRecipient
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   v3 = 0x277CCA000uLL;
   v4 = MEMORY[0x277CCAB68];
   v37.receiver = self;
   v37.super_class = DAResolvedRecipient;
   v5 = [(DAResolvedRecipient *)&v37 description];
-  v6 = [v4 stringWithFormat:@"%@ status %ld", v5, -[DAResolvedRecipient status](v2, "status")];
+  v6 = [v4 stringWithFormat:@"%@ status %ld", v5, -[DAResolvedRecipient status](selfCopy, "status")];
 
-  v7 = [(DAResolvedRecipient *)v2 mResolvedEmailToX509Certs];
-  v8 = [v7 count];
+  mResolvedEmailToX509Certs = [(DAResolvedRecipient *)selfCopy mResolvedEmailToX509Certs];
+  v8 = [mResolvedEmailToX509Certs count];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAB68] stringWithFormat:@" email->certs status %ld ", -[DAResolvedRecipient certificatesStatus](v2, "certificatesStatus")];
+    v9 = [MEMORY[0x277CCAB68] stringWithFormat:@" email->certs status %ld ", -[DAResolvedRecipient certificatesStatus](selfCopy, "certificatesStatus")];
     [v6 appendString:v9];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = [(DAResolvedRecipient *)v2 mResolvedEmailToX509Certs];
+    obj = [(DAResolvedRecipient *)selfCopy mResolvedEmailToX509Certs];
     v28 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v28)
     {
@@ -48,9 +48,9 @@
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v12 = v2;
-          v13 = [(DAResolvedRecipient *)v2 mResolvedEmailToX509Certs];
-          v14 = [v13 objectForKeyedSubscript:v11];
+          v12 = selfCopy;
+          mResolvedEmailToX509Certs2 = [(DAResolvedRecipient *)selfCopy mResolvedEmailToX509Certs];
+          v14 = [mResolvedEmailToX509Certs2 objectForKeyedSubscript:v11];
 
           v15 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
           if (v15)
@@ -75,7 +75,7 @@
             while (v16);
           }
 
-          v2 = v12;
+          selfCopy = v12;
         }
 
         v28 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
@@ -90,32 +90,32 @@
   else
   {
     [v6 appendString:@" email->certs "];
-    if ([(DAResolvedRecipient *)v2 certificatesStatus])
+    if ([(DAResolvedRecipient *)selfCopy certificatesStatus])
     {
-      v19 = [MEMORY[0x277CCAB68] stringWithFormat:@"status %ld ", -[DAResolvedRecipient certificatesStatus](v2, "certificatesStatus")];
+      v19 = [MEMORY[0x277CCAB68] stringWithFormat:@"status %ld ", -[DAResolvedRecipient certificatesStatus](selfCopy, "certificatesStatus")];
       [v6 appendString:v19];
     }
 
     [v6 appendString:@"(null)"];
   }
 
-  v20 = [(DAResolvedRecipient *)v2 mergedFreeBusy];
+  mergedFreeBusy = [(DAResolvedRecipient *)selfCopy mergedFreeBusy];
 
-  if (v20)
+  if (mergedFreeBusy)
   {
-    v21 = [*(v3 + 2920) stringWithFormat:@" email->availability status %ld ", -[DAResolvedRecipient availabilityStatus](v2, "availabilityStatus")];
+    v21 = [*(v3 + 2920) stringWithFormat:@" email->availability status %ld ", -[DAResolvedRecipient availabilityStatus](selfCopy, "availabilityStatus")];
     [v6 appendString:v21];
 
-    v22 = [(DAResolvedRecipient *)v2 mergedFreeBusy];
-    [v6 appendString:v22];
+    mergedFreeBusy2 = [(DAResolvedRecipient *)selfCopy mergedFreeBusy];
+    [v6 appendString:mergedFreeBusy2];
   }
 
   else
   {
     [v6 appendString:@" email->availability "];
-    if ([(DAResolvedRecipient *)v2 certificatesStatus])
+    if ([(DAResolvedRecipient *)selfCopy certificatesStatus])
     {
-      v23 = [*(v3 + 2920) stringWithFormat:@"status %ld ", -[DAResolvedRecipient availabilityStatus](v2, "availabilityStatus")];
+      v23 = [*(v3 + 2920) stringWithFormat:@"status %ld ", -[DAResolvedRecipient availabilityStatus](selfCopy, "availabilityStatus")];
       [v6 appendString:v23];
     }
 
@@ -127,31 +127,31 @@
   return v6;
 }
 
-- (void)addCert:(id)a3 forEmailAddress:(id)a4
+- (void)addCert:(id)cert forEmailAddress:(id)address
 {
-  v15 = a4;
-  v6 = a3;
-  v7 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
+  addressCopy = address;
+  certCopy = cert;
+  mResolvedEmailToX509Certs = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
 
-  if (!v7)
+  if (!mResolvedEmailToX509Certs)
   {
     v8 = objc_opt_new();
     [(DAResolvedRecipient *)self setMResolvedEmailToX509Certs:v8];
   }
 
-  v9 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
-  v10 = [v9 objectForKeyedSubscript:v15];
+  mResolvedEmailToX509Certs2 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
+  v10 = [mResolvedEmailToX509Certs2 objectForKeyedSubscript:addressCopy];
 
   if (!v10)
   {
     v11 = objc_opt_new();
-    v12 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
-    [v12 setObject:v11 forKeyedSubscript:v15];
+    mResolvedEmailToX509Certs3 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
+    [mResolvedEmailToX509Certs3 setObject:v11 forKeyedSubscript:addressCopy];
   }
 
-  v13 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
-  v14 = [v13 objectForKeyedSubscript:v15];
-  [v14 addObject:v6];
+  mResolvedEmailToX509Certs4 = [(DAResolvedRecipient *)self mResolvedEmailToX509Certs];
+  v14 = [mResolvedEmailToX509Certs4 objectForKeyedSubscript:addressCopy];
+  [v14 addObject:certCopy];
 }
 
 @end

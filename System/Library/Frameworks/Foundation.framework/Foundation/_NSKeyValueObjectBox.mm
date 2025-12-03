@@ -1,5 +1,5 @@
 @interface _NSKeyValueObjectBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
 @end
@@ -15,9 +15,9 @@
   [(_NSKeyValueObjectBox *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -33,7 +33,7 @@
     return 0;
   }
 
-  return self->_objectPointer == *(a3 + 2);
+  return self->_objectPointer == *(equal + 2);
 }
 
 - (id)description

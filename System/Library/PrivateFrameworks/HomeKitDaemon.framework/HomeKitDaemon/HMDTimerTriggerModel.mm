@@ -1,7 +1,7 @@
 @interface HMDTimerTriggerModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)createPayload;
 @end
 
@@ -11,55 +11,55 @@
 {
   v18.receiver = self;
   v18.super_class = HMDTimerTriggerModel;
-  v3 = [(HMDTriggerModel *)&v18 createPayload];
-  v4 = [v3 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v18 createPayload];
+  v4 = [createPayload mutableCopy];
 
-  v5 = [(HMDTimerTriggerModel *)self fireDate];
+  fireDate = [(HMDTimerTriggerModel *)self fireDate];
 
-  if (v5)
+  if (fireDate)
   {
-    v6 = [(HMDTimerTriggerModel *)self fireDate];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD26C8]];
+    fireDate2 = [(HMDTimerTriggerModel *)self fireDate];
+    [v4 setObject:fireDate2 forKeyedSubscript:*MEMORY[0x277CD26C8]];
   }
 
-  v7 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
+  fireDateTimeZone = [(HMDTimerTriggerModel *)self fireDateTimeZone];
 
-  if (v7)
+  if (fireDateTimeZone)
   {
-    v8 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
-    [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD2718]];
+    fireDateTimeZone2 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
+    [v4 setObject:fireDateTimeZone2 forKeyedSubscript:*MEMORY[0x277CD2718]];
   }
 
-  v9 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
+  fireRepeatInterval = [(HMDTimerTriggerModel *)self fireRepeatInterval];
 
-  if (v9)
+  if (fireRepeatInterval)
   {
-    v10 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
-    [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD26D0]];
+    fireRepeatInterval2 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
+    [v4 setObject:fireRepeatInterval2 forKeyedSubscript:*MEMORY[0x277CD26D0]];
   }
 
-  v11 = [(HMDTimerTriggerModel *)self recurrences];
+  recurrences = [(HMDTimerTriggerModel *)self recurrences];
 
-  if (v11)
+  if (recurrences)
   {
-    v12 = [(HMDTimerTriggerModel *)self recurrences];
-    [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277CD26D8]];
+    recurrences2 = [(HMDTimerTriggerModel *)self recurrences];
+    [v4 setObject:recurrences2 forKeyedSubscript:*MEMORY[0x277CD26D8]];
   }
 
-  v13 = [(HMDTimerTriggerModel *)self significantEvent];
+  significantEvent = [(HMDTimerTriggerModel *)self significantEvent];
 
-  if (v13)
+  if (significantEvent)
   {
-    v14 = [(HMDTimerTriggerModel *)self significantEvent];
-    [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x277CD2708]];
+    significantEvent2 = [(HMDTimerTriggerModel *)self significantEvent];
+    [v4 setObject:significantEvent2 forKeyedSubscript:*MEMORY[0x277CD2708]];
   }
 
-  v15 = [(HMDTimerTriggerModel *)self significantEventOffset];
+  significantEventOffset = [(HMDTimerTriggerModel *)self significantEventOffset];
 
-  if (v15)
+  if (significantEventOffset)
   {
-    v16 = [(HMDTimerTriggerModel *)self significantEventOffset];
-    [v4 setObject:v16 forKeyedSubscript:*MEMORY[0x277CD2710]];
+    significantEventOffset2 = [(HMDTimerTriggerModel *)self significantEventOffset];
+    [v4 setObject:significantEventOffset2 forKeyedSubscript:*MEMORY[0x277CD2710]];
   }
 
   return v4;
@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMDTimerTriggerModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_41905 != -1)
   {
     dispatch_once(&properties_onceToken_41905, block);
@@ -118,22 +118,22 @@ void __34__HMDTimerTriggerModel_properties__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"fireDateTimeZone"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"fireDateTimeZone"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"fireDateTimeZone"])
     {
-      v11 = [(HMDTimerTriggerModel *)self fireDateTimeZone];
-      v12 = v11;
-      if (v11)
+      fireDateTimeZone = [(HMDTimerTriggerModel *)self fireDateTimeZone];
+      v12 = fireDateTimeZone;
+      if (fireDateTimeZone)
       {
-        v13 = [v11 decodeTimeZone];
+        decodeTimeZone = [fireDateTimeZone decodeTimeZone];
 LABEL_15:
-        v17 = v13;
+        v17 = decodeTimeZone;
 
         goto LABEL_26;
       }
@@ -144,33 +144,33 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  if ([v9 isEqualToString:@"fireRepeatInterval"])
+  if ([fieldCopy isEqualToString:@"fireRepeatInterval"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"fireRepeatInterval"])
     {
-      v14 = [(HMDTimerTriggerModel *)self fireRepeatInterval];
-      v12 = v14;
-      if (v14)
+      fireRepeatInterval = [(HMDTimerTriggerModel *)self fireRepeatInterval];
+      v12 = fireRepeatInterval;
+      if (fireRepeatInterval)
       {
-        v13 = [v14 decodeDateComponents];
+        decodeTimeZone = [fireRepeatInterval decodeDateComponents];
         goto LABEL_15;
       }
 
 LABEL_14:
-      v13 = [MEMORY[0x277CBEB68] null];
+      decodeTimeZone = [MEMORY[0x277CBEB68] null];
       goto LABEL_15;
     }
 
     goto LABEL_25;
   }
 
-  if ([v9 isEqualToString:@"recurrences"])
+  if ([fieldCopy isEqualToString:@"recurrences"])
   {
     v15 = @"recurrences";
     goto LABEL_11;
   }
 
-  if ([v9 isEqualToString:@"recurrenceDays"])
+  if ([fieldCopy isEqualToString:@"recurrenceDays"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"recurrences"])
     {
@@ -178,8 +178,8 @@ LABEL_14:
     }
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [(HMDTimerTriggerModel *)self recurrences];
-    v20 = [v19 decodeArrayOfDateComponents];
+    recurrences = [(HMDTimerTriggerModel *)self recurrences];
+    decodeArrayOfDateComponents = [recurrences decodeArrayOfDateComponents];
     v21 = [v18 numberWithUnsignedInteger:HMDaysOfTheWeekFromDateComponents()];
 LABEL_19:
     v17 = v21;
@@ -187,35 +187,35 @@ LABEL_19:
     goto LABEL_26;
   }
 
-  if ([v9 isEqualToString:@"significantEventOffset"])
+  if ([fieldCopy isEqualToString:@"significantEventOffset"])
   {
     v15 = @"significantEventOffset";
 LABEL_11:
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:v15])
     {
-      v16 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 LABEL_13:
-      v17 = v16;
+      v17 = null;
       goto LABEL_26;
     }
 
     goto LABEL_25;
   }
 
-  if (![v9 isEqualToString:@"significantEventOffsetSeconds"])
+  if (![fieldCopy isEqualToString:@"significantEventOffsetSeconds"])
   {
     v24.receiver = self;
     v24.super_class = HMDTimerTriggerModel;
-    v16 = [(HMDTriggerModel *)&v24 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    null = [(HMDTriggerModel *)&v24 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
     goto LABEL_13;
   }
 
   if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"significantEventOffset"])
   {
     v22 = MEMORY[0x277CCABB0];
-    v19 = [(HMDTimerTriggerModel *)self significantEventOffset];
-    v20 = [v19 decodeDateComponents];
-    v21 = [v22 numberWithInteger:{HMDTimeOffsetFromDateComponents(v20, 0)}];
+    recurrences = [(HMDTimerTriggerModel *)self significantEventOffset];
+    decodeArrayOfDateComponents = [recurrences decodeDateComponents];
+    v21 = [v22 numberWithInteger:{HMDTimeOffsetFromDateComponents(decodeArrayOfDateComponents, 0)}];
     goto LABEL_19;
   }
 
@@ -226,43 +226,43 @@ LABEL_26:
   return v17;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"fireDateTimeZone"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"fireDateTimeZone"])
   {
-    v11 = [v8 fireDateTimeZone];
+    fireDateTimeZone = [objectCopy fireDateTimeZone];
     goto LABEL_5;
   }
 
-  if ([v9 isEqualToString:@"fireRepeatInterval"])
+  if ([fieldCopy isEqualToString:@"fireRepeatInterval"])
   {
-    v11 = [v8 fireRepeatInterval];
+    fireDateTimeZone = [objectCopy fireRepeatInterval];
 LABEL_5:
-    v12 = v11;
-    if (v11)
+    v12 = fireDateTimeZone;
+    if (fireDateTimeZone)
     {
 LABEL_6:
-      v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+      null = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
 LABEL_13:
-      v18 = v13;
+      v18 = null;
 
       goto LABEL_14;
     }
 
 LABEL_12:
-    v13 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToString:@"recurrences"])
+  if ([fieldCopy isEqualToString:@"recurrences"])
   {
-    v14 = [v8 recurrenceDays];
-    v15 = [v14 unsignedIntegerValue];
+    recurrenceDays = [objectCopy recurrenceDays];
+    unsignedIntegerValue = [recurrenceDays unsignedIntegerValue];
 
-    if (v15)
+    if (unsignedIntegerValue)
     {
       v16 = MEMORY[0x277CCAAB0];
       v17 = HMDaysOfTheWeekToDateComponents();
@@ -271,15 +271,15 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v21 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"significantEventOffset"])
+    if ([fieldCopy isEqualToString:@"significantEventOffset"])
     {
-      v19 = [v8 significantEventOffsetSeconds];
-      v12 = HMDTimeOffsetToDateComponents([v19 integerValue], 0);
+      significantEventOffsetSeconds = [objectCopy significantEventOffsetSeconds];
+      v12 = HMDTimeOffsetToDateComponents([significantEventOffsetSeconds integerValue], 0);
 
       if (v12)
       {
@@ -291,10 +291,10 @@ LABEL_12:
 
     v22.receiver = self;
     v22.super_class = HMDTimerTriggerModel;
-    v21 = [(HMDTriggerModel *)&v22 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+    null2 = [(HMDTriggerModel *)&v22 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
-  v18 = v21;
+  v18 = null2;
 LABEL_14:
 
   return v18;

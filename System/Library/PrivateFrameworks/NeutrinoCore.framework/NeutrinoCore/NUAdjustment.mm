@@ -1,14 +1,14 @@
 @interface NUAdjustment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustment:(id)adjustment;
 - (NSDictionary)settings;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NUAdjustment)init;
-- (NUAdjustment)initWithAdjustmentSchema:(id)a3;
-- (NUAdjustment)initWithIdentifier:(id)a3;
+- (NUAdjustment)initWithAdjustmentSchema:(id)schema;
+- (NUAdjustment)initWithIdentifier:(id)identifier;
 - (NUIdentifier)identifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)reset;
 @end
@@ -18,15 +18,15 @@
 - (void)reset
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(NUAdjustment *)self schema];
-  if (!v3)
+  schema = [(NUAdjustment *)self schema];
+  if (!schema)
   {
     v13 = NUAssertLogger_17098();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [(NUAdjustment *)self identifier];
-      v16 = [v14 stringWithFormat:@"No schema registered for identifier '%@'", v15];
+      identifier = [(NUAdjustment *)self identifier];
+      v16 = [v14 stringWithFormat:@"No schema registered for identifier '%@'", identifier];
       *buf = 138543362;
       v38 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -42,8 +42,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v22;
         v39 = 2114;
@@ -54,24 +54,24 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v27 = [(NUAdjustment *)self identifier];
-    _NUAssertFailHandler("[NUAdjustment reset]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 188, @"No schema registered for identifier '%@'", v28, v29, v30, v31, v27);
+    identifier2 = [(NUAdjustment *)self identifier];
+    _NUAssertFailHandler("[NUAdjustment reset]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 188, @"No schema registered for identifier '%@'", v28, v29, v30, v31, identifier2);
   }
 
-  v4 = v3;
-  v5 = [v3 settings];
+  v4 = schema;
+  settings = [schema settings];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v6 = [settings countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -82,42 +82,42 @@
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(settings);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
-        v11 = [v5 objectForKeyedSubscript:v10];
-        v12 = [v11 defaultValue];
-        [(NUAdjustment *)self setValue:v12 forKey:v10];
+        v11 = [settings objectForKeyedSubscript:v10];
+        defaultValue = [v11 defaultValue];
+        [(NUAdjustment *)self setValue:defaultValue forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v7 = [settings countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)isEqualToAdjustment:(id)a3
+- (BOOL)isEqualToAdjustment:(id)adjustment
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NUAdjustment *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToIdentifier:v6];
+  adjustmentCopy = adjustment;
+  identifier = [(NUAdjustment *)self identifier];
+  identifier2 = [adjustmentCopy identifier];
+  v7 = [identifier isEqualToIdentifier:identifier2];
 
   if (v7)
   {
-    v8 = [(NUAdjustment *)self schema];
-    v9 = v8;
-    if (!v8)
+    schema = [(NUAdjustment *)self schema];
+    v9 = schema;
+    if (!schema)
     {
       v13 = NUAssertLogger_17098();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [(NUAdjustment *)self identifier];
-        v16 = [v14 stringWithFormat:@"No schema registered for identifier '%@'", v15];
+        identifier3 = [(NUAdjustment *)self identifier];
+        v16 = [v14 stringWithFormat:@"No schema registered for identifier '%@'", identifier3];
         *buf = 138543362;
         *&buf[4] = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -133,8 +133,8 @@
           v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v23 = MEMORY[0x1E696AF00];
           v24 = v22;
-          v25 = [v23 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v23 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           *&buf[4] = v22;
           *&buf[12] = 2114;
@@ -146,30 +146,30 @@
 
       else if (v19)
       {
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v21;
         _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
-      v28 = [(NUAdjustment *)self identifier];
-      _NUAssertFailHandler("[NUAdjustment isEqualToAdjustment:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 162, @"No schema registered for identifier '%@'", v29, v30, v31, v32, v28);
+      identifier4 = [(NUAdjustment *)self identifier];
+      _NUAssertFailHandler("[NUAdjustment isEqualToAdjustment:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 162, @"No schema registered for identifier '%@'", v29, v30, v31, v32, identifier4);
     }
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v37 = 1;
-    v10 = [v8 settings];
+    settings = [schema settings];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __36__NUAdjustment_isEqualToAdjustment___block_invoke;
     v33[3] = &unk_1E810A8D0;
     v33[4] = self;
-    v34 = v4;
+    v34 = adjustmentCopy;
     v35 = buf;
-    [v10 enumerateKeysAndObjectsUsingBlock:v33];
+    [settings enumerateKeysAndObjectsUsingBlock:v33];
 
     v11 = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
@@ -233,44 +233,44 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUAdjustment *)self isEqualToAdjustment:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUAdjustment *)self isEqualToAdjustment:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NUAdjustment *)self identifier];
-  v3 = 0x4EA01FA48FF05 * [v2 hash];
+  identifier = [(NUAdjustment *)self identifier];
+  v3 = 0x4EA01FA48FF05 * [identifier hash];
 
   return v3;
 }
 
 - (NUIdentifier)identifier
 {
-  v2 = [(NUAdjustment *)self schema];
-  v3 = [v2 identifier];
+  schema = [(NUAdjustment *)self schema];
+  identifier = [schema identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSDictionary)settings
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(NUAdjustment *)self schema];
-  if (v3)
+  schema = [(NUAdjustment *)self schema];
+  if (schema)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v3 settings];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    settings = [schema settings];
+    v6 = [settings countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -281,7 +281,7 @@ LABEL_11:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(settings);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -292,7 +292,7 @@ LABEL_11:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [settings countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -309,14 +309,14 @@ LABEL_11:
 
 - (NSString)debugDescription
 {
-  v3 = [(NUAdjustment *)self settings];
-  v4 = [(NUAdjustment *)self identifier];
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"PortraitVideo"];
+  settings = [(NUAdjustment *)self settings];
+  identifier = [(NUAdjustment *)self identifier];
+  name = [identifier name];
+  v6 = [name isEqualToString:@"PortraitVideo"];
 
   if (v6)
   {
-    v7 = [v3 mutableCopy];
+    v7 = [settings mutableCopy];
     v8 = [v7 objectForKeyedSubscript:@"disparityKeyframes"];
     v9 = v8;
     if (v8 && [v8 count] >= 6)
@@ -341,21 +341,21 @@ LABEL_11:
 
   else
   {
-    v7 = v3;
+    v7 = settings;
   }
 
   v15 = MEMORY[0x1E696AEC0];
   v16 = objc_opt_class();
-  v17 = [(NUAdjustment *)self identifier];
-  v18 = [v15 stringWithFormat:@"<%@:%p> id=%@ settings=%@", v16, self, v17, v7];
+  identifier2 = [(NUAdjustment *)self identifier];
+  v18 = [v15 stringWithFormat:@"<%@:%p> id=%@ settings=%@", v16, self, identifier2, v7];
 
   return v18;
 }
 
 - (NSString)description
 {
-  v3 = [(NUAdjustment *)self settings];
-  v4 = [v3 description];
+  settings = [(NUAdjustment *)self settings];
+  v4 = [settings description];
 
   if ([v4 length] >= 0x65)
   {
@@ -367,24 +367,24 @@ LABEL_11:
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
-  v9 = [(NUAdjustment *)self identifier];
-  v10 = [v7 stringWithFormat:@"<%@:%p> id=%@ settings=%@", v8, self, v9, v4];
+  identifier = [(NUAdjustment *)self identifier];
+  v10 = [v7 stringWithFormat:@"<%@:%p> id=%@ settings=%@", v8, self, identifier, v4];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = [(NUAdjustment *)self schema];
-  if (!v4)
+  schema = [(NUAdjustment *)self schema];
+  if (!schema)
   {
     v9 = NUAssertLogger_17098();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(NUAdjustment *)self identifier];
-      v12 = [v10 stringWithFormat:@"No schema registered for identifier '%@'", v11];
+      identifier = [(NUAdjustment *)self identifier];
+      v12 = [v10 stringWithFormat:@"No schema registered for identifier '%@'", identifier];
       *buf = 138543362;
       v45 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -400,8 +400,8 @@ LABEL_11:
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -412,19 +412,19 @@ LABEL_11:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v30 = [(NUAdjustment *)self identifier];
-    _NUAssertFailHandler("[NUAdjustment copyWithZone:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 51, @"No schema registered for identifier '%@'", v31, v32, v33, v34, v30);
+    identifier2 = [(NUAdjustment *)self identifier];
+    _NUAssertFailHandler("[NUAdjustment copyWithZone:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 51, @"No schema registered for identifier '%@'", v31, v32, v33, v34, identifier2);
   }
 
-  v5 = v4;
-  v6 = [v4 copyAdjustment:self];
+  v5 = schema;
+  v6 = [schema copyAdjustment:self];
   if (!v6)
   {
     v18 = NUAssertLogger_17098();
@@ -446,8 +446,8 @@ LABEL_11:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v35;
         v46 = 2114;
@@ -458,8 +458,8 @@ LABEL_11:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -473,11 +473,11 @@ LABEL_11:
   return v7;
 }
 
-- (NUAdjustment)initWithIdentifier:(id)a3
+- (NUAdjustment)initWithIdentifier:(id)identifier
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v12 = NUAssertLogger_17098();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -498,8 +498,8 @@ LABEL_11:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v41 callStackSymbols];
+        v44 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v40;
         v79 = 2114;
@@ -510,8 +510,8 @@ LABEL_11:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -520,7 +520,7 @@ LABEL_11:
     _NUAssertFailHandler("[NUAdjustment initWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 34, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "identifier != nil");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
@@ -543,8 +543,8 @@ LABEL_11:
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v50 callStackSymbols];
+        v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v49;
         v79 = 2114;
@@ -555,8 +555,8 @@ LABEL_11:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -589,8 +589,8 @@ LABEL_11:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v60 callStackSymbols];
+        v63 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v59;
         v79 = 2114;
@@ -601,8 +601,8 @@ LABEL_11:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -633,8 +633,8 @@ LABEL_11:
         v68 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v69 = MEMORY[0x1E696AF00];
         v70 = v68;
-        v71 = [v69 callStackSymbols];
-        v72 = [v71 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v69 callStackSymbols];
+        v72 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v68;
         v79 = 2114;
@@ -645,8 +645,8 @@ LABEL_11:
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -660,11 +660,11 @@ LABEL_11:
   return v10;
 }
 
-- (NUAdjustment)initWithAdjustmentSchema:(id)a3
+- (NUAdjustment)initWithAdjustmentSchema:(id)schema
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v9 = NUAssertLogger_17098();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -685,8 +685,8 @@ LABEL_11:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -697,8 +697,8 @@ LABEL_11:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -707,7 +707,7 @@ LABEL_11:
     _NUAssertFailHandler("[NUAdjustment initWithAdjustmentSchema:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUAdjustment.m", 26, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "adjustmentSchema != nil");
   }
 
-  v5 = v4;
+  v5 = schemaCopy;
   v25.receiver = self;
   v25.super_class = NUAdjustment;
   v6 = [(NUAdjustment *)&v25 init];
@@ -763,8 +763,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -780,8 +780,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

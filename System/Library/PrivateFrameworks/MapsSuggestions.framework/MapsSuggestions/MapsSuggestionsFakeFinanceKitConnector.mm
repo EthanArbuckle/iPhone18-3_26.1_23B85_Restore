@@ -2,16 +2,16 @@
 - (NSArray)orderPickups;
 - (_TtC15MapsSuggestions38MapsSuggestionsFakeFinanceKitConnector)init;
 - (id)_callbackHandle;
-- (id)currentOrderPickupsWithPeriod:(double)a3;
-- (id)startObservingOrderPickupsIn:(double)a3 callback:(id)a4;
-- (void)setOrderPickups:(id)a3;
-- (void)set_callbackHandle:(id)a3;
+- (id)currentOrderPickupsWithPeriod:(double)period;
+- (id)startObservingOrderPickupsIn:(double)in callback:(id)callback;
+- (void)setOrderPickups:(id)pickups;
+- (void)set_callbackHandle:(id)handle;
 - (void)updatedOrders;
 @end
 
 @implementation MapsSuggestionsFakeFinanceKitConnector
 
-- (id)currentOrderPickupsWithPeriod:(double)a3
+- (id)currentOrderPickupsWithPeriod:(double)period
 {
   swift_beginAccess();
   type metadata accessor for MapsSuggestionsOrderPickup();
@@ -31,7 +31,7 @@
   return v2;
 }
 
-- (void)setOrderPickups:(id)a3
+- (void)setOrderPickups:(id)pickups
 {
   type metadata accessor for MapsSuggestionsOrderPickup();
   v4 = sub_1C529D7DC();
@@ -64,9 +64,9 @@
   return v4;
 }
 
-- (void)set_callbackHandle:(id)a3
+- (void)set_callbackHandle:(id)handle
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handle);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -84,19 +84,19 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1C513EDF0(v7);
 }
 
-- (id)startObservingOrderPickupsIn:(double)a3 callback:(id)a4
+- (id)startObservingOrderPickupsIn:(double)in callback:(id)callback
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(callback);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = (self + OBJC_IVAR____TtC15MapsSuggestions38MapsSuggestionsFakeFinanceKitConnector__callbackHandle);
   swift_beginAccess();
   v8 = *v7;
-  v9 = self;
+  selfCopy = self;
   _Block_copy(v5);
   *v7 = sub_1C51446DC;
   v7[1] = v6;
@@ -110,7 +110,7 @@
 
   _Block_release(v5);
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)updatedOrders
@@ -121,7 +121,7 @@
   if (*v3)
   {
     swift_beginAccess();
-    v5 = self;
+    selfCopy = self;
     sub_1C513B684(v4);
 
     v4(v6);

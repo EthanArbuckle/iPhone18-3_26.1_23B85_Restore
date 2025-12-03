@@ -1,12 +1,12 @@
 @interface WBSettingsTaskHandler
-- (BOOL)_shouldEnqueueTask:(id)a3;
+- (BOOL)_shouldEnqueueTask:(id)task;
 - (WBSettingsTaskHandler)init;
 - (void)_attemptCurrentTask;
-- (void)_currentTaskAttemptDidFinishWithError:(id)a3;
-- (void)_enqueueTask:(id)a3;
+- (void)_currentTaskAttemptDidFinishWithError:(id)error;
+- (void)_enqueueTask:(id)task;
 - (void)_finishCurrentTask;
 - (void)_performNextTask;
-- (void)enqueueTask:(id)a3;
+- (void)enqueueTask:(id)task;
 @end
 
 @implementation WBSettingsTaskHandler
@@ -19,15 +19,15 @@
   if (v2)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WBSettingsTaskHandler.%p", v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tasks = v2->_tasks;
-    v2->_tasks = v8;
+    v2->_tasks = array;
 
     v10 = v2;
   }
@@ -35,27 +35,27 @@
   return v2;
 }
 
-- (void)enqueueTask:(id)a3
+- (void)enqueueTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__WBSettingsTaskHandler_enqueueTask___block_invoke;
   v7[3] = &unk_279E753F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_enqueueTask:(id)a3
+- (void)_enqueueTask:(id)task
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(WBSettingsTaskHandler *)self _shouldEnqueueTask:v4])
+  taskCopy = task;
+  if ([(WBSettingsTaskHandler *)self _shouldEnqueueTask:taskCopy])
   {
-    [(NSMutableArray *)self->_tasks addObject:v4];
+    [(NSMutableArray *)self->_tasks addObject:taskCopy];
     [(WBSettingsTaskHandler *)self _performNextTask];
   }
 
@@ -66,7 +66,7 @@
     {
       v6 = v5;
       v8 = 134217984;
-      v9 = [v4 taskType];
+      taskType = [taskCopy taskType];
       _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "Not queueing settings task with type %ld since one has already been scheduled.", &v8, 0xCu);
     }
   }
@@ -74,11 +74,11 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldEnqueueTask:(id)a3
+- (BOOL)_shouldEnqueueTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 websiteDataRecord];
-  if (v5)
+  taskCopy = task;
+  websiteDataRecord = [taskCopy websiteDataRecord];
+  if (websiteDataRecord)
   {
 
 LABEL_12:
@@ -86,31 +86,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [v4 profileIdentifier];
+  profileIdentifier = [taskCopy profileIdentifier];
 
-  if (v6)
+  if (profileIdentifier)
   {
     goto LABEL_12;
   }
 
   v7 = [(NSMutableArray *)self->_tasks count];
-  v8 = [v4 taskType];
+  taskType = [taskCopy taskType];
   v9 = v7 - 2;
   if (v7 < 2)
   {
     goto LABEL_12;
   }
 
-  v10 = v8;
+  v10 = taskType;
   v11 = 1;
   do
   {
     v12 = [(NSMutableArray *)self->_tasks objectAtIndexedSubscript:v11];
-    v13 = [v12 taskType];
+    taskType2 = [v12 taskType];
 
     v15 = v9-- != 0;
-    v16 = v13 != v10;
-    if (v13 == v10)
+    v16 = taskType2 != v10;
+    if (taskType2 == v10)
     {
       break;
     }
@@ -230,20 +230,6 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_5(uint64_t a1
   dispatch_async(v5, v7);
 }
 
-{
-  v3 = a2;
-  v4 = *(a1 + 32);
-  v5 = *(v4 + 8);
-  v7[0] = MEMORY[0x277D85DD0];
-  v7[1] = 3221225472;
-  v7[2] = __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_6;
-  v7[3] = &unk_279E753F0;
-  v7[4] = v4;
-  v8 = v3;
-  v6 = v3;
-  dispatch_async(v5, v7);
-}
-
 void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_3(uint64_t a1, void *a2)
 {
   v3 = a2;
@@ -283,7 +269,7 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_7(uint64_t a1
     currentTask = self->_currentTask;
     v5 = v3;
     v8 = 134217984;
-    v9 = [(WBSettingsTask *)currentTask taskType];
+    taskType = [(WBSettingsTask *)currentTask taskType];
     _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_INFO, "Marking current task with type %ld as finished. Attempting next available task", &v8, 0xCu);
   }
 
@@ -294,12 +280,12 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_7(uint64_t a1
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_currentTaskAttemptDidFinishWithError:(id)a3
+- (void)_currentTaskAttemptDidFinishWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"WebBookmarksXPCConnectionErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"WebBookmarksXPCConnectionErrorDomain"];
 
   if (v6)
   {
@@ -307,9 +293,9 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_7(uint64_t a1
     v7 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WBSettingsTask *)self->_currentTask taskType];
-      v9 = [v4 wb_privacyPreservingDescription];
-      [(WBSettingsTaskHandler *)v9 _currentTaskAttemptDidFinishWithError:buf, v8, v7];
+      taskType = [(WBSettingsTask *)self->_currentTask taskType];
+      wb_privacyPreservingDescription = [errorCopy wb_privacyPreservingDescription];
+      [(WBSettingsTaskHandler *)wb_privacyPreservingDescription _currentTaskAttemptDidFinishWithError:buf, taskType, v7];
     }
 
     v10 = dispatch_time(0, 200000000);
@@ -328,11 +314,11 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_7(uint64_t a1
   {
     v12 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
     v13 = v12;
-    if (v4)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(WBSettingsTaskHandler *)self _currentTaskAttemptDidFinishWithError:v13, v4];
+        [(WBSettingsTaskHandler *)self _currentTaskAttemptDidFinishWithError:v13, errorCopy];
       }
     }
 
@@ -341,7 +327,7 @@ void __44__WBSettingsTaskHandler__attemptCurrentTask__block_invoke_7(uint64_t a1
       currentTask = self->_currentTask;
       v15 = v13;
       *buf = 134217984;
-      v21 = [(WBSettingsTask *)currentTask taskType];
+      taskType2 = [(WBSettingsTask *)currentTask taskType];
       _os_log_impl(&dword_272C20000, v15, OS_LOG_TYPE_INFO, "Successfully performed settings task with type: %ld", buf, 0xCu);
     }
 

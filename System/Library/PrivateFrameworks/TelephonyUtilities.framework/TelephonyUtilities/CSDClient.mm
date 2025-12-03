@@ -1,25 +1,25 @@
 @interface CSDClient
 - (BOOL)hasVoIPNetworkExtensionEntitlement;
 - (BOOL)isProcessSuspended;
-- (CSDClient)initWithObject:(id)a3 queue:(id)a4;
+- (CSDClient)initWithObject:(id)object queue:(id)queue;
 - (NSString)processBundleIdentifier;
 - (NSString)processName;
 - (NSString)propertiesDescription;
 - (id)description;
 - (int)processIdentifier;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 coalescedByIdentifier:(id)a4;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block coalescedByIdentifier:(id)identifier;
 @end
 
 @implementation CSDClient
 
 - (NSString)propertiesDescription
 {
-  v3 = [(CSDClient *)self object];
-  v4 = [(CSDClient *)self processIdentifier];
-  v5 = [(CSDClient *)self processName];
-  v6 = [(CSDClient *)self processBundleIdentifier];
-  v7 = [NSString stringWithFormat:@"object=%@ processIdentifier=%d processName=%@ processBundleIdentifier=%@", v3, v4, v5, v6];
+  object = [(CSDClient *)self object];
+  processIdentifier = [(CSDClient *)self processIdentifier];
+  processName = [(CSDClient *)self processName];
+  processBundleIdentifier = [(CSDClient *)self processBundleIdentifier];
+  v7 = [NSString stringWithFormat:@"object=%@ processIdentifier=%d processName=%@ processBundleIdentifier=%@", object, processIdentifier, processName, processBundleIdentifier];
 
   return v7;
 }
@@ -27,26 +27,26 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CSDClient *)self propertiesDescription];
-  v5 = [NSString stringWithFormat:@"<%@: %p %@>", v3, self, v4];
+  propertiesDescription = [(CSDClient *)self propertiesDescription];
+  v5 = [NSString stringWithFormat:@"<%@: %p %@>", v3, self, propertiesDescription];
 
   return v5;
 }
 
 - (BOOL)isProcessSuspended
 {
-  v3 = [(CSDClient *)self processHandle];
+  processHandle = [(CSDClient *)self processHandle];
 
-  if (!v3)
+  if (!processHandle)
   {
     v4 = [RBSProcessIdentifier identifierWithPid:[(CSDClient *)self processIdentifier]];
     v5 = [RBSProcessHandle handleForIdentifier:v4 error:0];
     [(CSDClient *)self setProcessHandle:v5];
   }
 
-  v6 = [(CSDClient *)self processHandle];
-  v7 = [v6 currentState];
-  v8 = [v7 taskState] == 3;
+  processHandle2 = [(CSDClient *)self processHandle];
+  currentState = [processHandle2 currentState];
+  v8 = [currentState taskState] == 3;
 
   return v8;
 }
@@ -54,9 +54,9 @@
 - (NSString)processName
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 processName];
+  processName = [v2 processName];
 
-  return v3;
+  return processName;
 }
 
 - (BOOL)hasVoIPNetworkExtensionEntitlement
@@ -76,18 +76,18 @@
   return v3;
 }
 
-- (CSDClient)initWithObject:(id)a3 queue:(id)a4
+- (CSDClient)initWithObject:(id)object queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CSDClient;
   v9 = [(CSDClient *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_object, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_object, object);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = +[NSMutableSet set];
     identifiersWithPendingCoalescingBlocks = v10->_identifiersWithPendingCoalescingBlocks;
     v10->_identifiersWithPendingCoalescingBlocks = v11;
@@ -100,41 +100,41 @@
   return v10;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(CSDClient *)self objectForBlock];
-  (*(a3 + 2))(v5, self, v6);
+  blockCopy = block;
+  objectForBlock = [(CSDClient *)self objectForBlock];
+  (*(block + 2))(blockCopy, self, objectForBlock);
 }
 
-- (void)performBlock:(id)a3 coalescedByIdentifier:(id)a4
+- (void)performBlock:(id)block coalescedByIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDClient *)self identifiersWithPendingCoalescingBlocks];
-  v9 = [v8 containsObject:v7];
+  blockCopy = block;
+  identifierCopy = identifier;
+  identifiersWithPendingCoalescingBlocks = [(CSDClient *)self identifiersWithPendingCoalescingBlocks];
+  v9 = [identifiersWithPendingCoalescingBlocks containsObject:identifierCopy];
 
   if (v9)
   {
-    v10 = objc_retainBlock(v6);
-    v11 = [(CSDClient *)self blockToExecuteAfterPendingCoalescingBlocksByIdentifier];
-    [v11 setObject:v10 forKeyedSubscript:v7];
+    v10 = objc_retainBlock(blockCopy);
+    blockToExecuteAfterPendingCoalescingBlocksByIdentifier = [(CSDClient *)self blockToExecuteAfterPendingCoalescingBlocksByIdentifier];
+    [blockToExecuteAfterPendingCoalescingBlocksByIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v12 = [(CSDClient *)self identifiersWithPendingCoalescingBlocks];
-    [v12 addObject:v7];
+    identifiersWithPendingCoalescingBlocks2 = [(CSDClient *)self identifiersWithPendingCoalescingBlocks];
+    [identifiersWithPendingCoalescingBlocks2 addObject:identifierCopy];
 
-    v13 = [(CSDClient *)self objectForBlock];
-    (*(v6 + 2))(v6, self, v13);
+    objectForBlock = [(CSDClient *)self objectForBlock];
+    (*(blockCopy + 2))(blockCopy, self, objectForBlock);
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001E7F38;
     v14[3] = &unk_100619D88;
     v14[4] = self;
-    v15 = v7;
+    v15 = identifierCopy;
     [(CSDClient *)self performBlockAfterCoalescing:v14];
   }
 }
@@ -142,17 +142,17 @@
 - (int)processIdentifier
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 processIdentifier];
+  processIdentifier = [v2 processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (NSString)processBundleIdentifier
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

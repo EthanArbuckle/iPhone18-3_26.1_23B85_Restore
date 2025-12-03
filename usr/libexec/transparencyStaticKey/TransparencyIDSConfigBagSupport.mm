@@ -1,18 +1,18 @@
 @interface TransparencyIDSConfigBagSupport
-+ (id)parseConfigInput:(id)a3 forVersion:(id)a4 error:(id *)a5;
++ (id)parseConfigInput:(id)input forVersion:(id)version error:(id *)error;
 @end
 
 @implementation TransparencyIDSConfigBagSupport
 
-+ (id)parseConfigInput:(id)a3 forVersion:(id)a4 error:(id *)a5
++ (id)parseConfigInput:(id)input forVersion:(id)version error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 containsString:@"{"] && (objc_msgSend(v7, "containsString:", @"}") & 1) != 0)
+  inputCopy = input;
+  versionCopy = version;
+  if ([inputCopy containsString:@"{"] && (objc_msgSend(inputCopy, "containsString:", @"}") & 1) != 0)
   {
-    v27 = a5;
+    errorCopy = error;
     v9 = +[NSMutableDictionary dictionary];
-    v29 = [v7 stringByReplacingOccurrencesOfString:@"{" withString:&stru_100096EB8];
+    v29 = [inputCopy stringByReplacingOccurrencesOfString:@"{" withString:&stru_100096EB8];
     v28 = [v29 stringByReplacingOccurrencesOfString:@"}" withString:&stru_100096EB8];
     [v28 componentsSeparatedByString:{@", "}];
     v30 = 0u;
@@ -24,7 +24,7 @@
     {
       v12 = v11;
       v13 = *v31;
-      v26 = v8;
+      v26 = versionCopy;
 LABEL_5:
       v14 = 0;
       while (1)
@@ -43,7 +43,7 @@ LABEL_5:
         v16 = [v15 componentsSeparatedByString:@":"];
         if ([v16 count] != 2)
         {
-          *v27 = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"Config bag key value pair invalid format"];
+          *errorCopy = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"Config bag key value pair invalid format"];
 
           v22 = 0;
           goto LABEL_18;
@@ -56,7 +56,7 @@ LABEL_5:
         if (v12 == ++v14)
         {
           v12 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
-          v8 = v26;
+          versionCopy = v26;
           if (v12)
           {
             goto LABEL_5;
@@ -67,10 +67,10 @@ LABEL_5:
       }
 
       [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"Config bag value missing colon"];
-      *v27 = v22 = 0;
+      *errorCopy = v22 = 0;
 LABEL_18:
       v19 = v10;
-      v8 = v26;
+      versionCopy = v26;
       v24 = v29;
       goto LABEL_23;
     }
@@ -79,7 +79,7 @@ LABEL_12:
 
     v19 = objc_alloc_init(NSNumberFormatter);
     [v19 setNumberStyle:1];
-    v20 = [v9 objectForKey:v8];
+    v20 = [v9 objectForKey:versionCopy];
     if (v20)
     {
       v21 = [v19 numberFromString:v20];
@@ -91,14 +91,14 @@ LABEL_12:
 
       else
       {
-        *v27 = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"value is not a number"];
+        *errorCopy = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"value is not a number"];
       }
     }
 
     else
     {
       [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"IDS version is not present in the config values"];
-      *v27 = v22 = 0;
+      *errorCopy = v22 = 0;
     }
 
     v24 = v29;
@@ -109,7 +109,7 @@ LABEL_23:
   else
   {
     [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:-401 description:@"Config bag value missing brackets"];
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
   return v22;

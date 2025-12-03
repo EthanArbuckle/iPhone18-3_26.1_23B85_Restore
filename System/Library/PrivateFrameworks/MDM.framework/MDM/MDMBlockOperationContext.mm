@@ -6,8 +6,8 @@
 
 - (void)endBlockOperation
 {
-  v2 = [(MDMBlockOperationContext *)self operation];
-  [v2 endOperationWithResultObject:0];
+  operation = [(MDMBlockOperationContext *)self operation];
+  [operation endOperationWithResultObject:0];
 }
 
 @end

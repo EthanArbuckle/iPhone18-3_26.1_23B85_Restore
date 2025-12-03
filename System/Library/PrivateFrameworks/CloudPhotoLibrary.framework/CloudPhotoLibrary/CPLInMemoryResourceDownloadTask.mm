@@ -1,24 +1,24 @@
 @interface CPLInMemoryResourceDownloadTask
-+ (id)failedTaskForResource:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (CPLInMemoryResourceDownloadTask)initWithResource:(id)a3 taskIdentifier:(id)a4 launchHandler:(id)a5 completionHandler:(id)a6;
-- (void)associateCloudResource:(id)a3 ofRecord:(id)a4;
++ (id)failedTaskForResource:(id)resource error:(id)error completionHandler:(id)handler;
+- (CPLInMemoryResourceDownloadTask)initWithResource:(id)resource taskIdentifier:(id)identifier launchHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)associateCloudResource:(id)resource ofRecord:(id)record;
 - (void)cancelTask;
-- (void)finishWithData:(id)a3 error:(id)a4;
-- (void)launchTransportTask:(id)a3;
+- (void)finishWithData:(id)data error:(id)error;
+- (void)launchTransportTask:(id)task;
 @end
 
 @implementation CPLInMemoryResourceDownloadTask
 
-- (void)launchTransportTask:(id)a3
+- (void)launchTransportTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CPLInMemoryResourceDownloadTask_launchTransportTask___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = taskCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -26,7 +26,7 @@
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = taskCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -45,18 +45,18 @@ uint64_t __55__CPLInMemoryResourceDownloadTask_launchTransportTask___block_invok
   return result;
 }
 
-- (void)finishWithData:(id)a3 error:(id)a4
+- (void)finishWithData:(id)data error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__CPLInMemoryResourceDownloadTask_finishWithData_error___block_invoke;
   v14[3] = &unk_1E861B1C8;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = dataCopy;
+  v16 = errorCopy;
   v9 = v14;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -64,8 +64,8 @@ uint64_t __55__CPLInMemoryResourceDownloadTask_launchTransportTask___block_invok
   block[3] = &unk_1E861B4E0;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = dataCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
@@ -111,25 +111,25 @@ void __45__CPLInMemoryResourceDownloadTask_cancelTask__block_invoke(uint64_t a1)
   }
 }
 
-- (void)associateCloudResource:(id)a3 ofRecord:(id)a4
+- (void)associateCloudResource:(id)resource ofRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  recordCopy = record;
   cloudResource = self->_cloudResource;
-  self->_cloudResource = v6;
-  v10 = v6;
+  self->_cloudResource = resourceCopy;
+  v10 = resourceCopy;
 
   cloudRecord = self->_cloudRecord;
-  self->_cloudRecord = v7;
+  self->_cloudRecord = recordCopy;
 }
 
-- (CPLInMemoryResourceDownloadTask)initWithResource:(id)a3 taskIdentifier:(id)a4 launchHandler:(id)a5 completionHandler:(id)a6
+- (CPLInMemoryResourceDownloadTask)initWithResource:(id)resource taskIdentifier:(id)identifier launchHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21.receiver = self;
   v21.super_class = CPLInMemoryResourceDownloadTask;
-  v12 = [(CPLResourceTransferTask *)&v21 initWithResource:a3 taskIdentifier:a4];
+  v12 = [(CPLResourceTransferTask *)&v21 initWithResource:resource taskIdentifier:identifier];
   if (v12)
   {
     v13 = CPLCopyDefaultSerialQueueAttributes();
@@ -137,11 +137,11 @@ void __45__CPLInMemoryResourceDownloadTask_cancelTask__block_invoke(uint64_t a1)
     queue = v12->_queue;
     v12->_queue = v14;
 
-    v16 = [v10 copy];
+    v16 = [handlerCopy copy];
     launchHandler = v12->_launchHandler;
     v12->_launchHandler = v16;
 
-    v18 = [v11 copy];
+    v18 = [completionHandlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v18;
   }
@@ -149,21 +149,21 @@ void __45__CPLInMemoryResourceDownloadTask_cancelTask__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (id)failedTaskForResource:(id)a3 error:(id)a4 completionHandler:(id)a5
++ (id)failedTaskForResource:(id)resource error:(id)error completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  errorCopy = error;
+  handlerCopy = handler;
+  resourceCopy = resource;
+  v11 = [self alloc];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__CPLInMemoryResourceDownloadTask_failedTaskForResource_error_completionHandler___block_invoke;
   v17[3] = &unk_1E861DED8;
-  v18 = v8;
-  v14 = v8;
-  v15 = [v11 initWithResource:v10 taskIdentifier:v13 launchHandler:v17 completionHandler:v9];
+  v18 = errorCopy;
+  v14 = errorCopy;
+  v15 = [v11 initWithResource:resourceCopy taskIdentifier:uUIDString launchHandler:v17 completionHandler:handlerCopy];
 
   return v15;
 }

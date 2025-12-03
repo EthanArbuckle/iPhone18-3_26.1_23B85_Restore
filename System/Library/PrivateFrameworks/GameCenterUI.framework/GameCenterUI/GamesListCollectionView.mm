@@ -6,7 +6,7 @@
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E2C81C4();
 
   return v3 & 1;

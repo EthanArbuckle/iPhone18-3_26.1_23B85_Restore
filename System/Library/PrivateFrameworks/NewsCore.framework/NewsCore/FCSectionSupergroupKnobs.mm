@@ -1,25 +1,25 @@
 @interface FCSectionSupergroupKnobs
-- (FCSectionSupergroupKnobs)initWithJSONData:(id)a3;
-- (FCSectionSupergroupKnobs)initWithJSONString:(id)a3;
+- (FCSectionSupergroupKnobs)initWithJSONData:(id)data;
+- (FCSectionSupergroupKnobs)initWithJSONString:(id)string;
 @end
 
 @implementation FCSectionSupergroupKnobs
 
-- (FCSectionSupergroupKnobs)initWithJSONString:(id)a3
+- (FCSectionSupergroupKnobs)initWithJSONString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   v5 = [(FCSectionSupergroupKnobs *)self initWithJSONData:v4];
 
   return v5;
 }
 
-- (FCSectionSupergroupKnobs)initWithJSONData:(id)a3
+- (FCSectionSupergroupKnobs)initWithJSONData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v27 = 0;
-    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v27];
+    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v27];
     v6 = v27;
     if (!v6)
     {
@@ -49,9 +49,9 @@
           if (v15)
           {
             v16 = [v5 objectForKeyedSubscript:@"nameOverride"];
-            v17 = [v16 stringValue];
+            stringValue = [v16 stringValue];
             nameOverride = v7->_nameOverride;
-            v7->_nameOverride = v17;
+            v7->_nameOverride = stringValue;
           }
 
           else

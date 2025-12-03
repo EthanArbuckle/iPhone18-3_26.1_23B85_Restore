@@ -1,29 +1,29 @@
 @interface PTCinematographyTransition
-- (PTCinematographyTransition)initWithKind:(unint64_t)a3;
-- (float)coefficientForNormalizedTime:(float)a3;
+- (PTCinematographyTransition)initWithKind:(unint64_t)kind;
+- (float)coefficientForNormalizedTime:(float)time;
 - (float)linearCoefficientForNormalizedTime:(float)result;
 @end
 
 @implementation PTCinematographyTransition
 
-- (PTCinematographyTransition)initWithKind:(unint64_t)a3
+- (PTCinematographyTransition)initWithKind:(unint64_t)kind
 {
   v5.receiver = self;
   v5.super_class = PTCinematographyTransition;
   result = [(PTCinematographyTransition *)&v5 init];
   if (result)
   {
-    result->_kind = a3;
+    result->_kind = kind;
   }
 
   return result;
 }
 
-- (float)coefficientForNormalizedTime:(float)a3
+- (float)coefficientForNormalizedTime:(float)time
 {
   if ([(PTCinematographyTransition *)self kind]== 1)
   {
-    *&v5 = a3;
+    *&v5 = time;
 
     [(PTCinematographyTransition *)self linearCoefficientForNormalizedTime:v5];
   }

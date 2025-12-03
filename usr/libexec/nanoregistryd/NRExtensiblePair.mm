@@ -1,48 +1,48 @@
 @interface NRExtensiblePair
-+ (id)newService:(id)a3;
-+ (unint64_t)_pairingStrategyFromAdvertisedName:(id)a3;
++ (id)newService:(id)service;
++ (unint64_t)_pairingStrategyFromAdvertisedName:(id)name;
 - (BOOL)hasStartedPairing;
 - (BOOL)isReady;
 - (EPFactory)factory;
-- (NRExtensiblePair)initWithServiceRegistry:(id)a3;
-- (NRExtensiblePair)pairWithDevice:(id)a3;
+- (NRExtensiblePair)initWithServiceRegistry:(id)registry;
+- (NRExtensiblePair)pairWithDevice:(id)device;
 - (NRExtensiblePairingDelegate)delegate;
 - (id)_getPairingExtendedMetadata;
-- (id)dataFromPairingStrategy:(unint64_t)a3 andStyle:(unint64_t)a4;
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4;
-- (unint64_t)pairingStrategyFromData:(id)a3 andStyle:(unint64_t *)a4;
+- (id)dataFromPairingStrategy:(unint64_t)strategy andStyle:(unint64_t)style;
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate;
+- (unint64_t)pairingStrategyFromData:(id)data andStyle:(unint64_t *)style;
 - (void)_invalidateIDSChannel;
 - (void)accountAndDeviceReady;
-- (void)advertiseAndPairWithAdvertisedName:(id)a3 andPairingMode:(unint64_t)a4 withGetStartedBlock:(id)a5;
-- (void)advertiser:(id)a3 receivedData:(id)a4;
-- (void)advertiser:(id)a3 receivedPairingRequestForDevice:(id)a4;
-- (void)bluetoothPaired:(id)a3;
-- (void)discoverAndPairWithAdvertisedName:(id)a3 andDeviceID:(id)a4;
-- (void)discoverAndPairWithAdvertisedName:(id)a3 andOOBKey:(id)a4;
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4;
-- (void)discovererBluetoothMayHaveFailed:(id)a3;
-- (void)pairer:(id)a3 completedWithError:(id)a4;
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5;
-- (void)pairerDidBeginToPair:(id)a3;
+- (void)advertiseAndPairWithAdvertisedName:(id)name andPairingMode:(unint64_t)mode withGetStartedBlock:(id)block;
+- (void)advertiser:(id)advertiser receivedData:(id)data;
+- (void)advertiser:(id)advertiser receivedPairingRequestForDevice:(id)device;
+- (void)bluetoothPaired:(id)paired;
+- (void)discoverAndPairWithAdvertisedName:(id)name andDeviceID:(id)d;
+- (void)discoverAndPairWithAdvertisedName:(id)name andOOBKey:(id)key;
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable;
+- (void)discovererBluetoothMayHaveFailed:(id)failed;
+- (void)pairer:(id)pairer completedWithError:(id)error;
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey;
+- (void)pairerDidBeginToPair:(id)pair;
 - (void)propertiesReceived;
-- (void)reset:(BOOL)a3;
-- (void)respondWithPasscode:(id)a3;
+- (void)reset:(BOOL)reset;
+- (void)respondWithPasscode:(id)passcode;
 - (void)sendBeginningToPairNotification;
-- (void)setNrDeviceUUID:(id)a3;
+- (void)setNrDeviceUUID:(id)d;
 - (void)setPairingError;
-- (void)setPairingStrategy:(unint64_t)a3 andStyle:(unint64_t)a4;
+- (void)setPairingStrategy:(unint64_t)strategy andStyle:(unint64_t)style;
 - (void)setPairingTimer;
 - (void)timeout;
-- (void)unpairer:(id)a3 didFinishUnpairingDevices:(id)a4;
+- (void)unpairer:(id)unpairer didFinishUnpairingDevices:(id)devices;
 - (void)update;
 @end
 
 @implementation NRExtensiblePair
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
@@ -55,10 +55,10 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (NRExtensiblePair)initWithServiceRegistry:(id)a3
+- (NRExtensiblePair)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  registryCopy = registry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v6 = [(NRExtensiblePair *)self init];
   if (v6)
   {
@@ -90,9 +90,9 @@
   return v6;
 }
 
-- (void)reset:(BOOL)a3
+- (void)reset:(BOOL)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -106,7 +106,7 @@
     }
   }
 
-  if (v3)
+  if (resetCopy)
   {
     v8 = 5;
   }
@@ -119,9 +119,9 @@
   [(NRExtensiblePair *)self setPairingMode:v8];
 }
 
-- (void)setPairingStrategy:(unint64_t)a3 andStyle:(unint64_t)a4
+- (void)setPairingStrategy:(unint64_t)strategy andStyle:(unint64_t)style
 {
-  if (self->_pairingStrategy != a3)
+  if (self->_pairingStrategy != strategy)
   {
     v7 = nr_daemon_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -131,25 +131,25 @@
       v9 = nr_daemon_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = sub_100052C70(a3);
+        v10 = sub_100052C70(strategy);
         v11 = 138412290;
         v12 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Switching to pairing strategy %@", &v11, 0xCu);
       }
     }
 
-    self->_pairingStrategy = a3;
+    self->_pairingStrategy = strategy;
   }
 
-  self->_pairingStyle = a4;
+  self->_pairingStyle = style;
   [(NRExtensiblePair *)self update];
 }
 
 - (void)update
 {
-  v3 = [(NRExtensiblePair *)self pairingMode];
+  pairingMode = [(NRExtensiblePair *)self pairingMode];
   nextPairingMode = self->_nextPairingMode;
-  if (v3 != nextPairingMode)
+  if (pairingMode != nextPairingMode)
   {
     self->_pairingMode = nextPairingMode;
     v5 = nr_daemon_log();
@@ -167,39 +167,39 @@
       }
     }
 
-    v9 = [(NRExtensiblePair *)self pairingMode];
-    if (v9 > 2)
+    pairingMode2 = [(NRExtensiblePair *)self pairingMode];
+    if (pairingMode2 > 2)
     {
-      if (v9 == 3)
+      if (pairingMode2 == 3)
       {
         goto LABEL_19;
       }
 
-      if (v9 == 4)
+      if (pairingMode2 == 4)
       {
         goto LABEL_10;
       }
 
-      if (v9 != 5)
+      if (pairingMode2 != 5)
       {
 LABEL_31:
-        v34 = [(NRExtensiblePair *)self delegate];
-        [v34 savePairingReport];
+        delegate = [(NRExtensiblePair *)self delegate];
+        [delegate savePairingReport];
 
         goto LABEL_32;
       }
     }
 
-    else if (v9)
+    else if (pairingMode2)
     {
-      if (v9 != 1)
+      if (pairingMode2 != 1)
       {
-        if (v9 == 2)
+        if (pairingMode2 == 2)
         {
 LABEL_10:
-          v10 = [(NRExtensiblePair *)self delegate];
-          v11 = [v10 pairingReport];
-          [v11 setPairingType:2];
+          delegate2 = [(NRExtensiblePair *)self delegate];
+          pairingReport = [delegate2 pairingReport];
+          [pairingReport setPairingType:2];
 LABEL_30:
 
           goto LABEL_31;
@@ -209,31 +209,31 @@ LABEL_30:
       }
 
 LABEL_19:
-      v10 = [(NRExtensiblePair *)self delegate];
-      v11 = [v10 pairingReport];
-      [v11 setPairingType:1];
+      delegate2 = [(NRExtensiblePair *)self delegate];
+      pairingReport = [delegate2 pairingReport];
+      [pairingReport setPairingType:1];
       goto LABEL_30;
     }
 
     if (self->_pairingMode == 5)
     {
-      v12 = [(NRExtensiblePair *)self nrDeviceUUID];
-      if (v12 && [(NRExtensiblePair *)self isReady])
+      nrDeviceUUID = [(NRExtensiblePair *)self nrDeviceUUID];
+      if (nrDeviceUUID && [(NRExtensiblePair *)self isReady])
       {
-        v13 = [(NRExtensiblePair *)self delegate];
-        v14 = [v13 pairingReport];
-        v15 = [v14 isErrorSet];
+        delegate3 = [(NRExtensiblePair *)self delegate];
+        pairingReport2 = [delegate3 pairingReport];
+        isErrorSet = [pairingReport2 isErrorSet];
 
-        if ((v15 & 1) == 0)
+        if ((isErrorSet & 1) == 0)
         {
-          v16 = [(NRExtensiblePair *)self delegate];
-          v17 = [(NRExtensiblePair *)self nrDeviceUUID];
+          delegate4 = [(NRExtensiblePair *)self delegate];
+          nrDeviceUUID2 = [(NRExtensiblePair *)self nrDeviceUUID];
           v118[0] = _NSConcreteStackBlock;
           v118[1] = 3221225472;
           v118[2] = sub_1000BA304;
           v118[3] = &unk_100175660;
           v118[4] = self;
-          [v16 activateDevice:v17 withCompletion:v118];
+          [delegate4 activateDevice:nrDeviceUUID2 withCompletion:v118];
 
           goto LABEL_24;
         }
@@ -243,8 +243,8 @@ LABEL_19:
       {
       }
 
-      v18 = [(NRExtensiblePair *)self delegate];
-      [v18 pairingCompleted];
+      delegate5 = [(NRExtensiblePair *)self delegate];
+      [delegate5 pairingCompleted];
     }
 
 LABEL_24:
@@ -310,10 +310,10 @@ LABEL_24:
       block[2] = sub_1000BA348;
       block[3] = &unk_100175660;
       v117 = v32;
-      v10 = v32;
+      delegate2 = v32;
       dispatch_async(v33, block);
 
-      v11 = v117;
+      pairingReport = v117;
       goto LABEL_30;
     }
 
@@ -331,8 +331,8 @@ LABEL_32:
     goto LABEL_41;
   }
 
-  v35 = [(NRExtensiblePair *)self advertisedName];
-  v36 = v35 == 0;
+  advertisedName = [(NRExtensiblePair *)self advertisedName];
+  v36 = advertisedName == 0;
 
   if (v36)
   {
@@ -341,8 +341,8 @@ LABEL_32:
 
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
-    v55 = [(NRExtensiblePair *)self pairingMode];
-    if (v55 - 1 < 2)
+    pairingMode3 = [(NRExtensiblePair *)self pairingMode];
+    if (pairingMode3 - 1 < 2)
     {
       v91 = self->_generator;
       self->_generator = 0;
@@ -355,14 +355,14 @@ LABEL_32:
 
       if (!self->_discoverer)
       {
-        v94 = [(NRExtensiblePair *)self factory];
-        [v94 setDiscovererDeviceUUIDs:0];
+        factory = [(NRExtensiblePair *)self factory];
+        [factory setDiscovererDeviceUUIDs:0];
 
-        v95 = [(NRExtensiblePair *)self factory];
-        [v95 setDiscovererShouldScanForProximity:0];
+        factory2 = [(NRExtensiblePair *)self factory];
+        [factory2 setDiscovererShouldScanForProximity:0];
 
-        v96 = [(NRExtensiblePair *)self factory];
-        v97 = [v96 newDiscovererWithDelegate:self];
+        factory3 = [(NRExtensiblePair *)self factory];
+        v97 = [factory3 newDiscovererWithDelegate:self];
         v98 = self->_discoverer;
         self->_discoverer = v97;
       }
@@ -386,7 +386,7 @@ LABEL_112:
       goto LABEL_36;
     }
 
-    if (v55 - 3 > 1)
+    if (pairingMode3 - 3 > 1)
     {
       goto LABEL_36;
     }
@@ -396,7 +396,7 @@ LABEL_112:
 
     if ([(NRExtensiblePair *)self pairingMode]== 4 || [(NRExtensiblePair *)self pairingStyle]== 2)
     {
-      v57 = self->_generator;
+      factory11 = self->_generator;
       self->_generator = 0;
     }
 
@@ -405,13 +405,13 @@ LABEL_112:
       if (self->_generator)
       {
 LABEL_75:
-        v58 = [(NRExtensiblePair *)self oobKey];
-        v59 = [(EPOOBKeyGenerator *)self->_generator key];
-        if (v58 != v59)
+        oobKey = [(NRExtensiblePair *)self oobKey];
+        oobKey3 = [(EPOOBKeyGenerator *)self->_generator key];
+        if (oobKey != oobKey3)
         {
-          v60 = [(NRExtensiblePair *)self oobKey];
+          oobKey2 = [(NRExtensiblePair *)self oobKey];
           v61 = [(EPOOBKeyGenerator *)self->_generator key];
-          v62 = [v60 isEqual:v61];
+          v62 = [oobKey2 isEqual:v61];
 
           if (v62)
           {
@@ -433,26 +433,26 @@ LABEL_79:
 
             if (!self->_advertiser)
             {
-              v67 = [(NRExtensiblePair *)self advertisedName];
-              v68 = [(NRExtensiblePair *)self factory];
-              [v68 setAdvertisingName:v67];
+              advertisedName2 = [(NRExtensiblePair *)self advertisedName];
+              factory4 = [(NRExtensiblePair *)self factory];
+              [factory4 setAdvertisingName:advertisedName2];
 
-              v69 = [(NRExtensiblePair *)self factory];
+              factory5 = [(NRExtensiblePair *)self factory];
               v70 = [CBUUID UUIDWithString:@"1F9636E6-CA97-4C30-BC5F-C477D6A6CF32"];
-              [v69 addAdvertisedCharacteristic:v70 encryptionRequired:0 withReadHandler:0 writeHandler:&stru_100179188];
+              [factory5 addAdvertisedCharacteristic:v70 encryptionRequired:0 withReadHandler:0 writeHandler:&stru_100179188];
 
               objc_initWeak(&buf, self);
-              v71 = [(NRExtensiblePair *)self factory];
+              factory6 = [(NRExtensiblePair *)self factory];
               v72 = [CBUUID UUIDWithString:@"E168D473-8EFD-4485-A1FD-B25EDAD4DCE2"];
               v114[0] = _NSConcreteStackBlock;
               v114[1] = 3221225472;
               v114[2] = sub_1000BA630;
               v114[3] = &unk_1001791B0;
               objc_copyWeak(&v115, &buf);
-              [v71 addAdvertisedCharacteristic:v72 encryptionRequired:0 withReadHandler:v114 writeHandler:0];
+              [factory6 addAdvertisedCharacteristic:v72 encryptionRequired:0 withReadHandler:v114 writeHandler:0];
 
-              v73 = [(NRExtensiblePair *)self factory];
-              [v73 setAdvertisingRate:3];
+              factory7 = [(NRExtensiblePair *)self factory];
+              [factory7 setAdvertisingRate:3];
 
               v74 = sub_1000A98C0();
               LODWORD(v72) = os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT);
@@ -467,14 +467,14 @@ LABEL_79:
                 }
               }
 
-              v76 = [(NRExtensiblePair *)self factory];
-              [v76 setAdvertiserNotAvailableToPair:0];
+              factory8 = [(NRExtensiblePair *)self factory];
+              [factory8 setAdvertiserNotAvailableToPair:0];
 
-              v77 = [(NRExtensiblePair *)self factory];
-              [v77 setDontAdvertiseWithServiceUUID:0];
+              factory9 = [(NRExtensiblePair *)self factory];
+              [factory9 setDontAdvertiseWithServiceUUID:0];
 
-              v78 = [(NRExtensiblePair *)self factory];
-              v79 = [v78 newAdvertiserWithDelegate:self];
+              factory10 = [(NRExtensiblePair *)self factory];
+              v79 = [factory10 newAdvertiserWithDelegate:self];
               v80 = self->_advertiser;
               self->_advertiser = v79;
 
@@ -494,16 +494,16 @@ LABEL_79:
           v63 = [(EPOOBKeyGenerator *)self->_generator key];
           [(NRExtensiblePair *)self setOobKey:v63];
 
-          v58 = [(NRExtensiblePair *)self delegate];
-          v59 = [(NRExtensiblePair *)self oobKey];
-          [v58 sendXPCOOBKeyChanged:v59];
+          oobKey = [(NRExtensiblePair *)self delegate];
+          oobKey3 = [(NRExtensiblePair *)self oobKey];
+          [oobKey sendXPCOOBKeyChanged:oobKey3];
         }
 
         goto LABEL_79;
       }
 
-      v57 = [(NRExtensiblePair *)self factory];
-      v104 = [v57 newKeyGeneratorWithDelegate:self];
+      factory11 = [(NRExtensiblePair *)self factory];
+      v104 = [factory11 newKeyGeneratorWithDelegate:self];
       v105 = self->_generator;
       self->_generator = v104;
     }
@@ -521,20 +521,20 @@ LABEL_36:
     v38 = +[NRRepeatingAlertEngine sharedInstance];
     [v38 setEnabled:0 withName:@"WatchUnexpectedlyUnpairedBridge"];
 
-    v39 = [(NRExtensiblePair *)self delegate];
-    [v39 deleteUnexpectedIDSPairedDevices];
+    delegate6 = [(NRExtensiblePair *)self delegate];
+    [delegate6 deleteUnexpectedIDSPairedDevices];
 
     if (!self->_haveStartedCreatingPairingDevice)
     {
       self->_haveStartedCreatingPairingDevice = 1;
-      v40 = [(NRExtensiblePair *)self delegate];
-      v41 = [(NRExtensiblePair *)self advertisedName];
+      delegate7 = [(NRExtensiblePair *)self delegate];
+      advertisedName3 = [(NRExtensiblePair *)self advertisedName];
       v112[0] = _NSConcreteStackBlock;
       v112[1] = 3221225472;
       v112[2] = sub_1000BA744;
       v112[3] = &unk_1001791D8;
       v112[4] = self;
-      [v40 createDeviceFromPairingRequest:v41 discoveredBy:1 withBlock:v112];
+      [delegate7 createDeviceFromPairingRequest:advertisedName3 discoveredBy:1 withBlock:v112];
     }
   }
 
@@ -543,10 +543,10 @@ LABEL_41:
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v42 = [(EPDiscoverer *)self->_discoverer devices];
-  v43 = [v42 allValues];
+  devices = [(EPDiscoverer *)self->_discoverer devices];
+  allValues = [devices allValues];
 
-  v44 = [v43 countByEnumeratingWithState:&v108 objects:v119 count:16];
+  v44 = [allValues countByEnumeratingWithState:&v108 objects:v119 count:16];
   if (v44)
   {
     v45 = *v109;
@@ -556,31 +556,31 @@ LABEL_41:
       {
         if (*v109 != v45)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v108 + 1) + 8 * i) setEnableOOBPairing:{-[NRExtensiblePair pairingMode](self, "pairingMode") == 1}];
       }
 
-      v44 = [v43 countByEnumeratingWithState:&v108 objects:v119 count:16];
+      v44 = [allValues countByEnumeratingWithState:&v108 objects:v119 count:16];
     }
 
     while (v44);
   }
 
-  v47 = [(NRExtensiblePair *)self advertisedName];
-  v48 = [(NRExtensiblePair *)self factory];
-  [v48 setAdvertisingName:v47];
+  advertisedName4 = [(NRExtensiblePair *)self advertisedName];
+  factory12 = [(NRExtensiblePair *)self factory];
+  [factory12 setAdvertisingName:advertisedName4];
 
   if (([(NRExtensiblePair *)self pairingMode]!= 3 || !self->_haveFinishedCreatingPairingDevice) && [(NRExtensiblePair *)self pairingMode]!= 1)
   {
     v50 = 0;
 LABEL_56:
-    v51 = [(NRExtensiblePair *)self pairingMode];
-    if (v51 == 2)
+    pairingMode4 = [(NRExtensiblePair *)self pairingMode];
+    if (pairingMode4 == 2)
     {
-      v52 = [(NRExtensiblePair *)self discoverer];
-      if (v52)
+      discoverer = [(NRExtensiblePair *)self discoverer];
+      if (discoverer)
       {
         failure = 1;
 LABEL_93:
@@ -596,7 +596,7 @@ LABEL_94:
 
       if ([(NRExtensiblePair *)self pairingMode]!= 4)
       {
-        v52 = 0;
+        discoverer = 0;
         failure = self->_failure;
         goto LABEL_93;
       }
@@ -608,8 +608,8 @@ LABEL_94:
       goto LABEL_94;
     }
 
-    v54 = [(NRExtensiblePair *)self advertiser];
-    if (v54)
+    advertiser = [(NRExtensiblePair *)self advertiser];
+    if (advertiser)
     {
       failure = 1;
     }
@@ -619,7 +619,7 @@ LABEL_94:
       failure = self->_failure;
     }
 
-    if (v51 != 2)
+    if (pairingMode4 != 2)
     {
       if (!v50)
       {
@@ -637,13 +637,13 @@ LABEL_95:
       goto LABEL_96;
     }
 
-    v52 = 0;
+    discoverer = 0;
     goto LABEL_93;
   }
 
-  v49 = [(NRExtensiblePair *)self oobKey];
-  v47 = v49;
-  if (!v49 || !self->_haveFinishedCreatingPairingDevice)
+  oobKey4 = [(NRExtensiblePair *)self oobKey];
+  advertisedName4 = oobKey4;
+  if (!oobKey4 || !self->_haveFinishedCreatingPairingDevice)
   {
     v50 = 1;
     goto LABEL_56;
@@ -709,9 +709,9 @@ LABEL_97:
   v9 = NRWatchOSVersion();
   sub_100101818(v3, v9);
 
-  v10 = [v3 data];
+  data = [v3 data];
 
-  return v10;
+  return data;
 }
 
 - (void)timeout
@@ -727,11 +727,11 @@ LABEL_97:
 
 - (void)setPairingError
 {
-  v3 = [(NRExtensiblePair *)self delegate];
-  v4 = [v3 pairingReport];
-  v5 = [v4 isErrorSet];
+  delegate = [(NRExtensiblePair *)self delegate];
+  pairingReport = [delegate pairingReport];
+  isErrorSet = [pairingReport isErrorSet];
 
-  if (v5)
+  if (isErrorSet)
   {
     return;
   }
@@ -754,18 +754,18 @@ LABEL_97:
     if (self->_lastBluetoothPairingError)
     {
       v8 = nrGetPairingError();
-      v9 = [v8 userInfo];
-      v6 = [v9 mutableCopy];
+      userInfo = [v8 userInfo];
+      delegate3 = [userInfo mutableCopy];
 
       v10 = [(NSError *)self->_lastBluetoothPairingError description];
-      [v6 setObject:v10 forKeyedSubscript:@"underlyingBluetoothError"];
+      [delegate3 setObject:v10 forKeyedSubscript:@"underlyingBluetoothError"];
 
-      v11 = [v8 domain];
-      v13 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v11, [v8 code], v6);
+      domain = [v8 domain];
+      v13 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v8 code], delegate3);
 
-      v7 = [(NRExtensiblePair *)self delegate];
-      v12 = [v7 pairingReport];
-      [v12 setOriginalError:v13];
+      delegate2 = [(NRExtensiblePair *)self delegate];
+      pairingReport2 = [delegate2 pairingReport];
+      [pairingReport2 setOriginalError:v13];
 
       goto LABEL_11;
     }
@@ -777,9 +777,9 @@ LABEL_97:
   }
 
   v13 = nrGetPairingError();
-  v6 = [(NRExtensiblePair *)self delegate];
-  v7 = [v6 pairingReport];
-  [v7 setOriginalError:v13];
+  delegate3 = [(NRExtensiblePair *)self delegate];
+  delegate2 = [delegate3 pairingReport];
+  [delegate2 setOriginalError:v13];
 LABEL_11:
 }
 
@@ -788,11 +788,11 @@ LABEL_11:
   if (![(NRExtensiblePair *)self IDSAccountAndDevicePresent])
   {
     [(NRExtensiblePair *)self setIDSAccountAndDevicePresent:1];
-    v3 = [(NRExtensiblePair *)self isReady];
+    isReady = [(NRExtensiblePair *)self isReady];
     v4 = sub_1000034AC();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-    if (v3)
+    if (isReady)
     {
       if (v5)
       {
@@ -824,11 +824,11 @@ LABEL_11:
   if (![(NRExtensiblePair *)self isInitialPropertiesReceived])
   {
     [(NRExtensiblePair *)self setIsInitialPropertiesReceived:1];
-    v3 = [(NRExtensiblePair *)self isReady];
+    isReady = [(NRExtensiblePair *)self isReady];
     v4 = sub_1000034AC();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
-    if (v3)
+    if (isReady)
     {
       if (v5)
       {
@@ -855,13 +855,13 @@ LABEL_11:
   }
 }
 
-- (void)bluetoothPaired:(id)a3
+- (void)bluetoothPaired:(id)paired
 {
-  v5 = a3;
+  pairedCopy = paired;
   if (![(NRExtensiblePair *)self isBluetoothPairComplete])
   {
     [(NRExtensiblePair *)self setIsBluetoothPairComplete:1];
-    objc_storeStrong(&self->_pairedBTDeviceUUID, a3);
+    objc_storeStrong(&self->_pairedBTDeviceUUID, paired);
     discoverer = self->_discoverer;
     if (discoverer)
     {
@@ -873,11 +873,11 @@ LABEL_11:
       [v8 setDiscovererDeviceUUIDs:v7];
     }
 
-    v9 = [(NRExtensiblePair *)self isReady];
+    isReady = [(NRExtensiblePair *)self isReady];
     v10 = sub_1000034AC();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
-    if (v9)
+    if (isReady)
     {
       if (v11)
       {
@@ -904,9 +904,9 @@ LABEL_11:
   }
 }
 
-- (void)respondWithPasscode:(id)a3
+- (void)respondWithPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -930,7 +930,7 @@ LABEL_11:
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         v17 = v9;
-        v18 = v4;
+        v18 = passcodeCopy;
         v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1, v13];
         [v11 respondWithType:2 accept:1 data:v12];
 
@@ -995,17 +995,17 @@ LABEL_11:
     }
   }
 
-  v9 = [(NRExtensiblePair *)self IDSAccountAndDevicePresent];
-  if (v9)
+  iDSAccountAndDevicePresent = [(NRExtensiblePair *)self IDSAccountAndDevicePresent];
+  if (iDSAccountAndDevicePresent)
   {
-    v9 = [(NRExtensiblePair *)self isBluetoothPairComplete];
-    if (v9)
+    iDSAccountAndDevicePresent = [(NRExtensiblePair *)self isBluetoothPairComplete];
+    if (iDSAccountAndDevicePresent)
     {
-      LOBYTE(v9) = [(NRExtensiblePair *)self isInitialPropertiesReceived];
+      LOBYTE(iDSAccountAndDevicePresent) = [(NRExtensiblePair *)self isInitialPropertiesReceived];
     }
   }
 
-  return v9;
+  return iDSAccountAndDevicePresent;
 }
 
 - (BOOL)hasStartedPairing
@@ -1018,23 +1018,23 @@ LABEL_11:
   return [(NRExtensiblePair *)self isInitialPropertiesReceived];
 }
 
-- (id)dataFromPairingStrategy:(unint64_t)a3 andStyle:(unint64_t)a4
+- (id)dataFromPairingStrategy:(unint64_t)strategy andStyle:(unint64_t)style
 {
   v6 = 1330528590;
-  v7 = a3;
-  v8 = a4;
+  strategyCopy = strategy;
+  styleCopy = style;
   v4 = [NSData dataWithBytes:&v6 length:6];
 
   return v4;
 }
 
-- (unint64_t)pairingStrategyFromData:(id)a3 andStyle:(unint64_t *)a4
+- (unint64_t)pairingStrategyFromData:(id)data andStyle:(unint64_t *)style
 {
-  v5 = a3;
-  if ([v5 length] == 6 && (v6 = objc_msgSend(v5, "bytes"), *v6 == 78) && v6[1] == 65 && v6[2] == 78 && v6[3] == 79)
+  dataCopy = data;
+  if ([dataCopy length] == 6 && (v6 = objc_msgSend(dataCopy, "bytes"), *v6 == 78) && v6[1] == 65 && v6[2] == 78 && v6[3] == 79)
   {
     v7 = v6[4];
-    if (a4)
+    if (style)
     {
       v8 = v6[5];
       if (((v8 - 1) & 0xFE) != 0)
@@ -1042,7 +1042,7 @@ LABEL_11:
         v8 = 0;
       }
 
-      *a4 = v8;
+      *style = v8;
     }
 
     if ((v7 - 4) < 0xFDu)
@@ -1056,9 +1056,9 @@ LABEL_11:
   else
   {
     v9 = 0;
-    if (a4)
+    if (style)
     {
-      *a4 = 0;
+      *style = 0;
     }
   }
 
@@ -1083,37 +1083,37 @@ LABEL_11:
   }
 }
 
-- (void)discoverAndPairWithAdvertisedName:(id)a3 andOOBKey:(id)a4
+- (void)discoverAndPairWithAdvertisedName:(id)name andOOBKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  nameCopy = name;
+  keyCopy = key;
   if (![(NSMutableArray *)self->_pairers count])
   {
     [(NRExtensiblePair *)self _invalidateIDSChannel];
     [(NRExtensiblePair *)self setPairingTimer];
-    [(NRExtensiblePair *)self setPairingStrategy:[NRExtensiblePair andStyle:"_pairingStrategyFromAdvertisedName:" _pairingStrategyFromAdvertisedName:v8], 1];
-    [(NRExtensiblePair *)self setAdvertisedName:v8];
+    [(NRExtensiblePair *)self setPairingStrategy:[NRExtensiblePair andStyle:"_pairingStrategyFromAdvertisedName:" _pairingStrategyFromAdvertisedName:nameCopy], 1];
+    [(NRExtensiblePair *)self setAdvertisedName:nameCopy];
     [(NRExtensiblePair *)self setPairingMode:1];
-    [(NRExtensiblePair *)self setOobKey:v6];
-    v7 = [(NRExtensiblePair *)self delegate];
-    [v7 sendXPCOOBKeyChanged:v6];
+    [(NRExtensiblePair *)self setOobKey:keyCopy];
+    delegate = [(NRExtensiblePair *)self delegate];
+    [delegate sendXPCOOBKeyChanged:keyCopy];
   }
 
   [(NRExtensiblePair *)self update];
 }
 
-- (void)discoverAndPairWithAdvertisedName:(id)a3 andDeviceID:(id)a4
+- (void)discoverAndPairWithAdvertisedName:(id)name andDeviceID:(id)d
 {
-  v7 = a3;
-  v6 = a4;
+  nameCopy = name;
+  dCopy = d;
   if (![(NSMutableArray *)self->_pairers count])
   {
     [(NRExtensiblePair *)self _invalidateIDSChannel];
     [(NRExtensiblePair *)self setPairingTimer];
-    [(NRExtensiblePair *)self setPairingStrategy:[NRExtensiblePair andStyle:"_pairingStrategyFromAdvertisedName:" _pairingStrategyFromAdvertisedName:v7], 2];
-    [(NRExtensiblePair *)self setAdvertisedName:v7];
+    [(NRExtensiblePair *)self setPairingStrategy:[NRExtensiblePair andStyle:"_pairingStrategyFromAdvertisedName:" _pairingStrategyFromAdvertisedName:nameCopy], 2];
+    [(NRExtensiblePair *)self setAdvertisedName:nameCopy];
     [(NRExtensiblePair *)self setPairingMode:2];
-    [(NRExtensiblePair *)self setNrDeviceUUID:v6];
+    [(NRExtensiblePair *)self setNrDeviceUUID:dCopy];
   }
 
   [(NRExtensiblePair *)self update];
@@ -1133,7 +1133,7 @@ LABEL_11:
       {
         v6 = objc_opt_class();
         v7 = NSStringFromClass(v6);
-        v8 = [(NRExtensiblePair *)self delegate];
+        delegate = [(NRExtensiblePair *)self delegate];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
         v12 = 138412546;
@@ -1144,38 +1144,38 @@ LABEL_11:
       }
     }
 
-    v11 = [(NRExtensiblePair *)self delegate];
-    [v11 invalidateIDSChannels];
+    delegate2 = [(NRExtensiblePair *)self delegate];
+    [delegate2 invalidateIDSChannels];
   }
 }
 
-+ (unint64_t)_pairingStrategyFromAdvertisedName:(id)a3
++ (unint64_t)_pairingStrategyFromAdvertisedName:(id)name
 {
   v3 = NRAdvertisingInfoFromPayload();
   v4 = [v3 objectForKeyedSubscript:NRBridgeAdvertisingVersionKey];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  v6 = sub_100052C60(v5);
+  v6 = sub_100052C60(integerValue);
   return v6;
 }
 
-- (void)setNrDeviceUUID:(id)a3
+- (void)setNrDeviceUUID:(id)d
 {
-  objc_storeStrong(&self->_nrDeviceUUID, a3);
-  v5 = a3;
-  v6 = [(NRExtensiblePair *)self delegate];
-  [v6 setPairingID:v5];
+  objc_storeStrong(&self->_nrDeviceUUID, d);
+  dCopy = d;
+  delegate = [(NRExtensiblePair *)self delegate];
+  [delegate setPairingID:dCopy];
 }
 
-- (void)advertiseAndPairWithAdvertisedName:(id)a3 andPairingMode:(unint64_t)a4 withGetStartedBlock:(id)a5
+- (void)advertiseAndPairWithAdvertisedName:(id)name andPairingMode:(unint64_t)mode withGetStartedBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  nameCopy = name;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (blockCopy)
   {
     startupBlocks = self->_startupBlocks;
-    v12 = [v9 copy];
+    v12 = [blockCopy copy];
     v13 = objc_retainBlock(v12);
     [(NSMutableArray *)startupBlocks addObject:v13];
   }
@@ -1196,11 +1196,11 @@ LABEL_11:
         }
       }
 
-      v17 = [(NRExtensiblePair *)self delegate];
-      [v17 invalidateIDSChannels];
+      delegate = [(NRExtensiblePair *)self delegate];
+      [delegate invalidateIDSChannels];
     }
 
-    if (a4 == 3)
+    if (mode == 3)
     {
       v18 = 1;
     }
@@ -1211,16 +1211,16 @@ LABEL_11:
     }
 
     [(NRExtensiblePair *)self setPairingStrategy:1 andStyle:v18];
-    [(NRExtensiblePair *)self setAdvertisedName:v8];
-    [(NRExtensiblePair *)self setPairingMode:a4];
+    [(NRExtensiblePair *)self setAdvertisedName:nameCopy];
+    [(NRExtensiblePair *)self setPairingMode:mode];
   }
 
   [(NRExtensiblePair *)self update];
 }
 
-- (NRExtensiblePair)pairWithDevice:(id)a3
+- (NRExtensiblePair)pairWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1236,13 +1236,13 @@ LABEL_11:
 
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
-    [v4 setEnableOOBPairing:self->_pairingMode == 1];
+    [deviceCopy setEnableOOBPairing:self->_pairingMode == 1];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000BC0A8;
     v26[3] = &unk_100175598;
     v26[4] = self;
-    v8 = v4;
+    v8 = deviceCopy;
     v27 = v8;
     v9 = objc_retainBlock(v26);
     v10 = nr_daemon_log();
@@ -1267,9 +1267,9 @@ LABEL_11:
 
     else
     {
-      v14 = [v8 uuid];
+      uuid = [v8 uuid];
       v15 = [NSNumber numberWithUnsignedInteger:[(NRExtensiblePair *)self pairingStrategy]];
-      v16 = [(NSMutableDictionary *)self->_didSetPairingStrategy objectForKeyedSubscript:v14];
+      v16 = [(NSMutableDictionary *)self->_didSetPairingStrategy objectForKeyedSubscript:uuid];
       v17 = [v15 isEqual:v16];
 
       if (v17)
@@ -1290,8 +1290,8 @@ LABEL_11:
         v20[2] = sub_1000BC208;
         v20[3] = &unk_100179200;
         v21 = v8;
-        v22 = self;
-        v23 = v14;
+        selfCopy = self;
+        v23 = uuid;
         v24 = v9;
         [v21 writeData:v18 begin:v25 completion:v20];
       }
@@ -1301,16 +1301,16 @@ LABEL_11:
   return result;
 }
 
-- (void)unpairer:(id)a3 didFinishUnpairingDevices:(id)a4
+- (void)unpairer:(id)unpairer didFinishUnpairingDevices:(id)devices
 {
-  v32 = a3;
-  v6 = a4;
+  unpairerCopy = unpairer;
+  devicesCopy = devices;
   self->_failure = 0;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v44 count:16];
+  v7 = [devicesCopy countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1321,7 +1321,7 @@ LABEL_11:
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devicesCopy);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
@@ -1333,22 +1333,22 @@ LABEL_11:
           v14 = sub_1000034AC();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v11 UUIDString];
+            uUIDString = [v11 UUIDString];
             *buf = 138412290;
-            v43 = v15;
+            v43 = uUIDString;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "NRExtensiblePair: Unpaired %@", buf, 0xCu);
           }
         }
 
-        v16 = [v11 UUIDString];
-        printf("NRExtensiblePair: Unpaired %s\n", [v16 UTF8String]);
+        uUIDString2 = [v11 UUIDString];
+        printf("NRExtensiblePair: Unpaired %s\n", [uUIDString2 UTF8String]);
 
-        v17 = [(EPDiscoverer *)self->_discoverer devices];
-        v18 = [v17 objectForKeyedSubscript:v11];
+        devices = [(EPDiscoverer *)self->_discoverer devices];
+        v18 = [devices objectForKeyedSubscript:v11];
         [v18 reset];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v37 objects:v44 count:16];
+      v8 = [devicesCopy countByEnumeratingWithState:&v37 objects:v44 count:16];
     }
 
     while (v8);
@@ -1356,10 +1356,10 @@ LABEL_11:
 
   if (self->_discoverer)
   {
-    v19 = [v32 requestedUUIDs];
-    v20 = [NSMutableSet setWithSet:v19];
+    requestedUUIDs = [unpairerCopy requestedUUIDs];
+    v20 = [NSMutableSet setWithSet:requestedUUIDs];
 
-    [v20 minusSet:v6];
+    [v20 minusSet:devicesCopy];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -1380,8 +1380,8 @@ LABEL_11:
           }
 
           v26 = *(*(&v33 + 1) + 8 * j);
-          v27 = [(EPDiscoverer *)self->_discoverer devices];
-          v28 = [v27 objectForKeyedSubscript:v26];
+          devices2 = [(EPDiscoverer *)self->_discoverer devices];
+          v28 = [devices2 objectForKeyedSubscript:v26];
 
           if (v28)
           {
@@ -1415,22 +1415,22 @@ LABEL_11:
   [(NRExtensiblePair *)self update];
 }
 
-- (void)discoverer:(id)a3 deviceDidBecomeDisplayable:(id)a4
+- (void)discoverer:(id)discoverer deviceDidBecomeDisplayable:(id)displayable
 {
-  v5 = a4;
+  displayableCopy = displayable;
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
-    v6 = [(NRExtensiblePair *)self nrDeviceUUID];
+    nrDeviceUUID = [(NRExtensiblePair *)self nrDeviceUUID];
 
-    if (v6)
+    if (nrDeviceUUID)
     {
-      v7 = [v5 name];
-      v8 = [(NRExtensiblePair *)self advertisedName];
-      v9 = [v7 isEqual:v8];
+      name = [displayableCopy name];
+      advertisedName = [(NRExtensiblePair *)self advertisedName];
+      v9 = [name isEqual:advertisedName];
 
       if (v9)
       {
-        if ([v5 isPeripheral])
+        if ([displayableCopy isPeripheral])
         {
           v10 = sub_1000034AC();
           v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -1440,19 +1440,19 @@ LABEL_11:
             v12 = sub_1000034AC();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
-              v13 = [v5 description];
+              v13 = [displayableCopy description];
               *buf = 136315138;
-              v20 = [v13 UTF8String];
+              uTF8String = [v13 UTF8String];
               _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "NRExtensiblePair: Discovered device %s, unpairing", buf, 0xCu);
             }
           }
 
-          v14 = [v5 description];
+          v14 = [displayableCopy description];
           printf("NRExtensiblePair: Discovered device %s, unpairing\n", [v14 UTF8String]);
 
           v15 = [EPMassUnpairer alloc];
-          v16 = [v5 uuid];
-          v17 = [NSSet setWithObject:v16];
+          uuid = [displayableCopy uuid];
+          v17 = [NSSet setWithObject:uuid];
           v18 = [(EPMassUnpairer *)v15 initWithDelegate:self UUIDs:v17];
         }
       }
@@ -1460,7 +1460,7 @@ LABEL_11:
   }
 }
 
-- (void)discovererBluetoothMayHaveFailed:(id)a3
+- (void)discovererBluetoothMayHaveFailed:(id)failed
 {
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
@@ -1470,9 +1470,9 @@ LABEL_11:
   }
 }
 
-- (void)advertiser:(id)a3 receivedPairingRequestForDevice:(id)a4
+- (void)advertiser:(id)advertiser receivedPairingRequestForDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
     v6 = nr_daemon_log();
@@ -1490,19 +1490,19 @@ LABEL_11:
       }
     }
 
-    v10 = [v5 newPairerWithDelegate:self];
+    v10 = [deviceCopy newPairerWithDelegate:self];
     if (v10)
     {
       [(NSMutableArray *)self->_pairers addObject:v10];
-      [(NSMutableArray *)self->_pairingDevices addObject:v5];
+      [(NSMutableArray *)self->_pairingDevices addObject:deviceCopy];
       [(NRExtensiblePair *)self update];
     }
   }
 }
 
-- (void)advertiser:(id)a3 receivedData:(id)a4
+- (void)advertiser:(id)advertiser receivedData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   v6 = nr_daemon_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1512,7 +1512,7 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v5;
+      *&buf[4] = dataCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received pairing switch modes data via Bluetooth characteristic: %@", buf, 0xCu);
     }
   }
@@ -1520,7 +1520,7 @@ LABEL_11:
   if (![(NSMutableArray *)self->_pairers count])
   {
     *buf = 0;
-    v9 = [(NRExtensiblePair *)self pairingStrategyFromData:v5 andStyle:buf];
+    v9 = [(NRExtensiblePair *)self pairingStrategyFromData:dataCopy andStyle:buf];
     if (*buf != 2)
     {
       [(NRExtensiblePair *)self sendBeginningToPairNotification];
@@ -1544,7 +1544,7 @@ LABEL_11:
   }
 }
 
-- (void)pairerDidBeginToPair:(id)a3
+- (void)pairerDidBeginToPair:(id)pair
 {
   if ([(NRExtensiblePair *)self pairingStyle]!= 2)
   {
@@ -1553,10 +1553,10 @@ LABEL_11:
   }
 }
 
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey
 {
-  v8 = a3;
-  v9 = a5;
+  pairerCopy = pairer;
+  passkeyCopy = passkey;
   v10 = nr_daemon_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -1572,30 +1572,30 @@ LABEL_11:
 
   if (![(NRExtensiblePair *)self hasStartedPairing])
   {
-    v13 = [(NRExtensiblePair *)self nrDeviceUUID];
+    nrDeviceUUID = [(NRExtensiblePair *)self nrDeviceUUID];
 
-    if (v13)
+    if (nrDeviceUUID)
     {
       v19 = _NSConcreteStackBlock;
       v20 = 3221225472;
       v21 = sub_1000BCE68;
       v22 = &unk_100175598;
-      v23 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = pairerCopy;
       v24 = v14;
       v15 = objc_retainBlock(&v19);
-      if (a4 == 1 || a4 == 2)
+      if (type == 1 || type == 2)
       {
         [(NRExtensiblePair *)self setPairingStrategy:[(NRExtensiblePair *)self pairingStrategy:v19] andStyle:2];
         (v15[2])(v15);
-        v17 = [(NRExtensiblePair *)self delegate];
-        v18 = [(NRExtensiblePair *)self nrDeviceUUID];
-        [v17 sendXPCDeviceNeedsPasscodeMessage:v18 passcode:v9];
+        delegate = [(NRExtensiblePair *)self delegate];
+        nrDeviceUUID2 = [(NRExtensiblePair *)self nrDeviceUUID];
+        [delegate sendXPCDeviceNeedsPasscodeMessage:nrDeviceUUID2 passcode:passkeyCopy];
       }
 
       else
       {
-        if (a4 != 5)
+        if (type != 5)
         {
           goto LABEL_15;
         }
@@ -1610,10 +1610,10 @@ LABEL_11:
         [(NRExtensiblePair *)self setPairingStrategy:[(NRExtensiblePair *)self pairingStrategy] andStyle:1];
         (v15[2])(v15);
         v26 = CBPairingAgentPairingDataOOBTKKey;
-        v17 = [(NRExtensiblePair *)self oobKey];
-        v27 = v17;
-        v18 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-        [v14 respondWithType:5 accept:1 data:v18];
+        delegate = [(NRExtensiblePair *)self oobKey];
+        v27 = delegate;
+        nrDeviceUUID2 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
+        [v14 respondWithType:5 accept:1 data:nrDeviceUUID2];
       }
 
 LABEL_15:
@@ -1621,48 +1621,48 @@ LABEL_15:
     }
   }
 
-  [v8 respondWithType:a4 accept:0 data:0];
+  [pairerCopy respondWithType:type accept:0 data:0];
 LABEL_16:
 }
 
-- (void)pairer:(id)a3 completedWithError:(id)a4
+- (void)pairer:(id)pairer completedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  pairerCopy = pairer;
+  errorCopy = error;
   if ([(NRExtensiblePair *)self isBluetoothPairComplete])
   {
-    [(NSMutableArray *)self->_pairers removeObject:v6];
+    [(NSMutableArray *)self->_pairers removeObject:pairerCopy];
     pairingDevices = self->_pairingDevices;
-    v9 = [v6 device];
-    [(NSMutableArray *)pairingDevices removeObject:v9];
+    device = [pairerCopy device];
+    [(NSMutableArray *)pairingDevices removeObject:device];
 LABEL_3:
 
     goto LABEL_30;
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
     if ([(NRExtensiblePair *)self hasStartedPairing])
     {
       goto LABEL_30;
     }
 
-    v27 = [v6 device];
-    v28 = [v27 uuid];
-    [(NRExtensiblePair *)self bluetoothPaired:v28];
+    device2 = [pairerCopy device];
+    uuid = [device2 uuid];
+    [(NRExtensiblePair *)self bluetoothPaired:uuid];
 
     [(NRExtensiblePair *)self sendBeginningToPairNotification];
     v29 = sub_1000034AC();
-    LODWORD(v28) = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
+    LODWORD(uuid) = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
 
-    if (v28)
+    if (uuid)
     {
       v30 = sub_1000034AC();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(NSUUID *)self->_pairedBTDeviceUUID UUIDString];
+        uUIDString = [(NSUUID *)self->_pairedBTDeviceUUID UUIDString];
         *buf = 138412290;
-        v75 = v31;
+        v75 = uUIDString;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "ExtensiblePair: Paired to BT device %@", buf, 0xCu);
       }
     }
@@ -1679,11 +1679,11 @@ LABEL_3:
     self->_timer = v33;
 
     [(NSMutableArray *)self->_pairers removeAllObjects];
-    [(NSMutableArray *)self->_pairers addObject:v6];
+    [(NSMutableArray *)self->_pairers addObject:pairerCopy];
     [(NSMutableArray *)self->_pairingDevices removeAllObjects];
     v35 = self->_pairingDevices;
-    v36 = [v6 device];
-    [(NSMutableArray *)v35 addObject:v36];
+    device3 = [pairerCopy device];
+    [(NSMutableArray *)v35 addObject:device3];
 
     unpairer = self->_unpairer;
     self->_unpairer = 0;
@@ -1691,12 +1691,12 @@ LABEL_3:
     discoverer = self->_discoverer;
     self->_discoverer = 0;
 
-    v9 = [(EPAdvertiser *)self->_advertiser manager];
+    device = [(EPAdvertiser *)self->_advertiser manager];
     advertiser = self->_advertiser;
     self->_advertiser = 0;
 
-    v40 = [(NRExtensiblePair *)self factory];
-    [v40 setAdvertisingRate:1];
+    factory = [(NRExtensiblePair *)self factory];
+    [factory setAdvertisingRate:1];
 
     v41 = sub_1000A98C0();
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
@@ -1711,19 +1711,19 @@ LABEL_3:
       }
     }
 
-    v44 = [(NRExtensiblePair *)self factory];
-    [v44 setAdvertiserNotAvailableToPair:1];
+    factory2 = [(NRExtensiblePair *)self factory];
+    [factory2 setAdvertiserNotAvailableToPair:1];
 
-    [v9 setName:0];
-    v45 = [(NRExtensiblePair *)self delegate];
-    v46 = [(NRExtensiblePair *)self nrDeviceUUID];
-    [v45 activateDevice:v46 withCompletion:0];
+    [device setName:0];
+    delegate = [(NRExtensiblePair *)self delegate];
+    nrDeviceUUID = [(NRExtensiblePair *)self nrDeviceUUID];
+    [delegate activateDevice:nrDeviceUUID withCompletion:0];
 
     [(NRExtensiblePair *)self update];
-    v47 = [(NRExtensiblePair *)self delegate];
-    v48 = [v6 device];
-    v49 = [(NRExtensiblePair *)self nrDeviceUUID];
-    [v47 updateNRMutableDeviceFromEPDevice:v48 withNRUUID:v49 withBlock:0];
+    delegate2 = [(NRExtensiblePair *)self delegate];
+    device4 = [pairerCopy device];
+    nrDeviceUUID2 = [(NRExtensiblePair *)self nrDeviceUUID];
+    [delegate2 updateNRMutableDeviceFromEPDevice:device4 withNRUUID:nrDeviceUUID2 withBlock:0];
 
     v69[0] = _NSConcreteStackBlock;
     v69[1] = 3221225472;
@@ -1739,12 +1739,12 @@ LABEL_3:
     else
     {
       v51 = self->_pairedBTDeviceUUID;
-      v52 = [(NRExtensiblePair *)self oobKey];
-      v53 = v52;
-      v62 = v9;
-      if (v52)
+      oobKey = [(NRExtensiblePair *)self oobKey];
+      v53 = oobKey;
+      v62 = device;
+      if (oobKey)
       {
-        v54 = v52;
+        v54 = oobKey;
       }
 
       else
@@ -1756,8 +1756,8 @@ LABEL_3:
       v56 = [[IDSLocalPairingAddPairedDeviceInfo alloc] initWithCBUUID:v51 pairingProtocolVersion:0 BTOutOfBandKey:v54];
       [v56 setPairingType:self->_isTinkerPairing];
       [v56 setShouldPairDirectlyOverIPsec:{-[NRExtensiblePair pairingStrategy](self, "pairingStrategy") == 3}];
-      v57 = [(NRExtensiblePair *)self delegate];
-      v58 = [(NRExtensiblePair *)self nrDeviceUUID];
+      delegate3 = [(NRExtensiblePair *)self delegate];
+      nrDeviceUUID3 = [(NRExtensiblePair *)self nrDeviceUUID];
       v63[0] = _NSConcreteStackBlock;
       v63[1] = 3221225472;
       v63[2] = sub_1000BDD38;
@@ -1765,38 +1765,38 @@ LABEL_3:
       v64 = v51;
       v65 = v53;
       v66 = v56;
-      v67 = self;
+      selfCopy = self;
       v68 = v50;
       v59 = v56;
       v60 = v53;
       v61 = v51;
-      [v57 createLocalPairingStore:v58 andNotifyPairingBeginning:1 withBlock:v63];
+      [delegate3 createLocalPairingStore:nrDeviceUUID3 andNotifyPairingBeginning:1 withBlock:v63];
 
-      v9 = v62;
+      device = v62;
     }
 
     goto LABEL_3;
   }
 
-  objc_storeStrong(&self->_lastBluetoothPairingError, a4);
-  [(NSMutableArray *)self->_pairers removeObject:v6];
+  objc_storeStrong(&self->_lastBluetoothPairingError, error);
+  [(NSMutableArray *)self->_pairers removeObject:pairerCopy];
   v10 = self->_pairingDevices;
-  v11 = [v6 device];
-  [(NSMutableArray *)v10 removeObject:v11];
+  device5 = [pairerCopy device];
+  [(NSMutableArray *)v10 removeObject:device5];
 
   [(EPDiscoverer *)self->_discoverer clear];
-  v12 = [v7 domain];
-  if ([v12 isEqualToString:CBInternalErrorDomain])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CBInternalErrorDomain])
   {
-    v13 = [v7 code];
+    code = [errorCopy code];
 
-    if (v13 == 1)
+    if (code == 1)
     {
-      v14 = [v6 device];
-      v15 = [v14 uuid];
+      device6 = [pairerCopy device];
+      uuid2 = [device6 uuid];
 
-      v16 = [v7 userInfo];
-      v17 = [v16 objectForKeyedSubscript:CBOriginalPeerIdentifierErrorKey];
+      userInfo = [errorCopy userInfo];
+      v17 = [userInfo objectForKeyedSubscript:CBOriginalPeerIdentifierErrorKey];
 
       v18 = sub_1000034AC();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -1806,12 +1806,12 @@ LABEL_3:
         v20 = sub_1000034AC();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v15 UUIDString];
-          v22 = [v17 UUIDString];
+          uUIDString2 = [uuid2 UUIDString];
+          uUIDString3 = [v17 UUIDString];
           *buf = 138412546;
-          v75 = v21;
+          v75 = uUIDString2;
           v76 = 2112;
-          v77 = v22;
+          v77 = uUIDString3;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "ExtensiblePair: BT returned already paired error for device %@. Ghost device UUID is: %@", buf, 0x16u);
         }
       }
@@ -1822,17 +1822,17 @@ LABEL_3:
         v24 = [NSSet setWithObject:v17];
         v25 = [(EPMassUnpairer *)v23 initWithDelegate:self UUIDs:v24];
 
-        v26 = [(NRExtensiblePair *)self delegate];
+        delegate4 = [(NRExtensiblePair *)self delegate];
         v71[0] = _NSConcreteStackBlock;
         v71[1] = 3221225472;
         v71[2] = sub_1000BD83C;
         v71[3] = &unk_100178828;
         v72 = v17;
-        v73 = self;
-        [v26 getPairedPairingIDForBluetoothID:v72 completion:v71];
+        selfCopy2 = self;
+        [delegate4 getPairedPairingIDForBluetoothID:v72 completion:v71];
       }
 
-      v6 = 0;
+      pairerCopy = 0;
     }
   }
 
@@ -1877,17 +1877,17 @@ LABEL_30:
   }
 }
 
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  pairerCopy = pairer;
+  delegateCopy = delegate;
   if ([(NRExtensiblePair *)self isBluetoothPairComplete])
   {
     goto LABEL_2;
   }
 
-  v20 = [(NRExtensiblePair *)self pairingStrategy];
-  if (v20 - 2 < 2)
+  pairingStrategy = [(NRExtensiblePair *)self pairingStrategy];
+  if (pairingStrategy - 2 < 2)
   {
     pairingPipeFactory = self->_pairingPipeFactory;
     if (!pairingPipeFactory)
@@ -1901,7 +1901,7 @@ LABEL_30:
       pairingPipeFactory = self->_pairingPipeFactory;
     }
 
-    v18 = [(EPResourceManagerProtocol *)pairingPipeFactory newResourceWithDelegate:v7];
+    v18 = [(EPResourceManagerProtocol *)pairingPipeFactory newResourceWithDelegate:delegateCopy];
 LABEL_14:
     if (v18)
     {
@@ -1911,7 +1911,7 @@ LABEL_14:
     goto LABEL_2;
   }
 
-  if (v20 != 1)
+  if (pairingStrategy != 1)
   {
     v36 = sub_1000034AC();
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_ERROR);
@@ -1937,12 +1937,12 @@ LABEL_14:
     self->_concurrentPipeFactory = v28;
 
     v30 = self->_concurrentPipeFactory;
-    v31 = [v6 device];
-    v32 = [v31 uuid];
-    v33 = [(NRExtensiblePair *)self nrDeviceUUID];
-    v34 = [(NRExtensiblePair *)self oobKey];
-    v35 = [(NRExtensiblePair *)self delegate];
-    v18 = [(NRConcurrentPipeManager *)v30 newIDSPairingToUUID:v32 pairingUUID:v33 oobKey:v34 withExtensiblePairingDelegate:v35 withDelegate:v7];
+    device = [pairerCopy device];
+    uuid = [device uuid];
+    nrDeviceUUID = [(NRExtensiblePair *)self nrDeviceUUID];
+    oobKey = [(NRExtensiblePair *)self oobKey];
+    delegate = [(NRExtensiblePair *)self delegate];
+    v18 = [(NRConcurrentPipeManager *)v30 newIDSPairingToUUID:uuid pairingUUID:nrDeviceUUID oobKey:oobKey withExtensiblePairingDelegate:delegate withDelegate:delegateCopy];
 
     goto LABEL_14;
   }

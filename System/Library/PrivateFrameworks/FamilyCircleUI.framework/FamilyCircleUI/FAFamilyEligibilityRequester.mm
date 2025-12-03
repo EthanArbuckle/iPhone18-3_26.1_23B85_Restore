@@ -1,9 +1,9 @@
 @interface FAFamilyEligibilityRequester
 - (FAFamilyEligibilityRequester)init;
-- (FAFamilyEligibilityRequester)initWithAccountManager:(id)a3;
+- (FAFamilyEligibilityRequester)initWithAccountManager:(id)manager;
 - (id)_appleAccount;
 - (id)_grandSlamSigner;
-- (void)requestFamilyEligibilityWithCompletion:(id)a3;
+- (void)requestFamilyEligibilityWithCompletion:(id)completion;
 @end
 
 @implementation FAFamilyEligibilityRequester
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (FAFamilyEligibilityRequester)initWithAccountManager:(id)a3
+- (FAFamilyEligibilityRequester)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = FAFamilyEligibilityRequester;
   v6 = [(FAFamilyEligibilityRequester *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     v7->_allowsAuthenticationPrompt = 0;
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkActivityQueue = v7->_networkActivityQueue;
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (void)requestFamilyEligibilityWithCompletion:(id)a3
+- (void)requestFamilyEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__FAFamilyEligibilityRequester_requestFamilyEligibilityWithCompletion___block_invoke;
@@ -51,12 +51,12 @@
   v22[1] = 3221225472;
   v22[2] = __71__FAFamilyEligibilityRequester_requestFamilyEligibilityWithCompletion___block_invoke_2;
   v22[3] = &unk_2782F2B88;
-  v6 = v4;
+  v6 = completionCopy;
   v23 = v6;
   v7 = _Block_copy(v22);
-  v8 = [(FAFamilyEligibilityRequester *)self _appleAccount];
+  _appleAccount = [(FAFamilyEligibilityRequester *)self _appleAccount];
 
-  if (v8)
+  if (_appleAccount)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -238,8 +238,8 @@ void __71__FAFamilyEligibilityRequester_requestFamilyEligibilityWithCompletion__
   {
     v4 = [(AIDAAccountManager *)self->_accountManager aidaAccountForService:*MEMORY[0x277CED1A0]];
     v5 = objc_alloc(MEMORY[0x277CEC808]);
-    v6 = [(AIDAAccountManager *)self->_accountManager accountStore];
-    v7 = [v5 initWithAccountStore:v6 grandSlamAccount:v4 appTokenID:*MEMORY[0x277CEC6F0]];
+    accountStore = [(AIDAAccountManager *)self->_accountManager accountStore];
+    v7 = [v5 initWithAccountStore:accountStore grandSlamAccount:v4 appTokenID:*MEMORY[0x277CEC6F0]];
     v8 = self->_grandSlamSigner;
     self->_grandSlamSigner = v7;
 
@@ -251,8 +251,8 @@ void __71__FAFamilyEligibilityRequester_requestFamilyEligibilityWithCompletion__
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }

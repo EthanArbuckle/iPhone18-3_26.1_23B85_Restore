@@ -1,6 +1,6 @@
 @interface TestModalCardContaineeViewController
-- (_TtC4Maps36TestModalCardContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps36TestModalCardContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps36TestModalCardContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps36TestModalCardContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -22,10 +22,10 @@
   sub_1000588AC(v5);
 }
 
-- (_TtC4Maps36TestModalCardContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps36TestModalCardContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = OBJC_IVAR____TtC4Maps36TestModalCardContaineeViewController_viewModel;
@@ -34,7 +34,7 @@
     *(v9 + 2) = 0;
     *(v9 + 3) = 0;
     *(&self->super.super.super.super.super.super.isa + v8) = v9;
-    v10 = a4;
+    bundleCopy = bundle;
     v11 = String._bridgeToObjectiveC()();
   }
 
@@ -46,18 +46,18 @@
     *(v13 + 2) = 0;
     *(v13 + 3) = 0;
     *(&self->super.super.super.super.super.super.isa + v12) = v13;
-    v14 = a4;
+    bundleCopy2 = bundle;
     v11 = 0;
   }
 
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v15 = [(MapsHostingContaineeViewController *)&v17 initWithNibName:v11 bundle:a4];
+  v15 = [(MapsHostingContaineeViewController *)&v17 initWithNibName:v11 bundle:bundle];
 
   return v15;
 }
 
-- (_TtC4Maps36TestModalCardContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps36TestModalCardContaineeViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC4Maps36TestModalCardContaineeViewController_viewModel;
@@ -68,8 +68,8 @@
   *(&self->super.super.super.super.super.super.isa + v6) = v7;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(MapsHostingContaineeViewController *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(MapsHostingContaineeViewController *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

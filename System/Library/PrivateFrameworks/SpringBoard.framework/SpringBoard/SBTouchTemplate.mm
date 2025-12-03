@@ -1,50 +1,50 @@
 @interface SBTouchTemplate
-- (unint64_t)matchesPolygon:(id)a3 matchTransformsAllowed:(unint64_t)a4 acceptanceFactor:(double)a5 outMorphedCandidate:(id *)a6;
+- (unint64_t)matchesPolygon:(id)polygon matchTransformsAllowed:(unint64_t)allowed acceptanceFactor:(double)factor outMorphedCandidate:(id *)candidate;
 @end
 
 @implementation SBTouchTemplate
 
-- (unint64_t)matchesPolygon:(id)a3 matchTransformsAllowed:(unint64_t)a4 acceptanceFactor:(double)a5 outMorphedCandidate:(id *)a6
+- (unint64_t)matchesPolygon:(id)polygon matchTransformsAllowed:(unint64_t)allowed acceptanceFactor:(double)factor outMorphedCandidate:(id *)candidate
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [(SBPolygon *)self pointCount];
-  if (v11 > [v10 pointCount])
+  allowedCopy = allowed;
+  polygonCopy = polygon;
+  pointCount = [(SBPolygon *)self pointCount];
+  if (pointCount > [polygonCopy pointCount])
   {
     v12 = 0;
     goto LABEL_29;
   }
 
-  v13 = [(SBPolygon *)self pointCount];
-  if (v13 < [v10 pointCount])
+  pointCount2 = [(SBPolygon *)self pointCount];
+  if (pointCount2 < [polygonCopy pointCount])
   {
     v12 = 2;
     goto LABEL_29;
   }
 
   v14 = [SBPolygon alloc];
-  v15 = [v10 _points];
-  v16 = [(SBPolygon *)v14 initWithPoints:v15];
+  _points = [polygonCopy _points];
+  v16 = [(SBPolygon *)v14 initWithPoints:_points];
 
-  if ((v8 & 8) != 0)
+  if ((allowedCopy & 8) != 0)
   {
-    v17 = [(SBPolygon *)self _isLeftHanded];
-    if (v17 != [(SBPolygon *)v16 _isLeftHanded])
+    _isLeftHanded = [(SBPolygon *)self _isLeftHanded];
+    if (_isLeftHanded != [(SBPolygon *)v16 _isLeftHanded])
     {
       [(SBPolygon *)v16 _flipHorizontally];
     }
   }
 
-  if (v8)
+  if (allowedCopy)
   {
     [(SBPolygon *)self _meanFingertipRowAngle];
     v37 = v36;
     [(SBPolygon *)v16 _meanFingertipRowAngle];
     [(SBPolygon *)v16 _rotate:v37 - v38];
-    if ((v8 & 2) == 0)
+    if ((allowedCopy & 2) == 0)
     {
 LABEL_10:
-      if ((v8 & 4) == 0)
+      if ((allowedCopy & 4) == 0)
       {
         goto LABEL_11;
       }
@@ -55,7 +55,7 @@ LABEL_22:
       v47 = v46;
       [(SBPolygon *)v16 _weightedCentroid];
       [(SBPolygon *)v16 _translate:v45 - v48, v47 - v49];
-      if (!a6)
+      if (!candidate)
       {
         goto LABEL_13;
       }
@@ -64,7 +64,7 @@ LABEL_22:
     }
   }
 
-  else if ((v8 & 2) == 0)
+  else if ((allowedCopy & 2) == 0)
   {
     goto LABEL_10;
   }
@@ -84,24 +84,24 @@ LABEL_22:
   }
 
   [(SBPolygon *)v16 _scale:v43];
-  if ((v8 & 4) != 0)
+  if ((allowedCopy & 4) != 0)
   {
     goto LABEL_22;
   }
 
 LABEL_11:
-  if (a6)
+  if (candidate)
   {
 LABEL_12:
     v18 = v16;
-    *a6 = v16;
+    *candidate = v16;
   }
 
 LABEL_13:
-  v19 = [v10 pointCount];
-  if (v19)
+  pointCount3 = [polygonCopy pointCount];
+  if (pointCount3)
   {
-    v20 = v19;
+    v20 = pointCount3;
     v21 = 0;
     v22 = 0.0;
     v23 = 0.0;
@@ -132,7 +132,7 @@ LABEL_13:
     v35 = NAN;
   }
 
-  if (a5 * 55.0 > sqrtf(v35))
+  if (factor * 55.0 > sqrtf(v35))
   {
     v12 = 1;
   }

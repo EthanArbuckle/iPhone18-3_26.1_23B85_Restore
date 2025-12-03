@@ -1,17 +1,17 @@
 @interface BCInternalAuthenticationResponse
 - (BCError)error;
-- (BCInternalAuthenticationResponse)initWithBusinessIdentifier:(id)a3 groupIdentifier:(id)a4 credentials:(id)a5 error:(id)a6;
-- (BCInternalAuthenticationResponse)initWithDictionary:(id)a3;
+- (BCInternalAuthenticationResponse)initWithBusinessIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier credentials:(id)credentials error:(id)error;
+- (BCInternalAuthenticationResponse)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (id)responseMessageFor:(id)a3 message:(id)a4;
+- (id)responseMessageFor:(id)for message:(id)message;
 @end
 
 @implementation BCInternalAuthenticationResponse
 
-- (BCInternalAuthenticationResponse)initWithDictionary:(id)a3
+- (BCInternalAuthenticationResponse)initWithDictionary:(id)dictionary
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = BCInternalAuthenticationResponse;
   v5 = [(BCInternalAuthenticationResponse *)&v46 init];
@@ -20,58 +20,58 @@
     v6 = LogCategory_Daemon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 description];
+      v7 = [dictionaryCopy description];
       *buf = 138412290;
       v49 = v7;
       _os_log_impl(&dword_236EA0000, v6, OS_LOG_TYPE_DEFAULT, "BCInternalAuthenticationResponse: initWithDictionary %@", buf, 0xCu);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"businessIdentifier"];
-    v9 = [MEMORY[0x277CBEB68] null];
-    if (v8 == v9)
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"businessIdentifier"];
+    null = [MEMORY[0x277CBEB68] null];
+    if (v8 == null)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = [v4 objectForKeyedSubscript:@"businessIdentifier"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"businessIdentifier"];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"groupIdentifier"];
-    v12 = [MEMORY[0x277CBEB68] null];
-    if (v11 == v12)
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    if (v11 == null2)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v4 objectForKeyedSubscript:@"groupIdentifier"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"credentials"];
-    v15 = [MEMORY[0x277CBEB68] null];
-    if (v14 == v15)
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"credentials"];
+    null3 = [MEMORY[0x277CBEB68] null];
+    if (v14 == null3)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [v4 objectForKeyedSubscript:@"credentials"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"credentials"];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"errors"];
-    v18 = [MEMORY[0x277CBEB68] null];
-    if (v17 == v18)
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"errors"];
+    null4 = [MEMORY[0x277CBEB68] null];
+    if (v17 == null4)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = [v4 objectForKeyedSubscript:@"errors"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"errors"];
     }
 
     if (v10)
@@ -182,36 +182,36 @@ LABEL_37:
   return v34;
 }
 
-- (BCInternalAuthenticationResponse)initWithBusinessIdentifier:(id)a3 groupIdentifier:(id)a4 credentials:(id)a5 error:(id)a6
+- (BCInternalAuthenticationResponse)initWithBusinessIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier credentials:(id)credentials error:(id)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  credentialsCopy = credentials;
+  errorCopy = error;
   v27.receiver = self;
   v27.super_class = BCInternalAuthenticationResponse;
   v15 = [(BCInternalAuthenticationResponse *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_businessIdentifier, a3);
-    objc_storeStrong(&v16->_groupIdentifier, a4);
-    objc_storeStrong(&v16->_credentials, a5);
+    objc_storeStrong(&v15->_businessIdentifier, identifier);
+    objc_storeStrong(&v16->_groupIdentifier, groupIdentifier);
+    objc_storeStrong(&v16->_credentials, credentials);
     v17 = @"authenticated";
-    if (!v13)
+    if (!credentialsCopy)
     {
       v17 = @"failed";
     }
 
     v16->_status = &v17->isa;
-    if (v14)
+    if (errorCopy)
     {
       v18 = [BCError alloc];
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "code")}];
-      v20 = [v14 domain];
-      v21 = [v14 localizedDescription];
-      v22 = [(BCError *)v18 initWithCode:v19 domain:v20 message:v21];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+      domain = [errorCopy domain];
+      localizedDescription = [errorCopy localizedDescription];
+      v22 = [(BCError *)v18 initWithCode:v19 domain:domain message:localizedDescription];
 
       v28[0] = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
@@ -224,100 +224,100 @@ LABEL_37:
   return v16;
 }
 
-- (id)responseMessageFor:(id)a3 message:(id)a4
+- (id)responseMessageFor:(id)for message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 authenticationRequest];
-  v8 = [v7 labels];
-  v9 = [v8 objectForKeyedSubscript:@"success"];
+  forCopy = for;
+  messageCopy = message;
+  authenticationRequest = [forCopy authenticationRequest];
+  labels = [authenticationRequest labels];
+  v9 = [labels objectForKeyedSubscript:@"success"];
 
-  v10 = [v6 replyMessage];
-  v11 = [v6 receivedMessage];
-  v12 = [v10 imageIdentifier];
-  if (v12)
+  replyMessage = [messageCopy replyMessage];
+  receivedMessage = [messageCopy receivedMessage];
+  imageIdentifier = [replyMessage imageIdentifier];
+  if (imageIdentifier)
   {
-    v13 = v10;
+    v13 = replyMessage;
   }
 
   else
   {
-    v13 = v11;
+    v13 = receivedMessage;
   }
 
-  v43 = [v13 imageIdentifier];
+  imageIdentifier2 = [v13 imageIdentifier];
 
-  v14 = [v10 imageDescription];
-  if (v14)
+  imageDescription = [replyMessage imageDescription];
+  if (imageDescription)
   {
-    v15 = v10;
+    v15 = replyMessage;
   }
 
   else
   {
-    v15 = v11;
+    v15 = receivedMessage;
   }
 
-  v41 = [v15 imageDescription];
+  imageDescription2 = [v15 imageDescription];
 
   v42 = v9;
-  v16 = [v9 title];
-  if (!v16)
+  title = [v9 title];
+  if (!title)
   {
-    v39 = v11;
+    v39 = receivedMessage;
     v17 = objc_opt_new();
-    v18 = [v5 lastName];
-    [v17 setFamilyName:v18];
+    lastName = [forCopy lastName];
+    [v17 setFamilyName:lastName];
 
-    v19 = [v5 firstName];
-    [v17 setGivenName:v19];
+    firstName = [forCopy firstName];
+    [v17 setGivenName:firstName];
 
     v20 = objc_opt_new();
     [v20 setStyle:0];
     v21 = MEMORY[0x277CCACA8];
     +[BCShared classBundle];
-    v22 = v38 = v5;
+    v22 = v38 = forCopy;
     v23 = [v22 localizedStringForKey:@"SIGNED_IN" value:&stru_2849DDCD8 table:0];
     v24 = [v20 stringFromPersonNameComponents:v17];
-    v16 = [v21 stringWithFormat:v23, v24];
+    title = [v21 stringWithFormat:v23, v24];
 
-    v5 = v38;
-    v11 = v39;
+    forCopy = v38;
+    receivedMessage = v39;
   }
 
-  v25 = [(BCInternalAuthenticationResponse *)self status];
-  v26 = [v25 isEqualToString:@"failed"];
+  status = [(BCInternalAuthenticationResponse *)self status];
+  v26 = [status isEqualToString:@"failed"];
 
   if (v26)
   {
-    v40 = v11;
-    v27 = [v5 authenticationRequest];
-    v28 = [v27 labels];
-    v29 = [v28 objectForKeyedSubscript:@"failure"];
+    v40 = receivedMessage;
+    authenticationRequest2 = [forCopy authenticationRequest];
+    labels2 = [authenticationRequest2 labels];
+    v29 = [labels2 objectForKeyedSubscript:@"failure"];
 
-    v30 = [v29 title];
-    if (v30)
+    title2 = [v29 title];
+    if (title2)
     {
-      v31 = [v29 title];
+      title3 = [v29 title];
     }
 
     else
     {
       v32 = +[BCShared classBundle];
-      v31 = [v32 localizedStringForKey:@"ERROR_INTERNAL_AUTHENTICATION_FAILED" value:&stru_2849DDCD8 table:0];
+      title3 = [v32 localizedStringForKey:@"ERROR_INTERNAL_AUTHENTICATION_FAILED" value:&stru_2849DDCD8 table:0];
 
-      v16 = v32;
+      title = v32;
     }
 
-    v16 = v31;
-    v11 = v40;
+    title = title3;
+    receivedMessage = v40;
   }
 
-  v33 = [[BCMessageInfo alloc] initWithTitle:v16 subtitle:0 style:@"icon" alternateTitle:0 imageIdentifier:v43 imageDescription:v41];
+  v33 = [[BCMessageInfo alloc] initWithTitle:title subtitle:0 style:@"icon" alternateTitle:0 imageIdentifier:imageIdentifier2 imageDescription:imageDescription2];
 
   v34 = [BCMessage alloc];
-  v35 = [v6 rootKey];
-  v36 = [(BCMessage *)v34 initFromOriginalMessage:v6 rootKey:v35 rootObject:self receivedMessage:v11 replyMessage:v33];
+  rootKey = [messageCopy rootKey];
+  v36 = [(BCMessage *)v34 initFromOriginalMessage:messageCopy rootKey:rootKey rootObject:self receivedMessage:receivedMessage replyMessage:v33];
 
   return v36;
 }
@@ -330,8 +330,8 @@ LABEL_37:
   [v3 setObject:self->_groupIdentifier forKeyedSubscript:@"groupIdentifier"];
   [v3 setObject:self->_status forKeyedSubscript:@"status"];
   [v3 setObject:self->_credentials forKeyedSubscript:@"credentials"];
-  v4 = [(BCInternalAuthenticationResponse *)self errors];
-  v5 = [v4 count];
+  errors = [(BCInternalAuthenticationResponse *)self errors];
+  v5 = [errors count];
 
   if (v5)
   {
@@ -340,8 +340,8 @@ LABEL_37:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(BCInternalAuthenticationResponse *)self errors];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    errors2 = [(BCInternalAuthenticationResponse *)self errors];
+    v8 = [errors2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -352,14 +352,14 @@ LABEL_37:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(errors2);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryValue];
-          [v6 addObject:v12];
+          dictionaryValue = [*(*(&v15 + 1) + 8 * i) dictionaryValue];
+          [v6 addObject:dictionaryValue];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [errors2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -375,10 +375,10 @@ LABEL_37:
 
 - (BCError)error
 {
-  v2 = [(BCInternalAuthenticationResponse *)self errors];
-  v3 = [v2 firstObject];
+  errors = [(BCInternalAuthenticationResponse *)self errors];
+  firstObject = [errors firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

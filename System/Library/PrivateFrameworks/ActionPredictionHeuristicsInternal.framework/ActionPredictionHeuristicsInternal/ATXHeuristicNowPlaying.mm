@@ -1,20 +1,20 @@
 @interface ATXHeuristicNowPlaying
 + (id)_defaults;
-- (ATXHeuristicNowPlaying)initWithPersistenceIdentifier:(id)a3;
+- (ATXHeuristicNowPlaying)initWithPersistenceIdentifier:(id)identifier;
 - (id)_expirationDate;
 - (id)_expirationDateKey;
 - (id)_produceSuggestions;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
-- (void)_setExpirationDate:(uint64_t)a1;
+- (void)_setExpirationDate:(uint64_t)date;
 @end
 
 @implementation ATXHeuristicNowPlaying
 
-- (ATXHeuristicNowPlaying)initWithPersistenceIdentifier:(id)a3
+- (ATXHeuristicNowPlaying)initWithPersistenceIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(ATXHeuristicNowPlaying *)a2 initWithPersistenceIdentifier:?];
   }
@@ -28,7 +28,7 @@
     mediaRemoteNowPlaying = v7->_mediaRemoteNowPlaying;
     v7->_mediaRemoteNowPlaying = v8;
 
-    objc_storeStrong(&v7->_persistenceIdentifier, a3);
+    objc_storeStrong(&v7->_persistenceIdentifier, identifier);
   }
 
   return v7;
@@ -82,12 +82,12 @@ void __56__ATXHeuristicNowPlaying_initWithPersistenceIdentifier___block_invoke_2
   return v5;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v4 = [ATXContextHeuristicResult alloc];
-  v5 = [(ATXHeuristicNowPlaying *)&self->super.isa _produceSuggestions];
+  _produceSuggestions = [(ATXHeuristicNowPlaying *)&self->super.isa _produceSuggestions];
   v6 = [MEMORY[0x277CBEB98] set];
-  v7 = [(ATXContextHeuristicResult *)v4 initWithSuggestions:v5 additionalRefreshTriggers:v6];
+  v7 = [(ATXContextHeuristicResult *)v4 initWithSuggestions:_produceSuggestions additionalRefreshTriggers:v6];
 
   return v7;
 }
@@ -103,54 +103,54 @@ void __56__ATXHeuristicNowPlaying_initWithPersistenceIdentifier___block_invoke_2
 
 - (id)_produceSuggestions
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[2] result];
-    v3 = [v2 playerPath];
-    v4 = [v3 origin];
-    v5 = [v4 isLocal];
+    result = [self[2] result];
+    playerPath = [result playerPath];
+    origin = [playerPath origin];
+    isLocal = [origin isLocal];
 
-    if (v5)
+    if (isLocal)
     {
-      v6 = 0;
+      displayName = 0;
     }
 
     else
     {
-      v7 = [v2 playerPath];
-      v8 = [v7 origin];
-      v6 = [v8 displayName];
+      playerPath2 = [result playerPath];
+      origin2 = [playerPath2 origin];
+      displayName = [origin2 displayName];
     }
 
-    v9 = [(ATXHeuristicNowPlaying *)a1 _expirationDate];
-    v10 = [v2 playbackState];
-    switch(v10)
+    _expirationDate = [(ATXHeuristicNowPlaying *)self _expirationDate];
+    playbackState = [result playbackState];
+    switch(playbackState)
     {
       case 5:
         goto LABEL_8;
       case 2:
-        if (!v9)
+        if (!_expirationDate)
         {
-          v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
-          [(ATXHeuristicNowPlaying *)a1 _setExpirationDate:v9];
+          _expirationDate = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
+          [(ATXHeuristicNowPlaying *)self _setExpirationDate:_expirationDate];
 LABEL_11:
-          v11 = [v2 playbackQueue];
-          v12 = [v11 contentItems];
-          v13 = [v12 firstObject];
+          playbackQueue = [result playbackQueue];
+          contentItems = [playbackQueue contentItems];
+          firstObject = [contentItems firstObject];
 
-          if (!v13)
+          if (!firstObject)
           {
             goto LABEL_20;
           }
 
-          v14 = [v2 playerPath];
-          v15 = [v14 client];
-          v16 = [v15 bundleIdentifier];
-          v17 = [v16 hasPrefix:@"com.apple."];
+          playerPath3 = [result playerPath];
+          client = [playerPath3 client];
+          bundleIdentifier = [client bundleIdentifier];
+          v17 = [bundleIdentifier hasPrefix:@"com.apple."];
 
           if (v17)
           {
-            v18 = [[ATXContextMediaSuggestionProducer alloc] initWithMediaRemoteContentItem:v13 destDisplayName:v6 expirationDate:v9];
+            v18 = [[ATXContextMediaSuggestionProducer alloc] initWithMediaRemoteContentItem:firstObject destDisplayName:displayName expirationDate:_expirationDate];
             v19 = objc_opt_new();
             v20 = OUTLINED_FUNCTION_0_7();
             v22 = [v21 suggestionForTrackWithReason:v20 score:?];
@@ -183,17 +183,17 @@ LABEL_20:
           goto LABEL_25;
         }
 
-        [v9 timeIntervalSinceNow];
+        [_expirationDate timeIntervalSinceNow];
         break;
       case 1:
 LABEL_8:
-        if (v9)
+        if (_expirationDate)
         {
 
-          [(ATXHeuristicNowPlaying *)a1 _setExpirationDate:?];
+          [(ATXHeuristicNowPlaying *)self _setExpirationDate:?];
         }
 
-        v9 = 0;
+        _expirationDate = 0;
         goto LABEL_11;
     }
 
@@ -211,35 +211,35 @@ LABEL_26:
 
 - (id)_expirationDateKey
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] stringByAppendingString:@"Expiration"];
+    self = [self[1] stringByAppendingString:@"Expiration"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_expirationDate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = +[ATXHeuristicNowPlaying _defaults];
-    v3 = [v1[1] stringByAppendingString:@"Expiration"];
-    v1 = [v2 objectForKey:v3];
+    v3 = [selfCopy[1] stringByAppendingString:@"Expiration"];
+    selfCopy = [v2 objectForKey:v3];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_setExpirationDate:(uint64_t)a1
+- (void)_setExpirationDate:(uint64_t)date
 {
-  if (a1)
+  if (date)
   {
     v3 = a2;
     v5 = +[ATXHeuristicNowPlaying _defaults];
-    v4 = [*(a1 + 8) stringByAppendingString:@"Expiration"];
+    v4 = [*(date + 8) stringByAppendingString:@"Expiration"];
     [v5 setObject:v3 forKey:v4];
   }
 }

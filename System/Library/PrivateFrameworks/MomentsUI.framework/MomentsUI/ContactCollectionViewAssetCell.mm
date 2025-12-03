@@ -1,10 +1,10 @@
 @interface ContactCollectionViewAssetCell
-- (_TtC9MomentsUI30ContactCollectionViewAssetCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI30ContactCollectionViewAssetCell)initWithCoder:(id)coder;
 @end
 
 @implementation ContactCollectionViewAssetCell
 
-- (_TtC9MomentsUI30ContactCollectionViewAssetCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI30ContactCollectionViewAssetCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI30ContactCollectionViewAssetCell_contactView;
   if (one-time initialization token for empty != -1)

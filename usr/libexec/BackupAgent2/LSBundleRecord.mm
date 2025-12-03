@@ -7,18 +7,18 @@
 
 - (BOOL)mb_isContainerized
 {
-  v2 = [(LSBundleRecord *)self dataContainerURL];
-  v3 = v2 != 0;
+  dataContainerURL = [(LSBundleRecord *)self dataContainerURL];
+  v3 = dataContainerURL != 0;
 
   return v3;
 }
 
 - (id)mb_entitlements
 {
-  v2 = [(LSBundleRecord *)self compatibilityObject];
-  v3 = [v2 entitlements];
+  compatibilityObject = [(LSBundleRecord *)self compatibilityObject];
+  entitlements = [compatibilityObject entitlements];
 
-  return v3;
+  return entitlements;
 }
 
 @end

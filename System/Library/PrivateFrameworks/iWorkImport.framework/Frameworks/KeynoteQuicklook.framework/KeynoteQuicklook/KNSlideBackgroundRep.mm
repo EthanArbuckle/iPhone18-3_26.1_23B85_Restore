@@ -1,18 +1,18 @@
 @interface KNSlideBackgroundRep
-+ (id)magicMoveMatchesBetweenOutgoingObjects:(id)a3 andIncomingObjects:(id)a4 textureDescription:(id)a5;
++ (id)magicMoveMatchesBetweenOutgoingObjects:(id)objects andIncomingObjects:(id)incomingObjects textureDescription:(id)description;
 - (BOOL)isOpaque;
-- (KNSlideBackgroundRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)textureForDescription:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (KNSlideBackgroundRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)textureForDescription:(id)description;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation KNSlideBackgroundRep
 
-- (KNSlideBackgroundRep)initWithLayout:(id)a3 canvas:(id)a4
+- (KNSlideBackgroundRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = KNSlideBackgroundRep;
-  result = [(TSDRep *)&v5 initWithLayout:a3 canvas:a4];
+  result = [(TSDRep *)&v5 initWithLayout:layout canvas:canvas];
   if (result)
   {
     result->_layerNeedsUpdate = 1;
@@ -39,7 +39,7 @@
   return isOpaque;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   Mutable = CGPathCreateMutable();
   objc_msgSend_naturalBounds(self, v6, v7);
@@ -50,7 +50,7 @@
   if (isCanvasInteractive)
   {
     v16 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D801F8], v14, v15, 0.0, 1.0);
-    objc_msgSend_paintPath_inContext_(v16, v17, Mutable, a3);
+    objc_msgSend_paintPath_inContext_(v16, v17, Mutable, context);
   }
 
   v18 = objc_msgSend_slideBackgroundInfo(self, v14, v15);
@@ -62,21 +62,21 @@
   {
     v28 = objc_msgSend_motionBackground(v24, v25, v26);
     objc_msgSend_naturalBounds(self, v29, v30);
-    objc_msgSend_drawInContext_inRect_(v28, v31, a3);
+    objc_msgSend_drawInContext_inRect_(v28, v31, context);
   }
 
   else
   {
     v28 = objc_msgSend_fill(v24, v25, v26);
-    objc_msgSend_paintPath_inContext_(v28, v32, Mutable, a3);
+    objc_msgSend_paintPath_inContext_(v28, v32, Mutable, context);
   }
 
   CGPathRelease(Mutable);
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v7 = objc_msgSend_canvas(self, v5, v6);
   if (objc_msgSend_isDrawingIntoPDF(v7, v8, v9))
   {
@@ -94,7 +94,7 @@
   {
   }
 
-  v19 = objc_msgSend_copy(v4, v16, v17);
+  v19 = objc_msgSend_copy(descriptionCopy, v16, v17);
 
   objc_msgSend_setShouldDistortToFit_(v19, v20, 1);
   v41.receiver = self;
@@ -115,20 +115,20 @@
 
   objc_msgSend_setIsBackground_(v18, v36, 1);
 
-  v4 = v19;
+  descriptionCopy = v19;
 LABEL_8:
 
   return v18;
 }
 
-+ (id)magicMoveMatchesBetweenOutgoingObjects:(id)a3 andIncomingObjects:(id)a4 textureDescription:(id)a5
++ (id)magicMoveMatchesBetweenOutgoingObjects:(id)objects andIncomingObjects:(id)incomingObjects textureDescription:(id)description
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v82 = a5;
-  v85 = v7;
-  if (objc_msgSend_count(v7, v9, v10) != 1)
+  objectsCopy = objects;
+  incomingObjectsCopy = incomingObjects;
+  descriptionCopy = description;
+  v85 = objectsCopy;
+  if (objc_msgSend_count(objectsCopy, v9, v10) != 1)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "+[KNSlideBackgroundRep magicMoveMatchesBetweenOutgoingObjects:andIncomingObjects:textureDescription:]");
@@ -138,7 +138,7 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  if (objc_msgSend_count(v8, v11, v12) >= 2)
+  if (objc_msgSend_count(incomingObjectsCopy, v11, v12) >= 2)
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "+[KNSlideBackgroundRep magicMoveMatchesBetweenOutgoingObjects:andIncomingObjects:textureDescription:]");
@@ -149,8 +149,8 @@ LABEL_8:
   }
 
   v29 = objc_msgSend_lastObject(v85, v20, v21);
-  v83 = v8;
-  v32 = objc_msgSend_lastObject(v8, v30, v31);
+  v83 = incomingObjectsCopy;
+  v32 = objc_msgSend_lastObject(incomingObjectsCopy, v30, v31);
   v33 = MEMORY[0x277D80320];
   v36 = objc_msgSend_layout(v29, v34, v35);
   v39 = objc_msgSend_geometry(v36, v37, v38);
@@ -195,7 +195,7 @@ LABEL_8:
     }
   }
 
-  v77 = objc_msgSend_matchWithOutgoingObject_incomingObject_matchType_attributeMatchPercent_textureDescription_(MEMORY[0x277D80318], v67, v84, v53, v69, v82, 1.0);
+  v77 = objc_msgSend_matchWithOutgoingObject_incomingObject_matchType_attributeMatchPercent_textureDescription_(MEMORY[0x277D80318], v67, v84, v53, v69, descriptionCopy, 1.0);
   v86[0] = v77;
   v79 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v78, v86, 1);
 

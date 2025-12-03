@@ -1,51 +1,51 @@
 @interface RTBiomeManager
-+ (id)biomeStreamTypeToBiomeStream:(int64_t)a3;
-+ (id)streamTypeToString:(int64_t)a3;
-- (BOOL)_isValidEvent:(id)a3 streamType:(int64_t)a4;
-- (RTBiomeManager)initWithAuthorizationManager:(id)a3 dataProtectionManager:(id)a4 defaultsManager:(id)a5 learnedLocationManager:(id)a6 platform:(id)a7;
-- (id)_extractDateIntervalFromBiomeEvent1:(id)a3 event2:(id)a4 streamType:(int64_t)a5;
-- (id)_getLatestBiomeDataForStreamType:(int64_t)a3 error:(id *)a4;
-- (id)_translateRTVisitToBiomeObject:(id)a3;
-- (id)_translateToBiomeMapItem:(id)a3;
-- (id)_translateToBiomePlaceInference:(id)a3;
-- (id)_translateToBiomeVisitLocation:(id)a3;
-- (int)_translateToBiomePlaceType:(unint64_t)a3;
-- (int)_translateToBiomeUserSpecificPlaceType:(unint64_t)a3;
-- (int)_translateToBiomeUserSpecificPlaceTypeSource:(unint64_t)a3;
-- (int)_translateToBiomeVisitLocationReferenceFrame:(int)a3;
-- (int)_translateToBiomeVisitLocationSourceAccuracy:(unint64_t)a3;
-- (int)_translateToBiomeVisitSource:(int64_t)a3;
-- (int)_translateToBiomeVisitType:(int64_t)a3;
-- (int64_t)_compareEvent1:(id)a3 event2:(id)a4 streamType:(int64_t)a5;
++ (id)biomeStreamTypeToBiomeStream:(int64_t)stream;
++ (id)streamTypeToString:(int64_t)string;
+- (BOOL)_isValidEvent:(id)event streamType:(int64_t)type;
+- (RTBiomeManager)initWithAuthorizationManager:(id)manager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager learnedLocationManager:(id)locationManager platform:(id)platform;
+- (id)_extractDateIntervalFromBiomeEvent1:(id)event1 event2:(id)event2 streamType:(int64_t)type;
+- (id)_getLatestBiomeDataForStreamType:(int64_t)type error:(id *)error;
+- (id)_translateRTVisitToBiomeObject:(id)object;
+- (id)_translateToBiomeMapItem:(id)item;
+- (id)_translateToBiomePlaceInference:(id)inference;
+- (id)_translateToBiomeVisitLocation:(id)location;
+- (int)_translateToBiomePlaceType:(unint64_t)type;
+- (int)_translateToBiomeUserSpecificPlaceType:(unint64_t)type;
+- (int)_translateToBiomeUserSpecificPlaceTypeSource:(unint64_t)source;
+- (int)_translateToBiomeVisitLocationReferenceFrame:(int)frame;
+- (int)_translateToBiomeVisitLocationSourceAccuracy:(unint64_t)accuracy;
+- (int)_translateToBiomeVisitSource:(int64_t)source;
+- (int)_translateToBiomeVisitType:(int64_t)type;
+- (int64_t)_compareEvent1:(id)event1 event2:(id)event2 streamType:(int64_t)type;
 - (void)_cancelSubscriptionBiomeConnectionCompanion;
-- (void)_clearBiomeStreamForStreamType:(int64_t)a3 error:(id *)a4;
-- (void)_onAuthorizationNotification:(id)a3;
-- (void)_onDataProtectionNotification:(id)a3;
-- (void)_onLearnedLocationManagerAvailabilityDidChangeNotification:(id)a3;
-- (void)_onLearnedLocationManagerDidUpdateNotification:(id)a3;
-- (void)_publishNewHindsightVisitsToBiomeWithError:(id *)a3;
+- (void)_clearBiomeStreamForStreamType:(int64_t)type error:(id *)error;
+- (void)_onAuthorizationNotification:(id)notification;
+- (void)_onDataProtectionNotification:(id)notification;
+- (void)_onLearnedLocationManagerAvailabilityDidChangeNotification:(id)notification;
+- (void)_onLearnedLocationManagerDidUpdateNotification:(id)notification;
+- (void)_publishNewHindsightVisitsToBiomeWithError:(id *)error;
 - (void)_setup;
 - (void)_startSubscriptionBiomeConnectionCompanion;
 - (void)cancelSubscriptionBiomeConnectionCompanion;
-- (void)enumerateEventsWithinDateInterval:(id)a3 streamType:(int64_t)a4 handler:(id)a5;
-- (void)onAuthorizationNotification:(id)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)onLearnedLocationManagerAvailabilityDidChangeNotification:(id)a3;
-- (void)onLearnedLocationManagerDidUpdateNotification:(id)a3;
+- (void)enumerateEventsWithinDateInterval:(id)interval streamType:(int64_t)type handler:(id)handler;
+- (void)onAuthorizationNotification:(id)notification;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)onLearnedLocationManagerAvailabilityDidChangeNotification:(id)notification;
+- (void)onLearnedLocationManagerDidUpdateNotification:(id)notification;
 - (void)startSubscriptionBiomeConnectionCompanion;
 @end
 
 @implementation RTBiomeManager
 
-- (RTBiomeManager)initWithAuthorizationManager:(id)a3 dataProtectionManager:(id)a4 defaultsManager:(id)a5 learnedLocationManager:(id)a6 platform:(id)a7
+- (RTBiomeManager)initWithAuthorizationManager:(id)manager dataProtectionManager:(id)protectionManager defaultsManager:(id)defaultsManager learnedLocationManager:(id)locationManager platform:(id)platform
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v24 = v17;
-  if (!v13)
+  managerCopy = manager;
+  protectionManagerCopy = protectionManager;
+  defaultsManagerCopy = defaultsManager;
+  locationManagerCopy = locationManager;
+  platformCopy = platform;
+  v24 = platformCopy;
+  if (!managerCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!protectionManagerCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -73,7 +73,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!defaultsManagerCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -86,7 +86,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!locationManagerCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -99,7 +99,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!platformCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -111,7 +111,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -121,19 +121,19 @@ LABEL_20:
   p_isa = &v18->super.super.super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_authorizationManager, a3);
-    objc_storeStrong(p_isa + 8, a4);
-    objc_storeStrong(p_isa + 9, a5);
-    objc_storeStrong(p_isa + 11, a6);
-    objc_storeStrong(p_isa + 12, a7);
+    objc_storeStrong(&v18->_authorizationManager, manager);
+    objc_storeStrong(p_isa + 8, protectionManager);
+    objc_storeStrong(p_isa + 9, defaultsManager);
+    objc_storeStrong(p_isa + 11, locationManager);
+    objc_storeStrong(p_isa + 12, platform);
     [p_isa setup];
   }
 
   self = p_isa;
-  v20 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)_setup
@@ -141,21 +141,21 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v4 = [(RTBiomeManager *)self authorizationManager];
+    authorizationManager = [(RTBiomeManager *)self authorizationManager];
     v5 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-    [v4 addObserver:self selector:sel_onAuthorizationNotification_ name:v5];
+    [authorizationManager addObserver:self selector:sel_onAuthorizationNotification_ name:v5];
 
-    v6 = [(RTBiomeManager *)self dataProtectionManager];
+    dataProtectionManager = [(RTBiomeManager *)self dataProtectionManager];
     v7 = +[(RTNotification *)RTDataProtectionManagerNotificationEncryptedDataAvailability];
-    [v6 addObserver:self selector:sel_onDataProtectionNotification_ name:v7];
+    [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v7];
 
-    v8 = [(RTBiomeManager *)self learnedLocationManager];
+    learnedLocationManager = [(RTBiomeManager *)self learnedLocationManager];
     v9 = +[(RTNotification *)RTLearnedLocationManagerNotificationAvailabilityDidChange];
-    [v8 addObserver:self selector:sel_onLearnedLocationManagerAvailabilityDidChangeNotification_ name:v9];
+    [learnedLocationManager addObserver:self selector:sel_onLearnedLocationManagerAvailabilityDidChangeNotification_ name:v9];
 
-    v15 = [(RTBiomeManager *)self learnedLocationManager];
+    learnedLocationManager2 = [(RTBiomeManager *)self learnedLocationManager];
     v10 = +[(RTNotification *)RTLearnedLocationManagerNotificationDidUpdate];
-    [v15 addObserver:self selector:sel_onLearnedLocationManagerDidUpdateNotification_ name:v10];
+    [learnedLocationManager2 addObserver:self selector:sel_onLearnedLocationManagerDidUpdateNotification_ name:v10];
   }
 
   else
@@ -177,13 +177,13 @@ LABEL_21:
 
 - (void)startSubscriptionBiomeConnectionCompanion
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTBiomeManager_startSubscriptionBiomeConnectionCompanion__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_startSubscriptionBiomeConnectionCompanion
@@ -208,13 +208,13 @@ LABEL_21:
 
 - (void)cancelSubscriptionBiomeConnectionCompanion
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTBiomeManager_cancelSubscriptionBiomeConnectionCompanion__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_cancelSubscriptionBiomeConnectionCompanion
@@ -237,13 +237,13 @@ LABEL_21:
   }
 }
 
-- (void)enumerateEventsWithinDateInterval:(id)a3 streamType:(int64_t)a4 handler:(id)a5
+- (void)enumerateEventsWithinDateInterval:(id)interval streamType:(int64_t)type handler:(id)handler
 {
   v107[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if ((a4 - 1) >= 4)
+  intervalCopy = interval;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if ((type - 1) >= 4)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -258,7 +258,7 @@ LABEL_20:
     goto LABEL_47;
   }
 
-  if (!v9)
+  if (!intervalCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -271,7 +271,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -293,7 +293,7 @@ LABEL_20:
       v13 = NSStringFromSelector(aSelector);
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = [objc_opt_class() streamTypeToString:a4];
+      v16 = [objc_opt_class() streamTypeToString:type];
       *buf = 138413058;
       *&buf[4] = v13;
       v97 = 2112;
@@ -301,18 +301,18 @@ LABEL_20:
       v99 = 2112;
       v100 = v16;
       v101 = 2112;
-      v102 = v9;
+      v102 = intervalCopy;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, %@, streamType, %@, date interval, %@", buf, 0x2Au);
     }
   }
 
-  v17 = [objc_opt_class() biomeStreamTypeToBiomeStream:a4];
+  v17 = [objc_opt_class() biomeStreamTypeToBiomeStream:type];
   if (v17)
   {
     v18 = objc_alloc(MEMORY[0x277CF1A50]);
-    v19 = [v9 startDate];
-    v20 = [v9 endDate];
-    v68 = [v18 initWithStartDate:v19 endDate:v20 maxEvents:0 lastN:0 reversed:0];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
+    v68 = [v18 initWithStartDate:startDate endDate:endDate maxEvents:0 lastN:0 reversed:0];
 
     v90 = 0;
     v91 = &v90;
@@ -352,7 +352,7 @@ LABEL_20:
     v73 = &v90;
     v74 = v88;
     v77 = aSelector;
-    v78 = a4;
+    typeCopy = type;
     v75 = v86;
     v76 = &v79;
     v23 = v22;
@@ -362,7 +362,7 @@ LABEL_20:
     v70[2] = __71__RTBiomeManager_enumerateEventsWithinDateInterval_streamType_handler___block_invoke_31;
     v70[3] = &unk_2788D0C40;
     v70[9] = aSelector;
-    v70[10] = a4;
+    v70[10] = type;
     v70[4] = self;
     v70[5] = v86;
     v70[6] = v88;
@@ -380,11 +380,11 @@ LABEL_20:
       v27 = v26;
       v28 = objc_opt_new();
       v29 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_134];
-      v30 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v31 = [v30 filteredArrayUsingPredicate:v29];
-      v32 = [v31 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v31 = [callStackSymbols filteredArrayUsingPredicate:v29];
+      firstObject = [v31 firstObject];
 
-      [v28 submitToCoreAnalytics:v32 type:1 duration:v27];
+      [v28 submitToCoreAnalytics:firstObject type:1 duration:v27];
       v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
@@ -423,7 +423,7 @@ LABEL_20:
         v58 = NSStringFromSelector(aSelector);
         v59 = objc_opt_class();
         v60 = NSStringFromClass(v59);
-        v61 = [objc_opt_class() streamTypeToString:a4];
+        v61 = [objc_opt_class() streamTypeToString:type];
         *buf = 138413058;
         *&buf[4] = v58;
         v97 = 2112;
@@ -431,7 +431,7 @@ LABEL_20:
         v99 = 2112;
         v100 = v61;
         v101 = 2112;
-        v102 = v9;
+        v102 = intervalCopy;
         _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "%@, %@, streamType, %@, date interval, %@", buf, 0x2Au);
       }
 
@@ -448,7 +448,7 @@ LABEL_20:
           v44 = NSStringFromSelector(aSelector);
           v45 = objc_opt_class();
           v46 = NSStringFromClass(v45);
-          v47 = [objc_opt_class() streamTypeToString:a4];
+          v47 = [objc_opt_class() streamTypeToString:type];
           v48 = [v80[5] count];
           *buf = 138413314;
           *&buf[4] = v44;
@@ -457,7 +457,7 @@ LABEL_20:
           v99 = 2112;
           v100 = v47;
           v101 = 2112;
-          v102 = v9;
+          v102 = intervalCopy;
           v103 = 2048;
           v104 = v48;
           _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, %@, streamType, %@, date interval, %@, outputDateIntervals count, %lu", buf, 0x34u);
@@ -525,7 +525,7 @@ LABEL_20:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *&buf[4] = a4;
+      *&buf[4] = type;
       _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "Invalid biome stream type, %lu", buf, 0xCu);
     }
 
@@ -691,11 +691,11 @@ LABEL_17:
   }
 }
 
-- (BOOL)_isValidEvent:(id)a3 streamType:(int64_t)a4
+- (BOOL)_isValidEvent:(id)event streamType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (!eventCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -714,7 +714,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if ((a4 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -728,30 +728,30 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [v5 eventBody];
-  v8 = v7;
-  if (a4 == 3)
+  eventBody = [eventCopy eventBody];
+  v8 = eventBody;
+  if (type == 3)
   {
-    v13 = [v7 hasStationary];
+    hasStationary = [eventBody hasStationary];
   }
 
   else
   {
-    v13 = [v7 hasStarting];
+    hasStationary = [eventBody hasStarting];
   }
 
-  v12 = v13;
+  v12 = hasStationary;
 
 LABEL_11:
   return v12;
 }
 
-- (int64_t)_compareEvent1:(id)a3 event2:(id)a4 streamType:(int64_t)a5
+- (int64_t)_compareEvent1:(id)event1 event2:(id)event2 streamType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  event1Copy = event1;
+  event2Copy = event2;
+  v9 = event2Copy;
+  if (!event1Copy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -767,7 +767,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!event2Copy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -781,20 +781,20 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ((a5 - 1) < 4)
+  if ((type - 1) < 4)
   {
-    v10 = v7;
+    v10 = event1Copy;
     v11 = v9;
-    v12 = [v10 eventBody];
-    v13 = v12;
-    if (a5 == 3)
+    eventBody = [v10 eventBody];
+    v13 = eventBody;
+    if (type == 3)
     {
-      if ([v12 stationary])
+      if ([eventBody stationary])
       {
-        a5 = [v11 eventBody];
-        v19 = [a5 stationary];
+        type = [v11 eventBody];
+        stationary = [type stationary];
 
-        if (!v19)
+        if (!stationary)
         {
 LABEL_20:
           v17 = 1;
@@ -808,15 +808,15 @@ LABEL_37:
       {
       }
 
-      v21 = [v10 eventBody];
-      v22 = [v21 stationary];
-      if ((v22 & 1) != 0 || ([v11 eventBody], a5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(a5, "stationary") & 1) == 0))
+      eventBody2 = [v10 eventBody];
+      stationary2 = [eventBody2 stationary];
+      if ((stationary2 & 1) != 0 || ([v11 eventBody], type = objc_claimAutoreleasedReturnValue(), (objc_msgSend(type, "stationary") & 1) == 0))
       {
-        v23 = [v10 eventBody];
-        if (([v23 stationary] & 1) == 0)
+        eventBody3 = [v10 eventBody];
+        if (([eventBody3 stationary] & 1) == 0)
         {
-          v24 = [v11 eventBody];
-          v25 = [v24 stationary];
+          eventBody4 = [v11 eventBody];
+          stationary3 = [eventBody4 stationary];
           goto LABEL_33;
         }
 
@@ -828,12 +828,12 @@ LABEL_31:
 
     else
     {
-      if ([v12 starting])
+      if ([eventBody starting])
       {
-        a5 = [v11 eventBody];
-        v20 = [a5 starting];
+        type = [v11 eventBody];
+        starting = [type starting];
 
-        if (!v20)
+        if (!starting)
         {
           goto LABEL_20;
         }
@@ -843,20 +843,20 @@ LABEL_31:
       {
       }
 
-      v21 = [v10 eventBody];
-      v22 = [v21 starting];
-      if ((v22 & 1) != 0 || ([v11 eventBody], a5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(a5, "starting") & 1) == 0))
+      eventBody2 = [v10 eventBody];
+      stationary2 = [eventBody2 starting];
+      if ((stationary2 & 1) != 0 || ([v11 eventBody], type = objc_claimAutoreleasedReturnValue(), (objc_msgSend(type, "starting") & 1) == 0))
       {
-        v23 = [v10 eventBody];
-        if (([v23 starting] & 1) == 0)
+        eventBody3 = [v10 eventBody];
+        if (([eventBody3 starting] & 1) == 0)
         {
-          v24 = [v11 eventBody];
-          v25 = [v24 starting];
+          eventBody4 = [v11 eventBody];
+          stationary3 = [eventBody4 starting];
 LABEL_33:
-          v26 = v25 ^ 1u;
+          v26 = stationary3 ^ 1u;
 
 LABEL_34:
-          if (v22)
+          if (stationary2)
           {
 LABEL_36:
 
@@ -894,13 +894,13 @@ LABEL_14:
   return v17;
 }
 
-- (id)_extractDateIntervalFromBiomeEvent1:(id)a3 event2:(id)a4 streamType:(int64_t)a5
+- (id)_extractDateIntervalFromBiomeEvent1:(id)event1 event2:(id)event2 streamType:(int64_t)type
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  event1Copy = event1;
+  event2Copy = event2;
+  v10 = event2Copy;
+  if (!event1Copy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -915,7 +915,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!event2Copy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -928,7 +928,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ((a5 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -943,7 +943,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v8 == v9)
+  if (event1Copy == event2Copy)
   {
     v12 = 0;
     v15 = 0;
@@ -973,7 +973,7 @@ LABEL_21:
   }
 
   v11 = MEMORY[0x277CBEAA8];
-  [v8 timestamp];
+  [event1Copy timestamp];
   v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
   v13 = MEMORY[0x277CBEAA8];
   [v10 timestamp];
@@ -992,36 +992,36 @@ LABEL_17:
   return v16;
 }
 
-- (void)onAuthorizationNotification:(id)a3
+- (void)onAuthorizationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RTBiomeManager_onAuthorizationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onAuthorizationNotification:(id)a3
+- (void)_onAuthorizationNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[RTBiomeManager setRoutineEnabled:](self, "setRoutineEnabled:", [v5 enabled]);
+    -[RTBiomeManager setRoutineEnabled:](self, "setRoutineEnabled:", [notificationCopy enabled]);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(RTBiomeManager *)self routineEnabled];
+        routineEnabled = [(RTBiomeManager *)self routineEnabled];
         v8 = @"NO";
-        if (v7)
+        if (routineEnabled)
         {
           v8 = @"YES";
         }
@@ -1058,11 +1058,11 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [v5 name];
+      name = [notificationCopy name];
       *buf = 138412546;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = name;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, unhandled notification, %@", buf, 0x16u);
     }
 
@@ -1072,24 +1072,24 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__RTBiomeManager_onDataProtectionNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDataProtectionNotification:(id)a3
+- (void)_onDataProtectionNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1108,7 +1108,7 @@ LABEL_16:
     }
   }
 
-  -[RTBiomeManager setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [v4 availability]);
+  -[RTBiomeManager setEncryptedDataAvailability:](self, "setEncryptedDataAvailability:", [notificationCopy availability]);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
@@ -1125,28 +1125,28 @@ LABEL_16:
   [(RTBiomeManager *)self _publishNewHindsightVisitsToBiomeWithError:&v10];
 }
 
-- (void)onLearnedLocationManagerAvailabilityDidChangeNotification:(id)a3
+- (void)onLearnedLocationManagerAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__RTBiomeManager_onLearnedLocationManagerAvailabilityDidChangeNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLearnedLocationManagerAvailabilityDidChangeNotification:(id)a3
+- (void)_onLearnedLocationManagerAvailabilityDidChangeNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
@@ -1155,12 +1155,12 @@ LABEL_16:
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = NSStringFromSelector(a2);
-        v10 = [v5 available];
+        available = [v5 available];
         v11 = @"NO";
         v12 = 138412802;
         v13 = v8;
         v14 = 2112;
-        if (v10)
+        if (available)
         {
           v11 = @"YES";
         }
@@ -1179,7 +1179,7 @@ LABEL_16:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412802;
-      v13 = v4;
+      v13 = notificationCopy;
       v14 = 2080;
       v15 = "[RTBiomeManager _onLearnedLocationManagerAvailabilityDidChangeNotification:]";
       v16 = 1024;
@@ -1189,28 +1189,28 @@ LABEL_16:
   }
 }
 
-- (void)onLearnedLocationManagerDidUpdateNotification:(id)a3
+- (void)onLearnedLocationManagerDidUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__RTBiomeManager_onLearnedLocationManagerDidUpdateNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLearnedLocationManagerDidUpdateNotification:(id)a3
+- (void)_onLearnedLocationManagerDidUpdateNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = notificationCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
@@ -1240,7 +1240,7 @@ LABEL_16:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v5;
+      v14 = notificationCopy;
       v15 = 2080;
       v16 = "[RTBiomeManager _onLearnedLocationManagerDidUpdateNotification:]";
       v17 = 1024;
@@ -1250,55 +1250,55 @@ LABEL_16:
   }
 }
 
-- (int)_translateToBiomeVisitLocationReferenceFrame:(int)a3
+- (int)_translateToBiomeVisitLocationReferenceFrame:(int)frame
 {
-  if (a3 == 1)
+  if (frame == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (frame == 2);
   }
 }
 
-- (int)_translateToBiomeVisitLocationSourceAccuracy:(unint64_t)a3
+- (int)_translateToBiomeVisitLocationSourceAccuracy:(unint64_t)accuracy
 {
-  if (a3 == 1)
+  if (accuracy == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (accuracy == 2);
   }
 }
 
-- (id)_translateToBiomeVisitLocation:(id)a3
+- (id)_translateToBiomeVisitLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
     v5 = objc_alloc(MEMORY[0x277CF12D8]);
     v6 = MEMORY[0x277CCABB0];
-    [v4 latitude];
+    [locationCopy latitude];
     v7 = [v6 numberWithDouble:?];
     v8 = MEMORY[0x277CCABB0];
-    [v4 longitude];
+    [locationCopy longitude];
     v9 = [v8 numberWithDouble:?];
     v10 = MEMORY[0x277CCABB0];
-    [v4 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v11 = [v10 numberWithDouble:?];
     v12 = MEMORY[0x277CCABB0];
-    [v4 altitude];
+    [locationCopy altitude];
     v13 = [v12 numberWithDouble:?];
     v14 = MEMORY[0x277CCABB0];
-    [v4 verticalUncertainty];
+    [locationCopy verticalUncertainty];
     v15 = [v14 numberWithDouble:?];
-    v16 = [v4 date];
-    v17 = [v5 initWithLatitude:v7 longitude:v9 horizontalUncertainty:v11 altitude:v13 verticalUncertainty:v15 date:v16 referenceFrame:__PAIR64__(-[RTBiomeManager _translateToBiomeVisitLocationSourceAccuracy:](self sourceAccuracy:{"_translateToBiomeVisitLocationSourceAccuracy:", objc_msgSend(v4, "sourceAccuracy")), -[RTBiomeManager _translateToBiomeVisitLocationReferenceFrame:](self, "_translateToBiomeVisitLocationReferenceFrame:", objc_msgSend(v4, "referenceFrame")))}];
+    date = [locationCopy date];
+    v17 = [v5 initWithLatitude:v7 longitude:v9 horizontalUncertainty:v11 altitude:v13 verticalUncertainty:v15 date:date referenceFrame:__PAIR64__(-[RTBiomeManager _translateToBiomeVisitLocationSourceAccuracy:](self sourceAccuracy:{"_translateToBiomeVisitLocationSourceAccuracy:", objc_msgSend(locationCopy, "sourceAccuracy")), -[RTBiomeManager _translateToBiomeVisitLocationReferenceFrame:](self, "_translateToBiomeVisitLocationReferenceFrame:", objc_msgSend(locationCopy, "referenceFrame")))}];
   }
 
   else
@@ -1316,11 +1316,11 @@ LABEL_16:
   return v17;
 }
 
-- (int)_translateToBiomePlaceType:(unint64_t)a3
+- (int)_translateToBiomePlaceType:(unint64_t)type
 {
-  if (a3 - 1 < 4)
+  if (type - 1 < 4)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -1329,11 +1329,11 @@ LABEL_16:
   }
 }
 
-- (int)_translateToBiomeUserSpecificPlaceType:(unint64_t)a3
+- (int)_translateToBiomeUserSpecificPlaceType:(unint64_t)type
 {
-  if (a3 - 1 < 4)
+  if (type - 1 < 4)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -1342,13 +1342,13 @@ LABEL_16:
   }
 }
 
-- (int)_translateToBiomeUserSpecificPlaceTypeSource:(unint64_t)a3
+- (int)_translateToBiomeUserSpecificPlaceTypeSource:(unint64_t)source
 {
-  if (a3 > 3)
+  if (source > 3)
   {
-    if (a3 != 4)
+    if (source != 4)
     {
-      if (a3 == 16)
+      if (source == 16)
       {
         return 5;
       }
@@ -1361,9 +1361,9 @@ LABEL_16:
 
   else
   {
-    if (a3 != 1)
+    if (source != 1)
     {
-      if (a3 == 2)
+      if (source == 2)
       {
         return 2;
       }
@@ -1375,18 +1375,18 @@ LABEL_16:
   }
 }
 
-- (id)_translateToBiomeMapItem:(id)a3
+- (id)_translateToBiomeMapItem:(id)item
 {
-  v3 = a3;
-  if (v3)
+  itemCopy = item;
+  if (itemCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CF1420]);
-    v5 = [v3 identifier];
-    v6 = [v3 name];
-    v7 = [v3 address];
-    v8 = [v7 description];
-    v9 = [v3 category];
-    v10 = [v4 initWithIdentifier:v5 name:v6 address:v8 category:v9];
+    identifier = [itemCopy identifier];
+    name = [itemCopy name];
+    address = [itemCopy address];
+    v8 = [address description];
+    category = [itemCopy category];
+    v10 = [v4 initWithIdentifier:identifier name:name address:v8 category:category];
   }
 
   else
@@ -1404,19 +1404,19 @@ LABEL_16:
   return v10;
 }
 
-- (id)_translateToBiomePlaceInference:(id)a3
+- (id)_translateToBiomePlaceInference:(id)inference
 {
-  v4 = a3;
-  if (v4)
+  inferenceCopy = inference;
+  if (inferenceCopy)
   {
     v5 = objc_alloc(MEMORY[0x277CF1418]);
-    v6 = [v4 loiIdentifier];
-    v7 = -[RTBiomeManager _translateToBiomePlaceType:](self, "_translateToBiomePlaceType:", [v4 placeType]);
-    v8 = -[RTBiomeManager _translateToBiomeUserSpecificPlaceType:](self, "_translateToBiomeUserSpecificPlaceType:", [v4 userType]);
-    v9 = -[RTBiomeManager _translateToBiomeUserSpecificPlaceTypeSource:](self, "_translateToBiomeUserSpecificPlaceTypeSource:", [v4 userTypeSource]);
-    v10 = [v4 mapItem];
-    v11 = [(RTBiomeManager *)self _translateToBiomeMapItem:v10];
-    v12 = [v5 initWithIdentifier:v6 placeType:v7 userSpecificPlaceType:v8 userSpecificPlaceTypeSource:v9 mapItem:v11];
+    loiIdentifier = [inferenceCopy loiIdentifier];
+    v7 = -[RTBiomeManager _translateToBiomePlaceType:](self, "_translateToBiomePlaceType:", [inferenceCopy placeType]);
+    v8 = -[RTBiomeManager _translateToBiomeUserSpecificPlaceType:](self, "_translateToBiomeUserSpecificPlaceType:", [inferenceCopy userType]);
+    v9 = -[RTBiomeManager _translateToBiomeUserSpecificPlaceTypeSource:](self, "_translateToBiomeUserSpecificPlaceTypeSource:", [inferenceCopy userTypeSource]);
+    mapItem = [inferenceCopy mapItem];
+    v11 = [(RTBiomeManager *)self _translateToBiomeMapItem:mapItem];
+    v12 = [v5 initWithIdentifier:loiIdentifier placeType:v7 userSpecificPlaceType:v8 userSpecificPlaceTypeSource:v9 mapItem:v11];
   }
 
   else
@@ -1434,11 +1434,11 @@ LABEL_16:
   return v12;
 }
 
-- (int)_translateToBiomeVisitType:(int64_t)a3
+- (int)_translateToBiomeVisitType:(int64_t)type
 {
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -1447,11 +1447,11 @@ LABEL_16:
   }
 }
 
-- (int)_translateToBiomeVisitSource:(int64_t)a3
+- (int)_translateToBiomeVisitSource:(int64_t)source
 {
-  if ((a3 - 1) < 3)
+  if ((source - 1) < 3)
   {
-    return a3;
+    return source;
   }
 
   else
@@ -1460,26 +1460,26 @@ LABEL_16:
   }
 }
 
-- (id)_translateRTVisitToBiomeObject:(id)a3
+- (id)_translateRTVisitToBiomeObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v20 = objc_alloc(MEMORY[0x277CF12D0]);
-    v19 = [v4 date];
-    v18 = -[RTBiomeManager _translateToBiomeVisitType:](self, "_translateToBiomeVisitType:", [v4 type]);
-    v5 = [v4 location];
-    v6 = [(RTBiomeManager *)self _translateToBiomeVisitLocation:v5];
-    v7 = [v4 entry];
-    v8 = [v4 exit];
+    date = [objectCopy date];
+    v18 = -[RTBiomeManager _translateToBiomeVisitType:](self, "_translateToBiomeVisitType:", [objectCopy type]);
+    location = [objectCopy location];
+    v6 = [(RTBiomeManager *)self _translateToBiomeVisitLocation:location];
+    entry = [objectCopy entry];
+    exit = [objectCopy exit];
     v9 = MEMORY[0x277CCABB0];
-    [v4 confidence];
+    [objectCopy confidence];
     v10 = [v9 numberWithDouble:?];
-    v11 = -[RTBiomeManager _translateToBiomeVisitSource:](self, "_translateToBiomeVisitSource:", [v4 source]);
-    v12 = [v4 placeInference];
-    v13 = [(RTBiomeManager *)self _translateToBiomePlaceInference:v12];
+    v11 = -[RTBiomeManager _translateToBiomeVisitSource:](self, "_translateToBiomeVisitSource:", [objectCopy source]);
+    placeInference = [objectCopy placeInference];
+    v13 = [(RTBiomeManager *)self _translateToBiomePlaceInference:placeInference];
     LODWORD(v17) = v11;
-    v14 = [v20 initWithDetectionDate:v19 type:v18 location:v6 entryDate:v7 exitDate:v8 confidence:v10 source:v17 placeInference:v13];
+    v14 = [v20 initWithDetectionDate:date type:v18 location:v6 entryDate:entry exitDate:exit confidence:v10 source:v17 placeInference:v13];
   }
 
   else
@@ -1497,7 +1497,7 @@ LABEL_16:
   return v14;
 }
 
-- (void)_publishNewHindsightVisitsToBiomeWithError:(id *)a3
+- (void)_publishNewHindsightVisitsToBiomeWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -1517,7 +1517,7 @@ LABEL_16:
       v8 = v27[5];
       if (v8)
       {
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -1534,22 +1534,22 @@ LABEL_16:
         }
 
         v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
-        v17 = [v7 exitDate];
-        if (v17)
+        exitDate = [v7 exitDate];
+        if (exitDate)
         {
-          v18 = [v7 exitDate];
-          v19 = [v18 compare:v16] == 1;
+          exitDate2 = [v7 exitDate];
+          v19 = [exitDate2 compare:v16] == 1;
 
           if (v19)
           {
-            v20 = [v7 exitDate];
+            exitDate3 = [v7 exitDate];
 
-            v16 = v20;
+            v16 = exitDate3;
           }
         }
 
-        v21 = [(RTBiomeManager *)self learnedLocationManager];
-        v22 = [MEMORY[0x277CBEAA8] distantFuture];
+        learnedLocationManager = [(RTBiomeManager *)self learnedLocationManager];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __61__RTBiomeManager__publishNewHindsightVisitsToBiomeWithError___block_invoke;
@@ -1557,12 +1557,12 @@ LABEL_16:
         v24[4] = self;
         v24[5] = &v26;
         v24[6] = a2;
-        [v21 fetchHindsightVisitsBetweenStartDate:v16 endDate:v22 ascending:1 handler:v24];
+        [learnedLocationManager fetchHindsightVisitsBetweenStartDate:v16 endDate:distantFuture ascending:1 handler:v24];
 
         v23 = v27[5];
         if (v23)
         {
-          *a3 = v23;
+          *error = v23;
         }
       }
 
@@ -1724,21 +1724,21 @@ void __61__RTBiomeManager__publishNewHindsightVisitsToBiomeWithError___block_inv
   }
 }
 
-- (void)_clearBiomeStreamForStreamType:(int64_t)a3 error:(id *)a4
+- (void)_clearBiomeStreamForStreamType:(int64_t)type error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 5)
+  if (type == 5)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v5 = v4;
     v6 = [objc_opt_class() biomeStreamTypeToBiomeStream:5];
-    v7 = [v6 pruner];
+    pruner = [v6 pruner];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__RTBiomeManager__clearBiomeStreamForStreamType_error___block_invoke;
     v16[3] = &__block_descriptor_40_e26_B24__0__BMStoreEvent_8_B16l;
     v16[4] = v5;
-    [v7 deleteEventsPassingTest:v16];
+    [pruner deleteEventsPassingTest:v16];
   }
 
   else
@@ -1746,15 +1746,15 @@ void __61__RTBiomeManager__publishNewHindsightVisitsToBiomeWithError___block_inv
     v25 = *MEMORY[0x277CCA450];
     v26[0] = @"Unsupported stream type";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v6];
-    *a4 = v7;
+    pruner = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v6];
+    *error = pruner;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = NSStringFromSelector(a2);
-      v15 = [objc_opt_class() streamTypeToString:a3];
+      v15 = [objc_opt_class() streamTypeToString:type];
       *buf = 138413058;
       v18 = v13;
       v19 = 2112;
@@ -1762,7 +1762,7 @@ void __61__RTBiomeManager__publishNewHindsightVisitsToBiomeWithError___block_inv
       v21 = 2112;
       v22 = v15;
       v23 = 2112;
-      v24 = v7;
+      v24 = pruner;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "%@, %@, streamType, %@, error, %@", buf, 0x2Au);
     }
   }
@@ -1794,10 +1794,10 @@ BOOL __55__RTBiomeManager__clearBiomeStreamForStreamType_error___block_invoke(ui
   return v6;
 }
 
-- (id)_getLatestBiomeDataForStreamType:(int64_t)a3 error:(id *)a4
+- (id)_getLatestBiomeDataForStreamType:(int64_t)type error:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 5)
+  if (type == 5)
   {
     v4 = [objc_opt_class() biomeStreamTypeToBiomeStream:5];
     v5 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:1 lastN:1 reversed:0];
@@ -1839,11 +1839,11 @@ BOOL __55__RTBiomeManager__clearBiomeStreamForStreamType_error___block_invoke(ui
       v15 = v14;
       v16 = objc_opt_new();
       v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_134];
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v19 = [v18 filteredArrayUsingPredicate:v17];
-      v20 = [v19 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+      firstObject = [v19 firstObject];
 
-      [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+      [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
       v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
@@ -1877,7 +1877,7 @@ BOOL __55__RTBiomeManager__clearBiomeStreamForStreamType_error___block_invoke(ui
     v30 = v49[5];
     if (v30)
     {
-      *a4 = v30;
+      *error = v30;
       v31 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -1911,14 +1911,14 @@ BOOL __55__RTBiomeManager__clearBiomeStreamForStreamType_error___block_invoke(ui
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v4];
     v27 = v6;
-    *a4 = v6;
+    *error = v6;
     v10 = _rt_log_facility_get_os_log(RTLogFacilityBiome);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = NSStringFromSelector(a2);
-      v36 = [objc_opt_class() streamTypeToString:a3];
+      v36 = [objc_opt_class() streamTypeToString:type];
       *buf = 138413058;
       *&buf[4] = v34;
       *&buf[12] = 2112;
@@ -1966,61 +1966,61 @@ void __57__RTBiomeManager__getLatestBiomeDataForStreamType_error___block_invoke_
   }
 }
 
-+ (id)biomeStreamTypeToBiomeStream:(int64_t)a3
++ (id)biomeStreamTypeToBiomeStream:(int64_t)stream
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (stream <= 2)
   {
-    if (a3 != 1)
+    if (stream != 1)
     {
-      if (a3 != 2)
+      if (stream != 2)
       {
         goto LABEL_15;
       }
 
       v4 = BiomeLibrary();
-      v5 = [v4 Device];
-      v6 = [v5 ScreenLocked];
+      device = [v4 Device];
+      screenLocked = [device ScreenLocked];
       goto LABEL_10;
     }
 
     v4 = BiomeLibrary();
-    v5 = [v4 Device];
-    v7 = [v5 Power];
-    v8 = [v7 PluggedIn];
+    device = [v4 Device];
+    power = [device Power];
+    pluggedIn = [power PluggedIn];
     goto LABEL_13;
   }
 
-  if (a3 != 3)
+  if (stream != 3)
   {
-    if (a3 != 4)
+    if (stream != 4)
     {
-      if (a3 != 5)
+      if (stream != 5)
       {
         goto LABEL_15;
       }
 
       v4 = BiomeLibrary();
-      v5 = [v4 Location];
-      v6 = [v5 Visit];
+      device = [v4 Location];
+      screenLocked = [device Visit];
       goto LABEL_10;
     }
 
     v4 = BiomeLibrary();
-    v5 = [v4 Device];
-    v7 = [v5 Wireless];
-    v8 = [v7 WiFi];
+    device = [v4 Device];
+    power = [device Wireless];
+    pluggedIn = [power WiFi];
 LABEL_13:
-    v3 = v8;
+    v3 = pluggedIn;
 
     goto LABEL_14;
   }
 
   v4 = BiomeLibrary();
-  v5 = [v4 Motion];
-  v6 = [v5 Activity];
+  device = [v4 Motion];
+  screenLocked = [device Activity];
 LABEL_10:
-  v3 = v6;
+  v3 = screenLocked;
 LABEL_14:
 
 LABEL_15:
@@ -2028,16 +2028,16 @@ LABEL_15:
   return v3;
 }
 
-+ (id)streamTypeToString:(int64_t)a3
++ (id)streamTypeToString:(int64_t)string
 {
-  if ((a3 - 1) > 5)
+  if ((string - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D0CF8[a3 - 1];
+    return off_2788D0CF8[string - 1];
   }
 }
 

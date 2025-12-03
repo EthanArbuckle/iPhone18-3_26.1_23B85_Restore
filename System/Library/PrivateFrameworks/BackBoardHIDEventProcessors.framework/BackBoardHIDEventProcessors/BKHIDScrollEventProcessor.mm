@@ -1,21 +1,21 @@
 @interface BKHIDScrollEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)_dispatchEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5 destinations:(id)a6;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)_dispatchEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher destinations:(id)destinations;
 @end
 
 @implementation BKHIDScrollEventProcessor
 
-- (void)_dispatchEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5 destinations:(id)a6
+- (void)_dispatchEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher destinations:(id)destinations
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  destinationsCopy = destinations;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [destinationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -27,20 +27,20 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(destinationsCopy);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
         Copy = IOHIDEventCreateCopy();
-        [v8 eventSource];
+        [senderCopy eventSource];
         BKSHIDEventSetSimpleDeliveryInfo();
-        [v9 postEvent:Copy toDestination:v15];
+        [dispatcherCopy postEvent:Copy toDestination:v15];
         CFRelease(Copy);
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [destinationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -49,17 +49,17 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   if (IOHIDEventGetType() == 6)
   {
-    v11 = [v9 destinationsForEvent:v10 fromSender:v8];
-    [(BKHIDScrollEventProcessor *)self _dispatchEvent:v10 sender:v8 dispatcher:v9 destinations:v11];
+    v11 = [dispatcherCopy destinationsForEvent:v10 fromSender:senderCopy];
+    [(BKHIDScrollEventProcessor *)self _dispatchEvent:v10 sender:senderCopy dispatcher:dispatcherCopy destinations:v11];
 
-    v12 = [v8 displayUUID];
+    displayUUID = [senderCopy displayUUID];
     _BKHIDNoteUserEventOccurredOnDisplay();
 
     v13 = 1;

@@ -1,26 +1,26 @@
 @interface NSTextTab
 + (NSCharacterSet)columnTerminatorsForLocale:(NSLocale *)aLocale;
-+ (NSTextTab)allocWithZone:(_NSZone *)a3;
++ (NSTextTab)allocWithZone:(_NSZone *)zone;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)options;
-- (NSTextTab)initWithCoder:(id)a3;
+- (NSTextTab)initWithCoder:(id)coder;
 - (NSTextTab)initWithTextAlignment:(NSTextAlignment)alignment location:(CGFloat)loc options:(NSDictionary *)options;
 - (NSTextTab)initWithType:(NSTextTabType)type location:(CGFloat)loc;
 - (NSTextTabType)tabStopType;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTextTab
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    __NSTextTabClass = a1;
+    __NSTextTabClass = self;
     if (([objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")] & 1) == 0)
     {
       __NSTextTabScratchInstance = NSAllocateObject(__NSTextTabClass, 0, 0);
@@ -48,12 +48,12 @@
   os_unfair_lock_unlock(&__NSTextTabLock);
 }
 
-+ (NSTextTab)allocWithZone:(_NSZone *)a3
++ (NSTextTab)allocWithZone:(_NSZone *)zone
 {
   v5 = __NSTextTabAllocMarkerInstance;
   if (__NSTextTabAllocMarkerInstance)
   {
-    v6 = __NSTextTabClass == a1;
+    v6 = __NSTextTabClass == self;
   }
 
   else
@@ -65,9 +65,9 @@
   {
     v9 = v3;
     v10 = v4;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NSTextTab;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   return v5;
@@ -90,10 +90,10 @@
     if (__NSCachedDecimalTabAttribute_onceToken != -1)
     {
       v11 = loc;
-      v9 = self;
+      selfCopy = self;
       v10 = v6;
       [NSTextTab initWithType:location:];
-      self = v9;
+      self = selfCopy;
       v6 = v10;
       loc = v11;
     }
@@ -182,13 +182,13 @@
 
 + (NSCharacterSet)columnTerminatorsForLocale:(NSLocale *)aLocale
 {
-  v3 = aLocale;
+  systemLocale = aLocale;
   if (!aLocale)
   {
-    v3 = [MEMORY[0x1E695DF58] systemLocale];
+    systemLocale = [MEMORY[0x1E695DF58] systemLocale];
   }
 
-  v4 = [(NSLocale *)v3 objectForKey:*MEMORY[0x1E695D990]];
+  v4 = [(NSLocale *)systemLocale objectForKey:*MEMORY[0x1E695D990]];
   if ([(__CFString *)v4 length])
   {
     v5 = v4;
@@ -265,95 +265,95 @@
   return (+[NSParagraphStyle _defaultWritingDirection]== 1);
 }
 
-- (NSTextTab)initWithCoder:(id)a3
+- (NSTextTab)initWithCoder:(id)coder
 {
   v18 = 0;
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     v17 = 0.0;
-    [a3 decodeValuesOfObjCTypes:{"Cf", &v18, &v17}];
+    [coder decodeValuesOfObjCTypes:{"Cf", &v18, &v17}];
     self->_location = v17;
     v15 = v18;
     return [(NSTextTab *)self initWithType:v15 location:?];
   }
 
-  [a3 decodeDoubleForKey:@"NSLocation"];
+  [coder decodeDoubleForKey:@"NSLocation"];
   self->_location = v5;
-  if (![a3 containsValueForKey:@"NSTextAlignment"])
+  if (![coder containsValueForKey:@"NSTextAlignment"])
   {
-    v16 = [a3 decodeIntegerForKey:@"NSType"];
+    v16 = [coder decodeIntegerForKey:@"NSType"];
     v15 = v16 & 0xF;
     v18 = v16 & 0xF;
     return [(NSTextTab *)self initWithType:v15 location:?];
   }
 
-  v6 = NSTextAlignmentFromCTTextAlignment([a3 decodeIntegerForKey:@"NSTextAlignment"]);
+  v6 = NSTextAlignmentFromCTTextAlignment([coder decodeIntegerForKey:@"NSTextAlignment"]);
   location = self->_location;
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
-  v13 = [a3 decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, v11, v12, objc_opt_class(), 0), @"NSTabOptions"}];
+  v13 = [coder decodeObjectOfClasses:objc_msgSend(v8 forKey:{"setWithObjects:", v9, v10, v11, v12, objc_opt_class(), 0), @"NSTabOptions"}];
 
   return [(NSTextTab *)self initWithTextAlignment:v6 location:v13 options:location];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSTextTab *)self tabStopType];
-  v11 = v5;
-  if ([a3 allowsKeyedCoding])
+  tabStopType = [(NSTextTab *)self tabStopType];
+  v11 = tabStopType;
+  if ([coder allowsKeyedCoding])
   {
-    if (NSTextAlignmentFromCTTextAlignment((*&self->_flags & 0xF)) > NSTextAlignmentCenter || self->_reserved && v5 != 3)
+    if (NSTextAlignmentFromCTTextAlignment((*&self->_flags & 0xF)) > NSTextAlignmentCenter || self->_reserved && tabStopType != 3)
     {
       flags = self->_flags;
       if ((*&flags & 0xF) != 0)
       {
-        [a3 encodeInteger:*&flags & 0xF forKey:@"NSTextAlignment"];
+        [coder encodeInteger:*&flags & 0xF forKey:@"NSTextAlignment"];
       }
 
       reserved = self->_reserved;
       if (reserved)
       {
-        [a3 encodeObject:reserved forKey:@"NSTabOptions"];
+        [coder encodeObject:reserved forKey:@"NSTabOptions"];
       }
     }
 
-    if (v5)
+    if (tabStopType)
     {
-      [a3 encodeInteger:v5 forKey:@"NSType"];
+      [coder encodeInteger:tabStopType forKey:@"NSType"];
     }
 
     location = self->_location;
 
-    [a3 encodeDouble:@"NSLocation" forKey:location];
+    [coder encodeDouble:@"NSLocation" forKey:location];
   }
 
   else
   {
     v9 = self->_location;
     v10 = v9;
-    [a3 encodeValuesOfObjCTypes:{"Cf", &v11, &v10}];
+    [coder encodeValuesOfObjCTypes:{"Cf", &v11, &v10}];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v5 = __NSTextTabScratchInstance == a3 || __NSTextTabScratchInstance == 0;
+  v5 = __NSTextTabScratchInstance == equal || __NSTextTabScratchInstance == 0;
   if (!v5 && __NSTextTabScratchInstance != self)
   {
-    Class = object_getClass(a3);
+    Class = object_getClass(equal);
     if (Class == object_getClass(self) && object_getClass(self) == __NSTextTabClass)
     {
       return 0;
@@ -366,13 +366,13 @@
   }
 
   v8 = NSTextAlignmentFromCTTextAlignment((*&self->_flags & 0xF));
-  if (v8 != [a3 alignment])
+  if (v8 != [equal alignment])
   {
     return 0;
   }
 
   location = self->_location;
-  [a3 location];
+  [equal location];
   if (location != v10)
   {
     return 0;
@@ -388,9 +388,9 @@
     reserved = MEMORY[0x1E695E0F8];
   }
 
-  v12 = [a3 options];
+  options = [equal options];
 
-  return [reserved isEqualToDictionary:v12];
+  return [reserved isEqualToDictionary:options];
 }
 
 - (unint64_t)hash
@@ -408,10 +408,10 @@
 
 - (id)description
 {
-  v3 = [(NSTextTab *)self tabStopType];
+  tabStopType = [(NSTextTab *)self tabStopType];
   v4 = MEMORY[0x1E696AEC0];
   location = self->_location;
-  if (v3 == 3)
+  if (tabStopType == 3)
   {
     v6 = "D";
   }

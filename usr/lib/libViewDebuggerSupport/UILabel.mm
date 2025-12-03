@@ -1,6 +1,6 @@
 @interface UILabel
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UILabel
@@ -105,20 +105,20 @@
   return v8;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"usesAttributedText"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"usesAttributedText"])
   {
-    v10 = [v9 attributedText];
-    a6 = [NSNumber numberWithInt:v10 != 0];
+    attributedText = [objectCopy attributedText];
+    error = [NSNumber numberWithInt:attributedText != 0];
 
     goto LABEL_24;
   }
 
-  v11 = v9;
-  v12 = v8;
+  v11 = objectCopy;
+  v12 = nameCopy;
   if (![v12 length])
   {
     goto LABEL_14;
@@ -129,18 +129,18 @@
   {
     if ([v12 length] < 2)
     {
-      v17 = [v12 uppercaseString];
+      uppercaseString = [v12 uppercaseString];
     }
 
     else
     {
       v14 = [v12 substringToIndex:1];
-      v15 = [v14 uppercaseString];
+      uppercaseString2 = [v14 uppercaseString];
       v16 = [v12 substringFromIndex:1];
-      v17 = [v15 stringByAppendingString:v16];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v16];
     }
 
-    v18 = [@"is" stringByAppendingString:v17];
+    v18 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v18);
     if (objc_opt_respondsToSelector())
     {
@@ -158,7 +158,7 @@
     }
 
 LABEL_14:
-    if (a6)
+    if (error)
     {
       v19 = v12;
       if (v11)
@@ -192,10 +192,10 @@ LABEL_14:
       v24 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v23];
 
       v25 = v24;
-      *a6 = v24;
+      *error = v24;
 
       v13 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -213,12 +213,12 @@ LABEL_14:
   }
 
 LABEL_6:
-  a6 = [v11 valueForKey:v13];
+  error = [v11 valueForKey:v13];
 LABEL_23:
 
 LABEL_24:
 
-  return a6;
+  return error;
 }
 
 @end

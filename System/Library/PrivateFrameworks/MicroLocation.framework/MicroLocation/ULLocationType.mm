@@ -1,15 +1,15 @@
 @interface ULLocationType
-- (BOOL)isEqual:(id)a3;
-- (ULLocationType)initWithCoder:(id)a3;
-- (ULLocationType)initWithLocationTypeEnum:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULLocationType)initWithCoder:(id)coder;
+- (ULLocationType)initWithLocationTypeEnum:(unint64_t)enum;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULLocationType
 
-- (ULLocationType)initWithLocationTypeEnum:(unint64_t)a3
+- (ULLocationType)initWithLocationTypeEnum:(unint64_t)enum
 {
   v7.receiver = self;
   v7.super_class = ULLocationType;
@@ -17,13 +17,13 @@
   v5 = v4;
   if (v4)
   {
-    [(ULLocationType *)v4 setLocationType:a3];
+    [(ULLocationType *)v4 setLocationType:enum];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   locationType = self->_locationType;
@@ -31,30 +31,30 @@
   return [v4 initWithLocationTypeEnum:locationType];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   locationType = self->_locationType;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:locationType];
-  [v5 encodeObject:v6 forKey:@"locationType"];
+  [coderCopy encodeObject:v6 forKey:@"locationType"];
 }
 
-- (ULLocationType)initWithCoder:(id)a3
+- (ULLocationType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULLocationType;
   v5 = [(ULLocationType *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationType"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULLocationType *)v6 unsignedIntValue];
+      unsignedIntValue = [(ULLocationType *)v6 unsignedIntValue];
 
-      v5->_locationType = v8;
+      v5->_locationType = unsignedIntValue;
       v7 = v5;
     }
   }
@@ -116,17 +116,17 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULLocationType *)self locationType];
-    v7 = [v5 locationType];
+    v5 = equalCopy;
+    locationType = [(ULLocationType *)self locationType];
+    locationType2 = [v5 locationType];
 
-    v8 = v6 == v7;
+    v8 = locationType == locationType2;
   }
 
   else

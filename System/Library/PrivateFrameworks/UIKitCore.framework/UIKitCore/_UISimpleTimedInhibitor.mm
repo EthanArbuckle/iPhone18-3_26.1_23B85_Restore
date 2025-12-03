@@ -13,7 +13,7 @@
   v5 = *(v3 + 32);
   __swift_mutable_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v3) = v6(v4, v5);
   swift_endAccess();
 

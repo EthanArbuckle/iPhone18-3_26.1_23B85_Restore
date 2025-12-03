@@ -1,22 +1,22 @@
 @interface GTReplayQueryPerformanceState
-- (GTReplayQueryPerformanceState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayQueryPerformanceState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayQueryPerformanceState
 
-- (GTReplayQueryPerformanceState)initWithCoder:(id)a3
+- (GTReplayQueryPerformanceState)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = GTReplayQueryPerformanceState;
-  return [(GTReplayRequest *)&v4 initWithCoder:a3];
+  return [(GTReplayRequest *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GTReplayQueryPerformanceState;
-  [(GTReplayRequest *)&v3 encodeWithCoder:a3];
+  [(GTReplayRequest *)&v3 encodeWithCoder:coder];
 }
 
 @end

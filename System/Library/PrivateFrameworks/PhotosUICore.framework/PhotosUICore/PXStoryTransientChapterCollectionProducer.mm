@@ -1,12 +1,12 @@
 @interface PXStoryTransientChapterCollectionProducer
 - (PXStoryErrorReporter)errorReporter;
-- (PXStoryTransientChapterCollectionProducer)initWithStoryQueue:(id)a3;
-- (id)_chapterCollectionManagerWithUneditedChapterColection:(id)a3;
-- (id)requestChapterCollectionForKeyAsset:(id)a3 curatedAssets:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6;
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4;
-- (void)_workQueue_persistEditTransaction:(id)a3;
-- (void)chapterCollectionManager:(id)a3 didApplyEditTransaction:(id)a4;
-- (void)workQueue_saveEditTransaction:(id)a3 completionHandler:(id)a4;
+- (PXStoryTransientChapterCollectionProducer)initWithStoryQueue:(id)queue;
+- (id)_chapterCollectionManagerWithUneditedChapterColection:(id)colection;
+- (id)requestChapterCollectionForKeyAsset:(id)asset curatedAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler;
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset;
+- (void)_workQueue_persistEditTransaction:(id)transaction;
+- (void)chapterCollectionManager:(id)manager didApplyEditTransaction:(id)transaction;
+- (void)workQueue_saveEditTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation PXStoryTransientChapterCollectionProducer
@@ -18,20 +18,20 @@
   return WeakRetained;
 }
 
-- (void)chapterCollectionManager:(id)a3 didApplyEditTransaction:(id)a4
+- (void)chapterCollectionManager:(id)manager didApplyEditTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  transactionCopy = transaction;
   objc_initWeak(&location, self);
-  v8 = [(PXStoryTransientChapterCollectionProducer *)self workQueue];
+  workQueue = [(PXStoryTransientChapterCollectionProducer *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__PXStoryTransientChapterCollectionProducer_chapterCollectionManager_didApplyEditTransaction___block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v12, &location);
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = transactionCopy;
+  v9 = transactionCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -43,15 +43,15 @@ void __94__PXStoryTransientChapterCollectionProducer_chapterCollectionManager_di
   [WeakRetained _workQueue_persistEditTransaction:*(a1 + 32)];
 }
 
-- (id)requestChapterCollectionForKeyAsset:(id)a3 curatedAssets:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6
+- (id)requestChapterCollectionForKeyAsset:(id)asset curatedAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  assetCopy = asset;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v12 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
-  v13 = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
+  storyQueue = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
   objc_initWeak(&location, self);
-  v14 = [(PXStoryTransientChapterCollectionProducer *)self workQueue];
+  workQueue = [(PXStoryTransientChapterCollectionProducer *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __117__PXStoryTransientChapterCollectionProducer_requestChapterCollectionForKeyAsset_curatedAssets_options_resultHandler___block_invoke;
@@ -59,15 +59,15 @@ void __94__PXStoryTransientChapterCollectionProducer_chapterCollectionManager_di
   v15 = v12;
   v24 = v15;
   objc_copyWeak(&v29, &location);
-  v25 = v10;
-  v26 = v9;
-  v27 = v13;
-  v28 = v11;
-  v16 = v11;
-  v17 = v13;
-  v18 = v9;
-  v19 = v10;
-  dispatch_async(v14, block);
+  v25 = assetsCopy;
+  v26 = assetCopy;
+  v27 = storyQueue;
+  v28 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = storyQueue;
+  v18 = assetCopy;
+  v19 = assetsCopy;
+  dispatch_async(workQueue, block);
 
   v20 = v28;
   v21 = v15;
@@ -121,29 +121,29 @@ void __117__PXStoryTransientChapterCollectionProducer_requestChapterCollectionFo
   }
 }
 
-- (void)workQueue_saveEditTransaction:(id)a3 completionHandler:(id)a4
+- (void)workQueue_saveEditTransaction:(id)transaction completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v14 = NSStringFromClass(v6);
   v13 = PXStoryErrorCreateWithCodeDebugFormat(4, @"%@ doesn't support saving chapter edits", v7, v8, v9, v10, v11, v12, v14);
-  (*(a4 + 2))(v5, 0, v13);
+  (*(handler + 2))(handlerCopy, 0, v13);
 }
 
-- (void)_workQueue_persistEditTransaction:(id)a3
+- (void)_workQueue_persistEditTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
-  v6 = [(PXStoryTransientChapterCollectionProducer *)self errorReporter];
+  transactionCopy = transaction;
+  storyQueue = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
+  errorReporter = [(PXStoryTransientChapterCollectionProducer *)self errorReporter];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTransaction___block_invoke;
   v9[3] = &unk_1E774B730;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
-  [(PXStoryTransientChapterCollectionProducer *)self workQueue_saveEditTransaction:v4 completionHandler:v9];
+  v10 = storyQueue;
+  v11 = errorReporter;
+  v7 = errorReporter;
+  v8 = storyQueue;
+  [(PXStoryTransientChapterCollectionProducer *)self workQueue_saveEditTransaction:transactionCopy completionHandler:v9];
 }
 
 void __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTransaction___block_invoke(uint64_t a1, char a2, void *a3)
@@ -171,11 +171,11 @@ void __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTrans
   }
 }
 
-- (id)_chapterCollectionManagerWithUneditedChapterColection:(id)a3
+- (id)_chapterCollectionManagerWithUneditedChapterColection:(id)colection
 {
-  v4 = a3;
-  v5 = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  colectionCopy = colection;
+  storyQueue = [(PXStoryTransientChapterCollectionProducer *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   transientChapterCollectionManager = self->_transientChapterCollectionManager;
   if (transientChapterCollectionManager)
@@ -184,13 +184,13 @@ void __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTrans
     v12[1] = 3221225472;
     v12[2] = __99__PXStoryTransientChapterCollectionProducer__chapterCollectionManagerWithUneditedChapterColection___block_invoke;
     v12[3] = &unk_1E774B1D0;
-    v13 = v4;
+    v13 = colectionCopy;
     [(PXStoryTransientChapterCollectionManager *)transientChapterCollectionManager performChanges:v12];
   }
 
   else
   {
-    v7 = [[PXStoryTransientChapterCollectionManager alloc] initWithUneditedChapterCollection:v4];
+    v7 = [[PXStoryTransientChapterCollectionManager alloc] initWithUneditedChapterCollection:colectionCopy];
     v8 = self->_transientChapterCollectionManager;
     self->_transientChapterCollectionManager = v7;
 
@@ -203,29 +203,29 @@ void __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTrans
   return v9;
 }
 
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetsCopy = assets;
+  assetCopy = asset;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXStoryTransientChapterCollectionProducer.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryTransientChapterCollectionProducer workQueue_uneditedChapterCollectionWithAssets:keyAsset:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransientChapterCollectionProducer.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryTransientChapterCollectionProducer workQueue_uneditedChapterCollectionWithAssets:keyAsset:]", v11}];
 
   abort();
 }
 
-- (PXStoryTransientChapterCollectionProducer)initWithStoryQueue:(id)a3
+- (PXStoryTransientChapterCollectionProducer)initWithStoryQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = PXStoryTransientChapterCollectionProducer;
   v5 = [(PXStoryTransientChapterCollectionProducer *)&v18 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
       storyQueue = v5->_storyQueue;
       v5->_storyQueue = v6;
     }
@@ -240,10 +240,10 @@ void __79__PXStoryTransientChapterCollectionProducer__workQueue_persistEditTrans
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_USER_INITIATED, 0);
-    v15 = dispatch_queue_create(v12, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     workQueue = v5->_workQueue;
     v5->_workQueue = v15;
   }

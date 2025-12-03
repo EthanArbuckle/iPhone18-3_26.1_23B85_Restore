@@ -1,13 +1,13 @@
 @interface CRLCurrencyFormat
-- (id)decimalFormatterForLocale:(id)a3;
+- (id)decimalFormatterForLocale:(id)locale;
 @end
 
 @implementation CRLCurrencyFormat
 
-- (id)decimalFormatterForLocale:(id)a3
+- (id)decimalFormatterForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [[CRLDecimalFormatter alloc] initWithLocale:v3 style:2];
+  localeCopy = locale;
+  v4 = [[CRLDecimalFormatter alloc] initWithLocale:localeCopy style:2];
 
   return v4;
 }

@@ -11,10 +11,10 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 data];
-    if (v6)
+    data = [v4 data];
+    if (data)
     {
-      v7 = [a1 legacyNoteAirDropDocumentWithData:v6];
+      v7 = [self legacyNoteAirDropDocumentWithData:data];
     }
 
     else
@@ -35,13 +35,13 @@
 
 - (id)webArchiveFromLegacyNoteDocument
 {
-  v1 = [a1 dataFromLegacyNoteDocument];
-  if (v1)
+  dataFromLegacyNoteDocument = [self dataFromLegacyNoteDocument];
+  if (dataFromLegacyNoteDocument)
   {
-    v2 = [objc_alloc(MEMORY[0x1E69E2F30]) initWithData:v1];
+    v2 = [objc_alloc(MEMORY[0x1E69E2F30]) initWithData:dataFromLegacyNoteDocument];
     if (!v2)
     {
-      [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"webArchive" functionName:"-[ICAirDropDocument(LegacyUI) webArchiveFromLegacyNoteDocument]" simulateCrash:1 showAlert:0 format:{@"Failed to create WebArchive from data with length %lu", objc_msgSend(v1, "length")}];
+      [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"webArchive" functionName:"-[ICAirDropDocument(LegacyUI) webArchiveFromLegacyNoteDocument]" simulateCrash:1 showAlert:0 format:{@"Failed to create WebArchive from data with length %lu", objc_msgSend(dataFromLegacyNoteDocument, "length")}];
     }
   }
 

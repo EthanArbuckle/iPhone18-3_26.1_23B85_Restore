@@ -1,40 +1,40 @@
 @interface PKOneTimeCodeView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKOneTimeCodeView)initWithCodeLength:(int64_t)a3 delegate:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKOneTimeCodeView)initWithCodeLength:(int64_t)length delegate:(id)delegate;
 - (id)currentCode;
-- (void)_passcodeFieldTapped:(id)a3;
+- (void)_passcodeFieldTapped:(id)tapped;
 - (void)_updateLabels;
 - (void)clearCurrentCode;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDisableEntry:(BOOL)a3;
-- (void)setEntryError:(unint64_t)a3;
-- (void)setEntrySpacing:(double)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDisableEntry:(BOOL)entry;
+- (void)setEntryError:(unint64_t)error;
+- (void)setEntrySpacing:(double)spacing;
 @end
 
 @implementation PKOneTimeCodeView
 
-- (PKOneTimeCodeView)initWithCodeLength:(int64_t)a3 delegate:(id)a4
+- (PKOneTimeCodeView)initWithCodeLength:(int64_t)length delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = PKOneTimeCodeView;
   v7 = [(PKOneTimeCodeView *)&v32 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    v7->_codeLength = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_codeLength = length;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
     value = v8->_value;
     v8->_value = v9;
 
-    v11 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v12 = [v11 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
     nonNumericCharSet = v8->_nonNumericCharSet;
-    v8->_nonNumericCharSet = v12;
+    v8->_nonNumericCharSet = invertedSet;
 
     v14 = [[PKOneTimeCodeDigitFieldView alloc] initWithIndex:0];
     templateField = v8->_templateField;
@@ -55,8 +55,8 @@
     v8->_entryErrorLabel = v18;
 
     v20 = v8->_entryErrorLabel;
-    v21 = [MEMORY[0x1E69DC888] redColor];
-    [(PKIconTextLabel *)v20 setTextColor:v21];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(PKIconTextLabel *)v20 setTextColor:redColor];
 
     v22 = v8->_entryErrorLabel;
     v23 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0, 0, 0);
@@ -96,22 +96,22 @@
   return v8;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (self->_invisibleTextField != v9 || self->_disableEntry || ([v10 isEqualToString:@"\n"] & 1) != 0 || objc_msgSend(v11, "rangeOfCharacterFromSet:", self->_nonNumericCharSet) != 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  v11 = stringCopy;
+  if (self->_invisibleTextField != fieldCopy || self->_disableEntry || ([stringCopy isEqualToString:@"\n"] & 1) != 0 || objc_msgSend(v11, "rangeOfCharacterFromSet:", self->_nonNumericCharSet) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = 0;
   }
 
   else
   {
-    v12 = [(UITextField *)v9 text];
-    v13 = [v12 stringByReplacingCharactersInRange:location withString:{length, v11}];
+    text = [(UITextField *)fieldCopy text];
+    v13 = [text stringByReplacingCharactersInRange:location withString:{length, v11}];
 
     v14 = [v13 length];
     codeLength = self->_codeLength;
@@ -149,37 +149,37 @@
   [WeakRetained oneTimeCodeView:self didEnterCode:v5];
 }
 
-- (void)setEntrySpacing:(double)a3
+- (void)setEntrySpacing:(double)spacing
 {
-  if (self->_entrySpacing != a3)
+  if (self->_entrySpacing != spacing)
   {
-    self->_entrySpacing = a3;
+    self->_entrySpacing = spacing;
     [(PKOneTimeCodeView *)self setNeedsLayout];
   }
 }
 
-- (void)setDisableEntry:(BOOL)a3
+- (void)setDisableEntry:(BOOL)entry
 {
-  if (self->_disableEntry != a3)
+  if (self->_disableEntry != entry)
   {
-    self->_disableEntry = a3;
+    self->_disableEntry = entry;
   }
 }
 
-- (void)setEntryError:(unint64_t)a3
+- (void)setEntryError:(unint64_t)error
 {
-  if (self->_entryError != a3)
+  if (self->_entryError != error)
   {
-    self->_entryError = a3;
+    self->_entryError = error;
     [(PKOneTimeCodeView *)self _updateLabels];
 
     [(PKOneTimeCodeView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKOneTimeCodeView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKOneTimeCodeView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -194,10 +194,10 @@
   [(PKOneTimeCodeView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  y = a3.origin.y;
+  width = bounds.size.width;
+  y = bounds.origin.y;
   v8 = [(NSArray *)self->_codeFields count];
   entrySpacing = self->_entrySpacing;
   v10 = 0.0;
@@ -220,7 +220,7 @@
         v14 = v14 + self->_entrySpacing;
       }
 
-      if (!a4)
+      if (!layout)
       {
         [v13 setFrame:{v12, y, v10, v10}];
       }
@@ -237,7 +237,7 @@
     [(PKIconTextLabel *)self->_entryErrorLabel sizeThatFits:width, 1.79769313e308];
     PKRectCenteredXInRect();
     v15 = v15 + v19 + 16.0;
-    if (a4)
+    if (layout)
     {
       goto LABEL_15;
     }
@@ -249,7 +249,7 @@
   v17 = *(MEMORY[0x1E695F058] + 8);
   v18 = *(MEMORY[0x1E695F058] + 16);
   v19 = *(MEMORY[0x1E695F058] + 24);
-  if (!a4)
+  if (!layout)
   {
 LABEL_14:
     [(PKIconTextLabel *)self->_entryErrorLabel setFrame:v16, v17, v18, v19];
@@ -263,13 +263,13 @@ LABEL_15:
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PKOneTimeCodeView;
-  [(PKOneTimeCodeView *)&v14 setBackgroundColor:v4];
+  [(PKOneTimeCodeView *)&v14 setBackgroundColor:colorCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -290,7 +290,7 @@ LABEL_15:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setBackgroundColor:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setBackgroundColor:{colorCopy, v10}];
       }
 
       while (v7 != v9);
@@ -346,12 +346,12 @@ LABEL_13:
   if (v4)
   {
     v8 = MEMORY[0x1E69DCAD8];
-    v9 = [(PKIconTextLabel *)self->_entryErrorLabel textFont];
-    v10 = [v8 configurationWithFont:v9 scale:2];
+    textFont = [(PKIconTextLabel *)self->_entryErrorLabel textFont];
+    v10 = [v8 configurationWithFont:textFont scale:2];
 
     v11 = [v4 imageWithConfiguration:v10];
-    v12 = [(PKIconTextLabel *)self->_entryErrorLabel textColor];
-    v13 = [v11 imageWithTintColor:v12];
+    textColor = [(PKIconTextLabel *)self->_entryErrorLabel textColor];
+    v13 = [v11 imageWithTintColor:textColor];
 
     v25 = [v13 imageWithRenderingMode:1];
   }
@@ -363,8 +363,8 @@ LABEL_13:
 
 LABEL_16:
   entryErrorLabel = self->_entryErrorLabel;
-  v15 = [v5 pk_attributedString];
-  [(PKIconTextLabel *)entryErrorLabel setText:v15];
+  pk_attributedString = [v5 pk_attributedString];
+  [(PKIconTextLabel *)entryErrorLabel setText:pk_attributedString];
 
   [(PKIconTextLabel *)self->_entryErrorLabel setIcon:v25];
   if (self->_codeLength > 0.0)
@@ -419,7 +419,7 @@ LABEL_16:
   [(PKOneTimeCodeView *)self setNeedsLayout];
 }
 
-- (void)_passcodeFieldTapped:(id)a3
+- (void)_passcodeFieldTapped:(id)tapped
 {
   if ([(PKOneTimeCodeView *)self canBecomeFirstResponder])
   {

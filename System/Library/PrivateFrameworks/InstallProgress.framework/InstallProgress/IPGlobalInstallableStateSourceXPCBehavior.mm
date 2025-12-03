@@ -1,51 +1,51 @@
 @interface IPGlobalInstallableStateSourceXPCBehavior
-- (IPGlobalInstallableStateSourceXPCBehavior)initWithXPCConnectionProvider:(id)a3 stateStreamSource:(id)a4 queue:(id)a5;
-- (id)_installableStateSourcesForStates:(id)a3;
-- (id)_queue_asyncProxyWithErrorHandler:(id)a3;
+- (IPGlobalInstallableStateSourceXPCBehavior)initWithXPCConnectionProvider:(id)provider stateStreamSource:(id)source queue:(id)queue;
+- (id)_installableStateSourcesForStates:(id)states;
+- (id)_queue_asyncProxyWithErrorHandler:(id)handler;
 - (id)_queue_connectedConnection;
-- (id)_queue_makeExtantStateSourcesForGlobalSource:(id)a3 error:(id *)a4;
-- (id)_queue_makeInstallingStateSourcesForGlobalSource:(id)a3 error:(id *)a4;
-- (id)_queue_syncProxyWithErrorHandler:(id)a3;
-- (id)currentProgressForIdentity:(id)a3 error:(id *)a4;
-- (void)_queue_noteInstallBeganForIdentity:(id)a3;
+- (id)_queue_makeExtantStateSourcesForGlobalSource:(id)source error:(id *)error;
+- (id)_queue_makeInstallingStateSourcesForGlobalSource:(id)source error:(id *)error;
+- (id)_queue_syncProxyWithErrorHandler:(id)handler;
+- (id)currentProgressForIdentity:(id)identity error:(id *)error;
+- (void)_queue_noteInstallBeganForIdentity:(id)identity;
 - (void)_queue_registerAsProgressObserverIfNecessary;
 - (void)_queue_resumeStateStreamSourceIfNecessary;
-- (void)_queue_sendStateSourceAvailableForIdentity:(id)a3;
-- (void)_queue_sendStateSourceUnavailableForIdentity:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)installableForIdentity:(id)a3 progressChanged:(id)a4;
-- (void)installableForIdentity:(id)a3 progressEndedForReason:(unint64_t)a4;
-- (void)makeExtantStateSourcesForGlobalSource:(id)a3 andEnumerate:(id)a4;
-- (void)makeInstallingStateSourcesForGlobalSource:(id)a3 andEnumerate:(id)a4;
-- (void)registerProgressSource:(id)a3;
-- (void)registerStateSource:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_queue_sendStateSourceAvailableForIdentity:(id)identity;
+- (void)_queue_sendStateSourceUnavailableForIdentity:(id)identity;
+- (void)addObserver:(id)observer;
+- (void)installableForIdentity:(id)identity progressChanged:(id)changed;
+- (void)installableForIdentity:(id)identity progressEndedForReason:(unint64_t)reason;
+- (void)makeExtantStateSourcesForGlobalSource:(id)source andEnumerate:(id)enumerate;
+- (void)makeInstallingStateSourcesForGlobalSource:(id)source andEnumerate:(id)enumerate;
+- (void)registerProgressSource:(id)source;
+- (void)registerStateSource:(id)source;
+- (void)removeObserver:(id)observer;
 - (void)serverActionBarrierForTesting;
-- (void)stateUpdateStreamSource:(id)a3 updateMessageReceived:(id)a4;
-- (void)unregisterProgressSource:(id)a3;
-- (void)unregisterStateSource:(id)a3;
+- (void)stateUpdateStreamSource:(id)source updateMessageReceived:(id)received;
+- (void)unregisterProgressSource:(id)source;
+- (void)unregisterStateSource:(id)source;
 @end
 
 @implementation IPGlobalInstallableStateSourceXPCBehavior
 
-- (IPGlobalInstallableStateSourceXPCBehavior)initWithXPCConnectionProvider:(id)a3 stateStreamSource:(id)a4 queue:(id)a5
+- (IPGlobalInstallableStateSourceXPCBehavior)initWithXPCConnectionProvider:(id)provider stateStreamSource:(id)source queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  sourceCopy = source;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = IPGlobalInstallableStateSourceXPCBehavior;
   v11 = [(IPGlobalInstallableStateSourceXPCBehavior *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_stateStreamSource, a4);
+    objc_storeStrong(&v11->_stateStreamSource, source);
     [(IPStateUpdateStreamSource *)v12->_stateStreamSource setDelegate:v12];
-    v13 = [v8 copy];
+    v13 = [providerCopy copy];
     connectionProvider = v12->_connectionProvider;
     v12->_connectionProvider = v13;
 
-    objc_storeStrong(&v12->_q, a5);
+    objc_storeStrong(&v12->_q, queue);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("com.apple.InstallProgress.GISSXPCB.callout", v15);
     calloutQueue = v12->_calloutQueue;
@@ -70,17 +70,17 @@
   return v12;
 }
 
-- (void)registerStateSource:(id)a3
+- (void)registerStateSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   q = self->_q;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__IPGlobalInstallableStateSourceXPCBehavior_registerStateSource___block_invoke;
   v7[3] = &unk_2797B1E00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   dispatch_sync(q, v7);
 }
 
@@ -138,17 +138,17 @@ void __65__IPGlobalInstallableStateSourceXPCBehavior_registerStateSource___block
   }
 }
 
-- (void)unregisterStateSource:(id)a3
+- (void)unregisterStateSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   q = self->_q;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__IPGlobalInstallableStateSourceXPCBehavior_unregisterStateSource___block_invoke;
   v7[3] = &unk_2797B1E00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   dispatch_sync(q, v7);
 }
 
@@ -175,9 +175,9 @@ void __67__IPGlobalInstallableStateSourceXPCBehavior_unregisterStateSource___blo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerProgressSource:(id)a3
+- (void)registerProgressSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -189,10 +189,10 @@ void __67__IPGlobalInstallableStateSourceXPCBehavior_unregisterStateSource___blo
   block[1] = 3221225472;
   block[2] = __68__IPGlobalInstallableStateSourceXPCBehavior_registerProgressSource___block_invoke;
   block[3] = &unk_2797B1EF0;
-  v8 = v4;
-  v9 = self;
+  v8 = sourceCopy;
+  selfCopy = self;
   v10 = &v11;
-  v6 = v4;
+  v6 = sourceCopy;
   dispatch_sync(q, block);
   dispatch_async(self->_calloutQueue, v12[5]);
 
@@ -342,17 +342,17 @@ void __68__IPGlobalInstallableStateSourceXPCBehavior_registerProgressSource___bl
   *(v6 + 40) = v5;
 }
 
-- (void)unregisterProgressSource:(id)a3
+- (void)unregisterProgressSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   q = self->_q;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__IPGlobalInstallableStateSourceXPCBehavior_unregisterProgressSource___block_invoke;
   v7[3] = &unk_2797B1E00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   dispatch_sync(q, v7);
 }
 
@@ -400,17 +400,17 @@ void __70__IPGlobalInstallableStateSourceXPCBehavior_unregisterProgressSource___
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   q = self->_q;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__IPGlobalInstallableStateSourceXPCBehavior_addObserver___block_invoke;
   v7[3] = &unk_2797B1E00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(q, v7);
 }
 
@@ -422,24 +422,24 @@ uint64_t __57__IPGlobalInstallableStateSourceXPCBehavior_addObserver___block_inv
   return [v2 _queue_resumeStateStreamSourceIfNecessary];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   q = self->_q;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__IPGlobalInstallableStateSourceXPCBehavior_removeObserver___block_invoke;
   v7[3] = &unk_2797B1E00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(q, v7);
 }
 
 - (void)_queue_registerAsProgressObserverIfNecessary
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0_1(&dword_254C69000, a2, a3, "Could not register as progress observer! %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -578,34 +578,34 @@ void __71__IPGlobalInstallableStateSourceXPCBehavior__queue_connectedConnection_
   }
 }
 
-- (id)_queue_syncProxyWithErrorHandler:(id)a3
+- (id)_queue_syncProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_connectedConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _queue_connectedConnection = [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_connectedConnection];
+  v6 = [_queue_connectedConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_queue_asyncProxyWithErrorHandler:(id)a3
+- (id)_queue_asyncProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_connectedConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _queue_connectedConnection = [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_connectedConnection];
+  v6 = [_queue_connectedConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_installableStateSourcesForStates:(id)a3
+- (id)_installableStateSourcesForStates:(id)states
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  statesCopy = states;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(statesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = statesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -622,8 +622,8 @@ void __71__IPGlobalInstallableStateSourceXPCBehavior__queue_connectedConnection_
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = [IPAppStateSource alloc];
-        v13 = [v11 identity];
-        v14 = [(IPAppStateSource *)v12 initWithApplicationIdentity:v13 forStateSourceRegistry:self];
+        identity = [v11 identity];
+        v14 = [(IPAppStateSource *)v12 initWithApplicationIdentity:identity forStateSourceRegistry:self];
         [v5 addObject:v14];
       }
 
@@ -639,9 +639,9 @@ void __71__IPGlobalInstallableStateSourceXPCBehavior__queue_connectedConnection_
   return v15;
 }
 
-- (id)_queue_makeExtantStateSourcesForGlobalSource:(id)a3 error:(id *)a4
+- (id)_queue_makeExtantStateSourcesForGlobalSource:(id)source error:(id *)error
 {
-  v6 = a3;
+  sourceCopy = source;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -670,9 +670,9 @@ void __71__IPGlobalInstallableStateSourceXPCBehavior__queue_connectedConnection_
   [v7 getAllInstallableStates:v11];
 
   v8 = v20[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -721,9 +721,9 @@ void __96__IPGlobalInstallableStateSourceXPCBehavior__queue_makeExtantStateSourc
   }
 }
 
-- (id)_queue_makeInstallingStateSourcesForGlobalSource:(id)a3 error:(id *)a4
+- (id)_queue_makeInstallingStateSourcesForGlobalSource:(id)source error:(id *)error
 {
-  v6 = a3;
+  sourceCopy = source;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -752,9 +752,9 @@ void __96__IPGlobalInstallableStateSourceXPCBehavior__queue_makeExtantStateSourc
   [v7 getActiveInstallations:v11];
 
   v8 = v14[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v8 = v14[5];
   }
 
@@ -851,10 +851,10 @@ void __100__IPGlobalInstallableStateSourceXPCBehavior__queue_makeInstallingState
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)makeInstallingStateSourcesForGlobalSource:(id)a3 andEnumerate:(id)a4
+- (void)makeInstallingStateSourcesForGlobalSource:(id)source andEnumerate:(id)enumerate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  enumerateCopy = enumerate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -869,7 +869,7 @@ void __100__IPGlobalInstallableStateSourceXPCBehavior__queue_makeInstallingState
   block[3] = &unk_2797B2120;
   v16 = &v17;
   block[4] = self;
-  v9 = v6;
+  v9 = sourceCopy;
   v15 = v9;
   dispatch_sync(q, block);
   v10 = v18[5];
@@ -877,7 +877,7 @@ void __100__IPGlobalInstallableStateSourceXPCBehavior__queue_makeInstallingState
   v12[1] = 3221225472;
   v12[2] = __100__IPGlobalInstallableStateSourceXPCBehavior_makeInstallingStateSourcesForGlobalSource_andEnumerate___block_invoke_2;
   v12[3] = &unk_2797B2148;
-  v11 = v7;
+  v11 = enumerateCopy;
   v13 = v11;
   [v10 enumerateObjectsUsingBlock:v12];
 
@@ -894,10 +894,10 @@ uint64_t __100__IPGlobalInstallableStateSourceXPCBehavior_makeInstallingStateSou
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)makeExtantStateSourcesForGlobalSource:(id)a3 andEnumerate:(id)a4
+- (void)makeExtantStateSourcesForGlobalSource:(id)source andEnumerate:(id)enumerate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  enumerateCopy = enumerate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -912,7 +912,7 @@ uint64_t __100__IPGlobalInstallableStateSourceXPCBehavior_makeInstallingStateSou
   block[3] = &unk_2797B2120;
   v16 = &v17;
   block[4] = self;
-  v9 = v6;
+  v9 = sourceCopy;
   v15 = v9;
   dispatch_sync(q, block);
   v10 = v18[5];
@@ -920,7 +920,7 @@ uint64_t __100__IPGlobalInstallableStateSourceXPCBehavior_makeInstallingStateSou
   v12[1] = 3221225472;
   v12[2] = __96__IPGlobalInstallableStateSourceXPCBehavior_makeExtantStateSourcesForGlobalSource_andEnumerate___block_invoke_2;
   v12[3] = &unk_2797B2148;
-  v11 = v7;
+  v11 = enumerateCopy;
   v13 = v11;
   [v10 enumerateObjectsUsingBlock:v12];
 
@@ -937,9 +937,9 @@ uint64_t __96__IPGlobalInstallableStateSourceXPCBehavior_makeExtantStateSourcesF
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)currentProgressForIdentity:(id)a3 error:(id *)a4
+- (id)currentProgressForIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -974,11 +974,11 @@ uint64_t __96__IPGlobalInstallableStateSourceXPCBehavior_makeExtantStateSourcesF
   v12[3] = &unk_2797B2080;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 getProgressForIdentity:v6 completion:v12];
+  [v8 getProgressForIdentity:identityCopy completion:v12];
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -1050,25 +1050,25 @@ void __74__IPGlobalInstallableStateSourceXPCBehavior_serverActionBarrierForTesti
   }
 }
 
-- (void)installableForIdentity:(id)a3 progressChanged:(id)a4
+- (void)installableForIdentity:(id)identity progressChanged:(id)changed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_q);
   v8 = _IPClientLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v6;
+    v20 = identityCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = changedCopy;
     _os_log_impl(&dword_254C69000, v8, OS_LOG_TYPE_DEFAULT, "Installable for identity %@ progress changed to %@", buf, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_registeredProgressSources objectForKey:v6];
-  v10 = [v9 allObjects];
-  v11 = [v10 copy];
+  v9 = [(NSMutableDictionary *)self->_registeredProgressSources objectForKey:identityCopy];
+  allObjects = [v9 allObjects];
+  v11 = [allObjects copy];
 
   if ([v11 count])
   {
@@ -1078,8 +1078,8 @@ void __74__IPGlobalInstallableStateSourceXPCBehavior_serverActionBarrierForTesti
     block[2] = __84__IPGlobalInstallableStateSourceXPCBehavior_installableForIdentity_progressChanged___block_invoke;
     block[3] = &unk_2797B21B8;
     v16 = v11;
-    v17 = v7;
-    v18 = v6;
+    v17 = changedCopy;
+    v18 = identityCopy;
     dispatch_async(calloutQueue, block);
 
     v13 = v16;
@@ -1091,7 +1091,7 @@ void __74__IPGlobalInstallableStateSourceXPCBehavior_serverActionBarrierForTesti
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identityCopy;
       _os_log_impl(&dword_254C69000, v13, OS_LOG_TYPE_DEFAULT, "No observers to notify of progress to %@", buf, 0xCu);
     }
   }
@@ -1144,35 +1144,35 @@ void __84__IPGlobalInstallableStateSourceXPCBehavior_installableForIdentity_prog
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)installableForIdentity:(id)a3 progressEndedForReason:(unint64_t)a4
+- (void)installableForIdentity:(id)identity progressEndedForReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_q);
   v7 = _IPClientLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = identityCopy;
     v19 = 2048;
-    v20 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_254C69000, v7, OS_LOG_TYPE_DEFAULT, "Installable for identity %@ progress ended with reason %llu", buf, 0x16u);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredProgressSources objectForKey:v6];
-  v9 = [v8 allObjects];
+  v8 = [(NSMutableDictionary *)self->_registeredProgressSources objectForKey:identityCopy];
+  allObjects = [v8 allObjects];
 
-  [(NSMutableDictionary *)self->_registeredProgressSources removeObjectForKey:v6];
-  if ([v9 count])
+  [(NSMutableDictionary *)self->_registeredProgressSources removeObjectForKey:identityCopy];
+  if ([allObjects count])
   {
     calloutQueue = self->_calloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__IPGlobalInstallableStateSourceXPCBehavior_installableForIdentity_progressEndedForReason___block_invoke;
     block[3] = &unk_2797B21E0;
-    v14 = v9;
-    v16 = a4;
-    v15 = v6;
+    v14 = allObjects;
+    reasonCopy2 = reason;
+    v15 = identityCopy;
     dispatch_async(calloutQueue, block);
 
     v11 = v14;
@@ -1184,7 +1184,7 @@ void __84__IPGlobalInstallableStateSourceXPCBehavior_installableForIdentity_prog
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = identityCopy;
       _os_log_impl(&dword_254C69000, v11, OS_LOG_TYPE_DEFAULT, "No observers to notify of finish of %@", buf, 0xCu);
     }
   }
@@ -1237,30 +1237,30 @@ void __91__IPGlobalInstallableStateSourceXPCBehavior_installableForIdentity_prog
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_noteInstallBeganForIdentity:(id)a3
+- (void)_queue_noteInstallBeganForIdentity:(id)identity
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_q);
   v5 = _IPClientLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = identityCopy;
     _os_log_impl(&dword_254C69000, v5, OS_LOG_TYPE_DEFAULT, "Install began for %@", buf, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_registeredStateSources objectForKey:v4];
-  v7 = [v6 allObjects];
+  v6 = [(NSMutableDictionary *)self->_registeredStateSources objectForKey:identityCopy];
+  allObjects = [v6 allObjects];
 
-  if ([v7 count])
+  if ([allObjects count])
   {
     calloutQueue = self->_calloutQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__IPGlobalInstallableStateSourceXPCBehavior__queue_noteInstallBeganForIdentity___block_invoke;
     block[3] = &unk_2797B2030;
-    v11 = v7;
+    v11 = allObjects;
     dispatch_async(calloutQueue, block);
   }
 
@@ -1303,31 +1303,31 @@ void __80__IPGlobalInstallableStateSourceXPCBehavior__queue_noteInstallBeganForI
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_sendStateSourceAvailableForIdentity:(id)a3
+- (void)_queue_sendStateSourceAvailableForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_q);
-  v5 = [(NSHashTable *)self->_stateUpdateObservers allObjects];
+  allObjects = [(NSHashTable *)self->_stateUpdateObservers allObjects];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __88__IPGlobalInstallableStateSourceXPCBehavior__queue_sendStateSourceAvailableForIdentity___block_invoke;
   v17[3] = &unk_2797B2208;
-  v6 = v4;
+  v6 = identityCopy;
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v7 = MEMORY[0x259C29600](v17);
   calloutQueue = self->_calloutQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__IPGlobalInstallableStateSourceXPCBehavior__queue_sendStateSourceAvailableForIdentity___block_invoke_2;
   v12[3] = &unk_2797B2230;
-  v13 = v5;
-  v14 = self;
+  v13 = allObjects;
+  selfCopy2 = self;
   v15 = v6;
   v16 = v7;
   v9 = v7;
   v10 = v6;
-  v11 = v5;
+  v11 = allObjects;
   dispatch_async(calloutQueue, v12);
 }
 
@@ -1374,22 +1374,22 @@ void __88__IPGlobalInstallableStateSourceXPCBehavior__queue_sendStateSourceAvail
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_sendStateSourceUnavailableForIdentity:(id)a3
+- (void)_queue_sendStateSourceUnavailableForIdentity:(id)identity
 {
   q = self->_q;
-  v5 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(q);
-  v6 = [(NSMutableDictionary *)self->_registeredStateSources objectForKey:v5];
-  v7 = [v6 allObjects];
+  v6 = [(NSMutableDictionary *)self->_registeredStateSources objectForKey:identityCopy];
+  allObjects = [v6 allObjects];
 
-  [(NSMutableDictionary *)self->_registeredStateSources removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_registeredStateSources removeObjectForKey:identityCopy];
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__IPGlobalInstallableStateSourceXPCBehavior__queue_sendStateSourceUnavailableForIdentity___block_invoke;
   block[3] = &unk_2797B2030;
-  v11 = v7;
-  v9 = v7;
+  v11 = allObjects;
+  v9 = allObjects;
   dispatch_async(calloutQueue, block);
 }
 
@@ -1429,44 +1429,44 @@ void __90__IPGlobalInstallableStateSourceXPCBehavior__queue_sendStateSourceUnava
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateUpdateStreamSource:(id)a3 updateMessageReceived:(id)a4
+- (void)stateUpdateStreamSource:(id)source updateMessageReceived:(id)received
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  receivedCopy = received;
   v6 = _IPClientLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = receivedCopy;
     _os_log_impl(&dword_254C69000, v6, OS_LOG_TYPE_DEFAULT, "received update message %@", &v12, 0xCu);
   }
 
-  v7 = [v5 type];
-  switch(v7)
+  type = [receivedCopy type];
+  switch(type)
   {
     case 4:
-      v9 = [v5 identity];
-      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_sendStateSourceUnavailableForIdentity:v9];
+      identity = [receivedCopy identity];
+      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_sendStateSourceUnavailableForIdentity:identity];
       goto LABEL_11;
     case 3:
       goto LABEL_7;
     case 1:
-      v8 = [v5 identity];
-      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_noteInstallBeganForIdentity:v8];
+      identity2 = [receivedCopy identity];
+      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_noteInstallBeganForIdentity:identity2];
 
 LABEL_7:
-      v9 = [v5 identity];
-      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_sendStateSourceAvailableForIdentity:v9];
+      identity = [receivedCopy identity];
+      [(IPGlobalInstallableStateSourceXPCBehavior *)self _queue_sendStateSourceAvailableForIdentity:identity];
       goto LABEL_11;
   }
 
-  v9 = _IPClientLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  identity = _IPClientLog();
+  if (os_log_type_enabled(identity, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 type];
+    type2 = [receivedCopy type];
     v12 = 67109120;
-    LODWORD(v13) = v10;
-    _os_log_impl(&dword_254C69000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring update message of type %u for now", &v12, 8u);
+    LODWORD(v13) = type2;
+    _os_log_impl(&dword_254C69000, identity, OS_LOG_TYPE_DEFAULT, "Ignoring update message of type %u for now", &v12, 8u);
   }
 
 LABEL_11:

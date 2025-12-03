@@ -1,25 +1,25 @@
 @interface ATXPOICategoryVisitDuetEvent
 - (ATXPOICategoryVisitDuetEvent)initWithCurrentContextStoreValues;
-- (ATXPOICategoryVisitDuetEvent)initWithPossibleCategoryNames:(id)a3 startDate:(id)a4 endDate:(id)a5 hasExited:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPOICategoryVisitDuetEvent:(id)a3;
+- (ATXPOICategoryVisitDuetEvent)initWithPossibleCategoryNames:(id)names startDate:(id)date endDate:(id)endDate hasExited:(BOOL)exited;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPOICategoryVisitDuetEvent:(id)event;
 - (id)description;
 - (id)identifier;
 @end
 
 @implementation ATXPOICategoryVisitDuetEvent
 
-- (ATXPOICategoryVisitDuetEvent)initWithPossibleCategoryNames:(id)a3 startDate:(id)a4 endDate:(id)a5 hasExited:(BOOL)a6
+- (ATXPOICategoryVisitDuetEvent)initWithPossibleCategoryNames:(id)names startDate:(id)date endDate:(id)endDate hasExited:(BOOL)exited
 {
-  v11 = a3;
+  namesCopy = names;
   v15.receiver = self;
   v15.super_class = ATXPOICategoryVisitDuetEvent;
-  v12 = [(ATXDuetEvent *)&v15 initWithStartDate:a4 endDate:a5];
+  v12 = [(ATXDuetEvent *)&v15 initWithStartDate:date endDate:endDate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_possibleCategoryNames, a3);
-    v13->_hasExited = a6;
+    objc_storeStrong(&v12->_possibleCategoryNames, names);
+    v13->_hasExited = exited;
   }
 
   return v13;
@@ -28,34 +28,34 @@
 - (ATXPOICategoryVisitDuetEvent)initWithCurrentContextStoreValues
 {
   v3 = +[ATXPOICategoryVisitDuetDataProvider sharedInstance];
-  v4 = [v3 getCurrentVisit];
+  getCurrentVisit = [v3 getCurrentVisit];
 
-  return v4;
+  return getCurrentVisit;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPOICategoryVisitDuetEvent *)self isEqualToATXPOICategoryVisitDuetEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPOICategoryVisitDuetEvent *)self isEqualToATXPOICategoryVisitDuetEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPOICategoryVisitDuetEvent:(id)a3
+- (BOOL)isEqualToATXPOICategoryVisitDuetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_possibleCategoryNames;
   v6 = v5;
-  if (v5 == v4[5])
+  if (v5 == eventCopy[5])
   {
   }
 
@@ -70,13 +70,13 @@
     }
   }
 
-  v9 = [(ATXDuetEvent *)self startDate];
-  v10 = [v4 startDate];
-  if ([v9 isEqualToDate:v10])
+  startDate = [(ATXDuetEvent *)self startDate];
+  startDate2 = [eventCopy startDate];
+  if ([startDate isEqualToDate:startDate2])
   {
-    v11 = [(ATXDuetEvent *)self endDate];
-    v12 = [v4 endDate];
-    v8 = [v11 isEqualToDate:v12];
+    endDate = [(ATXDuetEvent *)self endDate];
+    endDate2 = [eventCopy endDate];
+    v8 = [endDate isEqualToDate:endDate2];
   }
 
   else
@@ -91,24 +91,24 @@ LABEL_9:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
-  v5 = [(ATXDuetEvent *)self startDate];
-  v6 = [(ATXDuetEvent *)self endDate];
-  v7 = [v3 initWithFormat:@"ATXPOICategoryVisitDuetEvent categories: %@, startDate: %@, endDate: %@ hasExited: %d", v4, v5, v6, -[ATXPOICategoryVisitDuetEvent hasExited](self, "hasExited")];
+  possibleCategoryNames = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
+  startDate = [(ATXDuetEvent *)self startDate];
+  endDate = [(ATXDuetEvent *)self endDate];
+  v7 = [v3 initWithFormat:@"ATXPOICategoryVisitDuetEvent categories: %@, startDate: %@, endDate: %@ hasExited: %d", possibleCategoryNames, startDate, endDate, -[ATXPOICategoryVisitDuetEvent hasExited](self, "hasExited")];
 
   return v7;
 }
 
 - (id)identifier
 {
-  v3 = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
-  v4 = [v3 count];
+  possibleCategoryNames = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
+  v4 = [possibleCategoryNames count];
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCACA8]);
-    v6 = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    possibleCategoryNames2 = [(ATXPOICategoryVisitDuetEvent *)self possibleCategoryNames];
+    v7 = [possibleCategoryNames2 objectAtIndexedSubscript:0];
     v8 = [v5 initWithFormat:@"%@", v7];
   }
 

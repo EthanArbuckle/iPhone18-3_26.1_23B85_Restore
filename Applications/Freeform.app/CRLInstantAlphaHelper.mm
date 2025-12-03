@@ -1,22 +1,22 @@
 @interface CRLInstantAlphaHelper
-+ (id)newInstantAlphaImageWithCGImage:(CGImage *)a3 ofSize:(CGSize)a4;
-+ (id)newMaskBitmapWithPoint:(CGPoint)a3 image:(id)a4 tolerance:(unint64_t)a5 oldMaskBitmap:(id)a6;
-+ (id)newMaskSeedFillWithPoint:(CGPoint)a3 inImage:(id)a4 tolerance:(unint64_t)a5 oldFill:(id)a6;
-+ (id)removeBackgroundFromCGImage:(CGImage *)a3;
++ (id)newInstantAlphaImageWithCGImage:(CGImage *)image ofSize:(CGSize)size;
++ (id)newMaskBitmapWithPoint:(CGPoint)point image:(id)image tolerance:(unint64_t)tolerance oldMaskBitmap:(id)bitmap;
++ (id)newMaskSeedFillWithPoint:(CGPoint)point inImage:(id)image tolerance:(unint64_t)tolerance oldFill:(id)fill;
++ (id)removeBackgroundFromCGImage:(CGImage *)image;
 + (void)p_loadVKCGImageRemoveBackground;
 @end
 
 @implementation CRLInstantAlphaHelper
 
-+ (id)newInstantAlphaImageWithCGImage:(CGImage *)a3 ofSize:(CGSize)a4
++ (id)newInstantAlphaImageWithCGImage:(CGImage *)image ofSize:(CGSize)size
 {
-  v5 = sub_10012211C(a4.width);
+  v5 = sub_10012211C(size.width);
   v7 = v6;
   v8 = [[CRLInstantAlphaImage alloc] initWithWidth:v5 height:v6];
   if (v8)
   {
     v9 = sub_1000CCC44();
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(image);
     if (CGColorSpaceIsWideGamutRGB(ColorSpace))
     {
       v9 = sub_1000CCE28();
@@ -24,7 +24,7 @@
 
     v11 = CGBitmapContextCreate(v8->mImageData, v5, v7, 8uLL, 4 * v5, v9, 0x2001u);
     v14.origin.x = sub_10011ECB4();
-    CGContextDrawImage(v11, v14, a3);
+    CGContextDrawImage(v11, v14, image);
     CGContextRelease(v11);
     v12 = v8;
   }
@@ -32,28 +32,28 @@
   return v8;
 }
 
-+ (id)newMaskBitmapWithPoint:(CGPoint)a3 image:(id)a4 tolerance:(unint64_t)a5 oldMaskBitmap:(id)a6
++ (id)newMaskBitmapWithPoint:(CGPoint)point image:(id)image tolerance:(unint64_t)tolerance oldMaskBitmap:(id)bitmap
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a4;
-  v11 = a6;
-  v12 = [[CRLInstantAlphaBinaryBitmap alloc] initWithWidth:v10[1] height:v10[2]];
-  v13 = sub_1001825F8(v10, x, y);
+  y = point.y;
+  x = point.x;
+  imageCopy = image;
+  bitmapCopy = bitmap;
+  v12 = [[CRLInstantAlphaBinaryBitmap alloc] initWithWidth:imageCopy[1] height:imageCopy[2]];
+  v13 = sub_1001825F8(imageCopy, x, y);
   v14 = dispatch_get_global_queue(0, 0);
-  v15 = v10[2];
+  v15 = imageCopy[2];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100182874;
   block[3] = &unk_1018429D0;
-  v23 = v10;
-  v24 = v11;
+  v23 = imageCopy;
+  v24 = bitmapCopy;
   v16 = v12;
   v27 = v13;
   v25 = v16;
-  v26 = a5;
-  v17 = v11;
-  v18 = v10;
+  toleranceCopy = tolerance;
+  v17 = bitmapCopy;
+  v18 = imageCopy;
   dispatch_apply(v15, v14, block);
   v19 = v25;
   v20 = v16;
@@ -61,24 +61,24 @@
   return v20;
 }
 
-+ (id)newMaskSeedFillWithPoint:(CGPoint)a3 inImage:(id)a4 tolerance:(unint64_t)a5 oldFill:(id)a6
++ (id)newMaskSeedFillWithPoint:(CGPoint)point inImage:(id)image tolerance:(unint64_t)tolerance oldFill:(id)fill
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v17[0] = 0;
-  v10 = (*(a4 + 1) - 1);
-  v11 = a6;
-  v12 = a4;
+  v10 = (*(image + 1) - 1);
+  fillCopy = fill;
+  imageCopy = image;
   v13 = sub_1004C3240(x, 0.0, v10);
-  v14 = sub_1004C3240(y, 0.0, (v12[2] - 1));
-  v17[0] = sub_1001825F8(v12, v13, v14);
-  v17[1] = a5;
-  v15 = [CRLInstantAlphaSeedFill newSeedFillWithImage:v12 seedPoint:v17 context:v11 oldFill:v13, v14];
+  v14 = sub_1004C3240(y, 0.0, (imageCopy[2] - 1));
+  v17[0] = sub_1001825F8(imageCopy, v13, v14);
+  v17[1] = tolerance;
+  v15 = [CRLInstantAlphaSeedFill newSeedFillWithImage:imageCopy seedPoint:v17 context:fillCopy oldFill:v13, v14];
 
   return v15;
 }
 
-+ (id)removeBackgroundFromCGImage:(CGImage *)a3
++ (id)removeBackgroundFromCGImage:(CGImage *)image
 {
   v23 = 0;
   v24 = &v23;
@@ -86,8 +86,8 @@
   v26 = sub_10018330C;
   v27 = sub_10018331C;
   v28 = objc_alloc_init(CRLRemoveImageBackgroundData);
-  v6 = [a1 p_loadVKCGImageRemoveBackground];
-  if (!v6)
+  p_loadVKCGImageRemoveBackground = [self p_loadVKCGImageRemoveBackground];
+  if (!p_loadVKCGImageRemoveBackground)
   {
     goto LABEL_9;
   }
@@ -97,12 +97,12 @@
   v19[2] = sub_100183324;
   v19[3] = &unk_101842A38;
   v21 = &v23;
-  v22 = a3;
+  imageCopy = image;
   v7 = dispatch_group_create();
   v20 = v7;
   v8 = objc_retainBlock(v19);
   dispatch_group_enter(v7);
-  v6(a3, 1, v8);
+  p_loadVKCGImageRemoveBackground(image, 1, v8);
   v9 = dispatch_time(0, 5000000000);
   v10 = dispatch_group_wait(v7, v9);
   if (v10)

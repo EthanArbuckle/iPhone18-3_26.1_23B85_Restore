@@ -1,18 +1,18 @@
 @interface ExpandingSpiralScene
 - (_TtC11EmojiPoster20ExpandingSpiralScene)init;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation ExpandingSpiralScene
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_249FF8628();
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ExpandingSpiralScene();
-  [(SKScene *)&v6 didMoveToView:v4];
+  [(SKScene *)&v6 didMoveToView:viewCopy];
 }
 
 - (_TtC11EmojiPoster20ExpandingSpiralScene)init

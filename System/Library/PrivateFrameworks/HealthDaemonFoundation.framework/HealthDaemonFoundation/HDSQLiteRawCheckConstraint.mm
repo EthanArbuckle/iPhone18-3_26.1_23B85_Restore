@@ -1,33 +1,33 @@
 @interface HDSQLiteRawCheckConstraint
-+ (id)checkConstraintWithSQL:(id)a3;
-- (void)_initWithSQL:(void *)a1;
++ (id)checkConstraintWithSQL:(id)l;
+- (void)_initWithSQL:(void *)l;
 @end
 
 @implementation HDSQLiteRawCheckConstraint
 
-- (void)_initWithSQL:(void *)a1
+- (void)_initWithSQL:(void *)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
-    v7.receiver = a1;
+    v7.receiver = l;
     v7.super_class = HDSQLiteRawCheckConstraint;
-    a1 = objc_msgSendSuper2(&v7, sel__init);
-    if (a1)
+    l = objc_msgSendSuper2(&v7, sel__init);
+    if (l)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = l[1];
+      l[1] = v4;
     }
   }
 
-  return a1;
+  return l;
 }
 
-+ (id)checkConstraintWithSQL:(id)a3
++ (id)checkConstraintWithSQL:(id)l
 {
-  v3 = a3;
-  v4 = [[HDSQLiteRawCheckConstraint alloc] _initWithSQL:v3];
+  lCopy = l;
+  v4 = [[HDSQLiteRawCheckConstraint alloc] _initWithSQL:lCopy];
 
   return v4;
 }

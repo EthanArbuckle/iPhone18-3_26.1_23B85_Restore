@@ -1,12 +1,12 @@
 @interface ARCoachingRoundedButton
-- (void)_setupViewWithCornerRadius:(double)a3;
+- (void)_setupViewWithCornerRadius:(double)radius;
 @end
 
 @implementation ARCoachingRoundedButton
 
-- (void)_setupViewWithCornerRadius:(double)a3
+- (void)_setupViewWithCornerRadius:(double)radius
 {
-  [(ARCoachingRoundedButton *)self _setContinuousCornerRadius:a3];
+  [(ARCoachingRoundedButton *)self _setContinuousCornerRadius:radius];
 
   [(ARCoachingRoundedButton *)self setClipsToBounds:1];
 }

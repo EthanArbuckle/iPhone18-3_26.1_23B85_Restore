@@ -1,27 +1,27 @@
 @interface CCWalletExtractedOrderContentExtractedEmail
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentExtractedEmail)initWithEmailMetadata:(id)a3 emailType:(unsigned int)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6 orderDetails:(id)a7 error:(id *)a8;
-- (CCWalletExtractedOrderContentExtractedEmail)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmail)initWithEmailMetadata:(id)metadata emailType:(unsigned int)type spotlightUniqueIdentifier:(id)identifier spotlightDomainIdentifier:(id)domainIdentifier orderDetails:(id)details error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmail)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCWalletExtractedOrderContentExtractedEmailOrderDetails)orderDetails;
 - (CCWalletPaymentsCommerceOrderEmailEmailMetadata)emailMetadata;
 - (NSString)spotlightDomainIdentifier;
 - (NSString)spotlightUniqueIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletExtractedOrderContentExtractedEmail
 
-- (CCWalletExtractedOrderContentExtractedEmail)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletExtractedOrderContentExtractedEmail)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v26[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"emailMetadata"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"emailMetadata"];
     if (v9)
     {
       v26[0] = 0;
@@ -40,26 +40,26 @@ LABEL_19:
       v9 = v10;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"emailType"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"emailType"];
     v12 = v13;
-    v24 = self;
+    selfCopy = self;
     if (v13)
     {
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
     }
 
     else
     {
-      v14 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"spotlightUniqueIdentifier"];
-    v16 = [v6 objectForKeyedSubscript:@"spotlightDomainIdentifier"];
-    v17 = [v6 objectForKeyedSubscript:@"orderDetails"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"spotlightUniqueIdentifier"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"spotlightDomainIdentifier"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"orderDetails"];
     if (v17)
     {
       v18 = v17;
-      v23 = v14;
+      v23 = unsignedIntegerValue;
       v25 = 0;
       v19 = [[CCWalletExtractedOrderContentExtractedEmailOrderDetails alloc] initWithJSONDictionary:v17 error:&v25];
       v20 = v25;
@@ -72,7 +72,7 @@ LABEL_19:
         goto LABEL_18;
       }
 
-      v14 = v23;
+      unsignedIntegerValue = v23;
     }
 
     else
@@ -80,11 +80,11 @@ LABEL_19:
       v19 = 0;
     }
 
-    v15 = [[CCWalletExtractedOrderContentExtractedEmail alloc] initWithEmailMetadata:v9 emailType:v14 spotlightUniqueIdentifier:v10 spotlightDomainIdentifier:v16 orderDetails:v19 error:a4];
+    v15 = [[CCWalletExtractedOrderContentExtractedEmail alloc] initWithEmailMetadata:v9 emailType:unsignedIntegerValue spotlightUniqueIdentifier:v10 spotlightDomainIdentifier:v16 orderDetails:v19 error:error];
     v18 = v19;
 LABEL_18:
 
-    self = v24;
+    self = selfCopy;
     goto LABEL_19;
   }
 
@@ -100,9 +100,9 @@ LABEL_20:
   v3 = objc_opt_new();
   if (self->_emailMetadata)
   {
-    v4 = [(CCWalletExtractedOrderContentExtractedEmail *)self emailMetadata];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"emailMetadata"];
+    emailMetadata = [(CCWalletExtractedOrderContentExtractedEmail *)self emailMetadata];
+    jsonDictionary = [emailMetadata jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"emailMetadata"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCWalletExtractedOrderContentExtractedEmail emailType](self, "emailType")}];
@@ -110,21 +110,21 @@ LABEL_20:
 
   if (self->_spotlightUniqueIdentifier)
   {
-    v7 = [(CCWalletExtractedOrderContentExtractedEmail *)self spotlightUniqueIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"spotlightUniqueIdentifier"];
+    spotlightUniqueIdentifier = [(CCWalletExtractedOrderContentExtractedEmail *)self spotlightUniqueIdentifier];
+    [v3 setObject:spotlightUniqueIdentifier forKeyedSubscript:@"spotlightUniqueIdentifier"];
   }
 
   if (self->_spotlightDomainIdentifier)
   {
-    v8 = [(CCWalletExtractedOrderContentExtractedEmail *)self spotlightDomainIdentifier];
-    [v3 setObject:v8 forKeyedSubscript:@"spotlightDomainIdentifier"];
+    spotlightDomainIdentifier = [(CCWalletExtractedOrderContentExtractedEmail *)self spotlightDomainIdentifier];
+    [v3 setObject:spotlightDomainIdentifier forKeyedSubscript:@"spotlightDomainIdentifier"];
   }
 
   if (self->_orderDetails)
   {
-    v9 = [(CCWalletExtractedOrderContentExtractedEmail *)self orderDetails];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"orderDetails"];
+    orderDetails = [(CCWalletExtractedOrderContentExtractedEmail *)self orderDetails];
+    jsonDictionary2 = [orderDetails jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"orderDetails"];
   }
 
   v11 = [v3 copy];
@@ -132,37 +132,37 @@ LABEL_20:
   return v11;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v11 = a3;
+  blockCopy = block;
   if (self->_emailMetadata)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7957 subMessageValue:self->_emailMetadata];
-    v11[2](v11, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7968 enumValue:self->_emailType];
-  v11[2](v11, v6);
+  blockCopy[2](blockCopy, v6);
 
   if (self->_spotlightUniqueIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8020 stringValue:self->_spotlightUniqueIdentifier];
-    v11[2](v11, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_spotlightDomainIdentifier)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8021 stringValue:self->_spotlightDomainIdentifier];
-    v11[2](v11, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
-  v9 = v11;
+  v9 = blockCopy;
   if (self->_orderDetails)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8022 subMessageValue:self->_orderDetails];
-    v11[2](v11, v10);
+    blockCopy[2](blockCopy, v10);
 
-    v9 = v11;
+    v9 = blockCopy;
   }
 }
 
@@ -194,10 +194,10 @@ LABEL_20:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -421,19 +421,19 @@ LABEL_55:
   return v46;
 }
 
-- (CCWalletExtractedOrderContentExtractedEmail)initWithEmailMetadata:(id)a3 emailType:(unsigned int)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6 orderDetails:(id)a7 error:(id *)a8
+- (CCWalletExtractedOrderContentExtractedEmail)initWithEmailMetadata:(id)metadata emailType:(unsigned int)type spotlightUniqueIdentifier:(id)identifier spotlightDomainIdentifier:(id)domainIdentifier orderDetails:(id)details error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  detailsCopy = details;
   v18 = objc_opt_new();
-  if (!v14)
+  if (!metadataCopy)
   {
     v20 = 0;
 LABEL_5:
-    v32 = self;
-    if (a4)
+    selfCopy = self;
+    if (type)
     {
       v22 = CCValidateEnumField();
       v23 = v20;
@@ -454,7 +454,7 @@ LABEL_5:
       v23 = v20;
     }
 
-    if (v15)
+    if (identifierCopy)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -466,16 +466,16 @@ LABEL_16:
         CCSetError();
         v24 = 0;
 LABEL_24:
-        self = v32;
+        self = selfCopy;
         goto LABEL_25;
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v16)
+      if (!domainIdentifierCopy)
       {
 LABEL_13:
         v26 = v20;
-        if (v17)
+        if (detailsCopy)
         {
 LABEL_14:
           objc_opt_class();
@@ -484,12 +484,12 @@ LABEL_14:
 
           if (v27)
           {
-            v28 = [v17 data];
+            data = [detailsCopy data];
             CCPBDataWriterWriteDataField();
 
 LABEL_22:
-            v30 = [v18 immutableData];
-            v24 = [v33 initWithData:v30 error:a8];
+            immutableData = [v18 immutableData];
+            v24 = [v33 initWithData:immutableData error:error];
 
             self = v24;
             goto LABEL_25;
@@ -507,7 +507,7 @@ LABEL_21:
     else
     {
       v20 = v23;
-      if (!v16)
+      if (!domainIdentifierCopy)
       {
         goto LABEL_13;
       }
@@ -526,7 +526,7 @@ LABEL_21:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v17)
+    if (detailsCopy)
     {
       goto LABEL_14;
     }
@@ -539,7 +539,7 @@ LABEL_21:
   v20 = 0;
   if (v19)
   {
-    v21 = [v14 data];
+    data2 = [metadataCopy data];
     CCPBDataWriterWriteDataField();
 
     goto LABEL_5;

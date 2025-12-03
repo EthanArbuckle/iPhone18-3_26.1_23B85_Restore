@@ -1,71 +1,71 @@
 @interface ASDatabaseCompetitionDeletionJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (ASDatabaseCompetitionDeletionJournalEntry)initWithCoder:(id)a3;
-- (ASDatabaseCompetitionDeletionJournalEntry)initWithFriendUUID:(id)a3 type:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (ASDatabaseCompetitionDeletionJournalEntry)initWithCoder:(id)coder;
+- (ASDatabaseCompetitionDeletionJournalEntry)initWithFriendUUID:(id)d type:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDatabaseCompetitionDeletionJournalEntry
 
-- (ASDatabaseCompetitionDeletionJournalEntry)initWithFriendUUID:(id)a3 type:(int64_t)a4
+- (ASDatabaseCompetitionDeletionJournalEntry)initWithFriendUUID:(id)d type:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ASDatabaseCompetitionDeletionJournalEntry;
   v8 = [(ASDatabaseCompetitionDeletionJournalEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_friendUUID, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_friendUUID, d);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-- (ASDatabaseCompetitionDeletionJournalEntry)initWithCoder:(id)a3
+- (ASDatabaseCompetitionDeletionJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ASDatabaseCompetitionDeletionJournalEntry;
-  v5 = [(HDJournalEntry *)&v10 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"friendUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"friendUUID"];
     v7 = [MEMORY[0x277CCAD78] hk_UUIDWithData:v6];
     friendUUID = v5->_friendUUID;
     v5->_friendUUID = v7;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ASDatabaseCompetitionDeletionJournalEntry;
-  v4 = a3;
-  [(HDJournalEntry *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HDJournalEntry *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NSUUID *)self->_friendUUID hk_dataForUUIDBytes:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"friendUUID"];
+  [coderCopy encodeObject:v5 forKey:@"friendUUID"];
 
-  [v4 encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 database];
+  entriesCopy = entries;
+  profileCopy = profile;
+  database = [profileCopy database];
   v18 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__ASDatabaseCompetitionDeletionJournalEntry_applyEntries_withProfile___block_invoke;
   v15[3] = &unk_278C4DA00;
-  v16 = v5;
-  v17 = v6;
+  v16 = entriesCopy;
+  v17 = profileCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__ASDatabaseCompetitionDeletionJournalEntry_applyEntries_withProfile___block_invoke_2;
@@ -74,7 +74,7 @@
   v13 = v8;
   v9 = v16;
   v14 = v9;
-  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:v7 error:&v18 block:v15 inaccessibilityHandler:v12];
+  v10 = [(HDHealthEntity *)ASDatabaseCompetitionEntity performWriteTransactionWithHealthDatabase:database error:&v18 block:v15 inaccessibilityHandler:v12];
   v11 = v18;
 
   if (!v10)

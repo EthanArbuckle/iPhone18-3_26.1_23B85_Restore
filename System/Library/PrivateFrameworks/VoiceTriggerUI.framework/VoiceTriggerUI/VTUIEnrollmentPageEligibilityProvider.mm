@@ -1,20 +1,20 @@
 @interface VTUIEnrollmentPageEligibilityProvider
-- (BOOL)shouldShowLanguageDisambiguationForBestFittingSiriLanguages:(id)a3;
+- (BOOL)shouldShowLanguageDisambiguationForBestFittingSiriLanguages:(id)languages;
 @end
 
 @implementation VTUIEnrollmentPageEligibilityProvider
 
-- (BOOL)shouldShowLanguageDisambiguationForBestFittingSiriLanguages:(id)a3
+- (BOOL)shouldShowLanguageDisambiguationForBestFittingSiriLanguages:(id)languages
 {
-  v3 = a3;
-  if ([v3 count] >= 2)
+  languagesCopy = languages;
+  if ([languagesCopy count] >= 2)
   {
-    v5 = [MEMORY[0x277CEF368] sharedPreferences];
-    v6 = [v5 languageCode];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
 
-    if (v6)
+    if (languageCode)
     {
-      v4 = [v3 containsObject:v6];
+      v4 = [languagesCopy containsObject:languageCode];
     }
 
     else

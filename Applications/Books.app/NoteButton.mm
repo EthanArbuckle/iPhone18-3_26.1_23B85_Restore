@@ -1,11 +1,11 @@
 @interface NoteButton
 - (NSArray)accessibilityUserInputLabels;
-- (_TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton)initWithCoder:(id)a3;
+- (_TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton)initWithCoder:(id)coder;
 @end
 
 @implementation NoteButton
 
-- (_TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton)initWithCoder:(id)a3
+- (_TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton_annotation) = 0;
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5BooksP33_2999BCB781BB4046BF6F224C010EC6FE10NoteButton_associatedHighlightText);
@@ -18,7 +18,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100783AA4();
 
   if (v3)

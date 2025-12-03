@@ -1,19 +1,19 @@
 @interface AMSUIWebFetchTreatmentAreasAction
-- (AMSUIWebFetchTreatmentAreasAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebFetchTreatmentAreasAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFetchTreatmentAreasAction
 
-- (AMSUIWebFetchTreatmentAreasAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchTreatmentAreasAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = AMSUIWebFetchTreatmentAreasAction;
-  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"namespaceIds"];
+    v8 = [objectCopy objectForKeyedSubscript:@"namespaceIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
     namespaceIds = v7->_namespaceIds;
     v7->_namespaceIds = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"topicIds"];
+    v11 = [objectCopy objectForKeyedSubscript:@"topicIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,25 +49,25 @@
 
 - (id)runAction
 {
-  v2 = self;
+  selfCopy = self;
   v47 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = AMSUIWebFetchTreatmentAreasAction;
-  v3 = [(AMSUIWebAction *)&v40 runAction];
+  runAction = [(AMSUIWebAction *)&v40 runAction];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v5 = [(AMSUIWebFetchTreatmentAreasAction *)v2 namespaceIds];
+  namespaceIds = [(AMSUIWebFetchTreatmentAreasAction *)selfCopy namespaceIds];
   v6 = 0x1E698C000;
-  if (v5)
+  if (namespaceIds)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v5];
-    v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v8)
+    v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:namespaceIds];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -78,35 +78,35 @@
       v44 = v11;
       v45 = 2114;
       v46 = v12;
-      _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching areas (namespaces: %{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching areas (namespaces: %{public}@)", buf, 0x20u);
 
       v6 = 0x1E698C000uLL;
     }
 
-    v13 = [*(v6 + 2920) defaultTreatmentStore];
-    v14 = [v13 areasForNamespaces:v7];
+    defaultTreatmentStore = [*(v6 + 2920) defaultTreatmentStore];
+    v14 = [defaultTreatmentStore areasForNamespaces:v7];
     v15 = [v14 thenWithBlock:&__block_literal_global_26];
 
     [v4 addObject:v15];
   }
 
-  v16 = [(AMSUIWebFetchTreatmentAreasAction *)v2 topicIds];
-  if (v16)
+  topicIds = [(AMSUIWebFetchTreatmentAreasAction *)selfCopy topicIds];
+  if (topicIds)
   {
-    v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v16];
-    v18 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v18)
+    v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:topicIds];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v18 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = v2;
-      v20 = v16;
+      v37 = selfCopy;
+      v20 = topicIds;
       v21 = v4;
-      v22 = v5;
+      v22 = namespaceIds;
       v23 = v6;
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -114,19 +114,19 @@
       *buf = 138543874;
       v42 = v24;
       v6 = v23;
-      v5 = v22;
+      namespaceIds = v22;
       v4 = v21;
-      v16 = v20;
-      v2 = v37;
+      topicIds = v20;
+      selfCopy = v37;
       v43 = 2114;
       v44 = v25;
       v45 = 2114;
       v46 = v26;
-      _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching areas (topics: %{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching areas (topics: %{public}@)", buf, 0x20u);
     }
 
-    v27 = [*(v6 + 2920) defaultTreatmentStore];
-    v28 = [v27 areasForTopics:v17];
+    defaultTreatmentStore2 = [*(v6 + 2920) defaultTreatmentStore];
+    v28 = [defaultTreatmentStore2 areasForTopics:v17];
     v29 = [v28 thenWithBlock:&__block_literal_global_21];
 
     [v4 addObject:v29];
@@ -143,13 +143,13 @@
     v39[1] = 3221225472;
     v39[2] = __46__AMSUIWebFetchTreatmentAreasAction_runAction__block_invoke_4;
     v39[3] = &unk_1E7F24410;
-    v39[4] = v2;
+    v39[4] = selfCopy;
     [v33 addErrorBlock:v39];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __46__AMSUIWebFetchTreatmentAreasAction_runAction__block_invoke_32;
     v38[3] = &unk_1E7F261F0;
-    v38[4] = v2;
+    v38[4] = selfCopy;
     [v33 addSuccessBlock:v38];
   }
 

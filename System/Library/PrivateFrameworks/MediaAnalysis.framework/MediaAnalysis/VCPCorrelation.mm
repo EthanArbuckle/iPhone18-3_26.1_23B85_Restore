@@ -1,19 +1,19 @@
 @interface VCPCorrelation
-- (VCPCorrelation)initWithDevice:(id)a3;
+- (VCPCorrelation)initWithDevice:(id)device;
 - (int)configureGPU;
-- (int)encodeToCommandBuffer:(id)a3 firstInput:(id)a4 secondInput:(id)a5 correlation:(id)a6;
+- (int)encodeToCommandBuffer:(id)buffer firstInput:(id)input secondInput:(id)secondInput correlation:(id)correlation;
 @end
 
 @implementation VCPCorrelation
 
-- (VCPCorrelation)initWithDevice:(id)a3
+- (VCPCorrelation)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = VCPCorrelation;
   v6 = [(VCPCorrelation *)&v11 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_device, a3), [(VCPCorrelation *)v7 configureGPU]))
+  if (v6 && (objc_storeStrong(&v6->_device, device), [(VCPCorrelation *)v7 configureGPU]))
   {
     v8 = 0;
   }
@@ -30,10 +30,10 @@
 
 - (int)configureGPU
 {
-  v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
   device = self->_device;
   v16 = 0;
-  v5 = [(MTLDevice *)device newDefaultLibraryWithBundle:v3 error:&v16];
+  v5 = [(MTLDevice *)device newDefaultLibraryWithBundle:vcp_mediaAnalysisBundle error:&v16];
   v6 = v16;
   mtlLibrary = self->_mtlLibrary;
   self->_mtlLibrary = v5;
@@ -70,32 +70,32 @@
   return v13;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 firstInput:(id)a4 secondInput:(id)a5 correlation:(id)a6
+- (int)encodeToCommandBuffer:(id)buffer firstInput:(id)input secondInput:(id)secondInput correlation:(id)correlation
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  bufferCopy = buffer;
+  inputCopy = input;
+  secondInputCopy = secondInput;
+  correlationCopy = correlation;
+  v14 = correlationCopy;
   v15 = -50;
-  if (v11 && v12 && v13)
+  if (inputCopy && secondInputCopy && correlationCopy)
   {
-    v16 = [v10 computeCommandEncoder];
-    if (v16)
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v17 = [v11 width];
-      v18 = [v11 height];
-      [v16 setComputePipelineState:self->_correlationKernel];
-      [v16 setTexture:v11 atIndex:0];
-      [v16 setTexture:v12 atIndex:1];
-      [v16 setTexture:v14 atIndex:2];
-      v22[0] = (v17 + 15) >> 4;
-      v22[1] = (v18 + 15) >> 4;
+      width = [inputCopy width];
+      height = [inputCopy height];
+      [computeCommandEncoder setComputePipelineState:self->_correlationKernel];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:secondInputCopy atIndex:1];
+      [computeCommandEncoder setTexture:v14 atIndex:2];
+      v22[0] = (width + 15) >> 4;
+      v22[1] = (height + 15) >> 4;
       v22[2] = 1;
       v20 = vdupq_n_s64(0x10uLL);
       v21 = 1;
-      [v16 dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
-      [v16 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
+      [computeCommandEncoder endEncoding];
       v15 = 0;
     }
 

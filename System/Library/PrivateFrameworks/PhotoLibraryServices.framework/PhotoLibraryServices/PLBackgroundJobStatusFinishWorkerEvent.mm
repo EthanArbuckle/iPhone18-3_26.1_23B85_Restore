@@ -9,9 +9,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = PLBackgroundJobStatusFinishWorkerEvent;
-  v4 = [(PLBackgroundJobStatusEvent *)&v8 statusDump];
-  v5 = [(PLBackgroundJobStatusFinishWorkerEvent *)self worker];
-  v6 = [v3 stringWithFormat:@"%@ - %@ finished running jobs\n", v4, v5];
+  statusDump = [(PLBackgroundJobStatusEvent *)&v8 statusDump];
+  worker = [(PLBackgroundJobStatusFinishWorkerEvent *)self worker];
+  v6 = [v3 stringWithFormat:@"%@ - %@ finished running jobs\n", statusDump, worker];
 
   return v6;
 }

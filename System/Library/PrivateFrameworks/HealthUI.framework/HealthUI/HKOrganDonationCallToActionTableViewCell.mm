@@ -1,5 +1,5 @@
 @interface HKOrganDonationCallToActionTableViewCell
-- (HKOrganDonationCallToActionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKOrganDonationCallToActionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSAttributedString)callToActionTextViewString;
 - (void)setupConstraints;
 - (void)setupSubviews;
@@ -7,11 +7,11 @@
 
 @implementation HKOrganDonationCallToActionTableViewCell
 
-- (HKOrganDonationCallToActionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKOrganDonationCallToActionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKOrganDonationCallToActionTableViewCell;
-  v4 = [(HKOrganDonationCallToActionTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKOrganDonationCallToActionTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -24,82 +24,82 @@
 
 - (void)setupSubviews
 {
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(HKOrganDonationCallToActionTableViewCell *)self setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(HKOrganDonationCallToActionTableViewCell *)self setBackgroundColor:systemBackgroundColor];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(HKOrganDonationCallToActionTableViewCell *)self setTitleLabel:v4];
 
-  v5 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel2 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDC0]];
-  v8 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  [v8 setFont:v7];
+  titleLabel3 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  [titleLabel3 setFont:v7];
 
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v10 = [v9 localizedStringForKey:@"OD_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v11 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  [v11 setText:v10];
+  titleLabel4 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  [titleLabel4 setText:v10];
 
-  v12 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v13 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  [v12 addSubview:v13];
+  contentView = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  titleLabel5 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  [contentView addSubview:titleLabel5];
 
   v14 = objc_alloc(MEMORY[0x1E69DD250]);
   v15 = [v14 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(HKOrganDonationCallToActionTableViewCell *)self setSpacerView:v15];
 
-  v16 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spacerView = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  [spacerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [MEMORY[0x1E69DC888] tableSeparatorColor];
-  v18 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  [v18 setBackgroundColor:v17];
+  tableSeparatorColor = [MEMORY[0x1E69DC888] tableSeparatorColor];
+  spacerView2 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  [spacerView2 setBackgroundColor:tableSeparatorColor];
 
-  v19 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v20 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  [v19 addSubview:v20];
+  contentView2 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  spacerView3 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  [contentView2 addSubview:spacerView3];
 
   v21 = objc_alloc_init(MEMORY[0x1E69DD168]);
   [(HKOrganDonationCallToActionTableViewCell *)self setCallToActionTextView:v21];
 
-  v22 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v22 setDelegate:self];
+  callToActionTextView = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView setDelegate:self];
 
-  v23 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  callToActionTextView2 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextViewString];
-  v25 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v25 setAttributedText:v24];
+  callToActionTextViewString = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextViewString];
+  callToActionTextView3 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView3 setAttributedText:callToActionTextViewString];
 
-  v26 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v26 setScrollEnabled:0];
+  callToActionTextView4 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView4 setScrollEnabled:0];
 
-  v27 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v27 setUserInteractionEnabled:1];
+  callToActionTextView5 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView5 setUserInteractionEnabled:1];
 
-  v28 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v28 _setInteractiveTextSelectionDisabled:1];
+  callToActionTextView6 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView6 _setInteractiveTextSelectionDisabled:1];
 
-  v29 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v29 setDataDetectorTypes:2];
+  callToActionTextView7 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView7 setDataDetectorTypes:2];
 
-  v30 = [MEMORY[0x1E69DC888] labelColor];
-  v31 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v31 setTextColor:v30];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  callToActionTextView8 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView8 setTextColor:labelColor];
 
-  v32 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v33 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v33 setBackgroundColor:v32];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  callToActionTextView9 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [callToActionTextView9 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v34 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v35 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  [v34 addSubview:v35];
+  contentView3 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  callToActionTextView10 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  [contentView3 addSubview:callToActionTextView10];
 
   v36 = MEMORY[0x1E69DC738];
   v37 = HKHealthKeyColor();
@@ -108,120 +108,120 @@
   v40 = [v36 hk_roundRectButtonTintedWithColor:v37 title:v39 target:0 action:0];
   [(HKOrganDonationCallToActionTableViewCell *)self setActionButton:v40];
 
-  v41 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
+  actionButton = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  [actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v42 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  v43 = [v42 titleLabel];
-  [v43 setNumberOfLines:0];
+  actionButton2 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  titleLabel6 = [actionButton2 titleLabel];
+  [titleLabel6 setNumberOfLines:0];
 
-  v45 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v44 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  [v45 addSubview:v44];
+  contentView4 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  actionButton3 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  [contentView4 addSubview:actionButton3];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v4 = [v3 firstBaselineAnchor];
-  v5 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v8 = [v7 font];
-  [v8 _scaledValueForValue:60.0];
-  v9 = [v4 constraintEqualToAnchor:v6 constant:?];
+  titleLabel = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+  contentView = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  titleLabel2 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  font = [titleLabel2 font];
+  [font _scaledValueForValue:60.0];
+  v9 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v9 setActive:1];
 
-  v10 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v11 = [v10 leadingAnchor];
-  v12 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:16.0];
+  titleLabel3 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel3 leadingAnchor];
+  contentView2 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v14 setActive:1];
 
-  v15 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v16 = [v15 trailingAnchor];
-  v17 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:16.0];
+  contentView3 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  titleLabel4 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  trailingAnchor2 = [titleLabel4 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
   [v19 setActive:1];
 
-  v20 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  v21 = [v20 heightAnchor];
-  v22 = [v21 constraintEqualToConstant:0.5];
+  spacerView = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  heightAnchor = [spacerView heightAnchor];
+  v22 = [heightAnchor constraintEqualToConstant:0.5];
   [v22 setActive:1];
 
-  v23 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  v24 = [v23 topAnchor];
-  v25 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v26 = [v25 lastBaselineAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:18.0];
+  spacerView2 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  topAnchor2 = [spacerView2 topAnchor];
+  titleLabel5 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
+  v27 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:18.0];
   [v27 setActive:1];
 
-  v28 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  v29 = [v28 leadingAnchor];
-  v30 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v31 = [v30 leadingAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:16.0];
+  spacerView3 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  leadingAnchor3 = [spacerView3 leadingAnchor];
+  contentView4 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  leadingAnchor4 = [contentView4 leadingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [v32 setActive:1];
 
-  v33 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v34 = [v33 trailingAnchor];
-  v35 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
-  v36 = [v35 trailingAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:16.0];
+  contentView5 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  trailingAnchor3 = [contentView5 trailingAnchor];
+  spacerView4 = [(HKOrganDonationCallToActionTableViewCell *)self spacerView];
+  trailingAnchor4 = [spacerView4 trailingAnchor];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
   [v37 setActive:1];
 
-  v38 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  v39 = [v38 firstBaselineAnchor];
-  v40 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
-  v41 = [v40 lastBaselineAnchor];
-  v42 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  v43 = [v42 font];
-  [v43 _scaledValueForValue:45.0];
-  v44 = [v39 constraintEqualToAnchor:v41 constant:?];
+  callToActionTextView = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  firstBaselineAnchor2 = [callToActionTextView firstBaselineAnchor];
+  titleLabel6 = [(HKOrganDonationCallToActionTableViewCell *)self titleLabel];
+  lastBaselineAnchor2 = [titleLabel6 lastBaselineAnchor];
+  callToActionTextView2 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  font2 = [callToActionTextView2 font];
+  [font2 _scaledValueForValue:45.0];
+  v44 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
   [v44 setActive:1];
 
-  v45 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  v46 = [v45 leadingAnchor];
-  v47 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v48 = [v47 leadingAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48 constant:16.0];
+  callToActionTextView3 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  leadingAnchor5 = [callToActionTextView3 leadingAnchor];
+  contentView6 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  leadingAnchor6 = [contentView6 leadingAnchor];
+  v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
   [v49 setActive:1];
 
-  v50 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v51 = [v50 trailingAnchor];
-  v52 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  v53 = [v52 trailingAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53 constant:16.0];
+  contentView7 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  trailingAnchor5 = [contentView7 trailingAnchor];
+  callToActionTextView4 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  trailingAnchor6 = [callToActionTextView4 trailingAnchor];
+  v54 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:16.0];
   [v54 setActive:1];
 
-  v55 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  v56 = [v55 topAnchor];
-  v57 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
-  v58 = [v57 lastBaselineAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58 constant:33.0];
+  actionButton = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  topAnchor3 = [actionButton topAnchor];
+  callToActionTextView5 = [(HKOrganDonationCallToActionTableViewCell *)self callToActionTextView];
+  lastBaselineAnchor3 = [callToActionTextView5 lastBaselineAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor3 constant:33.0];
   [v59 setActive:1];
 
-  v60 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  v61 = [v60 leadingAnchor];
-  v62 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v63 = [v62 leadingAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63 constant:16.0];
+  actionButton2 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  leadingAnchor7 = [actionButton2 leadingAnchor];
+  contentView8 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  leadingAnchor8 = [contentView8 leadingAnchor];
+  v64 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
   [v64 setActive:1];
 
-  v65 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v66 = [v65 trailingAnchor];
-  v67 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  v68 = [v67 trailingAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68 constant:16.0];
+  contentView9 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  trailingAnchor7 = [contentView9 trailingAnchor];
+  actionButton3 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  trailingAnchor8 = [actionButton3 trailingAnchor];
+  v69 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:16.0];
   [v69 setActive:1];
 
-  v74 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
-  v70 = [v74 bottomAnchor];
-  v71 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
-  v72 = [v71 lastBaselineAnchor];
-  v73 = [v70 constraintEqualToAnchor:v72 constant:48.0];
+  contentView10 = [(HKOrganDonationCallToActionTableViewCell *)self contentView];
+  bottomAnchor = [contentView10 bottomAnchor];
+  actionButton4 = [(HKOrganDonationCallToActionTableViewCell *)self actionButton];
+  lastBaselineAnchor4 = [actionButton4 lastBaselineAnchor];
+  v73 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor4 constant:48.0];
   [v73 setActive:1];
 }
 
@@ -240,8 +240,8 @@
   v10 = objc_alloc(MEMORY[0x1E696AD40]);
   v11 = *MEMORY[0x1E69DB650];
   v30[0] = *MEMORY[0x1E69DB650];
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  v31[0] = v12;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v31[0] = labelColor;
   v13 = *MEMORY[0x1E69DB648];
   v30[1] = *MEMORY[0x1E69DB648];
   v14 = *MEMORY[0x1E69DDCF8];

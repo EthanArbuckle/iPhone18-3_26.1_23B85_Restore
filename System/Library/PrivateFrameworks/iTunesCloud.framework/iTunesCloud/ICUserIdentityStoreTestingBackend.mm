@@ -1,29 +1,29 @@
 @interface ICUserIdentityStoreTestingBackend
-+ (void)setDefaultActiveAccountDSID:(id)a3;
-+ (void)setDefaultActiveLockerAccountDSID:(id)a3;
-+ (void)setDefaultStorefrontIdentifier:(id)a3;
-- (BOOL)disableLockerAccountDSID:(id)a3 error:(id *)a4;
-- (BOOL)replaceIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5;
-- (BOOL)setIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5;
-- (BOOL)setLocalStoreAccountProperties:(id)a3 error:(id *)a4;
-- (BOOL)updateActiveAccountDSID:(id)a3 error:(id *)a4;
-- (BOOL)updateActiveLockerAccountDSID:(id)a3 error:(id *)a4;
++ (void)setDefaultActiveAccountDSID:(id)d;
++ (void)setDefaultActiveLockerAccountDSID:(id)d;
++ (void)setDefaultStorefrontIdentifier:(id)identifier;
+- (BOOL)disableLockerAccountDSID:(id)d error:(id *)error;
+- (BOOL)replaceIdentityProperties:(id)properties forDSID:(id)d error:(id *)error;
+- (BOOL)setIdentityProperties:(id)properties forDSID:(id)d error:(id *)error;
+- (BOOL)setLocalStoreAccountProperties:(id)properties error:(id *)error;
+- (BOOL)updateActiveAccountDSID:(id)d error:(id *)error;
+- (BOOL)updateActiveLockerAccountDSID:(id)d error:(id *)error;
 - (ICUserIdentityStoreBackendDelegate)delegate;
 - (ICUserIdentityStoreTestingBackend)init;
-- (ICUserIdentityStoreTestingBackend)initWithCoder:(id)a3;
-- (id)_propertiesToSaveForProperties:(id)a3;
-- (id)accountDSIDForAltDSID:(id)a3 error:(id *)a4;
-- (id)activeAccountDSIDWithError:(id *)a3;
-- (id)activeLockerAccountDSIDWithError:(id *)a3;
-- (id)allStoreAccountDSIDsWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)defaultMediaAccountDSIDWithError:(id *)a3;
-- (id)identityPropertiesForDSID:(id)a3 error:(id *)a4;
-- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)a3;
-- (id)verificationContextForAccountEstablishmentWithError:(id *)a3;
-- (id)verificationContextForDSID:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeIdentityForDSID:(id)a3 completion:(id)a4;
+- (ICUserIdentityStoreTestingBackend)initWithCoder:(id)coder;
+- (id)_propertiesToSaveForProperties:(id)properties;
+- (id)accountDSIDForAltDSID:(id)d error:(id *)error;
+- (id)activeAccountDSIDWithError:(id *)error;
+- (id)activeLockerAccountDSIDWithError:(id *)error;
+- (id)allStoreAccountDSIDsWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)defaultMediaAccountDSIDWithError:(id *)error;
+- (id)identityPropertiesForDSID:(id)d error:(id *)error;
+- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)error;
+- (id)verificationContextForAccountEstablishmentWithError:(id *)error;
+- (id)verificationContextForDSID:(id)d error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeIdentityForDSID:(id)d completion:(id)completion;
 @end
 
 @implementation ICUserIdentityStoreTestingBackend
@@ -35,38 +35,38 @@
   return WeakRetained;
 }
 
-- (id)_propertiesToSaveForProperties:(id)a3
+- (id)_propertiesToSaveForProperties:(id)properties
 {
-  v3 = [a3 mutableCopy];
+  v3 = [properties mutableCopy];
   [v3 setDelegated:0];
   [v3 setDelegateToken:0];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activeAccountDSID = self->_activeAccountDSID;
-  v5 = a3;
-  [v5 encodeObject:activeAccountDSID forKey:@"activeDSID"];
-  [v5 encodeObject:self->_activeLockerAccountDSID forKey:@"lockerDSID"];
-  [v5 encodeObject:self->_identityProperties forKey:@"ids"];
-  [v5 encodeObject:self->_localStoreAccountProperties forKey:@"localStoreAccountProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activeAccountDSID forKey:@"activeDSID"];
+  [coderCopy encodeObject:self->_activeLockerAccountDSID forKey:@"lockerDSID"];
+  [coderCopy encodeObject:self->_identityProperties forKey:@"ids"];
+  [coderCopy encodeObject:self->_localStoreAccountProperties forKey:@"localStoreAccountProperties"];
 }
 
-- (ICUserIdentityStoreTestingBackend)initWithCoder:(id)a3
+- (ICUserIdentityStoreTestingBackend)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ICUserIdentityStoreTestingBackend;
   v5 = [(ICUserIdentityStoreTestingBackend *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeDSID"];
     activeAccountDSID = v5->_activeAccountDSID;
     v5->_activeAccountDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockerDSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockerDSID"];
     activeLockerAccountDSID = v5->_activeLockerAccountDSID;
     v5->_activeLockerAccountDSID = v8;
 
@@ -74,11 +74,11 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v10 initWithObjects:{v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"ids"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ids"];
     identityProperties = v5->_identityProperties;
     v5->_identityProperties = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localStoreAccountProperties"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localStoreAccountProperties"];
     localStoreAccountProperties = v5->_localStoreAccountProperties;
     v5->_localStoreAccountProperties = v16;
   }
@@ -86,24 +86,24 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSNumber *)self->_activeAccountDSID copyWithZone:a3];
+    v6 = [(NSNumber *)self->_activeAccountDSID copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSNumber *)self->_activeLockerAccountDSID copyWithZone:a3];
+    v8 = [(NSNumber *)self->_activeLockerAccountDSID copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
 
-    v10 = [(NSMutableDictionary *)self->_identityProperties mutableCopyWithZone:a3];
+    v10 = [(NSMutableDictionary *)self->_identityProperties mutableCopyWithZone:zone];
     v11 = v5[3];
     v5[3] = v10;
 
-    v12 = [(ICLocalStoreAccountProperties *)self->_localStoreAccountProperties copyWithZone:a3];
+    v12 = [(ICLocalStoreAccountProperties *)self->_localStoreAccountProperties copyWithZone:zone];
     v13 = v5[4];
     v5[4] = v12;
   }
@@ -111,7 +111,7 @@
   return v5;
 }
 
-- (id)allStoreAccountDSIDsWithError:(id *)a3
+- (id)allStoreAccountDSIDsWithError:(id *)error
 {
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
   if ([(NSNumber *)self->_activeAccountDSID unsignedLongLongValue])
@@ -119,9 +119,9 @@
     [v5 addObject:self->_activeAccountDSID];
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   v6 = [v5 copy];
@@ -129,24 +129,24 @@
   return v6;
 }
 
-- (BOOL)setLocalStoreAccountProperties:(id)a3 error:(id *)a4
+- (BOOL)setLocalStoreAccountProperties:(id)properties error:(id *)error
 {
-  v6 = [a3 copy];
+  v6 = [properties copy];
   localStoreAccountProperties = self->_localStoreAccountProperties;
   self->_localStoreAccountProperties = v6;
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (id)verificationContextForDSID:(id)a3 error:(id *)a4
+- (id)verificationContextForDSID:(id)d error:(id *)error
 {
   v11 = 0;
-  v5 = [(ICUserIdentityStoreTestingBackend *)self identityPropertiesForDSID:a3 error:&v11];
+  v5 = [(ICUserIdentityStoreTestingBackend *)self identityPropertiesForDSID:d error:&v11];
   v6 = v11;
   v7 = 0;
   if (v6)
@@ -165,79 +165,79 @@
     [(ICUserVerificationContext *)v7 setIdentityProperties:v5];
   }
 
-  if (a4)
+  if (error)
   {
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   return v7;
 }
 
-- (id)verificationContextForAccountEstablishmentWithError:(id *)a3
+- (id)verificationContextForAccountEstablishmentWithError:(id *)error
 {
   v4 = objc_alloc_init(ICUserVerificationContext);
   v5 = objc_alloc_init(ICUserIdentityProperties);
   [(ICUserVerificationContext *)v4 setIdentityProperties:v5];
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v4;
 }
 
-- (BOOL)replaceIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5
+- (BOOL)replaceIdentityProperties:(id)properties forDSID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_identityProperties objectForKey:v9];
+  propertiesCopy = properties;
+  dCopy = d;
+  v10 = [(NSMutableDictionary *)self->_identityProperties objectForKey:dCopy];
 
   if (v10)
   {
-    v11 = [(ICUserIdentityStoreTestingBackend *)self _propertiesToSaveForProperties:v8];
-    [(NSMutableDictionary *)self->_identityProperties setObject:v11 forKey:v9];
+    v11 = [(ICUserIdentityStoreTestingBackend *)self _propertiesToSaveForProperties:propertiesCopy];
+    [(NSMutableDictionary *)self->_identityProperties setObject:v11 forKey:dCopy];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v10 != 0;
 }
 
-- (void)removeIdentityForDSID:(id)a3 completion:(id)a4
+- (void)removeIdentityForDSID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_identityProperties objectForKey:v8];
+  dCopy = d;
+  completionCopy = completion;
+  v7 = [(NSMutableDictionary *)self->_identityProperties objectForKey:dCopy];
 
   if (v7)
   {
-    [(NSMutableDictionary *)self->_identityProperties removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_identityProperties removeObjectForKey:dCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v7 != 0, 0);
+    completionCopy[2](completionCopy, v7 != 0, 0);
   }
 }
 
-- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)a3
+- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 0;
 }
 
-- (BOOL)setIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5
+- (BOOL)setIdentityProperties:(id)properties forDSID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  dCopy = d;
   if (!self->_identityProperties)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -245,38 +245,38 @@
     self->_identityProperties = v10;
   }
 
-  v12 = [(ICUserIdentityStoreTestingBackend *)self _propertiesToSaveForProperties:v8];
-  [(NSMutableDictionary *)self->_identityProperties setObject:v12 forKey:v9];
-  if (a5)
+  v12 = [(ICUserIdentityStoreTestingBackend *)self _propertiesToSaveForProperties:propertiesCopy];
+  [(NSMutableDictionary *)self->_identityProperties setObject:v12 forKey:dCopy];
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (id)identityPropertiesForDSID:(id)a3 error:(id *)a4
+- (id)identityPropertiesForDSID:(id)d error:(id *)error
 {
-  result = [(NSMutableDictionary *)self->_identityProperties objectForKey:a3];
-  if (a4)
+  result = [(NSMutableDictionary *)self->_identityProperties objectForKey:d];
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return result;
 }
 
-- (BOOL)disableLockerAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)disableLockerAccountDSID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if ([(NSNumber *)self->_activeLockerAccountDSID isEqualToNumber:v6])
+  dCopy = d;
+  if ([(NSNumber *)self->_activeLockerAccountDSID isEqualToNumber:dCopy])
   {
     activeLockerAccountDSID = self->_activeLockerAccountDSID;
     self->_activeLockerAccountDSID = 0;
   }
 
   v15 = 0;
-  v8 = [(ICUserIdentityStoreTestingBackend *)self identityPropertiesForDSID:v6 error:&v15];
+  v8 = [(ICUserIdentityStoreTestingBackend *)self identityPropertiesForDSID:dCopy error:&v15];
   v9 = v15;
   v10 = [v8 mutableCopy];
 
@@ -284,78 +284,78 @@
   {
     [v10 setActiveLocker:0];
     v14 = v9;
-    [(ICUserIdentityStoreTestingBackend *)self setIdentityProperties:v10 forDSID:v6 error:&v14];
+    [(ICUserIdentityStoreTestingBackend *)self setIdentityProperties:v10 forDSID:dCopy error:&v14];
     v11 = v14;
 
     v9 = v11;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return 1;
 }
 
-- (BOOL)updateActiveLockerAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)updateActiveLockerAccountDSID:(id)d error:(id *)error
 {
-  objc_storeStrong(&self->_activeLockerAccountDSID, a3);
-  if (a4)
+  objc_storeStrong(&self->_activeLockerAccountDSID, d);
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (id)defaultMediaAccountDSIDWithError:(id *)a3
+- (id)defaultMediaAccountDSIDWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return self->_activeAccountDSID;
 }
 
-- (id)accountDSIDForAltDSID:(id)a3 error:(id *)a4
+- (id)accountDSIDForAltDSID:(id)d error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return self->_activeAccountDSID;
 }
 
-- (id)activeLockerAccountDSIDWithError:(id *)a3
+- (id)activeLockerAccountDSIDWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return self->_activeLockerAccountDSID;
 }
 
-- (BOOL)updateActiveAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)updateActiveAccountDSID:(id)d error:(id *)error
 {
-  objc_storeStrong(&self->_activeAccountDSID, a3);
-  if (a4)
+  objc_storeStrong(&self->_activeAccountDSID, d);
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (id)activeAccountDSIDWithError:(id *)a3
+- (id)activeAccountDSIDWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return self->_activeAccountDSID;
@@ -381,11 +381,11 @@
   return v3;
 }
 
-+ (void)setDefaultStorefrontIdentifier:(id)a3
++ (void)setDefaultStorefrontIdentifier:(id)identifier
 {
-  if (sDefaultStorefrontIdentifier != a3)
+  if (sDefaultStorefrontIdentifier != identifier)
   {
-    v3 = [a3 copy];
+    v3 = [identifier copy];
     v4 = sDefaultStorefrontIdentifier;
     sDefaultStorefrontIdentifier = v3;
 
@@ -393,11 +393,11 @@
   }
 }
 
-+ (void)setDefaultActiveLockerAccountDSID:(id)a3
++ (void)setDefaultActiveLockerAccountDSID:(id)d
 {
-  if (sDefaultActiveLockerAccountDSID != a3)
+  if (sDefaultActiveLockerAccountDSID != d)
   {
-    v3 = [a3 copy];
+    v3 = [d copy];
     v4 = sDefaultActiveLockerAccountDSID;
     sDefaultActiveLockerAccountDSID = v3;
 
@@ -405,11 +405,11 @@
   }
 }
 
-+ (void)setDefaultActiveAccountDSID:(id)a3
++ (void)setDefaultActiveAccountDSID:(id)d
 {
-  if (sDefaultActiveAccountDSID != a3)
+  if (sDefaultActiveAccountDSID != d)
   {
-    v3 = [a3 copy];
+    v3 = [d copy];
     v4 = sDefaultActiveAccountDSID;
     sDefaultActiveAccountDSID = v3;
 

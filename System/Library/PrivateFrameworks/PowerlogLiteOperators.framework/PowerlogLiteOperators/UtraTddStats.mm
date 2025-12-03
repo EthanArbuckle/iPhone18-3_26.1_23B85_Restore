@@ -1,35 +1,35 @@
 @interface UtraTddStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveDuration:(BOOL)a3;
-- (void)setHasDeepSleepCycleCount:(BOOL)a3;
-- (void)setHasDeepSleepDuration:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasNormalSleepDuration:(BOOL)a3;
-- (void)setHasThClkOpt0Duration:(BOOL)a3;
-- (void)setHasThClkOpt1Duration:(BOOL)a3;
-- (void)setHasVoltHighDuration:(BOOL)a3;
-- (void)setHasVoltLowDuration:(BOOL)a3;
-- (void)setHasVoltMedDuration:(BOOL)a3;
-- (void)setHasZspClkOpt0Duration:(BOOL)a3;
-- (void)setHasZspClkOpt1Duration:(BOOL)a3;
-- (void)setHasZspClkOpt2Duration:(BOOL)a3;
-- (void)setHasZspClkOpt3Duration:(BOOL)a3;
-- (void)setHasZspClkOpt4Duration:(BOOL)a3;
-- (void)setHasZspClkOpt5Duration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveDuration:(BOOL)duration;
+- (void)setHasDeepSleepCycleCount:(BOOL)count;
+- (void)setHasDeepSleepDuration:(BOOL)duration;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasNormalSleepDuration:(BOOL)duration;
+- (void)setHasThClkOpt0Duration:(BOOL)duration;
+- (void)setHasThClkOpt1Duration:(BOOL)duration;
+- (void)setHasVoltHighDuration:(BOOL)duration;
+- (void)setHasVoltLowDuration:(BOOL)duration;
+- (void)setHasVoltMedDuration:(BOOL)duration;
+- (void)setHasZspClkOpt0Duration:(BOOL)duration;
+- (void)setHasZspClkOpt1Duration:(BOOL)duration;
+- (void)setHasZspClkOpt2Duration:(BOOL)duration;
+- (void)setHasZspClkOpt3Duration:(BOOL)duration;
+- (void)setHasZspClkOpt4Duration:(BOOL)duration;
+- (void)setHasZspClkOpt5Duration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UtraTddStats
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -42,9 +42,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasActiveDuration:(BOOL)a3
+- (void)setHasActiveDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasNormalSleepDuration:(BOOL)a3
+- (void)setHasNormalSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -72,9 +72,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasDeepSleepDuration:(BOOL)a3
+- (void)setHasDeepSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -87,9 +87,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasDeepSleepCycleCount:(BOOL)a3
+- (void)setHasDeepSleepCycleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -102,9 +102,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasVoltLowDuration:(BOOL)a3
+- (void)setHasVoltLowDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 512;
   }
@@ -117,9 +117,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasVoltMedDuration:(BOOL)a3
+- (void)setHasVoltMedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 1024;
   }
@@ -132,9 +132,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasVoltHighDuration:(BOOL)a3
+- (void)setHasVoltHighDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -147,9 +147,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasZspClkOpt0Duration:(BOOL)a3
+- (void)setHasZspClkOpt0Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2048;
   }
@@ -162,9 +162,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasZspClkOpt1Duration:(BOOL)a3
+- (void)setHasZspClkOpt1Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4096;
   }
@@ -177,9 +177,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasZspClkOpt2Duration:(BOOL)a3
+- (void)setHasZspClkOpt2Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x2000;
   }
@@ -192,9 +192,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasZspClkOpt3Duration:(BOOL)a3
+- (void)setHasZspClkOpt3Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x4000;
   }
@@ -207,9 +207,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasZspClkOpt4Duration:(BOOL)a3
+- (void)setHasZspClkOpt4Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x8000;
   }
@@ -222,9 +222,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasZspClkOpt5Duration:(BOOL)a3
+- (void)setHasZspClkOpt5Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x10000;
   }
@@ -237,9 +237,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasThClkOpt0Duration:(BOOL)a3
+- (void)setHasThClkOpt0Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -252,9 +252,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasThClkOpt1Duration:(BOOL)a3
+- (void)setHasThClkOpt1Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -273,20 +273,20 @@
   v8.receiver = self;
   v8.super_class = UtraTddStats;
   v4 = [(UtraTddStats *)&v8 description];
-  v5 = [(UtraTddStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(UtraTddStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v7 forKey:@"duration"];
+    [dictionary setObject:v7 forKey:@"duration"];
 
     has = self->_has;
     if ((*&has & 2) == 0)
@@ -307,7 +307,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_activeDuration];
-  [v3 setObject:v8 forKey:@"active_duration"];
+  [dictionary setObject:v8 forKey:@"active_duration"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -323,7 +323,7 @@ LABEL_4:
 
 LABEL_24:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_normalSleepDuration];
-  [v3 setObject:v9 forKey:@"normal_sleep_duration"];
+  [dictionary setObject:v9 forKey:@"normal_sleep_duration"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -339,7 +339,7 @@ LABEL_5:
 
 LABEL_25:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_deepSleepDuration];
-  [v3 setObject:v10 forKey:@"deep_sleep_duration"];
+  [dictionary setObject:v10 forKey:@"deep_sleep_duration"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -355,7 +355,7 @@ LABEL_6:
 
 LABEL_26:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_deepSleepCycleCount];
-  [v3 setObject:v11 forKey:@"deep_sleep_cycle_count"];
+  [dictionary setObject:v11 forKey:@"deep_sleep_cycle_count"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -371,7 +371,7 @@ LABEL_7:
 
 LABEL_27:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltLowDuration];
-  [v3 setObject:v12 forKey:@"volt_low_duration"];
+  [dictionary setObject:v12 forKey:@"volt_low_duration"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -387,7 +387,7 @@ LABEL_8:
 
 LABEL_28:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltMedDuration];
-  [v3 setObject:v13 forKey:@"volt_med_duration"];
+  [dictionary setObject:v13 forKey:@"volt_med_duration"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -403,7 +403,7 @@ LABEL_9:
 
 LABEL_29:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltHighDuration];
-  [v3 setObject:v14 forKey:@"volt_high_duration"];
+  [dictionary setObject:v14 forKey:@"volt_high_duration"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -419,7 +419,7 @@ LABEL_10:
 
 LABEL_30:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt0Duration];
-  [v3 setObject:v15 forKey:@"zsp_clk_opt0_duration"];
+  [dictionary setObject:v15 forKey:@"zsp_clk_opt0_duration"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -435,7 +435,7 @@ LABEL_11:
 
 LABEL_31:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt1Duration];
-  [v3 setObject:v16 forKey:@"zsp_clk_opt1_duration"];
+  [dictionary setObject:v16 forKey:@"zsp_clk_opt1_duration"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -451,7 +451,7 @@ LABEL_12:
 
 LABEL_32:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt2Duration];
-  [v3 setObject:v17 forKey:@"zsp_clk_opt2_duration"];
+  [dictionary setObject:v17 forKey:@"zsp_clk_opt2_duration"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -467,7 +467,7 @@ LABEL_13:
 
 LABEL_33:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt3Duration];
-  [v3 setObject:v18 forKey:@"zsp_clk_opt3_duration"];
+  [dictionary setObject:v18 forKey:@"zsp_clk_opt3_duration"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -483,7 +483,7 @@ LABEL_14:
 
 LABEL_34:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt4Duration];
-  [v3 setObject:v19 forKey:@"zsp_clk_opt4_duration"];
+  [dictionary setObject:v19 forKey:@"zsp_clk_opt4_duration"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -499,7 +499,7 @@ LABEL_15:
 
 LABEL_35:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_zspClkOpt5Duration];
-  [v3 setObject:v20 forKey:@"zsp_clk_opt5_duration"];
+  [dictionary setObject:v20 forKey:@"zsp_clk_opt5_duration"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -515,7 +515,7 @@ LABEL_16:
 
 LABEL_36:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_thClkOpt0Duration];
-  [v3 setObject:v21 forKey:@"th_clk_opt0_duration"];
+  [dictionary setObject:v21 forKey:@"th_clk_opt0_duration"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -531,23 +531,23 @@ LABEL_17:
 
 LABEL_37:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_thClkOpt1Duration];
-  [v3 setObject:v22 forKey:@"th_clk_opt1_duration"];
+  [dictionary setObject:v22 forKey:@"th_clk_opt1_duration"];
 
   if (*&self->_has)
   {
 LABEL_18:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_startTime];
-    [v3 setObject:v5 forKey:@"start_time"];
+    [dictionary setObject:v5 forKey:@"start_time"];
   }
 
 LABEL_19:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v22 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
@@ -793,14 +793,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
-    v4[7] = self->_duration;
-    v4[20] |= 0x10u;
+    toCopy[7] = self->_duration;
+    toCopy[20] |= 0x10u;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -819,8 +819,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_activeDuration;
-  v4[20] |= 2u;
+  toCopy[4] = self->_activeDuration;
+  toCopy[20] |= 2u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -834,8 +834,8 @@ LABEL_4:
   }
 
 LABEL_24:
-  v4[8] = self->_normalSleepDuration;
-  v4[20] |= 0x20u;
+  toCopy[8] = self->_normalSleepDuration;
+  toCopy[20] |= 0x20u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -849,8 +849,8 @@ LABEL_5:
   }
 
 LABEL_25:
-  v4[6] = self->_deepSleepDuration;
-  v4[20] |= 8u;
+  toCopy[6] = self->_deepSleepDuration;
+  toCopy[20] |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -864,8 +864,8 @@ LABEL_6:
   }
 
 LABEL_26:
-  v4[5] = self->_deepSleepCycleCount;
-  v4[20] |= 4u;
+  toCopy[5] = self->_deepSleepCycleCount;
+  toCopy[20] |= 4u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -879,8 +879,8 @@ LABEL_7:
   }
 
 LABEL_27:
-  v4[12] = self->_voltLowDuration;
-  v4[20] |= 0x200u;
+  toCopy[12] = self->_voltLowDuration;
+  toCopy[20] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -894,8 +894,8 @@ LABEL_8:
   }
 
 LABEL_28:
-  v4[13] = self->_voltMedDuration;
-  v4[20] |= 0x400u;
+  toCopy[13] = self->_voltMedDuration;
+  toCopy[20] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -909,8 +909,8 @@ LABEL_9:
   }
 
 LABEL_29:
-  v4[11] = self->_voltHighDuration;
-  v4[20] |= 0x100u;
+  toCopy[11] = self->_voltHighDuration;
+  toCopy[20] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -924,8 +924,8 @@ LABEL_10:
   }
 
 LABEL_30:
-  v4[14] = self->_zspClkOpt0Duration;
-  v4[20] |= 0x800u;
+  toCopy[14] = self->_zspClkOpt0Duration;
+  toCopy[20] |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -939,8 +939,8 @@ LABEL_11:
   }
 
 LABEL_31:
-  v4[15] = self->_zspClkOpt1Duration;
-  v4[20] |= 0x1000u;
+  toCopy[15] = self->_zspClkOpt1Duration;
+  toCopy[20] |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -954,8 +954,8 @@ LABEL_12:
   }
 
 LABEL_32:
-  v4[16] = self->_zspClkOpt2Duration;
-  v4[20] |= 0x2000u;
+  toCopy[16] = self->_zspClkOpt2Duration;
+  toCopy[20] |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -969,8 +969,8 @@ LABEL_13:
   }
 
 LABEL_33:
-  v4[17] = self->_zspClkOpt3Duration;
-  v4[20] |= 0x4000u;
+  toCopy[17] = self->_zspClkOpt3Duration;
+  toCopy[20] |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -984,8 +984,8 @@ LABEL_14:
   }
 
 LABEL_34:
-  v4[18] = self->_zspClkOpt4Duration;
-  v4[20] |= 0x8000u;
+  toCopy[18] = self->_zspClkOpt4Duration;
+  toCopy[20] |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -999,8 +999,8 @@ LABEL_15:
   }
 
 LABEL_35:
-  v4[19] = self->_zspClkOpt5Duration;
-  v4[20] |= 0x10000u;
+  toCopy[19] = self->_zspClkOpt5Duration;
+  toCopy[20] |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1014,8 +1014,8 @@ LABEL_16:
   }
 
 LABEL_36:
-  v4[9] = self->_thClkOpt0Duration;
-  v4[20] |= 0x40u;
+  toCopy[9] = self->_thClkOpt0Duration;
+  toCopy[20] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1029,21 +1029,21 @@ LABEL_17:
   }
 
 LABEL_37:
-  v4[10] = self->_thClkOpt1Duration;
-  v4[20] |= 0x80u;
+  toCopy[10] = self->_thClkOpt1Duration;
+  toCopy[20] |= 0x80u;
   if (*&self->_has)
   {
 LABEL_18:
-    *(v4 + 1) = self->_startTime;
-    v4[20] |= 1u;
+    *(toCopy + 1) = self->_startTime;
+    toCopy[20] |= 1u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
@@ -1290,19 +1290,19 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_87;
   }
 
   has = self->_has;
-  v6 = *(v4 + 20);
+  v6 = *(equalCopy + 20);
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_duration != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_duration != *(equalCopy + 7))
     {
       goto LABEL_87;
     }
@@ -1317,7 +1317,7 @@ LABEL_87:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_activeDuration != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_activeDuration != *(equalCopy + 4))
     {
       goto LABEL_87;
     }
@@ -1330,7 +1330,7 @@ LABEL_87:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_normalSleepDuration != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_normalSleepDuration != *(equalCopy + 8))
     {
       goto LABEL_87;
     }
@@ -1343,7 +1343,7 @@ LABEL_87:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_deepSleepDuration != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_deepSleepDuration != *(equalCopy + 6))
     {
       goto LABEL_87;
     }
@@ -1356,7 +1356,7 @@ LABEL_87:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_deepSleepCycleCount != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_deepSleepCycleCount != *(equalCopy + 5))
     {
       goto LABEL_87;
     }
@@ -1369,7 +1369,7 @@ LABEL_87:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_voltLowDuration != *(v4 + 12))
+    if ((v6 & 0x200) == 0 || self->_voltLowDuration != *(equalCopy + 12))
     {
       goto LABEL_87;
     }
@@ -1382,7 +1382,7 @@ LABEL_87:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_voltMedDuration != *(v4 + 13))
+    if ((v6 & 0x400) == 0 || self->_voltMedDuration != *(equalCopy + 13))
     {
       goto LABEL_87;
     }
@@ -1395,7 +1395,7 @@ LABEL_87:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_voltHighDuration != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_voltHighDuration != *(equalCopy + 11))
     {
       goto LABEL_87;
     }
@@ -1408,7 +1408,7 @@ LABEL_87:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_zspClkOpt0Duration != *(v4 + 14))
+    if ((v6 & 0x800) == 0 || self->_zspClkOpt0Duration != *(equalCopy + 14))
     {
       goto LABEL_87;
     }
@@ -1421,7 +1421,7 @@ LABEL_87:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_zspClkOpt1Duration != *(v4 + 15))
+    if ((v6 & 0x1000) == 0 || self->_zspClkOpt1Duration != *(equalCopy + 15))
     {
       goto LABEL_87;
     }
@@ -1434,7 +1434,7 @@ LABEL_87:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_zspClkOpt2Duration != *(v4 + 16))
+    if ((v6 & 0x2000) == 0 || self->_zspClkOpt2Duration != *(equalCopy + 16))
     {
       goto LABEL_87;
     }
@@ -1447,7 +1447,7 @@ LABEL_87:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_zspClkOpt3Duration != *(v4 + 17))
+    if ((v6 & 0x4000) == 0 || self->_zspClkOpt3Duration != *(equalCopy + 17))
     {
       goto LABEL_87;
     }
@@ -1460,7 +1460,7 @@ LABEL_87:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_zspClkOpt4Duration != *(v4 + 18))
+    if ((v6 & 0x8000) == 0 || self->_zspClkOpt4Duration != *(equalCopy + 18))
     {
       goto LABEL_87;
     }
@@ -1473,7 +1473,7 @@ LABEL_87:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_zspClkOpt5Duration != *(v4 + 19))
+    if ((v6 & 0x10000) == 0 || self->_zspClkOpt5Duration != *(equalCopy + 19))
     {
       goto LABEL_87;
     }
@@ -1486,7 +1486,7 @@ LABEL_87:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_thClkOpt0Duration != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_thClkOpt0Duration != *(equalCopy + 9))
     {
       goto LABEL_87;
     }
@@ -1499,7 +1499,7 @@ LABEL_87:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_thClkOpt1Duration != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_thClkOpt1Duration != *(equalCopy + 10))
     {
       goto LABEL_87;
     }
@@ -1512,7 +1512,7 @@ LABEL_87:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_startTime != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_startTime != *(equalCopy + 1))
     {
       goto LABEL_87;
     }
@@ -1522,7 +1522,7 @@ LABEL_87:
 
   else
   {
-    v7 = (*(v4 + 20) & 1) == 0;
+    v7 = (*(equalCopy + 20) & 1) == 0;
   }
 
 LABEL_88:
@@ -1761,15 +1761,15 @@ LABEL_34:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x10) != 0)
   {
-    self->_duration = *(v4 + 7);
+    self->_duration = *(fromCopy + 7);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1787,9 +1787,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_activeDuration = *(v4 + 4);
+  self->_activeDuration = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -1802,9 +1802,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_normalSleepDuration = *(v4 + 8);
+  self->_normalSleepDuration = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1817,9 +1817,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_deepSleepDuration = *(v4 + 6);
+  self->_deepSleepDuration = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1832,9 +1832,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_deepSleepCycleCount = *(v4 + 5);
+  self->_deepSleepCycleCount = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -1847,9 +1847,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_voltLowDuration = *(v4 + 12);
+  self->_voltLowDuration = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -1862,9 +1862,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_voltMedDuration = *(v4 + 13);
+  self->_voltMedDuration = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x100) == 0)
   {
 LABEL_9:
@@ -1877,9 +1877,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_voltHighDuration = *(v4 + 11);
+  self->_voltHighDuration = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x800) == 0)
   {
 LABEL_10:
@@ -1892,9 +1892,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_zspClkOpt0Duration = *(v4 + 14);
+  self->_zspClkOpt0Duration = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_11:
@@ -1907,9 +1907,9 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_zspClkOpt1Duration = *(v4 + 15);
+  self->_zspClkOpt1Duration = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_12:
@@ -1922,9 +1922,9 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_zspClkOpt2Duration = *(v4 + 16);
+  self->_zspClkOpt2Duration = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_13:
@@ -1937,9 +1937,9 @@ LABEL_13:
   }
 
 LABEL_33:
-  self->_zspClkOpt3Duration = *(v4 + 17);
+  self->_zspClkOpt3Duration = *(fromCopy + 17);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_14:
@@ -1952,9 +1952,9 @@ LABEL_14:
   }
 
 LABEL_34:
-  self->_zspClkOpt4Duration = *(v4 + 18);
+  self->_zspClkOpt4Duration = *(fromCopy + 18);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_15:
@@ -1967,9 +1967,9 @@ LABEL_15:
   }
 
 LABEL_35:
-  self->_zspClkOpt5Duration = *(v4 + 19);
+  self->_zspClkOpt5Duration = *(fromCopy + 19);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x40) == 0)
   {
 LABEL_16:
@@ -1982,9 +1982,9 @@ LABEL_16:
   }
 
 LABEL_36:
-  self->_thClkOpt0Duration = *(v4 + 9);
+  self->_thClkOpt0Duration = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 0x80) == 0)
   {
 LABEL_17:
@@ -1997,12 +1997,12 @@ LABEL_17:
   }
 
 LABEL_37:
-  self->_thClkOpt1Duration = *(v4 + 10);
+  self->_thClkOpt1Duration = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
 LABEL_18:
-    self->_startTime = *(v4 + 1);
+    self->_startTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

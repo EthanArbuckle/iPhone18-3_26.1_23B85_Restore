@@ -1,30 +1,30 @@
 @interface AKArrowShapePointOfInterestHelper
-+ (CGPoint)_arrowHeadInnerControlPoint:(id)a3;
-+ (CGPoint)_arrowHeadOuterControlPoint:(id)a3;
-+ (CGPoint)_centeredBaseControlPoint:(id)a3;
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6;
-+ (CGPoint)_normalizedDirectionVector:(id)a3;
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (CGPoint)_arrowHeadInnerControlPoint:(id)point;
++ (CGPoint)_arrowHeadOuterControlPoint:(id)point;
++ (CGPoint)_centeredBaseControlPoint:(id)point;
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller;
++ (CGPoint)_normalizedDirectionVector:(id)vector;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKArrowShapePointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
-  v8 = a5;
+  annotationCopy = annotation;
   v48 = 0;
   v49 = 0;
-  v47.receiver = a1;
+  v47.receiver = self;
   v47.super_class = &OBJC_METACLASS___AKArrowShapePointOfInterestHelper;
-  v9 = a6;
-  objc_msgSendSuper2(&v47, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v49, &v48, v8, v9);
+  alignmentCopy = alignment;
+  objc_msgSendSuper2(&v47, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v49, &v48, annotationCopy, alignmentCopy);
   v10 = v49;
   v11 = v48;
-  if ([v8 conformsToAKTextAnnotationProtocol])
+  if ([annotationCopy conformsToAKTextAnnotationProtocol])
   {
-    v12 = [v8 textIsClipped];
-    if (v12)
+    textIsClipped = [annotationCopy textIsClipped];
+    if (textIsClipped)
     {
       v13 = 3;
     }
@@ -37,13 +37,13 @@
 
   else
   {
-    v12 = 0;
+    textIsClipped = 0;
     v13 = 2;
   }
 
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count", a3) + v13}];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count", interest) + v13}];
   v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count") + v13}];
-  if (v12)
+  if (textIsClipped)
   {
     v16 = MEMORY[0x277CCAE60];
     v17 = [v10 objectAtIndex:0];
@@ -57,20 +57,20 @@
 
   [v14 addObjectsFromArray:v10];
   [v15 addObjectsFromArray:v11];
-  [a1 _arrowHeadOuterControlPoint:v8];
+  [self _arrowHeadOuterControlPoint:annotationCopy];
   v21 = v20;
   v23 = v22;
-  [a1 _arrowHeadInnerControlPoint:v8];
+  [self _arrowHeadInnerControlPoint:annotationCopy];
   v25 = v24;
   v27 = v26;
-  v28 = [v9 geometryHelper];
-  [v28 screenPixelAlignedPointForPoint:{v21, v23}];
+  geometryHelper = [alignmentCopy geometryHelper];
+  [geometryHelper screenPixelAlignedPointForPoint:{v21, v23}];
   v30 = v29;
   v32 = v31;
 
-  v33 = [v9 geometryHelper];
+  geometryHelper2 = [alignmentCopy geometryHelper];
 
-  [v33 screenPixelAlignedPointForPoint:{v25, v27}];
+  [geometryHelper2 screenPixelAlignedPointForPoint:{v25, v27}];
   v35 = v34;
   v37 = v36;
 
@@ -89,63 +89,63 @@
   v42 = v14;
   *v45 = v14;
   v43 = v15;
-  *a4 = v15;
+  *style = v15;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 conformsToAKTextAnnotationProtocol] && objc_msgSend(v8, "textIsClipped"))
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  if ([annotationCopy conformsToAKTextAnnotationProtocol] && objc_msgSend(annotationCopy, "textIsClipped"))
   {
-    if (!a3)
+    if (!index)
     {
       goto LABEL_12;
     }
 
-    --a3;
+    --index;
   }
 
-  if (a3 < 2)
+  if (index < 2)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___AKArrowShapePointOfInterestHelper;
-    a3 = objc_msgSendSuper2(&v12, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, a3, v8, v9);
+    index = objc_msgSendSuper2(&v12, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, index, annotationCopy, controllerCopy);
   }
 
   else
   {
     v10 = 12;
-    if (a3 != 3)
+    if (index != 3)
     {
       v10 = 0;
     }
 
-    if (a3 == 2)
+    if (index == 2)
     {
-      a3 = 13;
+      index = 13;
     }
 
     else
     {
-      a3 = v10;
+      index = v10;
     }
   }
 
 LABEL_12:
 
-  return a3;
+  return index;
 }
 
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a5;
-  v11 = a6;
-  v12 = v10;
+  y = point.y;
+  x = point.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  v12 = annotationCopy;
   v13 = v12;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((area & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     [v12 startPoint];
     v15 = v14;
@@ -166,7 +166,7 @@ LABEL_12:
     [v13 endPoint];
     v35 = [AKGeometryHelper isPointOnLeft:x ofRayWithFirstPoint:y andSecondPoint:v30, v32, v33, v34];
     v36 = v35 ^ +[AKGeometryHelper exifOrientationHasFlip:](AKGeometryHelper, "exifOrientationHasFlip:", [v13 originalExifOrientation]);
-    if (a4 == 12)
+    if (area == 12)
     {
       v37 = 0.0;
       if (v36)
@@ -237,7 +237,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4 == 10)
+  if (area == 10)
   {
     [v12 startPoint];
     v84 = x - v83;
@@ -263,7 +263,7 @@ LABEL_20:
     }
   }
 
-  else if (a4 == 9)
+  else if (area == 9)
   {
     [v12 endPoint];
     v41 = v40 - x;
@@ -298,16 +298,16 @@ LABEL_21:
   return result;
 }
 
-+ (CGPoint)_normalizedDirectionVector:(id)a3
++ (CGPoint)_normalizedDirectionVector:(id)vector
 {
-  v3 = a3;
-  [v3 endPoint];
+  vectorCopy = vector;
+  [vectorCopy endPoint];
   v5 = v4;
-  [v3 startPoint];
+  [vectorCopy startPoint];
   v7 = v5 - v6;
-  [v3 endPoint];
+  [vectorCopy endPoint];
   v9 = v8;
-  [v3 startPoint];
+  [vectorCopy startPoint];
   v11 = v10;
 
   [AKGeometryHelper normalizeVectorPoint:v7, v9 - v11];
@@ -316,17 +316,17 @@ LABEL_21:
   return result;
 }
 
-+ (CGPoint)_centeredBaseControlPoint:(id)a3
++ (CGPoint)_centeredBaseControlPoint:(id)point
 {
-  v3 = a3;
-  [v3 arrowHeadLength];
+  pointCopy = point;
+  [pointCopy arrowHeadLength];
   v5 = v4;
-  [v3 endPoint];
+  [pointCopy endPoint];
   v7 = v6;
   v9 = v8;
-  [v3 startPoint];
+  [pointCopy startPoint];
   v11 = v10 - v7;
-  [v3 startPoint];
+  [pointCopy startPoint];
   v13 = v12;
 
   [AKGeometryHelper normalizeVectorPoint:v11, v13 - v9];
@@ -337,16 +337,16 @@ LABEL_21:
   return result;
 }
 
-+ (CGPoint)_arrowHeadInnerControlPoint:(id)a3
++ (CGPoint)_arrowHeadInnerControlPoint:(id)point
 {
-  v4 = a3;
-  [a1 _centeredBaseControlPoint:v4];
+  pointCopy = point;
+  [self _centeredBaseControlPoint:pointCopy];
   v6 = v5;
   v8 = v7;
-  [a1 _normalizedDirectionVector:v4];
+  [self _normalizedDirectionVector:pointCopy];
   v10 = v9;
   v12 = v11;
-  if (+[AKGeometryHelper exifOrientationHasFlip:](AKGeometryHelper, "exifOrientationHasFlip:", [v4 originalExifOrientation]))
+  if (+[AKGeometryHelper exifOrientationHasFlip:](AKGeometryHelper, "exifOrientationHasFlip:", [pointCopy originalExifOrientation]))
   {
     v13 = 1.0;
   }
@@ -356,9 +356,9 @@ LABEL_21:
     v13 = -1.0;
   }
 
-  [v4 arrowLineWidth];
+  [pointCopy arrowLineWidth];
   v15 = v6 + v12 * v13 * (v14 * 0.5);
-  [v4 arrowLineWidth];
+  [pointCopy arrowLineWidth];
   v17 = v16;
 
   v18 = v8 + -(v13 * v10) * (v17 * 0.5);
@@ -368,16 +368,16 @@ LABEL_21:
   return result;
 }
 
-+ (CGPoint)_arrowHeadOuterControlPoint:(id)a3
++ (CGPoint)_arrowHeadOuterControlPoint:(id)point
 {
-  v4 = a3;
-  [a1 _centeredBaseControlPoint:v4];
+  pointCopy = point;
+  [self _centeredBaseControlPoint:pointCopy];
   v6 = v5;
   v8 = v7;
-  [a1 _normalizedDirectionVector:v4];
+  [self _normalizedDirectionVector:pointCopy];
   v10 = v9;
   v12 = v11;
-  if (+[AKGeometryHelper exifOrientationHasFlip:](AKGeometryHelper, "exifOrientationHasFlip:", [v4 originalExifOrientation]))
+  if (+[AKGeometryHelper exifOrientationHasFlip:](AKGeometryHelper, "exifOrientationHasFlip:", [pointCopy originalExifOrientation]))
   {
     v13 = 1.0;
   }
@@ -387,9 +387,9 @@ LABEL_21:
     v13 = -1.0;
   }
 
-  [v4 arrowHeadWidth];
+  [pointCopy arrowHeadWidth];
   v15 = v6 + v12 * v13 * (v14 * 0.5);
-  [v4 arrowHeadWidth];
+  [pointCopy arrowHeadWidth];
   v17 = v16;
 
   v18 = v8 + -(v13 * v10) * (v17 * 0.5);

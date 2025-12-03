@@ -1,14 +1,14 @@
 @interface DDRemotePersonViewControllerProvider
-- (void)createViewControllerWithCompletionHandler:(id)a3;
+- (void)createViewControllerWithCompletionHandler:(id)handler;
 @end
 
 @implementation DDRemotePersonViewControllerProvider
 
-- (void)createViewControllerWithCompletionHandler:(id)a3
+- (void)createViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DDRemotePersonViewControllerProvider *)self actionContext];
-  v6 = [v5 createContact:0];
+  handlerCopy = handler;
+  actionContext = [(DDRemotePersonViewControllerProvider *)self actionContext];
+  v6 = [actionContext createContact:0];
 
   if (v6)
   {
@@ -22,7 +22,7 @@
     v8 = 0;
   }
 
-  v4[2](v4, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
 @end

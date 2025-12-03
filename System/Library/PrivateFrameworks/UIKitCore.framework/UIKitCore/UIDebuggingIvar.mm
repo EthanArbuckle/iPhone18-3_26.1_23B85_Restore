@@ -1,5 +1,5 @@
 @interface UIDebuggingIvar
-+ (id)ivarWithObjcIvar:(objc_ivar *)a3 forObject:(id)a4;
++ (id)ivarWithObjcIvar:(objc_ivar *)ivar forObject:(id)object;
 - (BOOL)isObject;
 - (NSString)valueDescription;
 - (void)dealloc;
@@ -7,17 +7,17 @@
 
 @implementation UIDebuggingIvar
 
-+ (id)ivarWithObjcIvar:(objc_ivar *)a3 forObject:(id)a4
++ (id)ivarWithObjcIvar:(objc_ivar *)ivar forObject:(id)object
 {
   v6 = objc_alloc_init(objc_opt_class());
-  v7 = [MEMORY[0x1E696AEC0] stringWithCString:ivar_getName(a3) encoding:4];
-  TypeEncoding = ivar_getTypeEncoding(a3);
+  v7 = [MEMORY[0x1E696AEC0] stringWithCString:ivar_getName(ivar) encoding:4];
+  TypeEncoding = ivar_getTypeEncoding(ivar);
   v9 = _UIDebugObjectTypeDescription(TypeEncoding);
-  Ivar = object_getIvar(a4, a3);
-  [v6 setObject:a4];
-  [v6 setObjcIvar:a3];
+  Ivar = object_getIvar(object, ivar);
+  [v6 setObject:object];
+  [v6 setObjcIvar:ivar];
   [v6 setName:v7];
-  [v6 setTypeEncoding:ivar_getTypeEncoding(a3)];
+  [v6 setTypeEncoding:ivar_getTypeEncoding(ivar)];
   [v6 setTypeDescription:v9];
   [v6 setValue:Ivar];
 
@@ -26,9 +26,9 @@
 
 - (NSString)valueDescription
 {
-  v3 = [(UIDebuggingIvar *)self object];
+  object = [(UIDebuggingIvar *)self object];
   Offset = ivar_getOffset([(UIDebuggingIvar *)self objcIvar]);
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", _UIDebugIvarValue((v3 + Offset), -[UIDebuggingIvar typeEncoding](self, "typeEncoding"), 0)];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", _UIDebugIvarValue((object + Offset), -[UIDebuggingIvar typeEncoding](self, "typeEncoding"), 0)];
 }
 
 - (BOOL)isObject

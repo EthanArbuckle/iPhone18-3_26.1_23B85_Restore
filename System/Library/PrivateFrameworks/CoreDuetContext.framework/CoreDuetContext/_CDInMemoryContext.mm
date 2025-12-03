@@ -1,38 +1,38 @@
 @interface _CDInMemoryContext
 + (id)context;
-+ (id)contextWithDeviceID:(id)a3;
-- (BOOL)addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5;
-- (BOOL)addObjects:(id)a3 toArrayAtKeyPath:(id)a4;
-- (BOOL)evaluatePredicate:(id)a3 date:(id)a4;
-- (BOOL)hasKnowledgeOfContextualKeyPath:(id)a3;
-- (BOOL)removeObjects:(id)a3 fromArrayAtKeyPath:(id)a4;
-- (BOOL)setObject:(id)a3 forContextualKeyPath:(id)a4;
++ (id)contextWithDeviceID:(id)d;
+- (BOOL)addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path;
+- (BOOL)addObjects:(id)objects toArrayAtKeyPath:(id)path;
+- (BOOL)evaluatePredicate:(id)predicate date:(id)date;
+- (BOOL)hasKnowledgeOfContextualKeyPath:(id)path;
+- (BOOL)removeObjects:(id)objects fromArrayAtKeyPath:(id)path;
+- (BOOL)setObject:(id)object forContextualKeyPath:(id)path;
 - (_CDInMemoryContext)init;
-- (id)addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5 valueDidChange:(BOOL *)a6;
+- (id)addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path valueDidChange:(BOOL *)change;
 - (id)allRegistrations;
-- (id)lastModifiedDateForContextualKeyPath:(id)a3;
-- (id)objectForContextualKeyPath:(id)a3;
-- (id)propertiesForContextualKeyPath:(id)a3;
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4;
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4 removedObjects:(id *)a5;
-- (id)setObject:(id)a3 returningMetadataForContextualKeyPath:(id)a4;
-- (id)unsafe_addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5 valueDidChange:(BOOL *)a6;
-- (id)unsafe_evaluatedContextWithRegistration:(id)a3 date:(id)a4;
-- (id)unsafe_setObject:(id)a3 returningMetadataForContextualKeyPath:(id)a4;
-- (void)addCallback:(id)a3 forKeyPath:(id)a4;
+- (id)lastModifiedDateForContextualKeyPath:(id)path;
+- (id)objectForContextualKeyPath:(id)path;
+- (id)propertiesForContextualKeyPath:(id)path;
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path;
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path removedObjects:(id *)objects;
+- (id)setObject:(id)object returningMetadataForContextualKeyPath:(id)path;
+- (id)unsafe_addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path valueDidChange:(BOOL *)change;
+- (id)unsafe_evaluatedContextWithRegistration:(id)registration date:(id)date;
+- (id)unsafe_setObject:(id)object returningMetadataForContextualKeyPath:(id)path;
+- (void)addCallback:(id)callback forKeyPath:(id)path;
 - (void)dealloc;
-- (void)deregisterCallback:(id)a3;
-- (void)evalutateRegistrationPredicatesWithPreviousContextValue:(id)a3 date:(id)a4 keyPath:(id)a5;
-- (void)locationCoordinatorCircularRegionsDidChange:(id)a3;
-- (void)receiveSystemTimeCallback:(id)a3;
-- (void)registerCallback:(id)a3;
-- (void)setContextValue:(id)a3 forContextualKeyPath:(id)a4;
-- (void)unsafe_deregisterCallback:(id)a3;
-- (void)unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:(id)a3;
-- (void)unsafe_evalutateRegistrationPredicate:(id)a3 previousContextValue:(id)a4 date:(id)a5 keyPath:(id)a6;
-- (void)unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:(id)a3 date:(id)a4 keyPath:(id)a5;
-- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:(id)a3 date:(id)a4;
-- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:(id)a3 date:(id)a4;
+- (void)deregisterCallback:(id)callback;
+- (void)evalutateRegistrationPredicatesWithPreviousContextValue:(id)value date:(id)date keyPath:(id)path;
+- (void)locationCoordinatorCircularRegionsDidChange:(id)change;
+- (void)receiveSystemTimeCallback:(id)callback;
+- (void)registerCallback:(id)callback;
+- (void)setContextValue:(id)value forContextualKeyPath:(id)path;
+- (void)unsafe_deregisterCallback:(id)callback;
+- (void)unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:(id)registration;
+- (void)unsafe_evalutateRegistrationPredicate:(id)predicate previousContextValue:(id)value date:(id)date keyPath:(id)path;
+- (void)unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:(id)value date:(id)date keyPath:(id)path;
+- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:(id)registration date:(id)date;
+- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:(id)registrations date:(id)date;
 @end
 
 @implementation _CDInMemoryContext
@@ -49,31 +49,31 @@
     syncQueue = v2->_syncQueue;
     v2->_syncQueue = v4;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     context = v2->_context;
-    v2->_context = v6;
+    v2->_context = dictionary;
 
     v8 = dispatch_workloop_create("com.apple.cdcontext.inmemorycontext");
     callbackWorkloop = v2->_callbackWorkloop;
     v2->_callbackWorkloop = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     registrations = v2->_registrations;
-    v2->_registrations = v10;
+    v2->_registrations = dictionary2;
 
     v12 = +[_CDSystemTimeCallbackScheduler sharedInstance];
     systemTimeCallbackScheduler = v2->_systemTimeCallbackScheduler;
     v2->_systemTimeCallbackScheduler = v12;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v2 selector:sel_receiveSystemTimeCallback_ name:@"_CDSystemTimeCallbackNotification" object:v2->_systemTimeCallbackScheduler];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_receiveSystemTimeCallback_ name:@"_CDSystemTimeCallbackNotification" object:v2->_systemTimeCallbackScheduler];
 
     v15 = objc_alloc_init(_CDContextualLocationRegistrationMonitor);
     locationRegistrationMonitor = v2->_locationRegistrationMonitor;
     v2->_locationRegistrationMonitor = v15;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel_locationCoordinatorCircularRegionsDidChange_ name:@"_CDCircularRegionsForRegistrationDidChangeNotification" object:v2->_locationRegistrationMonitor];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_locationCoordinatorCircularRegionsDidChange_ name:@"_CDCircularRegionsForRegistrationDidChangeNotification" object:v2->_locationRegistrationMonitor];
   }
 
   return v2;
@@ -81,11 +81,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_CDSystemTimeCallbackNotification" object:self->_systemTimeCallbackScheduler];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_CDSystemTimeCallbackNotification" object:self->_systemTimeCallbackScheduler];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"_CDCircularRegionsForRegistrationDidChangeNotification" object:self->_locationRegistrationMonitor];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"_CDCircularRegionsForRegistrationDidChangeNotification" object:self->_locationRegistrationMonitor];
 
   v5.receiver = self;
   v5.super_class = _CDInMemoryContext;
@@ -99,28 +99,28 @@
   return v2;
 }
 
-+ (id)contextWithDeviceID:(id)a3
++ (id)contextWithDeviceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(_CDInMemoryContext);
-  [(_CDInMemoryContext *)v4 setDeviceID:v3];
+  [(_CDInMemoryContext *)v4 setDeviceID:dCopy];
 
   return v4;
 }
 
-- (void)locationCoordinatorCircularRegionsDidChange:(id)a3
+- (void)locationCoordinatorCircularRegionsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   syncQueue = self->_syncQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66___CDInMemoryContext_locationCoordinatorCircularRegionsDidChange___block_invoke;
   v11[3] = &unk_1E7886250;
-  v12 = v4;
-  v13 = self;
+  v12 = changeCopy;
+  selfCopy = self;
   v6 = v11;
   v7 = syncQueue;
-  v8 = v4;
+  v8 = changeCopy;
   v9 = os_transaction_create();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -132,10 +132,10 @@
   dispatch_async(v7, block);
 }
 
-- (void)receiveSystemTimeCallback:(id)a3
+- (void)receiveSystemTimeCallback:(id)callback
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"_CDSystemTimeCallbackDateKey"];
+  userInfo = [callback userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"_CDSystemTimeCallbackDateKey"];
 
   v5 = objc_alloc_init(_CDContextValue);
   [(_CDContextValue *)v5 setValue:v7];
@@ -144,9 +144,9 @@
   [(_CDInMemoryContext *)self evalutateRegistrationPredicatesWithPreviousContextValue:v5 date:v7 keyPath:v6];
 }
 
-- (BOOL)hasKnowledgeOfContextualKeyPath:(id)a3
+- (BOOL)hasKnowledgeOfContextualKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -156,10 +156,10 @@
   block[1] = 3221225472;
   block[2] = __54___CDInMemoryContext_hasKnowledgeOfContextualKeyPath___block_invoke;
   block[3] = &unk_1E7886508;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(syncQueue, block);
   LOBYTE(syncQueue) = *(v12 + 24);
 
@@ -167,10 +167,10 @@
   return syncQueue;
 }
 
-- (id)objectForContextualKeyPath:(id)a3
+- (id)objectForContextualKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 key];
+  pathCopy = path;
+  v5 = [pathCopy key];
   _cdcontextstore_signpost_get_object_begin();
 
   v13 = 0;
@@ -186,7 +186,7 @@
   block[3] = &unk_1E7886530;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
+  v7 = pathCopy;
   v11 = v7;
   dispatch_sync(syncQueue, block);
   _cdcontextstore_signpost_get_object_end();
@@ -197,28 +197,28 @@
   return v8;
 }
 
-- (void)setContextValue:(id)a3 forContextualKeyPath:(id)a4
+- (void)setContextValue:(id)value forContextualKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59___CDInMemoryContext_setContextValue_forContextualKeyPath___block_invoke;
   block[3] = &unk_1E7886228;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = pathCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = pathCopy;
   dispatch_sync(syncQueue, block);
 }
 
-- (id)unsafe_setObject:(id)a3 returningMetadataForContextualKeyPath:(id)a4
+- (id)unsafe_setObject:(id)object returningMetadataForContextualKeyPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_syncQueue);
   v8 = _os_activity_create(&dword_1A9611000, "CoreDuet: ContextStore setObject:forContextualKeyPath:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   *v24 = 0;
@@ -226,10 +226,10 @@
   os_activity_scope_enter(v8, v24);
   os_activity_scope_leave(v24);
 
-  v9 = [MEMORY[0x1E6997908] contextChannel];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  contextChannel = [MEMORY[0x1E6997908] contextChannel];
+  if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_INFO))
   {
-    if ([v6 conformsToProtocol:&unk_1F1D26DB0])
+    if ([objectCopy conformsToProtocol:&unk_1F1D26DB0])
     {
       v10 = objc_opt_class();
       NSStringFromClass(v10);
@@ -237,39 +237,39 @@
 
     else
     {
-      _CDRedactedObjectForKeyPath(v7, v6);
+      _CDRedactedObjectForKeyPath(pathCopy, objectCopy);
     }
     v11 = ;
     *v24 = 138543618;
-    *&v24[4] = v7;
+    *&v24[4] = pathCopy;
     *&v24[12] = 2112;
     *&v24[14] = v11;
-    _os_log_impl(&dword_1A9611000, v9, OS_LOG_TYPE_INFO, "Setting value for %{public}@: %@", v24, 0x16u);
+    _os_log_impl(&dword_1A9611000, contextChannel, OS_LOG_TYPE_INFO, "Setting value for %{public}@: %@", v24, 0x16u);
   }
 
-  v12 = [v7 key];
+  v12 = [pathCopy key];
   _cdcontextstore_signpost_set_object_begin();
 
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [(NSMutableDictionary *)self->_context objectForKeyedSubscript:v7];
-  v15 = [v14 value];
-  v16 = v15;
-  if (v6 | v15)
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [(NSMutableDictionary *)self->_context objectForKeyedSubscript:pathCopy];
+  value = [v14 value];
+  v16 = value;
+  if (objectCopy | value)
   {
-    if (!v6 || !v15 || ![v6 isEqual:v15])
+    if (!objectCopy || !value || ![objectCopy isEqual:value])
     {
       goto LABEL_13;
     }
 
-    v17 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    contextChannel2 = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel2, OS_LOG_TYPE_INFO))
     {
       *v24 = 138543362;
-      *&v24[4] = v7;
-      _os_log_impl(&dword_1A9611000, v17, OS_LOG_TYPE_INFO, "Setting value for %{public}@ is equal to previous value", v24, 0xCu);
+      *&v24[4] = pathCopy;
+      _os_log_impl(&dword_1A9611000, contextChannel2, OS_LOG_TYPE_INFO, "Setting value for %{public}@ is equal to previous value", v24, 0xCu);
     }
 
-    if (([v7 isEphemeral] & 1) == 0)
+    if (([pathCopy isEphemeral] & 1) == 0)
     {
       _cdcontextstore_signpost_set_object_end();
       v21 = v14;
@@ -279,19 +279,19 @@
     {
 LABEL_13:
       v18 = objc_alloc_init(_CDContextValue);
-      v19 = [v6 copy];
+      v19 = [objectCopy copy];
       [(_CDContextValue *)v18 setValue:v19];
 
-      [(_CDContextValue *)v18 setLastModifiedDate:v13];
+      [(_CDContextValue *)v18 setLastModifiedDate:date];
       if (!v14)
       {
-        v20 = [(_CDContextValue *)v18 metadata];
-        [v20 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_CDContextMetadataKeyFirstValueAfterReboot"];
+        metadata = [(_CDContextValue *)v18 metadata];
+        [metadata setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_CDContextMetadataKeyFirstValueAfterReboot"];
       }
 
-      [(NSMutableDictionary *)self->_context setObject:v18 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_context setObject:v18 forKeyedSubscript:pathCopy];
       v21 = v18;
-      [(_CDInMemoryContext *)self unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:v14 date:v13 keyPath:v7];
+      [(_CDInMemoryContext *)self unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:v14 date:date keyPath:pathCopy];
       _cdcontextstore_signpost_set_object_end();
     }
   }
@@ -307,10 +307,10 @@ LABEL_13:
   return v21;
 }
 
-- (id)setObject:(id)a3 returningMetadataForContextualKeyPath:(id)a4
+- (id)setObject:(id)object returningMetadataForContextualKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -323,11 +323,11 @@ LABEL_13:
   v13[2] = __70___CDInMemoryContext_setObject_returningMetadataForContextualKeyPath___block_invoke;
   v13[3] = &unk_1E7886558;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = objectCopy;
+  v15 = pathCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = pathCopy;
+  v10 = objectCopy;
   dispatch_sync(syncQueue, v13);
   v11 = v18[5];
 
@@ -336,10 +336,10 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)setObject:(id)a3 forContextualKeyPath:(id)a4
+- (BOOL)setObject:(id)object forContextualKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -352,11 +352,11 @@ LABEL_13:
   v12[2] = __53___CDInMemoryContext_setObject_forContextualKeyPath___block_invoke;
   v12[3] = &unk_1E7886558;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = objectCopy;
+  v14 = pathCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = pathCopy;
+  v10 = objectCopy;
   dispatch_sync(syncQueue, v12);
   LOBYTE(syncQueue) = v17[5] != 0;
 
@@ -364,9 +364,9 @@ LABEL_13:
   return syncQueue;
 }
 
-- (id)lastModifiedDateForContextualKeyPath:(id)a3
+- (id)lastModifiedDateForContextualKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -378,10 +378,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __59___CDInMemoryContext_lastModifiedDateForContextualKeyPath___block_invoke;
   block[3] = &unk_1E7886530;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(syncQueue, block);
   v7 = v13[5];
 
@@ -390,9 +390,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)propertiesForContextualKeyPath:(id)a3
+- (id)propertiesForContextualKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -404,10 +404,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __53___CDInMemoryContext_propertiesForContextualKeyPath___block_invoke;
   block[3] = &unk_1E7886530;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(syncQueue, block);
   v7 = v13[5];
 
@@ -416,19 +416,19 @@ LABEL_13:
   return v7;
 }
 
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path
 {
   v7 = 0;
-  v4 = [(_CDInMemoryContext *)self removeObjectsMatchingPredicate:a3 fromArrayAtKeyPath:a4 removedObjects:&v7];
+  v4 = [(_CDInMemoryContext *)self removeObjectsMatchingPredicate:predicate fromArrayAtKeyPath:path removedObjects:&v7];
   v5 = v7;
 
   return v5;
 }
 
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4 removedObjects:(id *)a5
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path removedObjects:(id *)objects
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  pathCopy = path;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -447,16 +447,16 @@ LABEL_13:
   block[2] = __87___CDInMemoryContext_removeObjectsMatchingPredicate_fromArrayAtKeyPath_removedObjects___block_invoke;
   block[3] = &unk_1E7886580;
   block[4] = self;
-  v11 = v9;
+  v11 = pathCopy;
   v16 = v11;
   v18 = &v20;
-  v12 = v8;
+  v12 = predicateCopy;
   v17 = v12;
   v19 = &v26;
   dispatch_sync(syncQueue, block);
-  if (a5)
+  if (objects)
   {
-    *a5 = v27[5];
+    *objects = v27[5];
   }
 
   v13 = v21[5];
@@ -467,11 +467,11 @@ LABEL_13:
   return v13;
 }
 
-- (id)addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5 valueDidChange:(BOOL *)a6
+- (id)addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path valueDidChange:(BOOL *)change
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectsCopy = objects;
+  removeObjectsCopy = removeObjects;
+  pathCopy = path;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -489,17 +489,17 @@ LABEL_13:
   v19[3] = &unk_1E78865A8;
   v23 = &v29;
   v19[4] = self;
-  v14 = v10;
+  v14 = objectsCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = removeObjectsCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = pathCopy;
   v22 = v16;
   v24 = &v25;
   dispatch_sync(syncQueue, v19);
-  if (a6)
+  if (change)
   {
-    *a6 = *(v26 + 24);
+    *change = *(v26 + 24);
   }
 
   v17 = v30[5];
@@ -510,20 +510,20 @@ LABEL_13:
   return v17;
 }
 
-- (id)unsafe_addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5 valueDidChange:(BOOL *)a6
+- (id)unsafe_addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path valueDidChange:(BOOL *)change
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectsCopy = objects;
+  removeObjectsCopy = removeObjects;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_syncQueue);
-  if (a6)
+  if (change)
   {
-    *a6 = 0;
+    *change = 0;
   }
 
-  v13 = [(NSMutableDictionary *)self->_context objectForKeyedSubscript:v12];
-  if (![v10 count] && !objc_msgSend(v11, "count"))
+  v13 = [(NSMutableDictionary *)self->_context objectForKeyedSubscript:pathCopy];
+  if (![objectsCopy count] && !objc_msgSend(removeObjectsCopy, "count"))
   {
     goto LABEL_33;
   }
@@ -533,26 +533,26 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  v14 = [v13 value];
-  if (!v14 || (v15 = v14, [v13 value], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, v15, (isKindOfClass & 1) != 0))
+  value = [v13 value];
+  if (!value || (v15 = value, [v13 value], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, v15, (isKindOfClass & 1) != 0))
   {
 LABEL_8:
-    v39 = v12;
-    v18 = [v13 value];
-    v19 = [v18 mutableCopy];
+    v39 = pathCopy;
+    value2 = [v13 value];
+    array = [value2 mutableCopy];
 
-    if (!v19)
+    if (!array)
     {
-      v19 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    if ([v19 count])
+    if ([array count])
     {
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v20 = v11;
+      v20 = removeObjectsCopy;
       v21 = [v20 countByEnumeratingWithState:&v44 objects:v49 count:16];
       if (v21)
       {
@@ -567,7 +567,7 @@ LABEL_8:
               objc_enumerationMutation(v20);
             }
 
-            [v19 removeObject:*(*(&v44 + 1) + 8 * i)];
+            [array removeObject:*(*(&v44 + 1) + 8 * i)];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -577,13 +577,13 @@ LABEL_8:
       }
     }
 
-    v38 = a6;
-    v25 = v11;
+    changeCopy = change;
+    v25 = removeObjectsCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v26 = v10;
+    v26 = objectsCopy;
     v27 = [v26 countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (v27)
     {
@@ -599,9 +599,9 @@ LABEL_8:
           }
 
           v31 = *(*(&v40 + 1) + 8 * j);
-          if (([v19 containsObject:{v31, v38}] & 1) == 0)
+          if (([array containsObject:{v31, changeCopy}] & 1) == 0)
           {
-            [v19 addObject:v31];
+            [array addObject:v31];
           }
         }
 
@@ -611,26 +611,26 @@ LABEL_8:
       while (v28);
     }
 
-    v32 = [v13 value];
-    v33 = [v19 isEqual:v32];
+    value3 = [v13 value];
+    v33 = [array isEqual:value3];
 
     if (v33)
     {
       v34 = v13;
-      v11 = v25;
-      v12 = v39;
+      removeObjectsCopy = v25;
+      pathCopy = v39;
     }
 
     else
     {
-      v35 = [v19 copy];
-      v12 = v39;
+      v35 = [array copy];
+      pathCopy = v39;
       v34 = [(_CDInMemoryContext *)self unsafe_setObject:v35 returningMetadataForContextualKeyPath:v39];
 
-      v11 = v25;
-      if (v38)
+      removeObjectsCopy = v25;
+      if (changeCopy)
       {
-        *v38 = 1;
+        *changeCopy = 1;
       }
     }
   }
@@ -646,15 +646,15 @@ LABEL_33:
   return v34;
 }
 
-- (BOOL)addObjects:(id)a3 andRemoveObjects:(id)a4 fromArrayAtKeyPath:(id)a5
+- (BOOL)addObjects:(id)objects andRemoveObjects:(id)removeObjects fromArrayAtKeyPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  objectsCopy = objects;
+  removeObjectsCopy = removeObjects;
+  pathCopy = path;
+  if ([objectsCopy count] || objc_msgSend(removeObjectsCopy, "count"))
   {
     v14 = 0;
-    v11 = [(_CDInMemoryContext *)self addObjects:v8 andRemoveObjects:v9 fromArrayAtKeyPath:v10 valueDidChange:&v14];
+    v11 = [(_CDInMemoryContext *)self addObjects:objectsCopy andRemoveObjects:removeObjectsCopy fromArrayAtKeyPath:pathCopy valueDidChange:&v14];
     v12 = v14;
   }
 
@@ -666,14 +666,14 @@ LABEL_33:
   return v12 & 1;
 }
 
-- (BOOL)addObjects:(id)a3 toArrayAtKeyPath:(id)a4
+- (BOOL)addObjects:(id)objects toArrayAtKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  objectsCopy = objects;
+  pathCopy = path;
+  if ([objectsCopy count])
   {
     v11 = 0;
-    v8 = [(_CDInMemoryContext *)self addObjects:v6 andRemoveObjects:0 fromArrayAtKeyPath:v7 valueDidChange:&v11];
+    v8 = [(_CDInMemoryContext *)self addObjects:objectsCopy andRemoveObjects:0 fromArrayAtKeyPath:pathCopy valueDidChange:&v11];
     v9 = v11;
   }
 
@@ -685,14 +685,14 @@ LABEL_33:
   return v9 & 1;
 }
 
-- (BOOL)removeObjects:(id)a3 fromArrayAtKeyPath:(id)a4
+- (BOOL)removeObjects:(id)objects fromArrayAtKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  objectsCopy = objects;
+  pathCopy = path;
+  if ([objectsCopy count])
   {
     v11 = 0;
-    v8 = [(_CDInMemoryContext *)self addObjects:0 andRemoveObjects:v6 fromArrayAtKeyPath:v7 valueDidChange:&v11];
+    v8 = [(_CDInMemoryContext *)self addObjects:0 andRemoveObjects:objectsCopy fromArrayAtKeyPath:pathCopy valueDidChange:&v11];
     v9 = v11;
   }
 
@@ -704,35 +704,35 @@ LABEL_33:
   return v9 & 1;
 }
 
-- (void)addCallback:(id)a3 forKeyPath:(id)a4
+- (void)addCallback:(id)callback forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  pathCopy = path;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45___CDInMemoryContext_addCallback_forKeyPath___block_invoke;
   block[3] = &unk_1E7886228;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = callbackCopy;
+  v13 = pathCopy;
+  selfCopy = self;
+  v9 = pathCopy;
+  v10 = callbackCopy;
   dispatch_sync(syncQueue, block);
 }
 
-- (void)registerCallback:(id)a3
+- (void)registerCallback:(id)callback
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 predicate];
-  v6 = [v5 keyPaths];
+  predicate = [callbackCopy predicate];
+  keyPaths = [predicate keyPaths];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [keyPaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -744,14 +744,14 @@ LABEL_33:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyPaths);
         }
 
-        [(_CDInMemoryContext *)self addCallback:v4 forKeyPath:*(*(&v12 + 1) + 8 * v10++)];
+        [(_CDInMemoryContext *)self addCallback:callbackCopy forKeyPath:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [keyPaths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -760,10 +760,10 @@ LABEL_33:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsafe_deregisterCallback:(id)a3
+- (void)unsafe_deregisterCallback:(id)callback
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   dispatch_assert_queue_V2(self->_syncQueue);
   v5 = _os_activity_create(&dword_1A9611000, "CoreDuet: ContextStore Deregister", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   *state = 0;
@@ -771,24 +771,24 @@ LABEL_33:
   os_activity_scope_enter(v5, state);
   os_activity_scope_leave(state);
 
-  v6 = [v4 clientIdentifier];
+  clientIdentifier = [callbackCopy clientIdentifier];
 
-  v7 = [MEMORY[0x1E6997908] contextChannel];
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  contextChannel = [MEMORY[0x1E6997908] contextChannel];
+  v8 = os_log_type_enabled(contextChannel, OS_LOG_TYPE_INFO);
+  if (clientIdentifier)
   {
     if (!v8)
     {
       goto LABEL_7;
     }
 
-    v9 = [v4 clientIdentifier];
-    v10 = [v4 identifier];
+    clientIdentifier2 = [callbackCopy clientIdentifier];
+    identifier = [callbackCopy identifier];
     *state = 138543618;
-    *&state[4] = v9;
+    *&state[4] = clientIdentifier2;
     *&state[12] = 2112;
-    *&state[14] = v10;
-    _os_log_impl(&dword_1A9611000, v7, OS_LOG_TYPE_INFO, "Deregistering callback for client: %{public}@, registration: %@", state, 0x16u);
+    *&state[14] = identifier;
+    _os_log_impl(&dword_1A9611000, contextChannel, OS_LOG_TYPE_INFO, "Deregistering callback for client: %{public}@, registration: %@", state, 0x16u);
   }
 
   else
@@ -798,21 +798,21 @@ LABEL_33:
       goto LABEL_7;
     }
 
-    v9 = [v4 identifier];
+    clientIdentifier2 = [callbackCopy identifier];
     *state = 138412290;
-    *&state[4] = v9;
-    _os_log_impl(&dword_1A9611000, v7, OS_LOG_TYPE_INFO, "Deregistering callback for registration: %@", state, 0xCu);
+    *&state[4] = clientIdentifier2;
+    _os_log_impl(&dword_1A9611000, contextChannel, OS_LOG_TYPE_INFO, "Deregistering callback for registration: %@", state, 0xCu);
   }
 
 LABEL_7:
-  v11 = [v4 predicate];
-  v12 = [v11 keyPaths];
+  predicate = [callbackCopy predicate];
+  keyPaths = [predicate keyPaths];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = v12;
+  v13 = keyPaths;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -829,14 +829,14 @@ LABEL_7:
 
         v18 = *(*(&v26 + 1) + 8 * i);
         v19 = [(NSMutableDictionary *)self->_registrations objectForKeyedSubscript:v18, v26];
-        [v19 removeObject:v4];
+        [v19 removeObject:callbackCopy];
 
         v20 = +[_CDContextQueries keyPathForSystemTime];
         v21 = [v18 isEqual:v20];
 
         if (v21)
         {
-          [(_CDInMemoryContext *)self unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:v4];
+          [(_CDInMemoryContext *)self unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:callbackCopy];
         }
 
         v22 = +[_CDContextQueries keyPathForCircularLocationRegions];
@@ -844,8 +844,8 @@ LABEL_7:
 
         if (v23)
         {
-          v24 = [(_CDInMemoryContext *)self locationRegistrationMonitor];
-          [v24 removeRegistration:v4];
+          locationRegistrationMonitor = [(_CDInMemoryContext *)self locationRegistrationMonitor];
+          [locationRegistrationMonitor removeRegistration:callbackCopy];
         }
       }
 
@@ -858,24 +858,24 @@ LABEL_7:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deregisterCallback:(id)a3
+- (void)deregisterCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41___CDInMemoryContext_deregisterCallback___block_invoke;
   v7[3] = &unk_1E7886250;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = callbackCopy;
+  selfCopy = self;
+  v6 = callbackCopy;
   dispatch_sync(syncQueue, v7);
 }
 
-- (BOOL)evaluatePredicate:(id)a3 date:(id)a4
+- (BOOL)evaluatePredicate:(id)predicate date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -886,46 +886,46 @@ LABEL_7:
   v12[2] = __45___CDInMemoryContext_evaluatePredicate_date___block_invoke;
   v12[3] = &unk_1E78865F0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = dateCopy;
+  v14 = predicateCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = predicateCopy;
+  v10 = dateCopy;
   dispatch_sync(syncQueue, v12);
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(predicateCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return predicateCopy;
 }
 
-- (void)evalutateRegistrationPredicatesWithPreviousContextValue:(id)a3 date:(id)a4 keyPath:(id)a5
+- (void)evalutateRegistrationPredicatesWithPreviousContextValue:(id)value date:(id)date keyPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  dateCopy = date;
+  pathCopy = path;
   syncQueue = self->_syncQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91___CDInMemoryContext_evalutateRegistrationPredicatesWithPreviousContextValue_date_keyPath___block_invoke;
   v15[3] = &unk_1E7886618;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = valueCopy;
+  v17 = dateCopy;
+  v18 = pathCopy;
+  v12 = pathCopy;
+  v13 = dateCopy;
+  v14 = valueCopy;
   dispatch_sync(syncQueue, v15);
 }
 
-- (void)unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:(id)a3 date:(id)a4 keyPath:(id)a5
+- (void)unsafe_evalutateRegistrationPredicatesWithPreviousContextValue:(id)value date:(id)date keyPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  dateCopy = date;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_syncQueue);
-  v11 = [(NSMutableDictionary *)self->_registrations objectForKeyedSubscript:v10];
+  v11 = [(NSMutableDictionary *)self->_registrations objectForKeyedSubscript:pathCopy];
   v12 = [v11 copy];
 
   v21 = 0u;
@@ -948,7 +948,7 @@ LABEL_7:
           objc_enumerationMutation(v13);
         }
 
-        [(_CDInMemoryContext *)self unsafe_evalutateRegistrationPredicate:*(*(&v19 + 1) + 8 * v17++) previousContextValue:v8 date:v9 keyPath:v10, v19];
+        [(_CDInMemoryContext *)self unsafe_evalutateRegistrationPredicate:*(*(&v19 + 1) + 8 * v17++) previousContextValue:valueCopy date:dateCopy keyPath:pathCopy, v19];
       }
 
       while (v15 != v17);
@@ -958,61 +958,61 @@ LABEL_7:
     while (v15);
   }
 
-  [(_CDInMemoryContext *)self unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:v13 date:v9];
+  [(_CDInMemoryContext *)self unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:v13 date:dateCopy];
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsafe_evalutateRegistrationPredicate:(id)a3 previousContextValue:(id)a4 date:(id)a5 keyPath:(id)a6
+- (void)unsafe_evalutateRegistrationPredicate:(id)predicate previousContextValue:(id)value date:(id)date keyPath:(id)path
 {
   v115 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  predicateCopy = predicate;
+  valueCopy = value;
+  dateCopy = date;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_syncQueue);
-  v96 = self;
-  v98 = [(_CDInMemoryContext *)self unsafe_evaluatedContextWithRegistration:v10 date:v12];
-  v14 = [v98 objectForKeyedSubscript:v13];
+  selfCopy = self;
+  v98 = [(_CDInMemoryContext *)self unsafe_evaluatedContextWithRegistration:predicateCopy date:dateCopy];
+  v14 = [v98 objectForKeyedSubscript:pathCopy];
   v15 = +[_CDContextQueries keyPathForSystemTime];
-  v16 = [v13 isEqual:v15];
+  v16 = [pathCopy isEqual:v15];
 
   if ((v16 & 1) == 0)
   {
-    if (!(v11 | v14) || v11 && v14 && ([v14 value], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "value"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, v22))
+    if (!(valueCopy | v14) || valueCopy && v14 && ([v14 value], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(valueCopy, "value"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, v22))
     {
-      v17 = [v10 predicate];
-      v18 = [v17 evaluateOnEveryKeyPathUpdate];
+      predicate = [predicateCopy predicate];
+      evaluateOnEveryKeyPathUpdate = [predicate evaluateOnEveryKeyPathUpdate];
 
-      if (!v18)
+      if (!evaluateOnEveryKeyPathUpdate)
       {
         goto LABEL_59;
       }
 
-      v19 = [MEMORY[0x1E6997908] contextChannel];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+      contextChannel = [MEMORY[0x1E6997908] contextChannel];
+      if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
       {
-        [_CDInMemoryContext unsafe_evalutateRegistrationPredicate:v19 previousContextValue:? date:? keyPath:?];
+        [_CDInMemoryContext unsafe_evalutateRegistrationPredicate:contextChannel previousContextValue:? date:? keyPath:?];
       }
     }
   }
 
-  v23 = [v10 predicate];
-  v24 = [v23 firesOnAnyChange];
+  predicate2 = [predicateCopy predicate];
+  firesOnAnyChange = [predicate2 firesOnAnyChange];
 
-  v97 = v13;
-  if (v24)
+  v97 = pathCopy;
+  if (firesOnAnyChange)
   {
     goto LABEL_11;
   }
 
-  v48 = [v10 predicate];
-  v49 = [v48 keyPaths];
+  predicate3 = [predicateCopy predicate];
+  keyPaths = [predicate3 keyPaths];
 
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v50 = v49;
+  v50 = keyPaths;
   v51 = [v50 countByEnumeratingWithState:&v109 objects:v114 count:16];
   if (v51)
   {
@@ -1032,7 +1032,7 @@ LABEL_7:
         if (!v55)
         {
           v60 = v50;
-          v13 = v97;
+          pathCopy = v97;
           goto LABEL_58;
         }
       }
@@ -1047,46 +1047,46 @@ LABEL_7:
     }
   }
 
-  v56 = [v10 predicate];
-  v57 = v56;
-  v58 = v16 ? 0 : v11;
-  v59 = [v56 evaluateWithState:v98 previousValue:v58];
+  predicate4 = [predicateCopy predicate];
+  v57 = predicate4;
+  v58 = v16 ? 0 : valueCopy;
+  v59 = [predicate4 evaluateWithState:v98 previousValue:v58];
 
-  v13 = v97;
+  pathCopy = v97;
   if (v59)
   {
 LABEL_11:
     if (v16)
     {
-      v25 = [MEMORY[0x1E6997908] mdcsChannel];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+      mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+      if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_DEBUG))
       {
-        [_CDInMemoryContext unsafe_evalutateRegistrationPredicate:v10 previousContextValue:v25 date:? keyPath:?];
+        [_CDInMemoryContext unsafe_evalutateRegistrationPredicate:predicateCopy previousContextValue:mdcsChannel date:? keyPath:?];
       }
 
-      [(_CDInMemoryContext *)v96 unsafe_deregisterCallback:v10];
+      [(_CDInMemoryContext *)selfCopy unsafe_deregisterCallback:predicateCopy];
     }
 
     else
     {
-      v61 = [v10 predicate];
-      [v61 minimumDurationInPreviousState];
+      predicate5 = [predicateCopy predicate];
+      [predicate5 minimumDurationInPreviousState];
       v63 = v62;
 
-      if (v11 && v63 > 2.22507386e-308)
+      if (valueCopy && v63 > 2.22507386e-308)
       {
-        v64 = [v11 lastModifiedDate];
-        if (!v64 || ([v11 metadata], v65 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "objectForKeyedSubscript:", @"_CDContextMetadataKeyFirstValueAfterReboot"), v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend(v66, "BOOLValue"), v66, v65, v67))
+        lastModifiedDate = [valueCopy lastModifiedDate];
+        if (!lastModifiedDate || ([valueCopy metadata], v65 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "objectForKeyedSubscript:", @"_CDContextMetadataKeyFirstValueAfterReboot"), v66 = objc_claimAutoreleasedReturnValue(), v67 = objc_msgSend(v66, "BOOLValue"), v66, v65, v67))
         {
-          v68 = [MEMORY[0x1E695DF00] distantPast];
+          distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-          v64 = v68;
+          lastModifiedDate = distantPast;
         }
 
-        [v12 timeIntervalSinceDate:v64];
+        [dateCopy timeIntervalSinceDate:lastModifiedDate];
         v70 = v69;
-        v71 = [v10 predicate];
-        [v71 minimumDurationInPreviousState];
+        predicate6 = [predicateCopy predicate];
+        [predicate6 minimumDurationInPreviousState];
         v73 = v72;
 
         if (v70 < v73)
@@ -1096,30 +1096,30 @@ LABEL_11:
       }
     }
 
-    v26 = [v10 informativeCallback];
+    informativeCallback = [predicateCopy informativeCallback];
 
     v94 = v14;
-    v95 = v12;
-    if (v26)
+    v95 = dateCopy;
+    if (informativeCallback)
     {
       v27 = MEMORY[0x1E695DF90];
-      v28 = [v10 predicate];
-      v29 = [v28 keyPaths];
-      v30 = [v27 dictionaryWithCapacity:{objc_msgSend(v29, "count") + 4}];
+      predicate7 = [predicateCopy predicate];
+      keyPaths2 = [predicate7 keyPaths];
+      v30 = [v27 dictionaryWithCapacity:{objc_msgSend(keyPaths2, "count") + 4}];
 
-      v92 = v11;
-      v31 = [v11 copy];
+      v92 = valueCopy;
+      v31 = [valueCopy copy];
       [v30 setObject:v31 forKeyedSubscript:@"OldValue"];
 
       v107 = 0u;
       v108 = 0u;
       v105 = 0u;
       v106 = 0u;
-      v93 = v10;
-      v32 = [v10 predicate];
-      v33 = [v32 keyPaths];
+      v93 = predicateCopy;
+      predicate8 = [predicateCopy predicate];
+      keyPaths3 = [predicate8 keyPaths];
 
-      v34 = [v33 countByEnumeratingWithState:&v105 objects:v113 count:16];
+      v34 = [keyPaths3 countByEnumeratingWithState:&v105 objects:v113 count:16];
       if (v34)
       {
         v35 = v34;
@@ -1131,18 +1131,18 @@ LABEL_11:
           {
             if (*v106 != v37)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(keyPaths3);
             }
 
             v39 = *(*(&v105 + 1) + 8 * j);
             v40 = [v98 objectForKeyedSubscript:v39];
-            v41 = [v39 deviceID];
+            deviceID = [v39 deviceID];
 
-            if (!v41)
+            if (!deviceID)
             {
               v42 = [v39 copy];
 
-              [v42 setDeviceID:v96->_deviceID];
+              [v42 setDeviceID:selfCopy->_deviceID];
               v39 = v42;
             }
 
@@ -1150,14 +1150,14 @@ LABEL_11:
 
             if ([v39 isEqual:v97])
             {
-              v44 = [v97 deviceID];
+              deviceID2 = [v97 deviceID];
 
-              if (v44)
+              if (deviceID2)
               {
                 v45 = [v39 copy];
 
-                v46 = [v97 deviceID];
-                [v45 setDeviceID:v46];
+                deviceID3 = [v97 deviceID];
+                [v45 setDeviceID:deviceID3];
 
                 v39 = v45;
               }
@@ -1172,7 +1172,7 @@ LABEL_11:
             [v30 setObject:v43 forKeyedSubscript:v39];
           }
 
-          v35 = [v33 countByEnumeratingWithState:&v105 objects:v113 count:16];
+          v35 = [keyPaths3 countByEnumeratingWithState:&v105 objects:v113 count:16];
         }
 
         while (v35);
@@ -1183,35 +1183,35 @@ LABEL_11:
         v36 = 0;
       }
 
-      v11 = v92;
+      valueCopy = v92;
       if (!v92)
       {
         goto LABEL_55;
       }
 
-      v74 = [v92 value];
-      if (!v74)
+      value = [v92 value];
+      if (!value)
       {
         goto LABEL_55;
       }
 
-      v75 = v74;
-      v76 = [v92 value];
-      v77 = [MEMORY[0x1E695DFB0] null];
-      v78 = [v76 isEqual:v77];
+      v75 = value;
+      value2 = [v92 value];
+      null = [MEMORY[0x1E695DFB0] null];
+      v78 = [value2 isEqual:null];
 
       if ((v78 & 1) == 0)
       {
         if (v36)
         {
-          v87 = [v36 value];
+          value3 = [v36 value];
           v79 = _CDInformativeContextualChangeRemoval;
-          if (v87)
+          if (value3)
           {
-            v88 = v87;
-            v89 = [v36 value];
-            v90 = [MEMORY[0x1E695DFB0] null];
-            v91 = [v89 isEqual:v90];
+            v88 = value3;
+            value4 = [v36 value];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            v91 = [value4 isEqual:null2];
 
             if (!v91)
             {
@@ -1233,33 +1233,33 @@ LABEL_55:
       }
 
       [v30 setObject:*v79 forKeyedSubscript:@"Kind"];
-      v26 = [v30 copy];
+      informativeCallback = [v30 copy];
 
-      v10 = v93;
-      v13 = v97;
+      predicateCopy = v93;
+      pathCopy = v97;
     }
 
-    v80 = [v10 callback];
+    callback = [predicateCopy callback];
     v81 = os_transaction_create();
-    v82 = [v10 qualityOfService];
-    callbackWorkloop = v96->_callbackWorkloop;
+    qualityOfService = [predicateCopy qualityOfService];
+    callbackWorkloop = selfCopy->_callbackWorkloop;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __94___CDInMemoryContext_unsafe_evalutateRegistrationPredicate_previousContextValue_date_keyPath___block_invoke;
     block[3] = &unk_1E7886640;
-    v100 = v10;
-    v101 = v13;
-    v102 = v26;
+    v100 = predicateCopy;
+    v101 = pathCopy;
+    v102 = informativeCallback;
     v103 = v81;
-    v104 = v80;
+    v104 = callback;
     v84 = v81;
-    v50 = v80;
-    v60 = v26;
-    v85 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v82, 0, block);
+    v50 = callback;
+    v60 = informativeCallback;
+    v85 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qualityOfService, 0, block);
     dispatch_async(callbackWorkloop, v85);
 
     v14 = v94;
-    v12 = v95;
+    dateCopy = v95;
 LABEL_58:
   }
 
@@ -1268,18 +1268,18 @@ LABEL_59:
   v86 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:(id)a3 date:(id)a4
+- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistrations:(id)registrations date:(id)date
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v18 = self;
-  v19 = a4;
+  registrationsCopy = registrations;
+  selfCopy = self;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_syncQueue);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v6;
+  v7 = registrationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -1295,14 +1295,14 @@ LABEL_59:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 predicate];
-        v14 = [v13 keyPaths];
+        predicate = [v12 predicate];
+        keyPaths = [predicate keyPaths];
         v15 = +[_CDContextQueries keyPathForSystemTime];
-        v16 = [v14 containsObject:v15];
+        v16 = [keyPaths containsObject:v15];
 
         if (v16)
         {
-          [(_CDInMemoryContext *)v18 unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:v12 date:v19];
+          [(_CDInMemoryContext *)selfCopy unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:v12 date:dateCopy];
         }
       }
 
@@ -1315,81 +1315,81 @@ LABEL_59:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:(id)a3 date:(id)a4
+- (void)unsafe_registerFutureSystemTimeBasedCallbacksForRegistration:(id)registration date:(id)date
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_syncQueue);
-  v8 = [v6 qualityOfService];
-  v9 = [v6 predicate];
-  v28 = [v6 identifier];
+  qualityOfService = [registrationCopy qualityOfService];
+  predicate = [registrationCopy predicate];
+  identifier = [registrationCopy identifier];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [v9 timeBasedPredicateEvaluationIntervals];
-  v29 = [v10 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  timeBasedPredicateEvaluationIntervals = [predicate timeBasedPredicateEvaluationIntervals];
+  v29 = [timeBasedPredicateEvaluationIntervals countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v29)
   {
     v27 = *v31;
     *&v11 = 138412546;
     v25 = v11;
-    v26 = v10;
+    v26 = timeBasedPredicateEvaluationIntervals;
     do
     {
       for (i = 0; i != v29; ++i)
       {
         if (*v31 != v27)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(timeBasedPredicateEvaluationIntervals);
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 startDate];
-        v15 = [v13 endDate];
-        v16 = [v15 compare:v7];
+        startDate = [v13 startDate];
+        endDate = [v13 endDate];
+        v16 = [endDate compare:dateCopy];
 
         if (v16 != 1)
         {
           goto LABEL_12;
         }
 
-        v17 = [(_CDInMemoryContext *)self unsafe_evaluatedContextWithRegistration:v6 date:v14];
-        if (![v9 evaluateWithState:v17 previousValue:0])
+        systemTimeCallbackScheduler = [(_CDInMemoryContext *)self unsafe_evaluatedContextWithRegistration:registrationCopy date:startDate];
+        if (![predicate evaluateWithState:systemTimeCallbackScheduler previousValue:0])
         {
 
 LABEL_12:
-          v17 = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
-          [v17 unscheduleCallbackAtDate:v14 identifier:v28 requiringDeviceWake:v8 > 0x18];
+          systemTimeCallbackScheduler = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
+          [systemTimeCallbackScheduler unscheduleCallbackAtDate:startDate identifier:identifier requiringDeviceWake:qualityOfService > 0x18];
           goto LABEL_13;
         }
 
-        v18 = v9;
-        v19 = v7;
-        v20 = v6;
-        v21 = [MEMORY[0x1E6997908] contextChannel];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+        v18 = predicate;
+        v19 = dateCopy;
+        v20 = registrationCopy;
+        contextChannel = [MEMORY[0x1E6997908] contextChannel];
+        if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
         {
           v23 = _CDFormattedDate();
           *buf = v25;
           v35 = v23;
           v36 = 2112;
-          v37 = v28;
-          _os_log_debug_impl(&dword_1A9611000, v21, OS_LOG_TYPE_DEBUG, "Registering system time callback at %@ for registration %@", buf, 0x16u);
+          v37 = identifier;
+          _os_log_debug_impl(&dword_1A9611000, contextChannel, OS_LOG_TYPE_DEBUG, "Registering system time callback at %@ for registration %@", buf, 0x16u);
         }
 
-        v22 = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
-        [v22 scheduleCallbackAtDate:v14 identifier:v28 requiringDeviceWake:v8 > 0x18];
+        systemTimeCallbackScheduler2 = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
+        [systemTimeCallbackScheduler2 scheduleCallbackAtDate:startDate identifier:identifier requiringDeviceWake:qualityOfService > 0x18];
 
-        v6 = v20;
-        v7 = v19;
-        v9 = v18;
-        v10 = v26;
+        registrationCopy = v20;
+        dateCopy = v19;
+        predicate = v18;
+        timeBasedPredicateEvaluationIntervals = v26;
 LABEL_13:
       }
 
-      v29 = [v10 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v29 = [timeBasedPredicateEvaluationIntervals countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v29);
@@ -1398,30 +1398,30 @@ LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:(id)a3
+- (void)unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:(id)registration
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  registrationCopy = registration;
   dispatch_assert_queue_V2(self->_syncQueue);
-  v5 = [v4 identifier];
-  if (v5)
+  identifier = [registrationCopy identifier];
+  if (identifier)
   {
-    v6 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
     {
-      [(_CDInMemoryContext *)v5 unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:v6];
+      [(_CDInMemoryContext *)identifier unsafe_deregisterForSystemTimeBasedCallbacksForRegistration:contextChannel];
     }
 
-    v7 = [v4 qualityOfService];
+    qualityOfService = [registrationCopy qualityOfService];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v4;
-    v8 = [v4 predicate];
-    v9 = [v8 timeBasedPredicateEvaluationIntervals];
+    v18 = registrationCopy;
+    predicate = [registrationCopy predicate];
+    timeBasedPredicateEvaluationIntervals = [predicate timeBasedPredicateEvaluationIntervals];
 
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [timeBasedPredicateEvaluationIntervals countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1433,51 +1433,51 @@ LABEL_13:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(timeBasedPredicateEvaluationIntervals);
           }
 
           v14 = *(*(&v19 + 1) + 8 * v13);
-          v15 = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
-          v16 = [v14 startDate];
-          [v15 unscheduleCallbackAtDate:v16 identifier:v5 requiringDeviceWake:v7 > 0x18];
+          systemTimeCallbackScheduler = [(_CDInMemoryContext *)self systemTimeCallbackScheduler];
+          startDate = [v14 startDate];
+          [systemTimeCallbackScheduler unscheduleCallbackAtDate:startDate identifier:identifier requiringDeviceWake:qualityOfService > 0x18];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [timeBasedPredicateEvaluationIntervals countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
     }
 
-    v4 = v18;
+    registrationCopy = v18;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)unsafe_evaluatedContextWithRegistration:(id)a3 date:(id)a4
+- (id)unsafe_evaluatedContextWithRegistration:(id)registration date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_syncQueue);
   v8 = [(NSMutableDictionary *)self->_context mutableCopy];
   v9 = objc_alloc_init(_CDContextValue);
-  [(_CDContextValue *)v9 setValue:v7];
-  [(_CDContextValue *)v9 setLastModifiedDate:v7];
+  [(_CDContextValue *)v9 setValue:dateCopy];
+  [(_CDContextValue *)v9 setLastModifiedDate:dateCopy];
   v10 = +[_CDContextQueries keyPathForSystemTime];
   [v8 setObject:v9 forKeyedSubscript:v10];
 
-  v11 = [v6 locationManagerEffectiveBundleID];
-  if (v11)
+  locationManagerEffectiveBundleID = [registrationCopy locationManagerEffectiveBundleID];
+  if (locationManagerEffectiveBundleID)
   {
-    v12 = [(_CDInMemoryContext *)self locationRegistrationMonitor];
-    v13 = [v12 regionInfosForRegistration:v6];
+    locationRegistrationMonitor = [(_CDInMemoryContext *)self locationRegistrationMonitor];
+    v13 = [locationRegistrationMonitor regionInfosForRegistration:registrationCopy];
 
     v14 = objc_alloc_init(_CDContextValue);
     [(_CDContextValue *)v14 setValue:v13];
-    [(_CDContextValue *)v14 setLastModifiedDate:v7];
+    [(_CDContextValue *)v14 setLastModifiedDate:dateCopy];
     v15 = +[_CDContextQueries keyPathForCircularLocationRegions];
     [v8 setObject:v14 forKeyedSubscript:v15];
   }

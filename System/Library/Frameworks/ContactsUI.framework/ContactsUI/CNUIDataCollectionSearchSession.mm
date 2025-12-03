@@ -1,23 +1,23 @@
 @interface CNUIDataCollectionSearchSession
 + (void)begin;
 + (void)end;
-- (void)didFetchResultSuggested:(BOOL)a3;
-- (void)didSelectResult:(id)a3;
+- (void)didFetchResultSuggested:(BOOL)suggested;
+- (void)didSelectResult:(id)result;
 - (void)searchStringDidChange;
 @end
 
 @implementation CNUIDataCollectionSearchSession
 
-- (void)didSelectResult:(id)a3
+- (void)didSelectResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[CNUIDataCollector sharedCollector];
-  [v4 logSearchResultSelected:v3];
+  [v4 logSearchResultSelected:resultCopy];
 }
 
-- (void)didFetchResultSuggested:(BOOL)a3
+- (void)didFetchResultSuggested:(BOOL)suggested
 {
-  v3 = a3;
+  suggestedCopy = suggested;
   if ([(CNUIDataCollectionSearchSession *)self pendingResults])
   {
     [(CNUIDataCollectionSearchSession *)self setPendingResults:0];
@@ -25,7 +25,7 @@
     [v5 logSearchResultsFetchedSuggested:0];
   }
 
-  if (v3 && [(CNUIDataCollectionSearchSession *)self pendingSuggestionsResults])
+  if (suggestedCopy && [(CNUIDataCollectionSearchSession *)self pendingSuggestionsResults])
   {
     [(CNUIDataCollectionSearchSession *)self setPendingSuggestionsResults:0];
     v6 = +[CNUIDataCollector sharedCollector];

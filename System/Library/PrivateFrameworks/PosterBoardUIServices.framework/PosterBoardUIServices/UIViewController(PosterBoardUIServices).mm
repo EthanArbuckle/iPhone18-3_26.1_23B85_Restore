@@ -7,7 +7,7 @@
 - (PRUISMutablePosterSnapshotRequest)pruis_snapshotRequestForDefinition:()PosterBoardUIServices interfaceOrientation:bounds:screen:posterContents:
 {
   v19 = a3;
-  v20 = a5;
+  _screen = a5;
   v21 = a6;
   if (!v19)
   {
@@ -26,24 +26,24 @@
   v41.size.height = a10;
   if (CGRectEqualToRect(v41, *MEMORY[0x1E695F050]))
   {
-    v23 = [a1 view];
-    [v23 bounds];
+    view = [self view];
+    [view bounds];
     a7 = v24;
     a8 = v25;
     a9 = v26;
     a10 = v27;
   }
 
-  if (!v20)
+  if (!_screen)
   {
-    v28 = [a1 view];
-    v20 = [v28 _screen];
+    view2 = [self view];
+    _screen = [view2 _screen];
   }
 
-  v29 = [MEMORY[0x1E699FAC0] pui_displayConfigurationForScreen:v20];
-  if (!v29)
+  mainConfiguration = [MEMORY[0x1E699FAC0] pui_displayConfigurationForScreen:_screen];
+  if (!mainConfiguration)
   {
-    v29 = [MEMORY[0x1E699F7A8] mainConfiguration];
+    mainConfiguration = [MEMORY[0x1E699F7A8] mainConfiguration];
   }
 
   v42.origin.x = a7;
@@ -52,14 +52,14 @@
   v42.size.height = a10;
   if (CGRectEqualToRect(v42, *MEMORY[0x1E695F058]))
   {
-    if (v20)
+    if (_screen)
     {
-      v30 = v20;
+      v30 = _screen;
     }
 
     else
     {
-      v30 = v29;
+      v30 = mainConfiguration;
     }
 
     [v30 bounds];
@@ -69,11 +69,11 @@
     a10 = v34;
   }
 
-  v35 = [a1 traitCollection];
-  v36 = [v35 userInterfaceStyle];
+  traitCollection = [self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v37 = [(PRUISPosterSnapshotDescriptor *)[PRUISMutablePosterSnapshotDescriptor alloc] initWithUserInterfaceStyle:v36 interfaceOrientation:a4 snapshotDefinition:v19];
-  [(PRUISMutablePosterSnapshotDescriptor *)v37 setDisplayConfiguration:v29];
+  v37 = [(PRUISPosterSnapshotDescriptor *)[PRUISMutablePosterSnapshotDescriptor alloc] initWithUserInterfaceStyle:userInterfaceStyle interfaceOrientation:a4 snapshotDefinition:v19];
+  [(PRUISMutablePosterSnapshotDescriptor *)v37 setDisplayConfiguration:mainConfiguration];
   [(PRUISMutablePosterSnapshotDescriptor *)v37 setCanvasBounds:a7, a8, a9, a10];
   v38 = [(PRUISPosterSnapshotRequest *)[PRUISMutablePosterSnapshotRequest alloc] initWithPoster:v22 snapshotDescriptor:v37];
 

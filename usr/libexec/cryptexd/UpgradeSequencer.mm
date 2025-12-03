@@ -1,24 +1,24 @@
 @interface UpgradeSequencer
 + (id)getSharedInstance;
 - (BOOL)_isInterfaceLocked;
-- (BOOL)lockIsHeldByClient:(_rpc_cred *)a3;
+- (BOOL)lockIsHeldByClient:(_rpc_cred *)client;
 - (UpgradeSequencer)init;
 - (id)_abort;
 - (id)_completeUpgradeSession;
-- (id)_completeUpgradeWithError:(id)a3;
+- (id)_completeUpgradeWithError:(id)error;
 - (id)_timeout;
 - (id)_unlockInterface;
-- (int)_setKernelUpgradeOngoing:(BOOL)a3;
+- (int)_setKernelUpgradeOngoing:(BOOL)ongoing;
 - (void)_disableInterfaceLockTimeout;
 - (void)_handleInterfaceLockCancel;
 - (void)_restartInterfaceLockTimeout;
-- (void)_startUpgradeForCryptex:(id)a3 withGraftPath:(id)a4 killingJobs:(BOOL)a5 withCompletion:(id)a6;
-- (void)abortWithCompletion:(id)a3;
-- (void)completeUpgradeWithCompletion:(id)a3;
-- (void)lockInterfaceForClient:(id)a3 withCompletion:(id)a4;
-- (void)onUpgradeCompleteForCryptex:(id)a3 withCompletion:(id)a4;
-- (void)onUpgradeSessionComplete:(id)a3;
-- (void)startUpgradeForCryptexes:(id)a3 killingJobs:(BOOL)a4 withCompletion:(id)a5;
+- (void)_startUpgradeForCryptex:(id)cryptex withGraftPath:(id)path killingJobs:(BOOL)jobs withCompletion:(id)completion;
+- (void)abortWithCompletion:(id)completion;
+- (void)completeUpgradeWithCompletion:(id)completion;
+- (void)lockInterfaceForClient:(id)client withCompletion:(id)completion;
+- (void)onUpgradeCompleteForCryptex:(id)cryptex withCompletion:(id)completion;
+- (void)onUpgradeSessionComplete:(id)complete;
+- (void)startUpgradeForCryptexes:(id)cryptexes killingJobs:(BOOL)jobs withCompletion:(id)completion;
 @end
 
 @implementation UpgradeSequencer
@@ -127,22 +127,22 @@ int *__24__UpgradeSequencer_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)startUpgradeForCryptexes:(id)a3 killingJobs:(BOOL)a4 withCompletion:(id)a5
+- (void)startUpgradeForCryptexes:(id)cryptexes killingJobs:(BOOL)jobs withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(UpgradeSequencer *)self workQueue];
+  cryptexesCopy = cryptexes;
+  completionCopy = completion;
+  workQueue = [(UpgradeSequencer *)self workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __72__UpgradeSequencer_startUpgradeForCryptexes_killingJobs_withCompletion___block_invoke;
   v13[3] = &unk_100071570;
-  v14 = v8;
-  v15 = v9;
+  v14 = cryptexesCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  jobsCopy = jobs;
+  v11 = cryptexesCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __72__UpgradeSequencer_startUpgradeForCryptexes_killingJobs_withCompletion___block_invoke(uint64_t a1)
@@ -436,18 +436,18 @@ LABEL_6:
   return (*(*(a1 + 40) + 16))(*(a1 + 40), *(*(*(a1 + 48) + 8) + 40));
 }
 
-- (void)completeUpgradeWithCompletion:(id)a3
+- (void)completeUpgradeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UpgradeSequencer *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(UpgradeSequencer *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __50__UpgradeSequencer_completeUpgradeWithCompletion___block_invoke;
   v7[3] = &unk_100071598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __50__UpgradeSequencer_completeUpgradeWithCompletion___block_invoke(uint64_t a1)
@@ -456,24 +456,24 @@ void __50__UpgradeSequencer_completeUpgradeWithCompletion___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)onUpgradeCompleteForCryptex:(id)a3 withCompletion:(id)a4
+- (void)onUpgradeCompleteForCryptex:(id)cryptex withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UpgradeSequencer *)self workQueue];
-  dispatch_suspend(v8);
+  cryptexCopy = cryptex;
+  completionCopy = completion;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_suspend(workQueue);
 
-  v9 = [(UpgradeSequencer *)self registrationQueue];
+  registrationQueue = [(UpgradeSequencer *)self registrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __63__UpgradeSequencer_onUpgradeCompleteForCryptex_withCompletion___block_invoke;
   block[3] = &unk_1000715C0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = cryptexCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = cryptexCopy;
+  dispatch_async(registrationQueue, block);
 }
 
 void __63__UpgradeSequencer_onUpgradeCompleteForCryptex_withCompletion___block_invoke(uint64_t a1)
@@ -513,21 +513,21 @@ void __63__UpgradeSequencer_onUpgradeCompleteForCryptex_withCompletion___block_i
   dispatch_resume(v9);
 }
 
-- (void)onUpgradeSessionComplete:(id)a3
+- (void)onUpgradeSessionComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(UpgradeSequencer *)self workQueue];
-  dispatch_suspend(v5);
+  completeCopy = complete;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_suspend(workQueue);
 
-  v6 = [(UpgradeSequencer *)self registrationQueue];
+  registrationQueue = [(UpgradeSequencer *)self registrationQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __45__UpgradeSequencer_onUpgradeSessionComplete___block_invoke;
   v8[3] = &unk_100071598;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = completeCopy;
+  v7 = completeCopy;
+  dispatch_sync(registrationQueue, v8);
 }
 
 void __45__UpgradeSequencer_onUpgradeSessionComplete___block_invoke(uint64_t a1)
@@ -537,21 +537,21 @@ void __45__UpgradeSequencer_onUpgradeSessionComplete___block_invoke(uint64_t a1)
   dispatch_resume(v2);
 }
 
-- (void)lockInterfaceForClient:(id)a3 withCompletion:(id)a4
+- (void)lockInterfaceForClient:(id)client withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UpgradeSequencer *)self lockAcquireQueue];
+  clientCopy = client;
+  completionCopy = completion;
+  lockAcquireQueue = [(UpgradeSequencer *)self lockAcquireQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__UpgradeSequencer_lockInterfaceForClient_withCompletion___block_invoke;
   block[3] = &unk_1000715C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = clientCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = clientCopy;
+  dispatch_sync(lockAcquireQueue, block);
 }
 
 void __58__UpgradeSequencer_lockInterfaceForClient_withCompletion___block_invoke(uint64_t a1)
@@ -811,25 +811,25 @@ LABEL_44:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v23);
 }
 
-- (BOOL)lockIsHeldByClient:(_rpc_cred *)a3
+- (BOOL)lockIsHeldByClient:(_rpc_cred *)client
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(UpgradeSequencer *)self workQueue];
+  workQueue = [(UpgradeSequencer *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __39__UpgradeSequencer_lockIsHeldByClient___block_invoke;
   block[3] = &unk_1000715E8;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = client;
+  dispatch_sync(workQueue, block);
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(client) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return client;
 }
 
 void __39__UpgradeSequencer_lockIsHeldByClient___block_invoke(uint64_t a1)
@@ -843,18 +843,18 @@ void __39__UpgradeSequencer_lockIsHeldByClient___block_invoke(uint64_t a1)
   }
 }
 
-- (void)abortWithCompletion:(id)a3
+- (void)abortWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UpgradeSequencer *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(UpgradeSequencer *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __40__UpgradeSequencer_abortWithCompletion___block_invoke;
   v7[3] = &unk_100071598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
@@ -865,40 +865,40 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)_isInterfaceLocked
 {
-  v2 = self;
-  v3 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(UpgradeSequencer *)v2 lockingClient];
-  LOBYTE(v2) = v4 != 0;
+  lockingClient = [(UpgradeSequencer *)selfCopy lockingClient];
+  LOBYTE(selfCopy) = lockingClient != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (int)_setKernelUpgradeOngoing:(BOOL)a3
+- (int)_setKernelUpgradeOngoing:(BOOL)ongoing
 {
-  v3 = a3;
-  v4 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  ongoingCopy = ongoing;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  return sysctl_upgrade_set(v3);
+  return sysctl_upgrade_set(ongoingCopy);
 }
 
 - (id)_completeUpgradeSession
 {
-  v3 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [(UpgradeSequencer *)self _setKernelUpgradeOngoing:0];
   if (v4)
   {
     v5 = v4;
-    v6 = [(UpgradeSequencer *)self logHandle];
+    logHandle = [(UpgradeSequencer *)self logHandle];
 
-    if (v6)
+    if (logHandle)
     {
-      v7 = [(UpgradeSequencer *)self logHandle];
-      os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
+      logHandle2 = [(UpgradeSequencer *)self logHandle];
+      os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR);
       v8 = _os_log_send_and_compose_impl();
     }
 
@@ -913,15 +913,15 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [(UpgradeSequencer *)self _unlockInterface];
-    if (v9)
+    _unlockInterface = [(UpgradeSequencer *)self _unlockInterface];
+    if (_unlockInterface)
     {
-      v10 = [(UpgradeSequencer *)self logHandle];
+      logHandle3 = [(UpgradeSequencer *)self logHandle];
 
-      if (v10)
+      if (logHandle3)
       {
-        v11 = [(UpgradeSequencer *)self logHandle];
-        os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
+        logHandle4 = [(UpgradeSequencer *)self logHandle];
+        os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR);
         v12 = _os_log_send_and_compose_impl();
       }
 
@@ -930,7 +930,7 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
         v12 = _os_log_send_and_compose_impl();
       }
 
-      Error = createError("[UpgradeSequencer _completeUpgradeSession]", "upgrade_sequencer.m", 620, "com.apple.security.cryptex.posix", 26, v9, v12);
+      Error = createError("[UpgradeSequencer _completeUpgradeSession]", "upgrade_sequencer.m", 620, "com.apple.security.cryptex.posix", 26, _unlockInterface, v12);
       free(v12);
     }
 
@@ -945,31 +945,31 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
 - (void)_handleInterfaceLockCancel
 {
-  v5 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(UpgradeSequencer *)self lockingClient];
+  lockingClient = [(UpgradeSequencer *)self lockingClient];
 
-  if (v6)
+  if (lockingClient)
   {
     buffer[0] = *"unknown";
     buffer[1] = *&qword_100059128;
-    v7 = [(UpgradeSequencer *)self lockingClient];
-    v8 = [v7 conn];
-    pid = xpc_connection_get_pid(v8);
+    lockingClient2 = [(UpgradeSequencer *)self lockingClient];
+    conn = [lockingClient2 conn];
+    pid = xpc_connection_get_pid(conn);
     proc_name(pid, buffer, 0x20u);
 
     v10 = *__error();
-    v11 = [(UpgradeSequencer *)self logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    logHandle = [(UpgradeSequencer *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(UpgradeSequencer *)self lockingClient];
-      v13 = [v12 conn];
-      if (v13)
+      lockingClient3 = [(UpgradeSequencer *)self lockingClient];
+      conn2 = [lockingClient3 conn];
+      if (conn2)
       {
-        v2 = [(UpgradeSequencer *)self lockingClient];
-        v3 = [v2 conn];
-        v14 = xpc_connection_get_pid(v3);
+        lockingClient4 = [(UpgradeSequencer *)self lockingClient];
+        conn3 = [lockingClient4 conn];
+        v14 = xpc_connection_get_pid(conn3);
       }
 
       else
@@ -981,40 +981,40 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
       v20 = buffer;
       v21 = 1024;
       v22 = v14;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Client disconnected.", &v19, 0x12u);
-      if (v13)
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Client disconnected.", &v19, 0x12u);
+      if (conn2)
       {
       }
     }
 
     *__error() = v10;
-    v15 = [(UpgradeSequencer *)self _abort];
-    if (v15)
+    _abort = [(UpgradeSequencer *)self _abort];
+    if (_abort)
     {
       v16 = *__error();
-      v17 = [(UpgradeSequencer *)self logHandle];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      logHandle2 = [(UpgradeSequencer *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buffer[0]) = 138412290;
-        *(buffer + 4) = v15;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to abort upgrade.: %@", buffer, 0xCu);
+        *(buffer + 4) = _abort;
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_ERROR, "Failed to abort upgrade.: %@", buffer, 0xCu);
       }
 
       *__error() = v16;
     }
 
-    v18 = [(UpgradeSequencer *)self _unlockInterface];
+    _unlockInterface = [(UpgradeSequencer *)self _unlockInterface];
   }
 }
 
 - (id)_unlockInterface
 {
-  v3 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(UpgradeSequencer *)self lockingClient];
+  lockingClient = [(UpgradeSequencer *)self lockingClient];
 
-  if (v4)
+  if (lockingClient)
   {
     [(UpgradeSequencer *)self _disableInterfaceLockTimeout];
     [(UpgradeSequencer *)self setLockingClient:0];
@@ -1025,27 +1025,27 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
 - (void)_disableInterfaceLockTimeout
 {
-  v5 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   buffer[0] = *"unknown";
   buffer[1] = *&qword_100059128;
-  v6 = [(UpgradeSequencer *)self lockingClient];
-  v7 = [v6 conn];
-  pid = xpc_connection_get_pid(v7);
+  lockingClient = [(UpgradeSequencer *)self lockingClient];
+  conn = [lockingClient conn];
+  pid = xpc_connection_get_pid(conn);
   proc_name(pid, buffer, 0x20u);
 
   v9 = *__error();
-  v10 = [(UpgradeSequencer *)self logHandle];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  logHandle = [(UpgradeSequencer *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(UpgradeSequencer *)self lockingClient];
-    v12 = [v11 conn];
-    if (v12)
+    lockingClient2 = [(UpgradeSequencer *)self lockingClient];
+    conn2 = [lockingClient2 conn];
+    if (conn2)
     {
-      v2 = [(UpgradeSequencer *)self lockingClient];
-      v3 = [v2 conn];
-      v13 = xpc_connection_get_pid(v3);
+      lockingClient3 = [(UpgradeSequencer *)self lockingClient];
+      conn3 = [lockingClient3 conn];
+      v13 = xpc_connection_get_pid(conn3);
     }
 
     else
@@ -1057,40 +1057,40 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
     v16 = buffer;
     v17 = 1024;
     v18 = v13;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Suspending upgrade lock timeout.", &v15, 0x12u);
-    if (v12)
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Suspending upgrade lock timeout.", &v15, 0x12u);
+    if (conn2)
     {
     }
   }
 
   *__error() = v9;
-  v14 = [(UpgradeSequencer *)self lockTimer];
-  dispatch_source_set_timer(v14, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  lockTimer = [(UpgradeSequencer *)self lockTimer];
+  dispatch_source_set_timer(lockTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
 - (void)_restartInterfaceLockTimeout
 {
-  v5 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   buffer[0] = *"unknown";
   buffer[1] = *&qword_100059128;
-  v6 = [(UpgradeSequencer *)self lockingClient];
-  v7 = [v6 conn];
-  pid = xpc_connection_get_pid(v7);
+  lockingClient = [(UpgradeSequencer *)self lockingClient];
+  conn = [lockingClient conn];
+  pid = xpc_connection_get_pid(conn);
   proc_name(pid, buffer, 0x20u);
 
   v9 = *__error();
-  v10 = [(UpgradeSequencer *)self logHandle];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  logHandle = [(UpgradeSequencer *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(UpgradeSequencer *)self lockingClient];
-    v12 = [v11 conn];
-    if (v12)
+    lockingClient2 = [(UpgradeSequencer *)self lockingClient];
+    conn2 = [lockingClient2 conn];
+    if (conn2)
     {
-      v2 = [(UpgradeSequencer *)self lockingClient];
-      v3 = [v2 conn];
-      v13 = xpc_connection_get_pid(v3);
+      lockingClient3 = [(UpgradeSequencer *)self lockingClient];
+      conn3 = [lockingClient3 conn];
+      v13 = xpc_connection_get_pid(conn3);
     }
 
     else
@@ -1104,22 +1104,22 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
     v19 = v13;
     v20 = 1024;
     v21 = 10;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Giving client another %d seconds to hold lock.", &v16, 0x18u);
-    if (v12)
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "XPC client <process=%s pid=%d>: Giving client another %d seconds to hold lock.", &v16, 0x18u);
+    if (conn2)
     {
     }
   }
 
   *__error() = v9;
-  v14 = [(UpgradeSequencer *)self lockTimer];
+  lockTimer = [(UpgradeSequencer *)self lockTimer];
   v15 = dispatch_walltime(0, 10000000000);
-  dispatch_source_set_timer(v14, v15, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  dispatch_source_set_timer(lockTimer, v15, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 }
 
 - (id)_timeout
 {
-  v6 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   Error = [(UpgradeSequencer *)self lockingClient];
 
@@ -1127,24 +1127,24 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
   {
     buffer[0] = *"unknown";
     buffer[1] = *&qword_100059128;
-    v8 = [(UpgradeSequencer *)self lockingClient];
-    v9 = [v8 conn];
-    pid = xpc_connection_get_pid(v9);
+    lockingClient = [(UpgradeSequencer *)self lockingClient];
+    conn = [lockingClient conn];
+    pid = xpc_connection_get_pid(conn);
     proc_name(pid, buffer, 0x20u);
 
-    v11 = [(UpgradeSequencer *)self logHandle];
+    logHandle = [(UpgradeSequencer *)self logHandle];
 
-    if (v11)
+    if (logHandle)
     {
-      v12 = [(UpgradeSequencer *)self logHandle];
-      os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
-      v13 = [(UpgradeSequencer *)self lockingClient];
-      v14 = [v13 conn];
-      if (v14)
+      logHandle2 = [(UpgradeSequencer *)self logHandle];
+      os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR);
+      lockingClient2 = [(UpgradeSequencer *)self lockingClient];
+      conn2 = [lockingClient2 conn];
+      if (conn2)
       {
-        v3 = [(UpgradeSequencer *)self lockingClient];
-        v4 = [v3 conn];
-        v15 = xpc_connection_get_pid(v4);
+        lockingClient3 = [(UpgradeSequencer *)self lockingClient];
+        conn3 = [lockingClient3 conn];
+        v15 = xpc_connection_get_pid(conn3);
       }
 
       else
@@ -1160,7 +1160,7 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
       v29 = 60;
       LODWORD(v23) = 24;
       v21 = _os_log_send_and_compose_impl();
-      if (v14)
+      if (conn2)
       {
       }
     }
@@ -1168,13 +1168,13 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
     else
     {
       v17 = &_os_log_default;
-      v18 = [(UpgradeSequencer *)self lockingClient];
-      v19 = [v18 conn];
-      if (v19)
+      lockingClient4 = [(UpgradeSequencer *)self lockingClient];
+      conn4 = [lockingClient4 conn];
+      if (conn4)
       {
-        v2 = [(UpgradeSequencer *)self lockingClient];
-        v3 = [v2 conn];
-        v20 = xpc_connection_get_pid(v3);
+        lockingClient5 = [(UpgradeSequencer *)self lockingClient];
+        lockingClient3 = [lockingClient5 conn];
+        v20 = xpc_connection_get_pid(lockingClient3);
       }
 
       else
@@ -1190,11 +1190,11 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
       v29 = 60;
       LODWORD(v23) = 24;
       v21 = _os_log_send_and_compose_impl();
-      if (v19)
+      if (conn4)
       {
       }
 
-      v12 = &_os_log_default;
+      logHandle2 = &_os_log_default;
     }
 
     Error = createError("[UpgradeSequencer _timeout]", "upgrade_sequencer.m", 697, "com.apple.security.cryptex.posix", 60, 0, v21);
@@ -1212,8 +1212,8 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
 - (id)_abort
 {
-  v3 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9[0] = 0;
   LODWORD(v8) = 2;
@@ -1225,26 +1225,26 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_startUpgradeForCryptex:(id)a3 withGraftPath:(id)a4 killingJobs:(BOOL)a5 withCompletion:(id)a6
+- (void)_startUpgradeForCryptex:(id)cryptex withGraftPath:(id)path killingJobs:(BOOL)jobs withCompletion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  jobsCopy = jobs;
+  cryptexCopy = cryptex;
+  pathCopy = path;
+  completionCopy = completion;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v14 = [(UpgradeSequencer *)self upgradesUnderway];
-  v15 = [v14 objectForKey:v10];
+  upgradesUnderway = [(UpgradeSequencer *)self upgradesUnderway];
+  v15 = [upgradesUnderway objectForKey:cryptexCopy];
 
   if (v15)
   {
-    v16 = [(UpgradeSequencer *)self logHandle];
+    logHandle = [(UpgradeSequencer *)self logHandle];
 
-    if (v16)
+    if (logHandle)
     {
-      v17 = [(UpgradeSequencer *)self logHandle];
-      os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
+      logHandle2 = [(UpgradeSequencer *)self logHandle];
+      os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR);
       v18 = _os_log_send_and_compose_impl();
     }
 
@@ -1255,7 +1255,7 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
     Error = createError("[UpgradeSequencer _startUpgradeForCryptex:withGraftPath:killingJobs:withCompletion:]", "upgrade_sequencer.m", 732, "com.apple.security.cryptex", 29, 0, v18);
     free(v18);
-    v12[2](v12, Error);
+    completionCopy[2](completionCopy, Error);
   }
 
   else
@@ -1263,22 +1263,22 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
     Error = 0;
   }
 
-  v20 = [[UpgradeOperation alloc] initWithCryptexName:v10 graftPath:v11];
+  v20 = [[UpgradeOperation alloc] initWithCryptexName:cryptexCopy graftPath:pathCopy];
   v21 = v20;
   if (v20)
   {
     [(UpgradeOperation *)v20 startUpgrade];
-    v22 = [(UpgradeSequencer *)self upgradesUnderway];
-    [v22 setObject:v21 forKeyedSubscript:v10];
+    upgradesUnderway2 = [(UpgradeSequencer *)self upgradesUnderway];
+    [upgradesUnderway2 setObject:v21 forKeyedSubscript:cryptexCopy];
 
-    if (v7)
+    if (jobsCopy)
     {
-      [(UpgradeOperation *)v21 terminateJobsWithCompletion:v12];
+      [(UpgradeOperation *)v21 terminateJobsWithCompletion:completionCopy];
     }
 
     else
     {
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     v26 = Error;
@@ -1286,12 +1286,12 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
 
   else
   {
-    v23 = [(UpgradeSequencer *)self logHandle];
+    logHandle3 = [(UpgradeSequencer *)self logHandle];
 
-    if (v23)
+    if (logHandle3)
     {
-      v24 = [(UpgradeSequencer *)self logHandle];
-      os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
+      logHandle4 = [(UpgradeSequencer *)self logHandle];
+      os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR);
       v25 = _os_log_send_and_compose_impl();
     }
 
@@ -1303,39 +1303,39 @@ void __40__UpgradeSequencer_abortWithCompletion___block_invoke(uint64_t a1)
     v26 = createError("[UpgradeSequencer _startUpgradeForCryptex:withGraftPath:killingJobs:withCompletion:]", "upgrade_sequencer.m", 742, "com.apple.security.cryptex", 24, 0, v25);
     free(v25);
 
-    v12[2](v12, v26);
+    completionCopy[2](completionCopy, v26);
   }
 }
 
-- (id)_completeUpgradeWithError:(id)a3
+- (id)_completeUpgradeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(UpgradeSequencer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(UpgradeSequencer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(UpgradeSequencer *)self upgradesUnderway];
+  upgradesUnderway = [(UpgradeSequencer *)self upgradesUnderway];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __46__UpgradeSequencer__completeUpgradeWithError___block_invoke;
   v13[3] = &unk_100071610;
-  v7 = v4;
+  v7 = errorCopy;
   v14 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  [upgradesUnderway enumerateKeysAndObjectsUsingBlock:v13];
 
-  v8 = [(UpgradeSequencer *)self upgradesUnderway];
-  [v8 removeAllObjects];
+  upgradesUnderway2 = [(UpgradeSequencer *)self upgradesUnderway];
+  [upgradesUnderway2 removeAllObjects];
 
-  v9 = [(UpgradeSequencer *)self sessionCompleteCallback];
+  sessionCompleteCallback = [(UpgradeSequencer *)self sessionCompleteCallback];
 
-  if (v9)
+  if (sessionCompleteCallback)
   {
-    v10 = [(UpgradeSequencer *)self sessionCompleteCallback];
-    (v10)[2](v10, v7);
+    sessionCompleteCallback2 = [(UpgradeSequencer *)self sessionCompleteCallback];
+    (sessionCompleteCallback2)[2](sessionCompleteCallback2, v7);
   }
 
-  v11 = [(UpgradeSequencer *)self _completeUpgradeSession];
+  _completeUpgradeSession = [(UpgradeSequencer *)self _completeUpgradeSession];
 
-  return v11;
+  return _completeUpgradeSession;
 }
 
 void __46__UpgradeSequencer__completeUpgradeWithError___block_invoke(uint64_t a1, uint64_t a2, void *a3)

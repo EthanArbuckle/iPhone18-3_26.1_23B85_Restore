@@ -1,5 +1,5 @@
 @interface COAlarmAddOnListenerProvider
-- (BOOL)serviceShouldAcceptNewConnection:(id)a3;
+- (BOOL)serviceShouldAcceptNewConnection:(id)connection;
 - (OS_dispatch_queue)dispatchQueue;
 - (id)serviceListener;
 @end
@@ -30,22 +30,22 @@
   return v3;
 }
 
-- (BOOL)serviceShouldAcceptNewConnection:(id)a3
+- (BOOL)serviceShouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.private.coordination"];
+  connectionCopy = connection;
+  v4 = [connectionCopy valueForEntitlement:@"com.apple.private.coordination"];
   if ([v4 BOOLValue])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [v3 valueForEntitlement:@"com.apple.private.coordination.alarms"];
-    v5 = [v6 BOOLValue];
+    v6 = [connectionCopy valueForEntitlement:@"com.apple.private.coordination.alarms"];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

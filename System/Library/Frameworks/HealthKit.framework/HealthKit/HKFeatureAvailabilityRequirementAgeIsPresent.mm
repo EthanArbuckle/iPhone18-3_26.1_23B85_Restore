@@ -1,10 +1,10 @@
 @interface HKFeatureAvailabilityRequirementAgeIsPresent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)requiredEntitlements;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementAgeIsPresent
@@ -21,14 +21,14 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = [HKObjectType characteristicTypeForIdentifier:@"HKCharacteristicTypeIdentifierDateOfBirth"];
-  v7 = [v5 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
 
   v14 = 0;
-  v8 = [v7 userCharacteristicForDataType:v6 error:&v14];
+  v8 = [healthDataSource userCharacteristicForDataType:v6 error:&v14];
   v9 = v14;
 
   if (v9)
@@ -40,11 +40,11 @@
       [HKFeatureAvailabilityRequirementAgeIsPresent isSatisfiedWithDataSource:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -62,12 +62,12 @@
   return v12;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  sourceCopy = source;
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.healthd.user-characteristics.did-change"];
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, sourceCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__HKFeatureAvailabilityRequirementAgeIsPresent_registerObserver_forDataSource___block_invoke;
@@ -75,14 +75,14 @@
   objc_copyWeak(&v15, &location);
   aBlock[4] = self;
   v9 = _Block_copy(aBlock);
-  v10 = [v7 darwinNotificationDataSource];
+  darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__HKFeatureAvailabilityRequirementAgeIsPresent_registerObserver_forDataSource___block_invoke_12;
   v12[3] = &unk_1E737BAB0;
   v11 = v9;
   v13 = v11;
-  [v10 registerObserver:v6 forKey:v8 newValueHandler:v12];
+  [darwinNotificationDataSource registerObserver:observerCopy forKey:v8 newValueHandler:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -116,20 +116,20 @@ void __79__HKFeatureAvailabilityRequirementAgeIsPresent_registerObserver_forData
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  observerCopy = observer;
   v9 = [v5 stringWithUTF8String:"com.apple.healthd.user-characteristics.did-change"];
-  v8 = [v6 darwinNotificationDataSource];
+  darwinNotificationDataSource = [sourceCopy darwinNotificationDataSource];
 
-  [v8 unregisterObserver:v7 forKey:v9];
+  [darwinNotificationDataSource unregisterObserver:observerCopy forKey:v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

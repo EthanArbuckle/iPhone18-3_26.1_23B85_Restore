@@ -1,5 +1,5 @@
 @interface _UIWTCTrackingInfo
-- (BOOL)isMarkedForRemovalTargetedPreview:(id)a3;
+- (BOOL)isMarkedForRemovalTargetedPreview:(id)preview;
 - (NSMutableArray)anticipationAnimationSubranges;
 - (NSMutableArray)insertionAnimationSubranges;
 - (NSMutableArray)removalAnimationSubranges;
@@ -14,15 +14,15 @@
 - (NSMutableIndexSet)finishedInsertionSubrangeIndexes;
 - (NSMutableIndexSet)finishedRemovalSubrangeIndexes;
 - (NSMutableIndexSet)landedReplacementSubrangeIndexes;
-- (id)customFillColorForSubrangeIndex:(unint64_t)a3;
-- (id)finishedSubrangeIndexesForTextAnimation:(int64_t)a3;
-- (id)proofreadingSuggestionIDsForDelivery:(id)a3;
-- (id)subrangesForTextAnimation:(int64_t)a3;
-- (id)targetedPreviewForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4;
-- (id)targetedPreviewsForTextAnimation:(int64_t)a3;
-- (int64_t)backingProofreadingSuggestionStateForSuggestion:(id)a3;
-- (void)markForRemovalTargetedPreviewForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4;
-- (void)setCustomFillColor:(id)a3 forSubrangeIndex:(unint64_t)a4;
+- (id)customFillColorForSubrangeIndex:(unint64_t)index;
+- (id)finishedSubrangeIndexesForTextAnimation:(int64_t)animation;
+- (id)proofreadingSuggestionIDsForDelivery:(id)delivery;
+- (id)subrangesForTextAnimation:(int64_t)animation;
+- (id)targetedPreviewForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index;
+- (id)targetedPreviewsForTextAnimation:(int64_t)animation;
+- (int64_t)backingProofreadingSuggestionStateForSuggestion:(id)suggestion;
+- (void)markForRemovalTargetedPreviewForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index;
+- (void)setCustomFillColor:(id)color forSubrangeIndex:(unint64_t)index;
 @end
 
 @implementation _UIWTCTrackingInfo
@@ -32,9 +32,9 @@
   anticipationAnimationSubranges = self->_anticipationAnimationSubranges;
   if (!anticipationAnimationSubranges)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_anticipationAnimationSubranges;
-    self->_anticipationAnimationSubranges = v4;
+    self->_anticipationAnimationSubranges = array;
 
     anticipationAnimationSubranges = self->_anticipationAnimationSubranges;
   }
@@ -47,9 +47,9 @@
   removalAnimationSubranges = self->_removalAnimationSubranges;
   if (!removalAnimationSubranges)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_removalAnimationSubranges;
-    self->_removalAnimationSubranges = v4;
+    self->_removalAnimationSubranges = array;
 
     removalAnimationSubranges = self->_removalAnimationSubranges;
   }
@@ -62,9 +62,9 @@
   insertionAnimationSubranges = self->_insertionAnimationSubranges;
   if (!insertionAnimationSubranges)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_insertionAnimationSubranges;
-    self->_insertionAnimationSubranges = v4;
+    self->_insertionAnimationSubranges = array;
 
     insertionAnimationSubranges = self->_insertionAnimationSubranges;
   }
@@ -77,9 +77,9 @@
   finishedAnticipationSubrangeIndexes = self->_finishedAnticipationSubrangeIndexes;
   if (!finishedAnticipationSubrangeIndexes)
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v5 = self->_finishedAnticipationSubrangeIndexes;
-    self->_finishedAnticipationSubrangeIndexes = v4;
+    self->_finishedAnticipationSubrangeIndexes = indexSet;
 
     finishedAnticipationSubrangeIndexes = self->_finishedAnticipationSubrangeIndexes;
   }
@@ -92,9 +92,9 @@
   finishedRemovalSubrangeIndexes = self->_finishedRemovalSubrangeIndexes;
   if (!finishedRemovalSubrangeIndexes)
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v5 = self->_finishedRemovalSubrangeIndexes;
-    self->_finishedRemovalSubrangeIndexes = v4;
+    self->_finishedRemovalSubrangeIndexes = indexSet;
 
     finishedRemovalSubrangeIndexes = self->_finishedRemovalSubrangeIndexes;
   }
@@ -107,9 +107,9 @@
   finishedInsertionSubrangeIndexes = self->_finishedInsertionSubrangeIndexes;
   if (!finishedInsertionSubrangeIndexes)
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v5 = self->_finishedInsertionSubrangeIndexes;
-    self->_finishedInsertionSubrangeIndexes = v4;
+    self->_finishedInsertionSubrangeIndexes = indexSet;
 
     finishedInsertionSubrangeIndexes = self->_finishedInsertionSubrangeIndexes;
   }
@@ -122,9 +122,9 @@
   landedReplacementSubrangeIndexes = self->_landedReplacementSubrangeIndexes;
   if (!landedReplacementSubrangeIndexes)
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v5 = self->_landedReplacementSubrangeIndexes;
-    self->_landedReplacementSubrangeIndexes = v4;
+    self->_landedReplacementSubrangeIndexes = indexSet;
 
     landedReplacementSubrangeIndexes = self->_landedReplacementSubrangeIndexes;
   }
@@ -132,54 +132,54 @@
   return landedReplacementSubrangeIndexes;
 }
 
-- (id)subrangesForTextAnimation:(int64_t)a3
+- (id)subrangesForTextAnimation:(int64_t)animation
 {
-  if (a3 == 2)
+  if (animation == 2)
   {
-    v3 = [(_UIWTCTrackingInfo *)self insertionAnimationSubranges];
+    insertionAnimationSubranges = [(_UIWTCTrackingInfo *)self insertionAnimationSubranges];
   }
 
-  else if (a3 == 1)
+  else if (animation == 1)
   {
-    v3 = [(_UIWTCTrackingInfo *)self removalAnimationSubranges];
+    insertionAnimationSubranges = [(_UIWTCTrackingInfo *)self removalAnimationSubranges];
   }
 
-  else if (a3)
+  else if (animation)
   {
-    v3 = 0;
+    insertionAnimationSubranges = 0;
   }
 
   else
   {
-    v3 = [(_UIWTCTrackingInfo *)self anticipationAnimationSubranges];
+    insertionAnimationSubranges = [(_UIWTCTrackingInfo *)self anticipationAnimationSubranges];
   }
 
-  return v3;
+  return insertionAnimationSubranges;
 }
 
-- (id)finishedSubrangeIndexesForTextAnimation:(int64_t)a3
+- (id)finishedSubrangeIndexesForTextAnimation:(int64_t)animation
 {
-  if (a3 == 2)
+  if (animation == 2)
   {
-    v3 = [(_UIWTCTrackingInfo *)self finishedInsertionSubrangeIndexes];
+    finishedInsertionSubrangeIndexes = [(_UIWTCTrackingInfo *)self finishedInsertionSubrangeIndexes];
   }
 
-  else if (a3 == 1)
+  else if (animation == 1)
   {
-    v3 = [(_UIWTCTrackingInfo *)self finishedRemovalSubrangeIndexes];
+    finishedInsertionSubrangeIndexes = [(_UIWTCTrackingInfo *)self finishedRemovalSubrangeIndexes];
   }
 
-  else if (a3)
+  else if (animation)
   {
-    v3 = 0;
+    finishedInsertionSubrangeIndexes = 0;
   }
 
   else
   {
-    v3 = [(_UIWTCTrackingInfo *)self finishedAnticipationSubrangeIndexes];
+    finishedInsertionSubrangeIndexes = [(_UIWTCTrackingInfo *)self finishedAnticipationSubrangeIndexes];
   }
 
-  return v3;
+  return finishedInsertionSubrangeIndexes;
 }
 
 - (NSMutableDictionary)anticipationAnimationPreviews
@@ -187,9 +187,9 @@
   anticipationAnimationPreviews = self->_anticipationAnimationPreviews;
   if (!anticipationAnimationPreviews)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_anticipationAnimationPreviews;
-    self->_anticipationAnimationPreviews = v4;
+    self->_anticipationAnimationPreviews = dictionary;
 
     anticipationAnimationPreviews = self->_anticipationAnimationPreviews;
   }
@@ -202,9 +202,9 @@
   removalAnimationPreviews = self->_removalAnimationPreviews;
   if (!removalAnimationPreviews)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_removalAnimationPreviews;
-    self->_removalAnimationPreviews = v4;
+    self->_removalAnimationPreviews = dictionary;
 
     removalAnimationPreviews = self->_removalAnimationPreviews;
   }
@@ -217,9 +217,9 @@
   insertionAnimationPreviews = self->_insertionAnimationPreviews;
   if (!insertionAnimationPreviews)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_insertionAnimationPreviews;
-    self->_insertionAnimationPreviews = v4;
+    self->_insertionAnimationPreviews = dictionary;
 
     insertionAnimationPreviews = self->_insertionAnimationPreviews;
   }
@@ -227,55 +227,55 @@
   return insertionAnimationPreviews;
 }
 
-- (id)targetedPreviewsForTextAnimation:(int64_t)a3
+- (id)targetedPreviewsForTextAnimation:(int64_t)animation
 {
-  if (a3 == 2)
+  if (animation == 2)
   {
-    v3 = [(_UIWTCTrackingInfo *)self insertionAnimationPreviews];
+    insertionAnimationPreviews = [(_UIWTCTrackingInfo *)self insertionAnimationPreviews];
   }
 
-  else if (a3 == 1)
+  else if (animation == 1)
   {
-    v3 = [(_UIWTCTrackingInfo *)self removalAnimationPreviews];
+    insertionAnimationPreviews = [(_UIWTCTrackingInfo *)self removalAnimationPreviews];
   }
 
-  else if (a3)
+  else if (animation)
   {
-    v3 = 0;
+    insertionAnimationPreviews = 0;
   }
 
   else
   {
-    v3 = [(_UIWTCTrackingInfo *)self anticipationAnimationPreviews];
+    insertionAnimationPreviews = [(_UIWTCTrackingInfo *)self anticipationAnimationPreviews];
   }
 
-  return v3;
+  return insertionAnimationPreviews;
 }
 
-- (id)targetedPreviewForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4
+- (id)targetedPreviewForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index
 {
-  v5 = [(_UIWTCTrackingInfo *)self targetedPreviewsForTextAnimation:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v5 = [(_UIWTCTrackingInfo *)self targetedPreviewsForTextAnimation:animation];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (void)markForRemovalTargetedPreviewForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4
+- (void)markForRemovalTargetedPreviewForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index
 {
-  v5 = [(_UIWTCTrackingInfo *)self targetedPreviewsForTextAnimation:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v5 = [(_UIWTCTrackingInfo *)self targetedPreviewsForTextAnimation:animation];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   object = [v5 objectForKeyedSubscript:v6];
 
   objc_setAssociatedObject(object, &_UIWTCTargetedPreviewIsMarkedForRemovalKey, MEMORY[0x1E695E118], 1);
 }
 
-- (BOOL)isMarkedForRemovalTargetedPreview:(id)a3
+- (BOOL)isMarkedForRemovalTargetedPreview:(id)preview
 {
-  v3 = objc_getAssociatedObject(a3, &_UIWTCTargetedPreviewIsMarkedForRemovalKey);
-  v4 = [v3 BOOLValue];
+  v3 = objc_getAssociatedObject(preview, &_UIWTCTargetedPreviewIsMarkedForRemovalKey);
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSMutableDictionary)customAnimationFillColorsBySubrangeIndex
@@ -283,9 +283,9 @@
   customAnimationFillColorsBySubrangeIndex = self->_customAnimationFillColorsBySubrangeIndex;
   if (!customAnimationFillColorsBySubrangeIndex)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_customAnimationFillColorsBySubrangeIndex;
-    self->_customAnimationFillColorsBySubrangeIndex = v4;
+    self->_customAnimationFillColorsBySubrangeIndex = dictionary;
 
     customAnimationFillColorsBySubrangeIndex = self->_customAnimationFillColorsBySubrangeIndex;
   }
@@ -293,15 +293,15 @@
   return customAnimationFillColorsBySubrangeIndex;
 }
 
-- (void)setCustomFillColor:(id)a3 forSubrangeIndex:(unint64_t)a4
+- (void)setCustomFillColor:(id)color forSubrangeIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v10 = v6;
-    v7 = [(_UIWTCTrackingInfo *)self customAnimationFillColorsBySubrangeIndex];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v7 setObject:v10 forKeyedSubscript:v8];
+    v10 = colorCopy;
+    customAnimationFillColorsBySubrangeIndex = [(_UIWTCTrackingInfo *)self customAnimationFillColorsBySubrangeIndex];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    [customAnimationFillColorsBySubrangeIndex setObject:v10 forKeyedSubscript:v8];
   }
 
   else
@@ -313,20 +313,20 @@
     }
 
     v10 = 0;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)customAnimationFillColorsBySubrangeIndex removeObjectForKey:v7];
+    customAnimationFillColorsBySubrangeIndex = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    [(NSMutableDictionary *)customAnimationFillColorsBySubrangeIndex removeObjectForKey:customAnimationFillColorsBySubrangeIndex];
   }
 
-  v6 = v10;
+  colorCopy = v10;
 LABEL_6:
 }
 
-- (id)customFillColorForSubrangeIndex:(unint64_t)a3
+- (id)customFillColorForSubrangeIndex:(unint64_t)index
 {
   customAnimationFillColorsBySubrangeIndex = self->_customAnimationFillColorsBySubrangeIndex;
   if (customAnimationFillColorsBySubrangeIndex)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     customAnimationFillColorsBySubrangeIndex = [customAnimationFillColorsBySubrangeIndex objectForKeyedSubscript:v4];
   }
 
@@ -338,9 +338,9 @@ LABEL_6:
   proofreadingSuggestionIDsPerDeliveryID = self->_proofreadingSuggestionIDsPerDeliveryID;
   if (!proofreadingSuggestionIDsPerDeliveryID)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_proofreadingSuggestionIDsPerDeliveryID;
-    self->_proofreadingSuggestionIDsPerDeliveryID = v4;
+    self->_proofreadingSuggestionIDsPerDeliveryID = dictionary;
 
     proofreadingSuggestionIDsPerDeliveryID = self->_proofreadingSuggestionIDsPerDeliveryID;
   }
@@ -353,9 +353,9 @@ LABEL_6:
   backingProofreadingSuggestionStatePerSuggestionID = self->_backingProofreadingSuggestionStatePerSuggestionID;
   if (!backingProofreadingSuggestionStatePerSuggestionID)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_backingProofreadingSuggestionStatePerSuggestionID;
-    self->_backingProofreadingSuggestionStatePerSuggestionID = v4;
+    self->_backingProofreadingSuggestionStatePerSuggestionID = dictionary;
 
     backingProofreadingSuggestionStatePerSuggestionID = self->_backingProofreadingSuggestionStatePerSuggestionID;
   }
@@ -363,23 +363,23 @@ LABEL_6:
   return backingProofreadingSuggestionStatePerSuggestionID;
 }
 
-- (id)proofreadingSuggestionIDsForDelivery:(id)a3
+- (id)proofreadingSuggestionIDsForDelivery:(id)delivery
 {
-  v4 = a3;
-  v5 = [(_UIWTCTrackingInfo *)self proofreadingSuggestionIDsPerDeliveryID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deliveryCopy = delivery;
+  proofreadingSuggestionIDsPerDeliveryID = [(_UIWTCTrackingInfo *)self proofreadingSuggestionIDsPerDeliveryID];
+  v6 = [proofreadingSuggestionIDsPerDeliveryID objectForKeyedSubscript:deliveryCopy];
 
   return v6;
 }
 
-- (int64_t)backingProofreadingSuggestionStateForSuggestion:(id)a3
+- (int64_t)backingProofreadingSuggestionStateForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(_UIWTCTrackingInfo *)self backingProofreadingSuggestionStatePerSuggestionID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  suggestionCopy = suggestion;
+  backingProofreadingSuggestionStatePerSuggestionID = [(_UIWTCTrackingInfo *)self backingProofreadingSuggestionStatePerSuggestionID];
+  v6 = [backingProofreadingSuggestionStatePerSuggestionID objectForKeyedSubscript:suggestionCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 - (NSMutableDictionary)decorationContainerViewsPerRange
@@ -387,9 +387,9 @@ LABEL_6:
   decorationContainerViewsPerRange = self->_decorationContainerViewsPerRange;
   if (!decorationContainerViewsPerRange)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_decorationContainerViewsPerRange;
-    self->_decorationContainerViewsPerRange = v4;
+    self->_decorationContainerViewsPerRange = dictionary;
 
     decorationContainerViewsPerRange = self->_decorationContainerViewsPerRange;
   }

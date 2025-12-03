@@ -1,7 +1,7 @@
 @interface EXAppExtensionBrowserViewController
 - (EXAppExtensionBrowserViewController)init;
-- (EXAppExtensionBrowserViewController)initWithCoder:(id)a3;
-- (EXAppExtensionBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (EXAppExtensionBrowserViewController)initWithCoder:(id)coder;
+- (EXAppExtensionBrowserViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -23,7 +23,7 @@
   return [(EXAppExtensionBrowserViewController *)&v5 initWithNibName:0 bundle:0];
 }
 
-- (EXAppExtensionBrowserViewController)initWithCoder:(id)a3
+- (EXAppExtensionBrowserViewController)initWithCoder:(id)coder
 {
   result = sub_1D2A006A8();
   __break(1u);
@@ -32,11 +32,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   EXAppExtensionBrowserViewController.loadView()();
 }
 
-- (EXAppExtensionBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (EXAppExtensionBrowserViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,17 +1,17 @@
 @interface AEExplorerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AEExplorerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AEExplorerViewController" hasInstanceMethod:@"_scrollViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXScrollViewController"];
-  [v3 validateClass:@"PXScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AEExplorerViewController" hasInstanceMethod:@"_handleAttemptedSelectionToggleOfAssetReference: cancelIfAlreadySelected: suppressLivePhotoContent:" withFullSignature:{"v", "@", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AEExplorerViewController" hasInstanceMethod:@"_scrollViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXScrollViewController"];
+  [validationsCopy validateClass:@"PXScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AEExplorerViewController" hasInstanceMethod:@"_handleAttemptedSelectionToggleOfAssetReference: cancelIfAlreadySelected: suppressLivePhotoContent:" withFullSignature:{"v", "@", "B", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

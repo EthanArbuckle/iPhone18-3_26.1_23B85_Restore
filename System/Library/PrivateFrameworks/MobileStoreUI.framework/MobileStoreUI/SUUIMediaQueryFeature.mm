@@ -1,18 +1,18 @@
 @interface SUUIMediaQueryFeature
-- (SUUIMediaQueryFeature)initWithFeatureName:(id)a3 value:(id)a4;
+- (SUUIMediaQueryFeature)initWithFeatureName:(id)name value:(id)value;
 @end
 
 @implementation SUUIMediaQueryFeature
 
-- (SUUIMediaQueryFeature)initWithFeatureName:(id)a3 value:(id)a4
+- (SUUIMediaQueryFeature)initWithFeatureName:(id)name value:(id)value
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = SUUIMediaQueryFeature;
   v6 = [(SUUIMediaQueryFeature *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     featureName = v6->_featureName;
     v6->_featureName = v7;
   }

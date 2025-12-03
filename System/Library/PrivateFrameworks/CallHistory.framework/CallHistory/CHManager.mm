@@ -1,14 +1,14 @@
 @interface CHManager
-+ (id)limitingCallKindsForCallType:(unsigned int)a3;
-+ (unsigned)CHCallStatusForCallWithDuration:(double)a3 isOriginated:(BOOL)a4 isAnswered:(BOOL)a5;
++ (id)limitingCallKindsForCallType:(unsigned int)type;
++ (unsigned)CHCallStatusForCallWithDuration:(double)duration isOriginated:(BOOL)originated isAnswered:(BOOL)answered;
 - (BOOL)canLoadOlderRecentCalls;
 - (BOOL)showsFaceTimeAudioCalls;
 - (BOOL)showsFaceTimeVideoCalls;
 - (BOOL)showsTelephonyCalls;
 - (CHManager)init;
-- (CHManager)initWithContactStore:(id)a3 featureFlags:(id)a4 protectedAppProvider:(id)a5 queue:(id)a6;
-- (CHManager)initWithFetchingLimitsDictionary:(id)a3 andCoalescingStrategy:(id)a4 andPostFetchingPredicate:(id)a5 withQueue:(id)a6;
-- (CHManager)initWithQueue:(id)a3;
+- (CHManager)initWithContactStore:(id)store featureFlags:(id)flags protectedAppProvider:(id)provider queue:(id)queue;
+- (CHManager)initWithFetchingLimitsDictionary:(id)dictionary andCoalescingStrategy:(id)strategy andPostFetchingPredicate:(id)predicate withQueue:(id)queue;
+- (CHManager)initWithQueue:(id)queue;
 - (NSArray)limitingCallKinds;
 - (NSArray)recentCalls;
 - (NSArray)uncoalescedRecentCallsSync;
@@ -21,78 +21,78 @@
 - (double)callTimersGetIncoming;
 - (double)callTimersGetLifetime;
 - (double)callTimersGetOutgoing;
-- (id)_coalescingHashForGroupCall:(id)a3 usingContactsIfPresent:(id)a4;
-- (id)_contactIdentifiersByHandleForCalls:(id)a3;
-- (id)applyPredicate:(id)a3 toCalls:(id)a4;
-- (id)callIdentifiersWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6;
-- (id)callsWithLimits:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6;
-- (id)callsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6;
-- (id)coalescedCallsWithCalls:(id)a3 usingStrategy:(id)a4;
-- (id)coalescedCallsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6;
-- (id)fetchRecentCallsSyncWithCoalescing:(BOOL)a3;
+- (id)_coalescingHashForGroupCall:(id)call usingContactsIfPresent:(id)present;
+- (id)_contactIdentifiersByHandleForCalls:(id)calls;
+- (id)applyPredicate:(id)predicate toCalls:(id)calls;
+- (id)callIdentifiersWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)callsWithLimits:(id)limits limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)callsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)coalescedCallsWithCalls:(id)calls usingStrategy:(id)strategy;
+- (id)coalescedCallsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchRecentCallsSyncWithCoalescing:(BOOL)coalescing;
 - (id)getLimitsDictionary;
 - (id)getLimitsDictionaryForPrivateHeader;
-- (id)latestCallMatchingNormalizedRemoteParticipantHandleValues:(id)a3;
-- (id)latestRecentCallMatchingPredicate:(id)a3;
-- (id)loadOlderRecentCallsWithPredicate:(id)a3;
+- (id)latestCallMatchingNormalizedRemoteParticipantHandleValues:(id)values;
+- (id)latestRecentCallMatchingPredicate:(id)predicate;
+- (id)loadOlderRecentCallsWithPredicate:(id)predicate;
 - (id)protectedBundleIDsExcludingCurrentProcess;
-- (id)recentCallsWithPredicate:(id)a3;
-- (id)unCoalesceCall:(id)a3;
+- (id)recentCallsWithPredicate:(id)predicate;
+- (id)unCoalesceCall:(id)call;
 - (int64_t)callHistoryDBFetchLimit;
-- (int64_t)deleteCallsWithPredicate:(id)a3;
-- (int64_t)setRead:(BOOL)a3 forCallsWithPredicate:(id)a4;
-- (unint64_t)callCountWithPredicate:(id)a3;
-- (unint64_t)coalescedCallCountWithPredicate:(id)a3;
-- (unint64_t)countCallsWithPredicate:(id)a3;
-- (unint64_t)countCallsWithPredicateSync:(id)a3;
+- (int64_t)deleteCallsWithPredicate:(id)predicate;
+- (int64_t)setRead:(BOOL)read forCallsWithPredicate:(id)predicate;
+- (unint64_t)callCountWithPredicate:(id)predicate;
+- (unint64_t)coalescedCallCountWithPredicate:(id)predicate;
+- (unint64_t)countCallsWithPredicate:(id)predicate;
+- (unint64_t)countCallsWithPredicateSync:(id)sync;
 - (unint64_t)databaseSizeInBytes;
 - (unint64_t)estimateDatabaseSizeInBytes;
 - (unsigned)limitingCallTypes;
-- (void)addArrayToCallHistory:(id)a3;
-- (void)addArrayToCallHistory:(id)a3 withCompletion:(id)a4;
-- (void)addMultipleCallsToCallHistory:(id)a3;
-- (void)addMultipleCallsToCallHistoryWithTransactions:(id)a3;
-- (void)addToCallHistory:(id)a3;
+- (void)addArrayToCallHistory:(id)history;
+- (void)addArrayToCallHistory:(id)history withCompletion:(id)completion;
+- (void)addMultipleCallsToCallHistory:(id)history;
+- (void)addMultipleCallsToCallHistoryWithTransactions:(id)transactions;
+- (void)addToCallHistory:(id)history;
 - (void)callTimersReset;
 - (void)clearDatabase;
-- (void)currentLocaleChanged:(id)a3;
+- (void)currentLocaleChanged:(id)changed;
 - (void)dealloc;
 - (void)deleteAllCalls;
 - (void)deleteAllCallsSync;
-- (void)deleteCall:(id)a3;
-- (void)deleteCallAtIndex:(unint64_t)a3;
-- (void)deleteCalls:(id)a3 withCompletion:(id)a4;
-- (void)deleteCallsWithPredicate:(id)a3 completion:(id)a4;
-- (void)deleteTheseCalls:(id)a3;
-- (void)deleteTheseCallsSync:(id)a3;
-- (void)handleCallHistoryContactStoreChangedInternalNotification:(id)a3;
-- (void)handleCallHistoryDatabaseChangedInternalNotification:(id)a3;
-- (void)markAllCallsAsReadWithPredicate:(id)a3;
+- (void)deleteCall:(id)call;
+- (void)deleteCallAtIndex:(unint64_t)index;
+- (void)deleteCalls:(id)calls withCompletion:(id)completion;
+- (void)deleteCallsWithPredicate:(id)predicate completion:(id)completion;
+- (void)deleteTheseCalls:(id)calls;
+- (void)deleteTheseCallsSync:(id)sync;
+- (void)handleCallHistoryContactStoreChangedInternalNotification:(id)notification;
+- (void)handleCallHistoryDatabaseChangedInternalNotification:(id)notification;
+- (void)markAllCallsAsReadWithPredicate:(id)predicate;
 - (void)protectedAppsChanged;
 - (void)registerForNotifications;
 - (void)resetCalls;
-- (void)setAllowedProtectedAppBundleIDs:(id)a3;
-- (void)setCoalescingStrategy:(id)a3;
+- (void)setAllowedProtectedAppBundleIDs:(id)ds;
+- (void)setCoalescingStrategy:(id)strategy;
 - (void)setDefaultInitValues;
-- (void)setInitialLimitingCallKinds:(id)a3;
-- (void)setLimitingCallKinds:(id)a3;
-- (void)setLimitingCallKindsSync:(id)a3;
-- (void)setLimitingCallTypes:(unsigned int)a3;
-- (void)setLimitingEndDate:(id)a3;
-- (void)setLimitingStartDate:(id)a3;
-- (void)setOutgoingLocalParticipantUUID:(id)a3 forRecentCallsMatchingPredicate:(id)a4;
-- (void)setPostFetchingPredicate:(id)a3;
-- (void)setPreFetchingPredicate:(id)a3;
-- (void)setRead:(BOOL)a3 forCallsWithPredicate:(id)a4 completion:(id)a5;
-- (void)setShowsFaceTimeAudioCalls:(BOOL)a3;
-- (void)setShowsFaceTimeVideoCalls:(BOOL)a3;
-- (void)setShowsProtectedApps:(BOOL)a3;
-- (void)setShowsTelephonyCalls:(BOOL)a3;
-- (void)updateAutoAnsweredReasonFor:(id)a3 with:(int64_t)a4;
-- (void)updateBytesOfDataUsedFor:(id)a3 with:(id)a4;
-- (void)updateEmergencyMediaItemFor:(id)a3 with:(id)a4;
-- (void)updateMessageStatusFor:(id)a3 with:(id)a4;
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4;
+- (void)setInitialLimitingCallKinds:(id)kinds;
+- (void)setLimitingCallKinds:(id)kinds;
+- (void)setLimitingCallKindsSync:(id)sync;
+- (void)setLimitingCallTypes:(unsigned int)types;
+- (void)setLimitingEndDate:(id)date;
+- (void)setLimitingStartDate:(id)date;
+- (void)setOutgoingLocalParticipantUUID:(id)d forRecentCallsMatchingPredicate:(id)predicate;
+- (void)setPostFetchingPredicate:(id)predicate;
+- (void)setPreFetchingPredicate:(id)predicate;
+- (void)setRead:(BOOL)read forCallsWithPredicate:(id)predicate completion:(id)completion;
+- (void)setShowsFaceTimeAudioCalls:(BOOL)calls;
+- (void)setShowsFaceTimeVideoCalls:(BOOL)calls;
+- (void)setShowsProtectedApps:(BOOL)apps;
+- (void)setShowsTelephonyCalls:(BOOL)calls;
+- (void)updateAutoAnsweredReasonFor:(id)for with:(int64_t)with;
+- (void)updateBytesOfDataUsedFor:(id)for with:(id)with;
+- (void)updateEmergencyMediaItemFor:(id)for with:(id)with;
+- (void)updateMessageStatusFor:(id)for with:(id)with;
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call;
 @end
 
 @implementation CHManager
@@ -126,10 +126,10 @@
 
 - (void)registerForNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleCallHistoryContactStoreChangedInternalNotification_ name:@"kCallHistoryContactStoreChangedInternalNotification" object:0];
-  [v3 addObserver:self selector:sel_handleCallHistoryDatabaseChangedInternalNotification_ name:@"kCallHistoryDatabaseChangedInternalNotification" object:0];
-  [v3 addObserver:self selector:sel_currentLocaleChanged_ name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleCallHistoryContactStoreChangedInternalNotification_ name:@"kCallHistoryContactStoreChangedInternalNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_handleCallHistoryDatabaseChangedInternalNotification_ name:@"kCallHistoryDatabaseChangedInternalNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_currentLocaleChanged_ name:*MEMORY[0x1E695D8F0] object:0];
 }
 
 id __24__CHManager_recentCalls__block_invoke(uint64_t a1)
@@ -179,22 +179,22 @@ id __24__CHManager_recentCalls__block_invoke(uint64_t a1)
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFD8] set];
-  v4 = [(CHManager *)self featureFlags];
-  if ([v4 protectedAppsEnabled])
+  featureFlags = [(CHManager *)self featureFlags];
+  if ([featureFlags protectedAppsEnabled])
   {
-    v5 = [(CHManager *)self showsProtectedApps];
+    showsProtectedApps = [(CHManager *)self showsProtectedApps];
 
-    if (!v5)
+    if (!showsProtectedApps)
     {
-      v6 = [(CHManager *)self protectedAppProvider];
-      v7 = [v6 protectedApplicationBundleIDs];
+      protectedAppProvider = [(CHManager *)self protectedAppProvider];
+      protectedApplicationBundleIDs = [protectedAppProvider protectedApplicationBundleIDs];
 
-      v8 = [(CHSynchronizedLoggable *)self logHandle];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(CHSynchronizedLoggable *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = v7;
-        _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "Fetched %{public}@ protected apps to exclude from call history fetches", &v14, 0xCu);
+        v15 = protectedApplicationBundleIDs;
+        _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Fetched %{public}@ protected apps to exclude from call history fetches", &v14, 0xCu);
       }
 
       goto LABEL_15;
@@ -205,11 +205,11 @@ id __24__CHManager_recentCalls__block_invoke(uint64_t a1)
   {
   }
 
-  v8 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CHManager *)self featureFlags];
-    if ([v9 protectedAppsEnabled])
+    featureFlags2 = [(CHManager *)self featureFlags];
+    if ([featureFlags2 protectedAppsEnabled])
     {
       v10 = @"YES";
     }
@@ -233,15 +233,15 @@ id __24__CHManager_recentCalls__block_invoke(uint64_t a1)
     v15 = v10;
     v16 = 2114;
     v17 = v11;
-    _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "Protected apps feature flag is off %{public}@ or we allow showing protectedApps %{public}@", &v14, 0x16u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Protected apps feature flag is off %{public}@ or we allow showing protectedApps %{public}@", &v14, 0x16u);
   }
 
-  v7 = v3;
+  protectedApplicationBundleIDs = v3;
 LABEL_15:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return protectedApplicationBundleIDs;
 }
 
 - (SyncManagerProtocol)syncManager
@@ -287,13 +287,13 @@ LABEL_15:
     [v4 setObject:limitingEndDate forKeyedSubscript:@"kCHLimitEndDateKey"];
   }
 
-  v9 = [(CHManager *)self featureFlags];
-  v10 = [v9 protectedAppsEnabled];
+  featureFlags = [(CHManager *)self featureFlags];
+  protectedAppsEnabled = [featureFlags protectedAppsEnabled];
 
-  if (v10)
+  if (protectedAppsEnabled)
   {
-    v11 = [(CHManager *)self protectedBundleIDsExcludingCurrentProcess];
-    [v4 setObject:v11 forKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
+    protectedBundleIDsExcludingCurrentProcess = [(CHManager *)self protectedBundleIDsExcludingCurrentProcess];
+    [v4 setObject:protectedBundleIDsExcludingCurrentProcess forKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
   }
 
   return v4;
@@ -301,18 +301,18 @@ LABEL_15:
 
 - (int64_t)callHistoryDBFetchLimit
 {
-  v3 = [(CHManager *)self featureFlags];
-  v4 = [v3 increaseCallHistoryEnabled];
+  featureFlags = [(CHManager *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (!v4)
+  if (!increaseCallHistoryEnabled)
   {
     return 200;
   }
 
-  v5 = [(CHManager *)self featureFlags];
-  v6 = [v5 keepCallsEnabled];
+  featureFlags2 = [(CHManager *)self featureFlags];
+  keepCallsEnabled = [featureFlags2 keepCallsEnabled];
   v7 = &kCallHistoryNoFetchLimit;
-  if (!v6)
+  if (!keepCallsEnabled)
   {
     v7 = &kCallHistoryIncreasedFetchLimit;
   }
@@ -325,13 +325,13 @@ LABEL_15:
 - (id)getLimitsDictionaryForPrivateHeader
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CHManager *)self featureFlags];
-  v5 = [v4 protectedAppsEnabled];
+  featureFlags = [(CHManager *)self featureFlags];
+  protectedAppsEnabled = [featureFlags protectedAppsEnabled];
 
-  if (v5)
+  if (protectedAppsEnabled)
   {
-    v6 = [(CHManager *)self protectedBundleIDsExcludingCurrentProcess];
-    [v3 setObject:v6 forKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
+    protectedBundleIDsExcludingCurrentProcess = [(CHManager *)self protectedBundleIDsExcludingCurrentProcess];
+    [v3 setObject:protectedBundleIDsExcludingCurrentProcess forKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
   }
 
   v7 = [v3 copy];
@@ -341,26 +341,26 @@ LABEL_15:
 
 - (BOOL)canLoadOlderRecentCalls
 {
-  v3 = [(CHManager *)self featureFlags];
-  if ([v3 increaseCallHistoryEnabled])
+  featureFlags = [(CHManager *)self featureFlags];
+  if ([featureFlags increaseCallHistoryEnabled])
   {
     if ([(CHManager *)self finishedLoadingAllCalls])
     {
-      v4 = [(CHManager *)self cacheIsDirty];
+      cacheIsDirty = [(CHManager *)self cacheIsDirty];
     }
 
     else
     {
-      v4 = 1;
+      cacheIsDirty = 1;
     }
   }
 
   else
   {
-    v4 = 0;
+    cacheIsDirty = 0;
   }
 
-  return v4;
+  return cacheIsDirty;
 }
 
 - (void)resetCalls
@@ -374,58 +374,58 @@ LABEL_15:
   }
 }
 
-- (CHManager)initWithQueue:(id)a3
+- (CHManager)initWithQueue:(id)queue
 {
   v4 = MEMORY[0x1E695CE18];
-  v5 = a3;
+  queueCopy = queue;
   v6 = objc_alloc_init(v4);
-  v7 = [(CHManager *)self initWithContactStore:v6 featureFlags:0 protectedAppProvider:0 queue:v5];
+  v7 = [(CHManager *)self initWithContactStore:v6 featureFlags:0 protectedAppProvider:0 queue:queueCopy];
 
   return v7;
 }
 
-- (CHManager)initWithContactStore:(id)a3 featureFlags:(id)a4 protectedAppProvider:(id)a5 queue:(id)a6
+- (CHManager)initWithContactStore:(id)store featureFlags:(id)flags protectedAppProvider:(id)provider queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  flagsCopy = flags;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = CHManager;
   v12 = [(CHSynchronizedLoggable *)&v21 initWithName:"CHManager"];
   v13 = v12;
   if (v12)
   {
-    v14 = [(CHSynchronizedLoggable *)v12 logHandle];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)v12 logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v20 = 0;
-      _os_log_impl(&dword_1C3E90000, v14, OS_LOG_TYPE_DEFAULT, "Creating CHManager with default values!", v20, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Creating CHManager with default values!", v20, 2u);
     }
 
     [(CHManager *)v13 setDefaultInitValues];
-    v15 = [[CHPhoneBookIOSManager alloc] initWithContactStore:v9];
+    v15 = [[CHPhoneBookIOSManager alloc] initWithContactStore:storeCopy];
     phoneBookManager = v13->_phoneBookManager;
     v13->_phoneBookManager = v15;
 
-    v17 = v10;
-    if (!v10)
+    v17 = flagsCopy;
+    if (!flagsCopy)
     {
       v17 = objc_alloc_init(CHFeatureFlags);
     }
 
     objc_storeStrong(&v13->_featureFlags, v17);
-    if (!v10)
+    if (!flagsCopy)
     {
     }
 
-    v18 = v11;
-    if (!v11)
+    v18 = providerCopy;
+    if (!providerCopy)
     {
       v18 = objc_alloc_init(CHProtectedAppProvider);
     }
 
     objc_storeStrong(&v13->_protectedAppProvider, v18);
-    if (!v11)
+    if (!providerCopy)
     {
     }
 
@@ -435,37 +435,37 @@ LABEL_15:
   return v13;
 }
 
-- (CHManager)initWithFetchingLimitsDictionary:(id)a3 andCoalescingStrategy:(id)a4 andPostFetchingPredicate:(id)a5 withQueue:(id)a6
+- (CHManager)initWithFetchingLimitsDictionary:(id)dictionary andCoalescingStrategy:(id)strategy andPostFetchingPredicate:(id)predicate withQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CHManager *)self initWithQueue:a6];
+  dictionaryCopy = dictionary;
+  strategyCopy = strategy;
+  predicateCopy = predicate;
+  v13 = [(CHManager *)self initWithQueue:queue];
   v14 = v13;
   if (v13)
   {
-    v15 = [(CHSynchronizedLoggable *)v13 logHandle];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)v13 logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v17 = 0;
-      _os_log_impl(&dword_1C3E90000, v15, OS_LOG_TYPE_DEFAULT, "Creating CHManager with user values!", v17, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Creating CHManager with user values!", v17, 2u);
     }
 
-    [(CHManager *)v14 setInitialLimitingCallKinds:v10];
-    objc_storeStrong(&v14->_coalescingStrategy, a4);
-    objc_storeStrong(&v14->_postFetchingPredicate, a5);
+    [(CHManager *)v14 setInitialLimitingCallKinds:dictionaryCopy];
+    objc_storeStrong(&v14->_coalescingStrategy, strategy);
+    objc_storeStrong(&v14->_postFetchingPredicate, predicate);
   }
 
   return v14;
 }
 
-- (void)setInitialLimitingCallKinds:(id)a3
+- (void)setInitialLimitingCallKinds:(id)kinds
 {
-  v4 = a3;
-  if (v4)
+  kindsCopy = kinds;
+  if (kindsCopy)
   {
-    v27 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"kCHLimitCallKindsKey"];
+    v27 = kindsCopy;
+    v5 = [kindsCopy objectForKeyedSubscript:@"kCHLimitCallKindsKey"];
 
     if (v5)
     {
@@ -595,17 +595,17 @@ LABEL_15:
       [(CHManager *)self setLimitingCallTypesSync:(v24 ^ v25 ^ v26) & v9];
     }
 
-    v4 = v27;
+    kindsCopy = v27;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1C3E90000, v3, OS_LOG_TYPE_DEFAULT, "CHManager is getting destroyed...", buf, 2u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "CHManager is getting destroyed...", buf, 2u);
   }
 
   v4.receiver = self;
@@ -613,16 +613,16 @@ LABEL_15:
   [(CHManager *)&v4 dealloc];
 }
 
-- (void)handleCallHistoryContactStoreChangedInternalNotification:(id)a3
+- (void)handleCallHistoryContactStoreChangedInternalNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__CHManager_handleCallHistoryContactStoreChangedInternalNotification___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -648,31 +648,31 @@ void __70__CHManager_handleCallHistoryContactStoreChangedInternalNotification___
   notifyClientsOfEvent(@"kCallHistoryDatabaseChangedNotification", v5);
 }
 
-- (void)setPreFetchingPredicate:(id)a3
+- (void)setPreFetchingPredicate:(id)predicate
 {
-  v5 = a3;
-  if (self->_preFetchingPredicate != v5)
+  predicateCopy = predicate;
+  if (self->_preFetchingPredicate != predicateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_preFetchingPredicate, a3);
+    v7 = predicateCopy;
+    objc_storeStrong(&self->_preFetchingPredicate, predicate);
     uncoalescedUnFilteredRecentCalls = self->_uncoalescedUnFilteredRecentCalls;
     self->_uncoalescedUnFilteredRecentCalls = 0;
 
     [(CHManager *)self resetCalls];
-    v5 = v7;
+    predicateCopy = v7;
   }
 }
 
-- (void)handleCallHistoryDatabaseChangedInternalNotification:(id)a3
+- (void)handleCallHistoryDatabaseChangedInternalNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__CHManager_handleCallHistoryDatabaseChangedInternalNotification___block_invoke;
   v6[3] = &unk_1E81DBE38;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -709,16 +709,16 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentLocaleChanged:(id)a3
+- (void)currentLocaleChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__CHManager_currentLocaleChanged___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -767,24 +767,24 @@ void __34__CHManager_currentLocaleChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)coalescedCallsWithCalls:(id)a3 usingStrategy:(id)a4
+- (id)coalescedCallsWithCalls:(id)calls usingStrategy:(id)strategy
 {
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  callsCopy = calls;
+  strategyCopy = strategy;
+  if (![callsCopy count])
   {
     goto LABEL_68;
   }
 
-  v58 = self;
-  if ([v7 isEqualToString:@"kCHCoalescingStrategyRecents"])
+  selfCopy = self;
+  if ([strategyCopy isEqualToString:@"kCHCoalescingStrategyRecents"])
   {
-    v8 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "Coalescing with kCHCoalescingStrategyRecents", buf, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Coalescing with kCHCoalescingStrategyRecents", buf, 2u);
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -792,7 +792,7 @@ void __34__CHManager_currentLocaleChanged___block_invoke(uint64_t a1)
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v10 = v6;
+    v10 = callsCopy;
     v11 = [v10 countByEnumeratingWithState:&v72 objects:v80 count:16];
     if (v11)
     {
@@ -813,7 +813,7 @@ void __34__CHManager_currentLocaleChanged___block_invoke(uint64_t a1)
           v17 = *(*(&v72 + 1) + 8 * v15);
           if (v16)
           {
-            v18 = [v16 coalescedCallWithCall:*(*(&v72 + 1) + 8 * v15) usingStrategy:v7];
+            v18 = [v16 coalescedCallWithCall:*(*(&v72 + 1) + 8 * v15) usingStrategy:strategyCopy];
           }
 
           else
@@ -841,7 +841,7 @@ void __34__CHManager_currentLocaleChanged___block_invoke(uint64_t a1)
 
       while (v12);
 
-      self = v58;
+      self = selfCopy;
       if (!v13)
       {
         goto LABEL_66;
@@ -861,23 +861,23 @@ LABEL_66:
     goto LABEL_69;
   }
 
-  if (([v7 isEqualToString:@"kCHCoalescingStrategyCollapseIfEqual"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"kCHCoalescingStrategyFaceTimeRecents") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"kCHCoalescingStrategyCollapseIfEqualContacts"))
+  if (([strategyCopy isEqualToString:@"kCHCoalescingStrategyCollapseIfEqual"] & 1) != 0 || (objc_msgSend(strategyCopy, "isEqualToString:", @"kCHCoalescingStrategyFaceTimeRecents") & 1) != 0 || objc_msgSend(strategyCopy, "isEqualToString:", @"kCHCoalescingStrategyCollapseIfEqualContacts"))
   {
-    v21 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v79[0] = v7;
-      _os_log_impl(&dword_1C3E90000, v21, OS_LOG_TYPE_DEFAULT, "Coalescing with %@", buf, 0xCu);
+      v79[0] = strategyCopy;
+      _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Coalescing with %@", buf, 0xCu);
     }
 
     v60 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v61 = v7;
+    v61 = strategyCopy;
     v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v7 isEqualToString:@"kCHCoalescingStrategyCollapseIfEqualContacts"])
+    if ([strategyCopy isEqualToString:@"kCHCoalescingStrategyCollapseIfEqualContacts"])
     {
-      v59 = [(CHManager *)self _contactIdentifiersByHandleForCalls:v6];
+      v59 = [(CHManager *)self _contactIdentifiersByHandleForCalls:callsCopy];
     }
 
     else
@@ -889,14 +889,14 @@ LABEL_66:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v57 = v6;
-    obj = v6;
+    v57 = callsCopy;
+    obj = callsCopy;
     v23 = [obj countByEnumeratingWithState:&v68 objects:v77 count:16];
     v24 = v59;
     if (v23)
     {
       v25 = v23;
-      v26 = self;
+      selfCopy2 = self;
       v27 = *v69;
       do
       {
@@ -910,35 +910,35 @@ LABEL_66:
           }
 
           v29 = *(*(&v68 + 1) + 8 * v28);
-          v30 = [v29 remoteParticipantHandles];
-          if ([v30 count] == 1)
+          remoteParticipantHandles = [v29 remoteParticipantHandles];
+          if ([remoteParticipantHandles count] == 1)
           {
             v31 = v22;
             v32 = v27;
-            v33 = [v30 anyObject];
-            v34 = [v24 objectForKeyedSubscript:v33];
+            anyObject = [remoteParticipantHandles anyObject];
+            v34 = [v24 objectForKeyedSubscript:anyObject];
 
             if (v34)
             {
-              v35 = v34;
+              value = v34;
             }
 
             else
             {
-              v36 = [v30 anyObject];
-              v37 = [v36 normalizedValue];
-              v38 = v37;
-              if (v37)
+              anyObject2 = [remoteParticipantHandles anyObject];
+              normalizedValue = [anyObject2 normalizedValue];
+              v38 = normalizedValue;
+              if (normalizedValue)
               {
-                v35 = v37;
+                value = normalizedValue;
               }
 
               else
               {
-                v39 = [v30 anyObject];
-                v35 = [v39 value];
+                anyObject3 = [remoteParticipantHandles anyObject];
+                value = [anyObject3 value];
 
-                v26 = v58;
+                selfCopy2 = selfCopy;
               }
 
               v24 = v59;
@@ -953,26 +953,26 @@ LABEL_66:
           {
             if (v24)
             {
-              [(CHManager *)v26 _coalescingHashForGroupCall:v29 usingContactsIfPresent:v24];
+              [(CHManager *)selfCopy2 _coalescingHashForGroupCall:v29 usingContactsIfPresent:v24];
             }
 
             else
             {
               [v29 notificationThreadIdentifier];
             }
-            v35 = ;
+            value = ;
           }
 
-          if (![v35 length])
+          if (![value length])
           {
-            v40 = [v29 uniqueId];
+            uniqueId = [v29 uniqueId];
 
-            v35 = v40;
+            value = uniqueId;
           }
 
-          if ([v35 length])
+          if ([value length])
           {
-            v41 = [v22 objectForKeyedSubscript:v35];
+            v41 = [v22 objectForKeyedSubscript:value];
             if (v41)
             {
               v42 = v41;
@@ -980,23 +980,23 @@ LABEL_66:
 
               if (v43)
               {
-                [v22 setObject:v43 forKeyedSubscript:v35];
+                [v22 setObject:v43 forKeyedSubscript:value];
               }
             }
 
             else
             {
-              [v22 setObject:v29 forKeyedSubscript:v35];
-              [v60 addObject:v35];
+              [v22 setObject:v29 forKeyedSubscript:value];
+              [v60 addObject:value];
             }
           }
 
           else
           {
-            v44 = [(CHSynchronizedLoggable *)v26 logHandle];
-            if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+            logHandle3 = [(CHSynchronizedLoggable *)selfCopy2 logHandle];
+            if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
             {
-              [(CHManager *)buf coalescedCallsWithCalls:v29 usingStrategy:v79, v44];
+              [(CHManager *)buf coalescedCallsWithCalls:v29 usingStrategy:v79, logHandle3];
             }
           }
 
@@ -1017,8 +1017,8 @@ LABEL_66:
     v45 = v60;
     v46 = [v45 countByEnumeratingWithState:&v64 objects:v76 count:16];
     v47 = v56;
-    v6 = v57;
-    v7 = v61;
+    callsCopy = v57;
+    strategyCopy = v61;
     if (v46)
     {
       v48 = v46;
@@ -1043,26 +1043,26 @@ LABEL_66:
     }
 
     v52 = [v47 copy];
-    self = v58;
+    self = selfCopy;
     goto LABEL_69;
   }
 
-  if (v7)
+  if (strategyCopy)
   {
 LABEL_68:
     v52 = 0;
     goto LABEL_69;
   }
 
-  v55 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
+  logHandle4 = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v79[0] = 0;
-    _os_log_impl(&dword_1C3E90000, v55, OS_LOG_TYPE_DEFAULT, "Returning calls with no coalescing since none or invalid (%{public}@) strategy was provided", buf, 0xCu);
+    _os_log_impl(&dword_1C3E90000, logHandle4, OS_LOG_TYPE_DEFAULT, "Returning calls with no coalescing since none or invalid (%{public}@) strategy was provided", buf, 0xCu);
   }
 
-  v52 = v6;
+  v52 = callsCopy;
 LABEL_69:
   [(CHManager *)self setReCoalesce:0, v56];
 
@@ -1071,16 +1071,16 @@ LABEL_69:
   return v52;
 }
 
-- (id)_coalescingHashForGroupCall:(id)a3 usingContactsIfPresent:(id)a4
+- (id)_coalescingHashForGroupCall:(id)call usingContactsIfPresent:(id)present
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 remoteParticipantHandles];
+  presentCopy = present;
+  remoteParticipantHandles = [call remoteParticipantHandles];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [remoteParticipantHandles countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1092,11 +1092,11 @@ LABEL_69:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteParticipantHandles);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v5 objectForKeyedSubscript:v12];
+        v13 = [presentCopy objectForKeyedSubscript:v12];
         v14 = v13;
         if (!v13)
         {
@@ -1106,7 +1106,7 @@ LABEL_69:
         v9 ^= [v13 hash];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [remoteParticipantHandles countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -1118,24 +1118,24 @@ LABEL_69:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
-  v16 = [v15 stringValue];
+  stringValue = [v15 stringValue];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return stringValue;
 }
 
-- (id)_contactIdentifiersByHandleForCalls:(id)a3
+- (id)_contactIdentifiersByHandleForCalls:(id)calls
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  callsCopy = calls;
   v4 = +[CHSharedAddressBook get];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v3;
+  obj = callsCopy;
   v31 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v31)
   {
@@ -1157,21 +1157,21 @@ LABEL_69:
         v39 = 0u;
         v40 = 0u;
         v36 = v7;
-        v8 = [v7 validRemoteParticipantHandles];
-        v9 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        validRemoteParticipantHandles = [v7 validRemoteParticipantHandles];
+        v9 = [validRemoteParticipantHandles countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v9)
         {
           v10 = v9;
           v11 = *v38;
           v34 = *v38;
-          v35 = v8;
+          v35 = validRemoteParticipantHandles;
           do
           {
             for (i = 0; i != v10; ++i)
             {
               if (*v38 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(validRemoteParticipantHandles);
               }
 
               v13 = *(*(&v37 + 1) + 8 * i);
@@ -1179,8 +1179,8 @@ LABEL_69:
 
               if (!v14)
               {
-                v15 = [v13 value];
-                v16 = [v4 fetchAddressBookInfoFromCacheForKey:v15];
+                value = [v13 value];
+                v16 = [v4 fetchAddressBookInfoFromCacheForKey:value];
 
                 v17 = [v16 valueForKey:@"kCHABCacheCNContactIdKey"];
                 if (v17)
@@ -1194,24 +1194,24 @@ LABEL_69:
                   [v13 value];
                   v19 = v5;
                   v21 = v20 = v4;
-                  v22 = [v36 isoCountryCode];
-                  v23 = -[CHPhoneBookIOSManager getRecordId:countryCode:isEmail:](phoneBookManager, "getRecordId:countryCode:isEmail:", v21, v22, [v13 type] == 3);
+                  isoCountryCode = [v36 isoCountryCode];
+                  v23 = -[CHPhoneBookIOSManager getRecordId:countryCode:isEmail:](phoneBookManager, "getRecordId:countryCode:isEmail:", v21, isoCountryCode, [v13 type] == 3);
 
                   v4 = v20;
                   v5 = v19;
-                  v24 = [v13 value];
-                  [v4 insertAddressBookInfoIntoCache:v23 forKey:v24];
+                  value2 = [v13 value];
+                  [v4 insertAddressBookInfoIntoCache:v23 forKey:value2];
 
                   v25 = [v23 valueForKey:@"kCHABCacheCNContactIdKey"];
                   [v19 setObject:v25 forKeyedSubscript:v13];
 
-                  v8 = v35;
+                  validRemoteParticipantHandles = v35;
                   v11 = v34;
                 }
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v10 = [validRemoteParticipantHandles countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v10);
@@ -1233,17 +1233,17 @@ LABEL_69:
   return v26;
 }
 
-- (id)loadOlderRecentCallsWithPredicate:(id)a3
+- (id)loadOlderRecentCallsWithPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke;
   v9[3] = &unk_1E81DC348;
-  v10 = v5;
+  v10 = predicateCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = predicateCopy;
   v7 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v9];
 
   return v7;
@@ -1289,23 +1289,23 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
   return uncoalescedRecentCalls;
 }
 
-- (id)unCoalesceCall:(id)a3
+- (id)unCoalesceCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 numberOfOccurrences];
-  v6 = [v3 callOccurrences];
-  if (v5)
+  numberOfOccurrences = [callCopy numberOfOccurrences];
+  callOccurrences = [callCopy callOccurrences];
+  if (numberOfOccurrences)
   {
     v7 = 0;
     v23 = @"kCHCallOccurrenceTTYTypeKey";
     do
     {
-      v8 = [v6 objectAtIndexedSubscript:{v7, v23}];
-      v9 = [v3 copy];
+      v8 = [callOccurrences objectAtIndexedSubscript:{v7, v23}];
+      v9 = [callCopy copy];
       [v8 objectForKeyedSubscript:@"kCHCallOccurrenceUniqueIdKey"];
       v10 = v4;
-      v12 = v11 = v3;
+      v12 = v11 = callCopy;
       [v9 setUniqueId:v12];
 
       v13 = [v8 objectForKeyedSubscript:@"kCHCallOccurrenceCallTypeKey"];
@@ -1336,7 +1336,7 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
       v21 = [v8 objectForKeyedSubscript:@"kCHCallOccurrenceReminderUUIDKey"];
       [v9 setReminderUUID:v21];
 
-      v3 = v11;
+      callCopy = v11;
       v4 = v10;
       [v9 setCallOccurrences:0];
       [v9 setMultiCall:0];
@@ -1345,31 +1345,31 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
       ++v7;
     }
 
-    while (v5 != v7);
+    while (numberOfOccurrences != v7);
   }
 
   return v4;
 }
 
-- (id)applyPredicate:(id)a3 toCalls:(id)a4
+- (id)applyPredicate:(id)predicate toCalls:(id)calls
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  callsCopy = calls;
+  if (predicateCopy)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v7 count])
+    if ([callsCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v7 objectAtIndexedSubscript:v8];
+        v9 = [callsCopy objectAtIndexedSubscript:v8];
         if ([v9 multiCall])
         {
           v10 = [(CHManager *)self unCoalesceCall:v9];
           v11 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"date" ascending:0];
-          v12 = [v10 filteredArrayUsingPredicate:v6];
+          v12 = [v10 filteredArrayUsingPredicate:predicateCopy];
           v21[0] = v11;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
           v14 = [v12 sortedArrayUsingDescriptors:v13];
@@ -1378,7 +1378,7 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
           [v19 addObjectsFromArray:v15];
         }
 
-        else if ([v6 evaluateWithObject:v9])
+        else if ([predicateCopy evaluateWithObject:v9])
         {
           [v19 addObject:v9];
         }
@@ -1386,20 +1386,20 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
         ++v8;
       }
 
-      while (v8 < [v7 count]);
+      while (v8 < [callsCopy count]);
     }
   }
 
   else
   {
-    v16 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "No predicate to apply, return all calls", buf, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "No predicate to apply, return all calls", buf, 2u);
     }
 
-    v19 = v7;
+    v19 = callsCopy;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1407,17 +1407,17 @@ id __47__CHManager_loadOlderRecentCallsWithPredicate___block_invoke(uint64_t a1)
   return v19;
 }
 
-- (id)recentCallsWithPredicate:(id)a3
+- (id)recentCallsWithPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__CHManager_recentCallsWithPredicate___block_invoke;
   v9[3] = &unk_1E81DC348;
-  v10 = v5;
+  v10 = predicateCopy;
   v11 = a2;
   v9[4] = self;
-  v6 = v5;
+  v6 = predicateCopy;
   v7 = [(CHSynchronizedLoggable *)self executeSyncWithResult:v9];
 
   return v7;
@@ -1465,17 +1465,17 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)fetchRecentCallsSyncWithCoalescing:(BOOL)a3
+- (id)fetchRecentCallsSyncWithCoalescing:(BOOL)coalescing
 {
-  v3 = a3;
+  coalescingCopy = coalescing;
   v71 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
   if (!self->_recentCalls || [(CHManager *)self cacheIsDirty])
   {
-    v7 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3)
+      if (coalescingCopy)
       {
         v8 = @"Yes";
       }
@@ -1490,14 +1490,14 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
       v68 = v8;
       v69 = 2114;
       v70 = v9;
-      _os_log_impl(&dword_1C3E90000, v7, OS_LOG_TYPE_DEFAULT, "Fetching from DB and updating cache. And coalescing: %{public}@, With callType limit: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Fetching from DB and updating cache. And coalescing: %{public}@, With callType limit: %{public}@", buf, 0x16u);
     }
 
-    v10 = [(CHManager *)self getLimitsDictionary];
-    v11 = [(CHManager *)self featureFlags];
-    v12 = [v11 increaseCallHistoryEnabled];
+    getLimitsDictionary = [(CHManager *)self getLimitsDictionary];
+    featureFlags = [(CHManager *)self featureFlags];
+    increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-    if (v12)
+    if (increaseCallHistoryEnabled)
     {
       uncoalescedUnFilteredRecentCalls = self->_uncoalescedUnFilteredRecentCalls;
       if (uncoalescedUnFilteredRecentCalls)
@@ -1519,7 +1519,7 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
         v15 = 100;
       }
 
-      v26 = [(CHManager *)self callsWithLimits:v10 limit:v15 offset:0 batchSize:0];
+      v26 = [(CHManager *)self callsWithLimits:getLimitsDictionary limit:v15 offset:0 batchSize:0];
       recentCalls = self->_recentCalls;
       self->_recentCalls = v26;
     }
@@ -1527,18 +1527,18 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
     else
     {
       recentCalls = [(CHManager *)self syncManager];
-      v17 = [recentCalls fetchObjectsWithLimits:v10];
+      v17 = [recentCalls fetchObjectsWithLimits:getLimitsDictionary];
       v18 = self->_recentCalls;
       self->_recentCalls = v17;
     }
 
-    v27 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       v28 = [(NSArray *)self->_recentCalls count];
       *buf = 134217984;
       v68 = v28;
-      _os_log_impl(&dword_1C3E90000, v27, OS_LOG_TYPE_DEFAULT, "SyncManager returned %lu calls", buf, 0xCu);
+      _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "SyncManager returned %lu calls", buf, 0xCu);
     }
 
     v29 = self->_recentCalls;
@@ -1559,20 +1559,20 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
     v34 = [(NSArray *)self->_recentCalls copy];
     [(CHManager *)self setUncoalescedUnFilteredRecentCalls:v34];
 
-    v35 = [(CHManager *)self featureFlags];
+    featureFlags2 = [(CHManager *)self featureFlags];
     v36 = a2;
-    if ([v35 increaseCallHistoryEnabled])
+    if ([featureFlags2 increaseCallHistoryEnabled])
     {
-      v37 = [(CHManager *)self uncoalescedUnFilteredRecentCalls];
-      v38 = [v37 count];
-      v39 = [(CHManager *)self callHistoryDBFetchLimit];
+      uncoalescedUnFilteredRecentCalls = [(CHManager *)self uncoalescedUnFilteredRecentCalls];
+      v38 = [uncoalescedUnFilteredRecentCalls count];
+      callHistoryDBFetchLimit = [(CHManager *)self callHistoryDBFetchLimit];
 
-      if (v38 >= v39)
+      if (v38 >= callHistoryDBFetchLimit)
       {
         [(CHManager *)self setFinishedLoadingAllCalls:1];
       }
 
-      if (v3)
+      if (coalescingCopy)
       {
         goto LABEL_30;
       }
@@ -1581,20 +1581,20 @@ id __38__CHManager_recentCallsWithPredicate___block_invoke(uint64_t a1)
     else
     {
 
-      if (v3)
+      if (coalescingCopy)
       {
 LABEL_30:
         v40 = [(CHManager *)self coalescedCallsWithCalls:self->_recentCalls usingStrategy:self->_coalescingStrategy];
         v41 = self->_recentCalls;
         self->_recentCalls = v40;
 
-        v42 = [(CHSynchronizedLoggable *)self logHandle];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        logHandle3 = [(CHSynchronizedLoggable *)self logHandle];
+        if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
         {
           v43 = [(NSArray *)self->_recentCalls count];
           *buf = 134217984;
           v68 = v43;
-          _os_log_impl(&dword_1C3E90000, v42, OS_LOG_TYPE_DEFAULT, "After coalescing we have %lu calls", buf, 0xCu);
+          _os_log_impl(&dword_1C3E90000, logHandle3, OS_LOG_TYPE_DEFAULT, "After coalescing we have %lu calls", buf, 0xCu);
         }
 
         v44 = [(CHManager *)self applyPredicate:self->_postFetchingPredicate toCalls:self->_recentCalls];
@@ -1622,8 +1622,8 @@ LABEL_36:
               }
 
               v51 = *(*(&v62 + 1) + 8 * i);
-              v52 = [(CHManager *)self phoneBookManager];
-              [v51 setPhoneBookManager:v52];
+              phoneBookManager = [(CHManager *)self phoneBookManager];
+              [v51 setPhoneBookManager:phoneBookManager];
             }
 
             v48 = [(NSArray *)v46 countByEnumeratingWithState:&v62 objects:v66 count:16];
@@ -1635,8 +1635,8 @@ LABEL_36:
         a2 = v36;
         v6 = v61;
 LABEL_44:
-        v53 = [(CHManager *)self featureFlags];
-        if ([v53 increaseCallHistoryEnabled])
+        featureFlags3 = [(CHManager *)self featureFlags];
+        if ([featureFlags3 increaseCallHistoryEnabled])
         {
           v54 = [(NSArray *)self->_recentCalls count];
 
@@ -1667,26 +1667,26 @@ LABEL_49:
     goto LABEL_36;
   }
 
-  if (v3 && [(CHManager *)self reCoalesce])
+  if (coalescingCopy && [(CHManager *)self reCoalesce])
   {
-    v19 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    logHandle4 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C3E90000, v19, OS_LOG_TYPE_DEFAULT, "No fetching required. Recoalscing & applying global filter", buf, 2u);
+      _os_log_impl(&dword_1C3E90000, logHandle4, OS_LOG_TYPE_DEFAULT, "No fetching required. Recoalscing & applying global filter", buf, 2u);
     }
 
-    v20 = [(CHManager *)self uncoalescedUnFilteredRecentCalls];
-    v10 = [v20 copy];
+    uncoalescedUnFilteredRecentCalls2 = [(CHManager *)self uncoalescedUnFilteredRecentCalls];
+    getLimitsDictionary = [uncoalescedUnFilteredRecentCalls2 copy];
 
-    v21 = [(CHManager *)self coalescedCallsWithCalls:v10 usingStrategy:self->_coalescingStrategy];
+    v21 = [(CHManager *)self coalescedCallsWithCalls:getLimitsDictionary usingStrategy:self->_coalescingStrategy];
     v22 = self->_recentCalls;
     self->_recentCalls = v21;
 
-    v23 = [(CHSynchronizedLoggable *)self logHandle];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+    logHandle5 = [(CHSynchronizedLoggable *)self logHandle];
+    if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEBUG))
     {
-      [(CHManager *)&self->_recentCalls fetchRecentCallsSyncWithCoalescing:v23];
+      [(CHManager *)&self->_recentCalls fetchRecentCallsSyncWithCoalescing:logHandle5];
     }
 
     v24 = [(CHManager *)self applyPredicate:self->_postFetchingPredicate toCalls:self->_recentCalls];
@@ -1697,8 +1697,8 @@ LABEL_49:
   }
 
 LABEL_50:
-  v55 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
+  logHandle6 = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEFAULT))
   {
     v56 = NSStringFromSelector(a2);
     v57 = [(NSArray *)self->_recentCalls count];
@@ -1706,7 +1706,7 @@ LABEL_50:
     v68 = v56;
     v69 = 2048;
     v70 = v57;
-    _os_log_impl(&dword_1C3E90000, v55, OS_LOG_TYPE_DEFAULT, "<== %{public}@ returns %lu calls", buf, 0x16u);
+    _os_log_impl(&dword_1C3E90000, logHandle6, OS_LOG_TYPE_DEFAULT, "<== %{public}@ returns %lu calls", buf, 0x16u);
   }
 
   v58 = self->_recentCalls;
@@ -1716,26 +1716,26 @@ LABEL_50:
   return v58;
 }
 
-- (unint64_t)countCallsWithPredicateSync:(id)a3
+- (unint64_t)countCallsWithPredicateSync:(id)sync
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  syncCopy = sync;
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 predicateFormat];
+    predicateFormat = [syncCopy predicateFormat];
     v19 = 138543618;
     v20 = v7;
     v21 = 2112;
-    v22 = v8;
-    _os_log_impl(&dword_1C3E90000, v6, OS_LOG_TYPE_DEFAULT, "==> %{public}@(%@)", &v19, 0x16u);
+    v22 = predicateFormat;
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "==> %{public}@(%@)", &v19, 0x16u);
   }
 
-  if (v5)
+  if (syncCopy)
   {
-    v9 = [(CHManager *)self uncoalescedRecentCallsSync];
-    v10 = [v9 filteredArrayUsingPredicate:v5];
+    uncoalescedRecentCallsSync = [(CHManager *)self uncoalescedRecentCallsSync];
+    v10 = [uncoalescedRecentCallsSync filteredArrayUsingPredicate:syncCopy];
   }
 
   else
@@ -1744,38 +1744,38 @@ LABEL_50:
   }
 
   v11 = [v10 count];
-  v12 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  logHandle2 = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v5 predicateFormat];
+    predicateFormat2 = [syncCopy predicateFormat];
     v19 = 138412546;
-    v20 = v13;
+    v20 = predicateFormat2;
     v21 = 2048;
     v22 = v11;
-    _os_log_impl(&dword_1C3E90000, v12, OS_LOG_TYPE_DEFAULT, "User requested to count calls with predicate, %@. Returning %lu.", &v19, 0x16u);
+    _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "User requested to count calls with predicate, %@. Returning %lu.", &v19, 0x16u);
   }
 
-  v14 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
     v15 = NSStringFromSelector(a2);
-    v16 = [v5 predicateFormat];
+    predicateFormat3 = [syncCopy predicateFormat];
     v19 = 138543874;
     v20 = v15;
     v21 = 2112;
-    v22 = v16;
+    v22 = predicateFormat3;
     v23 = 2048;
     v24 = v11;
-    _os_log_impl(&dword_1C3E90000, v14, OS_LOG_TYPE_DEFAULT, "<== %{public}@(%@) %lu calls", &v19, 0x20u);
+    _os_log_impl(&dword_1C3E90000, logHandle3, OS_LOG_TYPE_DEFAULT, "<== %{public}@(%@) %lu calls", &v19, 0x20u);
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (unint64_t)countCallsWithPredicate:(id)a3
+- (unint64_t)countCallsWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1786,7 +1786,7 @@ LABEL_50:
   v8[3] = &unk_1E81DC2D0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = predicateCopy;
   v9 = v5;
   [(CHSynchronizedLoggable *)self executeSync:v8];
   v6 = v12[3];
@@ -1874,17 +1874,17 @@ void __32__CHManager_databaseSizeInBytes__block_invoke(uint64_t a1)
   return InstanceSize * v5;
 }
 
-- (void)addToCallHistory:(id)a3
+- (void)addToCallHistory:(id)history
 {
-  v5 = a3;
+  historyCopy = history;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CHManager_addToCallHistory___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = historyCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = historyCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -1909,17 +1909,17 @@ void __30__CHManager_addToCallHistory___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addArrayToCallHistory:(id)a3
+- (void)addArrayToCallHistory:(id)history
 {
-  v5 = a3;
+  historyCopy = history;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CHManager_addArrayToCallHistory___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = historyCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = historyCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -1964,20 +1964,20 @@ void __35__CHManager_addArrayToCallHistory___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addArrayToCallHistory:(id)a3 withCompletion:(id)a4
+- (void)addArrayToCallHistory:(id)history withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  historyCopy = history;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__CHManager_addArrayToCallHistory_withCompletion___block_invoke;
   v11[3] = &unk_1E81DC3C0;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = historyCopy;
+  v13 = completionCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = historyCopy;
   [(CHSynchronizedLoggable *)self execute:v11];
 }
 
@@ -2029,19 +2029,19 @@ uint64_t __50__CHManager_addArrayToCallHistory_withCompletion___block_invoke(uin
   return result;
 }
 
-- (void)setOutgoingLocalParticipantUUID:(id)a3 forRecentCallsMatchingPredicate:(id)a4
+- (void)setOutgoingLocalParticipantUUID:(id)d forRecentCallsMatchingPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  predicateCopy = predicate;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__CHManager_setOutgoingLocalParticipantUUID_forRecentCallsMatchingPredicate___block_invoke;
   v10[3] = &unk_1E81DC2A8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = predicateCopy;
+  v8 = predicateCopy;
+  v9 = dCopy;
   [(CHSynchronizedLoggable *)self execute:v10];
 }
 
@@ -2113,17 +2113,17 @@ void __77__CHManager_setOutgoingLocalParticipantUUID_forRecentCallsMatchingPredi
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markAllCallsAsReadWithPredicate:(id)a3
+- (void)markAllCallsAsReadWithPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CHManager_markAllCallsAsReadWithPredicate___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = predicateCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = predicateCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -2202,20 +2202,20 @@ void __45__CHManager_markAllCallsAsReadWithPredicate___block_invoke(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateBytesOfDataUsedFor:(id)a3 with:(id)a4
+- (void)updateBytesOfDataUsedFor:(id)for with:(id)with
 {
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  withCopy = with;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__CHManager_updateBytesOfDataUsedFor_with___block_invoke;
   v11[3] = &unk_1E81DC3E8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = forCopy;
+  v13 = withCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = withCopy;
+  v10 = forCopy;
   [(CHSynchronizedLoggable *)self execute:v11];
 }
 
@@ -2259,20 +2259,20 @@ void __43__CHManager_updateBytesOfDataUsedFor_with___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMessageStatusFor:(id)a3 with:(id)a4
+- (void)updateMessageStatusFor:(id)for with:(id)with
 {
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  withCopy = with;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__CHManager_updateMessageStatusFor_with___block_invoke;
   v11[3] = &unk_1E81DC3E8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = forCopy;
+  v13 = withCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = withCopy;
+  v10 = forCopy;
   [(CHSynchronizedLoggable *)self execute:v11];
 }
 
@@ -2316,18 +2316,18 @@ void __41__CHManager_updateMessageStatusFor_with___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAutoAnsweredReasonFor:(id)a3 with:(int64_t)a4
+- (void)updateAutoAnsweredReasonFor:(id)for with:(int64_t)with
 {
-  v7 = a3;
+  forCopy = for;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__CHManager_updateAutoAnsweredReasonFor_with___block_invoke;
   v9[3] = &unk_1E81DC410;
   v9[4] = self;
-  v10 = v7;
+  v10 = forCopy;
   v11 = a2;
-  v12 = a4;
-  v8 = v7;
+  withCopy = with;
+  v8 = forCopy;
   [(CHSynchronizedLoggable *)self execute:v9];
 }
 
@@ -2386,20 +2386,20 @@ void __46__CHManager_updateAutoAnsweredReasonFor_with___block_invoke(uint64_t a1
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateEmergencyMediaItemFor:(id)a3 with:(id)a4
+- (void)updateEmergencyMediaItemFor:(id)for with:(id)with
 {
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  withCopy = with;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__CHManager_updateEmergencyMediaItemFor_with___block_invoke;
   v11[3] = &unk_1E81DC3E8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = forCopy;
+  v13 = withCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = withCopy;
+  v10 = forCopy;
   [(CHSynchronizedLoggable *)self execute:v11];
 }
 
@@ -2445,19 +2445,19 @@ void __46__CHManager_updateEmergencyMediaItemFor_with___block_invoke(uint64_t a1
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callCopy = call;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__CHManager_updateReminderUUID_forRecentCall___block_invoke;
   v10[3] = &unk_1E81DC2A8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = callCopy;
+  v8 = callCopy;
+  v9 = dCopy;
   [(CHSynchronizedLoggable *)self execute:v10];
 }
 
@@ -2539,44 +2539,44 @@ void __46__CHManager_updateReminderUUID_forRecentCall___block_invoke(uint64_t a1
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteTheseCallsSync:(id)a3
+- (void)deleteTheseCallsSync:(id)sync
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  syncCopy = sync;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 count])
+  if ([syncCopy count])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [v4 objectAtIndexedSubscript:v6];
+      v7 = [syncCopy objectAtIndexedSubscript:v6];
       if ([v7 multiCall])
       {
         break;
       }
 
-      v12 = [v7 uniqueId];
+      uniqueId = [v7 uniqueId];
 
-      if (v12)
+      if (uniqueId)
       {
-        v8 = [v7 uniqueId];
-        [v5 addObject:v8];
+        uniqueId2 = [v7 uniqueId];
+        [v5 addObject:uniqueId2];
 LABEL_12:
       }
 
-      if (++v6 >= [v4 count])
+      if (++v6 >= [syncCopy count])
       {
         goto LABEL_14;
       }
     }
 
-    v8 = [v7 callOccurrences];
-    if ([v8 count])
+    uniqueId2 = [v7 callOccurrences];
+    if ([uniqueId2 count])
     {
       v9 = 0;
       do
       {
-        v10 = [v8 objectAtIndexedSubscript:v9];
+        v10 = [uniqueId2 objectAtIndexedSubscript:v9];
         v11 = [v10 objectForKeyedSubscript:@"kCHCallOccurrenceUniqueIdKey"];
         if (v11)
         {
@@ -2586,7 +2586,7 @@ LABEL_12:
         ++v9;
       }
 
-      while (v9 < [v8 count]);
+      while (v9 < [uniqueId2 count]);
     }
 
     goto LABEL_12;
@@ -2614,19 +2614,19 @@ LABEL_14:
     }
   }
 
-  v18 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v19 = NSStringFromSelector(a2);
     *buf = 138543618;
     v24 = v19;
     v25 = 2114;
     v26 = v13;
-    _os_log_impl(&dword_1C3E90000, v18, OS_LOG_TYPE_DEFAULT, "=> %{public}@(%{public}@)", buf, 0x16u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "=> %{public}@(%{public}@)", buf, 0x16u);
   }
 
-  v20 = [(CHManager *)self syncManager];
-  [v20 deleteObjectsWithUniqueIds:v5 withTransaction:1];
+  syncManager = [(CHManager *)self syncManager];
+  [syncManager deleteObjectsWithUniqueIds:v5 withTransaction:1];
 
   [(CHManager *)self setCacheIsDirty:1];
   [(CHManager *)self setFinishedLoadingAllCalls:0];
@@ -2634,17 +2634,17 @@ LABEL_14:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteTheseCalls:(id)a3
+- (void)deleteTheseCalls:(id)calls
 {
-  v5 = a3;
+  callsCopy = calls;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CHManager_deleteTheseCalls___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = callsCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = callsCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -2665,16 +2665,16 @@ uint64_t __30__CHManager_deleteTheseCalls___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)deleteCall:(id)a3
+- (void)deleteCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__CHManager_deleteCall___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = callCopy;
+  v5 = callCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -2702,20 +2702,20 @@ void __24__CHManager_deleteCall___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteCalls:(id)a3 withCompletion:(id)a4
+- (void)deleteCalls:(id)calls withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  callsCopy = calls;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__CHManager_deleteCalls_withCompletion___block_invoke;
   v11[3] = &unk_1E81DC3C0;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = callsCopy;
+  v13 = completionCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = callsCopy;
   [(CHSynchronizedLoggable *)self execute:v11];
 }
 
@@ -2742,7 +2742,7 @@ uint64_t __40__CHManager_deleteCalls_withCompletion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)deleteCallAtIndex:(unint64_t)a3
+- (void)deleteCallAtIndex:(unint64_t)index
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -2750,7 +2750,7 @@ uint64_t __40__CHManager_deleteCalls_withCompletion___block_invoke(uint64_t a1)
   v3[3] = &unk_1E81DC438;
   v3[4] = self;
   v3[5] = a2;
-  v3[6] = a3;
+  v3[6] = index;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -2783,18 +2783,18 @@ void __31__CHManager_deleteCallAtIndex___block_invoke(uint64_t a1)
 - (void)deleteAllCallsSync
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v5 = NSStringFromSelector(a2);
     v9 = 138543362;
     v10 = v5;
-    _os_log_impl(&dword_1C3E90000, v4, OS_LOG_TYPE_DEFAULT, "==> %{public}@: User requested to delete ALL calls (with the global limits of course)", &v9, 0xCu);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "==> %{public}@: User requested to delete ALL calls (with the global limits of course)", &v9, 0xCu);
   }
 
-  v6 = [(CHManager *)self syncManager];
-  v7 = [(CHManager *)self getLimitsDictionary];
-  [v6 deleteObjectsWithLimits:v7];
+  syncManager = [(CHManager *)self syncManager];
+  getLimitsDictionary = [(CHManager *)self getLimitsDictionary];
+  [syncManager deleteObjectsWithLimits:getLimitsDictionary];
 
   [(CHManager *)self setCacheIsDirty:1];
   [(CHManager *)self setFinishedLoadingAllCalls:0];
@@ -2827,40 +2827,40 @@ void __26__CHManager_clearDatabase__block_invoke(uint64_t a1)
   [v1 deleteAllObjects];
 }
 
-- (void)setLimitingCallKindsSync:(id)a3
+- (void)setLimitingCallKindsSync:(id)sync
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  syncCopy = sync;
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
-    _os_log_impl(&dword_1C3E90000, v5, OS_LOG_TYPE_DEFAULT, "Setting limiting call kinds: %{public}@", &v8, 0xCu);
+    v9 = syncCopy;
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Setting limiting call kinds: %{public}@", &v8, 0xCu);
   }
 
   limitingCallKinds = self->_limitingCallKinds;
-  self->_limitingCallKinds = v4;
+  self->_limitingCallKinds = syncCopy;
 
   [(CHManager *)self setCacheIsDirty:1];
   [(CHManager *)self setFinishedLoadingAllCalls:0];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLimitingCallKinds:(id)a3
+- (void)setLimitingCallKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__CHManager_setLimitingCallKinds___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = kindsCopy;
+  v5 = kindsCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
-- (void)setLimitingCallTypes:(unsigned int)a3
+- (void)setLimitingCallTypes:(unsigned int)types
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -2868,7 +2868,7 @@ void __26__CHManager_clearDatabase__block_invoke(uint64_t a1)
   v3[3] = &unk_1E81DC460;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  typesCopy = types;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -2895,17 +2895,17 @@ uint64_t __34__CHManager_setLimitingCallTypes___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPostFetchingPredicate:(id)a3
+- (void)setPostFetchingPredicate:(id)predicate
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CHManager_setPostFetchingPredicate___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = predicateCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = predicateCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -2930,17 +2930,17 @@ uint64_t __38__CHManager_setPostFetchingPredicate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLimitingStartDate:(id)a3
+- (void)setLimitingStartDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__CHManager_setLimitingStartDate___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = dateCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = dateCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -2966,17 +2966,17 @@ uint64_t __34__CHManager_setLimitingStartDate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLimitingEndDate:(id)a3
+- (void)setLimitingEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CHManager_setLimitingEndDate___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = dateCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = dateCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -3002,17 +3002,17 @@ uint64_t __32__CHManager_setLimitingEndDate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCoalescingStrategy:(id)a3
+- (void)setCoalescingStrategy:(id)strategy
 {
-  v5 = a3;
+  strategyCopy = strategy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CHManager_setCoalescingStrategy___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = strategyCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = strategyCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -3042,7 +3042,7 @@ uint64_t __35__CHManager_setCoalescingStrategy___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShowsFaceTimeVideoCalls:(BOOL)a3
+- (void)setShowsFaceTimeVideoCalls:(BOOL)calls
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -3050,7 +3050,7 @@ uint64_t __35__CHManager_setCoalescingStrategy___block_invoke(uint64_t a1)
   v3[3] = &unk_1E81DC488;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  callsCopy = calls;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -3135,7 +3135,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setShowsFaceTimeAudioCalls:(BOOL)a3
+- (void)setShowsFaceTimeAudioCalls:(BOOL)calls
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -3143,7 +3143,7 @@ LABEL_9:
   v3[3] = &unk_1E81DC488;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  callsCopy = calls;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -3220,7 +3220,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setShowsProtectedApps:(BOOL)a3
+- (void)setShowsProtectedApps:(BOOL)apps
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -3228,7 +3228,7 @@ LABEL_9:
   v3[3] = &unk_1E81DC488;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  appsCopy = apps;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -3265,17 +3265,17 @@ uint64_t __35__CHManager_setShowsProtectedApps___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setAllowedProtectedAppBundleIDs:(id)a3
+- (void)setAllowedProtectedAppBundleIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CHManager_setAllowedProtectedAppBundleIDs___block_invoke;
   v7[3] = &unk_1E81DC398;
-  v8 = v5;
+  v8 = dsCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = dsCopy;
   [(CHSynchronizedLoggable *)self execute:v7];
 }
 
@@ -3408,7 +3408,7 @@ uint64_t __45__CHManager_setAllowedProtectedAppBundleIDs___block_invoke(uint64_t
   return v2;
 }
 
-- (void)setShowsTelephonyCalls:(BOOL)a3
+- (void)setShowsTelephonyCalls:(BOOL)calls
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -3416,7 +3416,7 @@ uint64_t __45__CHManager_setAllowedProtectedAppBundleIDs___block_invoke(uint64_t
   v3[3] = &unk_1E81DC488;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  callsCopy = calls;
   [(CHSynchronizedLoggable *)self execute:v3];
 }
 
@@ -3645,13 +3645,13 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)limitingCallKindsForCallType:(unsigned int)a3
++ (id)limitingCallKindsForCallType:(unsigned int)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3 != -1)
+  if (type != -1)
   {
-    if (a3)
+    if (type)
     {
       v14[0] = @"kCHServiceProviderKey";
       v14[1] = @"kCHMediaTypeKey";
@@ -3661,7 +3661,7 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
       [v4 addObject:v5];
     }
 
-    if ((a3 & 0x10) != 0)
+    if ((type & 0x10) != 0)
     {
       v12[0] = @"kCHServiceProviderKey";
       v12[1] = @"kCHMediaTypeKey";
@@ -3671,7 +3671,7 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
       [v4 addObject:v6];
     }
 
-    if ((a3 & 8) != 0)
+    if ((type & 8) != 0)
     {
       v10[0] = @"kCHServiceProviderKey";
       v10[1] = @"kCHMediaTypeKey";
@@ -3687,16 +3687,16 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (unsigned)CHCallStatusForCallWithDuration:(double)a3 isOriginated:(BOOL)a4 isAnswered:(BOOL)a5
++ (unsigned)CHCallStatusForCallWithDuration:(double)duration isOriginated:(BOOL)originated isAnswered:(BOOL)answered
 {
   v5 = &kCHCallStatusConnectedIncoming;
   v6 = &kCHCallStatusMissed;
-  if (a5)
+  if (answered)
   {
     v6 = &kCHCallStatusAnsweredElsewhere;
   }
 
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
     v7 = &kCHCallStatusConnectedOutgoing;
   }
@@ -3707,7 +3707,7 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
     v7 = &kCHCallStatusCancelled;
   }
 
-  if (a4)
+  if (originated)
   {
     v5 = v7;
   }
@@ -3715,16 +3715,16 @@ void __28__CHManager_callTimersReset__block_invoke(uint64_t a1)
   return *v5;
 }
 
-- (void)addMultipleCallsToCallHistoryWithTransactions:(id)a3
+- (void)addMultipleCallsToCallHistoryWithTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__CHManager_addMultipleCallsToCallHistoryWithTransactions___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionsCopy;
+  v5 = transactionsCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -3734,16 +3734,16 @@ void __59__CHManager_addMultipleCallsToCallHistoryWithTransactions___block_invok
   [v2 insertRecords:*(a1 + 40)];
 }
 
-- (void)addMultipleCallsToCallHistory:(id)a3
+- (void)addMultipleCallsToCallHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CHManager_addMultipleCallsToCallHistory___block_invoke;
   v6[3] = &unk_1E81DBE38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = historyCopy;
+  v5 = historyCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -3753,9 +3753,9 @@ void __43__CHManager_addMultipleCallsToCallHistory___block_invoke(uint64_t a1)
   [v2 insertRecordsWithoutTransactions:*(a1 + 40)];
 }
 
-- (int64_t)setRead:(BOOL)a3 forCallsWithPredicate:(id)a4
+- (int64_t)setRead:(BOOL)read forCallsWithPredicate:(id)predicate
 {
-  v6 = a4;
+  predicateCopy = predicate;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3765,10 +3765,10 @@ void __43__CHManager_addMultipleCallsToCallHistory___block_invoke(uint64_t a1)
   v10[2] = __43__CHManager_setRead_forCallsWithPredicate___block_invoke;
   v10[3] = &unk_1E81DC5F0;
   v10[4] = self;
-  v7 = v6;
+  v7 = predicateCopy;
   v11 = v7;
   v12 = &v14;
-  v13 = a3;
+  readCopy = read;
   [(CHSynchronizedLoggable *)self executeSync:v10];
   v8 = v15[3];
 
@@ -3808,20 +3808,20 @@ void __43__CHManager_setRead_forCallsWithPredicate___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRead:(BOOL)a3 forCallsWithPredicate:(id)a4 completion:(id)a5
+- (void)setRead:(BOOL)read forCallsWithPredicate:(id)predicate completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__CHManager_setRead_forCallsWithPredicate_completion___block_invoke;
   v12[3] = &unk_1E81DC618;
   v12[4] = self;
-  v13 = v8;
-  v15 = a3;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = predicateCopy;
+  readCopy = read;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = predicateCopy;
   [(CHSynchronizedLoggable *)self execute:v12];
 }
 
@@ -3862,9 +3862,9 @@ void __54__CHManager_setRead_forCallsWithPredicate_completion___block_invoke(uin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)deleteCallsWithPredicate:(id)a3
+- (int64_t)deleteCallsWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3874,7 +3874,7 @@ void __54__CHManager_setRead_forCallsWithPredicate_completion___block_invoke(uin
   v8[2] = __38__CHManager_deleteCallsWithPredicate___block_invoke;
   v8[3] = &unk_1E81DC640;
   v8[4] = self;
-  v5 = v4;
+  v5 = predicateCopy;
   v9 = v5;
   v10 = &v11;
   [(CHSynchronizedLoggable *)self executeSync:v8];
@@ -3915,19 +3915,19 @@ void __38__CHManager_deleteCallsWithPredicate___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteCallsWithPredicate:(id)a3 completion:(id)a4
+- (void)deleteCallsWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__CHManager_deleteCallsWithPredicate_completion___block_invoke;
   v10[3] = &unk_1E81DC668;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = predicateCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = predicateCopy;
   [(CHSynchronizedLoggable *)self execute:v10];
 }
 
@@ -3967,10 +3967,10 @@ void __49__CHManager_deleteCallsWithPredicate_completion___block_invoke(uint64_t
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)callCountWithPredicate:(id)a3
+- (unint64_t)callCountWithPredicate:(id)predicate
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3982,8 +3982,8 @@ void __49__CHManager_deleteCallsWithPredicate_completion___block_invoke(uint64_t
   v15 = 3221225472;
   v16 = __36__CHManager_callCountWithPredicate___block_invoke;
   v17 = &unk_1E81DC690;
-  v18 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = predicateCopy;
   v19 = v7;
   v21 = &v22;
   v8 = v6;
@@ -4026,15 +4026,15 @@ void __36__CHManager_callCountWithPredicate___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)callsWithLimits:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6
+- (id)callsWithLimits:(id)limits limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  limitsCopy = limits;
   v11 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"date" ascending:0];
   v29[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-  v13 = [(CHManager *)self syncManager];
-  v14 = [v13 fetchCallsWithPredicate:self->_preFetchingPredicate sortDescriptors:v12 limitsDictionary:v10 limit:a4 offset:a5 batchSize:a6];
+  syncManager = [(CHManager *)self syncManager];
+  v14 = [syncManager fetchCallsWithPredicate:self->_preFetchingPredicate sortDescriptors:v12 limitsDictionary:limitsCopy limit:limit offset:offset batchSize:size];
 
   v26 = 0u;
   v27 = 0u;
@@ -4056,8 +4056,8 @@ void __36__CHManager_callCountWithPredicate___block_invoke(uint64_t a1)
         }
 
         v20 = *(*(&v24 + 1) + 8 * i);
-        v21 = [(CHManager *)self phoneBookManager];
-        [v20 setPhoneBookManager:v21];
+        phoneBookManager = [(CHManager *)self phoneBookManager];
+        [v20 setPhoneBookManager:phoneBookManager];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -4071,10 +4071,10 @@ void __36__CHManager_callCountWithPredicate___block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)callsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6
+- (id)callsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  predicateCopy = predicate;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4089,14 +4089,14 @@ void __36__CHManager_callCountWithPredicate___block_invoke(uint64_t a1)
   v18[2] = __55__CHManager_callsWithPredicate_limit_offset_batchSize___block_invoke;
   v18[3] = &unk_1E81DC6B8;
   v18[4] = self;
-  v13 = v10;
+  v13 = predicateCopy;
   v19 = v13;
   v21 = &v25;
   v14 = v12;
   v20 = v14;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   [(CHSynchronizedLoggable *)self executeSync:v18];
   v15 = v26[5];
 
@@ -4162,10 +4162,10 @@ void __55__CHManager_callsWithPredicate_limit_offset_batchSize___block_invoke(ui
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)callIdentifiersWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6
+- (id)callIdentifiersWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  predicateCopy = predicate;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4180,14 +4180,14 @@ void __55__CHManager_callsWithPredicate_limit_offset_batchSize___block_invoke(ui
   v18[2] = __65__CHManager_callIdentifiersWithPredicate_limit_offset_batchSize___block_invoke;
   v18[3] = &unk_1E81DC6B8;
   v18[4] = self;
-  v13 = v10;
+  v13 = predicateCopy;
   v19 = v13;
   v21 = &v25;
   v14 = v12;
   v20 = v14;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   [(CHSynchronizedLoggable *)self executeSync:v18];
   v15 = v26[5];
 
@@ -4219,10 +4219,10 @@ void __65__CHManager_callIdentifiersWithPredicate_limit_offset_batchSize___block
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)coalescedCallCountWithPredicate:(id)a3
+- (unint64_t)coalescedCallCountWithPredicate:(id)predicate
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -4235,7 +4235,7 @@ void __65__CHManager_callIdentifiersWithPredicate_limit_offset_batchSize___block
   v12[2] = __45__CHManager_coalescedCallCountWithPredicate___block_invoke;
   v12[3] = &unk_1E81DC690;
   v12[4] = self;
-  v7 = v4;
+  v7 = predicateCopy;
   v13 = v7;
   v15 = &v16;
   v8 = v6;
@@ -4267,10 +4267,10 @@ void __45__CHManager_coalescedCallCountWithPredicate___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)coalescedCallsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 batchSize:(unint64_t)a6
+- (id)coalescedCallsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  predicateCopy = predicate;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4285,14 +4285,14 @@ void __45__CHManager_coalescedCallCountWithPredicate___block_invoke(uint64_t a1)
   v18[2] = __64__CHManager_coalescedCallsWithPredicate_limit_offset_batchSize___block_invoke;
   v18[3] = &unk_1E81DC6B8;
   v18[4] = self;
-  v13 = v10;
+  v13 = predicateCopy;
   v19 = v13;
   v21 = &v25;
   v14 = v12;
   v20 = v14;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  limitCopy = limit;
+  offsetCopy = offset;
+  sizeCopy = size;
   [(CHSynchronizedLoggable *)self executeSync:v18];
   v15 = v26[5];
 
@@ -4358,22 +4358,22 @@ void __64__CHManager_coalescedCallsWithPredicate_limit_offset_batchSize___block_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)latestRecentCallMatchingPredicate:(id)a3
+- (id)latestRecentCallMatchingPredicate:(id)predicate
 {
-  v3 = [(CHManager *)self callsWithPredicate:a3 limit:1 offset:0 batchSize:1];
-  v4 = [v3 firstObject];
+  v3 = [(CHManager *)self callsWithPredicate:predicate limit:1 offset:0 batchSize:1];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)latestCallMatchingNormalizedRemoteParticipantHandleValues:(id)a3
+- (id)latestCallMatchingNormalizedRemoteParticipantHandleValues:(id)values
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY remoteParticipantHandles.normalizedValue IN %@", a3];
+  values = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY remoteParticipantHandles.normalizedValue IN %@", values];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(service_provider = %@) OR (service_provider = %@)", @"com.apple.FaceTime", @"com.apple.Telephony"];
   v6 = MEMORY[0x1E696AB28];
   v12[0] = v5;
-  v12[1] = v4;
+  v12[1] = values;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v8 = [v6 andPredicateWithSubpredicates:v7];
 
@@ -4386,11 +4386,11 @@ void __64__CHManager_coalescedCallsWithPredicate_limit_offset_batchSize___block_
 
 - (void)protectedAppsChanged
 {
-  v3 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_1C3E90000, v3, OS_LOG_TYPE_DEFAULT, "CHManager reset calls because protected apps changed", v4, 2u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "CHManager reset calls because protected apps changed", v4, 2u);
   }
 
   [(CHManager *)self resetCalls];

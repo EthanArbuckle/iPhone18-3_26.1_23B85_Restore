@@ -1,19 +1,19 @@
 @interface NCABSettingsPairedController
 + (id)foundationKeys;
 + (id)peoplePickerKeys;
-+ (void)mapFoundationPreferenceKeysAndValues:(id)a3 toLegacyDomainAccessor:(id)a4 withSyncManager:(id)a5;
++ (void)mapFoundationPreferenceKeysAndValues:(id)values toLegacyDomainAccessor:(id)accessor withSyncManager:(id)manager;
 - (NCABSettingsPairedController)init;
-- (id)_getValueForKey:(id)a3 inDomainAccessor:(id)a4;
-- (id)contactsSortOrder:(id)a3;
-- (id)foundationKeysAndValuesUsingDomainAccessor:(BOOL)a3;
+- (id)_getValueForKey:(id)key inDomainAccessor:(id)accessor;
+- (id)contactsSortOrder:(id)order;
+- (id)foundationKeysAndValuesUsingDomainAccessor:(BOOL)accessor;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
 - (id)mirroredApplicationGroupSpecifiers;
-- (id)personNameOrder:(id)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4 inDomainAccessor:(id)a5 syncWithClient:(BOOL)a6;
+- (id)personNameOrder:(id)order;
+- (void)_setValue:(id)value forKey:(id)key inDomainAccessor:(id)accessor syncWithClient:(BOOL)client;
 - (void)dealloc;
-- (void)setContactsSortOrder:(id)a3 specifier:(id)a4;
-- (void)setPersonNameOrder:(id)a3 specifier:(id)a4;
+- (void)setContactsSortOrder:(id)order specifier:(id)specifier;
+- (void)setPersonNameOrder:(id)order specifier:(id)specifier;
 @end
 
 @implementation NCABSettingsPairedController
@@ -45,9 +45,9 @@
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, sub_1000, NSPersonNamePreferencesDidChangeNotification, 0, CFNotificationSuspensionBehaviorDrop);
     v12 = +[PDRRegistry sharedInstance];
     v13 = [v12 getDevicesExcluding:4];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
       PDRWatchOSVersionForRemoteDevice();
       v2->_activePairedWatchRequiresLegacyKeys = PDRVersionIsGreaterThanOrEqual() ^ 1;
@@ -86,10 +86,10 @@
     do
     {
       v11 = [v7 objectAtIndex:v10 - 2];
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:@"contactsSortOrder"];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:@"contactsSortOrder"];
       v14 = &OBJC_IVAR___NCABSettingsPairedController__contactsSortOrderSpecifier;
-      if ((v13 & 1) != 0 || (v15 = [v12 isEqualToString:v9], v14 = &OBJC_IVAR___NCABSettingsPairedController__personNameOrderSpecifier, v15))
+      if ((v13 & 1) != 0 || (v15 = [identifier isEqualToString:v9], v14 = &OBJC_IVAR___NCABSettingsPairedController__personNameOrderSpecifier, v15))
       {
         v16 = *v14;
         objc_storeStrong(&self->BPSNotificationAppController_opaque[v16], v11);
@@ -203,7 +203,7 @@
   return v3;
 }
 
-- (id)contactsSortOrder:(id)a3
+- (id)contactsSortOrder:(id)order
 {
   v3 = [(NCABSettingsPairedController *)self _getValueForKey:@"contactsSortOrder" inDomainAccessor:self->_peoplePickerDomainAccessor];
   v4 = v3;
@@ -222,13 +222,13 @@
   return v6;
 }
 
-- (void)setContactsSortOrder:(id)a3 specifier:(id)a4
+- (void)setContactsSortOrder:(id)order specifier:(id)specifier
 {
-  v5 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [a3 intValue]);
+  v5 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [order intValue]);
   [(NCABSettingsPairedController *)self _setValue:v5 forKey:@"contactsSortOrder" inDomainAccessor:self->_peoplePickerDomainAccessor syncWithClient:1];
 }
 
-- (id)personNameOrder:(id)a3
+- (id)personNameOrder:(id)order
 {
   v3 = [(NCABSettingsPairedController *)self _getValueForKey:NSPersonNameDefaultDisplayNameOrderKey inDomainAccessor:self->_foundationDomainAccessor];
   v4 = v3;
@@ -247,9 +247,9 @@
   return v6;
 }
 
-- (void)setPersonNameOrder:(id)a3 specifier:(id)a4
+- (void)setPersonNameOrder:(id)order specifier:(id)specifier
 {
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 integerValue]);
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [order integerValue]);
   [(NCABSettingsPairedController *)self _setValue:v5 forKey:NSPersonNameDefaultDisplayNameOrderKey inDomainAccessor:self->_foundationDomainAccessor syncWithClient:1];
 }
 
@@ -277,9 +277,9 @@
   return v3;
 }
 
-- (id)foundationKeysAndValuesUsingDomainAccessor:(BOOL)a3
+- (id)foundationKeysAndValuesUsingDomainAccessor:(BOOL)accessor
 {
-  if (a3)
+  if (accessor)
   {
     v4 = NSPersonNameDefaultDisplayNameOrderKey;
     v5 = [(NPSDomainAccessor *)self->_foundationDomainAccessor objectForKey:NSPersonNameDefaultDisplayNameOrderKey];
@@ -367,41 +367,41 @@
   return v24;
 }
 
-- (id)_getValueForKey:(id)a3 inDomainAccessor:(id)a4
+- (id)_getValueForKey:(id)key inDomainAccessor:(id)accessor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 synchronize];
-  v8 = [v5 objectForKey:v6];
+  accessorCopy = accessor;
+  keyCopy = key;
+  synchronize = [accessorCopy synchronize];
+  v8 = [accessorCopy objectForKey:keyCopy];
 
   return v8;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4 inDomainAccessor:(id)a5 syncWithClient:(BOOL)a6
+- (void)_setValue:(id)value forKey:(id)key inDomainAccessor:(id)accessor syncWithClient:(BOOL)client
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v12 setObject:v10 forKey:v11];
-  v13 = [v12 synchronize];
-  if (v6)
+  clientCopy = client;
+  valueCopy = value;
+  keyCopy = key;
+  accessorCopy = accessor;
+  [accessorCopy setObject:valueCopy forKey:keyCopy];
+  synchronize = [accessorCopy synchronize];
+  if (clientCopy)
   {
     syncManager = self->_syncManager;
-    v15 = [v12 domain];
-    v16 = [NSSet setWithObject:v11];
-    [(NPSManager *)syncManager synchronizeNanoDomain:v15 keys:v16];
+    domain = [accessorCopy domain];
+    v16 = [NSSet setWithObject:keyCopy];
+    [(NPSManager *)syncManager synchronizeNanoDomain:domain keys:v16];
 
     if (self->_activePairedWatchRequiresLegacyKeys)
     {
-      v17 = [objc_opt_class() foundationKeys];
-      v18 = [v17 containsObject:v11];
+      foundationKeys = [objc_opt_class() foundationKeys];
+      v18 = [foundationKeys containsObject:keyCopy];
 
       if (v18)
       {
         v19 = objc_opt_class();
-        v21 = v11;
-        v22 = v10;
+        v21 = keyCopy;
+        v22 = valueCopy;
         v20 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
         [v19 mapFoundationPreferenceKeysAndValues:v20 toLegacyDomainAccessor:self->_peoplePickerDomainAccessor withSyncManager:self->_syncManager];
       }
@@ -409,26 +409,26 @@
   }
 }
 
-+ (void)mapFoundationPreferenceKeysAndValues:(id)a3 toLegacyDomainAccessor:(id)a4 withSyncManager:(id)a5
++ (void)mapFoundationPreferenceKeysAndValues:(id)values toLegacyDomainAccessor:(id)accessor withSyncManager:(id)manager
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  accessorCopy = accessor;
+  managerCopy = manager;
+  valuesCopy = values;
   v10 = +[NSMutableSet set];
-  v11 = [NSPersonNameComponentsFormatterPreferences mappedPreferencesForPreferences:v9 from:0 to:2];
+  v11 = [NSPersonNameComponentsFormatterPreferences mappedPreferencesForPreferences:valuesCopy from:0 to:2];
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_22F4;
   v19 = &unk_8310;
-  v20 = v7;
+  v20 = accessorCopy;
   v21 = v10;
   v12 = v10;
-  v13 = v7;
+  v13 = accessorCopy;
   [v11 enumerateKeysAndObjectsUsingBlock:&v16];
-  v14 = [v13 synchronize];
-  v15 = [v13 domain];
-  [v8 synchronizeNanoDomain:v15 keys:v12];
+  synchronize = [v13 synchronize];
+  domain = [v13 domain];
+  [managerCopy synchronizeNanoDomain:domain keys:v12];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface TetheringSetupView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 inTableView:(id)a4 shouldSetSize:(BOOL)a5;
-- (TetheringSetupView)initWithSpecifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits inTableView:(id)view shouldSetSize:(BOOL)size;
+- (TetheringSetupView)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation TetheringSetupView
 
-- (TetheringSetupView)initWithSpecifier:(id)a3
+- (TetheringSetupView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v19.receiver = self;
   v19.super_class = TetheringSetupView;
   v5 = [(TetheringSetupView *)&v19 init];
   if (v5)
   {
-    v6 = [v4 propertyForKey:@"SupportsWifi"];
+    v6 = [specifierCopy propertyForKey:@"SupportsWifi"];
     v5->_showWifiView = [v6 BOOLValue];
 
     if (v5->_showWifiView)
@@ -58,16 +58,16 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 inTableView:(id)a4 shouldSetSize:(BOOL)a5
+- (CGSize)sizeThatFits:(CGSize)fits inTableView:(id)view shouldSetSize:(BOOL)size
 {
-  v5 = a5;
-  width = a3.width;
-  v8 = a4;
+  sizeCopy = size;
+  width = fits.width;
+  viewCopy = view;
   if (self->_showWifiView)
   {
     [(SetupView *)self->_wifiView sizeThatFits:width, 1.79769313e308];
     v11 = v10;
-    if (v5)
+    if (sizeCopy)
     {
       v27.size.width = v9;
       v27.origin.x = 0.0;
@@ -87,7 +87,7 @@
 
   [(SetupView *)self->_btView sizeThatFits:width, 1.79769313e308];
   v15 = v14;
-  if (v5)
+  if (sizeCopy)
   {
     v29.size.width = v13;
     v29.origin.x = 0.0;
@@ -100,7 +100,7 @@
   v16 = v12 + v15 + 10.0;
   [(SetupView *)self->_usbView sizeThatFits:width, 1.79769313e308];
   v19 = v18;
-  if (v5)
+  if (sizeCopy)
   {
     v31.size.width = v17;
     v31.origin.x = 0.0;
@@ -122,12 +122,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TetheringSetupView *)self superview];
-  [(TetheringSetupView *)self sizeThatFits:v6 inTableView:0 shouldSetSize:width, height];
+  height = fits.height;
+  width = fits.width;
+  superview = [(TetheringSetupView *)self superview];
+  [(TetheringSetupView *)self sizeThatFits:superview inTableView:0 shouldSetSize:width, height];
   v8 = v7;
   v10 = v9;
 
@@ -146,8 +146,8 @@
   [(TetheringSetupView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(TetheringSetupView *)self superview];
-  [(TetheringSetupView *)self sizeThatFits:v7 inTableView:1 shouldSetSize:v4, v6];
+  superview = [(TetheringSetupView *)self superview];
+  [(TetheringSetupView *)self sizeThatFits:superview inTableView:1 shouldSetSize:v4, v6];
 }
 
 @end

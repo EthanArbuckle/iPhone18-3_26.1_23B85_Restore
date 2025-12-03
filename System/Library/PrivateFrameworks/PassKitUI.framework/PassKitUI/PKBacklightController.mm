@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (PKBacklightController)init;
 - (void)_changeBacklightMinimumEnabledIfNecessary;
-- (void)_updateBacklightNits:(float)a3 period:(double)a4;
-- (void)beginAllowingBacklightRamping:(id)a3;
-- (void)beginRequestingBacklightRamping:(id)a3;
-- (void)endAllowingBacklightRamping:(id)a3;
-- (void)endRequestingBacklightRamping:(id)a3;
+- (void)_updateBacklightNits:(float)nits period:(double)period;
+- (void)beginAllowingBacklightRamping:(id)ramping;
+- (void)beginRequestingBacklightRamping:(id)ramping;
+- (void)endAllowingBacklightRamping:(id)ramping;
+- (void)endRequestingBacklightRamping:(id)ramping;
 @end
 
 @implementation PKBacklightController
@@ -34,13 +34,13 @@
     brightnessClient = v2->_brightnessClient;
     v2->_brightnessClient = v3;
 
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     requesters = v2->_requesters;
-    v2->_requesters = v5;
+    v2->_requesters = pk_weakObjectsHashTableUsingPointerPersonality;
 
-    v7 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality2 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     allowers = v2->_allowers;
-    v2->_allowers = v7;
+    v2->_allowers = pk_weakObjectsHashTableUsingPointerPersonality2;
   }
 
   return v2;
@@ -81,10 +81,10 @@ void __39__PKBacklightController_sharedInstance__block_invoke()
   qword_1EBD6ACB0 = v0;
 }
 
-- (void)beginAllowingBacklightRamping:(id)a3
+- (void)beginAllowingBacklightRamping:(id)ramping
 {
   v11 = *MEMORY[0x1E69E9840];
-  [(NSHashTable *)self->_allowers addObject:a3];
+  [(NSHashTable *)self->_allowers addObject:ramping];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -100,10 +100,10 @@ void __39__PKBacklightController_sharedInstance__block_invoke()
   [(PKBacklightController *)self _changeBacklightMinimumEnabledIfNecessary];
 }
 
-- (void)endAllowingBacklightRamping:(id)a3
+- (void)endAllowingBacklightRamping:(id)ramping
 {
   v15 = *MEMORY[0x1E69E9840];
-  [(NSHashTable *)self->_allowers removeObject:a3];
+  [(NSHashTable *)self->_allowers removeObject:ramping];
   v4 = [(NSHashTable *)self->_allowers count];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -128,10 +128,10 @@ void __39__PKBacklightController_sharedInstance__block_invoke()
   [(PKBacklightController *)self _changeBacklightMinimumEnabledIfNecessary];
 }
 
-- (void)beginRequestingBacklightRamping:(id)a3
+- (void)beginRequestingBacklightRamping:(id)ramping
 {
   v11 = *MEMORY[0x1E69E9840];
-  [(NSHashTable *)self->_requesters addObject:a3];
+  [(NSHashTable *)self->_requesters addObject:ramping];
   [(PKBacklightController *)self _changeBacklightMinimumEnabledIfNecessary];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -146,10 +146,10 @@ void __39__PKBacklightController_sharedInstance__block_invoke()
   }
 }
 
-- (void)endRequestingBacklightRamping:(id)a3
+- (void)endRequestingBacklightRamping:(id)ramping
 {
   v11 = *MEMORY[0x1E69E9840];
-  [(NSHashTable *)self->_requesters removeObject:a3];
+  [(NSHashTable *)self->_requesters removeObject:ramping];
   [(PKBacklightController *)self _changeBacklightMinimumEnabledIfNecessary];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -164,14 +164,14 @@ void __39__PKBacklightController_sharedInstance__block_invoke()
   }
 }
 
-- (void)_updateBacklightNits:(float)a3 period:(double)a4
+- (void)_updateBacklightNits:(float)nits period:(double)period
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"nits";
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   v12[1] = @"period";
   v13[0] = v6;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:period];
   v13[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 

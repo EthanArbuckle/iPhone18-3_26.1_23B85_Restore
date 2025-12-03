@@ -1,24 +1,24 @@
 @interface _NSItemProviderTypeCoercion
-+ (id)typeCoercionForValue:(id)a3 targetClass:(Class)a4;
++ (id)typeCoercionForValue:(id)value targetClass:(Class)class;
 - (BOOL)shouldCoerceForCoding;
-- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSDataValue:(id)a3 error:(id *)a4;
-- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSURLValue:(id)a3 error:(id *)a4;
-- (id)coerceValueError:(id *)a3;
+- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSDataValue:(id)value error:(id *)error;
+- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSURLValue:(id)value error:(id *)error;
+- (id)coerceValueError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation _NSItemProviderTypeCoercion
 
-+ (id)typeCoercionForValue:(id)a3 targetClass:(Class)a4
++ (id)typeCoercionForValue:(id)value targetClass:(Class)class
 {
-  if (![a1 instancesRespondToSelector:{_selectorForCoercion(a3, a4)}])
+  if (![self instancesRespondToSelector:{_selectorForCoercion(value, class)}])
   {
     return 0;
   }
 
-  v7 = objc_alloc_init(a1);
-  [v7 setValue:a3];
-  [v7 setTargetClass:a4];
+  v7 = objc_alloc_init(self);
+  [v7 setValue:value];
+  [v7 setTargetClass:class];
   return v7;
 }
 
@@ -45,21 +45,21 @@
     return 1;
   }
 
-  v5 = [(_NSItemProviderTypeCoercion *)self targetClass];
+  targetClass = [(_NSItemProviderTypeCoercion *)self targetClass];
   v6 = MEMORY[0x1E695DEF0];
 
-  return [(objc_class *)v5 isSubclassOfClass:v6];
+  return [(objc_class *)targetClass isSubclassOfClass:v6];
 }
 
-- (id)coerceValueError:(id *)a3
+- (id)coerceValueError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v9[0] = a3;
-  v8 = [(_NSItemProviderTypeCoercion *)self value];
-  v4 = _selectorForCoercion(v8, [(_NSItemProviderTypeCoercion *)self targetClass]);
+  v9[0] = error;
+  value = [(_NSItemProviderTypeCoercion *)self value];
+  v4 = _selectorForCoercion(value, [(_NSItemProviderTypeCoercion *)self targetClass]);
   v5 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:{-[_NSItemProviderTypeCoercion methodSignatureForSelector:](self, "methodSignatureForSelector:", v4)}];
   [v5 setSelector:v4];
-  [v5 setArgument:&v8 atIndex:2];
+  [v5 setArgument:&value atIndex:2];
   [v5 setArgument:v9 atIndex:3];
   [v5 invokeWithTarget:self];
   v7 = 0;
@@ -67,16 +67,16 @@
   return v7;
 }
 
-- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSURLValue:(id)a3 error:(id *)a4
+- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSURLValue:(id)value error:(id *)error
 {
-  v4 = [[NSFileWrapper alloc] initWithURL:a3 options:0 error:a4];
+  v4 = [[NSFileWrapper alloc] initWithURL:value options:0 error:error];
 
   return v4;
 }
 
-- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSDataValue:(id)a3 error:(id *)a4
+- (id)_NSItemProviderTypeCoercion_coercedNSFileWrapperValueFromNSDataValue:(id)value error:(id *)error
 {
-  v4 = [[NSFileWrapper alloc] initRegularFileWithContents:a3];
+  v4 = [[NSFileWrapper alloc] initRegularFileWithContents:value];
 
   return v4;
 }

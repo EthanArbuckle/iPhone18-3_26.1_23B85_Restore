@@ -1,17 +1,17 @@
 @interface RAPRouteCell
-- (RAPRouteCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RAPRouteCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_cellBackgroundColor;
-- (id)_formattedTimeStringSinceDirectionsWereTaken:(double)a3;
+- (id)_formattedTimeStringSinceDirectionsWereTaken:(double)taken;
 - (void)_setupConstraints;
 - (void)_setupStyling;
-- (void)configureWithRequest:(id)a3;
+- (void)configureWithRequest:(id)request;
 @end
 
 @implementation RAPRouteCell
 
-- (id)_formattedTimeStringSinceDirectionsWereTaken:(double)a3
+- (id)_formattedTimeStringSinceDirectionsWereTaken:(double)taken
 {
-  v3 = CFAbsoluteTimeGetCurrent() - a3;
+  v3 = CFAbsoluteTimeGetCurrent() - taken;
   if (v3 < 60.0)
   {
     v4 = +[NSBundle mainBundle];
@@ -66,13 +66,13 @@ LABEL_9:
   return v6;
 }
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = requestCopy;
   }
 
   else
@@ -81,10 +81,10 @@ LABEL_9:
   }
 
   v6 = v5;
-  v7 = [v6 historyItem];
+  historyItem = [v6 historyItem];
   v8 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
   objc_opt_class();
-  v9 = v7;
+  v9 = historyItem;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -111,28 +111,28 @@ LABEL_9:
   {
     v25 = 0;
     v26 = 0;
-    v15 = [v14 historyEntry];
-    [SearchResult newStartWaypointSearchResult:&v26 endWaypointSearchResult:&v25 forRouteHistoryEntry:v15];
+    historyEntry = [v14 historyEntry];
+    [SearchResult newStartWaypointSearchResult:&v26 endWaypointSearchResult:&v25 forRouteHistoryEntry:historyEntry];
     v16 = v26;
     v17 = v25;
 
-    v18 = [v17 name];
-    [(UILabel *)self->_titleLabel setText:v18];
+    name = [v17 name];
+    [(UILabel *)self->_titleLabel setText:name];
 
     [v14 timestamp];
     v19 = [(RAPRouteCell *)self _formattedTimeStringSinceDirectionsWereTaken:?];
     [(UILabel *)self->_subtitleLabel setText:v19];
 
-    v20 = [v14 historyEntry];
-    v21 = [v20 transportType];
+    historyEntry2 = [v14 historyEntry];
+    transportType = [historyEntry2 transportType];
 
     v22 = @"rp_drive";
-    if (v21 == 2)
+    if (transportType == 2)
     {
       v22 = @"rp_walk";
     }
 
-    if (v21 == 5)
+    if (transportType == 5)
     {
       v23 = @"rp_cycle";
     }
@@ -152,7 +152,7 @@ LABEL_9:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = requestCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to create a historyEntryRecentsItem from request: %@", buf, 0xCu);
     }
   }
@@ -160,8 +160,8 @@ LABEL_9:
 
 - (void)_setupStyling
 {
-  v3 = [(RAPRouteCell *)self _cellBackgroundColor];
-  [(RAPRouteCell *)self setBackgroundColor:v3];
+  _cellBackgroundColor = [(RAPRouteCell *)self _cellBackgroundColor];
+  [(RAPRouteCell *)self setBackgroundColor:_cellBackgroundColor];
 
   v4 = +[UIColor darkGrayColor];
   [(UIImageView *)self->_iconImageView setTintColor:v4];
@@ -200,86 +200,86 @@ LABEL_9:
 
 - (void)_setupConstraints
 {
-  v57 = [(UIView *)self->_iconImageContainerView heightAnchor];
-  v56 = [v57 constraintEqualToConstant:25.0];
+  heightAnchor = [(UIView *)self->_iconImageContainerView heightAnchor];
+  v56 = [heightAnchor constraintEqualToConstant:25.0];
   v58[0] = v56;
-  v55 = [(UIView *)self->_iconImageContainerView widthAnchor];
-  v54 = [v55 constraintEqualToConstant:25.0];
+  widthAnchor = [(UIView *)self->_iconImageContainerView widthAnchor];
+  v54 = [widthAnchor constraintEqualToConstant:25.0];
   v58[1] = v54;
-  v52 = [(UIView *)self->_iconImageContainerView leadingAnchor];
-  v53 = [(RAPRouteCell *)self contentView];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:16.0];
+  leadingAnchor = [(UIView *)self->_iconImageContainerView leadingAnchor];
+  contentView = [(RAPRouteCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v58[2] = v50;
-  v48 = [(UIView *)self->_iconImageContainerView centerYAnchor];
-  v49 = [(RAPRouteCell *)self contentView];
-  v47 = [v49 centerYAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerYAnchor = [(UIView *)self->_iconImageContainerView centerYAnchor];
+  contentView2 = [(RAPRouteCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v58[3] = v46;
-  v45 = [(UIImageView *)self->_iconImageView centerXAnchor];
-  v44 = [(UIView *)self->_iconImageContainerView centerXAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  centerXAnchor = [(UIImageView *)self->_iconImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_iconImageContainerView centerXAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v58[4] = v43;
-  v42 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v41 = [(UIView *)self->_iconImageContainerView centerYAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  centerYAnchor3 = [(UIImageView *)self->_iconImageView centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->_iconImageContainerView centerYAnchor];
+  v40 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v58[5] = v40;
-  v39 = [(UIImageView *)self->_iconImageView widthAnchor];
-  v38 = [v39 constraintLessThanOrEqualToConstant:25.0];
+  widthAnchor2 = [(UIImageView *)self->_iconImageView widthAnchor];
+  v38 = [widthAnchor2 constraintLessThanOrEqualToConstant:25.0];
   v58[6] = v38;
-  v37 = [(UIImageView *)self->_iconImageView heightAnchor];
-  v36 = [v37 constraintLessThanOrEqualToConstant:25.0];
+  heightAnchor2 = [(UIImageView *)self->_iconImageView heightAnchor];
+  v36 = [heightAnchor2 constraintLessThanOrEqualToConstant:25.0];
   v58[7] = v36;
-  v35 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v34 = [(UIView *)self->_iconImageContainerView trailingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:10.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(UIView *)self->_iconImageContainerView trailingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v58[8] = v33;
-  v32 = [(RAPRouteCell *)self contentView];
-  v31 = [v32 trailingAnchor];
-  v30 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+  contentView3 = [(RAPRouteCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v29 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:16.0];
   v58[9] = v29;
-  v27 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v28 = [(RAPRouteCell *)self contentView];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:40.0];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView4 = [(RAPRouteCell *)self contentView];
+  topAnchor = [contentView4 topAnchor];
+  v25 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:40.0];
   v58[10] = v25;
-  v23 = [(UILabel *)self->_titleLabel topAnchor];
-  v24 = [(RAPRouteCell *)self contentView];
-  v22 = [v24 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:14.0];
+  topAnchor2 = [(UILabel *)self->_titleLabel topAnchor];
+  contentView5 = [(RAPRouteCell *)self contentView];
+  topAnchor3 = [contentView5 topAnchor];
+  v21 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:14.0];
   v58[11] = v21;
-  v20 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v19 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor4 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  leadingAnchor5 = [(UILabel *)self->_titleLabel leadingAnchor];
+  v18 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v58[12] = v18;
-  v17 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v16 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  trailingAnchor4 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v15 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v58[13] = v15;
-  v14 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v3 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v4 = [v14 constraintGreaterThanOrEqualToAnchor:v3];
+  topAnchor4 = [(UILabel *)self->_subtitleLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v4 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor];
   v58[14] = v4;
-  v5 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
-  v6 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
   LODWORD(v7) = 1144750080;
-  v8 = [v5 constraintEqualToAnchor:v6 constant:20.0 priority:v7];
+  v8 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:20.0 priority:v7];
   v58[15] = v8;
-  v9 = [(RAPRouteCell *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:14.0];
+  contentView6 = [(RAPRouteCell *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  bottomAnchor3 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+  v12 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:14.0];
   v58[16] = v12;
   v13 = [NSArray arrayWithObjects:v58 count:17];
   [NSLayoutConstraint activateConstraints:v13];
 }
 
-- (RAPRouteCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPRouteCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v25.receiver = self;
   v25.super_class = RAPRouteCell;
-  v4 = [(RAPRouteCell *)&v25 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPRouteCell *)&v25 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -296,8 +296,8 @@ LABEL_9:
     v5->_iconImageContainerView = v11;
 
     [(UIView *)v5->_iconImageContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(RAPRouteCell *)v5 contentView];
-    [v13 addSubview:v5->_iconImageContainerView];
+    contentView = [(RAPRouteCell *)v5 contentView];
+    [contentView addSubview:v5->_iconImageContainerView];
 
     v14 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     iconImageView = v5->_iconImageView;
@@ -313,8 +313,8 @@ LABEL_9:
     [(UILabel *)v5->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v18) = 1148846080;
     [(UILabel *)v5->_titleLabel setContentHuggingPriority:1 forAxis:v18];
-    v19 = [(RAPRouteCell *)v5 contentView];
-    [v19 addSubview:v5->_titleLabel];
+    contentView2 = [(RAPRouteCell *)v5 contentView];
+    [contentView2 addSubview:v5->_titleLabel];
 
     v20 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     subtitleLabel = v5->_subtitleLabel;
@@ -323,8 +323,8 @@ LABEL_9:
     [(UILabel *)v5->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v22) = 1148846080;
     [(UILabel *)v5->_subtitleLabel setContentHuggingPriority:1 forAxis:v22];
-    v23 = [(RAPRouteCell *)v5 contentView];
-    [v23 addSubview:v5->_subtitleLabel];
+    contentView3 = [(RAPRouteCell *)v5 contentView];
+    [contentView3 addSubview:v5->_subtitleLabel];
 
     [(RAPRouteCell *)v5 _setupConstraints];
     [(RAPRouteCell *)v5 _setupStyling];

@@ -1,5 +1,5 @@
 @interface HMDHomeActivityStateDurationLogEvent
-- (HMDHomeActivityStateDurationLogEvent)initWithHomeUUID:(id)a3 state:(id)a4 nextState:(id)a5 durationInMinutes:(id)a6 supportsAdaptiveTemperatureAutomations:(BOOL)a7;
+- (HMDHomeActivityStateDurationLogEvent)initWithHomeUUID:(id)d state:(id)state nextState:(id)nextState durationInMinutes:(id)minutes supportsAdaptiveTemperatureAutomations:(BOOL)automations;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -9,14 +9,14 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"state";
-  v3 = [(HMDHomeActivityStateDurationLogEvent *)self state];
-  v11[0] = v3;
+  state = [(HMDHomeActivityStateDurationLogEvent *)self state];
+  v11[0] = state;
   v10[1] = @"nextState";
-  v4 = [(HMDHomeActivityStateDurationLogEvent *)self nextState];
-  v11[1] = v4;
+  nextState = [(HMDHomeActivityStateDurationLogEvent *)self nextState];
+  v11[1] = nextState;
   v10[2] = @"durationInMinutes";
-  v5 = [(HMDHomeActivityStateDurationLogEvent *)self durationInMinutes];
-  v11[2] = v5;
+  durationInMinutes = [(HMDHomeActivityStateDurationLogEvent *)self durationInMinutes];
+  v11[2] = durationInMinutes;
   v10[3] = @"supportsAdaptiveTemperatureAutomations";
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDHomeActivityStateDurationLogEvent supportsAdaptiveTemperatureAutomations](self, "supportsAdaptiveTemperatureAutomations")}];
   v11[3] = v6;
@@ -27,21 +27,21 @@
   return v7;
 }
 
-- (HMDHomeActivityStateDurationLogEvent)initWithHomeUUID:(id)a3 state:(id)a4 nextState:(id)a5 durationInMinutes:(id)a6 supportsAdaptiveTemperatureAutomations:(BOOL)a7
+- (HMDHomeActivityStateDurationLogEvent)initWithHomeUUID:(id)d state:(id)state nextState:(id)nextState durationInMinutes:(id)minutes supportsAdaptiveTemperatureAutomations:(BOOL)automations
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  stateCopy = state;
+  nextStateCopy = nextState;
+  minutesCopy = minutes;
   v19.receiver = self;
   v19.super_class = HMDHomeActivityStateDurationLogEvent;
-  v16 = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:a3];
+  v16 = [(HMMHomeLogEvent *)&v19 initWithHomeUUID:d];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_state, a4);
-    objc_storeStrong(&v17->_nextState, a5);
-    objc_storeStrong(&v17->_durationInMinutes, a6);
-    v17->_supportsAdaptiveTemperatureAutomations = a7;
+    objc_storeStrong(&v16->_state, state);
+    objc_storeStrong(&v17->_nextState, nextState);
+    objc_storeStrong(&v17->_durationInMinutes, minutes);
+    v17->_supportsAdaptiveTemperatureAutomations = automations;
   }
 
   return v17;

@@ -1,71 +1,71 @@
 @interface EDPatternFill
-+ (id)patternFillWithType:(int)a3 foreColor:(id)a4 backColor:(id)a5 resources:(id)a6;
-+ (id)patternFillWithType:(int)a3 foreColor:(id)a4 resources:(id)a5;
-+ (id)patternFillWithType:(int)a3 foreColorReference:(id)a4 backColorReference:(id)a5 resources:(id)a6;
-+ (id)patternFillWithType:(int)a3 resources:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPatternFill:(id)a3;
-- (EDPatternFill)initWithResources:(id)a3;
-- (EDPatternFill)initWithType:(int)a3 foreColor:(id)a4 backColor:(id)a5 resources:(id)a6;
-- (EDPatternFill)initWithType:(int)a3 foreColorReference:(id)a4 backColorReference:(id)a5 resources:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)patternFillWithType:(int)type foreColor:(id)color backColor:(id)backColor resources:(id)resources;
++ (id)patternFillWithType:(int)type foreColor:(id)color resources:(id)resources;
++ (id)patternFillWithType:(int)type foreColorReference:(id)reference backColorReference:(id)colorReference resources:(id)resources;
++ (id)patternFillWithType:(int)type resources:(id)resources;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPatternFill:(id)fill;
+- (EDPatternFill)initWithResources:(id)resources;
+- (EDPatternFill)initWithType:(int)type foreColor:(id)color backColor:(id)backColor resources:(id)resources;
+- (EDPatternFill)initWithType:(int)type foreColorReference:(id)reference backColorReference:(id)colorReference resources:(id)resources;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setBackColor:(id)a3;
-- (void)setBackColorReference:(id)a3;
-- (void)setForeColor:(id)a3;
-- (void)setForeColorReference:(id)a3;
+- (void)setBackColor:(id)color;
+- (void)setBackColorReference:(id)reference;
+- (void)setForeColor:(id)color;
+- (void)setForeColorReference:(id)reference;
 @end
 
 @implementation EDPatternFill
 
-- (void)setForeColor:(id)a3
+- (void)setForeColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v4 = [EDColorReference alloc];
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v6 = [(EDColorReference *)v4 initWithColor:v8 resources:WeakRetained];
+  v6 = [(EDColorReference *)v4 initWithColor:colorCopy resources:WeakRetained];
   mForeColorReference = self->mForeColorReference;
   self->mForeColorReference = v6;
 }
 
-- (void)setBackColor:(id)a3
+- (void)setBackColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v4 = [EDColorReference alloc];
   WeakRetained = objc_loadWeakRetained(&self->super.mResources);
-  v6 = [(EDColorReference *)v4 initWithColor:v8 resources:WeakRetained];
+  v6 = [(EDColorReference *)v4 initWithColor:colorCopy resources:WeakRetained];
   mBackColorReference = self->mBackColorReference;
   self->mBackColorReference = v6;
 }
 
-- (void)setBackColorReference:(id)a3
+- (void)setBackColorReference:(id)reference
 {
-  v5 = a3;
-  if (self->mBackColorReference != v5)
+  referenceCopy = reference;
+  if (self->mBackColorReference != referenceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mBackColorReference, a3);
-    v5 = v6;
+    v6 = referenceCopy;
+    objc_storeStrong(&self->mBackColorReference, reference);
+    referenceCopy = v6;
   }
 }
 
-- (void)setForeColorReference:(id)a3
+- (void)setForeColorReference:(id)reference
 {
-  v5 = a3;
-  if (self->mForeColorReference != v5)
+  referenceCopy = reference;
+  if (self->mForeColorReference != referenceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mForeColorReference, a3);
-    v5 = v6;
+    v6 = referenceCopy;
+    objc_storeStrong(&self->mForeColorReference, reference);
+    referenceCopy = v6;
   }
 }
 
-- (EDPatternFill)initWithResources:(id)a3
+- (EDPatternFill)initWithResources:(id)resources
 {
   v4.receiver = self;
   v4.super_class = EDPatternFill;
-  result = [(EDFill *)&v4 initWithResources:a3];
+  result = [(EDFill *)&v4 initWithResources:resources];
   if (result)
   {
     result->mType = 0;
@@ -74,27 +74,27 @@
   return result;
 }
 
-- (EDPatternFill)initWithType:(int)a3 foreColor:(id)a4 backColor:(id)a5 resources:(id)a6
+- (EDPatternFill)initWithType:(int)type foreColor:(id)color backColor:(id)backColor resources:(id)resources
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  colorCopy = color;
+  backColorCopy = backColor;
+  resourcesCopy = resources;
   v24.receiver = self;
   v24.super_class = EDPatternFill;
-  v13 = [(EDFill *)&v24 initWithResources:v12];
+  v13 = [(EDFill *)&v24 initWithResources:resourcesCopy];
   v14 = v13;
   if (v13)
   {
-    v13->mType = a3;
+    v13->mType = type;
     v15 = [EDColorReference alloc];
     WeakRetained = objc_loadWeakRetained(&v14->super.mResources);
-    v17 = [(EDColorReference *)v15 initWithColor:v11 resources:WeakRetained];
+    v17 = [(EDColorReference *)v15 initWithColor:backColorCopy resources:WeakRetained];
     mBackColorReference = v14->mBackColorReference;
     v14->mBackColorReference = v17;
 
     v19 = [EDColorReference alloc];
     v20 = objc_loadWeakRetained(&v14->super.mResources);
-    v21 = [(EDColorReference *)v19 initWithColor:v10 resources:v20];
+    v21 = [(EDColorReference *)v19 initWithColor:colorCopy resources:v20];
     mForeColorReference = v14->mForeColorReference;
     v14->mForeColorReference = v21;
   }
@@ -102,39 +102,39 @@
   return v14;
 }
 
-+ (id)patternFillWithType:(int)a3 resources:(id)a4
++ (id)patternFillWithType:(int)type resources:(id)resources
 {
-  v5 = [a1 fillWithResources:a4];
-  v5[4] = a3;
+  v5 = [self fillWithResources:resources];
+  v5[4] = type;
 
   return v5;
 }
 
-+ (id)patternFillWithType:(int)a3 foreColor:(id)a4 resources:(id)a5
++ (id)patternFillWithType:(int)type foreColor:(id)color resources:(id)resources
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = [a1 patternFillWithType:v6 resources:a5];
-  [v9 setForeColor:v8];
+  v6 = *&type;
+  colorCopy = color;
+  v9 = [self patternFillWithType:v6 resources:resources];
+  [v9 setForeColor:colorCopy];
 
   return v9;
 }
 
-+ (id)patternFillWithType:(int)a3 foreColor:(id)a4 backColor:(id)a5 resources:(id)a6
++ (id)patternFillWithType:(int)type foreColor:(id)color backColor:(id)backColor resources:(id)resources
 {
-  v8 = *&a3;
-  v10 = a5;
-  v11 = [a1 patternFillWithType:v8 foreColor:a4 resources:a6];
-  [v11 setBackColor:v10];
+  v8 = *&type;
+  backColorCopy = backColor;
+  v11 = [self patternFillWithType:v8 foreColor:color resources:resources];
+  [v11 setBackColor:backColorCopy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = EDPatternFill;
-  v4 = [(EDFill *)&v10 copyWithZone:a3];
+  v4 = [(EDFill *)&v10 copyWithZone:zone];
   v5 = [(EDColorReference *)self->mBackColorReference copy];
   v6 = v4[3];
   v4[3] = v5;
@@ -146,27 +146,27 @@
   return v4;
 }
 
-- (BOOL)isEqualToPatternFill:(id)a3
+- (BOOL)isEqualToPatternFill:(id)fill
 {
-  v4 = a3;
+  fillCopy = fill;
   mForeColorReference = self->mForeColorReference;
-  v7 = (mForeColorReference == v4[4] || [(EDColorReference *)mForeColorReference isEqual:?]) && ((mBackColorReference = self->mBackColorReference, mBackColorReference == v4[3]) || [(EDColorReference *)mBackColorReference isEqual:?]) && self->mType == *(v4 + 4);
+  v7 = (mForeColorReference == fillCopy[4] || [(EDColorReference *)mForeColorReference isEqual:?]) && ((mBackColorReference = self->mBackColorReference, mBackColorReference == fillCopy[3]) || [(EDColorReference *)mBackColorReference isEqual:?]) && self->mType == *(fillCopy + 4);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDPatternFill *)self isEqualToPatternFill:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDPatternFill *)self isEqualToPatternFill:v5];
   }
 
   return v6;
@@ -188,30 +188,30 @@
   return v2;
 }
 
-- (EDPatternFill)initWithType:(int)a3 foreColorReference:(id)a4 backColorReference:(id)a5 resources:(id)a6
+- (EDPatternFill)initWithType:(int)type foreColorReference:(id)reference backColorReference:(id)colorReference resources:(id)resources
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(EDPatternFill *)self initWithResources:v12];
+  referenceCopy = reference;
+  colorReferenceCopy = colorReference;
+  resourcesCopy = resources;
+  v13 = [(EDPatternFill *)self initWithResources:resourcesCopy];
   v14 = v13;
   if (v13)
   {
-    v13->mType = a3;
-    [(EDPatternFill *)v13 setBackColorReference:v11];
-    [(EDPatternFill *)v14 setForeColorReference:v10];
+    v13->mType = type;
+    [(EDPatternFill *)v13 setBackColorReference:colorReferenceCopy];
+    [(EDPatternFill *)v14 setForeColorReference:referenceCopy];
   }
 
   return v14;
 }
 
-+ (id)patternFillWithType:(int)a3 foreColorReference:(id)a4 backColorReference:(id)a5 resources:(id)a6
++ (id)patternFillWithType:(int)type foreColorReference:(id)reference backColorReference:(id)colorReference resources:(id)resources
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[a1 alloc] initWithType:v8 foreColorReference:v10 backColorReference:v11 resources:v12];
+  v8 = *&type;
+  referenceCopy = reference;
+  colorReferenceCopy = colorReference;
+  resourcesCopy = resources;
+  v13 = [[self alloc] initWithType:v8 foreColorReference:referenceCopy backColorReference:colorReferenceCopy resources:resourcesCopy];
 
   return v13;
 }

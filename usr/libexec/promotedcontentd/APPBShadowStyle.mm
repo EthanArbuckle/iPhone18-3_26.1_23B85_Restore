@@ -1,15 +1,15 @@
 @interface APPBShadowStyle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)offsetAtIndex:(unint64_t)a3;
+- (int)offsetAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRadius:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRadius:(BOOL)radius;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBShadowStyle
@@ -22,9 +22,9 @@
   [(APPBShadowStyle *)&v3 dealloc];
 }
 
-- (void)setHasRadius:(BOOL)a3
+- (void)setHasRadius:(BOOL)radius
 {
-  if (a3)
+  if (radius)
   {
     v3 = 2;
   }
@@ -37,18 +37,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)offsetAtIndex:(unint64_t)a3
+- (int)offsetAtIndex:(unint64_t)index
 {
   p_offsets = &self->_offsets;
   count = self->_offsets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_offsets->list[a3];
+  return p_offsets->list[index];
 }
 
 - (id)description
@@ -56,8 +56,8 @@
   v7.receiver = self;
   v7.super_class = APPBShadowStyle;
   v3 = [(APPBShadowStyle *)&v7 description];
-  v4 = [(APPBShadowStyle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBShadowStyle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -68,8 +68,8 @@
   color = self->_color;
   if (color)
   {
-    v6 = [(APPBColor *)color dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"color"];
+    dictionaryRepresentation = [(APPBColor *)color dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"color"];
   }
 
   has = self->_has;
@@ -95,28 +95,28 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_color)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   p_offsets = &self->_offsets;
@@ -126,7 +126,7 @@
     do
     {
       PBDataWriterWriteInt32Field();
-      v4 = v8;
+      toCopy = v8;
       ++v7;
     }
 
@@ -134,37 +134,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_color)
   {
-    [v4 setColor:?];
-    v4 = v9;
+    [toCopy setColor:?];
+    toCopy = v9;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 10) = LODWORD(self->_opacity);
-    *(v4 + 48) |= 1u;
+    *(toCopy + 10) = LODWORD(self->_opacity);
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 11) = LODWORD(self->_radius);
-    *(v4 + 48) |= 2u;
+    *(toCopy + 11) = LODWORD(self->_radius);
+    *(toCopy + 48) |= 2u;
   }
 
   if ([(APPBShadowStyle *)self offsetsCount])
   {
     [v9 clearOffsets];
-    v6 = [(APPBShadowStyle *)self offsetsCount];
-    if (v6)
+    offsetsCount = [(APPBShadowStyle *)self offsetsCount];
+    if (offsetsCount)
     {
-      v7 = v6;
+      v7 = offsetsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addOffset:{-[APPBShadowStyle offsetAtIndex:](self, "offsetAtIndex:", i)}];
@@ -173,10 +173,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBColor *)self->_color copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBColor *)self->_color copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -198,16 +198,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   color = self->_color;
-  if (color | *(v4 + 4))
+  if (color | *(equalCopy + 4))
   {
     if (![(APPBColor *)color isEqual:?])
     {
@@ -217,13 +217,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_opacity != *(v4 + 10))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_opacity != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     IsEqual = 0;
@@ -232,13 +232,13 @@ LABEL_15:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_radius != *(v4 + 11))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_radius != *(equalCopy + 11))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_15;
   }
@@ -322,12 +322,12 @@ LABEL_16:
   return v6 ^ v3 ^ v10 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   color = self->_color;
-  v6 = *(v4 + 4);
-  v11 = v4;
+  v6 = *(fromCopy + 4);
+  v11 = fromCopy;
   if (color)
   {
     if (!v6)
@@ -348,26 +348,26 @@ LABEL_16:
     [(APPBShadowStyle *)self setColor:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if (v7)
   {
-    self->_opacity = *(v4 + 10);
+    self->_opacity = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_radius = *(v4 + 11);
+    self->_radius = *(fromCopy + 11);
     *&self->_has |= 2u;
   }
 
-  v8 = [v4 offsetsCount];
-  if (v8)
+  offsetsCount = [fromCopy offsetsCount];
+  if (offsetsCount)
   {
-    v9 = v8;
+    v9 = offsetsCount;
     for (i = 0; i != v9; ++i)
     {
       -[APPBShadowStyle addOffset:](self, "addOffset:", [v11 offsetAtIndex:i]);

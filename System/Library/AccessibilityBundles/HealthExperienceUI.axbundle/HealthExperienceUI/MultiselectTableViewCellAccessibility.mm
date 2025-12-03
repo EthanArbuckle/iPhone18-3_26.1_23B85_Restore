@@ -1,18 +1,18 @@
 @interface MultiselectTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation MultiselectTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthExperienceUI.MultiselectTableViewCell" hasSwiftField:@"accessoryIsSelected" withSwiftType:"Bool"];
-  [v3 validateClass:@"HealthExperienceUI.MultiselectTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthExperienceUI.MultiselectTableViewCell" hasSwiftField:@"accessoryIsSelected" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"HealthExperienceUI.MultiselectTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

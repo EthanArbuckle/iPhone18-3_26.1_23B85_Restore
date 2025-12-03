@@ -1,7 +1,7 @@
 @interface PPSClientPermissions
-+ (BOOL)checkWritePermissionForSubsystem:(id)a3 category:(id)a4;
++ (BOOL)checkWritePermissionForSubsystem:(id)subsystem category:(id)category;
 + (BOOL)hasWriteEntitlements;
-+ (BOOL)overridePermissionForSubsystem:(id)a3 category:(id)a4;
++ (BOOL)overridePermissionForSubsystem:(id)subsystem category:(id)category;
 + (id)getClientPermissions;
 + (id)getPrivacyClientPermissions;
 + (id)getTestClientPermissions;
@@ -10,24 +10,24 @@
 
 @implementation PPSClientPermissions
 
-+ (BOOL)checkWritePermissionForSubsystem:(id)a3 category:(id)a4
++ (BOOL)checkWritePermissionForSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  v7 = categoryCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (subsystemCopy && categoryCopy)
   {
     if (+[PPSClientPermissions hasWriteEntitlements])
     {
-      if ([PPSClientPermissions overridePermissionForSubsystem:v5 category:v7])
+      if ([PPSClientPermissions overridePermissionForSubsystem:subsystemCopy category:v7])
       {
         v9 = sub_10000117C();
         v8 = 1;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v15 = 138412546;
-          v16 = v5;
+          v16 = subsystemCopy;
           v17 = 2112;
           v18 = v7;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "overridePermissionForSubsystem %@ category %@", &v15, 0x16u);
@@ -37,11 +37,11 @@
       }
 
       v9 = +[PPSClientPermissions getClientPermissions];
-      v10 = [v9 objectForKeyedSubscript:v5];
+      v10 = [v9 objectForKeyedSubscript:subsystemCopy];
 
       if (v10)
       {
-        v11 = [PPSClientInterface getMetadataForSubsystem:v5 category:v7];
+        v11 = [PPSClientInterface getMetadataForSubsystem:subsystemCopy category:v7];
         v12 = [v11 count];
         v8 = v12 != 0;
         if (v12)
@@ -56,7 +56,7 @@ LABEL_17:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v15 = 138412546;
-          v16 = v5;
+          v16 = subsystemCopy;
           v17 = 2112;
           v18 = v7;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Missing metric definition for subsystem: %@ category: %@", &v15, 0x16u);
@@ -69,7 +69,7 @@ LABEL_17:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v15 = 138412546;
-          v16 = v5;
+          v16 = subsystemCopy;
           v17 = 2112;
           v18 = v7;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Subsystem/Category: %@::%@ is not registered", &v15, 0x16u);
@@ -124,25 +124,25 @@ LABEL_18:
   return v3;
 }
 
-+ (BOOL)overridePermissionForSubsystem:(id)a3 category:(id)a4
++ (BOOL)overridePermissionForSubsystem:(id)subsystem category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   if (os_variant_has_internal_diagnostics())
   {
-    v8 = [a1 userDefaults];
-    v9 = [v8 stringForKey:@"OverridePermissions"];
+    userDefaults = [self userDefaults];
+    v9 = [userDefaults stringForKey:@"OverridePermissions"];
 
     if (v9)
     {
-      v10 = [NSString stringWithFormat:@"%@::%@", v6, v7];
+      categoryCopy = [NSString stringWithFormat:@"%@::%@", subsystemCopy, categoryCopy];
       v11 = sub_10000117C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000018AC(v10, v9, v11);
+        sub_1000018AC(categoryCopy, v9, v11);
       }
 
-      v12 = [v9 isEqualToString:v10];
+      v12 = [v9 isEqualToString:categoryCopy];
     }
 
     else
@@ -163,20 +163,20 @@ LABEL_18:
 {
   if (os_variant_has_internal_diagnostics())
   {
-    v3 = +[NSMutableDictionary dictionary];
-    v4 = [a1 getPrivacyClientPermissions];
-    [v3 addEntriesFromDictionary:v4];
+    getPrivacyClientPermissions2 = +[NSMutableDictionary dictionary];
+    getPrivacyClientPermissions = [self getPrivacyClientPermissions];
+    [getPrivacyClientPermissions2 addEntriesFromDictionary:getPrivacyClientPermissions];
 
-    v5 = [a1 getTestClientPermissions];
-    [v3 addEntriesFromDictionary:v5];
+    getTestClientPermissions = [self getTestClientPermissions];
+    [getPrivacyClientPermissions2 addEntriesFromDictionary:getTestClientPermissions];
   }
 
   else
   {
-    v3 = [a1 getPrivacyClientPermissions];
+    getPrivacyClientPermissions2 = [self getPrivacyClientPermissions];
   }
 
-  return v3;
+  return getPrivacyClientPermissions2;
 }
 
 + (id)getPrivacyClientPermissions

@@ -1,18 +1,18 @@
 @interface OBPrivacyLinkController_iOS
-- (OBPrivacyLinkController_iOS)initWithBundleIdentifiers:(id)a3;
-- (OBPrivacyLinkController_iOS)initWithPrivacyBundle:(id)a3;
+- (OBPrivacyLinkController_iOS)initWithBundleIdentifiers:(id)identifiers;
+- (OBPrivacyLinkController_iOS)initWithPrivacyBundle:(id)bundle;
 - (void)loadView;
 - (void)processBundlesForTitleInformation;
-- (void)setCustomTintColor:(id)a3;
+- (void)setCustomTintColor:(id)color;
 @end
 
 @implementation OBPrivacyLinkController_iOS
 
-- (OBPrivacyLinkController_iOS)initWithPrivacyBundle:(id)a3
+- (OBPrivacyLinkController_iOS)initWithPrivacyBundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = OBPrivacyLinkController_iOS;
-  v3 = [(OBPrivacyLinkController *)&v7 initWithPrivacyBundle:a3];
+  v3 = [(OBPrivacyLinkController *)&v7 initWithPrivacyBundle:bundle];
   if (v3)
   {
     v4 = +[OBUtilities mainScreen];
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (OBPrivacyLinkController_iOS)initWithBundleIdentifiers:(id)a3
+- (OBPrivacyLinkController_iOS)initWithBundleIdentifiers:(id)identifiers
 {
   v7.receiver = self;
   v7.super_class = OBPrivacyLinkController_iOS;
-  v3 = [(OBPrivacyLinkController *)&v7 initWithBundleIdentifiers:a3];
+  v3 = [(OBPrivacyLinkController *)&v7 initWithBundleIdentifiers:identifiers];
   if (v3)
   {
     v4 = +[OBUtilities mainScreen];
@@ -55,8 +55,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v3 = [(OBPrivacyLinkController *)self bundles];
-    v4 = [v3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    bundles = [(OBPrivacyLinkController *)self bundles];
+    v4 = [bundles countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v4)
     {
       v5 = v4;
@@ -67,21 +67,21 @@
         {
           if (*v40 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(bundles);
           }
 
-          v8 = [*(*(&v39 + 1) + 8 * i) privacyFlow];
-          v9 = [v8 _iconSymbolName];
+          privacyFlow = [*(*(&v39 + 1) + 8 * i) privacyFlow];
+          _iconSymbolName = [privacyFlow _iconSymbolName];
 
-          if (v9)
+          if (_iconSymbolName)
           {
-            v10 = [v8 _iconSymbolName];
+            _iconSymbolName2 = [privacyFlow _iconSymbolName];
 
             goto LABEL_13;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v5 = [bundles countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v5)
         {
           continue;
@@ -91,31 +91,31 @@
       }
     }
 
-    v10 = 0;
+    _iconSymbolName2 = 0;
 LABEL_13:
   }
 
   else
   {
-    v10 = 0;
+    _iconSymbolName2 = 0;
   }
 
   [(OBPrivacyLinkController_iOS *)self processBundlesForTitleInformation];
-  v11 = [(OBPrivacyLinkController *)self bundles];
-  if ([v11 count] < 2 || self->bundleTitlesMatch)
+  bundles2 = [(OBPrivacyLinkController *)self bundles];
+  if ([bundles2 count] < 2 || self->bundleTitlesMatch)
   {
   }
 
   else
   {
-    v23 = [(OBPrivacyLinkController *)self bundle];
-    v24 = [v23 isLinkBundle];
+    bundle = [(OBPrivacyLinkController *)self bundle];
+    isLinkBundle = [bundle isLinkBundle];
 
-    if ((v24 & 1) == 0)
+    if ((isLinkBundle & 1) == 0)
     {
       bundlesIncludePII = self->bundlesIncludePII;
-      v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v13 = [(OBPrivacyLinkController *)self displayLanguage];
+      flow = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+      displayLanguage = [(OBPrivacyLinkController *)self displayLanguage];
       if (bundlesIncludePII)
       {
         v26 = @"PRIVACY_LINK_MULTIPLE_PII";
@@ -126,26 +126,26 @@ LABEL_13:
         v26 = @"PRIVACY_LINK_MULTIPLE";
       }
 
-      v14 = [OBUtilities localizedString:v26 forTable:@"Localizable" inBundle:v12 forLanguage:v13];
+      v14 = [OBUtilities localizedString:v26 forTable:@"Localizable" inBundle:flow forLanguage:displayLanguage];
       goto LABEL_18;
     }
   }
 
-  v12 = [(OBPrivacyLinkController *)self flow];
-  v13 = [(OBPrivacyLinkController *)self displayLanguage];
-  v14 = [v12 localizedButtonTitleForLanguage:v13 preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
+  flow = [(OBPrivacyLinkController *)self flow];
+  displayLanguage = [(OBPrivacyLinkController *)self displayLanguage];
+  v14 = [flow localizedButtonTitleForLanguage:displayLanguage preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
 LABEL_18:
   v15 = v14;
 
   if ([(OBPrivacyLinkController *)self displayIcon]&& [(OBPrivacyLinkController *)self displayCaptionText])
   {
-    v16 = [(OBPrivacyLinkController *)self flow];
-    v17 = [(OBPrivacyLinkController *)self displayLanguage];
-    v18 = [v16 localizedButtonCaptionForLanguage:v17 preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
+    flow2 = [(OBPrivacyLinkController *)self flow];
+    displayLanguage2 = [(OBPrivacyLinkController *)self displayLanguage];
+    v18 = [flow2 localizedButtonCaptionForLanguage:displayLanguage2 preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
 
-    v19 = [(OBPrivacyLinkController *)self flow];
-    v20 = [(OBPrivacyLinkController *)self displayLanguage];
-    v21 = [v19 localizedButtonCaptionSymbolNameForLanguage:v20 preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
+    flow3 = [(OBPrivacyLinkController *)self flow];
+    displayLanguage3 = [(OBPrivacyLinkController *)self displayLanguage];
+    v21 = [flow3 localizedButtonCaptionSymbolNameForLanguage:displayLanguage3 preferredDeviceType:{-[OBPrivacyLinkController displayDeviceType](self, "displayDeviceType")}];
 
     if (v21)
     {
@@ -165,27 +165,27 @@ LABEL_18:
   }
 
   v27 = [OBPrivacyLinkButton alloc];
-  v28 = [(OBPrivacyLinkController *)self displayLargeIcon];
-  v29 = [(OBPrivacyLinkController *)self displayLanguage];
-  v30 = [(OBPrivacyLinkButton *)v27 initWithCaption:v18 captionAttachmentImage:v22 buttonText:v15 symbolName:v10 useLargeIcon:v28 displayLanguage:v29];
+  displayLargeIcon = [(OBPrivacyLinkController *)self displayLargeIcon];
+  displayLanguage4 = [(OBPrivacyLinkController *)self displayLanguage];
+  v30 = [(OBPrivacyLinkButton *)v27 initWithCaption:v18 captionAttachmentImage:v22 buttonText:v15 symbolName:_iconSymbolName2 useLargeIcon:displayLargeIcon displayLanguage:displayLanguage4];
   linkButton = self->_linkButton;
   self->_linkButton = v30;
 
   [(OBPrivacyLinkButton *)self->_linkButton addTarget:self action:sel__linkPressed forControlEvents:0x2000];
   v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v33 = [(OBPrivacyLinkController *)self displayLanguage];
-  v34 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v32 forLanguage:v33];
-  v35 = [(OBPrivacyLinkButton *)self->_linkButton iconView];
-  [v35 setAccessibilityLabel:v34];
+  displayLanguage5 = [(OBPrivacyLinkController *)self displayLanguage];
+  v34 = [OBUtilities localizedString:@"PRIVACY_ICON_DESCRIPTION" forTable:@"Localizable" inBundle:v32 forLanguage:displayLanguage5];
+  iconView = [(OBPrivacyLinkButton *)self->_linkButton iconView];
+  [iconView setAccessibilityLabel:v34];
 
   [(OBPrivacyLinkButton *)self->_linkButton setDisplayInfoIcon:[(OBPrivacyLinkController *)self displayInfoIcon]];
   [(OBPrivacyLinkButton *)self->_linkButton setUnderlineLinks:[(OBPrivacyLinkController *)self underlineLinks]];
-  v36 = [(OBPrivacyLinkController *)self customTintColor];
+  customTintColor = [(OBPrivacyLinkController *)self customTintColor];
 
-  if (v36)
+  if (customTintColor)
   {
-    v37 = [(OBPrivacyLinkController *)self customTintColor];
-    [(OBPrivacyLinkButton *)self->_linkButton setTintColor:v37];
+    customTintColor2 = [(OBPrivacyLinkController *)self customTintColor];
+    [(OBPrivacyLinkButton *)self->_linkButton setTintColor:customTintColor2];
   }
 
   [(OBPrivacyLinkController_iOS *)self setView:self->_linkButton];
@@ -202,8 +202,8 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(OBPrivacyLinkController *)self bundles];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  bundles = [(OBPrivacyLinkController *)self bundles];
+  v4 = [bundles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -215,22 +215,22 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bundles);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) privacyFlow];
-        v10 = [v9 localizedButtonTitle];
-        v11 = v10;
+        privacyFlow = [*(*(&v13 + 1) + 8 * i) privacyFlow];
+        localizedButtonTitle = [privacyFlow localizedButtonTitle];
+        v11 = localizedButtonTitle;
         if (v6)
         {
-          if ([v10 localizedStandardCompare:v6])
+          if ([localizedButtonTitle localizedStandardCompare:v6])
           {
             self->bundleTitlesMatch = 0;
           }
 
           if (!self->bundlesIncludePII)
           {
-            self->bundlesIncludePII = [v9 isPersonallyIdentifiable];
+            self->bundlesIncludePII = [privacyFlow isPersonallyIdentifiable];
           }
         }
 
@@ -238,14 +238,14 @@ LABEL_18:
         {
           if (!self->bundlesIncludePII)
           {
-            self->bundlesIncludePII = [v9 isPersonallyIdentifiable];
+            self->bundlesIncludePII = [privacyFlow isPersonallyIdentifiable];
           }
 
           v6 = v11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [bundles countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -259,13 +259,13 @@ LABEL_18:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCustomTintColor:(id)a3
+- (void)setCustomTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = OBPrivacyLinkController_iOS;
-  v4 = a3;
-  [(OBPrivacyLinkController *)&v5 setCustomTintColor:v4];
-  [(OBPrivacyLinkButton *)self->_linkButton setTintColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(OBPrivacyLinkController *)&v5 setCustomTintColor:colorCopy];
+  [(OBPrivacyLinkButton *)self->_linkButton setTintColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 @end

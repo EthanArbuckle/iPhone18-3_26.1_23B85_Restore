@@ -1,5 +1,5 @@
 @interface PFCloudKitSizeMetric
-- (PFCloudKitSizeMetric)initWithContainerIdentifier:(id)a3;
+- (PFCloudKitSizeMetric)initWithContainerIdentifier:(id)identifier;
 - (id)createPayload;
 - (uint64_t)addByteSize:(uint64_t)result;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation PFCloudKitSizeMetric
 
-- (PFCloudKitSizeMetric)initWithContainerIdentifier:(id)a3
+- (PFCloudKitSizeMetric)initWithContainerIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = PFCloudKitSizeMetric;
-  v3 = [(PFCloudKitBaseMetric *)&v5 initWithContainerIdentifier:a3];
+  v3 = [(PFCloudKitBaseMetric *)&v5 initWithContainerIdentifier:identifier];
   if (v3)
   {
     v3->_sizeInBytes = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
@@ -32,9 +32,9 @@
   if (result)
   {
     v3 = result;
-    v4 = [*(result + 24) unsignedIntegerValue];
+    unsignedIntegerValue = [*(result + 24) unsignedIntegerValue];
 
-    result = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v4 + a2];
+    result = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:unsignedIntegerValue + a2];
     *(v3 + 24) = result;
   }
 
@@ -45,15 +45,15 @@
 {
   v6.receiver = self;
   v6.super_class = PFCloudKitSizeMetric;
-  v3 = [(PFCloudKitBaseMetric *)&v6 createPayload];
+  createPayload = [(PFCloudKitBaseMetric *)&v6 createPayload];
   sizeInBytes = self->_sizeInBytes;
   if (!sizeInBytes)
   {
     sizeInBytes = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v3 setValue:sizeInBytes forKey:@"sizeInBytes"];
-  return v3;
+  [createPayload setValue:sizeInBytes forKey:@"sizeInBytes"];
+  return createPayload;
 }
 
 @end

@@ -20,8 +20,8 @@
 
 + (BOOL)isTobleroneEnabled
 {
-  v2 = [MEMORY[0x1E699C0A8] shared];
-  v3 = [v2 stateForFeature:@"Toblerone" domain:@"AppleAccountUI"];
+  mEMORY[0x1E699C0A8] = [MEMORY[0x1E699C0A8] shared];
+  v3 = [mEMORY[0x1E699C0A8] stateForFeature:@"Toblerone" domain:@"AppleAccountUI"];
 
   if (v3)
   {
@@ -51,8 +51,8 @@
 + (BOOL)isLCInviteAcceptanceEnabled
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"inheritanceCfgs"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"inheritanceCfgs"];
 
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -63,16 +63,16 @@
   }
 
   v5 = [v3 objectForKeyedSubscript:@"inviteAcceptance"];
-  v6 = [MEMORY[0x1E698B950] isLCInviteAcceptanceEnabled];
+  isLCInviteAcceptanceEnabled = [MEMORY[0x1E698B950] isLCInviteAcceptanceEnabled];
   v7 = _AAUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 67109120;
-    LODWORD(v12) = v6;
+    LODWORD(v12) = isLCInviteAcceptanceEnabled;
     _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "LCInvite: isEnabled in Defaults: %{BOOL}d", &v11, 8u);
   }
 
-  if (v6)
+  if (isLCInviteAcceptanceEnabled)
   {
     LOBYTE(v8) = 1;
   }
@@ -230,7 +230,7 @@
 
   if (v3)
   {
-    return [a1 isSolariumEnabled];
+    return [self isSolariumEnabled];
   }
 
   else

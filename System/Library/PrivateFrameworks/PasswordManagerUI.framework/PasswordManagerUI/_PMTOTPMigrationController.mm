@@ -2,11 +2,11 @@
 - (NSArray)totpGenerators;
 - (UIViewController)viewController;
 - (_TtC17PasswordManagerUI26_PMTOTPMigrationController)init;
-- (_TtC17PasswordManagerUI26_PMTOTPMigrationController)initWithMigrationURL:(id)a3 delegate:(id)a4;
+- (_TtC17PasswordManagerUI26_PMTOTPMigrationController)initWithMigrationURL:(id)l delegate:(id)delegate;
 - (_TtP17PasswordManagerUI34_PMTOTPMigrationControllerDelegate_)delegate;
 - (int64_t)numberOfCodes;
-- (void)addGenerator:(WBSTOTPGenerator *)a3 toSavedAccount:(WBSSavedAccount *)a4 completionHandler:(id)a5;
-- (void)setViewController:(id)a3;
+- (void)addGenerator:(WBSTOTPGenerator *)generator toSavedAccount:(WBSSavedAccount *)account completionHandler:(id)handler;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation _PMTOTPMigrationController
@@ -18,13 +18,13 @@
   return *(self + v3);
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC17PasswordManagerUI26_PMTOTPMigrationController_viewController;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtP17PasswordManagerUI34_PMTOTPMigrationControllerDelegate_)delegate
@@ -35,7 +35,7 @@
   return Strong;
 }
 
-- (_TtC17PasswordManagerUI26_PMTOTPMigrationController)initWithMigrationURL:(id)a3 delegate:(id)a4
+- (_TtC17PasswordManagerUI26_PMTOTPMigrationController)initWithMigrationURL:(id)l delegate:(id)delegate
 {
   v5 = sub_21CB80BE4();
   v6 = *(*(v5 - 8) + 64);
@@ -43,19 +43,19 @@
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB80B94();
   swift_unknownObjectRetain();
-  return _PMTOTPMigrationController.init(migrationURL:delegate:)(v8, a4);
+  return _PMTOTPMigrationController.init(migrationURL:delegate:)(v8, delegate);
 }
 
-- (void)addGenerator:(WBSTOTPGenerator *)a3 toSavedAccount:(WBSSavedAccount *)a4 completionHandler:(id)a5
+- (void)addGenerator:(WBSTOTPGenerator *)generator toSavedAccount:(WBSSavedAccount *)account completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CDF1D50, &qword_21CBA0C00);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = generator;
+  v14[3] = account;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_21CB858E4();
@@ -70,9 +70,9 @@
   v17[3] = 0;
   v17[4] = &unk_21CBA0DB8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  generatorCopy = generator;
+  accountCopy = account;
+  selfCopy = self;
   sub_21C963EF4(0, 0, v12, &unk_21CBA0DC0, v17);
 }
 
@@ -81,7 +81,7 @@
   v3 = *(self + OBJC_IVAR____TtC17PasswordManagerUI26_PMTOTPMigrationController_totpMigrationModel);
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_21CB81DB4();
 
   v5 = *(v7 + 16);
@@ -91,7 +91,7 @@
 
 - (NSArray)totpGenerators
 {
-  v2 = self;
+  selfCopy = self;
   sub_21C7B0628();
 
   sub_21C7B1B18();

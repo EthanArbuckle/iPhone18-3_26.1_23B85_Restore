@@ -1,25 +1,25 @@
 @interface SBInCallTransientOverlayPresentationWorkspaceTransaction
-- (SBInCallTransientOverlayPresentationWorkspaceTransaction)initWithTransitionRequest:(id)a3 sourcePresentationSession:(id)a4 analyticsSource:(id)a5;
+- (SBInCallTransientOverlayPresentationWorkspaceTransaction)initWithTransitionRequest:(id)request sourcePresentationSession:(id)session analyticsSource:(id)source;
 - (void)_begin;
-- (void)_performInCallPresentationWithCompletion:(id)a3;
+- (void)_performInCallPresentationWithCompletion:(id)completion;
 @end
 
 @implementation SBInCallTransientOverlayPresentationWorkspaceTransaction
 
-- (SBInCallTransientOverlayPresentationWorkspaceTransaction)initWithTransitionRequest:(id)a3 sourcePresentationSession:(id)a4 analyticsSource:(id)a5
+- (SBInCallTransientOverlayPresentationWorkspaceTransaction)initWithTransitionRequest:(id)request sourcePresentationSession:(id)session analyticsSource:(id)source
 {
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = SBInCallTransientOverlayPresentationWorkspaceTransaction;
-  v11 = [(SBMainWorkspaceTransaction *)&v15 initWithTransitionRequest:a3];
+  v11 = [(SBMainWorkspaceTransaction *)&v15 initWithTransitionRequest:request];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [sourceCopy copy];
     analyticsSource = v11->_analyticsSource;
     v11->_analyticsSource = v12;
 
-    objc_storeStrong(&v11->_sourcePresentationSession, a4);
+    objc_storeStrong(&v11->_sourcePresentationSession, session);
   }
 
   return v11;
@@ -27,8 +27,8 @@
 
 - (void)_begin
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBInCallTransientOverlayPresentationWorkspaceTransaction.m" lineNumber:38 description:@"Source presentation session required."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBInCallTransientOverlayPresentationWorkspaceTransaction.m" lineNumber:38 description:@"Source presentation session required."];
 }
 
 void __66__SBInCallTransientOverlayPresentationWorkspaceTransaction__begin__block_invoke(uint64_t a1, void *a2)
@@ -94,25 +94,25 @@ uint64_t __66__SBInCallTransientOverlayPresentationWorkspaceTransaction__begin__
   return [v3 removeMilestone:@"_SBInCallTransientOverlayPresentationWorkspaceTransactionMilestonePresentation"];
 }
 
-- (void)_performInCallPresentationWithCompletion:(id)a3
+- (void)_performInCallPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 workspace];
+  completionCopy = completion;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
   sourcePresentationSession = self->_sourcePresentationSession;
-  v8 = [v5 transientOverlayContext];
-  v9 = [v8 isAnimated];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  isAnimated = [transientOverlayContext isAnimated];
   analyticsSource = self->_analyticsSource;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __101__SBInCallTransientOverlayPresentationWorkspaceTransaction__performInCallPresentationWithCompletion___block_invoke;
   v13[3] = &unk_2783B8118;
-  v15 = self;
-  v16 = v4;
-  v14 = v6;
-  v11 = v4;
-  v12 = v6;
-  [(SBInCallPresentationSession *)sourcePresentationSession _prepareForTransientOverlayPresentationTransactionWithAnimation:v9 analyticsSource:analyticsSource completion:v13];
+  selfCopy = self;
+  v16 = completionCopy;
+  v14 = workspace;
+  v11 = completionCopy;
+  v12 = workspace;
+  [(SBInCallPresentationSession *)sourcePresentationSession _prepareForTransientOverlayPresentationTransactionWithAnimation:isAnimated analyticsSource:analyticsSource completion:v13];
 }
 
 void __101__SBInCallTransientOverlayPresentationWorkspaceTransaction__performInCallPresentationWithCompletion___block_invoke(id *a1, int a2, void *a3)

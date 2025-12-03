@@ -1,31 +1,31 @@
 @interface FlexLocalDBSongData
 - (BOOL)_validateSongData;
-- (FlexLocalDBSongData)initWithUID:(id)a3 songData:(id)a4 shouldValidate:(BOOL)a5;
+- (FlexLocalDBSongData)initWithUID:(id)d songData:(id)data shouldValidate:(BOOL)validate;
 - (id)_allRequiredKeys;
 @end
 
 @implementation FlexLocalDBSongData
 
-- (FlexLocalDBSongData)initWithUID:(id)a3 songData:(id)a4 shouldValidate:(BOOL)a5
+- (FlexLocalDBSongData)initWithUID:(id)d songData:(id)data shouldValidate:(BOOL)validate
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  validateCopy = validate;
+  dCopy = d;
+  dataCopy = data;
   v32.receiver = self;
   v32.super_class = FlexLocalDBSongData;
   v11 = [(FlexLocalDBSongData *)&v32 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uid, a3);
+    objc_storeStrong(&v11->_uid, d);
     v13 = objc_alloc(MEMORY[0x277CCAD78]);
-    v17 = objc_msgSend_initWithUUIDString_(v13, v14, v9, v15, v16);
+    v17 = objc_msgSend_initWithUUIDString_(v13, v14, dCopy, v15, v16);
     v22 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v18, v19, v20, v21);
     songData = v12->_songData;
     v12->_songData = v22;
 
-    objc_msgSend_addEntriesFromDictionary_(v12->_songData, v24, v10, v25, v26);
-    if (v5 && !objc_msgSend__validateSongData(v12, v27, v28, v29, v30) || !v17)
+    objc_msgSend_addEntriesFromDictionary_(v12->_songData, v24, dataCopy, v25, v26);
+    if (validateCopy && !objc_msgSend__validateSongData(v12, v27, v28, v29, v30) || !v17)
     {
 
       v12 = 0;

@@ -1,8 +1,8 @@
 @interface TSDMovieLayout
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
-- (CGRect)fullReflectionBoundsForRect:(CGRect)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
+- (CGRect)fullReflectionBoundsForRect:(CGRect)rect;
 - (CGRect)fullReflectionFrame;
-- (TSDMovieLayout)initWithInfo:(id)a3;
+- (TSDMovieLayout)initWithInfo:(id)info;
 - (id)computeLayoutGeometry;
 - (id)i_computeWrapPath;
 - (id)layoutGeometryFromInfo;
@@ -12,17 +12,17 @@
 - (void)endDynamicOperation;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)processChangedProperty:(int)a3;
-- (void)takeRotationFromTracker:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)takeRotationFromTracker:(id)tracker;
 @end
 
 @implementation TSDMovieLayout
 
-- (TSDMovieLayout)initWithInfo:(id)a3
+- (TSDMovieLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = TSDMovieLayout;
-  v3 = [(TSDMediaLayout *)&v6 initWithInfo:a3];
+  v3 = [(TSDMediaLayout *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -46,12 +46,12 @@
   [(TSDDrawableLayout *)&v3 dealloc];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDMovieLayout;
   [(TSDMediaLayout *)&v5 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
     [(TSDDrawableLayout *)self invalidateExteriorWrap];
   }
@@ -90,7 +90,7 @@
   return TSUDynamicCast();
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
   v12.receiver = self;
   v12.super_class = TSDMovieLayout;
@@ -99,9 +99,9 @@
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  if (a3)
+  if (tracker)
   {
-    [a3 rotateTransform];
+    [tracker rotateTransform];
   }
 
   else
@@ -112,11 +112,11 @@
   }
 
   [(TSDLayout *)self layoutTransformInInfoSpace:&v6];
-  v5 = [(TSDInfo *)[(TSDLayout *)self info] geometry];
+  geometry = [(TSDInfo *)[(TSDLayout *)self info] geometry];
   v6 = v9;
   v7 = v10;
   v8 = v11;
-  self->mDynamicInfoGeometry = [v5 geometryByAppendingTransform:&v6];
+  self->mDynamicInfoGeometry = [geometry geometryByAppendingTransform:&v6];
   [(TSDLayout *)self invalidatePosition];
 }
 
@@ -141,13 +141,13 @@
   [(TSDMovieLayout *)self p_destroyDynamicCopies];
 }
 
-- (CGRect)fullReflectionBoundsForRect:(CGRect)a3
+- (CGRect)fullReflectionBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -189,7 +189,7 @@
 {
   v35.receiver = self;
   v35.super_class = TSDMovieLayout;
-  v3 = [(TSDLayout *)&v35 computeLayoutGeometry];
+  computeLayoutGeometry = [(TSDLayout *)&v35 computeLayoutGeometry];
   objc_opt_class();
   [(TSDMediaLayout *)self stroke];
   v4 = TSUDynamicCast();
@@ -198,7 +198,7 @@
   {
     if ([v4 isFrame])
     {
-      [v3 size];
+      [computeLayoutGeometry size];
       v5 = TSDRectWithSize();
       v7 = v6;
       v9 = v8;
@@ -208,7 +208,7 @@
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [v3 mutableCopy];
+      v20 = [computeLayoutGeometry mutableCopy];
       [v20 setSize:{v17, v19}];
       if (v20)
       {
@@ -236,8 +236,8 @@
     {
       [v4 width];
       v23 = v22 * 0.5;
-      v21 = [v3 geometryByOutsettingBy:{v23, v23}];
-      [v3 size];
+      v21 = [computeLayoutGeometry geometryByOutsettingBy:{v23, v23}];
+      [computeLayoutGeometry size];
       v24 = TSDRectWithSize();
       v28 = v23;
       v29 = v23;
@@ -249,18 +249,18 @@
 
   else
   {
-    [v3 size];
+    [computeLayoutGeometry size];
     [(TSDMediaLayout *)self setBoundsForStandardKnobs:TSDRectWithSize()];
-    v21 = v3;
+    v21 = computeLayoutGeometry;
     if (!v4)
     {
-      return v3;
+      return computeLayoutGeometry;
     }
   }
 
   if ([v4 isFrame])
   {
-    [v3 size];
+    [computeLayoutGeometry size];
     [v4 coverageRectWithoutAdornment:TSDRectWithSize()];
     -[TSDMediaLayout setShouldRenderFrameStroke:](self, "setShouldRenderFrameStroke:", [v4 shouldRenderForSizeIncludingCoverage:{v30, v31}]);
   }
@@ -268,15 +268,15 @@
   return v21;
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v10, 0, sizeof(v10));
-  v5 = [(TSDAbstractLayout *)self geometry];
-  if (v5)
+  geometry = [(TSDAbstractLayout *)self geometry];
+  if (geometry)
   {
-    [(TSDLayoutGeometry *)v5 fullTransform];
-    if (!v3)
+    [(TSDLayoutGeometry *)geometry fullTransform];
+    if (!rootCopy)
     {
       goto LABEL_10;
     }
@@ -285,7 +285,7 @@
   else
   {
     memset(&v10, 0, sizeof(v10));
-    if (!v3)
+    if (!rootCopy)
     {
       goto LABEL_10;
     }
@@ -293,10 +293,10 @@
 
   if ([(TSDAbstractLayout *)self parent])
   {
-    v6 = [(TSDAbstractLayout *)self parent];
-    if (v6)
+    parent = [(TSDAbstractLayout *)self parent];
+    if (parent)
     {
-      [(TSDAbstractLayout *)v6 transformInRoot];
+      [(TSDAbstractLayout *)parent transformInRoot];
     }
 
     else
@@ -322,9 +322,9 @@ LABEL_10:
 {
   if (self->mDynamicInfoGeometry)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieLayout p_createDynamicCopies]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieLayout.m"), 240, @"expected nil value for '%s'", "mDynamicInfoGeometry"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieLayout.m"), 240, @"expected nil value for '%s'", "mDynamicInfoGeometry"}];
   }
 
   self->mDynamicInfoGeometry = [-[TSDInfo geometry](-[TSDLayout info](self "info")];
@@ -335,9 +335,9 @@ LABEL_10:
   mDynamicInfoGeometry = self->mDynamicInfoGeometry;
   if (!mDynamicInfoGeometry)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMovieLayout p_destroyDynamicCopies]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieLayout.m"), 246, @"invalid nil value for '%s'", "mDynamicInfoGeometry"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMovieLayout.m"), 246, @"invalid nil value for '%s'", "mDynamicInfoGeometry"}];
     mDynamicInfoGeometry = self->mDynamicInfoGeometry;
   }
 

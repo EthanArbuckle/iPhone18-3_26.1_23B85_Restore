@@ -6,8 +6,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isiPad])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v3 = 30;
   }

@@ -7,9 +7,9 @@
 - (BOOL)welcomeScreenShouldShow
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 launchedToTest];
+  launchedToTest = [v3 launchedToTest];
 
-  if (v4)
+  if (launchedToTest)
   {
     return 0;
   }

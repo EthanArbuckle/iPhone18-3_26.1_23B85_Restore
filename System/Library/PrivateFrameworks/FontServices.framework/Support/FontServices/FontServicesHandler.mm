@@ -1,12 +1,12 @@
 @interface FontServicesHandler
-- (FontServicesHandler)initWithFontServivesDaemon:(id)a3;
-- (void)addWebContentProcessConnection:(id)a3;
-- (void)checkin:(id)a3 reply:(id)a4;
-- (void)checkinForFontPicker:(id)a3;
-- (void)checkinForWebKitProcess:(id)a3 reply:(id)a4;
+- (FontServicesHandler)initWithFontServivesDaemon:(id)daemon;
+- (void)addWebContentProcessConnection:(id)connection;
+- (void)checkin:(id)checkin reply:(id)reply;
+- (void)checkinForFontPicker:(id)picker;
+- (void)checkinForWebKitProcess:(id)process reply:(id)reply;
 - (void)dealloc;
-- (void)fontChanged:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (void)fontChanged:(id)changed;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FontServicesHandler
@@ -22,25 +22,25 @@
   [(FontServicesHandler *)&v4 dealloc];
 }
 
-- (FontServicesHandler)initWithFontServivesDaemon:(id)a3
+- (FontServicesHandler)initWithFontServivesDaemon:(id)daemon
 {
-  v5 = a3;
+  daemonCopy = daemon;
   v9.receiver = self;
   v9.super_class = FontServicesHandler;
   v6 = [(FontServicesHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_server, a3);
+    objc_storeStrong(&v6->_server, daemon);
   }
 
   return v7;
 }
 
-- (void)checkin:(id)a3 reply:(id)a4
+- (void)checkin:(id)checkin reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  checkinCopy = checkin;
+  replyCopy = reply;
   v22 = 0u;
   v23 = 0u;
   v8 = +[NSXPCConnection currentConnection];
@@ -65,7 +65,7 @@
   v12 = v21;
   if ([(FontServicesHandler *)self isProcessIdentifierToIgnore:v12])
   {
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -81,7 +81,7 @@
     v20 = v23;
     v18[0] = v22;
     v18[1] = v23;
-    [(FontServicesDaemon *)v14 setupUserInstalledFontsFor:&v19 withCapabilitiesFor:v18 hasEnumeration:hasEnumerationEntitlement hasFontAccess:hasFontAccessEntitlement isFontProvider:isFontProvider processIdentifier:v12 options:v6 compat:&self->_inCompatMode reply:v7];
+    [(FontServicesDaemon *)v14 setupUserInstalledFontsFor:&v19 withCapabilitiesFor:v18 hasEnumeration:hasEnumerationEntitlement hasFontAccess:hasFontAccessEntitlement isFontProvider:isFontProvider processIdentifier:v12 options:checkinCopy compat:&self->_inCompatMode reply:replyCopy];
     FSLog_Debug();
     if (self->_isFontProvider)
     {
@@ -90,9 +90,9 @@
   }
 }
 
-- (void)checkinForFontPicker:(id)a3
+- (void)checkinForFontPicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   if ([(FontServicesDaemon *)self->_server isCurrentConnectionFontPicker])
   {
     v12 = 0u;
@@ -110,7 +110,7 @@
       v13 = 0u;
     }
 
-    v7 = [(FontServicesDaemon *)self->_server mainHandlerQueue];
+    mainHandlerQueue = [(FontServicesDaemon *)self->_server mainHandlerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000A9F4;
@@ -118,29 +118,29 @@
     v8[4] = self;
     v10 = v12;
     v11 = v13;
-    v9 = v4;
-    dispatch_sync(v7, v8);
+    v9 = pickerCopy;
+    dispatch_sync(mainHandlerQueue, v8);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(pickerCopy + 2))(pickerCopy, 0);
   }
 }
 
-- (void)fontChanged:(id)a3
+- (void)fontChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"added"];
-  v61 = [v6 BOOLValue];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:@"added"];
+  bOOLValue = [v6 BOOLValue];
 
-  v7 = [v5 objectForKey:@"kind"];
-  v8 = [v7 intValue];
+  v7 = [userInfo objectForKey:@"kind"];
+  intValue = [v7 intValue];
 
-  v56 = v5;
-  v57 = v4;
-  if (v8)
+  v56 = userInfo;
+  v57 = changedCopy;
+  if (intValue)
   {
     v9 = [(NSXPCConnection *)self->_clientConnection remoteObjectProxyWithErrorHandler:&stru_100018CD8];
     v10 = objc_opt_new();
@@ -149,7 +149,7 @@
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v12 = [v5 objectForKey:@"urls"];
+    v12 = [userInfo objectForKey:@"urls"];
     v13 = [v12 countByEnumeratingWithState:&v65 objects:v78 count:16];
     if (v13)
     {
@@ -169,8 +169,8 @@
           if (v18)
           {
             [v11 addObject:v17];
-            v19 = [v18 path];
-            [v10 addObject:v19];
+            path = [v18 path];
+            [v10 addObject:path];
           }
         }
 
@@ -180,7 +180,7 @@
       while (v14);
     }
 
-    if (v61)
+    if (bOOLValue)
     {
       v20 = +[FSUserFontManager profileFontsInfo];
       v21 = objc_opt_new();
@@ -206,16 +206,16 @@
       [v9 fontAddedInfo:0 addedURLStrings:0 removedURLStrings:v11];
     }
 
-    v5 = v56;
-    v4 = v57;
+    userInfo = v56;
+    changedCopy = v57;
 LABEL_60:
 
     goto LABEL_61;
   }
 
-  if (self->_hasEnumerationEntitlement || self->_isFontProvider || self->_hasFontAccessEntitlement || !(v61 & 1 | !self->_inCompatMode))
+  if (self->_hasEnumerationEntitlement || self->_isFontProvider || self->_hasFontAccessEntitlement || !(bOOLValue & 1 | !self->_inCompatMode))
   {
-    v58 = self;
+    selfCopy = self;
     v55 = objc_opt_new();
     v10 = objc_opt_new();
     v59 = objc_opt_new();
@@ -223,7 +223,7 @@ LABEL_60:
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    obj = [v5 objectForKey:@"urls"];
+    obj = [userInfo objectForKey:@"urls"];
     v25 = [obj countByEnumeratingWithState:&v72 objects:v79 count:16];
     if (!v25)
     {
@@ -232,13 +232,13 @@ LABEL_44:
 
       if ([v10 count])
       {
-        v5 = v56;
-        v4 = v57;
+        userInfo = v56;
+        changedCopy = v57;
         v9 = v55;
-        if (v61)
+        if (bOOLValue)
         {
-          clientConnection = v58->_clientConnection;
-          server = v58->_server;
+          clientConnection = selfCopy->_clientConnection;
+          server = selfCopy->_server;
           if (clientConnection)
           {
             [(NSXPCConnection *)clientConnection auditToken];
@@ -250,18 +250,18 @@ LABEL_44:
             v71 = 0u;
           }
 
-          hasFontAccessEntitlement = v58->_hasFontAccessEntitlement;
-          hasEnumerationEntitlement = v58->_hasEnumerationEntitlement;
-          isFontProvider = v58->_isFontProvider;
-          processIdentifier = v58->_processIdentifier;
+          hasFontAccessEntitlement = selfCopy->_hasFontAccessEntitlement;
+          hasEnumerationEntitlement = selfCopy->_hasEnumerationEntitlement;
+          isFontProvider = selfCopy->_isFontProvider;
+          processIdentifier = selfCopy->_processIdentifier;
           v69 = 0;
           v48 = [(FontServicesDaemon *)server fontInfoForAuditToken:&v70 withFontAccess:hasFontAccessEntitlement enumuration:hasEnumerationEntitlement installation:isFontProvider identifier:processIdentifier andFileFilters:v10 foundFontDirectoryName:&v69];
           v49 = v69;
           [v55 setObject:v48 forKey:@"fontsInfo"];
           if (v49)
           {
-            v50 = v58->_clientConnection;
-            v51 = v58->_server;
+            v50 = selfCopy->_clientConnection;
+            v51 = selfCopy->_server;
             if (v50)
             {
               [(NSXPCConnection *)v50 auditToken];
@@ -290,15 +290,15 @@ LABEL_44:
           v43 = v59;
         }
 
-        v53 = [(NSXPCConnection *)v58->_clientConnection remoteObjectProxyWithErrorHandler:&stru_100018CB8, v54];
+        v53 = [(NSXPCConnection *)selfCopy->_clientConnection remoteObjectProxyWithErrorHandler:&stru_100018CB8, v54];
         [v53 fontAddedInfo:v55 addedURLStrings:v42 removedURLStrings:v43];
       }
 
       else
       {
 
-        v5 = v56;
-        v4 = v57;
+        userInfo = v56;
+        changedCopy = v57;
         v9 = v55;
       }
 
@@ -308,7 +308,7 @@ LABEL_44:
     v26 = v25;
     v24 = 0;
     v27 = *v73;
-    v28 = self;
+    selfCopy2 = self;
 LABEL_19:
     v29 = 0;
     while (1)
@@ -326,40 +326,40 @@ LABEL_19:
         goto LABEL_29;
       }
 
-      v33 = [v31 path];
-      v35 = v33;
-      if (v61)
+      path2 = [v31 path];
+      v35 = path2;
+      if (bOOLValue)
       {
-        if ((sub_10000BAF8(v33, v34) & 1) == 0 && !sub_10000BB04(v35))
+        if ((sub_10000BAF8(path2, v34) & 1) == 0 && !sub_10000BB04(v35))
         {
           v54 = v35;
           FSLog_Error();
           goto LABEL_28;
         }
 
-        if (!v28->_hasEnumerationEntitlement)
+        if (!selfCopy2->_hasEnumerationEntitlement)
         {
-          if (!v28->_isFontProvider)
+          if (!selfCopy2->_isFontProvider)
           {
             goto LABEL_64;
           }
 
           if (!v24)
           {
-            v24 = [FSUserFontManager directoryNameFromIdentifier:v28->_processIdentifier];
+            v24 = [FSUserFontManager directoryNameFromIdentifier:selfCopy2->_processIdentifier];
           }
 
-          v36 = [v32 URLByDeletingLastPathComponent];
-          [v36 lastPathComponent];
+          uRLByDeletingLastPathComponent = [v32 URLByDeletingLastPathComponent];
+          [uRLByDeletingLastPathComponent lastPathComponent];
           v38 = v37 = v24;
 
-          LOBYTE(v36) = [v38 isEqualToString:v37];
+          LOBYTE(uRLByDeletingLastPathComponent) = [v38 isEqualToString:v37];
           v24 = v37;
-          v28 = v58;
-          if ((v36 & 1) == 0)
+          selfCopy2 = selfCopy;
+          if ((uRLByDeletingLastPathComponent & 1) == 0)
           {
 LABEL_64:
-            if (!v28->_hasFontAccessEntitlement || !sub_10000BB04(v35))
+            if (!selfCopy2->_hasFontAccessEntitlement || !sub_10000BB04(v35))
             {
               goto LABEL_28;
             }
@@ -389,27 +389,27 @@ LABEL_29:
 LABEL_61:
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   server = self->_server;
   if (objc_opt_respondsToSelector())
   {
-    [v4 invokeWithTarget:self->_server];
+    [invocationCopy invokeWithTarget:self->_server];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = FontServicesHandler;
-    [(FontServicesHandler *)&v6 forwardInvocation:v4];
+    [(FontServicesHandler *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (void)addWebContentProcessConnection:(id)a3
+- (void)addWebContentProcessConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   if (self->_webcontentProcessConnections)
   {
     v4 = objc_opt_new();
@@ -424,13 +424,13 @@ LABEL_61:
     v6 = 0;
   }
 
-  [(NSMutableArray *)v6 addObject:v7];
+  [(NSMutableArray *)v6 addObject:connectionCopy];
 }
 
-- (void)checkinForWebKitProcess:(id)a3 reply:(id)a4
+- (void)checkinForWebKitProcess:(id)process reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  replyCopy = reply;
   v30 = 0u;
   v31 = 0u;
   v8 = +[NSXPCConnection currentConnection];
@@ -446,7 +446,7 @@ LABEL_61:
     v31 = 0u;
   }
 
-  v10 = [[NSXPCConnection alloc] initWithListenerEndpoint:v6];
+  v10 = [[NSXPCConnection alloc] initWithListenerEndpoint:processCopy];
   [(FontServicesHandler *)self addWebContentProcessConnection:v10];
   objc_initWeak(&location, v10);
   v27[0] = _NSConcreteStackBlock;
@@ -478,7 +478,7 @@ LABEL_61:
   v20 = v16;
   v17 = v12;
   v21 = v17;
-  v18 = v7;
+  v18 = replyCopy;
   v22 = v18;
   [v17 ping:v19];
 

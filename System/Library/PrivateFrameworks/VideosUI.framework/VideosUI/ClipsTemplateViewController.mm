@@ -4,10 +4,10 @@
 - (TVPMediaItem)currentMediaItem;
 - (VUINowPlayingTabControllerDelegate)nowPlayingControllerDelegate;
 - (VUIPlayer)activePlayer;
-- (_TtC8VideosUI27ClipsTemplateViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (_TtC8VideosUI27ClipsTemplateViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
 @end
@@ -30,7 +30,7 @@
 
 - (TVPMediaItem)currentMediaItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3889D5C();
 
   return v3;
@@ -38,7 +38,7 @@
 
 - (VUIPlayer)activePlayer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3889E74();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3D7CDDC();
 
   return v3 & 1;
@@ -54,47 +54,47 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3D7F6B8();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_12();
-  sub_1E3D7F8FC(a4);
+  sub_1E3D7F8FC(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_10_0();
   sub_1E3D7FA50();
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3D7FDBC(v4);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3D7FE48();
 }
 
-- (_TtC8VideosUI27ClipsTemplateViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI27ClipsTemplateViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3D7FFB4();
 }
 

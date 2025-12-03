@@ -1,14 +1,14 @@
 @interface TIKeyboardActivityContext
-+ (id)contextFromState:(unint64_t)a3 toState:(unint64_t)a4;
++ (id)contextFromState:(unint64_t)state toState:(unint64_t)toState;
 @end
 
 @implementation TIKeyboardActivityContext
 
-+ (id)contextFromState:(unint64_t)a3 toState:(unint64_t)a4
++ (id)contextFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setFromState:a3];
-  [v6 setToState:a4];
+  v6 = objc_alloc_init(self);
+  [v6 setFromState:state];
+  [v6 setToState:toState];
 
   return v6;
 }

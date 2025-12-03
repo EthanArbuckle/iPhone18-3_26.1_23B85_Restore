@@ -1,26 +1,26 @@
 @interface WBSPublicKeyCredentialIdentifier
-- (BOOL)isEqual:(id)a3;
-- (WBSPublicKeyCredentialIdentifier)initWithCoder:(id)a3;
-- (WBSPublicKeyCredentialIdentifier)initWithCredentialID:(id)a3 groupID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSPublicKeyCredentialIdentifier)initWithCoder:(id)coder;
+- (WBSPublicKeyCredentialIdentifier)initWithCredentialID:(id)d groupID:(id)iD;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSPublicKeyCredentialIdentifier
 
-- (WBSPublicKeyCredentialIdentifier)initWithCredentialID:(id)a3 groupID:(id)a4
+- (WBSPublicKeyCredentialIdentifier)initWithCredentialID:(id)d groupID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = WBSPublicKeyCredentialIdentifier;
   v8 = [(WBSPublicKeyCredentialIdentifier *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     credentialID = v8->_credentialID;
     v8->_credentialID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     groupID = v8->_groupID;
     v8->_groupID = v11;
 
@@ -30,10 +30,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -43,16 +43,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       groupID = self->_groupID;
-      v7 = [(WBSPublicKeyCredentialIdentifier *)v5 groupID];
-      LODWORD(groupID) = WBSIsEqual(groupID, v7);
+      groupID = [(WBSPublicKeyCredentialIdentifier *)v5 groupID];
+      LODWORD(groupID) = WBSIsEqual(groupID, groupID);
 
       if (groupID)
       {
         credentialID = self->_credentialID;
-        v9 = [(WBSPublicKeyCredentialIdentifier *)v5 credentialID];
-        v10 = WBSIsEqual(credentialID, v9);
+        credentialID = [(WBSPublicKeyCredentialIdentifier *)v5 credentialID];
+        v10 = WBSIsEqual(credentialID, credentialID);
       }
 
       else
@@ -70,22 +70,22 @@
   return v10;
 }
 
-- (WBSPublicKeyCredentialIdentifier)initWithCoder:(id)a3
+- (WBSPublicKeyCredentialIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
 
   v7 = [(WBSPublicKeyCredentialIdentifier *)self initWithCredentialID:v5 groupID:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   credentialID = self->_credentialID;
-  v5 = a3;
-  [v5 encodeObject:credentialID forKey:@"credentialID"];
-  [v5 encodeObject:self->_groupID forKey:@"groupID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:credentialID forKey:@"credentialID"];
+  [coderCopy encodeObject:self->_groupID forKey:@"groupID"];
 }
 
 @end

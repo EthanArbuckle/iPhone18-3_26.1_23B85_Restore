@@ -1,16 +1,16 @@
 @interface TTRISubtaskListAddSubtaskCell
-- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation TTRISubtaskListAddSubtaskCell
 
-- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_21D3149DC(a3, a4, v6);
+  return sub_21D3149DC(style, identifier, v6);
 }
 
-- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore29TTRISubtaskListAddSubtaskCell_isForGroceries) = 0;
   result = sub_21DBFC31C();
@@ -32,7 +32,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D314CCC();
 }
 

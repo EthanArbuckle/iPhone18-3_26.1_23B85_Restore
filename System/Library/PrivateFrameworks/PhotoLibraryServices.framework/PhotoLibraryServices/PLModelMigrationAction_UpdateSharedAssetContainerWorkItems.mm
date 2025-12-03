@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_UpdateSharedAssetContainerWorkItems
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateSharedAssetContainerWorkItems
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc(MEMORY[0x1E695D5E0]);
   v7 = +[PLBackgroundJobWorkItem entityName];
   v8 = [v6 initWithEntityName:v7];
@@ -17,7 +17,7 @@
 
   [v8 setFetchBatchSize:100];
   v29 = 0;
-  v10 = [v5 executeFetchRequest:v8 error:&v29];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v29];
   v11 = v29;
   v12 = v11;
   if (v10)
@@ -54,9 +54,9 @@
       while (v15);
     }
 
-    [PLGlobalKeyValue setGlobalValue:0 forKey:@"LastPersonSyncSourceLibraryPath" managedObjectContext:v5];
+    [PLGlobalKeyValue setGlobalValue:0 forKey:@"LastPersonSyncSourceLibraryPath" managedObjectContext:contextCopy];
     v24 = v12;
-    v19 = [v5 save:&v24];
+    v19 = [contextCopy save:&v24];
     v20 = v24;
 
     if (v19)
@@ -67,7 +67,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (!a4)
+    if (!error)
     {
       v21 = 3;
       goto LABEL_20;
@@ -77,12 +77,12 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v11;
 LABEL_17:
     v22 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = 3;

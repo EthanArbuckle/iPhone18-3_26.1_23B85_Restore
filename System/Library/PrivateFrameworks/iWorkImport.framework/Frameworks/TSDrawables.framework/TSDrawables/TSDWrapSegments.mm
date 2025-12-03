@@ -1,12 +1,12 @@
 @interface TSDWrapSegments
 - (CGRect)bounds;
 - (TSDWrapSegments)init;
-- (TSDWrapSegments)initWithPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)a3;
+- (TSDWrapSegments)initWithPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)transform;
 - (void)dealloc;
-- (void)p_buildSegmentsForPath:(id)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)p_buildSegmentsForPath:(id)path;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSDWrapSegments
@@ -26,22 +26,22 @@
   return result;
 }
 
-- (TSDWrapSegments)initWithPath:(id)a3
+- (TSDWrapSegments)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = TSDWrapSegments;
   v7 = [(TSDWrapSegments *)&v14 init];
   if (v7)
   {
-    if (objc_msgSend_isFlat(v4, v5, v6))
+    if (objc_msgSend_isFlat(pathCopy, v5, v6))
     {
-      v10 = v4;
+      v10 = pathCopy;
     }
 
     else
     {
-      v10 = objc_msgSend_bezierPathByFlatteningPath(v4, v8, v9);
+      v10 = objc_msgSend_bezierPathByFlatteningPath(pathCopy, v8, v9);
     }
 
     v12 = v10;
@@ -64,9 +64,9 @@
   [(TSDWrapSegments *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDWrapSegments, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDWrapSegments, a2, zone);
   v7 = objc_msgSend_init(v4, v5, v6);
   v8 = malloc_type_calloc(self->mSegmentCount, 0x20uLL, 0x1000040E0EAB150uLL);
   *(v7 + 8) = v8;
@@ -91,24 +91,24 @@
   return result;
 }
 
-- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)a3
+- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)transform
 {
-  v4 = objc_msgSend_copy(self, a2, a3);
-  v5 = *&a3->c;
-  v8[0] = *&a3->a;
+  v4 = objc_msgSend_copy(self, a2, transform);
+  v5 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v5;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   objc_msgSend_transformUsingAffineTransform_(v4, v6, v8);
 
   return v4;
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&v21.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v21.a = *&transform->a;
   *&v21.c = v5;
-  *&v21.tx = *&a3->tx;
+  *&v21.tx = *&transform->tx;
   if (!CGAffineTransformIsIdentity(&v21))
   {
     mSegmentCount = self->mSegmentCount;
@@ -121,10 +121,10 @@
       v11 = 2.22507386e-308;
       do
       {
-        v12 = *&a3->c;
-        v13 = *&a3->tx;
-        v14 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1[-1].y), *&a3->a, p_var1[-1].x));
-        v15 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1->y), *&a3->a, p_var1->x));
+        v12 = *&transform->c;
+        v13 = *&transform->tx;
+        v14 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1[-1].y), *&transform->a, p_var1[-1].x));
+        v15 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1->y), *&transform->a, p_var1->x));
         v16 = vdup_n_s32(*&v14.i64[1] < *&v15.i64[1]);
         v17.i64[0] = v16.u32[0];
         v17.i64[1] = v16.u32[1];
@@ -191,11 +191,11 @@
   }
 }
 
-- (void)p_buildSegmentsForPath:(id)a3
+- (void)p_buildSegmentsForPath:(id)path
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ((objc_msgSend_isFlat(v4, v5, v6) & 1) == 0)
+  pathCopy = path;
+  if ((objc_msgSend_isFlat(pathCopy, v5, v6) & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSDWrapSegments p_buildSegmentsForPath:]");
@@ -221,11 +221,11 @@
   self->mBounds.size = v24;
   *p_mSegments = 0;
   self->mSegmentCount = 0;
-  if (objc_msgSend_elementCount(v4, v7, v8) >= 1)
+  if (objc_msgSend_elementCount(pathCopy, v7, v8) >= 1)
   {
-    v27 = objc_msgSend_elementCount(v4, v25, v26);
+    v27 = objc_msgSend_elementCount(pathCopy, v25, v26);
     *p_mSegments = malloc_type_calloc(v27, 0x20uLL, 0x1000040E0EAB150uLL);
-    if (objc_msgSend_elementCount(v4, v28, v29) >= 1)
+    if (objc_msgSend_elementCount(pathCopy, v28, v29) >= 1)
     {
       v31 = 0;
       v32 = 0;
@@ -242,7 +242,7 @@
       v41 = v35;
       while (1)
       {
-        v42 = objc_msgSend_elementAtIndex_associatedPoints_(v4, v30, v33, &v72);
+        v42 = objc_msgSend_elementAtIndex_associatedPoints_(pathCopy, v30, v33, &v72);
         switch(v42)
         {
           case 3:
@@ -430,7 +430,7 @@ LABEL_56:
             goto LABEL_41;
         }
 
-        if (++v33 >= objc_msgSend_elementCount(v4, v43, v44))
+        if (++v33 >= objc_msgSend_elementCount(pathCopy, v43, v44))
         {
           goto LABEL_62;
         }

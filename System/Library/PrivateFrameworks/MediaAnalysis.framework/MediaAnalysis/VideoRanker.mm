@@ -1,5 +1,5 @@
 @interface VideoRanker
-- (VideoRanker)initWithCorpus:(id)a3;
+- (VideoRanker)initWithCorpus:(id)corpus;
 - (id)rankingScores;
 - (int)fit;
 - (int)termAndDocumentFrequencies;
@@ -7,26 +7,26 @@
 
 @implementation VideoRanker
 
-- (VideoRanker)initWithCorpus:(id)a3
+- (VideoRanker)initWithCorpus:(id)corpus
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  corpusCopy = corpus;
+  v6 = corpusCopy;
+  if (corpusCopy && [corpusCopy count])
   {
     v17.receiver = self;
     v17.super_class = VideoRanker;
     v7 = [(VideoRanker *)&v17 init];
-    v8 = v7;
-    if (v7 && (objc_storeStrong(&v7->_corpus, a3), -[NSDictionary allKeys](v8->_corpus, "allKeys"), v9 = objc_claimAutoreleasedReturnValue(), v8->_corpusSize = [v9 count], v9, v10 = objc_alloc_init(MEMORY[0x1E695DF90]), tfs = v8->_tfs, v8->_tfs = v10, tfs, v12 = objc_alloc_init(MEMORY[0x1E695DF90]), maxSegments = v8->_maxSegments, v8->_maxSegments = v12, maxSegments, *&v8->_b = 0x3FC000003F400000, v8->_topK = 20, !-[VideoRanker fit](v8, "fit")))
+    selfCopy = v7;
+    if (v7 && (objc_storeStrong(&v7->_corpus, corpus), -[NSDictionary allKeys](selfCopy->_corpus, "allKeys"), v9 = objc_claimAutoreleasedReturnValue(), selfCopy->_corpusSize = [v9 count], v9, v10 = objc_alloc_init(MEMORY[0x1E695DF90]), tfs = selfCopy->_tfs, selfCopy->_tfs = v10, tfs, v12 = objc_alloc_init(MEMORY[0x1E695DF90]), maxSegments = selfCopy->_maxSegments, selfCopy->_maxSegments = v12, maxSegments, *&selfCopy->_b = 0x3FC000003F400000, selfCopy->_topK = 20, !-[VideoRanker fit](selfCopy, "fit")))
     {
-      if ([(VideoRanker *)v8 termAndDocumentFrequencies])
+      if ([(VideoRanker *)selfCopy termAndDocumentFrequencies])
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = v8;
+        v14 = selfCopy;
       }
     }
 
@@ -41,7 +41,7 @@
   else
   {
     v15 = 0;
-    v8 = self;
+    selfCopy = self;
   }
 
   return v15;
@@ -50,7 +50,7 @@
 - (int)fit
 {
   v56 = *MEMORY[0x1E69E9840];
-  v34 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -133,7 +133,7 @@
           v9 = &unk_1F49BB298;
         }
 
-        [v34 addObject:v9];
+        [array addObject:v9];
         [(NSMutableDictionary *)self->_maxSegments setObject:v7 forKey:v36];
 
         v37 += v35;
@@ -157,9 +157,9 @@
   }
 
   self->_avgDocumentLength = v16 / self->_corpusSize;
-  [v34 sortUsingComparator:&__block_literal_global_90];
+  [array sortUsingComparator:&__block_literal_global_90];
   topK = self->_topK;
-  v20 = [v34 count];
+  v20 = [array count];
   if (topK >= v20)
   {
     v21 = v20;
@@ -171,19 +171,19 @@
   }
 
   self->_topK = v21;
-  v22 = [v34 objectAtIndexedSubscript:v21];
+  v22 = [array objectAtIndexedSubscript:v21];
   [v22 floatValue];
   self->_similarityThreshold = v23;
 
-  v18 = v34;
+  v18 = array;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v24 = [MEMORY[0x1E696AD98] numberWithInt:self->_topK];
     *&v25 = self->_similarityThreshold;
     v26 = [MEMORY[0x1E696AD98] numberWithFloat:v25];
     v27 = MEMORY[0x1E696AD98];
-    v28 = [(NSMutableDictionary *)self->_maxSegments allKeys];
-    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
+    allKeys = [(NSMutableDictionary *)self->_maxSegments allKeys];
+    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(allKeys, "count")}];
     *buf = 138412802;
     v49 = v24;
     v50 = 2112;
@@ -194,7 +194,7 @@
 
     v17 = 0;
 LABEL_25:
-    v18 = v34;
+    v18 = array;
   }
 
   else

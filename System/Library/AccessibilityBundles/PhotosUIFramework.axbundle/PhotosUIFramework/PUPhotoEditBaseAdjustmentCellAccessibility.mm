@@ -1,5 +1,5 @@
 @interface PUPhotoEditBaseAdjustmentCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_isEligibleForFocusInteraction;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,16 +7,16 @@
 
 @implementation PUPhotoEditBaseAdjustmentCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"maxValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"minValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"identityValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUPhotoEditBaseAdjustmentCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_isEligibleForFocusInteraction" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"maxValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"minValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"identityValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditBaseAdjustmentCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_isEligibleForFocusInteraction" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

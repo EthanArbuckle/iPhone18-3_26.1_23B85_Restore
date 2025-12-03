@@ -1,13 +1,13 @@
 @interface PRSharingChoice
 - (PRSharingChoice)init;
-- (PRSharingChoice)initWithQueue:(id)a3;
+- (PRSharingChoice)initWithQueue:(id)queue;
 - (id).cxx_construct;
-- (void)addBluetoothProximityEstimate:(NeighborMeasurements *)a3 currentMachContTime:;
-- (void)addRoseSolutions:(id)a3 currentMachContTime:(double)a4;
+- (void)addBluetoothProximityEstimate:(NeighborMeasurements *)estimate currentMachContTime:;
+- (void)addRoseSolutions:(id)solutions currentMachContTime:(double)time;
 - (void)createEstimators;
-- (void)reportScoresToClientAlways:(BOOL)a3 useUpdatedScoreList:(BOOL)a4 currentMachContTime:(double)a5;
-- (void)updateScoresForTime:(double)a3;
-- (void)updateScoresWithNewMeasurement:(const void *)a3;
+- (void)reportScoresToClientAlways:(BOOL)always useUpdatedScoreList:(BOOL)list currentMachContTime:(double)time;
+- (void)updateScoresForTime:(double)time;
+- (void)updateScoresWithNewMeasurement:(const void *)measurement;
 @end
 
 @implementation PRSharingChoice
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (PRSharingChoice)initWithQueue:(id)a3
+- (PRSharingChoice)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = PRSharingChoice;
   v6 = [(PRSharingChoice *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     *&v7->_useRegionBasedEstimator = 0;
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     scores = v7->_scores;
@@ -63,27 +63,27 @@
   }
 }
 
-- (void)addRoseSolutions:(id)a3 currentMachContTime:(double)a4
+- (void)addRoseSolutions:(id)solutions currentMachContTime:(double)time
 {
-  v62 = a4;
+  timeCopy = time;
   v104 = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v68 = self;
+  solutionsCopy = solutions;
+  selfCopy = self;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
-    *(buf.__r_.__value_.__r.__words + 4) = v62;
+    *(buf.__r_.__value_.__r.__words + 4) = timeCopy;
     _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "addRoseSolutions: current mach continuous time %lf", &buf, 0xCu);
   }
 
   v79[0] = 0;
   v79[1] = 0;
   v78 = v79;
-  v6 = v68->_logger;
+  v6 = selfCopy->_logger;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v63 count];
+    v7 = [solutionsCopy count];
     LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
     *(buf.__r_.__value_.__r.__words + 4) = v7;
     _os_log_impl(&dword_230EB5000, v6, OS_LOG_TYPE_DEFAULT, "PRSharingSession: Got %lu solutions", &buf, 0xCu);
@@ -93,7 +93,7 @@
   v75 = 0u;
   v76 = 0u;
   v74 = 0u;
-  v8 = v63;
+  v8 = solutionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v74 objects:v103 count:16];
   if (v9)
   {
@@ -109,8 +109,8 @@
         }
 
         v12 = *(*(&v74 + 1) + 8 * v11);
-        v13 = [v12 mac_addr];
-        __str.__r_.__value_.__r.__words[0] = v13;
+        mac_addr = [v12 mac_addr];
+        __str.__r_.__value_.__r.__words[0] = mac_addr;
         v14 = v79[0];
         if (!v79[0])
         {
@@ -121,8 +121,8 @@
         do
         {
           v16 = v14[4];
-          v17 = v16 >= v13;
-          v18 = v16 < v13;
+          v17 = v16 >= mac_addr;
+          v18 = v16 < mac_addr;
           if (v17)
           {
             v15 = v14;
@@ -132,7 +132,7 @@
         }
 
         while (v14);
-        if (v15 != v79 && v13 >= v15[4])
+        if (v15 != v79 && mac_addr >= v15[4])
         {
           if ([v12 variant] == 1)
           {
@@ -144,9 +144,9 @@
         else
         {
 LABEL_18:
-          v19 = [v12 variant];
+          variant = [v12 variant];
           buf.__r_.__value_.__r.__words[0] = &__str;
-          *(std::__tree<std::__value_type<unsigned long long,BOOL>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,BOOL>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,BOOL>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&v78, &__str) + 40) = v19 == 1;
+          *(std::__tree<std::__value_type<unsigned long long,BOOL>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,BOOL>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,BOOL>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&v78, &__str) + 40) = variant == 1;
         }
 
         ++v11;
@@ -188,32 +188,32 @@ LABEL_18:
           buf.__r_.__value_.__r.__words[0] = &__str;
           if ((std::__tree<std::__value_type<unsigned long long,BOOL>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,BOOL>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,BOOL>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&v78, &__str)[5] & 1) == 0)
           {
-            v25 = v68->_logger;
+            v25 = selfCopy->_logger;
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v24 mac_addr];
+              mac_addr2 = [v24 mac_addr];
               LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
-              *(buf.__r_.__value_.__r.__words + 4) = v26;
+              *(buf.__r_.__value_.__r.__words + 4) = mac_addr2;
               _os_log_impl(&dword_230EB5000, v25, OS_LOG_TYPE_DEFAULT, "PRSharingSession: Using raw measurement solution for MAC: 0x%016llx", &buf, 0xCu);
             }
           }
 
           if ([v24 variant] == 1)
           {
-            v27 = v68->_logger;
+            v27 = selfCopy->_logger;
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = [v24 mac_addr];
+              mac_addr3 = [v24 mac_addr];
               LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
-              *(buf.__r_.__value_.__r.__words + 4) = v28;
+              *(buf.__r_.__value_.__r.__words + 4) = mac_addr3;
               _os_log_impl(&dword_230EB5000, v27, OS_LOG_TYPE_DEFAULT, "PRSharingSession: Using sensor-fused measurement solution for MAC: 0x%016llx", &buf, 0xCu);
             }
           }
 
-          v29 = v68->_logger;
+          v29 = selfCopy->_logger;
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v24 mac_addr];
+            mac_addr4 = [v24 mac_addr];
             [v24 mach_absolute_time_sec];
             v66 = v31;
             if ([v24 mach_continuous_time_valid])
@@ -262,25 +262,25 @@ LABEL_18:
             v48 = v47;
             [v24 fov_confidence];
             v50 = v49;
-            v51 = [v24 antenna_type];
+            antenna_type = [v24 antenna_type];
             v52 = v22;
             v53 = @"InvalidEnumValue";
-            if (v51 <= 4)
+            if (antenna_type <= 4)
             {
-              v53 = off_2788F40D8[v51];
+              v53 = off_2788F40D8[antenna_type];
             }
 
-            v54 = [(__CFString *)v53 UTF8String];
-            v55 = [v24 soi_rssi_valid];
+            uTF8String = [(__CFString *)v53 UTF8String];
+            soi_rssi_valid = [v24 soi_rssi_valid];
             [v24 soi_rssi_dbm];
             LODWORD(buf.__r_.__value_.__l.__data_) = 134221826;
             v57 = "false";
-            if (v55)
+            if (soi_rssi_valid)
             {
               v57 = "true";
             }
 
-            *(buf.__r_.__value_.__r.__words + 4) = v30;
+            *(buf.__r_.__value_.__r.__words + 4) = mac_addr4;
             WORD2(buf.__r_.__value_.__r.__words[1]) = 2048;
             *(&buf.__r_.__value_.__r.__words[1] + 6) = v66;
             HIWORD(buf.__r_.__value_.__r.__words[2]) = 2080;
@@ -306,7 +306,7 @@ LABEL_18:
             v94 = 2048;
             v95 = v50;
             v96 = 2080;
-            v97 = v54;
+            v97 = uTF8String;
             v98 = 2080;
             v99 = v57;
             v100 = 2048;
@@ -340,7 +340,7 @@ LABEL_18:
           v83[22] = 0;
           *&v83[26] = 3;
           *&v85[8] = 0;
-          [(PRSharingChoice *)v68 updateScoresWithNewMeasurement:&buf];
+          [(PRSharingChoice *)selfCopy updateScoresWithNewMeasurement:&buf];
           if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
           {
             operator delete(buf.__r_.__value_.__l.__data_);
@@ -362,13 +362,13 @@ LABEL_18:
     while (v21);
   }
 
-  [(PRSharingChoice *)v68 reportScoresToClientAlways:0 useUpdatedScoreList:1 currentMachContTime:v62];
+  [(PRSharingChoice *)selfCopy reportScoresToClientAlways:0 useUpdatedScoreList:1 currentMachContTime:timeCopy];
   std::__tree<Region>::destroy(&v78, v79[0]);
 
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBluetoothProximityEstimate:(NeighborMeasurements *)a3 currentMachContTime:
+- (void)addBluetoothProximityEstimate:(NeighborMeasurements *)estimate currentMachContTime:
 {
   v4 = v3;
   v11 = *MEMORY[0x277D85DE8];
@@ -380,31 +380,31 @@ LABEL_18:
     _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "addBluetoothProximityEstimate: current mach continuous time %lf", &v9, 0xCu);
   }
 
-  [(PRSharingChoice *)self updateScoresWithNewMeasurement:a3];
+  [(PRSharingChoice *)self updateScoresWithNewMeasurement:estimate];
   [(PRSharingChoice *)self reportScoresToClientAlways:0 useUpdatedScoreList:1 currentMachContTime:v4];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportScoresToClientAlways:(BOOL)a3 useUpdatedScoreList:(BOOL)a4 currentMachContTime:(double)a5
+- (void)reportScoresToClientAlways:(BOOL)always useUpdatedScoreList:(BOOL)list currentMachContTime:(double)time
 {
   v84[1] = *MEMORY[0x277D85DE8];
-  v77 = a3;
-  if (!a3 && !a4)
+  alwaysCopy = always;
+  if (!always && !list)
   {
     goto LABEL_74;
   }
 
-  if (!a3 || a4 || !self->_newScoresHandler || ![(NSArray *)self->_lastReportedScores count])
+  if (!always || list || !self->_newScoresHandler || ![(NSArray *)self->_lastReportedScores count])
   {
-    if (self->_lastScoreReportMachContinuousTime + 0.05 > a5 && !v77)
+    if (self->_lastScoreReportMachContinuousTime + 0.05 > time && !alwaysCopy)
     {
       goto LABEL_74;
     }
 
-    v11 = [(NSMutableDictionary *)self->_scores allValues];
+    allValues = [(NSMutableDictionary *)self->_scores allValues];
     v84[0] = self->_scoreSortDescriptor;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:1];
-    v13 = [v11 sortedArrayUsingDescriptors:v12];
+    v13 = [allValues sortedArrayUsingDescriptors:v12];
     v14 = [v13 mutableCopy];
 
     v15 = 0;
@@ -412,8 +412,8 @@ LABEL_18:
     while ([v14 count] > v15)
     {
       v17 = [v14 objectAtIndex:v15];
-      v18 = [v17 angle];
-      v19 = v18 != 0;
+      angle = [v17 angle];
+      v19 = angle != 0;
 
       v16 += v19;
       ++v15;
@@ -427,8 +427,8 @@ LABEL_18:
       while ([v14 count] > v20)
       {
         v23 = [v14 objectAtIndex:v20];
-        v24 = [v23 angle];
-        v25 = v24 == 0;
+        angle2 = [v23 angle];
+        v25 = angle2 == 0;
 
         if (!v25)
         {
@@ -469,10 +469,10 @@ LABEL_18:
         v33 = self->_logger;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v32 btAddress];
+          btAddress = [v32 btAddress];
           [v32 score];
           *buf = 138412546;
-          v79 = v34;
+          v79 = btAddress;
           v80 = 2048;
           v81 = v35;
           _os_log_impl(&dword_230EB5000, v33, OS_LOG_TYPE_DEFAULT, "Big Head Selection: selected big head device %@ with score %f", buf, 0x16u);
@@ -495,8 +495,8 @@ LABEL_18:
     while ([v14 count] > v36)
     {
       v38 = [v14 objectAtIndex:v36];
-      v39 = [v38 angle];
-      if (v39)
+      angle3 = [v38 angle];
+      if (angle3)
       {
         v40 = v37 == v36;
       }
@@ -513,28 +513,28 @@ LABEL_18:
         v42 = self->_logger;
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v38 angle];
-          [v43 measurement];
+          angle4 = [v38 angle];
+          [angle4 measurement];
           v45 = v44;
-          v46 = [v38 btAddress];
+          btAddress2 = [v38 btAddress];
           [v38 score];
           *buf = 134218498;
           v79 = v45;
           v80 = 2112;
-          v81 = v46;
+          v81 = btAddress2;
           v82 = 2048;
           v83 = v47;
           _os_log_impl(&dword_230EB5000, v42, OS_LOG_TYPE_DEFAULT, "Big Head Selection: nil out angle %f for device %@ with score %f (II)", buf, 0x20u);
         }
 
         v48 = [PRDeviceScore alloc];
-        v49 = [v38 btAddress];
-        v50 = [v38 proximity];
-        v51 = [v38 range];
+        btAddress3 = [v38 btAddress];
+        proximity = [v38 proximity];
+        range = [v38 range];
         [v38 score];
         v53 = v52;
         [v38 scoreUncertainty];
-        v55 = [(PRDeviceScore *)v48 initWithValues:v49 proximity:v50 range:v51 angle:0 score:v53 scoreUncertainty:v54];
+        v55 = [(PRDeviceScore *)v48 initWithValues:btAddress3 proximity:proximity range:range angle:0 score:v53 scoreUncertainty:v54];
 
         [v38 timestamp];
         [(PRDeviceScore *)v55 setTimestamp:?];
@@ -551,9 +551,9 @@ LABEL_18:
       obj = p_lastBigHeadMacAddress = &self->_lastBigHeadMacAddress;
       if (([obj isEqual:self->_lastBigHeadMacAddress] & 1) == 0)
       {
-        if (self->_lastBigHeadFirstReportTime + 0.5 > a5)
+        if (self->_lastBigHeadFirstReportTime + 0.5 > time)
         {
-          if (v77 && self->_newScoresHandler)
+          if (alwaysCopy && self->_newScoresHandler)
           {
             logger = self->_logger;
             if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -594,7 +594,7 @@ LABEL_74:
           return;
         }
 
-        self->_lastBigHeadFirstReportTime = a5;
+        self->_lastBigHeadFirstReportTime = time;
         objc_storeStrong(&self->_lastBigHeadMacAddress, obj);
       }
     }
@@ -612,9 +612,9 @@ LABEL_74:
       {
         v63 = [v14 objectAtIndex:v62];
         v64 = [(NSArray *)self->_lastReportedScores objectAtIndex:v62];
-        v65 = [v63 btAddress];
-        v66 = [v64 btAddress];
-        v67 = [v65 isEqual:v66];
+        btAddress4 = [v63 btAddress];
+        btAddress5 = [v64 btAddress];
+        v67 = [btAddress4 isEqual:btAddress5];
 
         if ((v67 & 1) == 0)
         {
@@ -622,18 +622,18 @@ LABEL_74:
           goto LABEL_68;
         }
 
-        v68 = [v63 angle];
-        v69 = [v64 angle];
-        v70 = v69 != 0;
+        angle5 = [v63 angle];
+        angle6 = [v64 angle];
+        v70 = angle6 != 0;
 
         ++v62;
-        if ((((v68 == 0) ^ v70) & 1) == 0)
+        if ((((angle5 == 0) ^ v70) & 1) == 0)
         {
           goto LABEL_68;
         }
       }
 
-      if (v77)
+      if (alwaysCopy)
       {
         goto LABEL_68;
       }
@@ -642,7 +642,7 @@ LABEL_74:
     else
     {
 LABEL_68:
-      self->_lastScoreReportMachContinuousTime = a5;
+      self->_lastScoreReportMachContinuousTime = time;
       objc_storeStrong(&self->_lastReportedScores, v14);
       newScoresHandler = self->_newScoresHandler;
       if (newScoresHandler)
@@ -661,15 +661,15 @@ LABEL_68:
   v8();
 }
 
-- (void)updateScoresForTime:(double)a3
+- (void)updateScoresForTime:(double)time
 {
   v21[0] = 0;
   v21[1] = 0;
   v20 = v21;
-  SharingImportanceManager::getImportanceEstimates(self->_estimatorRangeOnly.__ptr_, &v20, a3);
+  SharingImportanceManager::getImportanceEstimates(self->_estimatorRangeOnly.__ptr_, &v20, time);
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(NSMutableDictionary *)self->_scores allKeys];
-  v7 = [v5 initWithArray:v6];
+  allKeys = [(NSMutableDictionary *)self->_scores allKeys];
+  v7 = [v5 initWithArray:allKeys];
 
   v8 = v20;
   if (v20 != v21)
@@ -698,7 +698,7 @@ LABEL_68:
         [(NSMutableDictionary *)self->_scores setObject:v15 forKeyedSubscript:v10];
 
         v16 = [(NSMutableDictionary *)self->_scores objectForKeyedSubscript:v10];
-        [v16 setTimestamp:a3];
+        [v16 setTimestamp:time];
 
         [v7 removeObject:v10];
       }
@@ -738,18 +738,18 @@ LABEL_68:
   std::__tree<std::__value_type<std::string,NeighborImportanceEstimate>,std::__map_value_compare<std::string,std::__value_type<std::string,NeighborImportanceEstimate>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,NeighborImportanceEstimate>>>::destroy(&v20, v21[0]);
 }
 
-- (void)updateScoresWithNewMeasurement:(const void *)a3
+- (void)updateScoresWithNewMeasurement:(const void *)measurement
 {
   v10 = *MEMORY[0x277D85DE8];
   kdebug_trace();
-  std::vector<NeighborMeasurements>::push_back[abi:ne200100](&self->_measurements, a3);
+  std::vector<NeighborMeasurements>::push_back[abi:ne200100](&self->_measurements, measurement);
   SharingImportanceManager::handleMeasurements(self->_estimatorRangeOnly.__ptr_, &self->_measurements);
   std::vector<NeighborMeasurements>::clear[abi:ne200100](&self->_measurements);
-  [(PRSharingChoice *)self updateScoresForTime:*(a3 + 3)];
+  [(PRSharingChoice *)self updateScoresForTime:*(measurement + 3)];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = *(a3 + 3);
+    v6 = *(measurement + 3);
     v8 = 134217984;
     v9 = v6;
     _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "measurement time %lf", &v8, 0xCu);

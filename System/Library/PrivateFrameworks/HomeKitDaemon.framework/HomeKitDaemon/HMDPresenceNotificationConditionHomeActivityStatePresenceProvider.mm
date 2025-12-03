@@ -1,15 +1,15 @@
 @interface HMDPresenceNotificationConditionHomeActivityStatePresenceProvider
-- (id)presenceForHome:(id)a3;
+- (id)presenceForHome:(id)home;
 @end
 
 @implementation HMDPresenceNotificationConditionHomeActivityStatePresenceProvider
 
-- (id)presenceForHome:(id)a3
+- (id)presenceForHome:(id)home
 {
-  v3 = [a3 homeActivityStateManager];
-  v4 = [v3 userActivityStatesDetails];
+  homeActivityStateManager = [home homeActivityStateManager];
+  userActivityStatesDetails = [homeActivityStateManager userActivityStatesDetails];
 
-  return v4;
+  return userActivityStatesDetails;
 }
 
 @end

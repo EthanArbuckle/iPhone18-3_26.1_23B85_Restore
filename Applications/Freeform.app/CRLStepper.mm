@@ -1,26 +1,26 @@
 @interface CRLStepper
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CRLStepper)init;
 - (UIViewController)crlaxDefaultViewControllerForLargeContent;
 - (UIViewController)crlaxPreferredViewControllerForLargeContent;
-- (id)viewControllerForLargeContentViewerInteraction:(id)a3;
+- (id)viewControllerForLargeContentViewerInteraction:(id)interaction;
 - (void)addLongPressGestureRecognizersAndLCVInteractions;
 - (void)dealloc;
-- (void)dismissAccessibilityHUD:(id)a3;
-- (void)handleDownButtonTouchDownEvent:(id)a3;
-- (void)handleDownButtonTouchUpInsideEvent:(id)a3;
-- (void)handleUpButtonTouchDownEvent:(id)a3;
-- (void)handleUpButtonTouchUpInsideEvent:(id)a3;
+- (void)dismissAccessibilityHUD:(id)d;
+- (void)handleDownButtonTouchDownEvent:(id)event;
+- (void)handleDownButtonTouchUpInsideEvent:(id)event;
+- (void)handleUpButtonTouchDownEvent:(id)event;
+- (void)handleUpButtonTouchUpInsideEvent:(id)event;
 - (void)longPressDecrementGestureRecognizerTouchDown;
 - (void)longPressIncrementGestureRecognizerTouchDown;
-- (void)p_handleDownButtonTimer:(id)a3;
-- (void)p_handleUpButtonTimer:(id)a3;
-- (void)p_updateContinuousDifference:(BOOL)a3;
+- (void)p_handleDownButtonTimer:(id)timer;
+- (void)p_handleUpButtonTimer:(id)timer;
+- (void)p_updateContinuousDifference:(BOOL)difference;
 - (void)removeLongPressGestureRecognizersAndLCVInteractions;
-- (void)setCurrentValue:(double)a3;
-- (void)setIncrement:(double)a3;
-- (void)setMaxValue:(double)a3;
-- (void)setMinValue:(double)a3;
+- (void)setCurrentValue:(double)value;
+- (void)setIncrement:(double)increment;
+- (void)setMaxValue:(double)value;
+- (void)setMinValue:(double)value;
 - (void)updateLargeContentViewInteractions;
 @end
 
@@ -39,14 +39,14 @@
     v2->_minValue = 2.22507386e-308;
     v2->_maxValue = 1.79769313e308;
     v2->_continuousDifference = 1;
-    v4 = [(CRLStepper *)v2 layer];
-    [v4 setCornerRadius:6.0];
+    layer = [(CRLStepper *)v2 layer];
+    [layer setCornerRadius:6.0];
 
-    v5 = [(CRLStepper *)v3 layer];
-    [v5 setMasksToBounds:1];
+    layer2 = [(CRLStepper *)v3 layer];
+    [layer2 setMasksToBounds:1];
 
-    v6 = [(CRLStepper *)v3 layer];
-    [v6 setCornerCurve:kCACornerCurveContinuous];
+    layer3 = [(CRLStepper *)v3 layer];
+    [layer3 setCornerCurve:kCACornerCurveContinuous];
 
     v7 = +[UIColor clearColor];
     [(CRLStepper *)v3 setBackgroundColor:v7];
@@ -119,8 +119,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CRLStepper *)self timer];
-  [v3 invalidate];
+  timer = [(CRLStepper *)self timer];
+  [timer invalidate];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UILargeContentViewerInteractionEnabledStatusDidChangeNotification object:0];
@@ -130,7 +130,7 @@
   [(CRLStepper *)&v5 dealloc];
 }
 
-- (void)p_updateContinuousDifference:(BOOL)a3
+- (void)p_updateContinuousDifference:(BOOL)difference
 {
   v3 = self->_continuousCounter + 1;
   self->_continuousCounter = v3;
@@ -162,7 +162,7 @@
         break;
     }
 
-    if (a3)
+    if (difference)
     {
       [(CRLStepper *)self maxValue];
       v8 = v7;
@@ -187,12 +187,12 @@
   }
 }
 
-- (void)p_handleUpButtonTimer:(id)a3
+- (void)p_handleUpButtonTimer:(id)timer
 {
-  v12 = a3;
-  v4 = [(CRLStepper *)self timer];
+  timerCopy = timer;
+  timer = [(CRLStepper *)self timer];
 
-  if (v4 == v12)
+  if (timer == timerCopy)
   {
     [(CRLStepper *)self currentValue];
     v6 = v5;
@@ -211,16 +211,16 @@
 
   else
   {
-    [v12 invalidate];
+    [timerCopy invalidate];
   }
 }
 
-- (void)p_handleDownButtonTimer:(id)a3
+- (void)p_handleDownButtonTimer:(id)timer
 {
-  v12 = a3;
-  v4 = [(CRLStepper *)self timer];
+  timerCopy = timer;
+  timer = [(CRLStepper *)self timer];
 
-  if (v4 == v12)
+  if (timer == timerCopy)
   {
     [(CRLStepper *)self currentValue];
     v6 = v5;
@@ -239,20 +239,20 @@
 
   else
   {
-    [v12 invalidate];
+    [timerCopy invalidate];
   }
 }
 
-- (void)handleUpButtonTouchDownEvent:(id)a3
+- (void)handleUpButtonTouchDownEvent:(id)event
 {
   if ([(CRLStepper *)self continuous]&& [(CRLStepper *)self isEnabled])
   {
-    v4 = [(CRLStepper *)self timer];
+    timer = [(CRLStepper *)self timer];
 
-    if (v4)
+    if (timer)
     {
-      v5 = [(CRLStepper *)self timer];
-      [v5 invalidate];
+      timer2 = [(CRLStepper *)self timer];
+      [timer2 invalidate];
     }
 
     self->_upButtonDepressed = 1;
@@ -269,13 +269,13 @@
   }
 }
 
-- (void)handleUpButtonTouchUpInsideEvent:(id)a3
+- (void)handleUpButtonTouchUpInsideEvent:(id)event
 {
   if ([(CRLStepper *)self continuous]&& [(CRLStepper *)self isEnabled])
   {
     self->_upButtonDepressed = 0;
-    v4 = [(CRLStepper *)self timer];
-    [v4 invalidate];
+    timer = [(CRLStepper *)self timer];
+    [timer invalidate];
 
     [(CRLStepper *)self setTimer:0];
     self->_continuousDifference = 1;
@@ -296,16 +296,16 @@
   [(CRLStepper *)self sendActionsForControlEvents:64];
 }
 
-- (void)handleDownButtonTouchDownEvent:(id)a3
+- (void)handleDownButtonTouchDownEvent:(id)event
 {
   if ([(CRLStepper *)self continuous]&& [(CRLStepper *)self isEnabled])
   {
-    v4 = [(CRLStepper *)self timer];
+    timer = [(CRLStepper *)self timer];
 
-    if (v4)
+    if (timer)
     {
-      v5 = [(CRLStepper *)self timer];
-      [v5 invalidate];
+      timer2 = [(CRLStepper *)self timer];
+      [timer2 invalidate];
     }
 
     self->_downButtonDepressed = 1;
@@ -322,13 +322,13 @@
   }
 }
 
-- (void)handleDownButtonTouchUpInsideEvent:(id)a3
+- (void)handleDownButtonTouchUpInsideEvent:(id)event
 {
   if ([(CRLStepper *)self continuous]&& [(CRLStepper *)self isEnabled])
   {
     self->_downButtonDepressed = 0;
-    v4 = [(CRLStepper *)self timer];
-    [v4 invalidate];
+    timer = [(CRLStepper *)self timer];
+    [timer invalidate];
 
     [(CRLStepper *)self setTimer:0];
     self->_continuousDifference = 1;
@@ -349,7 +349,7 @@
   [(CRLStepper *)self sendActionsForControlEvents:64];
 }
 
-- (void)setCurrentValue:(double)a3
+- (void)setCurrentValue:(double)value
 {
   [(CRLStepper *)self minValue];
   v6 = v5;
@@ -358,7 +358,7 @@
   [(CRLStepper *)self increment];
   v10 = v9;
   [(CRLStepper *)self maxValue];
-  sub_1004E3CC0(a3, v6, v8, v10);
+  sub_1004E3CC0(value, v6, v8, v10);
   self->_currentValue = v11;
   [(UIButton *)self->_upButton setEnabled:v11 < self->_maxValue];
   v12 = self->_currentValue > self->_minValue;
@@ -367,51 +367,51 @@
   [(UIButton *)downButton setEnabled:v12];
 }
 
-- (void)setIncrement:(double)a3
+- (void)setIncrement:(double)increment
 {
-  if (a3 > 0.0)
+  if (increment > 0.0)
   {
-    self->_increment = a3;
+    self->_increment = increment;
   }
 }
 
-- (void)setMaxValue:(double)a3
+- (void)setMaxValue:(double)value
 {
-  self->_maxValue = a3;
+  self->_maxValue = value;
   [(CRLStepper *)self currentValue];
   upButton = self->_upButton;
 
-  [(UIButton *)upButton setEnabled:v5 < a3];
+  [(UIButton *)upButton setEnabled:v5 < value];
 }
 
-- (void)setMinValue:(double)a3
+- (void)setMinValue:(double)value
 {
-  self->_minValue = a3;
+  self->_minValue = value;
   [(CRLStepper *)self currentValue];
   downButton = self->_downButton;
 
-  [(UIButton *)downButton setEnabled:v5 > a3];
+  [(UIButton *)downButton setEnabled:v5 > value];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [(CRLStepper *)self upButtonLCVInteraction];
-  v7 = [v6 gestureRecognizerForExclusionRelationship];
-  v12[0] = v7;
-  v8 = [(CRLStepper *)self downButtonLCVInteraction];
-  v9 = [v8 gestureRecognizerForExclusionRelationship];
-  v12[1] = v9;
+  gestureRecognizerCopy = gestureRecognizer;
+  upButtonLCVInteraction = [(CRLStepper *)self upButtonLCVInteraction];
+  gestureRecognizerForExclusionRelationship = [upButtonLCVInteraction gestureRecognizerForExclusionRelationship];
+  v12[0] = gestureRecognizerForExclusionRelationship;
+  downButtonLCVInteraction = [(CRLStepper *)self downButtonLCVInteraction];
+  gestureRecognizerForExclusionRelationship2 = [downButtonLCVInteraction gestureRecognizerForExclusionRelationship];
+  v12[1] = gestureRecognizerForExclusionRelationship2;
   v10 = [NSArray arrayWithObjects:v12 count:2];
-  LOBYTE(self) = [v10 containsObject:v5];
+  LOBYTE(self) = [v10 containsObject:gestureRecognizerCopy];
 
   return self;
 }
 
-- (id)viewControllerForLargeContentViewerInteraction:(id)a3
+- (id)viewControllerForLargeContentViewerInteraction:(id)interaction
 {
-  v4 = [(CRLStepper *)self crlaxPreferredViewControllerForLargeContent];
-  if (v4)
+  crlaxPreferredViewControllerForLargeContent = [(CRLStepper *)self crlaxPreferredViewControllerForLargeContent];
+  if (crlaxPreferredViewControllerForLargeContent)
   {
     [(CRLStepper *)self crlaxPreferredViewControllerForLargeContent];
   }
@@ -427,16 +427,16 @@
 
 - (void)longPressDecrementGestureRecognizerTouchDown
 {
-  v3 = [(CRLStepper *)self downButtonLCVInteraction];
-  [(CRLStepper *)self dismissAccessibilityHUD:v3];
+  downButtonLCVInteraction = [(CRLStepper *)self downButtonLCVInteraction];
+  [(CRLStepper *)self dismissAccessibilityHUD:downButtonLCVInteraction];
 
   [(CRLStepper *)self handleDownButtonTouchDownEvent:self];
 }
 
 - (void)longPressIncrementGestureRecognizerTouchDown
 {
-  v3 = [(CRLStepper *)self upButtonLCVInteraction];
-  [(CRLStepper *)self dismissAccessibilityHUD:v3];
+  upButtonLCVInteraction = [(CRLStepper *)self upButtonLCVInteraction];
+  [(CRLStepper *)self dismissAccessibilityHUD:upButtonLCVInteraction];
 
   [(CRLStepper *)self handleUpButtonTouchDownEvent:self];
 }
@@ -461,104 +461,104 @@
   v3 = objc_alloc_init(UILongPressGestureRecognizer);
   [(CRLStepper *)self setUpButtonLongPressGestureRecognizer:v3];
 
-  v4 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
-  [v4 addTarget:self action:"longPressIncrementGestureRecognizerTouchDown"];
+  upButtonLongPressGestureRecognizer = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+  [upButtonLongPressGestureRecognizer addTarget:self action:"longPressIncrementGestureRecognizerTouchDown"];
 
-  v5 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
-  [v5 setDelegate:self];
+  upButtonLongPressGestureRecognizer2 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+  [upButtonLongPressGestureRecognizer2 setDelegate:self];
 
-  v6 = [(CRLStepper *)self upButton];
-  v7 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
-  [v6 addGestureRecognizer:v7];
+  upButton = [(CRLStepper *)self upButton];
+  upButtonLongPressGestureRecognizer3 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+  [upButton addGestureRecognizer:upButtonLongPressGestureRecognizer3];
 
   v8 = [[UILargeContentViewerInteraction alloc] initWithDelegate:self];
   [(CRLStepper *)self setUpButtonLCVInteraction:v8];
 
-  v9 = [(CRLStepper *)self upButton];
-  [v9 addInteraction:self->_upButtonLCVInteraction];
+  upButton2 = [(CRLStepper *)self upButton];
+  [upButton2 addInteraction:self->_upButtonLCVInteraction];
 
   v10 = objc_alloc_init(UILongPressGestureRecognizer);
   [(CRLStepper *)self setDownButtonLongPressGestureRecognizer:v10];
 
-  v11 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
-  [v11 addTarget:self action:"longPressDecrementGestureRecognizerTouchDown"];
+  downButtonLongPressGestureRecognizer = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+  [downButtonLongPressGestureRecognizer addTarget:self action:"longPressDecrementGestureRecognizerTouchDown"];
 
-  v12 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
-  [v12 setDelegate:self];
+  downButtonLongPressGestureRecognizer2 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+  [downButtonLongPressGestureRecognizer2 setDelegate:self];
 
-  v13 = [(CRLStepper *)self downButton];
-  v14 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
-  [v13 addGestureRecognizer:v14];
+  downButton = [(CRLStepper *)self downButton];
+  downButtonLongPressGestureRecognizer3 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+  [downButton addGestureRecognizer:downButtonLongPressGestureRecognizer3];
 
   v15 = [[UILargeContentViewerInteraction alloc] initWithDelegate:self];
   [(CRLStepper *)self setDownButtonLCVInteraction:v15];
 
-  v16 = [(CRLStepper *)self downButton];
-  v17 = [(CRLStepper *)self downButtonLCVInteraction];
-  [v16 addInteraction:v17];
+  downButton2 = [(CRLStepper *)self downButton];
+  downButtonLCVInteraction = [(CRLStepper *)self downButtonLCVInteraction];
+  [downButton2 addInteraction:downButtonLCVInteraction];
 
-  v18 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
-  [v18 setMinimumPressDuration:3.0];
+  downButtonLongPressGestureRecognizer4 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+  [downButtonLongPressGestureRecognizer4 setMinimumPressDuration:3.0];
 
-  v19 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
-  [v19 setMinimumPressDuration:3.0];
+  upButtonLongPressGestureRecognizer4 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+  [upButtonLongPressGestureRecognizer4 setMinimumPressDuration:3.0];
 }
 
 - (void)removeLongPressGestureRecognizersAndLCVInteractions
 {
-  v3 = [(CRLStepper *)self upButtonLCVInteraction];
+  upButtonLCVInteraction = [(CRLStepper *)self upButtonLCVInteraction];
 
-  if (v3)
+  if (upButtonLCVInteraction)
   {
-    v4 = [(CRLStepper *)self upButton];
-    v5 = [(CRLStepper *)self upButtonLCVInteraction];
-    [v4 removeInteraction:v5];
+    upButton = [(CRLStepper *)self upButton];
+    upButtonLCVInteraction2 = [(CRLStepper *)self upButtonLCVInteraction];
+    [upButton removeInteraction:upButtonLCVInteraction2];
 
     [(CRLStepper *)self setUpButtonLCVInteraction:0];
   }
 
-  v6 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+  upButtonLongPressGestureRecognizer = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
 
-  if (v6)
+  if (upButtonLongPressGestureRecognizer)
   {
     upButton = self->_upButton;
-    v8 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
-    [(UIButton *)upButton removeGestureRecognizer:v8];
+    upButtonLongPressGestureRecognizer2 = [(CRLStepper *)self upButtonLongPressGestureRecognizer];
+    [(UIButton *)upButton removeGestureRecognizer:upButtonLongPressGestureRecognizer2];
 
     [(CRLStepper *)self setUpButtonLongPressGestureRecognizer:0];
   }
 
-  v9 = [(CRLStepper *)self downButtonLCVInteraction];
+  downButtonLCVInteraction = [(CRLStepper *)self downButtonLCVInteraction];
 
-  if (v9)
+  if (downButtonLCVInteraction)
   {
-    v10 = [(CRLStepper *)self downButton];
-    v11 = [(CRLStepper *)self downButtonLCVInteraction];
-    [v10 removeInteraction:v11];
+    downButton = [(CRLStepper *)self downButton];
+    downButtonLCVInteraction2 = [(CRLStepper *)self downButtonLCVInteraction];
+    [downButton removeInteraction:downButtonLCVInteraction2];
 
     [(CRLStepper *)self setDownButtonLCVInteraction:0];
   }
 
-  v12 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+  downButtonLongPressGestureRecognizer = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
 
-  if (v12)
+  if (downButtonLongPressGestureRecognizer)
   {
-    v13 = [(CRLStepper *)self downButton];
-    v14 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
-    [v13 removeGestureRecognizer:v14];
+    downButton2 = [(CRLStepper *)self downButton];
+    downButtonLongPressGestureRecognizer2 = [(CRLStepper *)self downButtonLongPressGestureRecognizer];
+    [downButton2 removeGestureRecognizer:downButtonLongPressGestureRecognizer2];
 
     [(CRLStepper *)self setDownButtonLongPressGestureRecognizer:0];
   }
 }
 
-- (void)dismissAccessibilityHUD:(id)a3
+- (void)dismissAccessibilityHUD:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_class();
-  v5 = [v3 gestureRecognizerForExclusionRelationship];
+  gestureRecognizerForExclusionRelationship = [dCopy gestureRecognizerForExclusionRelationship];
 
-  v6 = [v5 delegate];
-  v7 = sub_100014370(v4, v6);
+  delegate = [gestureRecognizerForExclusionRelationship delegate];
+  v7 = sub_100014370(v4, delegate);
 
   [v7 _dismissAccessibilityHUD];
 }

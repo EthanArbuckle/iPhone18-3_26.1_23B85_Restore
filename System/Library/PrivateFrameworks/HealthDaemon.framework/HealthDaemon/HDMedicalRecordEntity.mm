@@ -1,31 +1,31 @@
 @interface HDMedicalRecordEntity
-+ (id)_latestDateForProperty:(void *)a3 sampleTypes:(void *)a4 profile:(uint64_t)a5 error:;
-+ (id)attachmentObjectIdentifierForSampleWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (id)_latestDateForProperty:(void *)property sampleTypes:(void *)types profile:(uint64_t)profile error:;
++ (id)attachmentObjectIdentifierForSampleWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (id)checkConstraints;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)latestCreationDateWithProfile:(id)a3 error:(id *)a4;
-+ (id)latestModifiedDateWithProfile:(id)a3 error:(id *)a4;
-+ (id)medicalRecordWithAttachmentObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)orderingTermForSortDescriptor:(id)a3;
-- (BOOL)willDeleteWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)joinClausesForProperty:(id)property;
++ (id)latestCreationDateWithProfile:(id)profile error:(id *)error;
++ (id)latestModifiedDateWithProfile:(id)profile error:(id *)error;
++ (id)medicalRecordWithAttachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
+- (BOOL)willDeleteWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDMedicalRecordEntity
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v57[13] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"HDMedicalRecordEntity.m" lineNumber:93 description:{@"Subclasses must override %s", "+[HDMedicalRecordEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDMedicalRecordEntity.m" lineNumber:93 description:{@"Subclasses must override %s", "+[HDMedicalRecordEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v57[0] = @"data_id";
@@ -42,50 +42,50 @@
   v57[11] = @"country";
   v57[12] = @"state";
   v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:13];
-  v16 = [v12 FHIRIdentifier];
+  fHIRIdentifier = [objectCopy FHIRIdentifier];
 
-  if (v16)
+  if (fHIRIdentifier)
   {
-    v17 = [v12 FHIRIdentifier];
-    v46 = [v17 stringValue];
+    fHIRIdentifier2 = [objectCopy FHIRIdentifier];
+    stringValue = [fHIRIdentifier2 stringValue];
   }
 
   else
   {
-    v46 = 0;
+    stringValue = 0;
   }
 
-  v18 = [v12 metadata];
+  metadata = [objectCopy metadata];
   v19 = *MEMORY[0x277CCE070];
-  v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277CCE070]];
+  v20 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE070]];
 
   if (v20)
   {
-    v45 = a7;
-    v21 = v13;
-    v22 = [v12 metadata];
-    v23 = [v22 objectForKeyedSubscript:v19];
-    v24 = [v23 longLongValue];
-    v25 = 0;
+    errorCopy2 = error;
+    v21 = databaseCopy;
+    metadata2 = [objectCopy metadata];
+    v23 = [metadata2 objectForKeyedSubscript:v19];
+    longLongValue = [v23 longLongValue];
+    persistentID = 0;
 LABEL_8:
 
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __87__HDMedicalRecordEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
     v48[3] = &unk_278626C10;
-    v26 = v14;
+    v26 = dCopy;
     v49 = v26;
-    v50 = v12;
-    v27 = v46;
-    v51 = v46;
-    v52 = v24;
-    v53 = v25;
+    v50 = objectCopy;
+    v27 = stringValue;
+    v51 = stringValue;
+    v52 = longLongValue;
+    v53 = persistentID;
     v54 = a2;
-    v55 = a1;
-    v13 = v21;
+    selfCopy = self;
+    databaseCopy = v21;
     v28 = v21;
     v29 = v47;
-    v30 = [a1 insertOrReplaceEntity:1 database:v28 properties:v47 error:v45 bindingHandler:v48];
+    v30 = [self insertOrReplaceEntity:1 database:v28 properties:v47 error:errorCopy2 bindingHandler:v48];
     if (v30)
     {
       v31 = v26;
@@ -101,35 +101,35 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v35 = [v12 originIdentifier];
-  v36 = [v35 signedClinicalDataRecordIdentifier];
+  originIdentifier = [objectCopy originIdentifier];
+  signedClinicalDataRecordIdentifier = [originIdentifier signedClinicalDataRecordIdentifier];
 
-  if (v36)
+  if (signedClinicalDataRecordIdentifier)
   {
-    v45 = a7;
-    [v12 originIdentifier];
-    v38 = v37 = v13;
-    v39 = [v38 signedClinicalDataRecordIdentifier];
+    errorCopy2 = error;
+    [objectCopy originIdentifier];
+    v38 = v37 = databaseCopy;
+    signedClinicalDataRecordIdentifier2 = [v38 signedClinicalDataRecordIdentifier];
     v56 = 0;
     v21 = v37;
-    v23 = [HDOriginalSignedClinicalDataRecordEntity entityWithSyncIdentifier:v39 database:v37 error:&v56];
-    v22 = v56;
+    v23 = [HDOriginalSignedClinicalDataRecordEntity entityWithSyncIdentifier:signedClinicalDataRecordIdentifier2 database:v37 error:&v56];
+    metadata2 = v56;
 
     if (v23)
     {
-      v25 = [v23 persistentID];
-      v24 = 0;
+      persistentID = [v23 persistentID];
+      longLongValue = 0;
       goto LABEL_8;
     }
 
-    if (v22)
+    if (metadata2)
     {
-      v13 = v21;
-      v27 = v46;
-      if (v45)
+      databaseCopy = v21;
+      v27 = stringValue;
+      if (errorCopy2)
       {
-        v40 = v22;
-        *v45 = v22;
+        v40 = metadata2;
+        *errorCopy2 = metadata2;
       }
 
       else
@@ -143,12 +143,12 @@ LABEL_8:
     else
     {
       v41 = MEMORY[0x277CCA9B8];
-      v42 = [v12 originIdentifier];
-      v43 = [v42 signedClinicalDataRecordIdentifier];
-      [v41 hk_assignError:v45 code:118 format:{@"Original signed clinical data record with sync identifier %@ does not exist", v43}];
+      originIdentifier2 = [objectCopy originIdentifier];
+      signedClinicalDataRecordIdentifier3 = [originIdentifier2 signedClinicalDataRecordIdentifier];
+      [v41 hk_assignError:errorCopy2 code:118 format:{@"Original signed clinical data record with sync identifier %@ does not exist", signedClinicalDataRecordIdentifier3}];
 
-      v13 = v21;
-      v27 = v46;
+      databaseCopy = v21;
+      v27 = stringValue;
       v29 = v47;
     }
 
@@ -157,9 +157,9 @@ LABEL_8:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:100 format:@"Attempting to save a medical record without an origin."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Attempting to save a medical record without an origin."];
     v32 = 0;
-    v27 = v46;
+    v27 = stringValue;
     v29 = v47;
   }
 
@@ -236,7 +236,7 @@ LABEL_5:
 
 + (id)checkConstraints
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [MEMORY[0x277D10B88] checkConstraintWithSQL:@"(original_fhir_resource_rowid IS NOT NULL AND original_signed_clinical_data_rowid IS NULL) OR (original_fhir_resource_rowid IS NULL AND original_signed_clinical_data_rowid IS NOT NULL)"];
     v2 = [MEMORY[0x277CBEB98] setWithObject:v3];
@@ -250,16 +250,16 @@ LABEL_5:
   return v2;
 }
 
-+ (id)_latestDateForProperty:(void *)a3 sampleTypes:(void *)a4 profile:(uint64_t)a5 error:
++ (id)_latestDateForProperty:(void *)property sampleTypes:(void *)types profile:(uint64_t)profile error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  propertyCopy = property;
+  typesCopy = types;
   v11 = objc_opt_self();
-  if (!v10)
+  if (!typesCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:sel__latestDateForProperty_sampleTypes_profile_error_ object:v11 file:@"HDMedicalRecordEntity.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__latestDateForProperty_sampleTypes_profile_error_ object:v11 file:@"HDMedicalRecordEntity.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
   }
 
   v25 = 0;
@@ -268,8 +268,8 @@ LABEL_5:
   v28 = __Block_byref_object_copy__142;
   v29 = __Block_byref_object_dispose__142;
   v30 = 0;
-  v12 = HDSampleEntityPredicateForDataTypes(v9);
-  v13 = [v10 database];
+  v12 = HDSampleEntityPredicateForDataTypes(propertyCopy);
+  database = [typesCopy database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __74__HDMedicalRecordEntity__latestDateForProperty_sampleTypes_profile_error___block_invoke;
@@ -280,7 +280,7 @@ LABEL_5:
   v15 = v12;
   v22 = v15;
   v23 = &v25;
-  v16 = [v11 performReadTransactionWithHealthDatabase:v13 error:a5 block:v20];
+  v16 = [v11 performReadTransactionWithHealthDatabase:database error:profile block:v20];
 
   if (v16)
   {
@@ -344,12 +344,12 @@ LABEL_4:
   return v15;
 }
 
-+ (id)latestCreationDateWithProfile:(id)a3 error:(id *)a4
++ (id)latestCreationDateWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 daemon];
-  v8 = [v7 behavior];
-  if ([v8 futureMigrationsEnabled])
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  if ([behavior futureMigrationsEnabled])
   {
     v9 = 8;
   }
@@ -360,17 +360,17 @@ LABEL_4:
   }
 
   v10 = [MEMORY[0x277CCD8D8] medicalRecordTypesWithOptions:v9];
-  v11 = [(HDMedicalRecordEntity *)a1 _latestDateForProperty:v10 sampleTypes:v6 profile:a4 error:?];
+  v11 = [(HDMedicalRecordEntity *)self _latestDateForProperty:v10 sampleTypes:profileCopy profile:error error:?];
 
   return v11;
 }
 
-+ (id)latestModifiedDateWithProfile:(id)a3 error:(id *)a4
++ (id)latestModifiedDateWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 daemon];
-  v8 = [v7 behavior];
-  if ([v8 futureMigrationsEnabled])
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  if ([behavior futureMigrationsEnabled])
   {
     v9 = 8;
   }
@@ -381,19 +381,19 @@ LABEL_4:
   }
 
   v10 = [MEMORY[0x277CCD8D8] medicalRecordTypesWithOptions:v9];
-  v11 = [(HDMedicalRecordEntity *)a1 _latestDateForProperty:v10 sampleTypes:v6 profile:a4 error:?];
+  v11 = [(HDMedicalRecordEntity *)self _latestDateForProperty:v10 sampleTypes:profileCopy profile:error error:?];
 
   return v11;
 }
 
-+ (id)medicalRecordWithAttachmentObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)medicalRecordWithAttachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  profileCopy = profile;
   v35 = 0;
   v36 = 0;
   v34 = 0;
-  v9 = [MEMORY[0x277CCD008] componentsFromAttachmentObjectIdentifier:a3 sampleTypeIdentifier:&v36 bundleIdentifier:&v35 FHIRIdentifier:&v34];
+  v9 = [MEMORY[0x277CCD008] componentsFromAttachmentObjectIdentifier:identifier sampleTypeIdentifier:&v36 bundleIdentifier:&v35 FHIRIdentifier:&v34];
   v10 = v36;
   v11 = v35;
   v12 = v34;
@@ -402,17 +402,17 @@ LABEL_4:
     v15 = [MEMORY[0x277CCA9B8] hk_error:2000 description:@"Failed parse attachment objectIdentifier into components"];
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v24 = v15;
-        v23 = 0;
-        *a5 = v15;
+        firstObject = 0;
+        *error = v15;
       }
 
       else
       {
         _HKLogDroppedError();
-        v23 = 0;
+        firstObject = 0;
       }
 
       v14 = v15;
@@ -428,10 +428,10 @@ LABEL_4:
     v15 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Invalid medicalType identifier: %@", v10}];
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v25 = v15;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -446,17 +446,17 @@ LABEL_22:
   }
 
   v14 = v13;
-  v15 = [a1 predicateForObjectsFromLocalSourceWithBundleIdentifier:v11 profile:v8 error:a5];
+  v15 = [self predicateForObjectsFromLocalSourceWithBundleIdentifier:v11 profile:profileCopy error:error];
   if (!v15)
   {
 LABEL_23:
-    v23 = 0;
+    firstObject = 0;
     goto LABEL_24;
   }
 
   v16 = v12;
   v14 = v14;
-  v17 = v8;
+  v17 = profileCopy;
   v15 = v15;
   v30 = objc_opt_self();
   v33 = v16;
@@ -467,7 +467,7 @@ LABEL_23:
   v42[0] = MEMORY[0x277CBEC38];
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
   v32 = v17;
-  v20 = [(HDSampleEntity *)HDMedicalRecordEntity samplesWithType:v14 profile:v17 encodingOptions:v19 predicate:v18 limit:0 anchor:0 error:a5];
+  v20 = [(HDSampleEntity *)HDMedicalRecordEntity samplesWithType:v14 profile:v17 encodingOptions:v19 predicate:v18 limit:0 anchor:0 error:error];
   v21 = v20;
   if (v20 && [v20 count])
   {
@@ -487,106 +487,106 @@ LABEL_23:
       }
     }
 
-    v23 = [v21 firstObject];
+    firstObject = [v21 firstObject];
   }
 
   else
   {
-    v23 = 0;
+    firstObject = 0;
   }
 
 LABEL_24:
   v26 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return firstObject;
 }
 
-+ (id)attachmentObjectIdentifierForSampleWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)attachmentObjectIdentifierForSampleWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
+  profileCopy = profile;
+  dCopy = d;
   v10 = objc_opt_class();
   v16 = @"SkipApplyingConceptIndex";
   v17[0] = MEMORY[0x277CBEC38];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v12 = [v10 objectWithUUID:v9 encodingOptions:v11 profile:v8 error:a6];
+  v12 = [v10 objectWithUUID:dCopy encodingOptions:v11 profile:profileCopy error:error];
 
-  v13 = [v12 attachmentObjectIdentifier];
+  attachmentObjectIdentifier = [v12 attachmentObjectIdentifier];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return attachmentObjectIdentifier;
 }
 
-- (BOOL)willDeleteWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)willDeleteWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = HDMedicalRecordEntity;
-  return [(HDHealthEntity *)&v6 willDeleteWithProfile:a3 transaction:a4 error:a5];
+  return [(HDHealthEntity *)&v6 willDeleteWithProfile:profile transaction:transaction error:error];
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_HDMedicalRecordEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [[_HDMedicalRecordEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
   v6 = [v5 isEqualToString:*MEMORY[0x277CCC3C8]];
 
   if (v6)
   {
     v7 = MEMORY[0x277D10B68];
     v8 = objc_opt_class();
-    v9 = [v4 ascending];
+    ascending = [descriptorCopy ascending];
     v10 = @"modified_date";
 LABEL_5:
-    v13 = [v7 orderingTermWithProperty:v10 entityClass:v8 ascending:v9];
+    v13 = [v7 orderingTermWithProperty:v10 entityClass:v8 ascending:ascending];
     goto LABEL_7;
   }
 
-  v11 = [v4 key];
+  v11 = [descriptorCopy key];
   v12 = [v11 isEqualToString:*MEMORY[0x277CCC3D0]];
 
   if (v12)
   {
     v7 = MEMORY[0x277D10B68];
     v8 = objc_opt_class();
-    v9 = [v4 ascending];
+    ascending = [descriptorCopy ascending];
     v10 = @"sort_date";
     goto LABEL_5;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___HDMedicalRecordEntity;
-  v13 = objc_msgSendSuper2(&v16, sel_orderingTermForSortDescriptor_, v4);
+  v13 = objc_msgSendSuper2(&v16, sel_orderingTermForSortDescriptor_, descriptorCopy);
 LABEL_7:
   v14 = v13;
 
   return v14;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"user_domain_concepts.uuid"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"user_domain_concepts.uuid"])
   {
     v5 = objc_alloc(MEMORY[0x277CBEB58]);
-    v6 = [HDMedicalUserDomainConceptMappingEntity joinClausesForProperty:v4];
+    v6 = [HDMedicalUserDomainConceptMappingEntity joinClausesForProperty:propertyCopy];
     v7 = [v5 initWithSet:v6];
 
     v8 = MEMORY[0x277D10B50];
-    v9 = [a1 disambiguatedDatabaseTable];
-    v10 = [v8 innerJoinClauseFromTable:v9 toTargetEntity:objc_opt_class() as:0 localReference:@"data_id" targetKey:@"data_id"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v10 = [v8 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:objc_opt_class() as:0 localReference:@"data_id" targetKey:@"data_id"];
     [v7 addObject:v10];
 
     v11 = [v7 copy];
@@ -594,9 +594,9 @@ LABEL_7:
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___HDMedicalRecordEntity;
-    v11 = objc_msgSendSuper2(&v13, sel_joinClausesForProperty_, v4);
+    v11 = objc_msgSendSuper2(&v13, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v11;

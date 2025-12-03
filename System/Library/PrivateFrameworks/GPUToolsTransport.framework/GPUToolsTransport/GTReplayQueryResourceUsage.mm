@@ -1,32 +1,32 @@
 @interface GTReplayQueryResourceUsage
-- (GTReplayQueryResourceUsage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayQueryResourceUsage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayQueryResourceUsage
 
-- (GTReplayQueryResourceUsage)initWithCoder:(id)a3
+- (GTReplayQueryResourceUsage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTReplayQueryResourceUsage;
-  v5 = [(GTReplayRequest *)&v8 initWithCoder:v4];
+  v5 = [(GTReplayRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_dispatchUID.uid = GTDispatchUIDDecode(v4, @"dispatchUID");
+    v5->_dispatchUID.uid = GTDispatchUIDDecode(coderCopy, @"dispatchUID");
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayQueryResourceUsage;
-  v4 = a3;
-  [(GTReplayRequest *)&v5 encodeWithCoder:v4];
-  GTDispatchUIDEncode(v4, self->_dispatchUID.uid, @"dispatchUID");
+  coderCopy = coder;
+  [(GTReplayRequest *)&v5 encodeWithCoder:coderCopy];
+  GTDispatchUIDEncode(coderCopy, self->_dispatchUID.uid, @"dispatchUID");
 }
 
 @end

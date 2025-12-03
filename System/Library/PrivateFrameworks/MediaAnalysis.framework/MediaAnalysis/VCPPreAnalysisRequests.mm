@@ -22,11 +22,11 @@
 
 - (id)gatherAvailableRequests
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_aestheticsRequest)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_classificationRequest)
@@ -300,14 +300,14 @@ LABEL_23:
 - (id)mapAvailableRequestsToResolution
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = [(VCPPreAnalysisRequests *)self gatherAvailableRequests];
-  v4 = [objc_opt_class() _cachedRequestIdealDimension];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  gatherAvailableRequests = [(VCPPreAnalysisRequests *)self gatherAvailableRequests];
+  _cachedRequestIdealDimension = [objc_opt_class() _cachedRequestIdealDimension];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v18;
+  obj = gatherAvailableRequests;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v5)
   {
@@ -327,7 +327,7 @@ LABEL_23:
         v26[1] = v9;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
 
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [_cachedRequestIdealDimension objectForKeyedSubscript:v10];
         if (!v11)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -341,16 +341,16 @@ LABEL_23:
           v11 = &unk_1F49BBC98;
         }
 
-        v13 = [v3 objectForKeyedSubscript:v11];
+        v13 = [dictionary objectForKeyedSubscript:v11];
         v14 = v13 == 0;
 
         if (v14)
         {
-          v15 = [MEMORY[0x1E695DF70] array];
-          [v3 setObject:v15 forKeyedSubscript:v11];
+          array = [MEMORY[0x1E695DF70] array];
+          [dictionary setObject:array forKeyedSubscript:v11];
         }
 
-        v16 = [v3 objectForKeyedSubscript:v11];
+        v16 = [dictionary objectForKeyedSubscript:v11];
         [v16 addObject:v8];
       }
 
@@ -360,7 +360,7 @@ LABEL_23:
     while (v5);
   }
 
-  return v3;
+  return dictionary;
 }
 
 + (void)asyncCacheRequestIdealDimension
@@ -370,7 +370,7 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = __57__VCPPreAnalysisRequests_asyncCacheRequestIdealDimension__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v3, block);
 }
 

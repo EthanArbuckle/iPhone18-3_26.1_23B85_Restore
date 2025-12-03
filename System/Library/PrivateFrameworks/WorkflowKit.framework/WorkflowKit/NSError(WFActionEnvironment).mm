@@ -7,10 +7,10 @@
 
 - (BOOL)wf_isUnsupportedEnvironmentError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"WFActionErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"WFActionErrorDomain"])
   {
-    v3 = [a1 code] == 2;
+    v3 = [self code] == 2;
   }
 
   else

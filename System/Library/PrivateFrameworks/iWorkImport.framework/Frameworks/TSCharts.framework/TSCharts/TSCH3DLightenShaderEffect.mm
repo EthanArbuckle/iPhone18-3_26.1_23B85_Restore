@@ -1,11 +1,11 @@
 @interface TSCH3DLightenShaderEffect
-+ (tvec4<float>)lightenDiffuseFragmentColor:(void *)a3 byPercent:(float)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
++ (tvec4<float>)lightenDiffuseFragmentColor:(void *)color byPercent:(float)percent;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DLightenShaderEffect
 
-+ (tvec4<float>)lightenDiffuseFragmentColor:(void *)a3 byPercent:(float)a4
++ (tvec4<float>)lightenDiffuseFragmentColor:(void *)color byPercent:(float)percent
 {
   __asm
   {
@@ -13,23 +13,23 @@
     FMOV            V1.4S, #1.0
   }
 
-  *v4 = vaddq_f32(vmulq_n_f32(vaddq_f32(*a3, _Q2), a4), _Q1);
+  *v4 = vaddq_f32(vmulq_n_f32(vaddq_f32(*color, _Q2), percent), _Q1);
   result.var2 = a2;
   result.var3 = *(&a2 + 4);
-  result.var0 = a1;
-  result.var1 = *(&a1 + 4);
+  result.var0 = self;
+  result.var1 = *(&self + 4);
   return result;
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v11 = objc_msgSend_stateSharingID(TSCH3DLightenShaderEffect, v7, v8, v9, v10);
-  v12 = sub_2761ADED8(v6, v11);
+  v12 = sub_2761ADED8(statesCopy, v11);
 
   v17 = v12;
-  objc_msgSend_uniform_vec1_(v5, v13, v14, v15, v16, qword_280A46470, &v17);
+  objc_msgSend_uniform_vec1_(dataCopy, v13, v14, v15, v16, qword_280A46470, &v17);
 }
 
 @end

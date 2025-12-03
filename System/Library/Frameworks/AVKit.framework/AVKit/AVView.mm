@@ -1,19 +1,19 @@
 @interface AVView
 - (AVContentIntersectingDelegate)contentIntersectingDelegate;
-- (AVView)initWithCoder:(id)a3;
-- (AVView)initWithFrame:(CGRect)a3;
+- (AVView)initWithCoder:(id)coder;
+- (AVView)initWithFrame:(CGRect)frame;
 - (CGRect)contentIntersection;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_commonInit;
 - (void)_updateSubviewContentIntersectionsIfNeeded;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)interruptActiveInteractions;
 - (void)layoutSubviews;
-- (void)setAutomaticallyUpdatesSubviewContentIntersections:(BOOL)a3;
-- (void)setContentIntersection:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAutomaticallyUpdatesSubviewContentIntersections:(BOOL)intersections;
+- (void)setContentIntersection:(CGRect)intersection;
+- (void)setHidden:(BOOL)hidden;
 - (void)updateForContentIntersection;
-- (void)willRemoveSubview:(id)a3;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation AVView
@@ -85,12 +85,12 @@
     if (self->_isOverVideo != v8)
     {
       self->_isOverVideo = v8;
-      v9 = [(AVView *)self contentIntersectingDelegate];
-      if (v9)
+      contentIntersectingDelegate = [(AVView *)self contentIntersectingDelegate];
+      if (contentIntersectingDelegate)
       {
-        v10 = v9;
-        [v9 viewIsOverVideoDidChange:self];
-        v9 = v10;
+        v10 = contentIntersectingDelegate;
+        [contentIntersectingDelegate viewIsOverVideoDidChange:self];
+        contentIntersectingDelegate = v10;
       }
     }
   }
@@ -99,13 +99,13 @@
 - (void)_updateSubviewContentIntersectionsIfNeeded
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 472) == 1)
+  if (self && *(self + 472) == 1)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v2 = *(a1 + 456);
+    v2 = *(self + 456);
     v3 = [v2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v3)
     {
@@ -122,7 +122,7 @@
           }
 
           v7 = *(*(&v20 + 1) + 8 * v6);
-          [a1 contentIntersection];
+          [self contentIntersection];
           v9 = v8;
           v11 = v10;
           v13 = v12;
@@ -137,7 +137,7 @@
           v26.size.width = v13;
           v26.size.height = v15;
           v27 = CGRectIntersection(v26, v28);
-          [v7 convertRect:a1 fromView:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
+          [v7 convertRect:self fromView:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
           [v7 setContentIntersection:?];
 
           ++v6;
@@ -152,14 +152,14 @@
   }
 }
 
-- (void)setContentIntersection:(CGRect)a3
+- (void)setContentIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
   p_contentIntersection = &self->_contentIntersection;
-  if (!CGRectEqualToRect(self->_contentIntersection, a3))
+  if (!CGRectEqualToRect(self->_contentIntersection, intersection))
   {
     p_contentIntersection->origin.x = x;
     p_contentIntersection->origin.y = y;
@@ -170,39 +170,39 @@
   }
 }
 
-- (void)setAutomaticallyUpdatesSubviewContentIntersections:(BOOL)a3
+- (void)setAutomaticallyUpdatesSubviewContentIntersections:(BOOL)intersections
 {
-  if (self->_automaticallyUpdatesSubviewContentIntersections != a3)
+  if (self->_automaticallyUpdatesSubviewContentIntersections != intersections)
   {
-    self->_automaticallyUpdatesSubviewContentIntersections = a3;
+    self->_automaticallyUpdatesSubviewContentIntersections = intersections;
     [(AVView *)self _updateSubviewContentIntersectionsIfNeeded];
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = AVView;
-  v4 = a3;
-  [(AVView *)&v5 willRemoveSubview:v4];
-  [(NSMutableArray *)self->_subviewsNeedingIntersectionUpdate removeObject:v4, v5.receiver, v5.super_class];
-  [(NSMutableArray *)self->_subviewsNeedingAVInterruptibleUpdate removeObject:v4];
+  subviewCopy = subview;
+  [(AVView *)&v5 willRemoveSubview:subviewCopy];
+  [(NSMutableArray *)self->_subviewsNeedingIntersectionUpdate removeObject:subviewCopy, v5.receiver, v5.super_class];
+  [(NSMutableArray *)self->_subviewsNeedingAVInterruptibleUpdate removeObject:subviewCopy];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v5.receiver = self;
   v5.super_class = AVView;
-  [(AVView *)&v5 didAddSubview:v4];
+  [(AVView *)&v5 didAddSubview:subviewCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(NSMutableArray *)self->_subviewsNeedingIntersectionUpdate addObject:v4];
+    [(NSMutableArray *)self->_subviewsNeedingIntersectionUpdate addObject:subviewCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(NSMutableArray *)self->_subviewsNeedingAVInterruptibleUpdate addObject:v4];
+    [(NSMutableArray *)self->_subviewsNeedingAVInterruptibleUpdate addObject:subviewCopy];
   }
 }
 
@@ -214,11 +214,11 @@
   [(AVView *)self _updateSubviewContentIntersectionsIfNeeded];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = AVView;
-  v5 = [(AVView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(AVView *)&v7 hitTest:event withEvent:test.x, test.y];
   if ([(AVView *)self ignoresTouches]&& v5 == self)
   {
 
@@ -228,22 +228,22 @@
   return v5;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = AVView;
-  [(AVView *)&v4 setHidden:a3];
+  [(AVView *)&v4 setHidden:hidden];
   if ([(AVView *)self hasBackdropView])
   {
     [(UIView *)self avkit_needsUpdateBackdropCaptureViewHidden];
   }
 }
 
-- (AVView)initWithFrame:(CGRect)a3
+- (AVView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVView;
-  v3 = [(AVView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -253,11 +253,11 @@
   return v4;
 }
 
-- (AVView)initWithCoder:(id)a3
+- (AVView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AVView;
-  v3 = [(AVView *)&v6 initWithCoder:a3];
+  v3 = [(AVView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

@@ -1,15 +1,15 @@
 @interface PGGraphLocationCityEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toCityNode:(id)a4;
+- (id)initFromLocationNode:(id)node toCityNode:(id)cityNode;
 @end
 
 @implementation PGGraphLocationCityEdge
 
-- (id)initFromLocationNode:(id)a3 toCityNode:(id)a4
+- (id)initFromLocationNode:(id)node toCityNode:(id)cityNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationCityEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:cityNode];
 }
 
 + (id)filter

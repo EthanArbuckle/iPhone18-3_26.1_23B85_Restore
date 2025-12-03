@@ -2,7 +2,7 @@
 + (id)sharedAgent;
 - (BOOL)_advertiserShouldAdvertise;
 - (BOOL)_companionLinkShouldStart;
-- (BOOL)_fillXpcDictionaryDescriptor:(id)a3 descriptor:(id)a4 metaData:(id)a5;
+- (BOOL)_fillXpcDictionaryDescriptor:(id)descriptor descriptor:(id)a4 metaData:(id)data;
 - (BOOL)_legacyBrowserShouldBrowse;
 - (BOOL)_legacyBrowserShouldScan;
 - (BOOL)_legacyBrowserShouldStart;
@@ -10,44 +10,44 @@
 - (NSString)description;
 - (SDHotspotAgent)init;
 - (id)_appMonitorAppList;
-- (id)_appMonitorStringForState:(unsigned int)a3;
-- (id)_discoveryCachedDeviceFor:(id)a3;
+- (id)_appMonitorStringForState:(unsigned int)state;
+- (id)_discoveryCachedDeviceFor:(id)for;
 - (id)_idsDeviceArray;
-- (id)_idsDeviceIDForBluetoothID:(id)a3;
-- (id)_slicingLLPHSStateNotificationValueToString:(unint64_t)a3;
-- (id)_sysMonitorFamilyMemberForAltDSID:(id)a3;
-- (id)_sysMonitorFamilyMemberForAppleID:(id)a3;
-- (int64_t)_discoveryGroupForDevice:(id)a3;
+- (id)_idsDeviceIDForBluetoothID:(id)d;
+- (id)_slicingLLPHSStateNotificationValueToString:(unint64_t)string;
+- (id)_sysMonitorFamilyMemberForAltDSID:(id)d;
+- (id)_sysMonitorFamilyMemberForAppleID:(id)d;
+- (int64_t)_discoveryGroupForDevice:(id)device;
 - (int64_t)_idsLegacyClientDeviceCount;
 - (int64_t)_idsLegacyHostDeviceCount;
 - (int64_t)_idsTetheringClientDeviceCount;
 - (int64_t)_idsTetheringHostDeviceCount;
 - (int64_t)_sysMonitorFamilyCount;
-- (unsigned)_nearbyNetworkTypeForHotspotNetworkType:(unsigned __int8)a3;
+- (unsigned)_nearbyNetworkTypeForHotspotNetworkType:(unsigned __int8)type;
 - (void)_activate;
-- (void)_addClientID:(id)a3 bundleID:(id)a4 proxy:(id)a5;
-- (void)_additionalInfoForRequest:(id)a3 toMessage:(id)a4;
+- (void)_addClientID:(id)d bundleID:(id)iD proxy:(id)proxy;
+- (void)_additionalInfoForRequest:(id)request toMessage:(id)message;
 - (void)_advertiserEnsureStopped;
 - (void)_advertiserUpdate;
 - (void)_appMonitorEnsureStarted;
 - (void)_appMonitorEnsureStopped;
 - (void)_appMonitorUpdate;
-- (void)_companionLinkActivateWithRequest:(id)a3;
-- (void)_companionLinkActivatedRequest:(id)a3;
+- (void)_companionLinkActivateWithRequest:(id)request;
+- (void)_companionLinkActivatedRequest:(id)request;
 - (void)_companionLinkEnsureStarted;
 - (void)_companionLinkEnsureStopped;
-- (void)_companionLinkHandleLowLatencyFilterRequestOfType:(int64_t)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)_companionLinkHandleRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)_companionLinkHandleResponse:(id)a3 request:(id)a4 error:(id)a5;
-- (void)_discoveryCellularSlicingStateUpdateFor:(id)a3;
-- (void)_discoveryDeviceChanged:(id)a3;
-- (void)_discoveryDeviceFound:(id)a3;
-- (void)_discoveryDeviceLost:(id)a3;
+- (void)_companionLinkHandleLowLatencyFilterRequestOfType:(int64_t)type request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_companionLinkHandleRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_companionLinkHandleResponse:(id)response request:(id)request error:(id)error;
+- (void)_discoveryCellularSlicingStateUpdateFor:(id)for;
+- (void)_discoveryDeviceChanged:(id)changed;
+- (void)_discoveryDeviceFound:(id)found;
+- (void)_discoveryDeviceLost:(id)lost;
 - (void)_discoveryReevaluateHandoffDevices;
 - (void)_discoveryUpdateClients;
-- (void)_discoveryUpdateCombined:(BOOL)a3;
-- (void)_discoveryUpdateLegacyDeviceList:(id)a3;
-- (void)_enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4;
+- (void)_discoveryUpdateCombined:(BOOL)combined;
+- (void)_discoveryUpdateLegacyDeviceList:(id)list;
+- (void)_enableHotspotForDevice:(id)device withCompletionHandler:(id)handler;
 - (void)_idsEnsureStarted;
 - (void)_idsEnsureStopped;
 - (void)_invalidate;
@@ -55,35 +55,35 @@
 - (void)_legacyBrowserEnsureStarted;
 - (void)_legacyBrowserEnsureStopped;
 - (void)_legacyBrowswerUpdateD2DState;
-- (void)_postUserAlertForName:(id)a3 altDSID:(id)a4 logCategory:(LogCategory *)a5 completion:(id)a6;
-- (void)_prefsChanged:(BOOL)a3;
+- (void)_postUserAlertForName:(id)name altDSID:(id)d logCategory:(LogCategory *)category completion:(id)completion;
+- (void)_prefsChanged:(BOOL)changed;
 - (void)_registerForCellularSlicingAvailabilityNotifications;
 - (void)_registerForWombatActivityNotifications;
-- (void)_removeClientID:(id)a3;
-- (void)_startBrowsingForClientID:(id)a3;
-- (void)_stopBrowsingForClientID:(id)a3;
+- (void)_removeClientID:(id)d;
+- (void)_startBrowsingForClientID:(id)d;
+- (void)_stopBrowsingForClientID:(id)d;
 - (void)_sysMonitorEnsureStarted;
 - (void)_sysMonitorEnsureStopped;
 - (void)_unregisterForCellularSlicingCapabilityNotifications;
 - (void)_unregisterWombatActivityNotifications;
 - (void)_update;
-- (void)_updateAdvertisementSuppression:(BOOL)a3;
-- (void)_userAlertForMember:(id)a3 logCategory:(LogCategory *)a4 completion:(id)a5;
+- (void)_updateAdvertisementSuppression:(BOOL)suppression;
+- (void)_userAlertForMember:(id)member logCategory:(LogCategory *)category completion:(id)completion;
 - (void)activate;
-- (void)addClientID:(id)a3 proxy:(id)a4;
-- (void)enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4;
-- (void)hotspotManagerTetheringSupportChanged:(id)a3;
+- (void)addClientID:(id)d proxy:(id)proxy;
+- (void)enableHotspotForDevice:(id)device withCompletionHandler:(id)handler;
+- (void)hotspotManagerTetheringSupportChanged:(id)changed;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)removeClientID:(id)a3;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)removeClientID:(id)d;
+- (void)service:(id)service devicesChanged:(id)changed;
 - (void)startBrowsing;
 - (void)stopBrowsing;
-- (void)stopBrowsingForClientID:(id)a3;
+- (void)stopBrowsingForClientID:(id)d;
 - (void)testNotification;
 - (void)update;
-- (void)updateLowLatencyFilter:(id)a3 isAddFilter:(BOOL)a4 completion:(id)a5;
-- (void)updatedFoundDeviceList:(id)a3;
+- (void)updateLowLatencyFilter:(id)filter isAddFilter:(BOOL)addFilter completion:(id)completion;
+- (void)updatedFoundDeviceList:(id)list;
 @end
 
 @implementation SDHotspotAgent
@@ -99,8 +99,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(SDHotspotAgent *)self _idsDeviceArray];
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+    v5 = [_idsDeviceArray countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (!v5)
     {
       goto LABEL_32;
@@ -114,16 +114,16 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_idsDeviceArray);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 modelIdentifier];
-        v11 = [v10 lowercaseString];
+        modelIdentifier = [v9 modelIdentifier];
+        lowercaseString = [modelIdentifier lowercaseString];
 
-        if (v11)
+        if (lowercaseString)
         {
-          if ([v11 containsString:@"mac"])
+          if ([lowercaseString containsString:@"mac"])
           {
             if (v9)
             {
@@ -147,7 +147,7 @@
             }
           }
 
-          if (([v11 containsString:@"iphone"] & 1) != 0 || objc_msgSend(v11, "containsString:", @"ipad"))
+          if (([lowercaseString containsString:@"iphone"] & 1) != 0 || objc_msgSend(lowercaseString, "containsString:", @"ipad"))
           {
             if (v9)
             {
@@ -163,7 +163,7 @@ LABEL_29:
             }
 
             v15 = 0;
-            if ([v11 containsString:@"watch"])
+            if ([lowercaseString containsString:@"watch"])
             {
 LABEL_27:
               v12 = 0;
@@ -175,7 +175,7 @@ LABEL_27:
           else
           {
 LABEL_22:
-            if ([v11 containsString:@"watch"])
+            if ([lowercaseString containsString:@"watch"])
             {
               if (!v9)
               {
@@ -190,7 +190,7 @@ LABEL_22:
             }
           }
 
-          if (![v11 containsString:{@"realitydevice", v12, v13, v14}])
+          if (![lowercaseString containsString:{@"realitydevice", v12, v13, v14}])
           {
             goto LABEL_30;
           }
@@ -206,7 +206,7 @@ LABEL_22:
 LABEL_30:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [_idsDeviceArray countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (!v6)
       {
 LABEL_32:
@@ -232,26 +232,26 @@ LABEL_32:
     goto LABEL_6;
   }
 
-  v3 = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
-  if (!v3)
+  isTetheringSupported = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
+  if (!isTetheringSupported)
   {
-    return v3;
+    return isTetheringSupported;
   }
 
   if ([(SDHotspotManager *)self->_hotspotManager maxConnectionsReached])
   {
 LABEL_6:
-    LOBYTE(v3) = 0;
+    LOBYTE(isTetheringSupported) = 0;
   }
 
   else
   {
     if (self->_suppressAdvertisement)
     {
-      v3 = _os_feature_enabled_impl();
-      if (!v3)
+      isTetheringSupported = _os_feature_enabled_impl();
+      if (!isTetheringSupported)
       {
-        return v3;
+        return isTetheringSupported;
       }
 
       if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
@@ -260,10 +260,10 @@ LABEL_6:
       }
     }
 
-    LOBYTE(v3) = [(SDHotspotAgent *)self _idsTetheringClientDeviceCount]>= 1 && [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable]|| [(SDHotspotAgent *)self _sysMonitorFamilyCount]> 0;
+    LOBYTE(isTetheringSupported) = [(SDHotspotAgent *)self _idsTetheringClientDeviceCount]>= 1 && [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable]|| [(SDHotspotAgent *)self _sysMonitorFamilyCount]> 0;
   }
 
-  return v3;
+  return isTetheringSupported;
 }
 
 - (int64_t)_sysMonitorFamilyCount
@@ -277,8 +277,8 @@ LABEL_6:
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    familyMembers = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
+    v5 = [familyMembers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -290,7 +290,7 @@ LABEL_6:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(familyMembers);
           }
 
           if (([*(*(&v9 + 1) + 8 * v8) isMe] & 1) == 0)
@@ -302,7 +302,7 @@ LABEL_6:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [familyMembers countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -401,8 +401,8 @@ LABEL_6:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = [(SDHotspotAgent *)self _idsDeviceArray];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+    v5 = [_idsDeviceArray countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v5)
     {
       goto LABEL_26;
@@ -416,16 +416,16 @@ LABEL_6:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_idsDeviceArray);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 modelIdentifier];
-        v11 = [v10 lowercaseString];
+        modelIdentifier = [v9 modelIdentifier];
+        lowercaseString = [modelIdentifier lowercaseString];
 
-        if (v11)
+        if (lowercaseString)
         {
-          if ([v11 containsString:@"mac"])
+          if ([lowercaseString containsString:@"mac"])
           {
             if (!v9)
             {
@@ -453,7 +453,7 @@ LABEL_23:
             }
           }
 
-          if (([v11 containsString:@"iphone"] & 1) != 0 || objc_msgSend(v11, "containsString:", @"ipad"))
+          if (([lowercaseString containsString:@"iphone"] & 1) != 0 || objc_msgSend(lowercaseString, "containsString:", @"ipad"))
           {
             v12 = &v13;
             if (!v9)
@@ -477,7 +477,7 @@ LABEL_23:
 LABEL_24:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [_idsDeviceArray countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (!v6)
       {
 LABEL_26:
@@ -501,8 +501,8 @@ LABEL_26:
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(SDHotspotAgent *)self _idsDeviceArray];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+    v5 = [_idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (!v5)
     {
       goto LABEL_15;
@@ -516,7 +516,7 @@ LABEL_26:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_idsDeviceArray);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -538,7 +538,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (!v6)
       {
 LABEL_15:
@@ -632,8 +632,8 @@ LABEL_11:
 
     if ([(SDHotspotManager *)self->_hotspotManager isTetheringSupported])
     {
-      v5 = [(SDHotspotAgent *)self _idsDeviceArray];
-      v3 = [v5 count] != 0;
+      _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+      v3 = [_idsDeviceArray count] != 0;
 
       return v3;
     }
@@ -661,8 +661,8 @@ LABEL_11:
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(SDHotspotAgent *)self _idsDeviceArray];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+    v5 = [_idsDeviceArray countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -674,7 +674,7 @@ LABEL_11:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_idsDeviceArray);
           }
 
           if ([*(*(&v9 + 1) + 8 * v8) supportsTethering])
@@ -686,7 +686,7 @@ LABEL_11:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [_idsDeviceArray countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -701,9 +701,9 @@ LABEL_11:
 - (void)_advertiserUpdate
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(SDStatusMonitor *)self->_statusMonitor localPowerSource];
-  v4 = [v3 charging];
-  [v3 chargeLevel];
+  localPowerSource = [(SDStatusMonitor *)self->_statusMonitor localPowerSource];
+  charging = [localPowerSource charging];
+  [localPowerSource chargeLevel];
   v6 = v5 * 100.0;
   if (self->_prefBatteryLevelOverride <= 0)
   {
@@ -715,7 +715,7 @@ LABEL_11:
     prefBatteryLevelOverride = self->_prefBatteryLevelOverride;
   }
 
-  if (self->_prefChargingOverrideDisabled || !v4 || prefBatteryLevelOverride > 20)
+  if (self->_prefChargingOverrideDisabled || !charging || prefBatteryLevelOverride > 20)
   {
     if (prefBatteryLevelOverride < 0x64)
     {
@@ -761,27 +761,27 @@ LABEL_11:
   prefFamilyEnabledOverride = self->_prefFamilyEnabledOverride;
   if (prefFamilyEnabledOverride)
   {
-    v12 = [(NSNumber *)prefFamilyEnabledOverride BOOLValue];
+    bOOLValue = [(NSNumber *)prefFamilyEnabledOverride BOOLValue];
   }
 
   else
   {
-    v12 = [(SDStatusMonitor *)self->_statusMonitor familyHotspotEnabled];
+    bOOLValue = [(SDStatusMonitor *)self->_statusMonitor familyHotspotEnabled];
   }
 
-  v32 = v12;
+  v32 = bOOLValue;
   prefNetworkTypeOverride = self->_prefNetworkTypeOverride;
   if (prefNetworkTypeOverride)
   {
-    v14 = [(NSNumber *)prefNetworkTypeOverride integerValue];
+    integerValue = [(NSNumber *)prefNetworkTypeOverride integerValue];
   }
 
   else
   {
-    v14 = [(SDStatusMonitor *)self->_statusMonitor networkType];
+    integerValue = [(SDStatusMonitor *)self->_statusMonitor networkType];
   }
 
-  v15 = [(SDHotspotAgent *)self _nearbyNetworkTypeForHotspotNetworkType:v14];
+  v15 = [(SDHotspotAgent *)self _nearbyNetworkTypeForHotspotNetworkType:integerValue];
   prefSignalStrengthOverride = self->_prefSignalStrengthOverride;
   if (!prefSignalStrengthOverride)
   {
@@ -799,7 +799,7 @@ LABEL_11:
   }
 
   v18 = +[SDNearbyAgent sharedNearbyAgent];
-  v19 = [v18 hotspotInfo];
+  hotspotInfo = [v18 hotspotInfo];
 
   if (v32)
   {
@@ -812,10 +812,10 @@ LABEL_11:
   }
 
   v21 = v8 | v20 | (16 * (v15 & 7)) | (4 * (v17 & 3u));
-  if (v19 != v21)
+  if (hotspotInfo != v21)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    if (((v21 ^ v19) & 0x83) != 0)
+    if (((v21 ^ hotspotInfo) & 0x83) != 0)
     {
       if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
       {
@@ -914,9 +914,9 @@ LABEL_51:
       sub_1000BCE58();
     }
 
-    v4 = [(IDSService *)self->_idsService devices];
+    devices = [(IDSService *)self->_idsService devices];
     v5 = self->_idsDeviceArray;
-    self->_idsDeviceArray = v4;
+    self->_idsDeviceArray = devices;
 
     idsDeviceArray = self->_idsDeviceArray;
   }
@@ -1027,8 +1027,8 @@ LABEL_51:
   NSAppendPrintF();
   v13 = v12;
 
-  v14 = [(SDStatusMonitor *)self->_statusMonitor localPowerSource];
-  [v14 chargeLevel];
+  localPowerSource = [(SDStatusMonitor *)self->_statusMonitor localPowerSource];
+  [localPowerSource chargeLevel];
   v31 = (v15 * 100.0);
   NSAppendPrintF();
   v16 = v13;
@@ -1047,11 +1047,11 @@ LABEL_51:
   NSAppendPrintF();
   v18 = v16;
 
-  v33 = [(SDStatusMonitor *)self->_statusMonitor networkType];
+  networkType = [(SDStatusMonitor *)self->_statusMonitor networkType];
   NSAppendPrintF();
   v19 = v18;
 
-  v34 = [(SDStatusMonitor *)self->_statusMonitor signalStrength];
+  signalStrength = [(SDStatusMonitor *)self->_statusMonitor signalStrength];
   NSAppendPrintF();
   v20 = v19;
 
@@ -1174,7 +1174,7 @@ LABEL_51:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_prefsChanged:(BOOL)a3
+- (void)_prefsChanged:(BOOL)changed
 {
   v51 = 0;
   dispatch_assert_queue_V2(self->_dispatchQueue);
@@ -1317,10 +1317,10 @@ LABEL_21:
       if (v50 == 1)
       {
         v25 = v24;
-        v26 = [(NSNumber *)self->_prefNetworkTypeOverride unsignedIntValue];
+        unsignedIntValue = [(NSNumber *)self->_prefNetworkTypeOverride unsignedIntValue];
         if (dword_100970200 <= 50)
         {
-          v27 = v26;
+          v27 = unsignedIntValue;
           if (dword_100970200 != -1 || _LogCategory_Initialize())
           {
             sub_1000BBD08(v27, v25);
@@ -1482,7 +1482,7 @@ LABEL_106:
     self->_prefStaleCacheInfoSecs = v44;
   }
 
-  if (!a3)
+  if (!changed)
   {
     [(SDHotspotAgent *)self _update];
   }
@@ -1526,22 +1526,22 @@ LABEL_106:
   }
 }
 
-- (unsigned)_nearbyNetworkTypeForHotspotNetworkType:(unsigned __int8)a3
+- (unsigned)_nearbyNetworkTypeForHotspotNetworkType:(unsigned __int8)type
 {
-  if (((a3 - 1) & 0xF8) != 0)
+  if (((type - 1) & 0xF8) != 0)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = 0x706050004030201uLL >> (8 * (a3 - 1));
+    v3 = 0x706050004030201uLL >> (8 * (type - 1));
   }
 
   return v3 & 7;
 }
 
-- (void)hotspotManagerTetheringSupportChanged:(id)a3
+- (void)hotspotManagerTetheringSupportChanged:(id)changed
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1618,8 +1618,8 @@ LABEL_106:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [(NSMutableDictionary *)self->_clientProxyMap allValues];
-    v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allValues = [(NSMutableDictionary *)self->_clientProxyMap allValues];
+    v4 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1631,21 +1631,21 @@ LABEL_106:
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v8 = *(*(&v15 + 1) + 8 * v7);
-          v9 = [v8 browsing];
-          if (v9)
+          browsing = [v8 browsing];
+          if (browsing)
           {
-            v10 = [v8 bundleID];
-            if (!v10 || ![(NSMutableArray *)self->_browserBundleIDs containsObject:v10])
+            bundleID = [v8 bundleID];
+            if (!bundleID || ![(NSMutableArray *)self->_browserBundleIDs containsObject:bundleID])
             {
 
               goto LABEL_20;
             }
 
-            v11 = [(BKSApplicationStateMonitor *)self->_browserAppMonitor applicationStateForApplication:v10];
+            v11 = [(BKSApplicationStateMonitor *)self->_browserAppMonitor applicationStateForApplication:bundleID];
             if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
             {
               sub_1000BC094(self, v11);
@@ -1661,7 +1661,7 @@ LABEL_106:
         }
 
         while (v5 != v7);
-        v12 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
         v5 = v12;
       }
 
@@ -1671,12 +1671,12 @@ LABEL_106:
     else
     {
 LABEL_20:
-      v9 = 0;
+      browsing = 0;
     }
 
     browserClientsInactive = self->_browserClientsInactive;
-    self->_browserClientsInactive = v9;
-    if (browserClientsInactive != v9 && dword_100970200 <= 50)
+    self->_browserClientsInactive = browsing;
+    if (browserClientsInactive != browsing && dword_100970200 <= 50)
     {
       if (dword_100970200 != -1)
       {
@@ -1694,56 +1694,56 @@ LABEL_24:
   }
 }
 
-- (id)_appMonitorStringForState:(unsigned int)a3
+- (id)_appMonitorStringForState:(unsigned int)state
 {
-  if (a3 < 9 && ((0x117u >> a3) & 1) != 0)
+  if (state < 9 && ((0x117u >> state) & 1) != 0)
   {
-    v4 = *(&off_1008CF6C0 + a3);
+    state = *(&off_1008CF6C0 + state);
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"Unexpected (%ld)", a3];
+    state = [NSString stringWithFormat:@"Unexpected (%ld)", state];
   }
 
-  return v4;
+  return state;
 }
 
-- (void)addClientID:(id)a3 proxy:(id)a4
+- (void)addClientID:(id)d proxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  proxyCopy = proxy;
   v8 = +[NSXPCConnection currentConnection];
-  v9 = [v8 sd_connectionBundleID];
+  sd_connectionBundleID = [v8 sd_connectionBundleID];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B549C;
   v13[3] = &unk_1008CE158;
   v13[4] = self;
-  v14 = v6;
-  v15 = v9;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  v15 = sd_connectionBundleID;
+  v16 = proxyCopy;
+  v11 = proxyCopy;
+  v12 = dCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_addClientID:(id)a3 bundleID:(id)a4 proxy:(id)a5
+- (void)_addClientID:(id)d bundleID:(id)iD proxy:(id)proxy
 {
-  v17 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a5;
+  proxyCopy = proxy;
   dispatch_assert_queue_V2(dispatchQueue);
   v11 = objc_opt_new();
-  [v11 setBundleID:v8];
-  [v11 setClientProxy:v10];
+  [v11 setBundleID:iDCopy];
+  [v11 setClientProxy:proxyCopy];
 
   if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
   {
-    v15 = v17;
-    v16 = v8;
+    v15 = dCopy;
+    v16 = iDCopy;
     LogPrintF();
   }
 
@@ -1757,28 +1757,28 @@ LABEL_24:
     clientProxyMap = self->_clientProxyMap;
   }
 
-  [(NSMutableDictionary *)clientProxyMap setObject:v11 forKeyedSubscript:v17, v15, v16];
+  [(NSMutableDictionary *)clientProxyMap setObject:v11 forKeyedSubscript:dCopy, v15, v16];
 }
 
-- (void)removeClientID:(id)a3
+- (void)removeClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B5674;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_removeClientID:(id)a3
+- (void)_removeClientID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:v5];
+  v4 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:dCopy];
   if (v4)
   {
     if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
@@ -1786,16 +1786,16 @@ LABEL_24:
       sub_1000BC0F4(v4);
     }
 
-    [(NSMutableDictionary *)self->_clientProxyMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_clientProxyMap removeObjectForKey:dCopy];
   }
 }
 
 - (void)startBrowsing
 {
   v3 = +[NSXPCConnection currentConnection];
-  v4 = [v3 userInfo];
+  userInfo = [v3 userInfo];
 
-  v5 = [v4 objectForKeyedSubscript:@"SDConnectionManagerIdentifier"];
+  v5 = [userInfo objectForKeyedSubscript:@"SDConnectionManagerIdentifier"];
   if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
   {
     sub_1000BC160(v5);
@@ -1812,22 +1812,22 @@ LABEL_24:
   dispatch_async(dispatchQueue, v8);
 }
 
-- (void)_startBrowsingForClientID:(id)a3
+- (void)_startBrowsingForClientID:(id)d
 {
-  v12 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if ([(SDStatusMonitor *)self->_statusMonitor deviceSupportsContinuity])
   {
-    v4 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:v12];
+    v4 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:dCopy];
     v5 = v4;
     if (v4)
     {
       [v4 setBrowsing:1];
-      v6 = [v5 bundleID];
-      if (v6)
+      bundleID = [v5 bundleID];
+      if (bundleID)
       {
-        v7 = [(SDHotspotAgent *)self _appMonitorAppList];
-        v8 = [v7 containsObject:v6];
+        _appMonitorAppList = [(SDHotspotAgent *)self _appMonitorAppList];
+        v8 = [_appMonitorAppList containsObject:bundleID];
 
         if (v8)
         {
@@ -1841,7 +1841,7 @@ LABEL_24:
             browserBundleIDs = self->_browserBundleIDs;
           }
 
-          [(NSMutableArray *)browserBundleIDs addObject:v6];
+          [(NSMutableArray *)browserBundleIDs addObject:bundleID];
           [(SDHotspotAgent *)self _appMonitorEnsureStarted];
         }
       }
@@ -1880,38 +1880,38 @@ LABEL_24:
 - (void)stopBrowsing
 {
   v3 = +[NSXPCConnection currentConnection];
-  v5 = [v3 userInfo];
+  userInfo = [v3 userInfo];
 
-  v4 = [v5 objectForKeyedSubscript:@"SDConnectionManagerIdentifier"];
+  v4 = [userInfo objectForKeyedSubscript:@"SDConnectionManagerIdentifier"];
   [(SDHotspotAgent *)self stopBrowsingForClientID:v4];
 }
 
-- (void)stopBrowsingForClientID:(id)a3
+- (void)stopBrowsingForClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B5B7C;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_stopBrowsingForClientID:(id)a3
+- (void)_stopBrowsingForClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if ([(SDStatusMonitor *)self->_statusMonitor deviceSupportsContinuity])
   {
-    v5 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_clientProxyMap objectForKeyedSubscript:dCopy];
     [v5 setBrowsing:0];
-    v6 = [v5 bundleID];
-    if (v6)
+    bundleID = [v5 bundleID];
+    if (bundleID)
     {
-      [(NSMutableArray *)self->_browserBundleIDs removeObject:v6];
+      [(NSMutableArray *)self->_browserBundleIDs removeObject:bundleID];
     }
 
     if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
@@ -1994,42 +1994,42 @@ LABEL_22:
   }
 }
 
-- (void)enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4
+- (void)enableHotspotForDevice:(id)device withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B5EA4;
   block[3] = &unk_1008CE730;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = deviceCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4
+- (void)_enableHotspotForDevice:(id)device withCompletionHandler:(id)handler
 {
-  v20 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = arc4random();
   v8 = [(SDHotspotAgent *)self _logCategoryCreateWithLabel:@"TetheringAgent" sessionID:v7];
   v9 = objc_opt_new();
   [v9 setRequestType:1];
-  [v9 setHotspotDevice:v20];
-  [v9 setHotspotInfoHandler:v6];
+  [v9 setHotspotDevice:deviceCopy];
+  [v9 setHotspotInfoHandler:handlerCopy];
   [v9 setLogCategory:v8];
   [v9 setSessionID:v7];
-  v10 = [v20 group];
-  v11 = [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable];
+  group = [deviceCopy group];
+  _sysMonitorD2DEncryptionIsAvailable = [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable];
   if (v8->var0 <= 50 && (v8->var0 != -1 || _LogCategory_Initialize()))
   {
     v12 = "no";
-    if (v10 == 2)
+    if (group == 2)
     {
       v13 = "yes";
     }
@@ -2039,21 +2039,21 @@ LABEL_22:
       v13 = "no";
     }
 
-    if (v11)
+    if (_sysMonitorD2DEncryptionIsAvailable)
     {
       v12 = "yes";
     }
 
     v18 = v12;
-    v19 = v20;
+    v19 = deviceCopy;
     v17 = v13;
     LogPrintF();
   }
 
-  v14 = v10 == 2;
-  v15 = [v20 supportsCompanionLink];
+  v14 = group == 2;
+  supportsCompanionLink = [deviceCopy supportsCompanionLink];
   var0 = v8->var0;
-  if (v15 && ((v14 | v11) & 1) != 0)
+  if (supportsCompanionLink && ((v14 | _sysMonitorD2DEncryptionIsAvailable) & 1) != 0)
   {
     if (var0 <= 50 && (var0 != -1 || _LogCategory_Initialize()))
     {
@@ -2070,14 +2070,14 @@ LABEL_22:
       sub_1000BC318();
     }
 
-    [(SDHotspotBrowser *)self->_hotspotBrowser enableHotspotForDevice:v20 withCompletionHandler:v6];
+    [(SDHotspotBrowser *)self->_hotspotBrowser enableHotspotForDevice:deviceCopy withCompletionHandler:handlerCopy];
   }
 }
 
-- (void)updateLowLatencyFilter:(id)a3 isAddFilter:(BOOL)a4 completion:(id)a5
+- (void)updateLowLatencyFilter:(id)filter isAddFilter:(BOOL)addFilter completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  filterCopy = filter;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     dispatchQueue = self->_dispatchQueue;
@@ -2086,56 +2086,56 @@ LABEL_22:
     v12[2] = sub_1000B61CC;
     v12[3] = &unk_1008CF450;
     v12[4] = self;
-    v15 = a4;
-    v13 = v8;
-    v14 = v9;
+    addFilterCopy = addFilter;
+    v13 = filterCopy;
+    v14 = completionCopy;
     dispatch_async(dispatchQueue, v12);
   }
 
   else
   {
     v11 = NSErrorWithOSStatusF();
-    (*(v9 + 2))(v9, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
-- (void)_additionalInfoForRequest:(id)a3 toMessage:(id)a4
+- (void)_additionalInfoForRequest:(id)request toMessage:(id)message
 {
-  v22 = a3;
-  v5 = a4;
-  if (([v22 requestType] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  requestCopy = request;
+  messageCopy = message;
+  if (([requestCopy requestType] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v6 = [v22 trafficFilterParams];
-    v7 = [v6 srcIPAddress];
-    [v5 setObject:v7 forKeyedSubscript:@"tfsIP"];
+    trafficFilterParams = [requestCopy trafficFilterParams];
+    srcIPAddress = [trafficFilterParams srcIPAddress];
+    [messageCopy setObject:srcIPAddress forKeyedSubscript:@"tfsIP"];
 
-    v8 = [v22 trafficFilterParams];
-    v9 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v8 srcPort]);
-    [v5 setObject:v9 forKeyedSubscript:@"tfsPrt"];
+    trafficFilterParams2 = [requestCopy trafficFilterParams];
+    v9 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [trafficFilterParams2 srcPort]);
+    [messageCopy setObject:v9 forKeyedSubscript:@"tfsPrt"];
 
-    v10 = [v22 trafficFilterParams];
-    v11 = [v10 destIPAddress];
-    [v5 setObject:v11 forKeyedSubscript:@"tfdIP"];
+    trafficFilterParams3 = [requestCopy trafficFilterParams];
+    destIPAddress = [trafficFilterParams3 destIPAddress];
+    [messageCopy setObject:destIPAddress forKeyedSubscript:@"tfdIP"];
 
-    v12 = [v22 trafficFilterParams];
-    v13 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v12 destPort]);
-    [v5 setObject:v13 forKeyedSubscript:@"tfdPrt"];
+    trafficFilterParams4 = [requestCopy trafficFilterParams];
+    v13 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [trafficFilterParams4 destPort]);
+    [messageCopy setObject:v13 forKeyedSubscript:@"tfdPrt"];
 
-    v14 = [v22 trafficFilterParams];
-    v15 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v14 ipProtocol]);
-    [v5 setObject:v15 forKeyedSubscript:@"tfPro"];
+    trafficFilterParams5 = [requestCopy trafficFilterParams];
+    v15 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [trafficFilterParams5 ipProtocol]);
+    [messageCopy setObject:v15 forKeyedSubscript:@"tfPro"];
 
-    v16 = [v22 trafficFilterParams];
-    v17 = [v16 trafficClass];
-    [v5 setObject:v17 forKeyedSubscript:@"tfTC"];
+    trafficFilterParams6 = [requestCopy trafficFilterParams];
+    trafficClass = [trafficFilterParams6 trafficClass];
+    [messageCopy setObject:trafficClass forKeyedSubscript:@"tfTC"];
 
-    v18 = [v22 trafficFilterParams];
-    v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v18 ipVersion]);
-    [v5 setObject:v19 forKeyedSubscript:@"tfIPv"];
+    trafficFilterParams7 = [requestCopy trafficFilterParams];
+    v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [trafficFilterParams7 ipVersion]);
+    [messageCopy setObject:v19 forKeyedSubscript:@"tfIPv"];
 
-    v20 = [v22 trafficFilterParams];
-    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v20 idleTimeout]);
-    [v5 setObject:v21 forKeyedSubscript:@"tfTO"];
+    trafficFilterParams8 = [requestCopy trafficFilterParams];
+    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [trafficFilterParams8 idleTimeout]);
+    [messageCopy setObject:v21 forKeyedSubscript:@"tfTO"];
   }
 }
 
@@ -2164,23 +2164,23 @@ LABEL_22:
   }
 }
 
-- (void)_companionLinkActivateWithRequest:(id)a3
+- (void)_companionLinkActivateWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v4 hotspotDevice];
-  v6 = [v4 logCategory];
-  v7 = [v5 deviceIdentifier];
-  if (v7)
+  hotspotDevice = [requestCopy hotspotDevice];
+  logCategory = [requestCopy logCategory];
+  deviceIdentifier = [hotspotDevice deviceIdentifier];
+  if (deviceIdentifier)
   {
-    v21 = v6;
-    v22 = v5;
+    v21 = logCategory;
+    v22 = hotspotDevice;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    activeDevices = [(RPCompanionLinkClient *)self->_companionLinkClient activeDevices];
+    v9 = [activeDevices countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2191,12 +2191,12 @@ LABEL_4:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(activeDevices);
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v7];
+        identifier = [v13 identifier];
+        v15 = [identifier isEqualToString:deviceIdentifier];
 
         if (v15)
         {
@@ -2205,7 +2205,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v10 = [activeDevices countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -2222,42 +2222,42 @@ LABEL_4:
         goto LABEL_15;
       }
 
-      v5 = v22;
+      hotspotDevice = v22;
       if (*v21 <= 50 && (*v21 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
       }
 
-      v18 = objc_opt_new();
-      [v18 setAppID:@"com.sharing.hotspot"];
-      [v18 setControlFlags:6291712];
-      [v18 setDestinationDevice:v16];
-      [v18 setDispatchQueue:self->_dispatchQueue];
+      hotspotInfoHandler = objc_opt_new();
+      [hotspotInfoHandler setAppID:@"com.sharing.hotspot"];
+      [hotspotInfoHandler setControlFlags:6291712];
+      [hotspotInfoHandler setDestinationDevice:v16];
+      [hotspotInfoHandler setDispatchQueue:self->_dispatchQueue];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1000B6E3C;
       v29[3] = &unk_1008CDEA0;
       v29[4] = v22;
-      [v18 setInterruptionHandler:v29];
+      [hotspotInfoHandler setInterruptionHandler:v29];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_1000B6E98;
       v28[3] = &unk_1008CDEA0;
       v28[4] = v22;
-      [v18 setInvalidationHandler:v28];
+      [hotspotInfoHandler setInvalidationHandler:v28];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_1000B6EF4;
       v23[3] = &unk_1008CF4D8;
       v27 = v21;
       v23[4] = v22;
-      v20 = v4;
+      v20 = requestCopy;
       v24 = v20;
       v25 = v16;
-      v26 = self;
+      selfCopy = self;
       v17 = v16;
-      [v18 activateWithCompletion:v23];
-      [v20 setCompanionLinkClient:v18];
+      [hotspotInfoHandler activateWithCompletion:v23];
+      [v20 setCompanionLinkClient:hotspotInfoHandler];
     }
 
     else
@@ -2265,60 +2265,60 @@ LABEL_4:
 LABEL_10:
 
 LABEL_15:
-      v5 = v22;
+      hotspotDevice = v22;
       if (*v21 <= 90 && (*v21 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
       }
 
       v17 = NSErrorWithOSStatusF();
-      v18 = [v4 hotspotInfoHandler];
-      (v18)[2](v18, 0, v17);
+      hotspotInfoHandler = [requestCopy hotspotInfoHandler];
+      (hotspotInfoHandler)[2](hotspotInfoHandler, 0, v17);
     }
   }
 
   else
   {
-    if (*v6 <= 90 && (*v6 != -1 || _LogCategory_Initialize()))
+    if (*logCategory <= 90 && (*logCategory != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
     v17 = NSErrorWithOSStatusF();
-    v19 = [v4 hotspotInfoHandler];
-    (v19)[2](v19, 0, v17);
+    hotspotInfoHandler2 = [requestCopy hotspotInfoHandler];
+    (hotspotInfoHandler2)[2](hotspotInfoHandler2, 0, v17);
   }
 }
 
-- (void)_companionLinkActivatedRequest:(id)a3
+- (void)_companionLinkActivatedRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v4 companionLinkClient];
-  v6 = [v5 destinationDevice];
-  v7 = [v6 statusFlags];
+  companionLinkClient = [requestCopy companionLinkClient];
+  destinationDevice = [companionLinkClient destinationDevice];
+  statusFlags = [destinationDevice statusFlags];
 
   v8 = SFDeviceProductVersion();
   v9 = objc_opt_new();
-  v10 = [(SDStatusMonitor *)self->_statusMonitor myAltDSID];
-  [v9 setObject:v10 forKeyedSubscript:@"altDSID"];
+  myAltDSID = [(SDStatusMonitor *)self->_statusMonitor myAltDSID];
+  [v9 setObject:myAltDSID forKeyedSubscript:@"altDSID"];
 
-  v11 = [(SDStatusMonitor *)self->_statusMonitor myAppleID];
-  [v9 setObject:v11 forKeyedSubscript:@"aplID"];
+  myAppleID = [(SDStatusMonitor *)self->_statusMonitor myAppleID];
+  [v9 setObject:myAppleID forKeyedSubscript:@"aplID"];
 
   v12 = [NSNumber numberWithBool:[(SDStatusMonitor *)self->_statusMonitor canConnectOn5GHz]];
   [v9 setObject:v12 forKeyedSubscript:@"5ghz"];
 
-  v13 = [(SDStatusMonitor *)self->_statusMonitor computerName];
-  [v9 setObject:v13 forKeyedSubscript:@"devnm"];
+  computerName = [(SDStatusMonitor *)self->_statusMonitor computerName];
+  [v9 setObject:computerName forKeyedSubscript:@"devnm"];
 
-  v14 = [NSNumber numberWithInt:(v7 & 0x4000) == 0];
+  v14 = [NSNumber numberWithInt:(statusFlags & 0x4000) == 0];
   [v9 setObject:v14 forKeyedSubscript:@"icld"];
 
-  v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 sessionID]);
+  v15 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [requestCopy sessionID]);
   [v9 setObject:v15 forKeyedSubscript:@"sID"];
 
-  v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 requestType]);
+  v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [requestCopy requestType]);
   [v9 setObject:v16 forKeyedSubscript:@"reqT"];
 
   if (v8 && ([v8 isEqualToString:@"?"] & 1) == 0)
@@ -2326,18 +2326,18 @@ LABEL_15:
     [v9 setObject:v8 forKeyedSubscript:@"proVer"];
   }
 
-  if ([v4 requestType] == 2 || objc_msgSend(v4, "requestType") == 3)
+  if ([requestCopy requestType] == 2 || objc_msgSend(requestCopy, "requestType") == 3)
   {
-    [(SDHotspotAgent *)self _additionalInfoForRequest:v4 toMessage:v9];
+    [(SDHotspotAgent *)self _additionalInfoForRequest:requestCopy toMessage:v9];
   }
 
   v17 = objc_opt_new();
   [v17 setObject:&off_10090B8C8 forKeyedSubscript:RPOptionTimeoutSeconds];
-  if (*[v4 logCategory] <= 50)
+  if (*[requestCopy logCategory] <= 50)
   {
-    if (*[v4 logCategory] != -1 || (objc_msgSend(v4, "logCategory"), _LogCategory_Initialize()))
+    if (*[requestCopy logCategory] != -1 || (objc_msgSend(requestCopy, "logCategory"), _LogCategory_Initialize()))
     {
-      sub_1000BC574(v4);
+      sub_1000BC574(requestCopy);
     }
   }
 
@@ -2347,16 +2347,16 @@ LABEL_15:
   v20[2] = sub_1000B736C;
   v20[3] = &unk_1008CF500;
   v20[4] = self;
-  v21 = v4;
-  v19 = v4;
-  [v5 sendRequestID:@"com.sharing.hotspot.request" request:v9 destinationID:v18 options:v17 responseHandler:v20];
+  v21 = requestCopy;
+  v19 = requestCopy;
+  [companionLinkClient sendRequestID:@"com.sharing.hotspot.request" request:v9 destinationID:v18 options:v17 responseHandler:v20];
 }
 
-- (void)_companionLinkHandleRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_companionLinkHandleRequest:(id)request options:(id)options responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v70 = 0;
   v11 = [(SDHotspotAgent *)self _logCategoryCreateWithLabel:@"TetheringAgent" sessionID:CFDictionaryGetInt64Ranged()];
@@ -2365,20 +2365,20 @@ LABEL_15:
   v67[2] = sub_1000B7C3C;
   v67[3] = &unk_1008CF528;
   v69 = v11;
-  v12 = v10;
+  v12 = handlerCopy;
   v68 = v12;
   v13 = objc_retainBlock(v67);
   if (v11->var0 <= 50 && (v11->var0 != -1 || _LogCategory_Initialize()))
   {
-    v50 = v8;
+    v50 = requestCopy;
     LogPrintF();
   }
 
-  v14 = [v8 objectForKeyedSubscript:{@"reqT", v50}];
+  v14 = [requestCopy objectForKeyedSubscript:{@"reqT", v50}];
   v15 = v14;
   if (!v14 || (v16 = [v14 integerValue], (v16 & 0xFFFFFFFFFFFFFFFELL) != 2))
   {
-    v17 = [v8 objectForKeyedSubscript:@"devnm"];
+    v17 = [requestCopy objectForKeyedSubscript:@"devnm"];
     if (!v17)
     {
       if (v11->var0 <= 90 && (v11->var0 != -1 || _LogCategory_Initialize()))
@@ -2392,7 +2392,7 @@ LABEL_15:
       goto LABEL_68;
     }
 
-    v18 = [v8 objectForKeyedSubscript:@"icld"];
+    v18 = [requestCopy objectForKeyedSubscript:@"icld"];
     if (!v18)
     {
       if (v11->var0 <= 90 && (v11->var0 != -1 || _LogCategory_Initialize()))
@@ -2420,8 +2420,8 @@ LABEL_15:
       v22 = @"senderModelID";
     }
 
-    v23 = v9;
-    v24 = [v9 objectForKeyedSubscript:v22];
+    v23 = optionsCopy;
+    v24 = [optionsCopy objectForKeyedSubscript:v22];
 
     v58 = v24;
     if (!v24 && v11->var0 <= 40 && (v11->var0 != -1 || _LogCategory_Initialize()))
@@ -2429,14 +2429,14 @@ LABEL_15:
       sub_1000BC5FC();
     }
 
-    v25 = [v8 valueForKey:@"5ghz"];
+    v25 = [requestCopy valueForKey:@"5ghz"];
 
     if (v25)
     {
-      v26 = [v8 objectForKeyedSubscript:@"5ghz"];
+      v26 = [requestCopy objectForKeyedSubscript:@"5ghz"];
       CanConnectOn5GHz = [v26 BOOLValue];
 
-      v9 = v23;
+      optionsCopy = v23;
       if (v11->var0 > 40)
       {
         v17 = v19;
@@ -2461,7 +2461,7 @@ LABEL_15:
 
     else
     {
-      v9 = v23;
+      optionsCopy = v23;
       if (v11->var0 <= 40 && (v11->var0 != -1 || _LogCategory_Initialize()))
       {
         sub_1000BC63C();
@@ -2481,15 +2481,15 @@ LABEL_15:
 
     v12 = v59;
     v60 = v13;
-    v56 = [v8 objectForKeyedSubscript:{@"proVer", v51}];
+    v56 = [requestCopy objectForKeyedSubscript:{@"proVer", v51}];
     if (!v56 && v11->var0 <= 40 && (v11->var0 != -1 || _LogCategory_Initialize()))
     {
       sub_1000BC668();
     }
 
-    v29 = [v18 BOOLValue];
-    v30 = [v8 objectForKeyedSubscript:@"altDSID"];
-    v31 = [v8 objectForKeyedSubscript:@"aplID"];
+    bOOLValue = [v18 BOOLValue];
+    v30 = [requestCopy objectForKeyedSubscript:@"altDSID"];
+    v31 = [requestCopy objectForKeyedSubscript:@"aplID"];
     v57 = v30;
     if (v30)
     {
@@ -2517,7 +2517,7 @@ LABEL_15:
 
     else
     {
-      v35 = v29;
+      v35 = bOOLValue;
     }
 
     v55 = v34;
@@ -2525,14 +2525,14 @@ LABEL_15:
     {
       v52 = v18;
       v53 = v17;
-      v36 = v9;
+      v36 = optionsCopy;
       statusMonitor = self->_statusMonitor;
-      v38 = [v34 altDSID];
-      v39 = [(SDStatusMonitor *)statusMonitor familyHotspotStateForAltDSID:v38];
+      altDSID = [v34 altDSID];
+      v39 = [(SDStatusMonitor *)statusMonitor familyHotspotStateForAltDSID:altDSID];
 
       if (v11->var0 <= 50 && (v11->var0 != -1 || _LogCategory_Initialize()))
       {
-        v45 = sub_1000BC6A8(v29, v11, v55, v39);
+        v45 = sub_1000BC6A8(bOOLValue, v11, v55, v39);
         if (v39 == 2)
         {
           v46 = 1;
@@ -2540,10 +2540,10 @@ LABEL_15:
 
         else
         {
-          v46 = v29;
+          v46 = bOOLValue;
         }
 
-        v9 = v36;
+        optionsCopy = v36;
         if (v45 & 1) != 0 || (v46)
         {
           goto LABEL_59;
@@ -2559,10 +2559,10 @@ LABEL_15:
 
         else
         {
-          v40 = v29;
+          v40 = bOOLValue;
         }
 
-        v9 = v36;
+        optionsCopy = v36;
         if (v40 == 1)
         {
 LABEL_59:
@@ -2652,69 +2652,69 @@ LABEL_68:
     goto LABEL_66;
   }
 
-  [(SDHotspotAgent *)self _companionLinkHandleLowLatencyFilterRequestOfType:v16 request:v8 options:v9 responseHandler:v12];
+  [(SDHotspotAgent *)self _companionLinkHandleLowLatencyFilterRequestOfType:v16 request:requestCopy options:optionsCopy responseHandler:v12];
 LABEL_69:
 }
 
-- (void)_companionLinkHandleResponse:(id)a3 request:(id)a4 error:(id)a5
+- (void)_companionLinkHandleResponse:(id)response request:(id)request error:(id)error
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v20)
+  if (responseCopy)
   {
-    v10 = [v20 objectForKeyedSubscript:@"name"];
-    v11 = [v20 objectForKeyedSubscript:@"pass"];
-    v12 = [v20 objectForKeyedSubscript:@"chan"];
-    v13 = [[SFRemoteHotspotInfo alloc] initWithName:v10 password:v11 channel:v12];
-    if (*[v8 logCategory] <= 50)
+    hotspotInfoHandler2 = [responseCopy objectForKeyedSubscript:@"name"];
+    v11 = [responseCopy objectForKeyedSubscript:@"pass"];
+    v12 = [responseCopy objectForKeyedSubscript:@"chan"];
+    v13 = [[SFRemoteHotspotInfo alloc] initWithName:hotspotInfoHandler2 password:v11 channel:v12];
+    if (*[requestCopy logCategory] <= 50)
     {
-      if (*[v8 logCategory] != -1 || (objc_msgSend(v8, "logCategory"), _LogCategory_Initialize()))
+      if (*[requestCopy logCategory] != -1 || (objc_msgSend(requestCopy, "logCategory"), _LogCategory_Initialize()))
       {
-        sub_1000BC868(v8);
+        sub_1000BC868(requestCopy);
       }
     }
 
-    v14 = [v8 hotspotInfoHandler];
-    (v14)[2](v14, v13, 0);
+    hotspotInfoHandler = [requestCopy hotspotInfoHandler];
+    (hotspotInfoHandler)[2](hotspotInfoHandler, v13, 0);
 
-    v15 = [v8 companionLinkClient];
-    v16 = [v15 destinationDevice];
-    v17 = [v16 identifier];
+    companionLinkClient = [requestCopy companionLinkClient];
+    destinationDevice = [companionLinkClient destinationDevice];
+    identifier = [destinationDevice identifier];
     hotspotDeviceIdentifier = self->_hotspotDeviceIdentifier;
     p_hotspotDeviceIdentifier = &self->_hotspotDeviceIdentifier;
-    *p_hotspotDeviceIdentifier = v17;
+    *p_hotspotDeviceIdentifier = identifier;
 
-    if (*[v8 logCategory] <= 50)
+    if (*[requestCopy logCategory] <= 50)
     {
-      if (*[v8 logCategory] != -1 || (objc_msgSend(v8, "logCategory"), _LogCategory_Initialize()))
+      if (*[requestCopy logCategory] != -1 || (objc_msgSend(requestCopy, "logCategory"), _LogCategory_Initialize()))
       {
-        sub_1000BC8B0(v8, p_hotspotDeviceIdentifier);
+        sub_1000BC8B0(requestCopy, p_hotspotDeviceIdentifier);
       }
     }
   }
 
   else
   {
-    if (*[v8 logCategory] <= 90)
+    if (*[requestCopy logCategory] <= 90)
     {
-      if (*[v8 logCategory] != -1 || (objc_msgSend(v8, "logCategory"), _LogCategory_Initialize()))
+      if (*[requestCopy logCategory] != -1 || (objc_msgSend(requestCopy, "logCategory"), _LogCategory_Initialize()))
       {
-        sub_1000BC8FC(v8);
+        sub_1000BC8FC(requestCopy);
       }
     }
 
-    v10 = [v8 hotspotInfoHandler];
-    (v10)[2](v10, 0, v9);
+    hotspotInfoHandler2 = [requestCopy hotspotInfoHandler];
+    (hotspotInfoHandler2)[2](hotspotInfoHandler2, 0, errorCopy);
   }
 }
 
-- (BOOL)_fillXpcDictionaryDescriptor:(id)a3 descriptor:(id)a4 metaData:(id)a5
+- (BOOL)_fillXpcDictionaryDescriptor:(id)descriptor descriptor:(id)a4 metaData:(id)data
 {
   v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  dataCopy = data;
+  descriptorCopy = descriptor;
   CFStringGetTypeID();
   v10 = CFDictionaryGetTypedValue();
   v11 = NSDictionaryGetNSNumber();
@@ -2747,35 +2747,35 @@ LABEL_69:
 
   else
   {
-    xpc_dictionary_set_string(v8, netrbClientIfnetTrafficDescriptorLocalIp, [v10 UTF8String]);
-    xpc_dictionary_set_string(v8, netrbClientIfnetTrafficDescriptorRemoteIp, [v12 UTF8String]);
-    xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorLocalPort, [v11 intValue]);
-    xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorRemotePort, [v13 intValue]);
-    xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorDeviceId, 0);
-    xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorIpProtocol, [v14 intValue]);
-    xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorIpVersion, [v15 intValue]);
+    xpc_dictionary_set_string(dataCopy, netrbClientIfnetTrafficDescriptorLocalIp, [v10 UTF8String]);
+    xpc_dictionary_set_string(dataCopy, netrbClientIfnetTrafficDescriptorRemoteIp, [v12 UTF8String]);
+    xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorLocalPort, [v11 intValue]);
+    xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorRemotePort, [v13 intValue]);
+    xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorDeviceId, 0);
+    xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorIpProtocol, [v14 intValue]);
+    xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorIpVersion, [v15 intValue]);
     if (v16 && [v16 intValue])
     {
-      xpc_dictionary_set_uint64(v8, netrbClientIfnetTrafficDescriptorConnectionIdleTimeout, [v16 intValue]);
+      xpc_dictionary_set_uint64(dataCopy, netrbClientIfnetTrafficDescriptorConnectionIdleTimeout, [v16 intValue]);
     }
 
-    xpc_dictionary_set_value(v7, netrbClientLowLatencyFlowParam, v8);
+    xpc_dictionary_set_value(v7, netrbClientLowLatencyFlowParam, dataCopy);
   }
 
   return v22;
 }
 
-- (void)_companionLinkHandleLowLatencyFilterRequestOfType:(int64_t)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)_companionLinkHandleLowLatencyFilterRequestOfType:(int64_t)type request:(id)request options:(id)options responseHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  optionsCopy = options;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000B855C;
   v17[3] = &unk_1008CF578;
-  v12 = a6;
+  handlerCopy = handler;
   v18 = 0;
-  v19 = v12;
+  v19 = handlerCopy;
   v13 = objc_retainBlock(v17);
   if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
   {
@@ -2784,11 +2784,11 @@ LABEL_69:
 
   v14 = xpc_dictionary_create(0, 0, 0);
   v15 = xpc_dictionary_create(0, 0, 0);
-  if ([(SDHotspotAgent *)self _fillXpcDictionaryDescriptor:v10 descriptor:v14 metaData:v15])
+  if ([(SDHotspotAgent *)self _fillXpcDictionaryDescriptor:requestCopy descriptor:v14 metaData:v15])
   {
     if (_NETRBClientCreate())
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v16 = _NETRBClientAddLowLatencyFlow();
       }
@@ -2828,17 +2828,17 @@ LABEL_26:
   (v13[2])(v13);
 }
 
-- (void)_discoveryDeviceFound:(id)a3
+- (void)_discoveryDeviceFound:(id)found
 {
-  v26 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v26 identifier];
-  if (v4)
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [v26 hotspotInfo];
-    if (!v5)
+    hotspotInfo = [foundCopy hotspotInfo];
+    if (!hotspotInfo)
     {
-      v9 = v4;
+      v9 = identifier;
       v10 = [(SDHotspotAgent *)self _discoveryCachedDeviceFor:v9];
       if (v10)
       {
@@ -2871,12 +2871,12 @@ LABEL_26:
       goto LABEL_39;
     }
 
-    v6 = v5;
-    v7 = [v26 statusFlags] & 0x80000;
-    v8 = [v26 statusFlags];
-    if (v7 | v8 & 0x4000)
+    v6 = hotspotInfo;
+    v7 = [foundCopy statusFlags] & 0x80000;
+    statusFlags = [foundCopy statusFlags];
+    if (v7 | statusFlags & 0x4000)
     {
-      if ((v6 & 0x80) == 0 && (v8 & 0x4000) != 0)
+      if ((v6 & 0x80) == 0 && (statusFlags & 0x4000) != 0)
       {
         if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
         {
@@ -2887,13 +2887,13 @@ LABEL_26:
       }
 
       v9 = objc_opt_new();
-      [v9 setDeviceIdentifier:v4];
-      v11 = [v26 name];
-      [v9 setDeviceName:v11];
+      [v9 setDeviceIdentifier:identifier];
+      name = [foundCopy name];
+      [v9 setDeviceName:name];
 
-      [v9 setGroup:{-[SDHotspotAgent _discoveryGroupForDevice:](self, "_discoveryGroupForDevice:", v26)}];
-      v12 = [v26 model];
-      [v9 setModel:v12];
+      [v9 setGroup:{-[SDHotspotAgent _discoveryGroupForDevice:](self, "_discoveryGroupForDevice:", foundCopy)}];
+      model = [foundCopy model];
+      [v9 setModel:model];
 
       [v9 setLastSeen:CFAbsoluteTimeGetCurrent()];
       [v9 setOsSupportsAutoHotspot:1];
@@ -2914,8 +2914,8 @@ LABEL_26:
         v13 = self->_devices;
       }
 
-      v16 = [v9 deviceIdentifier];
-      [(NSMutableDictionary *)v13 setObject:v9 forKeyedSubscript:v16];
+      deviceIdentifier = [v9 deviceIdentifier];
+      [(NSMutableDictionary *)v13 setObject:v9 forKeyedSubscript:deviceIdentifier];
 
       cachedHotspotInfoDevicesMap = self->_cachedHotspotInfoDevicesMap;
       if (!cachedHotspotInfoDevicesMap)
@@ -2927,8 +2927,8 @@ LABEL_26:
         cachedHotspotInfoDevicesMap = self->_cachedHotspotInfoDevicesMap;
       }
 
-      v20 = [v9 deviceIdentifier];
-      [(NSMutableDictionary *)cachedHotspotInfoDevicesMap setObject:v9 forKeyedSubscript:v20];
+      deviceIdentifier2 = [v9 deviceIdentifier];
+      [(NSMutableDictionary *)cachedHotspotInfoDevicesMap setObject:v9 forKeyedSubscript:deviceIdentifier2];
 
       [(SDHotspotAgent *)self _discoveryUpdateCombined:0];
 LABEL_39:
@@ -2950,19 +2950,19 @@ LABEL_39:
 LABEL_40:
 }
 
-- (void)_discoveryDeviceChanged:(id)a3
+- (void)_discoveryDeviceChanged:(id)changed
 {
-  v26 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v26 identifier];
-  v5 = v4;
-  if (v4)
+  identifier = [changedCopy identifier];
+  v5 = identifier;
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
     v7 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v6];
     v8 = [(SDHotspotAgent *)self _discoveryCachedDeviceFor:v6];
-    v9 = [v26 hotspotInfo];
-    if (v9)
+    hotspotInfo = [changedCopy hotspotInfo];
+    if (hotspotInfo)
     {
       v10 = 0;
     }
@@ -2973,35 +2973,35 @@ LABEL_40:
     }
 
     v11 = !v10;
-    if (([v26 statusFlags] & 0x80000) != 0)
+    if (([changedCopy statusFlags] & 0x80000) != 0)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = ([v26 statusFlags] >> 14) & ((v9 & 0x80) >> 7);
+      v12 = ([changedCopy statusFlags] >> 14) & ((hotspotInfo & 0x80) >> 7);
     }
 
     if ((v11 & v12) == 1)
     {
       v13 = objc_opt_new();
       v14 = v13;
-      if (v9)
+      if (hotspotInfo)
       {
         [v13 setDeviceIdentifier:v6];
-        v15 = [v26 name];
-        [v14 setDeviceName:v15];
+        name = [changedCopy name];
+        [v14 setDeviceName:name];
 
-        [v14 setGroup:{-[SDHotspotAgent _discoveryGroupForDevice:](self, "_discoveryGroupForDevice:", v26)}];
+        [v14 setGroup:{-[SDHotspotAgent _discoveryGroupForDevice:](self, "_discoveryGroupForDevice:", changedCopy)}];
         [v14 setHandoffActive:0];
         [v14 setLastSeen:CFAbsoluteTimeGetCurrent()];
-        v16 = [v26 model];
-        [v14 setModel:v16];
+        model = [changedCopy model];
+        [v14 setModel:model];
 
         [v14 setOsSupportsAutoHotspot:1];
         [v14 setSupportsCompanionLink:1];
-        [v14 updateWithHotspotInfo:v9];
+        [v14 updateWithHotspotInfo:hotspotInfo];
         v17 = v14;
       }
 
@@ -3064,7 +3064,7 @@ LABEL_46:
       sub_1000BCAB4();
     }
 
-    if (([v26 statusFlags] & 0x4000) == 0 || (v9 & 0x80) != 0)
+    if (([changedCopy statusFlags] & 0x4000) == 0 || (hotspotInfo & 0x80) != 0)
     {
       if (dword_100970200 > 50 || dword_100970200 == -1 && !_LogCategory_Initialize())
       {
@@ -3092,14 +3092,14 @@ LABEL_34:
 LABEL_47:
 }
 
-- (void)_discoveryDeviceLost:(id)a3
+- (void)_discoveryDeviceLost:(id)lost
 {
-  v6 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v6 identifier];
-  if (v4)
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
     if (v5)
     {
@@ -3108,7 +3108,7 @@ LABEL_47:
         sub_1000BCBB0();
       }
 
-      [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_devices removeObjectForKey:identifier];
       [(SDHotspotAgent *)self _discoveryUpdateCombined:0];
     }
 
@@ -3124,9 +3124,9 @@ LABEL_47:
   }
 }
 
-- (void)_discoveryUpdateCombined:(BOOL)a3
+- (void)_discoveryUpdateCombined:(BOOL)combined
 {
-  v28 = a3;
+  combinedCopy = combined;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v4 = objc_opt_new();
   devices = self->_devices;
@@ -3158,10 +3158,10 @@ LABEL_47:
         }
 
         v11 = *(*(&v33 + 1) + 8 * v10);
-        v12 = [v11 deviceIdentifier];
-        if (v12)
+        deviceIdentifier = [v11 deviceIdentifier];
+        if (deviceIdentifier)
         {
-          v13 = [(SDHotspotAgent *)self _idsDeviceIDForBluetoothID:v12];
+          v13 = [(SDHotspotAgent *)self _idsDeviceIDForBluetoothID:deviceIdentifier];
           if (v13)
           {
             v14 = [v4 objectForKeyedSubscript:v13];
@@ -3201,8 +3201,8 @@ LABEL_47:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [v4 allValues];
-    v18 = [v17 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    allValues = [v4 allValues];
+    v18 = [allValues countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v18)
     {
       v19 = v18;
@@ -3213,12 +3213,12 @@ LABEL_47:
         {
           if (*v30 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues);
           }
 
           v22 = *(*(&v29 + 1) + 8 * i);
-          v23 = [v22 deviceIdentifier];
-          v24 = [(NSMutableDictionary *)self->_devicesCombined objectForKeyedSubscript:v23];
+          deviceIdentifier2 = [v22 deviceIdentifier];
+          v24 = [(NSMutableDictionary *)self->_devicesCombined objectForKeyedSubscript:deviceIdentifier2];
           if (!v24)
           {
 
@@ -3236,7 +3236,7 @@ LABEL_36:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v19 = [allValues countByEnumeratingWithState:&v29 objects:v38 count:16];
         v27 = 0;
         if (v19)
         {
@@ -3266,15 +3266,15 @@ LABEL_37:
   }
 
   objc_storeStrong(&self->_devicesCombined, v4);
-  if ((v27 | v28) == 1)
+  if ((v27 | combinedCopy) == 1)
   {
     [(SDHotspotAgent *)self _discoveryUpdateClients];
   }
 }
 
-- (void)_discoveryUpdateLegacyDeviceList:(id)a3
+- (void)_discoveryUpdateLegacyDeviceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
   {
@@ -3282,31 +3282,31 @@ LABEL_37:
   }
 
   devicesLegacy = self->_devicesLegacy;
-  self->_devicesLegacy = v4;
+  self->_devicesLegacy = listCopy;
 
   [(SDHotspotAgent *)self _discoveryUpdateCombined:0];
 }
 
-- (void)updatedFoundDeviceList:(id)a3
+- (void)updatedFoundDeviceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B9838;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (id)_discoveryCachedDeviceFor:(id)a3
+- (id)_discoveryCachedDeviceFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [(NSMutableDictionary *)self->_cachedHotspotInfoDevicesMap objectForKeyedSubscript:v4];
-  if (v5 && (Current = CFAbsoluteTimeGetCurrent(), [v5 lastSeen], Current - v7 <= self->_prefStaleCacheInfoSecs) && (+[SDActivityScanner sharedScanner](SDActivityScanner, "sharedScanner"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "activeAdvertisementForDeviceWithIdentifier:", v4), v8, v9))
+  v5 = [(NSMutableDictionary *)self->_cachedHotspotInfoDevicesMap objectForKeyedSubscript:forCopy];
+  if (v5 && (Current = CFAbsoluteTimeGetCurrent(), [v5 lastSeen], Current - v7 <= self->_prefStaleCacheInfoSecs) && (+[SDActivityScanner sharedScanner](SDActivityScanner, "sharedScanner"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "activeAdvertisementForDeviceWithIdentifier:", forCopy), v8, v9))
   {
     [v5 setHandoffActive:1];
     if (dword_100970200 <= 10 && (dword_100970200 != -1 || _LogCategory_Initialize()))
@@ -3325,31 +3325,31 @@ LABEL_37:
   return v10;
 }
 
-- (void)_discoveryCellularSlicingStateUpdateFor:(id)a3
+- (void)_discoveryCellularSlicingStateUpdateFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B99F0;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forCopy;
+  v6 = forCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (int64_t)_discoveryGroupForDevice:(id)a3
+- (int64_t)_discoveryGroupForDevice:(id)device
 {
-  v3 = a3;
-  if (([v3 statusFlags] & 0x80000) != 0)
+  deviceCopy = device;
+  if (([deviceCopy statusFlags] & 0x80000) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = ([v3 statusFlags] >> 13) & 2;
+    v4 = ([deviceCopy statusFlags] >> 13) & 2;
   }
 
   return v4;
@@ -3403,9 +3403,9 @@ LABEL_37:
   }
 }
 
-- (id)_idsDeviceIDForBluetoothID:(id)a3
+- (id)_idsDeviceIDForBluetoothID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   idsDeviceBTDictionary = self->_idsDeviceBTDictionary;
   if (!idsDeviceBTDictionary)
   {
@@ -3414,8 +3414,8 @@ LABEL_37:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(SDHotspotAgent *)self _idsDeviceArray];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    _idsDeviceArray = [(SDHotspotAgent *)self _idsDeviceArray];
+    v8 = [_idsDeviceArray countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3426,20 +3426,20 @@ LABEL_37:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_idsDeviceArray);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 nsuuid];
-          if (v13)
+          nsuuid = [v12 nsuuid];
+          if (nsuuid)
           {
-            v14 = [v12 uniqueIDOverride];
-            v15 = [v13 UUIDString];
-            [(NSDictionary *)v6 setObject:v14 forKeyedSubscript:v15];
+            uniqueIDOverride = [v12 uniqueIDOverride];
+            uUIDString = [nsuuid UUIDString];
+            [(NSDictionary *)v6 setObject:uniqueIDOverride forKeyedSubscript:uUIDString];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [_idsDeviceArray countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -3451,23 +3451,23 @@ LABEL_37:
     idsDeviceBTDictionary = self->_idsDeviceBTDictionary;
   }
 
-  v17 = [(NSDictionary *)idsDeviceBTDictionary objectForKeyedSubscript:v4];
+  v17 = [(NSDictionary *)idsDeviceBTDictionary objectForKeyedSubscript:dCopy];
 
   return v17;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100970200 <= 50 && (dword_100970200 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000BCEF4(v5);
+    sub_1000BCEF4(changedCopy);
   }
 
   idsDeviceArray = self->_idsDeviceArray;
-  self->_idsDeviceArray = v5;
-  v7 = v5;
+  self->_idsDeviceArray = changedCopy;
+  v7 = changedCopy;
 
   idsDeviceBTDictionary = self->_idsDeviceBTDictionary;
   self->_idsDeviceBTDictionary = 0;
@@ -3501,9 +3501,9 @@ LABEL_37:
   }
 
   [(SDHotspotBrowser *)self->_hotspotBrowser setProducerScanEnabled:[(SDHotspotAgent *)self _legacyBrowserShouldScan]];
-  v5 = [(SDHotspotAgent *)self _legacyBrowserShouldBrowse];
+  _legacyBrowserShouldBrowse = [(SDHotspotAgent *)self _legacyBrowserShouldBrowse];
   v6 = self->_hotspotBrowser;
-  if (v5)
+  if (_legacyBrowserShouldBrowse)
   {
 
     [(SDHotspotBrowser *)v6 startBrowsing];
@@ -3563,10 +3563,10 @@ LABEL_37:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_hotspotBrowser)
   {
-    v3 = [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable];
+    _sysMonitorD2DEncryptionIsAvailable = [(SDHotspotAgent *)self _sysMonitorD2DEncryptionIsAvailable];
     hotspotBrowser = self->_hotspotBrowser;
 
-    [(SDHotspotBrowser *)hotspotBrowser setD2dEncryptionAvailable:v3];
+    [(SDHotspotBrowser *)hotspotBrowser setD2dEncryptionAvailable:_sysMonitorD2DEncryptionIsAvailable];
   }
 }
 
@@ -3616,16 +3616,16 @@ LABEL_37:
   self->_systemMonitor = 0;
 }
 
-- (id)_sysMonitorFamilyMemberForAltDSID:(id)a3
+- (id)_sysMonitorFamilyMemberForAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  familyMembers = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
+  v6 = [familyMembers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3637,14 +3637,14 @@ LABEL_37:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(familyMembers);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if (([v11 isMe] & 1) == 0)
         {
-          v12 = [v11 altDSID];
-          if (v12 && [v4 isEqualToString:v12])
+          altDSID = [v11 altDSID];
+          if (altDSID && [dCopy isEqualToString:altDSID])
           {
             v13 = v11;
 
@@ -3653,7 +3653,7 @@ LABEL_37:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [familyMembers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -3667,16 +3667,16 @@ LABEL_37:
   return v8;
 }
 
-- (id)_sysMonitorFamilyMemberForAppleID:(id)a3
+- (id)_sysMonitorFamilyMemberForAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  familyMembers = [(CUSystemMonitor *)self->_systemMonitor familyMembers];
+  v6 = [familyMembers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3688,14 +3688,14 @@ LABEL_37:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(familyMembers);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if (([v11 isMe] & 1) == 0)
         {
-          v12 = [v11 appleID];
-          if (v12 && [v4 isEqualToString:v12])
+          appleID = [v11 appleID];
+          if (appleID && [dCopy isEqualToString:appleID])
           {
             v13 = v11;
 
@@ -3704,7 +3704,7 @@ LABEL_37:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [familyMembers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -3718,77 +3718,77 @@ LABEL_37:
   return v8;
 }
 
-- (void)_userAlertForMember:(id)a3 logCategory:(LogCategory *)a4 completion:(id)a5
+- (void)_userAlertForMember:(id)member logCategory:(LogCategory *)category completion:(id)completion
 {
-  v13 = a3;
-  v8 = a5;
+  memberCopy = member;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v9 = [v13 firstName];
-  if (v9)
+  firstName = [memberCopy firstName];
+  if (firstName)
   {
-    v10 = [v13 altDSID];
-    if (v10)
+    altDSID = [memberCopy altDSID];
+    if (altDSID)
     {
-      v11 = [(NSMutableDictionary *)self->_userAlerts objectForKeyedSubscript:v10];
+      v11 = [(NSMutableDictionary *)self->_userAlerts objectForKeyedSubscript:altDSID];
       if (v11)
       {
-        if (a4->var0 <= 50 && (a4->var0 != -1 || _LogCategory_Initialize()))
+        if (category->var0 <= 50 && (category->var0 != -1 || _LogCategory_Initialize()))
         {
-          v12 = v9;
+          v12 = firstName;
           LogPrintF();
         }
 
         [v11 invalidate];
-        [(NSMutableDictionary *)self->_userAlerts removeObjectForKey:v10];
+        [(NSMutableDictionary *)self->_userAlerts removeObjectForKey:altDSID];
       }
 
-      [(SDHotspotAgent *)self _postUserAlertForName:v9 altDSID:v10 logCategory:a4 completion:v8];
+      [(SDHotspotAgent *)self _postUserAlertForName:firstName altDSID:altDSID logCategory:category completion:completionCopy];
     }
 
     else
     {
-      if (a4->var0 <= 90 && (a4->var0 != -1 || _LogCategory_Initialize()))
+      if (category->var0 <= 90 && (category->var0 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
       }
 
       v11 = NSErrorWithOSStatusF();
-      v8[2](v8, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
   else
   {
-    if (a4->var0 <= 90 && (a4->var0 != -1 || _LogCategory_Initialize()))
+    if (category->var0 <= 90 && (category->var0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    v10 = NSErrorWithOSStatusF();
-    v8[2](v8, v10);
+    altDSID = NSErrorWithOSStatusF();
+    completionCopy[2](completionCopy, altDSID);
   }
 }
 
-- (void)_postUserAlertForName:(id)a3 altDSID:(id)a4 logCategory:(LogCategory *)a5 completion:(id)a6
+- (void)_postUserAlertForName:(id)name altDSID:(id)d logCategory:(LogCategory *)category completion:(id)completion
 {
-  v10 = a3;
-  v31 = a4;
-  v30 = a6;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v11 = [NSBundle bundleWithIdentifier:@"com.apple.Sharing"];
   v12 = [v11 URLForResource:@"Assets" withExtension:@"car"];
 
-  if (!v12 && a5->var0 <= 90 && (a5->var0 != -1 || _LogCategory_Initialize()))
+  if (!v12 && category->var0 <= 90 && (category->var0 != -1 || _LogCategory_Initialize()))
   {
     sub_1000BD130();
   }
 
   v13 = SFLocalizedStringForKey();
   v14 = SFLocalizedStringForKey();
-  v15 = [NSString stringWithFormat:v14, v10];
+  nameCopy = [NSString stringWithFormat:v14, nameCopy];
 
   v16 = SFLocalizedStringForKey();
-  v17 = [NSString stringWithFormat:v16, v10];
+  nameCopy2 = [NSString stringWithFormat:v16, nameCopy];
 
   v18 = objc_opt_new();
   [v18 setObject:&__kCFBooleanTrue forKeyedSubscript:kCFUserNotificationAlertTopMostKey];
@@ -3797,14 +3797,14 @@ LABEL_37:
   [v18 setObject:&off_10090B8E0 forKeyedSubscript:SBUserNotificationSystemSoundIDKey];
   v32 = v13;
   [v18 setObject:v13 forKeyedSubscript:SBUserNotificationLockScreenAlertHeaderKey];
-  [v18 setObject:v15 forKeyedSubscript:SBUserNotificationLockScreenAlertMessageKey];
-  v19 = [v12 path];
-  [v18 setObject:v19 forKeyedSubscript:SBUserNotificationIconImageAssetCatalogPathKey];
+  [v18 setObject:nameCopy forKeyedSubscript:SBUserNotificationLockScreenAlertMessageKey];
+  path = [v12 path];
+  [v18 setObject:path forKeyedSubscript:SBUserNotificationIconImageAssetCatalogPathKey];
 
   [v18 setObject:@"InstantHotSpot" forKeyedSubscript:SBUserNotificationIconImageAssetCatalogImageKey];
   v20 = objc_opt_new();
   [v20 setDispatchQueue:self->_dispatchQueue];
-  [v20 setTitle:v17];
+  [v20 setTitle:nameCopy2];
   v21 = SFLocalizedStringForKey();
   [v20 setDefaultButtonTitle:v21];
 
@@ -3817,16 +3817,16 @@ LABEL_37:
   v33[1] = 3221225472;
   v33[2] = sub_1000BB110;
   v33[3] = &unk_1008CF640;
-  v38 = a5;
-  v23 = v10;
+  categoryCopy = category;
+  v23 = nameCopy;
   v34 = v23;
-  v24 = v30;
+  v24 = completionCopy;
   v37 = v24;
-  v35 = self;
-  v25 = v31;
+  selfCopy = self;
+  v25 = dCopy;
   v36 = v25;
   [v20 setResponseHandler:v33];
-  if (a5->var0 <= 50 && (a5->var0 != -1 || _LogCategory_Initialize()))
+  if (category->var0 <= 50 && (category->var0 != -1 || _LogCategory_Initialize()))
   {
     v29 = v23;
     LogPrintF();
@@ -3857,10 +3857,10 @@ LABEL_37:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_updateAdvertisementSuppression:(BOOL)a3
+- (void)_updateAdvertisementSuppression:(BOOL)suppression
 {
-  v3 = a3;
-  if ((GestaltGetDeviceClass() & 0xFFFFFFFD) != 1 || self->_suppressAdvertisement == v3)
+  suppressionCopy = suppression;
+  if ((GestaltGetDeviceClass() & 0xFFFFFFFD) != 1 || self->_suppressAdvertisement == suppressionCopy)
   {
     return;
   }
@@ -3881,7 +3881,7 @@ LABEL_37:
   }
 
 LABEL_8:
-  self->_suppressAdvertisement = v3;
+  self->_suppressAdvertisement = suppressionCopy;
 
   [(SDHotspotAgent *)self _update];
 }
@@ -3991,16 +3991,16 @@ LABEL_8:
   }
 }
 
-- (id)_slicingLLPHSStateNotificationValueToString:(unint64_t)a3
+- (id)_slicingLLPHSStateNotificationValueToString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"?";
   }
 
   else
   {
-    return *(&off_1008CF750 + a3);
+    return *(&off_1008CF750 + string);
   }
 }
 

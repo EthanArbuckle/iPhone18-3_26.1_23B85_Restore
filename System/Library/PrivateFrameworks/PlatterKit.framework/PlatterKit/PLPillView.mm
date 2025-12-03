@@ -2,25 +2,25 @@
 - (BOOL)_configureGlassIfNecessary;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFitsContentItem:(id)a3;
-- (PLPillView)initWithLeadingAccessoryView:(id)a3 trailingAccessoryView:(id)a4;
+- (CGSize)sizeThatFitsContentItem:(id)item;
+- (PLPillView)initWithLeadingAccessoryView:(id)view trailingAccessoryView:(id)accessoryView;
 - (UIEdgeInsets)shadowOutsets;
 - (double)_effectiveCornerRadius;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureShadowViewIfNecessary;
-- (void)_setBackground:(id)a3;
+- (void)_setBackground:(id)background;
 - (void)layoutSubviews;
-- (void)setHasShadow:(BOOL)a3;
-- (void)setUsesBackgroundView:(BOOL)a3;
+- (void)setHasShadow:(BOOL)shadow;
+- (void)setUsesBackgroundView:(BOOL)view;
 @end
 
 @implementation PLPillView
 
-- (PLPillView)initWithLeadingAccessoryView:(id)a3 trailingAccessoryView:(id)a4
+- (PLPillView)initWithLeadingAccessoryView:(id)view trailingAccessoryView:(id)accessoryView
 {
   v37[4] = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v31 = a4;
+  viewCopy = view;
+  accessoryViewCopy = accessoryView;
   v35.receiver = self;
   v35.super_class = PLPillView;
   v6 = [(PLPillView *)&v35 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -30,32 +30,32 @@
     v6->_adjustsFontForContentSizeCategory = 1;
     v6->_hasShadow = 1;
     v6->_usesBackgroundView = 1;
-    v8 = [(PLPillView *)v6 traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
+    traitCollection = [(PLPillView *)v6 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
     preferredContentSizeCategory = v7->_preferredContentSizeCategory;
-    v7->_preferredContentSizeCategory = v9;
+    v7->_preferredContentSizeCategory = preferredContentSizeCategory;
 
-    v11 = [[PLPillContentView alloc] initWithLeadingAccessoryView:v30 trailingAccessoryView:v31];
+    v11 = [[PLPillContentView alloc] initWithLeadingAccessoryView:viewCopy trailingAccessoryView:accessoryViewCopy];
     contentView = v7->_contentView;
     v7->_contentView = v11;
 
     [(PLPillContentView *)v7->_contentView setAdjustsFontForContentSizeCategory:v7->_adjustsFontForContentSizeCategory];
     [(PLPillView *)v7 addSubview:v7->_contentView];
-    v29 = [(PLPillContentView *)v7->_contentView leadingAnchor];
-    v28 = [(PLPillView *)v7 leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    leadingAnchor = [(PLPillContentView *)v7->_contentView leadingAnchor];
+    leadingAnchor2 = [(PLPillView *)v7 leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[0] = v27;
-    v13 = [(PLPillContentView *)v7->_contentView trailingAnchor];
-    v14 = [(PLPillView *)v7 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [(PLPillContentView *)v7->_contentView trailingAnchor];
+    trailingAnchor2 = [(PLPillView *)v7 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[1] = v15;
-    v16 = [(PLPillContentView *)v7->_contentView topAnchor];
-    v17 = [(PLPillView *)v7 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    topAnchor = [(PLPillContentView *)v7->_contentView topAnchor];
+    topAnchor2 = [(PLPillView *)v7 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[2] = v18;
-    v19 = [(PLPillContentView *)v7->_contentView bottomAnchor];
-    v20 = [(PLPillView *)v7 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [(PLPillContentView *)v7->_contentView bottomAnchor];
+    bottomAnchor2 = [(PLPillView *)v7 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v21;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
 
@@ -101,9 +101,9 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
   }
 }
 
-- (CGSize)sizeThatFitsContentItem:(id)a3
+- (CGSize)sizeThatFitsContentItem:(id)item
 {
-  [(PLPillContentView *)self->_contentView sizeThatFitsContentItem:a3];
+  [(PLPillContentView *)self->_contentView sizeThatFitsContentItem:item];
   result.height = v4;
   result.width = v3;
   return result;
@@ -128,20 +128,20 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
   return result;
 }
 
-- (void)setHasShadow:(BOOL)a3
+- (void)setHasShadow:(BOOL)shadow
 {
-  if (self->_hasShadow != a3)
+  if (self->_hasShadow != shadow)
   {
-    self->_hasShadow = a3;
+    self->_hasShadow = shadow;
     [(PLPillView *)self setNeedsLayout];
   }
 }
 
-- (void)setUsesBackgroundView:(BOOL)a3
+- (void)setUsesBackgroundView:(BOOL)view
 {
-  if (self->_usesBackgroundView != a3)
+  if (self->_usesBackgroundView != view)
   {
-    self->_usesBackgroundView = a3;
+    self->_usesBackgroundView = view;
     [(PLPillView *)self setNeedsLayout];
   }
 }
@@ -191,27 +191,27 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(PLPillView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(PLPillView *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
-    v3 = [(PLPillContentView *)self->_contentView adjustForContentSizeCategoryChange];
-    if (v3)
+    adjustsFontForContentSizeCategory = [(PLPillContentView *)self->_contentView adjustForContentSizeCategoryChange];
+    if (adjustsFontForContentSizeCategory)
     {
       [(PLPillView *)self invalidateIntrinsicContentSize];
       [(PLPillView *)self setNeedsUpdateConstraints];
       [(PLPillView *)self setNeedsLayout];
-      LOBYTE(v3) = 1;
+      LOBYTE(adjustsFontForContentSizeCategory) = 1;
     }
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
 - (double)_effectiveCornerRadius
 {
-  v3 = 424;
-  v4 = [(PLPillContentView *)self->_contentView centerContentItems];
-  v5 = [v4 count];
+  lastObject = 424;
+  centerContentItems = [(PLPillContentView *)self->_contentView centerContentItems];
+  v5 = [centerContentItems count];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
   if (v5 > 1)
   {
@@ -221,9 +221,9 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
   else
   {
     contentView = self->_contentView;
-    v3 = [v4 lastObject];
+    lastObject = [centerContentItems lastObject];
     [(PLPillView *)self bounds];
-    v8 = [(PLPillContentView *)contentView isWrappingRequiredForCenterContentItem:v3 inBounds:?];
+    v8 = [(PLPillContentView *)contentView isWrappingRequiredForCenterContentItem:lastObject inBounds:?];
   }
 
   v9 = *MEMORY[0x277D76860];
@@ -322,12 +322,12 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
   }
 }
 
-- (void)_setBackground:(id)a3
+- (void)_setBackground:(id)background
 {
   self->_hasClientSpecifiedBackground = 1;
   v3.receiver = self;
   v3.super_class = PLPillView;
-  [(PLPillView *)&v3 _setBackground:a3];
+  [(PLPillView *)&v3 _setBackground:background];
 }
 
 - (BOOL)_configureGlassIfNecessary
@@ -347,10 +347,10 @@ void __65__PLPillView_initWithLeadingAccessoryView_trailingAccessoryView___block
 
   else
   {
-    v4 = [(PLPillView *)self usesBackgroundView];
+    usesBackgroundView = [(PLPillView *)self usesBackgroundView];
     p_wantsAutomaticGlass = &self->_wantsAutomaticGlass;
-    self->_wantsAutomaticGlass = v4;
-    if (!v4)
+    self->_wantsAutomaticGlass = usesBackgroundView;
+    if (!usesBackgroundView)
     {
 LABEL_4:
       if (!self->_hasClientSpecifiedBackground)
@@ -362,27 +362,27 @@ LABEL_4:
     }
   }
 
-  v5 = [(MTMaterialView *)self->_materialView superview];
+  superview = [(MTMaterialView *)self->_materialView superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
     [(MTMaterialView *)self->_materialView removeFromSuperview];
     materialView = self->_materialView;
     self->_materialView = 0;
   }
 
-  v7 = [(MTShadowView *)self->_shadowView superview];
+  superview2 = [(MTShadowView *)self->_shadowView superview];
 
-  if (v7 == self)
+  if (superview2 == self)
   {
     [(MTShadowView *)self->_shadowView removeFromSuperview];
     shadowView = self->_shadowView;
     self->_shadowView = 0;
   }
 
-  v9 = [(PLPillContentView *)self->_contentView _background];
+  _background = [(PLPillContentView *)self->_contentView _background];
 
-  if (!v9)
+  if (!_background)
   {
     v10 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:0 size:1];
     [(PLPillContentView *)self->_contentView _setBackground:v10];

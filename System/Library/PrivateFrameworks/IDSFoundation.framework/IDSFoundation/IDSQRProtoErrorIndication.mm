@@ -1,21 +1,21 @@
 @interface IDSQRProtoErrorIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChannelId:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChannelId:(BOOL)id;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoErrorIndication
 
-- (void)setHasChannelId:(BOOL)a3
+- (void)setHasChannelId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoErrorIndication;
   v4 = [(IDSQRProtoErrorIndication *)&v8 description];
-  v5 = [(IDSQRProtoErrorIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoErrorIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_channelId];
-    [v3 setObject:v5 forKey:@"channel_id"];
+    [dictionary setObject:v5 forKey:@"channel_id"];
 
     has = self->_has;
   }
@@ -70,33 +70,33 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_errorCode];
-    [v3 setObject:v6 forKey:@"error_code"];
+    [dictionary setObject:v6 forKey:@"error_code"];
   }
 
   errorReason = self->_errorReason;
   if (errorReason)
   {
-    [v3 setObject:errorReason forKey:@"error_reason"];
+    [dictionary setObject:errorReason forKey:@"error_reason"];
   }
 
   clientAddress = self->_clientAddress;
   if (clientAddress)
   {
-    [v3 setObject:clientAddress forKey:@"client_address"];
+    [dictionary setObject:clientAddress forKey:@"client_address"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txnId];
-    [v3 setObject:v9 forKey:@"txn_id"];
+    [dictionary setObject:v9 forKey:@"txn_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -125,46 +125,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[4] = self->_channelId;
-    *(v4 + 48) |= 2u;
+    toCopy[4] = self->_channelId;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[8] = self->_errorCode;
-    *(v4 + 48) |= 4u;
+    toCopy[8] = self->_errorCode;
+    *(toCopy + 48) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_errorReason)
   {
-    [v4 setErrorReason:?];
-    v4 = v6;
+    [toCopy setErrorReason:?];
+    toCopy = v6;
   }
 
   if (self->_clientAddress)
   {
     [v6 setClientAddress:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_txnId;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = self->_txnId;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -180,11 +180,11 @@
     *(v5 + 48) |= 4u;
   }
 
-  v8 = [(NSString *)self->_errorReason copyWithZone:a3];
+  v8 = [(NSString *)self->_errorReason copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
-  v10 = [(NSString *)self->_clientAddress copyWithZone:a3];
+  v10 = [(NSString *)self->_clientAddress copyWithZone:zone];
   v11 = *(v6 + 24);
   *(v6 + 24) = v10;
 
@@ -197,23 +197,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_channelId != *(v4 + 4))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_channelId != *(equalCopy + 4))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -222,25 +222,25 @@ LABEL_20:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_errorCode != *(v4 + 8))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_errorCode != *(equalCopy + 8))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_20;
   }
 
   errorReason = self->_errorReason;
-  if (errorReason | *(v4 + 5) && ![(NSString *)errorReason isEqual:?])
+  if (errorReason | *(equalCopy + 5) && ![(NSString *)errorReason isEqual:?])
   {
     goto LABEL_20;
   }
 
   clientAddress = self->_clientAddress;
-  if (clientAddress | *(v4 + 3))
+  if (clientAddress | *(equalCopy + 3))
   {
     if (![(NSString *)clientAddress isEqual:?])
     {
@@ -248,10 +248,10 @@ LABEL_20:
     }
   }
 
-  v7 = (*(v4 + 48) & 1) == 0;
+  v7 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_txnId != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_txnId != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
@@ -303,39 +303,39 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_channelId = *(v4 + 4);
+    self->_channelId = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_errorCode = *(v4 + 8);
+    self->_errorCode = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  v6 = v4;
-  if (*(v4 + 5))
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(IDSQRProtoErrorIndication *)self setErrorReason:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(IDSQRProtoErrorIndication *)self setClientAddress:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_txnId = *(v4 + 1);
+    self->_txnId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

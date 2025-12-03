@@ -1,9 +1,9 @@
 @interface CNPRUISIncomingCallSnapshotDefinition
-+ (id)compositeSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4;
-+ (id)contentsAndObscurableContentSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4;
-+ (id)contentsAndOverlayContentSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4;
-+ (id)contentsOnlySnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4;
-- (CNPRUISIncomingCallSnapshotDefinition)initWithWrappedDefinition:(id)a3;
++ (id)compositeSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers;
++ (id)contentsAndObscurableContentSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers;
++ (id)contentsAndOverlayContentSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers;
++ (id)contentsOnlySnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers;
+- (CNPRUISIncomingCallSnapshotDefinition)initWithWrappedDefinition:(id)definition;
 - (id)levelSets;
 @end
 
@@ -11,8 +11,8 @@
 
 - (id)levelSets
 {
-  v2 = [(PRUISIncomingCallSnapshotDefinition *)self->_wrappedDefinition levelSets];
-  v3 = [v2 _cn_map:&__block_literal_global_317];
+  levelSets = [(PRUISIncomingCallSnapshotDefinition *)self->_wrappedDefinition levelSets];
+  v3 = [levelSets _cn_map:&__block_literal_global_317];
 
   return v3;
 }
@@ -25,25 +25,25 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   return v3;
 }
 
-- (CNPRUISIncomingCallSnapshotDefinition)initWithWrappedDefinition:(id)a3
+- (CNPRUISIncomingCallSnapshotDefinition)initWithWrappedDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v9.receiver = self;
   v9.super_class = CNPRUISIncomingCallSnapshotDefinition;
   v6 = [(CNPRUISIncomingCallSnapshotDefinition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedDefinition, a3);
+    objc_storeStrong(&v6->_wrappedDefinition, definition);
   }
 
   return v7;
 }
 
-+ (id)contentsOnlySnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4
++ (id)contentsOnlySnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v8 = objc_alloc(getPRUISIncomingCallSnapshotDefinitionClass());
   v18 = 0;
   v19 = &v18;
@@ -62,19 +62,19 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   if (v9)
   {
     v11 = *v9;
-    v12 = [v6 wrappedIncomingCallPosterContext];
-    v13 = [v8 initWithBaseIdentifier:v11 context:v12 attachmentUniqueIdentifiers:v7];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v13 = [v8 initWithBaseIdentifier:v11 context:wrappedIncomingCallPosterContext attachmentUniqueIdentifiers:identifiersCopy];
 
-    v14 = [[a1 alloc] initWithWrappedDefinition:v13];
+    v14 = [[self alloc] initWithWrappedDefinition:v13];
 
     return v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PRPosterSnapshotDefinitionIdentifier getPRPosterSnapshotDefinitionIdentifierIncomingCallPosterContentsOnly(void)"];
-    [v16 handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:78 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:78 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -82,10 +82,10 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   return result;
 }
 
-+ (id)contentsAndOverlayContentSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4
++ (id)contentsAndOverlayContentSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v8 = objc_alloc(getPRUISIncomingCallSnapshotDefinitionClass());
   v18 = 0;
   v19 = &v18;
@@ -104,19 +104,19 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   if (v9)
   {
     v11 = *v9;
-    v12 = [v6 wrappedIncomingCallPosterContext];
-    v13 = [v8 initWithBaseIdentifier:v11 context:v12 attachmentUniqueIdentifiers:v7];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v13 = [v8 initWithBaseIdentifier:v11 context:wrappedIncomingCallPosterContext attachmentUniqueIdentifiers:identifiersCopy];
 
-    v14 = [[a1 alloc] initWithWrappedDefinition:v13];
+    v14 = [[self alloc] initWithWrappedDefinition:v13];
 
     return v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PRPosterSnapshotDefinitionIdentifier getPRPosterSnapshotDefinitionIdentifierIncomingCallPosterContentsWithOverlay(void)"];
-    [v16 handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:77 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:77 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -124,10 +124,10 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   return result;
 }
 
-+ (id)contentsAndObscurableContentSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4
++ (id)contentsAndObscurableContentSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v8 = objc_alloc(getPRUISIncomingCallSnapshotDefinitionClass());
   v18 = 0;
   v19 = &v18;
@@ -146,19 +146,19 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   if (v9)
   {
     v11 = *v9;
-    v12 = [v6 wrappedIncomingCallPosterContext];
-    v13 = [v8 initWithBaseIdentifier:v11 context:v12 attachmentUniqueIdentifiers:v7];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v13 = [v8 initWithBaseIdentifier:v11 context:wrappedIncomingCallPosterContext attachmentUniqueIdentifiers:identifiersCopy];
 
-    v14 = [[a1 alloc] initWithWrappedDefinition:v13];
+    v14 = [[self alloc] initWithWrappedDefinition:v13];
 
     return v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PRPosterSnapshotDefinitionIdentifier getPRPosterSnapshotDefinitionIdentifierIncomingCallPosterContentsWithObscurableContentView(void)"];
-    [v16 handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:76 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:76 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -166,10 +166,10 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   return result;
 }
 
-+ (id)compositeSnapshotDefinitionWithContext:(id)a3 attachmentIdentifiers:(id)a4
++ (id)compositeSnapshotDefinitionWithContext:(id)context attachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   v8 = objc_alloc(getPRUISIncomingCallSnapshotDefinitionClass());
   v18 = 0;
   v19 = &v18;
@@ -188,19 +188,19 @@ CNPRPosterLevelSet *__50__CNPRUISIncomingCallSnapshotDefinition_levelSets__block
   if (v9)
   {
     v11 = *v9;
-    v12 = [v6 wrappedIncomingCallPosterContext];
-    v13 = [v8 initWithBaseIdentifier:v11 context:v12 attachmentUniqueIdentifiers:v7];
+    wrappedIncomingCallPosterContext = [contextCopy wrappedIncomingCallPosterContext];
+    v13 = [v8 initWithBaseIdentifier:v11 context:wrappedIncomingCallPosterContext attachmentUniqueIdentifiers:identifiersCopy];
 
-    v14 = [[a1 alloc] initWithWrappedDefinition:v13];
+    v14 = [[self alloc] initWithWrappedDefinition:v13];
 
     return v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PRPosterSnapshotDefinitionIdentifier getPRPosterSnapshotDefinitionIdentifierIncomingCallComposite(void)"];
-    [v16 handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:75 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"CNPostersSoftLink.h" lineNumber:75 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

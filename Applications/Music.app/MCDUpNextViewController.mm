@@ -1,26 +1,26 @@
 @interface MCDUpNextViewController
-- (MCDUpNextViewController)initWithContentManager:(id)a3 tracklist:(id)a4;
-- (void)_processResponse:(id)a3 error:(id)a4;
-- (void)playbackManagerShouldShowNowPlaying:(id)a3;
+- (MCDUpNextViewController)initWithContentManager:(id)manager tracklist:(id)tracklist;
+- (void)_processResponse:(id)response error:(id)error;
+- (void)playbackManagerShouldShowNowPlaying:(id)playing;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MCDUpNextViewController
 
-- (MCDUpNextViewController)initWithContentManager:(id)a3 tracklist:(id)a4
+- (MCDUpNextViewController)initWithContentManager:(id)manager tracklist:(id)tracklist
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  tracklistCopy = tracklist;
   v14.receiver = self;
   v14.super_class = MCDUpNextViewController;
   v9 = [(MCDTableViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentManager, a3);
-    v11 = [[_TtC5Music25CarPlayUpNextControlsView alloc] initWithTracklist:v8];
+    objc_storeStrong(&v9->_contentManager, manager);
+    v11 = [[_TtC5Music25CarPlayUpNextControlsView alloc] initWithTracklist:tracklistCopy];
     controlsView = v10->controlsView;
     v10->controlsView = v11;
   }
@@ -28,13 +28,13 @@
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MCDUpNextViewController;
-  [(MCDTableViewController *)&v5 viewWillAppear:a3];
-  v4 = [(MCDNowPlayingContentManager *)self->_contentManager tableView];
-  [v4 _scrollToTopIfPossible:0];
+  [(MCDTableViewController *)&v5 viewWillAppear:appear];
+  tableView = [(MCDNowPlayingContentManager *)self->_contentManager tableView];
+  [tableView _scrollToTopIfPossible:0];
 }
 
 - (void)viewDidLoad
@@ -59,18 +59,18 @@
   [(MCDUpNextViewController *)self setTitle:v7];
 
   [(MCDNowPlayingContentManager *)self->_contentManager setTableCellConfigurationBlock:&stru_101098310];
-  v8 = [(MCDUpNextViewController *)self tableView];
-  [(MCDNowPlayingContentManager *)self->_contentManager setTableView:v8];
+  tableView = [(MCDUpNextViewController *)self tableView];
+  [(MCDNowPlayingContentManager *)self->_contentManager setTableView:tableView];
 
   v9 = [[MCDPlaybackManager alloc] initWithDelegate:self];
   [(MCDNowPlayingContentManager *)self->_contentManager setPlaybackManager:v9];
 
   controlsView = self->controlsView;
-  v11 = [(MCDUpNextViewController *)self tableView];
-  [v11 setTableHeaderView:controlsView];
+  tableView2 = [(MCDUpNextViewController *)self tableView];
+  [tableView2 setTableHeaderView:controlsView];
 
-  v12 = [(MCDUpNextViewController *)self tableView];
-  [v12 setSectionHeaderTopPadding:8.0];
+  tableView3 = [(MCDUpNextViewController *)self tableView];
+  [tableView3 setSectionHeaderTopPadding:8.0];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -84,16 +84,16 @@
   }
 }
 
-- (void)playbackManagerShouldShowNowPlaying:(id)a3
+- (void)playbackManagerShouldShowNowPlaying:(id)playing
 {
-  v4 = [(MCDUpNextViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(MCDUpNextViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_processResponse:(id)a3 error:(id)a4
+- (void)_processResponse:(id)response error:(id)error
 {
-  v5 = [a3 tracklist];
-  [(CarPlayUpNextControlsView *)self->controlsView setTracklist:v5];
+  tracklist = [response tracklist];
+  [(CarPlayUpNextControlsView *)self->controlsView setTracklist:tracklist];
 }
 
 @end

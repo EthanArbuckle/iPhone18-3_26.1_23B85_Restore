@@ -1,37 +1,37 @@
 @interface MSDDemoManifestCheck
 + (MSDDemoManifestCheck)sharedInstance;
-- (BOOL)checkFileForEntitlements:(id)a3 forCorrespondingManifestEntry:(id)a4;
-- (BOOL)isManualSigning:(id)a3;
-- (BOOL)isValidDataContainerFile:(id)a3;
-- (BOOL)runAppLayoutSecurityCheck:(id)a3;
-- (BOOL)runFileSecurityChecksForSection:(id)a3 dataType:(id)a4 options:(id)a5;
-- (BOOL)runSecurityCheck:(id)a3;
-- (BOOL)runSecurityChecksForSection:(id)a3 dataType:(id)a4 componentName:(id)a5 options:(id)a6;
-- (BOOL)runSettingsSecurityCheckForSection:(id)a3 component:(id)a4;
-- (BOOL)secureManifestCheckForSegmentedManifest:(id)a3 options:(id)a4;
-- (BOOL)validateISTSignedApp:(id)a3 manifest:(id)a4;
-- (BOOL)verifySignature:(id)a3 forData:(id)a4 withKey:(__SecKey *)a5;
+- (BOOL)checkFileForEntitlements:(id)entitlements forCorrespondingManifestEntry:(id)entry;
+- (BOOL)isManualSigning:(id)signing;
+- (BOOL)isValidDataContainerFile:(id)file;
+- (BOOL)runAppLayoutSecurityCheck:(id)check;
+- (BOOL)runFileSecurityChecksForSection:(id)section dataType:(id)type options:(id)options;
+- (BOOL)runSecurityCheck:(id)check;
+- (BOOL)runSecurityChecksForSection:(id)section dataType:(id)type componentName:(id)name options:(id)options;
+- (BOOL)runSettingsSecurityCheckForSection:(id)section component:(id)component;
+- (BOOL)secureManifestCheckForSegmentedManifest:(id)manifest options:(id)options;
+- (BOOL)validateISTSignedApp:(id)app manifest:(id)manifest;
+- (BOOL)verifySignature:(id)signature forData:(id)data withKey:(__SecKey *)key;
 - (MSDDemoManifestCheck)init;
-- (MSDDemoManifestCheck)initWithWhiteListChecker:(id)a3 andCheckType:(id)a4;
-- (__SecKey)createPublicKey:(id)a3 usingPolicy:(__SecPolicy *)a4 anchors:(id)a5;
-- (__SecKey)createPublicKeyAppleISTSigning:(id)a3;
-- (__SecKey)createPublicKeyForDevelopmentSigning:(id)a3;
-- (__SecKey)createPublicKeyForDevelopmentSigningStandard:(id)a3;
-- (__SecKey)createPublicKeyForStrongSigning:(id)a3;
-- (id)getAllowedISTSignedComponents:(id)a3;
-- (id)getAllowedISTSignedComponentsFromManifest:(id)a3;
+- (MSDDemoManifestCheck)initWithWhiteListChecker:(id)checker andCheckType:(id)type;
+- (__SecKey)createPublicKey:(id)key usingPolicy:(__SecPolicy *)policy anchors:(id)anchors;
+- (__SecKey)createPublicKeyAppleISTSigning:(id)signing;
+- (__SecKey)createPublicKeyForDevelopmentSigning:(id)signing;
+- (__SecKey)createPublicKeyForDevelopmentSigningStandard:(id)standard;
+- (__SecKey)createPublicKeyForStrongSigning:(id)signing;
+- (id)getAllowedISTSignedComponents:(id)components;
+- (id)getAllowedISTSignedComponentsFromManifest:(id)manifest;
 - (id)getAllowedSymLinks;
-- (id)getBackupItemName:(id)a3;
+- (id)getBackupItemName:(id)name;
 - (id)getBackupSectionName;
-- (id)getComponentData:(id)a3;
+- (id)getComponentData:(id)data;
 - (id)getInstallationOrder;
-- (id)getManifestData:(id)a3;
+- (id)getManifestData:(id)data;
 - (id)getSecurityCheckSectionNames;
 - (id)getappIconLayoutBackupName;
-- (id)verifyFactoryManifestSignature:(id)a3 forDataSectionKeys:(id)a4;
-- (id)verifyManifestSignature:(id)a3 forDataSectionKeys:(id)a4 withOptions:(id)a5;
+- (id)verifyFactoryManifestSignature:(id)signature forDataSectionKeys:(id)keys;
+- (id)verifyManifestSignature:(id)signature forDataSectionKeys:(id)keys withOptions:(id)options;
 - (void)registerEntitlementNotificationHandler;
-- (void)removeBlocklistedItemFromSection:(id)a3 withName:(id)a4;
+- (void)removeBlocklistedItemFromSection:(id)section withName:(id)name;
 @end
 
 @implementation MSDDemoManifestCheck
@@ -59,19 +59,19 @@
     goto LABEL_5;
   }
 
-  v4 = [(MSDDemoManifestCheck *)v2 getAllowedSymLinks];
-  [(MSDDemoManifestCheck *)v3 setAllowedSymLinks:v4];
+  getAllowedSymLinks = [(MSDDemoManifestCheck *)v2 getAllowedSymLinks];
+  [(MSDDemoManifestCheck *)v3 setAllowedSymLinks:getAllowedSymLinks];
 
-  v5 = [(MSDDemoManifestCheck *)v3 getSettingsComponentNames];
-  [(MSDDemoManifestCheck *)v3 setSettingsComponentNames:v5];
+  getSettingsComponentNames = [(MSDDemoManifestCheck *)v3 getSettingsComponentNames];
+  [(MSDDemoManifestCheck *)v3 setSettingsComponentNames:getSettingsComponentNames];
 
   v6 = objc_alloc_init(WhitelistChecker);
   [(MSDDemoManifestCheck *)v3 setWhitelistChecker:v6];
 
-  v7 = [(MSDDemoManifestCheck *)v3 whitelistChecker];
-  v8 = [v7 load];
+  whitelistChecker = [(MSDDemoManifestCheck *)v3 whitelistChecker];
+  load = [whitelistChecker load];
 
-  if ((v8 & 1) == 0)
+  if ((load & 1) == 0)
   {
     sub_100029E24();
 LABEL_5:
@@ -88,36 +88,36 @@ LABEL_6:
   return v10;
 }
 
-- (MSDDemoManifestCheck)initWithWhiteListChecker:(id)a3 andCheckType:(id)a4
+- (MSDDemoManifestCheck)initWithWhiteListChecker:(id)checker andCheckType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  checkerCopy = checker;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = MSDDemoManifestCheck;
   v8 = [(MSDDemoManifestCheck *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(MSDDemoManifestCheck *)v8 getAllowedSymLinks];
-    [(MSDDemoManifestCheck *)v9 setAllowedSymLinks:v10];
+    getAllowedSymLinks = [(MSDDemoManifestCheck *)v8 getAllowedSymLinks];
+    [(MSDDemoManifestCheck *)v9 setAllowedSymLinks:getAllowedSymLinks];
 
-    v11 = [(MSDDemoManifestCheck *)v9 getSettingsComponentNames];
-    [(MSDDemoManifestCheck *)v9 setSettingsComponentNames:v11];
+    getSettingsComponentNames = [(MSDDemoManifestCheck *)v9 getSettingsComponentNames];
+    [(MSDDemoManifestCheck *)v9 setSettingsComponentNames:getSettingsComponentNames];
 
-    [(MSDDemoManifestCheck *)v9 setWhitelistChecker:v6];
-    [(MSDDemoManifestCheck *)v9 setCheckType:v7];
+    [(MSDDemoManifestCheck *)v9 setWhitelistChecker:checkerCopy];
+    [(MSDDemoManifestCheck *)v9 setCheckType:typeCopy];
   }
 
   return v9;
 }
 
-- (id)verifyFactoryManifestSignature:(id)a3 forDataSectionKeys:(id)a4
+- (id)verifyFactoryManifestSignature:(id)signature forDataSectionKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  keysCopy = keys;
   v8 = objc_opt_new();
   v9 = MGCopyAnswer();
-  v10 = [v6 objectForKey:@"Info"];
+  v10 = [signatureCopy objectForKey:@"Info"];
   v11 = 0;
   if (!v10)
   {
@@ -129,16 +129,16 @@ LABEL_6:
     [v8 setObject:&__kCFBooleanTrue forKey:@"ExcludeBlocklistItem"];
   }
 
-  v12 = [(MSDDemoManifestCheck *)self verifyManifestSignature:v6 forDataSectionKeys:v7 withOptions:v8];
+  v12 = [(MSDDemoManifestCheck *)self verifyManifestSignature:signatureCopy forDataSectionKeys:keysCopy withOptions:v8];
 
   return v12;
 }
 
-- (id)verifyManifestSignature:(id)a3 forDataSectionKeys:(id)a4 withOptions:(id)a5
+- (id)verifyManifestSignature:(id)signature forDataSectionKeys:(id)keys withOptions:(id)options
 {
-  v90 = a3;
-  v85 = a4;
-  v8 = a5;
+  signatureCopy = signature;
+  keysCopy = keys;
+  optionsCopy = options;
   v92 = objc_alloc_init(NSMutableDictionary);
   error = 0;
   v9 = sub_100021268();
@@ -149,19 +149,19 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Verifying a separate component manifest.", buf, 0xCu);
   }
 
-  v84 = [v8 objectForKey:@"RigorousTestingOverride"];
-  v10 = [v8 objectForKey:@"ExcludeBlocklistItem"];
-  v11 = [(MSDDemoManifestCheck *)self allowedISTSignedComponents];
+  v84 = [optionsCopy objectForKey:@"RigorousTestingOverride"];
+  v10 = [optionsCopy objectForKey:@"ExcludeBlocklistItem"];
+  allowedISTSignedComponents = [(MSDDemoManifestCheck *)self allowedISTSignedComponents];
 
-  if (!v11)
+  if (!allowedISTSignedComponents)
   {
-    v12 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponents:v90];
+    v12 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponents:signatureCopy];
     [(MSDDemoManifestCheck *)self setAllowedISTSignedComponents:v12];
   }
 
   v13 = [NSMutableSet alloc];
-  v14 = [v90 allKeys];
-  v15 = [v13 initWithArray:v14];
+  allKeys = [signatureCopy allKeys];
+  v15 = [v13 initWithArray:allKeys];
 
   v16 = MGCopyAnswer();
   cf = v16;
@@ -175,7 +175,7 @@ LABEL_6:
     v88 = 0;
   }
 
-  v17 = [v90 objectForKey:@"Certificates"];
+  v17 = [signatureCopy objectForKey:@"Certificates"];
   v81 = v17;
   if (!v17)
   {
@@ -195,9 +195,9 @@ LABEL_97:
     goto LABEL_107;
   }
 
-  v96 = self;
+  selfCopy = self;
   v79 = v15;
-  v82 = v8;
+  v82 = optionsCopy;
   v83 = v10;
   v112 = 0u;
   v113 = 0u;
@@ -274,7 +274,7 @@ LABEL_97:
 
       if ([v22 isEqualToString:@"UAT"])
       {
-        v28 = [(MSDDemoManifestCheck *)v96 createPublicKeyForDevelopmentSigning:v21];
+        v28 = [(MSDDemoManifestCheck *)selfCopy createPublicKeyForDevelopmentSigning:v21];
         v29 = @"Skip";
         if (!v28)
         {
@@ -284,10 +284,10 @@ LABEL_97:
         goto LABEL_26;
       }
 
-      v30 = [(MSDDemoManifestCheck *)v96 createPublicKeyForStrongSigning:v21];
+      v30 = [(MSDDemoManifestCheck *)selfCopy createPublicKeyForStrongSigning:v21];
       if (!v30)
       {
-        v28 = [(MSDDemoManifestCheck *)v96 createPublicKeyAppleISTSigning:v21];
+        v28 = [(MSDDemoManifestCheck *)selfCopy createPublicKeyAppleISTSigning:v21];
         v29 = @"AppleISTCertCheck";
         if (v28)
         {
@@ -311,13 +311,13 @@ LABEL_92:
         v34 = 0;
         v45 = 0;
         v40 = v97;
-        v8 = v82;
+        optionsCopy = v82;
         goto LABEL_97;
       }
 
       v28 = v30;
       v31 = v21;
-      v32 = [(MSDDemoManifestCheck *)v96 isManualSigning:v21];
+      v32 = [(MSDDemoManifestCheck *)selfCopy isManualSigning:v21];
       v29 = @"Skip";
       if (!v32)
       {
@@ -358,7 +358,7 @@ LABEL_31:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  obj = v85;
+  obj = keysCopy;
   v73 = [obj countByEnumeratingWithState:&v106 objects:v124 count:16];
   v34 = 0;
   v35 = 0;
@@ -385,7 +385,7 @@ LABEL_31:
         v104 = 0u;
         v105 = 0u;
         v91 = v38;
-        v86 = [v90 objectForKey:?];
+        v86 = [signatureCopy objectForKey:?];
         v89 = [v86 countByEnumeratingWithState:&v102 objects:v123 count:16];
         if (!v89)
         {
@@ -406,7 +406,7 @@ LABEL_31:
             }
 
             v43 = *(*(&v102 + 1) + 8 * i);
-            v44 = [v90 objectForKey:v91];
+            v44 = [signatureCopy objectForKey:v91];
             v45 = [v44 objectForKey:v43];
 
             v46 = [v45 objectForKey:@"Certificate"];
@@ -439,7 +439,7 @@ LABEL_31:
               goto LABEL_95;
             }
 
-            v50 = [(MSDDemoManifestCheck *)v96 getComponentData:v45];
+            v50 = [(MSDDemoManifestCheck *)selfCopy getComponentData:v45];
 
             if (!v50)
             {
@@ -453,7 +453,7 @@ LABEL_31:
 LABEL_95:
               v42 = v95;
 LABEL_96:
-              v8 = v82;
+              optionsCopy = v82;
               v10 = v83;
               v15 = v79;
 
@@ -472,7 +472,7 @@ LABEL_96:
             {
               v35 = v45;
               v70 = sub_100021268();
-              v8 = v82;
+              optionsCopy = v82;
               v15 = v79;
               if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
               {
@@ -496,9 +496,9 @@ LABEL_96:
             [v45 setObject:v40 forKey:@"RigorousCheckType"];
             v54 = [(__CFString *)v40 isEqualToString:@"Skip"];
             v97 = v40;
-            if (-[__CFString isEqualToString:](v40, "isEqualToString:", @"AppleISTCertCheck") && [v91 isEqualToString:@"Apps"] && !-[MSDDemoManifestCheck validateISTSignedApp:manifest:](v96, "validateISTSignedApp:manifest:", v43, v90))
+            if (-[__CFString isEqualToString:](v40, "isEqualToString:", @"AppleISTCertCheck") && [v91 isEqualToString:@"Apps"] && !-[MSDDemoManifestCheck validateISTSignedApp:manifest:](selfCopy, "validateISTSignedApp:manifest:", v43, signatureCopy))
             {
-              v8 = v82;
+              optionsCopy = v82;
               v15 = v79;
 LABEL_85:
               v34 = v94;
@@ -551,22 +551,22 @@ LABEL_50:
   v55 = sub_100021268();
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [v84 BOOLValue];
+    bOOLValue = [v84 BOOLValue];
     *buf = 136315650;
     v117 = "[MSDDemoManifestCheck verifyManifestSignature:forDataSectionKeys:withOptions:]";
     v118 = 1024;
     *v119 = v36 & 1;
     *&v119[4] = 1024;
-    *&v119[6] = v56;
+    *&v119[6] = bOOLValue;
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%s: Overriding rigorous testing from %{BOOL}d to %{BOOL}d", buf, 0x18u);
   }
 
   if ([v84 BOOLValue])
   {
 LABEL_64:
-    v8 = v82;
+    optionsCopy = v82;
     v10 = v83;
-    if ([(MSDDemoManifestCheck *)v96 secureManifestCheckForSegmentedManifest:v90 options:v82])
+    if ([(MSDDemoManifestCheck *)selfCopy secureManifestCheckForSegmentedManifest:signatureCopy options:v82])
     {
       goto LABEL_65;
     }
@@ -586,15 +586,15 @@ LABEL_58:
     _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%s: Skipping rigorous manifest testing.", buf, 0xCu);
   }
 
-  v8 = v82;
+  optionsCopy = v82;
 LABEL_65:
   if (![v10 BOOLValue])
   {
     goto LABEL_104;
   }
 
-  v59 = [(MSDDemoManifestCheck *)v96 blocklistedItems];
-  v60 = [v59 count];
+  blocklistedItems = [(MSDDemoManifestCheck *)selfCopy blocklistedItems];
+  v60 = [blocklistedItems count];
 
   if (!v60)
   {
@@ -612,7 +612,7 @@ LABEL_65:
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v61 = v90;
+  v61 = signatureCopy;
   v62 = [v61 countByEnumeratingWithState:&v98 objects:v115 count:16];
   if (!v62)
   {
@@ -638,7 +638,7 @@ LABEL_102:
       v68 = [v61 objectForKey:v67 ofType:objc_opt_class()];
       if (v68)
       {
-        [(MSDDemoManifestCheck *)v96 removeBlocklistedItemFromSection:v68 withName:v67];
+        [(MSDDemoManifestCheck *)selfCopy removeBlocklistedItemFromSection:v68 withName:v67];
       }
     }
 
@@ -646,7 +646,7 @@ LABEL_102:
   }
 
   while (v63);
-  v8 = v82;
+  optionsCopy = v82;
   v10 = v83;
   v21 = v76;
   v34 = v64;
@@ -658,24 +658,24 @@ LABEL_104:
     CFRelease(cf);
   }
 
-  v71 = v90;
+  v71 = signatureCopy;
   v40 = v97;
 LABEL_107:
 
   return v71;
 }
 
-- (BOOL)checkFileForEntitlements:(id)a3 forCorrespondingManifestEntry:(id)a4
+- (BOOL)checkFileForEntitlements:(id)entitlements forCorrespondingManifestEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSDDemoManifestCheck *)self itemBeingInstalled];
-  v9 = v8;
-  if (v8)
+  entitlementsCopy = entitlements;
+  entryCopy = entry;
+  itemBeingInstalled = [(MSDDemoManifestCheck *)self itemBeingInstalled];
+  v9 = itemBeingInstalled;
+  if (itemBeingInstalled)
   {
-    v10 = [v8 objectForKey:@"TypeOfFiles"];
-    v11 = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
-    v12 = [v11 objectForKey:v10];
+    v10 = [itemBeingInstalled objectForKey:@"TypeOfFiles"];
+    segmentedManifestWithRigorousFlag = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
+    v12 = [segmentedManifestWithRigorousFlag objectForKey:v10];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -686,31 +686,31 @@ LABEL_27:
       goto LABEL_11;
     }
 
-    v13 = [(MSDDemoManifestCheck *)self getBackupSectionName];
-    v14 = [v10 isEqualToString:v13];
+    getBackupSectionName = [(MSDDemoManifestCheck *)self getBackupSectionName];
+    v14 = [v10 isEqualToString:getBackupSectionName];
 
     if (v14)
     {
       v36 = v10;
       v37 = v9;
-      v38 = v6;
+      v38 = entitlementsCopy;
       v35 = [v9 objectForKey:@"Identifier"];
-      v15 = [v35 rangeValue];
+      rangeValue = [v35 rangeValue];
       v17 = v16;
-      v18 = [(MSDDemoManifestCheck *)self getInstallationOrder];
-      v19 = v15 + v17 - 1;
-      if ((v15 + v17 - 1) >= 0)
+      getInstallationOrder = [(MSDDemoManifestCheck *)self getInstallationOrder];
+      v19 = rangeValue + v17 - 1;
+      if ((rangeValue + v17 - 1) >= 0)
       {
         while (1)
         {
-          v20 = [v18 objectAtIndex:v19];
+          v20 = [getInstallationOrder objectAtIndex:v19];
           v21 = [(MSDDemoManifestCheck *)self getBackupItemName:v20];
 
           v22 = [v12 objectForKey:v21];
           v23 = [v22 objectForKey:@"Manifest"];
           v24 = [(MSDDemoManifestCheck *)self getManifestData:v23];
 
-          v25 = [v24 objectForKey:v7];
+          v25 = [v24 objectForKey:entryCopy];
 
           if (v25)
           {
@@ -727,7 +727,7 @@ LABEL_27:
         v33 = [v32 isEqualToString:@"Skip"];
 
         v9 = v37;
-        v6 = v38;
+        entitlementsCopy = v38;
         v10 = v36;
         if (v33)
         {
@@ -749,7 +749,7 @@ LABEL_21:
 LABEL_8:
 
       v9 = v37;
-      v6 = v38;
+      entitlementsCopy = v38;
       v10 = v36;
     }
 
@@ -795,9 +795,9 @@ LABEL_23:
   return v28;
 }
 
-- (__SecKey)createPublicKeyForStrongSigning:(id)a3
+- (__SecKey)createPublicKeyForStrongSigning:(id)signing
 {
-  v4 = a3;
+  signingCopy = signing;
   MobileStoreSigner = SecPolicyCreateMobileStoreSigner();
   v6 = sub_100021268();
   v7 = v6;
@@ -809,7 +809,7 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Verifying strong signing", v10, 2u);
     }
 
-    v8 = [(MSDDemoManifestCheck *)self createPublicKey:v4 usingPolicy:MobileStoreSigner anchors:0];
+    v8 = [(MSDDemoManifestCheck *)self createPublicKey:signingCopy usingPolicy:MobileStoreSigner anchors:0];
   }
 
   else
@@ -821,9 +821,9 @@ LABEL_23:
   return v8;
 }
 
-- (__SecKey)createPublicKeyForDevelopmentSigning:(id)a3
+- (__SecKey)createPublicKeyForDevelopmentSigning:(id)signing
 {
-  v4 = a3;
+  signingCopy = signing;
   v5 = sub_100021268();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -831,17 +831,17 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Verifying development signing", v8, 2u);
   }
 
-  v6 = [(MSDDemoManifestCheck *)self createPublicKeyForDevelopmentSigningStandard:v4];
+  v6 = [(MSDDemoManifestCheck *)self createPublicKeyForDevelopmentSigningStandard:signingCopy];
   return v6;
 }
 
-- (__SecKey)createPublicKeyForDevelopmentSigningStandard:(id)a3
+- (__SecKey)createPublicKeyForDevelopmentSigningStandard:(id)standard
 {
-  v4 = a3;
+  standardCopy = standard;
   TestMobileStoreSigner = SecPolicyCreateTestMobileStoreSigner();
   if (TestMobileStoreSigner)
   {
-    v6 = [(MSDDemoManifestCheck *)self createPublicKey:v4 usingPolicy:TestMobileStoreSigner anchors:0];
+    v6 = [(MSDDemoManifestCheck *)self createPublicKey:standardCopy usingPolicy:TestMobileStoreSigner anchors:0];
   }
 
   else
@@ -853,10 +853,10 @@ LABEL_23:
   return v6;
 }
 
-- (__SecKey)createPublicKey:(id)a3 usingPolicy:(__SecPolicy *)a4 anchors:(id)a5
+- (__SecKey)createPublicKey:(id)key usingPolicy:(__SecPolicy *)policy anchors:(id)anchors
 {
-  v7 = a3;
-  v8 = a5;
+  keyCopy = key;
+  anchorsCopy = anchors;
   trust[0] = 0;
   result = kSecTrustResultInvalid;
   v16 = 0;
@@ -874,13 +874,13 @@ LABEL_23:
   v15[2] = sub_10000DBCC;
   v15[3] = &unk_100050DC8;
   v15[4] = &v16;
-  [v7 enumerateObjectsUsingBlock:v15];
+  [keyCopy enumerateObjectsUsingBlock:v15];
   v11 = v17[5];
   if (!v11)
   {
 LABEL_14:
     v12 = 0;
-    if (!a4)
+    if (!policy)
     {
       goto LABEL_16;
     }
@@ -888,7 +888,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (SecTrustCreateWithCertificates(v11, a4, trust))
+  if (SecTrustCreateWithCertificates(v11, policy, trust))
   {
     sub_100021268();
     objc_claimAutoreleasedReturnValue();
@@ -900,7 +900,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v8 && SecTrustSetAnchorCertificates(trust[0], v8))
+  if (anchorsCopy && SecTrustSetAnchorCertificates(trust[0], anchorsCopy))
   {
     sub_100021268();
     objc_claimAutoreleasedReturnValue();
@@ -936,10 +936,10 @@ LABEL_13:
     goto LABEL_23;
   }
 
-  if (a4)
+  if (policy)
   {
 LABEL_15:
-    CFRelease(a4);
+    CFRelease(policy);
   }
 
 LABEL_16:
@@ -954,10 +954,10 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)verifySignature:(id)a3 forData:(id)a4 withKey:(__SecKey *)a5
+- (BOOL)verifySignature:(id)signature forData:(id)data withKey:(__SecKey *)key
 {
-  v7 = a4;
-  v8 = a3;
+  dataCopy = data;
+  signatureCopy = signature;
   v9 = sub_100021268();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -965,14 +965,14 @@ LABEL_16:
   }
 
   v10 = malloc_type_calloc(1uLL, 0x14uLL, 0x100004077774924uLL);
-  v11 = [v7 bytes];
-  v12 = [v7 length];
+  bytes = [dataCopy bytes];
+  v12 = [dataCopy length];
 
-  CC_SHA1(v11, v12, v10);
-  v13 = [v8 bytes];
-  v14 = [v8 length];
+  CC_SHA1(bytes, v12, v10);
+  bytes2 = [signatureCopy bytes];
+  v14 = [signatureCopy length];
 
-  v15 = SecKeyRawVerify(a5, 0x8002u, v10, 0x14uLL, v13, v14);
+  v15 = SecKeyRawVerify(key, 0x8002u, v10, 0x14uLL, bytes2, v14);
   free(v10);
   if (v15)
   {
@@ -982,10 +982,10 @@ LABEL_16:
   return v15 == 0;
 }
 
-- (BOOL)isManualSigning:(id)a3
+- (BOOL)isManualSigning:(id)signing
 {
   commonName = 0;
-  v3 = [a3 objectAtIndexedSubscript:0];
+  v3 = [signing objectAtIndexedSubscript:0];
   if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = sub_100021268();
@@ -1043,11 +1043,11 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)validateISTSignedApp:(id)a3 manifest:(id)a4
+- (BOOL)validateISTSignedApp:(id)app manifest:(id)manifest
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"Apps"];
-  v7 = [v6 objectForKey:v5];
+  appCopy = app;
+  v6 = [manifest objectForKey:@"Apps"];
+  v7 = [v6 objectForKey:appCopy];
 
   v8 = [v7 objectForKey:@"Manifest"];
 
@@ -1070,11 +1070,11 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)secureManifestCheckForSegmentedManifest:(id)a3 options:(id)a4
+- (BOOL)secureManifestCheckForSegmentedManifest:(id)manifest options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  manifestCopy = manifest;
+  optionsCopy = options;
+  if (!manifestCopy)
   {
     sub_10002ACD0();
 LABEL_9:
@@ -1082,19 +1082,19 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v8 = [(MSDDemoManifestCheck *)self allowedISTSignedComponents];
+  allowedISTSignedComponents = [(MSDDemoManifestCheck *)self allowedISTSignedComponents];
 
-  if (!v8)
+  if (!allowedISTSignedComponents)
   {
-    v9 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponents:v6];
+    v9 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponents:manifestCopy];
     [(MSDDemoManifestCheck *)self setAllowedISTSignedComponents:v9];
   }
 
-  [(MSDDemoManifestCheck *)self setSegmentedManifestWithRigorousFlag:v6];
-  v10 = [v6 objectForKey:@"Version"];
+  [(MSDDemoManifestCheck *)self setSegmentedManifestWithRigorousFlag:manifestCopy];
+  v10 = [manifestCopy objectForKey:@"Version"];
   -[MSDDemoManifestCheck setManifestVersion:](self, "setManifestVersion:", [v10 unsignedIntValue]);
 
-  if (![(MSDDemoManifestCheck *)self runSecurityCheck:v7])
+  if (![(MSDDemoManifestCheck *)self runSecurityCheck:optionsCopy])
   {
     sub_10002AC34();
     goto LABEL_9;
@@ -1107,16 +1107,16 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)runSecurityCheck:(id)a3
+- (BOOL)runSecurityCheck:(id)check
 {
-  v4 = a3;
+  checkCopy = check;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v5 = [(MSDDemoManifestCheck *)self getSecurityCheckSectionNames];
-  v6 = [(MSDDemoManifestCheck *)self getappIconLayoutBackupName];
-  v7 = [(MSDDemoManifestCheck *)self getBackupSectionName];
+  getSecurityCheckSectionNames = [(MSDDemoManifestCheck *)self getSecurityCheckSectionNames];
+  getappIconLayoutBackupName = [(MSDDemoManifestCheck *)self getappIconLayoutBackupName];
+  getBackupSectionName = [(MSDDemoManifestCheck *)self getBackupSectionName];
   v8 = sub_100021268();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1124,22 +1124,22 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Starting rigorous security checks", buf, 2u);
   }
 
-  v9 = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
+  segmentedManifestWithRigorousFlag = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000E39C;
   v17[3] = &unk_100050E18;
-  v10 = v5;
+  v10 = getSecurityCheckSectionNames;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v23 = &v24;
-  v11 = v4;
+  v11 = checkCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = getappIconLayoutBackupName;
   v21 = v12;
-  v13 = v7;
+  v13 = getBackupSectionName;
   v22 = v13;
-  [v9 enumerateKeysAndObjectsUsingBlock:v17];
+  [segmentedManifestWithRigorousFlag enumerateKeysAndObjectsUsingBlock:v17];
 
   if (v25[3])
   {
@@ -1166,23 +1166,23 @@ LABEL_6:
   return v15 & 1;
 }
 
-- (BOOL)runSecurityChecksForSection:(id)a3 dataType:(id)a4 componentName:(id)a5 options:(id)a6
+- (BOOL)runSecurityChecksForSection:(id)section dataType:(id)type componentName:(id)name options:(id)options
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(MSDDemoManifestCheck *)self settingsComponentNames];
-  v15 = [v14 containsObject:v11];
+  typeCopy = type;
+  nameCopy = name;
+  optionsCopy = options;
+  sectionCopy = section;
+  settingsComponentNames = [(MSDDemoManifestCheck *)self settingsComponentNames];
+  v15 = [settingsComponentNames containsObject:nameCopy];
 
   if (v15)
   {
-    v16 = [(MSDDemoManifestCheck *)self runSettingsSecurityCheckForSection:v13 component:v11];
+    v16 = [(MSDDemoManifestCheck *)self runSettingsSecurityCheckForSection:sectionCopy component:nameCopy];
   }
 
   else
   {
-    v16 = [(MSDDemoManifestCheck *)self runFileSecurityChecksForSection:v13 dataType:v10 options:v12];
+    v16 = [(MSDDemoManifestCheck *)self runFileSecurityChecksForSection:sectionCopy dataType:typeCopy options:optionsCopy];
   }
 
   v17 = v16;
@@ -1190,13 +1190,13 @@ LABEL_6:
   return v17;
 }
 
-- (BOOL)runSettingsSecurityCheckForSection:(id)a3 component:(id)a4
+- (BOOL)runSettingsSecurityCheckForSection:(id)section component:(id)component
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"locale"])
+  sectionCopy = section;
+  componentCopy = component;
+  if ([componentCopy isEqualToString:@"locale"])
   {
-    v7 = [v5 objectForKey:@"Data"];
+    v7 = [sectionCopy objectForKey:@"Data"];
     v8 = [v7 objectForKey:@"language"];
 
     if (!v8)
@@ -1221,7 +1221,7 @@ LABEL_11:
 
   else
   {
-    if (![v6 isEqualToString:@"display"])
+    if (![componentCopy isEqualToString:@"display"])
     {
       v7 = sub_100021268();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1232,7 +1232,7 @@ LABEL_11:
       goto LABEL_10;
     }
 
-    v7 = [v5 objectForKey:@"Data"];
+    v7 = [sectionCopy objectForKey:@"Data"];
     v10 = [v7 objectForKey:@"HDR"];
 
     if (!v10)
@@ -1248,27 +1248,27 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)runFileSecurityChecksForSection:(id)a3 dataType:(id)a4 options:(id)a5
+- (BOOL)runFileSecurityChecksForSection:(id)section dataType:(id)type options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKey:@"ExcludeBlocklistItem"];
+  sectionCopy = section;
+  typeCopy = type;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKey:@"ExcludeBlocklistItem"];
   v12 = +[MSDPlatform sharedInstance];
-  LODWORD(a4) = [v12 macOS];
+  LODWORD(type) = [v12 macOS];
 
-  v77 = v9;
-  if (a4)
+  v77 = typeCopy;
+  if (type)
   {
-    v13 = [v8 objectForKey:@"Data"];
-    v14 = [(MSDDemoManifestCheck *)self whitelistChecker];
+    v13 = [sectionCopy objectForKey:@"Data"];
+    whitelistChecker = [(MSDDemoManifestCheck *)self whitelistChecker];
     v15 = v13;
-    v16 = [v14 checkManifest:v13];
+    v16 = [whitelistChecker checkManifest:v13];
 
     if ([v11 BOOLValue])
     {
-      v17 = [(MSDDemoManifestCheck *)self blocklistedItems];
-      [v17 addObjectsFromArray:v16];
+      blocklistedItems = [(MSDDemoManifestCheck *)self blocklistedItems];
+      [blocklistedItems addObjectsFromArray:v16];
     }
 
     else if (v16)
@@ -1289,8 +1289,8 @@ LABEL_64:
     {
       v24 = v23;
       v87 = v16;
-      v71 = v10;
-      v73 = v8;
+      v71 = optionsCopy;
+      v73 = sectionCopy;
       v69 = v11;
       v25 = 0;
       v26 = 0;
@@ -1324,10 +1324,10 @@ LABEL_64:
             }
 
             v33 = 0;
-            v9 = v77;
+            typeCopy = v77;
             v11 = v69;
-            v10 = v71;
-            v8 = v73;
+            optionsCopy = v71;
+            sectionCopy = v73;
             v15 = v66;
             goto LABEL_70;
           }
@@ -1349,10 +1349,10 @@ LABEL_64:
         break;
       }
 
-      v9 = v77;
+      typeCopy = v77;
       v11 = v69;
-      v10 = v71;
-      v8 = v73;
+      optionsCopy = v71;
+      sectionCopy = v73;
       v16 = v87;
     }
 
@@ -1361,20 +1361,20 @@ LABEL_64:
   }
 
   v76 = [NSSet setWithArray:&off_100056538];
-  v18 = [(MSDDemoManifestCheck *)self getBackupSectionName];
-  v19 = [(MSDDemoManifestCheck *)self getManifestData:v8];
+  getBackupSectionName = [(MSDDemoManifestCheck *)self getBackupSectionName];
+  v19 = [(MSDDemoManifestCheck *)self getManifestData:sectionCopy];
 
-  v75 = v18;
-  v86 = self;
-  if ([v9 isEqualToString:v18])
+  v75 = getBackupSectionName;
+  selfCopy = self;
+  if ([typeCopy isEqualToString:getBackupSectionName])
   {
-    v20 = [(MSDDemoManifestCheck *)self whitelistChecker];
-    v21 = [v20 checkManifest:v19];
+    whitelistChecker2 = [(MSDDemoManifestCheck *)self whitelistChecker];
+    v21 = [whitelistChecker2 checkManifest:v19];
 
     if ([v11 BOOLValue])
     {
-      v22 = [(MSDDemoManifestCheck *)self blocklistedItems];
-      [v22 addObjectsFromArray:v21];
+      blocklistedItems2 = [(MSDDemoManifestCheck *)self blocklistedItems];
+      [blocklistedItems2 addObjectsFromArray:v21];
     }
 
     else if (v21)
@@ -1382,19 +1382,19 @@ LABEL_64:
       sub_10002B16C();
       v33 = 0;
       v15 = v76;
-      v8 = v19;
+      sectionCopy = v19;
       goto LABEL_70;
     }
   }
 
   v70 = v11;
-  v72 = v10;
+  v72 = optionsCopy;
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v8 = v19;
-  v80 = [v8 countByEnumeratingWithState:&v97 objects:v107 count:16];
+  sectionCopy = v19;
+  v80 = [sectionCopy countByEnumeratingWithState:&v97 objects:v107 count:16];
   v34 = 0;
   v35 = 0;
   v15 = 0;
@@ -1408,7 +1408,7 @@ LABEL_64:
   v79 = *v98;
   v37 = v75;
   v36 = v76;
-  v74 = v8;
+  v74 = sectionCopy;
   while (2)
   {
     v38 = 0;
@@ -1418,7 +1418,7 @@ LABEL_64:
       if (*v98 != v79)
       {
         v40 = v38;
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(sectionCopy);
         v38 = v40;
       }
 
@@ -1426,7 +1426,7 @@ LABEL_64:
       v41 = *(*(&v97 + 1) + 8 * v38);
       context = objc_autoreleasePoolPush();
       v88 = v41;
-      v84 = [v8 objectForKey:v41];
+      v84 = [sectionCopy objectForKey:v41];
       v15 = [v84 valueForKey:@"MSDManifestFileAttributes"];
 
       if (!v15)
@@ -1440,14 +1440,14 @@ LABEL_64:
         goto LABEL_63;
       }
 
-      v42 = [v36 containsObject:v9];
+      v42 = [v36 containsObject:typeCopy];
       v43 = [v15 valueForKey:@"NSFileType"];
 
       v83 = v43;
       v44 = [v43 isEqualToString:@"NSFileTypeRegular"];
       if (v42)
       {
-        if ((v44 & 1) != 0 || ([v43 isEqualToString:@"NSFileTypeDirectory"]) && !-[MSDDemoManifestCheck isValidDataContainerFile:](v86, "isValidDataContainerFile:", v88, v70, v72))
+        if ((v44 & 1) != 0 || ([v43 isEqualToString:@"NSFileTypeDirectory"]) && !-[MSDDemoManifestCheck isValidDataContainerFile:](selfCopy, "isValidDataContainerFile:", v88, v70, v72))
         {
           goto LABEL_61;
         }
@@ -1462,9 +1462,9 @@ LABEL_64:
         v96 = 0u;
         v93 = 0u;
         v94 = 0u;
-        v46 = v86;
-        v47 = [(MSDDemoManifestCheck *)v86 allowedSymLinks];
-        v48 = [v47 countByEnumeratingWithState:&v93 objects:v106 count:16];
+        v46 = selfCopy;
+        allowedSymLinks = [(MSDDemoManifestCheck *)selfCopy allowedSymLinks];
+        v48 = [allowedSymLinks countByEnumeratingWithState:&v93 objects:v106 count:16];
         if (!v48)
         {
 
@@ -1483,7 +1483,7 @@ LABEL_62:
           v35 = v83;
 LABEL_63:
           v11 = v70;
-          v10 = v72;
+          optionsCopy = v72;
 
           objc_autoreleasePoolPop(context);
           goto LABEL_64;
@@ -1499,14 +1499,14 @@ LABEL_63:
           {
             if (*v94 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(allowedSymLinks);
             }
 
             v53 = *(*(&v93 + 1) + 8 * i);
             if ([v51 rangeOfString:{v53, v70, v72}] != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v54 = [(MSDDemoManifestCheck *)v46 allowedSymLinks];
-              v55 = [v54 objectForKey:v53];
+              allowedSymLinks2 = [(MSDDemoManifestCheck *)v46 allowedSymLinks];
+              v55 = [allowedSymLinks2 objectForKey:v53];
 
               v91 = 0u;
               v92 = 0u;
@@ -1544,21 +1544,21 @@ LABEL_63:
                 }
 
 LABEL_49:
-                v46 = v86;
+                v46 = selfCopy;
                 v51 = v88;
               }
             }
           }
 
-          v49 = [v47 countByEnumeratingWithState:&v93 objects:v106 count:16];
+          v49 = [allowedSymLinks countByEnumeratingWithState:&v93 objects:v106 count:16];
         }
 
         while (v49);
 
         v34 = v45;
-        v9 = v77;
+        typeCopy = v77;
         v15 = v78;
-        v8 = v74;
+        sectionCopy = v74;
         v37 = v75;
         v36 = v76;
         if ((v85 & 1) == 0)
@@ -1568,9 +1568,9 @@ LABEL_49:
       }
 
       v61 = [v15 valueForKey:{@"NSFilePosixPermissions", v70, v72}];
-      v62 = [v61 longValue];
+      longValue = [v61 longValue];
 
-      if ((v62 & 0xC00) != 0)
+      if ((longValue & 0xC00) != 0)
       {
         v65 = sub_100021268();
         if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -1581,10 +1581,10 @@ LABEL_49:
         goto LABEL_62;
       }
 
-      if ([v9 isEqualToString:v37])
+      if ([typeCopy isEqualToString:v37])
       {
-        v63 = [(MSDDemoManifestCheck *)v86 whitelistChecker];
-        v64 = [v63 handleSystemContainerFiles:v88 withMetadata:v84];
+        whitelistChecker3 = [(MSDDemoManifestCheck *)selfCopy whitelistChecker];
+        v64 = [whitelistChecker3 handleSystemContainerFiles:v88 withMetadata:v84];
 
         if ((v64 & 1) == 0)
         {
@@ -1606,7 +1606,7 @@ LABEL_49:
 
     while ((v81 + 1) != v80);
     v35 = v83;
-    v80 = [v8 countByEnumeratingWithState:&v97 objects:v107 count:16];
+    v80 = [sectionCopy countByEnumeratingWithState:&v97 objects:v107 count:16];
     if (v80)
     {
       continue;
@@ -1619,23 +1619,23 @@ LABEL_66:
 
   v33 = 1;
   v11 = v70;
-  v10 = v72;
+  optionsCopy = v72;
 LABEL_70:
 
   return v33;
 }
 
-- (BOOL)runAppLayoutSecurityCheck:(id)a3
+- (BOOL)runAppLayoutSecurityCheck:(id)check
 {
-  v4 = a3;
+  checkCopy = check;
   v5 = objc_alloc_init(NSMutableSet);
   v6 = objc_alloc_init(NSMutableSet);
   v7 = +[MSDPlatform sharedInstance];
-  v8 = [v7 macOS];
+  macOS = [v7 macOS];
 
   v61 = v5;
   v62 = v6;
-  if (v8)
+  if (macOS)
   {
     [v5 addObject:&off_100056760];
     [v6 addObject:@"staff"];
@@ -1668,9 +1668,9 @@ LABEL_70:
     else
     {
       v14 = +[MSDPlatform sharedInstance];
-      v15 = [v14 tvOS];
+      tvOS = [v14 tvOS];
 
-      if (!v15)
+      if (!tvOS)
       {
         v16 = objc_alloc_init(NSSet);
         goto LABEL_10;
@@ -1684,7 +1684,7 @@ LABEL_70:
 LABEL_10:
   v63 = v16;
 LABEL_11:
-  v17 = [(MSDDemoManifestCheck *)self getManifestData:v4];
+  v17 = [(MSDDemoManifestCheck *)self getManifestData:checkCopy];
 
   v67 = 0u;
   v68 = 0u;
@@ -2079,9 +2079,9 @@ LABEL_95:
   if ([(MSDDemoManifestCheck *)self manifestVersion]== 7)
   {
     v2 = +[MSDPlatform sharedInstance];
-    v3 = [v2 macOS];
+    macOS = [v2 macOS];
 
-    if (v3)
+    if (macOS)
     {
       v4 = &off_1000565B0;
     }
@@ -2102,17 +2102,17 @@ LABEL_95:
   return v5;
 }
 
-- (id)getManifestData:(id)a3
+- (id)getManifestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(MSDDemoManifestCheck *)self manifestVersion]== 7)
   {
-    v5 = [v4 objectForKey:@"Data" ofType:objc_opt_class()];
+    v5 = [dataCopy objectForKey:@"Data" ofType:objc_opt_class()];
   }
 
   else
   {
-    v5 = v4;
+    v5 = dataCopy;
   }
 
   v6 = v5;
@@ -2120,15 +2120,15 @@ LABEL_95:
   return v6;
 }
 
-- (id)getComponentData:(id)a3
+- (id)getComponentData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = @"Manifest";
-  v5 = [v3 objectForKey:@"Manifest"];
+  v5 = [dataCopy objectForKey:@"Manifest"];
 
-  if (v5 || (v4 = @"Settings", [v3 objectForKey:@"Settings"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (v5 || (v4 = @"Settings", [dataCopy objectForKey:@"Settings"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v3 objectForKey:v4 ofType:objc_opt_class()];
+    v7 = [dataCopy objectForKey:v4 ofType:objc_opt_class()];
   }
 
   else
@@ -2160,9 +2160,9 @@ LABEL_95:
   }
 
   v2 = +[MSDPlatform sharedInstance];
-  v3 = [v2 macOS];
+  macOS = [v2 macOS];
 
-  if (v3)
+  if (macOS)
   {
     return @"dockLayout";
   }
@@ -2178,16 +2178,16 @@ LABEL_95:
   if ([(MSDDemoManifestCheck *)self manifestVersion]== 7)
   {
     v3 = +[NSMutableArray array];
-    v4 = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
-    v5 = [v4 objectForKey:@"InstallationOrder"];
+    segmentedManifestWithRigorousFlag = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
+    segmentedManifestWithRigorousFlag2 = [segmentedManifestWithRigorousFlag objectForKey:@"InstallationOrder"];
 
-    v6 = [v5 objectForKey:@"CriticalComponents"];
+    v6 = [segmentedManifestWithRigorousFlag2 objectForKey:@"CriticalComponents"];
     if (v6)
     {
       [v3 addObjectsFromArray:v6];
     }
 
-    v7 = [v5 objectForKey:@"Components"];
+    v7 = [segmentedManifestWithRigorousFlag2 objectForKey:@"Components"];
     if (v7)
     {
       [v3 addObjectsFromArray:v7];
@@ -2196,24 +2196,24 @@ LABEL_95:
 
   else
   {
-    v5 = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
-    v3 = [v5 objectForKey:@"InstallationOrder"];
+    segmentedManifestWithRigorousFlag2 = [(MSDDemoManifestCheck *)self segmentedManifestWithRigorousFlag];
+    v3 = [segmentedManifestWithRigorousFlag2 objectForKey:@"InstallationOrder"];
   }
 
   return v3;
 }
 
-- (id)getBackupItemName:(id)a3
+- (id)getBackupItemName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(MSDDemoManifestCheck *)self manifestVersion]== 7)
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"/BackupData/", "length")}];
+    v5 = [nameCopy substringFromIndex:{objc_msgSend(@"/BackupData/", "length")}];
   }
 
   else
   {
-    v5 = v4;
+    v5 = nameCopy;
   }
 
   v6 = v5;
@@ -2221,14 +2221,14 @@ LABEL_95:
   return v6;
 }
 
-- (BOOL)isValidDataContainerFile:(id)a3
+- (BOOL)isValidDataContainerFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 pathComponents];
-  v5 = v4;
-  if (v4)
+  fileCopy = file;
+  pathComponents = [fileCopy pathComponents];
+  v5 = pathComponents;
+  if (pathComponents)
   {
-    if ([v4 count])
+    if ([pathComponents count])
     {
       v6 = 0;
       v7 = 0;
@@ -2338,9 +2338,9 @@ LABEL_5:
   return v2;
 }
 
-- (id)getAllowedISTSignedComponents:(id)a3
+- (id)getAllowedISTSignedComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v5 = +[NSMutableSet set];
   v6 = [NSString stringWithFormat:@"%@.%@", @"BackupData", @"appIconLayout"];
   v12[0] = v6;
@@ -2348,7 +2348,7 @@ LABEL_5:
   v12[1] = v7;
   v8 = [NSArray arrayWithObjects:v12 count:2];
 
-  v9 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponentsFromManifest:v4];
+  v9 = [(MSDDemoManifestCheck *)self getAllowedISTSignedComponentsFromManifest:componentsCopy];
 
   [v5 addObjectsFromArray:v8];
   [v5 addObjectsFromArray:v9];
@@ -2357,9 +2357,9 @@ LABEL_5:
   return v10;
 }
 
-- (id)getAllowedISTSignedComponentsFromManifest:(id)a3
+- (id)getAllowedISTSignedComponentsFromManifest:(id)manifest
 {
-  v3 = a3;
+  manifestCopy = manifest;
   v4 = +[NSMutableArray array];
   [v4 addObject:@"com.apple.ist.DigitalCatalog"];
   [v4 addObject:@"com.apple.ist.demoloop"];
@@ -2368,8 +2368,8 @@ LABEL_5:
   [v4 addObject:@"com.apple.ist.DigitalSignage.iOS"];
   [v4 addObject:@"com.retailtech.arkenstone"];
   v5 = +[NSMutableArray array];
-  v24 = v3;
-  v27 = [v3 objectForKeyedSubscript:@"Apps"];
+  v24 = manifestCopy;
+  v27 = [manifestCopy objectForKeyedSubscript:@"Apps"];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -2479,24 +2479,24 @@ LABEL_5:
   return v22;
 }
 
-- (void)removeBlocklistedItemFromSection:(id)a3 withName:(id)a4
+- (void)removeBlocklistedItemFromSection:(id)section withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  nameCopy = name;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v58 objects:v71 count:16];
+  v8 = [sectionCopy countByEnumeratingWithState:&v58 objects:v71 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v59;
     v11 = &archive_entry_free_ptr;
-    v37 = self;
-    v38 = v6;
+    selfCopy = self;
+    v38 = sectionCopy;
     v35 = *v59;
-    v36 = v7;
+    v36 = nameCopy;
     do
     {
       v12 = 0;
@@ -2505,12 +2505,12 @@ LABEL_5:
       {
         if (*v59 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sectionCopy);
         }
 
         v13 = v11[377];
         v43 = *(*(&v58 + 1) + 8 * v12);
-        v14 = [v6 objectForKey:v43 ofType:objc_opt_class()];
+        v14 = [sectionCopy objectForKey:v43 ofType:objc_opt_class()];
         if (v14)
         {
           v15 = [(MSDDemoManifestCheck *)self getComponentData:v14];
@@ -2588,7 +2588,7 @@ LABEL_5:
               v47 = 0u;
               v28 = v17;
               v29 = [v28 countByEnumeratingWithState:&v46 objects:v68 count:16];
-              v7 = v36;
+              nameCopy = v36;
               if (v29)
               {
                 v30 = v29;
@@ -2624,8 +2624,8 @@ LABEL_5:
                 while (v30);
               }
 
-              self = v37;
-              v6 = v38;
+              self = selfCopy;
+              sectionCopy = v38;
               v10 = v35;
               v11 = &archive_entry_free_ptr;
               v9 = v39;
@@ -2640,16 +2640,16 @@ LABEL_5:
       }
 
       while (v12 != v9);
-      v9 = [v6 countByEnumeratingWithState:&v58 objects:v71 count:16];
+      v9 = [sectionCopy countByEnumeratingWithState:&v58 objects:v71 count:16];
     }
 
     while (v9);
   }
 }
 
-- (__SecKey)createPublicKeyAppleISTSigning:(id)a3
+- (__SecKey)createPublicKeyAppleISTSigning:(id)signing
 {
-  v5 = a3;
+  signingCopy = signing;
   commonName = 0;
   v6 = sub_100021268();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2676,7 +2676,7 @@ LABEL_38:
   }
 
   v8 = DemoDigitalCatalogSigning;
-  if ([v5 count] != 2)
+  if ([signingCopy count] != 2)
   {
     v34 = sub_100021268();
     if (sub_10001124C(v34))
@@ -2692,7 +2692,7 @@ LABEL_23:
     goto LABEL_35;
   }
 
-  v9 = [v5 objectAtIndex:0];
+  v9 = [signingCopy objectAtIndex:0];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2702,10 +2702,10 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  v3 = [v5 objectAtIndex:0];
-  v11 = [(__CFString *)v3 bytes];
-  v12 = [v5 objectAtIndex:0];
-  v13 = CFDataCreate(kCFAllocatorDefault, v11, [v12 length]);
+  v3 = [signingCopy objectAtIndex:0];
+  bytes = [(__CFString *)v3 bytes];
+  v12 = [signingCopy objectAtIndex:0];
+  v13 = CFDataCreate(kCFAllocatorDefault, bytes, [v12 length]);
 
   if (!v13)
   {
@@ -2742,7 +2742,7 @@ LABEL_35:
     goto LABEL_14;
   }
 
-  v16 = [v5 objectAtIndex:1];
+  v16 = [signingCopy objectAtIndex:1];
   objc_opt_class();
   v17 = objc_opt_isKindOfClass();
 
@@ -2754,10 +2754,10 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  v18 = [v5 objectAtIndex:1];
-  v19 = [v18 bytes];
-  v20 = [v5 objectAtIndex:1];
-  v3 = CFDataCreate(kCFAllocatorDefault, v19, [v20 length]);
+  v18 = [signingCopy objectAtIndex:1];
+  bytes2 = [v18 bytes];
+  v20 = [signingCopy objectAtIndex:1];
+  v3 = CFDataCreate(kCFAllocatorDefault, bytes2, [v20 length]);
 
   if (!v3)
   {
@@ -2822,7 +2822,7 @@ LABEL_40:
   }
 
   v24 = [NSArray arrayWithObjects:v23, 0];
-  v25 = [(MSDDemoManifestCheck *)self createPublicKey:v5 usingPolicy:v8 anchors:v24];
+  v25 = [(MSDDemoManifestCheck *)self createPublicKey:signingCopy usingPolicy:v8 anchors:v24];
 LABEL_14:
 
 LABEL_15:

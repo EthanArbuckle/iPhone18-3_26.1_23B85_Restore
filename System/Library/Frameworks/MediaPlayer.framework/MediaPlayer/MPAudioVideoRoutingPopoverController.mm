@@ -1,43 +1,43 @@
 @interface MPAudioVideoRoutingPopoverController
-- (MPAudioVideoRoutingPopoverController)initWithContentViewController:(id)a3;
-- (MPAudioVideoRoutingPopoverController)initWithType:(int64_t)a3 includeMirroring:(BOOL)a4;
+- (MPAudioVideoRoutingPopoverController)initWithContentViewController:(id)controller;
+- (MPAudioVideoRoutingPopoverController)initWithType:(int64_t)type includeMirroring:(BOOL)mirroring;
 - (void)dealloc;
-- (void)routingViewController:(id)a3 didPickRoute:(id)a4;
-- (void)routingViewControllerDidUpdateContents:(id)a3;
-- (void)setMirroringOnly:(BOOL)a3;
+- (void)routingViewController:(id)controller didPickRoute:(id)route;
+- (void)routingViewControllerDidUpdateContents:(id)contents;
+- (void)setMirroringOnly:(BOOL)only;
 @end
 
 @implementation MPAudioVideoRoutingPopoverController
 
-- (void)routingViewControllerDidUpdateContents:(id)a3
+- (void)routingViewControllerDidUpdateContents:(id)contents
 {
-  v4 = [(MPAudioVideoRoutingPopoverController *)self contentViewController];
-  [v4 preferredContentSize];
+  contentViewController = [(MPAudioVideoRoutingPopoverController *)self contentViewController];
+  [contentViewController preferredContentSize];
   [(MPAudioVideoRoutingPopoverController *)self setPopoverContentSize:1 animated:?];
 }
 
-- (void)routingViewController:(id)a3 didPickRoute:(id)a4
+- (void)routingViewController:(id)controller didPickRoute:(id)route
 {
   if (!self->_mirroringIncluded)
   {
-    [(MPAudioVideoRoutingPopoverController *)self dismissPopoverAnimated:1, a4];
-    v6 = [(MPAudioVideoRoutingPopoverController *)self delegate];
+    [(MPAudioVideoRoutingPopoverController *)self dismissPopoverAnimated:1, route];
+    delegate = [(MPAudioVideoRoutingPopoverController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 popoverControllerDidDismissPopover:self];
+      [delegate popoverControllerDidDismissPopover:self];
     }
   }
 }
 
-- (void)setMirroringOnly:(BOOL)a3
+- (void)setMirroringOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPAudioVideoRoutingPopoverController.m" lineNumber:101 description:@"Mirroring is no longer supported by MPAudioVideoRoutingPopoverController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAudioVideoRoutingPopoverController.m" lineNumber:101 description:@"Mirroring is no longer supported by MPAudioVideoRoutingPopoverController"];
   }
 
-  self->_mirroringOnly = a3;
+  self->_mirroringOnly = only;
 }
 
 - (void)dealloc
@@ -52,12 +52,12 @@
   [(MPAudioVideoRoutingPopoverController *)&v3 dealloc];
 }
 
-- (MPAudioVideoRoutingPopoverController)initWithContentViewController:(id)a3
+- (MPAudioVideoRoutingPopoverController)initWithContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = MPAudioVideoRoutingPopoverController;
-  v5 = [(MPAudioVideoRoutingPopoverController *)&v12 initWithContentViewController:v4];
+  v5 = [(MPAudioVideoRoutingPopoverController *)&v12 initWithContentViewController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -95,19 +95,19 @@ void __70__MPAudioVideoRoutingPopoverController_initWithContentViewController___
   }
 }
 
-- (MPAudioVideoRoutingPopoverController)initWithType:(int64_t)a3 includeMirroring:(BOOL)a4
+- (MPAudioVideoRoutingPopoverController)initWithType:(int64_t)type includeMirroring:(BOOL)mirroring
 {
-  if (a4)
+  if (mirroring)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPAudioVideoRoutingPopoverController.m" lineNumber:46 description:@"Mirroring is no longer supported by MPAudioVideoRoutingPopoverController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAudioVideoRoutingPopoverController.m" lineNumber:46 description:@"Mirroring is no longer supported by MPAudioVideoRoutingPopoverController"];
   }
 
   v7 = [[MPAVRoutingViewController alloc] initWithStyle:1];
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [(MPAVRoutingViewController *)v7 _setTableCellsBackgroundColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(MPAVRoutingViewController *)v7 _setTableCellsBackgroundColor:whiteColor];
 
-  [(MPAVRoutingViewController *)v7 setAVItemType:a3];
+  [(MPAVRoutingViewController *)v7 setAVItemType:type];
   [(MPAVRoutingViewController *)v7 setMirroringStyle:0];
   [(MPAVRoutingViewController *)v7 setDelegate:self];
   v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
@@ -117,7 +117,7 @@ void __70__MPAudioVideoRoutingPopoverController_initWithContentViewController___
   v11 = v10;
   if (v10)
   {
-    v10->_mirroringIncluded = a4;
+    v10->_mirroringIncluded = mirroring;
     objc_storeStrong(&v10->_routingViewController, v7);
   }
 

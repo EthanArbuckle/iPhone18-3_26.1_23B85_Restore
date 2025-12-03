@@ -1,20 +1,20 @@
 @interface REMListSectionContext
 - (BOOL)hasSections;
-- (REMListSectionContext)initWithList:(id)a3;
+- (REMListSectionContext)initWithList:(id)list;
 @end
 
 @implementation REMListSectionContext
 
-- (REMListSectionContext)initWithList:(id)a3
+- (REMListSectionContext)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = REMListSectionContext;
   v6 = [(REMListSectionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_list, a3);
+    objc_storeStrong(&v6->_list, list);
   }
 
   return v7;
@@ -22,15 +22,15 @@
 
 - (BOOL)hasSections
 {
-  v3 = [(REMListSectionContext *)self list];
-  v4 = [v3 store];
+  list = [(REMListSectionContext *)self list];
+  store = [list store];
 
-  v5 = [(REMListSectionContext *)self list];
-  v6 = [v5 remObjectID];
-  v7 = [v4 fetchListSectionsCountWithListObjectID:v6 error:0];
+  list2 = [(REMListSectionContext *)self list];
+  remObjectID = [list2 remObjectID];
+  v7 = [store fetchListSectionsCountWithListObjectID:remObjectID error:0];
 
-  LOBYTE(v5) = [v7 intValue] > 0;
-  return v5;
+  LOBYTE(list2) = [v7 intValue] > 0;
+  return list2;
 }
 
 @end

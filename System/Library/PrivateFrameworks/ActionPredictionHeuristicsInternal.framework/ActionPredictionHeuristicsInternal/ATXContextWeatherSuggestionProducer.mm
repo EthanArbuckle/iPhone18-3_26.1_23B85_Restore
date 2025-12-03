@@ -1,49 +1,49 @@
 @interface ATXContextWeatherSuggestionProducer
-- (ATXContextWeatherSuggestionProducer)initWithValidDateInterval:(id)a3 reasonCode:(int64_t)a4 score:(double)a5;
-- (id)_dummySuggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5;
-- (id)_suggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5;
+- (ATXContextWeatherSuggestionProducer)initWithValidDateInterval:(id)interval reasonCode:(int64_t)code score:(double)score;
+- (id)_dummySuggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score;
+- (id)_suggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score;
 - (id)dummySuggestion;
-- (id)weatherSuggestionWithRefreshTriggers:(id)a3;
+- (id)weatherSuggestionWithRefreshTriggers:(id)triggers;
 @end
 
 @implementation ATXContextWeatherSuggestionProducer
 
-- (ATXContextWeatherSuggestionProducer)initWithValidDateInterval:(id)a3 reasonCode:(int64_t)a4 score:(double)a5
+- (ATXContextWeatherSuggestionProducer)initWithValidDateInterval:(id)interval reasonCode:(int64_t)code score:(double)score
 {
-  v9 = a3;
+  intervalCopy = interval;
   v15.receiver = self;
   v15.super_class = ATXContextWeatherSuggestionProducer;
   v10 = [(ATXContextWeatherSuggestionProducer *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_validDateInterval, a3);
-    v11->_score = a5;
-    v11->_reasonCode = a4;
-    v12 = [MEMORY[0x277D41BF8] sharedInstance];
+    objc_storeStrong(&v10->_validDateInterval, interval);
+    v11->_score = score;
+    v11->_reasonCode = code;
+    mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
     locationManager = v11->_locationManager;
-    v11->_locationManager = v12;
+    v11->_locationManager = mEMORY[0x277D41BF8];
   }
 
   return v11;
 }
 
-- (id)weatherSuggestionWithRefreshTriggers:(id)a3
+- (id)weatherSuggestionWithRefreshTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   v5 = objc_alloc(MEMORY[0x277CEB2D0]);
-  v6 = [(NSDateInterval *)self->_validDateInterval startDate];
-  v7 = [(NSDateInterval *)self->_validDateInterval endDate];
-  v8 = [v5 initWithStartDate:v6 endDate:v7 lockScreenEligible:0 predicate:0];
+  startDate = [(NSDateInterval *)self->_validDateInterval startDate];
+  endDate = [(NSDateInterval *)self->_validDateInterval endDate];
+  v8 = [v5 initWithStartDate:startDate endDate:endDate lockScreenEligible:0 predicate:0];
 
-  v9 = [(ATXLocationManager *)self->_locationManager getCurrentLocation];
-  if (v9)
+  getCurrentLocation = [(ATXLocationManager *)self->_locationManager getCurrentLocation];
+  if (getCurrentLocation)
   {
     v10 = [ATXInformationHeuristicRefreshLocationTrigger alloc];
-    [v9 coordinate];
+    [getCurrentLocation coordinate];
     v11 = [ATXInformationHeuristicRefreshLocationTrigger initWithExitingLocation:v10 radiusInMeters:"initWithExitingLocation:radiusInMeters:"];
-    [v4 addObject:v11];
-    [v9 coordinate];
+    [triggersCopy addObject:v11];
+    [getCurrentLocation coordinate];
     v14 = [objc_alloc(MEMORY[0x277CEB860]) initWithWeatherLatitude:v8 longitude:v12 criteria:v13];
     v15 = [(ATXContextWeatherSuggestionProducer *)self _suggestionWithAction:v14 predictionReasons:1 << self->_reasonCode score:self->_score];
   }
@@ -65,9 +65,9 @@
 - (id)dummySuggestion
 {
   v3 = objc_alloc(MEMORY[0x277CEB2D0]);
-  v4 = [(NSDateInterval *)self->_validDateInterval startDate];
-  v5 = [(NSDateInterval *)self->_validDateInterval endDate];
-  v6 = [v3 initWithStartDate:v4 endDate:v5 lockScreenEligible:0 predicate:0];
+  startDate = [(NSDateInterval *)self->_validDateInterval startDate];
+  endDate = [(NSDateInterval *)self->_validDateInterval endDate];
+  v6 = [v3 initWithStartDate:startDate endDate:endDate lockScreenEligible:0 predicate:0];
 
   v7 = [objc_alloc(MEMORY[0x277CEB860]) initWithEntityName:&stru_2850AD368 qid:&stru_2850AD368 criteria:v6];
   v8 = [(ATXContextWeatherSuggestionProducer *)self _dummySuggestionWithAction:v7 predictionReasons:1 << self->_reasonCode score:self->_score];
@@ -75,22 +75,22 @@
   return v8;
 }
 
-- (id)_suggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5
+- (id)_suggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score
 {
   reasonCode = self->_reasonCode;
-  v8 = a3;
+  actionCopy = action;
   v9 = stringForATXSuggestionPredictionReasonCode();
-  v10 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v8 predictionReasons:a4 localizedReason:v9 score:0 dateInterval:a5];
+  v10 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:actionCopy predictionReasons:reasons localizedReason:v9 score:0 dateInterval:score];
 
   return v10;
 }
 
-- (id)_dummySuggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5
+- (id)_dummySuggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score
 {
   reasonCode = self->_reasonCode;
-  v8 = a3;
+  actionCopy = action;
   v9 = stringForATXSuggestionPredictionReasonCode();
-  v10 = [ATXContextHeuristicSuggestionProducer dummySuggestionWithSpotlightAction:v8 predictionReasons:a4 localizedReason:v9 score:a5];
+  v10 = [ATXContextHeuristicSuggestionProducer dummySuggestionWithSpotlightAction:actionCopy predictionReasons:reasons localizedReason:v9 score:score];
 
   return v10;
 }

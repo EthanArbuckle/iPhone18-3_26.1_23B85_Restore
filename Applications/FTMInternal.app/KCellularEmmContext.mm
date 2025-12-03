@@ -1,32 +1,32 @@
 @interface KCellularEmmContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRegProc:(id)a3;
-- (int)StringAsRegStatus:(id)a3;
-- (int)StringAsRejectCause:(id)a3;
-- (int)StringAsUeOpMode:(id)a3;
-- (int)StringAsUpdateStatus:(id)a3;
+- (int)StringAsRegProc:(id)proc;
+- (int)StringAsRegStatus:(id)status;
+- (int)StringAsRejectCause:(id)cause;
+- (int)StringAsUeOpMode:(id)mode;
+- (int)StringAsUpdateStatus:(id)status;
 - (int)regProc;
 - (int)regStatus;
 - (int)rejectCause;
 - (int)ueOpMode;
 - (int)updateStatus;
 - (unint64_t)hash;
-- (void)addTaiList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsEmergBearerSupported:(BOOL)a3;
-- (void)setHasIsImsVoiceSupported:(BOOL)a3;
-- (void)setHasRegProc:(BOOL)a3;
-- (void)setHasRegStatus:(BOOL)a3;
-- (void)setHasRejectCause:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasT3412DurS:(BOOL)a3;
-- (void)setHasUeOpMode:(BOOL)a3;
-- (void)setHasUpdateStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTaiList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsEmergBearerSupported:(BOOL)supported;
+- (void)setHasIsImsVoiceSupported:(BOOL)supported;
+- (void)setHasRegProc:(BOOL)proc;
+- (void)setHasRegStatus:(BOOL)status;
+- (void)setHasRejectCause:(BOOL)cause;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasT3412DurS:(BOOL)s;
+- (void)setHasUeOpMode:(BOOL)mode;
+- (void)setHasUpdateStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularEmmContext
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)setHasRegStatus:(BOOL)a3
+- (void)setHasRegStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -59,75 +59,75 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsRegStatus:(id)a3
+- (int)StringAsRegStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KREG_STATUS_NORMAL_SERVICE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"KREG_STATUS_NORMAL_SERVICE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_FAILURE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_LIMITED_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_LIMITED_SERVICE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_NO_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_NO_SERVICE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_AT_NOT_REGISTERED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_AT_NOT_REGISTERED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_SERVICE_DISABLED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_SERVICE_DISABLED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SERVICE_DETACHED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SERVICE_DETACHED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SERVICE_ACTIVATED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SERVICE_ACTIVATED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_EMERGENCY_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_EMERGENCY_SERVICE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_EMERGENCY_LIMITED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_EMERGENCY_LIMITED"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTERED_SMS_ONLY"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTERED_SMS_ONLY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_REGISTRATION_IN_PROGRESS"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_REGISTRATION_IN_PROGRESS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_POWER_OFF_NO_SERVICE"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_POWER_OFF_NO_SERVICE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KREG_STATUS_SUSPENDED"])
+  else if ([statusCopy isEqualToString:@"KREG_STATUS_SUSPENDED"])
   {
     v4 = 100;
   }
@@ -153,9 +153,9 @@
   }
 }
 
-- (void)setHasUpdateStatus:(BOOL)a3
+- (void)setHasUpdateStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 128;
   }
@@ -168,20 +168,20 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsUpdateStatus:(id)a3
+- (int)StringAsUpdateStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EPS_STATUS_UPDATED"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"EPS_STATUS_UPDATED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EPS_STATUS_NOT_UPDATED"])
+  else if ([statusCopy isEqualToString:@"EPS_STATUS_NOT_UPDATED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EPS_STATUS_ROAMING_NOT_ALLOWED"])
+  else if ([statusCopy isEqualToString:@"EPS_STATUS_ROAMING_NOT_ALLOWED"])
   {
     v4 = 2;
   }
@@ -207,9 +207,9 @@
   }
 }
 
-- (void)setHasUeOpMode:(BOOL)a3
+- (void)setHasUeOpMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }
@@ -222,25 +222,25 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsUeOpMode:(id)a3
+- (int)StringAsUeOpMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EPS_UE_OP_MODE_PS_MODE_1"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"EPS_UE_OP_MODE_PS_MODE_1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EPS_UE_OP_MODE_PS_MODE_2"])
+  else if ([modeCopy isEqualToString:@"EPS_UE_OP_MODE_PS_MODE_2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EPS_UE_OP_MODE_CSPS_MODE_1"])
+  else if ([modeCopy isEqualToString:@"EPS_UE_OP_MODE_CSPS_MODE_1"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EPS_UE_OP_MODE_CSPS_MODE_2"])
+  else if ([modeCopy isEqualToString:@"EPS_UE_OP_MODE_CSPS_MODE_2"])
   {
     v4 = 3;
   }
@@ -253,22 +253,22 @@
   return v4;
 }
 
-- (void)addTaiList:(id)a3
+- (void)addTaiList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   taiLists = self->_taiLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!taiLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_taiLists;
     self->_taiLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     taiLists = self->_taiLists;
   }
 
-  [(NSMutableArray *)taiLists addObject:v4];
+  [(NSMutableArray *)taiLists addObject:listCopy];
 }
 
 - (int)rejectCause
@@ -284,9 +284,9 @@
   }
 }
 
-- (void)setHasRejectCause:(BOOL)a3
+- (void)setHasRejectCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 8;
   }
@@ -299,185 +299,185 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsRejectCause:(id)a3
+- (int)StringAsRejectCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EMM_CAUSE_NO_CAUSE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"EMM_CAUSE_NO_CAUSE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_IMSI_UNKNOWN_IN_HSS"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_IMSI_UNKNOWN_IN_HSS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_ILLEGAL_UE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_ILLEGAL_UE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_IMEI_NOT_ACCEPTED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_IMEI_NOT_ACCEPTED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_ILLEGAL_ME"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_ILLEGAL_ME"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_EPS_SERVICES_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_EPS_SERVICES_NOT_ALLOWED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_EPS_SERVICES_AND_NON_EPS_SERVICES_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_EPS_SERVICES_AND_NON_EPS_SERVICES_NOT_ALLOWED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_NETWORK"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_UE_IDENTITY_CANNOT_BE_DERIVED_BY_NETWORK"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_IMPLICITLY_DETACHED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_IMPLICITLY_DETACHED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_PLMN_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_PLMN_NOT_ALLOWED"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_TRACKING_AREA_NOT_ALLOWED"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_ROAMING_NOT_ALLOWED_IN_THIS_TRACKING_AREA"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_ROAMING_NOT_ALLOWED_IN_THIS_TRACKING_AREA"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_EPS_SERVICES_NOT_ALLOWED_IN_THIS_PLMN"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_EPS_SERVICES_NOT_ALLOWED_IN_THIS_PLMN"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_NO_SUITABLE_CELLS_IN_TRACKING_AREA"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_NO_SUITABLE_CELLS_IN_TRACKING_AREA"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_MSC_TEMPORARILY_NOT_REACHABLE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_MSC_TEMPORARILY_NOT_REACHABLE"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_NETWORK_FAILURE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_NETWORK_FAILURE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_CS_DOMAIN_NOT_AVAILABLE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_CS_DOMAIN_NOT_AVAILABLE"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_ESM_FAILURE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_ESM_FAILURE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_MAC_FAILURE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_MAC_FAILURE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_SYNCH_FAILURE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_SYNCH_FAILURE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_CONGESTION"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_CONGESTION"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_UE_SECURITY_CAPABILITY_MISMATCH"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_UE_SECURITY_CAPABILITY_MISMATCH"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_SECURITY_MODE_REJECTED_UNSPECIFIED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_SECURITY_MODE_REJECTED_UNSPECIFIED"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_NOT_AUTHORIZED_FOR_THIS_CSG"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_NOT_AUTHORIZED_FOR_THIS_CSG"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_NON_EPS_AUTHENTICATION_UNACCEPTABLE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_NON_EPS_AUTHENTICATION_UNACCEPTABLE"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_REQUESTED_SERVICE_OPTION_NOT_AUTHORIZED_IN_THIS_PLMN"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_REQUESTED_SERVICE_OPTION_NOT_AUTHORIZED_IN_THIS_PLMN"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_CS_DOMAIN_TEMPORARILY_NOT_AVAILABLE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_CS_DOMAIN_TEMPORARILY_NOT_AVAILABLE"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_NO_EPS_BEARER_CONTEXT_ACTIVATED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_NO_EPS_BEARER_CONTEXT_ACTIVATED"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_SEMANTICALLY_INCORRECT_MESSAGE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_SEMANTICALLY_INCORRECT_MESSAGE"])
   {
     v4 = 95;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_INVALID_MANDATORY_INFORMATION"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_INVALID_MANDATORY_INFORMATION"])
   {
     v4 = 96;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_MESSAGE_TYPE_NON_EXISTENT_OR_NOT_IMPLEMENTED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_MESSAGE_TYPE_NON_EXISTENT_OR_NOT_IMPLEMENTED"])
   {
     v4 = 97;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_MESSAGE_TYPE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_MESSAGE_TYPE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE"])
   {
     v4 = 98;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_IE_NON_EXISTENT_OR_NOT_IMPLEMENTED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_IE_NON_EXISTENT_OR_NOT_IMPLEMENTED"])
   {
     v4 = 99;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_CONDITIONAL_IE_ERROR"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_CONDITIONAL_IE_ERROR"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_MESSAGE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_MESSAGE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED"])
+  else if ([causeCopy isEqualToString:@"EMM_CAUSE_PROTOCOL_ERROR_UNSPECIFIED"])
   {
     v4 = 111;
   }
@@ -503,9 +503,9 @@
   }
 }
 
-- (void)setHasRegProc:(BOOL)a3
+- (void)setHasRegProc:(BOOL)proc
 {
-  if (a3)
+  if (proc)
   {
     v3 = 2;
   }
@@ -518,45 +518,45 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsRegProc:(id)a3
+- (int)StringAsRegProc:(id)proc
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EMM_PROC_NO_PROC"])
+  procCopy = proc;
+  if ([procCopy isEqualToString:@"EMM_PROC_NO_PROC"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_ATTACH"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_ATTACH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_ATTACH_COMB"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_ATTACH_COMB"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_EMERGENCY_ATTACH"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_EMERGENCY_ATTACH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_TAU"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_TAU"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_TAU_COMB"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_TAU_COMB"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_PERIODIC_TAU"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_PERIODIC_TAU"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"EMM_PROC_SERV_REQ"])
+  else if ([procCopy isEqualToString:@"EMM_PROC_SERV_REQ"])
   {
     v4 = 7;
   }
@@ -569,9 +569,9 @@
   return v4;
 }
 
-- (void)setHasT3412DurS:(BOOL)a3
+- (void)setHasT3412DurS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 32;
   }
@@ -584,9 +584,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsImsVoiceSupported:(BOOL)a3
+- (void)setHasIsImsVoiceSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 512;
   }
@@ -599,9 +599,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsEmergBearerSupported:(BOOL)a3
+- (void)setHasIsEmergBearerSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 256;
   }
@@ -614,9 +614,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -634,8 +634,8 @@
   v7.receiver = self;
   v7.super_class = KCellularEmmContext;
   v3 = [(KCellularEmmContext *)&v7 description];
-  v4 = [(KCellularEmmContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularEmmContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -791,8 +791,8 @@ LABEL_32:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -807,8 +807,8 @@ LABEL_32:
   guti = self->_guti;
   if (guti)
   {
-    v20 = [(Guti *)guti dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"guti"];
+    dictionaryRepresentation2 = [(Guti *)guti dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"guti"];
   }
 
   v21 = self->_has;
@@ -1060,9 +1060,9 @@ LABEL_50:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1225,14 +1225,14 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 34) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 34) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -1243,8 +1243,8 @@ LABEL_3:
       }
 
 LABEL_24:
-      *(v4 + 15) = self->_updateStatus;
-      *(v4 + 34) |= 0x80u;
+      *(toCopy + 15) = self->_updateStatus;
+      *(toCopy + 34) |= 0x80u;
       if ((*&self->_has & 0x40) == 0)
       {
         goto LABEL_6;
@@ -1259,8 +1259,8 @@ LABEL_24:
     goto LABEL_3;
   }
 
-  *(v4 + 7) = self->_regStatus;
-  *(v4 + 34) |= 4u;
+  *(toCopy + 7) = self->_regStatus;
+  *(toCopy + 34) |= 4u;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
@@ -1271,19 +1271,19 @@ LABEL_4:
   if ((has & 0x40) != 0)
   {
 LABEL_5:
-    *(v4 + 14) = self->_ueOpMode;
-    *(v4 + 34) |= 0x40u;
+    *(toCopy + 14) = self->_ueOpMode;
+    *(toCopy + 34) |= 0x40u;
   }
 
 LABEL_6:
-  v11 = v4;
+  v11 = toCopy;
   if ([(KCellularEmmContext *)self taiListsCount])
   {
     [v11 clearTaiLists];
-    v6 = [(KCellularEmmContext *)self taiListsCount];
-    if (v6)
+    taiListsCount = [(KCellularEmmContext *)self taiListsCount];
+    if (taiListsCount)
     {
-      v7 = v6;
+      v7 = taiListsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularEmmContext *)self taiListAtIndex:i];
@@ -1377,9 +1377,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1448,7 +1448,7 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addTaiList:v13];
       }
 
@@ -1458,7 +1458,7 @@ LABEL_6:
     while (v10);
   }
 
-  v14 = [(Guti *)self->_guti copyWithZone:a3];
+  v14 = [(Guti *)self->_guti copyWithZone:zone];
   v15 = *(v6 + 2);
   *(v6 + 2) = v14;
 
@@ -1542,19 +1542,19 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
@@ -1567,7 +1567,7 @@ LABEL_19:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_regStatus != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_regStatus != *(equalCopy + 7))
     {
       goto LABEL_61;
     }
@@ -1580,7 +1580,7 @@ LABEL_19:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_updateStatus != *(v4 + 15))
+    if ((v6 & 0x80) == 0 || self->_updateStatus != *(equalCopy + 15))
     {
       goto LABEL_61;
     }
@@ -1593,7 +1593,7 @@ LABEL_19:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_ueOpMode != *(v4 + 14))
+    if ((v6 & 0x40) == 0 || self->_ueOpMode != *(equalCopy + 14))
     {
       goto LABEL_61;
     }
@@ -1605,13 +1605,13 @@ LABEL_19:
   }
 
   taiLists = self->_taiLists;
-  if (taiLists | *(v4 + 6) && ![(NSMutableArray *)taiLists isEqual:?])
+  if (taiLists | *(equalCopy + 6) && ![(NSMutableArray *)taiLists isEqual:?])
   {
     goto LABEL_61;
   }
 
   guti = self->_guti;
-  if (guti | *(v4 + 2))
+  if (guti | *(equalCopy + 2))
   {
     if (![(Guti *)guti isEqual:?])
     {
@@ -1620,10 +1620,10 @@ LABEL_19:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 34);
+  v10 = *(equalCopy + 34);
   if ((v9 & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_rejectCause != *(v4 + 8))
+    if ((v10 & 8) == 0 || self->_rejectCause != *(equalCopy + 8))
     {
       goto LABEL_61;
     }
@@ -1636,7 +1636,7 @@ LABEL_19:
 
   if ((v9 & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_regProc != *(v4 + 6))
+    if ((v10 & 2) == 0 || self->_regProc != *(equalCopy + 6))
     {
       goto LABEL_61;
     }
@@ -1649,7 +1649,7 @@ LABEL_19:
 
   if ((v9 & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_t3412DurS != *(v4 + 10))
+    if ((v10 & 0x20) == 0 || self->_t3412DurS != *(equalCopy + 10))
     {
       goto LABEL_61;
     }
@@ -1662,34 +1662,34 @@ LABEL_19:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 34) & 0x200) == 0)
+    if ((*(equalCopy + 34) & 0x200) == 0)
     {
       goto LABEL_61;
     }
 
-    v12 = *(v4 + 65);
+    v12 = *(equalCopy + 65);
     if (self->_isImsVoiceSupported)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_61;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 34) & 0x200) != 0)
+  else if ((*(equalCopy + 34) & 0x200) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(v4 + 34) & 0x100) == 0)
+    if ((*(equalCopy + 34) & 0x100) == 0)
     {
       goto LABEL_45;
     }
@@ -1699,21 +1699,21 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if ((*(v4 + 34) & 0x100) == 0)
+  if ((*(equalCopy + 34) & 0x100) == 0)
   {
     goto LABEL_61;
   }
 
-  v13 = *(v4 + 64);
+  v13 = *(equalCopy + 64);
   if (self->_isEmergBearerSupported)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_61;
   }
@@ -1721,7 +1721,7 @@ LABEL_61:
 LABEL_45:
   if ((v9 & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_subsId != *(v4 + 9))
+    if ((v10 & 0x10) == 0 || self->_subsId != *(equalCopy + 9))
     {
       goto LABEL_61;
     }
@@ -1875,16 +1875,16 @@ LABEL_16:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 34);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 34);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 34);
+    v6 = *(fromCopy + 34);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -1902,9 +1902,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_regStatus = *(v4 + 7);
+  self->_regStatus = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v6 = *(v4 + 34);
+  v6 = *(fromCopy + 34);
   if ((v6 & 0x80) == 0)
   {
 LABEL_4:
@@ -1917,12 +1917,12 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_updateStatus = *(v4 + 15);
+  self->_updateStatus = *(fromCopy + 15);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 34) & 0x40) != 0)
+  if ((*(fromCopy + 34) & 0x40) != 0)
   {
 LABEL_5:
-    self->_ueOpMode = *(v4 + 14);
+    self->_ueOpMode = *(fromCopy + 14);
     *&self->_has |= 0x40u;
   }
 
@@ -1931,7 +1931,7 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 6);
+  v7 = *(fromCopy + 6);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {

@@ -1,32 +1,32 @@
 @interface PKPassAuxiliaryRegistrationRequirements
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassAuxiliaryRegistrationRequirements:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassAuxiliaryRegistrationRequirements:(id)requirements;
 - (NSArray)allRequirements;
-- (PKPassAuxiliaryRegistrationRequirements)initWithCoder:(id)a3;
-- (PKPassAuxiliaryRegistrationRequirements)initWithDictionary:(id)a3;
+- (PKPassAuxiliaryRegistrationRequirements)initWithCoder:(id)coder;
+- (PKPassAuxiliaryRegistrationRequirements)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryRegistrationRequirements
 
-- (PKPassAuxiliaryRegistrationRequirements)initWithDictionary:(id)a3
+- (PKPassAuxiliaryRegistrationRequirements)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v12.receiver = self;
     v12.super_class = PKPassAuxiliaryRegistrationRequirements;
     v5 = [(PKPassAuxiliaryRegistrationRequirements *)&v12 init];
     if (v5)
     {
-      self = [v4 PKArrayContaining:objc_opt_class() forKey:@"deviceSignatures"];
+      self = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"deviceSignatures"];
       v6 = [(PKPassAuxiliaryRegistrationRequirements *)self pk_arrayBySafelyApplyingBlock:&__block_literal_global_35];
       deviceSignatureRequirements = v5->_deviceSignatureRequirements;
       v5->_deviceSignatureRequirements = v6;
 
-      v8 = [v4 PKArrayContaining:objc_opt_class() forKey:@"deviceDecryptions"];
+      v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"deviceDecryptions"];
       v9 = [v8 pk_arrayBySafelyApplyingBlock:&__block_literal_global_318];
       deviceDecryptionRequirements = v5->_deviceDecryptionRequirements;
       v5->_deviceDecryptionRequirements = v9;
@@ -91,9 +91,9 @@ PKPassAuxiliaryRegistrationDecryptionRequirement *__62__PKPassAuxiliaryRegistrat
   return v5;
 }
 
-- (PKPassAuxiliaryRegistrationRequirements)initWithCoder:(id)a3
+- (PKPassAuxiliaryRegistrationRequirements)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPassAuxiliaryRegistrationRequirements;
   v5 = [(PKPassAuxiliaryRegistrationRequirements *)&v17 init];
@@ -102,14 +102,14 @@ PKPassAuxiliaryRegistrationDecryptionRequirement *__62__PKPassAuxiliaryRegistrat
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"deviceSignatureRequirements"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"deviceSignatureRequirements"];
     deviceSignatureRequirements = v5->_deviceSignatureRequirements;
     v5->_deviceSignatureRequirements = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"deviceDecryptionRequirements"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"deviceDecryptionRequirements"];
     deviceDecryptionRequirements = v5->_deviceDecryptionRequirements;
     v5->_deviceDecryptionRequirements = v14;
   }
@@ -117,12 +117,12 @@ PKPassAuxiliaryRegistrationDecryptionRequirement *__62__PKPassAuxiliaryRegistrat
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceSignatureRequirements = self->_deviceSignatureRequirements;
-  v5 = a3;
-  [v5 encodeObject:deviceSignatureRequirements forKey:@"deviceSignatureRequirements"];
-  [v5 encodeObject:self->_deviceDecryptionRequirements forKey:@"deviceDecryptionRequirements"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceSignatureRequirements forKey:@"deviceSignatureRequirements"];
+  [coderCopy encodeObject:self->_deviceDecryptionRequirements forKey:@"deviceDecryptionRequirements"];
 }
 
 - (id)description
@@ -142,11 +142,11 @@ PKPassAuxiliaryRegistrationDecryptionRequirement *__62__PKPassAuxiliaryRegistrat
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_deviceSignatureRequirements)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_deviceDecryptionRequirements)
@@ -159,33 +159,33 @@ PKPassAuxiliaryRegistrationDecryptionRequirement *__62__PKPassAuxiliaryRegistrat
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationRequirements *)self isEqualToPassAuxiliaryRegistrationRequirements:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationRequirements *)self isEqualToPassAuxiliaryRegistrationRequirements:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassAuxiliaryRegistrationRequirements:(id)a3
+- (BOOL)isEqualToPassAuxiliaryRegistrationRequirements:(id)requirements
 {
-  v4 = a3;
-  if (!v4)
+  requirementsCopy = requirements;
+  if (!requirementsCopy)
   {
     goto LABEL_8;
   }
 
   deviceSignatureRequirements = self->_deviceSignatureRequirements;
-  v6 = v4[1];
+  v6 = requirementsCopy[1];
   if (deviceSignatureRequirements)
   {
     v7 = v6 == 0;
@@ -215,7 +215,7 @@ LABEL_8:
 
 LABEL_11:
   deviceDecryptionRequirements = self->_deviceDecryptionRequirements;
-  v11 = v4[2];
+  v11 = requirementsCopy[2];
   if (deviceDecryptionRequirements && v11)
   {
     v8 = [(NSArray *)deviceDecryptionRequirements isEqual:?];

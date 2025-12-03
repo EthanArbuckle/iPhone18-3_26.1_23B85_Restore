@@ -1,14 +1,14 @@
 @interface FTDisableSessionLog
-- (FTDisableSessionLog)initWithFlatbuffData:(id)a3 root:(const DisableSessionLog *)a4 verify:(BOOL)a5;
+- (FTDisableSessionLog)initWithFlatbuffData:(id)data root:(const DisableSessionLog *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
 @implementation FTDisableSessionLog
 
-- (FTDisableSessionLog)initWithFlatbuffData:(id)a3 root:(const DisableSessionLog *)a4 verify:(BOOL)a5
+- (FTDisableSessionLog)initWithFlatbuffData:(id)data root:(const DisableSessionLog *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTDisableSessionLog;
   v10 = [(FTDisableSessionLog *)&v25 init];
@@ -17,35 +17,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;

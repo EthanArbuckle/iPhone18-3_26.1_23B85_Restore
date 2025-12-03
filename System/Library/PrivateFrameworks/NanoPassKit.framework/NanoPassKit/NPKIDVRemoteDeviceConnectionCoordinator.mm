@@ -1,56 +1,56 @@
 @interface NPKIDVRemoteDeviceConnectionCoordinator
 - (NPKIDVRemoteDeviceConnectionCoordinator)init;
-- (id)_outstandingRequestItemWithCompletion:(id)a3 errorHandler:(id)a4;
-- (id)_safeQueue_outstandingRequestItemWithMessageIdentifier:(id)a3 remove:(BOOL)a4;
+- (id)_outstandingRequestItemWithCompletion:(id)completion errorHandler:(id)handler;
+- (id)_safeQueue_outstandingRequestItemWithMessageIdentifier:(id)identifier remove:(BOOL)remove;
 - (void)_inQueue_teardownCurrentRemoteDeviceConnection;
-- (void)_safeQueue_resetCleanupTimerForOutstandingRequestItemWithMessageIdentifier:(id)a3;
-- (void)_sendEstablishPrearmTrustRequest:(id)a3 item:(id)a4;
-- (void)addNotificationResponse:(id)a3;
-- (void)addNotificationWithType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5 completion:(id)a6;
-- (void)addObserver:(id)a3;
-- (void)createCredentialInPartition:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)createCredentialResponse:(id)a3;
-- (void)credentialIdentifiersInPartitions:(id)a3 completion:(id)a4;
-- (void)deleteCredential:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5;
-- (void)deleteCredentialResponse:(id)a3;
-- (void)deleteGlobalAuthACLResponse:(id)a3;
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3;
-- (void)deletePIIHashDataForCredentialIdentifier:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5;
-- (void)deletePIIHashDataResponse:(id)a3;
-- (void)establishPrearmTrustResponse:(id)a3;
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4;
-- (void)establishPrearmTrustV2Response:(id)a3;
-- (void)fetchPartitionsCredentialIdentifiersResponse:(id)a3;
-- (void)fetchPropertiesOfCredentialResponse:(id)a3;
-- (void)generateCredentialSigningKeyResponse:(id)a3;
-- (void)generateKeyWithType:(unint64_t)a3 credentialIdentifier:(id)a4 withConfiguredPartitions:(id)a5 completion:(id)a6;
-- (void)generatePresentmentKeysForCredential:(id)a3 numKeys:(int64_t)a4 withConfiguredPartitions:(id)a5 completion:(id)a6;
-- (void)generatePresentmentKeysForCredentialResponse:(id)a3;
-- (void)getCASDCertificateResponse:(id)a3;
-- (void)getCASDCertificateWithCompletion:(id)a3;
-- (void)handleHeartbeats:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handlePrearmStatusUpdate:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)nonceForAuthorizationTokenResponse:(id)a3;
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3;
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4;
-- (void)prearmCredentialWithAuthorizationTokenResponse:(id)a3;
-- (void)propertiesOfCredential:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5;
-- (void)provisionCredentialResponse:(id)a3;
-- (void)provisionCredentialWithType:(unint64_t)a3 metadata:(id)a4 credentialIdentifier:(id)a5 attestations:(id)a6 supplementalData:(id)a7 completion:(id)a8;
-- (void)removeObserver:(id)a3;
-- (void)retrievePIIHashDataForCredentialIdentifier:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5;
-- (void)retrievePIIHashDataResponse:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)_safeQueue_resetCleanupTimerForOutstandingRequestItemWithMessageIdentifier:(id)identifier;
+- (void)_sendEstablishPrearmTrustRequest:(id)request item:(id)item;
+- (void)addNotificationResponse:(id)response;
+- (void)addNotificationWithType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)createCredentialInPartition:(id)partition options:(id)options completion:(id)completion;
+- (void)createCredentialResponse:(id)response;
+- (void)credentialIdentifiersInPartitions:(id)partitions completion:(id)completion;
+- (void)deleteCredential:(id)credential withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)deleteCredentialResponse:(id)response;
+- (void)deleteGlobalAuthACLResponse:(id)response;
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion;
+- (void)deletePIIHashDataForCredentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)deletePIIHashDataResponse:(id)response;
+- (void)establishPrearmTrustResponse:(id)response;
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion;
+- (void)establishPrearmTrustV2Response:(id)response;
+- (void)fetchPartitionsCredentialIdentifiersResponse:(id)response;
+- (void)fetchPropertiesOfCredentialResponse:(id)response;
+- (void)generateCredentialSigningKeyResponse:(id)response;
+- (void)generateKeyWithType:(unint64_t)type credentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)generatePresentmentKeysForCredential:(id)credential numKeys:(int64_t)keys withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)generatePresentmentKeysForCredentialResponse:(id)response;
+- (void)getCASDCertificateResponse:(id)response;
+- (void)getCASDCertificateWithCompletion:(id)completion;
+- (void)handleHeartbeats:(id)heartbeats service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handlePrearmStatusUpdate:(id)update service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)nonceForAuthorizationTokenResponse:(id)response;
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion;
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion;
+- (void)prearmCredentialWithAuthorizationTokenResponse:(id)response;
+- (void)propertiesOfCredential:(id)credential withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)provisionCredentialResponse:(id)response;
+- (void)provisionCredentialWithType:(unint64_t)type metadata:(id)metadata credentialIdentifier:(id)identifier attestations:(id)attestations supplementalData:(id)data completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)retrievePIIHashDataForCredentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)retrievePIIHashDataResponse:(id)response;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 - (void)startCurrentRemoteDeviceConnection;
-- (void)storePIIHashDataForCredentialIdentifier:(id)a3 data:(id)a4 withConfiguredPartitions:(id)a5 completion:(id)a6;
-- (void)storePIIHashDataResponse:(id)a3;
+- (void)storePIIHashDataForCredentialIdentifier:(id)identifier data:(id)data withConfiguredPartitions:(id)partitions completion:(id)completion;
+- (void)storePIIHashDataResponse:(id)response;
 - (void)teardownCurrentRemoteDeviceConnection;
 - (void)updatePrearmStatus;
-- (void)updateProofingConfiguration:(id)a3 completion:(id)a4;
-- (void)updateProofingConfigurationResponse:(id)a3;
+- (void)updateProofingConfiguration:(id)configuration completion:(id)completion;
+- (void)updateProofingConfigurationResponse:(id)response;
 @end
 
 @implementation NPKIDVRemoteDeviceConnectionCoordinator
@@ -74,9 +74,9 @@
     outstandingRequestItems = v2->_outstandingRequestItems;
     v2->_outstandingRequestItems = v7;
 
-    v9 = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
   }
 
   return v2;
@@ -237,10 +237,10 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_startCurrentRemoteDeviceConne
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCredentialResponse:(id)a3
+- (void)createCredentialResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -252,38 +252,38 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_startCurrentRemoteDeviceConne
       v19 = 136315394;
       v20 = "[NPKIDVRemoteDeviceConnectionCoordinator createCredentialResponse:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v19, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoCreateCredentialResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    v17 = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v12 credentialIdentifier];
-    (v16)[2](v16, v17, v15);
+    completion2 = [v8 completion];
+    credentialIdentifier = [(NPKIDVRemoteDeviceProtoCreateCredentialResponse *)v12 credentialIdentifier];
+    (completion2)[2](completion2, credentialIdentifier, v15);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCredentialInPartition:(id)a3 options:(id)a4 completion:(id)a5
+- (void)createCredentialInPartition:(id)partition options:(id)options completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  partitionCopy = partition;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -299,24 +299,24 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_startCurrentRemoteDeviceConne
   }
 
   v14 = objc_alloc_init(NPKIDVRemoteDeviceProtoCreateCredentialRequest);
-  [(NPKIDVRemoteDeviceProtoCreateCredentialRequest *)v14 setPartitionIdentifier:v10];
+  [(NPKIDVRemoteDeviceProtoCreateCredentialRequest *)v14 setPartitionIdentifier:partitionCopy];
 
-  v15 = NPKSecureArchiveObject(v9);
+  v15 = NPKSecureArchiveObject(optionsCopy);
 
   [(NPKIDVRemoteDeviceProtoCreateCredentialRequest *)v14 setCredentialOptionsData:v15];
-  v16 = _Block_copy(v8);
+  v16 = _Block_copy(completionCopy);
   aBlock = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __90__NPKIDVRemoteDeviceConnectionCoordinator_createCredentialInPartition_options_completion___block_invoke;
   v27 = &unk_279945218;
-  v28 = v8;
-  v17 = v8;
+  v28 = completionCopy;
+  v17 = completionCopy;
   v18 = _Block_copy(&aBlock);
   v19 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v16 errorHandler:v18];
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [MEMORY[0x277CCAD78] UUID];
-  v22 = [v20 stringWithFormat:@"CreateCredential-%@", v21, aBlock, v25, v26, v27];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v22 = [v20 stringWithFormat:@"CreateCredential-%@", uUID, aBlock, v25, v26, v27];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v14 withType:1 queueIdentifier:v22 requestItem:v19];
   v23 = *MEMORY[0x277D85DE8];
@@ -345,10 +345,10 @@ void __90__NPKIDVRemoteDeviceConnectionCoordinator_createCredentialInPartition_o
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateCredentialSigningKeyResponse:(id)a3
+- (void)generateCredentialSigningKeyResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -360,42 +360,42 @@ void __90__NPKIDVRemoteDeviceConnectionCoordinator_createCredentialInPartition_o
       v21 = 136315394;
       v22 = "[NPKIDVRemoteDeviceConnectionCoordinator generateCredentialSigningKeyResponse:]";
       v23 = 2112;
-      v24 = v4;
+      v24 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v21, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoGenerateKeyResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v12 signingKeyData];
+    signingKeyData = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v12 signingKeyData];
     getDCCredentialCryptoKeyClass();
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(signingKeyData, v14);
 
-    v16 = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoGenerateKeyResponse *)v12 errorData];
     v17 = objc_opt_class();
-    v18 = NPKSecureUnarchiveObject(v16, v17);
+    v18 = NPKSecureUnarchiveObject(errorData, v17);
 
-    v19 = [v8 completion];
-    (v19)[2](v19, v15, v18);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15, v18);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateKeyWithType:(unint64_t)a3 credentialIdentifier:(id)a4 withConfiguredPartitions:(id)a5 completion:(id)a6
+- (void)generateKeyWithType:(unint64_t)type credentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  identifierCopy = identifier;
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -411,26 +411,26 @@ void __90__NPKIDVRemoteDeviceConnectionCoordinator_createCredentialInPartition_o
   }
 
   v16 = objc_alloc_init(NPKIDVRemoteDeviceProtoGenerateKeyRequest);
-  [(NPKIDVRemoteDeviceProtoGenerateKeyRequest *)v16 setCredentialIdentifier:v12];
-  v17 = NSStringFromNPKIDVRemoteDeviceCredentialStorageKeyType(a3);
+  [(NPKIDVRemoteDeviceProtoGenerateKeyRequest *)v16 setCredentialIdentifier:identifierCopy];
+  v17 = NSStringFromNPKIDVRemoteDeviceCredentialStorageKeyType(type);
   [(NPKIDVRemoteDeviceProtoGenerateKeyRequest *)v16 setKeyTypeString:v17];
 
-  v18 = [v11 allObjects];
+  allObjects = [partitionsCopy allObjects];
 
-  v19 = [v18 mutableCopy];
+  v19 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoGenerateKeyRequest *)v16 setConfiguredPartitionsIdentifiers:v19];
 
-  v20 = _Block_copy(v10);
+  v20 = _Block_copy(completionCopy);
   aBlock = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credentialIdentifier_withConfiguredPartitions_completion___block_invoke;
   v29 = &unk_279945218;
-  v30 = v10;
-  v21 = v10;
+  v30 = completionCopy;
+  v21 = completionCopy;
   v22 = _Block_copy(&aBlock);
   v23 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v20 errorHandler:v22];
 
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"GenerateCredentialKey-%@", v12, aBlock, v27, v28, v29];
+  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"GenerateCredentialKey-%@", identifierCopy, aBlock, v27, v28, v29];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v16 withType:4 queueIdentifier:v24 requestItem:v23];
   v25 = *MEMORY[0x277D85DE8];
@@ -459,10 +459,10 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credenti
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generatePresentmentKeysForCredentialResponse:(id)a3
+- (void)generatePresentmentKeysForCredentialResponse:(id)response
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -474,30 +474,30 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credenti
       *buf = 136315394;
       v35 = "[NPKIDVRemoteDeviceConnectionCoordinator generatePresentmentKeysForCredentialResponse:]";
       v36 = 2112;
-      v37 = v4;
+      v37 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", buf, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v10 initWithData:data];
 
     v13 = objc_alloc(MEMORY[0x277CBEB18]);
-    v14 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 presentmentKeysDatas];
-    v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+    presentmentKeysDatas = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 presentmentKeysDatas];
+    v15 = [v13 initWithCapacity:{objc_msgSend(presentmentKeysDatas, "count")}];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 presentmentKeysDatas];
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    presentmentKeysDatas2 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 presentmentKeysDatas];
+    v17 = [presentmentKeysDatas2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -509,7 +509,7 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credenti
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(presentmentKeysDatas2);
           }
 
           v21 = *(*(&v29 + 1) + 8 * v20);
@@ -522,42 +522,42 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credenti
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [presentmentKeysDatas2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v18);
     }
 
-    v24 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysResponse *)v12 errorData];
     v25 = objc_opt_class();
-    v26 = NPKSecureUnarchiveObject(v24, v25);
+    v26 = NPKSecureUnarchiveObject(errorData, v25);
 
-    v27 = [v8 completion];
-    (v27)[2](v27, v15, v26);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15, v26);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generatePresentmentKeysForCredential:(id)a3 numKeys:(int64_t)a4 withConfiguredPartitions:(id)a5 completion:(id)a6
+- (void)generatePresentmentKeysForCredential:(id)credential numKeys:(int64_t)keys withConfiguredPartitions:(id)partitions completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  credentialCopy = credential;
   v13 = NPKPairedOrPairingDevice();
   v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"E63BF630-F388-4DCC-B73A-40EFB659A4C2"];
   v15 = [v13 supportsCapability:v14];
 
-  if (a4 == 1 || (v15 & 1) == 0)
+  if (keys == 1 || (v15 & 1) == 0)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __124__NPKIDVRemoteDeviceConnectionCoordinator_generatePresentmentKeysForCredential_numKeys_withConfiguredPartitions_completion___block_invoke;
     aBlock[3] = &unk_279945808;
-    v31 = v10;
-    v16 = v10;
+    v31 = completionCopy;
+    v16 = completionCopy;
     v24 = _Block_copy(aBlock);
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self generateKeyWithType:3 credentialIdentifier:v12 withConfiguredPartitions:v11 completion:v24];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self generateKeyWithType:3 credentialIdentifier:credentialCopy withConfiguredPartitions:partitionsCopy completion:v24];
 
     v20 = v31;
   }
@@ -565,21 +565,21 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_generateKeyWithType_credenti
   else
   {
     v16 = objc_alloc_init(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest);
-    [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)v16 setCredentialIdentifier:v12];
+    [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)v16 setCredentialIdentifier:credentialCopy];
 
-    v17 = [v11 allObjects];
+    allObjects = [partitionsCopy allObjects];
 
-    v18 = [v17 mutableCopy];
+    v18 = [allObjects mutableCopy];
     [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)v16 setConfiguredPartitionsIdentifiers:v18];
 
-    [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)v16 setNumKeys:a4];
-    v19 = _Block_copy(v10);
+    [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)v16 setNumKeys:keys];
+    v19 = _Block_copy(completionCopy);
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __124__NPKIDVRemoteDeviceConnectionCoordinator_generatePresentmentKeysForCredential_numKeys_withConfiguredPartitions_completion___block_invoke_2;
     v28 = &unk_279945218;
-    v29 = v10;
-    v20 = v10;
+    v29 = completionCopy;
+    v20 = completionCopy;
     v21 = _Block_copy(&v25);
     v22 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v19 errorHandler:v21, v25, v26, v27, v28];
 
@@ -625,10 +625,10 @@ void __124__NPKIDVRemoteDeviceConnectionCoordinator_generatePresentmentKeysForCr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCredentialResponse:(id)a3
+- (void)deleteCredentialResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -640,37 +640,37 @@ void __124__NPKIDVRemoteDeviceConnectionCoordinator_generatePresentmentKeysForCr
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator deleteCredentialResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoDeleteCredentialResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoDeleteCredentialResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoDeleteCredentialResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoDeleteCredentialResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoDeleteCredentialResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCredential:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5
+- (void)deleteCredential:(id)credential withConfiguredPartitions:(id)partitions completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  credentialCopy = credential;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -686,23 +686,23 @@ void __124__NPKIDVRemoteDeviceConnectionCoordinator_generatePresentmentKeysForCr
   }
 
   v14 = objc_alloc_init(NPKIDVRemoteDeviceProtoDeleteCredentialRequest);
-  [(NPKIDVRemoteDeviceProtoDeleteCredentialRequest *)v14 setCredentialIdentifier:v10];
-  v15 = [v9 allObjects];
+  [(NPKIDVRemoteDeviceProtoDeleteCredentialRequest *)v14 setCredentialIdentifier:credentialCopy];
+  allObjects = [partitionsCopy allObjects];
 
-  v16 = [v15 mutableCopy];
+  v16 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoDeleteCredentialRequest *)v14 setConfiguredPartitionsIdentifiers:v16];
 
-  v17 = _Block_copy(v8);
+  v17 = _Block_copy(completionCopy);
   aBlock = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __96__NPKIDVRemoteDeviceConnectionCoordinator_deleteCredential_withConfiguredPartitions_completion___block_invoke;
   v26 = &unk_279945218;
-  v27 = v8;
-  v18 = v8;
+  v27 = completionCopy;
+  v18 = completionCopy;
   v19 = _Block_copy(&aBlock);
   v20 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v17 errorHandler:v19];
 
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"DeleteCredential-%@", v10, aBlock, v24, v25, v26];
+  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"DeleteCredential-%@", credentialCopy, aBlock, v24, v25, v26];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v14 withType:3 queueIdentifier:v21 requestItem:v20];
   v22 = *MEMORY[0x277D85DE8];
@@ -731,10 +731,10 @@ void __96__NPKIDVRemoteDeviceConnectionCoordinator_deleteCredential_withConfigur
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPropertiesOfCredentialResponse:(id)a3
+- (void)fetchPropertiesOfCredentialResponse:(id)response
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -746,22 +746,22 @@ void __96__NPKIDVRemoteDeviceConnectionCoordinator_deleteCredential_withConfigur
       *buf = 136315394;
       *&buf[4] = "[NPKIDVRemoteDeviceConnectionCoordinator fetchPropertiesOfCredentialResponse:]";
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", buf, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
-  v10 = v9 == 0;
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
+  v10 = completion == 0;
 
   if (!v10)
   {
     v11 = [NPKIDVRemoteDeviceProtoCredentialPropertiesResponse alloc];
-    v12 = [v4 data];
-    v13 = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v11 initWithData:v12];
+    data = [responseCopy data];
+    v13 = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v11 initWithData:data];
 
-    v14 = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v13 credentialPropertiesData];
+    credentialPropertiesData = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v13 credentialPropertiesData];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -781,25 +781,25 @@ void __96__NPKIDVRemoteDeviceConnectionCoordinator_deleteCredential_withConfigur
     v16 = v15;
     _Block_object_dispose(&v24, 8);
     v17 = objc_opt_class();
-    v18 = NPKSecureUnarchiveObject(v14, v17);
+    v18 = NPKSecureUnarchiveObject(credentialPropertiesData, v17);
 
-    v19 = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v13 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoCredentialPropertiesResponse *)v13 errorData];
     v20 = objc_opt_class();
-    v21 = NPKSecureUnarchiveObject(v19, v20);
+    v21 = NPKSecureUnarchiveObject(errorData, v20);
 
-    v22 = [v8 completion];
-    (v22)[2](v22, v18, v21);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v18, v21);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)propertiesOfCredential:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5
+- (void)propertiesOfCredential:(id)credential withConfiguredPartitions:(id)partitions completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  credentialCopy = credential;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -815,26 +815,26 @@ void __96__NPKIDVRemoteDeviceConnectionCoordinator_deleteCredential_withConfigur
   }
 
   v14 = objc_alloc_init(NPKIDVRemoteDeviceProtoCredentialPropertiesRequest);
-  [(NPKIDVRemoteDeviceProtoCredentialPropertiesRequest *)v14 setCredentialIdentifier:v10];
+  [(NPKIDVRemoteDeviceProtoCredentialPropertiesRequest *)v14 setCredentialIdentifier:credentialCopy];
 
-  v15 = [v9 allObjects];
+  allObjects = [partitionsCopy allObjects];
 
-  v16 = [v15 mutableCopy];
+  v16 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoCredentialPropertiesRequest *)v14 setConfiguredPartitionsIdentifiers:v16];
 
-  v17 = _Block_copy(v8);
+  v17 = _Block_copy(completionCopy);
   aBlock = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __102__NPKIDVRemoteDeviceConnectionCoordinator_propertiesOfCredential_withConfiguredPartitions_completion___block_invoke;
   v28 = &unk_279945218;
-  v29 = v8;
-  v18 = v8;
+  v29 = completionCopy;
+  v18 = completionCopy;
   v19 = _Block_copy(&aBlock);
   v20 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v17 errorHandler:v19];
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [MEMORY[0x277CCAD78] UUID];
-  v23 = [v21 stringWithFormat:@"CredentialProperties-%@", v22, aBlock, v26, v27, v28];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v23 = [v21 stringWithFormat:@"CredentialProperties-%@", uUID, aBlock, v26, v27, v28];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v14 withType:2 queueIdentifier:v23 requestItem:v20];
   v24 = *MEMORY[0x277D85DE8];
@@ -863,10 +863,10 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_propertiesOfCredential_withC
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPartitionsCredentialIdentifiersResponse:(id)a3
+- (void)fetchPartitionsCredentialIdentifiersResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -878,40 +878,40 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_propertiesOfCredential_withC
       v21 = 136315394;
       v22 = "[NPKIDVRemoteDeviceConnectionCoordinator fetchPartitionsCredentialIdentifiersResponse:]";
       v23 = 2112;
-      v24 = v4;
+      v24 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v21, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v12 partitionsCredentialIdentifiersData];
+    partitionsCredentialIdentifiersData = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v12 partitionsCredentialIdentifiersData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(partitionsCredentialIdentifiersData, v14);
 
-    v16 = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersResponse *)v12 errorData];
     v17 = objc_opt_class();
-    v18 = NPKSecureUnarchiveObject(v16, v17);
+    v18 = NPKSecureUnarchiveObject(errorData, v17);
 
-    v19 = [v8 completion];
-    (v19)[2](v19, v15, v18);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15, v18);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)credentialIdentifiersInPartitions:(id)a3 completion:(id)a4
+- (void)credentialIdentifiersInPartitions:(id)partitions completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -927,22 +927,22 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_propertiesOfCredential_withC
   }
 
   v11 = objc_alloc_init(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersRequest);
-  v12 = [v7 mutableCopy];
+  v12 = [partitionsCopy mutableCopy];
 
   [(NPKIDVRemoteDeviceProtoPartitionsCredentialIdentifiersRequest *)v11 setPartitionsIdentifiers:v12];
-  v13 = _Block_copy(v6);
+  v13 = _Block_copy(completionCopy);
   aBlock = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __88__NPKIDVRemoteDeviceConnectionCoordinator_credentialIdentifiersInPartitions_completion___block_invoke;
   v24 = &unk_279945218;
-  v25 = v6;
-  v14 = v6;
+  v25 = completionCopy;
+  v14 = completionCopy;
   v15 = _Block_copy(&aBlock);
   v16 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v13 errorHandler:v15];
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [v17 stringWithFormat:@"partitionsCredentialsIdentifiers-%@", v18, aBlock, v22, v23, v24];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v19 = [v17 stringWithFormat:@"partitionsCredentialsIdentifiers-%@", uUID, aBlock, v22, v23, v24];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v11 withType:5 queueIdentifier:v19 requestItem:v16];
   v20 = *MEMORY[0x277D85DE8];
@@ -971,10 +971,10 @@ void __88__NPKIDVRemoteDeviceConnectionCoordinator_credentialIdentifiersInPartit
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionCredentialResponse:(id)a3
+- (void)provisionCredentialResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -986,25 +986,25 @@ void __88__NPKIDVRemoteDeviceConnectionCoordinator_credentialIdentifiersInPartit
       v21 = 136315394;
       v22 = "[NPKIDVRemoteDeviceConnectionCoordinator provisionCredentialResponse:]";
       v23 = 2112;
-      v24 = v4;
+      v24 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v21, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoProvisionCredentialResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v10 initWithData:data];
 
     if ([(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 hasSecureElementPassData])
     {
-      v13 = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 secureElementPassData];
+      secureElementPassData = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 secureElementPassData];
       v14 = objc_opt_class();
-      v15 = NPKSecureUnarchiveObject(v13, v14);
+      v15 = NPKSecureUnarchiveObject(secureElementPassData, v14);
     }
 
     else
@@ -1014,9 +1014,9 @@ void __88__NPKIDVRemoteDeviceConnectionCoordinator_credentialIdentifiersInPartit
 
     if ([(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 hasErrorData])
     {
-      v16 = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 errorData];
+      errorData = [(NPKIDVRemoteDeviceProtoProvisionCredentialResponse *)v12 errorData];
       v17 = objc_opt_class();
-      v18 = NPKSecureUnarchiveObject(v16, v17);
+      v18 = NPKSecureUnarchiveObject(errorData, v17);
     }
 
     else
@@ -1024,59 +1024,59 @@ void __88__NPKIDVRemoteDeviceConnectionCoordinator_credentialIdentifiersInPartit
       v18 = 0;
     }
 
-    v19 = [v8 completion];
-    (v19)[2](v19, v15, v18);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15, v18);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionCredentialWithType:(unint64_t)a3 metadata:(id)a4 credentialIdentifier:(id)a5 attestations:(id)a6 supplementalData:(id)a7 completion:(id)a8
+- (void)provisionCredentialWithType:(unint64_t)type metadata:(id)metadata credentialIdentifier:(id)identifier attestations:(id)attestations supplementalData:(id)data completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  dataCopy = data;
+  attestationsCopy = attestations;
   v19 = objc_alloc_init(NPKIDVRemoteDeviceProtoProvisionCredentialRequest);
   v20 = v19;
-  if (!a3)
+  if (!type)
   {
     v21 = 0;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v21 = 1;
 LABEL_5:
     [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v19 setCredentialType:v21];
   }
 
-  v22 = NPKSecureArchiveObject(v14);
+  v22 = NPKSecureArchiveObject(metadataCopy);
   [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setMetadataData:v22];
 
-  [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setCredentialIdentifier:v15];
-  v23 = NPKSecureArchiveObject(v18);
+  [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setCredentialIdentifier:identifierCopy];
+  v23 = NPKSecureArchiveObject(attestationsCopy);
 
   [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setAttestationsData:v23];
-  [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setSupplementalData:v17];
+  [(NPKIDVRemoteDeviceProtoProvisionCredentialRequest *)v20 setSupplementalData:dataCopy];
 
-  v24 = _Block_copy(v16);
+  v24 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __142__NPKIDVRemoteDeviceConnectionCoordinator_provisionCredentialWithType_metadata_credentialIdentifier_attestations_supplementalData_completion___block_invoke;
   aBlock[3] = &unk_279945150;
-  v33 = v15;
-  v34 = v16;
-  v25 = v16;
-  v26 = v15;
+  v33 = identifierCopy;
+  v34 = completionCopy;
+  v25 = completionCopy;
+  v26 = identifierCopy;
   v27 = _Block_copy(aBlock);
   v28 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v24 errorHandler:v27];
 
   v29 = MEMORY[0x277CCACA8];
-  v30 = [MEMORY[0x277CCAD78] UUID];
-  v31 = [v29 stringWithFormat:@"credentialProvisioning-%@", v30];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v31 = [v29 stringWithFormat:@"credentialProvisioning-%@", uUID];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v20 withType:12 queueIdentifier:v31 requestItem:v28];
 }
@@ -1107,10 +1107,10 @@ void __142__NPKIDVRemoteDeviceConnectionCoordinator_provisionCredentialWithType_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nonceForAuthorizationTokenResponse:(id)a3
+- (void)nonceForAuthorizationTokenResponse:(id)response
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1122,22 +1122,22 @@ void __142__NPKIDVRemoteDeviceConnectionCoordinator_provisionCredentialWithType_
       *buf = 136315394;
       *&buf[4] = "[NPKIDVRemoteDeviceConnectionCoordinator nonceForAuthorizationTokenResponse:]";
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", buf, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
-  v10 = v9 == 0;
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
+  v10 = completion == 0;
 
   if (!v10)
   {
     v11 = [NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse alloc];
-    v12 = [v4 data];
-    v13 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v11 initWithData:v12];
+    data = [responseCopy data];
+    v13 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v11 initWithData:data];
 
-    v14 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v13 nonceData];
+    nonceData = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v13 nonceData];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -1157,23 +1157,23 @@ void __142__NPKIDVRemoteDeviceConnectionCoordinator_provisionCredentialWithType_
     v16 = v15;
     _Block_object_dispose(&v24, 8);
     v17 = objc_opt_class();
-    v18 = NPKSecureUnarchiveObject(v14, v17);
+    v18 = NPKSecureUnarchiveObject(nonceData, v17);
 
-    v19 = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v13 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenResponse *)v13 errorData];
     v20 = objc_opt_class();
-    v21 = NPKSecureUnarchiveObject(v19, v20);
+    v21 = NPKSecureUnarchiveObject(errorData, v20);
 
-    v22 = [v8 completion];
-    (v22)[2](v22, v18, v21);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v18, v21);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1189,13 +1189,13 @@ void __142__NPKIDVRemoteDeviceConnectionCoordinator_provisionCredentialWithType_
   }
 
   v8 = objc_alloc_init(NPKIDVRemoteDeviceProtoNonceForAuthorizationTokenRequest);
-  v9 = _Block_copy(v4);
+  v9 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__NPKIDVRemoteDeviceConnectionCoordinator_nonceForAuthorizationTokenWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v15 = v4;
-  v10 = v4;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = _Block_copy(aBlock);
   v12 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v9 errorHandler:v11];
 
@@ -1226,10 +1226,10 @@ void __84__NPKIDVRemoteDeviceConnectionCoordinator_nonceForAuthorizationTokenWit
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prearmCredentialWithAuthorizationTokenResponse:(id)a3
+- (void)prearmCredentialWithAuthorizationTokenResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1241,46 +1241,46 @@ void __84__NPKIDVRemoteDeviceConnectionCoordinator_nonceForAuthorizationTokenWit
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator prearmCredentialWithAuthorizationTokenResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoPrearmCredentialResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoPrearmCredentialResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoPrearmCredentialResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoPrearmCredentialResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoPrearmCredentialResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   v8 = objc_alloc_init(NPKIDVRemoteDeviceProtoPrearmCredentialRequest);
-  v9 = NPKSecureArchiveObject(v7);
+  v9 = NPKSecureArchiveObject(tokenCopy);
 
   [(NPKIDVRemoteDeviceProtoPrearmCredentialRequest *)v8 setAuthorizationTokenData:v9];
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthorizationToken_completion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v15 = v6;
-  v11 = v6;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v13 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v10 errorHandler:v12];
 
@@ -1310,10 +1310,10 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishPrearmTrustResponse:(id)a3
+- (void)establishPrearmTrustResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1325,25 +1325,25 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator establishPrearmTrustResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse *)v10 initWithData:data];
 
     if ([(NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse *)v12 hasErrorData])
     {
-      v13 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse *)v12 errorData];
+      errorData = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustResponse *)v12 errorData];
       v14 = objc_opt_class();
-      v15 = NPKSecureUnarchiveObject(v13, v14);
+      v15 = NPKSecureUnarchiveObject(errorData, v14);
     }
 
     else
@@ -1351,17 +1351,17 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
       v15 = 0;
     }
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishPrearmTrustV2Response:(id)a3
+- (void)establishPrearmTrustV2Response:(id)response
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1373,26 +1373,26 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
       *buf = 136315394;
       *&buf[4] = "[NPKIDVRemoteDeviceConnectionCoordinator establishPrearmTrustV2Response:]";
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", buf, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
-  v10 = v9 == 0;
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
+  v10 = completion == 0;
 
   if (!v10)
   {
     v11 = [NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response alloc];
-    v12 = [v4 data];
-    v13 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v11 initWithData:v12];
+    data = [responseCopy data];
+    v13 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v11 initWithData:data];
 
     if ([(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v13 hasErrorData])
     {
-      v14 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v13 errorData];
+      errorData = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v13 errorData];
       v15 = objc_opt_class();
-      v16 = NPKSecureUnarchiveObject(v14, v15);
+      v16 = NPKSecureUnarchiveObject(errorData, v15);
     }
 
     else
@@ -1400,7 +1400,7 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
       v16 = 0;
     }
 
-    v17 = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v13 attestationData];
+    attestationData = [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Response *)v13 attestationData];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -1420,38 +1420,38 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
     v19 = v18;
     _Block_object_dispose(&v24, 8);
     v20 = objc_opt_class();
-    v21 = NPKSecureUnarchiveObject(v17, v20);
+    v21 = NPKSecureUnarchiveObject(attestationData, v20);
 
-    v22 = [v8 completion];
-    (v22)[2](v22, v21, v16);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v21, v16);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  v2Copy = v2;
   v8 = NPKPairedOrPairingDevice();
   v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"E63BF630-F388-4DCC-B73A-40EFB659A4C2"];
   v10 = [v8 supportsCapability:v9];
 
   if (v10)
   {
-    v11 = _Block_copy(v6);
+    v11 = _Block_copy(completionCopy);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __77__NPKIDVRemoteDeviceConnectionCoordinator_establishPrearmTrustV2_completion___block_invoke;
     aBlock[3] = &unk_279945218;
     v12 = &v27;
-    v27 = v6;
-    v13 = v6;
+    v27 = completionCopy;
+    v13 = completionCopy;
     v14 = _Block_copy(aBlock);
     v15 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v11 errorHandler:v14];
 
     v16 = objc_alloc_init(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Request);
-    v17 = NPKSecureArchiveObject(v7);
+    v17 = NPKSecureArchiveObject(v2Copy);
 
     [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustV2Request *)v16 setTrustData:v17];
     [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v16 withType:16 queueIdentifier:@"establishPrearmTrustV2" requestItem:v15];
@@ -1464,8 +1464,8 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
     v24[2] = __77__NPKIDVRemoteDeviceConnectionCoordinator_establishPrearmTrustV2_completion___block_invoke_163;
     v24[3] = &unk_279945218;
     v12 = &v25;
-    v25 = v6;
-    v18 = v6;
+    v25 = completionCopy;
+    v18 = completionCopy;
     v19 = _Block_copy(v24);
     v20 = _Block_copy(v19);
     v22[0] = MEMORY[0x277D85DD0];
@@ -1477,7 +1477,7 @@ void __93__NPKIDVRemoteDeviceConnectionCoordinator_prearmCredentialWithAuthoriza
     v21 = _Block_copy(v22);
     v15 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v20 errorHandler:v21];
 
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendEstablishPrearmTrustRequest:v7 item:v15];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendEstablishPrearmTrustRequest:v2Copy item:v15];
   }
 }
 
@@ -1527,25 +1527,25 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_establishPrearmTrustV2_comple
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEstablishPrearmTrustRequest:(id)a3 item:(id)a4
+- (void)_sendEstablishPrearmTrustRequest:(id)request item:(id)item
 {
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  requestCopy = request;
   v9 = objc_alloc_init(NPKIDVRemoteDeviceProtoEstablishPrearmTrustRequest);
-  v8 = NPKSecureArchiveObject(v7);
+  v8 = NPKSecureArchiveObject(requestCopy);
 
   [(NPKIDVRemoteDeviceProtoEstablishPrearmTrustRequest *)v9 setTrustData:v8];
-  [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v9 withType:9 queueIdentifier:@"establishPrearmTrust" requestItem:v6];
+  [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v9 withType:9 queueIdentifier:@"establishPrearmTrust" requestItem:itemCopy];
 }
 
-- (void)handlePrearmStatusUpdate:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handlePrearmStatusUpdate:(id)update service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  updateCopy = update;
   v9 = [NPKIDVRemoteDeviceProtoPrearmStatusUpdate alloc];
-  v10 = [v8 data];
+  data = [updateCopy data];
 
-  v11 = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)v9 initWithData:v10];
+  v11 = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)v9 initWithData:data];
   v12 = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)v11 prearmStatus]+ 1;
   if (v12 >= 4)
   {
@@ -1643,10 +1643,10 @@ void __99__NPKIDVRemoteDeviceConnectionCoordinator_handlePrearmStatusUpdate_serv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteGlobalAuthACLResponse:(id)a3
+- (void)deleteGlobalAuthACLResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1658,35 +1658,35 @@ void __99__NPKIDVRemoteDeviceConnectionCoordinator_handlePrearmStatusUpdate_serv
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator deleteGlobalAuthACLResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1702,13 +1702,13 @@ void __99__NPKIDVRemoteDeviceConnectionCoordinator_handlePrearmStatusUpdate_serv
   }
 
   v8 = objc_alloc_init(NPKIDVRemoteDeviceProtoDeleteGlobalAuthACLRequest);
-  v9 = _Block_copy(v4);
+  v9 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__NPKIDVRemoteDeviceConnectionCoordinator_deleteGlobalAuthACLWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v15 = v4;
-  v10 = v4;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = _Block_copy(aBlock);
   v12 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v9 errorHandler:v11];
 
@@ -1743,10 +1743,10 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_deleteGlobalAuthACLWithComple
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCASDCertificateResponse:(id)a3
+- (void)getCASDCertificateResponse:(id)response
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1758,26 +1758,26 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_deleteGlobalAuthACLWithComple
       v20 = 136315394;
       v21 = "[NPKIDVRemoteDeviceConnectionCoordinator getCASDCertificateResponse:]";
       v22 = 2112;
-      v23 = v4;
+      v23 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v20, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoCasdCertificateResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 errorData];
-    if (v13)
+    errorData = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 errorData];
+    if (errorData)
     {
-      v14 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 errorData];
+      errorData2 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 errorData];
       v15 = objc_opt_class();
-      v16 = NPKSecureUnarchiveObject(v14, v15);
+      v16 = NPKSecureUnarchiveObject(errorData2, v15);
     }
 
     else
@@ -1785,25 +1785,25 @@ void __77__NPKIDVRemoteDeviceConnectionCoordinator_deleteGlobalAuthACLWithComple
       v16 = 0;
     }
 
-    v17 = [v8 completion];
-    v18 = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 casdCertificate];
-    (v17)[2](v17, v18, v16);
+    completion2 = [v8 completion];
+    casdCertificate = [(NPKIDVRemoteDeviceProtoCasdCertificateResponse *)v12 casdCertificate];
+    (completion2)[2](completion2, casdCertificate, v16);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCASDCertificateWithCompletion:(id)a3
+- (void)getCASDCertificateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NPKIDVRemoteDeviceProtoCasdCertificateRequest);
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__NPKIDVRemoteDeviceConnectionCoordinator_getCASDCertificateWithCompletion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   v9 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v6 errorHandler:v8];
 
@@ -1833,10 +1833,10 @@ void __76__NPKIDVRemoteDeviceConnectionCoordinator_getCASDCertificateWithComplet
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storePIIHashDataResponse:(id)a3
+- (void)storePIIHashDataResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1848,55 +1848,55 @@ void __76__NPKIDVRemoteDeviceConnectionCoordinator_getCASDCertificateWithComplet
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator storePIIHashDataResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoStorePIIHashDataResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storePIIHashDataForCredentialIdentifier:(id)a3 data:(id)a4 withConfiguredPartitions:(id)a5 completion:(id)a6
+- (void)storePIIHashDataForCredentialIdentifier:(id)identifier data:(id)data withConfiguredPartitions:(id)partitions completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  dataCopy = data;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest);
-  v15 = _Block_copy(v10);
+  v15 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __124__NPKIDVRemoteDeviceConnectionCoordinator_storePIIHashDataForCredentialIdentifier_data_withConfiguredPartitions_completion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v22 = v10;
-  v16 = v10;
+  v22 = completionCopy;
+  v16 = completionCopy;
   v17 = _Block_copy(aBlock);
   v18 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v15 errorHandler:v17];
 
-  [(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest *)v14 setCredentialIdentifier:v13];
-  v19 = [v11 allObjects];
+  [(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest *)v14 setCredentialIdentifier:identifierCopy];
+  allObjects = [partitionsCopy allObjects];
 
-  v20 = [v19 mutableCopy];
+  v20 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest *)v14 setConfiguredPartitionsIdentifiers:v20];
 
-  [(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest *)v14 setPiiHashData:v12];
+  [(NPKIDVRemoteDeviceProtoStorePIIHashDataRequest *)v14 setPiiHashData:dataCopy];
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v14 withType:19 queueIdentifier:@"storePIIHashDataForCredentialIdentifier" requestItem:v18];
 }
 
@@ -1927,10 +1927,10 @@ void __124__NPKIDVRemoteDeviceConnectionCoordinator_storePIIHashDataForCredentia
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePIIHashDataResponse:(id)a3
+- (void)retrievePIIHashDataResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1942,52 +1942,52 @@ void __124__NPKIDVRemoteDeviceConnectionCoordinator_storePIIHashDataForCredentia
       v19 = 136315394;
       v20 = "[NPKIDVRemoteDeviceConnectionCoordinator retrievePIIHashDataResponse:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v19, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    v17 = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v12 piiHashData];
-    (v16)[2](v16, v17, v15);
+    completion2 = [v8 completion];
+    piiHashData = [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataResponse *)v12 piiHashData];
+    (completion2)[2](completion2, piiHashData, v15);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePIIHashDataForCredentialIdentifier:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5
+- (void)retrievePIIHashDataForCredentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(NPKIDVRemoteDeviceProtoRetrievePIIHashDataRequest);
-  v12 = _Block_copy(v8);
+  v12 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __122__NPKIDVRemoteDeviceConnectionCoordinator_retrievePIIHashDataForCredentialIdentifier_withConfiguredPartitions_completion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v19 = v8;
-  v13 = v8;
+  v19 = completionCopy;
+  v13 = completionCopy;
   v14 = _Block_copy(aBlock);
   v15 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v12 errorHandler:v14];
 
-  [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataRequest *)v11 setCredentialIdentifier:v10];
-  v16 = [v9 allObjects];
+  [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataRequest *)v11 setCredentialIdentifier:identifierCopy];
+  allObjects = [partitionsCopy allObjects];
 
-  v17 = [v16 mutableCopy];
+  v17 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoRetrievePIIHashDataRequest *)v11 setConfiguredPartitionsIdentifiers:v17];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v11 withType:20 queueIdentifier:@"retrievePIIHashDataForCredentialIdentifier" requestItem:v15];
@@ -2020,10 +2020,10 @@ void __122__NPKIDVRemoteDeviceConnectionCoordinator_retrievePIIHashDataForCreden
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePIIHashDataResponse:(id)a3
+- (void)deletePIIHashDataResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2035,51 +2035,51 @@ void __122__NPKIDVRemoteDeviceConnectionCoordinator_retrievePIIHashDataForCreden
       v18 = 136315394;
       v19 = "[NPKIDVRemoteDeviceConnectionCoordinator deletePIIHashDataResponse:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v18, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoDeletePIIHashDataResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoDeletePIIHashDataResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoDeletePIIHashDataResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoDeletePIIHashDataResponse *)v12 errorData];
+    errorData = [(NPKIDVRemoteDeviceProtoDeletePIIHashDataResponse *)v12 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
 
-    v16 = [v8 completion];
-    (v16)[2](v16, v15);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v15);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePIIHashDataForCredentialIdentifier:(id)a3 withConfiguredPartitions:(id)a4 completion:(id)a5
+- (void)deletePIIHashDataForCredentialIdentifier:(id)identifier withConfiguredPartitions:(id)partitions completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  partitionsCopy = partitions;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(NPKIDVRemoteDeviceProtoDeletePIIHashDataRequest);
-  v12 = _Block_copy(v8);
+  v12 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __120__NPKIDVRemoteDeviceConnectionCoordinator_deletePIIHashDataForCredentialIdentifier_withConfiguredPartitions_completion___block_invoke;
   aBlock[3] = &unk_279945218;
-  v19 = v8;
-  v13 = v8;
+  v19 = completionCopy;
+  v13 = completionCopy;
   v14 = _Block_copy(aBlock);
   v15 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v12 errorHandler:v14];
 
-  [(NPKIDVRemoteDeviceProtoDeletePIIHashDataRequest *)v11 setCredentialIdentifier:v10];
-  v16 = [v9 allObjects];
+  [(NPKIDVRemoteDeviceProtoDeletePIIHashDataRequest *)v11 setCredentialIdentifier:identifierCopy];
+  allObjects = [partitionsCopy allObjects];
 
-  v17 = [v16 mutableCopy];
+  v17 = [allObjects mutableCopy];
   [(NPKIDVRemoteDeviceProtoDeletePIIHashDataRequest *)v11 setConfiguredPartitionsIdentifiers:v17];
 
   [(NPKIDVRemoteDeviceConnectionCoordinator *)self _sendRequest:v11 withType:21 queueIdentifier:@"deletePIIHashDataForCredentialIdentifier" requestItem:v15];
@@ -2112,11 +2112,11 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_deletePIIHashDataForCredenti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNotificationWithType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5 completion:(id)a6
+- (void)addNotificationWithType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
+  completionCopy = completion;
+  nameCopy = name;
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -2132,26 +2132,26 @@ void __120__NPKIDVRemoteDeviceConnectionCoordinator_deletePIIHashDataForCredenti
   }
 
   v15 = objc_alloc_init(NPKIDVRemoteDeviceProtoNotificationRequest);
-  [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setIssuerName:v11];
+  [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setIssuerName:nameCopy];
 
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setNotificationType:a3];
+    [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setNotificationType:type];
   }
 
-  if (a4 <= 3)
+  if (documentType <= 3)
   {
-    [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setDocumentType:(a4 - 1)];
+    [(NPKIDVRemoteDeviceProtoNotificationRequest *)v15 setDocumentType:(documentType - 1)];
   }
 
-  v16 = _Block_copy(v10);
+  v16 = _Block_copy(completionCopy);
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_documentType_issuerName_completion___block_invoke;
   v24 = &unk_279945128;
-  v25 = v10;
-  v26 = a3;
-  v17 = v10;
+  v25 = completionCopy;
+  typeCopy = type;
+  v17 = completionCopy;
   v18 = _Block_copy(&v21);
   v19 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v16 errorHandler:v18, v21, v22, v23, v24];
 
@@ -2189,10 +2189,10 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_docu
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNotificationResponse:(id)a3
+- (void)addNotificationResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2204,26 +2204,26 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_docu
       v19 = 136315394;
       v20 = "[NPKIDVRemoteDeviceConnectionCoordinator addNotificationResponse:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v19, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoNotificationResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v12 errorData];
-    if (v13)
+    errorData = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v12 errorData];
+    if (errorData)
     {
-      v14 = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v12 errorData];
+      errorData2 = [(NPKIDVRemoteDeviceProtoNotificationResponse *)v12 errorData];
       v15 = objc_opt_class();
-      v16 = NPKSecureUnarchiveObject(v14, v15);
+      v16 = NPKSecureUnarchiveObject(errorData2, v15);
     }
 
     else
@@ -2231,18 +2231,18 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_docu
       v16 = 0;
     }
 
-    v17 = [v8 completion];
-    (v17)[2](v17, v16);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v16);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProofingConfiguration:(id)a3 completion:(id)a4
+- (void)updateProofingConfiguration:(id)configuration completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -2259,9 +2259,9 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_docu
 
   v11 = objc_alloc_init(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationRequest);
   v12 = v11;
-  if (v6)
+  if (configurationCopy)
   {
-    v13 = NPKSecureArchiveObject(v6);
+    v13 = NPKSecureArchiveObject(configurationCopy);
     [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationRequest *)v12 setConfigurationData:v13];
   }
 
@@ -2270,25 +2270,25 @@ void __102__NPKIDVRemoteDeviceConnectionCoordinator_addNotificationWithType_docu
     [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationRequest *)v11 setConfigurationData:0];
   }
 
-  v14 = _Block_copy(v7);
+  v14 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_completion___block_invoke;
   aBlock[3] = &unk_279945150;
-  v26 = v6;
-  v27 = v7;
-  v15 = v7;
-  v16 = v6;
+  v26 = configurationCopy;
+  v27 = completionCopy;
+  v15 = completionCopy;
+  v16 = configurationCopy;
   v17 = _Block_copy(aBlock);
   v18 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _outstandingRequestItemWithCompletion:v14 errorHandler:v17];
 
   v19 = MEMORY[0x277CCACA8];
-  v20 = [v16 credentialIdentifier];
-  v21 = v20;
+  credentialIdentifier = [v16 credentialIdentifier];
+  v21 = credentialIdentifier;
   v22 = &stru_286C934F8;
-  if (v20)
+  if (credentialIdentifier)
   {
-    v22 = v20;
+    v22 = credentialIdentifier;
   }
 
   v23 = [v19 stringWithFormat:@"updateProofingConfiguration-%@", v22];
@@ -2327,10 +2327,10 @@ void __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_c
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProofingConfigurationResponse:(id)a3
+- (void)updateProofingConfigurationResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2342,26 +2342,26 @@ void __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_c
       v19 = 136315394;
       v20 = "[NPKIDVRemoteDeviceConnectionCoordinator updateProofingConfigurationResponse:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = responseCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s response:%@", &v19, 0x16u);
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:v4];
-  v9 = [v8 completion];
+  v8 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemForIDSProtobuf:responseCopy];
+  completion = [v8 completion];
 
-  if (v9)
+  if (completion)
   {
     v10 = [NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse alloc];
-    v11 = [v4 data];
-    v12 = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v10 initWithData:v11];
+    data = [responseCopy data];
+    v12 = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v10 initWithData:data];
 
-    v13 = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v12 errorData];
-    if (v13)
+    errorData = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v12 errorData];
+    if (errorData)
     {
-      v14 = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v12 errorData];
+      errorData2 = [(NPKIDVRemoteDeviceProtoUpdateProofingConfigurationResponse *)v12 errorData];
       v15 = objc_opt_class();
-      v16 = NPKSecureUnarchiveObject(v14, v15);
+      v16 = NPKSecureUnarchiveObject(errorData2, v15);
     }
 
     else
@@ -2369,17 +2369,17 @@ void __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_c
       v16 = 0;
     }
 
-    v17 = [v8 completion];
-    (v17)[2](v17, v16);
+    completion2 = [v8 completion];
+    (completion2)[2](completion2, v16);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHeartbeats:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleHeartbeats:(id)heartbeats service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  heartbeatsCopy = heartbeats;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -2391,14 +2391,14 @@ void __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_c
       *buf = 136315394;
       v23 = "[NPKIDVRemoteDeviceConnectionCoordinator handleHeartbeats:service:account:fromID:context:]";
       v24 = 2112;
-      v25 = v8;
+      v25 = heartbeatsCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %s request:%@", buf, 0x16u);
     }
   }
 
   v12 = [NPKIDVRemoteDeviceProtoHeartbeatRequest alloc];
-  v13 = [v8 data];
-  v14 = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v12 initWithData:v13];
+  data = [heartbeatsCopy data];
+  v14 = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v12 initWithData:data];
 
   v15 = pk_Payment_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -2408,35 +2408,35 @@ void __82__NPKIDVRemoteDeviceConnectionCoordinator_updateProofingConfiguration_c
     v17 = pk_Payment_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v14 inProgressResponseIdentifiers];
+      inProgressResponseIdentifiers = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v14 inProgressResponseIdentifiers];
       *buf = 138412290;
-      v23 = v18;
+      v23 = inProgressResponseIdentifiers;
       _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Received heartbeat for response identifiers:%@", buf, 0xCu);
     }
   }
 
-  v19 = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v14 inProgressResponseIdentifiers];
+  inProgressResponseIdentifiers2 = [(NPKIDVRemoteDeviceProtoHeartbeatRequest *)v14 inProgressResponseIdentifiers];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __91__NPKIDVRemoteDeviceConnectionCoordinator_handleHeartbeats_service_account_fromID_context___block_invoke;
   v21[3] = &unk_279945858;
   v21[4] = self;
-  [v19 enumerateObjectsUsingBlock:v21];
+  [inProgressResponseIdentifiers2 enumerateObjectsUsingBlock:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__NPKIDVRemoteDeviceConnectionCoordinator_addObserver___block_invoke;
   v7[3] = &unk_2799454E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -2466,17 +2466,17 @@ uint64_t __55__NPKIDVRemoteDeviceConnectionCoordinator_addObserver___block_invok
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_invoke;
   v7[3] = &unk_2799454E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -2506,10 +2506,10 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
   return result;
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2519,7 +2519,7 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: IDS service accounts changed: %@", &v9, 0xCu);
     }
   }
@@ -2527,10 +2527,10 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2540,7 +2540,7 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: IDS service devices changed: %@", &v9, 0xCu);
     }
   }
@@ -2548,14 +2548,14 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
   v16 = pk_Payment_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -2565,15 +2565,15 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138413314;
-      v21 = v11;
+      v21 = serviceCopy;
       v22 = 2112;
-      v23 = v12;
+      v23 = accountCopy;
       v24 = 2112;
-      v25 = v13;
+      v25 = protobufCopy;
       v26 = 2112;
-      v27 = v14;
+      v27 = dCopy;
       v28 = 2112;
-      v29 = v15;
+      v29 = contextCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: IDS service incoming unhandled protobuf: %@ %@ %@ %@ %@", &v20, 0x34u);
     }
   }
@@ -2581,14 +2581,14 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = pk_Payment_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -2598,20 +2598,20 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v25 = v12;
+      v25 = serviceCopy;
       v26 = 2112;
-      v27 = v13;
+      v27 = accountCopy;
       v28 = 2112;
-      v29 = v14;
+      v29 = identifierCopy;
       v30 = 1024;
-      v31 = v8;
+      v31 = successCopy;
       v32 = 2112;
-      v33 = v15;
+      v33 = errorCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: IDS service did send with success: %@ %@ %@ %d %@", buf, 0x30u);
     }
   }
 
-  if (!v8)
+  if (!successCopy)
   {
     IDSMessagesQueue = self->_IDSMessagesQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2619,8 +2619,8 @@ uint64_t __58__NPKIDVRemoteDeviceConnectionCoordinator_removeObserver___block_in
     block[2] = __95__NPKIDVRemoteDeviceConnectionCoordinator_service_account_identifier_didSendWithSuccess_error___block_invoke;
     block[3] = &unk_279945880;
     block[4] = self;
-    v22 = v14;
-    v23 = v15;
+    v22 = identifierCopy;
+    v23 = errorCopy;
     dispatch_async(IDSMessagesQueue, block);
   }
 
@@ -2639,14 +2639,14 @@ void __95__NPKIDVRemoteDeviceConnectionCoordinator_service_account_identifier_di
   }
 }
 
-- (id)_outstandingRequestItemWithCompletion:(id)a3 errorHandler:(id)a4
+- (id)_outstandingRequestItemWithCompletion:(id)completion errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  completionCopy = completion;
   v8 = [[NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem alloc] initWithtimeoutQueue:self->_IDSMessagesQueue];
-  [(NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem *)v8 setCompletion:v7];
+  [(NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem *)v8 setCompletion:completionCopy];
 
-  [(NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem *)v8 setErrorHandler:v6];
+  [(NPKIDVRemoteDeviceConnectionCoordinatorOutstandingRequestItem *)v8 setErrorHandler:handlerCopy];
 
   return v8;
 }
@@ -2752,13 +2752,13 @@ void __110__NPKIDVRemoteDeviceConnectionCoordinator__sendRequest_withType_priori
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_safeQueue_outstandingRequestItemWithMessageIdentifier:(id)a3 remove:(BOOL)a4
+- (id)_safeQueue_outstandingRequestItemWithMessageIdentifier:(id)identifier remove:(BOOL)remove
 {
-  v4 = a4;
+  removeCopy = remove;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_IDSMessagesQueue);
-  if (!v6)
+  if (!identifierCopy)
   {
     v9 = pk_Payment_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -2784,7 +2784,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [(NSMutableDictionary *)self->_outstandingRequestItems objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_outstandingRequestItems objectForKeyedSubscript:identifierCopy];
   if (!v7)
   {
     v15 = pk_Payment_log();
@@ -2796,7 +2796,7 @@ LABEL_13:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v19 = 138412290;
-        v20 = v6;
+        v20 = identifierCopy;
         v12 = "Error: NPKIDVRemoteDeviceService: Could not find completion handler for received Message Identifier:%@";
         v13 = v11;
         v14 = 12;
@@ -2810,10 +2810,10 @@ LABEL_13:
   }
 
   v8 = v7;
-  if (v4)
+  if (removeCopy)
   {
     [v7 invalidateCleanupTimer];
-    [(NSMutableDictionary *)self->_outstandingRequestItems removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_outstandingRequestItems removeObjectForKey:identifierCopy];
   }
 
 LABEL_14:
@@ -2823,9 +2823,9 @@ LABEL_14:
   return v8;
 }
 
-- (void)_safeQueue_resetCleanupTimerForOutstandingRequestItemWithMessageIdentifier:(id)a3
+- (void)_safeQueue_resetCleanupTimerForOutstandingRequestItemWithMessageIdentifier:(id)identifier
 {
-  v3 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemWithMessageIdentifier:a3 remove:0];
+  v3 = [(NPKIDVRemoteDeviceConnectionCoordinator *)self _safeQueue_outstandingRequestItemWithMessageIdentifier:identifier remove:0];
   [v3 setOrResetCleanupTimer];
 }
 

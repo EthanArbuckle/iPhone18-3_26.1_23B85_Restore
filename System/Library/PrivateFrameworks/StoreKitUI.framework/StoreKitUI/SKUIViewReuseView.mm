@@ -1,19 +1,19 @@
 @interface SKUIViewReuseView
-- (SKUIViewReuseView)initWithFrame:(CGRect)a3;
+- (SKUIViewReuseView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)enumerateExistingViewsForReuseIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)modifyUsingBlock:(id)a3;
-- (void)setBackgroundColor:(id)a3;
+- (void)enumerateExistingViewsForReuseIdentifier:(id)identifier usingBlock:(id)block;
+- (void)modifyUsingBlock:(id)block;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIViewReuseView
 
-- (SKUIViewReuseView)initWithFrame:(CGRect)a3
+- (SKUIViewReuseView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIViewReuseView initWithFrame:];
@@ -21,15 +21,15 @@
 
   v12.receiver = self;
   v12.super_class = SKUIViewReuseView;
-  v8 = [(SKUIViewReuseView *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIViewReuseView *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [[SKUIViewReusePool alloc] initWithParentView:v8];
-    viewReusePool = v8->_viewReusePool;
-    v8->_viewReusePool = v9;
+    v9 = [[SKUIViewReusePool alloc] initWithParentView:height];
+    viewReusePool = height->_viewReusePool;
+    height->_viewReusePool = v9;
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -77,11 +77,11 @@
   [(SKUIViewReuseView *)&v9 dealloc];
 }
 
-- (void)enumerateExistingViewsForReuseIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumerateExistingViewsForReuseIdentifier:(id)identifier usingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -104,10 +104,10 @@
 
         v14 = *(*(&v17 + 1) + 8 * i);
         v15 = SKUIReuseIdentifierForView(v14);
-        if (v15 && [v6 isEqualToString:v15])
+        if (v15 && [identifierCopy isEqualToString:v15])
         {
           v16 = 0;
-          v7[2](v7, v14, v11, &v16);
+          blockCopy[2](blockCopy, v14, v11, &v16);
           if (v16)
           {
 
@@ -131,10 +131,10 @@
 LABEL_14:
 }
 
-- (void)modifyUsingBlock:(id)a3
+- (void)modifyUsingBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (self->_allExistingViews)
   {
     [(SKUIViewReusePool *)self->_viewReusePool recycleReusableViews:?];
@@ -143,11 +143,11 @@ LABEL_14:
   }
 
   v6 = [[SKUIViewModification alloc] initWithViewReusePool:self->_viewReusePool];
-  v4[2](v4, v6);
-  v7 = [(SKUIViewReuseView *)self backgroundColor];
-  v8 = [(SKUIViewModification *)v6 views];
+  blockCopy[2](blockCopy, v6);
+  backgroundColor = [(SKUIViewReuseView *)self backgroundColor];
+  views = [(SKUIViewModification *)v6 views];
   v9 = self->_allExistingViews;
-  self->_allExistingViews = v8;
+  self->_allExistingViews = views;
 
   v18 = 0u;
   v19 = 0u;
@@ -169,7 +169,7 @@ LABEL_14:
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        [v15 setBackgroundColor:{v7, v16}];
+        [v15 setBackgroundColor:{backgroundColor, v16}];
         [(SKUIViewReuseView *)self addSubview:v15];
       }
 
@@ -183,30 +183,30 @@ LABEL_14:
   [(SKUIViewReuseView *)self setNeedsLayout];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v18 = 0.0;
   v19 = 0.0;
   v16 = 0.0;
   v17 = 0.0;
-  v5 = v4;
-  if ([v4 getHue:&v19 saturation:&v18 brightness:&v17 alpha:&v16])
+  clearColor = colorCopy;
+  if ([colorCopy getHue:&v19 saturation:&v18 brightness:&v17 alpha:&v16])
   {
-    v5 = v4;
+    clearColor = colorCopy;
     if (v16 < 1.0)
     {
-      v5 = v4;
+      clearColor = colorCopy;
       if (v19 != 0.0)
       {
-        v5 = v4;
+        clearColor = colorCopy;
         if (v18 != 0.0)
         {
-          v5 = v4;
+          clearColor = colorCopy;
           if (v17 != 0.0)
           {
-            v5 = [MEMORY[0x277D75348] clearColor];
+            clearColor = [MEMORY[0x277D75348] clearColor];
           }
         }
       }
@@ -232,7 +232,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * i) setBackgroundColor:v5];
+        [*(*(&v12 + 1) + 8 * i) setBackgroundColor:clearColor];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v20 count:16];
@@ -243,7 +243,7 @@ LABEL_14:
 
   v11.receiver = self;
   v11.super_class = SKUIViewReuseView;
-  [(SKUIViewReuseView *)&v11 setBackgroundColor:v4];
+  [(SKUIViewReuseView *)&v11 setBackgroundColor:colorCopy];
 }
 
 - (void)initWithFrame:.cold.1()

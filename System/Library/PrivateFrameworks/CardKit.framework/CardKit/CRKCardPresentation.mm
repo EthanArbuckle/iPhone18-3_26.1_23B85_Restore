@@ -1,34 +1,34 @@
 @interface CRKCardPresentation
 + (void)initialize;
-+ (void)registerProvider:(id)a3;
-+ (void)unregisterProvider:(id)a3;
-- (BOOL)cardSectionDisplayRequiresUserConsentForProvider:(id)a3;
++ (void)registerProvider:(id)provider;
++ (void)unregisterProvider:(id)provider;
+- (BOOL)cardSectionDisplayRequiresUserConsentForProvider:(id)provider;
 - (CRCard)card;
 - (CRKCardPresentation)init;
 - (CRKCardPresentationDelegate)delegate;
-- (double)boundingWidthForProvider:(id)a3;
-- (id)_cardSectionViewControllerForCardSection:(id)a3;
-- (int64_t)cardSectionViewLoader:(id)a3 compareCardSectionViewProviderOne:(id)a4 providerTwo:(id)a5;
-- (int64_t)semanticContentAttributeForCardFactory:(id)a3;
-- (void)_configureWithRequestedCard:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_establishParsecSessionIfNeeded:(id)a3;
-- (void)_fullyConfigureWithRequestedCard:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_loadAndRegisterBundleProviders:(id)a3;
-- (void)_updateViewConfigurationsDebugMode:(BOOL)a3;
-- (void)cardViewController:(id)a3 requestCardSectionViewSourceForCard:(id)a4 reply:(id)a5;
-- (void)configureWithCardRequest:(id)a3 completion:(id)a4;
-- (void)configureWithContent:(id)a3 completion:(id)a4;
+- (double)boundingWidthForProvider:(id)provider;
+- (id)_cardSectionViewControllerForCardSection:(id)section;
+- (int64_t)cardSectionViewLoader:(id)loader compareCardSectionViewProviderOne:(id)one providerTwo:(id)two;
+- (int64_t)semanticContentAttributeForCardFactory:(id)factory;
+- (void)_configureWithRequestedCard:(id)card animated:(BOOL)animated completion:(id)completion;
+- (void)_establishParsecSessionIfNeeded:(id)needed;
+- (void)_fullyConfigureWithRequestedCard:(id)card animated:(BOOL)animated completion:(id)completion;
+- (void)_loadAndRegisterBundleProviders:(id)providers;
+- (void)_updateViewConfigurationsDebugMode:(BOOL)mode;
+- (void)cardViewController:(id)controller requestCardSectionViewSourceForCard:(id)card reply:(id)reply;
+- (void)configureWithCardRequest:(id)request completion:(id)completion;
+- (void)configureWithContent:(id)content completion:(id)completion;
 - (void)dealloc;
-- (void)setConfiguration:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setDebugModeEnabled:(BOOL)a3;
-- (void)transitionAnimator:(id)a3 willTransitionFromCardViewController:(id)a4 toCardViewController:(id)a5 withAnimationCoordinator:(id)a6;
+- (void)setConfiguration:(id)configuration animated:(BOOL)animated completion:(id)completion;
+- (void)setDebugModeEnabled:(BOOL)enabled;
+- (void)transitionAnimator:(id)animator willTransitionFromCardViewController:(id)controller toCardViewController:(id)viewController withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation CRKCardPresentation
 
 + (void)initialize
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___CRKCardPresentation;
   objc_msgSendSuper2(&v8, sel_initialize);
   CRLogInitIfNeeded();
@@ -36,12 +36,12 @@
   v3 = +[CRKIdentifiedProviderRegistry sharedInstance];
   [v3 registerIdentifiedProvider:v2];
 
-  v4 = [MEMORY[0x277CF93E0] sharedInstance];
+  mEMORY[0x277CF93E0] = [MEMORY[0x277CF93E0] sharedInstance];
   v5 = objc_opt_new();
-  [v4 registerIdentifiedService:v5];
+  [mEMORY[0x277CF93E0] registerIdentifiedService:v5];
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  v7 = [_CRKImageLoader sharedInstanceWithInitialDelegate:v6];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v7 = [_CRKImageLoader sharedInstanceWithInitialDelegate:mainScreen];
 
   if (([v7 active] & 1) == 0)
   {
@@ -123,20 +123,20 @@ void __30__CRKCardPresentation_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setConfiguration:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setConfiguration:(id)configuration animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__CRKCardPresentation_setConfiguration_animated_completion___block_invoke;
   v12[3] = &unk_278DA32A8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = configurationCopy;
+  v14 = completionCopy;
+  animatedCopy = animated;
+  v10 = completionCopy;
+  v11 = configurationCopy;
   [(CRKCardPresentation *)self _establishParsecSessionIfNeeded:v12];
 }
 
@@ -284,34 +284,34 @@ void __60__CRKCardPresentation_setConfiguration_animated_completion___block_invo
 
 - (CRCard)card
 {
-  v2 = [(CRKCardPresentation *)self cardViewController];
-  v3 = [v2 card];
+  cardViewController = [(CRKCardPresentation *)self cardViewController];
+  card = [cardViewController card];
 
-  return v3;
+  return card;
 }
 
-- (void)configureWithContent:(id)a3 completion:(id)a4
+- (void)configureWithContent:(id)content completion:(id)completion
 {
   v6 = MEMORY[0x277CF93D8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithContent:v8 format:0];
+  completionCopy = completion;
+  contentCopy = content;
+  v9 = [[v6 alloc] initWithContent:contentCopy format:0];
 
-  [(CRKCardPresentation *)self configureWithCardRequest:v9 completion:v7];
+  [(CRKCardPresentation *)self configureWithCardRequest:v9 completion:completionCopy];
 }
 
-- (void)configureWithCardRequest:(id)a3 completion:(id)a4
+- (void)configureWithCardRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CRKCardPresentationConfiguration alloc] initWithCardRequest:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  v8 = [[CRKCardPresentationConfiguration alloc] initWithCardRequest:requestCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__CRKCardPresentation_configureWithCardRequest_completion___block_invoke;
   v10[3] = &unk_278DA32D0;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(CRKCardPresentation *)self setConfiguration:v8 animated:0 completion:v10];
 }
 
@@ -326,39 +326,39 @@ uint64_t __59__CRKCardPresentation_configureWithCardRequest_completion___block_i
   return result;
 }
 
-+ (void)registerProvider:(id)a3
++ (void)registerProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[CRKIdentifiedProviderRegistry sharedInstance];
-  [v4 registerIdentifiedProvider:v3];
+  [v4 registerIdentifiedProvider:providerCopy];
 }
 
-+ (void)unregisterProvider:(id)a3
++ (void)unregisterProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[CRKIdentifiedProviderRegistry sharedInstance];
-  [v4 unregisterIdentifiedProvider:v3];
+  [v4 unregisterIdentifiedProvider:providerCopy];
 }
 
-- (void)setDebugModeEnabled:(BOOL)a3
+- (void)setDebugModeEnabled:(BOOL)enabled
 {
-  if (self->_debugModeEnabled != a3)
+  if (self->_debugModeEnabled != enabled)
   {
-    self->_debugModeEnabled = a3;
+    self->_debugModeEnabled = enabled;
     [(CRKCardPresentation *)self _updateViewConfigurationsDebugMode:?];
   }
 }
 
-- (void)_updateViewConfigurationsDebugMode:(BOOL)a3
+- (void)_updateViewConfigurationsDebugMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader _allViewConfigurations];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _allViewConfigurations = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader _allViewConfigurations];
+  v5 = [_allViewConfigurations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -370,42 +370,42 @@ uint64_t __59__CRKCardPresentation_configureWithCardRequest_completion___block_i
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allViewConfigurations);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) _setDebugModeEnabled:v3];
+        [*(*(&v9 + 1) + 8 * v8++) _setDebugModeEnabled:modeCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_allViewConfigurations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_cardSectionViewControllerForCardSection:(id)a3
+- (id)_cardSectionViewControllerForCardSection:(id)section
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader cardSectionShouldBeDisplayed:v4])
+  sectionCopy = section;
+  if ([(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader cardSectionShouldBeDisplayed:sectionCopy])
   {
-    v5 = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader viewConfigurationForCardSection:v4];
-    v6 = [v5 _cardKitCardSectionViewController];
+    v5 = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader viewConfigurationForCardSection:sectionCopy];
+    _cardKitCardSectionViewController = [v5 _cardKitCardSectionViewController];
 
-    if (v6)
+    if (_cardKitCardSectionViewController)
     {
       goto LABEL_8;
     }
 
-    v7 = [(CRKCardPresentation *)self cardViewController];
+    cardViewController = [(CRKCardPresentation *)self cardViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(CRKCardPresentation *)self cardViewController];
-      v6 = [v9 _cardSectionViewControllerForCardSection:v4];
+      cardViewController2 = [(CRKCardPresentation *)self cardViewController];
+      _cardKitCardSectionViewController = [cardViewController2 _cardSectionViewControllerForCardSection:sectionCopy];
 
       goto LABEL_8;
     }
@@ -418,30 +418,30 @@ uint64_t __59__CRKCardPresentation_configureWithCardRequest_completion___block_i
     {
       cardSectionViewLoader = self->_cardSectionViewLoader;
       v13 = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = cardSectionViewLoader;
       v17 = 2112;
-      v18 = v4;
+      v18 = sectionCopy;
       _os_log_impl(&dword_243247000, v10, OS_LOG_TYPE_DEFAULT, "%@ not returning card section view controller because provider manager %@ marked card section %@ ineligble for display", &v13, 0x20u);
     }
   }
 
-  v6 = 0;
+  _cardKitCardSectionViewController = 0;
 LABEL_8:
 
-  return v6;
+  return _cardKitCardSectionViewController;
 }
 
-- (void)_loadAndRegisterBundleProviders:(id)a3
+- (void)_loadAndRegisterBundleProviders:(id)providers
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providersCopy = providers;
   v5 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_243247000, v5, OS_LOG_TYPE_INFO, "Loading and registering bundle providers if necessary: %@", buf, 0xCu);
   }
 
@@ -450,8 +450,8 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = __55__CRKCardPresentation__loadAndRegisterBundleProviders___block_invoke;
   v8[3] = &unk_278DA32F8;
-  v9 = v4;
-  v7 = v4;
+  v9 = providersCopy;
+  v7 = providersCopy;
   [v6 getProviderBundlesWithCompletion:v8];
 }
 
@@ -511,25 +511,25 @@ LABEL_13:
   }
 }
 
-- (void)_fullyConfigureWithRequestedCard:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_fullyConfigureWithRequestedCard:(id)card animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CRKCardPresentation *)self configuration];
-  v11 = [v10 loadsBundleProviders];
+  animatedCopy = animated;
+  cardCopy = card;
+  completionCopy = completion;
+  configuration = [(CRKCardPresentation *)self configuration];
+  loadsBundleProviders = [configuration loadsBundleProviders];
 
-  if (v11)
+  if (loadsBundleProviders)
   {
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __76__CRKCardPresentation__fullyConfigureWithRequestedCard_animated_completion___block_invoke;
     v12[3] = &unk_278DA3348;
-    v14 = v9;
+    v14 = completionCopy;
     objc_copyWeak(&v15, &location);
-    v13 = v8;
-    v16 = v6;
+    v13 = cardCopy;
+    v16 = animatedCopy;
     [(CRKCardPresentation *)self _loadAndRegisterBundleProviders:v12];
 
     objc_destroyWeak(&v15);
@@ -538,7 +538,7 @@ LABEL_13:
 
   else
   {
-    [(CRKCardPresentation *)self _configureWithRequestedCard:v8 animated:v6 completion:v9];
+    [(CRKCardPresentation *)self _configureWithRequestedCard:cardCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -596,23 +596,23 @@ uint64_t __76__CRKCardPresentation__fullyConfigureWithRequestedCard_animated_com
   return result;
 }
 
-- (void)_configureWithRequestedCard:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_configureWithRequestedCard:(id)card animated:(BOOL)animated completion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v25 = [v8 cardIdentifier];
+  cardCopy = card;
+  completionCopy = completion;
+  cardIdentifier = [cardCopy cardIdentifier];
   v10 = +[CRKIdentifiedProviderRegistry sharedInstance];
-  v26 = [v10 identifiedProviders];
+  identifiedProviders = [v10 identifiedProviders];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __71__CRKCardPresentation__configureWithRequestedCard_animated_completion___block_invoke;
   v44[3] = &unk_278DA3370;
   v44[4] = self;
-  v11 = v8;
+  v11 = cardCopy;
   v45 = v11;
-  v27 = [v26 sortedArrayUsingComparator:v44];
+  v27 = [identifiedProviders sortedArrayUsingComparator:v44];
   v12 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_DEFAULT))
   {
@@ -630,13 +630,13 @@ uint64_t __76__CRKCardPresentation__fullyConfigureWithRequestedCard_animated_com
   v14 = v11;
   v41 = v14;
   objc_copyWeak(&v43, buf);
-  v42 = self;
+  selfCopy = self;
   [v27 enumerateObjectsWithOptions:2 usingBlock:v40];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __71__CRKCardPresentation__configureWithRequestedCard_animated_completion___block_invoke_190;
   v38[3] = &unk_278DA33C0;
-  v24 = v9;
+  v24 = completionCopy;
   v39 = v24;
   v15 = MEMORY[0x245D2D520](v38);
   v33[0] = MEMORY[0x277D85DD0];
@@ -646,18 +646,18 @@ uint64_t __76__CRKCardPresentation__fullyConfigureWithRequestedCard_animated_com
   objc_copyWeak(&v36, buf);
   v16 = v13;
   v34 = v16;
-  v37 = a4;
+  animatedCopy = animated;
   v17 = v15;
   v35 = v17;
   v18 = MEMORY[0x245D2D520](v33);
-  v19 = [(CRKCardViewControlling *)self->_cardViewController card];
-  v20 = [v19 cardIdentifier];
-  v21 = [v20 isEqualToString:v25];
+  card = [(CRKCardViewControlling *)self->_cardViewController card];
+  cardIdentifier2 = [card cardIdentifier];
+  v21 = [cardIdentifier2 isEqualToString:cardIdentifier];
 
   if (v21)
   {
     cardSectionViewLoader = self->_cardSectionViewLoader;
-    v23 = [MEMORY[0x277CBEB98] setWithArray:v26];
+    v23 = [MEMORY[0x277CBEB98] setWithArray:identifiedProviders];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __71__CRKCardPresentation__configureWithRequestedCard_animated_completion___block_invoke_4;
@@ -932,16 +932,16 @@ void __71__CRKCardPresentation__configureWithRequestedCard_animated_completion__
   }
 }
 
-- (void)_establishParsecSessionIfNeeded:(id)a3
+- (void)_establishParsecSessionIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invoke;
   block[3] = &unk_278DA3460;
-  v7 = v3;
-  v5 = v3;
+  v7 = neededCopy;
+  v5 = neededCopy;
   dispatch_async(v4, block);
 }
 
@@ -959,20 +959,20 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
   return result;
 }
 
-- (BOOL)cardSectionDisplayRequiresUserConsentForProvider:(id)a3
+- (BOOL)cardSectionDisplayRequiresUserConsentForProvider:(id)provider
 {
-  v3 = [(CRKCardPresentation *)self configuration];
-  v4 = [v3 respectsUserConsent];
+  configuration = [(CRKCardPresentation *)self configuration];
+  respectsUserConsent = [configuration respectsUserConsent];
 
-  return v4;
+  return respectsUserConsent;
 }
 
-- (double)boundingWidthForProvider:(id)a3
+- (double)boundingWidthForProvider:(id)provider
 {
-  v4 = [(CRKCardPresentation *)self delegate];
+  delegate = [(CRKCardPresentation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 boundingWidthForPresentation:self];
+    [delegate boundingWidthForPresentation:self];
     Width = v5;
   }
 
@@ -982,9 +982,9 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
     Width = 0.0;
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CRKCardPresentation *)self delegate];
-      v8 = [v7 view];
-      [v8 bounds];
+      delegate2 = [(CRKCardPresentation *)self delegate];
+      view = [delegate2 view];
+      [view bounds];
       Width = CGRectGetWidth(v10);
     }
   }
@@ -992,13 +992,13 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
   return Width;
 }
 
-- (int64_t)semanticContentAttributeForCardFactory:(id)a3
+- (int64_t)semanticContentAttributeForCardFactory:(id)factory
 {
-  v4 = [(CRKCardPresentation *)self delegate];
+  delegate = [(CRKCardPresentation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CRKCardPresentation *)self delegate];
-    v6 = [v5 semanticContentAttributeForCardPresentation:self];
+    delegate2 = [(CRKCardPresentation *)self delegate];
+    v6 = [delegate2 semanticContentAttributeForCardPresentation:self];
   }
 
   else
@@ -1009,17 +1009,17 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
   return v6;
 }
 
-- (int64_t)cardSectionViewLoader:(id)a3 compareCardSectionViewProviderOne:(id)a4 providerTwo:(id)a5
+- (int64_t)cardSectionViewLoader:(id)loader compareCardSectionViewProviderOne:(id)one providerTwo:(id)two
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CRKCardPresentation *)self delegate];
+  oneCopy = one;
+  twoCopy = two;
+  delegate = [(CRKCardPresentation *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CRKCardPresentation *)self delegate];
-    v12 = [v11 cardPresentation:self compareCardSectionViewProviderOne:v7 providerTwo:v8];
+    delegate2 = [(CRKCardPresentation *)self delegate];
+    v12 = [delegate2 cardPresentation:self compareCardSectionViewProviderOne:oneCopy providerTwo:twoCopy];
   }
 
   else
@@ -1030,33 +1030,33 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
   return v12;
 }
 
-- (void)transitionAnimator:(id)a3 willTransitionFromCardViewController:(id)a4 toCardViewController:(id)a5 withAnimationCoordinator:(id)a6
+- (void)transitionAnimator:(id)animator willTransitionFromCardViewController:(id)controller toCardViewController:(id)viewController withAnimationCoordinator:(id)coordinator
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CRKCardPresentation *)self delegate];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
+  delegate = [(CRKCardPresentation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 cardPresentation:self willTransitionFromCardViewController:v12 toCardViewController:v9 withAnimationCoordinator:v10];
+    [delegate cardPresentation:self willTransitionFromCardViewController:controllerCopy toCardViewController:viewControllerCopy withAnimationCoordinator:coordinatorCopy];
   }
 }
 
-- (void)cardViewController:(id)a3 requestCardSectionViewSourceForCard:(id)a4 reply:(id)a5
+- (void)cardViewController:(id)controller requestCardSectionViewSourceForCard:(id)card reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  controllerCopy = controller;
+  cardCopy = card;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader loadedCard];
-    v12 = [v11 cardIdentifier];
-    v13 = [v9 cardIdentifier];
-    v14 = [v12 isEqualToString:v13];
+    loadedCard = [(_CRKCardSectionViewLoader *)self->_cardSectionViewLoader loadedCard];
+    cardIdentifier = [loadedCard cardIdentifier];
+    cardIdentifier2 = [cardCopy cardIdentifier];
+    v14 = [cardIdentifier isEqualToString:cardIdentifier2];
 
     if (v14)
     {
-      v10[2](v10, self->_cardSectionViewLoader, 0);
+      replyCopy[2](replyCopy, self->_cardSectionViewLoader, 0);
     }
 
     else
@@ -1064,15 +1064,15 @@ uint64_t __55__CRKCardPresentation__establishParsecSessionIfNeeded___block_invok
       v15 = objc_alloc_init(_CRKCardSectionViewLoader);
       v16 = MEMORY[0x277CBEB98];
       v17 = +[CRKIdentifiedProviderRegistry sharedInstance];
-      v18 = [v17 identifiedProviders];
-      v19 = [v16 setWithArray:v18];
+      identifiedProviders = [v17 identifiedProviders];
+      v19 = [v16 setWithArray:identifiedProviders];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __84__CRKCardPresentation_cardViewController_requestCardSectionViewSourceForCard_reply___block_invoke;
       v21[3] = &unk_278DA3488;
-      v24 = v10;
+      v24 = replyCopy;
       v22 = v15;
-      v23 = v9;
+      v23 = cardCopy;
       v20 = v15;
       [(_CRKCardSectionViewLoader *)v20 _loadIdentifiedCardSectionViewProvidersFromCard:v23 identifiedProviders:v19 delegate:self completion:v21];
     }

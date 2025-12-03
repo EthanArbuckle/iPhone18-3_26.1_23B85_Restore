@@ -1,21 +1,21 @@
 @interface CKDPListPosition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsReversed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsReversed:(BOOL)reversed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPListPosition
 
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth
 {
-  v17 = a3;
+  handleCopy = handle;
   if (objc_msgSend_hasIndex(self, v5, v6))
   {
     v9 = MEMORY[0x277CCACA8];
@@ -31,13 +31,13 @@
 
     v13 = objc_msgSend_index(self, v10, v11);
     v15 = objc_msgSend_stringWithFormat_(v9, v14, @"%@%d", v12, v13);
-    objc_msgSend_CKWriteString_(v17, v16, v15);
+    objc_msgSend_CKWriteString_(handleCopy, v16, v15);
   }
 }
 
-- (void)setHasIsReversed:(BOOL)a3
+- (void)setHasIsReversed:(BOOL)reversed
 {
-  if (a3)
+  if (reversed)
   {
     v3 = 2;
   }
@@ -83,16 +83,16 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     index = self->_index;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -100,32 +100,32 @@
   {
     isReversed = self->_isReversed;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_index;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_index;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 12) = self->_isReversed;
-    *(v4 + 16) |= 2u;
+    *(toCopy + 12) = self->_isReversed;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   has = self->_has;
   if (has)
@@ -144,32 +144,32 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_index != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_index != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_9;
   }
 
-  v7 = (*(v4 + 16) & 2) == 0;
+  v7 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0)
+    if ((*(equalCopy + 16) & 2) == 0)
     {
 LABEL_9:
       v7 = 0;
@@ -178,13 +178,13 @@ LABEL_9:
 
     if (self->_isReversed)
     {
-      if ((*(v4 + 12) & 1) == 0)
+      if ((*(equalCopy + 12) & 1) == 0)
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(v4 + 12))
+    else if (*(equalCopy + 12))
     {
       goto LABEL_9;
     }
@@ -223,20 +223,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_index = *(v4 + 2);
+    self->_index = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_isReversed = *(v4 + 12);
+    self->_isReversed = *(fromCopy + 12);
     *&self->_has |= 2u;
   }
 }

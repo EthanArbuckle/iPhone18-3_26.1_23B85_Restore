@@ -1,25 +1,25 @@
 @interface SXAudioComponentOverlayView
-- (SXAudioComponentOverlayView)initWithFrame:(CGRect)a3;
+- (SXAudioComponentOverlayView)initWithFrame:(CGRect)frame;
 - (id)image;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
 @end
 
 @implementation SXAudioComponentOverlayView
 
-- (SXAudioComponentOverlayView)initWithFrame:(CGRect)a3
+- (SXAudioComponentOverlayView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = SXAudioComponentOverlayView;
-  v3 = [(SXAudioComponentOverlayView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SXAudioComponentOverlayView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x1E69DCAB8];
     v5 = SXBundle();
     v6 = [v4 imageNamed:@"SXAudioOnlyIndicator" inBundle:v5];
-    v7 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v8 = [v6 _flatImageWithColor:v7];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v8 = [v6 _flatImageWithColor:systemGrayColor];
     audioIndicatorImage = v3->_audioIndicatorImage;
     v3->_audioIndicatorImage = v8;
 
@@ -32,14 +32,14 @@
     [(UIActivityIndicatorView *)v3->_activityIndicator setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)v3->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SXAudioComponentOverlayView *)v3 addSubview:v3->_activityIndicator];
-    v12 = [(UIActivityIndicatorView *)v3->_activityIndicator centerXAnchor];
-    v13 = [(SXAudioComponentOverlayView *)v3 centerXAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    centerXAnchor = [(UIActivityIndicatorView *)v3->_activityIndicator centerXAnchor];
+    centerXAnchor2 = [(SXAudioComponentOverlayView *)v3 centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v14 setActive:1];
 
-    v15 = [(UIActivityIndicatorView *)v3->_activityIndicator centerYAnchor];
-    v16 = [(SXAudioComponentOverlayView *)v3 centerYAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    centerYAnchor = [(UIActivityIndicatorView *)v3->_activityIndicator centerYAnchor];
+    centerYAnchor2 = [(SXAudioComponentOverlayView *)v3 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v17 setActive:1];
 
     v18 = objc_alloc(MEMORY[0x1E69CE128]);
@@ -49,22 +49,22 @@
 
     [(UIButton *)v3->_playButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SXAudioComponentOverlayView *)v3 addSubview:v3->_playButton];
-    v21 = [(UIButton *)v3->_playButton centerXAnchor];
-    v22 = [(SXAudioComponentOverlayView *)v3 centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor3 = [(UIButton *)v3->_playButton centerXAnchor];
+    centerXAnchor4 = [(SXAudioComponentOverlayView *)v3 centerXAnchor];
+    v23 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v23 setActive:1];
 
-    v24 = [(UIButton *)v3->_playButton centerYAnchor];
-    v25 = [(SXAudioComponentOverlayView *)v3 centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerYAnchor3 = [(UIButton *)v3->_playButton centerYAnchor];
+    centerYAnchor4 = [(SXAudioComponentOverlayView *)v3 centerYAnchor];
+    v26 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v26 setActive:1];
 
-    v27 = [(UIButton *)v3->_playButton widthAnchor];
-    v28 = [v27 constraintEqualToConstant:80.0];
+    widthAnchor = [(UIButton *)v3->_playButton widthAnchor];
+    v28 = [widthAnchor constraintEqualToConstant:80.0];
     [v28 setActive:1];
 
-    v29 = [(UIButton *)v3->_playButton heightAnchor];
-    v30 = [v29 constraintEqualToConstant:80.0];
+    heightAnchor = [(UIButton *)v3->_playButton heightAnchor];
+    v30 = [heightAnchor constraintEqualToConstant:80.0];
     [v30 setActive:1];
   }
 
@@ -75,43 +75,43 @@
 {
   v6.receiver = self;
   v6.super_class = SXAudioComponentOverlayView;
-  v3 = [(SXAudioComponentOverlayView *)&v6 image];
-  v4 = [(SXAudioComponentOverlayView *)self audioIndicatorImage];
+  image = [(SXAudioComponentOverlayView *)&v6 image];
+  audioIndicatorImage = [(SXAudioComponentOverlayView *)self audioIndicatorImage];
 
-  if (v3 == v4)
+  if (image == audioIndicatorImage)
   {
 
-    v3 = 0;
+    image = 0;
   }
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(SXAudioComponentOverlayView *)self audioIndicatorImage];
+  imageCopy = image;
+  audioIndicatorImage = [(SXAudioComponentOverlayView *)self audioIndicatorImage];
 
-  if (v5 != v4)
+  if (audioIndicatorImage != imageCopy)
   {
     [(SXAudioComponentOverlayView *)self setContentMode:1];
   }
 
   v6.receiver = self;
   v6.super_class = SXAudioComponentOverlayView;
-  [(SXAudioComponentOverlayView *)&v6 setImage:v4];
+  [(SXAudioComponentOverlayView *)&v6 setImage:imageCopy];
 }
 
 - (void)startActivityIndicator
 {
-  v3 = [(SXAudioComponentOverlayView *)self activityIndicator];
-  [v3 setAlpha:0.0];
+  activityIndicator = [(SXAudioComponentOverlayView *)self activityIndicator];
+  [activityIndicator setAlpha:0.0];
 
-  v4 = [(SXAudioComponentOverlayView *)self activityIndicator];
-  [v4 setHidden:0];
+  activityIndicator2 = [(SXAudioComponentOverlayView *)self activityIndicator];
+  [activityIndicator2 setHidden:0];
 
-  v5 = [(SXAudioComponentOverlayView *)self activityIndicator];
-  [v5 startAnimating];
+  activityIndicator3 = [(SXAudioComponentOverlayView *)self activityIndicator];
+  [activityIndicator3 startAnimating];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -143,8 +143,8 @@ void __53__SXAudioComponentOverlayView_startActivityIndicator__block_invoke_2(ui
 
 - (void)stopActivityIndicator
 {
-  v3 = [(SXAudioComponentOverlayView *)self playButton];
-  [v3 setHidden:0];
+  playButton = [(SXAudioComponentOverlayView *)self playButton];
+  [playButton setHidden:0];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;

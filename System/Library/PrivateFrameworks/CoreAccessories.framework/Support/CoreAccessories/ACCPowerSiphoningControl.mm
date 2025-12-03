@@ -1,18 +1,18 @@
 @interface ACCPowerSiphoningControl
-+ (BOOL)_getUSBHubOverCurrentState:(id)a3;
-+ (int)_getReserveCurrentInmA:(id)a3;
-+ (unsigned)_getChargerCurrentInmA:(id)a3;
-+ (unsigned)_getChargerVoltageInmV:(id)a3;
-+ (unsigned)_getUSBHubSiphoningCurrentActualRequirementInmA:(id)a3;
-+ (unsigned)_getUSBHubSiphoningCurrentRequirementInmA:(id)a3;
-+ (unsigned)_getUSBHubUnitLoadInmA:(id)a3;
-+ (void)_resetUSBHubOverCurrentSiphoning:(id)a3;
-+ (void)_setUSBHubOverCurrentSiphoning:(id)a3;
-- (ACCPowerSiphoningControl)initWithDelegate:(id)a3;
++ (BOOL)_getUSBHubOverCurrentState:(id)state;
++ (int)_getReserveCurrentInmA:(id)a;
++ (unsigned)_getChargerCurrentInmA:(id)a;
++ (unsigned)_getChargerVoltageInmV:(id)v;
++ (unsigned)_getUSBHubSiphoningCurrentActualRequirementInmA:(id)a;
++ (unsigned)_getUSBHubSiphoningCurrentRequirementInmA:(id)a;
++ (unsigned)_getUSBHubUnitLoadInmA:(id)a;
++ (void)_resetUSBHubOverCurrentSiphoning:(id)siphoning;
++ (void)_setUSBHubOverCurrentSiphoning:(id)siphoning;
+- (ACCPowerSiphoningControl)initWithDelegate:(id)delegate;
 - (id)siphoningDebounceTimerSource;
-- (unsigned)calculateSiphoningCurrent:(unsigned int)a3;
-- (void)_cckHubChangeNotificationHandler:(id)a3;
-- (void)_powerInfoChangeNotificationHandler:(id)a3;
+- (unsigned)calculateSiphoningCurrent:(unsigned int)current;
+- (void)_cckHubChangeNotificationHandler:(id)handler;
+- (void)_powerInfoChangeNotificationHandler:(id)handler;
 - (void)_processPowerInfoChangeTimeout;
 - (void)_sendChangedSiphoningValues;
 - (void)_updateSiphoningValues;
@@ -21,32 +21,32 @@
 
 @implementation ACCPowerSiphoningControl
 
-- (ACCPowerSiphoningControl)initWithDelegate:(id)a3
+- (ACCPowerSiphoningControl)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = ACCPowerSiphoningControl;
   v6 = [(ACCPowerSiphoningControl *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
-    v8 = [v5 connectionUID];
+    objc_storeStrong(&v6->_delegate, delegate);
+    connectionUID = [delegateCopy connectionUID];
     connectionUID = v7->_connectionUID;
-    v7->_connectionUID = v8;
+    v7->_connectionUID = connectionUID;
 
     v7->_siphoningDebounceTimerTime = -1;
-    v10 = [(ACCPowerSiphoningControl *)v7 siphoningDebounceTimerSource];
+    siphoningDebounceTimerSource = [(ACCPowerSiphoningControl *)v7 siphoningDebounceTimerSource];
     siphoningDebounceTimerSource = v7->_siphoningDebounceTimerSource;
-    v7->_siphoningDebounceTimerSource = v10;
+    v7->_siphoningDebounceTimerSource = siphoningDebounceTimerSource;
 
     v7->_minSiphoningCurrentInmAOld = -1;
     *&v7->_siphoningCurrentInmAOld = -1;
     *&v7->_chargerVoltageInmVOld = -1;
     v7->_siphoningCurrentNeedSend = 1;
     v12 = _getUSBCameraKitHubPluginInstance();
-    v13 = [(ACCPowerSiphoningControlDelegate *)v7->_delegate endpointUID];
-    [v12 initUSBCameraKitHubNotifications:v13];
+    endpointUID = [(ACCPowerSiphoningControlDelegate *)v7->_delegate endpointUID];
+    [v12 initUSBCameraKitHubNotifications:endpointUID];
 
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v7 selector:"_powerInfoChangeNotificationHandler:" name:ACCPlatformPowerPlugin_USBCurrentLimitDidChangeNotification object:0];
@@ -101,25 +101,25 @@
   return siphoningDebounceTimerSource;
 }
 
-- (unsigned)calculateSiphoningCurrent:(unsigned int)a3
+- (unsigned)calculateSiphoningCurrent:(unsigned int)current
 {
   v5 = self->_chargerVoltageInmV * self->_chargerCurrentInmA / 0x1388u;
   if (platform_systemInfo_isIPad() && self->_chargerCurrentInmA > 1999 || ((platform_systemInfo_isIPod() & 1) != 0 || platform_systemInfo_isIPhone()) && self->_chargerCurrentInmA >= 1000)
   {
-    if (v5 <= a3 || self->_chargerVoltageInmV <= 0)
+    if (v5 <= current || self->_chargerVoltageInmV <= 0)
     {
-      v7 = 0;
+      currentCopy = 0;
     }
 
     else
     {
-      v7 = a3;
+      currentCopy = current;
     }
   }
 
   else
   {
-    v7 = 0;
+    currentCopy = 0;
   }
 
   if (self->_usbAccessoryDetected && self->_usbAccessorySiphoningNotRequired)
@@ -145,13 +145,13 @@
       usbAccessoryDetected = self->_usbAccessoryDetected;
       usbAccessorySiphoningNotRequired = self->_usbAccessorySiphoningNotRequired;
       v17 = 67109376;
-      v18 = usbAccessoryDetected;
+      currentCopy2 = usbAccessoryDetected;
       v19 = 1024;
       v20 = usbAccessorySiphoningNotRequired;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Don't need siphoning Device working fine without, _usbAccessoryDetected=%d _usbAccessorySiphoningNotRequired=%d", &v17, 0xEu);
     }
 
-    v7 = 0;
+    currentCopy = 0;
   }
 
   if (gLogObjects && gNumLogObjects >= 37)
@@ -175,7 +175,7 @@
     chargerCurrentInmA = self->_chargerCurrentInmA;
     chargerVoltageInmV = self->_chargerVoltageInmV;
     v17 = 67110144;
-    v18 = a3;
+    currentCopy2 = current;
     v19 = 1024;
     v20 = chargerVoltageInmV;
     v21 = 1024;
@@ -183,20 +183,20 @@
     v23 = 1024;
     v24 = v5;
     v25 = 1024;
-    v26 = v7;
+    v26 = currentCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "usbDeviceRequestedCurrent=%d _chargerVoltageInmV=%d _chargerCurrentInmA=%d available5VCurrent=%d, result=%d", &v17, 0x20u);
   }
 
-  return v7;
+  return currentCopy;
 }
 
-- (void)_powerInfoChangeNotificationHandler:(id)a3
+- (void)_powerInfoChangeNotificationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 userInfo];
+  handlerCopy = handler;
+  name = [handlerCopy name];
+  userInfo = [handlerCopy userInfo];
 
-  v7 = [v6 objectForKey:ACCPlatformPowerPlugin_ConnectionUUID];
+  v7 = [userInfo objectForKey:ACCPlatformPowerPlugin_ConnectionUUID];
   if (gLogObjects && gNumLogObjects >= 37)
   {
     v8 = *(gLogObjects + 288);
@@ -216,9 +216,9 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v5;
+    v11 = name;
     v12 = 2112;
-    v13 = v6;
+    v13 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received notification: %@, userInfo=%@\n", &v10, 0x16u);
   }
 
@@ -229,13 +229,13 @@
   }
 }
 
-- (void)_cckHubChangeNotificationHandler:(id)a3
+- (void)_cckHubChangeNotificationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 userInfo];
+  handlerCopy = handler;
+  name = [handlerCopy name];
+  userInfo = [handlerCopy userInfo];
 
-  v7 = [v6 objectForKey:@"ACCPlatformUSBCameraKitHubPlugin_ConnectionUUID"];
+  v7 = [userInfo objectForKey:@"ACCPlatformUSBCameraKitHubPlugin_ConnectionUUID"];
   if (gLogObjects && gNumLogObjects >= 37)
   {
     v8 = *(gLogObjects + 288);
@@ -255,13 +255,13 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v5;
+    v22 = name;
     v23 = 2112;
-    v24 = v6;
+    v24 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received notification: %@, userInfo=%@", &v21, 0x16u);
   }
 
-  if ([v5 isEqualToString:@"ACCPlatformUSBCameraKitHubPlugin_HubChange"] && (!v7 || objc_msgSend(v7, "isEqualToString:", self->_connectionUID)))
+  if ([name isEqualToString:@"ACCPlatformUSBCameraKitHubPlugin_HubChange"] && (!v7 || objc_msgSend(v7, "isEqualToString:", self->_connectionUID)))
   {
     v10 = dispatch_time(0, 200000000);
     v11 = v10;
@@ -306,15 +306,15 @@
       }
 
       self->_siphoningDebounceTimerTime = v11;
-      v15 = [(ACCPowerSiphoningControl *)self siphoningDebounceTimerSource];
-      dispatch_source_set_timer(v15, self->_siphoningDebounceTimerTime, 0xFFFFFFFFFFFFFFFFLL, 0);
+      siphoningDebounceTimerSource = [(ACCPowerSiphoningControl *)self siphoningDebounceTimerSource];
+      dispatch_source_set_timer(siphoningDebounceTimerSource, self->_siphoningDebounceTimerTime, 0xFFFFFFFFFFFFFFFFLL, 0);
     }
 
     else
     {
       if (v14)
       {
-        v15 = *(gLogObjects + 288);
+        siphoningDebounceTimerSource = *(gLogObjects + 288);
       }
 
       else
@@ -324,18 +324,18 @@
           platform_connectionInfo_configStreamGetCategories_cold_2();
         }
 
-        v15 = &_os_log_default;
+        siphoningDebounceTimerSource = &_os_log_default;
         v19 = &_os_log_default;
       }
 
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(siphoningDebounceTimerSource, OS_LOG_TYPE_INFO))
       {
         v20 = self->_siphoningDebounceTimerTime;
         v21 = 134218240;
         v22 = v20;
         v23 = 2048;
         v24 = v11;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "ignore timeout=%lld >= %lld", &v21, 0x16u);
+        _os_log_impl(&_mh_execute_header, siphoningDebounceTimerSource, OS_LOG_TYPE_INFO, "ignore timeout=%lld >= %lld", &v21, 0x16u);
       }
     }
   }
@@ -493,8 +493,8 @@ LABEL_13:
       }
 
       self->_siphoningDebounceTimerTime = v25;
-      v22 = [(ACCPowerSiphoningControl *)self siphoningDebounceTimerSource];
-      dispatch_source_set_timer(v22, self->_siphoningDebounceTimerTime, 0xFFFFFFFFFFFFFFFFLL, 0);
+      siphoningDebounceTimerSource = [(ACCPowerSiphoningControl *)self siphoningDebounceTimerSource];
+      dispatch_source_set_timer(siphoningDebounceTimerSource, self->_siphoningDebounceTimerTime, 0xFFFFFFFFFFFFFFFFLL, 0);
       v23 = 1;
 LABEL_40:
 
@@ -537,8 +537,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "sendPowerUpdate usbRequiredCurrent=%d _siphoningCurrent=%d->%d _siphoningCurrentNeedSend=%d", &v39, 0x1Au);
     }
 
-    v22 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
-    platform_power_sendPowerUpdate(v22, 3, self->_siphoningCurrentInmA, 13, 0);
+    siphoningDebounceTimerSource = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
+    platform_power_sendPowerUpdate(siphoningDebounceTimerSource, 3, self->_siphoningCurrentInmA, 13, 0);
     v23 = 0;
     goto LABEL_40;
   }
@@ -692,8 +692,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "sendPowerUpdate chargerCurrent=%d->%d chargerVoltage=%d->%d", &v30, 0x1Au);
     }
 
-    v13 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
-    platform_power_sendPowerUpdate(v13, 9, self->_chargerVoltageInmV, 8, self->_chargerCurrentInmA);
+    endpointUID = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
+    platform_power_sendPowerUpdate(endpointUID, 9, self->_chargerVoltageInmV, 8, self->_chargerCurrentInmA);
 
     *&self->_chargerCurrentInmAOld = *&self->_chargerCurrentInmA;
     v5 = 1;
@@ -734,8 +734,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "sendPowerUpdate reserveCurrent=%d->%d", &v30, 0xEu);
     }
 
-    v19 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
-    platform_power_sendPowerUpdate(v19, 10, self->_reserveCurrentInmA, 13, 0);
+    endpointUID2 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
+    platform_power_sendPowerUpdate(endpointUID2, 10, self->_reserveCurrentInmA, 13, 0);
 
     self->_reserveCurrentInmAOld = self->_reserveCurrentInmA;
   }
@@ -770,8 +770,8 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "sendPowerUpdate minSiphoningCurrent=%d->%d", &v30, 0xEu);
     }
 
-    v25 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
-    platform_power_sendPowerUpdate(v25, 11, self->_minSiphoningCurrentInmA, 13, 0);
+    endpointUID3 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
+    platform_power_sendPowerUpdate(endpointUID3, 11, self->_minSiphoningCurrentInmA, 13, 0);
 
     self->_minSiphoningCurrentInmAOld = self->_minSiphoningCurrentInmA;
   }
@@ -823,30 +823,30 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "sendPowerUpdate maxNonSiphoningCurrent=%d", &v30, 8u);
     }
 
-    v29 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
-    platform_power_sendPowerUpdate(v29, 12, v26, 13, 0);
+    endpointUID4 = [(ACCPowerSiphoningControlDelegate *)self->_delegate endpointUID];
+    platform_power_sendPowerUpdate(endpointUID4, 12, v26, 13, 0);
   }
 }
 
-+ (int)_getReserveCurrentInmA:(id)a3
++ (int)_getReserveCurrentInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformPowerPluginProtocol fallbackToTransportPlugins:1];
 
-  LODWORD(v4) = [v5 USBCurrentLimitOffsetInmA:v3];
+  LODWORD(v4) = [v5 USBCurrentLimitOffsetInmA:aCopy];
   return -v4;
 }
 
-+ (unsigned)_getChargerCurrentInmA:(id)a3
++ (unsigned)_getChargerCurrentInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformPowerPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 USBCurrentLimitBaseInmA:v3];
+    v6 = [v5 USBCurrentLimitBaseInmA:aCopy];
   }
 
   else
@@ -857,15 +857,15 @@ LABEL_26:
   return v6;
 }
 
-+ (unsigned)_getChargerVoltageInmV:(id)a3
++ (unsigned)_getChargerVoltageInmV:(id)v
 {
-  v3 = a3;
+  vCopy = v;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformPowerPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 USBChargingVoltageInmV:v3];
+    v6 = [v5 USBChargingVoltageInmV:vCopy];
   }
 
   else
@@ -876,15 +876,15 @@ LABEL_26:
   return v6;
 }
 
-+ (unsigned)_getUSBHubUnitLoadInmA:(id)a3
++ (unsigned)_getUSBHubUnitLoadInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 getUSBHubUnitLoadInmA:v3];
+    v6 = [v5 getUSBHubUnitLoadInmA:aCopy];
   }
 
   else
@@ -895,15 +895,15 @@ LABEL_26:
   return v6;
 }
 
-+ (unsigned)_getUSBHubSiphoningCurrentRequirementInmA:(id)a3
++ (unsigned)_getUSBHubSiphoningCurrentRequirementInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 getUSBHubSiphoningCurrentRequirementInmA:v3];
+    v6 = [v5 getUSBHubSiphoningCurrentRequirementInmA:aCopy];
   }
 
   else
@@ -914,15 +914,15 @@ LABEL_26:
   return v6;
 }
 
-+ (unsigned)_getUSBHubSiphoningCurrentActualRequirementInmA:(id)a3
++ (unsigned)_getUSBHubSiphoningCurrentActualRequirementInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 getUSBHubSiphoningCurrentActualRequirementInmA:v3];
+    v6 = [v5 getUSBHubSiphoningCurrentActualRequirementInmA:aCopy];
   }
 
   else
@@ -933,15 +933,15 @@ LABEL_26:
   return v6;
 }
 
-+ (BOOL)_getUSBHubOverCurrentState:(id)a3
++ (BOOL)_getUSBHubOverCurrentState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[ACCPlatformPluginManager sharedManager];
   v5 = [v4 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v5)
   {
-    v6 = [v5 getUSBHubOverCurrentState:v3];
+    v6 = [v5 getUSBHubOverCurrentState:stateCopy];
   }
 
   else
@@ -952,27 +952,27 @@ LABEL_26:
   return v6;
 }
 
-+ (void)_resetUSBHubOverCurrentSiphoning:(id)a3
++ (void)_resetUSBHubOverCurrentSiphoning:(id)siphoning
 {
-  v5 = a3;
+  siphoningCopy = siphoning;
   v3 = +[ACCPlatformPluginManager sharedManager];
   v4 = [v3 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v4)
   {
-    [v4 resetUSBHubOverCurrentSiphoning:v5];
+    [v4 resetUSBHubOverCurrentSiphoning:siphoningCopy];
   }
 }
 
-+ (void)_setUSBHubOverCurrentSiphoning:(id)a3
++ (void)_setUSBHubOverCurrentSiphoning:(id)siphoning
 {
-  v5 = a3;
+  siphoningCopy = siphoning;
   v3 = +[ACCPlatformPluginManager sharedManager];
   v4 = [v3 pluginInstanceWithProtocol:&OBJC_PROTOCOL___ACCPlatformUSBCameraKitHubPluginProtocol fallbackToTransportPlugins:1];
 
   if (v4)
   {
-    [v4 setUSBHubOverCurrentSiphoning:v5];
+    [v4 setUSBHubOverCurrentSiphoning:siphoningCopy];
   }
 }
 

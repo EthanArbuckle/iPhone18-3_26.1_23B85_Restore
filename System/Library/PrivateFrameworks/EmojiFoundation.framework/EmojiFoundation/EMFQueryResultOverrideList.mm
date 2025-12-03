@@ -1,60 +1,60 @@
 @interface EMFQueryResultOverrideList
-- (EMFQueryResultOverrideList)initWithOverrideListURL:(id)a3;
-- (id)_overriddenResultsRawStringExactMatchForQuery:(id)a3;
-- (id)_overriddenResultsRawStringExactMatchForRawString:(id)a3 andSearchType:(unint64_t)a4;
-- (id)_overriddenResultsRawStringPrefixMatchForQuery:(id)a3;
-- (id)_overriddenResultsTokenExactMatchForQuery:(id)a3;
-- (id)_overriddenResultsTokenPrefixMatchForQuery:(id)a3;
-- (id)overriddenResultsForQuery:(id)a3;
-- (id)overriddenResultsForQuery:(id)a3 searchType:(unint64_t)a4;
+- (EMFQueryResultOverrideList)initWithOverrideListURL:(id)l;
+- (id)_overriddenResultsRawStringExactMatchForQuery:(id)query;
+- (id)_overriddenResultsRawStringExactMatchForRawString:(id)string andSearchType:(unint64_t)type;
+- (id)_overriddenResultsRawStringPrefixMatchForQuery:(id)query;
+- (id)_overriddenResultsTokenExactMatchForQuery:(id)query;
+- (id)_overriddenResultsTokenPrefixMatchForQuery:(id)query;
+- (id)overriddenResultsForQuery:(id)query;
+- (id)overriddenResultsForQuery:(id)query searchType:(unint64_t)type;
 @end
 
 @implementation EMFQueryResultOverrideList
 
-- (EMFQueryResultOverrideList)initWithOverrideListURL:(id)a3
+- (EMFQueryResultOverrideList)initWithOverrideListURL:(id)l
 {
-  v5 = a3;
-  if (v5 && (v12.receiver = self, v12.super_class = EMFQueryResultOverrideList, (self = [(EMFQueryResultOverrideList *)&v12 init]) != 0))
+  lCopy = l;
+  if (lCopy && (v12.receiver = self, v12.super_class = EMFQueryResultOverrideList, (self = [(EMFQueryResultOverrideList *)&v12 init]) != 0))
   {
     v11 = 0;
-    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v5 error:&v11];
+    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:lCopy error:&v11];
     v7 = v11;
     if (v7)
     {
       v8 = emf_logging_get_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(EMFQueryResultOverrideList *)v5 initWithOverrideListURL:v7, v8];
+        [(EMFQueryResultOverrideList *)lCopy initWithOverrideListURL:v7, v8];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      objc_storeStrong(&self->_overrideListURLForTesting, a3);
+      objc_storeStrong(&self->_overrideListURLForTesting, l);
       objc_storeStrong(&self->_overrideMap, v6);
-      v9 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)overriddenResultsForQuery:(id)a3
+- (id)overriddenResultsForQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  queryCopy = query;
+  v5 = queryCopy;
+  if (queryCopy)
   {
-    v6 = [v4 queryString];
+    queryString = [queryCopy queryString];
 
-    if (v6)
+    if (queryString)
     {
       v7 = 0;
       do
@@ -74,46 +74,46 @@
       }
 
       while (!v9);
-      v6 = v8;
+      queryString = v8;
     }
   }
 
   else
   {
-    v6 = 0;
+    queryString = 0;
   }
 
-  return v6;
+  return queryString;
 }
 
-- (id)overriddenResultsForQuery:(id)a3 searchType:(unint64_t)a4
+- (id)overriddenResultsForQuery:(id)query searchType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  queryCopy = query;
+  v7 = queryCopy;
+  if (!queryCopy)
   {
-    v8 = 0;
+    queryString = 0;
     goto LABEL_14;
   }
 
-  v8 = [v6 queryString];
+  queryString = [queryCopy queryString];
 
-  if (!v8)
+  if (!queryString)
   {
     goto LABEL_14;
   }
 
-  v8 = 0;
-  if (a4 > 1)
+  queryString = 0;
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v9 = [(EMFQueryResultOverrideList *)self _overriddenResultsTokenExactMatchForQuery:v7];
     }
 
     else
     {
-      if (a4 != 3)
+      if (type != 3)
       {
         goto LABEL_14;
       }
@@ -122,9 +122,9 @@
     }
   }
 
-  else if (a4)
+  else if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_14;
     }
@@ -137,17 +137,17 @@
     v9 = [(EMFQueryResultOverrideList *)self _overriddenResultsRawStringExactMatchForQuery:v7];
   }
 
-  v8 = v9;
+  queryString = v9;
 LABEL_14:
 
-  return v8;
+  return queryString;
 }
 
-- (id)_overriddenResultsRawStringExactMatchForRawString:(id)a3 andSearchType:(unint64_t)a4
+- (id)_overriddenResultsRawStringExactMatchForRawString:(id)string andSearchType:(unint64_t)type
 {
-  v5 = [(EMFQueryResultOverrideList *)self _metadataForString:a3];
+  v5 = [(EMFQueryResultOverrideList *)self _metadataForString:string];
   v6 = v5;
-  if (v5 && _searchTypeForEntryMetadata(v5) == a4)
+  if (v5 && _searchTypeForEntryMetadata(v5) == type)
   {
     v7 = v6;
     v8 = [EMFQueryResultOverride alloc];
@@ -166,15 +166,15 @@ LABEL_14:
 
     if (v14)
     {
-      v15 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
     }
 
     else
     {
-      v15 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v16 = [(EMFQueryResultOverride *)v8 initWithOverridesArray:v12 searchType:v13 behavior:v15];
+    v16 = [(EMFQueryResultOverride *)v8 initWithOverridesArray:v12 searchType:v13 behavior:unsignedIntegerValue];
   }
 
   else
@@ -185,23 +185,23 @@ LABEL_14:
   return v16;
 }
 
-- (id)_overriddenResultsRawStringExactMatchForQuery:(id)a3
+- (id)_overriddenResultsRawStringExactMatchForQuery:(id)query
 {
-  v4 = [a3 normalizedQueryString];
-  v5 = [(EMFQueryResultOverrideList *)self _overriddenResultsRawStringExactMatchForRawString:v4 andSearchType:0];
+  normalizedQueryString = [query normalizedQueryString];
+  v5 = [(EMFQueryResultOverrideList *)self _overriddenResultsRawStringExactMatchForRawString:normalizedQueryString andSearchType:0];
 
   return v5;
 }
 
-- (id)_overriddenResultsTokenExactMatchForQuery:(id)a3
+- (id)_overriddenResultsTokenExactMatchForQuery:(id)query
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 tokens];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tokens = [query tokens];
+  v5 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -212,7 +212,7 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokens);
         }
 
         v9 = [(EMFQueryResultOverrideList *)self _overriddenResultsRawStringExactMatchForRawString:*(*(&v12 + 1) + 8 * i) andSearchType:2];
@@ -223,7 +223,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -239,23 +239,23 @@ LABEL_11:
   return v10;
 }
 
-- (id)_overriddenResultsRawStringPrefixMatchForQuery:(id)a3
+- (id)_overriddenResultsRawStringPrefixMatchForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__2;
   v13 = __Block_byref_object_dispose__2;
   v14 = 0;
-  v5 = [v4 normalizedQueryString];
+  normalizedQueryString = [queryCopy normalizedQueryString];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__EMFQueryResultOverrideList__overriddenResultsRawStringPrefixMatchForQuery___block_invoke;
   v8[3] = &unk_1E7A5F828;
   v8[4] = self;
   v8[5] = &v9;
-  _enumeratePrefixesInStringUsingBlock(v5, v8);
+  _enumeratePrefixesInStringUsingBlock(normalizedQueryString, v8);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -276,10 +276,10 @@ void __77__EMFQueryResultOverrideList__overriddenResultsRawStringPrefixMatchForQ
   }
 }
 
-- (id)_overriddenResultsTokenPrefixMatchForQuery:(id)a3
+- (id)_overriddenResultsTokenPrefixMatchForQuery:(id)query
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queryCopy = query;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -290,8 +290,8 @@ void __77__EMFQueryResultOverrideList__overriddenResultsRawStringPrefixMatchForQ
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 tokens];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v23 count:16];
+  tokens = [queryCopy tokens];
+  v6 = [tokens countByEnumeratingWithState:&v13 objects:v23 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -301,7 +301,7 @@ LABEL_3:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(tokens);
       }
 
       v9 = *(*(&v13 + 1) + 8 * v8);
@@ -319,7 +319,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v23 count:16];
+        v6 = [tokens countByEnumeratingWithState:&v13 objects:v23 count:16];
         if (v6)
         {
           goto LABEL_3;

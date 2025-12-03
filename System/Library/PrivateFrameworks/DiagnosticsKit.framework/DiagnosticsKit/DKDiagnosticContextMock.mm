@@ -1,44 +1,44 @@
 @interface DKDiagnosticContextMock
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3;
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration;
 - (void)clearAllowSessionAccessoryDisconnect;
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6;
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11;
-- (void)enableVolumeHUD:(BOOL)a3;
-- (void)getAsset:(id)a3 completion:(id)a4;
-- (void)requestPluginReloadOnFinishWithCompletion:(id)a3;
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3;
-- (void)setScreenToBrightness:(float)a3 animate:(BOOL)a4;
-- (void)showUI:(id)a3 completion:(id)a4;
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion;
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1;
+- (void)enableVolumeHUD:(BOOL)d;
+- (void)getAsset:(id)asset completion:(id)completion;
+- (void)requestPluginReloadOnFinishWithCompletion:(id)completion;
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion;
+- (void)setScreenToBrightness:(float)brightness animate:(BOOL)animate;
+- (void)showUI:(id)i completion:(id)completion;
 - (void)unpairSessionAccessoryOnTestCompletion;
-- (void)updateProgress:(id)a3 forTest:(id)a4;
-- (void)uploadAssets:(id)a3 completion:(id)a4;
+- (void)updateProgress:(id)progress forTest:(id)test;
+- (void)uploadAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation DKDiagnosticContextMock
 
-- (void)updateProgress:(id)a3 forTest:(id)a4
+- (void)updateProgress:(id)progress forTest:(id)test
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  progressCopy = progress;
+  testCopy = test;
   v7 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[DKDiagnosticContextMock updateProgress:forTest:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = progressCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = testCopy;
     _os_log_impl(&dword_248B9D000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v9, 0x20u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableVolumeHUD:(BOOL)a3
+- (void)enableVolumeHUD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = *MEMORY[0x277D85DE8];
   v4 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -46,16 +46,16 @@
     v6 = 136315394;
     v7 = "[DKDiagnosticContextMock enableVolumeHUD:]";
     v8 = 1024;
-    v9 = v3;
+    v9 = dCopy;
     _os_log_impl(&dword_248B9D000, v4, OS_LOG_TYPE_DEFAULT, "%s: %d", &v6, 0x12u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setScreenToBrightness:(float)a3 animate:(BOOL)a4
+- (void)setScreenToBrightness:(float)brightness animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   v14 = *MEMORY[0x277D85DE8];
   v6 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -63,80 +63,80 @@
     v8 = 136315650;
     v9 = "[DKDiagnosticContextMock setScreenToBrightness:animate:]";
     v10 = 2048;
-    v11 = a3;
+    brightnessCopy = brightness;
     v12 = 1024;
-    v13 = v4;
+    v13 = animateCopy;
     _os_log_impl(&dword_248B9D000, v6, OS_LOG_TYPE_DEFAULT, "%s: %f, %d", &v8, 0x1Cu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAsset:(id)a3 completion:(id)a4
+- (void)getAsset:(id)asset completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v7 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[DKDiagnosticContextMock getAsset:completion:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = assetCopy;
     _os_log_impl(&dword_248B9D000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@", &v10, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEA90] data];
-  v6[2](v6, v8);
+  data = [MEMORY[0x277CBEA90] data];
+  completionCopy[2](completionCopy, data);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadAssets:(id)a3 completion:(id)a4
+- (void)uploadAssets:(id)assets completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v7 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[DKDiagnosticContextMock uploadAssets:completion:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = assetsCopy;
     _os_log_impl(&dword_248B9D000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@", &v10, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEA60] array];
-  v6[2](v6, v8, 0);
+  array = [MEMORY[0x277CBEA60] array];
+  completionCopy[2](completionCopy, array, 0);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showUI:(id)a3 completion:(id)a4
+- (void)showUI:(id)i completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  completionCopy = completion;
   v7 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[DKDiagnosticContextMock showUI:completion:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = iCopy;
     _os_log_impl(&dword_248B9D000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@", &v9, 0x16u);
   }
 
-  v6[2](v6, MEMORY[0x277CBEC10]);
+  completionCopy[2](completionCopy, MEMORY[0x277CBEC10]);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPluginReloadOnFinishWithCompletion:(id)a3
+- (void)requestPluginReloadOnFinishWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,7 +145,7 @@
     _os_log_impl(&dword_248B9D000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v3[2](v3);
+  completionCopy[2](completionCopy);
   v5 = *MEMORY[0x277D85DE8];
 }
 
@@ -163,10 +163,10 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,21 +175,21 @@
     _os_log_impl(&dword_248B9D000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v3[2](v3, &stru_285B8CB68, 0);
+  completionCopy[2](completionCopy, &stru_285B8CB68, 0);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  durationCopy = duration;
   v4 = DiagnosticsKitLogHandleForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[DKDiagnosticContextMock allowSessionAccessoryDisconnectForDuration:]";
     v8 = 2112;
-    v9 = v3;
+    v9 = durationCopy;
     _os_log_impl(&dword_248B9D000, v4, OS_LOG_TYPE_DEFAULT, "%s: %@", &v6, 0x16u);
   }
 
@@ -210,7 +210,7 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6
+- (void)displayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = DiagnosticsKitLogHandleForCategory(2);
@@ -224,7 +224,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11
+- (void)displayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1
 {
   v15 = *MEMORY[0x277D85DE8];
   v11 = DiagnosticsKitLogHandleForCategory(2);

@@ -1,16 +1,16 @@
 @interface NavShareETAFooterView
 - (NavShareETAFooterView)init;
-- (NavShareETAFooterView)initWithTextColor:(id)a3;
-- (void)setFooterText:(id)a3;
+- (NavShareETAFooterView)initWithTextColor:(id)color;
+- (void)setFooterText:(id)text;
 @end
 
 @implementation NavShareETAFooterView
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_footerText;
-  v6 = v4;
+  v6 = textCopy;
   if (v6 | v5)
   {
     v10 = v6;
@@ -29,9 +29,9 @@
   }
 }
 
-- (NavShareETAFooterView)initWithTextColor:(id)a3
+- (NavShareETAFooterView)initWithTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v32.receiver = self;
   v32.super_class = NavShareETAFooterView;
   v5 = [(NavShareETAFooterView *)&v32 initWithReuseIdentifier:0];
@@ -41,8 +41,8 @@
     v7 = NSStringFromClass(v6);
     [(NavShareETAFooterView *)v5 setAccessibilityIdentifier:v7];
 
-    v8 = [(NavShareETAFooterView *)v5 contentView];
-    [v8 setAccessibilityIdentifier:@"NavShareETAFooterContent"];
+    contentView = [(NavShareETAFooterView *)v5 contentView];
+    [contentView setAccessibilityIdentifier:@"NavShareETAFooterContent"];
 
     v9 = objc_opt_new();
     textLabel = v5->_textLabel;
@@ -54,36 +54,36 @@
     v11 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
     [(UILabel *)v5->_textLabel setFont:v11];
 
-    [(UILabel *)v5->_textLabel setTextColor:v4];
+    [(UILabel *)v5->_textLabel setTextColor:colorCopy];
     [(UILabel *)v5->_textLabel setAccessibilityIdentifier:@"TextLabel"];
-    v12 = [(NavShareETAFooterView *)v5 contentView];
-    [v12 addSubview:v5->_textLabel];
+    contentView2 = [(NavShareETAFooterView *)v5 contentView];
+    [contentView2 addSubview:v5->_textLabel];
 
-    v29 = [(UILabel *)v5->_textLabel leadingAnchor];
-    v30 = [(NavShareETAFooterView *)v5 layoutMarginsGuide];
-    v28 = [v30 leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    leadingAnchor = [(UILabel *)v5->_textLabel leadingAnchor];
+    layoutMarginsGuide = [(NavShareETAFooterView *)v5 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v27;
-    v25 = [(UILabel *)v5->_textLabel trailingAnchor];
-    v26 = [(NavShareETAFooterView *)v5 layoutMarginsGuide];
-    v24 = [v26 trailingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    trailingAnchor = [(UILabel *)v5->_textLabel trailingAnchor];
+    layoutMarginsGuide2 = [(NavShareETAFooterView *)v5 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[1] = v23;
-    v13 = [(UILabel *)v5->_textLabel topAnchor];
+    topAnchor = [(UILabel *)v5->_textLabel topAnchor];
     [(NavShareETAFooterView *)v5 contentView];
-    v14 = v31 = v4;
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:16.0];
+    v14 = v31 = colorCopy;
+    topAnchor2 = [v14 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v33[2] = v16;
-    v17 = [(UILabel *)v5->_textLabel bottomAnchor];
-    v18 = [(NavShareETAFooterView *)v5 contentView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:-10.0];
+    bottomAnchor = [(UILabel *)v5->_textLabel bottomAnchor];
+    contentView3 = [(NavShareETAFooterView *)v5 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v33[3] = v20;
     v21 = [NSArray arrayWithObjects:v33 count:4];
     [NSLayoutConstraint activateConstraints:v21];
 
-    v4 = v31;
+    colorCopy = v31;
   }
 
   return v5;

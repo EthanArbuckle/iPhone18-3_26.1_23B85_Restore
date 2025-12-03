@@ -1,87 +1,87 @@
 @interface MDMDeclarativeManagement
 + (id)_createNoInstallationError;
-+ (void)downloadDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5;
-+ (void)executeRequestForEndpoint:(id)a3 channelType:(unint64_t)a4 requestData:(id)a5 completionHandler:(id)a6;
-+ (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4;
++ (void)downloadDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler;
++ (void)executeRequestForEndpoint:(id)endpoint channelType:(unint64_t)type requestData:(id)data completionHandler:(id)handler;
++ (void)fetchDataAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation MDMDeclarativeManagement
 
-+ (void)executeRequestForEndpoint:(id)a3 channelType:(unint64_t)a4 requestData:(id)a5 completionHandler:(id)a6
++ (void)executeRequestForEndpoint:(id)endpoint channelType:(unint64_t)type requestData:(id)data completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  endpointCopy = endpoint;
+  dataCopy = data;
+  handlerCopy = handler;
   v12 = *DMCLogObjects();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v22 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_22E997000, v12, OS_LOG_TYPE_INFO, "Calling executeRequestForMessageType - channel type: %lu", buf, 0xCu);
   }
 
   v19 = @"Endpoint";
-  v20 = v9;
+  v20 = endpointCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v14 = [v13 mutableCopy];
 
-  if (v10)
+  if (dataCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"Data"];
+    [v14 setObject:dataCopy forKeyedSubscript:@"Data"];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __96__MDMDeclarativeManagement_executeRequestForEndpoint_channelType_requestData_completionHandler___block_invoke;
   v17[3] = &unk_278857048;
-  v18 = v11;
-  v15 = v11;
-  [MDMCheckInRequest executeRequestForMessageType:@"DeclarativeManagement" channelType:a4 requestDict:v14 completionHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  [MDMCheckInRequest executeRequestForMessageType:@"DeclarativeManagement" channelType:type requestDict:v14 completionHandler:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4
++ (void)fetchDataAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = +[MDMConfiguration sharedConfiguration];
   [v8 refreshDetailsFromDisk];
-  v9 = [v8 managingProfileIdentifier];
+  managingProfileIdentifier = [v8 managingProfileIdentifier];
 
-  if (v9)
+  if (managingProfileIdentifier)
   {
-    v10 = [v8 copyMemberQueueIdentity];
-    v11 = [v8 checkInPinnedSecCertificateRefs];
-    v12 = [v8 pinningRevocationCheckRequired];
-    v13 = [v8 signMessage];
-    v14 = [v8 rmAccountID];
-    if (v10)
+    copyMemberQueueIdentity = [v8 copyMemberQueueIdentity];
+    checkInPinnedSecCertificateRefs = [v8 checkInPinnedSecCertificateRefs];
+    pinningRevocationCheckRequired = [v8 pinningRevocationCheckRequired];
+    signMessage = [v8 signMessage];
+    rmAccountID = [v8 rmAccountID];
+    if (copyMemberQueueIdentity)
     {
-      v15 = [[MDMHTTPTransaction alloc] initWithURL:v6 identity:v10 pinnedCertificates:v11 pinningRevocationCheckRequired:v12 signMessage:v13 isShortTransaction:0 rmAccountID:v14];
-      CFRelease(v10);
+      v15 = [[MDMHTTPTransaction alloc] initWithURL:lCopy identity:copyMemberQueueIdentity pinnedCertificates:checkInPinnedSecCertificateRefs pinningRevocationCheckRequired:pinningRevocationCheckRequired signMessage:signMessage isShortTransaction:0 rmAccountID:rmAccountID];
+      CFRelease(copyMemberQueueIdentity);
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __61__MDMDeclarativeManagement_fetchDataAtURL_completionHandler___block_invoke;
       v17[3] = &unk_278856D40;
       v18 = v15;
-      v19 = v7;
-      v16 = v15;
-      [(DMCHTTPTransaction *)v16 performCompletionBlock:v17];
+      v19 = handlerCopy;
+      _createNoInstallationError = v15;
+      [(DMCHTTPTransaction *)_createNoInstallationError performCompletionBlock:v17];
     }
 
     else
     {
-      v16 = [a1 _createNoInstallationError];
-      (*(v7 + 2))(v7, 0, v16);
+      _createNoInstallationError = [self _createNoInstallationError];
+      (*(handlerCopy + 2))(handlerCopy, 0, _createNoInstallationError);
     }
   }
 
   else
   {
-    v11 = [a1 _createNoInstallationError];
-    (*(v7 + 2))(v7, 0, v11);
+    checkInPinnedSecCertificateRefs = [self _createNoInstallationError];
+    (*(handlerCopy + 2))(handlerCopy, 0, checkInPinnedSecCertificateRefs);
   }
 }
 
@@ -116,49 +116,49 @@ void __61__MDMDeclarativeManagement_fetchDataAtURL_completionHandler___block_inv
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)downloadDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5
++ (void)downloadDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v11 = +[MDMConfiguration sharedConfiguration];
   [v11 refreshDetailsFromDisk];
-  v12 = [v11 managingProfileIdentifier];
+  managingProfileIdentifier = [v11 managingProfileIdentifier];
 
-  if (v12)
+  if (managingProfileIdentifier)
   {
-    v13 = [v11 copyMemberQueueIdentity];
-    v14 = [v11 checkInPinnedSecCertificateRefs];
-    v15 = [v11 pinningRevocationCheckRequired];
-    v16 = [v11 signMessage];
-    v17 = [v11 rmAccountID];
-    if (v13)
+    copyMemberQueueIdentity = [v11 copyMemberQueueIdentity];
+    checkInPinnedSecCertificateRefs = [v11 checkInPinnedSecCertificateRefs];
+    pinningRevocationCheckRequired = [v11 pinningRevocationCheckRequired];
+    signMessage = [v11 signMessage];
+    rmAccountID = [v11 rmAccountID];
+    if (copyMemberQueueIdentity)
     {
       LOBYTE(v20) = 0;
-      v18 = [[MDMHTTPTransaction alloc] initWithURL:v8 downloadURL:v9 identity:v13 pinnedCertificates:v14 pinningRevocationCheckRequired:v15 signMessage:v16 isShortTransaction:v20 rmAccountID:v17];
-      CFRelease(v13);
+      v18 = [[MDMHTTPTransaction alloc] initWithURL:lCopy downloadURL:rLCopy identity:copyMemberQueueIdentity pinnedCertificates:checkInPinnedSecCertificateRefs pinningRevocationCheckRequired:pinningRevocationCheckRequired signMessage:signMessage isShortTransaction:v20 rmAccountID:rmAccountID];
+      CFRelease(copyMemberQueueIdentity);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __76__MDMDeclarativeManagement_downloadDataAtURL_downloadURL_completionHandler___block_invoke;
       v21[3] = &unk_278857070;
       v22 = v18;
-      v24 = v10;
-      v23 = v9;
-      v19 = v18;
-      [(DMCHTTPTransaction *)v19 performCompletionBlock:v21];
+      v24 = handlerCopy;
+      v23 = rLCopy;
+      _createNoInstallationError = v18;
+      [(DMCHTTPTransaction *)_createNoInstallationError performCompletionBlock:v21];
     }
 
     else
     {
-      v19 = [a1 _createNoInstallationError];
-      (*(v10 + 2))(v10, 0, v19);
+      _createNoInstallationError = [self _createNoInstallationError];
+      (*(handlerCopy + 2))(handlerCopy, 0, _createNoInstallationError);
     }
   }
 
   else
   {
-    v14 = [a1 _createNoInstallationError];
-    (*(v10 + 2))(v10, 0, v14);
+    checkInPinnedSecCertificateRefs = [self _createNoInstallationError];
+    (*(handlerCopy + 2))(handlerCopy, 0, checkInPinnedSecCertificateRefs);
   }
 }
 

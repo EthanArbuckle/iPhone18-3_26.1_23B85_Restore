@@ -1,6 +1,6 @@
 @interface PKDashboardMessageActionCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardMessageActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardMessageActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_commonInit;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -8,11 +8,11 @@
 
 @implementation PKDashboardMessageActionCell
 
-- (PKDashboardMessageActionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKDashboardMessageActionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PKDashboardMessageActionCell;
-  v4 = [(PKDashboardMessageActionCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKDashboardMessageActionCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -26,14 +26,14 @@
 - (void)_commonInit
 {
   v3 = [PKDashboardMessageActionView alloc];
-  v4 = [(PKDashboardMessageActionCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKDashboardMessageActionCell *)self contentView];
+  [contentView bounds];
   v5 = [(PKDashboardMessageActionView *)v3 initWithFrame:?];
   actionView = self->_actionView;
   self->_actionView = v5;
 
-  v7 = [(PKDashboardMessageActionCell *)self contentView];
-  [v7 addSubview:self->_actionView];
+  contentView2 = [(PKDashboardMessageActionCell *)self contentView];
+  [contentView2 addSubview:self->_actionView];
 }
 
 - (void)layoutSubviews
@@ -42,14 +42,14 @@
   v5.super_class = PKDashboardMessageActionCell;
   [(PKDashboardMessageActionCell *)&v5 layoutSubviews];
   actionView = self->_actionView;
-  v4 = [(PKDashboardMessageActionCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKDashboardMessageActionCell *)self contentView];
+  [contentView bounds];
   [(PKDashboardMessageActionView *)actionView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDashboardMessageActionView *)self->_actionView sizeThatFits:a3.width, a3.height];
+  [(PKDashboardMessageActionView *)self->_actionView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

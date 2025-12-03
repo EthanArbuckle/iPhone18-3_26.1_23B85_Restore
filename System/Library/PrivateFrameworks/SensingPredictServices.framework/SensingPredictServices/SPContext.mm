@@ -1,14 +1,14 @@
 @interface SPContext
-- (SPContext)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPContext)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPContext
 
-- (SPContext)initWithCoder:(id)a3
+- (SPContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SPContext *)self init];
   if (v5)
   {
@@ -23,17 +23,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_locationCategory)
   {
-    [a3 encodeInteger:self->_locationCategory forKey:@"loCt"];
+    [coder encodeInteger:self->_locationCategory forKey:@"loCt"];
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   NSAppendPrintF_safe();
   v5 = 0;
   v6 = v5;
@@ -52,7 +52,7 @@
     v6 = v9;
   }
 
-  if (v4 < 0x15)
+  if (levelCopy < 0x15)
   {
     NSAppendPrintF_safe();
     v10 = v6;

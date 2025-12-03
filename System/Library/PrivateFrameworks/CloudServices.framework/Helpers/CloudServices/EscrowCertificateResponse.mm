@@ -8,8 +8,8 @@
 
 - (NSData)cert
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"clubCert"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"clubCert"];
 
   if (v3)
   {
@@ -26,16 +26,16 @@
 
 - (NSString)dsid
 {
-  v2 = [(LakituResponse *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"dsid"];
+  responseDictionary = [(LakituResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"dsid"];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(EscrowCertificateResponse *)self cert];
-  if (v3 && (v4 = SecCertificateCreateWithData(0, v3)) != 0)
+  cert = [(EscrowCertificateResponse *)self cert];
+  if (cert && (v4 = SecCertificateCreateWithData(0, cert)) != 0)
   {
     v5 = v4;
     v6 = SecCertificateCopySerialNumberData(v4, 0);
@@ -53,8 +53,8 @@
   v9 = NSStringFromClass(v8);
   v10 = [(__CFData *)v6 debugDescription];
   v11 = [v7 debugDescription];
-  v12 = [(EscrowCertificateResponse *)self dsid];
-  v13 = [NSString stringWithFormat:@"<%@: %p>{serial = %@, digest = %@, dsid = %@}", v9, self, v10, v11, v12];
+  dsid = [(EscrowCertificateResponse *)self dsid];
+  v13 = [NSString stringWithFormat:@"<%@: %p>{serial = %@, digest = %@, dsid = %@}", v9, self, v10, v11, dsid];
 
   return v13;
 }

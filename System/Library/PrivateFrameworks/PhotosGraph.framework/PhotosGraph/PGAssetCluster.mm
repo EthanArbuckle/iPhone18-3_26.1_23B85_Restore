@@ -1,21 +1,21 @@
 @interface PGAssetCluster
-- (PGAssetCluster)initWithAssets:(id)a3 region:(id)a4;
+- (PGAssetCluster)initWithAssets:(id)assets region:(id)region;
 @end
 
 @implementation PGAssetCluster
 
-- (PGAssetCluster)initWithAssets:(id)a3 region:(id)a4
+- (PGAssetCluster)initWithAssets:(id)assets region:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  regionCopy = region;
   v12.receiver = self;
   v12.super_class = PGAssetCluster;
   v9 = [(PGAssetCluster *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assets, a3);
-    objc_storeStrong(&v10->_region, a4);
+    objc_storeStrong(&v9->_assets, assets);
+    objc_storeStrong(&v10->_region, region);
   }
 
   return v10;

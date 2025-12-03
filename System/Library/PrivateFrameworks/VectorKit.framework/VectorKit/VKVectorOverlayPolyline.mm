@@ -1,6 +1,6 @@
 @interface VKVectorOverlayPolyline
-- (PolylineWithElevation)simplifiedGeometryAtZoomLevel:(SEL)a3;
-- (VKVectorOverlayPolyline)initWithMapPoints:(id *)a3 elevations:(const double *)a4 count:(unint64_t)a5 needsElevationCorrection:(BOOL)a6;
+- (PolylineWithElevation)simplifiedGeometryAtZoomLevel:(SEL)level;
+- (VKVectorOverlayPolyline)initWithMapPoints:(id *)points elevations:(const double *)elevations count:(unint64_t)count needsElevationCorrection:(BOOL)correction;
 - (id).cxx_construct;
 @end
 
@@ -16,7 +16,7 @@
   return self;
 }
 
-- (PolylineWithElevation)simplifiedGeometryAtZoomLevel:(SEL)a3
+- (PolylineWithElevation)simplifiedGeometryAtZoomLevel:(SEL)level
 {
   os_unfair_lock_lock(&self->_simplifiedGeometryCacheLock._lock);
   ptr = self->_simplifiedGeometryCache.__ptr_;
@@ -72,7 +72,7 @@ LABEL_13:
   return result;
 }
 
-- (VKVectorOverlayPolyline)initWithMapPoints:(id *)a3 elevations:(const double *)a4 count:(unint64_t)a5 needsElevationCorrection:(BOOL)a6
+- (VKVectorOverlayPolyline)initWithMapPoints:(id *)points elevations:(const double *)elevations count:(unint64_t)count needsElevationCorrection:(BOOL)correction
 {
   v7.receiver = self;
   v7.super_class = VKVectorOverlayPolyline;

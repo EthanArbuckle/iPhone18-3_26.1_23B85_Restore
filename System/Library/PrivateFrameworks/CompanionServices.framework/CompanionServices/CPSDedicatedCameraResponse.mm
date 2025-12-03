@@ -1,10 +1,10 @@
 @interface CPSDedicatedCameraResponse
-- (CPSDedicatedCameraResponse)initWithCoder:(id)a3;
+- (CPSDedicatedCameraResponse)initWithCoder:(id)coder;
 @end
 
 @implementation CPSDedicatedCameraResponse
 
-- (CPSDedicatedCameraResponse)initWithCoder:(id)a3
+- (CPSDedicatedCameraResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CPSDedicatedCameraResponse;

@@ -36,10 +36,10 @@
 
 - (void)startBackgroundTask
 {
-  v3 = [(HSAppDelegate *)self backgroundTaskIdentifier];
+  backgroundTaskIdentifier = [(HSAppDelegate *)self backgroundTaskIdentifier];
   v4 = HFLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3 == UIBackgroundTaskInvalid)
+  if (backgroundTaskIdentifier == UIBackgroundTaskInvalid)
   {
     if (v5)
     {
@@ -70,9 +70,9 @@
 
 - (void)makeIdleTimerAssertion
 {
-  v3 = [(HSAppDelegate *)self idleTimerAssertion];
+  idleTimerAssertion = [(HSAppDelegate *)self idleTimerAssertion];
 
-  if (!v3)
+  if (!idleTimerAssertion)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -90,9 +90,9 @@
 
 - (void)releaseIdleTimerAssertion
 {
-  v3 = [(HSAppDelegate *)self idleTimerAssertion];
+  idleTimerAssertion = [(HSAppDelegate *)self idleTimerAssertion];
 
-  if (v3)
+  if (idleTimerAssertion)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -101,8 +101,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "HomeUIService invalidation idle timer assertion", v6, 2u);
     }
 
-    v5 = [(HSAppDelegate *)self idleTimerAssertion];
-    [v5 invalidate];
+    idleTimerAssertion2 = [(HSAppDelegate *)self idleTimerAssertion];
+    [idleTimerAssertion2 invalidate];
 
     [(HSAppDelegate *)self setIdleTimerAssertion:0];
   }

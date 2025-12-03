@@ -1,34 +1,34 @@
 @interface _DUIAccessibilityDragStatus
-- (_DUIAccessibilityDragStatus)initWithCoder:(id)a3;
+- (_DUIAccessibilityDragStatus)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DUIAccessibilityDragStatus
 
-- (_DUIAccessibilityDragStatus)initWithCoder:(id)a3
+- (_DUIAccessibilityDragStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _DUIAccessibilityDragStatus;
   v5 = [(_DUIAccessibilityDragStatus *)&v7 init];
   if (v5)
   {
-    v5->_itemCount = [v4 decodeIntegerForKey:@"itemCount"];
-    v5->_potentialOperation = [v4 decodeIntegerForKey:@"potentialOperation"];
-    v5->_forbidden = [v4 decodeBoolForKey:@"forbidden"];
+    v5->_itemCount = [coderCopy decodeIntegerForKey:@"itemCount"];
+    v5->_potentialOperation = [coderCopy decodeIntegerForKey:@"potentialOperation"];
+    v5->_forbidden = [coderCopy decodeBoolForKey:@"forbidden"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemCount = self->_itemCount;
-  v5 = a3;
-  [v5 encodeInteger:itemCount forKey:@"itemCount"];
-  [v5 encodeInteger:self->_potentialOperation forKey:@"potentialOperation"];
-  [v5 encodeBool:self->_forbidden forKey:@"forbidden"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:itemCount forKey:@"itemCount"];
+  [coderCopy encodeInteger:self->_potentialOperation forKey:@"potentialOperation"];
+  [coderCopy encodeBool:self->_forbidden forKey:@"forbidden"];
 }
 
 - (id)description

@@ -1,20 +1,20 @@
 @interface PLAssetsdCloudClient
-- (void)cancelCPLDownloadImageDataWithVirtualTaskIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)cancelCPLDownloadWithContext:(id)a3 completionHandler:(id)a4;
-- (void)computeStableHashesOfAsset:(id)a3 synchronously:(BOOL)a4 completionHandler:(id)a5;
-- (void)downloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 trackCPLDownload:(BOOL)a6 downloadIsTransient:(BOOL)a7 proposedTaskIdentifier:(id)a8 completionHandler:(id)a9;
-- (void)requestCPLDownloadImageDataForAssets:(id)a3 format:(unint64_t)a4 doneTokens:(id)a5 completionHandler:(id)a6;
-- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)a3 mediaAssetType:(unint64_t)a4 completionHandler:(id)a5;
+- (void)cancelCPLDownloadImageDataWithVirtualTaskIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)cancelCPLDownloadWithContext:(id)context completionHandler:(id)handler;
+- (void)computeStableHashesOfAsset:(id)asset synchronously:(BOOL)synchronously completionHandler:(id)handler;
+- (void)downloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority trackCPLDownload:(BOOL)download downloadIsTransient:(BOOL)transient proposedTaskIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestCPLDownloadImageDataForAssets:(id)assets format:(unint64_t)format doneTokens:(id)tokens completionHandler:(id)handler;
+- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)asset mediaAssetType:(unint64_t)type completionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdCloudClient
 
-- (void)computeStableHashesOfAsset:(id)a3 synchronously:(BOOL)a4 completionHandler:(id)a5
+- (void)computeStableHashesOfAsset:(id)asset synchronously:(BOOL)synchronously completionHandler:(id)handler
 {
-  v6 = a4;
+  synchronouslyCopy = synchronously;
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v42 = 0u;
   v43 = 0u;
   v41 = 0u;
@@ -29,21 +29,21 @@
     os_activity_scope_enter(v12, (&v42 + 8));
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v14 = [v9 URIRepresentation];
+  uRIRepresentation = [assetCopy URIRepresentation];
   [(PLAssetsdBaseClient *)self proxyFactory];
-  if (v6)
+  if (synchronouslyCopy)
     v15 = {;
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_completionHandler___block_invoke;
     v39[3] = &unk_1E7932DA8;
-    v16 = v10;
+    v16 = handlerCopy;
     v40 = v16;
     v17 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v39];
     v37[0] = MEMORY[0x1E69E9820];
@@ -51,7 +51,7 @@
     v37[2] = __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_completionHandler___block_invoke_37;
     v37[3] = &unk_1E7932540;
     v38 = v16;
-    [v17 computeStableHashesOfAssetWithObjectURI:v14 synchronously:1 reply:v37];
+    [v17 computeStableHashesOfAssetWithObjectURI:uRIRepresentation synchronously:1 reply:v37];
 
     v18 = &v40;
     v19 = &v38;
@@ -63,7 +63,7 @@
     v35[1] = 3221225472;
     v35[2] = __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_completionHandler___block_invoke_39;
     v35[3] = &unk_1E7932DA8;
-    v36 = v10;
+    v36 = handlerCopy;
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3254779904;
     v26[2] = __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_completionHandler___block_invoke_40;
@@ -73,7 +73,7 @@
     v31 = v42;
     v32 = v43;
     v33 = a2;
-    v27 = v14;
+    v27 = uRIRepresentation;
     v34 = 0;
     v28 = v36;
     [v20 remoteObjectProxyWithErrorHandler:v35 handler:v26];
@@ -212,11 +212,11 @@ void __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_complet
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelCPLDownloadImageDataWithVirtualTaskIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)cancelCPLDownloadImageDataWithVirtualTaskIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -231,24 +231,24 @@ void __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_complet
     os_activity_scope_enter(v10, (&v32 + 8));
   }
 
-  if (!v7)
+  if (!identifiersCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"virtualTaskIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"virtualTaskIdentifiers"}];
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __95__PLAssetsdCloudClient_cancelCPLDownloadImageDataWithVirtualTaskIdentifiers_completionHandler___block_invoke;
   v29[3] = &unk_1E7932DA8;
-  v30 = v8;
+  v30 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __95__PLAssetsdCloudClient_cancelCPLDownloadImageDataWithVirtualTaskIdentifiers_completionHandler___block_invoke_2;
@@ -258,11 +258,11 @@ void __83__PLAssetsdCloudClient_computeStableHashesOfAsset_synchronously_complet
   v26 = v32;
   v27 = v33;
   v28 = a2;
-  v13 = v7;
+  v13 = identifiersCopy;
   v22 = v13;
   v14 = v30;
   v23 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v29 handler:v21];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v29 handler:v21];
 
   if (v31 == 1)
   {
@@ -318,12 +318,12 @@ void __95__PLAssetsdCloudClient_cancelCPLDownloadImageDataWithVirtualTaskIdentif
   [v3 asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:v11 reply:v12];
 }
 
-- (void)requestCPLDownloadImageDataForAssets:(id)a3 format:(unint64_t)a4 doneTokens:(id)a5 completionHandler:(id)a6
+- (void)requestCPLDownloadImageDataForAssets:(id)assets format:(unint64_t)format doneTokens:(id)tokens completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  assetsCopy = assets;
+  tokensCopy = tokens;
+  handlerCopy = handler;
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
@@ -338,18 +338,18 @@ void __95__PLAssetsdCloudClient_cancelCPLDownloadImageDataWithVirtualTaskIdentif
     os_activity_scope_enter(v15, (&v39 + 8));
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v17 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __97__PLAssetsdCloudClient_requestCPLDownloadImageDataForAssets_format_doneTokens_completionHandler___block_invoke;
   v36[3] = &unk_1E7932DA8;
-  v37 = v13;
+  v37 = handlerCopy;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3254779904;
   v26[2] = __97__PLAssetsdCloudClient_requestCPLDownloadImageDataForAssets_format_doneTokens_completionHandler___block_invoke_2;
@@ -359,14 +359,14 @@ void __95__PLAssetsdCloudClient_cancelCPLDownloadImageDataWithVirtualTaskIdentif
   v32 = v39;
   v33 = v40;
   v34 = a2;
-  v18 = v11;
+  v18 = assetsCopy;
   v27 = v18;
-  v19 = v12;
+  v19 = tokensCopy;
   v28 = v19;
-  v35 = a4;
+  formatCopy = format;
   v20 = v37;
   v29 = v20;
-  [v17 remoteObjectProxyWithErrorHandler:v36 handler:v26];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v36 handler:v26];
 
   if (v38 == 1)
   {
@@ -424,12 +424,12 @@ void __97__PLAssetsdCloudClient_requestCPLDownloadImageDataForAssets_format_done
   [v3 asynchronousStartPreheatingCPLDownloadForAssets:v11 doneTokens:v12 format:v13 reply:v14];
 }
 
-- (void)downloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 trackCPLDownload:(BOOL)a6 downloadIsTransient:(BOOL)a7 proposedTaskIdentifier:(id)a8 completionHandler:(id)a9
+- (void)downloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority trackCPLDownload:(BOOL)download downloadIsTransient:(BOOL)transient proposedTaskIdentifier:(id)identifier completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a8;
-  v17 = a9;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v49 = 0u;
   v50 = 0u;
   v48 = 0u;
@@ -444,25 +444,25 @@ void __97__PLAssetsdCloudClient_requestCPLDownloadImageDataForAssets_format_done
     os_activity_scope_enter(v19, (&v49 + 8));
   }
 
-  if (!v15)
+  if (!assetCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
-  if (!v17)
+  if (!handlerCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v21 = [v15 URIRepresentation];
-  v22 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __159__PLAssetsdCloudClient_downloadCloudPhotoLibraryAsset_resourceType_highPriority_trackCPLDownload_downloadIsTransient_proposedTaskIdentifier_completionHandler___block_invoke;
   v46[3] = &unk_1E7932DA8;
-  v47 = v17;
+  v47 = handlerCopy;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3254779904;
   v33[2] = __159__PLAssetsdCloudClient_downloadCloudPhotoLibraryAsset_resourceType_highPriority_trackCPLDownload_downloadIsTransient_proposedTaskIdentifier_completionHandler___block_invoke_2;
@@ -472,17 +472,17 @@ void __97__PLAssetsdCloudClient_requestCPLDownloadImageDataForAssets_format_done
   v39 = v49;
   v40 = v50;
   v41 = a2;
-  v23 = v21;
+  v23 = uRIRepresentation;
   v34 = v23;
-  v24 = v16;
+  v24 = identifierCopy;
   v35 = v24;
-  v42 = a4;
-  v43 = a5;
-  v44 = a6;
-  v45 = a7;
+  typeCopy = type;
+  priorityCopy = priority;
+  downloadCopy = download;
+  transientCopy = transient;
   v25 = v47;
   v36 = v25;
-  [v22 remoteObjectProxyWithErrorHandler:v46 handler:v33];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v46 handler:v33];
 
   if (v48 == 1)
   {
@@ -573,11 +573,11 @@ void __159__PLAssetsdCloudClient_downloadCloudPhotoLibraryAsset_resourceType_hig
   }
 }
 
-- (void)cancelCPLDownloadWithContext:(id)a3 completionHandler:(id)a4
+- (void)cancelCPLDownloadWithContext:(id)context completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -592,12 +592,12 @@ void __159__PLAssetsdCloudClient_downloadCloudPhotoLibraryAsset_resourceType_hig
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __71__PLAssetsdCloudClient_cancelCPLDownloadWithContext_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __71__PLAssetsdCloudClient_cancelCPLDownloadWithContext_completionHandler___block_invoke_2;
@@ -607,11 +607,11 @@ void __159__PLAssetsdCloudClient_downloadCloudPhotoLibraryAsset_resourceType_hig
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = contextCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -689,11 +689,11 @@ uint64_t __71__PLAssetsdCloudClient_cancelCPLDownloadWithContext_completionHandl
   return result;
 }
 
-- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)a3 mediaAssetType:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)asset mediaAssetType:(unint64_t)type completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -708,19 +708,19 @@ uint64_t __71__PLAssetsdCloudClient_cancelCPLDownloadWithContext_completionHandl
     os_activity_scope_enter(v12, (&v35 + 8));
   }
 
-  if (!v9)
+  if (!assetCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudClient.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
   }
 
-  v14 = [v9 URIRepresentation];
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  uRIRepresentation = [assetCopy URIRepresentation];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __100__PLAssetsdCloudClient_requestVideoPlaybackURLForCloudSharedAsset_mediaAssetType_completionHandler___block_invoke;
   v32[3] = &unk_1E7932DA8;
-  v33 = v10;
+  v33 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __100__PLAssetsdCloudClient_requestVideoPlaybackURLForCloudSharedAsset_mediaAssetType_completionHandler___block_invoke_9;
@@ -730,12 +730,12 @@ uint64_t __71__PLAssetsdCloudClient_cancelCPLDownloadWithContext_completionHandl
   v28 = v35;
   v29 = v36;
   v30 = a2;
-  v16 = v14;
+  v16 = uRIRepresentation;
   v24 = v16;
-  v31 = a4;
+  typeCopy = type;
   v17 = v33;
   v25 = v17;
-  [v15 remoteObjectProxyWithErrorHandler:v32 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v32 handler:v23];
 
   if (v34 == 1)
   {

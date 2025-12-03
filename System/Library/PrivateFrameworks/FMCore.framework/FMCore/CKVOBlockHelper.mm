@@ -1,27 +1,27 @@
 @interface CKVOBlockHelper
-- (CKVOBlockHelper)initWithObject:(id)a3;
+- (CKVOBlockHelper)initWithObject:(id)object;
 - (id)allKVOObservers;
 - (id)debugDescription;
-- (id)insertNewTokenForKeyPath:(id)a3 block:(id)a4;
+- (id)insertNewTokenForKeyPath:(id)path block:(id)block;
 - (id)observedObject;
 - (void)dealloc;
 - (void)dump;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeHandlerForKey:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeHandlerForKey:(id)key;
 @end
 
 @implementation CKVOBlockHelper
 
-- (CKVOBlockHelper)initWithObject:(id)a3
+- (CKVOBlockHelper)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = CKVOBlockHelper;
   v5 = [(CKVOBlockHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observedObject, v4);
+    objc_storeWeak(&v5->_observedObject, objectCopy);
   }
 
   return v6;
@@ -30,13 +30,13 @@
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(CKVOBlockHelper *)self observedObject];
+  observedObject = [(CKVOBlockHelper *)self observedObject];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(NSMutableDictionary *)self->_tokensByContext allValues];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_tokensByContext allValues];
+  v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -47,16 +47,16 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 context];
-        v11 = [v9 keypath];
-        [v3 removeObserver:self forKeyPath:v11 context:v10];
+        context = [v9 context];
+        keypath = [v9 keypath];
+        [observedObject removeObserver:self forKeyPath:keypath context:context];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -70,27 +70,27 @@
 
 - (id)debugDescription
 {
-  v3 = [(CKVOBlockHelper *)self observedObject];
+  observedObject = [(CKVOBlockHelper *)self observedObject];
   v4 = MEMORY[0x277CCACA8];
   v5 = [(CKVOBlockHelper *)self description];
-  v6 = [(CKVOBlockHelper *)self tokensByContext];
-  v7 = [v4 stringWithFormat:@"%@ (%@, %@, %@)", v5, v3, v6, objc_msgSend(v3, "observationInfo")];
+  tokensByContext = [(CKVOBlockHelper *)self tokensByContext];
+  v7 = [v4 stringWithFormat:@"%@ (%@, %@, %@)", v5, observedObject, tokensByContext, objc_msgSend(observedObject, "observationInfo")];
 
   return v7;
 }
 
 - (void)dump
 {
-  v6 = [(CKVOBlockHelper *)self observedObject];
+  observedObject = [(CKVOBlockHelper *)self observedObject];
   puts("*******************************************************");
   v3 = [(CKVOBlockHelper *)self description];
   puts([v3 UTF8String]);
 
-  printf("\tObserved Object: %p\n", v6);
+  printf("\tObserved Object: %p\n", observedObject);
   puts("\tKeys:");
   [(NSMutableDictionary *)self->_tokensByContext enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4];
-  v4 = v6;
-  v5 = [objc_msgSend(v6 "observationInfo")];
+  v4 = observedObject;
+  v5 = [objc_msgSend(observedObject "observationInfo")];
   printf("\tObservationInfo: %s\n", [v5 UTF8String]);
 }
 
@@ -116,10 +116,10 @@ void __23__CKVOBlockHelper_dump__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)removeHandlerForKey:(id)a3
+- (void)removeHandlerForKey:(id)key
 {
   tokensByContext = self->_tokensByContext;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "index")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(key, "index")}];
   [(NSMutableDictionary *)tokensByContext removeObjectForKey:v5];
 
   if (![(NSMutableDictionary *)self->_tokensByContext count])
@@ -129,21 +129,21 @@ void __23__CKVOBlockHelper_dump__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)insertNewTokenForKeyPath:(id)a3 block:(id)a4
+- (id)insertNewTokenForKeyPath:(id)path block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  pathCopy = path;
   v8 = [CKVOToken alloc];
-  v9 = [(CKVOBlockHelper *)self nextIdentifier];
-  [(CKVOBlockHelper *)self setNextIdentifier:v9 + 1];
-  v10 = [(CKVOToken *)v8 initWithKeyPath:v7 index:v9 + 1 block:v6];
+  nextIdentifier = [(CKVOBlockHelper *)self nextIdentifier];
+  [(CKVOBlockHelper *)self setNextIdentifier:nextIdentifier + 1];
+  v10 = [(CKVOToken *)v8 initWithKeyPath:pathCopy index:nextIdentifier + 1 block:blockCopy];
 
   tokensByContext = self->_tokensByContext;
   if (!tokensByContext)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v13 = self->_tokensByContext;
-    self->_tokensByContext = v12;
+    self->_tokensByContext = dictionary;
 
     tokensByContext = self->_tokensByContext;
   }
@@ -154,26 +154,26 @@ void __23__CKVOBlockHelper_dump__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:context];
   v14 = [(NSMutableDictionary *)self->_tokensByContext objectForKeyedSubscript:v13];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 block];
-    (*(v16 + 16))(v16, v10, v11, v12);
+    block = [v14 block];
+    (*(block + 16))(block, pathCopy, objectCopy, changeCopy);
   }
 
   else
   {
-    v16 = LogCategory_Unspecified();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    block = LogCategory_Unspecified();
+    if (os_log_type_enabled(block, OS_LOG_TYPE_ERROR))
     {
-      [(CKVOBlockHelper *)v13 observeValueForKeyPath:v16 ofObject:v17 change:v18 context:v19, v20, v21, v22];
+      [(CKVOBlockHelper *)v13 observeValueForKeyPath:block ofObject:v17 change:v18 context:v19, v20, v21, v22];
     }
   }
 }

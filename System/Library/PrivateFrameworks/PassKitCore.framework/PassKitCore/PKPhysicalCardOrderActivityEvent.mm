@@ -1,24 +1,24 @@
 @interface PKPhysicalCardOrderActivityEvent
-- (BOOL)isEqual:(id)a3;
-- (PKPhysicalCardOrderActivityEvent)initWithCoder:(id)a3;
-- (PKPhysicalCardOrderActivityEvent)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPhysicalCardOrderActivityEvent)initWithCoder:(id)coder;
+- (PKPhysicalCardOrderActivityEvent)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPhysicalCardOrderActivityEvent
 
-- (PKPhysicalCardOrderActivityEvent)initWithDictionary:(id)a3
+- (PKPhysicalCardOrderActivityEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PKPhysicalCardOrderActivityEvent;
   v5 = [(PKPhysicalCardOrderActivityEvent *)&v24 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"activity"];
+    v6 = [dictionaryCopy PKStringForKey:@"activity"];
     v7 = v6;
     if (v6 != @"ordered")
     {
@@ -62,11 +62,11 @@ LABEL_5:
 LABEL_16:
 
     v5->_activity = v9;
-    v19 = [v4 PKDateForKey:@"timestamp"];
+    v19 = [dictionaryCopy PKDateForKey:@"timestamp"];
     date = v5->_date;
     v5->_date = v19;
 
-    v21 = [v4 PKStringForKey:@"localizedReason"];
+    v21 = [dictionaryCopy PKStringForKey:@"localizedReason"];
     localizedReason = v5->_localizedReason;
     v5->_localizedReason = v21;
   }
@@ -74,20 +74,20 @@ LABEL_16:
   return v5;
 }
 
-- (PKPhysicalCardOrderActivityEvent)initWithCoder:(id)a3
+- (PKPhysicalCardOrderActivityEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPhysicalCardOrderActivityEvent;
   v5 = [(PKPhysicalCardOrderActivityEvent *)&v11 init];
   if (v5)
   {
-    v5->_activity = [v4 decodeIntegerForKey:@"activity"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v5->_activity = [coderCopy decodeIntegerForKey:@"activity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedReason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedReason"];
     localizedReason = v5->_localizedReason;
     v5->_localizedReason = v8;
   }
@@ -95,18 +95,18 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activity = self->_activity;
-  v5 = a3;
-  [v5 encodeInteger:activity forKey:@"activity"];
-  [v5 encodeObject:self->_date forKey:@"timestamp"];
-  [v5 encodeObject:self->_localizedReason forKey:@"localizedReason"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:activity forKey:@"activity"];
+  [coderCopy encodeObject:self->_date forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_localizedReason forKey:@"localizedReason"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -114,7 +114,7 @@ LABEL_16:
   }
 
   date = self->_date;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (date && v6)
   {
     if (([(NSDate *)date isEqual:?]& 1) == 0)
@@ -130,7 +130,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = v4[3];
+  v7 = equalCopy[3];
   v8 = self->_localizedReason;
   v9 = v7;
   v10 = v9;
@@ -154,7 +154,7 @@ LABEL_15:
   }
 
 LABEL_13:
-  v12 = self->_activity == v4[1];
+  v12 = self->_activity == equalCopy[1];
 LABEL_16:
 
   return v12;
@@ -162,10 +162,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_date];
-  [v3 safelyAddObject:self->_localizedReason];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_date];
+  [array safelyAddObject:self->_localizedReason];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_activity - v4 + 32 * v4;
 
   return v5;
@@ -196,15 +196,15 @@ LABEL_16:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKPhysicalCardOrderActivityEvent allocWithZone:?];
   v5->_activity = self->_activity;
-  v6 = [(NSDate *)self->_date copyWithZone:a3];
+  v6 = [(NSDate *)self->_date copyWithZone:zone];
   date = v5->_date;
   v5->_date = v6;
 
-  v8 = [(NSString *)self->_localizedReason copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedReason copyWithZone:zone];
   localizedReason = v5->_localizedReason;
   v5->_localizedReason = v8;
 

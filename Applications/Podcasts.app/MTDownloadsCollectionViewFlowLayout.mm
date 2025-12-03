@@ -6,11 +6,11 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  collectionView = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     v14.receiver = self;
     v14.super_class = MTDownloadsCollectionViewFlowLayout;
@@ -19,12 +19,12 @@
 
   else
   {
-    v8 = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
-    [v8 contentInset];
+    collectionView2 = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
+    [collectionView2 contentInset];
     v10 = v9;
 
-    v11 = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
-    [v11 bounds];
+    collectionView3 = [(MTDownloadsCollectionViewFlowLayout *)self collectionView];
+    [collectionView3 bounds];
     v12 = CGRectGetHeight(v16) - v10 + -20.0;
 
     v13.receiver = self;

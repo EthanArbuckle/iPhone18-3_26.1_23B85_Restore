@@ -1,7 +1,7 @@
 @interface MTLBVHBuilder
-+ (BOOL)useTemporalSplitsForDescriptor:(id)a3;
++ (BOOL)useTemporalSplitsForDescriptor:(id)descriptor;
 - (MTLBVHBuilder)init;
-- (void)getCapacitiesForDescriptor:(id)a3 fragmentCapacity:(unint64_t *)a4 fragmentIndexCapacity:(unint64_t *)a5 innerNodeCapacity:(unint64_t *)a6 leafNodeCapacity:(unint64_t *)a7 primitiveDataCapacity:(unint64_t *)a8;
+- (void)getCapacitiesForDescriptor:(id)descriptor fragmentCapacity:(unint64_t *)capacity fragmentIndexCapacity:(unint64_t *)indexCapacity innerNodeCapacity:(unint64_t *)nodeCapacity leafNodeCapacity:(unint64_t *)leafNodeCapacity primitiveDataCapacity:(unint64_t *)dataCapacity;
 @end
 
 @implementation MTLBVHBuilder
@@ -13,82 +13,82 @@
   return [(MTLBVHBuilder *)&v3 init];
 }
 
-+ (BOOL)useTemporalSplitsForDescriptor:(id)a3
++ (BOOL)useTemporalSplitsForDescriptor:(id)descriptor
 {
-  v4 = [a3 useTemporalSplits];
-  if (v4)
+  useTemporalSplits = [descriptor useTemporalSplits];
+  if (useTemporalSplits)
   {
-    LOBYTE(v4) = [a3 primitiveKeyframeCount] > 1;
+    LOBYTE(useTemporalSplits) = [descriptor primitiveKeyframeCount] > 1;
   }
 
-  return v4;
+  return useTemporalSplits;
 }
 
-- (void)getCapacitiesForDescriptor:(id)a3 fragmentCapacity:(unint64_t *)a4 fragmentIndexCapacity:(unint64_t *)a5 innerNodeCapacity:(unint64_t *)a6 leafNodeCapacity:(unint64_t *)a7 primitiveDataCapacity:(unint64_t *)a8
+- (void)getCapacitiesForDescriptor:(id)descriptor fragmentCapacity:(unint64_t *)capacity fragmentIndexCapacity:(unint64_t *)indexCapacity innerNodeCapacity:(unint64_t *)nodeCapacity leafNodeCapacity:(unint64_t *)leafNodeCapacity primitiveDataCapacity:(unint64_t *)dataCapacity
 {
-  v14 = [a3 fragmentCount];
-  v15 = [a3 primitiveDataSize];
-  if (a8)
+  fragmentCount = [descriptor fragmentCount];
+  primitiveDataSize = [descriptor primitiveDataSize];
+  if (dataCapacity)
   {
-    v16 = v15;
-    v17 = ((8 * [objc_msgSend(a3 "geometryDescriptors")] + 255) & 0xFFFFFFFFFFFFFF00) + v15;
+    v16 = primitiveDataSize;
+    v17 = ((8 * [objc_msgSend(descriptor "geometryDescriptors")] + 255) & 0xFFFFFFFFFFFFFF00) + primitiveDataSize;
     if (!v16)
     {
       v17 = 0;
     }
 
-    *a8 = v17;
+    *dataCapacity = v17;
   }
 
   v18 = 1.0;
-  if ([objc_msgSend(a3 "geometryDescriptors")] && !objc_msgSend(objc_msgSend(objc_msgSend(a3, "geometryDescriptors"), "objectAtIndexedSubscript:", 0), "primitiveType") && objc_msgSend(a3, "splitHeuristic") == 3)
+  if ([objc_msgSend(descriptor "geometryDescriptors")] && !objc_msgSend(objc_msgSend(objc_msgSend(descriptor, "geometryDescriptors"), "objectAtIndexedSubscript:", 0), "primitiveType") && objc_msgSend(descriptor, "splitHeuristic") == 3)
   {
-    [a3 splitCapacity];
+    [descriptor splitCapacity];
     v18 = v19;
   }
 
-  v20 = (v18 * v14);
+  v20 = (v18 * fragmentCount);
   v21 = v20;
-  if ([MTLBVHBuilder useTemporalSplitsForDescriptor:a3])
+  if ([MTLBVHBuilder useTemporalSplitsForDescriptor:descriptor])
   {
-    v21 = ([a3 primitiveKeyframeCount] - 1) * v20;
-    v20 = v21 * (1 << [a3 maxSubKeyframeTemporalSplits]);
+    v21 = ([descriptor primitiveKeyframeCount] - 1) * v20;
+    v20 = v21 * (1 << [descriptor maxSubKeyframeTemporalSplits]);
   }
 
-  if (a4)
+  if (capacity)
   {
-    *a4 = v21;
+    *capacity = v21;
   }
 
-  if (a5)
+  if (indexCapacity)
   {
-    *a5 = v20;
+    *indexCapacity = v20;
   }
 
-  v22 = [a3 minPrimitivesPerLeaf];
-  if ((v22 + v20 - 1) / v22 <= 1)
+  minPrimitivesPerLeaf = [descriptor minPrimitivesPerLeaf];
+  if ((minPrimitivesPerLeaf + v20 - 1) / minPrimitivesPerLeaf <= 1)
   {
     v23 = 1;
   }
 
   else
   {
-    v23 = (v22 + v20 - 1) / v22;
+    v23 = (minPrimitivesPerLeaf + v20 - 1) / minPrimitivesPerLeaf;
   }
 
-  if (a7)
+  if (leafNodeCapacity)
   {
-    *a7 = v23;
+    *leafNodeCapacity = v23;
   }
 
   if (v20)
   {
-    v24 = [a3 branchingFactor];
-    if ([a3 maxPrimitivesPerInnerNode])
+    branchingFactor = [descriptor branchingFactor];
+    if ([descriptor maxPrimitivesPerInnerNode])
     {
-      v25 = [a3 minPrimitivesPerInnerNode];
-      v26 = ((v25 + v20 - 1) / v25 * v24 + 2 * v24 - 5) / (2 * v24 - 2) + (v25 + v20 - 1) / v25;
-      if (!a6)
+      minPrimitivesPerInnerNode = [descriptor minPrimitivesPerInnerNode];
+      v26 = ((minPrimitivesPerInnerNode + v20 - 1) / minPrimitivesPerInnerNode * branchingFactor + 2 * branchingFactor - 5) / (2 * branchingFactor - 2) + (minPrimitivesPerInnerNode + v20 - 1) / minPrimitivesPerInnerNode;
+      if (!nodeCapacity)
       {
         return;
       }
@@ -96,8 +96,8 @@
 
     else
     {
-      v26 = (2 * v24 - 2 + v24 * v23 - 3) / (2 * v24 - 2);
-      if (!a6)
+      v26 = (2 * branchingFactor - 2 + branchingFactor * v23 - 3) / (2 * branchingFactor - 2);
+      if (!nodeCapacity)
       {
         return;
       }
@@ -107,13 +107,13 @@
   else
   {
     v26 = 0;
-    if (!a6)
+    if (!nodeCapacity)
     {
       return;
     }
   }
 
-  *a6 = v26;
+  *nodeCapacity = v26;
 }
 
 @end

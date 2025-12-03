@@ -1,9 +1,9 @@
 @interface SigX
 + (basic_string<char,)getVersion;
-- (SigX)initWithSignatureType:(int)a3 sampleRate:(unsigned int)a4 signatureOptions:(int)a5 error:(id *)a6;
-- (id)ConvertGenericException:(const exception *)a3;
-- (id)ConvertSigException:(const SigException *)a3;
-- (id)ConvertSigxException:(const SigxException *)a3;
+- (SigX)initWithSignatureType:(int)type sampleRate:(unsigned int)rate signatureOptions:(int)options error:(id *)error;
+- (id)ConvertGenericException:(const exception *)exception;
+- (id)ConvertSigException:(const SigException *)exception;
+- (id)ConvertSigxException:(const SigxException *)exception;
 - (id)FillUnknownError;
 - (void)dealloc;
 @end
@@ -30,7 +30,7 @@
   [(SigX *)&v4 dealloc];
 }
 
-- (SigX)initWithSignatureType:(int)a3 sampleRate:(unsigned int)a4 signatureOptions:(int)a5 error:(id *)a6
+- (SigX)initWithSignatureType:(int)type sampleRate:(unsigned int)rate signatureOptions:(int)options error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = SigX;
@@ -50,29 +50,29 @@
   return v3;
 }
 
-- (id)ConvertGenericException:(const exception *)a3
+- (id)ConvertGenericException:(const exception *)exception
 {
-  v3 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(a3->var0 + 2))(a3, a2), +[NSString defaultCStringEncoding]);
+  v3 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(exception->var0 + 2))(exception, a2), +[NSString defaultCStringEncoding]);
   v4 = [NSDictionary dictionaryWithObject:v3 forKey:NSLocalizedDescriptionKey];
   v5 = [NSError errorWithDomain:@"com.shazam.sigx" code:-100 userInfo:v4];
 
   return v5;
 }
 
-- (id)ConvertSigException:(const SigException *)a3
+- (id)ConvertSigException:(const SigException *)exception
 {
-  v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(a3->var0 + 2))(a3, a2), +[NSString defaultCStringEncoding]);
-  var0 = a3->var2.var0;
+  v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(exception->var0 + 2))(exception, a2), +[NSString defaultCStringEncoding]);
+  var0 = exception->var2.var0;
   v6 = [NSDictionary dictionaryWithObject:v4 forKey:NSLocalizedDescriptionKey];
   v7 = [NSError errorWithDomain:@"com.shazam.sigvalidation" code:var0 userInfo:v6];
 
   return v7;
 }
 
-- (id)ConvertSigxException:(const SigxException *)a3
+- (id)ConvertSigxException:(const SigxException *)exception
 {
-  v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(a3->var0 + 2))(a3, a2), +[NSString defaultCStringEncoding]);
-  var0 = a3->var2.var0;
+  v4 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", (*(exception->var0 + 2))(exception, a2), +[NSString defaultCStringEncoding]);
+  var0 = exception->var2.var0;
   v6 = [NSDictionary dictionaryWithObject:v4 forKey:NSLocalizedDescriptionKey];
   v7 = [NSError errorWithDomain:@"com.shazam.sigx" code:var0 userInfo:v6];
 

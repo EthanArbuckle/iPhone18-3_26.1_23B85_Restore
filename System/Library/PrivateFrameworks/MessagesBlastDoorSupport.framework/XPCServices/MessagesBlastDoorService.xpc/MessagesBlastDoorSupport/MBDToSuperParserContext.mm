@@ -1,7 +1,7 @@
 @interface MBDToSuperParserContext
-+ (id)fileTransferInfoWithName:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6 emojiImageInfo:(id)a7;
++ (id)fileTransferInfoWithName:(id)name attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo emojiImageInfo:(id)imageInfo;
 - (BOOL)_lastCharacterInCurrentBodyIsAttachment;
-- (BOOL)appendLivePhotoAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6;
+- (BOOL)appendLivePhotoAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo;
 - (NSAttributedString)body;
 - (id)attachmentCharacterString;
 - (unint64_t)_currentMessagePart;
@@ -10,15 +10,15 @@
 - (unint64_t)_nextAvailableMessagePart;
 - (void)_clearIvars;
 - (void)_initIvars;
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4;
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5;
+- (void)_popValueFromStack:(id)stack attributeName:(id)name;
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name;
 - (void)_updateCurrentAttributesWithMessagePartNumber;
-- (void)appendFileTransferAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6 emojiImageInfo:(id)a7;
-- (void)appendString:(id)a3;
+- (void)appendFileTransferAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo emojiImageInfo:(id)imageInfo;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)popMessagePartNumber;
-- (void)pushMessagePartNumber:(unint64_t)a3;
-- (void)pushTextEffectAttributeWithType:(unint64_t)a3;
+- (void)pushMessagePartNumber:(unint64_t)number;
+- (void)pushTextEffectAttributeWithType:(unint64_t)type;
 - (void)reset;
 @end
 
@@ -96,32 +96,32 @@
   self->_body = 0;
 }
 
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name
 {
-  if (a3)
+  if (value)
   {
-    v8 = a5;
-    v9 = a3;
-    [a4 addObject:v9];
-    [(NSMutableDictionary *)self->_currentAttributes setObject:v9 forKey:v8];
+    nameCopy = name;
+    valueCopy = value;
+    [stack addObject:valueCopy];
+    [(NSMutableDictionary *)self->_currentAttributes setObject:valueCopy forKey:nameCopy];
   }
 }
 
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4
+- (void)_popValueFromStack:(id)stack attributeName:(id)name
 {
-  v6 = a4;
-  [a3 removeLastObject];
-  [(NSMutableDictionary *)self->_currentAttributes removeObjectForKey:v6];
+  nameCopy = name;
+  [stack removeLastObject];
+  [(NSMutableDictionary *)self->_currentAttributes removeObjectForKey:nameCopy];
 }
 
 - (void)_updateCurrentAttributesWithMessagePartNumber
 {
-  v3 = [(NSMutableArray *)self->_messagePartNumberStack lastObject];
+  lastObject = [(NSMutableArray *)self->_messagePartNumberStack lastObject];
   currentAttributes = self->_currentAttributes;
-  v5 = v3;
-  if (v3)
+  v5 = lastObject;
+  if (lastObject)
   {
-    [(NSMutableDictionary *)currentAttributes setObject:v3 forKey:MBDIMMessagePartAttributeName];
+    [(NSMutableDictionary *)currentAttributes setObject:lastObject forKey:MBDIMMessagePartAttributeName];
   }
 
   else
@@ -130,19 +130,19 @@
   }
 }
 
-- (void)pushMessagePartNumber:(unint64_t)a3
+- (void)pushMessagePartNumber:(unint64_t)number
 {
-  if ([(NSMutableIndexSet *)self->_allUsedMessagePartNumbers containsIndex:?]&& [(MBDToSuperParserContext *)self _messagePartForLastCharacterInCurrentBody]!= a3)
+  if ([(NSMutableIndexSet *)self->_allUsedMessagePartNumbers containsIndex:?]&& [(MBDToSuperParserContext *)self _messagePartForLastCharacterInCurrentBody]!= number)
   {
     v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Message parser found non-contigous message part numbers" userInfo:0];
     objc_exception_throw(v7);
   }
 
   messagePartNumberStack = self->_messagePartNumberStack;
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:number];
   [(NSMutableArray *)messagePartNumberStack addObject:v6];
 
-  [(NSMutableIndexSet *)self->_allUsedMessagePartNumbers addIndex:a3];
+  [(NSMutableIndexSet *)self->_allUsedMessagePartNumbers addIndex:number];
 
   [(MBDToSuperParserContext *)self _updateCurrentAttributesWithMessagePartNumber];
 }
@@ -156,9 +156,9 @@
 
 - (BOOL)_lastCharacterInCurrentBodyIsAttachment
 {
-  v3 = [(MBDToSuperParserContext *)self attachmentCharacterString];
-  v4 = [(NSMutableAttributedString *)self->_body string];
-  if ([v4 hasSuffix:v3])
+  attachmentCharacterString = [(MBDToSuperParserContext *)self attachmentCharacterString];
+  string = [(NSMutableAttributedString *)self->_body string];
+  if ([string hasSuffix:attachmentCharacterString])
   {
     v5 = [(NSMutableAttributedString *)self->_body length];
     v6 = [(NSMutableAttributedString *)self->_body attribute:MBDIMFileTransferAttributeName atIndex:v5 - 1 effectiveRange:0];
@@ -195,15 +195,15 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)_nextAvailableMessagePart
@@ -219,19 +219,19 @@
 
 - (unint64_t)_currentMessagePart
 {
-  v2 = [(NSMutableArray *)self->_messagePartNumberStack lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSMutableArray *)self->_messagePartNumberStack lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [lastObject unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)_inferredMessagePartForNewText
@@ -245,17 +245,17 @@
   return result;
 }
 
-- (void)pushTextEffectAttributeWithType:(unint64_t)a3
+- (void)pushTextEffectAttributeWithType:(unint64_t)type
 {
   currentAttributes = self->_currentAttributes;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)currentAttributes setObject:v4 forKey:MBDIMTextEffectAttributeName];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = [(NSMutableArray *)self->_messagePartNumberStack count];
     if (!v4)
@@ -263,7 +263,7 @@
       [(MBDToSuperParserContext *)self pushMessagePartNumber:[(MBDToSuperParserContext *)self _inferredMessagePartForNewText]];
     }
 
-    v5 = [[NSAttributedString alloc] initWithString:v6 attributes:self->_currentAttributes];
+    v5 = [[NSAttributedString alloc] initWithString:stringCopy attributes:self->_currentAttributes];
     [(NSMutableAttributedString *)self->_body appendAttributedString:v5];
     if (!v4)
     {
@@ -272,18 +272,18 @@
   }
 }
 
-+ (id)fileTransferInfoWithName:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6 emojiImageInfo:(id)a7
++ (id)fileTransferInfoWithName:(id)name attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo emojiImageInfo:(id)imageInfo
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  stickerInfoCopy = stickerInfo;
+  imageInfoCopy = imageInfo;
+  nameCopy = name;
   v16 = [[NSMutableDictionary alloc] initWithCapacity:5];
   v17 = v16;
-  if (v15)
+  if (nameCopy)
   {
-    v18 = v15;
+    v18 = nameCopy;
   }
 
   else
@@ -293,27 +293,27 @@
 
   [v16 setObject:v18 forKey:MBDIMFileTransferNameKey];
 
-  if ([v11 count])
+  if ([attachmentsCopy count])
   {
-    v19 = [v11 copy];
+    v19 = [attachmentsCopy copy];
     [v17 setObject:v19 forKey:MBDIMFileTransferAttachmentsKey];
   }
 
-  if ([v12 count])
+  if ([infoCopy count])
   {
-    v20 = [v12 copy];
+    v20 = [infoCopy copy];
     [v17 setObject:v20 forKey:MBDIMFileTransferImageInfoKey];
   }
 
-  if ([v13 count])
+  if ([stickerInfoCopy count])
   {
-    v21 = [v13 copy];
+    v21 = [stickerInfoCopy copy];
     [v17 setObject:v21 forKey:MBDIMFileTransferStickerInfoKey];
   }
 
-  if ([v14 count])
+  if ([imageInfoCopy count])
   {
-    [v17 addEntriesFromDictionary:v14];
+    [v17 addEntriesFromDictionary:imageInfoCopy];
   }
 
   if ([v17 count])
@@ -337,15 +337,15 @@
   return v2;
 }
 
-- (void)appendFileTransferAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6 emojiImageInfo:(id)a7
+- (void)appendFileTransferAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo emojiImageInfo:(id)imageInfo
 {
   v12 = MBDIMFileTransferEmojiImageContentIdentifierKey;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v13 _stringForKey:v12];
+  imageInfoCopy = imageInfo;
+  stickerInfoCopy = stickerInfo;
+  infoCopy = info;
+  attachmentsCopy = attachments;
+  attributeCopy = attribute;
+  v18 = [imageInfoCopy _stringForKey:v12];
   v19 = [v18 length];
 
   v20 = [(NSMutableArray *)self->_messagePartNumberStack count];
@@ -353,30 +353,30 @@
   {
     if (v19)
     {
-      v21 = [(MBDToSuperParserContext *)self _inferredMessagePartForNewText];
+      _inferredMessagePartForNewText = [(MBDToSuperParserContext *)self _inferredMessagePartForNewText];
     }
 
     else
     {
-      v21 = [(MBDToSuperParserContext *)self _inferredMessagePartForNewFile];
+      _inferredMessagePartForNewText = [(MBDToSuperParserContext *)self _inferredMessagePartForNewFile];
     }
 
-    [(MBDToSuperParserContext *)self pushMessagePartNumber:v21];
+    [(MBDToSuperParserContext *)self pushMessagePartNumber:_inferredMessagePartForNewText];
   }
 
-  v22 = [objc_opt_class() fileTransferInfoWithName:v17 attachments:v16 imageInfo:v15 stickerInfo:v14 emojiImageInfo:v13];
+  v22 = [objc_opt_class() fileTransferInfoWithName:attributeCopy attachments:attachmentsCopy imageInfo:infoCopy stickerInfo:stickerInfoCopy emojiImageInfo:imageInfoCopy];
 
-  v23 = [(MBDToSuperParserContext *)self attachmentCharacterString];
-  v24 = [(MBDToSuperParserContext *)self _currentMessagePart];
+  attachmentCharacterString = [(MBDToSuperParserContext *)self attachmentCharacterString];
+  _currentMessagePart = [(MBDToSuperParserContext *)self _currentMessagePart];
   v29[0] = MBDIMFileTransferAttributeName;
   v25 = [v22 copy];
   v30[0] = v25;
   v29[1] = MBDIMMessagePartAttributeName;
-  v26 = [NSNumber numberWithUnsignedInteger:v24];
+  v26 = [NSNumber numberWithUnsignedInteger:_currentMessagePart];
   v30[1] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
 
-  v28 = [[NSAttributedString alloc] initWithString:v23 attributes:v27];
+  v28 = [[NSAttributedString alloc] initWithString:attachmentCharacterString attributes:v27];
   [(NSMutableAttributedString *)self->_body appendAttributedString:v28];
   if (!v20)
   {
@@ -384,35 +384,35 @@
   }
 }
 
-- (BOOL)appendLivePhotoAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5 stickerInfo:(id)a6
+- (BOOL)appendLivePhotoAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info stickerInfo:(id)stickerInfo
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MBDToSuperParserContext *)self attachmentCharacterString];
+  attributeCopy = attribute;
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  stickerInfoCopy = stickerInfo;
+  attachmentCharacterString = [(MBDToSuperParserContext *)self attachmentCharacterString];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3010000000;
   v28 = &unk_1000D3F07;
   v29 = xmmword_1000C8D60;
-  v15 = [(NSMutableAttributedString *)self->_body string];
-  v16 = [v15 length];
+  string = [(NSMutableAttributedString *)self->_body string];
+  v16 = [string length];
 
-  v17 = [(NSMutableAttributedString *)self->_body string];
+  string2 = [(NSMutableAttributedString *)self->_body string];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000096E0;
   v22[3] = &unk_1000F0BD0;
-  v18 = v14;
+  v18 = attachmentCharacterString;
   v23 = v18;
   v24 = &v25;
-  [v17 enumerateSubstringsInRange:0 options:v16 usingBlock:{258, v22}];
+  [string2 enumerateSubstringsInRange:0 options:v16 usingBlock:{258, v22}];
 
   v19 = v26[4];
   if (v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [objc_opt_class() fileTransferInfoWithName:v10 attachments:v11 imageInfo:v12 stickerInfo:v13 emojiImageInfo:0];
+    v20 = [objc_opt_class() fileTransferInfoWithName:attributeCopy attachments:attachmentsCopy imageInfo:infoCopy stickerInfo:stickerInfoCopy emojiImageInfo:0];
     [(NSMutableAttributedString *)self->_body addAttribute:MBDIMLivePhotoAttributeName value:v20 range:v26[4], v26[5]];
   }
 

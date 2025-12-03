@@ -2,14 +2,14 @@
 - (NSData)blob;
 - (NSString)description;
 - (_TtC17identityservicesd30IDSGlobalLinkP2PKeyNegotiation)init;
-- (id)receiveBlob:(id)a3;
+- (id)receiveBlob:(id)blob;
 @end
 
 @implementation IDSGlobalLinkP2PKeyNegotiation
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100893104();
 
   v3 = sub_100936B28();
@@ -19,7 +19,7 @@
 
 - (NSData)blob
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100893320();
   v5 = v4;
 
@@ -38,10 +38,10 @@
   return v6;
 }
 
-- (id)receiveBlob:(id)a3
+- (id)receiveBlob:(id)blob
 {
-  v4 = a3;
-  v5 = self;
+  blobCopy = blob;
+  selfCopy = self;
   v6 = sub_100935EA8();
   v8 = v7;
 

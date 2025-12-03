@@ -1,10 +1,10 @@
 @interface SleepOnboardingConfirmationViewController
-- (void)hksp_cancelButtonTapped:(id)a3;
+- (void)hksp_cancelButtonTapped:(id)tapped;
 @end
 
 @implementation SleepOnboardingConfirmationViewController
 
-- (void)hksp_cancelButtonTapped:(id)a3
+- (void)hksp_cancelButtonTapped:(id)tapped
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -23,10 +23,10 @@
   v9[2] = sub_269CA6718;
   v9[3] = &block_descriptor_39;
   v6 = _Block_copy(v9);
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  tappedCopy = tapped;
 
-  [(OBWelcomeController *)v7 hksp_presentCancelConfirmationAlertWithSender:v8 cancelHandler:v6];
+  [(OBWelcomeController *)selfCopy hksp_presentCancelConfirmationAlertWithSender:tappedCopy cancelHandler:v6];
 
   _Block_release(v6);
 }

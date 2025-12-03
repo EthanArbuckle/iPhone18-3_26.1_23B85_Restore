@@ -1,22 +1,22 @@
 @interface PHSensitiveContentAnalysisUtility
-+ (BOOL)_assetIsEligableForVideoProcessing:(id)a3;
-+ (BOOL)_assetNeedsSensitivityProcessing:(id)a3 forThumbnail:(BOOL)a4 forPickerSharing:(BOOL)a5;
-+ (BOOL)_assetNeedsVideoSensitivityProcessing:(id)a3 forPickerSharing:(BOOL)a4;
-+ (BOOL)_isContentPreviewableForAsset:(id)a3 forPickerSharing:(BOOL)a4 outError:(id *)a5;
++ (BOOL)_assetIsEligableForVideoProcessing:(id)processing;
++ (BOOL)_assetNeedsSensitivityProcessing:(id)processing forThumbnail:(BOOL)thumbnail forPickerSharing:(BOOL)sharing;
++ (BOOL)_assetNeedsVideoSensitivityProcessing:(id)processing forPickerSharing:(BOOL)sharing;
++ (BOOL)_isContentPreviewableForAsset:(id)asset forPickerSharing:(BOOL)sharing outError:(id *)error;
 + (BOOL)_shouldAnalyzeMedia;
 + (BOOL)sensitiveContentAnalysisEnabled;
-+ (CGImage)_applyLiveTreatment:(CGImage *)a3;
-+ (CGImage)_applyStaticTreatment:(CGImage *)a3;
-+ (id)_blurredImage:(id)a3;
-+ (id)_clearedImageManagerResultDictionaryWithErrorIfNone:(id)a3 asset:(id)a4 isContentPreviewableForAsset:(BOOL)a5 assetNeedsProcessing:(BOOL)a6 error:(id)a7;
++ (CGImage)_applyLiveTreatment:(CGImage *)treatment;
++ (CGImage)_applyStaticTreatment:(CGImage *)treatment;
++ (id)_blurredImage:(id)image;
++ (id)_clearedImageManagerResultDictionaryWithErrorIfNone:(id)none asset:(id)asset isContentPreviewableForAsset:(BOOL)forAsset assetNeedsProcessing:(BOOL)processing error:(id)error;
 + (id)_sharedCIContext;
-+ (id)protectImageManagerResult:(id)a3 outVideoItem:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forVideoRequestFromAsset:(id)a7 requestAnalysisIfUnprocessed:(BOOL)a8;
-+ (id)sensitivityAnalysisFromAsset:(id)a3 outError:(id *)a4;
-+ (void)_analyzeUserOwnedAsset:(id)a3;
-+ (void)_obscureImageManagerResultOrThumbnailDataIfSensitive:(id)a3 outResult:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forRequestFromAsset:(id)a7 applyLiveBlurIfSensitive:(BOOL)a8 assetNeedsProcessing:(BOOL)a9;
-+ (void)obscureThumbnailDataIfSensitiveFromThumbnailData:(id)a3 outThumbnailData:(id *)a4 forThumbnailAsset:(id)a5;
-+ (void)protectImageManagerResult:(id)a3 outAnimatedImage:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forAnimatedImageRequestFromAsset:(id)a7;
-+ (void)protectImageManagerResult:(id)a3 outImage:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forImageRequestFromAsset:(id)a7 applyLiveBlurIfSensitive:(BOOL)a8;
++ (id)protectImageManagerResult:(id)result outVideoItem:(id *)item infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forVideoRequestFromAsset:(id)asset requestAnalysisIfUnprocessed:(BOOL)unprocessed;
++ (id)sensitivityAnalysisFromAsset:(id)asset outError:(id *)error;
++ (void)_analyzeUserOwnedAsset:(id)asset;
++ (void)_obscureImageManagerResultOrThumbnailDataIfSensitive:(id)sensitive outResult:(id *)result infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forRequestFromAsset:(id)asset applyLiveBlurIfSensitive:(BOOL)ifSensitive assetNeedsProcessing:(BOOL)processing;
++ (void)obscureThumbnailDataIfSensitiveFromThumbnailData:(id)data outThumbnailData:(id *)thumbnailData forThumbnailAsset:(id)asset;
++ (void)protectImageManagerResult:(id)result outAnimatedImage:(id *)image infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forAnimatedImageRequestFromAsset:(id)asset;
++ (void)protectImageManagerResult:(id)result outImage:(id *)image infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forImageRequestFromAsset:(id)asset applyLiveBlurIfSensitive:(BOOL)sensitive;
 @end
 
 @implementation PHSensitiveContentAnalysisUtility
@@ -40,20 +40,20 @@ uint64_t __53__PHSensitiveContentAnalysisUtility__sharedCIContext__block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_blurredImage:(id)a3
++ (id)_blurredImage:(id)image
 {
   v3 = MEMORY[0x1E695F648];
-  v4 = a3;
-  v5 = [v3 gaussianBlurFilter];
-  [v5 setValue:v4 forKey:*MEMORY[0x1E695FAB0]];
+  imageCopy = image;
+  gaussianBlurFilter = [v3 gaussianBlurFilter];
+  [gaussianBlurFilter setValue:imageCopy forKey:*MEMORY[0x1E695FAB0]];
 
-  [v5 setValue:&unk_1F102E4A8 forKey:*MEMORY[0x1E695FB10]];
-  v6 = [v5 outputImage];
+  [gaussianBlurFilter setValue:&unk_1F102E4A8 forKey:*MEMORY[0x1E695FB10]];
+  outputImage = [gaussianBlurFilter outputImage];
 
-  return v6;
+  return outputImage;
 }
 
-+ (CGImage)_applyStaticTreatment:(CGImage *)a3
++ (CGImage)_applyStaticTreatment:(CGImage *)treatment
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v40 = [MEMORY[0x1E695F658] imageWithCGImage:?];
@@ -64,20 +64,20 @@ uint64_t __53__PHSensitiveContentAnalysisUtility__sharedCIContext__block_invoke(
   v38 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
-  v12 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
-  v13 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
-  v14 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
-  v15 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
-  v16 = vcvtd_n_f64_s64([a1 randomIntBetween:5 upperBound:150], 8uLL);
+  v11 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
+  v12 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
+  v13 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
+  v14 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
+  v15 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
+  v16 = vcvtd_n_f64_s64([self randomIntBetween:5 upperBound:150], 8uLL);
   v36 = [MEMORY[0x1E695F610] colorWithRed:v11 green:v13 blue:v15];
   v35 = [MEMORY[0x1E695F610] colorWithRed:v12 green:v14 blue:v16];
-  v17 = [MEMORY[0x1E695F648] smoothLinearGradientFilter];
-  [v17 setPoint0:{0.0, 0.0}];
-  [v17 setPoint1:{v8, v10}];
-  [v17 setColor0:v36];
-  [v17 setColor1:v35];
-  v18 = [v17 outputImage];
+  smoothLinearGradientFilter = [MEMORY[0x1E695F648] smoothLinearGradientFilter];
+  [smoothLinearGradientFilter setPoint0:{0.0, 0.0}];
+  [smoothLinearGradientFilter setPoint1:{v8, v10}];
+  [smoothLinearGradientFilter setColor0:v36];
+  [smoothLinearGradientFilter setColor1:v35];
+  outputImage = [smoothLinearGradientFilter outputImage];
   v19 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:1.0 green:1.0 blue:1.0 alpha:0.1];
   v20 = MEMORY[0x1E695F648];
   v43 = *MEMORY[0x1E695FA78];
@@ -85,27 +85,27 @@ uint64_t __53__PHSensitiveContentAnalysisUtility__sharedCIContext__block_invoke(
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
   v22 = [v20 filterWithName:@"CIConstantColorGenerator" withInputParameters:v21];
 
-  v23 = [v22 outputImage];
+  outputImage2 = [v22 outputImage];
   v24 = MEMORY[0x1E695F648];
   v25 = *MEMORY[0x1E695FAB0];
   v41[0] = *MEMORY[0x1E695FA48];
   v41[1] = v25;
-  v42[0] = v18;
-  v42[1] = v23;
+  v42[0] = outputImage;
+  v42[1] = outputImage2;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
   v27 = [v24 filterWithName:@"CISourceOverCompositing" withInputParameters:v26];
 
-  v28 = [v27 outputImage];
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  v31 = [v28 imageByCroppingToRect:{v38, v37, v8, v10}];
-  v32 = [a1 _sharedCIContext];
-  v33 = [v32 createCGImage:v31 fromRect:{0.0, 0.0, Width, Height}];
+  outputImage3 = [v27 outputImage];
+  Width = CGImageGetWidth(treatment);
+  Height = CGImageGetHeight(treatment);
+  v31 = [outputImage3 imageByCroppingToRect:{v38, v37, v8, v10}];
+  _sharedCIContext = [self _sharedCIContext];
+  v33 = [_sharedCIContext createCGImage:v31 fromRect:{0.0, 0.0, Width, Height}];
 
   return v33;
 }
 
-+ (CGImage)_applyLiveTreatment:(CGImage *)a3
++ (CGImage)_applyLiveTreatment:(CGImage *)treatment
 {
   v5 = [MEMORY[0x1E695F658] imageWithCGImage:?];
   [v5 extent];
@@ -115,68 +115,68 @@ uint64_t __53__PHSensitiveContentAnalysisUtility__sharedCIContext__block_invoke(
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [a1 _blurredImage:v6];
-  v16 = [a1 _sharedCIContext];
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  v15 = [self _blurredImage:v6];
+  _sharedCIContext = [self _sharedCIContext];
+  Width = CGImageGetWidth(treatment);
+  Height = CGImageGetHeight(treatment);
   v19 = [v15 imageByCroppingToRect:{v8, v10, v12, v14}];
-  v20 = [v16 createCGImage:v19 fromRect:{0.0, 0.0, Width, Height}];
+  v20 = [_sharedCIContext createCGImage:v19 fromRect:{0.0, 0.0, Width, Height}];
 
   return v20;
 }
 
-+ (void)obscureThumbnailDataIfSensitiveFromThumbnailData:(id)a3 outThumbnailData:(id *)a4 forThumbnailAsset:(id)a5
++ (void)obscureThumbnailDataIfSensitiveFromThumbnailData:(id)data outThumbnailData:(id *)thumbnailData forThumbnailAsset:(id)asset
 {
-  v8 = a5;
-  v10 = a3;
-  LOBYTE(v9) = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:v8];
-  [a1 _obscureImageManagerResultOrThumbnailDataIfSensitive:v10 outResult:a4 infoDictionary:0 outInfoDictionary:0 forRequestFromAsset:v8 applyLiveBlurIfSensitive:0 assetNeedsProcessing:v9];
+  assetCopy = asset;
+  dataCopy = data;
+  LOBYTE(v9) = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:assetCopy];
+  [self _obscureImageManagerResultOrThumbnailDataIfSensitive:dataCopy outResult:thumbnailData infoDictionary:0 outInfoDictionary:0 forRequestFromAsset:assetCopy applyLiveBlurIfSensitive:0 assetNeedsProcessing:v9];
 }
 
-+ (void)protectImageManagerResult:(id)a3 outAnimatedImage:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forAnimatedImageRequestFromAsset:(id)a7
++ (void)protectImageManagerResult:(id)result outAnimatedImage:(id *)image infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forAnimatedImageRequestFromAsset:(id)asset
 {
-  v12 = a7;
-  v13 = a5;
-  v15 = a3;
-  LOBYTE(v14) = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:v12];
-  [a1 _obscureImageManagerResultOrThumbnailDataIfSensitive:v15 outResult:a4 infoDictionary:v13 outInfoDictionary:a6 forRequestFromAsset:v12 applyLiveBlurIfSensitive:1 assetNeedsProcessing:v14];
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  resultCopy = result;
+  LOBYTE(v14) = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:assetCopy];
+  [self _obscureImageManagerResultOrThumbnailDataIfSensitive:resultCopy outResult:image infoDictionary:dictionaryCopy outInfoDictionary:infoDictionary forRequestFromAsset:assetCopy applyLiveBlurIfSensitive:1 assetNeedsProcessing:v14];
 }
 
-+ (id)protectImageManagerResult:(id)a3 outVideoItem:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forVideoRequestFromAsset:(id)a7 requestAnalysisIfUnprocessed:(BOOL)a8
++ (id)protectImageManagerResult:(id)result outVideoItem:(id *)item infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forVideoRequestFromAsset:(id)asset requestAnalysisIfUnprocessed:(BOOL)unprocessed
 {
-  v8 = a8;
+  unprocessedCopy = unprocessed;
   v27[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = [PHSensitiveContentAnalysisUtility assetNeedsVideoSensitivityProcessing:v16];
+  resultCopy = result;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
+  v17 = [PHSensitiveContentAnalysisUtility assetNeedsVideoSensitivityProcessing:assetCopy];
   v18 = v17;
   v19 = 0;
-  if (v8 && v17)
+  if (unprocessedCopy && v17)
   {
-    if ([v16 sensitivityAnalysisState] == 4)
+    if ([assetCopy sensitivityAnalysisState] == 4)
     {
-      [PHSensitiveContentAnalysisUtility _analyzeUserOwnedAsset:v16];
+      [PHSensitiveContentAnalysisUtility _analyzeUserOwnedAsset:assetCopy];
       v19 = 0;
     }
 
     else
     {
-      v20 = [v16 photoLibrary];
-      v24 = [v16 uuid];
-      v27[0] = v24;
+      photoLibrary = [assetCopy photoLibrary];
+      uuid = [assetCopy uuid];
+      v27[0] = uuid;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __163__PHSensitiveContentAnalysisUtility_protectImageManagerResult_outVideoItem_infoDictionary_outInfoDictionary_forVideoRequestFromAsset_requestAnalysisIfUnprocessed___block_invoke;
       v25[3] = &unk_1E75A89F8;
-      v26 = v16;
-      v19 = [v20 analyzeAssets:v21 forFeature:7 withCompletion:v25];
+      v26 = assetCopy;
+      v19 = [photoLibrary analyzeAssets:v21 forFeature:7 withCompletion:v25];
     }
   }
 
   LOBYTE(v23) = v18;
-  [a1 _obscureImageManagerResultOrThumbnailDataIfSensitive:v14 outResult:a4 infoDictionary:v15 outInfoDictionary:a6 forRequestFromAsset:v16 applyLiveBlurIfSensitive:0 assetNeedsProcessing:v23];
+  [self _obscureImageManagerResultOrThumbnailDataIfSensitive:resultCopy outResult:item infoDictionary:dictionaryCopy outInfoDictionary:infoDictionary forRequestFromAsset:assetCopy applyLiveBlurIfSensitive:0 assetNeedsProcessing:v23];
 
   return v19;
 }
@@ -200,51 +200,51 @@ void __163__PHSensitiveContentAnalysisUtility_protectImageManagerResult_outVideo
   }
 }
 
-+ (void)protectImageManagerResult:(id)a3 outImage:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forImageRequestFromAsset:(id)a7 applyLiveBlurIfSensitive:(BOOL)a8
++ (void)protectImageManagerResult:(id)result outImage:(id *)image infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forImageRequestFromAsset:(id)asset applyLiveBlurIfSensitive:(BOOL)sensitive
 {
-  v8 = a8;
+  sensitiveCopy = sensitive;
   v23[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:v16];
+  resultCopy = result;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
+  v17 = [PHSensitiveContentAnalysisUtility assetNeedsThumbnailSensitivityProcessing:assetCopy];
   v18 = v17;
   if (v17)
   {
-    if ([v16 sensitivityAnalysisState] == 4)
+    if ([assetCopy sensitivityAnalysisState] == 4)
     {
-      [PHSensitiveContentAnalysisUtility _analyzeUserOwnedAsset:v16];
+      [PHSensitiveContentAnalysisUtility _analyzeUserOwnedAsset:assetCopy];
     }
 
     else
     {
-      v19 = [v16 photoLibrary];
-      v22 = [v16 uuid];
-      v23[0] = v22;
+      photoLibrary = [assetCopy photoLibrary];
+      uuid = [assetCopy uuid];
+      v23[0] = uuid;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-      [v19 coalesceAndAnalyzeAssets:v20 forFeature:8];
+      [photoLibrary coalesceAndAnalyzeAssets:v20 forFeature:8];
     }
   }
 
   LOBYTE(v21) = v18;
-  [a1 _obscureImageManagerResultOrThumbnailDataIfSensitive:v14 outResult:a4 infoDictionary:v15 outInfoDictionary:a6 forRequestFromAsset:v16 applyLiveBlurIfSensitive:v8 assetNeedsProcessing:v21];
+  [self _obscureImageManagerResultOrThumbnailDataIfSensitive:resultCopy outResult:image infoDictionary:dictionaryCopy outInfoDictionary:infoDictionary forRequestFromAsset:assetCopy applyLiveBlurIfSensitive:sensitiveCopy assetNeedsProcessing:v21];
 }
 
-+ (void)_analyzeUserOwnedAsset:(id)a3
++ (void)_analyzeUserOwnedAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
   v5 = objc_alloc_init(getSCSensitivityAnalyzerClass());
-  v6 = [v3 mainFileURL];
+  mainFileURL = [assetCopy mainFileURL];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__PHSensitiveContentAnalysisUtility__analyzeUserOwnedAsset___block_invoke;
   v9[3] = &unk_1E75A4958;
-  v10 = v4;
-  v11 = v3;
-  v7 = v3;
-  v8 = v4;
-  [v5 analyzeFile:v6 options:8 progressHandler:0 completionHandler:v9];
+  v10 = photoLibrary;
+  v11 = assetCopy;
+  v7 = assetCopy;
+  v8 = photoLibrary;
+  [v5 analyzeFile:mainFileURL options:8 progressHandler:0 completionHandler:v9];
 }
 
 void __60__PHSensitiveContentAnalysisUtility__analyzeUserOwnedAsset___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -325,41 +325,41 @@ void __60__PHSensitiveContentAnalysisUtility__analyzeUserOwnedAsset___block_invo
   }
 }
 
-+ (void)_obscureImageManagerResultOrThumbnailDataIfSensitive:(id)a3 outResult:(id *)a4 infoDictionary:(id)a5 outInfoDictionary:(id *)a6 forRequestFromAsset:(id)a7 applyLiveBlurIfSensitive:(BOOL)a8 assetNeedsProcessing:(BOOL)a9
++ (void)_obscureImageManagerResultOrThumbnailDataIfSensitive:(id)sensitive outResult:(id *)result infoDictionary:(id)dictionary outInfoDictionary:(id *)infoDictionary forRequestFromAsset:(id)asset applyLiveBlurIfSensitive:(BOOL)ifSensitive assetNeedsProcessing:(BOOL)processing
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
+  ifSensitiveCopy = ifSensitive;
+  sensitiveCopy = sensitive;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v31 = 0;
-  v17 = [PHSensitiveContentAnalysisUtility isContentPreviewableForAsset:v16 outError:&v31];
+  v17 = [PHSensitiveContentAnalysisUtility isContentPreviewableForAsset:assetCopy outError:&v31];
   v18 = v31;
-  if (v17 && !a9)
+  if (v17 && !processing)
   {
-    v21 = v14;
-    *a4 = v14;
-    if (a6)
+    v21 = sensitiveCopy;
+    *result = sensitiveCopy;
+    if (infoDictionary)
     {
-      v22 = v15;
-      *a6 = v15;
+      v22 = dictionaryCopy;
+      *infoDictionary = dictionaryCopy;
     }
   }
 
   else
   {
-    if (a6)
+    if (infoDictionary)
     {
-      v20 = [PHSensitiveContentAnalysisUtility _clearedImageManagerResultDictionaryWithErrorIfNone:v15 asset:v16 isContentPreviewableForAsset:v17 assetNeedsProcessing:a9 error:v18];
-      *a6 = v20;
+      v20 = [PHSensitiveContentAnalysisUtility _clearedImageManagerResultDictionaryWithErrorIfNone:dictionaryCopy asset:assetCopy isContentPreviewableForAsset:v17 assetNeedsProcessing:processing error:v18];
+      *infoDictionary = v20;
     }
 
-    *a4 = 0;
-    if (!a9)
+    *result = 0;
+    if (!processing)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        *a4 = 0;
+        *result = 0;
       }
 
       else
@@ -378,21 +378,21 @@ void __60__PHSensitiveContentAnalysisUtility__analyzeUserOwnedAsset___block_invo
             goto LABEL_15;
           }
 
-          v23 = v14;
+          v23 = sensitiveCopy;
         }
 
         v24 = v23;
         if (v23)
         {
           v25 = DCIM_CGImageRefFromPLImage();
-          if (v9)
+          if (ifSensitiveCopy)
           {
-            v26 = [a1 _applyLiveTreatment:v25];
+            v26 = [self _applyLiveTreatment:v25];
           }
 
           else
           {
-            v26 = [a1 _applyStaticTreatment:v25];
+            v26 = [self _applyStaticTreatment:v25];
           }
 
           v27 = v26;
@@ -408,7 +408,7 @@ void __60__PHSensitiveContentAnalysisUtility__analyzeUserOwnedAsset___block_invo
           }
 
           v29 = v28;
-          *a4 = v28;
+          *result = v28;
         }
       }
     }
@@ -423,7 +423,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sensitiveContentAnalysisEnabled_onceToken != -1)
   {
     dispatch_once(&sensitiveContentAnalysisEnabled_onceToken, block);
@@ -485,40 +485,40 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
   return v2;
 }
 
-+ (BOOL)_isContentPreviewableForAsset:(id)a3 forPickerSharing:(BOOL)a4 outError:(id *)a5
++ (BOOL)_isContentPreviewableForAsset:(id)asset forPickerSharing:(BOOL)sharing outError:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 sourceType];
-  if ((a4 || v9 == 256 || v9 == 2) && [v8 compactSCSensitivityAnalysis] && objc_msgSend(a1, "sensitiveContentAnalysisEnabled"))
+  assetCopy = asset;
+  sourceType = [assetCopy sourceType];
+  if ((sharing || sourceType == 256 || sourceType == 2) && [assetCopy compactSCSensitivityAnalysis] && objc_msgSend(self, "sensitiveContentAnalysisEnabled"))
   {
-    v10 = [a1 sensitivityAnalysisFromAsset:v8 outError:a5];
+    v10 = [self sensitivityAnalysisFromAsset:assetCopy outError:error];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 isContentPreviewable];
+      isContentPreviewable = [v10 isContentPreviewable];
     }
 
     else
     {
-      v12 = 0;
+      isContentPreviewable = 0;
     }
   }
 
   else
   {
-    v12 = 1;
+    isContentPreviewable = 1;
   }
 
-  return v12;
+  return isContentPreviewable;
 }
 
-+ (BOOL)_assetNeedsVideoSensitivityProcessing:(id)a3 forPickerSharing:(BOOL)a4
++ (BOOL)_assetNeedsVideoSensitivityProcessing:(id)processing forPickerSharing:(BOOL)sharing
 {
-  v4 = a4;
-  v6 = a3;
-  if ([PHSensitiveContentAnalysisUtility _assetIsEligableForVideoProcessing:v6])
+  sharingCopy = sharing;
+  processingCopy = processing;
+  if ([PHSensitiveContentAnalysisUtility _assetIsEligableForVideoProcessing:processingCopy])
   {
-    v7 = [a1 _assetNeedsSensitivityProcessing:v6 forThumbnail:0 forPickerSharing:v4];
+    v7 = [self _assetNeedsSensitivityProcessing:processingCopy forThumbnail:0 forPickerSharing:sharingCopy];
   }
 
   else
@@ -529,17 +529,17 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
   return v7;
 }
 
-+ (BOOL)_assetIsEligableForVideoProcessing:(id)a3
++ (BOOL)_assetIsEligableForVideoProcessing:(id)processing
 {
-  v3 = a3;
-  if ([v3 isVideo])
+  processingCopy = processing;
+  if ([processingCopy isVideo])
   {
     LOBYTE(v4) = 1;
   }
 
-  else if ([v3 isPhotoIris] && objc_msgSend(v3, "canPlayPhotoIris"))
+  else if ([processingCopy isPhotoIris] && objc_msgSend(processingCopy, "canPlayPhotoIris"))
   {
-    v4 = [v3 isPhotoIrisPlaceholder] ^ 1;
+    v4 = [processingCopy isPhotoIrisPlaceholder] ^ 1;
   }
 
   else
@@ -550,15 +550,15 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
   return v4;
 }
 
-+ (BOOL)_assetNeedsSensitivityProcessing:(id)a3 forThumbnail:(BOOL)a4 forPickerSharing:(BOOL)a5
++ (BOOL)_assetNeedsSensitivityProcessing:(id)processing forThumbnail:(BOOL)thumbnail forPickerSharing:(BOOL)sharing
 {
-  v8 = a3;
-  v9 = v8;
-  if ((a5 || [v8 sourceType] == 256 || objc_msgSend(v9, "sourceType") == 2) && objc_msgSend(a1, "sensitiveContentAnalysisEnabled"))
+  processingCopy = processing;
+  v9 = processingCopy;
+  if ((sharing || [processingCopy sourceType] == 256 || objc_msgSend(v9, "sourceType") == 2) && objc_msgSend(self, "sensitiveContentAnalysisEnabled"))
   {
     if ([v9 compactSCSensitivityAnalysis])
     {
-      v10 = [a1 sensitivityAnalysisFromAsset:v9 outError:0];
+      v10 = [self sensitivityAnalysisFromAsset:v9 outError:0];
       v11 = v10;
       if (v10)
       {
@@ -578,7 +578,7 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
 
           v14 = v13;
 
-          v15 = v14 && !a4 && [v14 sensitivityAnalysisState] != 2 && objc_msgSend(v14, "sensitivityAnalysisState") != 3;
+          v15 = v14 && !thumbnail && [v14 sensitivityAnalysisState] != 2 && objc_msgSend(v14, "sensitivityAnalysisState") != 3;
         }
 
         else
@@ -607,35 +607,35 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
   return v15;
 }
 
-+ (id)_clearedImageManagerResultDictionaryWithErrorIfNone:(id)a3 asset:(id)a4 isContentPreviewableForAsset:(BOOL)a5 assetNeedsProcessing:(BOOL)a6 error:(id)a7
++ (id)_clearedImageManagerResultDictionaryWithErrorIfNone:(id)none asset:(id)asset isContentPreviewableForAsset:(BOOL)forAsset assetNeedsProcessing:(BOOL)processing error:(id)error
 {
-  v8 = a6;
-  v9 = a5;
+  processingCopy = processing;
+  forAssetCopy = forAsset;
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = v13;
-  if (!v11 && !v13 && v9 && !v8)
+  noneCopy = none;
+  assetCopy = asset;
+  errorCopy = error;
+  v14 = errorCopy;
+  if (!noneCopy && !errorCopy && forAssetCopy && !processingCopy)
   {
     v15 = 0;
     goto LABEL_23;
   }
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  if (v11 && ([v11 objectForKeyedSubscript:@"PHImageErrorKey"], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (noneCopy && ([noneCopy objectForKeyedSubscript:@"PHImageErrorKey"], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    [v16 setObject:v17 forKeyedSubscript:@"PHImageErrorKey"];
+    [dictionary setObject:v17 forKeyedSubscript:@"PHImageErrorKey"];
   }
 
   else
   {
     if (!v14)
     {
-      if (v9)
+      if (forAssetCopy)
       {
-        if (!v8)
+        if (!processingCopy)
         {
           goto LABEL_16;
         }
@@ -651,64 +651,64 @@ void __68__PHSensitiveContentAnalysisUtility_sensitiveContentAnalysisEnabled__bl
       }
 
       v21 = [v19 errorWithDomain:@"PHPhotosErrorDomain" code:v20 userInfo:0];
-      [v16 setObject:v21 forKeyedSubscript:@"PHImageErrorKey"];
+      [dictionary setObject:v21 forKeyedSubscript:@"PHImageErrorKey"];
 
       goto LABEL_16;
     }
 
-    [v16 setObject:v14 forKeyedSubscript:@"PHImageErrorKey"];
+    [dictionary setObject:v14 forKeyedSubscript:@"PHImageErrorKey"];
   }
 
 LABEL_16:
-  v22 = [v16 objectForKeyedSubscript:@"PHImageErrorKey"];
+  v22 = [dictionary objectForKeyedSubscript:@"PHImageErrorKey"];
 
   if (v22)
   {
     v23 = PLBackendGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v12 objectID];
-      v25 = [v16 objectForKeyedSubscript:@"PHImageErrorKey"];
+      objectID = [assetCopy objectID];
+      v25 = [dictionary objectForKeyedSubscript:@"PHImageErrorKey"];
       v29 = 138412546;
-      v30 = v24;
+      v30 = objectID;
       v31 = 2112;
       v32 = v25;
       _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_ERROR, "Error encountered during request for assetID: %@ error: %@", &v29, 0x16u);
     }
   }
 
-  v26 = [v11 objectForKeyedSubscript:@"PHImageResultIsDegradedKey"];
+  v26 = [noneCopy objectForKeyedSubscript:@"PHImageResultIsDegradedKey"];
 
   if (v26)
   {
-    v27 = [v11 objectForKeyedSubscript:@"PHImageResultIsDegradedKey"];
-    [v16 setObject:v27 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
+    v27 = [noneCopy objectForKeyedSubscript:@"PHImageResultIsDegradedKey"];
+    [dictionary setObject:v27 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
   }
 
-  v15 = [v16 copy];
+  v15 = [dictionary copy];
 
 LABEL_23:
 
   return v15;
 }
 
-+ (id)sensitivityAnalysisFromAsset:(id)a3 outError:(id *)a4
++ (id)sensitivityAnalysisFromAsset:(id)asset outError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetCopy = asset;
   v19 = 0;
-  v6 = [objc_alloc(getSCSensitivityAnalysisClass()) initFromCompactAnalysis:objc_msgSend(v5 error:{"compactSCSensitivityAnalysis"), &v19}];
+  v6 = [objc_alloc(getSCSensitivityAnalysisClass()) initFromCompactAnalysis:objc_msgSend(assetCopy error:{"compactSCSensitivityAnalysis"), &v19}];
   v7 = v19;
-  if (!v6 && [v5 compactSCSensitivityAnalysis] >= 1)
+  if (!v6 && [assetCopy compactSCSensitivityAnalysis] >= 1)
   {
-    if (a4)
+    if (error)
     {
       v8 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     objc_opt_class();
-    v9 = v5;
+    v9 = assetCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -727,14 +727,14 @@ LABEL_23:
     {
       if (v13)
       {
-        v14 = [v11 localIdentifier];
-        v15 = [v9 compactSCSensitivityAnalysis];
+        localIdentifier = [v11 localIdentifier];
+        compactSCSensitivityAnalysis = [v9 compactSCSensitivityAnalysis];
         *buf = 138543874;
-        v21 = v14;
+        v21 = localIdentifier;
         v22 = 2112;
         v23 = v7;
         v24 = 2048;
-        v25 = v15;
+        v25 = compactSCSensitivityAnalysis;
         v16 = "Error initializing SCSensitivityAnalysis for asset: %{public}@ error: %@ value: %lld";
 LABEL_13:
         _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_ERROR, v16, buf, 0x20u);
@@ -743,14 +743,14 @@ LABEL_13:
 
     else if (v13)
     {
-      v14 = [v9 objectID];
-      v17 = [v9 compactSCSensitivityAnalysis];
+      localIdentifier = [v9 objectID];
+      compactSCSensitivityAnalysis2 = [v9 compactSCSensitivityAnalysis];
       *buf = 138543874;
-      v21 = v14;
+      v21 = localIdentifier;
       v22 = 2112;
       v23 = v7;
       v24 = 2048;
-      v25 = v17;
+      v25 = compactSCSensitivityAnalysis2;
       v16 = "Error initializing SCSensitivityAnalysis for assetID: %{public}@ error: %@ value: %lld";
       goto LABEL_13;
     }

@@ -1,13 +1,13 @@
 @interface PLModelMigrationActionStaged_MoveLibraryScopeContributors
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationActionStaged_MoveLibraryScopeContributors
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v102 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -28,7 +28,7 @@
   [v9 setFetchBatchSize:100];
   v11 = v62 + 5;
   obj = v62[5];
-  v12 = [v6 executeFetchRequest:v9 error:&obj];
+  v12 = [contextCopy executeFetchRequest:v9 error:&obj];
   objc_storeStrong(v11, obj);
   if (v12)
   {
@@ -37,8 +37,8 @@
     v48 = 3221225472;
     v49 = __105__PLModelMigrationActionStaged_MoveLibraryScopeContributors_performActionWithManagedObjectContext_error___block_invoke;
     v50 = &unk_1E7570008;
-    v51 = v6;
-    v52 = self;
+    v51 = contextCopy;
+    selfCopy = self;
     v54 = &v61;
     v55 = &v57;
     v14 = v13;
@@ -55,8 +55,8 @@
 
         if (v17)
         {
-          v18 = [(PLModelMigrationActionCore *)self logger];
-          v19 = v18 == 0;
+          logger = [(PLModelMigrationActionCore *)self logger];
+          v19 = logger == 0;
 
           if (v19)
           {
@@ -138,8 +138,8 @@
 
     if (v26)
     {
-      v27 = [(PLModelMigrationActionCore *)self logger];
-      v28 = v27 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v28 = logger2 == 0;
 
       if (v28)
       {
@@ -216,10 +216,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v42 = v58[3];
   v43 = v62[5];
-  if (v42 != 1 && a4)
+  if (v42 != 1 && error)
   {
     v43 = v43;
-    *a4 = v43;
+    *error = v43;
   }
 
   v44 = v58[3];

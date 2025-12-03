@@ -1,101 +1,101 @@
 @interface HDAnalyticsSubmissionCoordinator
-- (BOOL)isEventUsed:(id)a3;
-- (HDAnalyticsSubmissionCoordinator)initWithProfile:(id)a3;
+- (BOOL)isEventUsed:(id)used;
+- (HDAnalyticsSubmissionCoordinator)initWithProfile:(id)profile;
 - (_HKBehavior)behavior;
-- (id)_createHealthStoreForProfileIdentifier:(id)a3;
-- (void)_locked_sendDailyAnalyticsWithTimeout:(uint64_t)a1;
-- (void)_logFaultForTimedOutObservers:(id)a3 timeoutSeconds:(double)a4;
-- (void)_performAnalyticsSubmissionWithCompletion:(uint64_t)a1;
-- (void)_sendTinkerSyncEventWithLatency:(void *)a3 timeSinceLastSuccessfullPull:(void *)a4 configuration:(char)a5 success:(void *)a6 error:;
-- (void)attachments_reportDailyAnalytics:(id)a3;
-- (void)attachments_reportDailyCloudAnalytics:(id)a3;
-- (void)authorization_reportAuthRequestPromptedForBundleIdentifer:(id)a3 profileType:(int64_t)a4;
-- (void)authorization_reportAuthRequestsFromBundleIdentifier:(id)a3 isExtension:(BOOL)a4 isAppleWatch:(BOOL)a5 shouldPrompt:(BOOL)a6;
-- (void)cloudCache_reportCacheDiscrepancyForOperation:(id)a3 reason:(id)a4 containerIdentifier:(id)a5 databaseScope:(id)a6 error:(id)a7;
-- (void)cloudCache_reportCacheFetchAndUpdateAnalyticsForPipeline:(id)a3 changedZonesCount:(int64_t)a4 deletedZonesCount:(int64_t)a5 changedRecordsCount:(int64_t)a6 deletedRecordsCount:(int64_t)a7;
-- (void)cloudCache_reportCacheSyncAnalyticsForPipeline:(id)a3 operationCount:(int64_t)a4;
-- (void)cloudCache_reportWeeklyAnalyticsWithCacheValidation:(id)a3;
-- (void)cloudSync_newChildAdded:(BOOL)a3;
-- (void)cloudSync_operationFailed:(id)a3 error:(id)a4;
-- (void)cloudSync_operationFinished:(id)a3;
-- (void)cloudSync_operationStarted:(id)a3;
-- (void)cloudSync_reportDailyAnalyticForProfileType:(int64_t)a3 syncEnabled:(BOOL)a4 syncDisabledError:(id)a5 primaryContainer:(id)a6 restoreComplete:(BOOL)a7 timeSinceRestoreStart:(id)a8 journalSize:(id)a9 oldestJournalAge:(id)a10 timeSinceLastSuccessfulPull:(id)a11 timeSinceLastSuccessfulPush:(id)a12 timeSinceLastSuccessfulLitePush:(id)a13 timeSinceLastPushForwardProgress:(id)a14 storeCount:(int64_t)a15 zoneCount:(int64_t)a16 hasUnifiedZone:(BOOL)a17 hasMasterZone:(BOOL)a18 hasMedicalID:(BOOL)a19 errorRequiringUserAction:(id)a20 childSyncIdentityCount:(int64_t)a21 canUpgradeToSyncIdentity:(BOOL)a22 startedUpgradeToSyncIdentity:(BOOL)a23 completedUpgradeToSyncIdentity:(BOOL)a24 iPhoneCount:(id)a25 iPadCount:(id)a26 watchCount:(id)a27 visionProCount:(id)a28 totalSyncsCount:(id)a29 successfulSyncPercentageCount:(id)a30;
-- (void)cloudSync_reportFullSyncMetricsWithReason:(id)a3 shard:(id)a4 daysSincePreviousFullSync:(id)a5 totalDuration:(double)a6 activeDuration:(double)a7 numberOfRuns:(id)a8 incomplete:(BOOL)a9;
-- (void)cloudSync_reportMissingManateeIdentityDuringFetchInContainer:(id)a3 zoneName:(id)a4 databaseScope:(int64_t)a5;
+- (id)_createHealthStoreForProfileIdentifier:(id)identifier;
+- (void)_locked_sendDailyAnalyticsWithTimeout:(uint64_t)timeout;
+- (void)_logFaultForTimedOutObservers:(id)observers timeoutSeconds:(double)seconds;
+- (void)_performAnalyticsSubmissionWithCompletion:(uint64_t)completion;
+- (void)_sendTinkerSyncEventWithLatency:(void *)latency timeSinceLastSuccessfullPull:(void *)pull configuration:(char)configuration success:(void *)success error:;
+- (void)attachments_reportDailyAnalytics:(id)analytics;
+- (void)attachments_reportDailyCloudAnalytics:(id)analytics;
+- (void)authorization_reportAuthRequestPromptedForBundleIdentifer:(id)identifer profileType:(int64_t)type;
+- (void)authorization_reportAuthRequestsFromBundleIdentifier:(id)identifier isExtension:(BOOL)extension isAppleWatch:(BOOL)watch shouldPrompt:(BOOL)prompt;
+- (void)cloudCache_reportCacheDiscrepancyForOperation:(id)operation reason:(id)reason containerIdentifier:(id)identifier databaseScope:(id)scope error:(id)error;
+- (void)cloudCache_reportCacheFetchAndUpdateAnalyticsForPipeline:(id)pipeline changedZonesCount:(int64_t)count deletedZonesCount:(int64_t)zonesCount changedRecordsCount:(int64_t)recordsCount deletedRecordsCount:(int64_t)deletedRecordsCount;
+- (void)cloudCache_reportCacheSyncAnalyticsForPipeline:(id)pipeline operationCount:(int64_t)count;
+- (void)cloudCache_reportWeeklyAnalyticsWithCacheValidation:(id)validation;
+- (void)cloudSync_newChildAdded:(BOOL)added;
+- (void)cloudSync_operationFailed:(id)failed error:(id)error;
+- (void)cloudSync_operationFinished:(id)finished;
+- (void)cloudSync_operationStarted:(id)started;
+- (void)cloudSync_reportDailyAnalyticForProfileType:(int64_t)type syncEnabled:(BOOL)enabled syncDisabledError:(id)error primaryContainer:(id)container restoreComplete:(BOOL)complete timeSinceRestoreStart:(id)start journalSize:(id)size oldestJournalAge:(id)self0 timeSinceLastSuccessfulPull:(id)self1 timeSinceLastSuccessfulPush:(id)self2 timeSinceLastSuccessfulLitePush:(id)self3 timeSinceLastPushForwardProgress:(id)self4 storeCount:(int64_t)self5 zoneCount:(int64_t)self6 hasUnifiedZone:(BOOL)self7 hasMasterZone:(BOOL)self8 hasMedicalID:(BOOL)self9 errorRequiringUserAction:(id)action childSyncIdentityCount:(int64_t)identityCount canUpgradeToSyncIdentity:(BOOL)identity startedUpgradeToSyncIdentity:(BOOL)syncIdentity completedUpgradeToSyncIdentity:(BOOL)toSyncIdentity iPhoneCount:(id)phoneCount iPadCount:(id)padCount watchCount:(id)watchCount visionProCount:(id)proCount totalSyncsCount:(id)syncsCount successfulSyncPercentageCount:(id)type0;
+- (void)cloudSync_reportFullSyncMetricsWithReason:(id)reason shard:(id)shard daysSincePreviousFullSync:(id)sync totalDuration:(double)duration activeDuration:(double)activeDuration numberOfRuns:(id)runs incomplete:(BOOL)incomplete;
+- (void)cloudSync_reportMissingManateeIdentityDuringFetchInContainer:(id)container zoneName:(id)name databaseScope:(int64_t)scope;
 - (void)cloudSync_reportOwnershipChangeForMissingManateeIdentityDuringPush;
-- (void)cloudSync_reportOwnershipChangeForProfile:(id)a3 reason:(id)a4;
-- (void)cloudSync_reportPeriodicSyncFailureWithError:(id)a3 duration:(double)a4 type:(int64_t)a5;
-- (void)cloudSync_reportPeriodicSyncStartForType:(int64_t)a3;
-- (void)cloudSync_reportPeriodicSyncSuccessAfterDuration:(double)a3 type:(int64_t)a4;
-- (void)cloudSync_reportPipelineFailed:(id)a3 error:(id)a4;
-- (void)cloudSync_reportPipelineFinished:(id)a3;
-- (void)cloudSync_reportPipelineStarted:(id)a3;
-- (void)cloudSync_reportRebaseTriggeredByDeletionByUser:(BOOL)a3;
-- (void)cloudSync_reportRestoreForProfile:(id)a3 startDate:(id)a4 endDate:(id)a5 duration:(double)a6 finishedJournalMerge:(BOOL)a7;
-- (void)contextSync_operationSucceeded:(id)a3;
-- (void)contextSync_triggerDuration:(double)a3;
-- (void)database_reportCachedQueryEvent:(id)a3 cacheHits:(int64_t)a4 cacheMisses:(int64_t)a5 estimatedTotalBuckets:(unint64_t)a6;
-- (void)database_reportDatabaseMigrationStatus:(int64_t)a3 database:(id)a4 schemaVersion:(int64_t)a5 error:(id)a6 profileType:(int64_t)a7;
-- (void)database_reportJournalEntryInsertedForJournal:(int64_t)a3 entryClass:(id)a4 entrySize:(id)a5;
-- (void)database_reportJournalMergeActivityResult:(int64_t)a3 duration:(double)a4 interruptions:(id)a5 error:(id)a6;
-- (void)database_reportSQLiteCorruptionWithExtendedErrorCode:(int)a3 type:(int64_t)a4 profile:(id)a5 description:(id)a6 sqlStatement:(id)a7 failedObliterationAttempt:(BOOL)a8;
-- (void)database_reportUnprotectedDatabaseIdentifier:(id)a3 doesNotMatchProtectedDatabaseIdentifier:(id)a4;
-- (void)healthService_reportCountForAllServices:(id)a3 profileType:(int64_t)a4;
-- (void)healthService_reportServiceType:(id)a3 duration:(double)a4 profileType:(int64_t)a5;
-- (void)healthService_reportServiceTypeAdded:(id)a3 profileType:(int64_t)a4;
-- (void)healthService_reportServiceTypeRemoved:(id)a3 profileType:(int64_t)a4;
-- (void)heartDaily_reportHeartDailyAnalytics:(id)a3;
-- (void)heartRate_reportDailyRestingHeartRate:(double)a3 sedentaryHeartRateCount:(int)a4 filteredSedentaryHeartRateCount:(int)a5 hasTimeAsleep:(BOOL)a6 hasBGHRSleepMode:(BOOL)a7 unfilteredRestingHeartRate:(double)a8 profileType:(int64_t)a9;
-- (void)maintenanceCoordinator_reportCoreAnalyticsWithOperationName:(id)a3 database:(id)a4 pendingOperationsCount:(int64_t)a5 activeOperationsCount:(int64_t)a6 timeUntilStart:(int64_t)a7 canceled:(BOOL)a8 timedOut:(BOOL)a9 elapsedTime:(int64_t)a10 isImmediateRequest:(BOOL)a11 async:(BOOL)a12;
-- (void)medicalID_dailyReport:(id)a3 sosContactStatus:(BOOL)a4 profileType:(int64_t)a5;
-- (void)medicalID_reportHasBeenDeletedForProfileType:(int64_t)a3;
-- (void)medicalID_reportHasBeenSetForProfileType:(int64_t)a3;
-- (void)nanoSync_reportResponseStatusCode:(int)a3 profileType:(int64_t)a4;
-- (void)nanoSync_reportSyncFailureWithReason:(id)a3 options:(unint64_t)a4 duration:(double)a5 profileType:(int64_t)a6 error:(id)a7;
-- (void)nanoSync_reportSyncSuccessWithReason:(id)a3 options:(unint64_t)a4 duration:(double)a5 profileType:(int64_t)a6;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)sendDailyAnalyticsWithTimeout:(double)a3 completion:(id)a4;
-- (void)sendEvent:(id)a3 block:(id)a4;
-- (void)stateSync_operationFailed:(id)a3 error:(id)a4;
-- (void)stateSync_operationSucceeded:(id)a3;
-- (void)stateSync_recordSize:(unint64_t)a3;
-- (void)stateSync_subscriptionTriggeredDomain:(id)a3;
-- (void)stateSync_triggerDuration:(double)a3;
-- (void)summarySharing_reportDailyAnalytics:(id)a3 activeWatchProductType:(id)a4 age:(int64_t)a5 sex:(id)a6;
-- (void)summarySharing_reportSetupOperation:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)tinker_pairingDidFailWithError:(id)a3 configuration:(id)a4 duration:(double)a5 stage:(int64_t)a6;
-- (void)tinker_pairingDidFinishForConfiguration:(id)a3 duration:(double)a4;
-- (void)workout_reportEvent:(id)a3 timestamp:(id)a4 sessionID:(id)a5 activityType:(int64_t)a6 sessionDuration:(int64_t)a7 activityCount:(int64_t)a8 extendedMode:(BOOL)a9 totalLocations:(int64_t)a10 routeSmoothingRetryCount:(int64_t)a11 activityID:(id)a12 failure:(BOOL)a13;
-- (void)workout_reportGymKitWorkoutWithFitnessMachineType:(id)a3 manufacturer:(id)a4 timeToBeginExperience:(int64_t)a5 workoutEndError:(int64_t)a6;
-- (void)workout_reportMirroringEventWithStartDuration:(double)a3 stopDuration:(double)a4 mirroringDuration:(double)a5 numOfSendDataRequests:(int64_t)a6 maxTimeToSendData:(double)a7 minTimeToSendData:(double)a8 avgTimeToSendData:(double)a9 isFirstParty:(BOOL)a10;
-- (void)workout_reportWorkoutCondenserCoalescingCompressionRate:(id)a3 numberOfSamplesBeforeCoalescing:(int64_t)a4 numberOfSamplesAfterCoalescing:(int64_t)a5 compressionRate:(double)a6;
-- (void)workout_reportWorkoutEventWithHeartBeatFailures:(int64_t)a3 workoutDuration:(double)a4 isFirstParty:(BOOL)a5 sessionID:(id)a6;
+- (void)cloudSync_reportOwnershipChangeForProfile:(id)profile reason:(id)reason;
+- (void)cloudSync_reportPeriodicSyncFailureWithError:(id)error duration:(double)duration type:(int64_t)type;
+- (void)cloudSync_reportPeriodicSyncStartForType:(int64_t)type;
+- (void)cloudSync_reportPeriodicSyncSuccessAfterDuration:(double)duration type:(int64_t)type;
+- (void)cloudSync_reportPipelineFailed:(id)failed error:(id)error;
+- (void)cloudSync_reportPipelineFinished:(id)finished;
+- (void)cloudSync_reportPipelineStarted:(id)started;
+- (void)cloudSync_reportRebaseTriggeredByDeletionByUser:(BOOL)user;
+- (void)cloudSync_reportRestoreForProfile:(id)profile startDate:(id)date endDate:(id)endDate duration:(double)duration finishedJournalMerge:(BOOL)merge;
+- (void)contextSync_operationSucceeded:(id)succeeded;
+- (void)contextSync_triggerDuration:(double)duration;
+- (void)database_reportCachedQueryEvent:(id)event cacheHits:(int64_t)hits cacheMisses:(int64_t)misses estimatedTotalBuckets:(unint64_t)buckets;
+- (void)database_reportDatabaseMigrationStatus:(int64_t)status database:(id)database schemaVersion:(int64_t)version error:(id)error profileType:(int64_t)type;
+- (void)database_reportJournalEntryInsertedForJournal:(int64_t)journal entryClass:(id)class entrySize:(id)size;
+- (void)database_reportJournalMergeActivityResult:(int64_t)result duration:(double)duration interruptions:(id)interruptions error:(id)error;
+- (void)database_reportSQLiteCorruptionWithExtendedErrorCode:(int)code type:(int64_t)type profile:(id)profile description:(id)description sqlStatement:(id)statement failedObliterationAttempt:(BOOL)attempt;
+- (void)database_reportUnprotectedDatabaseIdentifier:(id)identifier doesNotMatchProtectedDatabaseIdentifier:(id)databaseIdentifier;
+- (void)healthService_reportCountForAllServices:(id)services profileType:(int64_t)type;
+- (void)healthService_reportServiceType:(id)type duration:(double)duration profileType:(int64_t)profileType;
+- (void)healthService_reportServiceTypeAdded:(id)added profileType:(int64_t)type;
+- (void)healthService_reportServiceTypeRemoved:(id)removed profileType:(int64_t)type;
+- (void)heartDaily_reportHeartDailyAnalytics:(id)analytics;
+- (void)heartRate_reportDailyRestingHeartRate:(double)rate sedentaryHeartRateCount:(int)count filteredSedentaryHeartRateCount:(int)rateCount hasTimeAsleep:(BOOL)asleep hasBGHRSleepMode:(BOOL)mode unfilteredRestingHeartRate:(double)heartRate profileType:(int64_t)type;
+- (void)maintenanceCoordinator_reportCoreAnalyticsWithOperationName:(id)name database:(id)database pendingOperationsCount:(int64_t)count activeOperationsCount:(int64_t)operationsCount timeUntilStart:(int64_t)start canceled:(BOOL)canceled timedOut:(BOOL)out elapsedTime:(int64_t)self0 isImmediateRequest:(BOOL)self1 async:(BOOL)self2;
+- (void)medicalID_dailyReport:(id)report sosContactStatus:(BOOL)status profileType:(int64_t)type;
+- (void)medicalID_reportHasBeenDeletedForProfileType:(int64_t)type;
+- (void)medicalID_reportHasBeenSetForProfileType:(int64_t)type;
+- (void)nanoSync_reportResponseStatusCode:(int)code profileType:(int64_t)type;
+- (void)nanoSync_reportSyncFailureWithReason:(id)reason options:(unint64_t)options duration:(double)duration profileType:(int64_t)type error:(id)error;
+- (void)nanoSync_reportSyncSuccessWithReason:(id)reason options:(unint64_t)options duration:(double)duration profileType:(int64_t)type;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)sendDailyAnalyticsWithTimeout:(double)timeout completion:(id)completion;
+- (void)sendEvent:(id)event block:(id)block;
+- (void)stateSync_operationFailed:(id)failed error:(id)error;
+- (void)stateSync_operationSucceeded:(id)succeeded;
+- (void)stateSync_recordSize:(unint64_t)size;
+- (void)stateSync_subscriptionTriggeredDomain:(id)domain;
+- (void)stateSync_triggerDuration:(double)duration;
+- (void)summarySharing_reportDailyAnalytics:(id)analytics activeWatchProductType:(id)type age:(int64_t)age sex:(id)sex;
+- (void)summarySharing_reportSetupOperation:(id)operation success:(BOOL)success error:(id)error;
+- (void)tinker_pairingDidFailWithError:(id)error configuration:(id)configuration duration:(double)duration stage:(int64_t)stage;
+- (void)tinker_pairingDidFinishForConfiguration:(id)configuration duration:(double)duration;
+- (void)workout_reportEvent:(id)event timestamp:(id)timestamp sessionID:(id)d activityType:(int64_t)type sessionDuration:(int64_t)duration activityCount:(int64_t)count extendedMode:(BOOL)mode totalLocations:(int64_t)self0 routeSmoothingRetryCount:(int64_t)self1 activityID:(id)self2 failure:(BOOL)self3;
+- (void)workout_reportGymKitWorkoutWithFitnessMachineType:(id)type manufacturer:(id)manufacturer timeToBeginExperience:(int64_t)experience workoutEndError:(int64_t)error;
+- (void)workout_reportMirroringEventWithStartDuration:(double)duration stopDuration:(double)stopDuration mirroringDuration:(double)mirroringDuration numOfSendDataRequests:(int64_t)requests maxTimeToSendData:(double)data minTimeToSendData:(double)sendData avgTimeToSendData:(double)toSendData isFirstParty:(BOOL)self0;
+- (void)workout_reportWorkoutCondenserCoalescingCompressionRate:(id)rate numberOfSamplesBeforeCoalescing:(int64_t)coalescing numberOfSamplesAfterCoalescing:(int64_t)afterCoalescing compressionRate:(double)compressionRate;
+- (void)workout_reportWorkoutEventWithHeartBeatFailures:(int64_t)failures workoutDuration:(double)duration isFirstParty:(BOOL)party sessionID:(id)d;
 @end
 
 @implementation HDAnalyticsSubmissionCoordinator
 
-- (void)maintenanceCoordinator_reportCoreAnalyticsWithOperationName:(id)a3 database:(id)a4 pendingOperationsCount:(int64_t)a5 activeOperationsCount:(int64_t)a6 timeUntilStart:(int64_t)a7 canceled:(BOOL)a8 timedOut:(BOOL)a9 elapsedTime:(int64_t)a10 isImmediateRequest:(BOOL)a11 async:(BOOL)a12
+- (void)maintenanceCoordinator_reportCoreAnalyticsWithOperationName:(id)name database:(id)database pendingOperationsCount:(int64_t)count activeOperationsCount:(int64_t)operationsCount timeUntilStart:(int64_t)start canceled:(BOOL)canceled timedOut:(BOOL)out elapsedTime:(int64_t)self0 isImmediateRequest:(BOOL)self1 async:(BOOL)self2
 {
   v14 = sub_22911C35C();
   v16 = v15;
   v17 = sub_22911C35C();
   v19 = v18;
-  v20 = self;
+  selfCopy = self;
   v21 = sub_22911C34C();
   v22 = swift_allocObject();
   *(v22 + 16) = v14;
   *(v22 + 24) = v16;
   *(v22 + 32) = v17;
   *(v22 + 40) = v19;
-  *(v22 + 48) = a5;
-  *(v22 + 56) = a6;
-  *(v22 + 64) = a7;
-  *(v22 + 72) = a8;
-  *(v22 + 73) = a9;
-  *(v22 + 80) = a10;
-  *(v22 + 88) = a11;
-  *(v22 + 89) = a12;
+  *(v22 + 48) = count;
+  *(v22 + 56) = operationsCount;
+  *(v22 + 64) = start;
+  *(v22 + 72) = canceled;
+  *(v22 + 73) = out;
+  *(v22 + 80) = time;
+  *(v22 + 88) = request;
+  *(v22 + 89) = async;
   aBlock[4] = sub_2289B63A8;
   aBlock[5] = v22;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -104,22 +104,22 @@
   aBlock[3] = &block_descriptor_7;
   v23 = _Block_copy(aBlock);
 
-  [(HDAnalyticsSubmissionCoordinator *)v20 sendEvent:v21 block:v23];
+  [(HDAnalyticsSubmissionCoordinator *)selfCopy sendEvent:v21 block:v23];
 
   _Block_release(v23);
 }
 
-- (void)tinker_pairingDidFinishForConfiguration:(id)a3 duration:(double)a4
+- (void)tinker_pairingDidFinishForConfiguration:(id)configuration duration:(double)duration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.tinker.%@", @"pairing"];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __93__HDAnalyticsSubmissionCoordinator_Tinker__tinker_pairingDidFinishForConfiguration_duration___block_invoke;
   v9[3] = &unk_2786139B8;
-  v11 = a4;
-  v10 = v6;
-  v8 = v6;
+  durationCopy = duration;
+  v10 = configurationCopy;
+  v8 = configurationCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v7 block:v9];
 }
 
@@ -141,20 +141,20 @@ id __93__HDAnalyticsSubmissionCoordinator_Tinker__tinker_pairingDidFinishForConf
   return v4;
 }
 
-- (void)tinker_pairingDidFailWithError:(id)a3 configuration:(id)a4 duration:(double)a5 stage:(int64_t)a6
+- (void)tinker_pairingDidFailWithError:(id)error configuration:(id)configuration duration:(double)duration stage:(int64_t)stage
 {
-  v9 = a3;
-  v10 = a4;
+  errorCopy = error;
+  configurationCopy = configuration;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.tinker.%@", @"pairing"];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __104__HDAnalyticsSubmissionCoordinator_Tinker__tinker_pairingDidFailWithError_configuration_duration_stage___block_invoke;
   v14[3] = &unk_2786139E0;
-  v17 = a5;
-  v15 = v10;
-  v16 = v9;
-  v12 = v9;
-  v13 = v10;
+  durationCopy = duration;
+  v15 = configurationCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = configurationCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v11 block:v14];
 }
 
@@ -189,25 +189,25 @@ id __104__HDAnalyticsSubmissionCoordinator_Tinker__tinker_pairingDidFailWithErro
   return v8;
 }
 
-- (void)_sendTinkerSyncEventWithLatency:(void *)a3 timeSinceLastSuccessfullPull:(void *)a4 configuration:(char)a5 success:(void *)a6 error:
+- (void)_sendTinkerSyncEventWithLatency:(void *)latency timeSinceLastSuccessfullPull:(void *)pull configuration:(char)configuration success:(void *)success error:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (a1)
+  latencyCopy = latency;
+  pullCopy = pull;
+  successCopy = success;
+  if (self)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.tinker.%@", @"sync"];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __133__HDAnalyticsSubmissionCoordinator_Tinker___sendTinkerSyncEventWithLatency_timeSinceLastSuccessfullPull_configuration_success_error___block_invoke;
     v16[3] = &unk_278613A08;
-    v17 = v13;
-    v21 = a5;
+    v17 = pullCopy;
+    configurationCopy = configuration;
     v18 = v11;
-    v19 = v12;
-    v20 = v14;
-    [a1 sendEvent:v15 block:v16];
+    v19 = latencyCopy;
+    v20 = successCopy;
+    [self sendEvent:v15 block:v16];
   }
 }
 
@@ -284,17 +284,17 @@ id __133__HDAnalyticsSubmissionCoordinator_Tinker___sendTinkerSyncEventWithLaten
   return v16;
 }
 
-- (void)medicalID_dailyReport:(id)a3 sosContactStatus:(BOOL)a4 profileType:(int64_t)a5
+- (void)medicalID_dailyReport:(id)report sosContactStatus:(BOOL)status profileType:(int64_t)type
 {
-  v8 = a3;
+  reportCopy = report;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __98__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_dailyReport_sosContactStatus_profileType___block_invoke;
   v10[3] = &unk_2786158F8;
-  v13 = a4;
-  v11 = v8;
-  v12 = a5;
-  v9 = v8;
+  statusCopy = status;
+  v11 = reportCopy;
+  typeCopy = type;
+  v9 = reportCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.HealthApp.MedicalID.Daily" block:v10];
 }
 
@@ -601,13 +601,13 @@ id __98__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_dailyReport_sosCo
   return v33;
 }
 
-- (void)medicalID_reportHasBeenSetForProfileType:(int64_t)a3
+- (void)medicalID_reportHasBeenSetForProfileType:(int64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __88__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_reportHasBeenSetForProfileType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.MedicalID.hasBeenSet" block:v3];
 }
 
@@ -624,13 +624,13 @@ id __88__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_reportHasBeenSetF
   return v2;
 }
 
-- (void)medicalID_reportHasBeenDeletedForProfileType:(int64_t)a3
+- (void)medicalID_reportHasBeenDeletedForProfileType:(int64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __92__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_reportHasBeenDeletedForProfileType___block_invoke;
   v3[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v3[4] = a3;
+  v3[4] = type;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.MedicalID.hasBeenDeleted" block:v3];
 }
 
@@ -647,16 +647,16 @@ id __92__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_reportHasBeenDele
   return v2;
 }
 
-- (void)heartDaily_reportHeartDailyAnalytics:(id)a3
+- (void)heartDaily_reportHeartDailyAnalytics:(id)analytics
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
+  payload = [analytics payload];
   _HKInitializeLogging();
   v5 = HKLogAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = payload;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "Submitting CoreAnalytics heart daily analytics: %{public}@", buf, 0xCu);
   }
 
@@ -664,23 +664,23 @@ id __92__HDAnalyticsSubmissionCoordinator_MedicalID__medicalID_reportHasBeenDele
   v8[1] = 3221225472;
   v8[2] = __85__HDAnalyticsSubmissionCoordinator_HeartDaily__heartDaily_reportHeartDailyAnalytics___block_invoke;
   v8[3] = &unk_278616398;
-  v9 = v4;
-  v6 = v4;
+  v9 = payload;
+  v6 = payload;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.health.HeartRhythm.HeartDailyAnalytics" block:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)healthService_reportServiceTypeAdded:(id)a3 profileType:(int64_t)a4
+- (void)healthService_reportServiceTypeAdded:(id)added profileType:(int64_t)type
 {
-  v6 = a3;
+  addedCopy = added;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __100__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportServiceTypeAdded_profileType___block_invoke;
   v8[3] = &unk_2786139B8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = addedCopy;
+  typeCopy = type;
+  v7 = addedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.services" block:v8];
 }
 
@@ -702,16 +702,16 @@ id __100__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportSe
   return v3;
 }
 
-- (void)healthService_reportServiceTypeRemoved:(id)a3 profileType:(int64_t)a4
+- (void)healthService_reportServiceTypeRemoved:(id)removed profileType:(int64_t)type
 {
-  v6 = a3;
+  removedCopy = removed;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __102__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportServiceTypeRemoved_profileType___block_invoke;
   v8[3] = &unk_2786139B8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = removedCopy;
+  typeCopy = type;
+  v7 = removedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.services" block:v8];
 }
 
@@ -733,16 +733,16 @@ id __102__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportSe
   return v3;
 }
 
-- (void)healthService_reportCountForAllServices:(id)a3 profileType:(int64_t)a4
+- (void)healthService_reportCountForAllServices:(id)services profileType:(int64_t)type
 {
-  v6 = a3;
+  servicesCopy = services;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __103__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportCountForAllServices_profileType___block_invoke;
   v8[3] = &unk_2786139B8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = servicesCopy;
+  typeCopy = type;
+  v7 = servicesCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.services" block:v8];
 }
 
@@ -763,17 +763,17 @@ id __103__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportCo
   return v4;
 }
 
-- (void)healthService_reportServiceType:(id)a3 duration:(double)a4 profileType:(int64_t)a5
+- (void)healthService_reportServiceType:(id)type duration:(double)duration profileType:(int64_t)profileType
 {
-  v8 = a3;
+  typeCopy = type;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __104__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportServiceType_duration_profileType___block_invoke;
   v10[3] = &unk_278617330;
-  v11 = v8;
-  v12 = a4;
-  v13 = a5;
-  v9 = v8;
+  v11 = typeCopy;
+  durationCopy = duration;
+  profileTypeCopy = profileType;
+  v9 = typeCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.services.connection-duration" block:v10];
 }
 
@@ -795,18 +795,18 @@ id __104__HDAnalyticsSubmissionCoordinator_HealthService__healthService_reportSe
   return v4;
 }
 
-- (void)authorization_reportAuthRequestsFromBundleIdentifier:(id)a3 isExtension:(BOOL)a4 isAppleWatch:(BOOL)a5 shouldPrompt:(BOOL)a6
+- (void)authorization_reportAuthRequestsFromBundleIdentifier:(id)identifier isExtension:(BOOL)extension isAppleWatch:(BOOL)watch shouldPrompt:(BOOL)prompt
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __142__HDAnalyticsSubmissionCoordinator_Authorization__authorization_reportAuthRequestsFromBundleIdentifier_isExtension_isAppleWatch_shouldPrompt___block_invoke;
   v12[3] = &unk_278618408;
-  v13 = v10;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v11 = v10;
+  v13 = identifierCopy;
+  extensionCopy = extension;
+  watchCopy = watch;
+  promptCopy = prompt;
+  v11 = identifierCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.authorization.request" block:v12];
 }
 
@@ -837,16 +837,16 @@ id __142__HDAnalyticsSubmissionCoordinator_Authorization__authorization_reportAu
   return v6;
 }
 
-- (void)authorization_reportAuthRequestPromptedForBundleIdentifer:(id)a3 profileType:(int64_t)a4
+- (void)authorization_reportAuthRequestPromptedForBundleIdentifer:(id)identifer profileType:(int64_t)type
 {
-  v6 = a3;
+  identiferCopy = identifer;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __121__HDAnalyticsSubmissionCoordinator_Authorization__authorization_reportAuthRequestPromptedForBundleIdentifer_profileType___block_invoke;
   v8[3] = &unk_2786139B8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identiferCopy;
+  typeCopy = type;
+  v7 = identiferCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.authorization.prompt" block:v8];
 }
 
@@ -876,16 +876,16 @@ id __121__HDAnalyticsSubmissionCoordinator_Authorization__authorization_reportAu
   return v4;
 }
 
-- (void)attachments_reportDailyAnalytics:(id)a3
+- (void)attachments_reportDailyAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   if ([(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __82__HDAnalyticsSubmissionCoordinator_Attachments__attachments_reportDailyAnalytics___block_invoke;
     v5[3] = &unk_27861ED70;
-    v6 = v4;
+    v6 = analyticsCopy;
     [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.health.attachments.daily" block:v5];
   }
 }
@@ -929,16 +929,16 @@ id __82__HDAnalyticsSubmissionCoordinator_Attachments__attachments_reportDailyAn
   return v2;
 }
 
-- (void)attachments_reportDailyCloudAnalytics:(id)a3
+- (void)attachments_reportDailyCloudAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   if ([(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __87__HDAnalyticsSubmissionCoordinator_Attachments__attachments_reportDailyCloudAnalytics___block_invoke;
     v5[3] = &unk_27861ED70;
-    v6 = v4;
+    v6 = analyticsCopy;
     [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.health.sync.cloud.cache.attachments.daily" block:v5];
   }
 }
@@ -967,16 +967,16 @@ id __87__HDAnalyticsSubmissionCoordinator_Attachments__attachments_reportDailyCl
   return v2;
 }
 
-- (void)heartRate_reportDailyRestingHeartRate:(double)a3 sedentaryHeartRateCount:(int)a4 filteredSedentaryHeartRateCount:(int)a5 hasTimeAsleep:(BOOL)a6 hasBGHRSleepMode:(BOOL)a7 unfilteredRestingHeartRate:(double)a8 profileType:(int64_t)a9
+- (void)heartRate_reportDailyRestingHeartRate:(double)rate sedentaryHeartRateCount:(int)count filteredSedentaryHeartRateCount:(int)rateCount hasTimeAsleep:(BOOL)asleep hasBGHRSleepMode:(BOOL)mode unfilteredRestingHeartRate:(double)heartRate profileType:(int64_t)type
 {
-  if (a4 < 1)
+  if (count < 1)
   {
     v11 = -1.0;
   }
 
   else
   {
-    v11 = a5 / a4;
+    v11 = rateCount / count;
   }
 
   v18 = v9;
@@ -986,14 +986,14 @@ id __87__HDAnalyticsSubmissionCoordinator_Attachments__attachments_reportDailyCl
   v12[2] = __211__HDAnalyticsSubmissionCoordinator_HeartRate__heartRate_reportDailyRestingHeartRate_sedentaryHeartRateCount_filteredSedentaryHeartRateCount_hasTimeAsleep_hasBGHRSleepMode_unfilteredRestingHeartRate_profileType___block_invoke;
   v12[3] = &unk_278621290;
   v12[4] = self;
-  v12[5] = a9;
-  v13 = a4;
-  v14 = a5;
+  v12[5] = type;
+  countCopy = count;
+  rateCountCopy = rateCount;
   v15 = v11;
-  v16 = a7;
-  v17 = a6;
-  *&v12[6] = a3;
-  *&v12[7] = a8;
+  modeCopy = mode;
+  asleepCopy = asleep;
+  *&v12[6] = rate;
+  *&v12[7] = heartRate;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.hid.bghr_rhr_eod" block:v12];
 }
 
@@ -1046,15 +1046,15 @@ id __211__HDAnalyticsSubmissionCoordinator_HeartRate__heartRate_reportDailyResti
   return v14;
 }
 
-- (void)nanoSync_reportResponseStatusCode:(int)a3 profileType:(int64_t)a4
+- (void)nanoSync_reportResponseStatusCode:(int)code profileType:(int64_t)type
 {
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.nano.%@", @"reponse-status"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportResponseStatusCode_profileType___block_invoke;
   v8[3] = &__block_descriptor_44_e19___NSDictionary_8__0l;
-  v9 = a3;
-  v8[4] = a4;
+  codeCopy = code;
+  v8[4] = type;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v7 block:v8];
 }
 
@@ -1074,19 +1074,19 @@ id __92__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportResponseStatu
   return v4;
 }
 
-- (void)nanoSync_reportSyncSuccessWithReason:(id)a3 options:(unint64_t)a4 duration:(double)a5 profileType:(int64_t)a6
+- (void)nanoSync_reportSyncSuccessWithReason:(id)reason options:(unint64_t)options duration:(double)duration profileType:(int64_t)type
 {
-  v10 = a3;
+  reasonCopy = reason;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.nano.%@", @"sync.finished"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessWithReason_options_duration_profileType___block_invoke;
   v13[3] = &unk_278623CD8;
-  v14 = v10;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v12 = v10;
+  v14 = reasonCopy;
+  optionsCopy = options;
+  durationCopy = duration;
+  typeCopy = type;
+  v12 = reasonCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v11 block:v13];
 }
 
@@ -1135,15 +1135,15 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
   return v12;
 }
 
-- (void)nanoSync_reportSyncFailureWithReason:(id)a3 options:(unint64_t)a4 duration:(double)a5 profileType:(int64_t)a6 error:(id)a7
+- (void)nanoSync_reportSyncFailureWithReason:(id)reason options:(unint64_t)options duration:(double)duration profileType:(int64_t)type error:(id)error
 {
-  v9 = a4;
-  v12 = a7;
+  optionsCopy = options;
+  errorCopy = error;
   v13 = MEMORY[0x277CBEB38];
-  v14 = a3;
+  reasonCopy = reason;
   v15 = objc_alloc_init(v13);
   [v15 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"success"];
-  v16 = [v14 length];
+  v16 = [reasonCopy length];
   if (v16 >= 0x400)
   {
     v17 = 1024;
@@ -1154,33 +1154,33 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
     v17 = v16;
   }
 
-  v18 = [v14 substringToIndex:v17];
+  v18 = [reasonCopy substringToIndex:v17];
 
   [v15 setObject:v18 forKeyedSubscript:@"reason"];
-  v19 = [MEMORY[0x277CCABB0] numberWithInt:v9 & 1];
+  v19 = [MEMORY[0x277CCABB0] numberWithInt:optionsCopy & 1];
   [v15 setObject:v19 forKeyedSubscript:@"optionPullRequest"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInt:(v9 >> 1) & 1];
+  v20 = [MEMORY[0x277CCABB0] numberWithInt:(optionsCopy >> 1) & 1];
   [v15 setObject:v20 forKeyedSubscript:@"optionsLastChange"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithInt:(v9 >> 2) & 1];
+  v21 = [MEMORY[0x277CCABB0] numberWithInt:(optionsCopy >> 2) & 1];
   [v15 setObject:v21 forKeyedSubscript:@"optionsActiveOnly"];
 
-  v22 = [MEMORY[0x277CCABB0] numberWithInt:(v9 >> 3) & 1];
+  v22 = [MEMORY[0x277CCABB0] numberWithInt:(optionsCopy >> 3) & 1];
   [v15 setObject:v22 forKeyedSubscript:@"optionsRequestedByRemote"];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v23 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [v15 setObject:v23 forKeyedSubscript:@"duration"];
 
-  v24 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  v24 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v15 setObject:v24 forKeyedSubscript:@"profileType"];
 
-  if (v12)
+  if (errorCopy)
   {
-    v25 = [v12 domain];
-    [v15 setObject:v25 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v15 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v15 setObject:v26 forKeyedSubscript:@"errorCode"];
   }
 
@@ -1194,19 +1194,19 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v27 block:v29];
 }
 
-- (HDAnalyticsSubmissionCoordinator)initWithProfile:(id)a3
+- (HDAnalyticsSubmissionCoordinator)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v19.receiver = self;
   v19.super_class = HDAnalyticsSubmissionCoordinator;
   v5 = [(HDAnalyticsSubmissionCoordinator *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_primaryProfile, v4);
-    v7 = [v4 daemon];
-    v8 = [v7 behavior];
-    objc_storeWeak(&v6->_behavior, v8);
+    objc_storeWeak(&v5->_primaryProfile, profileCopy);
+    daemon = [profileCopy daemon];
+    behavior = [daemon behavior];
+    objc_storeWeak(&v6->_behavior, behavior);
 
     v9 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
@@ -1231,15 +1231,15 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   WeakRetained = objc_loadWeakRetained(&self->_behavior);
-  v6 = [WeakRetained features];
-  v7 = [v6 analyticsSubmissionOnMaintenanceWorkCoordinator];
+  features = [WeakRetained features];
+  analyticsSubmissionOnMaintenanceWorkCoordinator = [features analyticsSubmissionOnMaintenanceWorkCoordinator];
 
-  if (v7)
+  if (analyticsSubmissionOnMaintenanceWorkCoordinator)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -1250,25 +1250,25 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
     v8 = _Block_copy(aBlock);
     v9 = objc_alloc(MEMORY[0x277D10B10]);
     v10 = HKLogAnalytics();
-    v11 = [v4 daemon];
-    v12 = [v11 systemScheduler];
-    v13 = [v9 initWithName:@"com.apple.healthd.daily-report" loggingCategory:v10 scheduler:v12 handler:v8 condition:0];
+    daemon = [readyCopy daemon];
+    systemScheduler = [daemon systemScheduler];
+    v13 = [v9 initWithName:@"com.apple.healthd.daily-report" loggingCategory:v10 scheduler:systemScheduler handler:v8 condition:0];
     repeatingBackgroundTask = self->_repeatingBackgroundTask;
     self->_repeatingBackgroundTask = v13;
 
-    v15 = [(HDRepeatingBackgroundTask *)self->_repeatingBackgroundTask getRequest];
-    if (!v15)
+    getRequest = [(HDRepeatingBackgroundTask *)self->_repeatingBackgroundTask getRequest];
+    if (!getRequest)
     {
-      v15 = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.daily-report"];
-      [v15 setRequiresProtectionClass:2];
-      [v15 setInterval:86400.0];
-      [v15 interval];
-      [v15 setMinDurationBetweenInstances:v16 * 0.8];
-      [v15 setPriority:2];
-      [v15 setRequiresNetworkConnectivity:1];
+      getRequest = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.daily-report"];
+      [getRequest setRequiresProtectionClass:2];
+      [getRequest setInterval:86400.0];
+      [getRequest interval];
+      [getRequest setMinDurationBetweenInstances:v16 * 0.8];
+      [getRequest setPriority:2];
+      [getRequest setRequiresNetworkConnectivity:1];
       v17 = self->_repeatingBackgroundTask;
       v26 = 0;
-      [(HDRepeatingBackgroundTask *)v17 submitRequest:v15 error:&v26];
+      [(HDRepeatingBackgroundTask *)v17 submitRequest:getRequest error:&v26];
       v18 = v26;
       if (v18)
       {
@@ -1277,7 +1277,7 @@ id __112__HDAnalyticsSubmissionCoordinator_NanoSync__nanoSync_reportSyncSuccessW
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v31 = self;
+          selfCopy = self;
           v32 = 2114;
           v33 = v18;
           _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Unable to submitRequest: %{public}@", buf, 0x16u);
@@ -1353,21 +1353,21 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAnalyticsSubmissionWithCompletion:(uint64_t)a1
+- (void)_performAnalyticsSubmissionWithCompletion:(uint64_t)completion
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v22 = 0;
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringWithFormat:@"dailyAnalytics-%@", v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringWithFormat:@"dailyAnalytics-%@", uUIDString];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v9 = [WeakRetained database];
-    v10 = [v9 takeAccessibilityAssertionWithOwnerIdentifier:v7 timeout:&v22 error:300.0];
+    WeakRetained = objc_loadWeakRetained((completion + 8));
+    database = [WeakRetained database];
+    v10 = [database takeAccessibilityAssertionWithOwnerIdentifier:v7 timeout:&v22 error:300.0];
 
     if (!v10)
     {
@@ -1376,7 +1376,7 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v24 = a1;
+        completionCopy = completion;
         v25 = 2114;
         v26 = v22;
         _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Daily analytics failed to take database accessibility assertion: %{public}@", buf, 0x16u);
@@ -1386,8 +1386,8 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
     v12 = v22;
     if (v10)
     {
-      v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:@"com.apple.healthd.daily-report"];
-      *(a1 + 64) = 1;
+      v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:completion activityName:@"com.apple.healthd.daily-report"];
+      *(completion + 64) = 1;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __78__HDAnalyticsSubmissionCoordinator__performAnalyticsSubmissionWithCompletion___block_invoke;
@@ -1395,10 +1395,10 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
       v21 = v3;
       v18 = v10;
       v19 = v13;
-      v20 = a1;
+      completionCopy2 = completion;
       v14 = v13;
       v15 = _Block_copy(aBlock);
-      [a1 sendDailyAnalyticsWithTimeout:v15 completion:30.0];
+      [completion sendDailyAnalyticsWithTimeout:v15 completion:30.0];
     }
 
     else
@@ -1410,11 +1410,11 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendEvent:(id)a3 block:(id)a4
+- (void)sendEvent:(id)event block:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   _HKInitializeLogging();
   v8 = HKLogAnalytics();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -1425,9 +1425,9 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v6;
+      v15 = eventCopy;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_INFO, "%{public}@: Event sent: %{public}@", &v12, 0x16u);
     }
   }
@@ -1437,10 +1437,10 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEventUsed:(id)a3
+- (BOOL)isEventUsed:(id)used
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usedCopy = used;
   _HKInitializeLogging();
   v5 = HKLogAnalytics();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -1451,9 +1451,9 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = usedCopy;
       _os_log_debug_impl(&dword_228986000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: Checked whether event is used: %{public}@", &v11, 0x16u);
     }
   }
@@ -1464,13 +1464,13 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
   return IsEventUsed;
 }
 
-- (void)_logFaultForTimedOutObservers:(id)a3 timeoutSeconds:(double)a4
+- (void)_logFaultForTimedOutObservers:(id)observers timeoutSeconds:(double)seconds
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAB68];
-  v7 = a3;
+  observersCopy = observers;
   v8 = [[v6 alloc] initWithString:@"["];
-  [v8 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v7, &__block_literal_global_156}];
+  [v8 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{observersCopy, &__block_literal_global_156}];
 
   [v8 appendString:@"]"];
   _HKInitializeLogging();
@@ -1478,9 +1478,9 @@ void __58__HDAnalyticsSubmissionCoordinator_profileDidBecomeReady___block_invoke
   if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
   {
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = a4;
+    secondsCopy = seconds;
     v15 = 2114;
     v16 = v8;
     _os_log_fault_impl(&dword_228986000, v9, OS_LOG_TYPE_FAULT, "%{public}@: Timeout (%0.1f) waiting for %{public}@", &v11, 0x20u);
@@ -1510,32 +1510,32 @@ uint64_t __78__HDAnalyticsSubmissionCoordinator__performAnalyticsSubmissionWithC
   return result;
 }
 
-- (void)_locked_sendDailyAnalyticsWithTimeout:(uint64_t)a1
+- (void)_locked_sendDailyAnalyticsWithTimeout:(uint64_t)timeout
 {
-  if (a1)
+  if (timeout)
   {
-    os_unfair_lock_assert_owner((a1 + 68));
-    v4 = [*(a1 + 88) anyObject];
-    if (v4 && (WeakRetained = objc_loadWeakRetained((a1 + 8)), [WeakRetained database], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isProtectedDataAvailable"), v6, WeakRetained, v7))
+    os_unfair_lock_assert_owner((timeout + 68));
+    anyObject = [*(timeout + 88) anyObject];
+    if (anyObject && (WeakRetained = objc_loadWeakRetained((timeout + 8)), [WeakRetained database], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isProtectedDataAvailable"), v6, WeakRetained, v7))
     {
-      v8 = [@"com.apple.healthd.daily-report" stringByAppendingFormat:@"%@", v4];
-      v9 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:v8];
-      v10 = [objc_alloc(MEMORY[0x277CCDDB0]) initWithQueue:*(a1 + 48) completion:&__block_literal_global_329_1];
+      v8 = [@"com.apple.healthd.daily-report" stringByAppendingFormat:@"%@", anyObject];
+      v9 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:timeout activityName:v8];
+      v10 = [objc_alloc(MEMORY[0x277CCDDB0]) initWithQueue:*(timeout + 48) completion:&__block_literal_global_329_1];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeout___block_invoke_2;
       v37[3] = &unk_278614E78;
-      v37[4] = a1;
-      v11 = v4;
+      v37[4] = timeout;
+      v11 = anyObject;
       v38 = v11;
       v39 = a2;
       [v10 startWithTimeoutInterval:v37 handler:a2];
-      v12 = *(a1 + 56);
+      v12 = *(timeout + 56);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeout___block_invoke_3;
       v31[3] = &unk_278624F48;
-      v31[4] = a1;
+      v31[4] = timeout;
       v32 = v8;
       v33 = v10;
       v36 = a2;
@@ -1549,35 +1549,35 @@ uint64_t __78__HDAnalyticsSubmissionCoordinator__performAnalyticsSubmissionWithC
 
     else
     {
-      [*(a1 + 72) timeIntervalSinceNow];
+      [*(timeout + 72) timeIntervalSinceNow];
       v17 = -v16;
-      v18 = *(a1 + 72);
-      *(a1 + 72) = 0;
+      v18 = *(timeout + 72);
+      *(timeout + 72) = 0;
 
-      v19 = [*(a1 + 80) copy];
+      v19 = [*(timeout + 80) copy];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeout___block_invoke_336;
       v29[3] = &unk_278616398;
       v30 = v19;
       v15 = v19;
-      [a1 sendEvent:@"com.apple.healthd.daily-report" block:v29];
-      v20 = _Block_copy(*(a1 + 96));
-      v21 = *(a1 + 96);
-      *(a1 + 96) = 0;
+      [timeout sendEvent:@"com.apple.healthd.daily-report" block:v29];
+      v20 = _Block_copy(*(timeout + 96));
+      v21 = *(timeout + 96);
+      *(timeout + 96) = 0;
 
-      v22 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v22 = *(timeout + 80);
+      *(timeout + 80) = 0;
 
-      v23 = *(a1 + 88);
-      *(a1 + 88) = 0;
+      v23 = *(timeout + 88);
+      *(timeout + 88) = 0;
 
-      v24 = *(a1 + 40);
+      v24 = *(timeout + 40);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeout___block_invoke_2_338;
       block[3] = &unk_278624F70;
-      block[4] = a1;
+      block[4] = timeout;
       v27 = v20;
       v28 = v17;
       v25 = v20;
@@ -1754,19 +1754,19 @@ void __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeou
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDailyAnalyticsWithTimeout:(double)a3 completion:(id)a4
+- (void)sendDailyAnalyticsWithTimeout:(double)timeout completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_dailyAnalyticsObserversLock);
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   dailyAnalyticsStartTime = self->_dailyAnalyticsStartTime;
-  self->_dailyAnalyticsStartTime = v7;
+  self->_dailyAnalyticsStartTime = date;
 
   WeakRetained = objc_loadWeakRetained(&self->_behavior);
-  v10 = [WeakRetained isAppleInternalInstall];
+  isAppleInternalInstall = [WeakRetained isAppleInternalInstall];
 
-  if (v10)
+  if (isAppleInternalInstall)
   {
     _HKInitializeLogging();
     v11 = HKLogAnalytics();
@@ -1778,7 +1778,7 @@ void __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeou
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v23 = 138543362;
-        v24 = self;
+        selfCopy = self;
         _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_INFO, "HDAnalyticsSubmissionCoordinator starting daily %{public}@", &v23, 0xCu);
       }
     }
@@ -1789,25 +1789,25 @@ void __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeou
   self->_dailyAnalyticsPayload = v14;
 
   v16 = objc_alloc(MEMORY[0x277CBEB58]);
-  v17 = [(HDAnalyticsSubmissionCoordinatorDelegate *)self->_observers allObservers];
-  v18 = [v16 initWithArray:v17];
+  allObservers = [(HDAnalyticsSubmissionCoordinatorDelegate *)self->_observers allObservers];
+  v18 = [v16 initWithArray:allObservers];
   dailyAnalyticsPendingObservers = self->_dailyAnalyticsPendingObservers;
   self->_dailyAnalyticsPendingObservers = v18;
 
-  v20 = [v6 copy];
+  v20 = [completionCopy copy];
   dailyAnalyticsCompletionHandler = self->_dailyAnalyticsCompletionHandler;
   self->_dailyAnalyticsCompletionHandler = v20;
 
-  [(HDAnalyticsSubmissionCoordinator *)self _locked_sendDailyAnalyticsWithTimeout:a3];
+  [(HDAnalyticsSubmissionCoordinator *)self _locked_sendDailyAnalyticsWithTimeout:timeout];
   os_unfair_lock_unlock(&self->_dailyAnalyticsObserversLock);
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v4 = *MEMORY[0x277D86340];
   v5 = *MEMORY[0x277D86348];
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_string(xdict, v4, v5);
   xpc_dictionary_set_int64(xdict, *MEMORY[0x277D86288], *MEMORY[0x277D86298]);
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86230], 1);
@@ -1816,12 +1816,12 @@ void __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeou
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86370], 1);
 }
 
-- (id)_createHealthStoreForProfileIdentifier:(id)a3
+- (id)_createHealthStoreForProfileIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCD4D8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(v3);
-  [v5 setProfileIdentifier:v4];
+  [v5 setProfileIdentifier:identifierCopy];
 
   [v5 resume];
 
@@ -1835,19 +1835,19 @@ void __74__HDAnalyticsSubmissionCoordinator__locked_sendDailyAnalyticsWithTimeou
   return WeakRetained;
 }
 
-- (void)summarySharing_reportSetupOperation:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)summarySharing_reportSetupOperation:(id)operation success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  operationCopy = operation;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __102__HDAnalyticsSubmissionCoordinator_SummarySharing__summarySharing_reportSetupOperation_success_error___block_invoke;
   v12[3] = &unk_278625708;
-  v15 = a4;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  successCopy = success;
+  v13 = operationCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = operationCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.health.sharing.setup.operational.event" block:v12];
 }
 
@@ -1937,29 +1937,29 @@ id __102__HDAnalyticsSubmissionCoordinator_SummarySharing__summarySharing_report
   return v3;
 }
 
-- (void)summarySharing_reportDailyAnalytics:(id)a3 activeWatchProductType:(id)a4 age:(int64_t)a5 sex:(id)a6
+- (void)summarySharing_reportDailyAnalytics:(id)analytics activeWatchProductType:(id)type age:(int64_t)age sex:(id)sex
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
-  v14 = [v10 numberPeopleSharingOut] > 0;
-  v15 = [v10 numberPeopleSharingIn];
+  analyticsCopy = analytics;
+  typeCopy = type;
+  sexCopy = sex;
+  isImprovedHealthAndActivityEnabled = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
+  v14 = [analyticsCopy numberPeopleSharingOut] > 0;
+  numberPeopleSharingIn = [analyticsCopy numberPeopleSharingIn];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __119__HDAnalyticsSubmissionCoordinator_SummarySharing__summarySharing_reportDailyAnalytics_activeWatchProductType_age_sex___block_invoke;
   v19[3] = &unk_278625730;
   v25 = v14;
-  v26 = v15 > 0;
-  v27 = v13;
-  v20 = v11;
-  v21 = v10;
+  v26 = numberPeopleSharingIn > 0;
+  v27 = isImprovedHealthAndActivityEnabled;
+  v20 = typeCopy;
+  v21 = analyticsCopy;
   v23 = xmmword_22916E4B0;
-  v24 = a5;
-  v22 = v12;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  ageCopy = age;
+  v22 = sexCopy;
+  v16 = sexCopy;
+  v17 = analyticsCopy;
+  v18 = typeCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.health.sharing.daily" block:v19];
 }
 
@@ -2143,16 +2143,16 @@ id __119__HDAnalyticsSubmissionCoordinator_SummarySharing__summarySharing_report
   return v7;
 }
 
-- (void)cloudCache_reportWeeklyAnalyticsWithCacheValidation:(id)a3
+- (void)cloudCache_reportWeeklyAnalyticsWithCacheValidation:(id)validation
 {
-  v4 = a3;
+  validationCopy = validation;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.cache.%@", @"weekly-validation"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __103__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportWeeklyAnalyticsWithCacheValidation___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = validationCopy;
+  v6 = validationCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
@@ -2366,28 +2366,28 @@ id __261__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportDaily
   return v12;
 }
 
-- (void)cloudCache_reportCacheDiscrepancyForOperation:(id)a3 reason:(id)a4 containerIdentifier:(id)a5 databaseScope:(id)a6 error:(id)a7
+- (void)cloudCache_reportCacheDiscrepancyForOperation:(id)operation reason:(id)reason containerIdentifier:(id)identifier databaseScope:(id)scope error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  operationCopy = operation;
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  errorCopy = error;
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.cache.%@", @"discrepancy"];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __144__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCacheDiscrepancyForOperation_reason_containerIdentifier_databaseScope_error___block_invoke;
   v23[3] = &unk_278625A78;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = v12;
-  v18 = v12;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
+  v24 = reasonCopy;
+  v25 = identifierCopy;
+  v26 = scopeCopy;
+  v27 = errorCopy;
+  v28 = operationCopy;
+  v18 = operationCopy;
+  v19 = errorCopy;
+  v20 = scopeCopy;
+  v21 = identifierCopy;
+  v22 = reasonCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v17 block:v23];
 }
 
@@ -2416,20 +2416,20 @@ id __144__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCache
   return v8;
 }
 
-- (void)cloudCache_reportCacheFetchAndUpdateAnalyticsForPipeline:(id)a3 changedZonesCount:(int64_t)a4 deletedZonesCount:(int64_t)a5 changedRecordsCount:(int64_t)a6 deletedRecordsCount:(int64_t)a7
+- (void)cloudCache_reportCacheFetchAndUpdateAnalyticsForPipeline:(id)pipeline changedZonesCount:(int64_t)count deletedZonesCount:(int64_t)zonesCount changedRecordsCount:(int64_t)recordsCount deletedRecordsCount:(int64_t)deletedRecordsCount
 {
-  v12 = a3;
+  pipelineCopy = pipeline;
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.cache.%@", @"fetch"];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __184__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCacheFetchAndUpdateAnalyticsForPipeline_changedZonesCount_deletedZonesCount_changedRecordsCount_deletedRecordsCount___block_invoke;
   v15[3] = &unk_278625AA0;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v16 = v12;
-  v17 = a4;
-  v14 = v12;
+  zonesCountCopy = zonesCount;
+  recordsCountCopy = recordsCount;
+  deletedRecordsCountCopy = deletedRecordsCount;
+  v16 = pipelineCopy;
+  countCopy = count;
+  v14 = pipelineCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v13 block:v15];
 }
 
@@ -2457,17 +2457,17 @@ id __184__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCache
   return v8;
 }
 
-- (void)cloudCache_reportCacheSyncAnalyticsForPipeline:(id)a3 operationCount:(int64_t)a4
+- (void)cloudCache_reportCacheSyncAnalyticsForPipeline:(id)pipeline operationCount:(int64_t)count
 {
-  v6 = a3;
+  pipelineCopy = pipeline;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.cache.%@", @"sync"];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __113__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCacheSyncAnalyticsForPipeline_operationCount___block_invoke;
   v9[3] = &unk_2786139B8;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = pipelineCopy;
+  countCopy = count;
+  v8 = pipelineCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v7 block:v9];
 }
 
@@ -2486,70 +2486,70 @@ id __113__HDAnalyticsSubmissionCoordinator_CloudKitCache__cloudCache_reportCache
   return v5;
 }
 
-- (void)cloudSync_reportDailyAnalyticForProfileType:(int64_t)a3 syncEnabled:(BOOL)a4 syncDisabledError:(id)a5 primaryContainer:(id)a6 restoreComplete:(BOOL)a7 timeSinceRestoreStart:(id)a8 journalSize:(id)a9 oldestJournalAge:(id)a10 timeSinceLastSuccessfulPull:(id)a11 timeSinceLastSuccessfulPush:(id)a12 timeSinceLastSuccessfulLitePush:(id)a13 timeSinceLastPushForwardProgress:(id)a14 storeCount:(int64_t)a15 zoneCount:(int64_t)a16 hasUnifiedZone:(BOOL)a17 hasMasterZone:(BOOL)a18 hasMedicalID:(BOOL)a19 errorRequiringUserAction:(id)a20 childSyncIdentityCount:(int64_t)a21 canUpgradeToSyncIdentity:(BOOL)a22 startedUpgradeToSyncIdentity:(BOOL)a23 completedUpgradeToSyncIdentity:(BOOL)a24 iPhoneCount:(id)a25 iPadCount:(id)a26 watchCount:(id)a27 visionProCount:(id)a28 totalSyncsCount:(id)a29 successfulSyncPercentageCount:(id)a30
+- (void)cloudSync_reportDailyAnalyticForProfileType:(int64_t)type syncEnabled:(BOOL)enabled syncDisabledError:(id)error primaryContainer:(id)container restoreComplete:(BOOL)complete timeSinceRestoreStart:(id)start journalSize:(id)size oldestJournalAge:(id)self0 timeSinceLastSuccessfulPull:(id)self1 timeSinceLastSuccessfulPush:(id)self2 timeSinceLastSuccessfulLitePush:(id)self3 timeSinceLastPushForwardProgress:(id)self4 storeCount:(int64_t)self5 zoneCount:(int64_t)self6 hasUnifiedZone:(BOOL)self7 hasMasterZone:(BOOL)self8 hasMedicalID:(BOOL)self9 errorRequiringUserAction:(id)action childSyncIdentityCount:(int64_t)identityCount canUpgradeToSyncIdentity:(BOOL)identity startedUpgradeToSyncIdentity:(BOOL)syncIdentity completedUpgradeToSyncIdentity:(BOOL)toSyncIdentity iPhoneCount:(id)phoneCount iPadCount:(id)padCount watchCount:(id)watchCount visionProCount:(id)proCount totalSyncsCount:(id)syncsCount successfulSyncPercentageCount:(id)type0
 {
-  v68 = a5;
-  v67 = a6;
-  v66 = a8;
-  v65 = a9;
-  v64 = a10;
-  v63 = a11;
-  v32 = a12;
-  v33 = a13;
-  v34 = a14;
-  v35 = a20;
-  v36 = a25;
-  v37 = a26;
-  v38 = a27;
-  v48 = a28;
-  v39 = a29;
-  v40 = a30;
+  errorCopy = error;
+  containerCopy = container;
+  startCopy = start;
+  sizeCopy = size;
+  ageCopy = age;
+  pullCopy = pull;
+  pushCopy = push;
+  litePushCopy = litePush;
+  progressCopy = progress;
+  actionCopy = action;
+  phoneCountCopy = phoneCount;
+  padCountCopy = padCount;
+  watchCountCopy = watchCount;
+  proCountCopy = proCount;
+  syncsCountCopy = syncsCount;
+  percentageCountCopy = percentageCount;
   v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"daily-report"];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __616__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportDailyAnalyticForProfileType_syncEnabled_syncDisabledError_primaryContainer_restoreComplete_timeSinceRestoreStart_journalSize_oldestJournalAge_timeSinceLastSuccessfulPull_timeSinceLastSuccessfulPush_timeSinceLastSuccessfulLitePush_timeSinceLastPushForwardProgress_storeCount_zoneCount_hasUnifiedZone_hasMasterZone_hasMedicalID_errorRequiringUserAction_childSyncIdentityCount_canUpgradeToSyncIdentity_startedUpgradeToSyncIdentity_completedUpgradeToSyncIdentity_iPhoneCount_iPadCount_watchCount_visionProCount_totalSyncsCount_successfulSyncPercentageCount___block_invoke;
   v69[3] = &unk_278628AD8;
-  v90 = a4;
-  v70 = v68;
-  v71 = v67;
-  v91 = a7;
-  v72 = v66;
-  v73 = v65;
-  v74 = v64;
-  v75 = v63;
-  v76 = v32;
-  v77 = v33;
-  v86 = a3;
-  v87 = a15;
-  v78 = v34;
-  v79 = v35;
-  v88 = a16;
-  v89 = a21;
-  v92 = a22;
-  v93 = a23;
-  v94 = a24;
-  v80 = v36;
-  v81 = v37;
-  v82 = v38;
-  v83 = v48;
-  v84 = v39;
-  v85 = v40;
-  v61 = v40;
-  v60 = v39;
-  v59 = v48;
-  v58 = v38;
-  v56 = v37;
-  v55 = v36;
-  v53 = v35;
-  v52 = v34;
-  v51 = v33;
-  v41 = v32;
-  v42 = v63;
-  v43 = v64;
-  v44 = v65;
-  v45 = v66;
-  v46 = v67;
-  v47 = v68;
+  enabledCopy = enabled;
+  v70 = errorCopy;
+  v71 = containerCopy;
+  completeCopy = complete;
+  v72 = startCopy;
+  v73 = sizeCopy;
+  v74 = ageCopy;
+  v75 = pullCopy;
+  v76 = pushCopy;
+  v77 = litePushCopy;
+  typeCopy = type;
+  countCopy = count;
+  v78 = progressCopy;
+  v79 = actionCopy;
+  zoneCountCopy = zoneCount;
+  identityCountCopy = identityCount;
+  identityCopy = identity;
+  syncIdentityCopy = syncIdentity;
+  toSyncIdentityCopy = toSyncIdentity;
+  v80 = phoneCountCopy;
+  v81 = padCountCopy;
+  v82 = watchCountCopy;
+  v83 = proCountCopy;
+  v84 = syncsCountCopy;
+  v85 = percentageCountCopy;
+  v61 = percentageCountCopy;
+  v60 = syncsCountCopy;
+  v59 = proCountCopy;
+  v58 = watchCountCopy;
+  v56 = padCountCopy;
+  v55 = phoneCountCopy;
+  v53 = actionCopy;
+  v52 = progressCopy;
+  v51 = litePushCopy;
+  v41 = pushCopy;
+  v42 = pullCopy;
+  v43 = ageCopy;
+  v44 = sizeCopy;
+  v45 = startCopy;
+  v46 = containerCopy;
+  v47 = errorCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v49 block:v69];
 }
 
@@ -2624,20 +2624,20 @@ id __616__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportDailyAnaly
   return v2;
 }
 
-- (void)cloudSync_reportMissingManateeIdentityDuringFetchInContainer:(id)a3 zoneName:(id)a4 databaseScope:(int64_t)a5
+- (void)cloudSync_reportMissingManateeIdentityDuringFetchInContainer:(id)container zoneName:(id)name databaseScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  nameCopy = name;
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"FetchMissingManateeIdentity"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __131__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportMissingManateeIdentityDuringFetchInContainer_zoneName_databaseScope___block_invoke;
   v13[3] = &unk_2786139E0;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = containerCopy;
+  v15 = nameCopy;
+  scopeCopy = scope;
+  v11 = nameCopy;
+  v12 = containerCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v10 block:v13];
 }
 
@@ -2665,19 +2665,19 @@ id __131__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportMissingMan
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v3 block:&__block_literal_global_191];
 }
 
-- (void)cloudSync_reportOwnershipChangeForProfile:(id)a3 reason:(id)a4
+- (void)cloudSync_reportOwnershipChangeForProfile:(id)profile reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  reasonCopy = reason;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"ownership-change"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __96__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportOwnershipChangeForProfile_reason___block_invoke;
   v11[3] = &unk_278628B00;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = profileCopy;
+  v13 = reasonCopy;
+  v9 = reasonCopy;
+  v10 = profileCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v8 block:v11];
 }
 
@@ -2709,14 +2709,14 @@ id __96__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportOwnershipCh
   return v7;
 }
 
-- (void)cloudSync_reportPeriodicSyncStartForType:(int64_t)a3
+- (void)cloudSync_reportPeriodicSyncStartForType:(int64_t)type
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"periodic.start"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __88__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSyncStartForType___block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v6[4] = a3;
+  v6[4] = type;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -2733,15 +2733,15 @@ id __88__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSyn
   return v2;
 }
 
-- (void)cloudSync_reportPeriodicSyncSuccessAfterDuration:(double)a3 type:(int64_t)a4
+- (void)cloudSync_reportPeriodicSyncSuccessAfterDuration:(double)duration type:(int64_t)type
 {
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"periodic.success"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __101__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSyncSuccessAfterDuration_type___block_invoke;
   v8[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
-  *&v8[4] = a3;
-  v8[5] = a4;
+  *&v8[4] = duration;
+  v8[5] = type;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v7 block:v8];
 }
 
@@ -2761,18 +2761,18 @@ id __101__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSy
   return v4;
 }
 
-- (void)cloudSync_reportPeriodicSyncFailureWithError:(id)a3 duration:(double)a4 type:(int64_t)a5
+- (void)cloudSync_reportPeriodicSyncFailureWithError:(id)error duration:(double)duration type:(int64_t)type
 {
-  v8 = a3;
+  errorCopy = error;
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"periodic.failure"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __106__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSyncFailureWithError_duration_type___block_invoke;
   v11[3] = &unk_278617330;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = errorCopy;
+  durationCopy = duration;
+  typeCopy = type;
+  v10 = errorCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v9 block:v11];
 }
 
@@ -2843,14 +2843,14 @@ id __106__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPeriodicSy
   return v17;
 }
 
-- (void)cloudSync_reportRebaseTriggeredByDeletionByUser:(BOOL)a3
+- (void)cloudSync_reportRebaseTriggeredByDeletionByUser:(BOOL)user
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"rebase-trigger.deletion"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __95__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportRebaseTriggeredByDeletionByUser___block_invoke;
   v6[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v7 = a3;
+  userCopy = user;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -2867,24 +2867,24 @@ id __95__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportRebaseTrigg
   return v2;
 }
 
-- (void)cloudSync_reportRestoreForProfile:(id)a3 startDate:(id)a4 endDate:(id)a5 duration:(double)a6 finishedJournalMerge:(BOOL)a7
+- (void)cloudSync_reportRestoreForProfile:(id)profile startDate:(id)date endDate:(id)endDate duration:(double)duration finishedJournalMerge:(BOOL)merge
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  profileCopy = profile;
+  dateCopy = date;
+  endDateCopy = endDate;
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"restore.complete"];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __129__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportRestoreForProfile_startDate_endDate_duration_finishedJournalMerge___block_invoke;
   v19[3] = &unk_278628B68;
-  v20 = v14;
-  v21 = v13;
-  v23 = a6;
-  v24 = a7;
-  v22 = v12;
-  v16 = v12;
-  v17 = v13;
-  v18 = v14;
+  v20 = endDateCopy;
+  v21 = dateCopy;
+  durationCopy = duration;
+  mergeCopy = merge;
+  v22 = profileCopy;
+  v16 = profileCopy;
+  v17 = dateCopy;
+  v18 = endDateCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v15 block:v19];
 }
 
@@ -2924,29 +2924,29 @@ id __129__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportRestoreFor
   return v14;
 }
 
-- (void)cloudSync_reportPipelineStarted:(id)a3
+- (void)cloudSync_reportPipelineStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"pipeline.started"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPipelineStarted___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
-- (void)cloudSync_reportPipelineFinished:(id)a3
+- (void)cloudSync_reportPipelineFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"pipeline.finished"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPipelineFinished___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishedCopy;
+  v6 = finishedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
@@ -2958,19 +2958,19 @@ id __80__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPipelineFin
   return v2;
 }
 
-- (void)cloudSync_reportPipelineFailed:(id)a3 error:(id)a4
+- (void)cloudSync_reportPipelineFailed:(id)failed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"pipeline.finished"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPipelineFailed_error___block_invoke;
   v11[3] = &unk_278628B00;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = failedCopy;
+  v9 = failedCopy;
+  v10 = errorCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v8 block:v11];
 }
 
@@ -3039,29 +3039,29 @@ id __84__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportPipelineFai
   return v17;
 }
 
-- (void)cloudSync_operationStarted:(id)a3
+- (void)cloudSync_operationStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"operation.started"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_operationStarted___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
-- (void)cloudSync_operationFinished:(id)a3
+- (void)cloudSync_operationFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"operation.finished"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_operationFinished___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishedCopy;
+  v6 = finishedCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
@@ -3073,19 +3073,19 @@ id __75__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_operationFinished
   return v2;
 }
 
-- (void)cloudSync_operationFailed:(id)a3 error:(id)a4
+- (void)cloudSync_operationFailed:(id)failed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"operation.finished"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_operationFailed_error___block_invoke;
   v11[3] = &unk_278628B00;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = failedCopy;
+  v9 = failedCopy;
+  v10 = errorCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v8 block:v11];
 }
 
@@ -3154,14 +3154,14 @@ id __79__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_operationFailed_e
   return v17;
 }
 
-- (void)cloudSync_newChildAdded:(BOOL)a3
+- (void)cloudSync_newChildAdded:(BOOL)added
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"newChildAdded"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_newChildAdded___block_invoke;
   v6[3] = &__block_descriptor_33_e19___NSDictionary_8__0l;
-  v7 = a3;
+  addedCopy = added;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -3178,28 +3178,28 @@ id __71__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_newChildAdded___b
   return v2;
 }
 
-- (void)cloudSync_reportFullSyncMetricsWithReason:(id)a3 shard:(id)a4 daysSincePreviousFullSync:(id)a5 totalDuration:(double)a6 activeDuration:(double)a7 numberOfRuns:(id)a8 incomplete:(BOOL)a9
+- (void)cloudSync_reportFullSyncMetricsWithReason:(id)reason shard:(id)shard daysSincePreviousFullSync:(id)sync totalDuration:(double)duration activeDuration:(double)activeDuration numberOfRuns:(id)runs incomplete:(BOOL)incomplete
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
+  reasonCopy = reason;
+  shardCopy = shard;
+  syncCopy = sync;
+  runsCopy = runs;
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"fullsync-metrics"];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __174__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportFullSyncMetricsWithReason_shard_daysSincePreviousFullSync_totalDuration_activeDuration_numberOfRuns_incomplete___block_invoke;
   v25[3] = &unk_278628B90;
-  v26 = v16;
-  v27 = v17;
-  v30 = a6;
-  v31 = a7;
-  v28 = v18;
-  v29 = v19;
-  v32 = a9;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
+  v26 = reasonCopy;
+  v27 = shardCopy;
+  durationCopy = duration;
+  activeDurationCopy = activeDuration;
+  v28 = syncCopy;
+  v29 = runsCopy;
+  incompleteCopy = incomplete;
+  v21 = runsCopy;
+  v22 = syncCopy;
+  v23 = shardCopy;
+  v24 = reasonCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v20 block:v25];
 }
 
@@ -3231,14 +3231,14 @@ id __174__HDAnalyticsSubmissionCoordinator_CloudSync__cloudSync_reportFullSyncMe
   return v7;
 }
 
-- (void)stateSync_recordSize:(unint64_t)a3
+- (void)stateSync_recordSize:(unint64_t)size
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"state.push"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_recordSize___block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v6[4] = a3;
+  v6[4] = size;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -3255,16 +3255,16 @@ id __68__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_recordSize___bloc
   return v2;
 }
 
-- (void)stateSync_operationSucceeded:(id)a3
+- (void)stateSync_operationSucceeded:(id)succeeded
 {
-  v4 = a3;
+  succeededCopy = succeeded;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"state.push"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_operationSucceeded___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = succeededCopy;
+  v6 = succeededCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
@@ -3276,19 +3276,19 @@ id __76__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_operationSucceede
   return v2;
 }
 
-- (void)stateSync_operationFailed:(id)a3 error:(id)a4
+- (void)stateSync_operationFailed:(id)failed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"state.push"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_operationFailed_error___block_invoke;
   v11[3] = &unk_278628B00;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = failedCopy;
+  v9 = failedCopy;
+  v10 = errorCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v8 block:v11];
 }
 
@@ -3357,9 +3357,9 @@ id __79__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_operationFailed_e
   return v17;
 }
 
-- (void)stateSync_subscriptionTriggeredDomain:(id)a3
+- (void)stateSync_subscriptionTriggeredDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   if ([(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"state.subscription"];
@@ -3367,7 +3367,7 @@ id __79__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_operationFailed_e
     v6[1] = 3221225472;
     v6[2] = __85__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_subscriptionTriggeredDomain___block_invoke;
     v6[3] = &unk_278616398;
-    v7 = v4;
+    v7 = domainCopy;
     [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
   }
 }
@@ -3384,14 +3384,14 @@ id __85__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_subscriptionTrigg
   return v2;
 }
 
-- (void)stateSync_triggerDuration:(double)a3
+- (void)stateSync_triggerDuration:(double)duration
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"state.trigger-gated"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_triggerDuration___block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  *&v6[4] = a3;
+  *&v6[4] = duration;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -3408,16 +3408,16 @@ id __73__HDAnalyticsSubmissionCoordinator_CloudSync__stateSync_triggerDuration__
   return v2;
 }
 
-- (void)contextSync_operationSucceeded:(id)a3
+- (void)contextSync_operationSucceeded:(id)succeeded
 {
-  v4 = a3;
+  succeededCopy = succeeded;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"context.push"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HDAnalyticsSubmissionCoordinator_CloudSync__contextSync_operationSucceeded___block_invoke;
   v7[3] = &unk_278616398;
-  v8 = v4;
-  v6 = v4;
+  v8 = succeededCopy;
+  v6 = succeededCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v7];
 }
 
@@ -3429,14 +3429,14 @@ id __78__HDAnalyticsSubmissionCoordinator_CloudSync__contextSync_operationSuccee
   return v2;
 }
 
-- (void)contextSync_triggerDuration:(double)a3
+- (void)contextSync_triggerDuration:(double)duration
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.sync.cloud.%@", @"context.trigger-gated"];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__HDAnalyticsSubmissionCoordinator_CloudSync__contextSync_triggerDuration___block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  *&v6[4] = a3;
+  *&v6[4] = duration;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v5 block:v6];
 }
 
@@ -3535,18 +3535,18 @@ id __244__HDAnalyticsSubmissionCoordinator_Workout__workout_reportWorkoutCondens
   return v13;
 }
 
-- (void)workout_reportWorkoutCondenserCoalescingCompressionRate:(id)a3 numberOfSamplesBeforeCoalescing:(int64_t)a4 numberOfSamplesAfterCoalescing:(int64_t)a5 compressionRate:(double)a6
+- (void)workout_reportWorkoutCondenserCoalescingCompressionRate:(id)rate numberOfSamplesBeforeCoalescing:(int64_t)coalescing numberOfSamplesAfterCoalescing:(int64_t)afterCoalescing compressionRate:(double)compressionRate
 {
-  v10 = a3;
+  rateCopy = rate;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __180__HDAnalyticsSubmissionCoordinator_Workout__workout_reportWorkoutCondenserCoalescingCompressionRate_numberOfSamplesBeforeCoalescing_numberOfSamplesAfterCoalescing_compressionRate___block_invoke;
   v12[3] = &unk_278623CD8;
-  v13 = v10;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v11 = v10;
+  v13 = rateCopy;
+  coalescingCopy = coalescing;
+  afterCoalescingCopy = afterCoalescing;
+  compressionRateCopy = compressionRate;
+  v11 = rateCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.condenser.coalescing" block:v12];
 }
 
@@ -3572,21 +3572,21 @@ id __180__HDAnalyticsSubmissionCoordinator_Workout__workout_reportWorkoutCondens
   return v6;
 }
 
-- (void)workout_reportGymKitWorkoutWithFitnessMachineType:(id)a3 manufacturer:(id)a4 timeToBeginExperience:(int64_t)a5 workoutEndError:(int64_t)a6
+- (void)workout_reportGymKitWorkoutWithFitnessMachineType:(id)type manufacturer:(id)manufacturer timeToBeginExperience:(int64_t)experience workoutEndError:(int64_t)error
 {
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  manufacturerCopy = manufacturer;
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.workout.%@", @"gymkit-workout"];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __146__HDAnalyticsSubmissionCoordinator_Workout__workout_reportGymKitWorkoutWithFitnessMachineType_manufacturer_timeToBeginExperience_workoutEndError___block_invoke;
   v15[3] = &unk_278629098;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = typeCopy;
+  v17 = manufacturerCopy;
+  experienceCopy = experience;
+  errorCopy = error;
+  v13 = manufacturerCopy;
+  v14 = typeCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v12 block:v15];
 }
 
@@ -3611,23 +3611,23 @@ id __146__HDAnalyticsSubmissionCoordinator_Workout__workout_reportGymKitWorkoutW
   return v5;
 }
 
-- (void)workout_reportMirroringEventWithStartDuration:(double)a3 stopDuration:(double)a4 mirroringDuration:(double)a5 numOfSendDataRequests:(int64_t)a6 maxTimeToSendData:(double)a7 minTimeToSendData:(double)a8 avgTimeToSendData:(double)a9 isFirstParty:(BOOL)a10
+- (void)workout_reportMirroringEventWithStartDuration:(double)duration stopDuration:(double)stopDuration mirroringDuration:(double)mirroringDuration numOfSendDataRequests:(int64_t)requests maxTimeToSendData:(double)data minTimeToSendData:(double)sendData avgTimeToSendData:(double)toSendData isFirstParty:(BOOL)self0
 {
-  v19 = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
+  isImprovedHealthAndActivityEnabled = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.workout.%@", @"mirroring"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __211__HDAnalyticsSubmissionCoordinator_Workout__workout_reportMirroringEventWithStartDuration_stopDuration_mirroringDuration_numOfSendDataRequests_maxTimeToSendData_minTimeToSendData_avgTimeToSendData_isFirstParty___block_invoke;
   v21[3] = &__block_descriptor_90_e26___NSMutableDictionary_8__0l;
-  *&v21[4] = a3;
-  *&v21[5] = a4;
-  v21[6] = a6;
-  *&v21[7] = a7;
-  *&v21[8] = a8;
-  v22 = a10;
-  v23 = v19;
-  *&v21[9] = a9;
-  *&v21[10] = a5;
+  *&v21[4] = duration;
+  *&v21[5] = stopDuration;
+  v21[6] = requests;
+  *&v21[7] = data;
+  *&v21[8] = sendData;
+  partyCopy = party;
+  v23 = isImprovedHealthAndActivityEnabled;
+  *&v21[9] = toSendData;
+  *&v21[10] = mirroringDuration;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v20 block:v21];
 }
 
@@ -3672,20 +3672,20 @@ id __211__HDAnalyticsSubmissionCoordinator_Workout__workout_reportMirroringEvent
   return v9;
 }
 
-- (void)workout_reportWorkoutEventWithHeartBeatFailures:(int64_t)a3 workoutDuration:(double)a4 isFirstParty:(BOOL)a5 sessionID:(id)a6
+- (void)workout_reportWorkoutEventWithHeartBeatFailures:(int64_t)failures workoutDuration:(double)duration isFirstParty:(BOOL)party sessionID:(id)d
 {
-  v10 = a6;
-  v11 = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
+  dCopy = d;
+  isImprovedHealthAndActivityEnabled = [(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __132__HDAnalyticsSubmissionCoordinator_Workout__workout_reportWorkoutEventWithHeartBeatFailures_workoutDuration_isFirstParty_sessionID___block_invoke;
   v13[3] = &unk_2786290E0;
-  v17 = a5;
-  v18 = v11;
-  v16 = a4;
-  v14 = v10;
-  v15 = a3;
-  v12 = v10;
+  partyCopy = party;
+  v18 = isImprovedHealthAndActivityEnabled;
+  durationCopy = duration;
+  v14 = dCopy;
+  failuresCopy = failures;
+  v12 = dCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.workout" block:v13];
 }
 
@@ -3717,29 +3717,29 @@ id __132__HDAnalyticsSubmissionCoordinator_Workout__workout_reportWorkoutEventWi
   return v5;
 }
 
-- (void)workout_reportEvent:(id)a3 timestamp:(id)a4 sessionID:(id)a5 activityType:(int64_t)a6 sessionDuration:(int64_t)a7 activityCount:(int64_t)a8 extendedMode:(BOOL)a9 totalLocations:(int64_t)a10 routeSmoothingRetryCount:(int64_t)a11 activityID:(id)a12 failure:(BOOL)a13
+- (void)workout_reportEvent:(id)event timestamp:(id)timestamp sessionID:(id)d activityType:(int64_t)type sessionDuration:(int64_t)duration activityCount:(int64_t)count extendedMode:(BOOL)mode totalLocations:(int64_t)self0 routeSmoothingRetryCount:(int64_t)self1 activityID:(id)self2 failure:(BOOL)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a12;
+  eventCopy = event;
+  timestampCopy = timestamp;
+  dCopy = d;
+  iDCopy = iD;
   if ([(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled])
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __200__HDAnalyticsSubmissionCoordinator_Workout__workout_reportEvent_timestamp_sessionID_activityType_sessionDuration_activityCount_extendedMode_totalLocations_routeSmoothingRetryCount_activityID_failure___block_invoke;
     v23[3] = &unk_278629108;
-    v24 = v20;
-    v25 = v19;
-    v26 = v21;
-    v28 = a6;
-    v29 = a7;
-    v30 = a8;
-    v31 = a10;
-    v33 = a9;
-    v32 = a11;
-    v27 = v22;
-    v34 = a13;
+    v24 = timestampCopy;
+    v25 = eventCopy;
+    v26 = dCopy;
+    typeCopy = type;
+    durationCopy = duration;
+    countCopy = count;
+    locationsCopy = locations;
+    modeCopy = mode;
+    retryCountCopy = retryCount;
+    v27 = iDCopy;
+    failureCopy = failure;
     [(HDAnalyticsSubmissionCoordinator *)self sendEvent:@"com.apple.healthd.workout.performance" block:v23];
   }
 }
@@ -3783,25 +3783,25 @@ id __200__HDAnalyticsSubmissionCoordinator_Workout__workout_reportEvent_timestam
   return v10;
 }
 
-- (void)database_reportSQLiteCorruptionWithExtendedErrorCode:(int)a3 type:(int64_t)a4 profile:(id)a5 description:(id)a6 sqlStatement:(id)a7 failedObliterationAttempt:(BOOL)a8
+- (void)database_reportSQLiteCorruptionWithExtendedErrorCode:(int)code type:(int64_t)type profile:(id)profile description:(id)description sqlStatement:(id)statement failedObliterationAttempt:(BOOL)attempt
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  descriptionCopy = description;
+  statementCopy = statement;
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"corruption.sqlite"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __163__HDAnalyticsSubmissionCoordinator_Database__database_reportSQLiteCorruptionWithExtendedErrorCode_type_profile_description_sqlStatement_failedObliterationAttempt___block_invoke;
   v21[3] = &unk_27862D9F0;
-  v26 = a3;
-  v22 = v15;
-  v23 = v14;
-  v24 = v16;
-  v25 = a4;
-  v27 = a8;
-  v18 = v16;
-  v19 = v14;
-  v20 = v15;
+  codeCopy = code;
+  v22 = descriptionCopy;
+  v23 = profileCopy;
+  v24 = statementCopy;
+  typeCopy = type;
+  attemptCopy = attempt;
+  v18 = statementCopy;
+  v19 = profileCopy;
+  v20 = descriptionCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v17 block:v21];
 }
 
@@ -3853,19 +3853,19 @@ id __163__HDAnalyticsSubmissionCoordinator_Database__database_reportSQLiteCorrup
   return v10;
 }
 
-- (void)database_reportUnprotectedDatabaseIdentifier:(id)a3 doesNotMatchProtectedDatabaseIdentifier:(id)a4
+- (void)database_reportUnprotectedDatabaseIdentifier:(id)identifier doesNotMatchProtectedDatabaseIdentifier:(id)databaseIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  databaseIdentifierCopy = databaseIdentifier;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"identifier-mismatch"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __131__HDAnalyticsSubmissionCoordinator_Database__database_reportUnprotectedDatabaseIdentifier_doesNotMatchProtectedDatabaseIdentifier___block_invoke;
   v11[3] = &unk_278628B00;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = databaseIdentifierCopy;
+  v9 = databaseIdentifierCopy;
+  v10 = identifierCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v8 block:v11];
 }
 
@@ -3885,20 +3885,20 @@ id __131__HDAnalyticsSubmissionCoordinator_Database__database_reportUnprotectedD
   return v4;
 }
 
-- (void)database_reportJournalEntryInsertedForJournal:(int64_t)a3 entryClass:(id)a4 entrySize:(id)a5
+- (void)database_reportJournalEntryInsertedForJournal:(int64_t)journal entryClass:(id)class entrySize:(id)size
 {
-  v8 = a4;
-  v9 = a5;
+  classCopy = class;
+  sizeCopy = size;
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"journal-inserted"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __113__HDAnalyticsSubmissionCoordinator_Database__database_reportJournalEntryInsertedForJournal_entryClass_entrySize___block_invoke;
   v13[3] = &unk_2786139E0;
-  v15 = v9;
-  v16 = a3;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  v15 = sizeCopy;
+  journalCopy = journal;
+  v14 = classCopy;
+  v11 = sizeCopy;
+  v12 = classCopy;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v10 block:v13];
 }
 
@@ -3921,34 +3921,34 @@ id __113__HDAnalyticsSubmissionCoordinator_Database__database_reportJournalEntry
   return v5;
 }
 
-- (void)database_reportDatabaseMigrationStatus:(int64_t)a3 database:(id)a4 schemaVersion:(int64_t)a5 error:(id)a6 profileType:(int64_t)a7
+- (void)database_reportDatabaseMigrationStatus:(int64_t)status database:(id)database schemaVersion:(int64_t)version error:(id)error profileType:(int64_t)type
 {
-  v12 = a6;
+  errorCopy = error;
   v13 = MEMORY[0x277CBEB38];
-  v14 = a4;
+  databaseCopy = database;
   v15 = objc_alloc_init(v13);
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:status];
   [v15 setObject:v16 forKeyedSubscript:@"databaseStatus"];
 
-  [v15 setObject:v14 forKeyedSubscript:@"databaseName"];
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  [v15 setObject:databaseCopy forKeyedSubscript:@"databaseName"];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:version];
   [v15 setObject:v17 forKeyedSubscript:@"schemaVersion"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v15 setObject:v18 forKeyedSubscript:@"profileType"];
 
-  if (v12)
+  if (errorCopy)
   {
-    v19 = [v12 hd_errorForAnalytics];
+    hd_errorForAnalytics = [errorCopy hd_errorForAnalytics];
 
-    v20 = [v19 domain];
-    [v15 setObject:v20 forKeyedSubscript:@"errorDomain"];
+    domain = [hd_errorForAnalytics domain];
+    [v15 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "code")}];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(hd_errorForAnalytics, "code")}];
     [v15 setObject:v21 forKeyedSubscript:@"errorCode"];
 
-    v22 = [v19 localizedDescription];
-    [v15 setObject:v22 forKeyedSubscript:@"errorDescription"];
+    localizedDescription = [hd_errorForAnalytics localizedDescription];
+    [v15 setObject:localizedDescription forKeyedSubscript:@"errorDescription"];
   }
 
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"migration-status"];
@@ -3961,9 +3961,9 @@ id __113__HDAnalyticsSubmissionCoordinator_Database__database_reportJournalEntry
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v23 block:v25];
 }
 
-- (void)database_reportCachedQueryEvent:(id)a3 cacheHits:(int64_t)a4 cacheMisses:(int64_t)a5 estimatedTotalBuckets:(unint64_t)a6
+- (void)database_reportCachedQueryEvent:(id)event cacheHits:(int64_t)hits cacheMisses:(int64_t)misses estimatedTotalBuckets:(unint64_t)buckets
 {
-  v10 = a3;
+  eventCopy = event;
   if ([(HDAnalyticsSubmissionCoordinator *)self isImprovedHealthAndActivityEnabled])
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"resumable-query"];
@@ -3971,10 +3971,10 @@ id __113__HDAnalyticsSubmissionCoordinator_Database__database_reportJournalEntry
     v12[1] = 3221225472;
     v12[2] = __122__HDAnalyticsSubmissionCoordinator_Database__database_reportCachedQueryEvent_cacheHits_cacheMisses_estimatedTotalBuckets___block_invoke;
     v12[3] = &unk_278623CD8;
-    v13 = v10;
-    v14 = a4;
-    v15 = a5;
-    v16 = a6;
+    v13 = eventCopy;
+    hitsCopy = hits;
+    missesCopy = misses;
+    bucketsCopy = buckets;
     [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v11 block:v12];
   }
 }
@@ -4001,10 +4001,10 @@ id __122__HDAnalyticsSubmissionCoordinator_Database__database_reportCachedQueryE
   return v6;
 }
 
-- (void)database_reportJournalMergeActivityResult:(int64_t)a3 duration:(double)a4 interruptions:(id)a5 error:(id)a6
+- (void)database_reportJournalMergeActivityResult:(int64_t)result duration:(double)duration interruptions:(id)interruptions error:(id)error
 {
-  v10 = a5;
-  v11 = a6;
+  interruptionsCopy = interruptions;
+  errorCopy = error;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -4026,17 +4026,17 @@ id __122__HDAnalyticsSubmissionCoordinator_Database__database_reportCachedQueryE
   v14[4] = v18;
   v14[5] = v15;
   v14[6] = v16;
-  [v10 enumerateKeysAndObjectsUsingBlock:v14];
+  [interruptionsCopy enumerateKeysAndObjectsUsingBlock:v14];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.healthd.database.%@", @"secondary-journal-merge-activity"];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __117__HDAnalyticsSubmissionCoordinator_Database__database_reportJournalMergeActivityResult_duration_interruptions_error___block_invoke_2;
   v13[3] = &unk_27862DA40;
-  *&v13[8] = a4;
+  *&v13[8] = duration;
   v13[4] = v18;
   v13[5] = v16;
   v13[6] = v15;
-  v13[7] = a3;
+  v13[7] = result;
   [(HDAnalyticsSubmissionCoordinator *)self sendEvent:v12 block:v13];
 
   _Block_object_dispose(v15, 8);

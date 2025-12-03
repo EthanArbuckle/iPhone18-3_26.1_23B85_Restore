@@ -1,8 +1,8 @@
 @interface PHMomentList
 + (id)entityKeyMap;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
 - (BOOL)hasLocalizedTitle;
-- (PHMomentList)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHMomentList)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -13,19 +13,19 @@
   v16.receiver = self;
   v16.super_class = PHMomentList;
   v3 = [(PHCollectionList *)&v16 description];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   collectionListSubtype = self->super._collectionListSubtype;
   if (collectionListSubtype == 2)
   {
-    v9 = [(PHCollectionList *)self startDate];
-    v10 = [v4 components:4 fromDate:v9];
-    v11 = [v10 year];
+    startDate = [(PHCollectionList *)self startDate];
+    v10 = [currentCalendar components:4 fromDate:startDate];
+    year = [v10 year];
 
-    v12 = [(PHCollectionList *)self endDate];
-    v13 = [v4 components:4 fromDate:v12];
-    v14 = [v13 year];
+    endDate = [(PHCollectionList *)self endDate];
+    v13 = [currentCalendar components:4 fromDate:endDate];
+    year2 = [v13 year];
 
-    v8 = [v3 stringByAppendingFormat:@" [%ld - %ld]", v11, v14];
+    v8 = [v3 stringByAppendingFormat:@" [%ld - %ld]", year, year2];
   }
 
   else
@@ -35,11 +35,11 @@
       goto LABEL_6;
     }
 
-    v6 = [(PHCollectionList *)self startDate];
-    v7 = [(PHCollectionList *)self endDate];
-    v8 = [v3 stringByAppendingFormat:@" [%@ - %@]", v6, v7];
+    startDate2 = [(PHCollectionList *)self startDate];
+    endDate2 = [(PHCollectionList *)self endDate];
+    v8 = [v3 stringByAppendingFormat:@" [%@ - %@]", startDate2, endDate2];
 
-    v3 = v6;
+    v3 = startDate2;
   }
 
   v3 = v8;
@@ -58,37 +58,37 @@ LABEL_6:
   return [(PHMomentList *)self hasLocationInfo];
 }
 
-- (PHMomentList)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHMomentList)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v9 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PHMomentList;
-  v10 = [(PHCollectionList *)&v20 initWithFetchDictionary:v9 propertyHint:a4 photoLibrary:a5];
+  v10 = [(PHCollectionList *)&v20 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:@"startDate"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v10->super._startDate;
     v10->super._startDate = v11;
 
-    v13 = [v9 objectForKeyedSubscript:@"endDate"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v10->super._endDate;
     v10->super._endDate = v13;
 
     v10->super._collectionListType = 1;
-    v15 = [v9 objectForKeyedSubscript:@"kind"];
-    v16 = [v15 integerValue];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
+    integerValue = [v15 integerValue];
 
-    if (v16 == 2)
+    if (integerValue == 2)
     {
       v17 = 2;
     }
 
     else
     {
-      if (v16 != 1)
+      if (integerValue != 1)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:v10 file:@"PHMomentList.m" lineNumber:94 description:@"invalid kind"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v10 file:@"PHMomentList.m" lineNumber:94 description:@"invalid kind"];
 
         goto LABEL_8;
       }
@@ -104,23 +104,23 @@ LABEL_8:
   return v10;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PHMomentList_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_1849 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_1849, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_1850 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_1850 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else

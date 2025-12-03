@@ -1,28 +1,28 @@
 @interface SLDCollaborationFooterMetrics
 - (CGColor)labelColor;
 - (CGColor)secondaryLabelColor;
-- (CGRect)boundingRectForString:(id)a3;
+- (CGRect)boundingRectForString:(id)string;
 - (NSAttributedString)subtitleAttributedString;
 - (NSAttributedString)titleAttributedString;
-- (SLDCollaborationFooterMetrics)initWithSlotStyle:(id)a3 tag:(id)a4;
+- (SLDCollaborationFooterMetrics)initWithSlotStyle:(id)style tag:(id)tag;
 - (double)expectedHeight;
-- (id)attributedStringWithString:(id)a3 textStyle:(__CFString *)a4 color:(CGColor *)a5;
+- (id)attributedStringWithString:(id)string textStyle:(__CFString *)style color:(CGColor *)color;
 @end
 
 @implementation SLDCollaborationFooterMetrics
 
-- (SLDCollaborationFooterMetrics)initWithSlotStyle:(id)a3 tag:(id)a4
+- (SLDCollaborationFooterMetrics)initWithSlotStyle:(id)style tag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v12.receiver = self;
   v12.super_class = SLDCollaborationFooterMetrics;
   v9 = [(SLDCollaborationFooterMetrics *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_style, a3);
-    objc_storeStrong(&v10->_tag, a4);
+    objc_storeStrong(&v9->_style, style);
+    objc_storeStrong(&v10->_tag, tag);
   }
 
   return v10;
@@ -31,14 +31,14 @@
 - (NSAttributedString)titleAttributedString
 {
   v3 = [(SLDCollaborationFooterMetrics *)self tag];
-  v4 = [v3 title];
+  title = [v3 title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(SLDCollaborationFooterMetrics *)self labelColor];
+    labelColor = [(SLDCollaborationFooterMetrics *)self labelColor];
     v6 = [(SLDCollaborationFooterMetrics *)self tag];
-    v7 = [v6 title];
-    v8 = [(SLDCollaborationFooterMetrics *)self attributedStringWithString:v7 textStyle:*MEMORY[0x277CC4A50] color:v5];
+    title2 = [v6 title];
+    v8 = [(SLDCollaborationFooterMetrics *)self attributedStringWithString:title2 textStyle:*MEMORY[0x277CC4A50] color:labelColor];
   }
 
   else
@@ -52,22 +52,22 @@
 - (NSAttributedString)subtitleAttributedString
 {
   v3 = [(SLDCollaborationFooterMetrics *)self tag];
-  v4 = [v3 subtitle];
+  subtitle = [v3 subtitle];
 
-  if (v4)
+  if (subtitle)
   {
     goto LABEL_2;
   }
 
   v7 = [(SLDCollaborationFooterMetrics *)self tag];
-  v8 = [v7 title];
+  title = [v7 title];
 
-  if (!v8)
+  if (!title)
   {
-    v4 = @"Collaboration";
+    subtitle = @"Collaboration";
 LABEL_2:
-    v5 = [(SLDCollaborationFooterMetrics *)self secondaryLabelColor];
-    v6 = [(SLDCollaborationFooterMetrics *)self attributedStringWithString:v4 textStyle:*MEMORY[0x277CC4A48] color:v5];
+    secondaryLabelColor = [(SLDCollaborationFooterMetrics *)self secondaryLabelColor];
+    v6 = [(SLDCollaborationFooterMetrics *)self attributedStringWithString:subtitle textStyle:*MEMORY[0x277CC4A48] color:secondaryLabelColor];
 
     goto LABEL_5;
   }
@@ -78,20 +78,20 @@ LABEL_5:
   return v6;
 }
 
-- (id)attributedStringWithString:(id)a3 textStyle:(__CFString *)a4 color:(CGColor *)a5
+- (id)attributedStringWithString:(id)string textStyle:(__CFString *)style color:(CGColor *)color
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v25 = *MEMORY[0x277CC4950];
   v23 = *MEMORY[0x277CC4948];
   v24 = &unk_28469BCD8;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  stringCopy = string;
   v9 = [v7 dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v26[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
 
-  v11 = [(SLDCollaborationFooterMetrics *)self style];
-  CTContentSizeCategoryForSlotStyle(v11);
+  style = [(SLDCollaborationFooterMetrics *)self style];
+  CTContentSizeCategoryForSlotStyle(style);
 
   v12 = CTFontDescriptorCreateWithTextStyleAndAttributes();
   v13 = CTFontCreateWithFontDescriptor(v12, 0.0, 0);
@@ -101,30 +101,30 @@ LABEL_5:
   v15 = *MEMORY[0x277D740A8];
   v21[0] = *MEMORY[0x277D740C0];
   v21[1] = v15;
-  v22[0] = a5;
+  v22[0] = color;
   v22[1] = v13;
   v21[2] = *MEMORY[0x277D74118];
   v16 = [v14 copy];
   v22[2] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-  v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8 attributes:v17];
+  v18 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:stringCopy attributes:v17];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (CGRect)boundingRectForString:(id)a3
+- (CGRect)boundingRectForString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
+    stringCopy = string;
     v5 = [(SLDCollaborationFooterMetrics *)self tag];
     [v5 maxWidth];
     v7 = v6;
 
-    v8 = [v4 length];
-    v9 = CTFramesetterCreateWithAttributedString(v4);
+    v8 = [stringCopy length];
+    v9 = CTFramesetterCreateWithAttributedString(stringCopy);
     v28.height = 1.79769313e308;
     v27.location = 0;
     v27.length = v8;
@@ -133,14 +133,14 @@ LABEL_5:
     width = v10.width;
     height = v10.height;
     CFRelease(v9);
-    v13 = CTLineCreateWithAttributedString(v4);
+    v13 = CTLineCreateWithAttributedString(stringCopy);
 
-    v14 = [(SLDCollaborationFooterMetrics *)self style];
-    v15 = [v14 displayScale];
+    style = [(SLDCollaborationFooterMetrics *)self style];
+    displayScale = [style displayScale];
 
-    v16 = [(SLDCollaborationFooterMetrics *)self style];
+    style2 = [(SLDCollaborationFooterMetrics *)self style];
     v17 = 0.0;
-    if ([v16 layoutDirection] == 1)
+    if ([style2 layoutDirection] == 1)
     {
       v18 = 1.0;
     }
@@ -153,7 +153,7 @@ LABEL_5:
     v19 = [(SLDCollaborationFooterMetrics *)self tag];
     [v19 maxWidth];
     PenOffsetForFlush = CTLineGetPenOffsetForFlush(v13, v18, v20);
-    v22 = SLRoundToScale(PenOffsetForFlush, v15);
+    v22 = SLRoundToScale(PenOffsetForFlush, displayScale);
 
     CFRelease(v13);
   }
@@ -179,12 +179,12 @@ LABEL_5:
 
 - (double)expectedHeight
 {
-  v3 = [(SLDCollaborationFooterMetrics *)self titleAttributedString];
-  [(SLDCollaborationFooterMetrics *)self boundingRectForString:v3];
+  titleAttributedString = [(SLDCollaborationFooterMetrics *)self titleAttributedString];
+  [(SLDCollaborationFooterMetrics *)self boundingRectForString:titleAttributedString];
   v5 = v4;
 
-  v6 = [(SLDCollaborationFooterMetrics *)self subtitleAttributedString];
-  [(SLDCollaborationFooterMetrics *)self boundingRectForString:v6];
+  subtitleAttributedString = [(SLDCollaborationFooterMetrics *)self subtitleAttributedString];
+  [(SLDCollaborationFooterMetrics *)self boundingRectForString:subtitleAttributedString];
   v8 = v7;
 
   return v5 + v8;
@@ -192,8 +192,8 @@ LABEL_5:
 
 - (CGColor)labelColor
 {
-  v2 = [(SLDCollaborationFooterMetrics *)self style];
-  if ([v2 userInterfaceStyle])
+  style = [(SLDCollaborationFooterMetrics *)self style];
+  if ([style userInterfaceStyle])
   {
     v3 = 1.0;
     v4 = 1.0;
@@ -214,8 +214,8 @@ LABEL_5:
 
 - (CGColor)secondaryLabelColor
 {
-  v2 = [(SLDCollaborationFooterMetrics *)self style];
-  if ([v2 userInterfaceStyle])
+  style = [(SLDCollaborationFooterMetrics *)self style];
+  if ([style userInterfaceStyle])
   {
     v3 = 0.75;
     v4 = 0.75;

@@ -1,5 +1,5 @@
 @interface TVSettingsUnselectedLanguageTableCell
-- (TVSettingsUnselectedLanguageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (TVSettingsUnselectedLanguageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)subtitle;
 - (id)title;
 - (void)updateLabels;
@@ -7,23 +7,23 @@
 
 @implementation TVSettingsUnselectedLanguageTableCell
 
-- (TVSettingsUnselectedLanguageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TVSettingsUnselectedLanguageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = TVSettingsUnselectedLanguageTableCell;
-  v9 = [(TVSettingsUnselectedLanguageTableCell *)&v14 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(TVSettingsUnselectedLanguageTableCell *)&v14 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 propertyForKey:PSIDKey];
+    v10 = [specifierCopy propertyForKey:PSIDKey];
     [(TVSettingsUnselectedLanguageTableCell *)v9 setLanguageCode:v10];
 
     [(TVSettingsUnselectedLanguageTableCell *)v9 updateLabels];
-    v11 = [(TVSettingsUnselectedLanguageTableCell *)v9 title];
-    if (v11)
+    title = [(TVSettingsUnselectedLanguageTableCell *)v9 title];
+    if (title)
     {
-      v12 = [(TVSettingsUnselectedLanguageTableCell *)v9 title];
-      [v8 setName:v12];
+      title2 = [(TVSettingsUnselectedLanguageTableCell *)v9 title];
+      [specifierCopy setName:title2];
     }
   }
 
@@ -32,27 +32,27 @@
 
 - (void)updateLabels
 {
-  v3 = [(TVSettingsUnselectedLanguageTableCell *)self textLabel];
-  v4 = [(TVSettingsUnselectedLanguageTableCell *)self title];
-  [v3 setText:v4];
+  textLabel = [(TVSettingsUnselectedLanguageTableCell *)self textLabel];
+  title = [(TVSettingsUnselectedLanguageTableCell *)self title];
+  [textLabel setText:title];
 
-  v6 = [(TVSettingsUnselectedLanguageTableCell *)self detailTextLabel];
-  v5 = [(TVSettingsUnselectedLanguageTableCell *)self subtitle];
-  [v6 setText:v5];
+  detailTextLabel = [(TVSettingsUnselectedLanguageTableCell *)self detailTextLabel];
+  subtitle = [(TVSettingsUnselectedLanguageTableCell *)self subtitle];
+  [detailTextLabel setText:subtitle];
 }
 
 - (id)title
 {
-  v3 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-  if ([v3 isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
+  languageCode = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+  if ([languageCode isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-    v6 = [v5 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"];
+    languageCode2 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+    v6 = [languageCode2 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"];
 
     if (v6)
     {
@@ -60,8 +60,8 @@
       goto LABEL_7;
     }
 
-    v3 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-    v4 = [WLKSettingsLanguageUtilities localizedNameForLanguageCodeInItsOwnLanguage:v3];
+    languageCode = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+    v4 = [WLKSettingsLanguageUtilities localizedNameForLanguageCodeInItsOwnLanguage:languageCode];
   }
 
 LABEL_7:
@@ -71,16 +71,16 @@ LABEL_7:
 
 - (id)subtitle
 {
-  v3 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-  if ([v3 isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
+  languageCode = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+  if ([languageCode isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-    v6 = [v5 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"];
+    languageCode2 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+    v6 = [languageCode2 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"];
 
     if (v6)
     {
@@ -88,8 +88,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v3 = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
-    v4 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v3];
+    languageCode = [(TVSettingsUnselectedLanguageTableCell *)self languageCode];
+    v4 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:languageCode];
   }
 
 LABEL_7:

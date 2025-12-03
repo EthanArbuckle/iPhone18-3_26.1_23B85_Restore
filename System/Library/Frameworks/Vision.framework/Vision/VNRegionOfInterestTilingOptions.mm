@@ -1,11 +1,11 @@
 @interface VNRegionOfInterestTilingOptions
 - (VNRegionOfInterestTilingOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNRegionOfInterestTilingOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)

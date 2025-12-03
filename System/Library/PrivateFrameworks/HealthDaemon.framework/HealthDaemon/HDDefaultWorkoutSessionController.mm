@@ -1,59 +1,59 @@
 @interface HDDefaultWorkoutSessionController
-- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)a3;
-- (HDDefaultWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6;
+- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)configurations;
+- (HDDefaultWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state;
 - (id)_maxTypesToCollect;
 - (id)_ownerIdentifier;
 - (id)currentActivityConfiguration;
 - (id)databaseAssertion;
 - (id)launchPayloadOptions;
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5;
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count;
 - (id)unitTest_databaseAssertion;
-- (void)_handleSamplesUpdated:(uint64_t)a1;
+- (void)_handleSamplesUpdated:(uint64_t)updated;
 - (void)_hideBackgroundActivityAndUnregisterObserver;
-- (void)_instantiateBackgroudActivityControllerWithSessionConfiguration:(uint64_t)a1;
-- (void)_lowPowerModeStateChanged:(id)a3;
-- (void)_persistAndNotifyClientsOfGeneratedTypesUpdate:(uint64_t)a3 moveMode:(void *)a4 configuration:(unsigned int)a5 didUpdateActivity:(void *)a6 earliestSampleDate:;
-- (void)_queue_instantiateAndStartSwimTrackerIfNeededWithIdentifier:(uint64_t)a3 activityType:;
+- (void)_instantiateBackgroudActivityControllerWithSessionConfiguration:(uint64_t)configuration;
+- (void)_lowPowerModeStateChanged:(id)changed;
+- (void)_persistAndNotifyClientsOfGeneratedTypesUpdate:(uint64_t)update moveMode:(void *)mode configuration:(unsigned int)configuration didUpdateActivity:(void *)activity earliestSampleDate:;
+- (void)_queue_instantiateAndStartSwimTrackerIfNeededWithIdentifier:(uint64_t)identifier activityType:;
 - (void)_queue_setupAssertionGroup;
-- (void)_queue_updateDataObserverWithMoveMode:(unsigned int)a3 didUpdateActivity:(void *)a4 earliestDate:;
-- (void)_showOrHideBackgroundActivityIfNeeded:(char)a3 isForegrounded:;
-- (void)beginNewActivity:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_queue_updateDataObserverWithMoveMode:(unsigned int)mode didUpdateActivity:(void *)activity earliestDate:;
+- (void)_showOrHideBackgroundActivityIfNeeded:(char)needed isForegrounded:;
+- (void)beginNewActivity:(id)activity;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)endCurrentActivity:(id)a3;
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4;
-- (void)hktest_setStateTransitionCompletionHandler:(id)a3;
-- (void)processDidEnterBackground:(id)a3;
-- (void)processDidEnterForeground:(id)a3;
-- (void)receivedWorkoutEvent:(id)a3;
-- (void)receivedWorkoutEvent:(id)a3 forWorkoutActivity:(id)a4;
-- (void)unitTest_setSwimTracker:(id)a3;
-- (void)unitTest_suggestActivity:(id)a3;
-- (void)workoutSessionServer:(id)a3 didChangeConfiguration:(id)a4;
-- (void)workoutSessionServer:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 date:(id)a6;
+- (void)endCurrentActivity:(id)activity;
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity;
+- (void)hktest_setStateTransitionCompletionHandler:(id)handler;
+- (void)processDidEnterBackground:(id)background;
+- (void)processDidEnterForeground:(id)foreground;
+- (void)receivedWorkoutEvent:(id)event;
+- (void)receivedWorkoutEvent:(id)event forWorkoutActivity:(id)activity;
+- (void)unitTest_setSwimTracker:(id)tracker;
+- (void)unitTest_suggestActivity:(id)activity;
+- (void)workoutSessionServer:(id)server didChangeConfiguration:(id)configuration;
+- (void)workoutSessionServer:(id)server didTransitionFromState:(int64_t)state toState:(int64_t)toState date:(id)date;
 @end
 
 @implementation HDDefaultWorkoutSessionController
 
-- (HDDefaultWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6
+- (HDDefaultWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  stateCopy = state;
   v48.receiver = self;
   v48.super_class = HDDefaultWorkoutSessionController;
   v14 = [(HDDefaultWorkoutSessionController *)&v48 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
+    objc_storeWeak(&v14->_profile, profileCopy);
     v16 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v16;
 
-    objc_storeStrong(&v15->_sessionConfiguration, a4);
-    objc_storeWeak(&v15->_sessionStateController, v12);
+    objc_storeStrong(&v15->_sessionConfiguration, configuration);
+    objc_storeWeak(&v15->_sessionStateController, controllerCopy);
     currentActivity = v15->_currentActivity;
     v15->_currentActivity = 0;
 
@@ -70,10 +70,10 @@
     }
 
     v15->_generateFinalDataWaitInterval = v23;
-    v24 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v25 = [v24 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if (v25)
+    if (isAppleWatch)
     {
       v15->_currentMoveMode = 1;
     }
@@ -82,10 +82,10 @@
     {
       v15->_currentMoveMode = 2;
       v26 = objc_loadWeakRetained(&v15->_profile);
-      v27 = [v26 daemon];
-      v28 = [v27 processStateManager];
-      v29 = [v11 clientProcessBundleIdentifier];
-      [v28 registerObserver:v15 forBundleIdentifier:v29];
+      daemon = [v26 daemon];
+      processStateManager = [daemon processStateManager];
+      clientProcessBundleIdentifier = [configurationCopy clientProcessBundleIdentifier];
+      [processStateManager registerObserver:v15 forBundleIdentifier:clientProcessBundleIdentifier];
     }
 
     v30 = v15->_queue;
@@ -95,7 +95,7 @@
     v45 = &unk_278613920;
     v31 = v15;
     v46 = v31;
-    v47 = v13;
+    v47 = stateCopy;
     dispatch_sync(v30, &v42);
     v32 = [HDWorkoutEventsManager alloc];
     v33 = objc_loadWeakRetained(&v15->_profile);
@@ -104,13 +104,13 @@
     v31->_eventsManager = v34;
 
     v36 = objc_loadWeakRetained(&v15->_profile);
-    v37 = [v36 workoutManager];
-    v38 = [v37 biomeInterface];
+    workoutManager = [v36 workoutManager];
+    biomeInterface = [workoutManager biomeInterface];
     bmInterface = v31->_bmInterface;
-    v31->_bmInterface = v38;
+    v31->_bmInterface = biomeInterface;
 
-    v40 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v40 addObserver:v31 selector:sel__lowPowerModeStateChanged_ name:*MEMORY[0x277CCA5E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v31 selector:sel__lowPowerModeStateChanged_ name:*MEMORY[0x277CCA5E8] object:0];
 
     [HDDefaultWorkoutSessionController _instantiateBackgroudActivityControllerWithSessionConfiguration:v31];
   }
@@ -229,17 +229,17 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
 - (void)_queue_setupAssertionGroup
 {
   v81[5] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(self + 24));
     v2 = objc_alloc_init(HDSessionAssertionGroup);
-    v3 = *(a1 + 40);
-    *(a1 + 40) = v2;
+    v3 = *(self + 40);
+    *(self + 40) = v2;
 
-    v4 = [*(a1 + 32) workoutConfiguration];
-    v5 = [v4 activityType];
+    workoutConfiguration = [*(self + 32) workoutConfiguration];
+    activityType = [workoutConfiguration activityType];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v6 = [HDSessionAssertionWrapper alloc];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
@@ -380,7 +380,7 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:8];
     v27 = [v26 mutableCopy];
 
-    if (v5 != 61)
+    if (activityType != 61)
     {
       [v27 addObject:v44];
     }
@@ -446,10 +446,10 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
           }
 
           v35 = *(*(&v47 + 1) + 8 * i);
-          v36 = [v35 integerValue];
-          v37 = *(a1 + 40);
+          integerValue = [v35 integerValue];
+          v37 = *(self + 40);
           v38 = [v19 objectForKeyedSubscript:v35];
-          [v37 setupState:v36 withAssertions:v38];
+          [v37 setupState:integerValue withAssertions:v38];
         }
 
         v32 = [v19 countByEnumeratingWithState:&v47 objects:v72 count:16];
@@ -464,45 +464,45 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
 
 - (id)currentActivityConfiguration
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[9] workoutConfiguration];
-    v3 = v2;
-    if (v2)
+    workoutConfiguration = [self[9] workoutConfiguration];
+    v3 = workoutConfiguration;
+    if (workoutConfiguration)
     {
-      v4 = v2;
+      workoutConfiguration2 = workoutConfiguration;
     }
 
     else
     {
-      v4 = [v1[4] workoutConfiguration];
+      workoutConfiguration2 = [selfCopy[4] workoutConfiguration];
     }
 
-    v1 = v4;
+    selfCopy = workoutConfiguration2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_instantiateBackgroudActivityControllerWithSessionConfiguration:(uint64_t)a1
+- (void)_instantiateBackgroudActivityControllerWithSessionConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    [*(a1 + 96) hidePillIfNeededWithCompletion:0];
-    v2 = [*(a1 + 32) client];
-    v3 = v2;
-    if (v2)
+    [*(configuration + 96) hidePillIfNeededWithCompletion:0];
+    client = [*(configuration + 32) client];
+    v3 = client;
+    if (client)
     {
       *buf = 0u;
       v14 = 0u;
-      v4 = [v2 XPCClient];
-      v5 = [v4 process];
-      v6 = [v5 auditToken];
-      v7 = v6;
-      if (v6)
+      xPCClient = [client XPCClient];
+      process = [xPCClient process];
+      auditToken = [process auditToken];
+      v7 = auditToken;
+      if (auditToken)
       {
-        [v6 auditToken];
+        [auditToken auditToken];
       }
 
       else
@@ -515,8 +515,8 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
       v12[0] = *buf;
       v12[1] = v14;
       v10 = [(HDWorkoutBackgroundActivityController *)v9 initWithAuditToken:v12];
-      v11 = *(a1 + 96);
-      *(a1 + 96) = v10;
+      v11 = *(configuration + 96);
+      *(configuration + 96) = v10;
     }
 
     else
@@ -535,8 +535,8 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
 - (void)dealloc
 {
   [(HDSessionAssertionGroup *)self->_assertionGroup invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
 
   [(HKDaemonTransaction *)self->_daemonTransaction invalidate];
   daemonTransaction = self->_daemonTransaction;
@@ -578,19 +578,19 @@ void __111__HDDefaultWorkoutSessionController_initWithProfile_sessionConfigurati
   return WeakRetained;
 }
 
-- (void)workoutSessionServer:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 date:(id)a6
+- (void)workoutSessionServer:(id)server didTransitionFromState:(int64_t)state toState:(int64_t)toState date:(id)date
 {
-  v9 = a6;
+  dateCopy = date;
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __94__HDDefaultWorkoutSessionController_workoutSessionServer_didTransitionFromState_toState_date___block_invoke;
   v12[3] = &unk_278616F60;
-  v14 = a4;
-  v15 = a5;
+  stateCopy = state;
+  toStateCopy = toState;
   v12[4] = self;
-  v13 = v9;
-  v11 = v9;
+  v13 = dateCopy;
+  v11 = dateCopy;
   dispatch_async(queue, v12);
 }
 
@@ -1009,15 +1009,15 @@ LABEL_57:
   v93 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showOrHideBackgroundActivityIfNeeded:(char)a3 isForegrounded:
+- (void)_showOrHideBackgroundActivityIfNeeded:(char)needed isForegrounded:
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_13;
   }
 
-  v4 = *(a1 + 56);
+  v4 = *(self + 56);
   if (v4 >= 14)
   {
     _HKInitializeLogging();
@@ -1025,7 +1025,7 @@ LABEL_57:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = a1;
+      selfCopy3 = self;
       v6 = "%{public}@: Ignoring attempted update for background activity. Session is in the process of ending";
 LABEL_8:
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, v6, &v15, 0xCu);
@@ -1042,7 +1042,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = a1;
+      selfCopy3 = self;
       v6 = "%{public}@: Ignoring attempted update for background activity. Session has not yet started";
       goto LABEL_8;
     }
@@ -1052,22 +1052,22 @@ LABEL_13:
     return;
   }
 
-  if (*(a1 + 208) == 1)
+  if (*(self + 208) == 1)
   {
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = a1;
+      selfCopy3 = self;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: The client has a live activity. Hiding background activity and will not process the requested update.", &v15, 0xCu);
     }
 
-    [*(a1 + 96) hidePillIfNeededWithCompletion:0];
+    [*(self + 96) hidePillIfNeededWithCompletion:0];
     goto LABEL_13;
   }
 
-  if ([*(a1 + 152) shouldAllowWorkoutDatabaseAccessWhileLocked])
+  if ([*(self + 152) shouldAllowWorkoutDatabaseAccessWhileLocked])
   {
     if (!a2)
     {
@@ -1080,10 +1080,10 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if ((a3 & 1) == 0)
+  if ((needed & 1) == 0)
   {
 LABEL_22:
-    v13 = *(a1 + 96);
+    v13 = *(self + 96);
     v14 = *MEMORY[0x277D85DE8];
 
     [v13 showPillIfNeededWithCompletion:0];
@@ -1091,7 +1091,7 @@ LABEL_22:
   }
 
 LABEL_19:
-  v11 = *(a1 + 96);
+  v11 = *(self + 96);
   v12 = *MEMORY[0x277D85DE8];
 
   [v11 hidePillIfNeededWithCompletion:0];
@@ -1099,28 +1099,28 @@ LABEL_19:
 
 - (void)_hideBackgroundActivityAndUnregisterObserver
 {
-  if (a1)
+  if (self)
   {
-    [a1[12] hidePillIfNeededWithCompletion:0];
-    WeakRetained = objc_loadWeakRetained(a1 + 1);
-    v2 = [WeakRetained daemon];
-    v3 = [v2 processStateManager];
-    v4 = [a1[4] clientProcessBundleIdentifier];
-    [v3 unregisterObserver:a1 forBundleIdentifier:v4];
+    [self[12] hidePillIfNeededWithCompletion:0];
+    WeakRetained = objc_loadWeakRetained(self + 1);
+    daemon = [WeakRetained daemon];
+    processStateManager = [daemon processStateManager];
+    clientProcessBundleIdentifier = [self[4] clientProcessBundleIdentifier];
+    [processStateManager unregisterObserver:self forBundleIdentifier:clientProcessBundleIdentifier];
   }
 }
 
-- (void)workoutSessionServer:(id)a3 didChangeConfiguration:(id)a4
+- (void)workoutSessionServer:(id)server didChangeConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__HDDefaultWorkoutSessionController_workoutSessionServer_didChangeConfiguration___block_invoke;
   v8[3] = &unk_278613920;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = configurationCopy;
+  selfCopy = self;
+  v7 = configurationCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1138,11 +1138,11 @@ void __81__HDDefaultWorkoutSessionController_workoutSessionServer_didChangeConfi
   [HDDefaultWorkoutSessionController _instantiateBackgroudActivityControllerWithSessionConfiguration:?];
 }
 
-- (void)beginNewActivity:(id)a3
+- (void)beginNewActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (activityCopy)
   {
     queue = self->_queue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -1150,7 +1150,7 @@ void __81__HDDefaultWorkoutSessionController_workoutSessionServer_didChangeConfi
     v8[2] = __54__HDDefaultWorkoutSessionController_beginNewActivity___block_invoke;
     v8[3] = &unk_278613920;
     v8[4] = self;
-    v9 = v4;
+    v9 = activityCopy;
     dispatch_async(queue, v8);
   }
 
@@ -1200,26 +1200,26 @@ void __54__HDDefaultWorkoutSessionController_beginNewActivity___block_invoke(uin
   [(HDDefaultWorkoutSessionController *)v17 _queue_updateDataObserverWithMoveMode:v18 didUpdateActivity:1u earliestDate:v19];
 }
 
-- (void)_queue_instantiateAndStartSwimTrackerIfNeededWithIdentifier:(uint64_t)a3 activityType:
+- (void)_queue_instantiateAndStartSwimTrackerIfNeededWithIdentifier:(uint64_t)identifier activityType:
 {
   v10 = a2;
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    if (a3 == 46)
+    dispatch_assert_queue_V2(*(self + 24));
+    if (identifier == 46)
     {
       if (_os_feature_enabled_impl())
       {
-        v5 = *(a1 + 88);
+        v5 = *(self + 88);
         if (!v5)
         {
           v6 = [_TtC12HealthDaemon13HDSwimTracker alloc];
-          WeakRetained = objc_loadWeakRetained((a1 + 8));
+          WeakRetained = objc_loadWeakRetained((self + 8));
           v8 = [(HDSwimTracker *)v6 initWithProfile:WeakRetained];
-          v9 = *(a1 + 88);
-          *(a1 + 88) = v8;
+          v9 = *(self + 88);
+          *(self + 88) = v8;
 
-          v5 = *(a1 + 88);
+          v5 = *(self + 88);
         }
 
         [v5 startWith:v10];
@@ -1228,61 +1228,61 @@ void __54__HDDefaultWorkoutSessionController_beginNewActivity___block_invoke(uin
   }
 }
 
-- (void)_queue_updateDataObserverWithMoveMode:(unsigned int)a3 didUpdateActivity:(void *)a4 earliestDate:
+- (void)_queue_updateDataObserverWithMoveMode:(unsigned int)mode didUpdateActivity:(void *)activity earliestDate:
 {
-  v26 = a4;
-  if (a1)
+  activityCopy = activity;
+  if (self)
   {
-    v7 = [*(a1 + 136) workoutConfiguration];
-    v8 = [(HDDefaultWorkoutSessionController *)a1 currentActivityConfiguration];
-    v9 = [v7 isEqual:v8];
+    workoutConfiguration = [*(self + 136) workoutConfiguration];
+    currentActivityConfiguration = [(HDDefaultWorkoutSessionController *)self currentActivityConfiguration];
+    v9 = [workoutConfiguration isEqual:currentActivityConfiguration];
 
-    if (*(a1 + 128) != a2 || (v9 & 1) == 0)
+    if (*(self + 128) != a2 || (v9 & 1) == 0)
     {
       v10 = MEMORY[0x277CCDC48];
-      v11 = [(HDDefaultWorkoutSessionController *)a1 currentActivityConfiguration];
-      v12 = [v10 defaultConfigurationWithWorkoutConfiguration:v11 activityMoveMode:a2];
-      v13 = *(a1 + 136);
-      *(a1 + 136) = v12;
+      currentActivityConfiguration2 = [(HDDefaultWorkoutSessionController *)self currentActivityConfiguration];
+      v12 = [v10 defaultConfigurationWithWorkoutConfiguration:currentActivityConfiguration2 activityMoveMode:a2];
+      v13 = *(self + 136);
+      *(self + 136) = v12;
 
-      v14 = [*(a1 + 136) sampleTypesToCollect];
-      v15 = *(a1 + 128);
+      sampleTypesToCollect = [*(self + 136) sampleTypesToCollect];
+      v15 = *(self + 128);
       if (v15 != a2)
       {
         v16 = MEMORY[0x277CCDC48];
-        v17 = [(HDDefaultWorkoutSessionController *)a1 currentActivityConfiguration];
-        v18 = [v16 defaultConfigurationWithWorkoutConfiguration:v17 activityMoveMode:v15];
-        v19 = [v18 sampleTypesToCollect];
+        currentActivityConfiguration3 = [(HDDefaultWorkoutSessionController *)self currentActivityConfiguration];
+        v18 = [v16 defaultConfigurationWithWorkoutConfiguration:currentActivityConfiguration3 activityMoveMode:v15];
+        sampleTypesToCollect2 = [v18 sampleTypesToCollect];
 
-        v20 = [*(a1 + 120) hk_minus:v19];
+        v20 = [*(self + 120) hk_minus:sampleTypesToCollect2];
         v21 = MEMORY[0x277CBEB98];
-        v22 = [*(a1 + 136) sampleTypesToCollect];
-        v23 = [v21 hk_setByUnioningSet:v20 otherSet:v22];
+        sampleTypesToCollect3 = [*(self + 136) sampleTypesToCollect];
+        v23 = [v21 hk_setByUnioningSet:v20 otherSet:sampleTypesToCollect3];
 
-        *(a1 + 128) = a2;
-        v14 = v23;
+        *(self + 128) = a2;
+        sampleTypesToCollect = v23;
       }
 
-      v24 = [v14 copy];
-      v25 = *(a1 + 120);
-      *(a1 + 120) = v24;
+      v24 = [sampleTypesToCollect copy];
+      v25 = *(self + 120);
+      *(self + 120) = v24;
 
-      [(HDDefaultWorkoutSessionController *)a1 _persistAndNotifyClientsOfGeneratedTypesUpdate:*(a1 + 128) moveMode:*(a1 + 136) configuration:a3 didUpdateActivity:v26 earliestSampleDate:?];
+      [(HDDefaultWorkoutSessionController *)self _persistAndNotifyClientsOfGeneratedTypesUpdate:*(self + 128) moveMode:*(self + 136) configuration:mode didUpdateActivity:activityCopy earliestSampleDate:?];
     }
   }
 }
 
-- (void)endCurrentActivity:(id)a3
+- (void)endCurrentActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HDDefaultWorkoutSessionController_endCurrentActivity___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1309,44 +1309,44 @@ void __56__HDDefaultWorkoutSessionController_endCurrentActivity___block_invoke(u
   [(HDDefaultWorkoutSessionController *)v9 _queue_updateDataObserverWithMoveMode:v10 didUpdateActivity:1u earliestDate:v11];
 }
 
-- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)a3
+- (BOOL)enableAutomaticDetectionForActivityConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration enableWorkoutChangeDetection];
-  if (v5)
+  configurationsCopy = configurations;
+  enableWorkoutChangeDetection = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration enableWorkoutChangeDetection];
+  if (enableWorkoutChangeDetection)
   {
-    [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration setActivityConfigurations:v4];
+    [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration setActivityConfigurations:configurationsCopy];
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC330];
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
     {
       sessionConfiguration = self->_sessionConfiguration;
       v8 = v6;
-      v9 = [(HDWorkoutSessionConfiguration *)sessionConfiguration clientApplicationIdentifier];
-      v10 = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration activityConfigurations];
+      clientApplicationIdentifier = [(HDWorkoutSessionConfiguration *)sessionConfiguration clientApplicationIdentifier];
+      activityConfigurations = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration activityConfigurations];
       v13 = 138412546;
-      v14 = v9;
+      v14 = clientApplicationIdentifier;
       v15 = 2112;
-      v16 = v10;
+      v16 = activityConfigurations;
       _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "Automatic change detection enabled for activity configurations from %@ with configurations %@", &v13, 0x16u);
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return enableWorkoutChangeDetection;
 }
 
-- (void)receivedWorkoutEvent:(id)a3
+- (void)receivedWorkoutEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = eventCopy;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "Received workout event %{public}@", buf, 0xCu);
   }
 
@@ -1355,9 +1355,9 @@ void __56__HDDefaultWorkoutSessionController_endCurrentActivity___block_invoke(u
   v9[1] = 3221225472;
   v9[2] = __58__HDDefaultWorkoutSessionController_receivedWorkoutEvent___block_invoke;
   v9[3] = &unk_278613920;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = eventCopy;
+  selfCopy = self;
+  v7 = eventCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1469,17 +1469,17 @@ LABEL_21:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedWorkoutEvent:(id)a3 forWorkoutActivity:(id)a4
+- (void)receivedWorkoutEvent:(id)event forWorkoutActivity:(id)activity
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  activityCopy = activity;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v6;
+    v18 = eventCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "Received workout event %{public}@", buf, 0xCu);
   }
 
@@ -1488,11 +1488,11 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __77__HDDefaultWorkoutSessionController_receivedWorkoutEvent_forWorkoutActivity___block_invoke;
   block[3] = &unk_278613830;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
-  v10 = v7;
-  v11 = v6;
+  v14 = eventCopy;
+  v15 = activityCopy;
+  selfCopy = self;
+  v10 = activityCopy;
+  v11 = eventCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1520,21 +1520,21 @@ void __77__HDDefaultWorkoutSessionController_receivedWorkoutEvent_forWorkoutActi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processDidEnterBackground:(id)a3
+- (void)processDidEnterBackground:(id)background
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  -[HDDefaultWorkoutSessionController _showOrHideBackgroundActivityIfNeeded:isForegrounded:](self, [v4 isProtectedDataAvailable], 0);
+  database = [WeakRetained database];
+  -[HDDefaultWorkoutSessionController _showOrHideBackgroundActivityIfNeeded:isForegrounded:](self, [database isProtectedDataAvailable], 0);
 }
 
-- (void)processDidEnterForeground:(id)a3
+- (void)processDidEnterForeground:(id)foreground
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  -[HDDefaultWorkoutSessionController _showOrHideBackgroundActivityIfNeeded:isForegrounded:](self, [v4 isProtectedDataAvailable], 1);
+  database = [WeakRetained database];
+  -[HDDefaultWorkoutSessionController _showOrHideBackgroundActivityIfNeeded:isForegrounded:](self, [database isProtectedDataAvailable], 1);
 }
 
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1559,32 +1559,32 @@ void __98__HDDefaultWorkoutSessionController_transactionalQuantityInsertHandlerF
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSamplesUpdated:(uint64_t)a1
+- (void)_handleSamplesUpdated:(uint64_t)updated
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (updated)
   {
-    v5 = *(a1 + 24);
+    v5 = *(updated + 24);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__HDDefaultWorkoutSessionController__handleSamplesUpdated___block_invoke;
     v6[3] = &unk_278613920;
-    v6[4] = a1;
+    v6[4] = updated;
     v7 = v3;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)_persistAndNotifyClientsOfGeneratedTypesUpdate:(uint64_t)a3 moveMode:(void *)a4 configuration:(unsigned int)a5 didUpdateActivity:(void *)a6 earliestSampleDate:
+- (void)_persistAndNotifyClientsOfGeneratedTypesUpdate:(uint64_t)update moveMode:(void *)mode configuration:(unsigned int)configuration didUpdateActivity:(void *)activity earliestSampleDate:
 {
   v34 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  if (a1)
+  modeCopy = mode;
+  activityCopy = activity;
+  if (self)
   {
-    v14 = [[HDWorkoutDefaultSessionRecoveryConfiguration alloc] initWithGeneratedTypes:v11 moveMode:a3];
+    v14 = [[HDWorkoutDefaultSessionRecoveryConfiguration alloc] initWithGeneratedTypes:v11 moveMode:update];
     v29 = 0;
     v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v29];
     v16 = v29;
@@ -1601,8 +1601,8 @@ void __98__HDDefaultWorkoutSessionController_transactionalQuantityInsertHandlerF
 
     if (v18)
     {
-      v27 = a5;
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      configurationCopy = configuration;
+      WeakRetained = objc_loadWeakRetained((self + 16));
       v28 = v17;
       v20 = [WeakRetained storeSessionControllerState:v15 forRecoveryIdentifier:@"com.apple.SessionController.Default" error:&v28];
       v21 = v28;
@@ -1614,15 +1614,15 @@ void __98__HDDefaultWorkoutSessionController_transactionalQuantityInsertHandlerF
         if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v31 = a1;
+          selfCopy2 = self;
           v32 = 2114;
           v33 = v21;
           _os_log_error_impl(&dword_228986000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to store recovery state with error: %{public}@", buf, 0x16u);
         }
       }
 
-      v23 = objc_loadWeakRetained((a1 + 16));
-      [v23 notifyClientsOfGeneratedTypesUpdate:v11 configuration:v12 didUpdateActivity:v27 earliestSampleDate:v13];
+      v23 = objc_loadWeakRetained((self + 16));
+      [v23 notifyClientsOfGeneratedTypesUpdate:v11 configuration:modeCopy didUpdateActivity:configurationCopy earliestSampleDate:activityCopy];
     }
 
     else
@@ -1632,7 +1632,7 @@ void __98__HDDefaultWorkoutSessionController_transactionalQuantityInsertHandlerF
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v31 = a1;
+        selfCopy2 = self;
         v32 = 2114;
         v33 = v17;
         _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Failed to unarchive persisted recovery configuration: %{public}@", buf, 0x16u);
@@ -1826,11 +1826,11 @@ LABEL_33:
   if (v3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v5 = [WeakRetained database];
-    v6 = [v5 isProtectedDataAvailable];
+    database = [WeakRetained database];
+    isProtectedDataAvailable = [database isProtectedDataAvailable];
 
     v7 = *MEMORY[0x277D0ABD0];
-    if (v6)
+    if (isProtectedDataAvailable)
     {
       v23 = v3;
       v24 = v7;
@@ -1867,9 +1867,9 @@ LABEL_33:
     {
       sessionConfiguration = self->_sessionConfiguration;
       v18 = v13;
-      v19 = [(HDWorkoutSessionConfiguration *)sessionConfiguration clientProcessBundleIdentifier];
+      clientProcessBundleIdentifier = [(HDWorkoutSessionConfiguration *)sessionConfiguration clientProcessBundleIdentifier];
       *buf = 138543362;
-      v27 = v19;
+      v27 = clientProcessBundleIdentifier;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "Failed to create action for client %{public}@", buf, 0xCu);
     }
 
@@ -1957,19 +1957,19 @@ void __63__HDDefaultWorkoutSessionController__setupLiveActivityObserver__block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v18 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained daemon];
-  v8 = [v7 processStateManager];
-  v9 = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration clientProcessBundleIdentifier];
-  v10 = [v8 isApplicationStateForegroundForBundleIdentifier:v9];
+  daemon = [WeakRetained daemon];
+  processStateManager = [daemon processStateManager];
+  clientProcessBundleIdentifier = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration clientProcessBundleIdentifier];
+  v10 = [processStateManager isApplicationStateForegroundForBundleIdentifier:clientProcessBundleIdentifier];
 
-  [(HDDefaultWorkoutSessionController *)self _showOrHideBackgroundActivityIfNeeded:v4 isForegrounded:v10];
+  [(HDDefaultWorkoutSessionController *)self _showOrHideBackgroundActivityIfNeeded:availableCopy isForegrounded:v10];
   v11 = objc_loadWeakRetained(&self->_databaseAssertion);
-  if (v11 || !v4)
+  if (v11 || !availableCopy)
   {
     v15 = *MEMORY[0x277D85DE8];
   }
@@ -1983,7 +1983,7 @@ void __63__HDDefaultWorkoutSessionController__setupLiveActivityObserver__block_i
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: protected data did become available", &v16, 0xCu);
       }
 
@@ -1997,17 +1997,17 @@ void __63__HDDefaultWorkoutSessionController__setupLiveActivityObserver__block_i
   }
 }
 
-- (void)hktest_setStateTransitionCompletionHandler:(id)a3
+- (void)hktest_setStateTransitionCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionCompletionHandler___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2021,24 +2021,24 @@ uint64_t __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionComple
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)unitTest_setSwimTracker:(id)a3
+- (void)unitTest_setSwimTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   [(HDSwimTracker *)self->_swimTracker stop];
   swimTracker = self->_swimTracker;
-  self->_swimTracker = v4;
-  v6 = v4;
+  self->_swimTracker = trackerCopy;
+  v6 = trackerCopy;
 
   v7 = self->_swimTracker;
-  v8 = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration sessionIdentifier];
-  [(HDSwimTracker *)v7 startWith:v8];
+  sessionIdentifier = [(HDWorkoutSessionConfiguration *)self->_sessionConfiguration sessionIdentifier];
+  [(HDSwimTracker *)v7 startWith:sessionIdentifier];
 }
 
-- (void)unitTest_suggestActivity:(id)a3
+- (void)unitTest_suggestActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained didDetectActivityChange:v4];
+  [WeakRetained didDetectActivityChange:activityCopy];
 }
 
 - (id)unitTest_databaseAssertion
@@ -2048,68 +2048,68 @@ uint64_t __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionComple
   return WeakRetained;
 }
 
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detectionCopy = detection;
+  activityCopy = activity;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = activityCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_INFO, "faking workout detection %{public}@", &v10, 0xCu);
   }
 
-  [(HDWorkoutEventsManager *)self->_eventsManager fakeActivityDetection:v6 workoutActivity:v7];
+  [(HDWorkoutEventsManager *)self->_eventsManager fakeActivityDetection:detectionCopy workoutActivity:activityCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_ownerIdentifier
 {
-  v2 = [*(a1 + 32) client];
-  v3 = [v2 process];
-  v4 = [v3 applicationIdentifier];
-  v5 = v4;
-  if (v4)
+  client = [*(self + 32) client];
+  process = [client process];
+  applicationIdentifier = [process applicationIdentifier];
+  v5 = applicationIdentifier;
+  if (applicationIdentifier)
   {
-    v6 = v4;
+    clientApplicationIdentifier = applicationIdentifier;
   }
 
   else
   {
-    v6 = [*(a1 + 32) clientApplicationIdentifier];
+    clientApplicationIdentifier = [*(self + 32) clientApplicationIdentifier];
   }
 
-  v7 = v6;
+  v7 = clientApplicationIdentifier;
 
   if (v7)
   {
-    v8 = v7;
+    uUIDString = v7;
   }
 
   else
   {
-    v9 = [*(a1 + 32) sessionIdentifier];
-    v8 = [v9 UUIDString];
+    sessionIdentifier = [*(self + 32) sessionIdentifier];
+    uUIDString = [sessionIdentifier UUIDString];
   }
 
-  return v8;
+  return uUIDString;
 }
 
 - (id)_maxTypesToCollect
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [*(a1 + 32) workoutConfiguration];
-  v3 = [v2 activityType];
+  workoutConfiguration = [*(self + 32) workoutConfiguration];
+  activityType = [workoutConfiguration activityType];
 
-  v4 = [MEMORY[0x277CCDCD8] maxDataTypesForWorkoutActivityType:v3];
+  v4 = [MEMORY[0x277CCDCD8] maxDataTypesForWorkoutActivityType:activityType];
   v5 = [MEMORY[0x277CBEB58] setWithSet:v4];
   v6 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC920]];
   [v5 addObject:v6];
-  if (*(a1 + 128) == 2)
+  if (*(self + 128) == 2)
   {
     v7 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC928]];
     [v5 addObject:v7];
@@ -2119,8 +2119,8 @@ uint64_t __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionComple
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [*(a1 + 32) activityConfigurations];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  activityConfigurations = [*(self + 32) activityConfigurations];
+  v9 = [activityConfigurations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2131,7 +2131,7 @@ uint64_t __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionComple
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(activityConfigurations);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -2142,7 +2142,7 @@ uint64_t __80__HDDefaultWorkoutSessionController_hktest_setStateTransitionComple
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [activityConfigurations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -2595,7 +2595,7 @@ id __78__HDDefaultWorkoutSessionController__queue_assertionsPerStateForActivityT
   return v8;
 }
 
-- (void)_lowPowerModeStateChanged:(id)a3
+- (void)_lowPowerModeStateChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

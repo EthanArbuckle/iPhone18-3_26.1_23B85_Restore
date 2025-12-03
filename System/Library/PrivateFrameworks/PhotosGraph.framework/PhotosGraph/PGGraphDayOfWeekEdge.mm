@@ -1,15 +1,15 @@
 @interface PGGraphDayOfWeekEdge
 + (id)filter;
-- (id)initFromDateNode:(id)a3 toDayOfWeekNode:(id)a4;
+- (id)initFromDateNode:(id)node toDayOfWeekNode:(id)weekNode;
 @end
 
 @implementation PGGraphDayOfWeekEdge
 
-- (id)initFromDateNode:(id)a3 toDayOfWeekNode:(id)a4
+- (id)initFromDateNode:(id)node toDayOfWeekNode:(id)weekNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphDayOfWeekEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:weekNode];
 }
 
 + (id)filter

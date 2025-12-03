@@ -1,24 +1,24 @@
 @interface INSendMessageRecipientResolutionResult
 + (INSendMessageRecipientResolutionResult)unsupportedForReason:(INSendMessageRecipientUnsupportedReason)reason;
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3;
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4;
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description;
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description;
 @end
 
 @implementation INSendMessageRecipientResolutionResult
 
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description
 {
   v20.receiver = self;
   v20.super_class = INSendMessageRecipientResolutionResult;
-  v4 = [(INIntentResolutionResult *)&v20 _buildIntentSlotResolutionResultWithIntentSlotDescription:a3];
+  v4 = [(INIntentResolutionResult *)&v20 _buildIntentSlotResolutionResultWithIntentSlotDescription:description];
   if ([(INIntentResolutionResult *)self resolutionResultCode]== 1 && [(INIntentResolutionResult *)self unsupportedReason])
   {
-    v5 = [v4 payloadUnsupported];
-    [v5 setReason:1000];
+    payloadUnsupported = [v4 payloadUnsupported];
+    [payloadUnsupported setReason:1000];
 
-    v6 = [v4 payloadUnsupported];
-    v7 = [(INIntentResolutionResult *)self unsupportedReason];
-    if (v7 == 1003)
+    payloadUnsupported2 = [v4 payloadUnsupported];
+    unsupportedReason = [(INIntentResolutionResult *)self unsupportedReason];
+    if (unsupportedReason == 1003)
     {
       v8 = 11;
     }
@@ -28,7 +28,7 @@
       v8 = 0x7FFFFFFF;
     }
 
-    if (v7 == 1002)
+    if (unsupportedReason == 1002)
     {
       v9 = 9;
     }
@@ -38,7 +38,7 @@
       v9 = v8;
     }
 
-    if (v7 == 1001)
+    if (unsupportedReason == 1001)
     {
       v10 = 8;
     }
@@ -48,7 +48,7 @@
       v10 = v9;
     }
 
-    if (v7 == 1000)
+    if (unsupportedReason == 1000)
     {
       v11 = 7;
     }
@@ -58,7 +58,7 @@
       v11 = 0x7FFFFFFF;
     }
 
-    if (v7 == 7)
+    if (unsupportedReason == 7)
     {
       v12 = 10;
     }
@@ -68,7 +68,7 @@
       v12 = v11;
     }
 
-    if (v7 == 6)
+    if (unsupportedReason == 6)
     {
       v13 = 6;
     }
@@ -78,12 +78,12 @@
       v13 = v12;
     }
 
-    if (v7 <= 1000)
+    if (unsupportedReason <= 1000)
     {
       v10 = v13;
     }
 
-    if (v7 == 5)
+    if (unsupportedReason == 5)
     {
       v14 = 5;
     }
@@ -93,7 +93,7 @@
       v14 = 0x7FFFFFFF;
     }
 
-    if (v7 == 4)
+    if (unsupportedReason == 4)
     {
       v15 = 4;
     }
@@ -103,7 +103,7 @@
       v15 = v14;
     }
 
-    if (v7 == 3)
+    if (unsupportedReason == 3)
     {
       v16 = 3;
     }
@@ -113,7 +113,7 @@
       v16 = v15;
     }
 
-    if (v7 == 2)
+    if (unsupportedReason == 2)
     {
       v17 = 2;
     }
@@ -123,17 +123,17 @@
       v17 = 0x7FFFFFFF;
     }
 
-    if (v7 == 1)
+    if (unsupportedReason == 1)
     {
       v17 = 1;
     }
 
-    if (v7 > 2)
+    if (unsupportedReason > 2)
     {
       v17 = v16;
     }
 
-    if (v7 <= 5)
+    if (unsupportedReason <= 5)
     {
       v18 = v17;
     }
@@ -143,27 +143,27 @@
       v18 = v10;
     }
 
-    [v6 setSendMessageIntentRecipientUnsupportedReason:v18];
+    [payloadUnsupported2 setSendMessageIntentRecipientUnsupportedReason:v18];
   }
 
   return v4;
 }
 
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description
 {
-  v6 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = INSendMessageRecipientResolutionResult;
-  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:v6 slotDescription:a4];
+  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:resultCopy slotDescription:description];
   if (v7)
   {
-    v8 = [v6 payloadUnsupported];
-    v9 = [v8 hasSendMessageIntentRecipientUnsupportedReason];
+    payloadUnsupported = [resultCopy payloadUnsupported];
+    hasSendMessageIntentRecipientUnsupportedReason = [payloadUnsupported hasSendMessageIntentRecipientUnsupportedReason];
 
-    if (v9)
+    if (hasSendMessageIntentRecipientUnsupportedReason)
     {
-      v10 = [v6 payloadUnsupported];
-      v11 = [v10 sendMessageIntentRecipientUnsupportedReason] - 1;
+      payloadUnsupported2 = [resultCopy payloadUnsupported];
+      v11 = [payloadUnsupported2 sendMessageIntentRecipientUnsupportedReason] - 1;
       if (v11 > 0xA)
       {
         v12 = 0;
@@ -183,10 +183,10 @@
 
 + (INSendMessageRecipientResolutionResult)unsupportedForReason:(INSendMessageRecipientUnsupportedReason)reason
 {
-  v4 = [a1 unsupported];
-  [v4 setUnsupportedReason:reason];
+  unsupported = [self unsupported];
+  [unsupported setUnsupportedReason:reason];
 
-  return v4;
+  return unsupported;
 }
 
 @end

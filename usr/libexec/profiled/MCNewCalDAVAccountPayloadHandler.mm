@@ -1,18 +1,18 @@
 @interface MCNewCalDAVAccountPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
-- (id)_accountFromPayloadWithUserInputResponses:(id)a3;
-- (id)_errorFromValidationError:(id)a3;
-- (id)_reallyInstallInstaller:(id)a3 isInstalledByMDM:(BOOL)a4 personaID:(id)a5 rmAccountIdentifier:(id)a6;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
+- (id)_accountFromPayloadWithUserInputResponses:(id)responses;
+- (id)_errorFromValidationError:(id)error;
+- (id)_reallyInstallInstaller:(id)installer isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier;
 - (id)accountTypeIdentifiers;
 - (id)unhashedAccountIdentifier;
 - (id)userInputFields;
-- (void)_preflightWithAccount:(id)a3 completionHandler:(id)a4;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
+- (void)_preflightWithAccount:(id)account completionHandler:(id)handler;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
 - (void)remove;
-- (void)setAsideWithInstaller:(id)a3;
-- (void)setUserInputResponses:(id)a3;
+- (void)setAsideWithInstaller:(id)installer;
+- (void)setUserInputResponses:(id)responses;
 - (void)unsetAside;
 @end
 
@@ -22,27 +22,27 @@
 {
   v21.receiver = self;
   v21.super_class = MCNewCalDAVAccountPayloadHandler;
-  v3 = [(MCNewPayloadHandler *)&v21 userInputFields];
-  v4 = [v3 mutableCopy];
+  userInputFields = [(MCNewPayloadHandler *)&v21 userInputFields];
+  v4 = [userInputFields mutableCopy];
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 accountDescription];
-  v7 = v6;
-  if (v6)
+  payload = [(MCNewPayloadHandler *)self payload];
+  accountDescription = [payload accountDescription];
+  v7 = accountDescription;
+  if (accountDescription)
   {
-    v8 = v6;
+    hostname = accountDescription;
   }
 
   else
   {
-    v8 = [v5 hostname];
+    hostname = [payload hostname];
   }
 
-  v9 = v8;
+  v9 = hostname;
 
-  v10 = [v5 username];
+  username = [payload username];
 
-  if (!v10)
+  if (!username)
   {
     v11 = MCLocalizedString();
     v12 = MCLocalizedFormat();
@@ -51,9 +51,9 @@
     [v4 addObject:v14];
   }
 
-  v15 = [v5 password];
+  password = [payload password];
 
-  if (!v15)
+  if (!password)
   {
     v16 = MCLocalizedString();
     v17 = MCLocalizedFormat();
@@ -65,16 +65,16 @@
   return v4;
 }
 
-- (void)setUserInputResponses:(id)a3
+- (void)setUserInputResponses:(id)responses
 {
-  v4 = a3;
-  v25 = self;
-  v5 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  selfCopy = self;
+  payload = [(MCNewPayloadHandler *)self payload];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = responsesCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v7)
   {
@@ -98,12 +98,12 @@
         v15 = [v13 objectForKey:v26];
         if ([v14 isEqualToString:@"kCalDAVUsernameKey"])
         {
-          [v5 setUsername:v15];
+          [payload setUsername:v15];
         }
 
         else if ([v14 isEqualToString:@"kCalDAVPasswordKey"])
         {
-          [v5 setPassword:v15];
+          [payload setPassword:v15];
         }
 
         else
@@ -119,13 +119,13 @@
             v35 = v14;
             v19 = v11;
             v20 = v10;
-            v21 = v5;
+            v21 = payload;
             v22 = v6;
             v23 = v18;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ didn't ask for user input for key %{public}@", buf, 0x16u);
 
             v6 = v22;
-            v5 = v21;
+            payload = v21;
             v10 = v20;
             v11 = v19;
           }
@@ -138,18 +138,18 @@
     while (v9);
   }
 
-  v27.receiver = v25;
+  v27.receiver = selfCopy;
   v27.super_class = MCNewCalDAVAccountPayloadHandler;
   [(MCNewPayloadHandler *)&v27 setUserInputResponses:v6];
 }
 
 - (id)unhashedAccountIdentifier
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 hostname];
-  if (v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  hostname = [payload hostname];
+  if (hostname)
   {
-    v4 = [NSString stringWithFormat:@"caldav|%@", v3];
+    v4 = [NSString stringWithFormat:@"caldav|%@", hostname];
   }
 
   else
@@ -157,11 +157,11 @@
     v4 = 0;
   }
 
-  v5 = [v2 username];
-  v6 = v5;
-  if (v4 && v5)
+  username = [payload username];
+  v6 = username;
+  if (v4 && username)
   {
-    v7 = [v4 stringByAppendingFormat:@"|%@", v5];
+    v7 = [v4 stringByAppendingFormat:@"|%@", username];
 
     v4 = v7;
   }
@@ -169,41 +169,41 @@
   return v4;
 }
 
-- (id)_accountFromPayloadWithUserInputResponses:(id)a3
+- (id)_accountFromPayloadWithUserInputResponses:(id)responses
 {
-  v4 = a3;
-  v5 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
   v6 = sharedDAAccountStore();
   v7 = [v6 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierCalDAV];
 
   v8 = [[ACAccount alloc] initWithAccountType:v7];
   [v8 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-  v9 = [v5 friendlyName];
-  [v8 setManagingSourceName:v9];
+  friendlyName = [payload friendlyName];
+  [v8 setManagingSourceName:friendlyName];
 
   v10 = +[MDMCloudConfiguration sharedConfiguration];
-  v11 = [v10 userMode];
+  userMode = [v10 userMode];
 
-  if (v11 == 1)
+  if (userMode == 1)
   {
-    v12 = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
-    if (v12)
+    mCACAccountIdentifier = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
+    if (mCACAccountIdentifier)
     {
-      v13 = [v8 identifier];
-      [v8 setAccountProperty:v13 forKey:@"MCAccountIdentifer"];
+      identifier = [v8 identifier];
+      [v8 setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
-      [v8 setIdentifier:v12];
+      [v8 setIdentifier:mCACAccountIdentifier];
     }
 
     v14 = sharedDAAccountStore();
-    v15 = [v8 identifier];
-    v16 = [v14 accountWithIdentifier:v15];
+    identifier2 = [v8 identifier];
+    v16 = [v14 accountWithIdentifier:identifier2];
 
     v79 = v16 != 0;
     if (v16)
     {
-      v17 = [v16 objectID];
-      [v8 performSelector:"_setObjectID:" withObject:v17];
+      objectID = [v16 objectID];
+      [v8 performSelector:"_setObjectID:" withObject:objectID];
     }
   }
 
@@ -212,12 +212,12 @@
     v79 = 0;
   }
 
-  v18 = [v7 supportedDataclasses];
+  supportedDataclasses = [v7 supportedDataclasses];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v19 = [v18 countByEnumeratingWithState:&v88 objects:v97 count:16];
+  v19 = [supportedDataclasses countByEnumeratingWithState:&v88 objects:v97 count:16];
   if (v19)
   {
     v20 = v19;
@@ -228,13 +228,13 @@
       {
         if (*v89 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(supportedDataclasses);
         }
 
         [v8 setProvisioned:1 forDataclass:*(*(&v88 + 1) + 8 * i)];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v88 objects:v97 count:16];
+      v20 = [supportedDataclasses countByEnumeratingWithState:&v88 objects:v97 count:16];
     }
 
     while (v20);
@@ -246,45 +246,45 @@
   {
     [v23 setEnabled:1 forDADataclass:4];
     [v24 setEnabled:1 forDADataclass:16];
-    v25 = [v5 accountDescription];
-    v74 = v18;
-    if (v25)
+    accountDescription = [payload accountDescription];
+    v74 = supportedDataclasses;
+    if (accountDescription)
     {
-      [v24 setAccountDescription:v25];
+      [v24 setAccountDescription:accountDescription];
     }
 
     else
     {
-      v26 = [v5 hostname];
-      [v24 setAccountDescription:v26];
+      hostname = [payload hostname];
+      [v24 setAccountDescription:hostname];
     }
 
-    v27 = [v5 hostname];
-    [v24 setHost:v27];
+    hostname2 = [payload hostname];
+    [v24 setHost:hostname2];
 
-    [v24 setUseSSL:{objc_msgSend(v5, "useSSL")}];
-    v28 = [v24 backingAccountInfo];
-    v29 = [(MCNewPayloadHandler *)self payload];
-    [v29 UUID];
+    [v24 setUseSSL:{objc_msgSend(payload, "useSSL")}];
+    backingAccountInfo = [v24 backingAccountInfo];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    [payload2 UUID];
     v31 = v30 = v24;
-    [v28 setMcPayloadUUID:v31];
+    [backingAccountInfo setMcPayloadUUID:v31];
 
-    v32 = [v30 backingAccountInfo];
-    v33 = [(MCNewPayloadHandler *)self payload];
-    v34 = [v33 profile];
-    v35 = [v34 UUID];
-    [v32 setMcProfileUUID:v35];
+    backingAccountInfo2 = [v30 backingAccountInfo];
+    payload3 = [(MCNewPayloadHandler *)self payload];
+    profile = [payload3 profile];
+    uUID = [profile UUID];
+    [backingAccountInfo2 setMcProfileUUID:uUID];
 
-    v36 = [(MCNewPayloadHandler *)self payload];
-    v37 = [v36 profile];
-    v38 = [v37 identifier];
+    payload4 = [(MCNewPayloadHandler *)self payload];
+    profile2 = [payload4 profile];
+    identifier3 = [profile2 identifier];
 
-    v81 = self;
+    selfCopy = self;
     v75 = v8;
-    if (v38)
+    if (identifier3)
     {
-      v39 = [v30 backingAccountInfo];
-      [v39 setMcConfigurationProfileIdentifier:v38];
+      backingAccountInfo3 = [v30 backingAccountInfo];
+      [backingAccountInfo3 setMcConfigurationProfileIdentifier:identifier3];
     }
 
     else
@@ -299,15 +299,15 @@
 
     v80 = v30;
     v76 = v7;
-    v41 = [v5 username];
-    v77 = v5;
-    v42 = [v5 password];
+    username = [payload username];
+    v77 = payload;
+    password = [payload password];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v78 = v4;
-    obj = v4;
+    v78 = responsesCopy;
+    obj = responsesCopy;
     v43 = [obj countByEnumeratingWithState:&v84 objects:v96 count:16];
     if (v43)
     {
@@ -315,7 +315,7 @@
       v83 = *v85;
       v45 = kMCIDUUIDKey;
       v46 = kMCIDResponseKey;
-      v47 = v42;
+      v47 = password;
       do
       {
         for (j = 0; j != v44; j = j + 1)
@@ -332,7 +332,7 @@
           {
             v52 = v51;
 
-            v41 = v52;
+            username = v52;
           }
 
           else if ([v50 isEqualToString:@"kCalDAVPasswordKey"])
@@ -353,13 +353,13 @@
               v93 = v56;
               v94 = 2114;
               v95 = v50;
-              v57 = v41;
+              v57 = username;
               v58 = v47;
               v59 = v56;
               _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%{public}@ didn't ask for user input for key %{public}@", buf, 0x16u);
 
               v47 = v58;
-              v41 = v57;
+              username = v57;
             }
           }
         }
@@ -372,25 +372,25 @@
 
     else
     {
-      v47 = v42;
+      v47 = password;
     }
 
     v60 = v80;
-    [v80 setUsername:v41];
-    v5 = v77;
+    [v80 setUsername:username];
+    payload = v77;
     if ([v77 port])
     {
       [v80 setPort:{objc_msgSend(v77, "port")}];
     }
 
-    v61 = [v77 principalURL];
-    self = v81;
-    v18 = v74;
-    if (v61)
+    principalURL = [v77 principalURL];
+    self = selfCopy;
+    supportedDataclasses = v74;
+    if (principalURL)
     {
-      v62 = v61;
-      v63 = [v77 principalURL];
-      v64 = [NSURL URLWithString:v63];
+      v62 = principalURL;
+      principalURL2 = [v77 principalURL];
+      v64 = [NSURL URLWithString:principalURL2];
 
       v60 = v80;
       if (v64)
@@ -411,8 +411,8 @@
     }
 
     v66 = v65;
-    v67 = [v60 backingAccountInfo];
-    [v67 setAccountProperty:v66 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
+    backingAccountInfo4 = [v60 backingAccountInfo];
+    [backingAccountInfo4 setAccountProperty:v66 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
 
     v24 = v80;
     [v80 setPassword:v47];
@@ -422,45 +422,45 @@
       [v80 setShouldDoInitialAutodiscovery:1];
     }
 
-    v4 = v78;
+    responsesCopy = v78;
     v8 = v75;
     v7 = v76;
   }
 
-  v68 = [v24 backingAccountInfo];
-  v69 = [v68 identifier];
+  backingAccountInfo5 = [v24 backingAccountInfo];
+  identifier4 = [backingAccountInfo5 identifier];
   [(MCNewPayloadHandler *)self payload];
   v71 = v70 = v24;
-  [v71 setAcAccountIdentifier:v69];
+  [v71 setAcAccountIdentifier:identifier4];
 
   return v70;
 }
 
-- (id)_errorFromValidationError:(id)a3
+- (id)_errorFromValidationError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  if (v4 == 102)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code == 102)
   {
     v11 = MCDAErrorDomain;
     v6 = MCErrorArray();
     v7 = MCLocalizedErrorString();
     v8 = MCUSEnglishErrorString();
-    [NSError MCErrorWithDomain:v11 code:18002 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:MCErrorTypeRetryable];
+    [NSError MCErrorWithDomain:v11 code:18002 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:MCErrorTypeRetryable];
   }
 
-  else if (v4 == 101)
+  else if (code == 101)
   {
     v10 = MCDAErrorDomain;
     v6 = MCErrorArray();
     v7 = MCLocalizedErrorString();
     v8 = MCUSEnglishErrorString();
-    [NSError MCErrorWithDomain:v10 code:18001 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:MCErrorTypeSkippable];
+    [NSError MCErrorWithDomain:v10 code:18001 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:MCErrorTypeSkippable];
   }
 
   else
   {
-    if (v4 == 100)
+    if (code == 100)
     {
       v5 = MCDAErrorDomain;
       v6 = MCErrorArray();
@@ -471,14 +471,14 @@
 
     else
     {
-      v12 = [v3 localizedDescription];
-      v13 = [v12 length];
+      localizedDescription = [errorCopy localizedDescription];
+      v13 = [localizedDescription length];
 
       v5 = MCDAErrorDomain;
       v6 = MCErrorArray();
       if (v13)
       {
-        v14 = [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 underlyingError:v3 errorType:MCErrorTypeFatal, 0];
+        v14 = [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
         goto LABEL_12;
       }
 
@@ -487,7 +487,7 @@
       v9 = &MCErrorTypeFatal;
     }
 
-    [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:*v9];
+    [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:*v9];
   }
   v14 = ;
 
@@ -496,60 +496,60 @@ LABEL_12:
   return v14;
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
   v10 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v9 MCVerboseDescription];
+    mCVerboseDescription = [errorCopy MCVerboseDescription];
     v15 = 138543874;
-    v16 = v8;
+    v16 = accountCopy;
     v17 = 1024;
-    v18 = v6;
+    v18 = validCopy;
     v19 = 2114;
-    v20 = v12;
+    v20 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "account %{public}@ is valid %d with error %{public}@", &v15, 0x1Cu);
   }
 
-  if (!v9 && !v6)
+  if (!errorCopy && !validCopy)
   {
-    v9 = [NSError errorWithDomain:DAAccountValidationDomain code:102 userInfo:0];
+    errorCopy = [NSError errorWithDomain:DAAccountValidationDomain code:102 userInfo:0];
   }
 
-  v13 = [(MCNewCalDAVAccountPayloadHandler *)self accountValidationCompletionHandler];
+  accountValidationCompletionHandler = [(MCNewCalDAVAccountPayloadHandler *)self accountValidationCompletionHandler];
 
-  if (v13)
+  if (accountValidationCompletionHandler)
   {
-    v14 = [(MCNewCalDAVAccountPayloadHandler *)self accountValidationCompletionHandler];
-    (v14)[2](v14, v9);
+    accountValidationCompletionHandler2 = [(MCNewCalDAVAccountPayloadHandler *)self accountValidationCompletionHandler];
+    (accountValidationCompletionHandler2)[2](accountValidationCompletionHandler2, errorCopy);
 
     [(MCNewCalDAVAccountPayloadHandler *)self setAccountValidationCompletionHandler:0];
   }
 }
 
-- (void)_preflightWithAccount:(id)a3 completionHandler:(id)a4
+- (void)_preflightWithAccount:(id)account completionHandler:(id)handler
 {
-  v6 = a3;
-  [(MCNewCalDAVAccountPayloadHandler *)self setAccountValidationCompletionHandler:a4];
+  accountCopy = account;
+  [(MCNewCalDAVAccountPayloadHandler *)self setAccountValidationCompletionHandler:handler];
   v8 = sharedDAAccountStore();
   v7 = dataaccess_get_global_queue();
-  [v6 checkValidityOnAccountStore:v8 withConsumer:self inQueue:v7];
+  [accountCopy checkValidityOnAccountStore:v8 withConsumer:self inQueue:v7];
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v6 = a3;
+  responsesCopy = responses;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = sub_100066F90;
   v30 = sub_100066FA0;
   v31 = 0;
-  v7 = [(MCNewCalDAVAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:v6];
+  v7 = [(MCNewCalDAVAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:responsesCopy];
   if (v7)
   {
     v23[0] = _NSConcreteStackBlock;
@@ -573,18 +573,18 @@ LABEL_12:
     v27[5] = v11;
   }
 
-  v12 = [v27[5] MCErrorType];
+  mCErrorType = [v27[5] MCErrorType];
   v13 = MCErrorTypeSkippable;
-  v14 = [v12 isEqualToString:MCErrorTypeSkippable];
+  v14 = [mCErrorType isEqualToString:MCErrorTypeSkippable];
 
   if (v14)
   {
     v15 = _MCLogObjects[0];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v27[5] MCVerboseDescription];
+      mCVerboseDescription = [v27[5] MCVerboseDescription];
       *buf = 138543362;
-      v33 = v16;
+      v33 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Swallowing skippable error %{public}@", buf, 0xCu);
     }
 
@@ -598,14 +598,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18;
+    *error = v18;
     v18 = v27[5];
   }
 
-  v19 = [v18 MCErrorType];
-  v20 = [v19 isEqualToString:v13];
+  mCErrorType2 = [v18 MCErrorType];
+  v20 = [mCErrorType2 isEqualToString:v13];
 
   if (!v20)
   {
@@ -622,16 +622,16 @@ LABEL_12:
   return v21;
 }
 
-- (id)_reallyInstallInstaller:(id)a3 isInstalledByMDM:(BOOL)a4 personaID:(id)a5 rmAccountIdentifier:(id)a6
+- (id)_reallyInstallInstaller:(id)installer isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MCNewPayloadHandler *)self payload];
-  v14 = [v13 hostname];
+  mCopy = m;
+  installerCopy = installer;
+  dCopy = d;
+  identifierCopy = identifier;
+  payload = [(MCNewPayloadHandler *)self payload];
+  hostname = [payload hostname];
 
-  if (v14)
+  if (hostname)
   {
     v15 = [(MCNewCalDAVAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:0];
     v16 = v15;
@@ -643,22 +643,22 @@ LABEL_12:
     v57 = 0;
     if (v15)
     {
-      if (v8)
+      if (mCopy)
       {
         [v15 setAccountBoolProperty:1 forKey:@"MCAccountIsManaged"];
-        if ([v11 length])
+        if ([dCopy length])
         {
-          [v16 setAccountProperty:v11 forKey:ACAccountPropertyPersonaIdentifier];
+          [v16 setAccountProperty:dCopy forKey:ACAccountPropertyPersonaIdentifier];
         }
 
-        if (v12)
+        if (identifierCopy)
         {
-          [v16 setAccountProperty:v12 forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
+          [v16 setAccountProperty:identifierCopy forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
         }
       }
 
-      v17 = [v16 backingAccountInfo];
-      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:v17];
+      backingAccountInfo = [v16 backingAccountInfo];
+      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:backingAccountInfo];
 
       v46 = 0;
       v47 = &v46;
@@ -670,29 +670,29 @@ LABEL_12:
       v43 = &v42;
       v44 = 0x2020000000;
       v45 = 1;
-      v18 = [v10 setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
+      v18 = [installerCopy setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
       if ([v18 count])
       {
-        v19 = [v16 backingAccountInfo];
+        backingAccountInfo2 = [v16 backingAccountInfo];
         v20 = +[DASharedAccountProperties DAAccountIdentifiersToIgnoreForUniquenessCheck];
-        [v19 setAccountProperty:v18 forKey:v20];
+        [backingAccountInfo2 setAccountProperty:v18 forKey:v20];
       }
 
       v21 = sharedDAAccountStore();
-      v22 = [v16 backingAccountInfo];
+      backingAccountInfo3 = [v16 backingAccountInfo];
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_100067568;
       v41[3] = &unk_10011C8E0;
       v41[4] = &v42;
       v41[5] = &v46;
-      [v21 canSaveAccount:v22 withCompletionHandler:v41];
+      [v21 canSaveAccount:backingAccountInfo3 withCompletionHandler:v41];
 
       dispatch_semaphore_wait(v47[5], 0xFFFFFFFFFFFFFFFFLL);
       if (*(v43 + 24) == 1)
       {
-        v23 = [v16 backingAccountInfo];
-        [v23 setAuthenticated:1];
+        backingAccountInfo4 = [v16 backingAccountInfo];
+        [backingAccountInfo4 setAuthenticated:1];
 
         v37[0] = _NSConcreteStackBlock;
         v37[1] = 3221225472;
@@ -702,9 +702,9 @@ LABEL_12:
         v38 = v16;
         v40 = &v52;
         v24 = objc_retainBlock(v37);
-        if ([v11 length])
+        if ([dCopy length])
         {
-          v25 = [DMCPersonaHelper performBlockUnderPersona:v11 block:v24];
+          v25 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v24];
         }
 
         else
@@ -719,9 +719,9 @@ LABEL_12:
       {
         v32 = MCErrorArray();
         v33 = [NSError MCErrorWithDomain:MCCalDAVErrorDomain code:17002 descriptionArray:v32 errorType:MCErrorTypeFatal, 0];
-        v34 = [v33 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v33 MCCopyAsPrimaryError];
         v35 = v53[5];
-        v53[5] = v34;
+        v53[5] = mCCopyAsPrimaryError;
       }
 
       _Block_object_dispose(&v42, 8);
@@ -750,21 +750,21 @@ LABEL_12:
   return v28;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v12 = [v11 BOOLValue];
+  installerCopy = installer;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = kMDMPersonaKey;
-    v14 = [v10 objectForKeyedSubscript:kMDMPersonaKey];
+    v14 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v10 objectForKeyedSubscript:v13];
+      v15 = [optionsCopy objectForKeyedSubscript:v13];
     }
 
     else
@@ -773,22 +773,22 @@ LABEL_12:
     }
 
     v17 = kMCInstallProfileOptionManagingProfileIdentifier;
-    v18 = [v10 objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+    v18 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = 0;
+      identifier = 0;
       goto LABEL_11;
     }
 
-    v19 = [v10 objectForKeyedSubscript:v17];
+    v19 = [optionsCopy objectForKeyedSubscript:v17];
 
     if (v19)
     {
       v20 = +[ACAccountStore defaultStore];
       v21 = [v20 dmc_remoteManagementAccountForManagementProfileIdentifier:v19];
 
-      v16 = [v21 identifier];
+      identifier = [v21 identifier];
 
       v18 = v19;
 LABEL_11:
@@ -802,13 +802,13 @@ LABEL_11:
     v15 = 0;
   }
 
-  v16 = 0;
+  identifier = 0;
 LABEL_12:
-  v22 = [(MCNewCalDAVAccountPayloadHandler *)self _reallyInstallInstaller:v9 isInstalledByMDM:v12 personaID:v15 rmAccountIdentifier:v16];
-  if (a6 && v22)
+  v22 = [(MCNewCalDAVAccountPayloadHandler *)self _reallyInstallInstaller:installerCopy isInstalledByMDM:bOOLValue personaID:v15 rmAccountIdentifier:identifier];
+  if (error && v22)
   {
     v22 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
   v23 = v22 == 0;
@@ -826,28 +826,28 @@ LABEL_12:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v3 = v2 != 0;
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v3 = _installedDAAccount != 0;
 
   return v3;
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v10.receiver = self;
   v10.super_class = MCNewCalDAVAccountPayloadHandler;
-  [(MCNewPayloadHandler *)&v10 setAsideWithInstaller:v4];
-  v5 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v6 = v5;
-  if (v5)
+  [(MCNewPayloadHandler *)&v10 setAsideWithInstaller:installerCopy];
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v6 = _installedDAAccount;
+  if (_installedDAAccount)
   {
-    v7 = [v5 backingAccountInfo];
-    [(MCACAccountPayloadHandler *)self setSetAsideAccount:v7];
+    backingAccountInfo = [_installedDAAccount backingAccountInfo];
+    [(MCACAccountPayloadHandler *)self setSetAsideAccount:backingAccountInfo];
 
-    v8 = [v6 backingAccountInfo];
-    v9 = [v8 identifier];
-    [v4 addSetAsideAccountIdentifier:v9 forPayloadClass:objc_opt_class()];
+    backingAccountInfo2 = [v6 backingAccountInfo];
+    identifier = [backingAccountInfo2 identifier];
+    [installerCopy addSetAsideAccountIdentifier:identifier forPayloadClass:objc_opt_class()];
   }
 }
 
@@ -856,31 +856,31 @@ LABEL_12:
   v14 = +[MDMCloudConfiguration sharedConfiguration];
   if ([v14 userMode] == 1)
   {
-    v3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+    setAsideAccount = [(MCACAccountPayloadHandler *)self setAsideAccount];
 
-    if (v3)
+    if (setAsideAccount)
     {
-      v4 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-      v5 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-      v6 = [v5 accountPropertyForKey:@"MCAccountIdentifer"];
+      _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+      setAsideAccount2 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+      v6 = [setAsideAccount2 accountPropertyForKey:@"MCAccountIdentifer"];
 
-      v7 = [v4 backingAccountInfo];
-      v8 = [v7 accountPropertyForKey:@"MCAccountIdentifer"];
+      backingAccountInfo = [_installedDAAccount backingAccountInfo];
+      v8 = [backingAccountInfo accountPropertyForKey:@"MCAccountIdentifer"];
 
       if (v6 && (!v8 || ([v6 isEqualToString:v8] & 1) == 0))
       {
-        v9 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-        [v9 markAllPropertiesDirty];
+        setAsideAccount3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+        [setAsideAccount3 markAllPropertiesDirty];
         v10 = dispatch_semaphore_create(0);
         v11 = sharedDAAccountStore();
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_100067C98;
         v15[3] = &unk_10011C908;
-        v16 = v9;
+        v16 = setAsideAccount3;
         v17 = v10;
         v12 = v10;
-        v13 = v9;
+        v13 = setAsideAccount3;
         [v11 saveVerifiedAccount:v13 withCompletionHandler:v15];
 
         dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
@@ -897,35 +897,35 @@ LABEL_12:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (!v4)
+  if (!isSetAside)
   {
     if ([(MCACAccountPayloadHandler *)self updatedOverInstalledAccount])
     {
-      v7 = 0;
+      backingAccountInfo = 0;
       goto LABEL_11;
     }
 
-    v8 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-    v7 = [v8 backingAccountInfo];
+    _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+    backingAccountInfo = [_installedDAAccount backingAccountInfo];
 
-    if (!v7)
+    if (!backingAccountInfo)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
     [MCFeatureOverrides accountRemovalTimeoutWithDefaultValue:600.0];
-    [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:v7 timeout:0 completion:?];
+    [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:backingAccountInfo timeout:0 completion:?];
     goto LABEL_11;
   }
 
   v5 = +[MDMCloudConfiguration sharedConfiguration];
-  v6 = [v5 userMode];
+  userMode = [v5 userMode];
 
-  if (v6 == 1)
+  if (userMode == 1)
   {
     [(MCACAccountPayloadHandler *)self _installedSetAsideACAccount];
   }
@@ -934,9 +934,9 @@ LABEL_10:
   {
     [(MCACAccountPayloadHandler *)self setAsideAccount];
   }
-  v7 = ;
+  backingAccountInfo = ;
   [(MCACAccountPayloadHandler *)self setSetAsideAccount:0];
-  if (v7)
+  if (backingAccountInfo)
   {
     goto LABEL_10;
   }

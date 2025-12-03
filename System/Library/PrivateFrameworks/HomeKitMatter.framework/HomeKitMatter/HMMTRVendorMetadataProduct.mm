@@ -1,10 +1,10 @@
 @interface HMMTRVendorMetadataProduct
-- (BOOL)isEqual:(id)a3;
-- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)a3 categoryNumber:(id)a4 isInvalid:(BOOL)a5;
-- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)identifier categoryNumber:(id)number isInvalid:(BOOL)invalid;
+- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -12,105 +12,105 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMMTRVendorMetadataProduct *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMMTRVendorMetadataProduct *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
-  v9 = [v7 initWithName:@"Category" value:v8];
-  [v3 addObject:v9];
+  categoryNumber = [(HMMTRVendorMetadataProduct *)self categoryNumber];
+  v9 = [v7 initWithName:@"Category" value:categoryNumber];
+  [array addObject:v9];
 
-  v10 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+  deviceTypeID = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
 
-  if (v10)
+  if (deviceTypeID)
   {
     v11 = objc_alloc(MEMORY[0x277D0F778]);
-    v12 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
-    v13 = [v11 initWithName:@"Device Type" value:v12];
-    [v3 addObject:v13];
+    deviceTypeID2 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+    v13 = [v11 initWithName:@"Device Type" value:deviceTypeID2];
+    [array addObject:v13];
   }
 
-  v14 = [(HMMTRVendorMetadataProduct *)self name];
+  name = [(HMMTRVendorMetadataProduct *)self name];
 
-  if (v14)
+  if (name)
   {
     v15 = objc_alloc(MEMORY[0x277D0F778]);
-    v16 = [(HMMTRVendorMetadataProduct *)self name];
-    v17 = [v15 initWithName:@"Name" value:v16];
-    [v3 addObject:v17];
+    name2 = [(HMMTRVendorMetadataProduct *)self name];
+    v17 = [v15 initWithName:@"Name" value:name2];
+    [array addObject:v17];
   }
 
-  v18 = [(HMMTRVendorMetadataProduct *)self label];
+  label = [(HMMTRVendorMetadataProduct *)self label];
 
-  if (v18)
+  if (label)
   {
     v19 = objc_alloc(MEMORY[0x277D0F778]);
-    v20 = [(HMMTRVendorMetadataProduct *)self label];
-    v21 = [v19 initWithName:@"Label" value:v20];
-    [v3 addObject:v21];
+    label2 = [(HMMTRVendorMetadataProduct *)self label];
+    v21 = [v19 initWithName:@"Label" value:label2];
+    [array addObject:v21];
   }
 
-  v22 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+  installationGuideURL = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
 
-  if (v22)
+  if (installationGuideURL)
   {
     v23 = objc_alloc(MEMORY[0x277D0F778]);
-    v24 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
-    v25 = [v23 initWithName:@"Installation Guide URL" value:v24];
-    [v3 addObject:v25];
+    installationGuideURL2 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+    v25 = [v23 initWithName:@"Installation Guide URL" value:installationGuideURL2];
+    [array addObject:v25];
   }
 
   v26 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMMTRVendorMetadataProduct *)self isInvalid];
   v27 = HMFBooleanToString();
   v28 = [v26 initWithName:@"invalid" value:v27];
-  [v3 addObject:v28];
+  [array addObject:v28];
 
-  v29 = [v3 copy];
+  v29 = [array copy];
 
   return v29;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMTRMutableVendorMetadataProduct allocWithZone:a3];
-  v5 = [(HMMTRVendorMetadataProduct *)self identifier];
-  v6 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
-  v7 = [(HMMTRVendorMetadataProduct *)v4 initWithIdentifier:v5 categoryNumber:v6 isInvalid:[(HMMTRVendorMetadataProduct *)self isInvalid]];
+  v4 = [HMMTRMutableVendorMetadataProduct allocWithZone:zone];
+  identifier = [(HMMTRVendorMetadataProduct *)self identifier];
+  categoryNumber = [(HMMTRVendorMetadataProduct *)self categoryNumber];
+  v7 = [(HMMTRVendorMetadataProduct *)v4 initWithIdentifier:identifier categoryNumber:categoryNumber isInvalid:[(HMMTRVendorMetadataProduct *)self isInvalid]];
 
-  v8 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
-  [(HMMTRVendorMetadataProduct *)v7 setDeviceTypeID:v8];
+  deviceTypeID = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+  [(HMMTRVendorMetadataProduct *)v7 setDeviceTypeID:deviceTypeID];
 
-  v9 = [(HMMTRVendorMetadataProduct *)self name];
-  [(HMMTRVendorMetadataProduct *)v7 setName:v9];
+  name = [(HMMTRVendorMetadataProduct *)self name];
+  [(HMMTRVendorMetadataProduct *)v7 setName:name];
 
-  v10 = [(HMMTRVendorMetadataProduct *)self label];
-  [(HMMTRVendorMetadataProduct *)v7 setLabel:v10];
+  label = [(HMMTRVendorMetadataProduct *)self label];
+  [(HMMTRVendorMetadataProduct *)v7 setLabel:label];
 
-  v11 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
-  [(HMMTRVendorMetadataProduct *)v7 setInstallationGuideURL:v11];
+  installationGuideURL = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+  [(HMMTRVendorMetadataProduct *)v7 setInstallationGuideURL:installationGuideURL];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMMTRVendorMetadataProduct *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMTRVendorMetadataProduct *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -122,19 +122,19 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 identifier];
-    v9 = [(HMMTRVendorMetadataProduct *)self identifier];
-    if ([v8 isEqualToNumber:v9])
+    identifier = [v6 identifier];
+    identifier2 = [(HMMTRVendorMetadataProduct *)self identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v10 = [v7 categoryNumber];
-      v11 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
-      if (![v10 isEqualToNumber:v11])
+      categoryNumber = [v7 categoryNumber];
+      categoryNumber2 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
+      if (![categoryNumber isEqualToNumber:categoryNumber2])
       {
         goto LABEL_13;
       }
 
-      v12 = [v7 deviceTypeID];
-      v13 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+      deviceTypeID = [v7 deviceTypeID];
+      deviceTypeID2 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
       v14 = HMFEqualObjects();
 
       if (!v14)
@@ -142,8 +142,8 @@
         goto LABEL_13;
       }
 
-      v15 = [v7 name];
-      v16 = [(HMMTRVendorMetadataProduct *)self name];
+      name = [v7 name];
+      name2 = [(HMMTRVendorMetadataProduct *)self name];
       v17 = HMFEqualObjects();
 
       if (!v17)
@@ -151,14 +151,14 @@
         goto LABEL_13;
       }
 
-      v18 = [v7 label];
-      v19 = [(HMMTRVendorMetadataProduct *)self label];
+      label = [v7 label];
+      label2 = [(HMMTRVendorMetadataProduct *)self label];
       v20 = HMFEqualObjects();
 
       if (v20)
       {
-        v21 = [v7 installationGuideURL];
-        v22 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+        installationGuideURL = [v7 installationGuideURL];
+        installationGuideURL2 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
         v23 = HMFEqualObjects();
       }
 
@@ -185,45 +185,45 @@ LABEL_13:
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMMTRVendorMetadataProduct *)self categoryNumber];
-  [v3 setObject:v4 forKeyedSubscript:@"Category"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  categoryNumber = [(HMMTRVendorMetadataProduct *)self categoryNumber];
+  [dictionary setObject:categoryNumber forKeyedSubscript:@"Category"];
 
-  v5 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+  deviceTypeID = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
 
-  if (v5)
+  if (deviceTypeID)
   {
-    v6 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
-    [v3 setObject:v6 forKeyedSubscript:@"DeviceType"];
+    deviceTypeID2 = [(HMMTRVendorMetadataProduct *)self deviceTypeID];
+    [dictionary setObject:deviceTypeID2 forKeyedSubscript:@"DeviceType"];
   }
 
-  v7 = [(HMMTRVendorMetadataProduct *)self name];
-  [v3 setObject:v7 forKeyedSubscript:@"Name"];
+  name = [(HMMTRVendorMetadataProduct *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"Name"];
 
-  v8 = [(HMMTRVendorMetadataProduct *)self label];
-  [v3 setObject:v8 forKeyedSubscript:@"Label"];
+  label = [(HMMTRVendorMetadataProduct *)self label];
+  [dictionary setObject:label forKeyedSubscript:@"Label"];
 
-  v9 = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
-  v10 = [v9 absoluteString];
-  [v3 setObject:v10 forKeyedSubscript:@"InstallationGuideURL"];
+  installationGuideURL = [(HMMTRVendorMetadataProduct *)self installationGuideURL];
+  absoluteString = [installationGuideURL absoluteString];
+  [dictionary setObject:absoluteString forKeyedSubscript:@"InstallationGuideURL"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)a3 categoryNumber:(id)a4 isInvalid:(BOOL)a5
+- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)identifier categoryNumber:(id)number isInvalid:(BOOL)invalid
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  numberCopy = number;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = numberCopy;
+  if (!numberCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -235,7 +235,7 @@ LABEL_7:
   v11 = [(HMMTRVendorMetadataProduct *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
@@ -243,28 +243,28 @@ LABEL_7:
     categoryNumber = v11->_categoryNumber;
     v11->_categoryNumber = v14;
 
-    v11->_invalid = a5;
+    v11->_invalid = invalid;
   }
 
   return v11;
 }
 
-- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (HMMTRVendorMetadataProduct)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  representationCopy = representation;
+  if (!representationCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  v9 = [v7 hmf_numberForKey:@"Category"];
+  v8 = representationCopy;
+  v9 = [representationCopy hmf_numberForKey:@"Category"];
   if (v9)
   {
-    v10 = [(HMMTRVendorMetadataProduct *)self initWithIdentifier:v6 categoryNumber:v9 isInvalid:0];
-    v11 = [(HMMTRVendorMetadataProduct *)v10 mutableCopy];
+    selfCopy = [(HMMTRVendorMetadataProduct *)self initWithIdentifier:identifierCopy categoryNumber:v9 isInvalid:0];
+    v11 = [(HMMTRVendorMetadataProduct *)selfCopy mutableCopy];
     v12 = [v8 hmf_stringForKey:@"Label"];
     [v11 setLabel:v12];
 
@@ -292,7 +292,7 @@ LABEL_7:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {

@@ -1,27 +1,27 @@
 @interface REMSuggestedAttributesPerformer
-- (REMSuggestedAttributesPerformer)initWithQueue:(id)a3 store:(id)a4;
-- (id)q_resolveSuggestedAttributesPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)q_syncSuggestedAttributesPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)resultFromPerformingSwiftInvocation:(id)a3 parametersData:(id)a4 storages:(id)a5 error:(id *)a6;
+- (REMSuggestedAttributesPerformer)initWithQueue:(id)queue store:(id)store;
+- (id)q_resolveSuggestedAttributesPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)q_syncSuggestedAttributesPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)resultFromPerformingSwiftInvocation:(id)invocation parametersData:(id)data storages:(id)storages error:(id *)error;
 - (void)preWarmModels;
 @end
 
 @implementation REMSuggestedAttributesPerformer
 
-- (REMSuggestedAttributesPerformer)initWithQueue:(id)a3 store:(id)a4
+- (REMSuggestedAttributesPerformer)initWithQueue:(id)queue store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = REMSuggestedAttributesPerformer;
   v9 = [(REMSuggestedAttributesPerformer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 nonUserInteractiveStore];
+    objc_storeStrong(&v9->_queue, queue);
+    nonUserInteractiveStore = [storeCopy nonUserInteractiveStore];
     store = v10->_store;
-    v10->_store = v11;
+    v10->_store = nonUserInteractiveStore;
   }
 
   return v10;
@@ -29,8 +29,8 @@
 
 - (void)preWarmModels
 {
-  v3 = [(REMSuggestedAttributesPerformer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(REMSuggestedAttributesPerformer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -50,14 +50,14 @@ void __48__REMSuggestedAttributesPerformer_preWarmModels__block_invoke(uint64_t 
   }
 }
 
-- (id)resultFromPerformingSwiftInvocation:(id)a3 parametersData:(id)a4 storages:(id)a5 error:(id *)a6
+- (id)resultFromPerformingSwiftInvocation:(id)invocation parametersData:(id)data storages:(id)storages error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v39 = a4;
-  v40 = a5;
-  v11 = [(REMSuggestedAttributesPerformer *)self queue];
-  dispatch_assert_queue_V2(v11);
+  invocationCopy = invocation;
+  dataCopy = data;
+  storagesCopy = storages;
+  queue = [(REMSuggestedAttributesPerformer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v55 = 0;
   v56 = &v55;
@@ -81,9 +81,9 @@ void __48__REMSuggestedAttributesPerformer_preWarmModels__block_invoke(uint64_t 
   v16 = v15;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v17 = [v10 name];
-    v18 = v17;
-    v19 = [v17 cStringUsingEncoding:1];
+    name = [invocationCopy name];
+    v18 = name;
+    v19 = [name cStringUsingEncoding:1];
     *buf = 136446210;
     v62 = v19;
     _os_signpost_emit_with_name_impl(&dword_19A0DB000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "REMStore.invocation", " enableTelemetry=YES Name=%{public, signpost.telemetry:string1, Name=InvocationName}s}d", buf, 0xCu);
@@ -92,11 +92,11 @@ void __48__REMSuggestedAttributesPerformer_preWarmModels__block_invoke(uint64_t 
   v20 = +[REMLogStore read];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v10 name];
-    v22 = [v39 length];
-    v23 = [v40 count];
+    name2 = [invocationCopy name];
+    v22 = [dataCopy length];
+    v23 = [storagesCopy count];
     *buf = 138543874;
-    v62 = v21;
+    v62 = name2;
     v63 = 2048;
     v64 = v22;
     v65 = 2048;
@@ -105,14 +105,14 @@ void __48__REMSuggestedAttributesPerformer_preWarmModels__block_invoke(uint64_t 
   }
 
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [v10 name];
-  v26 = [v24 stringWithFormat:@"swInv_%@", v25];
+  name3 = [invocationCopy name];
+  v26 = [v24 stringWithFormat:@"swInv_%@", name3];
 
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __101__REMSuggestedAttributesPerformer_resultFromPerformingSwiftInvocation_parametersData_storages_error___block_invoke;
   v45[3] = &unk_1E7507BF0;
-  v27 = v10;
+  v27 = invocationCopy;
   v46 = v27;
   v47 = &v55;
   v28 = [(REMSuggestedAttributesPerformer *)self q_syncSuggestedAttributesPerformerWithReason:v26 errorHandler:v45];
@@ -124,20 +124,20 @@ void __48__REMSuggestedAttributesPerformer_preWarmModels__block_invoke(uint64_t 
   v42 = v29;
   v43 = &v49;
   v44 = &v55;
-  [v28 performSwiftInvocation:v29 withParametersData:v39 storages:v40 completion:v41];
-  if (a6)
+  [v28 performSwiftInvocation:v29 withParametersData:dataCopy storages:storagesCopy completion:v41];
+  if (error)
   {
-    *a6 = v56[5];
+    *error = v56[5];
   }
 
   v30 = v16;
   v31 = v30;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
   {
-    v32 = [v50[5] resultStorages];
-    v33 = [v32 count];
-    v34 = [v50[5] resultData];
-    v35 = [v34 length];
+    resultStorages = [v50[5] resultStorages];
+    v33 = [resultStorages count];
+    resultData = [v50[5] resultData];
+    v35 = [resultData length];
     *buf = 134349312;
     v62 = v33;
     v63 = 2050;
@@ -217,16 +217,16 @@ void __101__REMSuggestedAttributesPerformer_resultFromPerformingSwiftInvocation_
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)q_syncSuggestedAttributesPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)q_syncSuggestedAttributesPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REMSuggestedAttributesPerformer *)self q_cachedXPCPerformer];
+  reasonCopy = reason;
+  handlerCopy = handler;
+  q_cachedXPCPerformer = [(REMSuggestedAttributesPerformer *)self q_cachedXPCPerformer];
 
-  if (!v8)
+  if (!q_cachedXPCPerformer)
   {
     objc_initWeak(&location, self);
-    v9 = [(REMSuggestedAttributesPerformer *)self q_resolveSuggestedAttributesPerformerWithReason:v6 errorHandler:v7];
+    v9 = [(REMSuggestedAttributesPerformer *)self q_resolveSuggestedAttributesPerformerWithReason:reasonCopy errorHandler:handlerCopy];
     if ([v9 conformsToProtocol:&unk_1F0DC87E8])
     {
       v16[0] = MEMORY[0x1E69E9820];
@@ -248,20 +248,20 @@ void __101__REMSuggestedAttributesPerformer_resultFromPerformingSwiftInvocation_
     objc_destroyWeak(&location);
   }
 
-  v11 = [(REMSuggestedAttributesPerformer *)self q_cachedXPCPerformer];
-  if ([v11 conformsToProtocol:&unk_1F0DC87E8])
+  q_cachedXPCPerformer2 = [(REMSuggestedAttributesPerformer *)self q_cachedXPCPerformer];
+  if ([q_cachedXPCPerformer2 conformsToProtocol:&unk_1F0DC87E8])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __93__REMSuggestedAttributesPerformer_q_syncSuggestedAttributesPerformerWithReason_errorHandler___block_invoke_15;
     v14[3] = &unk_1E7507CE0;
-    v15 = v7;
-    v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v14];
+    v15 = handlerCopy;
+    v12 = [q_cachedXPCPerformer2 synchronousRemoteObjectProxyWithErrorHandler:v14];
   }
 
   else
   {
-    v12 = v11;
+    v12 = q_cachedXPCPerformer2;
   }
 
   return v12;
@@ -298,10 +298,10 @@ void __93__REMSuggestedAttributesPerformer_q_syncSuggestedAttributesPerformerWit
   [WeakRetained setQ_cachedXPCPerformer:0];
 }
 
-- (id)q_resolveSuggestedAttributesPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)q_resolveSuggestedAttributesPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v8 = +[REMLogStore utility];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -309,11 +309,11 @@ void __93__REMSuggestedAttributesPerformer_q_syncSuggestedAttributesPerformerWit
     _os_log_impl(&dword_19A0DB000, v8, OS_LOG_TYPE_DEFAULT, "Cache-miss getting suggestedAttributesPerformer. Resolving.", buf, 2u);
   }
 
-  v9 = [(REMSuggestedAttributesPerformer *)self store];
-  v10 = [v9 daemonController];
+  store = [(REMSuggestedAttributesPerformer *)self store];
+  daemonController = [store daemonController];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"suggestedAttributesPerformer-%@", v6];
-  v12 = [v10 syncStorePerformerWithReason:v11 errorHandler:v7];
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"suggestedAttributesPerformer-%@", reasonCopy];
+  v12 = [daemonController syncStorePerformerWithReason:reasonCopy errorHandler:handlerCopy];
   if (v12)
   {
     *buf = 0;
@@ -327,8 +327,8 @@ void __93__REMSuggestedAttributesPerformer_q_syncSuggestedAttributesPerformerWit
     v16[2] = __96__REMSuggestedAttributesPerformer_q_resolveSuggestedAttributesPerformerWithReason_errorHandler___block_invoke;
     v16[3] = &unk_1E7508DB0;
     v18 = buf;
-    v17 = v7;
-    [v12 uncachedSuggestedAttributesPerformerWithReason:v11 completion:v16];
+    v17 = handlerCopy;
+    [v12 uncachedSuggestedAttributesPerformerWithReason:reasonCopy completion:v16];
     v13 = *(v20 + 5);
 
     _Block_object_dispose(buf, 8);

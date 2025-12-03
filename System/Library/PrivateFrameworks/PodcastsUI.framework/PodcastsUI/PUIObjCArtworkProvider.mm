@@ -1,61 +1,61 @@
 @interface PUIObjCArtworkProvider
-- (BOOL)hasArtworkForShow:(id)a3 withDimensions:(CGRect)a4 fromSource:(id)a5;
+- (BOOL)hasArtworkForShow:(id)show withDimensions:(CGRect)dimensions fromSource:(id)source;
 - (PUIObjCArtworkProvider)init;
-- (id)cachedArtworkForMTPodcast:(id)a3 withSize:(CGSize)a4;
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)legacyUICachedArtworkForPodcastUuid:(id)a3 withSize:(CGSize)a4;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)artworkForMTPodcast:(MTPodcast *)a3 withSize:(CGSize)a4 completionHandler:(id)a5;
-- (void)artworkForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5;
-- (void)artworkForShow:(NSString *)a3 size:(CGSize)a4 source:(NSString *)a5 completionHandler:(id)a6;
-- (void)artworkForURL:(NSString *)a3 withSize:(CGSize)a4 completionHandler:(id)a5;
-- (void)artworkPathForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5;
-- (void)artworkPathForShow:(NSString *)a3 size:(CGSize)a4 source:(NSString *)a5 completionHandler:(id)a6;
-- (void)cacheArtwork:(id)a3 withDimension:(CGRect)a4 forShow:(id)a5 fromSource:(id)a6;
-- (void)keyedArtworkForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5;
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4;
-- (void)migrateLibraryArtworkFromImageStoreWithCompletionHandler:(id)a3;
-- (void)placeholderWithSize:(CGSize)a3 completionHandler:(id)a4;
+- (id)cachedArtworkForMTPodcast:(id)podcast withSize:(CGSize)size;
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)legacyUICachedArtworkForPodcastUuid:(id)uuid withSize:(CGSize)size;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)artworkForMTPodcast:(MTPodcast *)podcast withSize:(CGSize)size completionHandler:(id)handler;
+- (void)artworkForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler;
+- (void)artworkForShow:(NSString *)show size:(CGSize)size source:(NSString *)source completionHandler:(id)handler;
+- (void)artworkForURL:(NSString *)l withSize:(CGSize)size completionHandler:(id)handler;
+- (void)artworkPathForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler;
+- (void)artworkPathForShow:(NSString *)show size:(CGSize)size source:(NSString *)source completionHandler:(id)handler;
+- (void)cacheArtwork:(id)artwork withDimension:(CGRect)dimension forShow:(id)show fromSource:(id)source;
+- (void)keyedArtworkForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler;
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler;
+- (void)migrateLibraryArtworkFromImageStoreWithCompletionHandler:(id)handler;
+- (void)placeholderWithSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation PUIObjCArtworkProvider
 
-- (void)cacheArtwork:(id)a3 withDimension:(CGRect)a4 forShow:(id)a5 fromSource:(id)a6
+- (void)cacheArtwork:(id)artwork withDimension:(CGRect)dimension forShow:(id)show fromSource:(id)source
 {
   v8 = sub_21B4C9708();
   v10 = v9;
   v11 = sub_21B4C9708();
-  v12 = a3;
-  v13 = self;
-  sub_21B3FFB54(v12, v8, v10, v11);
+  artworkCopy = artwork;
+  selfCopy = self;
+  sub_21B3FFB54(artworkCopy, v8, v10, v11);
 }
 
-- (BOOL)hasArtworkForShow:(id)a3 withDimensions:(CGRect)a4 fromSource:(id)a5
+- (BOOL)hasArtworkForShow:(id)show withDimensions:(CGRect)dimensions fromSource:(id)source
 {
   v6 = sub_21B4C9708();
   v8 = v7;
   v9 = sub_21B4C9708();
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
   LOBYTE(v9) = sub_21B400000(v6, v8, v9, v11);
 
   return v9 & 1;
 }
 
-- (void)artworkForShow:(NSString *)a3 size:(CGSize)a4 source:(NSString *)a5 completionHandler:(id)a6
+- (void)artworkForShow:(NSString *)show size:(CGSize)size source:(NSString *)source completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v12 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 2) = a3;
+  *(v16 + 2) = show;
   v16[3] = width;
   v16[4] = height;
-  *(v16 + 5) = a5;
+  *(v16 + 5) = source;
   *(v16 + 6) = v15;
   *(v16 + 7) = self;
   v17 = sub_21B4C9A58();
@@ -70,22 +70,22 @@
   v19[3] = 0;
   v19[4] = &unk_21B4D3430;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a5;
-  v22 = self;
+  showCopy = show;
+  sourceCopy = source;
+  selfCopy = self;
   sub_21B47243C(0, 0, v14, &unk_21B4D3438, v19);
 }
 
-- (void)artworkForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5
+- (void)artworkForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v10 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 2) = a3;
+  *(v14 + 2) = show;
   v14[3] = width;
   v14[4] = height;
   *(v14 + 5) = v13;
@@ -102,21 +102,21 @@
   v17[3] = 0;
   v17[4] = &unk_21B4D3410;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  showCopy = show;
+  selfCopy = self;
   sub_21B47243C(0, 0, v12, &unk_21B4D3418, v17);
 }
 
-- (void)keyedArtworkForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5
+- (void)keyedArtworkForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v10 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 2) = a3;
+  *(v14 + 2) = show;
   v14[3] = width;
   v14[4] = height;
   *(v14 + 5) = v13;
@@ -133,24 +133,24 @@
   v17[3] = 0;
   v17[4] = &unk_21B4D33F0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  showCopy = show;
+  selfCopy = self;
   sub_21B47243C(0, 0, v12, &unk_21B4D33F8, v17);
 }
 
-- (void)artworkPathForShow:(NSString *)a3 size:(CGSize)a4 source:(NSString *)a5 completionHandler:(id)a6
+- (void)artworkPathForShow:(NSString *)show size:(CGSize)size source:(NSString *)source completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v12 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 2) = a3;
+  *(v16 + 2) = show;
   v16[3] = width;
   v16[4] = height;
-  *(v16 + 5) = a5;
+  *(v16 + 5) = source;
   *(v16 + 6) = v15;
   *(v16 + 7) = self;
   v17 = sub_21B4C9A58();
@@ -165,22 +165,22 @@
   v19[3] = 0;
   v19[4] = &unk_21B4D33D0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a5;
-  v22 = self;
+  showCopy = show;
+  sourceCopy = source;
+  selfCopy = self;
   sub_21B47243C(0, 0, v14, &unk_21B4D33D8, v19);
 }
 
-- (void)artworkPathForShow:(NSString *)a3 size:(CGSize)a4 completionHandler:(id)a5
+- (void)artworkPathForShow:(NSString *)show size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v10 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 2) = a3;
+  *(v14 + 2) = show;
   v14[3] = width;
   v14[4] = height;
   *(v14 + 5) = v13;
@@ -197,40 +197,40 @@
   v17[3] = 0;
   v17[4] = &unk_21B4D33B0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  showCopy = show;
+  selfCopy = self;
   sub_21B47243C(0, 0, v12, &unk_21B4D33B8, v17);
 }
 
-- (id)legacyUICachedArtworkForPodcastUuid:(id)a3 withSize:(CGSize)a4
+- (id)legacyUICachedArtworkForPodcastUuid:(id)uuid withSize:(CGSize)size
 {
   v5 = sub_21B4C9708();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_21B403BB8(v5, v7);
 
   return v9;
 }
 
-- (id)cachedArtworkForMTPodcast:(id)a3 withSize:(CGSize)a4
+- (id)cachedArtworkForMTPodcast:(id)podcast withSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
+  podcastCopy = podcast;
+  selfCopy = self;
   v7 = sub_21B403E18();
 
   return v7;
 }
 
-- (void)artworkForMTPodcast:(MTPodcast *)a3 withSize:(CGSize)a4 completionHandler:(id)a5
+- (void)artworkForMTPodcast:(MTPodcast *)podcast withSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v10 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 2) = a3;
+  *(v14 + 2) = podcast;
   v14[3] = width;
   v14[4] = height;
   *(v14 + 5) = v13;
@@ -247,21 +247,21 @@
   v17[3] = 0;
   v17[4] = &unk_21B4D3390;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  podcastCopy = podcast;
+  selfCopy = self;
   sub_21B47243C(0, 0, v12, &unk_21B4D3398, v17);
 }
 
-- (void)artworkForURL:(NSString *)a3 withSize:(CGSize)a4 completionHandler:(id)a5
+- (void)artworkForURL:(NSString *)l withSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v10 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 2) = a3;
+  *(v14 + 2) = l;
   v14[3] = width;
   v14[4] = height;
   *(v14 + 5) = v13;
@@ -278,19 +278,19 @@
   v17[3] = 0;
   v17[4] = &unk_21B4D3370;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  lCopy = l;
+  selfCopy = self;
   sub_21B47243C(0, 0, v12, &unk_21B4D3378, v17);
 }
 
-- (void)placeholderWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)placeholderWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v8 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
   v12[2] = width;
   v12[3] = height;
@@ -308,16 +308,16 @@
   v15[3] = 0;
   v15[4] = &unk_21B4D3350;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_21B47243C(0, 0, v10, &unk_21B4D3358, v15);
 }
 
-- (void)migrateLibraryArtworkFromImageStoreWithCompletionHandler:(id)a3
+- (void)migrateLibraryArtworkFromImageStoreWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -333,7 +333,7 @@
   v12[3] = 0;
   v12[4] = &unk_21B4D3330;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_21B47243C(0, 0, v7, &unk_21B4D3338, v12);
 }
 
@@ -344,23 +344,23 @@
   return result;
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ObjCArtworkProvider.existingRepresentation(for:)(v4);
+  catalogCopy = catalog;
+  selfCopy = self;
+  v6 = ObjCArtworkProvider.existingRepresentation(for:)(catalogCopy);
 
   return v6;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(MPArtworkCatalog *)catalog completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD86EE0);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = catalog;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_21B4C9A58();
@@ -375,33 +375,33 @@
   v14[3] = 0;
   v14[4] = &unk_21B4D3330;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  catalogCopy = catalog;
+  selfCopy = self;
   sub_21B47243C(0, 0, v9, &unk_21B4D3338, v14);
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B40C0F8(v4);
-  v7 = v6;
+  catalogCopy = catalog;
+  selfCopy = self;
+  sub_21B40C0F8(catalogCopy);
+  initWithArtworkIdentifier_ = v6;
   if (v6)
   {
     v8 = objc_allocWithZone(MEMORY[0x277D3DB70]);
     v9 = sub_21B4C96C8();
 
-    v7 = [v8 initWithArtworkIdentifier_];
+    initWithArtworkIdentifier_ = [v8 initWithArtworkIdentifier_];
   }
 
-  return v7;
+  return initWithArtworkIdentifier_;
 }
 
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options
 {
-  v7 = a4;
-  v8 = self;
-  if (a3 == 1 && (v9 = sub_21B40C2B0(v7)) != 0)
+  catalogCopy = catalog;
+  selfCopy = self;
+  if (type == 1 && (v9 = sub_21B40C2B0(catalogCopy)) != 0)
   {
     v10 = v9;
     v11 = [objc_allocWithZone(MEMORY[0x277CD5FC8]) init];

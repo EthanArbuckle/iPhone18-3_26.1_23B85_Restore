@@ -1,17 +1,17 @@
 @interface SBStatusBarSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)alpha;
 - (NSSet)backgroundActivitiesToSuppress;
 - (SBStatusBarSettings)init;
-- (id)_initWithBSSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithBSSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)style;
 - (unint64_t)hash;
 - (unint64_t)hiddenParts;
@@ -45,15 +45,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)dealloc
@@ -89,15 +89,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (id)succinctDescriptionBuilder
@@ -109,7 +109,7 @@
   v8[3] = &unk_2783A92D8;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -131,15 +131,15 @@ void __49__SBStatusBarSettings_succinctDescriptionBuilder__block_invoke(uint64_t
   return v4;
 }
 
-- (id)_initWithBSSettings:(id)a3
+- (id)_initWithBSSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v10.receiver = self;
   v10.super_class = SBStatusBarSettings;
   v5 = [(SBStatusBarSettings *)&v10 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [settingsCopy mutableCopy];
     settings = v5->_settings;
     v5->_settings = v6;
 
@@ -156,58 +156,58 @@ void __49__SBStatusBarSettings_succinctDescriptionBuilder__block_invoke(uint64_t
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(SBStatusBarSettings *)self alpha];
+    v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    alpha = [(SBStatusBarSettings *)self alpha];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __31__SBStatusBarSettings_isEqual___block_invoke;
     v30[3] = &unk_2783A91C8;
-    v7 = v4;
+    v7 = equalCopy;
     v31 = v7;
-    v8 = [v5 appendObject:v6 counterpart:v30];
+    v8 = [v5 appendObject:alpha counterpart:v30];
 
-    v9 = [(SBStatusBarSettings *)self style];
+    style = [(SBStatusBarSettings *)self style];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __31__SBStatusBarSettings_isEqual___block_invoke_2;
     v28[3] = &unk_2783ACDE0;
     v10 = v7;
     v29 = v10;
-    v11 = [v5 appendInteger:v9 counterpart:v28];
-    v12 = [(SBStatusBarSettings *)self hiddenParts];
+    v11 = [v5 appendInteger:style counterpart:v28];
+    hiddenParts = [(SBStatusBarSettings *)self hiddenParts];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __31__SBStatusBarSettings_isEqual___block_invoke_3;
     v26[3] = &unk_2783A9500;
     v13 = v10;
     v27 = v13;
-    v14 = [v5 appendUnsignedInteger:v12 counterpart:v26];
-    v15 = [(SBStatusBarSettings *)self legibilitySettings];
+    v14 = [v5 appendUnsignedInteger:hiddenParts counterpart:v26];
+    legibilitySettings = [(SBStatusBarSettings *)self legibilitySettings];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __31__SBStatusBarSettings_isEqual___block_invoke_4;
     v24[3] = &unk_2783A91C8;
     v16 = v13;
     v25 = v16;
-    v17 = [v5 appendObject:v15 counterpart:v24];
+    v17 = [v5 appendObject:legibilitySettings counterpart:v24];
 
-    v18 = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
+    backgroundActivitiesToSuppress = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __31__SBStatusBarSettings_isEqual___block_invoke_5;
     v22[3] = &unk_2783A91C8;
     v23 = v16;
-    v19 = [v5 appendObject:v18 counterpart:v22];
+    v19 = [v5 appendObject:backgroundActivitiesToSuppress counterpart:v22];
 
     v20 = [v5 isEqual];
   }
@@ -218,21 +218,21 @@ void __49__SBStatusBarSettings_succinctDescriptionBuilder__block_invoke(uint64_t
 - (unint64_t)hash
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [(SBStatusBarSettings *)self alpha];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x277CF0C40] builder];
+  alpha = [(SBStatusBarSettings *)self alpha];
+  v5 = [builder appendObject:alpha];
 
-  v6 = [v3 appendInteger:{-[SBStatusBarSettings style](self, "style")}];
-  v7 = [v3 appendUnsignedInteger:{-[SBStatusBarSettings hiddenParts](self, "hiddenParts")}];
-  v8 = [(SBStatusBarSettings *)self legibilitySettings];
-  v9 = [v3 appendObject:v8];
+  v6 = [builder appendInteger:{-[SBStatusBarSettings style](self, "style")}];
+  v7 = [builder appendUnsignedInteger:{-[SBStatusBarSettings hiddenParts](self, "hiddenParts")}];
+  legibilitySettings = [(SBStatusBarSettings *)self legibilitySettings];
+  v9 = [builder appendObject:legibilitySettings];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  backgroundActivitiesToSuppress = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
+  v11 = [backgroundActivitiesToSuppress countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -244,51 +244,51 @@ void __49__SBStatusBarSettings_succinctDescriptionBuilder__block_invoke(uint64_t
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(backgroundActivitiesToSuppress);
         }
 
-        v15 = [v3 appendObject:*(*(&v18 + 1) + 8 * v14++)];
+        v15 = [builder appendObject:*(*(&v18 + 1) + 8 * v14++)];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [backgroundActivitiesToSuppress countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [v3 hash];
+  v16 = [builder hash];
   return v16;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBStatusBarSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStatusBarSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStatusBarSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStatusBarSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBStatusBarSettings *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBStatusBarSettings *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__SBStatusBarSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -323,7 +323,7 @@ void __61__SBStatusBarSettings_descriptionBuilderWithMultilinePrefix___block_inv
   [v10 appendString:v11 withName:@"backgroundActivitiesToSuppress" skipIfEmpty:1];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBStatusBarSettings alloc];
   settings = self->_settings;
@@ -331,7 +331,7 @@ void __61__SBStatusBarSettings_descriptionBuilderWithMultilinePrefix___block_inv
   return [(SBStatusBarSettings *)v4 _initWithBSSettings:settings];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBMutableStatusBarSettings alloc];
   settings = self->_settings;
@@ -339,66 +339,66 @@ void __61__SBStatusBarSettings_descriptionBuilderWithMultilinePrefix___block_inv
   return [(SBStatusBarSettings *)v4 _initWithBSSettings:settings];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 4)
+  if (setting - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2783BFF58[a3 - 1];
+    return off_2783BFF58[setting - 1];
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v7 = a4;
-  v8 = v7;
+  objectCopy = object;
+  v8 = objectCopy;
   v9 = 0;
-  if (a5 <= 2)
+  if (setting <= 2)
   {
-    if (a5 == 1)
+    if (setting == 1)
     {
-      v11 = [v7 description];
+      sb_description = [objectCopy description];
     }
 
     else
     {
-      if (a5 != 2)
+      if (setting != 2)
       {
         goto LABEL_14;
       }
 
-      v11 = [MEMORY[0x277D75128] stringForStatusBarStyle:{objc_msgSend(v7, "integerValue")}];
+      sb_description = [MEMORY[0x277D75128] stringForStatusBarStyle:{objc_msgSend(objectCopy, "integerValue")}];
     }
 
     goto LABEL_13;
   }
 
-  switch(a5)
+  switch(setting)
   {
     case 3uLL:
-      v12 = [v7 unsignedIntegerValue];
-      if (v12 > 0xA)
+      unsignedIntegerValue = [objectCopy unsignedIntegerValue];
+      if (unsignedIntegerValue > 0xA)
       {
         v9 = @"(unknown)";
       }
 
       else
       {
-        v9 = off_2783BFF80[v12];
+        v9 = off_2783BFF80[unsignedIntegerValue];
       }
 
       break;
     case 4uLL:
-      v11 = [v7 sb_description];
+      sb_description = [objectCopy sb_description];
 LABEL_13:
-      v9 = v11;
+      v9 = sb_description;
       break;
     case 5uLL:
-      v10 = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
+      backgroundActivitiesToSuppress = [(SBStatusBarSettings *)self backgroundActivitiesToSuppress];
       v9 = STBackgroundActivityIdentifiersDescription();
 
       break;

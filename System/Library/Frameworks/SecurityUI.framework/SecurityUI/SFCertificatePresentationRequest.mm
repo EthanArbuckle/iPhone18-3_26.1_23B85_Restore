@@ -1,40 +1,40 @@
 @interface SFCertificatePresentationRequest
-- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)a3;
-- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)a3 qwacTrust:(__SecTrust *)a4;
+- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)trust;
+- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)trust qwacTrust:(__SecTrust *)qwacTrust;
 - (void)dealloc;
 @end
 
 @implementation SFCertificatePresentationRequest
 
-- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)a3
+- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)trust
 {
   v7.receiver = self;
   v7.super_class = SFCertificatePresentationRequest;
   v4 = [(SFCertificatePresentationRequest *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (trust && v4)
   {
-    v4->_trust = CFRetain(a3);
+    v4->_trust = CFRetain(trust);
   }
 
   return v5;
 }
 
-- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)a3 qwacTrust:(__SecTrust *)a4
+- (SFCertificatePresentationRequest)initWithTrust:(__SecTrust *)trust qwacTrust:(__SecTrust *)qwacTrust
 {
   v8.receiver = self;
   v8.super_class = SFCertificatePresentationRequest;
   v6 = [(SFCertificatePresentationRequest *)&v8 init];
   if (v6)
   {
-    if (a3)
+    if (trust)
     {
-      v6->_trust = CFRetain(a3);
+      v6->_trust = CFRetain(trust);
     }
 
-    if (a4)
+    if (qwacTrust)
     {
-      v6->_qwacTrust = CFRetain(a4);
+      v6->_qwacTrust = CFRetain(qwacTrust);
     }
   }
 

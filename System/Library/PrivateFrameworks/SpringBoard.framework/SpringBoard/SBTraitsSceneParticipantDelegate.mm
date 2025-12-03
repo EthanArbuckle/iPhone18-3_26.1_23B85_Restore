@@ -1,48 +1,48 @@
 @interface SBTraitsSceneParticipantDelegate
 - (BOOL)_isAllowedToHavePortraitUpsideDown;
-- (BOOL)needsActuationForUpdateReasons:(int64_t)a3;
+- (BOOL)needsActuationForUpdateReasons:(int64_t)reasons;
 - (BOOL)scenePrefersOrientationLocked;
 - (FBScene)scene;
 - (NSString)description;
 - (SBSceneHandle)sceneHandle;
-- (SBTraitsSceneParticipantDelegate)initWithScene:(id)a3;
-- (SBTraitsSceneParticipantDelegate)initWithSceneHandle:(id)a3;
+- (SBTraitsSceneParticipantDelegate)initWithScene:(id)scene;
+- (SBTraitsSceneParticipantDelegate)initWithSceneHandle:(id)handle;
 - (TRAArbiter)arbiter;
 - (TRAParticipant)participant;
-- (double)_angleFromScreenReferenceSpaceForSettings:(id)a3 displayIdentity:(id)a4;
+- (double)_angleFromScreenReferenceSpaceForSettings:(id)settings displayIdentity:(id)identity;
 - (id)_application;
 - (id)lazyOrientationRequestActionAssistant;
-- (id)participantAssociatedSceneIdentityTokens:(id)a3;
+- (id)participantAssociatedSceneIdentityTokens:(id)tokens;
 - (int64_t)_orientationMode;
 - (int64_t)_preferredOrientation;
 - (int64_t)sceneCurrentOrientation;
 - (unint64_t)_allLegalOrientations;
 - (unint64_t)_bestGuessSupportedInterfaceOrientations;
-- (unint64_t)_hostReferenceAngleModeForDisplayIdentity:(id)a3;
-- (unint64_t)_sanitizedMask:(unint64_t)a3 forApplication:(id)a4;
+- (unint64_t)_hostReferenceAngleModeForDisplayIdentity:(id)identity;
+- (unint64_t)_sanitizedMask:(unint64_t)mask forApplication:(id)application;
 - (unint64_t)_supportedOrientations;
 - (void)_bestGuessSupportedInterfaceOrientations;
-- (void)_evaluateOrientationTransitionContext:(id)a3;
+- (void)_evaluateOrientationTransitionContext:(id)context;
 - (void)_resetToInitialState;
-- (void)actuateOrientationSettingsWithContext:(id)a3;
-- (void)actuateUserInterfaceStyleSettingsWithContext:(id)a3;
+- (void)actuateOrientationSettingsWithContext:(id)context;
+- (void)actuateUserInterfaceStyleSettingsWithContext:(id)context;
 - (void)actuateZOrderLevelSettings;
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5;
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix;
 - (void)dealloc;
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4;
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context;
 - (void)invalidate;
-- (void)participantWillInvalidate:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)setParticipant:(id)a3;
-- (void)setScene:(id)a3;
-- (void)setSceneHandle:(id)a3;
-- (void)updateOrientationLockGrantedIfNeeded:(BOOL)a3;
-- (void)updateOrientationSceneSettingsForParticipant:(id)a3;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
-- (void)updatePreferencesWithUpdater:(id)a3;
+- (void)participantWillInvalidate:(id)invalidate;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)setParticipant:(id)participant;
+- (void)setScene:(id)scene;
+- (void)setSceneHandle:(id)handle;
+- (void)updateOrientationLockGrantedIfNeeded:(BOOL)needed;
+- (void)updateOrientationSceneSettingsForParticipant:(id)participant;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
+- (void)updatePreferencesWithUpdater:(id)updater;
 @end
 
 @implementation SBTraitsSceneParticipantDelegate
@@ -66,21 +66,21 @@
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if ([WeakRetained isActive])
   {
-    v3 = [WeakRetained clientSettings];
-    v4 = [v3 preferredInterfaceOrientation];
-    if (!v4)
+    clientSettings = [WeakRetained clientSettings];
+    preferredInterfaceOrientation = [clientSettings preferredInterfaceOrientation];
+    if (!preferredInterfaceOrientation)
     {
-      v5 = [WeakRetained settings];
-      v4 = [v5 interfaceOrientation];
+      settings = [WeakRetained settings];
+      preferredInterfaceOrientation = [settings interfaceOrientation];
     }
   }
 
   else
   {
-    v4 = 0;
+    preferredInterfaceOrientation = 0;
   }
 
-  return v4;
+  return preferredInterfaceOrientation;
 }
 
 - (id)_application
@@ -89,61 +89,61 @@
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
   v5 = SBSafeCast(v3, WeakRetained);
 
-  v6 = [v5 application];
+  application = [v5 application];
   v7 = objc_loadWeakRetained(&self->_scene);
   v8 = v7;
-  if (!v6)
+  if (!application)
   {
-    v9 = [v7 clientHandle];
-    v10 = [v8 clientHandle];
-    v11 = [v10 processHandle];
+    clientHandle = [v7 clientHandle];
+    clientHandle2 = [v8 clientHandle];
+    processHandle = [clientHandle2 processHandle];
 
-    if (v11)
+    if (processHandle)
     {
       v12 = +[SBApplicationController sharedInstance];
-      v13 = [v9 bundleIdentifier];
-      v6 = [v12 applicationWithBundleIdentifier:v13];
+      bundleIdentifier = [clientHandle bundleIdentifier];
+      application = [v12 applicationWithBundleIdentifier:bundleIdentifier];
     }
 
     else
     {
-      v6 = 0;
+      application = 0;
     }
   }
 
-  return v6;
+  return application;
 }
 
 - (unint64_t)_supportedOrientations
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v4 = [WeakRetained uiSettings];
-  v5 = [v4 interfaceOrientationMode];
+  uiSettings = [WeakRetained uiSettings];
+  interfaceOrientationMode = [uiSettings interfaceOrientationMode];
 
-  if (v5 == 2)
+  if (interfaceOrientationMode == 2)
   {
-    v6 = 30;
+    _bestGuessSupportedInterfaceOrientations = 30;
   }
 
   else if ([WeakRetained isActive])
   {
-    v7 = [WeakRetained clientSettings];
-    v8 = [v7 supportedInterfaceOrientations];
-    if (!v8)
+    clientSettings = [WeakRetained clientSettings];
+    supportedInterfaceOrientations = [clientSettings supportedInterfaceOrientations];
+    if (!supportedInterfaceOrientations)
     {
-      v8 = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations];
+      supportedInterfaceOrientations = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations];
     }
 
-    v9 = [(SBTraitsSceneParticipantDelegate *)self _application];
-    v6 = [(SBTraitsSceneParticipantDelegate *)self _sanitizedMask:v8 forApplication:v9];
+    _application = [(SBTraitsSceneParticipantDelegate *)self _application];
+    _bestGuessSupportedInterfaceOrientations = [(SBTraitsSceneParticipantDelegate *)self _sanitizedMask:supportedInterfaceOrientations forApplication:_application];
   }
 
   else
   {
-    v6 = [(SBTraitsSceneParticipantDelegate *)self _bestGuessSupportedInterfaceOrientations];
+    _bestGuessSupportedInterfaceOrientations = [(SBTraitsSceneParticipantDelegate *)self _bestGuessSupportedInterfaceOrientations];
   }
 
-  return v6;
+  return _bestGuessSupportedInterfaceOrientations;
 }
 
 - (unint64_t)_bestGuessSupportedInterfaceOrientations
@@ -155,36 +155,36 @@
     [SBTraitsSceneParticipantDelegate _bestGuessSupportedInterfaceOrientations];
   }
 
-  v5 = [(SBTraitsSceneParticipantDelegate *)self _application];
-  v6 = v5;
-  if (!v5)
+  _application = [(SBTraitsSceneParticipantDelegate *)self _application];
+  v6 = _application;
+  if (!_application)
   {
     goto LABEL_9;
   }
 
-  if ([v5 isMedusaCapable])
+  if ([_application isMedusaCapable])
   {
-    v7 = 30;
+    supportedInterfaceOrientations = 30;
   }
 
   else
   {
-    v8 = [v6 info];
-    v7 = [v8 supportedInterfaceOrientations];
+    info = [v6 info];
+    supportedInterfaceOrientations = [info supportedInterfaceOrientations];
   }
 
-  v9 = [(SBTraitsSceneParticipantDelegate *)self _sanitizedMask:v7 forApplication:v6];
-  if (!v9)
+  initialSupportedOrientationsOverride = [(SBTraitsSceneParticipantDelegate *)self _sanitizedMask:supportedInterfaceOrientations forApplication:v6];
+  if (!initialSupportedOrientationsOverride)
   {
 LABEL_9:
-    v9 = [(SBTraitsSceneParticipantDelegate *)self initialSupportedOrientationsOverride];
-    if (!v9)
+    initialSupportedOrientationsOverride = [(SBTraitsSceneParticipantDelegate *)self initialSupportedOrientationsOverride];
+    if (!initialSupportedOrientationsOverride)
     {
-      v9 = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations];
+      initialSupportedOrientationsOverride = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations];
     }
   }
 
-  v10 = v9;
+  v10 = initialSupportedOrientationsOverride;
 
   return v10;
 }
@@ -211,8 +211,8 @@ LABEL_9:
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    if ([v3 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v2 = 1;
     }
@@ -223,27 +223,27 @@ LABEL_9:
     }
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  return (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 || v2;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || v2;
 }
 
 - (void)actuateZOrderLevelSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_participant);
-  v4 = [WeakRetained currentSettings];
-  v11 = [v4 zOrderLevelSettings];
+  currentSettings = [WeakRetained currentSettings];
+  zOrderLevelSettings = [currentSettings zOrderLevelSettings];
 
   v5 = objc_loadWeakRetained(&self->_scene);
   if (v5)
   {
-    if (v11)
+    if (zOrderLevelSettings)
     {
-      [v11 zOrderLevel];
+      [zOrderLevelSettings zOrderLevel];
       v7 = v6;
-      v8 = [v5 settings];
-      [v8 level];
+      settings = [v5 settings];
+      [settings level];
       v9 = BSFloatEqualToFloat();
 
       if ((v9 & 1) == 0)
@@ -267,18 +267,18 @@ LABEL_9:
     orientationMode = self->_orientationMode;
     if (!orientationMode)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v7 = [(SBTraitsSceneParticipantDelegate *)self _application];
-        v8 = v7;
-        if (v7)
+        _application = [(SBTraitsSceneParticipantDelegate *)self _application];
+        v8 = _application;
+        if (_application)
         {
-          v9 = [v7 isMedusaCapable];
+          isMedusaCapable = [_application isMedusaCapable];
           v10 = 1;
-          if (v9)
+          if (isMedusaCapable)
           {
             v10 = 2;
           }
@@ -290,16 +290,16 @@ LABEL_9:
         {
           self->_orientationMode = 1;
           WeakRetained = objc_loadWeakRetained(&self->_scene);
-          v12 = [WeakRetained clientHandle];
-          v13 = [v12 processHandle];
+          clientHandle = [WeakRetained clientHandle];
+          processHandle = [clientHandle processHandle];
 
-          v14 = [v13 bundle];
-          if (v14)
+          bundle = [processHandle bundle];
+          if (bundle)
           {
             bundleOrientationProperties = self->_bundleOrientationProperties;
             if (!bundleOrientationProperties)
             {
-              v16 = [v14 bundleInfoValuesForKeys:&unk_28336E898];
+              v16 = [bundle bundleInfoValuesForKeys:&unk_28336E898];
               v17 = self->_bundleOrientationProperties;
               self->_bundleOrientationProperties = v16;
 
@@ -348,33 +348,33 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (SBTraitsSceneParticipantDelegate)initWithScene:(id)a3
+- (SBTraitsSceneParticipantDelegate)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = SBTraitsSceneParticipantDelegate;
   v5 = [(SBTraitsSceneParticipantDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
-    [v4 addObserver:v6];
+    objc_storeWeak(&v5->_scene, sceneCopy);
+    [sceneCopy addObserver:v6];
     *&v6->_orientationActuationEnabled = 257;
   }
 
   return v6;
 }
 
-- (SBTraitsSceneParticipantDelegate)initWithSceneHandle:(id)a3
+- (SBTraitsSceneParticipantDelegate)initWithSceneHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 sceneIfExists];
-  v6 = [(SBTraitsSceneParticipantDelegate *)self initWithScene:v5];
+  handleCopy = handle;
+  sceneIfExists = [handleCopy sceneIfExists];
+  v6 = [(SBTraitsSceneParticipantDelegate *)self initWithScene:sceneIfExists];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_sceneHandle, v4);
-    [v4 addObserver:v6];
+    objc_storeWeak(&v6->_sceneHandle, handleCopy);
+    [handleCopy addObserver:v6];
   }
 
   return v6;
@@ -416,9 +416,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setSceneHandle:(id)a3
+- (void)setSceneHandle:(id)handle
 {
-  obj = a3;
+  obj = handle;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
   if ((SBEqualObjects(WeakRetained, obj) & 1) == 0)
   {
@@ -427,8 +427,8 @@ LABEL_9:
       [(SBTraitsSceneParticipantDelegate *)self _resetToInitialState];
     }
 
-    v5 = [obj sceneIfExists];
-    [(SBTraitsSceneParticipantDelegate *)self setScene:v5];
+    sceneIfExists = [obj sceneIfExists];
+    [(SBTraitsSceneParticipantDelegate *)self setScene:sceneIfExists];
 
     objc_storeWeak(&self->_sceneHandle, obj);
     v6 = objc_loadWeakRetained(&self->_scene);
@@ -440,9 +440,9 @@ LABEL_9:
   }
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (WeakRetained != obj)
   {
@@ -456,21 +456,21 @@ LABEL_9:
   }
 }
 
-- (void)setParticipant:(id)a3
+- (void)setParticipant:(id)participant
 {
-  obj = a3;
+  obj = participant;
   if (obj)
   {
-    v5 = [obj role];
-    v6 = SBTraitsArbiterOrientationActuationEnabledForRole(v5);
+    role = [obj role];
+    v6 = SBTraitsArbiterOrientationActuationEnabledForRole(role);
 
     if ((v6 & 1) == 0)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [obj role];
-      [v7 handleFailureInMethod:a2 object:self file:@"SBTraitsSceneParticipantDelegate.m" lineNumber:167 description:{@"%@ requires its participant{%@} to be active", v9, v10}];
+      role2 = [obj role];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBTraitsSceneParticipantDelegate.m" lineNumber:167 description:{@"%@ requires its participant{%@} to be active", v9, role2}];
     }
   }
 
@@ -482,10 +482,10 @@ LABEL_9:
   }
 }
 
-- (void)updatePreferencesWithUpdater:(id)a3
+- (void)updatePreferencesWithUpdater:(id)updater
 {
-  v4 = a3;
-  if (!v4)
+  updaterCopy = updater;
+  if (!updaterCopy)
   {
     [SBTraitsSceneParticipantDelegate updatePreferencesWithUpdater:];
   }
@@ -498,13 +498,13 @@ LABEL_9:
   v8[4] = self;
   v9 = WeakRetained;
   v6 = WeakRetained;
-  [v4 updateZOrderLevelPreferencesWithBlock:v8];
+  [updaterCopy updateZOrderLevelPreferencesWithBlock:v8];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SBTraitsSceneParticipantDelegate_updatePreferencesWithUpdater___block_invoke_2;
   v7[3] = &unk_2783B0DC0;
   v7[4] = self;
-  [v4 updateOrientationPreferencesWithBlock:v7];
+  [updaterCopy updateOrientationPreferencesWithBlock:v7];
 }
 
 void __65__SBTraitsSceneParticipantDelegate_updatePreferencesWithUpdater___block_invoke(uint64_t a1, void *a2)
@@ -545,45 +545,45 @@ void __65__SBTraitsSceneParticipantDelegate_updatePreferencesWithUpdater___block
   [v4 setPreferredOrientation:{objc_msgSend(*(a1 + 32), "_preferredOrientation")}];
 }
 
-- (unint64_t)_sanitizedMask:(unint64_t)a3 forApplication:(id)a4
+- (unint64_t)_sanitizedMask:(unint64_t)mask forApplication:(id)application
 {
-  v6 = a4;
-  if (a3 == 4 && ![(SBTraitsSceneParticipantDelegate *)self _isAllowedToHavePortraitUpsideDown])
+  applicationCopy = application;
+  if (mask == 4 && ![(SBTraitsSceneParticipantDelegate *)self _isAllowedToHavePortraitUpsideDown])
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations]& a3;
+    v7 = [(SBTraitsSceneParticipantDelegate *)self _allLegalOrientations]& mask;
   }
 
   return v7;
 }
 
-- (void)actuateUserInterfaceStyleSettingsWithContext:(id)a3
+- (void)actuateUserInterfaceStyleSettingsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
   v6 = objc_loadWeakRetained(&self->_scene);
   if (v6)
   {
-    v7 = [WeakRetained currentSettings];
+    currentSettings = [WeakRetained currentSettings];
 
-    if (v7)
+    if (currentSettings)
     {
-      v8 = [WeakRetained currentUserInterfaceStyle];
-      v9 = [v6 uiSettings];
-      v10 = [v9 userInterfaceStyle];
+      currentUserInterfaceStyle = [WeakRetained currentUserInterfaceStyle];
+      uiSettings = [v6 uiSettings];
+      userInterfaceStyle = [uiSettings userInterfaceStyle];
 
-      if (v8 != v10)
+      if (currentUserInterfaceStyle != userInterfaceStyle)
       {
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __81__SBTraitsSceneParticipantDelegate_actuateUserInterfaceStyleSettingsWithContext___block_invoke;
         v11[3] = &unk_2783BCD18;
-        v13 = v8;
-        v12 = v4;
+        v13 = currentUserInterfaceStyle;
+        v12 = contextCopy;
         [SBSceneSettingsUpdater safeUpdateScene:v6 withBlock:v11];
       }
     }
@@ -602,16 +602,16 @@ void __81__SBTraitsSceneParticipantDelegate_actuateUserInterfaceStyleSettingsWit
   [v6 setAnimationSettings:v8];
 }
 
-- (void)actuateOrientationSettingsWithContext:(id)a3
+- (void)actuateOrientationSettingsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
   v6 = objc_loadWeakRetained(&self->_scene);
   if (v6)
   {
-    v7 = [WeakRetained currentSettings];
+    currentSettings = [WeakRetained currentSettings];
 
-    if (v7)
+    if (currentSettings)
     {
       v24 = 0;
       v25 = 0;
@@ -621,10 +621,10 @@ void __81__SBTraitsSceneParticipantDelegate_actuateUserInterfaceStyleSettingsWit
       v8 = v23;
       if ((v23 & 0xE) != 0)
       {
-        v9 = [v4 drawingFence];
+        drawingFence = [contextCopy drawingFence];
         if ((v8 & 1) == 0 && self->_orientationActuationAnimatable && [v6 contentState] == 2)
         {
-          v10 = [SBAnimationUtilities animationSettingsForRotationFromOrientation:v24 toOrientation:v25 withContext:v4];
+          v10 = [SBAnimationUtilities animationSettingsForRotationFromOrientation:v24 toOrientation:v25 withContext:contextCopy];
         }
 
         else
@@ -633,23 +633,23 @@ void __81__SBTraitsSceneParticipantDelegate_actuateUserInterfaceStyleSettingsWit
         }
 
         v11 = v10;
-        v12 = [v6 isActive];
+        isActive = [v6 isActive];
         if ((v8 & 2) != 0)
         {
-          if (v12)
+          if (isActive)
           {
-            v13 = [v4 animationSettings];
+            animationSettings = [contextCopy animationSettings];
 
-            if (v13)
+            if (animationSettings)
             {
-              if (!v9)
+              if (!drawingFence)
               {
                 [(BKSAnimationFenceHandle *)self->_fallbackFence_90210730 invalidate];
                 v14 = [*MEMORY[0x277D76620] _systemAnimationFenceCreatingIfNecessary:1];
                 fallbackFence_90210730 = self->_fallbackFence_90210730;
                 self->_fallbackFence_90210730 = v14;
 
-                v9 = self->_fallbackFence_90210730;
+                drawingFence = self->_fallbackFence_90210730;
               }
             }
           }
@@ -660,7 +660,7 @@ void __81__SBTraitsSceneParticipantDelegate_actuateUserInterfaceStyleSettingsWit
         v20[2] = __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContext___block_invoke;
         v20[3] = &unk_2783BCD40;
         v20[4] = self;
-        v16 = v9;
+        v16 = drawingFence;
         v21 = v16;
         v17 = v11;
         v22 = v17;
@@ -701,40 +701,40 @@ void __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContex
   }
 }
 
-- (void)updateOrientationSceneSettingsForParticipant:(id)a3
+- (void)updateOrientationSceneSettingsForParticipant:(id)participant
 {
-  v13 = a3;
-  if (([v13 isUISubclass] & 1) == 0)
+  participantCopy = participant;
+  if (([participantCopy isUISubclass] & 1) == 0)
   {
     [SBTraitsSceneParticipantDelegate updateOrientationSceneSettingsForParticipant:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_participant);
-  v5 = [WeakRetained currentSettings];
-  v6 = [v5 orientationSettings];
+  currentSettings = [WeakRetained currentSettings];
+  orientationSettings = [currentSettings orientationSettings];
 
-  if (v6)
+  if (orientationSettings)
   {
-    v7 = [v13 displayIdentity];
-    v8 = [v6 validatedOrientationInputs];
-    v9 = [v8 currentDeviceOrientation];
+    displayIdentity = [participantCopy displayIdentity];
+    validatedOrientationInputs = [orientationSettings validatedOrientationInputs];
+    currentDeviceOrientation = [validatedOrientationInputs currentDeviceOrientation];
 
-    [(SBTraitsSceneParticipantDelegate *)self _angleFromScreenReferenceSpaceForSettings:v6 displayIdentity:v7];
+    [(SBTraitsSceneParticipantDelegate *)self _angleFromScreenReferenceSpaceForSettings:orientationSettings displayIdentity:displayIdentity];
     v11 = v10;
-    [v13 setHostReferenceAngleMode:{-[SBTraitsSceneParticipantDelegate _hostReferenceAngleModeForDisplayIdentity:](self, "_hostReferenceAngleModeForDisplayIdentity:", v7)}];
-    [v13 setAngleFromHostReferenceUprightDirection:v11];
-    v12 = [v6 orientationMapResolver];
-    [v13 setInterfaceOrientationMapResolver:v12];
+    [participantCopy setHostReferenceAngleMode:{-[SBTraitsSceneParticipantDelegate _hostReferenceAngleModeForDisplayIdentity:](self, "_hostReferenceAngleModeForDisplayIdentity:", displayIdentity)}];
+    [participantCopy setAngleFromHostReferenceUprightDirection:v11];
+    orientationMapResolver = [orientationSettings orientationMapResolver];
+    [participantCopy setInterfaceOrientationMapResolver:orientationMapResolver];
 
-    [v13 setInterfaceOrientationMode:{-[SBTraitsSceneParticipantDelegate _orientationMode](self, "_orientationMode")}];
-    [v13 setInterfaceOrientation:{objc_msgSend(v6, "orientation")}];
-    [v13 setDeviceOrientation:v9];
+    [participantCopy setInterfaceOrientationMode:{-[SBTraitsSceneParticipantDelegate _orientationMode](self, "_orientationMode")}];
+    [participantCopy setInterfaceOrientation:{objc_msgSend(orientationSettings, "orientation")}];
+    [participantCopy setDeviceOrientation:currentDeviceOrientation];
   }
 }
 
-- (unint64_t)_hostReferenceAngleModeForDisplayIdentity:(id)a3
+- (unint64_t)_hostReferenceAngleModeForDisplayIdentity:(id)identity
 {
-  if ([a3 isExternal])
+  if ([identity isExternal])
   {
     return 1;
   }
@@ -745,25 +745,25 @@ void __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContex
   }
 }
 
-- (double)_angleFromScreenReferenceSpaceForSettings:(id)a3 displayIdentity:(id)a4
+- (double)_angleFromScreenReferenceSpaceForSettings:(id)settings displayIdentity:(id)identity
 {
   v6 = SBApp;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 windowSceneManager];
-  v10 = [v9 windowSceneForDisplayIdentity:v7];
+  identityCopy = identity;
+  settingsCopy = settings;
+  windowSceneManager = [v6 windowSceneManager];
+  v10 = [windowSceneManager windowSceneForDisplayIdentity:identityCopy];
 
-  v11 = [v10 switcherController];
-  v12 = [v11 windowManagementContext];
-  [v12 isChamoisOrFlexibleWindowing];
+  switcherController = [v10 switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v13 = [(SBTraitsSceneParticipantDelegate *)self _application];
-  [v13 classicAppPhoneAppRunningOnPad];
+  _application = [(SBTraitsSceneParticipantDelegate *)self _application];
+  [_application classicAppPhoneAppRunningOnPad];
 
-  [v8 orientation];
-  v14 = [v8 validatedOrientationInputs];
+  [settingsCopy orientation];
+  validatedOrientationInputs = [settingsCopy validatedOrientationInputs];
 
-  [v14 nonFlatDeviceOrientation];
+  [validatedOrientationInputs nonFlatDeviceOrientation];
   SBFAngleForRotationFromInterfaceOrientationToInterfaceOrientation();
   BSRadiansToDegrees();
   v16 = v15;
@@ -774,32 +774,32 @@ void __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContex
 - (int64_t)sceneCurrentOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v3 = [WeakRetained sceneIfExists];
-  v4 = [v3 settings];
-  v5 = [v4 interfaceOrientation];
+  sceneIfExists = [WeakRetained sceneIfExists];
+  settings = [sceneIfExists settings];
+  interfaceOrientation = [settings interfaceOrientation];
 
-  return v5;
+  return interfaceOrientation;
 }
 
 - (BOOL)scenePrefersOrientationLocked
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained ui_orientationHostSceneComponent];
+  ui_orientationHostSceneComponent = [WeakRetained ui_orientationHostSceneComponent];
 
-  LOBYTE(WeakRetained) = [v3 clientPrefersInterfaceOrientationLocked];
+  LOBYTE(WeakRetained) = [ui_orientationHostSceneComponent clientPrefersInterfaceOrientationLocked];
   return WeakRetained;
 }
 
-- (void)updateOrientationLockGrantedIfNeeded:(BOOL)a3
+- (void)updateOrientationLockGrantedIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v8 = [WeakRetained ui_orientationHostSceneComponent];
+  ui_orientationHostSceneComponent = [WeakRetained ui_orientationHostSceneComponent];
 
   if ([(SBTraitsSceneParticipantDelegate *)self scenePrefersOrientationLocked])
   {
-    v6 = v8;
-    if (v3)
+    v6 = ui_orientationHostSceneComponent;
+    if (neededCopy)
     {
       v7 = 2;
     }
@@ -812,12 +812,12 @@ void __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContex
 
   else
   {
-    if (![v8 interfaceOrientationLockState])
+    if (![ui_orientationHostSceneComponent interfaceOrientationLockState])
     {
       goto LABEL_8;
     }
 
-    v6 = v8;
+    v6 = ui_orientationHostSceneComponent;
     v7 = 0;
   }
 
@@ -825,23 +825,23 @@ void __74__SBTraitsSceneParticipantDelegate_actuateOrientationSettingsWithContex
 LABEL_8:
 }
 
-- (BOOL)needsActuationForUpdateReasons:(int64_t)a3
+- (BOOL)needsActuationForUpdateReasons:(int64_t)reasons
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   v6 = WeakRetained;
   v7 = 0;
-  if (a3 && WeakRetained)
+  if (reasons && WeakRetained)
   {
-    v8 = [WeakRetained settings];
-    v9 = [v8 isUISubclass];
+    settings = [WeakRetained settings];
+    isUISubclass = [settings isUISubclass];
 
-    if ((v9 & 1) == 0)
+    if ((isUISubclass & 1) == 0)
     {
       [SBTraitsSceneParticipantDelegate needsActuationForUpdateReasons:];
     }
 
     v10 = objc_loadWeakRetained(&self->_participant);
-    v11 = [v6 settings];
+    settings2 = [v6 settings];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -851,19 +851,19 @@ LABEL_8:
     v20 = __67__SBTraitsSceneParticipantDelegate_needsActuationForUpdateReasons___block_invoke;
     v21 = &unk_2783BCD68;
     v24 = &v25;
-    v12 = v11;
+    v12 = settings2;
     v22 = v12;
     v13 = v10;
     v23 = v13;
     v14 = v19;
     v15 = 0;
     v29 = 0;
-    v16 = vcnt_s8(a3);
+    v16 = vcnt_s8(reasons);
     v16.i16[0] = vaddlv_u8(v16);
     v17 = v16.i32[0];
     do
     {
-      if (((1 << v15) & a3) != 0)
+      if (((1 << v15) & reasons) != 0)
       {
         v20(v14);
         if (v29)
@@ -918,30 +918,30 @@ LABEL_6:
   *a4 = *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v8 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
 
-  if (WeakRetained != v8)
+  if (WeakRetained != handleCopy)
   {
     [SBTraitsSceneParticipantDelegate sceneHandle:didCreateScene:];
   }
 
-  [(SBTraitsSceneParticipantDelegate *)self setScene:v6];
-  if (v6)
+  [(SBTraitsSceneParticipantDelegate *)self setScene:sceneCopy];
+  if (sceneCopy)
   {
-    [v8 removeObserver:self];
+    [handleCopy removeObserver:self];
   }
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
-  v5 = a3;
+  handleCopy = handle;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
 
-  if (WeakRetained != v5)
+  if (WeakRetained != handleCopy)
   {
     [SBTraitsSceneParticipantDelegate sceneHandle:didDestroyScene:];
   }
@@ -949,14 +949,14 @@ LABEL_6:
   [(SBTraitsSceneParticipantDelegate *)self setScene:0];
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (!self->_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scene);
 
-    if (WeakRetained != v4)
+    if (WeakRetained != changeCopy)
     {
       [SBTraitsSceneParticipantDelegate sceneContentStateDidChange:];
     }
@@ -967,14 +967,14 @@ LABEL_6:
       [SBTraitsSceneParticipantDelegate sceneContentStateDidChange:];
     }
 
-    if ([v4 contentState] == 2)
+    if ([changeCopy contentState] == 2)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __63__SBTraitsSceneParticipantDelegate_sceneContentStateDidChange___block_invoke;
       v7[3] = &unk_2783A92D8;
       v8 = v6;
-      v9 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v7);
     }
   }
@@ -993,12 +993,12 @@ uint64_t __63__SBTraitsSceneParticipantDelegate_sceneContentStateDidChange___blo
   return [v2 actuateUserInterfaceStyleSettingsWithContext:0];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
-  v9 = [v7 transitionContext];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
   if (self->_invalidated)
   {
     goto LABEL_12;
@@ -1006,7 +1006,7 @@ uint64_t __63__SBTraitsSceneParticipantDelegate_sceneContentStateDidChange___blo
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != sceneCopy)
   {
     [SBTraitsSceneParticipantDelegate scene:didUpdateClientSettings:];
   }
@@ -1015,7 +1015,7 @@ uint64_t __63__SBTraitsSceneParticipantDelegate_sceneContentStateDidChange___blo
 
   if (v11)
   {
-    if (v8)
+    if (settingsDiff)
     {
 LABEL_6:
       sceneClientSettingsDiffInspector = self->_sceneClientSettingsDiffInspector;
@@ -1040,11 +1040,11 @@ LABEL_6:
         sceneClientSettingsDiffInspector = self->_sceneClientSettingsDiffInspector;
       }
 
-      [v8 evaluateWithInspector:sceneClientSettingsDiffInspector context:v9];
-      v16 = [v7 settingsDiff];
-      v17 = [v16 ui_clientSettingsDiffContainsInterfaceOrientationLockPreference];
+      [settingsDiff evaluateWithInspector:sceneClientSettingsDiffInspector context:transitionContext];
+      settingsDiff2 = [settingsCopy settingsDiff];
+      ui_clientSettingsDiffContainsInterfaceOrientationLockPreference = [settingsDiff2 ui_clientSettingsDiffContainsInterfaceOrientationLockPreference];
 
-      if (v17)
+      if (ui_clientSettingsDiffContainsInterfaceOrientationLockPreference)
       {
         BSDispatchMain();
       }
@@ -1054,18 +1054,18 @@ LABEL_6:
   else
   {
     [SBTraitsSceneParticipantDelegate scene:didUpdateClientSettings:];
-    if (v8)
+    if (settingsDiff)
     {
       goto LABEL_6;
     }
   }
 
-  v18 = [v9 actions];
+  actions = [transitionContext actions];
 
-  if (v18)
+  if (actions)
   {
-    v19 = [(SBTraitsSceneParticipantDelegate *)self lazyOrientationRequestActionAssistant];
-    [v19 setUpForTransitionContextIfNeeded:v9];
+    lazyOrientationRequestActionAssistant = [(SBTraitsSceneParticipantDelegate *)self lazyOrientationRequestActionAssistant];
+    [lazyOrientationRequestActionAssistant setUpForTransitionContextIfNeeded:transitionContext];
   }
 
 LABEL_12:
@@ -1098,38 +1098,38 @@ void __66__SBTraitsSceneParticipantDelegate_scene_didUpdateClientSettings___bloc
   return orientationRequestActionAssistant;
 }
 
-- (void)_evaluateOrientationTransitionContext:(id)a3
+- (void)_evaluateOrientationTransitionContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   BSDispatchQueueAssertMain();
   if (!self->_invalidated)
   {
     v27 = a2;
-    v28 = [(SBTraitsSceneParticipantDelegate *)self scene];
+    scene = [(SBTraitsSceneParticipantDelegate *)self scene];
     WeakRetained = objc_loadWeakRetained(&self->_arbiter);
     v7 = objc_loadWeakRetained(&self->_participant);
-    v8 = [v5 animationFence];
-    v29 = [v5 animationSettings];
+    animationFence = [contextCopy animationFence];
+    animationSettings = [contextCopy animationSettings];
     v9 = objc_opt_class();
-    v10 = SBSafeCast(v9, v5);
+    v10 = SBSafeCast(v9, contextCopy);
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 disableTouchCancellationOnRotation];
+      disableTouchCancellationOnRotation = [v10 disableTouchCancellationOnRotation];
     }
 
     else
     {
-      v12 = 0;
+      disableTouchCancellationOnRotation = 0;
     }
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v7 role];
-    v15 = [v13 stringWithFormat:@"%@ scene settings update", v14];
+    role = [v7 role];
+    v15 = [v13 stringWithFormat:@"%@ scene settings update", role];
 
-    v16 = v29;
-    if (v29 || v8 || v12)
+    v16 = animationSettings;
+    if (animationSettings || animationFence || disableTouchCancellationOnRotation)
     {
       v17 = WeakRetained;
       if (!WeakRetained)
@@ -1137,27 +1137,27 @@ void __66__SBTraitsSceneParticipantDelegate_scene_didUpdateClientSettings___bloc
         v18 = SBLogTraitsArbiter();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v7 role];
+          role2 = [v7 role];
           *buf = 138543874;
-          v35 = self;
+          selfCopy = self;
           v36 = 2114;
-          v37 = v28;
+          v37 = scene;
           v38 = 2114;
-          v39 = v26;
+          v39 = role2;
           _os_log_error_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_ERROR, "%{public}@ arbiter is nil for scene %{public}@. Cannot propagate animated client settings changes for delegate of participant with role %{public}@", buf, 0x20u);
         }
 
-        v19 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
-        [v19 handleFailureInMethod:v27 object:self file:@"SBTraitsSceneParticipantDelegate.m" lineNumber:577 description:{@"%@ arbiter is nil. Cannot propagate animated client settings changes", v21}];
+        [currentHandler handleFailureInMethod:v27 object:self file:@"SBTraitsSceneParticipantDelegate.m" lineNumber:577 description:{@"%@ arbiter is nil. Cannot propagate animated client settings changes", v21}];
 
         v17 = 0;
-        v16 = v29;
+        v16 = animationSettings;
       }
 
-      v22 = [objc_alloc(MEMORY[0x277D734E8]) initWithAnimationSettings:v16 drawingFence:v8 preventTouchCancellation:v12];
-      [MEMORY[0x277D75940] _synchronizeDrawingWithFence:v8];
+      v22 = [objc_alloc(MEMORY[0x277D734E8]) initWithAnimationSettings:v16 drawingFence:animationFence preventTouchCancellation:disableTouchCancellationOnRotation];
+      [MEMORY[0x277D75940] _synchronizeDrawingWithFence:animationFence];
       v23 = objc_alloc(MEMORY[0x277D73498]);
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -1170,7 +1170,7 @@ void __66__SBTraitsSceneParticipantDelegate_scene_didUpdateClientSettings___bloc
       v25 = [v23 initWithBuilder:v30];
       [v17 setNeedsUpdateArbitrationWithContext:v25];
 
-      v16 = v29;
+      v16 = animationSettings;
     }
 
     else
@@ -1212,15 +1212,15 @@ void __74__SBTraitsSceneParticipantDelegate__evaluateOrientationTransitionContex
   objc_storeWeak(&self->_scene, 0);
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v9 = a4;
-  v6 = a3;
+  updaterCopy = updater;
+  participantCopy = participant;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
 
-  if (WeakRetained == v6)
+  if (WeakRetained == participantCopy)
   {
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -1229,7 +1229,7 @@ void __74__SBTraitsSceneParticipantDelegate__evaluateOrientationTransitionContex
   else
   {
     [SBTraitsSceneParticipantDelegate updatePreferencesForParticipant:updater:];
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -1237,8 +1237,8 @@ void __74__SBTraitsSceneParticipantDelegate__evaluateOrientationTransitionContex
 
   [SBTraitsSceneParticipantDelegate updatePreferencesForParticipant:updater:];
 LABEL_3:
-  v8 = v9;
-  if (!v9)
+  v8 = updaterCopy;
+  if (!updaterCopy)
   {
     [SBTraitsSceneParticipantDelegate updatePreferencesForParticipant:updater:];
     v8 = 0;
@@ -1247,22 +1247,22 @@ LABEL_3:
   [(SBTraitsSceneParticipantDelegate *)self updatePreferencesWithUpdater:v8];
 }
 
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
 
-  if (WeakRetained == v6)
+  if (WeakRetained == participantCopy)
   {
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
     [SBTraitsSceneParticipantDelegate didChangeSettingsForParticipant:context:];
-    if (v7)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -1271,13 +1271,13 @@ LABEL_12:
   }
 
   [SBTraitsSceneParticipantDelegate didChangeSettingsForParticipant:context:];
-  if (!v6)
+  if (!participantCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v7)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
@@ -1286,13 +1286,13 @@ LABEL_13:
   [SBTraitsSceneParticipantDelegate didChangeSettingsForParticipant:context:];
 LABEL_4:
   [(SBTraitsSceneParticipantDelegate *)self actuateZOrderLevelSettings];
-  v9 = [v7 userInterfaceStyleActuationContext];
-  [(SBTraitsSceneParticipantDelegate *)self actuateUserInterfaceStyleSettingsWithContext:v9];
+  userInterfaceStyleActuationContext = [contextCopy userInterfaceStyleActuationContext];
+  [(SBTraitsSceneParticipantDelegate *)self actuateUserInterfaceStyleSettingsWithContext:userInterfaceStyleActuationContext];
 
   if (self->_orientationActuationEnabled)
   {
-    v10 = [v7 orientationActuationContext];
-    [(SBTraitsSceneParticipantDelegate *)self actuateOrientationSettingsWithContext:v10];
+    orientationActuationContext = [contextCopy orientationActuationContext];
+    [(SBTraitsSceneParticipantDelegate *)self actuateOrientationSettingsWithContext:orientationActuationContext];
 LABEL_9:
 
     goto LABEL_10;
@@ -1302,26 +1302,26 @@ LABEL_9:
   v15 = 0;
   v13 = 0;
   v11 = objc_loadWeakRetained(&self->_scene);
-  SBTraitsSceneParticipantDelegateOrientationChangeInspector(v11, v6, &v14, &v13, &v15);
+  SBTraitsSceneParticipantDelegateOrientationChangeInspector(v11, participantCopy, &v14, &v13, &v15);
 
   [(SBTraitsSceneOrientationRequestsAssistant *)self->_orientationRequestActionAssistant checkValidityAgainstUpdateReasons:v15];
   actuateOrientationAlongsideBlock = self->_actuateOrientationAlongsideBlock;
   if (actuateOrientationAlongsideBlock && v15)
   {
-    v10 = [v7 orientationActuationContext];
-    actuateOrientationAlongsideBlock[2](actuateOrientationAlongsideBlock, v10, v15);
+    orientationActuationContext = [contextCopy orientationActuationContext];
+    actuateOrientationAlongsideBlock[2](actuateOrientationAlongsideBlock, orientationActuationContext, v15);
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)participantWillInvalidate:(id)a3
+- (void)participantWillInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   WeakRetained = objc_loadWeakRetained(&self->_participant);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != invalidateCopy)
   {
     [SBTraitsSceneParticipantDelegate participantWillInvalidate:];
   }
@@ -1329,11 +1329,11 @@ LABEL_10:
   [(SBTraitsSceneParticipantDelegate *)self invalidate];
 }
 
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SBTraitsSceneParticipantDelegate *)self participantAssociatedSceneIdentityTokens:a3];
+  builderCopy = builder;
+  prefixCopy = prefix;
+  v10 = [(SBTraitsSceneParticipantDelegate *)self participantAssociatedSceneIdentityTokens:participant];
   v11 = v10;
   if (v10)
   {
@@ -1342,32 +1342,32 @@ LABEL_10:
     v14[1] = 3221225472;
     v14[2] = __96__SBTraitsSceneParticipantDelegate_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke_2;
     v14[3] = &unk_2783A92D8;
-    v15 = v8;
+    v15 = builderCopy;
     v16 = v12;
     v13 = v12;
-    [v15 appendBodySectionWithName:@"Associated Scenes" multilinePrefix:v9 block:v14];
+    [v15 appendBodySectionWithName:@"Associated Scenes" multilinePrefix:prefixCopy block:v14];
   }
 }
 
-- (id)participantAssociatedSceneIdentityTokens:(id)a3
+- (id)participantAssociatedSceneIdentityTokens:(id)tokens
 {
   v10[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    sceneIfExists = WeakRetained;
 LABEL_4:
-    v7 = [v5 identityToken];
-    v10[0] = v7;
+    identityToken = [sceneIfExists identityToken];
+    v10[0] = identityToken;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
     goto LABEL_5;
   }
 
   v6 = objc_loadWeakRetained(&self->_sceneHandle);
-  v5 = [v6 sceneIfExists];
+  sceneIfExists = [v6 sceneIfExists];
 
-  if (v5)
+  if (sceneIfExists)
   {
     goto LABEL_4;
   }
@@ -1396,7 +1396,7 @@ LABEL_5:
 - (void)_bestGuessSupportedInterfaceOrientations
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

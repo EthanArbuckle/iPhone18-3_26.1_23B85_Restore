@@ -1,15 +1,15 @@
 @interface TLKGridRowView
-+ (void)updateLabel:(id)a3 withRichText:(id)a4 alignment:(int64_t)a5;
++ (void)updateLabel:(id)label withRichText:(id)text alignment:(int64_t)alignment;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (TLKGridRowView)init;
 - (id)leadingTextView;
 - (void)generateLabelsAndImagesIfNecessary;
 - (void)layoutSubviews;
 - (void)observedPropertiesChanged;
 - (void)resetStateOfAllViews;
-- (void)setManager:(id)a3;
-- (void)setTableRow:(id)a3;
+- (void)setManager:(id)manager;
+- (void)setTableRow:(id)row;
 @end
 
 @implementation TLKGridRowView
@@ -41,24 +41,24 @@
 
 - (id)leadingTextView
 {
-  v2 = [(TLKGridRowView *)self currentListOfViews];
-  if ([v2 count] < 2)
+  currentListOfViews = [(TLKGridRowView *)self currentListOfViews];
+  if ([currentListOfViews count] < 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
+    v3 = [currentListOfViews objectAtIndexedSubscript:0];
     objc_opt_class();
     v4 = 0;
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v2 objectAtIndexedSubscript:1];
+      v5 = [currentListOfViews objectAtIndexedSubscript:1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v2 objectAtIndexedSubscript:1];
+        v4 = [currentListOfViews objectAtIndexedSubscript:1];
       }
 
       else
@@ -71,45 +71,45 @@
   return v4;
 }
 
-- (void)setManager:(id)a3
+- (void)setManager:(id)manager
 {
-  v10 = a3;
-  if (self->_manager != v10)
+  managerCopy = manager;
+  if (self->_manager != managerCopy)
   {
-    objc_storeStrong(&self->_manager, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_manager, manager);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTableRow:(id)a3
+- (void)setTableRow:(id)row
 {
-  v10 = a3;
-  if (self->_tableRow != v10)
+  rowCopy = row;
+  if (self->_tableRow != rowCopy)
   {
-    objc_storeStrong(&self->_tableRow, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_tableRow, row);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -123,10 +123,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(TLKGridRowView *)self layoutMargins];
   v7 = v6;
   v9 = v8;
@@ -143,13 +143,13 @@
   if (v15)
   {
     v16 = v15;
-    v17 = [(TLKGridRowView *)self manager];
+    manager = [(TLKGridRowView *)self manager];
 
-    if (v17)
+    if (manager)
     {
-      v18 = [(TLKGridRowView *)self manager];
-      v19 = [(TLKGridRowView *)self tableRow];
-      [v18 sizeForFittingSize:v19 forRow:{v12, v13}];
+      manager2 = [(TLKGridRowView *)self manager];
+      tableRow = [(TLKGridRowView *)self tableRow];
+      [manager2 sizeForFittingSize:tableRow forRow:{v12, v13}];
       v14 = v20;
     }
   }
@@ -187,28 +187,28 @@
     goto LABEL_6;
   }
 
-  v16 = v15;
-  v17 = [(TLKGridRowView *)self manager];
-  if (v17)
+  manager2 = v15;
+  manager = [(TLKGridRowView *)self manager];
+  if (manager)
   {
-    v18 = v17;
-    v19 = [(TLKGridRowView *)self needsSizingPass];
+    v18 = manager;
+    needsSizingPass = [(TLKGridRowView *)self needsSizingPass];
 
-    if (!v19)
+    if (!needsSizingPass)
     {
       goto LABEL_6;
     }
 
-    v16 = [(TLKGridRowView *)self manager];
-    v20 = [(TLKGridRowView *)self tableRow];
-    [v16 sizeForFittingSize:v20 forRow:{width, height}];
+    manager2 = [(TLKGridRowView *)self manager];
+    tableRow = [(TLKGridRowView *)self tableRow];
+    [manager2 sizeForFittingSize:tableRow forRow:{width, height}];
   }
 
 LABEL_6:
   if (width != *MEMORY[0x1E695F060] || height != *(MEMORY[0x1E695F060] + 8))
   {
-    v22 = [(TLKGridRowView *)self manager];
-    v23 = [(TLKGridRowView *)self tableRow];
+    manager3 = [(TLKGridRowView *)self manager];
+    tableRow2 = [(TLKGridRowView *)self tableRow];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __32__TLKGridRowView_layoutSubviews__block_invoke;
@@ -218,23 +218,23 @@ LABEL_6:
     v72[7] = v8;
     v72[8] = v10;
     v72[4] = self;
-    [v22 placeViewsForSize:v23 forRow:v72 completion:{width, height}];
+    [manager3 placeViewsForSize:tableRow2 forRow:v72 completion:{width, height}];
 
     v24 = +[TLKLayoutUtilities isLTR];
     if ([(TLKGridRowView *)self indexOfFirstCenteredColumnForForcedCentering])
     {
-      v25 = [(TLKGridRowView *)self indexOfFirstCenteredColumnForForcedCentering];
-      v26 = [(TLKGridRowView *)self currentListOfViews];
-      v27 = [v26 count];
+      indexOfFirstCenteredColumnForForcedCentering = [(TLKGridRowView *)self indexOfFirstCenteredColumnForForcedCentering];
+      currentListOfViews = [(TLKGridRowView *)self currentListOfViews];
+      v27 = [currentListOfViews count];
 
-      if (v25 < v27)
+      if (indexOfFirstCenteredColumnForForcedCentering < v27)
       {
-        v28 = [(TLKGridRowView *)self indexOfFirstCenteredColumnForForcedCentering];
+        indexOfFirstCenteredColumnForForcedCentering2 = [(TLKGridRowView *)self indexOfFirstCenteredColumnForForcedCentering];
         [(TLKGridRowView *)self bounds];
         v30 = v29;
         v32 = v31;
-        v33 = [(TLKGridRowView *)self currentListOfViews];
-        v34 = [v33 objectAtIndexedSubscript:v28];
+        currentListOfViews2 = [(TLKGridRowView *)self currentListOfViews];
+        v34 = [currentListOfViews2 objectAtIndexedSubscript:indexOfFirstCenteredColumnForForcedCentering2];
         [v34 frame];
         v36 = v35;
         v38 = v37;
@@ -243,11 +243,11 @@ LABEL_6:
         v40 = v39;
         [TLKLayoutUtilities deviceScaledRoundedValue:self forView:(v32 - v38) * 0.5];
         v42 = v41;
-        v43 = [(TLKGridRowView *)self currentListOfViews];
-        v44 = [v43 objectAtIndexedSubscript:v28];
+        currentListOfViews3 = [(TLKGridRowView *)self currentListOfViews];
+        v44 = [currentListOfViews3 objectAtIndexedSubscript:indexOfFirstCenteredColumnForForcedCentering2];
         [v44 setFrame:{v40, v42, v36, v38}];
 
-        v45 = v28 + 1;
+        v45 = indexOfFirstCenteredColumnForForcedCentering2 + 1;
         if (v45 < [(TLKGridRowView *)self indexOfFirstTrailingColumn])
         {
           if (v24)
@@ -257,16 +257,16 @@ LABEL_6:
             v76.size.width = v36;
             v76.size.height = v38;
             MaxX = CGRectGetMaxX(v76);
-            v47 = [(TLKGridRowView *)self currentListOfViews];
-            v48 = [v47 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
+            currentListOfViews4 = [(TLKGridRowView *)self currentListOfViews];
+            v48 = [currentListOfViews4 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
             [v48 frame];
             MinX = v49;
           }
 
           else
           {
-            v51 = [(TLKGridRowView *)self currentListOfViews];
-            v52 = [v51 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
+            currentListOfViews5 = [(TLKGridRowView *)self currentListOfViews];
+            v52 = [currentListOfViews5 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
             [v52 frame];
             MaxX = CGRectGetMaxX(v77);
 
@@ -275,8 +275,8 @@ LABEL_6:
             v78.size.width = v36;
             v78.size.height = v38;
             MinX = CGRectGetMinX(v78);
-            v47 = [(TLKGridRowView *)self currentListOfViews];
-            v48 = [v47 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
+            currentListOfViews4 = [(TLKGridRowView *)self currentListOfViews];
+            v48 = [currentListOfViews4 objectAtIndexedSubscript:{-[TLKGridRowView indexOfFirstTrailingColumn](self, "indexOfFirstTrailingColumn")}];
             [v48 frame];
             v40 = v53;
             v42 = v54;
@@ -290,25 +290,25 @@ LABEL_6:
           v79.size.height = v38;
           v57 = MinX - CGRectGetMaxX(v79);
 
-          v58 = [(TLKGridRowView *)self currentListOfViews];
-          v59 = [v58 objectAtIndexedSubscript:v45];
+          currentListOfViews6 = [(TLKGridRowView *)self currentListOfViews];
+          v59 = [currentListOfViews6 objectAtIndexedSubscript:v45];
           [v59 frame];
           v61 = v60;
           v63 = v62;
 
-          v64 = [(TLKGridRowView *)self currentListOfViews];
-          v65 = [v64 objectAtIndexedSubscript:v45];
+          currentListOfViews7 = [(TLKGridRowView *)self currentListOfViews];
+          v65 = [currentListOfViews7 objectAtIndexedSubscript:v45];
           [v65 setFrame:{MaxX + 10.0, v61, v57 + -20.0, v63}];
 
-          v66 = [(TLKGridRowView *)self currentListOfViews];
-          v67 = [v66 objectAtIndexedSubscript:v45];
+          currentListOfViews8 = [(TLKGridRowView *)self currentListOfViews];
+          v67 = [currentListOfViews8 objectAtIndexedSubscript:v45];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v69 = [(TLKGridRowView *)self currentListOfViews];
-            v70 = [v69 objectAtIndexedSubscript:v45];
+            currentListOfViews9 = [(TLKGridRowView *)self currentListOfViews];
+            v70 = [currentListOfViews9 objectAtIndexedSubscript:v45];
 
             v71 = [TLKFontUtilities preferredFontForTextStyle:*MEMORY[0x1E69DDD28] maximumContentSizeCategory:*MEMORY[0x1E69DDC50]];
             [v70 setFont:v71];
@@ -357,16 +357,16 @@ void __32__TLKGridRowView_layoutSubviews__block_invoke(uint64_t a1, void *a2)
 - (void)observedPropertiesChanged
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = [(TLKGridRowView *)self manager];
-  if (!v4)
+  manager = [(TLKGridRowView *)self manager];
+  if (!manager)
   {
     return;
   }
 
-  v5 = v4;
-  v6 = [(TLKGridRowView *)self tableRow];
+  v5 = manager;
+  tableRow = [(TLKGridRowView *)self tableRow];
 
-  if (!v6)
+  if (!tableRow)
   {
     return;
   }
@@ -397,13 +397,13 @@ void __32__TLKGridRowView_layoutSubviews__block_invoke(uint64_t a1, void *a2)
       }
 
       v11 = *(*(&v58 + 1) + 8 * v10);
-      v12 = [(TLKGridRowView *)self tableRow];
+      tableRow2 = [(TLKGridRowView *)self tableRow];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
       {
-        v2 = [(TLKGridRowView *)self manager];
-        if (([v2 tableContainsRowHeaders] & 1) == 0)
+        manager2 = [(TLKGridRowView *)self manager];
+        if (([manager2 tableContainsRowHeaders] & 1) == 0)
         {
           [v11 setProminence:1];
 LABEL_13:
@@ -412,8 +412,8 @@ LABEL_13:
         }
       }
 
-      v14 = [(TLKGridRowView *)self tableRow];
-      [v11 setProminence:{objc_msgSend(v14, "isSubHeader")}];
+      tableRow3 = [(TLKGridRowView *)self tableRow];
+      [v11 setProminence:{objc_msgSend(tableRow3, "isSubHeader")}];
 
       if (isKindOfClass)
       {
@@ -432,32 +432,32 @@ LABEL_14:
   while (v8);
 LABEL_16:
 
-  v15 = [(TLKGridRowView *)self tableRow];
-  v16 = [v15 data];
+  tableRow4 = [(TLKGridRowView *)self tableRow];
+  data = [tableRow4 data];
 
-  if ([v16 count])
+  if ([data count])
   {
     v17 = 0;
     v18 = 0;
     v19 = 0;
-    v51 = v16;
+    v51 = data;
     do
     {
-      v20 = [v16 objectAtIndexedSubscript:{v17, v51}];
+      v20 = [data objectAtIndexedSubscript:{v17, v51}];
       if ([v20 hasOnlyImage])
       {
-        v21 = [v20 formattedTextItems];
-        v22 = [v21 firstObject];
+        formattedTextItems = [v20 formattedTextItems];
+        firstObject = [formattedTextItems firstObject];
 
-        v23 = [v22 tlkImage];
-        v24 = [(TLKGridRowView *)self imageViews];
-        v25 = [v24 objectAtIndexedSubscript:v18];
-        [v25 setTlkImage:v23];
+        tlkImage = [firstObject tlkImage];
+        imageViews = [(TLKGridRowView *)self imageViews];
+        v25 = [imageViews objectAtIndexedSubscript:v18];
+        [v25 setTlkImage:tlkImage];
 
-        v26 = [(TLKGridRowView *)self currentListOfViews];
-        v27 = [(TLKGridRowView *)self imageViews];
-        v28 = [v27 objectAtIndexedSubscript:v18];
-        [v26 addObject:v28];
+        currentListOfViews = [(TLKGridRowView *)self currentListOfViews];
+        imageViews2 = [(TLKGridRowView *)self imageViews];
+        v28 = [imageViews2 objectAtIndexedSubscript:v18];
+        [currentListOfViews addObject:v28];
 
         ++v18;
       }
@@ -465,23 +465,23 @@ LABEL_16:
       else if (([v20 hasContent] & 1) != 0 || !v17)
       {
         v29 = objc_opt_class();
-        v30 = [(TLKGridRowView *)self labels];
-        v31 = [v30 objectAtIndexedSubscript:v19];
+        labels = [(TLKGridRowView *)self labels];
+        v31 = [labels objectAtIndexedSubscript:v19];
         [(TLKGridRowView *)self manager];
         obja = v18;
         v33 = v32 = v19;
-        v34 = [v33 alignments];
-        v35 = [v34 objectAtIndexedSubscript:v17];
+        alignments = [v33 alignments];
+        v35 = [alignments objectAtIndexedSubscript:v17];
         [v29 updateLabel:v31 withRichText:v20 alignment:{objc_msgSend(v35, "dataAlignment")}];
 
         v36 = v32;
         v18 = obja;
 
-        v16 = v51;
-        v37 = [(TLKGridRowView *)self currentListOfViews];
-        v38 = [(TLKGridRowView *)self labels];
-        v39 = [v38 objectAtIndexedSubscript:v36];
-        [v37 addObject:v39];
+        data = v51;
+        currentListOfViews2 = [(TLKGridRowView *)self currentListOfViews];
+        labels2 = [(TLKGridRowView *)self labels];
+        v39 = [labels2 objectAtIndexedSubscript:v36];
+        [currentListOfViews2 addObject:v39];
 
         v19 = v36 + 1;
       }
@@ -489,16 +489,16 @@ LABEL_16:
       ++v17;
     }
 
-    while (v17 < [v16 count]);
+    while (v17 < [data count]);
   }
 
-  v40 = [(TLKGridRowView *)self manager];
-  v41 = [v40 alignments];
-  v42 = [v41 indexOfObjectPassingTest:&__block_literal_global_0];
+  manager3 = [(TLKGridRowView *)self manager];
+  alignments2 = [manager3 alignments];
+  v42 = [alignments2 indexOfObjectPassingTest:&__block_literal_global_0];
 
-  v43 = [(TLKGridRowView *)self manager];
-  v44 = [v43 alignments];
-  v45 = [v44 indexOfObjectPassingTest:&__block_literal_global_11];
+  manager4 = [(TLKGridRowView *)self manager];
+  alignments3 = [manager4 alignments];
+  v45 = [alignments3 indexOfObjectPassingTest:&__block_literal_global_11];
 
   if (v45 < v42 && v45)
   {
@@ -515,8 +515,8 @@ LABEL_16:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v46 = [(TLKGridRowView *)self currentListOfViews];
-  v47 = [v46 countByEnumeratingWithState:&v54 objects:v62 count:16];
+  currentListOfViews3 = [(TLKGridRowView *)self currentListOfViews];
+  v47 = [currentListOfViews3 countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (v47)
   {
     v48 = v47;
@@ -528,14 +528,14 @@ LABEL_16:
       {
         if (*v55 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(currentListOfViews3);
         }
 
         [*(*(&v54 + 1) + 8 * v50++) setHidden:0];
       }
 
       while (v48 != v50);
-      v48 = [v46 countByEnumeratingWithState:&v54 objects:v62 count:16];
+      v48 = [currentListOfViews3 countByEnumeratingWithState:&v54 objects:v62 count:16];
     }
 
     while (v48);
@@ -552,8 +552,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(TLKGridRowView *)self currentListOfViews];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  currentListOfViews = [(TLKGridRowView *)self currentListOfViews];
+  v4 = [currentListOfViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -568,7 +568,7 @@ LABEL_16:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(currentListOfViews);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -576,14 +576,14 @@ LABEL_16:
         [v12 setFrame:{v7, v8, v9, v10}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [currentListOfViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [(TLKGridRowView *)self currentListOfViews];
-  [v13 removeAllObjects];
+  currentListOfViews2 = [(TLKGridRowView *)self currentListOfViews];
+  [currentListOfViews2 removeAllObjects];
 }
 
 - (void)generateLabelsAndImagesIfNecessary
@@ -593,10 +593,10 @@ LABEL_16:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(TLKGridRowView *)self tableRow];
-  v4 = [v3 data];
+  tableRow = [(TLKGridRowView *)self tableRow];
+  data = [tableRow data];
 
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v5 = [data countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -609,7 +609,7 @@ LABEL_16:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(data);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -620,10 +620,10 @@ LABEL_16:
 
         else
         {
-          v12 = [v11 hasContent];
+          hasContent = [v11 hasContent];
           if (v8)
           {
-            v13 = v12;
+            v13 = hasContent;
           }
 
           else
@@ -635,7 +635,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [data countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
@@ -647,27 +647,27 @@ LABEL_16:
     v8 = 0;
   }
 
-  v14 = [(TLKGridRowView *)self labels];
-  v15 = [v14 count];
+  labels = [(TLKGridRowView *)self labels];
+  v15 = [labels count];
 
   if (v15 < v8)
   {
     do
     {
       v16 = objc_opt_new();
-      v17 = [(TLKGridRowView *)self labels];
-      [v17 addObject:v16];
+      labels2 = [(TLKGridRowView *)self labels];
+      [labels2 addObject:v16];
 
       [(TLKGridRowView *)self addSubview:v16];
-      v18 = [(TLKGridRowView *)self labels];
-      v19 = [v18 count];
+      labels3 = [(TLKGridRowView *)self labels];
+      v19 = [labels3 count];
     }
 
     while (v19 < v8);
   }
 
-  v20 = [(TLKGridRowView *)self imageViews];
-  v21 = [v20 count];
+  imageViews = [(TLKGridRowView *)self imageViews];
+  v21 = [imageViews count];
 
   if (v21 < v7)
   {
@@ -677,31 +677,31 @@ LABEL_16:
       v23 = +[TLKGridLayoutManager font];
       [v22 setSymbolFont:v23];
 
-      v24 = [(TLKGridRowView *)self imageViews];
-      [v24 addObject:v22];
+      imageViews2 = [(TLKGridRowView *)self imageViews];
+      [imageViews2 addObject:v22];
 
       [(TLKGridRowView *)self addSubview:v22];
-      v25 = [(TLKGridRowView *)self imageViews];
-      v26 = [v25 count];
+      imageViews3 = [(TLKGridRowView *)self imageViews];
+      v26 = [imageViews3 count];
     }
 
     while (v26 < v7);
   }
 }
 
-+ (void)updateLabel:(id)a3 withRichText:(id)a4 alignment:(int64_t)a5
++ (void)updateLabel:(id)label withRichText:(id)text alignment:(int64_t)alignment
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  textCopy = text;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__TLKGridRowView_updateLabel_withRichText_alignment___block_invoke;
   v11[3] = &unk_1E7FD8C98;
-  v13 = v8;
-  v14 = a5;
-  v12 = v7;
-  v9 = v8;
-  v10 = v7;
+  v13 = textCopy;
+  alignmentCopy = alignment;
+  v12 = labelCopy;
+  v9 = textCopy;
+  v10 = labelCopy;
   [v10 performBatchUpdates:v11];
 }
 

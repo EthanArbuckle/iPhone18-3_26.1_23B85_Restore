@@ -1,15 +1,15 @@
 @interface HRERankConfidenceController
-- (id)rankRecommendations:(id)a3;
-- (id)rankRecommendationsFromSet:(id)a3;
-- (void)calculateRankForRecommendations:(id)a3 fromTemplate:(id)a4;
+- (id)rankRecommendations:(id)recommendations;
+- (id)rankRecommendationsFromSet:(id)set;
+- (void)calculateRankForRecommendations:(id)recommendations fromTemplate:(id)template;
 @end
 
 @implementation HRERankConfidenceController
 
-- (id)rankRecommendationsFromSet:(id)a3
+- (id)rankRecommendationsFromSet:(id)set
 {
-  v4 = [a3 allObjects];
-  v5 = [(HRERankConfidenceController *)self rankRecommendations:v4];
+  allObjects = [set allObjects];
+  v5 = [(HRERankConfidenceController *)self rankRecommendations:allObjects];
 
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_6];
 
@@ -32,19 +32,19 @@ uint64_t __58__HRERankConfidenceController_rankRecommendationsFromSet___block_in
   return v11;
 }
 
-- (id)rankRecommendations:(id)a3
+- (id)rankRecommendations:(id)recommendations
 {
-  v4 = a3;
-  v5 = [v4 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_3_6];
-  v6 = [v5 allValues];
+  recommendationsCopy = recommendations;
+  v5 = [recommendationsCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_3_6];
+  allValues = [v5 allValues];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HRERankConfidenceController_rankRecommendations___block_invoke_4;
   v8[3] = &unk_279776DC0;
   v8[4] = self;
-  [v6 na_each:v8];
+  [allValues na_each:v8];
 
-  return v4;
+  return recommendationsCopy;
 }
 
 id __51__HRERankConfidenceController_rankRecommendations___block_invoke(uint64_t a1, void *a2)
@@ -82,15 +82,15 @@ void __51__HRERankConfidenceController_rankRecommendations___block_invoke_4(uint
   [*(a1 + 32) calculateRankForRecommendations:v3 fromTemplate:v5];
 }
 
-- (void)calculateRankForRecommendations:(id)a3 fromTemplate:(id)a4
+- (void)calculateRankForRecommendations:(id)recommendations fromTemplate:(id)template
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  recommendationsCopy = recommendations;
+  templateCopy = template;
+  v7 = templateCopy;
+  if (templateCopy)
   {
-    [v6 starterRank];
+    [templateCopy starterRank];
     v9 = v8;
   }
 
@@ -103,7 +103,7 @@ void __51__HRERankConfidenceController_rankRecommendations___block_invoke_4(uint
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = v5;
+  v10 = recommendationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v48 objects:v53 count:16];
   obj = v10;
   if (v11)
@@ -121,22 +121,22 @@ void __51__HRERankConfidenceController_rankRecommendations___block_invoke_4(uint
         }
 
         v15 = *(*(&v48 + 1) + 8 * i);
-        v16 = [v15 involvedObjects];
-        v17 = [v15 changedInvolvedObjects];
-        v18 = [v16 na_setByRemovingObjectsFromSet:v17];
+        involvedObjects = [v15 involvedObjects];
+        changedInvolvedObjects = [v15 changedInvolvedObjects];
+        v18 = [involvedObjects na_setByRemovingObjectsFromSet:changedInvolvedObjects];
         v19 = [v18 count];
-        v20 = v19 / [v16 count];
+        v20 = v19 / [involvedObjects count];
         v21 = [v10 count];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __76__HRERankConfidenceController_calculateRankForRecommendations_fromTemplate___block_invoke_2;
         v42[3] = &unk_279776E08;
-        v43 = v17;
+        v43 = changedInvolvedObjects;
         v44 = v15;
         v45 = &__block_literal_global_14_0;
         v46 = v20;
         v47 = v9;
-        v22 = v17;
+        v22 = changedInvolvedObjects;
         v23 = __76__HRERankConfidenceController_calculateRankForRecommendations_fromTemplate___block_invoke_2(v42);
         [objc_opt_class() _limitRankToValidRange:v23];
         [v15 setRankingConfidenceScore:objc_msgSend(objc_opt_class() rankVersion:{"version"), v24}];

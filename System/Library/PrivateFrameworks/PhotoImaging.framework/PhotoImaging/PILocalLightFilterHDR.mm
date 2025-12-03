@@ -138,7 +138,7 @@
     if (v20)
     {
 LABEL_11:
-      v21 = [(PILocalLightFilterHDR *)self _polyKernelHDR];
+      _polyKernelHDR = [(PILocalLightFilterHDR *)self _polyKernelHDR];
       if (!self->inputImage)
       {
         __assert_rtn("[PILocalLightFilterHDR outputImage]", "PILocalLightHDR.m", 699, "inputImage != nil");
@@ -154,7 +154,7 @@ LABEL_11:
         __assert_rtn("[PILocalLightFilterHDR outputImage]", "PILocalLightHDR.m", 702, "inputLocalLight != nil");
       }
 
-      v22 = v21;
+      v22 = _polyKernelHDR;
       [v20 extent];
       v24 = v23;
       v26 = v25;
@@ -195,7 +195,7 @@ LABEL_11:
       [(NSNumber *)self->inputSmartShadows doubleValue];
       if (fabs(v47) >= 1.0e-10)
       {
-        v48 = [(PILocalLightFilterHDR *)self _shadowKernelHDR];
+        _shadowKernelHDR = [(PILocalLightFilterHDR *)self _shadowKernelHDR];
         [(CIImage *)self->inputImage extent];
         v50 = v49;
         v52 = v51;
@@ -205,7 +205,7 @@ LABEL_11:
         v65[1] = v20;
         v65[2] = self->inputSmartShadows;
         v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:3];
-        v58 = [v48 applyWithExtent:v57 arguments:{v50, v52, v54, v56}];
+        v58 = [_shadowKernelHDR applyWithExtent:v57 arguments:{v50, v52, v54, v56}];
 
         v35 = v58;
       }

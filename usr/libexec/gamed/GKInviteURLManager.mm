@@ -1,9 +1,9 @@
 @interface GKInviteURLManager
 + (id)sharedManager;
-- (BOOL)isRecordEqualToMostRecentInviteShare:(id)a3;
+- (BOOL)isRecordEqualToMostRecentInviteShare:(id)share;
 - (CKRecordID)mostRecentInviteShareRootRecordID;
 - (GKInviteURLManager)init;
-- (void)setMostRecentInviteShareRootRecordID:(id)a3;
+- (void)setMostRecentInviteShareRootRecordID:(id)d;
 @end
 
 @implementation GKInviteURLManager
@@ -49,16 +49,16 @@
   return v2;
 }
 
-- (BOOL)isRecordEqualToMostRecentInviteShare:(id)a3
+- (BOOL)isRecordEqualToMostRecentInviteShare:(id)share
 {
-  if (!a3)
+  if (!share)
   {
     return 0;
   }
 
-  v4 = [a3 recordID];
-  v5 = [(GKInviteURLManager *)self mostRecentInviteShareRootRecordID];
-  v6 = [v4 isEqual:v5];
+  recordID = [share recordID];
+  mostRecentInviteShareRootRecordID = [(GKInviteURLManager *)self mostRecentInviteShareRootRecordID];
+  v6 = [recordID isEqual:mostRecentInviteShareRootRecordID];
 
   return v6;
 }
@@ -71,14 +71,14 @@
   v10 = sub_1000F7C3C;
   v11 = sub_1000F7C4C;
   v12 = 0;
-  v3 = [(GKInviteURLManager *)self inviteManagerQueue];
+  inviteManagerQueue = [(GKInviteURLManager *)self inviteManagerQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F7C54;
   v6[3] = &unk_1003624A8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(inviteManagerQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -86,19 +86,19 @@
   return v4;
 }
 
-- (void)setMostRecentInviteShareRootRecordID:(id)a3
+- (void)setMostRecentInviteShareRootRecordID:(id)d
 {
-  v4 = a3;
-  if (self->_mostRecentInviteShareRootRecordID != v4)
+  dCopy = d;
+  if (self->_mostRecentInviteShareRootRecordID != dCopy)
   {
-    v5 = [(GKInviteURLManager *)self inviteManagerQueue];
+    inviteManagerQueue = [(GKInviteURLManager *)self inviteManagerQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000F7D28;
     v6[3] = &unk_1003610B8;
     v6[4] = self;
-    v7 = v4;
-    dispatch_barrier_async(v5, v6);
+    v7 = dCopy;
+    dispatch_barrier_async(inviteManagerQueue, v6);
   }
 }
 

@@ -15,8 +15,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(TIDPBiomeEmojiTokenRecorder *)self records];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  records = [(TIDPBiomeEmojiTokenRecorder *)self records];
+  v5 = [records countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,13 +27,13 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(records);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) word];
-        v10 = [v9 lowercaseString];
+        word = [*(*(&v23 + 1) + 8 * i) word];
+        lowercaseString = [word lowercaseString];
 
-        v11 = [v3 objectForKey:v10];
+        v11 = [v3 objectForKey:lowercaseString];
         if (v11)
         {
           v12 = v11;
@@ -45,10 +45,10 @@
           v13 = [MEMORY[0x277CCABB0] numberWithInt:1];
         }
 
-        [v3 setObject:v13 forKey:v10];
+        [v3 setObject:v13 forKey:lowercaseString];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [records countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -57,15 +57,15 @@
   v14 = [v3 count];
   if (v14)
   {
-    v15 = [(TIDPBiomeEmojiTokenRecorder *)self delegate];
+    delegate = [(TIDPBiomeEmojiTokenRecorder *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(TIDPBiomeEmojiTokenRecorder *)self delegate];
-      v18 = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
-      v19 = [(TIDPBiomeEmojiTokenRecorder *)self recordingKey];
-      [v17 recordTokenFrequency:v3 withLocale:v18 withTokenType:v19];
+      delegate2 = [(TIDPBiomeEmojiTokenRecorder *)self delegate];
+      recordingKeyLocaleSubstring = [(TIDPRecorder *)self recordingKeyLocaleSubstring];
+      recordingKey = [(TIDPBiomeEmojiTokenRecorder *)self recordingKey];
+      [delegate2 recordTokenFrequency:v3 withLocale:recordingKeyLocaleSubstring withTokenType:recordingKey];
     }
   }
 
@@ -82,10 +82,10 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v4 = [(TIDPRecorder *)self typingSessionAligned];
-  v5 = [v4 alignedEntries];
+  typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+  alignedEntries = [typingSessionAligned alignedEntries];
 
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  v6 = [alignedEntries countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v6)
   {
     v7 = v6;
@@ -99,36 +99,36 @@
       {
         if (*v42 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(alignedEntries);
         }
 
         v10 = *(*(&v41 + 1) + 8 * v9);
-        v11 = [v10 originalWord];
-        v12 = [v11 editedEntry];
-        v13 = v12;
-        if (v12)
+        originalWord = [v10 originalWord];
+        editedEntry = [originalWord editedEntry];
+        v13 = editedEntry;
+        if (editedEntry)
         {
-          v14 = v12;
+          originalWord2 = editedEntry;
         }
 
         else
         {
-          v14 = [v10 originalWord];
+          originalWord2 = [v10 originalWord];
         }
 
-        v15 = v14;
+        v15 = originalWord2;
 
-        v16 = [v15 acceptedCandidate];
-        v17 = [v16 candidate];
-        v18 = [v17 _containsEmoji];
+        acceptedCandidate = [v15 acceptedCandidate];
+        candidate = [acceptedCandidate candidate];
+        _containsEmoji = [candidate _containsEmoji];
 
-        if (v18)
+        if (_containsEmoji)
         {
-          v19 = [v15 acceptedCandidate];
-          v20 = [v19 candidate];
-          v21 = [TIDPWordRecord word:v20];
+          acceptedCandidate2 = [v15 acceptedCandidate];
+          candidate2 = [acceptedCandidate2 candidate];
+          alignedKeyboardInputs = [TIDPWordRecord word:candidate2];
 
-          [v3 addObject:v21];
+          [v3 addObject:alignedKeyboardInputs];
         }
 
         else
@@ -137,8 +137,8 @@
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v21 = [v10 alignedKeyboardInputs];
-          v22 = [v21 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          alignedKeyboardInputs = [v10 alignedKeyboardInputs];
+          v22 = [alignedKeyboardInputs countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v22)
           {
             v23 = v22;
@@ -150,23 +150,23 @@
               {
                 if (*v38 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(alignedKeyboardInputs);
                 }
 
                 v26 = *(*(&v37 + 1) + 8 * i);
-                v27 = [v26 string];
-                v28 = [v27 _containsEmoji];
+                string = [v26 string];
+                _containsEmoji2 = [string _containsEmoji];
 
-                if (v28)
+                if (_containsEmoji2)
                 {
-                  v29 = [v26 string];
-                  v30 = [TIDPWordRecord word:v29];
+                  string2 = [v26 string];
+                  v30 = [TIDPWordRecord word:string2];
 
                   [v3 addObject:v30];
                 }
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v23 = [alignedKeyboardInputs countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v23);
@@ -180,7 +180,7 @@
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v7 = [alignedEntries countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v7);
@@ -196,9 +196,9 @@
 {
   v9.receiver = self;
   v9.super_class = TIDPBiomeEmojiTokenRecorder;
-  v3 = [(TIDPRecorder *)&v9 delegate];
+  delegate = [(TIDPRecorder *)&v9 delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = objc_alloc_init(TIDPBiomeReportingDelegate);
     v8.receiver = self;
@@ -208,9 +208,9 @@
 
   v7.receiver = self;
   v7.super_class = TIDPBiomeEmojiTokenRecorder;
-  v5 = [(TIDPRecorder *)&v7 delegate];
+  delegate2 = [(TIDPRecorder *)&v7 delegate];
 
-  return v5;
+  return delegate2;
 }
 
 @end

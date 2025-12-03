@@ -1,35 +1,35 @@
 @interface BLSBacklightFBSSceneEnvironmentDiffAction
 - (BLSBacklightFBSSceneEnvironmentDiffActionDelegate)delegate;
-- (NSObject)sceneUpdateForUpdatedFBSScene:(void *)a3 fromSettings:(void *)a4 transitionContext:(void *)a5 environment:;
-- (id)desiredFidelityRequestForUpdatedFBSScene:(uint64_t)a3 fromSettings:(uint64_t)a4 transitionContext:;
-- (id)frameSpecifiersRequestForUpdatedFBSScene:(uint64_t)a3 fromSettings:(uint64_t)a4 transitionContext:;
-- (void)completeBLSActionsForUpdatedFBSScene:(void *)a3 transitionContext:;
+- (NSObject)sceneUpdateForUpdatedFBSScene:(void *)scene fromSettings:(void *)settings transitionContext:(void *)context environment:;
+- (id)desiredFidelityRequestForUpdatedFBSScene:(uint64_t)scene fromSettings:(uint64_t)settings transitionContext:;
+- (id)frameSpecifiersRequestForUpdatedFBSScene:(uint64_t)scene fromSettings:(uint64_t)settings transitionContext:;
+- (void)completeBLSActionsForUpdatedFBSScene:(void *)scene transitionContext:;
 - (void)environmentDiffInspector;
-- (void)performActionsForUpdatedFBSScene:(id)a3 settingsDiff:(id)a4 fromSettings:(id)a5 transitionContext:(id)a6;
+- (void)performActionsForUpdatedFBSScene:(id)scene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context;
 @end
 
 @implementation BLSBacklightFBSSceneEnvironmentDiffAction
 
 - (void)environmentDiffInspector
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
       v4 = objc_alloc_init(BLSBacklightSceneSettingsDiffInspector);
-      v5 = v2[1];
-      v2[1] = v4;
+      v5 = selfCopy[1];
+      selfCopy[1] = v4;
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (BLSBacklightFBSSceneEnvironmentDiffActionDelegate)delegate
@@ -272,41 +272,41 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performActionsForUpdatedFBSScene:(id)a3 settingsDiff:(id)a4 fromSettings:(id)a5 transitionContext:(id)a6
+- (void)performActionsForUpdatedFBSScene:(id)scene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context
 {
   v55 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BLSBacklightFBSSceneEnvironmentDiffAction *)self environmentDiffInspector];
-  v15 = [v14 inspectDiff:v11];
-  v16 = [v10 backlightSceneEnvironment];
+  sceneCopy = scene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  environmentDiffInspector = [(BLSBacklightFBSSceneEnvironmentDiffAction *)self environmentDiffInspector];
+  v15 = [environmentDiffInspector inspectDiff:diffCopy];
+  backlightSceneEnvironment = [sceneCopy backlightSceneEnvironment];
   v17 = bls_scenes_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [v16 identifier];
+    identifier = [backlightSceneEnvironment identifier];
     v23 = BLSBacklightFBSSceneEnvironmentDeltaDescription(v15);
     v33 = MEMORY[0x277CCACA8];
     v35 = v23;
-    v31 = [v16 visualState];
-    v32 = [v16 presentationDate];
-    v30 = [v32 bls_shortLoggingString];
-    v34 = [v33 stringWithFormat:@"%@ %@", v31, v30];
+    visualState = [backlightSceneEnvironment visualState];
+    presentationDate = [backlightSceneEnvironment presentationDate];
+    bls_shortLoggingString = [presentationDate bls_shortLoggingString];
+    v34 = [v33 stringWithFormat:@"%@ %@", visualState, bls_shortLoggingString];
     v26 = MEMORY[0x277CCACA8];
-    v28 = [v12 bls_visualState];
-    v29 = [v12 bls_presentationDate];
-    v25 = [v29 bls_shortLoggingString];
-    v27 = [v26 stringWithFormat:@"%@ %@", v28, v25];
-    [v16 frameSpecifier];
+    bls_visualState = [settingsCopy bls_visualState];
+    bls_presentationDate = [settingsCopy bls_presentationDate];
+    bls_shortLoggingString2 = [bls_presentationDate bls_shortLoggingString];
+    v27 = [v26 stringWithFormat:@"%@ %@", bls_visualState, bls_shortLoggingString2];
+    [backlightSceneEnvironment frameSpecifier];
     *buf = 134219522;
-    v42 = v16;
+    v42 = backlightSceneEnvironment;
     v43 = 2114;
-    v44 = v36;
+    v44 = identifier;
     v45 = 2114;
     v46 = v35;
     v47 = 2114;
-    v48 = v11;
+    v48 = diffCopy;
     v49 = 2114;
     v50 = v34;
     v51 = 2114;
@@ -316,10 +316,10 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
     _os_log_debug_impl(&dword_21FE25000, v17, OS_LOG_TYPE_DEBUG, "%p environment updated:%{public}@\n  delta:%{public}@\n  diff:%{public}@\n  new:%{public}@\n  old:%{public}@\n  new:%{public}@", buf, 0x48u);
   }
 
-  v18 = [(BLSBacklightFBSSceneEnvironmentDiffAction *)self delegate];
-  if (!v18)
+  delegate = [(BLSBacklightFBSSceneEnvironmentDiffAction *)self delegate];
+  if (!delegate)
   {
-    v18 = objc_alloc_init(BLSBacklightFBSSceneEnvironmentDiffActionNullDelegate);
+    delegate = objc_alloc_init(BLSBacklightFBSSceneEnvironmentDiffActionNullDelegate);
   }
 
   v37[0] = MEMORY[0x277D85DD0];
@@ -327,36 +327,36 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
   v37[2] = __122__BLSBacklightFBSSceneEnvironmentDiffAction_performActionsForUpdatedFBSScene_settingsDiff_fromSettings_transitionContext___block_invoke;
   v37[3] = &unk_278428A68;
   v37[4] = self;
-  v38 = v10;
-  v39 = v12;
-  v40 = v16;
-  v19 = v16;
-  v20 = v12;
-  v21 = v10;
-  [(BLSBacklightFBSSceneEnvironmentDiffActionNullDelegate *)v18 performChangesWithTransitionContext:v13 environmentDelta:v15 performActionsBlock:v37];
+  v38 = sceneCopy;
+  v39 = settingsCopy;
+  v40 = backlightSceneEnvironment;
+  v19 = backlightSceneEnvironment;
+  v20 = settingsCopy;
+  v21 = sceneCopy;
+  [(BLSBacklightFBSSceneEnvironmentDiffActionNullDelegate *)delegate performChangesWithTransitionContext:contextCopy environmentDelta:v15 performActionsBlock:v37];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (NSObject)sceneUpdateForUpdatedFBSScene:(void *)a3 fromSettings:(void *)a4 transitionContext:(void *)a5 environment:
+- (NSObject)sceneUpdateForUpdatedFBSScene:(void *)scene fromSettings:(void *)settings transitionContext:(void *)context environment:
 {
   v125 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v96 = a5;
-  if (a1)
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (self)
   {
-    v12 = [v9 settings];
-    v13 = [v12 bls_visualState];
-    if (!v13)
+    settings = [v9 settings];
+    bls_visualState = [settings bls_visualState];
+    if (!bls_visualState)
     {
       v24 = bls_scenes_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v96 identifier];
+        identifier = [contextCopy identifier];
         *buf = 134218242;
-        v117 = v96;
+        v117 = contextCopy;
         OUTLINED_FUNCTION_5_0();
         v118 = v26;
         _os_log_impl(&dword_21FE25000, v24, OS_LOG_TYPE_DEFAULT, "%p:%{public}@ settings visualState nil", buf, 0x16u);
@@ -366,17 +366,17 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
       goto LABEL_71;
     }
 
-    v91 = v12;
+    v91 = settings;
     v92 = v9;
-    v93 = v11;
-    v94 = v10;
+    v93 = settingsCopy;
+    v94 = sceneCopy;
     v114 = 0u;
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v14 = [v11 actions];
-    v15 = [v14 countByEnumeratingWithState:&v112 objects:v124 count:16];
-    v95 = v13;
+    actions = [settingsCopy actions];
+    v15 = [actions countByEnumeratingWithState:&v112 objects:v124 count:16];
+    v95 = bls_visualState;
     if (v15)
     {
       v16 = v15;
@@ -390,7 +390,7 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
         {
           if (*v113 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(actions);
           }
 
           v20 = *(*(&v112 + 1) + 8 * i);
@@ -429,7 +429,7 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
           v17 = v22;
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v112 objects:v124 count:16];
+        v16 = [actions countByEnumeratingWithState:&v112 objects:v124 count:16];
         if (!v16)
         {
           goto LABEL_21;
@@ -443,9 +443,9 @@ void __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSSc
 LABEL_21:
 
     v28 = v98;
-    v29 = [v98 isAnimated];
-    v30 = v29;
-    v13 = v95;
+    isAnimated = [v98 isAnimated];
+    v30 = isAnimated;
+    bls_visualState = v95;
     v31 = v97;
     if (!v98 && v97 | v17)
     {
@@ -453,10 +453,10 @@ LABEL_21:
       v9 = v92;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v69 = [v93 actions];
-        v70 = [v69 bs_map:&__block_literal_global_4];
+        actions2 = [v93 actions];
+        v70 = [actions2 bs_map:&__block_literal_global_4];
         *buf = 134218498;
-        v117 = v96;
+        v117 = contextCopy;
         OUTLINED_FUNCTION_5_0();
         v118 = v71;
         v119 = v72;
@@ -474,10 +474,10 @@ LABEL_21:
 
       if (v17)
       {
-        v34 = [MEMORY[0x277CF0B68] response];
+        response = [MEMORY[0x277CF0B68] response];
         v35 = v17;
 LABEL_39:
-        [v35 sendResponse:v34];
+        [v35 sendResponse:response];
         v39 = 0;
 LABEL_69:
 
@@ -494,7 +494,7 @@ LABEL_69:
 
     else
     {
-      v36 = v29;
+      v36 = isAnimated;
     }
 
     v9 = v92;
@@ -503,14 +503,14 @@ LABEL_69:
       v37 = bls_scenes_log();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v60 = [v96 identifier];
+        identifier2 = [contextCopy identifier];
         v61 = [v93 debugDescription];
         v62 = [v92 debugDescription];
         *buf = 134218754;
-        v117 = v96;
+        v117 = contextCopy;
         v31 = v97;
         OUTLINED_FUNCTION_5_0();
-        *(v63 + 78) = v60;
+        *(v63 + 78) = identifier2;
         v119 = v64;
         v120 = v61;
         v121 = v64;
@@ -522,13 +522,13 @@ LABEL_69:
 
       if (v28)
       {
-        v38 = [MEMORY[0x277CF0B68] response];
-        [v28 sendResponse:v38];
+        response2 = [MEMORY[0x277CF0B68] response];
+        [v28 sendResponse:response2];
       }
 
       if (v31)
       {
-        v34 = [[BLSBacklightSceneUpdateBacklightRampResponse alloc] initWithRampDuration:0.0];
+        response = [[BLSBacklightSceneUpdateBacklightRampResponse alloc] initWithRampDuration:0.0];
         v35 = v31;
         goto LABEL_39;
       }
@@ -539,37 +539,37 @@ LABEL_70:
       v24 = v39;
 
       v27 = v24;
-      v11 = v93;
-      v12 = v91;
+      settingsCopy = v93;
+      settings = v91;
 LABEL_71:
 
       goto LABEL_72;
     }
 
-    v40 = [v10 bls_visualState];
-    v41 = v96;
-    v42 = [v96 frameSpecifier];
-    [v42 setGrantedFidelity:{objc_msgSend(v95, "updateFidelity")}];
-    v89 = [v98 event];
-    v90 = v42;
-    if (!v42)
+    bls_visualState2 = [sceneCopy bls_visualState];
+    v41 = contextCopy;
+    frameSpecifier = [contextCopy frameSpecifier];
+    [frameSpecifier setGrantedFidelity:{objc_msgSend(v95, "updateFidelity")}];
+    event = [v98 event];
+    v90 = frameSpecifier;
+    if (!frameSpecifier)
     {
-      v43 = [v96 presentationDate];
-      if (v43)
+      presentationDate = [contextCopy presentationDate];
+      if (presentationDate)
       {
         v44 = bls_scenes_log();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
-          v88 = [v96 identifier];
-          v74 = [v43 bls_shortLoggingString];
-          [v96 alwaysOnSession];
+          identifier3 = [contextCopy identifier];
+          bls_shortLoggingString = [presentationDate bls_shortLoggingString];
+          [contextCopy alwaysOnSession];
           objc_claimAutoreleasedReturnValue();
           *buf = 134218754;
-          v117 = v96;
+          v117 = contextCopy;
           OUTLINED_FUNCTION_5_0();
-          *(v75 + 78) = v88;
+          *(v75 + 78) = identifier3;
           v119 = v76;
-          v120 = v74;
+          v120 = bls_shortLoggingString;
           v121 = v76;
           *(v75 + 98) = v77;
           v78 = v77;
@@ -590,7 +590,7 @@ LABEL_71:
       v85 = &v110;
       v110 = v28;
       v46 = &v111;
-      v47 = v96;
+      v47 = contextCopy;
       v84 = &v111;
     }
 
@@ -602,7 +602,7 @@ LABEL_71:
       v105[2] = __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSScene_fromSettings_transitionContext_environment___block_invoke_12;
       v105[3] = &unk_278428AB0;
       v85 = &v106;
-      v106 = v96;
+      v106 = contextCopy;
       v84 = &v107;
       v107 = v95;
       v46 = &v108;
@@ -621,7 +621,7 @@ LABEL_71:
       v81 = &v103;
       v103 = v97;
       v80 = &v104;
-      v104 = v96;
+      v104 = contextCopy;
     }
 
     else
@@ -640,17 +640,17 @@ LABEL_71:
       v50 = 0;
     }
 
-    v86 = v40;
+    v86 = bls_visualState2;
     v82 = v46;
     if (v50 == 1)
     {
-      [v96 setAnimatingVisualState:1];
+      [contextCopy setAnimatingVisualState:1];
     }
 
     else if (!v17)
     {
       v51 = 0;
-      v52 = v96;
+      v52 = contextCopy;
       goto LABEL_60;
     }
 
@@ -660,28 +660,28 @@ LABEL_71:
     v99[2] = __118__BLSBacklightFBSSceneEnvironmentDiffAction_sceneUpdateForUpdatedFBSScene_fromSettings_transitionContext_environment___block_invoke_15;
     v99[3] = &unk_278428688;
     v83 = &v100;
-    v100 = v96;
-    v52 = v96;
+    v100 = contextCopy;
+    v52 = contextCopy;
     v41 = &v101;
     v101 = v17;
 LABEL_60:
     v53 = MEMORY[0x223D716E0](v51);
     v54 = [BLSBacklightSceneUpdate alloc];
-    v55 = [v98 isTouchTargetable];
+    isTouchTargetable = [v98 isTouchTargetable];
     BYTE1(v79) = [v98 isUpdateToDateSpecifier];
-    LOBYTE(v79) = v55;
+    LOBYTE(v79) = isTouchTargetable;
     v56 = v52;
-    v13 = v95;
-    v34 = v86;
-    v39 = [(BLSBacklightSceneUpdate *)v54 initForEnvironment:v56 visualState:v95 previousVisualState:v86 frameSpecifier:v90 animated:v30 triggerEvent:v89 touchTargetable:v79 isUpdateToDateSpecifier:v87 sceneContentsUpdated:v49 performBacklightRamp:v53 sceneContentsAnimationComplete:?];
+    bls_visualState = v95;
+    response = v86;
+    v39 = [(BLSBacklightSceneUpdate *)v54 initForEnvironment:v56 visualState:v95 previousVisualState:v86 frameSpecifier:v90 animated:v30 triggerEvent:event touchTargetable:v79 isUpdateToDateSpecifier:v87 sceneContentsUpdated:v49 performBacklightRamp:v53 sceneContentsAnimationComplete:?];
     v57 = bls_scenes_log();
     v31 = v97;
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
     {
-      v66 = [v96 identifier];
+      identifier4 = [contextCopy identifier];
       *buf = 134219266;
-      v117 = v96;
-      v34 = v86;
+      v117 = contextCopy;
+      response = v86;
       OUTLINED_FUNCTION_5_0();
       *(v68 + 78) = v67;
       v119 = 2112;
@@ -694,7 +694,7 @@ LABEL_60:
       *(v68 + 118) = v17;
       _os_log_debug_impl(&dword_21FE25000, v57, OS_LOG_TYPE_DEBUG, "%p:%{public}@ created sceneUpdate %@ from actions\n\t%@\n\t%@\n\t%@", buf, 0x3Eu);
 
-      v13 = v95;
+      bls_visualState = v95;
     }
 
     if (v17)
@@ -706,7 +706,7 @@ LABEL_60:
     {
     }
 
-    v10 = v94;
+    sceneCopy = v94;
     if (!v98)
     {
     }
@@ -722,34 +722,34 @@ LABEL_72:
   return v27;
 }
 
-- (void)completeBLSActionsForUpdatedFBSScene:(void *)a3 transitionContext:
+- (void)completeBLSActionsForUpdatedFBSScene:(void *)scene transitionContext:
 {
   v81 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  sceneCopy = scene;
+  v7 = sceneCopy;
+  if (!self)
   {
     goto LABEL_43;
   }
 
-  v8 = [v6 actions];
-  v9 = [v8 count];
+  actions = [sceneCopy actions];
+  v9 = [actions count];
 
   if (!v9)
   {
     goto LABEL_43;
   }
 
-  v70 = a1;
+  selfCopy = self;
   v71 = v7;
   v72 = v5;
   *v76 = 0u;
   v77 = 0u;
   *v74 = 0u;
   v75 = 0u;
-  v10 = [v7 actions];
-  v11 = [v10 countByEnumeratingWithState:v74 objects:v80 count:16];
+  actions2 = [v7 actions];
+  v11 = [actions2 countByEnumeratingWithState:v74 objects:v80 count:16];
   if (!v11)
   {
     v13 = 0;
@@ -769,7 +769,7 @@ LABEL_72:
     {
       if (*v75 != v15)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(actions2);
       }
 
       v17 = *(v74[1] + 8 * i);
@@ -808,54 +808,54 @@ LABEL_72:
       v13 = v19;
     }
 
-    v12 = [v10 countByEnumeratingWithState:v74 objects:v80 count:16];
+    v12 = [actions2 countByEnumeratingWithState:v74 objects:v80 count:16];
   }
 
   while (v12);
 LABEL_18:
 
-  v21 = [v5 backlightSceneEnvironment];
-  v22 = [v21 identifier];
+  backlightSceneEnvironment = [v5 backlightSceneEnvironment];
+  identifier = [backlightSceneEnvironment identifier];
   v23 = v73;
   if (v14)
   {
-    v24 = [v14 canSendResponse];
+    canSendResponse = [v14 canSendResponse];
     v25 = bls_scenes_log();
-    v26 = v25;
-    if (v24)
+    response = v25;
+    if (canSendResponse)
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         OUTLINED_FUNCTION_0_1();
         v79 = v14;
-        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v52, v53, "%p nothing changed in updateAction for %{public}@, completing inline:%{public}@", v54, v55, v56, v57, v70, v71, v5, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v52, v53, "%p nothing changed in updateAction for %{public}@, completing inline:%{public}@", v54, v55, v56, v57, selfCopy, v71, v5, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
       }
 
-      v26 = [MEMORY[0x277CF0B68] response];
-      [v14 sendResponse:v26];
+      response = [MEMORY[0x277CF0B68] response];
+      [v14 sendResponse:response];
     }
 
     else if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       OUTLINED_FUNCTION_0_1();
       v79 = v14;
-      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v27, v28, "%p nothing changed in updateAction for %{public}@, unable to send response:%{public}@", v29, v30, v31, v32, v70, v71, v5, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v27, v28, "%p nothing changed in updateAction for %{public}@, unable to send response:%{public}@", v29, v30, v31, v32, selfCopy, v71, v5, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
     }
   }
 
   v7 = v71;
   if (v23)
   {
-    v33 = [v23 canSendResponse];
+    canSendResponse2 = [v23 canSendResponse];
     v34 = bls_scenes_log();
     v35 = v34;
-    if (v33)
+    if (canSendResponse2)
     {
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
       {
         OUTLINED_FUNCTION_0_1();
         v79 = v23;
-        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v58, v59, "%p nothing changed in rampAction for %{public}@, completing inline:%{public}@", v60, v61, v62, v63, v70, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v58, v59, "%p nothing changed in rampAction for %{public}@, completing inline:%{public}@", v60, v61, v62, v63, selfCopy, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
       }
 
       v35 = [[BLSBacklightSceneUpdateBacklightRampResponse alloc] initWithRampDuration:0.0];
@@ -866,33 +866,33 @@ LABEL_18:
     {
       OUTLINED_FUNCTION_0_1();
       v79 = v23;
-      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v36, v37, "%p nothing changed in rampAction for %{public}@, unable to send response:%{public}@", v38, v39, v40, v41, v70, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v36, v37, "%p nothing changed in rampAction for %{public}@, unable to send response:%{public}@", v38, v39, v40, v41, selfCopy, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
     }
   }
 
   if (v13)
   {
-    v42 = [v13 canSendResponse];
+    canSendResponse3 = [v13 canSendResponse];
     v43 = bls_scenes_log();
-    v44 = v43;
-    if (v42)
+    response2 = v43;
+    if (canSendResponse3)
     {
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
       {
         OUTLINED_FUNCTION_0_1();
         v79 = v13;
-        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v64, v65, "%p nothing changed in animationCompleteAction for %{public}@, completing inline:%{public}@", v66, v67, v68, v69, v70, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+        OUTLINED_FUNCTION_3_0(&dword_21FE25000, v64, v65, "%p nothing changed in animationCompleteAction for %{public}@, completing inline:%{public}@", v66, v67, v68, v69, selfCopy, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
       }
 
-      v44 = [MEMORY[0x277CF0B68] response];
-      [v13 sendResponse:v44];
+      response2 = [MEMORY[0x277CF0B68] response];
+      [v13 sendResponse:response2];
     }
 
     else if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
       OUTLINED_FUNCTION_0_1();
       v79 = v13;
-      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v45, v46, "%p nothing changed in animationCompleteAction for %{public}@, unable to send response:%{public}@", v47, v48, v49, v50, v70, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
+      OUTLINED_FUNCTION_4_0(&dword_21FE25000, v45, v46, "%p nothing changed in animationCompleteAction for %{public}@, unable to send response:%{public}@", v47, v48, v49, v50, selfCopy, v71, v72, v73, v74[0], v74[1], v75, *(&v75 + 1), v76[0], v76[1], v77, *(&v77 + 1), v78);
     }
   }
 
@@ -900,12 +900,12 @@ LABEL_43:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (id)desiredFidelityRequestForUpdatedFBSScene:(uint64_t)a3 fromSettings:(uint64_t)a4 transitionContext:
+- (id)desiredFidelityRequestForUpdatedFBSScene:(uint64_t)scene fromSettings:(uint64_t)settings transitionContext:
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v4 = [OUTLINED_FUNCTION_7_0(a1 a2];
+    v4 = [OUTLINED_FUNCTION_7_0(self a2];
     OUTLINED_FUNCTION_8_0();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)
@@ -955,12 +955,12 @@ LABEL_12:
   return v10;
 }
 
-- (id)frameSpecifiersRequestForUpdatedFBSScene:(uint64_t)a3 fromSettings:(uint64_t)a4 transitionContext:
+- (id)frameSpecifiersRequestForUpdatedFBSScene:(uint64_t)scene fromSettings:(uint64_t)settings transitionContext:
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v4 = [OUTLINED_FUNCTION_7_0(a1 a2];
+    v4 = [OUTLINED_FUNCTION_7_0(self a2];
     OUTLINED_FUNCTION_8_0();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)

@@ -1,16 +1,16 @@
 @interface ActivitySharingFriendDetailCompetitionGraphTableViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithCoder:(id)a3;
-- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithCoder:(id)coder;
+- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ActivitySharingFriendDetailCompetitionGraphTableViewCell
 
-- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,12 +19,12 @@
     v6 = 0;
   }
 
-  return sub_100389E6C(a3, a4, v6);
+  return sub_100389E6C(style, identifier, v6);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
+  width = size.width;
   [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell_graphView) preferredHeight];
   v7 = v6;
   v8 = width;
@@ -33,17 +33,17 @@
   return result;
 }
 
-- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithCoder:(id)a3
+- (_TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell)initWithCoder:(id)coder
 {
-  v4 = [objc_opt_self() companionGraph];
-  if (!v4)
+  companionGraph = [objc_opt_self() companionGraph];
+  if (!companionGraph)
   {
     __break(1u);
   }
 
   v5 = OBJC_IVAR____TtC10FitnessApp56ActivitySharingFriendDetailCompetitionGraphTableViewCell_graphView;
-  v6 = v4;
-  [(objc_class *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  v6 = companionGraph;
+  [(objc_class *)companionGraph setTranslatesAutoresizingMaskIntoConstraints:0];
   *(&self->super.super.super.super.isa + v5) = v6;
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface SBBaseStartupTransition
-- (SBBaseStartupTransition)initWithDestination:(unint64_t)a3 context:(id)a4;
+- (SBBaseStartupTransition)initWithDestination:(unint64_t)destination context:(id)context;
 - (void)_begin;
-- (void)performTransitionWithCompletionBlock:(id)a3;
+- (void)performTransitionWithCompletionBlock:(id)block;
 @end
 
 @implementation SBBaseStartupTransition
 
-- (SBBaseStartupTransition)initWithDestination:(unint64_t)a3 context:(id)a4
+- (SBBaseStartupTransition)initWithDestination:(unint64_t)destination context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SBBaseStartupTransition;
   v8 = [(SBTransaction *)&v12 init];
@@ -18,18 +18,18 @@
     mainWorkspace = v8->_mainWorkspace;
     v8->_mainWorkspace = v9;
 
-    v8->_destination = a3;
-    objc_storeStrong(&v8->_context, a4);
+    v8->_destination = destination;
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v8;
 }
 
-- (void)performTransitionWithCompletionBlock:(id)a3
+- (void)performTransitionWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 

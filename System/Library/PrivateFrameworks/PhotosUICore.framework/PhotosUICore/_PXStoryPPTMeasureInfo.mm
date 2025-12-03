@@ -1,10 +1,10 @@
 @interface _PXStoryPPTMeasureInfo
-- (_PXStoryPPTMeasureInfo)initWithMetric:(int64_t)a3;
+- (_PXStoryPPTMeasureInfo)initWithMetric:(int64_t)metric;
 @end
 
 @implementation _PXStoryPPTMeasureInfo
 
-- (_PXStoryPPTMeasureInfo)initWithMetric:(int64_t)a3
+- (_PXStoryPPTMeasureInfo)initWithMetric:(int64_t)metric
 {
   v9.receiver = self;
   v9.super_class = _PXStoryPPTMeasureInfo;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_metric = a3;
+    v4->_metric = metric;
     v6 = objc_alloc_init(PXStatsCalculator);
     statistics = v5->_statistics;
     v5->_statistics = v6;

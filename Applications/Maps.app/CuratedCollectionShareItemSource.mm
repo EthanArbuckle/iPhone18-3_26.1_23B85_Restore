@@ -1,6 +1,6 @@
 @interface CuratedCollectionShareItemSource
-- (CuratedCollectionShareItemSource)initWithPlaceCollection:(id)a3 refinedMapItems:(id)a4;
-- (CuratedCollectionShareItemSource)initWithPublisher:(id)a3;
+- (CuratedCollectionShareItemSource)initWithPlaceCollection:(id)collection refinedMapItems:(id)items;
+- (CuratedCollectionShareItemSource)initWithPublisher:(id)publisher;
 - (NSArray)activityProviders;
 - (NSArray)excludedActivityTypes;
 @end
@@ -17,25 +17,25 @@
 
 - (NSArray)activityProviders
 {
-  v3 = [(CuratedCollectionShareItemSource *)self textProvider];
-  v4 = [(CuratedCollectionShareItemSource *)self urlProvider];
-  v8[1] = v4;
-  v5 = [(CuratedCollectionShareItemSource *)self linkPresentationProvider];
-  v8[2] = v5;
+  textProvider = [(CuratedCollectionShareItemSource *)self textProvider];
+  urlProvider = [(CuratedCollectionShareItemSource *)self urlProvider];
+  v8[1] = urlProvider;
+  linkPresentationProvider = [(CuratedCollectionShareItemSource *)self linkPresentationProvider];
+  v8[2] = linkPresentationProvider;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (CuratedCollectionShareItemSource)initWithPublisher:(id)a3
+- (CuratedCollectionShareItemSource)initWithPublisher:(id)publisher
 {
-  v4 = a3;
+  publisherCopy = publisher;
   v12.receiver = self;
   v12.super_class = CuratedCollectionShareItemSource;
   v5 = [(CuratedCollectionShareItemSource *)&v12 init];
   if (v5)
   {
-    v6 = [[_TtC4Maps33CuratedGuidesActivityDataProvider alloc] initWithPublisher:v4];
+    v6 = [[_TtC4Maps33CuratedGuidesActivityDataProvider alloc] initWithPublisher:publisherCopy];
     dataProvider = v5->_dataProvider;
     v5->_dataProvider = v6;
 
@@ -52,16 +52,16 @@
   return v5;
 }
 
-- (CuratedCollectionShareItemSource)initWithPlaceCollection:(id)a3 refinedMapItems:(id)a4
+- (CuratedCollectionShareItemSource)initWithPlaceCollection:(id)collection refinedMapItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  itemsCopy = items;
   v15.receiver = self;
   v15.super_class = CuratedCollectionShareItemSource;
   v8 = [(CuratedCollectionShareItemSource *)&v15 init];
   if (v8)
   {
-    v9 = [[_TtC4Maps33CuratedGuidesActivityDataProvider alloc] initWithCuratedGuide:v6 mapItems:v7];
+    v9 = [[_TtC4Maps33CuratedGuidesActivityDataProvider alloc] initWithCuratedGuide:collectionCopy mapItems:itemsCopy];
     dataProvider = v8->_dataProvider;
     v8->_dataProvider = v9;
 

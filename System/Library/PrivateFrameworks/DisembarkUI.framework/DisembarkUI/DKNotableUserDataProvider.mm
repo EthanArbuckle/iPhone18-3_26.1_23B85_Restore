@@ -1,25 +1,25 @@
 @interface DKNotableUserDataProvider
 - (DKNotableUserDataProvider)init;
-- (DKNotableUserDataProvider)initWithAccountProvider:(id)a3 findMyProvider:(id)a4 appleCareProvider:(id)a5 walletProvider:(id)a6;
-- (void)fetchNotableUserData:(id)a3;
+- (DKNotableUserDataProvider)initWithAccountProvider:(id)provider findMyProvider:(id)myProvider appleCareProvider:(id)careProvider walletProvider:(id)walletProvider;
+- (void)fetchNotableUserData:(id)data;
 @end
 
 @implementation DKNotableUserDataProvider
 
-- (DKNotableUserDataProvider)initWithAccountProvider:(id)a3 findMyProvider:(id)a4 appleCareProvider:(id)a5 walletProvider:(id)a6
+- (DKNotableUserDataProvider)initWithAccountProvider:(id)provider findMyProvider:(id)myProvider appleCareProvider:(id)careProvider walletProvider:(id)walletProvider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  myProviderCopy = myProvider;
+  careProviderCopy = careProvider;
+  walletProviderCopy = walletProvider;
   v15 = [(DKNotableUserDataProvider *)self init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountProvider, a3);
-    objc_storeStrong(&v16->_findMyProvider, a4);
-    objc_storeStrong(&v16->_appleCareProvider, a5);
-    objc_storeStrong(&v16->_walletProvider, a6);
+    objc_storeStrong(&v15->_accountProvider, provider);
+    objc_storeStrong(&v16->_findMyProvider, myProvider);
+    objc_storeStrong(&v16->_appleCareProvider, careProvider);
+    objc_storeStrong(&v16->_walletProvider, walletProvider);
   }
 
   return v16;
@@ -48,47 +48,47 @@
   return v2;
 }
 
-- (void)fetchNotableUserData:(id)a3
+- (void)fetchNotableUserData:(id)data
 {
-  v4 = a3;
-  v5 = [(DKNotableUserDataProvider *)self accountProvider];
-  if (!v5)
+  dataCopy = data;
+  accountProvider = [(DKNotableUserDataProvider *)self accountProvider];
+  if (!accountProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v6 = [(DKNotableUserDataProvider *)self findMyProvider];
-  if (!v6)
+  findMyProvider = [(DKNotableUserDataProvider *)self findMyProvider];
+  if (!findMyProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v7 = [(DKNotableUserDataProvider *)self appleCareProvider];
-  if (!v7)
+  appleCareProvider = [(DKNotableUserDataProvider *)self appleCareProvider];
+  if (!appleCareProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v8 = [(DKNotableUserDataProvider *)self restrictionsProvider];
-  if (!v8)
+  restrictionsProvider = [(DKNotableUserDataProvider *)self restrictionsProvider];
+  if (!restrictionsProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v9 = [(DKNotableUserDataProvider *)self storageProvider];
-  if (!v9)
+  storageProvider = [(DKNotableUserDataProvider *)self storageProvider];
+  if (!storageProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v10 = [(DKNotableUserDataProvider *)self telephonyProvider];
-  if (!v10)
+  telephonyProvider = [(DKNotableUserDataProvider *)self telephonyProvider];
+  if (!telephonyProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
 
-  v11 = [(DKNotableUserDataProvider *)self walletProvider];
-  if (!v11)
+  walletProvider = [(DKNotableUserDataProvider *)self walletProvider];
+  if (!walletProvider)
   {
     [DKNotableUserDataProvider fetchNotableUserData:];
   }
@@ -101,23 +101,23 @@
     _os_log_impl(&dword_248D68000, v13, OS_LOG_TYPE_DEFAULT, "Fetching synchronous notable user data...", buf, 2u);
   }
 
-  v14 = [(DKNotableUserDataProvider *)self restrictionsProvider];
-  v15 = [v14 isPreserveESIMOnEraseEnforced];
+  restrictionsProvider2 = [(DKNotableUserDataProvider *)self restrictionsProvider];
+  isPreserveESIMOnEraseEnforced = [restrictionsProvider2 isPreserveESIMOnEraseEnforced];
 
-  if (v15)
+  if (isPreserveESIMOnEraseEnforced)
   {
     [(DKNotableUserData *)v12 setCellularPlans:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    v16 = [(DKNotableUserDataProvider *)self telephonyProvider];
-    v17 = [v16 cellularPlans];
-    [(DKNotableUserData *)v12 setCellularPlans:v17];
+    telephonyProvider2 = [(DKNotableUserDataProvider *)self telephonyProvider];
+    cellularPlans = [telephonyProvider2 cellularPlans];
+    [(DKNotableUserData *)v12 setCellularPlans:cellularPlans];
   }
 
-  v18 = [(DKNotableUserDataProvider *)self storageProvider];
-  -[DKNotableUserData setDataSize:](v12, "setDataSize:", [v18 dataSize]);
+  storageProvider2 = [(DKNotableUserDataProvider *)self storageProvider];
+  -[DKNotableUserData setDataSize:](v12, "setDataSize:", [storageProvider2 dataSize]);
 
   v19 = _DKLogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@
 
   v20 = dispatch_group_create();
   dispatch_group_enter(v20);
-  v21 = [(DKNotableUserDataProvider *)self findMyProvider];
+  findMyProvider2 = [(DKNotableUserDataProvider *)self findMyProvider];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __50__DKNotableUserDataProvider_fetchNotableUserData___block_invoke;
@@ -137,10 +137,10 @@
   v48 = v22;
   v23 = v20;
   v49 = v23;
-  [v21 fetchFindMyState:v47];
+  [findMyProvider2 fetchFindMyState:v47];
 
   dispatch_group_enter(v23);
-  v24 = [(DKNotableUserDataProvider *)self appleCareProvider];
+  appleCareProvider2 = [(DKNotableUserDataProvider *)self appleCareProvider];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __50__DKNotableUserDataProvider_fetchNotableUserData___block_invoke_55;
@@ -149,10 +149,10 @@
   v45 = v25;
   v26 = v23;
   v46 = v26;
-  [v24 fetchAppleCareData:v44];
+  [appleCareProvider2 fetchAppleCareData:v44];
 
   dispatch_group_enter(v26);
-  v27 = [(DKNotableUserDataProvider *)self accountProvider];
+  accountProvider2 = [(DKNotableUserDataProvider *)self accountProvider];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __50__DKNotableUserDataProvider_fetchNotableUserData___block_invoke_57;
@@ -161,10 +161,10 @@
   v42 = v28;
   v29 = v26;
   v43 = v29;
-  [v27 fetchAccounts:v41];
+  [accountProvider2 fetchAccounts:v41];
 
   dispatch_group_enter(v29);
-  v30 = [(DKNotableUserDataProvider *)self walletProvider];
+  walletProvider2 = [(DKNotableUserDataProvider *)self walletProvider];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __50__DKNotableUserDataProvider_fetchNotableUserData___block_invoke_59;
@@ -173,16 +173,16 @@
   v39 = v31;
   v40 = v29;
   v32 = v29;
-  [v30 fetchAppleWalletCards:v38];
+  [walletProvider2 fetchAppleWalletCards:v38];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __50__DKNotableUserDataProvider_fetchNotableUserData___block_invoke_61;
   v35[3] = &unk_278F7D8F8;
   v36 = v31;
-  v37 = v4;
+  v37 = dataCopy;
   v33 = v31;
-  v34 = v4;
+  v34 = dataCopy;
   dispatch_group_notify(v32, MEMORY[0x277D85CD0], v35);
 }
 

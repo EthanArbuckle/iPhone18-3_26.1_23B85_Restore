@@ -1,12 +1,12 @@
 @interface SSVMediaSocialAdminPermissionsCoordinator
 + (id)sharedCoordinator;
-- (BOOL)_statusIsFresh:(id)a3;
+- (BOOL)_statusIsFresh:(id)fresh;
 - (BOOL)isCurrentUserAdmin;
 - (SSVMediaSocialAdminPermissionsCoordinator)init;
-- (id)_adminStatusForAccountID:(id)a3;
-- (void)_setAdminStatus:(id)a3 forAccountID:(id)a4;
-- (void)getAdminStatusAndWaitWithOptions:(id)a3 resultBlock:(id)a4;
-- (void)getAdminStatusWithOptions:(id)a3 resultBlock:(id)a4;
+- (id)_adminStatusForAccountID:(id)d;
+- (void)_setAdminStatus:(id)status forAccountID:(id)d;
+- (void)getAdminStatusAndWaitWithOptions:(id)options resultBlock:(id)block;
+- (void)getAdminStatusWithOptions:(id)options resultBlock:(id)block;
 - (void)reset;
 @end
 
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __62__SSVMediaSocialAdminPermissionsCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCoordinator_sOnce != -1)
   {
     dispatch_once(&sharedCoordinator_sOnce, block);
@@ -65,10 +65,10 @@ void __62__SSVMediaSocialAdminPermissionsCoordinator_sharedCoordinator__block_in
   sharedCoordinator_sCoordinator = v1;
 }
 
-- (void)getAdminStatusAndWaitWithOptions:(id)a3 resultBlock:(id)a4
+- (void)getAdminStatusAndWaitWithOptions:(id)options resultBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v8 = dispatch_semaphore_create(0);
   v23 = 0;
   v24 = &v23;
@@ -88,20 +88,20 @@ void __62__SSVMediaSocialAdminPermissionsCoordinator_sharedCoordinator__block_in
   v16 = &v17;
   v9 = v8;
   v14 = v9;
-  [(SSVMediaSocialAdminPermissionsCoordinator *)self getAdminStatusWithOptions:v6 resultBlock:v13];
+  [(SSVMediaSocialAdminPermissionsCoordinator *)self getAdminStatusWithOptions:optionsCopy resultBlock:v13];
   v10 = dispatch_time(0, 10000000000);
   v11 = dispatch_semaphore_wait(v9, v10);
-  if (v7)
+  if (blockCopy)
   {
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SSErrorDomain" code:140 userInfo:0];
-      v7[2](v7, 0, v12);
+      blockCopy[2](blockCopy, 0, v12);
     }
 
     else
     {
-      v7[2](v7, *(v24 + 24), v18[5]);
+      blockCopy[2](blockCopy, *(v24 + 24), v18[5]);
     }
   }
 
@@ -117,20 +117,20 @@ void __90__SSVMediaSocialAdminPermissionsCoordinator_getAdminStatusAndWaitWithOp
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)getAdminStatusWithOptions:(id)a3 resultBlock:(id)a4
+- (void)getAdminStatusWithOptions:(id)options resultBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__SSVMediaSocialAdminPermissionsCoordinator_getAdminStatusWithOptions_resultBlock___block_invoke;
   block[3] = &unk_1E84ABEC8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = blockCopy;
+  v12 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = blockCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -223,22 +223,22 @@ void __83__SSVMediaSocialAdminPermissionsCoordinator_getAdminStatusWithOptions_r
 
 - (BOOL)isCurrentUserAdmin
 {
-  v3 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v4 = [v3 ams_activeiTunesAccount];
-  v5 = [v4 ams_DSID];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-  if (v5)
+  if (ams_DSID)
   {
-    v6 = [(SSVMediaSocialAdminPermissionsCoordinator *)self _adminStatusForAccountID:v5];
-    v7 = [v6 isAdmin];
+    v6 = [(SSVMediaSocialAdminPermissionsCoordinator *)self _adminStatusForAccountID:ams_DSID];
+    isAdmin = [v6 isAdmin];
   }
 
   else
   {
-    v7 = 0;
+    isAdmin = 0;
   }
 
-  return v7;
+  return isAdmin;
 }
 
 - (void)reset
@@ -248,11 +248,11 @@ void __83__SSVMediaSocialAdminPermissionsCoordinator_getAdminStatusWithOptions_r
   [(SSVMediaSocialAdminPermissionsCoordinator *)self setRefreshPeriod:60.0];
 }
 
-- (id)_adminStatusForAccountID:(id)a3
+- (id)_adminStatusForAccountID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     [(SSVMediaSocialAdminPermissionsCoordinator *)a2 _adminStatusForAccountID:?];
   }
@@ -274,7 +274,7 @@ void __83__SSVMediaSocialAdminPermissionsCoordinator_getAdminStatusWithOptions_r
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v12 objectForKeyedSubscript:v5];
+        v14 = [v12 objectForKeyedSubscript:dCopy];
 LABEL_19:
 
         goto LABEL_21;
@@ -287,19 +287,19 @@ LABEL_19:
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 &= 2u;
     }
@@ -323,9 +323,9 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v31, v29}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v31, v29}];
       free(v21);
-      SSFileLog(v15, @"%@", v22, v23, v24, v25, v26, v27, v18);
+      SSFileLog(v15, @"%@", v22, v23, v24, v25, v26, v27, oSLogObject);
     }
 
     goto LABEL_18;
@@ -337,14 +337,14 @@ LABEL_21:
   return v14;
 }
 
-- (void)_setAdminStatus:(id)a3 forAccountID:(id)a4
+- (void)_setAdminStatus:(id)status forAccountID:(id)d
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  statusCopy = status;
+  dCopy = d;
+  if (dCopy)
   {
-    if (v6)
+    if (statusCopy)
     {
       goto LABEL_3;
     }
@@ -353,7 +353,7 @@ LABEL_21:
   else
   {
     [SSVMediaSocialAdminPermissionsCoordinator _setAdminStatus:a2 forAccountID:self];
-    if (v6)
+    if (statusCopy)
     {
       goto LABEL_3;
     }
@@ -362,7 +362,7 @@ LABEL_21:
   [SSVMediaSocialAdminPermissionsCoordinator _setAdminStatus:a2 forAccountID:self];
 LABEL_3:
   v8 = CFPreferencesCopyAppValue(@"MediaSocialSavedAdminStatusesKey", @"com.apple.itunesstored");
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (!v8)
   {
     goto LABEL_20;
@@ -384,19 +384,19 @@ LABEL_3:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v20 = v18;
     }
@@ -423,22 +423,22 @@ LABEL_3:
         goto LABEL_19;
       }
 
-      v19 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v50, v46}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v50, v46}];
       free(v23);
-      SSFileLog(v16, @"%@", v24, v25, v26, v27, v28, v29, v19);
+      SSFileLog(v16, @"%@", v24, v25, v26, v27, v28, v29, oSLogObject);
     }
 
     goto LABEL_19;
   }
 
-  v16 = v9;
-  v9 = [v14 mutableCopy];
+  v16 = dictionary;
+  dictionary = [v14 mutableCopy];
 LABEL_19:
 
 LABEL_20:
-  [v9 setObject:v6 forKeyedSubscript:{v7, v45}];
+  [dictionary setObject:statusCopy forKeyedSubscript:{dCopy, v45}];
   v48 = 0;
-  v30 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v48];
+  v30 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:&v48];
   v31 = v48;
   if (v31)
   {
@@ -448,21 +448,21 @@ LABEL_20:
       v32 = +[SSLogConfig sharedConfig];
     }
 
-    v33 = [v32 shouldLog];
+    shouldLog2 = [v32 shouldLog];
     if ([v32 shouldLogToDisk])
     {
-      v33 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v34 = [v32 OSLogObject];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v32 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v35 = v33;
+      v35 = shouldLog2;
     }
 
     else
     {
-      v35 = v33 & 2;
+      v35 = shouldLog2 & 2;
     }
 
     if (v35)
@@ -483,9 +483,9 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v34 = [MEMORY[0x1E696AEC0] stringWithCString:v38 encoding:{4, &v50, v46}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v38 encoding:{4, &v50, v46}];
       free(v38);
-      SSFileLog(v32, @"%@", v39, v40, v41, v42, v43, v44, v34);
+      SSFileLog(v32, @"%@", v39, v40, v41, v42, v43, v44, oSLogObject2);
     }
 
     goto LABEL_32;
@@ -495,15 +495,15 @@ LABEL_33:
   CFPreferencesSetAppValue(@"MediaSocialSavedAdminStatusesKey", v30, @"com.apple.itunesstored");
 }
 
-- (BOOL)_statusIsFresh:(id)a3
+- (BOOL)_statusIsFresh:(id)fresh
 {
-  if (!a3)
+  if (!fresh)
   {
     return 0;
   }
 
-  v4 = [a3 dateUpdated];
-  [v4 timeIntervalSinceNow];
+  dateUpdated = [fresh dateUpdated];
+  [dateUpdated timeIntervalSinceNow];
   v6 = fabs(v5);
   [(SSVMediaSocialAdminPermissionsCoordinator *)self refreshPeriod];
   v8 = v6 < v7;

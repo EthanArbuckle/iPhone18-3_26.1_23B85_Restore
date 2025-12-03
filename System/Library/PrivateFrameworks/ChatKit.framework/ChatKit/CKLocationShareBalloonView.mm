@@ -1,26 +1,26 @@
 @interface CKLocationShareBalloonView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKLocationShareBalloonView)initWithFrame:(CGRect)a3;
-- (void)_ignoreButtonHit:(id)a3;
-- (void)addFilter:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKLocationShareBalloonView)initWithFrame:(CGRect)frame;
+- (void)_ignoreButtonHit:(id)hit;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForLocationShareOfferChatItem:(id)a3;
+- (void)configureForLocationShareOfferChatItem:(id)item;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
-- (void)setDelegate:(id)a3;
-- (void)setLocationString:(id)a3;
-- (void)setOfferState:(int64_t)a3;
-- (void)setTitleString:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setLocationString:(id)string;
+- (void)setOfferState:(int64_t)state;
+- (void)setTitleString:(id)string;
 @end
 
 @implementation CKLocationShareBalloonView
 
-- (CKLocationShareBalloonView)initWithFrame:(CGRect)a3
+- (CKLocationShareBalloonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKLocationShareBalloonView;
-  v3 = [(CKImageBalloonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,8 +46,8 @@
   [v10 locationShareBalloonLabelMaxHeightForOfferState:{-[CKLocationShareBalloonView offerState](self, "offerState")}];
   v12 = v9 + v11;
 
-  v13 = [(CKLocationShareBalloonView *)self effectView];
-  [v13 setFrame:{0.0, v6 - v12, v4, v12}];
+  effectView = [(CKLocationShareBalloonView *)self effectView];
+  [effectView setFrame:{0.0, v6 - v12, v4, v12}];
 
   v14 = +[CKUIBehavior sharedBehaviors];
   [v14 balloonMaskTailSizeForTailShape:1];
@@ -68,18 +68,18 @@
   {
     if ([(CKLocationShareBalloonView *)self offerState]== 1)
     {
-      v26 = [(CKLocationShareBalloonView *)self titleLabel];
-      [v26 sizeThatFits:{v24, v22}];
+      titleLabel = [(CKLocationShareBalloonView *)self titleLabel];
+      [titleLabel sizeThatFits:{v24, v22}];
       v28 = v27;
       v30 = v29;
 
       [(CKLocationShareBalloonView *)self bounds];
       v32 = v22 - v30 + v31 - v19;
-      v33 = [(CKLocationShareBalloonView *)self titleLabel];
-      [v33 setFrame:{v25, v32, v28, v30}];
+      titleLabel2 = [(CKLocationShareBalloonView *)self titleLabel];
+      [titleLabel2 setFrame:{v25, v32, v28, v30}];
 
-      v34 = [(CKLocationShareBalloonView *)self locationLabel];
-      [v34 sizeThatFits:{v24, v22}];
+      locationLabel = [(CKLocationShareBalloonView *)self locationLabel];
+      [locationLabel sizeThatFits:{v24, v22}];
       v36 = v35;
       v38 = v37;
 
@@ -88,12 +88,12 @@
       v90.size.width = v28;
       v90.size.height = v30;
       MaxY = CGRectGetMaxY(v90);
-      v40 = [(CKLocationShareBalloonView *)self locationLabel];
-      [v40 setFrame:{v25, MaxY, v36, v38}];
+      locationLabel2 = [(CKLocationShareBalloonView *)self locationLabel];
+      [locationLabel2 setFrame:{v25, MaxY, v36, v38}];
 
-      v41 = [(CKLocationShareBalloonView *)self chevron];
-      v42 = [v41 image];
-      [v42 size];
+      chevron = [(CKLocationShareBalloonView *)self chevron];
+      image = [chevron image];
+      [image size];
       v44 = v43;
       v46 = v45;
 
@@ -114,7 +114,7 @@
       }
 
       v52 = v49 + ceil(v50 * v51) / v51;
-      v53 = v41;
+      titleLabel4 = chevron;
       v54 = v47;
       v55 = v44;
       v56 = v46;
@@ -127,15 +127,15 @@
         return;
       }
 
-      v82 = [(CKLocationShareBalloonView *)self titleLabel];
-      [v82 sizeThatFits:{v24, v22}];
+      titleLabel3 = [(CKLocationShareBalloonView *)self titleLabel];
+      [titleLabel3 sizeThatFits:{v24, v22}];
       v84 = v83;
       v86 = v85;
 
       [(CKLocationShareBalloonView *)self bounds];
       v88 = v87 - v22;
-      v53 = [(CKLocationShareBalloonView *)self titleLabel];
-      v41 = v53;
+      titleLabel4 = [(CKLocationShareBalloonView *)self titleLabel];
+      chevron = titleLabel4;
       v54 = v25;
       v52 = v88;
       v55 = v84;
@@ -148,8 +148,8 @@
     v57 = v22 + -6.0;
     [(CKLocationShareBalloonView *)self bounds];
     v59 = v58 - v19 - v22 + 3.0;
-    v60 = [(CKLocationShareBalloonView *)self titleLabel];
-    [v60 setFrame:{v16 + 10.0, v59, v24, v57}];
+    titleLabel5 = [(CKLocationShareBalloonView *)self titleLabel];
+    [titleLabel5 setFrame:{v16 + 10.0, v59, v24, v57}];
 
     [(CKLocationShareBalloonView *)self bounds];
     v62 = (v61 - v16) * 0.5;
@@ -171,12 +171,12 @@
 
     [(CKLocationShareBalloonView *)self bounds];
     v69 = v68 - v19;
-    v70 = [(CKLocationShareBalloonView *)self ignoreButton];
-    [v70 setFrame:{v16, v69, v64, v67}];
+    ignoreButton = [(CKLocationShareBalloonView *)self ignoreButton];
+    [ignoreButton setFrame:{v16, v69, v64, v67}];
 
     v71 = v16 + v64;
-    v72 = [(CKLocationShareBalloonView *)self startSharingButton];
-    [v72 setFrame:{v16 + v64, v69, v64, v67}];
+    startSharingButton = [(CKLocationShareBalloonView *)self startSharingButton];
+    [startSharingButton setFrame:{v16 + v64, v69, v64, v67}];
 
     [(CKLocationShareBalloonView *)self bounds];
     v74 = v73 - v19;
@@ -194,8 +194,8 @@
     }
 
     v78 = ceil(v77 * 0.5) / v77;
-    v79 = [(CKLocationShareBalloonView *)self horizontalSeparator];
-    [v79 setFrame:{v16, v74, v76, v78}];
+    horizontalSeparator = [(CKLocationShareBalloonView *)self horizontalSeparator];
+    [horizontalSeparator setFrame:{v16, v74, v76, v78}];
 
     if (CKMainScreenScale_once_8 != -1)
     {
@@ -209,23 +209,23 @@
     }
 
     v81 = ceil(v80 * 0.5) / v80;
-    v53 = [(CKLocationShareBalloonView *)self verticalSeparator];
-    v41 = v53;
+    titleLabel4 = [(CKLocationShareBalloonView *)self verticalSeparator];
+    chevron = titleLabel4;
     v54 = v71;
     v52 = v74;
     v55 = v81;
     v56 = v19;
   }
 
-  [v53 setFrame:{v54, v52, v55, v56}];
+  [titleLabel4 setFrame:{v54, v52, v55, v56}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  width = a3.width;
-  v7 = [CKUIBehavior sharedBehaviors:a4];
-  v8 = [(CKImageBalloonView *)self image];
-  [v8 size];
+  width = fits.width;
+  v7 = [CKUIBehavior sharedBehaviors:insets];
+  image = [(CKImageBalloonView *)self image];
+  [image size];
   v10 = v9;
 
   if (width >= v10)
@@ -244,13 +244,13 @@
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
   v5.receiver = self;
   v5.super_class = CKLocationShareBalloonView;
-  [(CKImageBalloonView *)&v5 addFilter:a3];
-  v4 = [(CKLocationShareBalloonView *)self effectView];
-  [v4 setHidden:1];
+  [(CKImageBalloonView *)&v5 addFilter:filter];
+  effectView = [(CKLocationShareBalloonView *)self effectView];
+  [effectView setHidden:1];
 }
 
 - (void)clearFilters
@@ -258,8 +258,8 @@
   v4.receiver = self;
   v4.super_class = CKLocationShareBalloonView;
   [(CKImageBalloonView *)&v4 clearFilters];
-  v3 = [(CKLocationShareBalloonView *)self effectView];
-  [v3 setHidden:0];
+  effectView = [(CKLocationShareBalloonView *)self effectView];
+  [effectView setHidden:0];
 }
 
 - (void)prepareForDisplay
@@ -267,80 +267,80 @@
   v82.receiver = self;
   v82.super_class = CKLocationShareBalloonView;
   [(CKImageBalloonView *)&v82 prepareForDisplay];
-  v3 = [(CKLocationShareBalloonView *)self effectView];
+  effectView = [(CKLocationShareBalloonView *)self effectView];
 
-  if (!v3)
+  if (!effectView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD298]);
     v5 = [MEMORY[0x1E69DC730] effectWithStyle:6];
     v6 = [v4 initWithEffect:v5];
     [(CKLocationShareBalloonView *)self setEffectView:v6];
 
-    v7 = [(CKLocationShareBalloonView *)self effectView];
-    [(CKLocationShareBalloonView *)self addSubview:v7];
+    effectView2 = [(CKLocationShareBalloonView *)self effectView];
+    [(CKLocationShareBalloonView *)self addSubview:effectView2];
   }
 
-  v8 = [(CKLocationShareBalloonView *)self effectView];
-  [(CKLocationShareBalloonView *)self sendSubviewToBack:v8];
+  effectView3 = [(CKLocationShareBalloonView *)self effectView];
+  [(CKLocationShareBalloonView *)self sendSubviewToBack:effectView3];
 
-  v9 = [(CKLocationShareBalloonView *)self titleLabel];
+  titleLabel = [(CKLocationShareBalloonView *)self titleLabel];
 
-  if (!v9)
+  if (!titleLabel)
   {
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [v11 setOpaque:0];
     [v11 setBackgroundColor:0];
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 previewTitleFont];
-    [v11 setFont:v13];
+    previewTitleFont = [v12 previewTitleFont];
+    [v11 setFont:previewTitleFont];
 
     [v11 setTextAlignment:4];
-    v14 = [(CKLocationShareBalloonView *)self titleString];
-    [v11 setText:v14];
+    titleString = [(CKLocationShareBalloonView *)self titleString];
+    [v11 setText:titleString];
 
     [(CKLocationShareBalloonView *)self setTitleLabel:v11];
   }
 
-  v15 = [(CKLocationShareBalloonView *)self titleLabel];
-  v16 = [(CKLocationShareBalloonView *)self titleString];
-  [v15 setText:v16];
+  titleLabel2 = [(CKLocationShareBalloonView *)self titleLabel];
+  titleString2 = [(CKLocationShareBalloonView *)self titleString];
+  [titleLabel2 setText:titleString2];
 
-  v17 = [(CKLocationShareBalloonView *)self titleLabel];
-  [(CKLocationShareBalloonView *)self addSubview:v17];
+  titleLabel3 = [(CKLocationShareBalloonView *)self titleLabel];
+  [(CKLocationShareBalloonView *)self addSubview:titleLabel3];
 
   if ([(CKLocationShareBalloonView *)self offerState])
   {
     if ([(CKLocationShareBalloonView *)self offerState]== 1)
     {
-      v18 = [(CKLocationShareBalloonView *)self titleLabel];
-      [v18 setLineBreakMode:4];
+      titleLabel4 = [(CKLocationShareBalloonView *)self titleLabel];
+      [titleLabel4 setLineBreakMode:4];
 
-      v19 = [(CKLocationShareBalloonView *)self titleLabel];
-      [v19 setNumberOfLines:1];
+      titleLabel5 = [(CKLocationShareBalloonView *)self titleLabel];
+      [titleLabel5 setNumberOfLines:1];
 
-      v20 = [(CKLocationShareBalloonView *)self locationLabel];
+      locationLabel = [(CKLocationShareBalloonView *)self locationLabel];
 
-      if (!v20)
+      if (!locationLabel)
       {
         v21 = objc_alloc(MEMORY[0x1E69DCC10]);
         v22 = [v21 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
         [v22 setOpaque:0];
         [v22 setBackgroundColor:0];
-        v23 = [(CKLocationShareBalloonView *)self locationString];
-        [v22 setText:v23];
+        locationString = [(CKLocationShareBalloonView *)self locationString];
+        [v22 setText:locationString];
 
         [v22 setAlpha:0.400000006];
         v24 = +[CKUIBehavior sharedBehaviors];
-        v25 = [v24 previewTitleFont];
-        [v22 setFont:v25];
+        previewTitleFont2 = [v24 previewTitleFont];
+        [v22 setFont:previewTitleFont2];
 
         [(CKLocationShareBalloonView *)self setLocationLabel:v22];
       }
 
-      v26 = [(CKLocationShareBalloonView *)self chevron];
+      chevron = [(CKLocationShareBalloonView *)self chevron];
 
-      if (!v26)
+      if (!chevron)
       {
         v27 = objc_alloc(MEMORY[0x1E69DCAE0]);
         v28 = +[CKUIBehavior sharedBehaviors];
@@ -351,26 +351,26 @@
         [(CKLocationShareBalloonView *)self setChevron:v30];
       }
 
-      v31 = [(CKLocationShareBalloonView *)self locationLabel];
-      v32 = [(CKLocationShareBalloonView *)self locationString];
-      [v31 setText:v32];
+      locationLabel2 = [(CKLocationShareBalloonView *)self locationLabel];
+      locationString2 = [(CKLocationShareBalloonView *)self locationString];
+      [locationLabel2 setText:locationString2];
 
-      v33 = [(CKLocationShareBalloonView *)self locationLabel];
-      [(CKLocationShareBalloonView *)self addSubview:v33];
+      locationLabel3 = [(CKLocationShareBalloonView *)self locationLabel];
+      [(CKLocationShareBalloonView *)self addSubview:locationLabel3];
 
-      v34 = [(CKLocationShareBalloonView *)self chevron];
-      [(CKLocationShareBalloonView *)self addSubview:v34];
+      chevron2 = [(CKLocationShareBalloonView *)self chevron];
+      [(CKLocationShareBalloonView *)self addSubview:chevron2];
 
-      v35 = [(CKLocationShareBalloonView *)self startSharingButton];
-      [v35 removeFromSuperview];
+      startSharingButton = [(CKLocationShareBalloonView *)self startSharingButton];
+      [startSharingButton removeFromSuperview];
 
-      v36 = [(CKLocationShareBalloonView *)self ignoreButton];
-      [v36 removeFromSuperview];
+      ignoreButton = [(CKLocationShareBalloonView *)self ignoreButton];
+      [ignoreButton removeFromSuperview];
 
-      v37 = [(CKLocationShareBalloonView *)self horizontalSeparator];
-      [v37 removeFromSuperview];
+      horizontalSeparator = [(CKLocationShareBalloonView *)self horizontalSeparator];
+      [horizontalSeparator removeFromSuperview];
 
-      v38 = [(CKLocationShareBalloonView *)self verticalSeparator];
+      verticalSeparator = [(CKLocationShareBalloonView *)self verticalSeparator];
       goto LABEL_24;
     }
 
@@ -379,36 +379,36 @@
       return;
     }
 
-    v75 = [(CKLocationShareBalloonView *)self titleLabel];
-    [v75 setLineBreakMode:4];
+    titleLabel6 = [(CKLocationShareBalloonView *)self titleLabel];
+    [titleLabel6 setLineBreakMode:4];
 
-    v76 = [(CKLocationShareBalloonView *)self titleLabel];
-    [v76 setNumberOfLines:1];
+    titleLabel7 = [(CKLocationShareBalloonView *)self titleLabel];
+    [titleLabel7 setNumberOfLines:1];
 
-    v77 = [(CKLocationShareBalloonView *)self startSharingButton];
-    [v77 removeFromSuperview];
+    startSharingButton2 = [(CKLocationShareBalloonView *)self startSharingButton];
+    [startSharingButton2 removeFromSuperview];
 
-    v78 = [(CKLocationShareBalloonView *)self ignoreButton];
-    [v78 removeFromSuperview];
+    ignoreButton2 = [(CKLocationShareBalloonView *)self ignoreButton];
+    [ignoreButton2 removeFromSuperview];
 
-    v79 = [(CKLocationShareBalloonView *)self horizontalSeparator];
-    [v79 removeFromSuperview];
+    horizontalSeparator2 = [(CKLocationShareBalloonView *)self horizontalSeparator];
+    [horizontalSeparator2 removeFromSuperview];
 
-    v74 = [(CKLocationShareBalloonView *)self verticalSeparator];
-    [v74 removeFromSuperview];
+    verticalSeparator2 = [(CKLocationShareBalloonView *)self verticalSeparator];
+    [verticalSeparator2 removeFromSuperview];
   }
 
   else
   {
-    v39 = [(CKLocationShareBalloonView *)self titleLabel];
-    [v39 setLineBreakMode:0];
+    titleLabel8 = [(CKLocationShareBalloonView *)self titleLabel];
+    [titleLabel8 setLineBreakMode:0];
 
-    v40 = [(CKLocationShareBalloonView *)self titleLabel];
-    [v40 setNumberOfLines:0];
+    titleLabel9 = [(CKLocationShareBalloonView *)self titleLabel];
+    [titleLabel9 setNumberOfLines:0];
 
-    v41 = [(CKLocationShareBalloonView *)self startSharingButton];
+    startSharingButton3 = [(CKLocationShareBalloonView *)self startSharingButton];
 
-    if (!v41)
+    if (!startSharingButton3)
     {
       v42 = [MEMORY[0x1E69DC738] buttonWithType:1];
       [v42 addTarget:self action:sel__shareButtonHit_ forControlEvents:64];
@@ -416,30 +416,30 @@
       v44 = [v43 localizedStringForKey:@"SHARE_BUTTON_START" value:&stru_1F04268F8 table:@"ChatKit"];
       [v42 setTitle:v44 forState:0];
 
-      v45 = [v42 titleLabel];
-      [v45 setTextAlignment:1];
+      titleLabel10 = [v42 titleLabel];
+      [titleLabel10 setTextAlignment:1];
 
-      v46 = [v42 titleLabel];
+      titleLabel11 = [v42 titleLabel];
       v47 = +[CKUIBehavior sharedBehaviors];
-      v48 = [v47 locationBoldButtonFont];
-      [v46 setFont:v48];
+      locationBoldButtonFont = [v47 locationBoldButtonFont];
+      [titleLabel11 setFont:locationBoldButtonFont];
 
-      v49 = [v42 titleLabel];
-      v50 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v49 setTextColor:v50];
+      titleLabel12 = [v42 titleLabel];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [titleLabel12 setTextColor:systemBlueColor];
 
-      v51 = [(CKBalloonView *)self delegate];
-      v52 = [v51 sharingMenu];
-      [v42 setMenu:v52];
+      delegate = [(CKBalloonView *)self delegate];
+      sharingMenu = [delegate sharingMenu];
+      [v42 setMenu:sharingMenu];
 
       [v42 setContextMenuIsPrimary:1];
       [v42 setEnabled:1];
       [(CKLocationShareBalloonView *)self setStartSharingButton:v42];
     }
 
-    v53 = [(CKLocationShareBalloonView *)self ignoreButton];
+    ignoreButton3 = [(CKLocationShareBalloonView *)self ignoreButton];
 
-    if (!v53)
+    if (!ignoreButton3)
     {
       v54 = [MEMORY[0x1E69DC738] buttonWithType:1];
       [v54 addTarget:self action:sel__ignoreButtonHit_ forControlEvents:64];
@@ -447,98 +447,98 @@
       v56 = [v55 localizedStringForKey:@"SHARE_BUTTON_IGNORE" value:&stru_1F04268F8 table:@"ChatKit"];
       [v54 setTitle:v56 forState:0];
 
-      v57 = [v54 titleLabel];
-      [v57 setTextAlignment:1];
+      titleLabel13 = [v54 titleLabel];
+      [titleLabel13 setTextAlignment:1];
 
-      v58 = [v54 titleLabel];
+      titleLabel14 = [v54 titleLabel];
       v59 = +[CKUIBehavior sharedBehaviors];
-      v60 = [v59 locationButtonFont];
-      [v58 setFont:v60];
+      locationButtonFont = [v59 locationButtonFont];
+      [titleLabel14 setFont:locationButtonFont];
 
-      v61 = [v54 titleLabel];
-      v62 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v61 setTextColor:v62];
+      titleLabel15 = [v54 titleLabel];
+      systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+      [titleLabel15 setTextColor:systemBlueColor2];
 
       [(CKLocationShareBalloonView *)self setIgnoreButton:v54];
     }
 
-    v63 = [(CKLocationShareBalloonView *)self horizontalSeparator];
+    horizontalSeparator3 = [(CKLocationShareBalloonView *)self horizontalSeparator];
 
-    if (!v63)
+    if (!horizontalSeparator3)
     {
       v64 = objc_alloc(MEMORY[0x1E69DD250]);
       v65 = [v64 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v66 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-      [v65 setBackgroundColor:v66];
+      opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+      [v65 setBackgroundColor:opaqueSeparatorColor];
 
       [(CKLocationShareBalloonView *)self setHorizontalSeparator:v65];
     }
 
-    v67 = [(CKLocationShareBalloonView *)self verticalSeparator];
+    verticalSeparator3 = [(CKLocationShareBalloonView *)self verticalSeparator];
 
-    if (!v67)
+    if (!verticalSeparator3)
     {
       v68 = objc_alloc(MEMORY[0x1E69DD250]);
       v69 = [v68 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v70 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-      [v69 setBackgroundColor:v70];
+      opaqueSeparatorColor2 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+      [v69 setBackgroundColor:opaqueSeparatorColor2];
 
       [(CKLocationShareBalloonView *)self setVerticalSeparator:v69];
     }
 
-    v71 = [(CKLocationShareBalloonView *)self startSharingButton];
-    [(CKLocationShareBalloonView *)self addSubview:v71];
+    startSharingButton4 = [(CKLocationShareBalloonView *)self startSharingButton];
+    [(CKLocationShareBalloonView *)self addSubview:startSharingButton4];
 
-    v72 = [(CKLocationShareBalloonView *)self ignoreButton];
-    [(CKLocationShareBalloonView *)self addSubview:v72];
+    ignoreButton4 = [(CKLocationShareBalloonView *)self ignoreButton];
+    [(CKLocationShareBalloonView *)self addSubview:ignoreButton4];
 
-    v73 = [(CKLocationShareBalloonView *)self horizontalSeparator];
-    [(CKLocationShareBalloonView *)self addSubview:v73];
+    horizontalSeparator4 = [(CKLocationShareBalloonView *)self horizontalSeparator];
+    [(CKLocationShareBalloonView *)self addSubview:horizontalSeparator4];
 
-    v74 = [(CKLocationShareBalloonView *)self verticalSeparator];
-    [(CKLocationShareBalloonView *)self addSubview:v74];
+    verticalSeparator2 = [(CKLocationShareBalloonView *)self verticalSeparator];
+    [(CKLocationShareBalloonView *)self addSubview:verticalSeparator2];
   }
 
-  v80 = [(CKLocationShareBalloonView *)self locationLabel];
-  [v80 removeFromSuperview];
+  locationLabel4 = [(CKLocationShareBalloonView *)self locationLabel];
+  [locationLabel4 removeFromSuperview];
 
-  v38 = [(CKLocationShareBalloonView *)self chevron];
+  verticalSeparator = [(CKLocationShareBalloonView *)self chevron];
 LABEL_24:
-  v81 = v38;
-  [v38 removeFromSuperview];
+  v81 = verticalSeparator;
+  [verticalSeparator removeFromSuperview];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = [a4 view];
-  if ([v5 isEqual:self->_startSharingButton])
+  view = [touch view];
+  if ([view isEqual:self->_startSharingButton])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = [v5 isEqual:self->_ignoreButton] ^ 1;
+    v6 = [view isEqual:self->_ignoreButton] ^ 1;
   }
 
   return v6;
 }
 
-- (void)setOfferState:(int64_t)a3
+- (void)setOfferState:(int64_t)state
 {
-  if (self->_offerState != a3)
+  if (self->_offerState != state)
   {
-    self->_offerState = a3;
+    self->_offerState = state;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_titleString isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     titleString = self->_titleString;
     self->_titleString = v4;
 
@@ -546,12 +546,12 @@ LABEL_24:
   }
 }
 
-- (void)setLocationString:(id)a3
+- (void)setLocationString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_locationString isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     locationString = self->_locationString;
     self->_locationString = v4;
 
@@ -559,42 +559,42 @@ LABEL_24:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = CKLocationShareBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v7 setDelegate:v4];
+  delegateCopy = delegate;
+  [(CKBalloonView *)&v7 setDelegate:delegateCopy];
   v5 = [(CKLocationShareBalloonView *)self startSharingButton:v7.receiver];
-  v6 = [v4 sharingMenu];
+  sharingMenu = [delegateCopy sharingMenu];
 
-  [v5 setMenu:v6];
+  [v5 setMenu:sharingMenu];
 }
 
-- (void)_ignoreButtonHit:(id)a3
+- (void)_ignoreButtonHit:(id)hit
 {
-  v4 = [(CKBalloonView *)self delegate];
-  [v4 locationShareBalloonViewIgnoreButtonTapped:self];
+  delegate = [(CKBalloonView *)self delegate];
+  [delegate locationShareBalloonViewIgnoreButtonTapped:self];
 }
 
-- (void)configureForLocationShareOfferChatItem:(id)a3
+- (void)configureForLocationShareOfferChatItem:(id)item
 {
-  v4 = a3;
-  -[CKBalloonView setOrientation:](self, "setOrientation:", [v4 balloonOrientation]);
-  -[CKImageBalloonView setHasTail:](self, "setHasTail:", [v4 hasTail]);
-  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [v4 balloonCorners]);
-  [v4 textAlignmentInsets];
+  itemCopy = item;
+  -[CKBalloonView setOrientation:](self, "setOrientation:", [itemCopy balloonOrientation]);
+  -[CKImageBalloonView setHasTail:](self, "setHasTail:", [itemCopy hasTail]);
+  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [itemCopy balloonCorners]);
+  [itemCopy textAlignmentInsets];
   [(CKBalloonView *)self setTextAlignmentInsets:?];
-  -[CKLocationShareBalloonView setOfferState:](self, "setOfferState:", [v4 offerState]);
-  v5 = [v4 titleText];
-  [(CKLocationShareBalloonView *)self setTitleString:v5];
+  -[CKLocationShareBalloonView setOfferState:](self, "setOfferState:", [itemCopy offerState]);
+  titleText = [itemCopy titleText];
+  [(CKLocationShareBalloonView *)self setTitleString:titleText];
 
-  v6 = [v4 locationText];
-  [(CKLocationShareBalloonView *)self setLocationString:v6];
+  locationText = [itemCopy locationText];
+  [(CKLocationShareBalloonView *)self setLocationString:locationText];
 
   v9 = +[CKUIBehavior sharedBehaviors];
   [v9 mapPreviewMaxWidth];
-  v8 = [v4 previewForWidth:-[CKBalloonView orientation](self orientation:{"orientation"), v7}];
+  v8 = [itemCopy previewForWidth:-[CKBalloonView orientation](self orientation:{"orientation"), v7}];
 
   [(CKImageBalloonView *)self setImage:v8];
 }

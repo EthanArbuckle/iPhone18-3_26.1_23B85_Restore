@@ -1,30 +1,30 @@
 @interface _VOSProfileSecondaryCommand
-+ (id)profileSecondaryCommandWithCommand:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5;
-+ (id)profileSecondaryCommandWithStringValue:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5;
++ (id)profileSecondaryCommandWithCommand:(id)command context:(unint64_t)context pressCount:(unint64_t)count;
++ (id)profileSecondaryCommandWithStringValue:(id)value context:(unint64_t)context pressCount:(unint64_t)count;
 - (_VOSProfileCommand)primaryProfileCommand;
-- (_VOSProfileSecondaryCommand)initWithCoder:(id)a3;
-- (id)_initWithCommand:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5;
+- (_VOSProfileSecondaryCommand)initWithCoder:(id)coder;
+- (id)_initWithCommand:(id)command context:(unint64_t)context pressCount:(unint64_t)count;
 - (id)description;
 - (unint64_t)pressCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _VOSProfileSecondaryCommand
 
-+ (id)profileSecondaryCommandWithCommand:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5
++ (id)profileSecondaryCommandWithCommand:(id)command context:(unint64_t)context pressCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = [[_VOSProfileSecondaryCommand alloc] _initWithCommand:v7 context:a4 pressCount:a5];
+  commandCopy = command;
+  v8 = [[_VOSProfileSecondaryCommand alloc] _initWithCommand:commandCopy context:context pressCount:count];
 
   return v8;
 }
 
-+ (id)profileSecondaryCommandWithStringValue:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5
++ (id)profileSecondaryCommandWithStringValue:(id)value context:(unint64_t)context pressCount:(unint64_t)count
 {
-  v8 = [VOSCommand builtInCommandWithStringValue:a3];
+  v8 = [VOSCommand builtInCommandWithStringValue:value];
   if (v8)
   {
-    v9 = [a1 profileSecondaryCommandWithCommand:v8 context:a4 pressCount:a5];
+    v9 = [self profileSecondaryCommandWithCommand:v8 context:context pressCount:count];
   }
 
   else
@@ -35,18 +35,18 @@
   return v9;
 }
 
-- (id)_initWithCommand:(id)a3 context:(unint64_t)a4 pressCount:(unint64_t)a5
+- (id)_initWithCommand:(id)command context:(unint64_t)context pressCount:(unint64_t)count
 {
-  v9 = a3;
+  commandCopy = command;
   v13.receiver = self;
   v13.super_class = _VOSProfileSecondaryCommand;
   v10 = [(_VOSProfileSecondaryCommand *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_command, a3);
-    v11->_context = a4;
-    v11->_pressCount = a5;
+    objc_storeStrong(&v10->_command, command);
+    v11->_context = context;
+    v11->_pressCount = count;
   }
 
   return v11;
@@ -57,19 +57,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_VOSProfileSecondaryCommand *)self command];
-  v7 = [v3 stringWithFormat:@"%@<%p>: cmd '%@' context: '%d' pressCount: '%d'", v5, self, v6, -[_VOSProfileSecondaryCommand context](self, "context"), -[_VOSProfileSecondaryCommand pressCount](self, "pressCount")];
+  command = [(_VOSProfileSecondaryCommand *)self command];
+  v7 = [v3 stringWithFormat:@"%@<%p>: cmd '%@' context: '%d' pressCount: '%d'", v5, self, command, -[_VOSProfileSecondaryCommand context](self, "context"), -[_VOSProfileSecondaryCommand pressCount](self, "pressCount")];
 
   return v7;
 }
 
-- (_VOSProfileSecondaryCommand)initWithCoder:(id)a3
+- (_VOSProfileSecondaryCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"commandType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"commandType"];
   if (v5 == 1)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
     v7 = [VOSCommand commandWithSiriShortcut:v6];
   }
 
@@ -82,7 +82,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"command"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"command"];
     v7 = [VOSCommand builtInCommandWithStringValue:v6];
   }
 
@@ -94,38 +94,38 @@ LABEL_6:
   }
 
 LABEL_7:
-  v9 = -[_VOSProfileSecondaryCommand _initWithCommand:context:pressCount:](self, "_initWithCommand:context:pressCount:", v8, [v4 decodeIntegerForKey:@"context"], objc_msgSend(v4, "decodeIntegerForKey:", @"pressCount"));
+  v9 = -[_VOSProfileSecondaryCommand _initWithCommand:context:pressCount:](self, "_initWithCommand:context:pressCount:", v8, [coderCopy decodeIntegerForKey:@"context"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"pressCount"));
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[VOSCommand commandType](self->_command forKey:{"commandType"), @"commandType"}];
-  v4 = [(VOSCommand *)self->_command commandType];
-  if (v4 == 1)
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[VOSCommand commandType](self->_command forKey:{"commandType"), @"commandType"}];
+  commandType = [(VOSCommand *)self->_command commandType];
+  if (commandType == 1)
   {
-    v5 = [(VOSCommand *)self->_command siriShortcut];
+    siriShortcut = [(VOSCommand *)self->_command siriShortcut];
     v6 = @"siriShortcut";
   }
 
   else
   {
-    if (v4)
+    if (commandType)
     {
       goto LABEL_6;
     }
 
-    v5 = [(VOSCommand *)self->_command rawValue];
+    siriShortcut = [(VOSCommand *)self->_command rawValue];
     v6 = @"command";
   }
 
-  [v7 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:siriShortcut forKey:v6];
 
 LABEL_6:
-  [v7 encodeInteger:-[_VOSProfileSecondaryCommand context](self forKey:{"context"), @"context"}];
-  [v7 encodeInteger:-[_VOSProfileSecondaryCommand pressCount](self forKey:{"pressCount"), @"pressCount"}];
+  [coderCopy encodeInteger:-[_VOSProfileSecondaryCommand context](self forKey:{"context"), @"context"}];
+  [coderCopy encodeInteger:-[_VOSProfileSecondaryCommand pressCount](self forKey:{"pressCount"), @"pressCount"}];
 }
 
 - (unint64_t)pressCount

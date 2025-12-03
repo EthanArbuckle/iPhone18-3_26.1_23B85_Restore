@@ -4,14 +4,14 @@
 - (NSString)description;
 - (SBSUniversalControlService)init;
 - (id)_ownedRectEdgeMaskAsNumber;
-- (id)acquireScreenEdgeOwnershipForPointerEvents:(unint64_t)a3 forReason:(id)a4;
+- (id)acquireScreenEdgeOwnershipForPointerEvents:(unint64_t)events forReason:(id)reason;
 - (uint64_t)screenEdgeOwnershipAssertion;
 - (uint64_t)serverConnection;
 - (void)_connectToServer;
 - (void)_init;
-- (void)setDisableKeyboardFocusAssertion:(uint64_t)a1;
-- (void)setScreenEdgeOwnershipAssertion:(uint64_t)a1;
-- (void)setServerConnection:(uint64_t)a1;
+- (void)setDisableKeyboardFocusAssertion:(uint64_t)assertion;
+- (void)setScreenEdgeOwnershipAssertion:(uint64_t)assertion;
+- (void)setServerConnection:(uint64_t)connection;
 @end
 
 @implementation SBSUniversalControlService
@@ -37,12 +37,12 @@ uint64_t __44__SBSUniversalControlService_sharedInstance__block_invoke()
 
 - (void)_init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = SBSUniversalControlService;
   v1 = objc_msgSendSuper2(&v23, sel_init);
   if (v1)
@@ -108,7 +108,7 @@ uint64_t __44__SBSUniversalControlService_sharedInstance__block_invoke()
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBSUniversalControlService.m";
     v17 = 1024;
@@ -137,7 +137,7 @@ uint64_t __44__SBSUniversalControlService_sharedInstance__block_invoke()
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBSUniversalControlService.m";
     v17 = 1024;
@@ -199,13 +199,13 @@ id __35__SBSUniversalControlService__init__block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (id)acquireScreenEdgeOwnershipForPointerEvents:(unint64_t)a3 forReason:(id)a4
+- (id)acquireScreenEdgeOwnershipForPointerEvents:(unint64_t)events forReason:(id)reason
 {
   screenEdgeOwnershipAssertion = self->_screenEdgeOwnershipAssertion;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:a3];
-  v9 = [(BSCompoundAssertion *)screenEdgeOwnershipAssertion acquireForReason:v7 withContext:v8];
+  reasonCopy = reason;
+  v8 = [v6 numberWithUnsignedInteger:events];
+  v9 = [(BSCompoundAssertion *)screenEdgeOwnershipAssertion acquireForReason:reasonCopy withContext:v8];
 
   return v9;
 }
@@ -269,10 +269,10 @@ void __46__SBSUniversalControlService__connectToServer__block_invoke_46(uint64_t
 
 - (id)_ownedRectEdgeMaskAsNumber
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 32) context];
-    v2 = [v1 bs_reduce:&unk_1F05B4EE0 block:&__block_literal_global_38];
+    context = [*(self + 32) context];
+    v2 = [context bs_reduce:&unk_1F05B4EE0 block:&__block_literal_global_38];
   }
 
   else
@@ -286,34 +286,34 @@ void __46__SBSUniversalControlService__connectToServer__block_invoke_46(uint64_t
 - (void)_connectToServer
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x1E698F498];
-    v3 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v4 = +[SBSUniversalControlInterfaceSpecification identifier];
-    v5 = [v2 endpointForMachName:v3 service:v4 instance:0];
+    v5 = [v2 endpointForMachName:defaultShellMachName service:v4 instance:0];
 
     v6 = [MEMORY[0x1E698F490] connectionWithEndpoint:v5];
-    v7 = *(a1 + 40);
-    *(a1 + 40) = v6;
+    v7 = *(self + 40);
+    *(self + 40) = v6;
 
-    v8 = *(a1 + 40);
+    v8 = *(self + 40);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __46__SBSUniversalControlService__connectToServer__block_invoke;
     v11[3] = &unk_1E735ED88;
-    v11[4] = a1;
+    v11[4] = self;
     [v8 configureConnection:v11];
     v9 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = *(a1 + 40);
+      v10 = *(self + 40);
       *buf = 138543362;
       v13 = v10;
       _os_log_impl(&dword_19169D000, v9, OS_LOG_TYPE_DEFAULT, "Activating Connection: %{public}@", buf, 0xCu);
     }
 
-    [*(a1 + 40) activate];
+    [*(self + 40) activate];
   }
 }
 
@@ -338,11 +338,11 @@ void __46__SBSUniversalControlService__connectToServer__block_invoke_45(uint64_t
   [v5 setScreenEdgesOwned:v7 reason:@"wants it"];
 }
 
-- (void)setDisableKeyboardFocusAssertion:(uint64_t)a1
+- (void)setDisableKeyboardFocusAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((assertion + 24), a2);
   }
 }
 
@@ -356,11 +356,11 @@ void __46__SBSUniversalControlService__connectToServer__block_invoke_45(uint64_t
   return result;
 }
 
-- (void)setScreenEdgeOwnershipAssertion:(uint64_t)a1
+- (void)setScreenEdgeOwnershipAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((assertion + 32), a2);
   }
 }
 
@@ -374,11 +374,11 @@ void __46__SBSUniversalControlService__connectToServer__block_invoke_45(uint64_t
   return result;
 }
 
-- (void)setServerConnection:(uint64_t)a1
+- (void)setServerConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((connection + 40), a2);
   }
 }
 

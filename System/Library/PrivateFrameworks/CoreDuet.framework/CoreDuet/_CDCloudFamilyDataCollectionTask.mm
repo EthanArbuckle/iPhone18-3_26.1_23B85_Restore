@@ -1,12 +1,12 @@
 @interface _CDCloudFamilyDataCollectionTask
-- (BOOL)regexMatchForRegex:(void *)a3 string:;
-- (_CDCloudFamilyDataCollectionTask)initWithActivity:(id)a3;
-- (id)aggregateInteractionDataUsingStore:(void *)a3 contact:(void *)a4 callHistoryManager:(void *)a5 avgCallDur:;
+- (BOOL)regexMatchForRegex:(void *)regex string:;
+- (_CDCloudFamilyDataCollectionTask)initWithActivity:(id)activity;
+- (id)aggregateInteractionDataUsingStore:(void *)store contact:(void *)contact callHistoryManager:(void *)manager avgCallDur:;
 - (id)airDropPeopleAtHome;
-- (id)allAirDropInteractionsFromStore:(uint64_t)a3 fetchLimit:;
-- (id)allEmailAndPhoneNumberHandlesForContact:(void *)a1;
-- (id)avgOfAllCallsUsingManager:(uint64_t)a1;
-- (id)callFeaturesFromInteractions:(void *)a3 avgCallLength:(double)a4 contact:;
+- (id)allAirDropInteractionsFromStore:(uint64_t)store fetchLimit:;
+- (id)allEmailAndPhoneNumberHandlesForContact:(void *)contact;
+- (id)avgOfAllCallsUsingManager:(uint64_t)manager;
+- (id)callFeaturesFromInteractions:(void *)interactions avgCallLength:(double)length contact:;
 - (id)contactFamilyNameForContact:me:;
 - (id)contactFamilyRelationForContact:contactRelations:me:;
 - (id)contactKeysToFetch;
@@ -18,34 +18,34 @@
 - (id)contactsInHome;
 - (id)dataPath;
 - (id)fetchEmergencyContacts;
-- (id)fetchInteractionFeatureDictionaryWithPredicate:(void *)a3 store:(void *)a4 sortDescription:;
-- (id)getThirdPartyPredicateForContact:(void *)a3 handles:;
-- (id)initWithStorage:(void *)a3 contactStore:(void *)a4 medicalIDStore:(void *)a5 activity:(void *)a6 sessionPath:(void *)a7 dataDirectory:(void *)a8 collectionDate:(double)a9 samplingRate:(void *)a10 maxBatches:(void *)a11 daysPerBatch:;
+- (id)fetchInteractionFeatureDictionaryWithPredicate:(void *)predicate store:(void *)store sortDescription:;
+- (id)getThirdPartyPredicateForContact:(void *)contact handles:;
+- (id)initWithStorage:(void *)storage contactStore:(void *)store medicalIDStore:(void *)dStore activity:(void *)activity sessionPath:(void *)path dataDirectory:(void *)directory collectionDate:(double)date samplingRate:(void *)self0 maxBatches:(void *)self1 daysPerBatch:;
 - (id)labelMembers;
 - (id)personRelationshipVocabularyByLocaleDictionary;
 - (id)relationshipRegularExpressionForRelationship;
-- (id)thirdPartyMessageFeaturesFromFeatureDictionary:(uint64_t)a1;
+- (id)thirdPartyMessageFeaturesFromFeatureDictionary:(uint64_t)dictionary;
 - (id)truncatedFileHandle;
-- (uint64_t)indexToInsertDate:(void *)a3 array:;
+- (uint64_t)indexToInsertDate:(void *)date array:;
 - (void)_execute;
 - (void)airDropPeopleAtHome;
 - (void)cleanup;
 - (void)execute;
-- (void)messagesCumulativeFeaturesFromInteractionsBatch:(void *)a3 mutableMessagesDictionary:;
-- (void)messagesFeaturesFromCumulativeDict:(uint64_t)a1;
-- (void)setSession:(uint64_t)a1;
+- (void)messagesCumulativeFeaturesFromInteractionsBatch:(void *)batch mutableMessagesDictionary:;
+- (void)messagesFeaturesFromCumulativeDict:(uint64_t)dict;
+- (void)setSession:(uint64_t)session;
 - (void)submitDataForCollection;
 @end
 
 @implementation _CDCloudFamilyDataCollectionTask
 
-- (_CDCloudFamilyDataCollectionTask)initWithActivity:(id)a3
+- (_CDCloudFamilyDataCollectionTask)initWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = NSTemporaryDirectory();
   v23 = [v5 stringByAppendingPathComponent:@"CoreDuet/DataCollection/CloudFamily"];
 
-  v22 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v6 = 1.0;
   if (!CRIsAppleInternal())
   {
@@ -64,24 +64,24 @@
   v9 = OSAGetDATaskingValue();
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 12;
+    unsignedIntegerValue = 12;
   }
 
   v11 = OSAGetDATaskingValue();
   v21 = v9;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = 30;
+    unsignedIntegerValue2 = 30;
   }
 
   v13 = +[_CDInteractionStore defaultDatabaseDirectory];
@@ -90,28 +90,28 @@
   v16 = objc_alloc(getHKMedicalIDStoreClass());
   v17 = objc_alloc_init(getHKHealthStoreClass());
   v18 = [v16 initWithHealthStore:v17];
-  v19 = [(_CDCloudFamilyDataCollectionTask *)&self->super.isa initWithStorage:v14 contactStore:v15 medicalIDStore:v18 activity:v4 sessionPath:@"/var/mobile/Library/CoreDuet/DataCollection/CloudFamily/session.archive" dataDirectory:v23 collectionDate:v22 samplingRate:v6 maxBatches:v10 daysPerBatch:v12];
+  v19 = [(_CDCloudFamilyDataCollectionTask *)&self->super.isa initWithStorage:v14 contactStore:v15 medicalIDStore:v18 activity:activityCopy sessionPath:@"/var/mobile/Library/CoreDuet/DataCollection/CloudFamily/session.archive" dataDirectory:v23 collectionDate:date samplingRate:v6 maxBatches:unsignedIntegerValue daysPerBatch:unsignedIntegerValue2];
 
   return v19;
 }
 
-- (id)initWithStorage:(void *)a3 contactStore:(void *)a4 medicalIDStore:(void *)a5 activity:(void *)a6 sessionPath:(void *)a7 dataDirectory:(void *)a8 collectionDate:(double)a9 samplingRate:(void *)a10 maxBatches:(void *)a11 daysPerBatch:
+- (id)initWithStorage:(void *)storage contactStore:(void *)store medicalIDStore:(void *)dStore activity:(void *)activity sessionPath:(void *)path dataDirectory:(void *)directory collectionDate:(double)date samplingRate:(void *)self0 maxBatches:(void *)self1 daysPerBatch:
 {
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  if (a1)
+  storageCopy = storage;
+  storeCopy = store;
+  dStoreCopy = dStore;
+  activityCopy = activity;
+  pathCopy = path;
+  directoryCopy = directory;
+  if (self)
   {
-    v52.receiver = a1;
+    v52.receiver = self;
     v52.super_class = _CDCloudFamilyDataCollectionTask;
-    a1 = objc_msgSendSuper2(&v52, sel_init, v45, v46, v47);
-    if (a1)
+    self = objc_msgSendSuper2(&v52, sel_init, storeCopy, storageCopy, v47);
+    if (self)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v24 = objc_alloc(MEMORY[0x1E69C5D58]);
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
@@ -119,18 +119,18 @@
       v49[3] = &unk_1E7369890;
       objc_copyWeak(&v50, &location);
       v25 = [v24 initWithBlock:v49];
-      v26 = a1[16];
-      a1[16] = v25;
+      v26 = self[16];
+      self[16] = v25;
 
-      objc_storeStrong(a1 + 7, a2);
-      objc_storeStrong(a1 + 8, a3);
-      objc_storeStrong(a1 + 9, a4);
-      objc_storeStrong(a1 + 2, a5);
-      v27 = [v21 copy];
-      v28 = a1[5];
-      a1[5] = v27;
+      objc_storeStrong(self + 7, a2);
+      objc_storeStrong(self + 8, storage);
+      objc_storeStrong(self + 9, store);
+      objc_storeStrong(self + 2, dStore);
+      v27 = [activityCopy copy];
+      v28 = self[5];
+      self[5] = v27;
 
-      v29 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a1[5] options:0 error:0];
+      v29 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:self[5] options:0 error:0];
       if (v29)
       {
         v48 = 0;
@@ -151,36 +151,36 @@
         v30 = 0;
       }
 
-      objc_storeStrong(a1 + 11, v30);
-      v39 = [v22 copy];
-      v40 = a1[4];
-      a1[4] = v39;
+      objc_storeStrong(self + 11, v30);
+      v39 = [pathCopy copy];
+      v40 = self[4];
+      self[4] = v39;
 
-      v41 = [v23 copy];
-      v42 = a1[6];
-      a1[6] = v41;
+      v41 = [directoryCopy copy];
+      v42 = self[6];
+      self[6] = v41;
 
-      *(a1 + 12) = a9;
-      a1[13] = a10;
-      a1[14] = a11;
-      *(a1 + 9) = 1;
-      v43 = a1[3];
-      a1[3] = &__block_literal_global_47;
+      *(self + 12) = date;
+      self[13] = rate;
+      self[14] = batches;
+      *(self + 9) = 1;
+      v43 = self[3];
+      self[3] = &__block_literal_global_47;
 
       objc_destroyWeak(&v50);
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)contactsEmergency
 {
   v69 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v41 = *(a1 + 72);
+    v41 = *(self + 72);
     v46 = [MEMORY[0x1E695DFA8] set];
     v60 = 0;
     v61 = &v60;
@@ -233,15 +233,15 @@
           }
 
           v10 = *(*(&v50 + 1) + 8 * i);
-          v11 = [v10 nameContactIdentifier];
+          nameContactIdentifier = [v10 nameContactIdentifier];
 
-          if (v11)
+          if (nameContactIdentifier)
           {
-            v12 = *(a1 + 64);
-            v13 = [v10 nameContactIdentifier];
-            v21 = [(_CDCloudFamilyDataCollectionTask *)a1 contactKeysToFetch:v14];
+            v12 = *(self + 64);
+            nameContactIdentifier2 = [v10 nameContactIdentifier];
+            v21 = [(_CDCloudFamilyDataCollectionTask *)self contactKeysToFetch:v14];
             v49 = v6;
-            v22 = [v12 unifiedContactWithIdentifier:v13 keysToFetch:v21 error:&v49];
+            v22 = [v12 unifiedContactWithIdentifier:nameContactIdentifier2 keysToFetch:v21 error:&v49];
             v23 = v49;
 
             v24 = +[_CDLogging dataCollectionChannel];
@@ -263,15 +263,15 @@
             v23 = v6;
           }
 
-          v25 = [v10 phoneNumberContactIdentifier];
+          phoneNumberContactIdentifier = [v10 phoneNumberContactIdentifier];
 
-          if (v25)
+          if (phoneNumberContactIdentifier)
           {
-            v26 = *(a1 + 64);
-            v27 = [v10 phoneNumberContactIdentifier];
-            v35 = [(_CDCloudFamilyDataCollectionTask *)a1 contactKeysToFetch:v28];
+            v26 = *(self + 64);
+            phoneNumberContactIdentifier2 = [v10 phoneNumberContactIdentifier];
+            v35 = [(_CDCloudFamilyDataCollectionTask *)self contactKeysToFetch:v28];
             v48 = v23;
-            v36 = [v26 unifiedContactWithIdentifier:v27 keysToFetch:v35 error:&v48];
+            v36 = [v26 unifiedContactWithIdentifier:phoneNumberContactIdentifier2 keysToFetch:v35 error:&v48];
             v6 = v48;
 
             v37 = +[_CDLogging dataCollectionChannel];
@@ -300,25 +300,25 @@
       while (v7);
     }
 
-    v38 = [v46 allObjects];
+    allObjects = [v46 allObjects];
 
     _Block_object_dispose(&v60, 8);
   }
 
   else
   {
-    v38 = 0;
+    allObjects = 0;
   }
 
   v39 = *MEMORY[0x1E69E9840];
 
-  return v38;
+  return allObjects;
 }
 
 - (id)contactsInContactStore
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v24 = 0;
     v25 = &v24;
@@ -328,7 +328,7 @@
     v29 = [MEMORY[0x1E695DFA8] set];
     v2 = objc_alloc_init(getCNContactStoreClass());
     v3 = objc_alloc(getCNContactFetchRequestClass());
-    v11 = [(_CDCloudFamilyDataCollectionTask *)a1 contactKeysToFetch:v4];
+    v11 = [(_CDCloudFamilyDataCollectionTask *)self contactKeysToFetch:v4];
     v12 = [v3 initWithKeysToFetch:v11];
 
     [v12 setContactBatchCount:25];
@@ -347,33 +347,33 @@
       _os_log_impl(&dword_191750000, v13, OS_LOG_TYPE_INFO, "_PSFamilyRecommender: Fetched %tu contact ids from contact store", &buf, 0xCu);
     }
 
-    v15 = [v25[5] allObjects];
+    allObjects = [v25[5] allObjects];
 
     _Block_object_dispose(&v24, 8);
   }
 
   else
   {
-    v15 = 0;
+    allObjects = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return allObjects;
 }
 
 - (id)airDropPeopleAtHome
 {
   v92 = *MEMORY[0x1E69E9840];
-  v63 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    v60 = 0;
+    dictionary = 0;
     goto LABEL_38;
   }
 
   context = objc_autoreleasePoolPush();
-  v59 = [getRTRoutineManagerClass() defaultManager];
+  defaultManager = [getRTRoutineManagerClass() defaultManager];
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -386,7 +386,7 @@
   v81[2] = __Block_byref_object_copy__14;
   v81[3] = __Block_byref_object_dispose__14;
   v82 = 0;
-  v1 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v2 = dispatch_semaphore_create(0);
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
@@ -396,7 +396,7 @@
   v79 = &v80;
   v3 = v2;
   v77 = v3;
-  [v59 fetchLocationsOfInterestOfType:0 withHandler:v76];
+  [defaultManager fetchLocationsOfInterestOfType:0 withHandler:v76];
   v4 = dispatch_time(0, 300000000000);
   v58 = v3;
   if (dispatch_semaphore_wait(v3, v4))
@@ -448,8 +448,8 @@ LABEL_23:
           v69 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v16 = [v15 visits];
-          v17 = [v16 countByEnumeratingWithState:&v68 objects:v90 count:16];
+          visits = [v15 visits];
+          v17 = [visits countByEnumeratingWithState:&v68 objects:v90 count:16];
           if (v17)
           {
             v18 = *v69;
@@ -459,13 +459,13 @@ LABEL_23:
               {
                 if (*v69 != v18)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(visits);
                 }
 
-                [v1 addObject:*(*(&v68 + 1) + 8 * j)];
+                [array addObject:*(*(&v68 + 1) + 8 * j)];
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v68 objects:v90 count:16];
+              v17 = [visits countByEnumeratingWithState:&v68 objects:v90 count:16];
             }
 
             while (v17);
@@ -482,10 +482,10 @@ LABEL_23:
   }
 
 LABEL_24:
-  v62 = [v1 valueForKey:@"entryDate"];
-  v60 = [MEMORY[0x1E695DF90] dictionary];
-  v20 = v63[7];
-  v21 = [(_CDCloudFamilyDataCollectionTask *)v63 allAirDropInteractionsFromStore:v20 fetchLimit:0];
+  v62 = [array valueForKey:@"entryDate"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v20 = selfCopy[7];
+  v21 = [(_CDCloudFamilyDataCollectionTask *)selfCopy allAirDropInteractionsFromStore:v20 fetchLimit:0];
 
   v66 = 0u;
   v67 = 0u;
@@ -506,40 +506,40 @@ LABEL_24:
         }
 
         v25 = *(*(&v64 + 1) + 8 * k);
-        v26 = [v25 recipients];
-        v27 = [v26 firstObject];
-        v28 = [v27 personId];
+        recipients = [v25 recipients];
+        firstObject = [recipients firstObject];
+        personId = [firstObject personId];
 
-        if (v28)
+        if (personId)
         {
-          v29 = [v25 startDate];
-          v30 = [(_CDCloudFamilyDataCollectionTask *)v63 indexToInsertDate:v29 array:v62];
+          startDate = [v25 startDate];
+          v30 = [(_CDCloudFamilyDataCollectionTask *)selfCopy indexToInsertDate:startDate array:v62];
 
           if (v30)
           {
-            v31 = [v1 objectAtIndexedSubscript:v30 - 1];
-            v32 = [v31 exitDate];
-            v33 = [v25 startDate];
-            [v32 timeIntervalSinceDate:v33];
+            v31 = [array objectAtIndexedSubscript:v30 - 1];
+            exitDate = [v31 exitDate];
+            startDate2 = [v25 startDate];
+            [exitDate timeIntervalSinceDate:startDate2];
             v35 = v34 > 0.0;
 
             if (v35)
             {
-              v36 = v63[8];
-              v37 = [v25 recipients];
-              v38 = [v37 firstObject];
-              v39 = [v38 personId];
-              v47 = [(_CDCloudFamilyDataCollectionTask *)v63 contactKeysToFetch:v40];
-              v48 = [v36 unifiedContactWithIdentifier:v39 keysToFetch:v47 error:0];
+              v36 = selfCopy[8];
+              recipients2 = [v25 recipients];
+              firstObject2 = [recipients2 firstObject];
+              personId2 = [firstObject2 personId];
+              v47 = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactKeysToFetch:v40];
+              v48 = [v36 unifiedContactWithIdentifier:personId2 keysToFetch:v47 error:0];
 
               if (v48)
               {
                 v49 = MEMORY[0x1E696AD98];
-                v50 = [v48 identifier];
-                v51 = [v60 objectForKeyedSubscript:v50];
+                identifier = [v48 identifier];
+                v51 = [dictionary objectForKeyedSubscript:identifier];
                 v52 = [v49 numberWithInteger:{objc_msgSend(v51, "integerValue") + 1}];
-                v53 = [v48 identifier];
-                [v60 setObject:v52 forKeyedSubscript:v53];
+                identifier2 = [v48 identifier];
+                [dictionary setObject:v52 forKeyedSubscript:identifier2];
               }
             }
           }
@@ -559,7 +559,7 @@ LABEL_24:
 LABEL_38:
   v54 = *MEMORY[0x1E69E9840];
 
-  return v60;
+  return dictionary;
 }
 
 - (void)execute
@@ -571,7 +571,7 @@ LABEL_38:
 
 - (id)labelMembers
 {
-  if (a1)
+  if (self)
   {
     v1 = objc_alloc_init(getFAFetchFamilyCircleRequestClass());
     v24 = 0;
@@ -579,7 +579,7 @@ LABEL_38:
     v26 = 0x3032000000;
     v27 = __Block_byref_object_copy__14;
     v28 = __Block_byref_object_dispose__14;
-    v29 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v2 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -598,9 +598,9 @@ LABEL_38:
         [_CDCloudFamilyDataCollectionTask labelMembers];
       }
 
-      v6 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v7 = v25[5];
-      v25[5] = v6;
+      v25[5] = array2;
     }
 
     if (![v25[5] count])
@@ -625,9 +625,9 @@ LABEL_38:
           [_CDCloudFamilyDataCollectionTask labelMembers];
         }
 
-        v11 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
         v12 = v25[5];
-        v25[5] = v11;
+        v25[5] = array3;
       }
     }
 
@@ -644,15 +644,15 @@ LABEL_38:
   return v13;
 }
 
-- (BOOL)regexMatchForRegex:(void *)a3 string:
+- (BOOL)regexMatchForRegex:(void *)regex string:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
+  regexCopy = regex;
+  v7 = regexCopy;
   v8 = 0;
-  if (a1 && v6)
+  if (self && regexCopy)
   {
-    v8 = [v5 numberOfMatchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}] != 0;
+    v8 = [v5 numberOfMatchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}] != 0;
   }
 
   return v8;
@@ -660,9 +660,9 @@ LABEL_38:
 
 - (id)fetchEmergencyContacts
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 72);
+    v1 = *(self + 72);
     v14 = 0;
     v15 = &v14;
     v16 = 0x3032000000;
@@ -765,12 +765,12 @@ LABEL_38:
     v47[6] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:7];
 
-    v14 = [v4 contactRelations];
+    contactRelations = [v4 contactRelations];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    v15 = [contactRelations countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v15)
     {
       v16 = v15;
@@ -782,20 +782,20 @@ LABEL_38:
         {
           if (*v42 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(contactRelations);
           }
 
           v19 = *(*(&v41 + 1) + 8 * v18);
-          v20 = [v19 label];
+          label = [v19 label];
           v21 = [OUTLINED_FUNCTION_66_0() containsObject:?];
 
           if ((v21 & 1) == 0)
           {
-            v22 = [v19 value];
-            v23 = [v22 name];
+            value = [v19 value];
+            name = [value name];
 
-            v36 = v23;
-            v24 = [(_CDCloudFamilyDataCollectionTask *)v35 queryContactsForGivenName:v23];
+            v36 = name;
+            v24 = [(_CDCloudFamilyDataCollectionTask *)v35 queryContactsForGivenName:name];
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
@@ -828,7 +828,7 @@ LABEL_38:
         }
 
         while (v18 != v16);
-        v29 = [v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v29 = [contactRelations countByEnumeratingWithState:&v41 objects:v46 count:16];
         v16 = v29;
       }
 
@@ -845,20 +845,20 @@ LABEL_38:
   return v31;
 }
 
-- (id)avgOfAllCallsUsingManager:(uint64_t)a1
+- (id)avgOfAllCallsUsingManager:(uint64_t)manager
 {
   v2 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (manager)
   {
     v3 = [a2 callsWithPredicate:0 limit:0 offset:0 batchSize:0];
     v4 = [v3 count];
     OUTLINED_FUNCTION_43_0();
     v5 = v3;
     OUTLINED_FUNCTION_36();
-    v7 = [v6 countByEnumeratingWithState:? objects:? count:?];
-    if (v7)
+    duration = [v6 countByEnumeratingWithState:? objects:? count:?];
+    if (duration)
     {
-      v15 = v7;
+      v15 = duration;
       v16 = *v26;
       v17 = 0.0;
       do
@@ -866,24 +866,24 @@ LABEL_38:
         v18 = 0;
         do
         {
-          OUTLINED_FUNCTION_29_1(v7, v8, v9, v10, v11, v12, v13, v14, v24, v25, v26);
+          OUTLINED_FUNCTION_29_1(duration, v8, v9, v10, v11, v12, v13, v14, v24, v25, v26);
           if (v19 != v16)
           {
             objc_enumerationMutation(v5);
           }
 
-          v7 = [*(v25 + 8 * v18) duration];
+          duration = [*(v25 + 8 * v18) duration];
           v17 = v17 + v20;
           ++v18;
         }
 
         while (v15 != v18);
         OUTLINED_FUNCTION_36();
-        v7 = [v5 countByEnumeratingWithState:? objects:? count:?];
-        v15 = v7;
+        duration = [v5 countByEnumeratingWithState:? objects:? count:?];
+        v15 = duration;
       }
 
-      while (v7);
+      while (duration);
     }
 
     else
@@ -907,7 +907,7 @@ LABEL_38:
 - (id)contactsEmergencyFamily
 {
   v75[7] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v56 = [MEMORY[0x1E695DFA8] set];
     v2 = getCNLabelContactRelationManager();
@@ -918,35 +918,35 @@ LABEL_38:
     v75[2] = v4;
     v5 = getCNLabelContactRelationTeacher();
     v75[3] = v5;
-    v6 = getCNLabelContactRelationFriend();
-    v75[4] = v6;
+    nameContactIdentifier = getCNLabelContactRelationFriend();
+    v75[4] = nameContactIdentifier;
     v7 = getCNLabelContactRelationMaleFriend();
     v75[5] = v7;
     v8 = getCNLabelContactRelationFemaleFriend();
     v75[6] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:7];
 
-    v10 = [(_CDCloudFamilyDataCollectionTask *)a1 fetchEmergencyContacts];
+    fetchEmergencyContacts = [(_CDCloudFamilyDataCollectionTask *)self fetchEmergencyContacts];
     v11 = OUTLINED_FUNCTION_16_2();
     v13 = [v12 countByEnumeratingWithState:&v62 objects:&v72 count:{16, v11}];
     if (v13)
     {
       v22 = v13;
-      v59 = a1;
+      selfCopy = self;
       v23 = 0;
       v24 = *v64;
       *&v21 = 138412290;
       v55 = v21;
-      v58 = v10;
+      v58 = fetchEmergencyContacts;
       do
       {
         v25 = 0;
         do
         {
-          OUTLINED_FUNCTION_48_0(v13, v14, v15, v16, v17, v18, v19, v20, v55, *(&v55 + 1), v56, v57, v58, v59, v60, v61, v62, v63, v64);
+          OUTLINED_FUNCTION_48_0(v13, v14, v15, v16, v17, v18, v19, v20, v55, *(&v55 + 1), v56, v57, v58, selfCopy, v60, v61, v62, v63, v64);
           if (v26 != v24)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(fetchEmergencyContacts);
           }
 
           v27 = *(v63 + 8 * v25);
@@ -956,15 +956,15 @@ LABEL_38:
 
           if ((v28 & 1) == 0)
           {
-            v6 = [v27 nameContactIdentifier];
+            nameContactIdentifier = [v27 nameContactIdentifier];
 
-            if (v6)
+            if (nameContactIdentifier)
             {
-              v31 = v59[8];
-              v32 = [v27 nameContactIdentifier];
-              v6 = [(_CDCloudFamilyDataCollectionTask *)v59 contactKeysToFetch:v33];
+              v31 = selfCopy[8];
+              nameContactIdentifier2 = [v27 nameContactIdentifier];
+              nameContactIdentifier = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactKeysToFetch:v33];
               v61 = v23;
-              v57 = [v31 unifiedContactWithIdentifier:v32 keysToFetch:v6 error:&v61];
+              v57 = [v31 unifiedContactWithIdentifier:nameContactIdentifier2 keysToFetch:nameContactIdentifier error:&v61];
               v29 = v61;
 
               v40 = +[_CDLogging dataCollectionChannel];
@@ -980,7 +980,7 @@ LABEL_38:
                 [v56 addObject:v57];
               }
 
-              v10 = v58;
+              fetchEmergencyContacts = v58;
             }
 
             else
@@ -988,15 +988,15 @@ LABEL_38:
               v29 = v23;
             }
 
-            v30 = [v27 phoneNumberContactIdentifier];
+            phoneNumberContactIdentifier = [v27 phoneNumberContactIdentifier];
 
-            if (v30)
+            if (phoneNumberContactIdentifier)
             {
-              v41 = v59[8];
-              v42 = [v27 phoneNumberContactIdentifier];
-              v50 = [(_CDCloudFamilyDataCollectionTask *)v59 contactKeysToFetch:v43];
+              v41 = selfCopy[8];
+              phoneNumberContactIdentifier2 = [v27 phoneNumberContactIdentifier];
+              v50 = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactKeysToFetch:v43];
               v60 = v29;
-              v6 = [v41 unifiedContactWithIdentifier:v42 keysToFetch:v50 error:&v60];
+              nameContactIdentifier = [v41 unifiedContactWithIdentifier:phoneNumberContactIdentifier2 keysToFetch:v50 error:&v60];
               v23 = v60;
 
               v51 = +[_CDLogging dataCollectionChannel];
@@ -1007,10 +1007,10 @@ LABEL_38:
                 _os_log_error_impl(&dword_191750000, v51, OS_LOG_TYPE_ERROR, "Error querying contacts %@", &buf, 0xCu);
               }
 
-              v10 = v58;
-              if (v6)
+              fetchEmergencyContacts = v58;
+              if (nameContactIdentifier)
               {
-                [v56 addObject:v6];
+                [v56 addObject:nameContactIdentifier];
               }
             }
 
@@ -1024,7 +1024,7 @@ LABEL_38:
         }
 
         while (v22 != v25);
-        v13 = [v10 countByEnumeratingWithState:&v62 objects:&v72 count:16];
+        v13 = [fetchEmergencyContacts countByEnumeratingWithState:&v62 objects:&v72 count:16];
         v22 = v13;
       }
 
@@ -1036,17 +1036,17 @@ LABEL_38:
       v23 = 0;
     }
 
-    v52 = [v56 allObjects];
+    allObjects = [v56 allObjects];
   }
 
   else
   {
-    v52 = 0;
+    allObjects = 0;
   }
 
   v53 = *MEMORY[0x1E69E9840];
 
-  return v52;
+  return allObjects;
 }
 
 - (id)contactParentsUsingRegexNamesUsingContacts:
@@ -1059,7 +1059,7 @@ LABEL_38:
   if (v1)
   {
     v4 = v3;
-    v65 = [_CDCloudFamilyDataCollectionTask relationshipRegularExpressionForRelationship];
+    relationshipRegularExpressionForRelationship = [_CDCloudFamilyDataCollectionTask relationshipRegularExpressionForRelationship];
     v5 = [MEMORY[0x1E695DFA8] set];
     v6 = v4;
     OUTLINED_FUNCTION_55();
@@ -1070,14 +1070,14 @@ LABEL_38:
       goto LABEL_26;
     }
 
-    OUTLINED_FUNCTION_54(v8, v9, v10, v11, v12, v13, v14, v15, v61, obj, v63, v65, v8, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, v87, 0, 0, 0);
+    OUTLINED_FUNCTION_54(v8, v9, v10, v11, v12, v13, v14, v15, v61, obj, v63, relationshipRegularExpressionForRelationship, v8, v67, v69, v71, v73, v75, v77, v79, v81, v83, v85, v87, 0, 0, 0);
     v64 = v24;
     while (1)
     {
       v25 = 0;
       do
       {
-        OUTLINED_FUNCTION_54(v16, v17, v18, v19, v20, v21, v22, v23, v61, obj, v64, v65, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, v86, v88, v89, v90, v91);
+        OUTLINED_FUNCTION_54(v16, v17, v18, v19, v20, v21, v22, v23, v61, obj, v64, relationshipRegularExpressionForRelationship, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, v86, v88, v89, v90, v91);
         if (v26 != v64)
         {
           objc_enumerationMutation(obj);
@@ -1086,7 +1086,7 @@ LABEL_38:
         v68 = v25;
         v27 = *(v90 + 8 * v25);
         OUTLINED_FUNCTION_16_2();
-        v28 = v65;
+        v28 = relationshipRegularExpressionForRelationship;
         OUTLINED_FUNCTION_60_0();
         v30 = [v29 countByEnumeratingWithState:? objects:? count:?];
         if (v30)
@@ -1100,30 +1100,30 @@ LABEL_38:
             v72 = v38;
             do
             {
-              OUTLINED_FUNCTION_48_0(v30, v31, v32, v33, v34, v35, v36, v37, v61, obj, v64, v65, v66, v68, v70, v72, v74, v76, v78);
+              OUTLINED_FUNCTION_48_0(v30, v31, v32, v33, v34, v35, v36, v37, v61, obj, v64, relationshipRegularExpressionForRelationship, v66, v68, v70, v72, v74, v76, v78);
               if (v41 != v39)
               {
                 objc_enumerationMutation(v28);
               }
 
               v42 = *(v76 + 8 * v40);
-              v43 = [v27 givenName];
+              givenName = [v27 givenName];
               v44 = OUTLINED_FUNCTION_64_0();
-              if ([(_CDCloudFamilyDataCollectionTask *)v44 regexMatchForRegex:v45 string:v43])
+              if ([(_CDCloudFamilyDataCollectionTask *)v44 regexMatchForRegex:v45 string:givenName])
               {
                 goto LABEL_17;
               }
 
-              v46 = [v27 middleName];
+              middleName = [v27 middleName];
               v47 = OUTLINED_FUNCTION_64_0();
-              if ([(_CDCloudFamilyDataCollectionTask *)v47 regexMatchForRegex:v48 string:v46])
+              if ([(_CDCloudFamilyDataCollectionTask *)v47 regexMatchForRegex:v48 string:middleName])
               {
                 goto LABEL_16;
               }
 
-              v49 = [v27 familyName];
+              familyName = [v27 familyName];
               v50 = OUTLINED_FUNCTION_64_0();
-              if ([(_CDCloudFamilyDataCollectionTask *)v50 regexMatchForRegex:v51 string:v49])
+              if ([(_CDCloudFamilyDataCollectionTask *)v50 regexMatchForRegex:v51 string:familyName])
               {
 
                 v38 = v72;
@@ -1189,39 +1189,39 @@ LABEL_26:
 
 - (id)contactsInHome
 {
-  if (a1)
+  if (self)
   {
     v1 = +[_CDHomeManagerUtilities sharedInstance];
-    v2 = [v1 contactsInHome];
+    contactsInHome = [v1 contactsInHome];
   }
 
   else
   {
-    v2 = 0;
+    contactsInHome = 0;
   }
 
-  return v2;
+  return contactsInHome;
 }
 
 - (void)_execute
 {
   v215 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v3 = a1;
-    v4 = [a1 activity];
-    if (v4)
+    selfCopy = self;
+    activity = [self activity];
+    if (activity)
     {
-      v5 = v4;
-      v6 = [v3 activity];
-      if (xpc_activity_should_defer(v6))
+      v5 = activity;
+      activity2 = [selfCopy activity];
+      if (xpc_activity_should_defer(activity2))
       {
-        v1 = [v3 activity];
-        v2 = xpc_activity_set_state(v1, 3);
+        activity3 = [selfCopy activity];
+        v2 = xpc_activity_set_state(activity3, 3);
 
         if (v2)
         {
-          *(v3 + 9) = 0;
+          *(selfCopy + 9) = 0;
           goto LABEL_12;
         }
       }
@@ -1231,15 +1231,15 @@ LABEL_26:
       }
     }
 
-    v7 = *(v3 + 48);
-    v8 = [(_CDCloudFamilyDataCollectionTask *)v3 labelMembers];
-    if ([v8 count])
+    v7 = *(selfCopy + 48);
+    labelMembers = [(_CDCloudFamilyDataCollectionTask *)selfCopy labelMembers];
+    if ([labelMembers count])
     {
-      if (!*(v3 + 88))
+      if (!*(selfCopy + 88))
       {
-        v9 = *(v3 + 96);
+        v9 = *(selfCopy + 96);
         v10 = arc4random_uniform(0xF4241u) / 1000000.0;
-        *(v3 + 8) = v10 <= v9;
+        *(selfCopy + 8) = v10 <= v9;
         if (v10 > v9)
         {
           goto LABEL_11;
@@ -1253,17 +1253,17 @@ LABEL_26:
           _os_log_debug_impl(v14, v15, v16, v17, v18, 2u);
         }
 
-        v1 = +[_CDCloudFamilyDataCollectionSession generateNewSession];
-        [(_CDCloudFamilyDataCollectionTask *)v3 setSession:v1];
+        activity3 = +[_CDCloudFamilyDataCollectionSession generateNewSession];
+        [(_CDCloudFamilyDataCollectionTask *)selfCopy setSession:activity3];
       }
 
-      if ([(_CDCloudFamilyDataCollectionSession *)*(v3 + 88) isValidForCollectionDate:v7])
+      if ([(_CDCloudFamilyDataCollectionSession *)*(selfCopy + 88) isValidForCollectionDate:v7])
       {
         v19 = +[_CDLogging dataCollectionChannel];
         if (OUTLINED_FUNCTION_53_0(v19))
         {
           v32 = MEMORY[0x1E696AD98];
-          v33 = *(v3 + 88);
+          v33 = *(selfCopy + 88);
           if (v33)
           {
             v34 = v33[5];
@@ -1282,7 +1282,7 @@ LABEL_26:
           _os_log_debug_impl(v35, v36, v37, v38, v39, 0xCu);
         }
 
-        v20 = *(v3 + 88);
+        v20 = *(selfCopy + 88);
         if (v20)
         {
           v20 = *(v20 + 32);
@@ -1290,8 +1290,8 @@ LABEL_26:
 
         if (v20)
         {
-          v21 = *(v3 + 112) * 86400.0;
-          v22 = *(v3 + 88);
+          v21 = *(selfCopy + 112) * 86400.0;
+          v22 = *(selfCopy + 88);
           v23 = v22 ? v22[4] : 0;
           v24 = v22;
           [OUTLINED_FUNCTION_67_0() timeIntervalSinceDate:v23];
@@ -1307,16 +1307,16 @@ LABEL_26:
               _os_log_debug_impl(v52, v53, v54, v55, v56, 2u);
             }
 
-            *(v3 + 9) = 0;
+            *(selfCopy + 9) = 0;
             goto LABEL_11;
           }
         }
 
-        v27 = *(v3 + 88);
+        v27 = *(selfCopy + 88);
         if (v27)
         {
           v28 = v27[5];
-          v29 = *(v3 + 104);
+          v29 = *(selfCopy + 104);
 
           if (v28 > v29)
           {
@@ -1324,7 +1324,7 @@ LABEL_26:
             if (OUTLINED_FUNCTION_53_0(v30))
             {
               v42 = MEMORY[0x1E696AD98];
-              v43 = *(v3 + 88);
+              v43 = *(selfCopy + 88);
               if (v43)
               {
                 v44 = v43[5];
@@ -1337,7 +1337,7 @@ LABEL_26:
 
               v45 = v43;
               v46 = [v42 numberWithUnsignedInteger:v44];
-              [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(v3 + 104)];
+              [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(selfCopy + 104)];
               *buf = 138412546;
               v212 = v46;
               v214 = v213 = 2112;
@@ -1349,23 +1349,23 @@ LABEL_26:
           }
         }
 
-        v40 = [(_CDCloudFamilyDataCollectionTask *)v3 truncatedFileHandle];
-        v28 = v40;
-        if (!v40)
+        truncatedFileHandle = [(_CDCloudFamilyDataCollectionTask *)selfCopy truncatedFileHandle];
+        v28 = truncatedFileHandle;
+        if (!truncatedFileHandle)
         {
           v41 = +[_CDLogging dataCollectionChannel];
           if (OUTLINED_FUNCTION_73_0(v41))
           {
             *buf = 0;
-            _os_log_error_impl(&dword_191750000, v3, OS_LOG_TYPE_ERROR, "Failed to open file for writing cloud family data collection data", buf, 2u);
+            _os_log_error_impl(&dword_191750000, selfCopy, OS_LOG_TYPE_ERROR, "Failed to open file for writing cloud family data collection data", buf, 2u);
           }
 
           goto LABEL_37;
         }
 
-        v150 = v40;
+        v150 = truncatedFileHandle;
         context = MEMORY[0x1E696AEC0];
-        v57 = *(v3 + 88);
+        v57 = *(selfCopy + 88);
         if (v57)
         {
           v58 = v57[1];
@@ -1377,7 +1377,7 @@ LABEL_26:
         }
 
         v59 = MEMORY[0x1E696AD98];
-        v60 = *(v3 + 88);
+        v60 = *(selfCopy + 88);
         if (v60)
         {
           v61 = v60[5];
@@ -1398,28 +1398,28 @@ LABEL_26:
         v66 = [v65 dataUsingEncoding:4];
         [v150 writeData:v66];
 
-        v67 = [(_CDCloudFamilyDataCollectionTask *)v3 contactsInContactStore];
-        v68 = *(v3 + 64);
-        [(_CDCloudFamilyDataCollectionTask *)v3 contactKeysToFetch:v69];
+        contactsInContactStore = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactsInContactStore];
+        activity5 = *(selfCopy + 64);
+        [(_CDCloudFamilyDataCollectionTask *)selfCopy contactKeysToFetch:v69];
         objc_claimAutoreleasedReturnValue();
         v76 = [OUTLINED_FUNCTION_28_2() _ios_meContactWithKeysToFetch:v61 error:0];
 
         v188 = v76;
         v167 = [_CDCloudFamilyDataCollectionTask contactRelationsUsingMe:];
-        v165 = [(_CDCloudFamilyDataCollectionTask *)v3 contactsEmergencyFamily];
-        v163 = [(_CDCloudFamilyDataCollectionTask *)v3 contactsEmergency];
-        v161 = [(_CDCloudFamilyDataCollectionTask *)v3 contactsInHome];
+        contactsEmergencyFamily = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactsEmergencyFamily];
+        contactsEmergency = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactsEmergency];
+        contactsInHome = [(_CDCloudFamilyDataCollectionTask *)selfCopy contactsInHome];
         v159 = [_CDCloudFamilyDataCollectionTask contactParentsUsingRegexNamesUsingContacts:];
-        v169 = [(_CDCloudFamilyDataCollectionTask *)v3 photosPeople];
-        v173 = [(_CDCloudFamilyDataCollectionTask *)v3 airDropPeople];
-        v157 = [(_CDCloudFamilyDataCollectionTask *)v3 airDropPeopleAtHome];
+        photosPeople = [(_CDCloudFamilyDataCollectionTask *)selfCopy photosPeople];
+        airDropPeople = [(_CDCloudFamilyDataCollectionTask *)selfCopy airDropPeople];
+        airDropPeopleAtHome = [(_CDCloudFamilyDataCollectionTask *)selfCopy airDropPeopleAtHome];
         v155 = objc_alloc_init(getCHManagerClass());
-        v153 = [(_CDCloudFamilyDataCollectionTask *)v3 avgOfAllCallsUsingManager:v155];
+        v153 = [(_CDCloudFamilyDataCollectionTask *)selfCopy avgOfAllCallsUsingManager:v155];
         v199 = 0u;
         v200 = 0u;
         v201 = 0u;
         v202 = 0u;
-        obj = v67;
+        obj = contactsInContactStore;
         v187 = [obj countByEnumeratingWithState:&v199 objects:v210 count:16];
         if (v187)
         {
@@ -1436,19 +1436,19 @@ LABEL_26:
 
               v78 = *(*(&v199 + 1) + 8 * v77);
               contexta = objc_autoreleasePoolPush();
-              v79 = [v3 activity];
-              if (v79)
+              activity4 = [selfCopy activity];
+              if (activity4)
               {
-                v80 = v79;
-                v68 = [v3 activity];
-                if (xpc_activity_should_defer(v68))
+                v80 = activity4;
+                activity5 = [selfCopy activity];
+                if (xpc_activity_should_defer(activity5))
                 {
-                  v81 = [v3 activity];
-                  v82 = xpc_activity_set_state(v81, 3);
+                  activity6 = [selfCopy activity];
+                  v82 = xpc_activity_set_state(activity6, 3);
 
                   if (v82)
                   {
-                    *(v3 + 9) = 1;
+                    *(selfCopy + 9) = 1;
                     objc_autoreleasePoolPop(contexta);
                     v138 = obj;
                     goto LABEL_89;
@@ -1460,7 +1460,7 @@ LABEL_26:
                 }
               }
 
-              v83 = [v188 identifier];
+              identifier = [v188 identifier];
               [v78 identifier];
               objc_claimAutoreleasedReturnValue();
               v84 = [OUTLINED_FUNCTION_8_6() isEqualToString:?];
@@ -1488,7 +1488,7 @@ LABEL_26:
                         objc_enumerationMutation(v88);
                       }
 
-                      if ([v8 containsObject:*(*(&v195 + 1) + 8 * i)])
+                      if ([labelMembers containsObject:*(*(&v195 + 1) + 8 * i)])
                       {
                         v90 = &unk_1F05EEA90;
                         goto LABEL_69;
@@ -1509,7 +1509,7 @@ LABEL_26:
 LABEL_69:
                 v183 = v90;
 
-                v94 = [(_CDCloudFamilyDataCollectionTask *)v3 aggregateInteractionDataUsingStore:v78 contact:v155 callHistoryManager:v153 avgCallDur:?];
+                v94 = [(_CDCloudFamilyDataCollectionTask *)selfCopy aggregateInteractionDataUsingStore:v78 contact:v155 callHistoryManager:v153 avgCallDur:?];
                 v95 = [v94 mutableCopy];
 
                 OUTLINED_FUNCTION_32_1();
@@ -1549,10 +1549,10 @@ LABEL_69:
                 v184 = v95;
                 [v95 addEntriesFromDictionary:v106];
 
-                if ([v169 count])
+                if ([photosPeople count])
                 {
-                  v107 = [v78 identifier];
-                  v108 = [v169 containsObject:v107];
+                  identifier2 = [v78 identifier];
+                  v108 = [photosPeople containsObject:identifier2];
 
                   if (v108)
                   {
@@ -1576,14 +1576,14 @@ LABEL_69:
                   [v95 addEntriesFromDictionary:v112];
                 }
 
-                v113 = [v173 allKeys];
-                v114 = [v78 identifier];
-                v115 = [v113 containsObject:v114];
+                allKeys = [airDropPeople allKeys];
+                identifier3 = [v78 identifier];
+                v115 = [allKeys containsObject:identifier3];
 
                 if (v115)
                 {
-                  v116 = [v78 identifier];
-                  v117 = [v173 objectForKeyedSubscript:v116];
+                  identifier4 = [v78 identifier];
+                  v117 = [airDropPeople objectForKeyedSubscript:identifier4];
                   [v184 setObject:v117 forKeyedSubscript:@"contactInAirDrop"];
                 }
 
@@ -1592,14 +1592,14 @@ LABEL_69:
                   [v184 setObject:&unk_1F05EEA78 forKeyedSubscript:@"contactInAirDrop"];
                 }
 
-                v118 = [v157 allKeys];
-                v119 = [v78 identifier];
-                v120 = [v118 containsObject:v119];
+                allKeys2 = [airDropPeopleAtHome allKeys];
+                identifier5 = [v78 identifier];
+                v120 = [allKeys2 containsObject:identifier5];
 
                 if (v120)
                 {
-                  v121 = [v78 identifier];
-                  v122 = [v173 objectForKeyedSubscript:v121];
+                  identifier6 = [v78 identifier];
+                  v122 = [airDropPeople objectForKeyedSubscript:identifier6];
                   v123 = v184;
                   [v184 setObject:v122 forKeyedSubscript:@"contactInAirDropAtHome"];
                 }
@@ -1610,20 +1610,20 @@ LABEL_69:
                   [v184 setObject:&unk_1F05EEA78 forKeyedSubscript:@"contactInAirDropAtHome"];
                 }
 
-                v68 = MEMORY[0x1E696ACB0];
+                activity5 = MEMORY[0x1E696ACB0];
                 v124 = [v123 copy];
                 v194 = 0;
-                v125 = [v68 dataWithJSONObject:v124 options:0 error:&v194];
+                v125 = [activity5 dataWithJSONObject:v124 options:0 error:&v194];
                 v126 = v194;
 
                 if (v126)
                 {
-                  v68 = +[_CDLogging dataCollectionChannel];
-                  if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
+                  activity5 = +[_CDLogging dataCollectionChannel];
+                  if (os_log_type_enabled(activity5, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412290;
                     v212 = v126;
-                    _os_log_error_impl(&dword_191750000, v68, OS_LOG_TYPE_ERROR, "Error during JSON serialization %@", buf, 0xCu);
+                    _os_log_error_impl(&dword_191750000, activity5, OS_LOG_TYPE_ERROR, "Error during JSON serialization %@", buf, 0xCu);
                   }
                 }
 
@@ -1663,7 +1663,7 @@ LABEL_69:
         {
 LABEL_90:
 
-          v3 = v149;
+          selfCopy = v149;
           v28 = v151;
 LABEL_37:
 
@@ -1672,7 +1672,7 @@ LABEL_27:
         }
 
         v132 = MEMORY[0x1E695DF00];
-        v133 = *(v3 + 88);
+        v133 = *(selfCopy + 88);
         [v132 distantPast];
         objc_claimAutoreleasedReturnValue();
         v134 = OUTLINED_FUNCTION_28_2();
@@ -1688,11 +1688,11 @@ LABEL_27:
 
         else
         {
-          v139 = [*(v3 + 40) stringByDeletingLastPathComponent];
-          v140 = [MEMORY[0x1E696AC08] defaultManager];
-          [v140 createDirectoryAtPath:v139 withIntermediateDirectories:1 attributes:0 error:0];
+          stringByDeletingLastPathComponent = [*(selfCopy + 40) stringByDeletingLastPathComponent];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-          v141 = *(v3 + 40);
+          v141 = *(selfCopy + 40);
           v192 = 0;
           v142 = v141;
           [v135 writeToFile:v142 options:0 error:&v192];
@@ -1700,7 +1700,7 @@ LABEL_27:
 
           if (!v137)
           {
-            *(v3 + 9) = 0;
+            *(selfCopy + 9) = 0;
             goto LABEL_95;
           }
         }
@@ -1710,7 +1710,7 @@ LABEL_27:
         {
           *buf = 138412290;
           v212 = v137;
-          OUTLINED_FUNCTION_10(&dword_191750000, v3, v144, "Error archiving subsequent airplay data collection session: %@", buf);
+          OUTLINED_FUNCTION_10(&dword_191750000, selfCopy, v144, "Error archiving subsequent airplay data collection session: %@", buf);
         }
 
 LABEL_95:
@@ -1730,10 +1730,10 @@ LABEL_12:
 - (void)cleanup
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 9) == 1)
+  if (self && *(self + 9) == 1)
   {
-    v2 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = *(a1 + 40);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = *(self + 40);
     [OUTLINED_FUNCTION_37_0() removeItemAtPath:? error:?];
     v4 = 0;
 
@@ -1744,17 +1744,17 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [v4 userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     if (v6)
     {
-      v7 = [v6 domain];
-      if (([v7 isEqualToString:*MEMORY[0x1E696A798]]& 1) != 0)
+      domain = [v6 domain];
+      if (([domain isEqualToString:*MEMORY[0x1E696A798]]& 1) != 0)
       {
-        v8 = [v6 code];
+        code = [v6 code];
 
-        if (v8 == 2)
+        if (code == 2)
         {
           goto LABEL_12;
         }
@@ -1769,7 +1769,7 @@ LABEL_13:
       {
         v12 = 138412290;
         v13 = v4;
-        OUTLINED_FUNCTION_10(&dword_191750000, v7, v10, "Error remove previous session file: %@", &v12);
+        OUTLINED_FUNCTION_10(&dword_191750000, domain, v10, "Error remove previous session file: %@", &v12);
       }
     }
 
@@ -1782,24 +1782,24 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSession:(uint64_t)a1
+- (void)setSession:(uint64_t)session
 {
-  if (a1)
+  if (session)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((session + 88), a2);
   }
 }
 
 - (id)truncatedFileHandle
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [(_CDCloudFamilyDataCollectionTask *)a1 dataPath];
-    v2 = [v1 stringByDeletingLastPathComponent];
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    dataPath = [(_CDCloudFamilyDataCollectionTask *)self dataPath];
+    stringByDeletingLastPathComponent = [dataPath stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v12 = 0;
-    [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v12];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v12];
     v4 = v12;
 
     if (v4)
@@ -1817,11 +1817,11 @@ LABEL_14:
 
     else
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      v9 = [MEMORY[0x1E695DEF0] data];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      data = [MEMORY[0x1E695DEF0] data];
       [OUTLINED_FUNCTION_66_0() createFileAtPath:? contents:? attributes:?];
 
-      v7 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:v1];
+      v7 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:dataPath];
     }
   }
 
@@ -1835,17 +1835,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)allEmailAndPhoneNumberHandlesForContact:(void *)a1
+- (id)allEmailAndPhoneNumberHandlesForContact:(void *)contact
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (contact)
   {
-    v5 = [v3 phoneNumbers];
-    v6 = [v5 valueForKey:@"value"];
+    phoneNumbers = [v3 phoneNumbers];
+    v6 = [phoneNumbers valueForKey:@"value"];
 
-    a1 = [MEMORY[0x1E695DF70] array];
+    contact = [MEMORY[0x1E695DF70] array];
     OUTLINED_FUNCTION_43_0();
     v7 = v6;
     OUTLINED_FUNCTION_36();
@@ -1866,12 +1866,12 @@ LABEL_14:
           }
 
           v21 = *(v33 + 8 * v19);
-          v22 = [v21 unformattedInternationalStringValue];
+          unformattedInternationalStringValue = [v21 unformattedInternationalStringValue];
 
-          if (v22)
+          if (unformattedInternationalStringValue)
           {
-            v23 = [v21 unformattedInternationalStringValue];
-            [a1 addObject:v23];
+            unformattedInternationalStringValue2 = [v21 unformattedInternationalStringValue];
+            [contact addObject:unformattedInternationalStringValue2];
           }
 
           ++v19;
@@ -1886,29 +1886,29 @@ LABEL_14:
       while (v9);
     }
 
-    v28 = [v4 emailAddresses];
-    v29 = [v28 valueForKey:@"value"];
+    emailAddresses = [v4 emailAddresses];
+    v29 = [emailAddresses valueForKey:@"value"];
 
-    [a1 addObjectsFromArray:v29];
+    [contact addObjectsFromArray:v29];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return contact;
 }
 
-- (id)aggregateInteractionDataUsingStore:(void *)a3 contact:(void *)a4 callHistoryManager:(void *)a5 avgCallDur:
+- (id)aggregateInteractionDataUsingStore:(void *)store contact:(void *)contact callHistoryManager:(void *)manager avgCallDur:
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v9 = MEMORY[0x1E695DF90];
-    v37 = a5;
-    v36 = a4;
-    v39 = a3;
+    managerCopy = manager;
+    contactCopy = contact;
+    storeCopy = store;
     v10 = a2;
     v31 = objc_alloc_init(v9);
-    v11 = [(_CDCloudFamilyDataCollectionTask *)a1 allEmailAndPhoneNumberHandlesForContact:v39];
+    v11 = [(_CDCloudFamilyDataCollectionTask *)self allEmailAndPhoneNumberHandlesForContact:storeCopy];
     v38 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
     v12 = MEMORY[0x1E696AE18];
     v43[0] = @"com.apple.MobileSMS";
@@ -1931,21 +1931,21 @@ LABEL_14:
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v30 = [OUTLINED_FUNCTION_63_0() andPredicateWithSubpredicates:?];
 
-    v18 = [(_CDCloudFamilyDataCollectionTask *)a1 fetchInteractionFeatureDictionaryWithPredicate:v30 store:v10 sortDescription:v38];
+    v18 = [(_CDCloudFamilyDataCollectionTask *)self fetchInteractionFeatureDictionaryWithPredicate:v30 store:v10 sortDescription:v38];
     v19 = v31;
     [v31 addEntriesFromDictionary:v18];
-    v20 = [(_CDCloudFamilyDataCollectionTask *)a1 getThirdPartyPredicateForContact:v39 handles:v11];
-    v21 = [(_CDCloudFamilyDataCollectionTask *)a1 fetchInteractionFeatureDictionaryWithPredicate:v20 store:v10 sortDescription:v38];
+    v20 = [(_CDCloudFamilyDataCollectionTask *)self getThirdPartyPredicateForContact:storeCopy handles:v11];
+    v21 = [(_CDCloudFamilyDataCollectionTask *)self fetchInteractionFeatureDictionaryWithPredicate:v20 store:v10 sortDescription:v38];
 
-    v22 = [(_CDCloudFamilyDataCollectionTask *)a1 thirdPartyMessageFeaturesFromFeatureDictionary:v21];
+    v22 = [(_CDCloudFamilyDataCollectionTask *)self thirdPartyMessageFeaturesFromFeatureDictionary:v21];
     [v31 addEntriesFromDictionary:v22];
     v23 = [getCHRecentCallClass() predicateForCallsWithAnyRemoteParticipantHandleNormalizedValues:v11];
-    v24 = [v36 callsWithPredicate:v23 limit:0 offset:0 batchSize:0];
+    v24 = [contactCopy callsWithPredicate:v23 limit:0 offset:0 batchSize:0];
 
-    [v37 doubleValue];
+    [managerCopy doubleValue];
     v26 = v25;
 
-    v27 = [(_CDCloudFamilyDataCollectionTask *)a1 callFeaturesFromInteractions:v24 avgCallLength:v39 contact:v26];
+    v27 = [(_CDCloudFamilyDataCollectionTask *)self callFeaturesFromInteractions:v24 avgCallLength:storeCopy contact:v26];
 
     [OUTLINED_FUNCTION_66_0() addEntriesFromDictionary:?];
   }
@@ -1995,9 +1995,9 @@ LABEL_14:
           }
 
           v16 = *(*(&v53 + 1) + 8 * v15);
-          v17 = [v7 identifier];
-          v18 = [v16 identifier];
-          v19 = [v17 isEqualToString:v18];
+          identifier = [v7 identifier];
+          identifier2 = [v16 identifier];
+          v19 = [identifier isEqualToString:identifier2];
 
           if (v19)
           {
@@ -2045,9 +2045,9 @@ LABEL_14:
           }
 
           v37 = *(v51 + 8 * v35);
-          v38 = [v9 identifier];
-          v39 = [v37 identifier];
-          v40 = [v38 isEqualToString:v39];
+          identifier3 = [v9 identifier];
+          identifier4 = [v37 identifier];
+          v40 = [identifier3 isEqualToString:identifier4];
 
           if (v40)
           {
@@ -2102,19 +2102,19 @@ LABEL_21:
   v6 = v5;
   if (v1)
   {
-    v7 = [v5 familyName];
+    familyName = [v5 familyName];
     [v6 familyName];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v8 = [OUTLINED_FUNCTION_9_5() familyName];
-      if (v8)
+      familyName2 = [OUTLINED_FUNCTION_9_5() familyName];
+      if (familyName2)
       {
-        v9 = v8;
-        v10 = [v6 familyName];
-        v11 = [v4 familyName];
-        v12 = [v7 length];
-        v13 = [MEMORY[0x1E695DF58] currentLocale];
-        v14 = [v10 compare:v11 options:129 range:0 locale:{v12, v13}];
+        v9 = familyName2;
+        familyName3 = [v6 familyName];
+        familyName4 = [v4 familyName];
+        v12 = [familyName length];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        v14 = [familyName3 compare:familyName4 options:129 range:0 locale:{v12, currentLocale}];
 
         if (!v14)
         {
@@ -2165,11 +2165,11 @@ LABEL_9:
       _os_log_debug_impl(&dword_191750000, v3, OS_LOG_TYPE_DEBUG, "Compressing airplay data collection json file", buf, 2u);
     }
 
-    v4 = [(_CDCloudFamilyDataCollectionTask *)&v2->isa dataPath];
-    v5 = [v4 stringByAppendingPathExtension:@"tar.gz"];
-    [v4 fileSystemRepresentation];
-    v6 = [OUTLINED_FUNCTION_67_0() lastPathComponent];
-    [v6 fileSystemRepresentation];
+    dataPath = [(_CDCloudFamilyDataCollectionTask *)&v2->isa dataPath];
+    v5 = [dataPath stringByAppendingPathExtension:@"tar.gz"];
+    [dataPath fileSystemRepresentation];
+    lastPathComponent = [OUTLINED_FUNCTION_67_0() lastPathComponent];
+    [lastPathComponent fileSystemRepresentation];
 
     [v5 fileSystemRepresentation];
     archive_write_new();
@@ -2203,20 +2203,20 @@ LABEL_9:
           v14 = v18;
           if (v14)
           {
-            v15 = +[_CDLogging dataCollectionChannel];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+            lastPathComponent2 = +[_CDLogging dataCollectionChannel];
+            if (os_log_type_enabled(lastPathComponent2, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v21 = v14;
-              OUTLINED_FUNCTION_10(&dword_191750000, v15, v16, "Error mapping gzipped data collection file for DA submission: %@", buf);
+              OUTLINED_FUNCTION_10(&dword_191750000, lastPathComponent2, v16, "Error mapping gzipped data collection file for DA submission: %@", buf);
             }
           }
 
           else
           {
-            v15 = [v5 lastPathComponent];
-            v17 = [v2 submissionBlock];
-            (v17)[2](v17, v15, v13);
+            lastPathComponent2 = [v5 lastPathComponent];
+            submissionBlock = [v2 submissionBlock];
+            (submissionBlock)[2](submissionBlock, lastPathComponent2, v13);
           }
 
           goto LABEL_12;
@@ -2250,12 +2250,12 @@ LABEL_12:
 
 - (id)dataPath
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[11])
+    if (self[11])
     {
-      v2 = a1[11];
+      v2 = self[11];
       if (v2)
       {
         v3 = v2[1];
@@ -2266,7 +2266,7 @@ LABEL_12:
         v3 = 0;
       }
 
-      v4 = a1[11];
+      v4 = self[11];
       if (v4)
       {
         v5 = v4[5];
@@ -2278,25 +2278,25 @@ LABEL_12:
       v9 = [OUTLINED_FUNCTION_37_0() numberWithUnsignedInteger:?];
       v10 = [v7 stringByAppendingFormat:@".%@.json", v9];
 
-      v1 = [v1[4] stringByAppendingPathComponent:v10];
+      selfCopy = [selfCopy[4] stringByAppendingPathComponent:v10];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (uint64_t)indexToInsertDate:(void *)a3 array:
+- (uint64_t)indexToInsertDate:(void *)date array:
 {
   if (result)
   {
-    v4 = a3;
+    dateCopy = date;
     v5 = a2;
-    [v4 count];
+    [dateCopy count];
     v6 = [OUTLINED_FUNCTION_51_0() indexOfObject:? inSortedRange:? options:? usingComparator:?];
 
     return v6;
@@ -2305,10 +2305,10 @@ LABEL_12:
   return result;
 }
 
-- (id)allAirDropInteractionsFromStore:(uint64_t)a3 fetchLimit:
+- (id)allAirDropInteractionsFromStore:(uint64_t)store fetchLimit:
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x1E696AE18];
     v5 = a2;
@@ -2323,7 +2323,7 @@ LABEL_12:
     v21 = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v18 = 0;
-    v12 = [v5 queryInteractionsUsingPredicate:v9 sortDescriptors:v11 limit:a3 error:&v18];
+    v12 = [v5 queryInteractionsUsingPredicate:v9 sortDescriptors:v11 limit:store error:&v18];
 
     v13 = v18;
     if (v13)
@@ -2360,34 +2360,34 @@ LABEL_12:
   v68 = *MEMORY[0x1E69E9840];
   if (v0)
   {
-    v46 = [(_CDCloudFamilyDataCollectionTask *)v0 personRelationshipVocabularyByLocaleDictionary];
-    v1 = [v46 allValues];
-    v53 = [MEMORY[0x1E695DF70] array];
+    personRelationshipVocabularyByLocaleDictionary = [(_CDCloudFamilyDataCollectionTask *)v0 personRelationshipVocabularyByLocaleDictionary];
+    allValues = [personRelationshipVocabularyByLocaleDictionary allValues];
+    array = [MEMORY[0x1E695DF70] array];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v2 = v1;
+    v2 = allValues;
     OUTLINED_FUNCTION_55();
     obj = v3;
     v4 = [v3 countByEnumeratingWithState:? objects:? count:?];
     if (v4)
     {
-      OUTLINED_FUNCTION_54(v4, v5, v6, v7, v8, v9, v10, v11, v44, v46, obj, v48, v4, v51, v53, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, *(&v64 + 1), v65);
+      OUTLINED_FUNCTION_54(v4, v5, v6, v7, v8, v9, v10, v11, v44, personRelationshipVocabularyByLocaleDictionary, obj, v48, v4, v51, array, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, *(&v64 + 1), v65);
       v49 = v20;
       do
       {
         v21 = 0;
         do
         {
-          OUTLINED_FUNCTION_54(v12, v13, v14, v15, v16, v17, v18, v19, v45, v46, obj, v49, v50, v52, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, *(&v64 + 1), v65);
+          OUTLINED_FUNCTION_54(v12, v13, v14, v15, v16, v17, v18, v19, v45, personRelationshipVocabularyByLocaleDictionary, obj, v49, v50, v52, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, *(&v64 + 1), v65);
           if (v22 != v49)
           {
             objc_enumerationMutation(obj);
           }
 
           v52 = v21;
-          v23 = [*(*(&v64 + 1) + 8 * v21) allValues];
+          allValues2 = [*(*(&v64 + 1) + 8 * v21) allValues];
           OUTLINED_FUNCTION_16_2();
           OUTLINED_FUNCTION_60_0();
           v25 = [v24 countByEnumeratingWithState:? objects:? count:?];
@@ -2400,10 +2400,10 @@ LABEL_12:
               v35 = 0;
               do
               {
-                OUTLINED_FUNCTION_48_0(v25, v26, v27, v28, v29, v30, v31, v32, v45, v46, obj, v49, v50, v52, v54, v55, v56, v57, v58);
+                OUTLINED_FUNCTION_48_0(v25, v26, v27, v28, v29, v30, v31, v32, v45, personRelationshipVocabularyByLocaleDictionary, obj, v49, v50, v52, v54, v55, v56, v57, v58);
                 if (v36 != v34)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(allValues2);
                 }
 
                 v37 = MEMORY[0x1E696AEC0];
@@ -2422,7 +2422,7 @@ LABEL_12:
 
               while (v33 != v35);
               OUTLINED_FUNCTION_60_0();
-              v25 = [v23 countByEnumeratingWithState:? objects:? count:?];
+              v25 = [allValues2 countByEnumeratingWithState:? objects:? count:?];
               v33 = v25;
             }
 
@@ -2450,42 +2450,42 @@ LABEL_12:
 
 - (id)personRelationshipVocabularyByLocaleDictionary
 {
-  if (a1)
+  if (self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82___CDCloudFamilyDataCollectionTask_personRelationshipVocabularyByLocaleDictionary__block_invoke;
     block[3] = &unk_1E7367440;
-    block[4] = a1;
+    block[4] = self;
     if (_MergedGlobals_1 != -1)
     {
       dispatch_once(&_MergedGlobals_1, block);
     }
 
-    a1 = qword_1EADBD5E0;
+    self = qword_1EADBD5E0;
     v1 = block[6];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)callFeaturesFromInteractions:(void *)a3 avgCallLength:(double)a4 contact:
+- (id)callFeaturesFromInteractions:(void *)interactions avgCallLength:(double)length contact:
 {
   v248 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  interactionsCopy = interactions;
+  if (self)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v237 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v237 setDateFormat:@"dd/MM/yyyy"];
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v240 = [v8 birthday];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    birthday = [interactionsCopy birthday];
     v238 = [MEMORY[0x1E695DFA8] set];
-    v11 = [v7 lastObject];
-    v12 = [v11 date];
+    lastObject = [v7 lastObject];
+    date = [lastObject date];
 
-    if (v12 && ([MEMORY[0x1E695DF00] date], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "components:fromDate:toDate:options:", 16, v12, v13, 0), v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
+    if (date && ([MEMORY[0x1E695DF00] date], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(currentCalendar, "components:fromDate:toDate:options:", 16, date, v13, 0), v14 = objc_claimAutoreleasedReturnValue(), v13, v14))
     {
       v15 = [v14 day];
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
@@ -2495,7 +2495,7 @@ LABEL_12:
       {
         v229 = v15;
         v230 = v14;
-        v231 = v12;
+        v231 = date;
         v17 = +[_CDContactFavoritesUtilities sharedInstance];
         v245[0] = MEMORY[0x1E69E9820];
         v245[1] = 3221225472;
@@ -2504,8 +2504,8 @@ LABEL_12:
         v232 = v9;
         v18 = v9;
         v246 = v18;
-        v233 = v8;
-        [v17 accessEntriesForContact:v8 withBlock:v245];
+        v233 = interactionsCopy;
+        [v17 accessEntriesForContact:interactionsCopy withBlock:v245];
 
         [v18 setObject:&unk_1F05EF180 forKeyedSubscript:@"callMaxDur"];
         v243 = 0u;
@@ -2522,7 +2522,7 @@ LABEL_12:
         }
 
         v236 = *v242;
-        v20 = a4 + a4;
+        v20 = length + length;
         while (1)
         {
           v21 = 0;
@@ -2558,8 +2558,8 @@ LABEL_12:
               [OUTLINED_FUNCTION_1_15() setObject:? forKeyedSubscript:?];
             }
 
-            v34 = [v22 callStatus];
-            if (v34 == getkCHCallStatusConnectedOutgoing())
+            callStatus = [v22 callStatus];
+            if (callStatus == getkCHCallStatusConnectedOutgoing())
             {
               v35 = *(v19 + 3480);
               v36 = [v18 objectForKeyedSubscript:@"callOutgoingRatio"];
@@ -2579,29 +2579,29 @@ LABEL_12:
               [OUTLINED_FUNCTION_1_15() setObject:? forKeyedSubscript:?];
             }
 
-            v41 = [v22 date];
-            v42 = [v237 stringFromDate:v41];
+            date2 = [v22 date];
+            v42 = [v237 stringFromDate:date2];
 
             [v238 addObject:v42];
-            v43 = [v22 date];
-            v19 = v10;
-            v44 = [v10 components:568 fromDate:v43];
+            date3 = [v22 date];
+            v19 = currentCalendar;
+            v44 = [currentCalendar components:568 fromDate:date3];
 
             [v44 weekday];
             [OUTLINED_FUNCTION_58_0() hour];
             v45 = [OUTLINED_FUNCTION_9_5() day];
-            v46 = [v44 month];
-            if ([v240 day] == v45 && objc_msgSend(v240, "month") == v46)
+            month = [v44 month];
+            if ([birthday day] == v45 && objc_msgSend(birthday, "month") == month)
             {
               [v18 setObject:&unk_1F05EEA90 forKeyedSubscript:@"callBirthday"];
             }
 
-            v47 = v43 - 6;
-            if ((v10 - 2) > 3)
+            v47 = date3 - 6;
+            if ((currentCalendar - 2) > 3)
             {
-              if (v10 != 7)
+              if (currentCalendar != 7)
               {
-                if (v10 == 6)
+                if (currentCalendar == 6)
                 {
                   if (v47 > 5)
                   {
@@ -3004,8 +3004,8 @@ LABEL_34:
             }
 
 LABEL_35:
-            v64 = [v22 date];
-            [v64 timeIntervalSinceNow];
+            date4 = [v22 date];
+            [date4 timeIntervalSinceNow];
             v66 = v65;
 
             v67 = @"callTwoWeeks";
@@ -3014,8 +3014,8 @@ LABEL_35:
               goto LABEL_38;
             }
 
-            v68 = [v22 date];
-            [v68 timeIntervalSinceNow];
+            date5 = [v22 date];
+            [date5 timeIntervalSinceNow];
             v70 = v69;
 
             v67 = @"callSixWeeks";
@@ -3039,7 +3039,7 @@ LABEL_38:
 LABEL_74:
 
             v110 = [v18 objectForKeyedSubscript:@"callTotal"];
-            v111 = [v110 integerValue];
+            integerValue = [v110 integerValue];
 
             v112 = [*(v19 + 3480) numberWithDouble:{objc_msgSend(v238, "count") / v229}];
             [v18 setObject:v112 forKeyedSubscript:@"callDayRatio"];
@@ -3047,8 +3047,8 @@ LABEL_74:
             v113 = *(v19 + 3480);
             v114 = v19;
             v115 = [v18 objectForKeyedSubscript:@"callOutgoingRatio"];
-            v116 = v111;
-            [v113 numberWithDouble:{objc_msgSend(v115, "integerValue") / v111}];
+            v116 = integerValue;
+            [v113 numberWithDouble:{objc_msgSend(v115, "integerValue") / integerValue}];
             objc_claimAutoreleasedReturnValue();
             [OUTLINED_FUNCTION_1_15() setObject:? forKeyedSubscript:?];
 
@@ -3416,9 +3416,9 @@ LABEL_74:
             [OUTLINED_FUNCTION_1_15() setObject:? forKeyedSubscript:?];
 
             v224 = v18;
-            v8 = v233;
+            interactionsCopy = v233;
             v7 = v234;
-            v12 = v231;
+            date = v231;
             v9 = v232;
             v14 = v230;
             goto LABEL_77;
@@ -3448,19 +3448,19 @@ LABEL_77:
   return v225;
 }
 
-- (void)messagesCumulativeFeaturesFromInteractionsBatch:(void *)a3 mutableMessagesDictionary:
+- (void)messagesCumulativeFeaturesFromInteractionsBatch:(void *)batch mutableMessagesDictionary:
 {
   v56 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  batchCopy = batch;
+  if (!self)
   {
     goto LABEL_37;
   }
 
   v49 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v49 setDateFormat:@"dd/MM/yyyy"];
-  v48 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   if (![v5 count])
   {
     goto LABEL_36;
@@ -3498,15 +3498,15 @@ LABEL_77:
       if ([v12 direction] == 1)
       {
         v13 = *(v7 + 3480);
-        v14 = [v6 objectForKeyedSubscript:@"firstPartyMsgOutgoingRatio"];
+        v14 = [batchCopy objectForKeyedSubscript:@"firstPartyMsgOutgoingRatio"];
         v15 = [v13 numberWithInteger:{objc_msgSend(v14, "integerValue") + 1}];
         [OUTLINED_FUNCTION_51_0() setObject:? forKeyedSubscript:?];
       }
 
-      v16 = [v12 startDate];
-      v17 = [v49 stringFromDate:v16];
+      startDate = [v12 startDate];
+      v17 = [v49 stringFromDate:startDate];
 
-      v18 = [v6 objectForKeyedSubscript:@"daysSeen"];
+      v18 = [batchCopy objectForKeyedSubscript:@"daysSeen"];
 
       if (!v18)
       {
@@ -3514,49 +3514,49 @@ LABEL_77:
         [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
       }
 
-      v20 = [v6 objectForKeyedSubscript:@"fromDate"];
+      v20 = [batchCopy objectForKeyedSubscript:@"fromDate"];
 
-      if (!v20 || ([v6 objectForKeyedSubscript:@"fromDate"], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "startDate"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "compare:", v22), v22, v21, v23 == 1))
+      if (!v20 || ([batchCopy objectForKeyedSubscript:@"fromDate"], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "startDate"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "compare:", v22), v22, v21, v23 == 1))
       {
-        v24 = [v12 startDate];
+        startDate2 = [v12 startDate];
         [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
       }
 
-      v25 = [v6 objectForKeyedSubscript:@"daysSeen"];
+      v25 = [batchCopy objectForKeyedSubscript:@"daysSeen"];
       [v25 addObject:v17];
 
-      v26 = [v12 startDate];
-      v27 = [v48 components:544 fromDate:v26];
+      startDate3 = [v12 startDate];
+      v27 = [currentCalendar components:544 fromDate:startDate3];
 
-      v28 = [v27 weekday];
-      v29 = [v27 hour];
-      v30 = v29 - 6;
-      if ((v28 - 2) > 3)
+      weekday = [v27 weekday];
+      hour = [v27 hour];
+      v30 = hour - 6;
+      if ((weekday - 2) > 3)
       {
-        if (v28 == 7)
+        if (weekday == 7)
         {
-          if (v30 >= 6 && (v29 - 12) >= 6)
+          if (v30 >= 6 && (hour - 12) >= 6)
           {
 LABEL_29:
             OUTLINED_FUNCTION_68_0();
           }
         }
 
-        else if (v28 == 6)
+        else if (weekday == 6)
         {
-          if (v30 >= 6 && (v29 - 12) >= 6)
+          if (v30 >= 6 && (hour - 12) >= 6)
           {
             goto LABEL_29;
           }
         }
 
-        else if (v30 >= 6 && (v29 - 12) >= 6)
+        else if (v30 >= 6 && (hour - 12) >= 6)
         {
           goto LABEL_29;
         }
       }
 
-      else if (v30 >= 6 && (v29 - 12) >= 6)
+      else if (v30 >= 6 && (hour - 12) >= 6)
       {
         goto LABEL_29;
       }
@@ -3569,14 +3569,14 @@ LABEL_29:
       [OUTLINED_FUNCTION_11_0() setObject:? forKeyedSubscript:?];
 
       v7 = v32;
-      v35 = [v12 startDate];
-      [v35 timeIntervalSinceNow];
+      startDate4 = [v12 startDate];
+      [startDate4 timeIntervalSinceNow];
       v37 = v36;
 
       if (v37 >= -1209600.0 || ([v12 startDate], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "timeIntervalSinceNow"), v40 = v39, v38, v40 >= -3628800.0))
       {
         v41 = *(v32 + 3480);
-        v42 = [v6 objectForKeyedSubscript:@"firstPartyMsgTwoWeeks"];
+        v42 = [batchCopy objectForKeyedSubscript:@"firstPartyMsgTwoWeeks"];
         [v42 integerValue];
         v43 = [OUTLINED_FUNCTION_13_4() numberWithInteger:?];
         [OUTLINED_FUNCTION_11_0() setObject:? forKeyedSubscript:?];
@@ -3596,18 +3596,18 @@ LABEL_37:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messagesFeaturesFromCumulativeDict:(uint64_t)a1
+- (void)messagesFeaturesFromCumulativeDict:(uint64_t)dict
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (dict)
   {
     if ([v3 count])
     {
       v5 = [v4 objectForKeyedSubscript:@"firstPartyMsgTotal"];
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
 
-      if (v6)
+      if (integerValue)
       {
         v7 = [OUTLINED_FUNCTION_14_0() objectForKeyedSubscript:?];
         v8 = [v4 objectForKeyedSubscript:@"fromDate"];
@@ -3615,9 +3615,9 @@ LABEL_37:
         [v4 removeObjectForKey:@"fromDate"];
         if (v8)
         {
-          v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v10 = [MEMORY[0x1E695DF00] date];
-          v11 = [v9 components:16 fromDate:v8 toDate:v10 options:0];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          date = [MEMORY[0x1E695DF00] date];
+          v11 = [currentCalendar components:16 fromDate:v8 toDate:date options:0];
 
           if (v11)
           {
@@ -3646,7 +3646,7 @@ LABEL_37:
 
         v14 = MEMORY[0x1E696AD98];
         v15 = [v4 objectForKeyedSubscript:@"firstPartyMsgOutgoingRatio"];
-        [v14 numberWithDouble:{objc_msgSend(v15, "integerValue") / v6}];
+        [v14 numberWithDouble:{objc_msgSend(v15, "integerValue") / integerValue}];
         objc_claimAutoreleasedReturnValue();
         [OUTLINED_FUNCTION_13_3() setObject:? forKeyedSubscript:?];
 
@@ -3782,10 +3782,10 @@ LABEL_12:
   }
 }
 
-- (id)thirdPartyMessageFeaturesFromFeatureDictionary:(uint64_t)a1
+- (id)thirdPartyMessageFeaturesFromFeatureDictionary:(uint64_t)dictionary
 {
   v3 = a2;
-  if (a1)
+  if (dictionary)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if ([v3 count])
@@ -3873,16 +3873,16 @@ LABEL_12:
   return v25;
 }
 
-- (id)getThirdPartyPredicateForContact:(void *)a3 handles:
+- (id)getThirdPartyPredicateForContact:(void *)contact handles:
 {
   v51 = *MEMORY[0x1E69E9840];
   v44 = a2;
-  v6 = a3;
-  v43 = v6;
-  if (a1)
+  contactCopy = contact;
+  v43 = contactCopy;
+  if (self)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x1E695DF70] array];
+    v7 = contactCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bundleId != %@", @"com.apple.MobileSMS"];
     v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"direction IN %@", &unk_1F05EF488];
     v38 = &unk_1F05EF4A0;
@@ -3891,10 +3891,10 @@ LABEL_12:
     v41 = v9;
     [OUTLINED_FUNCTION_67_0() addObject:v9];
     v40 = v10;
-    [v8 addObject:v10];
-    v42 = v8;
+    [array addObject:v10];
+    v42 = array;
     v39 = v3;
-    [v8 addObject:v3];
+    [array addObject:v3];
     v11 = objc_opt_new();
     v12 = objc_opt_new();
     OUTLINED_FUNCTION_16_2();
@@ -3917,8 +3917,8 @@ LABEL_12:
 
           v25 = *(v47 + 8 * v23);
           v26 = [_CDContactResolver normalizedStringFromContactString:v25];
-          v27 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-          v28 = [v25 stringByAddingPercentEncodingWithAllowedCharacters:v27];
+          alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+          v28 = [v25 stringByAddingPercentEncodingWithAllowedCharacters:alphanumericCharacterSet];
 
           v38 = v28;
           v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"conversationIdentifier(%@)"];
@@ -3965,13 +3965,13 @@ LABEL_12:
   return v35;
 }
 
-- (id)fetchInteractionFeatureDictionaryWithPredicate:(void *)a3 store:(void *)a4 sortDescription:
+- (id)fetchInteractionFeatureDictionaryWithPredicate:(void *)predicate store:(void *)store sortDescription:
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  predicateCopy = predicate;
+  storeCopy = store;
+  if (self)
   {
     v10 = objc_opt_new();
     v11 = 0;
@@ -3980,17 +3980,17 @@ LABEL_12:
     {
       v13 = v12;
       v14 = objc_autoreleasePoolPush();
-      v18[0] = v9;
+      v18[0] = storeCopy;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
       v12 = [OUTLINED_FUNCTION_51_0() queryInteractionsUsingPredicate:? sortDescriptors:? limit:? offset:? error:?];
 
-      [(_CDCloudFamilyDataCollectionTask *)a1 messagesCumulativeFeaturesFromInteractionsBatch:v12 mutableMessagesDictionary:v10];
+      [(_CDCloudFamilyDataCollectionTask *)self messagesCumulativeFeaturesFromInteractionsBatch:v12 mutableMessagesDictionary:v10];
       v11 += 128;
       objc_autoreleasePoolPop(v14);
     }
 
     while ([v12 count] == 128);
-    [(_CDCloudFamilyDataCollectionTask *)a1 messagesFeaturesFromCumulativeDict:v10];
+    [(_CDCloudFamilyDataCollectionTask *)self messagesFeaturesFromCumulativeDict:v10];
   }
 
   else
@@ -4013,7 +4013,7 @@ LABEL_12:
 - (void)airDropPeopleAtHome
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0_2(&dword_191750000, a2, a3, "Error fetching home visits: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }

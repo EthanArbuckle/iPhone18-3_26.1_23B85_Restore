@@ -3,12 +3,12 @@
 - (MRUCoverSheetViewControllerDelegate)delegate;
 - (MRUNowPlayingViewController)nowPlayingViewController;
 - (id)_childViewControllersForAlwaysOnTimelines;
-- (void)coordinatedUpdateController:(id)a3 processCoordinatedUpdates:(id)a4 completion:(id)a5;
-- (void)didReceiveInteraction:(id)a3;
+- (void)coordinatedUpdateController:(id)controller processCoordinatedUpdates:(id)updates completion:(id)completion;
+- (void)didReceiveInteraction:(id)interaction;
 - (void)loadView;
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePreferredContentSize;
 - (void)updateRestrictedRects;
 - (void)updateVisualStyling;
@@ -35,22 +35,22 @@
 
   [(MediaControlsInteractionRecognizer *)self->_interactionRecognizer setCancelsTouchesInView:0];
   [(MediaControlsInteractionRecognizer *)self->_interactionRecognizer setDelegate:self];
-  v5 = [(MRUCoverSheetViewController *)self view];
-  [v5 addGestureRecognizer:self->_interactionRecognizer];
+  view = [(MRUCoverSheetViewController *)self view];
+  [view addGestureRecognizer:self->_interactionRecognizer];
 
-  v6 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
-  [v6 setDelegate:self];
+  nowPlayingViewController = [(MRUCoverSheetViewController *)self nowPlayingViewController];
+  [nowPlayingViewController setDelegate:self];
 
-  v7 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
-  [(MRUCoverSheetViewController *)self addChildViewController:v7];
+  nowPlayingViewController2 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
+  [(MRUCoverSheetViewController *)self addChildViewController:nowPlayingViewController2];
 
-  v8 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
-  v9 = [v8 view];
-  v10 = [(MRUCoverSheetViewController *)self view];
-  [v10 setContentView:v9];
+  nowPlayingViewController3 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
+  view2 = [nowPlayingViewController3 view];
+  view3 = [(MRUCoverSheetViewController *)self view];
+  [view3 setContentView:view2];
 
-  v11 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
-  [v11 didMoveToParentViewController:self];
+  nowPlayingViewController4 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
+  [nowPlayingViewController4 didMoveToParentViewController:self];
 
   v12 = objc_alloc_init(MRUCoordinatedUpdateController);
   coordinatedUpdateController = self->_coordinatedUpdateController;
@@ -75,26 +75,26 @@
   [(MRUCoverSheetViewController *)self updateRestrictedRects];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = MRUCoverSheetViewController;
-  [(MRUCoverSheetViewController *)&v11 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
-  v6 = [(MRUCoverSheetViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  [(MRUCoverSheetViewController *)&v11 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection = [(MRUCoverSheetViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(MRUCoverSheetViewController *)self updateVisualStyling];
   }
 
-  v8 = [v4 preferredContentSizeCategory];
-  v9 = [(MRUCoverSheetViewController *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  traitCollection2 = [(MRUCoverSheetViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
 
-  if (v8 != v10)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(MRUCoverSheetViewController *)self updatePreferredContentSize];
   }
@@ -120,38 +120,38 @@
   return nowPlayingViewController;
 }
 
-- (void)didReceiveInteraction:(id)a3
+- (void)didReceiveInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained coverSheetViewController:self didReceiveInteractionEvent:v5];
+    [WeakRetained coverSheetViewController:self didReceiveInteractionEvent:interactionCopy];
   }
 }
 
-- (void)nowPlayingViewController:(id)a3 didChangeSizeWithAnimations:(id)a4 completion:(id)a5
+- (void)nowPlayingViewController:(id)controller didChangeSizeWithAnimations:(id)animations completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MRUCoverSheetViewController *)self layout];
-  if ([v14 isShowingMediaSuggestions] && !objc_msgSend(v14, "shouldShowMediaSuggestions"))
+  controllerCopy = controller;
+  animationsCopy = animations;
+  completionCopy = completion;
+  layout = [(MRUCoverSheetViewController *)self layout];
+  if ([controllerCopy isShowingMediaSuggestions] && !objc_msgSend(controllerCopy, "shouldShowMediaSuggestions"))
   {
-    v10 = 0;
+    layout = 0;
   }
 
-  else if ([v14 shouldShowMediaSuggestions] && !objc_msgSend(v14, "isShowingMediaSuggestions"))
+  else if ([controllerCopy shouldShowMediaSuggestions] && !objc_msgSend(controllerCopy, "isShowingMediaSuggestions"))
   {
-    v10 = 1;
+    layout = 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    if (v9)
+    if (completionCopy)
     {
-      v12 = v9;
+      v12 = completionCopy;
     }
 
     else
@@ -160,34 +160,34 @@
     }
 
     v13 = _Block_copy(v12);
-    [WeakRetained coverSheetViewController:self willChangeToLayout:v10 animations:v8 completion:v13];
+    [WeakRetained coverSheetViewController:self willChangeToLayout:layout animations:animationsCopy completion:v13];
   }
 
   else
   {
-    [(MRUCoordinatedUpdateController *)self->_coordinatedUpdateController addUpdate:v8 completion:v9];
+    [(MRUCoordinatedUpdateController *)self->_coordinatedUpdateController addUpdate:animationsCopy completion:completionCopy];
   }
 }
 
-- (void)coordinatedUpdateController:(id)a3 processCoordinatedUpdates:(id)a4 completion:(id)a5
+- (void)coordinatedUpdateController:(id)controller processCoordinatedUpdates:(id)updates completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  updatesCopy = updates;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69DD250];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__MRUCoverSheetViewController_coordinatedUpdateController_processCoordinatedUpdates_completion___block_invoke;
   v14[3] = &unk_1E7663FD8;
   v14[4] = self;
-  v15 = v7;
+  v15 = updatesCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__MRUCoverSheetViewController_coordinatedUpdateController_processCoordinatedUpdates_completion___block_invoke_2;
   v12[3] = &unk_1E7664700;
   v12[4] = self;
-  v13 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = updatesCopy;
   [v9 mru_animateUsingType:0 animations:v14 completion:v12];
 }
 
@@ -207,10 +207,10 @@ uint64_t __96__MRUCoverSheetViewController_coordinatedUpdateController_processCo
   return v2();
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v5 = a3;
-  v6 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:v5];
+  providerCopy = provider;
+  v6 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:providerCopy];
 
   [(MRUCoverSheetViewController *)self setStylingProvider:v6];
 
@@ -236,12 +236,12 @@ uint64_t __96__MRUCoverSheetViewController_coordinatedUpdateController_processCo
 
 - (CGSize)preferredContentSize
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v13);
 
-  v5 = [(MRUCoverSheetViewController *)self view];
-  [v5 sizeThatFits:{Width, 1.79769313e308}];
+  view = [(MRUCoverSheetViewController *)self view];
+  [view sizeThatFits:{Width, 1.79769313e308}];
   v7 = v6;
   v9 = v8;
 
@@ -265,8 +265,8 @@ uint64_t __96__MRUCoverSheetViewController_coordinatedUpdateController_processCo
     v22.width = v4;
     v22.height = v6;
     v9 = NSStringFromCGSize(v22);
-    v10 = [(MRUCoverSheetViewController *)self view];
-    [v10 frame];
+    view = [(MRUCoverSheetViewController *)self view];
+    [view frame];
     v23.width = v11;
     v23.height = v12;
     v13 = NSStringFromCGSize(v23);
@@ -279,20 +279,20 @@ uint64_t __96__MRUCoverSheetViewController_coordinatedUpdateController_processCo
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ preferred content size: %{public}@ | current: %{public}@", &v15, 0x20u);
   }
 
-  v14 = [(MRUCoverSheetViewController *)self delegate];
+  delegate = [(MRUCoverSheetViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v14 coverSheetViewController:self didUpdatePreferredContentSize:{v4, v6}];
+    [delegate coverSheetViewController:self didUpdatePreferredContentSize:{v4, v6}];
   }
 }
 
 - (void)updateRestrictedRects
 {
-  v4 = [(MRUCoverSheetViewController *)self delegate];
+  delegate = [(MRUCoverSheetViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MRUNowPlayingViewController *)self->_nowPlayingViewController restrictedRects];
-    [v4 coverSheetViewController:self didUpdateRestrictedRects:v3];
+    restrictedRects = [(MRUNowPlayingViewController *)self->_nowPlayingViewController restrictedRects];
+    [delegate coverSheetViewController:self didUpdateRestrictedRects:restrictedRects];
   }
 }
 
@@ -301,17 +301,17 @@ uint64_t __96__MRUCoverSheetViewController_coordinatedUpdateController_processCo
   if (+[MRUFeatureFlagProvider isAutobahnEnabled])
   {
     v3 = MEMORY[0x1E69AE170];
-    v4 = [(MRUCoverSheetViewController *)self traitCollection];
-    v7 = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(v4, "userInterfaceStyle")}];
+    traitCollection = [(MRUCoverSheetViewController *)self traitCollection];
+    stylingProvider = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    v5 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:v7];
-    v6 = [(MRUCoverSheetViewController *)self nowPlayingViewController];
-    [v6 setStylingProvider:v5];
+    v5 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:stylingProvider];
+    nowPlayingViewController = [(MRUCoverSheetViewController *)self nowPlayingViewController];
+    [nowPlayingViewController setStylingProvider:v5];
   }
 
   else
   {
-    v7 = [(MRUCoverSheetViewController *)self stylingProvider];
+    stylingProvider = [(MRUCoverSheetViewController *)self stylingProvider];
     [(MRUNowPlayingViewController *)self->_nowPlayingViewController setStylingProvider:?];
   }
 }

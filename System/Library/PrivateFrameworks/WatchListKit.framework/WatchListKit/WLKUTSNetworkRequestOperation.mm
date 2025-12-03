@@ -1,11 +1,11 @@
 @interface WLKUTSNetworkRequestOperation
 - (WLKUTSNetworkRequestOperation)init;
-- (WLKUTSNetworkRequestOperation)initWithRequestProperties:(id)a3;
+- (WLKUTSNetworkRequestOperation)initWithRequestProperties:(id)properties;
 - (id)responseDictionary;
 - (id)shortDescription;
 - (void)configureSession;
-- (void)handleResult:(id)a3 error:(id)a4;
-- (void)prepareURLRequest:(id)a3;
+- (void)handleResult:(id)result error:(id)error;
+- (void)prepareURLRequest:(id)request;
 @end
 
 @implementation WLKUTSNetworkRequestOperation
@@ -19,28 +19,28 @@
 
 - (id)shortDescription
 {
-  v3 = [(WLKNetworkRequestOperation *)self identifier];
-  v4 = v3;
+  identifier = [(WLKNetworkRequestOperation *)self identifier];
+  v4 = identifier;
   v5 = &stru_288206BC0;
-  if (v3)
+  if (identifier)
   {
-    v5 = v3;
+    v5 = identifier;
   }
 
   v6 = v5;
 
   if ([(__CFString *)v6 length]>= 7)
   {
-    v7 = [(WLKNetworkRequestOperation *)self identifier];
-    v8 = [v7 substringToIndex:7];
+    identifier2 = [(WLKNetworkRequestOperation *)self identifier];
+    v8 = [identifier2 substringToIndex:7];
 
     v6 = v8;
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(WLKUTSNetworkRequestOperation *)self requestProperties];
-  v11 = [v10 shortDescription];
-  v12 = [v9 stringWithFormat:@"%@ %@", v6, v11];
+  requestProperties = [(WLKUTSNetworkRequestOperation *)self requestProperties];
+  shortDescription = [requestProperties shortDescription];
+  v12 = [v9 stringWithFormat:@"%@ %@", v6, shortDescription];
 
   return v12;
 }
@@ -52,29 +52,29 @@
   return 0;
 }
 
-- (WLKUTSNetworkRequestOperation)initWithRequestProperties:(id)a3
+- (WLKUTSNetworkRequestOperation)initWithRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = WLKUTSNetworkRequestOperation;
-  v5 = -[WLKNetworkRequestOperation initWithURLRequest:options:](&v8, sel_initWithURLRequest_options_, 0, [v4 options]);
+  v5 = -[WLKNetworkRequestOperation initWithURLRequest:options:](&v8, sel_initWithURLRequest_options_, 0, [propertiesCopy options]);
   v6 = v5;
   if (v5)
   {
-    [(WLKUTSNetworkRequestOperation *)v5 setRequestProperties:v4];
+    [(WLKUTSNetworkRequestOperation *)v5 setRequestProperties:propertiesCopy];
   }
 
   return v6;
 }
 
-- (void)prepareURLRequest:(id)a3
+- (void)prepareURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = WLKNetworkSignpostLogObject();
-  v6 = [(WLKNetworkRequestOperation *)self signpostIdentifier];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostIdentifier = [(WLKNetworkRequestOperation *)self signpostIdentifier];
+  if (signpostIdentifier - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostIdentifier;
     if (os_signpost_enabled(v5))
     {
       *buf = 0;
@@ -88,8 +88,8 @@
   v10[2] = __51__WLKUTSNetworkRequestOperation_prepareURLRequest___block_invoke;
   v10[3] = &unk_279E60A08;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = requestCopy;
+  v9 = requestCopy;
   [v8 fetchConfigurationWithOptions:0 cachePolicy:4 queryParameters:0 completion:v10];
 }
 
@@ -123,13 +123,13 @@ void __51__WLKUTSNetworkRequestOperation_prepareURLRequest___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleResult:(id)a3 error:(id)a4
+- (void)handleResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 response];
-  v9 = [v8 allHeaderFields];
-  v10 = [v9 wlk_caseInsensitiveValueForKey:@"X-Apple-utsk-expired"];
+  resultCopy = result;
+  errorCopy = error;
+  response = [resultCopy response];
+  allHeaderFields = [response allHeaderFields];
+  v10 = [allHeaderFields wlk_caseInsensitiveValueForKey:@"X-Apple-utsk-expired"];
 
   if (v10)
   {
@@ -138,13 +138,13 @@ void __51__WLKUTSNetworkRequestOperation_prepareURLRequest___block_invoke(uint64
 
     v16.receiver = self;
     v16.super_class = WLKUTSNetworkRequestOperation;
-    [(WLKNetworkRequestOperation *)&v16 handleResult:v6 error:v7];
+    [(WLKNetworkRequestOperation *)&v16 handleResult:resultCopy error:errorCopy];
   }
 
   else
   {
-    v12 = [v8 allHeaderFields];
-    v13 = [v12 wlk_caseInsensitiveValueForKey:@"X-Apple-utsk"];
+    allHeaderFields2 = [response allHeaderFields];
+    v13 = [allHeaderFields2 wlk_caseInsensitiveValueForKey:@"X-Apple-utsk"];
 
     if ([v13 length])
     {
@@ -154,7 +154,7 @@ void __51__WLKUTSNetworkRequestOperation_prepareURLRequest___block_invoke(uint64
 
     v15.receiver = self;
     v15.super_class = WLKUTSNetworkRequestOperation;
-    [(WLKNetworkRequestOperation *)&v15 handleResult:v6 error:v7];
+    [(WLKNetworkRequestOperation *)&v15 handleResult:resultCopy error:errorCopy];
   }
 }
 
@@ -174,8 +174,8 @@ void __52__WLKUTSNetworkRequestOperation_handleResult_error___block_invoke()
   if (!responseDictionary)
   {
     v4 = objc_alloc_init(WLKDictionaryResponseProcessor);
-    v5 = [(WLKNetworkRequestOperation *)self data];
-    v6 = [(WLKDictionaryResponseProcessor *)v4 processResponseData:v5 error:0];
+    data = [(WLKNetworkRequestOperation *)self data];
+    v6 = [(WLKDictionaryResponseProcessor *)v4 processResponseData:data error:0];
 
     v7 = [v6 wlk_dictionaryForKey:@"data"];
     v8 = v7;

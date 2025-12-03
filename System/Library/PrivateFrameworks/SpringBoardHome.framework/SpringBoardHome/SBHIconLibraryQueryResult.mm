@@ -1,22 +1,22 @@
 @interface SBHIconLibraryQueryResult
 + (id)nullQueryResults;
-+ (void)_hydrateSnapshot:(id)a3 fromIcons:(id)a4 query:(id)a5 outCollationStrategy:(id *)a6 outIconForItemIdentifier:(id *)a7 outSortMethodology:(unint64_t *)a8 sortComparator:(id)a9;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQueryResult:(id)a3;
++ (void)_hydrateSnapshot:(id)snapshot fromIcons:(id)icons query:(id)query outCollationStrategy:(id *)strategy outIconForItemIdentifier:(id *)identifier outSortMethodology:(unint64_t *)methodology sortComparator:(id)comparator;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQueryResult:(id)result;
 - (BOOL)isNullQueryResult;
-- (SBHIconLibraryQueryResult)initWithQuery:(id)a3 icons:(id)a4 snapshot:(id)a5 collationStrategy:(id)a6 iconForitemIdentifier:(id)a7 sortMethodology:(unint64_t)a8;
-- (SBHIconLibraryQueryResult)initWithQuery:(id)a3 icons:(id)a4 sortComparator:(id)a5;
-- (id)_firstExtantSectionWithCollationIndexGreaterThan:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)iconAtIndexPath:(id)a3;
-- (id)iconsForSectionAtIndex:(unint64_t)a3;
-- (id)indexPathForIcon:(id)a3;
-- (id)itemIdentifierForIcon:(id)a3;
-- (id)sectionIdentifierAtIndex:(unint64_t)a3;
-- (id)sectionIdentifierForIcon:(id)a3;
-- (id)titleForSectionAtIndex:(int64_t)a3;
-- (id)titleForSectionIdentifier:(id)a3;
-- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)a3;
+- (SBHIconLibraryQueryResult)initWithQuery:(id)query icons:(id)icons snapshot:(id)snapshot collationStrategy:(id)strategy iconForitemIdentifier:(id)identifier sortMethodology:(unint64_t)methodology;
+- (SBHIconLibraryQueryResult)initWithQuery:(id)query icons:(id)icons sortComparator:(id)comparator;
+- (id)_firstExtantSectionWithCollationIndexGreaterThan:(int64_t)than;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)iconAtIndexPath:(id)path;
+- (id)iconsForSectionAtIndex:(unint64_t)index;
+- (id)indexPathForIcon:(id)icon;
+- (id)itemIdentifierForIcon:(id)icon;
+- (id)sectionIdentifierAtIndex:(unint64_t)index;
+- (id)sectionIdentifierForIcon:(id)icon;
+- (id)titleForSectionAtIndex:(int64_t)index;
+- (id)titleForSectionIdentifier:(id)identifier;
+- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)index;
 - (unint64_t)totalNumberOfItems;
 @end
 
@@ -44,34 +44,34 @@ void __45__SBHIconLibraryQueryResult_nullQueryResults__block_invoke()
   nullQueryResults_nullQueryResults = v2;
 }
 
-- (SBHIconLibraryQueryResult)initWithQuery:(id)a3 icons:(id)a4 snapshot:(id)a5 collationStrategy:(id)a6 iconForitemIdentifier:(id)a7 sortMethodology:(unint64_t)a8
+- (SBHIconLibraryQueryResult)initWithQuery:(id)query icons:(id)icons snapshot:(id)snapshot collationStrategy:(id)strategy iconForitemIdentifier:(id)identifier sortMethodology:(unint64_t)methodology
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  queryCopy = query;
+  iconsCopy = icons;
+  snapshotCopy = snapshot;
+  strategyCopy = strategy;
+  identifierCopy = identifier;
   v30.receiver = self;
   v30.super_class = SBHIconLibraryQueryResult;
   v20 = [(SBHIconLibraryQueryResult *)&v30 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_query, a3);
-    v22 = [v16 copy];
+    objc_storeStrong(&v20->_query, query);
+    v22 = [iconsCopy copy];
     icons = v21->_icons;
     v21->_icons = v22;
 
-    v24 = [v17 copy];
+    v24 = [snapshotCopy copy];
     snapshot = v21->_snapshot;
     v21->_snapshot = v24;
 
-    objc_storeStrong(&v21->_collationStrategy, a6);
-    v26 = [v19 copy];
+    objc_storeStrong(&v21->_collationStrategy, strategy);
+    v26 = [identifierCopy copy];
     iconForItemIdentifier = v21->_iconForItemIdentifier;
     v21->_iconForItemIdentifier = v26;
 
-    v21->_sortMethodology = a8;
+    v21->_sortMethodology = methodology;
     v28 = _gQueryResultIdx++;
     v21->_totalNumberOfItems = 0x7FFFFFFFFFFFFFFFLL;
     v21->_queryResultIdx = v28;
@@ -80,47 +80,47 @@ void __45__SBHIconLibraryQueryResult_nullQueryResults__block_invoke()
   return v21;
 }
 
-- (SBHIconLibraryQueryResult)initWithQuery:(id)a3 icons:(id)a4 sortComparator:(id)a5
+- (SBHIconLibraryQueryResult)initWithQuery:(id)query icons:(id)icons sortComparator:(id)comparator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  comparatorCopy = comparator;
+  iconsCopy = icons;
+  queryCopy = query;
   v11 = objc_opt_new();
   v18 = 1;
   v16 = 0;
   v17 = 0;
-  [objc_opt_class() _hydrateSnapshot:v11 fromIcons:v9 query:v10 outCollationStrategy:&v17 outIconForItemIdentifier:&v16 outSortMethodology:&v18 sortComparator:v8];
+  [objc_opt_class() _hydrateSnapshot:v11 fromIcons:iconsCopy query:queryCopy outCollationStrategy:&v17 outIconForItemIdentifier:&v16 outSortMethodology:&v18 sortComparator:comparatorCopy];
 
   v12 = v17;
   v13 = v16;
-  v14 = [(SBHIconLibraryQueryResult *)self initWithQuery:v10 icons:v9 snapshot:v11 collationStrategy:v12 iconForitemIdentifier:v13 sortMethodology:v18];
+  v14 = [(SBHIconLibraryQueryResult *)self initWithQuery:queryCopy icons:iconsCopy snapshot:v11 collationStrategy:v12 iconForitemIdentifier:v13 sortMethodology:v18];
 
   return v14;
 }
 
-- (BOOL)isEqualToQueryResult:(id)a3
+- (BOOL)isEqualToQueryResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (!resultCopy)
   {
     goto LABEL_8;
   }
 
-  if (self == v4)
+  if (self == resultCopy)
   {
     v19 = 1;
     goto LABEL_10;
   }
 
-  v6 = [(SBHIconLibraryQueryResult *)v4 snapshot];
-  v7 = [(SBHIconLibraryQueryResult *)self snapshot];
+  snapshot = [(SBHIconLibraryQueryResult *)resultCopy snapshot];
+  snapshot2 = [(SBHIconLibraryQueryResult *)self snapshot];
   v8 = BSEqualObjects();
 
   if (v8 && ([(SBHIconLibraryQueryResult *)v5 query], v9 = objc_claimAutoreleasedReturnValue(), [(SBHIconLibraryQueryResult *)self query], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11) && ([(SBHIconLibraryQueryResult *)v5 icons], v12 = objc_claimAutoreleasedReturnValue(), [(SBHIconLibraryQueryResult *)self icons], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && ([(SBHIconLibraryQueryResult *)v5 collationStrategy], v15 = objc_claimAutoreleasedReturnValue(), [(SBHIconLibraryQueryResult *)self collationStrategy], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17))
   {
-    v18 = [(SBHIconLibraryQueryResult *)v5 sortMethodology];
-    v19 = v18 == [(SBHIconLibraryQueryResult *)self sortMethodology];
+    sortMethodology = [(SBHIconLibraryQueryResult *)v5 sortMethodology];
+    v19 = sortMethodology == [(SBHIconLibraryQueryResult *)self sortMethodology];
   }
 
   else
@@ -134,10 +134,10 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -145,7 +145,7 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHIconLibraryQueryResult *)self isEqualToQueryResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHIconLibraryQueryResult *)self isEqualToQueryResult:equalCopy];
   }
 
   return v5;
@@ -159,29 +159,29 @@ LABEL_10:
   return self;
 }
 
-+ (void)_hydrateSnapshot:(id)a3 fromIcons:(id)a4 query:(id)a5 outCollationStrategy:(id *)a6 outIconForItemIdentifier:(id *)a7 outSortMethodology:(unint64_t *)a8 sortComparator:(id)a9
++ (void)_hydrateSnapshot:(id)snapshot fromIcons:(id)icons query:(id)query outCollationStrategy:(id *)strategy outIconForItemIdentifier:(id *)identifier outSortMethodology:(unint64_t *)methodology sortComparator:(id)comparator
 {
   v78 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v11 = a4;
-  v55 = a5;
-  v56 = a9;
-  v12 = [v55 searchString];
-  v48 = [v12 length];
+  snapshotCopy = snapshot;
+  iconsCopy = icons;
+  queryCopy = query;
+  comparatorCopy = comparator;
+  searchString = [queryCopy searchString];
+  v48 = [searchString length];
 
-  v50 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = objc_opt_new();
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v11;
+  obj = iconsCopy;
   v15 = [obj countByEnumeratingWithState:&v72 objects:v77 count:16];
   if (v15)
   {
     v16 = v15;
-    LOBYTE(v17) = 0;
+    LOBYTE(isAppClip) = 0;
     v18 = *v73;
     do
     {
@@ -193,12 +193,12 @@ LABEL_10:
         }
 
         v20 = *(*(&v72 + 1) + 8 * i);
-        v21 = [v20 sbh_iconLibraryItemIdentifier];
-        [v13 bs_setSafeObject:v20 forKey:v21];
+        sbh_iconLibraryItemIdentifier = [v20 sbh_iconLibraryItemIdentifier];
+        [v13 bs_setSafeObject:v20 forKey:sbh_iconLibraryItemIdentifier];
 
-        if (v17)
+        if (isAppClip)
         {
-          v17 = 1;
+          isAppClip = 1;
         }
 
         else
@@ -206,19 +206,19 @@ LABEL_10:
           v22 = v20;
           if ([v22 isBookmarkIcon])
           {
-            v23 = [v22 webClip];
-            v17 = [v23 isAppClip];
+            webClip = [v22 webClip];
+            isAppClip = [webClip isAppClip];
           }
 
           else
           {
-            v17 = 0;
+            isAppClip = 0;
           }
         }
 
         v24 = MEMORY[0x1E698B0D0];
-        v25 = [v20 applicationBundleID];
-        v26 = [v24 applicationWithBundleIdentifier:v25];
+        applicationBundleID = [v20 applicationBundleID];
+        v26 = [v24 applicationWithBundleIdentifier:applicationBundleID];
 
         if (([v26 isHidden] & 1) == 0)
         {
@@ -234,13 +234,13 @@ LABEL_10:
 
   else
   {
-    v17 = 0;
+    isAppClip = 0;
   }
 
   if (v48)
   {
     v76 = SBHLibrarySectionIdentifierNone;
-    v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
+    sectionTitles = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
     v28 = 0;
   }
 
@@ -249,7 +249,7 @@ LABEL_10:
     if ([v14 count])
     {
       BSDispatchQueueAssertNotMain();
-      if (v17)
+      if (isAppClip)
       {
         +[SBHLocalizedIndexedCollationStrategy dimSumCollationStrategy];
       }
@@ -266,23 +266,23 @@ LABEL_10:
       v28 = 0;
     }
 
-    v27 = [v28 sectionTitles];
+    sectionTitles = [v28 sectionTitles];
   }
 
-  v49 = v27;
-  v29 = [v27 count];
+  v49 = sectionTitles;
+  v29 = [sectionTitles count];
   v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:v29];
   v31 = [MEMORY[0x1E696AE08] pointerArrayWithOptions:0];
   [v31 setCount:v29];
   if (v48)
   {
     [v30 addObject:SBHLibrarySectionIdentifierNone];
-    v32 = v54;
+    v32 = snapshotCopy;
   }
 
   else
   {
-    v32 = v54;
+    v32 = snapshotCopy;
     if (v29)
     {
       for (j = 0; j != v29; ++j)
@@ -304,7 +304,7 @@ LABEL_10:
   v67 = v36;
   v37 = v30;
   v68 = v37;
-  v38 = v50;
+  v38 = dictionary;
   v69 = v38;
   v39 = v31;
   v70 = v39;
@@ -320,21 +320,21 @@ LABEL_10:
     v40[2](v40);
   }
 
-  if (a8)
+  if (methodology)
   {
     v42 = v36 != 0;
-    if (v56)
+    if (comparatorCopy)
     {
       v42 = 2;
     }
 
-    *a8 = v42;
+    *methodology = v42;
   }
 
   if (v32)
   {
-    v43 = [v39 allObjects];
-    [v32 appendSectionsWithIdentifiers:v43];
+    allObjects = [v39 allObjects];
+    [v32 appendSectionsWithIdentifiers:allObjects];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __142__SBHIconLibraryQueryResult__hydrateSnapshot_fromIcons_query_outCollationStrategy_outIconForItemIdentifier_outSortMethodology_sortComparator___block_invoke_2;
@@ -342,8 +342,8 @@ LABEL_10:
     v59 = v38;
     v64 = v48 == 0;
     v60 = v36;
-    v63 = v56;
-    v61 = v55;
+    v63 = comparatorCopy;
+    v61 = queryCopy;
     v62 = v32;
     v44 = _Block_copy(v58);
     v45 = v44;
@@ -358,16 +358,16 @@ LABEL_10:
     }
   }
 
-  if (a6)
+  if (strategy)
   {
     v46 = v36;
-    *a6 = v36;
+    *strategy = v36;
   }
 
-  if (a7)
+  if (identifier)
   {
     v47 = v13;
-    *a7 = v13;
+    *identifier = v13;
   }
 }
 
@@ -500,9 +500,9 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SBHIconLibraryQueryResult allocWithZone:a3];
+  v4 = [SBHIconLibraryQueryResult allocWithZone:zone];
   v5 = [(SBHIconLibraryQuery *)self->_query copy];
   v6 = [(NSSet *)self->_icons copy];
   v7 = [(NSDiffableDataSourceSnapshot *)self->_snapshot copy];
@@ -523,8 +523,8 @@ LABEL_14:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSDiffableDataSourceSnapshot *)self->_snapshot sectionIdentifiers];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    sectionIdentifiers = [(NSDiffableDataSourceSnapshot *)self->_snapshot sectionIdentifiers];
+    v5 = [sectionIdentifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -536,13 +536,13 @@ LABEL_14:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sectionIdentifiers);
           }
 
           totalNumberOfItems += [(NSDiffableDataSourceSnapshot *)self->_snapshot numberOfItemsInSection:*(*(&v10 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [sectionIdentifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -559,30 +559,30 @@ LABEL_14:
   return totalNumberOfItems;
 }
 
-- (id)itemIdentifierForIcon:(id)a3
+- (id)itemIdentifierForIcon:(id)icon
 {
-  v3 = a3;
-  if ([v3 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v4 = [v3 sbh_iconLibraryItemIdentifier];
+    sbh_iconLibraryItemIdentifier = [iconCopy sbh_iconLibraryItemIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    sbh_iconLibraryItemIdentifier = 0;
   }
 
-  return v4;
+  return sbh_iconLibraryItemIdentifier;
 }
 
-- (id)sectionIdentifierForIcon:(id)a3
+- (id)sectionIdentifierForIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   query = self->_query;
   v6 = self->_collationStrategy;
   v7 = query;
-  v8 = [(SBHIconLibraryQuery *)v7 searchString];
-  v9 = [v8 length];
+  searchString = [(SBHIconLibraryQuery *)v7 searchString];
+  v9 = [searchString length];
 
   if (v9)
   {
@@ -591,18 +591,18 @@ LABEL_14:
 
   else
   {
-    v11 = [(SBHLocalizedIndexedCollationStrategy *)v6 sectionTitles];
-    v12 = [(SBHLocalizedIndexedCollationStrategy *)v6 sectionForObject:v4 collationStringSelector:sel__sbhIconLibraryCollationString];
-    if (v12 >= [v11 count])
+    sectionTitles = [(SBHLocalizedIndexedCollationStrategy *)v6 sectionTitles];
+    v12 = [(SBHLocalizedIndexedCollationStrategy *)v6 sectionForObject:iconCopy collationStringSelector:sel__sbhIconLibraryCollationString];
+    if (v12 >= [sectionTitles count])
     {
       v10 = 0;
     }
 
     else
     {
-      v13 = [v11 objectAtIndex:v12];
-      v14 = [(SBHIconLibraryQuery *)v7 searchString];
-      v15 = [v14 length];
+      v13 = [sectionTitles objectAtIndex:v12];
+      searchString2 = [(SBHIconLibraryQuery *)v7 searchString];
+      v15 = [searchString2 length];
 
       if (v15)
       {
@@ -621,71 +621,71 @@ LABEL_14:
   return v10;
 }
 
-- (id)titleForSectionIdentifier:(id)a3
+- (id)titleForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqual:SBHLibrarySectionIdentifierNone])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:SBHLibrarySectionIdentifierNone])
   {
     v5 = &stru_1F3D472A8;
   }
 
   else
   {
-    v6 = [(SBHLocalizedIndexedCollationStrategy *)self->_collationStrategy sectionTitles];
-    v7 = v4;
+    sectionTitles = [(SBHLocalizedIndexedCollationStrategy *)self->_collationStrategy sectionTitles];
+    v7 = identifierCopy;
     v8 = [v7 rangeOfString:@"" options:? range:?], 0, 9, objc_msgSend(v7, "length") - 9);
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = [v7 substringWithRange:{9, v8 + v9}];
-      v10 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
-    v5 = [v6 objectAtIndexedSubscript:v10];
+    v5 = [sectionTitles objectAtIndexedSubscript:integerValue];
   }
 
   return v5;
 }
 
-- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)a3
+- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)index
 {
-  v5 = SBHLibrarySectionIdentifierForSectionWithIndex(self->_collationStrategy, a3);
-  v6 = [(SBHIconLibraryQueryResult *)self snapshot];
-  v7 = [v6 sectionIdentifiers];
+  v5 = SBHLibrarySectionIdentifierForSectionWithIndex(self->_collationStrategy, index);
+  snapshot = [(SBHIconLibraryQueryResult *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
 
-  if ([v7 containsObject:v5])
+  if ([sectionIdentifiers containsObject:v5])
   {
     v8 = v5;
   }
 
   else
   {
-    v8 = [(SBHIconLibraryQueryResult *)self _firstExtantSectionWithCollationIndexGreaterThan:a3];
+    v8 = [(SBHIconLibraryQueryResult *)self _firstExtantSectionWithCollationIndexGreaterThan:index];
   }
 
   v9 = v8;
   if (v8)
   {
-    v10 = [v7 indexOfObject:v8];
+    v10 = [sectionIdentifiers indexOfObject:v8];
   }
 
   else
   {
-    v10 = [v7 count] - 1;
+    v10 = [sectionIdentifiers count] - 1;
   }
 
   return v10;
 }
 
-- (id)_firstExtantSectionWithCollationIndexGreaterThan:(int64_t)a3
+- (id)_firstExtantSectionWithCollationIndexGreaterThan:(int64_t)than
 {
-  v5 = [(SBHIconLibraryQueryResult *)self snapshot];
-  v6 = [v5 sectionIdentifiers];
+  snapshot = [(SBHIconLibraryQueryResult *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
 
-  v7 = [(SBHLocalizedIndexedCollationStrategy *)self->_collationStrategy sectionIndexTitles];
-  v8 = [v7 count];
+  sectionIndexTitles = [(SBHLocalizedIndexedCollationStrategy *)self->_collationStrategy sectionIndexTitles];
+  v8 = [sectionIndexTitles count];
 
-  v9 = a3 + 1;
+  v9 = than + 1;
   if (v9 >= v8)
   {
 LABEL_4:
@@ -697,7 +697,7 @@ LABEL_4:
     while (1)
     {
       v10 = SBHLibrarySectionIdentifierForSectionWithIndex(self->_collationStrategy, v9);
-      if ([v6 containsObject:v10])
+      if ([sectionIdentifiers containsObject:v10])
       {
         break;
       }
@@ -712,13 +712,13 @@ LABEL_4:
   return v10;
 }
 
-- (id)indexPathForIcon:(id)a3
+- (id)indexPathForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconLibraryQueryResult *)self sectionIdentifierForIcon:v4];
+  iconCopy = icon;
+  v5 = [(SBHIconLibraryQueryResult *)self sectionIdentifierForIcon:iconCopy];
   if (v5)
   {
-    v6 = [(SBHIconLibraryQueryResult *)self itemIdentifierForIcon:v4];
+    v6 = [(SBHIconLibraryQueryResult *)self itemIdentifierForIcon:iconCopy];
     v7 = [(SBHIconLibraryQueryResult *)self indexOfSectionIdentifier:v5];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -728,8 +728,8 @@ LABEL_4:
     else
     {
       v9 = v7;
-      v10 = [(SBHIconLibraryQueryResult *)self snapshot];
-      v11 = [v10 itemIdentifiersInSectionWithIdentifier:v5];
+      snapshot = [(SBHIconLibraryQueryResult *)self snapshot];
+      v11 = [snapshot itemIdentifiersInSectionWithIdentifier:v5];
       v12 = [v11 indexOfObject:v6];
 
       v8 = [MEMORY[0x1E696AC88] indexPathForRow:v12 inSection:v9];
@@ -744,31 +744,31 @@ LABEL_4:
   return v8;
 }
 
-- (id)sectionIdentifierAtIndex:(unint64_t)a3
+- (id)sectionIdentifierAtIndex:(unint64_t)index
 {
-  v4 = [(SBHIconLibraryQueryResult *)self sectionIdentifiers];
-  if ([v4 count] <= a3)
+  sectionIdentifiers = [(SBHIconLibraryQueryResult *)self sectionIdentifiers];
+  if ([sectionIdentifiers count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [sectionIdentifiers objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)iconAtIndexPath:(id)a3
+- (id)iconAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[SBHIconLibraryQueryResult sectionIdentifierAtIndex:](self, "sectionIdentifierAtIndex:", [v4 indexAtPosition:0]);
+  pathCopy = path;
+  v5 = -[SBHIconLibraryQueryResult sectionIdentifierAtIndex:](self, "sectionIdentifierAtIndex:", [pathCopy indexAtPosition:0]);
   if (v5)
   {
-    v6 = [(SBHIconLibraryQueryResult *)self snapshot];
-    v7 = [v6 itemIdentifiersInSectionWithIdentifier:v5];
-    if (!v7 || (v8 = [v4 indexAtPosition:1], v8 == 0x7FFFFFFFFFFFFFFFLL) || (v9 = v8, v8 >= objc_msgSend(v7, "count")))
+    snapshot = [(SBHIconLibraryQueryResult *)self snapshot];
+    v7 = [snapshot itemIdentifiersInSectionWithIdentifier:v5];
+    if (!v7 || (v8 = [pathCopy indexAtPosition:1], v8 == 0x7FFFFFFFFFFFFFFFLL) || (v9 = v8, v8 >= objc_msgSend(v7, "count")))
     {
       v11 = 0;
     }
@@ -788,21 +788,21 @@ LABEL_4:
   return v11;
 }
 
-- (id)titleForSectionAtIndex:(int64_t)a3
+- (id)titleForSectionAtIndex:(int64_t)index
 {
-  v5 = [(SBHIconLibraryQueryResult *)self sectionIdentifiers];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  sectionIdentifiers = [(SBHIconLibraryQueryResult *)self sectionIdentifiers];
+  v6 = [sectionIdentifiers objectAtIndexedSubscript:index];
 
   v7 = [(SBHIconLibraryQueryResult *)self titleForSectionIdentifier:v6];
 
   return v7;
 }
 
-- (id)iconsForSectionAtIndex:(unint64_t)a3
+- (id)iconsForSectionAtIndex:(unint64_t)index
 {
-  v4 = [(SBHIconLibraryQueryResult *)self sectionIdentifierAtIndex:a3];
-  v5 = [(SBHIconLibraryQueryResult *)self snapshot];
-  v6 = [v5 itemIdentifiersInSectionWithIdentifier:v4];
+  v4 = [(SBHIconLibraryQueryResult *)self sectionIdentifierAtIndex:index];
+  snapshot = [(SBHIconLibraryQueryResult *)self snapshot];
+  v6 = [snapshot itemIdentifiersInSectionWithIdentifier:v4];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

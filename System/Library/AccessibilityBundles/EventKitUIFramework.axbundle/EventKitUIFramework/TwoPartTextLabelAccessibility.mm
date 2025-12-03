@@ -8,7 +8,7 @@
 {
   v7.receiver = self;
   v7.super_class = TwoPartTextLabelAccessibility;
-  v3 = [(TwoPartTextLabelAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(TwoPartTextLabelAccessibility *)&v7 accessibilityLabel];
   v6 = [(TwoPartTextLabelAccessibility *)self safeValueForKey:@"_secondTextPart"];
   v4 = __UIAXStringForVariables();
 

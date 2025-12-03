@@ -1,19 +1,19 @@
 @interface SSSScreenshotItemProviderImage
-+ (id)fileFormatTypeForActivityType:(id)a3 isHDR:(BOOL)a4;
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerSuggestionAssetLocalIdentifier:(id)a3;
-- (id)itemForActivityType:(id)a3;
-- (id)placeholderItemForScreenshot:(id)a3;
++ (id)fileFormatTypeForActivityType:(id)type isHDR:(BOOL)r;
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerSuggestionAssetLocalIdentifier:(id)identifier;
+- (id)itemForActivityType:(id)type;
+- (id)placeholderItemForScreenshot:(id)screenshot;
 @end
 
 @implementation SSSScreenshotItemProviderImage
 
-+ (id)fileFormatTypeForActivityType:(id)a3 isHDR:(BOOL)a4
++ (id)fileFormatTypeForActivityType:(id)type isHDR:(BOOL)r
 {
-  v5 = a3;
-  if ((_SSHDRCaptureEnabled() & 1) == 0 && !a4)
+  typeCopy = type;
+  if ((_SSHDRCaptureEnabled() & 1) == 0 && !r)
   {
     goto LABEL_7;
   }
@@ -27,7 +27,7 @@
   if (UsedScreenshotShareFormatOption == 1)
   {
     v7 = _SSHDRCaptureEnabled();
-    if (a4 || (v7 & 1) != 0)
+    if (r || (v7 & 1) != 0)
     {
       v8 = &UTTypeHEIC;
       goto LABEL_8;
@@ -36,52 +36,52 @@
 LABEL_7:
     v8 = &UTTypePNG;
 LABEL_8:
-    v9 = [*v8 identifier];
+    identifier = [*v8 identifier];
     goto LABEL_9;
   }
 
-  v9 = [UTTypePNG identifier];
-  if (v5)
+  identifier = [UTTypePNG identifier];
+  if (typeCopy)
   {
     if (qword_1000D4980 != -1)
     {
       sub_100073D1C();
     }
 
-    if ([qword_1000D4988 containsObject:v5])
+    if ([qword_1000D4988 containsObject:typeCopy])
     {
-      v11 = [UTTypeHEIC identifier];
+      identifier2 = [UTTypeHEIC identifier];
 
-      v9 = v11;
+      identifier = identifier2;
     }
   }
 
 LABEL_9:
 
-  return v9;
+  return identifier;
 }
 
-- (id)placeholderItemForScreenshot:(id)a3
+- (id)placeholderItemForScreenshot:(id)screenshot
 {
-  v3 = [a3 imageProvider];
-  v4 = [v3 requestOutputImageForUIBlocking];
+  imageProvider = [screenshot imageProvider];
+  requestOutputImageForUIBlocking = [imageProvider requestOutputImageForUIBlocking];
 
-  return v4;
+  return requestOutputImageForUIBlocking;
 }
 
-- (id)itemForActivityType:(id)a3
+- (id)itemForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotItemProvider *)self screenshot];
-  v6 = [v5 imageGenerator];
-  v7 = [(SSSScreenshotItemProvider *)self screenshot];
-  v8 = [v6 isGeneratedImageHDR:v7];
+  typeCopy = type;
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
+  screenshot2 = [(SSSScreenshotItemProvider *)self screenshot];
+  v8 = [imageGenerator isGeneratedImageHDR:screenshot2];
 
-  v9 = [objc_opt_class() fileFormatTypeForActivityType:v4 isHDR:v8];
-  v10 = [UTTypeHEIC identifier];
-  v11 = [v9 isEqualToString:v10];
+  v9 = [objc_opt_class() fileFormatTypeForActivityType:typeCopy isHDR:v8];
+  identifier = [UTTypeHEIC identifier];
+  v11 = [v9 isEqualToString:identifier];
 
-  if (!v4)
+  if (!typeCopy)
   {
     goto LABEL_6;
   }
@@ -91,30 +91,30 @@ LABEL_9:
     sub_100073D30();
   }
 
-  if ([qword_1000D4998 containsObject:v4])
+  if ([qword_1000D4998 containsObject:typeCopy])
   {
-    v12 = [(SSSScreenshotItemProvider *)self screenshot];
-    v13 = [v12 imageGenerator];
-    v14 = [(SSSScreenshotItemProvider *)self screenshot];
-    v15 = [v13 generateImageForScreenshot:v14 shouldApplyCrop:1 allowHDR:v11 targetSize:{CGSizeZero.width, CGSizeZero.height}];
+    screenshot3 = [(SSSScreenshotItemProvider *)self screenshot];
+    imageGenerator2 = [screenshot3 imageGenerator];
+    screenshot4 = [(SSSScreenshotItemProvider *)self screenshot];
+    v15 = [imageGenerator2 generateImageForScreenshot:screenshot4 shouldApplyCrop:1 allowHDR:v11 targetSize:{CGSizeZero.width, CGSizeZero.height}];
   }
 
   else
   {
 LABEL_6:
-    v12 = [(SSSScreenshotItemProvider *)self screenshot];
-    v13 = [v12 imageGenerator];
-    v14 = [(SSSScreenshotItemProvider *)self screenshot];
+    screenshot3 = [(SSSScreenshotItemProvider *)self screenshot];
+    imageGenerator2 = [screenshot3 imageGenerator];
+    screenshot4 = [(SSSScreenshotItemProvider *)self screenshot];
     v16 = [UTType typeWithIdentifier:v9];
-    v15 = [v13 generateImageDataForScreenshot:v14 shouldApplyCrop:1 allowHDR:v11 targetSize:v16 imageType:{CGSizeZero.width, CGSizeZero.height}];
+    v15 = [imageGenerator2 generateImageDataForScreenshot:screenshot4 shouldApplyCrop:1 allowHDR:v11 targetSize:v16 imageType:{CGSizeZero.width, CGSizeZero.height}];
   }
 
   return v15;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2050000000;
@@ -153,10 +153,10 @@ LABEL_6:
   v9 = v8;
   _Block_object_dispose(&v38, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [(SSSScreenshotItemProvider *)self screenshot];
-  v12 = [v11 imageGenerator];
-  v13 = [(SSSScreenshotItemProvider *)self screenshot];
-  v14 = [v12 imageGeneratorCachedImageForScreenshot:v13 allowHDR:0];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
+  screenshot2 = [(SSSScreenshotItemProvider *)self screenshot];
+  v14 = [imageGenerator imageGeneratorCachedImageForScreenshot:screenshot2 allowHDR:0];
 
   if (v14)
   {
@@ -181,8 +181,8 @@ LABEL_6:
     }
   }
 
-  v23 = [(SSSScreenshotItemProvider *)self nameForScreenshot];
-  [v10 setName:v23];
+  nameForScreenshot = [(SSSScreenshotItemProvider *)self nameForScreenshot];
+  [v10 setName:nameForScreenshot];
 
   v38 = 0;
   v39 = &v38;
@@ -205,40 +205,40 @@ LABEL_6:
   v26 = [[v24 alloc] initWithPlatformImage:v14];
   [v10 setThumbnail:v26];
 
-  v27 = [UTTypeImage identifier];
-  [v10 setType:v27];
+  identifier = [UTTypeImage identifier];
+  [v10 setType:identifier];
 
   [v7 setSpecialization:v10];
 
   return v7;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v5 = a4;
-  v6 = [(SSSScreenshotItemProvider *)self screenshot];
-  v7 = [v6 imageGenerator];
-  v8 = [(SSSScreenshotItemProvider *)self screenshot];
-  v9 = [v7 isGeneratedImageHDR:v8];
+  typeCopy = type;
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  imageGenerator = [screenshot imageGenerator];
+  screenshot2 = [(SSSScreenshotItemProvider *)self screenshot];
+  v9 = [imageGenerator isGeneratedImageHDR:screenshot2];
 
-  v10 = [objc_opt_class() fileFormatTypeForActivityType:v5 isHDR:v9];
+  v10 = [objc_opt_class() fileFormatTypeForActivityType:typeCopy isHDR:v9];
 
   return v10;
 }
 
-- (id)activityViewController:(id)a3 attachmentNameForActivityType:(id)a4
+- (id)activityViewController:(id)controller attachmentNameForActivityType:(id)type
 {
-  v5 = a4;
-  v6 = [(SSSScreenshotItemProvider *)self nameForScreenshot];
-  if (v5)
+  typeCopy = type;
+  nameForScreenshot = [(SSSScreenshotItemProvider *)self nameForScreenshot];
+  if (typeCopy)
   {
-    v7 = [(SSSScreenshotItemProvider *)self screenshot];
-    v8 = [v7 imageGenerator];
+    screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+    imageGenerator = [screenshot imageGenerator];
 
-    if (v8)
+    if (imageGenerator)
     {
-      v9 = [(SSSScreenshotItemProvider *)self screenshot];
-      v10 = [v8 isGeneratedImageHDR:v9];
+      screenshot2 = [(SSSScreenshotItemProvider *)self screenshot];
+      v10 = [imageGenerator isGeneratedImageHDR:screenshot2];
     }
 
     else
@@ -246,26 +246,26 @@ LABEL_6:
       v10 = 0;
     }
 
-    v11 = [objc_opt_class() fileFormatTypeForActivityType:v5 isHDR:v10];
+    v11 = [objc_opt_class() fileFormatTypeForActivityType:typeCopy isHDR:v10];
     v12 = [UTType typeWithIdentifier:v11];
-    v13 = [v12 preferredFilenameExtension];
-    if (v13)
+    preferredFilenameExtension = [v12 preferredFilenameExtension];
+    if (preferredFilenameExtension)
     {
-      v14 = [v6 stringByAppendingPathExtension:v13];
+      v14 = [nameForScreenshot stringByAppendingPathExtension:preferredFilenameExtension];
 
-      v6 = v14;
+      nameForScreenshot = v14;
     }
   }
 
-  return v6;
+  return nameForScreenshot;
 }
 
-- (id)activityViewControllerSuggestionAssetLocalIdentifier:(id)a3
+- (id)activityViewControllerSuggestionAssetLocalIdentifier:(id)identifier
 {
-  v3 = [(SSSScreenshotItemProvider *)self screenshot];
-  v4 = [v3 identifier];
+  screenshot = [(SSSScreenshotItemProvider *)self screenshot];
+  identifier = [screenshot identifier];
 
-  return v4;
+  return identifier;
 }
 
 @end

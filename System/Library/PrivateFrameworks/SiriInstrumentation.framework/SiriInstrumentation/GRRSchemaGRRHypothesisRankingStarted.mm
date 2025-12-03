@@ -1,27 +1,27 @@
 @interface GRRSchemaGRRHypothesisRankingStarted
-- (BOOL)isEqual:(id)a3;
-- (GRRSchemaGRRHypothesisRankingStarted)initWithDictionary:(id)a3;
-- (GRRSchemaGRRHypothesisRankingStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRRSchemaGRRHypothesisRankingStarted)initWithDictionary:(id)dictionary;
+- (GRRSchemaGRRHypothesisRankingStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addFeatureFlags:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFeatureFlags:(id)flags;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRRSchemaGRRHypothesisRankingStarted
 
-- (GRRSchemaGRRHypothesisRankingStarted)initWithDictionary:(id)a3
+- (GRRSchemaGRRHypothesisRankingStarted)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = GRRSchemaGRRHypothesisRankingStarted;
   v5 = [(GRRSchemaGRRHypothesisRankingStarted *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assetVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(GRRSchemaGRRHypothesisRankingStarted *)v5 setAssetVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"featureFlags"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"featureFlags"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (GRRSchemaGRRHypothesisRankingStarted)initWithJSON:(id)a3
+- (GRRSchemaGRRHypothesisRankingStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRRSchemaGRRHypothesisRankingStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRRSchemaGRRHypothesisRankingStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRRSchemaGRRHypothesisRankingStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,17 +118,17 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetVersion)
   {
-    v4 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetVersion"];
+    assetVersion = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
+    v5 = [assetVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetVersion"];
   }
 
   if ([(NSArray *)self->_featureFlags count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -148,16 +148,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -167,36 +167,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"featureFlags"];
+    [dictionary setObject:array forKeyedSubscript:@"featureFlags"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v15];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v15];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
-  v6 = [v4 assetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  assetVersion = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
+  assetVersion2 = [equalCopy assetVersion];
+  if ((assetVersion != 0) == (assetVersion2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
-  if (v7)
+  assetVersion3 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
+  if (assetVersion3)
   {
-    v8 = v7;
-    v9 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
-    v10 = [v4 assetVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = assetVersion3;
+    assetVersion4 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
+    assetVersion5 = [equalCopy assetVersion];
+    v11 = [assetVersion4 isEqual:assetVersion5];
 
     if (!v11)
     {
@@ -208,12 +208,12 @@
   {
   }
 
-  v5 = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
-  v6 = [v4 featureFlags];
-  if ((v5 != 0) != (v6 == 0))
+  assetVersion = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
+  assetVersion2 = [equalCopy featureFlags];
+  if ((assetVersion != 0) != (assetVersion2 == 0))
   {
-    v12 = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
-    if (!v12)
+    featureFlags = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
+    if (!featureFlags)
     {
 
 LABEL_15:
@@ -221,10 +221,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
-    v15 = [v4 featureFlags];
-    v16 = [v14 isEqual:v15];
+    v13 = featureFlags;
+    featureFlags2 = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags];
+    featureFlags3 = [equalCopy featureFlags];
+    v16 = [featureFlags2 isEqual:featureFlags3];
 
     if (v16)
     {
@@ -244,13 +244,13 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
+  toCopy = to;
+  assetVersion = [(GRRSchemaGRRHypothesisRankingStarted *)self assetVersion];
 
-  if (v5)
+  if (assetVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -287,32 +287,32 @@ LABEL_13:
   }
 }
 
-- (void)addFeatureFlags:(id)a3
+- (void)addFeatureFlags:(id)flags
 {
-  v4 = a3;
+  flagsCopy = flags;
   featureFlags = self->_featureFlags;
-  v8 = v4;
+  v8 = flagsCopy;
   if (!featureFlags)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_featureFlags;
-    self->_featureFlags = v6;
+    self->_featureFlags = array;
 
-    v4 = v8;
+    flagsCopy = v8;
     featureFlags = self->_featureFlags;
   }
 
-  [(NSArray *)featureFlags addObject:v4];
+  [(NSArray *)featureFlags addObject:flagsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GRRSchemaGRRHypothesisRankingStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GRRSchemaGRRHypothesisRankingStarted *)self featureFlags:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(GRRSchemaGRRHypothesisRankingStarted *)self setFeatureFlags:v7];
 

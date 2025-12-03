@@ -1,22 +1,22 @@
 @interface INStopSendingUpdatesForwardingAction
-- (BOOL)executeRemotelyWithVendorRemote:(id)a3 completionHandler:(id)a4;
-- (void)executeLocallyWithIntentDeliverer:(id)a3 completionHandler:(id)a4;
+- (BOOL)executeRemotelyWithVendorRemote:(id)remote completionHandler:(id)handler;
+- (void)executeLocallyWithIntentDeliverer:(id)deliverer completionHandler:(id)handler;
 @end
 
 @implementation INStopSendingUpdatesForwardingAction
 
-- (void)executeLocallyWithIntentDeliverer:(id)a3 completionHandler:(id)a4
+- (void)executeLocallyWithIntentDeliverer:(id)deliverer completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INIntentForwardingAction *)self intent];
+  handlerCopy = handler;
+  delivererCopy = deliverer;
+  intent = [(INIntentForwardingAction *)self intent];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__INStopSendingUpdatesForwardingAction_executeLocallyWithIntentDeliverer_completionHandler___block_invoke;
   v10[3] = &unk_1E72838B8;
-  v11 = v6;
-  v9 = v6;
-  [v7 stopSendingUpdatesForIntent:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [delivererCopy stopSendingUpdatesForIntent:intent completionHandler:v10];
 }
 
 void __92__INStopSendingUpdatesForwardingAction_executeLocallyWithIntentDeliverer_completionHandler___block_invoke(uint64_t a1)
@@ -26,26 +26,26 @@ void __92__INStopSendingUpdatesForwardingAction_executeLocallyWithIntentDelivere
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)executeRemotelyWithVendorRemote:(id)a3 completionHandler:(id)a4
+- (BOOL)executeRemotelyWithVendorRemote:(id)remote completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  remoteCopy = remote;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = INStopSendingUpdatesForwardingAction;
-  if ([(INIntentForwardingAction *)&v15 executeRemotelyWithVendorRemote:v6 completionHandler:v7])
+  if ([(INIntentForwardingAction *)&v15 executeRemotelyWithVendorRemote:remoteCopy completionHandler:handlerCopy])
   {
     goto LABEL_4;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(INIntentForwardingAction *)self intent];
-    v9 = INIntentWithTypedIntent(v8);
+    intent = [(INIntentForwardingAction *)self intent];
+    v9 = INIntentWithTypedIntent(intent);
 
-    [v6 stopSendingUpdatesForIntent:v9];
+    [remoteCopy stopSendingUpdatesForIntent:v9];
     v10 = [[INIntentForwardingActionResponse alloc] initWithError:0];
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
 
 LABEL_4:
     v11 = 1;

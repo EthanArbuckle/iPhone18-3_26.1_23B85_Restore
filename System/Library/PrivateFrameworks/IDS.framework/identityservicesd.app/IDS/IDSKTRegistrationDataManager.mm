@@ -1,28 +1,28 @@
 @interface IDSKTRegistrationDataManager
-- (BOOL)_isKTRegistrationData:(id)a3 forServiceIndex:(unsigned __int16)a4 inTrustedDevices:(id)a5;
-- (BOOL)doesSignatureDSID:(id)a3 matchAccountDSID:(id)a4;
-- (BOOL)handleTransparencySignatureResponse:(id)a3 error:(id)a4;
+- (BOOL)_isKTRegistrationData:(id)data forServiceIndex:(unsigned __int16)index inTrustedDevices:(id)devices;
+- (BOOL)doesSignatureDSID:(id)d matchAccountDSID:(id)iD;
+- (BOOL)handleTransparencySignatureResponse:(id)response error:(id)error;
 - (BOOL)hasUnregisteredKTData;
-- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)a3;
-- (BOOL)notePublicIdentityDidRegisterKTData:(id)a3 forKeyIndex:(unsigned __int16)a4;
+- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)index;
+- (BOOL)notePublicIdentityDidRegisterKTData:(id)data forKeyIndex:(unsigned __int16)index;
 - (BOOL)registrationNeedKTDataUpdated;
-- (BOOL)requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:(id)a3 applicationKeyManager:(id)a4;
-- (BOOL)serializeAndPersistKTDatasDeleteIfNull:(BOOL)a3;
-- (IDSKTRegistrationDataManager)initWithIdentityDataSource:(id)a3 transparencyDaemon:(id)a4;
-- (id)_createKTTrustedDeviceForKVSisRegistered:(BOOL)a3;
-- (id)_ktApplicationForKTRegistrationIndex:(unsigned __int16)a3;
-- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)a3 isRegistered:(BOOL)a4 withError:(id *)a5;
-- (id)createKTRegistrationDataForServiceTypes:(id)a3 usingPublicIdentityData:(id)a4 withApplicationKeyManager:(id)a5;
+- (BOOL)requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:(id)data applicationKeyManager:(id)manager;
+- (BOOL)serializeAndPersistKTDatasDeleteIfNull:(BOOL)null;
+- (IDSKTRegistrationDataManager)initWithIdentityDataSource:(id)source transparencyDaemon:(id)daemon;
+- (id)_createKTTrustedDeviceForKVSisRegistered:(BOOL)registered;
+- (id)_ktApplicationForKTRegistrationIndex:(unsigned __int16)index;
+- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)index isRegistered:(BOOL)registered withError:(id *)error;
+- (id)createKTRegistrationDataForServiceTypes:(id)types usingPublicIdentityData:(id)data withApplicationKeyManager:(id)manager;
 - (id)createRegistrationStatusProvider;
-- (unsigned)_ktRegistrationDataIndexForKTApplication:(id)a3;
+- (unsigned)_ktRegistrationDataIndexForKTApplication:(id)application;
 - (void)clearKTDatas;
-- (void)fetchKTSignatureDataForServiceTypes:(id)a3 publicIdentityData:(id)a4 registerID:(id)a5 applicationKeyManager:(id)a6 withCompletion:(id)a7;
-- (void)loadKTRegistrationDatasWithShouldGenerateKTData:(BOOL *)a3;
-- (void)logIDSKTRegMetrics:(id)a3 expectedRegisteredData:(id)a4 forKeyIndex:(unsigned __int16)a5;
-- (void)logKTRegistrationTimeMetricsForLatestRegisteredKTData:(id)a3 lastRegisteredKTData:(id)a4 forKeyIndex:(unsigned __int16)a5;
+- (void)fetchKTSignatureDataForServiceTypes:(id)types publicIdentityData:(id)data registerID:(id)d applicationKeyManager:(id)manager withCompletion:(id)completion;
+- (void)loadKTRegistrationDatasWithShouldGenerateKTData:(BOOL *)data;
+- (void)logIDSKTRegMetrics:(id)metrics expectedRegisteredData:(id)data forKeyIndex:(unsigned __int16)index;
+- (void)logKTRegistrationTimeMetricsForLatestRegisteredKTData:(id)data lastRegisteredKTData:(id)tData forKeyIndex:(unsigned __int16)index;
 - (void)noteBuddyFinishTime;
 - (void)noteManateeAvailableTime;
-- (void)noteSuccessfulKVSSyncOfTrustedDevices:(id)a3;
+- (void)noteSuccessfulKVSSyncOfTrustedDevices:(id)devices;
 - (void)noteiCloudSignInTime;
 - (void)scheduleNextKVSSync;
 - (void)updateKVSWithCurrentKTRegistrationData;
@@ -30,18 +30,18 @@
 
 @implementation IDSKTRegistrationDataManager
 
-- (IDSKTRegistrationDataManager)initWithIdentityDataSource:(id)a3 transparencyDaemon:(id)a4
+- (IDSKTRegistrationDataManager)initWithIdentityDataSource:(id)source transparencyDaemon:(id)daemon
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  daemonCopy = daemon;
   v17.receiver = self;
   v17.super_class = IDSKTRegistrationDataManager;
   v9 = [(IDSKTRegistrationDataManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identityDataSource, a3);
-    objc_storeStrong(&v10->_transparencyDaemon, a4);
+    objc_storeStrong(&v9->_identityDataSource, source);
+    objc_storeStrong(&v10->_transparencyDaemon, daemon);
     v11 = objc_alloc_init(NSMutableDictionary);
     serviceIndexToKTRegDataConfigs = v10->_serviceIndexToKTRegDataConfigs;
     v10->_serviceIndexToKTRegDataConfigs = v11;
@@ -101,8 +101,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(IDSKTRegistrationDataManager *)self serviceIndexToKTRegDataConfigs];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  serviceIndexToKTRegDataConfigs = [(IDSKTRegistrationDataManager *)self serviceIndexToKTRegDataConfigs];
+  v5 = [serviceIndexToKTRegDataConfigs countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -113,29 +113,29 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serviceIndexToKTRegDataConfigs);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v9];
-        v11 = [v10 unregisteredKTData];
+        unregisteredKTData = [v10 unregisteredKTData];
 
-        if (v11)
+        if (unregisteredKTData)
         {
           v12 = [(NSMutableDictionary *)self->_serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v9];
-          v13 = [v12 unregisteredKTData];
+          unregisteredKTData2 = [v12 unregisteredKTData];
 
-          v14 = [v13 ktDataForRegistration];
-          if (v14)
+          ktDataForRegistration = [unregisteredKTData2 ktDataForRegistration];
+          if (ktDataForRegistration)
           {
-            v15 = v14;
-            v16 = [v13 ktPublicAccountKey];
-            if (v16)
+            v15 = ktDataForRegistration;
+            ktPublicAccountKey = [unregisteredKTData2 ktPublicAccountKey];
+            if (ktPublicAccountKey)
             {
-              v17 = v16;
-              v18 = [v13 ktDataSignature];
+              v17 = ktPublicAccountKey;
+              ktDataSignature = [unregisteredKTData2 ktDataSignature];
 
-              if (v18)
+              if (ktDataSignature)
               {
                 v20 = +[IDSFoundationLog KeyTransparency];
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -143,7 +143,7 @@
                   *buf = 138412546;
                   v28 = v9;
                   v29 = 2112;
-                  v30 = v13;
+                  v30 = unregisteredKTData2;
                   _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Found unregistered KT Data for keyIndex. { keyIndex: %@, ktRegistrationData: %@ }", buf, 0x16u);
                 }
 
@@ -159,7 +159,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v6 = [serviceIndexToKTRegDataConfigs countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v6)
       {
         continue;
@@ -169,11 +169,11 @@
     }
   }
 
-  v4 = +[IDSFoundationLog KeyTransparency];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  serviceIndexToKTRegDataConfigs = +[IDSFoundationLog KeyTransparency];
+  if (os_log_type_enabled(serviceIndexToKTRegDataConfigs, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Did not find any unregistered KT Data.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, serviceIndexToKTRegDataConfigs, OS_LOG_TYPE_DEFAULT, "Did not find any unregistered KT Data.", buf, 2u);
   }
 
   v19 = 0;
@@ -195,67 +195,67 @@ LABEL_23:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(IDSKTRegistrationDataManager *)self serviceIndexToKTRegDataConfigs];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  serviceIndexToKTRegDataConfigs = [(IDSKTRegistrationDataManager *)self serviceIndexToKTRegDataConfigs];
+  v5 = [serviceIndexToKTRegDataConfigs countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v26;
-    v24 = v4;
+    v24 = serviceIndexToKTRegDataConfigs;
     while (2)
     {
       for (i = 0; i != v6; i = i + 1)
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serviceIndexToKTRegDataConfigs);
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v9];
-        v11 = [v10 unregisteredKTData];
+        unregisteredKTData = [v10 unregisteredKTData];
 
         v12 = [(NSMutableDictionary *)self->_serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v9];
-        v13 = [v12 registeredKTData];
+        registeredKTData = [v12 registeredKTData];
 
-        if (v11)
+        if (unregisteredKTData)
         {
-          v14 = [v11 ktPublicAccountKey];
-          if (v14)
+          ktPublicAccountKey = [unregisteredKTData ktPublicAccountKey];
+          if (ktPublicAccountKey)
           {
-            v15 = v14;
-            v16 = [v11 ktDataSignature];
+            v15 = ktPublicAccountKey;
+            ktDataSignature = [unregisteredKTData ktDataSignature];
 
-            if (v16)
+            if (ktDataSignature)
             {
-              if (!v13)
+              if (!registeredKTData)
               {
                 goto LABEL_19;
               }
 
-              v17 = [v13 ktPublicAccountKey];
-              if (!v17)
+              ktPublicAccountKey2 = [registeredKTData ktPublicAccountKey];
+              if (!ktPublicAccountKey2)
               {
                 goto LABEL_19;
               }
 
-              v18 = v17;
-              v19 = [v13 ktPublicAccountKey];
-              v20 = [v11 ktPublicAccountKey];
-              if (([v19 isEqualToData:v20] & 1) == 0)
+              v18 = ktPublicAccountKey2;
+              ktPublicAccountKey3 = [registeredKTData ktPublicAccountKey];
+              ktPublicAccountKey4 = [unregisteredKTData ktPublicAccountKey];
+              if (([ktPublicAccountKey3 isEqualToData:ktPublicAccountKey4] & 1) == 0)
               {
 
-                v4 = v24;
+                serviceIndexToKTRegDataConfigs = v24;
 LABEL_19:
 
                 v22 = 1;
                 goto LABEL_20;
               }
 
-              v21 = [v13 ktDataSignature];
+              ktDataSignature2 = [registeredKTData ktDataSignature];
 
-              v4 = v24;
-              if (!v21)
+              serviceIndexToKTRegDataConfigs = v24;
+              if (!ktDataSignature2)
               {
                 goto LABEL_19;
               }
@@ -264,7 +264,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v6 = [serviceIndexToKTRegDataConfigs countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v6)
       {
         continue;
@@ -280,28 +280,28 @@ LABEL_20:
   return v22;
 }
 
-- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)a3 isRegistered:(BOOL)a4 withError:(id *)a5
+- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)index isRegistered:(BOOL)registered withError:(id *)error
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [IDSFoundationLog KeyTransparency:a3];
+  registeredCopy = registered;
+  indexCopy = index;
+  v8 = [IDSFoundationLog KeyTransparency:index];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v5)
+    if (registeredCopy)
     {
       v9 = @"YES";
     }
 
     v37[0] = 67109378;
-    v37[1] = v6;
+    v37[1] = indexCopy;
     v38 = 2112;
     v39 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requesting copy of KTRegistrationData for keyIndex { keyIndex: %u, isRegistered: %@ }", v37, 0x12u);
   }
 
   serviceIndexToKTRegDataConfigs = self->_serviceIndexToKTRegDataConfigs;
-  v11 = [NSNumber numberWithUnsignedShort:v6];
+  v11 = [NSNumber numberWithUnsignedShort:indexCopy];
   v12 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v11];
 
   if (!v12)
@@ -315,29 +315,29 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!registeredCopy)
   {
-    v26 = [v12 unregisteredKTData];
+    unregisteredKTData = [v12 unregisteredKTData];
 
-    if (v26)
+    if (unregisteredKTData)
     {
       v14 = objc_alloc_init(IDSKTRegistrationData);
-      v27 = [v12 unregisteredKTData];
-      v28 = [v27 ktDataForRegistration];
-      v29 = [v28 copy];
+      unregisteredKTData2 = [v12 unregisteredKTData];
+      ktDataForRegistration = [unregisteredKTData2 ktDataForRegistration];
+      v29 = [ktDataForRegistration copy];
       [v14 setKtDataForRegistration:v29];
 
-      v30 = [v12 unregisteredKTData];
-      v31 = [v30 ktPublicAccountKey];
-      v32 = [v31 copy];
+      unregisteredKTData3 = [v12 unregisteredKTData];
+      ktPublicAccountKey = [unregisteredKTData3 ktPublicAccountKey];
+      v32 = [ktPublicAccountKey copy];
       [v14 setKtPublicAccountKey:v32];
 
-      v33 = [v12 unregisteredKTData];
-      v34 = [v33 ktDataSignature];
-      v35 = [v34 copy];
+      unregisteredKTData4 = [v12 unregisteredKTData];
+      ktDataSignature = [unregisteredKTData4 ktDataSignature];
+      v35 = [ktDataSignature copy];
       [v14 setKtDataSignature:v35];
 
-      v24 = [v12 unregisteredKTData];
+      unregisteredKTData5 = [v12 unregisteredKTData];
       goto LABEL_13;
     }
 
@@ -352,9 +352,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v13 = [v12 registeredKTData];
+  registeredKTData = [v12 registeredKTData];
 
-  if (!v13)
+  if (!registeredKTData)
   {
     v25 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -366,31 +366,31 @@ LABEL_18:
   }
 
   v14 = objc_alloc_init(IDSKTRegistrationData);
-  v15 = [v12 registeredKTData];
-  v16 = [v15 ktDataForRegistration];
-  v17 = [v16 copy];
+  registeredKTData2 = [v12 registeredKTData];
+  ktDataForRegistration2 = [registeredKTData2 ktDataForRegistration];
+  v17 = [ktDataForRegistration2 copy];
   [v14 setKtDataForRegistration:v17];
 
-  v18 = [v12 registeredKTData];
-  v19 = [v18 ktPublicAccountKey];
-  v20 = [v19 copy];
+  registeredKTData3 = [v12 registeredKTData];
+  ktPublicAccountKey2 = [registeredKTData3 ktPublicAccountKey];
+  v20 = [ktPublicAccountKey2 copy];
   [v14 setKtPublicAccountKey:v20];
 
-  v21 = [v12 registeredKTData];
-  v22 = [v21 ktDataSignature];
-  v23 = [v22 copy];
+  registeredKTData4 = [v12 registeredKTData];
+  ktDataSignature2 = [registeredKTData4 ktDataSignature];
+  v23 = [ktDataSignature2 copy];
   [v14 setKtDataSignature:v23];
 
-  v24 = [v12 registeredKTData];
+  unregisteredKTData5 = [v12 registeredKTData];
 LABEL_13:
-  v25 = v24;
-  [v14 setUploadedToKVS:{-[NSObject uploadedToKVS](v24, "uploadedToKVS")}];
+  v25 = unregisteredKTData5;
+  [v14 setUploadedToKVS:{-[NSObject uploadedToKVS](unregisteredKTData5, "uploadedToKVS")}];
 LABEL_19:
 
   return v14;
 }
 
-- (void)loadKTRegistrationDatasWithShouldGenerateKTData:(BOOL *)a3
+- (void)loadKTRegistrationDatasWithShouldGenerateKTData:(BOOL *)data
 {
   v4 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -401,7 +401,7 @@ LABEL_19:
 
   v5 = 0;
   v32 = 0;
-  v33 = self;
+  selfCopy = self;
   do
   {
     v6 = objc_alloc_init(IDSKTRegistrationDataConfig);
@@ -557,8 +557,8 @@ LABEL_38:
     }
 
 LABEL_39:
-    self = v33;
-    serviceIndexToKTRegDataConfigs = v33->_serviceIndexToKTRegDataConfigs;
+    self = selfCopy;
+    serviceIndexToKTRegDataConfigs = selfCopy->_serviceIndexToKTRegDataConfigs;
     v30 = [NSNumber numberWithUnsignedShort:v5];
     [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs setObject:v6 forKeyedSubscript:v30];
 
@@ -566,15 +566,15 @@ LABEL_39:
   }
 
   while (v5 != 4);
-  if (a3)
+  if (data)
   {
-    *a3 = v32 & 1;
+    *data = v32 & 1;
   }
 }
 
-- (BOOL)serializeAndPersistKTDatasDeleteIfNull:(BOOL)a3
+- (BOOL)serializeAndPersistKTDatasDeleteIfNull:(BOOL)null
 {
-  v4 = a3;
+  nullCopy = null;
   v6 = 0;
   *&v3 = 67109120;
   v32 = v3;
@@ -584,24 +584,24 @@ LABEL_39:
     v8 = [NSNumber numberWithUnsignedShort:v6, v32];
     v9 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v8];
 
-    v10 = [v9 registeredKTData];
+    registeredKTData = [v9 registeredKTData];
 
-    if (v10)
+    if (registeredKTData)
     {
       v11 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v9 registeredKTData];
+        registeredKTData2 = [v9 registeredKTData];
         *buf = 67109378;
         v40 = v6;
         v41 = 2112;
-        v42 = v12;
+        v42 = registeredKTData2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Saving registered KT Data for service key { keyIndex: %u, registeredKTData: %@ }", buf, 0x12u);
       }
 
-      v13 = [v9 registeredKTData];
+      registeredKTData3 = [v9 registeredKTData];
       v38 = 0;
-      v14 = [v13 dataRepresentationWithError:&v38];
+      v14 = [registeredKTData3 dataRepresentationWithError:&v38];
       v15 = v38;
 
       if (v14)
@@ -614,16 +614,16 @@ LABEL_39:
 
     else
     {
-      v17 = [v9 registeredKTData];
+      registeredKTData4 = [v9 registeredKTData];
 
-      if (v17)
+      if (registeredKTData4)
       {
         v18 = 1;
       }
 
       else
       {
-        v18 = !v4;
+        v18 = !nullCopy;
       }
 
       if (!v18)
@@ -642,24 +642,24 @@ LABEL_39:
       }
     }
 
-    v21 = [v9 unregisteredKTData];
+    unregisteredKTData = [v9 unregisteredKTData];
 
-    if (v21)
+    if (unregisteredKTData)
     {
       v22 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v9 unregisteredKTData];
+        unregisteredKTData2 = [v9 unregisteredKTData];
         *buf = 67109378;
         v40 = v6;
         v41 = 2112;
-        v42 = v23;
+        v42 = unregisteredKTData2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Saving unregistered KT Data for service key { keyIndex: %u, unregisteredKTData: %@ }", buf, 0x12u);
       }
 
-      v24 = [v9 unregisteredKTData];
+      unregisteredKTData3 = [v9 unregisteredKTData];
       v35 = 0;
-      v25 = [v24 dataRepresentationWithError:&v35];
+      v25 = [unregisteredKTData3 dataRepresentationWithError:&v35];
       v26 = v35;
 
       if (v25)
@@ -672,9 +672,9 @@ LABEL_39:
 
     else
     {
-      v28 = [v9 unregisteredKTData];
+      unregisteredKTData4 = [v9 unregisteredKTData];
 
-      if (!v28 && v4)
+      if (!unregisteredKTData4 && nullCopy)
       {
         v29 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -697,29 +697,29 @@ LABEL_39:
   return 1;
 }
 
-- (BOOL)notePublicIdentityDidRegisterKTData:(id)a3 forKeyIndex:(unsigned __int16)a4
+- (BOOL)notePublicIdentityDidRegisterKTData:(id)data forKeyIndex:(unsigned __int16)index
 {
-  v5 = a4;
-  v7 = a3;
+  indexCopy = index;
+  dataCopy = data;
   v8 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 ktDataForRegistration];
-    v10 = [v7 ktPublicAccountKey];
-    v4 = [v7 ktDataSignature];
+    ktDataForRegistration = [dataCopy ktDataForRegistration];
+    ktPublicAccountKey = [dataCopy ktPublicAccountKey];
+    ktDataSignature = [dataCopy ktDataSignature];
     *buf = 67109890;
-    v76 = v5;
+    v76 = indexCopy;
     v77 = 2112;
-    v78 = v9;
+    v78 = ktDataForRegistration;
     v79 = 2112;
-    v80 = v10;
+    v80 = ktPublicAccountKey;
     v81 = 2112;
-    v82 = v4;
+    v82 = ktDataSignature;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "KT registration manager noting registration of data { keyIndex: %u, ktDataForRegistration: %@, ktPublicAccountKey: %@, ktDataSignature: %@ }", buf, 0x26u);
   }
 
   serviceIndexToKTRegDataConfigs = self->_serviceIndexToKTRegDataConfigs;
-  v12 = [NSNumber numberWithUnsignedShort:v5];
+  v12 = [NSNumber numberWithUnsignedShort:indexCopy];
   v13 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v12];
 
   if (!v13)
@@ -733,8 +733,8 @@ LABEL_39:
     goto LABEL_48;
   }
 
-  v14 = [v13 unregisteredKTData];
-  if (!v14)
+  unregisteredKTData = [v13 unregisteredKTData];
+  if (!unregisteredKTData)
   {
     v15 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -742,8 +742,8 @@ LABEL_39:
       sub_10092E514();
     }
 
-    v14 = [v13 registeredKTData];
-    if (!v14)
+    unregisteredKTData = [v13 registeredKTData];
+    if (!unregisteredKTData)
     {
       v16 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -755,29 +755,29 @@ LABEL_39:
     }
   }
 
-  v16 = v14;
-  v17 = [v14 registeredTime];
+  v16 = unregisteredKTData;
+  registeredTime = [unregisteredKTData registeredTime];
 
-  if (!v17)
+  if (!registeredTime)
   {
     v18 = +[NSDate now];
     [v16 setRegisteredTime:v18];
   }
 
-  if (v5 == 1)
+  if (indexCopy == 1)
   {
-    [(IDSKTRegistrationDataManager *)self logIDSKTRegMetrics:v7 expectedRegisteredData:v16 forKeyIndex:1];
+    [(IDSKTRegistrationDataManager *)self logIDSKTRegMetrics:dataCopy expectedRegisteredData:v16 forKeyIndex:1];
   }
 
-  v73 = self;
-  v19 = [v16 ktDataForRegistration];
-  if (v19 || ([v7 ktDataForRegistration], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  selfCopy = self;
+  ktDataForRegistration2 = [v16 ktDataForRegistration];
+  if (ktDataForRegistration2 || ([dataCopy ktDataForRegistration], (ktDataSignature = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [v16 ktDataForRegistration];
-    v21 = [v7 ktDataForRegistration];
-    v22 = [v20 isEqualToData:v21];
+    ktDataForRegistration3 = [v16 ktDataForRegistration];
+    ktDataForRegistration4 = [dataCopy ktDataForRegistration];
+    v22 = [ktDataForRegistration3 isEqualToData:ktDataForRegistration4];
 
-    if (v19)
+    if (ktDataForRegistration2)
     {
 
       if (!v22)
@@ -799,22 +799,22 @@ LABEL_39:
   v23 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v7 ktDataForRegistration];
+    ktDataSignature = [dataCopy ktDataForRegistration];
     *buf = 67109378;
-    v76 = v5;
+    v76 = indexCopy;
     v77 = 2112;
-    v78 = v4;
+    v78 = ktDataSignature;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Expected KT Data for registration matches what was registered for keyIndex. { keyIndex: %u, expectedKTData: %@ }", buf, 0x12u);
   }
 
-  v24 = [v16 ktPublicAccountKey];
-  if (v24 || ([v7 ktPublicAccountKey], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  ktPublicAccountKey2 = [v16 ktPublicAccountKey];
+  if (ktPublicAccountKey2 || ([dataCopy ktPublicAccountKey], (ktDataSignature = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v25 = [v16 ktPublicAccountKey];
-    v26 = [v7 ktPublicAccountKey];
-    v27 = [v25 isEqualToData:v26];
+    ktPublicAccountKey3 = [v16 ktPublicAccountKey];
+    ktPublicAccountKey4 = [dataCopy ktPublicAccountKey];
+    v27 = [ktPublicAccountKey3 isEqualToData:ktPublicAccountKey4];
 
-    if (v24)
+    if (ktPublicAccountKey2)
     {
 
       if (!v27)
@@ -836,22 +836,22 @@ LABEL_39:
   v28 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v16 ktPublicAccountKey];
+    ktDataSignature = [v16 ktPublicAccountKey];
     *buf = 67109378;
-    v76 = v5;
+    v76 = indexCopy;
     v77 = 2112;
-    v78 = v4;
+    v78 = ktDataSignature;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Expected KT public account key for registrations matches what we registered for keyIndex. { keyIndex: %u, expectedKTPublicAccountKey: %@ }", buf, 0x12u);
   }
 
-  v29 = [v16 ktDataSignature];
-  if (v29 || ([v7 ktDataSignature], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  ktDataSignature2 = [v16 ktDataSignature];
+  if (ktDataSignature2 || ([dataCopy ktDataSignature], (ktDataSignature = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v30 = [v16 ktDataSignature];
-    v31 = [v7 ktDataSignature];
-    v32 = [v30 isEqualToData:v31];
+    ktDataSignature3 = [v16 ktDataSignature];
+    ktDataSignature4 = [dataCopy ktDataSignature];
+    v32 = [ktDataSignature3 isEqualToData:ktDataSignature4];
 
-    if (v29)
+    if (ktDataSignature2)
     {
 
       if (v32)
@@ -863,26 +863,26 @@ LABEL_45:
       v48 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v74 = [v16 ktDataForRegistration];
-        v51 = [v16 ktPublicAccountKey];
-        v52 = [v16 ktDataSignature];
-        v53 = [v7 ktDataForRegistration];
-        v54 = [v7 ktPublicAccountKey];
-        v55 = [v7 ktDataSignature];
+        ktDataForRegistration5 = [v16 ktDataForRegistration];
+        ktPublicAccountKey5 = [v16 ktPublicAccountKey];
+        ktDataSignature5 = [v16 ktDataSignature];
+        ktDataForRegistration6 = [dataCopy ktDataForRegistration];
+        ktPublicAccountKey6 = [dataCopy ktPublicAccountKey];
+        ktDataSignature6 = [dataCopy ktDataSignature];
         *buf = 67110658;
-        v76 = v5;
+        v76 = indexCopy;
         v77 = 2112;
-        v78 = v74;
+        v78 = ktDataForRegistration5;
         v79 = 2112;
-        v80 = v51;
+        v80 = ktPublicAccountKey5;
         v81 = 2112;
-        v82 = v52;
+        v82 = ktDataSignature5;
         v83 = 2112;
-        v84 = v53;
+        v84 = ktDataForRegistration6;
         v85 = 2112;
-        v86 = v54;
+        v86 = ktPublicAccountKey6;
         v87 = 2112;
-        v88 = v55;
+        v88 = ktDataSignature6;
         _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Completed registration does not match unregistered KT Data for key index { keyIndex: %u, expectedKTDataForRegistration: %@, expectedKTPublicAccountKey: %@, expectedKTDataSignature: %@, regKTDataForRegistration: %@, regKTPublicAccountKey: %@, regKTDataSignature: %@ }", buf, 0x44u);
       }
 
@@ -901,49 +901,49 @@ LABEL_34:
   v33 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [v16 ktDataSignature];
+    ktDataSignature7 = [v16 ktDataSignature];
     *buf = 67109378;
-    v76 = v5;
+    v76 = indexCopy;
     v77 = 2112;
-    v78 = v34;
+    v78 = ktDataSignature7;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Expected KT Data Signature for registrations matches what we registered for keyIndex. { keyIndex: %u, expectedKTDataSignature: %@ }", buf, 0x12u);
   }
 
   v35 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [v16 ktDataForRegistration];
-    v37 = [v16 ktPublicAccountKey];
-    v38 = [v16 ktDataSignature];
+    ktDataForRegistration7 = [v16 ktDataForRegistration];
+    ktPublicAccountKey7 = [v16 ktPublicAccountKey];
+    ktDataSignature8 = [v16 ktDataSignature];
     *buf = 67109890;
-    v76 = v5;
+    v76 = indexCopy;
     v77 = 2112;
-    v78 = v36;
+    v78 = ktDataForRegistration7;
     v79 = 2112;
-    v80 = v37;
+    v80 = ktPublicAccountKey7;
     v81 = 2112;
-    v82 = v38;
+    v82 = ktDataSignature8;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Completed registration of previously unregistered KT Data for key index { keyIndex: %u, ktDataForRegistration: %@, ktPublicAccountKey: %@, ktDataSignature: %@ }", buf, 0x26u);
   }
 
-  v39 = [v13 registeredKTData];
-  if (v39)
+  registeredKTData = [v13 registeredKTData];
+  if (registeredKTData)
   {
-    v40 = [v13 registeredKTData];
-    v41 = [v40 ktDataForRegistration];
-    if (v41)
+    registeredKTData2 = [v13 registeredKTData];
+    ktDataForRegistration8 = [registeredKTData2 ktDataForRegistration];
+    if (ktDataForRegistration8)
     {
-      v42 = [v13 registeredKTData];
-      v43 = [v42 ktDataSignature];
-      if (v43)
+      registeredKTData3 = [v13 registeredKTData];
+      ktDataSignature9 = [registeredKTData3 ktDataSignature];
+      if (ktDataSignature9)
       {
-        v44 = [v13 registeredKTData];
-        v45 = [v44 ktPublicAccountKey];
-        v71 = v42;
-        v46 = v45 != 0;
+        registeredKTData4 = [v13 registeredKTData];
+        ktPublicAccountKey8 = [registeredKTData4 ktPublicAccountKey];
+        v71 = registeredKTData3;
+        v46 = ktPublicAccountKey8 != 0;
 
         v47 = v46;
-        v42 = v71;
+        registeredKTData3 = v71;
       }
 
       else
@@ -963,22 +963,22 @@ LABEL_34:
     v47 = 0;
   }
 
-  v56 = [v13 unregisteredKTData];
-  if (v56)
+  unregisteredKTData2 = [v13 unregisteredKTData];
+  if (unregisteredKTData2)
   {
-    v57 = v56;
-    v58 = [v13 unregisteredKTData];
-    v59 = [v58 ktDataForRegistration];
-    if (v59)
+    v57 = unregisteredKTData2;
+    unregisteredKTData3 = [v13 unregisteredKTData];
+    ktDataForRegistration9 = [unregisteredKTData3 ktDataForRegistration];
+    if (ktDataForRegistration9)
     {
-      v72 = [v13 unregisteredKTData];
-      v60 = [v72 ktDataSignature];
-      if (v60)
+      unregisteredKTData4 = [v13 unregisteredKTData];
+      ktDataSignature10 = [unregisteredKTData4 ktDataSignature];
+      if (ktDataSignature10)
       {
         [v13 unregisteredKTData];
         v61 = v70 = v47;
-        v62 = [v61 ktPublicAccountKey];
-        v63 = v62 != 0;
+        ktPublicAccountKey9 = [v61 ktPublicAccountKey];
+        v63 = ktPublicAccountKey9 != 0;
 
         v47 = v70;
       }
@@ -999,7 +999,7 @@ LABEL_34:
     if (v47 && !v66)
     {
       v67 = &off_100C3D210;
-      v65 = v73;
+      v65 = selfCopy;
 LABEL_73:
       v68 = +[TransparencyAnalytics logger];
       [v68 logMetric:v67 withName:@"kt-reg-state-change"];
@@ -1007,7 +1007,7 @@ LABEL_73:
       goto LABEL_74;
     }
 
-    v65 = v73;
+    v65 = selfCopy;
     if (((v47 | v66) & 1) == 0)
     {
       v67 = &off_100C3D228;
@@ -1019,7 +1019,7 @@ LABEL_73:
   {
     v63 = 0;
     v64 = !v47;
-    v65 = v73;
+    v65 = selfCopy;
   }
 
   if (!v64 && !v63)
@@ -1035,10 +1035,10 @@ LABEL_73:
   }
 
 LABEL_74:
-  if (v5 == 1)
+  if (indexCopy == 1)
   {
-    v69 = [v13 registeredKTData];
-    [(IDSKTRegistrationDataManager *)v65 logKTRegistrationTimeMetricsForLatestRegisteredKTData:v16 lastRegisteredKTData:v69 forKeyIndex:1];
+    registeredKTData5 = [v13 registeredKTData];
+    [(IDSKTRegistrationDataManager *)v65 logKTRegistrationTimeMetricsForLatestRegisteredKTData:v16 lastRegisteredKTData:registeredKTData5 forKeyIndex:1];
   }
 
   [v13 setRegisteredKTData:v16];
@@ -1049,9 +1049,9 @@ LABEL_49:
   return v49;
 }
 
-- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)a3
+- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   v5 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1060,38 +1060,38 @@ LABEL_49:
   }
 
   serviceIndexToKTRegDataConfigs = self->_serviceIndexToKTRegDataConfigs;
-  v7 = [NSNumber numberWithUnsignedShort:v3];
+  v7 = [NSNumber numberWithUnsignedShort:indexCopy];
   v8 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v7];
 
-  v9 = [v8 unregisteredKTData];
+  unregisteredKTData = [v8 unregisteredKTData];
 
-  if (v9)
+  if (unregisteredKTData)
   {
     v10 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 unregisteredKTData];
+      unregisteredKTData2 = [v8 unregisteredKTData];
       v22[0] = 67109378;
-      v22[1] = v3;
+      v22[1] = indexCopy;
       v23 = 2112;
-      v24 = v11;
+      v24 = unregisteredKTData2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Found key index has unregistered KT Data { keyIndex: %u, unregisteredKTData: %@ }", v22, 0x12u);
     }
 
-    v12 = [v8 unregisteredKTData];
-    v13 = [v12 ktDataForRegistration];
-    if (v13)
+    unregisteredKTData3 = [v8 unregisteredKTData];
+    ktDataForRegistration = [unregisteredKTData3 ktDataForRegistration];
+    if (ktDataForRegistration)
     {
-      v14 = v13;
-      v15 = [v8 unregisteredKTData];
-      v16 = [v15 ktPublicAccountKey];
-      if (v16)
+      v14 = ktDataForRegistration;
+      unregisteredKTData4 = [v8 unregisteredKTData];
+      ktPublicAccountKey = [unregisteredKTData4 ktPublicAccountKey];
+      if (ktPublicAccountKey)
       {
-        v17 = v16;
-        v18 = [v8 unregisteredKTData];
-        v19 = [v18 ktDataSignature];
+        v17 = ktPublicAccountKey;
+        unregisteredKTData5 = [v8 unregisteredKTData];
+        ktDataSignature = [unregisteredKTData5 ktDataSignature];
 
-        if (v19)
+        if (ktDataSignature)
         {
           v20 = +[IDSFoundationLog KeyTransparency];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1100,7 +1100,7 @@ LABEL_49:
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Unregistered KT Data has necessary fields to register.", v22, 2u);
           }
 
-          LOBYTE(v9) = 1;
+          LOBYTE(unregisteredKTData) = 1;
 LABEL_17:
 
           goto LABEL_18;
@@ -1114,7 +1114,7 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Unregistered KT Data does not yet have necessary fields to register.", v22, 2u);
         }
 
-        LOBYTE(v9) = 0;
+        LOBYTE(unregisteredKTData) = 0;
         goto LABEL_17;
       }
     }
@@ -1124,21 +1124,21 @@ LABEL_14:
 
 LABEL_18:
 
-  return v9;
+  return unregisteredKTData;
 }
 
-- (id)createKTRegistrationDataForServiceTypes:(id)a3 usingPublicIdentityData:(id)a4 withApplicationKeyManager:(id)a5
+- (id)createKTRegistrationDataForServiceTypes:(id)types usingPublicIdentityData:(id)data withApplicationKeyManager:(id)manager
 {
-  v75 = a3;
-  v70 = a4;
-  v8 = a5;
+  typesCopy = types;
+  dataCopy = data;
+  managerCopy = manager;
   v9 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v94 = v70;
+    *v94 = dataCopy;
     *&v94[8] = 2112;
-    *&v94[10] = v8;
+    *&v94[10] = managerCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Creating KT Registration Data objects without async enrollment. {publicIdentity: %@, applicationKeyManager: %@}", buf, 0x16u);
   }
 
@@ -1148,7 +1148,7 @@ LABEL_18:
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = [v75 allKeys];
+  obj = [typesCopy allKeys];
   v11 = [obj countByEnumeratingWithState:&v89 objects:v96 count:16];
   if (v11)
   {
@@ -1157,9 +1157,9 @@ LABEL_18:
     *&v12 = 138412290;
     v65 = v12;
     v15 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
-    v78 = v8;
+    v78 = managerCopy;
     v68 = v10;
-    v69 = self;
+    selfCopy = self;
     v67 = *v90;
     do
     {
@@ -1173,17 +1173,17 @@ LABEL_18:
         }
 
         key = *(*(&v89 + 1) + 8 * v16);
-        v17 = [v75 objectForKeyedSubscript:v65];
-        v18 = [(IDSKTRegistrationDataManager *)self serviceController];
+        v17 = [typesCopy objectForKeyedSubscript:v65];
+        serviceController = [(IDSKTRegistrationDataManager *)self serviceController];
         v76 = v17;
-        v19 = [v17 serviceIdentifier];
-        v20 = [v18 serviceWithIdentifier:v19];
+        serviceIdentifier = [v17 serviceIdentifier];
+        v20 = [serviceController serviceWithIdentifier:serviceIdentifier];
 
         v21 = v20;
         if ([v20 adHocServiceType])
         {
-          v22 = [(IDSKTRegistrationDataManager *)self serviceController];
-          v21 = [v22 primaryServiceForAdhocServiceType:{objc_msgSend(v20, "adHocServiceType")}];
+          serviceController2 = [(IDSKTRegistrationDataManager *)self serviceController];
+          v21 = [serviceController2 primaryServiceForAdhocServiceType:{objc_msgSend(v20, "adHocServiceType")}];
         }
 
         if ([v10 containsObject:key])
@@ -1191,9 +1191,9 @@ LABEL_18:
           v23 = +[IDSFoundationLog KeyTransparency];
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v21 identifier];
+            identifier = [v21 identifier];
             *buf = v65;
-            *v94 = v24;
+            *v94 = identifier;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Top level service already has relevant KT Data setup. { service: %@ }", buf, 0xCu);
           }
 
@@ -1203,22 +1203,22 @@ LABEL_18:
         v74 = v16;
         v25 = objc_alloc_init(IDSProtoKeyTransparencyLoggableData);
         v26 = v21;
-        v27 = [v70 publicNGMIdentityData];
-        [(IDSProtoKeyTransparencyLoggableData *)v25 setNgmPublicIdentity:v27];
+        publicNGMIdentityData = [dataCopy publicNGMIdentityData];
+        [(IDSProtoKeyTransparencyLoggableData *)v25 setNgmPublicIdentity:publicNGMIdentityData];
 
-        v28 = [v70 NGMVersion];
-        -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v25, "setNgmVersion:", [v28 unsignedIntValue]);
+        nGMVersion = [dataCopy NGMVersion];
+        -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v25, "setNgmVersion:", [nGMVersion unsignedIntValue]);
 
         v29 = _IDSKeyTransparencyVersionNumber();
         v79 = v25;
         -[IDSProtoKeyTransparencyLoggableData setKtVersion:](v25, "setKtVersion:", [v29 unsignedIntValue]);
 
         v30 = objc_alloc_init(NSMutableSet);
-        v31 = self;
+        selfCopy2 = self;
         v32 = v30;
-        v33 = [(IDSKTRegistrationDataManager *)v31 serviceController];
-        v34 = [v21 identifier];
-        v35 = [v33 adHocServicesForIdentifier:v34];
+        serviceController3 = [(IDSKTRegistrationDataManager *)selfCopy2 serviceController];
+        identifier2 = [v21 identifier];
+        v35 = [serviceController3 adHocServicesForIdentifier:identifier2];
         v73 = v26;
         v36 = [v35 arrayByAddingObject:v26];
 
@@ -1255,9 +1255,9 @@ LABEL_18:
 
               if ((v44 & 1) == 0)
               {
-                v45 = [v42 applicationKeyIndex];
+                applicationKeyIndex = [v42 applicationKeyIndex];
                 v84 = 0;
-                v46 = [v8 copyPublicIdentityDataToRegisterForKeyIndex:v45 withError:&v84];
+                v46 = [managerCopy copyPublicIdentityDataToRegisterForKeyIndex:applicationKeyIndex withError:&v84];
                 v47 = v84;
                 v48 = v47;
                 if (v46)
@@ -1272,13 +1272,13 @@ LABEL_18:
                   {
                     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
                     {
-                      v53 = [v42 applicationKeyIndex];
-                      v54 = [v42 identifier];
+                      applicationKeyIndex2 = [v42 applicationKeyIndex];
+                      identifier3 = [v42 identifier];
                       *buf = 67109378;
-                      *v94 = v53;
-                      v8 = v78;
+                      *v94 = applicationKeyIndex2;
+                      managerCopy = v78;
                       *&v94[4] = 2112;
-                      *&v94[6] = v54;
+                      *&v94[6] = identifier3;
                       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Adding application key %u to kt-loggable-data for service: %@", buf, 0x12u);
                     }
 
@@ -1288,9 +1288,9 @@ LABEL_18:
 
                     [v79 addApplicationPublicIdentity:v52];
                     v15 = v49;
-                    v55 = [v49[476] numberWithUnsignedShort:{objc_msgSend(v42, "applicationKeyIndex")}];
+                    identifier4 = [v49[476] numberWithUnsignedShort:{objc_msgSend(v42, "applicationKeyIndex")}];
                     v32 = v80;
-                    [v80 addObject:v55];
+                    [v80 addObject:identifier4];
 LABEL_25:
                   }
 
@@ -1299,17 +1299,17 @@ LABEL_25:
                     v15 = v49;
                     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                     {
-                      v59 = [v42 applicationKeyIndex];
+                      applicationKeyIndex3 = [v42 applicationKeyIndex];
                       v60 = error;
-                      v55 = [v42 identifier];
+                      identifier4 = [v42 identifier];
                       *buf = 67109634;
-                      *v94 = v59;
+                      *v94 = applicationKeyIndex3;
                       v32 = v80;
                       *&v94[4] = 2112;
                       *&v94[6] = v60;
-                      v8 = v78;
+                      managerCopy = v78;
                       *&v94[14] = 2112;
-                      *&v94[16] = v55;
+                      *&v94[16] = identifier4;
                       _os_log_error_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "Failed to get representation of application key { keyType: %u, error: %@, service: %@ }", buf, 0x1Cu);
                       goto LABEL_25;
                     }
@@ -1331,13 +1331,13 @@ LABEL_25:
                   v56 = +[IDSFoundationLog KeyTransparency];
                   if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
                   {
-                    v57 = [v42 applicationKeyIndex];
-                    v58 = [v42 identifier];
+                    applicationKeyIndex4 = [v42 applicationKeyIndex];
+                    identifier5 = [v42 identifier];
                     *buf = 67109378;
-                    *v94 = v57;
+                    *v94 = applicationKeyIndex4;
                     v32 = v80;
                     *&v94[4] = 2112;
-                    *&v94[6] = v58;
+                    *&v94[6] = identifier5;
                     _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "Failed to get service application key { keyType: %u, service: %@ }", buf, 0x12u);
                   }
                 }
@@ -1357,8 +1357,8 @@ LABEL_38:
 
         v62 = objc_alloc_init(IDSKTRegistrationData);
         v23 = v79;
-        v63 = [v79 data];
-        [v62 setKtDataForRegistration:v63];
+        data = [v79 data];
+        [v62 setKtDataForRegistration:data];
 
         v10 = v68;
         if (v62)
@@ -1368,7 +1368,7 @@ LABEL_38:
 
         [v68 addObject:key];
 
-        self = v69;
+        self = selfCopy;
         v14 = v67;
         v13 = v71;
         v21 = v73;
@@ -1388,10 +1388,10 @@ LABEL_41:
   return theDict;
 }
 
-- (BOOL)requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:(id)a3 applicationKeyManager:(id)a4
+- (BOOL)requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:(id)data applicationKeyManager:(id)manager
 {
-  v76 = a3;
-  v6 = a4;
+  dataCopy = data;
+  managerCopy = manager;
   v7 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1399,8 +1399,8 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating request for KT registration data.", buf, 2u);
   }
 
-  v8 = [(IDSKTRegistrationDataManager *)self serviceController];
-  v9 = [v8 allPrimaryServices];
+  serviceController = [(IDSKTRegistrationDataManager *)self serviceController];
+  allPrimaryServices = [serviceController allPrimaryServices];
 
   v10 = objc_alloc_init(NSMutableSet);
   v72 = objc_alloc_init(NSMutableDictionary);
@@ -1408,15 +1408,15 @@ LABEL_41:
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = v9;
+  obj = allPrimaryServices;
   v11 = [obj countByEnumeratingWithState:&v92 objects:v101 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v93;
-    v81 = v6;
+    v81 = managerCopy;
     v74 = v10;
-    v75 = self;
+    selfCopy = self;
     v73 = *v93;
     do
     {
@@ -1438,9 +1438,9 @@ LABEL_41:
           v18 = +[IDSFoundationLog KeyTransparency];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v15 identifier];
+            identifier = [v15 identifier];
             *buf = 138412290;
-            *v97 = v19;
+            *v97 = identifier;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Top level service already has relevant KT Data setup. { service: %@ }", buf, 0xCu);
           }
         }
@@ -1449,20 +1449,20 @@ LABEL_41:
         {
           v80 = v14;
           v20 = objc_alloc_init(IDSProtoKeyTransparencyLoggableData);
-          v21 = [v76 publicNGMIdentityData];
-          [(IDSProtoKeyTransparencyLoggableData *)v20 setNgmPublicIdentity:v21];
+          publicNGMIdentityData = [dataCopy publicNGMIdentityData];
+          [(IDSProtoKeyTransparencyLoggableData *)v20 setNgmPublicIdentity:publicNGMIdentityData];
 
-          v22 = [v76 NGMVersion];
-          -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v20, "setNgmVersion:", [v22 unsignedIntValue]);
+          nGMVersion = [dataCopy NGMVersion];
+          -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v20, "setNgmVersion:", [nGMVersion unsignedIntValue]);
 
           v23 = _IDSKeyTransparencyVersionNumber();
           v82 = v20;
           -[IDSProtoKeyTransparencyLoggableData setKtVersion:](v20, "setKtVersion:", [v23 unsignedIntValue]);
 
           v24 = objc_alloc_init(NSMutableSet);
-          v25 = [(IDSKTRegistrationDataManager *)self serviceController];
-          v26 = [v15 identifier];
-          v27 = [v25 adHocServicesForIdentifier:v26];
+          serviceController2 = [(IDSKTRegistrationDataManager *)self serviceController];
+          identifier2 = [v15 identifier];
+          v27 = [serviceController2 adHocServicesForIdentifier:identifier2];
           v79 = v15;
           v28 = [v27 arrayByAddingObject:v15];
 
@@ -1495,9 +1495,9 @@ LABEL_41:
 
                   if ((v36 & 1) == 0)
                   {
-                    v37 = [v34 applicationKeyIndex];
+                    applicationKeyIndex = [v34 applicationKeyIndex];
                     v87 = 0;
-                    v38 = [v6 copyPublicIdentityDataToRegisterForKeyIndex:v37 withError:&v87];
+                    v38 = [managerCopy copyPublicIdentityDataToRegisterForKeyIndex:applicationKeyIndex withError:&v87];
                     v39 = v87;
                     if (v38)
                     {
@@ -1509,13 +1509,13 @@ LABEL_41:
                       {
                         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
                         {
-                          v43 = [v34 applicationKeyIndex];
-                          v44 = [v34 identifier];
+                          applicationKeyIndex2 = [v34 applicationKeyIndex];
+                          identifier3 = [v34 identifier];
                           *buf = 67109378;
-                          *v97 = v43;
-                          v6 = v81;
+                          *v97 = applicationKeyIndex2;
+                          managerCopy = v81;
                           *&v97[4] = 2112;
-                          *&v97[6] = v44;
+                          *&v97[6] = identifier3;
                           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Adding application key %u to kt-loggable-data for service: %@", buf, 0x12u);
                         }
 
@@ -1534,16 +1534,16 @@ LABEL_41:
                         v30 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
                         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
                         {
-                          v49 = [v34 applicationKeyIndex];
+                          applicationKeyIndex3 = [v34 applicationKeyIndex];
                           v50 = error;
-                          v51 = [v34 identifier];
+                          identifier4 = [v34 identifier];
                           *buf = 67109634;
-                          *v97 = v49;
+                          *v97 = applicationKeyIndex3;
                           *&v97[4] = 2112;
                           *&v97[6] = v50;
-                          v6 = v81;
+                          managerCopy = v81;
                           v98 = 2112;
-                          v99 = v51;
+                          v99 = identifier4;
                           _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "Failed to get representation of application key { keyType: %u, error: %@, service: %@ }", buf, 0x1Cu);
                         }
                       }
@@ -1562,13 +1562,13 @@ LABEL_41:
                       v46 = +[IDSFoundationLog KeyTransparency];
                       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
                       {
-                        v47 = [v34 applicationKeyIndex];
-                        v48 = [v34 identifier];
+                        applicationKeyIndex4 = [v34 applicationKeyIndex];
+                        identifier5 = [v34 identifier];
                         *buf = 67109378;
-                        *v97 = v47;
+                        *v97 = applicationKeyIndex4;
                         v24 = v83;
                         *&v97[4] = 2112;
-                        *&v97[6] = v48;
+                        *&v97[6] = identifier5;
                         _os_log_error_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Failed to get service application key { keyType: %u, service: %@ }", buf, 0x12u);
                       }
                     }
@@ -1584,22 +1584,22 @@ LABEL_41:
 
           v52 = objc_alloc_init(IDSKTRegistrationData);
           v18 = v82;
-          v53 = [v82 data];
-          [v52 setKtDataForRegistration:v53];
+          data = [v82 data];
+          [v52 setKtDataForRegistration:data];
 
-          self = v75;
-          v54 = -[IDSKTRegistrationDataManager _ktApplicationForKTRegistrationIndex:](v75, "_ktApplicationForKTRegistrationIndex:", [v79 ktRegistrationDataIndex]);
+          self = selfCopy;
+          v54 = -[IDSKTRegistrationDataManager _ktApplicationForKTRegistrationIndex:](selfCopy, "_ktApplicationForKTRegistrationIndex:", [v79 ktRegistrationDataIndex]);
           if (v54 && ([v52 ktDataForRegistration], v55 = objc_claimAutoreleasedReturnValue(), v55, v55))
           {
             v56 = [TransparencyIDSRegistrationRequestData alloc];
-            v57 = [v52 ktDataForRegistration];
-            v58 = [v56 initWithApplication:v54 registrationData:v57];
+            ktDataForRegistration = [v52 ktDataForRegistration];
+            v58 = [v56 initWithApplication:v54 registrationData:ktDataForRegistration];
 
             v59 = +[IDSPushHandler sharedInstance];
-            v60 = [v59 pushToken];
-            [v58 setPushToken:v60];
+            pushToken = [v59 pushToken];
+            [v58 setPushToken:pushToken];
 
-            v6 = v81;
+            managerCopy = v81;
             [v72 setObject:v58 forKeyedSubscript:v54];
             v10 = v74;
           }
@@ -1610,19 +1610,19 @@ LABEL_41:
             v10 = v74;
             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
             {
-              v65 = [v79 ktRegistrationDataIndex];
-              v66 = [v52 ktDataForRegistration];
+              ktRegistrationDataIndex = [v79 ktRegistrationDataIndex];
+              ktDataForRegistration2 = [v52 ktDataForRegistration];
               *buf = 67109378;
-              *v97 = v65;
+              *v97 = ktRegistrationDataIndex;
               *&v97[4] = 2112;
-              *&v97[6] = v66;
+              *&v97[6] = ktDataForRegistration2;
               _os_log_error_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "No KT Application found for key index or registration data is null. { keyIndex: %u, ktRegistrationData: %@ }", buf, 0x12u);
 
-              v6 = v81;
+              managerCopy = v81;
             }
           }
 
-          serviceIndexToKTRegDataConfigs = v75->_serviceIndexToKTRegDataConfigs;
+          serviceIndexToKTRegDataConfigs = selfCopy->_serviceIndexToKTRegDataConfigs;
           v62 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v79 ktRegistrationDataIndex]);
           v63 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v62];
 
@@ -1693,20 +1693,20 @@ LABEL_41:
   return 0;
 }
 
-- (void)fetchKTSignatureDataForServiceTypes:(id)a3 publicIdentityData:(id)a4 registerID:(id)a5 applicationKeyManager:(id)a6 withCompletion:(id)a7
+- (void)fetchKTSignatureDataForServiceTypes:(id)types publicIdentityData:(id)data registerID:(id)d applicationKeyManager:(id)manager withCompletion:(id)completion
 {
-  v104 = a3;
-  v99 = a4;
-  v92 = a5;
-  v12 = a6;
-  v91 = a7;
+  typesCopy = types;
+  dataCopy = data;
+  dCopy = d;
+  managerCopy = manager;
+  completionCopy = completion;
   v13 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v131 = v99;
+    *v131 = dataCopy;
     *&v131[8] = 2112;
-    *&v131[10] = v12;
+    *&v131[10] = managerCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Creating KT Registration Data objects. {publicIdentity: %@, applicationKeyManager: %@}", buf, 0x16u);
   }
 
@@ -1719,15 +1719,15 @@ LABEL_41:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  obj = [v104 allKeys];
+  obj = [typesCopy allKeys];
   v15 = [obj countByEnumeratingWithState:&v125 objects:v133 count:16];
-  v107 = v12;
+  v107 = managerCopy;
   if (v15)
   {
     v16 = v15;
     v17 = *v126;
     v18 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
-    v96 = self;
+    selfCopy = self;
     v97 = v14;
     v95 = *v126;
     do
@@ -1742,15 +1742,15 @@ LABEL_41:
         }
 
         key = *(*(&v125 + 1) + 8 * v19);
-        v20 = [v104 objectForKeyedSubscript:?];
-        v21 = [(IDSKTRegistrationDataManager *)self serviceController];
-        v22 = [v20 serviceIdentifier];
-        v23 = [v21 serviceWithIdentifier:v22];
+        v20 = [typesCopy objectForKeyedSubscript:?];
+        serviceController = [(IDSKTRegistrationDataManager *)self serviceController];
+        serviceIdentifier = [v20 serviceIdentifier];
+        v23 = [serviceController serviceWithIdentifier:serviceIdentifier];
 
         if ([v23 adHocServiceType])
         {
-          v24 = [(IDSKTRegistrationDataManager *)self serviceController];
-          v25 = [v24 primaryServiceForAdhocServiceType:{objc_msgSend(v23, "adHocServiceType")}];
+          serviceController2 = [(IDSKTRegistrationDataManager *)self serviceController];
+          v25 = [serviceController2 primaryServiceForAdhocServiceType:{objc_msgSend(v23, "adHocServiceType")}];
 
           v106 = v25;
         }
@@ -1767,9 +1767,9 @@ LABEL_41:
           v28 = v106;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v106 identifier];
+            identifier = [v106 identifier];
             *buf = 138412290;
-            *v131 = v29;
+            *v131 = identifier;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Top level service already has relevant KT Data setup. { service: %@ }", buf, 0xCu);
           }
         }
@@ -1779,22 +1779,22 @@ LABEL_41:
           v102 = v20;
           v103 = v19;
           v30 = objc_alloc_init(IDSProtoKeyTransparencyLoggableData);
-          v31 = [v99 publicNGMIdentityData];
-          [(IDSProtoKeyTransparencyLoggableData *)v30 setNgmPublicIdentity:v31];
+          publicNGMIdentityData = [dataCopy publicNGMIdentityData];
+          [(IDSProtoKeyTransparencyLoggableData *)v30 setNgmPublicIdentity:publicNGMIdentityData];
 
-          v32 = [v99 NGMVersion];
-          -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v30, "setNgmVersion:", [v32 unsignedIntValue]);
+          nGMVersion = [dataCopy NGMVersion];
+          -[IDSProtoKeyTransparencyLoggableData setNgmVersion:](v30, "setNgmVersion:", [nGMVersion unsignedIntValue]);
 
           v33 = _IDSKeyTransparencyVersionNumber();
           v108 = v30;
           -[IDSProtoKeyTransparencyLoggableData setKtVersion:](v30, "setKtVersion:", [v33 unsignedIntValue]);
 
           v34 = objc_alloc_init(NSMutableSet);
-          v35 = self;
+          selfCopy2 = self;
           v36 = v34;
-          v37 = [(IDSKTRegistrationDataManager *)v35 serviceController];
-          v38 = [v106 identifier];
-          v39 = [v37 adHocServicesForIdentifier:v38];
+          serviceController3 = [(IDSKTRegistrationDataManager *)selfCopy2 serviceController];
+          identifier2 = [v106 identifier];
+          v39 = [serviceController3 adHocServicesForIdentifier:identifier2];
           v40 = [v39 arrayByAddingObject:v106];
 
           v123 = 0u;
@@ -1827,9 +1827,9 @@ LABEL_41:
 
                   if ((v48 & 1) == 0)
                   {
-                    v49 = [v46 applicationKeyIndex];
+                    applicationKeyIndex = [v46 applicationKeyIndex];
                     v120 = 0;
-                    v50 = [v26 copyPublicIdentityDataToRegisterForKeyIndex:v49 withError:&v120];
+                    v50 = [v26 copyPublicIdentityDataToRegisterForKeyIndex:applicationKeyIndex withError:&v120];
                     v51 = v120;
                     v52 = v51;
                     if (v50)
@@ -1844,13 +1844,13 @@ LABEL_41:
                       {
                         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
                         {
-                          v57 = [v46 applicationKeyIndex];
-                          v58 = [v46 identifier];
+                          applicationKeyIndex2 = [v46 applicationKeyIndex];
+                          identifier3 = [v46 identifier];
                           *buf = 67109378;
-                          *v131 = v57;
+                          *v131 = applicationKeyIndex2;
                           v26 = v107;
                           *&v131[4] = 2112;
-                          *&v131[6] = v58;
+                          *&v131[6] = identifier3;
                           _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Adding application key %u to kt-loggable-data for service: %@", buf, 0x12u);
                         }
 
@@ -1871,17 +1871,17 @@ LABEL_41:
                       {
                         if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
                         {
-                          v63 = [v46 applicationKeyIndex];
+                          applicationKeyIndex3 = [v46 applicationKeyIndex];
                           v64 = error;
-                          v65 = [v46 identifier];
+                          identifier4 = [v46 identifier];
                           *buf = 67109634;
-                          *v131 = v63;
+                          *v131 = applicationKeyIndex3;
                           v41 = v109;
                           *&v131[4] = 2112;
                           *&v131[6] = v64;
                           v18 = v53;
                           *&v131[14] = 2112;
-                          *&v131[16] = v65;
+                          *&v131[16] = identifier4;
                           _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "Failed to get representation of application key { keyType: %u, error: %@, service: %@ }", buf, 0x1Cu);
 
                           v26 = v107;
@@ -1909,13 +1909,13 @@ LABEL_41:
                       v60 = +[IDSFoundationLog KeyTransparency];
                       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                       {
-                        v61 = [v46 applicationKeyIndex];
-                        v62 = [v46 identifier];
+                        applicationKeyIndex4 = [v46 applicationKeyIndex];
+                        identifier5 = [v46 identifier];
                         *buf = 67109378;
-                        *v131 = v61;
+                        *v131 = applicationKeyIndex4;
                         v41 = v109;
                         *&v131[4] = 2112;
-                        *&v131[6] = v62;
+                        *&v131[6] = identifier5;
                         _os_log_error_impl(&_mh_execute_header, v60, OS_LOG_TYPE_ERROR, "Failed to get service application key { keyType: %u, service: %@ }", buf, 0x12u);
 
                         v26 = v107;
@@ -1937,8 +1937,8 @@ LABEL_41:
 
           v67 = objc_alloc_init(IDSKTRegistrationData);
           v27 = v108;
-          v68 = [v108 data];
-          [v67 setKtDataForRegistration:v68];
+          data = [v108 data];
+          [v67 setKtDataForRegistration:data];
 
           if (v67)
           {
@@ -1947,18 +1947,18 @@ LABEL_41:
 
           v14 = v97;
           [v97 addObject:key];
-          self = v96;
-          v69 = -[IDSKTRegistrationDataManager _ktApplicationForKTRegistrationIndex:](v96, "_ktApplicationForKTRegistrationIndex:", [v106 ktRegistrationDataIndex]);
+          self = selfCopy;
+          v69 = -[IDSKTRegistrationDataManager _ktApplicationForKTRegistrationIndex:](selfCopy, "_ktApplicationForKTRegistrationIndex:", [v106 ktRegistrationDataIndex]);
           v20 = v102;
           if (v69 && ([v67 ktDataForRegistration], v70 = objc_claimAutoreleasedReturnValue(), v70, v70))
           {
             v71 = [TransparencyIDSRegistrationRequestData alloc];
-            v72 = [v67 ktDataForRegistration];
-            v73 = [v71 initWithApplication:v69 registrationData:v72];
+            ktDataForRegistration = [v67 ktDataForRegistration];
+            v73 = [v71 initWithApplication:v69 registrationData:ktDataForRegistration];
 
             v74 = +[IDSPushHandler sharedInstance];
-            v75 = [v74 pushToken];
-            [v73 setPushToken:v75];
+            pushToken = [v74 pushToken];
+            [v73 setPushToken:pushToken];
 
             [v93 setObject:v73 forKeyedSubscript:v69];
           }
@@ -1968,17 +1968,17 @@ LABEL_41:
             v73 = +[IDSFoundationLog KeyTransparency];
             if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
             {
-              v80 = [v106 ktRegistrationDataIndex];
-              v81 = [v67 ktDataForRegistration];
+              ktRegistrationDataIndex = [v106 ktRegistrationDataIndex];
+              ktDataForRegistration2 = [v67 ktDataForRegistration];
               *buf = 67109378;
-              *v131 = v80;
+              *v131 = ktRegistrationDataIndex;
               *&v131[4] = 2112;
-              *&v131[6] = v81;
+              *&v131[6] = ktDataForRegistration2;
               _os_log_error_impl(&_mh_execute_header, v73, OS_LOG_TYPE_ERROR, "No KT Application found for key index or registration data is null. { keyIndex: %u, ktRegistrationData: %@ }", buf, 0x12u);
             }
           }
 
-          serviceIndexToKTRegDataConfigs = v96->_serviceIndexToKTRegDataConfigs;
+          serviceIndexToKTRegDataConfigs = selfCopy->_serviceIndexToKTRegDataConfigs;
           v77 = [v18[476] numberWithUnsignedShort:{objc_msgSend(v106, "ktRegistrationDataIndex")}];
           v78 = [(NSMutableDictionary *)serviceIndexToKTRegDataConfigs objectForKeyedSubscript:v77];
 
@@ -2025,7 +2025,7 @@ LABEL_41:
     [v93 removeAllObjects];
   }
 
-  v84 = [(IDSKTRegistrationDataManager *)self ktVerifier];
+  ktVerifier = [(IDSKTRegistrationDataManager *)self ktVerifier];
   v129 = kKTApplicationIdentifierIDS;
   v85 = [NSArray arrayWithObjects:&v129 count:1];
   v112[0] = _NSConcreteStackBlock;
@@ -2033,24 +2033,24 @@ LABEL_41:
   v112[2] = sub_10069E254;
   v112[3] = &unk_100BE4078;
   v113 = theDict;
-  v114 = v104;
-  v115 = self;
+  v114 = typesCopy;
+  selfCopy3 = self;
   v116 = v93;
-  v117 = v92;
-  v118 = v91;
-  v86 = v91;
-  v87 = v92;
+  v117 = dCopy;
+  v118 = completionCopy;
+  v86 = completionCopy;
+  v87 = dCopy;
   v88 = v93;
-  v89 = v104;
+  v89 = typesCopy;
   v90 = theDict;
-  [v84 getOptInStatesForKTApplications:v85 withCompletion:v112];
+  [ktVerifier getOptInStatesForKTApplications:v85 withCompletion:v112];
 }
 
-- (BOOL)doesSignatureDSID:(id)a3 matchAccountDSID:(id)a4
+- (BOOL)doesSignatureDSID:(id)d matchAccountDSID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dCopy = d;
+  iDCopy = iD;
+  if (!dCopy)
   {
     v7 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2058,7 +2058,7 @@ LABEL_41:
       v13 = 138412546;
       v14 = 0;
       v15 = 2112;
-      v16 = v6;
+      v16 = iDCopy;
       v8 = "Missing signature dsid. Falling back and using signature without dsid validation. { signatureDSID: %@, accountDSID: %@ }";
       goto LABEL_7;
     }
@@ -2068,15 +2068,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v5 containsString:@"-"])
+  if ([dCopy containsString:@"-"])
   {
     v7 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v5;
+      v14 = dCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = iDCopy;
       v8 = "Signature DSID appears to be malformed. Falling back and using signature without dsid validation. { signatureDSID: %@, accountDSID: %@ }";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v8, &v13, 0x16u);
@@ -2086,7 +2086,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = v5;
+  v7 = dCopy;
   if (([v7 hasPrefix:@"D:"]& 1) == 0)
   {
     v11 = [@"D:" stringByAppendingString:v7];
@@ -2094,7 +2094,7 @@ LABEL_7:
     v7 = v11;
   }
 
-  v9 = [v6 isEqualToString:v7];
+  v9 = [iDCopy isEqualToString:v7];
   if (v9)
   {
     v12 = +[IDSFoundationLog KeyTransparency];
@@ -2103,7 +2103,7 @@ LABEL_7:
       v13 = 138412546;
       v14 = v7;
       v15 = 2112;
-      v16 = v6;
+      v16 = iDCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Signature DSID appears to match account dsid. { signatureDSID: %@, accountDSID: %@ }", &v13, 0x16u);
     }
   }
@@ -2113,10 +2113,10 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)handleTransparencySignatureResponse:(id)a3 error:(id)a4
+- (BOOL)handleTransparencySignatureResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v8 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2124,21 +2124,21 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling signature response from transparency.", buf, 2u);
   }
 
-  v9 = [(IDSKTRegistrationDataManager *)self accountController];
-  v10 = [v9 isiCloudSignedIn];
+  accountController = [(IDSKTRegistrationDataManager *)self accountController];
+  isiCloudSignedIn = [accountController isiCloudSignedIn];
 
-  v11 = [(IDSKTRegistrationDataManager *)self systemMonitor];
-  v12 = [v11 isSetup];
+  systemMonitor = [(IDSKTRegistrationDataManager *)self systemMonitor];
+  isSetup = [systemMonitor isSetup];
 
-  if (!v6)
+  if (!responseCopy)
   {
-    v69 = v12 ^ 1;
-    if (((v10 ^ 1) & 1) != 0 || v69)
+    v69 = isSetup ^ 1;
+    if (((isiCloudSignedIn ^ 1) & 1) != 0 || v69)
     {
-      v75 = v10 ^ 1 | v12;
-      v76 = v10 | v69;
+      v75 = isiCloudSignedIn ^ 1 | isSetup;
+      v76 = isiCloudSignedIn | v69;
       v77 = -1003;
-      if ((v10 | v12))
+      if ((isiCloudSignedIn | isSetup))
       {
         v77 = -1000;
       }
@@ -2161,10 +2161,10 @@ LABEL_9:
 
       else
       {
-        v80 = v10 | v12;
+        v80 = isiCloudSignedIn | isSetup;
       }
 
-      if ((v10 ^ 1 | v12))
+      if ((isiCloudSignedIn ^ 1 | isSetup))
       {
         v71 = v79;
       }
@@ -2184,7 +2184,7 @@ LABEL_9:
         v70 = 1;
       }
 
-      if (!v7)
+      if (!errorCopy)
       {
         goto LABEL_84;
       }
@@ -2194,7 +2194,7 @@ LABEL_9:
     {
       v70 = 1;
       v71 = -1002;
-      if (!v7)
+      if (!errorCopy)
       {
 LABEL_84:
         v68 = 0;
@@ -2228,20 +2228,20 @@ LABEL_104:
     }
 
     v132 = NSUnderlyingErrorKey;
-    v133 = v7;
+    v133 = errorCopy;
     v68 = [NSDictionary dictionaryWithObjects:&v133 forKeys:&v132 count:1];
     goto LABEL_104;
   }
 
-  v13 = [v6 registrationData];
-  if (!v13)
+  registrationData = [responseCopy registrationData];
+  if (!registrationData)
   {
-    v72 = v12 ^ 1;
-    if (((v10 ^ 1) & 1) != 0 || v72)
+    v72 = isSetup ^ 1;
+    if (((isiCloudSignedIn ^ 1) & 1) != 0 || v72)
     {
-      v88 = v10 | v72;
+      v88 = isiCloudSignedIn | v72;
       v89 = -1013;
-      if ((v10 | v12))
+      if ((isiCloudSignedIn | isSetup))
       {
         v89 = -1000;
       }
@@ -2264,10 +2264,10 @@ LABEL_104:
 
       else
       {
-        v92 = v10 | v12;
+        v92 = isiCloudSignedIn | isSetup;
       }
 
-      if ((v10 ^ 1 | v12))
+      if ((isiCloudSignedIn ^ 1 | isSetup))
       {
         v74 = v91;
       }
@@ -2277,7 +2277,7 @@ LABEL_104:
         v74 = -1011;
       }
 
-      if ((v10 ^ 1 | v12))
+      if ((isiCloudSignedIn ^ 1 | isSetup))
       {
         v73 = v92;
       }
@@ -2294,10 +2294,10 @@ LABEL_104:
       v74 = -1012;
     }
 
-    if (v7)
+    if (errorCopy)
     {
       v130 = NSUnderlyingErrorKey;
-      v131 = v7;
+      v131 = errorCopy;
       v81 = [NSDictionary dictionaryWithObjects:&v131 forKeys:&v130 count:1];
     }
 
@@ -2340,8 +2340,8 @@ LABEL_140:
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  obj = v13;
-  v14 = [v13 countByEnumeratingWithState:&v111 objects:v129 count:16];
+  obj = registrationData;
+  v14 = [registrationData countByEnumeratingWithState:&v111 objects:v129 count:16];
   if (!v14)
   {
     v86 = 0;
@@ -2350,11 +2350,11 @@ LABEL_140:
   }
 
   v15 = v14;
-  v99 = v6;
+  v99 = responseCopy;
   log = 0;
   v102 = 0;
   v110 = *v112;
-  v108 = v7;
+  v108 = errorCopy;
   do
   {
     v16 = 0;
@@ -2373,10 +2373,10 @@ LABEL_140:
 
       if (!v21)
       {
-        if (v7)
+        if (errorCopy)
         {
           v127 = NSUnderlyingErrorKey;
-          v128 = v7;
+          v128 = errorCopy;
           v23 = [NSDictionary dictionaryWithObjects:&v128 forKeys:&v127 count:1];
         }
 
@@ -2385,7 +2385,7 @@ LABEL_140:
           v23 = 0;
         }
 
-        v25 = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2000 userInfo:v23];
+        ktDataForRegistration = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2000 userInfo:v23];
         v41 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
@@ -2394,12 +2394,12 @@ LABEL_140:
           *&v124[8] = 2112;
           *&v124[10] = &off_100C3D270;
           *&v124[18] = 2112;
-          *&v124[20] = v25;
+          *&v124[20] = ktDataForRegistration;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Reporting KT metric { metricName: %@, errorCode: %@, error: %@ }", buf, 0x20u);
         }
 
         v42 = +[TransparencyAnalytics logger];
-        [v42 logResultForEvent:@"kt-sig-resp" hardFailure:1 result:v25];
+        [v42 logResultForEvent:@"kt-sig-resp" hardFailure:1 result:ktDataForRegistration];
 
         v43 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -2412,25 +2412,25 @@ LABEL_140:
           *&v124[14] = 2112;
           *&v124[16] = v44;
           *&v124[24] = 2112;
-          *&v124[26] = v25;
+          *&v124[26] = ktDataForRegistration;
           v125 = 2112;
           v126 = v108;
           _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "No config for key index and KT Application. { keyIndex: %u, KT Application: %@, transparencyResponse: %@, error: %@, underlyingError: %@ }", buf, 0x30u);
 
-          v7 = v108;
+          errorCopy = v108;
         }
 
         goto LABEL_45;
       }
 
-      v22 = [v21 unregisteredKTData];
+      unregisteredKTData = [v21 unregisteredKTData];
 
-      if (!v22)
+      if (!unregisteredKTData)
       {
-        if (v7)
+        if (errorCopy)
         {
           v121 = NSUnderlyingErrorKey;
-          v122 = v7;
+          v122 = errorCopy;
           v23 = [NSDictionary dictionaryWithObjects:&v122 forKeys:&v121 count:1];
         }
 
@@ -2439,7 +2439,7 @@ LABEL_140:
           v23 = 0;
         }
 
-        v25 = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2001 userInfo:v23];
+        ktDataForRegistration = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2001 userInfo:v23];
         v45 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
@@ -2448,12 +2448,12 @@ LABEL_140:
           *&v124[8] = 2112;
           *&v124[10] = &off_100C3D288;
           *&v124[18] = 2112;
-          *&v124[20] = v25;
+          *&v124[20] = ktDataForRegistration;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Reporting KT metric { metricName: %@, errorCode: %@, error: %@ }", buf, 0x20u);
         }
 
         v46 = +[TransparencyAnalytics logger];
-        [v46 logResultForEvent:@"kt-sig-resp" hardFailure:1 result:v25];
+        [v46 logResultForEvent:@"kt-sig-resp" hardFailure:1 result:ktDataForRegistration];
 
         v43 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -2463,9 +2463,9 @@ LABEL_140:
           *&v124[4] = 2112;
           *&v124[6] = v17;
           *&v124[14] = 2112;
-          *&v124[16] = v25;
+          *&v124[16] = ktDataForRegistration;
           *&v124[24] = 2112;
-          *&v124[26] = v7;
+          *&v124[26] = errorCopy;
           _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "No unregistered KT data for keyIndex. { keyIndex: %u, ktApplication: %@, error: %@, underlyingError: %@ }", buf, 0x26u);
         }
 
@@ -2477,19 +2477,19 @@ LABEL_45:
       v23 = [obj objectForKeyedSubscript:v17];
       if (!v23)
       {
-        if (v7)
+        if (errorCopy)
         {
           v119 = NSUnderlyingErrorKey;
-          v120 = v7;
-          v25 = [NSDictionary dictionaryWithObjects:&v120 forKeys:&v119 count:1];
+          v120 = errorCopy;
+          ktDataForRegistration = [NSDictionary dictionaryWithObjects:&v120 forKeys:&v119 count:1];
         }
 
         else
         {
-          v25 = 0;
+          ktDataForRegistration = 0;
         }
 
-        v51 = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2002 userInfo:v25];
+        v51 = [NSError errorWithDomain:@"IDSKTRegistrationDataManagerErrorDomain" code:-2002 userInfo:ktDataForRegistration];
         v52 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
@@ -2522,15 +2522,15 @@ LABEL_45:
         goto LABEL_65;
       }
 
-      v24 = [v21 unregisteredKTData];
-      v25 = [v24 ktDataForRegistration];
+      unregisteredKTData2 = [v21 unregisteredKTData];
+      ktDataForRegistration = [unregisteredKTData2 ktDataForRegistration];
 
-      if (!v25 || ([v23 tbsKTIDSRegistrationData], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v25, "isEqualToData:", v26), v26, (v27 & 1) == 0))
+      if (!ktDataForRegistration || ([v23 tbsKTIDSRegistrationData], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(ktDataForRegistration, "isEqualToData:", v26), v26, (v27 & 1) == 0))
       {
-        if (v7)
+        if (errorCopy)
         {
           v117 = NSUnderlyingErrorKey;
-          v118 = v7;
+          v118 = errorCopy;
           v40 = [NSDictionary dictionaryWithObjects:&v118 forKeys:&v117 count:1];
         }
 
@@ -2558,11 +2558,11 @@ LABEL_45:
         v50 = +[IDSFoundationLog KeyTransparency];
         if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
         {
-          v105 = [v23 tbsKTIDSRegistrationData];
+          tbsKTIDSRegistrationData = [v23 tbsKTIDSRegistrationData];
           *buf = 138413314;
-          *v124 = v25;
+          *v124 = ktDataForRegistration;
           *&v124[8] = 2112;
-          *&v124[10] = v105;
+          *&v124[10] = tbsKTIDSRegistrationData;
           *&v124[18] = 1024;
           *&v124[20] = v18;
           *&v124[24] = 2112;
@@ -2575,17 +2575,17 @@ LABEL_45:
 LABEL_64:
 
 LABEL_65:
-        v7 = v108;
+        errorCopy = v108;
         goto LABEL_66;
       }
 
-      v28 = [v23 signature];
-      if (!v28 || (v29 = v28, [v23 publicKey], v30 = objc_claimAutoreleasedReturnValue(), v30, v29, !v30))
+      signature = [v23 signature];
+      if (!signature || (v29 = signature, [v23 publicKey], v30 = objc_claimAutoreleasedReturnValue(), v30, v29, !v30))
       {
-        if (v7)
+        if (errorCopy)
         {
           v115 = NSUnderlyingErrorKey;
-          v116 = v7;
+          v116 = errorCopy;
           v40 = [NSDictionary dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         }
 
@@ -2631,28 +2631,28 @@ LABEL_65:
         goto LABEL_70;
       }
 
-      v104 = [v21 registeredKTData];
-      v31 = [v104 ktDataForRegistration];
-      v32 = [v23 tbsKTIDSRegistrationData];
-      v103 = v31;
-      if (![v31 isEqualToData:v32])
+      registeredKTData = [v21 registeredKTData];
+      ktDataForRegistration2 = [registeredKTData ktDataForRegistration];
+      tbsKTIDSRegistrationData2 = [v23 tbsKTIDSRegistrationData];
+      v103 = ktDataForRegistration2;
+      if (![ktDataForRegistration2 isEqualToData:tbsKTIDSRegistrationData2])
       {
 
 LABEL_69:
         goto LABEL_70;
       }
 
-      v100 = [v21 registeredKTData];
-      v33 = [v100 ktPublicAccountKey];
-      v34 = [v23 publicKey];
-      v101 = [v33 isEqualToData:v34];
+      registeredKTData2 = [v21 registeredKTData];
+      ktPublicAccountKey = [registeredKTData2 ktPublicAccountKey];
+      publicKey = [v23 publicKey];
+      v101 = [ktPublicAccountKey isEqualToData:publicKey];
 
-      v7 = v108;
+      errorCopy = v108;
       if (v101)
       {
-        v35 = [v21 registeredKTData];
-        v36 = [v35 ktDataSignature];
-        if (v36)
+        registeredKTData3 = [v21 registeredKTData];
+        ktDataSignature = [registeredKTData3 ktDataSignature];
+        if (ktDataSignature)
         {
 
 LABEL_22:
@@ -2680,9 +2680,9 @@ LABEL_22:
           goto LABEL_66;
         }
 
-        v65 = [v23 signature];
+        signature2 = [v23 signature];
 
-        if (!v65)
+        if (!signature2)
         {
           goto LABEL_22;
         }
@@ -2709,17 +2709,17 @@ LABEL_70:
       v58 = +[TransparencyAnalytics logger];
       [v58 logSuccessForEventNamed:@"kt-sig-resp"];
 
-      v59 = [v23 publicKey];
-      v60 = [v21 unregisteredKTData];
-      [v60 setKtPublicAccountKey:v59];
+      publicKey2 = [v23 publicKey];
+      unregisteredKTData3 = [v21 unregisteredKTData];
+      [unregisteredKTData3 setKtPublicAccountKey:publicKey2];
 
-      v61 = [v23 signature];
-      v62 = [v21 unregisteredKTData];
-      [v62 setKtDataSignature:v61];
+      signature3 = [v23 signature];
+      unregisteredKTData4 = [v21 unregisteredKTData];
+      [unregisteredKTData4 setKtDataSignature:signature3];
 
-      v63 = [v23 dsid];
-      v64 = [v21 unregisteredKTData];
-      [v64 setDsid:v63];
+      dsid = [v23 dsid];
+      unregisteredKTData5 = [v21 unregisteredKTData];
+      [unregisteredKTData5 setDsid:dsid];
 
       log = 1;
       v102 = 1;
@@ -2737,7 +2737,7 @@ LABEL_66:
   if (log)
   {
     v67 = +[IDSFoundationLog KeyTransparency];
-    v6 = v99;
+    responseCopy = v99;
     v68 = obj;
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
@@ -2750,7 +2750,7 @@ LABEL_66:
 
   else
   {
-    v6 = v99;
+    responseCopy = v99;
     v68 = obj;
   }
 
@@ -2781,35 +2781,35 @@ LABEL_141:
   return v86;
 }
 
-- (id)_ktApplicationForKTRegistrationIndex:(unsigned __int16)a3
+- (id)_ktApplicationForKTRegistrationIndex:(unsigned __int16)index
 {
-  if ((a3 - 1) > 2)
+  if ((index - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&off_100BE4098 + (a3 - 1));
+    v4 = **(&off_100BE4098 + (index - 1));
   }
 
   return v4;
 }
 
-- (unsigned)_ktRegistrationDataIndexForKTApplication:(id)a3
+- (unsigned)_ktRegistrationDataIndexForKTApplication:(id)application
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kKTApplicationIdentifierIDS])
+  applicationCopy = application;
+  if ([applicationCopy isEqualToString:kKTApplicationIdentifierIDS])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:kKTApplicationIdentifierIDSFaceTime])
+  else if ([applicationCopy isEqualToString:kKTApplicationIdentifierIDSFaceTime])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:kKTApplicationIdentifierIDSMultiplex])
+  else if ([applicationCopy isEqualToString:kKTApplicationIdentifierIDSMultiplex])
   {
     v4 = 3;
   }
@@ -2839,14 +2839,14 @@ LABEL_141:
 
   if ([v3 count])
   {
-    v6 = [(IDSKTRegistrationDataManager *)self ktVerifier];
+    ktVerifier = [(IDSKTRegistrationDataManager *)self ktVerifier];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1006A0854;
     v8[3] = &unk_100BD9AA8;
     v8[4] = self;
     v9 = v3;
-    [v6 updateKVSWithTrustedDevices:v9 withCompletion:v8];
+    [ktVerifier updateKVSWithTrustedDevices:v9 withCompletion:v8];
   }
 
   else
@@ -2910,15 +2910,15 @@ LABEL_141:
   return v15;
 }
 
-- (id)_createKTTrustedDeviceForKVSisRegistered:(BOOL)a3
+- (id)_createKTTrustedDeviceForKVSisRegistered:(BOOL)registered
 {
-  v3 = a3;
+  registeredCopy = registered;
   v5 = +[IDSFoundationLog KeyTransparency];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   v7 = @"NO";
   if (v6)
   {
-    if (v3)
+    if (registeredCopy)
     {
       v7 = @"YES";
     }
@@ -2931,7 +2931,7 @@ LABEL_141:
 
   else
   {
-    if (v3)
+    if (registeredCopy)
     {
       v7 = @"YES";
     }
@@ -2941,18 +2941,18 @@ LABEL_141:
 
   v8 = objc_alloc_init(IDSProtoKeyTransparencyTrustedDevice);
   v9 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
-  v10 = [v9 pushToken];
-  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setPushToken:v10];
+  pushToken = [v9 pushToken];
+  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setPushToken:pushToken];
 
   [(IDSProtoKeyTransparencyTrustedDevice *)v8 setTransparencyVersion:kTransparencyAnalyticsVersion];
   v11 = +[IMDeviceSupport sharedInstance];
-  v12 = [v11 productBuildVersion];
-  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setBuildVersion:v12];
+  productBuildVersion = [v11 productBuildVersion];
+  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setBuildVersion:productBuildVersion];
 
   v13 = +[IMDeviceSupport sharedInstance];
-  v14 = [v13 productName];
+  productName = [v13 productName];
   v35 = v8;
-  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setProductName:v14];
+  [(IDSProtoKeyTransparencyTrustedDevice *)v8 setProductName:productName];
 
   v36 = objc_alloc_init(NSMutableArray);
   v15 = 1;
@@ -2966,7 +2966,7 @@ LABEL_141:
 
     if (v19)
     {
-      if (v3)
+      if (registeredCopy)
       {
         [(__CFString *)v19 registeredKTData];
       }
@@ -2979,22 +2979,22 @@ LABEL_141:
       if (v20)
       {
         v21 = [IDSProtoKeyTransparencyLoggableData alloc];
-        v22 = [v20 ktDataForRegistration];
-        v23 = [(IDSProtoKeyTransparencyLoggableData *)v21 initWithData:v22];
+        ktDataForRegistration = [v20 ktDataForRegistration];
+        v23 = [(IDSProtoKeyTransparencyLoggableData *)v21 initWithData:ktDataForRegistration];
 
         if (v23)
         {
-          v24 = [v20 ktDataForRegistration];
-          if (v24)
+          ktDataForRegistration2 = [v20 ktDataForRegistration];
+          if (ktDataForRegistration2)
           {
-            v25 = v24;
-            v26 = [v20 ktDataSignature];
+            v25 = ktDataForRegistration2;
+            ktDataSignature = [v20 ktDataSignature];
 
-            if (v26)
+            if (ktDataSignature)
             {
               v27 = objc_alloc_init(IDSProtoKeyTransparencyTrustedService);
-              v28 = [v20 ktDataSignature];
-              [(IDSProtoKeyTransparencyTrustedService *)v27 setDeviceSignature:v28];
+              ktDataSignature2 = [v20 ktDataSignature];
+              [(IDSProtoKeyTransparencyTrustedService *)v27 setDeviceSignature:ktDataSignature2];
 
               [(IDSProtoKeyTransparencyTrustedService *)v27 setKtLoggableData:v23];
               [(IDSProtoKeyTransparencyTrustedService *)v27 setKeyIndex:sub_1005F0F88(v15)];
@@ -3057,9 +3057,9 @@ LABEL_141:
   return v30;
 }
 
-- (void)noteSuccessfulKVSSyncOfTrustedDevices:(id)a3
+- (void)noteSuccessfulKVSSyncOfTrustedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = 0;
   v6 = 1;
   *&v7 = 67109120;
@@ -3072,17 +3072,17 @@ LABEL_141:
 
     if (v10)
     {
-      v11 = [v10 unregisteredKTData];
-      v12 = v11;
-      if (v11 && ([v11 uploadedToKVS]& 1) == 0 && [(IDSKTRegistrationDataManager *)self _isKTRegistrationData:v12 forServiceIndex:v6 inTrustedDevices:v4])
+      unregisteredKTData = [v10 unregisteredKTData];
+      v12 = unregisteredKTData;
+      if (unregisteredKTData && ([unregisteredKTData uploadedToKVS]& 1) == 0 && [(IDSKTRegistrationDataManager *)self _isKTRegistrationData:v12 forServiceIndex:v6 inTrustedDevices:devicesCopy])
       {
         v5 = 1;
         [v12 setUploadedToKVS:1];
       }
 
-      v13 = [v10 registeredKTData];
-      v14 = v13;
-      if (v13 && ([v13 uploadedToKVS] & 1) == 0 && -[IDSKTRegistrationDataManager _isKTRegistrationData:forServiceIndex:inTrustedDevices:](self, "_isKTRegistrationData:forServiceIndex:inTrustedDevices:", v14, v6, v4))
+      registeredKTData = [v10 registeredKTData];
+      v14 = registeredKTData;
+      if (registeredKTData && ([registeredKTData uploadedToKVS] & 1) == 0 && -[IDSKTRegistrationDataManager _isKTRegistrationData:forServiceIndex:inTrustedDevices:](self, "_isKTRegistrationData:forServiceIndex:inTrustedDevices:", v14, v6, devicesCopy))
       {
         v5 = 1;
         [v14 setUploadedToKVS:1];
@@ -3119,20 +3119,20 @@ LABEL_141:
   }
 }
 
-- (BOOL)_isKTRegistrationData:(id)a3 forServiceIndex:(unsigned __int16)a4 inTrustedDevices:(id)a5
+- (BOOL)_isKTRegistrationData:(id)data forServiceIndex:(unsigned __int16)index inTrustedDevices:(id)devices
 {
-  v6 = a4;
-  v7 = a3;
+  indexCopy = index;
+  dataCopy = data;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = a5;
-  v32 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  devicesCopy = devices;
+  v32 = [devicesCopy countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v32)
   {
     v9 = *v42;
-    v34 = v8;
+    v34 = devicesCopy;
     v31 = *v42;
     do
     {
@@ -3141,16 +3141,16 @@ LABEL_141:
       {
         if (*v42 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(devicesCopy);
         }
 
         v33 = v10;
-        v11 = [*(*(&v41 + 1) + 8 * v10) trustedServices];
+        trustedServices = [*(*(&v41 + 1) + 8 * v10) trustedServices];
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v12 = v11;
+        v12 = trustedServices;
         v13 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v13)
         {
@@ -3167,15 +3167,15 @@ LABEL_141:
               }
 
               v17 = *(*(&v37 + 1) + 8 * i);
-              v18 = [v17 keyIndex];
-              if (v18 == sub_1005F0F88(v6))
+              keyIndex = [v17 keyIndex];
+              if (keyIndex == sub_1005F0F88(indexCopy))
               {
-                v19 = [v17 ktLoggableData];
-                v20 = [v17 deviceSignature];
-                v21 = v20;
-                if (v19)
+                ktLoggableData = [v17 ktLoggableData];
+                deviceSignature = [v17 deviceSignature];
+                v21 = deviceSignature;
+                if (ktLoggableData)
                 {
-                  v22 = v20 == 0;
+                  v22 = deviceSignature == 0;
                 }
 
                 else
@@ -3185,18 +3185,18 @@ LABEL_141:
 
                 if (!v22)
                 {
-                  v23 = [v19 data];
-                  v24 = [v7 ktDataForRegistration];
-                  if ([v23 isEqualToData:v24])
+                  data = [ktLoggableData data];
+                  ktDataForRegistration = [dataCopy ktDataForRegistration];
+                  if ([data isEqualToData:ktDataForRegistration])
                   {
-                    [v7 ktDataSignature];
+                    [dataCopy ktDataSignature];
                     v25 = v12;
-                    v26 = v6;
-                    v28 = v27 = v7;
+                    v26 = indexCopy;
+                    v28 = v27 = dataCopy;
                     v36 = [v21 isEqualToData:v28];
 
-                    v7 = v27;
-                    v6 = v26;
+                    dataCopy = v27;
+                    indexCopy = v26;
                     v12 = v25;
                     v15 = v35;
 
@@ -3204,7 +3204,7 @@ LABEL_141:
                     {
 
                       v29 = 1;
-                      v8 = v34;
+                      devicesCopy = v34;
                       goto LABEL_27;
                     }
                   }
@@ -3223,7 +3223,7 @@ LABEL_141:
         }
 
         v10 = v33 + 1;
-        v8 = v34;
+        devicesCopy = v34;
         v9 = v31;
       }
 
@@ -3245,13 +3245,13 @@ LABEL_27:
   return v29;
 }
 
-- (void)logIDSKTRegMetrics:(id)a3 expectedRegisteredData:(id)a4 forKeyIndex:(unsigned __int16)a5
+- (void)logIDSKTRegMetrics:(id)metrics expectedRegisteredData:(id)data forKeyIndex:(unsigned __int16)index
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ktDataForRegistration];
+  metricsCopy = metrics;
+  dataCopy = data;
+  ktDataForRegistration = [metricsCopy ktDataForRegistration];
 
-  if (!v8)
+  if (!ktDataForRegistration)
   {
     v15 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3268,9 +3268,9 @@ LABEL_27:
     goto LABEL_12;
   }
 
-  v9 = [v6 ktDataForRegistration];
-  v10 = [v7 ktDataForRegistration];
-  v11 = [v9 isEqualToData:v10];
+  ktDataForRegistration2 = [metricsCopy ktDataForRegistration];
+  ktDataForRegistration3 = [dataCopy ktDataForRegistration];
+  v11 = [ktDataForRegistration2 isEqualToData:ktDataForRegistration3];
 
   v12 = +[IDSFoundationLog KeyTransparency];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -3305,9 +3305,9 @@ LABEL_12:
   [v14 logSuccessForEventNamed:@"kt-reg-data-status"];
 LABEL_13:
 
-  v18 = [v6 ktPublicAccountKey];
+  ktPublicAccountKey = [metricsCopy ktPublicAccountKey];
 
-  if (!v18)
+  if (!ktPublicAccountKey)
   {
     v25 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -3324,9 +3324,9 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  v19 = [v6 ktPublicAccountKey];
-  v20 = [v7 ktPublicAccountKey];
-  v21 = [v19 isEqualToData:v20];
+  ktPublicAccountKey2 = [metricsCopy ktPublicAccountKey];
+  ktPublicAccountKey3 = [dataCopy ktPublicAccountKey];
+  v21 = [ktPublicAccountKey2 isEqualToData:ktPublicAccountKey3];
 
   v22 = +[IDSFoundationLog KeyTransparency];
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -3361,9 +3361,9 @@ LABEL_24:
   [v24 logSuccessForEventNamed:@"kt-reg-publicAccountKey-status"];
 LABEL_25:
 
-  v28 = [v6 ktDataSignature];
+  ktDataSignature = [metricsCopy ktDataSignature];
 
-  if (!v28)
+  if (!ktDataSignature)
   {
     v35 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -3380,9 +3380,9 @@ LABEL_25:
     goto LABEL_36;
   }
 
-  v29 = [v6 ktDataSignature];
-  v30 = [v7 ktDataSignature];
-  v31 = [v29 isEqualToData:v30];
+  ktDataSignature2 = [metricsCopy ktDataSignature];
+  ktDataSignature3 = [dataCopy ktDataSignature];
+  v31 = [ktDataSignature2 isEqualToData:ktDataSignature3];
 
   v32 = +[IDSFoundationLog KeyTransparency];
   v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
@@ -3418,24 +3418,24 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)logKTRegistrationTimeMetricsForLatestRegisteredKTData:(id)a3 lastRegisteredKTData:(id)a4 forKeyIndex:(unsigned __int16)a5
+- (void)logKTRegistrationTimeMetricsForLatestRegisteredKTData:(id)data lastRegisteredKTData:(id)tData forKeyIndex:(unsigned __int16)index
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 ktPublicAccountKey];
-  if (v10)
+  indexCopy = index;
+  dataCopy = data;
+  tDataCopy = tData;
+  ktPublicAccountKey = [dataCopy ktPublicAccountKey];
+  if (ktPublicAccountKey)
   {
-    v11 = [v8 ktDataSignature];
-    v12 = v11;
-    v141 = v11 != 0;
-    if (v9 && v11)
+    ktDataSignature = [dataCopy ktDataSignature];
+    v12 = ktDataSignature;
+    v141 = ktDataSignature != 0;
+    if (tDataCopy && ktDataSignature)
     {
-      v13 = [v9 ktPublicAccountKey];
-      if (v13)
+      ktPublicAccountKey2 = [tDataCopy ktPublicAccountKey];
+      if (ktPublicAccountKey2)
       {
-        v14 = [v9 ktDataSignature];
-        v141 = v14 == 0;
+        ktDataSignature2 = [tDataCopy ktDataSignature];
+        v141 = ktDataSignature2 == 0;
       }
 
       else
@@ -3450,17 +3450,17 @@ LABEL_37:
     v141 = 0;
   }
 
-  v15 = [v8 ktPublicAccountKey];
-  if (v15)
+  ktPublicAccountKey3 = [dataCopy ktPublicAccountKey];
+  if (ktPublicAccountKey3)
   {
-    v16 = [v8 ktDataSignature];
-    if (v16)
+    ktDataSignature3 = [dataCopy ktDataSignature];
+    if (ktDataSignature3)
     {
-      v17 = [v9 ktPublicAccountKey];
-      if (v17)
+      ktPublicAccountKey4 = [tDataCopy ktPublicAccountKey];
+      if (ktPublicAccountKey4)
       {
-        v18 = [v9 ktDataSignature];
-        v19 = v18 != 0;
+        ktDataSignature4 = [tDataCopy ktDataSignature];
+        v19 = ktDataSignature4 != 0;
       }
 
       else
@@ -3480,11 +3480,11 @@ LABEL_37:
     v19 = 0;
   }
 
-  v20 = [v8 ktPublicAccountKey];
-  if (v20)
+  ktPublicAccountKey5 = [dataCopy ktPublicAccountKey];
+  if (ktPublicAccountKey5)
   {
-    v21 = [v8 ktDataSignature];
-    v22 = v21 == 0;
+    ktDataSignature5 = [dataCopy ktDataSignature];
+    v22 = ktDataSignature5 == 0;
   }
 
   else
@@ -3494,7 +3494,7 @@ LABEL_37:
 
   v23 = +[IDSFoundationLog KeyTransparency];
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-  if (v9 != 0 && v22 || v19)
+  if (tDataCopy != 0 && v22 || v19)
   {
     if (v24)
     {
@@ -3555,8 +3555,8 @@ LABEL_34:
 
     else
     {
-      v32 = [v8 registeredTime];
-      v31 = v32 != 0;
+      registeredTime = [dataCopy registeredTime];
+      v31 = registeredTime != 0;
 
       v30 = 0;
     }
@@ -3570,8 +3570,8 @@ LABEL_34:
 LABEL_39:
   if (v141 && self->_iCloudSignInDate)
   {
-    v33 = [v8 registeredTime];
-    v135 = v33 != 0;
+    registeredTime2 = [dataCopy registeredTime];
+    v135 = registeredTime2 != 0;
   }
 
   else
@@ -3597,14 +3597,14 @@ LABEL_39:
 
   else
   {
-    v36 = [v8 registeredTime];
-    v136 = v36 != 0;
+    registeredTime3 = [dataCopy registeredTime];
+    v136 = registeredTime3 != 0;
   }
 
   if (v141 && self->_manateeAvailableDate)
   {
-    v37 = [v8 registeredTime];
-    v137 = v37 != 0;
+    registeredTime4 = [dataCopy registeredTime];
+    v137 = registeredTime4 != 0;
   }
 
   else
@@ -3613,7 +3613,7 @@ LABEL_39:
   }
 
   v38 = !v140;
-  if (v9)
+  if (tDataCopy)
   {
     v38 = 1;
   }
@@ -3625,14 +3625,14 @@ LABEL_39:
 
   else
   {
-    v39 = [v8 registeredTime];
-    v138 = v39 == 0;
+    registeredTime5 = [dataCopy registeredTime];
+    v138 = registeredTime5 == 0;
   }
 
   if (v141)
   {
-    v40 = [v8 registeredTime];
-    v139 = v40 == 0;
+    registeredTime6 = [dataCopy registeredTime];
+    v139 = registeredTime6 == 0;
   }
 
   else
@@ -3651,18 +3651,18 @@ LABEL_39:
       v44 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", v5];
+        indexCopy = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", indexCopy];
         *buf = 138412546;
-        v143 = v45;
+        v143 = indexCopy;
         v144 = 2048;
         v145 = v43;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f}", buf, 0x16u);
       }
 
       v46 = +[TransparencyAnalytics logger];
-      v47 = [NSNumber numberWithDouble:v43];
-      v48 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", v5];
-      [v46 logMetric:v47 withName:v48];
+      indexCopy4 = [NSNumber numberWithDouble:v43];
+      indexCopy2 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", indexCopy];
+      [v46 logMetric:indexCopy4 withName:indexCopy2];
     }
 
     else
@@ -3670,15 +3670,15 @@ LABEL_39:
       v49 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", v5];
+        indexCopy3 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", indexCopy];
         *buf = 138412290;
-        v143 = v50;
+        v143 = indexCopy3;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric success. {metricName: %@}", buf, 0xCu);
       }
 
       v46 = +[TransparencyAnalytics logger];
-      v47 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", v5];
-      [v46 logSuccessForEventNamed:v47];
+      indexCopy4 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudBuddyTime", indexCopy];
+      [v46 logSuccessForEventNamed:indexCopy4];
     }
 
     self->_hasReportediCloudBuddyTime = 1;
@@ -3693,9 +3693,9 @@ LABEL_39:
     v54 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudManateeTime", v5];
+      indexCopy5 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudManateeTime", indexCopy];
       *buf = 138412546;
-      v143 = v55;
+      v143 = indexCopy5;
       v144 = 2048;
       v145 = v53;
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3703,8 +3703,8 @@ LABEL_39:
 
     v56 = +[TransparencyAnalytics logger];
     v57 = [NSNumber numberWithDouble:v53];
-    v58 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudManateeTime", v5];
-    [v56 logMetric:v57 withName:v58];
+    indexCopy6 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudManateeTime", indexCopy];
+    [v56 logMetric:v57 withName:indexCopy6];
 
     self->_hasReportediCloudManateeTime = 1;
     v31 = v51;
@@ -3712,16 +3712,16 @@ LABEL_39:
 
   if (v31)
   {
-    v59 = [v8 registeredTime];
-    [v59 timeIntervalSinceDate:self->_iCloudSignInDate];
+    registeredTime7 = [dataCopy registeredTime];
+    [registeredTime7 timeIntervalSinceDate:self->_iCloudSignInDate];
     v61 = v60;
 
     v62 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
-      v63 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSNoKTRegTime", v5];
+      indexCopy7 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSNoKTRegTime", indexCopy];
       *buf = 138412546;
-      v143 = v63;
+      v143 = indexCopy7;
       v144 = 2048;
       v145 = v61;
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3729,22 +3729,22 @@ LABEL_39:
 
     v64 = +[TransparencyAnalytics logger];
     v65 = [NSNumber numberWithDouble:v61];
-    v66 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSNoKTRegTime", v5];
-    [v64 logMetric:v65 withName:v66];
+    indexCopy8 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSNoKTRegTime", indexCopy];
+    [v64 logMetric:v65 withName:indexCopy8];
   }
 
   if (v135)
   {
-    v67 = [v8 registeredTime];
-    [v67 timeIntervalSinceDate:self->_iCloudSignInDate];
+    registeredTime8 = [dataCopy registeredTime];
+    [registeredTime8 timeIntervalSinceDate:self->_iCloudSignInDate];
     v69 = v68;
 
     v70 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
-      v71 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSKTRegTime", v5];
+      indexCopy9 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSKTRegTime", indexCopy];
       *buf = 138412546;
-      v143 = v71;
+      v143 = indexCopy9;
       v144 = 2048;
       v145 = v69;
       _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3752,8 +3752,8 @@ LABEL_39:
 
     v72 = +[TransparencyAnalytics logger];
     v73 = [NSNumber numberWithDouble:v69];
-    v74 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSKTRegTime", v5];
-    [v72 logMetric:v73 withName:v74];
+    indexCopy10 = [NSString stringWithFormat:@"%@-%u", @"IDS_iCloudIDSKTRegTime", indexCopy];
+    [v72 logMetric:v73 withName:indexCopy10];
   }
 
   if (manateeAvailableDate != 0 && !v28 && !self->_hasReportedManateeBuddyTime)
@@ -3766,18 +3766,18 @@ LABEL_39:
       v78 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
       {
-        v79 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", v5];
+        indexCopy11 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", indexCopy];
         *buf = 138412546;
-        v143 = v79;
+        v143 = indexCopy11;
         v144 = 2048;
         v145 = v77;
         _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
       }
 
       v80 = +[TransparencyAnalytics logger];
-      v81 = [NSNumber numberWithDouble:v77];
-      v82 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", v5];
-      [v80 logMetric:v81 withName:v82];
+      indexCopy14 = [NSNumber numberWithDouble:v77];
+      indexCopy12 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", indexCopy];
+      [v80 logMetric:indexCopy14 withName:indexCopy12];
     }
 
     else
@@ -3785,15 +3785,15 @@ LABEL_39:
       v83 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
       {
-        v84 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", v5];
+        indexCopy13 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", indexCopy];
         *buf = 138412290;
-        v143 = v84;
+        v143 = indexCopy13;
         _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric success. {metricName: %@}", buf, 0xCu);
       }
 
       v80 = +[TransparencyAnalytics logger];
-      v81 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", v5];
-      [v80 logSuccessForEventNamed:v81];
+      indexCopy14 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeBuddyTime", indexCopy];
+      [v80 logSuccessForEventNamed:indexCopy14];
     }
 
     self->_hasReportedManateeBuddyTime = 1;
@@ -3801,16 +3801,16 @@ LABEL_39:
 
   if (v136)
   {
-    v85 = [v8 registeredTime];
-    [v85 timeIntervalSinceDate:self->_manateeAvailableDate];
+    registeredTime9 = [dataCopy registeredTime];
+    [registeredTime9 timeIntervalSinceDate:self->_manateeAvailableDate];
     v87 = v86;
 
     v88 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
     {
-      v89 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSNoKTRegTime", v5];
+      indexCopy15 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSNoKTRegTime", indexCopy];
       *buf = 138412546;
-      v143 = v89;
+      v143 = indexCopy15;
       v144 = 2048;
       v145 = v87;
       _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3818,22 +3818,22 @@ LABEL_39:
 
     v90 = +[TransparencyAnalytics logger];
     v91 = [NSNumber numberWithDouble:v87];
-    v92 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSNoKTRegTime", v5];
-    [v90 logMetric:v91 withName:v92];
+    indexCopy16 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSNoKTRegTime", indexCopy];
+    [v90 logMetric:v91 withName:indexCopy16];
   }
 
   if (v137)
   {
-    v93 = [v8 registeredTime];
-    [v93 timeIntervalSinceDate:self->_manateeAvailableDate];
+    registeredTime10 = [dataCopy registeredTime];
+    [registeredTime10 timeIntervalSinceDate:self->_manateeAvailableDate];
     v95 = v94;
 
     v96 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
     {
-      v97 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSKTRegTime", v5];
+      indexCopy17 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSKTRegTime", indexCopy];
       *buf = 138412546;
-      v143 = v97;
+      v143 = indexCopy17;
       v144 = 2048;
       v145 = v95;
       _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3841,33 +3841,33 @@ LABEL_39:
 
     v98 = +[TransparencyAnalytics logger];
     v99 = [NSNumber numberWithDouble:v95];
-    v100 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSKTRegTime", v5];
-    [v98 logMetric:v99 withName:v100];
+    indexCopy18 = [NSString stringWithFormat:@"%@-%u", @"IDS_manateeIDSKTRegTime", indexCopy];
+    [v98 logMetric:v99 withName:indexCopy18];
   }
 
   if (!v138 && !v28)
   {
     if (self->_buddyFinishDate)
     {
-      v101 = [v8 registeredTime];
-      [v101 timeIntervalSinceDate:self->_buddyFinishDate];
+      registeredTime11 = [dataCopy registeredTime];
+      [registeredTime11 timeIntervalSinceDate:self->_buddyFinishDate];
       v103 = v102;
 
       v104 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
       {
-        v105 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", v5];
+        indexCopy19 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", indexCopy];
         *buf = 138412546;
-        v143 = v105;
+        v143 = indexCopy19;
         v144 = 2048;
         v145 = v103;
         _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
       }
 
       v106 = +[TransparencyAnalytics logger];
-      v107 = [NSNumber numberWithDouble:v103];
-      v108 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", v5];
-      [v106 logMetric:v107 withName:v108];
+      indexCopy22 = [NSNumber numberWithDouble:v103];
+      indexCopy20 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", indexCopy];
+      [v106 logMetric:indexCopy22 withName:indexCopy20];
     }
 
     else
@@ -3875,15 +3875,15 @@ LABEL_39:
       v109 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
       {
-        v110 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", v5];
+        indexCopy21 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", indexCopy];
         *buf = 138412290;
-        v143 = v110;
+        v143 = indexCopy21;
         _os_log_impl(&_mh_execute_header, v109, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric success. {metricName: %@}", buf, 0xCu);
       }
 
       v106 = +[TransparencyAnalytics logger];
-      v107 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", v5];
-      [v106 logSuccessForEventNamed:v107];
+      indexCopy22 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSNoKTRegTime", indexCopy];
+      [v106 logSuccessForEventNamed:indexCopy22];
     }
   }
 
@@ -3891,25 +3891,25 @@ LABEL_39:
   {
     if (self->_buddyFinishDate)
     {
-      v111 = [v8 registeredTime];
-      [v111 timeIntervalSinceDate:self->_buddyFinishDate];
+      registeredTime12 = [dataCopy registeredTime];
+      [registeredTime12 timeIntervalSinceDate:self->_buddyFinishDate];
       v113 = v112;
 
       v114 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v114, OS_LOG_TYPE_DEFAULT))
       {
-        v115 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", v5];
+        indexCopy23 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", indexCopy];
         *buf = 138412546;
-        v143 = v115;
+        v143 = indexCopy23;
         v144 = 2048;
         v145 = v113;
         _os_log_impl(&_mh_execute_header, v114, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
       }
 
       v116 = +[TransparencyAnalytics logger];
-      v117 = [NSNumber numberWithDouble:v113];
-      v118 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", v5];
-      [v116 logMetric:v117 withName:v118];
+      indexCopy26 = [NSNumber numberWithDouble:v113];
+      indexCopy24 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", indexCopy];
+      [v116 logMetric:indexCopy26 withName:indexCopy24];
     }
 
     else
@@ -3917,26 +3917,26 @@ LABEL_39:
       v119 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
       {
-        v120 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", v5];
+        indexCopy25 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", indexCopy];
         *buf = 138412290;
-        v143 = v120;
+        v143 = indexCopy25;
         _os_log_impl(&_mh_execute_header, v119, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric success. {metricName: %@}", buf, 0xCu);
       }
 
       v116 = +[TransparencyAnalytics logger];
-      v117 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", v5];
-      [v116 logSuccessForEventNamed:v117];
+      indexCopy26 = [NSString stringWithFormat:@"%@-%u", @"IDS_buddyIDSKTRegTime", indexCopy];
+      [v116 logSuccessForEventNamed:indexCopy26];
     }
   }
 
   if (v141)
   {
-    v121 = [v9 registeredTime];
-    if (v121)
+    registeredTime13 = [tDataCopy registeredTime];
+    if (registeredTime13)
     {
-      v122 = [v8 registeredTime];
-      v123 = [v9 registeredTime];
-      [v122 timeIntervalSinceDate:v123];
+      registeredTime14 = [dataCopy registeredTime];
+      registeredTime15 = [tDataCopy registeredTime];
+      [registeredTime14 timeIntervalSinceDate:registeredTime15];
       v125 = v124;
     }
 
@@ -3948,9 +3948,9 @@ LABEL_39:
     v126 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v126, OS_LOG_TYPE_DEFAULT))
     {
-      v127 = [NSString stringWithFormat:@"%@-%u", @"IDS_IDSNoKTRegIDSKTRegTime", v5];
+      indexCopy27 = [NSString stringWithFormat:@"%@-%u", @"IDS_IDSNoKTRegIDSKTRegTime", indexCopy];
       *buf = 138412546;
-      v143 = v127;
+      v143 = indexCopy27;
       v144 = 2048;
       v145 = v125;
       _os_log_impl(&_mh_execute_header, v126, OS_LOG_TYPE_DEFAULT, "Reporting KT Metric {metricName: %@, timeInterval: %f", buf, 0x16u);
@@ -3958,8 +3958,8 @@ LABEL_39:
 
     v128 = +[TransparencyAnalytics logger];
     v129 = [NSNumber numberWithDouble:v125];
-    v130 = [NSString stringWithFormat:@"%@-%u", @"IDS_IDSNoKTRegIDSKTRegTime", v5];
-    [v128 logMetric:v129 withName:v130];
+    indexCopy28 = [NSString stringWithFormat:@"%@-%u", @"IDS_IDSNoKTRegIDSKTRegTime", indexCopy];
+    [v128 logMetric:v129 withName:indexCopy28];
   }
 
   if (!v140)

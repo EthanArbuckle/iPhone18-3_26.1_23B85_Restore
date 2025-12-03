@@ -11,15 +11,15 @@
     [NSNumber(_DKDeduping) _os_dedup];
   }
 
-  v2 = a1;
+  selfCopy = self;
   os_unfair_lock_lock(&_os_dedup_lock_5);
-  v3 = [_os_dedup_set_4 member:v2];
+  v3 = [_os_dedup_set_4 member:selfCopy];
   v4 = v3;
   if (v3)
   {
     v5 = v3;
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
   else
@@ -40,13 +40,13 @@
 
     if ([_os_dedup_set_4 count] <= 0x7F)
     {
-      [_os_dedup_set_4 addObject:v2];
+      [_os_dedup_set_4 addObject:selfCopy];
     }
   }
 
   os_unfair_lock_unlock(&_os_dedup_lock_5);
 
-  return v2;
+  return selfCopy;
 }
 
 @end

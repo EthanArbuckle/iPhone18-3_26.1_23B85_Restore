@@ -9,7 +9,7 @@
 {
   v5 = *a3;
   result = swift_getWitnessTable();
-  *(a1 + 8) = result;
+  *(self + 8) = result;
   return result;
 }
 
@@ -17,7 +17,7 @@
 {
   v5 = vextq_s8(*(a2 - 16), *(a2 - 16), 8uLL);
   WitnessTable = swift_getWitnessTable();
-  return XpcDictCodable.asXPC()(a1, WitnessTable);
+  return XpcDictCodable.asXPC()(self, WitnessTable);
 }
 
 @end

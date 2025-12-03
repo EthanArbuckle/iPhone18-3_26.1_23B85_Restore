@@ -1,21 +1,21 @@
 @interface AMSPurchaseInfo
 - (AMSPurchaseDelegate)delegate;
-- (AMSPurchaseInfo)initWithCoder:(id)a3;
-- (AMSPurchaseInfo)initWithPurchase:(id)a3;
+- (AMSPurchaseInfo)initWithCoder:(id)coder;
+- (AMSPurchaseInfo)initWithPurchase:(id)purchase;
 - (AMSPurchaseTask)activePurchaseTask;
 - (BOOL)isFree;
 - (NSDictionary)objectForLogging;
-- (id)_purchaseStringForType:(int64_t)a3;
+- (id)_purchaseStringForType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPurchaseInfo
 
-- (AMSPurchaseInfo)initWithPurchase:(id)a3
+- (AMSPurchaseInfo)initWithPurchase:(id)purchase
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  purchaseCopy = purchase;
   v59.receiver = self;
   v59.super_class = AMSPurchaseInfo;
   v6 = [(AMSPurchaseInfo *)&v59 init];
@@ -23,25 +23,25 @@
   if (v6)
   {
     v6->_addKBSync = 1;
-    v8 = [v5 additionalHeaders];
-    v9 = [v8 mutableCopy];
+    additionalHeaders = [purchaseCopy additionalHeaders];
+    v9 = [additionalHeaders mutableCopy];
     additionalHeaders = v7->_additionalHeaders;
     v7->_additionalHeaders = v9;
 
-    v11 = [v5 buyParams];
+    buyParams = [purchaseCopy buyParams];
     buyParams = v7->_buyParams;
-    v7->_buyParams = v11;
+    v7->_buyParams = buyParams;
 
-    v13 = [v5 clientCorrelationKey];
+    clientCorrelationKey = [purchaseCopy clientCorrelationKey];
     clientCorrelationKey = v7->_clientCorrelationKey;
-    v7->_clientCorrelationKey = v13;
+    v7->_clientCorrelationKey = clientCorrelationKey;
 
-    v15 = [v5 buyParams];
-    v16 = [v15 objectForKeyedSubscript:@"hasBeenAuthedForBuy"];
+    buyParams2 = [purchaseCopy buyParams];
+    v16 = [buyParams2 objectForKeyedSubscript:@"hasBeenAuthedForBuy"];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v5 buyParams];
-      v18 = [v17 objectForKeyedSubscript:@"hasBeenAuthedForBuy"];
+      buyParams3 = [purchaseCopy buyParams];
+      v18 = [buyParams3 objectForKeyedSubscript:@"hasBeenAuthedForBuy"];
       v7->_hasBeenAuthedForBuy = [v18 BOOLValue];
     }
 
@@ -50,29 +50,29 @@
       v7->_hasBeenAuthedForBuy = 0;
     }
 
-    objc_storeStrong(&v7->_purchase, a3);
-    v19 = [v5 account];
+    objc_storeStrong(&v7->_purchase, purchase);
+    account = [purchaseCopy account];
     account = v7->_account;
-    v7->_account = v19;
+    v7->_account = account;
 
     v7->_didShowPaymentSheet = 0;
-    v21 = [v5 clientInfo];
+    clientInfo = [purchaseCopy clientInfo];
 
-    if (v21)
+    if (clientInfo)
     {
-      v22 = [v5 clientInfo];
+      clientInfo2 = [purchaseCopy clientInfo];
       clientInfo = v7->_clientInfo;
-      v7->_clientInfo = v22;
+      v7->_clientInfo = clientInfo2;
     }
 
     else
     {
-      v24 = [v5 callerBundleId];
-      if (v24)
+      callerBundleId = [purchaseCopy callerBundleId];
+      if (callerBundleId)
       {
         v25 = [AMSProcessInfo alloc];
-        v26 = [v5 callerBundleId];
-        v27 = [(AMSProcessInfo *)v25 initWithBundleIdentifier:v26];
+        callerBundleId2 = [purchaseCopy callerBundleId];
+        v27 = [(AMSProcessInfo *)v25 initWithBundleIdentifier:callerBundleId2];
         p_clientInfo = &v7->_clientInfo;
         v28 = v7->_clientInfo;
         v7->_clientInfo = v27;
@@ -82,19 +82,19 @@
       {
         v30 = +[AMSProcessInfo currentProcess];
         p_clientInfo = &v7->_clientInfo;
-        v26 = v7->_clientInfo;
+        callerBundleId2 = v7->_clientInfo;
         v7->_clientInfo = v30;
       }
 
-      clientInfo = [v5 clientId];
+      clientInfo = [purchaseCopy clientId];
       [*p_clientInfo setProxyAppBundleID:clientInfo];
     }
 
-    v31 = [(AMSProcessInfo *)v7->_clientInfo processIdentifier];
-    v32 = v31;
-    if (v31)
+    processIdentifier = [(AMSProcessInfo *)v7->_clientInfo processIdentifier];
+    v32 = processIdentifier;
+    if (processIdentifier)
     {
-      v33 = v31;
+      v33 = processIdentifier;
       hostProcessIdentifier = v7->_hostProcessIdentifier;
       v7->_hostProcessIdentifier = v33;
     }
@@ -108,21 +108,21 @@
       v7->_hostProcessIdentifier = v36;
     }
 
-    v38 = [v5 account];
-    if (v38)
+    account2 = [purchaseCopy account];
+    if (account2)
     {
-      v39 = v38;
-      v40 = [v5 account];
-      v41 = [v40 ams_isiCloudAccount];
+      v39 = account2;
+      account3 = [purchaseCopy account];
+      ams_isiCloudAccount = [account3 ams_isiCloudAccount];
 
-      if (v41)
+      if (ams_isiCloudAccount)
       {
         v42 = MEMORY[0x1E6959A48];
-        v43 = [(AMSPurchaseInfo *)v7 clientInfo];
-        v44 = [v42 ams_sharedAccountStoreForClient:v43];
+        clientInfo3 = [(AMSPurchaseInfo *)v7 clientInfo];
+        v44 = [v42 ams_sharedAccountStoreForClient:clientInfo3];
 
-        v45 = [v5 account];
-        v46 = [v44 ams_iTunesAccountForAccount:v45];
+        account4 = [purchaseCopy account];
+        v46 = [v44 ams_iTunesAccountForAccount:account4];
 
         if (v46)
         {
@@ -134,12 +134,12 @@
     if (+[AMSEphemeralDefaults purchaseAccountFallback]&& !v7->_account)
     {
       v47 = MEMORY[0x1E6959A48];
-      v48 = [(AMSPurchaseInfo *)v7 clientInfo];
-      v49 = [v47 ams_sharedAccountStoreForClient:v48];
+      clientInfo4 = [(AMSPurchaseInfo *)v7 clientInfo];
+      v49 = [v47 ams_sharedAccountStoreForClient:clientInfo4];
 
-      v50 = [v49 ams_activeiTunesAccount];
+      ams_activeiTunesAccount = [v49 ams_activeiTunesAccount];
       v51 = v7->_account;
-      v7->_account = v50;
+      v7->_account = ams_activeiTunesAccount;
 
       v52 = +[AMSLogConfig sharedConfig];
       if (!v52)
@@ -147,8 +147,8 @@
         v52 = +[AMSLogConfig sharedConfig];
       }
 
-      v53 = [v52 OSLogObject];
-      if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v52 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v54 = objc_opt_class();
         v55 = v54;
@@ -160,7 +160,7 @@
         v63 = v56;
         v64 = 2112;
         v65 = v57;
-        _os_log_impl(&dword_192869000, v53, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Falling back to active iTunes account: %@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Falling back to active iTunes account: %@", buf, 0x20u);
       }
     }
   }
@@ -171,23 +171,23 @@
 - (NSDictionary)objectForLogging
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSPurchaseInfo *)self account];
-  [v3 ams_setNullableObject:v4 forKey:@"account"];
+  account = [(AMSPurchaseInfo *)self account];
+  [v3 ams_setNullableObject:account forKey:@"account"];
 
-  v5 = [(AMSPurchaseInfo *)self additionalHeaders];
-  [v3 ams_setNullableObject:v5 forKey:@"additionalHeaders"];
+  additionalHeaders = [(AMSPurchaseInfo *)self additionalHeaders];
+  [v3 ams_setNullableObject:additionalHeaders forKey:@"additionalHeaders"];
 
-  v6 = [(AMSPurchaseInfo *)self clientCorrelationKey];
-  [v3 ams_setNullableObject:v6 forKey:@"clientCorrelationKey"];
+  clientCorrelationKey = [(AMSPurchaseInfo *)self clientCorrelationKey];
+  [v3 ams_setNullableObject:clientCorrelationKey forKey:@"clientCorrelationKey"];
 
-  v7 = [(AMSPurchaseInfo *)self clientInfo];
-  [v3 ams_setNullableObject:v7 forKey:@"clientInfo"];
+  clientInfo = [(AMSPurchaseInfo *)self clientInfo];
+  [v3 ams_setNullableObject:clientInfo forKey:@"clientInfo"];
 
-  v8 = [(AMSPurchaseInfo *)self dialog];
-  [v3 ams_setNullableObject:v8 forKey:@"dialog"];
+  dialog = [(AMSPurchaseInfo *)self dialog];
+  [v3 ams_setNullableObject:dialog forKey:@"dialog"];
 
-  v9 = [(AMSPurchaseInfo *)self expressCheckoutMode];
-  [v3 ams_setNullableObject:v9 forKey:@"expressCheckoutMode"];
+  expressCheckoutMode = [(AMSPurchaseInfo *)self expressCheckoutMode];
+  [v3 ams_setNullableObject:expressCheckoutMode forKey:@"expressCheckoutMode"];
 
   if ([(AMSPurchaseInfo *)self isFree])
   {
@@ -222,28 +222,28 @@
   }
 
   [v3 ams_setNullableObject:v12 forKey:@"hasRetriedOriginalOwnerAccount"];
-  v13 = [(AMSPurchaseInfo *)self hostProcessIdentifier];
-  [v3 ams_setNullableObject:v13 forKey:@"hostProcessIdentifier"];
+  hostProcessIdentifier = [(AMSPurchaseInfo *)self hostProcessIdentifier];
+  [v3 ams_setNullableObject:hostProcessIdentifier forKey:@"hostProcessIdentifier"];
 
-  v14 = [(AMSPurchaseInfo *)self purchase];
-  v15 = [v14 logUUID];
-  [v3 ams_setNullableObject:v15 forKey:@"logUUID"];
+  purchase = [(AMSPurchaseInfo *)self purchase];
+  logUUID = [purchase logUUID];
+  [v3 ams_setNullableObject:logUUID forKey:@"logUUID"];
 
-  v16 = [(AMSPurchaseInfo *)self paymentServicesURL];
-  [v3 ams_setNullableObject:v16 forKey:@"paymentServicesURL"];
+  paymentServicesURL = [(AMSPurchaseInfo *)self paymentServicesURL];
+  [v3 ams_setNullableObject:paymentServicesURL forKey:@"paymentServicesURL"];
 
-  v17 = [(AMSPurchaseInfo *)self paymentMethodType];
-  [v3 ams_setNullableObject:v17 forKey:@"paymentMethodType"];
+  paymentMethodType = [(AMSPurchaseInfo *)self paymentMethodType];
+  [v3 ams_setNullableObject:paymentMethodType forKey:@"paymentMethodType"];
 
   v18 = [(AMSPurchaseInfo *)self _purchaseStringForType:[(AMSPurchase *)self->_purchase purchaseType]];
   [v3 ams_setNullableObject:v18 forKey:@"purchaseType"];
 
-  v19 = [(AMSPurchaseInfo *)self purchase];
-  v20 = [v19 uniqueIdentifier];
-  [v3 ams_setNullableObject:v20 forKey:@"purchaseId"];
+  purchase2 = [(AMSPurchaseInfo *)self purchase];
+  uniqueIdentifier = [purchase2 uniqueIdentifier];
+  [v3 ams_setNullableObject:uniqueIdentifier forKey:@"purchaseId"];
 
-  v21 = [(AMSPurchaseInfo *)self purchase];
-  if ([v21 isUserInitiated])
+  purchase3 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase3 isUserInitiated])
   {
     v22 = @"true";
   }
@@ -255,8 +255,8 @@
 
   [v3 ams_setNullableObject:v22 forKey:@"userInitiated"];
 
-  v23 = [(AMSPurchaseInfo *)self purchase];
-  if ([v23 ignoreRequirePasswordRestriction])
+  purchase4 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase4 ignoreRequirePasswordRestriction])
   {
     v24 = @"true";
   }
@@ -268,8 +268,8 @@
 
   [v3 ams_setNullableObject:v24 forKey:@"ignoreRequirePasswordRestriction"];
 
-  v25 = [(AMSPurchaseInfo *)self purchase];
-  if ([v25 requiresAccount])
+  purchase5 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase5 requiresAccount])
   {
     v26 = @"true";
   }
@@ -281,8 +281,8 @@
 
   [v3 ams_setNullableObject:v26 forKey:@"requiresAccount"];
 
-  v27 = [(AMSPurchaseInfo *)self purchase];
-  if ([v27 requiresApplePayClassic])
+  purchase6 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase6 requiresApplePayClassic])
   {
     v28 = @"true";
   }
@@ -294,8 +294,8 @@
 
   [v3 ams_setNullableObject:v28 forKey:@"requiresApplePayClassic"];
 
-  v29 = [(AMSPurchaseInfo *)self purchase];
-  if ([v29 useJSONContentType])
+  purchase7 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase7 useJSONContentType])
   {
     v30 = @"true";
   }
@@ -307,8 +307,8 @@
 
   [v3 ams_setNullableObject:v30 forKey:@"useJSONContentType"];
 
-  v31 = [(AMSPurchaseInfo *)self purchase];
-  if ([v31 asyncRecordEngagementEvent])
+  purchase8 = [(AMSPurchaseInfo *)self purchase];
+  if ([purchase8 asyncRecordEngagementEvent])
   {
     v32 = @"true";
   }
@@ -320,9 +320,9 @@
 
   [v3 ams_setNullableObject:v32 forKey:@"asyncRecordEngagementEvent"];
 
-  v33 = [(AMSPurchaseInfo *)self purchase];
-  v34 = [v33 storefront];
-  [v3 ams_setNullableObject:v34 forKey:@"storefront"];
+  purchase9 = [(AMSPurchaseInfo *)self purchase];
+  storefront = [purchase9 storefront];
+  [v3 ams_setNullableObject:storefront forKey:@"storefront"];
 
   return v3;
 }
@@ -330,26 +330,26 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSPurchaseInfo *)self purchase];
-  v5 = [v4 logUUID];
-  v6 = [(AMSPurchaseInfo *)self account];
-  v7 = [v6 ams_DSID];
+  purchase = [(AMSPurchaseInfo *)self purchase];
+  logUUID = [purchase logUUID];
+  account = [(AMSPurchaseInfo *)self account];
+  ams_DSID = [account ams_DSID];
   v8 = [(AMSPurchaseInfo *)self _purchaseStringForType:[(AMSPurchase *)self->_purchase purchaseType]];
-  v9 = [(AMSPurchaseInfo *)self purchase];
-  v10 = [v9 uniqueIdentifier];
-  v11 = [v3 stringWithFormat:@"{ logUUID: %@ accountId: %@ purchaseType: %@ purchaseId: %@ }", v5, v7, v8, v10];
+  purchase2 = [(AMSPurchaseInfo *)self purchase];
+  uniqueIdentifier = [purchase2 uniqueIdentifier];
+  v11 = [v3 stringWithFormat:@"{ logUUID: %@ accountId: %@ purchaseType: %@ purchaseId: %@ }", logUUID, ams_DSID, v8, uniqueIdentifier];
 
   return v11;
 }
 
 - (BOOL)isFree
 {
-  v3 = [(AMSPurchaseInfo *)self buyParams];
-  [v3 price];
+  buyParams = [(AMSPurchaseInfo *)self buyParams];
+  [buyParams price];
   if (v4 == 0.0)
   {
-    v5 = [(AMSPurchaseInfo *)self buyParams];
-    v6 = [v5 isFreeTrial] ^ 1;
+    buyParams2 = [(AMSPurchaseInfo *)self buyParams];
+    v6 = [buyParams2 isFreeTrial] ^ 1;
   }
 
   else
@@ -360,74 +360,74 @@
   return v6;
 }
 
-- (id)_purchaseStringForType:(int64_t)a3
+- (id)_purchaseStringForType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E73BB050[a3];
+    return off_1E73BB050[type];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseInfo *)self additionalHeaders];
-  [v4 encodeObject:v5 forKey:@"kAdditionalHeaders"];
+  coderCopy = coder;
+  additionalHeaders = [(AMSPurchaseInfo *)self additionalHeaders];
+  [coderCopy encodeObject:additionalHeaders forKey:@"kAdditionalHeaders"];
 
-  [v4 encodeBool:-[AMSPurchaseInfo addKBSync](self forKey:{"addKBSync"), @"kAddKBSync"}];
-  v6 = [(AMSPurchaseInfo *)self buyParams];
-  [v4 encodeObject:v6 forKey:@"kBuyParams"];
+  [coderCopy encodeBool:-[AMSPurchaseInfo addKBSync](self forKey:{"addKBSync"), @"kAddKBSync"}];
+  buyParams = [(AMSPurchaseInfo *)self buyParams];
+  [coderCopy encodeObject:buyParams forKey:@"kBuyParams"];
 
-  v7 = [(AMSPurchaseInfo *)self clientCorrelationKey];
-  [v4 encodeObject:v7 forKey:@"kClientCorrelationKey"];
+  clientCorrelationKey = [(AMSPurchaseInfo *)self clientCorrelationKey];
+  [coderCopy encodeObject:clientCorrelationKey forKey:@"kClientCorrelationKey"];
 
-  v8 = [(AMSPurchaseInfo *)self clientInfo];
-  [v4 encodeObject:v8 forKey:@"kClientInfo"];
+  clientInfo = [(AMSPurchaseInfo *)self clientInfo];
+  [coderCopy encodeObject:clientInfo forKey:@"kClientInfo"];
 
-  v9 = [(AMSPurchaseInfo *)self dialog];
-  [v4 encodeObject:v9 forKey:@"kDialog"];
+  dialog = [(AMSPurchaseInfo *)self dialog];
+  [coderCopy encodeObject:dialog forKey:@"kDialog"];
 
-  v10 = [(AMSPurchaseInfo *)self dialogId];
-  [v4 encodeObject:v10 forKey:@"kDialogId"];
+  dialogId = [(AMSPurchaseInfo *)self dialogId];
+  [coderCopy encodeObject:dialogId forKey:@"kDialogId"];
 
-  [v4 encodeBool:-[AMSPurchaseInfo didShowPaymentSheet](self forKey:{"didShowPaymentSheet"), @"kDidShowPaymentSheet"}];
-  v11 = [(AMSPurchaseInfo *)self expressCheckoutMode];
-  [v4 encodeObject:v11 forKey:@"kExpressCheckoutMode"];
+  [coderCopy encodeBool:-[AMSPurchaseInfo didShowPaymentSheet](self forKey:{"didShowPaymentSheet"), @"kDidShowPaymentSheet"}];
+  expressCheckoutMode = [(AMSPurchaseInfo *)self expressCheckoutMode];
+  [coderCopy encodeObject:expressCheckoutMode forKey:@"kExpressCheckoutMode"];
 
-  [v4 encodeBool:-[AMSPurchaseInfo hasBeenAuthedForBuy](self forKey:{"hasBeenAuthedForBuy"), @"kHasBeenAuthedForBuy"}];
-  [v4 encodeBool:-[AMSPurchaseInfo hasRetriedOriginalOwnerAccount](self forKey:{"hasRetriedOriginalOwnerAccount"), @"kHasRetriedOriginalOwnerAccount"}];
-  v12 = [(AMSPurchaseInfo *)self hostProcessIdentifier];
-  [v4 encodeObject:v12 forKey:@"kHostProcessIdentifier"];
+  [coderCopy encodeBool:-[AMSPurchaseInfo hasBeenAuthedForBuy](self forKey:{"hasBeenAuthedForBuy"), @"kHasBeenAuthedForBuy"}];
+  [coderCopy encodeBool:-[AMSPurchaseInfo hasRetriedOriginalOwnerAccount](self forKey:{"hasRetriedOriginalOwnerAccount"), @"kHasRetriedOriginalOwnerAccount"}];
+  hostProcessIdentifier = [(AMSPurchaseInfo *)self hostProcessIdentifier];
+  [coderCopy encodeObject:hostProcessIdentifier forKey:@"kHostProcessIdentifier"];
 
-  v13 = [(AMSPurchaseInfo *)self idmsTokens];
-  [v4 encodeObject:v13 forKey:@"kIDMTokens"];
+  idmsTokens = [(AMSPurchaseInfo *)self idmsTokens];
+  [coderCopy encodeObject:idmsTokens forKey:@"kIDMTokens"];
 
-  v14 = [(AMSPurchaseInfo *)self paymentMethodType];
-  [v4 encodeObject:v14 forKey:@"kPaymentMethodType"];
+  paymentMethodType = [(AMSPurchaseInfo *)self paymentMethodType];
+  [coderCopy encodeObject:paymentMethodType forKey:@"kPaymentMethodType"];
 
-  v15 = [(AMSPurchaseInfo *)self paymentServicesURL];
-  [v4 encodeObject:v15 forKey:@"kPaymentServicesURL"];
+  paymentServicesURL = [(AMSPurchaseInfo *)self paymentServicesURL];
+  [coderCopy encodeObject:paymentServicesURL forKey:@"kPaymentServicesURL"];
 
-  v16 = [(AMSPurchaseInfo *)self paymentToken];
-  [v4 encodeObject:v16 forKey:@"kPaymentToken"];
+  paymentToken = [(AMSPurchaseInfo *)self paymentToken];
+  [coderCopy encodeObject:paymentToken forKey:@"kPaymentToken"];
 
-  v17 = [(AMSPurchaseInfo *)self purchase];
-  [v4 encodeObject:v17 forKey:@"kPurchase"];
+  purchase = [(AMSPurchaseInfo *)self purchase];
+  [coderCopy encodeObject:purchase forKey:@"kPurchase"];
 }
 
-- (AMSPurchaseInfo)initWithCoder:(id)a3
+- (AMSPurchaseInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AMSPurchaseInfo *)self init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kAdditionalHeaders"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"kAdditionalHeaders"];
     v8 = [v7 mutableCopy];
     v9 = v8;
     if (v8)
@@ -443,57 +443,57 @@
     additionalHeaders = v5->_additionalHeaders;
     v5->_additionalHeaders = v10;
 
-    v5->_addKBSync = [v4 decodeBoolForKey:@"kAddKBSync"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kBuyParams"];
+    v5->_addKBSync = [coderCopy decodeBoolForKey:@"kAddKBSync"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kBuyParams"];
     buyParams = v5->_buyParams;
     v5->_buyParams = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kClientCorrelationKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kClientCorrelationKey"];
     clientCorrelationKey = v5->_clientCorrelationKey;
     v5->_clientCorrelationKey = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kClientInfo"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kClientInfo"];
     clientInfo = v5->_clientInfo;
     v5->_clientInfo = v16;
 
-    v18 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kDialog"];
+    ams_JSONClasses2 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v19 = [coderCopy decodeObjectOfClasses:ams_JSONClasses2 forKey:@"kDialog"];
     dialog = v5->_dialog;
     v5->_dialog = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDialogId"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDialogId"];
     dialogId = v5->_dialogId;
     v5->_dialogId = v21;
 
-    v5->_didShowPaymentSheet = [v4 decodeBoolForKey:@"kDidShowPaymentSheet"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kExpressCheckoutMode"];
+    v5->_didShowPaymentSheet = [coderCopy decodeBoolForKey:@"kDidShowPaymentSheet"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kExpressCheckoutMode"];
     expressCheckoutMode = v5->_expressCheckoutMode;
     v5->_expressCheckoutMode = v23;
 
-    v5->_hasBeenAuthedForBuy = [v4 decodeBoolForKey:@"kHasBeenAuthedForBuy"];
-    v5->_hasRetriedOriginalOwnerAccount = [v4 decodeBoolForKey:@"kHasRetriedOriginalOwnerAccount"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kHostProcessIdentifier"];
+    v5->_hasBeenAuthedForBuy = [coderCopy decodeBoolForKey:@"kHasBeenAuthedForBuy"];
+    v5->_hasRetriedOriginalOwnerAccount = [coderCopy decodeBoolForKey:@"kHasRetriedOriginalOwnerAccount"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kHostProcessIdentifier"];
     hostProcessIdentifier = v5->_hostProcessIdentifier;
     v5->_hostProcessIdentifier = v25;
 
-    v27 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"kIDMTokens"];
+    ams_JSONClasses3 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v28 = [coderCopy decodeObjectOfClasses:ams_JSONClasses3 forKey:@"kIDMTokens"];
     idmsTokens = v5->_idmsTokens;
     v5->_idmsTokens = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentMethodType"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentMethodType"];
     paymentMethodType = v5->_paymentMethodType;
     v5->_paymentMethodType = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentServicesURL"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentServicesURL"];
     paymentServicesURL = v5->_paymentServicesURL;
     v5->_paymentServicesURL = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentToken"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPaymentToken"];
     paymentToken = v5->_paymentToken;
     v5->_paymentToken = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPurchase"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPurchase"];
     purchase = v5->_purchase;
     v5->_purchase = v36;
   }

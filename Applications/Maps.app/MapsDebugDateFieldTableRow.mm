@@ -1,58 +1,58 @@
 @interface MapsDebugDateFieldTableRow
 - (MapsDebugDateFieldTableRow)init;
-- (void)_fieldDidChangeValue:(id)a3;
+- (void)_fieldDidChangeValue:(id)value;
 - (void)_showDatePicker;
-- (void)configureCell:(id)a3;
+- (void)configureCell:(id)cell;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation MapsDebugDateFieldTableRow
 
 - (void)_showDatePicker
 {
-  v3 = [(MapsDebugTableRow *)self title];
-  v4 = [UIAlertController alertControllerWithTitle:v3 message:0 preferredStyle:0];
+  title = [(MapsDebugTableRow *)self title];
+  v4 = [UIAlertController alertControllerWithTitle:title message:0 preferredStyle:0];
 
   v5 = objc_alloc_init(MapsDebugDataPickerViewController);
-  v6 = [(MapsDebugDateFieldTableRow *)self date];
-  v7 = [(MapsDebugDataPickerViewController *)v5 datePicker];
-  [v7 setDate:v6];
+  date = [(MapsDebugDateFieldTableRow *)self date];
+  datePicker = [(MapsDebugDataPickerViewController *)v5 datePicker];
+  [datePicker setDate:date];
 
   [v4 setContentViewController:v5];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_100A82B24;
   v24 = &unk_1016383E0;
-  v25 = self;
+  selfCopy = self;
   v8 = v5;
   v26 = v8;
   v9 = [UIAlertAction actionWithTitle:@"Ok" style:0 handler:&v21];
-  [v4 addAction:{v9, v21, v22, v23, v24, v25}];
+  [v4 addAction:{v9, v21, v22, v23, v24, selfCopy}];
 
   v10 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
   [v4 addAction:v10];
 
-  v11 = [v4 popoverPresentationController];
+  popoverPresentationController = [v4 popoverPresentationController];
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v13 = [WeakRetained contentView];
-  [v13 bounds];
-  [v11 setSourceRect:?];
+  contentView = [WeakRetained contentView];
+  [contentView bounds];
+  [popoverPresentationController setSourceRect:?];
 
   v14 = objc_loadWeakRetained(&self->_cell);
-  v15 = [v14 contentView];
-  [v11 setSourceView:v15];
+  contentView2 = [v14 contentView];
+  [popoverPresentationController setSourceView:contentView2];
 
   v16 = objc_loadWeakRetained(&self->_cell);
   if (v16)
   {
-    v17 = v16;
+    superview = v16;
     do
     {
-      v18 = v17;
-      v19 = [UIViewController viewControllerForView:v17];
-      v17 = [v17 superview];
+      v18 = superview;
+      v19 = [UIViewController viewControllerForView:superview];
+      superview = [superview superview];
 
       if (v19)
       {
@@ -61,7 +61,7 @@
 
       else
       {
-        v20 = v17 == 0;
+        v20 = superview == 0;
       }
     }
 
@@ -76,11 +76,11 @@
   [v19 presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_fieldDidChangeValue:(id)a3
+- (void)_fieldDidChangeValue:(id)value
 {
-  v8 = [a3 date];
-  v4 = [(MapsDebugDateFieldTableRow *)self date];
-  v5 = [v8 isEqual:v4];
+  date = [value date];
+  date2 = [(MapsDebugDateFieldTableRow *)self date];
+  v5 = [date isEqual:date2];
 
   if ((v5 & 1) == 0)
   {
@@ -89,40 +89,40 @@
     if (v6)
     {
       v7 = [(MapsDebugDateFieldTableRow *)self set];
-      (v7)[2](v7, v8);
+      (v7)[2](v7, date);
     }
 
-    [(MapsDebugDateFieldTableRow *)self setDate:v8];
+    [(MapsDebugDateFieldTableRow *)self setDate:date];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_date, date);
+  dateCopy = date;
   v8 = objc_alloc_init(NSDateFormatter);
   [v8 setTimeStyle:0];
   [v8 setDateStyle:1];
-  v6 = [(MapsDebugDateFieldTableRow *)self date];
-  v7 = [v8 stringFromDate:v6];
+  date = [(MapsDebugDateFieldTableRow *)self date];
+  v7 = [v8 stringFromDate:date];
   [(UILabel *)self->_dateLabel setText:v7];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v50.receiver = self;
   v50.super_class = MapsDebugDateFieldTableRow;
-  [(MapsDebugTableRow *)&v50 configureCell:v4];
-  v5 = [v4 contentView];
+  [(MapsDebugTableRow *)&v50 configureCell:cellCopy];
+  contentView = [cellCopy contentView];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = [v4 contentView];
-  v7 = [v6 subviews];
+  contentView2 = [cellCopy contentView];
+  subviews = [contentView2 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v46 objects:v53 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v8)
   {
     v9 = v8;
@@ -133,7 +133,7 @@
       {
         if (*v47 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v46 + 1) + 8 * i);
@@ -143,14 +143,14 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v46 objects:v53 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v46 objects:v53 count:16];
     }
 
     while (v9);
   }
 
-  [v4 setSelectionStyle:0];
-  objc_storeWeak(&self->_cell, v4);
+  [cellCopy setSelectionStyle:0];
+  objc_storeWeak(&self->_cell, cellCopy);
   if (!self->_dateLabel)
   {
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -173,82 +173,82 @@
     [(MapsDebugDateFieldTableRow *)self setDate:v18];
   }
 
-  v19 = [(MapsDebugDateFieldTableRow *)self date];
+  date = [(MapsDebugDateFieldTableRow *)self date];
 
-  if (!v19)
+  if (!date)
   {
     v20 = +[NSDate date];
     [(MapsDebugDateFieldTableRow *)self setDate:v20];
   }
 
   [(UILabel *)self->_dateLabel removeFromSuperview];
-  v21 = [v4 contentView];
-  [v21 addSubview:self->_dateLabel];
+  contentView3 = [cellCopy contentView];
+  [contentView3 addSubview:self->_dateLabel];
 
-  [v4 setPreservesSuperviewLayoutMargins:1];
-  v22 = [v4 contentView];
-  [v22 setPreservesSuperviewLayoutMargins:1];
+  [cellCopy setPreservesSuperviewLayoutMargins:1];
+  contentView4 = [cellCopy contentView];
+  [contentView4 setPreservesSuperviewLayoutMargins:1];
 
-  v23 = [(MapsDebugTableRow *)self title];
-  v24 = [v23 length];
+  title = [(MapsDebugTableRow *)self title];
+  v24 = [title length];
 
   v25 = self->_dateLabel;
   if (v24)
   {
     [(UILabel *)v25 setTextAlignment:2];
-    v26 = [(UILabel *)self->_dateLabel leadingAnchor];
-    v45 = [v5 textLayoutGuide];
-    v44 = [v45 trailingAnchor];
-    v43 = [v26 constraintEqualToAnchor:5.0 constant:?];
+    leadingAnchor = [(UILabel *)self->_dateLabel leadingAnchor];
+    textLayoutGuide = [contentView textLayoutGuide];
+    trailingAnchor = [textLayoutGuide trailingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:5.0 constant:?];
     v52[0] = v43;
-    v27 = [v5 trailingAnchor];
-    v41 = [(UILabel *)self->_dateLabel trailingAnchor];
-    v42 = v27;
-    v28 = [v27 constraintEqualToAnchor:?];
-    v52[1] = v28;
-    v29 = [(UILabel *)self->_dateLabel centerYAnchor];
-    v30 = [v5 textLayoutGuide];
-    v31 = [v30 centerYAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
-    v52[2] = v32;
+    trailingAnchor2 = [contentView trailingAnchor];
+    trailingAnchor3 = [(UILabel *)self->_dateLabel trailingAnchor];
+    trailingAnchor5 = trailingAnchor2;
+    topAnchor = [trailingAnchor2 constraintEqualToAnchor:?];
+    v52[1] = topAnchor;
+    centerYAnchor = [(UILabel *)self->_dateLabel centerYAnchor];
+    textLayoutGuide2 = [contentView textLayoutGuide];
+    centerYAnchor2 = [textLayoutGuide2 centerYAnchor];
+    bottomAnchor = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    v52[2] = bottomAnchor;
     v33 = [NSArray arrayWithObjects:v52 count:3];
   }
 
   else
   {
     [(UILabel *)v25 setTextAlignment:0];
-    v40 = [(UILabel *)self->_dateLabel leadingAnchor];
-    v45 = [v5 leadingAnchor];
-    v44 = [v40 constraintEqualToAnchor:?];
-    v51[0] = v44;
-    v34 = [v5 trailingAnchor];
-    v42 = [(UILabel *)self->_dateLabel trailingAnchor];
-    v43 = v34;
-    v41 = [v34 constraintEqualToAnchor:?];
-    v51[1] = v41;
-    v28 = [(UILabel *)self->_dateLabel topAnchor];
-    v29 = [v5 topAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
-    v51[2] = v30;
-    v31 = [(UILabel *)self->_dateLabel bottomAnchor];
-    v32 = [v5 bottomAnchor];
-    [v31 constraintEqualToAnchor:v32];
-    v36 = v35 = v5;
+    leadingAnchor2 = [(UILabel *)self->_dateLabel leadingAnchor];
+    textLayoutGuide = [contentView leadingAnchor];
+    trailingAnchor = [leadingAnchor2 constraintEqualToAnchor:?];
+    v51[0] = trailingAnchor;
+    trailingAnchor4 = [contentView trailingAnchor];
+    trailingAnchor5 = [(UILabel *)self->_dateLabel trailingAnchor];
+    v43 = trailingAnchor4;
+    trailingAnchor3 = [trailingAnchor4 constraintEqualToAnchor:?];
+    v51[1] = trailingAnchor3;
+    topAnchor = [(UILabel *)self->_dateLabel topAnchor];
+    centerYAnchor = [contentView topAnchor];
+    textLayoutGuide2 = [topAnchor constraintEqualToAnchor:centerYAnchor];
+    v51[2] = textLayoutGuide2;
+    centerYAnchor2 = [(UILabel *)self->_dateLabel bottomAnchor];
+    bottomAnchor = [contentView bottomAnchor];
+    [centerYAnchor2 constraintEqualToAnchor:bottomAnchor];
+    v36 = v35 = contentView;
     v51[3] = v36;
     v33 = [NSArray arrayWithObjects:v51 count:4];
 
-    v5 = v35;
-    v26 = v40;
+    contentView = v35;
+    leadingAnchor = leadingAnchor2;
   }
 
   if (self->_lastConstraints)
   {
-    v37 = [v4 contentView];
-    [v37 removeConstraints:self->_lastConstraints];
+    contentView5 = [cellCopy contentView];
+    [contentView5 removeConstraints:self->_lastConstraints];
   }
 
-  v38 = [v4 contentView];
-  [v38 addConstraints:v33];
+  contentView6 = [cellCopy contentView];
+  [contentView6 addConstraints:v33];
 
   lastConstraints = self->_lastConstraints;
   self->_lastConstraints = v33;

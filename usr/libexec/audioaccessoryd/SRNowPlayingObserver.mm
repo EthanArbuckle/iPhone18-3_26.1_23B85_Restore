@@ -2,9 +2,9 @@
 - ($1E6FB7347BE694799A5E8CC69A739A06)_constructNowPlayingMessage;
 - (SRNowPlayingObserver)init;
 - (double)_getCurrentTime;
-- (unsigned)getSRNowPlayingMediaSubType:(int64_t)a3;
-- (unsigned)getSRNowPlayingMediaType:(int64_t)a3;
-- (unsigned)getSRNowPlayingPlaybackState:(unsigned int)a3;
+- (unsigned)getSRNowPlayingMediaSubType:(int64_t)type;
+- (unsigned)getSRNowPlayingMediaType:(int64_t)type;
+- (unsigned)getSRNowPlayingPlaybackState:(unsigned int)state;
 - (void)_activate;
 - (void)_checkIfRouteChanged;
 - (void)_handleShortPlaybackDetectionTimerExpiry;
@@ -12,18 +12,18 @@
 - (void)_nowPlayingControllerEnsureStarted;
 - (void)_recordLastPlayedTime;
 - (void)_startShortPlaybackDetectionTimer;
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4;
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 - (void)fetchCurrentNowPlayingInfo;
-- (void)handleNowPlayingContentItemChanges:(id)a3;
-- (void)handleNowPlayingRouteChangedFrom:(id)a3 toRoute:(id)a4;
-- (void)handlePlaybackQueueChangedTo:(id)a3;
-- (void)handlePlaybackStateChangedTo:(unsigned __int8)a3;
+- (void)handleNowPlayingContentItemChanges:(id)changes;
+- (void)handleNowPlayingRouteChangedFrom:(id)from toRoute:(id)route;
+- (void)handlePlaybackQueueChangedTo:(id)to;
+- (void)handlePlaybackStateChangedTo:(unsigned __int8)to;
 - (void)sendNowPlayingMessage;
-- (void)systemRouteChangedTo:(id)a3;
+- (void)systemRouteChangedTo:(id)to;
 @end
 
 @implementation SRNowPlayingObserver
@@ -64,9 +64,9 @@
 
 - (void)_checkIfRouteChanged
 {
-  v3 = [(BTSmartRoutingDaemon *)self->_srDaemon getCurrentRoute];
+  getCurrentRoute = [(BTSmartRoutingDaemon *)self->_srDaemon getCurrentRoute];
   v4 = self->_currentSystemRoute;
-  v5 = v3;
+  v5 = getCurrentRoute;
   v7 = v5;
   if (v4 == v5)
   {
@@ -139,42 +139,42 @@ LABEL_8:
   return v4;
 }
 
-- (unsigned)getSRNowPlayingMediaType:(int64_t)a3
+- (unsigned)getSRNowPlayingMediaType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (type == 2);
   }
 }
 
-- (unsigned)getSRNowPlayingMediaSubType:(int64_t)a3
+- (unsigned)getSRNowPlayingMediaSubType:(int64_t)type
 {
-  if (a3 >= 8)
+  if (type >= 8)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (unsigned)getSRNowPlayingPlaybackState:(unsigned int)a3
+- (unsigned)getSRNowPlayingPlaybackState:(unsigned int)state
 {
-  if (a3 >= 5)
+  if (state >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
@@ -239,20 +239,20 @@ LABEL_8:
 
   if (v5)
   {
-    v7 = [(SRNowPlayingObserver *)self _constructNowPlayingMessage];
+    _constructNowPlayingMessage = [(SRNowPlayingObserver *)self _constructNowPlayingMessage];
     srDaemon = self->_srDaemon;
     lastTarget = self->_lastTarget;
     v10 = self->_lastTargetHeadsetAddress;
 
-    [(BTSmartRoutingDaemon *)srDaemon updateNowPlayingInfoForConnectedWx:v7 withLastPlayedTarget:v6 & 0xFFFFFFFFFFFFLL andHeadsetAddress:lastTarget, v10];
+    [(BTSmartRoutingDaemon *)srDaemon updateNowPlayingInfoForConnectedWx:_constructNowPlayingMessage withLastPlayedTarget:v6 & 0xFFFFFFFFFFFFLL andHeadsetAddress:lastTarget, v10];
   }
 }
 
-- (void)systemRouteChangedTo:(id)a3
+- (void)systemRouteChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = self->_currentSystemRoute;
-  v6 = v4;
+  v6 = toCopy;
   v8 = v6;
   if (v5 == v6)
   {
@@ -277,12 +277,12 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)handlePlaybackStateChangedTo:(unsigned __int8)a3
+- (void)handlePlaybackStateChangedTo:(unsigned __int8)to
 {
-  v3 = a3;
-  if (a3)
+  toCopy = to;
+  if (to)
   {
-    v5 = (a3 & 0xFE) == 2;
+    v5 = (to & 0xFE) == 2;
   }
 
   else
@@ -292,7 +292,7 @@ LABEL_8:
 
   currentPlaybackState = self->_currentPlaybackState;
   v8 = v5 && currentPlaybackState == 1;
-  if (currentPlaybackState != a3)
+  if (currentPlaybackState != to)
   {
     if (dword_1002F6A08 <= 30)
     {
@@ -304,9 +304,9 @@ LABEL_13:
           v9 = off_1002B9520[currentPlaybackState];
         }
 
-        if (v3 <= 4)
+        if (toCopy <= 4)
         {
-          v10 = off_1002B9520[v3];
+          v10 = off_1002B9520[toCopy];
         }
 
         LogPrintF();
@@ -321,12 +321,12 @@ LABEL_13:
     }
 
 LABEL_20:
-    self->_currentPlaybackState = v3;
+    self->_currentPlaybackState = toCopy;
   }
 
-  if (v3 - 2 >= 2 && v3)
+  if (toCopy - 2 >= 2 && toCopy)
   {
-    if (v3 != 1)
+    if (toCopy != 1)
     {
       return;
     }
@@ -346,13 +346,13 @@ LABEL_20:
   [(SRNowPlayingObserver *)self sendNowPlayingMessage];
 }
 
-- (void)handleNowPlayingContentItemChanges:(id)a3
+- (void)handleNowPlayingContentItemChanges:(id)changes
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 copy];
+  v4 = [changes copy];
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -371,16 +371,16 @@ LABEL_20:
         v9 = *(*(&v16 + 1) + 8 * v8);
         if (!self->_currentPlayingContentItem || ([*(*(&v16 + 1) + 8 * v8) identifier], v10 = objc_claimAutoreleasedReturnValue(), -[MRContentItem identifier](self->_currentPlayingContentItem, "identifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, (v12 & 1) != 0))
         {
-          v13 = [v9 metadata];
+          metadata = [v9 metadata];
 
-          if (v13)
+          if (metadata)
           {
-            if ([v13 hasMediaType])
+            if ([metadata hasMediaType])
             {
-              if ([v13 hasMediaSubType])
+              if ([metadata hasMediaSubType])
               {
-                v14 = -[SRNowPlayingObserver getSRNowPlayingMediaType:](self, "getSRNowPlayingMediaType:", [v13 mediaType]);
-                v15 = -[SRNowPlayingObserver getSRNowPlayingMediaSubType:](self, "getSRNowPlayingMediaSubType:", [v13 mediaSubType]);
+                v14 = -[SRNowPlayingObserver getSRNowPlayingMediaType:](self, "getSRNowPlayingMediaType:", [metadata mediaType]);
+                v15 = -[SRNowPlayingObserver getSRNowPlayingMediaSubType:](self, "getSRNowPlayingMediaSubType:", [metadata mediaSubType]);
                 if (self->_mediaType != v14 || self->_mediaSubType != v15)
                 {
                   self->_mediaType = v14;
@@ -408,14 +408,14 @@ LABEL_20:
     }
   }
 
-  v13 = 0;
+  metadata = 0;
 LABEL_17:
 }
 
-- (void)handleNowPlayingRouteChangedFrom:(id)a3 toRoute:(id)a4
+- (void)handleNowPlayingRouteChangedFrom:(id)from toRoute:(id)route
 {
-  v11 = a3;
-  v6 = a4;
+  fromCopy = from;
+  routeCopy = route;
   if (self->_currentPlaybackState == 1)
   {
     if (dword_1002F6A08 <= 30 && (dword_1002F6A08 != -1 || _LogCategory_Initialize()))
@@ -423,13 +423,13 @@ LABEL_17:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_currentSystemRoute, a4);
+    objc_storeStrong(&self->_currentSystemRoute, route);
     if ([(NSString *)self->_currentSystemRoute isEqualToString:@"Bluetooth"])
     {
       self->_lastTarget = 1;
-      v7 = [(BTSmartRoutingDaemon *)self->_srDaemon getCurrentBTRouteAddress];
+      getCurrentBTRouteAddress = [(BTSmartRoutingDaemon *)self->_srDaemon getCurrentBTRouteAddress];
       lastTargetHeadsetAddress = self->_lastTargetHeadsetAddress;
-      self->_lastTargetHeadsetAddress = v7;
+      self->_lastTargetHeadsetAddress = getCurrentBTRouteAddress;
 
       if (!self->_lastTargetHeadsetAddress)
       {
@@ -463,23 +463,23 @@ LABEL_17:
   }
 }
 
-- (void)handlePlaybackQueueChangedTo:(id)a3
+- (void)handlePlaybackQueueChangedTo:(id)to
 {
-  if (a3)
+  if (to)
   {
-    v13 = [a3 contentItems];
-    v4 = [v13 firstObject];
-    v5 = [v4 copy];
+    contentItems = [to contentItems];
+    firstObject = [contentItems firstObject];
+    v5 = [firstObject copy];
 
-    v6 = [v5 identifier];
-    if (v6)
+    identifier = [v5 identifier];
+    if (identifier)
     {
-      v7 = v6;
+      v7 = identifier;
       currentPlayingContentItem = self->_currentPlayingContentItem;
       p_currentPlayingContentItem = &self->_currentPlayingContentItem;
-      v10 = [(MRContentItem *)currentPlayingContentItem identifier];
-      v11 = [v5 identifier];
-      v12 = [v10 isEqualToString:v11];
+      identifier2 = [(MRContentItem *)currentPlayingContentItem identifier];
+      identifier3 = [v5 identifier];
+      v12 = [identifier2 isEqualToString:identifier3];
 
       if ((v12 & 1) == 0)
       {
@@ -548,7 +548,7 @@ LABEL_17:
   dispatch_activate(v5);
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -556,39 +556,39 @@ LABEL_17:
   v6[2] = sub_10007D074;
   v6[3] = &unk_1002B68F8;
   v6[4] = self;
-  v7 = a5;
+  toCopy = to;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to
 {
-  v6 = a5;
+  toCopy = to;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007D150;
   v9[3] = &unk_1002B6D18;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = toCopy;
+  v8 = toCopy;
   dispatch_async(dispatchQueue, v9);
 }
 
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes
 {
-  v5 = a4;
+  changesCopy = changes;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10007D1F4;
   v8[3] = &unk_1002B6D18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = changesCopy;
+  v7 = changesCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -599,7 +599,7 @@ LABEL_17:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;

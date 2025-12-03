@@ -1,22 +1,22 @@
 @interface HODiscoverWebViewMessageHandler
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation HODiscoverWebViewMessageHandler
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v10 = a4;
-  v4 = [v10 name];
-  v5 = [v4 isEqualToString:@"preload"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v5 = [name isEqualToString:@"preload"];
 
   if (v5)
   {
     objc_opt_class();
-    v6 = [v10 body];
+    body = [messageCopy body];
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = body;
     }
 
     else

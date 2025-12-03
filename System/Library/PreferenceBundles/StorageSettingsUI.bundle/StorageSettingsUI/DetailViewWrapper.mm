@@ -1,11 +1,11 @@
 @interface DetailViewWrapper
-+ (id)hostingControllerWithApplicationBundleID:(id)a3;
++ (id)hostingControllerWithApplicationBundleID:(id)d;
 - (_TtC17StorageSettingsUI17DetailViewWrapper)init;
 @end
 
 @implementation DetailViewWrapper
 
-+ (id)hostingControllerWithApplicationBundleID:(id)a3
++ (id)hostingControllerWithApplicationBundleID:(id)d
 {
   v3 = sub_81928();
   v5 = sub_750E8(v3, v4);

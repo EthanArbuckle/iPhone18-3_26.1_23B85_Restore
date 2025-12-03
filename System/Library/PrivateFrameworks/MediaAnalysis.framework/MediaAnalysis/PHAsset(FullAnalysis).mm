@@ -106,10 +106,10 @@
 - (unint64_t)vcp_fullAnalysisTypes
 {
   v11 = *MEMORY[0x1E69E9840];
-  if ([a1 isPhoto])
+  if ([self isPhoto])
   {
     v2 = *"\b\nH@";
-    if ([a1 vcp_isLivePhoto])
+    if ([self vcp_isLivePhoto])
     {
       v2 = *"\b\nH@" | 0x40032C04D5A41090;
     }
@@ -135,7 +135,7 @@
     }
   }
 
-  else if ([a1 isVideo])
+  else if ([self isVideo])
   {
     v5 = 0x40032C0040E4D898;
     if (!+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
@@ -163,11 +163,11 @@
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v7 = 138412546;
-      v8 = v6;
+      v8 = localIdentifier;
       v9 = 1024;
-      v10 = [a1 mediaType];
+      mediaType = [self mediaType];
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Unexpected media type (%d)", &v7, 0x12u);
     }
 
@@ -179,12 +179,12 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 isPhoto])
+  if ([self isPhoto])
   {
-    if ([v4 vcp_hasLocalPhoto:{objc_msgSend(a1, "hasAdjustments")}])
+    if ([v4 vcp_hasLocalPhoto:{objc_msgSend(self, "hasAdjustments")}])
     {
       v5 = *"\b\nH@";
-      if ([a1 vcp_isLivePhoto] && objc_msgSend(v4, "vcp_hasLocalMovie:", objc_msgSend(a1, "hasAdjustments")))
+      if ([self vcp_isLivePhoto] && objc_msgSend(v4, "vcp_hasLocalMovie:", objc_msgSend(self, "hasAdjustments")))
       {
         v5 = *"\b\nH@" | 0x40032C04D5A41090;
       }
@@ -217,24 +217,24 @@ LABEL_24:
     goto LABEL_32;
   }
 
-  if (![a1 isVideo])
+  if (![self isVideo])
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [a1 localIdentifier];
+      localIdentifier = [self localIdentifier];
       v17 = 138412546;
-      v18 = v11;
+      v18 = localIdentifier;
       v19 = 1024;
-      v20 = [a1 mediaType];
+      mediaType = [self mediaType];
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] Unexpected media type (%d)", &v17, 0x12u);
     }
 
     goto LABEL_31;
   }
 
-  if ((![a1 vcp_isVideoSlowmo] || (objc_msgSend(v4, "vcp_hasLocalSlowmo:", objc_msgSend(a1, "vcp_hasAdjustments")) & 1) == 0) && ((objc_msgSend(a1, "vcp_isVideoSlowmo") & 1) != 0 || !objc_msgSend(v4, "vcp_hasLocalMovie:", objc_msgSend(a1, "hasAdjustments"))))
+  if ((![self vcp_isVideoSlowmo] || (objc_msgSend(v4, "vcp_hasLocalSlowmo:", objc_msgSend(self, "vcp_hasAdjustments")) & 1) == 0) && ((objc_msgSend(self, "vcp_isVideoSlowmo") & 1) != 0 || !objc_msgSend(v4, "vcp_hasLocalMovie:", objc_msgSend(self, "hasAdjustments"))))
   {
-    if ([v4 vcp_hasLocalPhoto:{objc_msgSend(a1, "hasAdjustments")}])
+    if ([v4 vcp_hasLocalPhoto:{objc_msgSend(self, "hasAdjustments")}])
     {
       v15 = +[VCPVideoCNNAnalyzer isMUBackboneEnabled];
       v13 = +[VCPVideoCaptionAnalyzer mode];

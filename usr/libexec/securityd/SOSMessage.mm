@@ -1,83 +1,83 @@
 @interface SOSMessage
-- (BOOL)SOSTransportMessageHandlePeerMessage:(id)a3 id:(__CFString *)a4 cm:(__CFData *)a5 err:(__CFError *)a6;
-- (BOOL)SOSTransportMessageSendMessage:(id)a3 id:(__CFString *)a4 messageToSend:(__CFData *)a5 err:(__CFError *)a6;
-- (BOOL)SOSTransportMessageSendMessageIfNeeded:(id)a3 circleName:(__CFString *)a4 pID:(__CFString *)a5 err:(__CFError *)a6;
-- (SOSMessage)initWithAccount:(id)a3 andName:(id)a4;
+- (BOOL)SOSTransportMessageHandlePeerMessage:(id)message id:(__CFString *)id cm:(__CFData *)cm err:(__CFError *)err;
+- (BOOL)SOSTransportMessageSendMessage:(id)message id:(__CFString *)id messageToSend:(__CFData *)send err:(__CFError *)err;
+- (BOOL)SOSTransportMessageSendMessageIfNeeded:(id)needed circleName:(__CFString *)name pID:(__CFString *)d err:(__CFError *)err;
+- (SOSMessage)initWithAccount:(id)account andName:(id)name;
 - (__CFString)SOSTransportMessageGetCircleName;
-- (void)SOSTransportMessageCalculateNextTimer:(id)a3 rtt:(int)a4 peerid:(id)a5;
+- (void)SOSTransportMessageCalculateNextTimer:(id)timer rtt:(int)rtt peerid:(id)peerid;
 - (void)SOSTransportMessageGetEngine;
-- (void)SOSTransportMessageUpdateLastMessageSentTimetstamp:(id)a3 peer:(__OpaqueSOSPeer *)a4;
-- (void)SOSTransportMessageUpdateRTTs:(id)a3;
+- (void)SOSTransportMessageUpdateLastMessageSentTimetstamp:(id)timetstamp peer:(__OpaqueSOSPeer *)peer;
+- (void)SOSTransportMessageUpdateRTTs:(id)ts;
 - (void)dealloc;
 @end
 
 @implementation SOSMessage
 
-- (BOOL)SOSTransportMessageSendMessageIfNeeded:(id)a3 circleName:(__CFString *)a4 pID:(__CFString *)a5 err:(__CFError *)a6
+- (BOOL)SOSTransportMessageSendMessageIfNeeded:(id)needed circleName:(__CFString *)name pID:(__CFString *)d err:(__CFError *)err
 {
-  v8 = a3;
+  neededCopy = needed;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
-  v9 = [v8 account];
-  v10 = sub_100220920(v9);
-  v11 = [v8 engine];
+  account = [neededCopy account];
+  v10 = sub_100220920(account);
+  engine = [neededCopy engine];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10023EEC8;
   v16[3] = &unk_100346920;
   v19 = &v23;
-  v12 = v8;
+  v12 = neededCopy;
   v17 = v12;
-  v20 = a5;
-  v21 = a6;
+  dCopy = d;
+  errCopy = err;
   v22 = v10;
-  v13 = v9;
+  v13 = account;
   v18 = v13;
-  v14 = sub_10014811C(v11, a5, a6, v16);
-  LOBYTE(a6) = v14 & v24[3];
-  *(v24 + 24) = a6;
+  v14 = sub_10014811C(engine, d, err, v16);
+  LOBYTE(err) = v14 & v24[3];
+  *(v24 + 24) = err;
 
   _Block_object_dispose(&v23, 8);
-  return a6;
+  return err;
 }
 
-- (void)SOSTransportMessageUpdateLastMessageSentTimetstamp:(id)a3 peer:(__OpaqueSOSPeer *)a4
+- (void)SOSTransportMessageUpdateLastMessageSentTimetstamp:(id)timetstamp peer:(__OpaqueSOSPeer *)peer
 {
-  v8 = a3;
-  v5 = sub_10020649C(v8, @"kSOSAccountPeerLastSentTimestamp");
+  timetstampCopy = timetstamp;
+  v5 = sub_10020649C(timetstampCopy, @"kSOSAccountPeerLastSentTimestamp");
   if (!v5)
   {
     v5 = +[NSMutableDictionary dictionary];
   }
 
-  v6 = [v5 objectForKey:*(a4 + 2)];
+  v6 = [v5 objectForKey:*(peer + 2)];
 
   if (!v6)
   {
     v7 = +[NSDate date];
-    [v5 setObject:v7 forKey:*(a4 + 2)];
+    [v5 setObject:v7 forKey:*(peer + 2)];
 
-    sub_100228C18(v8, @"kSOSAccountPeerLastSentTimestamp", v5, 0);
+    sub_100228C18(timetstampCopy, @"kSOSAccountPeerLastSentTimestamp", v5, 0);
   }
 }
 
-- (BOOL)SOSTransportMessageHandlePeerMessage:(id)a3 id:(__CFString *)a4 cm:(__CFData *)a5 err:(__CFError *)a6
+- (BOOL)SOSTransportMessageHandlePeerMessage:(id)message id:(__CFString *)id cm:(__CFData *)cm err:(__CFError *)err
 {
-  v10 = a3;
-  [(SOSMessage *)self SOSTransportMessageUpdateRTTs:a4];
-  v11 = [v10 engine];
-  sub_100087E9C(v11 != 0, a6, @"Missing engine");
-  if (!v11)
+  messageCopy = message;
+  [(SOSMessage *)self SOSTransportMessageUpdateRTTs:id];
+  engine = [messageCopy engine];
+  sub_100087E9C(engine != 0, err, @"Missing engine");
+  if (!engine)
   {
     v17 = 0;
     goto LABEL_14;
   }
 
-  v12 = [v10 SOSTransportMessageGetAccount];
-  v13 = [v10 engine];
-  v14 = v12;
+  sOSTransportMessageGetAccount = [messageCopy SOSTransportMessageGetAccount];
+  engine2 = [messageCopy engine];
+  v14 = sOSTransportMessageGetAccount;
   v15 = v14;
   v40 = 0;
   v41 = &v40;
@@ -104,14 +104,14 @@
   v28[1] = 3221225472;
   v28[2] = sub_100240440;
   v28[3] = &unk_1003468F8;
-  v32 = a4;
-  v33 = a5;
-  v34 = a6;
+  idCopy = id;
+  cmCopy = cm;
+  errCopy = err;
   v29 = v15;
   v30 = &v40;
-  v35 = v13;
+  v35 = engine2;
   v31 = &v36;
-  v18 = sub_10014811C(v13, a4, a6, v28);
+  v18 = sub_10014811C(engine2, id, err, v28);
   v26 = (v18 & v41[3]);
   *(v41 + 24) &= v18;
   if (*(v37 + 24) != 1)
@@ -122,7 +122,7 @@
     }
 
 LABEL_11:
-    sub_100251538(a4, v19, v20, v21, v22, v23, v24, v25);
+    sub_100251538(id, v19, v20, v21, v22, v23, v24, v25);
     v17 = *(v41 + 24);
     goto LABEL_12;
   }
@@ -146,15 +146,15 @@ LABEL_14:
   return v17 & 1;
 }
 
-- (void)SOSTransportMessageUpdateRTTs:(id)a3
+- (void)SOSTransportMessageUpdateRTTs:(id)ts
 {
-  v4 = a3;
-  v5 = [(SOSMessage *)self SOSTransportMessageGetAccount];
-  v6 = sub_10020649C(v5, @"kSOSAccountPeerLastSentTimestamp");
+  tsCopy = ts;
+  sOSTransportMessageGetAccount = [(SOSMessage *)self SOSTransportMessageGetAccount];
+  v6 = sub_10020649C(sOSTransportMessageGetAccount, @"kSOSAccountPeerLastSentTimestamp");
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 objectForKey:v4];
+    v8 = [v6 objectForKey:tsCopy];
     if (v8)
     {
       v9 = +[NSDate date];
@@ -164,7 +164,7 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v19 = v4;
+        v19 = tsCopy;
         v20 = 2112;
         v21 = v9;
         v22 = 2112;
@@ -180,32 +180,32 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "rtt: %d", buf, 8u);
       }
 
-      [(SOSMessage *)self SOSTransportMessageCalculateNextTimer:v5 rtt:v11 peerid:v4];
-      v14 = [NSNumber numberWithUnsignedInt:v11, SecCoreAnalyticsValue];
-      v17 = v14;
+      [(SOSMessage *)self SOSTransportMessageCalculateNextTimer:sOSTransportMessageGetAccount rtt:v11 peerid:tsCopy];
+      secCoreAnalyticsValue = [NSNumber numberWithUnsignedInt:v11, SecCoreAnalyticsValue];
+      v17 = secCoreAnalyticsValue;
       v15 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
       [SecCoreAnalytics sendEvent:@"com.apple.security.sos.messagertt" event:v15];
 
-      [v7 removeObjectForKey:v4];
-      sub_100228C18(v5, @"kSOSAccountPeerLastSentTimestamp", v7, 0);
+      [v7 removeObjectForKey:tsCopy];
+      sub_100228C18(sOSTransportMessageGetAccount, @"kSOSAccountPeerLastSentTimestamp", v7, 0);
     }
   }
 }
 
-- (void)SOSTransportMessageCalculateNextTimer:(id)a3 rtt:(int)a4 peerid:(id)a5
+- (void)SOSTransportMessageCalculateNextTimer:(id)timer rtt:(int)rtt peerid:(id)peerid
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = sub_10020649C(v7, @"PeerNegotiationTimeouts");
+  timerCopy = timer;
+  peeridCopy = peerid;
+  v9 = sub_10020649C(timerCopy, @"PeerNegotiationTimeouts");
   if (!v9)
   {
     v9 = +[NSMutableDictionary dictionary];
   }
 
-  v10 = 2 * a4;
-  v11 = [v9 objectForKey:v8];
+  v10 = 2 * rtt;
+  v11 = [v9 objectForKey:peeridCopy];
   v12 = v11;
-  if (!v11 || (v13 = [v11 intValue], a4 > 1800) || v13 < v10)
+  if (!v11 || (v13 = [v11 intValue], rtt > 1800) || v13 < v10)
   {
     if (v10 <= 60)
     {
@@ -214,7 +214,7 @@ LABEL_14:
 
     else
     {
-      v14 = 2 * a4;
+      v14 = 2 * rtt;
     }
 
     if (v14 >= 3600)
@@ -228,26 +228,26 @@ LABEL_14:
     }
 
     v16 = [[NSNumber alloc] initWithInt:v15];
-    [v9 setObject:v16 forKey:v8];
+    [v9 setObject:v16 forKey:peeridCopy];
     v17 = sub_100006274("otrtimer");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412546;
-      v19 = v8;
+      v19 = peeridCopy;
       v20 = 1024;
       v21 = v15;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "peerID: %@ New OTR RTT: %d", &v18, 0x12u);
     }
 
-    sub_100228C18(v7, @"PeerNegotiationTimeouts", v9, 0);
+    sub_100228C18(timerCopy, @"PeerNegotiationTimeouts", v9, 0);
   }
 }
 
-- (BOOL)SOSTransportMessageSendMessage:(id)a3 id:(__CFString *)a4 messageToSend:(__CFData *)a5 err:(__CFError *)a6
+- (BOOL)SOSTransportMessageSendMessage:(id)message id:(__CFString *)id messageToSend:(__CFData *)send err:(__CFError *)err
 {
-  v10 = a3;
-  v18 = sub_10001104C(kCFAllocatorDefault, v11, v12, v13, v14, v15, v16, v17, a4, a5);
-  v19 = [(SOSMessage *)self SOSTransportMessageSendMessages:v10 pm:v18 err:a6];
+  messageCopy = message;
+  v18 = sub_10001104C(kCFAllocatorDefault, v11, v12, v13, v14, v15, v16, v17, id, send);
+  v19 = [(SOSMessage *)self SOSTransportMessageSendMessages:messageCopy pm:v18 err:err];
 
   if (v18)
   {
@@ -259,19 +259,19 @@ LABEL_14:
 
 - (__CFString)SOSTransportMessageGetCircleName
 {
-  v2 = [(SOSMessage *)self circleName];
+  circleName = [(SOSMessage *)self circleName];
 
-  return v2;
+  return circleName;
 }
 
 - (void)SOSTransportMessageGetEngine
 {
   if (![(SOSMessage *)self engine])
   {
-    v3 = [(SOSMessage *)self account];
-    v4 = [v3 factory];
-    v5 = [(SOSMessage *)self circleName];
-    if (v4 && (v6 = v4[1](v4, v5, 0)) != 0)
+    account = [(SOSMessage *)self account];
+    factory = [account factory];
+    circleName = [(SOSMessage *)self circleName];
+    if (factory && (v6 = factory[1](factory, circleName, 0)) != 0)
     {
       v7 = *v6;
       (*(v6 + 72))(v6, 0);
@@ -308,17 +308,17 @@ LABEL_14:
   [(SOSMessage *)&v4 dealloc];
 }
 
-- (SOSMessage)initWithAccount:(id)a3 andName:(id)a4
+- (SOSMessage)initWithAccount:(id)account andName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SOSMessage;
   v9 = [(SOSMessage *)&v16 init];
   if (v9)
   {
-    v10 = [v7 factory];
-    if (v10 && (v11 = v10[1](v10, v8, 0)) != 0)
+    factory = [accountCopy factory];
+    if (factory && (v11 = factory[1](factory, nameCopy, 0)) != 0)
     {
       v12 = *v11;
       (*(v11 + 72))(v11, 0);
@@ -334,8 +334,8 @@ LABEL_14:
     }
 
     v9->_engine = v12;
-    objc_storeStrong(&v9->_account, a3);
-    v13 = [[NSString alloc] initWithString:v8];
+    objc_storeStrong(&v9->_account, account);
+    v13 = [[NSString alloc] initWithString:nameCopy];
     circleName = v9->_circleName;
     v9->_circleName = v13;
   }

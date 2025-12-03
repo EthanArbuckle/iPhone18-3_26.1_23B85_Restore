@@ -13,18 +13,18 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 service];
+  service = [v4 service];
   v6 = *MEMORY[0x277CCF7D8];
-  v7 = [v5 findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
+  v7 = [service findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
   if (v7)
   {
-    v8 = [a1 naturalLightingActiveTransitionContextForCharacteristic:v7];
+    v8 = [self naturalLightingActiveTransitionContextForCharacteristic:v7];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -32,7 +32,7 @@
       v15 = 138543874;
       v16 = v12;
       v17 = 2112;
-      v18 = v5;
+      v18 = service;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Service doesn't support Color Temperature Characteristic %@:%@", &v15, 0x20u);
@@ -51,30 +51,30 @@
 {
   v36 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 controllerContext];
-  if (v5 || ([a1 endBehavior], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(a1, "linearTransition"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  controllerContext = [self controllerContext];
+  if (controllerContext || ([self endBehavior], (controllerContext = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(self, "linearTransition"), (controllerContext = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v26 = [a1 linearDerivedTransition];
+    linearDerivedTransition = [self linearDerivedTransition];
 
-    if (!v26)
+    if (!linearDerivedTransition)
     {
       goto LABEL_20;
     }
   }
 
-  v6 = [a1 linearDerivedTransition];
-  v7 = [v6 transitionPoints];
-  v8 = [v7 count];
+  linearDerivedTransition2 = [self linearDerivedTransition];
+  transitionPoints = [linearDerivedTransition2 transitionPoints];
+  v8 = [transitionPoints count];
 
   if (v8)
   {
-    v9 = [a1 controllerContext];
+    controllerContext2 = [self controllerContext];
     v29 = 0;
-    v10 = [MEMORY[0x277CFEAC8] parsedFromData:v9 error:&v29];
+    v10 = [MEMORY[0x277CFEAC8] parsedFromData:controllerContext2 error:&v29];
     v11 = v29;
     if (!v10)
     {
@@ -86,7 +86,7 @@
         *buf = 138543874;
         v31 = v22;
         v32 = 2112;
-        v33 = v9;
+        v33 = controllerContext2;
         v34 = 2112;
         v35 = v11;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode controller context %@:%@", buf, 0x20u);
@@ -97,20 +97,20 @@
       goto LABEL_18;
     }
 
-    v12 = [v10 startTime];
-    v13 = [v12 value];
+    startTime = [v10 startTime];
+    value = [startTime value];
 
-    if (v13)
+    if (value)
     {
       if ([v10 isNaturalLightingEnabled])
       {
         v14 = MEMORY[0x277CBEAA8];
-        [v13 doubleValue];
+        [value doubleValue];
         v16 = [v14 dateWithTimeIntervalSinceReferenceDate:v15 / 1000.0];
-        v17 = [v10 transitionChecksum];
-        v18 = [v17 value];
+        transitionChecksum = [v10 transitionChecksum];
+        value2 = [transitionChecksum value];
 
-        v19 = [[HMDNaturalLightingActiveTransitionContext alloc] initWithStartDate:v16 millisecondsElapsedSinceStartDate:0 transitionChecksum:v18];
+        v19 = [[HMDNaturalLightingActiveTransitionContext alloc] initWithStartDate:v16 millisecondsElapsedSinceStartDate:0 transitionChecksum:value2];
 LABEL_17:
 
 LABEL_18:
@@ -204,17 +204,17 @@ LABEL_21:
     v62 = v11;
     [v11 setEndBehavior:v13];
     v26 = [v12 transitionPointsWithMillisecondsElapsedSinceStartOfDay:a6];
-    v27 = [v26 hmf_isEmpty];
+    hmf_isEmpty = [v26 hmf_isEmpty];
     v28 = v13;
-    if (v27)
+    if (hmf_isEmpty)
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = a1;
+      selfCopy = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v32 = v27;
+        v32 = hmf_isEmpty;
         v34 = v33 = v28;
         *buf = 138543618;
         v71 = v34;
@@ -223,7 +223,7 @@ LABEL_21:
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@No transition points found: %@", buf, 0x16u);
 
         v28 = v33;
-        v27 = v32;
+        hmf_isEmpty = v32;
       }
 
       objc_autoreleasePoolPop(v29);
@@ -238,19 +238,19 @@ LABEL_21:
       v43 = [objc_opt_class() transitionPointsByCoalescingTransitionPoints:v26 ofCurve:v12];
 
       v44 = objc_autoreleasePoolPush();
-      v45 = a1;
+      selfCopy2 = self;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
         v47 = HMFGetLogIdentifier();
         v48 = [v43 count];
-        v49 = [v43 firstObject];
+        firstObject = [v43 firstObject];
         *buf = 138544130;
         v71 = v47;
         v72 = 2048;
         v73 = v48;
         v74 = 2112;
-        v75 = v49;
+        v75 = firstObject;
         v76 = 2048;
         v77 = v42;
         _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_INFO, "%{public}@Sending coalesced transition points to accessory, transition points count: %lu, start transition point: %@, time elapsed since start of the day: %llums", buf, 0x2Au);
@@ -259,13 +259,13 @@ LABEL_21:
       objc_autoreleasePoolPop(v44);
       *buf = [v12 minimumBrightness];
       v50 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:4];
-      v68 = [v12 maximumBrightness];
-      v51 = [MEMORY[0x277CBEA90] dataWithBytes:&v68 length:4];
+      maximumBrightness = [v12 maximumBrightness];
+      v51 = [MEMORY[0x277CBEA90] dataWithBytes:&maximumBrightness length:4];
       v52 = [objc_alloc(MEMORY[0x277CFEAA8]) initWithLowerBound:v50 upperBound:v51];
       v53 = objc_alloc(MEMORY[0x277CFEC98]);
       v35 = v67;
-      v54 = [v67 instanceID];
-      v55 = [v53 initWithValue:v54];
+      instanceID = [v67 instanceID];
+      v55 = [v53 initWithValue:instanceID];
 
       v56 = [objc_alloc(MEMORY[0x277CFEA98]) initWithTransitionPoints:v43 sourceHAPInstanceID:v55 sourceValueRange:v52];
       v11 = v62;
@@ -273,11 +273,11 @@ LABEL_21:
 
       v26 = v43;
       v28 = v59;
-      v27 = 0;
+      hmf_isEmpty = 0;
     }
 
     v22 = v60;
-    v41 = v27 ^ 1u;
+    v41 = hmf_isEmpty ^ 1u;
 
     v25 = v61;
   }
@@ -286,7 +286,7 @@ LABEL_21:
   {
     v28 = v13;
     v36 = objc_autoreleasePoolPush();
-    v37 = a1;
+    selfCopy3 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -337,14 +337,14 @@ LABEL_21:
     do
     {
       v9 = [v5 objectAtIndex:{v12, v38}];
-      if (v10 && [a1 canCoalesceTransitionPoint1:v9 transitionPoint2:v10 ofCurve:v40])
+      if (v10 && [self canCoalesceTransitionPoint1:v9 transitionPoint2:v10 ofCurve:v40])
       {
-        v13 = [v9 targetCompletionDuration];
-        v14 = [v13 value];
-        v15 = [v14 unsignedLongLongValue];
+        targetCompletionDuration = [v9 targetCompletionDuration];
+        value = [targetCompletionDuration value];
+        unsignedLongLongValue = [value unsignedLongLongValue];
 
         v16 = objc_autoreleasePoolPush();
-        v17 = a1;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
@@ -366,7 +366,7 @@ LABEL_21:
           v5 = v39;
         }
 
-        v8 += v15;
+        v8 += unsignedLongLongValue;
 
         objc_autoreleasePoolPop(v16);
         v21 = v9;
@@ -410,11 +410,11 @@ LABEL_21:
     while (v12 < [v5 count] - 1);
   }
 
-  v29 = [v5 lastObject];
-  v30 = v29;
+  lastObject = [v5 lastObject];
+  v30 = lastObject;
   if (v7)
   {
-    v31 = [v29 copy];
+    v31 = [lastObject copy];
 
     v32 = objc_alloc(MEMORY[0x277CFEC98]);
     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
@@ -438,15 +438,15 @@ LABEL_21:
   v10 = a3;
   v11 = a5;
   v12 = a6;
-  v13 = [v10 accessory];
-  v14 = [v13 home];
-  v15 = [v14 naturalLightingContext];
+  accessory = [v10 accessory];
+  home = [accessory home];
+  naturalLightingContext = [home naturalLightingContext];
 
-  v16 = [v15 timeZone];
-  if (!v16)
+  timeZone = [naturalLightingContext timeZone];
+  if (!timeZone)
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = a1;
+    selfCopy2 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -454,7 +454,7 @@ LABEL_21:
       *buf = 138543618;
       v73 = v44;
       v74 = 2112;
-      v75 = v15;
+      v75 = naturalLightingContext;
       v45 = "%{public}@Time zone missing in natural lighting context: %@";
 LABEL_20:
       _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, v45, buf, 0x16u);
@@ -472,7 +472,7 @@ LABEL_21:
   if (v18 <= 0)
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = a1;
+    selfCopy2 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -488,12 +488,12 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v19 = [v12 millisecondsElapsedSinceStartOfDayWithDate:v11 timeZone:v16];
-  v71 = [v10 naturalLightingCurve];
-  if (!v71)
+  v19 = [v12 millisecondsElapsedSinceStartOfDayWithDate:v11 timeZone:timeZone];
+  naturalLightingCurve = [v10 naturalLightingCurve];
+  if (!naturalLightingCurve)
   {
     v46 = objc_autoreleasePoolPush();
-    v47 = a1;
+    selfCopy3 = self;
     v48 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
@@ -514,13 +514,13 @@ LABEL_21:
   }
 
   v69 = v11;
-  v20 = [v10 service];
+  service = [v10 service];
   v21 = *MEMORY[0x277CCF7D8];
-  v70 = [v20 findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
+  v70 = [service findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
   if (!v70)
   {
     v50 = objc_autoreleasePoolPush();
-    v51 = a1;
+    selfCopy4 = self;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
@@ -528,7 +528,7 @@ LABEL_21:
       *buf = 138543874;
       v73 = v53;
       v74 = 2112;
-      v75 = v20;
+      v75 = service;
       v76 = 2112;
       v77 = v21;
       _os_log_impl(&dword_229538000, v52, OS_LOG_TYPE_ERROR, "%{public}@Service doesn't support Color Temperature Characteristic %@:%@", buf, 0x20u);
@@ -536,18 +536,18 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v50);
     v39 = 0;
-    v29 = v71;
+    v29 = naturalLightingCurve;
     goto LABEL_36;
   }
 
   v22 = *MEMORY[0x277CCF788];
-  v68 = v20;
-  v23 = [v20 findCharacteristicWithType:*MEMORY[0x277CCF788]];
+  v68 = service;
+  v23 = [service findCharacteristicWithType:*MEMORY[0x277CCF788]];
   v67 = v23;
   if (!v23)
   {
     v54 = objc_autoreleasePoolPush();
-    v55 = a1;
+    selfCopy5 = self;
     v56 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
     {
@@ -555,7 +555,7 @@ LABEL_21:
       *buf = 138543874;
       v73 = v57;
       v74 = 2112;
-      v75 = v20;
+      v75 = service;
       v76 = 2112;
       v77 = v22;
       _os_log_impl(&dword_229538000, v56, OS_LOG_TYPE_ERROR, "%{public}@Service doesn't support brightness Characteristic %@:%@", buf, 0x20u);
@@ -563,27 +563,27 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v54);
     v39 = 0;
-    v29 = v71;
+    v29 = naturalLightingCurve;
     goto LABEL_35;
   }
 
   v24 = v23;
   v66 = v12;
   v25 = objc_alloc(MEMORY[0x277CFEC98]);
-  v26 = [v70 instanceID];
-  v27 = [v25 initWithValue:v26];
+  instanceID = [v70 instanceID];
+  v27 = [v25 initWithValue:instanceID];
 
   v28 = objc_alloc_init(MEMORY[0x277CFEAB0]);
   [v28 setHAPInstanceID:v27];
   if (a4)
   {
     v65 = v28;
-    v29 = v71;
-    if (([objc_opt_class() updateTransition:v28 withCurve:v71 brightnessCharacteristic:v24 millisecondsElapsedSinceStartOfDay:v19 transitionStartTimeInMilliseconds:v18] & 1) == 0)
+    v29 = naturalLightingCurve;
+    if (([objc_opt_class() updateTransition:v28 withCurve:naturalLightingCurve brightnessCharacteristic:v24 millisecondsElapsedSinceStartOfDay:v19 transitionStartTimeInMilliseconds:v18] & 1) == 0)
     {
       v64 = v27;
       v58 = objc_autoreleasePoolPush();
-      v59 = a1;
+      selfCopy6 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
@@ -601,29 +601,29 @@ LABEL_21:
       goto LABEL_34;
     }
 
-    if ([v71 colorTemperatureNotifyIntervalThresholdInMilliseconds])
+    if ([naturalLightingCurve colorTemperatureNotifyIntervalThresholdInMilliseconds])
     {
       v30 = objc_alloc(MEMORY[0x277CFEC98]);
       v31 = v27;
-      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v71, "colorTemperatureNotifyIntervalThresholdInMilliseconds")}];
+      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(naturalLightingCurve, "colorTemperatureNotifyIntervalThresholdInMilliseconds")}];
       v33 = [v30 initWithValue:v32];
       [v65 setNotifyTimeIntervalThreshold:v33];
 
       v27 = v31;
     }
 
-    if ([v71 colorTemperatureUpdateIntervalInMilliseconds])
+    if ([naturalLightingCurve colorTemperatureUpdateIntervalInMilliseconds])
     {
       v34 = objc_alloc(MEMORY[0x277CFEC98]);
       v35 = v27;
-      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v71, "colorTemperatureUpdateIntervalInMilliseconds")}];
+      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(naturalLightingCurve, "colorTemperatureUpdateIntervalInMilliseconds")}];
       v37 = [v34 initWithValue:v36];
       [v65 setValueUpdateTimeInterval:v37];
 
       v27 = v35;
     }
 
-    *buf = [v71 colorTemperatureNotifyValueChangeThreshold];
+    *buf = [naturalLightingCurve colorTemperatureNotifyValueChangeThreshold];
     if (*buf >= 1)
     {
       v38 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:4];
@@ -636,11 +636,11 @@ LABEL_21:
   v39 = v28;
   v40 = v28;
   v12 = v66;
-  v29 = v71;
+  v29 = naturalLightingCurve;
 LABEL_34:
 
 LABEL_35:
-  v20 = v68;
+  service = v68;
 
 LABEL_36:
   v11 = v69;

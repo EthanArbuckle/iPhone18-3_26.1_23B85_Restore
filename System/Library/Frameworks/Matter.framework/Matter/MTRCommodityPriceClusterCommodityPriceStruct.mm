@@ -1,6 +1,6 @@
 @interface MTRCommodityPriceClusterCommodityPriceStruct
 - (MTRCommodityPriceClusterCommodityPriceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityPriceClusterCommodityPriceStruct);
-  v5 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self periodStart];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPeriodStart:v5];
+  periodStart = [(MTRCommodityPriceClusterCommodityPriceStruct *)self periodStart];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPeriodStart:periodStart];
 
-  v6 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self periodEnd];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPeriodEnd:v6];
+  periodEnd = [(MTRCommodityPriceClusterCommodityPriceStruct *)self periodEnd];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPeriodEnd:periodEnd];
 
-  v7 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self price];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPrice:v7];
+  price = [(MTRCommodityPriceClusterCommodityPriceStruct *)self price];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPrice:price];
 
-  v8 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self priceLevel];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPriceLevel:v8];
+  priceLevel = [(MTRCommodityPriceClusterCommodityPriceStruct *)self priceLevel];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setPriceLevel:priceLevel];
 
-  v9 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self descriptionString];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setDescriptionString:v9];
+  descriptionString = [(MTRCommodityPriceClusterCommodityPriceStruct *)self descriptionString];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setDescriptionString:descriptionString];
 
-  v10 = [(MTRCommodityPriceClusterCommodityPriceStruct *)self components];
-  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setComponents:v10];
+  components = [(MTRCommodityPriceClusterCommodityPriceStruct *)self components];
+  [(MTRCommodityPriceClusterCommodityPriceStruct *)v4 setComponents:components];
 
   return v4;
 }

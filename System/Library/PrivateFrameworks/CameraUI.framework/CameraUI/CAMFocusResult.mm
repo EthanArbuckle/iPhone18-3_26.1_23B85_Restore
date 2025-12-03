@@ -1,5 +1,5 @@
 @interface CAMFocusResult
-- (CAMFocusResult)initWithMode:(int64_t)a3 pointOfInterest:(CGPoint)a4 performingContrastDetection:(BOOL)a5 contrastBasedFocusDidStart:(BOOL)a6 contrastBasedFocusDidEnd:(BOOL)a7 deviceSupportsFocus:(BOOL)a8;
+- (CAMFocusResult)initWithMode:(int64_t)mode pointOfInterest:(CGPoint)interest performingContrastDetection:(BOOL)detection contrastBasedFocusDidStart:(BOOL)start contrastBasedFocusDidEnd:(BOOL)end deviceSupportsFocus:(BOOL)focus;
 - (CGPoint)pointOfInterest;
 - (id)description;
 @end
@@ -15,23 +15,23 @@
   return result;
 }
 
-- (CAMFocusResult)initWithMode:(int64_t)a3 pointOfInterest:(CGPoint)a4 performingContrastDetection:(BOOL)a5 contrastBasedFocusDidStart:(BOOL)a6 contrastBasedFocusDidEnd:(BOOL)a7 deviceSupportsFocus:(BOOL)a8
+- (CAMFocusResult)initWithMode:(int64_t)mode pointOfInterest:(CGPoint)interest performingContrastDetection:(BOOL)detection contrastBasedFocusDidStart:(BOOL)start contrastBasedFocusDidEnd:(BOOL)end deviceSupportsFocus:(BOOL)focus
 {
-  y = a4.y;
-  x = a4.x;
+  y = interest.y;
+  x = interest.x;
   v19.receiver = self;
   v19.super_class = CAMFocusResult;
   v15 = [(CAMFocusResult *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    v15->_focusMode = a3;
+    v15->_focusMode = mode;
     v15->_pointOfInterest.x = x;
     v15->_pointOfInterest.y = y;
-    v15->_performingContrastDetection = a5;
-    v15->_contrastBasedFocusDidStart = a6;
-    v15->_contrastBasedFocusDidEnd = a7;
-    v15->_deviceSupportsFocus = a8;
+    v15->_performingContrastDetection = detection;
+    v15->_contrastBasedFocusDidStart = start;
+    v15->_contrastBasedFocusDidEnd = end;
+    v15->_deviceSupportsFocus = focus;
     v17 = v15;
   }
 
@@ -43,10 +43,10 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMFocusResult *)self focusMode];
+  focusMode = [(CAMFocusResult *)self focusMode];
   [(CAMFocusResult *)self pointOfInterest];
   v7 = NSStringFromCGPoint(v13);
-  v8 = [v3 stringWithFormat:@"<%@: %p mode: %ld pointOfInterest: %@ contrast: %d>", v5, self, v6, v7, -[CAMFocusResult isPerformingContrastDetection](self, "isPerformingContrastDetection")];
+  v8 = [v3 stringWithFormat:@"<%@: %p mode: %ld pointOfInterest: %@ contrast: %d>", v5, self, focusMode, v7, -[CAMFocusResult isPerformingContrastDetection](self, "isPerformingContrastDetection")];
 
   if ([(CAMFocusResult *)self contrastBasedFocusDidStart])
   {

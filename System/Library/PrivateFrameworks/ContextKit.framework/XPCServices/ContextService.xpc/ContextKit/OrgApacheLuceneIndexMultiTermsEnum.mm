@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneIndexMultiTermsEnum
 + (void)initialize;
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)next;
-- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4;
+- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int;
 - (id)pullTop;
-- (id)resetWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndexArray:(id)a3;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)resetWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndexArray:(id)array;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (int)docFreq;
 - (int64_t)totalTermFreq;
 - (void)dealloc;
@@ -13,9 +13,9 @@
 
 @implementation OrgApacheLuceneIndexMultiTermsEnum
 
-- (id)resetWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndexArray:(id)a3
+- (id)resetWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndexArray:(id)array
 {
-  v3 = self;
+  selfCopy = self;
   self->numSubs_ = 0;
   self->numTop_ = 0;
   queue = self->queue_;
@@ -25,13 +25,13 @@
   }
 
   [(OrgApacheLuceneUtilPriorityQueue *)queue clear];
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v6 = 0;
-    v7 = a3;
+    arrayCopy = array;
     while (1)
     {
-      v8 = v7[3];
+      v8 = arrayCopy[3];
       if (!v8)
       {
         break;
@@ -43,16 +43,16 @@
         break;
       }
 
-      v10 = [v9 next];
-      if (v10)
+      next = [v9 next];
+      if (next)
       {
-        subs = v3->subs_;
+        subs = selfCopy->subs_;
         if (!subs)
         {
           break;
         }
 
-        v12 = v10;
+        v12 = next;
         v13 = *(v8 + 8);
         size = subs->super.size_;
         if (v13 < 0 || v13 >= size)
@@ -67,21 +67,21 @@
         }
 
         [(IOSClass *)v15 resetWithOrgApacheLuceneIndexTermsEnum:*(v8 + 16) withOrgApacheLuceneUtilBytesRef:v12];
-        [(OrgApacheLuceneUtilPriorityQueue *)v3->queue_ addWithId:v15];
-        currentSubs = v3->currentSubs_;
+        [(OrgApacheLuceneUtilPriorityQueue *)selfCopy->queue_ addWithId:v15];
+        currentSubs = selfCopy->currentSubs_;
         if (!currentSubs)
         {
           break;
         }
 
-        numSubs = v3->numSubs_;
-        v3->numSubs_ = numSubs + 1;
+        numSubs = selfCopy->numSubs_;
+        selfCopy->numSubs_ = numSubs + 1;
         IOSObjectArray_Set(currentSubs, numSubs, v15);
       }
 
       ++v6;
-      ++v7;
-      if (v6 >= *(a3 + 2))
+      ++arrayCopy;
+      if (v6 >= *(array + 2))
       {
         goto LABEL_16;
       }
@@ -92,7 +92,7 @@ LABEL_21:
   }
 
 LABEL_16:
-  if (![(OrgApacheLuceneUtilPriorityQueue *)v3->queue_ size])
+  if (![(OrgApacheLuceneUtilPriorityQueue *)selfCopy->queue_ size])
   {
     if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
@@ -102,10 +102,10 @@ LABEL_16:
     return OrgApacheLuceneIndexTermsEnum_EMPTY_;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   queue = self->queue_;
   if (!queue)
@@ -119,7 +119,7 @@ LABEL_43:
   lastSeek = self->lastSeek_;
   if (lastSeek)
   {
-    v7 = [(OrgApacheLuceneUtilBytesRef *)lastSeek compareToWithId:a3]< 1;
+    v7 = [(OrgApacheLuceneUtilBytesRef *)lastSeek compareToWithId:ref]< 1;
   }
 
   else
@@ -132,7 +132,7 @@ LABEL_43:
   if (self->numSubs_ >= 1)
   {
     v8 = 0;
-    v33 = a3;
+    refCopy = ref;
     do
     {
       currentSubs = self->currentSubs_;
@@ -157,12 +157,12 @@ LABEL_43:
 
         if (v11[2].super.isa)
         {
-          if (!a3)
+          if (!ref)
           {
             goto LABEL_43;
           }
 
-          v12 = [a3 compareToWithId:?];
+          v12 = [ref compareToWithId:?];
           if (!v12)
           {
             goto LABEL_25;
@@ -189,7 +189,7 @@ LABEL_43:
               goto LABEL_43;
             }
 
-            if ([(objc_class *)isa seekExactWithOrgApacheLuceneUtilBytesRef:a3])
+            if ([(objc_class *)isa seekExactWithOrgApacheLuceneUtilBytesRef:ref])
             {
               goto LABEL_25;
             }
@@ -222,7 +222,7 @@ LABEL_43:
           goto LABEL_43;
         }
 
-        if (([(objc_class *)v19 seekExactWithOrgApacheLuceneUtilBytesRef:a3]& 1) != 0)
+        if (([(objc_class *)v19 seekExactWithOrgApacheLuceneUtilBytesRef:ref]& 1) != 0)
         {
 LABEL_25:
           top = self->top_;
@@ -280,7 +280,7 @@ LABEL_25:
 
           v31 = JreStrongAssign(&v26[2].super.isa, [(objc_class *)v30 term]);
           JreStrongAssign(&self->current_, v31);
-          a3 = v33;
+          ref = refCopy;
         }
       }
 
@@ -293,21 +293,21 @@ LABEL_25:
   return self->numTop_ > 0;
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   queue = self->queue_;
-  if (!queue || (([(OrgApacheLuceneUtilPriorityQueue *)queue clear], self->numTop_ = 0, self->lastSeekExact_ = 0, (lastSeek = self->lastSeek_) == 0) ? (v45 = 0) : (v45 = [(OrgApacheLuceneUtilBytesRef *)lastSeek compareToWithId:a3]< 1), (lastSeekScratch = self->lastSeekScratch_) == 0))
+  if (!queue || (([(OrgApacheLuceneUtilPriorityQueue *)queue clear], self->numTop_ = 0, self->lastSeekExact_ = 0, (lastSeek = self->lastSeek_) == 0) ? (v45 = 0) : (v45 = [(OrgApacheLuceneUtilBytesRef *)lastSeek compareToWithId:ref]< 1), (lastSeekScratch = self->lastSeekScratch_) == 0))
   {
 LABEL_79:
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)lastSeekScratch copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)lastSeekScratch copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
   JreStrongAssign(&self->lastSeek_, [(OrgApacheLuceneUtilBytesRefBuilder *)self->lastSeekScratch_ get]);
   if (self->numSubs_ >= 1)
   {
     v8 = 0;
-    v44 = a3;
+    refCopy = ref;
     do
     {
       currentSubs = self->currentSubs_;
@@ -341,12 +341,12 @@ LABEL_79:
           goto LABEL_31;
         }
 
-        if (!a3)
+        if (!ref)
         {
           goto LABEL_79;
         }
 
-        v12 = [a3 compareToWithId:?];
+        v12 = [ref compareToWithId:?];
         if (!v12)
         {
           if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
@@ -395,7 +395,7 @@ LABEL_79:
         goto LABEL_79;
       }
 
-      v16 = [(objc_class *)isa seekCeilWithOrgApacheLuceneUtilBytesRef:a3];
+      v16 = [(objc_class *)isa seekCeilWithOrgApacheLuceneUtilBytesRef:ref];
 LABEL_31:
       if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
       {
@@ -467,7 +467,7 @@ LABEL_31:
         }
 
         [(OrgApacheLuceneUtilPriorityQueue *)self->queue_ addWithId:(&v32->elementType_)[v8]];
-        a3 = v44;
+        ref = refCopy;
       }
 
       else
@@ -593,14 +593,14 @@ LABEL_76:
 
 - (id)pullTop
 {
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   if (!v2)
   {
     goto LABEL_8;
   }
 
-  *(a1 + 80) = [v2 fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:*(a1 + 40)];
-  v3 = *(a1 + 40);
+  *(self + 80) = [v2 fillTopWithOrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSliceArray:*(self + 40)];
+  v3 = *(self + 40);
   if (!v3)
   {
     goto LABEL_8;
@@ -621,7 +621,7 @@ LABEL_8:
 
   v6 = *(v5 + 16);
 
-  return JreStrongAssign((a1 + 88), v6);
+  return JreStrongAssign((self + 88), v6);
 }
 
 - (id)next
@@ -721,13 +721,13 @@ LABEL_14:
       JreThrowNullPointerException();
     }
 
-    v9 = [(objc_class *)isa totalTermFreq];
-    if (v9 == -1)
+    totalTermFreq = [(objc_class *)isa totalTermFreq];
+    if (totalTermFreq == -1)
     {
       return -1;
     }
 
-    v4 += v9;
+    v4 += totalTermFreq;
     if (++v3 >= self->numTop_)
     {
       return v4;
@@ -735,14 +735,14 @@ LABEL_14:
   }
 }
 
-- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4
+- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int
 {
-  if (!a3)
+  if (!enum)
   {
     goto LABEL_5;
   }
 
-  v5 = a3;
+  enumCopy = enum;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -755,7 +755,7 @@ LABEL_14:
     JreThrowClassCastException();
   }
 
-  if (![(OrgApacheLuceneIndexMultiPostingsEnum *)v5 canReuseWithOrgApacheLuceneIndexMultiTermsEnum:self])
+  if (![(OrgApacheLuceneIndexMultiPostingsEnum *)enumCopy canReuseWithOrgApacheLuceneIndexMultiTermsEnum:self])
   {
 LABEL_5:
     subs = self->subs_;
@@ -764,7 +764,7 @@ LABEL_5:
       goto LABEL_30;
     }
 
-    v5 = new_OrgApacheLuceneIndexMultiPostingsEnum_initWithOrgApacheLuceneIndexMultiTermsEnum_withInt_(self, subs->super.size_);
+    enumCopy = new_OrgApacheLuceneIndexMultiPostingsEnum_initWithOrgApacheLuceneIndexMultiTermsEnum_withInt_(self, subs->super.size_);
   }
 
   OrgApacheLuceneUtilArrayUtil_timSortWithNSObjectArray_withInt_withInt_withJavaUtilComparator_(self->top_, 0, self->numTop_, qword_100554040);
@@ -791,7 +791,7 @@ LABEL_5:
         break;
       }
 
-      subPostingsEnums = v5->subPostingsEnums_;
+      subPostingsEnums = enumCopy->subPostingsEnums_;
       isa = v10[3].super.isa;
       v13 = subPostingsEnums->super.size_;
       if (isa < 0 || isa >= v13)
@@ -799,8 +799,8 @@ LABEL_5:
         IOSArray_throwOutOfBoundsWithMsg(v13, isa);
       }
 
-      v14 = [(objc_class *)v10[1].super.isa postingsWithOrgApacheLuceneIndexPostingsEnum:(&subPostingsEnums->elementType_)[isa] withInt:a4];
-      IOSObjectArray_Set(v5->subPostingsEnums_, SLODWORD(v10[3].super.isa), v14);
+      v14 = [(objc_class *)v10[1].super.isa postingsWithOrgApacheLuceneIndexPostingsEnum:(&subPostingsEnums->elementType_)[isa] withInt:int];
+      IOSObjectArray_Set(enumCopy->subPostingsEnums_, SLODWORD(v10[3].super.isa), v14);
       subDocs = self->subDocs_;
       if (!subDocs)
       {
@@ -844,7 +844,7 @@ LABEL_30:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!enumCopy)
   {
     goto LABEL_30;
   }
@@ -853,7 +853,7 @@ LABEL_30:
 LABEL_27:
   v21 = self->subDocs_;
 
-  return [(OrgApacheLuceneIndexMultiPostingsEnum *)v5 resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:v21 withInt:v7];
+  return [(OrgApacheLuceneIndexMultiPostingsEnum *)enumCopy resetWithOrgApacheLuceneIndexMultiPostingsEnum_EnumWithSliceArray:v21 withInt:v7];
 }
 
 - (void)dealloc
@@ -865,7 +865,7 @@ LABEL_27:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554040, [OrgApacheLuceneIndexMultiTermsEnum__1 alloc]);
     atomic_store(1u, &OrgApacheLuceneIndexMultiTermsEnum__initialized);

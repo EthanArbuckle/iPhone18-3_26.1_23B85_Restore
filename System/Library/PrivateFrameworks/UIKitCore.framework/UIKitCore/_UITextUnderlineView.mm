@@ -1,12 +1,12 @@
 @interface _UITextUnderlineView
-- (CGRect)underlineFrameFromRect:(id)a3 underlineHeight:(double)a4;
-- (_UITextUnderlineView)initWithFrame:(CGRect)a3;
-- (void)addUnderlines:(id)a3 animated:(BOOL)a4;
-- (void)clearAllUnderlinesAnimated:(BOOL)a3;
+- (CGRect)underlineFrameFromRect:(id)rect underlineHeight:(double)height;
+- (_UITextUnderlineView)initWithFrame:(CGRect)frame;
+- (void)addUnderlines:(id)underlines animated:(BOOL)animated;
+- (void)clearAllUnderlinesAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)removeUnderlines:(id)a3 animated:(BOOL)a4;
-- (void)setUnderlineRects:(id)a3;
-- (void)setUseDirectionalLightEffect:(BOOL)a3;
+- (void)removeUnderlines:(id)underlines animated:(BOOL)animated;
+- (void)setUnderlineRects:(id)rects;
+- (void)setUseDirectionalLightEffect:(BOOL)effect;
 @end
 
 @implementation _UITextUnderlineView
@@ -34,8 +34,8 @@
           v11 = [UIView alloc];
           [v9 rect];
           v10 = [(UIView *)v11 initWithFrame:?];
-          v12 = [v9 underlineColor];
-          if (!v12)
+          underlineColor = [v9 underlineColor];
+          if (!underlineColor)
           {
             if ([(_UITextUnderlineView *)self useDirectionalLightEffect])
             {
@@ -46,15 +46,15 @@
             {
               +[UIColor selectionHighlightColor];
             }
-            v12 = ;
+            underlineColor = ;
           }
 
-          [(UIView *)v10 setBackgroundColor:v12];
+          [(UIView *)v10 setBackgroundColor:underlineColor];
           [(NSMutableArray *)self->_underlineViews addObject:v10];
           if ([(_UITextUnderlineView *)self useDirectionalLightEffect])
           {
-            v13 = [(UIVisualEffectView *)self->_baseView contentView];
-            [v13 addSubview:v10];
+            contentView = [(UIVisualEffectView *)self->_baseView contentView];
+            [contentView addSubview:v10];
           }
 
           else
@@ -70,8 +70,8 @@
 
         [(_UITextUnderlineView *)self underlineFrameFromRect:v9 underlineHeight:2.0];
         [(UIView *)v10 setFrame:?];
-        v14 = [(UIView *)v10 layer];
-        [v14 setCornerRadius:1.0];
+        layer = [(UIView *)v10 layer];
+        [layer setCornerRadius:1.0];
 
         [v9 rect];
         v22.origin.x = v15;
@@ -105,11 +105,11 @@
   }
 }
 
-- (_UITextUnderlineView)initWithFrame:(CGRect)a3
+- (_UITextUnderlineView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UITextUnderlineView;
-  v3 = [(_UITextSelectionHighlightView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UITextSelectionHighlightView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -127,19 +127,19 @@
   return v4;
 }
 
-- (void)setUseDirectionalLightEffect:(BOOL)a3
+- (void)setUseDirectionalLightEffect:(BOOL)effect
 {
-  if (self->_useDirectionalLightEffect != a3)
+  if (self->_useDirectionalLightEffect != effect)
   {
-    self->_useDirectionalLightEffect = a3;
+    self->_useDirectionalLightEffect = effect;
     baseView = self->_baseView;
-    if (a3)
+    if (effect)
     {
       if (!baseView)
       {
         v7 = [UIVisualEffectView alloc];
-        v8 = [(_UITextUnderlineView *)self effectForProofreadingUnderlines];
-        v9 = [(UIVisualEffectView *)v7 initWithEffect:v8];
+        effectForProofreadingUnderlines = [(_UITextUnderlineView *)self effectForProofreadingUnderlines];
+        v9 = [(UIVisualEffectView *)v7 initWithEffect:effectForProofreadingUnderlines];
         v10 = self->_baseView;
         self->_baseView = v9;
 
@@ -151,9 +151,9 @@
 
     else
     {
-      v5 = [(UIView *)baseView superview];
+      superview = [(UIView *)baseView superview];
 
-      if (v5)
+      if (superview)
       {
         [(UIView *)self->_baseView removeFromSuperview];
       }
@@ -164,28 +164,28 @@
   }
 }
 
-- (void)setUnderlineRects:(id)a3
+- (void)setUnderlineRects:(id)rects
 {
-  v6 = a3;
-  if ([v6 count])
+  rectsCopy = rects;
+  if ([rectsCopy count])
   {
-    if (([(NSMutableArray *)self->_trackedUnderlineRects isEqualToArray:v6]& 1) == 0)
+    if (([(NSMutableArray *)self->_trackedUnderlineRects isEqualToArray:rectsCopy]& 1) == 0)
     {
       [(NSMutableArray *)self->_trackedUnderlineRects removeAllObjects];
       while (1)
       {
         v4 = [(NSMutableArray *)self->_underlineViews count];
-        if (v4 <= [v6 count])
+        if (v4 <= [rectsCopy count])
         {
           break;
         }
 
-        v5 = [(NSMutableArray *)self->_underlineViews firstObject];
-        [v5 removeFromSuperview];
-        [(NSMutableArray *)self->_underlineViews removeObject:v5];
+        firstObject = [(NSMutableArray *)self->_underlineViews firstObject];
+        [firstObject removeFromSuperview];
+        [(NSMutableArray *)self->_underlineViews removeObject:firstObject];
       }
 
-      [(_UITextUnderlineView *)self addUnderlines:v6 animated:0];
+      [(_UITextUnderlineView *)self addUnderlines:rectsCopy animated:0];
       [(UIView *)self setNeedsLayout];
     }
   }
@@ -196,14 +196,14 @@
   }
 }
 
-- (void)addUnderlines:(id)a3 animated:(BOOL)a4
+- (void)addUnderlines:(id)underlines animated:(BOOL)animated
 {
-  [(NSMutableArray *)self->_trackedUnderlineRects addObjectsFromArray:a3, a4];
+  [(NSMutableArray *)self->_trackedUnderlineRects addObjectsFromArray:underlines, animated];
   [(UIView *)self setNeedsLayout];
-  v5 = [(UIView *)self window];
-  if (v5)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v6 = v5;
+    v6 = window;
     v7 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
 
     if (v7)
@@ -218,18 +218,18 @@
   }
 }
 
-- (void)removeUnderlines:(id)a3 animated:(BOOL)a4
+- (void)removeUnderlines:(id)underlines animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v6 count])
+  animatedCopy = animated;
+  underlinesCopy = underlines;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([underlinesCopy count])
   {
-    v15 = v4;
+    v15 = animatedCopy;
     v8 = 0;
     do
     {
-      v9 = [v6 objectAtIndex:v8];
+      v9 = [underlinesCopy objectAtIndex:v8];
       v10 = [(NSMutableArray *)self->_trackedUnderlineRects indexOfObject:v9];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -237,29 +237,29 @@
         if (v10 < [(NSMutableArray *)self->_underlineViews count])
         {
           v12 = [(NSMutableArray *)self->_underlineViews objectAtIndex:v11];
-          [v7 addObject:v12];
+          [array addObject:v12];
         }
       }
 
       ++v8;
     }
 
-    while (v8 < [v6 count]);
-    v4 = v15;
+    while (v8 < [underlinesCopy count]);
+    animatedCopy = v15;
   }
 
-  [(NSMutableArray *)self->_trackedUnderlineRects removeObjectsInArray:v6];
-  if ([v7 count])
+  [(NSMutableArray *)self->_trackedUnderlineRects removeObjectsInArray:underlinesCopy];
+  if ([array count])
   {
-    [(NSMutableArray *)self->_underlineViews removeObjectsInArray:v7];
+    [(NSMutableArray *)self->_underlineViews removeObjectsInArray:array];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50___UITextUnderlineView_removeUnderlines_animated___block_invoke;
     aBlock[3] = &unk_1E70F5AC0;
-    v21 = v7;
+    v21 = array;
     v13 = _Block_copy(aBlock);
     v14 = v13;
-    if (v4)
+    if (animatedCopy)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -288,9 +288,9 @@
   }
 }
 
-- (void)clearAllUnderlinesAnimated:(BOOL)a3
+- (void)clearAllUnderlinesAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(NSMutableArray *)self->_underlineViews copy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -301,7 +301,7 @@
   v7 = _Block_copy(aBlock);
   [(NSMutableArray *)self->_underlineViews removeAllObjects];
   [(NSMutableArray *)self->_trackedUnderlineRects removeAllObjects];
-  if (v3)
+  if (animatedCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -322,14 +322,14 @@
   }
 }
 
-- (CGRect)underlineFrameFromRect:(id)a3 underlineHeight:(double)a4
+- (CGRect)underlineFrameFromRect:(id)rect underlineHeight:(double)height
 {
-  v4 = a3;
-  [v4 fullRect];
+  rectCopy = rect;
+  [rectCopy fullRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v4 baselineOffset];
+  [rectCopy baselineOffset];
   v12 = v11;
 
   v13 = v8 + v12 + 2.0;

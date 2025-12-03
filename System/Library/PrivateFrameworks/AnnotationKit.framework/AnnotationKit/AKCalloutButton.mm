@@ -1,16 +1,16 @@
 @interface AKCalloutButton
 - (AKCalloutBar)bar;
-- (AKCalloutButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (AKCalloutButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AKCalloutButton
 
-- (AKCalloutButton)initWithFrame:(CGRect)a3
+- (AKCalloutButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKCalloutButton;
-  v3 = [(AKCalloutButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKCalloutButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,14 +22,14 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = AKCalloutButton;
   [(AKCalloutButton *)&v6 setHighlighted:?];
   v5 = [(AKCalloutButton *)self bar];
-  [v5 setHighlighted:v3 forControl:self];
+  [v5 setHighlighted:highlightedCopy forControl:self];
 }
 
 - (AKCalloutBar)bar

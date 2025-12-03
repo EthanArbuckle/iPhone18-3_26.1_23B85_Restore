@@ -7,14 +7,14 @@
 - (NSSet)allAdapters
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HFAccessorySettingDefaultAdapterCollection *)self managedConfigurationAdapter];
-  [v3 na_safeAddObject:v4];
+  managedConfigurationAdapter = [(HFAccessorySettingDefaultAdapterCollection *)self managedConfigurationAdapter];
+  [v3 na_safeAddObject:managedConfigurationAdapter];
 
-  v5 = [(HFAccessorySettingDefaultAdapterCollection *)self mobileTimerAdapter];
-  [v3 na_safeAddObject:v5];
+  mobileTimerAdapter = [(HFAccessorySettingDefaultAdapterCollection *)self mobileTimerAdapter];
+  [v3 na_safeAddObject:mobileTimerAdapter];
 
-  v6 = [(HFAccessorySettingDefaultAdapterCollection *)self siriLanguageAdapter];
-  [v3 na_safeAddObject:v6];
+  siriLanguageAdapter = [(HFAccessorySettingDefaultAdapterCollection *)self siriLanguageAdapter];
+  [v3 na_safeAddObject:siriLanguageAdapter];
 
   return v3;
 }

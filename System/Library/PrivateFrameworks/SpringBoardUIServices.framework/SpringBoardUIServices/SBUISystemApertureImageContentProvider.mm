@@ -1,23 +1,23 @@
 @interface SBUISystemApertureImageContentProvider
-- (SBUISystemApertureImageContentProvider)initWithImage:(id)a3;
-- (SBUISystemApertureImageContentProvider)initWithSystemImageName:(id)a3;
+- (SBUISystemApertureImageContentProvider)initWithImage:(id)image;
+- (SBUISystemApertureImageContentProvider)initWithSystemImageName:(id)name;
 @end
 
 @implementation SBUISystemApertureImageContentProvider
 
-- (SBUISystemApertureImageContentProvider)initWithSystemImageName:(id)a3
+- (SBUISystemApertureImageContentProvider)initWithSystemImageName:(id)name
 {
-  v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:a3];
+  v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:name];
   v5 = [(SBUISystemApertureImageContentProvider *)self initWithImage:v4];
 
   return v5;
 }
 
-- (SBUISystemApertureImageContentProvider)initWithImage:(id)a3
+- (SBUISystemApertureImageContentProvider)initWithImage:(id)image
 {
   v4 = MEMORY[0x1E69DCAE0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithImage:v5];
+  imageCopy = image;
+  v6 = [[v4 alloc] initWithImage:imageCopy];
 
   [(UIImageView *)v6 setContentMode:1];
   imageView = self->_imageView;

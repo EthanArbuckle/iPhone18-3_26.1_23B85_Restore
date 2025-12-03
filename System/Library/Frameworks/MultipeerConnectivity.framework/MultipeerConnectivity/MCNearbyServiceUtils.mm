@@ -1,16 +1,16 @@
 @interface MCNearbyServiceUtils
-+ (BOOL)isServiceTypeValid:(id)a3;
++ (BOOL)isServiceTypeValid:(id)valid;
 @end
 
 @implementation MCNearbyServiceUtils
 
-+ (BOOL)isServiceTypeValid:(id)a3
++ (BOOL)isServiceTypeValid:(id)valid
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [valid UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
-    v5 = strlen(v3);
+    v4 = uTF8String;
+    v5 = strlen(uTF8String);
     if (v5 - 16 < 0xFFFFFFFFFFFFFFF1)
     {
       goto LABEL_7;
@@ -22,21 +22,21 @@
       goto LABEL_7;
     }
 
-    v3 = strpbrk(v4, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-    if (v3)
+    uTF8String = strpbrk(v4, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    if (uTF8String)
     {
       if (*v4 == 45 || v4[v6 - 1] == 45)
       {
 LABEL_7:
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(uTF8String) = 0;
+        return uTF8String;
       }
 
-      LOBYTE(v3) = strstr(v4, "--") == 0;
+      LOBYTE(uTF8String) = strstr(v4, "--") == 0;
     }
   }
 
-  return v3;
+  return uTF8String;
 }
 
 @end

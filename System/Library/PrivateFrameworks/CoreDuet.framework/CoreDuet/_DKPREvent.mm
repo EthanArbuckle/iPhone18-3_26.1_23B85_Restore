@@ -1,13 +1,13 @@
 @interface _DKPREvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)confidence;
 - (double)creationDate;
 - (double)endDate;
 - (double)startDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addMetadata:(uint64_t)a1;
+- (uint64_t)addMetadata:(uint64_t)metadata;
 - (uint64_t)compatibilityVersion;
 - (uint64_t)hasCompatibilityVersion;
 - (uint64_t)hasConfidence;
@@ -25,11 +25,11 @@
 - (uint64_t)timeZone;
 - (uint64_t)value;
 - (unint64_t)hash;
-- (void)setIdentifier:(uint64_t)a1;
-- (void)setSource:(uint64_t)a1;
-- (void)setStream:(uint64_t)a1;
-- (void)setValue:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setIdentifier:(uint64_t)identifier;
+- (void)setSource:(uint64_t)source;
+- (void)setStream:(uint64_t)stream;
+- (void)setValue:(uint64_t)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPREvent
@@ -40,8 +40,8 @@
   v8.receiver = self;
   v8.super_class = _DKPREvent;
   v4 = [(_DKPREvent *)&v8 description];
-  v5 = [(_DKPREvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPREvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -49,38 +49,38 @@
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   stream = self->_stream;
   if (stream)
   {
-    v5 = [(_DKPRStream *)stream dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"stream"];
+    dictionaryRepresentation = [(_DKPRStream *)stream dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"stream"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-  [v3 setObject:v6 forKey:@"startDate"];
+  [dictionary setObject:v6 forKey:@"startDate"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-  [v3 setObject:v7 forKey:@"endDate"];
+  [dictionary setObject:v7 forKey:@"endDate"];
 
   value = self->_value;
   if (value)
   {
-    v9 = [(_DKPRValue *)value dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"value"];
+    dictionaryRepresentation2 = [(_DKPRValue *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"value"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   source = self->_source;
   if (source)
   {
-    v12 = [(_DKPRSource *)source dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"source"];
+    dictionaryRepresentation3 = [(_DKPRSource *)source dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"source"];
   }
 
   if ([(NSMutableArray *)self->_metadatas count])
@@ -105,8 +105,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation4 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation4];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -115,14 +115,14 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"metadata"];
+    [dictionary setObject:v13 forKey:@"metadata"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithDouble:self->_creationDate];
-    [v3 setObject:v24 forKey:@"creationDate"];
+    [dictionary setObject:v24 forKey:@"creationDate"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -143,7 +143,7 @@ LABEL_20:
   }
 
   v25 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_confidence, v27}];
-  [v3 setObject:v25 forKey:@"confidence"];
+  [dictionary setObject:v25 forKey:@"confidence"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -159,31 +159,31 @@ LABEL_21:
 
 LABEL_28:
   v26 = [MEMORY[0x1E696AD98] numberWithLongLong:{self->_timeZone, v27}];
-  [v3 setObject:v26 forKey:@"timeZone"];
+  [dictionary setObject:v26 forKey:@"timeZone"];
 
   if (*&self->_has)
   {
 LABEL_22:
     v21 = [MEMORY[0x1E696AD98] numberWithLongLong:{self->_compatibilityVersion, v27}];
-    [v3 setObject:v21 forKey:@"compatibilityVersion"];
+    [dictionary setObject:v21 forKey:@"compatibilityVersion"];
   }
 
 LABEL_23:
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_stream)
   {
     [_DKPREvent writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   startDate = self->_startDate;
   PBDataWriterWriteDoubleField();
@@ -287,25 +287,25 @@ LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_DKPRStream *)self->_stream copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_DKPRStream *)self->_stream copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
   *(v5 + 40) = self->_startDate;
   *(v5 + 32) = self->_endDate;
-  v8 = [(_DKPRValue *)self->_value copyWithZone:a3];
+  v8 = [(_DKPRValue *)self->_value copyWithZone:zone];
   v9 = *(v5 + 88);
   *(v5 + 88) = v8;
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(_DKPRSource *)self->_source copyWithZone:a3];
+  v12 = [(_DKPRSource *)self->_source copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
@@ -328,7 +328,7 @@ LABEL_18:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * i) copyWithZone:{zone, v23}];
         [(_DKPREvent *)v5 addMetadata:v19];
       }
 
@@ -390,16 +390,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   stream = self->_stream;
-  if (stream | *(v4 + 10))
+  if (stream | *(equalCopy + 10))
   {
     if (![(_DKPRStream *)stream isEqual:?])
     {
@@ -407,18 +407,18 @@ LABEL_13:
     }
   }
 
-  if (self->_startDate != *(v4 + 5))
+  if (self->_startDate != *(equalCopy + 5))
   {
     goto LABEL_33;
   }
 
-  if (self->_endDate != *(v4 + 4))
+  if (self->_endDate != *(equalCopy + 4))
   {
     goto LABEL_33;
   }
 
   value = self->_value;
-  if (value | *(v4 + 11))
+  if (value | *(equalCopy + 11))
   {
     if (![(_DKPRValue *)value isEqual:?])
     {
@@ -427,7 +427,7 @@ LABEL_13:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 7))
+  if (identifier | *(equalCopy + 7))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -436,7 +436,7 @@ LABEL_13:
   }
 
   source = self->_source;
-  if (source | *(v4 + 9))
+  if (source | *(equalCopy + 9))
   {
     if (![(_DKPRSource *)source isEqual:?])
     {
@@ -445,7 +445,7 @@ LABEL_13:
   }
 
   metadatas = self->_metadatas;
-  if (metadatas | *(v4 + 8))
+  if (metadatas | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)metadatas isEqual:?])
     {
@@ -455,13 +455,13 @@ LABEL_13:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_creationDate != *(v4 + 3))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_creationDate != *(equalCopy + 3))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
 LABEL_33:
     v10 = 0;
@@ -470,34 +470,34 @@ LABEL_33:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_confidence != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_confidence != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_timeZone != *(v4 + 6))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_timeZone != *(equalCopy + 6))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_33;
   }
 
-  v10 = (*(v4 + 96) & 1) == 0;
+  v10 = (*(equalCopy + 96) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_compatibilityVersion != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_compatibilityVersion != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
@@ -674,21 +674,21 @@ LABEL_31:
   return v14 ^ v3 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v27 ^ v30 ^ v34 ^ v35;
 }
 
-- (uint64_t)addMetadata:(uint64_t)a1
+- (uint64_t)addMetadata:(uint64_t)metadata
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (metadata)
   {
-    v5 = *(a1 + 64);
+    v5 = *(metadata + 64);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 64);
-      *(a1 + 64) = v6;
+      v7 = *(metadata + 64);
+      *(metadata + 64) = v6;
 
-      v5 = *(a1 + 64);
+      v5 = *(metadata + 64);
     }
 
     v3 = [v5 addObject:v9];
@@ -772,35 +772,35 @@ LABEL_31:
   return result;
 }
 
-- (void)setStream:(uint64_t)a1
+- (void)setStream:(uint64_t)stream
 {
-  if (a1)
+  if (stream)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 80);
+    OUTLINED_FUNCTION_0_8(stream, a2, 80);
   }
 }
 
-- (void)setValue:(uint64_t)a1
+- (void)setValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 88);
+    OUTLINED_FUNCTION_0_8(value, a2, 88);
   }
 }
 
-- (void)setIdentifier:(uint64_t)a1
+- (void)setIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 56);
+    OUTLINED_FUNCTION_0_8(identifier, a2, 56);
   }
 }
 
-- (void)setSource:(uint64_t)a1
+- (void)setSource:(uint64_t)source
 {
-  if (a1)
+  if (source)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 72);
+    OUTLINED_FUNCTION_0_8(source, a2, 72);
   }
 }
 
@@ -816,9 +816,9 @@ LABEL_31:
 
 - (double)startDate
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_14(a1, 40);
+    return OUTLINED_FUNCTION_2_14(self, 40);
   }
 
   else
@@ -839,9 +839,9 @@ LABEL_31:
 
 - (double)endDate
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_14(a1, 32);
+    return OUTLINED_FUNCTION_2_14(self, 32);
   }
 
   else
@@ -902,9 +902,9 @@ LABEL_31:
 
 - (double)creationDate
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_14(a1, 24);
+    return OUTLINED_FUNCTION_2_14(self, 24);
   }
 
   else
@@ -915,9 +915,9 @@ LABEL_31:
 
 - (double)confidence
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_2_14(a1, 16);
+    return OUTLINED_FUNCTION_2_14(self, 16);
   }
 
   else

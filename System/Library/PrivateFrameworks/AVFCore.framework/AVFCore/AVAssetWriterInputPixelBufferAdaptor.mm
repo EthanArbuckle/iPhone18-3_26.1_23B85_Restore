@@ -6,7 +6,7 @@
 - (NSDictionary)sourcePixelBufferAttributes;
 - (NSString)description;
 - (void)dealloc;
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry;
 @end
 
 @implementation AVAssetWriterInputPixelBufferAdaptor
@@ -113,23 +113,23 @@ LABEL_16:
 
 - (NSDictionary)sourcePixelBufferAttributes
 {
-  v2 = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
 
-  return [(AVAssetWriterInput *)v2 _sourcePixelBufferAttributes];
+  return [(AVAssetWriterInput *)assetWriterInput _sourcePixelBufferAttributes];
 }
 
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry
 {
   v4 = AVTwoPartKeyPathMake(@"assetWriterInput", @"pixelBufferPool");
 
-  [a3 valueForKey:@"pixelBufferPool" dependsOnValueAtKeyPath:v4];
+  [registry valueForKey:@"pixelBufferPool" dependsOnValueAtKeyPath:v4];
 }
 
 - (CVPixelBufferPoolRef)pixelBufferPool
 {
-  v2 = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
 
-  return [(AVAssetWriterInput *)v2 _pixelBufferPool];
+  return [(AVAssetWriterInput *)assetWriterInput _pixelBufferPool];
 }
 
 - (BOOL)appendPixelBuffer:(CVPixelBufferRef)pixelBuffer withPresentationTime:(CMTime *)presentationTime
@@ -152,10 +152,10 @@ LABEL_6:
     objc_exception_throw(v15);
   }
 
-  v10 = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
+  assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self assetWriterInput];
   v16 = *&presentationTime->value;
   epoch = presentationTime->epoch;
-  return [(AVAssetWriterInput *)v10 _appendPixelBuffer:pixelBuffer withPresentationTime:&v16];
+  return [(AVAssetWriterInput *)assetWriterInput _appendPixelBuffer:pixelBuffer withPresentationTime:&v16];
 }
 
 @end

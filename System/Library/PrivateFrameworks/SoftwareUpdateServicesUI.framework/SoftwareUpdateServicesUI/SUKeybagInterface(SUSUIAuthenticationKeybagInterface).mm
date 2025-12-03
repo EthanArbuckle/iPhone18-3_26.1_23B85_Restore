@@ -8,7 +8,7 @@
 
 - (uint64_t)lockDevice
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = SUSUILogKeybagInterface();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -26,7 +26,7 @@
 
 - (BOOL)authenticate:()SUSUIAuthenticationKeybagInterface
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -39,7 +39,7 @@
 
 - (double)backOffTime
 {
-  v10[2] = a1;
+  v10[2] = self;
   v10[1] = a2;
   v10[0] = 0;
   v11 = MKBGetDeviceLockStateInfo();

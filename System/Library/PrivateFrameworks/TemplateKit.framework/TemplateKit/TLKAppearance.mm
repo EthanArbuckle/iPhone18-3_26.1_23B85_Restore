@@ -1,25 +1,25 @@
 @interface TLKAppearance
-+ (BOOL)viewHasOverriddenAppearance:(id)a3;
-+ (TLKAppearance)appearanceWithStyle:(unint64_t)a3;
-+ (TLKAppearance)appearanceWithVibrancyEnabled:(BOOL)a3 isDark:(BOOL)a4;
++ (BOOL)viewHasOverriddenAppearance:(id)appearance;
++ (TLKAppearance)appearanceWithStyle:(unint64_t)style;
++ (TLKAppearance)appearanceWithVibrancyEnabled:(BOOL)enabled isDark:(BOOL)dark;
 + (id)allAppearances;
 + (id)bestAppearanceForSystem;
-+ (id)bestAppearanceForTraitCollection:(id)a3;
-+ (id)bestAppearanceForView:(id)a3;
-+ (void)disableAppearanceOverrideForView:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)bestAppearanceForTraitCollection:(id)collection;
++ (id)bestAppearanceForView:(id)view;
++ (void)disableAppearanceOverrideForView:(id)view;
+- (BOOL)isEqual:(id)equal;
 - (UIColor)backgroundColor;
 - (UIColor)groupedBackgroundColor;
 - (UIColor)quinaryColor;
 - (UIColor)secondaryButtonColor;
-- (id)buttonColorForProminence:(unint64_t)a3;
-- (id)colorForProminence:(unint64_t)a3;
-- (id)primaryColorWithDefaultAlpha:(double)a3;
-- (id)textColorForColor:(int64_t)a3;
-- (void)disableAppearanceForView:(id)a3;
-- (void)enableAppearanceForContainer:(id)a3;
-- (void)enableAppearanceForView:(id)a3;
-- (void)overrideAppearanceForView:(id)a3;
+- (id)buttonColorForProminence:(unint64_t)prominence;
+- (id)colorForProminence:(unint64_t)prominence;
+- (id)primaryColorWithDefaultAlpha:(double)alpha;
+- (id)textColorForColor:(int64_t)color;
+- (void)disableAppearanceForView:(id)view;
+- (void)enableAppearanceForContainer:(id)container;
+- (void)enableAppearanceForView:(id)view;
+- (void)overrideAppearanceForView:(id)view;
 @end
 
 @implementation TLKAppearance
@@ -28,22 +28,22 @@
 {
   if ([(TLKAppearance *)self isVibrant])
   {
-    v2 = 0;
+    systemBackgroundColor = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
-  return v2;
+  return systemBackgroundColor;
 }
 
 + (id)bestAppearanceForSystem
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v4 = [v3 traitCollection];
-  v5 = [a1 bestAppearanceForTraitCollection:v4];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v5 = [self bestAppearanceForTraitCollection:traitCollection];
 
   return v5;
 }
@@ -64,11 +64,11 @@
   return v6;
 }
 
-+ (TLKAppearance)appearanceWithStyle:(unint64_t)a3
++ (TLKAppearance)appearanceWithStyle:(unint64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v3 = &appearanceWithStyle__cachedVibrantLightAppearance;
       v4 = appearanceWithStyle__cachedVibrantLightAppearance;
@@ -80,7 +80,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (style != 3)
       {
         goto LABEL_15;
       }
@@ -96,9 +96,9 @@
 
   else
   {
-    if (a3)
+    if (style)
     {
-      if (a3 != 1)
+      if (style != 1)
       {
         goto LABEL_15;
       }
@@ -127,44 +127,44 @@ LABEL_13:
   }
 
 LABEL_14:
-  a1 = v4;
+  self = v4;
 LABEL_15:
 
-  return a1;
+  return self;
 }
 
-+ (id)bestAppearanceForView:(id)a3
++ (id)bestAppearanceForView:(id)view
 {
-  v4 = [a3 traitCollection];
-  v5 = [a1 bestAppearanceForTraitCollection:v4];
+  traitCollection = [view traitCollection];
+  v5 = [self bestAppearanceForTraitCollection:traitCollection];
 
   return v5;
 }
 
-+ (id)bestAppearanceForTraitCollection:(id)a3
++ (id)bestAppearanceForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 _vibrancy] == 1;
-  v6 = [v4 userInterfaceStyle];
+  collectionCopy = collection;
+  v5 = [collectionCopy _vibrancy] == 1;
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
 
-  return [a1 appearanceWithVibrancyEnabled:v5 isDark:v6 == 2];
+  return [self appearanceWithVibrancyEnabled:v5 isDark:userInterfaceStyle == 2];
 }
 
-+ (TLKAppearance)appearanceWithVibrancyEnabled:(BOOL)a3 isDark:(BOOL)a4
++ (TLKAppearance)appearanceWithVibrancyEnabled:(BOOL)enabled isDark:(BOOL)dark
 {
   v4 = 3;
-  if (!a3 || !a4)
+  if (!enabled || !dark)
   {
     v4 = 0;
   }
 
   v5 = 2;
-  if (a4 || !a3)
+  if (dark || !enabled)
   {
     v5 = v4;
   }
 
-  if (!a4 || a3)
+  if (!dark || enabled)
   {
     v6 = v5;
   }
@@ -180,55 +180,55 @@ LABEL_15:
 - (UIColor)quinaryColor
 {
   v7 = 0.0;
-  v3 = [(TLKAppearance *)self quaternaryColor];
-  [v3 getHue:0 saturation:0 brightness:0 alpha:&v7];
+  quaternaryColor = [(TLKAppearance *)self quaternaryColor];
+  [quaternaryColor getHue:0 saturation:0 brightness:0 alpha:&v7];
 
   v7 = v7 * 0.6;
-  v4 = [(TLKAppearance *)self quaternaryColor];
-  v5 = [v4 colorWithAlphaComponent:v7];
+  quaternaryColor2 = [(TLKAppearance *)self quaternaryColor];
+  v5 = [quaternaryColor2 colorWithAlphaComponent:v7];
 
   return v5;
 }
 
-- (id)colorForProminence:(unint64_t)a3
+- (id)colorForProminence:(unint64_t)prominence
 {
-  if (a3 <= 1)
+  if (prominence <= 1)
   {
-    if (a3)
+    if (prominence)
     {
-      if (a3 != 1)
+      if (prominence != 1)
       {
         goto LABEL_13;
       }
 
-      v3 = [(TLKAppearance *)self secondaryColor];
+      secondaryColor = [(TLKAppearance *)self secondaryColor];
     }
 
     else
     {
-      v3 = [(TLKAppearance *)self primaryColor];
+      secondaryColor = [(TLKAppearance *)self primaryColor];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(prominence)
     {
       case 2uLL:
-        v3 = [(TLKAppearance *)self tertiaryColor];
+        secondaryColor = [(TLKAppearance *)self tertiaryColor];
         break;
       case 3uLL:
-        v3 = [(TLKAppearance *)self quaternaryColor];
+        secondaryColor = [(TLKAppearance *)self quaternaryColor];
         break;
       case 4uLL:
-        v3 = [(TLKAppearance *)self quinaryColor];
+        secondaryColor = [(TLKAppearance *)self quinaryColor];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  a2 = v3;
+  a2 = secondaryColor;
 LABEL_13:
 
   return a2;
@@ -250,39 +250,39 @@ LABEL_13:
   return v3;
 }
 
-- (id)buttonColorForProminence:(unint64_t)a3
+- (id)buttonColorForProminence:(unint64_t)prominence
 {
-  if (a3 <= 1)
+  if (prominence <= 1)
   {
-    if (a3)
+    if (prominence)
     {
-      if (a3 != 1)
+      if (prominence != 1)
       {
         goto LABEL_12;
       }
 
-      v3 = [(TLKAppearance *)self secondaryButtonColor];
+      secondaryButtonColor = [(TLKAppearance *)self secondaryButtonColor];
     }
 
     else
     {
-      v3 = [(TLKAppearance *)self primaryButtonColor];
+      secondaryButtonColor = [(TLKAppearance *)self primaryButtonColor];
     }
 
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (prominence == 2)
   {
-    v3 = [(TLKAppearance *)self tertiaryButtonColor];
+    secondaryButtonColor = [(TLKAppearance *)self tertiaryButtonColor];
     goto LABEL_11;
   }
 
-  if (a3 == 3 || a3 == 4)
+  if (prominence == 3 || prominence == 4)
   {
-    v3 = [(TLKAppearance *)self quaternaryButtonColor];
+    secondaryButtonColor = [(TLKAppearance *)self quaternaryButtonColor];
 LABEL_11:
-    a2 = v3;
+    a2 = secondaryButtonColor;
   }
 
 LABEL_12:
@@ -294,39 +294,39 @@ LABEL_12:
 {
   if ([(TLKAppearance *)self isVibrant])
   {
-    v2 = 0;
+    systemGroupedBackgroundColor = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  return v2;
+  return systemGroupedBackgroundColor;
 }
 
-- (void)enableAppearanceForView:(id)a3
+- (void)enableAppearanceForView:(id)view
 {
-  v4 = a3;
-  v5 = [(TLKAppearance *)self compositingFilter];
-  v6 = [v4 layer];
-  [v6 setCompositingFilter:v5];
+  viewCopy = view;
+  compositingFilter = [(TLKAppearance *)self compositingFilter];
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:compositingFilter];
 
-  v7 = [v4 superview];
+  superview = [viewCopy superview];
 
-  [(TLKAppearance *)self enableAppearanceForContainer:v7];
+  [(TLKAppearance *)self enableAppearanceForContainer:superview];
 }
 
-- (void)enableAppearanceForContainer:(id)a3
+- (void)enableAppearanceForContainer:(id)container
 {
-  v13 = a3;
-  v4 = [(TLKAppearance *)self compositingFilter];
+  containerCopy = container;
+  compositingFilter = [(TLKAppearance *)self compositingFilter];
 
-  v5 = v13;
-  if (v4)
+  v5 = containerCopy;
+  if (compositingFilter)
   {
-    v6 = v13;
-    v7 = [v6 layer];
+    v6 = containerCopy;
+    layer = [v6 layer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -334,13 +334,13 @@ LABEL_12:
     {
       do
       {
-        v9 = [v6 superview];
+        superview = [v6 superview];
 
-        v10 = [v9 layer];
+        layer2 = [superview layer];
         objc_opt_class();
         v11 = objc_opt_isKindOfClass();
 
-        v6 = v9;
+        v6 = superview;
       }
 
       while ((v11 & 1) != 0);
@@ -348,41 +348,41 @@ LABEL_12:
 
     else
     {
-      v9 = v6;
+      superview = v6;
     }
 
-    v12 = [v9 layer];
-    [v12 setAllowsGroupBlending:0];
+    layer3 = [superview layer];
+    [layer3 setAllowsGroupBlending:0];
 
-    v5 = v13;
+    v5 = containerCopy;
   }
 }
 
-- (void)disableAppearanceForView:(id)a3
+- (void)disableAppearanceForView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 setCompositingFilter:0];
+  layer = [view layer];
+  [layer setCompositingFilter:0];
 }
 
-+ (BOOL)viewHasOverriddenAppearance:(id)a3
++ (BOOL)viewHasOverriddenAppearance:(id)appearance
 {
-  v3 = a3;
-  if ([v3 overrideUserInterfaceStyle])
+  appearanceCopy = appearance;
+  if ([appearanceCopy overrideUserInterfaceStyle])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 _overrideVibrancyTrait] != -1;
+    v4 = [appearanceCopy _overrideVibrancyTrait] != -1;
   }
 
   return v4;
 }
 
-- (void)overrideAppearanceForView:(id)a3
+- (void)overrideAppearanceForView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(TLKAppearance *)self isDark])
   {
     v4 = 2;
@@ -393,39 +393,39 @@ LABEL_12:
     v4 = 1;
   }
 
-  [v5 setOverrideUserInterfaceStyle:v4];
-  [v5 _setOverrideVibrancyTrait:{-[TLKAppearance isVibrant](self, "isVibrant")}];
+  [viewCopy setOverrideUserInterfaceStyle:v4];
+  [viewCopy _setOverrideVibrancyTrait:{-[TLKAppearance isVibrant](self, "isVibrant")}];
 }
 
-+ (void)disableAppearanceOverrideForView:(id)a3
++ (void)disableAppearanceOverrideForView:(id)view
 {
-  v3 = a3;
-  [v3 setOverrideUserInterfaceStyle:0];
-  [v3 _setOverrideVibrancyTrait:-1];
+  viewCopy = view;
+  [viewCopy setOverrideUserInterfaceStyle:0];
+  [viewCopy _setOverrideVibrancyTrait:-1];
 }
 
-- (id)textColorForColor:(int64_t)a3
+- (id)textColorForColor:(int64_t)color
 {
-  if (a3 <= 4)
+  if (color <= 4)
   {
-    if (a3 <= 2)
+    if (color <= 2)
     {
-      if (a3 == 1)
+      if (color == 1)
       {
-        v3 = [MEMORY[0x1E69DC888] systemRedColor];
+        systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
         goto LABEL_20;
       }
 
-      if (a3 == 2)
+      if (color == 2)
       {
-        v3 = [MEMORY[0x1E69DC888] systemOrangeColor];
+        systemRedColor = [MEMORY[0x1E69DC888] systemOrangeColor];
         goto LABEL_20;
       }
 
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (color == 3)
     {
       [MEMORY[0x1E69DC888] systemYellowColor];
     }
@@ -435,13 +435,13 @@ LABEL_12:
       [MEMORY[0x1E69DC888] systemGreenColor];
     }
 
-    v3 = LABEL_9:;
+    systemRedColor = LABEL_9:;
     goto LABEL_20;
   }
 
-  if (a3 <= 6)
+  if (color <= 6)
   {
-    if (a3 == 5)
+    if (color == 5)
     {
       [MEMORY[0x1E69DC888] systemBlueColor];
     }
@@ -454,51 +454,51 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (color == 7)
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    systemRedColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (color == 8)
   {
-    v3 = [MEMORY[0x1E69DC888] linkColor];
+    systemRedColor = [MEMORY[0x1E69DC888] linkColor];
     goto LABEL_20;
   }
 
 LABEL_19:
-  v3 = [(TLKAppearance *)self primaryColor];
+  systemRedColor = [(TLKAppearance *)self primaryColor];
 LABEL_20:
 
-  return v3;
+  return systemRedColor;
 }
 
-- (id)primaryColorWithDefaultAlpha:(double)a3
+- (id)primaryColorWithDefaultAlpha:(double)alpha
 {
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    a3 = a3 + 0.2;
+    alpha = alpha + 0.2;
   }
 
-  v5 = [(TLKAppearance *)self primaryColor];
-  v6 = [v5 colorWithAlphaComponent:a3];
+  primaryColor = [(TLKAppearance *)self primaryColor];
+  v6 = [primaryColor colorWithAlphaComponent:alpha];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(TLKAppearance *)self style];
-    v7 = v6 == [(TLKAppearance *)v5 style];
+    style = [(TLKAppearance *)self style];
+    v7 = style == [(TLKAppearance *)v5 style];
   }
 
   else

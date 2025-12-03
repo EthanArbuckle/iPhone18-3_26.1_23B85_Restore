@@ -1,20 +1,20 @@
 @interface _UIAlertControllerCarBackgroundView
-- (_UIAlertControllerCarBackgroundView)initWithFrame:(CGRect)a3;
-- (id)_colorForInterfaceStyle:(int64_t)a3;
+- (_UIAlertControllerCarBackgroundView)initWithFrame:(CGRect)frame;
+- (id)_colorForInterfaceStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 @end
 
 @implementation _UIAlertControllerCarBackgroundView
 
-- (_UIAlertControllerCarBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerCarBackgroundView)initWithFrame:(CGRect)frame
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = _UIAlertControllerCarBackgroundView;
-  v3 = [(UIView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIVisualEffectView);
@@ -28,21 +28,21 @@
 
     [(UIView *)v3 addSubview:v4];
     v15 = MEMORY[0x1E69977A0];
-    v20 = [(UIView *)v4 topAnchor];
-    v19 = [(UIView *)v3 topAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    topAnchor = [(UIView *)v4 topAnchor];
+    topAnchor2 = [(UIView *)v3 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[0] = v18;
-    v17 = [(UIView *)v4 leftAnchor];
-    v16 = [(UIView *)v3 leftAnchor];
-    v6 = [v17 constraintEqualToAnchor:v16];
+    leftAnchor = [(UIView *)v4 leftAnchor];
+    leftAnchor2 = [(UIView *)v3 leftAnchor];
+    v6 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v24[1] = v6;
-    v7 = [(UIView *)v4 rightAnchor];
-    v8 = [(UIView *)v3 rightAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    rightAnchor = [(UIView *)v4 rightAnchor];
+    rightAnchor2 = [(UIView *)v3 rightAnchor];
+    v9 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v24[2] = v9;
-    v10 = [(UIView *)v4 bottomAnchor];
-    v11 = [(UIView *)v3 bottomAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    bottomAnchor = [(UIView *)v4 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v15 activateConstraints:v13];
@@ -65,36 +65,36 @@
 
   else
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = -[_UIAlertControllerCarBackgroundView _colorForInterfaceStyle:](self, "_colorForInterfaceStyle:", [v4 userInterfaceStyle]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = -[_UIAlertControllerCarBackgroundView _colorForInterfaceStyle:](self, "_colorForInterfaceStyle:", [traitCollection userInterfaceStyle]);
     [(UIView *)self setBackgroundColor:v5];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(UIView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v4 = [(UIView *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_isHighlighted != a3)
+  if (self->_isHighlighted != highlighted)
   {
     if (_UISolariumEnabled())
     {
-      v5 = [(_UIAlertControllerCarBackgroundView *)self fillColor];
-      v6 = [(_UIAlertControllerCarBackgroundView *)self highlightColor];
+      fillColor = [(_UIAlertControllerCarBackgroundView *)self fillColor];
+      highlightColor = [(_UIAlertControllerCarBackgroundView *)self highlightColor];
 
-      if (v5 != v6)
+      if (fillColor != highlightColor)
       {
-        if (a3)
+        if (highlighted)
         {
           [(_UIAlertControllerCarBackgroundView *)self highlightColor];
         }
@@ -108,13 +108,13 @@
       }
     }
 
-    self->_isHighlighted = a3;
+    self->_isHighlighted = highlighted;
   }
 }
 
-- (id)_colorForInterfaceStyle:(int64_t)a3
+- (id)_colorForInterfaceStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = 0.964705882;
   }

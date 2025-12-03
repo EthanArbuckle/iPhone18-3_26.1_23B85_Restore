@@ -1,39 +1,39 @@
 @interface WFBatteryLevelTriggerConfigurationViewController
 - (NSNumber)parameterSectionIndex;
-- (WFBatteryLevelTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFBatteryLevelTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)localizedTextForCellAtIndexPath:(id)a3 value:(double)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)localizedTextForCellAtIndexPath:(id)path value:(double)value;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)disableRowVisibilityFor:(id)a3;
-- (void)enableRowVisibilityFor:(id)a3;
-- (void)sliderValueChangedToValue:(double)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCellLabelsWithValue:(double)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)disableRowVisibilityFor:(id)for;
+- (void)enableRowVisibilityFor:(id)for;
+- (void)sliderValueChangedToValue:(double)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCellLabelsWithValue:(double)value;
 @end
 
 @implementation WFBatteryLevelTriggerConfigurationViewController
 
-- (id)localizedTextForCellAtIndexPath:(id)a3 value:(double)a4
+- (id)localizedTextForCellAtIndexPath:(id)path value:(double)value
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = MEMORY[0x277CCABB8];
-  v7 = a4 / 100.0;
-  *&v7 = a4 / 100.0;
+  v7 = value / 100.0;
+  *&v7 = value / 100.0;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
   v9 = [v6 localizedStringFromNumber:v8 numberStyle:3];
 
-  if (![v5 row])
+  if (![pathCopy row])
   {
     v10 = @"Equals %@";
     goto LABEL_7;
   }
 
-  if ([v5 row] == 1)
+  if ([pathCopy row] == 1)
   {
     v10 = @"Rises Above %@";
 LABEL_7:
@@ -44,7 +44,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v5 row] == 2)
+  if ([pathCopy row] == 2)
   {
     v10 = @"Falls Below %@";
     goto LABEL_7;
@@ -56,82 +56,82 @@ LABEL_8:
   return v13;
 }
 
-- (void)enableRowVisibilityFor:(id)a3
+- (void)enableRowVisibilityFor:(id)for
 {
-  v3 = a3;
-  [v3 setUserInteractionEnabled:1];
-  v4 = [v3 textLabel];
-  [v4 setEnabled:1];
+  forCopy = for;
+  [forCopy setUserInteractionEnabled:1];
+  textLabel = [forCopy textLabel];
+  [textLabel setEnabled:1];
 
-  v5 = [v3 detailTextLabel];
+  detailTextLabel = [forCopy detailTextLabel];
 
-  [v5 setEnabled:1];
+  [detailTextLabel setEnabled:1];
 }
 
-- (void)disableRowVisibilityFor:(id)a3
+- (void)disableRowVisibilityFor:(id)for
 {
-  v9 = a3;
-  [v9 setUserInteractionEnabled:0];
-  v4 = [v9 textLabel];
-  [v4 setEnabled:0];
+  forCopy = for;
+  [forCopy setUserInteractionEnabled:0];
+  textLabel = [forCopy textLabel];
+  [textLabel setEnabled:0];
 
-  v5 = [v9 detailTextLabel];
-  [v5 setEnabled:0];
+  detailTextLabel = [forCopy detailTextLabel];
+  [detailTextLabel setEnabled:0];
 
-  if ([v9 accessoryType] == 3)
+  if ([forCopy accessoryType] == 3)
   {
     v6 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:2];
-    v7 = [(WFTriggerConfigurationViewController *)self tableView];
-    v8 = [v7 cellForRowAtIndexPath:v6];
+    tableView = [(WFTriggerConfigurationViewController *)self tableView];
+    v8 = [tableView cellForRowAtIndexPath:v6];
 
     [v8 setAccessoryType:3];
-    [v9 setAccessoryType:0];
+    [forCopy setAccessoryType:0];
   }
 }
 
-- (void)updateCellLabelsWithValue:(double)a3
+- (void)updateCellLabelsWithValue:(double)value
 {
   v5 = MEMORY[0x277CCAA70];
-  v6 = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
-  v25 = [v5 indexPathForRow:0 inSection:{objc_msgSend(v6, "integerValue")}];
+  parameterSectionIndex = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
+  v25 = [v5 indexPathForRow:0 inSection:{objc_msgSend(parameterSectionIndex, "integerValue")}];
 
   v7 = MEMORY[0x277CCAA70];
-  v8 = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
-  v9 = [v7 indexPathForRow:1 inSection:{objc_msgSend(v8, "integerValue")}];
+  parameterSectionIndex2 = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
+  v9 = [v7 indexPathForRow:1 inSection:{objc_msgSend(parameterSectionIndex2, "integerValue")}];
 
   v10 = MEMORY[0x277CCAA70];
-  v11 = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
-  v12 = [v10 indexPathForRow:2 inSection:{objc_msgSend(v11, "integerValue")}];
+  parameterSectionIndex3 = [(WFBatteryLevelTriggerConfigurationViewController *)self parameterSectionIndex];
+  v12 = [v10 indexPathForRow:2 inSection:{objc_msgSend(parameterSectionIndex3, "integerValue")}];
 
-  v13 = [(WFTriggerConfigurationViewController *)self tableView];
-  v14 = [v13 cellForRowAtIndexPath:v25];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  v14 = [tableView cellForRowAtIndexPath:v25];
 
-  v15 = [(WFTriggerConfigurationViewController *)self tableView];
-  v16 = [v15 cellForRowAtIndexPath:v9];
+  tableView2 = [(WFTriggerConfigurationViewController *)self tableView];
+  v16 = [tableView2 cellForRowAtIndexPath:v9];
 
-  v17 = [(WFTriggerConfigurationViewController *)self tableView];
-  v18 = [v17 cellForRowAtIndexPath:v12];
+  tableView3 = [(WFTriggerConfigurationViewController *)self tableView];
+  v18 = [tableView3 cellForRowAtIndexPath:v12];
 
-  v19 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v25 value:a3];
-  v20 = [v14 textLabel];
-  [v20 setText:v19];
+  v19 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v25 value:value];
+  textLabel = [v14 textLabel];
+  [textLabel setText:v19];
 
-  v21 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v9 value:a3];
-  v22 = [v16 textLabel];
-  [v22 setText:v21];
+  v21 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v9 value:value];
+  textLabel2 = [v16 textLabel];
+  [textLabel2 setText:v21];
 
-  v23 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v12 value:a3];
-  v24 = [v18 textLabel];
-  [v24 setText:v23];
+  v23 = [(WFBatteryLevelTriggerConfigurationViewController *)self localizedTextForCellAtIndexPath:v12 value:value];
+  textLabel3 = [v18 textLabel];
+  [textLabel3 setText:v23];
 
   [(WFBatteryLevelTriggerConfigurationViewController *)self enableRowVisibilityFor:v16];
   [(WFBatteryLevelTriggerConfigurationViewController *)self enableRowVisibilityFor:v18];
-  if (a3 >= 100.0)
+  if (value >= 100.0)
   {
     [(WFBatteryLevelTriggerConfigurationViewController *)self disableRowVisibilityFor:v16];
   }
 
-  if (a3 <= 0.0)
+  if (value <= 0.0)
   {
     [(WFBatteryLevelTriggerConfigurationViewController *)self disableRowVisibilityFor:v18];
   }
@@ -143,8 +143,8 @@ LABEL_8:
   if (!parameterSectionIndex)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(WFTriggerConfigurationViewController *)self sections];
-    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "indexOfObjectPassingTest:", &__block_literal_global_6102)}];
+    sections = [(WFTriggerConfigurationViewController *)self sections];
+    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(sections, "indexOfObjectPassingTest:", &__block_literal_global_6102)}];
     v7 = self->_parameterSectionIndex;
     self->_parameterSectionIndex = v6;
 
@@ -176,53 +176,53 @@ uint64_t __73__WFBatteryLevelTriggerConfigurationViewController_parameterSection
   return v4;
 }
 
-- (void)sliderValueChangedToValue:(double)a3
+- (void)sliderValueChangedToValue:(double)value
 {
-  v5 = a3;
-  v6 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v6 setLevel:v5];
+  valueCopy = value;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setLevel:valueCopy];
 
-  [(WFBatteryLevelTriggerConfigurationViewController *)self updateCellLabelsWithValue:a3];
+  [(WFBatteryLevelTriggerConfigurationViewController *)self updateCellLabelsWithValue:value];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  [a3 deselectRowAtIndexPath:v13 animated:1];
-  v6 = -[WFBatteryLevelTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v13 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[WFBatteryLevelTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v7 = [v6 objectForKeyedSubscript:@"identifier"];
   v8 = [v7 isEqualToString:@"triggerParameters"];
 
   if (v8)
   {
-    v9 = [v13 row];
-    v10 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v10 setSelection:v9];
+    v9 = [pathCopy row];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger setSelection:v9];
 
-    v11 = [(WFTriggerConfigurationViewController *)self tableView];
-    v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v13, "section")}];
-    [v11 reloadSections:v12 withRowAnimation:100];
+    tableView = [(WFTriggerConfigurationViewController *)self tableView];
+    v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+    [tableView reloadSections:v12 withRowAnimation:100];
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v13 withSectionInfo:v6];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v6];
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFBatteryLevelTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFBatteryLevelTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFBatteryLevelTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFBatteryLevelTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -242,8 +242,8 @@ uint64_t __73__WFBatteryLevelTriggerConfigurationViewController_parameterSection
   {
     v15 = v10;
     [v15 setDelegate:self];
-    v16 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v15 configureWithInitialValue:objc_msgSend(v16 maximumValue:"level") minimumValue:100.0 stepValue:{0.0, 5.0}];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    [v15 configureWithInitialValue:objc_msgSend(trigger maximumValue:"level") minimumValue:100.0 stepValue:{0.0, 5.0}];
 
     goto LABEL_19;
   }
@@ -254,26 +254,26 @@ uint64_t __73__WFBatteryLevelTriggerConfigurationViewController_parameterSection
   if (v18)
   {
     [v10 setAccessoryType:0];
-    v19 = [(WFTriggerConfigurationViewController *)self trigger];
-    v20 = -[WFBatteryLevelTriggerConfigurationViewController localizedTextForCellAtIndexPath:value:](self, "localizedTextForCellAtIndexPath:value:", v6, [v19 level]);
-    v21 = [v10 textLabel];
-    [v21 setText:v20];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    v20 = -[WFBatteryLevelTriggerConfigurationViewController localizedTextForCellAtIndexPath:value:](self, "localizedTextForCellAtIndexPath:value:", pathCopy, [trigger2 level]);
+    textLabel = [v10 textLabel];
+    [textLabel setText:v20];
 
-    v22 = [v6 row];
+    v22 = [pathCopy row];
     if (v22 == 2)
     {
-      v29 = [(WFTriggerConfigurationViewController *)self trigger];
-      v30 = [v29 selection];
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      selection = [trigger3 selection];
 
-      if (v30 == 2)
+      if (selection == 2)
       {
         [v10 setAccessoryType:3];
       }
 
-      v31 = [(WFTriggerConfigurationViewController *)self trigger];
-      v32 = [v31 level];
+      trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+      level = [trigger4 level];
 
-      if (v32)
+      if (level)
       {
         goto LABEL_18;
       }
@@ -285,10 +285,10 @@ uint64_t __73__WFBatteryLevelTriggerConfigurationViewController_parameterSection
       {
         if (!v22)
         {
-          v23 = [(WFTriggerConfigurationViewController *)self trigger];
-          v24 = [v23 selection];
+          trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+          selection2 = [trigger5 selection];
 
-          if (!v24)
+          if (!selection2)
           {
             [v10 setAccessoryType:3];
           }
@@ -299,18 +299,18 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v25 = [(WFTriggerConfigurationViewController *)self trigger];
-      v26 = [v25 selection];
+      trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+      selection3 = [trigger6 selection];
 
-      if (v26 == 1)
+      if (selection3 == 1)
       {
         [v10 setAccessoryType:3];
       }
 
-      v27 = [(WFTriggerConfigurationViewController *)self trigger];
-      v28 = [v27 level];
+      trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+      level2 = [trigger7 level];
 
-      if (v28 <= 0x63)
+      if (level2 <= 0x63)
       {
         goto LABEL_18;
       }
@@ -320,43 +320,43 @@ LABEL_18:
   }
 
 LABEL_19:
-  v33 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v33 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v33;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFBatteryLevelTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFBatteryLevelTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqualToString:@"triggerParameters"];
 
   if (v7)
   {
     v8 = [v5 objectForKeyedSubscript:@"numberRows"];
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v9 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
+    integerValue = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
@@ -401,19 +401,19 @@ LABEL_19:
   return v4;
 }
 
-- (WFBatteryLevelTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFBatteryLevelTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFBatteryLevelTriggerConfigurationViewController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFBatteryLevelTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFBatteryLevelTriggerConfigurationViewController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFBatteryLevelTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFBatteryLevelTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

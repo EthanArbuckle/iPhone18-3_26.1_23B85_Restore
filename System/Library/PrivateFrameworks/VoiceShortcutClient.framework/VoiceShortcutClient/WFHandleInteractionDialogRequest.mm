@@ -1,39 +1,39 @@
 @interface WFHandleInteractionDialogRequest
-- (WFHandleInteractionDialogRequest)initWithCoder:(id)a3;
-- (WFHandleInteractionDialogRequest)initWithInteraction:(id)a3 attribution:(id)a4;
-- (WFHandleInteractionDialogRequest)initWithInteraction:(id)a3 prompt:(id)a4;
+- (WFHandleInteractionDialogRequest)initWithCoder:(id)coder;
+- (WFHandleInteractionDialogRequest)initWithInteraction:(id)interaction attribution:(id)attribution;
+- (WFHandleInteractionDialogRequest)initWithInteraction:(id)interaction prompt:(id)prompt;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFHandleInteractionDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFHandleInteractionDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFHandleInteractionDialogRequest *)self interaction:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"interaction"];
+  [coderCopy encodeObject:v5 forKey:@"interaction"];
 
-  v6 = [(WFHandleInteractionDialogRequest *)self doneButton];
-  [v4 encodeObject:v6 forKey:@"doneButton"];
+  doneButton = [(WFHandleInteractionDialogRequest *)self doneButton];
+  [coderCopy encodeObject:doneButton forKey:@"doneButton"];
 }
 
-- (WFHandleInteractionDialogRequest)initWithCoder:(id)a3
+- (WFHandleInteractionDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFHandleInteractionDialogRequest;
-  v5 = [(WFDialogRequest *)&v12 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
     interaction = v5->_interaction;
     v5->_interaction = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
     doneButton = v5->_doneButton;
     v5->_doneButton = v8;
 
@@ -48,24 +48,24 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDialogRequest *)self attribution];
-  v7 = [v6 title];
-  v8 = [(WFHandleInteractionDialogRequest *)self interaction];
-  v9 = [(WFHandleInteractionDialogRequest *)self doneButton];
-  v10 = [v3 stringWithFormat:@"<%@: %p, title: %@, interaction: %@, doneButton: %@>", v5, self, v7, v8, v9];
+  attribution = [(WFDialogRequest *)self attribution];
+  title = [attribution title];
+  interaction = [(WFHandleInteractionDialogRequest *)self interaction];
+  doneButton = [(WFHandleInteractionDialogRequest *)self doneButton];
+  v10 = [v3 stringWithFormat:@"<%@: %p, title: %@, interaction: %@, doneButton: %@>", v5, self, title, interaction, doneButton];
 
   return v10;
 }
 
-- (WFHandleInteractionDialogRequest)initWithInteraction:(id)a3 attribution:(id)a4
+- (WFHandleInteractionDialogRequest)initWithInteraction:(id)interaction attribution:(id)attribution
 {
-  v6 = a3;
+  interactionCopy = interaction;
   v14.receiver = self;
   v14.super_class = WFHandleInteractionDialogRequest;
-  v7 = [(WFDialogRequest *)&v14 initWithAttribution:a4 prompt:0];
+  v7 = [(WFDialogRequest *)&v14 initWithAttribution:attribution prompt:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [interactionCopy copy];
     interaction = v7->_interaction;
     v7->_interaction = v8;
 
@@ -79,17 +79,17 @@
   return v7;
 }
 
-- (WFHandleInteractionDialogRequest)initWithInteraction:(id)a3 prompt:(id)a4
+- (WFHandleInteractionDialogRequest)initWithInteraction:(id)interaction prompt:(id)prompt
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 intent];
-  v9 = [v8 _intents_bundleIdForDisplay];
+  interactionCopy = interaction;
+  promptCopy = prompt;
+  intent = [interactionCopy intent];
+  _intents_bundleIdForDisplay = [intent _intents_bundleIdForDisplay];
 
-  v10 = [(WFDialogRequest *)self initWithAppBundleIdentifier:v9 prompt:v7];
+  v10 = [(WFDialogRequest *)self initWithAppBundleIdentifier:_intents_bundleIdForDisplay prompt:promptCopy];
   if (v10)
   {
-    v11 = [v6 copy];
+    v11 = [interactionCopy copy];
     interaction = v10->_interaction;
     v10->_interaction = v11;
 

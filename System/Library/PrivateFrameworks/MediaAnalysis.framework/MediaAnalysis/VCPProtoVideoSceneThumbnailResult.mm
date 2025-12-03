@@ -1,34 +1,34 @@
 @interface VCPProtoVideoSceneThumbnailResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)addSceneToThumbnail:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSceneToThumbnail:(id)thumbnail;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoVideoSceneThumbnailResult
 
-- (void)addSceneToThumbnail:(id)a3
+- (void)addSceneToThumbnail:(id)thumbnail
 {
-  v4 = a3;
+  thumbnailCopy = thumbnail;
   sceneToThumbnails = self->_sceneToThumbnails;
-  v8 = v4;
+  v8 = thumbnailCopy;
   if (!sceneToThumbnails)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sceneToThumbnails;
     self->_sceneToThumbnails = v6;
 
-    v4 = v8;
+    thumbnailCopy = v8;
     sceneToThumbnails = self->_sceneToThumbnails;
   }
 
-  [(NSMutableArray *)sceneToThumbnails addObject:v4];
+  [(NSMutableArray *)sceneToThumbnails addObject:thumbnailCopy];
 }
 
 - (id)description
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoVideoSceneThumbnailResult;
   v4 = [(VCPProtoVideoSceneThumbnailResult *)&v8 description];
-  v5 = [(VCPProtoVideoSceneThumbnailResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoVideoSceneThumbnailResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -46,7 +46,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_sceneToThumbnails count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_sceneToThumbnails, "count")}];
@@ -69,8 +69,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -79,16 +79,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sceneToThumbnail"];
+    [dictionary setObject:v4 forKey:@"sceneToThumbnail"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -121,29 +121,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailsCount])
   {
-    [v8 clearSceneToThumbnails];
-    v4 = [(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailsCount];
-    if (v4)
+    [toCopy clearSceneToThumbnails];
+    sceneToThumbnailsCount = [(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailsCount];
+    if (sceneToThumbnailsCount)
     {
-      v5 = v4;
+      v5 = sceneToThumbnailsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailAtIndex:i];
-        [v8 addSceneToThumbnail:v7];
+        [toCopy addSceneToThumbnail:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -164,7 +164,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addSceneToThumbnail:v11];
 
         ++v10;
@@ -180,13 +180,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     sceneToThumbnails = self->_sceneToThumbnails;
-    if (sceneToThumbnails | v4[1])
+    if (sceneToThumbnails | equalCopy[1])
     {
       v6 = [(NSMutableArray *)sceneToThumbnails isEqual:?];
     }
@@ -205,14 +205,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -239,9 +239,9 @@
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   if ([v3 count])
   {
     v4 = objc_alloc_init(VCPProtoVideoSceneThumbnailResult);
@@ -279,10 +279,10 @@ void __82__VCPProtoVideoSceneThumbnailResult_LegacyConversion__resultFromLegacyD
   for (i = 0; i < [(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailsCount]; ++i)
   {
     v5 = [(VCPProtoVideoSceneThumbnailResult *)self sceneToThumbnailAtIndex:i];
-    v6 = [v5 thumbnailID];
+    thumbnailID = [v5 thumbnailID];
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v5, "identifier")}];
-    v8 = [v7 stringValue];
-    [v3 setObject:v6 forKey:v8];
+    stringValue = [v7 stringValue];
+    [v3 setObject:thumbnailID forKey:stringValue];
   }
 
   v11 = @"attributes";

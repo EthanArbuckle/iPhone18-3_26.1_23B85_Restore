@@ -1,6 +1,6 @@
 @interface HUDUserClientMetric
-- (HUDUserClientMetric)initWithBridgedDescriptor:(HUDMetricDescriptor *)a3 record:(HUDValueHistoryRecord *)a4;
-- (HUDUserClientMetric)initWithDescriptor:(HUDMetricDescriptor *)a3;
+- (HUDUserClientMetric)initWithBridgedDescriptor:(HUDMetricDescriptor *)descriptor record:(HUDValueHistoryRecord *)record;
+- (HUDUserClientMetric)initWithDescriptor:(HUDMetricDescriptor *)descriptor;
 - (HUDValueHistoryRecord)record;
 - (NSString)displayName;
 - (NSString)stringValue;
@@ -14,16 +14,16 @@
 - (int64_t)intValue;
 - (unint64_t)sampleCount;
 - (unint64_t)totalSampleCount;
-- (void)formatValue:(double)a3 buffer:(char *)a4 length:(unint64_t)a5;
-- (void)setFloatValue:(double)a3;
-- (void)setIntValue:(int64_t)a3;
-- (void)setName:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)formatValue:(double)value buffer:(char *)buffer length:(unint64_t)length;
+- (void)setFloatValue:(double)value;
+- (void)setIntValue:(int64_t)value;
+- (void)setName:(id)name;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation HUDUserClientMetric
 
-- (HUDUserClientMetric)initWithDescriptor:(HUDMetricDescriptor *)a3
+- (HUDUserClientMetric)initWithDescriptor:(HUDMetricDescriptor *)descriptor
 {
   v11.receiver = self;
   v11.super_class = HUDUserClientMetric;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    *&v6 = __copy_assignment_8_8_s0_s8_s16_t24w44(&v4->_descriptor, a3).n128_u64[0];
+    *&v6 = __copy_assignment_8_8_s0_s8_s16_t24w44(&v4->_descriptor, descriptor).n128_u64[0];
     name = v5->_descriptor.name;
     if ((v5->_descriptor.options & 2) != 0)
     {
@@ -55,7 +55,7 @@
   return v5;
 }
 
-- (HUDUserClientMetric)initWithBridgedDescriptor:(HUDMetricDescriptor *)a3 record:(HUDValueHistoryRecord *)a4
+- (HUDUserClientMetric)initWithBridgedDescriptor:(HUDMetricDescriptor *)descriptor record:(HUDValueHistoryRecord *)record
 {
   v13.receiver = self;
   v13.super_class = HUDUserClientMetric;
@@ -63,7 +63,7 @@
   v7 = v6;
   if (v6)
   {
-    *&v8 = __copy_assignment_8_8_s0_s8_s16_t24w44(&v6->_descriptor, a3).n128_u64[0];
+    *&v8 = __copy_assignment_8_8_s0_s8_s16_t24w44(&v6->_descriptor, descriptor).n128_u64[0];
     name = v7->_descriptor.name;
     if ((v7->_descriptor.options & 2) != 0)
     {
@@ -81,7 +81,7 @@
     LOWORD(v7->_lastUpdateTime) = 1;
     LOBYTE(v7->_value.floatValue) = 1;
     *&v7->_bridged = 0;
-    v7->_stringValue = a4;
+    v7->_stringValue = record;
   }
 
   return v7;
@@ -121,10 +121,10 @@
   {
     if (valuesMaxSinceBeginning_low == 2)
     {
-      v5 = [(HUDUserClientMetric *)self stringValue];
-      v4 = [v5 intValue];
+      stringValue = [(HUDUserClientMetric *)self stringValue];
+      intValue = [stringValue intValue];
 
-      return v4;
+      return intValue;
     }
 
     if (valuesMaxSinceBeginning_low != 1)
@@ -136,11 +136,11 @@
   return *(stringValue + 1028);
 }
 
-- (void)setIntValue:(int64_t)a3
+- (void)setIntValue:(int64_t)value
 {
   LODWORD(self->_record.valuesMaxSinceBeginning) = 0;
-  HUDValueHistoryRecordAddValue(&self->_record, a3);
-  self->_stringValue = a3;
+  HUDValueHistoryRecordAddValue(&self->_record, value);
+  self->_stringValue = value;
   *&self->_bridged = HUDCurrentTimeInNs();
 }
 
@@ -165,8 +165,8 @@
   {
     if (valuesMaxSinceBeginning_low == 2)
     {
-      v5 = [(HUDUserClientMetric *)self stringValue];
-      [v5 floatValue];
+      stringValue = [(HUDUserClientMetric *)self stringValue];
+      [stringValue floatValue];
       v4 = v6;
     }
 
@@ -349,45 +349,45 @@
   return stringValue[275];
 }
 
-- (void)setFloatValue:(double)a3
+- (void)setFloatValue:(double)value
 {
   LODWORD(self->_record.valuesMaxSinceBeginning) = 1;
-  HUDValueHistoryRecordAddValue(&self->_record, a3);
-  *&self->_stringValue = a3;
+  HUDValueHistoryRecordAddValue(&self->_record, value);
+  *&self->_stringValue = value;
   *&self->_bridged = HUDCurrentTimeInNs();
 }
 
 - (NSString)stringValue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (LODWORD(v2->_record.valuesMaxSinceBeginning) == 2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (LODWORD(selfCopy->_record.valuesMaxSinceBeginning) == 2)
   {
-    v3 = [*&v2->_metricType copy];
+    v3 = [*&selfCopy->_metricType copy];
   }
 
   else
   {
-    [(HUDUserClientMetric *)v2 floatValue];
-    [(HUDUserClientMetric *)v2 formatValue:v6 buffer:512 length:?];
+    [(HUDUserClientMetric *)selfCopy floatValue];
+    [(HUDUserClientMetric *)selfCopy formatValue:v6 buffer:512 length:?];
     v3 = [NSString stringWithUTF8String:v6];
   }
 
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  LODWORD(v5->_record.valuesMaxSinceBeginning) = 2;
-  objc_storeStrong(&v5->_metricType, a3);
-  *&v5->_bridged = HUDCurrentTimeInNs();
-  objc_sync_exit(v5);
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  LODWORD(selfCopy->_record.valuesMaxSinceBeginning) = 2;
+  objc_storeStrong(&selfCopy->_metricType, value);
+  *&selfCopy->_bridged = HUDCurrentTimeInNs();
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)displayName
@@ -404,26 +404,26 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v8 = a3;
-  objc_storeStrong(&self->_descriptor.name, a3);
+  nameCopy = name;
+  objc_storeStrong(&self->_descriptor.name, name);
   name = self->_descriptor.name;
   if ((self->_descriptor.options & 2) != 0)
   {
-    v6 = [@"* " stringByAppendingString:name];
+    nameCopy2 = [@"* " stringByAppendingString:name];
   }
 
   else
   {
-    v6 = name;
+    nameCopy2 = name;
   }
 
   v7 = *&self->_enabled;
-  *&self->_enabled = v6;
+  *&self->_enabled = nameCopy2;
 }
 
-- (void)formatValue:(double)a3 buffer:(char *)a4 length:(unint64_t)a5
+- (void)formatValue:(double)value buffer:(char *)buffer length:(unint64_t)length
 {
   unitType = self->_descriptor.unitType;
   if (unitType > 1)
@@ -432,15 +432,15 @@
     {
       case 2:
 
-        MTLHUDFormattedTimeInNanosecond(a3, 3, 0, a4, a5);
+        MTLHUDFormattedTimeInNanosecond(value, 3, 0, buffer, length);
         break;
       case 3:
 
-        MTLHUDFormattedBytes(a3, 0, 0, a4, a5);
+        MTLHUDFormattedBytes(value, 0, 0, buffer, length);
         break;
       case 4:
 
-        MTLHUDFormattedBytesPerSecond(a3, 0, 0, a4, a5);
+        MTLHUDFormattedBytesPerSecond(value, 0, 0, buffer, length);
         break;
     }
 
@@ -460,22 +460,22 @@
   valuesMaxSinceBeginning_low = LODWORD(self->_record.valuesMaxSinceBeginning);
   if (valuesMaxSinceBeginning_low == 1)
   {
-    v8 = snprintf(a4, a5, "%.2f");
+    v8 = snprintf(buffer, length, "%.2f");
     goto LABEL_20;
   }
 
   if (!valuesMaxSinceBeginning_low)
   {
 LABEL_19:
-    v8 = snprintf(a4, a5, "%llu");
+    v8 = snprintf(buffer, length, "%llu");
 LABEL_20:
-    a4[v8] = 0;
+    buffer[v8] = 0;
     return;
   }
 
-  if (a5)
+  if (length)
   {
-    *a4 = 0;
+    *buffer = 0;
   }
 }
 

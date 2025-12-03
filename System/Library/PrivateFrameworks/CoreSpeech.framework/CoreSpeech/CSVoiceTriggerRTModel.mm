@@ -1,12 +1,12 @@
 @interface CSVoiceTriggerRTModel
-- (CSVoiceTriggerRTModel)initWithCoder:(id)a3;
-- (CSVoiceTriggerRTModel)initWithData:(id)a3 hash:(id)a4 locale:(id)a5;
-- (CSVoiceTriggerRTModel)initWithData:(id)a3 hash:(id)a4 locale:(id)a5 digest:(id)a6 signature:(id)a7 certificate:(id)a8;
-- (CSVoiceTriggerRTModel)initWithHash:(id)a3 locale:(id)a4;
+- (CSVoiceTriggerRTModel)initWithCoder:(id)coder;
+- (CSVoiceTriggerRTModel)initWithData:(id)data hash:(id)hash locale:(id)locale;
+- (CSVoiceTriggerRTModel)initWithData:(id)data hash:(id)hash locale:(id)locale digest:(id)digest signature:(id)signature certificate:(id)certificate;
+- (CSVoiceTriggerRTModel)initWithHash:(id)hash locale:(id)locale;
 - (id)builtInRTModelDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSVoiceTriggerRTModel
@@ -52,54 +52,54 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   modelData = self->_modelData;
-  v11 = v4;
+  v11 = coderCopy;
   if (modelData)
   {
-    [v4 encodeObject:modelData forKey:@"RTModelData"];
-    v4 = v11;
+    [coderCopy encodeObject:modelData forKey:@"RTModelData"];
+    coderCopy = v11;
   }
 
   modelHash = self->_modelHash;
   if (modelHash)
   {
     [v11 encodeObject:modelHash forKey:@"RTModelHash"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   modelLocale = self->_modelLocale;
   if (modelLocale)
   {
     [v11 encodeObject:modelLocale forKey:@"RTModelLocale"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   digest = self->_digest;
   if (digest)
   {
     [v11 encodeObject:digest forKey:@"RTModelDigest"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   signature = self->_signature;
   if (signature)
   {
     [v11 encodeObject:signature forKey:@"RTModelSignature"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   certificate = self->_certificate;
   if (certificate)
   {
     [v11 encodeObject:certificate forKey:@"RTModelCertificate"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CSVoiceTriggerRTModel alloc];
   v5 = [(NSData *)self->_modelData copy];
@@ -113,52 +113,52 @@
   return v11;
 }
 
-- (CSVoiceTriggerRTModel)initWithCoder:(id)a3
+- (CSVoiceTriggerRTModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CSVoiceTriggerRTModel;
   v5 = [(CSVoiceTriggerRTModel *)&v19 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"RTModelData"])
+    if ([coderCopy containsValueForKey:@"RTModelData"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelData"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelData"];
       modelData = v5->_modelData;
       v5->_modelData = v6;
     }
 
-    if ([v4 containsValueForKey:@"RTModelHash"])
+    if ([coderCopy containsValueForKey:@"RTModelHash"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelHash"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelHash"];
       modelHash = v5->_modelHash;
       v5->_modelHash = v8;
     }
 
-    if ([v4 containsValueForKey:@"RTModelLocale"])
+    if ([coderCopy containsValueForKey:@"RTModelLocale"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelLocale"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelLocale"];
       modelLocale = v5->_modelLocale;
       v5->_modelLocale = v10;
     }
 
-    if ([v4 containsValueForKey:@"RTModelDigest"])
+    if ([coderCopy containsValueForKey:@"RTModelDigest"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelDigest"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelDigest"];
       digest = v5->_digest;
       v5->_digest = v12;
     }
 
-    if ([v4 containsValueForKey:@"RTModelSignature"])
+    if ([coderCopy containsValueForKey:@"RTModelSignature"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelSignature"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelSignature"];
       signature = v5->_signature;
       v5->_signature = v14;
     }
 
-    if ([v4 containsValueForKey:@"RTModelCertificate"])
+    if ([coderCopy containsValueForKey:@"RTModelCertificate"])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RTModelCertificate"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RTModelCertificate"];
       certificate = v5->_certificate;
       v5->_certificate = v16;
     }
@@ -167,62 +167,62 @@
   return v5;
 }
 
-- (CSVoiceTriggerRTModel)initWithData:(id)a3 hash:(id)a4 locale:(id)a5
+- (CSVoiceTriggerRTModel)initWithData:(id)data hash:(id)hash locale:(id)locale
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  hashCopy = hash;
+  localeCopy = locale;
   v15.receiver = self;
   v15.super_class = CSVoiceTriggerRTModel;
   v12 = [(CSVoiceTriggerRTModel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_modelData, a3);
-    objc_storeStrong(&v13->_modelHash, a4);
-    objc_storeStrong(&v13->_modelLocale, a5);
+    objc_storeStrong(&v12->_modelData, data);
+    objc_storeStrong(&v13->_modelHash, hash);
+    objc_storeStrong(&v13->_modelLocale, locale);
   }
 
   return v13;
 }
 
-- (CSVoiceTriggerRTModel)initWithHash:(id)a3 locale:(id)a4
+- (CSVoiceTriggerRTModel)initWithHash:(id)hash locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  hashCopy = hash;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = CSVoiceTriggerRTModel;
   v9 = [(CSVoiceTriggerRTModel *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modelHash, a3);
-    objc_storeStrong(&v10->_modelLocale, a4);
+    objc_storeStrong(&v9->_modelHash, hash);
+    objc_storeStrong(&v10->_modelLocale, locale);
   }
 
   return v10;
 }
 
-- (CSVoiceTriggerRTModel)initWithData:(id)a3 hash:(id)a4 locale:(id)a5 digest:(id)a6 signature:(id)a7 certificate:(id)a8
+- (CSVoiceTriggerRTModel)initWithData:(id)data hash:(id)hash locale:(id)locale digest:(id)digest signature:(id)signature certificate:(id)certificate
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  hashCopy = hash;
+  localeCopy = locale;
+  digestCopy = digest;
+  signatureCopy = signature;
+  certificateCopy = certificate;
   v24.receiver = self;
   v24.super_class = CSVoiceTriggerRTModel;
   v18 = [(CSVoiceTriggerRTModel *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_modelData, a3);
-    objc_storeStrong(&v19->_modelHash, a4);
-    objc_storeStrong(&v19->_modelLocale, a5);
-    objc_storeStrong(&v19->_digest, a6);
-    objc_storeStrong(&v19->_signature, a7);
-    objc_storeStrong(&v19->_certificate, a8);
+    objc_storeStrong(&v18->_modelData, data);
+    objc_storeStrong(&v19->_modelHash, hash);
+    objc_storeStrong(&v19->_modelLocale, locale);
+    objc_storeStrong(&v19->_digest, digest);
+    objc_storeStrong(&v19->_signature, signature);
+    objc_storeStrong(&v19->_certificate, certificate);
   }
 
   return v19;

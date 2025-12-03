@@ -1,89 +1,89 @@
 @interface UARPAssetManagerListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
-- (UARPAssetManagerListener)initWithDelegate:(id)a3;
-- (void)checkAssetAvailabilityForDomain:(id)a3;
-- (void)clearAssetCacheForDomain:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
+- (UARPAssetManagerListener)initWithDelegate:(id)delegate;
+- (void)checkAssetAvailabilityForDomain:(id)domain;
+- (void)clearAssetCacheForDomain:(id)domain;
 - (void)dealloc;
-- (void)getAssetURLForPersonality:(id)a3 reply:(id)a4;
-- (void)getSandboxExtensionTokenForAssetURL:(id)a3 reply:(id)a4;
-- (void)getSupplementalAssetURLForPersonality:(id)a3 supplementalAsset:(id)a4 reply:(id)a5;
-- (void)primeCache:(id)a3;
-- (void)subscribeForPersonality:(id)a3;
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4;
-- (void)updateSettingsForPersonality:(id)a3;
+- (void)getAssetURLForPersonality:(id)personality reply:(id)reply;
+- (void)getSandboxExtensionTokenForAssetURL:(id)l reply:(id)reply;
+- (void)getSupplementalAssetURLForPersonality:(id)personality supplementalAsset:(id)asset reply:(id)reply;
+- (void)primeCache:(id)cache;
+- (void)subscribeForPersonality:(id)personality;
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable;
+- (void)updateSettingsForPersonality:(id)personality;
 @end
 
 @implementation UARPAssetManagerListener
 
-- (UARPAssetManagerListener)initWithDelegate:(id)a3
+- (UARPAssetManagerListener)initWithDelegate:(id)delegate
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v15;
-  v15 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v3;
   v13.super_class = UARPAssetManagerListener;
-  v15 = [(UARPAssetManagerListener *)&v13 init];
-  objc_storeStrong(&v15, v15);
-  if (v15)
+  selfCopy = [(UARPAssetManagerListener *)&v13 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v15->_delegate, location[0]);
+    objc_storeStrong(&selfCopy->_delegate, location[0]);
     v4 = dispatch_queue_create("com.apple.AssetManagerListener.queue", 0);
-    internalQueue = v15->_internalQueue;
-    v15->_internalQueue = v4;
+    internalQueue = selfCopy->_internalQueue;
+    selfCopy->_internalQueue = v4;
 
     v6 = os_log_create("com.apple.uarpassetmanager.uarp", "uarpAssetManager");
-    xpcLog = v15->_xpcLog;
-    v15->_xpcLog = v6;
+    xpcLog = selfCopy->_xpcLog;
+    selfCopy->_xpcLog = v6;
 
     v8 = [NSXPCListener alloc];
     v9 = [v8 initWithMachServiceName:kUarpAssetManagerXpcServiceName];
-    listener = v15->_listener;
-    v15->_listener = v9;
+    listener = selfCopy->_listener;
+    selfCopy->_listener = v9;
 
-    [(NSXPCListener *)v15->_listener setDelegate:v15];
-    [(NSXPCListener *)v15->_listener resume];
+    [(NSXPCListener *)selfCopy->_listener setDelegate:selfCopy];
+    [(NSXPCListener *)selfCopy->_listener resume];
   }
 
-  v12 = v15;
+  v12 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(NSXPCListener *)self->_listener invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = UARPAssetManagerListener;
   [(UARPAssetManagerListener *)&v2 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, connection);
   v15 = 0;
   v16 = &v15;
   v17 = 0x20000000;
   v18 = 32;
   v19 = 0;
-  queue = v22->_internalQueue;
+  queue = selfCopy->_internalQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_invoke;
   v12 = &unk_100035D80;
-  v13 = v22;
+  v13 = selfCopy;
   v14[0] = v20;
   v14[1] = &v15;
   dispatch_sync(queue, &v8);
@@ -186,12 +186,12 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entitlement);
   v6 = [location[0] valueForEntitlement:kUarpAssetManagerXpcEntitlement];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 1 && [v6 BOOLValue] == 1)
@@ -202,7 +202,7 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
 
   else
   {
-    oslog = v8->_xpcLog;
+    oslog = selfCopy->_xpcLog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       __os_log_helper_16_0_1_4_0(v10, [location[0] processIdentifier]);
@@ -219,13 +219,13 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   return v9 & 1;
 }
 
-- (void)subscribeForPersonality:(id)a3
+- (void)subscribeForPersonality:(id)personality
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_xpcLog;
+  objc_storeStrong(location, personality);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v6, "[UARPAssetManagerListener subscribeForPersonality:]", location[0]);
@@ -233,18 +233,18 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v5->_delegate subscribeForPersonality:location[0]];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate subscribeForPersonality:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  oslog = v8->_xpcLog;
+  objc_storeStrong(location, personality);
+  reachableCopy = reachable;
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v9, "[UARPAssetManagerListener updateReachabilityForPersonality:reachable:]", location[0]);
@@ -252,17 +252,17 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v8->_delegate updateReachabilityForPersonality:location[0] reachable:v6];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate updateReachabilityForPersonality:location[0] reachable:reachableCopy];
   objc_storeStrong(location, 0);
 }
 
-- (void)updateSettingsForPersonality:(id)a3
+- (void)updateSettingsForPersonality:(id)personality
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_xpcLog;
+  objc_storeStrong(location, personality);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v6, "[UARPAssetManagerListener updateSettingsForPersonality:]", location[0]);
@@ -270,20 +270,20 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v5->_delegate updateSettingsForPersonality:location[0]];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate updateSettingsForPersonality:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)getAssetURLForPersonality:(id)a3 reply:(id)a4
+- (void)getAssetURLForPersonality:(id)personality reply:(id)reply
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [(UARPAssetManagerListenerDelegate *)v9->_delegate getAssetURLForPersonality:location[0]];
-  oslog = v9->_xpcLog;
+  objc_storeStrong(&v7, reply);
+  v6 = [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate getAssetURLForPersonality:location[0]];
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_3_8_32_8_64_8_64(v10, "[UARPAssetManagerListener getAssetURLForPersonality:reply:]", location[0], v6);
@@ -297,17 +297,17 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)getSupplementalAssetURLForPersonality:(id)a3 supplementalAsset:(id)a4 reply:(id)a5
+- (void)getSupplementalAssetURLForPersonality:(id)personality supplementalAsset:(id)asset reply:(id)reply
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, asset);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  oslog = v11->_xpcLog;
+  objc_storeStrong(&v8, reply);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
     __os_log_helper_16_2_1_8_32(v12, "[UARPAssetManagerListener getSupplementalAssetURLForPersonality:supplementalAsset:reply:]");
@@ -321,16 +321,16 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)getSandboxExtensionTokenForAssetURL:(id)a3 reply:(id)a4
+- (void)getSandboxExtensionTokenForAssetURL:(id)l reply:(id)reply
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, reply);
   v6 = [UARPSandboxExtension readTokenStringWithURL:location[0]];
-  oslog = v9->_xpcLog;
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_3_8_32_8_64_8_64(v10, "[UARPAssetManagerListener getSandboxExtensionTokenForAssetURL:reply:]", location[0], v6);
@@ -344,13 +344,13 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)checkAssetAvailabilityForDomain:(id)a3
+- (void)checkAssetAvailabilityForDomain:(id)domain
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_xpcLog;
+  objc_storeStrong(location, domain);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v6, "[UARPAssetManagerListener checkAssetAvailabilityForDomain:]", location[0]);
@@ -358,17 +358,17 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v5->_delegate checkAssetAvailabilityForDomain:location[0]];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate checkAssetAvailabilityForDomain:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)clearAssetCacheForDomain:(id)a3
+- (void)clearAssetCacheForDomain:(id)domain
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_xpcLog;
+  objc_storeStrong(location, domain);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v6, "[UARPAssetManagerListener clearAssetCacheForDomain:]", location[0]);
@@ -376,17 +376,17 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v5->_delegate clearAssetCacheForDomain:location[0]];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate clearAssetCacheForDomain:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)primeCache:(id)a3
+- (void)primeCache:(id)cache
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  oslog = v5->_xpcLog;
+  objc_storeStrong(location, cache);
+  oslog = selfCopy->_xpcLog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_64(v6, "[UARPAssetManagerListener primeCache:]", location[0]);
@@ -394,7 +394,7 @@ void __63__UARPAssetManagerListener_listener_shouldAcceptNewConnection___block_i
   }
 
   objc_storeStrong(&oslog, 0);
-  [(UARPAssetManagerListenerDelegate *)v5->_delegate primeCache:location[0]];
+  [(UARPAssetManagerListenerDelegate *)selfCopy->_delegate primeCache:location[0]];
   objc_storeStrong(location, 0);
 }
 

@@ -9,35 +9,35 @@
 - (uint64_t)ic_rangeForTextRange:()IC
 {
   v4 = a3;
-  v5 = [a1 documentRange];
-  v6 = [v5 location];
-  if (!v6)
+  documentRange = [self documentRange];
+  location = [documentRange location];
+  if (!location)
   {
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_6;
   }
 
-  v7 = v6;
-  v8 = [v4 location];
+  v7 = location;
+  location2 = [v4 location];
 
-  if (!v8)
+  if (!location2)
   {
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_8;
   }
 
-  v9 = [a1 documentRange];
-  v10 = [v9 location];
-  v11 = [v4 location];
-  v12 = [a1 offsetFromLocation:v10 toLocation:v11];
+  documentRange2 = [self documentRange];
+  location3 = [documentRange2 location];
+  location4 = [v4 location];
+  v12 = [self offsetFromLocation:location3 toLocation:location4];
 
-  v13 = [v4 endLocation];
+  endLocation = [v4 endLocation];
 
-  if (v13)
+  if (endLocation)
   {
-    v5 = [v4 location];
-    v14 = [v4 endLocation];
-    [a1 offsetFromLocation:v5 toLocation:v14];
+    documentRange = [v4 location];
+    endLocation2 = [v4 endLocation];
+    [self offsetFromLocation:documentRange toLocation:endLocation2];
 
 LABEL_6:
   }
@@ -49,18 +49,18 @@ LABEL_8:
 
 - (id)ic_textRangeForRange:()IC
 {
-  v7 = [a1 documentRange];
-  v8 = [v7 location];
+  documentRange = [self documentRange];
+  location = [documentRange location];
 
-  if (v8)
+  if (location)
   {
-    v9 = [a1 documentRange];
-    v10 = [v9 location];
-    v11 = [a1 locationFromLocation:v10 withOffset:a3];
+    documentRange2 = [self documentRange];
+    location2 = [documentRange2 location];
+    v11 = [self locationFromLocation:location2 withOffset:a3];
 
     if (v11)
     {
-      v12 = [a1 locationFromLocation:v11 withOffset:a4];
+      v12 = [self locationFromLocation:v11 withOffset:a4];
       if (v12)
       {
         v13 = [objc_alloc(MEMORY[0x1E69DB848]) initWithLocation:v11 endLocation:v12];
@@ -88,7 +88,7 @@ LABEL_8:
 
 - (double)ic_rectForRange:()IC
 {
-  v2 = [a1 ic_textRangeForRange:?];
+  v2 = [self ic_textRangeForRange:?];
   if (v2)
   {
     v8 = 0;
@@ -103,7 +103,7 @@ LABEL_8:
     v7[2] = __43__NSTextLayoutManager_IC__ic_rectForRange___block_invoke;
     v7[3] = &unk_1E846C878;
     v7[4] = &v8;
-    [a1 enumerateTextSegmentsInRange:v2 type:0 options:0 usingBlock:v7];
+    [self enumerateTextSegmentsInRange:v2 type:0 options:0 usingBlock:v7];
     if (CGRectIsNull(v9[1]))
     {
       p_x = MEMORY[0x1E695F058];

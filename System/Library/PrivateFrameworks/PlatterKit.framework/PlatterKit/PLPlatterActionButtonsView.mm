@@ -1,51 +1,51 @@
 @interface PLPlatterActionButtonsView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PLPlatterActionButtonsView)initWithFrame:(CGRect)a3 actions:(id)a4 cornerRadius:(double)a5 shouldVerticallyStack:(BOOL)a6 shouldGetGlassBackground:(BOOL)a7 glassState:(unint64_t)a8 glassSmoothness:(double)a9 glassId:(int64_t)a10 glassLuminance:(double)a11;
-- (id)senderForActionWithIdentifier:(id)a3;
-- (unint64_t)_widthMultipleForVerticallyStackedButtonsWithCount:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PLPlatterActionButtonsView)initWithFrame:(CGRect)frame actions:(id)actions cornerRadius:(double)radius shouldVerticallyStack:(BOOL)stack shouldGetGlassBackground:(BOOL)background glassState:(unint64_t)state glassSmoothness:(double)smoothness glassId:(int64_t)self0 glassLuminance:(double)self1;
+- (id)senderForActionWithIdentifier:(id)identifier;
+- (unint64_t)_widthMultipleForVerticallyStackedButtonsWithCount:(unint64_t)count;
 - (unint64_t)actionButtonCount;
 - (void)_hideNonDefaultActionButtons;
 - (void)_layoutButtonsStackView;
 - (void)_layoutClippingView;
 - (void)_revealNonDefaultActionButtons;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setBackgroundMaterialRecipe:(int64_t)a3;
-- (void)setBackgroundTintColor:(id)a3;
-- (void)setCustomBackgroundColor:(id)a3;
-- (void)setHighlightDefaultActionButton:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setBackgroundMaterialRecipe:(int64_t)recipe;
+- (void)setBackgroundTintColor:(id)color;
+- (void)setCustomBackgroundColor:(id)color;
+- (void)setHighlightDefaultActionButton:(BOOL)button;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setTextColor:(id)color;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PLPlatterActionButtonsView
 
-- (PLPlatterActionButtonsView)initWithFrame:(CGRect)a3 actions:(id)a4 cornerRadius:(double)a5 shouldVerticallyStack:(BOOL)a6 shouldGetGlassBackground:(BOOL)a7 glassState:(unint64_t)a8 glassSmoothness:(double)a9 glassId:(int64_t)a10 glassLuminance:(double)a11
+- (PLPlatterActionButtonsView)initWithFrame:(CGRect)frame actions:(id)actions cornerRadius:(double)radius shouldVerticallyStack:(BOOL)stack shouldGetGlassBackground:(BOOL)background glassState:(unint64_t)state glassSmoothness:(double)smoothness glassId:(int64_t)self0 glassLuminance:(double)self1
 {
-  v11 = a7;
-  v12 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  backgroundCopy = background;
+  stackCopy = stack;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v85 = *MEMORY[0x277D85DE8];
-  v21 = a4;
+  actionsCopy = actions;
   v82.receiver = self;
   v82.super_class = PLPlatterActionButtonsView;
-  v22 = [(PLPlatterActionButtonsView *)&v82 initWithFrame:x, y, width, height];
-  v23 = v22;
-  if (v22)
+  height = [(PLPlatterActionButtonsView *)&v82 initWithFrame:x, y, width, height];
+  v23 = height;
+  if (height)
   {
-    v22->_verticallyStacked = v12;
-    v22->_hasGlassBackground = v11;
-    v22->_backgroundMaterialRecipe = 1;
-    materialGroupNameBase = v22->_materialGroupNameBase;
-    v22->_materialGroupNameBase = @"PLPlatterActionButtonsView";
+    height->_verticallyStacked = stackCopy;
+    height->_hasGlassBackground = backgroundCopy;
+    height->_backgroundMaterialRecipe = 1;
+    materialGroupNameBase = height->_materialGroupNameBase;
+    height->_materialGroupNameBase = @"PLPlatterActionButtonsView";
 
     v23->_adjustsFontForContentSizeCategory = 1;
-    v23->_glassLuminance = a11;
+    v23->_glassLuminance = luminance;
     [(PLPlatterActionButtonsView *)v23 bounds];
     v26 = v25;
     v28 = v27;
@@ -62,18 +62,18 @@
     v23->_buttonsStackView = v35;
 
     [(UIStackView *)v23->_buttonsStackView setAutoresizingMask:2];
-    [(UIStackView *)v23->_buttonsStackView setAxis:v12];
+    [(UIStackView *)v23->_buttonsStackView setAxis:stackCopy];
     [(UIStackView *)v23->_buttonsStackView setDistribution:1];
     [(UIStackView *)v23->_buttonsStackView setSpacing:8.0];
     [(UIView *)v23->_clippingView addSubview:v23->_buttonsStackView];
-    v64 = [v21 count];
+    v64 = [actionsCopy count];
     [(PLPlatterActionButtonsView *)v23 _maxAllowedButtonWidth];
     v38 = v37;
     v39 = 1.0;
-    v65 = v12;
-    if (v12)
+    v65 = stackCopy;
+    if (stackCopy)
     {
-      v39 = -[PLPlatterActionButtonsView _widthMultipleForVerticallyStackedButtonsWithCount:](v23, "_widthMultipleForVerticallyStackedButtonsWithCount:", [v21 count]);
+      v39 = -[PLPlatterActionButtonsView _widthMultipleForVerticallyStackedButtonsWithCount:](v23, "_widthMultipleForVerticallyStackedButtonsWithCount:", [actionsCopy count]);
     }
 
     v86.origin.x = v26;
@@ -85,8 +85,8 @@
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v66 = v21;
-    recta = v21;
+    v66 = actionsCopy;
+    recta = actionsCopy;
     v41 = [recta countByEnumeratingWithState:&v78 objects:v84 count:16];
     if (v41)
     {
@@ -105,20 +105,20 @@
           v46 = *(*(&v78 + 1) + 8 * i);
           v47 = [[PLPlatterActionButton alloc] initWithFrame:0.0, 0.0, v43, v40];
           [(PLPlatterActionButton *)v47 setAdjustsFontForContentSizeCategory:[(PLPlatterActionButtonsView *)v23 adjustsFontForContentSizeCategory]];
-          [(PLPlatterActionButton *)v47 setIsBackgroundGlass:v11];
-          [(PLPlatterActionButton *)v47 setCornerRadius:a5];
-          if (v11)
+          [(PLPlatterActionButton *)v47 setIsBackgroundGlass:backgroundCopy];
+          [(PLPlatterActionButton *)v47 setCornerRadius:radius];
+          if (backgroundCopy)
           {
-            v48 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:1 size:1 smoothness:a8 == 1 subdued:a9];
+            v48 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:1 size:1 smoothness:state == 1 subdued:smoothness];
             v49 = v48;
-            if (a8 - 1 <= 1)
+            if (state - 1 <= 1)
             {
               [v48 setSubvariant:@"lockscreenNotifications"];
-              [v49 setAdaptiveFixedLuminance:a11];
+              [v49 setAdaptiveFixedLuminance:luminance];
             }
 
             [v49 setBackdropGroupName:@"lockscreenElements"];
-            [v49 setIdentifier:a10];
+            [v49 setIdentifier:id];
             [(PLPlatterActionButton *)v47 _setBackground:v49];
           }
 
@@ -129,8 +129,8 @@
           }
 
           [(PLPlatterActionButton *)v47 addAction:v46 forControlEvents:64];
-          v50 = [v46 title];
-          [(PLPlatterActionButton *)v47 setTitle:v50];
+          title = [v46 title];
+          [(PLPlatterActionButton *)v47 setTitle:title];
 
           if ([v46 pl_isDefaultAction])
           {
@@ -147,14 +147,14 @@
       while (v42);
     }
 
-    v51 = [(UIStackView *)v23->_buttonsStackView arrangedSubviews];
+    arrangedSubviews = [(UIStackView *)v23->_buttonsStackView arrangedSubviews];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __162__PLPlatterActionButtonsView_initWithFrame_actions_cornerRadius_shouldVerticallyStack_shouldGetGlassBackground_glassState_glassSmoothness_glassId_glassLuminance___block_invoke;
     v75[3] = &unk_278425290;
     v52 = v23;
     v76 = v52;
-    v53 = v51;
+    v53 = arrangedSubviews;
     v77 = v53;
     [v53 enumerateObjectsUsingBlock:v75];
     [(UIView *)v23->_clippingView frame];
@@ -197,12 +197,12 @@
     if (v65)
     {
       v62 = [v52 _widthMultipleForVerticallyStackedButtonsWithCount:v64];
-      v21 = v66;
+      actionsCopy = v66;
     }
 
     else
     {
-      v21 = v66;
+      actionsCopy = v66;
       v62 = v64;
     }
 
@@ -240,15 +240,15 @@ void __162__PLPlatterActionButtonsView_initWithFrame_actions_cornerRadius_should
   [v10 setActive:1];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = PLPlatterActionButtonsView;
-  v3 = a3;
-  [(PLPlatterActionButtonsView *)&v5 willMoveToSuperview:v3];
-  v4 = [v3 layer];
+  superviewCopy = superview;
+  [(PLPlatterActionButtonsView *)&v5 willMoveToSuperview:superviewCopy];
+  layer = [superviewCopy layer];
 
-  [v4 setAllowsGroupBlending:0];
+  [layer setAllowsGroupBlending:0];
 }
 
 - (void)layoutSubviews
@@ -260,17 +260,17 @@ void __162__PLPlatterActionButtonsView_initWithFrame_actions_cornerRadius_should
   [(PLPlatterActionButtonsView *)self _layoutClippingView];
 }
 
-- (id)senderForActionWithIdentifier:(id)a3
+- (id)senderForActionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+  identifierCopy = identifier;
+  arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invoke;
   v9[3] = &unk_2784252E0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [arrangedSubviews bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -313,28 +313,28 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
 
 - (unint64_t)actionButtonCount
 {
-  v2 = [(PLPlatterActionButtonsView *)self buttonsStackView];
-  v3 = [v2 arrangedSubviews];
-  v4 = [v3 count];
+  buttonsStackView = [(PLPlatterActionButtonsView *)self buttonsStackView];
+  arrangedSubviews = [buttonsStackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   return v4;
 }
 
-- (void)setHighlightDefaultActionButton:(BOOL)a3
+- (void)setHighlightDefaultActionButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(PLPlatterActionButtonsView *)self defaultActionButton];
-  if (v5)
+  buttonCopy = button;
+  defaultActionButton = [(PLPlatterActionButtonsView *)self defaultActionButton];
+  if (defaultActionButton)
   {
     highlightDefaultActionButton = self->_highlightDefaultActionButton;
 
-    if (highlightDefaultActionButton != v3)
+    if (highlightDefaultActionButton != buttonCopy)
     {
-      self->_highlightDefaultActionButton = v3;
-      v7 = [(PLPlatterActionButtonsView *)self defaultActionButton];
-      [v7 setHighlighted:v3];
+      self->_highlightDefaultActionButton = buttonCopy;
+      defaultActionButton2 = [(PLPlatterActionButtonsView *)self defaultActionButton];
+      [defaultActionButton2 setHighlighted:buttonCopy];
 
-      if (v3)
+      if (buttonCopy)
       {
 
         [(PLPlatterActionButtonsView *)self _hideNonDefaultActionButtons];
@@ -349,18 +349,18 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   }
 }
 
-- (void)setBackgroundMaterialRecipe:(int64_t)a3
+- (void)setBackgroundMaterialRecipe:(int64_t)recipe
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_backgroundMaterialRecipe != a3)
+  if (self->_backgroundMaterialRecipe != recipe)
   {
-    self->_backgroundMaterialRecipe = a3;
+    self->_backgroundMaterialRecipe = recipe;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+    v6 = [arrangedSubviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -372,14 +372,14 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setBackgroundMaterialRecipe:a3];
+          [*(*(&v10 + 1) + 8 * v9++) setBackgroundMaterialRecipe:recipe];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [arrangedSubviews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -389,19 +389,19 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   }
 }
 
-- (void)setBackgroundTintColor:(id)a3
+- (void)setBackgroundTintColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_backgroundTintColor, a3);
+    objc_storeStrong(&self->_backgroundTintColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -413,14 +413,14 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setBackgroundTintColor:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setBackgroundTintColor:colorCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -430,19 +430,19 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -454,14 +454,14 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setTextColor:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setTextColor:colorCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -471,9 +471,9 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   [(PLPlatterActionButtonsView *)self _layoutClippingView];
   [(UIView *)self->_clippingView frame];
   Width = CGRectGetWidth(v8);
@@ -483,20 +483,20 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   return result;
 }
 
-- (void)setCustomBackgroundColor:(id)a3
+- (void)setCustomBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_customBackgroundColor != v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (self->_customBackgroundColor != colorCopy)
   {
-    self->_customBackgroundColor = v4;
+    self->_customBackgroundColor = colorCopy;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -508,14 +508,14 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [*(*(&v11 + 1) + 8 * v10++) setCustomBackgroundColor:v5];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -525,15 +525,15 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
   }
 }
 
-- (unint64_t)_widthMultipleForVerticallyStackedButtonsWithCount:(unint64_t)a3
+- (unint64_t)_widthMultipleForVerticallyStackedButtonsWithCount:(unint64_t)count
 {
-  if (a3 == 1)
+  if (count == 1)
   {
     return 2;
   }
 
-  v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 3;
   }
@@ -569,15 +569,15 @@ void __60__PLPlatterActionButtonsView_senderForActionWithIdentifier___block_invo
 
 - (void)_hideNonDefaultActionButtons
 {
-  v3 = [(PLPlatterActionButtonsView *)self buttonsStackView];
-  v4 = [v3 arrangedSubviews];
+  buttonsStackView = [(PLPlatterActionButtonsView *)self buttonsStackView];
+  arrangedSubviews = [buttonsStackView arrangedSubviews];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__PLPlatterActionButtonsView__hideNonDefaultActionButtons__block_invoke;
   v5[3] = &unk_278425308;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [arrangedSubviews enumerateObjectsUsingBlock:v5];
 }
 
 void __58__PLPlatterActionButtonsView__hideNonDefaultActionButtons__block_invoke(uint64_t a1, void *a2)
@@ -599,15 +599,15 @@ void __58__PLPlatterActionButtonsView__hideNonDefaultActionButtons__block_invoke
 
 - (void)_revealNonDefaultActionButtons
 {
-  v3 = [(PLPlatterActionButtonsView *)self buttonsStackView];
-  v4 = [v3 arrangedSubviews];
+  buttonsStackView = [(PLPlatterActionButtonsView *)self buttonsStackView];
+  arrangedSubviews = [buttonsStackView arrangedSubviews];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__PLPlatterActionButtonsView__revealNonDefaultActionButtons__block_invoke;
   v5[3] = &unk_278425308;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [arrangedSubviews enumerateObjectsUsingBlock:v5];
 }
 
 void __60__PLPlatterActionButtonsView__revealNonDefaultActionButtons__block_invoke(uint64_t a1, void *a2)
@@ -627,21 +627,21 @@ void __60__PLPlatterActionButtonsView__revealNonDefaultActionButtons__block_invo
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
     v10 = v3;
     v11 = v4;
-    self->_adjustsFontForContentSizeCategory = a3;
-    v6 = [(PLPlatterActionButtonsView *)self buttonsStackView];
-    v7 = [v6 arrangedSubviews];
+    self->_adjustsFontForContentSizeCategory = category;
+    buttonsStackView = [(PLPlatterActionButtonsView *)self buttonsStackView];
+    arrangedSubviews = [buttonsStackView arrangedSubviews];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__PLPlatterActionButtonsView_setAdjustsFontForContentSizeCategory___block_invoke;
     v8[3] = &__block_descriptor_33_e55_v32__0__UIView_PLContentSizeCategoryAdjusting__8Q16_B24l;
-    v9 = a3;
-    [v7 enumerateObjectsUsingBlock:v8];
+    categoryCopy = category;
+    [arrangedSubviews enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -660,14 +660,14 @@ void __67__PLPlatterActionButtonsView_setAdjustsFontForContentSizeCategory___blo
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(PLPlatterActionButtonsView *)self buttonsStackView];
-  v4 = [v3 arrangedSubviews];
+  buttonsStackView = [(PLPlatterActionButtonsView *)self buttonsStackView];
+  arrangedSubviews = [buttonsStackView arrangedSubviews];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__PLPlatterActionButtonsView_adjustForContentSizeCategoryChange__block_invoke;
   v7[3] = &unk_278425350;
   v7[4] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [arrangedSubviews enumerateObjectsUsingBlock:v7];
 
   if (*(v9 + 24) == 1)
   {
@@ -710,19 +710,19 @@ uint64_t __64__PLPlatterActionButtonsView_adjustForContentSizeCategoryChange__bl
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSString *)self->_materialGroupNameBase isEqualToString:v5])
+  baseCopy = base;
+  if (![(NSString *)self->_materialGroupNameBase isEqualToString:baseCopy])
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
+    objc_storeStrong(&self->_materialGroupNameBase, base);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    arrangedSubviews = [(UIStackView *)self->_buttonsStackView arrangedSubviews];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -734,14 +734,14 @@ uint64_t __64__PLPlatterActionButtonsView_adjustForContentSizeCategoryChange__bl
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setMaterialGroupNameBase:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setMaterialGroupNameBase:baseCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);

@@ -1,5 +1,5 @@
 @interface TTRILabeledIconsView
-- (_TtC15RemindersUICore20TTRILabeledIconsView)initWithArrangedSubviews:(id)a3;
+- (_TtC15RemindersUICore20TTRILabeledIconsView)initWithArrangedSubviews:(id)subviews;
 - (void)layoutMarginsDidChange;
 @end
 
@@ -14,7 +14,7 @@
   sub_21D3E87FC();
 }
 
-- (_TtC15RemindersUICore20TTRILabeledIconsView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore20TTRILabeledIconsView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

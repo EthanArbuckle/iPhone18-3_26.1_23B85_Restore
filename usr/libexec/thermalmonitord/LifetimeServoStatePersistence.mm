@@ -1,17 +1,17 @@
 @interface LifetimeServoStatePersistence
 - (BOOL)initializeLTSPersistence;
 - (BOOL)nvramUpgradeStateV2toV3;
-- (BOOL)saveLTSStateToNand:(void *)a3;
+- (BOOL)saveLTSStateToNand:(void *)nand;
 - (BOOL)sendLTSStateToPMP;
-- (BOOL)updateLTSStateISFromPMP:(ltsStateV3 *)a3;
-- (BOOL)updateLTSStateISRev:(ltsStateV3 *)a3;
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4;
-- (LifetimeServoStatePersistence)initWithParams:(id)a3;
+- (BOOL)updateLTSStateISFromPMP:(ltsStateV3 *)p;
+- (BOOL)updateLTSStateISRev:(ltsStateV3 *)rev;
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path;
+- (LifetimeServoStatePersistence)initWithParams:(id)params;
 - (void)copyUpdatedLTSState;
 - (void)dealloc;
 - (void)initClassVariables;
 - (void)readNVRAM;
-- (void)safeFreeLTSStatePtrs:(void *)a3;
+- (void)safeFreeLTSStatePtrs:(void *)ptrs;
 @end
 
 @implementation LifetimeServoStatePersistence
@@ -92,7 +92,7 @@
   self->_currNvramLTSStateV3.ltsStateCommonPtr = 0;
 }
 
-- (LifetimeServoStatePersistence)initWithParams:(id)a3
+- (LifetimeServoStatePersistence)initWithParams:(id)params
 {
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
@@ -102,7 +102,7 @@
   {
     v9.receiver = v6;
     v9.super_class = LifetimeServoStatePersistence;
-    v7 = [(LifetimeServoStatePersistenceBase *)&v9 initWithParams:a3];
+    v7 = [(LifetimeServoStatePersistenceBase *)&v9 initWithParams:params];
   }
 
   else
@@ -127,22 +127,22 @@
   [(LifetimeServoStatePersistenceBase *)&v3 dealloc];
 }
 
-- (BOOL)saveLTSStateToNand:(void *)a3
+- (BOOL)saveLTSStateToNand:(void *)nand
 {
-  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:**a3 withKey:@"version"])
+  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:**nand withKey:@"version"])
   {
     sub_1000591FC(buf);
     return buf[0];
   }
 
-  v21 = *(*a3 + 8);
+  v21 = *(*nand + 8);
   if (![LifetimeServoStatePersistenceBase writeInteger:"writeInteger:withKey:" withKey:?])
   {
     sub_100059260(buf);
     return buf[0];
   }
 
-  v5 = *(*a3 + 12);
+  v5 = *(*nand + 12);
   if (![(LifetimeServoStatePersistenceBase *)self writeInteger:v5 withKey:@"lts-ctrl-loop-count"])
   {
     sub_1000592C4(buf);
@@ -174,7 +174,7 @@ LABEL_21:
       }
 
       v10 = v9;
-      v11 = CFDataCreate(0, (*(a3 + 1) + 8 * (v6 + v8)), 8);
+      v11 = CFDataCreate(0, (*(nand + 1) + 8 * (v6 + v8)), 8);
       if (v11)
       {
         v12 = v11;
@@ -198,7 +198,7 @@ LABEL_21:
       if (v14)
       {
         v15 = v14;
-        v16 = [(LifetimeServoStatePersistenceBase *)self writeInteger:*(*(a3 + 2) + 4 * (v6 + v8)) withKey:v14];
+        v16 = [(LifetimeServoStatePersistenceBase *)self writeInteger:*(*(nand + 2) + 4 * (v6 + v8)) withKey:v14];
         CFRelease(v15);
         if ((v16 & 1) == 0)
         {
@@ -238,7 +238,7 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:*(*a3 + 4) withKey:@"counter"])
+  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:*(*nand + 4) withKey:@"counter"])
   {
     sub_10005944C(buf);
     return buf[0];
@@ -265,11 +265,11 @@ LABEL_22:
 
 - (void)readNVRAM
 {
-  v3 = [(LifetimeServoStatePersistenceBase *)self readNVRAMData];
-  if (v3)
+  readNVRAMData = [(LifetimeServoStatePersistenceBase *)self readNVRAMData];
+  if (readNVRAMData)
   {
-    v4 = v3;
-    BytePtr = CFDataGetBytePtr(v3);
+    v4 = readNVRAMData;
+    BytePtr = CFDataGetBytePtr(readNVRAMData);
     self->super._nvramLength = CFDataGetLength(v4);
     v6 = malloc_type_calloc(1uLL, 0x10uLL, 0x15084EA0uLL);
     p_currNvramLTSStateV3 = &self->_currNvramLTSStateV3;
@@ -634,23 +634,23 @@ LABEL_30:
   return 1;
 }
 
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path
 {
-  if (a4)
+  if (path)
   {
     v6 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
     if (v6)
     {
       v7 = v6;
       v8 = objc_autoreleasePoolPush();
-      v9 = *(*a3 + 12) * *(*a3 + 8);
+      v9 = *(*nvram + 12) * *(*nvram + 8);
       v10 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-      v11 = [NSData dataWithBytes:*(a3 + 1) length:8 * v9];
-      v12 = [NSData dataWithBytes:*(a3 + 2) length:4 * v9];
+      v11 = [NSData dataWithBytes:*(nvram + 1) length:8 * v9];
+      v12 = [NSData dataWithBytes:*(nvram + 2) length:4 * v9];
       v13 = [(NSData *)v10 mutableCopy];
       [v13 appendData:v11];
       [v13 appendData:v12];
-      v14 = IORegistryEntrySetCFProperty(v7, a4, v13);
+      v14 = IORegistryEntrySetCFProperty(v7, path, v13);
       v15 = v14 == 0;
       if (v14 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
@@ -676,12 +676,12 @@ LABEL_30:
   return v15;
 }
 
-- (BOOL)updateLTSStateISFromPMP:(ltsStateV3 *)a3
+- (BOOL)updateLTSStateISFromPMP:(ltsStateV3 *)p
 {
-  var2 = a3->ltsStateCommonPtr->var2;
-  var3 = a3->ltsStateCommonPtr->var3;
+  var2 = p->ltsStateCommonPtr->var2;
+  var3 = p->ltsStateCommonPtr->var3;
   v7 = malloc_type_calloc(var3 * var2, 8uLL, 0x100004000313F17uLL);
-  a3->integratorStatePtr = v7;
+  p->integratorStatePtr = v7;
   if (v7)
   {
     if (var2)
@@ -750,7 +750,7 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        a3->integratorStatePtr[(v8 + v10)] = *BytePtr;
+        p->integratorStatePtr[(v8 + v10)] = *BytePtr;
         CFRelease(v14);
         if (var3 == ++v10)
         {
@@ -795,12 +795,12 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)updateLTSStateISRev:(ltsStateV3 *)a3
+- (BOOL)updateLTSStateISRev:(ltsStateV3 *)rev
 {
-  var2 = a3->ltsStateCommonPtr->var2;
-  var3 = a3->ltsStateCommonPtr->var3;
+  var2 = rev->ltsStateCommonPtr->var2;
+  var3 = rev->ltsStateCommonPtr->var3;
   v7 = malloc_type_calloc(var3 * var2, 4uLL, 0x100004052888210uLL);
-  a3->integratorStateRevPtr = v7;
+  rev->integratorStateRevPtr = v7;
   if (v7)
   {
     if (var2)
@@ -835,7 +835,7 @@ LABEL_10:
         }
 
         CFRelease(v12);
-        a3->integratorStateRevPtr[(v8 + v10++)] = v14;
+        rev->integratorStateRevPtr[(v8 + v10++)] = v14;
         if (var3 == v10)
         {
           goto LABEL_10;
@@ -859,26 +859,26 @@ LABEL_10:
   }
 }
 
-- (void)safeFreeLTSStatePtrs:(void *)a3
+- (void)safeFreeLTSStatePtrs:(void *)ptrs
 {
-  if (*a3)
+  if (*ptrs)
   {
-    free(*a3);
-    *a3 = 0;
+    free(*ptrs);
+    *ptrs = 0;
   }
 
-  v4 = *(a3 + 1);
+  v4 = *(ptrs + 1);
   if (v4)
   {
     free(v4);
-    *(a3 + 1) = 0;
+    *(ptrs + 1) = 0;
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(ptrs + 2);
   if (v5)
   {
     free(v5);
-    *(a3 + 2) = 0;
+    *(ptrs + 2) = 0;
   }
 }
 

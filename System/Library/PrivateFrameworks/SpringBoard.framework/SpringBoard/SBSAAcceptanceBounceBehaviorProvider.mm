@@ -1,30 +1,30 @@
 @interface SBSAAcceptanceBounceBehaviorProvider
-- (BOOL)phaseIsTimeDelayBased:(int64_t)a3;
-- (CGRect)_expandedBouncingContainerViewFrameForBounceStyle:(int64_t)a3 unexpandedFrame:(CGRect)a4;
-- (SBSAAcceptanceBounceBehaviorProvider)initWithParticipantIdentifier:(id)a3 style:(int64_t)a4 triggeredBlock:(id)a5;
-- (double)delayForPhase:(int64_t)a3;
-- (id)_updatedReboundingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedRevealAcceptedElementPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedStretchingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)nameForPhase:(int64_t)a3;
-- (id)updatedContextFromContext:(id)a3;
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
+- (BOOL)phaseIsTimeDelayBased:(int64_t)based;
+- (CGRect)_expandedBouncingContainerViewFrameForBounceStyle:(int64_t)style unexpandedFrame:(CGRect)frame;
+- (SBSAAcceptanceBounceBehaviorProvider)initWithParticipantIdentifier:(id)identifier style:(int64_t)style triggeredBlock:(id)block;
+- (double)delayForPhase:(int64_t)phase;
+- (id)_updatedReboundingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedRevealAcceptedElementPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedStretchingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)nameForPhase:(int64_t)phase;
+- (id)updatedContextFromContext:(id)context;
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
 - (void)removeFromParentProvider;
 @end
 
 @implementation SBSAAcceptanceBounceBehaviorProvider
 
-- (SBSAAcceptanceBounceBehaviorProvider)initWithParticipantIdentifier:(id)a3 style:(int64_t)a4 triggeredBlock:(id)a5
+- (SBSAAcceptanceBounceBehaviorProvider)initWithParticipantIdentifier:(id)identifier style:(int64_t)style triggeredBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SBSAAcceptanceBounceBehaviorProvider;
-  v9 = [(SBSASequencedBehaviorProvider *)&v14 initWithParticipantIdentifier:a3];
+  v9 = [(SBSASequencedBehaviorProvider *)&v14 initWithParticipantIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v9->_style = a4;
-    v11 = [v8 copy];
+    v9->_style = style;
+    v11 = [blockCopy copy];
     triggeredBlock = v10->_triggeredBlock;
     v10->_triggeredBlock = v11;
   }
@@ -52,14 +52,14 @@
   [(SBSABasePreferencesProvider *)&v5 removeFromParentProvider];
 }
 
-- (id)nameForPhase:(int64_t)a3
+- (id)nameForPhase:(int64_t)phase
 {
   v7.receiver = self;
   v7.super_class = SBSAAcceptanceBounceBehaviorProvider;
   v4 = [(SBSASequencedBehaviorProvider *)&v7 nameForPhase:?];
-  if (a3 <= 4)
+  if (phase <= 4)
   {
-    v5 = off_2783C3B20[a3];
+    v5 = off_2783C3B20[phase];
 
     v4 = v5;
   }
@@ -76,21 +76,21 @@ BOOL __95__SBSAAcceptanceBounceBehaviorProvider_canPersistAcrossLayoutStateChang
   return SBSABehavesLikeCustom(v3, v4);
 }
 
-- (id)updatedContextFromContext:(id)a3
+- (id)updatedContextFromContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SBSAAcceptanceBounceBehaviorProvider;
-  v6 = [(SBSASequencedBehaviorProvider *)&v17 updatedContextFromContext:v5];
+  v6 = [(SBSASequencedBehaviorProvider *)&v17 updatedContextFromContext:contextCopy];
   if ([(SBSASequencedBehaviorProvider *)self activePhase]== 1 && self->_style)
   {
     [v6 inertContainerFrame];
-    v7 = [objc_opt_class() settings];
-    [v7 acceptanceSideBounceXSensorExpansion];
+    settings = [objc_opt_class() settings];
+    [settings acceptanceSideBounceXSensorExpansion];
     [v6 displayScale];
     v15 = v8;
     UIRectCenteredXInRectScale();
-    [v7 acceptanceSideBounceXSensorOffset];
+    [settings acceptanceSideBounceXSensorOffset];
     UIRectIntegralWithScale();
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -107,7 +107,7 @@ BOOL __95__SBSAAcceptanceBounceBehaviorProvider_canPersistAcrossLayoutStateChang
     v6 = v13;
   }
 
-  return v5;
+  return contextCopy;
 }
 
 void __66__SBSAAcceptanceBounceBehaviorProvider_updatedContextFromContext___block_invoke(double *a1, void *a2)
@@ -151,19 +151,19 @@ void __66__SBSAAcceptanceBounceBehaviorProvider_updatedContextFromContext___bloc
   [v6 setInertContainerFrame:{a1[6], a1[7], a1[8], a1[9]}];
 }
 
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBSASequencedBehaviorProvider *)self activePhase];
-  switch(v10)
+  preferencesCopy = preferences;
+  contextCopy = context;
+  activePhase = [(SBSASequencedBehaviorProvider *)self activePhase];
+  switch(activePhase)
   {
     case 3:
       if (!self->_triggeredBlock)
       {
         lastSeenLastChangingElementTransition = self->_lastSeenLastChangingElementTransition;
-        v15 = [v8 lastChangingElementLayoutTransition];
-        v16 = v15;
+        lastChangingElementLayoutTransition = [preferencesCopy lastChangingElementLayoutTransition];
+        v16 = lastChangingElementLayoutTransition;
         if (lastSeenLastChangingElementTransition)
         {
           v17 = BSEqualObjects();
@@ -177,22 +177,22 @@ void __66__SBSAAcceptanceBounceBehaviorProvider_updatedContextFromContext___bloc
         else
         {
           v18 = self->_lastSeenLastChangingElementTransition;
-          self->_lastSeenLastChangingElementTransition = v15;
+          self->_lastSeenLastChangingElementTransition = lastChangingElementLayoutTransition;
         }
       }
 
-      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedRevealAcceptedElementPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedRevealAcceptedElementPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     case 2:
-      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedReboundingPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedReboundingPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     case 1:
-      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedStretchingPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSAAcceptanceBounceBehaviorProvider *)self _updatedStretchingPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     default:
       v19.receiver = self;
       v19.super_class = SBSAAcceptanceBounceBehaviorProvider;
-      v11 = [(SBSASequencedBehaviorProvider *)&v19 updatedPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSASequencedBehaviorProvider *)&v19 updatedPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
   }
 
@@ -201,12 +201,12 @@ void __66__SBSAAcceptanceBounceBehaviorProvider_updatedContextFromContext___bloc
   return v12;
 }
 
-- (BOOL)phaseIsTimeDelayBased:(int64_t)a3
+- (BOOL)phaseIsTimeDelayBased:(int64_t)based
 {
   v6.receiver = self;
   v6.super_class = SBSAAcceptanceBounceBehaviorProvider;
   result = [(SBSASequencedBehaviorProvider *)&v6 phaseIsTimeDelayBased:?];
-  if (a3 == 4 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (based == 4 || (based & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     return 1;
   }
@@ -214,49 +214,49 @@ void __66__SBSAAcceptanceBounceBehaviorProvider_updatedContextFromContext___bloc
   return result;
 }
 
-- (double)delayForPhase:(int64_t)a3
+- (double)delayForPhase:(int64_t)phase
 {
   v11.receiver = self;
   v11.super_class = SBSAAcceptanceBounceBehaviorProvider;
   [(SBSASequencedBehaviorProvider *)&v11 delayForPhase:?];
   v6 = v5;
-  v7 = [objc_opt_class() settings];
-  v8 = v7;
-  switch(a3)
+  settings = [objc_opt_class() settings];
+  v8 = settings;
+  switch(phase)
   {
     case 4:
       if (self->_style)
       {
-        [v7 acceptanceSideBounceFinishingDelay];
+        [settings acceptanceSideBounceFinishingDelay];
       }
 
       else
       {
-        [v7 acceptanceUpBounceFinishingDelay];
+        [settings acceptanceUpBounceFinishingDelay];
       }
 
       goto LABEL_13;
     case 3:
       if (self->_style)
       {
-        [v7 acceptanceSideBounceItemAppearanceDelayOffset];
+        [settings acceptanceSideBounceItemAppearanceDelayOffset];
       }
 
       else
       {
-        [v7 acceptanceUpBounceItemAppearanceDelayOffset];
+        [settings acceptanceUpBounceItemAppearanceDelayOffset];
       }
 
       goto LABEL_13;
     case 2:
       if (self->_style)
       {
-        [v7 acceptanceSideBounceReboundDelay];
+        [settings acceptanceSideBounceReboundDelay];
       }
 
       else
       {
-        [v7 acceptanceUpBounceReboundDelay];
+        [settings acceptanceUpBounceReboundDelay];
       }
 
 LABEL_13:
@@ -267,7 +267,7 @@ LABEL_13:
   return v6;
 }
 
-- (id)_updatedStretchingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedStretchingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -275,7 +275,7 @@ LABEL_13:
   v7[3] = &unk_2783A93E8;
   v7[4] = self;
   v7[5] = a2;
-  v5 = [a3 copyWithBlock:{v7, a4, a5}];
+  v5 = [preferences copyWithBlock:{v7, context, identity}];
 
   return v5;
 }
@@ -457,7 +457,7 @@ void __118__SBSAAcceptanceBounceBehaviorProvider__updatedStretchingPreferencesFr
   [v6 setCenter:?];
 }
 
-- (id)_updatedReboundingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedReboundingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -465,7 +465,7 @@ void __118__SBSAAcceptanceBounceBehaviorProvider__updatedStretchingPreferencesFr
   v7[3] = &unk_2783A93E8;
   v7[4] = self;
   v7[5] = a2;
-  v5 = [a3 copyWithBlock:{v7, a4, a5}];
+  v5 = [preferences copyWithBlock:{v7, context, identity}];
 
   return v5;
 }
@@ -588,11 +588,11 @@ void __118__SBSAAcceptanceBounceBehaviorProvider__updatedReboundingPreferencesFr
   }
 }
 
-- (id)_updatedRevealAcceptedElementPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedRevealAcceptedElementPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -606,7 +606,7 @@ void __118__SBSAAcceptanceBounceBehaviorProvider__updatedReboundingPreferencesFr
   v20[5] = &v21;
   v20[6] = a2;
   v20[4] = self;
-  v11 = [v9 copyWithBlock:v20];
+  v11 = [preferencesCopy copyWithBlock:v20];
   if (self->_triggeredBlock)
   {
     v12 = [SBSACalloutBlockAction alloc];
@@ -625,9 +625,9 @@ void __118__SBSAAcceptanceBounceBehaviorProvider__updatedReboundingPreferencesFr
     v11 = v18;
   }
 
-  if (a5)
+  if (identity)
   {
-    *a5 = v22[5];
+    *identity = v22[5];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -774,17 +774,17 @@ void __129__SBSAAcceptanceBounceBehaviorProvider__updatedRevealAcceptedElementPr
   *(v36 + 40) = v35;
 }
 
-- (CGRect)_expandedBouncingContainerViewFrameForBounceStyle:(int64_t)a3 unexpandedFrame:(CGRect)a4
+- (CGRect)_expandedBouncingContainerViewFrameForBounceStyle:(int64_t)style unexpandedFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [objc_opt_class() settings];
-  v10 = v9;
-  if (a3 == 2)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settings = [objc_opt_class() settings];
+  v10 = settings;
+  if (style == 2)
   {
-    [v9 acceptanceSideBounceYPadding];
+    [settings acceptanceSideBounceYPadding];
     v12 = -v22;
     [v10 acceptanceSideBounceYPadding];
     v16 = -v23;
@@ -793,9 +793,9 @@ void __129__SBSAAcceptanceBounceBehaviorProvider__updatedRevealAcceptedElementPr
     v14 = 0.0;
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
-    [v9 acceptanceSideBounceYPadding];
+    [settings acceptanceSideBounceYPadding];
     v12 = -v19;
     [v10 acceptanceSideBounceXStretch];
     v14 = -v20;
@@ -804,7 +804,7 @@ void __129__SBSAAcceptanceBounceBehaviorProvider__updatedRevealAcceptedElementPr
     v18 = 0.0;
   }
 
-  else if (a3)
+  else if (style)
   {
     v12 = *MEMORY[0x277D768C8];
     v14 = *(MEMORY[0x277D768C8] + 8);
@@ -814,7 +814,7 @@ void __129__SBSAAcceptanceBounceBehaviorProvider__updatedRevealAcceptedElementPr
 
   else
   {
-    [v9 acceptanceUpBounceYStretch];
+    [settings acceptanceUpBounceYStretch];
     v12 = -v11;
     [v10 acceptanceUpBounceXPadding];
     v14 = -v13;

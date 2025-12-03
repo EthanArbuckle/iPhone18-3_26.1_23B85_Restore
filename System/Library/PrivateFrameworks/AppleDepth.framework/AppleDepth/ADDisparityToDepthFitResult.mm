@@ -1,18 +1,18 @@
 @interface ADDisparityToDepthFitResult
-- (ADDisparityToDepthFitResult)initWithDisparityToDepthMultiplier:(float)a3 disparityToDepthOffset:(float)a4;
+- (ADDisparityToDepthFitResult)initWithDisparityToDepthMultiplier:(float)multiplier disparityToDepthOffset:(float)offset;
 @end
 
 @implementation ADDisparityToDepthFitResult
 
-- (ADDisparityToDepthFitResult)initWithDisparityToDepthMultiplier:(float)a3 disparityToDepthOffset:(float)a4
+- (ADDisparityToDepthFitResult)initWithDisparityToDepthMultiplier:(float)multiplier disparityToDepthOffset:(float)offset
 {
   v7.receiver = self;
   v7.super_class = ADDisparityToDepthFitResult;
   result = [(ADDisparityToDepthFitResult *)&v7 init];
   if (result)
   {
-    result->_disparityToDepthMultiplier = a3;
-    result->_disparityToDepthOffset = a4;
+    result->_disparityToDepthMultiplier = multiplier;
+    result->_disparityToDepthOffset = offset;
   }
 
   return result;

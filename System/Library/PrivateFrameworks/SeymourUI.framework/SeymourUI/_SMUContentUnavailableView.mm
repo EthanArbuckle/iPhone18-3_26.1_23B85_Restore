@@ -1,36 +1,36 @@
 @interface _SMUContentUnavailableView
-- (id)configurationForType:(int64_t)a3;
-- (void)smu_updateWithType:(int64_t)a3 text:(id)a4 secondaryText:(id)a5 image:(id)a6 buttonTitle:(id)a7 buttonPrimaryAction:(id)a8;
+- (id)configurationForType:(int64_t)type;
+- (void)smu_updateWithType:(int64_t)type text:(id)text secondaryText:(id)secondaryText image:(id)image buttonTitle:(id)title buttonPrimaryAction:(id)action;
 @end
 
 @implementation _SMUContentUnavailableView
 
-- (void)smu_updateWithType:(int64_t)a3 text:(id)a4 secondaryText:(id)a5 image:(id)a6 buttonTitle:(id)a7 buttonPrimaryAction:(id)a8
+- (void)smu_updateWithType:(int64_t)type text:(id)text secondaryText:(id)secondaryText image:(id)image buttonTitle:(id)title buttonPrimaryAction:(id)action
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v22 = [(_SMUContentUnavailableView *)self configurationForType:a3];
-  [v22 setText:v18];
+  actionCopy = action;
+  titleCopy = title;
+  imageCopy = image;
+  secondaryTextCopy = secondaryText;
+  textCopy = text;
+  v22 = [(_SMUContentUnavailableView *)self configurationForType:type];
+  [v22 setText:textCopy];
 
-  [v22 setSecondaryText:v17];
-  [v22 setImage:v16];
+  [v22 setSecondaryText:secondaryTextCopy];
+  [v22 setImage:imageCopy];
 
-  v19 = [v22 buttonProperties];
-  v20 = [v19 configuration];
-  [v20 setTitle:v15];
+  buttonProperties = [v22 buttonProperties];
+  configuration = [buttonProperties configuration];
+  [configuration setTitle:titleCopy];
 
-  v21 = [v22 buttonProperties];
-  [v21 setPrimaryAction:v14];
+  buttonProperties2 = [v22 buttonProperties];
+  [buttonProperties2 setPrimaryAction:actionCopy];
 
   [(UIContentUnavailableView *)self setConfiguration:v22];
 }
 
-- (id)configurationForType:(int64_t)a3
+- (id)configurationForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       self = [MEMORY[0x277D75390] loadingConfiguration];

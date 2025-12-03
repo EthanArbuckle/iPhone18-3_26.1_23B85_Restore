@@ -2,51 +2,51 @@
 + (Class)_relevanceProviderClass;
 + (id)_features;
 + (id)providerManagerClasses;
-+ (void)setProviderManagerClassesLoadingBlock:(id)a3;
-- (BOOL)_isValidProvider:(id)a3;
-- (BOOL)containsProvider:(id)a3;
++ (void)setProviderManagerClassesLoadingBlock:(id)block;
+- (BOOL)_isValidProvider:(id)provider;
+- (BOOL)containsProvider:(id)provider;
 - (NSArray)allProviders;
 - (RERelevanceProviderEnvironment)environment;
-- (RERelevanceProviderManager)initWithQueue:(id)a3;
+- (RERelevanceProviderManager)initWithQueue:(id)queue;
 - (id)_engineLocationManager;
 - (id)_engineVisitManager;
-- (id)_valueForHistoricProvider:(id)a3 feature:(id)a4;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
-- (id)_valuesForProvider:(id)a3 context:(id)a4 features:(id)a5;
-- (id)relevanceForProvider:(id)a3 context:(id)a4;
-- (void)_accessQueue_appendCompletionHandlerForScheduledUpdate:(id)a3;
-- (void)_accessQueue_performImmediateUpdate:(id)a3;
+- (id)_valueForHistoricProvider:(id)provider feature:(id)feature;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
+- (id)_valuesForProvider:(id)provider context:(id)context features:(id)features;
+- (id)relevanceForProvider:(id)provider context:(id)context;
+- (void)_accessQueue_appendCompletionHandlerForScheduledUpdate:(id)update;
+- (void)_accessQueue_performImmediateUpdate:(id)update;
 - (void)_accessQueue_performPendingUpdatesAndScheduleTimerIfNeeded;
-- (void)_accessQueue_performUpdate:(id)a3;
+- (void)_accessQueue_performUpdate:(id)update;
 - (void)_accessQueue_resetTimer;
-- (void)_accessQueue_scheduleUpdate:(id)a3;
-- (void)_enumerateProviders:(id)a3;
+- (void)_accessQueue_scheduleUpdate:(id)update;
+- (void)_enumerateProviders:(id)providers;
 - (void)_handleSignificantTimeChange;
 - (void)_loadLoggingHeader;
-- (void)_prepareForUpdateWithCompletion:(id)a3;
+- (void)_prepareForUpdateWithCompletion:(id)completion;
 - (void)_relevanceQueue_openDataStores;
 - (void)_removeAllPendingUpdates;
-- (void)_scheduleUpdate:(id)a3;
-- (void)addProvider:(id)a3 completion:(id)a4;
-- (void)beginActivity:(id)a3;
+- (void)_scheduleUpdate:(id)update;
+- (void)addProvider:(id)provider completion:(id)completion;
+- (void)beginActivity:(id)activity;
 - (void)dealloc;
-- (void)endActivity:(id)a3;
-- (void)enumerateInflectionFeatureValues:(id)a3;
-- (void)isProviderHistoric:(id)a3 completion:(id)a4;
-- (void)pauseWithCompletion:(id)a3;
-- (void)relevanceForHistoricProvider:(id)a3 completion:(id)a4;
-- (void)relevanceForProvider:(id)a3 completion:(id)a4;
-- (void)removeProvider:(id)a3 completion:(id)a4;
-- (void)resumeWithCompletion:(id)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setSupportedFeatures:(id)a3;
+- (void)endActivity:(id)activity;
+- (void)enumerateInflectionFeatureValues:(id)values;
+- (void)isProviderHistoric:(id)historic completion:(id)completion;
+- (void)pauseWithCompletion:(id)completion;
+- (void)relevanceForHistoricProvider:(id)provider completion:(id)completion;
+- (void)relevanceForProvider:(id)provider completion:(id)completion;
+- (void)removeProvider:(id)provider completion:(id)completion;
+- (void)resumeWithCompletion:(id)completion;
+- (void)setEnvironment:(id)environment;
+- (void)setSupportedFeatures:(id)features;
 @end
 
 @implementation RERelevanceProviderManager
 
-+ (void)setProviderManagerClassesLoadingBlock:(id)a3
++ (void)setProviderManagerClassesLoadingBlock:(id)block
 {
-  REProviderManagerLoadingBlock = [a3 copy];
+  REProviderManagerLoadingBlock = [block copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -99,9 +99,9 @@ void __52__RERelevanceProviderManager_providerManagerClasses__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (RERelevanceProviderManager)initWithQueue:(id)a3
+- (RERelevanceProviderManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = RERelevanceProviderManager;
   v6 = [(RERelevanceProviderManager *)&v26 init];
@@ -114,7 +114,7 @@ void __52__RERelevanceProviderManager_providerManagerClasses__block_invoke()
     v7->_providers = v8;
 
     v7->_dataStoresOpened = 0;
-    objc_storeStrong(&v7->_accessQueue, a3);
+    objc_storeStrong(&v7->_accessQueue, queue);
     v10 = MEMORY[0x277CCACA8];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -127,9 +127,9 @@ void __52__RERelevanceProviderManager_providerManagerClasses__block_invoke()
 
     v17 = objc_opt_class();
     v7->_implementsPrepareForUpdate = RESubclassOverridesMethod(v7, v17, sel__prepareForUpdate);
-    v18 = [objc_opt_class() _wantsSeperateRelevanceQueue];
-    v7->_hasSeperateRelevanceQueue = v18;
-    if (v18)
+    _wantsSeperateRelevanceQueue = [objc_opt_class() _wantsSeperateRelevanceQueue];
+    v7->_hasSeperateRelevanceQueue = _wantsSeperateRelevanceQueue;
+    if (_wantsSeperateRelevanceQueue)
     {
       if (initWithQueue__onceToken != -1)
       {
@@ -137,8 +137,8 @@ void __52__RERelevanceProviderManager_providerManagerClasses__block_invoke()
       }
 
       v19 = v7->_relevanceQueue;
-      v20 = [initWithQueue__QueuePool nextAvailableQueue];
-      dispatch_set_target_queue(v19, v20);
+      nextAvailableQueue = [initWithQueue__QueuePool nextAvailableQueue];
+      dispatch_set_target_queue(v19, nextAvailableQueue);
     }
 
     else
@@ -151,9 +151,9 @@ void __52__RERelevanceProviderManager_providerManagerClasses__block_invoke()
     scheduledUpdates = v7->_scheduledUpdates;
     v7->_scheduledUpdates = v21;
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v24 = RESignificantTimeChangeNotification();
-    [v23 addObserver:v7 selector:sel__handleSignificantTimeChange name:v24 object:0];
+    [defaultCenter addObserver:v7 selector:sel__handleSignificantTimeChange name:v24 object:0];
   }
 
   return v7;
@@ -173,35 +173,35 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
     [(RERelevanceProviderManager *)self pause];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = RESignificantTimeChangeNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 
   v5.receiver = self;
   v5.super_class = RERelevanceProviderManager;
   [(RERelevanceProviderManager *)&v5 dealloc];
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  [(RERelevanceProviderManager *)self _relevanceForProvider:a3, a4];
+  [(RERelevanceProviderManager *)self _relevanceForProvider:provider, feature];
   v5 = v4;
 
   return [REFeatureValue featureValueWithDouble:v5];
 }
 
-- (id)_valuesForProvider:(id)a3 context:(id)a4 features:(id)a5
+- (id)_valuesForProvider:(id)provider context:(id)context features:(id)features
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  providerCopy = provider;
+  contextCopy = context;
+  featuresCopy = features;
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(featuresCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v10;
+  v12 = featuresCopy;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
@@ -218,7 +218,7 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [(RERelevanceProviderManager *)self _valueForProvider:v8 context:v9 feature:v17];
+        v18 = [(RERelevanceProviderManager *)self _valueForProvider:providerCopy context:contextCopy feature:v17];
         if (!v18)
         {
           v19 = objc_opt_class();
@@ -242,34 +242,34 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
   return v11;
 }
 
-- (id)_valueForHistoricProvider:(id)a3 feature:(id)a4
+- (id)_valueForHistoricProvider:(id)provider feature:(id)feature
 {
-  [(RERelevanceProviderManager *)self _relevanceForHistoricProvider:a3, a4];
+  [(RERelevanceProviderManager *)self _relevanceForHistoricProvider:provider, feature];
   v5 = v4;
 
   return [REFeatureValue featureValueWithDouble:v5];
 }
 
-- (void)setSupportedFeatures:(id)a3
+- (void)setSupportedFeatures:(id)features
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  featuresCopy = features;
   supportedFeatures = self->_supportedFeatures;
-  if (supportedFeatures != v4 && ![(REFeatureSet *)supportedFeatures isEqual:v4])
+  if (supportedFeatures != featuresCopy && ![(REFeatureSet *)supportedFeatures isEqual:featuresCopy])
   {
-    v6 = [(REFeatureSet *)v4 copy];
+    v6 = [(REFeatureSet *)featuresCopy copy];
     v7 = self->_supportedFeatures;
     self->_supportedFeatures = v6;
 
     if (self->_supportedFeatures)
     {
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v9 = [objc_opt_class() _features];
-      v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      _features = [objc_opt_class() _features];
+      v10 = [_features countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v10)
       {
         v11 = v10;
@@ -280,37 +280,37 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
           {
             if (*v38 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(_features);
             }
 
             v14 = *(*(&v37 + 1) + 8 * i);
             if ([(REFeatureSet *)self->_supportedFeatures containsFeature:v14])
             {
-              [v8 addObject:v14];
+              [array addObject:v14];
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v11 = [_features countByEnumeratingWithState:&v37 objects:v42 count:16];
         }
 
         while (v11);
       }
 
-      v15 = [v8 copy];
+      v15 = [array copy];
       effectiveFeatures = self->_effectiveFeatures;
       self->_effectiveFeatures = v15;
     }
 
     else
     {
-      v17 = [objc_opt_class() _features];
+      _features2 = [objc_opt_class() _features];
       v18 = self->_effectiveFeatures;
-      self->_effectiveFeatures = v17;
+      self->_effectiveFeatures = _features2;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v20 = [WeakRetained relevanceEngine];
-    v21 = [v20 inflectionFeatureValues];
+    relevanceEngine = [WeakRetained relevanceEngine];
+    inflectionFeatureValues = [relevanceEngine inflectionFeatureValues];
 
     v22 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_effectiveFeatures, "count")}];
     v33 = 0u;
@@ -333,7 +333,7 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
           }
 
           v28 = *(*(&v33 + 1) + 8 * j);
-          v29 = [v21 objectForKeyedSubscript:{v28, v33}];
+          v29 = [inflectionFeatureValues objectForKeyedSubscript:{v28, v33}];
           if (v29)
           {
             [v22 setObject:v29 forKeyedSubscript:v28];
@@ -354,25 +354,25 @@ uint64_t __44__RERelevanceProviderManager_initWithQueue___block_invoke()
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addProvider:(id)a3 completion:(id)a4
+- (void)addProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (![(RERelevanceProviderManager *)self _isValidProvider:v6])
+  if (![(RERelevanceProviderManager *)self _isValidProvider:providerCopy])
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Provider %@ is not support by provider manager %@", v6, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Provider %@ is not support by provider manager %@", providerCopy, self}];
   }
 
-  [(NSHashTable *)self->_providers addObject:v6];
+  [(NSHashTable *)self->_providers addObject:providerCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__RERelevanceProviderManager_addProvider_completion___block_invoke;
   v12[3] = &unk_2785F99C8;
   v12[4] = self;
-  v8 = v6;
+  v8 = providerCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = MEMORY[0x22AABC5E0](v12);
   v11 = v10;
@@ -411,25 +411,25 @@ void __53__RERelevanceProviderManager_addProvider_completion___block_invoke(uint
   }
 }
 
-- (void)removeProvider:(id)a3 completion:(id)a4
+- (void)removeProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (![(NSHashTable *)self->_providers containsObject:v6])
+  if (![(NSHashTable *)self->_providers containsObject:providerCopy])
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No provider %@ was found by provider manager %@", v6, self}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No provider %@ was found by provider manager %@", providerCopy, self}];
   }
 
-  [(NSHashTable *)self->_providers removeObject:v6];
+  [(NSHashTable *)self->_providers removeObject:providerCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__RERelevanceProviderManager_removeProvider_completion___block_invoke;
   v12[3] = &unk_2785F99C8;
   v12[4] = self;
-  v8 = v6;
+  v8 = providerCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = MEMORY[0x22AABC5E0](v12);
   v11 = v10;
@@ -463,31 +463,31 @@ uint64_t __56__RERelevanceProviderManager_removeProvider_completion___block_invo
   return result;
 }
 
-- (BOOL)containsProvider:(id)a3
+- (BOOL)containsProvider:(id)provider
 {
-  v3 = self;
+  selfCopy = self;
   accessQueue = self->_accessQueue;
-  v5 = a3;
+  providerCopy = provider;
   dispatch_assert_queue_V2(accessQueue);
-  LOBYTE(v3) = [(NSHashTable *)v3->_providers containsObject:v5];
+  LOBYTE(selfCopy) = [(NSHashTable *)selfCopy->_providers containsObject:providerCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)relevanceForProvider:(id)a3 completion:(id)a4
+- (void)relevanceForProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   relevanceQueue = self->_relevanceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RERelevanceProviderManager_relevanceForProvider_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = providerCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = providerCopy;
   dispatch_async(relevanceQueue, block);
 }
 
@@ -517,10 +517,10 @@ void __62__RERelevanceProviderManager_relevanceForProvider_completion___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)relevanceForProvider:(id)a3 context:(id)a4
+- (id)relevanceForProvider:(id)provider context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -536,16 +536,16 @@ void __62__RERelevanceProviderManager_relevanceForProvider_completion___block_in
     v14[3] = &unk_2785F99F0;
     v17 = &v18;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = providerCopy;
+    v16 = contextCopy;
     dispatch_sync(relevanceQueue, v14);
   }
 
   else
   {
     dispatch_assert_queue_V2(self->_accessQueue);
-    v9 = [(RERelevanceProviderManager *)self effectiveFeatures];
-    v10 = [(RERelevanceProviderManager *)self _valuesForProvider:v6 context:v7 features:v9];
+    effectiveFeatures = [(RERelevanceProviderManager *)self effectiveFeatures];
+    v10 = [(RERelevanceProviderManager *)self _valuesForProvider:providerCopy context:contextCopy features:effectiveFeatures];
     v11 = v19[5];
     v19[5] = v10;
   }
@@ -576,20 +576,20 @@ void __59__RERelevanceProviderManager_relevanceForProvider_context___block_invok
   return [(NSHashTable *)providers allObjects];
 }
 
-- (void)isProviderHistoric:(id)a3 completion:(id)a4
+- (void)isProviderHistoric:(id)historic completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  historicCopy = historic;
+  completionCopy = completion;
   relevanceQueue = self->_relevanceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RERelevanceProviderManager_isProviderHistoric_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = historicCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = historicCopy;
   dispatch_async(relevanceQueue, block);
 }
 
@@ -622,20 +622,20 @@ uint64_t __60__RERelevanceProviderManager_isProviderHistoric_completion___block_
   return result;
 }
 
-- (void)relevanceForHistoricProvider:(id)a3 completion:(id)a4
+- (void)relevanceForHistoricProvider:(id)provider completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   relevanceQueue = self->_relevanceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RERelevanceProviderManager_relevanceForHistoricProvider_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = providerCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = providerCopy;
   dispatch_async(relevanceQueue, block);
 }
 
@@ -704,10 +704,10 @@ void __70__RERelevanceProviderManager_relevanceForHistoricProvider_completion___
   return WeakRetained;
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  objc_storeWeak(&self->_environment, a3);
-  if (a3)
+  objc_storeWeak(&self->_environment, environment);
+  if (environment)
   {
     v5 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
     [(RERelevanceProviderManager *)self _scheduleUpdate:v5];
@@ -716,48 +716,48 @@ void __70__RERelevanceProviderManager_relevanceForHistoricProvider_completion___
 
 - (id)_engineLocationManager
 {
-  v2 = [(RERelevanceProviderManager *)self environment];
-  v3 = [v2 relevanceEngine];
-  v4 = [v3 locationManager];
+  environment = [(RERelevanceProviderManager *)self environment];
+  relevanceEngine = [environment relevanceEngine];
+  locationManager = [relevanceEngine locationManager];
 
-  return v4;
+  return locationManager;
 }
 
 - (id)_engineVisitManager
 {
-  v2 = [(RERelevanceProviderManager *)self environment];
-  v3 = [v2 relevanceEngine];
-  v4 = [v3 visitManager];
+  environment = [(RERelevanceProviderManager *)self environment];
+  relevanceEngine = [environment relevanceEngine];
+  visitManager = [relevanceEngine visitManager];
 
-  return v4;
+  return visitManager;
 }
 
-- (void)beginActivity:(id)a3
+- (void)beginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  [WeakRetained beginActivity:v4 forObject:self];
+  [WeakRetained beginActivity:activityCopy forObject:self];
 }
 
-- (void)endActivity:(id)a3
+- (void)endActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  [WeakRetained endActivity:v4 forObject:self];
+  [WeakRetained endActivity:activityCopy forObject:self];
 }
 
-- (void)enumerateInflectionFeatureValues:(id)a3
+- (void)enumerateInflectionFeatureValues:(id)values
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valuesCopy = values;
+  v5 = valuesCopy;
+  if (valuesCopy)
   {
     inflectionValues = self->_inflectionValues;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63__RERelevanceProviderManager_enumerateInflectionFeatureValues___block_invoke;
     v7[3] = &unk_2785F9A18;
-    v8 = v4;
+    v8 = valuesCopy;
     [(NSDictionary *)inflectionValues enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
@@ -811,26 +811,26 @@ void __63__RERelevanceProviderManager_enumerateInflectionFeatureValues___block_i
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isValidProvider:(id)a3
+- (BOOL)_isValidProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   [objc_opt_class() _relevanceProviderClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_enumerateProviders:(id)a3
+- (void)_enumerateProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__RERelevanceProviderManager__enumerateProviders___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providersCopy;
+  v6 = providersCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -872,9 +872,9 @@ void __50__RERelevanceProviderManager__enumerateProviders___block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeWithCompletion:(id)a3
+- (void)resumeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   relevanceQueue = self->_relevanceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -882,8 +882,8 @@ void __50__RERelevanceProviderManager__enumerateProviders___block_invoke(uint64_
   block[2] = __51__RERelevanceProviderManager_resumeWithCompletion___block_invoke;
   block[3] = &unk_2785F9A68;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, -1, block);
   dispatch_async(relevanceQueue, v7);
 
@@ -936,9 +936,9 @@ uint64_t __51__RERelevanceProviderManager_resumeWithCompletion___block_invoke_2(
   return result;
 }
 
-- (void)pauseWithCompletion:(id)a3
+- (void)pauseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -953,8 +953,8 @@ uint64_t __51__RERelevanceProviderManager_resumeWithCompletion___block_invoke_2(
   v8[2] = __50__RERelevanceProviderManager_pauseWithCompletion___block_invoke_2;
   v8[3] = &unk_2785F9A68;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(relevanceQueue, v8);
 
   objc_destroyWeak(&v10);
@@ -1001,17 +1001,17 @@ void __50__RERelevanceProviderManager_pauseWithCompletion___block_invoke_2(uint6
   dispatch_async(accessQueue, block);
 }
 
-- (void)_scheduleUpdate:(id)a3
+- (void)_scheduleUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RERelevanceProviderManager__scheduleUpdate___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1026,10 +1026,10 @@ void __50__RERelevanceProviderManager_pauseWithCompletion___block_invoke_2(uint6
   dispatch_async(accessQueue, block);
 }
 
-- (void)_prepareForUpdateWithCompletion:(id)a3
+- (void)_prepareForUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_implementsPrepareForUpdate)
   {
     relevanceQueue = self->_relevanceQueue;
@@ -1038,13 +1038,13 @@ void __50__RERelevanceProviderManager_pauseWithCompletion___block_invoke_2(uint6
     v7[2] = __62__RERelevanceProviderManager__prepareForUpdateWithCompletion___block_invoke;
     v7[3] = &unk_2785F9A40;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(relevanceQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1059,7 +1059,7 @@ uint64_t __62__RERelevanceProviderManager__prepareForUpdateWithCompletion___bloc
 - (void)_relevanceQueue_openDataStores
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 80);
+  v2 = *(self + 80);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_22859F000, a2, OS_LOG_TYPE_DEBUG, "%@ opened data sources", &v4, 0xCu);
@@ -1072,13 +1072,13 @@ void __60__RERelevanceProviderManager__relevanceQueue_openDataStores__block_invo
   [WeakRetained immediateUpdateForRelevanceProviderManager:*(a1 + 32) completion:&__block_literal_global_125];
 }
 
-- (void)_accessQueue_appendCompletionHandlerForScheduledUpdate:(id)a3
+- (void)_accessQueue_appendCompletionHandlerForScheduledUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v5 = [v4 completion];
+  completion = [updateCopy completion];
 
-  if (v5)
+  if (completion)
   {
     v10[0] = 0;
     v10[1] = v10;
@@ -1090,7 +1090,7 @@ void __60__RERelevanceProviderManager__relevanceQueue_openDataStores__block_invo
     v7[2] = __85__RERelevanceProviderManager__accessQueue_appendCompletionHandlerForScheduledUpdate___block_invoke;
     v7[3] = &unk_2785F9B30;
     v9 = v10;
-    v8 = v4;
+    v8 = updateCopy;
     [(REPriorityQueue *)scheduledUpdates enumerateObjects:v7];
 
     _Block_object_dispose(v10, 8);
@@ -1138,12 +1138,12 @@ uint64_t __85__RERelevanceProviderManager__accessQueue_appendCompletionHandlerFo
   return v2();
 }
 
-- (void)_accessQueue_performImmediateUpdate:(id)a3
+- (void)_accessQueue_performImmediateUpdate:(id)update
 {
   accessQueue = self->_accessQueue;
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(accessQueue);
-  [(RERelevanceProviderManager *)self _accessQueue_performUpdate:v5];
+  [(RERelevanceProviderManager *)self _accessQueue_performUpdate:updateCopy];
 
   [(RERelevanceProviderManager *)self _accessQueue_performPendingUpdatesAndScheduleTimerIfNeeded];
 }
@@ -1152,16 +1152,16 @@ uint64_t __85__RERelevanceProviderManager__accessQueue_appendCompletionHandlerFo
 {
   v22 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
-  if (v4)
+  date = [MEMORY[0x277CBEAA8] date];
+  minimumObject = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+  if (minimumObject)
   {
     *&v5 = 138412290;
     v17 = v5;
     do
     {
-      v6 = [v4 updateDate];
-      v7 = [v6 compare:v3] == 1;
+      updateDate = [minimumObject updateDate];
+      v7 = [updateDate compare:date] == 1;
 
       if (v7)
       {
@@ -1177,20 +1177,20 @@ uint64_t __85__RERelevanceProviderManager__accessQueue_appendCompletionHandlerFo
         _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "%@ performing scheduled update", buf, 0xCu);
       }
 
-      [(RERelevanceProviderManager *)self _accessQueue_performUpdate:v4];
+      [(RERelevanceProviderManager *)self _accessQueue_performUpdate:minimumObject];
       [(REPriorityQueue *)self->_scheduledUpdates removeMinimumObject];
-      v10 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+      minimumObject2 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
 
-      v4 = v10;
+      minimumObject = minimumObject2;
     }
 
-    while (v10);
+    while (minimumObject2);
   }
 
   if ([(REPriorityQueue *)self->_scheduledUpdates count])
   {
-    v11 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
-    v12 = [v11 updateDate];
+    minimumObject3 = [(REPriorityQueue *)self->_scheduledUpdates minimumObject];
+    updateDate2 = [minimumObject3 updateDate];
 
     objc_initWeak(buf, self);
     accessQueue = self->_accessQueue;
@@ -1199,7 +1199,7 @@ uint64_t __85__RERelevanceProviderManager__accessQueue_appendCompletionHandlerFo
     v18[2] = __88__RERelevanceProviderManager__accessQueue_performPendingUpdatesAndScheduleTimerIfNeeded__block_invoke;
     v18[3] = &unk_2785F9B58;
     objc_copyWeak(&v19, buf);
-    v14 = [REUpNextTimer timerWithFireDate:v12 queue:accessQueue block:v18];
+    v14 = [REUpNextTimer timerWithFireDate:updateDate2 queue:accessQueue block:v18];
     updateTimer = self->_updateTimer;
     self->_updateTimer = v14;
 
@@ -1221,23 +1221,23 @@ void __88__RERelevanceProviderManager__accessQueue_performPendingUpdatesAndSched
   [WeakRetained _accessQueue_performPendingUpdatesAndScheduleTimerIfNeeded];
 }
 
-- (void)_accessQueue_performUpdate:(id)a3
+- (void)_accessQueue_performUpdate:(id)update
 {
-  v8 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v4 = [v8 allProviders];
+  allProviders = [updateCopy allProviders];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  if (v4)
+  if (allProviders)
   {
-    v6 = [v8 completion];
-    [WeakRetained scheduleUpdateForRelevanceProviderManager:self completion:v6];
+    completion = [updateCopy completion];
+    [WeakRetained scheduleUpdateForRelevanceProviderManager:self completion:completion];
   }
 
   else
   {
-    v6 = [v8 provider];
-    v7 = [v8 completion];
-    [WeakRetained scheduleUpdateForRelevanceProvider:v6 completion:v7];
+    completion = [updateCopy provider];
+    completion2 = [updateCopy completion];
+    [WeakRetained scheduleUpdateForRelevanceProvider:completion completion:completion2];
   }
 }
 
@@ -1249,14 +1249,14 @@ void __88__RERelevanceProviderManager__accessQueue_performPendingUpdatesAndSched
   self->_updateTimer = 0;
 }
 
-- (void)_accessQueue_scheduleUpdate:(id)a3
+- (void)_accessQueue_scheduleUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_accessQueue);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RERelevanceProviderManager *)self _accessQueue_performImmediateUpdate:v5];
+    [(RERelevanceProviderManager *)self _accessQueue_performImmediateUpdate:updateCopy];
   }
 
   else
@@ -1264,7 +1264,7 @@ void __88__RERelevanceProviderManager__accessQueue_performPendingUpdatesAndSched
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v5;
+      v4 = updateCopy;
       if ([(REPriorityQueue *)self->_scheduledUpdates containsObject:v4])
       {
         [(RERelevanceProviderManager *)self _accessQueue_appendCompletionHandlerForScheduledUpdate:v4];
@@ -1282,15 +1282,15 @@ void __88__RERelevanceProviderManager__accessQueue_performPendingUpdatesAndSched
 
 - (void)_loadLoggingHeader
 {
-  v3 = [objc_opt_class() _relevanceProviderClass];
-  v4 = NSStringFromClass(v3);
+  _relevanceProviderClass = [objc_opt_class() _relevanceProviderClass];
+  v4 = NSStringFromClass(_relevanceProviderClass);
   v9 = [v4 mutableCopy];
 
   [v9 replaceOccurrencesOfString:@"NTK" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v9, "length")}];
   [v9 replaceOccurrencesOfString:@"RelevanceProvider" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v9, "length")}];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v9 lowercaseString];
-  v7 = [v5 stringWithFormat:@"[PM: %@]", v6];
+  lowercaseString = [v9 lowercaseString];
+  v7 = [v5 stringWithFormat:@"[PM: %@]", lowercaseString];
   loggingHeader = self->_loggingHeader;
   self->_loggingHeader = v7;
 }

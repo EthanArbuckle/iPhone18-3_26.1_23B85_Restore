@@ -1,32 +1,32 @@
 @interface HFPinCodeItemProvider
 - (HFPinCodeItemProvider)init;
-- (HFPinCodeItemProvider)initWithHome:(id)a3 pinCodeManager:(id)a4 listType:(unint64_t)a5 forAccessory:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFPinCodeItemProvider)initWithHome:(id)home pinCodeManager:(id)manager listType:(unint64_t)type forAccessory:(id)accessory;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFPinCodeItemProvider
 
-- (HFPinCodeItemProvider)initWithHome:(id)a3 pinCodeManager:(id)a4 listType:(unint64_t)a5 forAccessory:(id)a6
+- (HFPinCodeItemProvider)initWithHome:(id)home pinCodeManager:(id)manager listType:(unint64_t)type forAccessory:(id)accessory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  homeCopy = home;
+  managerCopy = manager;
+  accessoryCopy = accessory;
   v19.receiver = self;
   v19.super_class = HFPinCodeItemProvider;
   v14 = [(HFItemProvider *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_home, a3);
-    objc_storeStrong(&v15->_pinCodeManager, a4);
-    v15->_listType = a5;
+    objc_storeStrong(&v14->_home, home);
+    objc_storeStrong(&v15->_pinCodeManager, manager);
+    v15->_listType = type;
     v16 = [MEMORY[0x277CBEB58] set];
     pinCodeItems = v15->_pinCodeItems;
     v15->_pinCodeItems = v16;
 
-    objc_storeStrong(&v15->_accessory, a6);
+    objc_storeStrong(&v15->_accessory, accessory);
   }
 
   return v15;
@@ -34,67 +34,67 @@
 
 - (HFPinCodeItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_pinCodeManager_listType_forAccessory_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFPinCodeItemProvider.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HFPinCodeItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPinCodeItemProvider.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HFPinCodeItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFPinCodeItemProvider *)self home];
-  v6 = [(HFPinCodeItemProvider *)self pinCodeManager];
-  v7 = [(HFPinCodeItemProvider *)self listType];
-  v8 = [(HFPinCodeItemProvider *)self accessory];
-  v9 = [v4 initWithHome:v5 pinCodeManager:v6 listType:v7 forAccessory:v8];
+  home = [(HFPinCodeItemProvider *)self home];
+  pinCodeManager = [(HFPinCodeItemProvider *)self pinCodeManager];
+  listType = [(HFPinCodeItemProvider *)self listType];
+  accessory = [(HFPinCodeItemProvider *)self accessory];
+  v9 = [v4 initWithHome:home pinCodeManager:pinCodeManager listType:listType forAccessory:accessory];
 
   return v9;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFPinCodeItemProvider *)self listType];
+  listType = [(HFPinCodeItemProvider *)self listType];
   v4 = 0;
-  if (v3 > 2)
+  if (listType > 2)
   {
-    if (v3 == 3)
+    if (listType == 3)
     {
-      v5 = [(HFPinCodeItemProvider *)self pinCodeManager];
-      v6 = [v5 removedUserPINCodes];
+      pinCodeManager = [(HFPinCodeItemProvider *)self pinCodeManager];
+      removedUserPINCodes = [pinCodeManager removedUserPINCodes];
     }
 
     else
     {
-      if (v3 != 4)
+      if (listType != 4)
       {
         goto LABEL_11;
       }
 
-      v5 = [(HFPinCodeItemProvider *)self pinCodeManager];
-      v6 = [v5 otherEcosystemGuestPinCodes];
+      pinCodeManager = [(HFPinCodeItemProvider *)self pinCodeManager];
+      removedUserPINCodes = [pinCodeManager otherEcosystemGuestPinCodes];
     }
   }
 
-  else if (v3 == 1)
+  else if (listType == 1)
   {
-    v5 = [(HFPinCodeItemProvider *)self pinCodeManager];
-    v6 = [v5 userPinCodes];
+    pinCodeManager = [(HFPinCodeItemProvider *)self pinCodeManager];
+    removedUserPINCodes = [pinCodeManager userPinCodes];
   }
 
   else
   {
-    if (v3 != 2)
+    if (listType != 2)
     {
       goto LABEL_11;
     }
 
-    v5 = [(HFPinCodeItemProvider *)self pinCodeManager];
-    v6 = [v5 guestPinCodes];
+    pinCodeManager = [(HFPinCodeItemProvider *)self pinCodeManager];
+    removedUserPINCodes = [pinCodeManager guestPinCodes];
   }
 
-  v4 = v6;
+  v4 = removedUserPINCodes;
 
 LABEL_11:
   objc_initWeak(&location, self);
@@ -207,12 +207,12 @@ id __36__HFPinCodeItemProvider_reloadItems__block_invoke_6(uint64_t a1, void *a2
   v8[3] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFPinCodeItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v8[1] = @"service";
   v8[2] = @"user";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

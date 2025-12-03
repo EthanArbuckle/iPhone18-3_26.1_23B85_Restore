@@ -1,82 +1,82 @@
 @interface RTPlaceInferenceManager
-+ (unint64_t)learnedPlaceTypeFromLocationOfInterestType:(int64_t)a3;
-+ (unint64_t)learnedPlaceTypeFromUserSpecificPlaceType:(unint64_t)a3;
-+ (unint64_t)userSpecificPlaceTypeFromLearnedPlaceType:(unint64_t)a3;
-+ (unint64_t)userSpecificPlaceTypeFromLocationOfInterestType:(int64_t)a3;
-+ (void)sanityCheckMapItemProviders:(id)a3;
-- (BOOL)_inferUserSpecificPlaceTypeForInferredMapItem:(id)a3 userSpecificPlaceType:(unint64_t *)a4 userSpecificPlaceTypeSource:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)_learnedPlaceTypeForInferredMapItem:(id)a3 placeType:(unint64_t *)a4 placeTypeSource:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)_savePlaceInferenceQueriesFromInferredMapItems:(id)a3 inferenceErrorCode:(int64_t)a4 referenceLocation:(id)a5 options:(id)a6 outError:(id *)a7;
-- (RTPlaceInferenceManager)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 eventManager:(id)a8 fingerprintManager:(id)a9 inferredMapItemFuser:(id)a10 learnedLocationStore:(id)a11 locationManager:(id)a12 mapItemManager:(id)a13 mapServiceManager:(id)a14 mapsSupportManager:(id)a15 metricManager:(id)a16 motionActivityManager:(id)a17 placeInferenceQueryStore:(id)a18 platform:(id)a19 portraitManager:(id)a20 userCurationStore:(id)a21 visitStore:(id)a22;
-- (id)_closestCachedLocationForLocation:(id)a3;
-- (id)_estimatedLocationFromSortedLocations:(id)a3;
-- (id)_filterLocalBluePOIMapItems:(id)a3;
-- (id)_getFallbackMapItemProviderForOptions:(id)a3;
-- (id)_loiIdentifierForInferredMapItem:(id)a3;
-- (id)_placeInferenceFromInferredMapItem:(id)a3 referenceLocation:(id)a4 error:(id *)a5;
-- (id)_placeInferencesForOptions:(id)a3 error:(id *)a4;
-- (id)_removeCurrentPOIMapItems:(id)a3;
-- (id)_selectBestCandidateAndUpdateReferenceLocation:(id)a3;
-- (id)_selectLastLocationFromLocations:(id)a3 maxHorizontalUncertainty:(double)a4;
-- (id)_selectMapItemProvidersForOptions:(id)a3 targetProvider:(unint64_t)a4;
-- (id)createAllMapItemProvidersWithDefaultManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 eventManager:(id)a8 fingerprintManager:(id)a9 learnedLocationStore:(id)a10 locationManager:(id)a11 mapItemManager:(id)a12 mapServiceManager:(id)a13 mapsSupportManager:(id)a14 motionActivityManager:(id)a15 platform:(id)a16 portraitManager:(id)a17 userCurationStore:(id)a18 visitStore:(id)a19;
-- (unint64_t)_getMappingIndexForClientIdentifier:(id)a3;
-- (void)_addMapItemProviderFromArray:(id)a3 toSet:(id)a4;
-- (void)_onBluePOIMonitorEstimateUpdateNotification:(id)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
-- (void)_onPointOfInterestVisitNotification:(id)a3;
-- (void)_onSyncedPlaceInferences:(id)a3;
-- (void)_onVisitManagerVisitIncidentNotification:(id)a3;
-- (void)_performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
++ (unint64_t)learnedPlaceTypeFromLocationOfInterestType:(int64_t)type;
++ (unint64_t)learnedPlaceTypeFromUserSpecificPlaceType:(unint64_t)type;
++ (unint64_t)userSpecificPlaceTypeFromLearnedPlaceType:(unint64_t)type;
++ (unint64_t)userSpecificPlaceTypeFromLocationOfInterestType:(int64_t)type;
++ (void)sanityCheckMapItemProviders:(id)providers;
+- (BOOL)_inferUserSpecificPlaceTypeForInferredMapItem:(id)item userSpecificPlaceType:(unint64_t *)type userSpecificPlaceTypeSource:(unint64_t *)source error:(id *)error;
+- (BOOL)_learnedPlaceTypeForInferredMapItem:(id)item placeType:(unint64_t *)type placeTypeSource:(unint64_t *)source error:(id *)error;
+- (BOOL)_savePlaceInferenceQueriesFromInferredMapItems:(id)items inferenceErrorCode:(int64_t)code referenceLocation:(id)location options:(id)options outError:(id *)error;
+- (RTPlaceInferenceManager)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator eventManager:(id)eventManager fingerprintManager:(id)fingerprintManager inferredMapItemFuser:(id)self0 learnedLocationStore:(id)self1 locationManager:(id)self2 mapItemManager:(id)self3 mapServiceManager:(id)self4 mapsSupportManager:(id)self5 metricManager:(id)self6 motionActivityManager:(id)self7 placeInferenceQueryStore:(id)self8 platform:(id)self9 portraitManager:(id)portraitManager userCurationStore:(id)curationStore visitStore:(id)visitStore;
+- (id)_closestCachedLocationForLocation:(id)location;
+- (id)_estimatedLocationFromSortedLocations:(id)locations;
+- (id)_filterLocalBluePOIMapItems:(id)items;
+- (id)_getFallbackMapItemProviderForOptions:(id)options;
+- (id)_loiIdentifierForInferredMapItem:(id)item;
+- (id)_placeInferenceFromInferredMapItem:(id)item referenceLocation:(id)location error:(id *)error;
+- (id)_placeInferencesForOptions:(id)options error:(id *)error;
+- (id)_removeCurrentPOIMapItems:(id)items;
+- (id)_selectBestCandidateAndUpdateReferenceLocation:(id)location;
+- (id)_selectLastLocationFromLocations:(id)locations maxHorizontalUncertainty:(double)uncertainty;
+- (id)_selectMapItemProvidersForOptions:(id)options targetProvider:(unint64_t)provider;
+- (id)createAllMapItemProvidersWithDefaultManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator eventManager:(id)eventManager fingerprintManager:(id)fingerprintManager learnedLocationStore:(id)self0 locationManager:(id)self1 mapItemManager:(id)self2 mapServiceManager:(id)self3 mapsSupportManager:(id)self4 motionActivityManager:(id)self5 platform:(id)self6 portraitManager:(id)self7 userCurationStore:(id)self8 visitStore:(id)self9;
+- (unint64_t)_getMappingIndexForClientIdentifier:(id)identifier;
+- (void)_addMapItemProviderFromArray:(id)array toSet:(id)set;
+- (void)_onBluePOIMonitorEstimateUpdateNotification:(id)notification;
+- (void)_onDailyMetricsNotification:(id)notification;
+- (void)_onPointOfInterestVisitNotification:(id)notification;
+- (void)_onSyncedPlaceInferences:(id)inferences;
+- (void)_onVisitManagerVisitIncidentNotification:(id)notification;
+- (void)_performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 - (void)_registerForDailyMetricsNotifications;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_unRegisterForDailyMetricsNotifications;
-- (void)_updateCachedLocationsWithLocation:(id)a3;
-- (void)fetchPlaceInferencesForOptions:(id)a3 handler:(id)a4;
-- (void)onBluePOIMonitorEstimateUpdateNotification:(id)a3;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)onPointOfInterestVisitNotification:(id)a3;
-- (void)onSyncedPlaceInferences:(id)a3;
-- (void)onVisitManagerVisitIncidentNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)sendPlaceInferenceMetrics:(id)a3 inferredMapItems:(id)a4 fusedMapItems:(id)a5 fallbackInferredMapItems:(id)a6 finalPlaceInferences:(id)a7 referenceLocation:(id)a8;
-- (void)setVisitManager:(id)a3;
+- (void)_updateCachedLocationsWithLocation:(id)location;
+- (void)fetchPlaceInferencesForOptions:(id)options handler:(id)handler;
+- (void)onBluePOIMonitorEstimateUpdateNotification:(id)notification;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)onPointOfInterestVisitNotification:(id)notification;
+- (void)onSyncedPlaceInferences:(id)inferences;
+- (void)onVisitManagerVisitIncidentNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)sendPlaceInferenceMetrics:(id)metrics inferredMapItems:(id)items fusedMapItems:(id)mapItems fallbackInferredMapItems:(id)inferredMapItems finalPlaceInferences:(id)inferences referenceLocation:(id)location;
+- (void)setVisitManager:(id)manager;
 @end
 
 @implementation RTPlaceInferenceManager
 
-- (RTPlaceInferenceManager)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 eventManager:(id)a8 fingerprintManager:(id)a9 inferredMapItemFuser:(id)a10 learnedLocationStore:(id)a11 locationManager:(id)a12 mapItemManager:(id)a13 mapServiceManager:(id)a14 mapsSupportManager:(id)a15 metricManager:(id)a16 motionActivityManager:(id)a17 placeInferenceQueryStore:(id)a18 platform:(id)a19 portraitManager:(id)a20 userCurationStore:(id)a21 visitStore:(id)a22
+- (RTPlaceInferenceManager)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator eventManager:(id)eventManager fingerprintManager:(id)fingerprintManager inferredMapItemFuser:(id)self0 learnedLocationStore:(id)self1 locationManager:(id)self2 mapItemManager:(id)self3 mapServiceManager:(id)self4 mapsSupportManager:(id)self5 metricManager:(id)self6 motionActivityManager:(id)self7 placeInferenceQueryStore:(id)self8 platform:(id)self9 portraitManager:(id)portraitManager userCurationStore:(id)curationStore visitStore:(id)visitStore
 {
-  v60 = a3;
-  obj = a4;
-  v26 = a4;
-  v59 = a5;
-  v55 = a6;
-  v61 = a6;
-  v57 = a7;
-  v78 = a7;
-  v27 = v26;
-  v28 = a8;
-  v77 = a9;
-  v29 = a10;
-  v64 = a11;
-  v75 = a12;
-  v74 = a13;
-  v73 = a14;
-  v72 = a15;
+  managerCopy = manager;
+  obj = metricManager;
+  metricManagerCopy = metricManager;
+  monitorCopy = monitor;
+  tileManagerCopy = tileManager;
+  tileManagerCopy2 = tileManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  v27 = metricManagerCopy;
+  eventManagerCopy = eventManager;
+  fingerprintManagerCopy = fingerprintManager;
+  fuserCopy = fuser;
+  storeCopy = store;
+  locationManagerCopy = locationManager;
+  itemManagerCopy = itemManager;
+  serviceManagerCopy = serviceManager;
+  supportManagerCopy = supportManager;
   v58 = a16;
-  v71 = a17;
-  v70 = a18;
-  v69 = a19;
-  v68 = a20;
-  v67 = a21;
-  v30 = a22;
+  activityManagerCopy = activityManager;
+  queryStoreCopy = queryStore;
+  platformCopy = platform;
+  portraitManagerCopy = portraitManager;
+  curationStoreCopy = curationStore;
+  visitStoreCopy = visitStore;
   v63 = v27;
-  v62 = v30;
+  v62 = visitStoreCopy;
   if (!v27)
   {
-    v31 = v59;
+    v31 = monitorCopy;
     v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
@@ -85,21 +85,21 @@
     }
 
     v43 = 0;
-    v32 = v60;
-    v33 = v61;
-    v45 = v78;
-    v46 = v28;
-    v34 = v29;
+    v32 = managerCopy;
+    v33 = tileManagerCopy2;
+    v45 = calculatorCopy2;
+    v46 = eventManagerCopy;
+    v34 = fuserCopy;
     goto LABEL_31;
   }
 
-  v31 = v59;
-  if (!v59)
+  v31 = monitorCopy;
+  if (!monitorCopy)
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v32 = v60;
-    v45 = v78;
-    v34 = v29;
+    v32 = managerCopy;
+    v45 = calculatorCopy2;
+    v34 = fuserCopy;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -107,52 +107,52 @@
     }
 
     v43 = 0;
-    v33 = v61;
-    v46 = v28;
+    v33 = tileManagerCopy2;
+    v46 = eventManagerCopy;
 LABEL_31:
-    v35 = v64;
+    v35 = storeCopy;
     v48 = v58;
     goto LABEL_70;
   }
 
-  v32 = v60;
-  v33 = v61;
-  v34 = v29;
-  if (v61)
+  v32 = managerCopy;
+  v33 = tileManagerCopy2;
+  v34 = fuserCopy;
+  if (tileManagerCopy2)
   {
-    v53 = v28;
-    if (v60)
+    v53 = eventManagerCopy;
+    if (managerCopy)
     {
-      v35 = v64;
-      if (v78)
+      v35 = storeCopy;
+      if (calculatorCopy2)
       {
         if (v53)
         {
-          if (v77)
+          if (fingerprintManagerCopy)
           {
-            if (v29)
+            if (fuserCopy)
             {
-              if (v64)
+              if (storeCopy)
               {
-                if (v75)
+                if (locationManagerCopy)
                 {
-                  if (v74)
+                  if (itemManagerCopy)
                   {
-                    if (v73)
+                    if (serviceManagerCopy)
                     {
-                      if (v72)
+                      if (supportManagerCopy)
                       {
-                        if (v71)
+                        if (activityManagerCopy)
                         {
-                          if (v70)
+                          if (queryStoreCopy)
                           {
-                            if (v69)
+                            if (platformCopy)
                             {
-                              if (v68)
+                              if (portraitManagerCopy)
                               {
-                                if (v67)
+                                if (curationStoreCopy)
                                 {
-                                  if (v30)
+                                  if (visitStoreCopy)
                                   {
                                     v79.receiver = self;
                                     v79.super_class = RTPlaceInferenceManager;
@@ -160,24 +160,24 @@ LABEL_31:
                                     if (v66)
                                     {
                                       objc_storeStrong(&v66->_bluePOIMetricManager, obj);
-                                      objc_storeStrong(&v66->_bluePOIMonitor, a5);
-                                      objc_storeStrong(&v66->_bluePOITileManager, v55);
-                                      objc_storeStrong(&v66->_defaultsManager, a3);
-                                      objc_storeStrong(&v66->_distanceCalculator, v57);
+                                      objc_storeStrong(&v66->_bluePOIMonitor, monitor);
+                                      objc_storeStrong(&v66->_bluePOITileManager, tileManagerCopy);
+                                      objc_storeStrong(&v66->_defaultsManager, manager);
+                                      objc_storeStrong(&v66->_distanceCalculator, calculatorCopy);
                                       objc_storeStrong(&v66->_metricManager, a16);
-                                      objc_storeStrong(&v66->_inferredMapItemFuser, a10);
-                                      objc_storeStrong(&v66->_learnedLocationStore, a11);
+                                      objc_storeStrong(&v66->_inferredMapItemFuser, fuser);
+                                      objc_storeStrong(&v66->_learnedLocationStore, store);
                                       v66->_placeInferencesLimit = 50;
                                       v36 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
                                       cachedLocations = v66->_cachedLocations;
                                       v66->_cachedLocations = v36;
 
                                       v66->_cachedLocationIndex = 0;
-                                      objc_storeStrong(&v66->_locationManager, a12);
-                                      objc_storeStrong(&v66->_mapItemManager, a13);
-                                      objc_storeStrong(&v66->_mapServiceManager, a14);
-                                      objc_storeStrong(&v66->_visitStore, a22);
-                                      objc_storeStrong(&v66->_placeInferenceQueryStore, a18);
+                                      objc_storeStrong(&v66->_locationManager, locationManager);
+                                      objc_storeStrong(&v66->_mapItemManager, itemManager);
+                                      objc_storeStrong(&v66->_mapServiceManager, serviceManager);
+                                      objc_storeStrong(&v66->_visitStore, visitStore);
+                                      objc_storeStrong(&v66->_placeInferenceQueryStore, queryStore);
                                       v38 = [(RTDefaultsManager *)v66->_defaultsManager objectForKey:@"RTDefaultsPlaceInferenceManagerPlaceInferencesLimit"];
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
@@ -186,17 +186,17 @@ LABEL_31:
                                       }
 
                                       v66->_clientMappingIndex = 0;
-                                      v39 = [[RTPlaceInferenceDailyMetrics alloc] initWithDefaultsManager:v60];
+                                      v39 = [[RTPlaceInferenceDailyMetrics alloc] initWithDefaultsManager:managerCopy];
                                       dailyMetrics = v66->_dailyMetrics;
                                       v66->_dailyMetrics = v39;
 
-                                      v35 = v64;
-                                      v41 = [(RTPlaceInferenceManager *)v66 createAllMapItemProvidersWithDefaultManager:v60 bluePOIMetricManager:v63 bluePOIMonitor:v59 bluePOITileManager:v61 distanceCalculator:v78 eventManager:v53 fingerprintManager:v77 learnedLocationStore:v64 locationManager:v75 mapItemManager:v74 mapServiceManager:v73 mapsSupportManager:v72 motionActivityManager:v71 platform:v69 portraitManager:v68 userCurationStore:v67 visitStore:v62];
+                                      v35 = storeCopy;
+                                      v41 = [(RTPlaceInferenceManager *)v66 createAllMapItemProvidersWithDefaultManager:managerCopy bluePOIMetricManager:v63 bluePOIMonitor:monitorCopy bluePOITileManager:tileManagerCopy2 distanceCalculator:calculatorCopy2 eventManager:v53 fingerprintManager:fingerprintManagerCopy learnedLocationStore:storeCopy locationManager:locationManagerCopy mapItemManager:itemManagerCopy mapServiceManager:serviceManagerCopy mapsSupportManager:supportManagerCopy motionActivityManager:activityManagerCopy platform:platformCopy portraitManager:portraitManagerCopy userCurationStore:curationStoreCopy visitStore:v62];
                                       mapItemProviders = v66->_mapItemProviders;
                                       v66->_mapItemProviders = v41;
 
                                       [(RTService *)v66 setup];
-                                      v34 = v29;
+                                      v34 = fuserCopy;
                                     }
 
                                     v43 = v66;
@@ -217,7 +217,7 @@ LABEL_68:
                                   v43 = 0;
 LABEL_69:
                                   v48 = v58;
-                                  v45 = v78;
+                                  v45 = calculatorCopy2;
                                   v46 = v53;
                                   goto LABEL_70;
                                 }
@@ -404,7 +404,7 @@ LABEL_69:
     else
     {
       v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v35 = v64;
+      v35 = storeCopy;
       if (!os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_68;
@@ -420,7 +420,7 @@ LABEL_67:
   }
 
   v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  v46 = v28;
+  v46 = eventManagerCopy;
   if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
@@ -428,48 +428,48 @@ LABEL_67:
   }
 
   v43 = 0;
-  v35 = v64;
+  v35 = storeCopy;
   v48 = v58;
-  v45 = v78;
+  v45 = calculatorCopy2;
 LABEL_70:
 
   return v43;
 }
 
-- (id)createAllMapItemProvidersWithDefaultManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 eventManager:(id)a8 fingerprintManager:(id)a9 learnedLocationStore:(id)a10 locationManager:(id)a11 mapItemManager:(id)a12 mapServiceManager:(id)a13 mapsSupportManager:(id)a14 motionActivityManager:(id)a15 platform:(id)a16 portraitManager:(id)a17 userCurationStore:(id)a18 visitStore:(id)a19
+- (id)createAllMapItemProvidersWithDefaultManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator eventManager:(id)eventManager fingerprintManager:(id)fingerprintManager learnedLocationStore:(id)self0 locationManager:(id)self1 mapItemManager:(id)self2 mapServiceManager:(id)self3 mapsSupportManager:(id)self4 motionActivityManager:(id)self5 platform:(id)self6 portraitManager:(id)self7 userCurationStore:(id)self8 visitStore:(id)self9
 {
-  v86 = a3;
-  v24 = a4;
-  v25 = a5;
-  v87 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
-  v79 = a11;
-  v30 = a12;
-  v31 = a13;
-  v78 = a14;
-  v85 = a15;
-  v84 = a16;
-  v83 = a17;
-  v80 = a18;
-  v81 = a19;
-  v32 = v24;
-  v77 = v29;
-  if (!v24)
+  managerCopy = manager;
+  metricManagerCopy = metricManager;
+  monitorCopy = monitor;
+  tileManagerCopy = tileManager;
+  calculatorCopy = calculator;
+  eventManagerCopy = eventManager;
+  fingerprintManagerCopy = fingerprintManager;
+  storeCopy = store;
+  locationManagerCopy = locationManager;
+  itemManagerCopy = itemManager;
+  serviceManagerCopy = serviceManager;
+  supportManagerCopy = supportManager;
+  activityManagerCopy = activityManager;
+  platformCopy = platform;
+  portraitManagerCopy = portraitManager;
+  curationStoreCopy = curationStore;
+  visitStoreCopy = visitStore;
+  v32 = metricManagerCopy;
+  v77 = storeCopy;
+  if (!metricManagerCopy)
   {
-    v33 = v25;
+    v33 = monitorCopy;
     v53 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
 LABEL_38:
 
       v82 = 0;
-      v55 = v87;
-      v56 = v28;
-      v51 = v78;
-      v52 = v79;
+      v55 = tileManagerCopy;
+      v56 = fingerprintManagerCopy;
+      v51 = supportManagerCopy;
+      v52 = locationManagerCopy;
       goto LABEL_82;
     }
 
@@ -480,8 +480,8 @@ LABEL_59:
     goto LABEL_38;
   }
 
-  v33 = v25;
-  if (!v25)
+  v33 = monitorCopy;
+  if (!monitorCopy)
   {
     v53 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -494,11 +494,11 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v73 = v26;
-  if (v87)
+  v73 = calculatorCopy;
+  if (tileManagerCopy)
   {
-    v34 = v25;
-    if (!v86)
+    v34 = monitorCopy;
+    if (!managerCopy)
     {
       v59 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -508,16 +508,16 @@ LABEL_59:
       }
 
       v82 = 0;
-      v56 = v28;
-      v51 = v78;
-      v52 = v79;
+      v56 = fingerprintManagerCopy;
+      v51 = supportManagerCopy;
+      v52 = locationManagerCopy;
       goto LABEL_80;
     }
 
     if (!v73)
     {
       v60 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v75 = v28;
+      v75 = fingerprintManagerCopy;
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -525,65 +525,65 @@ LABEL_59:
       }
 
       v82 = 0;
-      v51 = v78;
-      v52 = v79;
-      v26 = 0;
+      v51 = supportManagerCopy;
+      v52 = locationManagerCopy;
+      calculatorCopy = 0;
       goto LABEL_48;
     }
 
-    v35 = v28;
-    v36 = v27;
-    if (v27)
+    v35 = fingerprintManagerCopy;
+    v36 = eventManagerCopy;
+    if (eventManagerCopy)
     {
-      v37 = v30;
-      v38 = v31;
+      v37 = itemManagerCopy;
+      v38 = serviceManagerCopy;
       v39 = v35;
       if (v35)
       {
         v40 = v36;
-        if (v29)
+        if (storeCopy)
         {
-          if (v79)
+          if (locationManagerCopy)
           {
             if (v37)
             {
-              if (v31)
+              if (serviceManagerCopy)
               {
-                if (v78)
+                if (supportManagerCopy)
                 {
-                  if (v85)
+                  if (activityManagerCopy)
                   {
-                    if (v84)
+                    if (platformCopy)
                     {
-                      if (v83)
+                      if (portraitManagerCopy)
                       {
-                        if (v80)
+                        if (curationStoreCopy)
                         {
-                          if (v81)
+                          if (visitStoreCopy)
                           {
                             v82 = objc_opt_new();
                             v71 = [RTMapItemProviderBluePOI alloc];
-                            v69 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
-                            v72 = [(RTMapItemProviderBluePOI *)v71 initWithDefaultsManager:v86 bluePOIMetricManager:v24 bluePOIMonitor:v33 bluePOITileManager:v87 distanceCalculator:v73 fingerprintManager:v39 locationManager:v79 mapItemManager:v37 mapServiceManager:v31 motionActivityManager:v85 placeInferenceQueryStore:v69 platform:v84];
+                            placeInferenceQueryStore = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
+                            v72 = [(RTMapItemProviderBluePOI *)v71 initWithDefaultsManager:managerCopy bluePOIMetricManager:metricManagerCopy bluePOIMonitor:v33 bluePOITileManager:tileManagerCopy distanceCalculator:v73 fingerprintManager:v39 locationManager:locationManagerCopy mapItemManager:v37 mapServiceManager:serviceManagerCopy motionActivityManager:activityManagerCopy placeInferenceQueryStore:placeInferenceQueryStore platform:platformCopy];
 
                             if (v72)
                             {
                               [v82 setObject:v72 forKey:&unk_28459C570];
                             }
 
-                            v70 = [[RTMapItemProviderEventKit alloc] initWithDefaultsManager:v86 distanceCalculator:v73 eventManager:v36 mapServiceManager:v31];
+                            v70 = [[RTMapItemProviderEventKit alloc] initWithDefaultsManager:managerCopy distanceCalculator:v73 eventManager:v36 mapServiceManager:serviceManagerCopy];
                             if (v70)
                             {
                               [v82 setObject:v70 forKey:&unk_28459C588];
                             }
 
-                            v68 = [[RTMapItemProviderLearnedPlace alloc] initWithDefaultsManager:v86 distanceCalculator:v73 learnedLocationStore:v29];
+                            v68 = [[RTMapItemProviderLearnedPlace alloc] initWithDefaultsManager:managerCopy distanceCalculator:v73 learnedLocationStore:storeCopy];
                             if (v68)
                             {
                               [v82 setObject:v68 forKey:&unk_28459C5A0];
                             }
 
-                            v41 = [[RTMapItemProviderMapsSupport alloc] initWithDefaultsManager:v86 distanceCalculator:v73 mapsSupportManager:v78];
+                            v41 = [[RTMapItemProviderMapsSupport alloc] initWithDefaultsManager:managerCopy distanceCalculator:v73 mapsSupportManager:supportManagerCopy];
                             if (v41)
                             {
                               [v82 setObject:v41 forKey:&unk_28459C5B8];
@@ -591,8 +591,8 @@ LABEL_59:
 
                             v67 = v41;
                             v42 = [RTMapItemProviderCurrentPOI alloc];
-                            v43 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
-                            v44 = [(RTMapItemProviderCurrentPOI *)v42 initWithDefaultsManager:v86 distanceCalculator:v73 placeInferenceQueryStore:v43 visitStore:v81];
+                            placeInferenceQueryStore2 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
+                            v44 = [(RTMapItemProviderCurrentPOI *)v42 initWithDefaultsManager:managerCopy distanceCalculator:v73 placeInferenceQueryStore:placeInferenceQueryStore2 visitStore:visitStoreCopy];
 
                             if (v44)
                             {
@@ -601,7 +601,7 @@ LABEL_59:
 
                             v66 = v44;
                             v75 = v39;
-                            v45 = [[RTMapItemProviderProactiveExperts alloc] initWithDefaultsManager:v86 distanceCalculator:v73 mapServiceManager:v31 personalizationPortraitManager:v83];
+                            v45 = [[RTMapItemProviderProactiveExperts alloc] initWithDefaultsManager:managerCopy distanceCalculator:v73 mapServiceManager:serviceManagerCopy personalizationPortraitManager:portraitManagerCopy];
                             if (v45)
                             {
                               [v82 setObject:v45 forKey:&unk_28459C5E8];
@@ -609,40 +609,40 @@ LABEL_59:
 
                             v46 = v40;
                             v47 = v38;
-                            v48 = [[RTMapItemProviderReverseGeocode alloc] initWithDefaultsManager:v86 mapServiceManager:v38];
+                            v48 = [[RTMapItemProviderReverseGeocode alloc] initWithDefaultsManager:managerCopy mapServiceManager:v38];
                             if (v48)
                             {
                               [v82 setObject:v48 forKey:&unk_28459C600];
                             }
 
-                            v32 = v24;
-                            v30 = v37;
+                            v32 = metricManagerCopy;
+                            itemManagerCopy = v37;
                             v49 = v34;
-                            v50 = [[RTMapItemProviderUserCuration alloc] initWithDefaultsManager:v86 distanceCalculator:v73 userCurationStore:v80 visitStore:v81];
+                            v50 = [[RTMapItemProviderUserCuration alloc] initWithDefaultsManager:managerCopy distanceCalculator:v73 userCurationStore:curationStoreCopy visitStore:visitStoreCopy];
                             if (v50)
                             {
                               [v82 setObject:v50 forKey:&unk_28459C618];
                             }
 
-                            v26 = v73;
+                            calculatorCopy = v73;
                             v33 = v49;
-                            v51 = v78;
-                            v52 = v79;
-                            v31 = v47;
-                            v27 = v46;
+                            v51 = supportManagerCopy;
+                            v52 = locationManagerCopy;
+                            serviceManagerCopy = v47;
+                            eventManagerCopy = v46;
 LABEL_48:
                             v56 = v75;
 LABEL_81:
-                            v55 = v87;
+                            v55 = tileManagerCopy;
                             goto LABEL_82;
                           }
 
                           v56 = v35;
-                          v27 = v40;
-                          v32 = v24;
-                          v51 = v78;
-                          v30 = v37;
-                          v52 = v79;
+                          eventManagerCopy = v40;
+                          v32 = metricManagerCopy;
+                          v51 = supportManagerCopy;
+                          itemManagerCopy = v37;
+                          v52 = locationManagerCopy;
                           v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                           if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                           {
@@ -655,11 +655,11 @@ LABEL_81:
                         }
 
                         v56 = v35;
-                        v27 = v40;
-                        v32 = v24;
-                        v51 = v78;
-                        v30 = v37;
-                        v52 = v79;
+                        eventManagerCopy = v40;
+                        v32 = metricManagerCopy;
+                        v51 = supportManagerCopy;
+                        itemManagerCopy = v37;
+                        v52 = locationManagerCopy;
                         v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                         if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                         {
@@ -672,16 +672,16 @@ LABEL_79:
 
                         v82 = 0;
 LABEL_80:
-                        v26 = v73;
+                        calculatorCopy = v73;
                         goto LABEL_81;
                       }
 
                       v56 = v35;
-                      v27 = v40;
-                      v32 = v24;
-                      v51 = v78;
-                      v30 = v37;
-                      v52 = v79;
+                      eventManagerCopy = v40;
+                      v32 = metricManagerCopy;
+                      v51 = supportManagerCopy;
+                      itemManagerCopy = v37;
+                      v52 = locationManagerCopy;
                       v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                       if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                       {
@@ -695,11 +695,11 @@ LABEL_80:
                     else
                     {
                       v56 = v35;
-                      v27 = v40;
-                      v32 = v24;
-                      v51 = v78;
-                      v30 = v37;
-                      v52 = v79;
+                      eventManagerCopy = v40;
+                      v32 = metricManagerCopy;
+                      v51 = supportManagerCopy;
+                      itemManagerCopy = v37;
+                      v52 = locationManagerCopy;
                       v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                       if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                       {
@@ -714,11 +714,11 @@ LABEL_80:
                   else
                   {
                     v56 = v35;
-                    v27 = v40;
-                    v32 = v24;
-                    v51 = v78;
-                    v30 = v37;
-                    v52 = v79;
+                    eventManagerCopy = v40;
+                    v32 = metricManagerCopy;
+                    v51 = supportManagerCopy;
+                    itemManagerCopy = v37;
+                    v52 = locationManagerCopy;
                     v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                     if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                     {
@@ -733,11 +733,11 @@ LABEL_80:
                 else
                 {
                   v56 = v35;
-                  v27 = v40;
-                  v32 = v24;
+                  eventManagerCopy = v40;
+                  v32 = metricManagerCopy;
                   v51 = 0;
-                  v30 = v37;
-                  v52 = v79;
+                  itemManagerCopy = v37;
+                  v52 = locationManagerCopy;
                   v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                   if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                   {
@@ -752,12 +752,12 @@ LABEL_80:
               else
               {
                 v56 = v35;
-                v27 = v40;
-                v32 = v24;
-                v51 = v78;
-                v31 = 0;
-                v30 = v37;
-                v52 = v79;
+                eventManagerCopy = v40;
+                v32 = metricManagerCopy;
+                v51 = supportManagerCopy;
+                serviceManagerCopy = 0;
+                itemManagerCopy = v37;
+                v52 = locationManagerCopy;
                 v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                 if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
                 {
@@ -772,11 +772,11 @@ LABEL_80:
             else
             {
               v56 = v35;
-              v27 = v40;
-              v32 = v24;
-              v51 = v78;
-              v30 = 0;
-              v52 = v79;
+              eventManagerCopy = v40;
+              v32 = metricManagerCopy;
+              v51 = supportManagerCopy;
+              itemManagerCopy = 0;
+              v52 = locationManagerCopy;
               v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
               {
@@ -791,10 +791,10 @@ LABEL_80:
           else
           {
             v56 = v35;
-            v27 = v40;
-            v32 = v24;
-            v51 = v78;
-            v30 = v37;
+            eventManagerCopy = v40;
+            v32 = metricManagerCopy;
+            v51 = supportManagerCopy;
+            itemManagerCopy = v37;
             v52 = 0;
             v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -810,11 +810,11 @@ LABEL_80:
         else
         {
           v56 = v35;
-          v27 = v40;
-          v32 = v24;
-          v51 = v78;
-          v30 = v37;
-          v52 = v79;
+          eventManagerCopy = v40;
+          v32 = metricManagerCopy;
+          v51 = supportManagerCopy;
+          itemManagerCopy = v37;
+          v52 = locationManagerCopy;
           v63 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (!os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
           {
@@ -831,11 +831,11 @@ LABEL_78:
       }
 
       v76 = 0;
-      v30 = v37;
-      v52 = v79;
+      itemManagerCopy = v37;
+      v52 = locationManagerCopy;
       v62 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v51 = v78;
-      v27 = v36;
+      v51 = supportManagerCopy;
+      eventManagerCopy = v36;
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -843,14 +843,14 @@ LABEL_78:
       }
 
       v82 = 0;
-      v26 = v73;
+      calculatorCopy = v73;
     }
 
     else
     {
-      v76 = v28;
+      v76 = fingerprintManagerCopy;
       v61 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v52 = v79;
+      v52 = locationManagerCopy;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -858,11 +858,11 @@ LABEL_78:
       }
 
       v82 = 0;
-      v51 = v78;
-      v26 = v73;
+      v51 = supportManagerCopy;
+      calculatorCopy = v73;
     }
 
-    v55 = v87;
+    v55 = tileManagerCopy;
     v56 = v76;
     goto LABEL_82;
   }
@@ -875,9 +875,9 @@ LABEL_78:
   }
 
   v82 = 0;
-  v58 = v28;
-  v51 = v78;
-  v52 = v79;
+  v58 = fingerprintManagerCopy;
+  v51 = supportManagerCopy;
+  v52 = locationManagerCopy;
   v55 = 0;
   v56 = v58;
 LABEL_82:
@@ -888,23 +888,23 @@ LABEL_82:
 - (void)_setup
 {
   [(RTPlaceInferenceManager *)self _registerForDailyMetricsNotifications];
-  v4 = [(RTPlaceInferenceManager *)self bluePOIMonitor];
+  bluePOIMonitor = [(RTPlaceInferenceManager *)self bluePOIMonitor];
   v3 = +[(RTNotification *)RTBluePOIMonitorEstimateUpdateNotification];
-  [v4 addObserver:self selector:sel_onBluePOIMonitorEstimateUpdateNotification_ name:v3];
+  [bluePOIMonitor addObserver:self selector:sel_onBluePOIMonitorEstimateUpdateNotification_ name:v3];
 }
 
-- (void)setVisitManager:(id)a3
+- (void)setVisitManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  managerCopy = manager;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__RTPlaceInferenceManager_setVisitManager___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
@@ -923,14 +923,14 @@ void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
 
 - (void)_registerForDailyMetricsNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -940,44 +940,44 @@ void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
       v13 = 138412546;
       v14 = v7;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@ %@", &v13, 0x16u);
     }
   }
 
   [(RTPlaceInferenceManager *)self _unRegisterForDailyMetricsNotifications];
-  v8 = [(RTPlaceInferenceManager *)self visitManager];
+  visitManager = [(RTPlaceInferenceManager *)self visitManager];
 
-  if (v8)
+  if (visitManager)
   {
-    v9 = [(RTPlaceInferenceManager *)self visitManager];
+    visitManager2 = [(RTPlaceInferenceManager *)self visitManager];
     v10 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-    [v9 removeObserver:self fromNotification:v10];
+    [visitManager2 removeObserver:self fromNotification:v10];
 
-    v11 = [(RTPlaceInferenceManager *)self visitManager];
+    visitManager3 = [(RTPlaceInferenceManager *)self visitManager];
     v12 = +[(RTNotification *)RTPointOfInterestMonitorVisitNotification];
-    [v11 removeObserver:self fromNotification:v12];
+    [visitManager3 removeObserver:self fromNotification:v12];
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
 - (void)_unRegisterForDailyMetricsNotifications
 {
-  v4 = [(RTPlaceInferenceManager *)self locationManager];
+  locationManager = [(RTPlaceInferenceManager *)self locationManager];
   v3 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-  [v4 removeObserver:self fromNotification:v3];
+  [locationManager removeObserver:self fromNotification:v3];
 }
 
-- (void)fetchPlaceInferencesForOptions:(id)a3 handler:(id)a4
+- (void)fetchPlaceInferencesForOptions:(id)options handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -989,7 +989,7 @@ void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -997,7 +997,7 @@ void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "options is required, %@", buf, 0xCu);
       }
     }
@@ -1010,21 +1010,21 @@ void __43__RTPlaceInferenceManager_setVisitManager___block_invoke(uint64_t a1)
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v9 = [v11 errorWithDomain:v12 code:7 userInfo:v14];
 
-    v7[2](v7, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v8 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTPlaceInferenceManager_fetchPlaceInferencesForOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  dispatch_async(v8, block);
+  v16 = optionsCopy;
+  v17 = handlerCopy;
+  dispatch_async(queue, block);
 
 LABEL_12:
 }
@@ -1039,11 +1039,11 @@ void __66__RTPlaceInferenceManager_fetchPlaceInferencesForOptions_handler___bloc
   (*(a1[6] + 16))();
 }
 
-- (id)_selectLastLocationFromLocations:(id)a3 maxHorizontalUncertainty:(double)a4
+- (id)_selectLastLocationFromLocations:(id)locations maxHorizontalUncertainty:(double)uncertainty
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  locationsCopy = locations;
+  if (![locationsCopy count])
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1056,7 +1056,7 @@ void __66__RTPlaceInferenceManager_fetchPlaceInferencesForOptions_handler___bloc
     }
   }
 
-  if ([v5 count])
+  if ([locationsCopy count])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1068,9 +1068,9 @@ void __66__RTPlaceInferenceManager_fetchPlaceInferencesForOptions_handler___bloc
     v10[1] = 3221225472;
     v10[2] = __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizontalUncertainty___block_invoke;
     v10[3] = &unk_2788C4A98;
-    *&v10[5] = a4;
+    *&v10[5] = uncertainty;
     v10[4] = buf;
-    [v5 enumerateObjectsWithOptions:2 usingBlock:v10];
+    [locationsCopy enumerateObjectsWithOptions:2 usingBlock:v10];
     if (*(*&buf[8] + 40))
     {
       v7 = objc_alloc(MEMORY[0x277D01160]);
@@ -1104,11 +1104,11 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
   }
 }
 
-- (void)_updateCachedLocationsWithLocation:(id)a3
+- (void)_updateCachedLocationsWithLocation:(id)location
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1132,7 +1132,7 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
       v13 = 138413059;
       v14 = v10;
       v15 = 2117;
-      v16 = v5;
+      v16 = locationCopy;
       v17 = 2048;
       v18 = v11;
       v19 = 2048;
@@ -1145,22 +1145,22 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
   cachedLocations = self->_cachedLocations;
   if (v8 > 9)
   {
-    [(NSMutableArray *)cachedLocations replaceObjectAtIndex:self->_cachedLocationIndex withObject:v5];
+    [(NSMutableArray *)cachedLocations replaceObjectAtIndex:self->_cachedLocationIndex withObject:locationCopy];
   }
 
   else
   {
-    [(NSMutableArray *)cachedLocations addObject:v5];
+    [(NSMutableArray *)cachedLocations addObject:locationCopy];
   }
 
   self->_cachedLocationIndex = (self->_cachedLocationIndex + 1) % 0xA;
 }
 
-- (id)_closestCachedLocationForLocation:(id)a3
+- (id)_closestCachedLocationForLocation:(id)location
 {
   v44 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  if (v27)
+  locationCopy = location;
+  if (locationCopy)
   {
     v31 = 0u;
     v32 = 0u;
@@ -1187,9 +1187,9 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
           }
 
           v13 = *(*(&v29 + 1) + 8 * i);
-          v14 = [(RTPlaceInferenceManager *)self distanceCalculator];
+          distanceCalculator = [(RTPlaceInferenceManager *)self distanceCalculator];
           v28 = v6;
-          [v14 distanceFromLocation:v27 toLocation:v13 error:&v28];
+          [distanceCalculator distanceFromLocation:locationCopy toLocation:v13 error:&v28];
           v16 = v15;
           v6 = v28;
 
@@ -1248,7 +1248,7 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
         v35 = 2117;
         v36 = v8;
         v37 = 2117;
-        v38 = v27;
+        v38 = locationCopy;
         v39 = 2048;
         v40 = v10;
         v41 = 2048;
@@ -1273,25 +1273,25 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
   return v8;
 }
 
-- (void)onSyncedPlaceInferences:(id)a3
+- (void)onSyncedPlaceInferences:(id)inferences
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  inferencesCopy = inferences;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTPlaceInferenceManager_onSyncedPlaceInferences___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = inferencesCopy;
+  v6 = inferencesCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onSyncedPlaceInferences:(id)a3
+- (void)_onSyncedPlaceInferences:(id)inferences
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  inferencesCopy = inferences;
+  if (!inferencesCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1315,7 +1315,7 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v3;
+  obj = inferencesCopy;
   v5 = [obj countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v5)
   {
@@ -1345,8 +1345,8 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
         v47 = 0;
         v10 = dispatch_semaphore_create(0);
 
-        v11 = [(RTPlaceInferenceManager *)self learnedLocationStore];
-        v12 = [v9 mapItem];
+        learnedLocationStore = [(RTPlaceInferenceManager *)self learnedLocationStore];
+        mapItem = [v9 mapItem];
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __52__RTPlaceInferenceManager__onSyncedPlaceInferences___block_invoke;
@@ -1355,10 +1355,10 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
         v44 = v46;
         v40[4] = v9;
         v41 = v36;
-        v42 = self;
+        selfCopy = self;
         v13 = v10;
         v43 = v13;
-        [v11 processExternalMapItem:v12 handler:v40];
+        [learnedLocationStore processExternalMapItem:mapItem handler:v40];
 
         v6 = v13;
         v14 = [MEMORY[0x277CBEAA8] now];
@@ -1373,11 +1373,11 @@ void __85__RTPlaceInferenceManager__selectLastLocationFromLocations_maxHorizonta
         v18 = v17;
         v19 = objc_opt_new();
         v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-        v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v22 = [v21 filteredArrayUsingPredicate:v20];
-        v23 = [v22 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+        firstObject = [v22 firstObject];
 
-        [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+        [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
         v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
@@ -1493,25 +1493,25 @@ void __52__RTPlaceInferenceManager__onSyncedPlaceInferences___block_invoke_2(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_onBluePOIMonitorEstimateUpdateNotification:(id)a3
+- (void)_onBluePOIMonitorEstimateUpdateNotification:(id)notification
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = notificationCopy;
     v6 = objc_alloc(MEMORY[0x277D011E0]);
-    v7 = [v5 locations];
-    v8 = [v5 accessPoints];
-    v9 = [v6 initWithFidelityPolicy:32 locations:v7 accessPoints:v8];
+    locations = [v5 locations];
+    accessPoints = [v5 accessPoints];
+    v9 = [v6 initWithFidelityPolicy:32 locations:locations accessPoints:accessPoints];
 
-    v10 = [v5 inferredMapItems];
+    inferredMapItems = [v5 inferredMapItems];
     v34 = v5;
-    v11 = [v5 referenceLocation];
+    referenceLocation = [v5 referenceLocation];
     v39 = 0;
     v29 = v9;
-    [(RTPlaceInferenceManager *)self _savePlaceInferenceQueriesFromInferredMapItems:v10 inferenceErrorCode:-1 referenceLocation:v11 options:v9 outError:&v39];
+    [(RTPlaceInferenceManager *)self _savePlaceInferenceQueriesFromInferredMapItems:inferredMapItems inferenceErrorCode:-1 referenceLocation:referenceLocation options:v9 outError:&v39];
     v12 = v39;
 
     if (v12)
@@ -1526,9 +1526,9 @@ void __52__RTPlaceInferenceManager__onSyncedPlaceInferences___block_invoke_2(uin
     }
 
     v28 = v12;
-    v33 = self;
-    v30 = v4;
-    v32 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    v30 = notificationCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -1550,17 +1550,17 @@ void __52__RTPlaceInferenceManager__onSyncedPlaceInferences___block_invoke_2(uin
 
           v18 = *(*(&v35 + 1) + 8 * i);
           v19 = MEMORY[0x277D011D8];
-          v20 = [v18 mapItem];
-          v21 = [v19 placeInferencePlaceTypeFromMapItem:v20 userType:0 source:0x4000];
+          mapItem = [v18 mapItem];
+          v21 = [v19 placeInferencePlaceTypeFromMapItem:mapItem userType:0 source:0x4000];
 
-          v22 = [(RTPlaceInferenceManager *)v33 _loiIdentifierForInferredMapItem:v18];
+          v22 = [(RTPlaceInferenceManager *)selfCopy _loiIdentifierForInferredMapItem:v18];
           v23 = objc_alloc(MEMORY[0x277D011D8]);
-          v24 = [v18 mapItem];
-          v25 = [v34 referenceLocation];
+          mapItem2 = [v18 mapItem];
+          referenceLocation2 = [v34 referenceLocation];
           [v18 confidence];
-          v26 = [v23 initWithMapItem:v24 userType:0 userTypeSource:0 placeType:v21 referenceLocation:v25 confidence:v22 loiIdentifier:?];
+          v26 = [v23 initWithMapItem:mapItem2 userType:0 userTypeSource:0 placeType:v21 referenceLocation:referenceLocation2 confidence:v22 loiIdentifier:?];
 
-          [v32 addObject:v26];
+          [array addObject:v26];
         }
 
         v15 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -1569,37 +1569,37 @@ void __52__RTPlaceInferenceManager__onSyncedPlaceInferences___block_invoke_2(uin
       while (v15);
     }
 
-    v27 = [[RTPlaceInferenceUpdateNotification alloc] initWithPlaceInferences:v32];
-    [(RTNotifier *)v33 postNotification:v27];
+    v27 = [[RTPlaceInferenceUpdateNotification alloc] initWithPlaceInferences:array];
+    [(RTNotifier *)selfCopy postNotification:v27];
 
-    v4 = v30;
+    notificationCopy = v30;
   }
 }
 
-- (void)onBluePOIMonitorEstimateUpdateNotification:(id)a3
+- (void)onBluePOIMonitorEstimateUpdateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__RTPlaceInferenceManager_onBluePOIMonitorEstimateUpdateNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)_filterLocalBluePOIMapItems:(id)a3
+- (id)_filterLocalBluePOIMapItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -1668,16 +1668,16 @@ LABEL_19:
   return v13;
 }
 
-- (id)_removeCurrentPOIMapItems:(id)a3
+- (id)_removeCurrentPOIMapItems:(id)items
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1708,12 +1708,12 @@ LABEL_19:
   return v4;
 }
 
-- (id)_placeInferencesForOptions:(id)a3 error:(id *)a4
+- (id)_placeInferencesForOptions:(id)options error:(id *)error
 {
   v176[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 locations];
-  v8 = [v7 count];
+  optionsCopy = options;
+  locations = [optionsCopy locations];
+  v8 = [locations count];
 
   if (!v8)
   {
@@ -1728,8 +1728,8 @@ LABEL_19:
     }
   }
 
-  v10 = [v6 locations];
-  v11 = [v10 count];
+  locations2 = [optionsCopy locations];
+  v11 = [locations2 count];
 
   if (v11)
   {
@@ -1739,31 +1739,31 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = NSStringFromSelector(a2);
-        v14 = [v6 fidelityPolicy];
-        v15 = a4;
-        v16 = [MEMORY[0x277D011E0] fidelityPolicyMaskToString:{objc_msgSend(v6, "fidelityPolicy")}];
-        v17 = [v6 locations];
-        v18 = [v17 count];
+        fidelityPolicy = [optionsCopy fidelityPolicy];
+        errorCopy = error;
+        v16 = [MEMORY[0x277D011E0] fidelityPolicyMaskToString:{objc_msgSend(optionsCopy, "fidelityPolicy")}];
+        locations3 = [optionsCopy locations];
+        v18 = [locations3 count];
         *buf = 138413058;
         *&buf[4] = v13;
         v169 = 2048;
-        v170 = v14;
+        v170 = fidelityPolicy;
         v171 = 2112;
         v172 = v16;
         v173 = 2048;
         v174 = v18;
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%@, fidelity policy, %lu (%@), location count, %lu", buf, 0x2Au);
 
-        a4 = v15;
+        error = errorCopy;
       }
     }
 
     v19 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:1];
-    v20 = [v6 locations];
+    locations4 = [optionsCopy locations];
     v131 = v19;
     v167 = v19;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v167 count:1];
-    v22 = [v20 sortedArrayUsingDescriptors:v21];
+    v22 = [locations4 sortedArrayUsingDescriptors:v21];
 
     v141 = v22;
     v23 = [(RTPlaceInferenceManager *)self _selectLastLocationFromLocations:v22 maxHorizontalUncertainty:250.0];
@@ -1777,7 +1777,7 @@ LABEL_19:
         _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "At least one non-cell location should be provided, %@", buf, 0xCu);
       }
 
-      if (!a4)
+      if (!error)
       {
         v34 = 0;
 LABEL_136:
@@ -1790,9 +1790,9 @@ LABEL_136:
       v165 = *MEMORY[0x277CCA450];
       v142 = [MEMORY[0x277CCACA8] stringWithFormat:@"At least one non-cell location should be provided."];
       v166 = v142;
-      v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
-      [v36 errorWithDomain:v37 code:7 userInfo:v25];
-      *a4 = v34 = 0;
+      array = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v166 forKeys:&v165 count:1];
+      [v36 errorWithDomain:v37 code:7 userInfo:array];
+      *error = v34 = 0;
 LABEL_135:
 
       goto LABEL_136;
@@ -1809,7 +1809,7 @@ LABEL_135:
     }
 
     v142 = v23;
-    if (([v6 fidelityPolicy] & 8) != 0 && (objc_msgSend(v6, "fidelityPolicy") & 2) != 0)
+    if (([optionsCopy fidelityPolicy] & 8) != 0 && (objc_msgSend(optionsCopy, "fidelityPolicy") & 2) != 0)
     {
       v24 = [(RTPlaceInferenceManager *)self _estimatedLocationFromSortedLocations:v22];
 
@@ -1817,9 +1817,9 @@ LABEL_135:
       v142 = v24;
     }
 
-    if (([v6 fidelityPolicy] & 0x10) != 0)
+    if (([optionsCopy fidelityPolicy] & 0x10) != 0)
     {
-      if (([v6 fidelityPolicy] & 8) != 0 && (objc_msgSend(v6, "fidelityPolicy") & 2) == 0)
+      if (([optionsCopy fidelityPolicy] & 8) != 0 && (objc_msgSend(optionsCopy, "fidelityPolicy") & 2) == 0)
       {
         v38 = [(RTPlaceInferenceManager *)self _closestCachedLocationForLocation:v142];
 
@@ -1827,7 +1827,7 @@ LABEL_135:
       }
 
       v39 = [objc_alloc(MEMORY[0x277D011D8]) initWithMapItem:0 finerGranularityMapItem:0 userType:0 userTypeSource:0 placeType:0 referenceLocation:v142 confidence:0.0 finerGranularityMapItemConfidence:0.0 loiIdentifier:0 preferredName:0];
-      v25 = v39;
+      array = v39;
       if (v39)
       {
         v164 = v39;
@@ -1842,55 +1842,55 @@ LABEL_135:
       goto LABEL_135;
     }
 
-    v25 = [MEMORY[0x277CBEB18] array];
-    v130 = [MEMORY[0x277CBEB18] array];
-    v134 = [MEMORY[0x277CBEB18] array];
-    v26 = [v22 firstObject];
-    v140 = [v26 timestamp];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
+    firstObject = [v22 firstObject];
+    timestamp = [firstObject timestamp];
 
-    v27 = [v22 lastObject];
-    v139 = [v27 timestamp];
+    lastObject = [v22 lastObject];
+    timestamp2 = [lastObject timestamp];
 
-    v28 = [(RTPlaceInferenceManager *)self placeInferencesLimit];
-    if ([v6 limit] >= 1)
+    placeInferencesLimit = [(RTPlaceInferenceManager *)self placeInferencesLimit];
+    if ([optionsCopy limit] >= 1)
     {
-      v28 = [v6 limit];
+      placeInferencesLimit = [optionsCopy limit];
     }
 
-    v138 = v28;
+    v138 = placeInferencesLimit;
     context = objc_autoreleasePoolPush();
-    v29 = [v6 clientIdentifier];
-    if (v29)
+    clientIdentifier = [optionsCopy clientIdentifier];
+    if (clientIdentifier)
     {
-      v30 = [v6 clientIdentifier];
+      clientIdentifier2 = [optionsCopy clientIdentifier];
     }
 
     else
     {
-      v30 = @"unknown";
+      clientIdentifier2 = @"unknown";
     }
 
-    v125 = [[RTPlaceInferenceMetrics alloc] initWithClientIdentifier:v30 placeInferenceOptions:v6];
-    v126 = v30;
+    v125 = [[RTPlaceInferenceMetrics alloc] initWithClientIdentifier:clientIdentifier2 placeInferenceOptions:optionsCopy];
+    v126 = clientIdentifier2;
     self->_clientMappingIndex = [(RTPlaceInferenceManager *)self _getMappingIndexForClientIdentifier:?];
-    v40 = [(RTPlaceInferenceManager *)self _selectMapItemProvidersForOptions:v6];
+    v40 = [(RTPlaceInferenceManager *)self _selectMapItemProvidersForOptions:optionsCopy];
     v128 = v23;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v41 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
-        v42 = [v6 fidelityPolicy];
+        fidelityPolicy2 = [optionsCopy fidelityPolicy];
         v43 = [v40 count];
         *buf = 134218240;
-        *&buf[4] = v42;
+        *&buf[4] = fidelityPolicy2;
         v169 = 2048;
         v170 = v43;
         _os_log_impl(&dword_2304B3000, v41, OS_LOG_TYPE_INFO, "fidelity policy %lu has %lu providers", buf, 0x16u);
       }
     }
 
-    v143 = v6;
+    v143 = optionsCopy;
     v160 = 0u;
     v161 = 0u;
     v158 = 0u;
@@ -1898,11 +1898,11 @@ LABEL_135:
     v44 = v40;
     v45 = [v44 countByEnumeratingWithState:&v158 objects:v163 count:16];
     obj = v44;
-    v129 = a4;
+    errorCopy2 = error;
     if (v45)
     {
       v46 = v45;
-      v137 = v25;
+      v137 = array;
       v132 = 0;
       v47 = 0;
       v48 = *v159;
@@ -1920,11 +1920,11 @@ LABEL_135:
           if ((objc_opt_isKindOfClass() & 1) == 0 || ![v137 count])
           {
             v51 = objc_alloc(MEMORY[0x277D011E0]);
-            v52 = [v143 fidelityPolicy];
-            v53 = [v143 accessPoints];
-            v54 = [v143 clientIdentifier];
+            fidelityPolicy3 = [v143 fidelityPolicy];
+            accessPoints = [v143 accessPoints];
+            clientIdentifier3 = [v143 clientIdentifier];
             LOBYTE(v124) = 0;
-            v55 = [v51 initWithFidelityPolicy:v52 locations:v141 accessPoints:v53 distance:v142 location:v140 startDate:v139 endDate:50.0 limit:v138 useBackground:v124 clientIdentifier:v54];
+            v55 = [v51 initWithFidelityPolicy:fidelityPolicy3 locations:v141 accessPoints:accessPoints distance:v142 location:timestamp startDate:timestamp2 endDate:50.0 limit:v138 useBackground:v124 clientIdentifier:clientIdentifier3];
 
             v157 = 0;
             v56 = [v50 mapItemsWithOptions:v55 error:&v157];
@@ -1957,9 +1957,9 @@ LABEL_135:
 
               else
               {
-                v63 = [v57 code];
+                code = [v57 code];
                 v156 = 0;
-                [(RTPlaceInferenceManager *)self _savePlaceInferenceQueriesFromInferredMapItems:v56 inferenceErrorCode:v63 referenceLocation:v142 options:v143 outError:&v156];
+                [(RTPlaceInferenceManager *)self _savePlaceInferenceQueriesFromInferredMapItems:v56 inferenceErrorCode:code referenceLocation:v142 options:v143 outError:&v156];
                 v62 = v156;
                 if (v62)
                 {
@@ -1986,7 +1986,7 @@ LABEL_135:
 
             if (v57)
             {
-              [v134 addObject:v57];
+              [array3 addObject:v57];
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
               {
                 v66 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2020,32 +2020,32 @@ LABEL_135:
 
       if ((v47 & 1) == 0)
       {
-        v6 = v143;
-        a4 = v129;
-        v25 = v137;
+        optionsCopy = v143;
+        error = errorCopy2;
+        array = v137;
 LABEL_80:
-        v72 = [v6 fidelityPolicy];
-        v73 = [v6 fidelityPolicy] & 0x20;
-        if ([v6 fidelityPolicy] & 0x40 | v73)
+        fidelityPolicy4 = [optionsCopy fidelityPolicy];
+        v73 = [optionsCopy fidelityPolicy] & 0x20;
+        if ([optionsCopy fidelityPolicy] & 0x40 | v73)
         {
           v74 = 1;
         }
 
         else
         {
-          v74 = v72 == 7;
+          v74 = fidelityPolicy4 == 7;
         }
 
         v75 = !v74;
-        if ([v25 count])
+        if ([array count])
         {
-          v76 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v25, "count")}];
-          v77 = v25;
-          if ([v25 count])
+          v76 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(array, "count")}];
+          v77 = array;
+          if ([array count])
           {
             v78 = 0;
             v79 = 0;
-            v80 = v25;
+            v80 = array;
             do
             {
               v81 = v79;
@@ -2074,7 +2074,7 @@ LABEL_80:
 
               if (v79)
               {
-                [v134 addObject:v79];
+                [array3 addObject:v79];
               }
 
               ++v78;
@@ -2089,18 +2089,18 @@ LABEL_80:
             v79 = 0;
           }
 
-          v89 = [(RTPlaceInferenceManager *)self inferredMapItemFuser];
+          inferredMapItemFuser = [(RTPlaceInferenceManager *)self inferredMapItemFuser];
           v153 = v79;
-          v88 = [v89 fusedInferredMapItemsUsingCandidates:v76 referenceLocation:v142 snapToBestKnownPlace:v75 snapToBestAoi:0 error:&v153];
+          v88 = [inferredMapItemFuser fusedInferredMapItemsUsingCandidates:v76 referenceLocation:v142 snapToBestKnownPlace:v75 snapToBestAoi:0 error:&v153];
           v90 = v153;
 
           if (v90)
           {
-            [v134 addObject:v90];
+            [array3 addObject:v90];
           }
 
-          v6 = v143;
-          a4 = v129;
+          optionsCopy = v143;
+          error = errorCopy2;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v91 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2110,7 +2110,7 @@ LABEL_80:
               v93 = [v88 count];
               *buf = 134218498;
               *&buf[4] = v92;
-              a4 = v129;
+              error = errorCopy2;
               v169 = 2048;
               v170 = v93;
               v171 = 2112;
@@ -2119,7 +2119,7 @@ LABEL_80:
             }
           }
 
-          v25 = v77;
+          array = v77;
         }
 
         else
@@ -2129,16 +2129,16 @@ LABEL_80:
 
         if ([v88 count])
         {
-          v94 = [v88 firstObject];
-          v95 = [v94 mapItem];
+          firstObject2 = [v88 firstObject];
+          mapItem = [firstObject2 mapItem];
 
-          if (v95)
+          if (mapItem)
           {
             goto LABEL_122;
           }
         }
 
-        v96 = [(RTPlaceInferenceManager *)self _getFallbackMapItemProviderForOptions:v6];
+        v96 = [(RTPlaceInferenceManager *)self _getFallbackMapItemProviderForOptions:optionsCopy];
         if (!v96)
         {
           goto LABEL_122;
@@ -2146,20 +2146,20 @@ LABEL_80:
 
         v97 = v96;
         v98 = v88;
-        v99 = a4;
+        errorCopy3 = error;
         v100 = objc_alloc(MEMORY[0x277D011E0]);
-        v101 = [v6 fidelityPolicy];
-        v102 = [v6 accessPoints];
-        v103 = [v6 clientIdentifier];
+        fidelityPolicy5 = [optionsCopy fidelityPolicy];
+        accessPoints2 = [optionsCopy accessPoints];
+        clientIdentifier4 = [optionsCopy clientIdentifier];
         LOBYTE(v124) = 0;
-        v104 = [v100 initWithFidelityPolicy:v101 locations:v141 accessPoints:v102 distance:v142 location:v140 startDate:v139 endDate:50.0 limit:v138 useBackground:v124 clientIdentifier:v103];
+        v104 = [v100 initWithFidelityPolicy:fidelityPolicy5 locations:v141 accessPoints:accessPoints2 distance:v142 location:timestamp startDate:timestamp2 endDate:50.0 limit:v138 useBackground:v124 clientIdentifier:clientIdentifier4];
 
         v152 = 0;
         v105 = [v97 mapItemsWithOptions:v104 error:&v152];
         v106 = v152;
         if (v106)
         {
-          [v134 addObject:v106];
+          [array3 addObject:v106];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
             v107 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2181,7 +2181,7 @@ LABEL_80:
 LABEL_117:
             v88 = v98;
 
-            v6 = v143;
+            optionsCopy = v143;
             goto LABEL_120;
           }
 
@@ -2215,7 +2215,7 @@ LABEL_117:
         v88 = v98;
 LABEL_120:
 
-        a4 = v99;
+        error = errorCopy3;
         if (v108)
         {
           v148[0] = MEMORY[0x277D85DD0];
@@ -2226,9 +2226,9 @@ LABEL_120:
           v112 = &v149;
           v149 = v142;
           v113 = &v150;
-          v150 = v130;
+          v150 = array2;
           v114 = v151;
-          v151[0] = v134;
+          v151[0] = array3;
           v151[1] = v138;
           [v108 enumerateObjectsUsingBlock:v148];
           goto LABEL_123;
@@ -2243,44 +2243,44 @@ LABEL_122:
         v112 = &v145;
         v145 = v142;
         v113 = &v146;
-        v146 = v130;
+        v146 = array2;
         v114 = v147;
-        v147[0] = v134;
+        v147[0] = array3;
         v147[1] = v138;
         [v88 enumerateObjectsUsingBlock:v144];
         v108 = MEMORY[0x277CBEBF8];
 LABEL_123:
 
         v19 = v131;
-        if (([v6 fidelityPolicy] & 8) != 0 && (objc_msgSend(v6, "fidelityPolicy") & 2) == 0)
+        if (([optionsCopy fidelityPolicy] & 8) != 0 && (objc_msgSend(optionsCopy, "fidelityPolicy") & 2) == 0)
         {
-          v115 = [(RTPlaceInferenceManager *)self _selectBestCandidateAndUpdateReferenceLocation:v130];
-          [v130 removeAllObjects];
+          v115 = [(RTPlaceInferenceManager *)self _selectBestCandidateAndUpdateReferenceLocation:array2];
+          [array2 removeAllObjects];
           if (v115)
           {
-            [v130 addObject:v115];
+            [array2 addObject:v115];
           }
         }
 
         if (v132)
         {
-          v116 = [[RTPlaceInferenceUpdateNotification alloc] initWithPlaceInferences:v130];
+          v116 = [[RTPlaceInferenceUpdateNotification alloc] initWithPlaceInferences:array2];
           [(RTNotifier *)self postNotification:v116];
         }
 
-        v117 = [(RTPlaceInferenceManager *)self dailyMetrics];
-        [v117 increaseCountForClientMappingIndex:LODWORD(self->_clientMappingIndex)];
+        dailyMetrics = [(RTPlaceInferenceManager *)self dailyMetrics];
+        [dailyMetrics increaseCountForClientMappingIndex:LODWORD(self->_clientMappingIndex)];
 
-        v118 = v130;
-        [(RTPlaceInferenceManager *)self sendPlaceInferenceMetrics:v125 inferredMapItems:v25 fusedMapItems:v88 fallbackInferredMapItems:v108 finalPlaceInferences:v130 referenceLocation:v142];
+        v118 = array2;
+        [(RTPlaceInferenceManager *)self sendPlaceInferenceMetrics:v125 inferredMapItems:array fusedMapItems:v88 fallbackInferredMapItems:v108 finalPlaceInferences:array2 referenceLocation:v142];
 
         objc_autoreleasePoolPop(context);
-        if (a4 && [v134 count] && !objc_msgSend(v130, "count"))
+        if (error && [array3 count] && !objc_msgSend(array2, "count"))
         {
           v119 = _RTSafeArray();
-          *a4 = _RTMultiErrorCreate();
+          *error = _RTMultiErrorCreate();
 
-          v118 = v130;
+          v118 = array2;
         }
 
         v34 = v118;
@@ -2289,8 +2289,8 @@ LABEL_123:
         goto LABEL_135;
       }
 
-      v6 = v143;
-      a4 = v129;
+      optionsCopy = v143;
+      error = errorCopy2;
       v44 = v137;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -2302,7 +2302,7 @@ LABEL_123:
         }
       }
 
-      v25 = [(RTPlaceInferenceManager *)self _removeCurrentPOIMapItems:v137];
+      array = [(RTPlaceInferenceManager *)self _removeCurrentPOIMapItems:v137];
     }
 
     else
@@ -2321,7 +2321,7 @@ LABEL_123:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "At least one location should be provided, %@", buf, 0xCu);
   }
 
-  if (!a4)
+  if (!error)
   {
     v34 = 0;
     goto LABEL_138;
@@ -2334,7 +2334,7 @@ LABEL_123:
   v176[0] = v19;
   v141 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v176 forKeys:&v175 count:1];
   [v32 errorWithDomain:v33 code:7 userInfo:?];
-  *a4 = v34 = 0;
+  *error = v34 = 0;
 LABEL_137:
 
 LABEL_138:
@@ -2405,32 +2405,32 @@ void __60__RTPlaceInferenceManager__placeInferencesForOptions_error___block_invo
   }
 }
 
-- (BOOL)_savePlaceInferenceQueriesFromInferredMapItems:(id)a3 inferenceErrorCode:(int64_t)a4 referenceLocation:(id)a5 options:(id)a6 outError:(id *)a7
+- (BOOL)_savePlaceInferenceQueriesFromInferredMapItems:(id)items inferenceErrorCode:(int64_t)code referenceLocation:(id)location options:(id)options outError:(id *)error
 {
   v118[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v92 = a5;
-  v91 = a6;
+  itemsCopy = items;
+  locationCopy = location;
+  optionsCopy = options;
   v106 = 0;
   v107 = &v106;
   v108 = 0x3032000000;
   v109 = __Block_byref_object_copy__3;
   v110 = __Block_byref_object_dispose__3;
   v111 = 0;
-  v82 = v10;
-  v81 = a7;
-  if (![v10 count])
+  v82 = itemsCopy;
+  errorCopy = error;
+  if (![itemsCopy count])
   {
     v51 = dispatch_semaphore_create(0);
-    v52 = [objc_alloc(MEMORY[0x277D011D8]) initWithMapItem:0 finerGranularityMapItem:0 userType:0 userTypeSource:0 placeType:0 referenceLocation:v92 confidence:0.0 finerGranularityMapItemConfidence:0.0 loiIdentifier:0];
+    v52 = [objc_alloc(MEMORY[0x277D011D8]) initWithMapItem:0 finerGranularityMapItem:0 userType:0 userTypeSource:0 placeType:0 referenceLocation:locationCopy confidence:0.0 finerGranularityMapItemConfidence:0.0 loiIdentifier:0];
     v53 = objc_alloc(MEMORY[0x277D011E8]);
-    v54 = [MEMORY[0x277CCAD78] UUID];
-    v55 = [v92 date];
-    v56 = [v91 fidelityPolicy];
-    v57 = [v91 clientIdentifier];
-    v58 = [v53 initWithIdentifier:v54 date:v55 errorCode:a4 fidelityPolicyMask:v56 placeInference:v52 sourceIdentifier:v57];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    date = [locationCopy date];
+    fidelityPolicy = [optionsCopy fidelityPolicy];
+    clientIdentifier = [optionsCopy clientIdentifier];
+    v58 = [v53 initWithIdentifier:uUID date:date errorCode:code fidelityPolicyMask:fidelityPolicy placeInference:v52 sourceIdentifier:clientIdentifier];
 
-    v59 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
+    placeInferenceQueryStore = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
     v103[0] = MEMORY[0x277D85DD0];
     v103[1] = 3221225472;
     v103[2] = __128__RTPlaceInferenceManager__savePlaceInferenceQueriesFromInferredMapItems_inferenceErrorCode_referenceLocation_options_outError___block_invoke;
@@ -2438,7 +2438,7 @@ void __60__RTPlaceInferenceManager__placeInferencesForOptions_error___block_invo
     v105 = &v106;
     v60 = v51;
     v104 = v60;
-    [v59 storePlaceInferenceQuery:v58 handler:v103];
+    [placeInferenceQueryStore storePlaceInferenceQuery:v58 handler:v103];
 
     dsema = v60;
     v61 = [MEMORY[0x277CBEAA8] now];
@@ -2450,11 +2450,11 @@ void __60__RTPlaceInferenceManager__placeInferencesForOptions_error___block_invo
       v65 = v64;
       v66 = objc_opt_new();
       v67 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-      v68 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v69 = [v68 filteredArrayUsingPredicate:v67];
-      v70 = [v69 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v69 = [callStackSymbols filteredArrayUsingPredicate:v67];
+      firstObject = [v69 firstObject];
 
-      [v66 submitToCoreAnalytics:v70 type:1 duration:v65];
+      [v66 submitToCoreAnalytics:firstObject type:1 duration:v65];
       v71 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v71, OS_LOG_TYPE_FAULT))
       {
@@ -2498,9 +2498,9 @@ LABEL_37:
           }
         }
 
-        if (v81)
+        if (errorCopy)
         {
-          *v81 = v107[5];
+          *errorCopy = v107[5];
         }
 
         v50 = v107[5] == 0;
@@ -2522,7 +2522,7 @@ LABEL_37:
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v10;
+  obj = itemsCopy;
   v11 = [obj countByEnumeratingWithState:&v99 objects:v112 count:16];
   if (v11)
   {
@@ -2545,24 +2545,24 @@ LABEL_37:
 
         v14 = *(*(&v99 + 1) + 8 * v13);
         v15 = MEMORY[0x277D011D8];
-        v16 = [v14 mapItem];
-        v17 = [v15 placeInferencePlaceTypeFromMapItem:v16 userType:0 source:0x4000];
+        mapItem = [v14 mapItem];
+        v17 = [v15 placeInferencePlaceTypeFromMapItem:mapItem userType:0 source:0x4000];
 
         v94 = [(RTPlaceInferenceManager *)self _loiIdentifierForInferredMapItem:v14];
         v18 = objc_alloc(MEMORY[0x277D011D8]);
-        v19 = [v14 mapItem];
+        mapItem2 = [v14 mapItem];
         [v14 confidence];
-        v20 = [v18 initWithMapItem:v19 userType:0 userTypeSource:0 placeType:v17 referenceLocation:v92 confidence:v94 loiIdentifier:?];
+        v20 = [v18 initWithMapItem:mapItem2 userType:0 userTypeSource:0 placeType:v17 referenceLocation:locationCopy confidence:v94 loiIdentifier:?];
 
         v21 = objc_alloc(MEMORY[0x277D011E8]);
-        v22 = [MEMORY[0x277CCAD78] UUID];
-        v23 = [v92 date];
-        v24 = [v91 fidelityPolicy];
-        v25 = [v91 clientIdentifier];
-        v26 = [v21 initWithIdentifier:v22 date:v23 errorCode:a4 fidelityPolicyMask:v24 placeInference:v20 sourceIdentifier:v25];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        date2 = [locationCopy date];
+        fidelityPolicy2 = [optionsCopy fidelityPolicy];
+        clientIdentifier2 = [optionsCopy clientIdentifier];
+        v26 = [v21 initWithIdentifier:uUID2 date:date2 errorCode:code fidelityPolicyMask:fidelityPolicy2 placeInference:v20 sourceIdentifier:clientIdentifier2];
 
         v27 = dispatch_semaphore_create(0);
-        v28 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
+        placeInferenceQueryStore2 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
         v96[0] = MEMORY[0x277D85DD0];
         v96[1] = 3221225472;
         v96[2] = __128__RTPlaceInferenceManager__savePlaceInferenceQueriesFromInferredMapItems_inferenceErrorCode_referenceLocation_options_outError___block_invoke_234;
@@ -2570,7 +2570,7 @@ LABEL_37:
         v98 = &v106;
         v29 = v27;
         v97 = v29;
-        [v28 storePlaceInferenceQuery:v26 handler:v96];
+        [placeInferenceQueryStore2 storePlaceInferenceQuery:v26 handler:v96];
 
         dsema = v29;
         v30 = [MEMORY[0x277CBEAA8] now];
@@ -2585,11 +2585,11 @@ LABEL_37:
         v34 = v33;
         v35 = objc_opt_new();
         v36 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-        v37 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v38 = [v37 filteredArrayUsingPredicate:v36];
-        v39 = [v38 firstObject];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v38 = [callStackSymbols2 filteredArrayUsingPredicate:v36];
+        firstObject2 = [v38 firstObject];
 
-        [v35 submitToCoreAnalytics:v39 type:1 duration:v34];
+        [v35 submitToCoreAnalytics:firstObject2 type:1 duration:v34];
         v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
         {
@@ -2643,9 +2643,9 @@ LABEL_12:
         v49 = v107[5];
         if (v49)
         {
-          if (v81)
+          if (errorCopy)
           {
-            *v81 = v49;
+            *errorCopy = v49;
           }
 
           v50 = 0;
@@ -2673,9 +2673,9 @@ LABEL_12:
     v12 = 0;
   }
 
-  if (v81)
+  if (errorCopy)
   {
-    *v81 = 0;
+    *errorCopy = 0;
   }
 
   v50 = 1;
@@ -2699,20 +2699,20 @@ void __128__RTPlaceInferenceManager__savePlaceInferenceQueriesFromInferredMapIte
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_selectBestCandidateAndUpdateReferenceLocation:(id)a3
+- (id)_selectBestCandidateAndUpdateReferenceLocation:(id)location
 {
   v93[1] = *MEMORY[0x277D85DE8];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = a3;
+  obj = location;
   v68 = [obj countByEnumeratingWithState:&v81 objects:v92 count:16];
   if (!v68)
   {
     v61 = 0;
     v57 = 0;
-    v46 = obj;
+    mapItem = obj;
 LABEL_36:
 
     goto LABEL_38;
@@ -2752,8 +2752,8 @@ LABEL_36:
         }
       }
 
-      v8 = [v5 loiIdentifier];
-      v9 = v8 == 0;
+      loiIdentifier = [v5 loiIdentifier];
+      v9 = loiIdentifier == 0;
 
       if (!v9)
       {
@@ -2770,8 +2770,8 @@ LABEL_36:
         v79 = __Block_byref_object_dispose__3;
         v80 = 0;
         v10 = dispatch_semaphore_create(0);
-        v11 = [(RTPlaceInferenceManager *)self learnedLocationStore];
-        v12 = [v5 loiIdentifier];
+        learnedLocationStore = [(RTPlaceInferenceManager *)self learnedLocationStore];
+        loiIdentifier2 = [v5 loiIdentifier];
         v71[0] = MEMORY[0x277D85DD0];
         v71[1] = 3221225472;
         v71[2] = __74__RTPlaceInferenceManager__selectBestCandidateAndUpdateReferenceLocation___block_invoke;
@@ -2780,7 +2780,7 @@ LABEL_36:
         v74 = buf;
         v13 = v10;
         v72 = v13;
-        [v11 fetchLocationOfInterestWithIdentifier:v12 handler:v71];
+        [learnedLocationStore fetchLocationOfInterestWithIdentifier:loiIdentifier2 handler:v71];
 
         v14 = v13;
         v15 = [MEMORY[0x277CBEAA8] now];
@@ -2792,11 +2792,11 @@ LABEL_36:
           v19 = v18;
           v20 = objc_opt_new();
           v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-          v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v23 = [v22 filteredArrayUsingPredicate:v21];
-          v24 = [v23 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+          firstObject = [v23 firstObject];
 
-          [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+          [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
           v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
@@ -2835,8 +2835,8 @@ LABEL_18:
 
         if (*(*&buf[8] + 40))
         {
-          v32 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+          location = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
+          if (os_log_type_enabled(location, OS_LOG_TYPE_ERROR))
           {
             v33 = NSStringFromSelector(a2);
             v34 = *(*&buf[8] + 40);
@@ -2844,7 +2844,7 @@ LABEL_18:
             *&v85[4] = v33;
             v86 = 2112;
             v87 = v34;
-            _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "%@, error, %@", v85, 0x16u);
+            _os_log_error_impl(&dword_2304B3000, location, OS_LOG_TYPE_ERROR, "%@, error, %@", v85, 0x16u);
           }
 
 LABEL_28:
@@ -2852,17 +2852,17 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v32 = [v76[5] location];
-        v35 = [v32 location];
-        if ([v35 sourceAccuracy] != 2)
+        location = [v76[5] location];
+        v32Location = [location location];
+        if ([v32Location sourceAccuracy] != 2)
         {
 
           goto LABEL_28;
         }
 
-        v36 = [v76[5] location];
-        v37 = [v36 location];
-        [v37 horizontalUncertainty];
+        location2 = [v76[5] location];
+        v36Location = [location2 location];
+        [v36Location horizontalUncertainty];
         v39 = v38 > 40.0;
 
         if (v39 || ([v5 confidence], v40 <= v3))
@@ -2875,12 +2875,12 @@ LABEL_29:
         {
           v41 = v5;
 
-          v42 = [v76[5] location];
-          v43 = [v42 location];
+          location3 = [v76[5] location];
+          v42Location = [location3 location];
 
           [v41 confidence];
           v3 = v44;
-          v61 = v43;
+          v61 = v42Location;
         }
 
         _Block_object_dispose(&v75, 8);
@@ -2899,18 +2899,18 @@ LABEL_29:
   if (v69)
   {
     v45 = objc_alloc(MEMORY[0x277D011D8]);
-    v46 = [v69 mapItem];
-    v47 = [v69 finerGranularityMapItem];
-    v48 = [v69 userType];
-    v49 = [v69 userTypeSource];
-    v50 = [v69 placeType];
+    mapItem = [v69 mapItem];
+    finerGranularityMapItem = [v69 finerGranularityMapItem];
+    userType = [v69 userType];
+    userTypeSource = [v69 userTypeSource];
+    placeType = [v69 placeType];
     [v69 confidence];
     v52 = v51;
     [v69 finerGranularityMapItemConfidence];
     v54 = v53;
-    v55 = [v69 loiIdentifier];
-    v56 = [v69 preferredName];
-    v57 = [v45 initWithMapItem:v46 finerGranularityMapItem:v47 userType:v48 userTypeSource:v49 placeType:v50 referenceLocation:v61 confidence:v52 finerGranularityMapItemConfidence:v54 loiIdentifier:v55 preferredName:v56];
+    loiIdentifier3 = [v69 loiIdentifier];
+    preferredName = [v69 preferredName];
+    v57 = [v45 initWithMapItem:mapItem finerGranularityMapItem:finerGranularityMapItem userType:userType userTypeSource:userTypeSource placeType:placeType referenceLocation:v61 confidence:v52 finerGranularityMapItemConfidence:v54 loiIdentifier:loiIdentifier3 preferredName:preferredName];
 
     goto LABEL_36;
   }
@@ -2951,17 +2951,17 @@ void __74__RTPlaceInferenceManager__selectBestCandidateAndUpdateReferenceLocatio
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_estimatedLocationFromSortedLocations:(id)a3
+- (id)_estimatedLocationFromSortedLocations:(id)locations
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = v4;
+    v5 = locationsCopy;
     v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
@@ -3000,19 +3000,19 @@ void __74__RTPlaceInferenceManager__selectBestCandidateAndUpdateReferenceLocatio
       {
         v15 = v10 / v8;
 LABEL_19:
-        v16 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v18 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-        [v16 setObject:v18 forKey:@"kRTLocationSmootherAverageMovingSpeed"];
+        [dictionary setObject:v18 forKey:@"kRTLocationSmootherAverageMovingSpeed"];
 
         v19 = MEMORY[0x277CBEC38];
-        [v16 setObject:MEMORY[0x277CBEC38] forKey:@"kRTLocationSmootherEnableFallbackModel"];
-        [v16 setObject:v19 forKey:@"kRTLocationSmootherPreciseLocationOnlyMode"];
-        v20 = [(RTPlaceInferenceManager *)self locationManager];
-        v21 = [v20 locationSmoother];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"kRTLocationSmootherEnableFallbackModel"];
+        [dictionary setObject:v19 forKey:@"kRTLocationSmootherPreciseLocationOnlyMode"];
+        locationManager = [(RTPlaceInferenceManager *)self locationManager];
+        locationSmoother = [locationManager locationSmoother];
         v22 = [v5 objectAtIndexedSubscript:0];
-        v23 = [v22 timestamp];
-        [v23 timeIntervalSinceReferenceDate];
-        v24 = [v21 estimateLocationWithLocations:v5 timestamp:v16 parameters:0 meta:?];
+        timestamp = [v22 timestamp];
+        [timestamp timeIntervalSinceReferenceDate];
+        v24 = [locationSmoother estimateLocationWithLocations:v5 timestamp:dictionary parameters:0 meta:?];
 
         v17 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v24];
         goto LABEL_20;
@@ -3027,11 +3027,11 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  dictionary = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations.count", buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, dictionary, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations.count", buf, 2u);
   }
 
   v17 = 0;
@@ -3040,40 +3040,40 @@ LABEL_20:
   return v17;
 }
 
-- (id)_getFallbackMapItemProviderForOptions:(id)a3
+- (id)_getFallbackMapItemProviderForOptions:(id)options
 {
-  v4 = a3;
-  if (([v4 fidelityPolicy] & 4) != 0)
+  optionsCopy = options;
+  if (([optionsCopy fidelityPolicy] & 4) != 0)
   {
-    v6 = [(RTPlaceInferenceManager *)self _selectMapItemProvidersForOptions:v4 targetProvider:7];
+    v6 = [(RTPlaceInferenceManager *)self _selectMapItemProvidersForOptions:optionsCopy targetProvider:7];
     if ([v6 count])
     {
-      v5 = [v6 firstObject];
+      firstObject = [v6 firstObject];
     }
 
     else
     {
-      v5 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_selectMapItemProvidersForOptions:(id)a3 targetProvider:(unint64_t)a4
+- (id)_selectMapItemProvidersForOptions:(id)options targetProvider:(unint64_t)provider
 {
-  v6 = a3;
-  if (v6)
+  optionsCopy = options;
+  if (optionsCopy)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = [MEMORY[0x277CBEB58] set];
-    v9 = [(RTPlaceInferenceManager *)self defaultsManager];
-    v10 = [v9 objectForKey:@"RTDefaultsMapItemProviderDenyList"];
+    defaultsManager = [(RTPlaceInferenceManager *)self defaultsManager];
+    v10 = [defaultsManager objectForKey:@"RTDefaultsMapItemProviderDenyList"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -3081,8 +3081,8 @@ LABEL_20:
       [(RTPlaceInferenceManager *)self _addMapItemProviderFromArray:v10 toSet:v8];
     }
 
-    v11 = [MEMORY[0x277D0EB00] sharedConfiguration];
-    v12 = [v11 defaultForKey:@"RTDefaultsMapItemProviderDenyList" defaultValue:MEMORY[0x277CBEBF8]];
+    mEMORY[0x277D0EB00] = [MEMORY[0x277D0EB00] sharedConfiguration];
+    v12 = [mEMORY[0x277D0EB00] defaultForKey:@"RTDefaultsMapItemProviderDenyList" defaultValue:MEMORY[0x277CBEBF8]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -3090,9 +3090,9 @@ LABEL_20:
       [(RTPlaceInferenceManager *)self _addMapItemProviderFromArray:v12 toSet:v8];
     }
 
-    v13 = [v6 fidelityPolicy];
-    v14 = v13;
-    if ((v13 & 0x20) != 0 || (v13 & 0x40) != 0)
+    fidelityPolicy = [optionsCopy fidelityPolicy];
+    v14 = fidelityPolicy;
+    if ((fidelityPolicy & 0x20) != 0 || (fidelityPolicy & 0x40) != 0)
     {
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
@@ -3100,23 +3100,23 @@ LABEL_20:
 
       if ((v22 & 1) == 0)
       {
-        v23 = [(RTPlaceInferenceManager *)self mapItemProviders];
-        v24 = [v23 objectForKeyedSubscript:&unk_28459C570];
+        mapItemProviders = [(RTPlaceInferenceManager *)self mapItemProviders];
+        v24 = [mapItemProviders objectForKeyedSubscript:&unk_28459C570];
 
         if (v24)
         {
-          [v7 addObject:v24];
+          [array addObject:v24];
         }
       }
 
       goto LABEL_71;
     }
 
-    if (a4 > 3)
+    if (provider > 3)
     {
-      if (a4 != 4)
+      if (provider != 4)
       {
-        if (a4 != 8)
+        if (provider != 8)
         {
           goto LABEL_36;
         }
@@ -3127,7 +3127,7 @@ LABEL_20:
 
     else
     {
-      if (a4 && a4 != 3)
+      if (provider && provider != 3)
       {
         goto LABEL_36;
       }
@@ -3138,16 +3138,16 @@ LABEL_20:
 
       if ((v17 & 1) == 0)
       {
-        v18 = [(RTPlaceInferenceManager *)self mapItemProviders];
-        v19 = [v18 objectForKeyedSubscript:&unk_28459C5A0];
+        mapItemProviders2 = [(RTPlaceInferenceManager *)self mapItemProviders];
+        v19 = [mapItemProviders2 objectForKeyedSubscript:&unk_28459C5A0];
 
         if (v19)
         {
-          [v7 addObject:v19];
+          [array addObject:v19];
         }
       }
 
-      if (a4)
+      if (provider)
       {
         goto LABEL_36;
       }
@@ -3159,16 +3159,16 @@ LABEL_20:
 
     if ((v28 & 1) == 0)
     {
-      v29 = [(RTPlaceInferenceManager *)self mapItemProviders];
-      v30 = [v29 objectForKeyedSubscript:&unk_28459C5B8];
+      mapItemProviders3 = [(RTPlaceInferenceManager *)self mapItemProviders];
+      v30 = [mapItemProviders3 objectForKeyedSubscript:&unk_28459C5B8];
 
       if (v30)
       {
-        [v7 addObject:v30];
+        [array addObject:v30];
       }
     }
 
-    if (!a4)
+    if (!provider)
     {
 LABEL_32:
       v31 = objc_opt_class();
@@ -3177,12 +3177,12 @@ LABEL_32:
 
       if ((v33 & 1) == 0)
       {
-        v34 = [(RTPlaceInferenceManager *)self mapItemProviders];
-        v35 = [v34 objectForKeyedSubscript:&unk_28459C5D0];
+        mapItemProviders4 = [(RTPlaceInferenceManager *)self mapItemProviders];
+        v35 = [mapItemProviders4 objectForKeyedSubscript:&unk_28459C5D0];
 
         if (v35)
         {
-          [v7 addObject:v35];
+          [array addObject:v35];
         }
       }
     }
@@ -3190,7 +3190,7 @@ LABEL_32:
 LABEL_36:
     if ((v14 & 3) != 0)
     {
-      if (a4 <= 1)
+      if (provider <= 1)
       {
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
@@ -3198,17 +3198,17 @@ LABEL_36:
 
         if ((v38 & 1) == 0)
         {
-          v39 = [(RTPlaceInferenceManager *)self mapItemProviders];
-          v40 = [v39 objectForKeyedSubscript:&unk_28459C570];
+          mapItemProviders5 = [(RTPlaceInferenceManager *)self mapItemProviders];
+          v40 = [mapItemProviders5 objectForKeyedSubscript:&unk_28459C570];
 
           if (v40)
           {
-            [v7 addObject:v40];
+            [array addObject:v40];
           }
         }
       }
 
-      if ((a4 | 2) == 2)
+      if ((provider | 2) == 2)
       {
         v41 = objc_opt_class();
         v42 = NSStringFromClass(v41);
@@ -3216,12 +3216,12 @@ LABEL_36:
 
         if ((v43 & 1) == 0)
         {
-          v44 = [(RTPlaceInferenceManager *)self mapItemProviders];
-          v45 = [v44 objectForKeyedSubscript:&unk_28459C588];
+          mapItemProviders6 = [(RTPlaceInferenceManager *)self mapItemProviders];
+          v45 = [mapItemProviders6 objectForKeyedSubscript:&unk_28459C588];
 
           if (v45)
           {
-            [v7 addObject:v45];
+            [array addObject:v45];
           }
         }
       }
@@ -3229,14 +3229,14 @@ LABEL_36:
 
     if ((v14 & 2) != 0)
     {
-      if (a4 > 6)
+      if (provider > 6)
       {
-        if (a4 != 7)
+        if (provider != 7)
         {
-          if (a4 != 9)
+          if (provider != 9)
           {
 LABEL_70:
-            [RTPlaceInferenceManager sanityCheckMapItemProviders:v7];
+            [RTPlaceInferenceManager sanityCheckMapItemProviders:array];
 LABEL_71:
 
             goto LABEL_72;
@@ -3249,12 +3249,12 @@ LABEL_61:
 
           if ((v53 & 1) == 0)
           {
-            v54 = [(RTPlaceInferenceManager *)self mapItemProviders];
-            v55 = [v54 objectForKeyedSubscript:&unk_28459C618];
+            mapItemProviders7 = [(RTPlaceInferenceManager *)self mapItemProviders];
+            v55 = [mapItemProviders7 objectForKeyedSubscript:&unk_28459C618];
 
             if (v55)
             {
-              [v7 addObject:v55];
+              [array addObject:v55];
             }
           }
 
@@ -3268,19 +3268,19 @@ LABEL_66:
 
         if ((v58 & 1) == 0)
         {
-          v59 = [(RTPlaceInferenceManager *)self mapItemProviders];
-          v60 = [v59 objectForKeyedSubscript:&unk_28459C600];
+          mapItemProviders8 = [(RTPlaceInferenceManager *)self mapItemProviders];
+          v60 = [mapItemProviders8 objectForKeyedSubscript:&unk_28459C600];
 
           if (v60)
           {
-            [v7 addObject:v60];
+            [array addObject:v60];
           }
         }
 
         goto LABEL_70;
       }
 
-      if (a4 && a4 != 6)
+      if (provider && provider != 6)
       {
         goto LABEL_70;
       }
@@ -3291,24 +3291,24 @@ LABEL_66:
 
       if ((v48 & 1) == 0)
       {
-        v49 = [(RTPlaceInferenceManager *)self mapItemProviders];
-        v50 = [v49 objectForKeyedSubscript:&unk_28459C5E8];
+        mapItemProviders9 = [(RTPlaceInferenceManager *)self mapItemProviders];
+        v50 = [mapItemProviders9 objectForKeyedSubscript:&unk_28459C5E8];
 
         if (v50)
         {
-          [v7 addObject:v50];
+          [array addObject:v50];
         }
       }
     }
 
-    if (a4 == 9)
+    if (provider == 9)
     {
       goto LABEL_61;
     }
 
-    if (a4 != 7)
+    if (provider != 7)
     {
-      if (a4)
+      if (provider)
       {
         goto LABEL_70;
       }
@@ -3326,22 +3326,22 @@ LABEL_66:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v62, 2u);
   }
 
-  v7 = 0;
+  array = 0;
 LABEL_72:
 
-  return v7;
+  return array;
 }
 
-+ (void)sanityCheckMapItemProviders:(id)a3
++ (void)sanityCheckMapItemProviders:(id)providers
 {
-  v3 = a3;
-  if ([v3 count])
+  providersCopy = providers;
+  if ([providersCopy count])
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __55__RTPlaceInferenceManager_sanityCheckMapItemProviders___block_invoke;
     v4[3] = &unk_2788C4B80;
-    v5 = v3;
+    v5 = providersCopy;
     [v5 enumerateObjectsUsingBlock:v4];
   }
 }
@@ -3386,10 +3386,10 @@ void __55__RTPlaceInferenceManager_sanityCheckMapItemProviders___block_invoke(ui
   }
 }
 
-- (void)_addMapItemProviderFromArray:(id)a3 toSet:(id)a4
+- (void)_addMapItemProviderFromArray:(id)array toSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3397,8 +3397,8 @@ void __55__RTPlaceInferenceManager_sanityCheckMapItemProviders___block_invoke(ui
     v7[1] = 3221225472;
     v7[2] = __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_invoke;
     v7[3] = &unk_2788C4BA8;
-    v8 = v6;
-    [v5 enumerateObjectsUsingBlock:v7];
+    v8 = setCopy;
+    [arrayCopy enumerateObjectsUsingBlock:v7];
   }
 }
 
@@ -3412,10 +3412,10 @@ void __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_in
   }
 }
 
-- (BOOL)_learnedPlaceTypeForInferredMapItem:(id)a3 placeType:(unint64_t *)a4 placeTypeSource:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_learnedPlaceTypeForInferredMapItem:(id)item placeType:(unint64_t *)type placeTypeSource:(unint64_t *)source error:(id *)error
 {
-  v10 = a3;
-  if (!v10)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3424,7 +3424,7 @@ void __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_in
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3433,7 +3433,7 @@ void __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_in
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!type)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -3442,7 +3442,7 @@ void __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_in
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: placeType", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3450,11 +3450,11 @@ void __62__RTPlaceInferenceManager__addMapItemProviderFromArray_toSet___block_in
     v16 = @"placeType";
 LABEL_18:
     _RTErrorInvalidParameterCreate(v16);
-    *a6 = v11 = 0;
+    *error = v11 = 0;
     goto LABEL_24;
   }
 
-  if (!a5)
+  if (!source)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3463,7 +3463,7 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: placeTypeSource", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"placeTypeSource";
       goto LABEL_18;
@@ -3477,37 +3477,37 @@ LABEL_19:
   v22 = 0;
   *buf = 0;
   v21 = 0;
-  v11 = [(RTPlaceInferenceManager *)self _inferUserSpecificPlaceTypeForInferredMapItem:v10 userSpecificPlaceType:buf userSpecificPlaceTypeSource:&v22 error:&v21];
+  v11 = [(RTPlaceInferenceManager *)self _inferUserSpecificPlaceTypeForInferredMapItem:itemCopy userSpecificPlaceType:buf userSpecificPlaceTypeSource:&v22 error:&v21];
   v12 = v21;
   v13 = v12;
   if (v11)
   {
-    *a4 = [RTPlaceInferenceManager learnedPlaceTypeFromUserSpecificPlaceType:*buf];
+    *type = [RTPlaceInferenceManager learnedPlaceTypeFromUserSpecificPlaceType:*buf];
     v14 = [RTPlaceInferenceManager learnedPlaceTypeSourceFromUserSpecificPlaceTypeSource:v22];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       v19 = v12;
-      *a6 = v13;
+      *error = v13;
     }
 
     v14 = 0;
-    *a4 = 0;
+    *type = 0;
   }
 
-  *a5 = v14;
+  *source = v14;
 
 LABEL_24:
   return v11;
 }
 
-- (BOOL)_inferUserSpecificPlaceTypeForInferredMapItem:(id)a3 userSpecificPlaceType:(unint64_t *)a4 userSpecificPlaceTypeSource:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_inferUserSpecificPlaceTypeForInferredMapItem:(id)item userSpecificPlaceType:(unint64_t *)type userSpecificPlaceTypeSource:(unint64_t *)source error:(id *)error
 {
-  v10 = a3;
-  if (!v10)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3516,7 +3516,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3525,7 +3525,7 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!type)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3534,7 +3534,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: userSpecificPlaceType", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3542,11 +3542,11 @@ LABEL_24:
     v17 = @"userSpecificPlaceType";
 LABEL_18:
     _RTErrorInvalidParameterCreate(v17);
-    *a6 = v13 = 0;
+    *error = v13 = 0;
     goto LABEL_24;
   }
 
-  if (!a5)
+  if (!source)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -3555,7 +3555,7 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: userSpecificPlaceTypeSource", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v17 = @"userSpecificPlaceTypeSource";
       goto LABEL_18;
@@ -3568,47 +3568,47 @@ LABEL_19:
 
   v23 = 0;
   *buf = 0;
-  v11 = [(RTPlaceInferenceManager *)self learnedLocationStore];
-  v12 = [v10 mapItem];
+  learnedLocationStore = [(RTPlaceInferenceManager *)self learnedLocationStore];
+  mapItem = [itemCopy mapItem];
   v22 = 0;
-  v13 = [v11 placeTypeForMapItem:v12 placeType:buf placeTypeSource:&v23 error:&v22];
+  v13 = [learnedLocationStore placeTypeForMapItem:mapItem placeType:buf placeTypeSource:&v23 error:&v22];
   v14 = v22;
 
   if (v13)
   {
-    *a4 = [RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:*buf];
+    *type = [RTPlaceInferenceManager userSpecificPlaceTypeFromLearnedPlaceType:*buf];
     v15 = [RTPlaceInferenceManager userSpecificPlaceTypeSourceFromLearnedPlaceTypeSource:v23];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       v20 = v14;
-      *a6 = v14;
+      *error = v14;
     }
 
     v15 = 0;
-    *a4 = 0;
+    *type = 0;
   }
 
-  *a5 = v15;
+  *source = v15;
 
 LABEL_24:
   return v13;
 }
 
-- (id)_placeInferenceFromInferredMapItem:(id)a3 referenceLocation:(id)a4 error:(id *)a5
+- (id)_placeInferenceFromInferredMapItem:(id)item referenceLocation:(id)location error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  itemCopy = item;
+  locationCopy = location;
+  if (itemCopy)
   {
     v28 = 0;
     v29 = 0;
     v27 = 0;
-    v11 = [(RTPlaceInferenceManager *)self _inferUserSpecificPlaceTypeForInferredMapItem:v9 userSpecificPlaceType:&v29 userSpecificPlaceTypeSource:&v28 error:&v27];
+    v11 = [(RTPlaceInferenceManager *)self _inferUserSpecificPlaceTypeForInferredMapItem:itemCopy userSpecificPlaceType:&v29 userSpecificPlaceTypeSource:&v28 error:&v27];
     v12 = v27;
     if (!v11)
     {
@@ -3619,33 +3619,33 @@ LABEL_24:
         *buf = 138412803;
         v31 = v26;
         v32 = 2117;
-        v33 = v9;
+        v33 = itemCopy;
         v34 = 2112;
         v35 = v12;
         _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "%@, failed to infer user specific place type for inferredMapItem, %{sensitive}@ error, %@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v14 = v12;
-        *a5 = v12;
+        *error = v12;
       }
 
       v28 = 0;
       v29 = 0;
     }
 
-    v15 = [(RTPlaceInferenceManager *)self _loiIdentifierForInferredMapItem:v9];
+    v15 = [(RTPlaceInferenceManager *)self _loiIdentifierForInferredMapItem:itemCopy];
     v16 = MEMORY[0x277D011D8];
-    v17 = [v9 mapItem];
-    v18 = [v16 placeInferencePlaceTypeFromMapItem:v17 userType:0 source:{objc_msgSend(v9, "source")}];
+    mapItem = [itemCopy mapItem];
+    v18 = [v16 placeInferencePlaceTypeFromMapItem:mapItem userType:0 source:{objc_msgSend(itemCopy, "source")}];
 
     v19 = objc_alloc(MEMORY[0x277D011D8]);
-    v20 = [v9 mapItem];
+    mapItem2 = [itemCopy mapItem];
     v22 = v28;
     v21 = v29;
-    [v9 confidence];
-    v23 = [v19 initWithMapItem:v20 userType:v21 userTypeSource:v22 placeType:v18 referenceLocation:v10 confidence:v15 loiIdentifier:?];
+    [itemCopy confidence];
+    v23 = [v19 initWithMapItem:mapItem2 userType:v21 userTypeSource:v22 placeType:v18 referenceLocation:locationCopy confidence:v15 loiIdentifier:?];
   }
 
   else
@@ -3663,10 +3663,10 @@ LABEL_24:
   return v23;
 }
 
-- (id)_loiIdentifierForInferredMapItem:(id)a3
+- (id)_loiIdentifierForInferredMapItem:(id)item
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -3680,8 +3680,8 @@ LABEL_24:
   v42 = __Block_byref_object_dispose__3;
   v43 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTPlaceInferenceManager *)self learnedLocationStore];
-  v8 = [v5 mapItem];
+  learnedLocationStore = [(RTPlaceInferenceManager *)self learnedLocationStore];
+  mapItem = [itemCopy mapItem];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invoke;
@@ -3690,7 +3690,7 @@ LABEL_24:
   v37 = &v38;
   v9 = v6;
   v35 = v9;
-  [v7 fetchLocationOfInterestWithMapItem:v8 handler:v34];
+  [learnedLocationStore fetchLocationOfInterestWithMapItem:mapItem handler:v34];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -3702,11 +3702,11 @@ LABEL_24:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -3795,16 +3795,16 @@ void __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)sendPlaceInferenceMetrics:(id)a3 inferredMapItems:(id)a4 fusedMapItems:(id)a5 fallbackInferredMapItems:(id)a6 finalPlaceInferences:(id)a7 referenceLocation:(id)a8
+- (void)sendPlaceInferenceMetrics:(id)metrics inferredMapItems:(id)items fusedMapItems:(id)mapItems fallbackInferredMapItems:(id)inferredMapItems finalPlaceInferences:(id)inferences referenceLocation:(id)location
 {
   v146 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v83 = a5;
-  v15 = a6;
-  v85 = a7;
-  v84 = a8;
-  v79 = [v15 count];
+  metricsCopy = metrics;
+  itemsCopy = items;
+  mapItemsCopy = mapItems;
+  inferredMapItemsCopy = inferredMapItems;
+  inferencesCopy = inferences;
+  locationCopy = location;
+  v79 = [inferredMapItemsCopy count];
   v135 = 0;
   v136 = &v135;
   v137 = 0x2020000000;
@@ -3853,9 +3853,9 @@ void __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invo
   v102[9] = &v103;
   v102[10] = &v119;
   v102[11] = &v127;
-  [v14 enumerateObjectsUsingBlock:v102];
-  v82 = v14;
-  v80 = [v83 count];
+  [itemsCopy enumerateObjectsUsingBlock:v102];
+  v82 = itemsCopy;
+  v80 = [mapItemsCopy count];
   v98 = 0;
   v99 = &v98;
   v100 = 0x2020000000;
@@ -3865,7 +3865,7 @@ void __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invo
   v97[2] = __148__RTPlaceInferenceManager_sendPlaceInferenceMetrics_inferredMapItems_fusedMapItems_fallbackInferredMapItems_finalPlaceInferences_referenceLocation___block_invoke_2;
   v97[3] = &unk_2788C4BF8;
   v97[4] = &v98;
-  [v83 enumerateObjectsUsingBlock:v97];
+  [mapItemsCopy enumerateObjectsUsingBlock:v97];
   if (self->_visitEntryTime)
   {
     v16 = [MEMORY[0x277CBEAA8] now];
@@ -3897,7 +3897,7 @@ void __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invo
   v95 = __Block_byref_object_dispose__3;
   v96 = 0;
   v21 = dispatch_semaphore_create(0);
-  v22 = [(RTPlaceInferenceManager *)self visitStore];
+  visitStore = [(RTPlaceInferenceManager *)self visitStore];
   v23 = objc_alloc(MEMORY[0x277D01340]);
   v24 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
   v25 = [MEMORY[0x277CBEB98] setWithObject:&unk_28459C648];
@@ -3910,7 +3910,7 @@ void __60__RTPlaceInferenceManager__loiIdentifierForInferredMapItem___block_invo
   v90 = &v91;
   v27 = v21;
   v88 = v27;
-  [v22 fetchVisitsWithOptions:v26 handler:v87];
+  [visitStore fetchVisitsWithOptions:v26 handler:v87];
 
   v28 = v27;
   v29 = [MEMORY[0x277CBEAA8] now];
@@ -3929,11 +3929,11 @@ LABEL_12:
   v32 = v31;
   v76 = objc_opt_new();
   v77 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_3];
-  v33 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v34 = [v33 filteredArrayUsingPredicate:v77];
-  v35 = [v34 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v34 = [callStackSymbols filteredArrayUsingPredicate:v77];
+  firstObject = [v34 firstObject];
 
-  [v76 submitToCoreAnalytics:v35 type:1 duration:v32];
+  [v76 submitToCoreAnalytics:firstObject type:1 duration:v32];
   v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
   {
@@ -3965,13 +3965,13 @@ LABEL_13:
     objc_storeStrong(v92 + 5, v39);
   }
 
-  v44 = [*(*(&buf + 1) + 40) type];
-  v20 = v44 == 1;
-  if (v44 == 1)
+  type = [*(*(&buf + 1) + 40) type];
+  v20 = type == 1;
+  if (type == 1)
   {
     v45 = [MEMORY[0x277CBEAA8] now];
-    v46 = [*(*(&buf + 1) + 40) entry];
-    [v45 timeIntervalSinceDate:v46];
+    entry = [*(*(&buf + 1) + 40) entry];
+    [v45 timeIntervalSinceDate:entry];
     v48 = v47;
 
     v19 = vcvtad_u64_f64(v48);
@@ -3997,57 +3997,57 @@ LABEL_19:
     v50 = v19;
   }
 
-  [v13 setPlaceInferences:v85];
-  [v13 setTopPersonalizedLabelsInferredMapItems:v104[5] topBluePOIInferredMapItem:v110[5]];
+  [metricsCopy setPlaceInferences:inferencesCopy];
+  [metricsCopy setTopPersonalizedLabelsInferredMapItems:v104[5] topBluePOIInferredMapItem:v110[5]];
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v99 + 6)];
-  [v13 setObject:v51 forKey:@"afterFusionCount"];
+  [metricsCopy setObject:v51 forKey:@"afterFusionCount"];
 
-  v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
-  [v13 setObject:v52 forKey:@"beforeFusionCount"];
+  v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(itemsCopy, "count")}];
+  [metricsCopy setObject:v52 forKey:@"beforeFusionCount"];
 
   v53 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v50];
-  [v13 setObject:v53 forKey:@"callEntryLatency"];
+  [metricsCopy setObject:v53 forKey:@"callEntryLatency"];
 
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_clientMappingIndex];
-  [v13 setObject:v54 forKey:@"clientIdMappingIndex"];
+  [metricsCopy setObject:v54 forKey:@"clientIdMappingIndex"];
 
   v55 = [MEMORY[0x277CCABB0] numberWithInt:v110[5] != 0];
-  [v13 setObject:v55 forKey:@"hasBluePOIResults"];
+  [metricsCopy setObject:v55 forKey:@"hasBluePOIResults"];
 
   v56 = [MEMORY[0x277CCABB0] numberWithBool:*(v120 + 24)];
-  [v13 setObject:v56 forKey:@"hasConfidentLocalHints"];
+  [metricsCopy setObject:v56 forKey:@"hasConfidentLocalHints"];
 
   v57 = [MEMORY[0x277CCABB0] numberWithBool:*(v136 + 24)];
-  [v13 setObject:v57 forKey:@"hasCurrentPOIResult"];
+  [metricsCopy setObject:v57 forKey:@"hasCurrentPOIResult"];
 
   v58 = [MEMORY[0x277CCABB0] numberWithBool:*(v132 + 24)];
-  [v13 setObject:v58 forKey:@"hasLearnedPlaceInResults"];
+  [metricsCopy setObject:v58 forKey:@"hasLearnedPlaceInResults"];
 
   v59 = [MEMORY[0x277CCABB0] numberWithBool:*(v128 + 24)];
-  [v13 setObject:v59 forKey:@"hasMapSupportResults"];
+  [metricsCopy setObject:v59 forKey:@"hasMapSupportResults"];
 
   v60 = [MEMORY[0x277CCABB0] numberWithBool:*(v124 + 24)];
-  [v13 setObject:v60 forKey:@"hasRevGeocodeInResults"];
+  [metricsCopy setObject:v60 forKey:@"hasRevGeocodeInResults"];
 
   v61 = [MEMORY[0x277CCABB0] numberWithBool:v80 != 0];
-  [v13 setObject:v61 forKey:@"hasFusedResults"];
+  [metricsCopy setObject:v61 forKey:@"hasFusedResults"];
 
   v62 = [MEMORY[0x277CCABB0] numberWithBool:v79 != 0];
-  [v13 setObject:v62 forKey:@"hasFallbackResults"];
+  [metricsCopy setObject:v62 forKey:@"hasFallbackResults"];
 
   v63 = [MEMORY[0x277CCABB0] numberWithBool:v49];
-  [v13 setObject:v63 forKey:@"isInVisit"];
+  [metricsCopy setObject:v63 forKey:@"isInVisit"];
 
   v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v116 + 6)];
-  [v13 setObject:v64 forKey:@"sourceCount"];
+  [metricsCopy setObject:v64 forKey:@"sourceCount"];
 
-  if (v84 && [v85 count] && (objc_msgSend(v85, "objectAtIndexedSubscript:", 0), v65 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "referenceLocation"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v66 == 0, v66, v65, !v67))
+  if (locationCopy && [inferencesCopy count] && (objc_msgSend(inferencesCopy, "objectAtIndexedSubscript:", 0), v65 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v65, "referenceLocation"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v66 == 0, v66, v65, !v67))
   {
-    v68 = [(RTPlaceInferenceManager *)self distanceCalculator];
-    v69 = [v85 objectAtIndexedSubscript:0];
-    v70 = [v69 referenceLocation];
+    distanceCalculator = [(RTPlaceInferenceManager *)self distanceCalculator];
+    v69 = [inferencesCopy objectAtIndexedSubscript:0];
+    referenceLocation = [v69 referenceLocation];
     v86 = 0;
-    [v68 distanceFromLocation:v84 toLocation:v70 error:&v86];
+    [distanceCalculator distanceFromLocation:locationCopy toLocation:referenceLocation error:&v86];
     v72 = v71;
 
     v73 = v72;
@@ -4059,16 +4059,16 @@ LABEL_19:
   }
 
   v74 = [MEMORY[0x277CCABB0] numberWithInteger:v73];
-  [v13 setObject:v74 forKey:@"distanceBetweenReferenceLocationAndUpdatedReferenceLocation"];
+  [metricsCopy setObject:v74 forKey:@"distanceBetweenReferenceLocationAndUpdatedReferenceLocation"];
 
-  [v13 submitMetrics];
+  [metricsCopy submitMetrics];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v75 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v13;
+      *(&buf + 4) = metricsCopy;
       _os_log_impl(&dword_2304B3000, v75, OS_LOG_TYPE_INFO, "metrics, %@", &buf, 0xCu);
     }
   }
@@ -4174,37 +4174,37 @@ void __148__RTPlaceInferenceManager_sendPlaceInferenceMetrics_inferredMapItems_f
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_onVisitManagerVisitIncidentNotification:(id)a3
+- (void)_onVisitManagerVisitIncidentNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [v11 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v5 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
-  v7 = v11;
+  v7 = notificationCopy;
   if (v6)
   {
-    v8 = [v11 visitIncident];
-    if ([v8 type] == 1)
+    visitIncident = [notificationCopy visitIncident];
+    if ([visitIncident type] == 1)
     {
-      v9 = [v8 entry];
+      entry = [visitIncident entry];
     }
 
     else
     {
-      if ([v8 type] != 3)
+      if ([visitIncident type] != 3)
       {
 LABEL_7:
 
-        v7 = v11;
+        v7 = notificationCopy;
         goto LABEL_8;
       }
 
-      v9 = 0;
+      entry = 0;
     }
 
     visitEntryTime = self->_visitEntryTime;
-    self->_visitEntryTime = v9;
+    self->_visitEntryTime = entry;
 
     goto LABEL_7;
   }
@@ -4212,60 +4212,60 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)onVisitManagerVisitIncidentNotification:(id)a3
+- (void)onVisitManagerVisitIncidentNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__RTPlaceInferenceManager_onVisitManagerVisitIncidentNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onPointOfInterestVisitNotification:(id)a3
+- (void)_onPointOfInterestVisitNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [v11 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v5 = +[(RTNotification *)RTPointOfInterestMonitorVisitNotification];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
-  v7 = v11;
+  v7 = notificationCopy;
   if (v6)
   {
-    v8 = [v11 visit];
-    if ([v8 type] == 1)
+    visit = [notificationCopy visit];
+    if ([visit type] == 1)
     {
-      v9 = [v8 entry];
+      entry = [visit entry];
       visitEntryTime = self->_visitEntryTime;
-      self->_visitEntryTime = v9;
+      self->_visitEntryTime = entry;
     }
 
-    v7 = v11;
+    v7 = notificationCopy;
   }
 }
 
-- (void)onPointOfInterestVisitNotification:(id)a3
+- (void)onPointOfInterestVisitNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__RTPlaceInferenceManager_onPointOfInterestVisitNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
@@ -4275,68 +4275,68 @@ LABEL_8:
       v9 = 138412546;
       v10 = v7;
       v11 = 2112;
-      v12 = v5;
+      v12 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", &v9, 0x16u);
     }
   }
 
-  v8 = [(RTPlaceInferenceManager *)self dailyMetrics];
-  [v8 submit];
+  dailyMetrics = [(RTPlaceInferenceManager *)self dailyMetrics];
+  [dailyMetrics submit];
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTPlaceInferenceManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (unint64_t)_getMappingIndexForClientIdentifier:(id)a3
+- (unint64_t)_getMappingIndexForClientIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@"CoreRoutine"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasSuffix:@"CoreRoutine"])
   {
     v4 = 1;
   }
 
-  else if ([v3 hasSuffix:@"DoNotDisturb.bundle"])
+  else if ([identifierCopy hasSuffix:@"DoNotDisturb.bundle"])
   {
     v4 = 3;
   }
 
-  else if ([v3 hasSuffix:@"Emergency SOS.bundle"])
+  else if ([identifierCopy hasSuffix:@"Emergency SOS.bundle"])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasSuffix:@"findmy"])
+  else if ([identifierCopy hasSuffix:@"findmy"])
   {
     v4 = 5;
   }
 
-  else if ([v3 hasSuffix:@"GeocorrectionDLocationBundle.bundle"])
+  else if ([identifierCopy hasSuffix:@"GeocorrectionDLocationBundle.bundle"])
   {
     v4 = 7;
   }
 
-  else if ([v3 hasSuffix:@"HomeKitDaemon.framework"])
+  else if ([identifierCopy hasSuffix:@"HomeKitDaemon.framework"])
   {
     v4 = 6;
   }
 
-  else if ([v3 hasSuffix:@"CoreParsec.framework"])
+  else if ([identifierCopy hasSuffix:@"CoreParsec.framework"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasSuffix:@"VoiceMemos"])
+  else if ([identifierCopy hasSuffix:@"VoiceMemos"])
   {
     v4 = 8;
   }
@@ -4349,50 +4349,37 @@ LABEL_8:
   return v4;
 }
 
-+ (unint64_t)learnedPlaceTypeFromUserSpecificPlaceType:(unint64_t)a3
++ (unint64_t)learnedPlaceTypeFromUserSpecificPlaceType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (unint64_t)userSpecificPlaceTypeFromLearnedPlaceType:(unint64_t)a3
++ (unint64_t)userSpecificPlaceTypeFromLearnedPlaceType:(unint64_t)type
 {
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (unint64_t)userSpecificPlaceTypeFromLocationOfInterestType:(int64_t)a3
++ (unint64_t)userSpecificPlaceTypeFromLocationOfInterestType:(int64_t)type
 {
-  if ((a3 + 1) < 5)
+  if ((type + 1) < 5)
   {
-    return a3 + 1;
-  }
-
-  else
-  {
-    return 0;
-  }
-}
-
-+ (unint64_t)learnedPlaceTypeFromLocationOfInterestType:(int64_t)a3
-{
-  if ((a3 + 1) < 5)
-  {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -4401,44 +4388,57 @@ LABEL_8:
   }
 }
 
-- (void)_performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
++ (unint64_t)learnedPlaceTypeFromLocationOfInterestType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 > 1)
+  if ((type + 1) < 5)
   {
-    (*(v9 + 2))(v9, 0);
+    return type + 1;
   }
 
   else
   {
-    v11 = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
+    return 0;
+  }
+}
+
+- (void)_performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
+{
+  dateCopy = date;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (type > 1)
+  {
+    (*(completionCopy + 2))(completionCopy, 0);
+  }
+
+  else
+  {
+    placeInferenceQueryStore = [(RTPlaceInferenceManager *)self placeInferenceQueryStore];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__RTPlaceInferenceManager__performPurgeOfType_referenceDate_completion___block_invoke;
     v12[3] = &unk_2788C48C0;
     v13 = v10;
-    [v11 purgePlaceInferenceQueriesPredating:v8 handler:v12];
+    [placeInferenceQueryStore purgePlaceInferenceQueriesPredating:dateCopy handler:v12];
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__RTPlaceInferenceManager_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 @end

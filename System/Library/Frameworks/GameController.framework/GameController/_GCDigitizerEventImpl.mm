@@ -1,29 +1,29 @@
 @interface _GCDigitizerEventImpl
-- (_GCDigitizerEventImpl)initWithDigitizerEvent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_GCDigitizerEventImpl)initWithDigitizerEvent:(id)event;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _GCDigitizerEventImpl
 
-- (_GCDigitizerEventImpl)initWithDigitizerEvent:(id)a3
+- (_GCDigitizerEventImpl)initWithDigitizerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = _GCDigitizerEventImpl;
   v5 = [(_GCDigitizerEventImpl *)&v9 init];
   if (v5)
   {
-    v5->timestamp = [v4 timestamp];
-    [v4 x];
+    v5->timestamp = [eventCopy timestamp];
+    [eventCopy x];
     v5->x = v6;
-    [v4 y];
+    [eventCopy y];
     v5->y = v7;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

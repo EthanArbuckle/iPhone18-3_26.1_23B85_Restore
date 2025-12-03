@@ -1,18 +1,18 @@
 @interface WFAutomationTriggerDataSource
-- (WFAutomationTriggerDataSource)initWithDatabase:(id)a3;
+- (WFAutomationTriggerDataSource)initWithDatabase:(id)database;
 - (WFAutomationTriggerDataSourceDelegate)delegate;
 - (WFDatabaseResult)personalAutomationsDatabaseResult;
 - (id)allConfiguredTriggers;
 - (id)allHomeTriggers;
-- (id)workflowForIdentifier:(id)a3;
-- (void)databaseResultDidChange:(id)a3;
+- (id)workflowForIdentifier:(id)identifier;
+- (void)databaseResultDidChange:(id)change;
 - (void)dealloc;
-- (void)home:(id)a3 didAddTrigger:(id)a4;
-- (void)home:(id)a3 didRemoveTrigger:(id)a4;
-- (void)home:(id)a3 didUpdateNameForTrigger:(id)a4;
-- (void)home:(id)a3 didUpdateTrigger:(id)a4;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)home:(id)home didAddTrigger:(id)trigger;
+- (void)home:(id)home didRemoveTrigger:(id)trigger;
+- (void)home:(id)home didUpdateNameForTrigger:(id)trigger;
+- (void)home:(id)home didUpdateTrigger:(id)trigger;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)prewarm;
 @end
 
@@ -20,13 +20,13 @@
 
 - (void)prewarm
 {
-  v3 = [(WFAutomationTriggerDataSource *)self queue];
+  queue = [(WFAutomationTriggerDataSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__WFAutomationTriggerDataSource_prewarm__block_invoke;
   block[3] = &unk_279EE8A78;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
@@ -42,13 +42,13 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
 
 - (id)allConfiguredTriggers
 {
-  v3 = [(WFAutomationTriggerDataSource *)self personalAutomationsDatabaseResult];
-  [v3 reset];
+  personalAutomationsDatabaseResult = [(WFAutomationTriggerDataSource *)self personalAutomationsDatabaseResult];
+  [personalAutomationsDatabaseResult reset];
 
-  v4 = [(WFAutomationTriggerDataSource *)self personalAutomationsDatabaseResult];
-  v5 = [v4 descriptors];
+  personalAutomationsDatabaseResult2 = [(WFAutomationTriggerDataSource *)self personalAutomationsDatabaseResult];
+  descriptors = [personalAutomationsDatabaseResult2 descriptors];
 
-  return v5;
+  return descriptors;
 }
 
 - (WFDatabaseResult)personalAutomationsDatabaseResult
@@ -56,10 +56,10 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
   personalAutomationsDatabaseResult = self->_personalAutomationsDatabaseResult;
   if (!personalAutomationsDatabaseResult)
   {
-    v4 = [(WFAutomationTriggerDataSource *)self database];
-    v5 = [v4 allConfiguredTriggers];
+    database = [(WFAutomationTriggerDataSource *)self database];
+    allConfiguredTriggers = [database allConfiguredTriggers];
     v6 = self->_personalAutomationsDatabaseResult;
-    self->_personalAutomationsDatabaseResult = v5;
+    self->_personalAutomationsDatabaseResult = allConfiguredTriggers;
 
     [(WFDatabaseResult *)self->_personalAutomationsDatabaseResult registerObserver:self];
     personalAutomationsDatabaseResult = self->_personalAutomationsDatabaseResult;
@@ -77,62 +77,62 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(WFAutomationTriggerDataSource *)self homeManager];
-  [v3 removeEventObserver:self];
+  homeManager = [(WFAutomationTriggerDataSource *)self homeManager];
+  [homeManager removeEventObserver:self];
 
   v4.receiver = self;
   v4.super_class = WFAutomationTriggerDataSource;
   [(WFAutomationTriggerDataSource *)&v4 dealloc];
 }
 
-- (void)databaseResultDidChange:(id)a3
+- (void)databaseResultDidChange:(id)change
 {
-  v4 = [(WFAutomationTriggerDataSource *)self delegate];
-  [v4 dataSourceDidUpdateTriggers:self];
+  delegate = [(WFAutomationTriggerDataSource *)self delegate];
+  [delegate dataSourceDidUpdateTriggers:self];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = [(WFAutomationTriggerDataSource *)self delegate];
-  [v4 dataSourceDidUpdateTriggers:self];
+  delegate = [(WFAutomationTriggerDataSource *)self delegate];
+  [delegate dataSourceDidUpdateTriggers:self];
 }
 
-- (void)home:(id)a3 didUpdateTrigger:(id)a4
+- (void)home:(id)home didUpdateTrigger:(id)trigger
 {
-  v5 = [(WFAutomationTriggerDataSource *)self delegate:a3];
+  v5 = [(WFAutomationTriggerDataSource *)self delegate:home];
   [v5 dataSourceDidUpdateTriggers:self];
 }
 
-- (void)home:(id)a3 didUpdateNameForTrigger:(id)a4
+- (void)home:(id)home didUpdateNameForTrigger:(id)trigger
 {
-  v5 = [(WFAutomationTriggerDataSource *)self delegate:a3];
+  v5 = [(WFAutomationTriggerDataSource *)self delegate:home];
   [v5 dataSourceDidUpdateTriggers:self];
 }
 
-- (void)home:(id)a3 didRemoveTrigger:(id)a4
+- (void)home:(id)home didRemoveTrigger:(id)trigger
 {
-  v5 = [(WFAutomationTriggerDataSource *)self delegate:a3];
+  v5 = [(WFAutomationTriggerDataSource *)self delegate:home];
   [v5 dataSourceDidUpdateTriggers:self];
 }
 
-- (void)home:(id)a3 didAddTrigger:(id)a4
+- (void)home:(id)home didAddTrigger:(id)trigger
 {
-  v5 = [(WFAutomationTriggerDataSource *)self delegate:a3];
+  v5 = [(WFAutomationTriggerDataSource *)self delegate:home];
   [v5 dataSourceDidUpdateTriggers:self];
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = [(WFAutomationTriggerDataSource *)self delegate];
-  [v4 dataSourceDidUpdateTriggers:self];
+  delegate = [(WFAutomationTriggerDataSource *)self delegate];
+  [delegate dataSourceDidUpdateTriggers:self];
 }
 
 - (id)allHomeTriggers
 {
   v46 = *MEMORY[0x277D85DE8];
-  v2 = [(WFAutomationTriggerDataSource *)self homeManager];
-  v3 = [v2 homes];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_14503];
+  homeManager = [(WFAutomationTriggerDataSource *)self homeManager];
+  homes = [homeManager homes];
+  v4 = [homes sortedArrayUsingComparator:&__block_literal_global_14503];
 
   v22 = objc_opt_new();
   HomeLibrary();
@@ -161,8 +161,8 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v5 = [v27 triggers];
-        v6 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        triggers = [v27 triggers];
+        v6 = [triggers countByEnumeratingWithState:&v29 objects:v41 count:16];
         if (v6)
         {
           v7 = *v30;
@@ -172,7 +172,7 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
             {
               if (*v30 != v7)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(triggers);
               }
 
               v9 = *(*(&v29 + 1) + 8 * j);
@@ -181,8 +181,8 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke(uint64_t a1)
               {
                 if (([v10 hf_shouldDisplayTrigger]& 1) != 0)
                 {
-                  v11 = [v10 hf_triggerType];
-                  if (v11 != 7 && v11 != 0)
+                  hf_triggerType = [v10 hf_triggerType];
+                  if (hf_triggerType != 7 && hf_triggerType != 0)
                   {
                     v37 = 0;
                     v38 = &v37;
@@ -252,7 +252,7 @@ LABEL_30:
 LABEL_31:
             }
 
-            v6 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+            v6 = [triggers countByEnumeratingWithState:&v29 objects:v41 count:16];
           }
 
           while (v6);
@@ -305,51 +305,51 @@ uint64_t __48__WFAutomationTriggerDataSource_allHomeTriggers__block_invoke(uint6
   return v7;
 }
 
-- (id)workflowForIdentifier:(id)a3
+- (id)workflowForIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_cacheLock);
-    v5 = [(WFAutomationTriggerDataSource *)self workflowCache];
-    v6 = [v5 objectForKey:v4];
+    workflowCache = [(WFAutomationTriggerDataSource *)self workflowCache];
+    v6 = [workflowCache objectForKey:identifierCopy];
 
     if (v6)
     {
-      v7 = [(WFAutomationTriggerDataSource *)self workflowCache];
-      v8 = [v7 objectForKey:v4];
+      workflowCache2 = [(WFAutomationTriggerDataSource *)self workflowCache];
+      v8 = [workflowCache2 objectForKey:identifierCopy];
     }
 
     else
     {
-      v9 = [(WFAutomationTriggerDataSource *)self database];
-      v7 = [v9 referenceForWorkflowID:v4];
+      database = [(WFAutomationTriggerDataSource *)self database];
+      workflowCache2 = [database referenceForWorkflowID:identifierCopy];
 
       v10 = MEMORY[0x277D7CA60];
-      v11 = [(WFAutomationTriggerDataSource *)self database];
+      database2 = [(WFAutomationTriggerDataSource *)self database];
       v15 = 0;
-      v8 = [v10 workflowWithReference:v7 database:v11 error:&v15];
+      v8 = [v10 workflowWithReference:workflowCache2 database:database2 error:&v15];
       v12 = v15;
 
       if (v8)
       {
-        v13 = [(WFAutomationTriggerDataSource *)self workflowCache];
-        [v13 setObject:v8 forKey:v4];
+        workflowCache3 = [(WFAutomationTriggerDataSource *)self workflowCache];
+        [workflowCache3 setObject:v8 forKey:identifierCopy];
       }
 
       else
       {
-        v13 = getWFTriggersLogObject();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        workflowCache3 = getWFTriggersLogObject();
+        if (os_log_type_enabled(workflowCache3, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315650;
           v17 = "[WFAutomationTriggerDataSource workflowForIdentifier:]";
           v18 = 2112;
-          v19 = v4;
+          v19 = identifierCopy;
           v20 = 2114;
           v21 = v12;
-          _os_log_impl(&dword_274719000, v13, OS_LOG_TYPE_ERROR, "%s Failed to fetch workflow (%@): %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_274719000, workflowCache3, OS_LOG_TYPE_ERROR, "%s Failed to fetch workflow (%@): %{public}@", buf, 0x20u);
         }
       }
     }
@@ -372,19 +372,19 @@ void __40__WFAutomationTriggerDataSource_prewarm__block_invoke_2(uint64_t a1, vo
   v3 = [v2 workflowForIdentifier:v4];
 }
 
-- (WFAutomationTriggerDataSource)initWithDatabase:(id)a3
+- (WFAutomationTriggerDataSource)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v18.receiver = self;
   v18.super_class = WFAutomationTriggerDataSource;
   v6 = [(WFAutomationTriggerDataSource *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
-    v8 = [MEMORY[0x277D7C4F0] sharedManager];
+    objc_storeStrong(&v6->_database, database);
+    mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
     homeManager = v7->_homeManager;
-    v7->_homeManager = v8;
+    v7->_homeManager = mEMORY[0x277D7C4F0];
 
     [(WFHomeManager *)v7->_homeManager addEventObserver:v7];
     v7->_cacheLock._os_unfair_lock_opaque = 0;

@@ -1,18 +1,18 @@
 @interface DYFunctionPlayer
-+ (CGSize)shrinkSourceSize:(CGSize)result toDestSize:(CGSize)a4;
++ (CGSize)shrinkSourceSize:(CGSize)result toDestSize:(CGSize)size;
 - (DYFunctionPlayer)init;
-- (DYFunctionPlayer)initWithCaptureStore:(id)a3;
+- (DYFunctionPlayer)initWithCaptureStore:(id)store;
 - (id).cxx_construct;
-- (void)copyDataForFilename:(const char *)a3 dataSize:(unint64_t *)a4;
+- (void)copyDataForFilename:(const char *)filename dataSize:(unint64_t *)size;
 - (void)dealloc;
-- (void)executeFunctions:(CoreFunction *)a3 count:(unint64_t)a4 subCommandIndex:(unsigned int)a5;
+- (void)executeFunctions:(CoreFunction *)functions count:(unint64_t)count subCommandIndex:(unsigned int)index;
 - (void)prepareForCaptureExecution;
 - (void)processArguments;
 - (void)releaseArguments;
-- (void)releaseDataForArgument:(int)a3;
-- (void)releaseDataForPosition:(unint64_t)a3;
-- (void)requestDataForFilename:(const char *)a3 dataSize:(unint64_t *)a4 position:(unint64_t *)a5;
-- (void)requestDataForPosition:(unint64_t)a3 dataSize:(unint64_t *)a4;
+- (void)releaseDataForArgument:(int)argument;
+- (void)releaseDataForPosition:(unint64_t)position;
+- (void)requestDataForFilename:(const char *)filename dataSize:(unint64_t *)size position:(unint64_t *)position;
+- (void)requestDataForPosition:(unint64_t)position dataSize:(unint64_t *)size;
 @end
 
 @implementation DYFunctionPlayer
@@ -24,9 +24,9 @@
   return 0;
 }
 
-- (DYFunctionPlayer)initWithCaptureStore:(id)a3
+- (DYFunctionPlayer)initWithCaptureStore:(id)store
 {
-  if (!a3)
+  if (!store)
   {
     [DYFunctionPlayer initWithCaptureStore:];
   }
@@ -36,7 +36,7 @@
   v4 = [(DYFunctionPlayer *)&v18 init];
   if (v4)
   {
-    v4->_captureStore = a3;
+    v4->_captureStore = store;
     v4->_skipOptionalFunctions = 1;
     p_executePlatformSEL = &v4->_executePlatformSEL;
     if (sel_executePlatformFunction)
@@ -151,12 +151,12 @@
   }
 }
 
-- (void)executeFunctions:(CoreFunction *)a3 count:(unint64_t)a4 subCommandIndex:(unsigned int)a5
+- (void)executeFunctions:(CoreFunction *)functions count:(unint64_t)count subCommandIndex:(unsigned int)index
 {
-  self->_function = a3;
-  if (a4)
+  self->_function = functions;
+  if (count)
   {
-    v6 = &a3[a4];
+    v6 = &functions[count];
     p_currentExecutionModeFunctionIndex = &self->_currentExecutionModeFunctionIndex;
     while (1)
     {
@@ -243,45 +243,45 @@ LABEL_22:
   }
 }
 
-- (void)copyDataForFilename:(const char *)a3 dataSize:(unint64_t *)a4
+- (void)copyDataForFilename:(const char *)filename dataSize:(unint64_t *)size
 {
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v11 = 0;
-  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] getInfo:&v9 forFilenameBuffer:a3 error:&v11]& 1) == 0 || (v6 = GPUTools::Playback::MemoryManager::Alloc(&self->_memoryManager, v10), v7 = [(DYFunctionPlayer *)self captureStore], [(DYCaptureStore *)v7 readDataForFilePosition:v9 buffer:v6 size:v10 error:&v11]== -1))
+  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] getInfo:&v9 forFilenameBuffer:filename error:&v11]& 1) == 0 || (v6 = GPUTools::Playback::MemoryManager::Alloc(&self->_memoryManager, v10), v7 = [(DYFunctionPlayer *)self captureStore], [(DYCaptureStore *)v7 readDataForFilePosition:v9 buffer:v6 size:v10 error:&v11]== -1))
   {
     [DYFunctionPlayer copyDataForFilename:dataSize:];
     return 0;
   }
 
-  else if (a4)
+  else if (size)
   {
-    *a4 = v10;
+    *size = v10;
   }
 
   return v6;
 }
 
-- (void)releaseDataForPosition:(unint64_t)a3
+- (void)releaseDataForPosition:(unint64_t)position
 {
-  v4 = [(DYFunctionPlayer *)self captureStore];
+  captureStore = [(DYFunctionPlayer *)self captureStore];
 
-  [(DYCaptureStore *)v4 releaseBytesForFilePosition:a3];
+  [(DYCaptureStore *)captureStore releaseBytesForFilePosition:position];
 }
 
-- (void)requestDataForPosition:(unint64_t)a3 dataSize:(unint64_t *)a4
+- (void)requestDataForPosition:(unint64_t)position dataSize:(unint64_t *)size
 {
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v6 = 0;
   v7 = 0;
-  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] requestDataForFilePosition:a3 buffer:&v6 size:a4 error:&v7]& 1) != 0)
+  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] requestDataForFilePosition:position buffer:&v6 size:size error:&v7]& 1) != 0)
   {
     return v6;
   }
@@ -291,17 +291,17 @@ LABEL_22:
   return 0;
 }
 
-- (void)requestDataForFilename:(const char *)a3 dataSize:(unint64_t *)a4 position:(unint64_t *)a5
+- (void)requestDataForFilename:(const char *)filename dataSize:(unint64_t *)size position:(unint64_t *)position
 {
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
   v9 = 0;
-  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] getInfo:v8 forFilenameBuffer:a3 error:&v9]& 1) != 0)
+  if (([(DYCaptureStore *)[(DYFunctionPlayer *)self captureStore] getInfo:v8 forFilenameBuffer:filename error:&v9]& 1) != 0)
   {
-    *a5 = v8[0];
+    *position = v8[0];
     return [DYFunctionPlayer requestDataForPosition:"requestDataForPosition:dataSize:" dataSize:?];
   }
 
@@ -312,9 +312,9 @@ LABEL_22:
   }
 }
 
-- (void)releaseDataForArgument:(int)a3
+- (void)releaseDataForArgument:(int)argument
 {
-  v3 = self + 24 * a3;
+  v3 = self + 24 * argument;
   v4 = (v3 + 976);
   v5 = *(v3 + 123);
   v6 = *(v3 + 122);
@@ -367,7 +367,7 @@ LABEL_22:
   function = self->_function;
   if (function->argument_count)
   {
-    v3 = self;
+    selfCopy3 = self;
     v4 = 0;
     arguments = function->arguments;
     argumentStorePositions = self->_argumentStorePositions;
@@ -396,10 +396,10 @@ LABEL_22:
           v119 = 0;
           v18 = v4;
           v19 = &v116[v4];
-          *v19 = [(DYFunctionPlayer *)v3 requestDataForPosition:v17 dataSize:&v119];
+          *v19 = [(DYFunctionPlayer *)selfCopy3 requestDataForPosition:v17 dataSize:&v119];
           v20 = v119;
           v120 = v19;
-          std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&v3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v19)[3] = v20;
+          std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&selfCopy3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v19)[3] = v20;
           argumentPointers[v18] = v19;
           end = v8->__end_;
           cap = v8->__cap_;
@@ -525,7 +525,7 @@ LABEL_127:
         }
 
         v111 = v4;
-        v109 = GPUTools::Playback::MemoryManager::Alloc(&v3->_memoryManager, 8 * arguments->length);
+        v109 = GPUTools::Playback::MemoryManager::Alloc(&selfCopy3->_memoryManager, 8 * arguments->length);
         if (arguments->length)
         {
           v46 = 0;
@@ -673,7 +673,7 @@ LABEL_127:
         v44 = v109;
         v4 = v111;
         pointers = v116;
-        v3 = self;
+        selfCopy3 = self;
         goto LABEL_78;
       }
 
@@ -702,7 +702,7 @@ LABEL_96:
         }
 
         v86 = arguments->value;
-        v87 = GPUTools::Playback::MemoryManager::Alloc(&v3->_memoryManager, 8 * arguments->length);
+        v87 = GPUTools::Playback::MemoryManager::Alloc(&selfCopy3->_memoryManager, 8 * arguments->length);
         length = arguments->length;
         if (arguments->length)
         {
@@ -726,7 +726,7 @@ LABEL_79:
       }
 
       v45 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytesNoCopy:arguments->value length:strlen(arguments->value) encoding:1 freeWhenDone:0];
-      pointers[v4] = NSMapGet(v3->_variables, v45);
+      pointers[v4] = NSMapGet(selfCopy3->_variables, v45);
       argumentPointers[v4] = &pointers[v4];
 
 LABEL_124:
@@ -755,7 +755,7 @@ LABEL_124:
         v119 = 0;
         v12 = v4;
         v13 = &v116[v4];
-        *v13 = [(DYFunctionPlayer *)v3 requestDataForFilename:v11 dataSize:&v119 position:&v118];
+        *v13 = [(DYFunctionPlayer *)selfCopy3 requestDataForFilename:v11 dataSize:&v119 position:&v118];
         if (v118 != -1)
         {
           v15 = v8->__end_;
@@ -814,7 +814,7 @@ LABEL_126:
 
         v105 = v119;
         v120 = v13;
-        std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&v3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v13)[3] = v105;
+        std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&selfCopy3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v13)[3] = v105;
         v4 = v12;
         v73 = v116;
       }
@@ -847,7 +847,7 @@ LABEL_126:
     }
 
     v110 = v4;
-    v108 = GPUTools::Playback::MemoryManager::Alloc(&v3->_memoryManager, 8 * arguments->length);
+    v108 = GPUTools::Playback::MemoryManager::Alloc(&selfCopy3->_memoryManager, 8 * arguments->length);
     v24 = GPUTools::FD::Argument::ViewAsCStringArray(arguments);
     if (arguments->length)
     {
@@ -871,7 +871,7 @@ LABEL_126:
         {
           v118 = 0;
           v119 = 0;
-          *v27 = [(DYFunctionPlayer *)v3 requestDataForFilename:v29 dataSize:&v119 position:&v118];
+          *v27 = [(DYFunctionPlayer *)selfCopy3 requestDataForFilename:v29 dataSize:&v119 position:&v118];
           if (v118 != -1)
           {
             v31 = v8->__end_;
@@ -917,7 +917,7 @@ LABEL_126:
                 operator delete(v40);
               }
 
-              v3 = self;
+              selfCopy3 = self;
             }
 
             else
@@ -931,7 +931,7 @@ LABEL_126:
 
           v41 = v119;
           v120 = v27;
-          std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&v3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v27)[3] = v41;
+          std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>(&selfCopy3->_dataSizeMap.__table_.__bucket_list_.__ptr_, v27)[3] = v41;
         }
 
         else
@@ -972,10 +972,10 @@ LABEL_78:
   }
 }
 
-+ (CGSize)shrinkSourceSize:(CGSize)result toDestSize:(CGSize)a4
++ (CGSize)shrinkSourceSize:(CGSize)result toDestSize:(CGSize)size
 {
-  v4 = a4.width / result.width;
-  v5 = a4.height / result.height;
+  v4 = size.width / result.width;
+  v5 = size.height / result.height;
   v6 = v4 >= 1.0;
   v7 = v5 >= 1.0;
   if (v4 >= v5)

@@ -1,5 +1,5 @@
 @interface InterstitialContentView
-- (_TtC9MomentsUI23InterstitialContentView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI23InterstitialContentView)initWithFrame:(CGRect)frame;
 - (void)addToEntry;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)addToEntry
 {
-  v2 = self;
+  selfCopy = self;
   InterstitialContentView.addToEntry()();
 }
 
-- (_TtC9MomentsUI23InterstitialContentView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI23InterstitialContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

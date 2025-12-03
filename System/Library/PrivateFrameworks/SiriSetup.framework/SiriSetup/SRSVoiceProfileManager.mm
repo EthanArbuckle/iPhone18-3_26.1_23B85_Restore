@@ -1,7 +1,7 @@
 @interface SRSVoiceProfileManager
 - (SRSVoiceProfileManager)init;
-- (void)deleteUserVoiceProfile:(id)a3;
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4;
+- (void)deleteUserVoiceProfile:(id)profile;
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation SRSVoiceProfileManager
@@ -13,32 +13,32 @@
   v2 = [(SRSVoiceProfileManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D653F8] sharedInstance];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
     voiceProfileManager = v2->_voiceProfileManager;
-    v2->_voiceProfileManager = v3;
+    v2->_voiceProfileManager = mEMORY[0x277D653F8];
   }
 
   return v2;
 }
 
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SSRVoiceProfileManager *)self->_voiceProfileManager markSATEnrollmentSuccessForVoiceProfile:v7 completion:v6];
+    [(SSRVoiceProfileManager *)self->_voiceProfileManager markSATEnrollmentSuccessForVoiceProfile:profileCopy completion:completionCopy];
   }
 }
 
-- (void)deleteUserVoiceProfile:(id)a3
+- (void)deleteUserVoiceProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SSRVoiceProfileManager *)self->_voiceProfileManager deleteUserVoiceProfile:v5];
+    v4 = [(SSRVoiceProfileManager *)self->_voiceProfileManager deleteUserVoiceProfile:profileCopy];
   }
 }
 

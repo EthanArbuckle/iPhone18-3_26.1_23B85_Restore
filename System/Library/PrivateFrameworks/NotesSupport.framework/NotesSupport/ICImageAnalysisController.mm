@@ -1,7 +1,7 @@
 @interface ICImageAnalysisController
 + (ICImageAnalysisController)sharedController;
 - (ICImageAnalysisController)init;
-- (void)analyzeSearchableItems:(id)a3 completion:(id)a4;
+- (void)analyzeSearchableItems:(id)items completion:(id)completion;
 @end
 
 @implementation ICImageAnalysisController
@@ -46,26 +46,26 @@ uint64_t __45__ICImageAnalysisController_sharedController__block_invoke()
   return v2;
 }
 
-- (void)analyzeSearchableItems:(id)a3 completion:(id)a4
+- (void)analyzeSearchableItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICImageAnalysisController analyzeSearchableItems:v6 completion:?];
+    [ICImageAnalysisController analyzeSearchableItems:itemsCopy completion:?];
   }
 
-  v9 = [(ICImageAnalysisController *)self photoLibraryQueue];
+  photoLibraryQueue = [(ICImageAnalysisController *)self photoLibraryQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__ICImageAnalysisController_analyzeSearchableItems_completion___block_invoke;
   v12[3] = &unk_1E8484B48;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, v12);
+  v13 = itemsCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = itemsCopy;
+  dispatch_async(photoLibraryQueue, v12);
 }
 
 void __63__ICImageAnalysisController_analyzeSearchableItems_completion___block_invoke(uint64_t a1)

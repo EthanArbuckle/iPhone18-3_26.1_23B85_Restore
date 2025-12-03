@@ -1,20 +1,20 @@
 @interface PUIDPointerAccessoryContainerView
-- (void)_recordAccessory:(id)a3 withShapeView:(id)a4;
-- (void)_removeRecordOfAccessory:(id)a3;
-- (void)setAccessories:(id)a3 animated:(BOOL)a4;
+- (void)_recordAccessory:(id)accessory withShapeView:(id)view;
+- (void)_removeRecordOfAccessory:(id)accessory;
+- (void)setAccessories:(id)accessories animated:(BOOL)animated;
 @end
 
 @implementation PUIDPointerAccessoryContainerView
 
-- (void)setAccessories:(id)a3 animated:(BOOL)a4
+- (void)setAccessories:(id)accessories animated:(BOOL)animated
 {
-  v6 = a3;
+  accessoriesCopy = accessories;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v47 = v6;
-    v56 = self;
-    objc_storeStrong(&self->_accessories, a3);
-    if (!self->_shapeViewsByPosition && [v6 count])
+    v47 = accessoriesCopy;
+    selfCopy = self;
+    objc_storeStrong(&self->_accessories, accessories);
+    if (!self->_shapeViewsByPosition && [accessoriesCopy count])
     {
       v7 = +[NSMutableDictionary dictionary];
       shapeViewsByPosition = self->_shapeViewsByPosition;
@@ -58,27 +58,27 @@
           }
 
           v17 = *(*(&v71 + 1) + 8 * v16);
-          v18 = [(PUIDPointerAccessoryContainerView *)v56 _visibleShapeViewForAccessory:v17];
+          v18 = [(PUIDPointerAccessoryContainerView *)selfCopy _visibleShapeViewForAccessory:v17];
           if (v18)
           {
-            v19 = v17;
+            firstObject = v17;
 LABEL_14:
-            (v54[2])(v54, v18, v17, v19);
+            (v54[2])(v54, v18, v17, firstObject);
             goto LABEL_15;
           }
 
-          v20 = [v17 positionRecordKey];
-          v18 = [(PUIDPointerAccessoryContainerView *)v56 _visibleShapeViewAtPosition:v20];
+          positionRecordKey = [v17 positionRecordKey];
+          v18 = [(PUIDPointerAccessoryContainerView *)selfCopy _visibleShapeViewAtPosition:positionRecordKey];
 
           if (v18)
           {
-            v21 = [(NSMutableDictionary *)v56->_shapeViewsByAccessory allKeysForObject:v18];
-            v19 = [v21 firstObject];
+            v21 = [(NSMutableDictionary *)selfCopy->_shapeViewsByAccessory allKeysForObject:v18];
+            firstObject = [v21 firstObject];
 
             goto LABEL_14;
           }
 
-          v19 = 0;
+          firstObject = 0;
 LABEL_15:
 
           v16 = v16 + 1;
@@ -131,9 +131,9 @@ LABEL_21:
       v64 = 0u;
       v65 = 0u;
       v63 = 0u;
-      v24 = [v48 allKeys];
+      allKeys = [v48 allKeys];
       v25 = 0;
-      v26 = [v24 countByEnumeratingWithState:&v63 objects:v83 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v63 objects:v83 count:16];
       if (v26)
       {
         v27 = *v64;
@@ -143,14 +143,14 @@ LABEL_21:
           {
             if (*v64 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(allKeys);
             }
 
             v29 = *(*(&v63 + 1) + 8 * i);
             v30 = v57;
-            v31 = [v29 shape];
-            v32 = [v30 shape];
-            v33 = [v31 isEqual:v32];
+            shape = [v29 shape];
+            shape2 = [v30 shape];
+            v33 = [shape isEqual:shape2];
 
             if (v33)
             {
@@ -166,7 +166,7 @@ LABEL_21:
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v63 objects:v83 count:16];
+          v26 = [allKeys countByEnumeratingWithState:&v63 objects:v83 count:16];
         }
 
         while (v26);
@@ -197,13 +197,13 @@ LABEL_44:
 LABEL_46:
 
           v43 = +[PUIDPointerDomain rootSettings];
-          v44 = [v43 pointerAccessoryAnimationSettings];
+          pointerAccessoryAnimationSettings = [v43 pointerAccessoryAnimationSettings];
 
           v61[0] = _NSConcreteStackBlock;
           v61[1] = 3221225472;
           v61[2] = sub_10001ABD8;
           v61[3] = &unk_1000493C0;
-          v45 = v44;
+          v45 = pointerAccessoryAnimationSettings;
           v62 = v45;
           [v51 enumerateKeysAndObjectsUsingBlock:v61];
           v58[0] = _NSConcreteStackBlock;
@@ -212,13 +212,13 @@ LABEL_46:
           v58[3] = &unk_100049410;
           v46 = v45;
           v59 = v46;
-          v60 = v56;
+          v60 = selfCopy;
           [v48 enumerateKeysAndObjectsUsingBlock:v58];
 
           objc_destroyWeak(&v78);
           objc_destroyWeak(&location);
 
-          v6 = v47;
+          accessoriesCopy = v47;
           goto LABEL_47;
         }
 
@@ -231,8 +231,8 @@ LABEL_41:
 LABEL_42:
     v36 = v57;
     v37 = [PUIDPointerShapeView alloc];
-    v38 = [v36 shape];
-    [v38 bounds];
+    shape3 = [v36 shape];
+    [shape3 bounds];
     v39 = [(PUIDPointerShapeView *)v37 initWithFrame:?];
 
     v80[0] = _NSConcreteStackBlock;
@@ -253,27 +253,27 @@ LABEL_42:
 LABEL_47:
 }
 
-- (void)_recordAccessory:(id)a3 withShapeView:(id)a4
+- (void)_recordAccessory:(id)accessory withShapeView:(id)view
 {
   shapeViewsByAccessory = self->_shapeViewsByAccessory;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableDictionary *)shapeViewsByAccessory setObject:v7 forKeyedSubscript:v8];
+  viewCopy = view;
+  accessoryCopy = accessory;
+  [(NSMutableDictionary *)shapeViewsByAccessory setObject:viewCopy forKeyedSubscript:accessoryCopy];
   shapeViewsByPosition = self->_shapeViewsByPosition;
-  v10 = [v8 positionRecordKey];
+  positionRecordKey = [accessoryCopy positionRecordKey];
 
-  [(NSMutableDictionary *)shapeViewsByPosition setObject:v7 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)shapeViewsByPosition setObject:viewCopy forKeyedSubscript:positionRecordKey];
 }
 
-- (void)_removeRecordOfAccessory:(id)a3
+- (void)_removeRecordOfAccessory:(id)accessory
 {
   shapeViewsByAccessory = self->_shapeViewsByAccessory;
-  v5 = a3;
-  [(NSMutableDictionary *)shapeViewsByAccessory removeObjectForKey:v5];
+  accessoryCopy = accessory;
+  [(NSMutableDictionary *)shapeViewsByAccessory removeObjectForKey:accessoryCopy];
   shapeViewsByPosition = self->_shapeViewsByPosition;
-  v7 = [v5 positionRecordKey];
+  positionRecordKey = [accessoryCopy positionRecordKey];
 
-  [(NSMutableDictionary *)shapeViewsByPosition removeObjectForKey:v7];
+  [(NSMutableDictionary *)shapeViewsByPosition removeObjectForKey:positionRecordKey];
 }
 
 @end

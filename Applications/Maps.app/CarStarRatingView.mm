@@ -1,36 +1,36 @@
 @interface CarStarRatingView
 - (CarStarRatingView)init;
-- (id)_providerNameAndPriceAttributedStringForMapItem:(id)a3;
+- (id)_providerNameAndPriceAttributedStringForMapItem:(id)item;
 - (void)_setupConstraints;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setupWithMapItem:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setupWithMapItem:(id)item;
 @end
 
 @implementation CarStarRatingView
 
-- (void)setupWithMapItem:(id)a3
+- (void)setupWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CarStarRatingView *)self _providerNameAndPriceAttributedStringForMapItem:v4];
+  itemCopy = item;
+  v5 = [(CarStarRatingView *)self _providerNameAndPriceAttributedStringForMapItem:itemCopy];
   [(UILabel *)self->_providerInfoLabel setAttributedText:v5];
 
-  v6 = [MKRatingStringBuilder ratingSymbolNameForMapItem:v4];
+  v6 = [MKRatingStringBuilder ratingSymbolNameForMapItem:itemCopy];
   v9 = [UIImage _mapsCar_systemImageNamed:v6 pointSize:6 weight:8.5];
 
-  v7 = sub_100D0DDDC(v4);
+  v7 = sub_100D0DDDC(itemCopy);
   [(UIImageView *)self->_starImageView setTintColor:v7];
 
   [(UIImageView *)self->_starImageView setImage:v9];
   mapItem = self->_mapItem;
-  self->_mapItem = v4;
+  self->_mapItem = itemCopy;
 }
 
-- (id)_providerNameAndPriceAttributedStringForMapItem:(id)a3
+- (id)_providerNameAndPriceAttributedStringForMapItem:(id)item
 {
-  v4 = a3;
-  if ([v4 _hasUserRatingScore])
+  itemCopy = item;
+  if ([itemCopy _hasUserRatingScore])
   {
-    v5 = [MKRatingStringBuilder carPlayHeaderStringForMapItem:v4 isHighlighted:[(CarStarRatingView *)self isHighlighted]];
+    v5 = [MKRatingStringBuilder carPlayHeaderStringForMapItem:itemCopy isHighlighted:[(CarStarRatingView *)self isHighlighted]];
   }
 
   else
@@ -41,11 +41,11 @@
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     if ([(CarStarRatingView *)self isHighlighted])
     {
       +[UIColor _carSystemFocusLabelColor];
@@ -66,41 +66,41 @@
 - (void)_setupConstraints
 {
   v31 = +[NSMutableArray array];
-  v30 = [(UIImageView *)self->_starImageView topAnchor];
-  v29 = [(CarStarRatingView *)self topAnchor];
-  v28 = [v30 constraintGreaterThanOrEqualToAnchor:v29];
+  topAnchor = [(UIImageView *)self->_starImageView topAnchor];
+  topAnchor2 = [(CarStarRatingView *)self topAnchor];
+  v28 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v32[0] = v28;
-  v27 = [(UIImageView *)self->_starImageView leadingAnchor];
-  v26 = [(CarStarRatingView *)self leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor = [(UIImageView *)self->_starImageView leadingAnchor];
+  leadingAnchor2 = [(CarStarRatingView *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[1] = v25;
-  v24 = [(UIImageView *)self->_starImageView trailingAnchor];
-  v23 = [(CarStarRatingView *)self trailingAnchor];
-  v22 = [v24 constraintLessThanOrEqualToAnchor:v23];
+  trailingAnchor = [(UIImageView *)self->_starImageView trailingAnchor];
+  trailingAnchor2 = [(CarStarRatingView *)self trailingAnchor];
+  v22 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v32[2] = v22;
-  v21 = [(UIImageView *)self->_starImageView bottomAnchor];
-  v20 = [(CarStarRatingView *)self bottomAnchor];
-  v19 = [v21 constraintLessThanOrEqualToAnchor:v20];
+  bottomAnchor = [(UIImageView *)self->_starImageView bottomAnchor];
+  bottomAnchor2 = [(CarStarRatingView *)self bottomAnchor];
+  v19 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v32[3] = v19;
-  v18 = [(UILabel *)self->_providerInfoLabel leadingAnchor];
-  v17 = [(UIImageView *)self->_starImageView trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:2.0];
+  leadingAnchor3 = [(UILabel *)self->_providerInfoLabel leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_starImageView trailingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:2.0];
   v32[4] = v16;
-  v15 = [(UILabel *)self->_providerInfoLabel topAnchor];
-  v14 = [(CarStarRatingView *)self topAnchor];
-  v13 = [v15 constraintGreaterThanOrEqualToAnchor:v14];
+  topAnchor3 = [(UILabel *)self->_providerInfoLabel topAnchor];
+  topAnchor4 = [(CarStarRatingView *)self topAnchor];
+  v13 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v32[5] = v13;
-  v3 = [(UILabel *)self->_providerInfoLabel trailingAnchor];
-  v4 = [(CarStarRatingView *)self trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor4 = [(UILabel *)self->_providerInfoLabel trailingAnchor];
+  trailingAnchor5 = [(CarStarRatingView *)self trailingAnchor];
+  v5 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v32[6] = v5;
-  v6 = [(UILabel *)self->_providerInfoLabel firstBaselineAnchor];
-  v7 = [(UIImageView *)self->_starImageView firstBaselineAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:1.0];
+  firstBaselineAnchor = [(UILabel *)self->_providerInfoLabel firstBaselineAnchor];
+  firstBaselineAnchor2 = [(UIImageView *)self->_starImageView firstBaselineAnchor];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:1.0];
   v32[7] = v8;
-  v9 = [(UILabel *)self->_providerInfoLabel bottomAnchor];
-  v10 = [(CarStarRatingView *)self bottomAnchor];
-  v11 = [v9 constraintLessThanOrEqualToAnchor:v10];
+  bottomAnchor3 = [(UILabel *)self->_providerInfoLabel bottomAnchor];
+  bottomAnchor4 = [(CarStarRatingView *)self bottomAnchor];
+  v11 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v32[8] = v11;
   v12 = [NSArray arrayWithObjects:v32 count:9];
   [v31 addObjectsFromArray:v12];
@@ -115,46 +115,46 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v5 = [(CarStarRatingView *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v5)
+  height = [(CarStarRatingView *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v6 = [UIImage _mapsCar_systemImageNamed:@"star.fill" pointSize:6 weight:8.5];
     v7 = [[UIImageView alloc] initWithImage:v6];
-    v8 = *(v5 + 1);
-    *(v5 + 1) = v7;
+    v8 = *(height + 1);
+    *(height + 1) = v7;
 
-    [*(v5 + 1) setAccessibilityIdentifier:@"StarImageView"];
-    [*(v5 + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(height + 1) setAccessibilityIdentifier:@"StarImageView"];
+    [*(height + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v9) = 1148846080;
-    [*(v5 + 1) setContentCompressionResistancePriority:1 forAxis:v9];
+    [*(height + 1) setContentCompressionResistancePriority:1 forAxis:v9];
     LODWORD(v10) = 1148846080;
-    [*(v5 + 1) setContentCompressionResistancePriority:0 forAxis:v10];
-    v11 = sub_100D0DDDC(*(v5 + 3));
-    [*(v5 + 1) setTintColor:v11];
+    [*(height + 1) setContentCompressionResistancePriority:0 forAxis:v10];
+    v11 = sub_100D0DDDC(*(height + 3));
+    [*(height + 1) setTintColor:v11];
 
-    [v5 addSubview:*(v5 + 1)];
+    [height addSubview:*(height + 1)];
     v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    v13 = *(v5 + 2);
-    *(v5 + 2) = v12;
+    v13 = *(height + 2);
+    *(height + 2) = v12;
 
-    [*(v5 + 2) setAccessibilityIdentifier:@"ProviderInfoLabel"];
-    [*(v5 + 2) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(height + 2) setAccessibilityIdentifier:@"ProviderInfoLabel"];
+    [*(height + 2) setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v14) = 1144750080;
-    [*(v5 + 2) setContentHuggingPriority:1 forAxis:v14];
+    [*(height + 2) setContentHuggingPriority:1 forAxis:v14];
     LODWORD(v15) = 1144750080;
-    [*(v5 + 2) setContentHuggingPriority:0 forAxis:v15];
+    [*(height + 2) setContentHuggingPriority:0 forAxis:v15];
     LODWORD(v16) = 1148846080;
-    [*(v5 + 2) setContentCompressionResistancePriority:1 forAxis:v16];
-    [*(v5 + 2) setLineBreakMode:4];
+    [*(height + 2) setContentCompressionResistancePriority:1 forAxis:v16];
+    [*(height + 2) setLineBreakMode:4];
     v17 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:UIFontWeightRegular];
-    [*(v5 + 2) setFont:v17];
+    [*(height + 2) setFont:v17];
 
-    [*(v5 + 2) setAdjustsFontForContentSizeCategory:1];
-    [v5 addSubview:*(v5 + 2)];
-    [v5 _setupConstraints];
+    [*(height + 2) setAdjustsFontForContentSizeCategory:1];
+    [height addSubview:*(height + 2)];
+    [height _setupConstraints];
   }
 
-  return v5;
+  return height;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface MFAttachmentDataProvider
-+ (id)dataProviderWithPath:(id)a3;
-+ (id)dataProviderWithURL:(id)a3;
++ (id)dataProviderWithPath:(id)path;
++ (id)dataProviderWithURL:(id)l;
 - (BOOL)exists;
-- (BOOL)save:(id)a3;
-- (MFAttachmentDataProvider)initWithURL:(id)a3;
-- (id)_fileAttributes:(id)a3;
+- (BOOL)save:(id)save;
+- (MFAttachmentDataProvider)initWithURL:(id)l;
+- (id)_fileAttributes:(id)attributes;
 - (id)data;
-- (id)errorWithMessage:(id)a3 code:(int64_t)a4;
+- (id)errorWithMessage:(id)message code:(int64_t)code;
 - (void)dealloc;
 @end
 
 @implementation MFAttachmentDataProvider
 
-+ (id)dataProviderWithURL:(id)a3
++ (id)dataProviderWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }
 
-+ (id)dataProviderWithPath:(id)a3
++ (id)dataProviderWithPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:?];
-    v5 = [[a1 alloc] initWithURL:v4];
+    v5 = [[self alloc] initWithURL:v4];
   }
 
   else
@@ -43,14 +43,14 @@
   return v5;
 }
 
-- (MFAttachmentDataProvider)initWithURL:(id)a3
+- (MFAttachmentDataProvider)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(MFAttachmentDataProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
@@ -63,14 +63,14 @@
   [(MFAttachmentDataProvider *)&v2 dealloc];
 }
 
-- (id)errorWithMessage:(id)a3 code:(int64_t)a4
+- (id)errorWithMessage:(id)message code:(int64_t)code
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = a3;
+  v12[0] = message;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  messageCopy = message;
   v7 = [v5 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v4 errorWithDomain:@"MFAttachmentDataProviderErrorDomain" code:0 userInfo:v7];
 
@@ -81,26 +81,26 @@
 
 - (BOOL)exists
 {
-  v3 = [(MFAttachmentDataProvider *)self _isFileURL];
-  if (v3)
+  _isFileURL = [(MFAttachmentDataProvider *)self _isFileURL];
+  if (_isFileURL)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [(MFAttachmentDataProvider *)self _path];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    _path = [(MFAttachmentDataProvider *)self _path];
+    v6 = [defaultManager fileExistsAtPath:_path];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_isFileURL) = v6;
   }
 
-  return v3;
+  return _isFileURL;
 }
 
-- (id)_fileAttributes:(id)a3
+- (id)_fileAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-  if (v3)
+  if (attributesCopy)
   {
-    v5 = strtoul([v3 vf_lossyDefaultCStringBytes], 0, 8) & 0x1FF;
+    v5 = strtoul([attributesCopy vf_lossyDefaultCStringBytes], 0, 8) & 0x1FF;
     if (v5)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v5];
@@ -111,19 +111,19 @@
   return v4;
 }
 
-- (BOOL)save:(id)a3
+- (BOOL)save:(id)save
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFAttachmentDataProvider *)self _path];
-  v6 = [v5 copy];
+  saveCopy = save;
+  _path = [(MFAttachmentDataProvider *)self _path];
+  v6 = [_path copy];
 
-  v7 = [v6 stringByDeletingLastPathComponent];
-  if (v7)
+  stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
+  if (stringByDeletingLastPathComponent)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v17 = 0;
-    v9 = [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v17];
+    v9 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v17];
     v10 = v17;
     if (v9)
     {
@@ -132,7 +132,7 @@
       v13 = [v11 dictionaryWithDictionary:v12];
 
       [v13 setObject:*MEMORY[0x277CCA198] forKey:*MEMORY[0x277CCA1B0]];
-      if (([v8 createFileAtPath:v6 contents:v4 attributes:v13] & 1) == 0)
+      if (([defaultManager createFileAtPath:v6 contents:saveCopy attributes:v13] & 1) == 0)
       {
         v14 = vm_imap_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -152,7 +152,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v19 = v7;
+        v19 = stringByDeletingLastPathComponent;
         v20 = 2112;
         v21 = v10;
         _os_log_impl(&dword_2720B1000, v13, OS_LOG_TYPE_DEFAULT, "#Attachments Failed to create directory for attachment %@: %@", buf, 0x16u);
@@ -167,8 +167,8 @@
 - (id)data
 {
   v2 = MEMORY[0x277D24F00];
-  v3 = [(MFAttachmentDataProvider *)self _path];
-  v4 = [v2 dataWithContentsOfFile:v3];
+  _path = [(MFAttachmentDataProvider *)self _path];
+  v4 = [v2 dataWithContentsOfFile:_path];
 
   return v4;
 }

@@ -1,22 +1,22 @@
 @interface SUUIQuicklinksPageComponent
-- (SUUIQuicklinksPageComponent)initWithCustomPageContext:(id)a3;
-- (SUUIQuicklinksPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (id)valueForMetricsField:(id)a3;
-- (void)_setLinksWithLinksArray:(id)a3 context:(id)a4;
+- (SUUIQuicklinksPageComponent)initWithCustomPageContext:(id)context;
+- (SUUIQuicklinksPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (id)valueForMetricsField:(id)field;
+- (void)_setLinksWithLinksArray:(id)array context:(id)context;
 @end
 
 @implementation SUUIQuicklinksPageComponent
 
-- (SUUIQuicklinksPageComponent)initWithCustomPageContext:(id)a3
+- (SUUIQuicklinksPageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = SUUIQuicklinksPageComponent;
-  v5 = [(SUUIPageComponent *)&v12 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v12 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"title"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -25,28 +25,28 @@
       v5->_title = v8;
     }
 
-    v10 = [v6 objectForKey:@"children"];
+    v10 = [componentDictionary objectForKey:@"children"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SUUIQuicklinksPageComponent *)v5 _setLinksWithLinksArray:v10 context:v4];
+      [(SUUIQuicklinksPageComponent *)v5 _setLinksWithLinksArray:v10 context:contextCopy];
     }
   }
 
   return v5;
 }
 
-- (SUUIQuicklinksPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUIQuicklinksPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SUUIQuicklinksPageComponent;
-  v7 = [(SUUIPageComponent *)&v17 initWithFeaturedContentContext:v6 kind:a4];
+  v7 = [(SUUIPageComponent *)&v17 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v7)
   {
-    v8 = [v6 componentDictionary];
-    v9 = [v8 objectForKey:@"children"];
+    componentDictionary = [contextCopy componentDictionary];
+    v9 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 count])
     {
@@ -56,11 +56,11 @@
       {
         v11 = v10;
 
-        v8 = v11;
+        componentDictionary = v11;
       }
     }
 
-    v12 = [v8 objectForKey:@"name"];
+    v12 = [componentDictionary objectForKey:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,55 +69,55 @@
       v7->_title = v13;
     }
 
-    v15 = [v8 objectForKey:@"links"];
+    v15 = [componentDictionary objectForKey:@"links"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SUUIQuicklinksPageComponent *)v7 _setLinksWithLinksArray:v15 context:v6];
+      [(SUUIQuicklinksPageComponent *)v7 _setLinksWithLinksArray:v15 context:contextCopy];
     }
   }
 
   return v7;
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A8]))
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A8]))
   {
-    v5 = [(SUUIQuicklinksPageComponent *)self title];
-    if (v5)
+    title = [(SUUIQuicklinksPageComponent *)self title];
+    if (title)
     {
       goto LABEL_8;
     }
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277D6A498]])
+  else if ([fieldCopy isEqualToString:*MEMORY[0x277D6A498]])
   {
-    v5 = &unk_286BBE418;
+    title = &unk_286BBE418;
     goto LABEL_8;
   }
 
   v7.receiver = self;
   v7.super_class = SUUIQuicklinksPageComponent;
-  v5 = [(SUUIPageComponent *)&v7 valueForMetricsField:v4];
+  title = [(SUUIPageComponent *)&v7 valueForMetricsField:fieldCopy];
 LABEL_8:
 
-  return v5;
+  return title;
 }
 
-- (void)_setLinksWithLinksArray:(id)a3 context:(id)a4
+- (void)_setLinksWithLinksArray:(id)array context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -137,7 +137,7 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v6 copy];
+          v14 = [contextCopy copy];
           [v14 setComponentDictionary:v13];
           v15 = [[SUUILink alloc] initWithComponentContext:v14];
           if (v15)

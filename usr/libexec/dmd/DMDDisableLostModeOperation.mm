@@ -1,6 +1,6 @@
 @interface DMDDisableLostModeOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,13 +20,13 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = +[FMDFMIPManager sharedInstance];
-  v5 = [v4 isManagedLostModeActive];
+  isManagedLostModeActive = [v4 isManagedLostModeActive];
 
   v6 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isManagedLostModeActive)
   {
     if (v6)
     {
@@ -35,13 +35,13 @@
     }
 
     v7 = +[DMDLostDeviceLocationManager sharedManager];
-    v8 = [v7 lastLocationRequestedDateMessage];
-    if (v8)
+    lastLocationRequestedDateMessage = [v7 lastLocationRequestedDateMessage];
+    if (lastLocationRequestedDateMessage)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v14 = v8;
+        v14 = lastLocationRequestedDateMessage;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Device was located while in lost mode. Alerting user with message “%{public}@”", buf, 0xCu);
       }
     }
@@ -54,7 +54,7 @@
     v11[4] = self;
     v12 = v7;
     v10 = v7;
-    [v9 disableManagedLostModeWithLocatedMessage:v8 completion:v11];
+    [v9 disableManagedLostModeWithLocatedMessage:lastLocationRequestedDateMessage completion:v11];
   }
 
   else

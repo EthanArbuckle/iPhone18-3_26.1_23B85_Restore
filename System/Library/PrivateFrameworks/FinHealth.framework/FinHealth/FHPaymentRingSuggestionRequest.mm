@@ -1,34 +1,34 @@
 @interface FHPaymentRingSuggestionRequest
-- (BOOL)isEqual:(id)a3;
-- (FHPaymentRingSuggestionRequest)initWithcurrentStatement:(id)a3 previousStatement:(id)a4 previousStatementPaymentsSum:(id)a5 currentStatementPaymentsSum:(id)a6 statementPurchasesSum:(id)a7 merchantCategoryTransactionSums:(id)a8 paymentDetails:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (FHPaymentRingSuggestionRequest)initWithcurrentStatement:(id)statement previousStatement:(id)previousStatement previousStatementPaymentsSum:(id)sum currentStatementPaymentsSum:(id)paymentsSum statementPurchasesSum:(id)purchasesSum merchantCategoryTransactionSums:(id)sums paymentDetails:(id)details;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation FHPaymentRingSuggestionRequest
 
-- (FHPaymentRingSuggestionRequest)initWithcurrentStatement:(id)a3 previousStatement:(id)a4 previousStatementPaymentsSum:(id)a5 currentStatementPaymentsSum:(id)a6 statementPurchasesSum:(id)a7 merchantCategoryTransactionSums:(id)a8 paymentDetails:(id)a9
+- (FHPaymentRingSuggestionRequest)initWithcurrentStatement:(id)statement previousStatement:(id)previousStatement previousStatementPaymentsSum:(id)sum currentStatementPaymentsSum:(id)paymentsSum statementPurchasesSum:(id)purchasesSum merchantCategoryTransactionSums:(id)sums paymentDetails:(id)details
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  statementCopy = statement;
+  previousStatementCopy = previousStatement;
+  sumCopy = sum;
+  paymentsSumCopy = paymentsSum;
+  purchasesSumCopy = purchasesSum;
+  sumsCopy = sums;
+  detailsCopy = details;
   v26.receiver = self;
   v26.super_class = FHPaymentRingSuggestionRequest;
   v18 = [(FHPaymentRingSuggestionRequest *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_currentStatement, a3);
-    objc_storeStrong(&v19->_previousStatement, a4);
-    objc_storeStrong(&v19->_previousStatementPaymentsSum, a5);
-    objc_storeStrong(&v19->_currentStatementPaymentsSum, a6);
-    objc_storeStrong(&v19->_statementPurchasesSum, a7);
-    objc_storeStrong(&v19->_merchantCategoryTransactionSums, a8);
-    objc_storeStrong(&v19->_paymentDetails, a9);
+    objc_storeStrong(&v18->_currentStatement, statement);
+    objc_storeStrong(&v19->_previousStatement, previousStatement);
+    objc_storeStrong(&v19->_previousStatementPaymentsSum, sum);
+    objc_storeStrong(&v19->_currentStatementPaymentsSum, paymentsSum);
+    objc_storeStrong(&v19->_statementPurchasesSum, purchasesSum);
+    objc_storeStrong(&v19->_merchantCategoryTransactionSums, sums);
+    objc_storeStrong(&v19->_paymentDetails, details);
   }
 
   return v19;
@@ -36,71 +36,71 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FHPaymentRingSuggestionRequest *)self currentStatement];
-  v4 = [v3 hash];
+  currentStatement = [(FHPaymentRingSuggestionRequest *)self currentStatement];
+  v4 = [currentStatement hash];
 
-  v5 = [(FHPaymentRingSuggestionRequest *)self previousStatement];
-  v6 = 17 * (17 * v4 + [v5 hash]);
+  previousStatement = [(FHPaymentRingSuggestionRequest *)self previousStatement];
+  v6 = 17 * (17 * v4 + [previousStatement hash]);
 
-  v7 = [(FHPaymentRingSuggestionRequest *)self previousStatementPaymentsSum];
-  v8 = 17 * (v6 + [v7 hash]);
+  previousStatementPaymentsSum = [(FHPaymentRingSuggestionRequest *)self previousStatementPaymentsSum];
+  v8 = 17 * (v6 + [previousStatementPaymentsSum hash]);
 
-  v9 = [(FHPaymentRingSuggestionRequest *)self currentStatementPaymentsSum];
-  v10 = 17 * (v8 + [v9 hash]);
+  currentStatementPaymentsSum = [(FHPaymentRingSuggestionRequest *)self currentStatementPaymentsSum];
+  v10 = 17 * (v8 + [currentStatementPaymentsSum hash]);
 
-  v11 = [(FHPaymentRingSuggestionRequest *)self statementPurchasesSum];
-  v12 = 17 * (v10 + [v11 hash]);
+  statementPurchasesSum = [(FHPaymentRingSuggestionRequest *)self statementPurchasesSum];
+  v12 = 17 * (v10 + [statementPurchasesSum hash]);
 
-  v13 = [(FHPaymentRingSuggestionRequest *)self merchantCategoryTransactionSums];
-  v14 = 17 * (v12 + [v13 hash]);
+  merchantCategoryTransactionSums = [(FHPaymentRingSuggestionRequest *)self merchantCategoryTransactionSums];
+  v14 = 17 * (v12 + [merchantCategoryTransactionSums hash]);
 
-  v15 = [(FHPaymentRingSuggestionRequest *)self paymentDetails];
-  v16 = [v15 hash] + 410338673;
+  paymentDetails = [(FHPaymentRingSuggestionRequest *)self paymentDetails];
+  v16 = [paymentDetails hash] + 410338673;
 
   return v14 + v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(FHPaymentRingSuggestionRequest *)self currentStatement];
-    v7 = [(FHPaymentRingSuggestionRequest *)v5 currentStatement];
-    if ([v6 isEqual:v7])
+    currentStatement = [(FHPaymentRingSuggestionRequest *)self currentStatement];
+    currentStatement2 = [(FHPaymentRingSuggestionRequest *)v5 currentStatement];
+    if ([currentStatement isEqual:currentStatement2])
     {
-      v8 = [(FHPaymentRingSuggestionRequest *)self previousStatement];
-      v9 = [(FHPaymentRingSuggestionRequest *)v5 previousStatement];
-      if ([v8 isEqual:v9])
+      previousStatement = [(FHPaymentRingSuggestionRequest *)self previousStatement];
+      previousStatement2 = [(FHPaymentRingSuggestionRequest *)v5 previousStatement];
+      if ([previousStatement isEqual:previousStatement2])
       {
-        v10 = [(FHPaymentRingSuggestionRequest *)self previousStatementPaymentsSum];
-        v11 = [(FHPaymentRingSuggestionRequest *)v5 previousStatementPaymentsSum];
-        if ([v10 isEqual:v11])
+        previousStatementPaymentsSum = [(FHPaymentRingSuggestionRequest *)self previousStatementPaymentsSum];
+        previousStatementPaymentsSum2 = [(FHPaymentRingSuggestionRequest *)v5 previousStatementPaymentsSum];
+        if ([previousStatementPaymentsSum isEqual:previousStatementPaymentsSum2])
         {
-          v12 = [(FHPaymentRingSuggestionRequest *)self currentStatementPaymentsSum];
-          v13 = [(FHPaymentRingSuggestionRequest *)v5 currentStatementPaymentsSum];
-          if ([v12 isEqual:v13])
+          currentStatementPaymentsSum = [(FHPaymentRingSuggestionRequest *)self currentStatementPaymentsSum];
+          currentStatementPaymentsSum2 = [(FHPaymentRingSuggestionRequest *)v5 currentStatementPaymentsSum];
+          if ([currentStatementPaymentsSum isEqual:currentStatementPaymentsSum2])
           {
-            v23 = v12;
-            v14 = [(FHPaymentRingSuggestionRequest *)self statementPurchasesSum];
+            v23 = currentStatementPaymentsSum;
+            statementPurchasesSum = [(FHPaymentRingSuggestionRequest *)self statementPurchasesSum];
             [(FHPaymentRingSuggestionRequest *)v5 statementPurchasesSum];
-            v22 = v24 = v14;
-            if ([v14 isEqual:?])
+            v22 = v24 = statementPurchasesSum;
+            if ([statementPurchasesSum isEqual:?])
             {
-              v15 = [(FHPaymentRingSuggestionRequest *)self merchantCategoryTransactionSums];
-              v20 = [(FHPaymentRingSuggestionRequest *)v5 merchantCategoryTransactionSums];
-              v21 = v15;
-              if ([v15 isEqual:?])
+              merchantCategoryTransactionSums = [(FHPaymentRingSuggestionRequest *)self merchantCategoryTransactionSums];
+              merchantCategoryTransactionSums2 = [(FHPaymentRingSuggestionRequest *)v5 merchantCategoryTransactionSums];
+              v21 = merchantCategoryTransactionSums;
+              if ([merchantCategoryTransactionSums isEqual:?])
               {
-                v16 = [(FHPaymentRingSuggestionRequest *)self paymentDetails];
-                v19 = [(FHPaymentRingSuggestionRequest *)v5 paymentDetails];
-                v17 = [v16 isEqual:v19];
+                paymentDetails = [(FHPaymentRingSuggestionRequest *)self paymentDetails];
+                paymentDetails2 = [(FHPaymentRingSuggestionRequest *)v5 paymentDetails];
+                v17 = [paymentDetails isEqual:paymentDetails2];
               }
 
               else
@@ -108,13 +108,13 @@
                 v17 = 0;
               }
 
-              v12 = v23;
+              currentStatementPaymentsSum = v23;
             }
 
             else
             {
               v17 = 0;
-              v12 = v23;
+              currentStatementPaymentsSum = v23;
             }
           }
 

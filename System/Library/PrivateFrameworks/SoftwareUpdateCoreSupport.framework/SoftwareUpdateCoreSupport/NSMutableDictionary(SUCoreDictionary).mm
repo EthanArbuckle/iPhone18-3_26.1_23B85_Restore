@@ -11,17 +11,17 @@
   v8 = v7;
   if (v6 && v7)
   {
-    [a1 setObject:v6 forKey:v7];
+    [self setObject:v6 forKey:v7];
   }
 
   else if (!v7)
   {
     v9 = +[SUCoreLog sharedLogger];
-    v10 = [v9 oslog];
+    oslog = [v9 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [NSMutableDictionary(SUCoreDictionary) setSafeObject:v10 forKey:?];
+      [NSMutableDictionary(SUCoreDictionary) setSafeObject:oslog forKey:?];
     }
   }
 }

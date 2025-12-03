@@ -1,14 +1,14 @@
 @interface HMFMutableHTTPRequest
-- (HMFMutableHTTPRequest)initWithInternalRequest:(id)a3;
-- (HMFMutableHTTPRequest)initWithURL:(id)a3 method:(id)a4 body:(id)a5 timeoutInterval:(double)a6;
-- (id)responseWithStatusCode:(int64_t)a3;
-- (void)setBody:(id)a3;
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4;
+- (HMFMutableHTTPRequest)initWithInternalRequest:(id)request;
+- (HMFMutableHTTPRequest)initWithURL:(id)l method:(id)method body:(id)body timeoutInterval:(double)interval;
+- (id)responseWithStatusCode:(int64_t)code;
+- (void)setBody:(id)body;
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key;
 @end
 
 @implementation HMFMutableHTTPRequest
 
-- (HMFMutableHTTPRequest)initWithInternalRequest:(id)a3
+- (HMFMutableHTTPRequest)initWithInternalRequest:(id)request
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"Test"];
   v5 = [(HMFMutableHTTPRequest *)self initWithURL:v4 method:@"Test" body:0 timeoutInterval:0.0];
@@ -16,11 +16,11 @@
   return v5;
 }
 
-- (HMFMutableHTTPRequest)initWithURL:(id)a3 method:(id)a4 body:(id)a5 timeoutInterval:(double)a6
+- (HMFMutableHTTPRequest)initWithURL:(id)l method:(id)method body:(id)body timeoutInterval:(double)interval
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  methodCopy = method;
+  bodyCopy = body;
   v13 = objc_alloc_init(HMFHTTPRequestInternal);
   v18.receiver = self;
   v18.super_class = HMFMutableHTTPRequest;
@@ -28,42 +28,42 @@
 
   if (v14)
   {
-    v15 = [(HMFHTTPRequest *)v14 internal];
-    [v15 setURL:v10];
+    internal = [(HMFHTTPRequest *)v14 internal];
+    [internal setURL:lCopy];
 
-    v16 = [(HMFHTTPRequest *)v14 internal];
-    [v16 setMethod:v11];
+    internal2 = [(HMFHTTPRequest *)v14 internal];
+    [internal2 setMethod:methodCopy];
 
-    [(HMFMutableHTTPRequest *)v14 setBody:v12];
-    [(HMFHTTPRequest *)v14 setTimeoutInterval:a6];
+    [(HMFMutableHTTPRequest *)v14 setBody:bodyCopy];
+    [(HMFHTTPRequest *)v14 setTimeoutInterval:interval];
   }
 
   return v14;
 }
 
-- (id)responseWithStatusCode:(int64_t)a3
+- (id)responseWithStatusCode:(int64_t)code
 {
-  v5 = [(HMFHTTPRequest *)self internal];
-  v6 = [v5 responseWithStatusCode:a3];
+  internal = [(HMFHTTPRequest *)self internal];
+  v6 = [internal responseWithStatusCode:code];
 
   v7 = [[HMFHTTPResponse alloc] initWithRequest:self internalResponse:v6];
 
   return v7;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
-  v5 = [(HMFHTTPRequest *)self internal];
-  [v5 setBody:v4];
+  bodyCopy = body;
+  internal = [(HMFHTTPRequest *)self internal];
+  [internal setBody:bodyCopy];
 }
 
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMFHTTPRequest *)self internal];
-  [v8 setHeaderValue:v7 forHeaderKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(HMFHTTPRequest *)self internal];
+  [internal setHeaderValue:valueCopy forHeaderKey:keyCopy];
 }
 
 @end

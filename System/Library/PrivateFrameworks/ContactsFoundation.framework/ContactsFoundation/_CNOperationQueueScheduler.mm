@@ -1,17 +1,17 @@
 @interface _CNOperationQueueScheduler
-+ (id)operationWithQualityOfService:(unint64_t)a3 block:(id)a4;
++ (id)operationWithQualityOfService:(unint64_t)service block:(id)block;
 - (NSString)description;
-- (_CNOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)blockWithCurrentQualityOfServiceForBlock:(id)a3 ifAllowedForRequestedQualityOfService:(unint64_t)a4;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)_enqueueBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (_CNOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)blockWithCurrentQualityOfServiceForBlock:(id)block ifAllowedForRequestedQualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)_enqueueBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _CNOperationQueueScheduler
 
-- (_CNOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4
+- (_CNOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service
 {
   v12.receiver = self;
   v12.super_class = _CNOperationQueueScheduler;
@@ -22,17 +22,17 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    [(NSOperationQueue *)v6->_queue setMaxConcurrentOperationCount:a3];
-    if (a4 <= 2)
+    [(NSOperationQueue *)v6->_queue setMaxConcurrentOperationCount:count];
+    if (service <= 2)
     {
-      if (!a4)
+      if (!service)
       {
 LABEL_14:
         v10 = v6;
         goto LABEL_15;
       }
 
-      if (a4 == 2)
+      if (service == 2)
       {
         v9 = 9;
         goto LABEL_13;
@@ -41,7 +41,7 @@ LABEL_14:
 
     else
     {
-      switch(a4)
+      switch(service)
       {
         case 3uLL:
           v9 = 17;
@@ -72,41 +72,41 @@ LABEL_15:
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"width" unsignedInteger:{-[NSOperationQueue maxConcurrentOperationCount](self->_queue, "maxConcurrentOperationCount")}];
   v5 = [v3 appendName:@"blocks" unsignedInteger:{-[NSOperationQueue operationCount](self->_queue, "operationCount")}];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:a3 ifAllowedForRequestedQualityOfService:?];
-  [(_CNOperationQueueScheduler *)self _enqueueBlock:v6 qualityOfService:a4];
+  v6 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:block ifAllowedForRequestedQualityOfService:?];
+  [(_CNOperationQueueScheduler *)self _enqueueBlock:v6 qualityOfService:service];
 }
 
-- (void)_enqueueBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)_enqueueBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [objc_opt_class() operationWithQualityOfService:a4 block:v6];
+  blockCopy = block;
+  v7 = [objc_opt_class() operationWithQualityOfService:service block:blockCopy];
 
   [(NSOperationQueue *)self->_queue addOperation:v7];
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_alloc_init(CNOperationQueueSchedulerCancelationToken);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70___CNOperationQueueScheduler_performCancelableBlock_qualityOfService___block_invoke;
   aBlock[3] = &unk_1E6ED52C0;
-  v8 = v6;
+  v8 = blockCopy;
   v23 = v8;
   v9 = v7;
   v22 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v10 ifAllowedForRequestedQualityOfService:a4];
+  v11 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v10 ifAllowedForRequestedQualityOfService:service];
 
-  v12 = [objc_opt_class() operationWithQualityOfService:a4 block:v11];
+  v12 = [objc_opt_class() operationWithQualityOfService:service block:v11];
   objc_initWeak(&location, v12);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -122,13 +122,13 @@ LABEL_15:
   return v13;
 }
 
-- (id)blockWithCurrentQualityOfServiceForBlock:(id)a3 ifAllowedForRequestedQualityOfService:(unint64_t)a4
+- (id)blockWithCurrentQualityOfServiceForBlock:(id)block ifAllowedForRequestedQualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = _Block_copy(v6);
-  if (!a4 && !self->_isQualityOfServiceSpecified)
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
+  if (!service && !self->_isQualityOfServiceSpecified)
   {
-    v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, v6);
+    v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, blockCopy);
 
     v7 = v8;
   }
@@ -138,11 +138,11 @@ LABEL_15:
   return v9;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
+  blockCopy = block;
   v9 = objc_alloc_init(CNOperationQueueSchedulerCancelationToken);
-  v10 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v8 ifAllowedForRequestedQualityOfService:a5];
+  v10 = [(_CNOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:blockCopy ifAllowedForRequestedQualityOfService:service];
 
   v11 = +[CNScheduler globalAsyncScheduler];
   v17 = MEMORY[0x1E69E9820];
@@ -151,11 +151,11 @@ LABEL_15:
   v20 = &unk_1E6ED64C0;
   v12 = v9;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v23 = v10;
-  v24 = a5;
+  serviceCopy = service;
   v13 = v10;
-  v14 = [v11 afterDelay:&v17 performBlock:a3];
+  v14 = [v11 afterDelay:&v17 performBlock:delay];
 
   [(CNCancelationToken *)v12 addCancelable:v14, v17, v18, v19, v20];
   v15 = v12;
@@ -163,18 +163,18 @@ LABEL_15:
   return v12;
 }
 
-+ (id)operationWithQualityOfService:(unint64_t)a3 block:(id)a4
++ (id)operationWithQualityOfService:(unint64_t)service block:(id)block
 {
-  v5 = [MEMORY[0x1E696AAE0] blockOperationWithBlock:a4];
+  v5 = [MEMORY[0x1E696AAE0] blockOperationWithBlock:block];
   v6 = v5;
-  if (a3 - 2 >= 4)
+  if (service - 2 >= 4)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = 8 * (a3 - 2) + 9;
+    v7 = 8 * (service - 2) + 9;
   }
 
   if ([v5 qualityOfService] != v7)

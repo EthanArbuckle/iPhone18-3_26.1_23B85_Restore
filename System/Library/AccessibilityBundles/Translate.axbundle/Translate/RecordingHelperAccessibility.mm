@@ -1,16 +1,16 @@
 @interface RecordingHelperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityDidStartListening;
 - (void)_accessibilityDidStopListening;
 @end
 
 @implementation RecordingHelperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SequoiaTranslator.RecordingHelper" hasInstanceMethod:@"_accessibilityDidStartListening" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SequoiaTranslator.RecordingHelper" hasInstanceMethod:@"_accessibilityDidStopListening" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SequoiaTranslator.RecordingHelper" hasInstanceMethod:@"_accessibilityDidStartListening" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SequoiaTranslator.RecordingHelper" hasInstanceMethod:@"_accessibilityDidStopListening" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityDidStartListening

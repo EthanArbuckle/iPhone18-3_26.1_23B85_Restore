@@ -1,20 +1,20 @@
 @interface HIDUserDevice
-- (BOOL)handleReport:(id)a3 error:(id *)a4;
-- (BOOL)handleReport:(id)a3 withTimestamp:(unint64_t)a4 error:(id *)a5;
-- (HIDUserDevice)initWithProperties:(id)a3;
-- (id)propertyForKey:(id)a3;
+- (BOOL)handleReport:(id)report error:(id *)error;
+- (BOOL)handleReport:(id)report withTimestamp:(unint64_t)timestamp error:(id *)error;
+- (HIDUserDevice)initWithProperties:(id)properties;
+- (id)propertyForKey:(id)key;
 - (void)activate;
 - (void)dealloc;
-- (void)setCancelHandler:(id)a3;
-- (void)setGetReportHandler:(id)a3;
-- (void)setSetReportHandler:(id)a3;
+- (void)setCancelHandler:(id)handler;
+- (void)setGetReportHandler:(id)handler;
+- (void)setSetReportHandler:(id)handler;
 @end
 
 @implementation HIDUserDevice
 
-- (HIDUserDevice)initWithProperties:(id)a3
+- (HIDUserDevice)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v13.receiver = self;
   v13.super_class = HIDUserDevice;
   v5 = [(HIDUserDevice *)&v13 init];
@@ -23,11 +23,11 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"HIDUserDeviceCreateInactive"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"HIDUserDeviceCreateInactive"];
   if (v6)
   {
     v7 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"HIDUserDeviceCreateInactive"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"HIDUserDeviceCreateInactive"];
     [v8 isEqual:MEMORY[0x277CBEC38]];
   }
 
@@ -68,16 +68,16 @@ LABEL_6:
   [(HIDUserDevice *)&v5 dealloc];
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v3 = IOHIDUserDeviceCopyProperty(self->_device, a3);
+  v3 = IOHIDUserDeviceCopyProperty(self->_device, key);
 
   return v3;
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v4;
 
@@ -108,16 +108,16 @@ void __25__HIDUserDevice_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setGetReportHandler:(id)a3
+- (void)setGetReportHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_getReportHandler)
   {
     [HIDUserDevice setGetReportHandler:];
   }
 
-  v8 = v4;
-  v5 = _Block_copy(v4);
+  v8 = handlerCopy;
+  v5 = _Block_copy(handlerCopy);
   getReportHandler = self->_getReportHandler;
   self->_getReportHandler = v5;
 
@@ -125,16 +125,16 @@ void __25__HIDUserDevice_activate__block_invoke(uint64_t a1)
   IOHIDUserDeviceRegisterGetReportWithReturnLengthCallback();
 }
 
-- (void)setSetReportHandler:(id)a3
+- (void)setSetReportHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_setReportHandler)
   {
     [HIDUserDevice setSetReportHandler:];
   }
 
-  v8 = v4;
-  v5 = _Block_copy(v4);
+  v8 = handlerCopy;
+  v5 = _Block_copy(handlerCopy);
   setReportHandler = self->_setReportHandler;
   self->_setReportHandler = v5;
 
@@ -142,37 +142,37 @@ void __25__HIDUserDevice_activate__block_invoke(uint64_t a1)
   IOHIDUserDeviceRegisterSetReportCallback();
 }
 
-- (BOOL)handleReport:(id)a3 error:(id *)a4
+- (BOOL)handleReport:(id)report error:(id *)error
 {
   device = self->_device;
-  v7 = a3;
-  v8 = a3;
-  [v8 bytes];
-  [v8 length];
+  reportCopy = report;
+  reportCopy2 = report;
+  [reportCopy2 bytes];
+  [reportCopy2 length];
 
   v9 = IOHIDUserDeviceHandleReport();
   v10 = v9;
-  if (a4 && v9)
+  if (error && v9)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithIOReturn:v9];
+    *error = [MEMORY[0x277CCA9B8] errorWithIOReturn:v9];
   }
 
   return v10 == 0;
 }
 
-- (BOOL)handleReport:(id)a3 withTimestamp:(unint64_t)a4 error:(id *)a5
+- (BOOL)handleReport:(id)report withTimestamp:(unint64_t)timestamp error:(id *)error
 {
   device = self->_device;
-  v9 = a3;
-  v10 = a3;
-  v11 = [v10 bytes];
-  v12 = [v10 length];
+  reportCopy = report;
+  reportCopy2 = report;
+  bytes = [reportCopy2 bytes];
+  v12 = [reportCopy2 length];
 
-  v13 = IOHIDUserDeviceHandleReportWithTimeStamp(device, a4, v11, v12);
+  v13 = IOHIDUserDeviceHandleReportWithTimeStamp(device, timestamp, bytes, v12);
   v14 = v13;
-  if (a5 && v13)
+  if (error && v13)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithIOReturn:v13];
+    *error = [MEMORY[0x277CCA9B8] errorWithIOReturn:v13];
   }
 
   return v14 == 0;

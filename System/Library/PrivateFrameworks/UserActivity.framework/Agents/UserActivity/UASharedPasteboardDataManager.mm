@@ -1,31 +1,31 @@
 @interface UASharedPasteboardDataManager
 + (id)sharedInstance;
-- (BOOL)createTmpArchiveFileWithUUID:(id)a3;
-- (BOOL)directoryExistsAtPath:(id)a3;
-- (BOOL)fileExistsForUUID:(id)a3 inSubFolder:(id)a4;
+- (BOOL)createTmpArchiveFileWithUUID:(id)d;
+- (BOOL)directoryExistsAtPath:(id)path;
+- (BOOL)fileExistsForUUID:(id)d inSubFolder:(id)folder;
 - (UASharedPasteboardDataManager)init;
 - (id)createFileForLocalPasteboardBlob;
 - (id)createFileForRemotePasteboardBlob;
-- (id)createFileForUUID:(id)a3 inSubFolder:(id)a4;
-- (id)createFolderAtPath:(id)a3;
+- (id)createFileForUUID:(id)d inSubFolder:(id)folder;
+- (id)createFolderAtPath:(id)path;
 - (id)createSharedDataDirectory;
-- (id)fileURLForArchiveWithUUID:(id)a3;
+- (id)fileURLForArchiveWithUUID:(id)d;
 - (id)fileURLForCloneItems;
-- (id)fileURLForPasteboardItem:(id)a3;
+- (id)fileURLForPasteboardItem:(id)item;
 - (id)localPasteboardBlobForReading;
-- (id)readHandleForArchiveWithUUID:(id)a3;
+- (id)readHandleForArchiveWithUUID:(id)d;
 - (id)remotePasteboardBlobForReading;
 - (id)sharedDataPath;
-- (id)subDirForItem:(id)a3;
+- (id)subDirForItem:(id)item;
 - (void)cancelAllLocks;
 - (void)cleanupArchiveDir;
 - (void)cleanupCloneDir;
-- (void)cleanupForItem:(id)a3;
+- (void)cleanupForItem:(id)item;
 - (void)cleanupItemsDir;
-- (void)finishWritingArchiveForUUID:(id)a3;
-- (void)obtainLockForItem:(id)a3 completion:(id)a4;
-- (void)releaseLockForItem:(id)a3 withError:(id)a4;
-- (void)writeArchiveData:(id)a3 forItem:(id)a4;
+- (void)finishWritingArchiveForUUID:(id)d;
+- (void)obtainLockForItem:(id)item completion:(id)completion;
+- (void)releaseLockForItem:(id)item withError:(id)error;
+- (void)writeArchiveData:(id)data forItem:(id)item;
 @end
 
 @implementation UASharedPasteboardDataManager
@@ -50,7 +50,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UASharedPasteboardDataManager *)v2 createSharedDataDirectory];
+    createSharedDataDirectory = [(UASharedPasteboardDataManager *)v2 createSharedDataDirectory];
     v5 = objc_alloc_init(NSMutableDictionary);
     [(UASharedPasteboardDataManager *)v3 setTmpArchiveWriteFiles:v5];
 
@@ -60,13 +60,13 @@
     v7 = objc_alloc_init(NSMutableDictionary);
     [(UASharedPasteboardDataManager *)v3 setProviders:v7];
 
-    if (v4)
+    if (createSharedDataDirectory)
     {
       v8 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v12 = v4;
+        v12 = createSharedDataDirectory;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "[FILE MANAGER] ERROR creating shared pasteboard dir: %@", buf, 0xCu);
       }
     }
@@ -90,36 +90,36 @@
 - (id)createSharedDataDirectory
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
   v9 = 0;
-  [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v9];
+  [v3 createDirectoryAtPath:sharedDataPath withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v9];
   v5 = v9;
 
   v6 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(UASharedPasteboardDataManager *)self sharedDataPath];
+    sharedDataPath2 = [(UASharedPasteboardDataManager *)self sharedDataPath];
     *buf = 138412290;
-    v11 = v7;
+    v11 = sharedDataPath2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[FILE MANAGER] Shared Path: %@", buf, 0xCu);
   }
 
   return v5;
 }
 
-- (BOOL)fileExistsForUUID:(id)a3 inSubFolder:(id)a4
+- (BOOL)fileExistsForUUID:(id)d inSubFolder:(id)folder
 {
-  v6 = a4;
-  v7 = [a3 UUIDString];
-  if (v6)
+  folderCopy = folder;
+  uUIDString = [d UUIDString];
+  if (folderCopy)
   {
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    v8 = [folderCopy stringByAppendingPathComponent:uUIDString];
 
-    v7 = v8;
+    uUIDString = v8;
   }
 
-  v9 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v10 = [v9 stringByAppendingPathComponent:v7];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v10 = [sharedDataPath stringByAppendingPathComponent:uUIDString];
 
   v11 = +[NSFileManager defaultManager];
   v12 = [v11 fileExistsAtPath:v10];
@@ -127,25 +127,25 @@
   return v12;
 }
 
-- (id)createFileForUUID:(id)a3 inSubFolder:(id)a4
+- (id)createFileForUUID:(id)d inSubFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  folderCopy = folder;
   v8 = +[NSFileManager defaultManager];
-  v9 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v10 = [v8 fileExistsAtPath:v9];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v10 = [v8 fileExistsAtPath:sharedDataPath];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(UASharedPasteboardDataManager *)self createSharedDataDirectory];
-    if (v11)
+    createSharedDataDirectory = [(UASharedPasteboardDataManager *)self createSharedDataDirectory];
+    if (createSharedDataDirectory)
     {
-      v12 = v11;
+      uUIDString = createSharedDataDirectory;
       v13 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
         v28 = 138412290;
-        v29 = v12;
+        v29 = uUIDString;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "[FILE MANAGER] ERROR creating shared pasteboard dir: %@", &v28, 0xCu);
       }
 
@@ -155,39 +155,39 @@ LABEL_6:
     }
   }
 
-  if (![(UASharedPasteboardDataManager *)self directoryExistsAtPath:v7])
+  if (![(UASharedPasteboardDataManager *)self directoryExistsAtPath:folderCopy])
   {
-    v15 = [(UASharedPasteboardDataManager *)self createFolderAtPath:v7];
+    v15 = [(UASharedPasteboardDataManager *)self createFolderAtPath:folderCopy];
     if (!v15)
     {
-      v12 = sub_100001A30(@"pasteboard-server");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+      uUIDString = sub_100001A30(@"pasteboard-server");
+      if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_FAULT))
       {
         v28 = 138412290;
-        v29 = v7;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "[FILE MANAGER] Error creating subdir: %@", &v28, 0xCu);
+        v29 = folderCopy;
+        _os_log_impl(&_mh_execute_header, uUIDString, OS_LOG_TYPE_FAULT, "[FILE MANAGER] Error creating subdir: %@", &v28, 0xCu);
       }
 
       goto LABEL_6;
     }
   }
 
-  v12 = [v6 UUIDString];
-  if (v7)
+  uUIDString = [dCopy UUIDString];
+  if (folderCopy)
   {
-    v16 = [v7 stringByAppendingPathComponent:v12];
+    v16 = [folderCopy stringByAppendingPathComponent:uUIDString];
 
-    v12 = v16;
+    uUIDString = v16;
   }
 
-  v17 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v18 = [v17 stringByAppendingPathComponent:v12];
+  sharedDataPath2 = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v18 = [sharedDataPath2 stringByAppendingPathComponent:uUIDString];
 
   v19 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v28 = 138412546;
-    v29 = v6;
+    v29 = dCopy;
     v30 = 2112;
     v31 = v18;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "[FILE MANAGER] Path for file UUID: %@ -> '%@'", &v28, 0x16u);
@@ -232,25 +232,25 @@ LABEL_21:
   return v14;
 }
 
-- (BOOL)directoryExistsAtPath:(id)a3
+- (BOOL)directoryExistsAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  pathCopy = path;
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v6 = [sharedDataPath stringByAppendingPathComponent:pathCopy];
 
   v9 = 0;
   v7 = +[NSFileManager defaultManager];
-  LOBYTE(v4) = [v7 fileExistsAtPath:v6 isDirectory:&v9];
+  LOBYTE(pathCopy) = [v7 fileExistsAtPath:v6 isDirectory:&v9];
 
   LOBYTE(v7) = v9;
-  return v4 & v7;
+  return pathCopy & v7;
 }
 
-- (id)createFolderAtPath:(id)a3
+- (id)createFolderAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  pathCopy = path;
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v6 = [sharedDataPath stringByAppendingPathComponent:pathCopy];
 
   v7 = +[NSFileManager defaultManager];
   v19 = 0;
@@ -311,23 +311,23 @@ LABEL_7:
 
 - (id)createFileForLocalPasteboardBlob
 {
-  v3 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
+  currentLocalBlobPath = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
 
-  if (!v3)
+  if (!currentLocalBlobPath)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 stringForKey:@"kLocalPasteboardBlobName"];
     [(UASharedPasteboardDataManager *)self setCurrentLocalBlobPath:v5];
   }
 
-  v6 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
+  currentLocalBlobPath2 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
 
-  if (v6)
+  if (currentLocalBlobPath2)
   {
-    v7 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
+    currentLocalBlobPath3 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
     v8 = +[NSFileManager defaultManager];
     v23 = 0;
-    [v8 removeItemAtPath:v7 error:&v23];
+    [v8 removeItemAtPath:currentLocalBlobPath3 error:&v23];
     v9 = v23;
 
     v10 = sub_100001A30(@"pasteboard-server");
@@ -337,7 +337,7 @@ LABEL_7:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v25 = v7;
+        v25 = currentLocalBlobPath3;
         v26 = 2114;
         v27 = v9;
         v12 = "[FILE MANAGER] Failed to remove item at path: %{public}@ / %{public}@";
@@ -352,7 +352,7 @@ LABEL_9:
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v7;
+      v25 = currentLocalBlobPath3;
       v12 = "[FILE MANAGER] Removed item at path: %{public}@";
       v13 = v11;
       v14 = OS_LOG_TYPE_DEFAULT;
@@ -398,12 +398,12 @@ LABEL_9:
 
 - (id)localPasteboardBlobForReading
 {
-  v3 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
+  currentLocalBlobPath = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
 
-  if (v3)
+  if (currentLocalBlobPath)
   {
-    v4 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
-    v5 = [NSFileHandle fileHandleForReadingAtPath:v4];
+    currentLocalBlobPath2 = [(UASharedPasteboardDataManager *)self currentLocalBlobPath];
+    v5 = [NSFileHandle fileHandleForReadingAtPath:currentLocalBlobPath2];
   }
 
   else
@@ -416,23 +416,23 @@ LABEL_9:
 
 - (id)createFileForRemotePasteboardBlob
 {
-  v3 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
+  currentRemoteBlobPath = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
 
-  if (!v3)
+  if (!currentRemoteBlobPath)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 stringForKey:@"kRemotePasteboardBlobName"];
     [(UASharedPasteboardDataManager *)self setCurrentRemoteBlobPath:v5];
   }
 
-  v6 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
+  currentRemoteBlobPath2 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
 
-  if (v6)
+  if (currentRemoteBlobPath2)
   {
-    v7 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
+    currentRemoteBlobPath3 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
     v8 = +[NSFileManager defaultManager];
     v23 = 0;
-    [v8 removeItemAtPath:v7 error:&v23];
+    [v8 removeItemAtPath:currentRemoteBlobPath3 error:&v23];
     v9 = v23;
 
     v10 = sub_100001A30(@"pasteboard-server");
@@ -442,7 +442,7 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v25 = v7;
+        v25 = currentRemoteBlobPath3;
         v26 = 2114;
         v27 = v9;
         v12 = "[FILE MANAGER] Failed to remove item at path: %{public}@ / %{public}@";
@@ -457,7 +457,7 @@ LABEL_9:
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v7;
+      v25 = currentRemoteBlobPath3;
       v12 = "[FILE MANAGER] Removed item at path: %{public}@";
       v13 = v11;
       v14 = OS_LOG_TYPE_DEFAULT;
@@ -503,12 +503,12 @@ LABEL_9:
 
 - (id)remotePasteboardBlobForReading
 {
-  v3 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
+  currentRemoteBlobPath = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
 
-  if (v3)
+  if (currentRemoteBlobPath)
   {
-    v4 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
-    v5 = [NSFileHandle fileHandleForReadingAtPath:v4];
+    currentRemoteBlobPath2 = [(UASharedPasteboardDataManager *)self currentRemoteBlobPath];
+    v5 = [NSFileHandle fileHandleForReadingAtPath:currentRemoteBlobPath2];
   }
 
   else
@@ -519,10 +519,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)subDirForItem:(id)a3
+- (id)subDirForItem:(id)item
 {
-  v3 = [a3 UUIDString];
-  v4 = [NSString stringWithFormat:@"items/%@/", v3];
+  uUIDString = [item UUIDString];
+  v4 = [NSString stringWithFormat:@"items/%@/", uUIDString];
 
   return v4;
 }
@@ -530,21 +530,21 @@ LABEL_9:
 - (id)fileURLForCloneItems
 {
   v2 = +[UASharedPasteboardDataManager sharedInstance];
-  v3 = [v2 sharedDataPath];
-  v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
+  sharedDataPath = [v2 sharedDataPath];
+  v4 = [NSURL fileURLWithPath:sharedDataPath isDirectory:1];
 
   v5 = [v4 URLByAppendingPathComponent:@"type-clone"];
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  LOBYTE(v4) = [v6 fileExistsAtPath:v7];
+  path = [v5 path];
+  LOBYTE(v4) = [v6 fileExistsAtPath:path];
 
   if ((v4 & 1) == 0)
   {
     v8 = +[NSFileManager defaultManager];
-    v9 = [v5 path];
+    path2 = [v5 path];
     v13 = 0;
-    [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v13];
+    [v8 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v13];
     v10 = v13;
 
     if (v10)
@@ -562,50 +562,50 @@ LABEL_9:
   return v5;
 }
 
-- (id)fileURLForPasteboardItem:(id)a3
+- (id)fileURLForPasteboardItem:(id)item
 {
-  v4 = [(UASharedPasteboardDataManager *)self subDirForItem:a3];
-  v5 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v4 = [(UASharedPasteboardDataManager *)self subDirForItem:item];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v6 = [sharedDataPath stringByAppendingPathComponent:v4];
 
   v7 = [NSURL URLWithString:v6];
 
   return v7;
 }
 
-- (id)fileURLForArchiveWithUUID:(id)a3
+- (id)fileURLForArchiveWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v6 = [v5 stringByAppendingPathComponent:@"archives"];
+  dCopy = d;
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v6 = [sharedDataPath stringByAppendingPathComponent:@"archives"];
 
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  v8 = [v6 stringByAppendingPathComponent:uUIDString];
   v9 = [NSURL URLWithString:v8];
 
   return v9;
 }
 
-- (id)readHandleForArchiveWithUUID:(id)a3
+- (id)readHandleForArchiveWithUUID:(id)d
 {
-  v3 = [(UASharedPasteboardDataManager *)self fileURLForArchiveWithUUID:a3];
-  v4 = [v3 path];
-  v5 = [NSFileHandle fileHandleForReadingAtPath:v4];
+  v3 = [(UASharedPasteboardDataManager *)self fileURLForArchiveWithUUID:d];
+  path = [v3 path];
+  v5 = [NSFileHandle fileHandleForReadingAtPath:path];
 
   return v5;
 }
 
-- (BOOL)createTmpArchiveFileWithUUID:(id)a3
+- (BOOL)createTmpArchiveFileWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self createFileForUUID:v4 inSubFolder:@"archives"];
+  dCopy = d;
+  v5 = [(UASharedPasteboardDataManager *)self createFileForUUID:dCopy inSubFolder:@"archives"];
   if (v5 && ([NSFileHandle fileHandleForWritingAtPath:v5], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
-    v9 = [v4 UUIDString];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    tmpArchiveWriteFiles = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
+    uUIDString = [dCopy UUIDString];
+    [tmpArchiveWriteFiles setObject:v7 forKeyedSubscript:uUIDString];
 
     v10 = 1;
   }
@@ -618,29 +618,29 @@ LABEL_9:
   return v10;
 }
 
-- (void)writeArchiveData:(id)a3 forItem:(id)a4
+- (void)writeArchiveData:(id)data forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
-  v9 = [v7 UUIDString];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  dataCopy = data;
+  itemCopy = item;
+  tmpArchiveWriteFiles = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
+  uUIDString = [itemCopy UUIDString];
+  v10 = [tmpArchiveWriteFiles objectForKeyedSubscript:uUIDString];
 
   if (v10)
   {
     v11 = v10;
     objc_sync_enter(v11);
     v16 = 0;
-    v12 = [v11 writeData:v6 error:&v16];
+    v12 = [v11 writeData:dataCopy error:&v16];
     v13 = v16;
     if ((v12 & 1) == 0)
     {
       v14 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v7 UUIDString];
+        uUIDString2 = [itemCopy UUIDString];
         *buf = 138543618;
-        v18 = v15;
+        v18 = uUIDString2;
         v19 = 2114;
         v20 = v13;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[File Manager] Error writting data for %{public}@: %{public}@", buf, 0x16u);
@@ -651,12 +651,12 @@ LABEL_9:
   }
 }
 
-- (void)finishWritingArchiveForUUID:(id)a3
+- (void)finishWritingArchiveForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
-  v6 = [v4 UUIDString];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dCopy = d;
+  tmpArchiveWriteFiles = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
+  uUIDString = [dCopy UUIDString];
+  v7 = [tmpArchiveWriteFiles objectForKeyedSubscript:uUIDString];
 
   if (v7)
   {
@@ -664,63 +664,63 @@ LABEL_9:
     objc_sync_enter(v8);
     [v8 synchronizeFile];
     [v8 closeFile];
-    v9 = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
-    v10 = [v4 UUIDString];
-    [v9 removeObjectForKey:v10];
+    tmpArchiveWriteFiles2 = [(UASharedPasteboardDataManager *)self tmpArchiveWriteFiles];
+    uUIDString2 = [dCopy UUIDString];
+    [tmpArchiveWriteFiles2 removeObjectForKey:uUIDString2];
 
     objc_sync_exit(v8);
   }
 }
 
-- (void)obtainLockForItem:(id)a3 completion:(id)a4
+- (void)obtainLockForItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UASharedPasteboardDataManager *)self subDirForItem:v7];
+  completionCopy = completion;
+  itemCopy = item;
+  v8 = [(UASharedPasteboardDataManager *)self subDirForItem:itemCopy];
   v9 = [(UASharedPasteboardDataManager *)self createFolderAtPath:v8];
   v10 = [NSURL fileURLWithPath:v9 isDirectory:1];
   v11 = [[UASharedPasteboardFileProvider alloc] initWithURL:v10];
-  v12 = [(UASharedPasteboardDataManager *)self providers];
-  [v12 setObject:v11 forKeyedSubscript:v7];
+  providers = [(UASharedPasteboardDataManager *)self providers];
+  [providers setObject:v11 forKeyedSubscript:itemCopy];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100015850;
   v14[3] = &unk_1000C4E48;
-  v15 = v6;
-  v13 = v6;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [NSFileCoordinator _addFileProvider:v11 completionHandler:v14];
 }
 
-- (void)releaseLockForItem:(id)a3 withError:(id)a4
+- (void)releaseLockForItem:(id)item withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  errorCopy = error;
   v8 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [itemCopy UUIDString];
     v15 = 138412290;
-    v16 = v9;
+    v16 = uUIDString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[File Manager] Releasing lock for item %@", &v15, 0xCu);
   }
 
-  v10 = [(UASharedPasteboardDataManager *)self providers];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  providers = [(UASharedPasteboardDataManager *)self providers];
+  v11 = [providers objectForKeyedSubscript:itemCopy];
 
   if (v11)
   {
-    [v11 unlockWithError:v7];
+    [v11 unlockWithError:errorCopy];
     [NSFileCoordinator _removeFileProvider:v11];
-    v12 = [(UASharedPasteboardDataManager *)self providers];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    providers2 = [(UASharedPasteboardDataManager *)self providers];
+    [providers2 setObject:0 forKeyedSubscript:itemCopy];
 
     v13 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v6 UUIDString];
+      uUIDString2 = [itemCopy UUIDString];
       v15 = 138412290;
-      v16 = v14;
+      v16 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[File Manager] Released lock for item %@", &v15, 0xCu);
     }
   }
@@ -740,10 +740,10 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UASharedPasteboardDataManager *)self providers];
-  v6 = [v5 allValues];
+  providers = [(UASharedPasteboardDataManager *)self providers];
+  allValues = [providers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -754,7 +754,7 @@ LABEL_9:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -762,31 +762,31 @@ LABEL_9:
         [NSFileCoordinator _removeFileProvider:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(UASharedPasteboardDataManager *)self providers];
-  [v12 removeAllObjects];
+  providers2 = [(UASharedPasteboardDataManager *)self providers];
+  [providers2 removeAllObjects];
 }
 
-- (void)cleanupForItem:(id)a3
+- (void)cleanupForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v6 = [v5 stringByAppendingPathComponent:@"items"];
+  itemCopy = item;
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v6 = [sharedDataPath stringByAppendingPathComponent:@"items"];
 
   if (v6)
   {
-    v7 = [v4 UUIDString];
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    uUIDString = [itemCopy UUIDString];
+    v8 = [v6 stringByAppendingPathComponent:uUIDString];
 
     v9 = [[NSFileCoordinator alloc] initWithFilePresenter:0];
     v10 = [NSURL fileURLWithPath:v8];
-    v11 = [(UASharedPasteboardDataManager *)self lockTokens];
-    v12 = [v11 objectForKeyedSubscript:v4];
+    lockTokens = [(UASharedPasteboardDataManager *)self lockTokens];
+    v12 = [lockTokens objectForKeyedSubscript:itemCopy];
 
     v13 = sub_100001A30(@"pasteboard-server");
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
@@ -795,7 +795,7 @@ LABEL_9:
       if (v14)
       {
         *buf = 138543362;
-        v30 = v4;
+        v30 = itemCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Obtaining write lock to delete file for item: %{public}@", buf, 0xCu);
       }
 
@@ -804,7 +804,7 @@ LABEL_9:
       v25[1] = 3221225472;
       v25[2] = sub_100015FB0;
       v25[3] = &unk_1000C4E70;
-      v26 = v4;
+      v26 = itemCopy;
       [v9 coordinateWritingItemAtURL:v10 options:1 error:&v27 byAccessor:v25];
       v22 = v27;
       if (v22)
@@ -853,14 +853,14 @@ LABEL_19:
     else if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v30 = v4;
+      v30 = itemCopy;
       v19 = "Deleted file for item: %{public}@";
       v20 = v18;
       v21 = OS_LOG_TYPE_INFO;
       goto LABEL_19;
     }
 
-    [(UASharedPasteboardDataManager *)self releaseLockForItem:v4];
+    [(UASharedPasteboardDataManager *)self releaseLockForItem:itemCopy];
 LABEL_21:
 
     goto LABEL_22;
@@ -878,8 +878,8 @@ LABEL_22:
 
 - (void)cleanupArchiveDir
 {
-  v2 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"archives"];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v3 = [sharedDataPath stringByAppendingPathComponent:@"archives"];
 
   if (v3)
   {
@@ -959,8 +959,8 @@ LABEL_22:
 
 - (void)cleanupItemsDir
 {
-  v3 = [(UASharedPasteboardDataManager *)self sharedDataPath];
-  v4 = [v3 stringByAppendingPathComponent:@"items"];
+  sharedDataPath = [(UASharedPasteboardDataManager *)self sharedDataPath];
+  v4 = [sharedDataPath stringByAppendingPathComponent:@"items"];
 
   v5 = +[NSFileManager defaultManager];
   v36 = 0;
@@ -971,7 +971,7 @@ LABEL_22:
   if (!v7)
   {
     v27 = v8;
-    v29 = self;
+    selfCopy = self;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -1006,8 +1006,8 @@ LABEL_22:
           v17 = [NSURL URLWithString:v13 relativeToURL:v16];
 
           v18 = [[NSUUID alloc] initWithUUIDString:v13];
-          v19 = [(UASharedPasteboardDataManager *)v29 lockTokens];
-          v20 = [v19 objectForKeyedSubscript:v18];
+          lockTokens = [(UASharedPasteboardDataManager *)selfCopy lockTokens];
+          v20 = [lockTokens objectForKeyedSubscript:v18];
 
           v21 = sub_100001A30(@"pasteboard-server");
           v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
@@ -1067,12 +1067,12 @@ LABEL_22:
 
 - (void)cleanupCloneDir
 {
-  v2 = [(UASharedPasteboardDataManager *)self fileURLForCloneItems];
-  v3 = [v2 path];
+  fileURLForCloneItems = [(UASharedPasteboardDataManager *)self fileURLForCloneItems];
+  path = [fileURLForCloneItems path];
 
   v4 = +[NSFileManager defaultManager];
   v27 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v27];
+  v5 = [v4 contentsOfDirectoryAtPath:path error:&v27];
   v6 = v27;
 
   v7 = [[NSFileCoordinator alloc] initWithFilePresenter:0];
@@ -1106,7 +1106,7 @@ LABEL_22:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Attempting to delete copied item: %{private}@", buf, 0xCu);
           }
 
-          v14 = [NSURL fileURLWithPath:v3];
+          v14 = [NSURL fileURLWithPath:path];
           v15 = [NSURL URLWithString:v12 relativeToURL:v14];
 
           v16 = sub_100001A30(@"pasteboard-server");

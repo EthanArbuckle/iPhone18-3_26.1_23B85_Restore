@@ -1,56 +1,56 @@
 @interface _UIShareInvitationAddParticipantController
-+ (id)_subtitleTextForRecord:(id)a3 font:(id)a4 boldFond:(id)a5;
-+ (id)_titleTextForRecord:(id)a3 font:(id)a4 boldFond:(id)a5;
-+ (id)contactForMailAddress:(id)a3;
-+ (id)contactForMailAddressOrPhoneNumber:(id)a3;
-+ (id)contactForPhoneNumber:(id)a3;
++ (id)_subtitleTextForRecord:(id)record font:(id)font boldFond:(id)fond;
++ (id)_titleTextForRecord:(id)record font:(id)font boldFond:(id)fond;
++ (id)contactForMailAddress:(id)address;
++ (id)contactForMailAddressOrPhoneNumber:(id)number;
++ (id)contactForPhoneNumber:(id)number;
 + (id)contactStore;
-+ (void)_applyBoldFont:(id)a3 toPartialMatches:(id)a4 inAttributedString:(id)a5;
++ (void)_applyBoldFont:(id)font toPartialMatches:(id)matches inAttributedString:(id)string;
 - (_UIContactSearchArrayController)searchController;
-- (_UIShareInvitationAddParticipantController)initWithCurrentAddresses:(id)a3;
+- (_UIShareInvitationAddParticipantController)initWithCurrentAddresses:(id)addresses;
 - (id)cancelButton;
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4;
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address;
 - (id)finishAndReturnParticipants;
 - (id)sendButton;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateSendButton;
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5;
-- (void)cancelAction:(id)a3;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)continueAction:(id)a3;
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences;
+- (void)cancelAction:(id)action;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)continueAction:(id)action;
 - (void)dealloc;
-- (void)startSearchingText:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)startSearchingText:(id)text;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateOtherRecipients;
-- (void)updateSearchResults:(id)a3 changes:(id)a4;
+- (void)updateSearchResults:(id)results changes:(id)changes;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation _UIShareInvitationAddParticipantController
 
-- (_UIShareInvitationAddParticipantController)initWithCurrentAddresses:(id)a3
+- (_UIShareInvitationAddParticipantController)initWithCurrentAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v97.receiver = self;
   v97.super_class = _UIShareInvitationAddParticipantController;
   v5 = [(_UIShareInvitationAddParticipantController *)&v97 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [(_UIShareInvitationAddParticipantController *)v5 view];
-    v96 = v4;
-    if (v4)
+    view = [(_UIShareInvitationAddParticipantController *)v5 view];
+    v96 = addressesCopy;
+    if (addressesCopy)
     {
-      v8 = v4;
+      v8 = addressesCopy;
     }
 
     else
@@ -60,8 +60,8 @@
 
     [(_UIShareInvitationAddParticipantController *)v6 setCurrentParticipants:v8];
     v9 = [CNComposeRecipientTextView alloc];
-    v10 = [(_UIShareInvitationAddParticipantController *)v6 view];
-    [v10 bounds];
+    view2 = [(_UIShareInvitationAddParticipantController *)v6 view];
+    [view2 bounds];
     v11 = [v9 initWithFrame:?];
 
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -74,120 +74,120 @@
     v14 = +[UIColor labelColor];
     [v11 setTypingTextColor:v14];
 
-    [v7 addSubview:v11];
+    [view addSubview:v11];
     [(_UIShareInvitationAddParticipantController *)v6 setAddressView:v11];
     v15 = objc_alloc_init(UILabel);
     [(_UIShareInvitationAddParticipantController *)v6 setInfoLabel:v15];
 
-    v16 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    infoLabel = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v17 = [UIFont systemFontOfSize:17.0 weight:UIFontWeightRegular];
-    v18 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v18 setFont:v17];
+    infoLabel2 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel2 setFont:v17];
 
     v19 = +[UIColor secondaryLabelColor];
-    v20 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v20 setTextColor:v19];
+    infoLabel3 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel3 setTextColor:v19];
 
-    v21 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v21 setTextAlignment:1];
+    infoLabel4 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel4 setTextAlignment:1];
 
-    v22 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v22 setText:@"Only people you add will have access."];
+    infoLabel5 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel5 setText:@"Only people you add will have access."];
 
-    v23 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v23 setNumberOfLines:0];
+    infoLabel6 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [infoLabel6 setNumberOfLines:0];
 
-    v24 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
-    [v7 addSubview:v24];
+    infoLabel7 = [(_UIShareInvitationAddParticipantController *)v6 infoLabel];
+    [view addSubview:infoLabel7];
 
     v25 = [[UITableViewController alloc] initWithStyle:0];
     [(_UIShareInvitationAddParticipantController *)v6 setSearchResultTableViewController:v25];
 
-    v26 = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
-    [(_UIShareInvitationAddParticipantController *)v6 addChildViewController:v26];
+    searchResultTableViewController = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
+    [(_UIShareInvitationAddParticipantController *)v6 addChildViewController:searchResultTableViewController];
 
-    v27 = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
-    v28 = [v27 tableView];
+    searchResultTableViewController2 = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
+    tableView = [searchResultTableViewController2 tableView];
 
-    [(_UIShareInvitationAddParticipantController *)v6 setSearchResultTable:v28];
-    v29 = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
-    [v29 didMoveToParentViewController:v6];
+    [(_UIShareInvitationAddParticipantController *)v6 setSearchResultTable:tableView];
+    searchResultTableViewController3 = [(_UIShareInvitationAddParticipantController *)v6 searchResultTableViewController];
+    [searchResultTableViewController3 didMoveToParentViewController:v6];
 
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v28 setAlpha:0.0];
-    [v28 setDelegate:v6];
-    [v28 setDataSource:v6];
-    [v28 registerClass:objc_opt_class() forCellReuseIdentifier:@"_UIShareInvitationParticipantTableViewCellIdentifier"];
-    [v7 addSubview:v28];
-    v30 = [v11 heightAnchor];
-    v31 = [v30 constraintEqualToConstant:49.5];
+    [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [tableView setAlpha:0.0];
+    [tableView setDelegate:v6];
+    [tableView setDataSource:v6];
+    [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"_UIShareInvitationParticipantTableViewCellIdentifier"];
+    [view addSubview:tableView];
+    heightAnchor = [v11 heightAnchor];
+    v31 = [heightAnchor constraintEqualToConstant:49.5];
     [(_UIShareInvitationAddParticipantController *)v6 setAddressHeightConstraint:v31];
 
     v32 = objc_opt_new();
-    v33 = [(_UIShareInvitationAddParticipantController *)v6 view];
-    [v33 addLayoutGuide:v32];
+    view3 = [(_UIShareInvitationAddParticipantController *)v6 view];
+    [view3 addLayoutGuide:v32];
 
-    v95 = v7;
-    v34 = [v7 safeAreaLayoutGuide];
-    v90 = [v11 topAnchor];
-    v89 = [v34 topAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89];
+    v95 = view;
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    topAnchor = [v11 topAnchor];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v88 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v100[0] = v88;
-    v87 = [v11 bottomAnchor];
-    v86 = [v28 topAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    bottomAnchor = [v11 bottomAnchor];
+    topAnchor3 = [tableView topAnchor];
+    v85 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
     v100[1] = v85;
-    v84 = [v11 leadingAnchor];
-    v83 = [v34 leadingAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    leadingAnchor = [v11 leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v82 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v100[2] = v82;
-    v81 = [v11 trailingAnchor];
-    v80 = [v34 trailingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    trailingAnchor = [v11 trailingAnchor];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v79 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v100[3] = v79;
-    v78 = [v28 bottomAnchor];
-    v77 = [v34 bottomAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77];
+    bottomAnchor2 = [tableView bottomAnchor];
+    bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
+    v76 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v100[4] = v76;
-    v75 = [(_UIShareInvitationAddParticipantController *)v6 addressHeightConstraint];
-    v100[5] = v75;
-    v74 = [v28 leadingAnchor];
-    v73 = [v34 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    addressHeightConstraint = [(_UIShareInvitationAddParticipantController *)v6 addressHeightConstraint];
+    v100[5] = addressHeightConstraint;
+    leadingAnchor3 = [tableView leadingAnchor];
+    leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+    v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v100[6] = v72;
-    v93 = v28;
-    v71 = [v28 trailingAnchor];
-    v70 = [v34 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    v93 = tableView;
+    trailingAnchor3 = [tableView trailingAnchor];
+    trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+    v69 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v100[7] = v69;
-    v68 = [(UILabel *)v6->_infoLabel widthAnchor];
-    v67 = [v34 widthAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67 multiplier:1.0 constant:-64.0];
+    widthAnchor = [(UILabel *)v6->_infoLabel widthAnchor];
+    widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+    v66 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0 constant:-64.0];
     v100[8] = v66;
-    v65 = [(UILabel *)v6->_infoLabel centerXAnchor];
-    v64 = [v34 centerXAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    centerXAnchor = [(UILabel *)v6->_infoLabel centerXAnchor];
+    centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+    v63 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v100[9] = v63;
-    v62 = [v32 topAnchor];
+    topAnchor4 = [v32 topAnchor];
     v94 = v11;
-    v61 = [v11 bottomAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    bottomAnchor4 = [v11 bottomAnchor];
+    v60 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4];
     v100[10] = v60;
-    v59 = [v32 heightAnchor];
-    v91 = v34;
-    v35 = [v34 heightAnchor];
-    v36 = [v59 constraintEqualToAnchor:v35 multiplier:0.340000004];
+    heightAnchor2 = [v32 heightAnchor];
+    v91 = safeAreaLayoutGuide;
+    heightAnchor3 = [safeAreaLayoutGuide heightAnchor];
+    v36 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 multiplier:0.340000004];
     v100[11] = v36;
-    v37 = [(UILabel *)v6->_infoLabel topAnchor];
-    v38 = [v32 bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    topAnchor5 = [(UILabel *)v6->_infoLabel topAnchor];
+    bottomAnchor5 = [v32 bottomAnchor];
+    v39 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5];
     v100[12] = v39;
-    v40 = [(UILabel *)v6->_infoLabel topAnchor];
+    topAnchor6 = [(UILabel *)v6->_infoLabel topAnchor];
     v92 = v32;
-    v41 = [v32 centerYAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    centerYAnchor = [v32 centerYAnchor];
+    v42 = [topAnchor6 constraintEqualToAnchor:centerYAnchor];
     v100[13] = v42;
     v43 = [NSArray arrayWithObjects:v100 count:14];
     [NSLayoutConstraint activateConstraints:v43];
@@ -209,25 +209,25 @@
 
     v99 = v46;
     v51 = [NSArray arrayWithObjects:&v99 count:1];
-    v52 = [(_UIShareInvitationAddParticipantController *)v6 navigationItem];
-    [v52 setLeftBarButtonItems:v51];
+    navigationItem = [(_UIShareInvitationAddParticipantController *)v6 navigationItem];
+    [navigationItem setLeftBarButtonItems:v51];
 
     v98 = v50;
     v53 = [NSArray arrayWithObjects:&v98 count:1];
-    v54 = [(_UIShareInvitationAddParticipantController *)v6 navigationItem];
-    [v54 setRightBarButtonItems:v53];
+    navigationItem2 = [(_UIShareInvitationAddParticipantController *)v6 navigationItem];
+    [navigationItem2 setRightBarButtonItems:v53];
 
     [(_UIShareInvitationAddParticipantController *)v6 _updateSendButton];
     [(_UIShareInvitationAddParticipantController *)v6 updateOtherRecipients];
     v55 = +[UIColor systemBackgroundColor];
-    v56 = [(_UIShareInvitationAddParticipantController *)v6 view];
-    [v56 setBackgroundColor:v55];
+    view4 = [(_UIShareInvitationAddParticipantController *)v6 view];
+    [view4 setBackgroundColor:v55];
 
     v57 = [[CNMonogrammer alloc] initWithStyle:0 diameter:40.0];
     [(_UIShareInvitationAddParticipantController *)v6 setMonogrammer:v57];
 
     [v94 becomeFirstResponder];
-    v4 = v96;
+    addressesCopy = v96;
   }
 
   return v6;
@@ -244,25 +244,25 @@
 
 - (id)sendButton
 {
-  v2 = [(_UIShareInvitationAddParticipantController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
+  navigationItem = [(_UIShareInvitationAddParticipantController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  return v3;
+  return rightBarButtonItem;
 }
 
 - (id)cancelButton
 {
-  v2 = [(_UIShareInvitationAddParticipantController *)self navigationItem];
-  v3 = [v2 leftBarButtonItem];
+  navigationItem = [(_UIShareInvitationAddParticipantController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-  return v3;
+  return leftBarButtonItem;
 }
 
 - (void)_updateSendButton
 {
-  v12 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v7 = [v12 recipients];
-  v8 = [v7 count];
+  addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
+  recipients = [addressView recipients];
+  v8 = [recipients count];
   if (v8)
   {
     v9 = 0;
@@ -271,8 +271,8 @@
 
   else
   {
-    v2 = [(_UIShareInvitationAddParticipantController *)self addressView];
-    v3 = [v2 text];
+    addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
+    text = [addressView2 text];
     if (IMStringIsEmail())
     {
       v9 = 0;
@@ -281,15 +281,15 @@
 
     else
     {
-      v4 = [(_UIShareInvitationAddParticipantController *)self addressView];
-      v5 = [v4 text];
+      addressView3 = [(_UIShareInvitationAddParticipantController *)self addressView];
+      text2 = [addressView3 text];
       IsPhoneNumber = IMStringIsPhoneNumber();
       v9 = 1;
     }
   }
 
-  v11 = [(_UIShareInvitationAddParticipantController *)self sendButton];
-  [v11 setEnabled:IsPhoneNumber];
+  sendButton = [(_UIShareInvitationAddParticipantController *)self sendButton];
+  [sendButton setEnabled:IsPhoneNumber];
 
   if (v9)
   {
@@ -302,29 +302,29 @@
 
 - (id)finishAndReturnParticipants
 {
-  v3 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  [v3 resignFirstResponder];
+  addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
+  [addressView resignFirstResponder];
 
-  v4 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  [v4 finishEnteringRecipient];
+  addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
+  [addressView2 finishEnteringRecipient];
 
-  v5 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v6 = [v5 uncommentedAddresses];
+  addressView3 = [(_UIShareInvitationAddParticipantController *)self addressView];
+  uncommentedAddresses = [addressView3 uncommentedAddresses];
 
-  return v6;
+  return uncommentedAddresses;
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v3 = [(_UIShareInvitationAddParticipantController *)self completion];
-  v3[2](v3, 1, &__NSArray0__struct);
+  completion = [(_UIShareInvitationAddParticipantController *)self completion];
+  completion[2](completion, 1, &__NSArray0__struct);
 }
 
-- (void)continueAction:(id)a3
+- (void)continueAction:(id)action
 {
-  v5 = [(_UIShareInvitationAddParticipantController *)self finishAndReturnParticipants];
-  v4 = [(_UIShareInvitationAddParticipantController *)self completion];
-  (v4)[2](v4, 0, v5);
+  finishAndReturnParticipants = [(_UIShareInvitationAddParticipantController *)self finishAndReturnParticipants];
+  completion = [(_UIShareInvitationAddParticipantController *)self completion];
+  (completion)[2](completion, 0, finishAndReturnParticipants);
 }
 
 - (void)viewDidLayoutSubviews
@@ -336,40 +336,40 @@
   v3 = +[UIColor secondaryLabelColor];
   v16[0] = v3;
   v15[1] = NSFontAttributeName;
-  v4 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v5 = [v4 textView];
-  v6 = [v5 font];
-  v16[1] = v6;
+  addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
+  textView = [addressView textView];
+  font = [textView font];
+  v16[1] = font;
   v7 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v8 = [NSAttributedString alloc];
-  v9 = [(_UIShareInvitationAddParticipantController *)self addressView];
+  addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
   v10 = _UIAdaptLocalizedStringForView();
   v11 = [v8 initWithString:v10 attributes:v7];
 
-  v12 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v13 = [v12 textView];
-  [v13 setAttributedPlaceholder:v11];
+  addressView3 = [(_UIShareInvitationAddParticipantController *)self addressView];
+  textView2 = [addressView3 textView];
+  [textView2 setAttributedPlaceholder:v11];
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = [(_UIShareInvitationAddParticipantController *)self addressHeightConstraint:a3];
+  height = size.height;
+  v5 = [(_UIShareInvitationAddParticipantController *)self addressHeightConstraint:view];
   [v5 setConstant:height];
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
-  v5 = a3;
+  viewCopy = view;
   [(_UIShareInvitationAddParticipantController *)self _updateSendButton];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 textView];
-  v7 = [v6 textStorage];
-  v8 = [v5 atomViewsInRange:{0, objc_msgSend(v7, "length")}];
+  textView = [viewCopy textView];
+  textStorage = [textView textStorage];
+  v8 = [viewCopy atomViewsInRange:{0, objc_msgSend(textStorage, "length")}];
 
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
@@ -402,17 +402,17 @@
 
 - (void)updateOtherRecipients
 {
-  v3 = [(_UIShareInvitationAddParticipantController *)self currentParticipants];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  currentParticipants = [(_UIShareInvitationAddParticipantController *)self currentParticipants];
+  v4 = [NSMutableArray arrayWithArray:currentParticipants];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v6 = [v5 recipients];
+  addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
+  recipients = [addressView recipients];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [recipients countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -423,60 +423,60 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recipients);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 address];
+        address = [v11 address];
 
-        if (v12)
+        if (address)
         {
-          v13 = [v11 address];
-          [v4 addObject:v13];
+          address2 = [v11 address];
+          [v4 addObject:address2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [recipients countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(_UIShareInvitationAddParticipantController *)self searchController];
-  [v14 setExistingRecipients:v4];
+  searchController = [(_UIShareInvitationAddParticipantController *)self searchController];
+  [searchController setExistingRecipients:v4];
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  [(_UIShareInvitationAddParticipantController *)self _updateSendButton:a3];
+  [(_UIShareInvitationAddParticipantController *)self _updateSendButton:view];
 
   [(_UIShareInvitationAddParticipantController *)self updateOtherRecipients];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIShareInvitationAddParticipantController *)self searchController];
-  [v8 setSearchText:0];
+  addressCopy = address;
+  viewCopy = view;
+  searchController = [(_UIShareInvitationAddParticipantController *)self searchController];
+  [searchController setSearchText:0];
 
-  [v7 clearText];
-  v9 = [(_UIShareInvitationAddParticipantController *)self composeRecipientView:v7 composeRecipientForAddress:v6];
+  [viewCopy clearText];
+  v9 = [(_UIShareInvitationAddParticipantController *)self composeRecipientView:viewCopy composeRecipientForAddress:addressCopy];
 
-  [v7 addRecipient:v9];
+  [viewCopy addRecipient:v9];
 }
 
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address
 {
-  v4 = a4;
-  v5 = [objc_opt_class() contactForMailAddressOrPhoneNumber:v4];
+  addressCopy = address;
+  v5 = [objc_opt_class() contactForMailAddressOrPhoneNumber:addressCopy];
   if (v5)
   {
     if (IMStringIsPhoneNumber())
     {
       v6 = [CNComposeRecipient alloc];
       v7 = v5;
-      v8 = v4;
+      v8 = addressCopy;
       v9 = 1;
     }
 
@@ -493,7 +493,7 @@
 
       v6 = [CNComposeRecipient alloc];
       v7 = v5;
-      v8 = v4;
+      v8 = addressCopy;
       v9 = 0;
     }
 
@@ -508,7 +508,7 @@
   return v10;
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   v4 = objc_alloc_init(CNContactPickerViewController);
   v8[0] = CNContactEmailAddressesKey;
@@ -526,14 +526,14 @@
   [(_UIShareInvitationAddParticipantController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  [(_UIShareInvitationAddParticipantController *)self startSearchingText:a4];
+  [(_UIShareInvitationAddParticipantController *)self startSearchingText:change];
 
   [(_UIShareInvitationAddParticipantController *)self _updateSendButton];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -543,27 +543,27 @@
   [(_UIShareInvitationAddParticipantController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v5 = a4;
-  v6 = [v5 value];
+  propertyCopy = property;
+  value = [propertyCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(_UIShareInvitationAddParticipantController *)self addressView];
+    v7 = value;
+    addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
     v9 = [CNComposeRecipient alloc];
-    v10 = [v5 contact];
-    v11 = [v7 stringValue];
-    v12 = [v9 initWithContact:v10 address:v11 kind:1];
-    [v8 addRecipient:v12];
+    contact = [propertyCopy contact];
+    stringValue = [v7 stringValue];
+    v12 = [v9 initWithContact:contact address:stringValue kind:1];
+    [addressView addRecipient:v12];
 
     v13 = cdui_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v7 stringValue];
+      stringValue2 = [v7 stringValue];
       *buf = 138412290;
-      v22 = v14;
+      v22 = stringValue2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[INFO] Added phone participant %@ via contact sheet property", buf, 0xCu);
     }
 
@@ -575,12 +575,12 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v6;
-    v16 = [(_UIShareInvitationAddParticipantController *)self addressView];
+    v15 = value;
+    addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
     v17 = [CNComposeRecipient alloc];
-    v18 = [v5 contact];
-    v19 = [v17 initWithContact:v18 address:v15 kind:0];
-    [v16 addRecipient:v19];
+    contact2 = [propertyCopy contact];
+    v19 = [v17 initWithContact:contact2 address:v15 kind:0];
+    [addressView2 addRecipient:v19];
 
     v13 = cdui_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -602,34 +602,34 @@ LABEL_8:
   [(_UIShareInvitationAddParticipantController *)self dismissViewControllerAnimated:1 completion:v20];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
-  v6 = [v5 emailAddresses];
-  v7 = [v6 firstObject];
-  v8 = [v7 value];
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  firstObject = [emailAddresses firstObject];
+  value = [firstObject value];
 
-  if (!v8)
+  if (!value)
   {
-    v14 = [v5 phoneNumbers];
-    v15 = [v14 firstObject];
-    v13 = [v15 value];
+    phoneNumbers = [contactCopy phoneNumbers];
+    firstObject2 = [phoneNumbers firstObject];
+    value2 = [firstObject2 value];
 
-    v10 = [objc_opt_class() contactForPhoneNumber:v13];
+    v10 = [objc_opt_class() contactForPhoneNumber:value2];
     if (v10)
     {
-      v16 = [(_UIShareInvitationAddParticipantController *)self addressView];
+      addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
       v17 = [CNComposeRecipient alloc];
-      v18 = [v13 stringValue];
-      v19 = [v17 initWithContact:v10 address:v18 kind:1];
-      [v16 addRecipient:v19];
+      stringValue = [value2 stringValue];
+      v19 = [v17 initWithContact:v10 address:stringValue kind:1];
+      [addressView addRecipient:v19];
 
       v20 = cdui_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v13 stringValue];
+        stringValue2 = [value2 stringValue];
         *buf = 138412290;
-        v24 = v21;
+        v24 = stringValue2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[INFO] Added phone participant %@ via contact sheet", buf, 0xCu);
       }
     }
@@ -646,20 +646,20 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v9 = [objc_opt_class() contactForMailAddress:v8];
+  v9 = [objc_opt_class() contactForMailAddress:value];
   if (v9)
   {
     v10 = v9;
-    v11 = [(_UIShareInvitationAddParticipantController *)self addressView];
-    v12 = [[CNComposeRecipient alloc] initWithContact:v10 address:v8 kind:0];
-    [v11 addRecipient:v12];
+    addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
+    v12 = [[CNComposeRecipient alloc] initWithContact:v10 address:value kind:0];
+    [addressView2 addRecipient:v12];
 
-    v13 = cdui_default_log();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    value2 = cdui_default_log();
+    if (os_log_type_enabled(value2, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v8;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[INFO] Added mail participant %@ via contact sheet", buf, 0xCu);
+      v24 = value;
+      _os_log_impl(&_mh_execute_header, value2, OS_LOG_TYPE_INFO, "[INFO] Added mail participant %@ via contact sheet", buf, 0xCu);
     }
 
 LABEL_13:
@@ -695,29 +695,29 @@ LABEL_14:
   return v3;
 }
 
-+ (id)contactForMailAddress:(id)a3
++ (id)contactForMailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [a1 contactStore];
-  v6 = sub_1000042B8(v5, v4, 0, 1, 0);
+  addressCopy = address;
+  contactStore = [self contactStore];
+  v6 = sub_1000042B8(contactStore, addressCopy, 0, 1, 0);
 
   return v6;
 }
 
-+ (id)contactForPhoneNumber:(id)a3
++ (id)contactForPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [a1 contactStore];
-  v6 = sub_1000042B8(v5, 0, v4, 0, 1);
+  numberCopy = number;
+  contactStore = [self contactStore];
+  v6 = sub_1000042B8(contactStore, 0, numberCopy, 0, 1);
 
   return v6;
 }
 
-+ (id)contactForMailAddressOrPhoneNumber:(id)a3
++ (id)contactForMailAddressOrPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [a1 contactStore];
-  v6 = sub_1000042B8(v5, v4, 0, 1, 1);
+  numberCopy = number;
+  contactStore = [self contactStore];
+  v6 = sub_1000042B8(contactStore, numberCopy, 0, 1, 1);
 
   return v6;
 }
@@ -728,8 +728,8 @@ LABEL_14:
   if (!searchController)
   {
     v4 = [_UIContactSearchArrayController alloc];
-    v5 = [objc_opt_class() contactStore];
-    v6 = [(_UIContactSearchArrayController *)v4 initWithContactStore:v5 delegate:self];
+    contactStore = [objc_opt_class() contactStore];
+    v6 = [(_UIContactSearchArrayController *)v4 initWithContactStore:contactStore delegate:self];
     v7 = self->_searchController;
     self->_searchController = v6;
 
@@ -739,28 +739,28 @@ LABEL_14:
   return searchController;
 }
 
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004774;
   block[3] = &unk_100106DD8;
   block[4] = self;
-  v9 = a4;
-  v10 = a5;
-  v6 = v10;
-  v7 = v9;
+  changedCopy = changed;
+  differencesCopy = differences;
+  v6 = differencesCopy;
+  v7 = changedCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateSearchResults:(id)a3 changes:(id)a4
+- (void)updateSearchResults:(id)results changes:(id)changes
 {
-  v5 = [a3 array];
+  array = [results array];
   searchResults = self->_searchResults;
-  self->_searchResults = v5;
+  self->_searchResults = array;
 
-  v7 = [(_UIShareInvitationAddParticipantController *)self searchResultTable];
-  [v7 reloadData];
+  searchResultTable = [(_UIShareInvitationAddParticipantController *)self searchResultTable];
+  [searchResultTable reloadData];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -770,23 +770,23 @@ LABEL_14:
   [UIView animateWithDuration:v8 animations:0.2];
 }
 
-- (void)startSearchingText:(id)a3
+- (void)startSearchingText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationAddParticipantController *)self searchController];
-  [v5 setSearchText:v4];
+  textCopy = text;
+  searchController = [(_UIShareInvitationAddParticipantController *)self searchController];
+  [searchController setSearchText:textCopy];
 }
 
-+ (void)_applyBoldFont:(id)a3 toPartialMatches:(id)a4 inAttributedString:(id)a5
++ (void)_applyBoldFont:(id)font toPartialMatches:(id)matches inAttributedString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fontCopy = font;
+  matchesCopy = matches;
+  stringCopy = string;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v20 = [matchesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v20)
   {
     v19 = *v22;
@@ -796,13 +796,13 @@ LABEL_14:
       {
         if (*v22 != v19)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v9 string];
-        v13 = [v11 string];
-        for (j = [v12 rangeOfString:v13]; ; j = objc_msgSend(v12, "rangeOfString:options:range:", v13, 0, v16 + 1, &v18[~v16]))
+        string = [stringCopy string];
+        string2 = [v11 string];
+        for (j = [string rangeOfString:string2]; ; j = objc_msgSend(string, "rangeOfString:options:range:", string2, 0, v16 + 1, &v18[~v16]))
         {
           v16 = j;
           v17 = v15;
@@ -812,39 +812,39 @@ LABEL_14:
             break;
           }
 
-          [v9 addAttribute:NSFontAttributeName value:v7 range:{v16, v17}];
-          v18 = [v9 length];
-          v12 = [v9 string];
-          v13 = [v11 string];
+          [stringCopy addAttribute:NSFontAttributeName value:fontCopy range:{v16, v17}];
+          v18 = [stringCopy length];
+          string = [stringCopy string];
+          string2 = [v11 string];
         }
       }
 
-      v20 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v20 = [matchesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v20);
   }
 }
 
-+ (id)_titleTextForRecord:(id)a3 font:(id)a4 boldFond:(id)a5
++ (id)_titleTextForRecord:(id)record font:(id)font boldFond:(id)fond
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  fontCopy = font;
+  fondCopy = fond;
   v11 = objc_alloc_init(NSMutableAttributedString);
-  v12 = [v8 displayString];
+  displayString = [recordCopy displayString];
 
-  if (v12)
+  if (displayString)
   {
     v13 = [NSMutableAttributedString alloc];
-    v14 = [v8 displayString];
+    displayString2 = [recordCopy displayString];
     v26 = NSFontAttributeName;
-    v27 = v9;
+    v27 = fontCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    v16 = [v13 initWithString:v14 attributes:v15];
+    v16 = [v13 initWithString:displayString2 attributes:v15];
 
-    v17 = [v8 completelyMatchedAttributedStrings];
-    [a1 _applyBoldFont:v10 toPartialMatches:v17 inAttributedString:v16];
+    completelyMatchedAttributedStrings = [recordCopy completelyMatchedAttributedStrings];
+    [self _applyBoldFont:fondCopy toPartialMatches:completelyMatchedAttributedStrings inAttributedString:v16];
     v11 = v16;
 LABEL_7:
 
@@ -857,16 +857,16 @@ LABEL_7:
     sub_1000C5AF8();
   }
 
-  v19 = [v8 address];
+  address = [recordCopy address];
 
-  if (v19)
+  if (address)
   {
     v20 = [NSMutableAttributedString alloc];
-    v17 = [v8 address];
+    completelyMatchedAttributedStrings = [recordCopy address];
     v24 = NSFontAttributeName;
-    v25 = v9;
+    v25 = fontCopy;
     v21 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v22 = [v20 initWithString:v17 attributes:v21];
+    v22 = [v20 initWithString:completelyMatchedAttributedStrings attributes:v21];
 
     v11 = v22;
     goto LABEL_7;
@@ -877,56 +877,56 @@ LABEL_8:
   return v11;
 }
 
-+ (id)_subtitleTextForRecord:(id)a3 font:(id)a4 boldFond:(id)a5
++ (id)_subtitleTextForRecord:(id)record font:(id)font boldFond:(id)fond
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  fondCopy = fond;
+  fontCopy = font;
+  recordCopy = record;
   v11 = [NSMutableAttributedString alloc];
-  v12 = [v10 address];
+  address = [recordCopy address];
   v17 = NSFontAttributeName;
-  v18 = v9;
+  v18 = fontCopy;
   v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-  v14 = [v11 initWithString:v12 attributes:v13];
-  v15 = [v10 completelyMatchedAttributedStrings];
+  v14 = [v11 initWithString:address attributes:v13];
+  completelyMatchedAttributedStrings = [recordCopy completelyMatchedAttributedStrings];
 
-  [a1 _applyBoldFont:v8 toPartialMatches:v15 inAttributedString:v14];
+  [self _applyBoldFont:fondCopy toPartialMatches:completelyMatchedAttributedStrings inAttributedString:v14];
 
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(_UIShareInvitationAddParticipantController *)self searchResults:a3];
+  v4 = [(_UIShareInvitationAddParticipantController *)self searchResults:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v38 = [a3 dequeueReusableCellWithIdentifier:@"_UIShareInvitationParticipantTableViewCellIdentifier" forIndexPath:v6];
-  v7 = [(_UIShareInvitationAddParticipantController *)self searchResults];
-  v8 = [v6 row];
+  pathCopy = path;
+  v38 = [view dequeueReusableCellWithIdentifier:@"_UIShareInvitationParticipantTableViewCellIdentifier" forIndexPath:pathCopy];
+  searchResults = [(_UIShareInvitationAddParticipantController *)self searchResults];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [searchResults objectAtIndex:v8];
 
-  v10 = [v9 composeRecipient];
-  v11 = [v10 contact];
-  v12 = v11;
-  if (v11)
+  composeRecipient = [v9 composeRecipient];
+  contact = [composeRecipient contact];
+  v12 = contact;
+  if (contact)
   {
-    v13 = v11;
+    v13 = contact;
   }
 
   else
   {
     v14 = objc_opt_class();
-    v15 = [v9 composeRecipient];
-    v16 = [v15 address];
-    v13 = [v14 contactForMailAddress:v16];
+    composeRecipient2 = [v9 composeRecipient];
+    address = [composeRecipient2 address];
+    v13 = [v14 contactForMailAddress:address];
   }
 
   v17 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
@@ -938,16 +938,16 @@ LABEL_8:
   v22 = [UIFont fontWithDescriptor:v21 size:0.0];
 
   v23 = objc_opt_class();
-  v24 = [v9 composeRecipient];
-  v25 = [v23 _titleTextForRecord:v24 font:v17 boldFond:v19];
-  v26 = [v38 textLabel];
-  [v26 setAttributedText:v25];
+  composeRecipient3 = [v9 composeRecipient];
+  v25 = [v23 _titleTextForRecord:composeRecipient3 font:v17 boldFond:v19];
+  textLabel = [v38 textLabel];
+  [textLabel setAttributedText:v25];
 
   v27 = objc_opt_class();
-  v28 = [v9 composeRecipient];
-  v29 = [v27 _subtitleTextForRecord:v28 font:v20 boldFond:v22];
-  v30 = [v38 detailTextLabel];
-  [v30 setAttributedText:v29];
+  composeRecipient4 = [v9 composeRecipient];
+  v29 = [v27 _subtitleTextForRecord:composeRecipient4 font:v20 boldFond:v22];
+  detailTextLabel = [v38 detailTextLabel];
+  [detailTextLabel setAttributedText:v29];
 
   if (v13)
   {
@@ -958,43 +958,43 @@ LABEL_8:
 
     if (v33)
     {
-      v34 = [(_UIShareInvitationAddParticipantController *)self monogrammer];
-      v35 = [v34 monogramForContact:v13];
-      v36 = [v38 imageView];
-      [v36 setImage:v35];
+      monogrammer = [(_UIShareInvitationAddParticipantController *)self monogrammer];
+      v35 = [monogrammer monogramForContact:v13];
+      imageView = [v38 imageView];
+      [imageView setImage:v35];
     }
   }
 
   return v38;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIShareInvitationAddParticipantController *)self searchResults];
-  v7 = [v5 row];
+  pathCopy = path;
+  searchResults = [(_UIShareInvitationAddParticipantController *)self searchResults];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [searchResults objectAtIndex:v7];
 
-  v9 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  v10 = [v8 composeRecipient];
-  [v9 addRecipient:v10];
+  addressView = [(_UIShareInvitationAddParticipantController *)self addressView];
+  composeRecipient = [v8 composeRecipient];
+  [addressView addRecipient:composeRecipient];
 
   v11 = cdui_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 composeRecipient];
-    v13 = [v12 address];
+    composeRecipient2 = [v8 composeRecipient];
+    address = [composeRecipient2 address];
     v16 = 138412290;
-    v17 = v13;
+    v17 = address;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[INFO] Added recipient %@ via type-ahead search", &v16, 0xCu);
   }
 
-  v14 = [(_UIShareInvitationAddParticipantController *)self addressView];
-  [v14 clearText];
+  addressView2 = [(_UIShareInvitationAddParticipantController *)self addressView];
+  [addressView2 clearText];
 
-  v15 = [(_UIShareInvitationAddParticipantController *)self searchController];
-  [v15 setSearchText:0];
+  searchController = [(_UIShareInvitationAddParticipantController *)self searchController];
+  [searchController setSearchText:0];
 }
 
 @end

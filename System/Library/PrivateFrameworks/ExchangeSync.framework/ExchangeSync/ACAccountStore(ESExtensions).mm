@@ -22,23 +22,23 @@
         [ACAccountStore(ESExtensions) _esAccountsWithAccountTypeIdentifiers:enabledForDADataclasses:filterOnDataclasses:withCompletion:];
       }
 
-      v9 = [MEMORY[0x277D07AF0] sharedConnection];
-      [v9 registerForInterrogationWithBlock:&__block_literal_global_4];
+      mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+      [mEMORY[0x277D07AF0] registerForInterrogationWithBlock:&__block_literal_global_4];
     }
   }
 
   if (a5)
   {
     v10 = acDataclassesForDADataclasses();
-    v11 = [v10 allObjects];
+    allObjects = [v10 allObjects];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __129__ACAccountStore_ESExtensions___esAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_4;
     v40[3] = &unk_278FC6248;
-    v40[4] = a1;
+    v40[4] = self;
     v41 = v23;
     v12 = v23;
-    [a1 accountIdentifiersEnabledForDataclasses:v11 withAccountTypeIdentifiers:v24 completion:v40];
+    [self accountIdentifiersEnabledForDataclasses:allObjects withAccountTypeIdentifiers:v24 completion:v40];
   }
 
   else
@@ -49,7 +49,7 @@
     v38[3] = __Block_byref_object_copy__0;
     v38[4] = __Block_byref_object_dispose__0;
     v39 = 0;
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = dispatch_group_create();
     v34 = 0u;
     v35 = 0u;
@@ -75,11 +75,11 @@
           v30[1] = 3221225472;
           v30[2] = __129__ACAccountStore_ESExtensions___esAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_3_12;
           v30[3] = &unk_278FC6298;
-          v30[4] = a1;
+          v30[4] = self;
           v33 = v38;
-          v31 = v13;
+          v31 = array;
           v32 = v14;
-          [a1 accountTypeWithIdentifier:v18 completion:v30];
+          [self accountTypeWithIdentifier:v18 completion:v30];
         }
 
         v15 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -93,10 +93,10 @@
     block[1] = 3221225472;
     block[2] = __129__ACAccountStore_ESExtensions___esAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_5;
     block[3] = &unk_278FC6220;
-    v27 = v13;
+    v27 = array;
     v28 = v23;
     v29 = v38;
-    v20 = v13;
+    v20 = array;
     v21 = v23;
     dispatch_group_notify(v14, v19, block);
 
@@ -110,24 +110,24 @@
 {
   v4 = MEMORY[0x277D03720];
   v5 = a3;
-  v7 = [v4 _leafAccountTypes];
-  v6 = [v7 allObjects];
-  [a1 _esAccountsWithAccountTypeIdentifiers:v6 enabledForDADataclasses:0 filterOnDataclasses:0 withCompletion:v5];
+  _leafAccountTypes = [v4 _leafAccountTypes];
+  allObjects = [_leafAccountTypes allObjects];
+  [self _esAccountsWithAccountTypeIdentifiers:allObjects enabledForDADataclasses:0 filterOnDataclasses:0 withCompletion:v5];
 }
 
 - (void)es_loadESAccountsEnabledForDADataclasses:()ESExtensions withCompletion:
 {
   v6 = MEMORY[0x277D03720];
   v7 = a4;
-  v9 = [v6 _leafAccountTypes];
-  v8 = [v9 allObjects];
-  [a1 _esAccountsWithAccountTypeIdentifiers:v8 enabledForDADataclasses:a3 filterOnDataclasses:1 withCompletion:v7];
+  _leafAccountTypes = [v6 _leafAccountTypes];
+  allObjects = [_leafAccountTypes allObjects];
+  [self _esAccountsWithAccountTypeIdentifiers:allObjects enabledForDADataclasses:a3 filterOnDataclasses:1 withCompletion:v7];
 }
 
 - (id)es_accountsWithAccountTypeIdentifiers:()ESExtensions outError:
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [a1 accountsWithAccountTypeIdentifiers:? error:?];
+  v5 = [self accountsWithAccountTypeIdentifiers:? error:?];
   if (v5)
   {
     v6 = objc_opt_new();

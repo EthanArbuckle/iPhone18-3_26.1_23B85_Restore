@@ -1,7 +1,7 @@
 @interface MADPhotosDatabaseMigrationBackgroundSystemTask
 + (BOOL)enabledByDefault;
 + (id)sharedTask;
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation MADPhotosDatabaseMigrationBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100111FA0;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B83F0 != -1)
   {
     dispatch_once(&qword_1002B83F0, block);
@@ -33,33 +33,33 @@
   return _os_feature_enabled_impl();
 }
 
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler
 {
-  v34 = a3;
-  v35 = a4;
-  v7 = a5;
+  taskCopy = task;
+  blockCopy = block;
+  handlerCopy = handler;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [objc_opt_class() identifier];
-  v11 = [NSString stringWithFormat:@"[%@][%@]", v9, v10];
+  identifier = [objc_opt_class() identifier];
+  v11 = [NSString stringWithFormat:@"[%@][%@]", v9, identifier];
 
   if ([objc_opt_class() enabled])
   {
     v12 = +[VCPPhotoLibraryManager sharedManager];
-    v13 = [v12 allPhotoLibraries];
+    allPhotoLibraries = [v12 allPhotoLibraries];
 
-    v33 = v13;
-    if ([v13 count])
+    v33 = allPhotoLibraries;
+    if ([allPhotoLibraries count])
     {
-      v31 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], v34);
+      v31 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], taskCopy);
       v30 = +[NSDate now];
       *&buf = 0;
       *(&buf + 1) = &buf;
       v51 = 0x3032000000;
       v52 = sub_1001127FC;
       v53 = sub_10011280C;
-      v14 = [objc_opt_class() identifier];
-      v54 = VCPTransactionWithName(v14);
+      identifier2 = [objc_opt_class() identifier];
+      v54 = VCPTransactionWithName(identifier2);
 
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
@@ -79,30 +79,30 @@
       p_buf = &buf;
       v17 = v31;
       v43 = v17;
-      v44 = v7;
+      v44 = handlerCopy;
       v18 = objc_retainBlock(v40);
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_100112AA8;
       v38[3] = &unk_1002842C8;
-      v39 = v35;
+      v39 = blockCopy;
       v19 = objc_retainBlock(v38);
       v20 = objc_autoreleasePoolPush();
       if (VCPIsRemoteIOSTask())
       {
-        v21 = [objc_opt_class() taskID];
+        taskID = [objc_opt_class() taskID];
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_100112AB8;
         v36[3] = &unk_100284038;
         v37 = v18;
-        v22 = [VCPMADRemoteActivityTask taskWithActivityType:v21 andCompletionHandler:v36];
+        v22 = [VCPMADRemoteActivityTask taskWithActivityType:taskID andCompletionHandler:v36];
         [v22 setCancelBlock:v19];
       }
 
       else
       {
-        v22 = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:v13 progressHandler:v32 completionHandler:v18 cancelBlock:v19];
+        v22 = [MADPhotosDatabaseMigrationProcessingTask taskWithPhotoLibraries:allPhotoLibraries progressHandler:v32 completionHandler:v18 cancelBlock:v19];
       }
 
       v25 = +[VCPMADTaskScheduler sharedInstance];
@@ -152,7 +152,7 @@
         }
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -169,7 +169,7 @@
       }
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

@@ -1,30 +1,30 @@
 @interface NPKRemotePassActionCompanionBubbleViewController
-+ (id)_cardArtImageForMessage:(id)a3;
-+ (id)_fallbackHeaderImageForMessage:(id)a3;
-+ (id)_makeViewModelForMessage:(id)a3;
-- (CGSize)suggestedViewSizeThatFits:(CGSize)a3;
-- (CGSize)suggestedViewSizeThatFits:(CGSize)a3 message:(id)a4;
-- (NPKRemotePassActionCompanionBubbleViewController)initWithMessage:(id)a3 delegate:(id)a4;
-- (void)_setUpMessageBubbleForMessage:(id)a3;
-- (void)_updateMessageBubbleForMessage:(id)a3;
-- (void)remotePassActionRequestBubbleContentViewDidReceiveTap:(id)a3;
++ (id)_cardArtImageForMessage:(id)message;
++ (id)_fallbackHeaderImageForMessage:(id)message;
++ (id)_makeViewModelForMessage:(id)message;
+- (CGSize)suggestedViewSizeThatFits:(CGSize)fits;
+- (CGSize)suggestedViewSizeThatFits:(CGSize)fits message:(id)message;
+- (NPKRemotePassActionCompanionBubbleViewController)initWithMessage:(id)message delegate:(id)delegate;
+- (void)_setUpMessageBubbleForMessage:(id)message;
+- (void)_updateMessageBubbleForMessage:(id)message;
+- (void)remotePassActionRequestBubbleContentViewDidReceiveTap:(id)tap;
 - (void)viewDidLoad;
 @end
 
 @implementation NPKRemotePassActionCompanionBubbleViewController
 
-- (NPKRemotePassActionCompanionBubbleViewController)initWithMessage:(id)a3 delegate:(id)a4
+- (NPKRemotePassActionCompanionBubbleViewController)initWithMessage:(id)message delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = NPKRemotePassActionCompanionBubbleViewController;
   v9 = [(NPKRemotePassActionCompanionBubbleViewController *)&v14 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_message, message);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = [[NPKRemotePassActionCompanionBubbleContentView alloc] initWithDelegate:v10];
     bubbleContentView = v10->_bubbleContentView;
     v10->_bubbleContentView = v11;
@@ -39,25 +39,25 @@
   v5.super_class = NPKRemotePassActionCompanionBubbleViewController;
   [(NPKRemotePassActionCompanionBubbleViewController *)&v5 viewDidLoad];
   [(NPKRemotePassActionCompanionBubbleViewController *)self _setUpMessageBubbleForMessage:self->_message];
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView backgroundColor];
-  v4 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  backgroundColor = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView backgroundColor];
+  view = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+  [view setBackgroundColor:backgroundColor];
 }
 
-- (CGSize)suggestedViewSizeThatFits:(CGSize)a3
+- (CGSize)suggestedViewSizeThatFits:(CGSize)fits
 {
-  [(NPKRemotePassActionCompanionBubbleViewController *)self suggestedViewSizeThatFits:self->_message message:a3.width, a3.height];
+  [(NPKRemotePassActionCompanionBubbleViewController *)self suggestedViewSizeThatFits:self->_message message:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)suggestedViewSizeThatFits:(CGSize)a3 message:(id)a4
+- (CGSize)suggestedViewSizeThatFits:(CGSize)fits message:(id)message
 {
-  height = a3.height;
-  v5 = fmin(a3.width, 230.0);
-  v6 = a4;
-  v7 = [objc_opt_class() _makeViewModelForMessage:v6];
+  height = fits.height;
+  v5 = fmin(fits.width, 230.0);
+  messageCopy = message;
+  v7 = [objc_opt_class() _makeViewModelForMessage:messageCopy];
 
   [NPKRemotePassActionCompanionBubbleContentView contentViewHeightForViewModel:v7 withWidth:v5];
   v9 = fmin(v8, height);
@@ -91,64 +91,64 @@
   return result;
 }
 
-+ (id)_makeViewModelForMessage:(id)a3
++ (id)_makeViewModelForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 remotePassAction];
-  v6 = [a1 _cardArtImageForMessage:v5];
-  if ([v5 isResponse])
+  messageCopy = message;
+  remotePassAction = [messageCopy remotePassAction];
+  v6 = [self _cardArtImageForMessage:remotePassAction];
+  if ([remotePassAction isResponse])
   {
     v7 = [NPKRemotePassActionCompanionBubbleContentViewModel alloc];
-    v8 = [v5 passLocalizedDescription];
-    v9 = [v5 caption];
-    v10 = [(NPKRemotePassActionCompanionBubbleContentViewModel *)v7 initWithCardArtImage:v6 shouldDimPass:0 titleText:v8 detailText:v9 actionButtonText:0 showsActionButton:0];
+    passLocalizedDescription = [remotePassAction passLocalizedDescription];
+    caption = [remotePassAction caption];
+    v10 = [(NPKRemotePassActionCompanionBubbleContentViewModel *)v7 initWithCardArtImage:v6 shouldDimPass:0 titleText:passLocalizedDescription detailText:caption actionButtonText:0 showsActionButton:0];
   }
 
   else
   {
-    if (([v5 supportsTopUp] & 1) != 0 || objc_msgSend(v5, "supportsCommutePlanRenewal"))
+    if (([remotePassAction supportsTopUp] & 1) != 0 || objc_msgSend(remotePassAction, "supportsCommutePlanRenewal"))
     {
-      v8 = [v4 request];
+      passLocalizedDescription = [messageCopy request];
       v11 = [NPKRemotePassActionCompanionBubbleContentViewModel alloc];
-      v9 = [v8 caption];
-      v12 = [v8 actionText];
-      v13 = [v4 isFromMe] ^ 1;
+      caption = [passLocalizedDescription caption];
+      actionText = [passLocalizedDescription actionText];
+      v13 = [messageCopy isFromMe] ^ 1;
       v14 = v11;
       v15 = v6;
-      v16 = v9;
+      v16 = caption;
     }
 
     else
     {
       v17 = [NPKRemotePassActionCompanionBubbleContentViewModel alloc];
-      v8 = [v5 caption];
-      v9 = [NSBundle bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
-      v12 = [v9 localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_UPDATE_CAPTION" value:&stru_100014880 table:@"NanoPassKitUI-RemotePaymentPassAction"];
-      v13 = [v4 isFromMe] ^ 1;
+      passLocalizedDescription = [remotePassAction caption];
+      caption = [NSBundle bundleWithIdentifier:@"com.apple.NanoPassKitUI"];
+      actionText = [caption localizedStringForKey:@"REQUEST_REMOTE_PAYMENT_PASS_ACTION_UPDATE_CAPTION" value:&stru_100014880 table:@"NanoPassKitUI-RemotePaymentPassAction"];
+      v13 = [messageCopy isFromMe] ^ 1;
       v14 = v17;
       v15 = v6;
-      v16 = v8;
+      v16 = passLocalizedDescription;
     }
 
-    v10 = [(NPKRemotePassActionCompanionBubbleContentViewModel *)v14 initWithCardArtImage:v15 shouldDimPass:0 titleText:v16 detailText:0 actionButtonText:v12 showsActionButton:v13];
+    v10 = [(NPKRemotePassActionCompanionBubbleContentViewModel *)v14 initWithCardArtImage:v15 shouldDimPass:0 titleText:v16 detailText:0 actionButtonText:actionText showsActionButton:v13];
   }
 
   return v10;
 }
 
-+ (id)_cardArtImageForMessage:(id)a3
++ (id)_cardArtImageForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 image];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  image = [messageCopy image];
+  v6 = image;
+  if (image)
   {
-    v7 = v5;
+    v7 = image;
   }
 
   else
   {
-    v7 = [a1 _fallbackHeaderImageForMessage:v4];
+    v7 = [self _fallbackHeaderImageForMessage:messageCopy];
   }
 
   v8 = v7;
@@ -156,27 +156,27 @@
   return v8;
 }
 
-+ (id)_fallbackHeaderImageForMessage:(id)a3
++ (id)_fallbackHeaderImageForMessage:(id)message
 {
-  v3 = [a3 cardType];
-  if (v3 <= 2)
+  cardType = [message cardType];
+  if (cardType <= 2)
   {
-    v4 = [UIImage imageNamed:off_1000145A0[v3]];
+    v4 = [UIImage imageNamed:off_1000145A0[cardType]];
   }
 
   return v4;
 }
 
-- (void)_setUpMessageBubbleForMessage:(id)a3
+- (void)_setUpMessageBubbleForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (self->_bubbleContentView)
   {
-    v5 = [objc_opt_class() _makeViewModelForMessage:v4];
+    v5 = [objc_opt_class() _makeViewModelForMessage:messageCopy];
     [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView setViewModel:v5];
 
-    v6 = [v4 isFromMe];
-    if (v6)
+    isFromMe = [messageCopy isFromMe];
+    if (isFromMe)
     {
       v7 = -6.0;
     }
@@ -186,7 +186,7 @@
       v7 = 0.0;
     }
 
-    if (v6)
+    if (isFromMe)
     {
       v8 = 0.0;
     }
@@ -196,35 +196,35 @@
       v8 = 6.0;
     }
 
-    v9 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-    [v9 addSubview:self->_bubbleContentView];
+    view = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+    [view addSubview:self->_bubbleContentView];
 
-    v27 = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView topAnchor];
-    v30 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-    v29 = [v30 topAnchor];
-    v28 = [v27 constraintEqualToAnchor:v29 constant:0.0];
+    topAnchor = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView topAnchor];
+    view2 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v34[0] = v28;
-    v25 = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView bottomAnchor];
-    v26 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-    v24 = [v26 bottomAnchor];
-    v10 = [v25 constraintEqualToAnchor:v24 constant:0.0];
+    bottomAnchor = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView bottomAnchor];
+    view3 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v34[1] = v10;
-    v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView leadingAnchor];
+    leadingAnchor = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView leadingAnchor];
     [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-    v12 = v31 = v4;
-    v13 = [v12 leadingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:v8];
+    v12 = v31 = messageCopy;
+    leadingAnchor2 = [v12 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v8];
     v34[2] = v14;
-    v15 = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView trailingAnchor];
-    v16 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-    v17 = [v16 trailingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:v7];
+    trailingAnchor = [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView trailingAnchor];
+    view4 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v7];
     v34[3] = v18;
     v19 = [NSArray arrayWithObjects:v34 count:4];
     [NSLayoutConstraint activateConstraints:v19];
 
-    v4 = v31;
-    v20 = v27;
+    messageCopy = v31;
+    v20 = topAnchor;
   }
 
   else
@@ -250,22 +250,22 @@
 LABEL_10:
 }
 
-- (void)_updateMessageBubbleForMessage:(id)a3
+- (void)_updateMessageBubbleForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _makeViewModelForMessage:v4];
+  messageCopy = message;
+  v5 = [objc_opt_class() _makeViewModelForMessage:messageCopy];
 
   [(NPKRemotePassActionCompanionBubbleContentView *)self->_bubbleContentView setViewModel:v5];
-  v6 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+  [view setNeedsLayout];
 
-  v7 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
-  [v7 layoutIfNeeded];
+  view2 = [(NPKRemotePassActionCompanionBubbleViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
-- (void)remotePassActionRequestBubbleContentViewDidReceiveTap:(id)a3
+- (void)remotePassActionRequestBubbleContentViewDidReceiveTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   v5 = pk_RemotePassAction_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -276,7 +276,7 @@ LABEL_10:
     {
       message = self->_message;
       v14 = 138412546;
-      v15 = v4;
+      v15 = tapCopy;
       v16 = 2112;
       v17 = message;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Bubble view: %@ did receive tap for message: %@", &v14, 0x16u);

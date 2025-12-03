@@ -1,73 +1,73 @@
 @interface APManagedContentData
-+ (id)findById:(id)a3;
++ (id)findById:(id)id;
 - (APContentData)contentData;
 - (APContentDataPrivate)contentDataPrivate;
 - (APContentDataTransient)contentDataTransient;
-- (APManagedContentData)initWithCoder:(id)a3;
-- (APManagedContentData)initWithManagedContext:(id)a3 contentData:(id)a4 transaction:(id)a5;
+- (APManagedContentData)initWithCoder:(id)coder;
+- (APManagedContentData)initWithManagedContext:(id)context contentData:(id)data transaction:(id)transaction;
 - (BOOL)_update;
 - (BOOL)_updatePrivateData;
 - (BOOL)_updateTransientData;
 - (id)_heavyContentKeyNames;
-- (id)allPlacementTypesForContentData:(id)a3;
+- (id)allPlacementTypesForContentData:(id)data;
 - (id)toJSONObject;
 - (int64_t)garbageCollect;
 - (void)_unloadHeavyContentFromContentData;
 - (void)close;
-- (void)encodeWithCoder:(id)a3;
-- (void)markInUseByClientWithId:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)markInUseByClientWithId:(id)id;
 - (void)markUsed;
 @end
 
 @implementation APManagedContentData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = APManagedContentData;
-  v4 = a3;
-  [(APCacheableBaseObject *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(APCacheableBaseObject *)&v9 encodeWithCoder:coderCopy];
   v5 = [(APManagedContentData *)self contextIdentifier:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"contextId"];
+  [coderCopy encodeObject:v5 forKey:@"contextId"];
 
-  v6 = [(APManagedContentData *)self placementTypes];
-  [v4 encodeObject:v6 forKey:@"placementTypes"];
+  placementTypes = [(APManagedContentData *)self placementTypes];
+  [coderCopy encodeObject:placementTypes forKey:@"placementTypes"];
 
-  v7 = [(APManagedContentData *)self clientId];
-  [v4 encodeObject:v7 forKey:@"clientId"];
+  clientId = [(APManagedContentData *)self clientId];
+  [coderCopy encodeObject:clientId forKey:@"clientId"];
 
-  [v4 encodeInteger:-[APManagedContentData state](self forKey:{"state"), @"state"}];
-  v8 = [(APManagedContentData *)self expirationDate];
-  [v4 encodeObject:v8 forKey:@"lastModified"];
+  [coderCopy encodeInteger:-[APManagedContentData state](self forKey:{"state"), @"state"}];
+  expirationDate = [(APManagedContentData *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"lastModified"];
 }
 
-- (APManagedContentData)initWithCoder:(id)a3
+- (APManagedContentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = APManagedContentData;
-  v5 = [(APCacheableSynchronizedObject *)&v30 initWithCoder:v4];
+  v5 = [(APCacheableSynchronizedObject *)&v30 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
     objc_initWeak(&location, v5);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextId"];
     contextIdentifier = v5->_contextIdentifier;
     v5->_contextIdentifier = v7;
 
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v9, objc_opt_class(), 0];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"placementTypes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"placementTypes"];
     placementTypes = v5->_placementTypes;
     v5->_placementTypes = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientId"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientId"];
     clientId = v5->_clientId;
     v5->_clientId = v13;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v15 = [(APCacheableBaseObject *)v5 identifier];
-    v16 = [(APCacheableBaseObject *)APContentDataWrapper proxyForIdentifier:v15];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    identifier = [(APCacheableBaseObject *)v5 identifier];
+    v16 = [(APCacheableBaseObject *)APContentDataWrapper proxyForIdentifier:identifier];
     contentDataWrapper = v5->_contentDataWrapper;
     v5->_contentDataWrapper = v16;
 
@@ -77,17 +77,17 @@
     v27[3] = &unk_100480960;
     objc_copyWeak(&v28, &location);
     [(APContentDataWrapper *)v5->_contentDataWrapper setProvideIgnorableKeyNamesBlock:v27];
-    v18 = [(APCacheableBaseObject *)v5 identifier];
-    v19 = [(APCacheableBaseObject *)APContentDataPrivateWrapper proxyForIdentifier:v18];
+    identifier2 = [(APCacheableBaseObject *)v5 identifier];
+    v19 = [(APCacheableBaseObject *)APContentDataPrivateWrapper proxyForIdentifier:identifier2];
     contentDataPrivateWrapper = v5->_contentDataPrivateWrapper;
     v5->_contentDataPrivateWrapper = v19;
 
-    v21 = [(APCacheableBaseObject *)v5 identifier];
-    v22 = [(APCacheableBaseObject *)APContentDataTransientWrapper proxyForIdentifier:v21];
+    identifier3 = [(APCacheableBaseObject *)v5 identifier];
+    v22 = [(APCacheableBaseObject *)APContentDataTransientWrapper proxyForIdentifier:identifier3];
     contentDataTransientWrapper = v5->_contentDataTransientWrapper;
     v5->_contentDataTransientWrapper = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v24;
 
@@ -101,29 +101,29 @@
 
 - (BOOL)_update
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003969D8(self);
-  v4 = [v3 createTransaction];
+  createTransaction = [v3 createTransaction];
 
-  sub_100396A10(v2, v4);
-  LOBYTE(v2) = [v4 commit];
+  sub_100396A10(selfCopy, createTransaction);
+  LOBYTE(selfCopy) = [createTransaction commit];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_updateTransientData
 {
-  v3 = [(APManagedContentData *)self contentDataTransient];
-  if (v3)
+  contentDataTransient = [(APManagedContentData *)self contentDataTransient];
+  if (contentDataTransient)
   {
     v4 = sub_1003969D8(self);
-    v5 = [v4 createTransaction];
+    createTransaction = [v4 createTransaction];
 
-    sub_100396C7C(self, v5);
-    v6 = [(APManagedContentData *)self contentDataTransientWrapper];
-    sub_100396A10(v6, v5);
+    sub_100396C7C(self, createTransaction);
+    contentDataTransientWrapper = [(APManagedContentData *)self contentDataTransientWrapper];
+    sub_100396A10(contentDataTransientWrapper, createTransaction);
 
-    v7 = [v5 commit];
+    commit = [createTransaction commit];
   }
 
   else
@@ -131,31 +131,31 @@
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v11 = 138543362;
-      v12 = v9;
+      v12 = identifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Trying to update non-existing transient data for id %{public}@.", &v11, 0xCu);
     }
 
-    v7 = 0;
+    commit = 0;
   }
 
-  return v7;
+  return commit;
 }
 
 - (BOOL)_updatePrivateData
 {
-  v3 = [(APManagedContentData *)self contentDataPrivate];
-  if (v3)
+  contentDataPrivate = [(APManagedContentData *)self contentDataPrivate];
+  if (contentDataPrivate)
   {
     v4 = sub_1003969D8(self);
-    v5 = [v4 createTransaction];
+    createTransaction = [v4 createTransaction];
 
-    sub_100396C7C(self, v5);
-    v6 = [(APManagedContentData *)self contentDataPrivateWrapper];
-    sub_100396A10(v6, v5);
+    sub_100396C7C(self, createTransaction);
+    contentDataPrivateWrapper = [(APManagedContentData *)self contentDataPrivateWrapper];
+    sub_100396A10(contentDataPrivateWrapper, createTransaction);
 
-    v7 = [v5 commit];
+    commit = [createTransaction commit];
   }
 
   else
@@ -163,24 +163,24 @@
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v11 = 138543362;
-      v12 = v9;
+      v12 = identifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Trying to update non-existing private data for id %{public}@.", &v11, 0xCu);
     }
 
-    v7 = 0;
+    commit = 0;
   }
 
-  return v7;
+  return commit;
 }
 
-+ (id)findById:(id)a3
++ (id)findById:(id)id
 {
-  v3 = a3;
-  if ([v3 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v4 = sub_10037AA48(APManagedContentData, v3);
+    v4 = sub_10037AA48(APManagedContentData, idCopy);
     if (!v4)
     {
       goto LABEL_9;
@@ -190,7 +190,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v3;
+      v8 = idCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found managed content data '%{public}@' in a cache.", &v7, 0xCu);
     }
   }
@@ -212,74 +212,74 @@ LABEL_9:
   return v4;
 }
 
-- (APManagedContentData)initWithManagedContext:(id)a3 contentData:(id)a4 transaction:(id)a5
+- (APManagedContentData)initWithManagedContext:(id)context contentData:(id)data transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 content];
-  v12 = [v11 identifier];
+  contextCopy = context;
+  dataCopy = data;
+  transactionCopy = transaction;
+  content = [dataCopy content];
+  identifier = [content identifier];
 
   v38.receiver = self;
   v38.super_class = APManagedContentData;
-  v13 = [(APCacheableSynchronizedObject *)&v38 initWithIdentifier:v12];
+  v13 = [(APCacheableSynchronizedObject *)&v38 initWithIdentifier:identifier];
   if (v13)
   {
-    v14 = [v8 identifier];
+    identifier2 = [contextCopy identifier];
     contextIdentifier = v13->_contextIdentifier;
-    v13->_contextIdentifier = v14;
+    v13->_contextIdentifier = identifier2;
 
     v16 = [APContentDataWrapper alloc];
-    v17 = [v9 content];
-    v18 = [(APCacheableObjectWrapper *)v16 initWithObject:v17 identifier:v12];
+    content2 = [dataCopy content];
+    v18 = [(APCacheableObjectWrapper *)v16 initWithObject:content2 identifier:identifier];
 
-    v19 = [(APCacheableBaseObject *)v18 proxy];
+    proxy = [(APCacheableBaseObject *)v18 proxy];
     contentDataWrapper = v13->_contentDataWrapper;
-    v13->_contentDataWrapper = v19;
+    v13->_contentDataWrapper = proxy;
 
     v21 = [APContentDataPrivateWrapper alloc];
-    v22 = [v9 privateContent];
-    v23 = [(APCacheableObjectWrapper *)v21 initWithObject:v22 identifier:v12];
+    privateContent = [dataCopy privateContent];
+    v23 = [(APCacheableObjectWrapper *)v21 initWithObject:privateContent identifier:identifier];
 
-    v24 = [(APCacheableBaseObject *)v23 proxy];
+    proxy2 = [(APCacheableBaseObject *)v23 proxy];
     contentDataPrivateWrapper = v13->_contentDataPrivateWrapper;
-    v13->_contentDataPrivateWrapper = v24;
+    v13->_contentDataPrivateWrapper = proxy2;
 
     v26 = [APContentDataTransientWrapper alloc];
-    v27 = [v9 transientContent];
-    v28 = [(APCacheableObjectWrapper *)v26 initWithObject:v27 identifier:v12];
+    transientContent = [dataCopy transientContent];
+    v28 = [(APCacheableObjectWrapper *)v26 initWithObject:transientContent identifier:identifier];
 
-    v29 = [(APCacheableBaseObject *)v28 proxy];
+    proxy3 = [(APCacheableBaseObject *)v28 proxy];
     contentDataTransientWrapper = v13->_contentDataTransientWrapper;
-    v13->_contentDataTransientWrapper = v29;
+    v13->_contentDataTransientWrapper = proxy3;
 
     v13->_state = 1;
-    v31 = [v9 content];
-    v32 = [(APManagedContentData *)v13 allPlacementTypesForContentData:v31];
+    content3 = [dataCopy content];
+    v32 = [(APManagedContentData *)v13 allPlacementTypesForContentData:content3];
     placementTypes = v13->_placementTypes;
     v13->_placementTypes = v32;
 
-    v34 = [v9 content];
-    v35 = [v34 expirationDate];
+    content4 = [dataCopy content];
+    expirationDate = [content4 expirationDate];
     expirationDate = v13->_expirationDate;
-    v13->_expirationDate = v35;
+    v13->_expirationDate = expirationDate;
 
-    sub_100396A10(v18, v10);
-    sub_100396A10(v23, v10);
-    sub_100396A10(v28, v10);
-    sub_100396A10(v13, v10);
+    sub_100396A10(v18, transactionCopy);
+    sub_100396A10(v23, transactionCopy);
+    sub_100396A10(v28, transactionCopy);
+    sub_100396A10(v13, transactionCopy);
   }
 
   return v13;
 }
 
-- (id)allPlacementTypesForContentData:(id)a3
+- (id)allPlacementTypesForContentData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 representations];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  dataCopy = data;
+  representations = [dataCopy representations];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [representations count]);
 
-  v6 = [v3 representations];
+  representations2 = [dataCopy representations];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -287,7 +287,7 @@ LABEL_9:
   v10[3] = &unk_100480988;
   v11 = v5;
   v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [representations2 enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -296,86 +296,86 @@ LABEL_9:
 
 - (APContentData)contentData
 {
-  v3 = [(APManagedContentData *)self contentDataWrapper];
-  v4 = [v3 object];
+  contentDataWrapper = [(APManagedContentData *)self contentDataWrapper];
+  object = [contentDataWrapper object];
 
-  if (!v4)
+  if (!object)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v8 = 138543362;
-      v9 = v6;
+      v9 = identifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to load associated Content Data object for '%{public}@'.", &v8, 0xCu);
     }
   }
 
-  return v4;
+  return object;
 }
 
 - (APContentDataPrivate)contentDataPrivate
 {
-  v3 = [(APManagedContentData *)self contentDataPrivateWrapper];
-  v4 = [v3 object];
+  contentDataPrivateWrapper = [(APManagedContentData *)self contentDataPrivateWrapper];
+  object = [contentDataPrivateWrapper object];
 
-  if (!v4)
+  if (!object)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v8 = 138543362;
-      v9 = v6;
+      v9 = identifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to load associated Content Data Private object for '%{public}@'.", &v8, 0xCu);
     }
   }
 
-  [v4 setDelegate:self];
+  [object setDelegate:self];
 
-  return v4;
+  return object;
 }
 
 - (APContentDataTransient)contentDataTransient
 {
-  v3 = [(APManagedContentData *)self contentDataTransientWrapper];
-  v4 = [v3 object];
+  contentDataTransientWrapper = [(APManagedContentData *)self contentDataTransientWrapper];
+  object = [contentDataTransientWrapper object];
 
-  if (!v4)
+  if (!object)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v8 = 138543362;
-      v9 = v6;
+      v9 = identifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to load associated Content Data Transient object for '%{public}@'.", &v8, 0xCu);
     }
   }
 
-  [v4 setDelegate:self];
+  [object setDelegate:self];
 
-  return v4;
+  return object;
 }
 
-- (void)markInUseByClientWithId:(id)a3
+- (void)markInUseByClientWithId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   [(APCacheableSynchronizedObject *)self lockObject];
   if ([(APManagedContentData *)self state]== 1)
   {
     [(APManagedContentData *)self setState:2];
-    [(APManagedContentData *)self setClientId:v4];
+    [(APManagedContentData *)self setClientId:idCopy];
     [(APCacheableSynchronizedObject *)self unlockObject];
     [(APManagedContentData *)self _update];
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v9 = 138543874;
-      v10 = v6;
+      v10 = identifier;
       v11 = 2048;
-      v12 = 1;
+      state = 1;
       v13 = 2048;
       v14 = 2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changed managed contend data '%{public}@' state from %ld to %ld.", &v9, 0x20u);
@@ -387,11 +387,11 @@ LABEL_9:
     v7 = APLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(APCacheableBaseObject *)self identifier];
+      identifier2 = [(APCacheableBaseObject *)self identifier];
       v9 = 138543618;
-      v10 = v8;
+      v10 = identifier2;
       v11 = 2048;
-      v12 = [(APManagedContentData *)self state];
+      state = [(APManagedContentData *)self state];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to mark managed contend data %{public}@ as in use. Current state: %ld", &v9, 0x16u);
     }
 
@@ -404,8 +404,8 @@ LABEL_9:
   [(APCacheableSynchronizedObject *)self lockObject];
   if ([(APManagedContentData *)self state]== 2)
   {
-    v3 = [(APManagedContentData *)self contentDataWrapper];
-    v4 = [APCacheableObjectProxy objectIsLoaded:v3];
+    contentDataWrapper = [(APManagedContentData *)self contentDataWrapper];
+    v4 = [APCacheableObjectProxy objectIsLoaded:contentDataWrapper];
 
     if (v4)
     {
@@ -419,11 +419,11 @@ LABEL_9:
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v9 = 138543874;
-      v10 = v6;
+      v10 = identifier;
       v11 = 2048;
-      v12 = 2;
+      state = 2;
       v13 = 2048;
       v14 = 3;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changed managed contend data '%{public}@' state from %ld to %ld.", &v9, 0x20u);
@@ -435,11 +435,11 @@ LABEL_9:
     v7 = APLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(APCacheableBaseObject *)self identifier];
+      identifier2 = [(APCacheableBaseObject *)self identifier];
       v9 = 138543618;
-      v10 = v8;
+      v10 = identifier2;
       v11 = 2048;
-      v12 = [(APManagedContentData *)self state];
+      state = [(APManagedContentData *)self state];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to mark managed contend data %{public}@ as used. Current state: %ld", &v9, 0x16u);
     }
 
@@ -459,11 +459,11 @@ LABEL_9:
     v3 = APLogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v7 = 138543874;
-      v8 = v4;
+      v8 = identifier;
       v9 = 2048;
-      v10 = 2;
+      state = 2;
       v11 = 2048;
       v12 = 1;
 LABEL_7:
@@ -484,11 +484,11 @@ LABEL_7:
     v3 = APLogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(APCacheableBaseObject *)self identifier];
+      identifier = [(APCacheableBaseObject *)self identifier];
       v7 = 138543874;
-      v8 = v4;
+      v8 = identifier;
       v9 = 2048;
-      v10 = 3;
+      state = 3;
       v11 = 2048;
       v12 = 4;
       goto LABEL_7;
@@ -502,11 +502,11 @@ LABEL_8:
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [(APCacheableBaseObject *)self identifier];
+    identifier2 = [(APCacheableBaseObject *)self identifier];
     v7 = 138543618;
-    v8 = v6;
+    v8 = identifier2;
     v9 = 2048;
-    v10 = [(APManagedContentData *)self state];
+    state = [(APManagedContentData *)self state];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to close managed contend data %{public}@. Current state: %ld", &v7, 0x16u);
   }
 
@@ -515,41 +515,41 @@ LABEL_8:
 
 - (int64_t)garbageCollect
 {
-  v3 = [(APCacheableBaseObject *)self identifier];
-  v4 = sub_10037AAE0(APContentDataWrapper, v3);
+  identifier = [(APCacheableBaseObject *)self identifier];
+  v4 = sub_10037AAE0(APContentDataWrapper, identifier);
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(APCacheableBaseObject *)self identifier];
-    v6 = sub_10037AAE0(APContentDataPrivateWrapper, v5);
+    identifier2 = [(APCacheableBaseObject *)self identifier];
+    v6 = sub_10037AAE0(APContentDataPrivateWrapper, identifier2);
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(APCacheableBaseObject *)self identifier];
-      v8 = sub_10037AAE0(APContentDataTransientWrapper, v7);
+      identifier3 = [(APCacheableBaseObject *)self identifier];
+      v8 = sub_10037AAE0(APContentDataTransientWrapper, identifier3);
 
       if ((v8 & 1) == 0)
       {
-        v11 = [(APManagedContentData *)self contextIdentifier];
-        v12 = [APManagedContext findManagedContextByFingerprint:v11];
+        contextIdentifier = [(APManagedContentData *)self contextIdentifier];
+        v12 = [APManagedContext findManagedContextByFingerprint:contextIdentifier];
 
         if (v12)
         {
-          v13 = [(APCacheableBaseObject *)self identifier];
-          v14 = [v12 removeManagedContentDataForId:v13];
+          identifier4 = [(APCacheableBaseObject *)self identifier];
+          v14 = [v12 removeManagedContentDataForId:identifier4];
 
           if ((v14 & 1) == 0)
           {
-            v15 = APLogForCategory();
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+            createTransaction = APLogForCategory();
+            if (os_log_type_enabled(createTransaction, OS_LOG_TYPE_ERROR))
             {
-              v16 = [(APCacheableBaseObject *)self identifier];
-              v17 = [(APManagedContentData *)self contextIdentifier];
+              identifier5 = [(APCacheableBaseObject *)self identifier];
+              contextIdentifier2 = [(APManagedContentData *)self contextIdentifier];
               v27 = 138543618;
-              v28 = v16;
+              v28 = identifier5;
               v29 = 2114;
-              v30 = v17;
-              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to remove content data '%{public}@' reference from '%{public}@' context.", &v27, 0x16u);
+              v30 = contextIdentifier2;
+              _os_log_impl(&_mh_execute_header, createTransaction, OS_LOG_TYPE_ERROR, "Failed to remove content data '%{public}@' reference from '%{public}@' context.", &v27, 0x16u);
             }
 
             v9 = 0;
@@ -564,32 +564,32 @@ LABEL_19:
           v18 = APLogForCategory();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [(APManagedContentData *)self contextIdentifier];
-            v20 = [(APCacheableBaseObject *)self identifier];
+            contextIdentifier3 = [(APManagedContentData *)self contextIdentifier];
+            identifier6 = [(APCacheableBaseObject *)self identifier];
             v27 = 138543618;
-            v28 = v19;
+            v28 = contextIdentifier3;
             v29 = 2114;
-            v30 = v20;
+            v30 = identifier6;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to find context '%{public}@' for content data '%{public}@'.", &v27, 0x16u);
           }
         }
 
         v21 = sub_1003969D8(self);
-        v15 = [v21 createTransaction];
+        createTransaction = [v21 createTransaction];
 
-        sub_100396BF4(self, v15);
-        v22 = [(APCacheableBaseObject *)self identifier];
-        sub_10037AB68(APContentDataWrapper, v22, v15);
+        sub_100396BF4(self, createTransaction);
+        identifier7 = [(APCacheableBaseObject *)self identifier];
+        sub_10037AB68(APContentDataWrapper, identifier7, createTransaction);
 
-        v23 = [(APCacheableBaseObject *)self identifier];
-        sub_10037AB68(APContentDataPrivateWrapper, v23, v15);
+        identifier8 = [(APCacheableBaseObject *)self identifier];
+        sub_10037AB68(APContentDataPrivateWrapper, identifier8, createTransaction);
 
-        v24 = [(APCacheableBaseObject *)self identifier];
-        sub_10037AB68(APContentDataTransientWrapper, v24, v15);
+        identifier9 = [(APCacheableBaseObject *)self identifier];
+        sub_10037AB68(APContentDataTransientWrapper, identifier9, createTransaction);
 
-        if (([v15 commit]& 1) != 0)
+        if (([createTransaction commit]& 1) != 0)
         {
-          v9 = [v15 count];
+          v9 = [createTransaction count];
         }
 
         else
@@ -597,9 +597,9 @@ LABEL_19:
           v25 = APLogForCategory();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v26 = [(APCacheableBaseObject *)self identifier];
+            identifier10 = [(APCacheableBaseObject *)self identifier];
             v27 = 138543362;
-            v28 = v26;
+            v28 = identifier10;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Failed to remove managed content data '%{public}@'.", &v27, 0xCu);
           }
 
@@ -629,14 +629,14 @@ LABEL_19:
 
 - (void)_unloadHeavyContentFromContentData
 {
-  v2 = [(APManagedContentData *)self contentData];
-  [v2 setDisclosureRendererPayload:0];
+  contentData = [(APManagedContentData *)self contentData];
+  [contentData setDisclosureRendererPayload:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 representations];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  representations = [contentData representations];
+  v4 = [representations countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -648,7 +648,7 @@ LABEL_19:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(representations);
         }
 
         [*(*(&v10 + 1) + 8 * v7) setAdTag:0];
@@ -656,7 +656,7 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [representations countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v5);
@@ -665,9 +665,9 @@ LABEL_19:
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v2 identifier];
+    identifier = [contentData identifier];
     *buf = 138543362;
-    v15 = v9;
+    v15 = identifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Removing heavy content from ContentData %{public}@", buf, 0xCu);
   }
 }
@@ -676,8 +676,8 @@ LABEL_19:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [APJSONArchiver JSONObjectWithObject:self];
-  v5 = [(APManagedContentData *)self contentData];
-  v6 = [APJSONArchiver JSONObjectWithObject:v5];
+  contentData = [(APManagedContentData *)self contentData];
+  v6 = [APJSONArchiver JSONObjectWithObject:contentData];
 
   if (v6)
   {
@@ -690,8 +690,8 @@ LABEL_19:
     [v4 setObject:v7 forKeyedSubscript:@"contentData"];
   }
 
-  v8 = [(APManagedContentData *)self contentDataPrivate];
-  v9 = [APJSONArchiver JSONObjectWithObject:v8];
+  contentDataPrivate = [(APManagedContentData *)self contentDataPrivate];
+  v9 = [APJSONArchiver JSONObjectWithObject:contentDataPrivate];
 
   if (v9)
   {
@@ -704,8 +704,8 @@ LABEL_19:
     [v4 setObject:v10 forKeyedSubscript:@"contentDataPrivate"];
   }
 
-  v11 = [(APManagedContentData *)self contentDataTransient];
-  v12 = [APJSONArchiver JSONObjectWithObject:v11];
+  contentDataTransient = [(APManagedContentData *)self contentDataTransient];
+  v12 = [APJSONArchiver JSONObjectWithObject:contentDataTransient];
 
   if (v12)
   {

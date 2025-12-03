@@ -1,8 +1,8 @@
 @interface VMUDebugTimer
 + (id)sharedTimer;
 - (VMUDebugTimer)init;
-- (void)endEvent:(const char *)a3;
-- (void)startWithCategory:(const char *)a3 message:(const char *)a4;
+- (void)endEvent:(const char *)event;
+- (void)startWithCategory:(const char *)category message:(const char *)message;
 - (void)stop;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __28__VMUDebugTimer_sharedTimer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTimer_onceToken != -1)
   {
     dispatch_once(&sharedTimer_onceToken, block);
@@ -53,34 +53,34 @@ void __28__VMUDebugTimer_sharedTimer__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)startWithCategory:(const char *)a3 message:(const char *)a4
+- (void)startWithCategory:(const char *)category message:(const char *)message
 {
   if (*&self->_eventStartTime != 0)
   {
-    [(VMUDebugTimer *)self endEvent:a3];
+    [(VMUDebugTimer *)self endEvent:category];
   }
 
-  if (a3)
+  if (category)
   {
-    if (*a3)
+    if (*category)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%s - %s", a3, a4];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%s - %s", category, message];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithUTF8String:a4];
+      [MEMORY[0x1E696AEC0] stringWithUTF8String:message];
     }
     v7 = ;
     eventMessage = self->_eventMessage;
     self->_eventMessage = v7;
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:category];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a4];
+    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:message];
     v9 = self->_eventMessage;
     self->_eventMessage = v8;
 
@@ -98,14 +98,14 @@ void __28__VMUDebugTimer_sharedTimer__block_invoke(uint64_t a1)
   self->_signpostID = os_signpost_id_generate(self->_logHandle);
 }
 
-- (void)endEvent:(const char *)a3
+- (void)endEvent:(const char *)event
 {
   eventStartTime = self->_eventStartTime;
   if (eventStartTime && self->_eventMessage)
   {
     if (self->_signpostID)
     {
-      if (a3)
+      if (event)
       {
         v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
       }
@@ -139,15 +139,15 @@ void __28__VMUDebugTimer_sharedTimer__block_invoke(uint64_t a1)
   categoryMessage = self->_categoryMessage;
   if (categoryMessage)
   {
-    v4 = [(NSString *)categoryMessage UTF8String];
+    uTF8String = [(NSString *)categoryMessage UTF8String];
   }
 
   else
   {
-    v4 = 0;
+    uTF8String = 0;
   }
 
-  [(VMUDebugTimer *)self endEvent:v4];
+  [(VMUDebugTimer *)self endEvent:uTF8String];
   v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
   programStartTime = self->_programStartTime;
   self->_programStartTime = v5;

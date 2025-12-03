@@ -1,13 +1,13 @@
 @interface HKHealthStoreProvider
 + (id)taskIdentifier;
 - (HKHealthStoreProvider)init;
-- (HKHealthStoreProvider)initWithHealthStore:(id)a3;
-- (HKHealthStoreProvider)initWithProxyProvider:(id)a3;
-- (id)healthStoreWithIdentifier:(id)a3;
-- (void)fetchAvailableIdentifiersWithCompletion:(id)a3;
-- (void)fetchStoreForIdentifier:(id)a3 completion:(id)a4;
-- (void)requestAuthorizationToNewStoreToShareTypes:(id)a3 readTypes:(id)a4 completion:(id)a5;
-- (void)requestAuthorizationToNewStoreWithCompletion:(id)a3;
+- (HKHealthStoreProvider)initWithHealthStore:(id)store;
+- (HKHealthStoreProvider)initWithProxyProvider:(id)provider;
+- (id)healthStoreWithIdentifier:(id)identifier;
+- (void)fetchAvailableIdentifiersWithCompletion:(id)completion;
+- (void)fetchStoreForIdentifier:(id)identifier completion:(id)completion;
+- (void)requestAuthorizationToNewStoreToShareTypes:(id)types readTypes:(id)readTypes completion:(id)completion;
+- (void)requestAuthorizationToNewStoreWithCompletion:(id)completion;
 @end
 
 @implementation HKHealthStoreProvider
@@ -20,13 +20,13 @@
   return v4;
 }
 
-- (HKHealthStoreProvider)initWithHealthStore:(id)a3
+- (HKHealthStoreProvider)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [HKTaskServerProxyProvider alloc];
-  v6 = [objc_opt_class() taskIdentifier];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [(HKTaskServerProxyProvider *)v5 initWithHealthStore:v4 taskIdentifier:v6 exportedObject:self taskUUID:v7];
+  taskIdentifier = [objc_opt_class() taskIdentifier];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v8 = [(HKTaskServerProxyProvider *)v5 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:self taskUUID:uUID];
 
   [(HKProxyProvider *)v8 setShouldRetryOnInterruption:0];
   v9 = [(HKHealthStoreProvider *)self initWithProxyProvider:v8];
@@ -34,16 +34,16 @@
   return v9;
 }
 
-- (HKHealthStoreProvider)initWithProxyProvider:(id)a3
+- (HKHealthStoreProvider)initWithProxyProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = HKHealthStoreProvider;
   v6 = [(HKHealthStoreProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxyProvider, a3);
+    objc_storeStrong(&v6->_proxyProvider, provider);
   }
 
   return v7;
@@ -56,29 +56,29 @@
   return NSStringFromClass(v2);
 }
 
-- (id)healthStoreWithIdentifier:(id)a3
+- (id)healthStoreWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(HKHealthStore);
-  v5 = [v3 profileIdentifier];
+  profileIdentifier = [identifierCopy profileIdentifier];
 
-  [(HKHealthStore *)v4 setProfileIdentifier:v5];
+  [(HKHealthStore *)v4 setProfileIdentifier:profileIdentifier];
 
   return v4;
 }
 
-- (void)fetchStoreForIdentifier:(id)a3 completion:(id)a4
+- (void)fetchStoreForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__HKHealthStoreProvider_fetchStoreForIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E737FAB0;
-  v8 = v7;
+  v8 = completionCopy;
   v22 = v8;
   aBlock[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v21 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [(HKHealthStoreProviderProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v10];
@@ -118,9 +118,9 @@ void __60__HKHealthStoreProvider_fetchStoreForIdentifier_completion___block_invo
   }
 }
 
-- (void)fetchAvailableIdentifiersWithCompletion:(id)a3
+- (void)fetchAvailableIdentifiersWithCompletion:(id)completion
 {
-  v4 = [(HKHealthStoreProviderProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKHealthStoreProviderProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__HKHealthStoreProvider_fetchAvailableIdentifiersWithCompletion___block_invoke;
@@ -135,14 +135,14 @@ void __60__HKHealthStoreProvider_fetchStoreForIdentifier_completion___block_invo
   [(HKHealthStoreProvider *)self _fetchProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)requestAuthorizationToNewStoreWithCompletion:(id)a3
+- (void)requestAuthorizationToNewStoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__HKHealthStoreProvider_requestAuthorizationToNewStoreWithCompletion___block_invoke;
   aBlock[3] = &unk_1E737FB28;
-  v5 = v4;
+  v5 = completionCopy;
   aBlock[4] = self;
   v15 = v5;
   v6 = _Block_copy(aBlock);
@@ -181,16 +181,16 @@ void __70__HKHealthStoreProvider_requestAuthorizationToNewStoreWithCompletion___
   }
 }
 
-- (void)requestAuthorizationToNewStoreToShareTypes:(id)a3 readTypes:(id)a4 completion:(id)a5
+- (void)requestAuthorizationToNewStoreToShareTypes:(id)types readTypes:(id)readTypes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  readTypesCopy = readTypes;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__HKHealthStoreProvider_requestAuthorizationToNewStoreToShareTypes_readTypes_completion___block_invoke;
   aBlock[3] = &unk_1E737FB28;
-  v11 = v10;
+  v11 = completionCopy;
   aBlock[4] = self;
   v25 = v11;
   v12 = _Block_copy(aBlock);
@@ -200,8 +200,8 @@ void __70__HKHealthStoreProvider_requestAuthorizationToNewStoreWithCompletion___
   v20[1] = 3221225472;
   v20[2] = __89__HKHealthStoreProvider_requestAuthorizationToNewStoreToShareTypes_readTypes_completion___block_invoke_2;
   v20[3] = &unk_1E737FB50;
-  v21 = v8;
-  v22 = v9;
+  v21 = typesCopy;
+  v22 = readTypesCopy;
   v23 = v13;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -210,8 +210,8 @@ void __70__HKHealthStoreProvider_requestAuthorizationToNewStoreWithCompletion___
   v19 = v11;
   v14 = v11;
   v15 = v13;
-  v16 = v9;
-  v17 = v8;
+  v16 = readTypesCopy;
+  v17 = typesCopy;
   [(HKHealthStoreProvider *)self _fetchProxyWithHandler:v20 errorHandler:v18];
 }
 

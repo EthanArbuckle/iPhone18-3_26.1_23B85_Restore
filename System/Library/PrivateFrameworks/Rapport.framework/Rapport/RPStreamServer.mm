@@ -1,11 +1,11 @@
 @interface RPStreamServer
 - (RPStreamServer)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleStartRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)_handleStopRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleStartRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_handleStopRequest:(id)request options:(id)options responseHandler:(id)handler;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -26,12 +26,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -44,14 +44,14 @@
   v9[2] = __41__RPStreamServer_activateWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPStreamServer <= 30 && (gLogCategory_RPStreamServer != -1 || _LogCategory_Initialize()))
   {
     [RPStreamServer _activateWithCompletion:?];
@@ -65,20 +65,20 @@
     if (gLogCategory_RPStreamServer <= 90 && (gLogCategory_RPStreamServer != -1 || _LogCategory_Initialize()))
     {
       [RPStreamServer _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, v7);
     goto LABEL_12;
   }
 
@@ -96,9 +96,9 @@ LABEL_12:
   v8[4] = self;
   [(RPMessageable *)v6 registerRequestID:@"_streamStop" options:0 handler:v8];
   objc_storeStrong(&self->_selfRef, self);
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_13:
@@ -173,11 +173,11 @@ LABEL_13:
   }
 }
 
-- (void)_handleStartRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_handleStartRequest:(id)request options:(id)options responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -189,7 +189,7 @@ LABEL_13:
   aBlock[2] = __62__RPStreamServer__handleStartRequest_options_responseHandler___block_invoke;
   aBlock[3] = &unk_1E7C94FA8;
   v45 = &v46;
-  v11 = v10;
+  v11 = handlerCopy;
   v44 = v11;
   v12 = _Block_copy(aBlock);
   v33 = v12;
@@ -237,12 +237,12 @@ LABEL_13:
   [(RPStreamSession *)v16 setStreamType:Int64Ranged];
   [(RPStreamSession *)v16 setServiceType:self->_serviceType];
   [(RPStreamSession *)v16 setStreamQoS:self->_streamQoS];
-  v17 = v8;
+  v17 = requestCopy;
   [(RPStreamSession *)v16 setStreamFlags:[(RPStreamSession *)v16 streamFlags]| CFDictionaryGetInt64Ranged() & 2];
   v18 = v11;
   v19 = _Block_copy(self->_streamPrepareHandlerEx);
   v20 = v19;
-  v21 = v9;
+  v21 = optionsCopy;
   if (!v19)
   {
     v27 = _Block_copy(self->_streamPrepareHandler);
@@ -262,9 +262,9 @@ LABEL_13:
   if (v23)
   {
 LABEL_18:
-    v9 = v21;
+    optionsCopy = v21;
     v11 = v18;
-    v8 = v17;
+    requestCopy = v17;
     if ((self->_streamFlags & 1) != 0 || Int64Ranged == 2 && ([(RPStreamSession *)v16 streamFlags]& 4) != 0)
     {
       v40[0] = MEMORY[0x1E69E9820];
@@ -289,7 +289,7 @@ LABEL_18:
     v38 = v34;
     v36[5] = self;
     v36[6] = v13;
-    [(RPStreamSession *)v16 activateForServerRequest:v17 options:v9 responseHandler:v36];
+    [(RPStreamSession *)v16 activateForServerRequest:v17 options:optionsCopy responseHandler:v36];
 
     goto LABEL_23;
   }
@@ -299,9 +299,9 @@ LABEL_18:
   v26 = v47[5];
   v47[5] = v25;
 
-  v9 = v21;
+  optionsCopy = v21;
   v11 = v18;
-  v8 = v17;
+  requestCopy = v17;
 LABEL_23:
 
   v12 = v33;
@@ -534,10 +534,10 @@ void __62__RPStreamServer__handleStartRequest_options_responseHandler___block_in
   v3();
 }
 
-- (void)_handleStopRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_handleStopRequest:(id)request options:(id)options responseHandler:(id)handler
 {
-  v11 = a5;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
 
@@ -561,7 +561,7 @@ void __62__RPStreamServer__handleStartRequest_options_responseHandler___block_in
 
     [RPStreamServer _handleStopRequest:options:responseHandler:];
 LABEL_14:
-    v10 = v11[2];
+    v10 = handlerCopy[2];
     goto LABEL_15;
   }
 
@@ -571,7 +571,7 @@ LABEL_14:
     [RPStreamServer _handleStopRequest:options:responseHandler:];
   }
 
-  v10 = v11[2];
+  v10 = handlerCopy[2];
 LABEL_15:
   v10();
 }

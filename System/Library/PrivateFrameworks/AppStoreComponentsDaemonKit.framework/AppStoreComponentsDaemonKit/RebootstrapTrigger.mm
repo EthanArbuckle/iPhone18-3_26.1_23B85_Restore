@@ -1,11 +1,11 @@
 @interface RebootstrapTrigger
-- (void)accountStoreDidChange:(id)a3;
-- (void)appDistributorsDidChange:(id)a3;
+- (void)accountStoreDidChange:(id)change;
+- (void)appDistributorsDidChange:(id)change;
 @end
 
 @implementation RebootstrapTrigger
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
   v3 = sub_22273707C();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)appDistributorsDidChange:(id)a3
+- (void)appDistributorsDidChange:(id)change
 {
   v4 = sub_22273707C();
   v5 = *(v4 - 8);

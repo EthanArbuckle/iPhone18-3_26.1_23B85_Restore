@@ -1,13 +1,13 @@
 @interface TUIKeyboardState
-+ (id)compactFloatingAssistantStateForEdge:(unint64_t)a3;
++ (id)compactFloatingAssistantStateForEdge:(unint64_t)edge;
 + (id)floatingAssistantFullState;
 + (id)floatingState;
-+ (id)interactiveStateForState:(id)a3;
++ (id)interactiveStateForState:(id)state;
 + (id)offscreenState;
 + (id)onscreenState;
 - (BOOL)accessoryOnscreenOnly;
 - (BOOL)hasFloatingAssistantView;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOffscreen;
 - (BOOL)showsInputOrAssistantViews;
 - (BOOL)showsInputViews;
@@ -58,21 +58,21 @@
 
 - (BOOL)hasFloatingAssistantView
 {
-  v3 = [(TUIKeyboardState *)self hasAssistantView];
-  if (v3)
+  hasAssistantView = [(TUIKeyboardState *)self hasAssistantView];
+  if (hasAssistantView)
   {
     if ([(TUIKeyboardState *)self hasInputView])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(hasAssistantView) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(TUIKeyboardState *)self isDocked];
+      LOBYTE(hasAssistantView) = ![(TUIKeyboardState *)self isDocked];
     }
   }
 
-  return v3;
+  return hasAssistantView;
 }
 
 - (id)description
@@ -103,9 +103,9 @@
 
     else
     {
-      v7 = [(TUIKeyboardState *)self hasAssistantView];
+      hasAssistantView = [(TUIKeyboardState *)self hasAssistantView];
       v6 = @" with assistant";
-      if (!v7)
+      if (!hasAssistantView)
       {
         v6 = &stru_1F03BA8F8;
       }
@@ -120,9 +120,9 @@
     [v3 appendFormat:@"; has IAV"];
   }
 
-  v9 = [(TUIKeyboardState *)self isDocked];
+  isDocked = [(TUIKeyboardState *)self isDocked];
   v10 = @"undocked +";
-  if (v9)
+  if (isDocked)
   {
     v10 = @"docked";
   }
@@ -155,14 +155,14 @@ LABEL_20:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(TUIKeyboardState *)self hasInputView];
-  if (v5 == [v4 hasInputView] && (v6 = -[TUIKeyboardState hasAssistantView](self, "hasAssistantView"), v6 == objc_msgSend(v4, "hasAssistantView")) && (v7 = -[TUIKeyboardState hasFloatingAssistantView](self, "hasFloatingAssistantView"), v7 == objc_msgSend(v4, "hasFloatingAssistantView")) && (v8 = -[TUIKeyboardState isInteractive](self, "isInteractive"), v8 == objc_msgSend(v4, "isInteractive")) && (v9 = -[TUIKeyboardState isSplit](self, "isSplit"), v9 == objc_msgSend(v4, "isSplit")) && (v10 = -[TUIKeyboardState isFloating](self, "isFloating"), v10 == objc_msgSend(v4, "isFloating")) && (v11 = -[TUIKeyboardState isDocked](self, "isDocked"), v11 == objc_msgSend(v4, "isDocked")))
+  equalCopy = equal;
+  hasInputView = [(TUIKeyboardState *)self hasInputView];
+  if (hasInputView == [equalCopy hasInputView] && (v6 = -[TUIKeyboardState hasAssistantView](self, "hasAssistantView"), v6 == objc_msgSend(equalCopy, "hasAssistantView")) && (v7 = -[TUIKeyboardState hasFloatingAssistantView](self, "hasFloatingAssistantView"), v7 == objc_msgSend(equalCopy, "hasFloatingAssistantView")) && (v8 = -[TUIKeyboardState isInteractive](self, "isInteractive"), v8 == objc_msgSend(equalCopy, "isInteractive")) && (v9 = -[TUIKeyboardState isSplit](self, "isSplit"), v9 == objc_msgSend(equalCopy, "isSplit")) && (v10 = -[TUIKeyboardState isFloating](self, "isFloating"), v10 == objc_msgSend(equalCopy, "isFloating")) && (v11 = -[TUIKeyboardState isDocked](self, "isDocked"), v11 == objc_msgSend(equalCopy, "isDocked")))
   {
-    v14 = [(TUIKeyboardState *)self closeEdges];
-    v12 = v14 == [v4 closeEdges];
+    closeEdges = [(TUIKeyboardState *)self closeEdges];
+    v12 = closeEdges == [equalCopy closeEdges];
   }
 
   else
@@ -204,42 +204,42 @@ LABEL_20:
 
 - (BOOL)accessoryOnscreenOnly
 {
-  v3 = [(TUIKeyboardState *)self hasAccessoryView];
-  if (v3)
+  hasAccessoryView = [(TUIKeyboardState *)self hasAccessoryView];
+  if (hasAccessoryView)
   {
     if ([(TUIKeyboardState *)self hasInputView]|| [(TUIKeyboardState *)self hasFloatingAssistantView])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(hasAccessoryView) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(TUIKeyboardState *)self isNonKeyboard];
+      LOBYTE(hasAccessoryView) = ![(TUIKeyboardState *)self isNonKeyboard];
     }
   }
 
-  return v3;
+  return hasAccessoryView;
 }
 
-+ (id)interactiveStateForState:(id)a3
++ (id)interactiveStateForState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_alloc_init(TUIKeyboardState);
-  -[TUIKeyboardState setHasInputView:](v4, "setHasInputView:", [v3 hasInputView]);
-  -[TUIKeyboardState setHasAssistantView:](v4, "setHasAssistantView:", [v3 hasAssistantView]);
-  -[TUIKeyboardState setHasAccessoryView:](v4, "setHasAccessoryView:", [v3 hasAccessoryView]);
-  -[TUIKeyboardState setIsDocked:](v4, "setIsDocked:", [v3 isDocked]);
-  -[TUIKeyboardState setIsSplit:](v4, "setIsSplit:", [v3 isSplit]);
-  -[TUIKeyboardState setIsFloating:](v4, "setIsFloating:", [v3 isFloating]);
-  v5 = [v3 closeEdges];
+  -[TUIKeyboardState setHasInputView:](v4, "setHasInputView:", [stateCopy hasInputView]);
+  -[TUIKeyboardState setHasAssistantView:](v4, "setHasAssistantView:", [stateCopy hasAssistantView]);
+  -[TUIKeyboardState setHasAccessoryView:](v4, "setHasAccessoryView:", [stateCopy hasAccessoryView]);
+  -[TUIKeyboardState setIsDocked:](v4, "setIsDocked:", [stateCopy isDocked]);
+  -[TUIKeyboardState setIsSplit:](v4, "setIsSplit:", [stateCopy isSplit]);
+  -[TUIKeyboardState setIsFloating:](v4, "setIsFloating:", [stateCopy isFloating]);
+  closeEdges = [stateCopy closeEdges];
 
-  [(TUIKeyboardState *)v4 setCloseEdges:v5];
+  [(TUIKeyboardState *)v4 setCloseEdges:closeEdges];
   [(TUIKeyboardState *)v4 setIsInteractive:1];
 
   return v4;
 }
 
-+ (id)compactFloatingAssistantStateForEdge:(unint64_t)a3
++ (id)compactFloatingAssistantStateForEdge:(unint64_t)edge
 {
   v4 = objc_alloc_init(TUIKeyboardState);
   [(TUIKeyboardState *)v4 setHasInputView:0];
@@ -247,7 +247,7 @@ LABEL_20:
   [(TUIKeyboardState *)v4 setIsDocked:0];
   [(TUIKeyboardState *)v4 setIsSplit:0];
   [(TUIKeyboardState *)v4 setIsFloating:1];
-  [(TUIKeyboardState *)v4 setCloseEdges:a3];
+  [(TUIKeyboardState *)v4 setCloseEdges:edge];
   [(TUIKeyboardState *)v4 setIsCompact:1];
 
   return v4;

@@ -2,10 +2,10 @@
 + (SGLongRunningTaskManager)sharedInstance;
 - (SGLongRunningTaskManager)init;
 - (id)task;
-- (id)taskWithDeadline:(double)a3;
+- (id)taskWithDeadline:(double)deadline;
 - (void)dealloc;
 - (void)tellCurrentTasksToDefer;
-- (void)unregister:(id)a3;
+- (void)unregister:(id)unregister;
 @end
 
 @implementation SGLongRunningTaskManager
@@ -48,19 +48,19 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregister:(id)a3
+- (void)unregister:(id)unregister
 {
-  v4 = a3;
+  unregisterCopy = unregister;
   pthread_mutex_lock(&self->_lock);
-  [(NSHashTable *)self->_tasks removeObject:v4];
+  [(NSHashTable *)self->_tasks removeObject:unregisterCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (id)taskWithDeadline:(double)a3
+- (id)taskWithDeadline:(double)deadline
 {
   v5 = [SGLongRunningTask alloc];
-  v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:a3];
+  v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:deadline];
   v7 = [(SGLongRunningTask *)v5 initWithDeadline:v6 manager:self];
 
   pthread_mutex_lock(&self->_lock);

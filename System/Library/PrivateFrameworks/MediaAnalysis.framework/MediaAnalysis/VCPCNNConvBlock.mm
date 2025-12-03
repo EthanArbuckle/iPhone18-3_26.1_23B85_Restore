@@ -1,14 +1,14 @@
 @interface VCPCNNConvBlock
-+ (Class)convBlockClass:(int)a3;
-+ (id)convBlockWithFilterSize:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7;
-+ (id)convBlockWithFilterSize:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10;
-- (VCPCNNConvBlock)initWithParameters:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10;
-- (int)constructBlock:(id)a3 context:(id)a4;
++ (Class)convBlockClass:(int)class;
++ (id)convBlockWithFilterSize:(int)size filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding;
++ (id)convBlockWithFilterSize:(int)size filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0;
+- (VCPCNNConvBlock)initWithParameters:(int)parameters filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0;
+- (int)constructBlock:(id)block context:(id)context;
 @end
 
 @implementation VCPCNNConvBlock
 
-+ (Class)convBlockClass:(int)a3
++ (Class)convBlockClass:(int)class
 {
   if (!+[VCPCNNMetalContext supportGPU])
   {
@@ -20,93 +20,93 @@
   return v3;
 }
 
-+ (id)convBlockWithFilterSize:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7
++ (id)convBlockWithFilterSize:(int)size filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = *&a3;
-  v12 = [VCPCNNConvBlock convBlockClass:*&a5];
+  paddingCopy = padding;
+  uCopy = u;
+  v9 = *&chunk;
+  v10 = *&num;
+  v11 = *&size;
+  v12 = [VCPCNNConvBlock convBlockClass:*&chunk];
   if (v12)
   {
     BYTE4(v14) = 0;
     LODWORD(v14) = 1;
-    v12 = [[v12 alloc] initWithParameters:v11 filterNum:v10 chunk:v9 reLU:v8 padding:v7 groups:1 stride:v14 batchNorm:?];
+    v12 = [[v12 alloc] initWithParameters:v11 filterNum:v10 chunk:v9 reLU:uCopy padding:paddingCopy groups:1 stride:v14 batchNorm:?];
   }
 
   return v12;
 }
 
-+ (id)convBlockWithFilterSize:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10
++ (id)convBlockWithFilterSize:(int)size filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0
 {
-  v10 = *&a8;
-  v11 = a7;
-  v12 = a6;
-  v13 = *&a5;
-  v14 = *&a4;
-  v15 = *&a3;
-  v16 = [VCPCNNConvBlock convBlockClass:*&a5];
+  v10 = *&groups;
+  paddingCopy = padding;
+  uCopy = u;
+  v13 = *&chunk;
+  v14 = *&num;
+  v15 = *&size;
+  v16 = [VCPCNNConvBlock convBlockClass:*&chunk];
   if (v16)
   {
-    BYTE4(v18) = a10;
-    LODWORD(v18) = a9;
-    v16 = [[v16 alloc] initWithParameters:v15 filterNum:v14 chunk:v13 reLU:v12 padding:v11 groups:v10 stride:v18 batchNorm:?];
+    BYTE4(v18) = norm;
+    LODWORD(v18) = stride;
+    v16 = [[v16 alloc] initWithParameters:v15 filterNum:v14 chunk:v13 reLU:uCopy padding:paddingCopy groups:v10 stride:v18 batchNorm:?];
   }
 
   return v16;
 }
 
-- (VCPCNNConvBlock)initWithParameters:(int)a3 filterNum:(int)a4 chunk:(int)a5 reLU:(BOOL)a6 padding:(BOOL)a7 groups:(int)a8 stride:(int)a9 batchNorm:(BOOL)a10
+- (VCPCNNConvBlock)initWithParameters:(int)parameters filterNum:(int)num chunk:(int)chunk reLU:(BOOL)u padding:(BOOL)padding groups:(int)groups stride:(int)stride batchNorm:(BOOL)self0
 {
-  v11 = a7;
+  paddingCopy = padding;
   v19.receiver = self;
   v19.super_class = VCPCNNConvBlock;
   result = [(VCPCNNConvBlock *)&v19 init];
   if (result)
   {
-    v17 = a9;
-    *(&result->super._executedOnGPU + 3) = a3;
-    result->_filterSize = a4;
-    result->_chunk = a5;
-    result->_reLU = a6;
-    result->_padding = v11;
+    strideCopy = stride;
+    *(&result->super._executedOnGPU + 3) = parameters;
+    result->_filterSize = num;
+    result->_chunk = chunk;
+    result->_reLU = u;
+    result->_padding = paddingCopy;
     result->_padSize = 0;
-    if (v11)
+    if (paddingCopy)
     {
       result->_padSize = (*(&result->super._executedOnGPU + 3) - 1) / 2;
     }
 
-    if (a8 <= 1)
+    if (groups <= 1)
     {
-      v18 = 1;
+      groupsCopy = 1;
     }
 
     else
     {
-      v18 = a8;
+      groupsCopy = groups;
     }
 
-    result->_groups = v18;
-    if (a9 <= 1)
+    result->_groups = groupsCopy;
+    if (stride <= 1)
     {
-      v17 = 1;
+      strideCopy = 1;
     }
 
-    result->_stride = v17;
-    result->_batchNorm = a10;
+    result->_stride = strideCopy;
+    result->_batchNorm = norm;
     result->super._executedOnGPU = 0;
   }
 
   return result;
 }
 
-- (int)constructBlock:(id)a3 context:(id)a4
+- (int)constructBlock:(id)block context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->super._context, a4);
-  v8 = [VCPCNNData cnnDataWithGPUContext:v7];
+  blockCopy = block;
+  contextCopy = context;
+  objc_storeStrong(&self->super._context, context);
+  v8 = [VCPCNNData cnnDataWithGPUContext:contextCopy];
   output = self->super._output;
   self->super._output = v8;
 
@@ -118,10 +118,10 @@
   bias = self->_bias;
   self->_bias = v12;
 
-  if (self->super._output && self->_filter && self->_bias && (objc_storeWeak(&self->super._inputSize, v6), v14 = objc_alloc_init(MEMORY[0x1E695DF70]), v15 = self->super._outputSize, self->super._outputSize = v14, v15, (v16 = self->super._outputSize) != 0))
+  if (self->super._output && self->_filter && self->_bias && (objc_storeWeak(&self->super._inputSize, blockCopy), v14 = objc_alloc_init(MEMORY[0x1E695DF70]), v15 = self->super._outputSize, self->super._outputSize = v14, v15, (v16 = self->super._outputSize) != 0))
   {
     v17 = [MEMORY[0x1E696AD98] numberWithInt:self->_filterSize];
-    v47 = v6;
+    v47 = blockCopy;
     [(NSMutableArray *)v16 addObject:v17];
 
     LODWORD(v17) = self->_padding;
@@ -155,7 +155,7 @@
     v25 = ;
     [(NSMutableArray *)v22 addObject:v25];
 
-    v6 = v47;
+    blockCopy = v47;
     [(VCPCNNData *)self->super._output setSize:self->super._outputSize];
     v26 = [(VCPCNNData *)self->super._output allocBuffers:self->super._generateOutput];
     if (!v26)
@@ -174,7 +174,7 @@
       v37 = [v34 numberWithInt:{(objc_msgSend(v36, "intValue") / self->_groups)}];
       [v33 addObject:v37];
 
-      v6 = v47;
+      blockCopy = v47;
       v38 = [(VCPCNNData *)self->_filter size];
       v39 = [MEMORY[0x1E696AD98] numberWithInt:*(&self->super._executedOnGPU + 3)];
       [v38 addObject:v39];

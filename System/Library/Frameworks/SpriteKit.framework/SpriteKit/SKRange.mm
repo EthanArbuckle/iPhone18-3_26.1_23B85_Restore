@@ -5,11 +5,11 @@
 + (SKRange)rangeWithNoLimits;
 + (SKRange)rangeWithUpperLimit:(CGFloat)upper;
 + (SKRange)rangeWithValue:(CGFloat)value variance:(CGFloat)variance;
-- (SKRange)initWithCoder:(id)a3;
+- (SKRange)initWithCoder:(id)coder;
 - (SKRange)initWithLowerLimit:(CGFloat)lower upperLimit:(CGFloat)upper;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRange
@@ -29,24 +29,24 @@
   return v7;
 }
 
-- (SKRange)initWithCoder:(id)a3
+- (SKRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"_lowerLimit"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"_lowerLimit"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"_upperLimit"];
+  [coderCopy decodeDoubleForKey:@"_upperLimit"];
   v8 = [(SKRange *)self initWithLowerLimit:v6 upperLimit:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SKRange *)self lowerLimit];
-  [v4 encodeDouble:@"_lowerLimit" forKey:?];
+  [coderCopy encodeDouble:@"_lowerLimit" forKey:?];
   [(SKRange *)self upperLimit];
-  [v4 encodeDouble:@"_upperLimit" forKey:?];
+  [coderCopy encodeDouble:@"_upperLimit" forKey:?];
 }
 
 + (SKRange)rangeWithLowerLimit:(CGFloat)lower upperLimit:(CGFloat)upper
@@ -87,9 +87,9 @@
 + (SKRange)rangeWithValue:(CGFloat)value variance:(CGFloat)variance
 {
   v4 = fabs(variance);
-  v5 = [objc_alloc(objc_opt_class()) initWithLowerLimit:value - v4 upperLimit:v4 + value];
+  value = [objc_alloc(objc_opt_class()) initWithLowerLimit:value - v4 upperLimit:v4 + value];
 
-  return v5;
+  return value;
 }
 
 - (id)description
@@ -143,7 +143,7 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(SKRange *)self lowerLimit];
   v5 = v4;

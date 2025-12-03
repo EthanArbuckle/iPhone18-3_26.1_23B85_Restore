@@ -1,21 +1,21 @@
 @interface ML3ITunesSyncImportOperation
-- (BOOL)_performImportFromPlistFiles:(id)a3 withTransaction:(id)a4;
-- (BOOL)_performImportOfTrackData:(id)a3 WithTransaction:(id)a4;
-- (BOOL)_performImportWithTransaction:(id)a3;
-- (BOOL)_processDeletePlaylistOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processDeleteTrackOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processInsertPlaylistOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processInsertTrackOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processSyncOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processUpdateDBInfoOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processUpdatePlaylistOperation:(id)a3 withImportSession:(void *)a4;
-- (BOOL)_processUpdateTrackOperation:(id)a3 withImportSession:(void *)a4;
-- (id)_dbInfoValuesForStep:(id)a3;
-- (id)_syncOperationsFromPlistFile:(id)a3;
-- (id)_syncPlistFilesFromDirectory:(id)a3;
+- (BOOL)_performImportFromPlistFiles:(id)files withTransaction:(id)transaction;
+- (BOOL)_performImportOfTrackData:(id)data WithTransaction:(id)transaction;
+- (BOOL)_performImportWithTransaction:(id)transaction;
+- (BOOL)_processDeletePlaylistOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processDeleteTrackOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processInsertPlaylistOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processInsertTrackOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processSyncOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processUpdateDBInfoOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processUpdatePlaylistOperation:(id)operation withImportSession:(void *)session;
+- (BOOL)_processUpdateTrackOperation:(id)operation withImportSession:(void *)session;
+- (id)_dbInfoValuesForStep:(id)step;
+- (id)_syncOperationsFromPlistFile:(id)file;
+- (id)_syncPlistFilesFromDirectory:(id)directory;
 - (void)_archiveSyncPlistFiles;
-- (void)_processGeniusConfigPlist:(id)a3;
-- (void)_recoverExistingAsset:(id)a3 forTrackId:(int64_t)a4;
+- (void)_processGeniusConfigPlist:(id)plist;
+- (void)_recoverExistingAsset:(id)asset forTrackId:(int64_t)id;
 - (void)main;
 @end
 
@@ -24,7 +24,7 @@
 - (void)_archiveSyncPlistFiles
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v42 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v2 = MEMORY[0x277CBEBC0];
   v3 = MSVMediaLoggingDirectory();
   v56[0] = v3;
@@ -36,7 +36,7 @@
   v38 = 297;
   if (self->_resetSync)
   {
-    [v42 removeItemAtURL:v41 error:0];
+    [defaultManager removeItemAtURL:v41 error:0];
   }
 
   else
@@ -48,7 +48,7 @@
     v55[1] = v6;
     v44 = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
-    v8 = [v42 enumeratorAtURL:v41 includingPropertiesForKeys:v7 options:4 errorHandler:0];
+    v8 = [defaultManager enumeratorAtURL:v41 includingPropertiesForKeys:v7 options:4 errorHandler:0];
 
     v49 = 0u;
     v50 = 0u;
@@ -69,8 +69,8 @@
           }
 
           v13 = *(*(&v47 + 1) + 8 * i);
-          v14 = [v13 lastPathComponent];
-          v15 = [v14 isEqualToString:@"Reset"];
+          lastPathComponent = [v13 lastPathComponent];
+          v15 = [lastPathComponent isEqualToString:@"Reset"];
 
           if ((v15 & 1) == 0)
           {
@@ -99,19 +99,19 @@
 
     if ([v43 count] >= 4)
     {
-      v21 = [v43 allKeys];
-      v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_24606];
+      allKeys = [v43 allKeys];
+      v22 = [allKeys sortedArrayUsingComparator:&__block_literal_global_24606];
 
       for (j = 3; [v22 count] > j; ++j)
       {
         v24 = [v22 objectAtIndexedSubscript:j];
         v25 = [v43 objectForKeyedSubscript:v24];
-        [v42 removeItemAtURL:v25 error:0];
+        [defaultManager removeItemAtURL:v25 error:0];
       }
     }
   }
 
-  [v42 createDirectoryAtURL:v41 withIntermediateDirectories:1 attributes:0 error:{0, v38}];
+  [defaultManager createDirectoryAtURL:v41 withIntermediateDirectories:1 attributes:0 error:{0, v38}];
   if (*(&self->super.super.super.isa + v39))
   {
     v26 = @"Reset";
@@ -119,102 +119,102 @@
 
   else
   {
-    v27 = [MEMORY[0x277CBEAA8] date];
-    v26 = [v27 description];
+    date = [MEMORY[0x277CBEAA8] date];
+    v26 = [date description];
   }
 
   v28 = [(__CFString *)v26 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   v29 = MEMORY[0x277CBEBC0];
-  v30 = [v41 path];
-  v53[0] = v30;
+  path = [v41 path];
+  v53[0] = path;
   v53[1] = v28;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
   v32 = [v29 fileURLWithPathComponents:v31];
 
-  v33 = [MEMORY[0x277CBEAA8] date];
-  v34 = [v32 path];
-  [v42 copyItemAtPath:@"/var/mobile/Media/iTunes_Control/Sync/Media/" toPath:v34 error:0];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  path2 = [v32 path];
+  [defaultManager copyItemAtPath:@"/var/mobile/Media/iTunes_Control/Sync/Media/" toPath:path2 error:0];
 
   v35 = *MEMORY[0x277CCA150];
   v51[0] = *MEMORY[0x277CCA108];
   v51[1] = v35;
-  v52[0] = v33;
-  v52[1] = v33;
+  v52[0] = date2;
+  v52[1] = date2;
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
-  v37 = [v32 path];
-  [v42 setAttributes:v36 ofItemAtPath:v37 error:0];
+  path3 = [v32 path];
+  [defaultManager setAttributes:v36 ofItemAtPath:path3 error:0];
 }
 
-- (void)_processGeniusConfigPlist:(id)a3
+- (void)_processGeniusConfigPlist:(id)plist
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plistCopy = plist;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKey:@"data"];
+    v5 = [plistCopy objectForKey:@"data"];
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      null = v5;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v9 = v7;
+    v9 = null;
 
-    v10 = [v4 objectForKey:@"default_num_results"];
+    v10 = [plistCopy objectForKey:@"default_num_results"];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      null2 = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    v13 = v12;
+    v13 = null2;
 
-    v14 = [v4 objectForKey:@"min_num_results"];
+    v14 = [plistCopy objectForKey:@"min_num_results"];
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      null3 = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
     }
 
-    v17 = v16;
+    v17 = null3;
 
-    v18 = [v4 objectForKey:@"version"];
+    v18 = [plistCopy objectForKey:@"version"];
     v19 = v18;
     if (v18)
     {
-      v20 = v18;
+      null4 = v18;
     }
 
     else
     {
-      v20 = [MEMORY[0x277CBEB68] null];
+      null4 = [MEMORY[0x277CBEB68] null];
     }
 
-    v21 = v20;
+    v21 = null4;
 
     *&buf = 0;
     *(&buf + 1) = &buf;
     v41 = 0x2020000000;
     v42 = 0;
-    v22 = [(ML3ImportOperation *)self import];
-    v23 = [v22 library];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __58__ML3ITunesSyncImportOperation__processGeniusConfigPlist___block_invoke;
@@ -228,7 +228,7 @@
     v35 = v24;
     v25 = v21;
     v36 = v25;
-    [v23 databaseConnectionAllowingWrites:1 withBlock:v32];
+    [library databaseConnectionAllowingWrites:1 withBlock:v32];
 
     LODWORD(v21) = *(*(&buf + 1) + 24);
     v26 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -238,7 +238,7 @@
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *v38 = 138543362;
-        v39 = v4;
+        v39 = plistCopy;
         v28 = "Updated Genius configuration: %{public}@";
         v29 = v27;
         v30 = OS_LOG_TYPE_DEFAULT;
@@ -250,7 +250,7 @@ LABEL_21:
     else if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *v38 = 138543362;
-      v39 = v4;
+      v39 = plistCopy;
       v28 = "Failed to update Genius configuration: %{public}@";
       v29 = v27;
       v30 = OS_LOG_TYPE_ERROR;
@@ -265,7 +265,7 @@ LABEL_21:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = plistCopy;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "No valid genius_config found in: %{public}@", &buf, 0xCu);
   }
 
@@ -283,17 +283,17 @@ void __58__ML3ITunesSyncImportOperation__processGeniusConfigPlist___block_invoke
   *(*(*(a1 + 64) + 8) + 24) = [v3 executeUpdate:@"INSERT OR REPLACE INTO genius_config (id withParameters:data error:{default_num_results, min_num_results, version) VALUES (0, ?, ?, ?, ?)", v4, 0}];
 }
 
-- (id)_dbInfoValuesForStep:(id)a3
+- (id)_dbInfoValuesForStep:(id)step
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"pid"];
+  stepCopy = step;
+  v5 = [stepCopy objectForKey:@"pid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v6 setValue:v5 forKey:@"ROWID"];
-    v7 = [v4 objectForKey:@"db_info"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setValue:v5 forKey:@"ROWID"];
+    v7 = [stepCopy objectForKey:@"db_info"];
     v19[0] = @"audio_language";
     v19[1] = @"subtitle_language";
     v20[0] = @"audio_language";
@@ -302,7 +302,7 @@ void __58__ML3ITunesSyncImportOperation__processGeniusConfigPlist___block_invoke
     v20[2] = @"genius_cuid";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
     v9 = v7;
-    v10 = v6;
+    v10 = dictionary;
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
     v22 = ___ZL23TranslateDictionaryKeysP12NSDictionaryS0_P19NSMutableDictionary_block_invoke;
@@ -409,36 +409,36 @@ void __53__ML3ITunesSyncImportOperation__dbInfoValuesForStep___block_invoke(uint
   }
 }
 
-- (void)_recoverExistingAsset:(id)a3 forTrackId:(int64_t)a4
+- (void)_recoverExistingAsset:(id)asset forTrackId:(int64_t)id
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [ML3MusicLibrary mediaFolderPathByAppendingPathComponent:v6];
-  if (([v7 fileExistsAtPath:v8] & 1) == 0)
+  assetCopy = asset;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [ML3MusicLibrary mediaFolderPathByAppendingPathComponent:assetCopy];
+  if (([defaultManager fileExistsAtPath:v8] & 1) == 0)
   {
-    v9 = [(ML3ImportOperation *)self import];
-    v10 = [v9 library];
-    v11 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:a4];
-    v12 = [(ML3Entity *)ML3Track anyInLibrary:v10 predicate:v11 options:7];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
+    v11 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:id];
+    v12 = [(ML3Entity *)ML3Track anyInLibrary:library predicate:v11 options:7];
 
     if (v12)
     {
-      v13 = [v12 absoluteFilePath];
-      v14 = [v7 fileExistsAtPath:v13];
+      absoluteFilePath = [v12 absoluteFilePath];
+      v14 = [defaultManager fileExistsAtPath:absoluteFilePath];
       v15 = os_log_create("com.apple.amp.medialibrary", "Default");
-      v16 = v15;
+      import2 = v15;
       if (v14)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v22 = a4;
+          idCopy3 = id;
           v23 = 2114;
-          v24 = v13;
+          v24 = absoluteFilePath;
           v25 = 2114;
           v26 = v8;
-          _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "Asset path differs for pid %lld. ours=%{public}@, theirs=%{public}@", buf, 0x20u);
+          _os_log_impl(&dword_22D2FA000, import2, OS_LOG_TYPE_DEFAULT, "Asset path differs for pid %lld. ours=%{public}@, theirs=%{public}@", buf, 0x20u);
         }
       }
 
@@ -447,37 +447,37 @@ void __53__ML3ITunesSyncImportOperation__dbInfoValuesForStep___block_invoke(uint
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218242;
-          v22 = a4;
+          idCopy3 = id;
           v23 = 2114;
-          v24 = v6;
-          _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_ERROR, "No longer have asset for pid %lld. filePath=%{public}@", buf, 0x16u);
+          v24 = assetCopy;
+          _os_log_impl(&dword_22D2FA000, import2, OS_LOG_TYPE_ERROR, "No longer have asset for pid %lld. filePath=%{public}@", buf, 0x16u);
         }
 
-        v16 = [(ML3ImportOperation *)self import];
-        v17 = [v16 library];
-        v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+        import2 = [(ML3ImportOperation *)self import];
+        library2 = [import2 library];
+        v18 = [MEMORY[0x277CCABB0] numberWithLongLong:id];
         v20 = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-        [ML3Track clearLocationFromLibrary:v17 persistentIDs:v19 disableKeepLocal:0];
+        [ML3Track clearLocationFromLibrary:library2 persistentIDs:v19 disableKeepLocal:0];
       }
     }
 
     else
     {
-      v13 = os_log_create("com.apple.amp.medialibrary", "Default");
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      absoluteFilePath = os_log_create("com.apple.amp.medialibrary", "Default");
+      if (os_log_type_enabled(absoluteFilePath, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v22 = a4;
-        _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_ERROR, "recoverExistingAsset called with unknown track pid %lld", buf, 0xCu);
+        idCopy3 = id;
+        _os_log_impl(&dword_22D2FA000, absoluteFilePath, OS_LOG_TYPE_ERROR, "recoverExistingAsset called with unknown track pid %lld", buf, 0xCu);
       }
     }
   }
 }
 
-- (BOOL)_processDeletePlaylistOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processDeletePlaylistOperation:(id)operation withImportSession:(void *)session
 {
-  v5 = a3;
+  operationCopy = operation;
   if (!self->_sagaIsEnabled)
   {
     operator new();
@@ -486,14 +486,14 @@ void __53__ML3ITunesSyncImportOperation__dbInfoValuesForStep___block_invoke(uint
   return 1;
 }
 
-- (BOOL)_processUpdatePlaylistOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processUpdatePlaylistOperation:(id)operation withImportSession:(void *)session
 {
-  v5 = a3;
+  operationCopy = operation;
   if (!self->_sagaIsEnabled)
   {
     if (self->_devicePrimaryContainer)
     {
-      v6 = [v5 objectForKey:@"pid"];
+      v6 = [operationCopy objectForKey:@"pid"];
       [v6 longLongValue];
     }
 
@@ -503,14 +503,14 @@ void __53__ML3ITunesSyncImportOperation__dbInfoValuesForStep___block_invoke(uint
   return 1;
 }
 
-- (BOOL)_processInsertPlaylistOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processInsertPlaylistOperation:(id)operation withImportSession:(void *)session
 {
-  v7 = a3;
+  operationCopy = operation;
   if (!self->_sagaIsEnabled)
   {
     if (self->_devicePrimaryContainer)
     {
-      v5 = [(NSDictionary *)v7 objectForKey:@"pid"];
+      v5 = [(NSDictionary *)operationCopy objectForKey:@"pid"];
       [v5 longLongValue];
     }
 
@@ -530,32 +530,32 @@ void __82__ML3ITunesSyncImportOperation__processInsertPlaylistOperation_withImpo
   [(ML3Entity *)v7 setValue:&unk_2840CA3E8 forProperty:@"is_container_type_active_target"];
 }
 
-- (BOOL)_processUpdateDBInfoOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processUpdateDBInfoOperation:(id)operation withImportSession:(void *)session
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ML3ITunesSyncImportOperation *)self _dbInfoValuesForStep:v5];
+  operationCopy = operation;
+  v6 = [(ML3ITunesSyncImportOperation *)self _dbInfoValuesForStep:operationCopy];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 objectForKey:@"ROWID"];
-    v9 = [v8 longLongValue];
-    v10 = [(ML3ImportOperation *)self import];
-    v11 = [v10 library];
-    v12 = [v11 databaseInfo];
+    longLongValue = [v8 longLongValue];
+    import = [(ML3ImportOperation *)self import];
+    library = [import library];
+    databaseInfo = [library databaseInfo];
 
-    if (![v12 existsInLibrary] || objc_msgSend(v12, "persistentID") != v9)
+    if (![databaseInfo existsInLibrary] || objc_msgSend(databaseInfo, "persistentID") != longLongValue)
     {
-      v13 = [(ML3ImportOperation *)self import];
-      v14 = [v13 library];
-      v15 = [(ML3Entity *)ML3DatabaseMetadata queryWithLibrary:v14 predicate:0];
+      import2 = [(ML3ImportOperation *)self import];
+      library2 = [import2 library];
+      v15 = [(ML3Entity *)ML3DatabaseMetadata queryWithLibrary:library2 predicate:0];
       [v15 deleteAllEntitiesFromLibrary];
 
-      v16 = [(ML3ImportOperation *)self import];
-      v17 = [v16 library];
-      v18 = [(ML3Entity *)ML3DatabaseMetadata newWithDictionary:v7 inLibrary:v17 cachedNameOrders:0];
+      import3 = [(ML3ImportOperation *)self import];
+      library3 = [import3 library];
+      v18 = [(ML3Entity *)ML3DatabaseMetadata newWithDictionary:v7 inLibrary:library3 cachedNameOrders:0];
 
-      v12 = v18;
+      databaseInfo = v18;
     }
 
     v19 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -566,12 +566,12 @@ void __82__ML3ITunesSyncImportOperation__processInsertPlaylistOperation_withImpo
       _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEFAULT, "DBInfo values: %{public}@", &v26, 0xCu);
     }
 
-    v20 = v12 != 0;
-    if (v12)
+    v20 = databaseInfo != 0;
+    if (databaseInfo)
     {
       if ([v7 count])
       {
-        [v12 setValuesForPropertiesWithDictionary:v7];
+        [databaseInfo setValuesForPropertiesWithDictionary:v7];
       }
 
       v21 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -581,7 +581,7 @@ void __82__ML3ITunesSyncImportOperation__processInsertPlaylistOperation_withImpo
       }
 
       v26 = 138543362;
-      v27 = v12;
+      v27 = databaseInfo;
       v22 = "Updated dbInfo: %{public}@";
       v23 = v21;
       v24 = OS_LOG_TYPE_DEFAULT;
@@ -598,7 +598,7 @@ LABEL_16:
       }
 
       v26 = 134217984;
-      v27 = v9;
+      v27 = longLongValue;
       v22 = "Could not update dbInfo: %lld";
       v23 = v21;
       v24 = OS_LOG_TYPE_ERROR;
@@ -614,11 +614,11 @@ LABEL_17:
   return v20;
 }
 
-- (BOOL)_processDeleteTrackOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processDeleteTrackOperation:(id)operation withImportSession:(void *)session
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"pid"];
+  operationCopy = operation;
+  v5 = [operationCopy objectForKey:@"pid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -636,36 +636,36 @@ LABEL_17:
   return 0;
 }
 
-- (BOOL)_processUpdateTrackOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processUpdateTrackOperation:(id)operation withImportSession:(void *)session
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   operator new();
 }
 
-- (BOOL)_processInsertTrackOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processInsertTrackOperation:(id)operation withImportSession:(void *)session
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   operator new();
 }
 
-- (BOOL)_processSyncOperation:(id)a3 withImportSession:(void *)a4
+- (BOOL)_processSyncOperation:(id)operation withImportSession:(void *)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   v7 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = operationCopy;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "_processSyncOperation %{public}@", &v13, 0xCu);
   }
 
-  v8 = [v6 objectForKey:@"operation"];
+  v8 = [operationCopy objectForKey:@"operation"];
   if ([v8 isEqualToString:@"insert_track"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processInsertTrackOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processInsertTrackOperation:operationCopy withImportSession:session];
 LABEL_17:
     v10 = v9;
     goto LABEL_18;
@@ -673,37 +673,37 @@ LABEL_17:
 
   if ([v8 isEqualToString:@"update_track"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdateTrackOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdateTrackOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
   if ([v8 isEqualToString:@"delete_track"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processDeleteTrackOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processDeleteTrackOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
   if ([v8 isEqualToString:@"insert_playlist"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processInsertPlaylistOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processInsertPlaylistOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
   if ([v8 isEqualToString:@"update_playlist"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdatePlaylistOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdatePlaylistOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
   if ([v8 isEqualToString:@"delete_playlist"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processDeletePlaylistOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processDeletePlaylistOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
   if ([v8 isEqualToString:@"update_db_info"])
   {
-    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdateDBInfoOperation:v6 withImportSession:a4];
+    v9 = [(ML3ITunesSyncImportOperation *)self _processUpdateDBInfoOperation:operationCopy withImportSession:session];
     goto LABEL_17;
   }
 
@@ -721,11 +721,11 @@ LABEL_18:
   return v10;
 }
 
-- (id)_syncOperationsFromPlistFile:(id)a3
+- (id)_syncOperationsFromPlistFile:(id)file
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy];
   if (v4)
   {
     v5 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:0];
@@ -752,7 +752,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v3;
+      v11 = fileCopy;
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "No operations in %{public}@", &v10, 0xCu);
     }
   }
@@ -763,7 +763,7 @@ LABEL_18:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v3;
+      v11 = fileCopy;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Invalid sync plist at %{public}@", &v10, 0xCu);
     }
   }
@@ -774,14 +774,14 @@ LABEL_13:
   return v7;
 }
 
-- (id)_syncPlistFilesFromDirectory:(id)a3
+- (id)_syncPlistFilesFromDirectory:(id)directory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  directoryCopy = directory;
+  array = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CCAA00] defaultManager];
   v13 = v20 = 0;
-  v5 = [v13 contentsOfDirectoryAtPath:v3 error:&v20];
+  v5 = [v13 contentsOfDirectoryAtPath:directoryCopy error:&v20];
   v14 = v5;
   v15 = v20;
   if (v5)
@@ -805,10 +805,10 @@ LABEL_13:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v3 stringByAppendingPathComponent:v10];
+          v11 = [directoryCopy stringByAppendingPathComponent:v10];
           if ([v10 hasPrefix:@"Sync_"] && objc_msgSend(v10, "hasSuffix:", @".plist"))
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -825,37 +825,37 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = v3;
+      v22 = directoryCopy;
       v23 = 2114;
       v24 = v15;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Could not read %{public}@: %{public}@", buf, 0x16u);
     }
   }
 
-  [v4 sortUsingSelector:sel_compare_];
+  [array sortUsingSelector:sel_compare_];
 
-  return v4;
+  return array;
 }
 
-- (BOOL)_performImportFromPlistFiles:(id)a3 withTransaction:(id)a4
+- (BOOL)_performImportFromPlistFiles:(id)files withTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v12 = a4;
-  v6 = [(ML3ImportOperation *)self import];
-  v10 = [v6 library];
+  filesCopy = files;
+  transactionCopy = transaction;
+  import = [(ML3ImportOperation *)self import];
+  library = [import library];
 
   v7 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v13;
+    v15 = filesCopy;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "processing plist files: %{public}@", buf, 0xCu);
   }
 
-  [v13 count];
-  v8 = [v12 connection];
-  ML3ImportSession::ML3ImportSession(buf, v11, v8, 3, 1);
+  [filesCopy count];
+  connection = [transactionCopy connection];
+  ML3ImportSession::ML3ImportSession(buf, v11, connection, 3, 1);
 }
 
 void __77__ML3ITunesSyncImportOperation__performImportFromPlistFiles_withTransaction___block_invoke(uint64_t a1, int a2)
@@ -875,13 +875,13 @@ void __77__ML3ITunesSyncImportOperation__performImportFromPlistFiles_withTransac
   }
 }
 
-- (BOOL)_performImportOfTrackData:(id)a3 WithTransaction:(id)a4
+- (BOOL)_performImportOfTrackData:(id)data WithTransaction:(id)transaction
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  transactionCopy = transaction;
   v26 = 0;
-  v8 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:&v26];
+  v8 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:&v26];
   v21 = v26;
   if (!v8)
   {
@@ -905,9 +905,9 @@ LABEL_19:
   {
     v9 = v8;
     [(ML3ImportOperation *)self import];
-    v10 = [objc_claimAutoreleasedReturnValue() library];
-    v11 = [v7 connection];
-    ML3ImportSession::ML3ImportSession(v28, v10, v11, 3, 1);
+    library = [objc_claimAutoreleasedReturnValue() library];
+    connection = [transactionCopy connection];
+    ML3ImportSession::ML3ImportSession(v28, library, connection, 3, 1);
   }
 
   objc_opt_class();
@@ -944,7 +944,7 @@ LABEL_19:
         }
 
         v17 = [(ML3ITunesSyncImportOperation *)self _syncPlistFilesFromDirectory:*(*(&v22 + 1) + 8 * i)];
-        v18 = [(ML3ITunesSyncImportOperation *)self _performImportFromPlistFiles:v17 withTransaction:v7];
+        v18 = [(ML3ITunesSyncImportOperation *)self _performImportFromPlistFiles:v17 withTransaction:transactionCopy];
 
         if (!v18)
         {
@@ -970,25 +970,25 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)_performImportWithTransaction:(id)a3
+- (BOOL)_performImportWithTransaction:(id)transaction
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ML3ImportOperation *)self import];
-  self->_sagaIsEnabled = [v5 isSagaEnabled];
+  transactionCopy = transaction;
+  import = [(ML3ImportOperation *)self import];
+  self->_sagaIsEnabled = [import isSagaEnabled];
 
-  v6 = [(ML3ImportOperation *)self import];
-  self->_resetSync = [v6 isResetSync];
+  import2 = [(ML3ImportOperation *)self import];
+  self->_resetSync = [import2 isResetSync];
 
-  v7 = [(ML3ImportOperation *)self import];
-  v8 = [v7 library];
-  v9 = [v8 databaseInfo];
-  v10 = [v9 valueForProperty:@"primary_container_pid"];
+  import3 = [(ML3ImportOperation *)self import];
+  library = [import3 library];
+  databaseInfo = [library databaseInfo];
+  v10 = [databaseInfo valueForProperty:@"primary_container_pid"];
   self->_devicePrimaryContainer = [v10 longLongValue];
 
-  v11 = [(ML3ImportOperation *)self import];
-  v12 = [v11 trackData];
-  v13 = [v12 length];
+  import4 = [(ML3ImportOperation *)self import];
+  trackData = [import4 trackData];
+  v13 = [trackData length];
 
   if (!v13)
   {
@@ -998,7 +998,7 @@ LABEL_22:
     }
 
     v21 = [(ML3ITunesSyncImportOperation *)self _syncPlistFilesFromDirectory:@"/var/mobile/Media/iTunes_Control/Sync/Media/"];
-    v22 = [(ML3ITunesSyncImportOperation *)self _performImportFromPlistFiles:v21 withTransaction:v4];
+    v22 = [(ML3ITunesSyncImportOperation *)self _performImportFromPlistFiles:v21 withTransaction:transactionCopy];
 
     if (v22)
     {
@@ -1010,9 +1010,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [(ML3ImportOperation *)self import];
-  v15 = [v14 trackData];
-  v16 = [(ML3ITunesSyncImportOperation *)self _performImportOfTrackData:v15 WithTransaction:v4];
+  import5 = [(ML3ImportOperation *)self import];
+  trackData2 = [import5 trackData];
+  v16 = [(ML3ITunesSyncImportOperation *)self _performImportOfTrackData:trackData2 WithTransaction:transactionCopy];
 
   if (!v16)
   {
@@ -1021,8 +1021,8 @@ LABEL_7:
 
 LABEL_3:
   v24 = @"modified_playlist_pids";
-  v17 = [(NSMutableSet *)self->_importedPlaylists allObjects];
-  v25[0] = v17;
+  allObjects = [(NSMutableSet *)self->_importedPlaylists allObjects];
+  v25[0] = allObjects;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
   v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
@@ -1069,11 +1069,11 @@ LABEL_8:
   v11 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(ML3ITunesSyncImportOperation *)self isCancelled];
+    isCancelled = [(ML3ITunesSyncImportOperation *)self isCancelled];
     v13 = *(v18 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v22 = v12;
+    v22 = isCancelled;
     v23 = 1024;
     v24 = v13;
     v25 = 2048;

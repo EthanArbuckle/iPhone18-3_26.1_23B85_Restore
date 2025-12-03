@@ -7,10 +7,10 @@
 
 + (double)mui_maxDimension
 {
-  v0 = [MEMORY[0x277D759A0] mainScreen];
-  [v0 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v2 = v1;
-  [v0 bounds];
+  [mainScreen bounds];
   if (v2 < v3)
   {
     v2 = v3;

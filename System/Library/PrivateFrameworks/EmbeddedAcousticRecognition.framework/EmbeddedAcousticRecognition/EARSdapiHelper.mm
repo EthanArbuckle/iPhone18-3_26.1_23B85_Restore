@@ -11,7 +11,7 @@
   v2[2] = __40__EARSdapiHelper_EnsureSDAPIInitialized__block_invoke;
   v2[3] = &__block_descriptor_48_e5_v8__0l;
   v2[4] = a2;
-  v2[5] = a1;
+  v2[5] = self;
   if (+[EARSdapiHelper EnsureSDAPIInitialized]::onceToken != -1)
   {
     dispatch_once(&+[EARSdapiHelper EnsureSDAPIInitialized]::onceToken, v2);

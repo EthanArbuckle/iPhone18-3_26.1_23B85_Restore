@@ -7,7 +7,7 @@
 - (void)initWithBackgroundEffects:()Grouping
 {
   v4 = a3;
-  v5 = [a1 initWithEffect:0];
+  v5 = [self initWithEffect:0];
   v6 = v5;
   if (v5)
   {

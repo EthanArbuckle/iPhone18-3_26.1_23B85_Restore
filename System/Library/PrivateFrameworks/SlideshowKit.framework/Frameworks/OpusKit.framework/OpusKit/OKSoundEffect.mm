@@ -1,28 +1,28 @@
 @interface OKSoundEffect
-+ (id)soundEffectAtURL:(id)a3;
-+ (void)playSoundEffectAtURL:(id)a3;
-- (OKSoundEffect)initWithSoundURL:(id)a3;
++ (id)soundEffectAtURL:(id)l;
++ (void)playSoundEffectAtURL:(id)l;
+- (OKSoundEffect)initWithSoundURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation OKSoundEffect
 
-+ (id)soundEffectAtURL:(id)a3
++ (id)soundEffectAtURL:(id)l
 {
-  v3 = [[OKSoundEffect alloc] initWithSoundURL:a3];
+  v3 = [[OKSoundEffect alloc] initWithSoundURL:l];
 
   return v3;
 }
 
-+ (void)playSoundEffectAtURL:(id)a3
++ (void)playSoundEffectAtURL:(id)l
 {
-  v4 = [[OKSoundEffect alloc] initWithSoundURL:a3];
-  AudioServicesAddSystemSoundCompletion(v4->_soundID, 0, 0, _oneShotCompletionCallback, a1);
+  v4 = [[OKSoundEffect alloc] initWithSoundURL:l];
+  AudioServicesAddSystemSoundCompletion(v4->_soundID, 0, 0, _oneShotCompletionCallback, self);
 
   [(OKSoundEffect *)v4 play];
 }
 
-- (OKSoundEffect)initWithSoundURL:(id)a3
+- (OKSoundEffect)initWithSoundURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = OKSoundEffect;
@@ -30,7 +30,7 @@
   v5 = v4;
   if (v4)
   {
-    AudioServicesCreateSystemSoundID(a3, &v4->_soundID);
+    AudioServicesCreateSystemSoundID(l, &v4->_soundID);
   }
 
   return v5;

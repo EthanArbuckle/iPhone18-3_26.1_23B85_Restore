@@ -1,7 +1,7 @@
 @interface PXEditorialLayoutMetrics
 - (PXEditorialLayoutMetrics)init;
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXEditorialLayoutMetrics
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXEditorialLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   *(result + 4) = self->_numberOfColumns;
   *(result + 5) = *&self->_interTileSpacing;
   *(result + 6) = *&self->_headerHeight;

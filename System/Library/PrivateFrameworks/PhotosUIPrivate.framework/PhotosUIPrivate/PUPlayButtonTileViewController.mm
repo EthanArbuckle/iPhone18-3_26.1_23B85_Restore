@@ -4,18 +4,18 @@
 - (BOOL)showPlayButtonWhileActivated;
 - (PUPlayButtonTileViewControllerDelegate)delegate;
 - (id)loadView;
-- (void)_playButtonTapped:(id)a3;
-- (void)_setBrowsingVideoPlayer:(id)a3;
-- (void)_setShouldShowPlayButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateButtonAnimated:(BOOL)a3;
+- (void)_playButtonTapped:(id)tapped;
+- (void)_setBrowsingVideoPlayer:(id)player;
+- (void)_setShouldShowPlayButton:(BOOL)button animated:(BOOL)animated;
+- (void)_updateButtonAnimated:(BOOL)animated;
 - (void)_updateHasAssetBecomeFullyFocusedSinceBeingOutOfFocus;
 - (void)becomeReusable;
 - (void)dealloc;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:(BOOL)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)setAssetViewModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setDelegate:(id)delegate;
+- (void)setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:(BOOL)focus;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUPlayButtonTileViewController
@@ -27,15 +27,15 @@
   return WeakRetained;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(PUPlayButtonTileViewController *)self _browsingVideoPlayer];
+  modelCopy = model;
+  changeCopy = change;
+  _browsingVideoPlayer = [(PUPlayButtonTileViewController *)self _browsingVideoPlayer];
 
-  if (v7 == v15)
+  if (_browsingVideoPlayer == modelCopy)
   {
-    v11 = v6;
+    v11 = changeCopy;
     if (([v11 desiredPlayStateDidChange] & 1) == 0 && (objc_msgSend(v11, "isAtBeginningDidChange") & 1) == 0 && (objc_msgSend(v11, "isAtEndDidChange") & 1) == 0 && (objc_msgSend(v11, "isActivatedDidChange") & 1) == 0 && !objc_msgSend(v11, "playStateDidChange"))
     {
       goto LABEL_14;
@@ -44,11 +44,11 @@
     goto LABEL_13;
   }
 
-  v8 = [(PUPlayButtonTileViewController *)self assetViewModel];
+  assetViewModel = [(PUPlayButtonTileViewController *)self assetViewModel];
 
-  if (v8 == v15)
+  if (assetViewModel == modelCopy)
   {
-    v12 = v6;
+    v12 = changeCopy;
     if (([v12 isUserTransformingTileDidChange] & 1) != 0 || objc_msgSend(v12, "assetChanged"))
     {
       [(PUPlayButtonTileViewController *)self _updateButtonAnimated:1];
@@ -56,9 +56,9 @@
 
     if ([v12 videoPlayerDidChange])
     {
-      v13 = [(PUPlayButtonTileViewController *)self assetViewModel];
-      v14 = [v13 videoPlayer];
-      [(PUPlayButtonTileViewController *)self _setBrowsingVideoPlayer:v14];
+      assetViewModel2 = [(PUPlayButtonTileViewController *)self assetViewModel];
+      videoPlayer = [assetViewModel2 videoPlayer];
+      [(PUPlayButtonTileViewController *)self _setBrowsingVideoPlayer:videoPlayer];
     }
 
     if ([v12 focusValueChanged])
@@ -69,14 +69,14 @@
     goto LABEL_14;
   }
 
-  v9 = [(PUPlayButtonTileViewController *)self browsingViewModel];
+  browsingViewModel = [(PUPlayButtonTileViewController *)self browsingViewModel];
 
-  if (v9 != v15)
+  if (browsingViewModel != modelCopy)
   {
     goto LABEL_15;
   }
 
-  v10 = v6;
+  v10 = changeCopy;
   if (([v10 isScrubbingDidChange] & 1) != 0 || (objc_msgSend(v10, "chromeVisibilityDidChange") & 1) != 0 || objc_msgSend(v10, "reviewScreenBarsModelDidChange"))
   {
 LABEL_13:
@@ -88,32 +88,32 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_setShouldShowPlayButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShouldShowPlayButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->__shouldShowPlayButton != a3)
+  if (self->__shouldShowPlayButton != button)
   {
     v21 = v7;
     v22 = v6;
     v23 = v4;
     v24 = v5;
-    v8 = a4;
-    v9 = a3;
-    self->__shouldShowPlayButton = a3;
+    animatedCopy = animated;
+    buttonCopy = button;
+    self->__shouldShowPlayButton = button;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__PUPlayButtonTileViewController__setShouldShowPlayButton_animated___block_invoke;
     aBlock[3] = &unk_1E7B7FF98;
     aBlock[4] = self;
-    v20 = a3;
+    buttonCopy2 = button;
     v11 = _Block_copy(aBlock);
     v12 = v11;
-    if (v8)
+    if (animatedCopy)
     {
       v13 = 0.0;
       if (self->_delegateFlags.respondsToDelayForButtonAnimation)
       {
-        v14 = [(PUPlayButtonTileViewController *)self delegate];
-        [v14 playButtonTileViewController:self delayForButtonAnimation:v9];
+        delegate = [(PUPlayButtonTileViewController *)self delegate];
+        [delegate playButtonTileViewController:self delayForButtonAnimation:buttonCopy];
         v13 = v15;
       }
 
@@ -141,48 +141,48 @@ void __68__PUPlayButtonTileViewController__setShouldShowPlayButton_animated___bl
   [v3 setAlpha:v2];
 }
 
-- (void)_updateButtonAnimated:(BOOL)a3
+- (void)_updateButtonAnimated:(BOOL)animated
 {
-  v25 = a3;
-  v4 = [(PUPlayButtonTileViewController *)self canShowPauseButton];
-  v26 = [(PUPlayButtonTileViewController *)self _browsingVideoPlayer];
-  v5 = [v26 playState];
-  v6 = [v26 isPlaybackDesired];
-  if (v5 == 5)
+  animatedCopy = animated;
+  canShowPauseButton = [(PUPlayButtonTileViewController *)self canShowPauseButton];
+  _browsingVideoPlayer = [(PUPlayButtonTileViewController *)self _browsingVideoPlayer];
+  playState = [_browsingVideoPlayer playState];
+  isPlaybackDesired = [_browsingVideoPlayer isPlaybackDesired];
+  if (playState == 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = isPlaybackDesired;
   }
 
-  if (v7 == 1 && !v4)
+  if (v7 == 1 && !canShowPauseButton)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(PUPlayButtonTileViewController *)self assetViewModel];
-    v10 = [v9 isUserTransformingTile] ^ 1;
+    assetViewModel = [(PUPlayButtonTileViewController *)self assetViewModel];
+    v10 = [assetViewModel isUserTransformingTile] ^ 1;
   }
 
   v11 = +[PUOneUpSettings sharedInstance];
-  v12 = [v11 allowPlayButtonInBars];
+  allowPlayButtonInBars = [v11 allowPlayButtonInBars];
 
   v13 = +[PUOneUpSettings sharedInstance];
-  v14 = [(PUPlayButtonTileViewController *)self assetViewModel];
-  v15 = [v14 asset];
-  v16 = [v13 allowAutoplayVideoForAsset:v15];
+  assetViewModel2 = [(PUPlayButtonTileViewController *)self assetViewModel];
+  asset = [assetViewModel2 asset];
+  v16 = [v13 allowAutoplayVideoForAsset:asset];
 
-  if (v12 && v16 && v5 != 5)
+  if (allowPlayButtonInBars && v16 && playState != 5)
   {
     goto LABEL_13;
   }
 
-  if (![v26 isActivated])
+  if (![_browsingVideoPlayer isActivated])
   {
     if (v10)
     {
@@ -191,61 +191,61 @@ void __68__PUPlayButtonTileViewController__setShouldShowPlayButton_animated___bl
 
 LABEL_13:
     v17 = 0;
-    v18 = v25;
+    v18 = animatedCopy;
     goto LABEL_25;
   }
 
-  v19 = [(PUPlayButtonTileViewController *)self browsingViewModel];
-  v20 = v19;
-  if (!v10 || ([v19 isScrubbing] & 1) != 0 || !objc_msgSend(v20, "isChromeVisible"))
+  browsingViewModel = [(PUPlayButtonTileViewController *)self browsingViewModel];
+  playButton = browsingViewModel;
+  if (!v10 || ([browsingViewModel isScrubbing] & 1) != 0 || !objc_msgSend(playButton, "isChromeVisible"))
   {
     v17 = 0;
     goto LABEL_24;
   }
 
-  v21 = [(PUPlayButtonTileViewController *)self showPlayButtonWhileActivated];
+  showPlayButtonWhileActivated = [(PUPlayButtonTileViewController *)self showPlayButtonWhileActivated];
 
-  if (!v21)
+  if (!showPlayButtonWhileActivated)
   {
     goto LABEL_13;
   }
 
 LABEL_21:
-  v22 = [(PUPlayButtonTileViewController *)self assetViewModel];
-  v23 = [v22 asset];
-  v24 = [v23 isTemporaryPlaceholder];
+  assetViewModel3 = [(PUPlayButtonTileViewController *)self assetViewModel];
+  asset2 = [assetViewModel3 asset];
+  isTemporaryPlaceholder = [asset2 isTemporaryPlaceholder];
 
-  if (v24)
+  if (isTemporaryPlaceholder)
   {
     goto LABEL_13;
   }
 
-  v20 = [(PUPlayButtonTileViewController *)self playButton];
-  [v20 setShowAsPause:v4 & v7];
+  playButton = [(PUPlayButtonTileViewController *)self playButton];
+  [playButton setShowAsPause:canShowPauseButton & v7];
   v17 = 1;
 LABEL_24:
-  v18 = v25;
+  v18 = animatedCopy;
 
 LABEL_25:
   [(PUPlayButtonTileViewController *)self _setShouldShowPlayButton:v17 animated:v18];
 }
 
-- (void)setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:(BOOL)a3
+- (void)setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:(BOOL)focus
 {
-  if (self->_hasAssetBecomeFullyFocusedSinceBeingOutOfFocus != a3)
+  if (self->_hasAssetBecomeFullyFocusedSinceBeingOutOfFocus != focus)
   {
-    self->_hasAssetBecomeFullyFocusedSinceBeingOutOfFocus = a3;
+    self->_hasAssetBecomeFullyFocusedSinceBeingOutOfFocus = focus;
     [(PUPlayButtonTileViewController *)self _updateButtonAnimated:1];
   }
 }
 
 - (void)_updateHasAssetBecomeFullyFocusedSinceBeingOutOfFocus
 {
-  v3 = [(PUPlayButtonTileViewController *)self assetViewModel];
-  if (v3 && (v4 = v3, -[PUPlayButtonTileViewController assetViewModel](self, "assetViewModel"), v5 = objc_claimAutoreleasedReturnValue(), [v5 focusValue], v7 = fabs(v6), v5, v4, v7 < 1.0))
+  assetViewModel = [(PUPlayButtonTileViewController *)self assetViewModel];
+  if (assetViewModel && (v4 = assetViewModel, -[PUPlayButtonTileViewController assetViewModel](self, "assetViewModel"), v5 = objc_claimAutoreleasedReturnValue(), [v5 focusValue], v7 = fabs(v6), v5, v4, v7 < 1.0))
   {
-    v8 = [(PUPlayButtonTileViewController *)self assetViewModel];
-    [v8 focusValue];
+    assetViewModel2 = [(PUPlayButtonTileViewController *)self assetViewModel];
+    [assetViewModel2 focusValue];
     v9 = PXFloatApproximatelyEqualToFloat();
 
     if (!v9)
@@ -264,12 +264,12 @@ LABEL_25:
   [(PUPlayButtonTileViewController *)self setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:v10];
 }
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
   if (self->_delegateFlags.respondsToDidTapButton)
   {
-    v4 = [(PUPlayButtonTileViewController *)self delegate];
-    [v4 playButtonTileViewControllerDidTapButton:self];
+    delegate = [(PUPlayButtonTileViewController *)self delegate];
+    [delegate playButtonTileViewControllerDidTapButton:self];
   }
 
   [(PUPlayButtonTileViewController *)self _updateButtonAnimated:1];
@@ -282,11 +282,11 @@ LABEL_25:
     return 0;
   }
 
-  v2 = self;
-  v3 = [(PUPlayButtonTileViewController *)self delegate];
-  LOBYTE(v2) = [v3 playButtonTileViewControllerShouldShowPlayButtonWhileActivated:v2];
+  selfCopy = self;
+  delegate = [(PUPlayButtonTileViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate playButtonTileViewControllerShouldShowPlayButtonWhileActivated:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)canShowPauseButton
@@ -296,50 +296,50 @@ LABEL_25:
     return 0;
   }
 
-  v2 = self;
-  v3 = [(PUPlayButtonTileViewController *)self delegate];
-  LOBYTE(v2) = [v3 playButtonTileViewControllerShouldShowPauseButton:v2];
+  selfCopy = self;
+  delegate = [(PUPlayButtonTileViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate playButtonTileViewControllerShouldShowPauseButton:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setBrowsingVideoPlayer:(id)a3
+- (void)_setBrowsingVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   browsingVideoPlayer = self->__browsingVideoPlayer;
-  if (browsingVideoPlayer != v5)
+  if (browsingVideoPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PUBrowsingVideoPlayer *)browsingVideoPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->__browsingVideoPlayer, a3);
+    objc_storeStrong(&self->__browsingVideoPlayer, player);
     [(PUBrowsingVideoPlayer *)self->__browsingVideoPlayer registerChangeObserver:self];
     browsingVideoPlayer = [(PUPlayButtonTileViewController *)self _updateButtonAnimated:0];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingVideoPlayer, v5);
+  MEMORY[0x1EEE66BB8](browsingVideoPlayer, playerCopy);
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_assetViewModel != v5)
+  modelCopy = model;
+  if (self->_assetViewModel != modelCopy)
   {
-    v11 = v5;
+    v11 = modelCopy;
     [(PUPlayButtonTileViewController *)self setHasAssetBecomeFullyFocusedSinceBeingOutOfFocus:0];
     [(PUAssetViewModel *)self->_assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
     if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
     {
       v6 = +[PUOneUpSettings sharedInstance];
-      v7 = [(PUAssetViewModel *)v11 asset];
-      if ([v6 allowAutoplayVideoForAsset:v7])
+      asset = [(PUAssetViewModel *)v11 asset];
+      if ([v6 allowAutoplayVideoForAsset:asset])
       {
-        v8 = [(PUAssetViewModel *)v11 videoPlayer];
-        v9 = [v8 isPlaybackDesired];
+        videoPlayer = [(PUAssetViewModel *)v11 videoPlayer];
+        isPlaybackDesired = [videoPlayer isPlaybackDesired];
 
-        if ((v9 & 1) == 0)
+        if ((isPlaybackDesired & 1) == 0)
         {
           [(PUPlayButtonTileViewController *)self setIsAwaitingAutoPlay:1];
         }
@@ -350,35 +350,35 @@ LABEL_25:
       }
     }
 
-    v10 = [(PUAssetViewModel *)v11 videoPlayer];
-    [(PUPlayButtonTileViewController *)self _setBrowsingVideoPlayer:v10];
+    videoPlayer2 = [(PUAssetViewModel *)v11 videoPlayer];
+    [(PUPlayButtonTileViewController *)self _setBrowsingVideoPlayer:videoPlayer2];
 
     [(PUPlayButtonTileViewController *)self _updateHasAssetBecomeFullyFocusedSinceBeingOutOfFocus];
     [(PUPlayButtonTileViewController *)self _updateButtonAnimated:0];
-    v5 = v11;
+    modelCopy = v11;
   }
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   browsingViewModel = self->_browsingViewModel;
-  if (browsingViewModel != v5)
+  if (browsingViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)browsingViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_browsingViewModel, a3);
+    objc_storeStrong(&self->_browsingViewModel, model);
     [(PUBrowsingViewModel *)self->_browsingViewModel registerChangeObserver:self];
     browsingViewModel = [(PUPlayButtonTileViewController *)self _updateButtonAnimated:0];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingViewModel, v5);
+  MEMORY[0x1EEE66BB8](browsingViewModel, modelCopy);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -422,21 +422,21 @@ LABEL_25:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PUPlayButtonTileViewController *)self playButton];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  playButton = [(PUPlayButtonTileViewController *)self playButton];
+  [playButton setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(PUPlayButtonTileViewController *)self playButton];
-  [v15 setAutoresizingMask:18];
+  playButton2 = [(PUPlayButtonTileViewController *)self playButton];
+  [playButton2 setAutoresizingMask:18];
 
-  v16 = [(PUPlayButtonTileViewController *)self playButton];
-  [v16 setAlpha:0.0];
+  playButton3 = [(PUPlayButtonTileViewController *)self playButton];
+  [playButton3 setAlpha:0.0];
 
-  v17 = [(PUPlayButtonTileViewController *)self playButton];
-  [v17 setTarget:self selector:sel__playButtonTapped_];
+  playButton4 = [(PUPlayButtonTileViewController *)self playButton];
+  [playButton4 setTarget:self selector:sel__playButtonTapped_];
 
   [(PUPlayButtonTileViewController *)self _updateButtonAnimated:0];
-  v18 = [(PUPlayButtonTileViewController *)self playButton];
-  [v3 addSubview:v18];
+  playButton5 = [(PUPlayButtonTileViewController *)self playButton];
+  [v3 addSubview:playButton5];
 
   return v3;
 }

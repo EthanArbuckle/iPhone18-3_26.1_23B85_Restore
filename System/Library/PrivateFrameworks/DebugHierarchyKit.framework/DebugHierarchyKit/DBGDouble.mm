@@ -1,7 +1,7 @@
 @interface DBGDouble
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(double)a3;
-- (DBGDouble)initWithDouble:(double)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(double)value;
+- (DBGDouble)initWithDouble:(double)double;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,21 +10,21 @@
 
 @implementation DBGDouble
 
-+ (id)withValue:(double)a3
++ (id)withValue:(double)value
 {
-  v3 = [[a1 alloc] initWithDouble:a3];
+  v3 = [[self alloc] initWithDouble:value];
 
   return v3;
 }
 
-- (DBGDouble)initWithDouble:(double)a3
+- (DBGDouble)initWithDouble:(double)double
 {
   v5.receiver = self;
   v5.super_class = DBGDouble;
   result = [(DBGDouble *)&v5 init];
   if (result)
   {
-    result->_doubleValue = a3;
+    result->_doubleValue = double;
   }
 
   return result;
@@ -39,8 +39,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGDouble *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGDouble *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -55,10 +55,10 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if (![a4 isEqualToString:@"d"])
+  valueCopy = value;
+  if (![format isEqualToString:@"d"])
   {
     goto LABEL_6;
   }
@@ -66,28 +66,28 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 doubleValue];
+    [valueCopy doubleValue];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 dbgDoubleValue];
+    [valueCopy dbgDoubleValue];
   }
 
   else
   {
 LABEL_6:
     v9 = 0.0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
 LABEL_9:
-  v10 = [a1 withValue:v9];
+  v10 = [self withValue:v9];
 
   return v10;
 }

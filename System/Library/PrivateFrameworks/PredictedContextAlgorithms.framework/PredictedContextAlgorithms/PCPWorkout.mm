@@ -1,27 +1,27 @@
 @interface PCPWorkout
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSessionLocationType:(id)a3;
-- (int)StringAsSwimmingLocationType:(id)a3;
+- (int)StringAsSessionLocationType:(id)type;
+- (int)StringAsSwimmingLocationType:(id)type;
 - (int)sessionLocationType;
 - (int)swimmingLocationType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionLocationType:(BOOL)a3;
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3;
-- (void)setHasSwimmingLocationType:(BOOL)a3;
-- (void)setHasWorkoutActivityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionLocationType:(BOOL)type;
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute;
+- (void)setHasSwimmingLocationType:(BOOL)type;
+- (void)setHasWorkoutActivityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPWorkout
 
-- (void)setHasWorkoutActivityType:(BOOL)a3
+- (void)setHasWorkoutActivityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)setHasSessionLocationType:(BOOL)a3
+- (void)setHasSessionLocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -77,20 +77,20 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsSessionLocationType:(id)a3
+- (int)StringAsSessionLocationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SessionLocationType_Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SessionLocationType_Unknown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Indoor"])
+  else if ([typeCopy isEqualToString:@"Indoor"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Outdoor"])
+  else if ([typeCopy isEqualToString:@"Outdoor"])
   {
     v4 = 3;
   }
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)setHasSwimmingLocationType:(BOOL)a3
+- (void)setHasSwimmingLocationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -131,20 +131,20 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsSwimmingLocationType:(id)a3
+- (int)StringAsSwimmingLocationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Pool"])
+  else if ([typeCopy isEqualToString:@"Pool"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OpenWater"])
+  else if ([typeCopy isEqualToString:@"OpenWater"])
   {
     v4 = 2;
   }
@@ -163,20 +163,20 @@
   v8.receiver = self;
   v8.super_class = PCPWorkout;
   v4 = [(PCPWorkout *)&v8 description];
-  v5 = [(PCPWorkout *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPWorkout *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_workoutActivityType];
-    [v3 setObject:v13 forKey:@"workoutActivityType"];
+    [dictionary setObject:v13 forKey:@"workoutActivityType"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -197,33 +197,33 @@ LABEL_3:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startTimeCFAbsolute];
-  [v3 setObject:v14 forKey:@"startTimeCFAbsolute"];
+  [dictionary setObject:v14 forKey:@"startTimeCFAbsolute"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endTimeCFAbsolute];
-    [v3 setObject:v5 forKey:@"endTimeCFAbsolute"];
+    [dictionary setObject:v5 forKey:@"endTimeCFAbsolute"];
   }
 
 LABEL_5:
   hkObjectUUID = self->_hkObjectUUID;
   if (hkObjectUUID)
   {
-    [v3 setObject:hkObjectUUID forKey:@"hkObjectUUID"];
+    [dictionary setObject:hkObjectUUID forKey:@"hkObjectUUID"];
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
   if (sourceBundleIdentifier)
   {
-    [v3 setObject:sourceBundleIdentifier forKey:@"sourceBundleIdentifier"];
+    [dictionary setObject:sourceBundleIdentifier forKey:@"sourceBundleIdentifier"];
   }
 
   workoutStartLocation = self->_workoutStartLocation;
   if (workoutStartLocation)
   {
-    v9 = [(PCPLocation *)workoutStartLocation dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"workoutStartLocation"];
+    dictionaryRepresentation = [(PCPLocation *)workoutStartLocation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"workoutStartLocation"];
   }
 
   v10 = self->_has;
@@ -240,7 +240,7 @@ LABEL_5:
       v12 = off_1E83B8500[v11];
     }
 
-    [v3 setObject:v12 forKey:@"sessionLocationType"];
+    [dictionary setObject:v12 forKey:@"sessionLocationType"];
 
     v10 = self->_has;
   }
@@ -258,15 +258,15 @@ LABEL_5:
       v16 = off_1E83B8518[swimmingLocationType];
     }
 
-    [v3 setObject:v16 forKey:@"swimmingLocationType"];
+    [dictionary setObject:v16 forKey:@"swimmingLocationType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -330,14 +330,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_workoutActivityType;
-    *(v4 + 72) |= 4u;
+    toCopy[3] = self->_workoutActivityType;
+    *(toCopy + 72) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -356,53 +356,53 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = *&self->_startTimeCFAbsolute;
-  *(v4 + 72) |= 2u;
+  toCopy[2] = *&self->_startTimeCFAbsolute;
+  *(toCopy + 72) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = *&self->_endTimeCFAbsolute;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = *&self->_endTimeCFAbsolute;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_5:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_hkObjectUUID)
   {
-    [v4 setHkObjectUUID:?];
-    v4 = v7;
+    [toCopy setHkObjectUUID:?];
+    toCopy = v7;
   }
 
   if (self->_sourceBundleIdentifier)
   {
     [v7 setSourceBundleIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_workoutStartLocation)
   {
     [v7 setWorkoutStartLocation:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 10) = self->_sessionLocationType;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 10) = self->_sessionLocationType;
+    *(toCopy + 72) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 14) = self->_swimmingLocationType;
-    *(v4 + 72) |= 0x10u;
+    *(toCopy + 14) = self->_swimmingLocationType;
+    *(toCopy + 72) |= 0x10u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -437,15 +437,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSData *)self->_hkObjectUUID copyWithZone:a3];
+  v8 = [(NSData *)self->_hkObjectUUID copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
-  v10 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceBundleIdentifier copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
-  v12 = [(PCPLocation *)self->_workoutStartLocation copyWithZone:a3];
+  v12 = [(PCPLocation *)self->_workoutStartLocation copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
@@ -466,24 +466,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_workoutActivityType != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_workoutActivityType != *(equalCopy + 3))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
 LABEL_32:
     v9 = 0;
@@ -492,38 +492,38 @@ LABEL_32:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_startTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_endTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_endTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_32;
   }
 
   hkObjectUUID = self->_hkObjectUUID;
-  if (hkObjectUUID | *(v4 + 4) && ![(NSData *)hkObjectUUID isEqual:?])
+  if (hkObjectUUID | *(equalCopy + 4) && ![(NSData *)hkObjectUUID isEqual:?])
   {
     goto LABEL_32;
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  if (sourceBundleIdentifier | *(v4 + 6))
+  if (sourceBundleIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)sourceBundleIdentifier isEqual:?])
     {
@@ -532,7 +532,7 @@ LABEL_32:
   }
 
   workoutStartLocation = self->_workoutStartLocation;
-  if (workoutStartLocation | *(v4 + 8))
+  if (workoutStartLocation | *(equalCopy + 8))
   {
     if (![(PCPLocation *)workoutStartLocation isEqual:?])
     {
@@ -542,21 +542,21 @@ LABEL_32:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_sessionLocationType != *(v4 + 10))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_sessionLocationType != *(equalCopy + 10))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_32;
   }
 
-  v9 = (*(v4 + 72) & 0x10) == 0;
+  v9 = (*(equalCopy + 72) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_swimmingLocationType != *(v4 + 14))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_swimmingLocationType != *(equalCopy + 14))
     {
       goto LABEL_32;
     }
@@ -678,16 +678,16 @@ LABEL_21:
   return v9 ^ v5 ^ v10 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 72);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 72);
   if ((v6 & 4) != 0)
   {
-    self->_workoutActivityType = *(v4 + 3);
+    self->_workoutActivityType = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -700,23 +700,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 72) & 2) == 0)
+  else if ((*(fromCopy + 72) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_startTimeCFAbsolute = *(v4 + 2);
+  self->_startTimeCFAbsolute = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
 LABEL_4:
-    self->_endTimeCFAbsolute = *(v4 + 1);
+    self->_endTimeCFAbsolute = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  v10 = v4;
-  if (*(v4 + 4))
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PCPWorkout *)self setHkObjectUUID:?];
     v5 = v10;

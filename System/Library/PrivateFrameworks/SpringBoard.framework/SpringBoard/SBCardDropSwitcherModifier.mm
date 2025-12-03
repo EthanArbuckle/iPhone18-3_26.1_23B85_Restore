@@ -1,55 +1,55 @@
 @interface SBCardDropSwitcherModifier
-- (BOOL)_appLayoutContainsModifiedAppLayout:(id)a3;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (SBCardDropSwitcherModifier)initWithDropContext:(id)a3;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
+- (BOOL)_appLayoutContainsModifiedAppLayout:(id)layout;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (SBCardDropSwitcherModifier)initWithDropContext:(id)context;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
 - (id)animatablePropertyIdentifiers;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleAnimatablePropertyChangedEvent:(id)a3;
-- (id)handleBlurProgressEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleSwitcherDropEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)settingsForAnimatableProperty:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleAnimatablePropertyChangedEvent:(id)event;
+- (id)handleBlurProgressEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleSwitcherDropEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)settingsForAnimatableProperty:(id)property;
 - (id)topMostLayoutElements;
-- (int64_t)updateModeForAnimatableProperty:(id)a3;
+- (int64_t)updateModeForAnimatableProperty:(id)property;
 - (void)_completeIfNeeded;
-- (void)_recomputeBlurStateWithCompletion:(id)a3;
+- (void)_recomputeBlurStateWithCompletion:(id)completion;
 @end
 
 @implementation SBCardDropSwitcherModifier
 
-- (SBCardDropSwitcherModifier)initWithDropContext:(id)a3
+- (SBCardDropSwitcherModifier)initWithDropContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SBCardDropSwitcherModifier;
   v6 = [(SBSwitcherModifier *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dropContext, a3);
-    v8 = [v5 finalTargetAppLayout];
+    objc_storeStrong(&v6->_dropContext, context);
+    finalTargetAppLayout = [contextCopy finalTargetAppLayout];
     finalAppLayout = v7->_finalAppLayout;
-    v7->_finalAppLayout = v8;
+    v7->_finalAppLayout = finalTargetAppLayout;
 
-    v10 = [v5 remainingAppLayout];
+    remainingAppLayout = [contextCopy remainingAppLayout];
     remainingAppLayout = v7->_remainingAppLayout;
-    v7->_remainingAppLayout = v10;
+    v7->_remainingAppLayout = remainingAppLayout;
 
-    v12 = [v5 evictedAppLayout];
+    evictedAppLayout = [contextCopy evictedAppLayout];
     evictedAppLayout = v7->_evictedAppLayout;
-    v7->_evictedAppLayout = v12;
+    v7->_evictedAppLayout = evictedAppLayout;
 
-    v7->_shouldExpectMainTransitionEvent = SBSwitcherDropRegionWarrantsModelUpdate([v5 currentDropRegion]);
+    v7->_shouldExpectMainTransitionEvent = SBSwitcherDropRegionWarrantsModelUpdate([contextCopy currentDropRegion]);
     v7->_handledMainTransitionEvent = 0;
     v7->_waitingForReflowAnimation = 1;
     v7->_waitingForHeaderFadeIn = 1;
@@ -58,13 +58,13 @@
   return v7;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   if (self->_phase == 2)
   {
     v9.receiver = self;
     v9.super_class = SBCardDropSwitcherModifier;
-    [(SBCardDropSwitcherModifier *)&v9 contentOffsetForIndex:a3 alignment:a4];
+    [(SBCardDropSwitcherModifier *)&v9 contentOffsetForIndex:index alignment:alignment];
     v7 = v6 - self->_referenceCardOffsetFromPageBoundary.x;
   }
 
@@ -72,7 +72,7 @@
   {
     v8.receiver = self;
     v8.super_class = SBCardDropSwitcherModifier;
-    [(SBCardDropSwitcherModifier *)&v8 contentOffsetForIndex:a3 alignment:a4];
+    [(SBCardDropSwitcherModifier *)&v8 contentOffsetForIndex:index alignment:alignment];
   }
 
   result.y = v5;
@@ -88,36 +88,36 @@
   }
 }
 
-- (id)handleSwitcherDropEvent:(id)a3
+- (id)handleSwitcherDropEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v34.receiver = self;
   v34.super_class = SBCardDropSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v34 handleSwitcherDropEvent:v4];
-  v6 = [v4 phase];
-  self->_phase = v6;
-  v7 = [(SBCardDropSwitcherModifier *)self appLayouts];
-  v8 = [(SBSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v7];
+  v5 = [(SBSwitcherModifier *)&v34 handleSwitcherDropEvent:eventCopy];
+  phase = [eventCopy phase];
+  self->_phase = phase;
+  appLayouts = [(SBCardDropSwitcherModifier *)self appLayouts];
+  v8 = [(SBSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
 
-  if (v6 == 3)
+  if (phase == 3)
   {
     [(SBCardDropSwitcherModifier *)self _completeIfNeeded];
   }
 
-  else if (v6 == 2)
+  else if (phase == 2)
   {
     v15 = objc_alloc_init(SBSwitcherModifierEventResponse);
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [(SBCardDropSwitcherModifier *)self appLayouts];
-      v17 = [v16 objectAtIndex:v8];
+      appLayouts2 = [(SBCardDropSwitcherModifier *)self appLayouts];
+      v17 = [appLayouts2 objectAtIndex:v8];
 
       v18 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v17 alignment:0 animated:0];
       [(SBChainableModifierEventResponse *)v15 addChildResponse:v18];
     }
 
-    v19 = [(SBSwitcherDropRegionContext *)self->_dropContext displayItemsToReloadSnapshots];
-    v20 = [[SBInvalidateSnapshotCacheSwitcherEventResponse alloc] initWithDisplayItems:v19];
+    displayItemsToReloadSnapshots = [(SBSwitcherDropRegionContext *)self->_dropContext displayItemsToReloadSnapshots];
+    v20 = [[SBInvalidateSnapshotCacheSwitcherEventResponse alloc] initWithDisplayItems:displayItemsToReloadSnapshots];
     [(SBChainableModifierEventResponse *)v15 addChildResponse:v20];
     v21 = [[SBInvalidateItemContainerBackdropEventResponse alloc] initWithUpdateMode:3];
     [(SBChainableModifierEventResponse *)v15 addChildResponse:v21];
@@ -132,7 +132,7 @@
     v5 = v25;
   }
 
-  else if (v6 == 1 && v8 != 0x7FFFFFFFFFFFFFFFLL)
+  else if (phase == 1 && v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(SBSwitcherModifier *)self scaledFrameForIndex:v8];
     v10 = v9;
@@ -172,14 +172,14 @@ uint64_t __54__SBCardDropSwitcherModifier_handleSwitcherDropEvent___block_invoke
   return result;
 }
 
-- (id)handleAnimatablePropertyChangedEvent:(id)a3
+- (id)handleAnimatablePropertyChangedEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBCardDropSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v10 handleAnimatablePropertyChangedEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v10 handleAnimatablePropertyChangedEvent:event];
   [(SBCardDropSwitcherModifier *)self presentationValueForAnimatableProperty:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"];
-  v5 = [(SBCardDropSwitcherModifier *)self medusaSettings];
-  [v5 reflowAnimationProgressForCardHeaderFadeIn];
+  medusaSettings = [(SBCardDropSwitcherModifier *)self medusaSettings];
+  [medusaSettings reflowAnimationProgressForCardHeaderFadeIn];
 
   if (BSFloatGreaterThanOrEqualToFloat() && self->_waitingForReflowAnimation)
   {
@@ -194,9 +194,9 @@ uint64_t __54__SBCardDropSwitcherModifier_handleSwitcherDropEvent___block_invoke
   return v4;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -204,15 +204,15 @@ uint64_t __54__SBCardDropSwitcherModifier_handleSwitcherDropEvent___block_invoke
   v15 = __Block_byref_object_dispose__41;
   v10.receiver = self;
   v10.super_class = SBCardDropSwitcherModifier;
-  v16 = [(SBSwitcherModifier *)&v10 handleTimerEvent:v4];
+  v16 = [(SBSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SBCardDropSwitcherModifier_handleTimerEvent___block_invoke;
   v9[3] = &unk_2783B3C88;
   v9[4] = &v11;
   [(SBCardDropSwitcherModifier *)self _recomputeBlurStateWithCompletion:v9];
-  v5 = [v4 reason];
-  v6 = [v5 isEqualToString:@"SBCardDropSwitcherModifierTimerEventHeaderVisibleReason"];
+  reason = [eventCopy reason];
+  v6 = [reason isEqualToString:@"SBCardDropSwitcherModifierTimerEventHeaderVisibleReason"];
 
   if (v6)
   {
@@ -234,9 +234,9 @@ void __47__SBCardDropSwitcherModifier_handleTimerEvent___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -244,7 +244,7 @@ void __47__SBCardDropSwitcherModifier_handleTimerEvent___block_invoke(uint64_t a
   v16 = __Block_byref_object_dispose__41;
   v11.receiver = self;
   v11.super_class = SBCardDropSwitcherModifier;
-  v17 = [(SBSwitcherModifier *)&v11 handleSceneReadyEvent:v4];
+  v17 = [(SBSwitcherModifier *)&v11 handleSceneReadyEvent:eventCopy];
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v6 = SBAppendSwitcherModifierResponse(v5, v13[5]);
   v7 = v13[5];
@@ -271,9 +271,9 @@ void __52__SBCardDropSwitcherModifier_handleSceneReadyEvent___block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (id)handleBlurProgressEvent:(id)a3
+- (id)handleBlurProgressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -281,7 +281,7 @@ void __52__SBCardDropSwitcherModifier_handleSceneReadyEvent___block_invoke(uint6
   v16 = __Block_byref_object_dispose__41;
   v11.receiver = self;
   v11.super_class = SBCardDropSwitcherModifier;
-  v17 = [(SBSwitcherModifier *)&v11 handleBlurProgressEvent:v4];
+  v17 = [(SBSwitcherModifier *)&v11 handleBlurProgressEvent:eventCopy];
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v6 = SBAppendSwitcherModifierResponse(v5, v13[5]);
   v7 = v13[5];
@@ -308,21 +308,21 @@ void __54__SBCardDropSwitcherModifier_handleBlurProgressEvent___block_invoke(uin
   *(v4 + 40) = v3;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = SBCardDropSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v9 handleTransitionEvent:v4];
-  v6 = [v4 toAppLayout];
+  v5 = [(SBSwitcherModifier *)&v9 handleTransitionEvent:eventCopy];
+  toAppLayout = [eventCopy toAppLayout];
   finalAppLayout = self->_finalAppLayout;
 
-  if (v6 == finalAppLayout)
+  if (toAppLayout == finalAppLayout)
   {
     self->_handledMainTransitionEvent = 1;
   }
 
-  if (self->_waitingForHeaderFadeIn && [v4 toEnvironmentMode] != 2)
+  if (self->_waitingForHeaderFadeIn && [eventCopy toEnvironmentMode] != 2)
   {
     self->_waitingForHeaderFadeIn = 0;
     [(SBCardDropSwitcherModifier *)self _completeIfNeeded];
@@ -331,20 +331,20 @@ void __54__SBCardDropSwitcherModifier_handleBlurProgressEvent___block_invoke(uin
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = SBCardDropSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v6 handleTapAppLayoutEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v6 handleTapAppLayoutEvent:event];
   self->_waitingForHeaderFadeIn = 0;
   [(SBCardDropSwitcherModifier *)self _completeIfNeeded];
 
   return v4;
 }
 
-- (void)_recomputeBlurStateWithCompletion:(id)a3
+- (void)_recomputeBlurStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   isFinalAppLayoutBlurred = self->_isFinalAppLayoutBlurred;
   v11 = 0;
   v12 = &v11;
@@ -372,10 +372,10 @@ void __54__SBCardDropSwitcherModifier_handleBlurProgressEvent___block_invoke(uin
   }
 
   self->_isFinalAppLayoutBlurred = v8;
-  if (isFinalAppLayoutBlurred && v4 && (v7[3] & 1) == 0)
+  if (isFinalAppLayoutBlurred && completionCopy && (v7[3] & 1) == 0)
   {
     v9 = objc_alloc_init(SBUpdateDragPlatterBlurSwitcherEventResponse);
-    v4[2](v4, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   _Block_object_dispose(&v11, 8);
@@ -393,43 +393,43 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   return result;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBAppLayout *)v6 leafAppLayoutForRole:a3];
-  if (self->_finalAppLayout == v6)
+  layoutCopy = layout;
+  v7 = [(SBAppLayout *)layoutCopy leafAppLayoutForRole:blurred];
+  if (self->_finalAppLayout == layoutCopy)
   {
-    v9 = [(SBSwitcherDropRegionContext *)self->_dropContext droppedLeafAppLayout];
+    droppedLeafAppLayout = [(SBSwitcherDropRegionContext *)self->_dropContext droppedLeafAppLayout];
 
-    v8 = v7 != v9 && self->_isFinalAppLayoutBlurred;
+    v8 = v7 != droppedLeafAppLayout && self->_isFinalAppLayoutBlurred;
   }
 
   else
   {
-    v8 = [(SBCardDropSwitcherModifier *)self _appLayoutContainsModifiedAppLayout:v6];
+    v8 = [(SBCardDropSwitcherModifier *)self _appLayoutContainsModifiedAppLayout:layoutCopy];
   }
 
   return v8;
 }
 
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBCardDropSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
-  LOBYTE(v4) = [(SBCardDropSwitcherModifier *)v4 _appLayoutContainsModifiedAppLayout:v6];
+  selfCopy = self;
+  appLayouts = [(SBCardDropSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
+  LOBYTE(selfCopy) = [(SBCardDropSwitcherModifier *)selfCopy _appLayoutContainsModifiedAppLayout:v6];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleContentToFillBoundsAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBCardDropSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
-  LOBYTE(v4) = [(SBCardDropSwitcherModifier *)v4 _appLayoutContainsModifiedAppLayout:v6];
+  selfCopy = self;
+  appLayouts = [(SBCardDropSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
+  LOBYTE(selfCopy) = [(SBCardDropSwitcherModifier *)selfCopy _appLayoutContainsModifiedAppLayout:v6];
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)topMostLayoutElements
@@ -438,7 +438,7 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   {
     v8.receiver = self;
     v8.super_class = SBCardDropSwitcherModifier;
-    v6 = [(SBCardDropSwitcherModifier *)&v8 topMostLayoutElements];
+    topMostLayoutElements = [(SBCardDropSwitcherModifier *)&v8 topMostLayoutElements];
   }
 
   else
@@ -446,28 +446,28 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
     v3 = objc_alloc(MEMORY[0x277CBEB40]);
     v9.receiver = self;
     v9.super_class = SBCardDropSwitcherModifier;
-    v4 = [(SBCardDropSwitcherModifier *)&v9 topMostLayoutElements];
-    v5 = [v3 initWithArray:v4];
+    topMostLayoutElements2 = [(SBCardDropSwitcherModifier *)&v9 topMostLayoutElements];
+    v5 = [v3 initWithArray:topMostLayoutElements2];
 
     if (self->_finalAppLayout && ([v5 containsObject:?] & 1) == 0)
     {
       [v5 insertObject:self->_finalAppLayout atIndex:0];
     }
 
-    v6 = [v5 array];
+    topMostLayoutElements = [v5 array];
   }
 
-  return v6;
+  return topMostLayoutElements;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   v10.receiver = self;
   v10.super_class = SBCardDropSwitcherModifier;
   [(SBCardDropSwitcherModifier *)&v10 titleAndIconOpacityForIndex:?];
   v6 = v5;
-  v7 = [(SBCardDropSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBCardDropSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if ([(SBCardDropSwitcherModifier *)self _appLayoutContainsModifiedAppLayout:v8]&& self->_waitingForReflowAnimation)
   {
@@ -477,20 +477,20 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBCardDropSwitcherModifier;
-  v4 = [(SBCardDropSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBCardDropSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBCardDropSwitcherModifier *)self medusaSettings];
-  v7 = [v6 switcherCardDropAnimationSettings];
+  medusaSettings = [(SBCardDropSwitcherModifier *)self medusaSettings];
+  switcherCardDropAnimationSettings = [medusaSettings switcherCardDropAnimationSettings];
 
-  [v5 setLayoutSettings:v7];
-  [v5 setPositionSettings:v7];
-  [v5 setScaleSettings:v7];
-  [v5 setCornerRadiusSettings:v7];
+  [v5 setLayoutSettings:switcherCardDropAnimationSettings];
+  [v5 setPositionSettings:switcherCardDropAnimationSettings];
+  [v5 setScaleSettings:switcherCardDropAnimationSettings];
+  [v5 setCornerRadiusSettings:switcherCardDropAnimationSettings];
   [v5 setUpdateMode:3];
 
   return v5;
@@ -503,10 +503,10 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   return v2;
 }
 
-- (int64_t)updateModeForAnimatableProperty:(id)a3
+- (int64_t)updateModeForAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
   {
     v5 = 3;
   }
@@ -515,38 +515,38 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   {
     v7.receiver = self;
     v7.super_class = SBCardDropSwitcherModifier;
-    v5 = [(SBCardDropSwitcherModifier *)&v7 updateModeForAnimatableProperty:v4];
+    v5 = [(SBCardDropSwitcherModifier *)&v7 updateModeForAnimatableProperty:propertyCopy];
   }
 
   return v5;
 }
 
-- (id)settingsForAnimatableProperty:(id)a3
+- (id)settingsForAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
   {
-    v5 = [(SBCardDropSwitcherModifier *)self medusaSettings];
-    v6 = [v5 medusaAnimationSettings];
+    medusaSettings = [(SBCardDropSwitcherModifier *)self medusaSettings];
+    medusaAnimationSettings = [medusaSettings medusaAnimationSettings];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBCardDropSwitcherModifier;
-    v6 = [(SBCardDropSwitcherModifier *)&v8 settingsForAnimatableProperty:v4];
+    medusaAnimationSettings = [(SBCardDropSwitcherModifier *)&v8 settingsForAnimatableProperty:propertyCopy];
   }
 
-  return v6;
+  return medusaAnimationSettings;
 }
 
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating
 {
-  v5 = a5;
-  v8 = a3;
-  if ([v8 isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
+  creatingCopy = creating;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBCardDropSwitcherModifierAnimatablePropertyIdentifier"])
   {
-    if (v5)
+    if (creatingCopy)
     {
       v9 = 0.0;
     }
@@ -561,17 +561,17 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   {
     v12.receiver = self;
     v12.super_class = SBCardDropSwitcherModifier;
-    [(SBCardDropSwitcherModifier *)&v12 modelValueForAnimatableProperty:v8 currentValue:v5 creating:a4];
+    [(SBCardDropSwitcherModifier *)&v12 modelValueForAnimatableProperty:propertyCopy currentValue:creatingCopy creating:value];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([(SBCardDropSwitcherModifier *)self _appLayoutContainsModifiedAppLayout:v4])
+  layoutCopy = layout;
+  if ([(SBCardDropSwitcherModifier *)self _appLayoutContainsModifiedAppLayout:layoutCopy])
   {
     v5 = SBSwitcherAsyncRenderingAttributesMake(0, 0);
   }
@@ -580,7 +580,7 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   {
     v8.receiver = self;
     v8.super_class = SBCardDropSwitcherModifier;
-    v5 = [(SBCardDropSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:v4];
+    v5 = [(SBCardDropSwitcherModifier *)&v8 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v6 = v5;
@@ -588,10 +588,10 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   return v6;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBCardDropSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCardDropSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (v6 == self->_finalAppLayout || v6 == self->_evictedAppLayout || v6 == self->_remainingAppLayout)
   {
@@ -602,34 +602,34 @@ uint64_t __64__SBCardDropSwitcherModifier__recomputeBlurStateWithCompletion___bl
   {
     v9.receiver = self;
     v9.super_class = SBCardDropSwitcherModifier;
-    v7 = [(SBCardDropSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBCardDropSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (BOOL)_appLayoutContainsModifiedAppLayout:(id)a3
+- (BOOL)_appLayoutContainsModifiedAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [(SBAppLayout *)self->_finalAppLayout allItems];
-  [v5 addObjectsFromArray:v6];
+  allItems = [(SBAppLayout *)self->_finalAppLayout allItems];
+  [v5 addObjectsFromArray:allItems];
 
   remainingAppLayout = self->_remainingAppLayout;
   if (remainingAppLayout)
   {
-    v8 = [(SBAppLayout *)remainingAppLayout allItems];
-    [v5 addObjectsFromArray:v8];
+    allItems2 = [(SBAppLayout *)remainingAppLayout allItems];
+    [v5 addObjectsFromArray:allItems2];
   }
 
   evictedAppLayout = self->_evictedAppLayout;
   if (evictedAppLayout)
   {
-    v10 = [(SBAppLayout *)evictedAppLayout allItems];
-    [v5 addObjectsFromArray:v10];
+    allItems3 = [(SBAppLayout *)evictedAppLayout allItems];
+    [v5 addObjectsFromArray:allItems3];
   }
 
-  v11 = [v4 containsAnyItemFromSet:v5];
+  v11 = [layoutCopy containsAnyItemFromSet:v5];
 
   return v11;
 }

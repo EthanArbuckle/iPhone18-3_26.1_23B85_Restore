@@ -1,6 +1,6 @@
 @interface _SFNavigationIntent
 + (int64_t)defaultTabOrder;
-+ (int64_t)effectiveTabOrderWithPreferredTabOrder:(int64_t)a3;
++ (int64_t)effectiveTabOrderWithPreferredTabOrder:(int64_t)order;
 - (BOOL)canUseExistingBlankTab;
 - (BOOL)externalURLSourceApplicationIsSpotlight;
 - (NSArray)navigationIntents;
@@ -13,7 +13,7 @@
 - (UIWebClip)webClip;
 - (WBSCloudTabItem)cloudTab;
 - (WebBookmark)bookmark;
-- (id)_initWithType:(unint64_t)a3 value:(id)a4 policy:(int64_t)a5;
+- (id)_initWithType:(unint64_t)type value:(id)value policy:(int64_t)policy;
 - (id)description;
 @end
 
@@ -21,8 +21,8 @@
 
 + (int64_t)defaultTabOrder
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  if ([v2 BOOLForKey:@"OpenLinksInBackground"])
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  if ([safari_browserDefaults BOOLForKey:@"OpenLinksInBackground"])
   {
     v3 = 2;
   }
@@ -35,11 +35,11 @@
   return v3;
 }
 
-+ (int64_t)effectiveTabOrderWithPreferredTabOrder:(int64_t)a3
++ (int64_t)effectiveTabOrderWithPreferredTabOrder:(int64_t)order
 {
-  if (a3)
+  if (order)
   {
-    return a3;
+    return order;
   }
 
   else
@@ -48,18 +48,18 @@
   }
 }
 
-- (id)_initWithType:(unint64_t)a3 value:(id)a4 policy:(int64_t)a5
+- (id)_initWithType:(unint64_t)type value:(id)value policy:(int64_t)policy
 {
-  v9 = a4;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = _SFNavigationIntent;
   v10 = [(_SFNavigationIntent *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    objc_storeStrong(&v10->_value, a4);
-    v11->_policy = a5;
+    v10->_type = type;
+    objc_storeStrong(&v10->_value, value);
+    v11->_policy = policy;
     v11->_shouldRelateToSourceTab = 1;
     v12 = v11;
   }
@@ -150,11 +150,11 @@ LABEL_4:
     if (type == 3)
     {
       v5 = MEMORY[0x1E695DFF8];
-      v6 = [(_SFNavigationIntent *)self recentlyClosedTabStateData];
-      v7 = [v6 url];
+      recentlyClosedTabStateData = [(_SFNavigationIntent *)self recentlyClosedTabStateData];
+      address = [recentlyClosedTabStateData url];
 LABEL_14:
-      v8 = v7;
-      v4 = [v5 URLWithString:v7];
+      v8 = address;
+      v4 = [v5 URLWithString:address];
 
       goto LABEL_15;
     }
@@ -175,13 +175,13 @@ LABEL_14:
     }
 
     v5 = MEMORY[0x1E695DFF8];
-    v6 = [(_SFNavigationIntent *)self bookmark];
-    v7 = [v6 address];
+    recentlyClosedTabStateData = [(_SFNavigationIntent *)self bookmark];
+    address = [recentlyClosedTabStateData address];
     goto LABEL_14;
   }
 
-  v6 = [(_SFNavigationIntent *)self cloudTab];
-  v4 = [v6 url];
+  recentlyClosedTabStateData = [(_SFNavigationIntent *)self cloudTab];
+  v4 = [recentlyClosedTabStateData url];
 LABEL_15:
 
 LABEL_16:
@@ -226,39 +226,39 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [self->_value options];
+    options = [self->_value options];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 eventAttribution];
+      eventAttribution = [options eventAttribution];
     }
 
     else
     {
-      v4 = 0;
+      eventAttribution = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    eventAttribution = 0;
   }
 
-  return v4;
+  return eventAttribution;
 }
 
 - (NSDictionary)externalOptions
 {
   if (self->_type == 9)
   {
-    v4 = [self->_value URLOptionsDictionary];
+    uRLOptionsDictionary = [self->_value URLOptionsDictionary];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F8];
+    uRLOptionsDictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v4;
+  return uRLOptionsDictionary;
 }
 
 - (NSArray)navigationIntents
@@ -283,11 +283,11 @@ LABEL_16:
   switch(type)
   {
     case 0xBuLL:
-      v5 = [(_SFNavigationIntent *)self navigationIntents];
-      v6 = [v5 objectAtIndexedSubscript:0];
-      v7 = [v6 canUseExistingBlankTab];
+      navigationIntents = [(_SFNavigationIntent *)self navigationIntents];
+      v6 = [navigationIntents objectAtIndexedSubscript:0];
+      canUseExistingBlankTab = [v6 canUseExistingBlankTab];
 
-      return v7;
+      return canUseExistingBlankTab;
     case 9uLL:
       return 1;
     case 3uLL:
@@ -312,13 +312,13 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v7 = [(_SFNavigationIntent *)self text];
-      v8 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v9 = [v7 safari_stringByRemovingCharactersInSet:v8];
+      text = [(_SFNavigationIntent *)self text];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v9 = [text safari_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
       v10 = [v9 length];
 
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v7 length];
+      v12 = [text length];
       v13 = @"false";
       if (!v10)
       {
@@ -339,18 +339,18 @@ LABEL_16:
       if (type == 7)
       {
         v25 = MEMORY[0x1E696AEC0];
-        v7 = [(_SFNavigationIntent *)self webClip];
-        v15 = [v7 uuid];
-        v26 = [v15 UUIDString];
-        v3 = [v25 stringWithFormat:@"<web clip identifier = %@>", v26];;
+        text = [(_SFNavigationIntent *)self webClip];
+        uuid = [text uuid];
+        uUIDString = [uuid UUIDString];
+        v3 = [v25 stringWithFormat:@"<web clip identifier = %@>", uUIDString];;
 
         goto LABEL_15;
       }
 
       v14 = MEMORY[0x1E696AEC0];
-      v7 = [(_SFNavigationIntent *)self URL];
-      v15 = [v7 scheme];
-      [v14 stringWithFormat:@"<service worker open URL; scheme = %@>", v15];
+      text = [(_SFNavigationIntent *)self URL];
+      uuid = [text scheme];
+      [v14 stringWithFormat:@"<service worker open URL; scheme = %@>", uuid];
       v3 = LABEL_14:;
 LABEL_15:
 
@@ -360,9 +360,9 @@ LABEL_16:
 
 LABEL_13:
     v16 = MEMORY[0x1E696AEC0];
-    v7 = [(_SFNavigationIntent *)self URL];
-    v15 = [v7 scheme];
-    [v16 stringWithFormat:@"<url; scheme = %@>", v15];
+    text = [(_SFNavigationIntent *)self URL];
+    uuid = [text scheme];
+    [v16 stringWithFormat:@"<url; scheme = %@>", uuid];
     goto LABEL_14;
   }
 
@@ -373,12 +373,12 @@ LABEL_13:
 
   if (type == 11)
   {
-    v23 = [(_SFNavigationIntent *)self navigationIntents];
-    v7 = [v23 safari_mapObjectsUsingBlock:&__block_literal_global_32];
+    navigationIntents = [(_SFNavigationIntent *)self navigationIntents];
+    text = [navigationIntents safari_mapObjectsUsingBlock:&__block_literal_global_32];
 
     v24 = MEMORY[0x1E696AEC0];
-    v15 = [v7 componentsJoinedByString:{@", \n\t"}];
-    [v24 stringWithFormat:@"[\n\t%@\n]", v15];
+    uuid = [text componentsJoinedByString:{@", \n\t"}];
+    [v24 stringWithFormat:@"[\n\t%@\n]", uuid];
     goto LABEL_14;
   }
 
@@ -399,9 +399,9 @@ LABEL_17:
     return 0;
   }
 
-  v2 = [self->_value options];
-  v3 = [v2 sourceApplication];
-  v4 = [v3 isEqualToString:@"com.apple.Spotlight"];
+  options = [self->_value options];
+  sourceApplication = [options sourceApplication];
+  v4 = [sourceApplication isEqualToString:@"com.apple.Spotlight"];
 
   return v4;
 }

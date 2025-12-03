@@ -1,30 +1,30 @@
 @interface MTATimerPickerCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (MTATimerPickerCell)initWithPicker:(id)a3 timeView:(id)a4 expectedTimeView:(id)a5 countdownView:(id)a6 reuseIdentifier:(id)a7;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (MTATimerPickerCell)initWithPicker:(id)picker timeView:(id)view expectedTimeView:(id)timeView countdownView:(id)countdownView reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setState:(unint64_t)state animated:(BOOL)animated;
 @end
 
 @implementation MTATimerPickerCell
 
-- (MTATimerPickerCell)initWithPicker:(id)a3 timeView:(id)a4 expectedTimeView:(id)a5 countdownView:(id)a6 reuseIdentifier:(id)a7
+- (MTATimerPickerCell)initWithPicker:(id)picker timeView:(id)view expectedTimeView:(id)timeView countdownView:(id)countdownView reuseIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  pickerCopy = picker;
+  viewCopy = view;
+  timeViewCopy = timeView;
+  countdownViewCopy = countdownView;
   v26.receiver = self;
   v26.super_class = MTATimerPickerCell;
-  v17 = [(MTATimerPickerCell *)&v26 initWithStyle:0 reuseIdentifier:a7];
+  v17 = [(MTATimerPickerCell *)&v26 initWithStyle:0 reuseIdentifier:identifier];
   v18 = v17;
   if (v17)
   {
     [(MTATimerPickerCell *)v17 setSelectionStyle:0];
-    v19 = [(MTATimerPickerCell *)v18 contentView];
-    objc_storeStrong(&v18->_picker, a3);
-    objc_storeStrong(&v18->_timeView, a4);
-    objc_storeStrong(&v18->_countdownView, a6);
-    objc_storeStrong(&v18->_expectedTimeView, a5);
+    contentView = [(MTATimerPickerCell *)v18 contentView];
+    objc_storeStrong(&v18->_picker, picker);
+    objc_storeStrong(&v18->_timeView, view);
+    objc_storeStrong(&v18->_countdownView, countdownView);
+    objc_storeStrong(&v18->_expectedTimeView, timeView);
     v20 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     pickerBackgroundView = v18->_pickerBackgroundView;
     v18->_pickerBackgroundView = v20;
@@ -33,7 +33,7 @@
     v23 = +[UIColor clearColor];
     [(UIView *)v22 setBackgroundColor:v23];
 
-    [v19 addSubview:v18->_pickerBackgroundView];
+    [contentView addSubview:v18->_pickerBackgroundView];
     v24 = +[UIColor mtui_foregroundColor];
     [(MTATimerPickerCell *)v18 setBackgroundColor:v24];
   }
@@ -41,19 +41,19 @@
   return v18;
 }
 
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_state = a3;
+  animatedCopy = animated;
+  self->_state = state;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000538E4;
   v7[3] = &unk_1000AE6A0;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = state;
   v5 = objc_retainBlock(v7);
   v6 = v5;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v5 animations:0.2];
   }
@@ -64,10 +64,10 @@
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  [UIPickerView defaultSizeForCurrentOrientation:a3.width];
+  width = size.width;
+  [UIPickerView defaultSizeForCurrentOrientation:size.width];
   v7 = width;
   result.height = v6;
   result.width = v7;
@@ -79,18 +79,18 @@
   v30.receiver = self;
   v30.super_class = MTATimerPickerCell;
   [(MTATimerPickerCell *)&v30 layoutSubviews];
-  v3 = [(MTATimerPickerCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTATimerPickerCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(UIView *)self->_pickerBackgroundView setFrame:v5, v7, v9, v11];
-  v12 = [(MTATimerIntervalPickerView *)self->_picker superview];
-  v13 = [(MTATimerPickerCell *)self contentView];
+  superview = [(MTATimerIntervalPickerView *)self->_picker superview];
+  contentView2 = [(MTATimerPickerCell *)self contentView];
 
-  if (v12 == v13)
+  if (superview == contentView2)
   {
     [(MTATimerIntervalPickerView *)self->_picker frame];
     [(UIView *)self->_pickerBackgroundView bounds];
@@ -103,10 +103,10 @@
     [(MTATimerIntervalPickerView *)self->_picker setFrame:v15, v22 + v17, v19, v21];
   }
 
-  v23 = [(UILabel *)self->_timeView superview];
-  v24 = [(MTATimerPickerCell *)self contentView];
+  superview2 = [(UILabel *)self->_timeView superview];
+  contentView3 = [(MTATimerPickerCell *)self contentView];
 
-  if (v23 == v24)
+  if (superview2 == contentView3)
   {
     [(UILabel *)self->_timeView sizeToFit];
     [(UILabel *)self->_timeView frame];

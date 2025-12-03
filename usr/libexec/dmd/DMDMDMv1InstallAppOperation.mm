@@ -1,32 +1,32 @@
 @interface DMDMDMv1InstallAppOperation
-+ (id)descriptionForChangeType:(int64_t)a3;
++ (id)descriptionForChangeType:(int64_t)type;
 + (id)whitelistedClassesForRequest;
-- (BOOL)_canManageBundleIdentifier:(id)a3;
+- (BOOL)_canManageBundleIdentifier:(id)identifier;
 - (id)_getAllowedAppIDsFromDisk;
 - (id)_storeAppFormat;
-- (void)_applyManagementPiecesForRequest:(id)a3;
-- (void)_attemptSINFSwapForRequest:(id)a3 completion:(id)a4;
-- (void)_downloadStoreAppForRequest:(id)a3 type:(int64_t)a4;
-- (void)_endOperationWithBundleIdentifier:(id)a3;
-- (void)_installEnterpriseAppForRequest:(id)a3;
-- (void)_installStoreAppForRequest:(id)a3;
-- (void)_installSystemAppWithBundleIdentifier:(id)a3;
-- (void)_promptIfNeededWithMessageFormat:(id)a3 success:(id)a4;
-- (void)_promptToSignInAndInstallAppForRequest:(id)a3;
-- (void)_redeemAppWithRedemptionCode:(id)a3;
-- (void)_resetRemovabilityWithBundleIdentifier:(id)a3;
+- (void)_applyManagementPiecesForRequest:(id)request;
+- (void)_attemptSINFSwapForRequest:(id)request completion:(id)completion;
+- (void)_downloadStoreAppForRequest:(id)request type:(int64_t)type;
+- (void)_endOperationWithBundleIdentifier:(id)identifier;
+- (void)_installEnterpriseAppForRequest:(id)request;
+- (void)_installStoreAppForRequest:(id)request;
+- (void)_installSystemAppWithBundleIdentifier:(id)identifier;
+- (void)_promptIfNeededWithMessageFormat:(id)format success:(id)success;
+- (void)_promptToSignInAndInstallAppForRequest:(id)request;
+- (void)_redeemAppWithRedemptionCode:(id)code;
+- (void)_resetRemovabilityWithBundleIdentifier:(id)identifier;
 - (void)_resetTapToPayScreenLock;
-- (void)_setRedemptionCode:(id)a3;
-- (void)_setRemovability:(id)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)_setTapToPayScreenLock:(id)a3;
-- (void)_setUnusedRedemptionCode:(id)a3;
+- (void)_setRedemptionCode:(id)code;
+- (void)_setRemovability:(id)removability;
+- (void)_setState:(unint64_t)state;
+- (void)_setTapToPayScreenLock:(id)lock;
+- (void)_setUnusedRedemptionCode:(id)code;
 - (void)_showInstallationFailurePromptIfNeeded;
-- (void)_showStorePromptToSignInAndInstallAppForRequest:(id)a3;
-- (void)_updateManagementInfoWithBlock:(id)a3;
-- (void)endOperationWithError:(id)a3;
-- (void)endOperationWithResultObject:(id)a3;
-- (void)installAppForRequest:(id)a3;
+- (void)_showStorePromptToSignInAndInstallAppForRequest:(id)request;
+- (void)_updateManagementInfoWithBlock:(id)block;
+- (void)endOperationWithError:(id)error;
+- (void)endOperationWithResultObject:(id)object;
+- (void)installAppForRequest:(id)request;
 @end
 
 @implementation DMDMDMv1InstallAppOperation
@@ -38,36 +38,36 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)endOperationWithResultObject:(id)a3
+- (void)endOperationWithResultObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (([(DMDMDMv1InstallAppOperation *)self isFinished]& 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = DMDMDMv1InstallAppOperation;
-    [(DMDMDMv1InstallAppOperation *)&v5 endOperationWithResultObject:v4];
+    [(DMDMDMv1InstallAppOperation *)&v5 endOperationWithResultObject:objectCopy];
   }
 }
 
-- (void)endOperationWithError:(id)a3
+- (void)endOperationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (([(DMDMDMv1InstallAppOperation *)self isFinished]& 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = DMDMDMv1InstallAppOperation;
-    [(DMDMDMv1InstallAppOperation *)&v5 endOperationWithError:v4];
+    [(DMDMDMv1InstallAppOperation *)&v5 endOperationWithError:errorCopy];
   }
 }
 
-- (void)installAppForRequest:(id)a3
+- (void)installAppForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDInstallAppOperation *)self metadata];
-  v6 = [v5 bundleIdentifier];
+  requestCopy = request;
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
 
   v7 = +[DMDAppController sharedController];
-  v8 = [v7 stateForBundleIdentifier:v6];
+  v8 = [v7 stateForBundleIdentifier:bundleIdentifier];
 
   if (v8 == 3)
   {
@@ -78,9 +78,9 @@
     }
 
     v16 = DMFBundleIdentifierErrorKey;
-    v10 = [(DMDInstallAppOperation *)self metadata];
-    v11 = [v10 bundleIdentifier];
-    v17 = v11;
+    metadata2 = [(DMDInstallAppOperation *)self metadata];
+    bundleIdentifier2 = [metadata2 bundleIdentifier];
+    v17 = bundleIdentifier2;
     v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v13 = DMFErrorWithCodeAndUserInfo();
     [(DMDMDMv1InstallAppOperation *)self endOperationWithError:v13];
@@ -88,32 +88,32 @@
 
   else
   {
-    v10 = [v4 redemptionCode];
-    if (v10)
+    metadata2 = [requestCopy redemptionCode];
+    if (metadata2)
     {
-      [(DMDMDMv1InstallAppOperation *)self _redeemAppWithRedemptionCode:v10];
+      [(DMDMDMv1InstallAppOperation *)self _redeemAppWithRedemptionCode:metadata2];
       goto LABEL_10;
     }
 
-    v14 = [v4 manifestURL];
+    manifestURL = [requestCopy manifestURL];
 
-    if (v14)
+    if (manifestURL)
     {
-      [(DMDMDMv1InstallAppOperation *)self _installEnterpriseAppForRequest:v4];
+      [(DMDMDMv1InstallAppOperation *)self _installEnterpriseAppForRequest:requestCopy];
       goto LABEL_10;
     }
 
-    v11 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v6 error:0];
-    v15 = [v11 compatibilityObject];
-    v12 = v15;
-    if (v11 && v15)
+    bundleIdentifier2 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
+    compatibilityObject = [bundleIdentifier2 compatibilityObject];
+    v12 = compatibilityObject;
+    if (bundleIdentifier2 && compatibilityObject)
     {
-      [(DMDMDMv1InstallAppOperation *)self _installSystemAppWithBundleIdentifier:v6];
+      [(DMDMDMv1InstallAppOperation *)self _installSystemAppWithBundleIdentifier:bundleIdentifier];
     }
 
     else
     {
-      [(DMDMDMv1InstallAppOperation *)self _installStoreAppForRequest:v4];
+      [(DMDMDMv1InstallAppOperation *)self _installStoreAppForRequest:requestCopy];
     }
   }
 
@@ -167,26 +167,26 @@ LABEL_10:
   return v7;
 }
 
-- (void)_redeemAppWithRedemptionCode:(id)a3
+- (void)_redeemAppWithRedemptionCode:(id)code
 {
-  v4 = a3;
-  v5 = [(DMDInstallAppOperation *)self metadata];
-  v6 = [v5 bundleIdentifier];
+  codeCopy = code;
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
 
   v7 = +[DMDAppController sharedController];
-  if ([v7 stateForBundleIdentifier:v6] == 1)
+  if ([v7 stateForBundleIdentifier:bundleIdentifier] == 1)
   {
-    [(DMDMDMv1InstallAppOperation *)self _setRedemptionCode:v4];
-    v8 = [(DMDMDMv1InstallAppOperation *)self _storeAppFormat];
+    [(DMDMDMv1InstallAppOperation *)self _setRedemptionCode:codeCopy];
+    _storeAppFormat = [(DMDMDMv1InstallAppOperation *)self _storeAppFormat];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000558EC;
     v9[3] = &unk_1000CF808;
-    v10 = v6;
-    v11 = self;
+    v10 = bundleIdentifier;
+    selfCopy = self;
     v12 = v7;
-    v13 = v4;
-    [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:v8 success:v9];
+    v13 = codeCopy;
+    [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:_storeAppFormat success:v9];
   }
 
   else
@@ -195,13 +195,13 @@ LABEL_10:
   }
 }
 
-- (void)_installEnterpriseAppForRequest:(id)a3
+- (void)_installEnterpriseAppForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"%@ is about to install and manage the app “%@”.\nYour Apple Account will not be charged for this app." value:&stru_1000D0428 table:@"DMFNotifications"];
 
-  v7 = [v4 manifestURL];
+  manifestURL = [requestCopy manifestURL];
   v8 = +[DMDAppController sharedController];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -214,21 +214,21 @@ LABEL_10:
   v24[2] = sub_100055DF0;
   v24[3] = &unk_1000CF830;
   v24[4] = self;
-  v10 = v4;
+  v10 = requestCopy;
   v25 = v10;
-  v26 = v7;
+  v26 = manifestURL;
   v11 = v8;
   v27 = v11;
   v12 = v9;
   v28 = v12;
-  v13 = v7;
+  v13 = manifestURL;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10005607C;
   v18[3] = &unk_1000CF880;
   v19 = v11;
   v20 = v10;
-  v21 = self;
+  selfCopy = self;
   v22 = v12;
   v23 = objc_retainBlock(v24);
   v14 = v23;
@@ -238,9 +238,9 @@ LABEL_10:
   [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:v6 success:v18];
 }
 
-- (void)_installSystemAppWithBundleIdentifier:(id)a3
+- (void)_installSystemAppWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"%@ is about to install the app “%@”.\nYour Apple Account will not be charged for this app." value:&stru_1000D0428 table:@"DMFNotifications"];
 
@@ -248,48 +248,48 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = sub_10005637C;
   v8[3] = &unk_1000CDC38;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:v6 success:v8];
 }
 
-+ (id)descriptionForChangeType:(int64_t)a3
++ (id)descriptionForChangeType:(int64_t)type
 {
-  if (a3 >= 6)
+  if (type >= 6)
   {
-    v4 = [NSString stringWithFormat:@"unknown change type (%ld)", a3];
+    type = [NSString stringWithFormat:@"unknown change type (%ld)", type];
   }
 
   else
   {
-    v4 = off_1000CFA48[a3];
+    type = off_1000CFA48[type];
   }
 
-  return v4;
+  return type;
 }
 
-- (void)_installStoreAppForRequest:(id)a3
+- (void)_installStoreAppForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDInstallAppOperation *)self metadata];
-  v6 = [v5 bundleIdentifier];
+  requestCopy = request;
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
 
-  v7 = [(DMDInstallAppOperation *)self metadata];
-  v8 = [v7 needsRedownload];
+  metadata2 = [(DMDInstallAppOperation *)self metadata];
+  needsRedownload = [metadata2 needsRedownload];
 
   v9 = DMFAppLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (needsRedownload)
   {
     if (v10)
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Attempting re-download of app because metadata says it is necessary: %{public}@", buf, 0xCu);
     }
 
-    [(DMDMDMv1InstallAppOperation *)self _redownloadDeviceAppForRequest:v4];
+    [(DMDMDMv1InstallAppOperation *)self _redownloadDeviceAppForRequest:requestCopy];
   }
 
   else
@@ -297,7 +297,7 @@ LABEL_10:
     if (v10)
     {
       *buf = 138543362;
-      v16 = v6;
+      v16 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Attempting SINF swap to install app: %{public}@", buf, 0xCu);
     }
 
@@ -305,42 +305,42 @@ LABEL_10:
     v11[1] = 3221225472;
     v11[2] = sub_100056750;
     v11[3] = &unk_1000CF8A8;
-    v12 = v6;
-    v13 = self;
-    v14 = v4;
+    v12 = bundleIdentifier;
+    selfCopy = self;
+    v14 = requestCopy;
     [(DMDMDMv1InstallAppOperation *)self _attemptSINFSwapForRequest:v14 completion:v11];
   }
 }
 
-- (void)_attemptSINFSwapForRequest:(id)a3 completion:(id)a4
+- (void)_attemptSINFSwapForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
+  requestCopy = request;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100056FA4;
   v15[3] = &unk_1000CE208;
-  v7 = a4;
-  v16 = v7;
+  completionCopy = completion;
+  v16 = completionCopy;
   v8 = objc_retainBlock(v15);
   v9 = +[DMDAppController sharedController];
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 personaIdentifier];
+    personaIdentifier = [requestCopy personaIdentifier];
     *buf = 138543362;
-    v18 = v11;
+    v18 = personaIdentifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "attempt SINF swap, persona:%{public}@", buf, 0xCu);
   }
 
-  v12 = [(DMDInstallAppOperation *)self metadata];
-  v13 = [v12 storeItemIdentifier];
-  v14 = [v6 personaIdentifier];
-  [v9 sendAppRequestWithBundleIdentifier:0 storeItemIdentifier:v13 personaIdentifier:v14 type:2 skipDownloads:1 completion:v8];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  storeItemIdentifier = [metadata storeItemIdentifier];
+  personaIdentifier2 = [requestCopy personaIdentifier];
+  [v9 sendAppRequestWithBundleIdentifier:0 storeItemIdentifier:storeItemIdentifier personaIdentifier:personaIdentifier2 type:2 skipDownloads:1 completion:v8];
 }
 
-- (void)_downloadStoreAppForRequest:(id)a3 type:(int64_t)a4
+- (void)_downloadStoreAppForRequest:(id)request type:(int64_t)type
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = +[DMDAppController sharedController];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -355,56 +355,56 @@ LABEL_10:
   v25[4] = self;
   v9 = v7;
   v26 = v9;
-  v10 = v6;
+  v10 = requestCopy;
   v27 = v10;
   v11 = v8;
   v28 = v11;
   v12 = objc_retainBlock(v25);
-  v13 = [(DMDMDMv1InstallAppOperation *)self _storeAppFormat];
+  _storeAppFormat = [(DMDMDMv1InstallAppOperation *)self _storeAppFormat];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100057524;
   v18[3] = &unk_1000CF920;
   v19 = v9;
   v20 = v10;
-  v21 = self;
+  selfCopy = self;
   v22 = v11;
   v23 = v12;
-  v24 = a4;
+  typeCopy = type;
   v14 = v12;
   v15 = v11;
   v16 = v10;
   v17 = v9;
-  [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:v13 success:v18];
+  [(DMDMDMv1InstallAppOperation *)self _promptIfNeededWithMessageFormat:_storeAppFormat success:v18];
 }
 
-- (void)_applyManagementPiecesForRequest:(id)a3
+- (void)_applyManagementPiecesForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v19 = +[DMDAppController sharedController];
-  v18 = [v4 VPNUUIDString];
-  v5 = [v4 cellularSliceUUIDString];
-  v6 = [v4 contentFilterUUIDString];
-  v17 = [v4 DNSProxyUUIDString];
-  v16 = [v4 relayUUIDString];
-  v15 = [v4 associatedDomains];
-  v14 = [v4 associatedDomainsEnableDirectDownloads];
-  v13 = [v4 allowUserToHide];
-  v7 = [v4 allowUserToLock];
-  v8 = [v4 configuration];
-  v9 = [v4 managementOptions];
-  v10 = [v4 sourceIdentifier];
+  vPNUUIDString = [requestCopy VPNUUIDString];
+  cellularSliceUUIDString = [requestCopy cellularSliceUUIDString];
+  contentFilterUUIDString = [requestCopy contentFilterUUIDString];
+  dNSProxyUUIDString = [requestCopy DNSProxyUUIDString];
+  relayUUIDString = [requestCopy relayUUIDString];
+  associatedDomains = [requestCopy associatedDomains];
+  associatedDomainsEnableDirectDownloads = [requestCopy associatedDomainsEnableDirectDownloads];
+  allowUserToHide = [requestCopy allowUserToHide];
+  allowUserToLock = [requestCopy allowUserToLock];
+  configuration = [requestCopy configuration];
+  managementOptions = [requestCopy managementOptions];
+  sourceIdentifier = [requestCopy sourceIdentifier];
 
-  v11 = [(DMDInstallAppOperation *)self metadata];
-  v12 = [v11 bundleIdentifier];
-  [v19 setVPNUUIDString:v18 cellularSliceUUIDString:v5 contentFilterUUIDString:v6 DNSProxyUUIDString:v17 relayUUIDString:v16 associatedDomains:v15 enableDirectDownloads:v14 allowUserToHide:v13 allowUserToLock:v7 configuration:v8 options:v9 sourceIdentifier:v10 forBundleIdentifier:v12];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
+  [v19 setVPNUUIDString:vPNUUIDString cellularSliceUUIDString:cellularSliceUUIDString contentFilterUUIDString:contentFilterUUIDString DNSProxyUUIDString:dNSProxyUUIDString relayUUIDString:relayUUIDString associatedDomains:associatedDomains enableDirectDownloads:associatedDomainsEnableDirectDownloads allowUserToHide:allowUserToHide allowUserToLock:allowUserToLock configuration:configuration options:managementOptions sourceIdentifier:sourceIdentifier forBundleIdentifier:bundleIdentifier];
 }
 
-- (void)_promptIfNeededWithMessageFormat:(id)a3 success:(id)a4
+- (void)_promptIfNeededWithMessageFormat:(id)format success:(id)success
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  formatCopy = format;
+  successCopy = success;
+  if (!successCopy)
   {
     sub_100085678(a2, self);
   }
@@ -414,49 +414,49 @@ LABEL_10:
   v41[2] = sub_100057F1C;
   v41[3] = &unk_1000CE8C0;
   v41[4] = self;
-  v9 = v8;
+  v9 = successCopy;
   v42 = v9;
   v10 = objc_retainBlock(v41);
   v11 = +[MCCloudConfiguration sharedConfiguration];
-  v12 = [v11 isSupervised];
+  isSupervised = [v11 isSupervised];
 
-  if (v12)
+  if (isSupervised)
   {
     (v10[2])(v10);
   }
 
   else
   {
-    v13 = [(DMDMDMv1InstallAppOperation *)self _getAllowedAppIDsFromDisk];
-    v14 = [(DMDInstallAppOperation *)self metadata];
-    v15 = [v14 storeItemIdentifier];
+    _getAllowedAppIDsFromDisk = [(DMDMDMv1InstallAppOperation *)self _getAllowedAppIDsFromDisk];
+    metadata = [(DMDInstallAppOperation *)self metadata];
+    storeItemIdentifier = [metadata storeItemIdentifier];
 
-    if (v15 && [v13 containsObject:v15])
+    if (storeItemIdentifier && [_getAllowedAppIDsFromDisk containsObject:storeItemIdentifier])
     {
       (v10[2])(v10);
     }
 
     else
     {
-      v16 = [(DMDMDMv1InstallAppOperation *)self request];
-      v17 = [v16 originator];
+      request = [(DMDMDMv1InstallAppOperation *)self request];
+      originator = [request originator];
 
-      v18 = [(DMDInstallAppOperation *)self metadata];
-      v19 = [v18 displayName];
+      metadata2 = [(DMDInstallAppOperation *)self metadata];
+      displayName = [metadata2 displayName];
 
       v20 = DMFAppLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v44 = v19;
+        v44 = displayName;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Prompting user to install app: %{public}@", buf, 0xCu);
       }
 
-      v36 = v15;
-      v37 = v13;
+      v36 = storeItemIdentifier;
+      v37 = _getAllowedAppIDsFromDisk;
 
       v40 = 0;
-      v21 = [NSString stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@%@" error:&v40, v17, v19];
+      v21 = [NSString stringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%@%@" error:&v40, originator, displayName];
       v22 = v40;
       if (!v21)
       {
@@ -467,7 +467,7 @@ LABEL_10:
         }
       }
 
-      v34 = v17;
+      v34 = originator;
       v35 = v22;
       v24 = objc_opt_new();
       v25 = [NSBundle bundleForClass:objc_opt_class()];
@@ -493,19 +493,19 @@ LABEL_10:
       v39 = v10;
       [v31 showNotification:v24 completion:v38];
 
-      v32 = [(DMDInstallAppOperation *)self metadata];
-      v33 = [v32 bundleIdentifier];
-      [(DMDMDMv1InstallAppOperation *)self _endOperationWithBundleIdentifier:v33];
+      metadata3 = [(DMDInstallAppOperation *)self metadata];
+      bundleIdentifier = [metadata3 bundleIdentifier];
+      [(DMDMDMv1InstallAppOperation *)self _endOperationWithBundleIdentifier:bundleIdentifier];
 
-      v13 = v37;
-      v15 = v36;
+      _getAllowedAppIDsFromDisk = v37;
+      storeItemIdentifier = v36;
     }
   }
 }
 
-- (void)_promptToSignInAndInstallAppForRequest:(id)a3
+- (void)_promptToSignInAndInstallAppForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -519,8 +519,8 @@ LABEL_10:
   v8 = [v7 localizedStringForKey:@"App Installation" value:&stru_1000D0428 table:@"DMFNotifications"];
   [v6 setHeader:v8];
 
-  v9 = [v4 originator];
-  v10 = [NSString localizedStringWithFormat:@"Sign in to iTunes to allow %1$@ to manage and install apps.", v9];
+  originator = [requestCopy originator];
+  v10 = [NSString localizedStringWithFormat:@"Sign in to iTunes to allow %1$@ to manage and install apps.", originator];
   [v6 setMessage:v10];
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
@@ -537,14 +537,14 @@ LABEL_10:
   v17[2] = sub_1000582B0;
   v17[3] = &unk_1000CF970;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
+  v18 = requestCopy;
+  v16 = requestCopy;
   [v15 showNotification:v6 completion:v17];
 }
 
-- (void)_showStorePromptToSignInAndInstallAppForRequest:(id)a3
+- (void)_showStorePromptToSignInAndInstallAppForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -558,8 +558,8 @@ LABEL_10:
   v8[2] = sub_100058428;
   v8[3] = &unk_1000CF9C0;
   v9 = v8[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = requestCopy;
+  v6 = requestCopy;
   v7 = v9;
   [v7 promptUserToSignInWithCompletion:v8];
 }
@@ -567,9 +567,9 @@ LABEL_10:
 - (void)_showInstallationFailurePromptIfNeeded
 {
   v3 = +[MCCloudConfiguration sharedConfiguration];
-  v4 = [v3 isSupervised];
+  isSupervised = [v3 isSupervised];
 
-  if ((v4 & 1) == 0)
+  if ((isSupervised & 1) == 0)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"The app “%@” could not be installed." value:&stru_1000D0428 table:@"DMFNotifications"];
@@ -579,9 +579,9 @@ LABEL_10:
     v9 = [v8 localizedStringForKey:@"App Installation" value:&stru_1000D0428 table:@"DMFNotifications"];
     [v7 setHeader:v9];
 
-    v10 = [(DMDInstallAppOperation *)self metadata];
-    v11 = [v10 displayName];
-    v12 = [NSString localizedStringWithFormat:v6, v11];
+    metadata = [(DMDInstallAppOperation *)self metadata];
+    displayName = [metadata displayName];
+    v12 = [NSString localizedStringWithFormat:v6, displayName];
     [v7 setMessage:v12];
 
     v13 = [NSBundle bundleForClass:objc_opt_class()];
@@ -599,16 +599,16 @@ LABEL_10:
   }
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  v5 = [(DMDInstallAppOperation *)self metadata];
-  v6 = [v5 bundleIdentifier];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
 
-  if ([(DMDMDMv1InstallAppOperation *)self _canManageBundleIdentifier:v6])
+  if ([(DMDMDMv1InstallAppOperation *)self _canManageBundleIdentifier:bundleIdentifier])
   {
     v7 = +[DMDAppController sharedController];
     v11 = 0;
-    v8 = [v7 setState:a3 forBundleIdentifier:v6 error:&v11];
+    v8 = [v7 setState:state forBundleIdentifier:bundleIdentifier error:&v11];
     v9 = v11;
 
     if ((v8 & 1) == 0)
@@ -622,16 +622,16 @@ LABEL_10:
   }
 }
 
-- (void)_setRedemptionCode:(id)a3
+- (void)_setRedemptionCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DMDInstallAppOperation *)self metadata];
-    v7 = [v6 bundleIdentifier];
+    metadata = [(DMDInstallAppOperation *)self metadata];
+    bundleIdentifier = [metadata bundleIdentifier];
     *buf = 138543362;
-    v12 = v7;
+    v12 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set redemption code for bundle identifier: %{public}@", buf, 0xCu);
   }
 
@@ -639,21 +639,21 @@ LABEL_10:
   v9[1] = 3221225472;
   v9[2] = sub_1000589E8;
   v9[3] = &unk_1000CF9E8;
-  v10 = v4;
-  v8 = v4;
+  v10 = codeCopy;
+  v8 = codeCopy;
   [(DMDMDMv1InstallAppOperation *)self _updateManagementInfoWithBlock:v9];
 }
 
-- (void)_setUnusedRedemptionCode:(id)a3
+- (void)_setUnusedRedemptionCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DMDInstallAppOperation *)self metadata];
-    v7 = [v6 bundleIdentifier];
+    metadata = [(DMDInstallAppOperation *)self metadata];
+    bundleIdentifier = [metadata bundleIdentifier];
     *buf = 138543362;
-    v12 = v7;
+    v12 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set unused redemption code for bundle identifier: %{public}@", buf, 0xCu);
   }
 
@@ -661,42 +661,42 @@ LABEL_10:
   v9[1] = 3221225472;
   v9[2] = sub_100058B3C;
   v9[3] = &unk_1000CF9E8;
-  v10 = v4;
-  v8 = v4;
+  v10 = codeCopy;
+  v8 = codeCopy;
   [(DMDMDMv1InstallAppOperation *)self _updateManagementInfoWithBlock:v9];
 }
 
-- (void)_updateManagementInfoWithBlock:(id)a3
+- (void)_updateManagementInfoWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     sub_100085840(a2, self);
   }
 
-  v6 = [(DMDInstallAppOperation *)self metadata];
-  v7 = [v6 bundleIdentifier];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
 
-  if ([(DMDMDMv1InstallAppOperation *)self _canManageBundleIdentifier:v7])
+  if ([(DMDMDMv1InstallAppOperation *)self _canManageBundleIdentifier:bundleIdentifier])
   {
     v8 = DMFAppLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = v7;
+      v16 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Update management information for bundle identifier: %{public}@", buf, 0xCu);
     }
 
     v9 = +[DMDAppController sharedController];
-    v10 = [v9 managementInformationForBundleIdentifier:v7];
+    v10 = [v9 managementInformationForBundleIdentifier:bundleIdentifier];
     if (!v10)
     {
       v10 = objc_opt_new();
     }
 
-    v5[2](v5, v10);
+    blockCopy[2](blockCopy, v10);
     v14 = 0;
-    v11 = [v9 setManagementInformation:v10 forBundleIdentifier:v7 error:&v14];
+    v11 = [v9 setManagementInformation:v10 forBundleIdentifier:bundleIdentifier error:&v14];
     v12 = v14;
     if ((v11 & 1) == 0)
     {
@@ -709,67 +709,67 @@ LABEL_10:
   }
 }
 
-- (BOOL)_canManageBundleIdentifier:(id)a3
+- (BOOL)_canManageBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v3 error:0];
+  identifierCopy = identifier;
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:identifierCopy error:0];
 
   return v4 == 0;
 }
 
-- (void)_endOperationWithBundleIdentifier:(id)a3
+- (void)_endOperationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[DMDAppController sharedController];
-  v6 = [v5 stateForBundleIdentifier:v4];
+  v6 = [v5 stateForBundleIdentifier:identifierCopy];
 
-  v7 = [[DMFMDMv1InstallAppResultObject alloc] initWithBundleIdentifier:v4 state:v6];
+  v7 = [[DMFMDMv1InstallAppResultObject alloc] initWithBundleIdentifier:identifierCopy state:v6];
   [(DMDMDMv1InstallAppOperation *)self endOperationWithResultObject:v7];
 }
 
-- (void)_resetRemovabilityWithBundleIdentifier:(id)a3
+- (void)_resetRemovabilityWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[DMDAppController sharedController];
-  [v4 setRemovability:0 forBundleIdentifier:v3 completion:&stru_1000CFA08];
+  [v4 setRemovability:0 forBundleIdentifier:identifierCopy completion:&stru_1000CFA08];
 }
 
 - (void)_resetTapToPayScreenLock
 {
   v5 = +[DMDAppController sharedController];
-  v3 = [(DMDInstallAppOperation *)self metadata];
-  v4 = [v3 bundleIdentifier];
-  [v5 setTapToPayScreenLock:0 forBundleIdentifier:v4 completion:&stru_1000CFA28];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
+  [v5 setTapToPayScreenLock:0 forBundleIdentifier:bundleIdentifier completion:&stru_1000CFA28];
 }
 
-- (void)_setRemovability:(id)a3
+- (void)_setRemovability:(id)removability
 {
-  v4 = a3;
+  removabilityCopy = removability;
   v5 = +[DMDAppController sharedController];
-  v6 = [(DMDInstallAppOperation *)self metadata];
-  v7 = [v6 bundleIdentifier];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100059090;
   v9[3] = &unk_1000CEE68;
-  v10 = v4;
-  v8 = v4;
-  [v5 setRemovability:v8 forBundleIdentifier:v7 completion:v9];
+  v10 = removabilityCopy;
+  v8 = removabilityCopy;
+  [v5 setRemovability:v8 forBundleIdentifier:bundleIdentifier completion:v9];
 }
 
-- (void)_setTapToPayScreenLock:(id)a3
+- (void)_setTapToPayScreenLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v5 = +[DMDAppController sharedController];
-  v6 = [(DMDInstallAppOperation *)self metadata];
-  v7 = [v6 bundleIdentifier];
+  metadata = [(DMDInstallAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000591DC;
   v9[3] = &unk_1000CEE68;
-  v10 = v4;
-  v8 = v4;
-  [v5 setTapToPayScreenLock:v8 forBundleIdentifier:v7 completion:v9];
+  v10 = lockCopy;
+  v8 = lockCopy;
+  [v5 setTapToPayScreenLock:v8 forBundleIdentifier:bundleIdentifier completion:v9];
 }
 
 @end

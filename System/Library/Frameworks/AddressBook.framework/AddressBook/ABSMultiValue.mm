@@ -1,54 +1,54 @@
 @interface ABSMultiValue
 + (void)initialize;
-- (ABSMultiValue)initWithPropertyType:(unsigned int)a3 mutable:(BOOL)a4 values:(id)a5;
-- (BOOL)addValue:(id)a3 label:(id)a4 outIdentifier:(int *)a5;
-- (BOOL)insertValue:(id)a3 label:(id)a4 atIndex:(int64_t)a5 outIdentifier:(int *)a6;
-- (BOOL)removeValueAtIndex:(int64_t)a3;
-- (BOOL)replaceLabel:(id)a3 atIndex:(int64_t)a4;
-- (BOOL)replaceValue:(id)a3 atIndex:(int64_t)a4;
+- (ABSMultiValue)initWithPropertyType:(unsigned int)type mutable:(BOOL)mutable values:(id)values;
+- (BOOL)addValue:(id)value label:(id)label outIdentifier:(int *)identifier;
+- (BOOL)insertValue:(id)value label:(id)label atIndex:(int64_t)index outIdentifier:(int *)identifier;
+- (BOOL)removeValueAtIndex:(int64_t)index;
+- (BOOL)replaceLabel:(id)label atIndex:(int64_t)index;
+- (BOOL)replaceValue:(id)value atIndex:(int64_t)index;
 - (id)allValues;
-- (id)copyValueAtIndex:(int64_t)a3;
-- (id)labelAtIndex:(int64_t)a3;
+- (id)copyValueAtIndex:(int64_t)index;
+- (id)labelAtIndex:(int64_t)index;
 - (id)mutableCopy;
-- (int)identifierAtIndex:(int64_t)a3;
+- (int)identifierAtIndex:(int64_t)index;
 - (int)nextLegacyIdentifier;
-- (unint64_t)indexForIdentifier:(int)a3;
-- (unint64_t)indexOfValue:(id)a3;
+- (unint64_t)indexForIdentifier:(int)identifier;
+- (unint64_t)indexOfValue:(id)value;
 @end
 
 @implementation ABSMultiValue
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___ABSMultiValue;
   objc_msgSendSuper2(&v2, sel_initialize);
   +[ABSAddressBook ABInitialize];
 }
 
-- (ABSMultiValue)initWithPropertyType:(unsigned int)a3 mutable:(BOOL)a4 values:(id)a5
+- (ABSMultiValue)initWithPropertyType:(unsigned int)type mutable:(BOOL)mutable values:(id)values
 {
-  v8 = a5;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = ABSMultiValue;
   v9 = [(ABSMultiValue *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_propertyType = a3 & 0xFFFFFEFF;
-    v9->_mutable = a4;
-    if (v8)
+    v9->_propertyType = type & 0xFFFFFEFF;
+    v9->_mutable = mutable;
+    if (valuesCopy)
     {
-      v11 = [v8 mutableCopy];
+      array = [valuesCopy mutableCopy];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
     values = v10->_values;
-    v10->_values = v11;
+    v10->_values = array;
   }
 
   return v10;
@@ -57,27 +57,27 @@
 - (id)mutableCopy
 {
   v3 = [ABSMultiValue alloc];
-  v4 = [(ABSMultiValue *)self propertyType];
-  v5 = [(ABSMultiValue *)self values];
-  v6 = [(ABSMultiValue *)v3 initWithPropertyType:v4 mutable:1 values:v5];
+  propertyType = [(ABSMultiValue *)self propertyType];
+  values = [(ABSMultiValue *)self values];
+  v6 = [(ABSMultiValue *)v3 initWithPropertyType:propertyType mutable:1 values:values];
 
   return v6;
 }
 
-- (id)copyValueAtIndex:(int64_t)a3
+- (id)copyValueAtIndex:(int64_t)index
 {
-  if (a3 < 0 || (-[ABSMultiValue values](self, "values"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (index < 0 || (-[ABSMultiValue values](self, "values"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= index))
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(ABSMultiValue *)self values];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    values = [(ABSMultiValue *)self values];
+    v8 = [values objectAtIndexedSubscript:index];
 
-    v9 = [v8 value];
-    v10 = sABSValueToABValueTransform_block_invoke(v9, v9);
+    value = [v8 value];
+    v10 = sABSValueToABValueTransform_block_invoke(value, value);
   }
 
   if ([(ABSMultiValue *)self mutable]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -97,8 +97,8 @@
 
 - (id)allValues
 {
-  v2 = [(ABSMultiValue *)self values];
-  v3 = [v2 _cn_map:&__block_literal_global_14];
+  values = [(ABSMultiValue *)self values];
+  v3 = [values _cn_map:&__block_literal_global_14];
 
   return v3;
 }
@@ -111,48 +111,48 @@ id __26__ABSMultiValue_allValues__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)labelAtIndex:(int64_t)a3
+- (id)labelAtIndex:(int64_t)index
 {
-  if (a3 < 0 || (-[ABSMultiValue values](self, "values"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (index < 0 || (-[ABSMultiValue values](self, "values"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= index))
   {
-    v9 = 0;
+    label = 0;
   }
 
   else
   {
-    v7 = [(ABSMultiValue *)self values];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    values = [(ABSMultiValue *)self values];
+    v8 = [values objectAtIndexedSubscript:index];
 
-    v9 = [v8 label];
+    label = [v8 label];
   }
 
-  return v9;
+  return label;
 }
 
-- (unint64_t)indexForIdentifier:(int)a3
+- (unint64_t)indexForIdentifier:(int)identifier
 {
-  v4 = [(ABSMultiValue *)self values];
+  values = [(ABSMultiValue *)self values];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ABSMultiValue_indexForIdentifier___block_invoke;
   v7[3] = &__block_descriptor_36_e31_B32__0__CNLabeledValue_8Q16_B24l;
-  v8 = a3;
-  v5 = [v4 indexOfObjectPassingTest:v7];
+  identifierCopy = identifier;
+  v5 = [values indexOfObjectPassingTest:v7];
 
   return v5;
 }
 
-- (unint64_t)indexOfValue:(id)a3
+- (unint64_t)indexOfValue:(id)value
 {
-  v4 = sABValueToABSValueTransform_block_invoke_2(self, a3);
-  v5 = [(ABSMultiValue *)self values];
+  v4 = sABValueToABSValueTransform_block_invoke_2(self, value);
+  values = [(ABSMultiValue *)self values];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __30__ABSMultiValue_indexOfValue___block_invoke;
   v9[3] = &unk_278A047B0;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v7 = [values indexOfObjectPassingTest:v9];
 
   return v7;
 }
@@ -166,98 +166,98 @@ uint64_t __30__ABSMultiValue_indexOfValue___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (int)identifierAtIndex:(int64_t)a3
+- (int)identifierAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return -1;
   }
 
-  v5 = [(ABSMultiValue *)self values];
-  v6 = [v5 count];
+  values = [(ABSMultiValue *)self values];
+  v6 = [values count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return -1;
   }
 
-  v7 = [(ABSMultiValue *)self values];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  values2 = [(ABSMultiValue *)self values];
+  v8 = [values2 objectAtIndexedSubscript:index];
 
-  LODWORD(v7) = [v8 iOSLegacyIdentifier];
-  return v7;
+  LODWORD(values2) = [v8 iOSLegacyIdentifier];
+  return values2;
 }
 
 - (int)nextLegacyIdentifier
 {
-  v3 = [(ABSMultiValue *)self values];
-  v4 = [v3 count];
+  values = [(ABSMultiValue *)self values];
+  v4 = [values count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(ABSMultiValue *)self values];
-  v6 = [v5 valueForKeyPath:@"@max.iOSLegacyIdentifier"];
+  values2 = [(ABSMultiValue *)self values];
+  v6 = [values2 valueForKeyPath:@"@max.iOSLegacyIdentifier"];
   v7 = [v6 intValue] + 1;
 
   return v7;
 }
 
-- (BOOL)addValue:(id)a3 label:(id)a4 outIdentifier:(int *)a5
+- (BOOL)addValue:(id)value label:(id)label outIdentifier:(int *)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ABSMultiValue *)self mutable];
-  v11 = v10;
-  if (v10)
+  valueCopy = value;
+  labelCopy = label;
+  mutable = [(ABSMultiValue *)self mutable];
+  v11 = mutable;
+  if (mutable)
   {
-    v12 = sABValueToABSValueTransform_block_invoke_2(v10, v8);
+    v12 = sABValueToABSValueTransform_block_invoke_2(mutable, valueCopy);
 
-    v13 = [MEMORY[0x277CBDB20] labeledValueWithLabel:v9 value:v12];
+    v13 = [MEMORY[0x277CBDB20] labeledValueWithLabel:labelCopy value:v12];
     [v13 setIOSLegacyIdentifier:{-[ABSMultiValue nextLegacyIdentifier](self, "nextLegacyIdentifier")}];
-    v14 = [(ABSMultiValue *)self values];
-    [v14 addObject:v13];
+    values = [(ABSMultiValue *)self values];
+    [values addObject:v13];
 
-    if (a5)
+    if (identifier)
     {
-      *a5 = [v13 iOSLegacyIdentifier];
+      *identifier = [v13 iOSLegacyIdentifier];
     }
 
-    v8 = v12;
+    valueCopy = v12;
   }
 
   return v11;
 }
 
-- (BOOL)insertValue:(id)a3 label:(id)a4 atIndex:(int64_t)a5 outIdentifier:(int *)a6
+- (BOOL)insertValue:(id)value label:(id)label atIndex:(int64_t)index outIdentifier:(int *)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(ABSMultiValue *)self mutable];
+  valueCopy = value;
+  labelCopy = label;
+  mutable = [(ABSMultiValue *)self mutable];
   v13 = 0;
-  if ((a5 & 0x8000000000000000) == 0 && v12)
+  if ((index & 0x8000000000000000) == 0 && mutable)
   {
-    v14 = [(ABSMultiValue *)self values];
-    v15 = [v14 count];
+    values = [(ABSMultiValue *)self values];
+    v15 = [values count];
 
-    if (v15 >= a5)
+    if (v15 >= index)
     {
-      v17 = sABValueToABSValueTransform_block_invoke_2(v16, v10);
+      v17 = sABValueToABSValueTransform_block_invoke_2(v16, valueCopy);
 
-      v18 = [MEMORY[0x277CBDB20] labeledValueWithLabel:v11 value:v17];
+      v18 = [MEMORY[0x277CBDB20] labeledValueWithLabel:labelCopy value:v17];
       [v18 setIOSLegacyIdentifier:{-[ABSMultiValue nextLegacyIdentifier](self, "nextLegacyIdentifier")}];
-      v19 = [(ABSMultiValue *)self values];
-      [v19 insertObject:v18 atIndex:a5];
+      values2 = [(ABSMultiValue *)self values];
+      [values2 insertObject:v18 atIndex:index];
 
-      if (a6)
+      if (identifier)
       {
-        *a6 = [v18 iOSLegacyIdentifier];
+        *identifier = [v18 iOSLegacyIdentifier];
       }
 
       v13 = 1;
-      v10 = v17;
+      valueCopy = v17;
     }
 
     else
@@ -269,24 +269,24 @@ uint64_t __30__ABSMultiValue_indexOfValue___block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (BOOL)removeValueAtIndex:(int64_t)a3
+- (BOOL)removeValueAtIndex:(int64_t)index
 {
-  v5 = [(ABSMultiValue *)self mutable];
+  mutable = [(ABSMultiValue *)self mutable];
   result = 0;
-  if ((a3 & 0x8000000000000000) == 0 && v5)
+  if ((index & 0x8000000000000000) == 0 && mutable)
   {
-    v7 = [(ABSMultiValue *)self values];
-    v8 = [v7 count];
+    values = [(ABSMultiValue *)self values];
+    v8 = [values count];
 
-    if (v8 <= a3)
+    if (v8 <= index)
     {
       return 0;
     }
 
     else
     {
-      v9 = [(ABSMultiValue *)self values];
-      [v9 removeObjectAtIndex:a3];
+      values2 = [(ABSMultiValue *)self values];
+      [values2 removeObjectAtIndex:index];
 
       return 1;
     }
@@ -295,69 +295,69 @@ uint64_t __30__ABSMultiValue_indexOfValue___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (BOOL)replaceValue:(id)a3 atIndex:(int64_t)a4
+- (BOOL)replaceValue:(id)value atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(ABSMultiValue *)self mutable];
+  valueCopy = value;
+  mutable = [(ABSMultiValue *)self mutable];
   v8 = 0;
-  if ((a4 & 0x8000000000000000) == 0 && v7)
+  if ((index & 0x8000000000000000) == 0 && mutable)
   {
-    v9 = [(ABSMultiValue *)self values];
-    v10 = [v9 count];
+    values = [(ABSMultiValue *)self values];
+    v10 = [values count];
 
-    if (v10 <= a4)
+    if (v10 <= index)
     {
       v8 = 0;
     }
 
     else
     {
-      v12 = sABValueToABSValueTransform_block_invoke_2(v11, v6);
+      v12 = sABValueToABSValueTransform_block_invoke_2(v11, valueCopy);
 
-      v13 = [(ABSMultiValue *)self values];
-      v14 = [v13 objectAtIndexedSubscript:a4];
+      values2 = [(ABSMultiValue *)self values];
+      v14 = [values2 objectAtIndexedSubscript:index];
 
       v15 = MEMORY[0x277CBDB20];
-      v16 = [v14 label];
-      v17 = [v15 labeledValueWithLabel:v16 value:v12];
+      label = [v14 label];
+      v17 = [v15 labeledValueWithLabel:label value:v12];
 
-      v18 = [(ABSMultiValue *)self values];
-      [v18 replaceObjectAtIndex:a4 withObject:v17];
+      values3 = [(ABSMultiValue *)self values];
+      [values3 replaceObjectAtIndex:index withObject:v17];
 
       v8 = 1;
-      v6 = v12;
+      valueCopy = v12;
     }
   }
 
   return v8;
 }
 
-- (BOOL)replaceLabel:(id)a3 atIndex:(int64_t)a4
+- (BOOL)replaceLabel:(id)label atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(ABSMultiValue *)self mutable];
+  labelCopy = label;
+  mutable = [(ABSMultiValue *)self mutable];
   v8 = 0;
-  if ((a4 & 0x8000000000000000) == 0 && v7)
+  if ((index & 0x8000000000000000) == 0 && mutable)
   {
-    v9 = [(ABSMultiValue *)self values];
-    v10 = [v9 count];
+    values = [(ABSMultiValue *)self values];
+    v10 = [values count];
 
-    if (v10 <= a4)
+    if (v10 <= index)
     {
       v8 = 0;
     }
 
     else
     {
-      v11 = [(ABSMultiValue *)self values];
-      v12 = [v11 objectAtIndexedSubscript:a4];
+      values2 = [(ABSMultiValue *)self values];
+      v12 = [values2 objectAtIndexedSubscript:index];
 
       v13 = MEMORY[0x277CBDB20];
-      v14 = [v12 value];
-      v15 = [v13 labeledValueWithLabel:v6 value:v14];
+      value = [v12 value];
+      v15 = [v13 labeledValueWithLabel:labelCopy value:value];
 
-      v16 = [(ABSMultiValue *)self values];
-      [v16 replaceObjectAtIndex:a4 withObject:v15];
+      values3 = [(ABSMultiValue *)self values];
+      [values3 replaceObjectAtIndex:index withObject:v15];
 
       v8 = 1;
     }

@@ -1,12 +1,12 @@
 @interface URLFilterController
 - (URLFilterController)init;
-- (id)getURLFilterState:(id)a3;
+- (id)getURLFilterState:(id)state;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)setURLFilterState:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)urlFilterStatusChanged:(id)a3;
+- (void)setURLFilterState:(id)state forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)urlFilterStatusChanged:(id)changed;
 @end
 
 @implementation URLFilterController
@@ -41,15 +41,15 @@
   return v2;
 }
 
-- (void)urlFilterStatusChanged:(id)a3
+- (void)urlFilterStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(URLFilterController *)self currentConnection];
-  v6 = [v4 object];
-  if ([v5 isEqual:v6])
+  changedCopy = changed;
+  currentConnection = [(URLFilterController *)self currentConnection];
+  object = [changedCopy object];
+  if ([currentConnection isEqual:object])
   {
-    v16 = v6;
-    v17 = v4;
+    v16 = object;
+    v17 = changedCopy;
     [(URLFilterController *)self beginUpdates];
     v21 = 0u;
     v22 = 0u;
@@ -73,9 +73,9 @@
 
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = [v12 propertyForKey:v10];
-          v14 = [v5 statusText];
-          v15 = [v13 detailTextLabel];
-          [v15 setText:v14];
+          statusText = [currentConnection statusText];
+          detailTextLabel = [v13 detailTextLabel];
+          [detailTextLabel setText:statusText];
 
           [(URLFilterController *)self reloadSpecifier:v12 animated:0];
         }
@@ -87,25 +87,25 @@
     }
 
     [(URLFilterController *)self endUpdates];
-    v6 = v16;
-    v4 = v17;
+    object = v16;
+    changedCopy = v17;
   }
 }
 
-- (void)setURLFilterState:(id)a3 forSpecifier:(id)a4
+- (void)setURLFilterState:(id)state forSpecifier:(id)specifier
 {
-  v6 = a4;
-  -[URLFilterController setURLFilterActive:specifier:](self, "setURLFilterActive:specifier:", [a3 BOOLValue], v6);
+  specifierCopy = specifier;
+  -[URLFilterController setURLFilterActive:specifier:](self, "setURLFilterActive:specifier:", [state BOOLValue], specifierCopy);
 }
 
-- (id)getURLFilterState:(id)a3
+- (id)getURLFilterState:(id)state
 {
-  v4 = [(URLFilterController *)self currentConnection];
+  currentConnection = [(URLFilterController *)self currentConnection];
 
-  if (v4)
+  if (currentConnection)
   {
-    v5 = [(URLFilterController *)self currentConnection];
-    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 notDisconnectedOrDisconnecting]);
+    currentConnection2 = [(URLFilterController *)self currentConnection];
+    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [currentConnection2 notDisconnectedOrDisconnecting]);
   }
 
   else
@@ -139,8 +139,8 @@
   [v6 setProperties:v9];
 
   [v4 addObject:v6];
-  v10 = [(URLFilterController *)self systemSpecifiers];
-  v11 = [v10 count];
+  systemSpecifiers = [(URLFilterController *)self systemSpecifiers];
+  v11 = [systemSpecifiers count];
 
   if (v11)
   {
@@ -149,8 +149,8 @@
     v14 = [PSSpecifier groupSpecifierWithName:v13];
     [v4 addObject:v14];
 
-    v15 = [(URLFilterController *)self systemSpecifiers];
-    [v4 addObjectsFromArray:v15];
+    systemSpecifiers2 = [(URLFilterController *)self systemSpecifiers];
+    [v4 addObjectsFromArray:systemSpecifiers2];
   }
 
   v16 = OBJC_IVAR___PSListController__specifiers;
@@ -164,42 +164,42 @@
   return v19;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = URLFilterController;
-  [(URLFilterController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(URLFilterController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = URLFilterController;
-  v6 = a4;
-  v7 = [(URLFilterController *)&v18 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(URLFilterController *)self indexForIndexPath:v6, v18.receiver, v18.super_class];
+  pathCopy = path;
+  v7 = [(URLFilterController *)&v18 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(URLFilterController *)self indexForIndexPath:pathCopy, v18.receiver, v18.super_class];
 
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 userInfo];
-  v11 = [(URLFilterController *)self currentConnection];
+  userInfo = [v9 userInfo];
+  currentConnection = [(URLFilterController *)self currentConnection];
 
-  if (v11)
+  if (currentConnection)
   {
-    v12 = [(URLFilterController *)self currentConnection];
-    v13 = [v12 statusText];
-    v14 = [v7 detailTextLabel];
-    [v14 setText:v13];
+    currentConnection2 = [(URLFilterController *)self currentConnection];
+    statusText = [currentConnection2 statusText];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setText:statusText];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v10 objectForKey:@"vpn-organization"];
+    v15 = [userInfo objectForKey:@"vpn-organization"];
     [v7 setSubtitle:v15];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v10 objectForKey:@"vpn-status"];
+    v16 = [userInfo objectForKey:@"vpn-status"];
     [v7 setVpnPrimaryTableCellStatus:v16];
   }
 

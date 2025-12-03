@@ -1,15 +1,15 @@
 @interface CNComposeRecipientNamer
-+ (__CFString)nameForComposeRecipient:(uint64_t)a3 sources:;
-+ (id)buildAdHocNameForGroup:(id)a3;
-+ (id)displayStringForRecipient:(id)a3;
-+ (id)nameForComposeRecipient:(uint64_t)a1;
-+ (id)nameForGroup:(id)a3 sources:(unsigned int)a4;
-+ (id)nameForPerson:(id)a3 sources:(unsigned int)a4;
-+ (id)nameFromAddressForPerson:(id)a3;
-+ (id)nameFromComponentsForPerson:(id)a3;
-+ (id)nameFromContactForPerson:(id)a3;
-+ (id)nameFromEmailAddressForPerson:(id)a3;
-+ (id)nicknameForRecipient:(id)a3;
++ (__CFString)nameForComposeRecipient:(uint64_t)recipient sources:;
++ (id)buildAdHocNameForGroup:(id)group;
++ (id)displayStringForRecipient:(id)recipient;
++ (id)nameForComposeRecipient:(uint64_t)recipient;
++ (id)nameForGroup:(id)group sources:(unsigned int)sources;
++ (id)nameForPerson:(id)person sources:(unsigned int)sources;
++ (id)nameFromAddressForPerson:(id)person;
++ (id)nameFromComponentsForPerson:(id)person;
++ (id)nameFromContactForPerson:(id)person;
++ (id)nameFromEmailAddressForPerson:(id)person;
++ (id)nicknameForRecipient:(id)recipient;
 + (id)os_log;
 @end
 
@@ -36,7 +36,7 @@ uint64_t __33__CNComposeRecipientNamer_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)nameForComposeRecipient:(uint64_t)a1
++ (id)nameForComposeRecipient:(uint64_t)recipient
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -45,7 +45,7 @@ uint64_t __33__CNComposeRecipientNamer_os_log__block_invoke()
   return v4;
 }
 
-+ (__CFString)nameForComposeRecipient:(uint64_t)a3 sources:
++ (__CFString)nameForComposeRecipient:(uint64_t)recipient sources:
 {
   v4 = a2;
   v5 = objc_opt_self();
@@ -53,22 +53,22 @@ uint64_t __33__CNComposeRecipientNamer_os_log__block_invoke()
   {
     if ([v4 isGroup])
     {
-      [v5 nameForGroup:v4 sources:a3];
+      [v5 nameForGroup:v4 sources:recipient];
     }
 
     else
     {
-      [v5 nameForPerson:v4 sources:a3];
+      [v5 nameForPerson:v4 sources:recipient];
     }
     v7 = ;
   }
 
   else
   {
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      [CNComposeRecipientShortNamer shortNameForComposeRecipient:v6];
+      [CNComposeRecipientShortNamer shortNameForComposeRecipient:os_log];
     }
 
     v7 = &stru_1F3002C60;
@@ -77,41 +77,41 @@ uint64_t __33__CNComposeRecipientNamer_os_log__block_invoke()
   return v7;
 }
 
-+ (id)nameForGroup:(id)a3 sources:(unsigned int)a4
++ (id)nameForGroup:(id)group sources:(unsigned int)sources
 {
-  v6 = a3;
-  if (a4)
+  groupCopy = group;
+  if (sources)
   {
-    v7 = [a1 nicknameForRecipient:v6];
+    placeholderName = [self nicknameForRecipient:groupCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_17;
     }
   }
 
-  if ((a4 & 2) != 0)
+  if ((sources & 2) != 0)
   {
-    v7 = [a1 displayStringForRecipient:v6];
+    placeholderName = [self displayStringForRecipient:groupCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_17;
     }
   }
 
-  if ((a4 & 4) != 0)
+  if ((sources & 4) != 0)
   {
-    v7 = [a1 buildAdHocNameForGroup:v6];
+    placeholderName = [self buildAdHocNameForGroup:groupCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_17;
     }
   }
 
-  if ((a4 & 0x80000000) != 0)
+  if ((sources & 0x80000000) != 0)
   {
-    v7 = [v6 placeholderName];
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    placeholderName = [groupCopy placeholderName];
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameForGroup:sources:];
     }
@@ -119,33 +119,33 @@ uint64_t __33__CNComposeRecipientNamer_os_log__block_invoke()
 
   else
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameForGroup:sources:];
     }
 
-    v7 = &stru_1F3002C60;
+    placeholderName = &stru_1F3002C60;
   }
 
 LABEL_17:
 
-  return v7;
+  return placeholderName;
 }
 
-+ (id)nicknameForRecipient:(id)a3
++ (id)nicknameForRecipient:(id)recipient
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695CE40] sharedDefaults];
-  if ([v4 shortNameFormatPrefersNicknames])
+  recipientCopy = recipient;
+  mEMORY[0x1E695CE40] = [MEMORY[0x1E695CE40] sharedDefaults];
+  if ([mEMORY[0x1E695CE40] shortNameFormatPrefersNicknames])
   {
-    v5 = [v3 nameComponents];
-    v6 = [v5 nickname];
+    nameComponents = [recipientCopy nameComponents];
+    nickname = [nameComponents nickname];
 
-    if (v6 && [v6 length])
+    if (nickname && [nickname length])
     {
-      v7 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
         +[CNComposeRecipientNamer nicknameForRecipient:];
       }
@@ -154,27 +154,27 @@ LABEL_17:
     }
   }
 
-  v7 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     +[CNComposeRecipientNamer nicknameForRecipient:];
   }
 
-  v6 = 0;
+  nickname = 0;
 LABEL_10:
 
-  return v6;
+  return nickname;
 }
 
-+ (id)displayStringForRecipient:(id)a3
++ (id)displayStringForRecipient:(id)recipient
 {
-  v3 = a3;
-  v4 = [v3 displayString];
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  recipientCopy = recipient;
+  displayString = [recipientCopy displayString];
+  v5 = displayString;
+  if (!displayString || ![displayString length])
   {
-    v9 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer displayStringForRecipient:];
     }
@@ -182,18 +182,18 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  os_log2 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
   {
-    [(CNComposeRecipientNamer *)v5 displayStringForRecipient:v6];
+    [(CNComposeRecipientNamer *)v5 displayStringForRecipient:os_log2];
   }
 
   v7 = [v5 _cn_hasPrefix:@"\u200E"];
-  v8 = [objc_opt_class() os_log];
-  v9 = v8;
+  os_log3 = [objc_opt_class() os_log];
+  os_log = os_log3;
   if (v7)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
     {
       +[CNComposeRecipientNamer displayStringForRecipient:];
     }
@@ -204,7 +204,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG))
   {
     +[CNComposeRecipientNamer displayStringForRecipient:];
   }
@@ -215,14 +215,14 @@ LABEL_11:
   return v10;
 }
 
-+ (id)buildAdHocNameForGroup:(id)a3
++ (id)buildAdHocNameForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 children];
+  groupCopy = group;
+  children = [groupCopy children];
   v6 = objc_opt_new();
   v7 = objc_alloc_init(CNNameListBuilderBlockDelegate);
-  v8 = [v4 children];
-  -[CNNameListBuilderBlockDelegate setCountOfNames:](v7, "setCountOfNames:", [v8 count]);
+  children2 = [groupCopy children];
+  -[CNNameListBuilderBlockDelegate setCountOfNames:](v7, "setCountOfNames:", [children2 count]);
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -230,10 +230,10 @@ LABEL_11:
   v22[3] = &unk_1E7CD2698;
   v9 = v6;
   v23 = v9;
-  v10 = v5;
+  v10 = children;
   v24 = v10;
-  v26 = a1;
-  v11 = v4;
+  selfCopy = self;
+  v11 = groupCopy;
   v25 = v11;
   [(CNNameListBuilderBlockDelegate *)v7 setNameProviderBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
@@ -245,12 +245,12 @@ LABEL_11:
   [(CNNameListBuilderBlockDelegate *)v7 setLengthValidationBlock:v20];
   v13 = [[CNNameListBuilder alloc] initWithDelegate:v7];
   [(CNNameListBuilder *)v13 setShouldStripEllipses:1];
-  v14 = [(CNNameListBuilder *)v13 build];
-  v15 = v14;
-  if (v14 && [v14 length])
+  build = [(CNNameListBuilder *)v13 build];
+  v15 = build;
+  if (build && [build length])
   {
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer buildAdHocNameForGroup:];
     }
@@ -260,8 +260,8 @@ LABEL_11:
 
   else
   {
-    v18 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       +[CNComposeRecipientNamer buildAdHocNameForGroup:];
     }
@@ -302,59 +302,59 @@ id __50__CNComposeRecipientNamer_buildAdHocNameForGroup___block_invoke(uint64_t 
   return v5;
 }
 
-+ (id)nameForPerson:(id)a3 sources:(unsigned int)a4
++ (id)nameForPerson:(id)person sources:(unsigned int)sources
 {
-  v6 = a3;
-  if (a4)
+  personCopy = person;
+  if (sources)
   {
-    v7 = [a1 nicknameForRecipient:v6];
+    placeholderName = [self nicknameForRecipient:personCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_23;
     }
   }
 
-  if ((a4 & 2) != 0)
+  if ((sources & 2) != 0)
   {
-    v7 = [a1 displayStringForRecipient:v6];
+    placeholderName = [self displayStringForRecipient:personCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_23;
     }
   }
 
-  if ((a4 & 8) != 0)
+  if ((sources & 8) != 0)
   {
-    v7 = [a1 nameFromComponentsForPerson:v6];
+    placeholderName = [self nameFromComponentsForPerson:personCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_23;
     }
   }
 
-  if ((a4 & 0x10) != 0)
+  if ((sources & 0x10) != 0)
   {
-    v7 = [a1 nameFromContactForPerson:v6];
+    placeholderName = [self nameFromContactForPerson:personCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_23;
     }
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((sources & 0x20) != 0)
   {
-    v7 = [a1 nameFromAddressForPerson:v6];
+    placeholderName = [self nameFromAddressForPerson:personCopy];
     if (!(*(*MEMORY[0x1E6996568] + 16))())
     {
       goto LABEL_23;
     }
   }
 
-  if ((a4 & 0x80000000) != 0)
+  if ((sources & 0x80000000) != 0)
   {
-    v7 = [v6 placeholderName];
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    placeholderName = [personCopy placeholderName];
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameForPerson:sources:];
     }
@@ -362,34 +362,34 @@ id __50__CNComposeRecipientNamer_buildAdHocNameForGroup___block_invoke(uint64_t 
 
   else
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameForPerson:sources:];
     }
 
-    v7 = &stru_1F3002C60;
+    placeholderName = &stru_1F3002C60;
   }
 
 LABEL_23:
 
-  return v7;
+  return placeholderName;
 }
 
-+ (id)nameFromComponentsForPerson:(id)a3
++ (id)nameFromComponentsForPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 nameComponents];
-  if (v4)
+  personCopy = person;
+  nameComponents = [personCopy nameComponents];
+  if (nameComponents)
   {
-    v5 = objc_alloc_init(MEMORY[0x1E696ADF8]);
-    [v5 setStyle:3];
-    v6 = [v5 stringFromPersonNameComponents:v4];
+    os_log2 = objc_alloc_init(MEMORY[0x1E696ADF8]);
+    [os_log2 setStyle:3];
+    v6 = [os_log2 stringFromPersonNameComponents:nameComponents];
     v7 = v6;
     if (v6 && [v6 length])
     {
-      v8 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
         +[CNComposeRecipientNamer nameFromComponentsForPerson:];
       }
@@ -405,8 +405,8 @@ LABEL_23:
 
   else
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameFromComponentsForPerson:];
     }
@@ -417,16 +417,16 @@ LABEL_23:
   return v9;
 }
 
-+ (id)nameFromContactForPerson:(id)a3
++ (id)nameFromContactForPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 contact];
-  v5 = [MEMORY[0x1E695CD80] stringFromContact:v4 style:0];
+  personCopy = person;
+  contact = [personCopy contact];
+  v5 = [MEMORY[0x1E695CD80] stringFromContact:contact style:0];
   v6 = v5;
   if (v5 && [v5 length])
   {
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientNamer nameFromContactForPerson:];
     }
@@ -442,36 +442,36 @@ LABEL_23:
   return v8;
 }
 
-+ (id)nameFromAddressForPerson:(id)a3
++ (id)nameFromAddressForPerson:(id)person
 {
-  v4 = a3;
-  if ([v4 kind] && objc_msgSend(v4, "kind") != 2)
+  personCopy = person;
+  if ([personCopy kind] && objc_msgSend(personCopy, "kind") != 2)
   {
-    v5 = [v4 address];
+    address = [personCopy address];
   }
 
   else
   {
-    v5 = [a1 nameFromEmailAddressForPerson:v4];
+    address = [self nameFromEmailAddressForPerson:personCopy];
   }
 
-  v6 = v5;
+  v6 = address;
 
   return v6;
 }
 
-+ (id)nameFromEmailAddressForPerson:(id)a3
++ (id)nameFromEmailAddressForPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 address];
-  if ([v4 length])
+  personCopy = person;
+  address = [personCopy address];
+  if ([address length])
   {
-    v5 = [v4 ea_addressComment];
-    v6 = v5;
-    if (v5 && ([v5 isEqualToString:v4] & 1) == 0)
+    ea_addressComment = [address ea_addressComment];
+    v6 = ea_addressComment;
+    if (ea_addressComment && ([ea_addressComment isEqualToString:address] & 1) == 0)
     {
-      v11 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
         +[CNComposeRecipientNamer nameFromEmailAddressForPerson:];
       }
@@ -481,12 +481,12 @@ LABEL_23:
 
     else
     {
-      v7 = [v3 uncommentedAddress];
-      v8 = v7;
-      if (v7 && [v7 length])
+      uncommentedAddress = [personCopy uncommentedAddress];
+      v8 = uncommentedAddress;
+      if (uncommentedAddress && [uncommentedAddress length])
       {
-        v9 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+        os_log2 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
         {
           +[CNComposeRecipientNamer nameFromEmailAddressForPerson:];
         }
@@ -494,14 +494,14 @@ LABEL_23:
 
       else
       {
-        v9 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+        os_log2 = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
         {
           +[CNComposeRecipientNamer nameFromEmailAddressForPerson:];
         }
       }
 
-      v10 = v4;
+      v10 = address;
     }
   }
 

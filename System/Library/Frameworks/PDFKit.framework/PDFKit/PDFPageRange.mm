@@ -1,6 +1,6 @@
 @interface PDFPageRange
-- (BOOL)isEqual:(id)a3;
-- (PDFPageRange)initWithPage:(id)a3 range:(_NSRange)a4;
+- (BOOL)isEqual:(id)equal;
+- (PDFPageRange)initWithPage:(id)page range:(_NSRange)range;
 - (_NSRange)range;
 - (id)description;
 - (id)page;
@@ -8,11 +8,11 @@
 
 @implementation PDFPageRange
 
-- (PDFPageRange)initWithPage:(id)a3 range:(_NSRange)a4
+- (PDFPageRange)initWithPage:(id)page range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  pageCopy = page;
   v13.receiver = self;
   v13.super_class = PDFPageRange;
   v8 = [(PDFPageRange *)&v13 init];
@@ -22,7 +22,7 @@
     v10 = v8->_private;
     v8->_private = v9;
 
-    objc_storeWeak(&v8->_private->page, v7);
+    objc_storeWeak(&v8->_private->page, pageCopy);
     v11 = v8->_private;
     v11->range.location = location;
     v11->range.length = length;
@@ -48,17 +48,17 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 page];
-  v6 = [(PDFPageRange *)self page];
+  equalCopy = equal;
+  page = [equalCopy page];
+  page2 = [(PDFPageRange *)self page];
 
-  if (v5 == v6)
+  if (page == page2)
   {
-    v8 = [v4 range];
+    range = [equalCopy range];
     v10 = v9;
-    v7 = v8 == [(PDFPageRange *)self range]&& v10 == v11;
+    v7 = range == [(PDFPageRange *)self range]&& v10 == v11;
   }
 
   else
@@ -73,8 +73,8 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [WeakRetained document];
-  v6 = objc_msgSend(v4, "stringWithFormat:", @"Page index = %ld Range = (%ld, %ld]\n"), objc_msgSend(v5, "indexForPage:", WeakRetained), self->_private->range.location, self->_private->range.length;
+  document = [WeakRetained document];
+  v6 = objc_msgSend(v4, "stringWithFormat:", @"Page index = %ld Range = (%ld, %ld]\n"), objc_msgSend(document, "indexForPage:", WeakRetained), self->_private->range.location, self->_private->range.length;
 
   return v6;
 }

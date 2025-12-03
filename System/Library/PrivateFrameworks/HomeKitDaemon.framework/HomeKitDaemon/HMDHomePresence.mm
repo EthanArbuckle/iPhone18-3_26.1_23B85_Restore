@@ -1,16 +1,16 @@
 @interface HMDHomePresence
 + (id)logCategory;
-- (BOOL)areUsersAtHome:(id)a3;
-- (BOOL)areUsersNotAtHome:(id)a3;
+- (BOOL)areUsersAtHome:(id)home;
+- (BOOL)areUsersNotAtHome:(id)home;
 - (BOOL)hasPresenceRegionForAllUsers;
 - (BOOL)isAnyUserAtHome;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNoUserAtHome;
-- (BOOL)isPresenceRegionKnownForUser:(id)a3;
-- (BOOL)isUserAtHome:(id)a3;
-- (BOOL)isUserNotAtHome:(id)a3;
+- (BOOL)isPresenceRegionKnownForUser:(id)user;
+- (BOOL)isUserAtHome:(id)home;
+- (BOOL)isUserNotAtHome:(id)home;
 - (HMDHome)home;
-- (HMDHomePresence)initWithHome:(id)a3 userPresenceMap:(id)a4 lastUpdateByDevice:(id)a5;
+- (HMDHomePresence)initWithHome:(id)home userPresenceMap:(id)map lastUpdateByDevice:(id)device;
 - (NSArray)authorizedUsers;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
@@ -29,17 +29,17 @@
   return WeakRetained;
 }
 
-- (BOOL)areUsersNotAtHome:(id)a3
+- (BOOL)areUsersNotAtHome:(id)home
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  homeCopy = home;
+  if ([homeCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = homeCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -79,17 +79,17 @@
   return v9;
 }
 
-- (BOOL)areUsersAtHome:(id)a3
+- (BOOL)areUsersAtHome:(id)home
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  homeCopy = home;
+  if ([homeCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = homeCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -129,26 +129,26 @@
   return v8;
 }
 
-- (BOOL)isPresenceRegionKnownForUser:(id)a3
+- (BOOL)isPresenceRegionKnownForUser:(id)user
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 presenceAuthStatus];
-  v6 = [v5 value];
+  userCopy = user;
+  presenceAuthStatus = [userCopy presenceAuthStatus];
+  value = [presenceAuthStatus value];
 
-  if (v6 == 1)
+  if (value == 1)
   {
-    v7 = [(HMDHomePresence *)self userPresenceMap];
-    v8 = [v4 uuid];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+    uuid = [userCopy uuid];
+    v9 = [userPresenceMap objectForKeyedSubscript:uuid];
 
     if (v9)
     {
-      v10 = [v9 presenceRegionStatus];
-      if (v10)
+      presenceRegionStatus = [v9 presenceRegionStatus];
+      if (presenceRegionStatus)
       {
-        v11 = [v9 presenceRegionStatus];
-        v12 = [v11 value] != 0;
+        presenceRegionStatus2 = [v9 presenceRegionStatus];
+        v12 = [presenceRegionStatus2 value] != 0;
       }
 
       else
@@ -160,7 +160,7 @@
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -168,7 +168,7 @@
         v23 = 138543618;
         v24 = v20;
         v25 = 2112;
-        v26 = v4;
+        v26 = userCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Could not find user %@", &v23, 0x16u);
       }
 
@@ -180,7 +180,7 @@
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -188,7 +188,7 @@
       v23 = 138543618;
       v24 = v16;
       v25 = 2112;
-      v26 = v4;
+      v26 = userCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_DEBUG, "%{public}@%@ is not presence-authorized, cannot determine isUserPresenceRegionKnown", &v23, 0x16u);
     }
 
@@ -200,29 +200,29 @@
   return v12;
 }
 
-- (BOOL)isUserNotAtHome:(id)a3
+- (BOOL)isUserNotAtHome:(id)home
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 presenceAuthStatus];
-  v6 = [v5 value];
+  homeCopy = home;
+  presenceAuthStatus = [homeCopy presenceAuthStatus];
+  value = [presenceAuthStatus value];
 
-  if (v6 == 1)
+  if (value == 1)
   {
-    v7 = [(HMDHomePresence *)self userPresenceMap];
-    v8 = [v4 uuid];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+    uuid = [homeCopy uuid];
+    v9 = [userPresenceMap objectForKeyedSubscript:uuid];
 
     if (v9)
     {
-      v10 = [v9 presenceRegionStatus];
-      v11 = [v10 value] == 2;
+      presenceRegionStatus = [v9 presenceRegionStatus];
+      v11 = [presenceRegionStatus value] == 2;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -230,7 +230,7 @@
         v22 = 138543618;
         v23 = v19;
         v24 = 2112;
-        v25 = v4;
+        v25 = homeCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Could not find user %@", &v22, 0x16u);
       }
 
@@ -242,7 +242,7 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -250,7 +250,7 @@
       v22 = 138543618;
       v23 = v15;
       v24 = 2112;
-      v25 = v4;
+      v25 = homeCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@%@ is not presence-authorized, cannot determine isUserNotAtHome", &v22, 0x16u);
     }
 
@@ -262,29 +262,29 @@
   return v11;
 }
 
-- (BOOL)isUserAtHome:(id)a3
+- (BOOL)isUserAtHome:(id)home
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 presenceAuthStatus];
-  v6 = [v5 value];
+  homeCopy = home;
+  presenceAuthStatus = [homeCopy presenceAuthStatus];
+  value = [presenceAuthStatus value];
 
-  if (v6 == 1)
+  if (value == 1)
   {
-    v7 = [(HMDHomePresence *)self userPresenceMap];
-    v8 = [v4 uuid];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+    uuid = [homeCopy uuid];
+    v9 = [userPresenceMap objectForKeyedSubscript:uuid];
 
     if (v9)
     {
-      v10 = [v9 presenceRegionStatus];
-      v11 = [v10 value] == 1;
+      presenceRegionStatus = [v9 presenceRegionStatus];
+      v11 = [presenceRegionStatus value] == 1;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -292,7 +292,7 @@
         v22 = 138543618;
         v23 = v19;
         v24 = 2112;
-        v25 = v4;
+        v25 = homeCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Could not find user %@", &v22, 0x16u);
       }
 
@@ -304,7 +304,7 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -312,7 +312,7 @@
       v22 = 138543618;
       v23 = v15;
       v24 = 2112;
-      v25 = v4;
+      v25 = homeCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@%@ is not presence-authorized, cannot determine isUserAtHome", &v22, 0x16u);
     }
 
@@ -327,14 +327,14 @@
 - (BOOL)hasPresenceRegionForAllUsers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomePresence *)self authorizedUsers];
-  if ([v3 count])
+  authorizedUsers = [(HMDHomePresence *)self authorizedUsers];
+  if ([authorizedUsers count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = authorizedUsers;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -373,7 +373,7 @@ LABEL_12:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -394,14 +394,14 @@ LABEL_12:
 - (BOOL)isAnyUserAtHome
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomePresence *)self authorizedUsers];
-  if ([v3 count])
+  authorizedUsers = [(HMDHomePresence *)self authorizedUsers];
+  if ([authorizedUsers count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = authorizedUsers;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -435,7 +435,7 @@ LABEL_12:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -456,14 +456,14 @@ LABEL_12:
 - (BOOL)isNoUserAtHome
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomePresence *)self authorizedUsers];
-  if ([v3 count])
+  authorizedUsers = [(HMDHomePresence *)self authorizedUsers];
+  if ([authorizedUsers count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = authorizedUsers;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -497,7 +497,7 @@ LABEL_12:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -519,9 +519,9 @@ LABEL_12:
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDHomePresence *)self userPresenceMap];
-  v5 = [v4 allValues];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  allValues = [userPresenceMap allValues];
+  v6 = [allValues componentsJoinedByString:{@", "}];
   v7 = [v3 initWithName:@"UP" value:v6];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -535,15 +535,15 @@ LABEL_12:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMDHomePresence *)self userPresenceMap];
-  v6 = [v5 allValues];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  allValues = [userPresenceMap allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -554,14 +554,14 @@ LABEL_12:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) shortDescription];
-        [v4 appendFormat:@"%@, ", v11];
+        shortDescription = [*(*(&v14 + 1) + 8 * i) shortDescription];
+        [string appendFormat:@"%@, ", shortDescription];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -570,45 +570,45 @@ LABEL_12:
   objc_autoreleasePoolPop(v3);
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomePresence *)self home];
+  home = [(HMDHomePresence *)self home];
   if (isInternalBuild())
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [v2 name];
-    v5 = [v2 uuid];
-    v6 = [v5 UUIDString];
-    v7 = [v3 stringWithFormat:@"%@/%@", v4, v6];
+    name = [home name];
+    uuid = [home uuid];
+    uUIDString = [uuid UUIDString];
+    uUIDString2 = [v3 stringWithFormat:@"%@/%@", name, uUIDString];
   }
 
   else
   {
-    v4 = [v2 uuid];
-    v7 = [v4 UUIDString];
+    name = [home uuid];
+    uUIDString2 = [name UUIDString];
   }
 
-  return v7;
+  return uUIDString2;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDHomePresence *)self userPresenceMap];
-  v3 = [v2 hash];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  v3 = [userPresenceMap hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -619,9 +619,9 @@ LABEL_12:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDHomePresence *)self userPresenceMap];
-    v8 = [v6 userPresenceMap];
-    v9 = [v7 isEqualToDictionary:v8];
+    userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+    userPresenceMap2 = [v6 userPresenceMap];
+    v9 = [userPresenceMap isEqualToDictionary:userPresenceMap2];
   }
 
   else
@@ -635,18 +635,18 @@ LABEL_12:
 - (id)serializedIdentifierDictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(HMDHomePresence *)self userPresenceMap];
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(userPresenceMap, "count")}];
 
-  v6 = [(HMDHomePresence *)self userPresenceMap];
+  userPresenceMap2 = [(HMDHomePresence *)self userPresenceMap];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__HMDHomePresence_serializedIdentifierDictionary__block_invoke;
   v10[3] = &unk_278680648;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  selfCopy = self;
+  [userPresenceMap2 enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = v7;
   return v7;
@@ -703,18 +703,18 @@ LABEL_8:
 - (id)serializedUUIDDictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(HMDHomePresence *)self userPresenceMap];
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(userPresenceMap, "count")}];
 
-  v6 = [(HMDHomePresence *)self userPresenceMap];
+  userPresenceMap2 = [(HMDHomePresence *)self userPresenceMap];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__HMDHomePresence_serializedUUIDDictionary__block_invoke;
   v10[3] = &unk_278680648;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  selfCopy = self;
+  [userPresenceMap2 enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = v7;
   return v7;
@@ -774,15 +774,15 @@ LABEL_8:
 - (NSArray)authorizedUsers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(HMDHomePresence *)self userPresenceMap];
-  v5 = [v4 allValues];
+  userPresenceMap = [(HMDHomePresence *)self userPresenceMap];
+  allValues = [userPresenceMap allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -793,50 +793,50 @@ LABEL_8:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 user];
-        v12 = [v11 presenceAuthStatus];
-        v13 = [v12 value];
+        user = [v10 user];
+        presenceAuthStatus = [user presenceAuthStatus];
+        value = [presenceAuthStatus value];
 
-        if (v13 == 1)
+        if (value == 1)
         {
-          v14 = [v10 user];
-          [v3 addObject:v14];
+          user2 = [v10 user];
+          [array addObject:user2];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (HMDHomePresence)initWithHome:(id)a3 userPresenceMap:(id)a4 lastUpdateByDevice:(id)a5
+- (HMDHomePresence)initWithHome:(id)home userPresenceMap:(id)map lastUpdateByDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  mapCopy = map;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = HMDHomePresence;
   v11 = [(HMDHomePresence *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_home, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_home, homeCopy);
+    v13 = [mapCopy copy];
     userPresenceMap = v12->_userPresenceMap;
     v12->_userPresenceMap = v13;
 
-    objc_storeStrong(&v12->_lastUpdateByDevice, a5);
+    objc_storeStrong(&v12->_lastUpdateByDevice, device);
   }
 
   return v12;

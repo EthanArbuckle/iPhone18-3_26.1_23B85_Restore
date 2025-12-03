@@ -1,8 +1,8 @@
 @interface OffloadKeepAliveReceived
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)name;
-- (void)reportToPowerLogWithTimestamp:(double)a3;
-- (void)setName:(id)a3;
+- (void)reportToPowerLogWithTimestamp:(double)timestamp;
+- (void)setName:(id)name;
 @end
 
 @implementation OffloadKeepAliveReceived
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -39,10 +39,10 @@
   return v2.super.isa;
 }
 
-- (void)reportToPowerLogWithTimestamp:(double)a3
+- (void)reportToPowerLogWithTimestamp:(double)timestamp
 {
 
-  sub_1000E0790(a3);
+  sub_1000E0790(timestamp);
 }
 
 @end

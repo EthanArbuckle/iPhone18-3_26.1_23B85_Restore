@@ -1,24 +1,24 @@
 @interface RoutePlanningTransitTimingControlsView
-- (RoutePlanningTransitTimingControlsView)initWithFrame:(CGRect)a3;
-- (id)_horizontalStackViewWithViews:(id)a3 spacing:(double)a4;
+- (RoutePlanningTransitTimingControlsView)initWithFrame:(CGRect)frame;
+- (id)_horizontalStackViewWithViews:(id)views spacing:(double)spacing;
 - (void)_computeSelectedTiming;
 - (void)_notifyDidUpdateTiming;
-- (void)_planningTypeDidChange:(id)a3;
+- (void)_planningTypeDidChange:(id)change;
 - (void)_selectedDateDidChange;
 - (void)_setDatePickerBoundaries;
 - (void)_setDatePickerDate;
 - (void)_setupInitialConstraints;
-- (void)_toggleChanged:(id)a3;
+- (void)_toggleChanged:(id)changed;
 - (void)reset;
-- (void)setSelectedTiming:(id)a3;
-- (void)setShowPlanningControls:(BOOL)a3;
+- (void)setSelectedTiming:(id)timing;
+- (void)setShowPlanningControls:(BOOL)controls;
 @end
 
 @implementation RoutePlanningTransitTimingControlsView
 
 - (void)_setDatePickerBoundaries
 {
-  v3 = [(MapsRadioButton *)self->_leaveAtButton isSelected];
+  isSelected = [(MapsRadioButton *)self->_leaveAtButton isSelected];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -42,16 +42,16 @@
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [(RoutePlanningTransitTimingControlsView *)self selectedTiming];
-        v11 = v10;
-        if (v3)
+        selectedTiming = [(RoutePlanningTransitTimingControlsView *)self selectedTiming];
+        v11 = selectedTiming;
+        if (isSelected)
         {
-          [v10 departureTimeZone];
+          [selectedTiming departureTimeZone];
         }
 
         else
         {
-          [v10 arrivalTimeZone];
+          [selectedTiming arrivalTimeZone];
         }
         v12 = ;
         v13 = v12;
@@ -84,7 +84,7 @@
 
 - (void)_setDatePickerDate
 {
-  v3 = [(MapsRadioButton *)self->_leaveAtButton isSelected];
+  isSelected = [(MapsRadioButton *)self->_leaveAtButton isSelected];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -108,16 +108,16 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(RoutePlanningTransitTimingControlsView *)self selectedTiming];
-        v12 = v11;
-        if (v3)
+        selectedTiming = [(RoutePlanningTransitTimingControlsView *)self selectedTiming];
+        v12 = selectedTiming;
+        if (isSelected)
         {
-          [v11 departureDate];
+          [selectedTiming departureDate];
         }
 
         else
         {
-          [v11 arrivalDate];
+          [selectedTiming arrivalDate];
         }
         v13 = ;
         if (v13)
@@ -156,11 +156,11 @@
 - (void)_computeSelectedTiming
 {
   v3 = +[NSCalendar currentCalendar];
-  v4 = [(UIDatePicker *)self->_datePicker date];
-  v5 = [v3 components:28 fromDate:v4];
+  date = [(UIDatePicker *)self->_datePicker date];
+  v5 = [v3 components:28 fromDate:date];
 
-  v6 = [(UIDatePicker *)self->_timePicker date];
-  v7 = [v3 components:96 fromDate:v6];
+  date2 = [(UIDatePicker *)self->_timePicker date];
+  v7 = [v3 components:96 fromDate:date2];
 
   v8 = [v3 dateFromComponents:v5];
   v9 = [v3 dateByAddingComponents:v7 toDate:v8 options:0];
@@ -173,32 +173,32 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Computed date is %@", &v16, 0xCu);
   }
 
-  v11 = [(MapsRadioButton *)self->_leaveAtButton isSelected];
-  v12 = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
-  v13 = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
-  if (v11)
+  isSelected = [(MapsRadioButton *)self->_leaveAtButton isSelected];
+  departureTimeZone = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
+  arrivalTimeZone = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
+  if (isSelected)
   {
-    [RoutePlanningTiming timingWithDepartureDate:v9 departureTimeZone:v12 arrivalTimeZone:v13];
+    [RoutePlanningTiming timingWithDepartureDate:v9 departureTimeZone:departureTimeZone arrivalTimeZone:arrivalTimeZone];
   }
 
   else
   {
-    [RoutePlanningTiming timingWithArrivalDate:v9 departureTimeZone:v12 arrivalTimeZone:v13];
+    [RoutePlanningTiming timingWithArrivalDate:v9 departureTimeZone:departureTimeZone arrivalTimeZone:arrivalTimeZone];
   }
   v14 = ;
   selectedTiming = self->_selectedTiming;
   self->_selectedTiming = v14;
 }
 
-- (void)_toggleChanged:(id)a3
+- (void)_toggleChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(RoutePlanningTransitTimingControlsView *)self _setDatePickerBoundaries];
   [(RoutePlanningTransitTimingControlsView *)self _computeSelectedTiming];
   [(RoutePlanningTransitTimingControlsView *)self _setDatePickerDate];
   leaveAtButton = self->_leaveAtButton;
 
-  if (leaveAtButton == v4)
+  if (leaveAtButton == changedCopy)
   {
     v6 = 3028;
   }
@@ -214,57 +214,57 @@
   [(RoutePlanningTransitTimingControlsView *)self _notifyDidUpdateTiming];
 }
 
-- (void)_planningTypeDidChange:(id)a3
+- (void)_planningTypeDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 selectedSegmentIndex])
+  changeCopy = change;
+  if ([changeCopy selectedSegmentIndex])
   {
-    v5 = [(UIDatePicker *)self->_datePicker date];
-    v6 = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
-    v7 = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
-    v8 = [RoutePlanningTiming timingWithDepartureDate:v5 departureTimeZone:v6 arrivalTimeZone:v7];
+    date = [(UIDatePicker *)self->_datePicker date];
+    departureTimeZone = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
+    arrivalTimeZone = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
+    v8 = [RoutePlanningTiming timingWithDepartureDate:date departureTimeZone:departureTimeZone arrivalTimeZone:arrivalTimeZone];
     selectedTiming = self->_selectedTiming;
     self->_selectedTiming = v8;
   }
 
   else
   {
-    v10 = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
-    v11 = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
-    v12 = [RoutePlanningTiming timingWithDepartureDate:0 departureTimeZone:v10 arrivalTimeZone:v11];
+    departureTimeZone2 = [(RoutePlanningTiming *)self->_selectedTiming departureTimeZone];
+    arrivalTimeZone2 = [(RoutePlanningTiming *)self->_selectedTiming arrivalTimeZone];
+    v12 = [RoutePlanningTiming timingWithDepartureDate:0 departureTimeZone:departureTimeZone2 arrivalTimeZone:arrivalTimeZone2];
     v13 = self->_selectedTiming;
     self->_selectedTiming = v12;
 
-    v5 = +[MKMapService sharedService];
-    [v5 captureUserAction:3030 onTarget:631 eventValue:0];
+    date = +[MKMapService sharedService];
+    [date captureUserAction:3030 onTarget:631 eventValue:0];
   }
 
   [(MapsRadioButton *)self->_leaveAtButton setSelected:1];
   [(RoutePlanningTransitTimingControlsView *)self _setDatePickerDate];
   [(RoutePlanningTransitTimingControlsView *)self _setDatePickerBoundaries];
-  v14 = [v4 selectedSegmentIndex];
+  selectedSegmentIndex = [changeCopy selectedSegmentIndex];
 
-  [(RoutePlanningTransitTimingControlsView *)self setShowPlanningControls:v14 != 0];
+  [(RoutePlanningTransitTimingControlsView *)self setShowPlanningControls:selectedSegmentIndex != 0];
 
   [(RoutePlanningTransitTimingControlsView *)self _notifyDidUpdateTiming];
 }
 
-- (void)setShowPlanningControls:(BOOL)a3
+- (void)setShowPlanningControls:(BOOL)controls
 {
-  if (self->_showPlanningControls != a3)
+  if (self->_showPlanningControls != controls)
   {
-    v3 = a3;
-    self->_showPlanningControls = a3;
-    [(UIView *)self->_planningControlsView setAlpha:a3];
-    [(NSLayoutConstraint *)self->_planningControlsShowingConstraint setActive:v3];
-    [(NSLayoutConstraint *)self->_planningControlsHidingConstraint setActive:v3 ^ 1];
+    controlsCopy = controls;
+    self->_showPlanningControls = controls;
+    [(UIView *)self->_planningControlsView setAlpha:controls];
+    [(NSLayoutConstraint *)self->_planningControlsShowingConstraint setActive:controlsCopy];
+    [(NSLayoutConstraint *)self->_planningControlsHidingConstraint setActive:controlsCopy ^ 1];
     [(RoutePlanningTransitTimingControlsView *)self invalidateIntrinsicContentSize];
-    v5 = [(RoutePlanningTransitTimingControlsView *)self layoutHandler];
+    layoutHandler = [(RoutePlanningTransitTimingControlsView *)self layoutHandler];
 
-    if (v5)
+    if (layoutHandler)
     {
-      v6 = [(RoutePlanningTransitTimingControlsView *)self layoutHandler];
-      v6[2](v6, v3);
+      layoutHandler2 = [(RoutePlanningTransitTimingControlsView *)self layoutHandler];
+      layoutHandler2[2](layoutHandler2, controlsCopy);
     }
   }
 }
@@ -280,27 +280,27 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Notify selected timing is %@", &v7, 0xCu);
   }
 
-  v5 = [(RoutePlanningTransitTimingControlsView *)self changeHandler];
+  changeHandler = [(RoutePlanningTransitTimingControlsView *)self changeHandler];
 
-  if (v5)
+  if (changeHandler)
   {
-    v6 = [(RoutePlanningTransitTimingControlsView *)self changeHandler];
-    (v6)[2](v6, self->_selectedTiming);
+    changeHandler2 = [(RoutePlanningTransitTimingControlsView *)self changeHandler];
+    (changeHandler2)[2](changeHandler2, self->_selectedTiming);
   }
 }
 
-- (void)setSelectedTiming:(id)a3
+- (void)setSelectedTiming:(id)timing
 {
-  v5 = a3;
+  timingCopy = timing;
   v6 = self->_selectedTiming;
-  v7 = v5;
+  v7 = timingCopy;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_selectedTiming, a3);
+      objc_storeStrong(&self->_selectedTiming, timing);
       if (v7)
       {
         [v7 timepoint];
@@ -311,7 +311,7 @@
         [(RoutePlanningTransitTimingControlsView *)self _setDatePickerBoundaries];
         -[UISegmentedControl setSelectedSegmentIndex:](self->_timingTypeControl, "setSelectedSegmentIndex:", [v7 isDepartNow] ^ 1);
         v9 = [v7 isDepartNow] ^ 1;
-        v10 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -320,11 +320,11 @@
         [(RoutePlanningTransitTimingControlsView *)self _setDatePickerDate];
         [(RoutePlanningTransitTimingControlsView *)self _setDatePickerBoundaries];
         [(UISegmentedControl *)self->_timingTypeControl setSelectedSegmentIndex:0];
-        v10 = self;
+        selfCopy2 = self;
         v9 = 0;
       }
 
-      [(RoutePlanningTransitTimingControlsView *)v10 setShowPlanningControls:v9];
+      [(RoutePlanningTransitTimingControlsView *)selfCopy2 setShowPlanningControls:v9];
     }
   }
 }
@@ -338,82 +338,82 @@
 - (void)_setupInitialConstraints
 {
   v61 = objc_alloc_init(NSMutableArray);
-  v60 = [(UISegmentedControl *)self->_timingTypeControl topAnchor];
-  v59 = [(RoutePlanningTransitTimingControlsView *)self topAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  topAnchor = [(UISegmentedControl *)self->_timingTypeControl topAnchor];
+  topAnchor2 = [(RoutePlanningTransitTimingControlsView *)self topAnchor];
+  v58 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v62[0] = v58;
-  v57 = [(UISegmentedControl *)self->_timingTypeControl leadingAnchor];
-  v56 = [(RoutePlanningTransitTimingControlsView *)self leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  leadingAnchor = [(UISegmentedControl *)self->_timingTypeControl leadingAnchor];
+  leadingAnchor2 = [(RoutePlanningTransitTimingControlsView *)self leadingAnchor];
+  v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v62[1] = v55;
-  v54 = [(RoutePlanningTransitTimingControlsView *)self trailingAnchor];
-  v53 = [(UISegmentedControl *)self->_timingTypeControl trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  trailingAnchor = [(RoutePlanningTransitTimingControlsView *)self trailingAnchor];
+  trailingAnchor2 = [(UISegmentedControl *)self->_timingTypeControl trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v62[2] = v52;
-  v51 = [(UIView *)self->_planningControlsView topAnchor];
-  v50 = [(UISegmentedControl *)self->_timingTypeControl bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:12.0];
+  topAnchor3 = [(UIView *)self->_planningControlsView topAnchor];
+  bottomAnchor = [(UISegmentedControl *)self->_timingTypeControl bottomAnchor];
+  v49 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:12.0];
   v62[3] = v49;
-  v48 = [(UIView *)self->_planningControlsView leadingAnchor];
-  v47 = [(RoutePlanningTransitTimingControlsView *)self leadingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  leadingAnchor3 = [(UIView *)self->_planningControlsView leadingAnchor];
+  leadingAnchor4 = [(RoutePlanningTransitTimingControlsView *)self leadingAnchor];
+  v46 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v62[4] = v46;
-  v45 = [(RoutePlanningTransitTimingControlsView *)self trailingAnchor];
-  v44 = [(UIView *)self->_planningControlsView trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  trailingAnchor3 = [(RoutePlanningTransitTimingControlsView *)self trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_planningControlsView trailingAnchor];
+  v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v62[5] = v43;
-  v42 = [(MapsRadioButton *)self->_leaveAtButton heightAnchor];
-  v41 = [(MapsRadioButton *)self->_arriveByButton heightAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  heightAnchor = [(MapsRadioButton *)self->_leaveAtButton heightAnchor];
+  heightAnchor2 = [(MapsRadioButton *)self->_arriveByButton heightAnchor];
+  v40 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v62[6] = v40;
-  v39 = [(UIStackView *)self->_radioButtonStackView topAnchor];
-  v38 = [(UIView *)self->_planningControlsView topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  topAnchor4 = [(UIStackView *)self->_radioButtonStackView topAnchor];
+  topAnchor5 = [(UIView *)self->_planningControlsView topAnchor];
+  v37 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v62[7] = v37;
-  v36 = [(UIStackView *)self->_radioButtonStackView leadingAnchor];
-  v35 = [(UIView *)self->_planningControlsView leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  leadingAnchor5 = [(UIStackView *)self->_radioButtonStackView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_planningControlsView leadingAnchor];
+  v34 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v62[8] = v34;
-  v33 = [(UIView *)self->_planningControlsView trailingAnchor];
-  v32 = [(UIStackView *)self->_radioButtonStackView trailingAnchor];
-  v31 = [v33 constraintGreaterThanOrEqualToAnchor:v32];
+  trailingAnchor5 = [(UIView *)self->_planningControlsView trailingAnchor];
+  trailingAnchor6 = [(UIStackView *)self->_radioButtonStackView trailingAnchor];
+  v31 = [trailingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor6];
   v62[9] = v31;
-  v30 = [(UIStackView *)self->_datePickerStackView topAnchor];
-  v29 = [(UIStackView *)self->_radioButtonStackView bottomAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:12.0];
+  topAnchor6 = [(UIStackView *)self->_datePickerStackView topAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_radioButtonStackView bottomAnchor];
+  v28 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:12.0];
   v62[10] = v28;
-  v27 = [(UIStackView *)self->_datePickerStackView leadingAnchor];
-  v26 = [(UIView *)self->_planningControlsView leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor7 = [(UIStackView *)self->_datePickerStackView leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_planningControlsView leadingAnchor];
+  v25 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v62[11] = v25;
-  v24 = [(UIStackView *)self->_timePickerStackView topAnchor];
-  v23 = [(UIStackView *)self->_datePickerStackView topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  topAnchor7 = [(UIStackView *)self->_timePickerStackView topAnchor];
+  topAnchor8 = [(UIStackView *)self->_datePickerStackView topAnchor];
+  v22 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v62[12] = v22;
-  v21 = [(UIStackView *)self->_timePickerStackView leadingAnchor];
-  v3 = [(UIStackView *)self->_datePickerStackView trailingAnchor];
-  v4 = [v21 constraintEqualToAnchor:v3 constant:14.0];
+  leadingAnchor9 = [(UIStackView *)self->_timePickerStackView leadingAnchor];
+  trailingAnchor7 = [(UIStackView *)self->_datePickerStackView trailingAnchor];
+  v4 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7 constant:14.0];
   v62[13] = v4;
-  v5 = [(UIView *)self->_planningControlsView trailingAnchor];
-  v6 = [(UIStackView *)self->_timePickerStackView trailingAnchor];
-  v7 = [v5 constraintGreaterThanOrEqualToAnchor:v6];
+  trailingAnchor8 = [(UIView *)self->_planningControlsView trailingAnchor];
+  trailingAnchor9 = [(UIStackView *)self->_timePickerStackView trailingAnchor];
+  v7 = [trailingAnchor8 constraintGreaterThanOrEqualToAnchor:trailingAnchor9];
   v62[14] = v7;
-  v8 = [(UIView *)self->_planningControlsView bottomAnchor];
-  v9 = [(UIStackView *)self->_datePickerStackView bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor3 = [(UIView *)self->_planningControlsView bottomAnchor];
+  bottomAnchor4 = [(UIStackView *)self->_datePickerStackView bottomAnchor];
+  v10 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v62[15] = v10;
   v11 = [NSArray arrayWithObjects:v62 count:16];
   [v61 addObjectsFromArray:v11];
 
-  v12 = [(RoutePlanningTransitTimingControlsView *)self bottomAnchor];
-  v13 = [(UISegmentedControl *)self->_timingTypeControl bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor5 = [(RoutePlanningTransitTimingControlsView *)self bottomAnchor];
+  bottomAnchor6 = [(UISegmentedControl *)self->_timingTypeControl bottomAnchor];
+  v14 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   planningControlsHidingConstraint = self->_planningControlsHidingConstraint;
   self->_planningControlsHidingConstraint = v14;
 
-  v16 = [(RoutePlanningTransitTimingControlsView *)self bottomAnchor];
-  v17 = [(UIView *)self->_planningControlsView bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  bottomAnchor7 = [(RoutePlanningTransitTimingControlsView *)self bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_planningControlsView bottomAnchor];
+  v18 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   planningControlsShowingConstraint = self->_planningControlsShowingConstraint;
   self->_planningControlsShowingConstraint = v18;
 
@@ -431,13 +431,13 @@
   [NSLayoutConstraint activateConstraints:v61];
 }
 
-- (id)_horizontalStackViewWithViews:(id)a3 spacing:(double)a4
+- (id)_horizontalStackViewWithViews:(id)views spacing:(double)spacing
 {
-  v5 = a3;
-  v6 = [[UIStackView alloc] initWithArrangedSubviews:v5];
+  viewsCopy = views;
+  v6 = [[UIStackView alloc] initWithArrangedSubviews:viewsCopy];
 
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setSpacing:a4];
+  [v6 setSpacing:spacing];
   [v6 setAxis:0];
   [v6 setDistribution:0];
   [v6 setAlignment:3];
@@ -445,11 +445,11 @@
   return v6;
 }
 
-- (RoutePlanningTransitTimingControlsView)initWithFrame:(CGRect)a3
+- (RoutePlanningTransitTimingControlsView)initWithFrame:(CGRect)frame
 {
   v67.receiver = self;
   v67.super_class = RoutePlanningTransitTimingControlsView;
-  v3 = [(RoutePlanningTransitTimingControlsView *)&v67 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RoutePlanningTransitTimingControlsView *)&v67 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -515,8 +515,8 @@
     [v24 setText:v26];
 
     v63 = v18;
-    v27 = [v18 font];
-    [v24 setFont:v27];
+    font = [v18 font];
+    [v24 setFont:font];
 
     [v24 setAccessibilityIdentifier:@"ArriveByLabel"];
     v28 = [MapsRadioButton buttonWithGroupIdentifier:v64];

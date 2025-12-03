@@ -1,65 +1,65 @@
 @interface PLFeatureAvailabilityComputer
-+ (id)_predicateForAllAssetsAllowedForProcessingForSceneAnalysis:(BOOL)a3;
-+ (id)_predicateForAllCuratedAssetsForSceneAnalysis:(BOOL)a3;
++ (id)_predicateForAllAssetsAllowedForProcessingForSceneAnalysis:(BOOL)analysis;
++ (id)_predicateForAllCuratedAssetsForSceneAnalysis:(BOOL)analysis;
 + (id)_predicateForEnrichedHighlights;
 + (id)_predicatesForVisibleAssets;
-+ (id)_savedAssetTypePredicateForSceneAnalysis:(BOOL)a3;
-- (BOOL)_addAnalysisStatusForMediaTaskID:(unint64_t)a3 toProcessingSnapshot:(id)a4 managedObjectContext:(id)a5 error:(id *)a6;
-- (BOOL)_addAssetCountsToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 forSceneAnalysis:(BOOL)a5 error:(id *)a6;
-- (BOOL)_addCaptioningStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)_addEmbeddingVectorIndexingStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)_addHighlightStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)_addSpotlightSearchIndexingStatusToProcessingSnapshot:(id)a3 forTaskID:(unint64_t)a4 completedCount:(int64_t)a5 totalCount:(int64_t)a6 error:(id *)a7;
-- (BOOL)_clearAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)_failAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)_shouldStopWithProgress:(id)a3 afterCallingCompletionHandler:(id)a4;
-- (BOOL)clearAvailabilityStateForPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)didDropSearchIndexForPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)didFinishSearchIndexRebuidForPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)failAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4;
-- (PLFeatureAvailabilityComputer)initWithTransitionDelegate:(id)a3 progressDelegate:(id)a4;
-- (id)_computeAvailabilityForSnapshot:(id)a3 photoLibrary:(id)a4 shouldPersist:(BOOL)a5 error:(id *)a6;
-- (id)computeAvailabilityForPhotoLibrary:(id)a3 shouldPersist:(BOOL)a4 completionHandler:(id)a5;
-- (id)computeSnapshotForPhotoLibrary:(id)a3 completionHandler:(id)a4;
-- (id)onDemandAvailabilityUpdateWithChanges:(id)a3 forPhotoLibrary:(id)a4 completionHandler:(id)a5;
-- (unint64_t)_assetCountForPredicate:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (void)_addAssetCountsToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addAssetForSceneCountsToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addCaptioningToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addEmbeddingIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addHighlightStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addMediaAnalysisIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addPhotosKnowledgeGraphAvailabilityToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addSceneAnalysisIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addSceneAnalysisToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addVUIndexFullClusterStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_addVersionsToProcessingSnapshot:(id)a3;
-- (void)_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_fetchSpotlightSearchIndexingStatusForTaskID:(unint64_t)a3 photoLibrary:(id)a4 completionHandler:(id)a5;
-- (void)_onDemandAvailabilityUpdateWithChanges:(id)a3 forPhotoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)_onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 completionHandler:(id)a5;
-- (void)_persistFeatureAvailabilityDictionary:(id)a3 photoLibrary:(id)a4;
-- (void)_readLastFullModeClusterDateWithPhotoLibrary:(id)a3 completionHandler:(id)a4;
-- (void)_updateSnapshot:(id)a3 withChanges:(id)a4;
-- (void)_updateVUClusterStateInProcessingSnapshot:(id)a3 photoLibrary:(id)a4 completionHandler:(id)a5;
-- (void)updatePersistedSnapshotIfNeededWithLightweightVersionCheckForPhotoLibrary:(id)a3;
++ (id)_savedAssetTypePredicateForSceneAnalysis:(BOOL)analysis;
+- (BOOL)_addAnalysisStatusForMediaTaskID:(unint64_t)d toProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error;
+- (BOOL)_addAssetCountsToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context forSceneAnalysis:(BOOL)analysis error:(id *)error;
+- (BOOL)_addCaptioningStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error;
+- (BOOL)_addEmbeddingVectorIndexingStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error;
+- (BOOL)_addHighlightStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error;
+- (BOOL)_addSpotlightSearchIndexingStatusToProcessingSnapshot:(id)snapshot forTaskID:(unint64_t)d completedCount:(int64_t)count totalCount:(int64_t)totalCount error:(id *)error;
+- (BOOL)_clearAvailabilityForPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)_failAvailabilityForPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)_shouldStopWithProgress:(id)progress afterCallingCompletionHandler:(id)handler;
+- (BOOL)clearAvailabilityStateForPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)didDropSearchIndexForPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)didFinishSearchIndexRebuidForPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)failAvailabilityForPhotoLibrary:(id)library error:(id *)error;
+- (PLFeatureAvailabilityComputer)initWithTransitionDelegate:(id)delegate progressDelegate:(id)progressDelegate;
+- (id)_computeAvailabilityForSnapshot:(id)snapshot photoLibrary:(id)library shouldPersist:(BOOL)persist error:(id *)error;
+- (id)computeAvailabilityForPhotoLibrary:(id)library shouldPersist:(BOOL)persist completionHandler:(id)handler;
+- (id)computeSnapshotForPhotoLibrary:(id)library completionHandler:(id)handler;
+- (id)onDemandAvailabilityUpdateWithChanges:(id)changes forPhotoLibrary:(id)library completionHandler:(id)handler;
+- (unint64_t)_assetCountForPredicate:(id)predicate managedObjectContext:(id)context error:(id *)error;
+- (void)_addAssetCountsToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addAssetForSceneCountsToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addCaptioningToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addEmbeddingIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addHighlightStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addMediaAnalysisIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addPhotosKnowledgeGraphAvailabilityToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addSceneAnalysisIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addSceneAnalysisToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addVUIndexFullClusterStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_addVersionsToProcessingSnapshot:(id)snapshot;
+- (void)_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_fetchSpotlightSearchIndexingStatusForTaskID:(unint64_t)d photoLibrary:(id)library completionHandler:(id)handler;
+- (void)_onDemandAvailabilityUpdateWithChanges:(id)changes forPhotoLibrary:(id)library progress:(id)progress completionHandler:(id)handler;
+- (void)_onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library completionHandler:(id)handler;
+- (void)_persistFeatureAvailabilityDictionary:(id)dictionary photoLibrary:(id)library;
+- (void)_readLastFullModeClusterDateWithPhotoLibrary:(id)library completionHandler:(id)handler;
+- (void)_updateSnapshot:(id)snapshot withChanges:(id)changes;
+- (void)_updateVUClusterStateInProcessingSnapshot:(id)snapshot photoLibrary:(id)library completionHandler:(id)handler;
+- (void)updatePersistedSnapshotIfNeededWithLightweightVersionCheckForPhotoLibrary:(id)library;
 @end
 
 @implementation PLFeatureAvailabilityComputer
 
-- (void)_updateVUClusterStateInProcessingSnapshot:(id)a3 photoLibrary:(id)a4 completionHandler:(id)a5
+- (void)_updateVUClusterStateInProcessingSnapshot:(id)snapshot photoLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __106__PLFeatureAvailabilityComputer__updateVUClusterStateInProcessingSnapshot_photoLibrary_completionHandler___block_invoke;
   v12[3] = &unk_1E7573238;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(PLFeatureAvailabilityComputer *)self _readLastFullModeClusterDateWithPhotoLibrary:a4 completionHandler:v12];
+  v13 = snapshotCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = snapshotCopy;
+  [(PLFeatureAvailabilityComputer *)self _readLastFullModeClusterDateWithPhotoLibrary:library completionHandler:v12];
 }
 
 void __106__PLFeatureAvailabilityComputer__updateVUClusterStateInProcessingSnapshot_photoLibrary_completionHandler___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -77,10 +77,10 @@ void __106__PLFeatureAvailabilityComputer__updateVUClusterStateInProcessingSnaps
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_readLastFullModeClusterDateWithPhotoLibrary:(id)a3 completionHandler:(id)a4
+- (void)_readLastFullModeClusterDateWithPhotoLibrary:(id)library completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -92,8 +92,8 @@ void __106__PLFeatureAvailabilityComputer__updateVUClusterStateInProcessingSnaps
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "FeatureAvailability - LastFullModeClusterDate", "", buf, 2u);
   }
 
-  v11 = [v5 pathManager];
-  v12 = [v11 libraryURL];
+  pathManager = [libraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
@@ -102,11 +102,11 @@ void __106__PLFeatureAvailabilityComputer__updateVUClusterStateInProcessingSnaps
   v13 = v10;
   v19 = v13;
   v20 = v8;
-  v14 = v6;
+  v14 = handlerCopy;
   v18 = v14;
-  v15 = v5;
+  v15 = libraryCopy;
   v17 = v15;
-  [PLMediaAnalysisServiceRequestAdapter queryVUIndexLastFullModeClusterDateWithPhotoLibraryURL:v12 completionHandler:v16];
+  [PLMediaAnalysisServiceRequestAdapter queryVUIndexLastFullModeClusterDateWithPhotoLibraryURL:libraryURL completionHandler:v16];
 }
 
 void __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPhotoLibrary_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -174,18 +174,18 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
   return (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)didFinishSearchIndexRebuidForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)didFinishSearchIndexRebuidForPhotoLibrary:(id)library error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 libraryServicesManager];
-  v7 = [v6 backgroundJobService];
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
 
-  if (v7)
+  if (backgroundJobService)
   {
-    v8 = [v5 libraryBundle];
+    libraryBundle = [libraryCopy libraryBundle];
     v9 = +[PLBackgroundJobWorkerTypes maskForFeatureAvailability];
-    [v7 signalBackgroundProcessingNeededOnBundle:v8 workerTypes:v9];
+    [backgroundJobService signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v9];
   }
 
   else
@@ -199,28 +199,28 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = PLErrorCreate();
+      *error = PLErrorCreate();
     }
   }
 
-  return v7 != 0;
+  return backgroundJobService != 0;
 }
 
-- (BOOL)didDropSearchIndexForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)didDropSearchIndexForPhotoLibrary:(id)library error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 globalValues];
-  v8 = [v7 featureAvailability];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  if (v8)
+  if (featureAvailability)
   {
-    v9 = [[PLFeatureAvailability alloc] initWithDictionary:v8];
-    v10 = [(PLFeatureAvailability *)v9 processingSnapshot];
-    v11 = v10 != 0;
-    if (v10)
+    v9 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
+    processingSnapshot = [(PLFeatureAvailability *)v9 processingSnapshot];
+    v11 = processingSnapshot != 0;
+    if (processingSnapshot)
     {
       v12 = PLBackendGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -229,10 +229,10 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - resetting search index state", buf, 2u);
       }
 
-      [v10 resetSearchIndexState];
-      v13 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v10];
-      v14 = [(PLFeatureAvailability *)v13 dictionary];
-      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:v14 photoLibrary:v6];
+      [processingSnapshot resetSearchIndexState];
+      v13 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:processingSnapshot];
+      dictionary = [(PLFeatureAvailability *)v13 dictionary];
+      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:dictionary photoLibrary:libraryCopy];
     }
 
     else
@@ -246,9 +246,9 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = PLErrorCreate();
+        *error = PLErrorCreate();
       }
     }
   }
@@ -269,30 +269,30 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
   return v11;
 }
 
-- (void)_updateSnapshot:(id)a3 withChanges:(id)a4
+- (void)_updateSnapshot:(id)snapshot withChanges:(id)changes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  snapshotCopy = snapshot;
+  changesCopy = changes;
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 sourceIdentifier];
+    sourceIdentifier = [changesCopy sourceIdentifier];
     v25 = 138412290;
-    v26 = *&v8;
+    v26 = *&sourceIdentifier;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - updating snapshot with changes from source: %@", &v25, 0xCu);
   }
 
-  v9 = [v6 photosKnowledgeGraphIsReady];
-  v10 = v9;
-  if (v9)
+  photosKnowledgeGraphIsReady = [changesCopy photosKnowledgeGraphIsReady];
+  v10 = photosKnowledgeGraphIsReady;
+  if (photosKnowledgeGraphIsReady)
   {
-    v11 = [v9 BOOLValue];
+    bOOLValue = [photosKnowledgeGraphIsReady BOOLValue];
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"NO";
-      if (v11)
+      if (bOOLValue)
       {
         v13 = @"YES";
       }
@@ -302,12 +302,12 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - updating snapshot with changes, setting photosKnowledgeGraphIsReady to %@", &v25, 0xCu);
     }
 
-    [v5 setPhotosKnowledgeGraphIsReady:v11];
+    [snapshotCopy setPhotosKnowledgeGraphIsReady:bOOLValue];
   }
 
-  v14 = [v6 lastFullVUIndexClusterDate];
-  v15 = [v6 resetLastFullVUIndexClusterDate];
-  if (v15)
+  lastFullVUIndexClusterDate = [changesCopy lastFullVUIndexClusterDate];
+  resetLastFullVUIndexClusterDate = [changesCopy resetLastFullVUIndexClusterDate];
+  if (resetLastFullVUIndexClusterDate)
   {
     v16 = PLBackendGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -316,13 +316,13 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - updating snapshot with changes, setting lastFullVUIndexClusterDate and vuIndexIsFullClustered to nil", &v25, 2u);
     }
 
-    v17 = v5;
+    v17 = snapshotCopy;
     v18 = 0;
   }
 
   else
   {
-    if (!v14)
+    if (!lastFullVUIndexClusterDate)
     {
       goto LABEL_18;
     }
@@ -331,22 +331,22 @@ uint64_t __96__PLFeatureAvailabilityComputer__readLastFullModeClusterDateWithPho
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = *&v14;
+      v26 = *&lastFullVUIndexClusterDate;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - updating snapshot with changes, setting lastFullVUIndexClusterDate to %@", &v25, 0xCu);
     }
 
-    v17 = v5;
-    v18 = v14;
+    v17 = snapshotCopy;
+    v18 = lastFullVUIndexClusterDate;
   }
 
   [v17 setLastFullVUIndexClusterDate:v18];
-  [v5 setVuIndexIsFullClustered:v15 ^ 1u];
+  [snapshotCopy setVuIndexIsFullClustered:resetLastFullVUIndexClusterDate ^ 1u];
 LABEL_18:
-  v20 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
-  v21 = v20;
-  if (v20)
+  fractionOfCuratedAssetsIndexedInVUClustering = [changesCopy fractionOfCuratedAssetsIndexedInVUClustering];
+  v21 = fractionOfCuratedAssetsIndexedInVUClustering;
+  if (fractionOfCuratedAssetsIndexedInVUClustering)
   {
-    [v20 doubleValue];
+    [fractionOfCuratedAssetsIndexedInVUClustering doubleValue];
     v23 = v22;
     v24 = PLBackendGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -356,17 +356,17 @@ LABEL_18:
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - updating snapshot with changes, setting updateForFractionOfCuratedAssetsIndexedInVUClustering to %f", &v25, 0xCu);
     }
 
-    [v5 setFractionOfCuratedAssetsIndexedInVUClustering:v23];
+    [snapshotCopy setFractionOfCuratedAssetsIndexedInVUClustering:v23];
   }
 }
 
-- (void)_onDemandAvailabilityUpdateWithChanges:(id)a3 forPhotoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_onDemandAvailabilityUpdateWithChanges:(id)changes forPhotoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v9 = a4;
-  v30 = a5;
-  v10 = a6;
+  changesCopy = changes;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   v11 = PLPhotosSearchGetLog();
   v12 = os_signpost_id_generate(v11);
 
@@ -381,31 +381,31 @@ LABEL_18:
   v15 = PLBackendGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v31 sourceIdentifier];
+    sourceIdentifier = [changesCopy sourceIdentifier];
     *buf = 138412290;
-    v33 = v16;
+    v33 = sourceIdentifier;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "FeatureAvailability - on-demand availability update with changes from source: %@", buf, 0xCu);
   }
 
-  v17 = [v9 globalValues];
-  v18 = [v17 featureAvailability];
+  globalValues = [libraryCopy globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  if (v18)
+  if (featureAvailability)
   {
-    v28 = [[PLFeatureAvailability alloc] initWithDictionary:v18];
-    v19 = [(PLFeatureAvailability *)v28 processingSnapshot];
-    if (v19)
+    v28 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
+    processingSnapshot = [(PLFeatureAvailability *)v28 processingSnapshot];
+    if (processingSnapshot)
     {
-      [(PLFeatureAvailabilityComputer *)self _updateSnapshot:v19 withChanges:v31];
-      v20 = [MEMORY[0x1E695DF00] date];
-      v21 = [v9 globalValues];
-      [v21 setDateOfLastExternalAvailabilitySignal:v20];
+      [(PLFeatureAvailabilityComputer *)self _updateSnapshot:processingSnapshot withChanges:changesCopy];
+      date = [MEMORY[0x1E695DF00] date];
+      globalValues2 = [libraryCopy globalValues];
+      [globalValues2 setDateOfLastExternalAvailabilitySignal:date];
 
-      v22 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v19];
-      v23 = [(PLFeatureAvailability *)v22 dictionary];
-      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:v23 photoLibrary:v9];
+      v22 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:processingSnapshot];
+      dictionary = [(PLFeatureAvailability *)v22 dictionary];
+      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:dictionary photoLibrary:libraryCopy];
 
-      [v30 setCompletedUnitCount:{objc_msgSend(v30, "completedUnitCount") + 1}];
+      [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + 1}];
       v24 = v14;
       v25 = v24;
       if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
@@ -414,14 +414,14 @@ LABEL_18:
         _os_signpost_emit_with_name_impl(&dword_19BF1F000, v25, OS_SIGNPOST_INTERVAL_END, v12, "FeatureAvailability - OnDemandUpdateWithChanges", "", buf, 2u);
       }
 
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
     else
     {
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FeatureAvailability - %s - availability state persisted, but no snapshot", "-[PLFeatureAvailabilityComputer _onDemandAvailabilityUpdateWithChanges:forPhotoLibrary:progress:completionHandler:]"];
       v27 = PLErrorCreate();
-      (v10)[2](v10, 0, v27);
+      (handlerCopy)[2](handlerCopy, 0, v27);
     }
   }
 
@@ -435,15 +435,15 @@ LABEL_18:
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_INFO, "FeatureAvailability - %s - no persisted availability", buf, 0xCu);
     }
 
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (id)onDemandAvailabilityUpdateWithChanges:(id)a3 forPhotoLibrary:(id)a4 completionHandler:(id)a5
+- (id)onDemandAvailabilityUpdateWithChanges:(id)changes forPhotoLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changesCopy = changes;
+  libraryCopy = library;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v11 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
   v12 = +[PLConcurrencyLimiter sharedLimiter];
@@ -454,11 +454,11 @@ LABEL_18:
   objc_copyWeak(&v25, &location);
   v13 = v11;
   v21 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v24 = v14;
-  v15 = v8;
+  v15 = changesCopy;
   v22 = v15;
-  v16 = v9;
+  v16 = libraryCopy;
   v23 = v16;
   [v12 async:v20 identifyingBlock:0 library:0];
 
@@ -507,49 +507,49 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updatePersistedSnapshotIfNeededWithLightweightVersionCheckForPhotoLibrary:(id)a3
+- (void)updatePersistedSnapshotIfNeededWithLightweightVersionCheckForPhotoLibrary:(id)library
 {
-  v12 = a3;
-  v4 = [v12 globalValues];
-  v5 = [v4 featureAvailability];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  if (v5)
+  if (featureAvailability)
   {
-    v6 = [[PLFeatureAvailability alloc] initWithDictionary:v5];
-    v7 = [(PLFeatureAvailability *)v6 processingSnapshot];
-    if (![v7 mediaAnalysisImageVersion])
+    v6 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
+    processingSnapshot = [(PLFeatureAvailability *)v6 processingSnapshot];
+    if (![processingSnapshot mediaAnalysisImageVersion])
     {
-      [v7 setMediaAnalysisImageVersion:67];
-      [v7 setHasConsistentMediaAnalysisImageVersion:1];
+      [processingSnapshot setMediaAnalysisImageVersion:67];
+      [processingSnapshot setHasConsistentMediaAnalysisImageVersion:1];
     }
 
     v8 = +[PLFeatureProcessingAlgorithmVersionProvider provider];
-    v9 = [v7 mediaAnalysisImageVersion];
-    if (v9 != [v8 mediaAnalysisImageVersion])
+    mediaAnalysisImageVersion = [processingSnapshot mediaAnalysisImageVersion];
+    if (mediaAnalysisImageVersion != [v8 mediaAnalysisImageVersion])
     {
-      [v7 setHasConsistentMediaAnalysisImageVersion:0];
+      [processingSnapshot setHasConsistentMediaAnalysisImageVersion:0];
     }
 
-    v10 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v7];
-    v11 = [(PLFeatureAvailability *)v10 dictionary];
-    if (v11 != v5)
+    v10 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:processingSnapshot];
+    dictionary = [(PLFeatureAvailability *)v10 dictionary];
+    if (dictionary != featureAvailability)
     {
-      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:v11 photoLibrary:v12];
+      [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:dictionary photoLibrary:libraryCopy];
     }
   }
 }
 
-- (void)_persistFeatureAvailabilityDictionary:(id)a3 photoLibrary:(id)a4
+- (void)_persistFeatureAvailabilityDictionary:(id)dictionary photoLibrary:(id)library
 {
   v47 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a4;
-  v6 = [v37 globalValues];
-  v7 = [v6 featureAvailability];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v36 = v7;
-  if (v7)
+  v36 = featureAvailability;
+  if (featureAvailability)
   {
     v9 = PLBackendGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -558,12 +558,12 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - oldDictionary not nil", buf, 2u);
     }
 
-    v10 = [[PLFeatureAvailability alloc] initWithDictionary:v7];
+    v10 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
     v11 = MEMORY[0x1E695DFD8];
     v40 = v10;
-    v12 = [(PLFeatureAvailability *)v10 availabilityByFeature];
-    v13 = [v12 allKeys];
-    v14 = [v11 setWithArray:v13];
+    availabilityByFeature = [(PLFeatureAvailability *)v10 availabilityByFeature];
+    allKeys = [availabilityByFeature allKeys];
+    v14 = [v11 setWithArray:allKeys];
     [v8 unionSet:v14];
   }
 
@@ -572,7 +572,7 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
     v40 = 0;
   }
 
-  if (v38)
+  if (dictionaryCopy)
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -581,11 +581,11 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - dictionary not nil", buf, 2u);
     }
 
-    v16 = [[PLFeatureAvailability alloc] initWithDictionary:v38];
+    v16 = [[PLFeatureAvailability alloc] initWithDictionary:dictionaryCopy];
     v17 = MEMORY[0x1E695DFD8];
-    v18 = [(PLFeatureAvailability *)v16 availabilityByFeature];
-    v19 = [v18 allKeys];
-    v20 = [v17 setWithArray:v19];
+    availabilityByFeature2 = [(PLFeatureAvailability *)v16 availabilityByFeature];
+    allKeys2 = [availabilityByFeature2 allKeys];
+    v20 = [v17 setWithArray:allKeys2];
     [v8 unionSet:v20];
   }
 
@@ -601,8 +601,8 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - resetting global FA dictionary", buf, 2u);
   }
 
-  v22 = [v37 globalValues];
-  [v22 setFeatureAvailability:v38];
+  globalValues2 = [libraryCopy globalValues];
+  [globalValues2 setFeatureAvailability:dictionaryCopy];
 
   v43 = 0u;
   v44 = 0u;
@@ -627,18 +627,18 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
         WeakRetained = objc_loadWeakRetained(&self->_progressDelegate);
         [WeakRetained featureAvailability:v16 updateProgressForFeature:v27];
 
-        v29 = [(PLFeatureAvailability *)v40 availabilityByFeature];
-        v30 = [v29 objectForKeyedSubscript:v27];
-        v31 = [v30 BOOLValue];
+        availabilityByFeature3 = [(PLFeatureAvailability *)v40 availabilityByFeature];
+        v30 = [availabilityByFeature3 objectForKeyedSubscript:v27];
+        bOOLValue = [v30 BOOLValue];
 
-        v32 = [(PLFeatureAvailability *)v16 availabilityByFeature];
-        v33 = [v32 objectForKeyedSubscript:v27];
-        v34 = [v33 BOOLValue];
+        availabilityByFeature4 = [(PLFeatureAvailability *)v16 availabilityByFeature];
+        v33 = [availabilityByFeature4 objectForKeyedSubscript:v27];
+        bOOLValue2 = [v33 BOOLValue];
 
-        if (v31 != v34)
+        if (bOOLValue != bOOLValue2)
         {
           v35 = objc_loadWeakRetained(&self->_transitionDelegate);
-          [v35 availability:v16 feature:v27 didTransition:v34];
+          [v35 availability:v16 feature:v27 didTransition:bOOLValue2];
         }
       }
 
@@ -649,53 +649,53 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
   }
 }
 
-- (BOOL)_failAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)_failAvailabilityForPhotoLibrary:(id)library error:(id *)error
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [v5 globalValues];
-  [v7 setTimeOfLastFeatureAvailabilityJob:v6];
+  libraryCopy = library;
+  date = [v4 date];
+  globalValues = [libraryCopy globalValues];
+  [globalValues setTimeOfLastFeatureAvailabilityJob:date];
 
-  v8 = [v5 globalValues];
+  globalValues2 = [libraryCopy globalValues];
 
-  [v8 setFeatureAvailabilityJobDidFail:MEMORY[0x1E695E118]];
+  [globalValues2 setFeatureAvailabilityJobDidFail:MEMORY[0x1E695E118]];
   return 1;
 }
 
-- (BOOL)_clearAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)_clearAvailabilityForPhotoLibrary:(id)library error:(id *)error
 {
-  v5 = a3;
-  [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:0 photoLibrary:v5];
-  v6 = [v5 globalValues];
-  [v6 setTimeOfLastFeatureAvailabilityJob:0];
+  libraryCopy = library;
+  [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:0 photoLibrary:libraryCopy];
+  globalValues = [libraryCopy globalValues];
+  [globalValues setTimeOfLastFeatureAvailabilityJob:0];
 
-  v7 = [v5 globalValues];
+  globalValues2 = [libraryCopy globalValues];
 
-  [v7 setFeatureAvailabilityJobDidFail:0];
+  [globalValues2 setFeatureAvailabilityJobDidFail:0];
   return 1;
 }
 
-- (id)_computeAvailabilityForSnapshot:(id)a3 photoLibrary:(id)a4 shouldPersist:(BOOL)a5 error:(id *)a6
+- (id)_computeAvailabilityForSnapshot:(id)snapshot photoLibrary:(id)library shouldPersist:(BOOL)persist error:(id *)error
 {
-  v6 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:v10];
+  persistCopy = persist;
+  libraryCopy = library;
+  snapshotCopy = snapshot;
+  v11 = [[PLFeatureAvailability alloc] initWithProcessingSnapshot:snapshotCopy];
 
-  if (v6)
+  if (persistCopy)
   {
-    v12 = [(PLFeatureAvailability *)v11 dictionary];
-    [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:v12 photoLibrary:v9];
+    dictionary = [(PLFeatureAvailability *)v11 dictionary];
+    [(PLFeatureAvailabilityComputer *)self _persistFeatureAvailabilityDictionary:dictionary photoLibrary:libraryCopy];
   }
 
   return v11;
 }
 
-- (void)_fetchSpotlightSearchIndexingStatusForTaskID:(unint64_t)a3 photoLibrary:(id)a4 completionHandler:(id)a5
+- (void)_fetchSpotlightSearchIndexingStatusForTaskID:(unint64_t)d photoLibrary:(id)library completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  handlerCopy = handler;
   v9 = PLPhotosSearchGetLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -707,20 +707,20 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "FeatureAvailability - IndexingStatusForTaskID", "", buf, 2u);
   }
 
-  v13 = [v7 libraryServicesManager];
-  v14 = [v13 searchDonationProgress];
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  searchDonationProgress = [libraryServicesManager searchDonationProgress];
 
-  if (v14)
+  if (searchDonationProgress)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3254779904;
     v17[2] = __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusForTaskID_photoLibrary_completionHandler___block_invoke;
     v17[3] = &unk_1F0F057C8;
-    v19 = a3;
+    dCopy = d;
     v20 = v12;
     v21 = v10;
-    v18 = v8;
-    v15 = [v14 donationProgressForMediaProcessingTaskID:a3 completionHandler:v17];
+    v18 = handlerCopy;
+    v15 = [searchDonationProgress donationProgressForMediaProcessingTaskID:d completionHandler:v17];
 
     v16 = v20;
   }
@@ -728,7 +728,7 @@ void __105__PLFeatureAvailabilityComputer_onDemandAvailabilityUpdateWithChanges_
   else
   {
     v16 = PLErrorCreate();
-    (*(v8 + 2))(v8, 0, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v16);
   }
 }
 
@@ -802,19 +802,19 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
   v13();
 }
 
-- (BOOL)_addSpotlightSearchIndexingStatusToProcessingSnapshot:(id)a3 forTaskID:(unint64_t)a4 completedCount:(int64_t)a5 totalCount:(int64_t)a6 error:(id *)a7
+- (BOOL)_addSpotlightSearchIndexingStatusToProcessingSnapshot:(id)snapshot forTaskID:(unint64_t)d completedCount:(int64_t)count totalCount:(int64_t)totalCount error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  snapshotCopy = snapshot;
   v11 = PLBackendGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v34 = a4;
+    dCopy = d;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - adding spotlight search indexing status to processing snapshot for taskID: %tu", buf, 0xCu);
   }
 
-  if (a4 == 1)
+  if (d == 1)
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -823,10 +823,10 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fetching spotlight search index status with taskID PLMediaProcessingTaskID_MediaAnalysisVideo", buf, 2u);
     }
 
-    v16 = [v10 totalAssetCount];
-    if (v16)
+    totalAssetCount = [snapshotCopy totalAssetCount];
+    if (totalAssetCount)
     {
-      v17 = a5 / v16;
+      v17 = count / totalAssetCount;
     }
 
     else
@@ -834,10 +834,10 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
       v17 = 0.0;
     }
 
-    [v10 setFractionOfAllAssetsWithMediaAnalysisInSearchIndex:v17];
-    [v10 setNumberOfAssetsWithMediaAnalysisInSearchIndex:a5];
-    v31 = [MEMORY[0x1E695DF00] date];
-    [v10 setDateSearchIndexSnapshotLastUpdated:v31];
+    [snapshotCopy setFractionOfAllAssetsWithMediaAnalysisInSearchIndex:v17];
+    [snapshotCopy setNumberOfAssetsWithMediaAnalysisInSearchIndex:count];
+    date = [MEMORY[0x1E695DF00] date];
+    [snapshotCopy setDateSearchIndexSnapshotLastUpdated:date];
 
     v18 = PLBackendGetLog();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -846,14 +846,14 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
     }
 
     *buf = 134218240;
-    v34 = *&v17;
+    dCopy = *&v17;
     v35 = 2048;
-    v36 = a5;
+    countCopy2 = count;
     v30 = "FeatureAvailability - fractionOfAllAssetsWithAnalysisInSearchIndex: %f, numberOfAssetsWithMediaAnalysisInSearch: %lld: ";
     goto LABEL_29;
   }
 
-  if (a4 == 2)
+  if (d == 2)
   {
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -862,10 +862,10 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fetching spotlight search index status with taskID PLMediaProcessingTaskID_SceneAnalysis", buf, 2u);
     }
 
-    v13 = [v10 totalCuratedAssetForScenesCount];
-    if (v13)
+    totalCuratedAssetForScenesCount = [snapshotCopy totalCuratedAssetForScenesCount];
+    if (totalCuratedAssetForScenesCount)
     {
-      v14 = a5 / v13;
+      v14 = count / totalCuratedAssetForScenesCount;
     }
 
     else
@@ -877,15 +877,15 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v34 = *&v14;
+      dCopy = *&v14;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfCuratedAssetsWithAnalysisInSearchIndex: %f", buf, 0xCu);
     }
 
     v25 = fmin(v14, 1.0);
-    v26 = [v10 totalAssetForScenesCount];
-    if (v26)
+    totalAssetForScenesCount = [snapshotCopy totalAssetForScenesCount];
+    if (totalAssetForScenesCount)
     {
-      v27 = a5 / v26;
+      v27 = count / totalAssetForScenesCount;
     }
 
     else
@@ -894,11 +894,11 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
     }
 
     v28 = fmin(v27, 1.0);
-    [v10 setFractionOfCuratedAssetsWithSceneAnalysisInSearchIndex:v25];
-    [v10 setFractionOfAllAssetsWithSceneAnalysisInSearchIndex:v28];
-    [v10 setNumberOfAssetsWithSceneAnalysisInSearchIndex:a5];
-    v29 = [MEMORY[0x1E695DF00] date];
-    [v10 setDateSearchIndexSnapshotLastUpdated:v29];
+    [snapshotCopy setFractionOfCuratedAssetsWithSceneAnalysisInSearchIndex:v25];
+    [snapshotCopy setFractionOfAllAssetsWithSceneAnalysisInSearchIndex:v28];
+    [snapshotCopy setNumberOfAssetsWithSceneAnalysisInSearchIndex:count];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [snapshotCopy setDateSearchIndexSnapshotLastUpdated:date2];
 
     v18 = PLBackendGetLog();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -907,9 +907,9 @@ void __109__PLFeatureAvailabilityComputer__fetchSpotlightSearchIndexingStatusFor
     }
 
     *buf = 134218240;
-    v34 = *&v28;
+    dCopy = *&v28;
     v35 = 2048;
-    v36 = a5;
+    countCopy2 = count;
     v30 = "FeatureAvailability - fractionOfAllAssetsWithAnalysisInSearchIndex: %f, numberOfAssetsWithSceneAnalysisInSearchIndex: %lld: ";
 LABEL_29:
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, v30, buf, 0x16u);
@@ -918,20 +918,20 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FeatureAvailability - %s - unexpected media processing taskID: %tu", "-[PLFeatureAvailabilityComputer _addSpotlightSearchIndexingStatusToProcessingSnapshot:forTaskID:completedCount:totalCount:error:]", a4];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FeatureAvailability - %s - unexpected media processing taskID: %tu", "-[PLFeatureAvailabilityComputer _addSpotlightSearchIndexingStatusToProcessingSnapshot:forTaskID:completedCount:totalCount:error:]", d];
   v19 = PLErrorCreate();
   v20 = v19;
-  if (a7)
+  if (error)
   {
     v21 = v19;
-    *a7 = v20;
+    *error = v20;
   }
 
   v22 = PLBackendGetLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v34 = v18;
+    dCopy = v18;
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
@@ -941,11 +941,11 @@ LABEL_31:
   return v23;
 }
 
-- (BOOL)_addAnalysisStatusForMediaTaskID:(unint64_t)a3 toProcessingSnapshot:(id)a4 managedObjectContext:(id)a5 error:(id *)a6
+- (BOOL)_addAnalysisStatusForMediaTaskID:(unint64_t)d toProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v34 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  contextCopy = context;
   v11 = PLPhotosSearchGetLog();
   v12 = os_signpost_id_generate(v11);
 
@@ -959,14 +959,14 @@ LABEL_31:
 
   v15 = objc_alloc_init(MEMORY[0x1E695D5E0]);
   v16 = +[PLManagedAsset entityName];
-  v17 = PLSafeEntityForNameInManagedObjectContext(v16, v10, 0);
+  v17 = PLSafeEntityForNameInManagedObjectContext(v16, contextCopy, 0);
   [v15 setEntity:v17];
 
-  v18 = [objc_opt_class() _predicateForCountOfProcessedAssetsForMediaProcessingTaskID:a3 priority:0 versionProvider:self->_versionProvider];
+  v18 = [objc_opt_class() _predicateForCountOfProcessedAssetsForMediaProcessingTaskID:d priority:0 versionProvider:self->_versionProvider];
   [v15 setPredicate:v18];
 
   v35 = 0;
-  v19 = [v10 countForFetchRequest:v15 error:&v35];
+  v19 = [contextCopy countForFetchRequest:v15 error:&v35];
   v20 = v35;
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -974,17 +974,17 @@ LABEL_31:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v37 = a3;
+      dCopy2 = d;
       v38 = 2112;
       v39 = v20;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "FeatureAvailability - Failed to fetch count of assets that have been analyzed for media task ID: %tu, error: %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v22 = v20;
       v23 = 0;
-      *a6 = v20;
+      *error = v20;
       goto LABEL_22;
     }
 
@@ -993,31 +993,31 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  if (a3 != 2)
+  if (d != 2)
   {
     v26 = PLErrorCreate();
     v27 = v26;
-    if (a6)
+    if (error)
     {
       v28 = v26;
-      *a6 = v27;
+      *error = v27;
     }
 
     v29 = PLBackendGetLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v37 = a3;
+      dCopy2 = d;
       _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "FeatureAvailability - unexpected media processing task ID: %tu", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  v24 = [v34 totalAssetForScenesCount];
-  if (v24)
+  totalAssetForScenesCount = [snapshotCopy totalAssetForScenesCount];
+  if (totalAssetForScenesCount)
   {
-    v25 = v19 / v24;
+    v25 = v19 / totalAssetForScenesCount;
   }
 
   else
@@ -1029,13 +1029,13 @@ LABEL_17:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v37 = *&v25;
+    dCopy2 = *&v25;
     v38 = 2048;
     v39 = v19;
     _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfAllAssetsAnalyzedForScenes: %f, numberOfAssetsWithAnalyzedScenes: %lu", buf, 0x16u);
   }
 
-  [v34 setFractionOfAllAssetsAnalyzedForScenes:v25];
+  [snapshotCopy setFractionOfAllAssetsAnalyzedForScenes:v25];
   v23 = 1;
 LABEL_22:
   v31 = v14;
@@ -1049,11 +1049,11 @@ LABEL_22:
   return v23;
 }
 
-- (BOOL)_addHighlightStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_addHighlightStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  contextCopy = context;
   v8 = PLPhotosSearchGetLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -1075,11 +1075,11 @@ LABEL_22:
 
   v14 = objc_alloc_init(MEMORY[0x1E695D5E0]);
   v15 = +[PLPhotosHighlight entityName];
-  v16 = PLSafeEntityForNameInManagedObjectContext(v15, v7, 0);
+  v16 = PLSafeEntityForNameInManagedObjectContext(v15, contextCopy, 0);
   [v14 setEntity:v16];
 
   v40 = 0;
-  v17 = [v7 countForFetchRequest:v14 error:&v40];
+  v17 = [contextCopy countForFetchRequest:v14 error:&v40];
   v18 = v40;
   if (v17)
   {
@@ -1093,10 +1093,10 @@ LABEL_22:
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "FeatureAvailability - Failed to fetch count of highlights, error: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v20 = v18;
-        *a5 = v18;
+        *error = v18;
       }
 
       v21 = v11;
@@ -1114,11 +1114,11 @@ LABEL_22:
       goto LABEL_37;
     }
 
-    v25 = [objc_opt_class() _predicateForEnrichedHighlights];
-    [v14 setPredicate:v25];
+    _predicateForEnrichedHighlights = [objc_opt_class() _predicateForEnrichedHighlights];
+    [v14 setPredicate:_predicateForEnrichedHighlights];
 
     v39 = v18;
-    v26 = [v7 countForFetchRequest:v14 error:&v39];
+    v26 = [contextCopy countForFetchRequest:v14 error:&v39];
     v27 = v39;
 
     v28 = PLBackendGetLog();
@@ -1139,10 +1139,10 @@ LABEL_22:
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "FeatureAvailability - Failed to fetch count of enriched highlights, error: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v30 = v27;
-        *a5 = v27;
+        *error = v27;
       }
 
       v31 = v11;
@@ -1161,11 +1161,11 @@ LABEL_22:
       goto LABEL_37;
     }
 
-    [v38 setFractionOfHighlightsEnriched:v26 / v17];
+    [snapshotCopy setFractionOfHighlightsEnriched:v26 / v17];
     v33 = PLBackendGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      [v38 fractionOfHighlightsEnriched];
+      [snapshotCopy fractionOfHighlightsEnriched];
       *buf = 134217984;
       v42 = v34;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfHighlightsEnriched: %f", buf, 0xCu);
@@ -1183,7 +1183,7 @@ LABEL_22:
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - countOfAllHighlights is 0", buf, 2u);
     }
 
-    [v38 setFractionOfHighlightsEnriched:0.0];
+    [snapshotCopy setFractionOfHighlightsEnriched:0.0];
   }
 
   v35 = v11;
@@ -1203,11 +1203,11 @@ LABEL_37:
   return v23;
 }
 
-- (BOOL)_addEmbeddingVectorIndexingStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_addEmbeddingVectorIndexingStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  snapshotCopy = snapshot;
+  contextCopy = context;
   v10 = PLPhotosSearchGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -1229,14 +1229,14 @@ LABEL_37:
 
   v16 = objc_alloc_init(MEMORY[0x1E695D5E0]);
   v17 = +[PLManagedAsset entityName];
-  v18 = PLSafeEntityForNameInManagedObjectContext(v17, v9, 0);
+  v18 = PLSafeEntityForNameInManagedObjectContext(v17, contextCopy, 0);
   [v16 setEntity:v18];
 
   v19 = [objc_opt_class() _predicateForCountOfProcessedAssetsForMediaProcessingTaskID:17 priority:0 versionProvider:self->_versionProvider];
   [v16 setPredicate:v19];
 
   v31 = 0;
-  v20 = [v9 countForFetchRequest:v16 error:&v31];
+  v20 = [contextCopy countForFetchRequest:v16 error:&v31];
   v21 = v31;
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1248,10 +1248,10 @@ LABEL_37:
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "FeatureAvailability - Failed to fetch count of assets with mediaAnalysisImageVersion, error: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v25 = v21;
-      *a5 = v21;
+      *error = v21;
     }
 
     v26 = v13;
@@ -1269,10 +1269,10 @@ LABEL_22:
 
   else
   {
-    v22 = [v8 totalCuratedAssetCount];
-    if (v22)
+    totalCuratedAssetCount = [snapshotCopy totalCuratedAssetCount];
+    if (totalCuratedAssetCount)
     {
-      v23 = v20 / v22;
+      v23 = v20 / totalCuratedAssetCount;
     }
 
     else
@@ -1290,7 +1290,7 @@ LABEL_22:
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfCuratedAssetsWithEmbeddings: %f, numberOfCuratedAssetsWithEmbeddings: %lu", buf, 0x16u);
     }
 
-    [v8 setFractionOfCuratedAssetsWithEmbeddingsInVectorIndex:{fmin(v23, 1.0)}];
+    [snapshotCopy setFractionOfCuratedAssetsWithEmbeddingsInVectorIndex:{fmin(v23, 1.0)}];
     v29 = v13;
     if (v14 < 0xFFFFFFFFFFFFFFFELL)
     {
@@ -1306,11 +1306,11 @@ LABEL_22:
   return v20 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 completionHandler:(id)a5
+- (void)_onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  handlerCopy = handler;
   v10 = PLPhotosSearchGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -1329,8 +1329,8 @@ LABEL_22:
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - adding VU cluster index status to processing snapshot", buf, 2u);
   }
 
-  v15 = [v8 pathManager];
-  v16 = [v15 libraryURL];
+  pathManager = [libraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __135__PLFeatureAvailabilityComputer__onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot_photoLibrary_completionHandler___block_invoke;
@@ -1338,13 +1338,13 @@ LABEL_22:
   v17 = v13;
   v25 = v17;
   v26 = v11;
-  v18 = v9;
+  v18 = handlerCopy;
   v24 = v18;
-  v19 = v7;
+  v19 = snapshotCopy;
   v22 = v19;
-  v20 = v8;
+  v20 = libraryCopy;
   v23 = v20;
-  [PLMediaAnalysisServiceRequestAdapter queryVUIndexAssetCountForType:0 photoLibraryURL:v16 completionHandler:v21];
+  [PLMediaAnalysisServiceRequestAdapter queryVUIndexAssetCountForType:0 photoLibraryURL:libraryURL completionHandler:v21];
 }
 
 void __135__PLFeatureAvailabilityComputer__onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot_photoLibrary_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1439,11 +1439,11 @@ uint64_t __135__PLFeatureAvailabilityComputer__onDemand_addVisualUnderstandingCl
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_addCaptioningStatusToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_addCaptioningStatusToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  snapshotCopy = snapshot;
+  contextCopy = context;
   v10 = PLPhotosSearchGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -1465,14 +1465,14 @@ uint64_t __135__PLFeatureAvailabilityComputer__onDemand_addVisualUnderstandingCl
 
   v16 = objc_alloc_init(MEMORY[0x1E695D5E0]);
   v17 = +[PLManagedAsset entityName];
-  v18 = PLSafeEntityForNameInManagedObjectContext(v17, v9, 0);
+  v18 = PLSafeEntityForNameInManagedObjectContext(v17, contextCopy, 0);
   [v16 setEntity:v18];
 
   v19 = [objc_opt_class() _predicateForCountOfProcessedAssetsForMediaProcessingTaskID:17 priority:0 versionProvider:self->_versionProvider];
   [v16 setPredicate:v19];
 
   v34 = 0;
-  v20 = [v9 countForFetchRequest:v16 error:&v34];
+  v20 = [contextCopy countForFetchRequest:v16 error:&v34];
   v21 = v34;
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1486,10 +1486,10 @@ uint64_t __135__PLFeatureAvailabilityComputer__onDemand_addVisualUnderstandingCl
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "FeatureAvailability - %s - failed with error: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v25 = v21;
-      *a5 = v21;
+      *error = v21;
     }
 
     v26 = v13;
@@ -1507,10 +1507,10 @@ LABEL_27:
 
   else
   {
-    v22 = [v8 totalCuratedAssetCount];
-    if (v22)
+    totalCuratedAssetCount = [snapshotCopy totalCuratedAssetCount];
+    if (totalCuratedAssetCount)
     {
-      v23 = v20 / v22;
+      v23 = v20 / totalCuratedAssetCount;
     }
 
     else
@@ -1526,11 +1526,11 @@ LABEL_27:
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfCuratedAssetsWithCaptions: %f", buf, 0xCu);
     }
 
-    [v8 setFractionOfCuratedAssetsWithCaptions:{fmin(v23, 1.0)}];
-    v29 = [v8 totalAssetCount];
-    if (v29)
+    [snapshotCopy setFractionOfCuratedAssetsWithCaptions:{fmin(v23, 1.0)}];
+    totalAssetCount = [snapshotCopy totalAssetCount];
+    if (totalAssetCount)
     {
-      v30 = v20 / v29;
+      v30 = v20 / totalAssetCount;
     }
 
     else
@@ -1548,7 +1548,7 @@ LABEL_27:
       _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - fractionOfAllAssetsWithCaptions: %f, numberOfAssetsWithCaptions: %lu", buf, 0x16u);
     }
 
-    [v8 setFractionOfAllAssetsWithCaptions:v30];
+    [snapshotCopy setFractionOfAllAssetsWithCaptions:v30];
     v32 = v13;
     if (v14 < 0xFFFFFFFFFFFFFFFELL)
     {
@@ -1564,28 +1564,28 @@ LABEL_27:
   return v20 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)_assetCountForPredicate:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (unint64_t)_assetCountForPredicate:(id)predicate managedObjectContext:(id)context error:(id *)error
 {
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v10 = objc_alloc_init(v7);
   v11 = +[PLManagedAsset entityName];
-  v12 = PLSafeEntityForNameInManagedObjectContext(v11, v8, 0);
+  v12 = PLSafeEntityForNameInManagedObjectContext(v11, contextCopy, 0);
   [v10 setEntity:v12];
 
-  [v10 setPredicate:v9];
+  [v10 setPredicate:predicateCopy];
   v16 = 0;
-  v13 = [v8 countForFetchRequest:v10 error:&v16];
+  v13 = [contextCopy countForFetchRequest:v10 error:&v16];
 
   v14 = v16;
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
       v14 = v14;
       v13 = 0;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -1597,12 +1597,12 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)_addAssetCountsToProcessingSnapshot:(id)a3 managedObjectContext:(id)a4 forSceneAnalysis:(BOOL)a5 error:(id *)a6
+- (BOOL)_addAssetCountsToProcessingSnapshot:(id)snapshot managedObjectContext:(id)context forSceneAnalysis:(BOOL)analysis error:(id *)error
 {
-  v6 = a5;
+  analysisCopy = analysis;
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  snapshotCopy = snapshot;
+  contextCopy = context;
   v11 = PLPhotosSearchGetLog();
   v12 = os_signpost_id_generate(v11);
 
@@ -1616,19 +1616,19 @@ LABEL_27:
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "FeatureAvailability - InitializeCounts", "", buf, 2u);
   }
 
-  if (v6)
+  if (analysisCopy)
   {
     v16 = PLBackendGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 totalAssetForScenesCount];
+      totalAssetForScenesCount = [snapshotCopy totalAssetForScenesCount];
       *buf = 134217984;
-      v45 = v17;
+      v45 = totalAssetForScenesCount;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - resetting count before setting, before reset totalAssetForScenesCount: %lu", buf, 0xCu);
     }
 
-    [v9 setTotalCuratedAssetForScenesCount:0];
-    [v9 setTotalAssetForScenesCount:0];
+    [snapshotCopy setTotalCuratedAssetForScenesCount:0];
+    [snapshotCopy setTotalAssetForScenesCount:0];
   }
 
   else
@@ -1636,19 +1636,19 @@ LABEL_27:
     v18 = PLBackendGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v9 totalAssetCount];
+      totalAssetCount = [snapshotCopy totalAssetCount];
       *buf = 134217984;
-      v45 = v19;
+      v45 = totalAssetCount;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - resetting count before setting, before reset totalAssetCount: %lu", buf, 0xCu);
     }
 
-    [v9 setTotalCuratedAssetCount:0];
-    [v9 setTotalAssetCount:0];
+    [snapshotCopy setTotalCuratedAssetCount:0];
+    [snapshotCopy setTotalAssetCount:0];
   }
 
-  v20 = [objc_opt_class() _predicateForAllAssetsAllowedForProcessingForSceneAnalysis:v6];
+  v20 = [objc_opt_class() _predicateForAllAssetsAllowedForProcessingForSceneAnalysis:analysisCopy];
   v43 = 0;
-  v21 = [(PLFeatureAvailabilityComputer *)self _assetCountForPredicate:v20 managedObjectContext:v10 error:&v43];
+  v21 = [(PLFeatureAvailabilityComputer *)self _assetCountForPredicate:v20 managedObjectContext:contextCopy error:&v43];
   v22 = v43;
   if (v21 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1662,10 +1662,10 @@ LABEL_27:
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "FeatureAvailability - %s - failed with error: %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v24 = v22;
-      *a6 = v22;
+      *error = v22;
     }
 
     v25 = v14;
@@ -1688,7 +1688,7 @@ LABEL_27:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v29 = @"No";
-      if (v6)
+      if (analysisCopy)
       {
         v29 = @"Yes";
       }
@@ -1700,10 +1700,10 @@ LABEL_27:
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "FeatureAvailability - totalCount all assets allowed for processing: %lu (forSceneAnalysis: %@)", buf, 0x16u);
     }
 
-    v30 = [objc_opt_class() _predicateForAllCuratedAssetsForSceneAnalysis:v6];
+    v30 = [objc_opt_class() _predicateForAllCuratedAssetsForSceneAnalysis:analysisCopy];
 
     v42 = v22;
-    v31 = [(PLFeatureAvailabilityComputer *)self _assetCountForPredicate:v30 managedObjectContext:v10 error:&v42];
+    v31 = [(PLFeatureAvailabilityComputer *)self _assetCountForPredicate:v30 managedObjectContext:contextCopy error:&v42];
     v32 = v42;
 
     if (v31 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1718,10 +1718,10 @@ LABEL_27:
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "FeatureAvailability - %s - failed with error: %@", buf, 0x16u);
       }
 
-      if (a6)
+      if (error)
       {
         v34 = v32;
-        *a6 = v32;
+        *error = v32;
       }
 
       v35 = v14;
@@ -1740,16 +1740,16 @@ LABEL_27:
 
     else
     {
-      if (v6)
+      if (analysisCopy)
       {
-        [v9 setTotalAssetForScenesCount:v21];
-        [v9 setTotalCuratedAssetForScenesCount:v31];
+        [snapshotCopy setTotalAssetForScenesCount:v21];
+        [snapshotCopy setTotalCuratedAssetForScenesCount:v31];
       }
 
       else
       {
-        [v9 setTotalAssetCount:v21];
-        [v9 setTotalCuratedAssetCount:v31];
+        [snapshotCopy setTotalAssetCount:v21];
+        [snapshotCopy setTotalCuratedAssetCount:v31];
       }
 
       v37 = v14;
@@ -1773,20 +1773,20 @@ LABEL_27:
   return v27;
 }
 
-- (void)_addVersionsToProcessingSnapshot:(id)a3
+- (void)_addVersionsToProcessingSnapshot:(id)snapshot
 {
   versionProvider = self->_versionProvider;
-  v4 = a3;
-  [v4 setMediaAnalysisImageVersion:{-[PLMediaProcessingAlgorithmVersionProvider mediaAnalysisImageVersion](versionProvider, "mediaAnalysisImageVersion")}];
-  [v4 setHasConsistentMediaAnalysisImageVersion:1];
+  snapshotCopy = snapshot;
+  [snapshotCopy setMediaAnalysisImageVersion:{-[PLMediaProcessingAlgorithmVersionProvider mediaAnalysisImageVersion](versionProvider, "mediaAnalysisImageVersion")}];
+  [snapshotCopy setHasConsistentMediaAnalysisImageVersion:1];
 }
 
-- (BOOL)_shouldStopWithProgress:(id)a3 afterCallingCompletionHandler:(id)a4
+- (BOOL)_shouldStopWithProgress:(id)progress afterCallingCompletionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 isCancelled];
-  if (v6)
+  handlerCopy = handler;
+  isCancelled = [progress isCancelled];
+  if (isCancelled)
   {
     v7 = MEMORY[0x1E69BF2D0];
     v8 = MEMORY[0x1E696ABC0];
@@ -1796,31 +1796,31 @@ LABEL_27:
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v11 = [v8 errorWithDomain:v9 code:41031 userInfo:v10];
     v12 = [v7 failureWithError:v11];
-    v5[2](v5, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
-  return v6;
+  return isCancelled;
 }
 
-- (void)_addMediaAnalysisIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addMediaAnalysisIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __119__PLFeatureAvailabilityComputer__addMediaAnalysisIndexingToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v17[3] = &unk_1E7573210;
-  v14 = v13;
+  v14 = handlerCopy;
   v20 = v14;
   objc_copyWeak(&v21, &location);
-  v15 = v12;
+  v15 = progressCopy;
   v18 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v19 = v16;
-  [(PLFeatureAvailabilityComputer *)self _fetchSpotlightSearchIndexingStatusForTaskID:1 photoLibrary:v11 completionHandler:v17];
+  [(PLFeatureAvailabilityComputer *)self _fetchSpotlightSearchIndexingStatusForTaskID:1 photoLibrary:libraryCopy completionHandler:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1924,12 +1924,12 @@ void __119__PLFeatureAvailabilityComputer__addMediaAnalysisIndexingToProcessingS
   }
 }
 
-- (void)_addSceneAnalysisIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addSceneAnalysisIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v14 = PLBackendGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1942,14 +1942,14 @@ void __119__PLFeatureAvailabilityComputer__addMediaAnalysisIndexingToProcessingS
   v19[1] = 3221225472;
   v19[2] = __119__PLFeatureAvailabilityComputer__addSceneAnalysisIndexingToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v19[3] = &unk_1E75731C0;
-  v15 = v13;
+  v15 = handlerCopy;
   v23 = v15;
   objc_copyWeak(&v24, &location);
-  v16 = v12;
+  v16 = progressCopy;
   v20 = v16;
-  v17 = v10;
+  v17 = snapshotCopy;
   v21 = v17;
-  v18 = v11;
+  v18 = libraryCopy;
   v22 = v18;
   [(PLFeatureAvailabilityComputer *)self _fetchSpotlightSearchIndexingStatusForTaskID:2 photoLibrary:v18 completionHandler:v19];
 
@@ -2040,12 +2040,12 @@ void __119__PLFeatureAvailabilityComputer__addSceneAnalysisIndexingToProcessingS
   }
 }
 
-- (void)_addPhotosKnowledgeGraphAvailabilityToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addPhotosKnowledgeGraphAvailabilityToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   v14 = PLPhotosSearchGetLog();
   v15 = os_signpost_id_generate(v14);
 
@@ -2065,8 +2065,8 @@ void __119__PLFeatureAvailabilityComputer__addSceneAnalysisIndexingToProcessingS
   }
 
   v19 = [PLPhotoAnalysisMomentGraphService alloc];
-  v20 = [v11 photoAnalysisClient];
-  v21 = [(PLPhotoAnalysisMomentGraphService *)v19 initWithServiceProvider:v20];
+  photoAnalysisClient = [libraryCopy photoAnalysisClient];
+  v21 = [(PLPhotoAnalysisMomentGraphService *)v19 initWithServiceProvider:photoAnalysisClient];
 
   if (v21)
   {
@@ -2076,12 +2076,12 @@ void __119__PLFeatureAvailabilityComputer__addSceneAnalysisIndexingToProcessingS
     v26[2] = __130__PLFeatureAvailabilityComputer__addPhotosKnowledgeGraphAvailabilityToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
     v26[3] = &unk_1F0F05720;
     objc_copyWeak(&v31, buf);
-    v27 = v12;
-    v30 = v13;
+    v27 = progressCopy;
+    v30 = handlerCopy;
     v32 = v17;
     v33 = v15;
-    v28 = v10;
-    v29 = v11;
+    v28 = snapshotCopy;
+    v29 = libraryCopy;
     [(PLPhotoAnalysisMomentGraphService *)v21 requestGraphIsAvailableWithReply:v26];
 
     objc_destroyWeak(&v31);
@@ -2100,7 +2100,7 @@ void __119__PLFeatureAvailabilityComputer__addSceneAnalysisIndexingToProcessingS
     }
 
     v25 = [MEMORY[0x1E69BF2D0] failureWithError:v22];
-    (*(v13 + 2))(v13, v25);
+    (*(handlerCopy + 2))(handlerCopy, v25);
   }
 }
 
@@ -2194,12 +2194,12 @@ void __130__PLFeatureAvailabilityComputer__addPhotosKnowledgeGraphAvailabilityTo
   }
 }
 
-- (void)_addVUIndexFullClusterStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addVUIndexFullClusterStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   v14 = PLPhotosSearchGetLog();
   v15 = os_signpost_id_generate(v14);
 
@@ -2220,13 +2220,13 @@ void __130__PLFeatureAvailabilityComputer__addPhotosKnowledgeGraphAvailabilityTo
   v30 = v15;
   v18 = v17;
   objc_copyWeak(&v28, buf);
-  v19 = v12;
+  v19 = progressCopy;
   v24 = v19;
-  v20 = v13;
+  v20 = handlerCopy;
   v27 = v20;
-  v21 = v10;
+  v21 = snapshotCopy;
   v25 = v21;
-  v22 = v11;
+  v22 = libraryCopy;
   v26 = v22;
   [(PLFeatureAvailabilityComputer *)self _updateVUClusterStateInProcessingSnapshot:v21 photoLibrary:v22 completionHandler:v23];
 
@@ -2265,25 +2265,25 @@ void __122__PLFeatureAvailabilityComputer__addVUIndexFullClusterStatusToProcessi
   }
 }
 
-- (void)_addSceneAnalysisToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addSceneAnalysisToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __111__PLFeatureAvailabilityComputer__addSceneAnalysisToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2329,25 +2329,25 @@ void __111__PLFeatureAvailabilityComputer__addSceneAnalysisToProcessingSnapshot_
   }
 }
 
-- (void)_addHighlightStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addHighlightStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __113__PLFeatureAvailabilityComputer__addHighlightStatusToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2393,25 +2393,25 @@ void __113__PLFeatureAvailabilityComputer__addHighlightStatusToProcessingSnapsho
   }
 }
 
-- (void)_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __135__PLFeatureAvailabilityComputer__addVisualUnderstandingClusterIndexStatusToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573170;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [(PLFeatureAvailabilityComputer *)self _onDemand_addVisualUnderstandingClusterIndexStatusToProcessingSnapshot:v16 photoLibrary:v17 completionHandler:v18];
 
@@ -2452,25 +2452,25 @@ void __135__PLFeatureAvailabilityComputer__addVisualUnderstandingClusterIndexSta
   }
 }
 
-- (void)_addEmbeddingIndexingToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addEmbeddingIndexingToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __115__PLFeatureAvailabilityComputer__addEmbeddingIndexingToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2516,25 +2516,25 @@ void __115__PLFeatureAvailabilityComputer__addEmbeddingIndexingToProcessingSnaps
   }
 }
 
-- (void)_addCaptioningToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addCaptioningToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __108__PLFeatureAvailabilityComputer__addCaptioningToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2580,25 +2580,25 @@ void __108__PLFeatureAvailabilityComputer__addCaptioningToProcessingSnapshot_pho
   }
 }
 
-- (void)_addAssetForSceneCountsToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addAssetForSceneCountsToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __117__PLFeatureAvailabilityComputer__addAssetForSceneCountsToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2644,25 +2644,25 @@ void __117__PLFeatureAvailabilityComputer__addAssetForSceneCountsToProcessingSna
   }
 }
 
-- (void)_addAssetCountsToProcessingSnapshot:(id)a3 photoLibrary:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)_addAssetCountsToProcessingSnapshot:(id)snapshot photoLibrary:(id)library progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  libraryCopy = library;
+  progressCopy = progress;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __109__PLFeatureAvailabilityComputer__addAssetCountsToProcessingSnapshot_photoLibrary_progress_completionHandler___block_invoke;
   v18[3] = &unk_1E7573148;
   objc_copyWeak(&v23, &location);
-  v14 = v12;
+  v14 = progressCopy;
   v19 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = snapshotCopy;
   v20 = v16;
-  v17 = v11;
+  v17 = libraryCopy;
   v21 = v17;
   [v17 performBlock:v18];
 
@@ -2708,9 +2708,9 @@ void __109__PLFeatureAvailabilityComputer__addAssetCountsToProcessingSnapshot_ph
   }
 }
 
-- (BOOL)failAvailabilityForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)failAvailabilityForPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -2739,17 +2739,17 @@ void __109__PLFeatureAvailabilityComputer__addAssetCountsToProcessingSnapshot_ph
   v20[3] = &unk_1E7578898;
   v22 = &v24;
   v20[4] = self;
-  v12 = v6;
+  v12 = libraryCopy;
   v21 = v12;
   v23 = buf;
   [v11 sync:v20 identifyingBlock:0 library:0];
 
   v13 = *(v25 + 24);
   v14 = *(v29 + 5);
-  if (a4 && (v13 & 1) == 0)
+  if (error && (v13 & 1) == 0)
   {
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v10;
@@ -2778,9 +2778,9 @@ void __71__PLFeatureAvailabilityComputer_failAvailabilityForPhotoLibrary_error__
   objc_storeStrong((*(a1[7] + 8) + 40), v5);
 }
 
-- (BOOL)clearAvailabilityStateForPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)clearAvailabilityStateForPhotoLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -2809,17 +2809,17 @@ void __71__PLFeatureAvailabilityComputer_failAvailabilityForPhotoLibrary_error__
   v20[3] = &unk_1E7578898;
   v22 = &v24;
   v20[4] = self;
-  v12 = v6;
+  v12 = libraryCopy;
   v21 = v12;
   v23 = buf;
   [v11 sync:v20 identifyingBlock:0 library:0];
 
   v13 = *(v25 + 24);
   v14 = *(v29 + 5);
-  if (a4 && (v13 & 1) == 0)
+  if (error && (v13 & 1) == 0)
   {
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v10;
@@ -2848,10 +2848,10 @@ void __77__PLFeatureAvailabilityComputer_clearAvailabilityStateForPhotoLibrary_e
   objc_storeStrong((*(a1[7] + 8) + 40), v5);
 }
 
-- (id)computeAvailabilityForPhotoLibrary:(id)a3 shouldPersist:(BOOL)a4 completionHandler:(id)a5
+- (id)computeAvailabilityForPhotoLibrary:(id)library shouldPersist:(BOOL)persist completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  libraryCopy = library;
+  handlerCopy = handler;
   v10 = PLPhotosSearchGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -2879,12 +2879,12 @@ void __77__PLFeatureAvailabilityComputer_clearAvailabilityStateForPhotoLibrary_e
   v16 = v13;
   v28 = v16;
   v29 = v11;
-  v17 = v9;
+  v17 = handlerCopy;
   v26 = v17;
   objc_copyWeak(&v27, buf);
-  v18 = v8;
+  v18 = libraryCopy;
   v24 = v18;
-  v30 = a4;
+  persistCopy = persist;
   v19 = v15;
   v25 = v19;
   v20 = [(PLFeatureAvailabilityComputer *)self computeSnapshotForPhotoLibrary:v18 completionHandler:v23];
@@ -2982,10 +2982,10 @@ void __100__PLFeatureAvailabilityComputer_computeAvailabilityForPhotoLibrary_sho
   }
 }
 
-- (id)computeSnapshotForPhotoLibrary:(id)a3 completionHandler:(id)a4
+- (id)computeSnapshotForPhotoLibrary:(id)library completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   v8 = PLPhotosSearchGetLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -3015,9 +3015,9 @@ void __100__PLFeatureAvailabilityComputer_computeAvailabilityForPhotoLibrary_sho
   v15 = v11;
   v20 = v15;
   v21 = v9;
-  v16 = v7;
+  v16 = handlerCopy;
   v19 = v16;
-  [(PLFeatureAvailabilityComputer *)self _addAssetCountsToProcessingSnapshot:v12 photoLibrary:v6 progress:v14 completionHandler:v18];
+  [(PLFeatureAvailabilityComputer *)self _addAssetCountsToProcessingSnapshot:v12 photoLibrary:libraryCopy progress:v14 completionHandler:v18];
 
   return v14;
 }
@@ -3051,18 +3051,18 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
   (*(*(a1 + 32) + 16))();
 }
 
-- (PLFeatureAvailabilityComputer)initWithTransitionDelegate:(id)a3 progressDelegate:(id)a4
+- (PLFeatureAvailabilityComputer)initWithTransitionDelegate:(id)delegate progressDelegate:(id)progressDelegate
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  progressDelegateCopy = progressDelegate;
   v14.receiver = self;
   v14.super_class = PLFeatureAvailabilityComputer;
   v8 = [(PLFeatureAvailabilityComputer *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_transitionDelegate, v6);
-    objc_storeWeak(&v9->_progressDelegate, v7);
+    objc_storeWeak(&v8->_transitionDelegate, delegateCopy);
+    objc_storeWeak(&v9->_progressDelegate, progressDelegateCopy);
     v10 = +[PLFeatureProcessingAlgorithmVersionProvider provider];
     versionProvider = v9->_versionProvider;
     v9->_versionProvider = v10;
@@ -3087,9 +3087,9 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
   return v6;
 }
 
-+ (id)_savedAssetTypePredicateForSceneAnalysis:(BOOL)a3
++ (id)_savedAssetTypePredicateForSceneAnalysis:(BOOL)analysis
 {
-  v3 = [MEMORY[0x1E69BF328] maskForFeatureAvailabilityForSceneAnalysis:a3];
+  v3 = [MEMORY[0x1E69BF328] maskForFeatureAvailabilityForSceneAnalysis:analysis];
   v4 = MEMORY[0x1E69BF328];
 
   return [v4 predicateForIncludeMask:v3 useIndex:1];
@@ -3121,9 +3121,9 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
   return v2;
 }
 
-+ (id)_predicateForAllAssetsAllowedForProcessingForSceneAnalysis:(BOOL)a3
++ (id)_predicateForAllAssetsAllowedForProcessingForSceneAnalysis:(BOOL)analysis
 {
-  v3 = a3;
+  analysisCopy = analysis;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = +[PLManagedAsset predicateToIncludeOnlyAllowedForAnalysisAssets];
   if (v5)
@@ -3131,10 +3131,10 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
     [v4 addObject:v5];
   }
 
-  v6 = [objc_opt_class() _predicatesForVisibleAssets];
-  [v4 addObjectsFromArray:v6];
+  _predicatesForVisibleAssets = [objc_opt_class() _predicatesForVisibleAssets];
+  [v4 addObjectsFromArray:_predicatesForVisibleAssets];
 
-  v7 = [objc_opt_class() _savedAssetTypePredicateForSceneAnalysis:v3];
+  v7 = [objc_opt_class() _savedAssetTypePredicateForSceneAnalysis:analysisCopy];
   [v4 addObject:v7];
 
   if ([v4 count])
@@ -3159,9 +3159,9 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
   return v8;
 }
 
-+ (id)_predicateForAllCuratedAssetsForSceneAnalysis:(BOOL)a3
++ (id)_predicateForAllCuratedAssetsForSceneAnalysis:(BOOL)analysis
 {
-  v3 = a3;
+  analysisCopy = analysis;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = PLExtendedAssetsInHighlightPredicate();
   if (v5)
@@ -3176,10 +3176,10 @@ void __82__PLFeatureAvailabilityComputer_computeSnapshotForPhotoLibrary_completi
     [v4 addObject:v6];
   }
 
-  v7 = [objc_opt_class() _predicatesForVisibleAssets];
-  [v4 addObjectsFromArray:v7];
+  _predicatesForVisibleAssets = [objc_opt_class() _predicatesForVisibleAssets];
+  [v4 addObjectsFromArray:_predicatesForVisibleAssets];
 
-  v8 = [objc_opt_class() _savedAssetTypePredicateForSceneAnalysis:v3];
+  v8 = [objc_opt_class() _savedAssetTypePredicateForSceneAnalysis:analysisCopy];
   [v4 addObject:v8];
 
   if ([v4 count])

@@ -2,16 +2,16 @@
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
 - (NSString)debugDescription;
 - (NavigationSession)navigationSession;
-- (PedestrianARSessionTransportTypeMonitor)initWithObserver:(id)a3 platformController:(id)a4;
+- (PedestrianARSessionTransportTypeMonitor)initWithObserver:(id)observer platformController:(id)controller;
 - (PlatformController)platformController;
 - (RoutePlanningSession)routePlanningSession;
 - (void)dealloc;
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4;
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)setNavigationSession:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type;
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)setNavigationSession:(id)session;
+- (void)setRoutePlanningSession:(id)session;
 - (void)updateState;
 @end
 
@@ -38,55 +38,55 @@
   return WeakRetained;
 }
 
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   v6 = sub_100BFF360();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = collectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Navigation updated route collection: %@", &v7, 0x16u);
   }
 
   [(PedestrianARSessionTransportTypeMonitor *)self updateState];
 }
 
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type
 {
   v5 = sub_100BFF360();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Navigation changed transport type", &v6, 0xCu);
   }
 
   [(PedestrianARSessionTransportTypeMonitor *)self updateState];
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
   v6 = sub_100BFF360();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Route planning changed transport type", &v7, 0xCu);
   }
 
   [(PedestrianARSessionTransportTypeMonitor *)self updateState];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -97,7 +97,7 @@
   v8 = v7;
   [(PedestrianARSessionTransportTypeMonitor *)self setRoutePlanningSession:v8];
 
-  v11 = v6;
+  v11 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -117,83 +117,83 @@
 
 - (NSString)debugDescription
 {
-  v3 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
-  if (v3)
+  routePlanningSession = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
+  if (routePlanningSession)
   {
-    v4 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
-    v5 = [v4 currentTransportType];
+    routePlanningSession2 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
+    currentTransportType = [routePlanningSession2 currentTransportType];
   }
 
   else
   {
-    v4 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
-    if (v4)
+    routePlanningSession2 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
+    if (routePlanningSession2)
     {
-      v6 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
-      v5 = [v6 currentTransportType];
+      navigationSession = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
+      currentTransportType = [navigationSession currentTransportType];
     }
 
     else
     {
-      v5 = 0;
+      currentTransportType = 0;
     }
   }
 
-  v7 = [objc_opt_class() friendlyName];
-  v8 = v7;
-  if ((v5 - 1) > 4)
+  friendlyName = [objc_opt_class() friendlyName];
+  v8 = friendlyName;
+  if ((currentTransportType - 1) > 4)
   {
     v9 = @"Undefined";
   }
 
   else
   {
-    v9 = off_10164D8E0[(v5 - 1)];
+    v9 = off_10164D8E0[(currentTransportType - 1)];
   }
 
-  v10 = [NSString stringWithFormat:@"%@\ntransport type: %@\n", v7, v9];
+  v10 = [NSString stringWithFormat:@"%@\ntransport type: %@\n", friendlyName, v9];
 
   return v10;
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100BFF360();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating navigation session: %@", &v8, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_navigationSession);
   [WeakRetained unregisterObserver:self];
 
-  v7 = objc_storeWeak(&self->_navigationSession, v4);
-  [v4 registerObserver:self];
+  v7 = objc_storeWeak(&self->_navigationSession, sessionCopy);
+  [sessionCopy registerObserver:self];
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = sub_100BFF360();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating route planning session: %@", &v8, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_routePlanningSession);
   [WeakRetained unregisterObserver:self];
 
-  v7 = objc_storeWeak(&self->_routePlanningSession, v4);
-  [v4 registerObserver:self];
+  v7 = objc_storeWeak(&self->_routePlanningSession, sessionCopy);
+  [sessionCopy registerObserver:self];
 }
 
 - (void)updateState
@@ -202,45 +202,45 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134349056;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating state", &v12, 0xCu);
   }
 
-  v4 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
+  routePlanningSession = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
 
-  if (v4)
+  if (routePlanningSession)
   {
-    v5 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
-    v6 = [v5 currentTransportType] == 2;
-    v7 = self;
+    routePlanningSession2 = [(PedestrianARSessionTransportTypeMonitor *)self routePlanningSession];
+    v6 = [routePlanningSession2 currentTransportType] == 2;
+    selfCopy3 = self;
   }
 
   else
   {
-    v8 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
+    navigationSession = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
 
-    if (!v8)
+    if (!navigationSession)
     {
       [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:0];
       return;
     }
 
-    v5 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
-    if ([v5 currentTransportType] == 2)
+    routePlanningSession2 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
+    if ([routePlanningSession2 currentTransportType] == 2)
     {
-      v9 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
-      v10 = [v9 currentRouteCollection];
-      v11 = [v10 currentRoute];
-      -[PedestrianARSessionMonitor setShouldShowPedestrianAR:](self, "setShouldShowPedestrianAR:", [v11 isWalkingOnlyTransitRoute] ^ 1);
+      navigationSession2 = [(PedestrianARSessionTransportTypeMonitor *)self navigationSession];
+      currentRouteCollection = [navigationSession2 currentRouteCollection];
+      currentRoute = [currentRouteCollection currentRoute];
+      -[PedestrianARSessionMonitor setShouldShowPedestrianAR:](self, "setShouldShowPedestrianAR:", [currentRoute isWalkingOnlyTransitRoute] ^ 1);
 
       goto LABEL_6;
     }
 
-    v7 = self;
+    selfCopy3 = self;
     v6 = 0;
   }
 
-  [(PedestrianARSessionMonitor *)v7 setShouldShowPedestrianAR:v6];
+  [(PedestrianARSessionMonitor *)selfCopy3 setShouldShowPedestrianAR:v6];
 LABEL_6:
 }
 
@@ -250,7 +250,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -268,11 +268,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v7 dealloc];
 }
 
-- (PedestrianARSessionTransportTypeMonitor)initWithObserver:(id)a3 platformController:(id)a4
+- (PedestrianARSessionTransportTypeMonitor)initWithObserver:(id)observer platformController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  controllerCopy = controller;
+  if (!observerCopy)
   {
     v20 = sub_10006D178();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -301,7 +301,7 @@ LABEL_6:
     }
   }
 
-  if (!v7)
+  if (!controllerCopy)
   {
     v23 = sub_10006D178();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -332,7 +332,7 @@ LABEL_6:
 
   v26.receiver = self;
   v26.super_class = PedestrianARSessionTransportTypeMonitor;
-  v8 = [(PedestrianARSessionMonitor *)&v26 initWithObserver:v6];
+  v8 = [(PedestrianARSessionMonitor *)&v26 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = sub_100BFF360();
@@ -343,16 +343,16 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v10 = objc_storeWeak(&v8->_platformController, v7);
-    [v7 registerObserver:v8];
+    v10 = objc_storeWeak(&v8->_platformController, controllerCopy);
+    [controllerCopy registerObserver:v8];
 
     WeakRetained = objc_loadWeakRetained(&v8->_platformController);
-    v12 = [WeakRetained currentSession];
+    currentSession = [WeakRetained currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = currentSession;
     }
 
     else
@@ -364,12 +364,12 @@ LABEL_6:
 
     [(PedestrianARSessionTransportTypeMonitor *)v8 setRoutePlanningSession:v14];
     v15 = objc_loadWeakRetained(&v8->_platformController);
-    v16 = [v15 currentSession];
+    currentSession2 = [v15 currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = currentSession2;
     }
 
     else

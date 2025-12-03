@@ -1,22 +1,22 @@
 @interface PKPaymentTransactionArchive
-- (BOOL)allArchiveLocationsWithType:(unint64_t)a3 areArchived:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToArchive:(id)a3;
-- (id)archiveLocationMatchingLocation:(id)a3;
-- (id)archiveLocationsWithCloudStoreZone:(id)a3 isArchived:(BOOL)a4;
-- (id)archiveLocationsWithType:(unint64_t)a3 isArchived:(BOOL)a4;
+- (BOOL)allArchiveLocationsWithType:(unint64_t)type areArchived:(BOOL)archived;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToArchive:(id)archive;
+- (id)archiveLocationMatchingLocation:(id)location;
+- (id)archiveLocationsWithCloudStoreZone:(id)zone isArchived:(BOOL)archived;
+- (id)archiveLocationsWithType:(unint64_t)type isArchived:(BOOL)archived;
 - (id)description;
 - (unint64_t)hash;
-- (void)insertOrUpdateArchiveLocationWithCloudStoreZone:(id)a3 isArchived:(BOOL)a4 insertionMode:(unint64_t)a5;
-- (void)updateArchiveLocationsWithType:(unint64_t)a3 isArchived:(BOOL)a4;
-- (void)updateTransactionArchiveLocationsWithArchive:(id)a3 type:(unint64_t)a4 archived:(BOOL)a5;
+- (void)insertOrUpdateArchiveLocationWithCloudStoreZone:(id)zone isArchived:(BOOL)archived insertionMode:(unint64_t)mode;
+- (void)updateArchiveLocationsWithType:(unint64_t)type isArchived:(BOOL)archived;
+- (void)updateTransactionArchiveLocationsWithArchive:(id)archive type:(unint64_t)type archived:(BOOL)archived;
 @end
 
 @implementation PKPaymentTransactionArchive
 
-- (void)updateArchiveLocationsWithType:(unint64_t)a3 isArchived:(BOOL)a4
+- (void)updateArchiveLocationsWithType:(unint64_t)type isArchived:(BOOL)archived
 {
-  v4 = a4;
+  archivedCopy = archived;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
@@ -38,9 +38,9 @@
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
-        if ([v11 type] == a3)
+        if ([v11 type] == type)
         {
-          [v11 setArchived:v4];
+          [v11 setArchived:archivedCopy];
         }
       }
 
@@ -51,9 +51,9 @@
   }
 }
 
-- (BOOL)allArchiveLocationsWithType:(unint64_t)a3 areArchived:(BOOL)a4
+- (BOOL)allArchiveLocationsWithType:(unint64_t)type areArchived:(BOOL)archived
 {
-  v4 = a4;
+  archivedCopy = archived;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -75,7 +75,7 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 isArchived] != v4 || objc_msgSend(v11, "type") != a3)
+        if ([v11 isArchived] != archivedCopy || objc_msgSend(v11, "type") != type)
         {
           v12 = 0;
           goto LABEL_13;
@@ -103,10 +103,10 @@ LABEL_13:
   return v12;
 }
 
-- (id)archiveLocationMatchingLocation:(id)a3
+- (id)archiveLocationMatchingLocation:(id)location
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -126,15 +126,15 @@ LABEL_13:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 type];
-        if (v10 == [v4 type])
+        type = [v9 type];
+        if (type == [locationCopy type])
         {
-          v11 = [v9 cloudStoreZone];
-          v12 = [v4 cloudStoreZone];
-          v13 = v12;
-          if (v11)
+          cloudStoreZone = [v9 cloudStoreZone];
+          cloudStoreZone2 = [locationCopy cloudStoreZone];
+          v13 = cloudStoreZone2;
+          if (cloudStoreZone)
           {
-            v14 = v12 == 0;
+            v14 = cloudStoreZone2 == 0;
           }
 
           else
@@ -145,7 +145,7 @@ LABEL_13:
           if (v14)
           {
 
-            if (v11 == v13)
+            if (cloudStoreZone == v13)
             {
               goto LABEL_18;
             }
@@ -153,7 +153,7 @@ LABEL_13:
 
           else
           {
-            v15 = [v11 isEqual:v12];
+            v15 = [cloudStoreZone isEqual:cloudStoreZone2];
 
             if (v15)
             {
@@ -180,9 +180,9 @@ LABEL_19:
   return v6;
 }
 
-- (id)archiveLocationsWithType:(unint64_t)a3 isArchived:(BOOL)a4
+- (id)archiveLocationsWithType:(unint64_t)type isArchived:(BOOL)archived
 {
-  v4 = a4;
+  archivedCopy = archived;
   v21 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v16 = 0u;
@@ -205,7 +205,7 @@ LABEL_19:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 type] == a3 && objc_msgSend(v13, "isArchived") == v4)
+        if ([v13 type] == type && objc_msgSend(v13, "isArchived") == archivedCopy)
         {
           [v7 addObject:v13];
         }
@@ -222,11 +222,11 @@ LABEL_19:
   return v14;
 }
 
-- (id)archiveLocationsWithCloudStoreZone:(id)a3 isArchived:(BOOL)a4
+- (id)archiveLocationsWithCloudStoreZone:(id)zone isArchived:(BOOL)archived
 {
-  v4 = a4;
+  archivedCopy = archived;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  zoneCopy = zone;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v19 = 0u;
   v20 = 0u;
@@ -248,26 +248,26 @@ LABEL_19:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 cloudStoreZone];
-        v15 = v14;
-        if (v6 && v14)
+        cloudStoreZone = [v13 cloudStoreZone];
+        v15 = cloudStoreZone;
+        if (zoneCopy && cloudStoreZone)
         {
-          if (([v6 isEqual:v14] & 1) == 0)
+          if (([zoneCopy isEqual:cloudStoreZone] & 1) == 0)
           {
             goto LABEL_12;
           }
         }
 
-        else if (v14 != v6)
+        else if (cloudStoreZone != zoneCopy)
         {
 LABEL_12:
 
           continue;
         }
 
-        v16 = [v13 isArchived];
+        isArchived = [v13 isArchived];
 
-        if (v16 == v4)
+        if (isArchived == archivedCopy)
         {
           [v7 addObject:v13];
         }
@@ -284,12 +284,12 @@ LABEL_12:
   return v17;
 }
 
-- (void)insertOrUpdateArchiveLocationWithCloudStoreZone:(id)a3 isArchived:(BOOL)a4 insertionMode:(unint64_t)a5
+- (void)insertOrUpdateArchiveLocationWithCloudStoreZone:(id)zone isArchived:(BOOL)archived insertionMode:(unint64_t)mode
 {
-  v6 = a4;
+  archivedCopy = archived;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  zoneCopy = zone;
+  if (zoneCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -299,7 +299,7 @@ LABEL_12:
     v10 = [(NSSet *)v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
-      v21 = v6;
+      v21 = archivedCopy;
       v11 = *v23;
       while (2)
       {
@@ -311,11 +311,11 @@ LABEL_12:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 cloudStoreZone];
-          if (v14)
+          cloudStoreZone = [v13 cloudStoreZone];
+          if (cloudStoreZone)
           {
-            v15 = v14;
-            v16 = [v14 isEqual:v8];
+            v15 = cloudStoreZone;
+            v16 = [cloudStoreZone isEqual:zoneCopy];
 
             if (v16)
             {
@@ -335,11 +335,11 @@ LABEL_12:
       }
 
 LABEL_13:
-      v6 = v21;
+      archivedCopy = v21;
     }
 
     v17 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:self->_locations];
-    if (a5 == 1)
+    if (mode == 1)
     {
       if (v10)
       {
@@ -349,7 +349,7 @@ LABEL_13:
 
     else
     {
-      if (a5)
+      if (mode)
       {
 LABEL_20:
         v19 = [v17 copy];
@@ -361,12 +361,12 @@ LABEL_20:
 
       if (v10)
       {
-        [v10 setArchived:v6];
+        [v10 setArchived:archivedCopy];
         goto LABEL_20;
       }
     }
 
-    v18 = [[PKPaymentTransactionArchiveLocation alloc] initWithType:0 archived:v6 cloudStoreZone:v8];
+    v18 = [[PKPaymentTransactionArchiveLocation alloc] initWithType:0 archived:archivedCopy cloudStoreZone:zoneCopy];
     [v17 addObject:v18];
 
     goto LABEL_20;
@@ -375,16 +375,16 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)updateTransactionArchiveLocationsWithArchive:(id)a3 type:(unint64_t)a4 archived:(BOOL)a5
+- (void)updateTransactionArchiveLocationsWithArchive:(id)archive type:(unint64_t)type archived:(BOOL)archived
 {
-  v5 = a5;
+  archivedCopy = archived;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 locations];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  locations = [archive locations];
+  v9 = [locations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -395,55 +395,55 @@ LABEL_21:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(locations);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 type] == a4)
+        if ([v13 type] == type)
         {
           v14 = [(PKPaymentTransactionArchive *)self archiveLocationMatchingLocation:v13];
           v15 = v14;
           if (v14)
           {
-            [v14 setArchived:v5];
+            [v14 setArchived:archivedCopy];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [locations countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionArchive *)self isEqualToArchive:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionArchive *)self isEqualToArchive:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToArchive:(id)a3
+- (BOOL)isEqualToArchive:(id)archive
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  archiveCopy = archive;
+  v5 = archiveCopy;
+  if (!archiveCopy)
   {
     goto LABEL_13;
   }
 
-  v6 = v4[2];
+  v6 = archiveCopy[2];
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;

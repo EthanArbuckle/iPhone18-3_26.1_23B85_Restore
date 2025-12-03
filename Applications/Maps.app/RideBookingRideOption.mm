@@ -5,20 +5,20 @@
 - (NSString)selectionCommandTitle;
 - (NSUserActivity)userActivityForBookingInApplication;
 - (RideBookingApplication)application;
-- (RideBookingRideOption)initWithApplication:(id)a3 optionName:(id)a4 paymentMethods:(id)a5 estimatedPickupDate:(id)a6 passengersChoice:(id)a7;
+- (RideBookingRideOption)initWithApplication:(id)application optionName:(id)name paymentMethods:(id)methods estimatedPickupDate:(id)date passengersChoice:(id)choice;
 - (RidesharingSpecialPricingBadge)specialPricingBadge;
 - (UIImage)iconImage;
 - (id)description;
-- (void)setIntentsRideOption:(id)a3;
+- (void)setIntentsRideOption:(id)option;
 @end
 
 @implementation RideBookingRideOption
 
-- (void)setIntentsRideOption:(id)a3
+- (void)setIntentsRideOption:(id)option
 {
-  value = a3;
-  v4 = [(RideBookingRideOption *)self intentsRideOption];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = option;
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  if (([intentsRideOption isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_101214F04, value, 3);
   }
@@ -40,33 +40,33 @@
   return v5;
 }
 
-- (RideBookingRideOption)initWithApplication:(id)a3 optionName:(id)a4 paymentMethods:(id)a5 estimatedPickupDate:(id)a6 passengersChoice:(id)a7
+- (RideBookingRideOption)initWithApplication:(id)application optionName:(id)name paymentMethods:(id)methods estimatedPickupDate:(id)date passengersChoice:(id)choice
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  applicationCopy = application;
+  nameCopy = name;
+  methodsCopy = methods;
+  dateCopy = date;
+  choiceCopy = choice;
   v24.receiver = self;
   v24.super_class = RideBookingRideOption;
   v17 = [(RideBookingRideOption *)&v24 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    objc_storeWeak(&v17->_application, v12);
-    if (v15)
+    objc_storeWeak(&v17->_application, applicationCopy);
+    if (dateCopy)
     {
-      [v15 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       v21 = [NSNumber numberWithUnsignedInteger:vcvtpd_u64_f64(v20 * 0.0166666667)];
       etaMinutes = v17->_etaMinutes;
       v17->_etaMinutes = v21;
     }
 
-    objc_storeStrong(&v17->_paymentMethods, a5);
-    objc_storeStrong(&v17->_passengerChoices, a7);
+    objc_storeStrong(&v17->_paymentMethods, methods);
+    objc_storeStrong(&v17->_passengerChoices, choice);
   }
 
   return v17;
@@ -74,19 +74,19 @@
 
 - (NSUserActivity)userActivityForBookingInApplication
 {
-  v2 = [(RideBookingRideOption *)self intentsRideOption];
-  v3 = [v2 userActivityForBookingInApplication];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  userActivityForBookingInApplication = [intentsRideOption userActivityForBookingInApplication];
 
-  return v3;
+  return userActivityForBookingInApplication;
 }
 
 - (RidesharingSpecialPricingBadge)specialPricingBadge
 {
   v3 = +[RideBookingAccessProxy imageCache];
-  v4 = [(RideBookingRideOption *)self intentsRideOption];
-  v5 = [v4 specialPricingBadgeImage];
-  v6 = [v5 _identifier];
-  v7 = [v3 imageForKey:v6];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  specialPricingBadgeImage = [intentsRideOption specialPricingBadgeImage];
+  _identifier = [specialPricingBadgeImage _identifier];
+  v7 = [v3 imageForKey:_identifier];
 
   v8 = [[RidesharingSpecialPricingBadge alloc] initWithTemplateImage:v7];
 
@@ -95,34 +95,34 @@
 
 - (NSString)partySizeSelectionPrompt
 {
-  v2 = [(RideBookingRideOption *)self intentsRideOption];
-  v3 = [v2 availablePartySizeOptionsSelectionPrompt];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  availablePartySizeOptionsSelectionPrompt = [intentsRideOption availablePartySizeOptionsSelectionPrompt];
 
-  return v3;
+  return availablePartySizeOptionsSelectionPrompt;
 }
 
 - (NSString)priceRange
 {
-  v3 = [(RideBookingRideOption *)self intentsRideOption];
-  v4 = [v3 usesMeteredFare];
-  v5 = [v4 BOOLValue];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  usesMeteredFare = [intentsRideOption usesMeteredFare];
+  bOOLValue = [usesMeteredFare BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = +[NSBundle mainBundle];
-    v7 = [v6 localizedStringForKey:@"Metered fare [Ridesharing]" value:@"localized string not found" table:0];
+    intentsRideOption2 = +[NSBundle mainBundle];
+    v7 = [intentsRideOption2 localizedStringForKey:@"Metered fare [Ridesharing]" value:@"localized string not found" table:0];
   }
 
   else
   {
-    v6 = [(RideBookingRideOption *)self intentsRideOption];
-    v8 = [v6 priceRange];
-    v9 = [v8 _maps_formattedStringWithDefaultShortFormatStrings];
-    v10 = v9;
+    intentsRideOption2 = [(RideBookingRideOption *)self intentsRideOption];
+    priceRange = [intentsRideOption2 priceRange];
+    _maps_formattedStringWithDefaultShortFormatStrings = [priceRange _maps_formattedStringWithDefaultShortFormatStrings];
+    v10 = _maps_formattedStringWithDefaultShortFormatStrings;
     v11 = &stru_1016631F0;
-    if (v9)
+    if (_maps_formattedStringWithDefaultShortFormatStrings)
     {
-      v11 = v9;
+      v11 = _maps_formattedStringWithDefaultShortFormatStrings;
     }
 
     v7 = v11;
@@ -137,10 +137,10 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v2 = [(RideBookingRideOption *)self intentsRideOption];
-  v3 = [v2 availablePartySizeOptions];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  availablePartySizeOptions = [intentsRideOption availablePartySizeOptions];
 
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v4 = [availablePartySizeOptions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -154,33 +154,33 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availablePartySizeOptions);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v8);
-        v11 = [v9 unsignedIntegerValue];
-        v12 = [v10 partySizeRange];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        partySizeRange = [v10 partySizeRange];
         [v10 partySizeRange];
-        if (v11 <= &v12[v13])
+        if (unsignedIntegerValue <= &partySizeRange[v13])
         {
-          v15 = [v10 partySizeRange];
+          partySizeRange2 = [v10 partySizeRange];
           [v10 partySizeRange];
-          v14 = &v15[v16];
+          unsignedIntegerValue2 = &partySizeRange2[v16];
         }
 
         else
         {
-          v14 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v9 unsignedIntegerValue];
         }
 
-        v6 = [NSNumber numberWithUnsignedInteger:v14];
+        v6 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue2];
 
         v8 = v8 + 1;
         v9 = v6;
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [availablePartySizeOptions countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);
@@ -191,20 +191,20 @@
     v6 = 0;
   }
 
-  v17 = [(RideBookingRideOption *)self etaMinutes];
-  v18 = [NSString _maps_ridesharingETA:v17 partySize:v6];
+  etaMinutes = [(RideBookingRideOption *)self etaMinutes];
+  v18 = [NSString _maps_ridesharingETA:etaMinutes partySize:v6];
 
   return v18;
 }
 
 - (NSString)selectionCommandTitle
 {
-  v2 = [(RideBookingRideOption *)self intentsRideOption];
-  v3 = [v2 userActivityForBookingInApplication];
+  intentsRideOption = [(RideBookingRideOption *)self intentsRideOption];
+  userActivityForBookingInApplication = [intentsRideOption userActivityForBookingInApplication];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (userActivityForBookingInApplication)
   {
     v6 = @"Open [Ridesharing]";
   }
@@ -221,14 +221,14 @@
 
 - (UIImage)iconImage
 {
-  v3 = [(RideBookingRideOption *)self application];
+  application = [(RideBookingRideOption *)self application];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(RideBookingRideOption *)self application];
-    v6 = [v5 iconWithFormat:0];
+    application2 = [(RideBookingRideOption *)self application];
+    v6 = [application2 iconWithFormat:0];
   }
 
   else

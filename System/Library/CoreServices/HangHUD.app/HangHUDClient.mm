@@ -1,13 +1,13 @@
 @interface HangHUDClient
 + (id)sharedInstance;
-- (HangHUDClient)initWithIdentifier:(id)a3;
+- (HangHUDClient)initWithIdentifier:(id)identifier;
 - (HangHUDClientDelegate)delegate;
-- (id)obtainKeepHangHUDAliveAssertion:(id)a3;
-- (void)clearHUDWithCompletion:(id)a3;
-- (void)sendHangHUDInfo:(id)a3 completion:(id)a4;
-- (void)sendHudConfiguration:(id)a3 completion:(id)a4;
-- (void)sendMonitoredStates:(id)a3 completion:(id)a4;
-- (void)sendProcExitRecord:(id)a3 completion:(id)a4;
+- (id)obtainKeepHangHUDAliveAssertion:(id)assertion;
+- (void)clearHUDWithCompletion:(id)completion;
+- (void)sendHangHUDInfo:(id)info completion:(id)completion;
+- (void)sendHudConfiguration:(id)configuration completion:(id)completion;
+- (void)sendMonitoredStates:(id)states completion:(id)completion;
+- (void)sendProcExitRecord:(id)record completion:(id)completion;
 @end
 
 @implementation HangHUDClient
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000CA54;
   block[3] = &unk_100030840;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003E798 != -1)
   {
     dispatch_once(&qword_10003E798, block);
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (HangHUDClient)initWithIdentifier:(id)a3
+- (HangHUDClient)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = HangHUDClient;
   v5 = [(HangHUDClient *)&v20 init];
@@ -50,7 +50,7 @@
       v18[1] = 3221225472;
       v18[2] = sub_10000CCE4;
       v18[3] = &unk_100030D18;
-      v19 = v4;
+      v19 = identifierCopy;
       v11 = [BSServiceConnection connectionWithEndpoint:v10 clientContextBuilder:v18];
       connection = v5->_connection;
       v5->_connection = v11;
@@ -79,24 +79,24 @@
   return v5;
 }
 
-- (id)obtainKeepHangHUDAliveAssertion:(id)a3
+- (id)obtainKeepHangHUDAliveAssertion:(id)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   v4 = [RBSAssertion alloc];
   v5 = [RBSProcessIdentity identityForAngelJobLabel:@"com.apple.HangHUD"];
   v6 = [RBSTarget targetWithProcessIdentity:v5];
   v7 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v11 = v7;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  v9 = [v4 initWithExplanation:v3 target:v6 attributes:v8];
+  v9 = [v4 initWithExplanation:assertionCopy target:v6 attributes:v8];
 
   return v9;
 }
 
-- (void)sendHangHUDInfo:(id)a3 completion:(id)a4
+- (void)sendHangHUDInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = sub_100002F0C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -112,7 +112,7 @@
 
   if (v19)
   {
-    [v19 receiveHangHUDInfo:v6 completion:v7];
+    [v19 receiveHangHUDInfo:infoCopy completion:completionCopy];
   }
 
   else
@@ -125,10 +125,10 @@
   }
 }
 
-- (void)sendProcExitRecord:(id)a3 completion:(id)a4
+- (void)sendProcExitRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   v8 = sub_100002F0C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -144,7 +144,7 @@
 
   if (v19)
   {
-    [v19 receiveProcExitRecord:v6 completion:v7];
+    [v19 receiveProcExitRecord:recordCopy completion:completionCopy];
   }
 
   else
@@ -157,10 +157,10 @@
   }
 }
 
-- (void)sendHudConfiguration:(id)a3 completion:(id)a4
+- (void)sendHudConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = sub_100002F0C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -176,7 +176,7 @@
 
   if (v19)
   {
-    [v19 receiveHudConfiguration:v6 completion:v7];
+    [v19 receiveHudConfiguration:configurationCopy completion:completionCopy];
   }
 
   else
@@ -189,10 +189,10 @@
   }
 }
 
-- (void)sendMonitoredStates:(id)a3 completion:(id)a4
+- (void)sendMonitoredStates:(id)states completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  completionCopy = completion;
   v8 = sub_100002F0C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -208,7 +208,7 @@
 
   if (v19)
   {
-    [v19 receiveMonitoredStates:v6 completion:v7];
+    [v19 receiveMonitoredStates:statesCopy completion:completionCopy];
   }
 
   else
@@ -221,9 +221,9 @@
   }
 }
 
-- (void)clearHUDWithCompletion:(id)a3
+- (void)clearHUDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100002F0C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -239,7 +239,7 @@
 
   if (v16)
   {
-    [v16 clearHUDWithCompletion:v4];
+    [v16 clearHUDWithCompletion:completionCopy];
   }
 
   else

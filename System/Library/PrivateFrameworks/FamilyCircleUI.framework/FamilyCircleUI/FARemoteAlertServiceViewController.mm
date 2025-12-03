@@ -7,9 +7,9 @@
 - (void)_main_dismissAndExit;
 - (void)_setupRemoteProxy;
 - (void)_showFamilyFlow;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)handleButtonActions:(id)a3;
+- (void)handleButtonActions:(id)actions;
 - (void)viewDidLoad;
 @end
 
@@ -18,35 +18,35 @@
 - (void)viewDidLoad
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 languageCode];
-  v5 = [v2 characterDirectionForLanguage:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v5 = [v2 characterDirectionForLanguage:languageCode];
 
   if (v5 == 2)
   {
-    v6 = [MEMORY[0x277D75D18] appearance];
-    [v6 setSemanticContentAttribute:4];
+    appearance = [MEMORY[0x277D75D18] appearance];
+    [appearance setSemanticContentAttribute:4];
   }
 }
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(FARemoteAlertServiceViewController *)self _remoteViewControllerProxy];
-  [v2 setShouldDisableFadeInAnimation:1];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setAllowsSiri:0];
-  [v2 setAllowsAlertStacking:1];
-  [v2 setDesiredHardwareButtonEvents:16];
-  [v2 setSwipeDismissalStyle:0];
-  [v2 setDismissalAnimationStyle:1];
+  _remoteViewControllerProxy = [(FARemoteAlertServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
 }
 
 - (id)_account
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (void)_handleSignedOutAcceptInvitation
@@ -118,8 +118,8 @@ void __70__FARemoteAlertServiceViewController__handleSignedOutAcceptInvitation__
 
 - (void)_showFamilyFlow
 {
-  v3 = [(FARemoteAlertServiceViewController *)self _account];
-  if (v3)
+  _account = [(FARemoteAlertServiceViewController *)self _account];
+  if (_account)
   {
 
 LABEL_7:
@@ -137,8 +137,8 @@ LABEL_7:
     return;
   }
 
-  v4 = [(FACircleContext *)self->_circleContext eventType];
-  v5 = [v4 isEqualToString:@"FACircleEventTypeAcceptInvitation"];
+  eventType = [(FACircleContext *)self->_circleContext eventType];
+  v5 = [eventType isEqualToString:@"FACircleEventTypeAcceptInvitation"];
 
   if (!v5)
   {
@@ -156,10 +156,10 @@ uint64_t __53__FARemoteAlertServiceViewController__showFamilyFlow__block_invoke(
   return [v3 _dismissAndExit];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,8 +167,8 @@ uint64_t __53__FARemoteAlertServiceViewController__showFamilyFlow__block_invoke(
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "Configuring remote view service", buf, 2u);
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"FARemoteAlertServiceUserInfoContextData"];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"FARemoteAlertServiceUserInfoContextData"];
 
   if (v10)
   {
@@ -184,12 +184,12 @@ uint64_t __53__FARemoteAlertServiceViewController__showFamilyFlow__block_invoke(
   self->_circleContext = v11;
 
   v13 = objc_opt_new();
-  v14 = [v6 xpcEndpoint];
-  [v13 _setEndpoint:v14];
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  [v13 _setEndpoint:xpcEndpoint];
 
   v15 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v13];
-  v16 = [MEMORY[0x277D08278] XPCInterface];
-  [v15 setRemoteObjectInterface:v16];
+  xPCInterface = [MEMORY[0x277D08278] XPCInterface];
+  [v15 setRemoteObjectInterface:xPCInterface];
 
   [v15 resume];
   objc_storeStrong(&self->_lookupConnection, v15);
@@ -203,9 +203,9 @@ uint64_t __53__FARemoteAlertServiceViewController__showFamilyFlow__block_invoke(
   hostProxy = self->_hostProxy;
   self->_hostProxy = v17;
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   objc_destroyWeak(&v20);
@@ -232,7 +232,7 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21BB35000, v3, OS_LOG_TYPE_DEFAULT, "%@ deallocated", buf, 0xCu);
   }
 
@@ -245,10 +245,10 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -273,8 +273,8 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(FARemoteAlertServiceViewController *)self dismissViewControllerAnimated:0 completion:0];
-  v3 = [(FARemoteAlertServiceViewController *)self _remoteViewControllerProxy];
-  [v3 invalidate];
+  _remoteViewControllerProxy = [(FARemoteAlertServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy invalidate];
 }
 
 - (void)_invalidateLookupConnection
@@ -284,15 +284,15 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
   self->_lookupConnection = 0;
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -304,7 +304,7 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v10 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -316,7 +316,7 @@ void __70__FARemoteAlertServiceViewController_configureWithContext_completion___
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

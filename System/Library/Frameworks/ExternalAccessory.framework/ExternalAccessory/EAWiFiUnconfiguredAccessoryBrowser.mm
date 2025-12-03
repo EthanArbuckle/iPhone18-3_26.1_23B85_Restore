@@ -1,11 +1,11 @@
 @interface EAWiFiUnconfiguredAccessoryBrowser
 - (EAWiFiUnconfiguredAccessoryBrowser)initWithDelegate:(id)delegate queue:(dispatch_queue_t)queue;
 - (id)delegate;
-- (void)_handleBrowserDidUpdateState:(id)a3;
-- (void)_handleBrowserFinishedConfiguring:(id)a3;
-- (void)_handleNewAccessoriesNotification:(id)a3;
-- (void)_handlePurgeAccessoriesSetNotification:(id)a3;
-- (void)_handleRemovedAccessoriesNotification:(id)a3;
+- (void)_handleBrowserDidUpdateState:(id)state;
+- (void)_handleBrowserFinishedConfiguring:(id)configuring;
+- (void)_handleNewAccessoriesNotification:(id)notification;
+- (void)_handlePurgeAccessoriesSetNotification:(id)notification;
+- (void)_handleRemovedAccessoriesNotification:(id)notification;
 - (void)configureAccessory:(EAWiFiUnconfiguredAccessory *)accessory withConfigurationUIOnViewController:(UIViewController *)viewController;
 - (void)dealloc;
 - (void)startSearchingForUnconfiguredAccessoriesMatchingPredicate:(NSPredicate *)predicate;
@@ -56,11 +56,11 @@
       dispatch_once(&initWithDelegate_queue__token, &block);
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v16 selector:sel__handleBrowserDidUpdateState_ name:@"EAWiFiUnconfiguredAccessoryBrowserDidUpdateState" object:0];
-    [v17 addObserver:v16 selector:sel__handleNewAccessoriesNotification_ name:@"EAWiFiUnconfiguredAccessoriesAddedNotification" object:0];
-    [v17 addObserver:v16 selector:sel__handleRemovedAccessoriesNotification_ name:@"EAWiFiUnconfiguredAccessoriesRemovedNotification" object:0];
-    [v17 addObserver:v16 selector:sel__handlePurgeAccessoriesSetNotification_ name:@"EAWiFiUnconfiguredAccessoryBrowserPurgeAccessoriesSet" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__handleBrowserDidUpdateState_ name:@"EAWiFiUnconfiguredAccessoryBrowserDidUpdateState" object:0];
+    [defaultCenter addObserver:v16 selector:sel__handleNewAccessoriesNotification_ name:@"EAWiFiUnconfiguredAccessoriesAddedNotification" object:0];
+    [defaultCenter addObserver:v16 selector:sel__handleRemovedAccessoriesNotification_ name:@"EAWiFiUnconfiguredAccessoriesRemovedNotification" object:0];
+    [defaultCenter addObserver:v16 selector:sel__handlePurgeAccessoriesSetNotification_ name:@"EAWiFiUnconfiguredAccessoryBrowserPurgeAccessoriesSet" object:0];
     if (v9->__debugLog)
     {
       v18 = EAUIApplicationDidEnterBackgroundNotification();
@@ -68,10 +68,10 @@
     }
 
     v19 = EAUIApplicationDidEnterBackgroundNotification();
-    [v17 addObserver:v16 selector:sel_stopSearchingForUnconfiguredAccessories name:v19 object:0];
+    [defaultCenter addObserver:v16 selector:sel_stopSearchingForUnconfiguredAccessories name:v19 object:0];
   }
 
-  v20 = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
+  sharedInstance = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
 
   return v9;
 }
@@ -115,8 +115,8 @@ void __61__EAWiFiUnconfiguredAccessoryBrowser_initWithDelegate_queue___block_inv
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (uikitFramework_0 && dealloc_token != -1)
   {
@@ -137,8 +137,8 @@ void __61__EAWiFiUnconfiguredAccessoryBrowser_initWithDelegate_queue___block_inv
   }
 
   [(EAWiFiUnconfiguredAccessoryBrowser *)self setAccessorySearchPredicate:v5];
-  v4 = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
-  [v4 startSearchingForUnconfiguredAccessories];
+  sharedInstance = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
+  [sharedInstance startSearchingForUnconfiguredAccessories];
 }
 
 - (void)stopSearchingForUnconfiguredAccessories
@@ -148,8 +148,8 @@ void __61__EAWiFiUnconfiguredAccessoryBrowser_initWithDelegate_queue___block_inv
     NSLog(&cfstr_WacBrowserStop.isa, a2);
   }
 
-  v2 = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
-  [v2 stopSearchingForUnconfiguredAccessories];
+  sharedInstance = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
+  [sharedInstance stopSearchingForUnconfiguredAccessories];
 }
 
 - (void)configureAccessory:(EAWiFiUnconfiguredAccessory *)accessory withConfigurationUIOnViewController:(UIViewController *)viewController
@@ -161,22 +161,22 @@ void __61__EAWiFiUnconfiguredAccessoryBrowser_initWithDelegate_queue___block_inv
     NSLog(&cfstr_WacBrowserConf.isa, v9);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__handleBrowserFinishedConfiguring_ name:@"EAWiFiUnconfiguredAccessoryBrowserFinishedConfiguringAccessoryNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleBrowserFinishedConfiguring_ name:@"EAWiFiUnconfiguredAccessoryBrowserFinishedConfiguringAccessoryNotification" object:0];
 
-  v8 = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
-  [v8 configureAccessory:v9 withConfigurationUIOnViewController:v6];
+  sharedInstance = [__EAWiFiUnconfiguredAccessoryBrowserManager sharedInstance];
+  [sharedInstance configureAccessory:v9 withConfigurationUIOnViewController:v6];
 }
 
-- (void)_handleBrowserDidUpdateState:(id)a3
+- (void)_handleBrowserDidUpdateState:(id)state
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"EAWiFiUnconfiguredAccessoryBrowserState"];
-  v6 = [v5 intValue];
+  userInfo = [state userInfo];
+  v5 = [userInfo objectForKey:@"EAWiFiUnconfiguredAccessoryBrowserState"];
+  intValue = [v5 intValue];
 
   if (self->__debugLog)
   {
-    NSLog(&cfstr_WacBrowserHand.isa, v6);
+    NSLog(&cfstr_WacBrowserHand.isa, intValue);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -194,7 +194,7 @@ void __61__EAWiFiUnconfiguredAccessoryBrowser_initWithDelegate_queue___block_inv
       block[2] = __67__EAWiFiUnconfiguredAccessoryBrowser__handleBrowserDidUpdateState___block_invoke;
       block[3] = &unk_278A4E8D8;
       block[4] = self;
-      block[5] = v6;
+      block[5] = intValue;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -206,22 +206,22 @@ void __67__EAWiFiUnconfiguredAccessoryBrowser__handleBrowserDidUpdateState___blo
   [WeakRetained accessoryBrowser:*(a1 + 32) didUpdateState:*(a1 + 40)];
 }
 
-- (void)_handleNewAccessoriesNotification:(id)a3
+- (void)_handleNewAccessoriesNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"EAWiFiUnconfiguredAccessoriesAddedOrRemovedSet"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"EAWiFiUnconfiguredAccessoriesAddedOrRemovedSet"];
 
   if (self->__debugLog)
   {
     NSLog(&cfstr_WacBrowserHand_0.isa, v5);
   }
 
-  v6 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
+  accessorySearchPredicate = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
 
-  if (v6)
+  if (accessorySearchPredicate)
   {
-    v7 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
-    v8 = [v5 filteredSetUsingPredicate:v7];
+    accessorySearchPredicate2 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
+    v8 = [v5 filteredSetUsingPredicate:accessorySearchPredicate2];
   }
 
   else
@@ -229,8 +229,8 @@ void __67__EAWiFiUnconfiguredAccessoryBrowser__handleBrowserDidUpdateState___blo
     v8 = v5;
   }
 
-  v9 = [(EAWiFiUnconfiguredAccessoryBrowser *)self unconfiguredAccessories];
-  [v9 unionSet:v8];
+  unconfiguredAccessories = [(EAWiFiUnconfiguredAccessoryBrowser *)self unconfiguredAccessories];
+  [unconfiguredAccessories unionSet:v8];
 
   if ([v8 count])
   {
@@ -262,22 +262,22 @@ void __72__EAWiFiUnconfiguredAccessoryBrowser__handleNewAccessoriesNotification_
   [WeakRetained accessoryBrowser:*(a1 + 32) didFindUnconfiguredAccessories:*(a1 + 40)];
 }
 
-- (void)_handleRemovedAccessoriesNotification:(id)a3
+- (void)_handleRemovedAccessoriesNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"EAWiFiUnconfiguredAccessoriesAddedOrRemovedSet"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"EAWiFiUnconfiguredAccessoriesAddedOrRemovedSet"];
 
   if (self->__debugLog)
   {
     NSLog(&cfstr_WacBrowserHand_1.isa, v5);
   }
 
-  v6 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
+  accessorySearchPredicate = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
 
-  if (v6)
+  if (accessorySearchPredicate)
   {
-    v7 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
-    v8 = [v5 filteredSetUsingPredicate:v7];
+    accessorySearchPredicate2 = [(EAWiFiUnconfiguredAccessoryBrowser *)self accessorySearchPredicate];
+    v8 = [v5 filteredSetUsingPredicate:accessorySearchPredicate2];
   }
 
   else
@@ -285,8 +285,8 @@ void __72__EAWiFiUnconfiguredAccessoryBrowser__handleNewAccessoriesNotification_
     v8 = v5;
   }
 
-  v9 = [(EAWiFiUnconfiguredAccessoryBrowser *)self unconfiguredAccessories];
-  [v9 minusSet:v8];
+  unconfiguredAccessories = [(EAWiFiUnconfiguredAccessoryBrowser *)self unconfiguredAccessories];
+  [unconfiguredAccessories minusSet:v8];
 
   if ([v8 count])
   {
@@ -318,11 +318,11 @@ void __76__EAWiFiUnconfiguredAccessoryBrowser__handleRemovedAccessoriesNotificat
   [WeakRetained accessoryBrowser:*(a1 + 32) didRemoveUnconfiguredAccessories:*(a1 + 40)];
 }
 
-- (void)_handlePurgeAccessoriesSetNotification:(id)a3
+- (void)_handlePurgeAccessoriesSetNotification:(id)notification
 {
   if (self->__debugLog)
   {
-    NSLog(&cfstr_WacBrowserHand_2.isa, a2, a3, self->_unconfiguredAccessories);
+    NSLog(&cfstr_WacBrowserHand_2.isa, a2, notification, self->_unconfiguredAccessories);
   }
 
   v4 = [MEMORY[0x277CBEB98] setWithSet:self->_unconfiguredAccessories];
@@ -346,24 +346,24 @@ void __77__EAWiFiUnconfiguredAccessoryBrowser__handlePurgeAccessoriesSetNotifica
   [WeakRetained accessoryBrowser:*(a1 + 32) didRemoveUnconfiguredAccessories:*(a1 + 40)];
 }
 
-- (void)_handleBrowserFinishedConfiguring:(id)a3
+- (void)_handleBrowserFinishedConfiguring:(id)configuring
 {
-  v4 = a3;
-  v5 = v4;
+  configuringCopy = configuring;
+  v5 = configuringCopy;
   if (self->__debugLog)
   {
-    NSLog(&cfstr_WacBrowserHand_3.isa, v4);
+    NSLog(&cfstr_WacBrowserHand_3.isa, configuringCopy);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:@"EAWiFiUnconfiguredAccessoryBrowserFinishedConfiguringAccessoryNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"EAWiFiUnconfiguredAccessoryBrowserFinishedConfiguringAccessoryNotification" object:0];
 
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKey:@"EAWiFiUnconfiguredAccessoryBrowserConfigurationStatus"];
-  v9 = [v8 integerValue];
+  userInfo = [v5 userInfo];
+  v8 = [userInfo objectForKey:@"EAWiFiUnconfiguredAccessoryBrowserConfigurationStatus"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v5 userInfo];
-  v11 = [v10 objectForKey:@"EAWiFiUnconfiguredAccessoryConfigured"];
+  userInfo2 = [v5 userInfo];
+  v11 = [userInfo2 objectForKey:@"EAWiFiUnconfiguredAccessoryConfigured"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -381,7 +381,7 @@ void __77__EAWiFiUnconfiguredAccessoryBrowser__handlePurgeAccessoriesSetNotifica
       block[3] = &unk_278A4E928;
       block[4] = self;
       v18 = v11;
-      v19 = v9;
+      v19 = integerValue;
       dispatch_async(delegateQueue, block);
     }
   }

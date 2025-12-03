@@ -1,12 +1,12 @@
 @interface SCNActionRunAction
-+ (id)runAction:(id)a3 afterActionWithKey:(id)a4;
-+ (id)runAction:(id)a3 onFirstChildWithName:(id)a4;
++ (id)runAction:(id)action afterActionWithKey:(id)key;
++ (id)runAction:(id)action onFirstChildWithName:(id)name;
 - (SCNActionRunAction)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SCNActionRunAction
@@ -29,20 +29,20 @@
   return result;
 }
 
-+ (id)runAction:(id)a3 onFirstChildWithName:(id)a4
++ (id)runAction:(id)action onFirstChildWithName:(id)name
 {
   v6 = objc_alloc_init(SCNActionRunAction);
-  v6->_action = [a3 copy];
-  v6->_subSpriteKey = [a4 copy];
+  v6->_action = [action copy];
+  v6->_subSpriteKey = [name copy];
   v6->_runOnSubSprite = 1;
   return v6;
 }
 
-+ (id)runAction:(id)a3 afterActionWithKey:(id)a4
++ (id)runAction:(id)action afterActionWithKey:(id)key
 {
   v6 = objc_alloc_init(SCNActionRunAction);
-  v6->_action = [a3 copy];
-  v6->_actionKey = [a4 copy];
+  v6->_action = [action copy];
+  v6->_actionKey = [key copy];
   v6->_waitForKeyedAction = 1;
   return v6;
 }
@@ -54,21 +54,21 @@
   [(SCNAction *)&v3 dealloc];
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = SCNActionRunAction;
-  [(SCNAction *)&v5 willStartWithTarget:a3 atTime:a4];
+  [(SCNAction *)&v5 willStartWithTarget:target atTime:time];
   self->_fired = 0;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
   if (!self->_fired)
   {
     if (self->_runOnSubSprite)
     {
-      v6 = [a3 childNodeWithName:self->_subSpriteKey recursively:{1, a4}];
+      v6 = [target childNodeWithName:self->_subSpriteKey recursively:{1, time}];
       if (v6)
       {
         [v6 runAction:self->_action];
@@ -79,15 +79,15 @@
       [(SCNAction *)self setFinished:1];
     }
 
-    else if (self->_waitForKeyedAction && ![a3 actionForKey:{self->_actionKey, a4}])
+    else if (self->_waitForKeyedAction && ![target actionForKey:{self->_actionKey, time}])
     {
-      [a3 runAction:self->_action];
+      [target runAction:self->_action];
       self->_fired = 1;
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCNActionRunAction);
   v4->_action = [(SCNAction *)self->_action copy];

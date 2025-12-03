@@ -1,31 +1,31 @@
 @interface PLAssetJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
 + (id)snapshotSortDescriptors;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
 - (BOOL)hasAdjustments;
 - (BOOL)isDefaultAdjustedSlomo;
 - (BOOL)sleetIsReversible;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSArray)resources;
-- (PLAssetJournalEntryPayload)initWithAdditionalAssetAttributes:(id)a3 changedKeys:(id)a4;
-- (PLAssetJournalEntryPayload)initWithAssetDescription:(id)a3 changedKeys:(id)a4;
-- (PLAssetJournalEntryPayload)initWithCloudMaster:(id)a3 payloadID:(id)a4 changedKeys:(id)a5;
-- (PLAssetJournalEntryPayload)initWithCloudMasterMediaMetadata:(id)a3 payloadID:(id)a4 changedKeys:(id)a5 modelProperties:(id)a6;
-- (PLAssetJournalEntryPayload)initWithEditedIPTCAttributes:(id)a3 changedKeys:(id)a4;
-- (PLAssetJournalEntryPayload)initWithExtendedAttributes:(id)a3 changedKeys:(id)a4;
-- (PLAssetJournalEntryPayload)initWithInternalResource:(id)a3 filesystemBookmark:(id)a4 changedKeys:(id)a5;
-- (PLAssetJournalEntryPayload)initWithUnmanagedAdjustment:(id)a3 changedKeys:(id)a4;
-- (id)_loadOriginalImageMetadataWithPathManager:(id)a3 timezoneLookup:(id)a4;
-- (id)_loadOriginalVideoMetadataWithPathManager:(id)a3 timezoneLookup:(id)a4;
+- (PLAssetJournalEntryPayload)initWithAdditionalAssetAttributes:(id)attributes changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithAssetDescription:(id)description changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithCloudMaster:(id)master payloadID:(id)d changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithCloudMasterMediaMetadata:(id)metadata payloadID:(id)d changedKeys:(id)keys modelProperties:(id)properties;
+- (PLAssetJournalEntryPayload)initWithEditedIPTCAttributes:(id)attributes changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithExtendedAttributes:(id)attributes changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithInternalResource:(id)resource filesystemBookmark:(id)bookmark changedKeys:(id)keys;
+- (PLAssetJournalEntryPayload)initWithUnmanagedAdjustment:(id)adjustment changedKeys:(id)keys;
+- (id)_loadOriginalImageMetadataWithPathManager:(id)manager timezoneLookup:(id)lookup;
+- (id)_loadOriginalVideoMetadataWithPathManager:(id)manager timezoneLookup:(id)lookup;
 - (id)hdrGain;
-- (id)insertAssetFromDataInManagedObjectContext:(id)a3 keywordUUIDRemapping:(id)a4 rawPayloadAttributesToUpdate:(id)a5;
-- (id)originalResourceRelativePathsWithPathManager:(id)a3;
+- (id)insertAssetFromDataInManagedObjectContext:(id)context keywordUUIDRemapping:(id)remapping rawPayloadAttributesToUpdate:(id)update;
+- (id)originalResourceRelativePathsWithPathManager:(id)manager;
 - (id)originalUniformTypeIdentifier;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (int64_t)dateCreatedSource;
 - (signed)kind;
 - (signed)kindSubtype;
@@ -39,38 +39,38 @@
 - (void)_convertHasAdjustmentsToAdjustmentsState;
 - (void)_filterNonPersistedResources;
 - (void)_fixAdjustedAssetUTI;
-- (void)_fixDateCreatedSourceWithAdditionalAssetAttributes:(id)a3;
+- (void)_fixDateCreatedSourceWithAdditionalAssetAttributes:(id)attributes;
 - (void)_fixHDRGainZeroValueToNULL;
 - (void)_fixLocationData;
 - (void)_fixResourceTypeUnknownValues;
-- (void)_fixSleetIsReversibleWithAdditionalAssetAttributes:(id)a3;
+- (void)_fixSleetIsReversibleWithAdditionalAssetAttributes:(id)attributes;
 - (void)_fixXMPSidecarUTI;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6;
-- (void)mergePayload:(id)a3;
-- (void)migrateMergedPayloadWithUpdatePayloads:(id)a3;
-- (void)setDateCreatedSource:(int64_t)a3;
-- (void)setKind:(signed __int16)a3;
-- (void)setLocation:(id)a3;
-- (void)setPlaybackStyle:(unsigned __int16)a3;
-- (void)setSleetIsReversible:(unsigned __int16)a3;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update;
+- (void)mergePayload:(id)payload;
+- (void)migrateMergedPayloadWithUpdatePayloads:(id)payloads;
+- (void)setDateCreatedSource:(int64_t)source;
+- (void)setKind:(signed __int16)kind;
+- (void)setLocation:(id)location;
+- (void)setPlaybackStyle:(unsigned __int16)style;
+- (void)setSleetIsReversible:(unsigned __int16)reversible;
 @end
 
 @implementation PLAssetJournalEntryPayload
 
-- (id)_loadOriginalImageMetadataWithPathManager:(id)a3 timezoneLookup:(id)a4
+- (id)_loadOriginalImageMetadataWithPathManager:(id)manager timezoneLookup:(id)lookup
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  lookupCopy = lookup;
   v8 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E69C0718]);
     v10 = MEMORY[0x1E69C08F0];
-    v11 = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
-    v12 = [v10 typeWithIdentifier:v11];
-    v13 = [v9 initWithImageSourceProxyOrEncodedImagePropertyData:v8 contentType:v12 timeZoneLookup:v7];
+    originalUniformTypeIdentifier = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
+    v12 = [v10 typeWithIdentifier:originalUniformTypeIdentifier];
+    v13 = [v9 initWithImageSourceProxyOrEncodedImagePropertyData:v8 contentType:v12 timeZoneLookup:lookupCopy];
 
     goto LABEL_3;
   }
@@ -84,29 +84,29 @@
     v35 = *MEMORY[0x1E696A278];
     v36[0] = @"skipping reference asset";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    v11 = [v14 errorWithDomain:v15 code:46502 userInfo:v16];
+    originalUniformTypeIdentifier = [v14 errorWithDomain:v15 code:46502 userInfo:v16];
   }
 
   else
   {
-    v17 = [(PLAssetJournalEntryPayload *)self directory];
-    if (!v17)
+    directory = [(PLAssetJournalEntryPayload *)self directory];
+    if (!directory)
     {
 LABEL_10:
-      v11 = 0;
+      originalUniformTypeIdentifier = 0;
       goto LABEL_11;
     }
 
-    v18 = v17;
+    v18 = directory;
     v19 = MEMORY[0x1E695DFF8];
-    v20 = [(PLAssetJournalEntryPayload *)self directory];
-    v21 = [(PLAssetJournalEntryPayload *)self filename];
-    v22 = [v6 assetMainFilePathWithDirectory:v20 filename:v21 bundleScope:{-[PLAssetJournalEntryPayload bundleScope](self, "bundleScope")}];
-    v11 = [v19 fileURLWithPath:v22 isDirectory:0];
+    directory2 = [(PLAssetJournalEntryPayload *)self directory];
+    filename = [(PLAssetJournalEntryPayload *)self filename];
+    v22 = [managerCopy assetMainFilePathWithDirectory:directory2 filename:filename bundleScope:{-[PLAssetJournalEntryPayload bundleScope](self, "bundleScope")}];
+    originalUniformTypeIdentifier = [v19 fileURLWithPath:v22 isDirectory:0];
 
-    if (v11)
+    if (originalUniformTypeIdentifier)
     {
-      v13 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageURL:v11 contentType:0 options:12 timeZoneLookup:v7 cacheImageSource:0 cacheImageData:0];
+      v13 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageURL:originalUniformTypeIdentifier contentType:0 options:12 timeZoneLookup:lookupCopy cacheImageSource:0 cacheImageData:0];
 LABEL_3:
 
       if (v13)
@@ -122,16 +122,16 @@ LABEL_11:
   v23 = PLMigrationGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-    v25 = [v11 userInfo];
+    payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+    userInfo = [originalUniformTypeIdentifier userInfo];
     v27 = 136446978;
     v28 = "[PLAssetJournalEntryPayload _loadOriginalImageMetadataWithPathManager:timezoneLookup:]";
     v29 = 2114;
-    v30 = v24;
+    v30 = payloadID;
     v31 = 2112;
-    v32 = v11;
+    v32 = originalUniformTypeIdentifier;
     v33 = 2112;
-    v34 = v25;
+    v34 = userInfo;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "%{public}s: failed to load metadata for asset with uuid %{public}@, not fatal, will proceed with migration, error: %@ %@", &v27, 0x2Au);
   }
 
@@ -141,16 +141,16 @@ LABEL_14:
   return v13;
 }
 
-- (id)_loadOriginalVideoMetadataWithPathManager:(id)a3 timezoneLookup:(id)a4
+- (id)_loadOriginalVideoMetadataWithPathManager:(id)manager timezoneLookup:(id)lookup
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  lookupCopy = lookup;
   v8 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVProxyData:v8 timeZoneLookup:v7];
-    if (v9)
+    directory = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVProxyData:v8 timeZoneLookup:lookupCopy];
+    if (directory)
     {
       goto LABEL_14;
     }
@@ -167,25 +167,25 @@ LABEL_14:
       v30 = *MEMORY[0x1E696A278];
       v31[0] = @"skipping reference asset";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      v9 = [v10 errorWithDomain:v11 code:46502 userInfo:v12];
+      directory = [v10 errorWithDomain:v11 code:46502 userInfo:v12];
     }
 
     else
     {
-      v9 = [(PLAssetJournalEntryPayload *)self directory];
-      if (v9)
+      directory = [(PLAssetJournalEntryPayload *)self directory];
+      if (directory)
       {
         v13 = MEMORY[0x1E695DFF8];
-        v14 = [(PLAssetJournalEntryPayload *)self directory];
-        v15 = [(PLAssetJournalEntryPayload *)self filename];
-        v16 = [v6 assetMainFilePathWithDirectory:v14 filename:v15 bundleScope:{-[PLAssetJournalEntryPayload bundleScope](self, "bundleScope")}];
+        directory2 = [(PLAssetJournalEntryPayload *)self directory];
+        filename = [(PLAssetJournalEntryPayload *)self filename];
+        v16 = [managerCopy assetMainFilePathWithDirectory:directory2 filename:filename bundleScope:{-[PLAssetJournalEntryPayload bundleScope](self, "bundleScope")}];
         v17 = [v13 fileURLWithPath:v16 isDirectory:0];
 
         if (v17)
         {
-          v9 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVURL:v17 timeZoneLookup:v7];
+          directory = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVURL:v17 timeZoneLookup:lookupCopy];
 
-          if (v9)
+          if (directory)
           {
             goto LABEL_14;
           }
@@ -193,7 +193,7 @@ LABEL_14:
 
         else
         {
-          v9 = 0;
+          directory = 0;
         }
       }
     }
@@ -202,57 +202,57 @@ LABEL_14:
   v18 = PLMigrationGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v19 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-    v20 = [v9 userInfo];
+    payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+    userInfo = [directory userInfo];
     v22 = 136446978;
     v23 = "[PLAssetJournalEntryPayload _loadOriginalVideoMetadataWithPathManager:timezoneLookup:]";
     v24 = 2114;
-    v25 = v19;
+    v25 = payloadID;
     v26 = 2112;
-    v27 = v9;
+    v27 = directory;
     v28 = 2112;
-    v29 = v20;
+    v29 = userInfo;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "%{public}s: failed to load metadata for asset with uuid %{public}@, not fatal, will proceed with migration, error: %@ %@", &v22, 0x2Au);
   }
 
-  v9 = 0;
+  directory = 0;
 LABEL_14:
 
-  return v9;
+  return directory;
 }
 
-- (void)migrateMergedPayloadWithUpdatePayloads:(id)a3
+- (void)migrateMergedPayloadWithUpdatePayloads:(id)payloads
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  v6 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  v7 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  v8 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  v9 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:21 forKey:@"hdrGain" inUpdatePayloads:v4];
-  v10 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:25 forKey:@"depthStates" inUpdatePayloads:v4];
-  v11 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:101 forKey:@"customRenderedValue" inUpdatePayloads:v4];
-  v12 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
-  if ([(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:300 forKey:@"adjustmentsState" inUpdatePayloads:v4])
+  payloadsCopy = payloads;
+  payloadVersion = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  payloadVersion2 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  payloadVersion3 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  payloadVersion4 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  v9 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:21 forKey:@"hdrGain" inUpdatePayloads:payloadsCopy];
+  v10 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:25 forKey:@"depthStates" inUpdatePayloads:payloadsCopy];
+  v11 = [(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:101 forKey:@"customRenderedValue" inUpdatePayloads:payloadsCopy];
+  payloadVersion5 = [(PLManagedObjectJournalEntryPayload *)self payloadVersion];
+  if ([(PLManagedObjectJournalEntryPayload *)self payloadVersionIsLessThanVersion:300 forKey:@"adjustmentsState" inUpdatePayloads:payloadsCopy])
   {
     [(PLAssetJournalEntryPayload *)self _convertHasAdjustmentsToAdjustmentsState];
   }
 
-  if (v5 <= 1)
+  if (payloadVersion <= 1)
   {
     [(PLAssetJournalEntryPayload *)self _fixAdjustedAssetUTI];
   }
 
-  if (v6 <= 2)
+  if (payloadVersion2 <= 2)
   {
     [(PLAssetJournalEntryPayload *)self _fixLocationData];
   }
 
-  if (v7 <= 3)
+  if (payloadVersion3 <= 3)
   {
     [(PLAssetJournalEntryPayload *)self _fixXMPSidecarUTI];
   }
 
-  if (v8 <= 5)
+  if (payloadVersion4 <= 5)
   {
     [(PLAssetJournalEntryPayload *)self _fixResourceTypeUnknownValues];
     if (!v9)
@@ -293,19 +293,19 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (v12 <= 0x66)
+  if (payloadVersion5 <= 0x66)
   {
     [(PLAssetJournalEntryPayload *)self _filterNonPersistedResources];
   }
 
   v13.receiver = self;
   v13.super_class = PLAssetJournalEntryPayload;
-  [(PLManagedObjectJournalEntryPayload *)&v13 migrateMergedPayloadWithUpdatePayloads:v4];
+  [(PLManagedObjectJournalEntryPayload *)&v13 migrateMergedPayloadWithUpdatePayloads:payloadsCopy];
 }
 
-- (void)setSleetIsReversible:(unsigned __int16)a3
+- (void)setSleetIsReversible:(unsigned __int16)reversible
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:reversible];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"sleetIsReversible"];
 }
 
@@ -317,18 +317,18 @@ LABEL_14:
   return v3;
 }
 
-- (void)setDateCreatedSource:(int64_t)a3
+- (void)setDateCreatedSource:(int64_t)source
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:source];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"dateCreatedSource"];
 }
 
 - (int64_t)dateCreatedSource
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"dateCreatedSource"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)originalUniformTypeIdentifier
@@ -337,7 +337,7 @@ LABEL_14:
   v3 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"originalUTI"];
   if (v3 || ![(PLAssetJournalEntryPayload *)self hasAdjustments]&& ([(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"uti"], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    uniformTypeIdentifierString = v3;
   }
 
   else
@@ -382,9 +382,9 @@ LABEL_10:
         }
       }
 
-      v4 = [v11 uniformTypeIdentifierString];
+      uniformTypeIdentifierString = [v11 uniformTypeIdentifierString];
 
-      if (v4)
+      if (uniformTypeIdentifierString)
       {
         goto LABEL_3;
       }
@@ -395,47 +395,47 @@ LABEL_10:
 LABEL_17:
     }
 
-    v12 = [(PLAssetJournalEntryPayload *)self filename];
-    v4 = [v12 pathExtension];
+    filename = [(PLAssetJournalEntryPayload *)self filename];
+    uniformTypeIdentifierString = [filename pathExtension];
 
-    if (v4)
+    if (uniformTypeIdentifierString)
     {
       v13 = MEMORY[0x1E6982C40];
-      v14 = [(PLAssetJournalEntryPayload *)self filename];
-      v15 = [v14 pathExtension];
-      v16 = [v13 typeWithFilenameExtension:v15];
+      filename2 = [(PLAssetJournalEntryPayload *)self filename];
+      pathExtension = [filename2 pathExtension];
+      v16 = [v13 typeWithFilenameExtension:pathExtension];
 
       if ([v16 isDynamic])
       {
-        v4 = 0;
+        uniformTypeIdentifierString = 0;
       }
 
       else
       {
-        v4 = [v16 identifier];
+        uniformTypeIdentifierString = [v16 identifier];
       }
     }
   }
 
 LABEL_3:
 
-  return v4;
+  return uniformTypeIdentifierString;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v14 = a3;
+  locationCopy = location;
   v4 = [PLManagedAsset newLocationDataFromLocation:?];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"locationData"];
   v5 = MEMORY[0x1E696AD98];
   if (v4)
   {
-    [v14 coordinate];
+    [locationCopy coordinate];
     v6 = [v5 numberWithDouble:?];
     [(NSMutableDictionary *)self->super._payloadAttributes setObject:v6 forKeyedSubscript:@"latitude"];
 
     v7 = MEMORY[0x1E696AD98];
-    [v14 coordinate];
+    [locationCopy coordinate];
     v9 = v8;
     v10 = v7;
   }
@@ -503,14 +503,14 @@ LABEL_3:
 
 - (BOOL)isDefaultAdjustedSlomo
 {
-  v3 = [(PLAssetJournalEntryPayload *)self adjustmentFormatIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.video.slomo"];
+  adjustmentFormatIdentifier = [(PLAssetJournalEntryPayload *)self adjustmentFormatIdentifier];
+  v4 = [adjustmentFormatIdentifier isEqualToString:@"com.apple.video.slomo"];
 
-  v5 = [(PLAssetJournalEntryPayload *)self adjustmentFormatVersion];
-  v6 = v5;
+  adjustmentFormatVersion = [(PLAssetJournalEntryPayload *)self adjustmentFormatVersion];
+  v6 = adjustmentFormatVersion;
   if (v4)
   {
-    if ([v5 isEqualToString:@"1.1"])
+    if ([adjustmentFormatVersion isEqualToString:@"1.1"])
     {
       LOBYTE(v4) = 1;
     }
@@ -521,59 +521,59 @@ LABEL_3:
     }
   }
 
-  v7 = [(PLAssetJournalEntryPayload *)self isVideo];
+  isVideo = [(PLAssetJournalEntryPayload *)self isVideo];
 
-  return v7 & v4;
+  return isVideo & v4;
 }
 
 - (unsigned)playbackVariation
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"playbackVariation"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setPlaybackStyle:(unsigned __int16)a3
+- (void)setPlaybackStyle:(unsigned __int16)style
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:style];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"playbackStyle"];
 }
 
 - (unsigned)playbackStyle
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"playbackStyle"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (signed)kindSubtype
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"kindSubtype"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setKind:(signed __int16)a3
+- (void)setKind:(signed __int16)kind
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithShort:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithShort:kind];
   [(NSMutableDictionary *)self->super._payloadAttributes setObject:v4 forKeyedSubscript:@"kind"];
 }
 
 - (signed)kind
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"kind"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)originalResourceRelativePathsWithPathManager:(id)a3
+- (id)originalResourceRelativePathsWithPathManager:(id)manager
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"directory"];
   v6 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"filename"];
   v7 = v6;
@@ -600,14 +600,14 @@ LABEL_3:
     v28 = [v5 stringByAppendingPathComponent:v7];
     v29 = v9;
     [v9 addObject:?];
-    v27 = v4;
-    v10 = [v4 isUBF];
+    v27 = managerCopy;
+    isUBF = [managerCopy isUBF];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [(PLAssetJournalEntryPayload *)self resources];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    resources = [(PLAssetJournalEntryPayload *)self resources];
+    v12 = [resources countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
       v13 = v12;
@@ -618,31 +618,31 @@ LABEL_3:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(resources);
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
           if ([v16 isOriginalResource])
           {
-            v17 = [v16 resourceType];
-            if (v17 <= 0xB && ((1 << v17) & 0xC3C) != 0)
+            resourceType = [v16 resourceType];
+            if (resourceType <= 0xB && ((1 << resourceType) & 0xC3C) != 0)
             {
-              v19 = [v16 uniformTypeIdentifierString];
-              v20 = [MEMORY[0x1E6982C40] typeWithIdentifier:v19];
-              if (v10)
+              uniformTypeIdentifierString = [v16 uniformTypeIdentifierString];
+              v20 = [MEMORY[0x1E6982C40] typeWithIdentifier:uniformTypeIdentifierString];
+              if (isUBF)
               {
                 [MEMORY[0x1E69C08F0] preferredOrFallbackFilenameExtensionForType:v20];
               }
 
               else
               {
-                [PLManagedAsset preferredFileExtensionForType:v19];
+                [PLManagedAsset preferredFileExtensionForType:uniformTypeIdentifierString];
               }
               v21 = ;
               if (v21)
               {
-                v22 = [v28 stringByDeletingPathExtension];
-                v23 = [v22 stringByAppendingPathExtension:v21];
+                stringByDeletingPathExtension = [v28 stringByDeletingPathExtension];
+                v23 = [stringByDeletingPathExtension stringByAppendingPathExtension:v21];
 
                 [v29 addObject:v23];
               }
@@ -650,14 +650,14 @@ LABEL_3:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v13 = [resources countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v13);
     }
 
     v5 = v26;
-    v4 = v27;
+    managerCopy = v27;
     v7 = v25;
   }
 
@@ -670,23 +670,23 @@ LABEL_3:
   if (v3)
   {
     v4 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"bundleScope"];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (signed)savedAssetType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"savedAssetType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSArray)resources
@@ -725,17 +725,17 @@ LABEL_3:
   return v3;
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update
 {
   v202 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v164 = self;
-  if (![v10 requiresConversion])
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  selfCopy = self;
+  if (![propertyCopy requiresConversion])
   {
-    if ([v10 isEqualToKey:@"savedAssetType"])
+    if ([propertyCopy isEqualToKey:@"savedAssetType"])
     {
       [MEMORY[0x1E69BF328] maskForIsValidForBackup];
       [(PLAssetJournalEntryPayload *)self savedAssetType];
@@ -743,167 +743,167 @@ LABEL_3:
       {
         v174.receiver = self;
         v174.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v174 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v174 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
       goto LABEL_40;
     }
 
-    if ([v10 isEqualToKey:@"locationData"])
+    if ([propertyCopy isEqualToKey:@"locationData"])
     {
-      v21 = [(PLAssetJournalEntryPayload *)self locationData];
-      if (v21)
+      locationData = [(PLAssetJournalEntryPayload *)self locationData];
+      if (locationData)
       {
-        v22 = [(PLAssetJournalEntryPayload *)self dateCreated];
-        v23 = [PLManagedAsset newLocationFromLocationData:v21 timestampIfMissing:v22];
+        dateCreated = [(PLAssetJournalEntryPayload *)self dateCreated];
+        v23 = [PLManagedAsset newLocationFromLocationData:locationData timestampIfMissing:dateCreated];
 
         [v23 coordinate];
         if ([PLLocationUtils canUseCoordinate:?])
         {
-          v24 = v11;
+          v24 = objectCopy;
           v25 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v23, "pl_locationHash")}];
-          v26 = [v24 additionalAttributes];
-          [v26 setLocationHash:v25];
+          additionalAttributes = [v24 additionalAttributes];
+          [additionalAttributes setLocationHash:v25];
 
           [v23 horizontalAccuracy];
           if (v27 != 0.0)
           {
             [v23 horizontalAccuracy];
             v29 = v28;
-            v30 = [v24 additionalAttributes];
-            [v30 setGpsHorizontalAccuracy:v29];
+            additionalAttributes2 = [v24 additionalAttributes];
+            [additionalAttributes2 setGpsHorizontalAccuracy:v29];
           }
 
-          self = v164;
+          self = selfCopy;
         }
       }
 
       v173.receiver = self;
       v173.super_class = PLAssetJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v173 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+      [(PLManagedObjectJournalEntryPayload *)&v173 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       goto LABEL_31;
     }
 
-    if (([v10 isEqualToKey:@"embeddedThumbnailWidth"] & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"embeddedThumbnailHeight") & 1) != 0 || (objc_msgSend(v10, "isEqualToKey:", @"embeddedThumbnailOffset") & 1) != 0 || objc_msgSend(v10, "isEqualToKey:", @"embeddedThumbnailLength"))
+    if (([propertyCopy isEqualToKey:@"embeddedThumbnailWidth"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"embeddedThumbnailHeight") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToKey:", @"embeddedThumbnailOffset") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToKey:", @"embeddedThumbnailLength"))
     {
       payloadAttributes = self->super._payloadAttributes;
-      v21 = [v10 key];
-      v32 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v21];
-      [v11 setValue:v32 forKey:v12];
+      locationData = [propertyCopy key];
+      v32 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:locationData];
+      [objectCopy setValue:v32 forKey:keyCopy];
 
       goto LABEL_31;
     }
 
-    if ([v10 isEqualToKey:@"originalHash"])
+    if ([propertyCopy isEqualToKey:@"originalHash"])
     {
-      v21 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"originalHash"];
-      if (v21)
+      locationData = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"originalHash"];
+      if (locationData)
       {
-        v78 = v11;
-        v79 = [v78 originalStableHash];
+        v78 = objectCopy;
+        originalStableHash = [v78 originalStableHash];
 
-        if (!v79)
+        if (!originalStableHash)
         {
-          v80 = [v21 base64EncodedStringWithOptions:0];
+          v80 = [locationData base64EncodedStringWithOptions:0];
           [v78 setOriginalStableHash:v80];
         }
       }
 
       v172.receiver = self;
       v172.super_class = PLAssetJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v172 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+      [(PLManagedObjectJournalEntryPayload *)&v172 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       goto LABEL_31;
     }
 
-    if (![v10 isEqualToKey:@"highFrameRateState"])
+    if (![propertyCopy isEqualToKey:@"highFrameRateState"])
     {
-      if ([v10 isEqualToKey:@"dateCreatedSource"])
+      if ([propertyCopy isEqualToKey:@"dateCreatedSource"])
       {
         v92 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"dateCreatedSource"];
 
         if (!v92)
         {
-          [(PLAssetJournalEntryPayload *)self _fixDateCreatedSourceWithAdditionalAssetAttributes:v11];
+          [(PLAssetJournalEntryPayload *)self _fixDateCreatedSourceWithAdditionalAssetAttributes:objectCopy];
           v93 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PLAssetJournalEntryPayload dateCreatedSource](self, "dateCreatedSource")}];
-          [v13 setObject:v93 forKeyedSubscript:@"dateCreatedSource"];
+          [updateCopy setObject:v93 forKeyedSubscript:@"dateCreatedSource"];
         }
 
         v170.receiver = self;
         v170.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v170 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v170 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
-      else if ([v10 isEqualToKey:@"playbackStyle"])
+      else if ([propertyCopy isEqualToKey:@"playbackStyle"])
       {
         if (![(PLAssetJournalEntryPayload *)self playbackStyle])
         {
           if ([(PLAssetJournalEntryPayload *)self kind]== 3)
           {
-            v114 = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
-            v115 = [PLManagedAsset assetTypeFromUniformTypeIdentifier:v114];
+            originalUniformTypeIdentifier = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
+            kind = [PLManagedAsset assetTypeFromUniformTypeIdentifier:originalUniformTypeIdentifier];
           }
 
           else
           {
-            v115 = [(PLAssetJournalEntryPayload *)self kind];
+            kind = [(PLAssetJournalEntryPayload *)self kind];
           }
 
-          if (v115 != 3)
+          if (kind != 3)
           {
-            [(PLAssetJournalEntryPayload *)self setPlaybackStyle:[PLManagedAsset defaultPlaybackStyleFromAssetType:v115 subtype:[(PLAssetJournalEntryPayload *)self kindSubtype] playbackVariation:[(PLAssetJournalEntryPayload *)self playbackVariation]]];
+            [(PLAssetJournalEntryPayload *)self setPlaybackStyle:[PLManagedAsset defaultPlaybackStyleFromAssetType:kind subtype:[(PLAssetJournalEntryPayload *)self kindSubtype] playbackVariation:[(PLAssetJournalEntryPayload *)self playbackVariation]]];
             if ([(PLAssetJournalEntryPayload *)self playbackStyle])
             {
               v150 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[PLAssetJournalEntryPayload playbackStyle](self, "playbackStyle")}];
-              [v13 setObject:v150 forKeyedSubscript:@"playbackStyle"];
+              [updateCopy setObject:v150 forKeyedSubscript:@"playbackStyle"];
             }
           }
         }
 
         v169.receiver = self;
         v169.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v169 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v169 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
-      else if ([v10 isEqualToKey:@"kind"])
+      else if ([propertyCopy isEqualToKey:@"kind"])
       {
         if ([(PLAssetJournalEntryPayload *)self kind]== 3)
         {
-          v130 = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
-          [(PLAssetJournalEntryPayload *)self setKind:[PLManagedAsset assetTypeFromUniformTypeIdentifier:v130]];
+          originalUniformTypeIdentifier2 = [(PLAssetJournalEntryPayload *)self originalUniformTypeIdentifier];
+          [(PLAssetJournalEntryPayload *)self setKind:[PLManagedAsset assetTypeFromUniformTypeIdentifier:originalUniformTypeIdentifier2]];
 
           if ([(PLAssetJournalEntryPayload *)self kind]!= 3)
           {
             v131 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLAssetJournalEntryPayload kind](self, "kind")}];
-            [v13 setObject:v131 forKeyedSubscript:@"kind"];
+            [updateCopy setObject:v131 forKeyedSubscript:@"kind"];
           }
         }
 
         v168.receiver = self;
         v168.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v168 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v168 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
-      else if ([v10 isEqualToKey:@"sleetIsReversible"])
+      else if ([propertyCopy isEqualToKey:@"sleetIsReversible"])
       {
         v141 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"sleetIsReversible"];
 
         if (!v141)
         {
-          [(PLAssetJournalEntryPayload *)self _fixSleetIsReversibleWithAdditionalAssetAttributes:v11];
+          [(PLAssetJournalEntryPayload *)self _fixSleetIsReversibleWithAdditionalAssetAttributes:objectCopy];
           v142 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLAssetJournalEntryPayload sleetIsReversible](self, "sleetIsReversible")}];
-          [v13 setObject:v142 forKeyedSubscript:@"sleetIsReversible"];
+          [updateCopy setObject:v142 forKeyedSubscript:@"sleetIsReversible"];
         }
 
         v167.receiver = self;
         v167.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v167 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v167 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
       else
       {
         v166.receiver = self;
         v166.super_class = PLAssetJournalEntryPayload;
-        [(PLManagedObjectJournalEntryPayload *)&v166 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+        [(PLManagedObjectJournalEntryPayload *)&v166 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       }
 
       goto LABEL_40;
@@ -915,24 +915,24 @@ LABEL_3:
     {
       v171.receiver = self;
       v171.super_class = PLAssetJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v171 applyPayloadProperty:v10 toManagedObject:v11 key:v12 payloadAttributesToUpdate:v13];
+      [(PLManagedObjectJournalEntryPayload *)&v171 applyPayloadProperty:propertyCopy toManagedObject:objectCopy key:keyCopy payloadAttributesToUpdate:updateCopy];
       goto LABEL_40;
     }
 
-    v116 = self;
-    v38 = v13;
-    v117 = [(PLAssetJournalEntryPayload *)v116 isVideo];
-    v39 = v11;
-    if (!v117)
+    selfCopy2 = self;
+    v38 = updateCopy;
+    isVideo = [(PLAssetJournalEntryPayload *)selfCopy2 isVideo];
+    v39 = objectCopy;
+    if (!isVideo)
     {
       goto LABEL_129;
     }
 
     objc_opt_class();
-    v118 = [v39 managedObjectContext];
+    managedObjectContext = [v39 managedObjectContext];
     if (objc_opt_isKindOfClass())
     {
-      v119 = v118;
+      v119 = managedObjectContext;
     }
 
     else
@@ -942,33 +942,33 @@ LABEL_3:
 
     v120 = v119;
 
-    v121 = [v120 pl_libraryBundle];
+    pl_libraryBundle = [v120 pl_libraryBundle];
 
-    v122 = [v121 timeZoneLookup];
+    timeZoneLookup = [pl_libraryBundle timeZoneLookup];
 
-    if ([(PLAssetJournalEntryPayload *)v116 kindSubtype]== 101)
+    if ([(PLAssetJournalEntryPayload *)selfCopy2 kindSubtype]== 101)
     {
       v123 = MEMORY[0x1E69C0910];
-      v124 = [(PLAssetJournalEntryPayload *)v116 adjustmentFormatIdentifier];
-      v125 = [(PLAssetJournalEntryPayload *)v116 adjustmentFormatVersion];
-      LOBYTE(v123) = [v123 isRecognizedSlowMotionFormatWithIdentifier:v124 version:v125];
+      adjustmentFormatIdentifier = [(PLAssetJournalEntryPayload *)selfCopy2 adjustmentFormatIdentifier];
+      adjustmentFormatVersion = [(PLAssetJournalEntryPayload *)selfCopy2 adjustmentFormatVersion];
+      LOBYTE(v123) = [v123 isRecognizedSlowMotionFormatWithIdentifier:adjustmentFormatIdentifier version:adjustmentFormatVersion];
 
       if (v123)
       {
-        v126 = 3;
+        isSloMo = 3;
 LABEL_157:
 
         v152 = v39;
-        if (v126)
+        if (isSloMo)
         {
           v153 = v152;
-          [v152 setHighFrameRateState:v126];
-          v154 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v126];
+          [v152 setHighFrameRateState:isSloMo];
+          v154 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:isSloMo];
           [v38 setObject:v154 forKeyedSubscript:@"highFrameRateState"];
 
-          if ([(PLAssetJournalEntryPayload *)v164 kindSubtype]!= 101)
+          if ([(PLAssetJournalEntryPayload *)selfCopy kindSubtype]!= 101)
           {
-            [(NSMutableDictionary *)v164->super._payloadAttributes setObject:&unk_1F0FBDD08 forKeyedSubscript:@"kindSubtype"];
+            [(NSMutableDictionary *)selfCopy->super._payloadAttributes setObject:&unk_1F0FBDD08 forKeyedSubscript:@"kindSubtype"];
             [v153 setKindSubtype:101];
             [v38 setObject:&unk_1F0FBDD08 forKeyedSubscript:@"kindSubtype"];
           }
@@ -977,84 +977,84 @@ LABEL_157:
         goto LABEL_129;
       }
 
-      v151 = [v39 pathManager];
-      v144 = [(PLAssetJournalEntryPayload *)v164 _loadOriginalVideoMetadataWithPathManager:v151 timezoneLookup:v122];
+      pathManager = [v39 pathManager];
+      v144 = [(PLAssetJournalEntryPayload *)selfCopy _loadOriginalVideoMetadataWithPathManager:pathManager timezoneLookup:timeZoneLookup];
 
       if ([v144 isSloMo])
       {
-        v126 = 3;
+        isSloMo = 3;
       }
 
       else
       {
-        v126 = 2;
+        isSloMo = 2;
       }
     }
 
     else
     {
-      if (![(PLAssetJournalEntryPayload *)v116 hasAdjustments])
+      if (![(PLAssetJournalEntryPayload *)selfCopy2 hasAdjustments])
       {
-        v126 = 0;
+        isSloMo = 0;
         goto LABEL_157;
       }
 
-      v143 = [v39 pathManager];
-      v144 = [(PLAssetJournalEntryPayload *)v164 _loadOriginalVideoMetadataWithPathManager:v143 timezoneLookup:v122];
+      pathManager2 = [v39 pathManager];
+      v144 = [(PLAssetJournalEntryPayload *)selfCopy _loadOriginalVideoMetadataWithPathManager:pathManager2 timezoneLookup:timeZoneLookup];
 
-      v126 = [v144 isSloMo];
+      isSloMo = [v144 isSloMo];
     }
 
     goto LABEL_157;
   }
 
-  if (![v10 isEqualToKey:@"inTrash"])
+  if (![propertyCopy isEqualToKey:@"inTrash"])
   {
-    if ([v10 isEqualToKey:@"assetDescription"])
+    if ([propertyCopy isEqualToKey:@"assetDescription"])
     {
       v20 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"description"];
       v16 = v20;
       if (v20 && [v20 length])
       {
-        [v11 setLongDescription:v16];
+        [objectCopy setLongDescription:v16];
       }
 
       goto LABEL_39;
     }
 
-    if ([v10 isEqualToKey:@"assetMediaMetadataRelationship"])
+    if ([propertyCopy isEqualToKey:@"assetMediaMetadataRelationship"])
     {
       v16 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"assetMediaMetadata"];
       if (v16)
       {
-        [v11 setMediaMetadataData:v16];
+        [objectCopy setMediaMetadataData:v16];
       }
 
       goto LABEL_39;
     }
 
-    if ([v10 isEqualToKey:@"unmanagedAdjustment"])
+    if ([propertyCopy isEqualToKey:@"unmanagedAdjustment"])
     {
       if (![(PLAssetJournalEntryPayload *)self hasAdjustments])
       {
         goto LABEL_40;
       }
 
-      v33 = [v11 managedObjectContext];
-      v34 = [(PLManagedObject *)PLUnmanagedAdjustment insertInManagedObjectContext:v33];
+      managedObjectContext2 = [objectCopy managedObjectContext];
+      v34 = [(PLManagedObject *)PLUnmanagedAdjustment insertInManagedObjectContext:managedObjectContext2];
 
-      v35 = [v10 subRelationshipProperties];
+      subRelationshipProperties = [propertyCopy subRelationshipProperties];
       v189[0] = MEMORY[0x1E69E9820];
       v189[1] = 3221225472;
       v189[2] = __97__PLAssetJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke;
       v189[3] = &unk_1E7572EE8;
       v190 = v34;
-      v191 = v13;
-      v192 = self;
+      v191 = updateCopy;
+      selfCopy3 = self;
       v16 = v34;
-      [v35 enumerateKeysAndObjectsUsingBlock:v189];
+      [subRelationshipProperties enumerateKeysAndObjectsUsingBlock:v189];
 
-      [v11 setUnmanagedAdjustment:v16];
+      [objectCopy setUnmanagedAdjustment:v16];
       v36 = v190;
 LABEL_35:
 
@@ -1062,100 +1062,100 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    if ([v10 isEqualToKey:@"master"])
+    if ([propertyCopy isEqualToKey:@"master"])
     {
-      v37 = self;
-      v38 = v13;
-      v39 = [(NSMutableDictionary *)v37->super._payloadAttributes objectForKeyedSubscript:@"cloudMasterGUID"];
+      selfCopy4 = self;
+      v38 = updateCopy;
+      v39 = [(NSMutableDictionary *)selfCopy4->super._payloadAttributes objectForKeyedSubscript:@"cloudMasterGUID"];
       if (v39)
       {
-        v160 = v12;
-        v40 = v11;
-        v41 = [v40 managedObjectContext];
-        v42 = [PLCloudMaster cloudMasterWithGUID:v39 inShare:0 prefetchResources:0 inManagedObjectContext:v41];
+        v160 = keyCopy;
+        v40 = objectCopy;
+        managedObjectContext3 = [v40 managedObjectContext];
+        v42 = [PLCloudMaster cloudMasterWithGUID:v39 inShare:0 prefetchResources:0 inManagedObjectContext:managedObjectContext3];
 
         if (v42)
         {
           goto LABEL_128;
         }
 
-        v43 = [v40 managedObjectContext];
-        v42 = [(PLManagedObject *)PLCloudMaster insertInManagedObjectContext:v43];
+        managedObjectContext4 = [v40 managedObjectContext];
+        v42 = [(PLManagedObject *)PLCloudMaster insertInManagedObjectContext:managedObjectContext4];
 
         [v42 setCloudMasterGUID:v39];
-        v44 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"importedBy"];
+        v44 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"importedBy"];
         [v42 setImportedBy:{objc_msgSend(v44, "intValue")}];
 
-        v45 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"creatorBundleID"];
+        v45 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"creatorBundleID"];
         [v42 setImportedByBundleIdentifier:v45];
 
-        v46 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"importedByDisplayName"];
+        v46 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"importedByDisplayName"];
         [v42 setImportedByDisplayName:v46];
 
-        v47 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"originalFilename"];
+        v47 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"originalFilename"];
         [v42 setOriginalFilename:v47];
 
-        v48 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"originalOrientation"];
+        v48 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"originalOrientation"];
         [v42 setOriginalOrientation:{objc_msgSend(v48, "intValue")}];
 
-        v49 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"originatingAssetIdentifier"];
+        v49 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"originatingAssetIdentifier"];
         [v42 setOriginatingAssetIdentifier:v49];
 
-        v50 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"creationDate"];
+        v50 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"creationDate"];
         [v42 setCreationDate:v50];
 
-        v51 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"importDate"];
+        v51 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"importDate"];
         [v42 setImportDate:v51];
 
-        v52 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"originalUTI"];
+        v52 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"originalUTI"];
         [v42 setUniformTypeIdentifier:v52];
 
-        v53 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadataType"];
+        v53 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadataType"];
         [v42 setMediaMetadataType:v53];
 
-        v54 = [v42 mediaMetadata];
-        v55 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
-        [v54 setValue:v55 forKey:@"data"];
+        mediaMetadata = [v42 mediaMetadata];
+        v55 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
+        [mediaMetadata setValue:v55 forKey:@"data"];
 
-        v56 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"fullSizeJPEGSource"];
+        v56 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"fullSizeJPEGSource"];
 
-        v57 = v164->super._payloadAttributes;
+        v57 = selfCopy->super._payloadAttributes;
         if (v56)
         {
-          v58 = [(NSMutableDictionary *)v57 objectForKeyedSubscript:@"fullSizeJPEGSource"];
-          v59 = [v58 intValue];
+          uniformTypeIdentifier = [(NSMutableDictionary *)v57 objectForKeyedSubscript:@"fullSizeJPEGSource"];
+          intValue = [uniformTypeIdentifier intValue];
         }
 
         else
         {
           v102 = [(NSMutableDictionary *)v57 objectForKeyedSubscript:@"originalWidth"];
-          v103 = [v102 integerValue];
-          v104 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"originalHeight"];
-          v105 = [v104 integerValue];
+          integerValue = [v102 integerValue];
+          v104 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"originalHeight"];
+          integerValue2 = [v104 integerValue];
 
-          v58 = [v42 uniformTypeIdentifier];
-          v59 = [PLCloudMaster fullSizeJPEGSourceForUTI:v58 andImageDimensions:v103, v105];
+          uniformTypeIdentifier = [v42 uniformTypeIdentifier];
+          intValue = [PLCloudMaster fullSizeJPEGSourceForUTI:uniformTypeIdentifier andImageDimensions:integerValue, integerValue2];
         }
 
-        [v42 setFullSizeJPEGSource:v59];
+        [v42 setFullSizeJPEGSource:intValue];
 
-        v106 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"importSessionID"];
+        v106 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"importSessionID"];
         [v42 setImportSessionID:v106];
 
-        if (![(PLAssetJournalEntryPayload *)v164 isVideo])
+        if (![(PLAssetJournalEntryPayload *)selfCopy isVideo])
         {
           goto LABEL_128;
         }
 
-        v107 = [(NSMutableDictionary *)v164->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
+        v107 = [(NSMutableDictionary *)selfCopy->super._payloadAttributes objectForKeyedSubscript:@"mediaMetadata"];
         if (!v107)
         {
           v128 = PLMigrationGetLog();
           if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
           {
-            v129 = [v40 uuid];
+            uuid = [v40 uuid];
             *buf = 138543362;
-            v194 = v129;
+            v194 = uuid;
             _os_log_impl(&dword_19BF1F000, v128, OS_LOG_TYPE_DEFAULT, "Rebuild: unable to find mediaMetadata in master for %{public}@", buf, 0xCu);
           }
 
@@ -1168,18 +1168,18 @@ LABEL_39:
         if (v108)
         {
           v109 = [MEMORY[0x1E6987E28] assetProxyWithPropertyList:v108];
-          v110 = [v109 plVideoCodecName];
-          [v42 setCodecName:v110];
+          plVideoCodecName = [v109 plVideoCodecName];
+          [v42 setCodecName:plVideoCodecName];
 
-          v111 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v109];
-          if ([v111 count])
+          uuid2 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v109];
+          if ([uuid2 count])
           {
-            [v111 objectAtIndex:0];
-            v112 = v158 = v11;
+            [uuid2 objectAtIndex:0];
+            v112 = v158 = objectCopy;
             [v112 nominalFrameRate];
             [v42 setVideoFrameRate:v113];
 
-            v11 = v158;
+            objectCopy = v158;
           }
         }
 
@@ -1195,16 +1195,16 @@ LABEL_127:
 
 LABEL_128:
             [v40 setMaster:v42];
-            v132 = [v40 additionalAttributes];
-            [v132 setOriginalStableHash:v39];
+            additionalAttributes3 = [v40 additionalAttributes];
+            [additionalAttributes3 setOriginalStableHash:v39];
 
-            v12 = v160;
+            keyCopy = v160;
             goto LABEL_129;
           }
 
-          v111 = [v40 uuid];
+          uuid2 = [v40 uuid];
           *buf = 138543618;
-          v194 = v111;
+          v194 = uuid2;
           v195 = 2114;
           v196 = v165;
           _os_log_impl(&dword_19BF1F000, v109, OS_LOG_TYPE_DEFAULT, "Rebuild: unable to serialize videoProperties for %{public}@: %{public}@", buf, 0x16u);
@@ -1215,22 +1215,22 @@ LABEL_128:
 
 LABEL_129:
 
-      v13 = v38;
+      updateCopy = v38;
       goto LABEL_40;
     }
 
-    if ([v10 isEqualToKey:@"keywords"])
+    if ([propertyCopy isEqualToKey:@"keywords"])
     {
-      v159 = v13;
-      v60 = v11;
+      v159 = updateCopy;
+      v60 = objectCopy;
       v61 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"keywords"];
       v62 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v61];
 
       if ([v62 count])
       {
-        v161 = v12;
-        v156 = v10;
-        v157 = v11;
+        v161 = keyCopy;
+        v156 = propertyCopy;
+        v157 = objectCopy;
         v163 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v184 = 0u;
         v185 = 0u;
@@ -1265,8 +1265,8 @@ LABEL_129:
                 v70 = v67;
               }
 
-              v71 = [v60 managedObjectContext];
-              v72 = [PLManagedKeyword keywordForUuid:v70 context:v71];
+              managedObjectContext5 = [v60 managedObjectContext];
+              v72 = [PLManagedKeyword keywordForUuid:v70 context:managedObjectContext5];
 
               if (v72)
               {
@@ -1275,19 +1275,19 @@ LABEL_129:
                   v73 = PLMigrationGetLog();
                   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
                   {
-                    v74 = [v72 title];
-                    v75 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+                    title = [v72 title];
+                    payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
                     *buf = 138413058;
-                    v194 = v74;
+                    v194 = title;
                     v195 = 2112;
                     v196 = v67;
                     v197 = 2112;
                     v198 = v69;
                     v199 = 2112;
-                    v200 = v75;
+                    v200 = payloadID;
                     _os_log_impl(&dword_19BF1F000, v73, OS_LOG_TYPE_DEFAULT, "Rebuild: using re-mapped uuid for keyword %@, %@ -> %@, for asset: %@", buf, 0x2Au);
 
-                    self = v164;
+                    self = selfCopy;
                   }
                 }
 
@@ -1299,14 +1299,14 @@ LABEL_129:
                 v76 = PLMigrationGetLog();
                 if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
                 {
-                  v77 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+                  payloadID2 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
                   *buf = 138412546;
                   v194 = v70;
                   v195 = 2112;
-                  v196 = v77;
+                  v196 = payloadID2;
                   _os_log_impl(&dword_19BF1F000, v76, OS_LOG_TYPE_ERROR, "Rebuild: could not find keyword for uuid: %@ for asset: %@", buf, 0x16u);
 
-                  self = v164;
+                  self = selfCopy;
                 }
               }
             }
@@ -1318,39 +1318,39 @@ LABEL_129:
         }
 
         [v60 setKeywords:v163];
-        v10 = v156;
-        v11 = v157;
-        v12 = v161;
+        propertyCopy = v156;
+        objectCopy = v157;
+        keyCopy = v161;
         v62 = v155;
       }
 
 LABEL_69:
-      v13 = v159;
+      updateCopy = v159;
       goto LABEL_40;
     }
 
-    if ([v10 isEqualToKey:@"extendedAttributes"])
+    if ([propertyCopy isEqualToKey:@"extendedAttributes"])
     {
-      v81 = [v11 managedObjectContext];
-      v82 = [(PLManagedObject *)PLExtendedAttributes insertInManagedObjectContext:v81];
+      managedObjectContext6 = [objectCopy managedObjectContext];
+      v82 = [(PLManagedObject *)PLExtendedAttributes insertInManagedObjectContext:managedObjectContext6];
 
-      v83 = [v10 subRelationshipProperties];
+      subRelationshipProperties2 = [propertyCopy subRelationshipProperties];
       v180[0] = MEMORY[0x1E69E9820];
       v180[1] = 3221225472;
       v180[2] = __97__PLAssetJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke_1567;
       v180[3] = &unk_1E7572EE8;
       v181 = v82;
-      v182 = v13;
-      v183 = self;
+      v182 = updateCopy;
+      selfCopy5 = self;
       v16 = v82;
-      [v83 enumerateKeysAndObjectsUsingBlock:v180];
+      [subRelationshipProperties2 enumerateKeysAndObjectsUsingBlock:v180];
 
-      [v11 setExtendedAttributes:v16];
+      [objectCopy setExtendedAttributes:v16];
       v36 = v181;
       goto LABEL_35;
     }
 
-    if ([v10 isEqualToKey:@"editedIPTCAttributes"])
+    if ([propertyCopy isEqualToKey:@"editedIPTCAttributes"])
     {
       v85 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"iptcData"];
 
@@ -1359,46 +1359,46 @@ LABEL_69:
         goto LABEL_40;
       }
 
-      v86 = [v11 managedObjectContext];
-      v87 = [(PLManagedObject *)PLEditedIPTCAttributes insertInManagedObjectContext:v86];
+      managedObjectContext7 = [objectCopy managedObjectContext];
+      v87 = [(PLManagedObject *)PLEditedIPTCAttributes insertInManagedObjectContext:managedObjectContext7];
 
-      v88 = [v10 subRelationshipProperties];
+      subRelationshipProperties3 = [propertyCopy subRelationshipProperties];
       v176[0] = MEMORY[0x1E69E9820];
       v176[1] = 3221225472;
       v176[2] = __97__PLAssetJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke_2;
       v176[3] = &unk_1E7572EE8;
-      v21 = v87;
-      v177 = v21;
-      v178 = v13;
-      v179 = self;
-      [v88 enumerateKeysAndObjectsUsingBlock:v176];
+      locationData = v87;
+      v177 = locationData;
+      v178 = updateCopy;
+      selfCopy6 = self;
+      [subRelationshipProperties3 enumerateKeysAndObjectsUsingBlock:v176];
 
-      v89 = v11;
-      v90 = [v21 data];
+      v89 = objectCopy;
+      data = [locationData data];
 
-      if (v90)
+      if (data)
       {
-        v91 = [v21 data];
-        [v21 setIPTCData:v91];
+        data2 = [locationData data];
+        [locationData setIPTCData:data2];
       }
 
-      [v89 setEditedIPTCAttributes:v21];
+      [v89 setEditedIPTCAttributes:locationData];
     }
 
     else
     {
-      if ([v10 isEqualToKey:@"resources"] && -[PLAssetJournalEntryPayload hasAdjustments](self, "hasAdjustments"))
+      if ([propertyCopy isEqualToKey:@"resources"] && -[PLAssetJournalEntryPayload hasAdjustments](self, "hasAdjustments"))
       {
-        v159 = v13;
-        v94 = [(PLAssetJournalEntryPayload *)self bestCPLResourceTypeForAdjustedFingerPrint];
+        v159 = updateCopy;
+        bestCPLResourceTypeForAdjustedFingerPrint = [(PLAssetJournalEntryPayload *)self bestCPLResourceTypeForAdjustedFingerPrint];
         v95 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"resources"];
         v175[0] = MEMORY[0x1E69E9820];
         v175[1] = 3221225472;
         v175[2] = __97__PLAssetJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke_3;
         v175[3] = &__block_descriptor_40_e29_B32__0__NSDictionary_8Q16_B24l;
-        v175[4] = v94;
+        v175[4] = bestCPLResourceTypeForAdjustedFingerPrint;
         v96 = [v95 indexesOfObjectsPassingTest:v175];
-        v97 = v11;
+        v97 = objectCopy;
         v98 = [v96 count];
         if (v98 == 1)
         {
@@ -1411,8 +1411,8 @@ LABEL_69:
           v99 = 0;
         }
 
-        v140 = [v97 additionalAttributes];
-        [v140 setAdjustedStableHash:v99];
+        additionalAttributes4 = [v97 additionalAttributes];
+        [additionalAttributes4 setAdjustedStableHash:v99];
 
         if (v98 == 1)
         {
@@ -1421,11 +1421,11 @@ LABEL_69:
         goto LABEL_69;
       }
 
-      if ([v10 isEqualToKey:@"bundleScope"])
+      if ([propertyCopy isEqualToKey:@"bundleScope"])
       {
-        v16 = v11;
+        v16 = objectCopy;
         v100 = self->super._payloadAttributes;
-        v101 = [v10 key];
+        v101 = [propertyCopy key];
         v18 = [(NSMutableDictionary *)v100 objectForKeyedSubscript:v101];
 
         if (v18)
@@ -1436,28 +1436,28 @@ LABEL_69:
         goto LABEL_38;
       }
 
-      if ([v10 isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
+      if ([propertyCopy isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
       {
         v127 = self->super._payloadAttributes;
-        v18 = v11;
-        v16 = [(PLAssetJournalEntryPayload *)self payloadValueFromAttributes:v127 forPayloadProperty:v10];
+        v18 = objectCopy;
+        v16 = [(PLAssetJournalEntryPayload *)self payloadValueFromAttributes:v127 forPayloadProperty:propertyCopy];
         [v18 setLibraryScopeAssetContributorsToUpdate:v16];
 LABEL_38:
 
         goto LABEL_39;
       }
 
-      if (![v10 isEqualToKey:@"avalancheUUID"])
+      if (![propertyCopy isEqualToKey:@"avalancheUUID"])
       {
-        if ([v10 isEqualToKey:@"avalanchePickType"])
+        if ([propertyCopy isEqualToKey:@"avalanchePickType"])
         {
           v145 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"avalancheUUID"];
 
           if (v145)
           {
             v146 = self->super._payloadAttributes;
-            v147 = v11;
-            v148 = [v10 key];
+            v147 = objectCopy;
+            v148 = [propertyCopy key];
             v149 = [(NSMutableDictionary *)v146 objectForKeyedSubscript:v148];
             [v147 setAvalanchePickType:{objc_msgSend(v149, "integerValue")}];
           }
@@ -1466,17 +1466,17 @@ LABEL_38:
         goto LABEL_40;
       }
 
-      v21 = v11;
+      locationData = objectCopy;
       v133 = self->super._payloadAttributes;
-      v134 = [v10 key];
+      v134 = [propertyCopy key];
       v135 = [(NSMutableDictionary *)v133 objectForKeyedSubscript:v134];
 
       if (v135)
       {
         v136 = self->super._payloadAttributes;
-        v137 = [v10 key];
+        v137 = [propertyCopy key];
         v138 = [(NSMutableDictionary *)v136 objectForKeyedSubscript:v137];
-        [v21 setAvalancheUUID:v138];
+        [locationData setAvalancheUUID:v138];
 
         v139 = 1;
       }
@@ -1486,7 +1486,7 @@ LABEL_38:
         v139 = 0;
       }
 
-      [v21 setAvalancheKind:v139];
+      [locationData setAvalancheKind:v139];
     }
 
 LABEL_31:
@@ -1495,24 +1495,24 @@ LABEL_31:
   }
 
   v14 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"inTrash"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
-    v16 = v11;
+    v16 = objectCopy;
     v17 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"trashedReason"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 unsignedShortValue];
+      unsignedShortValue = [v17 unsignedShortValue];
     }
 
     else
     {
-      v19 = 0;
+      unsignedShortValue = 0;
     }
 
-    [v16 trashWithReason:v19];
+    [v16 trashWithReason:unsignedShortValue];
     goto LABEL_38;
   }
 
@@ -1558,101 +1558,101 @@ BOOL __97__PLAssetJournalEntryPayload_applyPayloadProperty_toManagedObject_key_p
   return v5 == *(a1 + 32) && v7 == 2;
 }
 
-- (id)insertAssetFromDataInManagedObjectContext:(id)a3 keywordUUIDRemapping:(id)a4 rawPayloadAttributesToUpdate:(id)a5
+- (id)insertAssetFromDataInManagedObjectContext:(id)context keywordUUIDRemapping:(id)remapping rawPayloadAttributesToUpdate:(id)update
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PLManagedObject *)PLManagedAsset insertInManagedObjectContext:a3];
-  v11 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v12 = [v11 payloadIDString];
-  [v10 setUuid:v12];
+  remappingCopy = remapping;
+  updateCopy = update;
+  v10 = [(PLManagedObject *)PLManagedAsset insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v10 setUuid:payloadIDString];
 
   keywordUUIDRemapping = self->_keywordUUIDRemapping;
-  self->_keywordUUIDRemapping = v8;
+  self->_keywordUUIDRemapping = remappingCopy;
 
-  [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v10 payloadAttributesToUpdate:v9];
+  [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v10 payloadAttributesToUpdate:updateCopy];
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
   v52[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"resource"])
+  keyCopy = key;
+  valueCopy = value;
+  builderCopy = builder;
+  if ([keyCopy isEqualToString:@"resource"])
   {
-    v11 = [v10 style];
-    v12 = [v10 indent];
-    if (v11 == 1)
+    style = [builderCopy style];
+    indent = [builderCopy indent];
+    if (style == 1)
     {
-      v13 = v12;
+      v13 = indent;
     }
 
     else
     {
-      v13 = v12 + 1;
+      v13 = indent + 1;
     }
 
-    v14 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", v9, [v10 style], v13);
-    v15 = [[PLAssetJournalEntryPayloadResource alloc] initWithPayloadAttributes:v9 payload:self];
+    v14 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", valueCopy, [builderCopy style], v13);
+    v15 = [[PLAssetJournalEntryPayloadResource alloc] initWithPayloadAttributes:valueCopy payload:self];
     [(PLAssetJournalEntryPayloadResource *)v15 appendToDescriptionBuilder:v14];
-    v16 = [(PLDescriptionBuilder *)v14 build];
-    [v10 appendName:v8 object:v16];
+    build = [(PLDescriptionBuilder *)v14 build];
+    [builderCopy appendName:keyCopy object:build];
 
     goto LABEL_6;
   }
 
-  if (![v8 isEqualToString:@"resources"])
+  if (![keyCopy isEqualToString:@"resources"])
   {
-    if ([v8 isEqualToString:@"keywords"])
+    if ([keyCopy isEqualToString:@"keywords"])
     {
-      v14 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v9];
+      v14 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:valueCopy];
       v45.receiver = self;
       v45.super_class = PLAssetJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v45 appendAttributeKey:v8 value:v14 toDescriptionBuilder:v10];
+      [(PLManagedObjectJournalEntryPayload *)&v45 appendAttributeKey:keyCopy value:v14 toDescriptionBuilder:builderCopy];
       goto LABEL_7;
     }
 
-    if (![v8 isEqualToString:@"libraryScopeAssetContributorsToUpdate"])
+    if (![keyCopy isEqualToString:@"libraryScopeAssetContributorsToUpdate"])
     {
       v43.receiver = self;
       v43.super_class = PLAssetJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v43 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+      [(PLManagedObjectJournalEntryPayload *)&v43 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
       goto LABEL_30;
     }
 
     v14 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E696A8B0]];
-    v15 = [(PLDescriptionBuilder *)v14 transformedValue:v9];
+    v15 = [(PLDescriptionBuilder *)v14 transformedValue:valueCopy];
     v44.receiver = self;
     v44.super_class = PLAssetJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v44 appendAttributeKey:v8 value:v15 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v44 appendAttributeKey:keyCopy value:v15 toDescriptionBuilder:builderCopy];
 LABEL_6:
 
 LABEL_7:
     goto LABEL_30;
   }
 
-  if ([v10 style] == 1)
+  if ([builderCopy style] == 1)
   {
     v46.receiver = self;
     v46.super_class = PLAssetJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v46 appendAttributeKey:v8 value:v9 toDescriptionBuilder:v10];
+    [(PLManagedObjectJournalEntryPayload *)&v46 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 
   else
   {
-    v42 = self;
-    v39 = v8;
-    v17 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", v9, [v10 style], objc_msgSend(v10, "indent") + 1);
+    selfCopy = self;
+    v39 = keyCopy;
+    v17 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", valueCopy, [builderCopy style], objc_msgSend(builderCopy, "indent") + 1);
     v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"version" ascending:1];
     v52[0] = v18;
     v19 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"subType" ascending:1];
     v52[1] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
-    v38 = v9;
-    v21 = [v9 sortedArrayUsingDescriptors:v20];
+    v38 = valueCopy;
+    v21 = [valueCopy sortedArrayUsingDescriptors:v20];
 
     v49 = 0u;
     v50 = 0u;
@@ -1665,7 +1665,7 @@ LABEL_7:
       v23 = v22;
       v24 = 0;
       v41 = *v48;
-      v25 = v10;
+      v25 = builderCopy;
       do
       {
         v26 = 0;
@@ -1678,28 +1678,28 @@ LABEL_7:
           }
 
           v28 = *(*(&v47 + 1) + 8 * v26);
-          v29 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", v28, [v10 style], -[PLDescriptionBuilder indent](v17, "indent") + 1);
-          v30 = [[PLAssetJournalEntryPayloadResource alloc] initWithPayloadAttributes:v28 payload:v42];
+          v29 = -[PLDescriptionBuilder initWithObject:style:indent:]([PLDescriptionBuilder alloc], "initWithObject:style:indent:", v28, [builderCopy style], -[PLDescriptionBuilder indent](v17, "indent") + 1);
+          v30 = [[PLAssetJournalEntryPayloadResource alloc] initWithPayloadAttributes:v28 payload:selfCopy];
           [(PLAssetJournalEntryPayloadResource *)v30 appendToDescriptionBuilder:v29];
-          if ([v10 style] == 2)
+          if ([builderCopy style] == 2)
           {
             v31 = MEMORY[0x1E696AEC0];
-            v32 = [(PLDescriptionBuilder *)v29 build];
-            v33 = [v31 stringWithFormat:@"\n%@", v32];
+            build2 = [(PLDescriptionBuilder *)v29 build];
+            build3 = [v31 stringWithFormat:@"\n%@", build2];
           }
 
           else
           {
-            v33 = [(PLDescriptionBuilder *)v29 build];
+            build3 = [(PLDescriptionBuilder *)v29 build];
           }
 
           v24 = v27 + 1;
           v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v27];
-          [(PLDescriptionBuilder *)v17 appendName:v34 object:v33];
+          [(PLDescriptionBuilder *)v17 appendName:v34 object:build3];
 
           ++v26;
           ++v27;
-          v10 = v25;
+          builderCopy = v25;
         }
 
         while (v23 != v26);
@@ -1709,92 +1709,92 @@ LABEL_7:
       while (v23);
     }
 
-    if ([v10 style] == 2)
+    if ([builderCopy style] == 2)
     {
       v35 = MEMORY[0x1E696AEC0];
-      v36 = [(PLDescriptionBuilder *)v17 build];
-      v37 = [v35 stringWithFormat:@"\n%@", v36];
+      build4 = [(PLDescriptionBuilder *)v17 build];
+      build5 = [v35 stringWithFormat:@"\n%@", build4];
     }
 
     else
     {
-      v37 = [(PLDescriptionBuilder *)v17 build];
+      build5 = [(PLDescriptionBuilder *)v17 build];
     }
 
-    v9 = v38;
-    v8 = v39;
-    [v10 appendName:v39 object:v37];
+    valueCopy = v38;
+    keyCopy = v39;
+    [builderCopy appendName:v39 object:build5];
   }
 
 LABEL_30:
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 parentProperty];
-  v12 = [v11 isEqualToKey:@"resources"];
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  parentProperty = [propertyCopy parentProperty];
+  v12 = [parentProperty isEqualToKey:@"resources"];
 
   if (v12)
   {
-    if ([v10 isEqualToKey:@"uti"])
+    if ([propertyCopy isEqualToKey:@"uti"])
     {
-      v13 = [v9 description];
+      v13 = [dictionaryValueCopy description];
       v14 = [PLUniformTypeIdentifierIntegratedLookup identifierFromCompactRepresentation:v13];
-      LOBYTE(v15) = [v14 isEqualToString:v8];
+      LOBYTE(v15) = [v14 isEqualToString:valueCopy];
 
       goto LABEL_15;
     }
 
-    if ([v10 isEqualToKey:@"inTrash"])
+    if ([propertyCopy isEqualToKey:@"inTrash"])
     {
 LABEL_8:
-      v17 = [v9 integerValue];
-      v15 = [v8 BOOLValue] ^ (v17 == 0);
+      integerValue = [dictionaryValueCopy integerValue];
+      v15 = [valueCopy BOOLValue] ^ (integerValue == 0);
       goto LABEL_15;
     }
 
-    v19 = [(PLManagedObjectJournalEntryPayload *)&v26 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10, v24.receiver, v24.super_class, v25.receiver, v25.super_class, self, PLAssetJournalEntryPayload];
+    pLAssetJournalEntryPayload = [(PLManagedObjectJournalEntryPayload *)&v26 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy, v24.receiver, v24.super_class, v25.receiver, v25.super_class, self, PLAssetJournalEntryPayload];
 LABEL_14:
-    LOBYTE(v15) = v19;
+    LOBYTE(v15) = pLAssetJournalEntryPayload;
     goto LABEL_15;
   }
 
-  if ([v10 isEqualToKey:@"inTrash"])
+  if ([propertyCopy isEqualToKey:@"inTrash"])
   {
     goto LABEL_8;
   }
 
-  if ([v10 isEqualToKey:@"keywords"])
+  if ([propertyCopy isEqualToKey:@"keywords"])
   {
-    v16 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-    LOBYTE(v15) = [v16 isEqualToSet:v8];
+    v16 = [MEMORY[0x1E695DFD8] setWithArray:dictionaryValueCopy];
+    LOBYTE(v15) = [v16 isEqualToSet:valueCopy];
 
     goto LABEL_15;
   }
 
-  if (![v10 isEqualToKey:@"dateCreatedSource"])
+  if (![propertyCopy isEqualToKey:@"dateCreatedSource"])
   {
-    if ([v10 isEqualToKey:@"duration"])
+    if ([propertyCopy isEqualToKey:@"duration"])
     {
-      [v9 doubleValue];
+      [dictionaryValueCopy doubleValue];
       v22 = round(v21 * 1000.0);
-      [v8 doubleValue];
+      [valueCopy doubleValue];
       LOBYTE(v15) = v22 - round(v23 * 1000.0) == 0.0;
       goto LABEL_15;
     }
 
-    v19 = [(PLManagedObjectJournalEntryPayload *)&v24 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10, self, PLAssetJournalEntryPayload, v25.receiver, v25.super_class, v26.receiver, v26.super_class];
+    pLAssetJournalEntryPayload = [(PLManagedObjectJournalEntryPayload *)&v24 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy, self, PLAssetJournalEntryPayload, v25.receiver, v25.super_class, v26.receiver, v26.super_class];
     goto LABEL_14;
   }
 
-  v18 = [v9 integerValue];
+  integerValue2 = [dictionaryValueCopy integerValue];
   LOBYTE(v15) = 1;
-  if (v8 && v18)
+  if (valueCopy && integerValue2)
   {
-    v19 = [(PLManagedObjectJournalEntryPayload *)&v25 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10, v24.receiver, v24.super_class, self, PLAssetJournalEntryPayload, v26.receiver, v26.super_class];
+    pLAssetJournalEntryPayload = [(PLManagedObjectJournalEntryPayload *)&v25 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy, v24.receiver, v24.super_class, self, PLAssetJournalEntryPayload, v26.receiver, v26.super_class];
     goto LABEL_14;
   }
 
@@ -1803,19 +1803,19 @@ LABEL_15:
   return v15;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 parentProperty];
-  v9 = [v8 isEqualToKey:@"resources"];
+  attributesCopy = attributes;
+  propertyCopy = property;
+  parentProperty = [propertyCopy parentProperty];
+  v9 = [parentProperty isEqualToKey:@"resources"];
 
   if (v9)
   {
-    if ([v7 isEqualToKey:@"volume"])
+    if ([propertyCopy isEqualToKey:@"volume"])
     {
-      v10 = [v7 key];
-      v11 = [v6 objectForKeyedSubscript:v10];
+      v10 = [propertyCopy key];
+      v11 = [attributesCopy objectForKeyedSubscript:v10];
       v12 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v11];
 LABEL_6:
       v13 = v12;
@@ -1824,31 +1824,31 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    [(PLManagedObjectJournalEntryPayload *)&v18 payloadValueFromAttributes:v6 forPayloadProperty:v7, v17.receiver, v17.super_class, self, PLAssetJournalEntryPayload];
+    [(PLManagedObjectJournalEntryPayload *)&v18 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy, v17.receiver, v17.super_class, self, PLAssetJournalEntryPayload];
   }
 
   else
   {
-    if ([v7 isEqualToKey:@"keywords"])
+    if ([propertyCopy isEqualToKey:@"keywords"])
     {
-      v10 = [v7 key];
-      v11 = [v6 objectForKeyedSubscript:v10];
+      v10 = [propertyCopy key];
+      v11 = [attributesCopy objectForKeyedSubscript:v10];
       v12 = [(PLManagedObjectJournalEntryPayload *)self setForUUIDEncodedData:v11];
       goto LABEL_6;
     }
 
-    if ([v7 isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
+    if ([propertyCopy isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
     {
       v10 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E696A8B0]];
       payloadAttributes = self->super._payloadAttributes;
-      v11 = [v7 key];
+      v11 = [propertyCopy key];
       v15 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v11];
       v13 = [v10 transformedValue:v15];
 
       goto LABEL_7;
     }
 
-    [(PLManagedObjectJournalEntryPayload *)&v17 payloadValueFromAttributes:v6 forPayloadProperty:v7, self, PLAssetJournalEntryPayload, v18.receiver, v18.super_class];
+    [(PLManagedObjectJournalEntryPayload *)&v17 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy, self, PLAssetJournalEntryPayload, v18.receiver, v18.super_class];
   }
   v13 = ;
 LABEL_13:
@@ -1856,47 +1856,47 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 parentProperty];
-  v15 = [v14 isEqualToKey:@"resources"];
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  parentProperty = [propertyCopy parentProperty];
+  v15 = [parentProperty isEqualToKey:@"resources"];
 
   if (v15)
   {
-    if ([v13 isEqualToKey:@"uti"])
+    if ([propertyCopy isEqualToKey:@"uti"])
     {
-      v16 = [v12 uniformTypeIdentifier];
-      v17 = [v16 identifier];
+      uniformTypeIdentifier = [objectCopy uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier identifier];
 LABEL_4:
-      v18 = v17;
-      v19 = [v13 key];
-      [v10 setObject:v18 forKeyedSubscript:v19];
+      uuid = identifier;
+      v19 = [propertyCopy key];
+      [attributesCopy setObject:uuid forKeyedSubscript:v19];
 LABEL_11:
 
       goto LABEL_28;
     }
 
-    if ([v13 isEqualToKey:@"volume"])
+    if ([propertyCopy isEqualToKey:@"volume"])
     {
-      v16 = [v12 fileSystemVolume];
-      v18 = [v16 uuid];
-      v22 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v18];
+      uniformTypeIdentifier = [objectCopy fileSystemVolume];
+      uuid = [uniformTypeIdentifier uuid];
+      v22 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:uuid];
 LABEL_10:
       v19 = v22;
-      v23 = [v13 key];
-      [v10 setObject:v19 forKeyedSubscript:v23];
+      v23 = [propertyCopy key];
+      [attributesCopy setObject:v19 forKeyedSubscript:v23];
 
       goto LABEL_11;
     }
 
-    if ([v13 isEqualToKey:@"inTrash"])
+    if ([propertyCopy isEqualToKey:@"inTrash"])
     {
       v20 = MEMORY[0x1E696AD98];
-      v21 = [v12 isTrashedOrExpunged];
+      isTrashedOrExpunged = [objectCopy isTrashedOrExpunged];
       goto LABEL_7;
     }
 
@@ -1905,69 +1905,69 @@ LABEL_33:
     goto LABEL_30;
   }
 
-  if (![v13 isEqualToKey:@"inTrash"])
+  if (![propertyCopy isEqualToKey:@"inTrash"])
   {
-    if ([v13 isEqualToKey:@"keywords"])
+    if ([propertyCopy isEqualToKey:@"keywords"])
     {
-      v24 = [v12 keywords];
-      v25 = [v13 relatedEntityPropertyNames];
-      v26 = [v25 anyObject];
-      v16 = [v24 valueForKey:v26];
+      keywords = [objectCopy keywords];
+      relatedEntityPropertyNames = [propertyCopy relatedEntityPropertyNames];
+      anyObject = [relatedEntityPropertyNames anyObject];
+      uniformTypeIdentifier = [keywords valueForKey:anyObject];
 
-      v18 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:v16];
-      [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v18];
+      uuid = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringSet:uniformTypeIdentifier];
+      [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:uuid];
       goto LABEL_28;
     }
 
-    if ([v13 isEqualToKey:@"bundleScope"])
+    if ([propertyCopy isEqualToKey:@"bundleScope"])
     {
-      v16 = v12;
-      if ([v16 bundleScope])
+      uniformTypeIdentifier = objectCopy;
+      if ([uniformTypeIdentifier bundleScope])
       {
-        v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v16, "bundleScope")}];
+        identifier = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(uniformTypeIdentifier, "bundleScope")}];
         goto LABEL_4;
       }
     }
 
     else
     {
-      if ([v13 isEqualToKey:@"avalancheUUID"])
+      if ([propertyCopy isEqualToKey:@"avalancheUUID"])
       {
-        v16 = v12;
-        v27 = [v16 avalancheKind];
-        v28 = v27 == 2;
-        if (v27 < 2)
+        uniformTypeIdentifier = objectCopy;
+        avalancheKind = [uniformTypeIdentifier avalancheKind];
+        v28 = avalancheKind == 2;
+        if (avalancheKind < 2)
         {
-          v17 = [v16 avalancheUUID];
+          identifier = [uniformTypeIdentifier avalancheUUID];
           goto LABEL_4;
         }
       }
 
       else
       {
-        if (![v13 isEqualToKey:@"avalanchePickType"])
+        if (![propertyCopy isEqualToKey:@"avalanchePickType"])
         {
-          if ([v13 isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
+          if ([propertyCopy isEqualToKey:@"libraryScopeAssetContributorsToUpdate"])
           {
             v32 = MEMORY[0x1E696B0A0];
             v33 = *MEMORY[0x1E696A8B0];
-            v34 = v12;
-            v16 = [v32 valueTransformerForName:v33];
-            v18 = [v34 libraryScopeAssetContributorsToUpdate];
+            v34 = objectCopy;
+            uniformTypeIdentifier = [v32 valueTransformerForName:v33];
+            uuid = [v34 libraryScopeAssetContributorsToUpdate];
 
-            v22 = [v16 reverseTransformedValue:v18];
+            v22 = [uniformTypeIdentifier reverseTransformedValue:uuid];
             goto LABEL_10;
           }
 
           goto LABEL_33;
         }
 
-        v16 = v12;
-        v29 = [v16 avalancheKind];
-        v28 = v29 == 2;
-        if (v29 < 2)
+        uniformTypeIdentifier = objectCopy;
+        avalancheKind2 = [uniformTypeIdentifier avalancheKind];
+        v28 = avalancheKind2 == 2;
+        if (avalancheKind2 < 2)
         {
-          v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "avalanchePickType")}];
+          identifier = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(uniformTypeIdentifier, "avalanchePickType")}];
           goto LABEL_4;
         }
       }
@@ -1978,17 +1978,17 @@ LABEL_33:
       }
     }
 
-    v18 = [v13 key];
-    [v11 addObject:v18];
+    uuid = [propertyCopy key];
+    [nilAttributesCopy addObject:uuid];
     goto LABEL_28;
   }
 
   v20 = MEMORY[0x1E696AD98];
-  v21 = [v12 isInTrash];
+  isTrashedOrExpunged = [objectCopy isInTrash];
 LABEL_7:
-  v16 = [v20 numberWithBool:v21];
-  v18 = [v13 key];
-  [v10 setObject:v16 forKeyedSubscript:v18];
+  uniformTypeIdentifier = [v20 numberWithBool:isTrashedOrExpunged];
+  uuid = [propertyCopy key];
+  [attributesCopy setObject:uniformTypeIdentifier forKeyedSubscript:uuid];
 LABEL_28:
 
 LABEL_29:
@@ -1998,11 +1998,11 @@ LABEL_30:
   return v30;
 }
 
-- (void)mergePayload:(id)a3
+- (void)mergePayload:(id)payload
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4[1];
+  payloadCopy = payload;
+  v5 = payloadCopy[1];
   v6 = [v5 objectForKeyedSubscript:@"resource"];
   if (v6)
   {
@@ -2013,8 +2013,8 @@ LABEL_30:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(PLAssetJournalEntryPayload *)self resources];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    resources = [(PLAssetJournalEntryPayload *)self resources];
+    v10 = [resources countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2025,20 +2025,20 @@ LABEL_30:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(resources);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
           if ([v14 isEqualToPayloadResource:v7])
           {
-            [v14 mergePayloadResource:v7 nilAttributes:v4[2]];
+            [v14 mergePayloadResource:v7 nilAttributes:payloadCopy[2]];
           }
 
-          v15 = [v14 payloadAttributes];
-          [v8 addObject:v15];
+          payloadAttributes = [v14 payloadAttributes];
+          [v8 addObject:payloadAttributes];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [resources countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -2052,26 +2052,26 @@ LABEL_30:
   {
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v17 mergePayload:v4];
+    [(PLManagedObjectJournalEntryPayload *)&v17 mergePayload:payloadCopy];
   }
 }
 
-- (PLAssetJournalEntryPayload)initWithEditedIPTCAttributes:(id)a3 changedKeys:(id)a4
+- (PLAssetJournalEntryPayload)initWithEditedIPTCAttributes:(id)attributes changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  attributesCopy = attributes;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v8 = [v6 payloadID];
-    v9 = [objc_opt_class() payloadVersion];
-    v10 = [objc_opt_class() modelProperties];
-    v11 = [v10 objectForKeyedSubscript:@"additionalAttributes"];
-    v12 = [v11 subRelationshipProperties];
-    v13 = [v12 objectForKeyedSubscript:@"editedIPTCAttributes"];
-    v14 = [v13 subRelationshipProperties];
+    payloadID = [attributesCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v11 = [modelProperties objectForKeyedSubscript:@"additionalAttributes"];
+    subRelationshipProperties = [v11 subRelationshipProperties];
+    v13 = [subRelationshipProperties objectForKeyedSubscript:@"editedIPTCAttributes"];
+    subRelationshipProperties2 = [v13 subRelationshipProperties];
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:v8 payloadVersion:v9 managedObject:v6 changedKeys:v7 modelProperties:v14];
+    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:attributesCopy changedKeys:keysCopy modelProperties:subRelationshipProperties2];
   }
 
   else
@@ -2083,20 +2083,20 @@ LABEL_30:
   return v15;
 }
 
-- (PLAssetJournalEntryPayload)initWithExtendedAttributes:(id)a3 changedKeys:(id)a4
+- (PLAssetJournalEntryPayload)initWithExtendedAttributes:(id)attributes changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  attributesCopy = attributes;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v8 = [v6 payloadID];
-    v9 = [objc_opt_class() payloadVersion];
-    v10 = [objc_opt_class() modelProperties];
-    v11 = [v10 objectForKeyedSubscript:@"extendedAttributes"];
-    v12 = [v11 subRelationshipProperties];
+    payloadID = [attributesCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v11 = [modelProperties objectForKeyedSubscript:@"extendedAttributes"];
+    subRelationshipProperties = [v11 subRelationshipProperties];
     v15.receiver = self;
     v15.super_class = PLAssetJournalEntryPayload;
-    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 initWithPayloadID:v8 payloadVersion:v9 managedObject:v6 changedKeys:v7 modelProperties:v12];
+    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:attributesCopy changedKeys:keysCopy modelProperties:subRelationshipProperties];
   }
 
   else
@@ -2108,18 +2108,18 @@ LABEL_30:
   return v13;
 }
 
-- (PLAssetJournalEntryPayload)initWithCloudMasterMediaMetadata:(id)a3 payloadID:(id)a4 changedKeys:(id)a5 modelProperties:(id)a6
+- (PLAssetJournalEntryPayload)initWithCloudMasterMediaMetadata:(id)metadata payloadID:(id)d changedKeys:(id)keys modelProperties:(id)properties
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  metadataCopy = metadata;
+  dCopy = d;
+  keysCopy = keys;
+  propertiesCopy = properties;
+  if (keysCopy)
   {
-    v14 = [objc_opt_class() payloadVersion];
+    payloadVersion = [objc_opt_class() payloadVersion];
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:v11 payloadVersion:v14 managedObject:v10 changedKeys:v12 modelProperties:v13];
+    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:dCopy payloadVersion:payloadVersion managedObject:metadataCopy changedKeys:keysCopy modelProperties:propertiesCopy];
   }
 
   else
@@ -2131,20 +2131,20 @@ LABEL_30:
   return v15;
 }
 
-- (PLAssetJournalEntryPayload)initWithCloudMaster:(id)a3 payloadID:(id)a4 changedKeys:(id)a5
+- (PLAssetJournalEntryPayload)initWithCloudMaster:(id)master payloadID:(id)d changedKeys:(id)keys
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  masterCopy = master;
+  dCopy = d;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v11 = [objc_opt_class() payloadVersion];
-    v12 = [objc_opt_class() modelProperties];
-    v13 = [v12 objectForKeyedSubscript:@"master"];
-    v14 = [v13 subRelationshipProperties];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v13 = [modelProperties objectForKeyedSubscript:@"master"];
+    subRelationshipProperties = [v13 subRelationshipProperties];
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:v9 payloadVersion:v11 managedObject:v8 changedKeys:v10 modelProperties:v14];
+    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:dCopy payloadVersion:payloadVersion managedObject:masterCopy changedKeys:keysCopy modelProperties:subRelationshipProperties];
   }
 
   else
@@ -2156,27 +2156,27 @@ LABEL_30:
   return v15;
 }
 
-- (PLAssetJournalEntryPayload)initWithInternalResource:(id)a3 filesystemBookmark:(id)a4 changedKeys:(id)a5
+- (PLAssetJournalEntryPayload)initWithInternalResource:(id)resource filesystemBookmark:(id)bookmark changedKeys:(id)keys
 {
   v33[5] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v8 = a4;
-  v9 = a5;
-  v30 = v8;
-  if (v8)
+  resourceCopy = resource;
+  bookmarkCopy = bookmark;
+  keysCopy = keys;
+  v30 = bookmarkCopy;
+  if (bookmarkCopy)
   {
     v28 = [PLManagedObjectJournalEntryPayload alloc];
-    v10 = [v8 payloadID];
-    v11 = [objc_opt_class() payloadVersion];
-    v12 = [objc_opt_class() modelProperties];
-    v13 = [v12 objectForKeyedSubscript:@"modernResources"];
-    v14 = [v13 subRelationshipProperties];
-    [v14 objectForKeyedSubscript:@"fileSystemBookmark"];
-    v16 = v15 = v9;
-    v17 = [v16 subRelationshipProperties];
-    v29 = [(PLManagedObjectJournalEntryPayload *)v28 initWithPayloadID:v10 payloadVersion:v11 managedObject:v8 changedKeys:v15 modelProperties:v17];
+    payloadID = [bookmarkCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v13 = [modelProperties objectForKeyedSubscript:@"modernResources"];
+    subRelationshipProperties = [v13 subRelationshipProperties];
+    [subRelationshipProperties objectForKeyedSubscript:@"fileSystemBookmark"];
+    v16 = v15 = keysCopy;
+    subRelationshipProperties2 = [v16 subRelationshipProperties];
+    v29 = [(PLManagedObjectJournalEntryPayload *)v28 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:bookmarkCopy changedKeys:v15 modelProperties:subRelationshipProperties2];
 
-    v9 = [MEMORY[0x1E695DFD8] set];
+    keysCopy = [MEMORY[0x1E695DFD8] set];
   }
 
   else
@@ -2184,21 +2184,21 @@ LABEL_30:
     v29 = 0;
   }
 
-  v18 = [v31 payloadID];
-  v19 = [objc_opt_class() payloadVersion];
+  payloadID2 = [resourceCopy payloadID];
+  payloadVersion2 = [objc_opt_class() payloadVersion];
   v33[0] = @"resourceType";
   v33[1] = @"version";
   v33[2] = @"recipeID";
   v33[3] = @"compactUTI";
   v33[4] = @"dataStoreSubtype";
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:5];
-  v21 = [v9 setByAddingObjectsFromArray:v20];
-  v22 = [objc_opt_class() modelProperties];
-  v23 = [v22 objectForKeyedSubscript:@"modernResources"];
-  v24 = [v23 subRelationshipProperties];
+  v21 = [keysCopy setByAddingObjectsFromArray:v20];
+  modelProperties2 = [objc_opt_class() modelProperties];
+  v23 = [modelProperties2 objectForKeyedSubscript:@"modernResources"];
+  subRelationshipProperties3 = [v23 subRelationshipProperties];
   v32.receiver = self;
   v32.super_class = PLAssetJournalEntryPayload;
-  v25 = [(PLManagedObjectJournalEntryPayload *)&v32 initWithPayloadID:v18 payloadVersion:v19 managedObject:v31 changedKeys:v21 modelProperties:v24];
+  v25 = [(PLManagedObjectJournalEntryPayload *)&v32 initWithPayloadID:payloadID2 payloadVersion:payloadVersion2 managedObject:resourceCopy changedKeys:v21 modelProperties:subRelationshipProperties3];
 
   if (v25)
   {
@@ -2216,22 +2216,22 @@ LABEL_30:
   return v25;
 }
 
-- (PLAssetJournalEntryPayload)initWithUnmanagedAdjustment:(id)a3 changedKeys:(id)a4
+- (PLAssetJournalEntryPayload)initWithUnmanagedAdjustment:(id)adjustment changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  adjustmentCopy = adjustment;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v8 = [v6 payloadID];
-    v9 = [objc_opt_class() payloadVersion];
-    v10 = [objc_opt_class() modelProperties];
-    v11 = [v10 objectForKeyedSubscript:@"additionalAttributes"];
-    v12 = [v11 subRelationshipProperties];
-    v13 = [v12 objectForKeyedSubscript:@"unmanagedAdjustment"];
-    v14 = [v13 subRelationshipProperties];
+    payloadID = [adjustmentCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v11 = [modelProperties objectForKeyedSubscript:@"additionalAttributes"];
+    subRelationshipProperties = [v11 subRelationshipProperties];
+    v13 = [subRelationshipProperties objectForKeyedSubscript:@"unmanagedAdjustment"];
+    subRelationshipProperties2 = [v13 subRelationshipProperties];
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:v8 payloadVersion:v9 managedObject:v6 changedKeys:v7 modelProperties:v14];
+    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:adjustmentCopy changedKeys:keysCopy modelProperties:subRelationshipProperties2];
   }
 
   else
@@ -2243,22 +2243,22 @@ LABEL_30:
   return v15;
 }
 
-- (PLAssetJournalEntryPayload)initWithAssetDescription:(id)a3 changedKeys:(id)a4
+- (PLAssetJournalEntryPayload)initWithAssetDescription:(id)description changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  descriptionCopy = description;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v8 = [v6 payloadID];
-    v9 = [objc_opt_class() payloadVersion];
-    v10 = [objc_opt_class() modelProperties];
-    v11 = [v10 objectForKeyedSubscript:@"additionalAttributes"];
-    v12 = [v11 subRelationshipProperties];
-    v13 = [v12 objectForKeyedSubscript:@"assetDescription"];
-    v14 = [v13 subRelationshipProperties];
+    payloadID = [descriptionCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v11 = [modelProperties objectForKeyedSubscript:@"additionalAttributes"];
+    subRelationshipProperties = [v11 subRelationshipProperties];
+    v13 = [subRelationshipProperties objectForKeyedSubscript:@"assetDescription"];
+    subRelationshipProperties2 = [v13 subRelationshipProperties];
     v17.receiver = self;
     v17.super_class = PLAssetJournalEntryPayload;
-    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:v8 payloadVersion:v9 managedObject:v6 changedKeys:v7 modelProperties:v14];
+    v15 = [(PLManagedObjectJournalEntryPayload *)&v17 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:descriptionCopy changedKeys:keysCopy modelProperties:subRelationshipProperties2];
   }
 
   else
@@ -2270,20 +2270,20 @@ LABEL_30:
   return v15;
 }
 
-- (PLAssetJournalEntryPayload)initWithAdditionalAssetAttributes:(id)a3 changedKeys:(id)a4
+- (PLAssetJournalEntryPayload)initWithAdditionalAssetAttributes:(id)attributes changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  attributesCopy = attributes;
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v8 = [v6 payloadID];
-    v9 = [objc_opt_class() payloadVersion];
-    v10 = [objc_opt_class() modelProperties];
-    v11 = [v10 objectForKeyedSubscript:@"additionalAttributes"];
-    v12 = [v11 subRelationshipProperties];
+    payloadID = [attributesCopy payloadID];
+    payloadVersion = [objc_opt_class() payloadVersion];
+    modelProperties = [objc_opt_class() modelProperties];
+    v11 = [modelProperties objectForKeyedSubscript:@"additionalAttributes"];
+    subRelationshipProperties = [v11 subRelationshipProperties];
     v15.receiver = self;
     v15.super_class = PLAssetJournalEntryPayload;
-    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 initWithPayloadID:v8 payloadVersion:v9 managedObject:v6 changedKeys:v7 modelProperties:v12];
+    v13 = [(PLManagedObjectJournalEntryPayload *)&v15 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:attributesCopy changedKeys:keysCopy modelProperties:subRelationshipProperties];
   }
 
   else
@@ -2295,16 +2295,16 @@ LABEL_30:
   return v13;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v7 = +[PLInternalResource entityName];
-  v8 = [v5 isEqualToString:v7];
+  v8 = [nameCopy isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"recipeID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"recipeID"];
 
     v10 = +[PLAssetJournalEntryPayloadResource isValidForPersistenceWithRecipeID:](PLAssetJournalEntryPayloadResource, "isValidForPersistenceWithRecipeID:", [v9 integerValue]);
   }
@@ -2312,7 +2312,7 @@ LABEL_30:
   else
   {
     v11 = MEMORY[0x1E69BF2A0];
-    v9 = [v6 objectForKeyedSubscript:@"bundleScope"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleScope"];
 
     v10 = [v11 bundleScopeShouldBePersistedForRebuild:{objc_msgSend(v9, "integerValue")}];
   }
@@ -2338,7 +2338,7 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = __66__PLAssetJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_83523 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_83523, block);
@@ -2362,7 +2362,7 @@ void __66__PLAssetJournalEntryPayload_persistedPropertyNamesForEntityNames__bloc
   block[1] = 3221225472;
   block[2] = __45__PLAssetJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_83525 != -1)
   {
     dispatch_once(&modelProperties_onceToken_83525, block);
@@ -2387,7 +2387,7 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
 
 + (id)nonPersistedModelPropertiesDescription
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v302[110] = *MEMORY[0x1E69E9840];
   v301[0] = @"adjustmentTimestamp";
   v280 = [PLJournalEntryPayloadProperty payloadPropertyWithKey:0 andType:0 info:0];
@@ -3207,7 +3207,7 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
 
 + (id)modelPropertiesDescription
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v224[49] = *MEMORY[0x1E69E9840];
   v223[0] = @"uuid";
   v201 = +[PLJournalEntryPayloadProperty payloadPropertyForUUID];
@@ -3769,18 +3769,18 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
   return v13;
 }
 
-- (void)_fixSleetIsReversibleWithAdditionalAssetAttributes:(id)a3
+- (void)_fixSleetIsReversibleWithAdditionalAssetAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v14 = [v5 pathManager];
+  attributesCopy = attributes;
+  asset = [attributesCopy asset];
+  pathManager = [asset pathManager];
 
   objc_opt_class();
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [attributesCopy managedObjectContext];
 
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = managedObjectContext;
   }
 
   else
@@ -3790,19 +3790,19 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
 
   v8 = v7;
 
-  v9 = [v8 pl_libraryBundle];
-  v10 = [v9 timeZoneLookup];
+  pl_libraryBundle = [v8 pl_libraryBundle];
+  timeZoneLookup = [pl_libraryBundle timeZoneLookup];
 
   [(PLAssetJournalEntryPayload *)self setSleetIsReversible:0];
   if ([(PLAssetJournalEntryPayload *)self isImage])
   {
-    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalImageMetadataWithPathManager:v14 timezoneLookup:v10];
+    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalImageMetadataWithPathManager:pathManager timezoneLookup:timeZoneLookup];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 smartStyleIsReversible];
+      smartStyleIsReversible = [v11 smartStyleIsReversible];
 
-      if (v13)
+      if (smartStyleIsReversible)
       {
         [(PLAssetJournalEntryPayload *)self setSleetIsReversible:1];
       }
@@ -3815,18 +3815,18 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
   }
 }
 
-- (void)_fixDateCreatedSourceWithAdditionalAssetAttributes:(id)a3
+- (void)_fixDateCreatedSourceWithAdditionalAssetAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v14 = [v5 pathManager];
+  attributesCopy = attributes;
+  asset = [attributesCopy asset];
+  pathManager = [asset pathManager];
 
   objc_opt_class();
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [attributesCopy managedObjectContext];
 
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = managedObjectContext;
   }
 
   else
@@ -3836,12 +3836,12 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
 
   v8 = v7;
 
-  v9 = [v8 pl_libraryBundle];
-  v10 = [v9 timeZoneLookup];
+  pl_libraryBundle = [v8 pl_libraryBundle];
+  timeZoneLookup = [pl_libraryBundle timeZoneLookup];
 
   if ([(PLAssetJournalEntryPayload *)self isImage])
   {
-    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalImageMetadataWithPathManager:v14 timezoneLookup:v10];
+    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalImageMetadataWithPathManager:pathManager timezoneLookup:timeZoneLookup];
   }
 
   else
@@ -3851,21 +3851,21 @@ uint64_t __45__PLAssetJournalEntryPayload_modelProperties__block_invoke(uint64_t
       goto LABEL_10;
     }
 
-    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalVideoMetadataWithPathManager:v14 timezoneLookup:v10];
+    v11 = [(PLAssetJournalEntryPayload *)self _loadOriginalVideoMetadataWithPathManager:pathManager timezoneLookup:timeZoneLookup];
   }
 
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 creationDateSource];
+    creationDateSource = [v11 creationDateSource];
 
     goto LABEL_11;
   }
 
 LABEL_10:
-  v13 = 0;
+  creationDateSource = 0;
 LABEL_11:
-  [(PLAssetJournalEntryPayload *)self setDateCreatedSource:v13];
+  [(PLAssetJournalEntryPayload *)self setDateCreatedSource:creationDateSource];
 }
 
 - (void)_filterNonPersistedResources
@@ -3876,8 +3876,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PLAssetJournalEntryPayload *)self resources];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  resources = [(PLAssetJournalEntryPayload *)self resources];
+  v5 = [resources countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3888,18 +3888,18 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resources);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 isValidForPersistence])
         {
-          v10 = [v9 payloadAttributes];
-          [v3 addObject:v10];
+          payloadAttributes = [v9 payloadAttributes];
+          [v3 addObject:payloadAttributes];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [resources countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -3920,12 +3920,12 @@ LABEL_11:
 - (void)_convertDepthStatesToDepthType
 {
   v3 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"customRenderedValue"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"depthStates"];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  if (v4 - 7 < 2 || (v6 & 0xFFFE) == 2)
+  if (intValue - 7 < 2 || (unsignedIntValue & 0xFFFE) == 2)
   {
     payloadAttributes = self->super._payloadAttributes;
 
@@ -3956,9 +3956,9 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v13 = self;
-  v4 = [(PLAssetJournalEntryPayload *)self resources];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  resources = [(PLAssetJournalEntryPayload *)self resources];
+  v5 = [resources countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3969,34 +3969,34 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resources);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 resourceType] == 32)
         {
           v10 = objc_alloc(MEMORY[0x1E695DF90]);
-          v11 = [v9 payloadAttributes];
-          v12 = [v10 initWithDictionary:v11];
+          payloadAttributes = [v9 payloadAttributes];
+          payloadAttributes2 = [v10 initWithDictionary:payloadAttributes];
 
-          [v12 setObject:&unk_1F0FBDD98 forKeyedSubscript:@"type"];
+          [payloadAttributes2 setObject:&unk_1F0FBDD98 forKeyedSubscript:@"type"];
         }
 
         else
         {
-          v12 = [v9 payloadAttributes];
+          payloadAttributes2 = [v9 payloadAttributes];
         }
 
-        [v3 addObject:v12];
+        [v3 addObject:payloadAttributes2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [resources countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableDictionary *)v13->super._payloadAttributes setObject:v3 forKeyedSubscript:@"resources"];
+  [(NSMutableDictionary *)selfCopy->super._payloadAttributes setObject:v3 forKeyedSubscript:@"resources"];
 }
 
 - (void)_fixXMPSidecarUTI
@@ -4007,9 +4007,9 @@ LABEL_11:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = self;
-  v4 = [(PLAssetJournalEntryPayload *)self resources];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  selfCopy = self;
+  resources = [(PLAssetJournalEntryPayload *)self resources];
+  v5 = [resources countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4021,91 +4021,91 @@ LABEL_11:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resources);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
         if ([v9 resourceType] != 5)
         {
-          v12 = [v9 payloadAttributes];
-          [v3 addObject:v12];
+          payloadAttributes = [v9 payloadAttributes];
+          [v3 addObject:payloadAttributes];
           goto LABEL_16;
         }
 
         v10 = MEMORY[0x1E69C08F0];
-        v11 = [v9 uniformTypeIdentifierString];
-        v12 = [v10 typeWithIdentifier:v11];
+        uniformTypeIdentifierString = [v9 uniformTypeIdentifierString];
+        payloadAttributes = [v10 typeWithIdentifier:uniformTypeIdentifierString];
 
-        if ([v12 isDynamic])
+        if ([payloadAttributes isDynamic])
         {
           v13 = objc_alloc(MEMORY[0x1E695DF90]);
-          v14 = [v9 payloadAttributes];
-          v15 = [v13 initWithDictionary:v14];
+          payloadAttributes2 = [v9 payloadAttributes];
+          payloadAttributes3 = [v13 initWithDictionary:payloadAttributes2];
 
-          v16 = [v22 identifier];
-          [v15 setObject:v16 forKeyedSubscript:@"uti"];
+          identifier = [v22 identifier];
+          [payloadAttributes3 setObject:identifier forKeyedSubscript:@"uti"];
         }
 
         else
         {
-          v17 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-          if (![v12 isEqual:v17])
+          supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+          if (![payloadAttributes isEqual:supplementalResourceAAEType])
           {
 
 LABEL_14:
-            v15 = [v9 payloadAttributes];
+            payloadAttributes3 = [v9 payloadAttributes];
             goto LABEL_15;
           }
 
-          v18 = [v9 cplType];
+          cplType = [v9 cplType];
 
-          if (v18 == 22)
+          if (cplType == 22)
           {
             goto LABEL_14;
           }
 
           v19 = objc_alloc(MEMORY[0x1E695DF90]);
-          v20 = [v9 payloadAttributes];
-          v15 = [v19 initWithDictionary:v20];
+          payloadAttributes4 = [v9 payloadAttributes];
+          payloadAttributes3 = [v19 initWithDictionary:payloadAttributes4];
 
-          [v15 setObject:&unk_1F0FBDD80 forKeyedSubscript:@"subType"];
+          [payloadAttributes3 setObject:&unk_1F0FBDD80 forKeyedSubscript:@"subType"];
         }
 
 LABEL_15:
-        [v3 addObject:v15];
+        [v3 addObject:payloadAttributes3];
 
 LABEL_16:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [resources countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableDictionary *)v21->super._payloadAttributes setObject:v3 forKeyedSubscript:@"resources"];
+  [(NSMutableDictionary *)selfCopy->super._payloadAttributes setObject:v3 forKeyedSubscript:@"resources"];
 }
 
 - (void)_fixLocationData
 {
-  v13 = [(PLAssetJournalEntryPayload *)self extendedAttributesLatitude];
-  v3 = [(PLAssetJournalEntryPayload *)self locationData];
+  extendedAttributesLatitude = [(PLAssetJournalEntryPayload *)self extendedAttributesLatitude];
+  locationData = [(PLAssetJournalEntryPayload *)self locationData];
 
-  v4 = v13;
-  if (!v3 && v13)
+  v4 = extendedAttributesLatitude;
+  if (!locationData && extendedAttributesLatitude)
   {
-    v5 = [(PLAssetJournalEntryPayload *)self extendedAttributesLongitude];
-    if (v5)
+    extendedAttributesLongitude = [(PLAssetJournalEntryPayload *)self extendedAttributesLongitude];
+    if (extendedAttributesLongitude)
     {
-      [v13 doubleValue];
+      [extendedAttributesLatitude doubleValue];
       v7 = v6;
-      [v5 doubleValue];
+      [extendedAttributesLongitude doubleValue];
       v9 = CLLocationCoordinate2DMake(v7, v8);
       if ([PLLocationUtils canUseCoordinate:?])
       {
         v10 = objc_alloc(MEMORY[0x1E6985C40]);
-        v11 = [(PLAssetJournalEntryPayload *)self dateCreated];
-        v12 = [v10 initWithCoordinate:v11 altitude:v9.latitude horizontalAccuracy:v9.longitude verticalAccuracy:0.0 timestamp:{0.0, 0.0}];
+        dateCreated = [(PLAssetJournalEntryPayload *)self dateCreated];
+        v12 = [v10 initWithCoordinate:dateCreated altitude:v9.latitude horizontalAccuracy:v9.longitude verticalAccuracy:0.0 timestamp:{0.0, 0.0}];
       }
 
       else
@@ -4116,7 +4116,7 @@ LABEL_16:
       [(PLAssetJournalEntryPayload *)self setLocation:v12];
     }
 
-    v4 = v13;
+    v4 = extendedAttributesLatitude;
   }
 }
 
@@ -4127,7 +4127,7 @@ LABEL_16:
   {
     if ([(PLAssetJournalEntryPayload *)self isImage])
     {
-      v14 = [*MEMORY[0x1E6982E58] identifier];
+      identifier = [*MEMORY[0x1E6982E58] identifier];
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
@@ -4137,8 +4137,8 @@ LABEL_16:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v3 = [(PLAssetJournalEntryPayload *)self resources];
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      resources = [(PLAssetJournalEntryPayload *)self resources];
+      v4 = [resources countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v4)
       {
         v5 = v4;
@@ -4149,16 +4149,16 @@ LABEL_16:
           {
             if (*v16 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(resources);
             }
 
             v8 = *(*(&v15 + 1) + 8 * i);
             if (![v8 dataStoreClassID] && objc_msgSend(v8, "version") == 2 && objc_msgSend(v8, "cplType") == 16)
             {
-              v10 = [v8 uniformTypeIdentifierString];
+              uniformTypeIdentifierString = [v8 uniformTypeIdentifierString];
               v9 = *MEMORY[0x1E6982F80];
-              v11 = [*MEMORY[0x1E6982F80] identifier];
-              v12 = [v10 isEqualToString:v11];
+              identifier2 = [*MEMORY[0x1E6982F80] identifier];
+              v12 = [uniformTypeIdentifierString isEqualToString:identifier2];
 
               if ((v12 & 1) == 0)
               {
@@ -4169,7 +4169,7 @@ LABEL_16:
             }
           }
 
-          v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v5 = [resources countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v5)
           {
             continue;
@@ -4181,8 +4181,8 @@ LABEL_16:
 
       v9 = *MEMORY[0x1E6982F80];
 LABEL_21:
-      v13 = [v9 identifier];
-      [(NSMutableDictionary *)self->super._payloadAttributes setObject:v13 forKeyedSubscript:@"uti"];
+      identifier3 = [v9 identifier];
+      [(NSMutableDictionary *)self->super._payloadAttributes setObject:identifier3 forKeyedSubscript:@"uti"];
     }
   }
 }
@@ -4193,14 +4193,14 @@ LABEL_21:
   if (v3)
   {
     v9 = v3;
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     payloadAttributes = self->super._payloadAttributes;
-    if (v4)
+    if (bOOLValue)
     {
       v6 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:@"adjustmentRenderTypes"];
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-      if ((v7 & 0x2000) != 0)
+      if ((unsignedIntegerValue & 0x2000) != 0)
       {
         payloadAttributes = self->super._payloadAttributes;
         v8 = &unk_1F0FBDD38;
@@ -4209,7 +4209,7 @@ LABEL_21:
       else
       {
         payloadAttributes = self->super._payloadAttributes;
-        if (v7)
+        if (unsignedIntegerValue)
         {
           v8 = &unk_1F0FBDD50;
         }

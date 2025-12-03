@@ -6,19 +6,19 @@
 
 - (__CFString)asMessageSecurityHexString
 {
-  if ([a1 length])
+  if ([self length])
   {
     v2 = 0;
     v3 = &stru_286A08A88;
     do
     {
-      v4 = -[__CFString stringByAppendingFormat:](v3, "stringByAppendingFormat:", @"%02X", *([a1 bytes] + v2));
+      v4 = -[__CFString stringByAppendingFormat:](v3, "stringByAppendingFormat:", @"%02X", *([self bytes] + v2));
 
       ++v2;
       v3 = v4;
     }
 
-    while (v2 < [a1 length]);
+    while (v2 < [self length]);
   }
 
   else

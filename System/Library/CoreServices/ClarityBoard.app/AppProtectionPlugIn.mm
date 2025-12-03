@@ -1,20 +1,20 @@
 @interface AppProtectionPlugIn
 - (_TtC12ClarityBoard19AppProtectionPlugIn)init;
-- (void)setApplication:(APApplication *)a3 shielded:(BOOL)a4 forOutlet:(APSystemAppOutlet *)a5 completion:(id)a6;
+- (void)setApplication:(APApplication *)application shielded:(BOOL)shielded forOutlet:(APSystemAppOutlet *)outlet completion:(id)completion;
 @end
 
 @implementation AppProtectionPlugIn
 
-- (void)setApplication:(APApplication *)a3 shielded:(BOOL)a4 forOutlet:(APSystemAppOutlet *)a5 completion:(id)a6
+- (void)setApplication:(APApplication *)application shielded:(BOOL)shielded forOutlet:(APSystemAppOutlet *)outlet completion:(id)completion
 {
   v11 = sub_10002B6CC(&qword_10032D050);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(completion);
   v15 = swift_allocObject();
-  *(v15 + 16) = a3;
-  *(v15 + 24) = a4;
-  *(v15 + 32) = a5;
+  *(v15 + 16) = application;
+  *(v15 + 24) = shielded;
+  *(v15 + 32) = outlet;
   *(v15 + 40) = v14;
   *(v15 + 48) = self;
   v16 = type metadata accessor for TaskPriority();
@@ -29,9 +29,9 @@
   v18[3] = 0;
   v18[4] = &unk_10029A1A8;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
-  v21 = self;
+  applicationCopy = application;
+  outletCopy = outlet;
+  selfCopy = self;
   sub_10008C9F0(0, 0, v13, &unk_10029A1B0, v18);
 }
 

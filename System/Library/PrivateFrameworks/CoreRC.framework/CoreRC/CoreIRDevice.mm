@@ -1,27 +1,27 @@
 @interface CoreIRDevice
 - (BOOL)is3rdPartyRemote;
-- (BOOL)pairAppleRemote:(id *)a3;
-- (BOOL)setOSDName:(id)a3 error:(id *)a4;
-- (BOOL)unpairAppleRemote:(id *)a3;
-- (CoreIRDevice)initWithCoder:(id)a3;
-- (CoreIRDevice)initWithDevice:(id)a3;
+- (BOOL)pairAppleRemote:(id *)remote;
+- (BOOL)setOSDName:(id)name error:(id *)error;
+- (BOOL)unpairAppleRemote:(id *)remote;
+- (CoreIRDevice)initWithCoder:(id)coder;
+- (CoreIRDevice)initWithDevice:(id)device;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLearningSession:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLearningSession:(id)session;
 @end
 
 @implementation CoreIRDevice
 
-- (BOOL)setOSDName:(id)a3 error:(id *)a4
+- (BOOL)setOSDName:(id)name error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreIRDevice setOSDName:error:];
   }
 
-  [(CoreIRDevice *)self setOSDName:a3];
+  [(CoreIRDevice *)self setOSDName:name];
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreIRDevice setOSDName:? error:?];
@@ -39,21 +39,21 @@
   [(CoreRCDevice *)&v3 dealloc];
 }
 
-- (CoreIRDevice)initWithDevice:(id)a3
+- (CoreIRDevice)initWithDevice:(id)device
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = CoreIRDevice;
-    v5 = [(CoreRCDevice *)&v7 initWithDevice:a3];
+    v5 = [(CoreRCDevice *)&v7 initWithDevice:device];
     if (v5)
     {
-      v5->_isTransmitter = [a3 isTransmitter];
-      v5->_isReceiver = [a3 isReceiver];
-      v5->_vendorID = [a3 vendorID];
-      v5->_buttons = [objc_msgSend(a3 "buttons")];
-      v5->_OSDName = [objc_msgSend(a3 "OSDName")];
+      v5->_isTransmitter = [device isTransmitter];
+      v5->_isReceiver = [device isReceiver];
+      v5->_vendorID = [device vendorID];
+      v5->_buttons = [objc_msgSend(device "buttons")];
+      v5->_OSDName = [objc_msgSend(device "OSDName")];
     }
   }
 
@@ -66,35 +66,35 @@
   return v5;
 }
 
-- (CoreIRDevice)initWithCoder:(id)a3
+- (CoreIRDevice)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CoreIRDevice;
   v4 = [(CoreRCDevice *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_isTransmitter = [a3 decodeBoolForKey:@"isTransmitter"];
-    v4->_isReceiver = [a3 decodeBoolForKey:@"isReceiver"];
-    v4->_vendorID = [a3 decodeIntForKey:@"vendorID"];
+    v4->_isTransmitter = [coder decodeBoolForKey:@"isTransmitter"];
+    v4->_isReceiver = [coder decodeBoolForKey:@"isReceiver"];
+    v4->_vendorID = [coder decodeIntForKey:@"vendorID"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->_buttons = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"buttons"}];
-    v4->_OSDName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"OSDName"];
+    v4->_buttons = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"buttons"}];
+    v4->_OSDName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"OSDName"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CoreIRDevice;
   [(CoreRCDevice *)&v5 encodeWithCoder:?];
-  [a3 encodeBool:self->_isTransmitter forKey:@"isTransmitter"];
-  [a3 encodeBool:self->_isReceiver forKey:@"isReceiver"];
-  [a3 encodeInt:LODWORD(self->_vendorID) forKey:@"isReceiver"];
-  [a3 encodeObject:self->_buttons forKey:@"buttons"];
-  [a3 encodeObject:self->_OSDName forKey:@"OSDName"];
+  [coder encodeBool:self->_isTransmitter forKey:@"isTransmitter"];
+  [coder encodeBool:self->_isReceiver forKey:@"isReceiver"];
+  [coder encodeInt:LODWORD(self->_vendorID) forKey:@"isReceiver"];
+  [coder encodeObject:self->_buttons forKey:@"buttons"];
+  [coder encodeObject:self->_OSDName forKey:@"OSDName"];
 }
 
 - (id)description
@@ -144,48 +144,48 @@
 
 - (BOOL)is3rdPartyRemote
 {
-  v3 = [(CoreIRDevice *)self isTransmitter];
-  if (v3)
+  isTransmitter = [(CoreIRDevice *)self isTransmitter];
+  if (isTransmitter)
   {
     if ([(CoreRCDevice *)self isLocalDevice])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isTransmitter) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(CoreIRDevice *)self isAppleRemote];
+      LOBYTE(isTransmitter) = ![(CoreIRDevice *)self isAppleRemote];
     }
   }
 
-  return v3;
+  return isTransmitter;
 }
 
-- (void)setLearningSession:(id)a3
+- (void)setLearningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   [(CoreIRLearningSession *)self->_learningSession setOwningDevice:0];
 
-  self->_learningSession = a3;
+  self->_learningSession = session;
 
-  [a3 setOwningDevice:self];
+  [session setOwningDevice:self];
 }
 
-- (BOOL)pairAppleRemote:(id *)a3
+- (BOOL)pairAppleRemote:(id *)remote
 {
-  if (a3)
+  if (remote)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6756 userInfo:0];
+    *remote = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6756 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)unpairAppleRemote:(id *)a3
+- (BOOL)unpairAppleRemote:(id *)remote
 {
-  if (a3)
+  if (remote)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6756 userInfo:0];
+    *remote = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6756 userInfo:0];
   }
 
   return 0;

@@ -1,10 +1,10 @@
 @interface RMModelAccountMailDeclaration_IncomingServer
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithServerType:(id)a3 hostName:(id)a4 authenticationMethod:(id)a5;
-+ (id)buildWithServerType:(id)a3 hostName:(id)a4 port:(id)a5 authenticationMethod:(id)a6 authenticationCredentialsAssetReference:(id)a7 imapPathPrefix:(id)a8;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithServerType:(id)type hostName:(id)name authenticationMethod:(id)method;
++ (id)buildWithServerType:(id)type hostName:(id)name port:(id)port authenticationMethod:(id)method authenticationCredentialsAssetReference:(id)reference imapPathPrefix:(id)prefix;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountMailDeclaration_IncomingServer
@@ -27,48 +27,48 @@
   return v4;
 }
 
-+ (id)buildWithServerType:(id)a3 hostName:(id)a4 port:(id)a5 authenticationMethod:(id)a6 authenticationCredentialsAssetReference:(id)a7 imapPathPrefix:(id)a8
++ (id)buildWithServerType:(id)type hostName:(id)name port:(id)port authenticationMethod:(id)method authenticationCredentialsAssetReference:(id)reference imapPathPrefix:(id)prefix
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  prefixCopy = prefix;
+  referenceCopy = reference;
+  methodCopy = method;
+  portCopy = port;
+  nameCopy = name;
+  typeCopy = type;
   v19 = objc_opt_new();
-  [v19 setPayloadServerType:v18];
+  [v19 setPayloadServerType:typeCopy];
 
-  [v19 setPayloadHostName:v17];
-  [v19 setPayloadPort:v16];
+  [v19 setPayloadHostName:nameCopy];
+  [v19 setPayloadPort:portCopy];
 
-  [v19 setPayloadAuthenticationMethod:v15];
-  [v19 setPayloadAuthenticationCredentialsAssetReference:v14];
+  [v19 setPayloadAuthenticationMethod:methodCopy];
+  [v19 setPayloadAuthenticationCredentialsAssetReference:referenceCopy];
 
-  [v19 setPayloadIMAPPathPrefix:v13];
+  [v19 setPayloadIMAPPathPrefix:prefixCopy];
 
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithServerType:(id)a3 hostName:(id)a4 authenticationMethod:(id)a5
++ (id)buildRequiredOnlyWithServerType:(id)type hostName:(id)name authenticationMethod:(id)method
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  methodCopy = method;
+  nameCopy = name;
+  typeCopy = type;
   v10 = objc_opt_new();
-  [v10 setPayloadServerType:v9];
+  [v10 setPayloadServerType:typeCopy];
 
-  [v10 setPayloadHostName:v8];
-  [v10 setPayloadAuthenticationMethod:v7];
+  [v10 setPayloadHostName:nameCopy];
+  [v10 setPayloadAuthenticationMethod:methodCopy];
 
   return v10;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountMailDeclaration_IncomingServer allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -76,41 +76,41 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ServerType" forKeyPath:@"payloadServerType" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationMethod" forKeyPath:@"payloadAuthenticationMethod" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"IMAPPathPrefix" forKeyPath:@"payloadIMAPPathPrefix" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ServerType" forKeyPath:@"payloadServerType" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationMethod" forKeyPath:@"payloadAuthenticationMethod" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"IMAPPathPrefix" forKeyPath:@"payloadIMAPPathPrefix" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadServerType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ServerType" value:v5 isRequired:1 defaultValue:0];
+  payloadServerType = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadServerType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ServerType" value:payloadServerType isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:v6 isRequired:1 defaultValue:0];
+  payloadHostName = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:payloadHostName isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:v7 isRequired:0 defaultValue:0];
+  payloadPort = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:payloadPort isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadAuthenticationMethod];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationMethod" value:v8 isRequired:1 defaultValue:0];
+  payloadAuthenticationMethod = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadAuthenticationMethod];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationMethod" value:payloadAuthenticationMethod isRequired:1 defaultValue:0];
 
-  v9 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:v9 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadIMAPPathPrefix];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IMAPPathPrefix" value:v10 isRequired:0 defaultValue:0];
+  payloadIMAPPathPrefix = [(RMModelAccountMailDeclaration_IncomingServer *)self payloadIMAPPathPrefix];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IMAPPathPrefix" value:payloadIMAPPathPrefix isRequired:0 defaultValue:0];
 
   v11 = [v4 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = RMModelAccountMailDeclaration_IncomingServer;
-  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadServerType copy];
   v6 = v4[2];
   v4[2] = v5;

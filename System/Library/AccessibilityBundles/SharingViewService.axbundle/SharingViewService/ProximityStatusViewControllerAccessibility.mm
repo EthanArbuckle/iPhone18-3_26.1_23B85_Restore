@@ -1,45 +1,45 @@
 @interface ProximityStatusViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (id)_axCreateAggregateStatusView:(id)a3 primaryTitle:(id)a4 batteryLevelLabel:(id)a5 chargingImage:(id)a6 warningImage:(id)a7;
+- (id)_axCreateAggregateStatusView:(id)view primaryTitle:(id)title batteryLevelLabel:(id)label chargingImage:(id)image warningImage:(id)warningImage;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateAccessibilityElements;
-- (void)_updateBatteryLevelLeft:(double)a3 levelRight:(double)a4 levelCase:(double)a5;
+- (void)_updateBatteryLevelLeft:(double)left levelRight:(double)right levelCase:(double)case;
 @end
 
 @implementation ProximityStatusViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"handleTapOutsideView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"_updateBatteryLevelLeft: levelRight: levelCase:" withFullSignature:{"v", "d", "d", "d", 0}];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"dismissButton" withType:"UIButton"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftIndicatorImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftExclamationPointImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryLevelImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryShellImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryChargeImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightIndicatorImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightExclamationPointImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryLevelImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryShellImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryChargeImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryLevelImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryShellImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryChargeImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryLevelImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryShellImageView" withType:"UIImageView"];
-  [v3 validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryChargeImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"handleTapOutsideView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceMethod:@"_updateBatteryLevelLeft: levelRight: levelCase:" withFullSignature:{"v", "d", "d", "d", 0}];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"dismissButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftIndicatorImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftExclamationPointImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryLevelImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryShellImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"leftBatteryChargeImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightIndicatorImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightExclamationPointImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryLevelImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryShellImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"rightBatteryChargeImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryLevelImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryShellImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"bothBatteryChargeImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseImageView" withType:"_TtC18SharingViewService20SVSAdjustedImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryLevelImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryShellImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"ProximityStatusViewController" hasInstanceVariable:@"caseBatteryChargeImageView" withType:"UIImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -69,17 +69,17 @@ uint64_t __72__ProximityStatusViewControllerAccessibility_accessibilityPerformEs
   return result;
 }
 
-- (void)_updateBatteryLevelLeft:(double)a3 levelRight:(double)a4 levelCase:(double)a5
+- (void)_updateBatteryLevelLeft:(double)left levelRight:(double)right levelCase:(double)case
 {
   v12.receiver = self;
   v12.super_class = ProximityStatusViewControllerAccessibility;
   [ProximityStatusViewControllerAccessibility _updateBatteryLevelLeft:sel__updateBatteryLevelLeft_levelRight_levelCase_ levelRight:? levelCase:?];
   [(ProximityStatusViewControllerAccessibility *)self _axLeftBatteryLevel];
-  if (v9 != a3 || ([(ProximityStatusViewControllerAccessibility *)self _axRightBatteryLevel], v10 != a4) || ([(ProximityStatusViewControllerAccessibility *)self _axCaseBatteryLevel], v11 != a5))
+  if (v9 != left || ([(ProximityStatusViewControllerAccessibility *)self _axRightBatteryLevel], v10 != right) || ([(ProximityStatusViewControllerAccessibility *)self _axCaseBatteryLevel], v11 != case))
   {
-    [(ProximityStatusViewControllerAccessibility *)self _axSetLeftBatteryLevel:a3];
-    [(ProximityStatusViewControllerAccessibility *)self _axSetRightBatteryLevel:a4];
-    [(ProximityStatusViewControllerAccessibility *)self _axSetCaseBatteryLevel:a5];
+    [(ProximityStatusViewControllerAccessibility *)self _axSetLeftBatteryLevel:left];
+    [(ProximityStatusViewControllerAccessibility *)self _axSetRightBatteryLevel:right];
+    [(ProximityStatusViewControllerAccessibility *)self _axSetCaseBatteryLevel:case];
     [(ProximityStatusViewControllerAccessibility *)self _accessibilityUpdateAccessibilityElements];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
@@ -91,8 +91,8 @@ uint64_t __72__ProximityStatusViewControllerAccessibility_accessibilityPerformEs
   [(ProximityStatusViewControllerAccessibility *)self _axSetRightDevice:0];
   [(ProximityStatusViewControllerAccessibility *)self _axSetCombinedDevice:0];
   [(ProximityStatusViewControllerAccessibility *)self _axSetCaseDevice:0];
-  v3 = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
-  if (!v3)
+  _axLeftDevice = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
+  if (!_axLeftDevice)
   {
     v4 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryLabel"];
 
@@ -109,20 +109,20 @@ uint64_t __72__ProximityStatusViewControllerAccessibility_accessibilityPerformEs
     v10 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryLevelImageView"];
     v11 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryShellImageView"];
     v12 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryChargeImageView"];
-    v3 = [v5 axArrayByIgnoringNilElementsWithCount:{7, v6, v7, v8, v9, v10, v11, v12}];
+    _axLeftDevice = [v5 axArrayByIgnoringNilElementsWithCount:{7, v6, v7, v8, v9, v10, v11, v12}];
 
     v13 = accessibilityB188LocalizedString(@"left.earbud");
     v14 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryLabel"];
     v15 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftBatteryChargeImageView"];
     v16 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"leftExclamationPointImageView"];
-    v17 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:v3 primaryTitle:v13 batteryLevelLabel:v14 chargingImage:v15 warningImage:v16];
+    v17 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:_axLeftDevice primaryTitle:v13 batteryLevelLabel:v14 chargingImage:v15 warningImage:v16];
 
     [(ProximityStatusViewControllerAccessibility *)self _axSetLeftDevice:v17];
   }
 
 LABEL_5:
-  v18 = [(ProximityStatusViewControllerAccessibility *)self _axRightDevice];
-  if (!v18)
+  _axRightDevice = [(ProximityStatusViewControllerAccessibility *)self _axRightDevice];
+  if (!_axRightDevice)
   {
     v19 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryLabel"];
 
@@ -139,20 +139,20 @@ LABEL_5:
     v25 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryLevelImageView"];
     v26 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryShellImageView"];
     v27 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryChargeImageView"];
-    v18 = [v20 axArrayByIgnoringNilElementsWithCount:{7, v21, v22, v23, v24, v25, v26, v27}];
+    _axRightDevice = [v20 axArrayByIgnoringNilElementsWithCount:{7, v21, v22, v23, v24, v25, v26, v27}];
 
     v28 = accessibilityB188LocalizedString(@"right.earbud");
     v29 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryLabel"];
     v30 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightBatteryChargeImageView"];
     v31 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"rightExclamationPointImageView"];
-    v32 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:v18 primaryTitle:v28 batteryLevelLabel:v29 chargingImage:v30 warningImage:v31];
+    v32 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:_axRightDevice primaryTitle:v28 batteryLevelLabel:v29 chargingImage:v30 warningImage:v31];
 
     [(ProximityStatusViewControllerAccessibility *)self _axSetRightDevice:v32];
   }
 
 LABEL_9:
-  v33 = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
-  if (v33)
+  _axCombinedDevice = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
+  if (_axCombinedDevice)
   {
   }
 
@@ -183,23 +183,23 @@ LABEL_9:
         v43 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"bothBatteryLabel"];
         v44 = __UIAccessibilityCastAsClass();
 
-        v45 = [v44 superview];
-        [v40 axSafelyAddObject:v45];
+        superview = [v44 superview];
+        [v40 axSafelyAddObject:superview];
       }
 
       v46 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
-      v47 = [v46 accessibilityLabel];
+      accessibilityLabel = [v46 accessibilityLabel];
 
       v48 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"bothBatteryLabel"];
       v49 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"bothBatteryChargeImageView"];
-      v50 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:v40 primaryTitle:v47 batteryLevelLabel:v48 chargingImage:v49 warningImage:0];
+      v50 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:v40 primaryTitle:accessibilityLabel batteryLevelLabel:v48 chargingImage:v49 warningImage:0];
 
       [(ProximityStatusViewControllerAccessibility *)self _axSetCombinedDevice:v50];
     }
   }
 
-  v51 = [(ProximityStatusViewControllerAccessibility *)self _axCaseDevice];
-  if (v51)
+  _axCaseDevice = [(ProximityStatusViewControllerAccessibility *)self _axCaseDevice];
+  if (_axCaseDevice)
   {
     goto LABEL_23;
   }
@@ -217,21 +217,21 @@ LABEL_9:
   v56 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"caseBatteryLevelImageView"];
   v57 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"caseBatteryShellImageView"];
   v58 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"caseBatteryChargeImageView"];
-  v51 = [v53 axArrayByIgnoringNilElementsWithCount:{5, v54, v55, v56, v57, v58}];
+  _axCaseDevice = [v53 axArrayByIgnoringNilElementsWithCount:{5, v54, v55, v56, v57, v58}];
 
   v59 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
-  v60 = [v59 accessibilityLabel];
+  accessibilityLabel2 = [v59 accessibilityLabel];
 
-  v61 = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
-  if (v61 || ([(ProximityStatusViewControllerAccessibility *)self _axRightDevice], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
+  _axLeftDevice2 = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
+  if (_axLeftDevice2 || ([(ProximityStatusViewControllerAccessibility *)self _axRightDevice], (_axLeftDevice2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v75 = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
+    _axCombinedDevice2 = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
 
-    if (!v75)
+    if (!_axCombinedDevice2)
     {
       goto LABEL_22;
     }
@@ -239,11 +239,11 @@ LABEL_9:
 
   v62 = accessibilityB188LocalizedString(@"battery.case");
 
-  v60 = v62;
+  accessibilityLabel2 = v62;
 LABEL_22:
   v63 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"caseBatteryLabel"];
   v64 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"caseBatteryChargeImageView"];
-  v65 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:v51 primaryTitle:v60 batteryLevelLabel:v63 chargingImage:v64 warningImage:0];
+  v65 = [(ProximityStatusViewControllerAccessibility *)self _axCreateAggregateStatusView:_axCaseDevice primaryTitle:accessibilityLabel2 batteryLevelLabel:v63 chargingImage:v64 warningImage:0];
 
   [(ProximityStatusViewControllerAccessibility *)self _axSetCaseDevice:v65];
 LABEL_23:
@@ -251,45 +251,45 @@ LABEL_23:
 LABEL_24:
   v66 = [(ProximityStatusViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
   [v66 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
-  v67 = [MEMORY[0x29EDB8DE8] array];
-  [v67 axSafelyAddObject:v66];
-  v68 = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
+  array = [MEMORY[0x29EDB8DE8] array];
+  [array axSafelyAddObject:v66];
+  _axCombinedDevice3 = [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
 
-  if (v68)
+  if (_axCombinedDevice3)
   {
     [(ProximityStatusViewControllerAccessibility *)self _axCombinedDevice];
   }
 
   else
   {
-    v69 = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
-    [v67 axSafelyAddObject:v69];
+    _axLeftDevice3 = [(ProximityStatusViewControllerAccessibility *)self _axLeftDevice];
+    [array axSafelyAddObject:_axLeftDevice3];
 
     [(ProximityStatusViewControllerAccessibility *)self _axRightDevice];
   }
   v70 = ;
-  [v67 axSafelyAddObject:v70];
+  [array axSafelyAddObject:v70];
 
-  v71 = [(ProximityStatusViewControllerAccessibility *)self _axCaseDevice];
-  [v67 axSafelyAddObject:v71];
+  _axCaseDevice2 = [(ProximityStatusViewControllerAccessibility *)self _axCaseDevice];
+  [array axSafelyAddObject:_axCaseDevice2];
 
   v72 = [(ProximityStatusViewControllerAccessibility *)self safeUIViewForKey:@"dismissButton"];
   [v72 _accessibilitySetUserTestingIsCancelButton:1];
-  [v67 axSafelyAddObject:v72];
+  [array axSafelyAddObject:v72];
   objc_opt_class();
   v73 = __UIAccessibilityCastAsClass();
-  v74 = [v73 view];
-  [v74 setAccessibilityElements:v67];
+  view = [v73 view];
+  [view setAccessibilityElements:array];
 }
 
-- (id)_axCreateAggregateStatusView:(id)a3 primaryTitle:(id)a4 batteryLevelLabel:(id)a5 chargingImage:(id)a6 warningImage:(id)a7
+- (id)_axCreateAggregateStatusView:(id)view primaryTitle:(id)title batteryLevelLabel:(id)label chargingImage:(id)image warningImage:(id)warningImage
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 count])
+  viewCopy = view;
+  titleCopy = title;
+  labelCopy = label;
+  imageCopy = image;
+  warningImageCopy = warningImage;
+  if ([viewCopy count])
   {
     v17 = [AXAggregatedDeviceBatteryStatusView alloc];
     objc_opt_class();
@@ -298,7 +298,7 @@ LABEL_24:
     v19 = __UIAccessibilityCastAsClass();
     objc_opt_class();
     v20 = __UIAccessibilityCastAsClass();
-    v21 = [(AXAggregatedDeviceBatteryStatusView *)v17 initWithAccessibilityContainer:self representedElements:v12 primaryTitle:v13 batteryLevelLabel:v18 chargingImage:v19 warningImage:v20];
+    v21 = [(AXAggregatedDeviceBatteryStatusView *)v17 initWithAccessibilityContainer:self representedElements:viewCopy primaryTitle:titleCopy batteryLevelLabel:v18 chargingImage:v19 warningImage:v20];
   }
 
   else

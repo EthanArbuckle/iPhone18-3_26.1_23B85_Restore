@@ -1,26 +1,26 @@
 @interface FCChannelUpsellTrigger
-- (FCChannelUpsellTrigger)initWithConfigDictionary:(id)a3;
+- (FCChannelUpsellTrigger)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCChannelUpsellTrigger
 
-- (FCChannelUpsellTrigger)initWithConfigDictionary:(id)a3
+- (FCChannelUpsellTrigger)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FCChannelUpsellTrigger;
   v5 = [(FCChannelUpsellTrigger *)&v12 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"triggerMethod", 0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"triggerMethod", 0);
     v5->_triggerMethod = FCChannelUpsellTriggerMethodForValue(v6);
 
-    v5->_triggerCount = FCAppConfigurationIntegerValue(v4, @"triggerCount", 0);
-    v7 = FCAppConfigurationStringValue(v4, @"subscriberUpsellArticleID", 0);
+    v5->_triggerCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"triggerCount", 0);
+    v7 = FCAppConfigurationStringValue(dictionaryCopy, @"subscriberUpsellArticleID", 0);
     subscriberUpsellArticleID = v5->_subscriberUpsellArticleID;
     v5->_subscriberUpsellArticleID = v7;
 
-    v9 = FCAppConfigurationStringValue(v4, @"nonSubscriberUpsellArticleID", 0);
+    v9 = FCAppConfigurationStringValue(dictionaryCopy, @"nonSubscriberUpsellArticleID", 0);
     nonSubscriberUpsellArticleID = v5->_nonSubscriberUpsellArticleID;
     v5->_nonSubscriberUpsellArticleID = v9;
   }

@@ -1,9 +1,9 @@
 @interface _NSKeyedUnarchiverHelper
-- (BOOL)classNameAllowed:(Class)a3;
+- (BOOL)classNameAllowed:(Class)allowed;
 - (_NSKeyedUnarchiverHelper)init;
 - (id)allowedClassNames;
 - (void)dealloc;
-- (void)setAllowedClassNames:(id)a3;
+- (void)setAllowedClassNames:(id)names;
 @end
 
 @implementation _NSKeyedUnarchiverHelper
@@ -31,25 +31,25 @@
   return v2;
 }
 
-- (void)setAllowedClassNames:(id)a3
+- (void)setAllowedClassNames:(id)names
 {
   allowed = self->_allowed;
-  if (allowed != a3)
+  if (allowed != names)
   {
 
-    self->_allowed = [a3 copy];
+    self->_allowed = [names copy];
   }
 }
 
-- (BOOL)classNameAllowed:(Class)a3
+- (BOOL)classNameAllowed:(Class)allowed
 {
   if (!self->_allowed)
   {
     return 1;
   }
 
-  Superclass = a3;
-  if (!a3)
+  Superclass = allowed;
+  if (!allowed)
   {
     return 0;
   }

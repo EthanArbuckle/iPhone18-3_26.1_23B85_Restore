@@ -1,20 +1,20 @@
 @interface PASUIWelcomeController
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation PASUIWelcomeController
 
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v7 = sub_26115B6A4();
   v9 = v8;
-  if (a4)
+  if (text)
   {
-    a4 = sub_26115B6A4();
+    text = sub_26115B6A4();
     v11 = v10;
   }
 
@@ -23,8 +23,8 @@
     v11 = 0;
   }
 
-  v12 = a5;
-  return sub_261156BBC(v7, v9, a4, v11, a5);
+  iconCopy = icon;
+  return sub_261156BBC(v7, v9, text, v11, icon);
 }
 
 - (void)viewDidLoad
@@ -41,20 +41,20 @@
   sub_261156E04();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_261156E04();
 }
 
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC23ProximityAppleIDSetupUI22PASUIWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

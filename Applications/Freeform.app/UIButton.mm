@@ -1,8 +1,8 @@
 @interface UIButton
-- (CGRect)crl_deprecatedBackgroundRectForBounds:(CGRect)a3;
-- (CGRect)crl_deprecatedContentRectForBounds:(CGRect)a3;
-- (CGRect)crl_deprecatedImageRectForContentRect:(CGRect)a3;
-- (CGRect)crl_deprecatedTitleRectForContentRect:(CGRect)a3;
+- (CGRect)crl_deprecatedBackgroundRectForBounds:(CGRect)bounds;
+- (CGRect)crl_deprecatedContentRectForBounds:(CGRect)bounds;
+- (CGRect)crl_deprecatedImageRectForContentRect:(CGRect)rect;
+- (CGRect)crl_deprecatedTitleRectForContentRect:(CGRect)rect;
 - (UIEdgeInsets)crl_deprecatedContentEdgeInsets;
 - (UIEdgeInsets)crl_deprecatedImageEdgeInsets;
 - (UIEdgeInsets)crl_deprecatedTitleEdgeInsets;
@@ -40,9 +40,9 @@
   return result;
 }
 
-- (CGRect)crl_deprecatedBackgroundRectForBounds:(CGRect)a3
+- (CGRect)crl_deprecatedBackgroundRectForBounds:(CGRect)bounds
 {
-  [(UIButton *)self backgroundRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButton *)self backgroundRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -50,9 +50,9 @@
   return result;
 }
 
-- (CGRect)crl_deprecatedContentRectForBounds:(CGRect)a3
+- (CGRect)crl_deprecatedContentRectForBounds:(CGRect)bounds
 {
-  [(UIButton *)self contentRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButton *)self contentRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (CGRect)crl_deprecatedTitleRectForContentRect:(CGRect)a3
+- (CGRect)crl_deprecatedTitleRectForContentRect:(CGRect)rect
 {
-  [(UIButton *)self titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButton *)self titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -70,9 +70,9 @@
   return result;
 }
 
-- (CGRect)crl_deprecatedImageRectForContentRect:(CGRect)a3
+- (CGRect)crl_deprecatedImageRectForContentRect:(CGRect)rect
 {
-  [(UIButton *)self imageRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButton *)self imageRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

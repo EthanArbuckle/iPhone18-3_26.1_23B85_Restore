@@ -1,8 +1,8 @@
 @interface ASAuthorizationPublicKeyCredentialPRFRegistrationOutput
 - (ASAuthorizationPublicKeyCredentialPRFRegistrationOutput)init;
-- (ASAuthorizationPublicKeyCredentialPRFRegistrationOutput)initWithIsSupported:(BOOL)a3 first:(id)a4 second:(id)a5;
+- (ASAuthorizationPublicKeyCredentialPRFRegistrationOutput)initWithIsSupported:(BOOL)supported first:(id)first second:(id)second;
 - (BOOL)isSupported;
-- (void)setIsSupported:(BOOL)a3;
+- (void)setIsSupported:(BOOL)supported;
 @end
 
 @implementation ASAuthorizationPublicKeyCredentialPRFRegistrationOutput
@@ -14,21 +14,21 @@
   return *(self + v3);
 }
 
-- (void)setIsSupported:(BOOL)a3
+- (void)setIsSupported:(BOOL)supported
 {
   v5 = OBJC_IVAR___ASAuthorizationPublicKeyCredentialPRFRegistrationOutput_isSupported;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = supported;
 }
 
-- (ASAuthorizationPublicKeyCredentialPRFRegistrationOutput)initWithIsSupported:(BOOL)a3 first:(id)a4 second:(id)a5
+- (ASAuthorizationPublicKeyCredentialPRFRegistrationOutput)initWithIsSupported:(BOOL)supported first:(id)first second:(id)second
 {
-  v6 = a4;
-  if (!a4)
+  firstCopy = first;
+  if (!first)
   {
-    v15 = a5;
+    secondCopy = second;
     v11 = 0xF000000000000000;
-    if (a5)
+    if (second)
     {
       goto LABEL_3;
     }
@@ -39,12 +39,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = a5;
-  v9 = v6;
-  v6 = sub_1B1D7B4EC();
+  secondCopy2 = second;
+  v9 = firstCopy;
+  firstCopy = sub_1B1D7B4EC();
   v11 = v10;
 
-  if (!a5)
+  if (!second)
   {
     goto LABEL_5;
   }
@@ -54,9 +54,9 @@ LABEL_3:
   v14 = v13;
 
 LABEL_6:
-  v16 = sub_1B1D11068(a3, v6, v11, v12, v14);
+  v16 = sub_1B1D11068(supported, firstCopy, v11, v12, v14);
   sub_1B1C91AE4(v12, v14);
-  sub_1B1C91AE4(v6, v11);
+  sub_1B1C91AE4(firstCopy, v11);
   return v16;
 }
 

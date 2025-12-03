@@ -1,13 +1,13 @@
 @interface GTRemoteDeviceBrowserReplyStream
-- (GTRemoteDeviceBrowserReplyStream)initWithObserver:(id)a3;
-- (void)notifyDeviceListChanged_:(id)a3 replyConnection:(id)a4;
+- (GTRemoteDeviceBrowserReplyStream)initWithObserver:(id)observer;
+- (void)notifyDeviceListChanged_:(id)changed_ replyConnection:(id)connection;
 @end
 
 @implementation GTRemoteDeviceBrowserReplyStream
 
-- (GTRemoteDeviceBrowserReplyStream)initWithObserver:(id)a3
+- (GTRemoteDeviceBrowserReplyStream)initWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = [GTServiceProperties protocolMethods:&unk_2860F4C68];
   v9.receiver = self;
   v9.super_class = GTRemoteDeviceBrowserReplyStream;
@@ -15,17 +15,17 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_observer, a3);
+    objc_storeStrong(&v7->_observer, observer);
   }
 
   return v7;
 }
 
-- (void)notifyDeviceListChanged_:(id)a3 replyConnection:(id)a4
+- (void)notifyDeviceListChanged_:(id)changed_ replyConnection:(id)connection
 {
-  v5 = a3;
+  changed_Copy = changed_;
   v6 = objc_opt_class();
-  nsarray = xpc_dictionary_get_nsarray(v5, "deviceList", v6);
+  nsarray = xpc_dictionary_get_nsarray(changed_Copy, "deviceList", v6);
 
   [(GTRemoteDeviceBrowserObserver *)self->_observer notifyDeviceListChanged:nsarray];
 }

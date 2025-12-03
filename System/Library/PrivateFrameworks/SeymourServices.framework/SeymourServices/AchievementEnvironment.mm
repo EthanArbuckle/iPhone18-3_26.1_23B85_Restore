@@ -1,8 +1,8 @@
 @interface AchievementEnvironment
 - (NSString)modalityIdentifier;
 - (_TtC15SeymourServices22AchievementEnvironment)init;
-- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)a3;
-- (id)numberOfWorkoutsOver5MinutesForModality:(id)a3;
+- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)modality;
+- (id)numberOfWorkoutsOver5MinutesForModality:(id)modality;
 @end
 
 @implementation AchievementEnvironment
@@ -17,20 +17,20 @@
   return v4;
 }
 
-- (id)numberOfWorkoutsOver5MinutesForModality:(id)a3
+- (id)numberOfWorkoutsOver5MinutesForModality:(id)modality
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_22704FF94(v4);
+  modalityCopy = modality;
+  selfCopy = self;
+  v6 = sub_22704FF94(modalityCopy);
 
   return v6;
 }
 
-- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)a3
+- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)modality
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_227050000(v4);
+  modalityCopy = modality;
+  selfCopy = self;
+  v6 = sub_227050000(modalityCopy);
 
   return v6;
 }

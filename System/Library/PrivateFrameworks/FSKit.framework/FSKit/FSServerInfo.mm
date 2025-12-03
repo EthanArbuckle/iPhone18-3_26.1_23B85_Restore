@@ -1,62 +1,62 @@
 @interface FSServerInfo
-- (FSServerInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FSServerInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSServerInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   flags = self->_flags;
-  v5 = a3;
-  [v5 encodeInteger:flags forKey:@"FSFlags"];
-  [v5 encodeObject:self->_displayName forKey:@"FSSDisn"];
-  [v5 encodeObject:self->_supportedMechTypes forKey:@"FSSupMT"];
-  [v5 encodeObject:self->_authenticationInfo forKey:@"FSSAInf"];
-  [v5 encodeObject:self->_machineType forKey:@"FSMachT"];
-  [v5 encodeObject:self->_serverOS forKey:@"FSSrvOS"];
-  [v5 encodeObject:self->_proxyServerName forKey:@"FSSPxSN"];
-  [v5 encodeObject:self->_proxyServerRealm forKey:@"FSSPxSR"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:flags forKey:@"FSFlags"];
+  [coderCopy encodeObject:self->_displayName forKey:@"FSSDisn"];
+  [coderCopy encodeObject:self->_supportedMechTypes forKey:@"FSSupMT"];
+  [coderCopy encodeObject:self->_authenticationInfo forKey:@"FSSAInf"];
+  [coderCopy encodeObject:self->_machineType forKey:@"FSMachT"];
+  [coderCopy encodeObject:self->_serverOS forKey:@"FSSrvOS"];
+  [coderCopy encodeObject:self->_proxyServerName forKey:@"FSSPxSN"];
+  [coderCopy encodeObject:self->_proxyServerRealm forKey:@"FSSPxSR"];
 }
 
-- (FSServerInfo)initWithCoder:(id)a3
+- (FSServerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = FSServerInfo;
   v5 = [(FSServerInfo *)&v23 init];
   if (v5)
   {
-    v5->_flags = [v4 decodeIntegerForKey:@"FSFlags"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSDisn"];
+    v5->_flags = [coderCopy decodeIntegerForKey:@"FSFlags"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSDisn"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSupMT"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSupMT"];
     supportedMechTypes = v5->_supportedMechTypes;
     v5->_supportedMechTypes = v8;
 
     v10 = +[FSKitConstants plistTypes];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"FSSAInf"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"FSSAInf"];
 
     authenticationInfo = v5->_authenticationInfo;
     v5->_authenticationInfo = v11;
     v13 = v11;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSMachT"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSMachT"];
     machineType = v5->_machineType;
     v5->_machineType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSrvOS"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSrvOS"];
     serverOS = v5->_serverOS;
     v5->_serverOS = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSPxSN"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSPxSN"];
     proxyServerName = v5->_proxyServerName;
     v5->_proxyServerName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSPxSR"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSPxSR"];
     proxyServerRealm = v5->_proxyServerRealm;
     v5->_proxyServerRealm = v20;
   }
@@ -64,14 +64,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_flags;
   displayName = self->_displayName;
   if (displayName)
   {
-    displayName = [(NSString *)displayName copyWithZone:a3];
+    displayName = [(NSString *)displayName copyWithZone:zone];
   }
 
   v7 = v5[2];
@@ -80,7 +80,7 @@
   supportedMechTypes = self->_supportedMechTypes;
   if (supportedMechTypes)
   {
-    supportedMechTypes = [(NSString *)supportedMechTypes copyWithZone:a3];
+    supportedMechTypes = [(NSString *)supportedMechTypes copyWithZone:zone];
   }
 
   v9 = v5[3];
@@ -89,7 +89,7 @@
   authenticationInfo = self->_authenticationInfo;
   if (authenticationInfo)
   {
-    authenticationInfo = [(NSDictionary *)authenticationInfo copyWithZone:a3];
+    authenticationInfo = [(NSDictionary *)authenticationInfo copyWithZone:zone];
   }
 
   v11 = v5[4];
@@ -98,7 +98,7 @@
   machineType = self->_machineType;
   if (machineType)
   {
-    machineType = [(NSString *)machineType copyWithZone:a3];
+    machineType = [(NSString *)machineType copyWithZone:zone];
   }
 
   v13 = v5[5];
@@ -107,7 +107,7 @@
   serverOS = self->_serverOS;
   if (serverOS)
   {
-    serverOS = [(NSString *)serverOS copyWithZone:a3];
+    serverOS = [(NSString *)serverOS copyWithZone:zone];
   }
 
   v15 = v5[6];
@@ -116,7 +116,7 @@
   proxyServerName = self->_proxyServerName;
   if (proxyServerName)
   {
-    proxyServerName = [(NSString *)proxyServerName copyWithZone:a3];
+    proxyServerName = [(NSString *)proxyServerName copyWithZone:zone];
   }
 
   v17 = v5[7];
@@ -125,7 +125,7 @@
   proxyServerRealm = self->_proxyServerRealm;
   if (proxyServerRealm)
   {
-    proxyServerRealm = [(NSString *)proxyServerRealm copyWithZone:a3];
+    proxyServerRealm = [(NSString *)proxyServerRealm copyWithZone:zone];
   }
 
   v19 = v5[8];

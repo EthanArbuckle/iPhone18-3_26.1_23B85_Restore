@@ -1,8 +1,8 @@
 @interface HKGraphSeriesDataSource
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
 - (HKGraphSeriesDataSource)init;
 - (HKGraphSeriesDataSourceDelegate)delegate;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
 @end
 
 @implementation HKGraphSeriesDataSource
@@ -20,27 +20,27 @@
   return result;
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
-  v14 = a4;
-  v10 = [(HKGraphSeriesDataSource *)self minimumZoom];
-  if (v10 > a5)
+  zoomCopy = zoom;
+  minimumZoom = [(HKGraphSeriesDataSource *)self minimumZoom];
+  if (minimumZoom > resolution)
   {
-    a5 = v10;
+    resolution = minimumZoom;
   }
 
-  v11 = [(HKGraphSeriesDataSource *)self maximumZoom];
-  if (a5 >= v11)
+  maximumZoom = [(HKGraphSeriesDataSource *)self maximumZoom];
+  if (resolution >= maximumZoom)
   {
-    v12 = v11;
+    resolutionCopy = maximumZoom;
   }
 
   else
   {
-    v12 = a5;
+    resolutionCopy = resolution;
   }
 
-  HKGraphSeriesDataBlockPathContainingDate(v14, v12, a6, retstr);
+  HKGraphSeriesDataBlockPathContainingDate(zoomCopy, resolutionCopy, a6, retstr);
 
   return result;
 }
@@ -52,7 +52,7 @@
   return WeakRetained;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

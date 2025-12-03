@@ -1,42 +1,42 @@
 @interface SKUILockupSwooshViewController
-+ (int64_t)_swooshTypeForLockups:(id)a3;
++ (int64_t)_swooshTypeForLockups:(id)lockups;
 - ($0F9D46A54E891E2DFD6B960C8B4302D3)_lockupSwooshMetrics;
-- (CGRect)frameForItemAtIndex:(int64_t)a3;
+- (CGRect)frameForItemAtIndex:(int64_t)index;
 - (CGRect)seeAllButtonFrame;
-- (CGSize)_maximumCellSizeForImageSize:(CGSize)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)_maximumCellSizeForImageSize:(CGSize)size;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSArray)items;
-- (SKUILockupSwooshViewController)initWithItemList:(id)a3;
-- (SKUILockupSwooshViewController)initWithSwoosh:(id)a3;
+- (SKUILockupSwooshViewController)initWithItemList:(id)list;
+- (SKUILockupSwooshViewController)initWithSwoosh:(id)swoosh;
 - (SKUIVideoImageDataConsumer)videoImageConsumer;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_newArtworkContextForSwooshType:(int64_t)a3;
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)popImageViewForItemAtIndex:(int64_t)a3;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_newArtworkContextForSwooshType:(int64_t)type;
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)popImageViewForItemAtIndex:(int64_t)index;
 - (void)_reloadSizes;
-- (void)_seeAllAction:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_seeAllAction:(id)action;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)deselectAllItems;
 - (void)loadView;
-- (void)setClientContext:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4;
-- (void)setLockups:(id)a3;
-- (void)setSeeAllHidden:(BOOL)a3;
-- (void)setVideoThumbnail:(id)a3 forItemAtIndex:(int64_t)a4;
+- (void)setClientContext:(id)context;
+- (void)setColorScheme:(id)scheme;
+- (void)setDelegate:(id)delegate;
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index;
+- (void)setLockups:(id)lockups;
+- (void)setSeeAllHidden:(BOOL)hidden;
+- (void)setVideoThumbnail:(id)thumbnail forItemAtIndex:(int64_t)index;
 - (void)unhideImages;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUILockupSwooshViewController
 
-- (SKUILockupSwooshViewController)initWithItemList:(id)a3
+- (SKUILockupSwooshViewController)initWithItemList:(id)list
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILockupSwooshViewController initWithItemList:];
@@ -53,17 +53,17 @@
     v8 = v31;
     v6->_defaultLockupStyle.visibleFields = visibleFields;
     *&p_defaultLockupStyle->artworkSize = v8;
-    v9 = [v4 seeAllTitle];
+    seeAllTitle = [listCopy seeAllTitle];
     seeAllTitle = v6->_seeAllTitle;
-    v6->_seeAllTitle = v9;
+    v6->_seeAllTitle = seeAllTitle;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = [v4 items];
+    items = [listCopy items];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v34 count:16];
+    v13 = [items countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v13)
     {
       v14 = v13;
@@ -75,7 +75,7 @@
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(items);
           }
 
           v17 = *(*(&v27 + 1) + 8 * v16);
@@ -89,7 +89,7 @@
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v34 count:16];
+        v14 = [items countByEnumeratingWithState:&v27 objects:v34 count:16];
       }
 
       while (v14);
@@ -99,27 +99,27 @@
     lockups = v6->_lockups;
     v6->_lockups = v20;
 
-    v22 = [v4 seeAllURLString];
+    seeAllURLString = [listCopy seeAllURLString];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v22];
+      v23 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:seeAllURLString];
       seeAllURL = v6->_seeAllURL;
       v6->_seeAllURL = v23;
     }
 
     v6->_swooshType = [objc_opt_class() _swooshTypeForLockups:v6->_lockups];
-    v25 = [v4 title];
-    [(SKUILockupSwooshViewController *)v6 setTitle:v25];
+    title = [listCopy title];
+    [(SKUILockupSwooshViewController *)v6 setTitle:title];
   }
 
   return v6;
 }
 
-- (SKUILockupSwooshViewController)initWithSwoosh:(id)a3
+- (SKUILockupSwooshViewController)initWithSwoosh:(id)swoosh
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  swooshCopy = swoosh;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILockupSwooshViewController initWithSwoosh:];
@@ -131,12 +131,12 @@
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [v4 lockups];
+    lockups = [swooshCopy lockups];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v8 = [lockups countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -147,18 +147,18 @@
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(lockups);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v12 item];
-          if (v13)
+          item = [v12 item];
+          if (item)
           {
             [v6 addObject:v12];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v9 = [lockups countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v9);
@@ -168,9 +168,9 @@
     v15 = *(v5 + 136);
     *(v5 + 136) = v14;
 
-    if (v4)
+    if (swooshCopy)
     {
-      [v4 lockupStyle];
+      [swooshCopy lockupStyle];
     }
 
     else
@@ -181,18 +181,18 @@
 
     *(v5 + 131) = v23;
     *(v5 + 1032) = v22;
-    *(v5 + 156) = [v4 seeAllStyle];
-    v16 = [v4 seeAllTitle];
+    *(v5 + 156) = [swooshCopy seeAllStyle];
+    seeAllTitle = [swooshCopy seeAllTitle];
     v17 = *(v5 + 157);
-    *(v5 + 157) = v16;
+    *(v5 + 157) = seeAllTitle;
 
-    v18 = [v4 seeAllURL];
+    seeAllURL = [swooshCopy seeAllURL];
     v19 = *(v5 + 158);
-    *(v5 + 158) = v18;
+    *(v5 + 158) = seeAllURL;
 
     *(v5 + 160) = [objc_opt_class() _swooshTypeForLockups:*(v5 + 136)];
-    v20 = [v4 title];
-    [v5 setTitle:v20];
+    title = [swooshCopy title];
+    [v5 setTitle:title];
   }
 
   return v5;
@@ -202,11 +202,11 @@
 {
   [(UICollectionView *)self->_collectionView setDataSource:0];
   [(UICollectionView *)self->_collectionView setDelegate:0];
-  v3 = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
-  [v3 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  chevronTitleControl = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
+  [chevronTitleControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(SKUISwooshView *)self->_swooshView seeAllControl];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  seeAllControl = [(SKUISwooshView *)self->_swooshView seeAllControl];
+  [seeAllControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   v5.receiver = self;
   v5.super_class = SKUILockupSwooshViewController;
@@ -216,7 +216,7 @@
 - (NSArray)items
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -236,10 +236,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) item];
-        if (v9)
+        item = [*(*(&v11 + 1) + 8 * i) item];
+        if (item)
         {
-          [v3 addObject:v9];
+          [array addObject:item];
         }
       }
 
@@ -249,7 +249,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (CGRect)seeAllButtonFrame
@@ -257,7 +257,7 @@
   seeAllStyle = self->_seeAllStyle;
   if (seeAllStyle == 1)
   {
-    v3 = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
+    chevronTitleControl = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
   }
 
   else
@@ -268,10 +268,10 @@
       goto LABEL_7;
     }
 
-    v3 = [(SKUISwooshView *)self->_swooshView seeAllControl];
+    chevronTitleControl = [(SKUISwooshView *)self->_swooshView seeAllControl];
   }
 
-  v4 = v3;
+  v4 = chevronTitleControl;
 LABEL_7:
   [v4 bounds];
   [v4 convertRect:0 toView:?];
@@ -291,9 +291,9 @@ LABEL_7:
   return result;
 }
 
-- (void)setLockups:(id)a3
+- (void)setLockups:(id)lockups
 {
-  v4 = a3;
+  lockupsCopy = lockups;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -325,8 +325,8 @@ LABEL_7:
   v10 = v7;
   v22 = &v29;
   v19 = v10;
-  v20 = self;
-  [v4 enumerateObjectsUsingBlock:v17];
+  selfCopy = self;
+  [lockupsCopy enumerateObjectsUsingBlock:v17];
   v11 = [v9 copy];
   lockups = self->_lockups;
   self->_lockups = v11;
@@ -410,16 +410,16 @@ LABEL_8:
   }
 }
 
-- (void)setSeeAllHidden:(BOOL)a3
+- (void)setSeeAllHidden:(BOOL)hidden
 {
-  if (self->_seeAllHidden != a3)
+  if (self->_seeAllHidden != hidden)
   {
-    v3 = a3;
-    self->_seeAllHidden = a3;
+    hiddenCopy = hidden;
+    self->_seeAllHidden = hidden;
     seeAllStyle = self->_seeAllStyle;
     if (seeAllStyle == 1)
     {
-      v5 = !a3 && self->_seeAllURL != 0;
+      v5 = !hidden && self->_seeAllURL != 0;
       swooshView = self->_swooshView;
 
       [(SKUISwooshView *)swooshView setShowsChevronForTitle:v5];
@@ -427,8 +427,8 @@ LABEL_8:
 
     else if (!seeAllStyle)
     {
-      v7 = [(SKUISwooshView *)self->_swooshView seeAllControl];
-      [v7 setHidden:v3];
+      seeAllControl = [(SKUISwooshView *)self->_swooshView seeAllControl];
+      [seeAllControl setHidden:hiddenCopy];
     }
   }
 }
@@ -444,12 +444,12 @@ LABEL_8:
 
     [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setAllowedOrientations:2];
     [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setLandscapeSize:self->_metrics.videoThumbnailSize.width, self->_metrics.videoThumbnailSize.height];
-    v6 = [(SKUISwooshViewController *)self colorScheme];
+    colorScheme = [(SKUISwooshViewController *)self colorScheme];
     v7 = self->_videoImageConsumer;
-    v8 = [v6 backgroundColor];
-    [(SKUIVideoImageDataConsumer *)v7 setBackgroundColor:v8];
+    backgroundColor = [colorScheme backgroundColor];
+    [(SKUIVideoImageDataConsumer *)v7 setBackgroundColor:backgroundColor];
 
-    [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setColorScheme:v6];
+    [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setColorScheme:colorScheme];
     videoImageConsumer = self->_videoImageConsumer;
   }
 
@@ -463,8 +463,8 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v4 = [indexPathsForSelectedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -476,24 +476,24 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v8 + 1) + 8 * v7++) animated:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [indexPathsForSelectedItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (CGRect)frameForItemAtIndex:(int64_t)a3
+- (CGRect)frameForItemAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
-  v4 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v5 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v4];
 
   [v5 bounds];
@@ -514,23 +514,23 @@ LABEL_8:
   return result;
 }
 
-- (id)popImageViewForItemAtIndex:(int64_t)a3
+- (id)popImageViewForItemAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
-  v6 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+  v6 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
   v7 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v6];
 
   if (v7)
   {
-    v8 = [v7 layout];
+    layout = [v7 layout];
     v9 = objc_alloc(MEMORY[0x277D755E8]);
-    v10 = [v8 iconImage];
-    v11 = [v9 initWithImage:v10];
+    iconImage = [layout iconImage];
+    v11 = [v9 initWithImage:iconImage];
 
-    v12 = [v8 iconImageView];
-    v13 = [(SKUILockupSwooshViewController *)self view];
-    [v12 frame];
-    [v13 convertRect:v7 fromView:?];
+    iconImageView = [layout iconImageView];
+    view = [(SKUILockupSwooshViewController *)self view];
+    [iconImageView frame];
+    [view convertRect:v7 fromView:?];
     [v11 setFrame:?];
 
     hiddenIconIndexSet = self->_hiddenIconIndexSet;
@@ -543,8 +543,8 @@ LABEL_8:
       hiddenIconIndexSet = self->_hiddenIconIndexSet;
     }
 
-    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:a3];
-    [v8 setIconImageHidden:1];
+    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:index];
+    [layout setIconImageHidden:1];
   }
 
   else
@@ -555,67 +555,67 @@ LABEL_8:
   return v11;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SKUILockupSwooshViewController;
-  [(SKUISwooshViewController *)&v5 setClientContext:a3];
+  [(SKUISwooshViewController *)&v5 setClientContext:context];
   [(SKUILockupSwooshViewController *)self _lockupSwooshMetrics];
   self->_metrics = v4;
   [(SKUILockupSwooshViewController *)self _reloadSizes];
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [(SKUISwooshViewController *)self colorScheme];
+  schemeCopy = scheme;
+  colorScheme = [(SKUISwooshViewController *)self colorScheme];
 
-  if (v5 != v4)
+  if (colorScheme != schemeCopy)
   {
     v8.receiver = self;
     v8.super_class = SKUILockupSwooshViewController;
-    [(SKUISwooshViewController *)&v8 setColorScheme:v4];
-    [(SKUIItemArtworkContext *)self->_artworkContext setColorScheme:v4];
-    [(SKUISwooshView *)self->_swooshView setColoringWithColorScheme:v4];
+    [(SKUISwooshViewController *)&v8 setColorScheme:schemeCopy];
+    [(SKUIItemArtworkContext *)self->_artworkContext setColorScheme:schemeCopy];
+    [(SKUISwooshView *)self->_swooshView setColoringWithColorScheme:schemeCopy];
     videoImageConsumer = self->_videoImageConsumer;
-    v7 = [v4 backgroundColor];
-    [(SKUIVideoImageDataConsumer *)videoImageConsumer setBackgroundColor:v7];
+    backgroundColor = [schemeCopy backgroundColor];
+    [(SKUIVideoImageDataConsumer *)videoImageConsumer setBackgroundColor:backgroundColor];
 
-    [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setColorScheme:v4];
+    [(SKUIVideoImageDataConsumer *)self->_videoImageConsumer setColorScheme:schemeCopy];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   self->_delegateWantsWillDisplay = objc_opt_respondsToSelector() & 1;
   v5.receiver = self;
   v5.super_class = SKUILockupSwooshViewController;
-  [(SKUISwooshViewController *)&v5 setDelegate:v4];
+  [(SKUISwooshViewController *)&v5 setDelegate:delegateCopy];
 }
 
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
   v6 = MEMORY[0x277CCAA70];
-  v7 = a3;
-  v8 = [v6 indexPathForItem:a4 inSection:0];
+  imageCopy = image;
+  v8 = [v6 indexPathForItem:index inSection:0];
   v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v8];
 
-  v9 = [v10 layout];
-  [v9 setIconImage:v7];
+  layout = [v10 layout];
+  [layout setIconImage:imageCopy];
 }
 
-- (void)setVideoThumbnail:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)setVideoThumbnail:(id)thumbnail forItemAtIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
   v6 = MEMORY[0x277CCAA70];
-  v7 = a3;
-  v8 = [v6 indexPathForItem:a4 inSection:0];
+  thumbnailCopy = thumbnail;
+  v8 = [v6 indexPathForItem:index inSection:0];
   v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v8];
 
-  v9 = [v10 layout];
-  [v9 setVideoThumbnailImage:v7];
+  layout = [v10 layout];
+  [layout setVideoThumbnailImage:thumbnailCopy];
 }
 
 - (void)unhideImages
@@ -655,8 +655,8 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     seeAllStyle = self->_seeAllStyle;
     if (seeAllStyle == 1)
     {
-      v8 = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
-      [v8 addTarget:self action:sel__seeAllAction_ forControlEvents:64];
+      chevronTitleControl = [(SKUISwooshView *)self->_swooshView chevronTitleControl];
+      [chevronTitleControl addTarget:self action:sel__seeAllAction_ forControlEvents:64];
 
       v9 = !self->_seeAllHidden && self->_seeAllURL != 0;
       [(SKUISwooshView *)self->_swooshView setShowsChevronForTitle:v9];
@@ -664,16 +664,16 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
     else if (!seeAllStyle)
     {
-      v6 = [(SKUISwooshView *)self->_swooshView seeAllControl];
-      [v6 addTarget:self action:sel__seeAllAction_ forControlEvents:64];
+      seeAllControl = [(SKUISwooshView *)self->_swooshView seeAllControl];
+      [seeAllControl addTarget:self action:sel__seeAllAction_ forControlEvents:64];
 
-      v7 = [(SKUISwooshView *)self->_swooshView seeAllControl];
-      [v7 setHidden:self->_seeAllHidden];
+      seeAllControl2 = [(SKUISwooshView *)self->_swooshView seeAllControl];
+      [seeAllControl2 setHidden:self->_seeAllHidden];
     }
 
     v10 = self->_swooshView;
-    v11 = [(SKUISwooshViewController *)self colorScheme];
-    [(SKUISwooshView *)v10 setColoringWithColorScheme:v11];
+    colorScheme = [(SKUISwooshViewController *)self colorScheme];
+    [(SKUISwooshView *)v10 setColoringWithColorScheme:colorScheme];
 
     [(SKUISwooshView *)self->_swooshView contentInsets];
     [(SKUISwooshView *)self->_swooshView setCollectionViewInsets:-5.0, -v12, 2.0, -v13];
@@ -694,11 +694,11 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
     else
     {
-      v28 = [(SKUISwooshViewController *)self clientContext];
-      v29 = v28;
-      if (v28)
+      clientContext = [(SKUISwooshViewController *)self clientContext];
+      v29 = clientContext;
+      if (clientContext)
       {
-        [v28 localizedStringForKey:@"SWOOSH_SEE_ALL_TITLE"];
+        [clientContext localizedStringForKey:@"SWOOSH_SEE_ALL_TITLE"];
       }
 
       else
@@ -717,8 +717,8 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   if (!collectionView)
   {
     v16 = objc_alloc_init(SKUISwooshCollectionViewLayout);
-    v17 = [(SKUISwooshView *)self->_swooshView backgroundColor];
-    [(SKUISwooshCollectionViewLayout *)v16 setBackgroundColor:v17];
+    backgroundColor = [(SKUISwooshView *)self->_swooshView backgroundColor];
+    [(SKUISwooshCollectionViewLayout *)v16 setBackgroundColor:backgroundColor];
 
     [(SKUISwooshCollectionViewLayout *)v16 setSnapsToItemBoundaries:1];
     if ((self->_defaultLockupStyle.visibleFields & 0x400) != 0)
@@ -745,8 +745,8 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"0"];
     [(UICollectionView *)self->_collectionView setAlwaysBounceHorizontal:1];
     v22 = self->_collectionView;
-    v23 = [(SKUISwooshView *)self->_swooshView backgroundColor];
-    [(UICollectionView *)v22 setBackgroundColor:v23];
+    backgroundColor2 = [(SKUISwooshView *)self->_swooshView backgroundColor];
+    [(UICollectionView *)v22 setBackgroundColor:backgroundColor2];
 
     [(UICollectionView *)self->_collectionView setDataSource:self];
     v24 = self->_collectionView;
@@ -762,16 +762,16 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
   [(SKUISwooshView *)self->_swooshView setCollectionView:collectionView];
   v26 = self->_swooshView;
-  v27 = [(SKUILockupSwooshViewController *)self title];
-  [(SKUISwooshView *)v26 setTitle:v27];
+  title = [(SKUILockupSwooshViewController *)self title];
+  [(SKUISwooshView *)v26 setTitle:title];
 
   [(SKUISwooshView *)self->_swooshView sizeToFit];
   [(SKUILockupSwooshViewController *)self setView:self->_swooshView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16 = *MEMORY[0x277D85DE8];
   if (!self->_didInitialReload)
   {
@@ -779,12 +779,12 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     [(UICollectionView *)self->_collectionView reloadData];
   }
 
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -795,13 +795,13 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v11 + 1) + 8 * i) animated:v3];
+        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v11 + 1) + 8 * i) animated:appearCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -809,28 +809,28 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
   v10.receiver = self;
   v10.super_class = SKUILockupSwooshViewController;
-  [(SKUILockupSwooshViewController *)&v10 viewWillAppear:v3];
+  [(SKUILockupSwooshViewController *)&v10 viewWillAppear:appearCopy];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"0" forIndexPath:v6];
-  v8 = [(SKUISwooshViewController *)self clientContext];
-  v9 = [v7 layout];
-  [v9 setClientContext:v8];
-  v10 = [v6 item];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"0" forIndexPath:pathCopy];
+  clientContext = [(SKUISwooshViewController *)self clientContext];
+  layout = [v7 layout];
+  [layout setClientContext:clientContext];
+  item = [pathCopy item];
 
-  v11 = [(NSArray *)self->_lockups objectAtIndex:v10];
-  v12 = [v11 item];
-  [v7 configureForItem:v12 clientContext:v8];
+  v11 = [(NSArray *)self->_lockups objectAtIndex:item];
+  item2 = [v11 item];
+  [v7 configureForItem:item2 clientContext:clientContext];
 
-  v13 = [(SKUISwooshViewController *)self colorScheme];
-  [v9 setColoringWithColorScheme:v13];
+  colorScheme = [(SKUISwooshViewController *)self colorScheme];
+  [layout setColoringWithColorScheme:colorScheme];
 
-  [v9 setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", v10)}];
-  [v9 setMaxImageSize:{self->_maxImageSize.width, self->_maxImageSize.height}];
-  [v9 setVideoSize:{self->_metrics.videoThumbnailSize.width, self->_metrics.videoThumbnailSize.height}];
+  [layout setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", item)}];
+  [layout setMaxImageSize:{self->_maxImageSize.width, self->_maxImageSize.height}];
+  [layout setVideoSize:{self->_metrics.videoThumbnailSize.width, self->_metrics.videoThumbnailSize.height}];
   if (v11)
   {
     [v11 lockupStyle];
@@ -845,11 +845,11 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     v24 = 0;
   }
 
-  [v9 setVisibleFields:v14];
-  v15 = [(SKUISwooshViewController *)self delegate];
+  [layout setVisibleFields:v14];
+  delegate = [(SKUISwooshViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 swoosh:self imageForCellAtIndex:v10];
+    v16 = [delegate swoosh:self imageForCellAtIndex:item];
   }
 
   else
@@ -857,13 +857,13 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     v16 = 0;
   }
 
-  [v9 setIconImage:v16];
+  [layout setIconImage:v16];
   if (v11)
   {
     [v11 lockupStyle];
     if (v21 & 0x400) != 0 && (objc_opt_respondsToSelector())
     {
-      v17 = [v15 swoosh:self videoThumbnailForCellAtIndex:v10];
+      v17 = [delegate swoosh:self videoThumbnailForCellAtIndex:item];
     }
 
     else
@@ -880,26 +880,26 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     v21 = 0;
   }
 
-  [v9 setVideoThumbnailImage:{v17, v19, v20, v21, v22, v23, v24}];
+  [layout setVideoThumbnailImage:{v17, v19, v20, v21, v22, v23, v24}];
   if (self->_delegateWantsWillDisplay)
   {
-    [v15 swoosh:self willDisplayCellAtIndex:v10];
+    [delegate swoosh:self willDisplayCellAtIndex:item];
   }
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(SKUISwooshViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(SKUISwooshViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 swoosh:self didSelectCellAtIndex:{objc_msgSend(v6, "item")}];
+    [delegate swoosh:self didSelectCellAtIndex:{objc_msgSend(pathCopy, "item")}];
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   if ((self->_defaultLockupStyle.visibleFields & 0x400) != 0)
   {
@@ -921,17 +921,17 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   v7 = objc_alloc_init(SKUILockupSwooshCollectionViewCell);
-  v8 = [(SKUILockupSwooshCollectionViewCell *)v7 layout];
+  layout = [(SKUILockupSwooshCollectionViewCell *)v7 layout];
   lockups = self->_lockups;
-  v10 = [v6 item];
+  item = [pathCopy item];
 
-  v11 = [(NSArray *)lockups objectAtIndex:v10];
-  [v8 setMaxImageSize:{self->_maxImageSize.width, self->_maxImageSize.height}];
-  [v8 setVideoSize:{self->_metrics.videoThumbnailSize.width, self->_metrics.videoThumbnailSize.height}];
+  v11 = [(NSArray *)lockups objectAtIndex:item];
+  [layout setMaxImageSize:{self->_maxImageSize.width, self->_maxImageSize.height}];
+  [layout setVideoSize:{self->_metrics.videoThumbnailSize.width, self->_metrics.videoThumbnailSize.height}];
   if (v11)
   {
     [v11 lockupStyle];
@@ -943,14 +943,14 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     v12 = 0;
   }
 
-  [v8 setVisibleFields:v12];
+  [layout setVisibleFields:v12];
   artworkContext = self->_artworkContext;
-  v14 = [v11 item];
-  [(SKUIItemArtworkContext *)artworkContext imageSizeForItem:v14];
+  item2 = [v11 item];
+  [(SKUIItemArtworkContext *)artworkContext imageSizeForItem:item2];
   v16 = v15;
   v18 = v17;
 
-  [v8 cellSizeForImageOfSize:{v16, v18}];
+  [layout cellSizeForImageOfSize:{v16, v18}];
   v20 = v19;
   height = self->_maxCellSize.height;
 
@@ -961,26 +961,26 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_seeAllAction:(id)a3
+- (void)_seeAllAction:(id)action
 {
-  v4 = [(SKUISwooshViewController *)self delegate];
+  delegate = [(SKUISwooshViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 swooshDidSelectSeeAll:self];
+    [delegate swooshDidSelectSeeAll:self];
   }
 }
 
-- (CGSize)_maximumCellSizeForImageSize:(CGSize)a3
+- (CGSize)_maximumCellSizeForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v34 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
   v8 = self->_metrics.videoThumbnailSize.width;
   v9 = self->_metrics.videoThumbnailSize.height;
   v10 = objc_alloc_init(SKUILockupSwooshCollectionViewCell);
-  v11 = [(SKUILockupSwooshCollectionViewCell *)v10 layout];
+  layout = [(SKUILockupSwooshCollectionViewCell *)v10 layout];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1005,7 +1005,7 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        [v11 setVideoSize:{v8, v9}];
+        [layout setVideoSize:{v8, v9}];
         if (v19)
         {
           [v19 lockupStyle];
@@ -1018,8 +1018,8 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
           v28 = 0;
         }
 
-        [v11 setVisibleFields:v20];
-        [v11 cellSizeForImageOfSize:{width, height}];
+        [layout setVisibleFields:v20];
+        [layout cellSizeForImageOfSize:{width, height}];
         if (v22 >= v14)
         {
           v14 = v22;
@@ -1039,9 +1039,9 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
   if (v15 == v6 && v14 == v7)
   {
-    [v11 setVideoSize:{v8, v9}];
-    [v11 setVisibleFields:self->_defaultLockupStyle.visibleFields];
-    [v11 cellSizeForImageOfSize:{width, height}];
+    [layout setVideoSize:{v8, v9}];
+    [layout setVisibleFields:self->_defaultLockupStyle.visibleFields];
+    [layout cellSizeForImageOfSize:{width, height}];
     v15 = v24;
     v14 = v25;
   }
@@ -1053,11 +1053,11 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   return result;
 }
 
-- (id)_newArtworkContextForSwooshType:(int64_t)a3
+- (id)_newArtworkContextForSwooshType:(int64_t)type
 {
   v5 = objc_alloc_init(SKUIItemArtworkContext);
-  v6 = [(SKUISwooshViewController *)self colorScheme];
-  [(SKUIItemArtworkContext *)v5 setColorScheme:v6];
+  colorScheme = [(SKUISwooshViewController *)self colorScheme];
+  [(SKUIItemArtworkContext *)v5 setColorScheme:colorScheme];
 
   p_metrics = &self->_metrics;
   if ((self->_defaultLockupStyle.visibleFields & 0x400) != 0)
@@ -1080,7 +1080,7 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
     v9 = [SKUIStyledImageDataConsumer appIconConsumerWithSize:p_metrics->iconSize.width, p_metrics->iconSize.height];
     [(SKUIItemArtworkContext *)v5 setIconConsumer:v9];
 
-    if (a3)
+    if (type)
     {
       p_height = &p_metrics->newsstandSwooshSize.height;
     }
@@ -1090,7 +1090,7 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
       p_height = &p_metrics->newsstandSize.height;
     }
 
-    if (a3)
+    if (type)
     {
       p_videoLockupIconSize = &p_metrics->newsstandSwooshSize;
     }
@@ -1107,18 +1107,18 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)_newLockupComponentWithItem:(id)a3 defaultStyle:(SKUILockupStyle *)a4
+- (id)_newLockupComponentWithItem:(id)item defaultStyle:(SKUILockupStyle *)style
 {
-  v5 = a3;
-  if ([v5 itemKind] == 17)
+  itemCopy = item;
+  if ([itemCopy itemKind] == 17)
   {
-    a4->visibleFields = 150;
+    style->visibleFields = 150;
   }
 
   v6 = [SKUILockupComponent alloc];
-  v9 = *&a4->artworkSize;
-  visibleFields = a4->visibleFields;
-  v7 = [(SKUILockupComponent *)v6 initWithItem:v5 style:&v9];
+  v9 = *&style->artworkSize;
+  visibleFields = style->visibleFields;
+  v7 = [(SKUILockupComponent *)v6 initWithItem:itemCopy style:&v9];
 
   return v7;
 }
@@ -1148,15 +1148,15 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   self->_maxCellSize.height = v9;
 }
 
-+ (int64_t)_swooshTypeForLockups:(id)a3
++ (int64_t)_swooshTypeForLockups:(id)lockups
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lockupsCopy = lockups;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [lockupsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1169,17 +1169,17 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lockupsCopy);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) item];
-        v11 = [v10 isNewsstandApp];
+        item = [*(*(&v14 + 1) + 8 * i) item];
+        isNewsstandApp = [item isNewsstandApp];
 
-        v6 |= v11 ^ 1;
-        v7 |= v11;
+        v6 |= isNewsstandApp ^ 1;
+        v7 |= isNewsstandApp;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [lockupsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1216,8 +1216,8 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
   retstr->var1 = 0u;
   retstr->var2 = 0u;
   retstr->var0 = 0u;
-  v4 = [(SKUISwooshViewController *)self clientContext];
-  v5 = SKUIUserInterfaceIdiom(v4);
+  clientContext = [(SKUISwooshViewController *)self clientContext];
+  v5 = SKUIUserInterfaceIdiom(clientContext);
 
   if (v5 == 1)
   {
@@ -1234,14 +1234,14 @@ void __46__SKUILockupSwooshViewController_unhideImages__block_invoke(uint64_t a1
 
   else
   {
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v14 = v13;
 
     if (v14 <= 375.0)
     {
-      v16 = [MEMORY[0x277D759A0] mainScreen];
-      [v16 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v18 = v17;
 
       if (v18 <= 320.0)

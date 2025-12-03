@@ -1,7 +1,7 @@
 @interface HFIrrigationValveServiceState
 + (id)requiredCharacteristicTypes;
-+ (unint64_t)_typeForSystemActiveState:(BOOL)a3 usageState:(int64_t)a4;
-- (HFIrrigationValveServiceState)initWithBatchReadResponse:(id)a3;
++ (unint64_t)_typeForSystemActiveState:(BOOL)state usageState:(int64_t)usageState;
+- (HFIrrigationValveServiceState)initWithBatchReadResponse:(id)response;
 - (id)stateTypeIdentifier;
 - (int64_t)primaryState;
 - (int64_t)priority;
@@ -36,36 +36,36 @@ void __60__HFIrrigationValveServiceState_requiredCharacteristicTypes__block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)_typeForSystemActiveState:(BOOL)a3 usageState:(int64_t)a4
++ (unint64_t)_typeForSystemActiveState:(BOOL)state usageState:(int64_t)usageState
 {
   v4 = 2;
-  if (a3)
+  if (state)
   {
     v4 = 3;
   }
 
-  v5 = a3;
-  if (a4)
+  stateCopy = state;
+  if (usageState)
   {
-    v5 = v4;
+    stateCopy = v4;
   }
 
-  if (a4 == 1)
+  if (usageState == 1)
   {
     return v4;
   }
 
   else
   {
-    return v5;
+    return stateCopy;
   }
 }
 
-- (HFIrrigationValveServiceState)initWithBatchReadResponse:(id)a3
+- (HFIrrigationValveServiceState)initWithBatchReadResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 allServices];
-  v6 = [v5 na_any:&__block_literal_global_172_3];
+  responseCopy = response;
+  allServices = [responseCopy allServices];
+  v6 = [allServices na_any:&__block_literal_global_172_3];
 
   v7 = MEMORY[0x277CD0F38];
   if (v6)
@@ -75,10 +75,10 @@ void __60__HFIrrigationValveServiceState_requiredCharacteristicTypes__block_invo
 
   v8 = *MEMORY[0x277CCF748];
   v9 = [MEMORY[0x277CBEB98] setWithObject:*v7];
-  v10 = [v4 responseForCharacteristicType:v8 inServicesOfTypes:v9];
+  v10 = [responseCopy responseForCharacteristicType:v8 inServicesOfTypes:v9];
   v11 = [v10 valueWithExpectedClass:objc_opt_class()];
 
-  v12 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF908]];
+  v12 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF908]];
 
   v13 = [v12 valueWithExpectedClass:objc_opt_class()];
 
@@ -94,7 +94,7 @@ void __60__HFIrrigationValveServiceState_requiredCharacteristicTypes__block_invo
 
   if (v14)
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -109,10 +109,10 @@ void __60__HFIrrigationValveServiceState_requiredCharacteristicTypes__block_invo
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 uint64_t __59__HFIrrigationValveServiceState_initWithBatchReadResponse___block_invoke(uint64_t a1, void *a2)
@@ -125,15 +125,15 @@ uint64_t __59__HFIrrigationValveServiceState_initWithBatchReadResponse___block_i
 
 - (id)stateTypeIdentifier
 {
-  v2 = [(HFIrrigationValveServiceState *)self type];
-  if (v2 - 1 > 2)
+  type = [(HFIrrigationValveServiceState *)self type];
+  if (type - 1 > 2)
   {
     return @"Off";
   }
 
   else
   {
-    return off_277DFEBB8[v2 - 1];
+    return off_277DFEBB8[type - 1];
   }
 }
 

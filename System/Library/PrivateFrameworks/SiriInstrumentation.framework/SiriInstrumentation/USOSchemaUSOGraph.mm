@@ -1,32 +1,32 @@
 @interface USOSchemaUSOGraph
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOGraph)initWithDictionary:(id)a3;
-- (USOSchemaUSOGraph)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOGraph)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOGraph)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAlignments:(id)a3;
-- (void)addEdges:(id)a3;
-- (void)addIdentifiers:(id)a3;
-- (void)addNodes:(id)a3;
-- (void)addSpans:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlignments:(id)alignments;
+- (void)addEdges:(id)edges;
+- (void)addIdentifiers:(id)identifiers;
+- (void)addNodes:(id)nodes;
+- (void)addSpans:(id)spans;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOGraph
 
-- (USOSchemaUSOGraph)initWithDictionary:(id)a3
+- (USOSchemaUSOGraph)initWithDictionary:(id)dictionary
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v79.receiver = self;
   v79.super_class = USOSchemaUSOGraph;
   v5 = [(USOSchemaUSOGraph *)&v79 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"version"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
     }
 
     v55 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"linkId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
     }
 
     v54 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"nodes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"nodes"];
     objc_opt_class();
     v58 = v10;
     if (objc_opt_isKindOfClass())
@@ -84,7 +84,7 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"edges"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"edges"];
     objc_opt_class();
     v57 = v18;
     if (objc_opt_isKindOfClass())
@@ -124,7 +124,7 @@
       }
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"identifiers"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"identifiers"];
     objc_opt_class();
     v56 = v26;
     if (objc_opt_isKindOfClass())
@@ -164,7 +164,7 @@
       }
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"alignments"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"alignments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -206,7 +206,7 @@
       v34 = v35;
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"spans"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"spans"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -254,30 +254,30 @@
   return v5;
 }
 
-- (USOSchemaUSOGraph)initWithJSON:(id)a3
+- (USOSchemaUSOGraph)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOGraph *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOGraph *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOGraph *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -291,10 +291,10 @@
 - (id)dictionaryRepresentation
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_alignments count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -314,16 +314,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v67 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v67 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -333,12 +333,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alignments"];
+    [dictionary setObject:array forKeyedSubscript:@"alignments"];
   }
 
   if ([(NSArray *)self->_edges count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
@@ -358,16 +358,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v63 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v63 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -377,12 +377,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"edges"];
+    [dictionary setObject:array2 forKeyedSubscript:@"edges"];
   }
 
   if ([(NSArray *)self->_identifiers count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
@@ -402,16 +402,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v59 + 1) + 8 * k) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v59 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -421,28 +421,28 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"identifiers"];
+    [dictionary setObject:array3 forKeyedSubscript:@"identifiers"];
   }
 
   if (self->_linkId)
   {
-    v28 = [(USOSchemaUSOGraph *)self linkId];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    linkId = [(USOSchemaUSOGraph *)self linkId];
+    dictionaryRepresentation4 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"linkId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_nodes count])
   {
-    v31 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
@@ -462,16 +462,16 @@
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v55 + 1) + 8 * m) dictionaryRepresentation];
-          if (v37)
+          dictionaryRepresentation5 = [*(*(&v55 + 1) + 8 * m) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v31 addObject:v37];
+            [array4 addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v38 = [MEMORY[0x1E695DFB0] null];
-            [v31 addObject:v38];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array4 addObject:null5];
           }
         }
 
@@ -481,12 +481,12 @@
       while (v34);
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"nodes"];
+    [dictionary setObject:array4 forKeyedSubscript:@"nodes"];
   }
 
   if ([(NSArray *)self->_spans count])
   {
-    v39 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -506,16 +506,16 @@
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v51 + 1) + 8 * n) dictionaryRepresentation];
-          if (v45)
+          dictionaryRepresentation6 = [*(*(&v51 + 1) + 8 * n) dictionaryRepresentation];
+          if (dictionaryRepresentation6)
           {
-            [v39 addObject:v45];
+            [array5 addObject:dictionaryRepresentation6];
           }
 
           else
           {
-            v46 = [MEMORY[0x1E695DFB0] null];
-            [v39 addObject:v46];
+            null6 = [MEMORY[0x1E695DFB0] null];
+            [array5 addObject:null6];
           }
         }
 
@@ -525,28 +525,28 @@
       while (v42);
     }
 
-    [v3 setObject:v39 forKeyedSubscript:@"spans"];
+    [dictionary setObject:array5 forKeyedSubscript:@"spans"];
   }
 
   if (self->_version)
   {
-    v47 = [(USOSchemaUSOGraph *)self version];
-    v48 = [v47 dictionaryRepresentation];
-    if (v48)
+    version = [(USOSchemaUSOGraph *)self version];
+    dictionaryRepresentation7 = [version dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v48 forKeyedSubscript:@"version"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"version"];
     }
 
     else
     {
-      v49 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v49 forKeyedSubscript:@"version"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"version"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v51];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v51];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -560,28 +560,28 @@
   return v6 ^ v8 ^ [(NSArray *)self->_spans hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(USOSchemaUSOGraph *)self version];
-  v6 = [v4 version];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self version];
+  version2 = [equalCopy version];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(USOSchemaUSOGraph *)self version];
-  if (v7)
+  version3 = [(USOSchemaUSOGraph *)self version];
+  if (version3)
   {
-    v8 = v7;
-    v9 = [(USOSchemaUSOGraph *)self version];
-    v10 = [v4 version];
-    v11 = [v9 isEqual:v10];
+    v8 = version3;
+    version4 = [(USOSchemaUSOGraph *)self version];
+    version5 = [equalCopy version];
+    v11 = [version4 isEqual:version5];
 
     if (!v11)
     {
@@ -593,20 +593,20 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self linkId];
+  version2 = [equalCopy linkId];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(USOSchemaUSOGraph *)self linkId];
-  if (v12)
+  linkId = [(USOSchemaUSOGraph *)self linkId];
+  if (linkId)
   {
-    v13 = v12;
-    v14 = [(USOSchemaUSOGraph *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(USOSchemaUSOGraph *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (!v16)
     {
@@ -618,20 +618,20 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self nodes];
-  v6 = [v4 nodes];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self nodes];
+  version2 = [equalCopy nodes];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(USOSchemaUSOGraph *)self nodes];
-  if (v17)
+  nodes = [(USOSchemaUSOGraph *)self nodes];
+  if (nodes)
   {
-    v18 = v17;
-    v19 = [(USOSchemaUSOGraph *)self nodes];
-    v20 = [v4 nodes];
-    v21 = [v19 isEqual:v20];
+    v18 = nodes;
+    nodes2 = [(USOSchemaUSOGraph *)self nodes];
+    nodes3 = [equalCopy nodes];
+    v21 = [nodes2 isEqual:nodes3];
 
     if (!v21)
     {
@@ -643,20 +643,20 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self edges];
-  v6 = [v4 edges];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self edges];
+  version2 = [equalCopy edges];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(USOSchemaUSOGraph *)self edges];
-  if (v22)
+  edges = [(USOSchemaUSOGraph *)self edges];
+  if (edges)
   {
-    v23 = v22;
-    v24 = [(USOSchemaUSOGraph *)self edges];
-    v25 = [v4 edges];
-    v26 = [v24 isEqual:v25];
+    v23 = edges;
+    edges2 = [(USOSchemaUSOGraph *)self edges];
+    edges3 = [equalCopy edges];
+    v26 = [edges2 isEqual:edges3];
 
     if (!v26)
     {
@@ -668,20 +668,20 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self identifiers];
-  v6 = [v4 identifiers];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self identifiers];
+  version2 = [equalCopy identifiers];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(USOSchemaUSOGraph *)self identifiers];
-  if (v27)
+  identifiers = [(USOSchemaUSOGraph *)self identifiers];
+  if (identifiers)
   {
-    v28 = v27;
-    v29 = [(USOSchemaUSOGraph *)self identifiers];
-    v30 = [v4 identifiers];
-    v31 = [v29 isEqual:v30];
+    v28 = identifiers;
+    identifiers2 = [(USOSchemaUSOGraph *)self identifiers];
+    identifiers3 = [equalCopy identifiers];
+    v31 = [identifiers2 isEqual:identifiers3];
 
     if (!v31)
     {
@@ -693,20 +693,20 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self alignments];
-  v6 = [v4 alignments];
-  if ((v5 != 0) == (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self alignments];
+  version2 = [equalCopy alignments];
+  if ((version != 0) == (version2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(USOSchemaUSOGraph *)self alignments];
-  if (v32)
+  alignments = [(USOSchemaUSOGraph *)self alignments];
+  if (alignments)
   {
-    v33 = v32;
-    v34 = [(USOSchemaUSOGraph *)self alignments];
-    v35 = [v4 alignments];
-    v36 = [v34 isEqual:v35];
+    v33 = alignments;
+    alignments2 = [(USOSchemaUSOGraph *)self alignments];
+    alignments3 = [equalCopy alignments];
+    v36 = [alignments2 isEqual:alignments3];
 
     if (!v36)
     {
@@ -718,12 +718,12 @@
   {
   }
 
-  v5 = [(USOSchemaUSOGraph *)self spans];
-  v6 = [v4 spans];
-  if ((v5 != 0) != (v6 == 0))
+  version = [(USOSchemaUSOGraph *)self spans];
+  version2 = [equalCopy spans];
+  if ((version != 0) != (version2 == 0))
   {
-    v37 = [(USOSchemaUSOGraph *)self spans];
-    if (!v37)
+    spans = [(USOSchemaUSOGraph *)self spans];
+    if (!spans)
     {
 
 LABEL_40:
@@ -731,10 +731,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(USOSchemaUSOGraph *)self spans];
-    v40 = [v4 spans];
-    v41 = [v39 isEqual:v40];
+    v38 = spans;
+    spans2 = [(USOSchemaUSOGraph *)self spans];
+    spans3 = [equalCopy spans];
+    v41 = [spans2 isEqual:spans3];
 
     if (v41)
     {
@@ -754,23 +754,23 @@ LABEL_38:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(USOSchemaUSOGraph *)self version];
+  toCopy = to;
+  version = [(USOSchemaUSOGraph *)self version];
 
-  if (v5)
+  if (version)
   {
-    v6 = [(USOSchemaUSOGraph *)self version];
+    version2 = [(USOSchemaUSOGraph *)self version];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(USOSchemaUSOGraph *)self linkId];
+  linkId = [(USOSchemaUSOGraph *)self linkId];
 
-  if (v7)
+  if (linkId)
   {
-    v8 = [(USOSchemaUSOGraph *)self linkId];
+    linkId2 = [(USOSchemaUSOGraph *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -930,138 +930,138 @@ LABEL_38:
   }
 }
 
-- (void)addSpans:(id)a3
+- (void)addSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   spans = self->_spans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!spans)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_spans;
-    self->_spans = v6;
+    self->_spans = array;
 
-    v4 = v8;
+    spansCopy = v8;
     spans = self->_spans;
   }
 
-  [(NSArray *)spans addObject:v4];
+  [(NSArray *)spans addObject:spansCopy];
 }
 
-- (void)addAlignments:(id)a3
+- (void)addAlignments:(id)alignments
 {
-  v4 = a3;
+  alignmentsCopy = alignments;
   alignments = self->_alignments;
-  v8 = v4;
+  v8 = alignmentsCopy;
   if (!alignments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alignments;
-    self->_alignments = v6;
+    self->_alignments = array;
 
-    v4 = v8;
+    alignmentsCopy = v8;
     alignments = self->_alignments;
   }
 
-  [(NSArray *)alignments addObject:v4];
+  [(NSArray *)alignments addObject:alignmentsCopy];
 }
 
-- (void)addIdentifiers:(id)a3
+- (void)addIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   identifiers = self->_identifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!identifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_identifiers;
-    self->_identifiers = v6;
+    self->_identifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     identifiers = self->_identifiers;
   }
 
-  [(NSArray *)identifiers addObject:v4];
+  [(NSArray *)identifiers addObject:identifiersCopy];
 }
 
-- (void)addEdges:(id)a3
+- (void)addEdges:(id)edges
 {
-  v4 = a3;
+  edgesCopy = edges;
   edges = self->_edges;
-  v8 = v4;
+  v8 = edgesCopy;
   if (!edges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_edges;
-    self->_edges = v6;
+    self->_edges = array;
 
-    v4 = v8;
+    edgesCopy = v8;
     edges = self->_edges;
   }
 
-  [(NSArray *)edges addObject:v4];
+  [(NSArray *)edges addObject:edgesCopy];
 }
 
-- (void)addNodes:(id)a3
+- (void)addNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   nodes = self->_nodes;
-  v8 = v4;
+  v8 = nodesCopy;
   if (!nodes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_nodes;
-    self->_nodes = v6;
+    self->_nodes = array;
 
-    v4 = v8;
+    nodesCopy = v8;
     nodes = self->_nodes;
   }
 
-  [(NSArray *)nodes addObject:v4];
+  [(NSArray *)nodes addObject:nodesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v23.receiver = self;
   v23.super_class = USOSchemaUSOGraph;
-  v5 = [(SISchemaInstrumentationMessage *)&v23 applySensitiveConditionsPolicy:v4];
-  v6 = [(USOSchemaUSOGraph *)self version];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v23 applySensitiveConditionsPolicy:policyCopy];
+  version = [(USOSchemaUSOGraph *)self version];
+  v7 = [version applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(USOSchemaUSOGraph *)self deleteVersion];
   }
 
-  v9 = [(USOSchemaUSOGraph *)self linkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  linkId = [(USOSchemaUSOGraph *)self linkId];
+  v10 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(USOSchemaUSOGraph *)self deleteLinkId];
   }
 
-  v12 = [(USOSchemaUSOGraph *)self nodes];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  nodes = [(USOSchemaUSOGraph *)self nodes];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:nodes underConditions:policyCopy];
   [(USOSchemaUSOGraph *)self setNodes:v13];
 
-  v14 = [(USOSchemaUSOGraph *)self edges];
-  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v14 underConditions:v4];
+  edges = [(USOSchemaUSOGraph *)self edges];
+  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:edges underConditions:policyCopy];
   [(USOSchemaUSOGraph *)self setEdges:v15];
 
-  v16 = [(USOSchemaUSOGraph *)self identifiers];
-  v17 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v16 underConditions:v4];
+  identifiers = [(USOSchemaUSOGraph *)self identifiers];
+  v17 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:identifiers underConditions:policyCopy];
   [(USOSchemaUSOGraph *)self setIdentifiers:v17];
 
-  v18 = [(USOSchemaUSOGraph *)self alignments];
-  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v18 underConditions:v4];
+  alignments = [(USOSchemaUSOGraph *)self alignments];
+  v19 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:alignments underConditions:policyCopy];
   [(USOSchemaUSOGraph *)self setAlignments:v19];
 
-  v20 = [(USOSchemaUSOGraph *)self spans];
-  v21 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v20 underConditions:v4];
+  spans = [(USOSchemaUSOGraph *)self spans];
+  v21 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:spans underConditions:policyCopy];
   [(USOSchemaUSOGraph *)self setSpans:v21];
 
   return v5;

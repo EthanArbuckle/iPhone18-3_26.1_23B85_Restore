@@ -1,20 +1,20 @@
 @interface CLLocation
-- (id)distanceFromLat:(id)a3 andLon:(id)a4;
+- (id)distanceFromLat:(id)lat andLon:(id)lon;
 - (id)getLatitude;
 - (id)getLongitude;
 @end
 
 @implementation CLLocation
 
-- (id)distanceFromLat:(id)a3 andLon:(id)a4
+- (id)distanceFromLat:(id)lat andLon:(id)lon
 {
-  v6 = a4;
-  v7 = a3;
+  lonCopy = lon;
+  latCopy = lat;
   v8 = [CLLocation alloc];
-  [v7 floatValue];
+  [latCopy floatValue];
   v10 = v9;
 
-  [v6 floatValue];
+  [lonCopy floatValue];
   v12 = v11;
 
   v13 = [v8 initWithLatitude:v10 longitude:v12];

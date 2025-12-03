@@ -3,8 +3,8 @@
 + (id)ANEDevice;
 + (id)CPUDevice;
 + (void)initialize;
-- (MPSGraphDevice)initWithDeviceDescriptor:(id)a3;
-- (MPSGraphDevice)initWithDeviceType:(unsigned int)a3 metalDevice:(id)a4;
+- (MPSGraphDevice)initWithDeviceDescriptor:(id)descriptor;
+- (MPSGraphDevice)initWithDeviceType:(unsigned int)type metalDevice:(id)device;
 @end
 
 @implementation MPSGraphDevice
@@ -20,13 +20,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (MPSGraphDevice)initWithDeviceType:(unsigned int)a3 metalDevice:(id)a4
+- (MPSGraphDevice)initWithDeviceType:(unsigned int)type metalDevice:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = MPSGraphDevice;
   v8 = [(MPSGraphDevice *)&v15 init];
-  objc_storeStrong(&v8->_metalDevice, a4);
+  objc_storeStrong(&v8->_metalDevice, device);
   if (!v8->_metalDevice)
   {
     v9 = MTLCreateSystemDefaultDevice();
@@ -36,10 +36,10 @@
     }
   }
 
-  v8->_type = a3;
-  v10 = [v7 name];
+  v8->_type = type;
+  name = [deviceCopy name];
   metalDeviceName = v8->_metalDeviceName;
-  v8->_metalDeviceName = v10;
+  v8->_metalDeviceName = name;
 
   v12 = [[MPSGraphDeviceDescriptor alloc] initWithMPSGraphDevice:v8];
   deviceDescriptor = v8->_deviceDescriptor;
@@ -134,22 +134,22 @@ LABEL_12:
   }
 }
 
-- (MPSGraphDevice)initWithDeviceDescriptor:(id)a3
+- (MPSGraphDevice)initWithDeviceDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = MPSGraphDevice;
   v6 = [(MPSGraphDevice *)&v11 init];
   if (v6)
   {
-    v6->_type = [v5 type];
+    v6->_type = [descriptorCopy type];
     metalDeviceName = v6->_metalDeviceName;
     v6->_metalDeviceName = 0;
 
     metalDevice = v6->_metalDevice;
     v6->_metalDevice = 0;
 
-    objc_storeStrong(&v6->_deviceDescriptor, a3);
+    objc_storeStrong(&v6->_deviceDescriptor, descriptor);
     v9 = v6;
   }
 

@@ -1,12 +1,12 @@
 @interface _UIEventDeferringBehavior_SystemShell
-- (BOOL)shouldSuppressRemoteRuleForOwningElement:(id)a3 inEnvironment:(id)a4;
+- (BOOL)shouldSuppressRemoteRuleForOwningElement:(id)element inEnvironment:(id)environment;
 - (BOOL)wantsLocalCompatibilityRules;
-- (_UIEventDeferringBehavior_SystemShell)initWithEventDeferringManager:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (_UIEventDeferringBehavior_SystemShell)initWithEventDeferringManager:(id)manager;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)systemShellBehaviorDelegate;
-- (int64_t)compareRemoteRuleOwningElement:(id)a3 toElement:(id)a4 inEnvironment:(id)a5;
-- (int64_t)isRemoteRuleOwningElement:(id)a3 andContainingWindow:(id)a4 visibleComparedToLocalTargetWindow:(id)a5;
-- (void)setSystemShellBehaviorDelegate:(id)a3;
+- (int64_t)compareRemoteRuleOwningElement:(id)element toElement:(id)toElement inEnvironment:(id)environment;
+- (int64_t)isRemoteRuleOwningElement:(id)element andContainingWindow:(id)window visibleComparedToLocalTargetWindow:(id)targetWindow;
+- (void)setSystemShellBehaviorDelegate:(id)delegate;
 @end
 
 @implementation _UIEventDeferringBehavior_SystemShell
@@ -38,8 +38,8 @@
 
   else
   {
-    v5 = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
-    v6 = [v5 eventDeferringManagerSystemShellBehaviorWantsLocalCompatibilityRules];
+    systemShellBehaviorDelegate = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
+    eventDeferringManagerSystemShellBehaviorWantsLocalCompatibilityRules = [systemShellBehaviorDelegate eventDeferringManagerSystemShellBehaviorWantsLocalCompatibilityRules];
 
     v7 = _UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_ShouldWriteCompatibilityEventDeferringRulesForAllProcesses, @"ShouldWriteCompatibilityEventDeferringRulesForAllProcesses");
     if (byte_1ED48AA84)
@@ -52,7 +52,7 @@
       v8 = v7;
     }
 
-    return v8 & v4 & v6;
+    return v8 & v4 & eventDeferringManagerSystemShellBehaviorWantsLocalCompatibilityRules;
   }
 }
 
@@ -63,18 +63,18 @@
   return WeakRetained;
 }
 
-- (_UIEventDeferringBehavior_SystemShell)initWithEventDeferringManager:(id)a3
+- (_UIEventDeferringBehavior_SystemShell)initWithEventDeferringManager:(id)manager
 {
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_SystemShell.m" lineNumber:40 description:{@"%s: This is an abstract class that can not be initialized directly.", "-[_UIEventDeferringBehavior_SystemShell initWithEventDeferringManager:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_SystemShell.m" lineNumber:40 description:{@"%s: This is an abstract class that can not be initialized directly.", "-[_UIEventDeferringBehavior_SystemShell initWithEventDeferringManager:]"}];
   }
 
   v11.receiver = self;
   v11.super_class = _UIEventDeferringBehavior_SystemShell;
-  v7 = [(_UIEventDeferringBehavior_Default *)&v11 initWithEventDeferringManager:a3];
+  v7 = [(_UIEventDeferringBehavior_Default *)&v11 initWithEventDeferringManager:manager];
   if (v7)
   {
     v8 = +[_UIEventDeferringManager systemShellBehaviorDelegate];
@@ -84,12 +84,12 @@
   return v7;
 }
 
-- (void)setSystemShellBehaviorDelegate:(id)a3
+- (void)setSystemShellBehaviorDelegate:(id)delegate
 {
   *&self->_behaviorDelegateFlags &= 0xE1u;
-  v5 = objc_storeWeak(&self->_systemShellBehaviorDelegate, a3);
+  v5 = objc_storeWeak(&self->_systemShellBehaviorDelegate, delegate);
   v6 = *&self->_behaviorDelegateFlags & 0xFE;
-  if (a3)
+  if (delegate)
   {
     ++v6;
   }
@@ -153,25 +153,25 @@
   }
 }
 
-- (BOOL)shouldSuppressRemoteRuleForOwningElement:(id)a3 inEnvironment:(id)a4
+- (BOOL)shouldSuppressRemoteRuleForOwningElement:(id)element inEnvironment:(id)environment
 {
   if ((~*&self->_behaviorDelegateFlags & 5) != 0)
   {
     v10.receiver = self;
     v10.super_class = _UIEventDeferringBehavior_SystemShell;
-    return [(_UIEventDeferringBehavior_Default *)&v10 shouldSuppressRemoteRuleForOwningElement:a3 inEnvironment:a4];
+    return [(_UIEventDeferringBehavior_Default *)&v10 shouldSuppressRemoteRuleForOwningElement:element inEnvironment:environment];
   }
 
   else
   {
-    v7 = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
-    v8 = [v7 eventDeferringManagerSystemShellBehavior:self shouldSuppressRemoteRuleForOwningElement:a3 inEnvironment:a4];
+    systemShellBehaviorDelegate = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
+    v8 = [systemShellBehaviorDelegate eventDeferringManagerSystemShellBehavior:self shouldSuppressRemoteRuleForOwningElement:element inEnvironment:environment];
 
     return v8;
   }
 }
 
-- (int64_t)compareRemoteRuleOwningElement:(id)a3 toElement:(id)a4 inEnvironment:(id)a5
+- (int64_t)compareRemoteRuleOwningElement:(id)element toElement:(id)toElement inEnvironment:(id)environment
 {
   if ((~*&self->_behaviorDelegateFlags & 9) != 0)
   {
@@ -180,22 +180,22 @@
     goto LABEL_5;
   }
 
-  v9 = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
-  v10 = [v9 eventDeferringManagerSystemShellBehavior:self compareRemoteRuleOwningElement:a3 toElement:a4 inEnvironment:a5];
+  systemShellBehaviorDelegate = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
+  v10 = [systemShellBehaviorDelegate eventDeferringManagerSystemShellBehavior:self compareRemoteRuleOwningElement:element toElement:toElement inEnvironment:environment];
 
   if (!v10)
   {
-    v13 = self;
-    v11 = &v13;
+    selfCopy = self;
+    v11 = &selfCopy;
 LABEL_5:
     v11->super_class = _UIEventDeferringBehavior_SystemShell;
-    return [(objc_super *)v11 compareRemoteRuleOwningElement:a3 toElement:a4 inEnvironment:a5, v13];
+    return [(objc_super *)v11 compareRemoteRuleOwningElement:element toElement:toElement inEnvironment:environment, selfCopy];
   }
 
   return v10;
 }
 
-- (int64_t)isRemoteRuleOwningElement:(id)a3 andContainingWindow:(id)a4 visibleComparedToLocalTargetWindow:(id)a5
+- (int64_t)isRemoteRuleOwningElement:(id)element andContainingWindow:(id)window visibleComparedToLocalTargetWindow:(id)targetWindow
 {
   if ((~*&self->_behaviorDelegateFlags & 0x11) != 0)
   {
@@ -204,34 +204,34 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
-  v10 = [v9 eventDeferringManagerSystemShellBehavior:self isRemoteRuleOwningElement:a3 andContainingWindow:a4 visibleComparedToLocalTargetWindow:a5];
+  systemShellBehaviorDelegate = [(_UIEventDeferringBehavior_SystemShell *)self systemShellBehaviorDelegate];
+  v10 = [systemShellBehaviorDelegate eventDeferringManagerSystemShellBehavior:self isRemoteRuleOwningElement:element andContainingWindow:window visibleComparedToLocalTargetWindow:targetWindow];
 
   if (!v10)
   {
-    v13 = self;
-    v11 = &v13;
+    selfCopy = self;
+    v11 = &selfCopy;
 LABEL_5:
     v11->super_class = _UIEventDeferringBehavior_SystemShell;
-    return [(objc_super *)v11 isRemoteRuleOwningElement:a3 andContainingWindow:a4 visibleComparedToLocalTargetWindow:a5, v13];
+    return [(objc_super *)v11 isRemoteRuleOwningElement:element andContainingWindow:window visibleComparedToLocalTargetWindow:targetWindow, selfCopy];
   }
 
   return v10;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v13.receiver = self;
   v13.super_class = _UIEventDeferringBehavior_SystemShell;
   v5 = [(_UIEventDeferringBehavior_Default *)&v13 descriptionBuilderWithMultilinePrefix:?];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79___UIEventDeferringBehavior_SystemShell_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

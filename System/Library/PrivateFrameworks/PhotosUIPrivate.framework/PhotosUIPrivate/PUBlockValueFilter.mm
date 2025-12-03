@@ -1,13 +1,13 @@
 @interface PUBlockValueFilter
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4;
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue;
 @end
 
 @implementation PUBlockValueFilter
 
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue
 {
-  v6 = [(PUBlockValueFilter *)self operationBlock];
-  v7 = v6[2](a4, a3);
+  operationBlock = [(PUBlockValueFilter *)self operationBlock];
+  v7 = operationBlock[2](targetValue, value);
 
   return v7;
 }

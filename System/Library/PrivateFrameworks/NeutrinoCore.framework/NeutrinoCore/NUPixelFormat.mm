@@ -17,12 +17,12 @@
 + (NUPixelFormat)YCC10f420p;
 + (NUPixelFormat)sRGB10XR;
 + (NUPixelFormat)sRGBA8;
-+ (id)pixelFormatForCIFormat:(int)a3;
-+ (id)pixelFormatForCVPixelFormat:(unsigned int)a3;
++ (id)pixelFormatForCIFormat:(int)format;
++ (id)pixelFormatForCVPixelFormat:(unsigned int)format;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)chromaSubsampling;
-- (BOOL)isEqual:(id)a3;
-- (int64_t)alignedRowBytesForWidth:(int64_t)a3;
-- (void)nu_updateDigest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int64_t)alignedRowBytesForWidth:(int64_t)width;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation NUPixelFormat
@@ -36,27 +36,27 @@
   return result;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
-  [v4 addString:@"NUPixelFormat<"];
-  [v4 addString:self->_name];
-  [v4 addString:@">"];
+  digestCopy = digest;
+  [digestCopy addString:@"NUPixelFormat<"];
+  [digestCopy addString:self->_name];
+  [digestCopy addString:@">"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUPixelFormat *)self isEqualToPixelFormat:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUPixelFormat *)self isEqualToPixelFormat:equalCopy];
 
   return v5;
 }
 
-- (int64_t)alignedRowBytesForWidth:(int64_t)a3
+- (int64_t)alignedRowBytesForWidth:(int64_t)width
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0)
+  if (width <= 0)
   {
     v6 = NUAssertLogger_12083();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -77,8 +77,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v13;
         v24 = 2114;
@@ -89,8 +89,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -99,9 +99,9 @@
     _NUAssertFailHandler("[NUPixelFormat alignedRowBytesForWidth:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPixelFormat.m", 399, @"Invalid parameter not satisfying: %s", v18, v19, v20, v21, "width > 0");
   }
 
-  v4 = [(NUPixelFormat *)self bytesPerPixel];
+  bytesPerPixel = [(NUPixelFormat *)self bytesPerPixel];
 
-  return [NUImageUtilities alignedRowBytesForWidth:a3 bytesPerPixel:v4];
+  return [NUImageUtilities alignedRowBytesForWidth:width bytesPerPixel:bytesPerPixel];
 }
 
 + (NUPixelFormat)YCC10f420p
@@ -380,34 +380,34 @@
   return v2;
 }
 
-+ (id)pixelFormatForCVPixelFormat:(unsigned int)a3
++ (id)pixelFormatForCVPixelFormat:(unsigned int)format
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 > 1278226535)
+  if (format > 1278226535)
   {
-    if (a3 <= 1647719520)
+    if (format <= 1647719520)
     {
-      if (a3 > 1380401728)
+      if (format > 1380401728)
       {
-        switch(a3)
+        switch(format)
         {
           case 0x52474241u:
-            v4 = [a1 RGBA8];
+            rGBA8 = [self RGBA8];
             goto LABEL_47;
           case 0x52476641u:
-            v4 = [a1 RGBAf];
+            rGBA8 = [self RGBAf];
             goto LABEL_47;
           case 0x52476841u:
-            v4 = [a1 RGBAh];
+            rGBA8 = [self RGBAh];
             goto LABEL_47;
         }
 
         goto LABEL_42;
       }
 
-      if (a3 != 1278226536)
+      if (format != 1278226536)
       {
-        if (a3 == 1278226742)
+        if (format == 1278226742)
         {
           goto LABEL_30;
         }
@@ -416,23 +416,23 @@
       }
 
 LABEL_31:
-      v4 = [a1 R16h];
+      rGBA8 = [self R16h];
       goto LABEL_47;
     }
 
-    if (a3 > 1751411058)
+    if (format > 1751411058)
     {
-      if (a3 != 1751411059)
+      if (format != 1751411059)
       {
-        if (a3 == 1885745712)
+        if (format == 1885745712)
         {
-          v4 = [a1 YCC10f420p];
+          rGBA8 = [self YCC10f420p];
           goto LABEL_47;
         }
 
-        if (a3 == 2019963440)
+        if (format == 2019963440)
         {
-          v4 = [a1 YCC10f420];
+          rGBA8 = [self YCC10f420];
           goto LABEL_47;
         }
 
@@ -442,9 +442,9 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    if (a3 == 1647719521)
+    if (format == 1647719521)
     {
-      v4 = [a1 RGBA16];
+      rGBA8 = [self RGBA16];
       goto LABEL_47;
     }
 
@@ -452,13 +452,13 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  if (a3 <= 826487093)
+  if (format <= 826487093)
   {
-    if (a3 > 826486885)
+    if (format > 826486885)
     {
-      if (a3 != 826486886)
+      if (format != 826486886)
       {
-        if (a3 != 826486888)
+        if (format != 826486888)
         {
           goto LABEL_42;
         }
@@ -467,17 +467,17 @@ LABEL_31:
       }
 
 LABEL_35:
-      v4 = [a1 R32f];
+      rGBA8 = [self R32f];
       goto LABEL_47;
     }
 
-    if (a3 == 32)
+    if (format == 32)
     {
-      v4 = [a1 ARGB8];
+      rGBA8 = [self ARGB8];
       goto LABEL_47;
     }
 
-    if (a3 != 826486840)
+    if (format != 826486840)
     {
       goto LABEL_42;
     }
@@ -485,19 +485,19 @@ LABEL_35:
     goto LABEL_21;
   }
 
-  if (a3 > 1111970368)
+  if (format > 1111970368)
   {
-    if (a3 == 1111970369)
+    if (format == 1111970369)
     {
-      v4 = [a1 BGRA8];
+      rGBA8 = [self BGRA8];
       goto LABEL_47;
     }
 
-    if (a3 != 1278226488)
+    if (format != 1278226488)
     {
       v5 = 1278226534;
 LABEL_34:
-      if (a3 != v5)
+      if (format != v5)
       {
         goto LABEL_42;
       }
@@ -506,20 +506,20 @@ LABEL_34:
     }
 
 LABEL_21:
-    v4 = [a1 R8];
+    rGBA8 = [self R8];
     goto LABEL_47;
   }
 
-  if (a3 == 826487094)
+  if (format == 826487094)
   {
 LABEL_30:
-    v4 = [a1 R16];
+    rGBA8 = [self R16];
     goto LABEL_47;
   }
 
-  if (a3 == 843264310)
+  if (format == 843264310)
   {
-    v4 = [a1 RG16];
+    rGBA8 = [self RG16];
     goto LABEL_47;
   }
 
@@ -533,64 +533,64 @@ LABEL_42:
   if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = NUStringForTypeCode(a3);
+    v8 = NUStringForTypeCode(format);
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1C0184000, v7, OS_LOG_TYPE_INFO, "Unknown pixel format: '%@'", &v10, 0xCu);
   }
 
-  v4 = 0;
+  rGBA8 = 0;
 LABEL_47:
 
-  return v4;
+  return rGBA8;
 }
 
-+ (id)pixelFormatForCIFormat:(int)a3
++ (id)pixelFormatForCIFormat:(int)format
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (*MEMORY[0x1E695F8A0] == a3)
+  if (*MEMORY[0x1E695F8A0] == format)
   {
-    v3 = [a1 ARGB8];
+    aRGB8 = [self ARGB8];
   }
 
-  else if (*MEMORY[0x1E695F8A8] == a3)
+  else if (*MEMORY[0x1E695F8A8] == format)
   {
-    v3 = [a1 BGRA8];
+    aRGB8 = [self BGRA8];
   }
 
-  else if (*MEMORY[0x1E695F910] == a3)
+  else if (*MEMORY[0x1E695F910] == format)
   {
-    v3 = [a1 RGBA8];
+    aRGB8 = [self RGBA8];
   }
 
-  else if (*MEMORY[0x1E695F908] == a3)
+  else if (*MEMORY[0x1E695F908] == format)
   {
-    v3 = [a1 RGBA16];
+    aRGB8 = [self RGBA16];
   }
 
-  else if (*MEMORY[0x1E695F918] == a3)
+  else if (*MEMORY[0x1E695F918] == format)
   {
-    v3 = [a1 RGBAf];
+    aRGB8 = [self RGBAf];
   }
 
-  else if (*MEMORY[0x1E695F920] == a3)
+  else if (*MEMORY[0x1E695F920] == format)
   {
-    v3 = [a1 RGBAh];
+    aRGB8 = [self RGBAh];
   }
 
-  else if (*MEMORY[0x1E695F8E8] == a3)
+  else if (*MEMORY[0x1E695F8E8] == format)
   {
-    v3 = [a1 RG16];
+    aRGB8 = [self RG16];
   }
 
-  else if (*MEMORY[0x1E695F888] == a3)
+  else if (*MEMORY[0x1E695F888] == format)
   {
-    v3 = [a1 R16];
+    aRGB8 = [self R16];
   }
 
   else
   {
-    if (*MEMORY[0x1E695F8B0] != a3)
+    if (*MEMORY[0x1E695F8B0] != format)
     {
       v5 = NUAssertLogger_12083();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -611,8 +611,8 @@ LABEL_47:
           v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v13 = MEMORY[0x1E696AF00];
           v14 = v12;
-          v15 = [v13 callStackSymbols];
-          v16 = [v15 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v13 callStackSymbols];
+          v16 = [callStackSymbols componentsJoinedByString:@"\n"];
           *v21 = 138543618;
           *&v21[4] = v12;
           v22 = 2114;
@@ -623,8 +623,8 @@ LABEL_47:
 
       else if (v9)
       {
-        v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v11 = [v10 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *v21 = 138543362;
         *&v21[4] = v11;
         _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v21, 0xCu);
@@ -633,10 +633,10 @@ LABEL_47:
       _NUAssertFailHandler("+[NUPixelFormat pixelFormatForCIFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUPixelFormat.m", 94, @"Unknown format passed to NUPixelFormat -pixelFormatForCIFormat", v17, v18, v19, v20, *v21);
     }
 
-    v3 = [a1 R8];
+    aRGB8 = [self R8];
   }
 
-  return v3;
+  return aRGB8;
 }
 
 + (BOOL)supportsUniversalCompressionFormats

@@ -1,28 +1,28 @@
 @interface SBSystemApertureZStackPolicyAssistant
-- (id)initWithDelegate:(id *)a1;
-- (id)initWithParticipant:(id *)a1;
+- (id)initWithDelegate:(id *)delegate;
+- (id)initWithParticipant:(id *)participant;
 - (uint64_t)suppressSystemApertureForSystemChromeSuppression;
 - (void)_resolveProposedPolicies;
-- (void)homeGrabberViewDidUpdateHidden:(id)a3;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setForegroundExclusiveSceneHandle:(void *)a3 homeGrabberView:;
+- (void)homeGrabberViewDidUpdateHidden:(id)hidden;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setForegroundExclusiveSceneHandle:(void *)handle homeGrabberView:;
 @end
 
 @implementation SBSystemApertureZStackPolicyAssistant
 
 - (void)_resolveProposedPolicies
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 24);
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
-  v3 = [WeakRetained sceneIfExists];
-  v4 = [v3 clientSettings];
+  v2 = *(self + 24);
+  WeakRetained = objc_loadWeakRetained((self + 32));
+  sceneIfExists = [WeakRetained sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = clientSettings;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -43,34 +43,34 @@
 
   v8 = v7;
 
-  v9 = [v8 statusBarHidden];
-  v10 = [v8 homeIndicatorAutoHidden];
+  statusBarHidden = [v8 statusBarHidden];
+  homeIndicatorAutoHidden = [v8 homeIndicatorAutoHidden];
 
-  if (v10)
+  if (homeIndicatorAutoHidden)
   {
-    v11 = objc_loadWeakRetained((a1 + 40));
-    v12 = [v11 isHidden];
+    v11 = objc_loadWeakRetained((self + 40));
+    isHidden = [v11 isHidden];
 
-    v9 |= v12;
+    statusBarHidden |= isHidden;
   }
 
-  v13 = v2 != (v9 & 1);
-  if (v2 != (v9 & 1))
+  v13 = v2 != (statusBarHidden & 1);
+  if (v2 != (statusBarHidden & 1))
   {
-    *(a1 + 24) = v9 & 1;
+    *(self + 24) = statusBarHidden & 1;
   }
 
-  v14 = [WeakRetained application];
-  v15 = [v14 bundleIdentifier];
+  application = [WeakRetained application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  v16 = [*(a1 + 48) anyObject];
+  anyObject = [*(self + 48) anyObject];
   v17 = BSEqualStrings();
 
   if ((v17 & 1) == 0)
   {
-    if (v15)
+    if (bundleIdentifier)
     {
-      v18 = [MEMORY[0x277CBEB98] setWithObject:v15];
+      v18 = [MEMORY[0x277CBEB98] setWithObject:bundleIdentifier];
     }
 
     else
@@ -78,14 +78,14 @@
       v18 = 0;
     }
 
-    v19 = *(a1 + 48);
-    *(a1 + 48) = v18;
+    v19 = *(self + 48);
+    *(self + 48) = v18;
 
     v13 = 1;
   }
 
-  v20 = [WeakRetained sceneIdentifier];
-  v21 = [*(a1 + 56) anyObject];
+  sceneIdentifier = [WeakRetained sceneIdentifier];
+  anyObject2 = [*(self + 56) anyObject];
   v22 = BSEqualStrings();
 
   if (v22)
@@ -98,9 +98,9 @@
 
   else
   {
-    if (v20)
+    if (sceneIdentifier)
     {
-      v23 = [MEMORY[0x277CBEB98] setWithObject:v20];
+      v23 = [MEMORY[0x277CBEB98] setWithObject:sceneIdentifier];
     }
 
     else
@@ -108,25 +108,25 @@
       v23 = 0;
     }
 
-    v24 = *(a1 + 56);
-    *(a1 + 56) = v23;
+    v24 = *(self + 56);
+    *(self + 56) = v23;
   }
 
-  v25 = *(a1 + 16);
+  v25 = *(self + 16);
   v26 = [objc_opt_class() description];
   [v25 setNeedsUpdatePreferencesWithReason:v26];
 
-  v27 = objc_loadWeakRetained((a1 + 8));
-  [v27 systemApertureZStackPolicyAssistantDidChange:a1];
+  v27 = objc_loadWeakRetained((self + 8));
+  [v27 systemApertureZStackPolicyAssistantDidChange:self];
 
 LABEL_24:
 }
 
 - (uint64_t)suppressSystemApertureForSystemChromeSuppression
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
   }
 
   else
@@ -137,20 +137,20 @@ LABEL_24:
   return v1 & 1;
 }
 
-- (id)initWithParticipant:(id *)a1
+- (id)initWithParticipant:(id *)participant
 {
   v4 = a2;
-  if (a1)
+  if (participant)
   {
-    v8.receiver = a1;
+    v8.receiver = participant;
     v8.super_class = SBSystemApertureZStackPolicyAssistant;
-    a1 = objc_msgSendSuper2(&v8, sel_init);
-    if (a1)
+    participant = objc_msgSendSuper2(&v8, sel_init);
+    if (participant)
     {
       v5 = v4;
       if (!v5)
       {
-        [(SBSystemApertureZStackPolicyAssistant *)sel_initWithParticipant_ initWithParticipant:a1];
+        [(SBSystemApertureZStackPolicyAssistant *)sel_initWithParticipant_ initWithParticipant:participant];
       }
 
       v6 = v5;
@@ -158,25 +158,25 @@ LABEL_24:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(SBSystemApertureZStackPolicyAssistant *)v6 initWithParticipant:a1];
+        [(SBSystemApertureZStackPolicyAssistant *)v6 initWithParticipant:participant];
       }
 
-      objc_storeStrong(a1 + 2, a2);
+      objc_storeStrong(participant + 2, a2);
     }
   }
 
-  return a1;
+  return participant;
 }
 
-- (id)initWithDelegate:(id *)a1
+- (id)initWithDelegate:(id *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v6.receiver = a1;
+    v6.receiver = delegate;
     v6.super_class = SBSystemApertureZStackPolicyAssistant;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       if (!v3)
@@ -188,45 +188,45 @@ LABEL_24:
     }
   }
 
-  return a1;
+  return delegate;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v5 = a3;
+  handleCopy = handle;
   WeakRetained = objc_loadWeakRetained(&self->_foregroundExclusiveSceneHandle);
 
-  if (WeakRetained == v5)
+  if (WeakRetained == handleCopy)
   {
 
     [(SBSystemApertureZStackPolicyAssistant *)self _resolveProposedPolicies];
   }
 }
 
-- (void)homeGrabberViewDidUpdateHidden:(id)a3
+- (void)homeGrabberViewDidUpdateHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   WeakRetained = objc_loadWeakRetained(&self->_foregroundExclusiveHomeGrabberView);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == hiddenCopy)
   {
 
     [(SBSystemApertureZStackPolicyAssistant *)self _resolveProposedPolicies];
   }
 }
 
-- (void)setForegroundExclusiveSceneHandle:(void *)a3 homeGrabberView:
+- (void)setForegroundExclusiveSceneHandle:(void *)handle homeGrabberView:
 {
   obj = a2;
-  v5 = a3;
-  if (a1)
+  handleCopy = handle;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     if (WeakRetained == obj)
     {
-      v7 = (a1 + 40);
-      v8 = objc_loadWeakRetained((a1 + 40));
-      if (v8 == v5)
+      v7 = (self + 40);
+      v8 = objc_loadWeakRetained((self + 40));
+      if (v8 == handleCopy)
       {
 LABEL_4:
 
@@ -236,22 +236,22 @@ LABEL_4:
 
     else
     {
-      [WeakRetained removeObserver:a1];
-      objc_storeWeak((a1 + 32), obj);
-      [obj addObserver:a1];
-      v7 = (a1 + 40);
-      v8 = objc_loadWeakRetained((a1 + 40));
-      if (v8 == v5)
+      [WeakRetained removeObserver:self];
+      objc_storeWeak((self + 32), obj);
+      [obj addObserver:self];
+      v7 = (self + 40);
+      v8 = objc_loadWeakRetained((self + 40));
+      if (v8 == handleCopy)
       {
 LABEL_10:
-        [(SBSystemApertureZStackPolicyAssistant *)a1 _resolveProposedPolicies];
+        [(SBSystemApertureZStackPolicyAssistant *)self _resolveProposedPolicies];
         goto LABEL_4;
       }
     }
 
-    [v8 removeObserver:a1];
-    objc_storeWeak(v7, v5);
-    [v5 addObserver:a1];
+    [v8 removeObserver:self];
+    objc_storeWeak(v7, handleCopy);
+    [handleCopy addObserver:self];
     goto LABEL_10;
   }
 

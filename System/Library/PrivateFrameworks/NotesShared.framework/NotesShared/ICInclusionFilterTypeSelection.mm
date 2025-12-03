@@ -1,8 +1,8 @@
 @interface ICInclusionFilterTypeSelection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInclusionFilterSelection:(id)a3;
-- (ICInclusionFilterTypeSelection)initWithInclusionType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInclusionFilterSelection:(id)selection;
+- (ICInclusionFilterTypeSelection)initWithInclusionType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)rawFilterValue;
 - (unint64_t)hash;
@@ -10,14 +10,14 @@
 
 @implementation ICInclusionFilterTypeSelection
 
-- (ICInclusionFilterTypeSelection)initWithInclusionType:(unint64_t)a3
+- (ICInclusionFilterTypeSelection)initWithInclusionType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICInclusionFilterTypeSelection;
   result = [(ICInclusionFilterTypeSelection *)&v5 init];
   if (result)
   {
-    result->_inclusionType = a3;
+    result->_inclusionType = type;
   }
 
   return result;
@@ -27,9 +27,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NSStringFromICFilterType([(ICInclusionFilterTypeSelection *)self filterType]);
-  v5 = [(ICInclusionFilterTypeSelection *)self inclusionType];
+  inclusionType = [(ICInclusionFilterTypeSelection *)self inclusionType];
   v6 = @"Excluded";
-  if (!v5)
+  if (!inclusionType)
   {
     v6 = @"Included";
   }
@@ -39,26 +39,26 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICInclusionFilterTypeSelection allocWithZone:a3];
-  v5 = [(ICInclusionFilterTypeSelection *)self inclusionType];
+  v4 = [ICInclusionFilterTypeSelection allocWithZone:zone];
+  inclusionType = [(ICInclusionFilterTypeSelection *)self inclusionType];
 
-  return [(ICInclusionFilterTypeSelection *)v4 initWithInclusionType:v5];
+  return [(ICInclusionFilterTypeSelection *)v4 initWithInclusionType:inclusionType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICInclusionFilterTypeSelection *)self isEqualToInclusionFilterSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICInclusionFilterTypeSelection *)self isEqualToInclusionFilterSelection:v5];
   }
 
   return v6;
@@ -94,13 +94,13 @@
   return v2;
 }
 
-- (BOOL)isEqualToInclusionFilterSelection:(id)a3
+- (BOOL)isEqualToInclusionFilterSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICInclusionFilterTypeSelection *)self inclusionType];
-  v6 = [v4 inclusionType];
+  selectionCopy = selection;
+  inclusionType = [(ICInclusionFilterTypeSelection *)self inclusionType];
+  inclusionType2 = [selectionCopy inclusionType];
 
-  return v5 == v6;
+  return inclusionType == inclusionType2;
 }
 
 @end

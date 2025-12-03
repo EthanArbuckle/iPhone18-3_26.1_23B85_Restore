@@ -1,13 +1,13 @@
 @interface DUDictionaryManager
 + (id)assetManager;
-- (BOOL)_hasDefinitionForTerm:(id)a3;
+- (BOOL)_hasDefinitionForTerm:(id)term;
 - (DUDictionaryManager)init;
 - (id)_allAvailableDefinitionDictionaries;
 - (id)_availableDictionaryAssets;
-- (id)_definitionValuesForTerm:(id)a3;
-- (int64_t)_compareOrderOfDictionary:(id)a3 withDictionary:(id)a4;
-- (void)_downloadDictionaryAssetCatalogWithTimeout:(int64_t)a3 completion:(id)a4;
-- (void)_migrateInstalledStateForNewDictionaries:(id)a3;
+- (id)_definitionValuesForTerm:(id)term;
+- (int64_t)_compareOrderOfDictionary:(id)dictionary withDictionary:(id)withDictionary;
+- (void)_downloadDictionaryAssetCatalogWithTimeout:(int64_t)timeout completion:(id)completion;
+- (void)_migrateInstalledStateForNewDictionaries:(id)dictionaries;
 @end
 
 @implementation DUDictionaryManager
@@ -20,9 +20,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(DUDictionaryManager *)v2 _allAvailableDefinitionDictionaries];
+    _allAvailableDefinitionDictionaries = [(DUDictionaryManager *)v2 _allAvailableDefinitionDictionaries];
     availableDefinitionDictionaries = v3->_availableDefinitionDictionaries;
-    v3->_availableDefinitionDictionaries = v4;
+    v3->_availableDefinitionDictionaries = _allAvailableDefinitionDictionaries;
 
     v3->_initiallyEmptyAssets = [(NSArray *)v3->_availableDefinitionDictionaries count]== 0;
   }
@@ -37,12 +37,12 @@
   return v2;
 }
 
-- (BOOL)_hasDefinitionForTerm:(id)a3
+- (BOOL)_hasDefinitionForTerm:(id)term
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  termCopy = term;
+  v5 = termCopy;
+  if (termCopy && [termCopy length])
   {
     v14 = 0u;
     v15 = 0u;
@@ -91,10 +91,10 @@ LABEL_14:
   return v7;
 }
 
-- (id)_definitionValuesForTerm:(id)a3
+- (id)_definitionValuesForTerm:(id)term
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  termCopy = term;
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
   v16 = 0u;
   v17 = 0u;
@@ -118,7 +118,7 @@ LABEL_14:
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 activated])
         {
-          v12 = [v11 _definitionValueForTerm:v4];
+          v12 = [v11 _definitionValueForTerm:termCopy];
           v13 = v12;
           if (v12 && [v12 foundRecordRefs])
           {
@@ -144,22 +144,22 @@ LABEL_14:
   return v5;
 }
 
-- (void)_downloadDictionaryAssetCatalogWithTimeout:(int64_t)a3 completion:(id)a4
+- (void)_downloadDictionaryAssetCatalogWithTimeout:(int64_t)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_opt_new();
   [v7 setAllowsCellularAccess:1];
   [v7 setDiscretionary:0];
-  [v7 setTimeoutIntervalForResource:a3];
+  [v7 setTimeoutIntervalForResource:timeout];
   v8 = MEMORY[0x277D289C0];
-  v9 = [(DUDictionaryManager *)self _dictionaryAssetType];
+  _dictionaryAssetType = [(DUDictionaryManager *)self _dictionaryAssetType];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_completion___block_invoke;
   v11[3] = &unk_278F6F3E8;
-  v12 = v6;
-  v10 = v6;
-  [v8 startCatalogDownload:v9 options:v7 then:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v8 startCatalogDownload:_dictionaryAssetType options:v7 then:v11];
 }
 
 uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_completion___block_invoke(uint64_t a1)
@@ -176,39 +176,39 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
 - (id)_availableDictionaryAssets
 {
   v3 = objc_alloc(MEMORY[0x277D289D8]);
-  v4 = [(DUDictionaryManager *)self _dictionaryAssetType];
-  v5 = [v3 initWithType:v4];
+  _dictionaryAssetType = [(DUDictionaryManager *)self _dictionaryAssetType];
+  v5 = [v3 initWithType:_dictionaryAssetType];
 
   [v5 returnTypes:2];
   [v5 setDoNotBlockBeforeFirstUnlock:1];
-  v6 = [v5 queryMetaDataSync];
-  if (v6)
+  queryMetaDataSync = [v5 queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    NSLog(&cfstr_DictionaryuiDu.isa, v6);
-    v7 = 0;
+    NSLog(&cfstr_DictionaryuiDu.isa, queryMetaDataSync);
+    results = 0;
   }
 
   else
   {
-    v7 = [v5 results];
+    results = [v5 results];
   }
 
-  return v7;
+  return results;
 }
 
 - (id)_allAvailableDefinitionDictionaries
 {
   v51 = *MEMORY[0x277D85DE8];
-  v27 = [(DUDictionaryManager *)self _availableDictionaryAssets];
-  v28 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  if (v27)
+  _availableDictionaryAssets = [(DUDictionaryManager *)self _availableDictionaryAssets];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  if (_availableDictionaryAssets)
   {
-    v2 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v3 = v27;
+    v3 = _availableDictionaryAssets;
     v4 = [v3 countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v4)
     {
@@ -223,8 +223,8 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
           }
 
           v7 = *(*(&v44 + 1) + 8 * i);
-          v8 = [v7 _formatVersion];
-          if (v8 == MEMORY[0x24C1E7090]())
+          _formatVersion = [v7 _formatVersion];
+          if (_formatVersion == MEMORY[0x24C1E7090]())
           {
             v9 = [[DUDefinitionDictionary alloc] initWithAsset:v7];
             if (v9)
@@ -234,10 +234,10 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
                 [(DUDefinitionDictionary *)v9 setActivated:1];
               }
 
-              v10 = [v7 attributes];
-              [(DUDefinitionDictionary *)v9 setPreferredOrder:MEMORY[0x24C1E70C0](v10, v28)];
+              attributes = [v7 attributes];
+              [(DUDefinitionDictionary *)v9 setPreferredOrder:MEMORY[0x24C1E70C0](attributes, preferredLanguages)];
 
-              [v2 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
@@ -253,15 +253,15 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
     v43[2] = __58__DUDictionaryManager__allAvailableDefinitionDictionaries__block_invoke;
     v43[3] = &unk_278F6F410;
     v43[4] = self;
-    [v2 sortUsingComparator:v43];
+    [array sortUsingComparator:v43];
   }
 
   else
   {
-    v2 = 0;
+    array = 0;
   }
 
-  [v2 _filteredArrayOfObjectsPassingTest:&__block_literal_global_471];
+  [array _filteredArrayOfObjectsPassingTest:&__block_literal_global_471];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -290,7 +290,7 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
         v34[3] = &unk_278F6F458;
         v34[4] = v14;
         v34[5] = &v39;
-        v15 = [v2 _filteredArrayOfObjectsPassingTest:v34];
+        v15 = [array _filteredArrayOfObjectsPassingTest:v34];
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
@@ -309,7 +309,7 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
                 objc_enumerationMutation(v16);
               }
 
-              [v2 removeObject:*(*(&v30 + 1) + 8 * k)];
+              [array removeObject:*(*(&v30 + 1) + 8 * k)];
             }
 
             v17 = [v16 countByEnumeratingWithState:&v30 objects:v48 count:16];
@@ -318,15 +318,15 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
           while (v17);
         }
 
-        v20 = [v14 rawAsset];
-        if (![v16 count] && objc_msgSend(v20, "state") == 3)
+        rawAsset = [v14 rawAsset];
+        if (![v16 count] && objc_msgSend(rawAsset, "state") == 3)
         {
-          [v2 removeObject:v14];
-          v21 = [v20 purgeSync];
+          [array removeObject:v14];
+          purgeSync = [rawAsset purgeSync];
           *(v40 + 24) = 1;
-          v22 = [v20 attributes];
-          v23 = [v22 objectForKeyedSubscript:@"DictionaryIdentifier"];
-          NSLog(&cfstr_DictionaryuiAl.isa, v23, v21);
+          attributes2 = [rawAsset attributes];
+          v23 = [attributes2 objectForKeyedSubscript:@"DictionaryIdentifier"];
+          NSLog(&cfstr_DictionaryuiAl.isa, v23, purgeSync);
         }
       }
 
@@ -336,18 +336,18 @@ uint64_t __77__DUDictionaryManager__downloadDictionaryAssetCatalogWithTimeout_co
     while (v11);
   }
 
-  if (self->_initiallyEmptyAssets && [v2 count] && !objc_msgSend(obj, "count"))
+  if (self->_initiallyEmptyAssets && [array count] && !objc_msgSend(obj, "count"))
   {
-    [(DUDictionaryManager *)self _migrateInstalledStateForNewDictionaries:v2];
+    [(DUDictionaryManager *)self _migrateInstalledStateForNewDictionaries:array];
     self->_initiallyEmptyAssets = 0;
   }
 
-  objc_storeStrong(&self->_availableDefinitionDictionaries, v2);
+  objc_storeStrong(&self->_availableDefinitionDictionaries, array);
   _Block_object_dispose(&v39, 8);
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 uint64_t __58__DUDictionaryManager__allAvailableDefinitionDictionaries__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -402,20 +402,20 @@ LABEL_6:
   return v11;
 }
 
-- (int64_t)_compareOrderOfDictionary:(id)a3 withDictionary:(id)a4
+- (int64_t)_compareOrderOfDictionary:(id)dictionary withDictionary:(id)withDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 preferredOrder];
-  v8 = [v6 preferredOrder];
-  if (v7 == -1 && v8 == -1)
+  dictionaryCopy = dictionary;
+  withDictionaryCopy = withDictionary;
+  preferredOrder = [dictionaryCopy preferredOrder];
+  preferredOrder2 = [withDictionaryCopy preferredOrder];
+  if (preferredOrder == -1 && preferredOrder2 == -1)
   {
-    v9 = [v5 localizedSortName];
-    v10 = [v6 localizedSortName];
-    v11 = v10;
-    if (v10)
+    localizedSortName = [dictionaryCopy localizedSortName];
+    localizedSortName2 = [withDictionaryCopy localizedSortName];
+    v11 = localizedSortName2;
+    if (localizedSortName2)
     {
-      v12 = v10;
+      v12 = localizedSortName2;
     }
 
     else
@@ -423,12 +423,12 @@ LABEL_6:
       v12 = &stru_285B95F20;
     }
 
-    v13 = [v9 localizedStandardCompare:v12];
+    v13 = [localizedSortName localizedStandardCompare:v12];
   }
 
-  else if (v7 == -1 || v8 == -1)
+  else if (preferredOrder == -1 || preferredOrder2 == -1)
   {
-    if (v7 == -1)
+    if (preferredOrder == -1)
     {
       v13 = 1;
     }
@@ -439,7 +439,7 @@ LABEL_6:
     }
   }
 
-  else if (v7 > v8)
+  else if (preferredOrder > preferredOrder2)
   {
     v13 = 1;
   }
@@ -452,13 +452,13 @@ LABEL_6:
   return v13;
 }
 
-- (void)_migrateInstalledStateForNewDictionaries:(id)a3
+- (void)_migrateInstalledStateForNewDictionaries:(id)dictionaries
 {
   v48 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc(MEMORY[0x277D289A8]);
-  v5 = [(DUDictionaryManager *)self _dictionaryAssetType];
-  v6 = [v4 initWithAssetType:v5];
+  _dictionaryAssetType = [(DUDictionaryManager *)self _dictionaryAssetType];
+  v6 = [v4 initWithAssetType:_dictionaryAssetType];
 
   [v6 setQueriesLocalAssetInformationOnly:1];
   v28 = v6;
@@ -493,15 +493,15 @@ LABEL_6:
           {
             v34 = v12;
             v35 = v11;
-            v13 = [v12 attributes];
-            v14 = [v13 objectForKeyedSubscript:@"DictionaryIdentifier"];
+            attributes = [v12 attributes];
+            v14 = [attributes objectForKeyedSubscript:@"DictionaryIdentifier"];
 
             NSLog(&cfstr_DictionaryuiV1.isa, v14);
             v40 = 0u;
             v41 = 0u;
             v38 = 0u;
             v39 = 0u;
-            v15 = v31;
+            v15 = dictionariesCopy;
             v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v16)
             {
@@ -517,15 +517,15 @@ LABEL_6:
                   }
 
                   v20 = *(*(&v38 + 1) + 8 * i);
-                  v21 = [v20 rawAsset];
-                  v22 = [v21 attributes];
-                  v23 = [v22 objectForKeyedSubscript:@"DictionaryIdentifier"];
+                  rawAsset = [v20 rawAsset];
+                  attributes2 = [rawAsset attributes];
+                  v23 = [attributes2 objectForKeyedSubscript:@"DictionaryIdentifier"];
                   v24 = [v23 isEqualToString:v14];
 
                   if (v24)
                   {
-                    v25 = [v20 rawAsset];
-                    [v20 setAssetToUpgrade:v25];
+                    rawAsset2 = [v20 rawAsset];
+                    [v20 setAssetToUpgrade:rawAsset2];
 
                     goto LABEL_18;
                   }

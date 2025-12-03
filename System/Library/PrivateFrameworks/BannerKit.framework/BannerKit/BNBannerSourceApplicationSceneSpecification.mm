@@ -1,31 +1,31 @@
 @interface BNBannerSourceApplicationSceneSpecification
-+ (id)specificationAffectingAppLifecycleIfInternal:(BOOL)a3;
++ (id)specificationAffectingAppLifecycleIfInternal:(BOOL)internal;
 - (id)baseSceneComponentClassDictionary;
 @end
 
 @implementation BNBannerSourceApplicationSceneSpecification
 
-+ (id)specificationAffectingAppLifecycleIfInternal:(BOOL)a3
++ (id)specificationAffectingAppLifecycleIfInternal:(BOOL)internal
 {
-  if (!a3)
+  if (!internal)
   {
-    a1 = BNBannerSourceApplicationNonAffectingAppLifecycleSceneSpecification;
+    self = BNBannerSourceApplicationNonAffectingAppLifecycleSceneSpecification;
   }
 
-  v3 = [a1 specification];
+  specification = [self specification];
 
-  return v3;
+  return specification;
 }
 
 - (id)baseSceneComponentClassDictionary
 {
   v9.receiver = self;
   v9.super_class = BNBannerSourceApplicationSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v9 baseSceneComponentClassDictionary];
-  v3 = v2;
-  if (v2)
+  baseSceneComponentClassDictionary = [(UIApplicationSceneSpecification *)&v9 baseSceneComponentClassDictionary];
+  v3 = baseSceneComponentClassDictionary;
+  if (baseSceneComponentClassDictionary)
   {
-    v4 = [v2 mutableCopy];
+    v4 = [baseSceneComponentClassDictionary mutableCopy];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface WCM_FrequencyToolControllerIOS
 - (WCM_FrequencyToolControllerIOS)init;
 - (void)dealloc;
-- (void)handleFrequencyToolOperation:(id)a3;
-- (void)handleFrequencyToolQuery:(id)a3;
-- (void)handleMessage:(id)a3;
+- (void)handleFrequencyToolOperation:(id)operation;
+- (void)handleFrequencyToolQuery:(id)query;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation WCM_FrequencyToolControllerIOS
@@ -14,9 +14,9 @@
   v7.super_class = WCM_FrequencyToolControllerIOS;
   v2 = [(WCM_FrequencyToolController *)&v7 init];
   v3 = +[WCM_PolicyManager singleton];
-  v4 = [v3 sacManager];
+  sacManager = [v3 sacManager];
   v5 = *(v2 + 20);
-  *(v2 + 20) = v4;
+  *(v2 + 20) = sacManager;
 
   return v2;
 }
@@ -28,19 +28,19 @@
   [(WCM_FrequencyToolController *)&v2 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v5 = a3;
-  uint64 = xpc_dictionary_get_uint64(v5, "kMessageId");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "kMessageId");
   [WCM_Logging logLevel:2 message:@"Frequency Tool Controller handleMessage messageId = %lld", uint64];
   if (uint64 == 2402)
   {
-    [(WCM_FrequencyToolControllerIOS *)self handleFrequencyToolQuery:v5];
+    [(WCM_FrequencyToolControllerIOS *)self handleFrequencyToolQuery:messageCopy];
   }
 
   else if (uint64 == 2401)
   {
-    [(WCM_FrequencyToolControllerIOS *)self handleFrequencyToolOperation:v5];
+    [(WCM_FrequencyToolControllerIOS *)self handleFrequencyToolOperation:messageCopy];
   }
 
   else
@@ -49,14 +49,14 @@
   }
 }
 
-- (void)handleFrequencyToolQuery:(id)a3
+- (void)handleFrequencyToolQuery:(id)query
 {
-  xdict = a3;
-  v37 = self;
+  xdict = query;
+  selfCopy = self;
   v4 = *(&self->super.super.mProcessId + 1);
   v5 = +[WCM_PolicyManager singleton];
-  v6 = [v5 activeCoexFeatures];
-  v7 = [v6 containsObject:@"SacPolicySupport"];
+  activeCoexFeatures = [v5 activeCoexFeatures];
+  v7 = [activeCoexFeatures containsObject:@"SacPolicySupport"];
 
   v8 = xpc_dictionary_create(0, 0, 0);
   if (v7)
@@ -93,7 +93,7 @@ LABEL_11:
     {
       v38 = v17;
       v18 = dword_1001AE2C4[v17];
-      [*(&v37->super.super.mProcessId + 1) frequencyToolGetJasperResult:v14 generalSacResult:v15 client:v18];
+      [*(&selfCopy->super.super.mProcessId + 1) frequencyToolGetJasperResult:v14 generalSacResult:v15 client:v18];
       if ([v14 count])
       {
         v19 = 0;
@@ -101,11 +101,11 @@ LABEL_11:
         do
         {
           v21 = [v14 objectAtIndex:v19];
-          v22 = [v21 centerFreq];
+          centerFreq = [v21 centerFreq];
           v23 = [v21 bw] >> 1;
           v24 = xpc_dictionary_create(0, 0, 0);
           xpc_dictionary_set_uint64(v24, "KWCMFrequencyToolResponse_Client", v18);
-          xpc_dictionary_set_uint64(v24, "KWCMFrequencyToolResponse_Frequency", v22);
+          xpc_dictionary_set_uint64(v24, "KWCMFrequencyToolResponse_Frequency", centerFreq);
           xpc_dictionary_set_uint64(v24, "KWCMFrequencyToolResponse_Bandwidth", v23);
           xpc_array_append_value(value, v24);
 
@@ -123,11 +123,11 @@ LABEL_11:
         do
         {
           v28 = [v15 objectAtIndex:v26];
-          v29 = [v28 centerFreq];
+          centerFreq2 = [v28 centerFreq];
           v30 = [v28 bw] >> 1;
           v31 = xpc_dictionary_create(0, 0, 0);
           xpc_dictionary_set_uint64(v31, "KWCMFrequencyToolResponse_Client", v18);
-          xpc_dictionary_set_uint64(v31, "KWCMFrequencyToolResponse_Frequency", v29);
+          xpc_dictionary_set_uint64(v31, "KWCMFrequencyToolResponse_Frequency", centerFreq2);
           xpc_dictionary_set_uint64(v31, "KWCMFrequencyToolResponse_Bandwidth", v30);
           xpc_array_append_value(v35, v31);
 
@@ -161,12 +161,12 @@ LABEL_20:
 
 LABEL_21:
   xpc_dictionary_set_BOOL(v8, "KWCMFrequencyToolResponse_Status", v10);
-  [(WCM_Controller *)v37 sendMessage:2403 withArgs:v8];
+  [(WCM_Controller *)selfCopy sendMessage:2403 withArgs:v8];
 }
 
-- (void)handleFrequencyToolOperation:(id)a3
+- (void)handleFrequencyToolOperation:(id)operation
 {
-  xdict = a3;
+  xdict = operation;
   if (*(&self->super.super.mProcessId + 1) && (+[WCM_PolicyManager singleton](WCM_PolicyManager, "singleton"), v4 = objc_claimAutoreleasedReturnValue(), [v4 activeCoexFeatures], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", @"SacPolicySupport"), v5, v4, (v6 & 1) != 0))
   {
     v7 = xpc_dictionary_get_value(xdict, "kMessageArgs");

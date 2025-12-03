@@ -1,29 +1,29 @@
 @interface MOOnboardingAndSettingsManager
-+ (id)_getKeyNameForSetting:(unint64_t)a3;
++ (id)_getKeyNameForSetting:(unint64_t)setting;
 + (id)sharedInstance;
-- (BOOL)getStateForSetting:(unint64_t)a3;
-- (BOOL)isApplicationUsingDataAccess:(id)a3;
-- (BOOL)isClientUsingDataAccess:(id)a3;
+- (BOOL)getStateForSetting:(unint64_t)setting;
+- (BOOL)isApplicationUsingDataAccess:(id)access;
+- (BOOL)isClientUsingDataAccess:(id)access;
 - (MOOnboardingAndSettingsManager)init;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
 - (unint64_t)getExtendedOnboardingFlowCompletionStatus;
 - (unint64_t)getOnboardingFlowCompletionStatus;
 - (unint64_t)getOnboardingFlowRefreshCompletionStatus;
-- (void)_getExtendedOnboardingFlowCompletionStatusWithHandler:(id)a3;
-- (void)_getOnboardingFlowCompletionStatusWithHandler:(id)a3;
-- (void)_getOnboardingFlowRefreshCompletionStatusWithHandler:(id)a3;
-- (void)_getStateForSetting:(unint64_t)a3 withHandler:(id)a4;
-- (void)_getStateForSettingFast:(unint64_t)a3 withHandler:(id)a4;
-- (void)_updateOnboardingCacheAndNotifyForKey:(id)a3 andState:(unint64_t)a4 isComplete:(BOOL)a5;
-- (void)getApplicationsWithDataAccess:(id)a3;
-- (void)getClientsWithDataAccess:(id)a3;
-- (void)getDiagnosticReporterConfiguration:(id)a3;
+- (void)_getExtendedOnboardingFlowCompletionStatusWithHandler:(id)handler;
+- (void)_getOnboardingFlowCompletionStatusWithHandler:(id)handler;
+- (void)_getOnboardingFlowRefreshCompletionStatusWithHandler:(id)handler;
+- (void)_getStateForSetting:(unint64_t)setting withHandler:(id)handler;
+- (void)_getStateForSettingFast:(unint64_t)fast withHandler:(id)handler;
+- (void)_updateOnboardingCacheAndNotifyForKey:(id)key andState:(unint64_t)state isComplete:(BOOL)complete;
+- (void)getApplicationsWithDataAccess:(id)access;
+- (void)getClientsWithDataAccess:(id)access;
+- (void)getDiagnosticReporterConfiguration:(id)configuration;
 - (void)getOnboardingFlowCompletionStatus;
 - (void)getOnboardingFlowRefreshCompletionStatus;
 - (void)onEventStreamsUpdated;
-- (void)refreshCacheWithExtendedStatusOnly:(BOOL)a3;
-- (void)registerClientsForDataAccess:(id)a3;
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3;
+- (void)refreshCacheWithExtendedStatusOnly:(BOOL)only;
+- (void)registerClientsForDataAccess:(id)access;
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status;
 @end
 
 @implementation MOOnboardingAndSettingsManager
@@ -103,7 +103,7 @@
   return v4;
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v3 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286C13860];
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
@@ -144,7 +144,7 @@
   block[1] = 3221225472;
   block[2] = __48__MOOnboardingAndSettingsManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -174,20 +174,20 @@ uint64_t __48__MOOnboardingAndSettingsManager_sharedInstance__block_invoke(uint6
   [(MOOnboardingAndSettingsManager *)self refreshCache];
 }
 
-- (void)_updateOnboardingCacheAndNotifyForKey:(id)a3 andState:(unint64_t)a4 isComplete:(BOOL)a5
+- (void)_updateOnboardingCacheAndNotifyForKey:(id)key andState:(unint64_t)state isComplete:(BOOL)complete
 {
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->stateCache objectForKeyedSubscript:v8];
+  keyCopy = key;
+  v9 = [(NSMutableDictionary *)self->stateCache objectForKeyedSubscript:keyCopy];
   if (self->_onboardingManagerDelegate)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v11 = v10;
     if (v9)
     {
       v12 = [v10 isEqualToNumber:v9];
 
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-      [(NSMutableDictionary *)self->stateCache setObject:v13 forKeyedSubscript:v8];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+      [(NSMutableDictionary *)self->stateCache setObject:v13 forKeyedSubscript:keyCopy];
 
       if (v12)
       {
@@ -197,7 +197,7 @@ uint64_t __48__MOOnboardingAndSettingsManager_sharedInstance__block_invoke(uint6
 
     else
     {
-      [(NSMutableDictionary *)self->stateCache setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->stateCache setObject:v10 forKeyedSubscript:keyCopy];
     }
 
     clientQueue = self->clientQueue;
@@ -206,28 +206,28 @@ uint64_t __48__MOOnboardingAndSettingsManager_sharedInstance__block_invoke(uint6
     block[2] = __92__MOOnboardingAndSettingsManager__updateOnboardingCacheAndNotifyForKey_andState_isComplete___block_invoke;
     block[3] = &unk_27991EAC8;
     block[4] = self;
-    block[5] = a4;
-    v17 = a5;
+    block[5] = state;
+    completeCopy = complete;
     dispatch_async(clientQueue, block);
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)self->stateCache setObject:v14 forKeyedSubscript:v8];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+    [(NSMutableDictionary *)self->stateCache setObject:v14 forKeyedSubscript:keyCopy];
   }
 
 LABEL_8:
 }
 
-- (void)refreshCacheWithExtendedStatusOnly:(BOOL)a3
+- (void)refreshCacheWithExtendedStatusOnly:(BOOL)only
 {
   queue = self->queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__MOOnboardingAndSettingsManager_refreshCacheWithExtendedStatusOnly___block_invoke;
   v4[3] = &unk_27991EB90;
-  v5 = a3;
+  onlyCopy = only;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -769,16 +769,16 @@ void __69__MOOnboardingAndSettingsManager_refreshCacheWithExtendedStatusOnly___b
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_getKeyNameForSetting:(unint64_t)a3
++ (id)_getKeyNameForSetting:(unint64_t)setting
 {
-  if (a3 > 0xB)
+  if (setting > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_27991EEB0[a3];
+    return off_27991EEB0[setting];
   }
 }
 
@@ -810,11 +810,11 @@ void __69__MOOnboardingAndSettingsManager_refreshCacheWithExtendedStatusOnly___b
   v5 = v13[5];
   if (v5)
   {
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
     v7 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       *buf = 138412546;
       v19 = @"MOStateOnboardingStatus";
       v20 = 2112;
@@ -831,12 +831,12 @@ void __69__MOOnboardingAndSettingsManager_refreshCacheWithExtendedStatusOnly___b
       [MOOnboardingAndSettingsManager getOnboardingFlowCompletionStatus];
     }
 
-    v6 = 4;
+    unsignedIntegerValue = 4;
   }
 
   _Block_object_dispose(&v12, 8);
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __67__MOOnboardingAndSettingsManager_getOnboardingFlowCompletionStatus__block_invoke(uint64_t a1)
@@ -856,9 +856,9 @@ void __67__MOOnboardingAndSettingsManager_getOnboardingFlowCompletionStatus__blo
   return [(MOOnboardingAndSettingsManager *)self getOnboardingFlowCompletionStatus];
 }
 
-- (void)_getExtendedOnboardingFlowCompletionStatusWithHandler:(id)a3
+- (void)_getExtendedOnboardingFlowCompletionStatusWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_new();
   v5 = xpc_copy_entitlement_for_self();
   if (!v5)
@@ -870,8 +870,8 @@ LABEL_6:
     v10[2] = __88__MOOnboardingAndSettingsManager__getExtendedOnboardingFlowCompletionStatusWithHandler___block_invoke_2;
     v10[3] = &unk_27991EBE0;
     v7 = &v11;
-    v11 = v3;
-    v9 = v3;
+    v11 = handlerCopy;
+    v9 = handlerCopy;
     [v4 retrieveOnboardingStateWithCompletionHandler:v10];
     goto LABEL_7;
   }
@@ -887,18 +887,18 @@ LABEL_6:
   v12[2] = __88__MOOnboardingAndSettingsManager__getExtendedOnboardingFlowCompletionStatusWithHandler___block_invoke;
   v12[3] = &unk_27991EBE0;
   v7 = &v13;
-  v13 = v3;
-  v8 = v3;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   [v4 retrieveOnboardingStateLocalWithCompletionHandler:v12];
 LABEL_7:
 }
 
-- (void)_getOnboardingFlowCompletionStatusWithHandler:(id)a3
+- (void)_getOnboardingFlowCompletionStatusWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MOOnboardingAndSettingsManager *)self defaultManager];
-  v6 = [v5 objectForKey:@"OnboardingStatus"];
+  handlerCopy = handler;
+  defaultManager = [(MOOnboardingAndSettingsManager *)self defaultManager];
+  v6 = [defaultManager objectForKey:@"OnboardingStatus"];
 
   if (v6)
   {
@@ -910,7 +910,7 @@ LABEL_7:
       _os_log_impl(&dword_25A200000, v7, OS_LOG_TYPE_INFO, "Retrieved onboarding state from defaults: %@", buf, 0xCu);
     }
 
-    v4[2](v4, [v6 integerValue], 1);
+    handlerCopy[2](handlerCopy, [v6 integerValue], 1);
   }
 
   else
@@ -921,7 +921,7 @@ LABEL_7:
     v10[2] = __80__MOOnboardingAndSettingsManager__getOnboardingFlowCompletionStatusWithHandler___block_invoke;
     v10[3] = &unk_27991EC80;
     v10[4] = self;
-    v11 = v4;
+    v11 = handlerCopy;
     dispatch_async(proxyQueue, v10);
   }
 
@@ -992,13 +992,13 @@ void __80__MOOnboardingAndSettingsManager__getOnboardingFlowCompletionStatusWith
   }
 }
 
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
     *buf = 138412290;
     v11 = v6;
     _os_log_impl(&dword_25A200000, v5, OS_LOG_TYPE_INFO, "Setting onboarding state in cache: %@", buf, 0xCu);
@@ -1010,7 +1010,7 @@ void __80__MOOnboardingAndSettingsManager__getOnboardingFlowCompletionStatusWith
   v9[2] = __68__MOOnboardingAndSettingsManager_setOnboardingFlowCompletionStatus___block_invoke;
   v9[3] = &unk_27991ECE8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = status;
   dispatch_async(cacheQueue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1111,11 +1111,11 @@ void __68__MOOnboardingAndSettingsManager_setOnboardingFlowCompletionStatus___bl
   v5 = v13[5];
   if (v5)
   {
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
     v7 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       *buf = 138412546;
       v19 = @"MOStateOnboardingRefreshStatus";
       v20 = 2112;
@@ -1132,12 +1132,12 @@ void __68__MOOnboardingAndSettingsManager_setOnboardingFlowCompletionStatus___bl
       [MOOnboardingAndSettingsManager getOnboardingFlowRefreshCompletionStatus];
     }
 
-    v6 = 4;
+    unsignedIntegerValue = 4;
   }
 
   _Block_object_dispose(&v12, 8);
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __74__MOOnboardingAndSettingsManager_getOnboardingFlowRefreshCompletionStatus__block_invoke(uint64_t a1)
@@ -1149,12 +1149,12 @@ void __74__MOOnboardingAndSettingsManager_getOnboardingFlowRefreshCompletionStat
   *(v3 + 40) = v2;
 }
 
-- (void)_getOnboardingFlowRefreshCompletionStatusWithHandler:(id)a3
+- (void)_getOnboardingFlowRefreshCompletionStatusWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MOOnboardingAndSettingsManager *)self defaultManager];
-  v6 = [v5 objectForKey:@"OnboardingRefreshStatus"];
+  handlerCopy = handler;
+  defaultManager = [(MOOnboardingAndSettingsManager *)self defaultManager];
+  v6 = [defaultManager objectForKey:@"OnboardingRefreshStatus"];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1166,7 +1166,7 @@ void __74__MOOnboardingAndSettingsManager_getOnboardingFlowRefreshCompletionStat
       _os_log_impl(&dword_25A200000, v7, OS_LOG_TYPE_INFO, "Retrieved onboarding refresh state from defaults: %@", buf, 0xCu);
     }
 
-    v4[2](v4, [v6 integerValue], 1);
+    handlerCopy[2](handlerCopy, [v6 integerValue], 1);
   }
 
   else
@@ -1177,7 +1177,7 @@ void __74__MOOnboardingAndSettingsManager_getOnboardingFlowRefreshCompletionStat
     v10[2] = __87__MOOnboardingAndSettingsManager__getOnboardingFlowRefreshCompletionStatusWithHandler___block_invoke;
     v10[3] = &unk_27991EC80;
     v10[4] = self;
-    v11 = v4;
+    v11 = handlerCopy;
     dispatch_async(proxyQueue, v10);
   }
 
@@ -1249,19 +1249,19 @@ void __87__MOOnboardingAndSettingsManager__getOnboardingFlowRefreshCompletionSta
   }
 }
 
-- (BOOL)getStateForSetting:(unint64_t)a3
+- (BOOL)getStateForSetting:(unint64_t)setting
 {
   v34 = *MEMORY[0x277D85DE8];
   v6 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setting];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v7;
     _os_log_impl(&dword_25A200000, v6, OS_LOG_TYPE_INFO, "Client is retrieving setting %@...", &buf, 0xCu);
   }
 
-  if (a3 == 8)
+  if (setting == 8)
   {
     v8 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1271,18 +1271,18 @@ void __87__MOOnboardingAndSettingsManager__getOnboardingFlowRefreshCompletionSta
   }
 
   [(MOOnboardingAndSettingsManager *)self waitForRefresh];
-  v9 = [MOOnboardingAndSettingsManager _getKeyNameForSetting:a3];
+  v9 = [MOOnboardingAndSettingsManager _getKeyNameForSetting:setting];
   if (!v9)
   {
     v10 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [MOOnboardingAndSettingsManager getStateForSetting:a3];
+      [MOOnboardingAndSettingsManager getStateForSetting:setting];
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v11 handleFailureInMethod:a2 object:self file:@"MOOnboardingAndSettingsManager.m" lineNumber:645 description:{@"Unhandled setting %@ (in %s:%d)", v12, "-[MOOnboardingAndSettingsManager getStateForSetting:]", 645}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setting];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOOnboardingAndSettingsManager.m" lineNumber:645 description:{@"Unhandled setting %@ (in %s:%d)", v12, "-[MOOnboardingAndSettingsManager getStateForSetting:]", 645}];
   }
 
   *&buf = 0;
@@ -1304,11 +1304,11 @@ void __87__MOOnboardingAndSettingsManager__getOnboardingFlowRefreshCompletionSta
   v15 = *(*(&buf + 1) + 40);
   if (v15)
   {
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
     v17 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+      v18 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       *v25 = 138412546;
       v26 = v14;
       v27 = 2112;
@@ -1322,16 +1322,16 @@ void __87__MOOnboardingAndSettingsManager__getOnboardingFlowRefreshCompletionSta
     v17 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setting];
       [(MOOnboardingAndSettingsManager *)v19 getStateForSetting:v25, v17];
     }
 
-    LOBYTE(v16) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   _Block_object_dispose(&buf, 8);
   v20 = *MEMORY[0x277D85DE8];
-  return v16;
+  return bOOLValue;
 }
 
 void __53__MOOnboardingAndSettingsManager_getStateForSetting___block_invoke(void *a1)
@@ -1343,18 +1343,18 @@ void __53__MOOnboardingAndSettingsManager_getStateForSetting___block_invoke(void
   *(v3 + 40) = v2;
 }
 
-- (void)_getStateForSetting:(unint64_t)a3 withHandler:(id)a4
+- (void)_getStateForSetting:(unint64_t)setting withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxyQueue = self->proxyQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__MOOnboardingAndSettingsManager__getStateForSetting_withHandler___block_invoke;
   block[3] = &unk_27991ED88;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  settingCopy = setting;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(proxyQueue, block);
 }
 
@@ -1432,18 +1432,18 @@ void __66__MOOnboardingAndSettingsManager__getStateForSetting_withHandler___bloc
   }
 }
 
-- (void)_getStateForSettingFast:(unint64_t)a3 withHandler:(id)a4
+- (void)_getStateForSettingFast:(unint64_t)fast withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   proxyQueue = self->proxyQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__MOOnboardingAndSettingsManager__getStateForSettingFast_withHandler___block_invoke;
   block[3] = &unk_27991ED88;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  fastCopy = fast;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(proxyQueue, block);
 }
 
@@ -1598,17 +1598,17 @@ void __54__MOOnboardingAndSettingsManager_setState_forSetting___block_invoke_171
   }
 }
 
-- (void)getDiagnosticReporterConfiguration:(id)a3
+- (void)getDiagnosticReporterConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   proxyQueue = self->proxyQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__MOOnboardingAndSettingsManager_getDiagnosticReporterConfiguration___block_invoke;
   v7[3] = &unk_27991EC80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(proxyQueue, v7);
 }
 
@@ -1694,25 +1694,25 @@ void __69__MOOnboardingAndSettingsManager_getDiagnosticReporterConfiguration___b
   }
 }
 
-- (BOOL)isApplicationUsingDataAccess:(id)a3
+- (BOOL)isApplicationUsingDataAccess:(id)access
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessCopy = access;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = accessCopy;
     _os_log_impl(&dword_25A200000, v5, OS_LOG_TYPE_INFO, "Client is checking data access usage for: %@", &buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
     v8 = [(MODefaultsManager *)self->_defaultManager objectForKey:@"ApplicationsWithDataAccess"];
-    v9 = [v8 objectForKey:v4];
+    v9 = [v8 objectForKey:accessCopy];
     v10 = v9 != 0;
   }
 
@@ -1730,7 +1730,7 @@ void __69__MOOnboardingAndSettingsManager_getDiagnosticReporterConfiguration___b
     block[3] = &unk_27991EE40;
     block[4] = self;
     p_buf = &buf;
-    v15 = v4;
+    v15 = accessCopy;
     dispatch_sync(cacheQueue, block);
     v10 = *(*(&buf + 1) + 24);
 
@@ -1748,10 +1748,10 @@ void __63__MOOnboardingAndSettingsManager_isApplicationUsingDataAccess___block_i
   *(*(a1[6] + 8) + 24) = v2 != 0;
 }
 
-- (void)getApplicationsWithDataAccess:(id)a3
+- (void)getApplicationsWithDataAccess:(id)access
 {
   defaultManager = self->_defaultManager;
-  v4 = a3;
+  accessCopy = access;
   v5 = [(MODefaultsManager *)defaultManager objectForKey:@"ApplicationsWithDataAccess"];
   if (v5)
   {
@@ -1764,12 +1764,12 @@ void __63__MOOnboardingAndSettingsManager_isApplicationUsingDataAccess___block_i
   }
 
   v7 = v6;
-  v4[2](v4);
+  accessCopy[2](accessCopy);
 }
 
-- (BOOL)isClientUsingDataAccess:(id)a3
+- (BOOL)isClientUsingDataAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1787,10 +1787,10 @@ void __63__MOOnboardingAndSettingsManager_isApplicationUsingDataAccess___block_i
   block[1] = 3221225472;
   block[2] = __58__MOOnboardingAndSettingsManager_isClientUsingDataAccess___block_invoke;
   block[3] = &unk_27991EE40;
-  v11 = v4;
+  v11 = accessCopy;
   v12 = buf;
   block[4] = self;
-  v7 = v4;
+  v7 = accessCopy;
   dispatch_sync(cacheQueue, block);
   v8 = v14[24];
 
@@ -1805,17 +1805,17 @@ void __58__MOOnboardingAndSettingsManager_isClientUsingDataAccess___block_invoke
   *(*(a1[6] + 8) + 24) = v2 != 0;
 }
 
-- (void)getClientsWithDataAccess:(id)a3
+- (void)getClientsWithDataAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   proxyQueue = self->proxyQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__MOOnboardingAndSettingsManager_getClientsWithDataAccess___block_invoke;
   v7[3] = &unk_27991EC80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessCopy;
+  v6 = accessCopy;
   dispatch_async(proxyQueue, v7);
 }
 
@@ -1892,31 +1892,31 @@ void __59__MOOnboardingAndSettingsManager_getClientsWithDataAccess___block_invok
   }
 }
 
-- (void)registerClientsForDataAccess:(id)a3
+- (void)registerClientsForDataAccess:(id)access
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessCopy = access;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityPermissions);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = accessCopy;
     _os_log_impl(&dword_25A200000, v5, OS_LOG_TYPE_INFO, "Registering client for data access: %@", buf, 0xCu);
   }
 
-  v6 = [(MOOnboardingAndSettingsManager *)self connectionManager];
+  connectionManager = [(MOOnboardingAndSettingsManager *)self connectionManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__MOOnboardingAndSettingsManager_registerClientsForDataAccess___block_invoke;
   v14[3] = &unk_27991EE68;
-  v15 = v4;
+  v15 = accessCopy;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __63__MOOnboardingAndSettingsManager_registerClientsForDataAccess___block_invoke_179;
   v12 = &unk_27991EE90;
   v13 = v15;
   v7 = v15;
-  [v6 postAsyncProxyUsingBlock:v14 onError:&v9];
+  [connectionManager postAsyncProxyUsingBlock:v14 onError:&v9];
 
   [(MOOnboardingAndSettingsManager *)self refreshCache:v9];
   v8 = *MEMORY[0x277D85DE8];

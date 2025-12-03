@@ -1,14 +1,14 @@
 @interface WiFiSetupView
-- (WiFiSetupView)initWithFrame:(CGRect)a3;
+- (WiFiSetupView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WiFiSetupView
 
-- (WiFiSetupView)initWithFrame:(CGRect)a3
+- (WiFiSetupView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = WiFiSetupView;
-  v3 = [(SetupView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SetupView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277CCACA8];

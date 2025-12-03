@@ -1,7 +1,7 @@
 @interface VUIGenresRequestResponseParser
 - (VUIGenresRequestResponseParser)init;
-- (id)_parseRawGenreResults:(id)a3;
-- (id)parseAMSURLResult:(id)a3;
+- (id)_parseRawGenreResults:(id)results;
+- (id)parseAMSURLResult:(id)result;
 @end
 
 @implementation VUIGenresRequestResponseParser
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (id)parseAMSURLResult:(id)a3
+- (id)parseAMSURLResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 object];
+  resultCopy = result;
+  object = [resultCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [v7 vui_arrayForKey:@"data"];
+    object2 = [resultCopy object];
+    v8 = [object2 vui_arrayForKey:@"data"];
 
     if (v8)
     {
@@ -66,16 +66,16 @@
   return v9;
 }
 
-- (id)_parseRawGenreResults:(id)a3
+- (id)_parseRawGenreResults:(id)results
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = resultsCopy;
   v4 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v4)
   {
@@ -133,14 +133,14 @@
                   }
 
                   v18 = *(*(&v37 + 1) + 8 * i);
-                  v19 = [v18 genreTitle];
-                  v20 = [v19 isEqualToString:v12];
+                  genreTitle = [v18 genreTitle];
+                  v20 = [genreTitle isEqualToString:v12];
 
                   if (v20)
                   {
                     v25 = objc_alloc(MEMORY[0x1E695DF70]);
-                    v26 = [v18 genreIdentifiers];
-                    v27 = [v25 initWithArray:v26];
+                    genreIdentifiers = [v18 genreIdentifiers];
+                    v27 = [v25 initWithArray:genreIdentifiers];
 
                     v22 = v36;
                     [v27 addObject:v36];

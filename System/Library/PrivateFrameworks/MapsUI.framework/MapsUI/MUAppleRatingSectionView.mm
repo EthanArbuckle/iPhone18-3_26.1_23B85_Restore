@@ -1,7 +1,7 @@
 @interface MUAppleRatingSectionView
-- (MUAppleRatingSectionView)initWithFrame:(CGRect)a3;
+- (MUAppleRatingSectionView)initWithFrame:(CGRect)frame;
 - (void)_updateAppearance;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUAppleRatingSectionView
@@ -58,12 +58,12 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (([(NSArray *)self->_viewModels isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -72,11 +72,11 @@
   }
 }
 
-- (MUAppleRatingSectionView)initWithFrame:(CGRect)a3
+- (MUAppleRatingSectionView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MUAppleRatingSectionView;
-  return [(MUPlaceVerticalCardContainerView *)&v4 initWithShowsSeparators:1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(MUPlaceVerticalCardContainerView *)&v4 initWithShowsSeparators:1, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

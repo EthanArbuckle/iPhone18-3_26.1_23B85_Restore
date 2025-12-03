@@ -1,16 +1,16 @@
 @interface PRSWallpaperClient
-- (void)initializeWithKnownIdentities:(id)a3 knownRoles:(id)a4 knownCollection:(id)a5;
+- (void)initializeWithKnownIdentities:(id)identities knownRoles:(id)roles knownCollection:(id)collection;
 @end
 
 @implementation PRSWallpaperClient
 
-- (void)initializeWithKnownIdentities:(id)a3 knownRoles:(id)a4 knownCollection:(id)a5
+- (void)initializeWithKnownIdentities:(id)identities knownRoles:(id)roles knownCollection:(id)collection
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  collectionCopy = collection;
+  rolesCopy = roles;
+  identitiesCopy = identities;
   WeakRetained = objc_loadWeakRetained(&self->_publisher);
-  [WeakRetained _initializeClient:self withKnownIdentities:v10 knownRoles:v9 knownCollection:v8];
+  [WeakRetained _initializeClient:self withKnownIdentities:identitiesCopy knownRoles:rolesCopy knownCollection:collectionCopy];
 }
 
 @end

@@ -2,7 +2,7 @@
 - (void)_auxiliaryAction;
 - (void)_cancelAction;
 - (void)_continueAction;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -13,23 +13,23 @@
   v14.receiver = self;
   v14.super_class = PKApplyDeclinedViewController;
   [(PKApplyExplanationViewController *)&v14 viewDidLoad];
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v4 = [v3 featureApplication];
-  if ([v4 applicationStateReason] == 7)
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
+  if ([featureApplication applicationStateReason] == 7)
   {
     [(PKExplanationViewController *)self setShowCancelButton:1];
   }
 
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = PKFeatureApplicationHeaderImageWithImage([v3 featureIdentifier], 0);
-  [v5 setImage:v6];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  v6 = PKFeatureApplicationHeaderImageWithImage([controller featureIdentifier], 0);
+  [explanationView setImage:v6];
   if (v6)
   {
-    [v5 setTopMargin:30.0];
+    [explanationView setTopMargin:30.0];
   }
 
-  [v5 setBodyButtonNumberOfLines:2];
-  [v5 setBodyDataDetectorTypes:1];
+  [explanationView setBodyButtonNumberOfLines:2];
+  [explanationView setBodyDataDetectorTypes:1];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -90,16 +90,16 @@ uint64_t __44__PKApplyDeclinedViewController_viewDidLoad__block_invoke_3(uint64_
   return 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKApplyDeclinedViewController;
-  [(PKApplyExplanationViewController *)&v8 viewDidAppear:a3];
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 featureApplication];
-  v6 = [v5 declineDetails];
-  v7 = [v6 declinedTermsIdentifier];
-  [v4 termsShownWithIdentifier:v7];
+  [(PKApplyExplanationViewController *)&v8 viewDidAppear:appear];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
+  declineDetails = [featureApplication declineDetails];
+  declinedTermsIdentifier = [declineDetails declinedTermsIdentifier];
+  [controller termsShownWithIdentifier:declinedTermsIdentifier];
 }
 
 - (void)_continueAction
@@ -111,10 +111,10 @@ uint64_t __44__PKApplyDeclinedViewController_viewDidLoad__block_invoke_3(uint64_
   aBlock[3] = &unk_1E8011338;
   objc_copyWeak(&v15, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 featureApplication];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
 
-  if ([v5 applicationStateReason] == 7)
+  if ([featureApplication applicationStateReason] == 7)
   {
     if (+[PKBusinessChatController deviceSupportsBusinessChat])
     {
@@ -126,8 +126,8 @@ uint64_t __44__PKApplyDeclinedViewController_viewDidLoad__block_invoke_3(uint64_
       }
 
       v8 = [PKBuinessChatApplyContext alloc];
-      v9 = [v5 businessChatIdentifier];
-      v10 = [(PKBuinessChatApplyContext *)v8 initWithIdentifier:v9 intent:1];
+      businessChatIdentifier = [featureApplication businessChatIdentifier];
+      v10 = [(PKBuinessChatApplyContext *)v8 initWithIdentifier:businessChatIdentifier intent:1];
 
       v11 = self->_businessChatController;
       v12[0] = MEMORY[0x1E69E9820];
@@ -186,16 +186,16 @@ void __48__PKApplyDeclinedViewController__continueAction__block_invoke_2(uint64_
 
 - (void)_cancelAction
 {
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  [v3 endApplyFlow];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller endApplyFlow];
 
   [(PKApplyExplanationViewController *)self handleNextStep];
 }
 
 - (void)_auxiliaryAction
 {
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  [v3 endApplyFlow];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller endApplyFlow];
 
   [(PKApplyExplanationViewController *)self handleNextStep];
 }

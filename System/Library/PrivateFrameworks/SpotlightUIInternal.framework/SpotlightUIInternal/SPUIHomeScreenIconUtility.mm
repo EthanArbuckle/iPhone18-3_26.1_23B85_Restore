@@ -1,24 +1,24 @@
 @interface SPUIHomeScreenIconUtility
-+ (void)addMenusToBuilder:(id)a3 forFocusEnvironment:(id)a4;
++ (void)addMenusToBuilder:(id)builder forFocusEnvironment:(id)environment;
 @end
 
 @implementation SPUIHomeScreenIconUtility
 
-+ (void)addMenusToBuilder:(id)a3 forFocusEnvironment:(id)a4
++ (void)addMenusToBuilder:(id)builder forFocusEnvironment:(id)environment
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 system];
-  v6 = [MEMORY[0x277D75730] mainSystem];
+  builderCopy = builder;
+  system = [builderCopy system];
+  mainSystem = [MEMORY[0x277D75730] mainSystem];
 
-  if (v5 == v6)
+  if (system == mainSystem)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [MEMORY[0x277D663F0] applicationIconMultitaskingMenus];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    applicationIconMultitaskingMenus = [MEMORY[0x277D663F0] applicationIconMultitaskingMenus];
+    v8 = [applicationIconMultitaskingMenus countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -31,14 +31,14 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(applicationIconMultitaskingMenus);
           }
 
-          [v4 insertChildMenu:*(*(&v14 + 1) + 8 * v12++) atEndOfMenuForIdentifier:v11];
+          [builderCopy insertChildMenu:*(*(&v14 + 1) + 8 * v12++) atEndOfMenuForIdentifier:v11];
         }
 
         while (v9 != v12);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [applicationIconMultitaskingMenus countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);

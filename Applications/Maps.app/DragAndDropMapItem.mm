@@ -1,20 +1,20 @@
 @interface DragAndDropMapItem
-+ (id)dragAndDropItemWithObject:(id)a3;
++ (id)dragAndDropItemWithObject:(id)object;
 + (id)writableTypeIdentifiersForItemProvider;
 - (CLLocationCoordinate2D)sourceCoordinate;
 - (DragAndDropMapItem)init;
-- (DragAndDropMapItem)initWithAddress:(id)a3;
-- (DragAndDropMapItem)initWithLabelMarker:(id)a3;
-- (DragAndDropMapItem)initWithMapItem:(id)a3;
-- (DragAndDropMapItem)initWithPersonalizedItem:(id)a3;
-- (DragAndDropMapItem)initWithRecentContact:(id)a3;
+- (DragAndDropMapItem)initWithAddress:(id)address;
+- (DragAndDropMapItem)initWithLabelMarker:(id)marker;
+- (DragAndDropMapItem)initWithMapItem:(id)item;
+- (DragAndDropMapItem)initWithPersonalizedItem:(id)item;
+- (DragAndDropMapItem)initWithRecentContact:(id)contact;
 - (DragAndDropMapItemObserver)observer;
 - (NSItemProvider)itemProvider;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)traitsForMapItemResolver:(id)a3;
-- (void)_didResolveMapItem:(id)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)traitsForMapItemResolver:(id)resolver;
+- (void)_didResolveMapItem:(id)item;
 - (void)_resolveMapItem;
-- (void)setObserver:(id)a3;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation DragAndDropMapItem
@@ -35,18 +35,18 @@
   return WeakRetained;
 }
 
-- (id)traitsForMapItemResolver:(id)a3
+- (id)traitsForMapItemResolver:(id)resolver
 {
   v3 = +[MKMapService sharedService];
-  v4 = [v3 defaultTraits];
+  defaultTraits = [v3 defaultTraits];
 
-  return v4;
+  return defaultTraits;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (self->_resolveProgress)
   {
     v8 = [NSProgress progressWithTotalUnitCount:100];
@@ -71,18 +71,18 @@
   v20[1] = 3221225472;
   v20[2] = sub_100572E54;
   v20[3] = &unk_101622088;
-  v9 = v7;
+  v9 = handlerCopy;
   v24 = v9;
   v10 = v8;
   v21 = v10;
-  v11 = v6;
+  v11 = identifierCopy;
   v22 = v11;
-  v23 = self;
+  selfCopy = self;
   v12 = objc_retainBlock(v20);
   v13 = +[UIDevice currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-  if (v14 == 5)
+  if (userInterfaceIdiom == 5)
   {
     (v12[2])(v12, self->_originalMapItem);
   }
@@ -107,8 +107,8 @@
 - (NSItemProvider)itemProvider
 {
   v3 = [NSItemProvider alloc];
-  v4 = [(DragAndDropMapItem *)self itemProviderWriting];
-  v5 = [v3 initWithObject:v4];
+  itemProviderWriting = [(DragAndDropMapItem *)self itemProviderWriting];
+  v5 = [v3 initWithObject:itemProviderWriting];
 
   [v5 setSuggestedName:self->_name];
 
@@ -137,8 +137,8 @@
       v8 = [NSProgress progressWithTotalUnitCount:100];
       [(NSProgress *)v8 setCancellable:1];
       v11 = [MapItemResolver alloc];
-      v12 = [(CRRecentContact *)self->_recentContact address];
-      v10 = [(MapItemResolver *)v11 initWithAddressString:v12];
+      address = [(CRRecentContact *)self->_recentContact address];
+      v10 = [(MapItemResolver *)v11 initWithAddressString:address];
 
       if (v10)
       {
@@ -204,24 +204,24 @@ LABEL_11:
   }
 }
 
-- (void)_didResolveMapItem:(id)a3
+- (void)_didResolveMapItem:(id)item
 {
-  objc_storeStrong(&self->_resolvedMapItem, a3);
-  v5 = a3;
-  v6 = [(DragAndDropMapItem *)self observer];
-  [v6 dragAndDropItem:self didResolveMapItem:self->_resolvedMapItem];
+  objc_storeStrong(&self->_resolvedMapItem, item);
+  itemCopy = item;
+  observer = [(DragAndDropMapItem *)self observer];
+  [observer dragAndDropItem:self didResolveMapItem:self->_resolvedMapItem];
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
-  objc_storeWeak(&self->_observer, a3);
+  objc_storeWeak(&self->_observer, observer);
 
   [(DragAndDropMapItem *)self _resolveMapItem];
 }
 
-- (DragAndDropMapItem)initWithPersonalizedItem:(id)a3
+- (DragAndDropMapItem)initWithPersonalizedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = DragAndDropMapItem;
   v5 = [(DragAndDropMapItem *)&v25 init];
@@ -230,29 +230,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 searchResult];
+  searchResult = [itemCopy searchResult];
   searchResult = v5->_searchResult;
-  v5->_searchResult = v6;
+  v5->_searchResult = searchResult;
 
-  v8 = [v4 address];
+  address = [itemCopy address];
   address = v5->_address;
-  v5->_address = v8;
+  v5->_address = address;
 
-  v10 = [v4 mapItem];
+  mapItem = [itemCopy mapItem];
   mapItem = v5->_mapItem;
-  v5->_mapItem = v10;
+  v5->_mapItem = mapItem;
 
   objc_storeStrong(&v5->_originalMapItem, v5->_mapItem);
-  v12 = [v4 title];
-  v13 = [v12 value];
+  title = [itemCopy title];
+  value = [title value];
   name = v5->_name;
-  v5->_name = v13;
+  v5->_name = value;
 
-  v15 = [v4 parkedCar];
-  v16 = v15;
-  if (v15)
+  parkedCar = [itemCopy parkedCar];
+  v16 = parkedCar;
+  if (parkedCar)
   {
-    v17 = v15;
+    v17 = parkedCar;
 LABEL_6:
     presentationObject = v5->_presentationObject;
     v5->_presentationObject = v17;
@@ -300,20 +300,20 @@ LABEL_12:
   return v5;
 }
 
-- (DragAndDropMapItem)initWithRecentContact:(id)a3
+- (DragAndDropMapItem)initWithRecentContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v13.receiver = self;
   v13.super_class = DragAndDropMapItem;
   v6 = [(DragAndDropMapItem *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recentContact, a3);
-    objc_storeStrong(&v7->_presentationObject, a3);
-    v8 = [v5 displayName];
+    objc_storeStrong(&v6->_recentContact, contact);
+    objc_storeStrong(&v7->_presentationObject, contact);
+    displayName = [contactCopy displayName];
     name = v7->_name;
-    v7->_name = v8;
+    v7->_name = displayName;
 
     v10 = objc_alloc_init(MapsAnalyticsHelper);
     analyticsHelper = v7->_analyticsHelper;
@@ -323,24 +323,24 @@ LABEL_12:
   return v7;
 }
 
-- (DragAndDropMapItem)initWithAddress:(id)a3
+- (DragAndDropMapItem)initWithAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v15.receiver = self;
   v15.super_class = DragAndDropMapItem;
   v6 = [(DragAndDropMapItem *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_address, a3);
-    v8 = [(AddressBookAddress *)v7->_address geocodedMapItem];
+    objc_storeStrong(&v6->_address, address);
+    geocodedMapItem = [(AddressBookAddress *)v7->_address geocodedMapItem];
     originalMapItem = v7->_originalMapItem;
-    v7->_originalMapItem = v8;
+    v7->_originalMapItem = geocodedMapItem;
 
-    objc_storeStrong(&v7->_presentationObject, a3);
-    v10 = [v5 compositeName];
+    objc_storeStrong(&v7->_presentationObject, address);
+    compositeName = [addressCopy compositeName];
     name = v7->_name;
-    v7->_name = v10;
+    v7->_name = compositeName;
 
     if (v7->_originalMapItem)
     {
@@ -359,23 +359,23 @@ LABEL_12:
   return v7;
 }
 
-- (DragAndDropMapItem)initWithMapItem:(id)a3
+- (DragAndDropMapItem)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = DragAndDropMapItem;
   v6 = [(DragAndDropMapItem *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
-    objc_storeStrong(&v7->_originalMapItem, a3);
-    objc_storeStrong(&v7->_presentationObject, a3);
-    v8 = [v5 name];
+    objc_storeStrong(&v6->_mapItem, item);
+    objc_storeStrong(&v7->_originalMapItem, item);
+    objc_storeStrong(&v7->_presentationObject, item);
+    name = [itemCopy name];
     name = v7->_name;
-    v7->_name = v8;
+    v7->_name = name;
 
-    v10 = [[MapsAnalyticsHelper alloc] initWithMapItem:v5];
+    v10 = [[MapsAnalyticsHelper alloc] initWithMapItem:itemCopy];
     analyticsHelper = v7->_analyticsHelper;
     v7->_analyticsHelper = v10;
   }
@@ -383,30 +383,30 @@ LABEL_12:
   return v7;
 }
 
-- (DragAndDropMapItem)initWithLabelMarker:(id)a3
+- (DragAndDropMapItem)initWithLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [v4 featureAnnotation];
-  if ([v4 isCluster])
+  markerCopy = marker;
+  featureAnnotation = [markerCopy featureAnnotation];
+  if ([markerCopy isCluster])
   {
-    v6 = [v4 clusterFeatureAnnotations];
-    v7 = [v6 firstObject];
+    clusterFeatureAnnotations = [markerCopy clusterFeatureAnnotations];
+    firstObject = [clusterFeatureAnnotations firstObject];
 
-    v5 = v7;
+    featureAnnotation = firstObject;
   }
 
-  if (!v5 || ![v5 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+  if (!featureAnnotation || ![featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
   {
     goto LABEL_9;
   }
 
-  v8 = v5;
-  v9 = [v8 personalizedItem];
-  v10 = [v8 mapItem];
+  v8 = featureAnnotation;
+  personalizedItem = [v8 personalizedItem];
+  mapItem = [v8 mapItem];
 
-  if (v9)
+  if (personalizedItem)
   {
-    v11 = [(DragAndDropMapItem *)self initWithPersonalizedItem:v9];
+    v11 = [(DragAndDropMapItem *)self initWithPersonalizedItem:personalizedItem];
 
     if (!v11)
     {
@@ -416,17 +416,17 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!mapItem)
   {
 LABEL_9:
-    v10 = [[MKMapItem alloc] _initWithLabelMarker:v4];
+    mapItem = [[MKMapItem alloc] _initWithLabelMarker:markerCopy];
   }
 
-  v11 = [(DragAndDropMapItem *)self initWithMapItem:v10];
+  v11 = [(DragAndDropMapItem *)self initWithMapItem:mapItem];
   if (v11)
   {
 LABEL_11:
-    v12 = [[MapsAnalyticsHelper alloc] initWithLabelMarker:v4];
+    v12 = [[MapsAnalyticsHelper alloc] initWithLabelMarker:markerCopy];
     analyticsHelper = v11->_analyticsHelper;
     v11->_analyticsHelper = v12;
   }
@@ -449,24 +449,24 @@ LABEL_12:
   v3 = +[MKMapItem writableTypeIdentifiersForItemProvider];
   [v2 addObjectsFromArray:v3];
 
-  v4 = [UTTypeVCard identifier];
-  [v2 addObject:v4];
+  identifier = [UTTypeVCard identifier];
+  [v2 addObject:identifier];
 
-  v5 = [UTTypeURL identifier];
-  [v2 addObject:v5];
+  identifier2 = [UTTypeURL identifier];
+  [v2 addObject:identifier2];
 
-  v6 = [UTTypeUTF8PlainText identifier];
-  [v2 addObject:v6];
+  identifier3 = [UTTypeUTF8PlainText identifier];
+  [v2 addObject:identifier3];
 
   v7 = [v2 copy];
 
   return v7;
 }
 
-+ (id)dragAndDropItemWithObject:(id)a3
++ (id)dragAndDropItemWithObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     goto LABEL_5;
   }
@@ -474,9 +474,9 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 autocompleteObject];
+    autocompleteObject = [objectCopy autocompleteObject];
 
-    v4 = v5;
+    objectCopy = autocompleteObject;
   }
 
   objc_opt_class();
@@ -488,11 +488,11 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v4;
-    v8 = [a1 alloc];
-    v9 = [v4 mapItem];
+    objectCopy = objectCopy;
+    v8 = [self alloc];
+    mapItem = [objectCopy mapItem];
 
-    v6 = [v8 initWithMapItem:v9];
+    v6 = [v8 initWithMapItem:mapItem];
     goto LABEL_6;
   }
 
@@ -502,8 +502,8 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v4;
-      v14 = [[a1 alloc] initWithAddress:v4];
+      objectCopy = objectCopy;
+      v14 = [[self alloc] initWithAddress:objectCopy];
 LABEL_17:
       v6 = v14;
       goto LABEL_33;
@@ -518,15 +518,15 @@ LABEL_17:
       v25 = sub_100573FEC;
       v26 = sub_100573FFC;
       v27 = 0;
-      v4 = v4;
-      v15 = [v4 historyEntry];
+      objectCopy = objectCopy;
+      historyEntry = [objectCopy historyEntry];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100574004;
       v21[3] = &unk_101621FF0;
       v21[4] = &v22;
-      v21[5] = a1;
-      [v15 ifSearch:&stru_101621FA8 ifRoute:&stru_101621FC8 ifPlaceDisplay:v21 ifTransitLineItem:&stru_101622010];
+      v21[5] = self;
+      [historyEntry ifSearch:&stru_101621FA8 ifRoute:&stru_101621FC8 ifPlaceDisplay:v21 ifTransitLineItem:&stru_101622010];
 
       v6 = v23[5];
       _Block_object_dispose(&v22, 8);
@@ -537,7 +537,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [[a1 alloc] initWithRecentContact:v4];
+      v16 = [[self alloc] initWithRecentContact:objectCopy];
 LABEL_22:
       v6 = v16;
       goto LABEL_6;
@@ -546,10 +546,10 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v4;
-      v17 = [v4 geoMapItem];
+      objectCopy = objectCopy;
+      geoMapItem = [objectCopy geoMapItem];
 
-      if (!v17)
+      if (!geoMapItem)
       {
         goto LABEL_32;
       }
@@ -560,15 +560,15 @@ LABEL_22:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v4;
-        v14 = [[a1 alloc] initWithLabelMarker:v4];
+        objectCopy = objectCopy;
+        v14 = [[self alloc] initWithLabelMarker:objectCopy];
         goto LABEL_17;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [[a1 alloc] initWithMapItem:v4];
+        v16 = [[self alloc] initWithMapItem:objectCopy];
         goto LABEL_22;
       }
 
@@ -580,38 +580,38 @@ LABEL_5:
         goto LABEL_6;
       }
 
-      v4 = v4;
-      v20 = [v4 geoMapItem];
+      objectCopy = objectCopy;
+      geoMapItem2 = [objectCopy geoMapItem];
 
-      if (!v20)
+      if (!geoMapItem2)
       {
         goto LABEL_32;
       }
     }
 
     v18 = [MKMapItem alloc];
-    v19 = [v4 geoMapItem];
-    v12 = [v18 initWithGeoMapItem:v19 isPlaceHolderPlace:1];
+    geoMapItem3 = [objectCopy geoMapItem];
+    mapItem3 = [v18 initWithGeoMapItem:geoMapItem3 isPlaceHolderPlace:1];
 
-    v13 = [a1 alloc];
+    v13 = [self alloc];
     goto LABEL_14;
   }
 
-  v4 = v4;
-  v10 = [v4 mapItem];
+  objectCopy = objectCopy;
+  mapItem2 = [objectCopy mapItem];
 
-  if (!v10)
+  if (!mapItem2)
   {
 LABEL_32:
     v6 = 0;
     goto LABEL_33;
   }
 
-  v11 = [a1 alloc];
-  v12 = [v4 mapItem];
+  v11 = [self alloc];
+  mapItem3 = [objectCopy mapItem];
   v13 = v11;
 LABEL_14:
-  v6 = [v13 initWithMapItem:v12];
+  v6 = [v13 initWithMapItem:mapItem3];
 
 LABEL_33:
 LABEL_6:

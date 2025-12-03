@@ -3,23 +3,23 @@
 - (double)_artworkContentWidth;
 - (int64_t)_maxArtworkCountFittingSize;
 - (void)_layoutArtworkImagesIfNeeded;
-- (void)_removeArtworkTitleItem:(id)a3;
-- (void)_setContentClipCorners:(unint64_t)a3 updateCorners:(BOOL)a4;
+- (void)_removeArtworkTitleItem:(id)item;
+- (void)_setContentClipCorners:(unint64_t)corners updateCorners:(BOOL)updateCorners;
 - (void)_setNeedsArtworkImagesLayout;
 - (void)_updateTintColors;
-- (void)applyConfiguration:(id)a3;
+- (void)applyConfiguration:(id)configuration;
 - (void)configureCell;
-- (void)coreCellItemTapped:(id)a3;
+- (void)coreCellItemTapped:(id)tapped;
 - (void)createItemStackView;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)gridCellItemTapped:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)gridCellItemTapped:(id)tapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLoading:(BOOL)a3;
-- (void)setMaximumNumberOfLines:(unint64_t)a3;
-- (void)setTrailingView:(id)a3;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLoading:(BOOL)loading;
+- (void)setMaximumNumberOfLines:(unint64_t)lines;
+- (void)setTrailingView:(id)view;
 @end
 
 @implementation CPUIImageRowCell
@@ -49,7 +49,7 @@
     +[_CPUIBaseTableCell disabledHighlightedColor];
   }
   v4 = ;
-  v5 = [(CPUIImageRowCell *)self titleLabel];
+  titleLabel = [(CPUIImageRowCell *)self titleLabel];
   if ([(CPUIImageRowCell *)self isHighlighted])
   {
     v6 = v4;
@@ -60,7 +60,7 @@
     v6 = v3;
   }
 
-  [v5 setTextColor:v6];
+  [titleLabel setTextColor:v6];
 
   if ([(_CPUIBaseTableCell *)self itemEnabled])
   {
@@ -82,7 +82,7 @@
     +[_CPUIBaseTableCell disabledHighlightedColor];
   }
   v8 = ;
-  v9 = [(CPUIImageRowCell *)self chevronView];
+  chevronView = [(CPUIImageRowCell *)self chevronView];
   if ([(CPUIImageRowCell *)self isHighlighted])
   {
     v10 = v8;
@@ -93,7 +93,7 @@
     v10 = v7;
   }
 
-  [v9 setTintColor:v10];
+  [chevronView setTintColor:v10];
 }
 
 - (void)prepareForReuse
@@ -127,9 +127,9 @@
   }
 
   [(UIStackView *)self->_contentStackView setSpacing:*v6];
-  v7 = [(CPUIImageRowCell *)self contentView];
-  v8 = [(CPUIImageRowCell *)self contentStackView];
-  [v7 addSubview:v8];
+  contentView = [(CPUIImageRowCell *)self contentView];
+  contentStackView = [(CPUIImageRowCell *)self contentStackView];
+  [contentView addSubview:contentStackView];
 
   v9 = objc_opt_new();
   titleStackView = self->_titleStackView;
@@ -141,9 +141,9 @@
   [(UIStackView *)self->_titleStackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_titleStackView setClipsToBounds:0];
   [(UIStackView *)self->_titleStackView setSpacing:4.0];
-  v11 = [(CPUIImageRowCell *)self contentStackView];
-  v12 = [(CPUIImageRowCell *)self titleStackView];
-  [v11 addArrangedSubview:v12];
+  contentStackView2 = [(CPUIImageRowCell *)self contentStackView];
+  titleStackView = [(CPUIImageRowCell *)self titleStackView];
+  [contentStackView2 addArrangedSubview:titleStackView];
 
   v13 = objc_opt_new();
   titleLabel = self->_titleLabel;
@@ -153,9 +153,9 @@
   v15 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D743F8]];
   [(UILabel *)self->_titleLabel setFont:v15];
 
-  v16 = [(CPUIImageRowCell *)self titleStackView];
-  v17 = [(CPUIImageRowCell *)self titleLabel];
-  [v16 addArrangedSubview:v17];
+  titleStackView2 = [(CPUIImageRowCell *)self titleStackView];
+  titleLabel = [(CPUIImageRowCell *)self titleLabel];
+  [titleStackView2 addArrangedSubview:titleLabel];
 
   v18 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:21];
   activityIndicator = self->_activityIndicator;
@@ -171,7 +171,7 @@
   [(CPUIImageRowCell *)self addSubview:self->_focusIndicator];
   [(CPUIImageRowCell *)self sendSubviewToBack:self->_focusIndicator];
   v22 = objc_alloc(MEMORY[0x277D755E8]);
-  v23 = [(CPUIImageRowCell *)self traitCollection];
+  traitCollection = [(CPUIImageRowCell *)self traitCollection];
   v24 = CPUIChevronRightGlyph();
   v25 = [v24 imageWithRenderingMode:2];
   v26 = [v22 initWithImage:v25];
@@ -190,8 +190,8 @@
 
   v32 = MEMORY[0x277D755B8];
   v33 = CPUIFrameworkBundle();
-  v34 = [(CPUIImageRowCell *)self traitCollection];
-  v35 = [v32 imageNamed:@"PlaceholderMusic" inBundle:v33 compatibleWithTraitCollection:v34];
+  traitCollection2 = [(CPUIImageRowCell *)self traitCollection];
+  v35 = [v32 imageNamed:@"PlaceholderMusic" inBundle:v33 compatibleWithTraitCollection:traitCollection2];
   fallbackImage = self->_fallbackImage;
   self->_fallbackImage = v35;
 
@@ -210,31 +210,31 @@
   v39 = v38[1];
   *&p_contentInsets->top = *v38;
   *&self->_contentInsets.bottom = v39;
-  v40 = [(UIStackView *)self->_contentStackView topAnchor];
-  v41 = [(CPUIImageRowCell *)self contentView];
-  v42 = [v41 topAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:p_contentInsets->top];
+  topAnchor = [(UIStackView *)self->_contentStackView topAnchor];
+  contentView2 = [(CPUIImageRowCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:p_contentInsets->top];
   topInsetConstraint = self->_topInsetConstraint;
   self->_topInsetConstraint = v43;
 
-  v45 = [(UIStackView *)self->_contentStackView leadingAnchor];
-  v46 = [(CPUIImageRowCell *)self contentView];
-  v47 = [v46 leadingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:self->_contentInsets.leading];
+  leadingAnchor = [(UIStackView *)self->_contentStackView leadingAnchor];
+  contentView3 = [(CPUIImageRowCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_contentInsets.leading];
   leadingInsetConstraint = self->_leadingInsetConstraint;
   self->_leadingInsetConstraint = v48;
 
-  v50 = [(UIStackView *)self->_contentStackView trailingAnchor];
-  v51 = [(CPUIImageRowCell *)self contentView];
-  v52 = [v51 trailingAnchor];
-  v53 = [v50 constraintEqualToAnchor:v52 constant:-self->_contentInsets.trailing];
+  trailingAnchor = [(UIStackView *)self->_contentStackView trailingAnchor];
+  contentView4 = [(CPUIImageRowCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-self->_contentInsets.trailing];
   trailingInsetConstraint = self->_trailingInsetConstraint;
   self->_trailingInsetConstraint = v53;
 
-  v55 = [(UIStackView *)self->_contentStackView bottomAnchor];
-  v56 = [(CPUIImageRowCell *)self contentView];
-  v57 = [v56 bottomAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57 constant:-self->_contentInsets.bottom];
+  bottomAnchor = [(UIStackView *)self->_contentStackView bottomAnchor];
+  contentView5 = [(CPUIImageRowCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-self->_contentInsets.bottom];
   bottomInsetConstraint = self->_bottomInsetConstraint;
   self->_bottomInsetConstraint = v58;
 
@@ -245,9 +245,9 @@
   v62 = self->_bottomInsetConstraint;
   v102[2] = self->_trailingInsetConstraint;
   v102[3] = v62;
-  v63 = [(UIStackView *)self->_titleStackView leadingAnchor];
-  v64 = [(UIStackView *)self->_contentStackView leadingAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  leadingAnchor3 = [(UIStackView *)self->_titleStackView leadingAnchor];
+  leadingAnchor4 = [(UIStackView *)self->_contentStackView leadingAnchor];
+  v65 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v102[4] = v65;
   v66 = [MEMORY[0x277CBEA60] arrayWithObjects:v102 count:5];
   [v60 activateConstraints:v66];
@@ -257,64 +257,64 @@
   v68 = self->_focusIndicator;
   if (v67)
   {
-    v69 = [(CPUIImageRowHighlightButton *)v68 leadingAnchor];
-    v98 = [(CPUIImageRowCell *)self titleStackView];
-    [v98 leadingAnchor];
-    v97 = v90 = v69;
-    v96 = [v69 constraintEqualToAnchor:-8.0 constant:?];
+    leadingAnchor5 = [(CPUIImageRowHighlightButton *)v68 leadingAnchor];
+    titleStackView3 = [(CPUIImageRowCell *)self titleStackView];
+    [titleStackView3 leadingAnchor];
+    v97 = v90 = leadingAnchor5;
+    v96 = [leadingAnchor5 constraintEqualToAnchor:-8.0 constant:?];
     v101[0] = v96;
-    v70 = [(CPUIImageRowHighlightButton *)self->_focusIndicator trailingAnchor];
-    v93 = [(CPUIImageRowCell *)self titleStackView];
-    [v93 trailingAnchor];
-    v92 = v94 = v70;
-    v91 = [v70 constraintEqualToAnchor:8.0 constant:?];
+    trailingAnchor3 = [(CPUIImageRowHighlightButton *)self->_focusIndicator trailingAnchor];
+    titleStackView4 = [(CPUIImageRowCell *)self titleStackView];
+    [titleStackView4 trailingAnchor];
+    v92 = v94 = trailingAnchor3;
+    v91 = [trailingAnchor3 constraintEqualToAnchor:8.0 constant:?];
     v101[1] = v91;
-    v71 = [(CPUIImageRowHighlightButton *)self->_focusIndicator topAnchor];
-    v89 = [(CPUIImageRowCell *)self titleStackView];
-    v87 = [v89 topAnchor];
-    v88 = v71;
-    v72 = [v71 constraintEqualToAnchor:-3.0 constant:?];
+    topAnchor3 = [(CPUIImageRowHighlightButton *)self->_focusIndicator topAnchor];
+    titleStackView5 = [(CPUIImageRowCell *)self titleStackView];
+    topAnchor4 = [titleStackView5 topAnchor];
+    v88 = topAnchor3;
+    v72 = [topAnchor3 constraintEqualToAnchor:-3.0 constant:?];
     v101[2] = v72;
-    v73 = [(CPUIImageRowHighlightButton *)self->_focusIndicator bottomAnchor];
-    v74 = [(CPUIImageRowCell *)self titleStackView];
-    v75 = [v74 bottomAnchor];
-    v76 = [v73 constraintEqualToAnchor:v75 constant:3.0];
+    bottomAnchor3 = [(CPUIImageRowHighlightButton *)self->_focusIndicator bottomAnchor];
+    titleStackView6 = [(CPUIImageRowCell *)self titleStackView];
+    bottomAnchor4 = [titleStackView6 bottomAnchor];
+    v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:3.0];
     v101[3] = v76;
-    v77 = [(UIStackView *)self->_titleStackView trailingAnchor];
-    v78 = [(UIStackView *)self->_contentStackView trailingAnchor];
-    v79 = [v77 constraintLessThanOrEqualToAnchor:v78 constant:-12.0];
+    trailingAnchor4 = [(UIStackView *)self->_titleStackView trailingAnchor];
+    trailingAnchor5 = [(UIStackView *)self->_contentStackView trailingAnchor];
+    v79 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5 constant:-12.0];
     v101[4] = v79;
     v80 = v101;
   }
 
   else
   {
-    v81 = [(CPUIImageRowHighlightButton *)v68 topAnchor];
-    v98 = [(CPUIImageRowCell *)self titleStackView];
-    [v98 topAnchor];
-    v97 = v90 = v81;
-    v96 = [v81 constraintEqualToAnchor:-8.0 constant:?];
+    topAnchor5 = [(CPUIImageRowHighlightButton *)v68 topAnchor];
+    titleStackView3 = [(CPUIImageRowCell *)self titleStackView];
+    [titleStackView3 topAnchor];
+    v97 = v90 = topAnchor5;
+    v96 = [topAnchor5 constraintEqualToAnchor:-8.0 constant:?];
     v100[0] = v96;
-    v82 = [(CPUIImageRowHighlightButton *)self->_focusIndicator leadingAnchor];
-    v93 = [(CPUIImageRowCell *)self titleStackView];
-    [v93 leadingAnchor];
-    v92 = v94 = v82;
-    v91 = [v82 constraintEqualToAnchor:-8.0 constant:?];
+    leadingAnchor6 = [(CPUIImageRowHighlightButton *)self->_focusIndicator leadingAnchor];
+    titleStackView4 = [(CPUIImageRowCell *)self titleStackView];
+    [titleStackView4 leadingAnchor];
+    v92 = v94 = leadingAnchor6;
+    v91 = [leadingAnchor6 constraintEqualToAnchor:-8.0 constant:?];
     v100[1] = v91;
-    v83 = [(CPUIImageRowHighlightButton *)self->_focusIndicator trailingAnchor];
-    v89 = [(CPUIImageRowCell *)self titleStackView];
-    v87 = [v89 trailingAnchor];
-    v88 = v83;
-    v72 = [v83 constraintEqualToAnchor:8.0 constant:?];
+    trailingAnchor6 = [(CPUIImageRowHighlightButton *)self->_focusIndicator trailingAnchor];
+    titleStackView5 = [(CPUIImageRowCell *)self titleStackView];
+    topAnchor4 = [titleStackView5 trailingAnchor];
+    v88 = trailingAnchor6;
+    v72 = [trailingAnchor6 constraintEqualToAnchor:8.0 constant:?];
     v100[2] = v72;
-    v73 = [(CPUIImageRowHighlightButton *)self->_focusIndicator bottomAnchor];
-    v74 = [(CPUIImageRowCell *)self titleStackView];
-    v75 = [v74 bottomAnchor];
-    v76 = [v73 constraintEqualToAnchor:v75 constant:8.0];
+    bottomAnchor3 = [(CPUIImageRowHighlightButton *)self->_focusIndicator bottomAnchor];
+    titleStackView6 = [(CPUIImageRowCell *)self titleStackView];
+    bottomAnchor4 = [titleStackView6 bottomAnchor];
+    v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:8.0];
     v100[3] = v76;
-    v77 = [(UIStackView *)self->_titleStackView trailingAnchor];
-    v78 = [(UIStackView *)self->_contentStackView trailingAnchor];
-    v79 = [v77 constraintLessThanOrEqualToAnchor:v78];
+    trailingAnchor4 = [(UIStackView *)self->_titleStackView trailingAnchor];
+    trailingAnchor5 = [(UIStackView *)self->_contentStackView trailingAnchor];
+    v79 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
     v100[4] = v79;
     v80 = v100;
   }
@@ -323,54 +323,54 @@
   [v95 activateConstraints:v84];
 
   [(CPUIImageRowCell *)self setAccessibilityIdentifier:@"CPListImageRowItem"];
-  v85 = [(CPUIImageRowCell *)self titleLabel];
-  [v85 setAccessibilityIdentifier:@"CPListItemTitle"];
+  titleLabel2 = [(CPUIImageRowCell *)self titleLabel];
+  [titleLabel2 setAccessibilityIdentifier:@"CPListItemTitle"];
 
   if (_os_feature_enabled_impl())
   {
-    v86 = [(CPUIImageRowCell *)self titleLabel];
-    [v86 setAdjustsFontForContentSizeCategory:1];
+    titleLabel3 = [(CPUIImageRowCell *)self titleLabel];
+    [titleLabel3 setAdjustsFontForContentSizeCategory:1];
   }
 }
 
-- (void)setMaximumNumberOfLines:(unint64_t)a3
+- (void)setMaximumNumberOfLines:(unint64_t)lines
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (self->_maximumNumberOfLines != a3)
+  if (self->_maximumNumberOfLines != lines)
   {
-    self->_maximumNumberOfLines = a3;
-    if (a3)
+    self->_maximumNumberOfLines = lines;
+    if (lines)
     {
-      v5 = [(CPUIImageRowCell *)self itemStackViews];
-      v6 = [v5 count];
+      itemStackViews = [(CPUIImageRowCell *)self itemStackViews];
+      v6 = [itemStackViews count];
 
-      if (v6 > a3)
+      if (v6 > lines)
       {
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [(CPUIImageRowCell *)self itemStackViews];
-        v8 = [v7 reverseObjectEnumerator];
+        itemStackViews2 = [(CPUIImageRowCell *)self itemStackViews];
+        reverseObjectEnumerator = [itemStackViews2 reverseObjectEnumerator];
 
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v9)
         {
           v10 = v9;
           v11 = *v27;
-          v12 = a3 - 1;
+          v12 = lines - 1;
 LABEL_6:
           v13 = 0;
           while (1)
           {
             if (*v27 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v14 = *(*(&v26 + 1) + 8 * v13);
-            v15 = [(CPUIImageRowCell *)self itemStackViews];
-            v16 = [v15 objectAtIndexedSubscript:v12];
+            itemStackViews3 = [(CPUIImageRowCell *)self itemStackViews];
+            v16 = [itemStackViews3 objectAtIndexedSubscript:v12];
 
             if (v14 == v16)
             {
@@ -381,8 +381,8 @@ LABEL_6:
             v25 = 0u;
             v22 = 0u;
             v23 = 0u;
-            v17 = [v14 arrangedSubviews];
-            v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            arrangedSubviews = [v14 arrangedSubviews];
+            v18 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v18)
             {
               v19 = v18;
@@ -393,13 +393,13 @@ LABEL_6:
                 {
                   if (*v23 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(arrangedSubviews);
                   }
 
                   [(CPUIImageRowCell *)self _removeArtworkTitleItem:*(*(&v22 + 1) + 8 * i)];
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+                v19 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v30 count:16];
               }
 
               while (v19);
@@ -407,7 +407,7 @@ LABEL_6:
 
             if (++v13 == v10)
             {
-              v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+              v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v31 count:16];
               if (v10)
               {
                 goto LABEL_6;
@@ -422,60 +422,60 @@ LABEL_6:
   }
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
-    trailing = a3.trailing;
-    bottom = a3.bottom;
-    leading = a3.leading;
+    self->_contentInsets = insets;
+    trailing = insets.trailing;
+    bottom = insets.bottom;
+    leading = insets.leading;
     [(NSLayoutConstraint *)self->_topInsetConstraint setConstant:?];
     [(NSLayoutConstraint *)self->_leadingInsetConstraint setConstant:leading];
     [(NSLayoutConstraint *)self->_trailingInsetConstraint setConstant:-trailing];
     [(NSLayoutConstraint *)self->_bottomInsetConstraint setConstant:-bottom];
-    v9 = [(CPUIImageRowCell *)self contentStackView];
-    [v9 setNeedsLayout];
+    contentStackView = [(CPUIImageRowCell *)self contentStackView];
+    [contentStackView setNeedsLayout];
   }
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  -[_CPUIBaseTableCell setItemEnabled:](self, "setItemEnabled:", [v4 enabled]);
-  -[CPUIImageRowCell setMaximumNumberOfLines:](self, "setMaximumNumberOfLines:", [v4 maximumNumberOfLines]);
-  [v4 contentInsets];
+  configurationCopy = configuration;
+  -[_CPUIBaseTableCell setItemEnabled:](self, "setItemEnabled:", [configurationCopy enabled]);
+  -[CPUIImageRowCell setMaximumNumberOfLines:](self, "setMaximumNumberOfLines:", [configurationCopy maximumNumberOfLines]);
+  [configurationCopy contentInsets];
   [(CPUIImageRowCell *)self setContentInsets:?];
-  [v4 lineSpacing];
+  [configurationCopy lineSpacing];
   v6 = v5;
-  v7 = [(CPUIImageRowCell *)self contentStackView];
-  [v7 setSpacing:v6];
+  contentStackView = [(CPUIImageRowCell *)self contentStackView];
+  [contentStackView setSpacing:v6];
 
-  v8 = [v4 title];
+  title = [configurationCopy title];
 
-  if (v8)
+  if (title)
   {
-    v9 = [v4 title];
-    v10 = [(CPUIImageRowCell *)self titleLabel];
-    [v10 setText:v9];
+    title2 = [configurationCopy title];
+    titleLabel = [(CPUIImageRowCell *)self titleLabel];
+    [titleLabel setText:title2];
 
     [(UIStackView *)self->_titleStackView setHidden:0];
     [(CPUIMediaButton *)self->_focusIndicator setHidden:0];
-    v11 = [v4 title];
-    [(CPUIImageRowHighlightButton *)self->_focusIndicator setAccessibilityLabel:v11];
+    title3 = [configurationCopy title];
+    [(CPUIImageRowHighlightButton *)self->_focusIndicator setAccessibilityLabel:title3];
 
-    v12 = [v4 title];
-    v24[0] = v12;
+    title4 = [configurationCopy title];
+    v24[0] = title4;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     [(CPUIImageRowHighlightButton *)self->_focusIndicator setAccessibilityUserInputLabels:v13];
 
     focusIndicator = self->_focusIndicator;
-    v15 = [(_CPUIBaseTableCell *)self itemEnabled];
+    itemEnabled = [(_CPUIBaseTableCell *)self itemEnabled];
     v16 = focusIndicator;
   }
 
@@ -484,36 +484,36 @@ LABEL_6:
     [(UIStackView *)self->_titleStackView setHidden:1];
     [(CPUIMediaButton *)self->_focusIndicator setHidden:1];
     v16 = self->_focusIndicator;
-    v15 = 0;
+    itemEnabled = 0;
   }
 
-  [(CPUIImageRowHighlightButton *)v16 setEnabled:v15];
+  [(CPUIImageRowHighlightButton *)v16 setEnabled:itemEnabled];
   [(CPUIImageRowCell *)self _updateTintColors];
-  v17 = [v4 selectGridItemBlock];
-  [(CPUIImageRowCell *)self setSelectGridItemBlock:v17];
+  selectGridItemBlock = [configurationCopy selectGridItemBlock];
+  [(CPUIImageRowCell *)self setSelectGridItemBlock:selectGridItemBlock];
 
-  v18 = [v4 selectTitleBlock];
-  [(CPUIImageRowCell *)self setSelectTitleBlock:v18];
+  selectTitleBlock = [configurationCopy selectTitleBlock];
+  [(CPUIImageRowCell *)self setSelectTitleBlock:selectTitleBlock];
 
-  v19 = [v4 itemsConfigurations];
-  [(CPUIImageRowCell *)self setItemsConfigurations:v19];
+  itemsConfigurations = [configurationCopy itemsConfigurations];
+  [(CPUIImageRowCell *)self setItemsConfigurations:itemsConfigurations];
 
-  v20 = [v4 bundleIdentifier];
-  v21 = CPUIPlaceholderTypeForBundleIdentifier(v20);
+  bundleIdentifier = [configurationCopy bundleIdentifier];
+  v21 = CPUIPlaceholderTypeForBundleIdentifier(bundleIdentifier);
 
-  v22 = [(CPUIImageRowCell *)self traitCollection];
-  v23 = CPUIImageForPlaceholderTypeWithTraitCollection(v21, v22);
+  traitCollection = [(CPUIImageRowCell *)self traitCollection];
+  v23 = CPUIImageForPlaceholderTypeWithTraitCollection(v21, traitCollection);
   [(CPUIImageRowCell *)self setFallbackImage:v23];
 
-  -[CPUIImageRowCell setLoading:](self, "setLoading:", [v4 showActivityIndicator]);
+  -[CPUIImageRowCell setLoading:](self, "setLoading:", [configurationCopy showActivityIndicator]);
   [(CPUIImageRowCell *)self _setNeedsArtworkImagesLayout];
   [(CPUIImageRowCell *)self setNeedsLayout];
 }
 
 - (double)_artworkContentWidth
 {
-  v3 = [(CPUIImageRowCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CPUIImageRowCell *)self contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v10);
   [(NSLayoutConstraint *)self->_leadingInsetConstraint constant];
   v6 = v5;
@@ -530,63 +530,63 @@ LABEL_6:
   return [CPUIGridViewBaseWidthControlledColumnCountGridSize numberOfColumnsFor:?];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     [(CPUIImageRowCell *)self setTrailingView:self->_activityIndicator];
-    v4 = [(CPUIImageRowCell *)self activityIndicator];
-    [v4 startAnimating];
+    activityIndicator = [(CPUIImageRowCell *)self activityIndicator];
+    [activityIndicator startAnimating];
   }
 
   else
   {
     [(CPUIImageRowCell *)self setTrailingView:self->_chevronView];
-    v4 = [(CPUIImageRowCell *)self activityIndicator];
-    [v4 stopAnimating];
+    activityIndicator = [(CPUIImageRowCell *)self activityIndicator];
+    [activityIndicator stopAnimating];
   }
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_trailingView removeFromSuperview];
-  v5 = [(CPUIImageRowCell *)self titleStackView];
-  [v5 removeArrangedSubview:self->_trailingView];
+  titleStackView = [(CPUIImageRowCell *)self titleStackView];
+  [titleStackView removeArrangedSubview:self->_trailingView];
 
   trailingView = self->_trailingView;
-  self->_trailingView = v4;
-  v9 = v4;
+  self->_trailingView = viewCopy;
+  v9 = viewCopy;
 
-  v7 = [(CPUIImageRowCell *)self titleStackView];
-  [v7 addArrangedSubview:v9];
+  titleStackView2 = [(CPUIImageRowCell *)self titleStackView];
+  [titleStackView2 addArrangedSubview:v9];
 
   LODWORD(v8) = 1148846080;
   [(UIView *)v9 setContentCompressionResistancePriority:0 forAxis:v8];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = [(CPUIImageRowCell *)self focusIndicator];
-  v7 = [v5 nextFocusedItem];
+  contextCopy = context;
+  focusIndicator = [(CPUIImageRowCell *)self focusIndicator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  self->_wasFocused = v6 == v7;
+  self->_wasFocused = focusIndicator == nextFocusedItem;
   wasFocused = self->_wasFocused;
 
   [(CPUIImageRowCell *)self setHighlighted:wasFocused];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v5 = a3 || self->_wasFocused;
+  v5 = highlighted || self->_wasFocused;
   v8.receiver = self;
   v8.super_class = CPUIImageRowCell;
-  [(CPUIImageRowCell *)&v8 setHighlighted:v5 animated:a4];
+  [(CPUIImageRowCell *)&v8 setHighlighted:v5 animated:animated];
   [(CPUIImageRowCell *)self _updateTintColors];
-  v6 = [(CPUIImageRowCell *)self isHighlighted];
-  v7 = [(CPUIImageRowCell *)self focusIndicator];
-  [v7 setShowHighlight:v6];
+  isHighlighted = [(CPUIImageRowCell *)self isHighlighted];
+  focusIndicator = [(CPUIImageRowCell *)self focusIndicator];
+  [focusIndicator setShowHighlight:isHighlighted];
 }
 
 - (void)layoutSubviews
@@ -630,18 +630,18 @@ LABEL_6:
     v30[17] = v2;
     v30[18] = v3;
     self->_needsArtworkImagesLayout = 0;
-    v7 = [(CPUIImageRowCell *)self itemsConfigurations];
-    v8 = [v7 count];
+    itemsConfigurations = [(CPUIImageRowCell *)self itemsConfigurations];
+    v8 = [itemsConfigurations count];
 
     if (v8)
     {
-      v9 = [(CPUIImageRowCell *)self itemsConfigurations];
-      v10 = [v9 count];
+      itemsConfigurations2 = [(CPUIImageRowCell *)self itemsConfigurations];
+      v10 = [itemsConfigurations2 count];
 
-      v11 = [(CPUIImageRowCell *)self _maxArtworkCountFittingSize];
-      if (v10 >= v11)
+      _maxArtworkCountFittingSize = [(CPUIImageRowCell *)self _maxArtworkCountFittingSize];
+      if (v10 >= _maxArtworkCountFittingSize)
       {
-        v12 = v11;
+        v12 = _maxArtworkCountFittingSize;
       }
 
       else
@@ -656,12 +656,12 @@ LABEL_6:
 
       else
       {
-        v14 = [(CPUIImageRowCell *)self itemsConfigurations];
-        v13 = [v14 count];
+        itemsConfigurations3 = [(CPUIImageRowCell *)self itemsConfigurations];
+        v13 = [itemsConfigurations3 count];
       }
 
-      v15 = [(CPUIImageRowCell *)self itemsConfigurations];
-      v16 = [v15 count];
+      itemsConfigurations4 = [(CPUIImageRowCell *)self itemsConfigurations];
+      v16 = [itemsConfigurations4 count];
 
       if (v13 >= v16)
       {
@@ -673,22 +673,22 @@ LABEL_6:
         v17 = v13;
       }
 
-      v18 = [(CPUIImageRowCell *)self itemsConfigurations];
-      v19 = [v18 subarrayWithRange:{0, v17}];
+      itemsConfigurations5 = [(CPUIImageRowCell *)self itemsConfigurations];
+      v19 = [itemsConfigurations5 subarrayWithRange:{0, v17}];
 
       [(CPUIImageRowCell *)self _artworkContentWidth];
       v21 = v20;
-      v22 = [(CPUIImageRowCell *)self _maxArtworkCountFittingSize];
-      v23 = (v21 - (8 * v22 - 8)) / v22;
-      v24 = [(CPUIImageRowCell *)self reusableMediaViews];
-      v25 = [v24 count];
+      _maxArtworkCountFittingSize2 = [(CPUIImageRowCell *)self _maxArtworkCountFittingSize];
+      v23 = (v21 - (8 * _maxArtworkCountFittingSize2 - 8)) / _maxArtworkCountFittingSize2;
+      reusableMediaViews = [(CPUIImageRowCell *)self reusableMediaViews];
+      v25 = [reusableMediaViews count];
 
       if (v16 < v25 || v25 > v13)
       {
         for (i = v25 - 1; i >= v12; --i)
         {
-          v28 = [(CPUIImageRowCell *)self reusableMediaViews];
-          v29 = [v28 objectAtIndexedSubscript:i];
+          reusableMediaViews2 = [(CPUIImageRowCell *)self reusableMediaViews];
+          v29 = [reusableMediaViews2 objectAtIndexedSubscript:i];
 
           [(CPUIImageRowCell *)self _removeArtworkTitleItem:v29];
         }
@@ -778,51 +778,51 @@ LABEL_11:
   [v28 configureWithArtwork:v22 title:v23 subtitle:v24 imageSize:v26 fallbackImage:v27 enabled:v25];
 }
 
-- (void)gridCellItemTapped:(id)a3
+- (void)gridCellItemTapped:(id)tapped
 {
-  v7 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
-    v5 = [(CPUIImageRowCell *)self selectGridItemBlock];
+    v4 = tappedCopy;
+    selectGridItemBlock = [(CPUIImageRowCell *)self selectGridItemBlock];
 
-    if (v5)
+    if (selectGridItemBlock)
     {
-      v6 = [(CPUIImageRowCell *)self selectGridItemBlock];
-      v6[2](v6, [v4 tag]);
+      selectGridItemBlock2 = [(CPUIImageRowCell *)self selectGridItemBlock];
+      selectGridItemBlock2[2](selectGridItemBlock2, [v4 tag]);
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)coreCellItemTapped:(id)a3
+- (void)coreCellItemTapped:(id)tapped
 {
-  v4 = [(CPUIImageRowCell *)self selectTitleBlock];
+  selectTitleBlock = [(CPUIImageRowCell *)self selectTitleBlock];
 
-  if (v4)
+  if (selectTitleBlock)
   {
-    v5 = [(CPUIImageRowCell *)self selectTitleBlock];
-    v5[2]();
+    selectTitleBlock2 = [(CPUIImageRowCell *)self selectTitleBlock];
+    selectTitleBlock2[2]();
   }
 }
 
-- (void)_removeArtworkTitleItem:(id)a3
+- (void)_removeArtworkTitleItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CPUIImageRowCell *)self itemStackViews];
-  v6 = [v5 lastObject];
+  itemCopy = item;
+  itemStackViews = [(CPUIImageRowCell *)self itemStackViews];
+  lastObject = [itemStackViews lastObject];
 
-  if (v6)
+  if (lastObject)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 arrangedSubviews];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    arrangedSubviews = [lastObject arrangedSubviews];
+    v8 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -833,17 +833,17 @@ LABEL_4:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
-        if (*(*(&v16 + 1) + 8 * v11) == v4)
+        if (*(*(&v16 + 1) + 8 * v11) == itemCopy)
         {
           break;
         }
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -853,25 +853,25 @@ LABEL_4:
         }
       }
 
-      [v6 removeArrangedSubview:v4];
-      v12 = [(CPUIImageRowCell *)self reusableMediaViews];
-      [v12 removeObject:v4];
+      [lastObject removeArrangedSubview:itemCopy];
+      reusableMediaViews = [(CPUIImageRowCell *)self reusableMediaViews];
+      [reusableMediaViews removeObject:itemCopy];
 
-      [v4 removeFromSuperview];
-      v13 = [v6 arrangedSubviews];
-      if (![v13 count])
+      [itemCopy removeFromSuperview];
+      arrangedSubviews2 = [lastObject arrangedSubviews];
+      if (![arrangedSubviews2 count])
       {
-        v14 = [(CPUIImageRowCell *)self itemStackViews];
-        v15 = [v14 count];
+        itemStackViews2 = [(CPUIImageRowCell *)self itemStackViews];
+        v15 = [itemStackViews2 count];
 
         if (v15 < 2)
         {
           goto LABEL_15;
         }
 
-        [v6 removeFromSuperview];
-        v13 = [(CPUIImageRowCell *)self itemStackViews];
-        [v13 removeObject:v6];
+        [lastObject removeFromSuperview];
+        arrangedSubviews2 = [(CPUIImageRowCell *)self itemStackViews];
+        [arrangedSubviews2 removeObject:lastObject];
       }
     }
 
@@ -888,27 +888,27 @@ LABEL_15:
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setSpacing:8.0];
   [v5 setClipsToBounds:0];
-  v3 = [(CPUIImageRowCell *)self contentStackView];
-  [v3 addArrangedSubview:v5];
+  contentStackView = [(CPUIImageRowCell *)self contentStackView];
+  [contentStackView addArrangedSubview:v5];
 
-  v4 = [(CPUIImageRowCell *)self itemStackViews];
-  [v4 addObject:v5];
+  itemStackViews = [(CPUIImageRowCell *)self itemStackViews];
+  [itemStackViews addObject:v5];
 }
 
-- (void)_setContentClipCorners:(unint64_t)a3 updateCorners:(BOOL)a4
+- (void)_setContentClipCorners:(unint64_t)corners updateCorners:(BOOL)updateCorners
 {
-  v4 = a4;
+  updateCornersCopy = updateCorners;
   if (_UISolariumEnabled())
   {
-    v7 = [(CPUIImageRowCell *)self layer];
-    [v7 setMasksToBounds:0];
+    layer = [(CPUIImageRowCell *)self layer];
+    [layer setMasksToBounds:0];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CPUIImageRowCell;
-    [(CPUIImageRowCell *)&v8 _setContentClipCorners:a3 updateCorners:v4];
+    [(CPUIImageRowCell *)&v8 _setContentClipCorners:corners updateCorners:updateCornersCopy];
   }
 }
 

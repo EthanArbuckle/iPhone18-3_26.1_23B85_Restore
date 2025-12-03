@@ -1,7 +1,7 @@
 @interface SagaCollaborationJoinOperation
-- (SagaCollaborationJoinOperation)initWithCoder:(id)a3;
-- (SagaCollaborationJoinOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 globalPlaylistID:(id)a5 invitationURL:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCollaborationJoinOperation)initWithCoder:(id)coder;
+- (SagaCollaborationJoinOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity globalPlaylistID:(id)d invitationURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -15,7 +15,7 @@
     v4 = *(&self->super._finished + 1);
     v5 = *(&self->_globalPlaylistID + 2);
     *buf = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v4;
     v19 = 2114;
@@ -31,8 +31,8 @@
 
   v8 = [[MSVXPCTransaction alloc] initWithName:v7];
   [v8 beginTransaction];
-  v9 = [(CloudLibraryOperation *)self connection];
-  v10 = -[ICCollaborationJoinRequest initWithDatabaseID:globalPlaylistID:invitationURL:]([ICCollaborationJoinRequest alloc], "initWithDatabaseID:globalPlaylistID:invitationURL:", [v9 databaseID], *(&self->super._finished + 1), *(&self->_globalPlaylistID + 2));
+  connection = [(CloudLibraryOperation *)self connection];
+  v10 = -[ICCollaborationJoinRequest initWithDatabaseID:globalPlaylistID:invitationURL:]([ICCollaborationJoinRequest alloc], "initWithDatabaseID:globalPlaylistID:invitationURL:", [connection databaseID], *(&self->super._finished + 1), *(&self->_globalPlaylistID + 2));
   [(ICDRequest *)v10 setVerificationInteractionLevel:2];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -41,32 +41,32 @@
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v9 sendRequest:v10 withResponseHandler:v12];
+  [connection sendRequest:v10 withResponseHandler:v12];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCollaborationJoinOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*(&self->super._finished + 1) forKey:{@"SagaCollaborationJoinOperationCollaborationGlobalPlaylistIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeObject:*(&self->_globalPlaylistID + 2) forKey:@"SagaCollaborationJoinOperationCollaborationInvitationURLKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*(&self->super._finished + 1) forKey:{@"SagaCollaborationJoinOperationCollaborationGlobalPlaylistIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:*(&self->_globalPlaylistID + 2) forKey:@"SagaCollaborationJoinOperationCollaborationInvitationURLKey"];
 }
 
-- (SagaCollaborationJoinOperation)initWithCoder:(id)a3
+- (SagaCollaborationJoinOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SagaCollaborationJoinOperation;
-  v5 = [(CloudLibraryOperation *)&v11 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationJoinOperationCollaborationGlobalPlaylistIDKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationJoinOperationCollaborationGlobalPlaylistIDKey"];
     v7 = *(v5 + 90);
     *(v5 + 90) = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationJoinOperationCollaborationInvitationURLKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaCollaborationJoinOperationCollaborationInvitationURLKey"];
     v9 = *(v5 + 98);
     *(v5 + 98) = v8;
   }
@@ -74,18 +74,18 @@
   return v5;
 }
 
-- (SagaCollaborationJoinOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 globalPlaylistID:(id)a5 invitationURL:(id)a6
+- (SagaCollaborationJoinOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity globalPlaylistID:(id)d invitationURL:(id)l
 {
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = SagaCollaborationJoinOperation;
-  v13 = [(CloudLibraryOperation *)&v16 initWithConfiguration:a3 clientIdentity:a4];
+  v13 = [(CloudLibraryOperation *)&v16 initWithConfiguration:configuration clientIdentity:identity];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong((v13 + 90), a5);
-    objc_storeStrong((v14 + 98), a6);
+    objc_storeStrong((v13 + 90), d);
+    objc_storeStrong((v14 + 98), l);
   }
 
   return v14;

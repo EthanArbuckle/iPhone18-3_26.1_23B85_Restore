@@ -1,6 +1,6 @@
 @interface DailyBriefingMapsSink
 - (NSString)uniqueName;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
 @end
 
 @implementation DailyBriefingMapsSink
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_A4AB4();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_5000(v6);

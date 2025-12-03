@@ -6,9 +6,9 @@
 
 - (id)internalRepresentation
 {
-  v3 = [(GKPlayerToInviteCacheObject *)self managedObjectContext];
-  v4 = [(GKPlayerToInviteCacheObject *)self playerID];
-  v5 = [GKPlayerProfileCacheObject playerProfileWithPlayerID:v4 inManagedObjectContext:v3];
+  managedObjectContext = [(GKPlayerToInviteCacheObject *)self managedObjectContext];
+  playerID = [(GKPlayerToInviteCacheObject *)self playerID];
+  v5 = [GKPlayerProfileCacheObject playerProfileWithPlayerID:playerID inManagedObjectContext:managedObjectContext];
 
   v6 = [GKPlayerInternal internalRepresentationForCacheObject:v5];
 

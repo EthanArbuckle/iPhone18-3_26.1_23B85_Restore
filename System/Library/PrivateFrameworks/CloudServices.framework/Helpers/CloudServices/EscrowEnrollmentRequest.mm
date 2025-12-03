@@ -1,21 +1,21 @@
 @interface EscrowEnrollmentRequest
-- (EscrowEnrollmentRequest)initWithRequest:(id)a3;
+- (EscrowEnrollmentRequest)initWithRequest:(id)request;
 - (id)bodyDictionary;
 - (id)validateInput;
 @end
 
 @implementation EscrowEnrollmentRequest
 
-- (EscrowEnrollmentRequest)initWithRequest:(id)a3
+- (EscrowEnrollmentRequest)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = EscrowEnrollmentRequest;
-  v5 = [(EscrowGenericRequest *)&v8 initWithRequest:v4];
+  v5 = [(EscrowGenericRequest *)&v8 initWithRequest:requestCopy];
   if (v5)
   {
-    v6 = [v4 prerecord];
-    [(EscrowEnrollmentRequest *)v5 setPrerecord:v6];
+    prerecord = [requestCopy prerecord];
+    [(EscrowEnrollmentRequest *)v5 setPrerecord:prerecord];
   }
 
   return v5;
@@ -25,21 +25,21 @@
 {
   v19.receiver = self;
   v19.super_class = EscrowEnrollmentRequest;
-  v6 = [(EscrowPasswordAuthenticatedRequest *)&v19 validateInput];
-  if (v6)
+  validateInput = [(EscrowPasswordAuthenticatedRequest *)&v19 validateInput];
+  if (validateInput)
   {
     goto LABEL_30;
   }
 
-  v7 = [(EscrowEnrollmentRequest *)self prerecord];
-  if (v7)
+  prerecord = [(EscrowEnrollmentRequest *)self prerecord];
+  if (prerecord)
   {
     v8 = 0;
 LABEL_8:
     if ([(EscrowGenericRequest *)self stingray]|| [(EscrowGenericRequest *)self iCDP])
     {
       v11 = 0;
-      if (v7)
+      if (prerecord)
       {
 LABEL_11:
         if (!v8)
@@ -48,7 +48,7 @@ LABEL_11:
           if (!v11)
           {
 LABEL_20:
-            v6 = 0;
+            validateInput = 0;
             goto LABEL_30;
           }
 
@@ -61,10 +61,10 @@ LABEL_20:
 
     else
     {
-      v12 = [(EscrowGenericRequest *)self phoneNumber];
-      v11 = [v12 length] == 0;
+      phoneNumber = [(EscrowGenericRequest *)self phoneNumber];
+      v11 = [phoneNumber length] == 0;
 
-      if (v7)
+      if (prerecord)
       {
         goto LABEL_11;
       }
@@ -83,22 +83,22 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v2 = [(EscrowGenericRequest *)self recoveryPassphrase];
-  v9 = [v2 length];
+  recoveryPassphrase = [(EscrowGenericRequest *)self recoveryPassphrase];
+  v9 = [recoveryPassphrase length];
   v8 = v9 == 0;
   if (!v9)
   {
-    v3 = [(EscrowGenericRequest *)self passcodeStashSecret];
-    if (!v3)
+    passcodeStashSecret = [(EscrowGenericRequest *)self passcodeStashSecret];
+    if (!passcodeStashSecret)
     {
       goto LABEL_22;
     }
   }
 
-  v10 = [(EscrowGenericRequest *)self escrowRecord];
-  if (v10)
+  escrowRecord = [(EscrowGenericRequest *)self escrowRecord];
+  if (escrowRecord)
   {
-    v4 = v10;
+    v4 = escrowRecord;
     goto LABEL_8;
   }
 
@@ -108,12 +108,12 @@ LABEL_22:
   }
 
 LABEL_24:
-  v6 = [CloudServicesError errorWithCode:22 error:0 format:@"Missing required parameters"];
+  validateInput = [CloudServicesError errorWithCode:22 error:0 format:@"Missing required parameters"];
   v13 = CloudServicesLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(EscrowGenericRequest *)self recoveryPassphrase];
-    if ([v14 length])
+    recoveryPassphrase2 = [(EscrowGenericRequest *)self recoveryPassphrase];
+    if ([recoveryPassphrase2 length])
     {
       v15 = @"Yes";
     }
@@ -123,80 +123,80 @@ LABEL_24:
       v15 = @"No";
     }
 
-    v16 = [(EscrowGenericRequest *)self escrowRecord];
-    v17 = [(EscrowGenericRequest *)self phoneNumber];
+    escrowRecord2 = [(EscrowGenericRequest *)self escrowRecord];
+    phoneNumber2 = [(EscrowGenericRequest *)self phoneNumber];
     *buf = 138412802;
     v21 = v15;
     v22 = 2112;
-    v23 = v16;
+    v23 = escrowRecord2;
     v24 = 2112;
-    v25 = v17;
+    v25 = phoneNumber2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Missing required parameters passphrase: %@\ndata: %@\nsms target: %@", buf, 0x20u);
   }
 
 LABEL_30:
 
-  return v6;
+  return validateInput;
 }
 
 - (id)bodyDictionary
 {
   v21.receiver = self;
   v21.super_class = EscrowEnrollmentRequest;
-  v3 = [(EscrowGenericRequest *)&v21 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self phoneNumber];
+  bodyDictionary = [(EscrowGenericRequest *)&v21 bodyDictionary];
+  phoneNumber = [(EscrowGenericRequest *)self phoneNumber];
 
-  if (v4)
+  if (phoneNumber)
   {
-    v5 = [(EscrowGenericRequest *)self phoneNumber];
-    [v3 setObject:v5 forKeyedSubscript:@"phoneNumber"];
+    phoneNumber2 = [(EscrowGenericRequest *)self phoneNumber];
+    [bodyDictionary setObject:phoneNumber2 forKeyedSubscript:@"phoneNumber"];
   }
 
-  v6 = [(EscrowGenericRequest *)self countryCode];
+  countryCode = [(EscrowGenericRequest *)self countryCode];
 
-  if (v6)
+  if (countryCode)
   {
-    v7 = [(EscrowGenericRequest *)self countryCode];
-    [v3 setObject:v7 forKeyedSubscript:@"countryISOCode"];
+    countryCode2 = [(EscrowGenericRequest *)self countryCode];
+    [bodyDictionary setObject:countryCode2 forKeyedSubscript:@"countryISOCode"];
   }
 
-  v8 = [(EscrowGenericRequest *)self countryDialCode];
+  countryDialCode = [(EscrowGenericRequest *)self countryDialCode];
 
-  if (v8)
+  if (countryDialCode)
   {
-    v9 = [(EscrowGenericRequest *)self countryDialCode];
-    [v3 setObject:v9 forKeyedSubscript:@"countryDialCode"];
+    countryDialCode2 = [(EscrowGenericRequest *)self countryDialCode];
+    [bodyDictionary setObject:countryDialCode2 forKeyedSubscript:@"countryDialCode"];
   }
 
-  v10 = [(EscrowGenericRequest *)self dsid];
+  dsid = [(EscrowGenericRequest *)self dsid];
 
-  if (v10)
+  if (dsid)
   {
-    v11 = [(EscrowGenericRequest *)self dsid];
-    [v3 setObject:v11 forKeyedSubscript:@"dsid"];
+    dsid2 = [(EscrowGenericRequest *)self dsid];
+    [bodyDictionary setObject:dsid2 forKeyedSubscript:@"dsid"];
   }
 
-  v12 = [(EscrowGenericRequest *)self duplicate];
-  v13 = [(EscrowGenericRequest *)self metadata];
-  if (v12)
+  duplicate = [(EscrowGenericRequest *)self duplicate];
+  metadata = [(EscrowGenericRequest *)self metadata];
+  if (duplicate)
   {
-    v14 = [(EscrowGenericRequest *)self _filteredMetadataForDoubleEnrollment:v13];
+    v14 = [(EscrowGenericRequest *)self _filteredMetadataForDoubleEnrollment:metadata];
 
-    v13 = v14;
+    metadata = v14;
   }
 
-  v15 = [v13 base64EncodedStringFromDict];
-  [v3 setObject:v15 forKeyedSubscript:@"metadata"];
+  base64EncodedStringFromDict = [metadata base64EncodedStringFromDict];
+  [bodyDictionary setObject:base64EncodedStringFromDict forKeyedSubscript:@"metadata"];
 
-  v16 = [(EscrowGenericRequest *)self blob];
-  v17 = [v16 base64EncodedStringWithOptions:0];
-  [v3 setObject:v17 forKeyedSubscript:@"blob"];
+  blob = [(EscrowGenericRequest *)self blob];
+  v17 = [blob base64EncodedStringWithOptions:0];
+  [bodyDictionary setObject:v17 forKeyedSubscript:@"blob"];
 
-  v18 = [(EscrowGenericRequest *)self blob];
-  v19 = sub_10000DD7C(v18);
-  [v3 setObject:v19 forKeyedSubscript:@"blobDigest"];
+  blob2 = [(EscrowGenericRequest *)self blob];
+  v19 = sub_10000DD7C(blob2);
+  [bodyDictionary setObject:v19 forKeyedSubscript:@"blobDigest"];
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

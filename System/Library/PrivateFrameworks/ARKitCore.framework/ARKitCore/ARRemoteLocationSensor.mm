@@ -1,12 +1,12 @@
 @interface ARRemoteLocationSensor
 - (ARLocationData)currentLocation;
 - (ARRemoteLocationSensor)init;
-- (ARRemoteLocationSensor)initWithServerConnection:(id)a3;
+- (ARRemoteLocationSensor)initWithServerConnection:(id)connection;
 - (void)configureForReplay;
-- (void)lookupAltitudeAtCoordinate:(CLLocationCoordinate2D)a3 completionHandler:(id)a4;
-- (void)updateARSessionState:(unint64_t)a3;
-- (void)updateEstimationFromVIOPose:(id)a3 imageData:(id)a4;
-- (void)updateFromVisualLocalizationResult:(id)a3;
+- (void)lookupAltitudeAtCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler;
+- (void)updateARSessionState:(unint64_t)state;
+- (void)updateEstimationFromVIOPose:(id)pose imageData:(id)data;
+- (void)updateFromVisualLocalizationResult:(id)result;
 @end
 
 @implementation ARRemoteLocationSensor
@@ -18,19 +18,19 @@
   return [(ARRemoteSensor *)&v3 initWithServiceName:@"com.apple.arkit.service.location"];
 }
 
-- (ARRemoteLocationSensor)initWithServerConnection:(id)a3
+- (ARRemoteLocationSensor)initWithServerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ARRemoteLocationSensor;
-  v5 = [(ARRemoteSensor *)&v9 initWithServerConnection:v4];
+  v5 = [(ARRemoteSensor *)&v9 initWithServerConnection:connectionCopy];
   if (v5)
   {
     v6 = ARRemoteLocationSensorClientInterface();
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = ARRemoteLocationSensorServiceInterface();
-    [v4 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
   }
 
   return v5;
@@ -38,13 +38,13 @@
 
 - (void)configureForReplay
 {
-  v3 = [(ARRemoteSensor *)self serverConnection];
+  serverConnection = [(ARRemoteSensor *)self serverConnection];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__ARRemoteLocationSensor_configureForReplay__block_invoke;
   v5[3] = &unk_1E817E818;
   v5[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v5];
+  v4 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v5];
 
   [v4 configureForReplay];
 }
@@ -77,13 +77,13 @@ void __44__ARRemoteLocationSensor_configureForReplay__block_invoke(uint64_t a1, 
   v12 = __Block_byref_object_copy__8;
   v13 = __Block_byref_object_dispose__8;
   v14 = 0;
-  v3 = [(ARRemoteSensor *)self serverConnection];
+  serverConnection = [(ARRemoteSensor *)self serverConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__ARRemoteLocationSensor_currentLocation__block_invoke;
   v8[3] = &unk_1E817E818;
   v8[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v4 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -118,20 +118,20 @@ void __41__ARRemoteLocationSensor_currentLocation__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)lookupAltitudeAtCoordinate:(CLLocationCoordinate2D)a3 completionHandler:(id)a4
+- (void)lookupAltitudeAtCoordinate:(CLLocationCoordinate2D)coordinate completionHandler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = a4;
-  v8 = [(ARRemoteSensor *)self serverConnection];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
+  serverConnection = [(ARRemoteSensor *)self serverConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ARRemoteLocationSensor_lookupAltitudeAtCoordinate_completionHandler___block_invoke;
   v10[3] = &unk_1E817E818;
   v10[4] = self;
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v10];
+  v9 = [serverConnection remoteObjectProxyWithErrorHandler:v10];
 
-  [v9 lookupAltitudeAtCoordinate:v7 completionHandler:{latitude, longitude}];
+  [v9 lookupAltitudeAtCoordinate:handlerCopy completionHandler:{latitude, longitude}];
 }
 
 void __71__ARRemoteLocationSensor_lookupAltitudeAtCoordinate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -154,17 +154,17 @@ void __71__ARRemoteLocationSensor_lookupAltitudeAtCoordinate_completionHandler__
   }
 }
 
-- (void)updateARSessionState:(unint64_t)a3
+- (void)updateARSessionState:(unint64_t)state
 {
-  v5 = [(ARRemoteSensor *)self serverConnection];
+  serverConnection = [(ARRemoteSensor *)self serverConnection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ARRemoteLocationSensor_updateARSessionState___block_invoke;
   v7[3] = &unk_1E817E818;
   v7[4] = self;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v6 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
 
-  [v6 updateARSessionState:a3];
+  [v6 updateARSessionState:state];
 }
 
 void __47__ARRemoteLocationSensor_updateARSessionState___block_invoke(uint64_t a1, void *a2)
@@ -187,19 +187,19 @@ void __47__ARRemoteLocationSensor_updateARSessionState___block_invoke(uint64_t a
   }
 }
 
-- (void)updateEstimationFromVIOPose:(id)a3 imageData:(id)a4
+- (void)updateEstimationFromVIOPose:(id)pose imageData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ARRemoteSensor *)self serverConnection];
+  dataCopy = data;
+  poseCopy = pose;
+  serverConnection = [(ARRemoteSensor *)self serverConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__ARRemoteLocationSensor_updateEstimationFromVIOPose_imageData___block_invoke;
   v10[3] = &unk_1E817E818;
   v10[4] = self;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v9 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
-  [v9 updateEstimationFromVIOPose:v7 imageData:v6];
+  [v9 updateEstimationFromVIOPose:poseCopy imageData:dataCopy];
 }
 
 void __64__ARRemoteLocationSensor_updateEstimationFromVIOPose_imageData___block_invoke(uint64_t a1, void *a2)
@@ -222,7 +222,7 @@ void __64__ARRemoteLocationSensor_updateEstimationFromVIOPose_imageData___block_
   }
 }
 
-- (void)updateFromVisualLocalizationResult:(id)a3
+- (void)updateFromVisualLocalizationResult:(id)result
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D940];

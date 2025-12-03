@@ -1,18 +1,18 @@
 @interface PXCuratedLibraryFooterController
-+ (int64_t)_modeForZoomLevel:(int64_t)a3;
++ (int64_t)_modeForZoomLevel:(int64_t)level;
 - (BOOL)_shouldRevealPhotosFooterView;
 - (BOOL)_shouldShowFooterForGridViewState;
 - (BOOL)_shouldShowFooterForPresentedZoomLevel;
 - (BOOL)isGridViewVisible;
 - (BOOL)isPullingFooter;
 - (PXCuratedLibraryFooterController)init;
-- (PXCuratedLibraryFooterController)initWithGridView:(id)a3 layout:(id)a4 viewModel:(id)a5 itemsCountsController:(id)a6;
+- (PXCuratedLibraryFooterController)initWithGridView:(id)view layout:(id)layout viewModel:(id)model itemsCountsController:(id)controller;
 - (PXCuratedLibraryFooterControllerDelegate)delegate;
-- (double)footerVisibleAmountIncludingSafeAreaInsets:(BOOL)a3;
+- (double)footerVisibleAmountIncludingSafeAreaInsets:(BOOL)insets;
 - (id)footerViewModel;
-- (id)presentingViewControllerForFooterViewModel:(id)a3;
+- (id)presentingViewControllerForFooterViewModel:(id)model;
 - (void)_conditionallyRevealPhotosFooterView;
-- (void)_conditionallyRevealPhotosFooterViewWithLastUserScrollTime:(double)a3;
+- (void)_conditionallyRevealPhotosFooterViewWithLastUserScrollTime:(double)time;
 - (void)_footerHasImportantInformationDidChange;
 - (void)_invalidateFooter;
 - (void)_invalidateFooterAlpha;
@@ -30,20 +30,20 @@
 - (void)_updateIsFooterVisible;
 - (void)_updateWantsFooter;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4;
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3;
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)setFooterFullyMasked:(BOOL)a3;
-- (void)setFooterMaskVerticalOffset:(double)a3;
-- (void)setFooterNeedsReveal:(BOOL)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHasAppearedOnce:(BOOL)a3;
-- (void)setIsFooterVisible:(BOOL)a3;
-- (void)setWantsFooter:(BOOL)a3;
-- (void)setWantsFooterMask:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller;
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height;
+- (void)scrollViewControllerContentBoundsDidChange:(id)change;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)setFooterFullyMasked:(BOOL)masked;
+- (void)setFooterMaskVerticalOffset:(double)offset;
+- (void)setFooterNeedsReveal:(BOOL)reveal;
+- (void)setFooterView:(id)view;
+- (void)setHasAppearedOnce:(BOOL)once;
+- (void)setIsFooterVisible:(BOOL)visible;
+- (void)setWantsFooter:(BOOL)footer;
+- (void)setWantsFooterMask:(BOOL)mask;
 - (void)viewDidAppear;
 @end
 
@@ -56,15 +56,15 @@
   return WeakRetained;
 }
 
-- (id)presentingViewControllerForFooterViewModel:(id)a3
+- (id)presentingViewControllerForFooterViewModel:(id)model
 {
-  v4 = [(PXCuratedLibraryFooterController *)self delegate];
-  v5 = [v4 presentingViewControllerForFooterController:self];
+  delegate = [(PXCuratedLibraryFooterController *)self delegate];
+  v5 = [delegate presentingViewControllerForFooterController:self];
 
   return v5;
 }
 
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height
 {
   if (!self->_isUpdatingFooter)
   {
@@ -77,15 +77,15 @@
   }
 }
 
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller
 {
-  v7 = a4;
-  v5 = [(PXCuratedLibraryFooterController *)self delegate];
-  v6 = [v5 presentingViewControllerForFooterController:self];
+  controllerCopy = controller;
+  delegate = [(PXCuratedLibraryFooterController *)self delegate];
+  v6 = [delegate presentingViewControllerForFooterController:self];
 
-  if (v7)
+  if (controllerCopy)
   {
-    [v6 presentViewController:v7 animated:1 completion:0];
+    [v6 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
@@ -94,7 +94,7 @@
   }
 }
 
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3
+- (void)scrollViewControllerContentBoundsDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -104,7 +104,7 @@
   [(PXCuratedLibraryFooterController *)self performChanges:v3];
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -123,31 +123,31 @@ uint64_t __66__PXCuratedLibraryFooterController_scrollViewControllerDidScroll___
   return [v2 _invalidateFooterMaskViewFrame];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (CuratedLibraryViewModelObserverContext_132478 == a5)
+  observableCopy = observable;
+  if (CuratedLibraryViewModelObserverContext_132478 == context)
   {
-    if ((([(PXCuratedLibraryViewModel *)self->_viewModel hideStatusFooterInSelectMode]| 0x44) & a4) != 0)
+    if ((([(PXCuratedLibraryViewModel *)self->_viewModel hideStatusFooterInSelectMode]| 0x44) & change) != 0)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __65__PXCuratedLibraryFooterController_observable_didChange_context___block_invoke;
       v12[3] = &unk_1E773BBF0;
       v12[4] = self;
-      v12[5] = a4;
+      v12[5] = change;
       [(PXCuratedLibraryFooterController *)self performChanges:v12];
     }
 
-    if ((a4 & 0x10000000) != 0)
+    if ((change & 0x10000000) != 0)
     {
       [(PXCuratedLibraryFooterController *)self _resetFooterViewModel];
     }
   }
 
-  else if (operator|| == a5)
+  else if (operator|| == context)
   {
-    if ((a4 & 0x4001) != 0)
+    if ((change & 0x4001) != 0)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -160,15 +160,15 @@ uint64_t __66__PXCuratedLibraryFooterController_scrollViewControllerDidScroll___
 
   else
   {
-    if (CuratedLibraryFooterViewModelObserverContext != a5)
+    if (CuratedLibraryFooterViewModelObserverContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterController.m" lineNumber:665 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterController.m" lineNumber:665 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((a4 & 0x40000) != 0)
+    if ((change & 0x40000) != 0)
     {
       [(PXCuratedLibraryFooterController *)self _footerHasImportantInformationDidChange];
     }
@@ -197,35 +197,35 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
 
 - (void)_updateFooterAndMaskVisibility
 {
-  v3 = [(PXCuratedLibraryFooterController *)self isFooterFullyMasked];
-  v4 = [(PXCuratedLibraryFooterController *)self footerMaskView];
-  [v4 setHidden:v3];
+  isFooterFullyMasked = [(PXCuratedLibraryFooterController *)self isFooterFullyMasked];
+  footerMaskView = [(PXCuratedLibraryFooterController *)self footerMaskView];
+  [footerMaskView setHidden:isFooterFullyMasked];
 
-  v5 = [(PXCuratedLibraryFooterController *)self footerView];
-  [v5 setHidden:v3];
+  footerView = [(PXCuratedLibraryFooterController *)self footerView];
+  [footerView setHidden:isFooterFullyMasked];
 }
 
 - (void)_invalidateFooterAndMaskVisibility
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterAndMaskVisibility];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterAndMaskVisibility];
 }
 
 - (void)_updateFooterMaskViewFrame
 {
-  v36 = [(PXCuratedLibraryFooterController *)self footerMaskView];
-  if (v36)
+  footerMaskView = [(PXCuratedLibraryFooterController *)self footerMaskView];
+  if (footerMaskView)
   {
-    v3 = [(PXCuratedLibraryFooterController *)self gridView];
-    v4 = [v3 scrollViewController];
+    gridView = [(PXCuratedLibraryFooterController *)self gridView];
+    scrollViewController = [gridView scrollViewController];
 
-    [v4 visibleRect];
+    [scrollViewController visibleRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(PXCuratedLibraryFooterController *)self styleGuide];
-    [v13 secondaryToolbarPadding];
+    styleGuide = [(PXCuratedLibraryFooterController *)self styleGuide];
+    [styleGuide secondaryToolbarPadding];
     v15 = v14;
     v17 = v16;
 
@@ -236,7 +236,7 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
     v38.size.width = v10;
     v38.size.height = v12;
     MaxY = CGRectGetMaxY(v38);
-    [v4 contentInset];
+    [scrollViewController contentInset];
     v22 = MaxY - v21;
     [(PXCuratedLibraryFooterController *)self footerMaskVerticalOffset];
     v24 = v23 + v22;
@@ -250,10 +250,10 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
     v40.size.width = v18;
     v40.size.height = v12;
     v26 = v25 - CGRectGetMinY(v40);
-    [v4 contentBounds];
+    [scrollViewController contentBounds];
     v27 = CGRectGetMaxY(v41);
-    v28 = [(PXCuratedLibraryFooterController *)self layout];
-    [v28 padding];
+    layout = [(PXCuratedLibraryFooterController *)self layout];
+    [layout padding];
     v30 = v27 - v29;
 
     if (v24 >= v30)
@@ -267,9 +267,9 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
     }
 
     v32 = v31 + 1.0;
-    [v36 setFrame:{v19, v31 + 1.0, v18, v26}];
-    v33 = [(PXCuratedLibraryFooterController *)self footerView];
-    [v33 frame];
+    [footerMaskView setFrame:{v19, v31 + 1.0, v18, v26}];
+    footerView = [(PXCuratedLibraryFooterController *)self footerView];
+    [footerView frame];
     v35 = v34;
 
     [(PXCuratedLibraryFooterController *)self setFooterFullyMasked:v35 + 1.0 >= v32, v35 + 1.0];
@@ -283,16 +283,16 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
 
 - (void)_invalidateFooterMaskViewFrame
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterMaskViewFrame];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterMaskViewFrame];
 }
 
 - (void)_updateFooterAlpha
 {
   if (self->_needsFooterFrameChangeAnimation)
   {
-    v3 = [(PXCuratedLibraryFooterController *)self footerView];
-    [v3 setAlpha:0.0];
+    footerView = [(PXCuratedLibraryFooterController *)self footerView];
+    [footerView setAlpha:0.0];
 
     self->_needsFooterFrameChangeAnimation = 0;
     v4 = 1.0;
@@ -301,11 +301,11 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
 
   else
   {
-    v6 = [(PXCuratedLibraryFooterController *)self viewModel];
-    v7 = [v6 zoomablePhotosViewModel];
-    v8 = [v7 shouldHideSurroundingContent];
+    viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+    zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+    shouldHideSurroundingContent = [zoomablePhotosViewModel shouldHideSurroundingContent];
 
-    if (v8)
+    if (shouldHideSurroundingContent)
     {
       v4 = 0.0;
     }
@@ -318,8 +318,8 @@ uint64_t __65__PXCuratedLibraryFooterController_observable_didChange_context___b
     v5 = 0.2;
   }
 
-  v9 = [(PXCuratedLibraryFooterController *)self footerView];
-  [v9 alpha];
+  footerView2 = [(PXCuratedLibraryFooterController *)self footerView];
+  [footerView2 alpha];
   v11 = v10;
 
   if (v11 != v4)
@@ -343,8 +343,8 @@ void __54__PXCuratedLibraryFooterController__updateFooterAlpha__block_invoke(uin
 
 - (void)_invalidateFooterAlpha
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterAlpha];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterAlpha];
 }
 
 - (void)_updateIsFooterVisible
@@ -356,111 +356,111 @@ void __54__PXCuratedLibraryFooterController__updateFooterAlpha__block_invoke(uin
 
 - (void)_invalidateIsFooterVisible
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsFooterVisible];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsFooterVisible];
 }
 
 - (void)_updateFooter
 {
   isUpdatingFooter = self->_isUpdatingFooter;
   self->_isUpdatingFooter = 1;
-  v4 = [(PXCuratedLibraryFooterController *)self layout];
-  [v4 padding];
+  layout = [(PXCuratedLibraryFooterController *)self layout];
+  [layout padding];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXCuratedLibraryFooterController *)self gridView];
-  v12 = [v11 scrollViewController];
+  gridView = [(PXCuratedLibraryFooterController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
 
-  v13 = [(PXCuratedLibraryFooterController *)self footerView];
-  v14 = [(PXCuratedLibraryFooterController *)self wantsFooter];
-  if (v14)
+  footerView = [(PXCuratedLibraryFooterController *)self footerView];
+  wantsFooter = [(PXCuratedLibraryFooterController *)self wantsFooter];
+  if (wantsFooter)
   {
-    if (!v13)
+    if (!footerView)
     {
       reusableFooterView = self->_reusableFooterView;
       if (reusableFooterView)
       {
         [(PXPhotosGlobalFooterView *)reusableFooterView setHidden:0];
-        v13 = self->_reusableFooterView;
+        footerView = self->_reusableFooterView;
         v16 = self->_reusableFooterView;
         self->_reusableFooterView = 0;
       }
 
       else
       {
-        v13 = objc_alloc_init(PXPhotosGlobalFooterView);
-        [(PXPhotosGlobalFooterView *)v13 setDelegate:self];
-        [v12 addSubview:v13];
+        footerView = objc_alloc_init(PXPhotosGlobalFooterView);
+        [(PXPhotosGlobalFooterView *)footerView setDelegate:self];
+        [scrollViewController addSubview:footerView];
       }
     }
 
-    v19 = [(PXCuratedLibraryFooterController *)self footerViewModel];
-    [(PXPhotosGlobalFooterView *)v13 setViewModel:v19];
+    footerViewModel = [(PXCuratedLibraryFooterController *)self footerViewModel];
+    [(PXPhotosGlobalFooterView *)footerView setViewModel:footerViewModel];
 
-    [v4 presentedPadding];
-    [v4 safeAreaInsets];
-    [v12 scrollViewContentSize];
+    [layout presentedPadding];
+    [layout safeAreaInsets];
+    [scrollViewController scrollViewContentSize];
     PXEdgeInsetsInsetSizeEdges();
   }
 
-  if (v13)
+  if (footerView)
   {
     v17 = self->_reusableFooterView;
-    self->_reusableFooterView = v13;
-    v18 = v13;
+    self->_reusableFooterView = footerView;
+    v18 = footerView;
 
     [(PXPhotosGlobalFooterView *)self->_reusableFooterView setHidden:1];
   }
 
-  [v4 setPadding:{v6, v8, 0.0, v10}];
+  [layout setPadding:{v6, v8, 0.0, v10}];
   [(PXCuratedLibraryFooterController *)self setFooterView:0];
-  v20 = [(PXCuratedLibraryFooterController *)self footerMaskView];
-  v21 = [(PXCuratedLibraryFooterController *)self wantsFooterMask];
-  if (v14 && v21)
+  footerMaskView = [(PXCuratedLibraryFooterController *)self footerMaskView];
+  wantsFooterMask = [(PXCuratedLibraryFooterController *)self wantsFooterMask];
+  if (wantsFooter && wantsFooterMask)
   {
-    if (!v20)
+    if (!footerMaskView)
     {
-      v20 = objc_alloc_init(MEMORY[0x1E69DD250]);
+      footerMaskView = objc_alloc_init(MEMORY[0x1E69DD250]);
       v22 = +[PXCuratedLibrarySettings sharedInstance];
       if ([v22 exaggerateContrast])
       {
-        v23 = [MEMORY[0x1E69DC888] redColor];
-        v24 = [v23 colorWithAlphaComponent:0.5];
-        [v20 setBackgroundColor:v24];
+        redColor = [MEMORY[0x1E69DC888] redColor];
+        v24 = [redColor colorWithAlphaComponent:0.5];
+        [footerMaskView setBackgroundColor:v24];
       }
 
       else
       {
-        v23 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-        [v20 setBackgroundColor:v23];
+        redColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+        [footerMaskView setBackgroundColor:redColor];
       }
 
-      [v20 setUserInteractionEnabled:0];
-      [v12 addSubview:v20];
+      [footerMaskView setUserInteractionEnabled:0];
+      [scrollViewController addSubview:footerMaskView];
     }
 
-    [(PXCuratedLibraryFooterController *)self setFooterMaskView:v20];
+    [(PXCuratedLibraryFooterController *)self setFooterMaskView:footerMaskView];
     [(PXCuratedLibraryFooterController *)self _updateFooterMaskViewFrame];
   }
 
   else
   {
-    [v20 removeFromSuperview];
+    [footerMaskView removeFromSuperview];
 
     [(PXCuratedLibraryFooterController *)self setFooterMaskView:0];
   }
 
-  v25 = [(PXCuratedLibraryFooterController *)self viewModel];
-  self->_presentedZoomLevel = [v25 zoomLevel];
+  viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+  self->_presentedZoomLevel = [viewModel zoomLevel];
 
   self->_isUpdatingFooter = isUpdatingFooter;
 }
 
 - (void)_invalidateFooter
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooter];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooter];
 }
 
 - (void)_resetFooterViewModel
@@ -478,37 +478,37 @@ void __54__PXCuratedLibraryFooterController__updateFooterAlpha__block_invoke(uin
 
 - (void)_updateFooterMode
 {
-  v3 = [(PXCuratedLibraryFooterController *)self footerViewModelIfLoaded];
-  if (v3)
+  footerViewModelIfLoaded = [(PXCuratedLibraryFooterController *)self footerViewModelIfLoaded];
+  if (footerViewModelIfLoaded)
   {
-    v8 = v3;
-    v4 = [v3 mode];
-    v5 = [(PXCuratedLibraryFooterController *)self viewModel];
-    v6 = [v5 zoomLevel];
+    v8 = footerViewModelIfLoaded;
+    mode = [footerViewModelIfLoaded mode];
+    viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+    zoomLevel = [viewModel zoomLevel];
 
-    v7 = [objc_opt_class() _modeForZoomLevel:v6];
-    v3 = v8;
-    if (v4 != v7)
+    v7 = [objc_opt_class() _modeForZoomLevel:zoomLevel];
+    footerViewModelIfLoaded = v8;
+    if (mode != v7)
     {
       [v8 setMode:?];
       [(PXCuratedLibraryFooterController *)self _invalidateFooter];
-      v3 = v8;
+      footerViewModelIfLoaded = v8;
     }
   }
 }
 
 - (void)_invalidateFooterMode
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterMode];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterMode];
 }
 
 - (void)_updateWantsFooter
 {
   if ([(PXCuratedLibraryFooterController *)self hasAppearedOnce])
   {
-    v3 = [(PXCuratedLibraryFooterController *)self viewModel];
-    if ([v3 enableFooter] && -[PXCuratedLibraryFooterController _shouldShowFooterForPresentedZoomLevel](self, "_shouldShowFooterForPresentedZoomLevel"))
+    viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+    if ([viewModel enableFooter] && -[PXCuratedLibraryFooterController _shouldShowFooterForPresentedZoomLevel](self, "_shouldShowFooterForPresentedZoomLevel"))
     {
       if ([(PXCuratedLibraryFooterController *)self _shouldShowFooterForGridViewState])
       {
@@ -517,9 +517,9 @@ void __54__PXCuratedLibraryFooterController__updateFooterAlpha__block_invoke(uin
 
       if ([(PXCuratedLibraryFooterController *)self wantsFooter])
       {
-        v6 = [v3 zoomablePhotosViewModel];
-        v5 = v6;
-        if (!v6)
+        zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+        v5 = zoomablePhotosViewModel;
+        if (!zoomablePhotosViewModel)
         {
           v4 = 0;
           v14 = 0;
@@ -532,13 +532,13 @@ void __54__PXCuratedLibraryFooterController__updateFooterAlpha__block_invoke(uin
           goto LABEL_16;
         }
 
-        [v6 zoomState];
+        [zoomablePhotosViewModel zoomState];
         v7 = BYTE8(v11);
 
         if (v7)
         {
 LABEL_7:
-          if ((PXCuratedLibraryStateIsEmptyLibrary([v3 libraryState]) & 1) == 0 && (!objc_msgSend(v3, "isSelecting") || (objc_msgSend(v3, "hideStatusFooterInSelectMode") & 1) == 0))
+          if ((PXCuratedLibraryStateIsEmptyLibrary([viewModel libraryState]) & 1) == 0 && (!objc_msgSend(viewModel, "isSelecting") || (objc_msgSend(viewModel, "hideStatusFooterInSelectMode") & 1) == 0))
           {
             v4 = +[PXCuratedLibrarySettings sharedInstance];
             v5 = ([v4 hideStatusFooter] ^ 1);
@@ -558,16 +558,16 @@ LABEL_13:
 
 - (void)_invalidateWantsFooter
 {
-  v2 = [(PXCuratedLibraryFooterController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsFooter];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsFooter];
 }
 
 - (void)_footerHasImportantInformationDidChange
 {
-  v3 = [(PXCuratedLibraryFooterController *)self footerViewModel];
-  v4 = [v3 hasImportantInformation];
+  footerViewModel = [(PXCuratedLibraryFooterController *)self footerViewModel];
+  hasImportantInformation = [footerViewModel hasImportantInformation];
 
-  if (v4)
+  if (hasImportantInformation)
   {
 
     [(PXCuratedLibraryFooterController *)self _conditionallyRevealPhotosFooterView];
@@ -615,18 +615,18 @@ void __72__PXCuratedLibraryFooterController__conditionallyRevealPhotosFooterView
   [WeakRetained _conditionallyRevealPhotosFooterViewWithLastUserScrollTime:*(a1 + 40)];
 }
 
-- (void)_conditionallyRevealPhotosFooterViewWithLastUserScrollTime:(double)a3
+- (void)_conditionallyRevealPhotosFooterViewWithLastUserScrollTime:(double)time
 {
   footerAutoScrollMinimumIdleTimer = self->_footerAutoScrollMinimumIdleTimer;
   self->_footerAutoScrollMinimumIdleTimer = 0;
 
-  if (self->_lastUserScrollTime == a3)
+  if (self->_lastUserScrollTime == time)
   {
     if ([(PXCuratedLibraryFooterController *)self _shouldRevealPhotosFooterView])
     {
       self->_footerDidAutoScroll = 1;
-      v9 = [(PXCuratedLibraryFooterController *)self delegate];
-      [v9 footerControllerRevealFooter:self];
+      delegate = [(PXCuratedLibraryFooterController *)self delegate];
+      [delegate footerControllerRevealFooter:self];
 
       v7 = v10;
       v10[0] = MEMORY[0x1E69E9820];
@@ -683,16 +683,16 @@ LABEL_7:
 
     else
     {
-      v6 = [(PXCuratedLibraryFooterController *)self footerViewModel];
-      v7 = [v6 hasImportantInformation];
+      footerViewModel = [(PXCuratedLibraryFooterController *)self footerViewModel];
+      hasImportantInformation = [footerViewModel hasImportantInformation];
 
-      if (v7)
+      if (hasImportantInformation)
       {
-        v8 = [(PXCuratedLibraryFooterController *)self gridView];
-        v9 = [v8 scrollViewController];
-        v10 = [(PXCuratedLibraryFooterController *)self layout];
-        [v10 padding];
-        [v9 isScrolledAtEdge:3 tolerance:v11 + 1.0];
+        gridView = [(PXCuratedLibraryFooterController *)self gridView];
+        scrollViewController = [gridView scrollViewController];
+        layout = [(PXCuratedLibraryFooterController *)self layout];
+        [layout padding];
+        [scrollViewController isScrolledAtEdge:3 tolerance:v11 + 1.0];
 
         [(PXCuratedLibraryFooterController *)self footerVisibleAmountIncludingSafeAreaInsets:0];
         PXFloatEqualToFloatWithTolerance();
@@ -724,12 +724,12 @@ LABEL_7:
 
 - (BOOL)_shouldShowFooterForPresentedZoomLevel
 {
-  v3 = [(PXCuratedLibraryFooterController *)self viewModel];
-  v4 = [v3 specManager];
-  v5 = [v4 spec];
-  v6 = [v5 userInterfaceIdiom];
+  viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+  specManager = [viewModel specManager];
+  spec = [specManager spec];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
 
-  if (v6 == 4)
+  if (userInterfaceIdiom == 4)
   {
     return 1;
   }
@@ -740,20 +740,20 @@ LABEL_7:
     return 1;
   }
 
-  v8 = [(PXCuratedLibraryFooterController *)self viewModel];
-  v9 = presentedZoomLevel == [v8 zoomLevel];
+  viewModel2 = [(PXCuratedLibraryFooterController *)self viewModel];
+  v9 = presentedZoomLevel == [viewModel2 zoomLevel];
 
   return v9;
 }
 
 - (BOOL)_shouldShowFooterForGridViewState
 {
-  v3 = [(PXCuratedLibraryFooterController *)self viewModel];
-  v4 = [v3 specManager];
-  v5 = [v4 spec];
-  v6 = [v5 userInterfaceIdiom];
+  viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+  specManager = [viewModel specManager];
+  spec = [specManager spec];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
 
-  if (v6 != 4)
+  if (userInterfaceIdiom != 4)
   {
     [(PXCuratedLibraryFooterController *)self footerVisibleAmountIncludingSafeAreaInsets:1];
     PXFloatGreaterThanFloat();
@@ -764,47 +764,47 @@ LABEL_7:
 
 - (BOOL)isPullingFooter
 {
-  v3 = [(PXCuratedLibraryFooterController *)self gridView];
-  v4 = [v3 scrollViewController];
+  gridView = [(PXCuratedLibraryFooterController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
 
-  v5 = [(PXCuratedLibraryFooterController *)self gridView];
-  v6 = [v5 engine];
-  v7 = [v6 scrollViewSpeedometer];
+  gridView2 = [(PXCuratedLibraryFooterController *)self gridView];
+  engine = [gridView2 engine];
+  scrollViewSpeedometer = [engine scrollViewSpeedometer];
 
-  if ([v4 isScrolledAtEdge:3 tolerance:1.0] && (objc_msgSend(v7, "lastScrollDirection"), v8 > 0.0))
+  if ([scrollViewController isScrolledAtEdge:3 tolerance:1.0] && (objc_msgSend(scrollViewSpeedometer, "lastScrollDirection"), v8 > 0.0))
   {
-    v9 = [v4 isTracking];
+    isTracking = [scrollViewController isTracking];
   }
 
   else
   {
-    v9 = 0;
+    isTracking = 0;
   }
 
-  return v9;
+  return isTracking;
 }
 
-- (double)footerVisibleAmountIncludingSafeAreaInsets:(BOOL)a3
+- (double)footerVisibleAmountIncludingSafeAreaInsets:(BOOL)insets
 {
-  v5 = [(PXCuratedLibraryFooterController *)self footerView];
-  if (v5)
+  footerView = [(PXCuratedLibraryFooterController *)self footerView];
+  if (footerView)
   {
-    v6 = [(PXCuratedLibraryFooterController *)self gridView];
-    [v5 frame];
+    gridView = [(PXCuratedLibraryFooterController *)self gridView];
+    [footerView frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v6 scrollViewController];
-    [v15 scrollViewVisibleRect];
+    scrollViewController = [gridView scrollViewController];
+    [scrollViewController scrollViewVisibleRect];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    if (!a3)
+    if (!insets)
     {
-      [v6 safeAreaInsets];
+      [gridView safeAreaInsets];
       PXEdgeInsetsInsetRect();
     }
 
@@ -853,9 +853,9 @@ LABEL_7:
 
 - (BOOL)isGridViewVisible
 {
-  v2 = [(PXCuratedLibraryFooterController *)self gridView];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  gridView = [(PXCuratedLibraryFooterController *)self gridView];
+  window = [gridView window];
+  v4 = window != 0;
 
   return v4;
 }
@@ -867,11 +867,11 @@ LABEL_7:
   [(PXCuratedLibraryFooterController *)self _footerHasImportantInformationDidChange];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCuratedLibraryFooterController;
-  [(PXCuratedLibraryFooterController *)&v3 performChanges:a3];
+  [(PXCuratedLibraryFooterController *)&v3 performChanges:changes];
 }
 
 - (void)didPerformChanges
@@ -879,92 +879,92 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryFooterController;
   [(PXCuratedLibraryFooterController *)&v4 didPerformChanges];
-  v3 = [(PXCuratedLibraryFooterController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXCuratedLibraryFooterController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)setFooterFullyMasked:(BOOL)a3
+- (void)setFooterFullyMasked:(BOOL)masked
 {
-  if (self->_footerFullyMasked != a3)
+  if (self->_footerFullyMasked != masked)
   {
-    self->_footerFullyMasked = a3;
+    self->_footerFullyMasked = masked;
     [(PXCuratedLibraryFooterController *)self _invalidateFooterAndMaskVisibility];
   }
 }
 
-- (void)setIsFooterVisible:(BOOL)a3
+- (void)setIsFooterVisible:(BOOL)visible
 {
-  if (self->_isFooterVisible != a3)
+  if (self->_isFooterVisible != visible)
   {
-    self->_isFooterVisible = a3;
-    v4 = [(PXCuratedLibraryFooterController *)self footerViewModel];
-    v5 = v4;
+    self->_isFooterVisible = visible;
+    footerViewModel = [(PXCuratedLibraryFooterController *)self footerViewModel];
+    v5 = footerViewModel;
     if (self->_isFooterVisible)
     {
-      [v4 didShowFooter];
+      [footerViewModel didShowFooter];
     }
 
     else
     {
-      [v4 didHideFooter];
+      [footerViewModel didHideFooter];
     }
   }
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
-  if (self->_footerView != v5)
+  viewCopy = view;
+  if (self->_footerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_footerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_footerView, view);
     [(PXCuratedLibraryFooterController *)self _invalidateIsFooterVisible];
     [(PXCuratedLibraryFooterController *)self _invalidateFooterAlpha];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setFooterMaskVerticalOffset:(double)a3
+- (void)setFooterMaskVerticalOffset:(double)offset
 {
-  if (self->_footerMaskVerticalOffset != a3)
+  if (self->_footerMaskVerticalOffset != offset)
   {
-    self->_footerMaskVerticalOffset = a3;
+    self->_footerMaskVerticalOffset = offset;
     [(PXCuratedLibraryFooterController *)self _invalidateFooterMaskViewFrame];
   }
 }
 
-- (void)setWantsFooterMask:(BOOL)a3
+- (void)setWantsFooterMask:(BOOL)mask
 {
-  if (self->_wantsFooterMask != a3)
+  if (self->_wantsFooterMask != mask)
   {
-    self->_wantsFooterMask = a3;
+    self->_wantsFooterMask = mask;
     [(PXCuratedLibraryFooterController *)self _invalidateFooter];
   }
 }
 
-- (void)setWantsFooter:(BOOL)a3
+- (void)setWantsFooter:(BOOL)footer
 {
-  if (self->_wantsFooter != a3)
+  if (self->_wantsFooter != footer)
   {
-    self->_wantsFooter = a3;
+    self->_wantsFooter = footer;
     [(PXCuratedLibraryFooterController *)self _invalidateFooter];
   }
 }
 
-- (void)setFooterNeedsReveal:(BOOL)a3
+- (void)setFooterNeedsReveal:(BOOL)reveal
 {
-  if (self->_footerNeedsReveal != a3)
+  if (self->_footerNeedsReveal != reveal)
   {
-    self->_footerNeedsReveal = a3;
+    self->_footerNeedsReveal = reveal;
     [(PXCuratedLibraryFooterController *)self _invalidateWantsFooter];
   }
 }
 
-- (void)setHasAppearedOnce:(BOOL)a3
+- (void)setHasAppearedOnce:(BOOL)once
 {
-  if (self->_hasAppearedOnce != a3)
+  if (self->_hasAppearedOnce != once)
   {
-    self->_hasAppearedOnce = a3;
+    self->_hasAppearedOnce = once;
     [(PXCuratedLibraryFooterController *)self _invalidateWantsFooter];
   }
 }
@@ -974,11 +974,11 @@ LABEL_7:
   footerViewModel = self->_footerViewModel;
   if (!footerViewModel)
   {
-    v4 = [(PXCuratedLibraryFooterController *)self itemCountsController];
-    v5 = [(PXCuratedLibraryFooterController *)self viewModel];
-    v6 = [v5 cplUIStatusProvider];
-    v7 = [v5 analysisStatus];
-    v8 = -[PXCuratedLibraryFooterViewModel initWithItemCountsController:cplUIStatusProvider:analysisStatus:mode:viewModel:]([PXCuratedLibraryFooterViewModel alloc], "initWithItemCountsController:cplUIStatusProvider:analysisStatus:mode:viewModel:", v4, v6, v7, [objc_opt_class() _modeForZoomLevel:{objc_msgSend(v5, "zoomLevel")}], v5);
+    itemCountsController = [(PXCuratedLibraryFooterController *)self itemCountsController];
+    viewModel = [(PXCuratedLibraryFooterController *)self viewModel];
+    cplUIStatusProvider = [viewModel cplUIStatusProvider];
+    analysisStatus = [viewModel analysisStatus];
+    v8 = -[PXCuratedLibraryFooterViewModel initWithItemCountsController:cplUIStatusProvider:analysisStatus:mode:viewModel:]([PXCuratedLibraryFooterViewModel alloc], "initWithItemCountsController:cplUIStatusProvider:analysisStatus:mode:viewModel:", itemCountsController, cplUIStatusProvider, analysisStatus, [objc_opt_class() _modeForZoomLevel:{objc_msgSend(viewModel, "zoomLevel")}], viewModel);
     v9 = self->_footerViewModel;
     self->_footerViewModel = v8;
 
@@ -991,12 +991,12 @@ LABEL_7:
   return footerViewModel;
 }
 
-- (PXCuratedLibraryFooterController)initWithGridView:(id)a3 layout:(id)a4 viewModel:(id)a5 itemsCountsController:(id)a6
+- (PXCuratedLibraryFooterController)initWithGridView:(id)view layout:(id)layout viewModel:(id)model itemsCountsController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  viewCopy = view;
+  layoutCopy = layout;
+  modelCopy = model;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = PXCuratedLibraryFooterController;
   v15 = [(PXCuratedLibraryFooterController *)&v24 init];
@@ -1004,20 +1004,20 @@ LABEL_7:
   if (v15)
   {
     v15->_presentedZoomLevel = 0;
-    objc_storeStrong(&v15->_gridView, a3);
-    v17 = [(PXGView *)v16->_gridView scrollViewController];
-    [v17 registerObserver:v16];
-    objc_storeStrong(&v16->_layout, a4);
-    objc_storeStrong(&v16->_viewModel, a5);
+    objc_storeStrong(&v15->_gridView, view);
+    scrollViewController = [(PXGView *)v16->_gridView scrollViewController];
+    [scrollViewController registerObserver:v16];
+    objc_storeStrong(&v16->_layout, layout);
+    objc_storeStrong(&v16->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v16->_viewModel registerChangeObserver:v16 context:CuratedLibraryViewModelObserverContext_132478];
-    v18 = [(PXCuratedLibraryViewModel *)v16->_viewModel zoomablePhotosViewModel];
-    [v18 registerChangeObserver:v16 context:operator||];
+    zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)v16->_viewModel zoomablePhotosViewModel];
+    [zoomablePhotosViewModel registerChangeObserver:v16 context:operator||];
 
-    v19 = [v13 styleGuide];
+    styleGuide = [modelCopy styleGuide];
     styleGuide = v16->_styleGuide;
-    v16->_styleGuide = v19;
+    v16->_styleGuide = styleGuide;
 
-    objc_storeStrong(&v16->_itemCountsController, a6);
+    objc_storeStrong(&v16->_itemCountsController, controller);
     v21 = [[off_1E7721940 alloc] initWithTarget:v16];
     updater = v16->_updater;
     v16->_updater = v21;
@@ -1037,30 +1037,30 @@ LABEL_7:
 
 - (PXCuratedLibraryFooterController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterController.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFooterController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterController.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXCuratedLibraryFooterController init]"}];
 
   abort();
 }
 
-+ (int64_t)_modeForZoomLevel:(int64_t)a3
++ (int64_t)_modeForZoomLevel:(int64_t)level
 {
-  if ((a3 - 1) < 2)
+  if ((level - 1) < 2)
   {
     return 2;
   }
 
-  if (a3 == 3)
+  if (level == 3)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!level)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXCuratedLibraryFooterController.m" lineNumber:280 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryFooterController.m" lineNumber:280 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }

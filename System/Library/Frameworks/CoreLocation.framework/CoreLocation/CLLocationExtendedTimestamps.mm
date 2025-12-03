@@ -1,9 +1,9 @@
 @interface CLLocationExtendedTimestamps
-- (CLLocationExtendedTimestamps)initWithCLLocation:(id)a3 systemTime:(id)a4 machContinuousTimeSec:(double)a5;
-- (CLLocationExtendedTimestamps)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLLocationExtendedTimestamps)initWithCLLocation:(id)location systemTime:(id)time machContinuousTimeSec:(double)sec;
+- (CLLocationExtendedTimestamps)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLLocationExtendedTimestamps
@@ -15,55 +15,55 @@
   [(CLLocationExtendedTimestamps *)&v3 dealloc];
 }
 
-- (CLLocationExtendedTimestamps)initWithCLLocation:(id)a3 systemTime:(id)a4 machContinuousTimeSec:(double)a5
+- (CLLocationExtendedTimestamps)initWithCLLocation:(id)location systemTime:(id)time machContinuousTimeSec:(double)sec
 {
   v10.receiver = self;
   v10.super_class = CLLocationExtendedTimestamps;
   v8 = [(CLLocationExtendedTimestamps *)&v10 init];
   if (v8)
   {
-    v8->_location = a3;
-    v8->_systemTimeNotUserTime = a4;
-    v8->_machContinuousTimeSec = a5;
+    v8->_location = location;
+    v8->_systemTimeNotUserTime = time;
+    v8->_machContinuousTimeSec = sec;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [[(CLLocationExtendedTimestamps *)self location] copyWithZone:a3];
-  v7 = [(NSDate *)[(CLLocationExtendedTimestamps *)self systemTimeNotUserTime] copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [[(CLLocationExtendedTimestamps *)self location] copyWithZone:zone];
+  v7 = [(NSDate *)[(CLLocationExtendedTimestamps *)self systemTimeNotUserTime] copyWithZone:zone];
   machContinuousTimeSec = self->_machContinuousTimeSec;
 
   return [v5 initWithCLLocation:v6 systemTime:v7 machContinuousTimeSec:machContinuousTimeSec];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[CLLocationExtendedTimestamps location](self forKey:{"location"), @"CLLocationExtendedTimestampsLocation"}];
-  [a3 encodeObject:-[CLLocationExtendedTimestamps systemTimeNotUserTime](self forKey:{"systemTimeNotUserTime"), @"CLLocationExtendedTimestampsSystemTime"}];
+  [coder encodeObject:-[CLLocationExtendedTimestamps location](self forKey:{"location"), @"CLLocationExtendedTimestampsLocation"}];
+  [coder encodeObject:-[CLLocationExtendedTimestamps systemTimeNotUserTime](self forKey:{"systemTimeNotUserTime"), @"CLLocationExtendedTimestampsSystemTime"}];
   [(CLLocationExtendedTimestamps *)self machContinuousTimeSec];
 
-  [a3 encodeDouble:@"CLLocationExtendedTimestampsMachContinuousTime" forKey:?];
+  [coder encodeDouble:@"CLLocationExtendedTimestampsMachContinuousTime" forKey:?];
 }
 
-- (CLLocationExtendedTimestamps)initWithCoder:(id)a3
+- (CLLocationExtendedTimestamps)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CLLocationExtendedTimestampsLocation"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CLLocationExtendedTimestampsSystemTime"];
-  [a3 decodeDoubleForKey:@"CLLocationExtendedTimestampsMachContinuousTime"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CLLocationExtendedTimestampsLocation"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CLLocationExtendedTimestampsSystemTime"];
+  [coder decodeDoubleForKey:@"CLLocationExtendedTimestampsMachContinuousTime"];
 
   return [(CLLocationExtendedTimestamps *)self initWithCLLocation:v6 systemTime:v7 machContinuousTimeSec:?];
 }

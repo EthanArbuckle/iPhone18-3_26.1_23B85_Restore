@@ -1,35 +1,35 @@
 @interface NLModelImplE
-- (NLModelImplE)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10;
-- (id)predictedLabelForString:(id)a3;
-- (id)predictedLabelsForTokens:(id)a3;
+- (NLModelImplE)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0;
+- (id)predictedLabelForString:(id)string;
+- (id)predictedLabelsForTokens:(id)tokens;
 @end
 
 @implementation NLModelImplE
 
-- (NLModelImplE)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10
+- (NLModelImplE)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0
 {
-  v12 = a3;
-  v13 = [[NLEmbedding alloc] initWithData:v12 error:a10];
+  dataCopy = data;
+  v13 = [[NLEmbedding alloc] initWithData:dataCopy error:error];
   if (v13 && (v17.receiver = self, v17.super_class = NLModelImplE, v14 = [(NLModelImplE *)&v17 init], (self = v14) != 0))
   {
     objc_storeStrong(&v14->_embedding, v13);
-    objc_storeStrong(&self->_embeddingData, a3);
+    objc_storeStrong(&self->_embeddingData, data);
     self = self;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (id)predictedLabelForString:(id)a3
+- (id)predictedLabelForString:(id)string
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(NLEmbedding *)self->_embedding vectorForString:a3];
+  v3 = [(NLEmbedding *)self->_embedding vectorForString:string];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -82,14 +82,14 @@
   return v4;
 }
 
-- (id)predictedLabelsForTokens:(id)a3
+- (id)predictedLabelsForTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [v4 componentsJoinedByString:@" "];
+  tokensCopy = tokens;
+  v5 = [tokensCopy componentsJoinedByString:@" "];
   v6 = [(NLModelImplE *)self predictedLabelForString:v5];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v8 = 0;
     if (v6)
@@ -104,14 +104,14 @@
 
     do
     {
-      [v7 addObject:v9];
+      [array addObject:v9];
       ++v8;
     }
 
-    while (v8 < [v4 count]);
+    while (v8 < [tokensCopy count]);
   }
 
-  return v7;
+  return array;
 }
 
 @end

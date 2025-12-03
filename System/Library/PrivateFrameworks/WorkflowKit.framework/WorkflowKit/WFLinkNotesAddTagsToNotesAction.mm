@@ -1,15 +1,15 @@
 @interface WFLinkNotesAddTagsToNotesAction
-- (id)localizedCategoryWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
 - (id)parameterSummary;
 @end
 
 @implementation WFLinkNotesAddTagsToNotesAction
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"NotesSubcategoryTags", @"Tags");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

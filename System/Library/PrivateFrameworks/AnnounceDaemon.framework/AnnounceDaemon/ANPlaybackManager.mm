@@ -1,44 +1,44 @@
 @interface ANPlaybackManager
-+ (id)managerWithEndpointID:(id)a3;
-- (ANPlaybackManager)initWithEndpointID:(id)a3;
++ (id)managerWithEndpointID:(id)d;
+- (ANPlaybackManager)initWithEndpointID:(id)d;
 - (ANPlaybackManagerDataSource)dataSource;
 - (ANPlaybackManagerDelegate)delegate;
-- (BOOL)_playAnnouncements:(id)a3 announceIDToStart:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (BOOL)_playAnnouncementsWithIDs:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (BOOL)_playAnnouncements:(id)announcements announceIDToStart:(id)start options:(unint64_t)options completionHandler:(id)handler;
+- (BOOL)_playAnnouncementsWithIDs:(id)ds options:(unint64_t)options completionHandler:(id)handler;
 - (BOOL)_startPlayingAnnouncements;
 - (NSDictionary)lastPlayedAnnouncementInfo;
-- (id)_announcementsForPlaybackOptions:(unint64_t)a3 fromAnnouncements:(id)a4;
-- (id)_createTrackPlayerWithAnnouncement:(id)a3 options:(unint64_t)a4 anchorPoint:(unint64_t *)a5;
+- (id)_announcementsForPlaybackOptions:(unint64_t)options fromAnnouncements:(id)announcements;
+- (id)_createTrackPlayerWithAnnouncement:(id)announcement options:(unint64_t)options anchorPoint:(unint64_t *)point;
 - (id)_nextAnnouncementToPlay;
 - (unint64_t)playbackItemCount;
 - (unint64_t)playbackState;
 - (void)_addAdditionalAnnouncementsIfNeeded;
-- (void)_handlePlaybackEndedForPlayer:(id)a3 withError:(id)a4;
-- (void)_nextAnnouncementWithCompletionHandler:(id)a3;
-- (void)_previousAnnouncementWithCompletionHandler:(id)a3;
+- (void)_handlePlaybackEndedForPlayer:(id)player withError:(id)error;
+- (void)_nextAnnouncementWithCompletionHandler:(id)handler;
+- (void)_previousAnnouncementWithCompletionHandler:(id)handler;
 - (void)_startPlayingAnnouncements;
 - (void)_stopAudioPlayer;
-- (void)_stopPlayingAnnouncementsWithCompletionHandler:(id)a3;
-- (void)_updatePlaybackInfoForAnnouncementID:(id)a3 options:(unint64_t)a4 player:(id)a5;
-- (void)performPlaybackCommand:(id)a3 completionHandler:(id)a4;
-- (void)playWithTonePlayer:(ANTonePlayer *)a3 toneFileURL:(NSURL *)a4 trackPlayer:(ANTrackPlayer *)a5 completionHandler:(id)a6;
-- (void)trackPlayer:(id)a3 didFinishPlayingTrackType:(int64_t)a4 announcementID:(id)a5 error:(id)a6;
-- (void)trackPlayer:(id)a3 didUpdatePlaybackState:(unint64_t)a4 announcementID:(id)a5;
-- (void)updatePlaybackForAnnouncementID:(id)a3 options:(unint64_t)a4;
+- (void)_stopPlayingAnnouncementsWithCompletionHandler:(id)handler;
+- (void)_updatePlaybackInfoForAnnouncementID:(id)d options:(unint64_t)options player:(id)player;
+- (void)performPlaybackCommand:(id)command completionHandler:(id)handler;
+- (void)playWithTonePlayer:(ANTonePlayer *)player toneFileURL:(NSURL *)l trackPlayer:(ANTrackPlayer *)trackPlayer completionHandler:(id)handler;
+- (void)trackPlayer:(id)player didFinishPlayingTrackType:(int64_t)type announcementID:(id)d error:(id)error;
+- (void)trackPlayer:(id)player didUpdatePlaybackState:(unint64_t)state announcementID:(id)d;
+- (void)updatePlaybackForAnnouncementID:(id)d options:(unint64_t)options;
 @end
 
 @implementation ANPlaybackManager
 
-- (ANPlaybackManager)initWithEndpointID:(id)a3
+- (ANPlaybackManager)initWithEndpointID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = ANPlaybackManager;
   v6 = [(ANPlaybackManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointID, a3);
+    objc_storeStrong(&v6->_endpointID, d);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.announce.playbackQueue", v8);
     playbackQueue = v7->_playbackQueue;
@@ -57,30 +57,30 @@
   return v7;
 }
 
-+ (id)managerWithEndpointID:(id)a3
++ (id)managerWithEndpointID:(id)d
 {
-  v3 = a3;
-  v4 = [[ANPlaybackManager alloc] initWithEndpointID:v3];
+  dCopy = d;
+  v4 = [[ANPlaybackManager alloc] initWithEndpointID:dCopy];
 
   return v4;
 }
 
-- (void)performPlaybackCommand:(id)a3 completionHandler:(id)a4
+- (void)performPlaybackCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(ANPlaybackManager *)self playbackQueue];
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__ANPlaybackManager_performPlaybackCommand_completionHandler___block_invoke;
   v11[3] = &unk_278C86A80;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = commandCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = commandCopy;
+  dispatch_async(playbackQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -171,25 +171,25 @@ LABEL_16:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePlaybackForAnnouncementID:(id)a3 options:(unint64_t)a4
+- (void)updatePlaybackForAnnouncementID:(id)d options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(ANPlaybackManager *)self playbackQueue];
+  dCopy = d;
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ANPlaybackManager_updatePlaybackForAnnouncementID_options___block_invoke;
   block[3] = &unk_278C866B8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  optionsCopy = options;
+  v8 = dCopy;
+  dispatch_async(playbackQueue, block);
 }
 
 - (NSDictionary)lastPlayedAnnouncementInfo
 {
-  v3 = [(ANPlaybackManager *)self playbackQueue];
-  dispatch_assert_queue_not_V2(v3);
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
+  dispatch_assert_queue_not_V2(playbackQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -197,14 +197,14 @@ LABEL_16:
   v11 = __Block_byref_object_copy__2;
   v12 = __Block_byref_object_dispose__2;
   v13 = 0;
-  v4 = [(ANPlaybackManager *)self playbackQueue];
+  playbackQueue2 = [(ANPlaybackManager *)self playbackQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke;
   v7[3] = &unk_278C86AA8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(playbackQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -223,34 +223,34 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
 
 - (unint64_t)playbackState
 {
-  v2 = [(ANPlaybackManager *)self audioPlayer];
-  v3 = [v2 playbackState];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  playbackState = [audioPlayer playbackState];
 
-  return v3;
+  return playbackState;
 }
 
 - (unint64_t)playbackItemCount
 {
-  v2 = [(ANPlaybackManager *)self announcementsToPlay];
-  v3 = [v2 count];
+  announcementsToPlay = [(ANPlaybackManager *)self announcementsToPlay];
+  v3 = [announcementsToPlay count];
 
   return v3;
 }
 
-- (void)_updatePlaybackInfoForAnnouncementID:(id)a3 options:(unint64_t)a4 player:(id)a5
+- (void)_updatePlaybackInfoForAnnouncementID:(id)d options:(unint64_t)options player:(id)player
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ANPlaybackManager *)self playbackQueue];
-  dispatch_assert_queue_V2(v10);
+  dCopy = d;
+  playerCopy = player;
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
+  dispatch_assert_queue_V2(playbackQueue);
 
   v11 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4 & 1];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options & 1];
     LODWORD(v56[0]) = 138412546;
-    *(v56 + 4) = v8;
+    *(v56 + 4) = dCopy;
     WORD2(v56[1]) = 2112;
     *(&v56[1] + 6) = v12;
     _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "Updating Playback Info with Announcement ID = %@, Playing = %@", v56, 0x16u);
@@ -259,34 +259,34 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
   v13 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(ANPlaybackManager *)self playbackInfo];
+    playbackInfo = [(ANPlaybackManager *)self playbackInfo];
     LODWORD(v56[0]) = 138412290;
-    *(v56 + 4) = v14;
+    *(v56 + 4) = playbackInfo;
     _os_log_impl(&dword_23F525000, v13, OS_LOG_TYPE_DEFAULT, "[BEFORE] Playback Info: %@", v56, 0xCu);
   }
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v15 = [(ANPlaybackManager *)self playbackInfo];
+    playbackInfo2 = [(ANPlaybackManager *)self playbackInfo];
     v16 = *MEMORY[0x277CEA790];
-    v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277CEA790]];
+    v17 = [playbackInfo2 objectForKeyedSubscript:*MEMORY[0x277CEA790]];
 
-    v18 = [(ANPlaybackManager *)self playbackInfo];
+    playbackInfo3 = [(ANPlaybackManager *)self playbackInfo];
     v19 = *MEMORY[0x277CEA770];
-    v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277CEA770]];
+    v20 = [playbackInfo3 objectForKeyedSubscript:*MEMORY[0x277CEA770]];
 
     if (v17)
     {
-      v21 = [v17 BOOLValue];
-      if (v8)
+      bOOLValue = [v17 BOOLValue];
+      if (dCopy)
       {
-        if (!v21 && v20 && [v20 isEqualToString:v8])
+        if (!bOOLValue && v20 && [v20 isEqualToString:dCopy])
         {
           v22 = [(ANPlaybackManager *)self log];
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(v56[0]) = 138412290;
-            *(v56 + 4) = v8;
+            *(v56 + 4) = dCopy;
             _os_log_impl(&dword_23F525000, v22, OS_LOG_TYPE_DEFAULT, "Ignoring dupe stop update for Announcement %@", v56, 0xCu);
           }
 
@@ -295,25 +295,25 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
       }
     }
 
-    v31 = [(ANPlaybackManager *)self playbackInfo];
-    [v31 setObject:&unk_2851C49F8 forKeyedSubscript:v16];
+    playbackInfo4 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo4 setObject:&unk_2851C49F8 forKeyedSubscript:v16];
 
     v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_absolute_time()];
-    v33 = [(ANPlaybackManager *)self playbackInfo];
-    [v33 setObject:v32 forKeyedSubscript:*MEMORY[0x277CEA788]];
+    playbackInfo5 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo5 setObject:v32 forKeyedSubscript:*MEMORY[0x277CEA788]];
 
-    v34 = [MEMORY[0x277CBEAA8] date];
-    v35 = [(ANPlaybackManager *)self playbackInfo];
-    [v35 setObject:v34 forKeyedSubscript:*MEMORY[0x277CEA780]];
+    date = [MEMORY[0x277CBEAA8] date];
+    playbackInfo6 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo6 setObject:date forKeyedSubscript:*MEMORY[0x277CEA780]];
 
-    if (v9)
+    if (playerCopy)
     {
       v36 = MEMORY[0x277CCAE60];
-      v37 = [v9 queuePlayer];
-      v38 = v37;
-      if (v37)
+      queuePlayer = [playerCopy queuePlayer];
+      v38 = queuePlayer;
+      if (queuePlayer)
       {
-        [v37 currentTime];
+        [queuePlayer currentTime];
       }
 
       else
@@ -322,11 +322,11 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
       }
 
       v39 = [v36 valueWithCMTime:v56];
-      v40 = [(ANPlaybackManager *)self playbackInfo];
-      [v40 setObject:v39 forKeyedSubscript:*MEMORY[0x277CEA778]];
+      playbackInfo7 = [(ANPlaybackManager *)self playbackInfo];
+      [playbackInfo7 setObject:v39 forKeyedSubscript:*MEMORY[0x277CEA778]];
     }
 
-    if (!v8)
+    if (!dCopy)
     {
       goto LABEL_31;
     }
@@ -334,27 +334,27 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
     goto LABEL_30;
   }
 
-  if (v8)
+  if (dCopy)
   {
-    v23 = [(ANPlaybackManager *)self playbackInfo];
-    [v23 setObject:&unk_2851C49E0 forKeyedSubscript:*MEMORY[0x277CEA790]];
+    playbackInfo8 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo8 setObject:&unk_2851C49E0 forKeyedSubscript:*MEMORY[0x277CEA790]];
 
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_absolute_time()];
-    v25 = [(ANPlaybackManager *)self playbackInfo];
-    [v25 setObject:v24 forKeyedSubscript:*MEMORY[0x277CEA7A8]];
+    playbackInfo9 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo9 setObject:v24 forKeyedSubscript:*MEMORY[0x277CEA7A8]];
 
-    v26 = [MEMORY[0x277CBEAA8] date];
-    v27 = [(ANPlaybackManager *)self playbackInfo];
-    [v27 setObject:v26 forKeyedSubscript:*MEMORY[0x277CEA7A0]];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    playbackInfo10 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo10 setObject:date2 forKeyedSubscript:*MEMORY[0x277CEA7A0]];
 
-    if (v9)
+    if (playerCopy)
     {
       v28 = MEMORY[0x277CCAE60];
-      v29 = [v9 queuePlayer];
-      v30 = v29;
-      if (v29)
+      queuePlayer2 = [playerCopy queuePlayer];
+      v30 = queuePlayer2;
+      if (queuePlayer2)
       {
-        [v29 currentTime];
+        [queuePlayer2 currentTime];
       }
 
       else
@@ -363,23 +363,23 @@ void __47__ANPlaybackManager_lastPlayedAnnouncementInfo__block_invoke(uint64_t a
       }
 
       v41 = [v28 valueWithCMTime:v56];
-      v42 = [(ANPlaybackManager *)self playbackInfo];
-      [v42 setObject:v41 forKeyedSubscript:*MEMORY[0x277CEA798]];
+      playbackInfo11 = [(ANPlaybackManager *)self playbackInfo];
+      [playbackInfo11 setObject:v41 forKeyedSubscript:*MEMORY[0x277CEA798]];
     }
 
     v43 = [(ANPlaybackManager *)self playbackInfo:v56[0]];
     [v43 setObject:0 forKeyedSubscript:*MEMORY[0x277CEA788]];
 
-    v44 = [(ANPlaybackManager *)self playbackInfo];
-    [v44 setObject:0 forKeyedSubscript:*MEMORY[0x277CEA780]];
+    playbackInfo12 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo12 setObject:0 forKeyedSubscript:*MEMORY[0x277CEA780]];
 
-    v45 = [(ANPlaybackManager *)self playbackInfo];
-    [v45 setObject:0 forKeyedSubscript:*MEMORY[0x277CEA778]];
+    playbackInfo13 = [(ANPlaybackManager *)self playbackInfo];
+    [playbackInfo13 setObject:0 forKeyedSubscript:*MEMORY[0x277CEA778]];
 
     v19 = *MEMORY[0x277CEA770];
 LABEL_30:
     v46 = [(ANPlaybackManager *)self playbackInfo:v56[0]];
-    [v46 setObject:v8 forKeyedSubscript:v19];
+    [v46 setObject:dCopy forKeyedSubscript:v19];
 
 LABEL_31:
     v47 = [(ANPlaybackManager *)self playbackInfo:v56[0]];
@@ -387,32 +387,32 @@ LABEL_31:
 
     if (v17)
     {
-      v48 = [(ANPlaybackManager *)self delegate];
-      v49 = v48;
-      if (a4)
+      delegate = [(ANPlaybackManager *)self delegate];
+      v49 = delegate;
+      if (options)
       {
-        [v48 playbackManager:self didStartPlayingAnnouncement:v17];
+        [delegate playbackManager:self didStartPlayingAnnouncement:v17];
       }
 
       else
       {
-        [v48 playbackManager:self didFinishPlayingAnnouncement:v17 withOptions:a4];
+        [delegate playbackManager:self didFinishPlayingAnnouncement:v17 withOptions:options];
       }
     }
 
     v50 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = [(ANPlaybackManager *)self playbackInfo];
+      playbackInfo14 = [(ANPlaybackManager *)self playbackInfo];
       LODWORD(v56[0]) = 138412290;
-      *(v56 + 4) = v51;
+      *(v56 + 4) = playbackInfo14;
       _os_log_impl(&dword_23F525000, v50, OS_LOG_TYPE_DEFAULT, "[AFTER] Playback Info: %@", v56, 0xCu);
     }
 
-    v52 = [(ANPlaybackManager *)self delegate];
-    v53 = [(ANPlaybackManager *)self playbackInfo];
-    v54 = [v53 copy];
-    [v52 playbackManager:self didUpdatePlaybackInfo:v54];
+    delegate2 = [(ANPlaybackManager *)self delegate];
+    playbackInfo15 = [(ANPlaybackManager *)self playbackInfo];
+    v54 = [playbackInfo15 copy];
+    [delegate2 playbackManager:self didUpdatePlaybackInfo:v54];
 
     goto LABEL_39;
   }
@@ -428,9 +428,9 @@ LABEL_39:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopPlayingAnnouncementsWithCompletionHandler:(id)a3
+- (void)_stopPlayingAnnouncementsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -440,16 +440,16 @@ LABEL_39:
 
   [(ANPlaybackManager *)self _stopAudioPlayer];
   v6 = [MEMORY[0x277CCA9B8] an_errorWithCode:1037 component:*MEMORY[0x277CEA9C0]];
-  v7 = [(ANPlaybackManager *)self audioPlayer];
-  [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:v7 withError:v6];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:audioPlayer withError:v6];
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)_nextAnnouncementWithCompletionHandler:(id)a3
+- (void)_nextAnnouncementWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -458,19 +458,19 @@ LABEL_39:
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v19, 0xCu);
   }
 
-  v6 = [(ANPlaybackManager *)self audioPlayer];
-  v7 = [v6 playbackState];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  playbackState = [audioPlayer playbackState];
 
-  if (v7 == 1)
+  if (playbackState == 1)
   {
     [(ANPlaybackManager *)self _addAdditionalAnnouncementsIfNeeded];
-    v8 = [(ANPlaybackManager *)self audioPlayer];
-    v9 = [v8 numberActiveTracks];
+    audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
+    numberActiveTracks = [audioPlayer2 numberActiveTracks];
 
-    if (v9 > 1)
+    if (numberActiveTracks > 1)
     {
-      v13 = [(ANPlaybackManager *)self audioPlayer];
-      [v13 nextWithCompletionHandler:v4];
+      audioPlayer3 = [(ANPlaybackManager *)self audioPlayer];
+      [audioPlayer3 nextWithCompletionHandler:handlerCopy];
       goto LABEL_9;
     }
 
@@ -486,22 +486,22 @@ LABEL_39:
     v12 = 1020;
   }
 
-  v13 = [v10 an_errorWithCode:v12 component:v11];
-  v4[2](v4, v13);
+  audioPlayer3 = [v10 an_errorWithCode:v12 component:v11];
+  handlerCopy[2](handlerCopy, audioPlayer3);
   v14 = +[ANAnalytics shared];
-  v15 = [v13 code];
-  v16 = [(ANPlaybackManager *)self endpointID];
-  v17 = [ANAnalyticsContext contextWithEndpointID:v16];
-  [v14 error:v15 context:v17];
+  code = [audioPlayer3 code];
+  endpointID = [(ANPlaybackManager *)self endpointID];
+  v17 = [ANAnalyticsContext contextWithEndpointID:endpointID];
+  [v14 error:code context:v17];
 
 LABEL_9:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_previousAnnouncementWithCompletionHandler:(id)a3
+- (void)_previousAnnouncementWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -510,71 +510,71 @@ LABEL_9:
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v14, 0xCu);
   }
 
-  v6 = [(ANPlaybackManager *)self audioPlayer];
-  v7 = [v6 playbackState];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  playbackState = [audioPlayer playbackState];
 
-  if (v7 == 1)
+  if (playbackState == 1)
   {
-    v8 = [(ANPlaybackManager *)self audioPlayer];
-    [v8 previousWithCompletionHandler:v4];
+    audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
+    [audioPlayer2 previousWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] an_errorWithCode:1020 component:*MEMORY[0x277CEA9C0]];
-    v4[2](v4, v8);
+    audioPlayer2 = [MEMORY[0x277CCA9B8] an_errorWithCode:1020 component:*MEMORY[0x277CEA9C0]];
+    handlerCopy[2](handlerCopy, audioPlayer2);
     v9 = +[ANAnalytics shared];
-    v10 = [v8 code];
-    v11 = [(ANPlaybackManager *)self endpointID];
-    v12 = [ANAnalyticsContext contextWithEndpointID:v11];
-    [v9 error:v10 context:v12];
+    code = [audioPlayer2 code];
+    endpointID = [(ANPlaybackManager *)self endpointID];
+    v12 = [ANAnalyticsContext contextWithEndpointID:endpointID];
+    [v9 error:code context:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_playAnnouncements:(id)a3 announceIDToStart:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (BOOL)_playAnnouncements:(id)announcements announceIDToStart:(id)start options:(unint64_t)options completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ANPlaybackManager *)self audioPlayer];
-  v14 = [v13 playbackState];
+  announcementsCopy = announcements;
+  startCopy = start;
+  handlerCopy = handler;
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  playbackState = [audioPlayer playbackState];
 
-  if (v14)
+  if (playbackState)
   {
     v15 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v45 = v14;
+      v45 = playbackState;
       _os_log_impl(&dword_23F525000, v15, OS_LOG_TYPE_DEFAULT, "Already playing. Current playback state = %{public}lu. Stopping before proceeding.", buf, 0xCu);
     }
 
     [(ANPlaybackManager *)self _stopAudioPlayer];
-    v16 = [(ANPlaybackManager *)self audioPlayer];
-    [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:v16 withError:0];
+    audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
+    [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:audioPlayer2 withError:0];
   }
 
-  self->_playbackOptions = a5;
+  self->_playbackOptions = options;
   [(ANPlaybackManager *)self setLastAnnoucementIndex:0];
-  v17 = [(ANPlaybackManager *)self dataSource];
-  [v17 cleanUpOldAnnouncementsForPlaybackManager:self];
+  dataSource = [(ANPlaybackManager *)self dataSource];
+  [dataSource cleanUpOldAnnouncementsForPlaybackManager:self];
 
   v18 = objc_alloc(MEMORY[0x277CBEB40]);
-  v19 = [(ANPlaybackManager *)self _announcementsForPlaybackOptions:a5 fromAnnouncements:v10];
+  v19 = [(ANPlaybackManager *)self _announcementsForPlaybackOptions:options fromAnnouncements:announcementsCopy];
   v20 = [v18 initWithArray:v19];
   [(ANPlaybackManager *)self setAnnouncementsToPlay:v20];
 
-  if (v11)
+  if (startCopy)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v21 = [(ANPlaybackManager *)self announcementsToPlay];
-    v22 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    announcementsToPlay = [(ANPlaybackManager *)self announcementsToPlay];
+    v22 = [announcementsToPlay countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v22)
     {
       v23 = v22;
@@ -585,11 +585,11 @@ LABEL_8:
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(announcementsToPlay);
         }
 
-        v26 = [*(*(&v39 + 1) + 8 * v25) identifier];
-        v27 = [v26 isEqual:v11];
+        identifier = [*(*(&v39 + 1) + 8 * v25) identifier];
+        v27 = [identifier isEqual:startCopy];
 
         if (v27)
         {
@@ -599,7 +599,7 @@ LABEL_8:
         [(ANPlaybackManager *)self setLastAnnoucementIndex:[(ANPlaybackManager *)self lastAnnoucementIndex]+ 1];
         if (v23 == ++v25)
         {
-          v23 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+          v23 = [announcementsToPlay countByEnumeratingWithState:&v39 objects:v43 count:16];
           if (v23)
           {
             goto LABEL_8;
@@ -610,23 +610,23 @@ LABEL_8:
       }
     }
 
-    v28 = [(ANPlaybackManager *)self lastAnnoucementIndex];
-    v29 = [(ANPlaybackManager *)self announcementsToPlay];
-    v30 = [v29 count];
+    lastAnnoucementIndex = [(ANPlaybackManager *)self lastAnnoucementIndex];
+    announcementsToPlay2 = [(ANPlaybackManager *)self announcementsToPlay];
+    v30 = [announcementsToPlay2 count];
 
-    if (v28 >= v30)
+    if (lastAnnoucementIndex >= v30)
     {
       [(ANPlaybackManager *)self setLastAnnoucementIndex:0];
     }
   }
 
-  v31 = [(ANPlaybackManager *)self announcementsToPlay];
-  v32 = [v31 count];
+  announcementsToPlay3 = [(ANPlaybackManager *)self announcementsToPlay];
+  v32 = [announcementsToPlay3 count];
 
   if (v32)
   {
-    [(ANPlaybackManager *)self setPlaybackCompletionHandler:v12];
-    v33 = [(ANPlaybackManager *)self _startPlayingAnnouncements];
+    [(ANPlaybackManager *)self setPlaybackCompletionHandler:handlerCopy];
+    _startPlayingAnnouncements = [(ANPlaybackManager *)self _startPlayingAnnouncements];
   }
 
   else
@@ -639,85 +639,85 @@ LABEL_8:
     }
 
     [(ANPlaybackManager *)self setAnnouncementsToPlay:0];
-    v12[2](v12, 0);
-    v35 = [(ANPlaybackManager *)self delegate];
-    v36 = [(ANPlaybackManager *)self audioPlayer];
-    [v35 playbackManager:self didUpdatePlaybackState:objc_msgSend(v36 announcement:{"playbackState"), 0}];
+    handlerCopy[2](handlerCopy, 0);
+    delegate = [(ANPlaybackManager *)self delegate];
+    audioPlayer3 = [(ANPlaybackManager *)self audioPlayer];
+    [delegate playbackManager:self didUpdatePlaybackState:objc_msgSend(audioPlayer3 announcement:{"playbackState"), 0}];
 
-    v33 = 0;
+    _startPlayingAnnouncements = 0;
   }
 
   v37 = *MEMORY[0x277D85DE8];
-  return v33;
+  return _startPlayingAnnouncements;
 }
 
-- (BOOL)_playAnnouncementsWithIDs:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (BOOL)_playAnnouncementsWithIDs:(id)ds options:(unint64_t)options completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 firstObject];
+  dsCopy = ds;
+  handlerCopy = handler;
+  firstObject = [dsCopy firstObject];
   v11 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136315650;
     v20 = "[ANPlaybackManager _playAnnouncementsWithIDs:options:completionHandler:]";
     v21 = 2112;
-    v22 = v10;
+    v22 = firstObject;
     v23 = 2048;
-    v24 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "%s: announceIDToStart %@, options %ld", &v19, 0x20u);
   }
 
-  v12 = [v8 count];
-  v13 = [(ANPlaybackManager *)self dataSource];
-  v14 = v13;
+  v12 = [dsCopy count];
+  dataSource = [(ANPlaybackManager *)self dataSource];
+  v14 = dataSource;
   if (v12)
   {
-    [v13 playbackManager:self announcementsForIdentifiers:v8];
+    [dataSource playbackManager:self announcementsForIdentifiers:dsCopy];
   }
 
   else
   {
-    [v13 announcementsForPlaybackManager:self];
+    [dataSource announcementsForPlaybackManager:self];
   }
   v15 = ;
 
-  v16 = [(ANPlaybackManager *)self _playAnnouncements:v15 announceIDToStart:v10 options:a4 completionHandler:v9];
+  v16 = [(ANPlaybackManager *)self _playAnnouncements:v15 announceIDToStart:firstObject options:options completionHandler:handlerCopy];
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (id)_announcementsForPlaybackOptions:(unint64_t)a3 fromAnnouncements:(id)a4
+- (id)_announcementsForPlaybackOptions:(unint64_t)options fromAnnouncements:(id)announcements
 {
-  v4 = a3;
-  v5 = ~a3;
-  v6 = a4;
-  v7 = v6;
+  optionsCopy = options;
+  v5 = ~options;
+  announcementsCopy = announcements;
+  v7 = announcementsCopy;
   if ((v5 & 0xC0) == 0)
   {
     goto LABEL_2;
   }
 
-  if (v4 < 0)
+  if (optionsCopy < 0)
   {
-    v8 = [v6 unplayedAnnouncements];
+    unplayedAnnouncements = [announcementsCopy unplayedAnnouncements];
   }
 
   else
   {
-    if ((v4 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
 LABEL_2:
-      v8 = v6;
+      unplayedAnnouncements = announcementsCopy;
       goto LABEL_7;
     }
 
-    v8 = [v6 playedAnnouncements];
+    unplayedAnnouncements = [announcementsCopy playedAnnouncements];
   }
 
 LABEL_7:
-  v9 = v8;
+  v9 = unplayedAnnouncements;
 
   return v9;
 }
@@ -734,18 +734,18 @@ LABEL_7:
       _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "Checking for new announcements to play", buf, 2u);
     }
 
-    v4 = [(ANPlaybackManager *)self dataSource];
-    v5 = [v4 announcementsForPlaybackManager:self];
+    dataSource = [(ANPlaybackManager *)self dataSource];
+    v5 = [dataSource announcementsForPlaybackManager:self];
 
     v44 = v5;
     v6 = [(ANPlaybackManager *)self _announcementsForPlaybackOptions:[(ANPlaybackManager *)self playbackOptions] fromAnnouncements:v5];
     v7 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ANPlaybackManager *)self playbackOptions];
+      playbackOptions = [(ANPlaybackManager *)self playbackOptions];
       v9 = [v6 count];
       *buf = 134218240;
-      v50 = v8;
+      v50 = playbackOptions;
       v51 = 2048;
       v52 = v9;
       _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "Current Announcements in Storage for Playback Options (%lu): %lu", buf, 0x16u);
@@ -754,15 +754,15 @@ LABEL_7:
     v10 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ANPlaybackManager *)self announcementsToPlay];
-      v12 = [v11 count];
+      announcementsToPlay = [(ANPlaybackManager *)self announcementsToPlay];
+      v12 = [announcementsToPlay count];
       *buf = 134217984;
       v50 = v12;
       _os_log_impl(&dword_23F525000, v10, OS_LOG_TYPE_DEFAULT, "Current Announcements in Playback Queue: = %lu", buf, 0xCu);
     }
 
-    v13 = [(ANPlaybackManager *)self announcementsToPlay];
-    v14 = [v13 lastObject];
+    announcementsToPlay2 = [(ANPlaybackManager *)self announcementsToPlay];
+    lastObject = [announcementsToPlay2 lastObject];
 
     v47 = 0u;
     v48 = 0u;
@@ -784,29 +784,29 @@ LABEL_7:
           }
 
           v20 = *(*(&v45 + 1) + 8 * i);
-          v21 = [v14 receiptTimestamp];
-          [v21 timeIntervalSince1970];
+          receiptTimestamp = [lastObject receiptTimestamp];
+          [receiptTimestamp timeIntervalSince1970];
           v23 = v22;
-          v24 = [v20 receiptTimestamp];
-          [v24 timeIntervalSince1970];
+          receiptTimestamp2 = [v20 receiptTimestamp];
+          [receiptTimestamp2 timeIntervalSince1970];
           v26 = v25;
 
           if (v23 <= v26)
           {
-            v27 = [(ANPlaybackManager *)self announcementsToPlay];
-            v28 = [v27 containsObject:v20];
+            announcementsToPlay3 = [(ANPlaybackManager *)self announcementsToPlay];
+            v28 = [announcementsToPlay3 containsObject:v20];
 
             if ((v28 & 1) == 0)
             {
-              v29 = [(ANPlaybackManager *)self announcementsToPlay];
-              [v29 addObject:v20];
+              announcementsToPlay4 = [(ANPlaybackManager *)self announcementsToPlay];
+              [announcementsToPlay4 addObject:v20];
 
               v30 = [(ANPlaybackManager *)self log];
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [v20 identifier];
+                identifier = [v20 identifier];
                 *buf = 138412290;
-                v50 = v31;
+                v50 = identifier;
                 _os_log_impl(&dword_23F525000, v30, OS_LOG_TYPE_DEFAULT, "Added Announcement to Play Queue: %@", buf, 0xCu);
               }
             }
@@ -820,36 +820,36 @@ LABEL_7:
     }
   }
 
-  v32 = [(ANPlaybackManager *)self announcementsToPlay];
-  if (v32)
+  announcementsToPlay5 = [(ANPlaybackManager *)self announcementsToPlay];
+  if (announcementsToPlay5)
   {
-    v33 = [(ANPlaybackManager *)self announcementsToPlay];
-    v34 = [v33 count];
-    v35 = [(ANPlaybackManager *)self lastAnnoucementIndex];
+    announcementsToPlay6 = [(ANPlaybackManager *)self announcementsToPlay];
+    v34 = [announcementsToPlay6 count];
+    lastAnnoucementIndex = [(ANPlaybackManager *)self lastAnnoucementIndex];
 
-    if (v34 <= v35)
+    if (v34 <= lastAnnoucementIndex)
     {
-      v32 = 0;
+      announcementsToPlay5 = 0;
     }
 
     else
     {
-      v36 = [(ANPlaybackManager *)self announcementsToPlay];
-      v32 = [v36 objectAtIndex:{-[ANPlaybackManager lastAnnoucementIndex](self, "lastAnnoucementIndex")}];
+      announcementsToPlay7 = [(ANPlaybackManager *)self announcementsToPlay];
+      announcementsToPlay5 = [announcementsToPlay7 objectAtIndex:{-[ANPlaybackManager lastAnnoucementIndex](self, "lastAnnoucementIndex")}];
 
       v37 = [(ANPlaybackManager *)self log];
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         v38 = [(ANPlaybackManager *)self lastAnnoucementIndex]+ 1;
-        v39 = [(ANPlaybackManager *)self announcementsToPlay];
-        v40 = [v39 count];
-        v41 = [v32 identifier];
+        announcementsToPlay8 = [(ANPlaybackManager *)self announcementsToPlay];
+        v40 = [announcementsToPlay8 count];
+        identifier2 = [announcementsToPlay5 identifier];
         *buf = 134218498;
         v50 = v38;
         v51 = 2048;
         v52 = v40;
         v53 = 2112;
-        v54 = v41;
+        v54 = identifier2;
         _os_log_impl(&dword_23F525000, v37, OS_LOG_TYPE_DEFAULT, "Next Announcement To Play (%ld of %ld): %@", buf, 0x20u);
       }
 
@@ -859,37 +859,37 @@ LABEL_7:
 
   v42 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return announcementsToPlay5;
 }
 
-- (id)_createTrackPlayerWithAnnouncement:(id)a3 options:(unint64_t)a4 anchorPoint:(unint64_t *)a5
+- (id)_createTrackPlayerWithAnnouncement:(id)announcement options:(unint64_t)options anchorPoint:(unint64_t *)point
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 playbackDeadline];
+  announcementCopy = announcement;
+  playbackDeadline = [announcementCopy playbackDeadline];
   v10 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.value) = 138412290;
-    *(&buf.value + 4) = v9;
+    *(&buf.value + 4) = playbackDeadline;
     _os_log_impl(&dword_23F525000, v10, OS_LOG_TYPE_DEFAULT, "PlaybackDeadline: %@", &buf, 0xCu);
   }
 
-  if ((a4 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
     v14 = [ANAnchorTrackPlayer alloc];
-    v15 = [(ANPlaybackManager *)self endpointID];
-    v16 = [(ANTrackPlayer *)v14 initWithOptions:a4 endpointUUID:v15];
+    endpointID = [(ANPlaybackManager *)self endpointID];
+    v16 = [(ANTrackPlayer *)v14 initWithOptions:options endpointUUID:endpointID];
 
     v13 = v16;
     memset(&buf, 0, sizeof(buf));
-    if (v8)
+    if (announcementCopy)
     {
-      [v8 cmStartTime];
+      [announcementCopy cmStartTime];
     }
 
-    v17 = [v8 machStartTime];
-    if ((a4 & 4) != 0)
+    machStartTime = [announcementCopy machStartTime];
+    if ((options & 4) != 0)
     {
       memset(&v60, 0, sizeof(v60));
       HostTimeClock = CMClockGetHostTimeClock();
@@ -898,9 +898,9 @@ LABEL_7:
       time2 = buf;
       if (CMTimeCompare(&time1, &time2) == 1)
       {
-        [MEMORY[0x277CEABE0] machTimeToSeconds:v17];
+        [MEMORY[0x277CEABE0] machTimeToSeconds:machStartTime];
         v20 = v19;
-        if (([v8 statusFlags] & 3) == 0)
+        if (([announcementCopy statusFlags] & 3) == 0)
         {
           v21 = [(ANPlaybackManager *)self log];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -914,15 +914,15 @@ LABEL_7:
           }
 
           v23 = +[ANAnalytics shared];
-          v24 = [(ANPlaybackManager *)self endpointID];
-          v25 = [ANAnalyticsContext contextWithEndpointID:v24];
+          endpointID2 = [(ANPlaybackManager *)self endpointID];
+          v25 = [ANAnalyticsContext contextWithEndpointID:endpointID2];
           [v23 error:5003 context:v25];
         }
 
         [MEMORY[0x277CEABE0] machTimeToSeconds:mach_absolute_time()];
         v27 = v26;
-        v28 = [MEMORY[0x277CEAB80] sharedInstance];
-        v29 = [v28 numberForDefault:*MEMORY[0x277CEA840]];
+        mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+        v29 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA840]];
         [v29 doubleValue];
         v31 = v30;
 
@@ -930,14 +930,14 @@ LABEL_7:
         v58 = v60;
         CMTimeAdd(&time1, &v58, &time2);
         buf = time1;
-        v17 = [MEMORY[0x277CEABE0] secondsToMachTime:v27 + v31];
+        machStartTime = [MEMORY[0x277CEABE0] secondsToMachTime:v27 + v31];
         v32 = [(ANPlaybackManager *)self log];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(time1.value) = 134218240;
           *(&time1.value + 4) = buf.value / buf.timescale;
           LOWORD(time1.flags) = 2048;
-          *(&time1.flags + 2) = v17;
+          *(&time1.flags + 2) = machStartTime;
           _os_log_impl(&dword_23F525000, v32, OS_LOG_TYPE_DEFAULT, "Updated CM Start Time = %lld, Mach Start Time = %llu", &time1, 0x16u);
         }
       }
@@ -945,28 +945,28 @@ LABEL_7:
 
     v60 = buf;
     [(ANSimpleTrackPlayer *)v13 setStartTime:&v60];
-    *a5 = v17;
+    *point = machStartTime;
   }
 
   else
   {
     v11 = [ANSimpleTrackPlayer alloc];
-    v12 = [(ANPlaybackManager *)self endpointID];
-    v13 = [(ANTrackPlayer *)v11 initWithOptions:a4 endpointUUID:v12];
+    endpointID3 = [(ANPlaybackManager *)self endpointID];
+    v13 = [(ANTrackPlayer *)v11 initWithOptions:options endpointUUID:endpointID3];
 
-    *a5 = mach_absolute_time();
+    *point = mach_absolute_time();
   }
 
   [(ANTrackPlayer *)v13 setDelegate:self];
-  v33 = [(ANPlaybackManager *)self playbackQueue];
-  [(ANTrackPlayer *)v13 setDelegateQueue:v33];
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
+  [(ANTrackPlayer *)v13 setDelegateQueue:playbackQueue];
 
-  v34 = [MEMORY[0x277CEAB80] sharedInstance];
-  v35 = [v34 numberForDefault:*MEMORY[0x277CEA858]];
+  mEMORY[0x277CEAB80]2 = [MEMORY[0x277CEAB80] sharedInstance];
+  v35 = [mEMORY[0x277CEAB80]2 numberForDefault:*MEMORY[0x277CEA858]];
   [v35 doubleValue];
   [(ANTrackPlayer *)v13 setSilenceBetweenEachTrack:v36 / 1000.0];
 
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v37 = MEMORY[0x277CBEBC0];
     v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -974,15 +974,15 @@ LABEL_7:
     v40 = [v37 fileURLWithPath:v39];
     [(ANTrackPlayer *)v13 setAudioFileAtStart:v40];
 
-    v41 = [MEMORY[0x277CEAB80] sharedInstance];
-    v42 = [v41 numberForDefault:*MEMORY[0x277CEA860]];
+    mEMORY[0x277CEAB80]3 = [MEMORY[0x277CEAB80] sharedInstance];
+    v42 = [mEMORY[0x277CEAB80]3 numberForDefault:*MEMORY[0x277CEA860]];
     [v42 doubleValue];
     v44 = v43;
 
     [(ANTrackPlayer *)v13 setTrimStartTone:v44];
   }
 
-  if ((a4 & 8) == 0)
+  if ((options & 8) == 0)
   {
     v45 = MEMORY[0x277CBEBC0];
     v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -990,16 +990,16 @@ LABEL_7:
     v48 = [v45 fileURLWithPath:v47];
     [(ANTrackPlayer *)v13 setAudioFileTransition:v48];
 
-    v49 = [MEMORY[0x277CEAB80] sharedInstance];
-    v50 = [v49 numberForDefault:*MEMORY[0x277CEA870]];
+    mEMORY[0x277CEAB80]4 = [MEMORY[0x277CEAB80] sharedInstance];
+    v50 = [mEMORY[0x277CEAB80]4 numberForDefault:*MEMORY[0x277CEA870]];
     [v50 doubleValue];
     v52 = v51;
 
     [(ANTrackPlayer *)v13 setTrimTransitionTone:v52];
   }
 
-  v53 = [MEMORY[0x277CEAB80] sharedInstance];
-  v54 = [v53 numberForDefault:*MEMORY[0x277CEA848]];
+  mEMORY[0x277CEAB80]5 = [MEMORY[0x277CEAB80] sharedInstance];
+  v54 = [mEMORY[0x277CEAB80]5 numberForDefault:*MEMORY[0x277CEA848]];
   [v54 doubleValue];
   [(ANTrackPlayer *)v13 setPreviousSkipGoesToPreviousTrackDelta:v55 / 1000.0];
 
@@ -1014,50 +1014,50 @@ LABEL_7:
   v3 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ANPlaybackManager *)self announcementsToPlay];
-    v5 = [v4 count];
+    announcementsToPlay = [(ANPlaybackManager *)self announcementsToPlay];
+    v5 = [announcementsToPlay count];
     v6 = v5 - [(ANPlaybackManager *)self lastAnnoucementIndex];
-    v7 = [(ANPlaybackManager *)self announcementsToPlay];
+    announcementsToPlay2 = [(ANPlaybackManager *)self announcementsToPlay];
     *buf = 134218240;
     v47 = v6;
     v48 = 2048;
-    v49 = [v7 count];
+    v49 = [announcementsToPlay2 count];
     _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "Will Play (%ld of %ld) Announcements", buf, 0x16u);
   }
 
-  v8 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
-  if (v8)
+  _nextAnnouncementToPlay = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
+  if (_nextAnnouncementToPlay)
   {
-    v9 = [(ANPlaybackManager *)self endpointID];
-    v10 = [v9 an_isLocalDevice];
+    endpointID = [(ANPlaybackManager *)self endpointID];
+    an_isLocalDevice = [endpointID an_isLocalDevice];
 
-    if (v10)
+    if (an_isLocalDevice)
     {
       v11 = [(ANPlaybackManager *)self playbackOptions]& 2;
       v12 = v11 & 0xFFFFFFFFFFFFFFFELL | ([(ANPlaybackManager *)self playbackOptions]>> 8) & 1;
-      v13 = [MEMORY[0x277CEABE8] sharedController];
-      [v13 setVolumeWithOptions:v12];
+      mEMORY[0x277CEABE8] = [MEMORY[0x277CEABE8] sharedController];
+      [mEMORY[0x277CEABE8] setVolumeWithOptions:v12];
     }
 
     v45 = 0;
-    v14 = [(ANPlaybackManager *)self _createTrackPlayerWithAnnouncement:v8 options:[(ANPlaybackManager *)self playbackOptions] anchorPoint:&v45];
+    v14 = [(ANPlaybackManager *)self _createTrackPlayerWithAnnouncement:_nextAnnouncementToPlay options:[(ANPlaybackManager *)self playbackOptions] anchorPoint:&v45];
     [(ANPlaybackManager *)self setAudioPlayer:v14];
 
-    v15 = v8;
-    v16 = [MEMORY[0x277CBEB18] array];
+    audioPlayer2 = _nextAnnouncementToPlay;
+    array = [MEMORY[0x277CBEB18] array];
     *&v17 = 138412546;
     v43 = v17;
     while (1)
     {
-      v18 = [v15 filePath];
-      v19 = v18 != 0;
-      if (!v18)
+      filePath = [audioPlayer2 filePath];
+      v19 = filePath != 0;
+      if (!filePath)
       {
         break;
       }
 
-      v20 = v18;
-      v21 = [MEMORY[0x277CBEBC0] fileURLWithPath:v18];
+      v20 = filePath;
+      v21 = [MEMORY[0x277CBEBC0] fileURLWithPath:filePath];
       v22 = v21;
       if (v21)
       {
@@ -1076,33 +1076,33 @@ LABEL_7:
           }
 
           v26 = +[ANAnalytics shared];
-          v27 = [(ANPlaybackManager *)self endpointID];
-          v28 = [ANAnalyticsContext contextWithEndpointID:v27];
+          endpointID2 = [(ANPlaybackManager *)self endpointID];
+          v28 = [ANAnalyticsContext contextWithEndpointID:endpointID2];
           [v26 error:5032 context:v28];
         }
       }
 
-      v29 = [(ANPlaybackManager *)self audioPlayer];
-      v30 = [v15 filePath];
-      v31 = [v15 identifier];
-      [v29 add:v30 announcementID:v31];
+      audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+      filePath2 = [audioPlayer2 filePath];
+      identifier = [audioPlayer2 identifier];
+      [audioPlayer add:filePath2 announcementID:identifier];
 
-      v32 = [v15 identifier];
-      [v16 addObject:v32];
+      identifier2 = [audioPlayer2 identifier];
+      [array addObject:identifier2];
 
-      v33 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
+      _nextAnnouncementToPlay2 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
 
-      v15 = v33;
-      if (!v33)
+      audioPlayer2 = _nextAnnouncementToPlay2;
+      if (!_nextAnnouncementToPlay2)
       {
-        v15 = [(ANPlaybackManager *)self audioPlayer];
+        audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __47__ANPlaybackManager__startPlayingAnnouncements__block_invoke;
         v44[3] = &unk_278C86AD0;
         v44[4] = self;
         v44[5] = v45;
-        [(ANPlaybackManager *)self playWithTonePlayer:0 toneFileURL:0 trackPlayer:v15 completionHandler:v44];
+        [(ANPlaybackManager *)self playWithTonePlayer:0 toneFileURL:0 trackPlayer:audioPlayer2 completionHandler:v44];
         goto LABEL_19;
       }
     }
@@ -1110,17 +1110,17 @@ LABEL_7:
     v35 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      [(ANPlaybackManager *)v15 _startPlayingAnnouncements];
+      [(ANPlaybackManager *)audioPlayer2 _startPlayingAnnouncements];
     }
 
     v36 = +[ANAnalytics shared];
-    v37 = [(ANPlaybackManager *)self endpointID];
-    v38 = [ANAnalyticsContext contextWithEndpointID:v37];
+    endpointID3 = [(ANPlaybackManager *)self endpointID];
+    v38 = [ANAnalyticsContext contextWithEndpointID:endpointID3];
     [v36 error:5034 context:v38];
 
-    v39 = [(ANPlaybackManager *)self audioPlayer];
+    audioPlayer3 = [(ANPlaybackManager *)self audioPlayer];
     v40 = [MEMORY[0x277CCA9B8] an_errorWithCode:5034 component:*MEMORY[0x277CEA9C0]];
-    [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:v39 withError:v40];
+    [(ANPlaybackManager *)self _handlePlaybackEndedForPlayer:audioPlayer3 withError:v40];
 
 LABEL_19:
   }
@@ -1174,32 +1174,32 @@ void __47__ANPlaybackManager__startPlayingAnnouncements__block_invoke_2(uint64_t
 
 - (void)_stopAudioPlayer
 {
-  v3 = [(ANPlaybackManager *)self audioPlayer];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
 
-  if (v3)
+  if (audioPlayer)
   {
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
-    v5 = [(ANPlaybackManager *)self audioPlayer];
+    audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__ANPlaybackManager__stopAudioPlayer__block_invoke;
     v7[3] = &unk_278C86910;
     v8 = v4;
     v6 = v4;
-    [v5 stopWithCompletionHandler:v7];
+    [audioPlayer2 stopWithCompletionHandler:v7];
 
     dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)_handlePlaybackEndedForPlayer:(id)a3 withError:(id)a4
+- (void)_handlePlaybackEndedForPlayer:(id)player withError:(id)error
 {
-  v17 = a4;
-  v6 = a3;
+  errorCopy = error;
+  playerCopy = player;
   [(ANPlaybackManager *)self setAnnouncementsToPlay:0];
-  [v6 end];
-  if (v17)
+  [playerCopy end];
+  if (errorCopy)
   {
     v7 = 10;
   }
@@ -1209,13 +1209,13 @@ void __47__ANPlaybackManager__startPlayingAnnouncements__block_invoke_2(uint64_t
     v7 = 14;
   }
 
-  v8 = [v6 activelyPlayingAnnouncementID];
-  [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:v8 options:v7 player:v6];
+  activelyPlayingAnnouncementID = [playerCopy activelyPlayingAnnouncementID];
+  [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:activelyPlayingAnnouncementID options:v7 player:playerCopy];
 
-  if (v17)
+  if (errorCopy)
   {
-    v9 = v17;
-    if ([v17 code] != 1037)
+    v9 = errorCopy;
+    if ([errorCopy code] != 1037)
     {
       goto LABEL_8;
     }
@@ -1223,12 +1223,12 @@ void __47__ANPlaybackManager__startPlayingAnnouncements__block_invoke_2(uint64_t
 
   v9 = 0;
 LABEL_8:
-  v10 = [(ANPlaybackManager *)self playbackCompletionHandler];
+  playbackCompletionHandler = [(ANPlaybackManager *)self playbackCompletionHandler];
 
-  if (v10)
+  if (playbackCompletionHandler)
   {
-    v11 = [(ANPlaybackManager *)self playbackCompletionHandler];
-    (v11)[2](v11, v9);
+    playbackCompletionHandler2 = [(ANPlaybackManager *)self playbackCompletionHandler];
+    (playbackCompletionHandler2)[2](playbackCompletionHandler2, v9);
 
     [(ANPlaybackManager *)self setPlaybackCompletionHandler:0];
   }
@@ -1236,39 +1236,39 @@ LABEL_8:
   if (v9)
   {
     v12 = +[ANAnalytics shared];
-    v13 = [v9 code];
-    v14 = [(ANPlaybackManager *)self endpointID];
-    v15 = [ANAnalyticsContext contextWithEndpointID:v14];
-    [v12 error:v13 context:v15];
+    code = [v9 code];
+    endpointID = [(ANPlaybackManager *)self endpointID];
+    v15 = [ANAnalyticsContext contextWithEndpointID:endpointID];
+    [v12 error:code context:v15];
   }
 
-  v16 = [(ANPlaybackManager *)self delegate];
-  [v16 playbackManagerDidFinishPlayingAnnouncements:self];
+  delegate = [(ANPlaybackManager *)self delegate];
+  [delegate playbackManagerDidFinishPlayingAnnouncements:self];
 }
 
-- (void)trackPlayer:(id)a3 didUpdatePlaybackState:(unint64_t)a4 announcementID:(id)a5
+- (void)trackPlayer:(id)player didUpdatePlaybackState:(unint64_t)state announcementID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ANPlaybackManager *)self playbackQueue];
-  dispatch_assert_queue_V2(v10);
+  dCopy = d;
+  playerCopy = player;
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
+  dispatch_assert_queue_V2(playbackQueue);
 
   v11 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218242;
-    v17 = a4;
+    stateCopy = state;
     v18 = 2112;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "Did Update Playback State: %lu, AnnouncementID: %@", &v16, 0x16u);
   }
 
-  v12 = [(ANPlaybackManager *)self delegate];
-  v13 = [(ANPlaybackManager *)self audioPlayer];
-  [v12 playbackManager:self didUpdatePlaybackState:objc_msgSend(v13 announcement:{"playbackState"), v8}];
+  delegate = [(ANPlaybackManager *)self delegate];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+  [delegate playbackManager:self didUpdatePlaybackState:objc_msgSend(audioPlayer announcement:{"playbackState"), dCopy}];
 
-  if (a4 == 1)
+  if (state == 1)
   {
     v14 = 3;
   }
@@ -1278,64 +1278,64 @@ LABEL_8:
     v14 = 2;
   }
 
-  [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:v8 options:v14 player:v9];
+  [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:dCopy options:v14 player:playerCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trackPlayer:(id)a3 didFinishPlayingTrackType:(int64_t)a4 announcementID:(id)a5 error:(id)a6
+- (void)trackPlayer:(id)player didFinishPlayingTrackType:(int64_t)type announcementID:(id)d error:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ANPlaybackManager *)self playbackQueue];
-  dispatch_assert_queue_V2(v13);
+  playerCopy = player;
+  dCopy = d;
+  errorCopy = error;
+  playbackQueue = [(ANPlaybackManager *)self playbackQueue];
+  dispatch_assert_queue_V2(playbackQueue);
 
   v14 = [(ANPlaybackManager *)self log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 136315138;
-    v33 = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
+    typeCopy = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
     _os_log_impl(&dword_23F525000, v14, OS_LOG_TYPE_DEFAULT, "%s", &v32, 0xCu);
   }
 
-  v15 = [(ANPlaybackManager *)self audioPlayer];
+  audioPlayer = [(ANPlaybackManager *)self audioPlayer];
 
-  if (v15 == v10)
+  if (audioPlayer == playerCopy)
   {
     v16 = [(ANPlaybackManager *)self log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v32 = 134218242;
-      v33 = a4;
+      typeCopy = type;
       v34 = 2112;
-      v35 = v11;
+      typeCopy2 = dCopy;
       _os_log_impl(&dword_23F525000, v16, OS_LOG_TYPE_DEFAULT, "Audio Player Finished Playing trackType: %ld, AnnouncementID: %@", &v32, 0x16u);
     }
 
-    if (v12)
+    if (errorCopy)
     {
       v17 = [(ANPlaybackManager *)self log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [ANPlaybackManager trackPlayer:v11 didFinishPlayingTrackType:v12 announcementID:v17 error:?];
+        [ANPlaybackManager trackPlayer:dCopy didFinishPlayingTrackType:errorCopy announcementID:v17 error:?];
       }
 
       [(ANPlaybackManager *)self _stopAudioPlayer];
-      v18 = self;
-      v19 = v10;
-      v20 = v12;
+      selfCopy2 = self;
+      v19 = playerCopy;
+      v20 = errorCopy;
 LABEL_10:
-      [(ANPlaybackManager *)v18 _handlePlaybackEndedForPlayer:v19 withError:v20];
+      [(ANPlaybackManager *)selfCopy2 _handlePlaybackEndedForPlayer:v19 withError:v20];
       goto LABEL_11;
     }
 
     [(ANPlaybackManager *)self _addAdditionalAnnouncementsIfNeeded];
-    v22 = [(ANPlaybackManager *)self audioPlayer];
-    v23 = [v22 numberActiveTracks];
+    audioPlayer2 = [(ANPlaybackManager *)self audioPlayer];
+    numberActiveTracks = [audioPlayer2 numberActiveTracks];
 
-    if (!v23)
+    if (!numberActiveTracks)
     {
       v26 = [(ANPlaybackManager *)self log];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1345,22 +1345,22 @@ LABEL_10:
       }
 
       [(ANPlaybackManager *)self _stopAudioPlayer];
-      v18 = self;
-      v19 = v10;
+      selfCopy2 = self;
+      v19 = playerCopy;
       v20 = 0;
       goto LABEL_10;
     }
 
     v24 = [(ANPlaybackManager *)self log];
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-    if (a4)
+    if (type)
     {
       if (v25)
       {
         v32 = 136315394;
-        v33 = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
+        typeCopy = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
         v34 = 2048;
-        v35 = a4;
+        typeCopy2 = type;
         _os_log_impl(&dword_23F525000, v24, OS_LOG_TYPE_DEFAULT, "%s: Ignoring track player of type %ld", &v32, 0x16u);
       }
     }
@@ -1370,19 +1370,19 @@ LABEL_10:
       if (v25)
       {
         v32 = 136315138;
-        v33 = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
+        typeCopy = "[ANPlaybackManager trackPlayer:didFinishPlayingTrackType:announcementID:error:]";
         _os_log_impl(&dword_23F525000, v24, OS_LOG_TYPE_DEFAULT, "%s: there are still outstanding players. Keep Announce active", &v32, 0xCu);
       }
 
-      [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:v11 options:14 player:v10];
-      v27 = [(ANPlaybackManager *)self audioPlayer];
-      v28 = [v27 playbackState];
+      [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:dCopy options:14 player:playerCopy];
+      audioPlayer3 = [(ANPlaybackManager *)self audioPlayer];
+      playbackState = [audioPlayer3 playbackState];
 
-      if (v28)
+      if (playbackState)
       {
-        v29 = [(ANPlaybackManager *)self audioPlayer];
-        v30 = [v29 activelyPlayingAnnouncementID];
-        [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:v30 options:3 player:v10];
+        audioPlayer4 = [(ANPlaybackManager *)self audioPlayer];
+        activelyPlayingAnnouncementID = [audioPlayer4 activelyPlayingAnnouncementID];
+        [(ANPlaybackManager *)self _updatePlaybackInfoForAnnouncementID:activelyPlayingAnnouncementID options:3 player:playerCopy];
       }
 
       else
@@ -1391,7 +1391,7 @@ LABEL_10:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           v32 = 138412290;
-          v33 = &stru_2851BDB18;
+          typeCopy = &stru_2851BDB18;
           _os_log_impl(&dword_23F525000, v31, OS_LOG_TYPE_DEFAULT, "%@Audio Player is stopped. Not updating playback info.", &v32, 0xCu);
         }
       }
@@ -1414,23 +1414,23 @@ LABEL_11:
       _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "Looking for new announcements", v10, 2u);
     }
 
-    v4 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
-    if (v4)
+    _nextAnnouncementToPlay = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
+    if (_nextAnnouncementToPlay)
     {
-      v5 = v4;
+      v5 = _nextAnnouncementToPlay;
       do
       {
-        v6 = [(ANPlaybackManager *)self audioPlayer];
-        v7 = [v5 filePath];
-        v8 = [v5 identifier];
-        [v6 add:v7 announcementID:v8];
+        audioPlayer = [(ANPlaybackManager *)self audioPlayer];
+        filePath = [v5 filePath];
+        identifier = [v5 identifier];
+        [audioPlayer add:filePath announcementID:identifier];
 
-        v9 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
+        _nextAnnouncementToPlay2 = [(ANPlaybackManager *)self _nextAnnouncementToPlay];
 
-        v5 = v9;
+        v5 = _nextAnnouncementToPlay2;
       }
 
-      while (v9);
+      while (_nextAnnouncementToPlay2);
     }
   }
 }
@@ -1449,17 +1449,17 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)playWithTonePlayer:(ANTonePlayer *)a3 toneFileURL:(NSURL *)a4 trackPlayer:(ANTrackPlayer *)a5 completionHandler:(id)a6
+- (void)playWithTonePlayer:(ANTonePlayer *)player toneFileURL:(NSURL *)l trackPlayer:(ANTrackPlayer *)trackPlayer completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E39C9E8, &qword_23F58D708);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = player;
+  v16[3] = l;
+  v16[4] = trackPlayer;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_23F5883B4();
@@ -1474,10 +1474,10 @@ LABEL_11:
   v19[3] = 0;
   v19[4] = &unk_23F58D720;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  playerCopy = player;
+  lCopy = l;
+  trackPlayerCopy = trackPlayer;
+  selfCopy = self;
   sub_23F57A118(0, 0, v14, &unk_23F58D728, v19);
 }
 
@@ -1485,7 +1485,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23F525000, a2, OS_LOG_TYPE_ERROR, "Announcement does not contain a file path. Announcement: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

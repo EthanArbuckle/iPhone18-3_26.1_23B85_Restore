@@ -1,12 +1,12 @@
 @interface ZWSlugTriangleView
 - (CGSize)intrinsicContentSize;
-- (ZWSlugTriangleView)initWithTriangle:(unint64_t)a3;
+- (ZWSlugTriangleView)initWithTriangle:(unint64_t)triangle;
 - (void)layoutSubviews;
 @end
 
 @implementation ZWSlugTriangleView
 
-- (ZWSlugTriangleView)initWithTriangle:(unint64_t)a3
+- (ZWSlugTriangleView)initWithTriangle:(unint64_t)triangle
 {
   v10.receiver = self;
   v10.super_class = ZWSlugTriangleView;
@@ -14,10 +14,10 @@
   v5 = v4;
   if (v4)
   {
-    [(ZWSlugTriangleView *)v4 setTriangle:a3];
+    [(ZWSlugTriangleView *)v4 setTriangle:triangle];
     v6 = +[CAShapeLayer layer];
-    v7 = [(ZWSlugTriangleView *)v5 layer];
-    [v7 addSublayer:v6];
+    layer = [(ZWSlugTriangleView *)v5 layer];
+    [layer addSublayer:v6];
 
     [(ZWSlugTriangleView *)v5 setTriangleLayer:v6];
     v8 = +[UIColor whiteColor];
@@ -37,9 +37,9 @@
 
   else
   {
-    v5 = [(ZWSlugTriangleView *)self triangle];
+    triangle = [(ZWSlugTriangleView *)self triangle];
     v4 = 15.0;
-    if (v5)
+    if (triangle)
     {
       v3 = 15.0;
     }
@@ -49,7 +49,7 @@
       v3 = 7.0;
     }
 
-    if (v5)
+    if (triangle)
     {
       v4 = 7.0;
     }
@@ -70,8 +70,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWSlugTriangleView *)self triangleLayer];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  triangleLayer = [(ZWSlugTriangleView *)self triangleLayer];
+  [triangleLayer setBounds:{v4, v6, v8, v10}];
 
   v22.origin.x = v4;
   v22.origin.y = v6;
@@ -83,14 +83,14 @@
   v23.size.width = v8;
   v23.size.height = v10;
   MidY = CGRectGetMidY(v23);
-  v14 = [(ZWSlugTriangleView *)self triangleLayer];
-  [v14 setPosition:{MidX, MidY}];
+  triangleLayer2 = [(ZWSlugTriangleView *)self triangleLayer];
+  [triangleLayer2 setPosition:{MidX, MidY}];
 
   v15 = +[UIBezierPath bezierPath];
-  v16 = [(ZWSlugTriangleView *)self triangle];
-  if (v16 > 1)
+  triangle = [(ZWSlugTriangleView *)self triangle];
+  if (triangle > 1)
   {
-    if (v16 == 2)
+    if (triangle == 2)
     {
       [v15 moveToPoint:{0.0, 0.0}];
       [v15 addLineToPoint:{v8 * 0.5, v10}];
@@ -98,7 +98,7 @@
       goto LABEL_11;
     }
 
-    if (v16 != 3)
+    if (triangle != 3)
     {
       goto LABEL_12;
     }
@@ -111,7 +111,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!triangle)
   {
     [v15 moveToPoint:{0.0, v10}];
     v18 = v8 * 0.5;
@@ -119,7 +119,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v16 == 1)
+  if (triangle == 1)
   {
     [v15 moveToPoint:{0.0, 0.0}];
     [v15 addLineToPoint:{v8, v10 * 0.5}];
@@ -130,9 +130,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  v19 = [v15 CGPath];
-  v20 = [(ZWSlugTriangleView *)self triangleLayer];
-  [v20 setPath:v19];
+  cGPath = [v15 CGPath];
+  triangleLayer3 = [(ZWSlugTriangleView *)self triangleLayer];
+  [triangleLayer3 setPath:cGPath];
 }
 
 @end

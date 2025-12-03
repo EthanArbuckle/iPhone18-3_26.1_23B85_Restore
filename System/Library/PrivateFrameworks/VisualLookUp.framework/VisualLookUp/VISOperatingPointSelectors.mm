@@ -1,30 +1,30 @@
 @interface VISOperatingPointSelectors
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISOperatingPointSelectors)initWithDictionary:(id)a3;
-- (VISOperatingPointSelectors)initWithJSON:(id)a3;
+- (VISOperatingPointSelectors)initWithDictionary:(id)dictionary;
+- (VISOperatingPointSelectors)initWithJSON:(id)n;
 - (float)confidence;
 - (float)f_beta;
 - (float)precision;
 - (float)recall;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setConfidence:(float)a3;
-- (void)setF_beta:(float)a3;
-- (void)setPrecision:(float)a3;
-- (void)setRecall:(float)a3;
-- (void)writeTo:(id)a3;
+- (void)setConfidence:(float)confidence;
+- (void)setF_beta:(float)f_beta;
+- (void)setPrecision:(float)precision;
+- (void)setRecall:(float)recall;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISOperatingPointSelectors
 
-- (void)setConfidence:(float)a3
+- (void)setConfidence:(float)confidence
 {
   self->_precision = 0.0;
   self->_recall = 0.0;
   self->_f_beta = 0.0;
   self->_whichSelectors = 1;
-  self->_confidence = a3;
+  self->_confidence = confidence;
 }
 
 - (float)confidence
@@ -38,13 +38,13 @@
   return result;
 }
 
-- (void)setPrecision:(float)a3
+- (void)setPrecision:(float)precision
 {
   self->_confidence = 0.0;
   self->_recall = 0.0;
   self->_f_beta = 0.0;
   self->_whichSelectors = 2;
-  self->_precision = a3;
+  self->_precision = precision;
 }
 
 - (float)precision
@@ -58,13 +58,13 @@
   return result;
 }
 
-- (void)setRecall:(float)a3
+- (void)setRecall:(float)recall
 {
   self->_confidence = 0.0;
   self->_precision = 0.0;
   self->_f_beta = 0.0;
   self->_whichSelectors = 3;
-  self->_recall = a3;
+  self->_recall = recall;
 }
 
 - (float)recall
@@ -78,13 +78,13 @@
   return result;
 }
 
-- (void)setF_beta:(float)a3
+- (void)setF_beta:(float)f_beta
 {
   self->_confidence = 0.0;
   self->_precision = 0.0;
   self->_recall = 0.0;
   self->_whichSelectors = 4;
-  self->_f_beta = a3;
+  self->_f_beta = f_beta;
 }
 
 - (float)f_beta
@@ -98,9 +98,9 @@
   return result;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   [(VISOperatingPointSelectors *)self confidence];
   if (v4 != 0.0)
   {
@@ -120,21 +120,21 @@
   }
 
   [(VISOperatingPointSelectors *)self f_beta];
-  v7 = v9;
+  v7 = toCopy;
   if (v8 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (confidence = self->_confidence, objc_msgSend(v4, "confidence"), confidence == v6) && (precision = self->_precision, objc_msgSend(v4, "precision"), precision == v8) && (recall = self->_recall, objc_msgSend(v4, "recall"), recall == v10))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (confidence = self->_confidence, objc_msgSend(equalCopy, "confidence"), confidence == v6) && (precision = self->_precision, objc_msgSend(equalCopy, "precision"), precision == v8) && (recall = self->_recall, objc_msgSend(equalCopy, "recall"), recall == v10))
   {
     f_beta = self->_f_beta;
-    [v4 f_beta];
+    [equalCopy f_beta];
     v11 = f_beta == v14;
   }
 
@@ -296,13 +296,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_confidence != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISOperatingPointSelectors *)self confidence];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"confidence"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidence"];
   }
 
   if (self->_f_beta != 0.0)
@@ -310,7 +310,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(VISOperatingPointSelectors *)self f_beta];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"fBeta"];
+    [dictionary setObject:v7 forKeyedSubscript:@"fBeta"];
   }
 
   if (self->_precision != 0.0)
@@ -318,7 +318,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(VISOperatingPointSelectors *)self precision];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"precision"];
+    [dictionary setObject:v9 forKeyedSubscript:@"precision"];
   }
 
   if (self->_recall != 0.0)
@@ -326,18 +326,18 @@
     v10 = MEMORY[0x1E696AD98];
     [(VISOperatingPointSelectors *)self recall];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"recall"];
+    [dictionary setObject:v11 forKeyedSubscript:@"recall"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISOperatingPointSelectors *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISOperatingPointSelectors *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -348,33 +348,33 @@
   return v3;
 }
 
-- (VISOperatingPointSelectors)initWithJSON:(id)a3
+- (VISOperatingPointSelectors)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISOperatingPointSelectors *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISOperatingPointSelectors)initWithDictionary:(id)a3
+- (VISOperatingPointSelectors)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = VISOperatingPointSelectors;
   v5 = [(VISOperatingPointSelectors *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"confidence"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -382,7 +382,7 @@
       [(VISOperatingPointSelectors *)v5 setConfidence:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"precision"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -390,7 +390,7 @@
       [(VISOperatingPointSelectors *)v5 setPrecision:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"recall"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"recall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -398,7 +398,7 @@
       [(VISOperatingPointSelectors *)v5 setRecall:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"f_beta"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"f_beta"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

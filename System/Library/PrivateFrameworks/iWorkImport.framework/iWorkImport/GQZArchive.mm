@@ -1,30 +1,30 @@
 @interface GQZArchive
-- (GQZArchive)initWithData:(id)a3 collapseCommonRootDirectory:(BOOL)a4;
-- (GQZArchive)initWithPath:(id)a3 collapseCommonRootDirectory:(BOOL)a4;
+- (GQZArchive)initWithData:(id)data collapseCommonRootDirectory:(BOOL)directory;
+- (GQZArchive)initWithPath:(id)path collapseCommonRootDirectory:(BOOL)directory;
 - (GQZEndOfCentralDirectory)readEndOfCentralDirectory;
-- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromOffset:(SEL)a3;
-- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryWithEocdOffset:(SEL)a3;
-- (const)searchForEndOfCentralDirectoryOffset:(int64_t *)a3;
-- (id)readFilenameFromBuffer:(const char *)a3 size:(unint64_t)a4;
+- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromOffset:(SEL)offset;
+- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryWithEocdOffset:(SEL)offset;
+- (const)searchForEndOfCentralDirectoryOffset:(int64_t *)offset;
+- (id)readFilenameFromBuffer:(const char *)buffer size:(unint64_t)size;
 - (void)collapseCommonRootDirectory;
 - (void)dealloc;
 - (void)readEntries;
-- (void)readExtraFieldFromBuffer:(const char *)a3 size:(unint64_t)a4 entry:(id)a5;
+- (void)readExtraFieldFromBuffer:(const char *)buffer size:(unint64_t)size entry:(id)entry;
 @end
 
 @implementation GQZArchive
 
-- (GQZArchive)initWithPath:(id)a3 collapseCommonRootDirectory:(BOOL)a4
+- (GQZArchive)initWithPath:(id)path collapseCommonRootDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v6 = [(GQZArchive *)self init];
   if (v6)
   {
-    v6->mFilename = [a3 lastPathComponent];
+    v6->mFilename = [path lastPathComponent];
     v6->mEntries = objc_alloc_init(NSMutableDictionary);
-    v6->mInput = [[GQZArchiveFileInputStream alloc] initWithPath:a3];
+    v6->mInput = [[GQZArchiveFileInputStream alloc] initWithPath:path];
     [(GQZArchive *)v6 readEntries];
-    if (v4)
+    if (directoryCopy)
     {
       [(GQZArchive *)v6 collapseCommonRootDirectory];
     }
@@ -33,16 +33,16 @@
   return v6;
 }
 
-- (GQZArchive)initWithData:(id)a3 collapseCommonRootDirectory:(BOOL)a4
+- (GQZArchive)initWithData:(id)data collapseCommonRootDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v6 = [(GQZArchive *)self init];
   if (v6)
   {
     v6->mEntries = objc_alloc_init(NSMutableDictionary);
-    v6->mInput = [[GQZArchiveMemoryInputStream alloc] initWithData:a3];
+    v6->mInput = [[GQZArchiveMemoryInputStream alloc] initWithData:data];
     [(GQZArchive *)v6 readEntries];
-    if (v4)
+    if (directoryCopy)
     {
       [(GQZArchive *)v6 collapseCommonRootDirectory];
     }
@@ -69,8 +69,8 @@
 - (void)collapseCommonRootDirectory
 {
   v3 = objc_alloc_init(NSAutoreleasePool);
-  v4 = [(GQZArchive *)self entryNames];
-  v5 = [v4 count];
+  entryNames = [(GQZArchive *)self entryNames];
+  v5 = [entryNames count];
   v6 = v5;
   if (v5)
   {
@@ -78,7 +78,7 @@
     v8 = 0;
     while (1)
     {
-      v9 = [objc_msgSend(v4 objectAtIndex:{v7), "pathComponents"}];
+      v9 = [objc_msgSend(entryNames objectAtIndex:{v7), "pathComponents"}];
       if ([v9 count] < 2)
       {
         break;
@@ -124,8 +124,8 @@ LABEL_13:
     v22 = v13;
     v14 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSMutableDictionary count](self->mEntries, "count")}];
     v15 = [v8 length];
-    v16 = [(GQZArchive *)self entryNames];
-    v17 = [v16 count];
+    entryNames2 = [(GQZArchive *)self entryNames];
+    v17 = [entryNames2 count];
     v18 = v17;
     if (v17)
     {
@@ -133,7 +133,7 @@ LABEL_13:
       v20 = (v15 + 1);
       do
       {
-        v21 = [v16 objectAtIndex:v19];
+        v21 = [entryNames2 objectAtIndex:v19];
         if ([v21 length] != v20 && (objc_msgSend(v21, "hasPrefix:", @"__MACOSX") & 1) == 0)
         {
           -[NSMutableDictionary setObject:forKey:](v14, "setObject:forKey:", -[NSMutableDictionary objectForKey:](self->mEntries, "objectForKey:", v21), [v21 substringFromIndex:v20]);
@@ -187,7 +187,7 @@ LABEL_13:
   return result;
 }
 
-- (const)searchForEndOfCentralDirectoryOffset:(int64_t *)a3
+- (const)searchForEndOfCentralDirectoryOffset:(int64_t *)offset
 {
   v5 = [(GQZArchiveInputStream *)self->mInput size];
   if (v5 >= 65557)
@@ -259,15 +259,15 @@ LABEL_17:
   }
 
   v11 = v16 + 4;
-  if (a3)
+  if (offset)
   {
-    *a3 = &v7[v16] - v12;
+    *offset = &v7[v16] - v12;
   }
 
   return v11;
 }
 
-- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryWithEocdOffset:(SEL)a3
+- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryWithEocdOffset:(SEL)offset
 {
   if (a4 <= 19)
   {
@@ -294,7 +294,7 @@ LABEL_17:
   return [(GQZArchive *)self readZip64EndOfCentralDirectoryFromOffset:v7];
 }
 
-- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromOffset:(SEL)a3
+- (GQZEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromOffset:(SEL)offset
 {
   result = [(GQZArchiveInputStream *)self->mInput dataAtOffset:a4 size:56 end:0 readSize:0];
   v6 = result;
@@ -318,13 +318,13 @@ LABEL_17:
   return result;
 }
 
-- (id)readFilenameFromBuffer:(const char *)a3 size:(unint64_t)a4
+- (id)readFilenameFromBuffer:(const char *)buffer size:(unint64_t)size
 {
-  result = [[NSString alloc] initWithBytes:a3 length:a4 encoding:4];
+  result = [[NSString alloc] initWithBytes:buffer length:size encoding:4];
   if (!result)
   {
     SystemEncoding = CFStringGetSystemEncoding();
-    result = [[NSString alloc] initWithBytes:a3 length:a4 encoding:CFStringConvertEncodingToNSStringEncoding(SystemEncoding)];
+    result = [[NSString alloc] initWithBytes:buffer length:size encoding:CFStringConvertEncodingToNSStringEncoding(SystemEncoding)];
     if (!result)
     {
       [GQZException raise:@"GQZFilenameError" format:@"Could not read filename."];
@@ -335,23 +335,23 @@ LABEL_17:
   return result;
 }
 
-- (void)readExtraFieldFromBuffer:(const char *)a3 size:(unint64_t)a4 entry:(id)a5
+- (void)readExtraFieldFromBuffer:(const char *)buffer size:(unint64_t)size entry:(id)entry
 {
-  if (a4 >= 4)
+  if (size >= 4)
   {
-    v6 = a3;
-    v8 = &a3[a4];
+    bufferCopy = buffer;
+    v8 = &buffer[size];
     do
     {
-      v9 = *(v6 + 1);
-      v10 = v6 + 4;
-      v11 = &v6[v9 + 4];
+      v9 = *(bufferCopy + 1);
+      v10 = bufferCopy + 4;
+      v11 = &bufferCopy[v9 + 4];
       if (v11 > v8)
       {
         break;
       }
 
-      v12 = *v6;
+      v12 = *bufferCopy;
       if (v12 == 25453)
       {
         if (v9 >= 4 && !self->mIsEncrypted && *v10 == 1987082089)
@@ -362,10 +362,10 @@ LABEL_17:
 
       else if (v12 == 1)
       {
-        [a5 readZip64ExtraField:? size:?];
+        [entry readZip64ExtraField:? size:?];
       }
 
-      v6 = v11;
+      bufferCopy = v11;
     }
 
     while (v11 + 4 <= v8);

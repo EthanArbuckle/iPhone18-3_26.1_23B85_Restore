@@ -2,10 +2,10 @@
 - (NSSet)listenableArticleIDs;
 - (NSSet)readableArticleIDs;
 - (_TtC7NewsUI221OfflineContentManager)init;
-- (void)downloadFinishedForRequest:(id)a3 error:(id)a4;
-- (void)downloadProgressedForRequest:(id)a3 contentArchive:(id)a4;
-- (void)downloadProgressedForRequest:(id)a3 progress:(double)a4;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (void)downloadFinishedForRequest:(id)request error:(id)error;
+- (void)downloadProgressedForRequest:(id)request contentArchive:(id)archive;
+- (void)downloadProgressedForRequest:(id)request progress:(double)progress;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 @end
 
 @implementation OfflineContentManager
@@ -19,7 +19,7 @@
 
 - (NSSet)readableArticleIDs
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_219BE2184();
 
@@ -32,7 +32,7 @@
 
 - (NSSet)listenableArticleIDs
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_219BE2184();
 
@@ -47,47 +47,47 @@
   return v6;
 }
 
-- (void)downloadProgressedForRequest:(id)a3 contentArchive:(id)a4
+- (void)downloadProgressedForRequest:(id)request contentArchive:(id)archive
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2198F0CB4(v6, v7);
+  requestCopy = request;
+  archiveCopy = archive;
+  selfCopy = self;
+  sub_2198F0CB4(requestCopy, archiveCopy);
 }
 
-- (void)downloadProgressedForRequest:(id)a3 progress:(double)a4
+- (void)downloadProgressedForRequest:(id)request progress:(double)progress
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a3;
-  *(v7 + 32) = a4;
-  v8 = a3;
-  v10 = self;
-  v9 = v8;
+  *(v7 + 24) = request;
+  *(v7 + 32) = progress;
+  requestCopy = request;
+  selfCopy = self;
+  v9 = requestCopy;
   sub_219BE3494();
 }
 
-- (void)downloadFinishedForRequest:(id)a3 error:(id)a4
+- (void)downloadFinishedForRequest:(id)request error:(id)error
 {
   v7 = swift_allocObject();
   v7[2] = self;
-  v7[3] = a3;
-  v7[4] = a4;
-  v8 = a3;
-  v9 = self;
-  v10 = a4;
-  v13 = v9;
-  v11 = v8;
-  v12 = v10;
+  v7[3] = request;
+  v7[4] = error;
+  requestCopy = request;
+  selfCopy = self;
+  errorCopy = error;
+  v13 = selfCopy;
+  v11 = requestCopy;
+  v12 = errorCopy;
   sub_219BE3494();
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
   swift_getObjectType();
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v6;
-  v7 = self;
+  selfCopy = self;
   sub_219BE3204();
   v8 = sub_219BE2E54();
   sub_219BE2F84();

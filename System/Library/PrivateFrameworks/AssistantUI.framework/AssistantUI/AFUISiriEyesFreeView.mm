@@ -1,43 +1,43 @@
 @interface AFUISiriEyesFreeView
-- (AFUISiriEyesFreeView)initWithFrame:(CGRect)a3 eyesFreeMode:(int64_t)a4;
+- (AFUISiriEyesFreeView)initWithFrame:(CGRect)frame eyesFreeMode:(int64_t)mode;
 - (id)backdropView;
-- (void)_configureEyesFreePresentation:(int64_t)a3;
+- (void)_configureEyesFreePresentation:(int64_t)presentation;
 - (void)checkForAndReportEyesFreeLogoBug;
 @end
 
 @implementation AFUISiriEyesFreeView
 
-- (AFUISiriEyesFreeView)initWithFrame:(CGRect)a3 eyesFreeMode:(int64_t)a4
+- (AFUISiriEyesFreeView)initWithFrame:(CGRect)frame eyesFreeMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = AFUISiriEyesFreeView;
-  v5 = [(AFUISiriEyesFreeView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AFUISiriEyesFreeView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(AFUISiriEyesFreeView *)v5 _configureEyesFreePresentation:a4];
+    [(AFUISiriEyesFreeView *)v5 _configureEyesFreePresentation:mode];
   }
 
   return v6;
 }
 
-- (void)_configureEyesFreePresentation:(int64_t)a3
+- (void)_configureEyesFreePresentation:(int64_t)presentation
 {
   v31 = *MEMORY[0x277D85DE8];
-  self->_eyesFreeMode = a3;
-  if (a3 == 1)
+  self->_eyesFreeMode = presentation;
+  if (presentation == 1)
   {
-    v4 = [(AFUISiriEyesFreeView *)self backdropView];
+    backdropView = [(AFUISiriEyesFreeView *)self backdropView];
     backdropView = self->_backdropView;
-    self->_backdropView = v4;
+    self->_backdropView = backdropView;
 
     v6 = self->_backdropView;
     [(AFUISiriEyesFreeView *)self bounds];
     [(UIView *)v6 setFrame:?];
     [(AFUISiriEyesFreeView *)self addSubview:self->_backdropView];
     v7 = objc_alloc(MEMORY[0x277D619E0]);
-    v8 = [MEMORY[0x277D75D00] siriui_platterVibrancyEffect];
-    v9 = [v7 initWithEffect:v8];
+    siriui_platterVibrancyEffect = [MEMORY[0x277D75D00] siriui_platterVibrancyEffect];
+    v9 = [v7 initWithEffect:siriui_platterVibrancyEffect];
     eyesFreeEffectView = self->_eyesFreeEffectView;
     self->_eyesFreeEffectView = v9;
 
@@ -108,9 +108,9 @@
   if (v4 > v5)
   {
     v6 = [objc_alloc(MEMORY[0x277D6AFC8]) initWithQueue:0];
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v7 processName];
-    v9 = [v6 signatureWithDomain:@"SiriAssistant" type:@"eyesfree_icon_offscreen" subType:&stru_285322A30 subtypeContext:&stru_285322A30 detectedProcess:v8 triggerThresholdValues:0];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v9 = [v6 signatureWithDomain:@"SiriAssistant" type:@"eyesfree_icon_offscreen" subType:&stru_285322A30 subtypeContext:&stru_285322A30 detectedProcess:processName triggerThresholdValues:0];
 
     [v6 snapshotWithSignature:v9 delay:0 events:0 payload:0 actions:0 reply:0.0];
     v10 = *MEMORY[0x277CEF098];
@@ -132,12 +132,12 @@
       [(AFUISiriEyesFreeView *)self bounds];
       v5 = [v4 initWithFrame:?];
       [(UIView *)v5 siriSharedUI_setGlassBackground];
-      v6 = [(UIView *)v5 layer];
-      [v6 setMasksToBounds:1];
+      layer = [(UIView *)v5 layer];
+      [layer setMasksToBounds:1];
 
       [(UIView *)v5 setAutoresizingMask:18];
-      v7 = [(UIView *)v5 layer];
-      [v7 setAllowsHitTesting:0];
+      layer2 = [(UIView *)v5 layer];
+      [layer2 setAllowsHitTesting:0];
     }
 
     else

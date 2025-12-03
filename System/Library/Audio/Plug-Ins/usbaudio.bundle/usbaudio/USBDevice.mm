@@ -1,6 +1,6 @@
 @interface USBDevice
-- (BOOL)acquireBox:(BOOL)a3 fromHAL:(BOOL)a4;
-- (_TtC9AUASDCore9USBDevice)initWithBoxUID:(id)a3 withPlugin:(id)a4;
+- (BOOL)acquireBox:(BOOL)box fromHAL:(BOOL)l;
+- (_TtC9AUASDCore9USBDevice)initWithBoxUID:(id)d withPlugin:(id)plugin;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   swift_beginAccess();
   if (*&self->speed[v3])
   {
-    v4 = self;
+    selfCopy = self;
 
     sub_100022C14();
 
@@ -21,7 +21,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *&self->speed[v3] = 0;
@@ -31,16 +31,16 @@
   [(USBDevice *)&v7 dealloc];
 }
 
-- (BOOL)acquireBox:(BOOL)a3 fromHAL:(BOOL)a4
+- (BOOL)acquireBox:(BOOL)box fromHAL:(BOOL)l
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(v4) = _s9AUASDCore9USBDeviceC10acquireBox_7fromHALS2b_SbtF_0(v4);
+  boxCopy = box;
+  selfCopy = self;
+  LOBYTE(boxCopy) = _s9AUASDCore9USBDeviceC10acquireBox_7fromHALS2b_SbtF_0(boxCopy);
 
-  return v4 & 1;
+  return boxCopy & 1;
 }
 
-- (_TtC9AUASDCore9USBDevice)initWithBoxUID:(id)a3 withPlugin:(id)a4
+- (_TtC9AUASDCore9USBDevice)initWithBoxUID:(id)d withPlugin:(id)plugin
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

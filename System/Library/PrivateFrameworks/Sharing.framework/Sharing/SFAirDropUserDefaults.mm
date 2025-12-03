@@ -4,8 +4,8 @@
 - (BOOL)objcPrivateContactDiscoveryEnabled;
 - (BOOL)objcSystemLevelProgressEnabled;
 - (NSString)description;
-- (void)setObjcCellularUsageEnabled:(BOOL)a3;
-- (void)setObjcNearFieldSharingEnabled:(BOOL)a3;
+- (void)setObjcCellularUsageEnabled:(BOOL)enabled;
+- (void)setObjcNearFieldSharingEnabled:(BOOL)enabled;
 @end
 
 @implementation SFAirDropUserDefaults
@@ -24,7 +24,7 @@
 
 - (BOOL)objcPrivateContactDiscoveryEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFAirDropUserDefaults.privateContactDiscoveryEnabled.getter();
 
   return v3 & 1;
@@ -32,7 +32,7 @@
 
 - (BOOL)objcSystemLevelProgressEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFAirDropUserDefaults.systemLevelProgressEnabled.getter();
 
   return v3 & 1;
@@ -40,22 +40,22 @@
 
 - (BOOL)objcMoveToAppEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFAirDropUserDefaults.moveToAppEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setObjcNearFieldSharingEnabled:(BOOL)a3
+- (void)setObjcNearFieldSharingEnabled:(BOOL)enabled
 {
-  v4 = self;
-  SFAirDropUserDefaults.objcNearFieldSharingEnabled.setter(a3);
+  selfCopy = self;
+  SFAirDropUserDefaults.objcNearFieldSharingEnabled.setter(enabled);
 }
 
-- (void)setObjcCellularUsageEnabled:(BOOL)a3
+- (void)setObjcCellularUsageEnabled:(BOOL)enabled
 {
-  v4 = self;
-  SFAirDropUserDefaults.cellularUsageEnabled.setter(a3);
+  selfCopy = self;
+  SFAirDropUserDefaults.cellularUsageEnabled.setter(enabled);
 }
 
 - (NSString)description

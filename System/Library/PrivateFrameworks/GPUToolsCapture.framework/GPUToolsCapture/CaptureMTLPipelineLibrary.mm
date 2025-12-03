@@ -1,13 +1,13 @@
 @interface CaptureMTLPipelineLibrary
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLPipelineLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLPipelineLibrary)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setDisableRunTimeCompilation:(BOOL)a3;
-- (void)setLabel:(id)a3;
+- (void)setDisableRunTimeCompilation:(BOOL)compilation;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
@@ -39,10 +39,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLPipelineLibrary *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLPipelineLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -61,13 +61,13 @@
   [(CaptureMTLPipelineLibrary *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLPipelineLibrarySPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLPipelineLibrarySPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -122,10 +122,10 @@
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  [(MTLPipelineLibrarySPI *)self->_baseObject setLabel:v4];
+  labelCopy = label;
+  [(MTLPipelineLibrarySPI *)self->_baseObject setLabel:labelCopy];
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
@@ -150,10 +150,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLPipelineLibrary *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLPipelineLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -161,16 +161,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -179,9 +179,9 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)setDisableRunTimeCompilation:(BOOL)a3
+- (void)setDisableRunTimeCompilation:(BOOL)compilation
 {
-  v3 = a3;
+  compilationCopy = compilation;
   [(MTLPipelineLibrarySPI *)self->_baseObject setDisableRunTimeCompilation:?];
   v16 = 0u;
   v17 = 0u;
@@ -207,10 +207,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLPipelineLibrary *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLPipelineLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -219,7 +219,7 @@
   }
 
   *v8 = var0;
-  *(v8 + 2) = v3;
+  *(v8 + 2) = compilationCopy;
   *(v8 + 3) = 0;
   s();
   *v13 = v14;
@@ -227,22 +227,22 @@
   *(v16 + 15) |= 8u;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = a3;
+  nameCopy = name;
   baseObject = self->_baseObject;
   if (self->_isBaseObjectDebugDevice)
   {
-    v12 = a4;
+    optionsCopy = options;
   }
 
   else
   {
-    v12 = 65539;
+    optionsCopy = 65539;
   }
 
   v53 = 0;
-  v13 = [(MTLPipelineLibrarySPI *)baseObject newRenderPipelineStateWithName:v10 options:v12 reflection:&v53 error:a6];
+  v13 = [(MTLPipelineLibrarySPI *)baseObject newRenderPipelineStateWithName:nameCopy options:optionsCopy reflection:&v53 error:error];
   v14 = v53;
   if (v13)
   {
@@ -274,7 +274,7 @@
   v20 = v51;
   *(v51 + 8) = -15738;
   v21 = BYTE9(v52);
-  v48 = a4;
+  optionsCopy2 = options;
   if (BYTE9(v52) > 0x18uLL)
   {
     v23 = *(*(&v50 + 1) + 24);
@@ -298,10 +298,10 @@
     SaveMTLRenderPipelineReflectionCommon(&v50, v13, v14, 0, 0);
   }
 
-  v26 = [(CaptureMTLPipelineLibrary *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLPipelineLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v26->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -309,14 +309,14 @@
     var0 = 0;
   }
 
-  v27 = [(CaptureMTLRenderPipelineState *)v15 traceStream];
-  if (v27)
+  traceStream2 = [(CaptureMTLRenderPipelineState *)v15 traceStream];
+  if (traceStream2)
   {
-    v28 = v27->var0;
-    if (a6)
+    v28 = traceStream2->var0;
+    if (error)
     {
 LABEL_17:
-      v29 = *a6;
+      v29 = *error;
       goto LABEL_20;
     }
   }
@@ -324,7 +324,7 @@ LABEL_17:
   else
   {
     v28 = 0;
-    if (a6)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -332,45 +332,45 @@ LABEL_17:
 
   v29 = 0;
 LABEL_20:
-  v45 = a6;
-  v30 = [v10 UTF8String];
-  if (v30)
+  errorCopy = error;
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String)
   {
     v31 = v15;
     v32 = v13;
     v33 = v14;
-    v34 = a5;
-    v35 = [v10 UTF8String];
-    v36 = strlen([v10 UTF8String]);
-    v37 = v35;
-    a5 = v34;
+    reflectionCopy = reflection;
+    uTF8String2 = [nameCopy UTF8String];
+    v36 = strlen([nameCopy UTF8String]);
+    v37 = uTF8String2;
+    reflection = reflectionCopy;
     v14 = v33;
     v13 = v32;
     v15 = v31;
-    LOBYTE(v30) = GTTraceEncoder_storeBytes(&v50, v37, v36 + 1);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v50, v37, v36 + 1);
   }
 
   *v22 = var0;
   *(v22 + 1) = v28;
-  *(v22 + 2) = v48;
+  *(v22 + 2) = optionsCopy2;
   *(v22 + 3) = v29;
-  v22[32] = v30;
+  v22[32] = uTF8String;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
-  if (v48 && a5)
+  if (optionsCopy2 && reflection)
   {
-    if ((~v48 & 3) != 0 && !self->_isBaseObjectDebugDevice)
+    if ((~optionsCopy2 & 3) != 0 && !self->_isBaseObjectDebugDevice)
     {
       v38 = DEVICEOBJECT(self->_baseObject);
       v49 = v14;
-      v39 = [v38 newRenderPipelineStateWithName:v10 options:v48 reflection:&v49 error:v45];
+      v39 = [v38 newRenderPipelineStateWithName:nameCopy options:optionsCopy2 reflection:&v49 error:errorCopy];
       v40 = v49;
       v41 = v14;
       v14 = v40;
     }
 
     v42 = v14;
-    *a5 = v14;
+    *reflection = v14;
   }
 
   v43 = v51;
@@ -381,23 +381,23 @@ LABEL_20:
   return v15;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v9 = a3;
+  nameCopy = name;
   baseObject = self->_baseObject;
-  v48 = a4;
+  optionsCopy = options;
   if (self->_isBaseObjectDebugDevice)
   {
-    v11 = a4;
+    optionsCopy2 = options;
   }
 
   else
   {
-    v11 = 65539;
+    optionsCopy2 = 65539;
   }
 
   v54 = 0;
-  v12 = [(MTLPipelineLibrarySPI *)baseObject newComputePipelineStateWithName:v9 options:v11 reflection:&v54 error:a6];
+  v12 = [(MTLPipelineLibrarySPI *)baseObject newComputePipelineStateWithName:nameCopy options:optionsCopy2 reflection:&v54 error:error];
   v13 = v54;
   if (v12)
   {
@@ -432,14 +432,14 @@ LABEL_20:
   if (BYTE9(v53) > 0x18uLL)
   {
     v23 = *(*(&v51 + 1) + 24);
-    v24 = a6;
+    errorCopy = error;
     v25 = v14;
     v26 = BYTE10(v53);
     ++BYTE10(v53);
     v22 = GTTraceMemPool_allocateBytes(v23, *(&v52 + 1), v26 | 0x2800000000) + 16;
     v21 = v26;
     v14 = v25;
-    a6 = v24;
+    error = errorCopy;
   }
 
   else
@@ -450,10 +450,10 @@ LABEL_20:
 
   *(v20 + 13) = v21;
   SaveMTLComputePipelineReflection(&v51, v12, v13, 0, 0);
-  v27 = [(CaptureMTLPipelineLibrary *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLPipelineLibrary *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -461,14 +461,14 @@ LABEL_20:
     var0 = 0;
   }
 
-  v29 = [(CaptureMTLComputePipelineState *)v14 traceStream];
-  if (v29)
+  traceStream2 = [(CaptureMTLComputePipelineState *)v14 traceStream];
+  if (traceStream2)
   {
-    v47 = v29->var0;
-    if (a6)
+    v47 = traceStream2->var0;
+    if (error)
     {
 LABEL_15:
-      v30 = *a6;
+      v30 = *error;
       goto LABEL_18;
     }
   }
@@ -476,7 +476,7 @@ LABEL_15:
   else
   {
     v47 = 0;
-    if (a6)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -484,45 +484,45 @@ LABEL_15:
 
   v30 = 0;
 LABEL_18:
-  v46 = a6;
-  v31 = [v9 UTF8String];
-  if (v31)
+  errorCopy2 = error;
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String)
   {
     v32 = v14;
     v33 = v13;
     v34 = v12;
     v35 = var0;
-    v36 = [v9 UTF8String];
-    v37 = strlen([v9 UTF8String]);
-    v38 = v36;
+    uTF8String2 = [nameCopy UTF8String];
+    v37 = strlen([nameCopy UTF8String]);
+    v38 = uTF8String2;
     var0 = v35;
     v12 = v34;
     v13 = v33;
     v14 = v32;
-    LOBYTE(v31) = GTTraceEncoder_storeBytes(&v51, v38, v37 + 1);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v51, v38, v37 + 1);
   }
 
   *v22 = var0;
   *(v22 + 1) = v47;
-  *(v22 + 2) = v48;
+  *(v22 + 2) = optionsCopy;
   *(v22 + 3) = v30;
-  v22[32] = v31;
+  v22[32] = uTF8String;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
-  if (v48 && a5)
+  if (optionsCopy && reflection)
   {
-    if ((~v48 & 3) != 0 && !self->_isBaseObjectDebugDevice)
+    if ((~optionsCopy & 3) != 0 && !self->_isBaseObjectDebugDevice)
     {
       v39 = DEVICEOBJECT(self->_baseObject);
       v50 = v13;
-      v40 = [v39 newComputePipelineStateWithName:v9 options:v48 reflection:&v50 error:v46];
+      v40 = [v39 newComputePipelineStateWithName:nameCopy options:optionsCopy reflection:&v50 error:errorCopy2];
       v41 = v50;
       v42 = v13;
       v13 = v41;
     }
 
     v43 = v13;
-    *a5 = v13;
+    *reflection = v13;
   }
 
   v44 = v52;
@@ -533,22 +533,22 @@ LABEL_18:
   return v14;
 }
 
-- (CaptureMTLPipelineLibrary)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLPipelineLibrary)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLPipelineLibrary;
   v9 = [(CaptureMTLPipelineLibrary *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
 
     NSClassFromString(@"MTLDebugPipelineLibrary");
     v10->_isBaseObjectDebugDevice = objc_opt_isKindOfClass() & 1;

@@ -1,75 +1,75 @@
 @interface BMEntityRelationshipEventUtilities
-+ (BOOL)checkNullableArrayEqualityForSource:(id)a3 target:(id)a4;
-+ (BOOL)checkNullableDictionaryEqualityForSource:(id)a3 target:(id)a4;
-+ (BOOL)checkNullablePersonEntityEqualityForSource:(id)a3 target:(id)a4;
-+ (BOOL)checkNullableStringEqualityForSource:(id)a3 target:(id)a4;
-+ (BOOL)checkNullableTopicEntityEqualityForSource:(id)a3 target:(id)a4;
++ (BOOL)checkNullableArrayEqualityForSource:(id)source target:(id)target;
++ (BOOL)checkNullableDictionaryEqualityForSource:(id)source target:(id)target;
++ (BOOL)checkNullablePersonEntityEqualityForSource:(id)source target:(id)target;
++ (BOOL)checkNullableStringEqualityForSource:(id)source target:(id)target;
++ (BOOL)checkNullableTopicEntityEqualityForSource:(id)source target:(id)target;
 @end
 
 @implementation BMEntityRelationshipEventUtilities
 
-+ (BOOL)checkNullableStringEqualityForSource:(id)a3 target:(id)a4
++ (BOOL)checkNullableStringEqualityForSource:(id)source target:(id)target
 {
-  if (a3 && a4)
+  if (source && target)
   {
-    return [a3 isEqualToString:a4];
+    return [source isEqualToString:target];
   }
 
   else
   {
-    return a3 == a4;
+    return source == target;
   }
 }
 
-+ (BOOL)checkNullableArrayEqualityForSource:(id)a3 target:(id)a4
++ (BOOL)checkNullableArrayEqualityForSource:(id)source target:(id)target
 {
-  if (a3 && a4)
+  if (source && target)
   {
-    return [a3 isEqualToArray:a4];
+    return [source isEqualToArray:target];
   }
 
   else
   {
-    return a3 == a4;
+    return source == target;
   }
 }
 
-+ (BOOL)checkNullableDictionaryEqualityForSource:(id)a3 target:(id)a4
++ (BOOL)checkNullableDictionaryEqualityForSource:(id)source target:(id)target
 {
-  if (a3 && a4)
+  if (source && target)
   {
-    return [a3 isEqualToDictionary:a4];
+    return [source isEqualToDictionary:target];
   }
 
   else
   {
-    return a3 == a4;
+    return source == target;
   }
 }
 
-+ (BOOL)checkNullablePersonEntityEqualityForSource:(id)a3 target:(id)a4
++ (BOOL)checkNullablePersonEntityEqualityForSource:(id)source target:(id)target
 {
-  if (a3 && a4)
+  if (source && target)
   {
-    return [a3 isEqual:a4];
+    return [source isEqual:target];
   }
 
   else
   {
-    return a3 == a4;
+    return source == target;
   }
 }
 
-+ (BOOL)checkNullableTopicEntityEqualityForSource:(id)a3 target:(id)a4
++ (BOOL)checkNullableTopicEntityEqualityForSource:(id)source target:(id)target
 {
-  if (a3 && a4)
+  if (source && target)
   {
-    return [a3 isEqual:a4];
+    return [source isEqual:target];
   }
 
   else
   {
-    return a3 == a4;
+    return source == target;
   }
 }
 

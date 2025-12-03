@@ -1,17 +1,17 @@
 @interface MapsSuggestionsFirstUnlockBase
 - (BOOL)hasDeviceBeenUnlocked;
-- (MapsSuggestionsFirstUnlockBase)initWithName:(id)a3;
+- (MapsSuggestionsFirstUnlockBase)initWithName:(id)name;
 - (NSString)uniqueName;
-- (void)triggerFired:(id)a3;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsFirstUnlockBase
 
-- (MapsSuggestionsFirstUnlockBase)initWithName:(id)a3
+- (MapsSuggestionsFirstUnlockBase)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = MapsSuggestionsFirstUnlockBase;
-  return [(MapsSuggestionsBaseTrigger *)&v4 initWithName:a3];
+  return [(MapsSuggestionsBaseTrigger *)&v4 initWithName:name];
 }
 
 - (BOOL)hasDeviceBeenUnlocked
@@ -28,9 +28,9 @@
   return [v2 description];
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
-  v5 = a3;
+  firedCopy = fired;
   [(MapsSuggestionsFirstUnlockBase *)self doesNotRecognizeSelector:a2];
   __break(1u);
 }

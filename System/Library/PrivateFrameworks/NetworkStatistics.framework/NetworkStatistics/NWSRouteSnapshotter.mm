@@ -1,5 +1,5 @@
 @interface NWSRouteSnapshotter
-- (NWSRouteSnapshotter)initWithSource:(id)a3 dest:(id)a4 mask:(id)a5 ifindex:(int)a6;
+- (NWSRouteSnapshotter)initWithSource:(id)source dest:(id)dest mask:(id)mask ifindex:(int)ifindex;
 - (id)snapshot;
 - (void)snapshot;
 @end
@@ -16,8 +16,8 @@
   v16 = 0;
   v17 = 1007;
   v18[0] = [(NWSSnapshotter *)self kernelSourceRef];
-  v3 = [(NWSSnapshotter *)self snapshotSource];
-  v4 = [v3 send:&v16 length:24 err:&v15];
+  snapshotSource = [(NWSSnapshotter *)self snapshotSource];
+  v4 = [snapshotSource send:&v16 length:24 err:&v15];
 
   if (v4 != 24)
   {
@@ -39,8 +39,8 @@
     goto LABEL_21;
   }
 
-  v5 = [(NWSSnapshotter *)self snapshotSource];
-  v6 = [v5 recv:&v16 length:272 err:&v15];
+  snapshotSource2 = [(NWSSnapshotter *)self snapshotSource];
+  v6 = [snapshotSource2 recv:&v16 length:272 err:&v15];
 
   if (v6 <= 271)
   {
@@ -108,12 +108,12 @@ LABEL_23:
   return v11;
 }
 
-- (NWSRouteSnapshotter)initWithSource:(id)a3 dest:(id)a4 mask:(id)a5 ifindex:(int)a6
+- (NWSRouteSnapshotter)initWithSource:(id)source dest:(id)dest mask:(id)mask ifindex:(int)ifindex
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sourceCopy = source;
+  destCopy = dest;
+  maskCopy = mask;
   v27.receiver = self;
   v27.super_class = NWSRouteSnapshotter;
   v13 = [(NWSRouteSnapshotter *)&v27 init];
@@ -124,14 +124,14 @@ LABEL_23:
 
   v29 = 0;
   memset(v28, 0, sizeof(v28));
-  if (v11 && [v11 length] >= 0x10 && objc_msgSend(v11, "length") < 0x1D)
+  if (destCopy && [destCopy length] >= 0x10 && objc_msgSend(destCopy, "length") < 0x1D)
   {
-    if (v12 && ([v11 length] < 0x10 || objc_msgSend(v11, "length") >= 0x1D))
+    if (maskCopy && ([destCopy length] < 0x10 || objc_msgSend(destCopy, "length") >= 0x1D))
     {
       v14 = NStatGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [NWSRouteSnapshotter initWithSource:v12 dest:? mask:? ifindex:?];
+        [NWSRouteSnapshotter initWithSource:maskCopy dest:? mask:? ifindex:?];
       }
 
       goto LABEL_7;
@@ -141,15 +141,15 @@ LABEL_23:
     *(&v28[0] + 1) = 1001;
     *&v28[1] = 1;
     memset(&v28[1] + 8, 0, 56);
-    LODWORD(v29) = a6;
-    [v11 getBytes:&v28[1] + 8 length:28];
-    if (v12)
+    LODWORD(v29) = ifindex;
+    [destCopy getBytes:&v28[1] + 8 length:28];
+    if (maskCopy)
     {
-      [v12 getBytes:&v28[3] + 4 length:28];
+      [maskCopy getBytes:&v28[3] + 4 length:28];
     }
 
     v26 = 0;
-    v16 = [v10 send:v28 length:84 err:&v26];
+    v16 = [sourceCopy send:v28 length:84 err:&v26];
     if (v16 != 84)
     {
       v20 = v16;
@@ -171,7 +171,7 @@ LABEL_23:
       goto LABEL_7;
     }
 
-    v17 = [v10 recv:v28 length:88 err:&v26];
+    v17 = [sourceCopy recv:v28 length:88 err:&v26];
     if (v17 <= 31)
     {
       v18 = v17;
@@ -238,7 +238,7 @@ LABEL_23:
     }
 
     [(NWSSnapshotter *)v13 setKernelSourceRef:*&v28[1]];
-    [(NWSSnapshotter *)v13 setSnapshotSource:v10];
+    [(NWSSnapshotter *)v13 setSnapshotSource:sourceCopy];
 LABEL_34:
     v15 = v13;
     goto LABEL_35;
@@ -247,7 +247,7 @@ LABEL_34:
   v14 = NStatGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [NWSRouteSnapshotter initWithSource:v11 dest:v11 == 0 mask:? ifindex:?];
+    [NWSRouteSnapshotter initWithSource:destCopy dest:destCopy == 0 mask:? ifindex:?];
   }
 
 LABEL_7:
@@ -262,7 +262,7 @@ LABEL_35:
 - (void)snapshot
 {
   v1 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_5(a1);
+  OUTLINED_FUNCTION_5(self);
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 8u);

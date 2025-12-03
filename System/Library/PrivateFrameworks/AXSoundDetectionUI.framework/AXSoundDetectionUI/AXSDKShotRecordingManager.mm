@@ -1,34 +1,34 @@
 @interface AXSDKShotRecordingManager
-+ (BOOL)_cleanupKShotFiles:(id)a3;
-+ (id)_retrieveFilesOlderThan:(double)a3;
++ (BOOL)_cleanupKShotFiles:(id)files;
++ (id)_retrieveFilesOlderThan:(double)than;
 + (id)defaults;
-+ (id)requestForDetector:(id)a3;
++ (id)requestForDetector:(id)detector;
 + (void)cleanupKShotFiles;
-- (AXSDKShotRecordingManager)initWithSampleLength:(double)a3 bufferSize:(double)a4;
+- (AXSDKShotRecordingManager)initWithSampleLength:(double)length bufferSize:(double)size;
 - (AXSDKShotRecordingManagerDelegate)delegate;
 - (id)_directory;
-- (id)_saveCachedAudioFileTimer:(id)a3;
+- (id)_saveCachedAudioFileTimer:(id)timer;
 - (id)audioFileSettings;
 - (id)path;
 - (unint64_t)nRecordingsSoFar;
-- (void)_cacheResultAndWaitForSave:(id)a3;
+- (void)_cacheResultAndWaitForSave:(id)save;
 - (void)_directory;
 - (void)_kShotShouldSaveCurrentSoundDidChange;
 - (void)_recordCachedResultToFile;
-- (void)listenEngineFailedToStartWithError:(id)a3;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)listenEngineFailedToStartWithError:(id)error;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
+- (void)request:(id)request didProduceResult:(id)result;
 - (void)reset;
-- (void)saveDetectionResult:(id)a3;
-- (void)setTargetDetector:(id)a3;
-- (void)trackBuffer:(id)a3 atTime:(id)a4;
-- (void)trackBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5;
-- (void)updateShouldSendSimilarityWarning:(id)a3;
+- (void)saveDetectionResult:(id)result;
+- (void)setTargetDetector:(id)detector;
+- (void)trackBuffer:(id)buffer atTime:(id)time;
+- (void)trackBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file;
+- (void)updateShouldSendSimilarityWarning:(id)warning;
 @end
 
 @implementation AXSDKShotRecordingManager
 
-- (AXSDKShotRecordingManager)initWithSampleLength:(double)a3 bufferSize:(double)a4
+- (AXSDKShotRecordingManager)initWithSampleLength:(double)length bufferSize:(double)size
 {
   v17.receiver = self;
   v17.super_class = AXSDKShotRecordingManager;
@@ -39,21 +39,21 @@
     fileProcessingQueue = v6->_fileProcessingQueue;
     v6->_fileProcessingQueue = v7;
 
-    v6->_sampleLength = a3;
-    v9 = [[AXSDRingBuffer alloc] initWithCount:vcvtpd_u64_f64(60.0 / (a3 * a4))];
+    v6->_sampleLength = length;
+    v9 = [[AXSDRingBuffer alloc] initWithCount:vcvtpd_u64_f64(60.0 / (length * size))];
     audioRingBuffer = v6->_audioRingBuffer;
     v6->_audioRingBuffer = v9;
 
     v6->_isFile = 0;
     [(AXSDKShotRecordingManager *)v6 reset];
     objc_initWeak(&location, v6);
-    v11 = [MEMORY[0x277CE6F98] sharedInstance];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block_invoke;
     v14[3] = &unk_278BDD060;
     objc_copyWeak(&v15, &location);
-    [v11 registerUpdateBlock:v14 forRetrieveSelector:sel_kShotShouldSaveCurrentSound withListener:v6];
+    [mEMORY[0x277CE6F98] registerUpdateBlock:v14 forRetrieveSelector:sel_kShotShouldSaveCurrentSound withListener:v6];
 
     if ([MEMORY[0x277D12B60] isInternalInstall])
     {
@@ -98,18 +98,18 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
   self->_numObservations = 0;
 }
 
-- (void)setTargetDetector:(id)a3
+- (void)setTargetDetector:(id)detector
 {
-  objc_storeStrong(&self->_targetDetector, a3);
+  objc_storeStrong(&self->_targetDetector, detector);
 
   [(AXSDKShotRecordingManager *)self reset];
 }
 
 - (unint64_t)nRecordingsSoFar
 {
-  v2 = [(AXSDKShotRecordingManager *)self targetDetector];
-  v3 = [v2 recordings];
-  v4 = [v3 count];
+  targetDetector = [(AXSDKShotRecordingManager *)self targetDetector];
+  recordings = [targetDetector recordings];
+  v4 = [recordings count];
 
   return v4;
 }
@@ -117,8 +117,8 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
 + (void)cleanupKShotFiles
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() defaults];
-  v4 = [v3 objectForKey:@"com.apple.accessibility.kshot.last_cleanup_key"];
+  defaults = [objc_opt_class() defaults];
+  v4 = [defaults objectForKey:@"com.apple.accessibility.kshot.last_cleanup_key"];
 
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [v5 dateByAddingTimeInterval:-86400.0];
@@ -136,29 +136,29 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
 
   else
   {
-    v8 = [a1 _retrieveFilesOlderThan:432000.0];
+    v8 = [self _retrieveFilesOlderThan:432000.0];
     if ([v8 count])
     {
-      [a1 _cleanupKShotFiles:v8];
+      [self _cleanupKShotFiles:v8];
     }
 
-    v9 = [a1 defaults];
+    defaults2 = [self defaults];
     v10 = [MEMORY[0x277CBEAA8] now];
-    [v9 setObject:v10 forKey:@"com.apple.accessibility.kshot.last_cleanup_key"];
+    [defaults2 setObject:v10 forKey:@"com.apple.accessibility.kshot.last_cleanup_key"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_cleanupKShotFiles:(id)a3
++ (BOOL)_cleanupKShotFiles:(id)files
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  filesCopy = files;
   v4 = AXLogUltronKShot();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v3;
+    v26 = filesCopy;
     _os_log_impl(&dword_23D62D000, v4, OS_LOG_TYPE_INFO, "Cleaning up KShot Files - at paths %@", buf, 0xCu);
   }
 
@@ -166,7 +166,7 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = filesCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v6)
   {
@@ -188,9 +188,9 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
         }
 
         v14 = *(*(&v21 + 1) + 8 * v12);
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v20 = v13;
-        [v15 removeItemAtPath:v14 error:&v20];
+        [defaultManager removeItemAtPath:v14 error:&v20];
         v9 = v20;
 
         if (v9)
@@ -229,32 +229,32 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
   return v11 & 1;
 }
 
-+ (id)_retrieveFilesOlderThan:(double)a3
++ (id)_retrieveFilesOlderThan:(double)than
 {
   v48 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (than <= 0.0)
   {
-    v3 = a3;
+    thanCopy = than;
   }
 
   else
   {
-    v3 = -a3;
+    thanCopy = -than;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v32 = [v4 dateByAddingTimeInterval:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v32 = [date dateByAddingTimeInterval:thanCopy];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277CE6F98] sharedInstance];
-  v7 = [v6 decodedKShotDetectors];
-  v8 = [v7 allValues];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  decodedKShotDetectors = [mEMORY[0x277CE6F98] decodedKShotDetectors];
+  allValues = [decodedKShotDetectors allValues];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = v8;
+  v9 = allValues;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v10)
   {
@@ -272,8 +272,8 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
         v14 = *(*(&v38 + 1) + 8 * i);
         if ([v14 isModelReady])
         {
-          v15 = [v14 identifier];
-          v16 = [@"/var/mobile/Library/Accessibility/SoundDetectionKShot/TrainingFiles" stringByAppendingPathComponent:v15];
+          identifier = [v14 identifier];
+          v16 = [@"/var/mobile/Library/Accessibility/SoundDetectionKShot/TrainingFiles" stringByAppendingPathComponent:identifier];
 
           [v5 addObject:v16];
         }
@@ -308,11 +308,11 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
         }
 
         v22 = *(*(&v34 + 1) + 8 * j);
-        v23 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v33 = 0;
-        v24 = [v23 attributesOfItemAtPath:v22 error:&v33];
+        v24 = [defaultManager attributesOfItemAtPath:v22 error:&v33];
         v25 = v33;
-        v26 = [v24 fileCreationDate];
+        fileCreationDate = [v24 fileCreationDate];
 
         if (v25)
         {
@@ -327,7 +327,7 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
           }
         }
 
-        else if ([v26 compare:v32] == -1)
+        else if ([fileCreationDate compare:v32] == -1)
         {
           [v31 addObject:v22];
         }
@@ -351,31 +351,31 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
   return v2;
 }
 
-- (void)trackBuffer:(id)a3 atTime:(id)a4
+- (void)trackBuffer:(id)buffer atTime:(id)time
 {
   audioRingBuffer = self->_audioRingBuffer;
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:v7 atTime:v6];
+  timeCopy = time;
+  bufferCopy = buffer;
+  v8 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:bufferCopy atTime:timeCopy];
 
   [(AXSDRingBuffer *)audioRingBuffer addObject:v8];
 }
 
-- (void)trackBuffer:(id)a3 atTime:(id)a4 isFile:(BOOL)a5
+- (void)trackBuffer:(id)buffer atTime:(id)time isFile:(BOOL)file
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (self->_isFile != v5)
+  fileCopy = file;
+  bufferCopy = buffer;
+  timeCopy = time;
+  if (self->_isFile != fileCopy)
   {
-    v10 = AXLogUltronKShot();
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    content = AXLogUltronKShot();
+    v11 = os_log_type_enabled(content, OS_LOG_TYPE_DEFAULT);
+    if (fileCopy)
     {
       if (v11)
       {
         *buf = 0;
-        _os_log_impl(&dword_23D62D000, v10, OS_LOG_TYPE_DEFAULT, "AUTOMATION: RESETTING Audio Recording Buffer since we're recieving audio from a file.", buf, 2u);
+        _os_log_impl(&dword_23D62D000, content, OS_LOG_TYPE_DEFAULT, "AUTOMATION: RESETTING Audio Recording Buffer since we're recieving audio from a file.", buf, 2u);
       }
     }
 
@@ -384,25 +384,25 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
       if (v11)
       {
         *v16 = 0;
-        _os_log_impl(&dword_23D62D000, v10, OS_LOG_TYPE_DEFAULT, "AUTOMATION: Moving from recording from a file to recording from the mic. Resetting Audio Recording Buffer", v16, 2u);
+        _os_log_impl(&dword_23D62D000, content, OS_LOG_TYPE_DEFAULT, "AUTOMATION: Moving from recording from a file to recording from the mic. Resetting Audio Recording Buffer", v16, 2u);
       }
 
-      v10 = [(AXSDRingBuffer *)self->_audioRingBuffer content];
-      v12 = [v10 copy];
+      content = [(AXSDRingBuffer *)self->_audioRingBuffer content];
+      v12 = [content copy];
       cachedCurrentAudioFile = self->_cachedCurrentAudioFile;
       self->_cachedCurrentAudioFile = v12;
     }
 
     [(AXSDRingBuffer *)self->_audioRingBuffer reset];
-    self->_isFile = v5;
+    self->_isFile = fileCopy;
   }
 
   audioRingBuffer = self->_audioRingBuffer;
-  v15 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:v8 atTime:v9];
+  v15 = [[AXSDTimedAudioBuffer alloc] initWithBuffer:bufferCopy atTime:timeCopy];
   [(AXSDRingBuffer *)audioRingBuffer addObject:v15];
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
   v3 = AXLogUltronKShot();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -413,9 +413,9 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
 
 - (id)path
 {
-  v2 = [(AXSDKShotRecordingManager *)self targetDetector];
-  v3 = [v2 identifier];
-  v4 = [@"/var/mobile/Library/Accessibility/SoundDetectionKShot/TrainingFiles" stringByAppendingFormat:@"/%@", v3];
+  targetDetector = [(AXSDKShotRecordingManager *)self targetDetector];
+  identifier = [targetDetector identifier];
+  v4 = [@"/var/mobile/Library/Accessibility/SoundDetectionKShot/TrainingFiles" stringByAppendingFormat:@"/%@", identifier];
 
   return v4;
 }
@@ -427,9 +427,9 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
   v17[0] = MEMORY[0x277CBEC28];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v15 = 1;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [(AXSDKShotRecordingManager *)self path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v15];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(AXSDKShotRecordingManager *)self path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v15];
 
   if ((v6 & 1) == 0)
   {
@@ -439,9 +439,9 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
       [AXSDKShotRecordingManager _directory];
     }
 
-    v8 = [(AXSDKShotRecordingManager *)self path];
+    path2 = [(AXSDKShotRecordingManager *)self path];
     v14 = 0;
-    [v4 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:v3 error:&v14];
+    [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:v3 error:&v14];
     v9 = v14;
 
     if (v9)
@@ -454,60 +454,60 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
     }
   }
 
-  v11 = [(AXSDKShotRecordingManager *)self path];
+  path3 = [(AXSDKShotRecordingManager *)self path];
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return path3;
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v5 = a3;
+  observationCopy = observation;
   [(AXSDKShotRecordingManager *)self setNumObservations:[(AXSDKShotRecordingManager *)self numObservations]+ 1];
   if ([(AXSDKShotRecordingManager *)self numObservations]>= 5)
   {
-    v6 = [MEMORY[0x277CE6F98] sharedInstance];
-    if ([v6 soundDetectionKShotListeningState] == 1)
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    if ([mEMORY[0x277CE6F98] soundDetectionKShotListeningState] == 1)
     {
     }
 
     else
     {
-      v7 = [MEMORY[0x277CE6F98] sharedInstance];
-      v8 = [v7 soundDetectionKShotListeningState];
+      mEMORY[0x277CE6F98]2 = [MEMORY[0x277CE6F98] sharedInstance];
+      soundDetectionKShotListeningState = [mEMORY[0x277CE6F98]2 soundDetectionKShotListeningState];
 
-      if (v8 != 2)
+      if (soundDetectionKShotListeningState != 2)
       {
         goto LABEL_16;
       }
     }
 
-    if ([v5 detected])
+    if ([observationCopy detected])
     {
-      [(AXSDKShotRecordingManager *)self saveDetectionResult:v5];
+      [(AXSDKShotRecordingManager *)self saveDetectionResult:observationCopy];
       goto LABEL_16;
     }
 
-    v9 = [v5 identifier];
-    v10 = [(AXSDKShotRecordingManager *)self currentDetectionType];
-    if (![v9 isEqualToString:v10])
+    identifier = [observationCopy identifier];
+    currentDetectionType = [(AXSDKShotRecordingManager *)self currentDetectionType];
+    if (![identifier isEqualToString:currentDetectionType])
     {
       goto LABEL_14;
     }
 
-    v11 = [(AXSDKShotRecordingManager *)self isDetectionInProgress];
+    isDetectionInProgress = [(AXSDKShotRecordingManager *)self isDetectionInProgress];
 
-    if (v11)
+    if (isDetectionInProgress)
     {
       [(AXSDKShotRecordingManager *)self setNumNonDetections:[(AXSDKShotRecordingManager *)self numNonDetections]+ 1];
       if ([(AXSDKShotRecordingManager *)self numNonDetections]== 6)
       {
-        v12 = [MEMORY[0x277CE6F98] sharedInstance];
-        [v12 setSoundDetectionKShotListeningState:3];
+        mEMORY[0x277CE6F98]3 = [MEMORY[0x277CE6F98] sharedInstance];
+        [mEMORY[0x277CE6F98]3 setSoundDetectionKShotListeningState:3];
 
         [(AXSDKShotRecordingManager *)self setIsDetectionInProgress:0];
-        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AXSDKShotRecordingManager nRecordingsSoFar](self, "nRecordingsSoFar")}];
+        identifier = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AXSDKShotRecordingManager nRecordingsSoFar](self, "nRecordingsSoFar")}];
         cachedCurrentAudio = self->_cachedCurrentAudio;
         self->_cachedCurrentAudio = 0;
 
@@ -524,7 +524,7 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
           v18[2] = __61__AXSDKShotRecordingManager_receivedObservation_forDetector___block_invoke;
           v18[3] = &unk_278BDD2C0;
           v18[4] = self;
-          v19 = v9;
+          v19 = identifier;
           dispatch_async(MEMORY[0x277D85CD0], v18);
 
           goto LABEL_15;
@@ -537,8 +537,8 @@ uint64_t __61__AXSDKShotRecordingManager_initWithSampleLength_bufferSize___block
           _os_log_impl(&dword_23D62D000, v16, OS_LOG_TYPE_DEFAULT, "AUTOMATION: Audio File Ring Buffer is not nil! Will take recording from file instead of the mic.", buf, 2u);
         }
 
-        v10 = [(AXSDKShotRecordingManager *)self currentDetections];
-        v17 = [v10 objectForKey:v9];
+        currentDetectionType = [(AXSDKShotRecordingManager *)self currentDetections];
+        v17 = [currentDetectionType objectForKey:identifier];
         [(AXSDKShotRecordingManager *)self _cacheResultAndWaitForSave:v17];
 
 LABEL_14:
@@ -556,9 +556,9 @@ void __61__AXSDKShotRecordingManager_receivedObservation_forDetector___block_inv
   [*(a1 + 32) setTimer:v2];
 }
 
-- (id)_saveCachedAudioFileTimer:(id)a3
+- (id)_saveCachedAudioFileTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CBEBB8];
   v9[0] = MEMORY[0x277D85DD0];
@@ -566,7 +566,7 @@ void __61__AXSDKShotRecordingManager_receivedObservation_forDetector___block_inv
   v9[2] = __55__AXSDKShotRecordingManager__saveCachedAudioFileTimer___block_invoke;
   v9[3] = &unk_278BDD3B0;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = timerCopy;
   v10 = v6;
   v7 = [v5 scheduledTimerWithTimeInterval:0 repeats:v9 block:5.0];
 
@@ -610,21 +610,21 @@ void __55__AXSDKShotRecordingManager__saveCachedAudioFileTimer___block_invoke(ui
   [v3 invalidate];
 }
 
-- (void)saveDetectionResult:(id)a3
+- (void)saveDetectionResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[AXSDKShotRecordingManager nRecordingsSoFar](self, "nRecordingsSoFar")}];
   v7 = AXLogUltronKShot();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = resultCopy;
     _os_log_impl(&dword_23D62D000, v7, OS_LOG_TYPE_DEFAULT, "KSHOT: Detected an electronic sound, adding audio from detection result: %@", &v17, 0xCu);
   }
 
-  [(AXSDKShotRecordingManager *)self setCurrentDetectionType:v5];
+  [(AXSDKShotRecordingManager *)self setCurrentDetectionType:identifier];
   [(AXSDKShotRecordingManager *)self setIsDetectionInProgress:1];
   [(AXSDKShotRecordingManager *)self setNumNonDetections:0];
   v8 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:v6];
@@ -637,20 +637,20 @@ void __55__AXSDKShotRecordingManager__saveCachedAudioFileTimer___block_invoke(ui
   }
 
   v11 = [(NSMutableDictionary *)self->_detectionResultCollection objectForKey:v6];
-  [v11 addObject:v4];
+  [v11 addObject:resultCopy];
 
   v12 = [(NSMutableDictionary *)self->_currentDetections objectForKey:v6];
 
   if (!v12)
   {
-    v13 = [MEMORY[0x277CE6F98] sharedInstance];
-    [v13 setSoundDetectionKShotListeningState:2];
+    mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+    [mEMORY[0x277CE6F98] setSoundDetectionKShotListeningState:2];
 
-    [(NSMutableDictionary *)self->_currentDetections setObject:v4 forKey:v6];
+    [(NSMutableDictionary *)self->_currentDetections setObject:resultCopy forKey:v6];
     v14 = AXLogUltronKShot();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 confidence];
+      [resultCopy confidence];
       v17 = 138412546;
       v18 = v6;
       v19 = 2048;
@@ -662,50 +662,50 @@ void __55__AXSDKShotRecordingManager__saveCachedAudioFileTimer___block_invoke(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cacheResultAndWaitForSave:(id)a3
+- (void)_cacheResultAndWaitForSave:(id)save
 {
   cachedCurrentAudioFile = self->_cachedCurrentAudioFile;
   if (cachedCurrentAudioFile)
   {
-    v6 = a3;
+    saveCopy = save;
     v7 = [(NSArray *)cachedCurrentAudioFile mutableCopy];
     cachedCurrentAudio = self->_cachedCurrentAudio;
     self->_cachedCurrentAudio = v7;
 
-    v9 = self->_cachedCurrentAudioFile;
+    content = self->_cachedCurrentAudioFile;
     self->_cachedCurrentAudioFile = 0;
   }
 
   else
   {
     audioRingBuffer = self->_audioRingBuffer;
-    v11 = a3;
-    v9 = [(AXSDRingBuffer *)audioRingBuffer content];
-    v12 = [v9 mutableCopy];
+    saveCopy2 = save;
+    content = [(AXSDRingBuffer *)audioRingBuffer content];
+    v12 = [content mutableCopy];
     v13 = self->_cachedCurrentAudio;
     self->_cachedCurrentAudio = v12;
   }
 
-  v14 = [(NSMutableDictionary *)self->_detectionResultCollection ax_deepMutableCopy];
+  ax_deepMutableCopy = [(NSMutableDictionary *)self->_detectionResultCollection ax_deepMutableCopy];
   cachedCurrentResults = self->_cachedCurrentResults;
-  self->_cachedCurrentResults = v14;
+  self->_cachedCurrentResults = ax_deepMutableCopy;
 
-  v16 = [a3 copy];
+  v16 = [save copy];
   cachedDetectionResult = self->_cachedDetectionResult;
   self->_cachedDetectionResult = v16;
 }
 
 - (void)_kShotShouldSaveCurrentSoundDidChange
 {
-  v3 = [MEMORY[0x277CE6F98] sharedInstance];
-  v4 = [v3 kShotShouldSaveCurrentSound];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  kShotShouldSaveCurrentSound = [mEMORY[0x277CE6F98] kShotShouldSaveCurrentSound];
 
-  if (v4)
+  if (kShotShouldSaveCurrentSound)
   {
-    v5 = [(AXSDKShotRecordingManager *)self timer];
-    v6 = [v5 isValid];
+    timer = [(AXSDKShotRecordingManager *)self timer];
+    isValid = [timer isValid];
 
-    if ((v6 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       v7 = AXLogUltronKShot();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1045,20 +1045,20 @@ void __54__AXSDKShotRecordingManager__recordCachedResultToFile__block_invoke_2(u
   }
 }
 
-- (void)updateShouldSendSimilarityWarning:(id)a3
+- (void)updateShouldSendSimilarityWarning:(id)warning
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  warningCopy = warning;
   [(AXSDKShotRecordingManager *)self setShouldSendSimilarityWarning:0];
-  v5 = [MEMORY[0x277CE6F98] sharedInstance];
-  v6 = [v5 decodedKShotDetectors];
-  v7 = [v6 allValues];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  decodedKShotDetectors = [mEMORY[0x277CE6F98] decodedKShotDetectors];
+  allValues = [decodedKShotDetectors allValues];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v7;
+  v8 = allValues;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v9)
   {
@@ -1081,18 +1081,18 @@ void __54__AXSDKShotRecordingManager__recordCachedResultToFile__block_invoke_2(u
           v15 = AXLogUltronKShot();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v14 name];
-            v23 = [v14 identifier];
+            name = [v14 name];
+            identifier = [v14 identifier];
             *buf = 138412546;
-            v35 = v22;
+            v35 = name;
             v36 = 2112;
-            v37 = v23;
+            v37 = identifier;
             _os_log_debug_impl(&dword_23D62D000, v15, OS_LOG_TYPE_DEBUG, "CONFIDENCE FOR DETECTOR %@ %@", buf, 0x16u);
           }
 
           v16 = objc_alloc(MEMORY[0x277CDC8D8]);
           v29 = 0;
-          v17 = [v16 initWithURL:v4 error:&v29];
+          v17 = [v16 initWithURL:warningCopy error:&v29];
           v18 = v29;
           if (v18)
           {
@@ -1148,14 +1148,14 @@ LABEL_22:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)requestForDetector:(id)a3
++ (id)requestForDetector:(id)detector
 {
-  v3 = a3;
-  v4 = [v3 mlModel];
-  if (v4)
+  detectorCopy = detector;
+  mlModel = [detectorCopy mlModel];
+  if (mlModel)
   {
     v21 = 0;
-    v5 = [objc_alloc(MEMORY[0x277CDC900]) initWithMLModel:v4 error:&v21];
+    v5 = [objc_alloc(MEMORY[0x277CDC900]) initWithMLModel:mlModel error:&v21];
     v6 = v21;
     v7 = v6;
     if (v5)
@@ -1170,18 +1170,18 @@ LABEL_22:
 
     if (v8)
     {
-      v18 = [v4 modelDescription];
-      v11 = [v18 inputDescriptionsByName];
-      v12 = [v11 objectForKeyedSubscript:@"td_audio"];
-      v13 = [v12 multiArrayConstraint];
-      v14 = [v13 shape];
-      v15 = [v14 lastObject];
-      v16 = [v15 int64ValueSafe];
+      modelDescription = [mlModel modelDescription];
+      inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+      v12 = [inputDescriptionsByName objectForKeyedSubscript:@"td_audio"];
+      multiArrayConstraint = [v12 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
+      lastObject = [shape lastObject];
+      int64ValueSafe = [lastObject int64ValueSafe];
 
-      CMTimeMake(&v20, v16, 16000);
+      CMTimeMake(&v20, int64ValueSafe, 16000);
       v19 = v20;
       [v5 setWindowDuration:&v19];
-      [v5 setOverlapFactor:((v16 + -7800.0) / v16)];
+      [v5 setOverlapFactor:((int64ValueSafe + -7800.0) / int64ValueSafe)];
       v10 = v5;
     }
 
@@ -1190,7 +1190,7 @@ LABEL_22:
       v9 = AXLogUltronKShot();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [AXSDKShotRecordingManager requestForDetector:v3];
+        [AXSDKShotRecordingManager requestForDetector:detectorCopy];
       }
 
       v10 = 0;
@@ -1202,7 +1202,7 @@ LABEL_22:
     v7 = AXLogUltronKShot();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [AXSDKShotRecordingManager requestForDetector:v3];
+      [AXSDKShotRecordingManager requestForDetector:detectorCopy];
     }
 
     v10 = 0;
@@ -1211,15 +1211,15 @@ LABEL_22:
   return v10;
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a4 classifications];
+  classifications = [result classifications];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [classifications countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1230,12 +1230,12 @@ LABEL_22:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(classifications);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        if ([v11 isEqualToString:@"1"])
+        identifier = [v10 identifier];
+        if ([identifier isEqualToString:@"1"])
         {
           [v10 confidence];
           v13 = v12;
@@ -1251,7 +1251,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [classifications countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

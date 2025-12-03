@@ -1,21 +1,21 @@
 @interface TIAddKeyboardLanguageListController
-- (BOOL)inputMode:(id)a3 matchesPredicate:(id)a4;
+- (BOOL)inputMode:(id)mode matchesPredicate:(id)predicate;
 - (NSOperationQueue)searchQueue;
 - (TIAddKeyboardLanguageListController)init;
 - (id)generateSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)cancelButtonTapped;
-- (void)createAboutPrivacyControllerIfNeeded:(id)a3;
+- (void)createAboutPrivacyControllerIfNeeded:(id)needed;
 - (void)dealloc;
 - (void)dismissForDone;
 - (void)emitNavigationEventForAddKeyboardLanguageListController;
-- (void)handleSoleInputModeAddition:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)showAddExtensionKeyboardSheet:(id)a3;
-- (void)showAddSystemKeyboardSheet:(id)a3;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)handleSoleInputModeAddition:(id)addition;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)showAddExtensionKeyboardSheet:(id)sheet;
+- (void)showAddSystemKeyboardSheet:(id)sheet;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -71,9 +71,9 @@
   [objc_msgSend(objc_msgSend(-[TIAddKeyboardLanguageListController navigationItem](self "navigationItem")];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  [(TIAddKeyboardLanguageListController *)self setSearchText:a4];
+  [(TIAddKeyboardLanguageListController *)self setSearchText:change];
   [(NSOperationQueue *)[(TIAddKeyboardLanguageListController *)self searchQueue] cancelAllOperations];
   v5 = objc_alloc_init(NSBlockOperation);
   objc_initWeak(&location, v5);
@@ -89,7 +89,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   [(NSOperationQueue *)[(TIAddKeyboardLanguageListController *)self searchQueue] cancelAllOperations];
   [(TIAddKeyboardLanguageListController *)self setSearchText:0];
@@ -97,10 +97,10 @@
   [(TIAddKeyboardLanguageListController *)self reloadSpecifiers];
 }
 
-- (BOOL)inputMode:(id)a3 matchesPredicate:(id)a4
+- (BOOL)inputMode:(id)mode matchesPredicate:(id)predicate
 {
   LanguageWithRegion = TIInputModeGetLanguageWithRegion();
-  if ([a4 evaluateWithObject:LanguageWithRegion])
+  if ([predicate evaluateWithObject:LanguageWithRegion])
   {
     v6 = 1;
   }
@@ -174,7 +174,7 @@
           }
 
           v20 = *(*(&v24 + 1) + 8 * j);
-          if ([a4 evaluateWithObject:v20])
+          if ([predicate evaluateWithObject:v20])
           {
             *(v29 + 24) = 1;
             goto LABEL_25;
@@ -185,7 +185,7 @@
           v23[1] = 3221225472;
           v23[2] = sub_29970;
           v23[3] = &unk_49980;
-          v23[4] = a4;
+          v23[4] = predicate;
           v23[5] = &v28;
           [v20 enumerateSubstringsInRange:0 options:v21 usingBlock:{3, v23}];
           if (v29[3])
@@ -320,7 +320,7 @@ LABEL_25:
               }
 
               v19 = v18;
-              v20 = [(UIKeyboardInputMode *)v17 identifier];
+              identifier = [(UIKeyboardInputMode *)v17 identifier];
               v21 = [-[UIKeyboardInputMode containingBundle](v17 "containingBundle")];
               v22 = [-[UIKeyboardInputMode containingBundle](v17 "containingBundle")];
               if (!v22)
@@ -336,12 +336,12 @@ LABEL_25:
               v21 = TIInputModeGetLanguageWithRegion();
               v23 = [TIKeyboardListController keyboardDisplayNameForIdentifier:v21];
               v19 = 0;
-              v20 = v21;
+              identifier = v21;
             }
 
-            if (![v45 member:v20])
+            if (![v45 member:identifier])
             {
-              [v45 addObject:v20];
+              [v45 addObject:identifier];
               if (!-[UIKeyboardInputMode isExtensionInputMode](v17, "isExtensionInputMode") || (v24 = [v42 objectForKey:{objc_msgSend(-[UIKeyboardInputMode containingBundle](v17, "containingBundle"), "bundlePath")}]) == 0)
               {
                 v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:val set:0 get:0 detail:0 cell:3 edit:0];
@@ -457,7 +457,7 @@ LABEL_25:
   return v32;
 }
 
-- (void)createAboutPrivacyControllerIfNeeded:(id)a3
+- (void)createAboutPrivacyControllerIfNeeded:(id)needed
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -465,7 +465,7 @@ LABEL_25:
   v5 = sub_2A43C;
   v6 = &unk_49A18;
   objc_copyWeak(&v8, &location);
-  v7 = a3;
+  neededCopy = needed;
   if (+[NSThread isMainThread])
   {
     v5(block);
@@ -480,7 +480,7 @@ LABEL_25:
   objc_destroyWeak(&location);
 }
 
-- (void)handleSoleInputModeAddition:(id)a3
+- (void)handleSoleInputModeAddition:(id)addition
 {
   +[TIKeyboardListController setInputModes:](TIKeyboardListController, "setInputModes:", [objc_msgSend(+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")]);
   v4 = [-[TIAddKeyboardLanguageListController parentController](self "parentController")];
@@ -490,31 +490,31 @@ LABEL_25:
     [v4 reloadSpecifiers];
   }
 
-  v5 = [(TIAddKeyboardLanguageListController *)self parentController];
+  parentController = [(TIAddKeyboardLanguageListController *)self parentController];
 
-  [v5 dismiss];
+  [parentController dismiss];
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v7 = [(TIAddKeyboardLanguageListController *)self aboutPrivacyController];
+  aboutPrivacyController = [(TIAddKeyboardLanguageListController *)self aboutPrivacyController];
 
-  [(TIAboutKeyboardPrivacyController *)v7 addPrivacyLinkViewIfNecessaryToHeaderView:a4 forSection:a5];
+  [(TIAboutKeyboardPrivacyController *)aboutPrivacyController addPrivacyLinkViewIfNecessaryToHeaderView:headerView forSection:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = TIAddKeyboardLanguageListController;
-  v6 = [(TIAddKeyboardLanguageListController *)&v9 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(TIAddKeyboardLanguageListController *)self specifierAtIndex:[(TIAddKeyboardLanguageListController *)self indexForIndexPath:a4]];
+  v6 = [(TIAddKeyboardLanguageListController *)&v9 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(TIAddKeyboardLanguageListController *)self specifierAtIndex:[(TIAddKeyboardLanguageListController *)self indexForIndexPath:path]];
   [v6 setAccessibilityIdentifier:{objc_msgSend(v7, "propertyForKey:", PSIDKey)}];
   return v6;
 }
 
-- (void)showAddSystemKeyboardSheet:(id)a3
+- (void)showAddSystemKeyboardSheet:(id)sheet
 {
-  v5 = [a3 propertyForKey:PSIDKey];
+  v5 = [sheet propertyForKey:PSIDKey];
   v6 = [TIKeyboardListController supportedInputModesForLanguage:v5];
   if (!+[TIAddKeyboardController shouldShowAddKeyboardControllerForInputModes:](TIAddKeyboardController, "shouldShowAddKeyboardControllerForInputModes:", v6) && (v7 = +[TIKeyboardListController availableInputModesForLanguage:](TIKeyboardListController, "availableInputModesForLanguage:", v5), v8 = [v6 count], v8 == objc_msgSend(v7, "count")) && (v9 = objc_msgSend(v7, "firstObject")) != 0)
   {
@@ -531,20 +531,20 @@ LABEL_25:
   {
     v11 = objc_alloc_init(TIAddKeyboardController);
     [(TIAddKeyboardController *)v11 setParentController:self];
-    [(TIAddKeyboardController *)v11 setSpecifier:a3];
-    [a3 setTarget:self];
+    [(TIAddKeyboardController *)v11 setSpecifier:sheet];
+    [sheet setTarget:self];
 
     [(TIAddKeyboardLanguageListController *)self showController:v11 animate:?];
   }
 }
 
-- (void)showAddExtensionKeyboardSheet:(id)a3
+- (void)showAddExtensionKeyboardSheet:(id)sheet
 {
   v5 = objc_alloc_init(TIAddExtensionKeyboardController);
   [(TIAddExtensionKeyboardController *)v5 setBehavesAsModalForAddSheet:1];
   [(TIAddExtensionKeyboardController *)v5 setParentController:self];
-  [(TIAddExtensionKeyboardController *)v5 setSpecifier:a3];
-  [a3 setTarget:self];
+  [(TIAddExtensionKeyboardController *)v5 setSpecifier:sheet];
+  [sheet setTarget:self];
   if ([-[TIAddExtensionKeyboardController specifiers](v5 "specifiers")])
   {
 
@@ -553,7 +553,7 @@ LABEL_25:
 
   else
   {
-    v6 = [objc_msgSend(objc_msgSend(a3 propertyForKey:{@"TIKBIdentifiersKey", "firstObject"), "identifier"}];
+    v6 = [objc_msgSend(objc_msgSend(sheet propertyForKey:{@"TIKBIdentifiersKey", "firstObject"), "identifier"}];
 
     [(TIAddKeyboardLanguageListController *)self handleSoleInputModeAddition:v6];
   }
@@ -561,9 +561,9 @@ LABEL_25:
 
 - (void)cancelButtonTapped
 {
-  v2 = [(TIAddKeyboardLanguageListController *)self parentController];
+  parentController = [(TIAddKeyboardLanguageListController *)self parentController];
 
-  [v2 dismiss];
+  [parentController dismiss];
 }
 
 - (void)dismissForDone
@@ -575,9 +575,9 @@ LABEL_25:
     [v3 reloadSpecifiers];
   }
 
-  v4 = [(TIAddKeyboardLanguageListController *)self parentController];
+  parentController = [(TIAddKeyboardLanguageListController *)self parentController];
 
-  [v4 dismiss];
+  [parentController dismiss];
 }
 
 - (void)emitNavigationEventForAddKeyboardLanguageListController

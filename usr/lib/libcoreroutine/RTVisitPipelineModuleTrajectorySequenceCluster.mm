@@ -1,49 +1,49 @@
 @interface RTVisitPipelineModuleTrajectorySequenceCluster
-+ (double)normalizeFeature:(double)a3 min:(double)a4 max:(double)a5;
-- (BOOL)computeFeatureVector:(float *)a3 cumSumNumLocations:(unint64_t)a4 cumSumNorthings:(double *)a5 cumSumEastings:(double *)a6 cumSumSquaredNorthings:(double *)a7 cumSumSquaredEastings:(double *)a8 sequenceLength:(unint64_t)a9;
-- (RTVisitPipelineModuleTrajectorySequenceCluster)initWithVisitTrajectorySequenceClassifier:(id)a3 hyperParameter:(id)a4;
-- (double)computeRadiusFromCumSumNorthings:(const double *)a3 cumSumEastings:(const double *)a4 cumSumSquaredNorthings:(const double *)a5 cumSumSuaredEastings:(const double *)a6 firstLocationIndex:(unint64_t)a7 lastLocationIndex:(unint64_t)a8;
-- (float)computeFeatureVectorFromLocalFramesNumOfLocations:(unint64_t)a3 northings:(const double *)a4 eastings:(const double *)a5 sequenceLength:(unint64_t)a6;
-- (float)computeFeatureVectorFromLocations:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5;
-- (id)createVisitWithLocations:(id)a3 entryDate:(id)a4 exitDate:(id)a5;
-- (id)performBatchInferenceWithFeatureVector:(const float *)a3 featureVectorLength:(unint64_t)a4 start:(unint64_t)a5 firstTimeStepDate:(id)a6;
-- (id)process:(id)a3;
-- (unint64_t)numLocationsFrom:(unint64_t)a3;
-- (unint64_t)sequenceIndexFromDate:(id)a3 firstTimeStepDate:(id)a4;
-- (unint64_t)sequenceLengthFrom:(unint64_t)a3;
++ (double)normalizeFeature:(double)feature min:(double)min max:(double)max;
+- (BOOL)computeFeatureVector:(float *)vector cumSumNumLocations:(unint64_t)locations cumSumNorthings:(double *)northings cumSumEastings:(double *)eastings cumSumSquaredNorthings:(double *)squaredNorthings cumSumSquaredEastings:(double *)squaredEastings sequenceLength:(unint64_t)length;
+- (RTVisitPipelineModuleTrajectorySequenceCluster)initWithVisitTrajectorySequenceClassifier:(id)classifier hyperParameter:(id)parameter;
+- (double)computeRadiusFromCumSumNorthings:(const double *)northings cumSumEastings:(const double *)eastings cumSumSquaredNorthings:(const double *)squaredNorthings cumSumSuaredEastings:(const double *)suaredEastings firstLocationIndex:(unint64_t)index lastLocationIndex:(unint64_t)locationIndex;
+- (float)computeFeatureVectorFromLocalFramesNumOfLocations:(unint64_t)locations northings:(const double *)northings eastings:(const double *)eastings sequenceLength:(unint64_t)length;
+- (float)computeFeatureVectorFromLocations:(id)locations start:(unint64_t)start end:(unint64_t)end;
+- (id)createVisitWithLocations:(id)locations entryDate:(id)date exitDate:(id)exitDate;
+- (id)performBatchInferenceWithFeatureVector:(const float *)vector featureVectorLength:(unint64_t)length start:(unint64_t)start firstTimeStepDate:(id)date;
+- (id)process:(id)process;
+- (unint64_t)numLocationsFrom:(unint64_t)from;
+- (unint64_t)sequenceIndexFromDate:(id)date firstTimeStepDate:(id)stepDate;
+- (unint64_t)sequenceLengthFrom:(unint64_t)from;
 - (void)clearWorkingVisitCluster;
 @end
 
 @implementation RTVisitPipelineModuleTrajectorySequenceCluster
 
-+ (double)normalizeFeature:(double)a3 min:(double)a4 max:(double)a5
++ (double)normalizeFeature:(double)feature min:(double)min max:(double)max
 {
-  if (a3 < a4)
+  if (feature < min)
   {
-    a3 = a4;
+    feature = min;
   }
 
-  if (a3 >= a5)
+  if (feature >= max)
   {
-    a3 = a5;
+    feature = max;
   }
 
-  return -(a4 + a5 - a3 * 2.0) / (a5 - a4);
+  return -(min + max - feature * 2.0) / (max - min);
 }
 
-- (RTVisitPipelineModuleTrajectorySequenceCluster)initWithVisitTrajectorySequenceClassifier:(id)a3 hyperParameter:(id)a4
+- (RTVisitPipelineModuleTrajectorySequenceCluster)initWithVisitTrajectorySequenceClassifier:(id)classifier hyperParameter:(id)parameter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  classifierCopy = classifier;
+  parameterCopy = parameter;
+  v9 = parameterCopy;
+  if (!classifierCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -54,7 +54,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!parameterCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -73,39 +73,39 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_trajectorySequenceClassifier, a3);
-    objc_storeStrong(&v11->_hyperParameter, a4);
+    objc_storeStrong(&v10->_trajectorySequenceClassifier, classifier);
+    objc_storeStrong(&v11->_hyperParameter, parameter);
     v12 = [[RTVisitDecoder alloc] initWithHyperParameter:v9];
     decoder = v11->_decoder;
     v11->_decoder = v12;
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-- (unint64_t)numLocationsFrom:(unint64_t)a3
+- (unint64_t)numLocationsFrom:(unint64_t)from
 {
-  if (!a3)
+  if (!from)
   {
     return 0;
   }
 
-  v4 = a3 - 1;
-  v5 = [(RTVisitHyperParameter *)self->_hyperParameter stride];
-  v6 = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ v5 * v4;
+  v4 = from - 1;
+  stride = [(RTVisitHyperParameter *)self->_hyperParameter stride];
+  v6 = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ stride * v4;
   return v6 + [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
 }
 
-- (unint64_t)sequenceLengthFrom:(unint64_t)a3
+- (unint64_t)sequenceLengthFrom:(unint64_t)from
 {
-  v5 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
-  v6 = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ v5;
-  v7 = a3 >= v6;
-  v8 = a3 - v6;
+  windowSize = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+  v6 = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ windowSize;
+  v7 = from >= v6;
+  v8 = from - v6;
   if (v7)
   {
     return v8 / [(RTVisitHyperParameter *)self->_hyperParameter stride]+ 1;
@@ -117,12 +117,12 @@ LABEL_10:
   }
 }
 
-- (unint64_t)sequenceIndexFromDate:(id)a3 firstTimeStepDate:(id)a4
+- (unint64_t)sequenceIndexFromDate:(id)date firstTimeStepDate:(id)stepDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dateCopy = date;
+  stepDateCopy = stepDate;
+  v8 = stepDateCopy;
+  if (!stepDateCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -141,7 +141,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (([v7 isOnOrBefore:v6] & 1) == 0)
+  if (([stepDateCopy isOnOrBefore:dateCopy] & 1) == 0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -155,16 +155,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v6 timeIntervalSinceDate:v8];
+  [dateCopy timeIntervalSinceDate:v8];
   v10 = (v9 / [(RTVisitHyperParameter *)self->_hyperParameter windowInterval]);
 LABEL_8:
 
   return v10;
 }
 
-- (double)computeRadiusFromCumSumNorthings:(const double *)a3 cumSumEastings:(const double *)a4 cumSumSquaredNorthings:(const double *)a5 cumSumSuaredEastings:(const double *)a6 firstLocationIndex:(unint64_t)a7 lastLocationIndex:(unint64_t)a8
+- (double)computeRadiusFromCumSumNorthings:(const double *)northings cumSumEastings:(const double *)eastings cumSumSquaredNorthings:(const double *)squaredNorthings cumSumSuaredEastings:(const double *)suaredEastings firstLocationIndex:(unint64_t)index lastLocationIndex:(unint64_t)locationIndex
 {
-  if (a8 <= a7)
+  if (locationIndex <= index)
   {
     v15 = v8;
     v16 = v9;
@@ -180,19 +180,19 @@ LABEL_8:
 
   else
   {
-    v11 = a3[a8] - a3[a7];
-    v10 = a8 - a7;
-    return sqrt(vabdd_f64((a5[a8] - a5[a7] + a6[a8] - a6[a7]) / v10, (v11 * v11 + (a4[a8] - a4[a7]) * (a4[a8] - a4[a7])) / (v10 * v10)));
+    v11 = northings[locationIndex] - northings[index];
+    v10 = locationIndex - index;
+    return sqrt(vabdd_f64((squaredNorthings[locationIndex] - squaredNorthings[index] + suaredEastings[locationIndex] - suaredEastings[index]) / v10, (v11 * v11 + (eastings[locationIndex] - eastings[index]) * (eastings[locationIndex] - eastings[index])) / (v10 * v10)));
   }
 }
 
-- (float)computeFeatureVectorFromLocalFramesNumOfLocations:(unint64_t)a3 northings:(const double *)a4 eastings:(const double *)a5 sequenceLength:(unint64_t)a6
+- (float)computeFeatureVectorFromLocalFramesNumOfLocations:(unint64_t)locations northings:(const double *)northings eastings:(const double *)eastings sequenceLength:(unint64_t)length
 {
-  if (a6)
+  if (length)
   {
-    v9 = a3;
-    v34 = a3 + 1;
-    v11 = 8 * (a3 + 1);
+    locationsCopy = locations;
+    v34 = locations + 1;
+    v11 = 8 * (locations + 1);
     v12 = malloc_type_malloc(v11, 0x100004000313F17uLL);
     v13 = malloc_type_malloc(v11, 0x100004000313F17uLL);
     v14 = malloc_type_malloc(v11, 0x100004000313F17uLL);
@@ -200,7 +200,7 @@ LABEL_8:
     v16 = v15;
     if (v12 && v13 && v14 && v15)
     {
-      v17 = malloc_type_malloc(4 * a6 * [(RTVisitHyperParameter *)self->_hyperParameter featureDimension], 0x100004052888210uLL);
+      v17 = malloc_type_malloc(4 * length * [(RTVisitHyperParameter *)self->_hyperParameter featureDimension], 0x100004052888210uLL);
       if (!v17)
       {
         v33 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -218,7 +218,7 @@ LABEL_8:
       *v13 = 0.0;
       *v14 = 0.0;
       *v16 = 0.0;
-      if (v9)
+      if (locationsCopy)
       {
         v19 = v16 + 1;
         v20 = v14 + 1;
@@ -230,10 +230,10 @@ LABEL_8:
         v26 = 0.0;
         do
         {
-          v27 = *a4++;
+          v27 = *northings++;
           v28 = v27;
           v26 = v26 + v27;
-          v29 = *a5++;
+          v29 = *eastings++;
           v25 = v25 + v29;
           v24 = v24 + v28 * v28;
           *v22++ = v26;
@@ -241,13 +241,13 @@ LABEL_8:
           v23 = v23 + v29 * v29;
           *v20++ = v24;
           *v19++ = v23;
-          --v9;
+          --locationsCopy;
         }
 
-        while (v9);
+        while (locationsCopy);
       }
 
-      if (![(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeFeatureVector:v17 cumSumNumLocations:v34 cumSumNorthings:v12 cumSumEastings:v13 cumSumSquaredNorthings:v14 cumSumSquaredEastings:v16 sequenceLength:a6])
+      if (![(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeFeatureVector:v17 cumSumNumLocations:v34 cumSumNorthings:v12 cumSumEastings:v13 cumSumSquaredNorthings:v14 cumSumSquaredEastings:v16 sequenceLength:length])
       {
         free(v18);
 LABEL_28:
@@ -308,9 +308,9 @@ LABEL_19:
   return 0;
 }
 
-- (BOOL)computeFeatureVector:(float *)a3 cumSumNumLocations:(unint64_t)a4 cumSumNorthings:(double *)a5 cumSumEastings:(double *)a6 cumSumSquaredNorthings:(double *)a7 cumSumSquaredEastings:(double *)a8 sequenceLength:(unint64_t)a9
+- (BOOL)computeFeatureVector:(float *)vector cumSumNumLocations:(unint64_t)locations cumSumNorthings:(double *)northings cumSumEastings:(double *)eastings cumSumSquaredNorthings:(double *)squaredNorthings cumSumSquaredEastings:(double *)squaredEastings sequenceLength:(unint64_t)length
 {
-  if (!a3)
+  if (!vector)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -323,7 +323,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!a5)
+  if (!northings)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -336,7 +336,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!a6)
+  if (!eastings)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -349,8 +349,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v11 = a7;
-  if (!a7)
+  squaredNorthingsCopy = squaredNorthings;
+  if (!squaredNorthings)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -363,10 +363,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = a8;
-  if (a8)
+  squaredEastingsCopy = squaredEastings;
+  if (squaredEastings)
   {
-    if (a4 <= 1)
+    if (locations <= 1)
     {
       v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -379,19 +379,19 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v16 = a3;
-    v18 = a9;
+    vectorCopy = vector;
+    lengthCopy2 = length;
     [(RTVisitHyperParameter *)self->_hyperParameter featureDwellnessLogMin];
     v84 = exp(v19);
     [(RTVisitHyperParameter *)self->_hyperParameter featureDwellnessLogMax];
     v21 = exp(-v20);
-    v22 = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize];
-    v23 = [(RTVisitHyperParameter *)self->_hyperParameter stride];
-    if (a9)
+    referenceSize = [(RTVisitHyperParameter *)self->_hyperParameter referenceSize];
+    stride = [(RTVisitHyperParameter *)self->_hyperParameter stride];
+    if (length)
     {
       v24 = 0;
-      v83 = &v16[2 * a9];
-      v85 = v22 / v23;
+      v83 = &vectorCopy[2 * length];
+      v85 = referenceSize / stride;
       while (1)
       {
         if ([(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDistance]<= v24)
@@ -405,27 +405,27 @@ LABEL_19:
         }
 
         v26 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize]+ v25;
-        v27 = a5[v26];
-        v93 = a5[v25];
-        v91 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
-        v92 = a6[v26];
-        v90 = a6[v25];
-        v89 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+        v27 = northings[v26];
+        v93 = northings[v25];
+        windowSize = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+        v92 = eastings[v26];
+        v90 = eastings[v25];
+        windowSize2 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
         v28 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self startLocationIndex:v24];
         v29 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize]+ v28;
-        v88 = a5[v29];
-        v30 = a5[v28];
-        v87 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
-        v31 = a6[v29];
-        v32 = a6[v28];
-        v86 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+        v88 = northings[v29];
+        v30 = northings[v28];
+        windowSize3 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+        v31 = eastings[v29];
+        v32 = eastings[v28];
+        windowSize4 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
         v33 = 0.0;
         if (v24 + v85 >= [(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDwellness])
         {
           v82 = v24;
           v34 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self startLocationIndex:v24];
-          v35 = [(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDwellness];
-          if (v34 < [(RTVisitHyperParameter *)self->_hyperParameter stride]* v35)
+          numOfTimeStepForDwellness = [(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDwellness];
+          if (v34 < [(RTVisitHyperParameter *)self->_hyperParameter stride]* numOfTimeStepForDwellness)
           {
             v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -441,22 +441,22 @@ LABEL_19:
           }
 
           v81 = v27;
-          v36 = [(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDwellness];
-          v37 = [(RTVisitHyperParameter *)self->_hyperParameter stride];
+          numOfTimeStepForDwellness2 = [(RTVisitHyperParameter *)self->_hyperParameter numOfTimeStepForDwellness];
+          stride2 = [(RTVisitHyperParameter *)self->_hyperParameter stride];
           if ([(RTVisitHyperParameter *)self->_hyperParameter windowSize])
           {
             v38 = 0;
-            v39 = v34 - v37 * v36;
+            v39 = v34 - stride2 * numOfTimeStepForDwellness2;
             v40 = v34 + 1;
             v41 = ~v34;
             v42 = 0.0;
             v43 = v34 + 1;
             v77 = v39;
-            v78 = v16;
+            v78 = vectorCopy;
             v76 = v34 + 1;
 LABEL_30:
-            v44 = v11;
-            v45 = v12;
+            v44 = squaredNorthingsCopy;
+            v45 = squaredEastingsCopy;
             v46 = 0;
             v47 = v39 + v38;
             v79 = v43;
@@ -479,12 +479,12 @@ LABEL_30:
                 goto LABEL_19;
               }
 
-              if (v48 >= a4)
+              if (v48 >= locations)
               {
                 break;
               }
 
-              [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeRadiusFromCumSumNorthings:a5 cumSumEastings:a6 cumSumSquaredNorthings:v44 cumSumSuaredEastings:v45 firstLocationIndex:v46 lastLocationIndex:v48];
+              [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeRadiusFromCumSumNorthings:northings cumSumEastings:eastings cumSumSquaredNorthings:v44 cumSumSuaredEastings:v45 firstLocationIndex:v46 lastLocationIndex:v48];
               v52 = v51;
               v53 = v50 / (v21 / v50 + (v52 * [(RTVisitHyperParameter *)self->_hyperParameter stride]));
               if (v53 > v49)
@@ -498,15 +498,15 @@ LABEL_30:
               {
                 v42 = v42 + v49;
                 v38 = v80 + 1;
-                v54 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+                windowSize5 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
                 --v41;
                 v43 = v79 + 1;
-                v12 = v45;
-                v11 = v44;
+                squaredEastingsCopy = v45;
+                squaredNorthingsCopy = v44;
                 v39 = v77;
-                v16 = v78;
+                vectorCopy = v78;
                 v40 = v76;
-                if (v80 + 1 < v54)
+                if (v80 + 1 < windowSize5)
                 {
                   goto LABEL_30;
                 }
@@ -529,7 +529,7 @@ LABEL_30:
           v42 = 0.0;
 LABEL_39:
           v33 = v42 / [(RTVisitHyperParameter *)self->_hyperParameter windowSize:v76];
-          v18 = a9;
+          lengthCopy2 = length;
           v24 = v82;
           v27 = v81;
         }
@@ -544,8 +544,8 @@ LABEL_39:
           v55 = 0;
         }
 
-        v56 = sqrt(((v88 - v30) / v87 - (v27 - v93) / v91) * ((v88 - v30) / v87 - (v27 - v93) / v91) + ((v31 - v32) / v86 - (v92 - v90) / v89) * ((v31 - v32) / v86 - (v92 - v90) / v89));
-        [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeRadiusFromCumSumNorthings:a5 cumSumEastings:a6 cumSumSquaredNorthings:v11 cumSumSuaredEastings:v12 firstLocationIndex:v55 lastLocationIndex:[(RTVisitPipelineModuleTrajectorySequenceCluster *)self startLocationIndex:v24]];
+        v56 = sqrt(((v88 - v30) / windowSize3 - (v27 - v93) / windowSize) * ((v88 - v30) / windowSize3 - (v27 - v93) / windowSize) + ((v31 - v32) / windowSize4 - (v92 - v90) / windowSize2) * ((v31 - v32) / windowSize4 - (v92 - v90) / windowSize2));
+        [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeRadiusFromCumSumNorthings:northings cumSumEastings:eastings cumSumSquaredNorthings:squaredNorthingsCopy cumSumSuaredEastings:squaredEastingsCopy firstLocationIndex:v55 lastLocationIndex:[(RTVisitPipelineModuleTrajectorySequenceCluster *)self startLocationIndex:v24]];
         v58 = v57;
         v59 = objc_opt_class();
         [(RTVisitHyperParameter *)self->_hyperParameter featureDistanceMin];
@@ -553,7 +553,7 @@ LABEL_39:
         [(RTVisitHyperParameter *)self->_hyperParameter featureDistanceMax];
         [v59 normalizeFeature:v56 min:v61 max:v62];
         *&v63 = v63;
-        v64 = &v16[v24];
+        v64 = &vectorCopy[v24];
         *v64 = *&v63;
         v65 = objc_opt_class();
         v66 = log(v84 + v33);
@@ -562,7 +562,7 @@ LABEL_39:
         [(RTVisitHyperParameter *)self->_hyperParameter featureDwellnessLogMax];
         [v65 normalizeFeature:v66 min:v68 max:v69];
         *&v70 = v70;
-        v64[v18] = *&v70;
+        v64[lengthCopy2] = *&v70;
         v71 = objc_opt_class();
         [(RTVisitHyperParameter *)self->_hyperParameter featureRadiusMin];
         v73 = v72;
@@ -571,7 +571,7 @@ LABEL_39:
         *&v75 = v75;
         v83[v24++] = *&v75;
         result = 1;
-        if (v24 == v18)
+        if (v24 == lengthCopy2)
         {
           return result;
         }
@@ -597,10 +597,10 @@ LABEL_20:
   }
 }
 
-- (float)computeFeatureVectorFromLocations:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5
+- (float)computeFeatureVectorFromLocations:(id)locations start:(unint64_t)start end:(unint64_t)end
 {
-  v8 = a3;
-  if (!v8)
+  locationsCopy = locations;
+  if (!locationsCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -616,8 +616,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = a5 - a4;
-  if (a5 <= a4)
+  v9 = end - start;
+  if (end <= start)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -630,7 +630,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength]+ a4 > a5)
+  if ([(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength]+ start > end)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -645,8 +645,8 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  v14 = [(RTVisitHyperParameter *)self->_hyperParameter stride]* a4;
-  v15 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self numLocationsFrom:a5];
+  v14 = [(RTVisitHyperParameter *)self->_hyperParameter stride]* start;
+  v15 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self numLocationsFrom:end];
   v16 = v15 - v14;
   if (v15 <= v14)
   {
@@ -661,7 +661,7 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  if (v15 > [v8 count])
+  if (v15 > [locationsCopy count])
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -701,10 +701,10 @@ LABEL_34:
 
   else
   {
-    v22 = [v8 objectAtIndexedSubscript:v14];
+    v22 = [locationsCopy objectAtIndexedSubscript:v14];
     [v22 latitude];
 
-    v23 = [v8 objectAtIndexedSubscript:v14];
+    v23 = [locationsCopy objectAtIndexedSubscript:v14];
     [v23 longitude];
 
     v24 = 0;
@@ -717,9 +717,9 @@ LABEL_34:
     do
     {
       *buf = 0;
-      v25 = [v8 objectAtIndexedSubscript:v14];
+      v25 = [locationsCopy objectAtIndexedSubscript:v14];
       [v25 latitude];
-      v26 = [v8 objectAtIndexedSubscript:v14];
+      v26 = [locationsCopy objectAtIndexedSubscript:v14];
       [v26 longitude];
       RTCommonConvertGeodeticToLocalFrame();
 
@@ -747,29 +747,29 @@ LABEL_10:
   return v12;
 }
 
-- (id)createVisitWithLocations:(id)a3 entryDate:(id)a4 exitDate:(id)a5
+- (id)createVisitWithLocations:(id)locations entryDate:(id)date exitDate:(id)exitDate
 {
   v80 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  locationsCopy = locations;
+  dateCopy = date;
+  exitDateCopy = exitDate;
+  if (dateCopy)
   {
-    v11 = [(RTVisitCluster *)self->_workingVisitCluster visit];
-    v12 = [v11 location];
+    visit = [(RTVisitCluster *)self->_workingVisitCluster visit];
+    location = [visit location];
 
-    if ([v8 count])
+    if ([locationsCopy count])
     {
       v13 = objc_alloc(MEMORY[0x277D01160]);
-      v14 = [v8 objectAtIndexedSubscript:0];
+      v14 = [locationsCopy objectAtIndexedSubscript:0];
       [v14 latitude];
       v16 = v15;
-      v17 = [v8 objectAtIndexedSubscript:0];
+      v17 = [locationsCopy objectAtIndexedSubscript:0];
       [v17 longitude];
-      v19 = [v13 initWithLatitude:v9 longitude:v16 horizontalUncertainty:v18 date:0.0];
+      v19 = [v13 initWithLatitude:dateCopy longitude:v16 horizontalUncertainty:v18 date:0.0];
 
-      v20 = [v8 indexOfObject:v19 inSortedRange:0 options:objc_msgSend(v8 usingComparator:{"count"), 1280, &__block_literal_global_65}];
-      if (v20 >= [v8 count])
+      v20 = [locationsCopy indexOfObject:v19 inSortedRange:0 options:objc_msgSend(locationsCopy usingComparator:{"count"), 1280, &__block_literal_global_65}];
+      if (v20 >= [locationsCopy count])
       {
         v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -790,31 +790,31 @@ LABEL_51:
         goto LABEL_52;
       }
 
-      v21 = [v8 count];
-      v73 = v10;
-      if (v10)
+      v21 = [locationsCopy count];
+      v73 = exitDateCopy;
+      if (exitDateCopy)
       {
-        v71 = v12;
+        v71 = location;
         v22 = objc_alloc(MEMORY[0x277D01160]);
-        v23 = [v8 objectAtIndexedSubscript:0];
+        v23 = [locationsCopy objectAtIndexedSubscript:0];
         [v23 latitude];
         v25 = v24;
-        v26 = [v8 objectAtIndexedSubscript:0];
+        v26 = [locationsCopy objectAtIndexedSubscript:0];
         [v26 longitude];
-        v28 = [v22 initWithLatitude:v10 longitude:v25 horizontalUncertainty:v27 date:0.0];
+        v28 = [v22 initWithLatitude:exitDateCopy longitude:v25 horizontalUncertainty:v27 date:0.0];
 
-        v29 = [v8 indexOfObject:v28 inSortedRange:v20 options:objc_msgSend(v8 usingComparator:{"count") - v20, 1536, &__block_literal_global_65}];
-        if (v29 < [v8 count])
+        v29 = [locationsCopy indexOfObject:v28 inSortedRange:v20 options:objc_msgSend(locationsCopy usingComparator:{"count") - v20, 1536, &__block_literal_global_65}];
+        if (v29 < [locationsCopy count])
         {
-          v30 = [v8 objectAtIndexedSubscript:v29];
-          v31 = [v30 date];
-          v32 = [v10 isEqualToDate:v31];
+          v30 = [locationsCopy objectAtIndexedSubscript:v29];
+          date = [v30 date];
+          v32 = [exitDateCopy isEqualToDate:date];
 
           v29 += v32 & 1;
         }
 
         v19 = v28;
-        v12 = v71;
+        location = v71;
       }
 
       else
@@ -838,7 +838,7 @@ LABEL_51:
       self->_numOfLocations += v29 - v20;
       if (!self->_referenceLocation)
       {
-        v43 = [v8 objectAtIndexedSubscript:v20];
+        v43 = [locationsCopy objectAtIndexedSubscript:v20];
         referenceLocation = self->_referenceLocation;
         self->_referenceLocation = v43;
       }
@@ -855,9 +855,9 @@ LABEL_51:
           v75 = 0.0;
           [(RTLocation *)self->_referenceLocation latitude];
           [(RTLocation *)self->_referenceLocation longitude];
-          v46 = [v8 objectAtIndexedSubscript:v45];
+          v46 = [locationsCopy objectAtIndexedSubscript:v45];
           [v46 latitude];
-          v47 = [v8 objectAtIndexedSubscript:v45];
+          v47 = [locationsCopy objectAtIndexedSubscript:v45];
           [v47 longitude];
           v48 = RTCommonConvertGeodeticToLocalFrame();
 
@@ -891,7 +891,7 @@ LABEL_51:
 
         v33 = 0;
         v19 = v72;
-        v10 = v73;
+        exitDateCopy = v73;
         goto LABEL_51;
       }
 
@@ -911,7 +911,7 @@ LABEL_36:
       if (RTCommonConvertLocalFrameToGeodetic())
       {
         RTCommonIsCoordinateValid();
-        v10 = v73;
+        exitDateCopy = v73;
         if (v58 != 0.0)
         {
           v59 = sqrt(vabdd_f64(sumOfSquaredNorthing / numOfLocations, v56 * v56));
@@ -923,13 +923,13 @@ LABEL_36:
           {
             v62 = v61;
             v63 = [RTVisitLocationPoints alloc];
-            v64 = [v8 subarrayWithRange:{v20, v70}];
+            v64 = [locationsCopy subarrayWithRange:{v20, v70}];
             v65 = v63;
             v61 = v62;
             v34 = [(RTVisitLocationPoints *)v65 initWithLocations:v64];
           }
 
-          v12 = v61;
+          location = v61;
           if (!v61)
           {
             goto LABEL_41;
@@ -951,7 +951,7 @@ LABEL_36:
       else
       {
         v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-        v10 = v73;
+        exitDateCopy = v73;
         if (!os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_50;
@@ -966,7 +966,7 @@ LABEL_36:
     }
 
     v34 = 0;
-    if (!v12)
+    if (!location)
     {
 LABEL_41:
       v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -977,14 +977,14 @@ LABEL_41:
       }
 
       v33 = 0;
-      v12 = v34;
+      location = v34;
       goto LABEL_51;
     }
 
 LABEL_11:
     v35 = objc_alloc(MEMORY[0x277D01428]);
-    v36 = [MEMORY[0x277CBEAA8] date];
-    if (v10)
+    date2 = [MEMORY[0x277CBEAA8] date];
+    if (exitDateCopy)
     {
       v37 = 3;
     }
@@ -994,7 +994,7 @@ LABEL_11:
       v37 = 1;
     }
 
-    v38 = [v35 initWithDate:v36 type:v37 location:v12 entry:v9 exit:v10 dataPointCount:self->_numOfLocations confidence:*MEMORY[0x277D01470] placeInference:0];
+    v38 = [v35 initWithDate:date2 type:v37 location:location entry:dateCopy exit:exitDateCopy dataPointCount:self->_numOfLocations confidence:*MEMORY[0x277D01470] placeInference:0];
 
     v33 = [[RTVisitCluster alloc] initWithPoints:v34 visit:v38];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1016,11 +1016,11 @@ LABEL_11:
     goto LABEL_51;
   }
 
-  v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  location = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(location, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entryDate", buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, location, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entryDate", buf, 2u);
   }
 
   v33 = 0;
@@ -1055,11 +1055,11 @@ uint64_t __94__RTVisitPipelineModuleTrajectorySequenceCluster_createVisitWithLoc
   self->_residualLocations = 0;
 }
 
-- (id)performBatchInferenceWithFeatureVector:(const float *)a3 featureVectorLength:(unint64_t)a4 start:(unint64_t)a5 firstTimeStepDate:(id)a6
+- (id)performBatchInferenceWithFeatureVector:(const float *)vector featureVectorLength:(unint64_t)length start:(unint64_t)start firstTimeStepDate:(id)date
 {
-  v10 = a6;
-  v32 = v10;
-  if (!a3)
+  dateCopy = date;
+  v32 = dateCopy;
+  if (!vector)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1075,8 +1075,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v11 = a4 - a5;
-  if (a4 <= a5)
+  v11 = length - start;
+  if (length <= start)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1090,8 +1090,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v12 = v10;
-  if (!v10)
+  v12 = dateCopy;
+  if (!dateCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1107,29 +1107,29 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v13 = [(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength];
-  v14 = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
-  if (v11 >= v14)
+  minSequenceLength = [(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength];
+  maxSequenceLength = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
+  if (v11 >= maxSequenceLength)
   {
-    v11 = v14;
+    v11 = maxSequenceLength;
   }
 
-  v15 = [v12 dateByAddingTimeInterval:{(-[RTVisitHyperParameter windowInterval](self->_hyperParameter, "windowInterval") * (a5 + v13 - 1))}];
-  v16 = [(RTVisitHyperParameter *)self->_hyperParameter onDeviceInferenceBatchSize];
-  if (v13 > v11)
+  v15 = [v12 dateByAddingTimeInterval:{(-[RTVisitHyperParameter windowInterval](self->_hyperParameter, "windowInterval") * (start + minSequenceLength - 1))}];
+  onDeviceInferenceBatchSize = [(RTVisitHyperParameter *)self->_hyperParameter onDeviceInferenceBatchSize];
+  if (minSequenceLength > v11)
   {
     goto LABEL_24;
   }
 
-  v17 = v16;
+  v17 = onDeviceInferenceBatchSize;
   v18 = v11;
   v30 = 0;
   v19 = v15;
   while (1)
   {
-    if (v18 < v13 + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution:v30]* (v17 - 1))
+    if (v18 < minSequenceLength + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution:v30]* (v17 - 1))
     {
-      v20 = v18 + ~v13 + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution];
+      v20 = v18 + ~minSequenceLength + [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution];
       v17 = v20 / [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]+ 1;
     }
 
@@ -1164,7 +1164,7 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v21 = [(RTVisitModelController *)self->_trajectorySequenceClassifier predictFromInput:a3 featureVectorStride:a4 firstSequenceIndex:a5 firstSequenceLength:v13 batchSize:v17];
+    v21 = [(RTVisitModelController *)self->_trajectorySequenceClassifier predictFromInput:vector featureVectorStride:length firstSequenceIndex:start firstSequenceLength:minSequenceLength batchSize:v17];
     if (!v21)
     {
       v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1193,12 +1193,12 @@ LABEL_39:
       goto LABEL_37;
     }
 
-    v13 += [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]* v17;
+    minSequenceLength += [(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]* v17;
     v15 = [v19 dateByAddingTimeInterval:([(RTVisitHyperParameter *)self->_hyperParameter visitInferenceResolution]* v17 * [(RTVisitHyperParameter *)self->_hyperParameter windowInterval])];
 
     v19 = v15;
     v30 = v22;
-    if (v13 > v18)
+    if (minSequenceLength > v18)
     {
       goto LABEL_25;
     }
@@ -1221,22 +1221,22 @@ LABEL_25:
   return v22;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v139 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  processCopy = process;
+  array = [MEMORY[0x277CBEB18] array];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v6 = v4;
+  v6 = processCopy;
   v119 = [v6 countByEnumeratingWithState:&v120 objects:v138 count:16];
   if (!v119)
   {
 LABEL_121:
 
-    v98 = v5;
+    v98 = array;
     goto LABEL_127;
   }
 
@@ -1244,7 +1244,7 @@ LABEL_121:
   v118 = *v121;
   *&v7 = 134218240;
   v106 = v7;
-  v112 = v5;
+  v112 = array;
   obj = v6;
 LABEL_3:
   v9 = 0;
@@ -1271,21 +1271,21 @@ LABEL_3:
       }
     }
 
-    v12 = [v10 points];
-    v13 = [v12 locations];
+    points = [v10 points];
+    locations = [points locations];
 
     if ([(NSArray *)self->_residualLocations count])
     {
-      v14 = [v10 points];
-      v15 = [v14 locations];
-      if ([v15 count])
+      points2 = [v10 points];
+      locations2 = [points2 locations];
+      if ([locations2 count])
       {
         v16 = v10;
-        v17 = [(NSArray *)self->_residualLocations lastObject];
-        v18 = [v17 date];
-        v19 = [v13 firstObject];
-        v20 = [v19 date];
-        [v18 timeIntervalSinceDate:v20];
+        lastObject = [(NSArray *)self->_residualLocations lastObject];
+        date = [lastObject date];
+        firstObject = [locations firstObject];
+        date2 = [firstObject date];
+        [date timeIntervalSinceDate:date2];
         v22 = v21;
         v23 = [(RTVisitHyperParameter *)self->_hyperParameter timeIntervalBetweenSmoothedPoints]+ 1.0;
 
@@ -1296,8 +1296,8 @@ LABEL_3:
           goto LABEL_17;
         }
 
-        [(NSArray *)self->_residualLocations arrayByAddingObjectsFromArray:v13];
-        v13 = v14 = v13;
+        [(NSArray *)self->_residualLocations arrayByAddingObjectsFromArray:locations];
+        locations = points2 = locations;
         v8 = MEMORY[0x277D86220];
         v10 = v16;
       }
@@ -1311,9 +1311,9 @@ LABEL_17:
     residualLocations = self->_residualLocations;
     self->_residualLocations = 0;
 
-    v25 = [v10 points];
-    v26 = [v25 locations];
-    v27 = [v26 count];
+    points3 = [v10 points];
+    locations3 = [points3 locations];
+    v27 = [locations3 count];
 
     if (v27)
     {
@@ -1336,22 +1336,22 @@ LABEL_17:
     }
 
 LABEL_109:
-    v87 = [v10 visit];
-    v88 = [v87 exit];
+    visit = [v10 visit];
+    exit = [visit exit];
 
-    if (v88)
+    if (exit)
     {
-      v89 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self workingVisitCluster];
+      workingVisitCluster = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self workingVisitCluster];
 
-      if (v89)
+      if (workingVisitCluster)
       {
-        v90 = [v10 points];
-        v91 = [v90 locations];
-        v92 = [(RTVisitCluster *)self->_workingVisitCluster visit];
-        v93 = [v92 entry];
-        v94 = [v10 visit];
-        v95 = [v94 exit];
-        v96 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:v91 entryDate:v93 exitDate:v95];
+        points4 = [v10 points];
+        locations4 = [points4 locations];
+        visit2 = [(RTVisitCluster *)self->_workingVisitCluster visit];
+        entry = [visit2 entry];
+        visit3 = [v10 visit];
+        exit2 = [visit3 exit];
+        v96 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:locations4 entryDate:entry exitDate:exit2];
 
         v8 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1376,7 +1376,7 @@ LABEL_109:
     if (++v9 == v119)
     {
       v6 = obj;
-      v5 = v112;
+      array = v112;
       v119 = [obj countByEnumeratingWithState:&v120 objects:v138 count:16];
       if (!v119)
       {
@@ -1387,10 +1387,10 @@ LABEL_109:
     }
   }
 
-  v28 = [v13 count];
-  v29 = [(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength];
-  v30 = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
-  if (v28 < [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ v30 * v29)
+  v28 = [locations count];
+  minSequenceLength = [(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength];
+  windowSize = [(RTVisitHyperParameter *)self->_hyperParameter windowSize];
+  if (v28 < [(RTVisitHyperParameter *)self->_hyperParameter referenceSize]+ windowSize * minSequenceLength)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -1399,7 +1399,7 @@ LABEL_109:
       {
         v75 = objc_opt_class();
         v76 = NSStringFromClass(v75);
-        v77 = [v13 count];
+        v77 = [locations count];
         *buf = 138412546;
         v125 = v76;
         v126 = 2048;
@@ -1408,7 +1408,7 @@ LABEL_109:
       }
     }
 
-    v32 = v13;
+    v32 = locations;
     p_super = &self->_residualLocations->super;
     self->_residualLocations = v32;
 LABEL_108:
@@ -1416,8 +1416,8 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  v36 = -[RTVisitPipelineModuleTrajectorySequenceCluster sequenceLengthFrom:](self, "sequenceLengthFrom:", [v13 count]);
-  v37 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeFeatureVectorFromLocations:v13 start:0 end:v36];
+  v36 = -[RTVisitPipelineModuleTrajectorySequenceCluster sequenceLengthFrom:](self, "sequenceLengthFrom:", [locations count]);
+  v37 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self computeFeatureVectorFromLocations:locations start:0 end:v36];
   if (!v37)
   {
     v102 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1427,15 +1427,15 @@ LABEL_108:
       _os_log_error_impl(&dword_2304B3000, v102, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: featureVector", buf, 2u);
     }
 
-    v5 = v112;
+    array = v112;
     v103 = v112;
     v6 = obj;
     goto LABEL_126;
   }
 
   v38 = v37;
-  v113 = [v13 count];
-  v39 = [v13 objectAtIndexedSubscript:{-[RTVisitPipelineModuleTrajectorySequenceCluster startLocationIndex:](self, "startLocationIndex:", 0)}];
+  v113 = [locations count];
+  v39 = [locations objectAtIndexedSubscript:{-[RTVisitPipelineModuleTrajectorySequenceCluster startLocationIndex:](self, "startLocationIndex:", 0)}];
   p_super = [v39 date];
 
   if ([(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength]> v36)
@@ -1444,7 +1444,7 @@ LABEL_108:
     v41 = 0;
 LABEL_100:
     v81 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self startLocationIndex:&v41[v113]];
-    if (v81 < [v13 count])
+    if (v81 < [locations count])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -1459,9 +1459,9 @@ LABEL_100:
         }
       }
 
-      v83 = [v13 count] - v81;
-      v84 = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
-      if (v83 > [(RTVisitHyperParameter *)self->_hyperParameter windowSize]* v84)
+      v83 = [locations count] - v81;
+      maxSequenceLength = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
+      if (v83 > [(RTVisitHyperParameter *)self->_hyperParameter windowSize]* maxSequenceLength)
       {
         v99 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
@@ -1470,12 +1470,12 @@ LABEL_100:
           _os_log_error_impl(&dword_2304B3000, v99, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations.count - residualLocationIndex <= _hyperParameter.maxSequenceLength * _hyperParameter.windowSize", buf, 2u);
         }
 
-        v5 = v112;
+        array = v112;
         v6 = obj;
         goto LABEL_125;
       }
 
-      v85 = [v13 subarrayWithRange:{v81, objc_msgSend(v13, "count") - v81}];
+      v85 = [locations subarrayWithRange:{v81, objc_msgSend(locations, "count") - v81}];
       v86 = self->_residualLocations;
       self->_residualLocations = v85;
     }
@@ -1488,15 +1488,15 @@ LABEL_100:
   v108 = v10;
   v109 = v36;
   v116 = 0;
-  v117 = v13;
+  v117 = locations;
   v40 = 0;
   while (2)
   {
-    v42 = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
-    v43 = v42 + v40;
-    if (v36 >= v42 + v40)
+    maxSequenceLength2 = [(RTVisitHyperParameter *)self->_hyperParameter maxSequenceLength];
+    v43 = maxSequenceLength2 + v40;
+    if (v36 >= maxSequenceLength2 + v40)
     {
-      v44 = v42 + v40;
+      v44 = maxSequenceLength2 + v40;
     }
 
     else
@@ -1567,9 +1567,9 @@ LABEL_100:
           goto LABEL_98;
         }
 
-        v49 = [(RTVisitHyperParameter *)self->_hyperParameter noVisitMargin];
+        noVisitMargin = [(RTVisitHyperParameter *)self->_hyperParameter noVisitMargin];
 LABEL_57:
-        v40 = v44 - v49;
+        v40 = v44 - noVisitMargin;
       }
 
       else
@@ -1578,10 +1578,10 @@ LABEL_57:
         {
           if (v43 >= v36)
           {
-            v110 = [v46 entryDate];
-            v114 = [v108 visit];
-            v69 = [v114 exit];
-            v70 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:v117 entryDate:v110 exitDate:v69];
+            entryDate = [v46 entryDate];
+            visit4 = [v108 visit];
+            exit3 = [visit4 exit];
+            v70 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:v117 entryDate:entryDate exitDate:exit3];
 
             if (v70)
             {
@@ -1589,11 +1589,11 @@ LABEL_57:
             }
 
             v111 = v70;
-            v71 = [v108 visit];
-            v72 = [v71 exit];
+            visit5 = [v108 visit];
+            exit4 = [visit5 exit];
 
             v73 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-            if (v72)
+            if (exit4)
             {
               if (v73)
               {
@@ -1640,7 +1640,7 @@ LABEL_57:
             }
           }
 
-          v49 = [(RTVisitHyperParameter *)self->_hyperParameter partialVisitMargin];
+          noVisitMargin = [(RTVisitHyperParameter *)self->_hyperParameter partialVisitMargin];
           goto LABEL_57;
         }
 
@@ -1656,17 +1656,17 @@ LABEL_57:
             }
           }
 
-          v52 = [v46 exitDate];
-          v53 = [v52 isBeforeDate:p_super];
+          exitDate = [v46 exitDate];
+          v53 = [exitDate isBeforeDate:p_super];
 
           if (v53)
           {
             [v46 setExitDate:p_super];
           }
 
-          v54 = [v46 entryDate];
-          v55 = [v46 exitDate];
-          v56 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:v117 entryDate:v54 exitDate:v55];
+          entryDate2 = [v46 entryDate];
+          exitDate2 = [v46 exitDate];
+          v56 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self createVisitWithLocations:v117 entryDate:entryDate2 exitDate:exitDate2];
 
           if (v56)
           {
@@ -1674,8 +1674,8 @@ LABEL_57:
           }
 
           [(RTVisitPipelineModuleTrajectorySequenceCluster *)self clearWorkingVisitCluster];
-          v57 = [v46 exitDate];
-          v58 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self sequenceIndexFromDate:v57 firstTimeStepDate:p_super];
+          exitDate3 = [v46 exitDate];
+          v58 = [(RTVisitPipelineModuleTrajectorySequenceCluster *)self sequenceIndexFromDate:exitDate3 firstTimeStepDate:p_super];
           v40 = v58 + [(RTVisitHyperParameter *)self->_hyperParameter completeVisitMargin]+ 1;
 
           if ([(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength]+ v40 > v36)
@@ -1692,7 +1692,7 @@ LABEL_57:
 LABEL_97:
 
 LABEL_98:
-            v13 = v117;
+            locations = v117;
 LABEL_99:
             v10 = v108;
             goto LABEL_100;
@@ -1710,23 +1710,23 @@ LABEL_99:
               _os_log_error_impl(&dword_2304B3000, v104, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: featureVector", buf, 2u);
             }
 
-            v5 = v112;
+            array = v112;
             v105 = v112;
 
             v6 = obj;
-            v13 = v117;
+            locations = v117;
             goto LABEL_126;
           }
 
           v38 = v60;
           v61 = [v117 objectAtIndexedSubscript:{-[RTVisitPipelineModuleTrajectorySequenceCluster startLocationIndex:](self, "startLocationIndex:", v59)}];
-          v62 = [v61 date];
+          date3 = [v61 date];
 
           v116 = v59;
           v36 = v109 - v59;
 
           v40 = 0;
-          p_super = v62;
+          p_super = date3;
         }
 
         else
@@ -1751,7 +1751,7 @@ LABEL_99:
       if ([(RTVisitHyperParameter *)self->_hyperParameter minSequenceLength]+ v40 > v36)
       {
         v41 = v116;
-        v13 = v117;
+        locations = v117;
         goto LABEL_99;
       }
 
@@ -1768,17 +1768,17 @@ LABEL_99:
     _os_log_error_impl(&dword_2304B3000, v99, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: decoded", buf, 2u);
   }
 
-  v5 = v112;
+  array = v112;
   v6 = obj;
-  v13 = v117;
+  locations = v117;
 LABEL_125:
 
-  v100 = v5;
+  v100 = array;
 LABEL_126:
 
 LABEL_127:
 
-  return v5;
+  return array;
 }
 
 @end

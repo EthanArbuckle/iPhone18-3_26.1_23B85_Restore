@@ -1,23 +1,23 @@
 @interface TrendDetailViewController
-- (_TtC10FitnessApp25TrendDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10FitnessApp25TrendDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)tapToRadar;
-- (void)contentSizeCategoryDidChangeWithNote:(id)a3;
+- (void)contentSizeCategoryDidChangeWithNote:(id)note;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TrendDetailViewController
 
-- (void)contentSizeCategoryDidChangeWithNote:(id)a3
+- (void)contentSizeCategoryDidChangeWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1002E26B8();
 
   (*(v5 + 8))(v7, v4);
@@ -25,29 +25,29 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E2990();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E3420();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1002E3690(a3);
+  selfCopy = self;
+  sub_1002E3690(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TrendDetailViewController();
   v4 = v7.receiver;
-  [(TrendDetailViewController *)&v7 viewDidAppear:v3];
+  [(TrendDetailViewController *)&v7 viewDidAppear:appearCopy];
   if (*(v4 + OBJC_IVAR____TtC10FitnessApp25TrendDetailViewController_direction) != 1)
   {
     v5 = swift_allocObject();
@@ -57,7 +57,7 @@
   }
 }
 
-- (_TtC10FitnessApp25TrendDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp25TrendDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -81,10 +81,10 @@
   }
 
   (*(v4 + 32))(v6, v2, v3);
-  v8 = [objc_opt_self() defaultWorkspace];
-  if (v8)
+  defaultWorkspace = [objc_opt_self() defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v10 = v8;
+    v10 = defaultWorkspace;
     URL._bridgeToObjectiveC()(v9);
     v12 = v11;
     [v10 openURL:v11 configuration:0 completionHandler:0];

@@ -45,8 +45,8 @@
 
   v10 = v9;
   _Block_object_dispose(&v27, 8);
-  v11 = [v9 appIntentsStream];
-  v31[0] = v11;
+  appIntentsStream = [v9 appIntentsStream];
+  v31[0] = appIntentsStream;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   v13 = [v7 eventQueryWithPredicate:v6 eventStreams:v12 offset:0 limit:1 sortDescriptors:0];
 
@@ -68,15 +68,15 @@
 
   v15 = v14;
   _Block_object_dispose(&v27, 8);
-  v16 = [v14 knowledgeStore];
-  v17 = [v16 executeQuery:v13 error:a4];
+  knowledgeStore = [v14 knowledgeStore];
+  v17 = [knowledgeStore executeQuery:v13 error:a4];
 
-  v18 = [v17 firstObject];
-  v19 = [v18 interaction];
+  firstObject = [v17 firstObject];
+  interaction = [firstObject interaction];
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return interaction;
 }
 
 @end

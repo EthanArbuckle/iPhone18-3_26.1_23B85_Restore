@@ -1,14 +1,14 @@
 @interface FCPurchaseController
 - (BOOL)hasPurchaseTypeAppStore;
-- (BOOL)hasRenewalNoticeShownForTagID:(id)a3;
+- (BOOL)hasRenewalNoticeShownForTagID:(id)d;
 - (BOOL)isPaidSubscriber;
 - (BOOL)isPaidSubscriberFromAppStore;
 - (BOOL)isPaidSubscriberFromNews;
 - (BOOL)isPaidSubscriberFromWeb;
-- (BOOL)isTagIDPurchased:(id)a3;
-- (BOOL)isTagPurchased:(id)a3;
+- (BOOL)isTagIDPurchased:(id)purchased;
+- (BOOL)isTagPurchased:(id)purchased;
 - (FCPurchaseController)init;
-- (FCPurchaseController)initWithCloudContext:(id)a3 entitlementService:(id)a4;
+- (FCPurchaseController)initWithCloudContext:(id)context entitlementService:(id)service;
 - (NSDictionary)purchaseLookUpEntriesByTagID;
 - (NSSet)allPurchaseIDs;
 - (NSSet)allTagIDs;
@@ -16,44 +16,44 @@
 - (id)_allPurchasedTagIDs;
 - (id)expiredPurchaseChannelIDs;
 - (id)lastSignedInItunesAccountDSID;
-- (id)purchaseLookUpEntryForTagID:(id)a3;
+- (id)purchaseLookUpEntryForTagID:(id)d;
 - (id)subscriptionNotSupportedChannelIDs;
-- (id)webAccessEntryForTagID:(void *)a1;
+- (id)webAccessEntryForTagID:(void *)d;
 - (id)webAccessOptedInTagIDs;
 - (uint64_t)_removeFromPurchasedChannelsListWithTagIDs:(uint64_t)result;
 - (uint64_t)atleastOneValidAppStorePurchase;
-- (void)_enumerateValidPurchasesUsingBlock:(void *)a1;
+- (void)_enumerateValidPurchasesUsingBlock:(void *)block;
 - (void)activityObservingApplicationDidEnterBackground;
-- (void)addToPurchasedChannelsListWithTagID:(uint64_t)a1 purchaseID:(void *)a2 purchaseType:(void *)a3 purchaseValidationState:(uint64_t)a4 isNewsAppPurchase:(char)a5 lastVerificationTime:(void *)a6;
-- (void)addToWebAccessOptedInListWithTagID:(id)a3;
+- (void)addToPurchasedChannelsListWithTagID:(uint64_t)d purchaseID:(void *)iD purchaseType:(void *)type purchaseValidationState:(uint64_t)state isNewsAppPurchase:(char)purchase lastVerificationTime:(void *)time;
+- (void)addToWebAccessOptedInListWithTagID:(id)d;
 - (void)clearAllAppStorePurchases;
 - (void)dealloc;
 - (void)forceExpireAllSubscriptionsIfNeeded;
-- (void)handleAccessTokenChangeWithTagID:(uint64_t)a1 userInitiated:(void *)a2;
-- (void)notifyPurchaseAddedWithTagIDs:(uint64_t)a1;
+- (void)handleAccessTokenChangeWithTagID:(uint64_t)d userInitiated:(void *)initiated;
+- (void)notifyPurchaseAddedWithTagIDs:(uint64_t)ds;
 - (void)notifyPurchaseListChanged;
-- (void)notifyPurchaseRemovedWithTagIDs:(uint64_t)a1;
-- (void)notifyPurchasesDiscoveredWithTagIDs:(uint64_t)a1;
-- (void)performEntitlementCheckWithIgnoreCache:(BOOL)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)removeFromPurchasedChannelsListWithTagIDs:(id)a3;
-- (void)removeFromPurchasesDiscoveredList:(id)a3 completion:(id)a4;
-- (void)renewalNoticeShownForPurchasedChannelsListWithTagIDs:(id)a3;
-- (void)setPurchasesDiscoveredTagIDs:(uint64_t)a1;
-- (void)shouldShowSignedInWithDifferentiTunesAccountAlertWithiTunesAccountName:(id)a3 iTunesAccountDSID:(id)a4 isUserSignedIntoiTunes:(BOOL)a5 isBundleSubscriber:(BOOL)a6 completion:(id)a7;
-- (void)shouldShowiTunesSignedOutAlertWithiTunesAccountName:(id)a3 iTunesAccountDSID:(id)a4 isUserSignedIntoiTunes:(BOOL)a5 isBundleSubscriber:(BOOL)a6 completion:(id)a7;
+- (void)notifyPurchaseRemovedWithTagIDs:(uint64_t)ds;
+- (void)notifyPurchasesDiscoveredWithTagIDs:(uint64_t)ds;
+- (void)performEntitlementCheckWithIgnoreCache:(BOOL)cache callbackQueue:(id)queue completion:(id)completion;
+- (void)removeFromPurchasedChannelsListWithTagIDs:(id)ds;
+- (void)removeFromPurchasesDiscoveredList:(id)list completion:(id)completion;
+- (void)renewalNoticeShownForPurchasedChannelsListWithTagIDs:(id)ds;
+- (void)setPurchasesDiscoveredTagIDs:(uint64_t)ds;
+- (void)shouldShowSignedInWithDifferentiTunesAccountAlertWithiTunesAccountName:(id)name iTunesAccountDSID:(id)d isUserSignedIntoiTunes:(BOOL)tunes isBundleSubscriber:(BOOL)subscriber completion:(id)completion;
+- (void)shouldShowiTunesSignedOutAlertWithiTunesAccountName:(id)name iTunesAccountDSID:(id)d isUserSignedIntoiTunes:(BOOL)tunes isBundleSubscriber:(BOOL)subscriber completion:(id)completion;
 - (void)silentExpireInAppSubscriptions;
-- (void)submitWebAccessWithTagID:(id)a3 purchaseID:(id)a4 emailAddress:(id)a5 purchaseReceipt:(id)a6 serialCompletion:(id)a7 completion:(id)a8;
-- (void)updatePurchaseEntryToExpired:(id)a3;
-- (void)updatePurchaseEntryToExpiredForTagIDs:(id)a3;
-- (void)verifyAccessTokenWithTagID:(id)a3 accessToken:(id)a4 consumedArticleCount:(unint64_t)a5 serialCompletion:(id)a6 callbackQueue:(id)a7 completion:(id)a8;
+- (void)submitWebAccessWithTagID:(id)d purchaseID:(id)iD emailAddress:(id)address purchaseReceipt:(id)receipt serialCompletion:(id)completion completion:(id)a8;
+- (void)updatePurchaseEntryToExpired:(id)expired;
+- (void)updatePurchaseEntryToExpiredForTagIDs:(id)ds;
+- (void)verifyAccessTokenWithTagID:(id)d accessToken:(id)token consumedArticleCount:(unint64_t)count serialCompletion:(id)completion callbackQueue:(id)queue completion:(id)a8;
 @end
 
 @implementation FCPurchaseController
 
 - (id)_allPurchasedTagIDs
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [MEMORY[0x1E695DFA8] set];
     v5[0] = MEMORY[0x1E69E9820];
@@ -62,11 +62,11 @@
     v5[3] = &unk_1E7C38FA0;
     v6 = v2;
     v3 = v2;
-    [(FCPurchaseController *)v1 _enumerateValidPurchasesUsingBlock:v5];
-    v1 = [v3 copy];
+    [(FCPurchaseController *)selfCopy _enumerateValidPurchasesUsingBlock:v5];
+    selfCopy = [v3 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isPaidSubscriber
@@ -86,13 +86,13 @@
   }
 
   v3 = purchaseLookupEntriesManager;
-  v4 = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__FCPurchaseController_isPaidSubscriber__block_invoke;
   v6[3] = &unk_1E7C38F78;
   v6[4] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v6];
 
   LOBYTE(v3) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -116,13 +116,13 @@
   }
 
   v3 = purchaseLookupEntriesManager;
-  v4 = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__FCPurchaseController_isPaidSubscriberFromWeb__block_invoke;
   v6[3] = &unk_1E7C38F78;
   v6[4] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v6];
 
   LOBYTE(v3) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -146,13 +146,13 @@
   }
 
   v3 = purchaseLookupEntriesManager;
-  v4 = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__FCPurchaseController_isPaidSubscriberFromNews__block_invoke;
   v6[3] = &unk_1E7C38F78;
   v6[4] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v6];
 
   LOBYTE(v3) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -176,13 +176,13 @@
   }
 
   v3 = purchaseLookupEntriesManager;
-  v4 = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__FCPurchaseController_isPaidSubscriberFromAppStore__block_invoke;
   v6[3] = &unk_1E7C38F78;
   v6[4] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v6];
 
   LOBYTE(v3) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -196,10 +196,10 @@
     self = self->_cloudContext;
   }
 
-  v2 = [(FCPurchaseController *)self tagSettings];
-  v3 = [v2 webAccessOptedInTagIDs];
+  tagSettings = [(FCPurchaseController *)self tagSettings];
+  webAccessOptedInTagIDs = [tagSettings webAccessOptedInTagIDs];
 
-  return v3;
+  return webAccessOptedInTagIDs;
 }
 
 - (FCPurchaseController)init
@@ -228,15 +228,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCPurchaseController)initWithCloudContext:(id)a3 entitlementService:(id)a4
+- (FCPurchaseController)initWithCloudContext:(id)context entitlementService:(id)service
 {
   v111 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  contextCopy = context;
+  serviceCopy = service;
+  if (contextCopy)
   {
-    v9 = v7;
-    v10 = v8;
+    v9 = contextCopy;
+    v10 = serviceCopy;
     if (!self)
     {
 LABEL_51:
@@ -261,7 +261,7 @@ LABEL_51:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", v95, 0x26u);
     }
 
-    v11 = v8;
+    v11 = serviceCopy;
     if (!self)
     {
       goto LABEL_51;
@@ -291,11 +291,11 @@ LABEL_51:
     goto LABEL_50;
   }
 
-  v81 = v8;
-  objc_storeStrong(&v12->_cloudContext, a3);
-  objc_storeStrong(&v13->_entitlementService, a4);
-  v14 = [v7 userInfo];
-  [v14 addObserver:v13];
+  v81 = serviceCopy;
+  objc_storeStrong(&v12->_cloudContext, context);
+  objc_storeStrong(&v13->_entitlementService, service);
+  userInfo = [contextCopy userInfo];
+  [userInfo addObserver:v13];
 
   v93[0] = @"newssubscription.subscriptions.metered_count_duration";
   v93[1] = @"newssubscription.a_la_carte_subscriptions.metered_count_maximum_limit";
@@ -305,12 +305,12 @@ LABEL_51:
   v94[2] = &unk_1F2E6FDC8;
   v15 = 0x1E695D000uLL;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:3];
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v80 = v16;
-  [v17 registerDefaults:v16];
+  [standardUserDefaults registerDefaults:v16];
 
-  v79 = [v7 privateDataDirectory];
-  v18 = [[FCKeyValueStore alloc] initWithName:@"PurchasedChannelList" directory:v79 version:1 options:0 classRegistry:0];
+  privateDataDirectory = [contextCopy privateDataDirectory];
+  v18 = [[FCKeyValueStore alloc] initWithName:@"PurchasedChannelList" directory:privateDataDirectory version:1 options:0 classRegistry:0];
   localStore = v13->_localStore;
   v13->_localStore = v18;
 
@@ -318,9 +318,9 @@ LABEL_51:
   purchaseLookupEntriesManager = v13->_purchaseLookupEntriesManager;
   v13->_purchaseLookupEntriesManager = v20;
 
-  v82 = v7;
-  v22 = [v7 appActivityMonitor];
-  [v22 addObserver:v13];
+  v82 = contextCopy;
+  appActivityMonitor = [contextCopy appActivityMonitor];
+  [appActivityMonitor addObserver:v13];
 
   v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v24 = dispatch_queue_attr_make_with_qos_class(v23, QOS_CLASS_BACKGROUND, 0);
@@ -337,9 +337,9 @@ LABEL_51:
   v13->_session = v29;
 
   objc_setProperty_atomic_copy(v13, v31, MEMORY[0x1E695E0F8], 64);
-  v32 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   webAccessEntriesByTagID = v13->_webAccessEntriesByTagID;
-  v13->_webAccessEntriesByTagID = v32;
+  v13->_webAccessEntriesByTagID = dictionary;
 
   v34 = [MEMORY[0x1E695DFA8] set];
   purchasesDiscoveredTagIDs = v13->_purchasesDiscoveredTagIDs;
@@ -405,12 +405,12 @@ LABEL_51:
         }
 
         v46 = [FCWebAccessEntry alloc];
-        v47 = v41;
+        webAccessEntriesByTagID = v41;
         v48 = v45;
         v49 = v48;
         if (v46)
         {
-          if (!v47 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (!webAccessEntriesByTagID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             v60 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"web access entry must have an identifier"];
             *buf = 136315906;
@@ -429,7 +429,7 @@ LABEL_51:
           v52 = [v49 objectForKeyedSubscript:@"WebAccessEntryPurchaseReceipt"];
           v53 = [v49 objectForKeyedSubscript:@"WebAccessEntryTagID"];
           v54 = [v49 objectForKeyedSubscript:@"WebAccessEntryPurchaseID"];
-          v46 = [(FCWebAccessEntry *)v46 initWithEntryID:v47 tagID:v53 purchaseID:v54 lastRetryAttemptTime:v50 email:v51 purchaseReceipt:v52];
+          v46 = [(FCWebAccessEntry *)v46 initWithEntryID:webAccessEntriesByTagID tagID:v53 purchaseID:v54 lastRetryAttemptTime:v50 email:v51 purchaseReceipt:v52];
 
           if (!v46)
           {
@@ -442,8 +442,8 @@ LABEL_51:
           }
 
           v13 = v85;
-          v47 = [(FCPurchaseController *)v85 webAccessEntriesByTagID];
-          [v47 setObject:v46 forKey:v46->_tagID];
+          webAccessEntriesByTagID = [(FCPurchaseController *)v85 webAccessEntriesByTagID];
+          [webAccessEntriesByTagID setObject:v46 forKey:v46->_tagID];
           v15 = 0x1E695D000;
           v39 = v83;
           v36 = v84;
@@ -485,8 +485,8 @@ LABEL_51:
         }
 
         v57 = MEMORY[0x1E695DFD8];
-        v47 = [(FCWebAccessEntry *)v46 copy];
-        v58 = [v57 setWithArray:v47];
+        webAccessEntriesByTagID = [(FCWebAccessEntry *)v46 copy];
+        v58 = [v57 setWithArray:webAccessEntriesByTagID];
         v59 = v13->_purchasesDiscoveredTagIDs;
         v13->_purchasesDiscoveredTagIDs = v58;
       }
@@ -505,27 +505,27 @@ LABEL_39:
   while (v61);
 LABEL_43:
 
-  v62 = [(FCPurchaseLookUpEntriesManager *)&v13->_purchaseLookupEntriesManager->super.isa lookupEntriesByTagID];
-  v63 = [v62 copy];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)&v13->_purchaseLookupEntriesManager->super.isa lookupEntriesByTagID];
+  v63 = [lookupEntriesByTagID copy];
   objc_setProperty_atomic_copy(v13, v64, v63, 64);
 
-  v8 = v81;
+  serviceCopy = v81;
   if (NFInternalBuild())
   {
-    v65 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v66 = [v65 BOOLForKey:@"simulate_subscription_detection_enabled"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v66 = [standardUserDefaults2 BOOLForKey:@"simulate_subscription_detection_enabled"];
 
     if (v66)
     {
       v67 = arc4random_uniform(5u);
-      v68 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if (v67 <= 0x7FFFFFFE)
       {
         v69 = 0;
         do
         {
           v70 = [&unk_1F2E6F720 objectAtIndexedSubscript:v69];
-          [v68 addObject:v70];
+          [array addObject:v70];
 
           ++v69;
         }
@@ -534,14 +534,14 @@ LABEL_43:
       }
 
       v71 = MEMORY[0x1E695DFD8];
-      v72 = [v68 copy];
+      v72 = [array copy];
       v73 = [v71 setWithArray:v72];
       v74 = v13->_purchasesDiscoveredTagIDs;
       v13->_purchasesDiscoveredTagIDs = v73;
     }
   }
 
-  v7 = v82;
+  contextCopy = v82;
 LABEL_50:
 
   v75 = *MEMORY[0x1E69E9840];
@@ -591,26 +591,26 @@ void __31__FCPurchaseController_dealloc__block_invoke_2(uint64_t a1)
   [v4 removeObserver:*(a1 + 32)];
 }
 
-- (void)setPurchasesDiscoveredTagIDs:(uint64_t)a1
+- (void)setPurchasesDiscoveredTagIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((ds + 8), a2);
   }
 }
 
-- (void)notifyPurchaseAddedWithTagIDs:(uint64_t)a1
+- (void)notifyPurchaseAddedWithTagIDs:(uint64_t)ds
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 count])
+  if (ds && [v3 count])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __54__FCPurchaseController_notifyPurchaseAddedWithTagIDs___block_invoke_2;
     v5[3] = &unk_1E7C36C58;
     v6 = v4;
-    v7 = a1;
+    dsCopy = ds;
     FCPerformBlockOnMainThread(v5);
   }
 }
@@ -631,29 +631,29 @@ void __54__FCPurchaseController_notifyPurchaseAddedWithTagIDs___block_invoke_2(u
 
 - (void)notifyPurchaseListChanged
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __49__FCPurchaseController_notifyPurchaseListChanged__block_invoke;
     v1[3] = &unk_1E7C36EA0;
-    v1[4] = a1;
+    v1[4] = self;
     FCPerformBlockOnMainThread(v1);
   }
 }
 
-- (void)notifyPurchaseRemovedWithTagIDs:(uint64_t)a1
+- (void)notifyPurchaseRemovedWithTagIDs:(uint64_t)ds
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 count])
+  if (ds && [v3 count])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__FCPurchaseController_notifyPurchaseRemovedWithTagIDs___block_invoke_2;
     v5[3] = &unk_1E7C36C58;
     v6 = v4;
-    v7 = a1;
+    dsCopy = ds;
     FCPerformBlockOnMainThread(v5);
   }
 }
@@ -691,11 +691,11 @@ void __57__FCPurchaseController_notifyWebAccessOptedInListChanged__block_invoke(
   [v0 postNotificationName:FCWebAccessOptedInListChangedNotificationName object:0];
 }
 
-- (void)notifyPurchasesDiscoveredWithTagIDs:(uint64_t)a1
+- (void)notifyPurchasesDiscoveredWithTagIDs:(uint64_t)ds
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ds)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -719,43 +719,43 @@ void __60__FCPurchaseController_notifyPurchasesDiscoveredWithTagIDs___block_invo
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addToWebAccessOptedInListWithTagID:(id)a3
+- (void)addToWebAccessOptedInListWithTagID:(id)d
 {
   if (self)
   {
     cloudContext = self->_cloudContext;
-    v4 = a3;
-    v5 = [(FCCloudContext *)cloudContext tagSettings];
-    [v5 setWebAccessOptInForTagID:v4 webAccessOptIn:1];
+    dCopy = d;
+    tagSettings = [(FCCloudContext *)cloudContext tagSettings];
+    [tagSettings setWebAccessOptInForTagID:dCopy webAccessOptIn:1];
 
     FCPerformBlockOnMainThread(&__block_literal_global_177);
   }
 
   else
   {
-    v6 = a3;
-    v7 = [0 tagSettings];
-    [v7 setWebAccessOptInForTagID:v6 webAccessOptIn:1];
+    dCopy2 = d;
+    tagSettings2 = [0 tagSettings];
+    [tagSettings2 setWebAccessOptInForTagID:dCopy2 webAccessOptIn:1];
   }
 }
 
-- (void)shouldShowSignedInWithDifferentiTunesAccountAlertWithiTunesAccountName:(id)a3 iTunesAccountDSID:(id)a4 isUserSignedIntoiTunes:(BOOL)a5 isBundleSubscriber:(BOOL)a6 completion:(id)a7
+- (void)shouldShowSignedInWithDifferentiTunesAccountAlertWithiTunesAccountName:(id)name iTunesAccountDSID:(id)d isUserSignedIntoiTunes:(BOOL)tunes isBundleSubscriber:(BOOL)subscriber completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(FCPurchaseController *)self lastSignedInItunesAccountName];
-  v22 = v12;
-  v16 = v13;
-  v17 = [(FCPurchaseController *)&self->super.isa lastSignedInItunesAccountDSID];
-  v18 = v17;
-  if (v17 && a5)
+  subscriberCopy = subscriber;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
+  lastSignedInItunesAccountName = [(FCPurchaseController *)self lastSignedInItunesAccountName];
+  v22 = nameCopy;
+  v16 = dCopy;
+  lastSignedInItunesAccountDSID = [(FCPurchaseController *)&self->super.isa lastSignedInItunesAccountDSID];
+  v18 = lastSignedInItunesAccountDSID;
+  if (lastSignedInItunesAccountDSID && tunes)
   {
-    v19 = [(FCPurchaseController *)&self->super.isa lastSignedInItunesAccountDSID];
-    v20 = [v19 isEqualToString:v16];
+    lastSignedInItunesAccountDSID2 = [(FCPurchaseController *)&self->super.isa lastSignedInItunesAccountDSID];
+    v20 = [lastSignedInItunesAccountDSID2 isEqualToString:v16];
 
-    if ((v20 & 1) == 0 && (([(FCPurchaseController *)self atleastOneValidAppStorePurchase]& 1) != 0 || v8))
+    if ((v20 & 1) == 0 && (([(FCPurchaseController *)self atleastOneValidAppStorePurchase]& 1) != 0 || subscriberCopy))
     {
       if (self)
       {
@@ -770,9 +770,9 @@ void __60__FCPurchaseController_notifyPurchasesDiscoveredWithTagIDs___block_invo
       }
 
       [(FCKeyValueStore *)localStore setObject:v22 forKey:@"LastSignedInITunesAccountName"];
-      if (v14)
+      if (completionCopy)
       {
-        v14[2](v14, 1, v15, v22);
+        completionCopy[2](completionCopy, 1, lastSignedInItunesAccountName, v22);
       }
 
       goto LABEL_13;
@@ -783,9 +783,9 @@ void __60__FCPurchaseController_notifyPurchasesDiscoveredWithTagIDs___block_invo
   {
   }
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, 0, 0, 0);
+    completionCopy[2](completionCopy, 0, 0, 0);
   }
 
 LABEL_13:
@@ -793,26 +793,26 @@ LABEL_13:
 
 - (id)lastSignedInItunesAccountDSID
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[6] objectForKey:@"LastSignedInITunesAccountDSID"];
+    self = [self[6] objectForKey:@"LastSignedInITunesAccountDSID"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)atleastOneValidAppStorePurchase
 {
-  if (a1)
+  if (self)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v1 = *(a1 + 56);
-    v2 = [(FCPurchaseLookUpEntriesManager *)v1 lookupEntriesByTagID];
-    v3 = [v2 copy];
+    v1 = *(self + 56);
+    lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v1 lookupEntriesByTagID];
+    v3 = [lookupEntriesByTagID copy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__FCPurchaseController_atleastOneValidAppStorePurchase__block_invoke;
@@ -832,16 +832,16 @@ LABEL_13:
   return v4 & 1;
 }
 
-- (void)shouldShowiTunesSignedOutAlertWithiTunesAccountName:(id)a3 iTunesAccountDSID:(id)a4 isUserSignedIntoiTunes:(BOOL)a5 isBundleSubscriber:(BOOL)a6 completion:(id)a7
+- (void)shouldShowiTunesSignedOutAlertWithiTunesAccountName:(id)name iTunesAccountDSID:(id)d isUserSignedIntoiTunes:(BOOL)tunes isBundleSubscriber:(BOOL)subscriber completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(FCPurchaseController *)self lastSignedInItunesAccountName];
-  v18 = v12;
-  v16 = v13;
-  if (!v15 || a5)
+  subscriberCopy = subscriber;
+  nameCopy = name;
+  dCopy = d;
+  completionCopy = completion;
+  lastSignedInItunesAccountName = [(FCPurchaseController *)self lastSignedInItunesAccountName];
+  v18 = nameCopy;
+  v16 = dCopy;
+  if (!lastSignedInItunesAccountName || tunes)
   {
     if (self)
     {
@@ -858,19 +858,19 @@ LABEL_13:
     [(FCKeyValueStore *)localStore setObject:v18 forKey:@"LastSignedInITunesAccountName"];
   }
 
-  else if (([(FCPurchaseController *)self atleastOneValidAppStorePurchase]& 1) != 0 || v8)
+  else if (([(FCPurchaseController *)self atleastOneValidAppStorePurchase]& 1) != 0 || subscriberCopy)
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 1, v15);
+      completionCopy[2](completionCopy, 1, lastSignedInItunesAccountName);
     }
 
     goto LABEL_12;
   }
 
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_12:
@@ -890,7 +890,7 @@ LABEL_12:
   }
 
   v5 = purchaseLookupEntriesManager;
-  v6 = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __49__FCPurchaseController_clearAllAppStorePurchases__block_invoke;
@@ -898,8 +898,8 @@ LABEL_12:
   v7 = v3;
 
   v19 = v7;
-  v20 = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v15];
+  selfCopy = self;
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:&v15];
 
   [(FCPurchaseController *)self notifyPurchaseRemovedWithTagIDs:v7];
   v8 = [(FCPurchaseController *)self purchasesDiscoveredTagIDs:v15];
@@ -917,12 +917,12 @@ LABEL_12:
   }
 
   v11 = localStore;
-  v12 = [(FCPurchaseController *)self purchasesDiscoveredTagIDs];
-  v13 = [v12 allObjects];
-  [(FCKeyValueStore *)v11 setObject:v13 forKey:@"SubscriptionsDiscoveredList"];
+  purchasesDiscoveredTagIDs = [(FCPurchaseController *)self purchasesDiscoveredTagIDs];
+  allObjects = [purchasesDiscoveredTagIDs allObjects];
+  [(FCKeyValueStore *)v11 setObject:allObjects forKey:@"SubscriptionsDiscoveredList"];
 
-  v14 = [(FCPurchaseController *)self purchasesDiscoveredTagIDs];
-  [(FCPurchaseController *)self notifyPurchasesDiscoveredWithTagIDs:v14];
+  purchasesDiscoveredTagIDs2 = [(FCPurchaseController *)self purchasesDiscoveredTagIDs];
+  [(FCPurchaseController *)self notifyPurchasesDiscoveredWithTagIDs:purchasesDiscoveredTagIDs2];
 }
 
 void __49__FCPurchaseController_clearAllAppStorePurchases__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -971,25 +971,25 @@ void __49__FCPurchaseController_clearAllAppStorePurchases__block_invoke(uint64_t
   return [(FCPurchaseController *)self objectForKey:@"LastSignedInITunesAccountName"];
 }
 
-- (void)addToPurchasedChannelsListWithTagID:(uint64_t)a1 purchaseID:(void *)a2 purchaseType:(void *)a3 purchaseValidationState:(uint64_t)a4 isNewsAppPurchase:(char)a5 lastVerificationTime:(void *)a6
+- (void)addToPurchasedChannelsListWithTagID:(uint64_t)d purchaseID:(void *)iD purchaseType:(void *)type purchaseValidationState:(uint64_t)state isNewsAppPurchase:(char)purchase lastVerificationTime:(void *)time
 {
-  v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  if (a1)
+  iDCopy = iD;
+  typeCopy = type;
+  timeCopy = time;
+  if (d)
   {
-    v14 = *(a1 + 80);
+    v14 = *(d + 80);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __147__FCPurchaseController_addToPurchasedChannelsListWithTagID_purchaseID_purchaseType_purchaseValidationState_isNewsAppPurchase_lastVerificationTime___block_invoke;
     block[3] = &unk_1E7C393A8;
-    block[4] = a1;
-    v16 = v11;
-    v17 = v12;
-    v18 = v13;
-    v19 = a4;
+    block[4] = d;
+    v16 = iDCopy;
+    v17 = typeCopy;
+    v18 = timeCopy;
+    stateCopy = state;
     v20 = 1;
-    v21 = a5;
+    purchaseCopy = purchase;
     dispatch_sync(v14, block);
   }
 }
@@ -1051,13 +1051,13 @@ void __47__FCPurchaseController_isPaidSubscriberFromWeb__block_invoke(uint64_t a
   }
 
   v3 = purchaseLookupEntriesManager;
-  v4 = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v3 lookupEntriesByTagID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__FCPurchaseController_hasPurchaseTypeAppStore__block_invoke;
   v6[3] = &unk_1E7C38F78;
   v6[4] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v6];
 
   LOBYTE(v3) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1074,9 +1074,9 @@ void __47__FCPurchaseController_hasPurchaseTypeAppStore__block_invoke(uint64_t a
   }
 }
 
-- (BOOL)hasRenewalNoticeShownForTagID:(id)a3
+- (BOOL)hasRenewalNoticeShownForTagID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1099,22 +1099,22 @@ void __47__FCPurchaseController_hasPurchaseTypeAppStore__block_invoke(uint64_t a
   block[3] = &unk_1E7C37138;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
   dispatch_sync(accessQueue, block);
   v7 = v14[5];
   if (v7)
   {
-    v8 = [v7 hasShownRenewalNotice];
+    hasShownRenewalNotice = [v7 hasShownRenewalNotice];
   }
 
   else
   {
-    v8 = 0;
+    hasShownRenewalNotice = 0;
   }
 
   _Block_object_dispose(&v13, 8);
-  return v8;
+  return hasShownRenewalNotice;
 }
 
 void __54__FCPurchaseController_hasRenewalNoticeShownForTagID___block_invoke(void *a1)
@@ -1137,8 +1137,8 @@ void __54__FCPurchaseController_hasRenewalNoticeShownForTagID___block_invoke(voi
 {
   if (NFInternalBuild())
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"force_expire_subscriptions"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"force_expire_subscriptions"];
 
     if (v4)
     {
@@ -1152,13 +1152,13 @@ void __54__FCPurchaseController_hasRenewalNoticeShownForTagID___block_invoke(voi
         purchaseLookupEntriesManager = 0;
       }
 
-      v6 = [(FCPurchaseLookUpEntriesManager *)&purchaseLookupEntriesManager->super.isa lookupEntriesByTagID];
+      lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)&purchaseLookupEntriesManager->super.isa lookupEntriesByTagID];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __59__FCPurchaseController_forceExpireAllSubscriptionsIfNeeded__block_invoke_2;
       v12[3] = &unk_1E7C38FA0;
       v12[4] = self;
-      [v6 enumerateKeysAndObjectsUsingBlock:v12];
+      [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v12];
 
       if (self)
       {
@@ -1171,8 +1171,8 @@ void __54__FCPurchaseController_hasRenewalNoticeShownForTagID___block_invoke(voi
       }
 
       v8 = v7;
-      v9 = [(FCPurchaseLookUpEntriesManager *)v8 lookupEntriesByTagID];
-      v11 = [v9 copy];
+      lookupEntriesByTagID2 = [(FCPurchaseLookUpEntriesManager *)v8 lookupEntriesByTagID];
+      v11 = [lookupEntriesByTagID2 copy];
       if (self)
       {
         objc_setProperty_atomic_copy(self, v10, v11, 64);
@@ -1222,14 +1222,14 @@ void __59__FCPurchaseController_forceExpireAllSubscriptionsIfNeeded__block_invok
   }
 
   v4 = purchaseLookupEntriesManager;
-  v5 = [(FCPurchaseLookUpEntriesManager *)v4 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v4 lookupEntriesByTagID];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__FCPurchaseController_silentExpireInAppSubscriptions__block_invoke;
   v11[3] = &unk_1E7C38FC8;
   v11[4] = self;
   v11[5] = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v11];
 
   if (self)
   {
@@ -1242,8 +1242,8 @@ void __59__FCPurchaseController_forceExpireAllSubscriptionsIfNeeded__block_invok
   }
 
   v7 = v6;
-  v8 = [(FCPurchaseLookUpEntriesManager *)v7 lookupEntriesByTagID];
-  v10 = [v8 copy];
+  lookupEntriesByTagID2 = [(FCPurchaseLookUpEntriesManager *)v7 lookupEntriesByTagID];
+  v10 = [lookupEntriesByTagID2 copy];
   if (self)
   {
     objc_setProperty_atomic_copy(self, v9, v10, 64);
@@ -1283,7 +1283,7 @@ void __54__FCPurchaseController_silentExpireInAppSubscriptions__block_invoke(uin
 
 - (id)expiredPurchaseChannelIDs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
     purchaseLookupEntriesManager = self->_purchaseLookupEntriesManager;
@@ -1295,15 +1295,15 @@ void __54__FCPurchaseController_silentExpireInAppSubscriptions__block_invoke(uin
   }
 
   v5 = purchaseLookupEntriesManager;
-  v6 = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__FCPurchaseController_expiredPurchaseChannelIDs__block_invoke;
   v10[3] = &unk_1E7C38FA0;
 
-  v11 = v3;
-  v7 = v3;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  v11 = array;
+  v7 = array;
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -1323,7 +1323,7 @@ void __49__FCPurchaseController_expiredPurchaseChannelIDs__block_invoke(uint64_t
 
 - (id)subscriptionNotSupportedChannelIDs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
     purchaseLookupEntriesManager = self->_purchaseLookupEntriesManager;
@@ -1335,16 +1335,16 @@ void __49__FCPurchaseController_expiredPurchaseChannelIDs__block_invoke(uint64_t
   }
 
   v5 = purchaseLookupEntriesManager;
-  v6 = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
+  lookupEntriesByTagID = [(FCPurchaseLookUpEntriesManager *)v5 lookupEntriesByTagID];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __58__FCPurchaseController_subscriptionNotSupportedChannelIDs__block_invoke;
   v13 = &unk_1E7C38F50;
-  v14 = self;
+  selfCopy = self;
 
-  v15 = v3;
-  v7 = v3;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v10];
+  v15 = array;
+  v7 = array;
+  [lookupEntriesByTagID enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -1379,14 +1379,14 @@ void __58__FCPurchaseController_subscriptionNotSupportedChannelIDs__block_invoke
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performEntitlementCheckWithIgnoreCache:(BOOL)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)performEntitlementCheckWithIgnoreCache:(BOOL)cache callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AAE8] mainBundle];
-  v11 = [v10 bundleIdentifier];
+  queueCopy = queue;
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (([v11 isEqualToString:@"com.apple.stocks"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"com.apple.news") & 1) != 0 || NSClassFromString(&cfstr_Xctest.isa))
+  if (([bundleIdentifier isEqualToString:@"com.apple.stocks"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.news") & 1) != 0 || NSClassFromString(&cfstr_Xctest.isa))
   {
     objc_initWeak(&location, self);
     if (self)
@@ -1400,17 +1400,17 @@ void __58__FCPurchaseController_subscriptionNotSupportedChannelIDs__block_invoke
     }
 
     v13 = cloudContext;
-    v14 = [(FCCloudContext *)v13 configurationManager];
+    configurationManager = [(FCCloudContext *)v13 configurationManager];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __88__FCPurchaseController_performEntitlementCheckWithIgnoreCache_callbackQueue_completion___block_invoke_189;
     v15[3] = &unk_1E7C39068;
     objc_copyWeak(&v18, &location);
     v15[4] = self;
-    v19 = a3;
-    v16 = v8;
-    v17 = v9;
-    [v14 fetchConfigurationIfNeededWithCompletion:v15];
+    cacheCopy = cache;
+    v16 = queueCopy;
+    v17 = completionCopy;
+    [configurationManager fetchConfigurationIfNeededWithCompletion:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -1423,8 +1423,8 @@ void __58__FCPurchaseController_subscriptionNotSupportedChannelIDs__block_invoke
     v21[2] = __88__FCPurchaseController_performEntitlementCheckWithIgnoreCache_callbackQueue_completion___block_invoke;
     v21[3] = &unk_1E7C38FF0;
     v21[4] = self;
-    v22 = v11;
-    v23 = v9;
+    v22 = bundleIdentifier;
+    v23 = completionCopy;
     __88__FCPurchaseController_performEntitlementCheckWithIgnoreCache_callbackQueue_completion___block_invoke(v21);
   }
 }
@@ -2541,9 +2541,9 @@ void __79__FCPurchaseController_fetchChannelIDsForPurchaseIDs_callbackQueue_comp
   return v2;
 }
 
-- (id)purchaseLookUpEntryForTagID:(id)a3
+- (id)purchaseLookUpEntryForTagID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (self)
   {
     Property = objc_getProperty(self, v4, 64, 1);
@@ -2554,7 +2554,7 @@ void __79__FCPurchaseController_fetchChannelIDsForPurchaseIDs_callbackQueue_comp
     Property = 0;
   }
 
-  v7 = [Property objectForKey:v5];
+  v7 = [Property objectForKey:dCopy];
 
   return v7;
 }
@@ -2595,18 +2595,18 @@ void __62__FCPurchaseController_allAppStorePurchasedTagIDsByPurchaseID__block_in
     self = objc_getProperty(self, a2, 64, 1);
   }
 
-  v3 = [(FCPurchaseController *)self allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(FCPurchaseController *)self allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (void)_enumerateValidPurchasesUsingBlock:(void *)a1
+- (void)_enumerateValidPurchasesUsingBlock:(void *)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (a1)
+  if (block)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2622,7 +2622,7 @@ void __62__FCPurchaseController_allAppStorePurchasedTagIDsByPurchaseID__block_in
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    Property = objc_getProperty(a1, v4, 64, 1);
+    Property = objc_getProperty(block, v4, 64, 1);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__FCPurchaseController__enumerateValidPurchasesUsingBlock___block_invoke;
@@ -2679,31 +2679,31 @@ void __50__FCPurchaseController_allAppStorePurchasedTagIDs__block_invoke(uint64_
   }
 }
 
-- (BOOL)isTagIDPurchased:(id)a3
+- (BOOL)isTagIDPurchased:(id)purchased
 {
-  v3 = [(FCPurchaseController *)self purchaseLookUpEntryForTagID:a3];
+  v3 = [(FCPurchaseController *)self purchaseLookUpEntryForTagID:purchased];
   v4 = [v3 purchaseValidationState] == 1 || objc_msgSend(v3, "purchaseValidationState") == 3;
 
   return v4;
 }
 
-- (BOOL)isTagPurchased:(id)a3
+- (BOOL)isTagPurchased:(id)purchased
 {
-  v4 = a3;
-  if ([v4 tagType] == 3)
+  purchasedCopy = purchased;
+  if ([purchasedCopy tagType] == 3)
   {
-    v5 = [v4 asSection];
+    asSection = [purchasedCopy asSection];
 
-    v6 = [v5 parentID];
-    v4 = v5;
+    parentID = [asSection parentID];
+    purchasedCopy = asSection;
   }
 
   else
   {
-    v6 = [v4 identifier];
+    parentID = [purchasedCopy identifier];
   }
 
-  v7 = [(FCPurchaseController *)self isTagIDPurchased:v6];
+  v7 = [(FCPurchaseController *)self isTagIDPurchased:parentID];
   return v7;
 }
 
@@ -2757,9 +2757,9 @@ void __147__FCPurchaseController_addToPurchasedChannelsListWithTagID_purchaseID_
   [(FCPurchaseController *)v10 notifyPurchaseAddedWithTagIDs:v11];
 }
 
-- (void)renewalNoticeShownForPurchasedChannelsListWithTagIDs:(id)a3
+- (void)renewalNoticeShownForPurchasedChannelsListWithTagIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (self)
   {
     accessQueue = self->_accessQueue;
@@ -2774,9 +2774,9 @@ void __147__FCPurchaseController_addToPurchasedChannelsListWithTagID_purchaseID_
   v7[1] = 3221225472;
   v7[2] = __77__FCPurchaseController_renewalNoticeShownForPurchasedChannelsListWithTagIDs___block_invoke;
   v7[3] = &unk_1E7C36C58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -2829,14 +2829,14 @@ void __77__FCPurchaseController_renewalNoticeShownForPurchasedChannelsListWithTa
   }
 }
 
-- (void)updatePurchaseEntryToExpiredForTagIDs:(id)a3
+- (void)updatePurchaseEntryToExpiredForTagIDs:(id)ds
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62__FCPurchaseController_updatePurchaseEntryToExpiredForTagIDs___block_invoke;
   v3[3] = &unk_1E7C393D0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [ds enumerateObjectsUsingBlock:v3];
 }
 
 void __62__FCPurchaseController_updatePurchaseEntryToExpiredForTagIDs___block_invoke(uint64_t a1, uint64_t a2)
@@ -2845,10 +2845,10 @@ void __62__FCPurchaseController_updatePurchaseEntryToExpiredForTagIDs___block_in
   [*(a1 + 32) updatePurchaseEntryToExpired:v3];
 }
 
-- (void)updatePurchaseEntryToExpired:(id)a3
+- (void)updatePurchaseEntryToExpired:(id)expired
 {
-  v4 = a3;
-  v5 = v4;
+  expiredCopy = expired;
+  v5 = expiredCopy;
   if (self)
   {
     accessQueue = self->_accessQueue;
@@ -2857,8 +2857,8 @@ void __62__FCPurchaseController_updatePurchaseEntryToExpiredForTagIDs___block_in
     block[2] = __75__FCPurchaseController_updatePurchaseEntryToExpired_hasShownRenewalNotice___block_invoke;
     block[3] = &unk_1E7C37678;
     v10 = 0;
-    v8 = v4;
-    v9 = self;
+    v8 = expiredCopy;
+    selfCopy = self;
     dispatch_sync(accessQueue, block);
   }
 }
@@ -2950,9 +2950,9 @@ void __64__FCPurchaseController_updatePurchaseEntryToValid_purchaseType___block_
   [(FCPurchaseController *)v8 notifyPurchaseAddedWithTagIDs:v9];
 }
 
-- (void)removeFromPurchasedChannelsListWithTagIDs:(id)a3
+- (void)removeFromPurchasedChannelsListWithTagIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (self)
   {
     accessQueue = self->_accessQueue;
@@ -2968,8 +2968,8 @@ void __64__FCPurchaseController_updatePurchaseEntryToValid_purchaseType___block_
   v7[2] = __66__FCPurchaseController_removeFromPurchasedChannelsListWithTagIDs___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dsCopy;
+  v6 = dsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -3024,10 +3024,10 @@ void __67__FCPurchaseController__removeFromPurchasedChannelsListWithTagIDs___blo
   [(FCPurchaseController *)v12 notifyPurchaseRemovedWithTagIDs:v13];
 }
 
-- (void)removeFromPurchasesDiscoveredList:(id)a3 completion:(id)a4
+- (void)removeFromPurchasesDiscoveredList:(id)list completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  completionCopy = completion;
   if (self)
   {
     accessQueue = self->_accessQueue;
@@ -3043,10 +3043,10 @@ void __67__FCPurchaseController__removeFromPurchasedChannelsListWithTagIDs___blo
   block[2] = __69__FCPurchaseController_removeFromPurchasesDiscoveredList_completion___block_invoke;
   block[3] = &unk_1E7C38FF0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = listCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = listCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3166,37 +3166,37 @@ void __67__FCPurchaseController_cleanupExpiredPurchaseLookupEntriesIfNeeded__blo
   }
 }
 
-- (void)handleAccessTokenChangeWithTagID:(uint64_t)a1 userInitiated:(void *)a2
+- (void)handleAccessTokenChangeWithTagID:(uint64_t)d userInitiated:(void *)initiated
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v3 = a2;
-  if (a1)
+  initiatedCopy = initiated;
+  if (d)
   {
-    v4 = *(a1 + 32);
-    v5 = [v4 tagSettings];
-    v6 = [v5 accessTokenForTagID:v3];
+    v4 = *(d + 32);
+    tagSettings = [v4 tagSettings];
+    v6 = [tagSettings accessTokenForTagID:initiatedCopy];
 
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
     v35 = __Block_byref_object_copy__10;
     v36 = __Block_byref_object_dispose__10;
-    v37 = [a1 purchaseLookUpEntryForTagID:v3];
+    v37 = [d purchaseLookUpEntryForTagID:initiatedCopy];
     if (v6)
     {
-      objc_initWeak(&location, a1);
-      v7 = *(a1 + 32);
-      v8 = [v7 tagController];
+      objc_initWeak(&location, d);
+      v7 = *(d + 32);
+      tagController = [v7 tagController];
       v9 = MEMORY[0x1E69E96A0];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __71__FCPurchaseController_handleAccessTokenChangeWithTagID_userInitiated___block_invoke;
       v26[3] = &unk_1E7C39448;
       objc_copyWeak(&v30, &location);
-      v28 = a1;
+      dCopy = d;
       v29 = &v32;
-      v27 = v3;
-      [v8 fetchTagForTagID:v27 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v26];
+      v27 = initiatedCopy;
+      [tagController fetchTagForTagID:v27 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v26];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(&location);
@@ -3209,33 +3209,33 @@ void __67__FCPurchaseController_cleanupExpiredPurchaseLookupEntriesIfNeeded__blo
       {
         if ([v11 purchaseType] == 2)
         {
-          v38[0] = v3;
+          v38[0] = initiatedCopy;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
-          [a1 removeFromPurchasedChannelsListWithTagIDs:v12];
+          [d removeFromPurchasedChannelsListWithTagIDs:v12];
 
-          v13 = [a1 purchasesDiscoveredTagIDs];
-          v14 = [v13 containsObject:v3];
+          purchasesDiscoveredTagIDs = [d purchasesDiscoveredTagIDs];
+          v14 = [purchasesDiscoveredTagIDs containsObject:initiatedCopy];
 
           if (v14)
           {
-            v15 = [a1 purchasesDiscoveredTagIDs];
-            v16 = [v15 allObjects];
-            v17 = [v16 mutableCopy];
+            purchasesDiscoveredTagIDs2 = [d purchasesDiscoveredTagIDs];
+            allObjects = [purchasesDiscoveredTagIDs2 allObjects];
+            v17 = [allObjects mutableCopy];
 
-            [v17 removeObject:v3];
+            [v17 removeObject:initiatedCopy];
             v18 = MEMORY[0x1E695DFD8];
             v19 = [v17 copy];
             v20 = [v18 setWithArray:v19];
-            v21 = *(a1 + 8);
-            *(a1 + 8) = v20;
+            v21 = *(d + 8);
+            *(d + 8) = v20;
 
-            v22 = *(a1 + 48);
-            v23 = [a1 purchasesDiscoveredTagIDs];
-            v24 = [v23 allObjects];
-            [v22 setObject:v24 forKey:@"SubscriptionsDiscoveredList"];
+            v22 = *(d + 48);
+            purchasesDiscoveredTagIDs3 = [d purchasesDiscoveredTagIDs];
+            allObjects2 = [purchasesDiscoveredTagIDs3 allObjects];
+            [v22 setObject:allObjects2 forKey:@"SubscriptionsDiscoveredList"];
 
-            v25 = [a1 purchasesDiscoveredTagIDs];
-            [(FCPurchaseController *)a1 notifyPurchasesDiscoveredWithTagIDs:v25];
+            purchasesDiscoveredTagIDs4 = [d purchasesDiscoveredTagIDs];
+            [(FCPurchaseController *)d notifyPurchasesDiscoveredWithTagIDs:purchasesDiscoveredTagIDs4];
           }
         }
       }
@@ -3575,13 +3575,13 @@ void __70__FCPurchaseController_handleAccessTokenVerificationFailureWithTagID___
   [v7 setObject:v9 forKey:v8];
 }
 
-- (void)verifyAccessTokenWithTagID:(id)a3 accessToken:(id)a4 consumedArticleCount:(unint64_t)a5 serialCompletion:(id)a6 callbackQueue:(id)a7 completion:(id)a8
+- (void)verifyAccessTokenWithTagID:(id)d accessToken:(id)token consumedArticleCount:(unint64_t)count serialCompletion:(id)completion callbackQueue:(id)queue completion:(id)a8
 {
   v49 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  tokenCopy = token;
+  completionCopy = completion;
+  queueCopy = queue;
   v18 = a8;
   if (self)
   {
@@ -3593,10 +3593,10 @@ void __70__FCPurchaseController_handleAccessTokenVerificationFailureWithTagID___
     cloudContext = 0;
   }
 
-  v20 = [(FCCloudContext *)cloudContext networkReachability];
-  v21 = [v20 isNetworkReachable];
+  networkReachability = [(FCCloudContext *)cloudContext networkReachability];
+  isNetworkReachable = [networkReachability isNetworkReachable];
 
-  if (v21)
+  if (isNetworkReachable)
   {
     if (self)
     {
@@ -3609,21 +3609,21 @@ void __70__FCPurchaseController_handleAccessTokenVerificationFailureWithTagID___
     }
 
     v23 = v22;
-    v24 = [(FCCloudContext *)v23 tagController];
+    tagController = [(FCCloudContext *)v23 tagController];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __126__FCPurchaseController_verifyAccessTokenWithTagID_accessToken_consumedArticleCount_serialCompletion_callbackQueue_completion___block_invoke;
     v38[3] = &unk_1E7C39588;
     v38[4] = self;
-    v39 = v14;
-    v40 = v17;
+    v39 = dCopy;
+    v40 = queueCopy;
     v42 = v18;
-    v43 = v16;
-    v41 = v15;
-    v44 = a5;
-    v25 = v16;
+    v43 = completionCopy;
+    v41 = tokenCopy;
+    countCopy = count;
+    v25 = completionCopy;
     v26 = v18;
-    [v24 fetchTagForTagID:v39 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v38];
+    [tagController fetchTagForTagID:v39 qualityOfService:9 callbackQueue:MEMORY[0x1E69E96A0] completionHandler:v38];
 
     v27 = v39;
   }
@@ -3639,7 +3639,7 @@ void __70__FCPurchaseController_handleAccessTokenVerificationFailureWithTagID___
       *buf = 138543618;
       v46 = v31;
       v47 = 2048;
-      v48 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B63EF000, v29, OS_LOG_TYPE_DEFAULT, "<%{public}@ %p> verifyAccessTokenWithTagID failed because the network is not reachable", buf, 0x16u);
     }
 
@@ -3648,10 +3648,10 @@ void __70__FCPurchaseController_handleAccessTokenVerificationFailureWithTagID___
     block[2] = __126__FCPurchaseController_verifyAccessTokenWithTagID_accessToken_consumedArticleCount_serialCompletion_callbackQueue_completion___block_invoke_254;
     block[3] = &unk_1E7C39090;
     v36 = v18;
-    v37 = v16;
-    v32 = v16;
+    v37 = completionCopy;
+    v32 = completionCopy;
     v33 = v18;
-    dispatch_async(v17, block);
+    dispatch_async(queueCopy, block);
 
     v27 = v36;
   }
@@ -4380,23 +4380,23 @@ LABEL_22:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (id)webAccessEntryForTagID:(void *)a1
+- (id)webAccessEntryForTagID:(void *)d
 {
   v3 = a2;
-  v4 = [a1 webAccessEntriesByTagID];
-  v5 = [v4 objectForKey:v3];
+  webAccessEntriesByTagID = [d webAccessEntriesByTagID];
+  v5 = [webAccessEntriesByTagID objectForKey:v3];
 
   return v5;
 }
 
-- (void)submitWebAccessWithTagID:(id)a3 purchaseID:(id)a4 emailAddress:(id)a5 purchaseReceipt:(id)a6 serialCompletion:(id)a7 completion:(id)a8
+- (void)submitWebAccessWithTagID:(id)d purchaseID:(id)iD emailAddress:(id)address purchaseReceipt:(id)receipt serialCompletion:(id)completion completion:(id)a8
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v34 = a4;
-  v35 = a5;
-  v36 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  addressCopy = address;
+  receiptCopy = receipt;
+  completionCopy = completion;
   v16 = a8;
   if (self)
   {
@@ -4408,19 +4408,19 @@ LABEL_22:
     cloudContext = 0;
   }
 
-  v18 = [(FCCloudContext *)cloudContext networkReachability];
-  v19 = [v18 isNetworkReachable];
+  networkReachability = [(FCCloudContext *)cloudContext networkReachability];
+  isNetworkReachable = [networkReachability isNetworkReachable];
 
-  if (v19)
+  if (isNetworkReachable)
   {
     objc_initWeak(&location, self);
-    v20 = [MEMORY[0x1E695DF58] currentLocale];
-    v21 = [v20 objectForKey:*MEMORY[0x1E695D9B0]];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v21 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
-    v22 = [MEMORY[0x1E695DF58] currentLocale];
-    v33 = [v22 objectForKey:*MEMORY[0x1E695D978]];
+    currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+    v33 = [currentLocale2 objectForKey:*MEMORY[0x1E695D978]];
 
-    v23 = [v36 dataUsingEncoding:4];
+    v23 = [receiptCopy dataUsingEncoding:4];
     v32 = [v23 base64EncodedStringWithOptions:0];
     if (self)
     {
@@ -4433,20 +4433,20 @@ LABEL_22:
     }
 
     v25 = v24;
-    v26 = [(FCCloudContext *)v25 endpointConnection];
+    endpointConnection = [(FCCloudContext *)v25 endpointConnection];
     v27 = MEMORY[0x1E69E96A0];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __117__FCPurchaseController_submitWebAccessWithTagID_purchaseID_emailAddress_purchaseReceipt_serialCompletion_completion___block_invoke;
     v37[3] = &unk_1E7C39600;
     objc_copyWeak(&v44, &location);
-    v38 = v14;
-    v39 = v34;
-    v40 = v35;
-    v41 = v36;
+    v38 = dCopy;
+    v39 = iDCopy;
+    v40 = addressCopy;
+    v41 = receiptCopy;
     v42 = v16;
-    v43 = v15;
-    [v26 submitWebAccessWithTagID:v38 purchaseID:v39 emailAddress:v40 purchaseReceipt:v32 countryCode:v33 languageCode:v21 callbackQueue:MEMORY[0x1E69E96A0] completion:v37];
+    v43 = completionCopy;
+    [endpointConnection submitWebAccessWithTagID:v38 purchaseID:v39 emailAddress:v40 purchaseReceipt:v32 countryCode:v33 languageCode:v21 callbackQueue:MEMORY[0x1E69E96A0] completion:v37];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(&location);
@@ -4464,9 +4464,9 @@ LABEL_22:
       (*(v16 + 2))(v16, 0, v30);
     }
 
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15);
+      completionCopy[2](completionCopy);
     }
   }
 

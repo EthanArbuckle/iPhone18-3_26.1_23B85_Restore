@@ -1,8 +1,8 @@
 @interface CLIntersiloInterface
 + (id)sharedInterface;
-- (BOOL)hasInfoForSelector:(SEL)a3;
-- (id)getInfoForSelector:(SEL)a3;
-- (void)extendSelectorInfoWithProtocol:(id)a3 bases:(id)a4;
+- (BOOL)hasInfoForSelector:(SEL)selector;
+- (id)getInfoForSelector:(SEL)selector;
+- (void)extendSelectorInfoWithProtocol:(id)protocol bases:(id)bases;
 @end
 
 @implementation CLIntersiloInterface
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (void)extendSelectorInfoWithProtocol:(id)a3 bases:(id)a4
+- (void)extendSelectorInfoWithProtocol:(id)protocol bases:(id)bases
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v5 = a4;
-  if ((sub_1DF807F18(v10, v5) & 1) == 0)
+  protocolCopy = protocol;
+  basesCopy = bases;
+  if ((sub_1DF807F18(protocolCopy, basesCopy) & 1) == 0)
   {
     v7 = sub_1DF80C018();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -33,9 +33,9 @@
       v12 = 2082;
       v13 = &unk_1DF8255EF;
       v14 = 2114;
-      v15 = v10;
+      v15 = protocolCopy;
       v16 = 2114;
-      v17 = v5;
+      v17 = basesCopy;
       v18 = 2082;
       v19 = "assert";
       v20 = 2081;
@@ -50,9 +50,9 @@
       v12 = 2082;
       v13 = &unk_1DF8255EF;
       v14 = 2114;
-      v15 = v10;
+      v15 = protocolCopy;
       v16 = 2114;
-      v17 = v5;
+      v17 = basesCopy;
       v18 = 2082;
       v19 = "assert";
       v20 = 2081;
@@ -68,9 +68,9 @@
       v12 = 2082;
       v13 = &unk_1DF8255EF;
       v14 = 2114;
-      v15 = v10;
+      v15 = protocolCopy;
       v16 = 2114;
-      v17 = v5;
+      v17 = basesCopy;
       v18 = 2082;
       v19 = "assert";
       v20 = 2081;
@@ -85,7 +85,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getInfoForSelector:(SEL)a3
+- (id)getInfoForSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -98,7 +98,7 @@
   v5[2] = sub_1DF80C4A8;
   v5[3] = &unk_1E86C82A8;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = selector;
   sub_1DF7FF4D8(v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (BOOL)hasInfoForSelector:(SEL)a3
+- (BOOL)hasInfoForSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -119,7 +119,7 @@
   v5[2] = sub_1DF80C7C0;
   v5[3] = &unk_1E86C82A8;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = selector;
   sub_1DF7FF4D8(v5);
   v3 = v7[5] != 0;
   _Block_object_dispose(&v6, 8);

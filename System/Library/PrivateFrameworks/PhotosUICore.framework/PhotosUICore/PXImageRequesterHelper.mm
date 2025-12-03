@@ -5,16 +5,16 @@
 - (void)_updateContentsRect;
 - (void)_updateImage;
 - (void)_updateImageRequester;
-- (void)didPublishChanges:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setImageRequester:(id)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setScale:(double)a3;
+- (void)didPublishChanges:(unint64_t)changes;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setAsset:(id)asset;
+- (void)setContentSize:(CGSize)size;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setImage:(id)image;
+- (void)setImageRequester:(id)requester;
+- (void)setMediaProvider:(id)provider;
+- (void)setScale:(double)scale;
 @end
 
 @implementation PXImageRequesterHelper
@@ -41,23 +41,23 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXImageRequesterObserverContext_159971 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXImageRequesterObserverContext_159971 == context)
   {
-    v9 = v8;
-    if ((v6 & 4) != 0)
+    v9 = observableCopy;
+    if ((changeCopy & 4) != 0)
     {
       [(PXImageRequesterHelper *)self _updateImage];
-      v8 = v9;
+      observableCopy = v9;
     }
 
-    if (v6 < 0)
+    if (changeCopy < 0)
     {
       [(PXImageRequesterHelper *)self _updateContentsRect];
-      v8 = v9;
+      observableCopy = v9;
     }
   }
 }
@@ -83,33 +83,33 @@ void __45__PXImageRequesterHelper__updateContentsRect__block_invoke(uint64_t a1,
 
 - (void)_updateImage
 {
-  v3 = [(PXImageRequesterHelper *)self imageRequester];
-  v4 = [v3 image];
+  imageRequester = [(PXImageRequesterHelper *)self imageRequester];
+  image = [imageRequester image];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__PXImageRequesterHelper__updateImage__block_invoke;
   v6[3] = &unk_1E773EBC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = image;
+  v5 = image;
   [(PXImageRequesterHelper *)self performChanges:v6];
 }
 
 - (void)_updateAssetOrMediaProvider
 {
-  v3 = [(PXImageRequesterHelper *)self asset];
-  v4 = [(PXImageRequesterHelper *)self mediaProvider];
-  v5 = v4;
-  if (v3 && v4)
+  asset = [(PXImageRequesterHelper *)self asset];
+  mediaProvider = [(PXImageRequesterHelper *)self mediaProvider];
+  v5 = mediaProvider;
+  if (asset && mediaProvider)
   {
-    v6 = [(PXImageRequesterHelper *)self imageRequester];
-    if (v6)
+    imageRequester = [(PXImageRequesterHelper *)self imageRequester];
+    if (imageRequester)
     {
-      v7 = v6;
+      v7 = imageRequester;
       v8 = MEMORY[0x1E69E9820];
       v9 = 3221225472;
       v10 = __53__PXImageRequesterHelper__updateAssetOrMediaProvider__block_invoke;
       v11 = &unk_1E773EBA0;
-      v12 = v3;
+      v12 = asset;
       v13 = v5;
       [(PXImageRequester *)v7 performChanges:&v8];
       [(PXImageRequesterHelper *)self _updateImageRequester:v8];
@@ -117,7 +117,7 @@ void __45__PXImageRequesterHelper__updateContentsRect__block_invoke(uint64_t a1,
 
     else
     {
-      v7 = [[PXImageRequester alloc] initWithMediaProvider:v5 asset:v3];
+      v7 = [[PXImageRequester alloc] initWithMediaProvider:v5 asset:asset];
       [(PXImageRequesterHelper *)self setImageRequester:v7];
     }
   }
@@ -158,30 +158,30 @@ void __47__PXImageRequesterHelper__updateImageRequester__block_invoke(uint64_t a
   [v5 setScale:*(*(a1 + 32) + 112)];
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   imageRequester = self->_imageRequester;
-  if (imageRequester != v5)
+  if (imageRequester != requesterCopy)
   {
-    v7 = v5;
+    v7 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext_159971];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXImageRequester *)self->_imageRequester registerChangeObserver:self context:PXImageRequesterObserverContext_159971];
     [(PXImageRequesterHelper *)self _updateImageRequester];
     [(PXImageRequesterHelper *)self _updateImage];
-    v5 = v7;
+    requesterCopy = v7;
   }
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(self->_contentsRect, a3))
+  if (!CGRectEqualToRect(self->_contentsRect, rect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
@@ -192,88 +192,88 @@ void __47__PXImageRequesterHelper__updateImageRequester__block_invoke(uint64_t a
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_image != v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (self->_image != imageCopy)
   {
-    v8 = v5;
-    v7 = [(UIImage *)v5 isEqual:?];
+    v8 = imageCopy;
+    v7 = [(UIImage *)imageCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_image, a3);
+      objc_storeStrong(&self->_image, image);
       [(PXImageRequesterHelper *)self signalChange:32];
       v6 = v8;
     }
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(PXImageRequesterHelper *)self signalChange:16];
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (a3.width != self->_contentSize.width || a3.height != self->_contentSize.height)
+  if (size.width != self->_contentSize.width || size.height != self->_contentSize.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(PXImageRequesterHelper *)self signalChange:4];
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXImageRequesterHelper *)self signalChange:2];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXImageRequesterHelper *)self signalChange:1];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)didPublishChanges:(unint64_t)a3
+- (void)didPublishChanges:(unint64_t)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v5.receiver = self;
   v5.super_class = PXImageRequesterHelper;
   [(PXImageRequesterHelper *)&v5 didPublishChanges:?];
-  if ((v3 & 3) != 0)
+  if ((changesCopy & 3) != 0)
   {
     [(PXImageRequesterHelper *)self _updateAssetOrMediaProvider];
   }
 
-  if ((v3 & 0x14) != 0)
+  if ((changesCopy & 0x14) != 0)
   {
     [(PXImageRequesterHelper *)self _updateImageRequester];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXImageRequesterHelper;
-  [(PXImageRequesterHelper *)&v3 performChanges:a3];
+  [(PXImageRequesterHelper *)&v3 performChanges:changes];
 }
 
 @end

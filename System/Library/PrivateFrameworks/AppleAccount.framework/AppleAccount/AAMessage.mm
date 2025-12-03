@@ -1,14 +1,14 @@
 @interface AAMessage
-- (AAMessage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AAMessage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAMessage
 
-- (AAMessage)initWithCoder:(id)a3
+- (AAMessage)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAMessage *)self init];
   v6 = v5;
   if (v5)
@@ -17,8 +17,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(AAMessage *)v5 keysForEncoding];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    keysForEncoding = [(AAMessage *)v5 keysForEncoding];
+    v8 = [keysForEncoding countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -29,15 +29,15 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keysForEncoding);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v4 decodeObjectForKey:v12];
+          v13 = [coderCopy decodeObjectForKey:v12];
           [(AAMessage *)v6 setValue:v13 forKey:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [keysForEncoding countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -48,16 +48,16 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AAMessage *)self keysForEncoding];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keysForEncoding = [(AAMessage *)self keysForEncoding];
+  v6 = [keysForEncoding countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -68,15 +68,15 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keysForEncoding);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(AAMessage *)self valueForKey:v10];
-        [v4 encodeObject:v11 forKey:v10];
+        [coderCopy encodeObject:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [keysForEncoding countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

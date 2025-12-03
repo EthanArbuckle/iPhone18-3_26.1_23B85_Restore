@@ -1,11 +1,11 @@
 @interface InsightsAdminVC
-- (_TtC7Journal15InsightsAdminVC)initWithCoder:(id)a3;
-- (_TtC7Journal15InsightsAdminVC)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Journal15InsightsAdminVC)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (_TtC7Journal15InsightsAdminVC)initWithCoder:(id)coder;
+- (_TtC7Journal15InsightsAdminVC)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Journal15InsightsAdminVC)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)refreshData;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -13,7 +13,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A0860();
 }
 
@@ -25,18 +25,18 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1003E9628(0, 0, v5, &unk_10094B9A0, v9);
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  sub_1002A3248(a4);
+  sub_1002A3248(section);
   if (v4)
   {
     v5 = String._bridgeToObjectiveC()();
@@ -50,23 +50,23 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1002A32AC(v8);
+  viewCopy = view;
+  headerViewCopy = headerView;
+  selfCopy = self;
+  sub_1002A32AC(headerViewCopy);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_1002A345C();
 
   (*(v7 + 8))(v9, v6);
@@ -74,45 +74,45 @@
   return v12;
 }
 
-- (_TtC7Journal15InsightsAdminVC)initWithStyle:(int64_t)a3
+- (_TtC7Journal15InsightsAdminVC)initWithStyle:(int64_t)style
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15InsightsAdminVC_data) = _swiftEmptyArrayStorage;
   v5.receiver = self;
   v5.super_class = type metadata accessor for InsightsAdminVC();
-  return [(InsightsAdminVC *)&v5 initWithStyle:a3];
+  return [(InsightsAdminVC *)&v5 initWithStyle:style];
 }
 
-- (_TtC7Journal15InsightsAdminVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal15InsightsAdminVC)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15InsightsAdminVC_data) = _swiftEmptyArrayStorage;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15InsightsAdminVC_data) = _swiftEmptyArrayStorage;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for InsightsAdminVC();
-  v9 = [(InsightsAdminVC *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(InsightsAdminVC *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC7Journal15InsightsAdminVC)initWithCoder:(id)a3
+- (_TtC7Journal15InsightsAdminVC)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15InsightsAdminVC_data) = _swiftEmptyArrayStorage;
   v7.receiver = self;
   v7.super_class = type metadata accessor for InsightsAdminVC();
-  v4 = a3;
-  v5 = [(InsightsAdminVC *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(InsightsAdminVC *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

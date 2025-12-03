@@ -1,7 +1,7 @@
 @interface AXAudioHardwareManager
-+ (BOOL)channelsAreAirplay:(id)a3 route:(id)a4;
-+ (BOOL)channelsAreWiredHeadphones:(id)a3;
-+ (id)channelsForPort:(id)a3;
++ (BOOL)channelsAreAirplay:(id)airplay route:(id)route;
++ (BOOL)channelsAreWiredHeadphones:(id)headphones;
++ (id)channelsForPort:(id)port;
 + (id)defaultPort;
 + (id)defaultPortChannels;
 + (id)defaultRouteDescription;
@@ -11,10 +11,10 @@
 + (void)updateTestingChannels;
 - (AXAudioHardwareManager)init;
 - (BOOL)isDolbyAtmosConfigured;
-- (id)_savedIdForRouteDescription:(id)a3;
-- (id)savedChannelsForOutput:(id)a3 forSource:(int64_t)a4;
-- (void)_handleSurroundSoundDefaults:(id)a3 returnedChannels:(id)a4 port:(id)a5 source:(int64_t)a6;
-- (void)setSavedChannels:(id)a3 forOutput:(id)a4 forSource:(int64_t)a5;
+- (id)_savedIdForRouteDescription:(id)description;
+- (id)savedChannelsForOutput:(id)output forSource:(int64_t)source;
+- (void)_handleSurroundSoundDefaults:(id)defaults returnedChannels:(id)channels port:(id)port source:(int64_t)source;
+- (void)setSavedChannels:(id)channels forOutput:(id)output forSource:(int64_t)source;
 @end
 
 @implementation AXAudioHardwareManager
@@ -52,17 +52,17 @@ uint64_t __39__AXAudioHardwareManager_sharedManager__block_invoke()
   return v3;
 }
 
-+ (BOOL)channelsAreAirplay:(id)a3 route:(id)a4
++ (BOOL)channelsAreAirplay:(id)airplay route:(id)route
 {
-  v5 = a4;
-  if ([a3 count] == 2)
+  routeCopy = route;
+  if ([airplay count] == 2)
   {
-    v6 = [v5 outputs];
-    if ([v6 count] == 1)
+    outputs = [routeCopy outputs];
+    if ([outputs count] == 1)
     {
-      v7 = [v6 firstObject];
-      v8 = [v7 portType];
-      v9 = [v8 isEqualToString:*MEMORY[0x1E69581A0]];
+      firstObject = [outputs firstObject];
+      portType = [firstObject portType];
+      v9 = [portType isEqualToString:*MEMORY[0x1E69581A0]];
     }
 
     else
@@ -79,17 +79,17 @@ uint64_t __39__AXAudioHardwareManager_sharedManager__block_invoke()
   return v9;
 }
 
-+ (BOOL)channelsAreWiredHeadphones:(id)a3
++ (BOOL)channelsAreWiredHeadphones:(id)headphones
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] == 2)
+  headphonesCopy = headphones;
+  if ([headphonesCopy count] == 2)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = headphonesCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -104,8 +104,8 @@ uint64_t __39__AXAudioHardwareManager_sharedManager__block_invoke()
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) owningPortUID];
-          v10 = [v9 isEqualToString:@"Wired Headphones"];
+          owningPortUID = [*(*(&v13 + 1) + 8 * i) owningPortUID];
+          v10 = [owningPortUID isEqualToString:@"Wired Headphones"];
 
           if (!v10)
           {
@@ -138,15 +138,15 @@ LABEL_13:
 
 + (void)enableMultiroute
 {
-  v2 = [MEMORY[0x1E6958460] sharedInstance];
-  v3 = [v2 category];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  category = [mEMORY[0x1E6958460] category];
   v4 = ExistingCategory;
-  ExistingCategory = v3;
+  ExistingCategory = category;
 
-  v5 = [MEMORY[0x1E6958460] sharedInstance];
+  mEMORY[0x1E6958460]2 = [MEMORY[0x1E6958460] sharedInstance];
   v6 = *MEMORY[0x1E6958058];
   v9 = 0;
-  v7 = [v5 setCategory:v6 withOptions:0 error:&v9];
+  v7 = [mEMORY[0x1E6958460]2 setCategory:v6 withOptions:0 error:&v9];
   v8 = v9;
 
   if ((v7 & 1) == 0)
@@ -161,9 +161,9 @@ LABEL_13:
   v2 = ExistingCategory;
   if (ExistingCategory)
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
     v6 = 0;
-    v4 = [v3 setCategory:ExistingCategory withOptions:0 error:&v6];
+    v4 = [mEMORY[0x1E6958460] setCategory:ExistingCategory withOptions:0 error:&v6];
     v5 = v6;
 
     if ((v4 & 1) == 0)
@@ -182,16 +182,16 @@ LABEL_13:
 {
   if (DefaultRouteDescription)
   {
-    v2 = DefaultRouteDescription;
+    currentRoute = DefaultRouteDescription;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
-    v2 = [v3 currentRoute];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    currentRoute = [mEMORY[0x1E6958460] currentRoute];
   }
 
-  return v2;
+  return currentRoute;
 }
 
 - (BOOL)isDolbyAtmosConfigured
@@ -201,10 +201,10 @@ LABEL_13:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [MEMORY[0x1E6958460] sharedInstance];
-  v3 = [v2 audioFormats];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  audioFormats = [mEMORY[0x1E6958460] audioFormats];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [audioFormats countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -215,15 +215,15 @@ LABEL_13:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(audioFormats);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) intValue];
-        if (v8 > 1836344106)
+        intValue = [*(*(&v16 + 1) + 8 * i) intValue];
+        if (intValue > 1836344106)
         {
-          if (v8 > 1902324530)
+          if (intValue > 1902324530)
           {
-            if (v8 == 1902324531 || v8 == 2053319475)
+            if (intValue == 1902324531 || intValue == 2053319475)
             {
 LABEL_30:
               v14 = 1;
@@ -231,7 +231,7 @@ LABEL_30:
             }
           }
 
-          else if (v8 == 1836344107 || v8 == 1885547315)
+          else if (intValue == 1836344107 || intValue == 1885547315)
           {
             goto LABEL_30;
           }
@@ -239,26 +239,26 @@ LABEL_30:
 
         else
         {
-          if (v8 > 1835103274)
+          if (intValue > 1835103274)
           {
-            v9 = v8 == 1835103275;
+            v9 = intValue == 1835103275;
             v10 = 1836343851;
           }
 
           else
           {
-            v9 = v8 == 1667443507;
+            v9 = intValue == 1667443507;
             v10 = 1700997939;
           }
 
-          if (v9 || v8 == v10)
+          if (v9 || intValue == v10)
           {
             goto LABEL_30;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [audioFormats countByEnumeratingWithState:&v16 objects:v20 count:16];
       v14 = 0;
       if (v5)
       {
@@ -282,7 +282,7 @@ LABEL_32:
 + (void)updateTestingChannels
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -303,11 +303,11 @@ LABEL_32:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 channel];
+        channel = [v8 channel];
 
-        if (v9)
+        if (channel)
         {
-          [v2 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -317,9 +317,9 @@ LABEL_32:
     while (v5);
   }
 
-  if ([v2 count])
+  if ([array count])
   {
-    v10 = v2;
+    v10 = array;
   }
 
   else
@@ -330,35 +330,35 @@ LABEL_32:
   objc_storeStrong(&TestingChannels, v10);
 }
 
-+ (id)channelsForPort:(id)a3
++ (id)channelsForPort:(id)port
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [a1 updateTestingChannels];
+  portCopy = port;
+  [self updateTestingChannels];
   if (TestingChannels)
   {
-    v5 = TestingChannels;
+    array = TestingChannels;
   }
 
   else
   {
     if (AXProcessIsPreferences())
     {
-      [a1 enableMultiroute];
+      [self enableMultiroute];
     }
 
     if (AXProcessIsPreferences())
     {
-      [a1 disableMultiroute];
+      [self disableMultiroute];
     }
 
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 channels];
+    array = [MEMORY[0x1E695DF70] array];
+    channels = [portCopy channels];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [channels countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -369,27 +369,27 @@ LABEL_32:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(channels);
           }
 
           v11 = [MEMORY[0x1E69D9EA0] channelWithChannel:*(*(&v13 + 1) + 8 * i)];
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [channels countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
     }
   }
 
-  return v5;
+  return array;
 }
 
 + (id)defaultPortChannels
 {
   v3 = +[AXAudioHardwareManager defaultPort];
-  v4 = [a1 channelsForPort:v3];
+  v4 = [self channelsForPort:v3];
 
   return v4;
 }
@@ -399,29 +399,29 @@ LABEL_32:
   v17 = *MEMORY[0x1E69E9840];
   if (TestingPort)
   {
-    v2 = TestingPort;
+    firstObject = TestingPort;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
-    v4 = [v3 currentRoute];
-    v5 = [v4 outputs];
-    v2 = [v5 firstObject];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    currentRoute = [mEMORY[0x1E6958460] currentRoute];
+    outputs = [currentRoute outputs];
+    firstObject = [outputs firstObject];
 
-    v6 = [MEMORY[0x1E69887B0] sharedInstance];
-    v7 = [v6 ignoreLogging];
+    mEMORY[0x1E69887B0] = [MEMORY[0x1E69887B0] sharedInstance];
+    ignoreLogging = [mEMORY[0x1E69887B0] ignoreLogging];
 
-    if ((v7 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v8 = [MEMORY[0x1E69887B0] identifier];
+      identifier = [MEMORY[0x1E69887B0] identifier];
       v9 = AXLoggerForFacility();
 
       v10 = AXOSLogLevelFromAXLogLevel();
       if (os_log_type_enabled(v9, v10))
       {
         v11 = AXColorizeFormatLog();
-        v14 = [v4 outputs];
+        outputs2 = [currentRoute outputs];
         v12 = _AXStringForArgs();
 
         if (os_log_type_enabled(v9, v10))
@@ -434,20 +434,20 @@ LABEL_32:
     }
   }
 
-  return v2;
+  return firstObject;
 }
 
-- (id)_savedIdForRouteDescription:(id)a3
+- (id)_savedIdForRouteDescription:(id)description
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  descriptionCopy = description;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 outputs];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outputs = [descriptionCopy outputs];
+  v6 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -458,54 +458,54 @@ LABEL_32:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outputs);
         }
 
         v10 = [*(*(&v13 + 1) + 8 * i) UID];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  [v4 sortUsingComparator:&__block_literal_global_14];
-  v11 = [v4 componentsJoinedByString:@"_"];
+  [array sortUsingComparator:&__block_literal_global_14];
+  v11 = [array componentsJoinedByString:@"_"];
 
   return v11;
 }
 
-- (id)savedChannelsForOutput:(id)a3 forSource:(int64_t)a4
+- (id)savedChannelsForOutput:(id)output forSource:(int64_t)source
 {
   v90 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  outputCopy = output;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 _audioHardwareChannelLayout];
+  _audioHardwareChannelLayout = [v7 _audioHardwareChannelLayout];
 
-  v62 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", a4];
-  v10 = [v8 objectForKey:v9];
+  sourceCopy = source;
+  source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", source];
+  v10 = [_audioHardwareChannelLayout objectForKey:source];
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  v61 = self;
-  v12 = [(AXAudioHardwareManager *)self _savedIdForRouteDescription:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  v12 = [(AXAudioHardwareManager *)self _savedIdForRouteDescription:outputCopy];
   v66 = [v10 objectForKey:v12];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = [v6 outputs];
+  obj = [outputCopy outputs];
   v13 = 0x1E6988000uLL;
-  v70 = v11;
+  v70 = array;
   v63 = [obj countByEnumeratingWithState:&v81 objects:v89 count:16];
   if (v63)
   {
     v54 = v12;
     v55 = v10;
-    v56 = v8;
-    v57 = v6;
+    v56 = _audioHardwareChannelLayout;
+    v57 = outputCopy;
     v59 = *v82;
     while (1)
     {
@@ -523,13 +523,13 @@ LABEL_32:
         v60 = [v16 isEqualToString:@"Wired Headphones"];
 
         v71 = v15;
-        v17 = [v15 channels];
+        channels = [v15 channels];
         v77 = 0u;
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v65 = v17;
-        v68 = [v17 countByEnumeratingWithState:&v77 objects:v88 count:16];
+        v65 = channels;
+        v68 = [channels countByEnumeratingWithState:&v77 objects:v88 count:16];
         if (v68)
         {
           v67 = *v78;
@@ -573,21 +573,21 @@ LABEL_32:
                       if ([v25 isEqualToString:v26])
                       {
                         v27 = [v24 objectForKeyedSubscript:@"channelNumber"];
-                        v28 = [v27 intValue];
-                        v29 = [v72 channelNumber];
+                        intValue = [v27 intValue];
+                        channelNumber = [v72 channelNumber];
 
                         v13 = 0x1E6988000;
-                        v30 = v29 == v28;
-                        v11 = v70;
+                        v30 = channelNumber == intValue;
+                        array = v70;
                         if (!v30)
                         {
 LABEL_23:
-                          v31 = [*(v13 + 1968) sharedInstance];
-                          v32 = [v31 ignoreLogging];
+                          sharedInstance = [*(v13 + 1968) sharedInstance];
+                          ignoreLogging = [sharedInstance ignoreLogging];
 
-                          if ((v32 & 1) == 0)
+                          if ((ignoreLogging & 1) == 0)
                           {
-                            v33 = [*(v13 + 1968) identifier];
+                            identifier = [*(v13 + 1968) identifier];
                             v34 = AXLoggerForFacility();
 
                             v35 = AXOSLogLevelFromAXLogLevel();
@@ -595,7 +595,7 @@ LABEL_23:
                             {
                               v36 = AXColorizeFormatLog();
                               v52 = v72;
-                              v53 = v11;
+                              v53 = array;
                               v51 = v24;
                               v37 = _AXStringForArgs();
                               if (os_log_type_enabled(v34, v35))
@@ -640,7 +640,7 @@ LABEL_23:
           while (v68);
         }
 
-        [(AXAudioHardwareManager *)v61 _handleSurroundSoundDefaults:v65 returnedChannels:v11 port:v71 source:v62, v51];
+        [(AXAudioHardwareManager *)selfCopy _handleSurroundSoundDefaults:v65 returnedChannels:array port:v71 source:sourceCopy, v51];
 
         v14 = v64 + 1;
       }
@@ -649,8 +649,8 @@ LABEL_23:
       v63 = [obj countByEnumeratingWithState:&v81 objects:v89 count:16];
       if (!v63)
       {
-        v8 = v56;
-        v6 = v57;
+        _audioHardwareChannelLayout = v56;
+        outputCopy = v57;
         v12 = v54;
         v10 = v55;
         v38 = v60;
@@ -662,12 +662,12 @@ LABEL_23:
   v38 = 0;
 LABEL_37:
 
-  v39 = [*(v13 + 1968) sharedInstance];
-  v40 = [v39 ignoreLogging];
+  sharedInstance2 = [*(v13 + 1968) sharedInstance];
+  ignoreLogging2 = [sharedInstance2 ignoreLogging];
 
-  if ((v40 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
-    v41 = [*(v13 + 1968) identifier];
+    identifier2 = [*(v13 + 1968) identifier];
     v42 = AXLoggerForFacility();
 
     v43 = AXOSLogLevelFromAXLogLevel();
@@ -675,7 +675,7 @@ LABEL_37:
     {
       v44 = AXColorizeFormatLog();
       v51 = v66;
-      v52 = v11;
+      v52 = array;
       v45 = _AXStringForArgs();
       if (os_log_type_enabled(v42, v43))
       {
@@ -684,7 +684,7 @@ LABEL_37:
         _os_log_impl(&dword_18B15E000, v42, v43, "%{public}@", buf, 0xCu);
       }
 
-      v11 = v70;
+      array = v70;
     }
   }
 
@@ -693,21 +693,21 @@ LABEL_37:
     goto LABEL_48;
   }
 
-  v46 = [v6 outputs];
-  if ([v46 count] != 1)
+  outputs = [outputCopy outputs];
+  if ([outputs count] != 1)
   {
 
     goto LABEL_48;
   }
 
-  v47 = [v11 count];
+  v47 = [array count];
 
   if (v47 != 2)
   {
 LABEL_48:
-    if ([v11 count])
+    if ([array count])
     {
-      v49 = v11;
+      v49 = array;
     }
 
     else
@@ -725,26 +725,26 @@ LABEL_52:
   return v48;
 }
 
-- (void)_handleSurroundSoundDefaults:(id)a3 returnedChannels:(id)a4 port:(id)a5 source:(int64_t)a6
+- (void)_handleSurroundSoundDefaults:(id)defaults returnedChannels:(id)channels port:(id)port source:(int64_t)source
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count] == 5 && !objc_msgSend(v10, "count"))
+  defaultsCopy = defaults;
+  channelsCopy = channels;
+  portCopy = port;
+  if ([defaultsCopy count] == 5 && !objc_msgSend(channelsCopy, "count"))
   {
-    v12 = [v11 portType];
-    v13 = [v12 isEqualToString:*MEMORY[0x1E6958200]];
+    portType = [portCopy portType];
+    v13 = [portType isEqualToString:*MEMORY[0x1E6958200]];
 
     if (v13)
     {
-      if (a6 == 2)
+      if (source == 2)
       {
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v21 = v9;
+        v21 = defaultsCopy;
         v22 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v22)
         {
@@ -763,7 +763,7 @@ LABEL_52:
               if ([v26 channelLabel] == 1 || objc_msgSend(v26, "channelLabel") == 2 || objc_msgSend(v26, "channelLabel") == 5 || objc_msgSend(v26, "channelLabel") == 6)
               {
                 v27 = [MEMORY[0x1E69D9EA0] channelWithChannel:v26];
-                [v10 addObject:v27];
+                [channelsCopy addObject:v27];
               }
             }
 
@@ -776,13 +776,13 @@ LABEL_52:
         goto LABEL_29;
       }
 
-      if (a6 == 1)
+      if (source == 1)
       {
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v14 = v9;
+        v14 = defaultsCopy;
         v15 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v15)
         {
@@ -801,7 +801,7 @@ LABEL_52:
               if ([v19 channelLabel] == 3 || objc_msgSend(v19, "channelLabel") == 9)
               {
                 v20 = [MEMORY[0x1E69D9EA0] channelWithChannel:v19];
-                [v10 addObject:v20];
+                [channelsCopy addObject:v20];
               }
             }
 
@@ -817,22 +817,22 @@ LABEL_29:
   }
 }
 
-- (void)setSavedChannels:(id)a3 forOutput:(id)a4 forSource:(int64_t)a5
+- (void)setSavedChannels:(id)channels forOutput:(id)output forSource:(int64_t)source
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v31 = a4;
+  channelsCopy = channels;
+  outputCopy = output;
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 _audioHardwareChannelLayout];
-  v10 = [v9 mutableCopy];
+  _audioHardwareChannelLayout = [v8 _audioHardwareChannelLayout];
+  v10 = [_audioHardwareChannelLayout mutableCopy];
 
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", a5];
-  v12 = [v10 objectForKey:v11];
+  source = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", source];
+  v12 = [v10 objectForKey:source];
   v13 = [v12 mutableCopy];
 
   if (!v13)
@@ -840,17 +840,17 @@ LABEL_29:
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", a5];
+  source2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", source];
   v30 = v10;
   v28 = v13;
-  [v10 setObject:v13 forKey:v14];
+  [v10 setObject:v13 forKey:source2];
 
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v16 = v7;
+  v16 = channelsCopy;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v17)
   {
@@ -867,13 +867,13 @@ LABEL_29:
 
         v21 = *(*(&v32 + 1) + 8 * i);
         v36[0] = @"portUID";
-        v22 = [v21 owningPortUID];
+        owningPortUID = [v21 owningPortUID];
         v36[1] = @"channelNumber";
-        v37[0] = v22;
+        v37[0] = owningPortUID;
         v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v21, "channelNumber")}];
         v37[1] = v23;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
-        [v15 addObject:v24];
+        [array addObject:v24];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -882,14 +882,14 @@ LABEL_29:
     while (v18);
   }
 
-  v25 = [(AXAudioHardwareManager *)self _savedIdForRouteDescription:v31];
+  v25 = [(AXAudioHardwareManager *)self _savedIdForRouteDescription:outputCopy];
   v26 = AXLogSpeechAssetDownload();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    [AXAudioHardwareManager setSavedChannels:v25 forOutput:v15 forSource:v26];
+    [AXAudioHardwareManager setSavedChannels:v25 forOutput:array forSource:v26];
   }
 
-  [v28 setObject:v15 forKey:v25];
+  [v28 setObject:array forKey:v25];
   v27 = +[AXSettings sharedInstance];
   [v27 _setAudioHardwareChannelLayout:v30];
 }

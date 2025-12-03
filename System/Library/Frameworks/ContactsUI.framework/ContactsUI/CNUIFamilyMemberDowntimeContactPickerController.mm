@@ -1,34 +1,34 @@
 @interface CNUIFamilyMemberDowntimeContactPickerController
 + (id)familyCircle;
 - (CNUICoreContactEditingSession)editingSessionFromContactViewController;
-- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)a3 allFamilyMembers:(id)a4 contactStore:(id)a5;
-- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)a3 allFamilyMembers:(id)a4 contactStore:(id)a5 editingStrategy:(id)a6 showingFamilyMemberContacts:(BOOL)a7;
+- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)member allFamilyMembers:(id)members contactStore:(id)store;
+- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)member allFamilyMembers:(id)members contactStore:(id)store editingStrategy:(id)strategy showingFamilyMemberContacts:(BOOL)contacts;
 - (CNUIFamilyMemberDowntimeContactPickerControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)warningMessageForContact:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cancel:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)warningMessageForContact:(id)contact;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cancel:(id)cancel;
 - (void)configureNavigationItem;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
-- (void)done:(id)a3;
-- (void)keyboardWillChange:(id)a3;
-- (void)saveSanitizedSelectedContacts:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)done:(id)done;
+- (void)keyboardWillChange:(id)change;
+- (void)saveSanitizedSelectedContacts:(id)contacts;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 - (void)setupSearchBar;
 - (void)setupSearchController;
 - (void)setupTableView;
 - (void)setupUI;
 - (void)startObservingKeyboardChanges;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNUIFamilyMemberDowntimeContactPickerController
@@ -40,21 +40,21 @@
   return WeakRetained;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  if (!a4)
+  if (!contact)
   {
-    v5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-    v6 = [(CNUIFamilyMemberDowntimeContactPickerController *)self presentedContactIndexPath];
-    [v5 deselectRowAtIndexPath:v6 animated:1];
+    tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+    presentedContactIndexPath = [(CNUIFamilyMemberDowntimeContactPickerController *)self presentedContactIndexPath];
+    [tableView deselectRowAtIndexPath:presentedContactIndexPath animated:1];
   }
 
   [(CNUIFamilyMemberDowntimeContactPickerController *)self setPresentedContactIndexPath:0];
-  v8 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
-  v7 = [v8 popViewControllerAnimated:1];
+  navigationController = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   [(UISearchBar *)self->_searchBar setText:&stru_1F0CE7398];
   searchController = self->_searchController;
@@ -62,102 +62,102 @@
   [(CNUIFamilyMemberDowntimeContactPickerController *)self updateSearchResultsForSearchController:searchController];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [(UISearchBar *)self->_searchBar text];
-  [(CNUIFamilyMemberDowntimeContactDataSource *)self->_dataSource setFilterString:v4];
+  text = [(UISearchBar *)self->_searchBar text];
+  [(CNUIFamilyMemberDowntimeContactDataSource *)self->_dataSource setFilterString:text];
   [(UITableView *)self->_tableView reloadData];
 }
 
-- (id)warningMessageForContact:(id)a3
+- (id)warningMessageForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactCardWarningFormatter];
-  v6 = [v5 stringFromContact:v4];
+  contactCopy = contact;
+  contactCardWarningFormatter = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactCardWarningFormatter];
+  v6 = [contactCardWarningFormatter stringFromContact:contactCopy];
 
-  LODWORD(v5) = (*(*MEMORY[0x1E6996568] + 16))();
+  LODWORD(contactCardWarningFormatter) = (*(*MEMORY[0x1E6996568] + 16))();
   v7 = MEMORY[0x1E696AEC0];
   v8 = CNContactsUIBundle();
   v9 = v8;
-  if (v5)
+  if (contactCardWarningFormatter)
   {
     v10 = [v8 localizedStringForKey:@"DOWNTIME_PICKER_CONTACT_CARD_WARNING_NO_NAME" value:&stru_1F0CE7398 table:@"Localized"];
-    v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
-    v12 = [v11 firstName];
-    v13 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
-    v14 = [v13 firstName];
-    [v7 stringWithFormat:v10, v12, v14, v17];
+    childFamilyMember = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
+    firstName = [childFamilyMember firstName];
+    childFamilyMember2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
+    firstName2 = [childFamilyMember2 firstName];
+    [v7 stringWithFormat:v10, firstName, firstName2, v17];
   }
 
   else
   {
     v10 = [v8 localizedStringForKey:@"DOWNTIME_PICKER_CONTACT_CARD_WARNING" value:&stru_1F0CE7398 table:@"Localized"];
-    v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
-    v12 = [v11 firstName];
-    v13 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
-    v14 = [v13 firstName];
-    [v7 stringWithFormat:v10, v12, v6, v14];
+    childFamilyMember = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
+    firstName = [childFamilyMember firstName];
+    childFamilyMember2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
+    firstName2 = [childFamilyMember2 firstName];
+    [v7 stringWithFormat:v10, firstName, v6, firstName2];
   }
   v15 = ;
 
   return v15;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [(CNUIFamilyMemberDowntimeContactPickerController *)self setPresentedContactIndexPath:v5];
-  v6 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v7 = [v6 contactItemForIndexPath:v5];
+  pathCopy = path;
+  [(CNUIFamilyMemberDowntimeContactPickerController *)self setPresentedContactIndexPath:pathCopy];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  v7 = [dataSource contactItemForIndexPath:pathCopy];
 
-  v8 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v9 = [v7 contact];
+  dataSource2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  contact = [v7 contact];
   v10 = +[CNContactContentViewController descriptorForRequiredKeys];
   v11 = *MEMORY[0x1E695C220];
   v36[0] = v10;
   v36[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
-  v13 = [v8 completeContactFromContact:v9 fromMainStoreOnly:1 keysToFetch:v12];
+  v13 = [dataSource2 completeContactFromContact:contact fromMainStoreOnly:1 keysToFetch:v12];
 
   v14 = v13;
-  v15 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
-  LODWORD(v10) = [v15 containsUpdatedContactMatchingContact:v14];
+  editingSessionFromContactViewController = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
+  LODWORD(v10) = [editingSessionFromContactViewController containsUpdatedContactMatchingContact:v14];
 
   if (v10)
   {
-    v16 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
+    editingSessionFromContactViewController2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
     v35 = v14;
-    v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-    v18 = [v16 updatedContactsMatchingContacts:v17];
-    v19 = [v18 firstObject];
+    sensitiveDataContactFilter = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
+    v18 = [editingSessionFromContactViewController2 updatedContactsMatchingContacts:sensitiveDataContactFilter];
+    firstObject = [v18 firstObject];
   }
 
   else
   {
-    v16 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
-    v17 = [v16 sensitiveDataContactFilter];
-    v19 = (v17)[2](v17, v14);
+    editingSessionFromContactViewController2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
+    sensitiveDataContactFilter = [editingSessionFromContactViewController2 sensitiveDataContactFilter];
+    firstObject = (sensitiveDataContactFilter)[2](sensitiveDataContactFilter, v14);
     v18 = v14;
   }
 
   contactViewController = self->_contactViewController;
   if (contactViewController)
   {
-    [(CNContactViewController *)contactViewController setContact:v19 additionalContact:0 mode:1];
+    [(CNContactViewController *)contactViewController setContact:firstObject additionalContact:0 mode:1];
     v21 = [(CNUIFamilyMemberDowntimeContactPickerController *)self warningMessageForContact:v14];
     [(CNContactViewController *)self->_contactViewController setWarningMessage:v21];
   }
 
   else
   {
-    v22 = [CNContactViewController viewControllerForContact:v19];
+    v22 = [CNContactViewController viewControllerForContact:firstObject];
     v23 = self->_contactViewController;
     self->_contactViewController = v22;
 
-    v24 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
-    v25 = [v24 prohibitedPropertyKeys];
-    [(CNContactViewController *)self->_contactViewController setProhibitedPropertyKeys:v25];
+    editingStrategy = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
+    prohibitedPropertyKeys = [editingStrategy prohibitedPropertyKeys];
+    [(CNContactViewController *)self->_contactViewController setProhibitedPropertyKeys:prohibitedPropertyKeys];
 
     [(CNContactViewController *)self->_contactViewController setIgnoresParentalRestrictions:1];
     [(CNContactViewController *)self->_contactViewController setDisplayMode:2];
@@ -175,101 +175,101 @@
     [(CNContactViewController *)self->_contactViewController setActions:[(CNContactViewController *)self->_contactViewController actions]& 0xFFFFFFFFFFFFFEFFLL];
     [(CNContactViewController *)self->_contactViewController setActions:[(CNContactViewController *)self->_contactViewController actions]& 0xFFFFFFFFFFFFFFEFLL];
     [(CNContactViewController *)self->_contactViewController setAllowsActions:0];
-    v29 = [(CNContactViewController *)self->_contactViewController contentViewController];
-    [v29 setShouldIgnoreContactStoreDidChangeNotification:1];
+    contentViewController = [(CNContactViewController *)self->_contactViewController contentViewController];
+    [contentViewController setShouldIgnoreContactStoreDidChangeNotification:1];
 
     v30 = objc_alloc_init(CNUIEditingSessionSaveExecutor);
-    v31 = [(CNContactViewController *)self->_contactViewController contentViewController];
-    [v31 setSaveContactExecutor:v30];
+    contentViewController2 = [(CNContactViewController *)self->_contactViewController contentViewController];
+    [contentViewController2 setSaveContactExecutor:v30];
 
     v21 = objc_alloc_init(CNUINullSaveExecutor);
-    v32 = [(CNContactViewController *)self->_contactViewController contentViewController];
-    [v32 setSaveLinkedContactsExecutor:v21];
+    contentViewController3 = [(CNContactViewController *)self->_contactViewController contentViewController];
+    [contentViewController3 setSaveLinkedContactsExecutor:v21];
   }
 
   [(CNContactViewController *)self->_contactViewController setEditing:1];
-  v33 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
-  v34 = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactViewController];
-  [v33 pushViewController:v34 animated:1];
+  navigationController = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
+  contactViewController = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactViewController];
+  [navigationController pushViewController:contactViewController animated:1];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
   v5 = *MEMORY[0x1E6996530];
-  v6 = a4;
-  v7 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  v8 = [v7 indexPathsForSelectedRows];
-  LODWORD(v5) = (*(v5 + 16))(v5, v8);
-  v9 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setEnabled:v5 ^ 1];
+  pathCopy = path;
+  tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  LODWORD(v5) = (*(v5 + 16))(v5, indexPathsForSelectedRows);
+  navigationItem = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5 ^ 1];
 
-  v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  [v11 setContactItemSelected:0 forIndexPath:v6];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  [dataSource setContactItemSelected:0 forIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5 = *MEMORY[0x1E6996530];
-  v6 = a4;
-  v7 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  v8 = [v7 indexPathsForSelectedRows];
-  LODWORD(v5) = (*(v5 + 16))(v5, v8);
-  v9 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setEnabled:v5 ^ 1];
+  pathCopy = path;
+  tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  LODWORD(v5) = (*(v5 + 16))(v5, indexPathsForSelectedRows);
+  navigationItem = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5 ^ 1];
 
-  v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  [v11 setContactItemSelected:1 forIndexPath:v6];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  [dataSource setContactItemSelected:1 forIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a5;
-  v7 = a4;
-  v8 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v9 = [v8 contactItemForIndexPath:v12];
-  v10 = [v9 selected];
+  pathCopy = path;
+  cellCopy = cell;
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  v9 = [dataSource contactItemForIndexPath:pathCopy];
+  selected = [v9 selected];
 
-  if (v10)
+  if (selected)
   {
-    [v7 setSelected:1 animated:0];
+    [cellCopy setSelected:1 animated:0];
 
-    v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-    [v11 selectRowAtIndexPath:v12 animated:0 scrollPosition:0];
+    tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+    [tableView selectRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
   }
 
   else
   {
-    [v7 setSelected:0 animated:0];
+    [cellCopy setSelected:0 animated:0];
 
-    v11 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-    [v11 deselectRowAtIndexPath:v12 animated:0];
+    tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNUIFamilyDowntimeContactPickerCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v11 = [v10 contactItemForIndexPath:v6];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  v11 = [dataSource contactItemForIndexPath:pathCopy];
 
-  v12 = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactCellLabelFormatter];
-  v13 = [v11 contact];
-  v14 = [v12 stringFromContact:v13];
-  v15 = [v9 textLabel];
-  [v15 setText:v14];
+  contactCellLabelFormatter = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactCellLabelFormatter];
+  contact = [v11 contact];
+  v14 = [contactCellLabelFormatter stringFromContact:contact];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v14];
 
-  v16 = [v11 label];
-  v17 = [v9 detailTextLabel];
-  [v17 setText:v16];
+  label = [v11 label];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:label];
 
-  v18 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  if ([v18 isShowingFamilyMemberContacts])
+  dataSource2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  if ([dataSource2 isShowingFamilyMemberContacts])
   {
     v19 = 0;
   }
@@ -287,22 +287,22 @@
 
   if (![(CNUIFamilyMemberDowntimeContactPickerController *)self initialSelectionPerformed]&& [(CNUIFamilyMemberDowntimeContactPickerController *)self shouldPreselectFamilyMemberContacts])
   {
-    v22 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-    if ([v22 numberOfSections] == 2)
+    dataSource3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+    if ([dataSource3 numberOfSections] == 2)
     {
-      v23 = [v6 section];
+      section = [pathCopy section];
 
-      if (v23)
+      if (section)
       {
         goto LABEL_10;
       }
 
-      v24 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-      [v24 setContactItemSelected:1 forIndexPath:v6];
+      dataSource4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+      [dataSource4 setContactItemSelected:1 forIndexPath:pathCopy];
 
-      v22 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-      v25 = [v22 rightBarButtonItem];
-      [v25 setEnabled:1];
+      dataSource3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+      rightBarButtonItem = [dataSource3 rightBarButtonItem];
+      [rightBarButtonItem setEnabled:1];
     }
   }
 
@@ -311,37 +311,37 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v6 = [v5 numberOfRowsInSection:a4];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  v6 = [dataSource numberOfRowsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (void)saveSanitizedSelectedContacts:(id)a3
+- (void)saveSanitizedSelectedContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = *MEMORY[0x1E6996530];
-  if (((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v4) & 1) == 0)
+  if (((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], contactsCopy) & 1) == 0)
   {
-    v6 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
-    v7 = [v6 updatedContacts];
-    v8 = (*(v5 + 16))(v5, v7);
+    editingSessionFromContactViewController = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingSessionFromContactViewController];
+    updatedContacts = [editingSessionFromContactViewController updatedContacts];
+    v8 = (*(v5 + 16))(v5, updatedContacts);
 
     if (v8)
     {
-      v9 = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
-      v10 = [v9 sensitiveDataContactFilter];
-      v11 = [v4 _cn_map:v10];
+      editingStrategy = [(CNUIFamilyMemberDowntimeContactPickerController *)self editingStrategy];
+      sensitiveDataContactFilter = [editingStrategy sensitiveDataContactFilter];
+      v11 = [contactsCopy _cn_map:sensitiveDataContactFilter];
     }
 
     else
@@ -351,11 +351,11 @@ LABEL_10:
       v13[2] = __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedContacts___block_invoke;
       v13[3] = &unk_1E74E16F8;
       v13[4] = self;
-      v11 = [v4 _cn_map:v13];
+      v11 = [contactsCopy _cn_map:v13];
     }
 
-    v12 = [(CNUIFamilyMemberDowntimeContactPickerController *)self delegate];
-    [v12 downtimePickerController:self didFinishWithContacts:v11];
+    delegate = [(CNUIFamilyMemberDowntimeContactPickerController *)self delegate];
+    [delegate downtimePickerController:self didFinishWithContacts:v11];
   }
 }
 
@@ -384,47 +384,47 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
   return v8;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v5 = [v4 selectedContacts];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  selectedContacts = [dataSource selectedContacts];
 
-  [(CNUIFamilyMemberDowntimeContactPickerController *)self saveSanitizedSelectedContacts:v5];
+  [(CNUIFamilyMemberDowntimeContactPickerController *)self saveSanitizedSelectedContacts:selectedContacts];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self delegate];
-  [v4 downtimePickerController:self didFinishWithContacts:0];
+  delegate = [(CNUIFamilyMemberDowntimeContactPickerController *)self delegate];
+  [delegate downtimePickerController:self didFinishWithContacts:0];
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
-  v15 = [v14 window];
-  [v15 convertRect:0 fromWindow:{v7, v9, v11, v13}];
+  view = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
+  window = [view window];
+  [window convertRect:0 fromWindow:{v7, v9, v11, v13}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
-  [v24 convertRect:0 fromView:{v17, v19, v21, v23}];
+  view2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
+  [view2 convertRect:0 fromView:{v17, v19, v21, v23}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
 
-  v33 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
-  [v33 bounds];
+  view3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
+  [view3 bounds];
   v61.origin.x = v26;
   v61.origin.y = v28;
   v61.size.width = v30;
@@ -440,14 +440,14 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
   v60.size.width = width;
   v60.size.height = height;
   v38 = CGRectGetHeight(v60);
-  v39 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  [v39 contentInset];
+  tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  [tableView contentInset];
   v41 = v40;
   v43 = v42;
   v45 = v44;
 
-  v46 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  [v46 _systemContentInset];
+  tableView2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  [tableView2 _systemContentInset];
   v48 = v38 - v47;
 
   if (v48 < 0.0)
@@ -455,8 +455,8 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
     v48 = 0.0;
   }
 
-  v49 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  [v49 contentInset];
+  tableView3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  [tableView3 contentInset];
   if (v43 == v53 && v41 == v50 && v45 == v52)
   {
     v54 = v51;
@@ -471,22 +471,22 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
   {
   }
 
-  v55 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  [v55 setContentInset:{v41, v43, v48, v45}];
+  tableView4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  [tableView4 setContentInset:{v41, v43, v48, v45}];
 
-  v56 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  [v56 setScrollIndicatorInsets:{v41, v43, v48, v45}];
+  tableView5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  [tableView5 setScrollIndicatorInsets:{v41, v43, v48, v45}];
 }
 
 - (CNUICoreContactEditingSession)editingSessionFromContactViewController
 {
   objc_opt_class();
-  v3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactViewController];
-  v4 = [v3 contentViewController];
-  v5 = [v4 saveContactExecutor];
+  contactViewController = [(CNUIFamilyMemberDowntimeContactPickerController *)self contactViewController];
+  contentViewController = [contactViewController contentViewController];
+  saveContactExecutor = [contentViewController saveContactExecutor];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = saveContactExecutor;
   }
 
   else
@@ -495,82 +495,82 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
   }
 
   v7 = v6;
-  v8 = [v7 editingSession];
+  editingSession = [v7 editingSession];
 
-  return v8;
+  return editingSession;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CNUIFamilyMemberDowntimeContactPickerController;
-  [(CNUIFamilyMemberDowntimeContactPickerController *)&v4 viewDidAppear:a3];
+  [(CNUIFamilyMemberDowntimeContactPickerController *)&v4 viewDidAppear:appear];
   [(CNUIFamilyMemberDowntimeContactPickerController *)self setInitialSelectionPerformed:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CNUIFamilyMemberDowntimeContactPickerController;
-  [(CNUIFamilyMemberDowntimeContactPickerController *)&v7 viewWillAppear:a3];
-  v4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  v5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
-  v6 = [v5 indexPathsForVisibleRows];
-  [v4 reloadRowsAtIndexPaths:v6 withRowAnimation:5];
+  [(CNUIFamilyMemberDowntimeContactPickerController *)&v7 viewWillAppear:appear];
+  tableView = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  tableView2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self tableView];
+  indexPathsForVisibleRows = [tableView2 indexPathsForVisibleRows];
+  [tableView reloadRowsAtIndexPaths:indexPathsForVisibleRows withRowAnimation:5];
 }
 
 - (void)startObservingKeyboardChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE078] object:0];
 }
 
 - (void)configureNavigationItem
 {
-  v3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
-  v31 = [v3 firstName];
+  childFamilyMember = [(CNUIFamilyMemberDowntimeContactPickerController *)self childFamilyMember];
+  firstName = [childFamilyMember firstName];
 
-  v4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
-  v5 = [v4 isShowingFamilyMemberContacts];
+  dataSource = [(CNUIFamilyMemberDowntimeContactPickerController *)self dataSource];
+  isShowingFamilyMemberContacts = [dataSource isShowingFamilyMemberContacts];
 
   searchController = self->_searchController;
-  v7 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  [v7 setSearchController:searchController];
+  navigationItem = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  [navigationItem setSearchController:searchController];
 
-  v8 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  [v8 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = CNContactsUIBundle();
     v11 = [v10 localizedStringForKey:@"DOWNTIME_PICKER_PROMPT" value:&stru_1F0CE7398 table:@"Localized"];
-    v12 = [v9 stringWithFormat:v11, v31];
-    v13 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-    [v13 setPrompt:v12];
+    v12 = [v9 stringWithFormat:v11, firstName];
+    navigationItem3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+    [navigationItem3 setPrompt:v12];
 
-    if (v5)
+    if (isShowingFamilyMemberContacts)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = CNContactsUIBundle();
       v16 = [v15 localizedStringForKey:@"DOWNTIME_PICKER_TITLE_MEMBER" value:&stru_1F0CE7398 table:@"Localized"];
-      v17 = [v14 stringWithFormat:v16, v31];
+      navigationItem6 = [v14 stringWithFormat:v16, firstName];
     }
 
     else
     {
       v15 = CNContactsUIBundle();
-      v17 = [v15 localizedStringForKey:@"DOWNTIME_PICKER_TITLE_THIS_DEVICE" value:&stru_1F0CE7398 table:@"Localized"];
-      v16 = v17;
+      navigationItem6 = [v15 localizedStringForKey:@"DOWNTIME_PICKER_TITLE_THIS_DEVICE" value:&stru_1F0CE7398 table:@"Localized"];
+      v16 = navigationItem6;
     }
 
-    v23 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-    [v23 setTitle:v17];
+    navigationItem4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+    [navigationItem4 setTitle:navigationItem6];
 
-    if ((v5 & 1) == 0)
+    if ((isShowingFamilyMemberContacts & 1) == 0)
     {
       goto LABEL_11;
     }
@@ -580,7 +580,7 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
   {
     v18 = CNContactsUIBundle();
     v19 = v18;
-    if (v5)
+    if (isShowingFamilyMemberContacts)
     {
       v20 = @"DOWNTIME_PICKER_TITLE";
     }
@@ -591,46 +591,46 @@ id __81__CNUIFamilyMemberDowntimeContactPickerController_saveSanitizedSelectedCo
     }
 
     v21 = [v18 localizedStringForKey:v20 value:&stru_1F0CE7398 table:@"Localized"];
-    v22 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-    [v22 setTitle:v21];
+    navigationItem5 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+    [navigationItem5 setTitle:v21];
 
     v15 = CNContactsUIBundle();
     v16 = [v15 localizedStringForKey:@"DOWNTIME_PICKER_PROMPT_DEFAULT_NAME" value:&stru_1F0CE7398 table:@"Localized"];
-    v17 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-    [v17 setPrompt:v16];
+    navigationItem6 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+    [navigationItem6 setPrompt:v16];
   }
 
 LABEL_11:
-  v24 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  [v24 setLargeTitleDisplayMode:2];
+  navigationItem7 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  [navigationItem7 setLargeTitleDisplayMode:2];
 
   v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-  v26 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  [v26 setLeftBarButtonItem:v25];
+  navigationItem8 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  [navigationItem8 setLeftBarButtonItem:v25];
 
   v27 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_done_];
-  v28 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  [v28 setRightBarButtonItem:v27];
+  navigationItem9 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  [navigationItem9 setRightBarButtonItem:v27];
 
-  v29 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
-  v30 = [v29 rightBarButtonItem];
-  [v30 setEnabled:0];
+  navigationItem10 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationItem];
+  rightBarButtonItem = [navigationItem10 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 }
 
 - (void)setupSearchBar
 {
-  v3 = [(UISearchController *)self->_searchController searchBar];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
   v4 = CNContactsUIBundle();
   v5 = [v4 localizedStringForKey:@"SEARCH_LOCAL_PLACEHOLDER" value:&stru_1F0CE7398 table:@"Localized"];
-  [(UISearchBar *)v3 setPlaceholder:v5];
+  [(UISearchBar *)searchBar setPlaceholder:v5];
 
-  [(UISearchBar *)v3 setAutoresizingMask:2];
-  [(UISearchBar *)v3 setAutocorrectionType:1];
-  [(UISearchBar *)v3 setDelegate:self];
-  [(UISearchBar *)v3 sizeToFit];
-  [(UISearchBar *)v3 setAutoresizingMask:2];
+  [(UISearchBar *)searchBar setAutoresizingMask:2];
+  [(UISearchBar *)searchBar setAutocorrectionType:1];
+  [(UISearchBar *)searchBar setDelegate:self];
+  [(UISearchBar *)searchBar sizeToFit];
+  [(UISearchBar *)searchBar setAutoresizingMask:2];
   searchBar = self->_searchBar;
-  self->_searchBar = v3;
+  self->_searchBar = searchBar;
 }
 
 - (void)setupSearchController
@@ -649,8 +649,8 @@ LABEL_11:
 - (void)setupTableView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
-  v4 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
-  [v4 bounds];
+  view = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v5;
@@ -666,8 +666,8 @@ LABEL_11:
   [(UITableView *)self->_tableView setKeyboardDismissMode:2];
   [(UITableView *)self->_tableView setAutoresizingMask:18];
   [(UITableView *)self->_tableView setEditing:1];
-  v10 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
-  [v10 addSubview:self->_tableView];
+  view2 = [(CNUIFamilyMemberDowntimeContactPickerController *)self view];
+  [view2 addSubview:self->_tableView];
 }
 
 - (void)setupUI
@@ -686,58 +686,58 @@ LABEL_11:
   v5.super_class = CNUIFamilyMemberDowntimeContactPickerController;
   [(CNUIFamilyMemberDowntimeContactPickerController *)&v5 viewDidLoad];
   [(CNUIFamilyMemberDowntimeContactPickerController *)self setupUI];
-  v3 = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
-  v4 = [v3 presentationController];
-  [v4 setDelegate:self];
+  navigationController = [(CNUIFamilyMemberDowntimeContactPickerController *)self navigationController];
+  presentationController = [navigationController presentationController];
+  [presentationController setDelegate:self];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNUIFamilyMemberDowntimeContactPickerController;
   [(CNUIFamilyMemberDowntimeContactPickerController *)&v4 dealloc];
 }
 
-- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)a3 allFamilyMembers:(id)a4 contactStore:(id)a5 editingStrategy:(id)a6 showingFamilyMemberContacts:(BOOL)a7
+- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)member allFamilyMembers:(id)members contactStore:(id)store editingStrategy:(id)strategy showingFamilyMemberContacts:(BOOL)contacts
 {
-  v8 = a7;
-  v12 = a3;
+  contactsCopy = contacts;
+  memberCopy = member;
   v41[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  memberCopy2 = member;
+  membersCopy = members;
+  storeCopy = store;
+  strategyCopy = strategy;
   v40.receiver = self;
   v40.super_class = CNUIFamilyMemberDowntimeContactPickerController;
   v18 = [(CNUIFamilyMemberDowntimeContactPickerController *)&v40 init];
   v19 = v18;
   if (v18)
   {
-    v37 = v8;
-    objc_storeStrong(&v18->_childFamilyMember, v12);
-    v20 = v15;
-    if (!v15)
+    v37 = contactsCopy;
+    objc_storeStrong(&v18->_childFamilyMember, memberCopy);
+    v20 = membersCopy;
+    if (!membersCopy)
     {
-      v12 = [objc_opt_class() familyCircle];
-      v7 = [v12 members];
+      memberCopy = [objc_opt_class() familyCircle];
+      members = [memberCopy members];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __151__CNUIFamilyMemberDowntimeContactPickerController_initWithChildFamilyMember_allFamilyMembers_contactStore_editingStrategy_showingFamilyMemberContacts___block_invoke;
       v38[3] = &unk_1E74E16D0;
       v36 = &v39;
-      v39 = v14;
-      v20 = [v7 _cn_filter:v38];
+      v39 = memberCopy2;
+      v20 = [members _cn_filter:v38];
     }
 
     objc_storeStrong(&v19->_allFamilyMembers, v20);
-    if (!v15)
+    if (!membersCopy)
     {
     }
 
-    objc_storeStrong(&v19->_editingStrategy, a6);
+    objc_storeStrong(&v19->_editingStrategy, strategy);
     v21 = objc_alloc_init(MEMORY[0x1E695CD80]);
     contactCellLabelFormatter = v19->_contactCellLabelFormatter;
     v19->_contactCellLabelFormatter = v21;
@@ -752,9 +752,9 @@ LABEL_11:
     [(CNContactFormatter *)v19->_contactCardWarningFormatter setIgnoresNickname:1];
     [(CNContactFormatter *)v19->_contactCardWarningFormatter setIgnoresOrganization:1];
     [(CNContactFormatter *)v19->_contactCardWarningFormatter setStyle:1000];
-    if (v16)
+    if (storeCopy)
     {
-      v25 = v16;
+      v25 = storeCopy;
     }
 
     else
@@ -777,7 +777,7 @@ LABEL_11:
     [(CNUIFamilyMemberDowntimeContactDataSource *)v19->_dataSource setIsShowingFamilyMemberContacts:v37];
     v34 = v19;
 
-    if (!v15)
+    if (!membersCopy)
     {
     }
   }
@@ -805,13 +805,13 @@ uint64_t __151__CNUIFamilyMemberDowntimeContactPickerController_initWithChildFam
   return v8;
 }
 
-- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)a3 allFamilyMembers:(id)a4 contactStore:(id)a5
+- (CNUIFamilyMemberDowntimeContactPickerController)initWithChildFamilyMember:(id)member allFamilyMembers:(id)members contactStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  storeCopy = store;
+  membersCopy = members;
+  memberCopy = member;
   v11 = +[CNUIFamilyMemberContactsEditingStrategy whitelistedContactsStrategy];
-  v12 = [(CNUIFamilyMemberDowntimeContactPickerController *)self initWithChildFamilyMember:v10 allFamilyMembers:v9 contactStore:v8 editingStrategy:v11 showingFamilyMemberContacts:0];
+  v12 = [(CNUIFamilyMemberDowntimeContactPickerController *)self initWithChildFamilyMember:memberCopy allFamilyMembers:membersCopy contactStore:storeCopy editingStrategy:v11 showingFamilyMemberContacts:0];
 
   return v12;
 }
@@ -821,11 +821,11 @@ uint64_t __151__CNUIFamilyMemberDowntimeContactPickerController_initWithChildFam
   v2 = objc_alloc_init(MEMORY[0x1E699C070]);
   [v2 setPromptUserToResolveAuthenticatonFailure:0];
   v3 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v4 = [v3 completionHandlerAdapter];
-  [v2 startRequestWithCompletionHandler:v4];
+  completionHandlerAdapter = [v3 completionHandlerAdapter];
+  [v2 startRequestWithCompletionHandler:completionHandlerAdapter];
 
-  v5 = [v3 future];
-  v6 = [v5 recover:&__block_literal_global_56];
+  future = [v3 future];
+  v6 = [future recover:&__block_literal_global_56];
 
   v7 = [v6 result:0];
 

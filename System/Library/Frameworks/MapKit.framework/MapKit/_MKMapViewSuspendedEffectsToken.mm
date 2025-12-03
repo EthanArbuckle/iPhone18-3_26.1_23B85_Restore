@@ -1,5 +1,5 @@
 @interface _MKMapViewSuspendedEffectsToken
-- (_MKMapViewSuspendedEffectsToken)initWithOwner:(id)a3;
+- (_MKMapViewSuspendedEffectsToken)initWithOwner:(id)owner;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -25,16 +25,16 @@
   }
 }
 
-- (_MKMapViewSuspendedEffectsToken)initWithOwner:(id)a3
+- (_MKMapViewSuspendedEffectsToken)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = _MKMapViewSuspendedEffectsToken;
   v5 = [(_MKMapViewSuspendedEffectsToken *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
   }
 
   return v6;

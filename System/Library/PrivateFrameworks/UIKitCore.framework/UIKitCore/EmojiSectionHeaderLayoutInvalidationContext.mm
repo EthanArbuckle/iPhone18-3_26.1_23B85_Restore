@@ -1,5 +1,5 @@
 @interface EmojiSectionHeaderLayoutInvalidationContext
-- (double)preferredWidthForHeaderInSection:(int64_t)a3;
+- (double)preferredWidthForHeaderInSection:(int64_t)section;
 - (void)dealloc;
 @end
 
@@ -18,13 +18,13 @@
   [(EmojiSectionHeaderLayoutInvalidationContext *)&v4 dealloc];
 }
 
-- (double)preferredWidthForHeaderInSection:(int64_t)a3
+- (double)preferredWidthForHeaderInSection:(int64_t)section
 {
   headerWidthDict = self->_headerWidthDict;
   v5 = 0.0;
-  if (headerWidthDict && CFDictionaryContainsKey(headerWidthDict, a3))
+  if (headerWidthDict && CFDictionaryContainsKey(headerWidthDict, section))
   {
-    return CFDictionaryGetValue(self->_headerWidthDict, a3);
+    return CFDictionaryGetValue(self->_headerWidthDict, section);
   }
 
   return v5;

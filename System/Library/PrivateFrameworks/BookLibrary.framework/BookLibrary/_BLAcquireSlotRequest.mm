@@ -1,15 +1,15 @@
 @interface _BLAcquireSlotRequest
-- (_BLAcquireSlotRequest)initWithDeviceGUID:(id)a3;
-- (void)_acquireSlotWithURL:(id)a3;
+- (_BLAcquireSlotRequest)initWithDeviceGUID:(id)d;
+- (void)_acquireSlotWithURL:(id)l;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation _BLAcquireSlotRequest
 
-- (_BLAcquireSlotRequest)initWithDeviceGUID:(id)a3
+- (_BLAcquireSlotRequest)initWithDeviceGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = _BLAcquireSlotRequest;
   v5 = [(ICRequestOperation *)&v18 init];
@@ -20,7 +20,7 @@
     requestContext = v5->_requestContext;
     v5->_requestContext = active;
 
-    v15 = objc_msgSend_copy(v4, v12, v13, v14);
+    v15 = objc_msgSend_copy(dCopy, v12, v13, v14);
     deviceGUID = v5->_deviceGUID;
     v5->_deviceGUID = v15;
   }
@@ -28,16 +28,16 @@
   return v5;
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_241D110CC;
   v8[3] = &unk_278D158A0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   objc_msgSend_performRequestWithCompletionHandler_(self, v6, v8, v7);
 }
 
@@ -57,10 +57,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_acquireSlotWithURL:(id)a3
+- (void)_acquireSlotWithURL:(id)l
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v5;
   deviceGUID = self->_deviceGUID;
@@ -88,7 +88,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v54 = self;
+        selfCopy = self;
         _os_log_impl(&dword_241D0D000, v27, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to obtain companion guid.", buf, 0xCu);
       }
     }
@@ -104,13 +104,13 @@
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v54 = v30;
+      selfCopy = v30;
       _os_log_impl(&dword_241D0D000, v31, OS_LOG_TYPE_ERROR, "Failed to serialize property list for acquireSlot request! %@", buf, 0xCu);
     }
   }
 
   v32 = objc_alloc(MEMORY[0x277CCAB70]);
-  v35 = objc_msgSend_initWithURL_(v32, v33, v4, v34);
+  v35 = objc_msgSend_initWithURL_(v32, v33, lCopy, v34);
   objc_msgSend_setHTTPMethod_(v35, v36, @"POST", v37);
   objc_msgSend_setHTTPBody_(v35, v38, v28, v39);
   objc_msgSend_setValue_forHTTPHeaderField_(v35, v40, *MEMORY[0x277D7F910], *MEMORY[0x277D7F918]);

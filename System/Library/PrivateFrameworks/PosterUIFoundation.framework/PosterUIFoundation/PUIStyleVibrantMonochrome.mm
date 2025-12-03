@@ -1,17 +1,17 @@
 @interface PUIStyleVibrantMonochrome
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation;
 - (NSArray)colors;
 - (NSString)nonVariatedIdentifier;
-- (PUIStyleVibrantMonochrome)initWithBackgroundType:(unint64_t)a3;
-- (PUIStyleVibrantMonochrome)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUIStyleVibrantMonochrome)initWithBackgroundType:(unint64_t)type;
+- (PUIStyleVibrantMonochrome)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PUIStyleVibrantMonochrome
 
-- (PUIStyleVibrantMonochrome)initWithBackgroundType:(unint64_t)a3
+- (PUIStyleVibrantMonochrome)initWithBackgroundType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = PUIStyleVibrantMonochrome;
@@ -19,8 +19,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_backgroundType = a3;
-    if (a3 == 1)
+    v4->_backgroundType = type;
+    if (type == 1)
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -48,24 +48,24 @@
   else
   {
     objc_opt_class();
-    v6 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleVibrantMonochrome *)self isEqualToStyle:v5];
+    v6 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleVibrantMonochrome *)self isEqualToStyle:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  variationCopy = variation;
+  styleCopy = style;
+  if (styleCopy == self)
   {
     v7 = 1;
   }
 
-  else if (_PUIStyleCompareUsingIdentifiers(self, v6, v4))
+  else if (_PUIStyleCompareUsingIdentifiers(self, styleCopy, variationCopy))
   {
-    v7 = self->_backgroundType == v6->_backgroundType;
+    v7 = self->_backgroundType == styleCopy->_backgroundType;
   }
 
   else
@@ -87,9 +87,9 @@
 
 - (NSString)nonVariatedIdentifier
 {
-  v2 = [(PUIStyleVibrantMonochrome *)self type];
+  type = [(PUIStyleVibrantMonochrome *)self type];
 
-  return NSStringFromPUIStyleType(v2);
+  return NSStringFromPUIStyleType(type);
 }
 
 - (NSArray)colors
@@ -101,16 +101,16 @@
   return v2;
 }
 
-- (PUIStyleVibrantMonochrome)initWithCoder:(id)a3
+- (PUIStyleVibrantMonochrome)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"_backgroundType"];
+  v4 = [coder decodeIntegerForKey:@"_backgroundType"];
 
   return [(PUIStyleVibrantMonochrome *)self initWithBackgroundType:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   backgroundType = self->_backgroundType;
 
   return [v4 initWithBackgroundType:backgroundType];

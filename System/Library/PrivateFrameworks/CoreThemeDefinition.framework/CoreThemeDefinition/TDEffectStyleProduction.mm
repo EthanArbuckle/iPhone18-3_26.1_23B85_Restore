@@ -1,25 +1,25 @@
 @interface TDEffectStyleProduction
 - (id)displayName;
-- (void)generateRenditionsWithDocument:(id)a3;
+- (void)generateRenditionsWithDocument:(id)document;
 @end
 
 @implementation TDEffectStyleProduction
 
-- (void)generateRenditionsWithDocument:(id)a3
+- (void)generateRenditionsWithDocument:(id)document
 {
   v58 = *MEMORY[0x277D85DE8];
   obj = [-[TDEffectStyleProduction partDefinition](self "partDefinition")];
-  v40 = self;
+  selfCopy = self;
   if ([-[TDEffectStyleProduction renditions](self "renditions")])
   {
     NSLog(&cfstr_DeletingExisti.isa);
-    v5 = [(TDEffectStyleProduction *)self managedObjectContext];
+    managedObjectContext = [(TDEffectStyleProduction *)self managedObjectContext];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v6 = [(TDEffectStyleProduction *)self renditions];
-    v7 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    renditions = [(TDEffectStyleProduction *)self renditions];
+    v7 = [renditions countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v7)
     {
       v8 = v7;
@@ -30,13 +30,13 @@
         {
           if (*v52 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(renditions);
           }
 
-          [v5 deleteObject:*(*(&v51 + 1) + 8 * i)];
+          [managedObjectContext deleteObject:*(*(&v51 + 1) + 8 * i)];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v8 = [renditions countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
       while (v8);
@@ -67,26 +67,26 @@
         }
 
         v16 = *(*(&v47 + 1) + 8 * v15);
-        v39 = [objc_msgSend(objc_msgSend(-[TDEffectStyleProduction entity](v40 entity];
-        v17 = [[TDEffectRenditionSpec alloc] initWithEntity:v39 insertIntoManagedObjectContext:[(TDEffectStyleProduction *)v40 managedObjectContext]];
+        entity = [objc_msgSend(objc_msgSend(-[TDEffectStyleProduction entity](selfCopy entity];
+        v17 = [[TDEffectRenditionSpec alloc] initWithEntity:entity insertIntoManagedObjectContext:[(TDEffectStyleProduction *)selfCopy managedObjectContext]];
         v18 = v17;
-        [(TDEffectRenditionSpec *)v17 setProduction:v40];
+        [(TDEffectRenditionSpec *)v17 setProduction:selfCopy];
         [(TDRenditionSpec *)v17 resetToBaseKeySpec];
-        v19 = [(TDEffectRenditionSpec *)v17 keySpec];
-        [v19 setAttributesFromRenditionKey:objc_msgSend(v16 withDocument:{"key"), a3}];
-        v20 = [v16 effectPreset];
+        keySpec = [(TDEffectRenditionSpec *)v17 keySpec];
+        [keySpec setAttributesFromRenditionKey:objc_msgSend(v16 withDocument:{"key"), document}];
+        effectPreset = [v16 effectPreset];
         v21 = *(v14 + 2992);
-        [v20 effectScale];
+        [effectPreset effectScale];
         *&v22 = v22;
         -[TDEffectRenditionSpec setEffectScale:](v17, "setEffectScale:", [v21 numberWithFloat:v22]);
-        v38 = v20;
-        [(TDEffectRenditionSpec *)v17 setComponentsFromEffectPreset:v20 withDocument:a3];
-        if ([objc_msgSend(a3 "catalogGlobals")])
+        v38 = effectPreset;
+        [(TDEffectRenditionSpec *)v17 setComponentsFromEffectPreset:effectPreset withDocument:document];
+        if ([objc_msgSend(document "catalogGlobals")])
         {
           v37 = v15;
           v46 = 0;
-          v23 = a3;
-          v24 = [a3 allObjectsForEntity:@"Appearance" withSortDescriptors:0 error:&v46];
+          documentCopy = document;
+          v24 = [document allObjectsForEntity:@"Appearance" withSortDescriptors:0 error:&v46];
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
@@ -108,14 +108,14 @@
 
                 v30 = *(*(&v42 + 1) + 8 * j);
                 v31 = v17;
-                if ([v19 appearance])
+                if ([keySpec appearance])
                 {
-                  v31 = [[TDEffectRenditionSpec alloc] initWithEntity:v39 insertIntoManagedObjectContext:[(TDEffectStyleProduction *)v40 managedObjectContext]];
-                  [(TDEffectRenditionSpec *)v31 setProduction:v40];
+                  v31 = [[TDEffectRenditionSpec alloc] initWithEntity:entity insertIntoManagedObjectContext:[(TDEffectStyleProduction *)selfCopy managedObjectContext]];
+                  [(TDEffectRenditionSpec *)v31 setProduction:selfCopy];
                   [(TDRenditionSpec *)v31 resetToBaseKeySpec];
-                  [v19 copyAttributesInto:{-[TDEffectRenditionSpec keySpec](v31, "keySpec")}];
+                  [keySpec copyAttributesInto:{-[TDEffectRenditionSpec keySpec](v31, "keySpec")}];
                   [(TDEffectRenditionSpec *)v31 setEffectScale:[(TDEffectRenditionSpec *)v17 effectScale]];
-                  [(TDEffectRenditionSpec *)v31 setComponentsFromEffectPreset:v38 withDocument:v23];
+                  [(TDEffectRenditionSpec *)v31 setComponentsFromEffectPreset:v38 withDocument:documentCopy];
                   v32 = v31;
                 }
 
@@ -129,7 +129,7 @@
             while (v27);
           }
 
-          a3 = v23;
+          document = documentCopy;
           v13 = v34;
           v12 = v35;
           v14 = 0x277CCA000;
@@ -161,9 +161,9 @@
     return [MEMORY[0x277CCACA8] stringWithFormat:@"Effect: %@ – %@", objc_msgSend(objc_msgSend(-[TDEffectStyleProduction baseKeySpec](self, "baseKeySpec"), "element"), "displayName"), objc_msgSend(objc_msgSend(-[TDEffectStyleProduction baseKeySpec](self, "baseKeySpec"), "part"), "displayName")];
   }
 
-  v3 = [(TDEffectStyleProduction *)self name];
+  name = [(TDEffectStyleProduction *)self name];
 
-  return [v3 name];
+  return [name name];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface TSCEFunction_LEN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_LEN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v33 = 0;
-  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v33);
+  v9 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v33);
   v13 = v33;
   if (v13)
   {
-    v14 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v13, v11, v12);
+    v14 = objc_msgSend_raiseErrorOrConvert_(context, v10, v13, v11, v12);
   }
 
   else

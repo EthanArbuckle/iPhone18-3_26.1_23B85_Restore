@@ -1,25 +1,25 @@
 @interface OADParagraph
 - (BOOL)hasBulletCharacterProperties;
 - (BOOL)isEmpty;
-- (BOOL)isSimilarToParagraph:(id)a3;
+- (BOOL)isSimilarToParagraph:(id)paragraph;
 - (OADParagraph)init;
-- (id)addDateTimeFieldWithFormat:(int)a3;
+- (id)addDateTimeFieldWithFormat:(int)format;
 - (id)addFooterField;
-- (id)addGenericTextFieldWithGuid:(id)a3 type:(id)a4;
+- (id)addGenericTextFieldWithGuid:(id)guid type:(id)type;
 - (id)addRegularTextRun;
 - (id)addSlideNumberField;
 - (id)addTextLineBreak;
 - (id)bulletCharacterProperties;
 - (id)description;
-- (id)findFirstTextRunOfClass:(Class)a3;
+- (id)findFirstTextRunOfClass:(Class)class;
 - (id)plainText;
 - (unint64_t)characterCount;
 - (unint64_t)lineBreakCount;
-- (void)applyProperties:(id)a3;
-- (void)changeParentParagraphPropertiesPreservingEffectiveValues:(id)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
+- (void)applyProperties:(id)properties;
+- (void)changeParentParagraphPropertiesPreservingEffectiveValues:(id)values;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setParentTextListStyle:(id)a3;
+- (void)setParentTextListStyle:(id)style;
 @end
 
 @implementation OADParagraph
@@ -52,8 +52,8 @@
 - (id)addRegularTextRun
 {
   v3 = objc_alloc_init(OADRegularTextRun);
-  v4 = [(OADTextRun *)v3 properties];
-  [v4 setParent:self->mProperties];
+  properties = [(OADTextRun *)v3 properties];
+  [properties setParent:self->mProperties];
 
   [(NSMutableArray *)self->mTextRuns addObject:v3];
 
@@ -63,8 +63,8 @@
 - (id)addFooterField
 {
   v3 = objc_alloc_init(OADFooterField);
-  v4 = [(OADTextRun *)v3 properties];
-  [v4 setParent:self->mProperties];
+  properties = [(OADTextRun *)v3 properties];
+  [properties setParent:self->mProperties];
 
   [(NSMutableArray *)self->mTextRuns addObject:v3];
 
@@ -74,8 +74,8 @@
 - (id)addSlideNumberField
 {
   v3 = objc_alloc_init(PDSlideNumberField);
-  v4 = [(OADTextRun *)v3 properties];
-  [v4 setParent:self->mProperties];
+  properties = [(OADTextRun *)v3 properties];
+  [properties setParent:self->mProperties];
 
   [(NSMutableArray *)self->mTextRuns addObject:v3];
 
@@ -85,10 +85,10 @@
 - (void)removeUnnecessaryOverrides
 {
   [(OADCharacterProperties *)self->mParagraphEndCharacterProperties removeUnnecessaryOverrides];
-  v3 = [(OADParagraph *)self textRunCount];
-  if (v3)
+  textRunCount = [(OADParagraph *)self textRunCount];
+  if (textRunCount)
   {
-    v4 = v3;
+    v4 = textRunCount;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(OADParagraph *)self textRunAtIndex:i];
@@ -104,8 +104,8 @@
 - (id)addTextLineBreak
 {
   v3 = objc_alloc_init(OADTextLineBreak);
-  v4 = [(OADTextRun *)v3 properties];
-  [v4 setParent:self->mProperties];
+  properties = [(OADTextRun *)v3 properties];
+  [properties setParent:self->mProperties];
 
   [(NSMutableArray *)self->mTextRuns addObject:v3];
 
@@ -114,17 +114,17 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(OADParagraph *)self textRunCount];
-  if (v3)
+  textRunCount = [(OADParagraph *)self textRunCount];
+  if (textRunCount)
   {
-    v4 = v3;
+    v4 = textRunCount;
     v5 = 0;
     for (i = 0; i != v4; v5 = i >= v4)
     {
       v7 = [(OADParagraph *)self textRunAtIndex:i];
-      v8 = [v7 isEmpty];
+      isEmpty = [v7 isEmpty];
 
-      if ((v8 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
         break;
       }
@@ -143,13 +143,13 @@
 
 - (unint64_t)characterCount
 {
-  v3 = [(OADParagraph *)self textRunCount];
-  if (!v3)
+  textRunCount = [(OADParagraph *)self textRunCount];
+  if (!textRunCount)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = textRunCount;
   v5 = 0;
   for (i = 0; i != v4; ++i)
   {
@@ -198,25 +198,25 @@
   return v3;
 }
 
-- (id)addGenericTextFieldWithGuid:(id)a3 type:(id)a4
+- (id)addGenericTextFieldWithGuid:(id)guid type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[OADGenericTextField alloc] initWithGuid:v6 type:v7];
-  v9 = [(OADTextRun *)v8 properties];
-  [v9 setParent:self->mProperties];
+  guidCopy = guid;
+  typeCopy = type;
+  v8 = [[OADGenericTextField alloc] initWithGuid:guidCopy type:typeCopy];
+  properties = [(OADTextRun *)v8 properties];
+  [properties setParent:self->mProperties];
 
   [(NSMutableArray *)self->mTextRuns addObject:v8];
 
   return v8;
 }
 
-- (id)addDateTimeFieldWithFormat:(int)a3
+- (id)addDateTimeFieldWithFormat:(int)format
 {
-  v3 = *&a3;
+  v3 = *&format;
   v5 = objc_alloc_init(OADDateTimeField);
-  v6 = [(OADTextRun *)v5 properties];
-  [v6 setParent:self->mProperties];
+  properties = [(OADTextRun *)v5 properties];
+  [properties setParent:self->mProperties];
 
   [(OADDateTimeField *)v5 setFormat:v3];
   [(NSMutableArray *)self->mTextRuns addObject:v5];
@@ -232,8 +232,8 @@
   }
 
   v4 = [(OADParagraph *)self textRunAtIndex:0];
-  v5 = [v4 properties];
-  v3 = v5 != 0;
+  properties = [v4 properties];
+  v3 = properties != 0;
 
   return v3;
 }
@@ -241,31 +241,31 @@
 - (id)bulletCharacterProperties
 {
   v2 = [(OADParagraph *)self textRunAtIndex:0];
-  v3 = [v2 properties];
+  properties = [v2 properties];
 
-  return v3;
+  return properties;
 }
 
-- (void)setParentTextListStyle:(id)a3
+- (void)setParentTextListStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   mProperties = self->mProperties;
-  v5 = [v6 propertiesForListLevel:{-[OADParagraphProperties level](mProperties, "level")}];
+  v5 = [styleCopy propertiesForListLevel:{-[OADParagraphProperties level](mProperties, "level")}];
   [(OADProperties *)mProperties setParent:v5];
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
-  v5 = a3;
-  v4 = [v5 propertiesForListLevel:{-[OADParagraphProperties level](self->mProperties, "level")}];
+  valuesCopy = values;
+  v4 = [valuesCopy propertiesForListLevel:{-[OADParagraphProperties level](self->mProperties, "level")}];
   [(OADParagraph *)self changeParentParagraphPropertiesPreservingEffectiveValues:v4];
 }
 
-- (void)changeParentParagraphPropertiesPreservingEffectiveValues:(id)a3
+- (void)changeParentParagraphPropertiesPreservingEffectiveValues:(id)values
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(OADProperties *)self->mProperties changeParentPreservingEffectiveValues:v4];
+  valuesCopy = values;
+  [(OADProperties *)self->mProperties changeParentPreservingEffectiveValues:valuesCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -285,8 +285,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) properties];
-        [v9 changeParentPreservingEffectiveValues:self->mProperties];
+        properties = [*(*(&v10 + 1) + 8 * v8) properties];
+        [properties changeParentPreservingEffectiveValues:self->mProperties];
 
         ++v8;
       }
@@ -301,33 +301,33 @@
   [(OADProperties *)self->mParagraphEndCharacterProperties changeParentPreservingEffectiveValues:self->mProperties];
 }
 
-- (void)applyProperties:(id)a3
+- (void)applyProperties:(id)properties
 {
-  v6 = a3;
-  v4 = [(OADParagraph *)self properties];
-  v5 = [v6 propertiesForListLevel:{objc_msgSend(v4, "level")}];
-  [v4 overrideWithProperties:v5];
+  propertiesCopy = properties;
+  properties = [(OADParagraph *)self properties];
+  v5 = [propertiesCopy propertiesForListLevel:{objc_msgSend(properties, "level")}];
+  [properties overrideWithProperties:v5];
 }
 
-- (BOOL)isSimilarToParagraph:(id)a3
+- (BOOL)isSimilarToParagraph:(id)paragraph
 {
-  v4 = a3;
-  v5 = [(OADParagraph *)self textRunCount];
-  if ([v4 textRunCount] != v5)
+  paragraphCopy = paragraph;
+  textRunCount = [(OADParagraph *)self textRunCount];
+  if ([paragraphCopy textRunCount] != textRunCount)
   {
 LABEL_11:
     LOBYTE(v11) = 0;
     goto LABEL_12;
   }
 
-  if (v5)
+  if (textRunCount)
   {
     v6 = 0;
-    v7 = v5 - 1;
+    v7 = textRunCount - 1;
     while (1)
     {
       v8 = [(OADParagraph *)self textRunAtIndex:v6];
-      v9 = [v4 textRunAtIndex:v6];
+      v9 = [paragraphCopy textRunAtIndex:v6];
       v10 = objc_opt_class();
       if (v10 != objc_opt_class())
       {
@@ -359,10 +359,10 @@ LABEL_12:
 - (id)plainText
 {
   v3 = objc_opt_new();
-  v4 = [(OADParagraph *)self textRunCount];
-  if (v4)
+  textRunCount = [(OADParagraph *)self textRunCount];
+  if (textRunCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != textRunCount; ++i)
     {
       v6 = [(OADParagraph *)self textRunAtIndex:i];
       if (([v6 isEmpty] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -376,8 +376,8 @@ LABEL_12:
 
       else
       {
-        v7 = [v6 text];
-        [v3 appendString:v7];
+        text = [v6 text];
+        [v3 appendString:text];
       }
     }
   }
@@ -394,7 +394,7 @@ LABEL_12:
   return v2;
 }
 
-- (id)findFirstTextRunOfClass:(Class)a3
+- (id)findFirstTextRunOfClass:(Class)class
 {
   v4 = 0;
   while ([(NSMutableArray *)self->mTextRuns count]> v4)

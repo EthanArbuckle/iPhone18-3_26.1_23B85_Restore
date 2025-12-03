@@ -1,11 +1,11 @@
 @interface HMAnnounceUserSettings
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAnnounceUserSettings)initWithCoder:(id)a3;
-- (HMAnnounceUserSettings)initWithDeviceNotificationMode:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAnnounceUserSettings)initWithCoder:(id)coder;
+- (HMAnnounceUserSettings)initWithDeviceNotificationMode:(unint64_t)mode;
 - (id)attributeDescriptions;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAnnounceUserSettings
@@ -31,10 +31,10 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -56,8 +56,8 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMAnnounceUserSettings *)v6 deviceNotificationMode];
-      v9 = v8 == [(HMAnnounceUserSettings *)self deviceNotificationMode];
+      deviceNotificationMode = [(HMAnnounceUserSettings *)v6 deviceNotificationMode];
+      v9 = deviceNotificationMode == [(HMAnnounceUserSettings *)self deviceNotificationMode];
     }
 
     else
@@ -69,31 +69,31 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[HMAnnounceUserSettings deviceNotificationMode](self, "deviceNotificationMode")}];
-  [v5 encodeObject:v6 forKey:@"HMD.Announce.DeviceNotificationModeKey"];
+  [coderCopy encodeObject:v6 forKey:@"HMD.Announce.DeviceNotificationModeKey"];
 }
 
-- (HMAnnounceUserSettings)initWithCoder:(id)a3
+- (HMAnnounceUserSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.Announce.DeviceNotificationModeKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.Announce.DeviceNotificationModeKey"];
 
   v6 = -[HMAnnounceUserSettings initWithDeviceNotificationMode:](self, "initWithDeviceNotificationMode:", [v5 unsignedIntegerValue]);
   return v6;
 }
 
-- (HMAnnounceUserSettings)initWithDeviceNotificationMode:(unint64_t)a3
+- (HMAnnounceUserSettings)initWithDeviceNotificationMode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = HMAnnounceUserSettings;
   result = [(HMAnnounceUserSettings *)&v5 init];
   if (result)
   {
-    result->_deviceNotificationMode = a3;
+    result->_deviceNotificationMode = mode;
   }
 
   return result;

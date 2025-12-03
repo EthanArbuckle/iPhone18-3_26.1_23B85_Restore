@@ -1,16 +1,16 @@
 @interface PKTransactionsPageBoundary
 - (_TtC9PassKitUI26PKTransactionsPageBoundary)init;
-- (_TtC9PassKitUI26PKTransactionsPageBoundary)initWithDate:(id)a3 identifier:(id)a4;
+- (_TtC9PassKitUI26PKTransactionsPageBoundary)initWithDate:(id)date identifier:(id)identifier;
 @end
 
 @implementation PKTransactionsPageBoundary
 
-- (_TtC9PassKitUI26PKTransactionsPageBoundary)initWithDate:(id)a3 identifier:(id)a4
+- (_TtC9PassKitUI26PKTransactionsPageBoundary)initWithDate:(id)date identifier:(id)identifier
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD39970);
   MEMORY[0x1EEE9AC00](v6 - 8, v7);
   v9 = &v16 - v8;
-  if (a3)
+  if (date)
   {
     sub_1BE04AEE4();
     v10 = sub_1BE04AF64();
@@ -23,7 +23,7 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  if (a4)
+  if (identifier)
   {
     v12 = sub_1BE052434();
     v14 = v13;

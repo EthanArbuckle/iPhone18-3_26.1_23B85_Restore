@@ -1,39 +1,39 @@
 @interface CKDMovePhotosOperation
-- (CKDMovePhotosOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_createModifyRequestWithRecordsToSave:(id)a3 recordsToDelete:(id)a4 recordsToDeleteToEtags:(id)a5 recordIDsToDeleteToSigningPCSIdentity:(id)a6 handlersByRecordID:(id)a7 sendMergeableDeltas:(BOOL)a8;
+- (CKDMovePhotosOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_createModifyRequestWithRecordsToSave:(id)save recordsToDelete:(id)delete recordsToDeleteToEtags:(id)etags recordIDsToDeleteToSigningPCSIdentity:(id)identity handlersByRecordID:(id)d sendMergeableDeltas:(BOOL)deltas;
 - (id)activityCreate;
-- (id)handlerForDeleteWithRecordID:(id)a3;
-- (id)handlerForSaveWithRecord:(id)a3;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleRecordMoved:(id)a3 handler:(id)a4 responseCode:(id)a5 recordForOplockFailure:(id)a6 destinationServerRecord:(id)a7 moveMarkerServerRecord:(id)a8;
-- (void)_reallyHandleRecordMoved:(id)a3 handler:(id)a4 responseCode:(id)a5 recordForOplockFailure:(id)a6 destinationServerRecord:(id)a7 moveMarkerServerRecord:(id)a8;
-- (void)callbackWithMetadata:(id)a3 error:(id)a4;
+- (id)handlerForDeleteWithRecordID:(id)d;
+- (id)handlerForSaveWithRecord:(id)record;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleRecordMoved:(id)moved handler:(id)handler responseCode:(id)code recordForOplockFailure:(id)failure destinationServerRecord:(id)record moveMarkerServerRecord:(id)serverRecord;
+- (void)_reallyHandleRecordMoved:(id)moved handler:(id)handler responseCode:(id)code recordForOplockFailure:(id)failure destinationServerRecord:(id)record moveMarkerServerRecord:(id)serverRecord;
+- (void)callbackWithMetadata:(id)metadata error:(id)error;
 - (void)main;
-- (void)moveCallbackWithMetadata:(id)a3 error:(id)a4;
+- (void)moveCallbackWithMetadata:(id)metadata error:(id)error;
 @end
 
 @implementation CKDMovePhotosOperation
 
-- (CKDMovePhotosOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDMovePhotosOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_moveChanges(v6, v8, v9);
+  infoCopy = info;
+  containerCopy = container;
+  v10 = objc_msgSend_moveChanges(infoCopy, v8, v9);
   v12 = objc_msgSend_CKMap_(v10, v11, &unk_28385D720);
 
-  objc_msgSend_setRecordsToSave_(v6, v13, v12);
-  v16 = objc_msgSend_moveChanges(v6, v14, v15);
+  objc_msgSend_setRecordsToSave_(infoCopy, v13, v12);
+  v16 = objc_msgSend_moveChanges(infoCopy, v14, v15);
   v18 = objc_msgSend_CKMapToDictionary_(v16, v17, &unk_28385D740);
 
   objc_storeStrong(&self->_moveChangesByDestinationRecordID, v18);
   v23.receiver = self;
   v23.super_class = CKDMovePhotosOperation;
-  v19 = [(CKDModifyRecordsOperation *)&v23 initWithOperationInfo:v6 container:v7];
+  v19 = [(CKDModifyRecordsOperation *)&v23 initWithOperationInfo:infoCopy container:containerCopy];
 
   if (v19)
   {
     objc_storeStrong(&v19->_moveChangesByDestinationRecordID, v18);
-    v19->_sourceDatabaseScope = objc_msgSend_sourceDatabaseScope(v6, v20, v21);
+    v19->_sourceDatabaseScope = objc_msgSend_sourceDatabaseScope(infoCopy, v20, v21);
   }
 
   return v19;
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (id)handlerForSaveWithRecord:(id)a3
+- (id)handlerForSaveWithRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,7 +57,7 @@
   }
 
   v8 = objc_msgSend_moveChangesByDestinationRecordID(self, v6, v7);
-  v11 = objc_msgSend_recordID(v5, v9, v10);
+  v11 = objc_msgSend_recordID(recordCopy, v9, v10);
   v13 = objc_msgSend_objectForKeyedSubscript_(v8, v12, v11);
 
   v15 = objc_msgSend_moveHandlerWithMoveChange_operation_(CKDMoveRecordHandler, v14, v13, self);
@@ -65,18 +65,18 @@
   return v15;
 }
 
-- (id)handlerForDeleteWithRecordID:(id)a3
+- (id)handlerForDeleteWithRecordID:(id)d
 {
-  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v5 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, d);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v5, v6, a2, self, @"CKDMovePhotosOperation.m", 93, @"Not expected to delete records in a move");
 
   return 0;
 }
 
-- (void)callbackWithMetadata:(id)a3 error:(id)a4
+- (void)callbackWithMetadata:(id)metadata error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -90,32 +90,32 @@
   block[2] = sub_2252202EC;
   block[3] = &unk_278546990;
   block[4] = self;
-  v17 = v7;
-  v18 = v8;
-  v12 = v8;
-  v13 = v7;
+  v17 = metadataCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = metadataCopy;
   dispatch_async(v11, block);
 }
 
-- (void)moveCallbackWithMetadata:(id)a3 error:(id)a4
+- (void)moveCallbackWithMetadata:(id)metadata error:(id)error
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_moveChange(v7, v9, v10);
+  metadataCopy = metadata;
+  errorCopy = error;
+  v11 = objc_msgSend_moveChange(metadataCopy, v9, v10);
   v14 = objc_msgSend_sourceRecordID(v11, v12, v13);
 
-  if (objc_msgSend_saveCompletionBlockCalled(v7, v15, v16))
+  if (objc_msgSend_saveCompletionBlockCalled(metadataCopy, v15, v16))
   {
     v73 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v73, v74, a2, self, @"CKDMovePhotosOperation.m", 108, @"moveCallbackWithMetadata:error: called twice on %@", v14);
   }
 
-  v19 = objc_msgSend_serverDestinationRecord(v7, v17, v18);
+  v19 = objc_msgSend_serverDestinationRecord(metadataCopy, v17, v18);
   v22 = objc_msgSend_streamingAssetRequestOptions(self, v20, v21);
   objc_msgSend_setStreamingAssetRequestOptions_(v19, v23, v22);
 
-  if (v8)
+  if (errorCopy)
   {
     v26 = objc_msgSend_moveCompletionBlock(self, v24, v25);
 
@@ -125,11 +125,11 @@
     }
 
     v29 = objc_msgSend_moveCompletionBlock(self, v27, v28);
-    (v29)[2](v29, v14, 0, 0, 0, v8);
+    (v29)[2](v29, v14, 0, 0, 0, errorCopy);
     goto LABEL_12;
   }
 
-  v32 = objc_msgSend_error(v7, v24, v25);
+  v32 = objc_msgSend_error(metadataCopy, v24, v25);
   if (v32)
   {
     goto LABEL_9;
@@ -152,21 +152,21 @@ LABEL_9:
   }
 
   v29 = objc_msgSend_moveCompletionBlock(self, v27, v28);
-  v75 = objc_msgSend_moveChange(v7, v37, v38);
+  v75 = objc_msgSend_moveChange(metadataCopy, v37, v38);
   objc_msgSend_sourceRecordID(v75, v39, v40);
   v41 = v76 = v14;
-  v44 = objc_msgSend_moveChange(v7, v42, v43);
+  v44 = objc_msgSend_moveChange(metadataCopy, v42, v43);
   v47 = objc_msgSend_destinationRecord(v44, v45, v46);
-  v50 = objc_msgSend_serverDestinationRecord(v7, v48, v49);
-  v53 = objc_msgSend_serverMoveMarkerRecord(v7, v51, v52);
-  v56 = objc_msgSend_error(v7, v54, v55);
+  v50 = objc_msgSend_serverDestinationRecord(metadataCopy, v48, v49);
+  v53 = objc_msgSend_serverMoveMarkerRecord(metadataCopy, v51, v52);
+  v56 = objc_msgSend_error(metadataCopy, v54, v55);
   (v29)[2](v29, v41, v47, v50, v53, v56);
 
   v14 = v76;
 LABEL_12:
 
 LABEL_13:
-  if (objc_msgSend_didAttemptZoneWideShareKeyRoll(v7, v27, v28))
+  if (objc_msgSend_didAttemptZoneWideShareKeyRoll(metadataCopy, v27, v28))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -184,16 +184,16 @@ LABEL_13:
       v82 = 0x28387E400;
       _os_log_debug_impl(&dword_22506F000, v64, OS_LOG_TYPE_DEBUG, "Operation %{public}@ sending CoreAnalytics event %{public}@", buf, 0x16u);
 
-      if (v8)
+      if (errorCopy)
       {
         goto LABEL_18;
       }
     }
 
-    else if (v8)
+    else if (errorCopy)
     {
 LABEL_18:
-      v62 = v8;
+      v62 = errorCopy;
 LABEL_21:
       v68 = v62;
       v69 = objc_msgSend_dugongKeyRollAnalyticsPayloadWithError_(self, v63, v62);
@@ -202,14 +202,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v62 = objc_msgSend_error(v7, v60, v61);
+    v62 = objc_msgSend_error(metadataCopy, v60, v61);
     goto LABEL_21;
   }
 
 LABEL_22:
-  if (!v8)
+  if (!errorCopy)
   {
-    v70 = objc_msgSend_error(v7, v57, v58);
+    v70 = objc_msgSend_error(metadataCopy, v57, v58);
 
     if (!v70)
     {
@@ -218,43 +218,43 @@ LABEL_22:
       v77[2] = sub_225220748;
       v77[3] = &unk_278549F38;
       v77[4] = self;
-      v78 = v7;
+      v78 = metadataCopy;
       objc_msgSend_updateCloudKitMetrics_(self, v71, v77);
     }
   }
 
-  objc_msgSend_setSaveCompletionBlockCalled_(v7, v57, 1);
+  objc_msgSend_setSaveCompletionBlockCalled_(metadataCopy, v57, 1);
 
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createModifyRequestWithRecordsToSave:(id)a3 recordsToDelete:(id)a4 recordsToDeleteToEtags:(id)a5 recordIDsToDeleteToSigningPCSIdentity:(id)a6 handlersByRecordID:(id)a7 sendMergeableDeltas:(BOOL)a8
+- (id)_createModifyRequestWithRecordsToSave:(id)save recordsToDelete:(id)delete recordsToDeleteToEtags:(id)etags recordIDsToDeleteToSigningPCSIdentity:(id)identity handlersByRecordID:(id)d sendMergeableDeltas:(BOOL)deltas
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  saveCopy = save;
+  deleteCopy = delete;
+  etagsCopy = etags;
+  identityCopy = identity;
+  dCopy = d;
   objc_initWeak(&location, self);
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = sub_225220AF8;
   v48[3] = &unk_27854A640;
   v48[4] = self;
-  v20 = objc_msgSend_CKMap_(v14, v19, v48);
-  if (objc_msgSend_count(v15, v21, v22))
+  v20 = objc_msgSend_CKMap_(saveCopy, v19, v48);
+  if (objc_msgSend_count(deleteCopy, v21, v22))
   {
     v40 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v23, v24);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v40, v41, a2, self, @"CKDMovePhotosOperation.m", 162, @"How did a move operation decide to delete records?");
   }
 
-  if (objc_msgSend_count(v17, v23, v24))
+  if (objc_msgSend_count(identityCopy, v23, v24))
   {
     v42 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v25, v26);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v42, v43, a2, self, @"CKDMovePhotosOperation.m", 163, @"How did a move operation decide to delete records?");
   }
 
-  if (objc_msgSend_count(v16, v25, v26))
+  if (objc_msgSend_count(etagsCopy, v25, v26))
   {
     v44 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v27, v28);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v44, v45, a2, self, @"CKDMovePhotosOperation.m", 164, @"How did a move operation decide to delete records?");
@@ -277,28 +277,28 @@ LABEL_22:
   return v37;
 }
 
-- (void)_handleRecordMoved:(id)a3 handler:(id)a4 responseCode:(id)a5 recordForOplockFailure:(id)a6 destinationServerRecord:(id)a7 moveMarkerServerRecord:(id)a8
+- (void)_handleRecordMoved:(id)moved handler:(id)handler responseCode:(id)code recordForOplockFailure:(id)failure destinationServerRecord:(id)record moveMarkerServerRecord:(id)serverRecord
 {
   v84 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  movedCopy = moved;
+  handlerCopy = handler;
+  codeCopy = code;
+  failureCopy = failure;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
   v80[0] = 0;
   v80[1] = v80;
   v80[2] = 0x3032000000;
   v80[3] = sub_225074080;
   v80[4] = sub_2250735CC;
-  v20 = v18;
+  v20 = recordCopy;
   v81 = v20;
   v78[0] = 0;
   v78[1] = v78;
   v78[2] = 0x3032000000;
   v78[3] = sub_225074080;
   v78[4] = sub_2250735CC;
-  v21 = v19;
+  v21 = serverRecordCopy;
   v79 = v21;
   v24 = objc_msgSend_stateTransitionGroup(self, v22, v23);
   dispatch_group_enter(v24);
@@ -382,19 +382,19 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = sub_2252215E8;
   block[3] = &unk_27854A6B8;
-  v55 = v15;
-  v56 = self;
-  v57 = v14;
-  v58 = v16;
-  v59 = v17;
+  v55 = handlerCopy;
+  selfCopy = self;
+  v57 = movedCopy;
+  v58 = codeCopy;
+  v59 = failureCopy;
   v60 = v76;
   v61 = v74;
   v62 = v80;
   v63 = v78;
-  v47 = v17;
-  v48 = v16;
-  v49 = v14;
-  v50 = v15;
+  v47 = failureCopy;
+  v48 = codeCopy;
+  v49 = movedCopy;
+  v50 = handlerCopy;
   dispatch_group_notify(v25, v46, block);
 
   _Block_object_dispose(v74, 8);
@@ -406,20 +406,20 @@ LABEL_22:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reallyHandleRecordMoved:(id)a3 handler:(id)a4 responseCode:(id)a5 recordForOplockFailure:(id)a6 destinationServerRecord:(id)a7 moveMarkerServerRecord:(id)a8
+- (void)_reallyHandleRecordMoved:(id)moved handler:(id)handler responseCode:(id)code recordForOplockFailure:(id)failure destinationServerRecord:(id)record moveMarkerServerRecord:(id)serverRecord
 {
   v388 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  movedCopy = moved;
+  handlerCopy = handler;
+  codeCopy = code;
+  failureCopy = failure;
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
   v367 = objc_msgSend_container(self, v20, v21);
-  if (v14)
+  if (movedCopy)
   {
     v24 = objc_msgSend_handlersByRecordID(self, v22, v23);
-    v26 = objc_msgSend_objectForKeyedSubscript_(v24, v25, v14);
+    v26 = objc_msgSend_objectForKeyedSubscript_(v24, v25, movedCopy);
     v369 = objc_msgSend_record(v26, v27, v28);
   }
 
@@ -428,35 +428,35 @@ LABEL_22:
     v369 = 0;
   }
 
-  objc_msgSend_setServerDestinationRecord_(v15, v22, v18);
-  objc_msgSend_setServerMoveMarkerRecord_(v15, v29, v19);
-  v32 = objc_msgSend_code(v16, v30, v31);
-  if (!v14 || v32 != 1)
+  objc_msgSend_setServerDestinationRecord_(handlerCopy, v22, recordCopy);
+  objc_msgSend_setServerMoveMarkerRecord_(handlerCopy, v29, serverRecordCopy);
+  v32 = objc_msgSend_code(codeCopy, v30, v31);
+  if (!movedCopy || v32 != 1)
   {
-    v365 = v17;
+    v365 = failureCopy;
     if (*MEMORY[0x277CBC880] != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
     }
 
-    v366 = v19;
+    v366 = serverRecordCopy;
     v57 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v385 = v14;
+      v385 = movedCopy;
       v386 = 2112;
-      v387 = v16;
+      v387 = codeCopy;
       _os_log_impl(&dword_22506F000, v57, OS_LOG_TYPE_INFO, "Error when moving record %@: %@", buf, 0x16u);
     }
 
-    v60 = objc_msgSend_error(v16, v58, v59);
+    v60 = objc_msgSend_error(codeCopy, v58, v59);
     v63 = objc_msgSend_clientError(v60, v61, v62);
     hasType = objc_msgSend_hasType(v63, v64, v65);
 
     if (hasType)
     {
-      v69 = objc_msgSend_error(v16, v67, v68);
+      v69 = objc_msgSend_error(codeCopy, v67, v68);
       v72 = objc_msgSend_clientError(v69, v70, v71);
       v75 = objc_msgSend_type(v72, v73, v74);
 
@@ -467,12 +467,12 @@ LABEL_22:
           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
         }
 
-        v19 = v366;
+        serverRecordCopy = v366;
         v78 = *MEMORY[0x277CBC830];
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v385 = v14;
+          v385 = movedCopy;
           v79 = "Record PCS etag failed for record %@";
 LABEL_38:
           _os_log_impl(&dword_22506F000, v78, OS_LOG_TYPE_INFO, v79, buf, 0xCu);
@@ -483,7 +483,7 @@ LABEL_38:
         goto LABEL_41;
       }
 
-      v93 = objc_msgSend_error(v16, v76, v77);
+      v93 = objc_msgSend_error(codeCopy, v76, v77);
       v96 = objc_msgSend_clientError(v93, v94, v95);
       v99 = objc_msgSend_type(v96, v97, v98);
 
@@ -494,12 +494,12 @@ LABEL_38:
           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
         }
 
-        v19 = v366;
+        serverRecordCopy = v366;
         v78 = *MEMORY[0x277CBC830];
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v385 = v14;
+          v385 = movedCopy;
           v79 = "Zone PCS etag failed for record %@";
           goto LABEL_38;
         }
@@ -509,11 +509,11 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v171 = objc_msgSend_error(v16, v100, v101);
+      v171 = objc_msgSend_error(codeCopy, v100, v101);
       v174 = objc_msgSend_clientError(v171, v172, v173);
       v177 = objc_msgSend_type(v174, v175, v176);
 
-      v180 = objc_msgSend_error(v16, v178, v179);
+      v180 = objc_msgSend_error(codeCopy, v178, v179);
       v183 = v180;
       if (v177 == 15)
       {
@@ -528,7 +528,7 @@ LABEL_41:
 
         else
         {
-          v219 = objc_msgSend_error(v16, v187, v188);
+          v219 = objc_msgSend_error(codeCopy, v187, v188);
           v222 = objc_msgSend_errorDescription(v219, v220, v221);
           v224 = objc_msgSend_hasPrefix_(v222, v223, @"Zone PCS oplock failed");
 
@@ -540,7 +540,7 @@ LABEL_41:
 
           else
           {
-            v249 = objc_msgSend_error(v16, v225, v226);
+            v249 = objc_msgSend_error(codeCopy, v225, v226);
             v252 = objc_msgSend_errorDescription(v249, v250, v251);
             v189 = objc_msgSend_hasPrefix_(v252, v253, @"Share Etag Oplock failure");
 
@@ -567,14 +567,14 @@ LABEL_41:
           *buf = 138543618;
           v385 = v190;
           v386 = 2112;
-          v387 = v14;
+          v387 = movedCopy;
           _os_log_impl(&dword_22506F000, v254, OS_LOG_TYPE_INFO, "%{public}@ oplock failed for record %@", buf, 0x16u);
         }
 
         if (v189)
         {
           v360 = 0;
-          v19 = v366;
+          serverRecordCopy = v366;
 LABEL_39:
           if (*MEMORY[0x277CBC880] != -1)
           {
@@ -586,27 +586,27 @@ LABEL_42:
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v385 = v14;
+            v385 = movedCopy;
             _os_log_impl(&dword_22506F000, v102, OS_LOG_TYPE_INFO, "Handling error for record %@ as an oplock failure", buf, 0xCu);
           }
 
           if (objc_msgSend_retryPCSFailures(self, v103, v104))
           {
-            v107 = self;
-            objc_msgSend_clearProtectionDataForRecord(v15, v105, v106);
+            selfCopy = self;
+            objc_msgSend_clearProtectionDataForRecord(handlerCopy, v105, v106);
             v110 = objc_msgSend_recordID(v369, v108, v109);
             v113 = objc_msgSend_zoneID(v110, v111, v112);
 
             if (!v113)
             {
               v37 = v369;
-              objc_msgSend_setState_(v15, v114, 13);
+              objc_msgSend_setState_(handlerCopy, v114, 13);
               goto LABEL_62;
             }
 
-            v362 = v18;
-            v358 = v15;
-            v359 = v14;
+            v362 = recordCopy;
+            v358 = handlerCopy;
+            v359 = movedCopy;
             v381 = 0u;
             v382 = 0u;
             v380 = 0u;
@@ -654,7 +654,7 @@ LABEL_42:
                   v138 = objc_msgSend_record(v130, v136, v137);
                   objc_msgSend_setShareEtag_(v138, v139, 0);
 
-                  v142 = objc_msgSend_error(v16, v140, v141);
+                  v142 = objc_msgSend_error(codeCopy, v140, v141);
                   v145 = objc_msgSend_clientError(v142, v143, v144);
                   v148 = objc_msgSend_type(v145, v146, v147);
 
@@ -662,7 +662,7 @@ LABEL_42:
                   {
                     v151 = objc_msgSend_record(v130, v149, v150);
                     v154 = objc_msgSend_recordID(v151, v152, v153);
-                    objc_msgSend_setPCSData_forFetchedRecordID_(v107, v155, 0, v154);
+                    objc_msgSend_setPCSData_forFetchedRecordID_(selfCopy, v155, 0, v154);
                   }
 
                   ++v129;
@@ -676,10 +676,10 @@ LABEL_42:
             }
 
             v163 = 13;
-            v15 = v358;
-            v14 = v359;
-            v18 = v362;
-            v19 = v366;
+            handlerCopy = v358;
+            movedCopy = v359;
+            recordCopy = v362;
+            serverRecordCopy = v366;
           }
 
           else
@@ -688,12 +688,12 @@ LABEL_42:
           }
 
           v37 = v369;
-          objc_msgSend_setState_(v15, v105, v163);
+          objc_msgSend_setState_(handlerCopy, v105, v163);
 LABEL_62:
-          v17 = v365;
+          failureCopy = v365;
           if (v360)
           {
-            objc_msgSend_setError_(v15, v164, v360);
+            objc_msgSend_setError_(handlerCopy, v164, v360);
 
             goto LABEL_115;
           }
@@ -702,7 +702,7 @@ LABEL_62:
           v166 = *MEMORY[0x277CBC120];
           v167 = objc_msgSend_recordID(v37, v164, 0);
           v169 = objc_msgSend_errorWithDomain_code_userInfo_format_(v165, v168, v166, 2037, 0, @"Error moving record %@ on server: Protection data didn't match", v167);
-          objc_msgSend_setError_(v15, v170, v169);
+          objc_msgSend_setError_(handlerCopy, v170, v169);
 
 LABEL_114:
           v37 = v369;
@@ -718,7 +718,7 @@ LABEL_114:
         if (v194 == 48)
         {
           v197 = objc_msgSend_recordCache(v367, v195, v196);
-          v200 = objc_msgSend_zoneID(v14, v198, v199);
+          v200 = objc_msgSend_zoneID(movedCopy, v198, v199);
           objc_msgSend_clearAllRecordsForContainer_zoneWithID_(v197, v201, v367, v200);
 
           if (objc_msgSend_databaseScope(self, v202, v203) != 1)
@@ -736,7 +736,7 @@ LABEL_114:
 
         else
         {
-          v227 = objc_msgSend_error(v16, v195, v196);
+          v227 = objc_msgSend_error(codeCopy, v195, v196);
           v230 = objc_msgSend_clientError(v227, v228, v229);
           v233 = objc_msgSend_type(v230, v231, v232);
 
@@ -747,8 +747,8 @@ LABEL_114:
               dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
             }
 
-            v234 = self;
-            v363 = v18;
+            selfCopy2 = self;
+            v363 = recordCopy;
             v235 = *MEMORY[0x277CBC830];
             if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
             {
@@ -758,25 +758,25 @@ LABEL_114:
 
             v236 = MEMORY[0x277CBC560];
             v237 = *MEMORY[0x277CBC120];
-            v238 = sub_2253962A4(v16);
+            v238 = sub_2253962A4(codeCopy);
             v241 = objc_msgSend_recordID(v369, v239, v240);
-            v244 = objc_msgSend_error(v16, v242, v243);
+            v244 = objc_msgSend_error(codeCopy, v242, v243);
             v247 = objc_msgSend_errorDescription(v244, v245, v246);
             v360 = objc_msgSend_errorWithDomain_code_userInfo_format_(v236, v248, v237, v238, 0, @"Error moving record %@ on server: %@", v241, v247);
 
-            v18 = v363;
-            v19 = v366;
-            self = v234;
+            recordCopy = v363;
+            serverRecordCopy = v366;
+            self = selfCopy2;
             goto LABEL_39;
           }
         }
       }
     }
 
-    v255 = objc_msgSend_error(v16, v67, v68);
+    v255 = objc_msgSend_error(codeCopy, v67, v68);
     if (objc_msgSend_hasExtensionError(v255, v256, v257))
     {
-      v260 = objc_msgSend_error(v16, v258, v259);
+      v260 = objc_msgSend_error(codeCopy, v258, v259);
       v263 = objc_msgSend_extensionError(v260, v261, v262);
       hasTypeCode = objc_msgSend_hasTypeCode(v263, v264, v265);
 
@@ -785,13 +785,13 @@ LABEL_114:
         v269 = MEMORY[0x277CBC560];
         v270 = *MEMORY[0x277CBC120];
         v271 = objc_msgSend_request(self, v267, v268);
-        v272 = sub_225395734(v271, v16);
+        v272 = sub_225395734(v271, codeCopy);
         v274 = objc_msgSend_errorWithDomain_code_userInfo_format_(v269, v273, v270, 6000, v272, @"Plugin-Specific Error");
-        objc_msgSend_setError_(v15, v275, v274);
+        objc_msgSend_setError_(handlerCopy, v275, v274);
 
-        objc_msgSend_setState_(v15, v276, 12);
+        objc_msgSend_setState_(handlerCopy, v276, 12);
 LABEL_113:
-        v19 = v366;
+        serverRecordCopy = v366;
         goto LABEL_114;
       }
     }
@@ -800,21 +800,21 @@ LABEL_113:
     {
     }
 
-    v364 = v18;
-    v368 = self;
+    v364 = recordCopy;
+    selfCopy3 = self;
     v277 = objc_msgSend_request(self, v267, v268);
-    v278 = sub_225395734(v277, v16);
+    v278 = sub_225395734(v277, codeCopy);
     v281 = objc_msgSend_mutableCopy(v278, v279, v280);
 
-    v284 = objc_msgSend_error(v16, v282, v283);
+    v284 = objc_msgSend_error(codeCopy, v282, v283);
     v287 = objc_msgSend_clientError(v284, v285, v286);
     v290 = objc_msgSend_moveOplockFailure(v287, v288, v289);
     hasMovedRecordDestinationIdentifier = objc_msgSend_hasMovedRecordDestinationIdentifier(v290, v291, v292);
 
     if (hasMovedRecordDestinationIdentifier)
     {
-      v296 = objc_msgSend_translator(v368, v294, v295);
-      v299 = objc_msgSend_error(v16, v297, v298);
+      v296 = objc_msgSend_translator(selfCopy3, v294, v295);
+      v299 = objc_msgSend_error(codeCopy, v297, v298);
       v302 = objc_msgSend_clientError(v299, v300, v301);
       v305 = objc_msgSend_moveOplockFailure(v302, v303, v304);
       objc_msgSend_movedRecordDestinationIdentifier(v305, v306, v307);
@@ -832,9 +832,9 @@ LABEL_113:
     aBlock[1] = 3221225472;
     aBlock[2] = sub_2252229C0;
     aBlock[3] = &unk_2785470C0;
-    v378 = v15;
+    v378 = handlerCopy;
     v313 = _Block_copy(aBlock);
-    v316 = objc_msgSend_error(v16, v314, v315);
+    v316 = objc_msgSend_error(codeCopy, v314, v315);
     v319 = objc_msgSend_clientError(v316, v317, v318);
     hasOplockFailure = objc_msgSend_hasOplockFailure(v319, v320, v321);
 
@@ -860,7 +860,7 @@ LABEL_113:
 
       if (objc_msgSend_hasPropertiesRequiringEncryption(v323, v327, v328))
       {
-        v332 = objc_msgSend_stateTransitionGroup(v368, v330, v331);
+        v332 = objc_msgSend_stateTransitionGroup(selfCopy3, v330, v331);
         dispatch_group_enter(v332);
 
         v361 = v329;
@@ -869,7 +869,7 @@ LABEL_113:
           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
         }
 
-        v17 = v365;
+        failureCopy = v365;
         v333 = *MEMORY[0x277CBC830];
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
         {
@@ -880,16 +880,16 @@ LABEL_113:
           _os_log_debug_impl(&dword_22506F000, v354, OS_LOG_TYPE_DEBUG, "Decrypting server record returned by oplock failure %@", buf, 0xCu);
         }
 
-        v336 = objc_msgSend_recordDecryptOperation(v368, v334, v335);
+        v336 = objc_msgSend_recordDecryptOperation(selfCopy3, v334, v335);
         v370[0] = MEMORY[0x277D85DD0];
         v370[1] = 3221225472;
         v370[2] = sub_225222A30;
         v370[3] = &unk_27854A200;
         v371 = v323;
         v372 = v281;
-        v373 = v16;
-        v374 = v14;
-        v375 = v368;
+        v373 = codeCopy;
+        v374 = movedCopy;
+        v375 = selfCopy3;
         v376 = v313;
         v337 = v323;
         objc_msgSend_decryptRecord_withCompletion_(v336, v338, v337, v370);
@@ -900,24 +900,24 @@ LABEL_113:
 
     v339 = MEMORY[0x277CBC560];
     v340 = *MEMORY[0x277CBC120];
-    v341 = sub_2253962A4(v16);
-    objc_msgSend_error(v16, v342, v343);
+    v341 = sub_2253962A4(codeCopy);
+    objc_msgSend_error(codeCopy, v342, v343);
     v344 = v313;
     v345 = v281;
-    v347 = v346 = v14;
+    v347 = v346 = movedCopy;
     objc_msgSend_errorDescription(v347, v348, v349);
-    v351 = v350 = v15;
+    v351 = v350 = handlerCopy;
     v324 = objc_msgSend_errorWithDomain_code_userInfo_format_(v339, v352, v340, v341, v345, @"Error moving record %@ on server: %@", v346, v351);
 
-    v15 = v350;
-    v14 = v346;
+    handlerCopy = v350;
+    movedCopy = v346;
     v281 = v345;
     v313 = v344;
     v344[2](v344, v324);
-    v17 = v365;
+    failureCopy = v365;
 LABEL_112:
 
-    v18 = v364;
+    recordCopy = v364;
     goto LABEL_113;
   }
 
@@ -930,26 +930,26 @@ LABEL_112:
       dispatch_once(MEMORY[0x277CBC880], v33);
     }
 
-    v366 = v19;
-    v80 = v18;
+    v366 = serverRecordCopy;
+    v80 = recordCopy;
     v81 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v385 = v14;
+      v385 = movedCopy;
       _os_log_error_impl(&dword_22506F000, v81, OS_LOG_TYPE_ERROR, "Got a response for record with ID %@, but we didn't try to move that record.", buf, 0xCu);
     }
 
-    objc_msgSend_setState_(v15, v82, 12);
+    objc_msgSend_setState_(handlerCopy, v82, 12);
     v83 = MEMORY[0x277CBC560];
     v84 = *MEMORY[0x277CBC120];
-    v85 = sub_2253962A4(v16);
+    v85 = sub_2253962A4(codeCopy);
     v88 = objc_msgSend_request(self, v86, v87);
-    v89 = sub_225395734(v88, v16);
-    v91 = objc_msgSend_errorWithDomain_code_userInfo_format_(v83, v90, v84, v85, v89, @"Got a response for record with ID %@, but we didn't try to move that record.", v14);
-    objc_msgSend_setError_(v15, v92, v91);
+    v89 = sub_225395734(v88, codeCopy);
+    v91 = objc_msgSend_errorWithDomain_code_userInfo_format_(v83, v90, v84, v85, v89, @"Got a response for record with ID %@, but we didn't try to move that record.", movedCopy);
+    objc_msgSend_setError_(handlerCopy, v92, v91);
 
-    v18 = v80;
+    recordCopy = v80;
     goto LABEL_113;
   }
 
@@ -962,39 +962,39 @@ LABEL_112:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v385 = v14;
+    v385 = movedCopy;
     _os_log_impl(&dword_22506F000, v35, OS_LOG_TYPE_INFO, "Record %@ was successfully moved on the server", buf, 0xCu);
   }
 
-  objc_msgSend_setState_(v15, v36, 8);
+  objc_msgSend_setState_(handlerCopy, v36, 8);
   v37 = v369;
   objc_msgSend_setKnownToServer_(v369, v38, 1);
-  objc_msgSend_setKnownToServer_(v19, v39, 1);
-  v42 = objc_msgSend_etag(v18, v40, v41);
+  objc_msgSend_setKnownToServer_(serverRecordCopy, v39, 1);
+  v42 = objc_msgSend_etag(recordCopy, v40, v41);
 
   if (v42)
   {
-    v45 = objc_msgSend_etag(v18, v43, v44);
+    v45 = objc_msgSend_etag(recordCopy, v43, v44);
     objc_msgSend_setEtag_(v369, v46, v45);
   }
 
-  v47 = objc_msgSend_creationDate(v18, v43, v44);
+  v47 = objc_msgSend_creationDate(recordCopy, v43, v44);
 
   if (v47)
   {
-    v50 = objc_msgSend_creationDate(v18, v48, v49);
+    v50 = objc_msgSend_creationDate(recordCopy, v48, v49);
     objc_msgSend_setCreationDate_(v369, v51, v50);
   }
 
-  v52 = objc_msgSend_modificationDate(v18, v48, v49);
+  v52 = objc_msgSend_modificationDate(recordCopy, v48, v49);
 
   if (v52)
   {
-    v55 = objc_msgSend_modificationDate(v18, v53, v54);
+    v55 = objc_msgSend_modificationDate(recordCopy, v53, v54);
     objc_msgSend_setModificationDate_(v369, v56, v55);
   }
 
-  objc_msgSend_savePCSDataToCache(v15, v53, v54);
+  objc_msgSend_savePCSDataToCache(handlerCopy, v53, v54);
 LABEL_115:
 
   v353 = *MEMORY[0x277D85DE8];
@@ -1021,7 +1021,7 @@ LABEL_115:
     v19 = 138544130;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v13;
     v25 = 2112;
@@ -1033,9 +1033,9 @@ LABEL_115:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = objc_msgSend_sourceZoneID(self, v5, v6);
 
   if (v7)
@@ -1058,7 +1058,7 @@ LABEL_115:
   objc_msgSend_setMoveCompletionBlock_(self, v8, 0);
   v17.receiver = self;
   v17.super_class = CKDMovePhotosOperation;
-  [(CKDModifyRecordsOperation *)&v17 _finishOnCallbackQueueWithError:v4];
+  [(CKDModifyRecordsOperation *)&v17 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

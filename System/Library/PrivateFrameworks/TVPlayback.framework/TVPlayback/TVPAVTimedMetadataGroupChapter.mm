@@ -1,14 +1,14 @@
 @interface TVPAVTimedMetadataGroupChapter
-- (TVPAVTimedMetadataGroupChapter)initWithAVTimedMetadataGroup:(id)a3 filterByLanguages:(id)a4;
-- (void)_loadChapterNameFromMetadataItem:(id)a3;
+- (TVPAVTimedMetadataGroupChapter)initWithAVTimedMetadataGroup:(id)group filterByLanguages:(id)languages;
+- (void)_loadChapterNameFromMetadataItem:(id)item;
 @end
 
 @implementation TVPAVTimedMetadataGroupChapter
 
-- (TVPAVTimedMetadataGroupChapter)initWithAVTimedMetadataGroup:(id)a3 filterByLanguages:(id)a4
+- (TVPAVTimedMetadataGroupChapter)initWithAVTimedMetadataGroup:(id)group filterByLanguages:(id)languages
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  languagesCopy = languages;
   v24.receiver = self;
   v24.super_class = TVPAVTimedMetadataGroupChapter;
   v8 = [(TVPAVTimedMetadataGroupChapter *)&v24 init];
@@ -17,9 +17,9 @@
     v22 = 0u;
     v23 = 0u;
     v21 = 0u;
-    if (v6)
+    if (groupCopy)
     {
-      [v6 timeRange];
+      [groupCopy timeRange];
       if ((BYTE12(v21) & 1) != 0 && (BYTE4(v23) & 1) != 0 && !*(&v23 + 1) && (*(&v22 + 1) & 0x8000000000000000) == 0)
       {
         v9 = [TVPTimeRange alloc];
@@ -30,16 +30,16 @@
         timeRange = v8->super.super._timeRange;
         v8->super.super._timeRange = v10;
 
-        v12 = [v6 items];
-        v13 = [MEMORY[0x277CE6520] metadataItemsFromArray:v12 withKey:*MEMORY[0x277CE5F28] keySpace:0];
-        v14 = [MEMORY[0x277CE6520] metadataItemsFromArray:v12 withKey:*MEMORY[0x277CE5F10] keySpace:0];
-        v15 = [v14 firstObject];
-        if (v15)
+        items = [groupCopy items];
+        v13 = [MEMORY[0x277CE6520] metadataItemsFromArray:items withKey:*MEMORY[0x277CE5F28] keySpace:0];
+        v14 = [MEMORY[0x277CE6520] metadataItemsFromArray:items withKey:*MEMORY[0x277CE5F10] keySpace:0];
+        firstObject = [v14 firstObject];
+        if (firstObject)
         {
-          [(TVPAVTimedMetadataGroupChapter *)v8 setImageMetadataItem:v15];
+          [(TVPAVTimedMetadataGroupChapter *)v8 setImageMetadataItem:firstObject];
         }
 
-        v16 = [MEMORY[0x277CE6520] metadataItemsFromArray:v13 filteredAndSortedAccordingToPreferredLanguages:v7];
+        v16 = [MEMORY[0x277CE6520] metadataItemsFromArray:v13 filteredAndSortedAccordingToPreferredLanguages:languagesCopy];
         if (![v16 count])
         {
           v17 = v13;
@@ -47,8 +47,8 @@
           v16 = v17;
         }
 
-        v18 = [v16 firstObject];
-        [(TVPAVTimedMetadataGroupChapter *)v8 _loadChapterNameFromMetadataItem:v18];
+        firstObject2 = [v16 firstObject];
+        [(TVPAVTimedMetadataGroupChapter *)v8 _loadChapterNameFromMetadataItem:firstObject2];
       }
     }
   }
@@ -56,19 +56,19 @@
   return v8;
 }
 
-- (void)_loadChapterNameFromMetadataItem:(id)a3
+- (void)_loadChapterNameFromMetadataItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 statusOfValueForKey:@"value" error:0];
+    v6 = [itemCopy statusOfValueForKey:@"value" error:0];
     if (v6 != 1)
     {
       if (v6 == 2)
       {
-        v7 = [v5 stringValue];
-        [(TVPChapter *)self setLocalizedName:v7];
+        stringValue = [v5 stringValue];
+        [(TVPChapter *)self setLocalizedName:stringValue];
       }
 
       else

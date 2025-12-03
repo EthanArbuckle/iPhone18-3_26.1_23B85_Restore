@@ -1,14 +1,14 @@
 @interface OKMediaManager
 + (id)defaultManager;
-- (Class)mediaItemClassForURL:(id)a3;
+- (Class)mediaItemClassForURL:(id)l;
 - (OKMediaManager)init;
-- (id)mediaItemForURL:(id)a3;
-- (id)mediaItemsForURLs:(id)a3;
-- (id)mediaURLForMediaObject:(id)a3;
-- (id)mediaURLsForMediaObjects:(id)a3;
-- (void)addMediaItemClass:(Class)a3;
+- (id)mediaItemForURL:(id)l;
+- (id)mediaItemsForURLs:(id)ls;
+- (id)mediaURLForMediaObject:(id)object;
+- (id)mediaURLsForMediaObjects:(id)objects;
+- (void)addMediaItemClass:(Class)class;
 - (void)dealloc;
-- (void)removeMediaItemClass:(Class)a3;
+- (void)removeMediaItemClass:(Class)class;
 @end
 
 @implementation OKMediaManager
@@ -65,40 +65,40 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
   [(OKMediaManager *)&v4 dealloc];
 }
 
-- (void)addMediaItemClass:(Class)a3
+- (void)addMediaItemClass:(Class)class
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     mediaSourcesByScheme = self->_mediaSourcesByScheme;
     objc_sync_enter(mediaSourcesByScheme);
-    [(NSMutableDictionary *)self->_mediaSourcesByScheme setObject:a3 forKey:[(objc_class *)a3 scheme]];
+    [(NSMutableDictionary *)self->_mediaSourcesByScheme setObject:class forKey:[(objc_class *)class scheme]];
 
     objc_sync_exit(mediaSourcesByScheme);
   }
 }
 
-- (void)removeMediaItemClass:(Class)a3
+- (void)removeMediaItemClass:(Class)class
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     mediaSourcesByScheme = self->_mediaSourcesByScheme;
     objc_sync_enter(mediaSourcesByScheme);
-    [(NSMutableDictionary *)self->_mediaSourcesByScheme removeObjectForKey:[(objc_class *)a3 scheme]];
+    [(NSMutableDictionary *)self->_mediaSourcesByScheme removeObjectForKey:[(objc_class *)class scheme]];
 
     objc_sync_exit(mediaSourcesByScheme);
   }
 }
 
-- (Class)mediaItemClassForURL:(id)a3
+- (Class)mediaItemClassForURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
   mediaSourcesByScheme = self->_mediaSourcesByScheme;
   objc_sync_enter(mediaSourcesByScheme);
-  v6 = -[NSMutableDictionary objectForKey:](self->_mediaSourcesByScheme, "objectForKey:", [a3 scheme]);
+  v6 = -[NSMutableDictionary objectForKey:](self->_mediaSourcesByScheme, "objectForKey:", [l scheme]);
   if (v6 && ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     objc_sync_exit(mediaSourcesByScheme);
@@ -117,14 +117,14 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
     return 0;
   }
 
-  v7 = [(OKMediaManager *)self delegate];
+  delegate = [(OKMediaManager *)self delegate];
 
-  return [(OKMediaManagerDelegate *)v7 mediaManager:self mediaItemClassForURL:a3];
+  return [(OKMediaManagerDelegate *)delegate mediaManager:self mediaItemClassForURL:l];
 }
 
-- (id)mediaItemForURL:(id)a3
+- (id)mediaItemForURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
@@ -141,20 +141,20 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
     return 0;
   }
 
-  v6 = [[v5 alloc] initWithUniqueURL:a3];
+  v6 = [[v5 alloc] initWithUniqueURL:l];
 
   return v6;
 }
 
-- (id)mediaItemsForURLs:(id)a3
+- (id)mediaItemsForURLs:(id)ls
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [ls countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -166,32 +166,32 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         v10 = [(OKMediaManager *)self mediaItemForURL:*(*(&v12 + 1) + 8 * v9)];
-        if (([v5 containsObject:v10] & 1) == 0)
+        if (([array containsObject:v10] & 1) == 0)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [ls countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)mediaURLForMediaObject:(id)a3
+- (id)mediaURLForMediaObject:(id)object
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
@@ -202,8 +202,8 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSMutableDictionary *)self->_mediaSourcesByScheme allValues];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_mediaSourcesByScheme allValues];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -213,10 +213,10 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) performSelector:sel_urlForMediaObject_ withObject:a3];
+        v10 = [*(*(&v12 + 1) + 8 * i) performSelector:sel_urlForMediaObject_ withObject:object];
         if (v10)
         {
           objc_sync_exit(mediaSourcesByScheme);
@@ -224,7 +224,7 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -235,12 +235,12 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
   }
 
   objc_sync_exit(mediaSourcesByScheme);
-  if (![(OKMediaManager *)self delegate]|| ([(OKMediaManager *)self delegate], (objc_opt_respondsToSelector() & 1) == 0) || (v10 = [(OKMediaManagerDelegate *)[(OKMediaManager *)self delegate] mediaManager:self mediaURLforObject:a3]) == 0)
+  if (![(OKMediaManager *)self delegate]|| ([(OKMediaManager *)self delegate], (objc_opt_respondsToSelector() & 1) == 0) || (v10 = [(OKMediaManagerDelegate *)[(OKMediaManager *)self delegate] mediaManager:self mediaURLforObject:object]) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return a3;
+      return object;
     }
 
     else
@@ -252,15 +252,15 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
   return v10;
 }
 
-- (id)mediaURLsForMediaObjects:(id)a3
+- (id)mediaURLsForMediaObjects:(id)objects
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -272,26 +272,26 @@ OKMediaManager *__32__OKMediaManager_defaultManager__block_invoke()
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v10 = [(OKMediaManager *)self mediaURLForMediaObject:*(*(&v12 + 1) + 8 * v9)];
-        if (([v5 containsObject:v10] & 1) == 0)
+        if (([array containsObject:v10] & 1) == 0)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
 @end

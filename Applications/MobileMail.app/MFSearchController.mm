@@ -1,11 +1,11 @@
 @interface MFSearchController
 - (MFSearchBar)searchBar;
-- (MFSearchController)initWithSearchResultsController:(id)a3;
-- (void)_handleMailNavigationControllerShowViewController:(id)a3;
+- (MFSearchController)initWithSearchResultsController:(id)controller;
+- (void)_handleMailNavigationControllerShowViewController:(id)controller;
 - (void)dealloc;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MFSearchController
@@ -25,12 +25,12 @@
   return searchBar;
 }
 
-- (MFSearchController)initWithSearchResultsController:(id)a3
+- (MFSearchController)initWithSearchResultsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MFSearchController;
-  v5 = [(MFSearchController *)&v8 initWithSearchResultsController:v4];
+  v5 = [(MFSearchController *)&v8 initWithSearchResultsController:controllerCopy];
   v6 = v5;
   if (v5)
   {
@@ -58,11 +58,11 @@
   [(MFSearchController *)self setScopeBarActivation:2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MFSearchController;
-  [(MFSearchController *)&v6 viewWillAppear:a3];
+  [(MFSearchController *)&v6 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_handleMailNavigationControllerShowViewController:" name:MailNavigationControllerWillShowViewControllerNotification object:0];
 
@@ -70,11 +70,11 @@
   [v5 addObserver:self selector:"_handleMailNavigationControllerShowViewController:" name:MailNavigationControllerDidShowViewControllerNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MFSearchController;
-  [(MFSearchController *)&v6 viewWillDisappear:a3];
+  [(MFSearchController *)&v6 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:MailNavigationControllerWillShowViewControllerNotification object:0];
 
@@ -82,49 +82,49 @@
   [v5 removeObserver:self name:MailNavigationControllerDidShowViewControllerNotification object:0];
 }
 
-- (void)_handleMailNavigationControllerShowViewController:(id)a3
+- (void)_handleMailNavigationControllerShowViewController:(id)controller
 {
-  v18 = a3;
-  v4 = [v18 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MailNavigationControllerNewViewControllerKey];
+  controllerCopy = controller;
+  userInfo = [controllerCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MailNavigationControllerNewViewControllerKey];
 
-  v6 = [v18 userInfo];
-  v7 = [v6 objectForKeyedSubscript:MailNavigationControllerPreviousViewControllerKey];
+  userInfo2 = [controllerCopy userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:MailNavigationControllerPreviousViewControllerKey];
 
-  v8 = [v18 userInfo];
-  v9 = [v8 objectForKeyedSubscript:MailNavigationControllerAnimatedKey];
+  userInfo3 = [controllerCopy userInfo];
+  v9 = [userInfo3 objectForKeyedSubscript:MailNavigationControllerAnimatedKey];
 
-  v10 = [v9 BOOLValue];
-  v11 = [v18 name];
-  v12 = [v11 isEqual:MailNavigationControllerWillShowViewControllerNotification];
+  bOOLValue = [v9 BOOLValue];
+  name = [controllerCopy name];
+  v12 = [name isEqual:MailNavigationControllerWillShowViewControllerNotification];
 
-  v13 = [(MFSearchController *)self presentingViewController];
-  v14 = [v13 parentViewController];
+  presentingViewController = [(MFSearchController *)self presentingViewController];
+  parentViewController = [presentingViewController parentViewController];
 
-  v15 = [(MFSearchController *)self presentingViewController];
+  presentingViewController2 = [(MFSearchController *)self presentingViewController];
 
-  if (v5 == v15 || v5 == v14)
+  if (v5 == presentingViewController2 || v5 == parentViewController)
   {
-    v17 = [(MFSearchController *)self searchResultsController];
+    searchResultsController = [(MFSearchController *)self searchResultsController];
     if (v12)
     {
-      [v17 beginAppearanceTransition:1 animated:v10];
+      [searchResultsController beginAppearanceTransition:1 animated:bOOLValue];
       goto LABEL_10;
     }
 
 LABEL_9:
-    [v17 endAppearanceTransition];
+    [searchResultsController endAppearanceTransition];
     goto LABEL_10;
   }
 
-  v16 = [(MFSearchController *)self presentingViewController];
+  presentingViewController3 = [(MFSearchController *)self presentingViewController];
 
-  if (v7 == v16 || v7 == v14)
+  if (v7 == presentingViewController3 || v7 == parentViewController)
   {
-    v17 = [(MFSearchController *)self searchResultsController];
+    searchResultsController = [(MFSearchController *)self searchResultsController];
     if (v12)
     {
-      [v17 beginAppearanceTransition:0 animated:v10];
+      [searchResultsController beginAppearanceTransition:0 animated:bOOLValue];
 LABEL_10:
 
       goto LABEL_11;

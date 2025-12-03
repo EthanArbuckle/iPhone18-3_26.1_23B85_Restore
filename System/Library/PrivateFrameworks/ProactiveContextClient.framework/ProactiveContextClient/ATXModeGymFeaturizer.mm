@@ -27,22 +27,22 @@
 - (id)provideFeatures
 {
   v3 = objc_alloc_init(ATXModeFeatureSet);
-  v4 = [(ATXModeGymFeaturizer *)self dataProvider];
-  v5 = [v4 getCurrentVisit];
+  dataProvider = [(ATXModeGymFeaturizer *)self dataProvider];
+  getCurrentVisit = [dataProvider getCurrentVisit];
 
-  if (v5)
+  if (getCurrentVisit)
   {
-    v6 = [v5 possibleCategoryNames];
-    v7 = [v6 firstObject];
+    possibleCategoryNames = [getCurrentVisit possibleCategoryNames];
+    firstObject = [possibleCategoryNames firstObject];
 
-    if ([v7 isEqualToString:*MEMORY[0x277D0E890]])
+    if ([firstObject isEqualToString:*MEMORY[0x277D0E890]])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v7 isEqualToString:@"gym"];
+      v8 = [firstObject isEqualToString:@"gym"];
     }
 
     [(ATXModeFeatureSet *)v3 setValue:v8 forBinaryFeatureOfType:24];
@@ -59,11 +59,11 @@
 - (void)beginListening
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ATXModeGymFeaturizer *)self dataProvider];
+  dataProvider = [(ATXModeGymFeaturizer *)self dataProvider];
   v6[0] = *MEMORY[0x277D0E890];
   v6[1] = @"gym";
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
-  [v3 subscribeToPOIChangesForCategories:v4 observer:self enterSelector:sel_handleChange exitSelector:sel_handleChange sinkCompletion:&__block_literal_global_6];
+  [dataProvider subscribeToPOIChangesForCategories:v4 observer:self enterSelector:sel_handleChange exitSelector:sel_handleChange sinkCompletion:&__block_literal_global_6];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -85,15 +85,15 @@ void __38__ATXModeGymFeaturizer_beginListening__block_invoke(uint64_t a1, void *
 
 - (void)stopListening
 {
-  v2 = [(ATXModeGymFeaturizer *)self dataProvider];
-  [v2 unsubscribeToPOIChanges];
+  dataProvider = [(ATXModeGymFeaturizer *)self dataProvider];
+  [dataProvider unsubscribeToPOIChanges];
 }
 
 - (void)handleChange
 {
-  v4 = [(ATXModeGymFeaturizer *)self provideFeatures];
-  v3 = [(ATXModeGymFeaturizer *)self delegate];
-  [v3 featurizer:self didUpdateFeatures:v4];
+  provideFeatures = [(ATXModeGymFeaturizer *)self provideFeatures];
+  delegate = [(ATXModeGymFeaturizer *)self delegate];
+  [delegate featurizer:self didUpdateFeatures:provideFeatures];
 }
 
 - (ATXModeFeaturizerDelegate)delegate

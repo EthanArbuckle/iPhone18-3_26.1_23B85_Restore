@@ -1,9 +1,9 @@
 @interface UIKeyboardSliceStore
 + (id)sharedStore;
-+ (id)sliceSetForID:(id)a3;
-+ (void)archiveSet:(id)a3;
++ (id)sliceSetForID:(id)d;
++ (void)archiveSet:(id)set;
 - (UIKeyboardSliceStore)init;
-- (void)addSet:(id)a3;
+- (void)addSet:(id)set;
 @end
 
 @implementation UIKeyboardSliceStore
@@ -42,28 +42,28 @@ void __35__UIKeyboardSliceStore_sharedStore__block_invoke()
   _MergedGlobals_1213 = v0;
 }
 
-- (void)addSet:(id)a3
+- (void)addSet:(id)set
 {
   store = self->_store;
-  v4 = a3;
-  v5 = [v4 sliceSetID];
-  [(NSMutableDictionary *)store setValue:v4 forKey:v5];
+  setCopy = set;
+  sliceSetID = [setCopy sliceSetID];
+  [(NSMutableDictionary *)store setValue:setCopy forKey:sliceSetID];
 }
 
-+ (id)sliceSetForID:(id)a3
++ (id)sliceSetForID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 sharedStore];
-  v6 = [v5 sliceSetForID:v4];
+  dCopy = d;
+  sharedStore = [self sharedStore];
+  v6 = [sharedStore sliceSetForID:dCopy];
 
   return v6;
 }
 
-+ (void)archiveSet:(id)a3
++ (void)archiveSet:(id)set
 {
-  v4 = a3;
-  v5 = [a1 sharedStore];
-  [v5 addSet:v4];
+  setCopy = set;
+  sharedStore = [self sharedStore];
+  [sharedStore addSet:setCopy];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface BKLibraryAssetStatusObserver
-- (BKLibraryAssetStatusObserver)initWithFilter:(id)a3 notify:(id)a4;
+- (BKLibraryAssetStatusObserver)initWithFilter:(id)filter notify:(id)notify;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BKLibraryAssetStatusObserver
 
-- (BKLibraryAssetStatusObserver)initWithFilter:(id)a3 notify:(id)a4
+- (BKLibraryAssetStatusObserver)initWithFilter:(id)filter notify:(id)notify
 {
-  v6 = a3;
-  v7 = a4;
+  filterCopy = filter;
+  notifyCopy = notify;
   v15.receiver = self;
   v15.super_class = BKLibraryAssetStatusObserver;
   v8 = [(BKLibraryAssetStatusObserver *)&v15 init];
   if (v8)
   {
     v9 = +[BKLibraryAssetStatusController sharedController];
-    v10 = [v9 _addArrayControllerWithFilter:v6];
+    v10 = [v9 _addArrayControllerWithFilter:filterCopy];
     controller = v8->_controller;
     v8->_controller = v10;
 
     [(IMArrayController *)v8->_controller addObserver:v8 forKeyPath:@"arrangedObjects" options:3 context:off_EED70];
-    v12 = [v7 copy];
+    v12 = [notifyCopy copy];
     notify = v8->_notify;
     v8->_notify = v12;
   }
@@ -40,17 +40,17 @@
   [(BKLibraryAssetStatusObserver *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_EED70 == a6)
+  if (off_EED70 == context)
   {
-    v11 = a5;
+    changeCopy = change;
     objc_opt_class();
-    v12 = [v11 objectForKey:NSKeyValueChangeOldKey];
+    v12 = [changeCopy objectForKey:NSKeyValueChangeOldKey];
     v19 = BUDynamicCast();
 
     objc_opt_class();
-    v13 = [v11 objectForKey:NSKeyValueChangeNewKey];
+    v13 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
 
     v14 = BUDynamicCast();
 
@@ -72,8 +72,8 @@
   {
     v20.receiver = self;
     v20.super_class = BKLibraryAssetStatusObserver;
-    v10 = a5;
-    [(BKLibraryAssetStatusObserver *)&v20 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(BKLibraryAssetStatusObserver *)&v20 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 

@@ -1,43 +1,43 @@
 @interface CKUploadRequestPersistentStore
-+ (id)repairRecordToMetadata:(id)a3;
-- (CKUploadRequestPersistentStore)initWithDatabaseURL:(id)a3;
++ (id)repairRecordToMetadata:(id)metadata;
+- (CKUploadRequestPersistentStore)initWithDatabaseURL:(id)l;
 - (id)allData;
 - (id)assetRepairMetadata;
 - (id)currentUser;
-- (id)delayedSyncDateForRecord:(id)a3;
-- (id)delayedSyncRecordNamesAfterDate:(id)a3;
-- (id)delayedSyncRecordNamesBeforeAndIncludingDate:(id)a3;
-- (id)earliestDelayedSyncDateAfterDate:(id)a3;
+- (id)delayedSyncDateForRecord:(id)record;
+- (id)delayedSyncRecordNamesAfterDate:(id)date;
+- (id)delayedSyncRecordNamesBeforeAndIncludingDate:(id)date;
+- (id)earliestDelayedSyncDateAfterDate:(id)date;
 - (id)lastFetchDate;
-- (id)metadataForRecordName:(id)a3;
+- (id)metadataForRecordName:(id)name;
 - (id)packageRepairMetadata;
-- (id)sortedDelayedSyncRecordsForDatabase:(id)a3;
+- (id)sortedDelayedSyncRecordsForDatabase:(id)database;
 - (id)syncEngineMetadata;
-- (id)unarchivedObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5;
-- (int64_t)delayedSyncCountForRecordName:(id)a3;
+- (id)unarchivedObjectOfClass:(Class)class fromData:(id)data error:(id *)error;
+- (int64_t)delayedSyncCountForRecordName:(id)name;
 - (void)deleteDatabase;
-- (void)deleteDelayedSyncForRecordName:(id)a3;
-- (void)deleteRepairRecord:(id)a3;
-- (void)markRecordNameUnrecoverable:(id)a3;
-- (void)persistDelayedSyncForRecordName:(id)a3 withDate:(id)a4 increasingCount:(BOOL)a5;
-- (void)persistRepairRecord:(id)a3;
-- (void)persistSyncEngineMetadata:(id)a3;
-- (void)readWriteDatabase:(id)a3 async:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)setCurrentUser:(id)a3;
-- (void)setLastFetchDate:(id)a3;
+- (void)deleteDelayedSyncForRecordName:(id)name;
+- (void)deleteRepairRecord:(id)record;
+- (void)markRecordNameUnrecoverable:(id)unrecoverable;
+- (void)persistDelayedSyncForRecordName:(id)name withDate:(id)date increasingCount:(BOOL)count;
+- (void)persistRepairRecord:(id)record;
+- (void)persistSyncEngineMetadata:(id)metadata;
+- (void)readWriteDatabase:(id)database async:(BOOL)async withCompletionHandler:(id)handler;
+- (void)setCurrentUser:(id)user;
+- (void)setLastFetchDate:(id)date;
 @end
 
 @implementation CKUploadRequestPersistentStore
 
-- (CKUploadRequestPersistentStore)initWithDatabaseURL:(id)a3
+- (CKUploadRequestPersistentStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = CKUploadRequestPersistentStore;
   v7 = [(CKUploadRequestPersistentStore *)&v14 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(lCopy, v5, v6);
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
@@ -178,9 +178,9 @@
   return v5;
 }
 
-- (id)metadataForRecordName:(id)a3
+- (id)metadataForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -191,8 +191,8 @@
   v11[1] = 3221225472;
   v11[2] = sub_18863E3F0;
   v11[3] = &unk_1E70BFB38;
-  v12 = v4;
-  v13 = self;
+  v12 = nameCopy;
+  selfCopy = self;
   v14 = &v15;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -208,15 +208,15 @@
   return v7;
 }
 
-- (id)sortedDelayedSyncRecordsForDatabase:(id)a3
+- (id)sortedDelayedSyncRecordsForDatabase:(id)database
 {
-  v3 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"Scheduler");
+  databaseCopy = database;
+  v5 = objc_msgSend_objectForKeyedSubscript_(databaseCopy, v4, @"Scheduler");
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = sub_18863E8C4;
   v25[3] = &unk_1E70BFB60;
-  v6 = v3;
+  v6 = databaseCopy;
   v26 = v6;
   v8 = objc_msgSend_CKFilter_(v5, v7, v25);
 
@@ -246,9 +246,9 @@
   return v19;
 }
 
-- (id)delayedSyncRecordNamesBeforeAndIncludingDate:(id)a3
+- (id)delayedSyncRecordNamesBeforeAndIncludingDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -260,7 +260,7 @@
   v13[2] = sub_18863EB88;
   v13[3] = &unk_1E70BFB38;
   v13[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v14 = v5;
   v15 = &v16;
   objc_msgSend_readDatabase_async_withCompletionHandler_(self, v6, v13, 0, &unk_1EFA2F9A8);
@@ -292,9 +292,9 @@
   return v10;
 }
 
-- (id)delayedSyncRecordNamesAfterDate:(id)a3
+- (id)delayedSyncRecordNamesAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -306,7 +306,7 @@
   v9[2] = sub_18863EEB8;
   v9[3] = &unk_1E70BFB38;
   v9[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v10 = v5;
   v11 = &v12;
   objc_msgSend_readDatabase_async_withCompletionHandler_(self, v6, v9, 0, &unk_1EFA2F9C8);
@@ -317,9 +317,9 @@
   return v7;
 }
 
-- (id)earliestDelayedSyncDateAfterDate:(id)a3
+- (id)earliestDelayedSyncDateAfterDate:(id)date
 {
-  v4 = objc_msgSend_delayedSyncRecordNamesAfterDate_(self, a2, a3);
+  v4 = objc_msgSend_delayedSyncRecordNamesAfterDate_(self, a2, date);
   v7 = v4;
   if (v4)
   {
@@ -335,9 +335,9 @@
   return v10;
 }
 
-- (id)delayedSyncDateForRecord:(id)a3
+- (id)delayedSyncDateForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -348,7 +348,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_18863F26C;
   v9[3] = &unk_1E70BFB10;
-  v5 = v4;
+  v5 = recordCopy;
   v10 = v5;
   v11 = &v12;
   objc_msgSend_readDatabase_async_withCompletionHandler_(self, v6, v9, 0, &unk_1EFA2F9E8);
@@ -359,9 +359,9 @@
   return v7;
 }
 
-- (int64_t)delayedSyncCountForRecordName:(id)a3
+- (int64_t)delayedSyncCountForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -370,7 +370,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_18863F4F8;
   v9[3] = &unk_1E70BFB10;
-  v5 = v4;
+  v5 = nameCopy;
   v10 = v5;
   v11 = &v12;
   objc_msgSend_readDatabase_async_withCompletionHandler_(self, v6, v9, 0, &unk_1EFA2FA08);
@@ -400,39 +400,39 @@
   return v2;
 }
 
-- (void)setLastFetchDate:(id)a3
+- (void)setLastFetchDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_18863F97C;
   v7[3] = &unk_1E70BFBB0;
-  v8 = v4;
-  v5 = v4;
+  v8 = dateCopy;
+  v5 = dateCopy;
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v7, 0, &unk_1EFA2FA48);
 }
 
-- (void)setCurrentUser:(id)a3
+- (void)setCurrentUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_18863FB50;
   v7[3] = &unk_1E70BFBB0;
-  v8 = v4;
-  v5 = v4;
+  v8 = userCopy;
+  v5 = userCopy;
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v7, 0, &unk_1EFA2FA68);
 }
 
-- (void)persistRepairRecord:(id)a3
+- (void)persistRepairRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_18863FE8C;
   v9[3] = &unk_1E70BFBD8;
-  v10 = v4;
-  v11 = self;
+  v10 = recordCopy;
+  selfCopy = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1886402B0;
@@ -442,14 +442,14 @@
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v9, 0, v7);
 }
 
-- (void)deleteRepairRecord:(id)a3
+- (void)deleteRepairRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1886404C0;
   v9[3] = &unk_1E70BFBB0;
-  v10 = v4;
+  v10 = recordCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1886408D4;
@@ -459,35 +459,35 @@
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v9, 0, v7);
 }
 
-- (void)persistDelayedSyncForRecordName:(id)a3 withDate:(id)a4 increasingCount:(BOOL)a5
+- (void)persistDelayedSyncForRecordName:(id)name withDate:(id)date increasingCount:(BOOL)count
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  dateCopy = date;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_188640C98;
   v15[3] = &unk_1E70BFC20;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
+  v16 = nameCopy;
+  v17 = dateCopy;
+  countCopy = count;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_188640F18;
   v13[3] = &unk_1E70BC048;
   v14 = v16;
   v10 = v16;
-  v11 = v9;
+  v11 = dateCopy;
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v12, v15, 0, v13);
 }
 
-- (void)deleteDelayedSyncForRecordName:(id)a3
+- (void)deleteDelayedSyncForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_188641108;
   v9[3] = &unk_1E70BFBB0;
-  v10 = v4;
+  v10 = nameCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_188641304;
@@ -497,14 +497,14 @@
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v9, 0, v7);
 }
 
-- (void)markRecordNameUnrecoverable:(id)a3
+- (void)markRecordNameUnrecoverable:(id)unrecoverable
 {
-  v4 = a3;
+  unrecoverableCopy = unrecoverable;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_188641650;
   v9[3] = &unk_1E70BFBB0;
-  v10 = v4;
+  v10 = unrecoverableCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_18864170C;
@@ -514,15 +514,15 @@
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v9, 0, v7);
 }
 
-- (void)persistSyncEngineMetadata:(id)a3
+- (void)persistSyncEngineMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1886418AC;
   v7[3] = &unk_1E70BFBB0;
-  v8 = v4;
-  v5 = v4;
+  v8 = metadataCopy;
+  v5 = metadataCopy;
   objc_msgSend_readWriteDatabase_async_withCompletionHandler_(self, v6, v7, 0, &unk_1EFA2FB08);
 }
 
@@ -537,18 +537,18 @@
   dispatch_sync(v4, block);
 }
 
-- (id)unarchivedObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5
+- (id)unarchivedObjectOfClass:(Class)class fromData:(id)data error:(id *)error
 {
   v15[6] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dataCopy = data;
   v15[0] = 0;
-  v9 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(MEMORY[0x1E696ACD0], v8, a3, v7, v15);
+  v9 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(MEMORY[0x1E696ACD0], v8, class, dataCopy, v15);
   v10 = v15[0];
   v11 = v10;
-  if (a5)
+  if (error)
   {
     v12 = v10;
-    *a5 = v11;
+    *error = v11;
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -556,12 +556,12 @@
   return v9;
 }
 
-- (void)readWriteDatabase:(id)a3 async:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)readWriteDatabase:(id)database async:(BOOL)async withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v11 = a5;
-  if (v6)
+  asyncCopy = async;
+  databaseCopy = database;
+  handlerCopy = handler;
+  if (asyncCopy)
   {
     v12 = MEMORY[0x1E69E9750];
   }
@@ -577,28 +577,28 @@
   v16[2] = sub_1886421B4;
   v16[3] = &unk_1E70BFC70;
   v16[4] = self;
-  v17 = v11;
-  v18 = v8;
-  v14 = v8;
-  v15 = v11;
+  v17 = handlerCopy;
+  v18 = databaseCopy;
+  v14 = databaseCopy;
+  v15 = handlerCopy;
   v12(v13, v16);
 }
 
-+ (id)repairRecordToMetadata:(id)a3
++ (id)repairRecordToMetadata:(id)metadata
 {
-  v3 = a3;
-  v6 = objc_msgSend_recordType(v3, v4, v5);
+  metadataCopy = metadata;
+  v6 = objc_msgSend_recordType(metadataCopy, v4, v5);
   isEqualToString = objc_msgSend_isEqualToString_(v6, v7, @"MissingAsset");
 
   if (isEqualToString)
   {
-    v11 = objc_msgSend_objectForKeyedSubscript_(v3, v9, @"zone");
-    v13 = objc_msgSend_objectForKeyedSubscript_(v3, v12, @"affectedRecordID");
-    v15 = objc_msgSend_objectForKeyedSubscript_(v3, v14, @"affectedRecordType");
-    v17 = objc_msgSend_objectForKeyedSubscript_(v3, v16, @"fieldName");
-    v19 = objc_msgSend_objectForKeyedSubscript_(v3, v18, @"fileSignature");
-    v21 = objc_msgSend_objectForKeyedSubscript_(v3, v20, @"referenceSignature");
-    v23 = objc_msgSend_objectForKeyedSubscript_(v3, v22, @"listIndex");
+    v11 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v9, @"zone");
+    v13 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v12, @"affectedRecordID");
+    v15 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v14, @"affectedRecordType");
+    v17 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v16, @"fieldName");
+    v19 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v18, @"fileSignature");
+    v21 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v20, @"referenceSignature");
+    v23 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v22, @"listIndex");
     v24 = [CKRecordZoneID alloc];
     v71 = v11;
     v26 = objc_msgSend_initWithZoneName_ownerName_(v24, v25, v11, @"__defaultOwner__");
@@ -606,7 +606,7 @@
     v70 = v13;
     v29 = objc_msgSend_initWithRecordName_zoneID_(v27, v28, v13, v26);
     v30 = [CKAssetUploadRequestMetadata alloc];
-    v35 = objc_msgSend_recordID(v3, v31, v32);
+    v35 = objc_msgSend_recordID(metadataCopy, v31, v32);
     v73 = v21;
     if (v23)
     {
@@ -635,7 +635,7 @@
 
   else
   {
-    v42 = objc_msgSend_recordType(v3, v9, v10);
+    v42 = objc_msgSend_recordType(metadataCopy, v9, v10);
     v44 = objc_msgSend_isEqualToString_(v42, v43, @"MissingPackage");
 
     if (!v44)
@@ -644,19 +644,19 @@
       goto LABEL_10;
     }
 
-    v46 = objc_msgSend_objectForKeyedSubscript_(v3, v45, @"zone");
-    v48 = objc_msgSend_objectForKeyedSubscript_(v3, v47, @"affectedRecordID");
-    v37 = objc_msgSend_objectForKeyedSubscript_(v3, v49, @"affectedRecordType");
-    v72 = objc_msgSend_objectForKeyedSubscript_(v3, v50, @"fieldName");
-    v39 = objc_msgSend_objectForKeyedSubscript_(v3, v51, @"fileSignature");
-    v53 = objc_msgSend_objectForKeyedSubscript_(v3, v52, @"referenceSignature");
+    v46 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v45, @"zone");
+    v48 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v47, @"affectedRecordID");
+    v37 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v49, @"affectedRecordType");
+    v72 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v50, @"fieldName");
+    v39 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v51, @"fileSignature");
+    v53 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v52, @"referenceSignature");
     v54 = [CKRecordZoneID alloc];
     v23 = objc_msgSend_initWithZoneName_ownerName_(v54, v55, v46, @"__defaultOwner__");
     v56 = [CKRecordID alloc];
     v57 = v48;
     v26 = objc_msgSend_initWithRecordName_zoneID_(v56, v58, v48, v23);
     v59 = [CKPackageUploadRequestMetadata alloc];
-    v29 = objc_msgSend_recordID(v3, v60, v61);
+    v29 = objc_msgSend_recordID(metadataCopy, v60, v61);
     v73 = v53;
     v68 = v53;
     v62 = v46;

@@ -1,5 +1,5 @@
 @interface WFIntentAppPickerParameter
-- (WFIntentAppPickerParameter)initWithDefinition:(id)a3;
+- (WFIntentAppPickerParameter)initWithDefinition:(id)definition;
 - (void)possibleStatesDidChange;
 @end
 
@@ -13,16 +13,16 @@
   [(WFDynamicEnumerationParameter *)self defaultSerializedRepresentationDidChange];
 }
 
-- (WFIntentAppPickerParameter)initWithDefinition:(id)a3
+- (WFIntentAppPickerParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFIntentAppPickerParameter;
-  v5 = [(WFDynamicEnumerationParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFDynamicEnumerationParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"IntentName"];
+    v6 = [definitionCopy objectForKey:@"IntentName"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

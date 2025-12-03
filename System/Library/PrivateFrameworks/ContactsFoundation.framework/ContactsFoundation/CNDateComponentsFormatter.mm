@@ -1,32 +1,32 @@
 @interface CNDateComponentsFormatter
-+ (BOOL)shouldUseChinaSpecificFormattersForLocale:(id)a3;
-+ (BOOL)shouldUseIslamicSpecificFormattersForLocale:(id)a3;
++ (BOOL)shouldUseChinaSpecificFormattersForLocale:(id)locale;
++ (BOOL)shouldUseIslamicSpecificFormattersForLocale:(id)locale;
 + (id)chineseCyclicYearMonthDayFormatter;
 + (id)chineseLongStyleRelatedGregorianYearMonthDayFormatter;
 + (id)chineseMonthDayFormatter;
 + (id)chineseMonthDayHanidayFormatter;
 + (id)chineseRelatedGregorianYearMonthDayFormatter;
 + (id)chineseRelatedGregorianYearMonthDayHanidayFormatter;
-+ (id)dateFormatterWithYearFormat:(id)a3 hasLongFormat:(BOOL)a4 locale:(id)a5;
-+ (id)formatterFuturesWithLocale:(id)a3;
++ (id)dateFormatterWithYearFormat:(id)format hasLongFormat:(BOOL)longFormat locale:(id)locale;
++ (id)formatterFuturesWithLocale:(id)locale;
 + (id)os_log;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)shouldUseArabicGregorianPlaceholderStringForLanguage:(id)a3;
-- (BOOL)shouldUseArabicIslamicPlaceholderStringForLanguage:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)shouldUseArabicGregorianPlaceholderStringForLanguage:(id)language;
+- (BOOL)shouldUseArabicIslamicPlaceholderStringForLanguage:(id)language;
 - (BOOL)shouldUseChinesePlaceholderString;
 - (CNDateComponentsFormatter)init;
-- (id)dateComponentsFromString:(id)a3;
+- (id)dateComponentsFromString:(id)string;
 - (id)dateFormatPlaceholderString;
-- (id)dateFormatPlaceholderStringForLanguage:(id)a3;
-- (id)displayFormatterForComponents:(id)a3;
+- (id)dateFormatPlaceholderStringForLanguage:(id)language;
+- (id)displayFormatterForComponents:(id)components;
 - (id)dmyFormatString;
-- (id)normalizedComponentsFromDate:(id)a3 calendar:(id)a4 timeZone:(id)a5;
-- (id)placeholderStringWithLocalizedDay:(id)a3 month:(id)a4 year:(id)a5;
-- (id)placeholderSubstitutionStringWithDay:(unint64_t)a3 month:(unint64_t)a4 year:(unint64_t)a5;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromDateComponents:(id)a3;
+- (id)normalizedComponentsFromDate:(id)date calendar:(id)calendar timeZone:(id)zone;
+- (id)placeholderStringWithLocalizedDay:(id)day month:(id)month year:(id)year;
+- (id)placeholderSubstitutionStringWithDay:(unint64_t)day month:(unint64_t)month year:(unint64_t)year;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromDateComponents:(id)components;
 - (void)regenerateFormatterFutures;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation CNDateComponentsFormatter
@@ -59,9 +59,9 @@ uint64_t __35__CNDateComponentsFormatter_os_log__block_invoke()
   v2 = [(CNDateComponentsFormatter *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = currentLocale;
 
     [(CNDateComponentsFormatter *)v2 regenerateFormatterFutures];
   }
@@ -69,19 +69,19 @@ uint64_t __35__CNDateComponentsFormatter_os_log__block_invoke()
   return v2;
 }
 
-- (id)placeholderSubstitutionStringWithDay:(unint64_t)a3 month:(unint64_t)a4 year:(unint64_t)a5
+- (id)placeholderSubstitutionStringWithDay:(unint64_t)day month:(unint64_t)month year:(unint64_t)year
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v9 setDay:a3];
-  [v9 setMonth:a4];
-  [v9 setYear:a5];
-  v10 = [(CNDateComponentsFormatter *)self locale];
-  v11 = [v10 objectForKey:*MEMORY[0x1E695D958]];
+  [v9 setDay:day];
+  [v9 setMonth:month];
+  [v9 setYear:year];
+  locale = [(CNDateComponentsFormatter *)self locale];
+  v11 = [locale objectForKey:*MEMORY[0x1E695D958]];
   v12 = [v11 dateFromComponents:v9];
 
   v13 = objc_opt_class();
-  v14 = [(CNDateComponentsFormatter *)self locale];
-  v15 = [v13 shortDayMonthYearDateFormatterWithLocale:v14];
+  locale2 = [(CNDateComponentsFormatter *)self locale];
+  v15 = [v13 shortDayMonthYearDateFormatterWithLocale:locale2];
 
   v16 = MEMORY[0x1E696AD60];
   v17 = [v15 stringFromDate:v12];
@@ -96,15 +96,15 @@ uint64_t __35__CNDateComponentsFormatter_os_log__block_invoke()
   if (!dateFormatPlaceholderString)
   {
     v4 = objc_opt_class();
-    v5 = [(CNDateComponentsFormatter *)self locale];
-    v6 = [v4 shortDayMonthYearDateFormatterWithLocale:v5];
+    locale = [(CNDateComponentsFormatter *)self locale];
+    v6 = [v4 shortDayMonthYearDateFormatterWithLocale:locale];
 
-    v7 = [v6 dateStyle];
+    dateStyle = [v6 dateStyle];
     [v6 setDateStyle:1];
-    v8 = [v6 dateFormat];
-    [v6 setDateStyle:v7];
-    v9 = [v8 lowercaseString];
-    v10 = [v9 copy];
+    dateFormat = [v6 dateFormat];
+    [v6 setDateStyle:dateStyle];
+    lowercaseString = [dateFormat lowercaseString];
+    v10 = [lowercaseString copy];
     v11 = self->_dateFormatPlaceholderString;
     self->_dateFormatPlaceholderString = v10;
 
@@ -116,40 +116,40 @@ uint64_t __35__CNDateComponentsFormatter_os_log__block_invoke()
 
 - (id)dateFormatPlaceholderString
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 preferredLocalizations];
-  v5 = [v4 firstObject];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  v6 = [(CNDateComponentsFormatter *)self dateFormatPlaceholderStringForLanguage:v5];
+  v6 = [(CNDateComponentsFormatter *)self dateFormatPlaceholderStringForLanguage:firstObject];
 
   return v6;
 }
 
-- (id)dateFormatPlaceholderStringForLanguage:(id)a3
+- (id)dateFormatPlaceholderStringForLanguage:(id)language
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(CNDateComponentsFormatter *)self shouldUseArabicGregorianPlaceholderStringForLanguage:v4])
+  languageCopy = language;
+  if ([(CNDateComponentsFormatter *)self shouldUseArabicGregorianPlaceholderStringForLanguage:languageCopy])
   {
-    v5 = [(CNDateComponentsFormatter *)self arabicGregorianPlaceholderString];
+    arabicGregorianPlaceholderString = [(CNDateComponentsFormatter *)self arabicGregorianPlaceholderString];
 LABEL_5:
-    v6 = v5;
+    v6 = arabicGregorianPlaceholderString;
     goto LABEL_16;
   }
 
-  if ([(CNDateComponentsFormatter *)self shouldUseArabicIslamicPlaceholderStringForLanguage:v4])
+  if ([(CNDateComponentsFormatter *)self shouldUseArabicIslamicPlaceholderStringForLanguage:languageCopy])
   {
-    v5 = [(CNDateComponentsFormatter *)self arabicIslamicPlaceholderString];
+    arabicGregorianPlaceholderString = [(CNDateComponentsFormatter *)self arabicIslamicPlaceholderString];
     goto LABEL_5;
   }
 
-  v7 = [(CNDateComponentsFormatter *)self locale];
-  v8 = [v7 localeIdentifier];
+  locale = [(CNDateComponentsFormatter *)self locale];
+  localeIdentifier = [locale localeIdentifier];
 
   pErrorCode = U_ZERO_ERROR;
-  [v8 UTF8String];
+  [localeIdentifier UTF8String];
   udatpg_open();
-  v22 = v8;
+  v22 = localeIdentifier;
   v9 = &stru_1EF441028;
   v10 = &dword_185A9209C;
   v11 = 1;
@@ -204,22 +204,22 @@ LABEL_16:
   return v6;
 }
 
-- (id)placeholderStringWithLocalizedDay:(id)a3 month:(id)a4 year:(id)a5
+- (id)placeholderStringWithLocalizedDay:(id)day month:(id)month year:(id)year
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dayCopy = day;
+  monthCopy = month;
+  yearCopy = year;
   if ([(CNDateComponentsFormatter *)self shouldUseChinesePlaceholderString])
   {
-    v11 = [(CNDateComponentsFormatter *)self chinesePlaceholderStringWithDay:v8 month:v9 year:v10];
+    v11 = [(CNDateComponentsFormatter *)self chinesePlaceholderStringWithDay:dayCopy month:monthCopy year:yearCopy];
   }
 
   else
   {
     v11 = [(CNDateComponentsFormatter *)self placeholderSubstitutionStringWithDay:4 month:2 year:13];
-    [v11 replaceOccurrencesOfString:@"0?4" withString:v8 options:1024 range:{0, objc_msgSend(v11, "length")}];
-    [v11 replaceOccurrencesOfString:@"0?2" withString:v9 options:1024 range:{0, objc_msgSend(v11, "length")}];
-    [v11 replaceOccurrencesOfString:@"13" withString:v10 options:1024 range:{0, objc_msgSend(v11, "length")}];
+    [v11 replaceOccurrencesOfString:@"0?4" withString:dayCopy options:1024 range:{0, objc_msgSend(v11, "length")}];
+    [v11 replaceOccurrencesOfString:@"0?2" withString:monthCopy options:1024 range:{0, objc_msgSend(v11, "length")}];
+    [v11 replaceOccurrencesOfString:@"13" withString:yearCopy options:1024 range:{0, objc_msgSend(v11, "length")}];
   }
 
   return v11;
@@ -227,63 +227,63 @@ LABEL_16:
 
 - (BOOL)shouldUseChinesePlaceholderString
 {
-  v2 = [(CNDateComponentsFormatter *)self locale];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695D958]];
-  v4 = [v3 calendarIdentifier];
-  v5 = [v4 containsString:@"chinese"];
+  locale = [(CNDateComponentsFormatter *)self locale];
+  v3 = [locale objectForKey:*MEMORY[0x1E695D958]];
+  calendarIdentifier = [v3 calendarIdentifier];
+  v5 = [calendarIdentifier containsString:@"chinese"];
 
   return v5;
 }
 
-- (BOOL)shouldUseArabicGregorianPlaceholderStringForLanguage:(id)a3
+- (BOOL)shouldUseArabicGregorianPlaceholderStringForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(CNDateComponentsFormatter *)self locale];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695D958]];
-  v7 = [v6 calendarIdentifier];
-  v8 = [v7 containsString:@"gregorian"];
+  languageCopy = language;
+  locale = [(CNDateComponentsFormatter *)self locale];
+  v6 = [locale objectForKey:*MEMORY[0x1E695D958]];
+  calendarIdentifier = [v6 calendarIdentifier];
+  v8 = [calendarIdentifier containsString:@"gregorian"];
 
-  LOBYTE(v5) = [v4 isEqualToString:@"ar"];
-  return v8 & v5;
+  LOBYTE(locale) = [languageCopy isEqualToString:@"ar"];
+  return v8 & locale;
 }
 
-- (BOOL)shouldUseArabicIslamicPlaceholderStringForLanguage:(id)a3
+- (BOOL)shouldUseArabicIslamicPlaceholderStringForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(CNDateComponentsFormatter *)self locale];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695D958]];
-  v7 = [v6 calendarIdentifier];
-  v8 = [v7 containsString:@"islamic"];
+  languageCopy = language;
+  locale = [(CNDateComponentsFormatter *)self locale];
+  v6 = [locale objectForKey:*MEMORY[0x1E695D958]];
+  calendarIdentifier = [v6 calendarIdentifier];
+  v8 = [calendarIdentifier containsString:@"islamic"];
 
-  LOBYTE(v5) = [v4 isEqualToString:@"ar"];
-  return v8 & v5;
+  LOBYTE(locale) = [languageCopy isEqualToString:@"ar"];
+  return v8 & locale;
 }
 
-+ (id)dateFormatterWithYearFormat:(id)a3 hasLongFormat:(BOOL)a4 locale:(id)a5
++ (id)dateFormatterWithYearFormat:(id)format hasLongFormat:(BOOL)longFormat locale:(id)locale
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  longFormatCopy = longFormat;
+  formatCopy = format;
+  localeCopy = locale;
   v9 = @"dM";
-  if (v6)
+  if (longFormatCopy)
   {
     v9 = @"dMMMM";
   }
 
   v10 = v9;
   v11 = v10;
-  if (v7)
+  if (formatCopy)
   {
-    v12 = [(__CFString *)v10 stringByAppendingString:v7];
+    v12 = [(__CFString *)v10 stringByAppendingString:formatCopy];
 
     v11 = v12;
   }
 
-  v13 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:v11 options:0 locale:v8];
+  v13 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:v11 options:0 locale:localeCopy];
   v14 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v14 setLocale:v8];
+  [v14 setLocale:localeCopy];
   [v14 setDateFormat:v13];
-  if (!v7)
+  if (!formatCopy)
   {
     v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:-1.25138736e10];
     [v14 setDefaultDate:v15];
@@ -295,34 +295,34 @@ LABEL_16:
 - (void)regenerateFormatterFutures
 {
   v3 = objc_opt_class();
-  v6 = [(CNDateComponentsFormatter *)self locale];
-  v4 = [v3 formatterFuturesWithLocale:v6];
+  locale = [(CNDateComponentsFormatter *)self locale];
+  v4 = [v3 formatterFuturesWithLocale:locale];
   lazyFormatterFutures = self->_lazyFormatterFutures;
   self->_lazyFormatterFutures = v4;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v5 = a3;
-  if (self->_locale != v5)
+  localeCopy = locale;
+  if (self->_locale != localeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_locale, a3);
+    v6 = localeCopy;
+    objc_storeStrong(&self->_locale, locale);
     [(CNDateComponentsFormatter *)self regenerateFormatterFutures];
-    v5 = v6;
+    localeCopy = v6;
   }
 }
 
-+ (BOOL)shouldUseChinaSpecificFormattersForLocale:(id)a3
++ (BOOL)shouldUseChinaSpecificFormattersForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695D958]];
-  v4 = [v3 calendarIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695D828]];
+  v3 = [locale objectForKey:*MEMORY[0x1E695D958]];
+  calendarIdentifier = [v3 calendarIdentifier];
+  v5 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D828]];
 
   return v5;
 }
 
-+ (BOOL)shouldUseIslamicSpecificFormattersForLocale:(id)a3
++ (BOOL)shouldUseIslamicSpecificFormattersForLocale:(id)locale
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695D880];
@@ -332,135 +332,135 @@ LABEL_16:
   v12[2] = *MEMORY[0x1E695D890];
   v12[3] = v4;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
+  localeCopy = locale;
   v7 = [v5 arrayWithObjects:v12 count:4];
-  v8 = [v6 objectForKey:*MEMORY[0x1E695D958]];
+  v8 = [localeCopy objectForKey:*MEMORY[0x1E695D958]];
 
-  v9 = [v8 calendarIdentifier];
-  LOBYTE(v5) = [v7 containsObject:v9];
+  calendarIdentifier = [v8 calendarIdentifier];
+  LOBYTE(v5) = [v7 containsObject:calendarIdentifier];
 
   v10 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-+ (id)formatterFuturesWithLocale:(id)a3
++ (id)formatterFuturesWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([a1 shouldUseChinaSpecificFormattersForLocale:v4])
+  localeCopy = locale;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([self shouldUseChinaSpecificFormattersForLocale:localeCopy])
   {
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke;
     v50[3] = &__block_descriptor_40_e9__16__0__8l;
-    v50[4] = a1;
+    v50[4] = self;
     v6 = [CNFuture lazyFutureWithBlock:v50];
-    [v5 addObject:v6];
+    [array addObject:v6];
 
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_2;
     v49[3] = &__block_descriptor_40_e9__16__0__8l;
-    v49[4] = a1;
+    v49[4] = self;
     v7 = [CNFuture lazyFutureWithBlock:v49];
-    [v5 addObject:v7];
+    [array addObject:v7];
 
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_3;
     v48[3] = &__block_descriptor_40_e9__16__0__8l;
-    v48[4] = a1;
+    v48[4] = self;
     v8 = [CNFuture lazyFutureWithBlock:v48];
-    [v5 addObject:v8];
+    [array addObject:v8];
 
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_4;
     v47[3] = &__block_descriptor_40_e9__16__0__8l;
-    v47[4] = a1;
+    v47[4] = self;
     v9 = [CNFuture lazyFutureWithBlock:v47];
-    [v5 addObject:v9];
+    [array addObject:v9];
 
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_5;
     v46[3] = &__block_descriptor_40_e9__16__0__8l;
-    v46[4] = a1;
+    v46[4] = self;
     v10 = [CNFuture lazyFutureWithBlock:v46];
-    [v5 addObject:v10];
+    [array addObject:v10];
 
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_6;
     v45[3] = &__block_descriptor_40_e9__16__0__8l;
-    v45[4] = a1;
+    v45[4] = self;
     v11 = [CNFuture lazyFutureWithBlock:v45];
-    [v5 addObject:v11];
+    [array addObject:v11];
   }
 
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_7;
   v42[3] = &unk_1E6ED8068;
-  v44 = a1;
-  v12 = v4;
+  selfCopy = self;
+  v12 = localeCopy;
   v43 = v12;
   v13 = [CNFuture lazyFutureWithBlock:v42];
-  [v5 addObject:v13];
+  [array addObject:v13];
 
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_8;
   v39[3] = &unk_1E6ED8068;
-  v41 = a1;
+  selfCopy2 = self;
   v14 = v12;
   v40 = v14;
   v15 = [CNFuture lazyFutureWithBlock:v39];
-  [v5 addObject:v15];
+  [array addObject:v15];
 
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_9;
   v36[3] = &unk_1E6ED8068;
-  v38 = a1;
+  selfCopy3 = self;
   v16 = v14;
   v37 = v16;
   v17 = [CNFuture lazyFutureWithBlock:v36];
-  [v5 addObject:v17];
+  [array addObject:v17];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_10;
   v33[3] = &unk_1E6ED8068;
-  v35 = a1;
+  selfCopy4 = self;
   v18 = v16;
   v34 = v18;
   v19 = [CNFuture lazyFutureWithBlock:v33];
-  [v5 addObject:v19];
+  [array addObject:v19];
 
-  if ([a1 shouldUseIslamicSpecificFormattersForLocale:v18])
+  if ([self shouldUseIslamicSpecificFormattersForLocale:v18])
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_11;
     v30[3] = &unk_1E6ED8068;
-    v32 = a1;
+    selfCopy5 = self;
     v20 = v18;
     v31 = v20;
     v21 = [CNFuture lazyFutureWithBlock:v30];
-    [v5 addObject:v21];
+    [array addObject:v21];
 
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12;
     v27 = &unk_1E6ED8068;
-    v29 = a1;
+    selfCopy6 = self;
     v28 = v20;
     v22 = [CNFuture lazyFutureWithBlock:&v24];
-    [v5 addObject:{v22, v24, v25, v26, v27}];
+    [array addObject:{v22, v24, v25, v26, v27}];
   }
 
-  return v5;
+  return array;
 }
 
 id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_11(uint64_t a1)
@@ -490,7 +490,7 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 + (id)chineseRelatedGregorianYearMonthDayFormatter
 {
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"zh@calendar=chinese"];
-  v4 = [a1 dateFormatterWithYearFormat:@"r" hasLongFormat:0 locale:v3];
+  v4 = [self dateFormatterWithYearFormat:@"r" hasLongFormat:0 locale:v3];
 
   [v4 setDateStyle:1];
 
@@ -500,7 +500,7 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 + (id)chineseMonthDayFormatter
 {
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"zh@calendar=chinese"];
-  v4 = [a1 dateFormatterWithYearFormat:0 hasLongFormat:0 locale:v3];
+  v4 = [self dateFormatterWithYearFormat:0 hasLongFormat:0 locale:v3];
 
   return v4;
 }
@@ -508,7 +508,7 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 + (id)chineseMonthDayHanidayFormatter
 {
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"zh@calendar=chinesenumbers=hanidays"];;
-  v4 = [a1 dateFormatterWithYearFormat:0 hasLongFormat:0 locale:v3];
+  v4 = [self dateFormatterWithYearFormat:0 hasLongFormat:0 locale:v3];
 
   return v4;
 }
@@ -516,7 +516,7 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 + (id)chineseRelatedGregorianYearMonthDayHanidayFormatter
 {
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"zh@calendar=chinesenumbers=hanidays"];;
-  v4 = [a1 dateFormatterWithYearFormat:@"r" hasLongFormat:1 locale:v3];
+  v4 = [self dateFormatterWithYearFormat:@"r" hasLongFormat:1 locale:v3];
 
   [v4 setDateStyle:2];
 
@@ -526,10 +526,10 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 + (id)chineseCyclicYearMonthDayFormatter
 {
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"zh@calendar=chinesenumbers=hanidays"];;
-  v4 = [a1 dateFormatterWithYearFormat:@"U" hasLongFormat:0 locale:v3];
+  v4 = [self dateFormatterWithYearFormat:@"U" hasLongFormat:0 locale:v3];
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v4 setDefaultDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  [v4 setDefaultDate:date];
 
   return v4;
 }
@@ -545,52 +545,52 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
   return v2;
 }
 
-- (id)displayFormatterForComponents:(id)a3
+- (id)displayFormatterForComponents:(id)components
 {
-  v4 = a3;
-  v5 = [v4 year];
-  v6 = [v4 calendar];
+  componentsCopy = components;
+  year = [componentsCopy year];
+  calendar = [componentsCopy calendar];
 
-  v7 = [v6 calendarIdentifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E695D828]];
+  calendarIdentifier = [calendar calendarIdentifier];
+  v8 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D828]];
 
   v9 = objc_opt_class();
   v10 = v9;
   if (v8)
   {
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (year == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v9 chineseMonthDayFormatter];
+      chineseMonthDayFormatter = [v9 chineseMonthDayFormatter];
     }
 
     else
     {
-      v11 = [v9 chineseRelatedGregorianYearMonthDayHanidayFormatter];
-      [v11 setDateStyle:3];
+      chineseMonthDayFormatter = [v9 chineseRelatedGregorianYearMonthDayHanidayFormatter];
+      [chineseMonthDayFormatter setDateStyle:3];
     }
   }
 
   else
   {
-    v12 = [(CNDateComponentsFormatter *)self locale];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    locale = [(CNDateComponentsFormatter *)self locale];
+    if (year == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v10 longDayMonthYearlessDateFormatterWithLocale:v12];
+      [v10 longDayMonthYearlessDateFormatterWithLocale:locale];
     }
 
     else
     {
-      [v10 longDayMonthYearDateFormatterWithLocale:v12];
+      [v10 longDayMonthYearDateFormatterWithLocale:locale];
     }
-    v11 = ;
+    chineseMonthDayFormatter = ;
   }
 
-  return v11;
+  return chineseMonthDayFormatter;
 }
 
-- (id)stringFromDateComponents:(id)a3
+- (id)stringFromDateComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
     v4 = [(CNDateComponentsFormatter *)self stringForObjectValue:?];
   }
@@ -603,12 +603,12 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
   return v4;
 }
 
-- (id)dateComponentsFromString:(id)a3
+- (id)dateComponentsFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v8 = 0;
-    v4 = [(CNDateComponentsFormatter *)self getObjectValue:&v8 forString:a3 errorDescription:0];
+    v4 = [(CNDateComponentsFormatter *)self getObjectValue:&v8 forString:string errorDescription:0];
     v5 = v8;
     if (!v4)
     {
@@ -626,27 +626,27 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
   return v6;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v4 _cn_isEmpty])
+    if ([valueCopy _cn_isEmpty])
     {
       v5 = &stru_1EF441028;
     }
 
     else
     {
-      v7 = v4;
+      v7 = valueCopy;
       v8 = [(CNDateComponentsFormatter *)self displayFormatterForComponents:v7];
-      v9 = [v7 calendar];
-      v10 = [v8 calendar];
+      calendar = [v7 calendar];
+      calendar2 = [v8 calendar];
       v11 = [v7 copy];
 
-      if (!v9)
+      if (!calendar)
       {
-        v9 = v10;
+        calendar = calendar2;
       }
 
       if ([v11 year] == 0x7FFFFFFFFFFFFFFFLL)
@@ -654,10 +654,10 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
         [v11 setYear:1604];
       }
 
-      v12 = [v10 timeZone];
-      [v11 setTimeZone:v12];
+      timeZone = [calendar2 timeZone];
+      [v11 setTimeZone:timeZone];
 
-      v13 = [v9 dateFromComponents:v11];
+      v13 = [calendar dateFromComponents:v11];
       v5 = [v8 stringForObjectValue:v13];
     }
   }
@@ -670,16 +670,16 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
   return v5;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ([v8 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v9 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      [CNDateComponentsFormatter getObjectValue:v8 forString:v9 errorDescription:?];
+      [CNDateComponentsFormatter getObjectValue:stringCopy forString:os_log errorDescription:?];
     }
 
     v49 = 0u;
@@ -693,7 +693,7 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
       v11 = v10;
       v12 = 0;
       v44 = *v48;
-      v42 = a3;
+      valueCopy = value;
       while (2)
       {
         v13 = 0;
@@ -707,16 +707,16 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
 
           v15 = [*(*(&v47 + 1) + 8 * v13) result:0];
           v46 = 0;
-          v16 = [v15 getObjectValue:&v46 forString:v8 errorDescription:a5];
+          v16 = [v15 getObjectValue:&v46 forString:stringCopy errorDescription:description];
           v17 = v46;
 
-          v18 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+          os_log2 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
           {
-            v40 = [v15 locale];
-            v21 = [v40 localeIdentifier];
-            v38 = v21;
-            v22 = [v15 dateFormat];
+            locale = [v15 locale];
+            localeIdentifier = [locale localeIdentifier];
+            v38 = localeIdentifier;
+            dateFormat = [v15 dateFormat];
             *buf = 138412802;
             v23 = @"failed";
             if (v16)
@@ -724,13 +724,13 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
               v23 = @"succeeded";
             }
 
-            v52 = v21;
+            v52 = localeIdentifier;
             v53 = 2112;
-            v54 = v22;
-            v24 = v22;
+            v54 = dateFormat;
+            v24 = dateFormat;
             v55 = 2112;
             v56 = v23;
-            _os_log_debug_impl(&dword_1859F0000, v18, OS_LOG_TYPE_DEBUG, "Parse attempt with locale:%@ date format: %@ %@", buf, 0x20u);
+            _os_log_debug_impl(&dword_1859F0000, os_log2, OS_LOG_TYPE_DEBUG, "Parse attempt with locale:%@ date format: %@ %@", buf, 0x20u);
 
             v14 = obj;
           }
@@ -739,33 +739,33 @@ id __56__CNDateComponentsFormatter_formatterFuturesWithLocale___block_invoke_12(
           {
             v12 = v17;
 LABEL_26:
-            v32 = [v15 calendar];
-            v33 = [v15 timeZone];
-            v30 = [(CNDateComponentsFormatter *)self normalizedComponentsFromDate:v12 calendar:v32 timeZone:v33];
+            calendar = [v15 calendar];
+            timeZone = [v15 timeZone];
+            v30 = [(CNDateComponentsFormatter *)self normalizedComponentsFromDate:v12 calendar:calendar timeZone:timeZone];
 
-            v34 = [objc_opt_class() os_log];
-            if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
+            os_log3 = [objc_opt_class() os_log];
+            if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG))
             {
-              [CNDateComponentsFormatter getObjectValue:v15 forString:v30 errorDescription:v34];
+              [CNDateComponentsFormatter getObjectValue:v15 forString:v30 errorDescription:os_log3];
             }
 
             v31 = 1;
-            a3 = v42;
+            value = valueCopy;
             goto LABEL_29;
           }
 
           [v15 setLenient:1];
           v45 = 0;
-          v19 = [v15 getObjectValue:&v45 forString:v8 errorDescription:a5];
+          v19 = [v15 getObjectValue:&v45 forString:stringCopy errorDescription:description];
           v12 = v45;
 
-          v20 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+          os_log4 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEBUG))
           {
-            v41 = [v15 locale];
-            v25 = [v41 localeIdentifier];
-            v39 = v25;
-            v26 = [v15 dateFormat];
+            locale2 = [v15 locale];
+            localeIdentifier2 = [locale2 localeIdentifier];
+            v39 = localeIdentifier2;
+            dateFormat2 = [v15 dateFormat];
             *buf = 138412802;
             v27 = @"failed";
             if (v19)
@@ -773,13 +773,13 @@ LABEL_26:
               v27 = @"succeeded";
             }
 
-            v52 = v25;
+            v52 = localeIdentifier2;
             v53 = 2112;
-            v54 = v26;
-            v28 = v26;
+            v54 = dateFormat2;
+            v28 = dateFormat2;
             v55 = 2112;
             v56 = v27;
-            _os_log_debug_impl(&dword_1859F0000, v20, OS_LOG_TYPE_DEBUG, "Parse attempt with lenient option, locale:%@ date format: %@ %@", buf, 0x20u);
+            _os_log_debug_impl(&dword_1859F0000, os_log4, OS_LOG_TYPE_DEBUG, "Parse attempt with lenient option, locale:%@ date format: %@ %@", buf, 0x20u);
 
             v14 = obj;
           }
@@ -797,7 +797,7 @@ LABEL_26:
         v11 = v29;
         v30 = 0;
         v31 = 0;
-        a3 = v42;
+        value = valueCopy;
         if (v29)
         {
           continue;
@@ -816,10 +816,10 @@ LABEL_26:
 
 LABEL_29:
 
-    if (a3)
+    if (value)
     {
       v35 = v30;
-      *a3 = v30;
+      *value = v30;
     }
   }
 
@@ -832,33 +832,33 @@ LABEL_29:
   return v31;
 }
 
-- (id)normalizedComponentsFromDate:(id)a3 calendar:(id)a4 timeZone:(id)a5
+- (id)normalizedComponentsFromDate:(id)date calendar:(id)calendar timeZone:(id)zone
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNDateComponentsFormatter *)self componentsToExtract];
-  v12 = [v9 componentsInTimeZone:v8 fromDate:v10];
+  zoneCopy = zone;
+  calendarCopy = calendar;
+  dateCopy = date;
+  componentsToExtract = [(CNDateComponentsFormatter *)self componentsToExtract];
+  v12 = [calendarCopy componentsInTimeZone:zoneCopy fromDate:dateCopy];
 
-  v13 = [CNDateHelper dateComponentsFromDateComponents:v12 preservingUnits:v11];
+  v13 = [CNDateHelper dateComponentsFromDateComponents:v12 preservingUnits:componentsToExtract];
 
   v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:-1.25138736e10];
-  v15 = [v9 componentsInTimeZone:v8 fromDate:v14];
+  v15 = [calendarCopy componentsInTimeZone:zoneCopy fromDate:v14];
 
-  v16 = [CNDateHelper dateComponentsFromDateComponents:v15 preservingUnits:v11];
+  v16 = [CNDateHelper dateComponentsFromDateComponents:v15 preservingUnits:componentsToExtract];
 
-  v17 = [v13 year];
-  if (v17 == [v16 year] && (v18 = objc_msgSend(v13, "era"), v18 == objc_msgSend(v16, "era")))
+  year = [v13 year];
+  if (year == [v16 year] && (v18 = objc_msgSend(v13, "era"), v18 == objc_msgSend(v16, "era")))
   {
-    v19 = 0x7FFFFFFFFFFFFFFFLL;
+    year2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v19 = [v13 year];
+    year2 = [v13 year];
   }
 
-  [v13 setYear:v19];
+  [v13 setYear:year2];
 
   return v13;
 }

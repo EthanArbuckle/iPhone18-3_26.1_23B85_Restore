@@ -1,24 +1,24 @@
 @interface PUPlaybackTimeLabel
 - (BOOL)_needsUpdate;
-- (CGSize)_maximumLabelSizeWithDuration:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PUPlaybackTimeLabel)initWithFrame:(CGRect)a3;
-- (id)_labelTextWithFormat:(int64_t)a3 elapsedInterval:(double)a4 remainingInterval:(double)a5;
-- (id)_stringFromTimeInterval:(double)a3;
+- (CGSize)_maximumLabelSizeWithDuration:(double)duration;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PUPlaybackTimeLabel)initWithFrame:(CGRect)frame;
+- (id)_labelTextWithFormat:(int64_t)format elapsedInterval:(double)interval remainingInterval:(double)remainingInterval;
+- (id)_stringFromTimeInterval:(double)interval;
 - (void)_invalidateBackground;
 - (void)_invalidateLabel;
 - (void)_updateBackgroundIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updateLabelIfNeeded;
 - (void)layoutSubviews;
-- (void)setCurrentPlaybackTime:(id *)a3;
-- (void)setFormat:(int64_t)a3;
-- (void)setPlaybackDuration:(id *)a3;
+- (void)setCurrentPlaybackTime:(id *)time;
+- (void)setFormat:(int64_t)format;
+- (void)setPlaybackDuration:(id *)duration;
 @end
 
 @implementation PUPlaybackTimeLabel
 
-- (id)_stringFromTimeInterval:(double)a3
+- (id)_stringFromTimeInterval:(double)interval
 {
   if (_stringFromTimeInterval__onceToken_70262 != -1)
   {
@@ -26,14 +26,14 @@
   }
 
   v4 = &_stringFromTimeInterval__hourMinuteSecondFormatter_70264;
-  if (a3 < 3600.0)
+  if (interval < 3600.0)
   {
     v4 = &_stringFromTimeInterval__minuteSecondFormatter_70265;
   }
 
   v5 = *v4;
 
-  return [v5 stringFromTimeInterval:a3];
+  return [v5 stringFromTimeInterval:interval];
 }
 
 uint64_t __47__PUPlaybackTimeLabel__stringFromTimeInterval___block_invoke()
@@ -56,25 +56,25 @@ uint64_t __47__PUPlaybackTimeLabel__stringFromTimeInterval___block_invoke()
   return [v4 setZeroFormattingBehavior:0x10000];
 }
 
-- (id)_labelTextWithFormat:(int64_t)a3 elapsedInterval:(double)a4 remainingInterval:(double)a5
+- (id)_labelTextWithFormat:(int64_t)format elapsedInterval:(double)interval remainingInterval:(double)remainingInterval
 {
-  switch(a3)
+  switch(format)
   {
     case 3:
       v11 = MEMORY[0x1E696AEC0];
-      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:a4];
-      v12 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:a5];
+      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:interval];
+      v12 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:remainingInterval];
       v10 = [v11 stringWithFormat:@"%@ / -%@", v8, v12];
 
       goto LABEL_8;
     case 2:
       v9 = MEMORY[0x1E696AEC0];
-      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:a5];
+      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:remainingInterval];
       [v9 stringWithFormat:@"-%@", v8];
       goto LABEL_6;
     case 1:
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:a4];
+      v8 = [(PUPlaybackTimeLabel *)self _stringFromTimeInterval:interval];
       [v7 stringWithFormat:@"%@", v8];
       v10 = LABEL_6:;
 LABEL_8:
@@ -88,10 +88,10 @@ LABEL_10:
   return v10;
 }
 
-- (CGSize)_maximumLabelSizeWithDuration:(double)a3
+- (CGSize)_maximumLabelSizeWithDuration:(double)duration
 {
-  v5 = [(PUPlaybackTimeLabel *)self _label];
-  v6 = [v5 text];
+  _label = [(PUPlaybackTimeLabel *)self _label];
+  text = [_label text];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -100,7 +100,7 @@ LABEL_10:
   aBlock[1] = 3221225472;
   aBlock[2] = __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke;
   aBlock[3] = &unk_1E7B7D3E8;
-  *&aBlock[5] = a3;
+  *&aBlock[5] = duration;
   aBlock[4] = &v23;
   aBlock[6] = 3;
   v7 = _Block_copy(aBlock);
@@ -126,11 +126,11 @@ LABEL_10:
   v8[2](v8, [v9 chromeShownPlaybackIndicator]);
   v8[2](v8, [v9 playingPlaybackIndicator]);
   v10 = [(PUPlaybackTimeLabel *)self _labelTextWithFormat:v19[3] elapsedInterval:v24[3] remainingInterval:v24[3]];
-  [v5 setText:v10];
-  [v5 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [_label setText:v10];
+  [_label sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v12 = v11;
   v14 = v13;
-  [v5 setText:v6];
+  [_label setText:text];
 
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v23, 8);
@@ -185,8 +185,8 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
       v4 = 0;
     }
 
-    v5 = [(PUPlaybackTimeLabel *)self _label];
-    [v5 setText:v4];
+    _label = [(PUPlaybackTimeLabel *)self _label];
+    [_label setText:v4];
   }
 }
 
@@ -218,7 +218,7 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
     [(PUPlaybackTimeLabel *)self _maximumLabelSizeWithDuration:v3];
     v5 = v4 + 16.0;
     v7 = v6 + 4.0;
-    v8 = [(PUPlaybackTimeLabel *)self _backgroundView];
+    _backgroundView = [(PUPlaybackTimeLabel *)self _backgroundView];
     [(PUPlaybackTimeLabel *)self bounds];
     x = v15.origin.x;
     y = v15.origin.y;
@@ -229,8 +229,8 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
     v16.origin.y = y;
     v16.size.width = width;
     v16.size.height = height;
-    [v8 setCenter:{MidX + 0.0, CGRectGetMidY(v16) + 0.0}];
-    [v8 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v5, v7}];
+    [_backgroundView setCenter:{MidX + 0.0, CGRectGetMidY(v16) + 0.0}];
+    [_backgroundView setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v5, v7}];
   }
 }
 
@@ -261,11 +261,11 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
   return [(PUPlaybackTimeLabel *)self _needsUpdateLabel];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PUPlaybackTimeLabel *)self _updateIfNeeded:a3.width];
-  v4 = [(PUPlaybackTimeLabel *)self _backgroundView];
-  [v4 bounds];
+  [(PUPlaybackTimeLabel *)self _updateIfNeeded:fits.width];
+  _backgroundView = [(PUPlaybackTimeLabel *)self _backgroundView];
+  [_backgroundView bounds];
   v6 = v5;
   v8 = v7;
 
@@ -284,15 +284,15 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
   [(PUPlaybackTimeLabel *)self _updateIfNeeded];
 }
 
-- (void)setPlaybackDuration:(id *)a3
+- (void)setPlaybackDuration:(id *)duration
 {
   p_playbackDuration = &self->_playbackDuration;
-  time1 = *a3;
+  time1 = *duration;
   playbackDuration = self->_playbackDuration;
   if (CMTimeCompare(&time1, &playbackDuration))
   {
-    v6 = *&a3->var0;
-    p_playbackDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_playbackDuration->epoch = duration->var3;
     *&p_playbackDuration->value = v6;
     if ([(PUPlaybackTimeLabel *)self format])
     {
@@ -302,15 +302,15 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
   }
 }
 
-- (void)setCurrentPlaybackTime:(id *)a3
+- (void)setCurrentPlaybackTime:(id *)time
 {
   p_currentPlaybackTime = &self->_currentPlaybackTime;
-  time1 = *a3;
+  time1 = *time;
   currentPlaybackTime = self->_currentPlaybackTime;
   if (CMTimeCompare(&time1, &currentPlaybackTime))
   {
-    v6 = *&a3->var0;
-    p_currentPlaybackTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_currentPlaybackTime->epoch = time->var3;
     *&p_currentPlaybackTime->value = v6;
     if ([(PUPlaybackTimeLabel *)self format])
     {
@@ -319,22 +319,22 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
   }
 }
 
-- (void)setFormat:(int64_t)a3
+- (void)setFormat:(int64_t)format
 {
-  if (self->_format != a3)
+  if (self->_format != format)
   {
-    self->_format = a3;
+    self->_format = format;
     [(PUPlaybackTimeLabel *)self _invalidateBackground];
 
     [(PUPlaybackTimeLabel *)self _invalidateLabel];
   }
 }
 
-- (PUPlaybackTimeLabel)initWithFrame:(CGRect)a3
+- (PUPlaybackTimeLabel)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PUPlaybackTimeLabel;
-  v3 = [(PUPlaybackTimeLabel *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPlaybackTimeLabel *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -343,13 +343,13 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
     backgroundView = v3->__backgroundView;
     v3->__backgroundView = v5;
 
-    v7 = [(UIView *)v3->__backgroundView layer];
-    [v7 setCornerRadius:2.0];
+    layer = [(UIView *)v3->__backgroundView layer];
+    [layer setCornerRadius:2.0];
 
     v8 = v3->__backgroundView;
     v9 = +[PUInterfaceManager currentTheme];
-    v10 = [v9 playbackTimeLabelBackgroundColor];
-    [(UIView *)v8 setBackgroundColor:v10];
+    playbackTimeLabelBackgroundColor = [v9 playbackTimeLabelBackgroundColor];
+    [(UIView *)v8 setBackgroundColor:playbackTimeLabelBackgroundColor];
 
     [(UIView *)v3->__backgroundView setAutoresizingMask:45];
     [(PUPlaybackTimeLabel *)v3 addSubview:v3->__backgroundView];
@@ -361,14 +361,14 @@ uint64_t __53__PUPlaybackTimeLabel__maximumLabelSizeWithDuration___block_invoke_
 
     v14 = v3->__label;
     v15 = +[PUInterfaceManager currentTheme];
-    v16 = [v15 playbackTimeLabelFont];
-    [(UILabel *)v14 setFont:v16];
+    playbackTimeLabelFont = [v15 playbackTimeLabelFont];
+    [(UILabel *)v14 setFont:playbackTimeLabelFont];
 
     [(UILabel *)v3->__label setTextAlignment:1];
     [(UILabel *)v3->__label setNumberOfLines:1];
     v17 = v3->__label;
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v17 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v17 setBackgroundColor:clearColor];
 
     [(UILabel *)v3->__label setAutoresizingMask:18];
     [(PUPlaybackTimeLabel *)v3 addSubview:v3->__label];

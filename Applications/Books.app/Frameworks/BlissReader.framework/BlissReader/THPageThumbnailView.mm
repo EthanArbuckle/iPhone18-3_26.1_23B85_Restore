@@ -3,28 +3,28 @@
 + (id)thumbnailQueue;
 - (CGRect)highlightedRelativeRect;
 - (NSString)description;
-- (THPageThumbnailView)initWithFrame:(CGRect)a3 isFirstThumbnail:(BOOL)a4 delegate:(id)a5;
+- (THPageThumbnailView)initWithFrame:(CGRect)frame isFirstThumbnail:(BOOL)thumbnail delegate:(id)delegate;
 - (id)p_createSideBorderView;
 - (void)clearHighlightRect;
 - (void)dealloc;
-- (void)gestureReset:(id)a3;
-- (void)hideExtrasAnimated:(BOOL)a3 duration:(double)a4;
+- (void)gestureReset:(id)reset;
+- (void)hideExtrasAnimated:(BOOL)animated duration:(double)duration;
 - (void)p_clearTimer;
-- (void)p_handleTap:(id)a3;
+- (void)p_handleTap:(id)tap;
 - (void)p_setBorderMode:(int)mBorderMode;
-- (void)p_tapGestureTimerFired:(id)a3;
-- (void)setBorderVisible:(BOOL)a3;
-- (void)setCanvasScrollView:(id)a3 rasterize:(BOOL)a4;
-- (void)setHasLeftBorder:(BOOL)a3;
-- (void)setHasRightBorder:(BOOL)a3;
-- (void)setHighlightRelativeRect:(CGRect)a3;
-- (void)setImage:(CGImage *)a3;
-- (void)setImageData:(id)a3 immediate:(BOOL)a4;
-- (void)setShowCanvas:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupFreeTransformWithDelegate:(id)a3;
-- (void)showExtrasAnimated:(BOOL)a3 duration:(double)a4;
+- (void)p_tapGestureTimerFired:(id)fired;
+- (void)setBorderVisible:(BOOL)visible;
+- (void)setCanvasScrollView:(id)view rasterize:(BOOL)rasterize;
+- (void)setHasLeftBorder:(BOOL)border;
+- (void)setHasRightBorder:(BOOL)border;
+- (void)setHighlightRelativeRect:(CGRect)rect;
+- (void)setImage:(CGImage *)image;
+- (void)setImageData:(id)data immediate:(BOOL)immediate;
+- (void)setShowCanvas:(BOOL)canvas animated:(BOOL)animated;
+- (void)setupFreeTransformWithDelegate:(id)delegate;
+- (void)showExtrasAnimated:(BOOL)animated duration:(double)duration;
 - (void)teardown;
-- (void)touchesBeganFromTap:(id)a3;
+- (void)touchesBeganFromTap:(id)tap;
 @end
 
 @implementation THPageThumbnailView
@@ -49,12 +49,12 @@
   return qword_5677E0;
 }
 
-- (THPageThumbnailView)initWithFrame:(CGRect)a3 isFirstThumbnail:(BOOL)a4 delegate:(id)a5
+- (THPageThumbnailView)initWithFrame:(CGRect)frame isFirstThumbnail:(BOOL)thumbnail delegate:(id)delegate
 {
-  v6 = a4;
+  thumbnailCopy = thumbnail;
   v15.receiver = self;
   v15.super_class = THPageThumbnailView;
-  v7 = [(THPageThumbnailView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(THPageThumbnailView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
@@ -71,8 +71,8 @@
     [-[THPageThumbnailView layer](v8 "layer")];
     [(CALayer *)v8->mImageLayer setHidden:1];
 
-    v8->mDelegate = a5;
-    if (v6)
+    v8->mDelegate = delegate;
+    if (thumbnailCopy)
     {
       [-[THPageThumbnailView layer](v8 "layer")];
       v10 = 2;
@@ -132,7 +132,7 @@
   return [(NSString *)[(THPageThumbnailView *)&v3 description] stringByAppendingString:[NSString stringWithFormat:@" ch: %lu p: %lu", self->mChapterIndex, self->mPageIndex]];
 }
 
-- (void)setupFreeTransformWithDelegate:(id)a3
+- (void)setupFreeTransformWithDelegate:(id)delegate
 {
   if (self->mFreeTransformController)
   {
@@ -141,7 +141,7 @@
 
   v5 = objc_alloc_init(THWFreeTransformController);
   self->mFreeTransformController = v5;
-  [(THWFreeTransformController *)v5 setDelegate:a3];
+  [(THWFreeTransformController *)v5 setDelegate:delegate];
   [(THWFreeTransformController *)self->mFreeTransformController setScaleThreshold:1.5];
   [(THWFreeTransformController *)self->mFreeTransformController setTargetLayer:[(THPageThumbnailView *)self layer]];
   [(THWFreeTransformController *)self->mFreeTransformController setSmoothEdges:1];
@@ -151,13 +151,13 @@
   [(THWFreeTransformController *)self->mFreeTransformController setTransformScale:v7 / v8];
   [(THPageThumbnailView *)self setFreeTransformGestureRecognizer:[[THWFreeTransformGestureRecognizer alloc] initWithTarget:self->mFreeTransformController action:"transformGRChanged:"]];
   [(THPageThumbnailView *)self addGestureRecognizer:[(THPageThumbnailView *)self freeTransformGestureRecognizer]];
-  -[THWFreeTransformGestureRecognizer setUnmovingParentView:](-[THPageThumbnailView freeTransformGestureRecognizer](self, "freeTransformGestureRecognizer"), "setUnmovingParentView:", [a3 unmovingParentViewForFreeTransformController:self->mFreeTransformController]);
+  -[THWFreeTransformGestureRecognizer setUnmovingParentView:](-[THPageThumbnailView freeTransformGestureRecognizer](self, "freeTransformGestureRecognizer"), "setUnmovingParentView:", [delegate unmovingParentViewForFreeTransformController:self->mFreeTransformController]);
   [(THWFreeTransformGestureRecognizer *)[(THPageThumbnailView *)self freeTransformGestureRecognizer] setFreeTransformDelegate:self->mFreeTransformController];
   [(THWFreeTransformGestureRecognizer *)[(THPageThumbnailView *)self freeTransformGestureRecognizer] setUseGestureViewForReCentering:1];
-  v9 = [(THPageThumbnailView *)self freeTransformGestureRecognizer];
+  freeTransformGestureRecognizer = [(THPageThumbnailView *)self freeTransformGestureRecognizer];
   mFreeTransformController = self->mFreeTransformController;
 
-  [(THWFreeTransformController *)mFreeTransformController setTransformGR:v9];
+  [(THWFreeTransformController *)mFreeTransformController setTransformGR:freeTransformGestureRecognizer];
 }
 
 - (void)teardown
@@ -169,10 +169,10 @@
   [(THWFreeTransformController *)mFreeTransformController clearGestureRecognizer];
 }
 
-- (void)setBorderVisible:(BOOL)a3
+- (void)setBorderVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
     v5 = 1.0;
   }
@@ -187,7 +187,7 @@
   [(UIView *)self->mRightBorderView setAlpha:v5];
   mPageNumberView = self->mPageNumberView;
 
-  [(THPageNumberView *)mPageNumberView setHidden:!v3];
+  [(THPageNumberView *)mPageNumberView setHidden:!visibleCopy];
 }
 
 - (void)p_setBorderMode:(int)mBorderMode
@@ -263,12 +263,12 @@
   return v3;
 }
 
-- (void)setHasLeftBorder:(BOOL)a3
+- (void)setHasLeftBorder:(BOOL)border
 {
-  v3 = a3;
-  if ([(THPageThumbnailView *)self hasLeftBorder]!= a3)
+  borderCopy = border;
+  if ([(THPageThumbnailView *)self hasLeftBorder]!= border)
   {
-    if (v3)
+    if (borderCopy)
     {
       if (self->mBorderMode == 2)
       {
@@ -301,12 +301,12 @@
   }
 }
 
-- (void)setHasRightBorder:(BOOL)a3
+- (void)setHasRightBorder:(BOOL)border
 {
-  v3 = a3;
-  if ([(THPageThumbnailView *)self hasRightBorder]!= a3)
+  borderCopy = border;
+  if ([(THPageThumbnailView *)self hasRightBorder]!= border)
   {
-    if (v3)
+    if (borderCopy)
     {
       if (self->mBorderMode == 2)
       {
@@ -337,24 +337,24 @@
   }
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   +[CATransaction begin];
   [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
-  [(CALayer *)self->mImageLayer setContents:a3];
+  [(CALayer *)self->mImageLayer setContents:image];
   [(CALayer *)self->mImageLayer setHidden:0];
 
   +[CATransaction commit];
 }
 
-- (void)setImageData:(id)a3 immediate:(BOOL)a4
+- (void)setImageData:(id)data immediate:(BOOL)immediate
 {
-  v4 = a4;
+  immediateCopy = immediate;
   objc_sync_enter(self);
-  if (v4)
+  if (immediateCopy)
   {
     [(THPageThumbnailView *)self setWillSetImageFromQueue:0];
-    [(THPageThumbnailView *)self setImage:[TSDBitmapImageProvider CGImageForImageData:a3]];
+    [(THPageThumbnailView *)self setImage:[TSDBitmapImageProvider CGImageForImageData:data]];
 
     self->mImageData = 0;
 
@@ -367,24 +367,24 @@
     [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
     [(CALayer *)self->mImageLayer setHidden:1];
     +[CATransaction commit];
-    v7 = a3;
+    dataCopy = data;
 
-    self->mImageData = a3;
+    self->mImageData = data;
     [(THPageThumbnailView *)self setWillSetImageFromQueue:1];
     objc_sync_exit(self);
-    v8 = [objc_opt_class() thumbnailQueue];
+    thumbnailQueue = [objc_opt_class() thumbnailQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_AF924;
     block[3] = &unk_45AE00;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(thumbnailQueue, block);
   }
 }
 
-- (void)setCanvasScrollView:(id)a3 rasterize:(BOOL)a4
+- (void)setCanvasScrollView:(id)view rasterize:(BOOL)rasterize
 {
-  v4 = a4;
+  rasterizeCopy = rasterize;
   if (!self->mCanvasWrapperView)
   {
     v7 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -392,11 +392,11 @@
     [(THPageThumbnailView *)self addSubview:v7];
   }
 
-  v8 = [(UIView *)self->mCanvasWrapperView layer];
-  if (v4)
+  layer = [(UIView *)self->mCanvasWrapperView layer];
+  if (rasterizeCopy)
   {
-    [(CALayer *)v8 setShouldRasterize:1];
-    [a3 bounds];
+    [(CALayer *)layer setShouldRasterize:1];
+    [view bounds];
     v10 = v9;
     [(THPageThumbnailView *)self bounds];
     [(CALayer *)[(UIView *)self->mCanvasWrapperView layer] setRasterizationScale:v10 / v11];
@@ -404,18 +404,18 @@
 
   else
   {
-    [(CALayer *)v8 setShouldRasterize:0];
+    [(CALayer *)layer setShouldRasterize:0];
   }
 
   mCanvasWrapperView = self->mCanvasWrapperView;
 
-  [(UIView *)mCanvasWrapperView addSubview:a3];
+  [(UIView *)mCanvasWrapperView addSubview:view];
 }
 
-- (void)setShowCanvas:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowCanvas:(BOOL)canvas animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (canvas)
   {
     v6 = 1.0;
   }
@@ -429,7 +429,7 @@
   if (v7 != v6)
   {
     v8 = 0.15;
-    if (!v4)
+    if (!animatedCopy)
     {
       v8 = 0.0;
     }
@@ -457,13 +457,13 @@
   return result;
 }
 
-- (void)setHighlightRelativeRect:(CGRect)a3
+- (void)setHighlightRelativeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
 
     [(THPageThumbnailView *)self clearHighlightRect];
@@ -546,16 +546,16 @@
   }
 }
 
-- (void)hideExtrasAnimated:(BOOL)a3 duration:(double)a4
+- (void)hideExtrasAnimated:(BOOL)animated duration:(double)duration
 {
-  if (a3)
+  if (animated)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_B003C;
     v6[3] = &unk_45AE00;
     v6[4] = self;
-    [UIView animateWithDuration:v6 animations:a4];
+    [UIView animateWithDuration:v6 animations:duration];
   }
 
   else
@@ -569,16 +569,16 @@
   }
 }
 
-- (void)showExtrasAnimated:(BOOL)a3 duration:(double)a4
+- (void)showExtrasAnimated:(BOOL)animated duration:(double)duration
 {
-  if (a3)
+  if (animated)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_B01B8;
     v6[3] = &unk_45AE00;
     v6[4] = self;
-    [UIView animateWithDuration:v6 animations:a4];
+    [UIView animateWithDuration:v6 animations:duration];
   }
 
   else
@@ -599,7 +599,7 @@
   self->mTapTimer = 0;
 }
 
-- (void)p_tapGestureTimerFired:(id)a3
+- (void)p_tapGestureTimerFired:(id)fired
 {
   mSingleTapGR = self->mSingleTapGR;
   if (![(THPageThumbnailViewTapGestureRecognizer *)mSingleTapGR state]|| [(THPageThumbnailViewTapGestureRecognizer *)mSingleTapGR state]== &dword_0 + 1 || [(THPageThumbnailViewTapGestureRecognizer *)mSingleTapGR state]== &dword_0 + 2)
@@ -611,35 +611,35 @@
   [(THPageThumbnailView *)self p_clearTimer];
 }
 
-- (void)p_handleTap:(id)a3
+- (void)p_handleTap:(id)tap
 {
-  v5 = [a3 state];
-  if ((v5 - 1) >= 2)
+  state = [tap state];
+  if ((state - 1) >= 2)
   {
-    if ((v5 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
-      if (v5 == &dword_0 + 3)
+      if (state == &dword_0 + 3)
       {
         if (self->mTapTimer)
         {
           [(THPageThumbnailView *)self p_clearTimer];
           mDelegate = self->mDelegate;
-          [a3 locationInView:self];
+          [tap locationInView:self];
           v7 = mDelegate;
-          v8 = self;
+          selfCopy2 = self;
           v9 = 0;
         }
 
         else
         {
           v13 = self->mDelegate;
-          [a3 locationInView:self];
+          [tap locationInView:self];
           v7 = v13;
-          v8 = self;
+          selfCopy2 = self;
           v9 = 1;
         }
 
-        [(THPageThumbnailViewDelegate *)v7 thumbnailWasTapped:v8 atPoint:v9 forLong:?];
+        [(THPageThumbnailViewDelegate *)v7 thumbnailWasTapped:selfCopy2 atPoint:v9 forLong:?];
       }
 
       else
@@ -661,9 +661,9 @@
   }
 }
 
-- (void)touchesBeganFromTap:(id)a3
+- (void)touchesBeganFromTap:(id)tap
 {
-  [a3 locationInView:{-[THPageThumbnailView superview](self, "superview")}];
+  [tap locationInView:{-[THPageThumbnailView superview](self, "superview")}];
   v6 = v5;
   v8 = v7;
   [(THPageThumbnailView *)self frame];
@@ -677,7 +677,7 @@
     }
 
     mDelegate = self->mDelegate;
-    [a3 locationInView:self];
+    [tap locationInView:self];
 
     [(THPageThumbnailViewDelegate *)mDelegate thumbnailWasPressed:self atPoint:0 forLong:?];
   }
@@ -689,15 +689,15 @@
   }
 }
 
-- (void)gestureReset:(id)a3
+- (void)gestureReset:(id)reset
 {
-  if (self->mTapTimer && [a3 state] != &dword_4 + 1)
+  if (self->mTapTimer && [reset state] != &dword_4 + 1)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   [(THPageThumbnailView *)self p_clearTimer];
-  if ([a3 state] != &dword_0 + 3)
+  if ([reset state] != &dword_0 + 3)
   {
 
     [(THPageThumbnailView *)self clearHighlightRect];

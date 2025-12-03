@@ -1,21 +1,21 @@
 @interface RTWiFiManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (RTWiFiManager)allocWithZone:(_NSZone *)a3;
-+ (id)linkStatusToString:(unint64_t)a3;
-+ (id)powerStatusToString:(unint64_t)a3;
++ (BOOL)supportsNotificationName:(id)name;
++ (RTWiFiManager)allocWithZone:(_NSZone *)zone;
++ (id)linkStatusToString:(unint64_t)string;
++ (id)powerStatusToString:(unint64_t)string;
 - (RTWiFiManager)init;
-- (void)_notifyLeechScanResults:(id)a3;
-- (void)_notifyScanResults:(id)a3;
+- (void)_notifyLeechScanResults:(id)results;
+- (void)_notifyScanResults:(id)results;
 - (void)cancelScan;
-- (void)fetchLinkStatus:(id)a3;
-- (void)fetchPowerStatus:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
+- (void)fetchLinkStatus:(id)status;
+- (void)fetchPowerStatus:(id)status;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
 - (void)scheduleActiveScan;
 - (void)scheduleScan;
-- (void)scheduleScanWithChannels:(id)a3;
-- (void)setAccessPoints:(id)a3;
-- (void)setPowerStatus:(unint64_t)a3;
+- (void)scheduleScanWithChannels:(id)channels;
+- (void)setAccessPoints:(id)points;
+- (void)setPowerStatus:(unint64_t)status;
 @end
 
 @implementation RTWiFiManager
@@ -39,19 +39,19 @@ void __21__RTWiFiManager_init__block_invoke(uint64_t a1, void *a2)
   [WeakRetained _notifyLeechScanResults:v3];
 }
 
-+ (RTWiFiManager)allocWithZone:(_NSZone *)a3
++ (RTWiFiManager)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTWiFiManager_MobileWiFi allocWithZone:a3];
+    return [RTWiFiManager_MobileWiFi allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTWiFiManager;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -83,13 +83,13 @@ void __21__RTWiFiManager_init__block_invoke(uint64_t a1, void *a2)
 
       objc_initWeak(location, v3);
       v6 = +[_TtC14libcoreroutine22RTAonWiFiLeechProvider shared];
-      v7 = [(RTNotifier *)v3 queue];
+      queue = [(RTNotifier *)v3 queue];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __21__RTWiFiManager_init__block_invoke;
       v9[3] = &unk_2788CCC48;
       objc_copyWeak(&v10, location);
-      [v6 registerWithQueue:v7 callback:v9];
+      [v6 registerWithQueue:queue callback:v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(location);
@@ -101,56 +101,56 @@ void __21__RTWiFiManager_init__block_invoke(uint64_t a1, void *a2)
 
 - (void)scheduleScan
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__RTWiFiManager_scheduleScan__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)scheduleScanWithChannels:(id)a3
+- (void)scheduleScanWithChannels:(id)channels
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  channelsCopy = channels;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__RTWiFiManager_scheduleScanWithChannels___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = channelsCopy;
+  v6 = channelsCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)scheduleActiveScan
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__RTWiFiManager_scheduleActiveScan__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)cancelScan
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__RTWiFiManager_cancelScan__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)fetchPowerStatus:(id)a3
+- (void)fetchPowerStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -163,15 +163,15 @@ void __21__RTWiFiManager_init__block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__RTWiFiManager_fetchPowerStatus___block_invoke;
   v8[3] = &unk_2788C4D38;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = statusCopy;
+  v7 = statusCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __34__RTWiFiManager_fetchPowerStatus___block_invoke(uint64_t a1)
@@ -183,11 +183,11 @@ uint64_t __34__RTWiFiManager_fetchPowerStatus___block_invoke(uint64_t a1)
   return v3(v1, v2);
 }
 
-- (void)fetchLinkStatus:(id)a3
+- (void)fetchLinkStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -200,15 +200,15 @@ uint64_t __34__RTWiFiManager_fetchPowerStatus___block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__RTWiFiManager_fetchLinkStatus___block_invoke;
   v8[3] = &unk_2788C4D38;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = statusCopy;
+  v7 = statusCopy;
+  dispatch_async(queue, v8);
 }
 
 void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
@@ -219,43 +219,43 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v3, v4);
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-  if ([v3 isEqualToString:v4])
+  if ([nameCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -263,7 +263,7 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
   else
   {
     v6 = +[(RTNotification *)RTWiFiManagerNotificationLinkStatusChanged];
-    if ([v3 isEqualToString:v6])
+    if ([nameCopy isEqualToString:v6])
     {
       v5 = 1;
     }
@@ -271,20 +271,20 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
     else
     {
       v7 = +[(RTNotification *)RTWiFiManagerNotificationPowerStatusChanged];
-      v5 = [v3 isEqualToString:v7];
+      v5 = [nameCopy isEqualToString:v7];
     }
   }
 
   return v5;
 }
 
-- (void)setPowerStatus:(unint64_t)a3
+- (void)setPowerStatus:(unint64_t)status
 {
   v13 = *MEMORY[0x277D85DE8];
   powerStatus = self->_powerStatus;
-  if (powerStatus != a3)
+  if (powerStatus != status)
   {
-    self->_powerStatus = a3;
+    self->_powerStatus = status;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
@@ -305,14 +305,14 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccessPoints:(id)a3
+- (void)setAccessPoints:(id)points
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  pointsCopy = points;
+  v6 = pointsCopy;
+  if (pointsCopy)
   {
-    v7 = [v5 count];
+    v7 = [pointsCopy count];
     v8 = 1;
     if (v7)
     {
@@ -345,7 +345,7 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
     }
   }
 
-  objc_storeStrong(&self->_accessPoints, a3);
+  objc_storeStrong(&self->_accessPoints, points);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
@@ -362,45 +362,45 @@ void __33__RTWiFiManager_fetchLinkStatus___block_invoke(uint64_t a1)
   [(RTNotifier *)self postNotification:v15];
 }
 
-- (void)_notifyScanResults:(id)a3
+- (void)_notifyScanResults:(id)results
 {
-  v4 = a3;
-  v5 = [[RTWiFiManagerNotificationScanResults alloc] initWithScanResults:v4];
+  resultsCopy = results;
+  v5 = [[RTWiFiManagerNotificationScanResults alloc] initWithScanResults:resultsCopy];
 
   [(RTNotifier *)self postNotification:v5];
 }
 
-- (void)_notifyLeechScanResults:(id)a3
+- (void)_notifyLeechScanResults:(id)results
 {
-  v4 = a3;
-  v5 = [[RTWiFiManagerNotificationLeechScanResults alloc] initWithScanResults:v4];
+  resultsCopy = results;
+  v5 = [[RTWiFiManagerNotificationLeechScanResults alloc] initWithScanResults:resultsCopy];
 
   [(RTNotifier *)self postNotification:v5];
 }
 
-+ (id)powerStatusToString:(unint64_t)a3
++ (id)powerStatusToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Unexpected Value";
   }
 
   else
   {
-    return off_2788CCC68[a3];
+    return off_2788CCC68[string];
   }
 }
 
-+ (id)linkStatusToString:(unint64_t)a3
++ (id)linkStatusToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Unexpected Value";
   }
 
   else
   {
-    return off_2788CCC80[a3];
+    return off_2788CCC80[string];
   }
 }
 

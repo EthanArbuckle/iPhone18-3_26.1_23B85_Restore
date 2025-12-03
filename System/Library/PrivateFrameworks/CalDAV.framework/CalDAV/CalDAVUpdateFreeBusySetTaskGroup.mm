@@ -1,28 +1,28 @@
 @interface CalDAVUpdateFreeBusySetTaskGroup
-- (CalDAVUpdateFreeBusySetTaskGroup)initWithAccountInfoProvider:(id)a3 inboxURL:(id)a4 urlToAdd:(id)a5 suffixToFilterOut:(id)a6 taskManager:(id)a7;
+- (CalDAVUpdateFreeBusySetTaskGroup)initWithAccountInfoProvider:(id)provider inboxURL:(id)l urlToAdd:(id)add suffixToFilterOut:(id)out taskManager:(id)manager;
 - (void)_startFetchFreeBusySet;
-- (void)_startPropPatchWithURLs:(id)a3;
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
-- (void)propPatchTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
+- (void)_startPropPatchWithURLs:(id)ls;
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error;
+- (void)propPatchTask:(id)task parsedResponses:(id)responses error:(id)error;
 @end
 
 @implementation CalDAVUpdateFreeBusySetTaskGroup
 
-- (CalDAVUpdateFreeBusySetTaskGroup)initWithAccountInfoProvider:(id)a3 inboxURL:(id)a4 urlToAdd:(id)a5 suffixToFilterOut:(id)a6 taskManager:(id)a7
+- (CalDAVUpdateFreeBusySetTaskGroup)initWithAccountInfoProvider:(id)provider inboxURL:(id)l urlToAdd:(id)add suffixToFilterOut:(id)out taskManager:(id)manager
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  addCopy = add;
+  outCopy = out;
   v18.receiver = self;
   v18.super_class = CalDAVUpdateFreeBusySetTaskGroup;
-  v15 = [(CoreDAVTaskGroup *)&v18 initWithAccountInfoProvider:a3 taskManager:a7];
+  v15 = [(CoreDAVTaskGroup *)&v18 initWithAccountInfoProvider:provider taskManager:manager];
   v16 = v15;
   if (v15)
   {
     [(CalDAVUpdateFreeBusySetTaskGroup *)v15 setState:0];
-    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setInboxURL:v12];
-    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setUrlToAdd:v13];
-    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setSuffixToFilterOut:v14];
+    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setInboxURL:lCopy];
+    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setUrlToAdd:addCopy];
+    [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setSuffixToFilterOut:outCopy];
     [(CalDAVUpdateFreeBusySetTaskGroup *)v16 setFetchTask:0];
   }
 
@@ -35,39 +35,39 @@
   v15 = [v3 initWithNameSpace:*MEMORY[0x277CFDDC0] name:*MEMORY[0x277CFDDE8] parseClass:objc_opt_class()];
   v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v15, 0}];
   v5 = objc_alloc(MEMORY[0x277CFDC68]);
-  v6 = [(CalDAVUpdateFreeBusySetTaskGroup *)self inboxURL];
-  v7 = [v5 initWithPropertiesToFind:v4 atURL:v6 withDepth:2];
+  inboxURL = [(CalDAVUpdateFreeBusySetTaskGroup *)self inboxURL];
+  v7 = [v5 initWithPropertiesToFind:v4 atURL:inboxURL withDepth:2];
 
   [(CalDAVUpdateFreeBusySetTaskGroup *)self setFetchTask:v7];
-  v8 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  v9 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  [v8 addObject:v9];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  fetchTask = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  [outstandingTasks addObject:fetchTask];
 
-  v10 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  v11 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  [v11 setAccountInfoProvider:v10];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  fetchTask2 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  [fetchTask2 setAccountInfoProvider:accountInfoProvider];
 
-  v12 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  [v12 setDelegate:self];
+  fetchTask3 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  [fetchTask3 setDelegate:self];
 
-  v13 = [(CoreDAVTaskGroup *)self taskManager];
-  v14 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  [v13 submitQueuedCoreDAVTask:v14];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  fetchTask4 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  [taskManager submitQueuedCoreDAVTask:fetchTask4];
 
   [(CalDAVUpdateFreeBusySetTaskGroup *)self setState:1];
 }
 
-- (void)_startPropPatchWithURLs:(id)a3
+- (void)_startPropPatchWithURLs:(id)ls
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lsCopy = ls;
   v5 = objc_alloc(MEMORY[0x277CFDBE0]);
   v6 = [v5 initWithNameSpace:*MEMORY[0x277CFDDC0] andName:*MEMORY[0x277CFDDE8]];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v4;
+  v7 = lsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -85,11 +85,11 @@
 
         v12 = *(*(&v24 + 1) + 8 * v11);
         v13 = objc_alloc_init(MEMORY[0x277CFDBD8]);
-        v14 = [v12 CDVRawPath];
-        [v13 setPayloadAsString:v14];
+        cDVRawPath = [v12 CDVRawPath];
+        [v13 setPayloadAsString:cDVRawPath];
 
-        v15 = [v6 extraChildItems];
-        [v15 addObject:v13];
+        extraChildItems = [v6 extraChildItems];
+        [extraChildItems addObject:v13];
 
         ++v11;
       }
@@ -103,62 +103,62 @@
 
   v16 = objc_alloc(MEMORY[0x277CFDC70]);
   v17 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  v18 = [(CalDAVUpdateFreeBusySetTaskGroup *)self inboxURL];
-  v19 = [v16 initWithPropertiesToSet:v17 andRemove:0 atURL:v18];
+  inboxURL = [(CalDAVUpdateFreeBusySetTaskGroup *)self inboxURL];
+  v19 = [v16 initWithPropertiesToSet:v17 andRemove:0 atURL:inboxURL];
 
-  v20 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v20 addObject:v19];
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks addObject:v19];
 
-  v21 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v19 setAccountInfoProvider:v21];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v19 setAccountInfoProvider:accountInfoProvider];
 
   [v19 setDelegate:self];
-  v22 = [(CoreDAVTaskGroup *)self taskManager];
-  [v22 submitQueuedCoreDAVTask:v19];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v19];
 
   [(CalDAVUpdateFreeBusySetTaskGroup *)self setState:2];
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error
 {
-  v6 = a5;
-  v7 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  v8 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  [v7 removeObject:v8];
+  errorCopy = error;
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  fetchTask = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  [outstandingTasks removeObject:fetchTask];
 
-  if (!v6)
+  if (!errorCopy)
   {
     goto LABEL_4;
   }
 
-  v9 = [v6 domain];
-  if (([v9 isEqualToString:*MEMORY[0x277CFDB18]] & 1) == 0)
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:*MEMORY[0x277CFDB18]] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [v6 code];
+  code = [errorCopy code];
 
-  if (v10 != 2)
+  if (code != 2)
   {
 LABEL_8:
-    [(CalDAVUpdateFreeBusySetTaskGroup *)self _finishWithError:v6 state:4];
+    [(CalDAVUpdateFreeBusySetTaskGroup *)self _finishWithError:errorCopy state:4];
     goto LABEL_17;
   }
 
 LABEL_4:
-  v11 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
-  v12 = [v11 successfulValueForNameSpace:*MEMORY[0x277CFDDC0] elementName:*MEMORY[0x277CFDDE8]];
+  fetchTask2 = [(CalDAVUpdateFreeBusySetTaskGroup *)self fetchTask];
+  v12 = [fetchTask2 successfulValueForNameSpace:*MEMORY[0x277CFDDC0] elementName:*MEMORY[0x277CFDDE8]];
 
   if (v12)
   {
-    v13 = [v12 hrefsAsFullURLs];
-    v14 = v13;
-    if (v13)
+    hrefsAsFullURLs = [v12 hrefsAsFullURLs];
+    v14 = hrefsAsFullURLs;
+    if (hrefsAsFullURLs)
     {
-      v15 = v13;
+      v15 = hrefsAsFullURLs;
     }
 
     else
@@ -168,25 +168,25 @@ LABEL_4:
 
     v16 = v15;
 
-    v17 = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
-    v18 = [v17 length];
+    suffixToFilterOut = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
+    v18 = [suffixToFilterOut length];
 
     if (v18)
     {
-      v19 = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
-      v20 = [v19 CDVStringByAppendingSlashIfNeeded];
+      suffixToFilterOut2 = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
+      cDVStringByAppendingSlashIfNeeded = [suffixToFilterOut2 CDVStringByAppendingSlashIfNeeded];
 
-      v21 = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
-      v22 = [v21 CDVStringByRemovingTerminatingSlashIfNeeded];
+      suffixToFilterOut3 = [(CalDAVUpdateFreeBusySetTaskGroup *)self suffixToFilterOut];
+      cDVStringByRemovingTerminatingSlashIfNeeded = [suffixToFilterOut3 CDVStringByRemovingTerminatingSlashIfNeeded];
 
       v29 = MEMORY[0x277D85DD0];
       v30 = 3221225472;
       v31 = __71__CalDAVUpdateFreeBusySetTaskGroup_propFindTask_parsedResponses_error___block_invoke;
       v32 = &unk_278D668F0;
-      v33 = v20;
-      v34 = v22;
-      v23 = v22;
-      v24 = v20;
+      v33 = cDVStringByAppendingSlashIfNeeded;
+      v34 = cDVStringByRemovingTerminatingSlashIfNeeded;
+      v23 = cDVStringByRemovingTerminatingSlashIfNeeded;
+      v24 = cDVStringByAppendingSlashIfNeeded;
       v25 = [v16 objectsPassingTest:&v29];
 
       v16 = v25;
@@ -196,8 +196,8 @@ LABEL_4:
 
     if (v26)
     {
-      v27 = [(CalDAVUpdateFreeBusySetTaskGroup *)self urlToAdd];
-      v28 = [v16 setByAddingObject:v27];
+      urlToAdd = [(CalDAVUpdateFreeBusySetTaskGroup *)self urlToAdd];
+      v28 = [v16 setByAddingObject:urlToAdd];
 
       v16 = v28;
     }
@@ -229,12 +229,12 @@ uint64_t __71__CalDAVUpdateFreeBusySetTaskGroup_propFindTask_parsedResponses_err
   return v4;
 }
 
-- (void)propPatchTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propPatchTask:(id)task parsedResponses:(id)responses error:(id)error
 {
-  v9 = a5;
-  v7 = a3;
-  v8 = [(CoreDAVTaskGroup *)self outstandingTasks];
-  [v8 removeObject:v7];
+  errorCopy = error;
+  taskCopy = task;
+  outstandingTasks = [(CoreDAVTaskGroup *)self outstandingTasks];
+  [outstandingTasks removeObject:taskCopy];
 
   [CalDAVUpdateFreeBusySetTaskGroup _finishWithError:"_finishWithError:state:" state:?];
 }

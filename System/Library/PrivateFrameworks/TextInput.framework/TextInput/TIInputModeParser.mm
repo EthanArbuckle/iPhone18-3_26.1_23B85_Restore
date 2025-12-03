@@ -1,23 +1,23 @@
 @interface TIInputModeParser
 + (id)sharedInstance;
 - (TIInputModeParser)init;
-- (id)parseInputMode:(id)a3;
-- (id)stringByReplacingInvalidCharactersWithUnderscores:(id)a3;
+- (id)parseInputMode:(id)mode;
+- (id)stringByReplacingInvalidCharactersWithUnderscores:(id)underscores;
 @end
 
 @implementation TIInputModeParser
 
-- (id)stringByReplacingInvalidCharactersWithUnderscores:(id)a3
+- (id)stringByReplacingInvalidCharactersWithUnderscores:(id)underscores
 {
-  v4 = a3;
-  if ([v4 length] && objc_msgSend(v4, "rangeOfCharacterFromSet:", self->_invalidCharacterSet) != 0x7FFFFFFFFFFFFFFFLL)
+  underscoresCopy = underscores;
+  if ([underscoresCopy length] && objc_msgSend(underscoresCopy, "rangeOfCharacterFromSet:", self->_invalidCharacterSet) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v4 _stringByReplacingCharactersInSet:self->_invalidCharacterSet withCharacter:95];
+    v5 = [underscoresCopy _stringByReplacingCharactersInSet:self->_invalidCharacterSet withCharacter:95];
   }
 
   else
   {
-    v5 = v4;
+    v5 = underscoresCopy;
   }
 
   v6 = v5;
@@ -25,17 +25,17 @@
   return v6;
 }
 
-- (id)parseInputMode:(id)a3
+- (id)parseInputMode:(id)mode
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_inputModeDicts objectForKey:v4];
+  modeCopy = mode;
+  v5 = [(NSMutableDictionary *)self->_inputModeDicts objectForKey:modeCopy];
   if (!v5)
   {
-    v6 = TIInputModeGetLanguageWithRegion(v4);
+    v6 = TIInputModeGetLanguageWithRegion(modeCopy);
     v7 = [(TIInputModeParser *)self stringByReplacingInvalidCharactersWithUnderscores:v6];
 
-    v8 = TIInputModeGetComponentsFromIdentifier(v4);
+    v8 = TIInputModeGetComponentsFromIdentifier(modeCopy);
     v9 = [v8 objectForKey:@"sw"];
     v10 = [(TIInputModeParser *)self stringByReplacingInvalidCharactersWithUnderscores:v9];
 
@@ -69,7 +69,7 @@
 
     v17[2] = v14;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
-    [(NSMutableDictionary *)self->_inputModeDicts setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_inputModeDicts setObject:v5 forKey:modeCopy];
   }
 
   return v5;

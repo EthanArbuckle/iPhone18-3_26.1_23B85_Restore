@@ -1,59 +1,59 @@
 @interface RMProfileStore
-+ (id)profileStoreForOwner:(id)a3;
-+ (id)profileStoreForOwner:(id)a3 scope:(int64_t)a4;
-- (BOOL)_removeDeclarationKeysForPayload:(id)a3 error:(id *)a4;
-- (BOOL)_saveDeclarationKeysForPayload:(id)a3 keys:(id)a4 error:(id *)a5;
-- (RMProfileStore)initWithOwner:(id)a3 scope:(int64_t)a4;
-- (id)_createStoreReturningError:(id *)a3;
-- (id)_metadataKeyForPayload:(id)a3;
-- (id)_newDeclarationsMap:(id)a3 error:(id *)a4;
-- (id)_oldDeclarationKeysForPayload:(id)a3 store:(id)a4 error:(id *)a5;
-- (void)_applyDeclarationsForPayload:(id)a3 declarations:(id)a4 completionHandler:(id)a5;
-- (void)_findObserverStoreWithCompletionHandler:(id)a3;
-- (void)_findProviderStoreWithCompletionHandler:(id)a3;
-- (void)_removeDeclarationsForPayload:(id)a3 completionHandler:(id)a4;
-- (void)declarationIdentifiersForProfilePayloadIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)installProfile:(id)a3 declarations:(id)a4 completionHandler:(id)a5;
-- (void)observerStoreWithCompletionHandler:(id)a3;
-- (void)providerStoreWithCompletionHandler:(id)a3;
-- (void)removeProfile:(id)a3 completionHandler:(id)a4;
++ (id)profileStoreForOwner:(id)owner;
++ (id)profileStoreForOwner:(id)owner scope:(int64_t)scope;
+- (BOOL)_removeDeclarationKeysForPayload:(id)payload error:(id *)error;
+- (BOOL)_saveDeclarationKeysForPayload:(id)payload keys:(id)keys error:(id *)error;
+- (RMProfileStore)initWithOwner:(id)owner scope:(int64_t)scope;
+- (id)_createStoreReturningError:(id *)error;
+- (id)_metadataKeyForPayload:(id)payload;
+- (id)_newDeclarationsMap:(id)map error:(id *)error;
+- (id)_oldDeclarationKeysForPayload:(id)payload store:(id)store error:(id *)error;
+- (void)_applyDeclarationsForPayload:(id)payload declarations:(id)declarations completionHandler:(id)handler;
+- (void)_findObserverStoreWithCompletionHandler:(id)handler;
+- (void)_findProviderStoreWithCompletionHandler:(id)handler;
+- (void)_removeDeclarationsForPayload:(id)payload completionHandler:(id)handler;
+- (void)declarationIdentifiersForProfilePayloadIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)installProfile:(id)profile declarations:(id)declarations completionHandler:(id)handler;
+- (void)observerStoreWithCompletionHandler:(id)handler;
+- (void)providerStoreWithCompletionHandler:(id)handler;
+- (void)removeProfile:(id)profile completionHandler:(id)handler;
 @end
 
 @implementation RMProfileStore
 
-+ (id)profileStoreForOwner:(id)a3
++ (id)profileStoreForOwner:(id)owner
 {
   v3 = MEMORY[0x277D45F68];
-  v4 = a3;
-  v5 = [v3 currentManagedDevice];
-  v6 = [v5 isSharediPad];
+  ownerCopy = owner;
+  currentManagedDevice = [v3 currentManagedDevice];
+  isSharediPad = [currentManagedDevice isSharediPad];
 
-  v7 = [[RMProfileStore alloc] initWithOwner:v4 scope:v6 ^ 1u];
+  v7 = [[RMProfileStore alloc] initWithOwner:ownerCopy scope:isSharediPad ^ 1u];
 
   return v7;
 }
 
-+ (id)profileStoreForOwner:(id)a3 scope:(int64_t)a4
++ (id)profileStoreForOwner:(id)owner scope:(int64_t)scope
 {
-  v5 = a3;
-  v6 = [[RMProfileStore alloc] initWithOwner:v5 scope:a4];
+  ownerCopy = owner;
+  v6 = [[RMProfileStore alloc] initWithOwner:ownerCopy scope:scope];
 
   return v6;
 }
 
-- (RMProfileStore)initWithOwner:(id)a3 scope:(int64_t)a4
+- (RMProfileStore)initWithOwner:(id)owner scope:(int64_t)scope
 {
-  v6 = a3;
+  ownerCopy = owner;
   v13.receiver = self;
   v13.super_class = RMProfileStore;
   v7 = [(RMProfileStore *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [ownerCopy copy];
     ownerIdentifier = v7->_ownerIdentifier;
     v7->_ownerIdentifier = v8;
 
-    v7->_scope = a4;
+    v7->_scope = scope;
     v10 = dispatch_queue_create("RMProfileStore", 0);
     workQueue = v7->_workQueue;
     v7->_workQueue = v10;
@@ -62,15 +62,15 @@
   return v7;
 }
 
-- (void)providerStoreWithCompletionHandler:(id)a3
+- (void)providerStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMProfileStore *)self providerStore];
+  handlerCopy = handler;
+  providerStore = [(RMProfileStore *)self providerStore];
 
-  if (v5)
+  if (providerStore)
   {
-    v6 = [(RMProfileStore *)self providerStore];
-    v4[2](v4, v6, 0);
+    providerStore2 = [(RMProfileStore *)self providerStore];
+    handlerCopy[2](handlerCopy, providerStore2, 0);
   }
 
   else
@@ -80,7 +80,7 @@
     v7[2] = __53__RMProfileStore_providerStoreWithCompletionHandler___block_invoke;
     v7[3] = &unk_279B05BF0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(RMProfileStore *)self _findProviderStoreWithCompletionHandler:v7];
   }
 }
@@ -132,15 +132,15 @@ LABEL_8:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)installProfile:(id)a3 declarations:(id)a4 completionHandler:(id)a5
+- (void)installProfile:(id)profile declarations:(id)declarations completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  profileCopy = profile;
+  declarationsCopy = declarations;
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
-    [RMProfileStore installProfile:v8 declarations:v9 completionHandler:?];
+    [RMProfileStore installProfile:profileCopy declarations:declarationsCopy completionHandler:?];
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -148,12 +148,12 @@ LABEL_8:
   v15[2] = __64__RMProfileStore_installProfile_declarations_completionHandler___block_invoke;
   v15[3] = &unk_279B05C40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = profileCopy;
+  v17 = declarationsCopy;
+  v18 = handlerCopy;
+  v12 = declarationsCopy;
+  v13 = profileCopy;
+  v14 = handlerCopy;
   [(RMProfileStore *)self providerStoreWithCompletionHandler:v15];
 }
 
@@ -203,12 +203,12 @@ uint64_t __64__RMProfileStore_installProfile_declarations_completionHandler___bl
   }
 }
 
-- (void)removeProfile:(id)a3 completionHandler:(id)a4
+- (void)removeProfile:(id)profile completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  profileCopy = profile;
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore removeProfile:completionHandler:];
   }
@@ -217,11 +217,11 @@ uint64_t __64__RMProfileStore_installProfile_declarations_completionHandler___bl
   v11[1] = 3221225472;
   v11[2] = __50__RMProfileStore_removeProfile_completionHandler___block_invoke;
   v11[3] = &unk_279B05C90;
-  v12 = v6;
-  v13 = v7;
+  v12 = profileCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = profileCopy;
+  v10 = handlerCopy;
   [(RMProfileStore *)self providerStoreWithCompletionHandler:v11];
 }
 
@@ -269,15 +269,15 @@ uint64_t __50__RMProfileStore_removeProfile_completionHandler___block_invoke_2(v
   }
 }
 
-- (void)observerStoreWithCompletionHandler:(id)a3
+- (void)observerStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMProfileStore *)self observerStore];
+  handlerCopy = handler;
+  observerStore = [(RMProfileStore *)self observerStore];
 
-  if (v5)
+  if (observerStore)
   {
-    v6 = [(RMProfileStore *)self observerStore];
-    v4[2](v4, v6, 0);
+    observerStore2 = [(RMProfileStore *)self observerStore];
+    handlerCopy[2](handlerCopy, observerStore2, 0);
   }
 
   else
@@ -287,7 +287,7 @@ uint64_t __50__RMProfileStore_removeProfile_completionHandler___block_invoke_2(v
     v7[2] = __53__RMProfileStore_observerStoreWithCompletionHandler___block_invoke;
     v7[3] = &unk_279B05BC0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(RMProfileStore *)self _findObserverStoreWithCompletionHandler:v7];
   }
 }
@@ -311,19 +311,19 @@ void __53__RMProfileStore_observerStoreWithCompletionHandler___block_invoke(uint
   }
 }
 
-- (void)declarationIdentifiersForProfilePayloadIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)declarationIdentifiersForProfilePayloadIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__RMProfileStore_declarationIdentifiersForProfilePayloadIdentifiers_completionHandler___block_invoke;
   v10[3] = &unk_279B05CB8;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifiersCopy;
+  v12 = handlerCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifiersCopy;
+  v9 = handlerCopy;
   [(RMProfileStore *)self observerStoreWithCompletionHandler:v10];
 }
 
@@ -454,24 +454,24 @@ LABEL_21:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_findProviderStoreWithCompletionHandler:(id)a3
+- (void)_findProviderStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore _findProviderStoreWithCompletionHandler:];
   }
 
-  v6 = [(RMProfileStore *)self scope];
+  scope = [(RMProfileStore *)self scope];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__RMProfileStore__findProviderStoreWithCompletionHandler___block_invoke;
   v8[3] = &unk_279B05CE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [RMProviderStore storesWithScope:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [RMProviderStore storesWithScope:scope completionHandler:v8];
 }
 
 void __58__RMProfileStore__findProviderStoreWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -561,24 +561,24 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_findObserverStoreWithCompletionHandler:(id)a3
+- (void)_findObserverStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore _findObserverStoreWithCompletionHandler:];
   }
 
-  v6 = [(RMProfileStore *)self scope];
+  scope = [(RMProfileStore *)self scope];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__RMProfileStore__findObserverStoreWithCompletionHandler___block_invoke;
   v8[3] = &unk_279B05CE0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [RMObserverStore storesWithScope:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [RMObserverStore storesWithScope:scope completionHandler:v8];
 }
 
 void __58__RMProfileStore__findObserverStoreWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -688,10 +688,10 @@ LABEL_24:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createStoreReturningError:(id *)a3
+- (id)_createStoreReturningError:(id *)error
 {
-  v5 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore _createStoreReturningError:];
   }
@@ -709,7 +709,7 @@ LABEL_24:
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
   v37 = 0;
-  v7 = [(RMProfileStore *)self scope];
+  scope = [(RMProfileStore *)self scope];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __45__RMProfileStore__createStoreReturningError___block_invoke;
@@ -718,20 +718,20 @@ LABEL_24:
   v31 = &v32;
   v8 = v6;
   v29 = v8;
-  [RMProviderStore createStoreWithType:2 scope:v7 defaultToInteractive:0 dataSeparated:0 options:0 completionHandler:v28];
+  [RMProviderStore createStoreWithType:2 scope:scope defaultToInteractive:0 dataSeparated:0 options:0 completionHandler:v28];
   [v8 waitForCompletion];
   if (*(v39[0] + 40))
   {
-    v9 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    profileStore2 = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore2, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _createStoreReturningError:v39];
     }
 
-    if (a3 && (v10 = *(v39[0] + 40)) != 0)
+    if (error && (v10 = *(v39[0] + 40)) != 0)
     {
       v11 = 0;
-      *a3 = v10;
+      *error = v10;
     }
 
     else
@@ -743,9 +743,9 @@ LABEL_24:
   else
   {
     v12 = v33[5];
-    v13 = [(RMProfileStore *)self ownerIdentifier];
+    ownerIdentifier = [(RMProfileStore *)self ownerIdentifier];
     v27 = 0;
-    v14 = [v12 setMetadataValue:v13 forKey:@"RMProfileStoreIdentifier" error:&v27];
+    v14 = [v12 setMetadataValue:ownerIdentifier forKey:@"RMProfileStoreIdentifier" error:&v27];
     v15 = v27;
 
     if (v14)
@@ -755,15 +755,15 @@ LABEL_24:
 
     else
     {
-      v16 = [MEMORY[0x277D45F58] profileStore];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      profileStore3 = [MEMORY[0x277D45F58] profileStore];
+      if (os_log_type_enabled(profileStore3, OS_LOG_TYPE_ERROR))
       {
         [RMProfileStore _createStoreReturningError:];
       }
 
       v17 = objc_opt_new();
-      v18 = [v33[5] identifier];
-      v19 = [(RMProfileStore *)self scope];
+      identifier = [v33[5] identifier];
+      scope2 = [(RMProfileStore *)self scope];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __45__RMProfileStore__createStoreReturningError___block_invoke_26;
@@ -771,22 +771,22 @@ LABEL_24:
       v26 = &v38;
       v20 = v17;
       v25 = v20;
-      [RMProviderStore removeStoreWithIdentifier:v18 scope:v19 completionHandler:v24];
+      [RMProviderStore removeStoreWithIdentifier:identifier scope:scope2 completionHandler:v24];
 
       [v20 waitForCompletion];
       if (*(v39[0] + 40))
       {
-        v21 = [MEMORY[0x277D45F58] profileStore];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        profileStore4 = [MEMORY[0x277D45F58] profileStore];
+        if (os_log_type_enabled(profileStore4, OS_LOG_TYPE_ERROR))
         {
           [RMProfileStore _createStoreReturningError:v39];
         }
       }
 
-      if (a3 && v15)
+      if (error && v15)
       {
         v22 = v15;
-        *a3 = v15;
+        *error = v15;
       }
 
       v11 = 0;
@@ -819,54 +819,54 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
   [*(a1 + 32) complete];
 }
 
-- (void)_applyDeclarationsForPayload:(id)a3 declarations:(id)a4 completionHandler:(id)a5
+- (void)_applyDeclarationsForPayload:(id)payload declarations:(id)declarations completionHandler:(id)handler
 {
   v105 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v59 = a4;
-  v58 = a5;
-  v7 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  payloadCopy = payload;
+  declarationsCopy = declarations;
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
-    [RMProfileStore _applyDeclarationsForPayload:v59 declarations:? completionHandler:?];
+    [RMProfileStore _applyDeclarationsForPayload:declarationsCopy declarations:? completionHandler:?];
   }
 
   v64 = objc_opt_new();
   v96 = 0;
-  v63 = [(RMProfileStore *)self _newDeclarationsMap:v59 error:&v96];
+  v63 = [(RMProfileStore *)self _newDeclarationsMap:declarationsCopy error:&v96];
   v8 = v96;
   if (v8)
   {
     v9 = v8;
-    v10 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    profileStore2 = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore2, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _applyDeclarationsForPayload:declarations:completionHandler:];
     }
 
-    v58[2](v58, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   else
   {
     v11 = MEMORY[0x277CBEB98];
-    v12 = [v63 allKeys];
-    v56 = [v11 setWithArray:v12];
+    allKeys = [v63 allKeys];
+    v56 = [v11 setWithArray:allKeys];
 
-    v13 = [(RMProfileStore *)self providerStore];
+    providerStore = [(RMProfileStore *)self providerStore];
     v95 = 0;
-    v55 = [(RMProfileStore *)self _oldDeclarationKeysForPayload:v57 store:v13 error:&v95];
+    v55 = [(RMProfileStore *)self _oldDeclarationKeysForPayload:payloadCopy store:providerStore error:&v95];
     v9 = v95;
 
     if (v9)
     {
-      v14 = [MEMORY[0x277D45F58] profileStore];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      profileStore3 = [MEMORY[0x277D45F58] profileStore];
+      if (os_log_type_enabled(profileStore3, OS_LOG_TYPE_ERROR))
       {
         __87__RMProfileStore_declarationIdentifiersForProfilePayloadIdentifiers_completionHandler___block_invoke_2_cold_1();
       }
 
-      v58[2](v58, v9);
+      handlerCopy[2](handlerCopy, v9);
     }
 
     else
@@ -879,8 +879,8 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
       v54 = v94;
       v15 = v93;
       v53 = v92;
-      v16 = [MEMORY[0x277D45F58] profileStore];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      profileStore4 = [MEMORY[0x277D45F58] profileStore];
+      if (os_log_type_enabled(profileStore4, OS_LOG_TYPE_DEBUG))
       {
         [RMProfileStore _applyDeclarationsForPayload:v15 declarations:? completionHandler:?];
       }
@@ -906,9 +906,9 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
 
             v19 = *(*(&v88 + 1) + 8 * v18);
             v20 = objc_autoreleasePoolPush();
-            v21 = [v19 applyKey];
+            applyKey = [v19 applyKey];
             v22 = MEMORY[0x277D46018];
-            v23 = [v63 objectForKeyedSubscript:v21];
+            v23 = [v63 objectForKeyedSubscript:applyKey];
             v24 = [v22 loadData:v23 serializationType:1 error:0];
 
             v25 = objc_opt_new();
@@ -918,14 +918,14 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
             v85 = __Block_byref_object_copy__2;
             v86 = __Block_byref_object_dispose__2;
             v87 = 0;
-            v26 = [MEMORY[0x277D45F58] profileStore];
-            if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+            profileStore5 = [MEMORY[0x277D45F58] profileStore];
+            if (os_log_type_enabled(profileStore5, OS_LOG_TYPE_DEBUG))
             {
-              v27 = [v24 declarationIdentifier];
-              [(RMProfileStore *)v27 _applyDeclarationsForPayload:v102 declarations:&v103 completionHandler:v26];
+              declarationIdentifier = [v24 declarationIdentifier];
+              [(RMProfileStore *)declarationIdentifier _applyDeclarationsForPayload:v102 declarations:&v103 completionHandler:profileStore5];
             }
 
-            v28 = [(RMProfileStore *)self providerStore];
+            providerStore2 = [(RMProfileStore *)self providerStore];
             v78[0] = MEMORY[0x277D85DD0];
             v78[1] = 3221225472;
             v78[2] = __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHandler___block_invoke;
@@ -935,38 +935,38 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
             v81 = &v82;
             v30 = v25;
             v80 = v30;
-            [v28 saveDeclaration:v29 completionHandler:v78];
+            [providerStore2 saveDeclaration:v29 completionHandler:v78];
 
             [v30 waitForCompletion];
             if (v83[5])
             {
-              v31 = [MEMORY[0x277D45F58] profileStore];
-              if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+              profileStore6 = [MEMORY[0x277D45F58] profileStore];
+              if (os_log_type_enabled(profileStore6, OS_LOG_TYPE_ERROR))
               {
-                v35 = [v21 declarationIdentifier];
+                declarationIdentifier2 = [applyKey declarationIdentifier];
                 *buf = 138543618;
-                v99 = v35;
+                v99 = declarationIdentifier2;
                 v100 = 2114;
                 v101 = 0;
-                _os_log_error_impl(&dword_261E36000, v31, OS_LOG_TYPE_ERROR, "Failed to save declaration %{public}@: %{public}@", buf, 0x16u);
+                _os_log_error_impl(&dword_261E36000, profileStore6, OS_LOG_TYPE_ERROR, "Failed to save declaration %{public}@: %{public}@", buf, 0x16u);
               }
 
-              v32 = [v21 declarationIdentifier];
-              [v64 addObject:v32];
+              declarationIdentifier3 = [applyKey declarationIdentifier];
+              [v64 addObject:declarationIdentifier3];
 
-              v33 = [v19 replaceKey];
-              LOBYTE(v32) = v33 == 0;
+              replaceKey = [v19 replaceKey];
+              LOBYTE(declarationIdentifier3) = replaceKey == 0;
 
-              if ((v32 & 1) == 0)
+              if ((declarationIdentifier3 & 1) == 0)
               {
-                v34 = [v19 replaceKey];
-                [v65 addObject:v34];
+                replaceKey2 = [v19 replaceKey];
+                [v65 addObject:replaceKey2];
               }
             }
 
             else
             {
-              [v65 addObject:v21];
+              [v65 addObject:applyKey];
             }
 
             _Block_object_dispose(&v82, 8);
@@ -982,8 +982,8 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
       }
 
       [v65 unionSet:v54];
-      v36 = [MEMORY[0x277D45F58] profileStore];
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+      profileStore7 = [MEMORY[0x277D45F58] profileStore];
+      if (os_log_type_enabled(profileStore7, OS_LOG_TYPE_DEBUG))
       {
         [RMProfileStore _applyDeclarationsForPayload:v53 declarations:? completionHandler:?];
       }
@@ -1016,8 +1016,8 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
             v85 = __Block_byref_object_copy__2;
             v86 = __Block_byref_object_dispose__2;
             v87 = 0;
-            v43 = [(RMProfileStore *)self providerStore];
-            v44 = [v40 declarationIdentifier];
+            providerStore3 = [(RMProfileStore *)self providerStore];
+            declarationIdentifier4 = [v40 declarationIdentifier];
             v71[0] = MEMORY[0x277D85DD0];
             v71[1] = 3221225472;
             v71[2] = __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHandler___block_invoke_32;
@@ -1026,24 +1026,24 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
             v73 = &v82;
             v45 = v42;
             v72 = v45;
-            [v43 deleteDeclarationWithIdentifier:v44 completionHandler:v71];
+            [providerStore3 deleteDeclarationWithIdentifier:declarationIdentifier4 completionHandler:v71];
 
             [v45 waitForCompletion];
             if (v83[5])
             {
-              v46 = [MEMORY[0x277D45F58] profileStore];
-              if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+              profileStore8 = [MEMORY[0x277D45F58] profileStore];
+              if (os_log_type_enabled(profileStore8, OS_LOG_TYPE_ERROR))
               {
-                v48 = [v40 declarationIdentifier];
+                declarationIdentifier5 = [v40 declarationIdentifier];
                 *buf = 138543618;
-                v99 = v48;
+                v99 = declarationIdentifier5;
                 v100 = 2114;
                 v101 = 0;
-                _os_log_error_impl(&dword_261E36000, v46, OS_LOG_TYPE_ERROR, "Failed to delete declaration %{public}@: %{public}@", buf, 0x16u);
+                _os_log_error_impl(&dword_261E36000, profileStore8, OS_LOG_TYPE_ERROR, "Failed to delete declaration %{public}@: %{public}@", buf, 0x16u);
               }
 
-              v47 = [v40 declarationIdentifier];
-              [v64 addObject:v47];
+              declarationIdentifier6 = [v40 declarationIdentifier];
+              [v64 addObject:declarationIdentifier6];
 
               [v65 addObject:v40];
             }
@@ -1061,26 +1061,26 @@ void __45__RMProfileStore__createStoreReturningError___block_invoke_26(uint64_t 
       }
 
       v70 = 0;
-      [(RMProfileStore *)self _saveDeclarationKeysForPayload:v57 keys:v65 error:&v70];
+      [(RMProfileStore *)self _saveDeclarationKeysForPayload:payloadCopy keys:v65 error:&v70];
       v49 = v70;
       if (v49)
       {
-        v50 = [MEMORY[0x277D45F58] profileStore];
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+        profileStore9 = [MEMORY[0x277D45F58] profileStore];
+        if (os_log_type_enabled(profileStore9, OS_LOG_TYPE_ERROR))
         {
           [RMProfileStore _applyDeclarationsForPayload:declarations:completionHandler:];
         }
       }
 
-      v51 = [(RMProfileStore *)self providerStore];
+      providerStore4 = [(RMProfileStore *)self providerStore];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHandler___block_invoke_33;
       v67[3] = &unk_279B05808;
       v9 = v49;
       v68 = v9;
-      v69 = v58;
-      [v51 applyChangesWithCompletionHandler:v67];
+      v69 = handlerCopy;
+      [providerStore4 applyChangesWithCompletionHandler:v67];
     }
   }
 
@@ -1136,28 +1136,28 @@ void __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_removeDeclarationsForPayload:(id)a3 completionHandler:(id)a4
+- (void)_removeDeclarationsForPayload:(id)payload completionHandler:(id)handler
 {
   v57 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v27 = a4;
-  v5 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  payloadCopy = payload;
+  handlerCopy = handler;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore _removeDeclarationsForPayload:completionHandler:];
   }
 
   v31 = objc_opt_new();
-  v6 = [(RMProfileStore *)self providerStore];
+  providerStore = [(RMProfileStore *)self providerStore];
   v51 = 0;
-  v26 = [(RMProfileStore *)self _oldDeclarationKeysForPayload:v28 store:v6 error:&v51];
+  v26 = [(RMProfileStore *)self _oldDeclarationKeysForPayload:payloadCopy store:providerStore error:&v51];
   v7 = v51;
 
   if (!v7)
   {
     v30 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v26, "count")}];
-    v9 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    profileStore2 = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore2, OS_LOG_TYPE_DEBUG))
     {
       [RMProfileStore _removeDeclarationsForPayload:v26 completionHandler:?];
     }
@@ -1190,8 +1190,8 @@ void __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHa
           v44 = __Block_byref_object_copy__2;
           v45 = __Block_byref_object_dispose__2;
           v46 = 0;
-          v16 = [(RMProfileStore *)self providerStore];
-          v17 = [v13 declarationIdentifier];
+          providerStore2 = [(RMProfileStore *)self providerStore];
+          declarationIdentifier = [v13 declarationIdentifier];
           v38[0] = MEMORY[0x277D85DD0];
           v38[1] = 3221225472;
           v38[2] = __66__RMProfileStore__removeDeclarationsForPayload_completionHandler___block_invoke;
@@ -1200,24 +1200,24 @@ void __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHa
           v40 = &v41;
           v18 = v15;
           v39 = v18;
-          [v16 deleteDeclarationWithIdentifier:v17 completionHandler:v38];
+          [providerStore2 deleteDeclarationWithIdentifier:declarationIdentifier completionHandler:v38];
 
           [v18 waitForCompletion];
           if (v42[5])
           {
-            v19 = [MEMORY[0x277D45F58] profileStore];
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+            profileStore3 = [MEMORY[0x277D45F58] profileStore];
+            if (os_log_type_enabled(profileStore3, OS_LOG_TYPE_ERROR))
             {
-              v21 = [v13 declarationIdentifier];
+              declarationIdentifier2 = [v13 declarationIdentifier];
               *buf = 138543618;
-              v53 = v21;
+              v53 = declarationIdentifier2;
               v54 = 2114;
               v55 = 0;
-              _os_log_error_impl(&dword_261E36000, v19, OS_LOG_TYPE_ERROR, "Failed to delete declaration %{public}@: %{public}@", buf, 0x16u);
+              _os_log_error_impl(&dword_261E36000, profileStore3, OS_LOG_TYPE_ERROR, "Failed to delete declaration %{public}@: %{public}@", buf, 0x16u);
             }
 
-            v20 = [v13 declarationIdentifier];
-            [v31 addObject:v20];
+            declarationIdentifier3 = [v13 declarationIdentifier];
+            [v31 addObject:declarationIdentifier3];
 
             [v30 addObject:v13];
           }
@@ -1237,12 +1237,12 @@ void __78__RMProfileStore__applyDeclarationsForPayload_declarations_completionHa
     if ([v30 count])
     {
       v36 = 0;
-      [(RMProfileStore *)self _saveDeclarationKeysForPayload:v28 keys:v30 error:&v36];
+      [(RMProfileStore *)self _saveDeclarationKeysForPayload:payloadCopy keys:v30 error:&v36];
       v22 = v36;
       if (v22)
       {
-        v23 = [MEMORY[0x277D45F58] profileStore];
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        profileStore4 = [MEMORY[0x277D45F58] profileStore];
+        if (os_log_type_enabled(profileStore4, OS_LOG_TYPE_ERROR))
         {
           [RMProfileStore _applyDeclarationsForPayload:declarations:completionHandler:];
         }
@@ -1254,12 +1254,12 @@ LABEL_27:
     else
     {
       v37 = 0;
-      [(RMProfileStore *)self _removeDeclarationKeysForPayload:v28 error:&v37];
+      [(RMProfileStore *)self _removeDeclarationKeysForPayload:payloadCopy error:&v37];
       v22 = v37;
       if (v22)
       {
-        v23 = [MEMORY[0x277D45F58] profileStore];
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        profileStore4 = [MEMORY[0x277D45F58] profileStore];
+        if (os_log_type_enabled(profileStore4, OS_LOG_TYPE_ERROR))
         {
           [RMProfileStore _removeDeclarationsForPayload:completionHandler:];
         }
@@ -1268,26 +1268,26 @@ LABEL_27:
       }
     }
 
-    v24 = [(RMProfileStore *)self providerStore];
+    providerStore3 = [(RMProfileStore *)self providerStore];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __66__RMProfileStore__removeDeclarationsForPayload_completionHandler___block_invoke_34;
     v33[3] = &unk_279B05808;
     v7 = v22;
     v34 = v7;
-    v35 = v27;
-    [v24 applyChangesWithCompletionHandler:v33];
+    v35 = handlerCopy;
+    [providerStore3 applyChangesWithCompletionHandler:v33];
 
     goto LABEL_29;
   }
 
-  v8 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  profileStore5 = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore5, OS_LOG_TYPE_ERROR))
   {
     __87__RMProfileStore_declarationIdentifiersForProfilePayloadIdentifiers_completionHandler___block_invoke_2_cold_1();
   }
 
-  (*(v27 + 2))(v27, v7);
+  (*(handlerCopy + 2))(handlerCopy, v7);
 LABEL_29:
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1325,21 +1325,21 @@ void __66__RMProfileStore__removeDeclarationsForPayload_completionHandler___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_newDeclarationsMap:(id)a3 error:(id *)a4
+- (id)_newDeclarationsMap:(id)map error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  mapCopy = map;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v6;
+  v8 = mapCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
-    v23 = a4;
+    errorCopy = error;
     obj = v8;
     v11 = *v27;
 LABEL_3:
@@ -1361,8 +1361,8 @@ LABEL_3:
         break;
       }
 
-      v17 = [(RMProfileStore *)self providerStore];
-      v18 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"ProfileSubscriber" store:v17 declaration:v15];
+      providerStore = [(RMProfileStore *)self providerStore];
+      v18 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"ProfileSubscriber" store:providerStore declaration:v15];
 
       [v7 setObject:v13 forKey:v18];
       objc_autoreleasePoolPop(v14);
@@ -1384,11 +1384,11 @@ LABEL_3:
     objc_autoreleasePoolPop(v14);
     v8 = obj;
 
-    if (v23)
+    if (errorCopy)
     {
       v20 = v19;
       v7 = 0;
-      *v23 = v20;
+      *errorCopy = v20;
       v19 = v20;
       goto LABEL_12;
     }
@@ -1408,26 +1408,26 @@ LABEL_12:
   return v7;
 }
 
-- (id)_oldDeclarationKeysForPayload:(id)a3 store:(id)a4 error:(id *)a5
+- (id)_oldDeclarationKeysForPayload:(id)payload store:(id)store error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(RMProfileStore *)self _metadataKeyForPayload:a3];
+  storeCopy = store;
+  v9 = [(RMProfileStore *)self _metadataKeyForPayload:payload];
   v31 = 0;
-  v10 = [v8 metadataValueForKey:v9 error:&v31];
+  v10 = [storeCopy metadataValueForKey:v9 error:&v31];
   v11 = v31;
   if (v11)
   {
-    v12 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    profileStore = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _oldDeclarationKeysForPayload:store:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     goto LABEL_23;
@@ -1435,8 +1435,8 @@ LABEL_12:
 
   if (!v10)
   {
-    v23 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+    profileStore2 = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore2, OS_LOG_TYPE_DEBUG))
     {
       [RMProfileStore _oldDeclarationKeysForPayload:store:error:];
     }
@@ -1447,8 +1447,8 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v23 = [MEMORY[0x277D45F58] profileStore];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    profileStore2 = [MEMORY[0x277D45F58] profileStore];
+    if (os_log_type_enabled(profileStore2, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _oldDeclarationKeysForPayload:store:error:];
     }
@@ -1460,7 +1460,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v26 = v8;
+  v26 = storeCopy;
   v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
   v27 = 0u;
   v28 = 0u;
@@ -1491,15 +1491,15 @@ LABEL_23:
     while (v17);
   }
 
-  v21 = [MEMORY[0x277D45F58] profileStore];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+  profileStore3 = [MEMORY[0x277D45F58] profileStore];
+  if (os_log_type_enabled(profileStore3, OS_LOG_TYPE_DEBUG))
   {
     [RMProfileStore _oldDeclarationKeysForPayload:store:error:];
   }
 
   v22 = [MEMORY[0x277CBEB98] setWithArray:v14];
 
-  v8 = v26;
+  storeCopy = v26;
 LABEL_24:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1507,17 +1507,17 @@ LABEL_24:
   return v22;
 }
 
-- (BOOL)_saveDeclarationKeysForPayload:(id)a3 keys:(id)a4 error:(id *)a5
+- (BOOL)_saveDeclarationKeysForPayload:(id)payload keys:(id)keys error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  payloadCopy = payload;
+  keysCopy = keys;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = v9;
+  v11 = keysCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
@@ -1546,17 +1546,17 @@ LABEL_24:
     while (v13);
   }
 
-  v17 = [(RMProfileStore *)self _metadataKeyForPayload:v8];
-  v18 = [(RMProfileStore *)self providerStore];
+  v17 = [(RMProfileStore *)self _metadataKeyForPayload:payloadCopy];
+  providerStore = [(RMProfileStore *)self providerStore];
   v26 = 0;
-  v19 = [v18 setMetadataValue:v10 forKey:v17 error:&v26];
+  v19 = [providerStore setMetadataValue:v10 forKey:v17 error:&v26];
   v20 = v26;
 
-  v21 = [MEMORY[0x277D45F58] profileStore];
-  v22 = v21;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  v22 = profileStore;
   if (v19)
   {
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
     {
       [RMProfileStore _saveDeclarationKeysForPayload:keys:error:];
     }
@@ -1564,15 +1564,15 @@ LABEL_24:
 
   else
   {
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(profileStore, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _saveDeclarationKeysForPayload:keys:error:];
     }
 
-    if (a5 && v20)
+    if (error && v20)
     {
       v23 = v20;
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -1580,19 +1580,19 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)_removeDeclarationKeysForPayload:(id)a3 error:(id *)a4
+- (BOOL)_removeDeclarationKeysForPayload:(id)payload error:(id *)error
 {
-  v6 = [(RMProfileStore *)self _metadataKeyForPayload:a3];
-  v7 = [(RMProfileStore *)self providerStore];
+  v6 = [(RMProfileStore *)self _metadataKeyForPayload:payload];
+  providerStore = [(RMProfileStore *)self providerStore];
   v14 = 0;
-  v8 = [v7 setMetadataValue:0 forKey:v6 error:&v14];
+  v8 = [providerStore setMetadataValue:0 forKey:v6 error:&v14];
   v9 = v14;
 
-  v10 = [MEMORY[0x277D45F58] profileStore];
-  v11 = v10;
+  profileStore = [MEMORY[0x277D45F58] profileStore];
+  v11 = profileStore;
   if (v8)
   {
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(profileStore, OS_LOG_TYPE_DEBUG))
     {
       [RMProfileStore _removeDeclarationKeysForPayload:error:];
     }
@@ -1600,27 +1600,27 @@ LABEL_24:
 
   else
   {
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(profileStore, OS_LOG_TYPE_ERROR))
     {
       [RMProfileStore _removeDeclarationKeysForPayload:error:];
     }
 
-    if (a4 && v9)
+    if (error && v9)
     {
       v12 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
   return v8;
 }
 
-- (id)_metadataKeyForPayload:(id)a3
+- (id)_metadataKeyForPayload:(id)payload
 {
-  v3 = [a3 dataUsingEncoding:4];
-  v4 = [v3 DMCSHA256Hash];
-  v5 = [v4 DMCHexString];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", @"RMProfileStore", v5];
+  v3 = [payload dataUsingEncoding:4];
+  dMCSHA256Hash = [v3 DMCSHA256Hash];
+  dMCHexString = [dMCSHA256Hash DMCHexString];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", @"RMProfileStore", dMCHexString];
 
   return v6;
 }

@@ -1,18 +1,18 @@
 @interface PBUIWallpaperServer
-- (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forLocations:(id)a5;
-- (BOOL)setWallpaperGradient:(id)a3 forLocations:(id)a4;
-- (BOOL)setWallpaperImage:(id)a3 adjustedImage:(id)a4 thumbnailData:(id)a5 imageHashData:(id)a6 wallpaperOptions:(id)a7 forLocations:(id)a8 currentWallpaperMode:(id)a9;
-- (BOOL)setWallpaperWithVideo:(id)a3 sandboxToken:(id)a4 cropRect:(id)a5 wallpaperMode:(id)a6;
+- (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forLocations:(id)locations;
+- (BOOL)setWallpaperGradient:(id)gradient forLocations:(id)locations;
+- (BOOL)setWallpaperImage:(id)image adjustedImage:(id)adjustedImage thumbnailData:(id)data imageHashData:(id)hashData wallpaperOptions:(id)options forLocations:(id)locations currentWallpaperMode:(id)mode;
+- (BOOL)setWallpaperWithVideo:(id)video sandboxToken:(id)token cropRect:(id)rect wallpaperMode:(id)mode;
 - (PBUIWallpaperServer)init;
 - (PBUIWallpaperServerDelegate)delegate;
-- (id)getWallpaperLegibilitySettingsForVariant:(id)a3;
-- (id)getWallpaperOptionsForVariant:(id)a3;
-- (void)_queue_addConnection:(id)a3;
-- (void)_queue_removeConnection:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (id)getWallpaperLegibilitySettingsForVariant:(id)variant;
+- (id)getWallpaperOptionsForVariant:(id)variant;
+- (void)_queue_addConnection:(id)connection;
+- (void)_queue_removeConnection:(id)connection;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)removeWallpaperVideo;
 - (void)restoreDefaultWallpaper;
-- (void)setProceduralWallpaperIdentifier:(id)a3 options:(id)a4 locations:(id)a5;
+- (void)setProceduralWallpaperIdentifier:(id)identifier options:(id)options locations:(id)locations;
 @end
 
 @implementation PBUIWallpaperServer
@@ -43,9 +43,9 @@
     connectionListener = v8->_connectionListener;
     v8->_connectionListener = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v8->_connections;
-    v8->_connections = v11;
+    v8->_connections = array;
   }
 
   return v2;
@@ -61,15 +61,15 @@ void __27__PBUIWallpaperServer_init__block_invoke(uint64_t a1, void *a2)
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = PBUILogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = connectionCopy;
     _os_log_impl(&dword_21E67D000, v7, OS_LOG_TYPE_INFO, "PBUIWallpaperServer received connection: %{public}@", buf, 0xCu);
   }
 
@@ -78,11 +78,11 @@ void __27__PBUIWallpaperServer_init__block_invoke(uint64_t a1, void *a2)
   v15[2] = __65__PBUIWallpaperServer_listener_didReceiveConnection_withContext___block_invoke;
   v15[3] = &unk_278363C18;
   v15[4] = self;
-  [v6 configureConnection:v15];
+  [connectionCopy configureConnection:v15];
   clientAuthenticator = self->_clientAuthenticator;
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
-  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v10];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken];
 
   if (clientAuthenticator)
   {
@@ -92,7 +92,7 @@ void __27__PBUIWallpaperServer_init__block_invoke(uint64_t a1, void *a2)
     block[2] = __65__PBUIWallpaperServer_listener_didReceiveConnection_withContext___block_invoke_8;
     block[3] = &unk_2783622E0;
     block[4] = self;
-    v12 = v6;
+    v12 = connectionCopy;
     v14 = v12;
     dispatch_async(queue, block);
     [v12 activate];
@@ -100,7 +100,7 @@ void __27__PBUIWallpaperServer_init__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -138,121 +138,121 @@ void __65__PBUIWallpaperServer_listener_didReceiveConnection_withContext___block
   [*(a1 + 32) _queue_removeConnection:v3];
 }
 
-- (void)_queue_addConnection:(id)a3
+- (void)_queue_addConnection:(id)connection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = PBUILogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&dword_21E67D000, v5, OS_LOG_TYPE_INFO, "Adding Connection: %{public}@", &v6, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_connections addObject:v4];
+  [(NSMutableArray *)self->_connections addObject:connectionCopy];
 }
 
-- (void)_queue_removeConnection:(id)a3
+- (void)_queue_removeConnection:(id)connection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = PBUILogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&dword_21E67D000, v5, OS_LOG_TYPE_INFO, "Removing Connection: %{public}@", &v6, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_connections removeObject:v4];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
 }
 
-- (BOOL)setWallpaperImage:(id)a3 adjustedImage:(id)a4 thumbnailData:(id)a5 imageHashData:(id)a6 wallpaperOptions:(id)a7 forLocations:(id)a8 currentWallpaperMode:(id)a9
+- (BOOL)setWallpaperImage:(id)image adjustedImage:(id)adjustedImage thumbnailData:(id)data imageHashData:(id)hashData wallpaperOptions:(id)options forLocations:(id)locations currentWallpaperMode:(id)mode
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(PBUIWallpaperServer *)self delegate];
-  v24 = [v23 setWallpaperImage:v22 adjustedImage:v21 thumbnailData:v20 imageHashData:v19 wallpaperOptions:v18 forLocations:v17 currentWallpaperMode:v16];
+  modeCopy = mode;
+  locationsCopy = locations;
+  optionsCopy = options;
+  hashDataCopy = hashData;
+  dataCopy = data;
+  adjustedImageCopy = adjustedImage;
+  imageCopy = image;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v24 = [delegate setWallpaperImage:imageCopy adjustedImage:adjustedImageCopy thumbnailData:dataCopy imageHashData:hashDataCopy wallpaperOptions:optionsCopy forLocations:locationsCopy currentWallpaperMode:modeCopy];
 
   return v24;
 }
 
-- (void)setProceduralWallpaperIdentifier:(id)a3 options:(id)a4 locations:(id)a5
+- (void)setProceduralWallpaperIdentifier:(id)identifier options:(id)options locations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PBUIWallpaperServer *)self delegate];
-  [v11 setProceduralWallpaperIdentifier:v10 options:v9 locations:v8];
+  locationsCopy = locations;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  [delegate setProceduralWallpaperIdentifier:identifierCopy options:optionsCopy locations:locationsCopy];
 }
 
 - (void)removeWallpaperVideo
 {
-  v2 = [(PBUIWallpaperServer *)self delegate];
-  [v2 removeWallpaperVideo];
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  [delegate removeWallpaperVideo];
 }
 
-- (BOOL)setWallpaperWithVideo:(id)a3 sandboxToken:(id)a4 cropRect:(id)a5 wallpaperMode:(id)a6
+- (BOOL)setWallpaperWithVideo:(id)video sandboxToken:(id)token cropRect:(id)rect wallpaperMode:(id)mode
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PBUIWallpaperServer *)self delegate];
-  v15 = [v14 setWallpaperWithVideo:v13 sandboxToken:v12 cropRect:v11 wallpaperMode:v10];
+  modeCopy = mode;
+  rectCopy = rect;
+  tokenCopy = token;
+  videoCopy = video;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v15 = [delegate setWallpaperWithVideo:videoCopy sandboxToken:tokenCopy cropRect:rectCopy wallpaperMode:modeCopy];
 
   return v15;
 }
 
 - (void)restoreDefaultWallpaper
 {
-  v2 = [(PBUIWallpaperServer *)self delegate];
-  [v2 restoreDefaultWallpaper];
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  [delegate restoreDefaultWallpaper];
 }
 
-- (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forLocations:(id)a5
+- (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forLocations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PBUIWallpaperServer *)self delegate];
-  v12 = [v11 setWallpaperColor:v10 darkColor:v9 forLocations:v8];
+  locationsCopy = locations;
+  darkColorCopy = darkColor;
+  colorCopy = color;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v12 = [delegate setWallpaperColor:colorCopy darkColor:darkColorCopy forLocations:locationsCopy];
 
   return v12;
 }
 
-- (BOOL)setWallpaperGradient:(id)a3 forLocations:(id)a4
+- (BOOL)setWallpaperGradient:(id)gradient forLocations:(id)locations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PBUIWallpaperServer *)self delegate];
-  v9 = [v8 setWallpaperGradient:v7 forLocations:v6];
+  locationsCopy = locations;
+  gradientCopy = gradient;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v9 = [delegate setWallpaperGradient:gradientCopy forLocations:locationsCopy];
 
   return v9;
 }
 
-- (id)getWallpaperOptionsForVariant:(id)a3
+- (id)getWallpaperOptionsForVariant:(id)variant
 {
-  v4 = a3;
-  v5 = [(PBUIWallpaperServer *)self delegate];
-  v6 = [v5 getWallpaperOptionsForVariant:v4];
+  variantCopy = variant;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v6 = [delegate getWallpaperOptionsForVariant:variantCopy];
 
   return v6;
 }
 
-- (id)getWallpaperLegibilitySettingsForVariant:(id)a3
+- (id)getWallpaperLegibilitySettingsForVariant:(id)variant
 {
-  v4 = a3;
-  v5 = [(PBUIWallpaperServer *)self delegate];
-  v6 = [v5 getWallpaperLegibilitySettingsForVariant:v4];
+  variantCopy = variant;
+  delegate = [(PBUIWallpaperServer *)self delegate];
+  v6 = [delegate getWallpaperLegibilitySettingsForVariant:variantCopy];
 
   return v6;
 }

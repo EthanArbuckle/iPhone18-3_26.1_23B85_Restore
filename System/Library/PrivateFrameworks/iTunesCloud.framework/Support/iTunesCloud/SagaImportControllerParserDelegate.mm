@@ -1,25 +1,25 @@
 @interface SagaImportControllerParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (BOOL)parser:(id)a3 shouldParseCodeAsContainer:(unsigned int)a4;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (BOOL)parser:(id)parser shouldParseCodeAsContainer:(unsigned int)container;
 - (SagaImportControllerParserDelegate)init;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
-- (void)parserDidStart:(id)a3;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
+- (void)parserDidStart:(id)start;
 @end
 
 @implementation SagaImportControllerParserDelegate
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1835821428 && self->_currentCloudID >= 1)
+  parserCopy = parser;
+  v7 = parserCopy;
+  if (code == 1835821428 && self->_currentCloudID >= 1)
   {
-    v11 = v6;
-    v6 = [(NSString *)self->_currentLyricsToken length];
+    v11 = parserCopy;
+    parserCopy = [(NSString *)self->_currentLyricsToken length];
     v7 = v11;
-    if (v6)
+    if (parserCopy)
     {
       currentLyricsToken = self->_currentLyricsToken;
       mutableCloudIDToLyricsTokenMap = self->_mutableCloudIDToLyricsTokenMap;
@@ -30,61 +30,61 @@
     }
   }
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(parserCopy, v7);
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 <= 1836081510)
+  parserCopy = parser;
+  if (code <= 1836081510)
   {
-    if (a4 != 1634026356)
+    if (code != 1634026356)
     {
-      if (a4 == 1634951787)
+      if (code == 1634951787)
       {
-        self->_includesBookmarkable = bswap32(*a5) != 0;
+        self->_includesBookmarkable = bswap32(*bytes) != 0;
       }
 
-      else if (a4 == 1835624804)
+      else if (code == 1835624804)
       {
-        self->_currentCloudID = bswap32(*a5);
+        self->_currentCloudID = bswap32(*bytes);
       }
 
       goto LABEL_15;
     }
 
-    v14 = v10;
-    v11 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v14 = parserCopy;
+    v11 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     currentLyricsToken = self->_currentLyricsToken;
     self->_currentLyricsToken = v11;
 LABEL_12:
 
-    v10 = v14;
+    parserCopy = v14;
     goto LABEL_15;
   }
 
-  switch(a4)
+  switch(code)
   {
     case 0x6D706167u:
-      v14 = v10;
-      v13 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+      v14 = parserCopy;
+      v13 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
       currentLyricsToken = self->_currentPaginationToken;
       self->_currentPaginationToken = v13;
       goto LABEL_12;
     case 0x6D72636Fu:
-      self->_currentItemCount = bswap32(*a5);
+      self->_currentItemCount = bswap32(*bytes);
       break;
     case 0x6D74636Fu:
-      self->_totalItemCount = bswap32(*a5);
+      self->_totalItemCount = bswap32(*bytes);
       break;
   }
 
 LABEL_15:
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1835821428)
+  if (code == 1835821428)
   {
     currentLyricsToken = self->_currentLyricsToken;
     self->_currentCloudID = 0;
@@ -92,29 +92,29 @@ LABEL_15:
     _objc_release_x1();
   }
 
-  else if (a4 == 1836413554)
+  else if (code == 1836413554)
   {
     self->_shouldRestart = 1;
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCodeAsContainer:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCodeAsContainer:(unsigned int)container
 {
   result = 1;
-  if (a4 > 1835819883)
+  if (container > 1835819883)
   {
-    if (a4 != 1835819884 && a4 != 1835821428)
+    if (container != 1835819884 && container != 1835821428)
     {
       v5 = 1836413554;
 LABEL_8:
-      if (a4 != v5)
+      if (container != v5)
       {
         return 0;
       }
     }
   }
 
-  else if (a4 != 1633968755 && a4 != 1634165100)
+  else if (container != 1633968755 && container != 1634165100)
   {
     v5 = 1634165106;
     goto LABEL_8;
@@ -123,7 +123,7 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   if (self->_shouldRestart)
   {
@@ -131,11 +131,11 @@ LABEL_8:
   }
 
   result = 1;
-  if (a4 > 1835819883)
+  if (code > 1835819883)
   {
-    if (a4 > 1836213102)
+    if (code > 1836213102)
     {
-      if (a4 == 1836213103 || a4 == 1836344175)
+      if (code == 1836213103 || code == 1836344175)
       {
         return result;
       }
@@ -145,7 +145,7 @@ LABEL_8:
 
     else
     {
-      if (a4 == 1835819884 || a4 == 1835821428)
+      if (code == 1835819884 || code == 1835821428)
       {
         return result;
       }
@@ -154,9 +154,9 @@ LABEL_8:
     }
   }
 
-  else if (a4 > 1634165105)
+  else if (code > 1634165105)
   {
-    if (a4 == 1634165106 || a4 == 1634951787)
+    if (code == 1634165106 || code == 1634951787)
     {
       return result;
     }
@@ -166,7 +166,7 @@ LABEL_8:
 
   else
   {
-    if (a4 == 1633968755 || a4 == 1634026356)
+    if (code == 1633968755 || code == 1634026356)
     {
       return result;
     }
@@ -174,7 +174,7 @@ LABEL_8:
     v5 = 1634165100;
   }
 
-  if (a4 != v5)
+  if (code != v5)
   {
     return 0;
   }
@@ -182,7 +182,7 @@ LABEL_8:
   return result;
 }
 
-- (void)parserDidStart:(id)a3
+- (void)parserDidStart:(id)start
 {
   self->_shouldRestart = 0;
   currentPaginationToken = self->_currentPaginationToken;

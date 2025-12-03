@@ -1,43 +1,43 @@
 @interface STMutableVoiceControlStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setListeningState:(unint64_t)a3;
-- (void)setVoiceControlActive:(BOOL)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setListeningState:(unint64_t)state;
+- (void)setVoiceControlActive:(BOOL)active;
 @end
 
 @implementation STMutableVoiceControlStatusDomainData
 
-- (void)setVoiceControlActive:(BOOL)a3
+- (void)setVoiceControlActive:(BOOL)active
 {
-  if (self->super._voiceControlActive != a3)
+  if (self->super._voiceControlActive != active)
   {
-    self->super._voiceControlActive = a3;
+    self->super._voiceControlActive = active;
   }
 }
 
-- (void)setListeningState:(unint64_t)a3
+- (void)setListeningState:(unint64_t)state
 {
-  if (self->super._listeningState != a3)
+  if (self->super._listeningState != state)
   {
-    self->super._listeningState = a3;
+    self->super._listeningState = state;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STVoiceControlStatusDomainData allocWithZone:a3];
+  v4 = [STVoiceControlStatusDomainData allocWithZone:zone];
 
   return [(STVoiceControlStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

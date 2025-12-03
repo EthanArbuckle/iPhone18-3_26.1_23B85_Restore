@@ -1,6 +1,6 @@
 @interface UIKeyShortcutHUDMetrics
 + (UIKeyShortcutHUDMetrics)currentMetrics;
-+ (void)setCurrentMetrics:(id)a3;
++ (void)setCurrentMetrics:(id)metrics;
 - (BOOL)isHUDShrunkToFitHorizontally;
 - (BOOL)shouldAlignShortcutModifiersAndInputInColumn;
 - (UIColor)standardHUDTextColor;
@@ -18,39 +18,39 @@
 - (_UIKeyShortcutHUDShortcutCell)selfSizingShortcutCell;
 - (_UIKeyShortcutHUDToolbarCategoryCell)selfSizingToolbarCategoryCell;
 - (_UIKeyShortcutHUDToolbarSearchCell)selfSizingSearchCell;
-- (double)_computedWidthForCategoryAtIndex:(unint64_t)a3;
-- (double)_shortcutWidthAdjustmentForMetrics:(id)a3 shortcutWidth:(double)a4;
+- (double)_computedWidthForCategoryAtIndex:(unint64_t)index;
+- (double)_shortcutWidthAdjustmentForMetrics:(id)metrics shortcutWidth:(double)width;
 - (double)_toolbarContentToWindowBottomEdgeSpacing;
 - (double)_toolbarDistanceFromBottomOfWindow;
 - (double)_toolbarHeight;
-- (double)cellWidthForShortcut:(id)a3;
-- (double)contentSizeScaledMetric:(double)a3;
-- (double)headerWidthForCategory:(id)a3;
-- (double)horizontalOffsetForCategoryAtIndex:(unint64_t)a3;
-- (double)inputWidthForShortcut:(id)a3;
+- (double)cellWidthForShortcut:(id)shortcut;
+- (double)contentSizeScaledMetric:(double)metric;
+- (double)headerWidthForCategory:(id)category;
+- (double)horizontalOffsetForCategoryAtIndex:(unint64_t)index;
+- (double)inputWidthForShortcut:(id)shortcut;
 - (double)menuCellCornerRadius;
 - (double)menuColumnSpacing;
 - (double)menuHorizontalContentInset;
 - (double)menuTopContentInset;
-- (double)modifiersWidthForShortcut:(id)a3;
+- (double)modifiersWidthForShortcut:(id)shortcut;
 - (double)searchModeMaximumMenuPanelHeight;
 - (double)searchModeMenuTopContentInset;
 - (double)searchModePreferredMenuPanelWidth;
 - (double)standardHUDWidth;
 - (double)standardMenuPanelHeight;
 - (double)toolbarCellCornerRadius;
-- (unint64_t)categoryIndexAtHorizontalOffset:(double)a3;
+- (unint64_t)categoryIndexAtHorizontalOffset:(double)offset;
 - (unint64_t)contentSizeAdjustedMaxNumberOfCellsPerColumn;
 - (unint64_t)maxNumberOfCellsInSearchResults;
-- (void)_computeAndStoreCellMetricsForShortcut:(id)a3 indexPath:(id)a4;
-- (void)_setDisplayedMenu:(id)a3 searching:(BOOL)a4 combinedShortcutAndAlternateColumnWidths:(BOOL)a5;
+- (void)_computeAndStoreCellMetricsForShortcut:(id)shortcut indexPath:(id)path;
+- (void)_setDisplayedMenu:(id)menu searching:(BOOL)searching combinedShortcutAndAlternateColumnWidths:(BOOL)widths;
 - (void)_updateBaseMenuMetrics;
 - (void)_updateDisplayedMenuMetrics;
 - (void)_updateDisplayedSearchMenuMetrics;
 - (void)_updateDisplayedStandardMenuMetrics;
 - (void)computeOneTimeMetrics;
-- (void)setBaseMenu:(id)a3;
-- (void)setDisplayedMenu:(id)a3 searching:(BOOL)a4;
+- (void)setBaseMenu:(id)menu;
+- (void)setDisplayedMenu:(id)menu searching:(BOOL)searching;
 @end
 
 @implementation UIKeyShortcutHUDMetrics
@@ -60,12 +60,12 @@
   selfSizingShortcutCell = self->_selfSizingShortcutCell;
   if (!selfSizingShortcutCell)
   {
-    v5 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    selfSizingPlayground = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
 
-    if (!v5)
+    if (!selfSizingPlayground)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:126 description:@"Fatal: attempted to create the self-sizing shortcut cell in the HUD metrics without a self-sizing playground!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:126 description:@"Fatal: attempted to create the self-sizing shortcut cell in the HUD metrics without a self-sizing playground!"];
     }
 
     v6 = [_UIKeyShortcutHUDShortcutCell alloc];
@@ -74,8 +74,8 @@
     v9 = self->_selfSizingShortcutCell;
     self->_selfSizingShortcutCell = v8;
 
-    v10 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
-    [v10 addSubview:self->_selfSizingShortcutCell];
+    selfSizingPlayground2 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    [selfSizingPlayground2 addSubview:self->_selfSizingShortcutCell];
 
     selfSizingShortcutCell = self->_selfSizingShortcutCell;
   }
@@ -88,12 +88,12 @@
   selfSizingSearchCell = self->_selfSizingSearchCell;
   if (!selfSizingSearchCell)
   {
-    v5 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    selfSizingPlayground = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
 
-    if (!v5)
+    if (!selfSizingPlayground)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:136 description:@"Fatal: attempted to create the self-sizing search cell in the HUD metrics without a self-sizing playground!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:136 description:@"Fatal: attempted to create the self-sizing search cell in the HUD metrics without a self-sizing playground!"];
     }
 
     v6 = [_UIKeyShortcutHUDToolbarSearchCell alloc];
@@ -102,8 +102,8 @@
     v9 = self->_selfSizingSearchCell;
     self->_selfSizingSearchCell = v8;
 
-    v10 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
-    [v10 addSubview:self->_selfSizingSearchCell];
+    selfSizingPlayground2 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    [selfSizingPlayground2 addSubview:self->_selfSizingSearchCell];
 
     selfSizingSearchCell = self->_selfSizingSearchCell;
   }
@@ -116,12 +116,12 @@
   selfSizingToolbarCategoryCell = self->_selfSizingToolbarCategoryCell;
   if (!selfSizingToolbarCategoryCell)
   {
-    v5 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    selfSizingPlayground = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
 
-    if (!v5)
+    if (!selfSizingPlayground)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:146 description:@"Fatal: attempted to create the self-sizing toolbar category cell in the HUD metrics without a self-sizing playground!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:146 description:@"Fatal: attempted to create the self-sizing toolbar category cell in the HUD metrics without a self-sizing playground!"];
     }
 
     v6 = [_UIKeyShortcutHUDToolbarCategoryCell alloc];
@@ -130,8 +130,8 @@
     v9 = self->_selfSizingToolbarCategoryCell;
     self->_selfSizingToolbarCategoryCell = v8;
 
-    v10 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
-    [v10 addSubview:self->_selfSizingToolbarCategoryCell];
+    selfSizingPlayground2 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+    [selfSizingPlayground2 addSubview:self->_selfSizingToolbarCategoryCell];
 
     selfSizingToolbarCategoryCell = self->_selfSizingToolbarCategoryCell;
   }
@@ -139,9 +139,9 @@
   return selfSizingToolbarCategoryCell;
 }
 
-- (void)setBaseMenu:(id)a3
+- (void)setBaseMenu:(id)menu
 {
-  obj = a3;
+  obj = menu;
   WeakRetained = objc_loadWeakRetained(&self->_baseMenu);
 
   v5 = obj;
@@ -153,26 +153,26 @@
   }
 }
 
-- (void)setDisplayedMenu:(id)a3 searching:(BOOL)a4
+- (void)setDisplayedMenu:(id)menu searching:(BOOL)searching
 {
-  v4 = a4;
-  v6 = a3;
-  [(UIKeyShortcutHUDMetrics *)self _setDisplayedMenu:v6 searching:v4 combinedShortcutAndAlternateColumnWidths:[(UIKeyShortcutHUDMetrics *)self isHUDShrunkToFitHorizontally]];
+  searchingCopy = searching;
+  menuCopy = menu;
+  [(UIKeyShortcutHUDMetrics *)self _setDisplayedMenu:menuCopy searching:searchingCopy combinedShortcutAndAlternateColumnWidths:[(UIKeyShortcutHUDMetrics *)self isHUDShrunkToFitHorizontally]];
 }
 
-- (void)_setDisplayedMenu:(id)a3 searching:(BOOL)a4 combinedShortcutAndAlternateColumnWidths:(BOOL)a5
+- (void)_setDisplayedMenu:(id)menu searching:(BOOL)searching combinedShortcutAndAlternateColumnWidths:(BOOL)widths
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (self->_displayedMenu != v9 || self->_searching != v6 || self->_combinedShortcutAndAlternateColumnWidths != v5)
+  widthsCopy = widths;
+  searchingCopy = searching;
+  menuCopy = menu;
+  if (self->_displayedMenu != menuCopy || self->_searching != searchingCopy || self->_combinedShortcutAndAlternateColumnWidths != widthsCopy)
   {
-    v10 = v9;
-    objc_storeStrong(&self->_displayedMenu, a3);
-    self->_searching = v6;
-    self->_combinedShortcutAndAlternateColumnWidths = v5;
+    v10 = menuCopy;
+    objc_storeStrong(&self->_displayedMenu, menu);
+    self->_searching = searchingCopy;
+    self->_combinedShortcutAndAlternateColumnWidths = widthsCopy;
     [(UIKeyShortcutHUDMetrics *)self _updateDisplayedMenuMetrics];
-    v9 = v10;
+    menuCopy = v10;
   }
 }
 
@@ -198,25 +198,25 @@
 - (void)_updateBaseMenuMetrics
 {
   v101 = *MEMORY[0x1E69E9840];
-  v4 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+  selfSizingPlayground = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
 
-  if (!v4)
+  if (!selfSizingPlayground)
   {
-    v77 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v77 handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:202 description:@"Fatal: attempted to compute base menu metrics for the HUD without a self-sizing playground!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyShortcutHUDMetrics.m" lineNumber:202 description:@"Fatal: attempted to compute base menu metrics for the HUD without a self-sizing playground!"];
   }
 
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   shortcutCellMetricsMap = self->_shortcutCellMetricsMap;
-  self->_shortcutCellMetricsMap = v5;
+  self->_shortcutCellMetricsMap = strongToStrongObjectsMapTable;
 
-  v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   shortcutCellIndexPathsMap = self->_shortcutCellIndexPathsMap;
-  self->_shortcutCellIndexPathsMap = v7;
+  self->_shortcutCellIndexPathsMap = strongToStrongObjectsMapTable2;
 
   WeakRetained = objc_loadWeakRetained(&self->_baseMenu);
-  v10 = [WeakRetained children];
-  v11 = [v10 count];
+  children = [WeakRetained children];
+  v11 = [children count];
 
   if (v11)
   {
@@ -224,19 +224,19 @@
     do
     {
       v13 = objc_loadWeakRetained(&self->_baseMenu);
-      v14 = [v13 children];
-      v15 = [v14 objectAtIndexedSubscript:v12];
+      children2 = [v13 children];
+      v15 = [children2 objectAtIndexedSubscript:v12];
 
-      v16 = [v15 children];
-      v17 = [v16 count];
+      children3 = [v15 children];
+      v17 = [children3 count];
 
       if (v17)
       {
         v18 = 0;
         do
         {
-          v19 = [v15 children];
-          v20 = [v19 objectAtIndexedSubscript:v18];
+          children4 = [v15 children];
+          v20 = [children4 objectAtIndexedSubscript:v18];
 
           v21 = [MEMORY[0x1E696AC88] indexPathForItem:v18 inSection:v12];
           [(UIKeyShortcutHUDMetrics *)self _computeAndStoreCellMetricsForShortcut:v20 indexPath:v21];
@@ -244,8 +244,8 @@
           v89 = 0u;
           v86 = 0u;
           v87 = 0u;
-          v22 = [v20 shortcutAlternates];
-          v23 = [v22 countByEnumeratingWithState:&v86 objects:v100 count:16];
+          shortcutAlternates = [v20 shortcutAlternates];
+          v23 = [shortcutAlternates countByEnumeratingWithState:&v86 objects:v100 count:16];
           if (v23)
           {
             v24 = v23;
@@ -257,22 +257,22 @@
               {
                 if (*v87 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(shortcutAlternates);
                 }
 
                 [(UIKeyShortcutHUDMetrics *)self _computeAndStoreCellMetricsForShortcut:*(*(&v86 + 1) + 8 * v26++) indexPath:v21];
               }
 
               while (v24 != v26);
-              v24 = [v22 countByEnumeratingWithState:&v86 objects:v100 count:16];
+              v24 = [shortcutAlternates countByEnumeratingWithState:&v86 objects:v100 count:16];
             }
 
             while (v24);
           }
 
           ++v18;
-          v27 = [v15 children];
-          v28 = [v27 count];
+          children5 = [v15 children];
+          v28 = [children5 count];
         }
 
         while (v18 < v28);
@@ -280,8 +280,8 @@
 
       ++v12;
       v29 = objc_loadWeakRetained(&self->_baseMenu);
-      v30 = [v29 children];
-      v31 = [v30 count];
+      children6 = [v29 children];
+      v31 = [children6 count];
     }
 
     while (v12 < v31);
@@ -294,9 +294,9 @@
   v84 = 0u;
   v85 = 0u;
   v33 = objc_loadWeakRetained(&self->_baseMenu);
-  v34 = [v33 children];
+  children7 = [v33 children];
 
-  v35 = [v34 countByEnumeratingWithState:&v82 objects:v99 count:16];
+  v35 = [children7 countByEnumeratingWithState:&v82 objects:v99 count:16];
   if (v35)
   {
     v36 = v35;
@@ -308,18 +308,18 @@
       {
         if (*v83 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(children7);
         }
 
         numCellsPerColumn = self->_numCellsPerColumn;
-        v40 = [*(*(&v82 + 1) + 8 * v38) children];
-        self->_numCellsPerColumn = fmax(numCellsPerColumn, fmin([v40 count], *&v32));
+        children8 = [*(*(&v82 + 1) + 8 * v38) children];
+        self->_numCellsPerColumn = fmax(numCellsPerColumn, fmin([children8 count], *&v32));
 
         ++v38;
       }
 
       while (v36 != v38);
-      v36 = [v34 countByEnumeratingWithState:&v82 objects:v99 count:16];
+      v36 = [children7 countByEnumeratingWithState:&v82 objects:v99 count:16];
     }
 
     while (v36);
@@ -391,22 +391,22 @@
   [(UIKeyShortcutHUDMetrics *)self _setDisplayedMenu:v64 searching:0 combinedShortcutAndAlternateColumnWidths:1];
 
   self->_computedHUDWidthForBaseMenu = self->_displayedMenuContentWidth;
-  v65 = [(UIKeyShortcutHUDMetrics *)self selfSizingSearchCell];
-  [v65 layoutIfNeeded];
-  [v65 systemLayoutSizeFittingSize:{0.0, 0.0}];
+  selfSizingSearchCell = [(UIKeyShortcutHUDMetrics *)self selfSizingSearchCell];
+  [selfSizingSearchCell layoutIfNeeded];
+  [selfSizingSearchCell systemLayoutSizeFittingSize:{0.0, 0.0}];
   self->_searchButtonWidth = v66;
   [(UIKeyShortcutHUDMetrics *)self toolbarContentInset];
   self->_searchButtonWidth = v67 + self->_searchButtonWidth;
   self->_widestToolbarCategoryCellWidth = 0.0;
-  v68 = [(UIKeyShortcutHUDMetrics *)self selfSizingToolbarCategoryCell];
+  selfSizingToolbarCategoryCell = [(UIKeyShortcutHUDMetrics *)self selfSizingToolbarCategoryCell];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v69 = objc_loadWeakRetained(&self->_baseMenu);
-  v70 = [v69 children];
+  children9 = [v69 children];
 
-  v71 = [v70 countByEnumeratingWithState:&v78 objects:v90 count:16];
+  v71 = [children9 countByEnumeratingWithState:&v78 objects:v90 count:16];
   if (v71)
   {
     v72 = v71;
@@ -418,13 +418,13 @@
       {
         if (*v79 != v73)
         {
-          objc_enumerationMutation(v70);
+          objc_enumerationMutation(children9);
         }
 
-        [v68 configureForMetricsCalculationsWithCategory:*(*(&v78 + 1) + 8 * v74)];
-        [v68 layoutIfNeeded];
+        [selfSizingToolbarCategoryCell configureForMetricsCalculationsWithCategory:*(*(&v78 + 1) + 8 * v74)];
+        [selfSizingToolbarCategoryCell layoutIfNeeded];
         widestToolbarCategoryCellWidth = self->_widestToolbarCategoryCellWidth;
-        [v68 systemLayoutSizeFittingSize:{0.0, 0.0}];
+        [selfSizingToolbarCategoryCell systemLayoutSizeFittingSize:{0.0, 0.0}];
         if (widestToolbarCategoryCellWidth >= v76)
         {
           v76 = widestToolbarCategoryCellWidth;
@@ -435,44 +435,44 @@
       }
 
       while (v72 != v74);
-      v72 = [v70 countByEnumeratingWithState:&v78 objects:v90 count:16];
+      v72 = [children9 countByEnumeratingWithState:&v78 objects:v90 count:16];
     }
 
     while (v72);
   }
 }
 
-- (void)_computeAndStoreCellMetricsForShortcut:(id)a3 indexPath:(id)a4
+- (void)_computeAndStoreCellMetricsForShortcut:(id)shortcut indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v16 = [(UIKeyShortcutHUDMetrics *)self selfSizingShortcutCell];
-  v8 = [v16 shortcutInputAccessoryView];
-  v9 = [v8 shortcutInputView];
+  pathCopy = path;
+  shortcutCopy = shortcut;
+  selfSizingShortcutCell = [(UIKeyShortcutHUDMetrics *)self selfSizingShortcutCell];
+  shortcutInputAccessoryView = [selfSizingShortcutCell shortcutInputAccessoryView];
+  shortcutInputView = [shortcutInputAccessoryView shortcutInputView];
 
-  [v16 configureWithShortcut:v7];
-  [v16 layoutIfNeeded];
-  [v16 systemLayoutSizeFittingSize:{0.0, 0.0}];
+  [selfSizingShortcutCell configureWithShortcut:shortcutCopy];
+  [selfSizingShortcutCell layoutIfNeeded];
+  [selfSizingShortcutCell systemLayoutSizeFittingSize:{0.0, 0.0}];
   v11 = v10;
-  [v9 modifiersLabelWidth];
+  [shortcutInputView modifiersLabelWidth];
   v13 = v12;
-  [v9 inputLabelWidth];
+  [shortcutInputView inputLabelWidth];
   v15 = [_UIKeyShortcutHUDShortcutCellMetrics metricsWithCellWidth:v11 modifiersWidth:v13 inputWidth:v14];
-  [(NSMapTable *)self->_shortcutCellMetricsMap setObject:v15 forKey:v7];
-  [(NSMapTable *)self->_shortcutCellIndexPathsMap setObject:v6 forKey:v7];
+  [(NSMapTable *)self->_shortcutCellMetricsMap setObject:v15 forKey:shortcutCopy];
+  [(NSMapTable *)self->_shortcutCellIndexPathsMap setObject:pathCopy forKey:shortcutCopy];
 }
 
 - (void)_updateDisplayedMenuMetrics
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  children = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(children, "count")}];
   displayedMenuColumnMetrics = self->_displayedMenuColumnMetrics;
   self->_displayedMenuColumnMetrics = v5;
 
   v7 = MEMORY[0x1E695DF70];
-  v8 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  children2 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(children2, "count")}];
   displayedMenuCategoryOffsets = self->_displayedMenuCategoryOffsets;
   self->_displayedMenuCategoryOffsets = v9;
 
@@ -533,11 +533,11 @@
         else
         {
           v95 = v6;
-          v11 = [v7 children];
-          v12 = [v11 count] - 1;
-          v13 = [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
-          v14 = v12 / v13 + 1;
-          LOBYTE(v12) = v12 / v13 == -1;
+          children = [v7 children];
+          v12 = [children count] - 1;
+          numCellsPerColumn = [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
+          v14 = v12 / numCellsPerColumn + 1;
+          LOBYTE(v12) = v12 / numCellsPerColumn == -1;
 
           v98 = v14;
           v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:v14];
@@ -552,29 +552,29 @@
             do
             {
               v18 = [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn]* v17++;
-              v19 = [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
+              numCellsPerColumn2 = [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
               v20 = 0.0;
               v21 = 0.0;
               v22 = 0.0;
-              if (v18 < v19 * v17)
+              if (v18 < numCellsPerColumn2 * v17)
               {
                 v97 = v17;
-                v23 = v19 * v99;
+                v23 = numCellsPerColumn2 * v99;
                 v24 = v18;
                 v25 = 0.0;
-                v104 = v19 * v99;
+                v104 = numCellsPerColumn2 * v99;
                 do
                 {
-                  v26 = [v16 children];
-                  v27 = [v26 count];
+                  children2 = [v16 children];
+                  v27 = [children2 count];
 
                   if (v24 >= v27)
                   {
                     break;
                   }
 
-                  v28 = [v16 children];
-                  v29 = [v28 objectAtIndexedSubscript:v24];
+                  children3 = [v16 children];
+                  v29 = [children3 objectAtIndexedSubscript:v24];
 
                   v30 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:v29];
                   [v30 modifiersWidth];
@@ -591,8 +591,8 @@
 
                   if (self->_combinedShortcutAndAlternateColumnWidths)
                   {
-                    v33 = [v29 baseShortcutForAlternate];
-                    v34 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:v33];
+                    baseShortcutForAlternate = [v29 baseShortcutForAlternate];
+                    v34 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:baseShortcutForAlternate];
                     [v34 modifiersWidth];
                     if (v22 < v35)
                     {
@@ -610,9 +610,9 @@
                     v110 = 0u;
                     v111 = 0u;
                     v112 = 0u;
-                    v101 = v33;
-                    v37 = [v33 shortcutAlternates];
-                    v38 = [v37 countByEnumeratingWithState:&v109 objects:v118 count:16];
+                    v101 = baseShortcutForAlternate;
+                    shortcutAlternates = [baseShortcutForAlternate shortcutAlternates];
+                    v38 = [shortcutAlternates countByEnumeratingWithState:&v109 objects:v118 count:16];
                     if (v38)
                     {
                       v39 = v38;
@@ -623,7 +623,7 @@
                         {
                           if (*v110 != v40)
                           {
-                            objc_enumerationMutation(v37);
+                            objc_enumerationMutation(shortcutAlternates);
                           }
 
                           v42 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:*(*(&v109 + 1) + 8 * i)];
@@ -640,7 +640,7 @@
                           }
                         }
 
-                        v39 = [v37 countByEnumeratingWithState:&v109 objects:v118 count:16];
+                        v39 = [shortcutAlternates countByEnumeratingWithState:&v109 objects:v118 count:16];
                       }
 
                       while (v39);
@@ -667,23 +667,23 @@
                 v22 = 0.0;
                 do
                 {
-                  v46 = [v16 children];
-                  v47 = [v46 count];
+                  children4 = [v16 children];
+                  v47 = [children4 count];
 
                   if (v18 >= v47)
                   {
                     break;
                   }
 
-                  v48 = [v16 children];
-                  v49 = [v48 objectAtIndexedSubscript:v18];
+                  children5 = [v16 children];
+                  v49 = [children5 objectAtIndexedSubscript:v18];
 
                   v50 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:v49];
                   v51 = v50;
                   if (self->_combinedShortcutAndAlternateColumnWidths)
                   {
-                    v52 = [v49 baseShortcutForAlternate];
-                    v53 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:v52];
+                    baseShortcutForAlternate2 = [v49 baseShortcutForAlternate];
+                    v53 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:baseShortcutForAlternate2];
                     [v53 cellWidth];
                     v55 = v54;
                     [(UIKeyShortcutHUDMetrics *)self _shortcutWidthAdjustmentForMetrics:v53 shortcutWidth:v45];
@@ -692,9 +692,9 @@
                     v106 = 0u;
                     v107 = 0u;
                     v108 = 0u;
-                    v102 = v52;
-                    v58 = [v52 shortcutAlternates];
-                    v59 = [v58 countByEnumeratingWithState:&v105 objects:v117 count:16];
+                    v102 = baseShortcutForAlternate2;
+                    shortcutAlternates2 = [baseShortcutForAlternate2 shortcutAlternates];
+                    v59 = [shortcutAlternates2 countByEnumeratingWithState:&v105 objects:v117 count:16];
                     if (v59)
                     {
                       v60 = v59;
@@ -705,7 +705,7 @@
                         {
                           if (*v106 != v61)
                           {
-                            objc_enumerationMutation(v58);
+                            objc_enumerationMutation(shortcutAlternates2);
                           }
 
                           v63 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:*(*(&v105 + 1) + 8 * j)];
@@ -719,7 +719,7 @@
                           }
                         }
 
-                        v60 = [v58 countByEnumeratingWithState:&v105 objects:v117 count:16];
+                        v60 = [shortcutAlternates2 countByEnumeratingWithState:&v105 objects:v117 count:16];
                       }
 
                       while (v60);
@@ -775,8 +775,8 @@
     while (v4);
   }
 
-  v72 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-  v73 = [v72 count];
+  children6 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+  v73 = [children6 count];
 
   if (v73)
   {
@@ -805,8 +805,8 @@
       [(NSMutableArray *)displayedMenuCategoryOffsets addObject:v83];
 
       ++v74;
-      v84 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-      v85 = [v84 count];
+      children7 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+      v85 = [children7 count];
     }
 
     while (v74 < v85);
@@ -814,8 +814,8 @@
 
   if (![(_UIKeyShortcutHUDMenu *)self->_displayedMenu isEmpty])
   {
-    v86 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-    v87 = [v86 count] - 1;
+    children8 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+    v87 = [children8 count] - 1;
 
     v88 = [(NSMutableArray *)self->_displayedMenuCategoryOffsets objectAtIndexedSubscript:v87];
     [v88 doubleValue];
@@ -828,16 +828,16 @@
   }
 }
 
-- (double)_shortcutWidthAdjustmentForMetrics:(id)a3 shortcutWidth:(double)a4
+- (double)_shortcutWidthAdjustmentForMetrics:(id)metrics shortcutWidth:(double)width
 {
-  v6 = a3;
+  metricsCopy = metrics;
   v7 = 0.0;
   if ([(UIKeyShortcutHUDMetrics *)self shouldAlignShortcutModifiersAndInputInColumn])
   {
-    [v6 modifiersWidth];
+    [metricsCopy modifiersWidth];
     v9 = v8;
-    [v6 inputWidth];
-    v7 = a4 - (v9 + v10);
+    [metricsCopy inputWidth];
+    v7 = width - (v9 + v10);
   }
 
   return v7;
@@ -855,8 +855,8 @@
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v6 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-    v7 = [v6 countByEnumeratingWithState:&v69 objects:v77 count:16];
+    children = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+    v7 = [children countByEnumeratingWithState:&v69 objects:v77 count:16];
     if (v7)
     {
       v8 = v7;
@@ -867,7 +867,7 @@
         {
           if (*v70 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(children);
           }
 
           v11 = *(*(&v69 + 1) + 8 * i);
@@ -875,8 +875,8 @@
           v66 = 0u;
           v67 = 0u;
           v68 = 0u;
-          v12 = [v11 children];
-          v13 = [v12 countByEnumeratingWithState:&v65 objects:v76 count:16];
+          children2 = [v11 children];
+          v13 = [children2 countByEnumeratingWithState:&v65 objects:v76 count:16];
           if (v13)
           {
             v14 = v13;
@@ -887,7 +887,7 @@
               {
                 if (*v66 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(children2);
                 }
 
                 v17 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:*(*(&v65 + 1) + 8 * j)];
@@ -904,14 +904,14 @@
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v65 objects:v76 count:16];
+              v14 = [children2 countByEnumeratingWithState:&v65 objects:v76 count:16];
             }
 
             while (v14);
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v69 objects:v77 count:16];
+        v8 = [children countByEnumeratingWithState:&v69 objects:v77 count:16];
       }
 
       while (v8);
@@ -922,8 +922,8 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v20 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-  v21 = [v20 countByEnumeratingWithState:&v61 objects:v75 count:16];
+  children3 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+  v21 = [children3 countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v21)
   {
     v22 = v21;
@@ -935,7 +935,7 @@
       {
         if (*v62 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(children3);
         }
 
         v25 = *(*(&v61 + 1) + 8 * k);
@@ -943,8 +943,8 @@
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v26 = [v25 children];
-        v27 = [v26 countByEnumeratingWithState:&v57 objects:v74 count:16];
+        children4 = [v25 children];
+        v27 = [children4 countByEnumeratingWithState:&v57 objects:v74 count:16];
         if (v27)
         {
           v28 = v27;
@@ -955,7 +955,7 @@
             {
               if (*v58 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(children4);
               }
 
               v31 = [(NSMapTable *)self->_shortcutCellMetricsMap objectForKey:*(*(&v57 + 1) + 8 * m)];
@@ -976,14 +976,14 @@
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v57 objects:v74 count:16];
+            v28 = [children4 countByEnumeratingWithState:&v57 objects:v74 count:16];
           }
 
           while (v28);
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v61 objects:v75 count:16];
+      v22 = [children3 countByEnumeratingWithState:&v61 objects:v75 count:16];
     }
 
     while (v22);
@@ -997,8 +997,8 @@
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v40 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
-  v41 = [v40 countByEnumeratingWithState:&v53 objects:v73 count:16];
+  children5 = [(_UIKeyShortcutHUDMenu *)self->_displayedMenu children];
+  v41 = [children5 countByEnumeratingWithState:&v53 objects:v73 count:16];
   if (v41)
   {
     v42 = v41;
@@ -1010,14 +1010,14 @@
       {
         if (*v54 != v44)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(children5);
         }
 
-        v46 = [*(*(&v53 + 1) + 8 * n) children];
-        v43 += [v46 count] + 1;
+        children6 = [*(*(&v53 + 1) + 8 * n) children];
+        v43 += [children6 count] + 1;
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v53 objects:v73 count:16];
+      v42 = [children5 countByEnumeratingWithState:&v53 objects:v73 count:16];
     }
 
     while (v42);
@@ -1037,10 +1037,10 @@
   self->_searchModePreferredMenuPanelHeight = v51 + v52;
 }
 
-- (double)_computedWidthForCategoryAtIndex:(unint64_t)a3
+- (double)_computedWidthForCategoryAtIndex:(unint64_t)index
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableArray *)self->_displayedMenuColumnMetrics objectAtIndexedSubscript:a3];
+  v4 = [(NSMutableArray *)self->_displayedMenuColumnMetrics objectAtIndexedSubscript:index];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1094,9 +1094,9 @@
   return WeakRetained;
 }
 
-+ (void)setCurrentMetrics:(id)a3
++ (void)setCurrentMetrics:(id)metrics
 {
-  obj = a3;
+  obj = metrics;
   WeakRetained = objc_loadWeakRetained(&_currentMetrics);
 
   v4 = obj;
@@ -1107,7 +1107,7 @@
   }
 }
 
-- (double)contentSizeScaledMetric:(double)a3
+- (double)contentSizeScaledMetric:(double)metric
 {
   if (qword_1ED49ECC8 != -1)
   {
@@ -1116,7 +1116,7 @@
 
   v4 = _MergedGlobals_1157;
 
-  [v4 scaledValueForValue:a3];
+  [v4 scaledValueForValue:metric];
   return result;
 }
 
@@ -1137,20 +1137,20 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
 
 - (unint64_t)contentSizeAdjustedMaxNumberOfCellsPerColumn
 {
-  v3 = [(UIKeyShortcutHUDMetrics *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(UIKeyShortcutHUDMetrics *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(&cfstr_Uictcontentsiz_10.isa, v4) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(&cfstr_Uictcontentsiz_10.isa, preferredContentSizeCategory) == NSOrderedAscending)
   {
     v5 = -3;
   }
 
-  else if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  else if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = -2;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(&cfstr_Uictcontentsiz_5.isa, v4) == NSOrderedAscending)
+  else if (UIContentSizeCategoryCompareToCategory(&cfstr_Uictcontentsiz_5.isa, preferredContentSizeCategory) == NSOrderedAscending)
   {
     v5 = -1;
   }
@@ -1184,9 +1184,9 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
 
 - (UIVisualEffect)platterVisualEffect
 {
-  v2 = [(UIKeyShortcutHUDMetrics *)self hudBlurStyle];
+  hudBlurStyle = [(UIKeyShortcutHUDMetrics *)self hudBlurStyle];
 
-  return [UIBlurEffect effectWithStyle:v2];
+  return [UIBlurEffect effectWithStyle:hudBlurStyle];
 }
 
 - (double)standardMenuPanelHeight
@@ -1229,9 +1229,9 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
 {
   [(UIKeyShortcutHUDMetrics *)self minimumBottomScreenEdgeDistance];
   v4 = v3;
-  v5 = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
-  v6 = [v5 window];
-  [v6 safeAreaInsets];
+  selfSizingPlayground = [(UIKeyShortcutHUDMetrics *)self selfSizingPlayground];
+  window = [selfSizingPlayground window];
+  [window safeAreaInsets];
   v8 = fmax(v4, v7);
 
   return v8;
@@ -1321,7 +1321,7 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
   return v3;
 }
 
-- (unint64_t)categoryIndexAtHorizontalOffset:(double)a3
+- (unint64_t)categoryIndexAtHorizontalOffset:(double)offset
 {
   v5 = [(NSMutableArray *)self->_displayedMenuCategoryOffsets count];
   if (v5)
@@ -1335,7 +1335,7 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
       [v9 doubleValue];
       v11 = v10;
 
-      if (v11 <= a3)
+      if (v11 <= offset)
       {
         if (v8 == [(NSMutableArray *)self->_displayedMenuCategoryOffsets count]- 1)
         {
@@ -1346,7 +1346,7 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
         [v12 doubleValue];
         v14 = v13;
 
-        if (v14 > a3)
+        if (v14 > offset)
         {
           return v8;
         }
@@ -1371,9 +1371,9 @@ void __51__UIKeyShortcutHUDMetrics_contentSizeScaledMetric___block_invoke()
   return 0;
 }
 
-- (double)horizontalOffsetForCategoryAtIndex:(unint64_t)a3
+- (double)horizontalOffsetForCategoryAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_displayedMenuCategoryOffsets objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_displayedMenuCategoryOffsets objectAtIndexedSubscript:index];
   [v3 doubleValue];
   v5 = v4;
 
@@ -1556,7 +1556,7 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
   qword_1ED49ED30 = v0;
 }
 
-- (double)cellWidthForShortcut:(id)a3
+- (double)cellWidthForShortcut:(id)shortcut
 {
   if (self->_searching)
   {
@@ -1566,9 +1566,9 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
 
   else
   {
-    v5 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:a3];
-    v6 = [v5 item];
-    v7 = v6 / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
+    v5 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:shortcut];
+    item = [v5 item];
+    v7 = item / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
     v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_displayedMenuColumnMetrics, "objectAtIndexedSubscript:", [v5 section]);
     v9 = [v8 objectAtIndexedSubscript:v7];
     [v9 columnWidth];
@@ -1585,7 +1585,7 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
   return result;
 }
 
-- (double)modifiersWidthForShortcut:(id)a3
+- (double)modifiersWidthForShortcut:(id)shortcut
 {
   if (self->_searching)
   {
@@ -1596,9 +1596,9 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
 
   else
   {
-    v6 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:a3];
-    v7 = [v6 item];
-    v8 = v7 / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
+    v6 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:shortcut];
+    item = [v6 item];
+    v8 = item / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
     v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_displayedMenuColumnMetrics, "objectAtIndexedSubscript:", [v6 section]);
     v10 = [v9 objectAtIndexedSubscript:v8];
     [v10 modifiersWidth];
@@ -1610,7 +1610,7 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
   return result;
 }
 
-- (double)inputWidthForShortcut:(id)a3
+- (double)inputWidthForShortcut:(id)shortcut
 {
   if (self->_searching)
   {
@@ -1621,9 +1621,9 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
 
   else
   {
-    v6 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:a3];
-    v7 = [v6 item];
-    v8 = v7 / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
+    v6 = [(NSMapTable *)self->_shortcutCellIndexPathsMap objectForKey:shortcut];
+    item = [v6 item];
+    v8 = item / [(UIKeyShortcutHUDMetrics *)self numCellsPerColumn];
     v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_displayedMenuColumnMetrics, "objectAtIndexedSubscript:", [v6 section]);
     v10 = [v9 objectAtIndexedSubscript:v8];
     [v10 inputWidth];
@@ -1635,10 +1635,10 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
   return result;
 }
 
-- (double)headerWidthForCategory:(id)a3
+- (double)headerWidthForCategory:(id)category
 {
-  v4 = a3;
-  if ([v4 isEmpty])
+  categoryCopy = category;
+  if ([categoryCopy isEmpty])
   {
     [(UIKeyShortcutHUDMetrics *)self emptyColumnWidth];
     v6 = v5;
@@ -1646,9 +1646,9 @@ void __53__UIKeyShortcutHUDMetrics_toolbarCategoryVisibleFont__block_invoke()
 
   else
   {
-    v7 = [v4 children];
-    v8 = [v7 lastObject];
-    [(UIKeyShortcutHUDMetrics *)self cellWidthForShortcut:v8];
+    children = [categoryCopy children];
+    lastObject = [children lastObject];
+    [(UIKeyShortcutHUDMetrics *)self cellWidthForShortcut:lastObject];
     v6 = v9;
   }
 

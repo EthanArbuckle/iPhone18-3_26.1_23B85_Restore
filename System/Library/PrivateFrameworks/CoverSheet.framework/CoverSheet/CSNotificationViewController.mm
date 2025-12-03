@@ -1,25 +1,25 @@
 @interface CSNotificationViewController
 - (SBUIPresentableHomeGestureContext)homeGestureContext;
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4;
-- (void)expandedPlatterDidPresent:(id)a3;
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3;
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason;
+- (void)expandedPlatterDidPresent:(id)present;
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view;
 @end
 
 @implementation CSNotificationViewController
 
-- (void)expandedPlatterDidPresent:(id)a3
+- (void)expandedPlatterDidPresent:(id)present
 {
   v20.receiver = self;
   v20.super_class = CSNotificationViewController;
-  [(NCNotificationShortLookViewController *)&v20 expandedPlatterDidPresent:a3];
+  [(NCNotificationShortLookViewController *)&v20 expandedPlatterDidPresent:present];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   if (objc_opt_respondsToSelector())
   {
     v5 = [WeakRetained platterBarSwipeAffordanceViewForParticipant:self];
     [v5 addObserver:self];
-    v6 = [(NCNotificationShortLookViewController *)self containerViewForExpandedContent];
-    [v6 addSubview:v5];
-    [v6 bounds];
+    containerViewForExpandedContent = [(NCNotificationShortLookViewController *)self containerViewForExpandedContent];
+    [containerViewForExpandedContent addSubview:v5];
+    [containerViewForExpandedContent bounds];
     x = v21.origin.x;
     y = v21.origin.y;
     width = v21.size.width;
@@ -47,23 +47,23 @@
   [WeakRetained setWantsHomeGesture:1];
 }
 
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason
 {
   v6.receiver = self;
   v6.super_class = CSNotificationViewController;
-  [(NCNotificationShortLookViewController *)&v6 expandedPlatter:a3 willDismissWithReason:a4];
+  [(NCNotificationShortLookViewController *)&v6 expandedPlatter:platter willDismissWithReason:reason];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   [WeakRetained setWantsHomeGesture:0];
 }
 
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view
 {
-  v5 = [(NCNotificationShortLookViewController *)self presentedExpandedPlatterViewController];
+  presentedExpandedPlatterViewController = [(NCNotificationShortLookViewController *)self presentedExpandedPlatterViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = v5;
-    v4 = [v3 dismisser];
-    [v4 expandedPlatterPresentable:v3 requestsDismissalWithTrigger:2];
+    v3 = presentedExpandedPlatterViewController;
+    dismisser = [v3 dismisser];
+    [dismisser expandedPlatterPresentable:v3 requestsDismissalWithTrigger:2];
   }
 }
 

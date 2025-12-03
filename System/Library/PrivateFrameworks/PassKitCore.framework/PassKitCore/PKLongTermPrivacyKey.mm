@@ -1,33 +1,33 @@
 @interface PKLongTermPrivacyKey
-- (PKLongTermPrivacyKey)initWithSESPrivacyKey:(id)a3;
+- (PKLongTermPrivacyKey)initWithSESPrivacyKey:(id)key;
 - (id)description;
 @end
 
 @implementation PKLongTermPrivacyKey
 
-- (PKLongTermPrivacyKey)initWithSESPrivacyKey:(id)a3
+- (PKLongTermPrivacyKey)initWithSESPrivacyKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v15.receiver = self;
   v15.super_class = PKLongTermPrivacyKey;
   v5 = [(PKLongTermPrivacyKey *)&v15 init];
   if (v5)
   {
-    v6 = [v4 keyIdentifier];
+    keyIdentifier = [keyCopy keyIdentifier];
     keyIdentifier = v5->_keyIdentifier;
-    v5->_keyIdentifier = v6;
+    v5->_keyIdentifier = keyIdentifier;
 
-    v8 = [v4 publicKey];
+    publicKey = [keyCopy publicKey];
     publicKey = v5->_publicKey;
-    v5->_publicKey = v8;
+    v5->_publicKey = publicKey;
 
-    v10 = [v4 creationDate];
+    creationDate = [keyCopy creationDate];
     creationDate = v5->_creationDate;
-    v5->_creationDate = v10;
+    v5->_creationDate = creationDate;
 
-    v12 = [v4 groupIdentifier];
+    groupIdentifier = [keyCopy groupIdentifier];
     groupIdentifier = v5->_groupIdentifier;
-    v5->_groupIdentifier = v12;
+    v5->_groupIdentifier = groupIdentifier;
   }
 
   return v5;

@@ -6,25 +6,25 @@
 
 - (BOOL)tooLargeForPreviewGeneration
 {
-  v2 = [a1 attachment];
-  v3 = [v2 attachmentType];
+  attachment = [self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v3 == 15)
+  if (attachmentType == 15)
   {
-    v4 = [a1 paperPageCount];
-    v5 = [MEMORY[0x1E69B76E8] sharedConfiguration];
-    v6 = [v5 maxSubAttachmentsPerAttachment];
+    paperPageCount = [self paperPageCount];
+    mEMORY[0x1E69B76E8] = [MEMORY[0x1E69B76E8] sharedConfiguration];
+    maxSubAttachmentsPerAttachment = [mEMORY[0x1E69B76E8] maxSubAttachmentsPerAttachment];
 
-    if (v4 > v6)
+    if (paperPageCount > maxSubAttachmentsPerAttachment)
     {
       return 1;
     }
   }
 
-  v8 = [a1 paperBundleURL];
-  v9 = [v8 ic_fileOrDirectorySize];
+  paperBundleURL = [self paperBundleURL];
+  ic_fileOrDirectorySize = [paperBundleURL ic_fileOrDirectorySize];
 
-  return v9 > 209715200;
+  return ic_fileOrDirectorySize > 209715200;
 }
 
 @end

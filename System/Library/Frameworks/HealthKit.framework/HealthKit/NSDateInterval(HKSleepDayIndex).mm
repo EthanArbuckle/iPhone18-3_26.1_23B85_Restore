@@ -59,15 +59,15 @@
 {
   v6 = a4;
   v7 = [objc_opt_class() hk_sleepDayIntervalForMorningIndex:a3 calendar:v6];
-  v8 = [a1 startDate];
-  if ([v7 containsDate:v8])
+  startDate = [self startDate];
+  if ([v7 containsDate:startDate])
   {
-    v9 = [a1 endDate];
-    v10 = [v7 containsDate:v9];
+    endDate = [self endDate];
+    v10 = [v7 containsDate:endDate];
 
     if (v10)
     {
-      v11 = a1;
+      selfCopy = self;
       goto LABEL_11;
     }
   }
@@ -76,14 +76,14 @@
   {
   }
 
-  v12 = [v7 startDate];
-  v13 = [v6 components:28 fromDate:v12];
+  startDate2 = [v7 startDate];
+  v13 = [v6 components:28 fromDate:startDate2];
 
-  v14 = [v7 endDate];
-  v15 = [v6 components:28 fromDate:v14];
+  endDate2 = [v7 endDate];
+  v15 = [v6 components:28 fromDate:endDate2];
 
-  v16 = [a1 startDate];
-  v17 = [v6 components:224 fromDate:v16];
+  startDate3 = [self startDate];
+  v17 = [v6 components:224 fromDate:startDate3];
 
   if ([v17 hour] >= 18)
   {
@@ -95,34 +95,34 @@
     v18 = v15;
   }
 
-  v19 = [a1 _hk_dateForYearMonthDayComponents:v18 hourMinuteSecondComponents:v17 calendar:v6];
-  [a1 duration];
+  v19 = [self _hk_dateForYearMonthDayComponents:v18 hourMinuteSecondComponents:v17 calendar:v6];
+  [self duration];
   v20 = [v19 dateByAddingTimeInterval:?];
-  v21 = [v7 endDate];
-  v22 = [v20 hk_isAfterDate:v21];
+  endDate3 = [v7 endDate];
+  v22 = [v20 hk_isAfterDate:endDate3];
 
   if (v22)
   {
-    v23 = [v7 endDate];
+    endDate4 = [v7 endDate];
 
-    v20 = v23;
+    v20 = endDate4;
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v19 endDate:v20];
+  selfCopy = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v19 endDate:v20];
 
 LABEL_11:
 
-  return v11;
+  return selfCopy;
 }
 
 - (uint64_t)hk_dayIndexRangeWithCalendar:()HKSleepDayIndex
 {
   v4 = a3;
-  v5 = [a1 startDate];
-  v6 = [v5 hk_morningIndexWithCalendar:v4];
+  startDate = [self startDate];
+  v6 = [startDate hk_morningIndexWithCalendar:v4];
 
-  v7 = [a1 endDate];
-  [v7 hk_morningIndexWithCalendar:v4];
+  endDate = [self endDate];
+  [endDate hk_morningIndexWithCalendar:v4];
 
   return v6;
 }
@@ -143,12 +143,12 @@ LABEL_11:
   [v11 setDay:v12];
   [v11 setHour:{objc_msgSend(v9, "hour")}];
   [v11 setMinute:{objc_msgSend(v9, "minute")}];
-  v13 = [v9 second];
+  second = [v9 second];
 
-  [v11 setSecond:v13];
-  v14 = [v11 date];
+  [v11 setSecond:second];
+  date = [v11 date];
 
-  return v14;
+  return date;
 }
 
 @end

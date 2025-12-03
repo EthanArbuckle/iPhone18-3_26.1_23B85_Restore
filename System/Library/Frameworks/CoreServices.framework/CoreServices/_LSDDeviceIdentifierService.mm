@@ -1,7 +1,7 @@
 @interface _LSDDeviceIdentifierService
 + (id)XPCInterface;
-+ (id)vendorNameForDeviceIdentifiersWithContext:(LSContext *)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5;
-+ (void)clearIdentifiersForUninstallationWithContext:(LSContext *)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5;
++ (id)vendorNameForDeviceIdentifiersWithContext:(LSContext *)context bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data;
++ (void)clearIdentifiersForUninstallationWithContext:(LSContext *)context bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data;
 @end
 
 @implementation _LSDDeviceIdentifierService
@@ -13,7 +13,7 @@
   v4[2] = __43___LSDDeviceIdentifierService_XPCInterface__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (+[_LSDDeviceIdentifierService XPCInterface]::once != -1)
   {
     dispatch_once(&+[_LSDDeviceIdentifierService XPCInterface]::once, v4);
@@ -24,21 +24,21 @@
   return v2;
 }
 
-+ (id)vendorNameForDeviceIdentifiersWithContext:(LSContext *)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5
++ (id)vendorNameForDeviceIdentifiersWithContext:(LSContext *)context bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data
 {
   v5 = 0;
-  if (a3 && a4 && a5)
+  if (context && unit && data)
   {
-    installFailureReason_high = HIDWORD(a5->installFailureReason);
-    [(_LSDatabase *)a3->db store];
+    installFailureReason_high = HIDWORD(data->installFailureReason);
+    [(_LSDatabase *)context->db store];
     v5 = _CSStringCopyCFString();
     if (v5)
     {
       goto LABEL_5;
     }
 
-    exactIdentifier = a5->base.exactIdentifier;
-    [(_LSDatabase *)a3->db store];
+    exactIdentifier = data->base.exactIdentifier;
+    [(_LSDatabase *)context->db store];
     v11 = _CSStringCopyCFString();
     if (!v11)
     {
@@ -75,7 +75,7 @@
     if (v13)
     {
 LABEL_5:
-      if ((*(&a5->_clas + 6) & 0x20) != 0)
+      if ((*(&data->_clas + 6) & 0x20) != 0)
       {
         v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Beta:%@", v5];
 
@@ -89,15 +89,15 @@ LABEL_16:
   return v5;
 }
 
-+ (void)clearIdentifiersForUninstallationWithContext:(LSContext *)a3 bundleUnit:(unsigned int)a4 bundleData:(const LSBundleData *)a5
++ (void)clearIdentifiersForUninstallationWithContext:(LSContext *)context bundleUnit:(unsigned int)unit bundleData:(const LSBundleData *)data
 {
-  if (a3 && a4 && a5)
+  if (context && unit && data)
   {
-    v11 = [a1 vendorNameForDeviceIdentifiersWithContext:? bundleUnit:? bundleData:?];
-    exactIdentifier = a5->base.exactIdentifier;
-    [(_LSDatabase *)a3->db store];
+    v11 = [self vendorNameForDeviceIdentifiersWithContext:? bundleUnit:? bundleData:?];
+    exactIdentifier = data->base.exactIdentifier;
+    [(_LSDatabase *)context->db store];
     v9 = _CSStringCopyCFString();
-    v10 = [(_LSDService *)a1 XPCProxyWithErrorHandler:?];
+    v10 = [(_LSDService *)self XPCProxyWithErrorHandler:?];
     [v10 clearIdentifiersForUninstallationWithVendorName:v11 bundleIdentifier:v9];
   }
 }

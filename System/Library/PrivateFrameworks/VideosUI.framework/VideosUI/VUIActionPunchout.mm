@@ -1,24 +1,24 @@
 @interface VUIActionPunchout
 - (BOOL)_isValidAppInstalled;
 - (BOOL)canPerformNow;
-- (VUIActionPunchout)initWithContextData:(id)a3 appContext:(id)a4;
-- (void)_openAirplayPicker:(id)a3;
-- (void)_openPunchoutURL:(id)a3 afterInstallation:(BOOL)a4;
-- (void)_presentASCSingleAppInstaller:(id)a3;
-- (void)_showErrorMessageAlert:(id)a3;
-- (void)_startASCAppInstallFlowWithCompletionHandler:(id)a3;
-- (void)_startAppInstallFlow:(BOOL)a3 completionHandler:(id)a4;
-- (void)checkVppaStatus:(id)a3;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (VUIActionPunchout)initWithContextData:(id)data appContext:(id)context;
+- (void)_openAirplayPicker:(id)picker;
+- (void)_openPunchoutURL:(id)l afterInstallation:(BOOL)installation;
+- (void)_presentASCSingleAppInstaller:(id)installer;
+- (void)_showErrorMessageAlert:(id)alert;
+- (void)_startASCAppInstallFlowWithCompletionHandler:(id)handler;
+- (void)_startAppInstallFlow:(BOOL)flow completionHandler:(id)handler;
+- (void)checkVppaStatus:(id)status;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 - (void)showAPPInstallRestrictedErrorAlert;
 @end
 
 @implementation VUIActionPunchout
 
-- (VUIActionPunchout)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionPunchout)initWithContextData:(id)data appContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = VUIActionPunchout;
   v8 = [(VUIActionPunchout *)&v44 init];
@@ -26,8 +26,8 @@
   if (v8)
   {
     v8->_isPlaybackURL = 1;
-    objc_storeStrong(&v8->_appContext, a4);
-    v10 = [v6 vui_dictionaryForKey:@"punchoutOfferData"];
+    objc_storeStrong(&v8->_appContext, context);
+    v10 = [dataCopy vui_dictionaryForKey:@"punchoutOfferData"];
     v9->_shouldPunchOutAfterAppInstallation = [v10 vui_BOOLForKey:@"shouldPunchOutAfterAppInstallation" defaultValue:1];
     v9->_shouldForceVPPAPrompt = [v10 vui_BOOLForKey:@"shouldForceVPPAPrompt" defaultValue:0];
     v11 = [v10 vui_numberForKey:@"consentCancelButtonType"];
@@ -54,15 +54,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
     }
 
     else
     {
-      v20 = 0;
+      bOOLValue = 0;
     }
 
-    v9->_isEntitledToPlay = v20;
+    v9->_isEntitledToPlay = bOOLValue;
     v21 = [v10 vui_stringForKey:@"externalId"];
     externalID = v9->_externalID;
     v9->_externalID = v21;
@@ -102,14 +102,14 @@
     mediaType = v9->_mediaType;
     v9->_mediaType = v30;
 
-    v9->_shouldAvoidInstallSheet = [v6 vui_BOOLForKey:@"shouldAvoidAppInstallSheet" defaultValue:0];
+    v9->_shouldAvoidInstallSheet = [dataCopy vui_BOOLForKey:@"shouldAvoidAppInstallSheet" defaultValue:0];
     v32 = [v10 vui_dictionaryForKey:@"playbackMetadata"];
     v33 = [v32 vui_stringForKey:@"ratingSystem"];
     v34 = [v32 vui_numberForKey:@"ratingValue"];
-    v35 = [v34 unsignedLongValue];
+    unsignedLongValue = [v34 unsignedLongValue];
 
     v36 = [v32 vui_stringForKey:@"ratingName"];
-    v37 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:v33 ratingLabel:v36 rank:v35 ratingDescription:0];
+    v37 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:v33 ratingLabel:v36 rank:unsignedLongValue ratingDescription:0];
     contentRating = v9->_contentRating;
     v9->_contentRating = v37;
 
@@ -153,18 +153,18 @@
   }
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   if ([(VUIActionPunchout *)self shouldRunPreflightManager])
   {
     v8 = +[VUIPreflightManager defaultPreflightManager];
     v9 = +[VUIApplicationRouter topPresentedViewController];
     [v8 setPresentingController:v9];
 
-    v10 = [(VUIActionPunchout *)self contentRating];
-    [v8 setContentRating:v10];
+    contentRating = [(VUIActionPunchout *)self contentRating];
+    [v8 setContentRating:contentRating];
 
     [v8 setRestrictionsCheckType:0];
     objc_initWeak(location, self);
@@ -173,7 +173,7 @@
     v12[2] = __66__VUIActionPunchout_performWithTargetResponder_completionHandler___block_invoke;
     v12[3] = &unk_1E8736470;
     objc_copyWeak(&v14, location);
-    v13 = v7;
+    v13 = handlerCopy;
     [v8 preflightWithOptions:1 completion:v12];
 
     objc_destroyWeak(&v14);
@@ -189,7 +189,7 @@
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "VUIPreflightManager:: skipping due to no ratings data", location, 2u);
     }
 
-    [(VUIActionPunchout *)self _continueInstallFlowAfterPreflight:v7];
+    [(VUIActionPunchout *)self _continueInstallFlowAfterPreflight:handlerCopy];
   }
 }
 
@@ -209,9 +209,9 @@ void __66__VUIActionPunchout_performWithTargetResponder_completionHandler___bloc
   }
 }
 
-- (void)checkVppaStatus:(id)a3
+- (void)checkVppaStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = +[VUIVPPAManager sharedInstance];
   channelDetails = self->_channelDetails;
   consentCancelButtonType = self->_consentCancelButtonType;
@@ -221,8 +221,8 @@ void __66__VUIActionPunchout_performWithTargetResponder_completionHandler___bloc
   v10[2] = __37__VUIActionPunchout_checkVppaStatus___block_invoke;
   v10[3] = &unk_1E87364C0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = statusCopy;
+  v9 = statusCopy;
   [v5 startVPPAConsentFlow:channelDetails consentCancelButtonType:consentCancelButtonType shouldForceVPPAPrompt:shouldForceVPPAPrompt completion:v10];
 }
 
@@ -316,7 +316,7 @@ uint64_t __37__VUIActionPunchout_checkVppaStatus___block_invoke_3(uint64_t a1, i
   block[1] = 3221225472;
   v3 = __55__VUIActionPunchout_showAPPInstallRestrictedErrorAlert__block_invoke;
   v4 = &unk_1E872D768;
-  v5 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v3(block);
@@ -355,20 +355,20 @@ void __55__VUIActionPunchout_showAPPInstallRestrictedErrorAlert__block_invoke_2(
   [v0 openSensitiveURL:v1 withOptions:0];
 }
 
-- (void)_startAppInstallFlow:(BOOL)a3 completionHandler:(id)a4
+- (void)_startAppInstallFlow:(BOOL)flow completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4 && ([(WLKChannelDetails *)self->_channelDetails isConsented]& 1) == 0)
+  flowCopy = flow;
+  handlerCopy = handler;
+  if (flowCopy && ([(WLKChannelDetails *)self->_channelDetails isConsented]& 1) == 0)
   {
     v7 = +[VUIVPPAManager sharedInstance];
     [v7 reloadConfigurationAfterVPPAChange];
   }
 
-  v8 = [(VUIActionPunchout *)self _shouldUseASCAppInstall];
+  _shouldUseASCAppInstall = [(VUIActionPunchout *)self _shouldUseASCAppInstall];
   v9 = VUIDefaultLogObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (_shouldUseASCAppInstall)
   {
     if (v10)
     {
@@ -376,7 +376,7 @@ void __55__VUIActionPunchout_showAPPInstallRestrictedErrorAlert__block_invoke_2(
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_INFO, "ASC enabled - will use it.", buf, 2u);
     }
 
-    [(VUIActionPunchout *)self _startASCAppInstallFlowWithCompletionHandler:v6];
+    [(VUIActionPunchout *)self _startASCAppInstallFlowWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -389,16 +389,16 @@ void __55__VUIActionPunchout_showAPPInstallRestrictedErrorAlert__block_invoke_2(
   }
 }
 
-- (void)_startASCAppInstallFlowWithCompletionHandler:(id)a3
+- (void)_startASCAppInstallFlowWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__VUIActionPunchout__startASCAppInstallFlowWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E872DE58;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(VUIActionPunchout *)self _presentASCSingleAppInstaller:v6];
 
@@ -467,16 +467,16 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)_presentASCSingleAppInstaller:(id)a3
+- (void)_presentASCSingleAppInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v7 = MEMORY[0x1E69E9820];
   v8 = __51__VUIActionPunchout__presentASCSingleAppInstaller___block_invoke;
   v9 = &unk_1E872E580;
-  v10 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = installerCopy;
   v5 = MEMORY[0x1E696AF00];
-  v6 = v4;
+  v6 = installerCopy;
   if ([v5 isMainThread])
   {
     v8(&v7);
@@ -520,21 +520,21 @@ void __51__VUIActionPunchout__presentASCSingleAppInstaller___block_invoke_2(uint
   sASCNavigationController = 0;
 }
 
-- (void)_openAirplayPicker:(id)a3
+- (void)_openAirplayPicker:(id)picker
 {
-  v4 = a3;
-  v5 = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
-  v6 = [v5 firstObject];
+  pickerCopy = picker;
+  appBundleIDs = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
+  firstObject = [appBundleIDs firstObject];
 
-  if (self->_isEntitledToPlay && [v6 length])
+  if (self->_isEntitledToPlay && [firstObject length])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     v8 = __40__VUIActionPunchout__openAirplayPicker___block_invoke;
     v9 = &unk_1E872DF40;
-    v10 = v6;
-    v11 = self;
-    v12 = v4;
+    v10 = firstObject;
+    selfCopy = self;
+    v12 = pickerCopy;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
       v8(block);
@@ -548,7 +548,7 @@ void __51__VUIActionPunchout__presentASCSingleAppInstaller___block_invoke_2(uint
 
   else
   {
-    [(VUIActionPunchout *)self _openPunchoutURL:v4 afterInstallation:0];
+    [(VUIActionPunchout *)self _openPunchoutURL:pickerCopy afterInstallation:0];
   }
 }
 
@@ -596,22 +596,22 @@ void __40__VUIActionPunchout__openAirplayPicker___block_invoke_92(uint64_t a1, u
   *(v4 + 40) = 0;
 }
 
-- (void)_showErrorMessageAlert:(id)a3
+- (void)_showErrorMessageAlert:(id)alert
 {
-  v30 = a3;
+  alertCopy = alert;
   v4 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:1];
-  v5 = [(VUIActionPunchout *)self channelDetails];
-  v6 = [v5 name];
-  v7 = [v6 length];
+  channelDetails = [(VUIActionPunchout *)self channelDetails];
+  name = [channelDetails name];
+  v7 = [name length];
 
   if (v7)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = +[VUILocalizationManager sharedInstance];
     v10 = [v9 localizedStringForKey:@"PUNCHOUT_FAILED_ERROR"];
-    v11 = [(VUIActionPunchout *)self channelDetails];
-    v12 = [v11 name];
-    v13 = [v8 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v12];
+    channelDetails2 = [(VUIActionPunchout *)self channelDetails];
+    name2 = [channelDetails2 name];
+    v13 = [v8 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, name2];
 
     [v4 setMessage:v13];
   }
@@ -623,40 +623,40 @@ void __40__VUIActionPunchout__openAirplayPicker___block_invoke_92(uint64_t a1, u
     [v4 setMessage:v14];
   }
 
-  v15 = [v30 domain];
-  if ([v15 isEqualToString:*MEMORY[0x1E699F9A0]])
+  domain = [alertCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E699F9A0]])
   {
-    v16 = [v30 code];
+    code = [alertCopy code];
 
-    if (v16 != 1)
+    if (code != 1)
     {
       goto LABEL_12;
     }
 
-    v17 = [v30 userInfo];
-    v15 = [v17 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [alertCopy userInfo];
+    domain = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    if (v15)
+    if (domain)
     {
-      v18 = [v15 domain];
-      if (![v18 isEqualToString:*MEMORY[0x1E699F8C0]])
+      v15Domain = [domain domain];
+      if (![v15Domain isEqualToString:*MEMORY[0x1E699F8C0]])
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v19 = [v15 code];
+      code2 = [domain code];
 
-      if (v19 == 5)
+      if (code2 == 5)
       {
         v20 = +[VUILocalizationManager sharedInstance];
         v21 = [v20 localizedStringForKey:@"TRANSACTION_RESTRICTED_PUNCHOUT"];
         [v4 setMessage:v21];
 
         v22 = MEMORY[0x1E69DC648];
-        v18 = +[VUILocalizationManager sharedInstance];
-        v23 = [v18 localizedStringForKey:@"SETTINGS"];
+        v15Domain = +[VUILocalizationManager sharedInstance];
+        v23 = [v15Domain localizedStringForKey:@"SETTINGS"];
         v24 = [v22 actionWithTitle:v23 style:0 handler:&__block_literal_global_111];
         [v4 addAction:v24];
 
@@ -674,8 +674,8 @@ LABEL_12:
   v28 = [v25 actionWithTitle:v27 style:0 handler:0];
   [v4 addAction:v28];
 
-  v29 = [(VUIActionPunchout *)self topPresentedViewController];
-  [v29 presentViewController:v4 animated:1 completion:0];
+  topPresentedViewController = [(VUIActionPunchout *)self topPresentedViewController];
+  [topPresentedViewController presentViewController:v4 animated:1 completion:0];
 }
 
 void __44__VUIActionPunchout__showErrorMessageAlert___block_invoke()
@@ -685,44 +685,44 @@ void __44__VUIActionPunchout__showErrorMessageAlert___block_invoke()
   [v0 openSensitiveURL:v1 withOptions:0];
 }
 
-- (void)_openPunchoutURL:(id)a3 afterInstallation:(BOOL)a4
+- (void)_openPunchoutURL:(id)l afterInstallation:(BOOL)installation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VUIActionPunchout *)self punchoutURL];
-  v8 = [(VUIActionPunchout *)self channelDetails];
-  v9 = [v8 appBundleIDs];
-  v10 = [v9 firstObject];
+  installationCopy = installation;
+  lCopy = l;
+  punchoutURL = [(VUIActionPunchout *)self punchoutURL];
+  channelDetails = [(VUIActionPunchout *)self channelDetails];
+  appBundleIDs = [channelDetails appBundleIDs];
+  firstObject = [appBundleIDs firstObject];
 
-  if ([v10 length] && v7)
+  if ([firstObject length] && punchoutURL)
   {
-    v27 = v4;
+    v27 = installationCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__VUIActionPunchout__openPunchoutURL_afterInstallation___block_invoke;
     aBlock[3] = &unk_1E8736510;
     aBlock[4] = self;
-    v11 = v7;
+    v11 = punchoutURL;
     v39 = v11;
-    v12 = v10;
+    v12 = firstObject;
     v40 = v12;
-    v41 = v6;
+    v41 = lCopy;
     v28 = _Block_copy(aBlock);
     objc_initWeak(&location, self);
-    v13 = [v11 scheme];
-    v14 = [v13 lowercaseString];
-    v15 = [v14 isEqualToString:@"app"];
+    scheme = [v11 scheme];
+    lowercaseString = [scheme lowercaseString];
+    v15 = [lowercaseString isEqualToString:@"app"];
 
     if (v15)
     {
-      v16 = [MEMORY[0x1E6963608] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __56__VUIActionPunchout__openPunchoutURL_afterInstallation___block_invoke_126;
       v34[3] = &unk_1E87333C0;
       objc_copyWeak(&v36, &location);
       v35 = v28;
-      [v16 openApplicationWithBundleIdentifier:v12 configuration:0 completionHandler:v34];
+      [defaultWorkspace openApplicationWithBundleIdentifier:v12 configuration:0 completionHandler:v34];
 
       objc_destroyWeak(&v36);
     }
@@ -739,18 +739,18 @@ void __44__VUIActionPunchout__showErrorMessageAlert___block_invoke()
       v33 = v28;
       v26 = _Block_copy(v31);
       v19 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v18 resolvingAgainstBaseURL:0];
-      v20 = [v19 scheme];
-      v21 = [v20 lowercaseString];
-      if ([v21 isEqualToString:@"https"])
+      scheme2 = [v19 scheme];
+      lowercaseString2 = [scheme2 lowercaseString];
+      if ([lowercaseString2 isEqualToString:@"https"])
       {
         v22 = 1;
       }
 
       else
       {
-        v23 = [v19 scheme];
-        v24 = [v23 lowercaseString];
-        v22 = [v24 isEqualToString:@"http"];
+        scheme3 = [v19 scheme];
+        lowercaseString3 = [scheme3 lowercaseString];
+        v22 = [lowercaseString3 isEqualToString:@"http"];
       }
 
       if (v27 && v22)
@@ -781,9 +781,9 @@ void __44__VUIActionPunchout__showErrorMessageAlert___block_invoke()
       [VUIActionPunchout _openPunchoutURL:afterInstallation:];
     }
 
-    if (v6)
+    if (lCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(lCopy + 2))(lCopy, 0);
     }
   }
 }
@@ -1039,8 +1039,8 @@ void __56__VUIActionPunchout__openPunchoutURL_afterInstallation___block_invoke_2
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    appBundleIDs = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
+    v7 = [appBundleIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1051,21 +1051,21 @@ void __56__VUIActionPunchout__openPunchoutURL_afterInstallation___block_invoke_2
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(appBundleIDs);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
           if (v11)
           {
-            v12 = [MEMORY[0x1E6963608] defaultWorkspace];
-            v13 = [v12 applicationIsInstalled:v11];
+            defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+            v13 = [defaultWorkspace applicationIsInstalled:v11];
 
             if (v13)
             {
               v15 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v11 allowPlaceholder:1 error:0];
-              v16 = [(WLKChannelDetails *)self->_channelDetails minRequiredAppVersion];
-              v17 = [v15 shortVersionString];
-              if (v16 && [v16 compare:v17 options:64] == 1)
+              minRequiredAppVersion = [(WLKChannelDetails *)self->_channelDetails minRequiredAppVersion];
+              shortVersionString = [v15 shortVersionString];
+              if (minRequiredAppVersion && [minRequiredAppVersion compare:shortVersionString options:64] == 1)
               {
                 LOBYTE(v14) = 0;
               }
@@ -1080,7 +1080,7 @@ void __56__VUIActionPunchout__openPunchoutURL_afterInstallation___block_invoke_2
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [appBundleIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           continue;

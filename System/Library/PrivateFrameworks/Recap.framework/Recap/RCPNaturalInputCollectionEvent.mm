@@ -1,31 +1,31 @@
 @interface RCPNaturalInputCollectionEvent
-- (RCPNaturalInputCollectionEvent)initWithManipulators:(id)a3 selections:(id)a4 phase:(int64_t)a5 timestamp:(unint64_t)a6 senderProperties:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCPNaturalInputCollectionEvent)initWithManipulators:(id)manipulators selections:(id)selections phase:(int64_t)phase timestamp:(unint64_t)timestamp senderProperties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RCPNaturalInputCollectionEvent
 
-- (RCPNaturalInputCollectionEvent)initWithManipulators:(id)a3 selections:(id)a4 phase:(int64_t)a5 timestamp:(unint64_t)a6 senderProperties:(id)a7
+- (RCPNaturalInputCollectionEvent)initWithManipulators:(id)manipulators selections:(id)selections phase:(int64_t)phase timestamp:(unint64_t)timestamp senderProperties:(id)properties
 {
   v22.receiver = self;
   v22.super_class = RCPNaturalInputCollectionEvent;
-  v11 = a7;
-  v12 = a4;
-  v13 = a3;
+  propertiesCopy = properties;
+  selectionsCopy = selections;
+  manipulatorsCopy = manipulators;
   v14 = [(RCPNaturalInputCollectionEvent *)&v22 init];
-  v15 = [v13 copy];
+  v15 = [manipulatorsCopy copy];
 
   manipulators = v14->_manipulators;
   v14->_manipulators = v15;
 
-  v17 = [v12 copy];
+  v17 = [selectionsCopy copy];
   selections = v14->_selections;
   v14->_selections = v17;
 
-  v14->_phase = a5;
-  v14->_timestamp = a6;
-  v19 = [v11 copy];
+  v14->_phase = phase;
+  v14->_timestamp = timestamp;
+  v19 = [propertiesCopy copy];
 
   senderProperties = v14->_senderProperties;
   v14->_senderProperties = v19;
@@ -37,19 +37,19 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(RCPNaturalInputCollectionEvent *)self manipulators];
-  v6 = [(RCPNaturalInputCollectionEvent *)self selections];
-  v7 = [(RCPNaturalInputCollectionEvent *)self phase];
-  v8 = [(RCPNaturalInputCollectionEvent *)self timestamp];
-  v9 = [(RCPNaturalInputCollectionEvent *)self senderProperties];
-  v10 = [v3 stringWithFormat:@"<%@: { Manipulators: %@, Selections: %@, Phase: %lu, Timestamp: %llu, Sender Properties: %@ }>", v4, v5, v6, v7, v8, v9];
+  manipulators = [(RCPNaturalInputCollectionEvent *)self manipulators];
+  selections = [(RCPNaturalInputCollectionEvent *)self selections];
+  phase = [(RCPNaturalInputCollectionEvent *)self phase];
+  timestamp = [(RCPNaturalInputCollectionEvent *)self timestamp];
+  senderProperties = [(RCPNaturalInputCollectionEvent *)self senderProperties];
+  v10 = [v3 stringWithFormat:@"<%@: { Manipulators: %@, Selections: %@, Phase: %lu, Timestamp: %llu, Sender Properties: %@ }>", v4, manipulators, selections, phase, timestamp, senderProperties];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   manipulators = self->_manipulators;
   selections = self->_selections;
   phase = self->_phase;

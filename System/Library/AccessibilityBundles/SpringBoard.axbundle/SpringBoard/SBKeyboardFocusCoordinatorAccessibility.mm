@@ -1,60 +1,60 @@
 @interface SBKeyboardFocusCoordinatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsFocusLockedToSpringBoard;
-- (BOOL)_accessibilitySwitchNativeFocusedApplicationWithPID:(int)a3 identifier:(id)a4;
-- (id)_accessibilityTokenStringForPid:(int)a3 sceneID:(id)a4;
-- (void)_accessibilityFocusOnAppWithPid:(int)a3 bundleIdentifier:(id)a4 identifier:(id)a5;
-- (void)_accessibilityFocusOnSpringBoardWithSceneID:(id)a3;
+- (BOOL)_accessibilitySwitchNativeFocusedApplicationWithPID:(int)d identifier:(id)identifier;
+- (id)_accessibilityTokenStringForPid:(int)pid sceneID:(id)d;
+- (void)_accessibilityFocusOnAppWithPid:(int)pid bundleIdentifier:(id)identifier identifier:(id)a5;
+- (void)_accessibilityFocusOnSpringBoardWithSceneID:(id)d;
 - (void)_accessibilityInvalidateSpringBoardKeyboardDeferral;
-- (void)_accessibilityUserFocusRequestForScene:(id)a3;
+- (void)_accessibilityUserFocusRequestForScene:(id)scene;
 - (void)_axClearKeyboardFocusOverrideDeferral;
-- (void)_axDeferKeyboardFocusToPid:(int)a3 sceneID:(id)a4 forPrimaryOverride:(BOOL)a5;
-- (void)_axSetKeyboardFocusPid:(int)a3 sceneID:(id)a4 forPrimaryOverride:(BOOL)a5;
-- (void)setHandlingKeyboardArbiterSuggestion:(BOOL)a3;
+- (void)_axDeferKeyboardFocusToPid:(int)pid sceneID:(id)d forPrimaryOverride:(BOOL)override;
+- (void)_axSetKeyboardFocusPid:(int)pid sceneID:(id)d forPrimaryOverride:(BOOL)override;
+- (void)setHandlingKeyboardArbiterSuggestion:(BOOL)suggestion;
 @end
 
 @implementation SBKeyboardFocusCoordinatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" conformsToProtocol:@"SBKeyboardFocusControlling"];
-  [v3 validateProtocol:@"SBKeyboardFocusControlling" hasRequiredInstanceMethod:@"userFocusRequestForScene:reason:completion:"];
-  [v3 validateClass:@"SBKeyboardFocusSceneController" hasInstanceVariable:@"_springBoardFocusLockAssertions" withType:"BSCompoundAssertion"];
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" hasInstanceVariable:@"_sceneControllers" withType:"NSMutableSet"];
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"focusLockSpringBoardWindowScene:forAccessibilityReason:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"requestKeyboardFocusOverrideSceneIdentityTokenStringRepresentation:forAccessibilityReason:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"suppressKeyboardFocusEvaluationForReason:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"setHandlingKeyboardArbiterSuggestion:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SpringBoard" hasInstanceMethod:@"systemUIScenesCoordinator" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SBFSceneWorkspaceControlling" hasMethod:@"enumerateScenesWithBlock:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"SBSystemUISceneController" conformsToProtocol:@"SBFSceneWorkspaceControlling"];
-  [v3 validateClass:@"SBLiveTranscriptionUISceneController" isKindOfClass:@"SBSystemUISceneController"];
-  [v3 validateClass:@"SBFullKeyboardAccessUISceneController" isKindOfClass:@"SBSystemUISceneController"];
-  [v3 validateClass:@"SBAssistiveTouchUISceneController" isKindOfClass:@"SBSystemUISceneController"];
-  [v3 validateClass:@"SBAccessibilityUIServerUISceneController" isKindOfClass:@"SBSystemUISceneController"];
-  [v3 validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"liveTranscriptionUISceneController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"fullKeyboardAccessUISceneController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"assistiveTouchUISceneController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"accessibilityUIServerUISceneController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" conformsToProtocol:@"SBKeyboardFocusControlling"];
+  [validationsCopy validateProtocol:@"SBKeyboardFocusControlling" hasRequiredInstanceMethod:@"userFocusRequestForScene:reason:completion:"];
+  [validationsCopy validateClass:@"SBKeyboardFocusSceneController" hasInstanceVariable:@"_springBoardFocusLockAssertions" withType:"BSCompoundAssertion"];
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" hasInstanceVariable:@"_sceneControllers" withType:"NSMutableSet"];
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"focusLockSpringBoardWindowScene:forAccessibilityReason:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"requestKeyboardFocusOverrideSceneIdentityTokenStringRepresentation:forAccessibilityReason:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"suppressKeyboardFocusEvaluationForReason:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBKeyboardFocusCoordinator" hasInstanceMethod:@"setHandlingKeyboardArbiterSuggestion:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SpringBoard" hasInstanceMethod:@"systemUIScenesCoordinator" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SBFSceneWorkspaceControlling" hasMethod:@"enumerateScenesWithBlock:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"SBSystemUISceneController" conformsToProtocol:@"SBFSceneWorkspaceControlling"];
+  [validationsCopy validateClass:@"SBLiveTranscriptionUISceneController" isKindOfClass:@"SBSystemUISceneController"];
+  [validationsCopy validateClass:@"SBFullKeyboardAccessUISceneController" isKindOfClass:@"SBSystemUISceneController"];
+  [validationsCopy validateClass:@"SBAssistiveTouchUISceneController" isKindOfClass:@"SBSystemUISceneController"];
+  [validationsCopy validateClass:@"SBAccessibilityUIServerUISceneController" isKindOfClass:@"SBSystemUISceneController"];
+  [validationsCopy validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"liveTranscriptionUISceneController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"fullKeyboardAccessUISceneController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"assistiveTouchUISceneController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSystemUIScenesCoordinator" hasInstanceMethod:@"accessibilityUIServerUISceneController" withFullSignature:{"@", 0}];
 }
 
-- (void)setHandlingKeyboardArbiterSuggestion:(BOOL)a3
+- (void)setHandlingKeyboardArbiterSuggestion:(BOOL)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v5.receiver = self;
   v5.super_class = SBKeyboardFocusCoordinatorAccessibility;
   [(SBKeyboardFocusCoordinatorAccessibility *)&v5 setHandlingKeyboardArbiterSuggestion:?];
-  if (v3)
+  if (suggestionCopy)
   {
     [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityInvalidateSpringBoardKeyboardDeferral];
   }
 }
 
-- (void)_accessibilityUserFocusRequestForScene:(id)a3
+- (void)_accessibilityUserFocusRequestForScene:(id)scene
 {
-  v4 = a3;
-  v3 = v4;
+  sceneCopy = scene;
+  v3 = sceneCopy;
   AXPerformSafeBlock();
 }
 
@@ -89,11 +89,11 @@ void __83__SBKeyboardFocusCoordinatorAccessibility__accessibilityIsFocusLockedTo
   *(*(*(a1 + 32) + 8) + 24) = [v7 count] != 0;
 }
 
-- (void)_axDeferKeyboardFocusToPid:(int)a3 sceneID:(id)a4 forPrimaryOverride:(BOOL)a5
+- (void)_axDeferKeyboardFocusToPid:(int)pid sceneID:(id)d forPrimaryOverride:(BOOL)override
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityTokenStringForPid:v6 sceneID:v8];
+  v6 = *&pid;
+  dCopy = d;
+  v9 = [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityTokenStringForPid:v6 sceneID:dCopy];
   v10 = v9;
   if (v9)
   {
@@ -108,7 +108,7 @@ void __83__SBKeyboardFocusCoordinatorAccessibility__accessibilityIsFocusLockedTo
     v19 = __97__SBKeyboardFocusCoordinatorAccessibility__axDeferKeyboardFocusToPid_sceneID_forPrimaryOverride___block_invoke;
     v20 = &unk_29F2FB9F0;
     v23 = &v24;
-    v21 = self;
+    selfCopy = self;
     v22 = v9;
     AXPerformSafeBlock();
     v11 = v25[5];
@@ -120,7 +120,7 @@ void __83__SBKeyboardFocusCoordinatorAccessibility__accessibilityIsFocusLockedTo
     v14[1] = 3221225472;
     v14[2] = __97__SBKeyboardFocusCoordinatorAccessibility__axDeferKeyboardFocusToPid_sceneID_forPrimaryOverride___block_invoke_2;
     v14[3] = &unk_29F2FC208;
-    v16 = a5;
+    overrideCopy = override;
     v15 = v6;
     v14[4] = self;
     v13 = [v12 initWithPID:v6 queue:MEMORY[0x29EDCA578] deathHandler:v14];
@@ -132,7 +132,7 @@ void __83__SBKeyboardFocusCoordinatorAccessibility__accessibilityIsFocusLockedTo
     v11 = FKALogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [SBKeyboardFocusCoordinatorAccessibility _axDeferKeyboardFocusToPid:v6 sceneID:v8 forPrimaryOverride:v11];
+      [SBKeyboardFocusCoordinatorAccessibility _axDeferKeyboardFocusToPid:v6 sceneID:dCopy forPrimaryOverride:v11];
     }
   }
 }
@@ -180,18 +180,18 @@ uint64_t __97__SBKeyboardFocusCoordinatorAccessibility__axDeferKeyboardFocusToPi
   }
 }
 
-- (void)_axSetKeyboardFocusPid:(int)a3 sceneID:(id)a4 forPrimaryOverride:(BOOL)a5
+- (void)_axSetKeyboardFocusPid:(int)pid sceneID:(id)d forPrimaryOverride:(BOOL)override
 {
-  v5 = a5;
-  v6 = *&a3;
+  overrideCopy = override;
+  v6 = *&pid;
   v16 = *MEMORY[0x29EDCA608];
-  v8 = a4;
+  dCopy = d;
   [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityInvalidateSpringBoardKeyboardDeferral];
   v9 = FKALogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = @"secondary";
-    if (v5)
+    if (overrideCopy)
     {
       v10 = @"primary";
     }
@@ -203,22 +203,22 @@ uint64_t __97__SBKeyboardFocusCoordinatorAccessibility__axDeferKeyboardFocusToPi
     _os_log_impl(&dword_29C37A000, v9, OS_LOG_TYPE_INFO, "Set %@ keyboard focus override pid: %i", &v12, 0x12u);
   }
 
-  if (v5)
+  if (overrideCopy)
   {
     [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetPrimaryKeyboardFocusOverridePid:v6];
-    [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetPrimaryKeyboardFocusOverrideSceneID:v8];
+    [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetPrimaryKeyboardFocusOverrideSceneID:dCopy];
     goto LABEL_11;
   }
 
   [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetSecondaryKeyboardFocusOverridePid:v6];
-  [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetSecondaryKeyboardFocusOverrideSceneID:v8];
+  [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetSecondaryKeyboardFocusOverrideSceneID:dCopy];
   if (![(SBKeyboardFocusCoordinatorAccessibility *)self _axPrimaryKeyboardFocusOverridePid])
   {
 LABEL_11:
     [(SBKeyboardFocusCoordinatorAccessibility *)self _axClearKeyboardFocusOverrideDeferral];
     if (v6)
     {
-      [(SBKeyboardFocusCoordinatorAccessibility *)self _axDeferKeyboardFocusToPid:v6 sceneID:v8 forPrimaryOverride:v5];
+      [(SBKeyboardFocusCoordinatorAccessibility *)self _axDeferKeyboardFocusToPid:v6 sceneID:dCopy forPrimaryOverride:overrideCopy];
     }
 
     goto LABEL_13;
@@ -234,10 +234,10 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)_accessibilityTokenStringForPid:(int)a3 sceneID:(id)a4
+- (id)_accessibilityTokenStringForPid:(int)pid sceneID:(id)d
 {
   v32 = *MEMORY[0x29EDCA608];
-  v19 = a4;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -271,7 +271,7 @@ LABEL_3:
         objc_enumerationMutation(v11);
       }
 
-      v20 = v19;
+      v20 = dCopy;
       AXPerformSafeBlock();
       v15 = v26[5] == 0;
 
@@ -343,40 +343,40 @@ void __83__SBKeyboardFocusCoordinatorAccessibility__accessibilityTokenStringForP
 
 - (void)_axClearKeyboardFocusOverrideDeferral
 {
-  v3 = [(SBKeyboardFocusCoordinatorAccessibility *)self _axNativeFocusedApplicationDeferral];
-  [v3 invalidate];
+  _axNativeFocusedApplicationDeferral = [(SBKeyboardFocusCoordinatorAccessibility *)self _axNativeFocusedApplicationDeferral];
+  [_axNativeFocusedApplicationDeferral invalidate];
 
   [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetNativeFocusedApplicationDeferral:0];
-  v4 = [(SBKeyboardFocusCoordinatorAccessibility *)self _axNativeFocusedApplicationDeathWatcher];
-  [v4 invalidate];
+  _axNativeFocusedApplicationDeathWatcher = [(SBKeyboardFocusCoordinatorAccessibility *)self _axNativeFocusedApplicationDeathWatcher];
+  [_axNativeFocusedApplicationDeathWatcher invalidate];
 
   [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetNativeFocusedApplicationDeathWatcher:0];
 }
 
-- (void)_accessibilityFocusOnSpringBoardWithSceneID:(id)a3
+- (void)_accessibilityFocusOnSpringBoardWithSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(SBKeyboardFocusCoordinatorAccessibility *)self _axClearKeyboardFocusOverrideDeferral];
   [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityInvalidateSpringBoardKeyboardDeferral];
   v5 = MEMORY[0x29EDC8008];
   v6 = [*MEMORY[0x29EDC8008] safeArrayForKey:@"_accessibilityFocusableScenes"];
-  v7 = [*v5 _accessibilityMainWindow];
-  v8 = [v7 windowScene];
+  _accessibilityMainWindow = [*v5 _accessibilityMainWindow];
+  windowScene = [_accessibilityMainWindow windowScene];
 
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__7;
   v27 = __Block_byref_object_dispose__7;
-  v9 = v8;
+  v9 = windowScene;
   v28 = v9;
-  if ([v4 length])
+  if ([dCopy length])
   {
     v20[0] = MEMORY[0x29EDCA5F8];
     v20[1] = 3221225472;
     v20[2] = __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBoardWithSceneID___block_invoke;
     v20[3] = &unk_29F2FBE00;
-    v21 = v4;
+    v21 = dCopy;
     v22 = &v23;
     [v6 enumerateObjectsUsingBlock:v20];
   }
@@ -467,23 +467,23 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
   }
 }
 
-- (void)_accessibilityFocusOnAppWithPid:(int)a3 bundleIdentifier:(id)a4 identifier:(id)a5
+- (void)_accessibilityFocusOnAppWithPid:(int)pid bundleIdentifier:(id)identifier identifier:(id)a5
 {
   v18 = *MEMORY[0x29EDCA608];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = a5;
   v10 = FKALogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = identifierCopy;
     v16 = 1024;
-    v17 = a3;
+    pidCopy = pid;
     _os_log_impl(&dword_29C37A000, v10, OS_LOG_TYPE_INFO, "Focusing on app with bundle identifier: %@, pid: %i", &v14, 0x12u);
   }
 
-  v11 = [MEMORY[0x29EDC1180] sharedInstance];
-  v12 = [v11 sceneWithIdentifier:v9];
+  mEMORY[0x29EDC1180] = [MEMORY[0x29EDC1180] sharedInstance];
+  v12 = [mEMORY[0x29EDC1180] sceneWithIdentifier:v9];
 
   if (v12)
   {
@@ -500,11 +500,11 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
   }
 }
 
-- (BOOL)_accessibilitySwitchNativeFocusedApplicationWithPID:(int)a3 identifier:(id)a4
+- (BOOL)_accessibilitySwitchNativeFocusedApplicationWithPID:(int)d identifier:(id)identifier
 {
-  v4 = *&a3;
+  v4 = *&d;
   v20 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = [(SBKeyboardFocusCoordinatorAccessibility *)self suppressKeyboardFocusEvaluationForReason:@"Accessibility-FKA"];
   v8 = AXFrontBoardRunningAppProcesses();
   v16[0] = MEMORY[0x29EDCA5F8];
@@ -514,7 +514,7 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
   v17 = v4;
   v9 = [v8 ax_firstObjectUsingBlock:v16];
 
-  if ([v9 isSystemApplicationProcess] && (objc_msgSend(v6, "containsString:", @"SystemAperture") & 1) == 0)
+  if ([v9 isSystemApplicationProcess] && (objc_msgSend(identifierCopy, "containsString:", @"SystemAperture") & 1) == 0)
   {
     v12 = FKALogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -524,7 +524,7 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
     }
 
     [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilitySetSecondaryKeyboardFocusOverridePid:0 sceneID:0];
-    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityFocusOnSpringBoardWithSceneID:v6];
+    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityFocusOnSpringBoardWithSceneID:identifierCopy];
     goto LABEL_15;
   }
 
@@ -538,7 +538,7 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
       _os_log_impl(&dword_29C37A000, v11, OS_LOG_TYPE_INFO, "Switching to non-application %i", buf, 8u);
     }
 
-    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilitySetSecondaryKeyboardFocusOverridePid:v4 sceneID:v6];
+    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilitySetSecondaryKeyboardFocusOverridePid:v4 sceneID:identifierCopy];
     goto LABEL_15;
   }
 
@@ -553,8 +553,8 @@ void __87__SBKeyboardFocusCoordinatorAccessibility__accessibilityFocusOnSpringBo
     }
 
     [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilitySetSecondaryKeyboardFocusOverridePid:0 sceneID:0];
-    v14 = [v9 bundleIdentifier];
-    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityFocusOnAppWithPid:v4 bundleIdentifier:v14 identifier:v6];
+    bundleIdentifier = [v9 bundleIdentifier];
+    [(SBKeyboardFocusCoordinatorAccessibility *)self _accessibilityFocusOnAppWithPid:v4 bundleIdentifier:bundleIdentifier identifier:identifierCopy];
 
 LABEL_15:
     v10 = 1;
@@ -570,8 +570,8 @@ LABEL_16:
 
 - (void)_accessibilityInvalidateSpringBoardKeyboardDeferral
 {
-  v3 = [(SBKeyboardFocusCoordinatorAccessibility *)self _axSpringBoardDeferral];
-  [v3 invalidate];
+  _axSpringBoardDeferral = [(SBKeyboardFocusCoordinatorAccessibility *)self _axSpringBoardDeferral];
+  [_axSpringBoardDeferral invalidate];
 
   [(SBKeyboardFocusCoordinatorAccessibility *)self _axSetSpringBoardDeferral:0];
 }

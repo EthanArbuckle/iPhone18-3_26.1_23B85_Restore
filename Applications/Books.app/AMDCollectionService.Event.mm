@@ -1,7 +1,7 @@
 @interface AMDCollectionService.Event
 - (NSDictionary)engagementData;
 - (_TtCC5Books20AMDCollectionServiceP33_4EFD11BC7D3B203388E5898071D414945Event)init;
-- (void)setEngagementData:(id)a3;
+- (void)setEngagementData:(id)data;
 @end
 
 @implementation AMDCollectionService.Event
@@ -22,9 +22,9 @@
   return v2.super.isa;
 }
 
-- (void)setEngagementData:(id)a3
+- (void)setEngagementData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_1007A2044();
   }

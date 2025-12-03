@@ -1,13 +1,13 @@
 @interface UAFPreinstalledAssetsCache
-+ (BOOL)checkForAssetTypePath:(id)a3;
++ (BOOL)checkForAssetTypePath:(id)path;
 + (BOOL)isEnabled;
-+ (id)assetSpecifier:(id)a3 assetSetConfiguration:(id)a4;
-+ (id)assetSpecifiersFromRoots:(id)a3;
-+ (id)queryAssetType:(id)a3;
-+ (id)summary:(id)a3;
-+ (void)initCache:(id)a3;
++ (id)assetSpecifier:(id)specifier assetSetConfiguration:(id)configuration;
++ (id)assetSpecifiersFromRoots:(id)roots;
++ (id)queryAssetType:(id)type;
++ (id)summary:(id)summary;
++ (void)initCache:(id)cache;
 + (void)invalidateCache;
-+ (void)populateCache:(id)a3;
++ (void)populateCache:(id)cache;
 @end
 
 @implementation UAFPreinstalledAssetsCache
@@ -24,9 +24,9 @@
   return v2;
 }
 
-+ (void)initCache:(id)a3
++ (void)initCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if (_MergedGlobals_0 != -1)
   {
     dispatch_once(&_MergedGlobals_0, &__block_literal_global_1);
@@ -35,24 +35,24 @@
   v4 = qword_1ED7D1060;
   objc_sync_enter(v4);
   v5 = qword_1ED7D1060;
-  v6 = [v3 name];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  name = [cacheCopy name];
+  LOBYTE(v5) = [v5 containsObject:name];
 
   if ((v5 & 1) == 0)
   {
-    v7 = [v3 name];
+    name2 = [cacheCopy name];
     v8 = qword_1ED7D1050;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __40__UAFPreinstalledAssetsCache_initCache___block_invoke_2;
     v12[3] = &unk_1E7FFCFD0;
-    v9 = v3;
+    v9 = cacheCopy;
     v13 = v9;
-    [UAFAssetSetObserver listenForUAFNotificationsForAssetSet:v7 forRoot:1 queue:v8 updateHandler:v12];
+    [UAFAssetSetObserver listenForUAFNotificationsForAssetSet:name2 forRoot:1 queue:v8 updateHandler:v12];
 
     v10 = qword_1ED7D1060;
-    v11 = [v9 name];
-    [v10 addObject:v11];
+    name3 = [v9 name];
+    [v10 addObject:name3];
   }
 
   objc_sync_exit(v4);
@@ -101,23 +101,23 @@ uint64_t __40__UAFPreinstalledAssetsCache_initCache___block_invoke_2(uint64_t a1
   qword_1ED7D1070 = 0;
 }
 
-+ (void)populateCache:(id)a3
++ (void)populateCache:(id)cache
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cacheCopy = cache;
   v4 = qword_1ED7D1068;
   if (!qword_1ED7D1068)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = qword_1ED7D1068;
-    qword_1ED7D1068 = v5;
+    qword_1ED7D1068 = dictionary;
 
     v4 = qword_1ED7D1068;
   }
 
-  v7 = [v4 objectForKeyedSubscript:v3];
+  v7 = [v4 objectForKeyedSubscript:cacheCopy];
 
-  if (!v7 && [UAFPreinstalledAssetsCache checkForAssetTypePath:v3])
+  if (!v7 && [UAFPreinstalledAssetsCache checkForAssetTypePath:cacheCopy])
   {
     v8 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -125,29 +125,29 @@ uint64_t __40__UAFPreinstalledAssetsCache_initCache___block_invoke_2(uint64_t a1
       v11 = 136315394;
       v12 = "+[UAFPreinstalledAssetsCache populateCache:]";
       v13 = 2114;
-      v14 = v3;
+      v14 = cacheCopy;
       _os_log_impl(&dword_1BCF2C000, v8, OS_LOG_TYPE_DEFAULT, "%s Querying for %{public}@", &v11, 0x16u);
     }
 
-    v9 = [UAFPreinstalledAssetsCache queryAssetType:v3];
-    [qword_1ED7D1068 setObject:v9 forKeyedSubscript:v3];
+    v9 = [UAFPreinstalledAssetsCache queryAssetType:cacheCopy];
+    [qword_1ED7D1068 setObject:v9 forKeyedSubscript:cacheCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)assetSpecifier:(id)a3 assetSetConfiguration:(id)a4
++ (id)assetSpecifier:(id)specifier assetSetConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 autoAssetType];
+  specifierCopy = specifier;
+  configurationCopy = configuration;
+  autoAssetType = [configurationCopy autoAssetType];
 
-  if (v7)
+  if (autoAssetType)
   {
     if (+[UAFPreinstalledAssetsCache isEnabled])
     {
-      [UAFPreinstalledAssetsCache initCache:v6];
-      v8 = [v6 autoAssetType];
+      [UAFPreinstalledAssetsCache initCache:configurationCopy];
+      autoAssetType2 = [configurationCopy autoAssetType];
       v16 = 0;
       v17 = &v16;
       v18 = 0x3032000000;
@@ -159,23 +159,23 @@ uint64_t __40__UAFPreinstalledAssetsCache_initCache___block_invoke_2(uint64_t a1
       block[1] = 3221225472;
       block[2] = __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___block_invoke;
       block[3] = &unk_1E7FFD768;
-      v13 = v8;
+      v13 = autoAssetType2;
       v15 = &v16;
-      v14 = v5;
-      v10 = v8;
+      v14 = specifierCopy;
+      v10 = autoAssetType2;
       dispatch_sync(v9, block);
-      v7 = v17[5];
+      autoAssetType = v17[5];
 
       _Block_object_dispose(&v16, 8);
     }
 
     else
     {
-      v7 = 0;
+      autoAssetType = 0;
     }
   }
 
-  return v7;
+  return autoAssetType;
 }
 
 void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___block_invoke(void *a1)
@@ -202,44 +202,44 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
   }
 }
 
-+ (BOOL)checkForAssetTypePath:(id)a3
++ (BOOL)checkForAssetTypePath:(id)path
 {
   v73 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v4 = qword_1ED7D1070;
   if (!qword_1ED7D1070)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = qword_1ED7D1070;
-    qword_1ED7D1070 = v5;
+    qword_1ED7D1070 = dictionary;
 
     v4 = qword_1ED7D1070;
   }
 
-  v7 = [v4 objectForKeyedSubscript:v3];
+  v7 = [v4 objectForKeyedSubscript:pathCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [v3 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-    v12 = [MEMORY[0x1E695DF70] array];
+    v11 = [pathCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0x1E7FFC000uLL;
     v14 = [UAFCommonUtilities getMAPath:1];
-    [v12 addObject:v14];
+    [array addObject:v14];
 
     v15 = [UAFCommonUtilities getMAPath:2];
-    [v12 addObject:v15];
+    [array addObject:v15];
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v16 = v12;
+    v16 = array;
     v45 = [v16 countByEnumeratingWithState:&v52 objects:v72 count:16];
     if (v45)
     {
@@ -272,7 +272,7 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
           memset(v64, 0, sizeof(v64));
           if (![*(v13 + 2584) stat:v20 withBuf:v64 error:0])
           {
-            v21 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
             v22 = [MEMORY[0x1E695DFF8] URLWithString:v20];
             v63 = v43;
             v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
@@ -282,7 +282,7 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
             v50[3] = &unk_1E7FFD790;
             v44 = v20;
             v51 = v44;
-            v24 = [v21 enumeratorAtURL:v22 includingPropertiesForKeys:v23 options:1 errorHandler:v50];
+            v24 = [defaultManager enumeratorAtURL:v22 includingPropertiesForKeys:v23 options:1 errorHandler:v50];
 
             v48 = 0u;
             v49 = 0u;
@@ -303,8 +303,8 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
                     objc_enumerationMutation(v25);
                   }
 
-                  v30 = [*(*(&v46 + 1) + 8 * i) path];
-                  v31 = [v30 hasSuffix:@".asset"];
+                  path = [*(*(&v46 + 1) + 8 * i) path];
+                  v31 = [path hasSuffix:@".asset"];
 
                   if (v31)
                   {
@@ -314,15 +314,15 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
                       *buf = 136315650;
                       v57 = "+[UAFPreinstalledAssetsCache checkForAssetTypePath:]";
                       v58 = 2114;
-                      v59 = v3;
+                      v59 = pathCopy;
                       v60 = 2114;
                       v61 = v44;
                       _os_log_impl(&dword_1BCF2C000, v35, OS_LOG_TYPE_INFO, "%s Root for asset type %{public}@ found at %{public}@", buf, 0x20u);
                     }
 
-                    [qword_1ED7D1070 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v3];
+                    [qword_1ED7D1070 setObject:MEMORY[0x1E695E118] forKeyedSubscript:pathCopy];
                     objc_autoreleasePoolPop(context);
-                    v9 = 1;
+                    bOOLValue = 1;
                     v8 = 0;
                     goto LABEL_31;
                   }
@@ -373,19 +373,19 @@ void __67__UAFPreinstalledAssetsCache_assetSpecifier_assetSetConfiguration___blo
       *v64 = 136315394;
       *&v64[4] = "+[UAFPreinstalledAssetsCache checkForAssetTypePath:]";
       *&v64[12] = 2114;
-      *&v64[14] = v3;
+      *&v64[14] = pathCopy;
       _os_log_impl(&dword_1BCF2C000, v34, OS_LOG_TYPE_INFO, "%s No root asset type path found for %{public}@", v64, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    [qword_1ED7D1070 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v3];
-    v9 = 0;
+    [qword_1ED7D1070 setObject:MEMORY[0x1E695E110] forKeyedSubscript:pathCopy];
+    bOOLValue = 0;
   }
 
 LABEL_31:
 
   v36 = *MEMORY[0x1E69E9840];
-  return v9;
+  return bOOLValue;
 }
 
 uint64_t __52__UAFPreinstalledAssetsCache_checkForAssetTypePath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -412,12 +412,12 @@ uint64_t __52__UAFPreinstalledAssetsCache_checkForAssetTypePath___block_invoke(u
   return 0;
 }
 
-+ (id)queryAssetType:(id)a3
++ (id)queryAssetType:(id)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:v3];
+  v5 = [objc_alloc(MEMORY[0x1E69B18E8]) initWithType:typeCopy];
   v6 = v5;
   if (!v5)
   {
@@ -427,7 +427,7 @@ uint64_t __52__UAFPreinstalledAssetsCache_checkForAssetTypePath___block_invoke(u
       *buf = 136315394;
       v19 = "+[UAFPreinstalledAssetsCache queryAssetType:]";
       v20 = 2112;
-      v21 = v3;
+      v21 = typeCopy;
       _os_log_error_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_ERROR, "%s Error creating MAAssetQuery for asset type %@", buf, 0x16u);
     }
 
@@ -438,17 +438,17 @@ uint64_t __52__UAFPreinstalledAssetsCache_checkForAssetTypePath___block_invoke(u
   [v6 setDoNotBlockOnNetworkStatus:1];
   [v6 setDoNotBlockBeforeFirstUnlock:1];
   [v6 addKeyValuePair:@"isRoot" with:@"1"];
-  v7 = [v6 queryMetaDataSync];
-  if (v7)
+  queryMetaDataSync = [v6 queryMetaDataSync];
+  if (queryMetaDataSync)
   {
-    v8 = v7;
+    v8 = queryMetaDataSync;
     v9 = UAFGetLogCategory(&UAFLogContextClient);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v19 = "+[UAFPreinstalledAssetsCache queryAssetType:]";
       v20 = 2112;
-      v21 = v3;
+      v21 = typeCopy;
       v22 = 2048;
       v23 = v8;
       _os_log_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_DEFAULT, "%s MA query for %@ failed with result: %ld", buf, 0x20u);
@@ -460,29 +460,29 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v11 = [v6 results];
+  results = [v6 results];
   v12 = UAFGetLogCategory(&UAFLogContextClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v19 = "+[UAFPreinstalledAssetsCache queryAssetType:]";
     v20 = 2114;
-    v21 = v3;
+    v21 = typeCopy;
     v22 = 1024;
-    LODWORD(v23) = [v11 count];
+    LODWORD(v23) = [results count];
     _os_log_debug_impl(&dword_1BCF2C000, v12, OS_LOG_TYPE_DEBUG, "%s Query for %{public}@ returned %d assets", buf, 0x1Cu);
   }
 
-  if ([v11 count])
+  if ([results count])
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __45__UAFPreinstalledAssetsCache_queryAssetType___block_invoke;
     v16[3] = &unk_1E7FFD7B8;
-    v10 = v13;
+    v10 = dictionary;
     v17 = v10;
-    [v11 enumerateObjectsUsingBlock:v16];
+    [results enumerateObjectsUsingBlock:v16];
   }
 
   else
@@ -524,17 +524,17 @@ void __45__UAFPreinstalledAssetsCache_queryAssetType___block_invoke(uint64_t a1,
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)assetSpecifiersFromRoots:(id)a3
++ (id)assetSpecifiersFromRoots:(id)roots
 {
-  v3 = a3;
-  v4 = [v3 autoAssetType];
+  rootsCopy = roots;
+  autoAssetType = [rootsCopy autoAssetType];
 
-  if (v4)
+  if (autoAssetType)
   {
     if (+[UAFPreinstalledAssetsCache isEnabled])
     {
-      [UAFPreinstalledAssetsCache initCache:v3];
-      v5 = [v3 autoAssetType];
+      [UAFPreinstalledAssetsCache initCache:rootsCopy];
+      autoAssetType2 = [rootsCopy autoAssetType];
       v12 = 0;
       v13 = &v12;
       v14 = 0x3032000000;
@@ -546,22 +546,22 @@ void __45__UAFPreinstalledAssetsCache_queryAssetType___block_invoke(uint64_t a1,
       v9[1] = 3221225472;
       v9[2] = __55__UAFPreinstalledAssetsCache_assetSpecifiersFromRoots___block_invoke;
       v9[3] = &unk_1E7FFD0E8;
-      v10 = v5;
+      v10 = autoAssetType2;
       v11 = &v12;
-      v7 = v5;
+      v7 = autoAssetType2;
       dispatch_sync(v6, v9);
-      v4 = v13[5];
+      autoAssetType = v13[5];
 
       _Block_object_dispose(&v12, 8);
     }
 
     else
     {
-      v4 = 0;
+      autoAssetType = 0;
     }
   }
 
-  return v4;
+  return autoAssetType;
 }
 
 void __55__UAFPreinstalledAssetsCache_assetSpecifiersFromRoots___block_invoke(uint64_t a1)
@@ -589,17 +589,17 @@ void __55__UAFPreinstalledAssetsCache_assetSpecifiersFromRoots___block_invoke(ui
   }
 }
 
-+ (id)summary:(id)a3
++ (id)summary:(id)summary
 {
-  v3 = a3;
-  v4 = [v3 autoAssetType];
+  summaryCopy = summary;
+  autoAssetType = [summaryCopy autoAssetType];
 
-  if (v4)
+  if (autoAssetType)
   {
     if (+[UAFPreinstalledAssetsCache isEnabled])
     {
-      [UAFPreinstalledAssetsCache initCache:v3];
-      v5 = [v3 autoAssetType];
+      [UAFPreinstalledAssetsCache initCache:summaryCopy];
+      autoAssetType2 = [summaryCopy autoAssetType];
       v12 = 0;
       v13 = &v12;
       v14 = 0x3032000000;
@@ -611,22 +611,22 @@ void __55__UAFPreinstalledAssetsCache_assetSpecifiersFromRoots___block_invoke(ui
       v9[1] = 3221225472;
       v9[2] = __38__UAFPreinstalledAssetsCache_summary___block_invoke;
       v9[3] = &unk_1E7FFD0E8;
-      v10 = v5;
+      v10 = autoAssetType2;
       v11 = &v12;
-      v7 = v5;
+      v7 = autoAssetType2;
       dispatch_sync(v6, v9);
-      v4 = v13[5];
+      autoAssetType = v13[5];
 
       _Block_object_dispose(&v12, 8);
     }
 
     else
     {
-      v4 = 0;
+      autoAssetType = 0;
     }
   }
 
-  return v4;
+  return autoAssetType;
 }
 
 void __38__UAFPreinstalledAssetsCache_summary___block_invoke(uint64_t a1)

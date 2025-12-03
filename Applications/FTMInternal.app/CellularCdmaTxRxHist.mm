@@ -1,33 +1,33 @@
 @interface CellularCdmaTxRxHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBand:(id)a3;
+- (int)StringAsBand:(id)band;
 - (int)band;
 - (unint64_t)hash;
-- (unsigned)hdrRx0IdleCountAtIndex:(unint64_t)a3;
-- (unsigned)hdrRx0TrafficCountAtIndex:(unint64_t)a3;
-- (unsigned)hdrRx1TrafficCountAtIndex:(unint64_t)a3;
-- (unsigned)hdrTxTrafficCountAtIndex:(unint64_t)a3;
-- (unsigned)rx0IdleCountAtIndex:(unint64_t)a3;
-- (unsigned)rx0TrafficCountAtIndex:(unint64_t)a3;
-- (unsigned)rx1TrafficCountAtIndex:(unint64_t)a3;
-- (unsigned)txTrafficCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)hdrRx0IdleCountAtIndex:(unint64_t)index;
+- (unsigned)hdrRx0TrafficCountAtIndex:(unint64_t)index;
+- (unsigned)hdrRx1TrafficCountAtIndex:(unint64_t)index;
+- (unsigned)hdrTxTrafficCountAtIndex:(unint64_t)index;
+- (unsigned)rx0IdleCountAtIndex:(unint64_t)index;
+- (unsigned)rx0TrafficCountAtIndex:(unint64_t)index;
+- (unsigned)rx1TrafficCountAtIndex:(unint64_t)index;
+- (unsigned)txTrafficCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBand:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasHdrRx0IdleCountAll:(BOOL)a3;
-- (void)setHasHdrRx0TrafficCountAll:(BOOL)a3;
-- (void)setHasHdrRx1TrafficCountAll:(BOOL)a3;
-- (void)setHasHdrTxTrafficCountAll:(BOOL)a3;
-- (void)setHasRx0IdleCountAll:(BOOL)a3;
-- (void)setHasRx0TrafficCountAll:(BOOL)a3;
-- (void)setHasRx1TrafficCountAll:(BOOL)a3;
-- (void)setHasTxTrafficCountAll:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBand:(BOOL)band;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasHdrRx0IdleCountAll:(BOOL)all;
+- (void)setHasHdrRx0TrafficCountAll:(BOOL)all;
+- (void)setHasHdrRx1TrafficCountAll:(BOOL)all;
+- (void)setHasHdrTxTrafficCountAll:(BOOL)all;
+- (void)setHasRx0IdleCountAll:(BOOL)all;
+- (void)setHasRx0TrafficCountAll:(BOOL)all;
+- (void)setHasRx1TrafficCountAll:(BOOL)all;
+- (void)setHasTxTrafficCountAll:(BOOL)all;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularCdmaTxRxHist
@@ -47,9 +47,9 @@
   [(CellularCdmaTxRxHist *)&v3 dealloc];
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRx0IdleCountAll:(BOOL)a3
+- (void)setHasRx0IdleCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 128;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRx0TrafficCountAll:(BOOL)a3
+- (void)setHasRx0TrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 256;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRx1TrafficCountAll:(BOOL)a3
+- (void)setHasRx1TrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 512;
   }
@@ -107,9 +107,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTxTrafficCountAll:(BOOL)a3
+- (void)setHasTxTrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 1024;
   }
@@ -122,65 +122,65 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (unsigned)rx0IdleCountAtIndex:(unint64_t)a3
+- (unsigned)rx0IdleCountAtIndex:(unint64_t)index
 {
   p_rx0IdleCounts = &self->_rx0IdleCounts;
   count = self->_rx0IdleCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rx0IdleCounts->list[a3];
+  return p_rx0IdleCounts->list[index];
 }
 
-- (unsigned)rx0TrafficCountAtIndex:(unint64_t)a3
+- (unsigned)rx0TrafficCountAtIndex:(unint64_t)index
 {
   p_rx0TrafficCounts = &self->_rx0TrafficCounts;
   count = self->_rx0TrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rx0TrafficCounts->list[a3];
+  return p_rx0TrafficCounts->list[index];
 }
 
-- (unsigned)rx1TrafficCountAtIndex:(unint64_t)a3
+- (unsigned)rx1TrafficCountAtIndex:(unint64_t)index
 {
   p_rx1TrafficCounts = &self->_rx1TrafficCounts;
   count = self->_rx1TrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rx1TrafficCounts->list[a3];
+  return p_rx1TrafficCounts->list[index];
 }
 
-- (unsigned)txTrafficCountAtIndex:(unint64_t)a3
+- (unsigned)txTrafficCountAtIndex:(unint64_t)index
 {
   p_txTrafficCounts = &self->_txTrafficCounts;
   count = self->_txTrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_txTrafficCounts->list[a3];
+  return p_txTrafficCounts->list[index];
 }
 
-- (void)setHasHdrRx0IdleCountAll:(BOOL)a3
+- (void)setHasHdrRx0IdleCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 8;
   }
@@ -193,9 +193,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasHdrRx0TrafficCountAll:(BOOL)a3
+- (void)setHasHdrRx0TrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 16;
   }
@@ -208,9 +208,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasHdrRx1TrafficCountAll:(BOOL)a3
+- (void)setHasHdrRx1TrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 32;
   }
@@ -223,9 +223,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasHdrTxTrafficCountAll:(BOOL)a3
+- (void)setHasHdrTxTrafficCountAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v3 = 64;
   }
@@ -238,60 +238,60 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (unsigned)hdrRx0IdleCountAtIndex:(unint64_t)a3
+- (unsigned)hdrRx0IdleCountAtIndex:(unint64_t)index
 {
   p_hdrRx0IdleCounts = &self->_hdrRx0IdleCounts;
   count = self->_hdrRx0IdleCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_hdrRx0IdleCounts->list[a3];
+  return p_hdrRx0IdleCounts->list[index];
 }
 
-- (unsigned)hdrRx0TrafficCountAtIndex:(unint64_t)a3
+- (unsigned)hdrRx0TrafficCountAtIndex:(unint64_t)index
 {
   p_hdrRx0TrafficCounts = &self->_hdrRx0TrafficCounts;
   count = self->_hdrRx0TrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_hdrRx0TrafficCounts->list[a3];
+  return p_hdrRx0TrafficCounts->list[index];
 }
 
-- (unsigned)hdrRx1TrafficCountAtIndex:(unint64_t)a3
+- (unsigned)hdrRx1TrafficCountAtIndex:(unint64_t)index
 {
   p_hdrRx1TrafficCounts = &self->_hdrRx1TrafficCounts;
   count = self->_hdrRx1TrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_hdrRx1TrafficCounts->list[a3];
+  return p_hdrRx1TrafficCounts->list[index];
 }
 
-- (unsigned)hdrTxTrafficCountAtIndex:(unint64_t)a3
+- (unsigned)hdrTxTrafficCountAtIndex:(unint64_t)index
 {
   p_hdrTxTrafficCounts = &self->_hdrTxTrafficCounts;
   count = self->_hdrTxTrafficCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_hdrTxTrafficCounts->list[a3];
+  return p_hdrTxTrafficCounts->list[index];
 }
 
 - (int)band
@@ -307,9 +307,9 @@
   }
 }
 
-- (void)setHasBand:(BOOL)a3
+- (void)setHasBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 2;
   }
@@ -322,395 +322,395 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsBand:(id)a3
+- (int)StringAsBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_BAND_BC0"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"SYS_BAND_BC0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC6"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC7"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC7"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC8"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC8"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC9"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC9"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC10"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC10"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC11"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC11"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC12"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC12"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC13"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC13"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC14"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC14"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC15"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC15"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC16"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC16"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC17"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC17"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC18"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC18"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC19"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC19"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_450"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_450"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_480"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_480"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_750"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_750"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_850"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_EGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_EGSM_900"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_PGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_PGSM_900"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_RGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_RGSM_900"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_DCS_1800"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_DCS_1800"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_PCS_1900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_PCS_1900"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_I_IMT_2000"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_I_IMT_2000"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_II_PCS_1900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_II_PCS_1900"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_III_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_III_1700"])
   {
     v4 = 82;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_IV_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_IV_1700"])
   {
     v4 = 83;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_V_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_V_850"])
   {
     v4 = 84;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VI_800"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VI_800"])
   {
     v4 = 85;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VII_2600"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VII_2600"])
   {
     v4 = 86;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VIII_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VIII_900"])
   {
     v4 = 87;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_IX_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_IX_1700"])
   {
     v4 = 88;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_XI_1500"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_XI_1500"])
   {
     v4 = 90;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_XIX_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_XIX_850"])
   {
     v4 = 91;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND1"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND2"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND2"])
   {
     v4 = 121;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND3"])
   {
     v4 = 122;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND4"])
   {
     v4 = 123;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND5"])
   {
     v4 = 124;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND6"])
   {
     v4 = 125;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND7"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND7"])
   {
     v4 = 126;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND8"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND8"])
   {
     v4 = 127;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND9"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND9"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND10"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND10"])
   {
     v4 = 129;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND11"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND11"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND12"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND12"])
   {
     v4 = 131;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND13"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND13"])
   {
     v4 = 132;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND14"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND14"])
   {
     v4 = 133;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND17"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND17"])
   {
     v4 = 136;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND18"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND18"])
   {
     v4 = 137;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND19"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND19"])
   {
     v4 = 138;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND20"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND20"])
   {
     v4 = 139;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND21"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND21"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND24"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND24"])
   {
     v4 = 143;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND25"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND25"])
   {
     v4 = 144;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND26"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND26"])
   {
     v4 = 145;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND33"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND33"])
   {
     v4 = 152;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND34"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND34"])
   {
     v4 = 153;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND35"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND35"])
   {
     v4 = 154;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND36"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND36"])
   {
     v4 = 155;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND37"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND37"])
   {
     v4 = 156;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND38"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND38"])
   {
     v4 = 157;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND39"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND39"])
   {
     v4 = 158;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND40"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND40"])
   {
     v4 = 159;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND41"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND41"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND42"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND42"])
   {
     v4 = 161;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND43"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND43"])
   {
     v4 = 162;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND1"])
   {
     v4 = 163;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND2"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND2"])
   {
     v4 = 164;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND3"])
   {
     v4 = 165;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND4"])
   {
     v4 = 166;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND5"])
   {
     v4 = 167;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND6"])
   {
     v4 = 168;
   }
@@ -728,8 +728,8 @@
   v7.receiver = self;
   v7.super_class = CellularCdmaTxRxHist;
   v3 = [(CellularCdmaTxRxHist *)&v7 description];
-  v4 = [(CellularCdmaTxRxHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularCdmaTxRxHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -898,256 +898,256 @@ LABEL_13:
   if ((*&self->_has & 2) != 0)
   {
     band = self->_band;
-    v17 = @"SYS_BAND_BC0";
+    band = @"SYS_BAND_BC0";
     switch(band)
     {
       case 0:
         break;
       case 1:
-        v17 = @"SYS_BAND_BC1";
+        band = @"SYS_BAND_BC1";
         break;
       case 3:
-        v17 = @"SYS_BAND_BC3";
+        band = @"SYS_BAND_BC3";
         break;
       case 4:
-        v17 = @"SYS_BAND_BC4";
+        band = @"SYS_BAND_BC4";
         break;
       case 5:
-        v17 = @"SYS_BAND_BC5";
+        band = @"SYS_BAND_BC5";
         break;
       case 6:
-        v17 = @"SYS_BAND_BC6";
+        band = @"SYS_BAND_BC6";
         break;
       case 7:
-        v17 = @"SYS_BAND_BC7";
+        band = @"SYS_BAND_BC7";
         break;
       case 8:
-        v17 = @"SYS_BAND_BC8";
+        band = @"SYS_BAND_BC8";
         break;
       case 9:
-        v17 = @"SYS_BAND_BC9";
+        band = @"SYS_BAND_BC9";
         break;
       case 10:
-        v17 = @"SYS_BAND_BC10";
+        band = @"SYS_BAND_BC10";
         break;
       case 11:
-        v17 = @"SYS_BAND_BC11";
+        band = @"SYS_BAND_BC11";
         break;
       case 12:
-        v17 = @"SYS_BAND_BC12";
+        band = @"SYS_BAND_BC12";
         break;
       case 13:
-        v17 = @"SYS_BAND_BC13";
+        band = @"SYS_BAND_BC13";
         break;
       case 14:
-        v17 = @"SYS_BAND_BC14";
+        band = @"SYS_BAND_BC14";
         break;
       case 15:
-        v17 = @"SYS_BAND_BC15";
+        band = @"SYS_BAND_BC15";
         break;
       case 16:
-        v17 = @"SYS_BAND_BC16";
+        band = @"SYS_BAND_BC16";
         break;
       case 17:
-        v17 = @"SYS_BAND_BC17";
+        band = @"SYS_BAND_BC17";
         break;
       case 18:
-        v17 = @"SYS_BAND_BC18";
+        band = @"SYS_BAND_BC18";
         break;
       case 19:
-        v17 = @"SYS_BAND_BC19";
+        band = @"SYS_BAND_BC19";
         break;
       case 40:
-        v17 = @"SYS_BAND_GSM_450";
+        band = @"SYS_BAND_GSM_450";
         break;
       case 41:
-        v17 = @"SYS_BAND_GSM_480";
+        band = @"SYS_BAND_GSM_480";
         break;
       case 42:
-        v17 = @"SYS_BAND_GSM_750";
+        band = @"SYS_BAND_GSM_750";
         break;
       case 43:
-        v17 = @"SYS_BAND_GSM_850";
+        band = @"SYS_BAND_GSM_850";
         break;
       case 44:
-        v17 = @"SYS_BAND_GSM_EGSM_900";
+        band = @"SYS_BAND_GSM_EGSM_900";
         break;
       case 45:
-        v17 = @"SYS_BAND_GSM_PGSM_900";
+        band = @"SYS_BAND_GSM_PGSM_900";
         break;
       case 46:
-        v17 = @"SYS_BAND_GSM_RGSM_900";
+        band = @"SYS_BAND_GSM_RGSM_900";
         break;
       case 47:
-        v17 = @"SYS_BAND_GSM_DCS_1800";
+        band = @"SYS_BAND_GSM_DCS_1800";
         break;
       case 48:
-        v17 = @"SYS_BAND_GSM_PCS_1900";
+        band = @"SYS_BAND_GSM_PCS_1900";
         break;
       case 80:
-        v17 = @"SYS_BAND_WCDMA_I_IMT_2000";
+        band = @"SYS_BAND_WCDMA_I_IMT_2000";
         break;
       case 81:
-        v17 = @"SYS_BAND_WCDMA_II_PCS_1900";
+        band = @"SYS_BAND_WCDMA_II_PCS_1900";
         break;
       case 82:
-        v17 = @"SYS_BAND_WCDMA_III_1700";
+        band = @"SYS_BAND_WCDMA_III_1700";
         break;
       case 83:
-        v17 = @"SYS_BAND_WCDMA_IV_1700";
+        band = @"SYS_BAND_WCDMA_IV_1700";
         break;
       case 84:
-        v17 = @"SYS_BAND_WCDMA_V_850";
+        band = @"SYS_BAND_WCDMA_V_850";
         break;
       case 85:
-        v17 = @"SYS_BAND_WCDMA_VI_800";
+        band = @"SYS_BAND_WCDMA_VI_800";
         break;
       case 86:
-        v17 = @"SYS_BAND_WCDMA_VII_2600";
+        band = @"SYS_BAND_WCDMA_VII_2600";
         break;
       case 87:
-        v17 = @"SYS_BAND_WCDMA_VIII_900";
+        band = @"SYS_BAND_WCDMA_VIII_900";
         break;
       case 88:
-        v17 = @"SYS_BAND_WCDMA_IX_1700";
+        band = @"SYS_BAND_WCDMA_IX_1700";
         break;
       case 90:
-        v17 = @"SYS_BAND_WCDMA_XI_1500";
+        band = @"SYS_BAND_WCDMA_XI_1500";
         break;
       case 91:
-        v17 = @"SYS_BAND_WCDMA_XIX_850";
+        band = @"SYS_BAND_WCDMA_XIX_850";
         break;
       case 120:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND1";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND1";
         break;
       case 121:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND2";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND2";
         break;
       case 122:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND3";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND3";
         break;
       case 123:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND4";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND4";
         break;
       case 124:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND5";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND5";
         break;
       case 125:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND6";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND6";
         break;
       case 126:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND7";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND7";
         break;
       case 127:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND8";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND8";
         break;
       case 128:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND9";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND9";
         break;
       case 129:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND10";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND10";
         break;
       case 130:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND11";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND11";
         break;
       case 131:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND12";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND12";
         break;
       case 132:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND13";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND13";
         break;
       case 133:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND14";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND14";
         break;
       case 136:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND17";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND17";
         break;
       case 137:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND18";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND18";
         break;
       case 138:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND19";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND19";
         break;
       case 139:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND20";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND20";
         break;
       case 140:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND21";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND21";
         break;
       case 143:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND24";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND24";
         break;
       case 144:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND25";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND25";
         break;
       case 145:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND26";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND26";
         break;
       case 152:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND33";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND33";
         break;
       case 153:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND34";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND34";
         break;
       case 154:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND35";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND35";
         break;
       case 155:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND36";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND36";
         break;
       case 156:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND37";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND37";
         break;
       case 157:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND38";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND38";
         break;
       case 158:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND39";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND39";
         break;
       case 159:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND40";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND40";
         break;
       case 160:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND41";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND41";
         break;
       case 161:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND42";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND42";
         break;
       case 162:
-        v17 = @"SYS_BAND_LTE_EUTRAN_BAND43";
+        band = @"SYS_BAND_LTE_EUTRAN_BAND43";
         break;
       case 163:
-        v17 = @"SYS_BAND_UMTS_BAND1";
+        band = @"SYS_BAND_UMTS_BAND1";
         break;
       case 164:
-        v17 = @"SYS_BAND_UMTS_BAND2";
+        band = @"SYS_BAND_UMTS_BAND2";
         break;
       case 165:
-        v17 = @"SYS_BAND_UMTS_BAND3";
+        band = @"SYS_BAND_UMTS_BAND3";
         break;
       case 166:
-        v17 = @"SYS_BAND_UMTS_BAND4";
+        band = @"SYS_BAND_UMTS_BAND4";
         break;
       case 167:
-        v17 = @"SYS_BAND_UMTS_BAND5";
+        band = @"SYS_BAND_UMTS_BAND5";
         break;
       case 168:
-        v17 = @"SYS_BAND_UMTS_BAND6";
+        band = @"SYS_BAND_UMTS_BAND6";
         break;
       default:
-        v17 = [NSString stringWithFormat:@"(unknown: %i)", band];
+        band = [NSString stringWithFormat:@"(unknown: %i)", band];
         break;
     }
 
-    [v3 setObject:v17 forKey:@"band"];
+    [v3 setObject:band forKey:@"band"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1433,14 +1433,14 @@ LABEL_33:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[25] = self->_timestamp;
-    *(v4 + 124) |= 1u;
+    toCopy[25] = self->_timestamp;
+    *(toCopy + 124) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -1459,8 +1459,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 53) = self->_duration;
-  *(v4 + 124) |= 4u;
+  *(toCopy + 53) = self->_duration;
+  *(toCopy + 124) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1474,8 +1474,8 @@ LABEL_4:
   }
 
 LABEL_52:
-  *(v4 + 58) = self->_rx0IdleCountAll;
-  *(v4 + 124) |= 0x80u;
+  *(toCopy + 58) = self->_rx0IdleCountAll;
+  *(toCopy + 124) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1486,8 +1486,8 @@ LABEL_5:
     }
 
 LABEL_54:
-    *(v4 + 60) = self->_rx1TrafficCountAll;
-    *(v4 + 124) |= 0x200u;
+    *(toCopy + 60) = self->_rx1TrafficCountAll;
+    *(toCopy + 124) |= 0x200u;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_8;
@@ -1497,8 +1497,8 @@ LABEL_54:
   }
 
 LABEL_53:
-  *(v4 + 59) = self->_rx0TrafficCountAll;
-  *(v4 + 124) |= 0x100u;
+  *(toCopy + 59) = self->_rx0TrafficCountAll;
+  *(toCopy + 124) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -1509,19 +1509,19 @@ LABEL_6:
   if ((has & 0x400) != 0)
   {
 LABEL_7:
-    *(v4 + 61) = self->_txTrafficCountAll;
-    *(v4 + 124) |= 0x400u;
+    *(toCopy + 61) = self->_txTrafficCountAll;
+    *(toCopy + 124) |= 0x400u;
   }
 
 LABEL_8:
-  v31 = v4;
+  v31 = toCopy;
   if ([(CellularCdmaTxRxHist *)self rx0IdleCountsCount])
   {
     [v31 clearRx0IdleCounts];
-    v6 = [(CellularCdmaTxRxHist *)self rx0IdleCountsCount];
-    if (v6)
+    rx0IdleCountsCount = [(CellularCdmaTxRxHist *)self rx0IdleCountsCount];
+    if (rx0IdleCountsCount)
     {
-      v7 = v6;
+      v7 = rx0IdleCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [v31 addRx0IdleCount:{-[CellularCdmaTxRxHist rx0IdleCountAtIndex:](self, "rx0IdleCountAtIndex:", i)}];
@@ -1532,10 +1532,10 @@ LABEL_8:
   if ([(CellularCdmaTxRxHist *)self rx0TrafficCountsCount])
   {
     [v31 clearRx0TrafficCounts];
-    v9 = [(CellularCdmaTxRxHist *)self rx0TrafficCountsCount];
-    if (v9)
+    rx0TrafficCountsCount = [(CellularCdmaTxRxHist *)self rx0TrafficCountsCount];
+    if (rx0TrafficCountsCount)
     {
-      v10 = v9;
+      v10 = rx0TrafficCountsCount;
       for (j = 0; j != v10; ++j)
       {
         [v31 addRx0TrafficCount:{-[CellularCdmaTxRxHist rx0TrafficCountAtIndex:](self, "rx0TrafficCountAtIndex:", j)}];
@@ -1546,10 +1546,10 @@ LABEL_8:
   if ([(CellularCdmaTxRxHist *)self rx1TrafficCountsCount])
   {
     [v31 clearRx1TrafficCounts];
-    v12 = [(CellularCdmaTxRxHist *)self rx1TrafficCountsCount];
-    if (v12)
+    rx1TrafficCountsCount = [(CellularCdmaTxRxHist *)self rx1TrafficCountsCount];
+    if (rx1TrafficCountsCount)
     {
-      v13 = v12;
+      v13 = rx1TrafficCountsCount;
       for (k = 0; k != v13; ++k)
       {
         [v31 addRx1TrafficCount:{-[CellularCdmaTxRxHist rx1TrafficCountAtIndex:](self, "rx1TrafficCountAtIndex:", k)}];
@@ -1560,10 +1560,10 @@ LABEL_8:
   if ([(CellularCdmaTxRxHist *)self txTrafficCountsCount])
   {
     [v31 clearTxTrafficCounts];
-    v15 = [(CellularCdmaTxRxHist *)self txTrafficCountsCount];
-    if (v15)
+    txTrafficCountsCount = [(CellularCdmaTxRxHist *)self txTrafficCountsCount];
+    if (txTrafficCountsCount)
     {
-      v16 = v15;
+      v16 = txTrafficCountsCount;
       for (m = 0; m != v16; ++m)
       {
         [v31 addTxTrafficCount:{-[CellularCdmaTxRxHist txTrafficCountAtIndex:](self, "txTrafficCountAtIndex:", m)}];
@@ -1622,10 +1622,10 @@ LABEL_29:
   if ([(CellularCdmaTxRxHist *)self hdrRx0IdleCountsCount])
   {
     [v31 clearHdrRx0IdleCounts];
-    v19 = [(CellularCdmaTxRxHist *)self hdrRx0IdleCountsCount];
-    if (v19)
+    hdrRx0IdleCountsCount = [(CellularCdmaTxRxHist *)self hdrRx0IdleCountsCount];
+    if (hdrRx0IdleCountsCount)
     {
-      v20 = v19;
+      v20 = hdrRx0IdleCountsCount;
       for (n = 0; n != v20; ++n)
       {
         [v31 addHdrRx0IdleCount:{-[CellularCdmaTxRxHist hdrRx0IdleCountAtIndex:](self, "hdrRx0IdleCountAtIndex:", n)}];
@@ -1636,10 +1636,10 @@ LABEL_29:
   if ([(CellularCdmaTxRxHist *)self hdrRx0TrafficCountsCount])
   {
     [v31 clearHdrRx0TrafficCounts];
-    v22 = [(CellularCdmaTxRxHist *)self hdrRx0TrafficCountsCount];
-    if (v22)
+    hdrRx0TrafficCountsCount = [(CellularCdmaTxRxHist *)self hdrRx0TrafficCountsCount];
+    if (hdrRx0TrafficCountsCount)
     {
-      v23 = v22;
+      v23 = hdrRx0TrafficCountsCount;
       for (ii = 0; ii != v23; ++ii)
       {
         [v31 addHdrRx0TrafficCount:{-[CellularCdmaTxRxHist hdrRx0TrafficCountAtIndex:](self, "hdrRx0TrafficCountAtIndex:", ii)}];
@@ -1650,10 +1650,10 @@ LABEL_29:
   if ([(CellularCdmaTxRxHist *)self hdrRx1TrafficCountsCount])
   {
     [v31 clearHdrRx1TrafficCounts];
-    v25 = [(CellularCdmaTxRxHist *)self hdrRx1TrafficCountsCount];
-    if (v25)
+    hdrRx1TrafficCountsCount = [(CellularCdmaTxRxHist *)self hdrRx1TrafficCountsCount];
+    if (hdrRx1TrafficCountsCount)
     {
-      v26 = v25;
+      v26 = hdrRx1TrafficCountsCount;
       for (jj = 0; jj != v26; ++jj)
       {
         [v31 addHdrRx1TrafficCount:{-[CellularCdmaTxRxHist hdrRx1TrafficCountAtIndex:](self, "hdrRx1TrafficCountAtIndex:", jj)}];
@@ -1664,10 +1664,10 @@ LABEL_29:
   if ([(CellularCdmaTxRxHist *)self hdrTxTrafficCountsCount])
   {
     [v31 clearHdrTxTrafficCounts];
-    v28 = [(CellularCdmaTxRxHist *)self hdrTxTrafficCountsCount];
-    if (v28)
+    hdrTxTrafficCountsCount = [(CellularCdmaTxRxHist *)self hdrTxTrafficCountsCount];
+    if (hdrTxTrafficCountsCount)
     {
-      v29 = v28;
+      v29 = hdrTxTrafficCountsCount;
       for (kk = 0; kk != v29; ++kk)
       {
         [v31 addHdrTxTrafficCount:{-[CellularCdmaTxRxHist hdrTxTrafficCountAtIndex:](self, "hdrTxTrafficCountAtIndex:", kk)}];
@@ -1682,9 +1682,9 @@ LABEL_29:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -1829,19 +1829,19 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
   has = self->_has;
-  v6 = *(v4 + 124);
+  v6 = *(equalCopy + 124);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 25))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 25))
     {
       goto LABEL_65;
     }
@@ -1856,7 +1856,7 @@ LABEL_65:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_duration != *(v4 + 53))
+    if ((v6 & 4) == 0 || self->_duration != *(equalCopy + 53))
     {
       goto LABEL_65;
     }
@@ -1869,7 +1869,7 @@ LABEL_65:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rx0IdleCountAll != *(v4 + 58))
+    if ((v6 & 0x80) == 0 || self->_rx0IdleCountAll != *(equalCopy + 58))
     {
       goto LABEL_65;
     }
@@ -1882,39 +1882,39 @@ LABEL_65:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 124) & 0x100) == 0 || self->_rx0TrafficCountAll != *(v4 + 59))
+    if ((*(equalCopy + 124) & 0x100) == 0 || self->_rx0TrafficCountAll != *(equalCopy + 59))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 124) & 0x100) != 0)
+  else if ((*(equalCopy + 124) & 0x100) != 0)
   {
     goto LABEL_65;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 124) & 0x200) == 0 || self->_rx1TrafficCountAll != *(v4 + 60))
+    if ((*(equalCopy + 124) & 0x200) == 0 || self->_rx1TrafficCountAll != *(equalCopy + 60))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 124) & 0x200) != 0)
+  else if ((*(equalCopy + 124) & 0x200) != 0)
   {
     goto LABEL_65;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 124) & 0x400) == 0 || self->_txTrafficCountAll != *(v4 + 61))
+    if ((*(equalCopy + 124) & 0x400) == 0 || self->_txTrafficCountAll != *(equalCopy + 61))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 124) & 0x400) != 0)
+  else if ((*(equalCopy + 124) & 0x400) != 0)
   {
     goto LABEL_65;
   }
@@ -1925,10 +1925,10 @@ LABEL_65:
   }
 
   v7 = self->_has;
-  v8 = *(v4 + 124);
+  v8 = *(equalCopy + 124);
   if ((v7 & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_hdrRx0IdleCountAll != *(v4 + 54))
+    if ((v8 & 8) == 0 || self->_hdrRx0IdleCountAll != *(equalCopy + 54))
     {
       goto LABEL_65;
     }
@@ -1941,7 +1941,7 @@ LABEL_65:
 
   if ((v7 & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_hdrRx0TrafficCountAll != *(v4 + 55))
+    if ((v8 & 0x10) == 0 || self->_hdrRx0TrafficCountAll != *(equalCopy + 55))
     {
       goto LABEL_65;
     }
@@ -1954,7 +1954,7 @@ LABEL_65:
 
   if ((v7 & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_hdrRx1TrafficCountAll != *(v4 + 56))
+    if ((v8 & 0x20) == 0 || self->_hdrRx1TrafficCountAll != *(equalCopy + 56))
     {
       goto LABEL_65;
     }
@@ -1967,7 +1967,7 @@ LABEL_65:
 
   if ((v7 & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_hdrTxTrafficCountAll != *(v4 + 57))
+    if ((v8 & 0x40) == 0 || self->_hdrTxTrafficCountAll != *(equalCopy + 57))
     {
       goto LABEL_65;
     }
@@ -1983,10 +1983,10 @@ LABEL_65:
     goto LABEL_65;
   }
 
-  v9 = *(v4 + 124);
+  v9 = *(equalCopy + 124);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_band != *(v4 + 52))
+    if ((v9 & 2) == 0 || self->_band != *(equalCopy + 52))
     {
       goto LABEL_65;
     }
@@ -2157,15 +2157,15 @@ LABEL_23:
   return v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 124);
+  fromCopy = from;
+  v5 = *(fromCopy + 124);
   if (v5)
   {
-    self->_timestamp = *(v4 + 25);
+    self->_timestamp = *(fromCopy + 25);
     *&self->_has |= 1u;
-    v5 = *(v4 + 124);
+    v5 = *(fromCopy + 124);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -2183,9 +2183,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_duration = *(v4 + 53);
+  self->_duration = *(fromCopy + 53);
   *&self->_has |= 4u;
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -2198,9 +2198,9 @@ LABEL_4:
   }
 
 LABEL_44:
-  self->_rx0IdleCountAll = *(v4 + 58);
+  self->_rx0IdleCountAll = *(fromCopy + 58);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 0x100) == 0)
   {
 LABEL_5:
@@ -2213,9 +2213,9 @@ LABEL_5:
   }
 
 LABEL_45:
-  self->_rx0TrafficCountAll = *(v4 + 59);
+  self->_rx0TrafficCountAll = *(fromCopy + 59);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -2228,51 +2228,51 @@ LABEL_6:
   }
 
 LABEL_46:
-  self->_rx1TrafficCountAll = *(v4 + 60);
+  self->_rx1TrafficCountAll = *(fromCopy + 60);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 124) & 0x400) != 0)
+  if ((*(fromCopy + 124) & 0x400) != 0)
   {
 LABEL_7:
-    self->_txTrafficCountAll = *(v4 + 61);
+    self->_txTrafficCountAll = *(fromCopy + 61);
     *&self->_has |= 0x400u;
   }
 
 LABEL_8:
-  v31 = v4;
-  v6 = [v4 rx0IdleCountsCount];
-  if (v6)
+  v31 = fromCopy;
+  rx0IdleCountsCount = [fromCopy rx0IdleCountsCount];
+  if (rx0IdleCountsCount)
   {
-    v7 = v6;
+    v7 = rx0IdleCountsCount;
     for (i = 0; i != v7; ++i)
     {
       -[CellularCdmaTxRxHist addRx0IdleCount:](self, "addRx0IdleCount:", [v31 rx0IdleCountAtIndex:i]);
     }
   }
 
-  v9 = [v31 rx0TrafficCountsCount];
-  if (v9)
+  rx0TrafficCountsCount = [v31 rx0TrafficCountsCount];
+  if (rx0TrafficCountsCount)
   {
-    v10 = v9;
+    v10 = rx0TrafficCountsCount;
     for (j = 0; j != v10; ++j)
     {
       -[CellularCdmaTxRxHist addRx0TrafficCount:](self, "addRx0TrafficCount:", [v31 rx0TrafficCountAtIndex:j]);
     }
   }
 
-  v12 = [v31 rx1TrafficCountsCount];
-  if (v12)
+  rx1TrafficCountsCount = [v31 rx1TrafficCountsCount];
+  if (rx1TrafficCountsCount)
   {
-    v13 = v12;
+    v13 = rx1TrafficCountsCount;
     for (k = 0; k != v13; ++k)
     {
       -[CellularCdmaTxRxHist addRx1TrafficCount:](self, "addRx1TrafficCount:", [v31 rx1TrafficCountAtIndex:k]);
     }
   }
 
-  v15 = [v31 txTrafficCountsCount];
-  if (v15)
+  txTrafficCountsCount = [v31 txTrafficCountsCount];
+  if (txTrafficCountsCount)
   {
-    v16 = v15;
+    v16 = txTrafficCountsCount;
     for (m = 0; m != v16; ++m)
     {
       -[CellularCdmaTxRxHist addTxTrafficCount:](self, "addTxTrafficCount:", [v31 txTrafficCountAtIndex:m]);
@@ -2327,40 +2327,40 @@ LABEL_24:
   }
 
 LABEL_25:
-  v19 = [v31 hdrRx0IdleCountsCount];
-  if (v19)
+  hdrRx0IdleCountsCount = [v31 hdrRx0IdleCountsCount];
+  if (hdrRx0IdleCountsCount)
   {
-    v20 = v19;
+    v20 = hdrRx0IdleCountsCount;
     for (n = 0; n != v20; ++n)
     {
       -[CellularCdmaTxRxHist addHdrRx0IdleCount:](self, "addHdrRx0IdleCount:", [v31 hdrRx0IdleCountAtIndex:n]);
     }
   }
 
-  v22 = [v31 hdrRx0TrafficCountsCount];
-  if (v22)
+  hdrRx0TrafficCountsCount = [v31 hdrRx0TrafficCountsCount];
+  if (hdrRx0TrafficCountsCount)
   {
-    v23 = v22;
+    v23 = hdrRx0TrafficCountsCount;
     for (ii = 0; ii != v23; ++ii)
     {
       -[CellularCdmaTxRxHist addHdrRx0TrafficCount:](self, "addHdrRx0TrafficCount:", [v31 hdrRx0TrafficCountAtIndex:ii]);
     }
   }
 
-  v25 = [v31 hdrRx1TrafficCountsCount];
-  if (v25)
+  hdrRx1TrafficCountsCount = [v31 hdrRx1TrafficCountsCount];
+  if (hdrRx1TrafficCountsCount)
   {
-    v26 = v25;
+    v26 = hdrRx1TrafficCountsCount;
     for (jj = 0; jj != v26; ++jj)
     {
       -[CellularCdmaTxRxHist addHdrRx1TrafficCount:](self, "addHdrRx1TrafficCount:", [v31 hdrRx1TrafficCountAtIndex:jj]);
     }
   }
 
-  v28 = [v31 hdrTxTrafficCountsCount];
-  if (v28)
+  hdrTxTrafficCountsCount = [v31 hdrTxTrafficCountsCount];
+  if (hdrTxTrafficCountsCount)
   {
-    v29 = v28;
+    v29 = hdrTxTrafficCountsCount;
     for (kk = 0; kk != v29; ++kk)
     {
       -[CellularCdmaTxRxHist addHdrTxTrafficCount:](self, "addHdrTxTrafficCount:", [v31 hdrTxTrafficCountAtIndex:kk]);

@@ -1,26 +1,26 @@
 @interface CKCompoundSubpredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (CKCompoundSubpredicateValidator)initWithValidator:(id)a3;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (CKCompoundSubpredicateValidator)initWithValidator:(id)validator;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKCompoundSubpredicateValidator
 
-- (CKCompoundSubpredicateValidator)initWithValidator:(id)a3
+- (CKCompoundSubpredicateValidator)initWithValidator:(id)validator
 {
   v7.receiver = self;
   v7.super_class = CKCompoundSubpredicateValidator;
-  v3 = a3;
+  validatorCopy = validator;
   v4 = [(CKCompoundSubpredicateValidator *)&v7 init];
-  objc_msgSend_setValidator_(v4, v5, v3, v7.receiver, v7.super_class);
+  objc_msgSend_setValidator_(v4, v5, validatorCopy, v7.receiver, v7.super_class);
 
   return v4;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,12 +28,12 @@
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v9 = objc_msgSend_subpredicates(v6, v7, v8);
+    v9 = objc_msgSend_subpredicates(validateCopy, v7, v8);
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v45, v51, 16);
     if (v11)
     {
       v14 = v11;
-      v42 = v6;
+      v42 = validateCopy;
       obj = v9;
       v15 = 0;
       v16 = *v46;
@@ -49,7 +49,7 @@
           v18 = *(*(&v45 + 1) + 8 * i);
           v19 = objc_msgSend_validator(self, v12, v13);
           v21 = v19;
-          if (a4)
+          if (error)
           {
             v44 = v15;
             v22 = objc_msgSend_validate_error_(v19, v20, v18, &v44);
@@ -71,7 +71,7 @@
               v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v36, v50, v49, 3);
               v15 = objc_msgSend_errorWithDomain_code_userInfo_(v31, v38, @"CKErrorDomain", 12, v37);
 
-              v6 = v42;
+              validateCopy = v42;
               v27 = obj;
               goto LABEL_17;
             }
@@ -86,7 +86,7 @@
             if ((v24 & 1) == 0)
             {
               v25 = 0;
-              v6 = v42;
+              validateCopy = v42;
               v9 = obj;
               goto LABEL_21;
             }
@@ -104,7 +104,7 @@
       }
 
       v25 = 1;
-      v6 = v42;
+      validateCopy = v42;
     }
 
     else
@@ -116,11 +116,11 @@
 LABEL_21:
   }
 
-  else if (a4)
+  else if (error)
   {
     v26 = MEMORY[0x1E696ABC0];
     v52[0] = *MEMORY[0x1E696A578];
-    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not a compound predicate", v6);
+    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not a compound predicate", validateCopy);
     v52[1] = @"ck_isComparisonError";
     v53[0] = v27;
     v53[1] = MEMORY[0x1E695E110];
@@ -130,7 +130,7 @@ LABEL_17:
 
     v39 = v15;
     v25 = 0;
-    *a4 = v15;
+    *error = v15;
   }
 
   else

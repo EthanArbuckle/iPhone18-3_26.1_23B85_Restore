@@ -1,35 +1,35 @@
 @interface CNVSchemaCNVIntentReformationContext
-- (BOOL)isEqual:(id)a3;
-- (CNVSchemaCNVIntentReformationContext)initWithDictionary:(id)a3;
-- (CNVSchemaCNVIntentReformationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNVSchemaCNVIntentReformationContext)initWithDictionary:(id)dictionary;
+- (CNVSchemaCNVIntentReformationContext)initWithJSON:(id)n;
 - (CNVSchemaCNVIntentReformationEnded)ended;
 - (CNVSchemaCNVIntentReformationFailed)failed;
 - (CNVSchemaCNVIntentReformationStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CNVSchemaCNVIntentReformationContext
 
-- (CNVSchemaCNVIntentReformationContext)initWithDictionary:(id)a3
+- (CNVSchemaCNVIntentReformationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CNVSchemaCNVIntentReformationContext;
   v5 = [(CNVSchemaCNVIntentReformationContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(CNVSchemaCNVIntentReformationContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(CNVSchemaCNVIntentReformationContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (CNVSchemaCNVIntentReformationContext)initWithJSON:(id)a3
+- (CNVSchemaCNVIntentReformationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CNVSchemaCNVIntentReformationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CNVSchemaCNVIntentReformationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CNVSchemaCNVIntentReformationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,58 +95,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(CNVSchemaCNVIntentReformationContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(CNVSchemaCNVIntentReformationContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v7 = [(CNVSchemaCNVIntentReformationContext *)self failed];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    failed = [(CNVSchemaCNVIntentReformationContext *)self failed];
+    dictionaryRepresentation2 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"failed"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v10 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+    dictionaryRepresentation3 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"startedOrChanged"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,34 +156,34 @@
   return v4 ^ [(CNVSchemaCNVIntentReformationFailed *)self->_failed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -195,20 +195,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVIntentReformationContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(CNVSchemaCNVIntentReformationContext *)self ended];
-  if (v13)
+  ended = [(CNVSchemaCNVIntentReformationContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(CNVSchemaCNVIntentReformationContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(CNVSchemaCNVIntentReformationContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -220,12 +220,12 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVIntentReformationContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v18 = [(CNVSchemaCNVIntentReformationContext *)self failed];
-    if (!v18)
+    failed = [(CNVSchemaCNVIntentReformationContext *)self failed];
+    if (!failed)
     {
 
 LABEL_21:
@@ -233,10 +233,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(CNVSchemaCNVIntentReformationContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(CNVSchemaCNVIntentReformationContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (v22)
     {
@@ -256,34 +256,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+    startedOrChanged2 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CNVSchemaCNVIntentReformationContext *)self ended];
+  ended = [(CNVSchemaCNVIntentReformationContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(CNVSchemaCNVIntentReformationContext *)self ended];
+    ended2 = [(CNVSchemaCNVIntentReformationContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CNVSchemaCNVIntentReformationContext *)self failed];
+  failed = [(CNVSchemaCNVIntentReformationContext *)self failed];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (failed)
   {
-    v10 = [(CNVSchemaCNVIntentReformationContext *)self failed];
+    failed2 = [(CNVSchemaCNVIntentReformationContext *)self failed];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -312,9 +312,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -322,14 +322,14 @@ LABEL_19:
   self->_ended = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -357,18 +357,18 @@ LABEL_19:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -396,49 +396,49 @@ LABEL_19:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = CNVSchemaCNVIntentReformationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(CNVSchemaCNVIntentReformationContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CNVSchemaCNVIntentReformationContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(CNVSchemaCNVIntentReformationContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(CNVSchemaCNVIntentReformationContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CNVSchemaCNVIntentReformationContext *)self deleteEnded];
   }
 
-  v12 = [(CNVSchemaCNVIntentReformationContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(CNVSchemaCNVIntentReformationContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CNVSchemaCNVIntentReformationContext *)self deleteFailed];
   }

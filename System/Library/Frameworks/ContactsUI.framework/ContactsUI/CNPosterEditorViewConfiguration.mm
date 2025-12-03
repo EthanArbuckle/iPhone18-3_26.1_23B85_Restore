@@ -1,17 +1,17 @@
 @interface CNPosterEditorViewConfiguration
 - (_TtC10ContactsUI31CNPosterEditorViewConfiguration)init;
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithImageData:(id)a3 displayName:(id)a4;
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)a3 displayName:(id)a4;
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)a3 imageData:(id)a4 displayName:(id)a5;
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterConfiguration:(id)a3 displayName:(id)a4;
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithImageData:(id)data displayName:(id)name;
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)data displayName:(id)name;
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)data imageData:(id)imageData displayName:(id)name;
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterConfiguration:(id)configuration displayName:(id)name;
 @end
 
 @implementation CNPosterEditorViewConfiguration
 
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithImageData:(id)a3 displayName:(id)a4
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithImageData:(id)data displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v8 = sub_199DF71FC();
   v10 = v9;
 
@@ -35,10 +35,10 @@
   return [(CNPosterEditorViewConfiguration *)&v18 init];
 }
 
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)a3 displayName:(id)a4
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)data displayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   v8 = sub_199DF71FC();
   v10 = v9;
 
@@ -62,11 +62,11 @@
   return [(CNPosterEditorViewConfiguration *)&v18 init];
 }
 
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)a3 imageData:(id)a4 displayName:(id)a5
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterArchiveData:(id)data imageData:(id)imageData displayName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  imageDataCopy = imageData;
+  nameCopy = name;
   v11 = sub_199DF71FC();
   v13 = v12;
 
@@ -95,7 +95,7 @@
   return [(CNPosterEditorViewConfiguration *)&v25 init];
 }
 
-- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterConfiguration:(id)a3 displayName:(id)a4
+- (_TtC10ContactsUI31CNPosterEditorViewConfiguration)initWithPosterConfiguration:(id)configuration displayName:(id)name
 {
   v4 = sub_199DF9F8C();
   v6 = v5;

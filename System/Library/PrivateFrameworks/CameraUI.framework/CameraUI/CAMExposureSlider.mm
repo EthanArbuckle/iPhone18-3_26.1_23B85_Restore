@@ -3,12 +3,12 @@
 + (double)minimumValue;
 + (id)decimalFormatter;
 + (id)exposureValues;
-- (CAMExposureSlider)initWithTickMarkStyle:(unint64_t)a3;
+- (CAMExposureSlider)initWithTickMarkStyle:(unint64_t)style;
 - (double)exposureValue;
 - (double)horizontalValueLabelOffset;
 - (id)valueText;
-- (unint64_t)_indexOfClosestValidValueForExposureValue:(double)a3;
-- (void)setExposureValueClosestTo:(double)a3 animated:(BOOL)a4;
+- (unint64_t)_indexOfClosestValidValueForExposureValue:(double)value;
+- (void)setExposureValueClosestTo:(double)to animated:(BOOL)animated;
 - (void)updateValueLabel;
 @end
 
@@ -49,7 +49,7 @@ void __35__CAMExposureSlider_exposureValues__block_invoke()
   block[1] = 3221225472;
   block[2] = __33__CAMExposureSlider_minimumValue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (minimumValue_onceToken != -1)
   {
     dispatch_once(&minimumValue_onceToken, block);
@@ -82,7 +82,7 @@ uint64_t __33__CAMExposureSlider_minimumValue__block_invoke_2(uint64_t a1, void 
   block[1] = 3221225472;
   block[2] = __33__CAMExposureSlider_maximumValue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (maximumValue_onceToken != -1)
   {
     dispatch_once(&maximumValue_onceToken, block);
@@ -139,26 +139,26 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
   [decimalFormatter_decimalFormatter setNegativePrefix:v4];
 }
 
-- (CAMExposureSlider)initWithTickMarkStyle:(unint64_t)a3
+- (CAMExposureSlider)initWithTickMarkStyle:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = CAMExposureSlider;
-  v3 = [(CEKDiscreteSlider *)&v10 initWithTickMarkStyle:a3];
+  v3 = [(CEKDiscreteSlider *)&v10 initWithTickMarkStyle:style];
   v4 = v3;
   if (v3)
   {
     [(CEKDiscreteSlider *)v3 setColorHighlight:2];
-    v5 = [objc_opt_class() exposureValues];
-    -[CEKDiscreteSlider setIndexCount:](v4, "setIndexCount:", [v5 count]);
+    exposureValues = [objc_opt_class() exposureValues];
+    -[CEKDiscreteSlider setIndexCount:](v4, "setIndexCount:", [exposureValues count]);
 
     v6 = CAMLocalizedFrameworkString(@"EXPOSURE_SLIDER_TITLE", 0);
     [(CEKDiscreteSlider *)v4 setTitleText:v6];
 
-    v7 = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
-    [v7 setMainTickMarkInterval:3];
+    tickMarksConfiguration = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
+    [tickMarksConfiguration setMainTickMarkInterval:3];
 
-    v8 = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
-    [v8 setTickMarkSpacing:20.0];
+    tickMarksConfiguration2 = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
+    [tickMarksConfiguration2 setTickMarkSpacing:20.0];
 
     [(CEKDiscreteSlider *)v4 setTickMarkCountBetweenIndexes:0];
   }
@@ -166,10 +166,10 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
   return v4;
 }
 
-- (void)setExposureValueClosestTo:(double)a3 animated:(BOOL)a4
+- (void)setExposureValueClosestTo:(double)to animated:(BOOL)animated
 {
-  v6 = [(CAMExposureSlider *)self _indexOfClosestValidValueForExposureValue:a3];
-  if (a4)
+  v6 = [(CAMExposureSlider *)self _indexOfClosestValidValueForExposureValue:to];
+  if (animated)
   {
     v7 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     [(CEKDiscreteSlider *)self setSelectedIndex:v6 animatedDuration:v7 animatedCurve:0 completion:0.25];
@@ -184,8 +184,8 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
 
 - (double)exposureValue
 {
-  v3 = [objc_opt_class() exposureValues];
-  v4 = [v3 objectAtIndex:{-[CEKDiscreteSlider selectedIndex](self, "selectedIndex")}];
+  exposureValues = [objc_opt_class() exposureValues];
+  v4 = [exposureValues objectAtIndex:{-[CEKDiscreteSlider selectedIndex](self, "selectedIndex")}];
   [v4 floatValue];
   v6 = v5;
 
@@ -214,11 +214,11 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
 
 - (id)valueText
 {
-  v3 = [objc_opt_class() decimalFormatter];
+  decimalFormatter = [objc_opt_class() decimalFormatter];
   v4 = MEMORY[0x1E696AD98];
   [(CAMExposureSlider *)self exposureValue];
   v5 = [v4 numberWithDouble:?];
-  v6 = [v3 stringFromNumber:v5];
+  v6 = [decimalFormatter stringFromNumber:v5];
 
   return v6;
 }
@@ -238,9 +238,9 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
   }
 }
 
-- (unint64_t)_indexOfClosestValidValueForExposureValue:(double)a3
+- (unint64_t)_indexOfClosestValidValueForExposureValue:(double)value
 {
-  v4 = [objc_opt_class() exposureValues];
+  exposureValues = [objc_opt_class() exposureValues];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -253,10 +253,10 @@ void __37__CAMExposureSlider_decimalFormatter__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __63__CAMExposureSlider__indexOfClosestValidValueForExposureValue___block_invoke;
   v7[3] = &unk_1E76FE038;
-  *&v7[6] = a3;
+  *&v7[6] = value;
   v7[4] = v8;
   v7[5] = &v9;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [exposureValues enumerateObjectsUsingBlock:v7];
   v5 = v10[3];
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(&v9, 8);

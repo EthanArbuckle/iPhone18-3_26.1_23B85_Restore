@@ -1,44 +1,44 @@
 @interface APOdmlExplorer
-- (APOdmlExplorer)initWithRankableObjects:(id)a3 pttrArray:(id)a4 assetManager:(id)a5;
+- (APOdmlExplorer)initWithRankableObjects:(id)objects pttrArray:(id)array assetManager:(id)manager;
 - (id)cumulativeEpsilonGreedyProbabilityDistribution;
 - (id)epsilonGreedyProbabilityDistribution;
 - (id)explore;
 - (id)greedy;
 - (id)randomizedResponse;
 - (id)rankableObjectsFromSortable;
-- (id)sortableArray:(id)a3 pttrArray:(id)a4;
+- (id)sortableArray:(id)array pttrArray:(id)pttrArray;
 @end
 
 @implementation APOdmlExplorer
 
-- (APOdmlExplorer)initWithRankableObjects:(id)a3 pttrArray:(id)a4 assetManager:(id)a5
+- (APOdmlExplorer)initWithRankableObjects:(id)objects pttrArray:(id)array assetManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  arrayCopy = array;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = APOdmlExplorer;
   v11 = [(APOdmlExplorer *)&v30 init];
   v13 = v11;
   if (v11)
   {
-    v14 = objc_msgSend_sortableArray_pttrArray_(v11, v12, v8, v9);
+    v14 = objc_msgSend_sortableArray_pttrArray_(v11, v12, objectsCopy, arrayCopy);
     sortableObjects = v13->_sortableObjects;
     v13->_sortableObjects = v14;
 
-    v17 = objc_msgSend_doubleValueForFactor_(v10, v16, @"EpsilonDP");
+    v17 = objc_msgSend_doubleValueForFactor_(managerCopy, v16, @"EpsilonDP");
     epsilon = v13->_epsilon;
     v13->_epsilon = v17;
 
-    v20 = objc_msgSend_stringValueForFactor_(v10, v19, @"ExploreMode");
+    v20 = objc_msgSend_stringValueForFactor_(managerCopy, v19, @"ExploreMode");
     mode = v13->_mode;
     v13->_mode = v20;
 
-    v23 = objc_msgSend_stringValueForFactor_(v10, v22, @"ExploreNoiseType");
+    v23 = objc_msgSend_stringValueForFactor_(managerCopy, v22, @"ExploreNoiseType");
     noise_type = v13->_noise_type;
     v13->_noise_type = v23;
 
-    v26 = objc_msgSend_doubleValueForFactor_(v10, v25, @"ExploreClippingBound");
+    v26 = objc_msgSend_doubleValueForFactor_(managerCopy, v25, @"ExploreClippingBound");
     clipping_bound = v13->_clipping_bound;
     v13->_clipping_bound = v26;
 
@@ -49,26 +49,26 @@
   return v13;
 }
 
-- (id)sortableArray:(id)a3 pttrArray:(id)a4
+- (id)sortableArray:(id)array pttrArray:(id)pttrArray
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  pttrArrayCopy = pttrArray;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8);
-  if (objc_msgSend_count(v6, v10, v11))
+  if (objc_msgSend_count(pttrArrayCopy, v10, v11))
   {
     v12 = 0;
     do
     {
       v13 = [APOdmlSortableObject alloc];
-      v15 = objc_msgSend_objectAtIndexedSubscript_(v5, v14, v12);
-      v17 = objc_msgSend_objectAtIndexedSubscript_(v6, v16, v12);
+      v15 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v14, v12);
+      v17 = objc_msgSend_objectAtIndexedSubscript_(pttrArrayCopy, v16, v12);
       v19 = objc_msgSend_initWithRankable_andPTTR_(v13, v18, v15, v17);
 
       objc_msgSend_addObject_(v9, v20, v19);
       ++v12;
     }
 
-    while (v12 < objc_msgSend_count(v6, v21, v22));
+    while (v12 < objc_msgSend_count(pttrArrayCopy, v21, v22));
   }
 
   return v9;

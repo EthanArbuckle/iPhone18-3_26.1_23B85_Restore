@@ -1,10 +1,10 @@
 @interface InternalApertureView
-- (_TtC16CommunicationsUI20InternalApertureView)initWithCoder:(id)a3;
+- (_TtC16CommunicationsUI20InternalApertureView)initWithCoder:(id)coder;
 @end
 
 @implementation InternalApertureView
 
-- (_TtC16CommunicationsUI20InternalApertureView)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI20InternalApertureView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16CommunicationsUI20InternalApertureView_systemApertureLayoutGuide;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC20]) init];

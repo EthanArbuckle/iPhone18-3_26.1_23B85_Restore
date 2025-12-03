@@ -1,30 +1,30 @@
 @interface WFFaceTimeContextualAction
-- (WFFaceTimeContextualAction)initWithPerson:(id)a3 type:(unint64_t)a4 callTypeSerializedRepresentation:(id)a5 personSerializedRepresentation:(id)a6 namedQueryInfo:(id)a7;
+- (WFFaceTimeContextualAction)initWithPerson:(id)person type:(unint64_t)type callTypeSerializedRepresentation:(id)representation personSerializedRepresentation:(id)serializedRepresentation namedQueryInfo:(id)info;
 - (id)_staticDisplayStringForDecoding;
 - (id)uniqueIdentifier;
 @end
 
 @implementation WFFaceTimeContextualAction
 
-- (WFFaceTimeContextualAction)initWithPerson:(id)a3 type:(unint64_t)a4 callTypeSerializedRepresentation:(id)a5 personSerializedRepresentation:(id)a6 namedQueryInfo:(id)a7
+- (WFFaceTimeContextualAction)initWithPerson:(id)person type:(unint64_t)type callTypeSerializedRepresentation:(id)representation personSerializedRepresentation:(id)serializedRepresentation namedQueryInfo:(id)info
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v54 = a7;
-  if (v12)
+  personCopy = person;
+  representationCopy = representation;
+  serializedRepresentationCopy = serializedRepresentation;
+  infoCopy = info;
+  if (personCopy)
   {
-    if (v13)
+    if (representationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_28:
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"callTypeSerializedRepresentation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"callTypeSerializedRepresentation"}];
 
-    if (v14)
+    if (serializedRepresentationCopy)
     {
       goto LABEL_4;
     }
@@ -32,83 +32,83 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v47 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v47 handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"person"}];
 
-  if (!v13)
+  if (!representationCopy)
   {
     goto LABEL_28;
   }
 
 LABEL_3:
-  if (v14)
+  if (serializedRepresentationCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_29:
-  v49 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v49 handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"personSerializedRepresentation"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFFaceTimeContextualAction.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"personSerializedRepresentation"}];
 
 LABEL_4:
   v15 = @"Video";
-  v52 = a4;
-  if (a4 == 1)
+  typeCopy = type;
+  if (type == 1)
   {
     v15 = @"Audio";
   }
 
   v16 = v15;
   v17 = WFLocalizedString(v16);
-  v18 = [v12 nameComponents];
-  v19 = [v18 givenName];
-  v20 = v19;
-  if (v19)
+  nameComponents = [personCopy nameComponents];
+  givenName = [nameComponents givenName];
+  v20 = givenName;
+  if (givenName)
   {
-    v21 = v19;
+    displayName = givenName;
   }
 
   else
   {
-    v21 = [v12 displayName];
+    displayName = [personCopy displayName];
   }
 
-  v22 = v21;
+  v22 = displayName;
 
   if (![v22 length])
   {
-    v23 = [v12 displayName];
-    v24 = v23;
-    if (v23)
+    displayName2 = [personCopy displayName];
+    v24 = displayName2;
+    if (displayName2)
     {
-      v25 = v23;
+      value = displayName2;
     }
 
     else
     {
-      [v12 personHandle];
+      [personCopy personHandle];
       v27 = v26 = v17;
-      v25 = [v27 value];
+      value = [v27 value];
 
       v22 = v27;
       v17 = v26;
     }
 
-    v22 = v25;
+    v22 = value;
   }
 
-  v59 = [[WFContextualActionParameter alloc] initWithType:@"WFStringContentItem" displayString:v17 wfParameterKey:@"WFFaceTimeType" wfSerializedRepresentation:v13];
-  v55 = v14;
-  v28 = [[WFContextualActionParameter alloc] initWithType:@"WFContactContentItem" displayString:v22 wfParameterKey:@"WFFaceTimeContact" wfSerializedRepresentation:v14];
-  v29 = [v12 image];
-  v30 = [v29 _imageData];
+  v59 = [[WFContextualActionParameter alloc] initWithType:@"WFStringContentItem" displayString:v17 wfParameterKey:@"WFFaceTimeType" wfSerializedRepresentation:representationCopy];
+  v55 = serializedRepresentationCopy;
+  v28 = [[WFContextualActionParameter alloc] initWithType:@"WFContactContentItem" displayString:v22 wfParameterKey:@"WFFaceTimeContact" wfSerializedRepresentation:serializedRepresentationCopy];
+  image = [personCopy image];
+  _imageData = [image _imageData];
 
-  if (v30)
+  if (_imageData)
   {
     v31 = [WFContextualActionIcon alloc];
-    v32 = [v12 image];
-    v33 = [v32 _imageData];
-    v51 = [(WFContextualActionIcon *)v31 initWithImageData:v33 scale:1 displayStyle:2.0];
+    image2 = [personCopy image];
+    _imageData2 = [image2 _imageData];
+    v51 = [(WFContextualActionIcon *)v31 initWithImageData:_imageData2 scale:1 displayStyle:2.0];
   }
 
   else
@@ -116,13 +116,13 @@ LABEL_4:
     v51 = 0;
   }
 
-  v56 = v13;
-  if (v52 == 1)
+  v56 = representationCopy;
+  if (typeCopy == 1)
   {
     v35 = +[WFDevice currentDevice];
-    v36 = [v35 idiom];
+    idiom = [v35 idiom];
 
-    if (v36 == 1)
+    if (idiom == 1)
     {
       v37 = [WFContextualActionIcon iconWithImageName:@"Phone"];
 LABEL_25:
@@ -136,7 +136,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v52)
+  if (!typeCopy)
   {
     v34 = @"com.apple.facetime";
     goto LABEL_24;
@@ -156,7 +156,7 @@ LABEL_26:
   v44 = WFLocalizedString(@"FaceTime");
   v60.receiver = self;
   v60.super_class = WFFaceTimeContextualAction;
-  v58 = [(WFTopHitItemContextualAction *)&v60 initWithItem:v12 identifier:v39 wfActionIdentifier:@"com.apple.facetime.facetime" associatedAppBundleIdentifier:@"com.apple.facetime" parameters:v40 displayString:v43 title:v44 subtitle:v22 primaryColor:4 icon:v51 accessoryIcon:v38 namedQueryInfo:v54];
+  v58 = [(WFTopHitItemContextualAction *)&v60 initWithItem:personCopy identifier:v39 wfActionIdentifier:@"com.apple.facetime.facetime" associatedAppBundleIdentifier:@"com.apple.facetime" parameters:v40 displayString:v43 title:v44 subtitle:v22 primaryColor:4 icon:v51 accessoryIcon:v38 namedQueryInfo:infoCopy];
 
   v45 = *MEMORY[0x1E69E9840];
   return v58;
@@ -164,21 +164,21 @@ LABEL_26:
 
 - (id)_staticDisplayStringForDecoding
 {
-  v2 = [(WFFaceTimeContextualAction *)self person];
-  v3 = [v2 nameComponents];
-  v4 = [v3 givenName];
-  v5 = v4;
-  if (v4)
+  person = [(WFFaceTimeContextualAction *)self person];
+  nameComponents = [person nameComponents];
+  givenName = [nameComponents givenName];
+  v5 = givenName;
+  if (givenName)
   {
-    v6 = v4;
+    displayName = givenName;
   }
 
   else
   {
-    v6 = [v2 displayName];
+    displayName = [person displayName];
   }
 
-  v7 = v6;
+  v7 = displayName;
 
   if ([v7 length])
   {
@@ -195,23 +195,23 @@ LABEL_6:
 
   else
   {
-    v11 = [v2 displayName];
-    v12 = v11;
-    if (v11)
+    displayName2 = [person displayName];
+    v12 = displayName2;
+    if (displayName2)
     {
-      v13 = v11;
+      value = displayName2;
     }
 
     else
     {
-      v14 = [v2 personHandle];
-      v13 = [v14 value];
+      personHandle = [person personHandle];
+      value = [personHandle value];
 
-      v7 = v14;
+      v7 = personHandle;
     }
 
-    v7 = v13;
-    if (v13)
+    v7 = value;
+    if (value)
     {
       goto LABEL_6;
     }
@@ -225,20 +225,20 @@ LABEL_12:
 
 - (id)uniqueIdentifier
 {
-  v3 = [(WFContextualAction *)self identifier];
-  v4 = [(WFFaceTimeContextualAction *)self person];
-  v5 = [v4 contactIdentifier];
-  v6 = v5;
-  if (v5)
+  identifier = [(WFContextualAction *)self identifier];
+  person = [(WFFaceTimeContextualAction *)self person];
+  contactIdentifier = [person contactIdentifier];
+  v6 = contactIdentifier;
+  if (contactIdentifier)
   {
-    v7 = [v3 stringByAppendingFormat:@":%@", v5];
+    v7 = [identifier stringByAppendingFormat:@":%@", contactIdentifier];
   }
 
   else
   {
-    v8 = [(WFFaceTimeContextualAction *)self person];
-    v9 = [v8 displayName];
-    v7 = [v3 stringByAppendingFormat:@":%@", v9];
+    person2 = [(WFFaceTimeContextualAction *)self person];
+    displayName = [person2 displayName];
+    v7 = [identifier stringByAppendingFormat:@":%@", displayName];
   }
 
   return v7;

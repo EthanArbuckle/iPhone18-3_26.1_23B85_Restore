@@ -1,12 +1,12 @@
 @interface CPTextButton
 - (CPControlDelegate)delegate;
 - (CPTemplate)associatedTemplate;
-- (CPTextButton)initWithCoder:(id)a3;
+- (CPTextButton)initWithCoder:(id)coder;
 - (CPTextButton)initWithTitle:(NSString *)title textStyle:(CPTextButtonStyle)textStyle handler:(void *)handler;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setTitle:(NSString *)title;
 @end
 
@@ -21,9 +21,9 @@
   v10 = [(CPTextButton *)&v18 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = uUID;
 
     v10->_enabled = 1;
     v13 = MEMORY[0x2383C2A40](v9);
@@ -40,38 +40,38 @@
   return v10;
 }
 
-- (CPTextButton)initWithCoder:(id)a3
+- (CPTextButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPTextButton *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPControlIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPControlIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"kCPControlEnabledKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPControlTitleKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"kCPControlEnabledKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPControlTitleKey"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_textStyle = [v4 decodeIntegerForKey:@"kCPTextButtonStyleKey"];
+    v5->_textStyle = [coderCopy decodeIntegerForKey:@"kCPTextButtonStyleKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CPTextButton *)self identifier];
-  [v6 encodeObject:v4 forKey:@"kCPControlIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(CPTextButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPControlIdentifierKey"];
 
-  [v6 encodeBool:-[CPTextButton isEnabled](self forKey:{"isEnabled"), @"kCPControlEnabledKey"}];
-  v5 = [(CPTextButton *)self title];
-  [v6 encodeObject:v5 forKey:@"kCPControlTitleKey"];
+  [coderCopy encodeBool:-[CPTextButton isEnabled](self forKey:{"isEnabled"), @"kCPControlEnabledKey"}];
+  title = [(CPTextButton *)self title];
+  [coderCopy encodeObject:title forKey:@"kCPControlTitleKey"];
 
-  [v6 encodeInteger:-[CPTextButton textStyle](self forKey:{"textStyle"), @"kCPTextButtonStyleKey"}];
+  [coderCopy encodeInteger:-[CPTextButton textStyle](self forKey:{"textStyle"), @"kCPTextButtonStyleKey"}];
 }
 
 - (NSString)description
@@ -80,21 +80,21 @@
   v10.receiver = self;
   v10.super_class = CPTextButton;
   v4 = [(CPTextButton *)&v10 description];
-  v5 = [(CPTextButton *)self identifier];
+  identifier = [(CPTextButton *)self identifier];
   v6 = CPSStringFromBOOL([(CPTextButton *)self isEnabled]);
-  v7 = [(CPTextButton *)self title];
-  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, title: %@}", v4, v5, v6, v7];
+  title = [(CPTextButton *)self title];
+  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, title: %@}", v4, identifier, v6, title];
 
   return v8;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    v5 = [(CPTextButton *)self delegate];
-    [v5 control:self setEnabled:self->_enabled];
+    self->_enabled = enabled;
+    delegate = [(CPTextButton *)self delegate];
+    [delegate control:self setEnabled:self->_enabled];
   }
 }
 
@@ -107,29 +107,29 @@
     v5 = self->_title;
     self->_title = v4;
 
-    v6 = [(CPTextButton *)self associatedTemplate];
-    [v6 setNeedsUpdate];
+    associatedTemplate = [(CPTextButton *)self associatedTemplate];
+    [associatedTemplate setNeedsUpdate];
   }
 }
 
 - (void)handlePrimaryAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CPTextButton *)self handler];
+  handler = [(CPTextButton *)self handler];
 
   v4 = CarPlayFrameworkGeneralLogging();
-  v5 = v4;
-  if (v3)
+  handler2 = v4;
+  if (handler)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = self;
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_236ED4000, handler2, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
     }
 
-    v5 = [(CPTextButton *)self handler];
-    (*(v5 + 16))(v5, self);
+    handler2 = [(CPTextButton *)self handler];
+    (*(handler2 + 16))(handler2, self);
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))

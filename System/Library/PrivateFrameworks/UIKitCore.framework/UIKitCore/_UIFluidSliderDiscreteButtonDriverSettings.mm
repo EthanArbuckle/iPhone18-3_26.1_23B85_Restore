@@ -17,24 +17,24 @@
   [(_UIFluidSliderDiscreteButtonDriverSettings *)self setVerticalVolumeUpScale:1.06];
   [(_UIFluidSliderDiscreteButtonDriverSettings *)self setHorizontalVolumeDownScale:0.96];
   [(_UIFluidSliderDiscreteButtonDriverSettings *)self setHorizontalVolumeUpScale:1.03];
-  v3 = [(_UIFluidSliderDriverSettings *)self update];
-  [v3 setDampingRatio:1.0];
+  update = [(_UIFluidSliderDriverSettings *)self update];
+  [update setDampingRatio:1.0];
 
-  v4 = [(_UIFluidSliderDriverSettings *)self update];
-  [v4 setResponse:0.3];
+  update2 = [(_UIFluidSliderDriverSettings *)self update];
+  [update2 setResponse:0.3];
 
-  v5 = [(_UIFluidSliderDiscreteButtonDriverSettings *)self settle];
-  [v5 setDampingRatio:1.0];
+  settle = [(_UIFluidSliderDiscreteButtonDriverSettings *)self settle];
+  [settle setDampingRatio:1.0];
 
-  v6 = [(_UIFluidSliderDiscreteButtonDriverSettings *)self settle];
-  [v6 setResponse:0.6];
+  settle2 = [(_UIFluidSliderDiscreteButtonDriverSettings *)self settle];
+  [settle2 setResponse:0.6];
 }
 
 + (id)settingsControllerModule
 {
   v45[4] = *MEMORY[0x1E69E9840];
   v30 = MEMORY[0x1E69C6638];
-  v41.receiver = a1;
+  v41.receiver = self;
   v41.super_class = &OBJC_METACLASS____UIFluidSliderDiscreteButtonDriverSettings;
   v40 = objc_msgSendSuper2(&v41, sel_settingsControllerModule);
   v45[0] = v40;
@@ -78,8 +78,8 @@
   v45[2] = v8;
   v9 = MEMORY[0x1E69C6638];
   v10 = MEMORY[0x1E69C65E8];
-  v11 = [MEMORY[0x1E69C6640] action];
-  v12 = [v10 rowWithTitle:@"Restore Defaults" action:v11];
+  action = [MEMORY[0x1E69C6640] action];
+  v12 = [v10 rowWithTitle:@"Restore Defaults" action:action];
   v42 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
   v14 = [v9 sectionWithRows:v13];

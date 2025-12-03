@@ -1,25 +1,25 @@
 @interface CSUCLIPTextEncoderV3
-- (BOOL)loadResources:(id *)a3;
-- (CSUCLIPTextEncoderV3)initWithConfiguration:(id)a3;
+- (BOOL)loadResources:(id *)resources;
+- (CSUCLIPTextEncoderV3)initWithConfiguration:(id)configuration;
 - (id).cxx_construct;
 - (unordered_map<std::string,)_inputTokenTensorsWithText:()std:()std:(std:(ik:(CSUCLIPTextEncoderV3 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>;
 - (unordered_map<std::string,)_inputTokenTensorsWithTextBatch:()std:()std:(std:(ik:(CSUCLIPTextEncoderV3 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(id)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string>;
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4;
-- (void)runOnInputText:(id)a3 completion:(id)a4;
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion;
+- (void)runOnInputText:(id)text completion:(id)completion;
 @end
 
 @implementation CSUCLIPTextEncoderV3
 
-- (CSUCLIPTextEncoderV3)initWithConfiguration:(id)a3
+- (CSUCLIPTextEncoderV3)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CSUCLIPTextEncoderV3;
   v6 = [(CSUCLIPTextEncoderV3 *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 
@@ -54,11 +54,11 @@
   return result;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   if (!self->_textEncoderNet.__ptr_)
   {
-    v5 = objc_msgSend_vocabularyModelPath(self->_configuration, a2, a3, v3, v4);
+    v5 = objc_msgSend_vocabularyModelPath(self->_configuration, a2, resources, v3, v4);
     objc_msgSend_UTF8String(v5, v6, v7, v8, v9);
     sub_1AC0BEE1C();
   }
@@ -66,21 +66,21 @@
   return 1;
 }
 
-- (void)_unsafeRunOnInputText:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInputText:(id)text completion:(id)completion
 {
   v138 = *MEMORY[0x1E69E9840];
-  v100 = a3;
-  v101 = a4;
+  textCopy = text;
+  completionCopy = completion;
   v125 = 0;
-  LOBYTE(a4) = objc_msgSend_loadResources_(self, v6, &v125, v7, v8);
+  LOBYTE(completion) = objc_msgSend_loadResources_(self, v6, &v125, v7, v8);
   v12 = v125;
-  if ((a4 & 1) == 0)
+  if ((completion & 1) == 0)
   {
-    v101[2](v101, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_70;
   }
 
-  objc_msgSend__inputTokenTensorsWithText_(self, v9, v100, v10, v11);
+  objc_msgSend__inputTokenTensorsWithText_(self, v9, textCopy, v10, v11);
   sub_1AC0669EC(self->_tokenEmbeddingNet.__ptr_, v124, v123);
   v17 = objc_msgSend_outputTokenEmbeddingIDTensorName(self->_configuration, v13, v14, v15, v16);
   v18 = v17;
@@ -320,7 +320,7 @@ LABEL_57:
   v94 = sub_1AC0BFC24(v108, v93);
   v96 = objc_msgSend_initWithTokenEmbeddingIDs_tokenEmbeddingMask_clipTextEmbedding_(v76, v95, v82, v88, v94);
 
-  (v101)[2](v101, v96, v12);
+  (completionCopy)[2](completionCopy, v96, v12);
   sub_1AC066D78(v108);
   v109 = &unk_1F20D01C0;
   v97 = v115;
@@ -357,11 +357,11 @@ LABEL_70:
   v99 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runOnInputText:(id)a3 completion:(id)a4
+- (void)runOnInputText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, v6, v7, v9);
+  textCopy = text;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInputText_completion_(self, v8, textCopy, completionCopy, v9);
 }
 
 - (id).cxx_construct

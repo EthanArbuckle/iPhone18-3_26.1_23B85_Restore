@@ -1,46 +1,46 @@
 @interface PXGesturePerformer
 + (BOOL)isAvailable;
-+ (CGRect)_frameInScreenSpaceForRect:(CGRect)a3 inView:(id)a4;
-+ (CGRect)_rectInWindowCoordinateSpaceFromRect:(CGRect)a3 inView:(id)a4;
-+ (CGRect)_viewFrameInScreenSpace:(id)a3;
-+ (double)_amplitudeFactorBySpeed:(unint64_t)a3;
-+ (id)_rptPlatformScrollViewFromPXScrollView:(id)a3;
-+ (id)_rptPlatformViewFromPXView:(id)a3;
-+ (id)_swipeParametersForScrollView:(id)a3 rect:(CGRect)a4 count:(int64_t)a5 speed:(unint64_t)a6 direction:(int64_t)a7;
-+ (id)swipeSpeedFactor:(unint64_t)a3;
-+ (int64_t)_UIAccessibilityDirection:(int64_t)a3;
-+ (int64_t)_oppositeDirection:(int64_t)a3;
-+ (int64_t)_rptDirection:(int64_t)a3;
-+ (void)_handleResult:(id)a3 success:(BOOL)a4 error:(id)a5;
-+ (void)performOscillatingInScrollView:(id)a3 rect:(CGRect)a4 speed:(unint64_t)a5 direction:(int64_t)a6 completionHandler:(id)a7;
-+ (void)performSwipingInScrollView:(id)a3 rect:(CGRect)a4 count:(int64_t)a5 speed:(unint64_t)a6 direction:(int64_t)a7 roundTrip:(BOOL)a8 completionHandler:(id)a9;
++ (CGRect)_frameInScreenSpaceForRect:(CGRect)rect inView:(id)view;
++ (CGRect)_rectInWindowCoordinateSpaceFromRect:(CGRect)rect inView:(id)view;
++ (CGRect)_viewFrameInScreenSpace:(id)space;
++ (double)_amplitudeFactorBySpeed:(unint64_t)speed;
++ (id)_rptPlatformScrollViewFromPXScrollView:(id)view;
++ (id)_rptPlatformViewFromPXView:(id)view;
++ (id)_swipeParametersForScrollView:(id)view rect:(CGRect)rect count:(int64_t)count speed:(unint64_t)speed direction:(int64_t)direction;
++ (id)swipeSpeedFactor:(unint64_t)factor;
++ (int64_t)_UIAccessibilityDirection:(int64_t)direction;
++ (int64_t)_oppositeDirection:(int64_t)direction;
++ (int64_t)_rptDirection:(int64_t)direction;
++ (void)_handleResult:(id)result success:(BOOL)success error:(id)error;
++ (void)performOscillatingInScrollView:(id)view rect:(CGRect)rect speed:(unint64_t)speed direction:(int64_t)direction completionHandler:(id)handler;
++ (void)performSwipingInScrollView:(id)view rect:(CGRect)rect count:(int64_t)count speed:(unint64_t)speed direction:(int64_t)direction roundTrip:(BOOL)trip completionHandler:(id)handler;
 @end
 
 @implementation PXGesturePerformer
 
-+ (id)_swipeParametersForScrollView:(id)a3 rect:(CGRect)a4 count:(int64_t)a5 speed:(unint64_t)a6 direction:(int64_t)a7
++ (id)_swipeParametersForScrollView:(id)view rect:(CGRect)rect count:(int64_t)count speed:(unint64_t)speed direction:(int64_t)direction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = [a1 _rptPlatformScrollViewFromPXScrollView:a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = [self _rptPlatformScrollViewFromPXScrollView:view];
   v16 = objc_alloc(MEMORY[0x1E69C6C20]);
   if (v15)
   {
     v17 = [v16 initWithTestName:@"swipe" scrollView:v15 completionHandler:0];
-    [v17 setSwipeCount:a5];
-    [v17 setDirection:{objc_msgSend(a1, "_UIAccessibilityDirection:", a7)}];
-    [a1 _rectInWindowCoordinateSpaceFromRect:v15 inView:{x, y, width, height}];
+    [v17 setSwipeCount:count];
+    [v17 setDirection:{objc_msgSend(self, "_UIAccessibilityDirection:", direction)}];
+    [self _rectInWindowCoordinateSpaceFromRect:v15 inView:{x, y, width, height}];
     [v17 setScrollingBounds:?];
   }
 
   else
   {
-    v17 = [v16 initWithTestName:@"swipe" scrollingBounds:a5 swipeCount:objc_msgSend(a1 direction:"_UIAccessibilityDirection:" completionHandler:{a7), 0, x, y, width, height}];
+    v17 = [v16 initWithTestName:@"swipe" scrollingBounds:count swipeCount:objc_msgSend(self direction:"_UIAccessibilityDirection:" completionHandler:{direction), 0, x, y, width, height}];
   }
 
-  v18 = [a1 swipeSpeedFactor:a6];
+  v18 = [self swipeSpeedFactor:speed];
   [v17 setSwipeSpeedFactor:v18];
 
   [v17 setShouldFlick:1];
@@ -48,15 +48,15 @@
   return v17;
 }
 
-+ (CGRect)_rectInWindowCoordinateSpaceFromRect:(CGRect)a3 inView:(id)a4
++ (CGRect)_rectInWindowCoordinateSpaceFromRect:(CGRect)rect inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [v8 superview];
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  superview = [viewCopy superview];
+  if (superview)
   {
     v18.origin.x = x;
     v18.origin.y = y;
@@ -64,12 +64,12 @@
     v18.size.height = height;
     if (CGRectIsNull(v18))
     {
-      [v8 frame];
+      [viewCopy frame];
       PXEdgeInsetsMake();
     }
 
-    [v8 convertRect:v9 toView:{x, y, width, height}];
-    [v9 convertRect:0 toView:?];
+    [viewCopy convertRect:superview toView:{x, y, width, height}];
+    [superview convertRect:0 toView:?];
     x = v10;
     y = v11;
     width = v12;
@@ -87,13 +87,13 @@
   return result;
 }
 
-+ (id)_rptPlatformViewFromPXView:(id)a3
++ (id)_rptPlatformViewFromPXView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewCopy;
   }
 
   else
@@ -104,13 +104,13 @@
   return v4;
 }
 
-+ (id)_rptPlatformScrollViewFromPXScrollView:(id)a3
++ (id)_rptPlatformScrollViewFromPXScrollView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewCopy;
   }
 
   else
@@ -121,9 +121,9 @@
   return v4;
 }
 
-+ (CGRect)_viewFrameInScreenSpace:(id)a3
++ (CGRect)_viewFrameInScreenSpace:(id)space
 {
-  v3 = [a1 _rptPlatformViewFromPXView:a3];
+  v3 = [self _rptPlatformViewFromPXView:space];
   RPTViewFrameInScreenSpace();
   v5 = v4;
   v7 = v6;
@@ -141,18 +141,18 @@
   return result;
 }
 
-+ (CGRect)_frameInScreenSpaceForRect:(CGRect)a3 inView:(id)a4
++ (CGRect)_frameInScreenSpaceForRect:(CGRect)rect inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [a1 _rptPlatformViewFromPXView:a4];
-  v9 = [v8 window];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [self _rptPlatformViewFromPXView:view];
+  window = [v8 window];
 
   v10 = MEMORY[0x1E69C6C18];
-  v11 = [v9 screen];
-  v12 = [v10 converterFromWindow:v9 toScreen:v11];
+  screen = [window screen];
+  v12 = [v10 converterFromWindow:window toScreen:screen];
 
   [v12 convertRect:{x, y, width, height}];
   v14 = v13;
@@ -171,15 +171,15 @@
   return result;
 }
 
-+ (double)_amplitudeFactorBySpeed:(unint64_t)a3
++ (double)_amplitudeFactorBySpeed:(unint64_t)speed
 {
   result = 1.0;
-  if (a3 == 1)
+  if (speed == 1)
   {
     result = 3.0;
   }
 
-  if (a3 == 2)
+  if (speed == 2)
   {
     return 5.0;
   }
@@ -187,15 +187,15 @@
   return result;
 }
 
-+ (id)swipeSpeedFactor:(unint64_t)a3
++ (id)swipeSpeedFactor:(unint64_t)factor
 {
   v3 = &unk_1F190E638;
-  if (a3 == 1)
+  if (factor == 1)
   {
     v3 = &unk_1F190E648;
   }
 
-  if (a3 == 2)
+  if (factor == 2)
   {
     return &unk_1F190E658;
   }
@@ -206,70 +206,70 @@
   }
 }
 
-+ (int64_t)_oppositeDirection:(int64_t)a3
++ (int64_t)_oppositeDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 2)
+  if ((direction - 1) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_1A53833A8[a3 - 1];
+    return qword_1A53833A8[direction - 1];
   }
 }
 
-+ (int64_t)_rptDirection:(int64_t)a3
++ (int64_t)_rptDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 2)
+  if ((direction - 1) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_1A53833A8[a3 - 1];
+    return qword_1A53833A8[direction - 1];
   }
 }
 
-+ (int64_t)_UIAccessibilityDirection:(int64_t)a3
++ (int64_t)_UIAccessibilityDirection:(int64_t)direction
 {
-  if ((a3 - 1) >= 3)
+  if ((direction - 1) >= 3)
   {
     return 4;
   }
 
   else
   {
-    return 4 - a3;
+    return 4 - direction;
   }
 }
 
-+ (void)_handleResult:(id)a3 success:(BOOL)a4 error:(id)a5
++ (void)_handleResult:(id)result success:(BOOL)success error:(id)error
 {
-  if (a3)
+  if (result)
   {
-    (*(a3 + 2))(a3, a4, a5);
+    (*(result + 2))(result, success, error);
   }
 }
 
-+ (void)performSwipingInScrollView:(id)a3 rect:(CGRect)a4 count:(int64_t)a5 speed:(unint64_t)a6 direction:(int64_t)a7 roundTrip:(BOOL)a8 completionHandler:(id)a9
++ (void)performSwipingInScrollView:(id)view rect:(CGRect)rect count:(int64_t)count speed:(unint64_t)speed direction:(int64_t)direction roundTrip:(BOOL)trip completionHandler:(id)handler
 {
-  v10 = a8;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
-  v20 = a9;
-  v21 = [MEMORY[0x1E695DF70] array];
-  v22 = [a1 _swipeParametersForScrollView:v19 rect:a5 count:a6 speed:a7 direction:{x, y, width, height}];
-  [v21 addObject:v22];
-  if (v10)
+  tripCopy = trip;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
+  v22 = [self _swipeParametersForScrollView:viewCopy rect:count count:speed speed:direction direction:{x, y, width, height}];
+  [array addObject:v22];
+  if (tripCopy)
   {
-    v23 = [a1 _swipeParametersForScrollView:v19 rect:a5 count:a6 speed:objc_msgSend(a1 direction:{"_oppositeDirection:", a7), x, y, width, height}];
+    v23 = [self _swipeParametersForScrollView:viewCopy rect:count count:speed speed:objc_msgSend(self direction:{"_oppositeDirection:", direction), x, y, width, height}];
 
-    [v21 addObject:v23];
+    [array addObject:v23];
     v22 = v23;
   }
 
@@ -278,23 +278,23 @@
   v28 = 3221225472;
   v29 = __104__PXGesturePerformer_performSwipingInScrollView_rect_count_speed_direction_roundTrip_completionHandler___block_invoke;
   v30 = &unk_1E7747E18;
-  v31 = v20;
-  v32 = a1;
-  v25 = v20;
-  v26 = [v24 newWithTestName:@"swipe" parameters:v21 completionHandler:&v27];
+  v31 = handlerCopy;
+  selfCopy = self;
+  v25 = handlerCopy;
+  v26 = [v24 newWithTestName:@"swipe" parameters:array completionHandler:&v27];
   [MEMORY[0x1E69C6C50] runTestWithParameters:{v26, v27, v28, v29, v30}];
 }
 
-+ (void)performOscillatingInScrollView:(id)a3 rect:(CGRect)a4 speed:(unint64_t)a5 direction:(int64_t)a6 completionHandler:(id)a7
++ (void)performOscillatingInScrollView:(id)view rect:(CGRect)rect speed:(unint64_t)speed direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = [a1 _rptPlatformScrollViewFromPXScrollView:a3];
-  v17 = [a1 _rptDirection:a6];
-  [a1 _rectInWindowCoordinateSpaceFromRect:v16 inView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  handlerCopy = handler;
+  v16 = [self _rptPlatformScrollViewFromPXScrollView:view];
+  v17 = [self _rptDirection:direction];
+  [self _rectInWindowCoordinateSpaceFromRect:v16 inView:{x, y, width, height}];
   if (v17 > 1)
   {
     v22 = CGRectGetWidth(*&v18);
@@ -310,7 +310,7 @@
   if (v16)
   {
     v25 = [v24 initWithTestName:@"oscillating" scrollView:v16 completionHandler:0];
-    [v25 setDirection:{objc_msgSend(a1, "_UIAccessibilityDirection:", a6)}];
+    [v25 setDirection:{objc_msgSend(self, "_UIAccessibilityDirection:", direction)}];
     [v25 setShouldFlick:1];
     [v25 setScrollingContentLength:v23];
   }
@@ -324,11 +324,11 @@
   v28 = 3221225472;
   v29 = __92__PXGesturePerformer_performOscillatingInScrollView_rect_speed_direction_completionHandler___block_invoke;
   v30 = &unk_1E7747E18;
-  v31 = v15;
-  v32 = a1;
-  v26 = v15;
+  v31 = handlerCopy;
+  selfCopy = self;
+  v26 = handlerCopy;
   [v25 setCompletionHandler:&v27];
-  [a1 _amplitudeFactorBySpeed:{a5, v27, v28, v29, v30}];
+  [self _amplitudeFactorBySpeed:{speed, v27, v28, v29, v30}];
   [v25 setAmplitudeFactor:?];
   [MEMORY[0x1E69C6C50] runTestWithParameters:v25];
 }

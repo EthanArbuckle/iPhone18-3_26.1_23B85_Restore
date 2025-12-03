@@ -6,8 +6,8 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKAkitaFace *)self _faceDescriptionKey];
-  v3 = [NTKAkitaFaceBundle localizedStringForKey:v2 comment:@"FACE_STYLE_AKITA_DESCRIPTION"];
+  _faceDescriptionKey = [(NTKAkitaFace *)self _faceDescriptionKey];
+  v3 = [NTKAkitaFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"FACE_STYLE_AKITA_DESCRIPTION"];
 
   return v3;
 }

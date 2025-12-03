@@ -1,6 +1,6 @@
 @interface PIVideoStabilizeRenderJob
 - ($721907E0E1CDE8B6CD3FA271A8B25860)stabCropRect;
-- (BOOL)prepare:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
 - (id)result;
 @end
 
@@ -17,19 +17,19 @@
 - (id)result
 {
   v3 = [_PIVideoStabilizeResult alloc];
-  v4 = [(PIVideoStabilizeRenderJob *)self keyframes];
+  keyframes = [(PIVideoStabilizeRenderJob *)self keyframes];
   [(PIVideoStabilizeRenderJob *)self stabCropRect];
-  v5 = [(PIVideoStabilizeRenderJob *)self analysisType];
-  v6 = [(PIVideoStabilizeRenderJob *)self rawHomographies];
-  v7 = [(_PIVideoStabilizeResult *)v3 initWithKeyframes:v4 stabCropRect:&v9 analysisType:v5 rawHomographies:v6];
+  analysisType = [(PIVideoStabilizeRenderJob *)self analysisType];
+  rawHomographies = [(PIVideoStabilizeRenderJob *)self rawHomographies];
+  v7 = [(_PIVideoStabilizeResult *)v3 initWithKeyframes:keyframes stabCropRect:&v9 analysisType:analysisType rawHomographies:rawHomographies];
 
   return v7;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v114 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v58 = NUAssertLogger_7300();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
@@ -51,8 +51,8 @@
         v66 = dispatch_get_specific(*v60);
         v67 = MEMORY[0x1E696AF00];
         v68 = v66;
-        v69 = [v67 callStackSymbols];
-        v70 = [v69 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v67 callStackSymbols];
+        v70 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v66;
         *&buf[12] = 2114;
@@ -63,8 +63,8 @@
 
     else if (v63)
     {
-      v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v65 = [v64 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v65 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v65;
       _os_log_error_impl(&dword_1C7694000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -78,8 +78,8 @@
   v92.super_class = PIVideoStabilizeRenderJob;
   if ([(NURenderJob *)&v92 prepare:?])
   {
-    v78 = [(NURenderJob *)self outputVideo];
-    v76 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v78 error:a3];
+    outputVideo = [(NURenderJob *)self outputVideo];
+    v76 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:outputVideo error:prepare];
     if (!v76)
     {
       v33 = 0;
@@ -102,25 +102,25 @@ LABEL_34:
     [(_PIVideoStabilizeFlowControl *)v3 setShouldCancelHandler:v89];
     [(_PIVideoStabilizeFlowControl *)v3 setRangeMin:0.0];
     [(_PIVideoStabilizeFlowControl *)v3 setRangeMax:0.75];
-    v4 = [(PIVideoStabilizeRenderJob *)self allowedAnalysisTypes];
-    v74 = v78;
+    allowedAnalysisTypes = [(PIVideoStabilizeRenderJob *)self allowedAnalysisTypes];
+    v74 = outputVideo;
     v75 = v3;
     v98 = 0;
-    if ((v4 & 2) != 0)
+    if ((allowedAnalysisTypes & 2) != 0)
     {
       v5 = [objc_alloc(MEMORY[0x1E69B3D18]) initWithAVAsset:v74];
-      v6 = [v5 timedMetadataArray];
+      timedMetadataArray = [v5 timedMetadataArray];
 
-      if (v6)
+      if (timedMetadataArray)
       {
         NUPixelSizeToCGSize();
         DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v115);
-        v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+        v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(timedMetadataArray, "count")}];
         v96 = 0u;
         v97 = 0u;
         v95 = 0u;
         v94 = 0u;
-        obj = v6;
+        obj = timedMetadataArray;
         v83 = [obj countByEnumeratingWithState:&v94 objects:buf count:16];
         if (v83)
         {
@@ -208,7 +208,7 @@ LABEL_34:
         {
           v30 = MEMORY[0x1E69B3A48];
           v31 = [MEMORY[0x1E696AD98] numberWithInt:v98];
-          *a3 = [v30 failureError:@"Failure in ICSynthesizeAnalysis" object:v31];
+          *prepare = [v30 failureError:@"Failure in ICSynthesizeAnalysis" object:v31];
         }
 
         if (!v29)
@@ -221,7 +221,7 @@ LABEL_34:
       }
     }
 
-    if (v4)
+    if (allowedAnalysisTypes)
     {
       if (ICAnalyzeInputMotion())
       {
@@ -232,7 +232,7 @@ LABEL_26:
         {
           v34 = MEMORY[0x1E69B3A48];
           v35 = [(PIVideoStabilizeRenderJob *)self copy];
-          *a3 = [v34 canceledError:@"Stabilize request was cancelled" object:v35];
+          *prepare = [v34 canceledError:@"Stabilize request was cancelled" object:v35];
 
           ICDestroyResult();
         }
@@ -267,10 +267,10 @@ LABEL_26:
           if (v48)
           {
 
-            v49 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v50 = ICGetResultHomographies();
-            CreateKeyframesFromHomographyDictionary(v50, v73, v72, v49, &self->_stabCropRect.origin.x);
-            v51 = [v49 copy];
+            CreateKeyframesFromHomographyDictionary(v50, v73, v72, array, &self->_stabCropRect.origin.x);
+            v51 = [array copy];
             keyframes = self->_keyframes;
             self->_keyframes = v51;
 
@@ -289,7 +289,7 @@ LABEL_33:
 
           v56 = MEMORY[0x1E69B3A48];
           v57 = [MEMORY[0x1E696AD98] numberWithInt:v94];
-          *a3 = [v56 failureError:@"Failure in ICCalcCinematicL1Corrections" object:v57];
+          *prepare = [v56 failureError:@"Failure in ICCalcCinematicL1Corrections" object:v57];
 
           ICDestroyResult();
         }
@@ -301,12 +301,12 @@ LABEL_32:
 
       v53 = MEMORY[0x1E69B3A48];
       v54 = [MEMORY[0x1E696AD98] numberWithInt:v98];
-      *a3 = [v53 failureError:@"Failure in ICAnalyzeInputMotion" object:v54];
+      *prepare = [v53 failureError:@"Failure in ICAnalyzeInputMotion" object:v54];
     }
 
     else
     {
-      *a3 = [MEMORY[0x1E69B3A48] failureError:@"No available analysis types were allowed" object:0];
+      *prepare = [MEMORY[0x1E69B3A48] failureError:@"No available analysis types were allowed" object:0];
     }
 
     goto LABEL_32;

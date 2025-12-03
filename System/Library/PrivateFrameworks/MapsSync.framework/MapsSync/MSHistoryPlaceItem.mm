@@ -1,27 +1,27 @@
 @interface MSHistoryPlaceItem
 + (Class)managedClass;
-+ (id)strippedMapItemWith:(id)a3;
++ (id)strippedMapItemWith:(id)with;
 - (GEOMapItemStorage)mapItemStorage;
-- (MSHistoryPlaceItem)initWithLatitude:(id)a3 longitude:(id)a4 mapItemLastRefreshed:(id)a5 muid:(id)a6 supersededSearchId:(id)a7;
-- (MSHistoryPlaceItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryPlaceItem)initWithStore:(id)a3 latitude:(id)a4 longitude:(id)a5 mapItemLastRefreshed:(id)a6 muid:(id)a7 supersededSearchId:(id)a8;
+- (MSHistoryPlaceItem)initWithLatitude:(id)latitude longitude:(id)longitude mapItemLastRefreshed:(id)refreshed muid:(id)muid supersededSearchId:(id)id;
+- (MSHistoryPlaceItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryPlaceItem)initWithStore:(id)store latitude:(id)latitude longitude:(id)longitude mapItemLastRefreshed:(id)refreshed muid:(id)muid supersededSearchId:(id)id;
 - (NSDate)mapItemLastRefreshed;
 - (NSNumber)latitude;
 - (NSNumber)longitude;
 - (NSNumber)muid;
 - (NSUUID)supersededSearchId;
-- (void)setLatitude:(id)a3;
-- (void)setLongitude:(id)a3;
-- (void)setMapItemLastRefreshed:(id)a3;
-- (void)setMapItemStorage:(id)a3;
-- (void)setMuid:(id)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setSupersededSearchId:(id)a3;
+- (void)setLatitude:(id)latitude;
+- (void)setLongitude:(id)longitude;
+- (void)setMapItemLastRefreshed:(id)refreshed;
+- (void)setMapItemStorage:(id)storage;
+- (void)setMuid:(id)muid;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setSupersededSearchId:(id)id;
 @end
 
 @implementation MSHistoryPlaceItem
 
-- (MSHistoryPlaceItem)initWithLatitude:(id)a3 longitude:(id)a4 mapItemLastRefreshed:(id)a5 muid:(id)a6 supersededSearchId:(id)a7
+- (MSHistoryPlaceItem)initWithLatitude:(id)latitude longitude:(id)longitude mapItemLastRefreshed:(id)refreshed muid:(id)muid supersededSearchId:(id)id
 {
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943680, qword_1B63C4070);
   v13 = *(*(v12 - 8) + 64);
@@ -31,7 +31,7 @@
   v17 = *(*(v16 - 8) + 64);
   MEMORY[0x1EEE9AC00](v16 - 8);
   v19 = &v29 - v18;
-  if (a5)
+  if (refreshed)
   {
     sub_1B63BE974();
     v20 = sub_1B63BE994();
@@ -44,7 +44,7 @@
     (*(*(v21 - 8) + 56))(v19, 1, 1, v21);
   }
 
-  if (a7)
+  if (id)
   {
     sub_1B63BE9E4();
     v22 = 0;
@@ -57,15 +57,15 @@
 
   v23 = sub_1B63BEA04();
   (*(*(v23 - 8) + 56))(v15, v22, 1, v23);
-  v24 = a3;
-  v25 = a4;
-  v26 = a6;
-  v27 = sub_1B62FFC80(a3, a4, v19, a6, v15);
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  muidCopy = muid;
+  v27 = sub_1B62FFC80(latitude, longitude, v19, muid, v15);
 
   return v27;
 }
 
-- (MSHistoryPlaceItem)initWithStore:(id)a3 latitude:(id)a4 longitude:(id)a5 mapItemLastRefreshed:(id)a6 muid:(id)a7 supersededSearchId:(id)a8
+- (MSHistoryPlaceItem)initWithStore:(id)store latitude:(id)latitude longitude:(id)longitude mapItemLastRefreshed:(id)refreshed muid:(id)muid supersededSearchId:(id)id
 {
   v14 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943680, qword_1B63C4070);
   v15 = *(*(v14 - 8) + 64);
@@ -75,7 +75,7 @@
   v19 = *(*(v18 - 8) + 64);
   MEMORY[0x1EEE9AC00](v18 - 8);
   v21 = &v31 - v20;
-  if (a6)
+  if (refreshed)
   {
     sub_1B63BE974();
     v22 = sub_1B63BE994();
@@ -88,7 +88,7 @@
     (*(*(v23 - 8) + 56))(v21, 1, 1, v23);
   }
 
-  if (a8)
+  if (id)
   {
     sub_1B63BE9E4();
     v24 = 0;
@@ -101,11 +101,11 @@
 
   v25 = sub_1B63BEA04();
   (*(*(v25 - 8) + 56))(v17, v24, 1, v25);
-  v26 = a3;
-  v27 = a4;
-  v28 = a5;
-  v29 = a7;
-  return HistoryPlaceItem.init(store:latitude:longitude:mapItemLastRefreshed:muid:supersededSearchId:)(v26, a4, a5, v21, a7, v17);
+  storeCopy = store;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  muidCopy = muid;
+  return HistoryPlaceItem.init(store:latitude:longitude:mapItemLastRefreshed:muid:supersededSearchId:)(storeCopy, latitude, longitude, v21, muid, v17);
 }
 
 + (Class)managedClass
@@ -115,41 +115,41 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62FF724(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62FF724(objectCopy, load);
 }
 
 - (NSNumber)latitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62FB2CC();
 
   return v3;
 }
 
-- (void)setLatitude:(id)a3
+- (void)setLatitude:(id)latitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B6300084(a3);
+  latitudeCopy = latitude;
+  selfCopy = self;
+  sub_1B6300084(latitude);
 }
 
 - (NSNumber)longitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62FB768();
 
   return v3;
 }
 
-- (void)setLongitude:(id)a3
+- (void)setLongitude:(id)longitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B630025C(a3);
+  longitudeCopy = longitude;
+  selfCopy = self;
+  sub_1B630025C(longitude);
 }
 
 - (NSDate)mapItemLastRefreshed
@@ -158,7 +158,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B62FBD68(v6);
 
   v8 = sub_1B63BE994();
@@ -175,13 +175,13 @@
   return v11;
 }
 
-- (void)setMapItemLastRefreshed:(id)a3
+- (void)setMapItemLastRefreshed:(id)refreshed
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943210, &unk_1B63C3F50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (refreshed)
   {
     sub_1B63BE974();
     v9 = sub_1B63BE994();
@@ -194,23 +194,23 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_1B62FC368(v8);
 }
 
 - (NSNumber)muid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62FCAFC();
 
   return v3;
 }
 
-- (void)setMuid:(id)a3
+- (void)setMuid:(id)muid
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B6300468(a3);
+  muidCopy = muid;
+  selfCopy = self;
+  sub_1B6300468(muid);
 }
 
 - (NSUUID)supersededSearchId
@@ -219,7 +219,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B62FD200(v6);
 
   v8 = sub_1B63BEA04();
@@ -236,13 +236,13 @@
   return v11;
 }
 
-- (void)setSupersededSearchId:(id)a3
+- (void)setSupersededSearchId:(id)id
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943680, qword_1B63C4070);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (id)
   {
     sub_1B63BE9E4();
     v9 = sub_1B63BEA04();
@@ -255,33 +255,33 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_1B62FD800(v8);
 }
 
 - (GEOMapItemStorage)mapItemStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62FE0DC();
 
   return v3;
 }
 
-- (void)setMapItemStorage:(id)a3
+- (void)setMapItemStorage:(id)storage
 {
   v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v7 = a3;
-  v8 = self;
+  storageCopy = storage;
+  selfCopy = self;
   [v6 lock];
-  sub_1B62FE808(*(&self->super.super.super.isa + v5), a3, v8);
+  sub_1B62FE808(*(&self->super.super.super.isa + v5), storage, selfCopy);
   [*(&self->super.super.super.isa + v5) unlock];
 }
 
-- (MSHistoryPlaceItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryPlaceItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryPlaceItem__latitude) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryPlaceItem__longitude) = 0;
   v11 = OBJC_IVAR___MSHistoryPlaceItem__mapItemLastRefreshed;
@@ -292,15 +292,15 @@
   v14 = sub_1B63BEA04();
   (*(*(v14 - 8) + 56))(self + v13, 1, 1, v14);
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryPlaceItem__mapItemStorage) = xmmword_1B63C3E40;
-  v15 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
-+ (id)strippedMapItemWith:(id)a3
++ (id)strippedMapItemWith:(id)with
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  result = [v4 mapItemStorageForGEOMapItem:v5 forUseType:4];
+  withCopy = with;
+  result = [v4 mapItemStorageForGEOMapItem:withCopy forUseType:4];
   if (result)
   {
     v7 = result;

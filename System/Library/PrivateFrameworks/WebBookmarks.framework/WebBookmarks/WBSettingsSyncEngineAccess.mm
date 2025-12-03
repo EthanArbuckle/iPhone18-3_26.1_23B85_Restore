@@ -1,5 +1,5 @@
 @interface WBSettingsSyncEngineAccess
-- (BOOL)_isKnownPerSiteSetting:(id)a3;
+- (BOOL)_isKnownPerSiteSetting:(id)setting;
 - (BOOL)_isShowBackgroundImageEnabled;
 - (BOOL)backgroundImageAppearanceIsLight;
 - (BOOL)backgroundImageExists;
@@ -8,93 +8,93 @@
 - (id)_perSitePreferencesStore;
 - (id)_startPageSectionOrder;
 - (id)startPageSectionsManager;
-- (int64_t)_settingForValue:(id)a3;
-- (void)_attemptUpdatingSavingPerSiteSettingsWithRecord:(id)a3;
-- (void)_didUpdateIOSDefaultBrowserWithRecord:(id)a3;
-- (void)_didUpdateStartPageBackgroundImageVisibilityWithRecord:(id)a3;
-- (void)_installMobileAssetIfApplicableWithURL:(id)a3;
-- (void)_updatePerSiteSettingsWithRecord:(id)a3;
-- (void)_updatePerSiteSettingsWithRecord:(id)a3 completionHandler:(id)a4;
-- (void)_updateStartPageBackgroundImageWithRecord:(id)a3;
-- (void)_updateStartPageCloudTabsConsent:(id)a3;
-- (void)_updateStartPageSectionOrder:(id)a3;
-- (void)_updateStartPageSectionVisibilityWithIdentifier:(id)a3 record:(id)a4;
+- (int64_t)_settingForValue:(id)value;
+- (void)_attemptUpdatingSavingPerSiteSettingsWithRecord:(id)record;
+- (void)_didUpdateIOSDefaultBrowserWithRecord:(id)record;
+- (void)_didUpdateStartPageBackgroundImageVisibilityWithRecord:(id)record;
+- (void)_installMobileAssetIfApplicableWithURL:(id)l;
+- (void)_updatePerSiteSettingsWithRecord:(id)record;
+- (void)_updatePerSiteSettingsWithRecord:(id)record completionHandler:(id)handler;
+- (void)_updateStartPageBackgroundImageWithRecord:(id)record;
+- (void)_updateStartPageCloudTabsConsent:(id)consent;
+- (void)_updateStartPageSectionOrder:(id)order;
+- (void)_updateStartPageSectionVisibilityWithIdentifier:(id)identifier record:(id)record;
 - (void)deleteBackgroundImageDirectory;
-- (void)didDeleteRemoteRecordWithID:(id)a3;
-- (void)didReceiveRemoteCloudSettingsUpdateWithRecord:(id)a3;
+- (void)didDeleteRemoteRecordWithID:(id)d;
+- (void)didReceiveRemoteCloudSettingsUpdateWithRecord:(id)record;
 @end
 
 @implementation WBSettingsSyncEngineAccess
 
-- (int64_t)_settingForValue:(id)a3
+- (int64_t)_settingForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D4A400]])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:*MEMORY[0x277D4A400]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3D0]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3D0]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3D8]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3D8]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3E8]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3E8]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A408]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A408]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3C8]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3C8]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3F0]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3F0]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3C0]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3C0]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3E0]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3E0]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3F8]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3F8]])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A418]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A418]])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A250]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D4A258]))
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A250]] & 1) != 0 || (objc_msgSend(valueCopy, "isEqualToString:", *MEMORY[0x277D4A258]))
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A410]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A410]])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D4A3A8]])
+  else if ([valueCopy isEqualToString:*MEMORY[0x277D4A3A8]])
   {
     v4 = 14;
   }
@@ -107,32 +107,32 @@
   return v4;
 }
 
-- (void)didReceiveRemoteCloudSettingsUpdateWithRecord:(id)a3
+- (void)didReceiveRemoteCloudSettingsUpdateWithRecord:(id)record
 {
-  v8 = a3;
+  recordCopy = record;
   if ([(WBSettingsSyncEngineAccess *)self syncEnabled])
   {
-    if ([v8 safari_isCloudBackgroundImageRecord] && objc_msgSend(MEMORY[0x277D49A08], "isStartPageSettingSyncEnabled"))
+    if ([recordCopy safari_isCloudBackgroundImageRecord] && objc_msgSend(MEMORY[0x277D49A08], "isStartPageSettingSyncEnabled"))
     {
-      [(WBSettingsSyncEngineAccess *)self _updateStartPageBackgroundImageWithRecord:v8];
+      [(WBSettingsSyncEngineAccess *)self _updateStartPageBackgroundImageWithRecord:recordCopy];
     }
 
-    else if ([v8 safari_isCloudPerSiteSettingRecord] && objc_msgSend(MEMORY[0x277D49A08], "isPerSiteSettingSyncEnabled"))
+    else if ([recordCopy safari_isCloudPerSiteSettingRecord] && objc_msgSend(MEMORY[0x277D49A08], "isPerSiteSettingSyncEnabled"))
     {
-      [(WBSettingsSyncEngineAccess *)self _updatePerSiteSettingsWithRecord:v8];
+      [(WBSettingsSyncEngineAccess *)self _updatePerSiteSettingsWithRecord:recordCopy];
     }
 
-    else if ([v8 safari_isCloudSettingRecord] && objc_msgSend(MEMORY[0x277D49A08], "isStartPageSettingSyncEnabled"))
+    else if ([recordCopy safari_isCloudSettingRecord] && objc_msgSend(MEMORY[0x277D49A08], "isStartPageSettingSyncEnabled"))
     {
-      v4 = [v8 recordID];
-      v5 = [v4 recordName];
-      v6 = [(WBSettingsSyncEngineAccess *)self _settingForValue:v5];
+      recordID = [recordCopy recordID];
+      recordName = [recordID recordName];
+      v6 = [(WBSettingsSyncEngineAccess *)self _settingForValue:recordName];
 
       v7 = MEMORY[0x277D4A4B0];
       switch(v6)
       {
         case 1:
-          [(WBSettingsSyncEngineAccess *)self _updateStartPageSectionOrder:v8];
+          [(WBSettingsSyncEngineAccess *)self _updateStartPageSectionOrder:recordCopy];
           break;
         case 2:
           goto LABEL_24;
@@ -152,7 +152,7 @@
           v7 = MEMORY[0x277D4A500];
           goto LABEL_24;
         case 8:
-          [(WBSettingsSyncEngineAccess *)self _didUpdateStartPageBackgroundImageVisibilityWithRecord:v8];
+          [(WBSettingsSyncEngineAccess *)self _didUpdateStartPageBackgroundImageVisibilityWithRecord:recordCopy];
           break;
         case 9:
           v7 = MEMORY[0x277D4A4C0];
@@ -164,15 +164,15 @@
           v7 = MEMORY[0x277D4A520];
           goto LABEL_24;
         case 12:
-          [(WBSettingsSyncEngineAccess *)self _didUpdateIOSDefaultBrowserWithRecord:v8];
+          [(WBSettingsSyncEngineAccess *)self _didUpdateIOSDefaultBrowserWithRecord:recordCopy];
           break;
         case 13:
           v7 = MEMORY[0x277D4A518];
 LABEL_24:
-          [(WBSettingsSyncEngineAccess *)self _updateStartPageSectionVisibilityWithIdentifier:*v7 record:v8];
+          [(WBSettingsSyncEngineAccess *)self _updateStartPageSectionVisibilityWithIdentifier:*v7 record:recordCopy];
           break;
         case 14:
-          [(WBSettingsSyncEngineAccess *)self _updateStartPageCloudTabsConsent:v8];
+          [(WBSettingsSyncEngineAccess *)self _updateStartPageCloudTabsConsent:recordCopy];
           break;
         default:
           break;
@@ -181,13 +181,13 @@ LABEL_24:
   }
 }
 
-- (void)didDeleteRemoteRecordWithID:(id)a3
+- (void)didDeleteRemoteRecordWithID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if ([MEMORY[0x277D49A08] isStartPageSettingSyncEnabled])
   {
-    v3 = [v6 recordName];
-    v4 = [v3 isEqualToString:*MEMORY[0x277D4A360]];
+    recordName = [dCopy recordName];
+    v4 = [recordName isEqualToString:*MEMORY[0x277D4A360]];
 
     if (v4)
     {
@@ -242,19 +242,19 @@ void __58__WBSettingsSyncEngineAccess_didDeleteRemoteRecordWithID___block_invoke
   [v0 postNotificationName:*MEMORY[0x277D4A368] object:0 userInfo:0 deliverImmediately:1];
 }
 
-- (void)_updateStartPageBackgroundImageWithRecord:(id)a3
+- (void)_updateStartPageBackgroundImageWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"data"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"data"];
   v6 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__WBSettingsSyncEngineAccess__updateStartPageBackgroundImageWithRecord___block_invoke;
   block[3] = &unk_279E752A8;
   v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = recordCopy;
+  selfCopy = self;
+  v7 = recordCopy;
   v8 = v5;
   dispatch_async(v6, block);
 }
@@ -331,34 +331,34 @@ void __72__WBSettingsSyncEngineAccess__updateStartPageBackgroundImageWithRecord_
   return lazyStartPageSectionsManager;
 }
 
-- (void)_updateStartPageSectionVisibilityWithIdentifier:(id)a3 record:(id)a4
+- (void)_updateStartPageSectionVisibilityWithIdentifier:(id)identifier record:(id)record
 {
-  v10 = a3;
-  v6 = [a4 safari_encryptedValues];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D4A158]];
+  identifierCopy = identifier;
+  safari_encryptedValues = [record safari_encryptedValues];
+  v7 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A158]];
 
   if (v7)
   {
-    if ([v10 isEqualToString:*MEMORY[0x277D4A520]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A520]])
     {
-      v8 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      v9 = [v7 BOOLValue];
-      [v8 setBool:v9 forKey:*MEMORY[0x277D4A490]];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      bOOLValue = [v7 BOOLValue];
+      [safari_browserDefaults setBool:bOOLValue forKey:*MEMORY[0x277D4A490]];
     }
 
     else
     {
-      v8 = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
-      [v8 setSectionIdentifier:v10 enabled:{objc_msgSend(v7, "BOOLValue")}];
+      safari_browserDefaults = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
+      [safari_browserDefaults setSectionIdentifier:identifierCopy enabled:{objc_msgSend(v7, "BOOLValue")}];
     }
   }
 }
 
-- (void)_installMobileAssetIfApplicableWithURL:(id)a3
+- (void)_installMobileAssetIfApplicableWithURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = CGImageSourceCreateWithURL(v4, 0);
+  lCopy = l;
+  v5 = CGImageSourceCreateWithURL(lCopy, 0);
   v6 = v5;
   if (v5)
   {
@@ -390,68 +390,68 @@ void __72__WBSettingsSyncEngineAccess__updateStartPageBackgroundImageWithRecord_
     CFRelease(v6);
     if (v11)
     {
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
-      v13 = [v12 safari_startPageBackgroundImageMobileAssetFolderURL];
-      v14 = [v13 URLByAppendingPathComponent:v11];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      safari_startPageBackgroundImageMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageMobileAssetFolderURL];
+      v14 = [safari_startPageBackgroundImageMobileAssetFolderURL URLByAppendingPathComponent:v11];
 
       v22 = 0;
-      v15 = [v12 safari_replaceItemAtURL:v14 withItemFromURL:v4 error:&v22];
+      v15 = [defaultManager safari_replaceItemAtURL:v14 withItemFromURL:lCopy error:&v22];
       v16 = v22;
       if ((v15 & 1) == 0)
       {
         v17 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v16 safari_privacyPreservingDescription];
-          [(WBSettingsSyncEngineAccess *)v18 _installMobileAssetIfApplicableWithURL:buf, v17];
+          safari_privacyPreservingDescription = [v16 safari_privacyPreservingDescription];
+          [(WBSettingsSyncEngineAccess *)safari_privacyPreservingDescription _installMobileAssetIfApplicableWithURL:buf, v17];
         }
       }
 
-      v19 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v23 = @"FileName";
       v24 = v11;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-      [v19 postNotificationName:@"WBSBackgroundImageMobileAssetDidInstallBackgroundImage" object:self userInfo:v20];
+      [defaultCenter postNotificationName:@"WBSBackgroundImageMobileAssetDidInstallBackgroundImage" object:self userInfo:v20];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didUpdateStartPageBackgroundImageVisibilityWithRecord:(id)a3
+- (void)_didUpdateStartPageBackgroundImageVisibilityWithRecord:(id)record
 {
-  v8 = a3;
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v4 = [v8 safari_encryptedValues];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D4A158]];
+  recordCopy = record;
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_encryptedValues = [recordCopy safari_encryptedValues];
+  v5 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A158]];
 
   v6 = *MEMORY[0x277D4A478];
-  v7 = [v3 safari_BOOLForKey:*MEMORY[0x277D4A478] defaultValue:1];
+  v7 = [safari_browserDefaults safari_BOOLForKey:*MEMORY[0x277D4A478] defaultValue:1];
   if (v7 != [v5 BOOLValue])
   {
-    [v3 setBool:objc_msgSend(v5 forKey:{"BOOLValue"), v6}];
+    [safari_browserDefaults setBool:objc_msgSend(v5 forKey:{"BOOLValue"), v6}];
   }
 }
 
-- (void)_didUpdateIOSDefaultBrowserWithRecord:(id)a3
+- (void)_didUpdateIOSDefaultBrowserWithRecord:(id)record
 {
-  v11 = a3;
-  v3 = [v11 safari_encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D4A158]];
+  recordCopy = record;
+  safari_encryptedValues = [recordCopy safari_encryptedValues];
+  v4 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A158]];
 
   if ([v4 intValue])
   {
-    v5 = [v11 recordID];
-    v6 = [v5 recordName];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
 
-    v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v8 = [v7 safari_numberForKey:v6];
-    v9 = [v8 intValue];
-    v10 = [v4 intValue];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v8 = [safari_browserDefaults safari_numberForKey:recordName];
+    intValue = [v8 intValue];
+    intValue2 = [v4 intValue];
 
-    if (v9 != v10)
+    if (intValue != intValue2)
     {
-      [v7 setInteger:objc_msgSend(v4 forKey:{"intValue"), v6}];
+      [safari_browserDefaults setInteger:objc_msgSend(v4 forKey:{"intValue"), recordName}];
     }
   }
 }
@@ -477,15 +477,15 @@ void __54__WBSettingsSyncEngineAccess__perSitePreferencesStore__block_invoke()
   [WBSettingsSyncEngineAccess _perSitePreferencesStore]::perSitePreferencesStore = v1;
 }
 
-- (BOOL)_isKnownPerSiteSetting:(id)a3
+- (BOOL)_isKnownPerSiteSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   if ([WBSettingsSyncEngineAccess _isKnownPerSiteSetting:]::once != -1)
   {
     [WBSettingsSyncEngineAccess _isKnownPerSiteSetting:];
   }
 
-  v4 = [-[WBSettingsSyncEngineAccess _isKnownPerSiteSetting:]::knownPerSiteSettings containsObject:v3];
+  v4 = [-[WBSettingsSyncEngineAccess _isKnownPerSiteSetting:]::knownPerSiteSettings containsObject:settingCopy];
 
   return v4;
 }
@@ -509,18 +509,18 @@ void __53__WBSettingsSyncEngineAccess__isKnownPerSiteSetting___block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePerSiteSettingsWithRecord:(id)a3
+- (void)_updatePerSiteSettingsWithRecord:(id)record
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [WBSettingsSyncEngineAccess _updatePerSiteSettingsWithRecord:];
   }
 
-  v6 = [v4 safari_encryptedValues];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D4A138]];
+  safari_encryptedValues = [recordCopy safari_encryptedValues];
+  v7 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A138]];
 
   if (v7 && ![(WBSettingsSyncEngineAccess *)self _isKnownPerSiteSetting:v7])
   {
@@ -540,17 +540,17 @@ void __53__WBSettingsSyncEngineAccess__isKnownPerSiteSetting___block_invoke()
       goto LABEL_9;
     }
 
-    v8 = [v4 safari_encryptedValues];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D4A128]];
+    safari_encryptedValues2 = [recordCopy safari_encryptedValues];
+    v9 = [safari_encryptedValues2 objectForKeyedSubscript:*MEMORY[0x277D4A128]];
 
-    v10 = [(WBSettingsSyncEngineAccess *)self _deviceClass];
-    v11 = [v10 isEqualToString:v9];
+    _deviceClass = [(WBSettingsSyncEngineAccess *)self _deviceClass];
+    v11 = [_deviceClass isEqualToString:v9];
 
     if (v11)
     {
 
 LABEL_9:
-      [(WBSettingsSyncEngineAccess *)self _attemptUpdatingSavingPerSiteSettingsWithRecord:v4];
+      [(WBSettingsSyncEngineAccess *)self _attemptUpdatingSavingPerSiteSettingsWithRecord:recordCopy];
       goto LABEL_15;
     }
 
@@ -568,16 +568,16 @@ LABEL_15:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_attemptUpdatingSavingPerSiteSettingsWithRecord:(id)a3
+- (void)_attemptUpdatingSavingPerSiteSettingsWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__WBSettingsSyncEngineAccess__attemptUpdatingSavingPerSiteSettingsWithRecord___block_invoke;
   v6[3] = &unk_279E75320;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = recordCopy;
+  v5 = recordCopy;
   [(WBSettingsSyncEngineAccess *)self _updatePerSiteSettingsWithRecord:v5 completionHandler:v6];
 }
 
@@ -660,16 +660,16 @@ void __78__WBSettingsSyncEngineAccess__attemptUpdatingSavingPerSiteSettingsWithR
 
 - (id)_deviceClass
 {
-  v2 = [MEMORY[0x277D499F0] currentDevice];
-  v3 = [v2 deviceClass];
+  currentDevice = [MEMORY[0x277D499F0] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
   v4 = @"UndefinedDeviceClass";
-  if (v3 == 3)
+  if (deviceClass == 3)
   {
     v4 = @"iPad";
   }
 
-  if (v3 == 1)
+  if (deviceClass == 1)
   {
     return @"iPhone";
   }
@@ -680,76 +680,76 @@ void __78__WBSettingsSyncEngineAccess__attemptUpdatingSavingPerSiteSettingsWithR
   }
 }
 
-- (void)_updatePerSiteSettingsWithRecord:(id)a3 completionHandler:(id)a4
+- (void)_updatePerSiteSettingsWithRecord:(id)record completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 safari_encryptedValues];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D4A148]];
+  recordCopy = record;
+  handlerCopy = handler;
+  safari_encryptedValues = [recordCopy safari_encryptedValues];
+  v9 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A148]];
 
-  v10 = [v6 safari_encryptedValues];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D4A138]];
+  safari_encryptedValues2 = [recordCopy safari_encryptedValues];
+  v11 = [safari_encryptedValues2 objectForKeyedSubscript:*MEMORY[0x277D4A138]];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__WBSettingsSyncEngineAccess__updatePerSiteSettingsWithRecord_completionHandler___block_invoke;
   v21[3] = &unk_279E75348;
-  v12 = v7;
+  v12 = handlerCopy;
   v22 = v12;
   v13 = MEMORY[0x2743D6830](v21);
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277D4A140]];
+  v14 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277D4A140]];
 
   if (v14)
   {
-    v15 = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
-    v16 = [v6 recordID];
-    v17 = [v16 recordName];
-    [v15 removePreferenceValueWithRecordName:v17 completionHandler:v13];
+    _perSitePreferencesStore = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    [_perSitePreferencesStore removePreferenceValueWithRecordName:recordName completionHandler:v13];
   }
 
   else
   {
-    v18 = [v6 safari_encryptedValues];
+    safari_encryptedValues3 = [recordCopy safari_encryptedValues];
     v19 = *MEMORY[0x277D4A130];
-    v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277D4A130]];
+    v20 = [safari_encryptedValues3 objectForKeyedSubscript:*MEMORY[0x277D4A130]];
 
     if (!v20)
     {
-      v15 = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
-      [v15 setDefaultValue:v9 forPreference:v11 completionHandler:v13];
+      _perSitePreferencesStore = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
+      [_perSitePreferencesStore setDefaultValue:v9 forPreference:v11 completionHandler:v13];
       goto LABEL_6;
     }
 
-    v15 = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
-    v16 = [v6 safari_encryptedValues];
-    v17 = [v16 objectForKeyedSubscript:v19];
-    [v15 setValue:v9 ofPreference:v11 forDomain:v17 withTimestamp:0 completionHandler:v13];
+    _perSitePreferencesStore = [(WBSettingsSyncEngineAccess *)self _perSitePreferencesStore];
+    recordID = [recordCopy safari_encryptedValues];
+    recordName = [recordID objectForKeyedSubscript:v19];
+    [_perSitePreferencesStore setValue:v9 ofPreference:v11 forDomain:recordName withTimestamp:0 completionHandler:v13];
   }
 
 LABEL_6:
 }
 
-- (void)_updateStartPageSectionOrder:(id)a3
+- (void)_updateStartPageSectionOrder:(id)order
 {
-  v20 = a3;
-  v3 = [v20 safari_encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D4A158]];
+  orderCopy = order;
+  safari_encryptedValues = [orderCopy safari_encryptedValues];
+  v4 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A158]];
   v5 = [v4 mutableCopy];
 
-  v19 = [MEMORY[0x277D4A080] allSections];
-  v6 = [MEMORY[0x277CBEB18] array];
+  allSections = [MEMORY[0x277D4A080] allSections];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [MEMORY[0x277D4A080] defaultManager];
-  v9 = [v8 enabledSectionIdentifiers];
-  v10 = [v7 setWithArray:v9];
+  defaultManager = [MEMORY[0x277D4A080] defaultManager];
+  enabledSectionIdentifiers = [defaultManager enabledSectionIdentifiers];
+  v10 = [v7 setWithArray:enabledSectionIdentifiers];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __59__WBSettingsSyncEngineAccess__updateStartPageSectionOrder___block_invoke;
   v25[3] = &unk_279E75370;
-  v11 = v19;
+  v11 = allSections;
   v26 = v11;
-  v12 = v6;
+  v12 = array;
   v27 = v12;
   [v5 enumerateObjectsUsingBlock:v25];
   v21[0] = MEMORY[0x277D85DD0];
@@ -763,14 +763,14 @@ LABEL_6:
   v15 = v10;
   v24 = v15;
   [v11 enumerateObjectsUsingBlock:v21];
-  v16 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
   v17 = [v14 copy];
-  [v16 setObject:v17 forKey:*MEMORY[0x277D49BD0]];
+  [safari_browserDefaults setObject:v17 forKey:*MEMORY[0x277D49BD0]];
 
   if (v13)
   {
-    v18 = [MEMORY[0x277D4A080] defaultManager];
-    [v18 reorderSectionsToMatchOrderedIdentifiers:v13];
+    defaultManager2 = [MEMORY[0x277D4A080] defaultManager];
+    [defaultManager2 reorderSectionsToMatchOrderedIdentifiers:v13];
   }
 }
 
@@ -843,64 +843,64 @@ BOOL __59__WBSettingsSyncEngineAccess__updateStartPageSectionOrder___block_invok
 
 - (id)_startPageSectionOrder
 {
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
   v4 = *MEMORY[0x277D49BD0];
-  v5 = [v3 arrayForKey:*MEMORY[0x277D49BD0]];
+  v5 = [safari_browserDefaults arrayForKey:*MEMORY[0x277D49BD0]];
 
   if (v5)
   {
-    v6 = [v3 arrayForKey:v4];
+    sectionIdentifiers = [safari_browserDefaults arrayForKey:v4];
   }
 
   else
   {
-    v7 = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
-    v6 = [v7 sectionIdentifiers];
+    startPageSectionsManager = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
+    sectionIdentifiers = [startPageSectionsManager sectionIdentifiers];
   }
 
-  return v6;
+  return sectionIdentifiers;
 }
 
-- (void)_updateStartPageCloudTabsConsent:(id)a3
+- (void)_updateStartPageCloudTabsConsent:(id)consent
 {
-  v3 = a3;
+  consentCopy = consent;
   v4 = WBS_LOG_CHANNEL_PREFIXCloudSettings();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [WBSettingsSyncEngineAccess _updateStartPageCloudTabsConsent:];
   }
 
-  v5 = [v3 safari_encryptedValues];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D4A158]];
+  safari_encryptedValues = [consentCopy safari_encryptedValues];
+  v6 = [safari_encryptedValues objectForKeyedSubscript:*MEMORY[0x277D4A158]];
 
-  v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v8 = [v6 BOOLValue];
-  [v7 setBool:v8 forKey:*MEMORY[0x277D4A160]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  bOOLValue = [v6 BOOLValue];
+  [safari_browserDefaults setBool:bOOLValue forKey:*MEMORY[0x277D4A160]];
 
-  v9 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v9 postNotificationName:*MEMORY[0x277D4A388] object:0 userInfo:0 deliverImmediately:1];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D4A388] object:0 userInfo:0 deliverImmediately:1];
 }
 
 - (NSArray)syncSettingsUpDictionary
 {
   v54[15] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
-  v5 = [v4 enabledSectionIdentifiers];
-  v53 = [v3 setWithArray:v5];
+  startPageSectionsManager = [(WBSettingsSyncEngineAccess *)self startPageSectionsManager];
+  enabledSectionIdentifiers = [startPageSectionsManager enabledSectionIdentifiers];
+  v53 = [v3 setWithArray:enabledSectionIdentifiers];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
   v8 = *MEMORY[0x277D4A250];
-  v52 = v7;
-  v49 = [v6 numberWithInteger:{objc_msgSend(v7, "integerForKey:", *MEMORY[0x277D4A250])}];
+  v52 = safari_browserDefaults;
+  v49 = [v6 numberWithInteger:{objc_msgSend(safari_browserDefaults, "integerForKey:", *MEMORY[0x277D4A250])}];
   v50 = makeSettingDictionary(v8, v49);
   v54[0] = v50;
   v9 = MEMORY[0x277CCABB0];
-  v10 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  safari_browserDefaults2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
   v11 = *MEMORY[0x277D4A258];
-  v51 = v10;
-  v47 = [v9 numberWithInteger:{objc_msgSend(v10, "integerForKey:", *MEMORY[0x277D4A258])}];
+  v51 = safari_browserDefaults2;
+  v47 = [v9 numberWithInteger:{objc_msgSend(safari_browserDefaults2, "integerForKey:", *MEMORY[0x277D4A258])}];
   v48 = makeSettingDictionary(v11, v47);
   v54[1] = v48;
   v45 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v53, "containsObject:", *MEMORY[0x277D4A4B0])}];
@@ -931,21 +931,21 @@ BOOL __59__WBSettingsSyncEngineAccess__updateStartPageSectionOrder___block_invok
   v29 = makeSettingDictionary(*MEMORY[0x277D4A410], v28);
   v54[10] = v29;
   v12 = MEMORY[0x277CCABB0];
-  v30 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v13 = [v12 numberWithBool:{objc_msgSend(v30, "BOOLForKey:", *MEMORY[0x277D4A160])}];
+  safari_browserDefaults3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v13 = [v12 numberWithBool:{objc_msgSend(safari_browserDefaults3, "BOOLForKey:", *MEMORY[0x277D4A160])}];
   v14 = makeSettingDictionary(*MEMORY[0x277D4A3A8], v13);
   v54[11] = v14;
-  v15 = [(WBSettingsSyncEngineAccess *)self _startPageSectionOrder];
-  v16 = makeSettingDictionary(*MEMORY[0x277D4A400], v15);
+  _startPageSectionOrder = [(WBSettingsSyncEngineAccess *)self _startPageSectionOrder];
+  v16 = makeSettingDictionary(*MEMORY[0x277D4A400], _startPageSectionOrder);
   v54[12] = v16;
   v17 = MEMORY[0x277CCABB0];
-  v18 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v19 = [v17 numberWithBool:{objc_msgSend(v18, "BOOLForKey:", *MEMORY[0x277D4A490])}];
+  safari_browserDefaults4 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v19 = [v17 numberWithBool:{objc_msgSend(safari_browserDefaults4, "BOOLForKey:", *MEMORY[0x277D4A490])}];
   v20 = makeSettingDictionary(*MEMORY[0x277D4A418], v19);
   v54[13] = v20;
   v21 = MEMORY[0x277CCABB0];
-  v22 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v23 = [v21 numberWithBool:{objc_msgSend(v22, "BOOLForKey:", *MEMORY[0x277D4A488])}];
+  safari_browserDefaults5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v23 = [v21 numberWithBool:{objc_msgSend(safari_browserDefaults5, "BOOLForKey:", *MEMORY[0x277D4A488])}];
   v24 = makeSettingDictionary(*MEMORY[0x277D4A3F8], v23);
   v54[14] = v24;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:15];
@@ -957,36 +957,36 @@ BOOL __59__WBSettingsSyncEngineAccess__updateStartPageSectionOrder___block_invok
 
 - (BOOL)backgroundImageExists
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 integerForKey:*MEMORY[0x277D4A268]] != 0;
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults integerForKey:*MEMORY[0x277D4A268]] != 0;
 
   return v3;
 }
 
 - (BOOL)backgroundImageAppearanceIsLight
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 integerForKey:*MEMORY[0x277D4A268]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults integerForKey:*MEMORY[0x277D4A268]];
 
   return v3 == 1;
 }
 
 - (BOOL)_isShowBackgroundImageEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 objectForKey:*MEMORY[0x277D4A478]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults objectForKey:*MEMORY[0x277D4A478]];
 
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)deleteBackgroundImageDirectory

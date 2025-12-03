@@ -1,15 +1,15 @@
 @interface PXStoryDummyDailyChapterCollectionProducer
-- (PXStoryDummyDailyChapterCollectionProducer)initWithDayInterval:(int64_t)a3 storyQueue:(id)a4;
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4;
+- (PXStoryDummyDailyChapterCollectionProducer)initWithDayInterval:(int64_t)interval storyQueue:(id)queue;
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset;
 @end
 
 @implementation PXStoryDummyDailyChapterCollectionProducer
 
-- (id)workQueue_uneditedChapterCollectionWithAssets:(id)a3 keyAsset:(id)a4
+- (id)workQueue_uneditedChapterCollectionWithAssets:(id)assets keyAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  assetsCopy = assets;
+  assetCopy = asset;
+  v8 = [assetsCopy count];
   if (v8 < 1)
   {
     v11 = 0;
@@ -23,21 +23,21 @@
     v11 = 0;
     for (i = 0; i != v9; ++i)
     {
-      v13 = [v6 objectAtIndexedSubscript:i];
-      v14 = [v13 localCreationDate];
+      v13 = [assetsCopy objectAtIndexedSubscript:i];
+      localCreationDate = [v13 localCreationDate];
 
-      if (v14)
+      if (localCreationDate)
       {
-        if (!v10 || [v10 compare:v14] == 1)
+        if (!v10 || [v10 compare:localCreationDate] == 1)
         {
-          v15 = v14;
+          v15 = localCreationDate;
 
           v10 = v15;
         }
 
-        if (!v11 || [v11 compare:v14] == -1)
+        if (!v11 || [v11 compare:localCreationDate] == -1)
         {
-          v16 = v14;
+          v16 = localCreationDate;
 
           v11 = v16;
         }
@@ -56,7 +56,7 @@
   v26 = v17;
   v19 = v11;
   v20 = v10;
-  v21 = [(PXStoryTimeBasedChapterCollection *)v18 initWithAssets:v6 keyAsset:v7 configuration:v23];
+  v21 = [(PXStoryTimeBasedChapterCollection *)v18 initWithAssets:assetsCopy keyAsset:assetCopy configuration:v23];
 
   return v21;
 }
@@ -128,14 +128,14 @@ void __101__PXStoryDummyDailyChapterCollectionProducer_workQueue_uneditedChapter
   }
 }
 
-- (PXStoryDummyDailyChapterCollectionProducer)initWithDayInterval:(int64_t)a3 storyQueue:(id)a4
+- (PXStoryDummyDailyChapterCollectionProducer)initWithDayInterval:(int64_t)interval storyQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = PXStoryDummyDailyChapterCollectionProducer;
-  result = [(PXStoryTransientChapterCollectionProducer *)&v6 initWithStoryQueue:a4];
+  result = [(PXStoryTransientChapterCollectionProducer *)&v6 initWithStoryQueue:queue];
   if (result)
   {
-    result->_dayInterval = a3;
+    result->_dayInterval = interval;
   }
 
   return result;

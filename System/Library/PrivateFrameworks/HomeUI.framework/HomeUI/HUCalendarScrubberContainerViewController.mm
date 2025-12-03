@@ -1,23 +1,23 @@
 @interface HUCalendarScrubberContainerViewController
 - (HFCameraPlaybackEngine)playbackEngine;
-- (HUCalendarScrubberContainerViewController)initWithPlaybackEngine:(id)a3 calendarScrubberDataSource:(id)a4;
-- (void)_jumpToDate:(id)a3 animated:(BOOL)a4;
+- (HUCalendarScrubberContainerViewController)initWithPlaybackEngine:(id)engine calendarScrubberDataSource:(id)source;
+- (void)_jumpToDate:(id)date animated:(BOOL)animated;
 - (void)_updateNextPreviousButtonState;
-- (void)handleNextButton:(id)a3;
-- (void)handlePreviousButton:(id)a3;
-- (void)playbackEngine:(id)a3 didUpdateEventCache:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdatePlaybackPosition:(id)a4;
-- (void)scrubberViewController:(id)a3 didSelectItemAtIndex:(id)a4;
+- (void)handleNextButton:(id)button;
+- (void)handlePreviousButton:(id)button;
+- (void)playbackEngine:(id)engine didUpdateEventCache:(id)cache;
+- (void)playbackEngine:(id)engine didUpdatePlaybackPosition:(id)position;
+- (void)scrubberViewController:(id)controller didSelectItemAtIndex:(id)index;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCalendarScrubberContainerViewController
 
-- (HUCalendarScrubberContainerViewController)initWithPlaybackEngine:(id)a3 calendarScrubberDataSource:(id)a4
+- (HUCalendarScrubberContainerViewController)initWithPlaybackEngine:(id)engine calendarScrubberDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  sourceCopy = source;
   v33.receiver = self;
   v33.super_class = HUCalendarScrubberContainerViewController;
   v8 = [(HUCalendarScrubberContainerViewController *)&v33 initWithNibName:0 bundle:0];
@@ -25,13 +25,13 @@
   if (v8)
   {
     v8->_isEditing = 0;
-    objc_storeWeak(&v8->_playbackEngine, v6);
+    objc_storeWeak(&v8->_playbackEngine, engineCopy);
     v10 = objc_alloc_init(MEMORY[0x277D144C8]);
     [v10 setPeriodicTimeUpdateInterval:&unk_2824933C0];
     WeakRetained = objc_loadWeakRetained(&v9->_playbackEngine);
     [WeakRetained addObserver:v9 withOptions:v10];
 
-    v12 = [[HUCalendarScrubberViewController alloc] initWithDataSource:v7];
+    v12 = [[HUCalendarScrubberViewController alloc] initWithDataSource:sourceCopy];
     calendarScrubber = v9->_calendarScrubber;
     v9->_calendarScrubber = v12;
 
@@ -81,29 +81,29 @@
   v29.receiver = self;
   v29.super_class = HUCalendarScrubberContainerViewController;
   [(HUCalendarScrubberContainerViewController *)&v29 viewDidLoad];
-  v24 = [(HUCalendarScrubberContainerViewController *)self view];
-  v3 = [(HUCalendarScrubberContainerViewController *)self backgroundView];
-  v4 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v23 = [v4 view];
+  view = [(HUCalendarScrubberContainerViewController *)self view];
+  backgroundView = [(HUCalendarScrubberContainerViewController *)self backgroundView];
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  view2 = [calendarScrubber view];
 
-  v5 = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
-  v6 = [(HUCalendarScrubberContainerViewController *)self nextWeekButton];
-  v7 = [(HUCalendarScrubberContainerViewController *)self hairlineViewLeft];
-  v8 = [(HUCalendarScrubberContainerViewController *)self hairlineViewRight];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = v7;
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  prevWeekButton = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
+  nextWeekButton = [(HUCalendarScrubberContainerViewController *)self nextWeekButton];
+  hairlineViewLeft = [(HUCalendarScrubberContainerViewController *)self hairlineViewLeft];
+  hairlineViewRight = [(HUCalendarScrubberContainerViewController *)self hairlineViewRight];
+  [prevWeekButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  [nextWeekButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  [hairlineViewRight setTranslatesAutoresizingMaskIntoConstraints:0];
+  v22 = hairlineViewLeft;
+  [hairlineViewLeft setTranslatesAutoresizingMaskIntoConstraints:0];
   v9 = [MEMORY[0x277D755B8] kitImageNamed:@"UINavigationBarBackIndicatorDefault"];
   v10 = [v9 imageWithRenderingMode:2];
 
-  [v5 setImage:v10 forState:0];
+  [prevWeekButton setImage:v10 forState:0];
   v21 = v10;
-  [v6 setImage:v10 forState:0];
-  if (v6)
+  [nextWeekButton setImage:v10 forState:0];
+  if (nextWeekButton)
   {
-    [v6 transform];
+    [nextWeekButton transform];
   }
 
   else
@@ -113,15 +113,15 @@
 
   CGAffineTransformRotate(&v28, &v27, 3.14159265);
   v27 = v28;
-  [v6 setTransform:&v27];
-  v11 = [(HUCalendarScrubberContainerViewController *)self traitCollection];
-  v12 = [v11 layoutDirection];
+  [nextWeekButton setTransform:&v27];
+  traitCollection = [(HUCalendarScrubberContainerViewController *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v12)
+  if (layoutDirection)
   {
-    if (v5)
+    if (prevWeekButton)
     {
-      [v5 transform];
+      [prevWeekButton transform];
     }
 
     else
@@ -131,10 +131,10 @@
 
     CGAffineTransformRotate(&v26, &v27, 3.14159265);
     v27 = v26;
-    [v5 setTransform:&v27];
-    if (v6)
+    [prevWeekButton setTransform:&v27];
+    if (nextWeekButton)
     {
-      [v6 transform];
+      [nextWeekButton transform];
     }
 
     else
@@ -144,7 +144,7 @@
 
     CGAffineTransformRotate(&v25, &v27, 3.14159265);
     v27 = v25;
-    [v6 setTransform:&v27];
+    [nextWeekButton setTransform:&v27];
     v13 = &selRef_handlePreviousButton_;
     v14 = &selRef_handleNextButton_;
   }
@@ -155,223 +155,223 @@
     v14 = &selRef_handlePreviousButton_;
   }
 
-  [v5 addTarget:self action:*v14 forControlEvents:64];
-  [v6 addTarget:self action:*v13 forControlEvents:64];
-  [v24 naui_addAutoLayoutSubview:v3];
-  [v3 addSubview:v5 applyingMaterialStyle:0 tintEffectStyle:0];
-  [v3 addSubview:v6 applyingMaterialStyle:0 tintEffectStyle:0];
-  v15 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  [(HUCalendarScrubberContainerViewController *)self addChildViewController:v15];
+  [prevWeekButton addTarget:self action:*v14 forControlEvents:64];
+  [nextWeekButton addTarget:self action:*v13 forControlEvents:64];
+  [view naui_addAutoLayoutSubview:backgroundView];
+  [backgroundView addSubview:prevWeekButton applyingMaterialStyle:0 tintEffectStyle:0];
+  [backgroundView addSubview:nextWeekButton applyingMaterialStyle:0 tintEffectStyle:0];
+  calendarScrubber2 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  [(HUCalendarScrubberContainerViewController *)self addChildViewController:calendarScrubber2];
 
-  [v3 naui_addAutoLayoutSubview:v23];
-  v16 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  [v16 didMoveToParentViewController:self];
+  [backgroundView naui_addAutoLayoutSubview:view2];
+  calendarScrubber3 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  [calendarScrubber3 didMoveToParentViewController:self];
 
-  [v3 addSubview:v8 applyingMaterialStyle:1 tintEffectStyle:1];
-  [v3 addSubview:v22 applyingMaterialStyle:1 tintEffectStyle:1];
-  [v24 setNeedsUpdateConstraints];
+  [backgroundView addSubview:hairlineViewRight applyingMaterialStyle:1 tintEffectStyle:1];
+  [backgroundView addSubview:v22 applyingMaterialStyle:1 tintEffectStyle:1];
+  [view setNeedsUpdateConstraints];
   [(HUCalendarScrubberContainerViewController *)self _updateNextPreviousButtonState];
-  v17 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
-  v18 = [v17 playbackPosition];
-  v19 = [v18 contentType] == 0;
-  v20 = [(HUCalendarScrubberContainerViewController *)self view];
-  [v20 setHidden:v19];
+  playbackEngine = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  v19 = [playbackPosition contentType] == 0;
+  view3 = [(HUCalendarScrubberContainerViewController *)self view];
+  [view3 setHidden:v19];
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v110[30] = *MEMORY[0x277D85DE8];
-  v3 = [(HUCalendarScrubberContainerViewController *)self constraints];
+  constraints = [(HUCalendarScrubberContainerViewController *)self constraints];
 
-  if (!v3)
+  if (!constraints)
   {
-    v4 = [(HUCalendarScrubberContainerViewController *)v2 backgroundView];
-    [(HUCalendarScrubberContainerViewController *)v2 calendarScrubber];
-    v5 = v108 = v2;
-    v6 = [v5 view];
+    backgroundView = [(HUCalendarScrubberContainerViewController *)selfCopy backgroundView];
+    [(HUCalendarScrubberContainerViewController *)selfCopy calendarScrubber];
+    v5 = v108 = selfCopy;
+    view = [v5 view];
 
-    v7 = [(HUCalendarScrubberContainerViewController *)v108 prevWeekButton];
-    v8 = [(HUCalendarScrubberContainerViewController *)v108 nextWeekButton];
-    v9 = [(HUCalendarScrubberContainerViewController *)v108 hairlineViewLeft];
-    v10 = [(HUCalendarScrubberContainerViewController *)v108 hairlineViewRight];
-    v106 = [v4 centerXAnchor];
-    v107 = [(HUCalendarScrubberContainerViewController *)v108 view];
-    v105 = [v107 centerXAnchor];
-    v104 = [v106 constraintEqualToAnchor:v105];
+    prevWeekButton = [(HUCalendarScrubberContainerViewController *)v108 prevWeekButton];
+    nextWeekButton = [(HUCalendarScrubberContainerViewController *)v108 nextWeekButton];
+    hairlineViewLeft = [(HUCalendarScrubberContainerViewController *)v108 hairlineViewLeft];
+    hairlineViewRight = [(HUCalendarScrubberContainerViewController *)v108 hairlineViewRight];
+    centerXAnchor = [backgroundView centerXAnchor];
+    view2 = [(HUCalendarScrubberContainerViewController *)v108 view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v104 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v110[0] = v104;
-    v102 = [v4 centerYAnchor];
-    v103 = [(HUCalendarScrubberContainerViewController *)v108 view];
-    v101 = [v103 centerYAnchor];
-    v100 = [v102 constraintEqualToAnchor:v101];
+    centerYAnchor = [backgroundView centerYAnchor];
+    view3 = [(HUCalendarScrubberContainerViewController *)v108 view];
+    centerYAnchor2 = [view3 centerYAnchor];
+    v100 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v110[1] = v100;
-    v98 = [v4 widthAnchor];
-    v99 = [(HUCalendarScrubberContainerViewController *)v108 view];
-    v97 = [v99 widthAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    widthAnchor = [backgroundView widthAnchor];
+    view4 = [(HUCalendarScrubberContainerViewController *)v108 view];
+    widthAnchor2 = [view4 widthAnchor];
+    v96 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v110[2] = v96;
-    v95 = [v4 heightAnchor];
-    v94 = [v95 constraintEqualToConstant:47.0];
+    heightAnchor = [backgroundView heightAnchor];
+    v94 = [heightAnchor constraintEqualToConstant:47.0];
     v110[3] = v94;
-    v93 = [v6 leadingAnchor];
-    v92 = [v9 trailingAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    leadingAnchor = [view leadingAnchor];
+    trailingAnchor = [hairlineViewLeft trailingAnchor];
+    v91 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
     v110[4] = v91;
-    v90 = [v6 trailingAnchor];
-    v89 = [v10 leadingAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89];
+    trailingAnchor2 = [view trailingAnchor];
+    leadingAnchor2 = [hairlineViewRight leadingAnchor];
+    v88 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor2];
     v110[5] = v88;
-    v87 = [v6 topAnchor];
-    v86 = [v4 topAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [backgroundView topAnchor];
+    v85 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v110[6] = v85;
-    v84 = [v6 bottomAnchor];
-    v82 = [v4 bottomAnchor];
-    v81 = [v84 constraintEqualToAnchor:v82];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [backgroundView bottomAnchor];
+    v81 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v110[7] = v81;
-    v80 = [v6 centerXAnchor];
-    v79 = [v4 centerXAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    centerXAnchor3 = [view centerXAnchor];
+    centerXAnchor4 = [backgroundView centerXAnchor];
+    v78 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v110[8] = v78;
-    v77 = [v6 widthAnchor];
-    v76 = [v77 constraintLessThanOrEqualToConstant:400.0];
+    widthAnchor3 = [view widthAnchor];
+    v76 = [widthAnchor3 constraintLessThanOrEqualToConstant:400.0];
     v110[9] = v76;
-    v73 = [v7 topAnchor];
-    v72 = [v4 topAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    topAnchor3 = [prevWeekButton topAnchor];
+    topAnchor4 = [backgroundView topAnchor];
+    v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v110[10] = v71;
-    v70 = [v7 bottomAnchor];
-    v69 = [v4 bottomAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    bottomAnchor3 = [prevWeekButton bottomAnchor];
+    bottomAnchor4 = [backgroundView bottomAnchor];
+    v68 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v110[11] = v68;
-    v67 = [v7 leadingAnchor];
-    v66 = [v4 leadingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    leadingAnchor3 = [prevWeekButton leadingAnchor];
+    leadingAnchor4 = [backgroundView leadingAnchor];
+    v65 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v110[12] = v65;
-    v64 = [v7 trailingAnchor];
-    v63 = [v9 leadingAnchor];
-    v61 = [v64 constraintEqualToAnchor:v63];
+    trailingAnchor3 = [prevWeekButton trailingAnchor];
+    leadingAnchor5 = [hairlineViewLeft leadingAnchor];
+    v61 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
     v110[13] = v61;
-    v83 = v7;
-    v60 = [v7 widthAnchor];
-    v59 = [v60 constraintEqualToConstant:60.0];
+    v83 = prevWeekButton;
+    widthAnchor4 = [prevWeekButton widthAnchor];
+    v59 = [widthAnchor4 constraintEqualToConstant:60.0];
     v110[14] = v59;
-    v57 = [v9 leadingAnchor];
-    v56 = [v7 trailingAnchor];
-    v54 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor6 = [hairlineViewLeft leadingAnchor];
+    trailingAnchor4 = [prevWeekButton trailingAnchor];
+    v54 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4];
     v110[15] = v54;
-    v53 = [v9 trailingAnchor];
-    v74 = v6;
-    v52 = [v6 leadingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor5 = [hairlineViewLeft trailingAnchor];
+    v74 = view;
+    leadingAnchor7 = [view leadingAnchor];
+    v51 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor7];
     v110[16] = v51;
-    v50 = [v9 widthAnchor];
-    v49 = [v50 constraintEqualToConstant:1.0];
+    widthAnchor5 = [hairlineViewLeft widthAnchor];
+    v49 = [widthAnchor5 constraintEqualToConstant:1.0];
     v110[17] = v49;
-    v75 = v9;
-    v48 = [v9 topAnchor];
-    v47 = [v4 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    v75 = hairlineViewLeft;
+    topAnchor5 = [hairlineViewLeft topAnchor];
+    topAnchor6 = [backgroundView topAnchor];
+    v46 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v110[18] = v46;
-    v45 = [v9 bottomAnchor];
-    v44 = [v4 bottomAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    bottomAnchor5 = [hairlineViewLeft bottomAnchor];
+    bottomAnchor6 = [backgroundView bottomAnchor];
+    v43 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v110[19] = v43;
-    v42 = [v10 leadingAnchor];
-    v41 = [v6 trailingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    leadingAnchor8 = [hairlineViewRight leadingAnchor];
+    trailingAnchor6 = [view trailingAnchor];
+    v40 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor6];
     v110[20] = v40;
-    v39 = [v10 trailingAnchor];
-    v11 = v8;
-    v55 = v8;
-    v38 = [v8 leadingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    trailingAnchor7 = [hairlineViewRight trailingAnchor];
+    v11 = nextWeekButton;
+    v55 = nextWeekButton;
+    leadingAnchor9 = [nextWeekButton leadingAnchor];
+    v37 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor9];
     v110[21] = v37;
-    v36 = [v10 widthAnchor];
-    v35 = [v36 constraintEqualToConstant:1.0];
+    widthAnchor6 = [hairlineViewRight widthAnchor];
+    v35 = [widthAnchor6 constraintEqualToConstant:1.0];
     v110[22] = v35;
-    v34 = [v10 topAnchor];
-    v33 = [v4 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor7 = [hairlineViewRight topAnchor];
+    topAnchor8 = [backgroundView topAnchor];
+    v32 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v110[23] = v32;
-    v62 = v10;
-    v31 = [v10 bottomAnchor];
-    v58 = v4;
-    v30 = [v4 bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    v62 = hairlineViewRight;
+    bottomAnchor7 = [hairlineViewRight bottomAnchor];
+    v58 = backgroundView;
+    bottomAnchor8 = [backgroundView bottomAnchor];
+    v29 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v110[24] = v29;
-    v28 = [v8 leadingAnchor];
-    v27 = [v10 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leadingAnchor10 = [nextWeekButton leadingAnchor];
+    trailingAnchor8 = [hairlineViewRight trailingAnchor];
+    v26 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor8];
     v110[25] = v26;
-    v25 = [v8 trailingAnchor];
-    v24 = [v4 trailingAnchor];
-    v12 = [v25 constraintEqualToAnchor:v24];
+    trailingAnchor9 = [nextWeekButton trailingAnchor];
+    trailingAnchor10 = [backgroundView trailingAnchor];
+    v12 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v110[26] = v12;
-    v13 = [v8 topAnchor];
-    v14 = [v4 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor9 = [nextWeekButton topAnchor];
+    topAnchor10 = [backgroundView topAnchor];
+    v15 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v110[27] = v15;
-    v16 = [v11 bottomAnchor];
-    v17 = [v4 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor9 = [v11 bottomAnchor];
+    bottomAnchor10 = [backgroundView bottomAnchor];
+    v18 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v110[28] = v18;
-    v19 = [v11 widthAnchor];
-    v20 = [v19 constraintEqualToConstant:60.0];
+    widthAnchor7 = [v11 widthAnchor];
+    v20 = [widthAnchor7 constraintEqualToConstant:60.0];
     v110[29] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:30];
     [(HUCalendarScrubberContainerViewController *)v108 setConstraints:v21];
 
-    v2 = v108;
+    selfCopy = v108;
     v22 = MEMORY[0x277CCAAD0];
-    v23 = [(HUCalendarScrubberContainerViewController *)v108 constraints];
-    [v22 activateConstraints:v23];
+    constraints2 = [(HUCalendarScrubberContainerViewController *)v108 constraints];
+    [v22 activateConstraints:constraints2];
   }
 
-  v109.receiver = v2;
+  v109.receiver = selfCopy;
   v109.super_class = HUCalendarScrubberContainerViewController;
   [(HUCalendarScrubberContainerViewController *)&v109 updateViewConstraints];
 }
 
-- (void)handleNextButton:(id)a3
+- (void)handleNextButton:(id)button
 {
-  v5 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v4 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  [v5 jumpToSection:objc_msgSend(v4 animated:"nextSection") completion:{1, 0}];
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  calendarScrubber2 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  [calendarScrubber jumpToSection:objc_msgSend(calendarScrubber2 animated:"nextSection") completion:{1, 0}];
 
   [(HUCalendarScrubberContainerViewController *)self _updateNextPreviousButtonState];
 }
 
-- (void)handlePreviousButton:(id)a3
+- (void)handlePreviousButton:(id)button
 {
-  v5 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v4 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  [v5 jumpToSection:objc_msgSend(v4 animated:"previousSection") completion:{1, 0}];
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  calendarScrubber2 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  [calendarScrubber jumpToSection:objc_msgSend(calendarScrubber2 animated:"previousSection") completion:{1, 0}];
 
   [(HUCalendarScrubberContainerViewController *)self _updateNextPreviousButtonState];
 }
 
-- (void)_jumpToDate:(id)a3 animated:(BOOL)a4
+- (void)_jumpToDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v8 = [v7 dataSource];
-  v9 = [v8 indexPathForDate:v6];
+  animatedCopy = animated;
+  dateCopy = date;
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  dataSource = [calendarScrubber dataSource];
+  v9 = [dataSource indexPathForDate:dateCopy];
 
   objc_initWeak(&location, self);
-  v10 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v11 = [v9 section];
+  calendarScrubber2 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  section = [v9 section];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__HUCalendarScrubberContainerViewController__jumpToDate_animated___block_invoke;
   v14[3] = &unk_277DB98C8;
   objc_copyWeak(&v17, &location);
-  v12 = v7;
+  v12 = calendarScrubber;
   v15 = v12;
   v13 = v9;
   v16 = v13;
-  [v10 jumpToSection:v11 animated:v4 completion:v14];
+  [calendarScrubber2 jumpToSection:section animated:animatedCopy completion:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -388,42 +388,42 @@ void __66__HUCalendarScrubberContainerViewController__jumpToDate_animated___bloc
 
 - (void)_updateNextPreviousButtonState
 {
-  v12 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v3 = [(HUCalendarScrubberContainerViewController *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  traitCollection = [(HUCalendarScrubberContainerViewController *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v4)
+  if (layoutDirection)
   {
-    v5 = [v12 nextSection] != 0x7FFFFFFFFFFFFFFFLL;
-    v6 = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
-    [v6 setEnabled:v5];
+    v5 = [calendarScrubber nextSection] != 0x7FFFFFFFFFFFFFFFLL;
+    prevWeekButton = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
+    [prevWeekButton setEnabled:v5];
 
-    v7 = [v12 previousSection];
+    previousSection = [calendarScrubber previousSection];
   }
 
   else
   {
-    v8 = [v12 previousSection] != 0x7FFFFFFFFFFFFFFFLL;
-    v9 = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
-    [v9 setEnabled:v8];
+    v8 = [calendarScrubber previousSection] != 0x7FFFFFFFFFFFFFFFLL;
+    prevWeekButton2 = [(HUCalendarScrubberContainerViewController *)self prevWeekButton];
+    [prevWeekButton2 setEnabled:v8];
 
-    v7 = [v12 nextSection];
+    previousSection = [calendarScrubber nextSection];
   }
 
-  v10 = v7 != 0x7FFFFFFFFFFFFFFFLL;
-  v11 = [(HUCalendarScrubberContainerViewController *)self nextWeekButton];
-  [v11 setEnabled:v10];
+  v10 = previousSection != 0x7FFFFFFFFFFFFFFFLL;
+  nextWeekButton = [(HUCalendarScrubberContainerViewController *)self nextWeekButton];
+  [nextWeekButton setEnabled:v10];
 }
 
-- (void)scrubberViewController:(id)a3 didSelectItemAtIndex:(id)a4
+- (void)scrubberViewController:(id)controller didSelectItemAtIndex:(id)index
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 dataSource];
-  v8 = [v7 dateAtIndexPath:v6];
+  indexCopy = index;
+  dataSource = [controller dataSource];
+  v8 = [dataSource dateAtIndexPath:indexCopy];
 
-  v9 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
-  v10 = [v9 firstOfTheDayClipForDate:v8];
+  playbackEngine = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
+  v10 = [playbackEngine firstOfTheDayClipForDate:v8];
 
   v11 = HFLogForCategory();
   v12 = v11;
@@ -431,16 +431,16 @@ void __66__HUCalendarScrubberContainerViewController__jumpToDate_animated___bloc
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 uniqueIdentifier];
+      uniqueIdentifier = [v10 uniqueIdentifier];
       v18 = 138412546;
-      v19 = v13;
+      v19 = uniqueIdentifier;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "Calendar moving to first clip:%@ for date:%@", &v18, 0x16u);
     }
 
-    v14 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
-    [v14 setTimelineState:2];
+    playbackEngine2 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
+    [playbackEngine2 setTimelineState:2];
 
     [v10 dateOfOccurrence];
     v8 = v12 = v8;
@@ -453,41 +453,41 @@ void __66__HUCalendarScrubberContainerViewController__jumpToDate_animated___bloc
     _os_log_error_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_ERROR, "Calendar unable to find first clip for date:%@", &v18, 0xCu);
   }
 
-  v15 = [(HUCalendarScrubberContainerViewController *)self isEditing];
-  v16 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
-  v17 = v16;
-  if (v15)
+  isEditing = [(HUCalendarScrubberContainerViewController *)self isEditing];
+  playbackEngine3 = [(HUCalendarScrubberContainerViewController *)self playbackEngine];
+  v17 = playbackEngine3;
+  if (isEditing)
   {
-    [v16 updatePlaybackPositionToDate:v8 usingClip:v10];
+    [playbackEngine3 updatePlaybackPositionToDate:v8 usingClip:v10];
   }
 
   else
   {
-    [v16 startPlaybackAtDate:v8 withClip:v10];
+    [playbackEngine3 startPlaybackAtDate:v8 withClip:v10];
   }
 }
 
-- (void)playbackEngine:(id)a3 didUpdatePlaybackPosition:(id)a4
+- (void)playbackEngine:(id)engine didUpdatePlaybackPosition:(id)position
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 contentType] == 0;
-  v7 = [(HUCalendarScrubberContainerViewController *)self view];
-  [v7 setHidden:v6];
+  positionCopy = position;
+  v6 = [positionCopy contentType] == 0;
+  view = [(HUCalendarScrubberContainerViewController *)self view];
+  [view setHidden:v6];
 
-  v8 = [(HUCalendarScrubberContainerViewController *)self view];
-  LOBYTE(v7) = [v8 isHidden];
+  view2 = [(HUCalendarScrubberContainerViewController *)self view];
+  LOBYTE(view) = [view2 isHidden];
 
-  if ((v7 & 1) == 0)
+  if ((view & 1) == 0)
   {
-    v9 = [v5 clipPlaybackDate];
-    v10 = [(HUCalendarScrubberContainerViewController *)self lastSelectedDate];
-    if (v10 && (v11 = v10, [MEMORY[0x277CBEA80] currentCalendar], v12 = objc_claimAutoreleasedReturnValue(), -[HUCalendarScrubberContainerViewController lastSelectedDate](self, "lastSelectedDate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isDate:inSameDayAsDate:", v9, v13), v13, v12, v11, (v14 & 1) != 0))
+    clipPlaybackDate = [positionCopy clipPlaybackDate];
+    lastSelectedDate = [(HUCalendarScrubberContainerViewController *)self lastSelectedDate];
+    if (lastSelectedDate && (v11 = lastSelectedDate, [MEMORY[0x277CBEA80] currentCalendar], v12 = objc_claimAutoreleasedReturnValue(), -[HUCalendarScrubberContainerViewController lastSelectedDate](self, "lastSelectedDate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isDate:inSameDayAsDate:", clipPlaybackDate, v13), v13, v12, v11, (v14 & 1) != 0))
     {
-      v15 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-      v16 = [v15 collectionView];
-      v17 = [v16 indexPathsForSelectedItems];
-      v18 = [v17 count];
+      calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+      collectionView = [calendarScrubber collectionView];
+      indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+      v18 = [indexPathsForSelectedItems count];
 
       if (v18)
       {
@@ -500,7 +500,7 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
-        v23 = v9;
+        v23 = clipPlaybackDate;
         _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Update calendar to selected date:%@ because there was no selected index path.", &v22, 0xCu);
       }
 
@@ -512,34 +512,34 @@ LABEL_12:
       v19 = HFLogForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(HUCalendarScrubberContainerViewController *)self lastSelectedDate];
+        lastSelectedDate2 = [(HUCalendarScrubberContainerViewController *)self lastSelectedDate];
         v22 = 138412546;
-        v23 = v9;
+        v23 = clipPlaybackDate;
         v24 = 2112;
-        v25 = v21;
+        v25 = lastSelectedDate2;
         _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Update calendar to selected date:%@ from date:%@.", &v22, 0x16u);
       }
 
       v20 = 1;
     }
 
-    [(HUCalendarScrubberContainerViewController *)self setLastSelectedDate:v9];
-    [(HUCalendarScrubberContainerViewController *)self _jumpToDate:v9 animated:v20];
+    [(HUCalendarScrubberContainerViewController *)self setLastSelectedDate:clipPlaybackDate];
+    [(HUCalendarScrubberContainerViewController *)self _jumpToDate:clipPlaybackDate animated:v20];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)playbackEngine:(id)a3 didUpdateEventCache:(id)a4
+- (void)playbackEngine:(id)engine didUpdateEventCache:(id)cache
 {
-  v5 = a3;
+  engineCopy = engine;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
-  v6 = [v8 dataSource];
-  v7 = [v5 daysWithClips];
+  calendarScrubber = [(HUCalendarScrubberContainerViewController *)self calendarScrubber];
+  dataSource = [calendarScrubber dataSource];
+  daysWithClips = [engineCopy daysWithClips];
 
-  [v6 addDatesWithClips:v7];
+  [dataSource addDatesWithClips:daysWithClips];
 }
 
 - (HFCameraPlaybackEngine)playbackEngine

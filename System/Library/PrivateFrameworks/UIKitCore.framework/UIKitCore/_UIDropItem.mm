@@ -2,8 +2,8 @@
 - (id)_privateLocalContext;
 - (id)itemProvider;
 - (id)localObject;
-- (void)_setPrivateLocalContext:(id)a3;
-- (void)setLocalObject:(id)a3;
+- (void)_setPrivateLocalContext:(id)context;
+- (void)setLocalObject:(id)object;
 - (void)setNeedsDropPreviewUpdate;
 @end
 
@@ -14,59 +14,59 @@
   dropItemProvider = self->_dropItemProvider;
   if (dropItemProvider)
   {
-    v3 = dropItemProvider;
+    itemProvider = dropItemProvider;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UIDropItem;
-    v3 = [(UIDragItem *)&v5 itemProvider];
+    itemProvider = [(UIDragItem *)&v5 itemProvider];
   }
 
-  return v3;
+  return itemProvider;
 }
 
 - (id)localObject
 {
-  v2 = [(_UIDropItem *)self _localDragItem];
-  v3 = [v2 localObject];
+  _localDragItem = [(_UIDropItem *)self _localDragItem];
+  localObject = [_localDragItem localObject];
 
-  return v3;
+  return localObject;
 }
 
-- (void)setLocalObject:(id)a3
+- (void)setLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = [(_UIDropItem *)self _localDragItem];
-  [v5 setLocalObject:v4];
+  objectCopy = object;
+  _localDragItem = [(_UIDropItem *)self _localDragItem];
+  [_localDragItem setLocalObject:objectCopy];
 }
 
 - (id)_privateLocalContext
 {
-  v2 = [(_UIDropItem *)self _localDragItem];
-  v3 = [v2 _privateLocalContext];
+  _localDragItem = [(_UIDropItem *)self _localDragItem];
+  _privateLocalContext = [_localDragItem _privateLocalContext];
 
-  return v3;
+  return _privateLocalContext;
 }
 
-- (void)_setPrivateLocalContext:(id)a3
+- (void)_setPrivateLocalContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_UIDropItem *)self _localDragItem];
-  [v5 _setPrivateLocalContext:v4];
+  contextCopy = context;
+  _localDragItem = [(_UIDropItem *)self _localDragItem];
+  [_localDragItem _setPrivateLocalContext:contextCopy];
 }
 
 - (void)setNeedsDropPreviewUpdate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->super.__currentSetDownAnimation);
   }
 
-  v3 = self;
-  [(_UIDropItem *)self dirtyTargetedDragPreviewForDragItem:v2];
+  selfCopy2 = self;
+  [(_UIDropItem *)self dirtyTargetedDragPreviewForDragItem:selfCopy];
 }
 
 @end

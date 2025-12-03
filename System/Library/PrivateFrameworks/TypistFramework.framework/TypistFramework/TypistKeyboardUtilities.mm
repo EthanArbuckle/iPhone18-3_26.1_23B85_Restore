@@ -17,76 +17,76 @@
 + (BOOL)getSmartQuotesPrefSetting;
 + (BOOL)getTypologyEnabled;
 + (BOOL)hasMarkedText;
-+ (BOOL)inhibitGlobalAlerts:(BOOL)a3;
-+ (BOOL)isDictationSupported:(id)a3;
++ (BOOL)inhibitGlobalAlerts:(BOOL)alerts;
++ (BOOL)isDictationSupported:(id)supported;
 + (BOOL)isFloating;
-+ (BOOL)setPrefSettings:(id)a3;
++ (BOOL)setPrefSettings:(id)settings;
 + (BOOL)shouldShowDictationKey;
 + (BOOL)shouldShowGlobeKey;
 + (BOOL)triggerAllTIOneTimeActions;
-+ (BOOL)waitForKeyboardPlane:(id)a3;
++ (BOOL)waitForKeyboardPlane:(id)plane;
 + (CGPoint)floatingKeyboardDraggablePoint;
-+ (CGPoint)generateGaussianPoint:(CGPoint)a3 withSeed:(int64_t)a4 andSigma:(double)a5;
-+ (CGPoint)generateGaussianPointWithMean:(CGPoint)a3 andSigma:(double)a4;
-+ (CGPoint)generateUniformPointWithMean:(CGPoint)a3 andBounds:(CGVector)a4;
-+ (CGPoint)generateUniformPointWithMean:(CGPoint)a3 andRange:(unsigned int)a4;
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3;
-+ (id)appendKeyboardForKeyboardSetting:(id)a3;
-+ (id)canonicalConversion:(id)a3;
++ (CGPoint)generateGaussianPoint:(CGPoint)point withSeed:(int64_t)seed andSigma:(double)sigma;
++ (CGPoint)generateGaussianPointWithMean:(CGPoint)mean andSigma:(double)sigma;
++ (CGPoint)generateUniformPointWithMean:(CGPoint)mean andBounds:(CGVector)bounds;
++ (CGPoint)generateUniformPointWithMean:(CGPoint)mean andRange:(unsigned int)range;
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard;
++ (id)appendKeyboardForKeyboardSetting:(id)setting;
++ (id)canonicalConversion:(id)conversion;
 + (id)captureCurrentKeyboardImage;
-+ (id)convertRecapCommands:(id)a3;
-+ (id)convertRecapCommandsFromListOfActions:(id)a3;
++ (id)convertRecapCommands:(id)commands;
++ (id)convertRecapCommandsFromListOfActions:(id)actions;
 + (id)deviceInfo;
 + (id)formattedKeyplaneName;
 + (id)generateKeyboardList;
 + (id)getAggregatedTIPreferences;
 + (id)getHwRevision;
 + (id)getKeyboardsForKeyboardSetting;
-+ (id)getMobileGestalt:(id)a3;
++ (id)getMobileGestalt:(id)gestalt;
 + (id)getNandCapacity;
 + (id)getOneHandedKeyboardHandBias;
-+ (id)getRegionCodeFromKeyboardID:(id)a3;
++ (id)getRegionCodeFromKeyboardID:(id)d;
 + (id)getRootViewControllerViaScene;
 + (id)getSameScreenSizeModel;
 + (id)getScreenSize;
-+ (id)getTrainBuildVersion:(id)a3;
++ (id)getTrainBuildVersion:(id)version;
 + (id)getUIDeviceOrientationAsString;
 + (id)markedText;
-+ (id)removeKeyboardForKeyboardSetting:(id)a3;
-+ (id)replaceWaitForKeyboardPlane:(id)a3 withWait:(double)a4;
-+ (id)searchForViewInKeyboardWindow:(id)a3;
-+ (id)searchForWindow:(id)a3;
-+ (id)setKeyboardForKeyboardSetting:(id)a3;
-+ (id)setOneHandedKeyboardHandBias:(id)a3;
++ (id)removeKeyboardForKeyboardSetting:(id)setting;
++ (id)replaceWaitForKeyboardPlane:(id)plane withWait:(double)wait;
++ (id)searchForViewInKeyboardWindow:(id)window;
++ (id)searchForWindow:(id)window;
++ (id)setKeyboardForKeyboardSetting:(id)setting;
++ (id)setOneHandedKeyboardHandBias:(id)bias;
 + (id)sharedFBSOrientationObserver;
 + (id)sharedRecapInlinePlayer;
-+ (id)validateProbability:(id)a3;
++ (id)validateProbability:(id)probability;
 + (int)getShuangpinPrefSetting;
 + (int)getWubiPrefSetting;
 + (int)touchScanRate;
-+ (int64_t)getUIDeviceOrientationFromString:(id)a3;
++ (int64_t)getUIDeviceOrientationFromString:(id)string;
 + (int64_t)getUIInterfaceOrientation;
-+ (int64_t)toUIDeviceOrientation:(int64_t)a3;
-+ (int64_t)toUIInterfaceOrientation:(int64_t)a3;
-+ (void)correctForRotation:(CGVector *)a3 orientation:(int64_t)a4;
++ (int64_t)toUIDeviceOrientation:(int64_t)orientation;
++ (int64_t)toUIInterfaceOrientation:(int64_t)orientation;
++ (void)correctForRotation:(CGVector *)rotation orientation:(int64_t)orientation;
 + (void)killKbd;
-+ (void)launchRecap:(id)a3 completion:(id)a4;
-+ (void)launchRecapWithSyntheticEventStream:(id)a3;
-+ (void)runCommandLineProcess:(char *)a3;
-+ (void)runOnMainThread:(id)a3;
-+ (void)setAirplaneMode:(BOOL)a3;
-+ (void)setDoNotDisturb:(BOOL)a3;
++ (void)launchRecap:(id)recap completion:(id)completion;
++ (void)launchRecapWithSyntheticEventStream:(id)stream;
++ (void)runCommandLineProcess:(char *)process;
++ (void)runOnMainThread:(id)thread;
++ (void)setAirplaneMode:(BOOL)mode;
++ (void)setDoNotDisturb:(BOOL)disturb;
 + (void)tearDownRecapInlinePlayer;
-+ (void)waitFor:(double)a3;
++ (void)waitFor:(double)for;
 @end
 
 @implementation TypistKeyboardUtilities
 
-+ (CGPoint)generateGaussianPoint:(CGPoint)a3 withSeed:(int64_t)a4 andSigma:(double)a5
++ (CGPoint)generateGaussianPoint:(CGPoint)point withSeed:(int64_t)seed andSigma:(double)sigma
 {
-  y = a3.y;
-  x = a3.x;
-  srand48(a4);
+  y = point.y;
+  x = point.x;
+  srand48(seed);
   do
   {
     v7 = drand48() * 2.0 + -1.0;
@@ -97,17 +97,17 @@
   while (v9 >= 1.0);
   v10 = sqrt(log(v8 * v8 + v7 * v7) * -2.0 / v9);
   v11 = v8 * v10;
-  v12 = x + v7 * v10 * a5;
-  v13 = y + v11 * a5;
+  v12 = x + v7 * v10 * sigma;
+  v13 = y + v11 * sigma;
   result.y = v13;
   result.x = v12;
   return result;
 }
 
-+ (CGPoint)generateGaussianPointWithMean:(CGPoint)a3 andSigma:(double)a4
++ (CGPoint)generateGaussianPointWithMean:(CGPoint)mean andSigma:(double)sigma
 {
-  y = a3.y;
-  x = a3.x;
+  y = mean.y;
+  x = mean.x;
   do
   {
     v6 = drand48() * 2.0 + -1.0;
@@ -118,27 +118,27 @@
   while (v8 >= 1.0);
   v9 = sqrt(log(v7 * v7 + v6 * v6) * -2.0 / v8);
   v10 = v7 * v9;
-  v11 = x + v6 * v9 * a4;
-  v12 = y + v10 * a4;
+  v11 = x + v6 * v9 * sigma;
+  v12 = y + v10 * sigma;
   result.y = v12;
   result.x = v11;
   return result;
 }
 
-+ (CGPoint)generateUniformPointWithMean:(CGPoint)a3 andRange:(unsigned int)a4
++ (CGPoint)generateUniformPointWithMean:(CGPoint)mean andRange:(unsigned int)range
 {
-  [a1 generateUniformPointWithMean:a3.x andBounds:{a3.y, a4, a4}];
+  [self generateUniformPointWithMean:mean.x andBounds:{mean.y, range, range}];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)generateUniformPointWithMean:(CGPoint)a3 andBounds:(CGVector)a4
++ (CGPoint)generateUniformPointWithMean:(CGPoint)mean andBounds:(CGVector)bounds
 {
-  dy = a4.dy;
-  y = a3.y;
-  x = a3.x;
-  v7 = (arc4random_uniform((a4.dx + a4.dx)) - a4.dx);
+  dy = bounds.dy;
+  y = mean.y;
+  x = mean.x;
+  v7 = (arc4random_uniform((bounds.dx + bounds.dx)) - bounds.dx);
   v8 = arc4random_uniform((dy + dy));
   v9 = x + v7;
   v10 = y + (v8 - dy);
@@ -147,9 +147,9 @@
   return result;
 }
 
-+ (id)validateProbability:(id)a3
++ (id)validateProbability:(id)probability
 {
-  [a3 doubleValue];
+  [probability doubleValue];
   if (v3 >= 0.0)
   {
     if (v3 <= 1.0)
@@ -171,27 +171,27 @@
   return v4;
 }
 
-+ (void)waitFor:(double)a3
++ (void)waitFor:(double)for
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-    [v6 runUntilDate:v4];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:for];
+    [currentRunLoop runUntilDate:v4];
   }
 
   else
   {
     v5 = MEMORY[0x277CCACC8];
 
-    [v5 sleepForTimeInterval:a3];
+    [v5 sleepForTimeInterval:for];
   }
 }
 
-+ (void)runOnMainThread:(id)a3
++ (void)runOnMainThread:(id)thread
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = thread;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -203,33 +203,33 @@
   }
 }
 
-+ (id)canonicalConversion:(id)a3
++ (id)canonicalConversion:(id)conversion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  conversionCopy = conversion;
+  v4 = conversionCopy;
+  if (conversionCopy)
   {
-    v5 = [v3 decomposedStringWithCanonicalMapping];
+    decomposedStringWithCanonicalMapping = [conversionCopy decomposedStringWithCanonicalMapping];
 
-    v6 = [v5 precomposedStringWithCanonicalMapping];
+    precomposedStringWithCanonicalMapping = [decomposedStringWithCanonicalMapping precomposedStringWithCanonicalMapping];
 
-    v7 = [v6 precomposedStringWithCompatibilityMapping];
+    precomposedStringWithCompatibilityMapping = [precomposedStringWithCanonicalMapping precomposedStringWithCompatibilityMapping];
 
-    v4 = [v7 stringByReplacingOccurrencesOfString:@"–" withString:@"-"];
+    v4 = [precomposedStringWithCompatibilityMapping stringByReplacingOccurrencesOfString:@"–" withString:@"-"];
   }
 
   return v4;
 }
 
-+ (void)runCommandLineProcess:(char *)a3
++ (void)runCommandLineProcess:(char *)process
 {
-  if (a3)
+  if (process)
   {
-    v3 = *a3;
-    if (*a3)
+    v3 = *process;
+    if (*process)
     {
       v4 = 0;
-      posix_spawn(&v4, v3, 0, 0, a3, *MEMORY[0x277D85DB0]);
+      posix_spawn(&v4, v3, 0, 0, process, *MEMORY[0x277D85DB0]);
       waitpid(v4, 0, 0);
     }
   }
@@ -391,20 +391,20 @@ void __47__TypistKeyboardUtilities_generateKeyboardList__block_invoke(uint64_t a
 
 + (int)touchScanRate
 {
-  v2 = [MEMORY[0x277D44338] currentEnvironment];
-  v3 = [v2 touchScanRate];
+  currentEnvironment = [MEMORY[0x277D44338] currentEnvironment];
+  touchScanRate = [currentEnvironment touchScanRate];
 
-  return v3;
+  return touchScanRate;
 }
 
-+ (id)getMobileGestalt:(id)a3
++ (id)getMobileGestalt:(id)gestalt
 {
-  v3 = a3;
+  gestaltCopy = gestalt;
   v4 = MGCopyAnswer();
   if (v4)
   {
     v5 = v4;
-    if ([v3 isEqualToString:@"HWModelStr"])
+    if ([gestaltCopy isEqualToString:@"HWModelStr"])
     {
       v6 = [(__CFString *)v5 rangeOfString:@"AP" options:4];
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
@@ -473,99 +473,99 @@ void __47__TypistKeyboardUtilities_generateKeyboardList__block_invoke(uint64_t a
   return v8;
 }
 
-+ (id)getTrainBuildVersion:(id)a3
++ (id)getTrainBuildVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v11 = 0;
-  v4 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-  v5 = [MEMORY[0x277CCAC80] scannerWithString:v3];
+  uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+  v5 = [MEMORY[0x277CCAC80] scannerWithString:versionCopy];
   [v5 scanInteger:&v11];
   v10 = 0;
-  [v5 scanCharactersFromSet:v4 intoString:&v10];
+  [v5 scanCharactersFromSet:uppercaseLetterCharacterSet intoString:&v10];
   [v5 scanInteger:&v11];
-  if ([v3 hasPrefix:@"15A"])
+  if ([versionCopy hasPrefix:@"15A"])
   {
     v6 = @"Tigris";
   }
 
-  else if ([v3 hasPrefix:@"15B"])
+  else if ([versionCopy hasPrefix:@"15B"])
   {
     v6 = @"Bursa";
   }
 
-  else if ([v3 hasPrefix:@"15C"])
+  else if ([versionCopy hasPrefix:@"15C"])
   {
     v6 = @"Cinar";
   }
 
-  else if ([v3 hasPrefix:@"15D"])
+  else if ([versionCopy hasPrefix:@"15D"])
   {
     v6 = @"Dalaman";
   }
 
-  else if ([v3 hasPrefix:@"15E"])
+  else if ([versionCopy hasPrefix:@"15E"])
   {
     v6 = @"Emet";
   }
 
-  else if ([v3 hasPrefix:@"15F"])
+  else if ([versionCopy hasPrefix:@"15F"])
   {
     v6 = @"Fatsa";
   }
 
-  else if ([v3 hasPrefix:@"15G"])
+  else if ([versionCopy hasPrefix:@"15G"])
   {
     v6 = @"TigrisG";
   }
 
-  else if ([v3 hasPrefix:@"16A"])
+  else if ([versionCopy hasPrefix:@"16A"])
   {
     v6 = @"Peace";
   }
 
-  else if ([v3 hasPrefix:@"16B"])
+  else if ([versionCopy hasPrefix:@"16B"])
   {
     v6 = @"PeaceB";
   }
 
-  else if ([v3 hasPrefix:@"16C"])
+  else if ([versionCopy hasPrefix:@"16C"])
   {
     v6 = @"PeaceC";
   }
 
-  else if ([v3 hasPrefix:@"16D"])
+  else if ([versionCopy hasPrefix:@"16D"])
   {
     v6 = @"PeaceD";
   }
 
-  else if ([v3 hasPrefix:@"16E"])
+  else if ([versionCopy hasPrefix:@"16E"])
   {
     v6 = @"PeaceE";
   }
 
-  else if ([v3 hasPrefix:@"17A"])
+  else if ([versionCopy hasPrefix:@"17A"])
   {
     v6 = @"Yukon";
   }
 
-  else if ([v3 hasPrefix:@"17B"])
+  else if ([versionCopy hasPrefix:@"17B"])
   {
     v6 = @"YukonB";
   }
 
-  else if ([v3 hasPrefix:@"17C"])
+  else if ([versionCopy hasPrefix:@"17C"])
   {
     v6 = @"YukonC";
   }
 
-  else if ([v3 hasPrefix:@"17D"])
+  else if ([versionCopy hasPrefix:@"17D"])
   {
     v6 = @"YukonD";
   }
 
   else
   {
-    v7 = [v3 hasPrefix:@"17E"];
+    v7 = [versionCopy hasPrefix:@"17E"];
     v6 = &stru_288014100;
     if (v7)
     {
@@ -573,15 +573,15 @@ void __47__TypistKeyboardUtilities_generateKeyboardList__block_invoke(uint64_t a
     }
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v6, v3];
+  versionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v6, versionCopy];
 
-  return v8;
+  return versionCopy;
 }
 
 + (id)getSameScreenSizeModel
 {
-  v2 = [a1 getScreenSize];
-  v3 = [&unk_28802A4D8 objectForKeyedSubscript:v2];
+  getScreenSize = [self getScreenSize];
+  v3 = [&unk_28802A4D8 objectForKeyedSubscript:getScreenSize];
 
   return v3;
 }
@@ -616,8 +616,8 @@ void __47__TypistKeyboardUtilities_generateKeyboardList__block_invoke(uint64_t a
   v9 = [v7 stringWithFormat:@"%@", v8];
   v20[7] = v9;
   v19[8] = @"displaySize";
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v22.width = v11;
   v22.height = v12;
   v13 = NSStringFromCGSize(v22);
@@ -653,29 +653,29 @@ void __47__TypistKeyboardUtilities_generateKeyboardList__block_invoke(uint64_t a
   return v6;
 }
 
-+ (int64_t)toUIDeviceOrientation:(int64_t)a3
++ (int64_t)toUIDeviceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 
-+ (int64_t)toUIInterfaceOrientation:(int64_t)a3
++ (int64_t)toUIInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 
@@ -700,44 +700,44 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
 
 + (int64_t)getUIInterfaceOrientation
 {
-  v2 = [a1 sharedFBSOrientationObserver];
-  v3 = [v2 activeInterfaceOrientation];
+  sharedFBSOrientationObserver = [self sharedFBSOrientationObserver];
+  activeInterfaceOrientation = [sharedFBSOrientationObserver activeInterfaceOrientation];
 
-  if ((v3 - 1) >= 4)
+  if ((activeInterfaceOrientation - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return activeInterfaceOrientation;
   }
 }
 
 + (id)getUIDeviceOrientationAsString
 {
-  v2 = [a1 getUIInterfaceOrientation];
-  if ((v2 - 1) > 3)
+  getUIInterfaceOrientation = [self getUIInterfaceOrientation];
+  if ((getUIInterfaceOrientation - 1) > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279DF4730[v2 - 1];
+    return off_279DF4730[getUIInterfaceOrientation - 1];
   }
 }
 
-+ (int64_t)getUIDeviceOrientationFromString:(id)a3
++ (int64_t)getUIDeviceOrientationFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"Portrait"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"Portrait"])
   {
-    if ([v3 caseInsensitiveCompare:@"PortraitUpsideDown"])
+    if ([stringCopy caseInsensitiveCompare:@"PortraitUpsideDown"])
     {
-      if ([v3 caseInsensitiveCompare:@"LandscapeLeft"])
+      if ([stringCopy caseInsensitiveCompare:@"LandscapeLeft"])
       {
-        v4 = 4 * ([v3 caseInsensitiveCompare:@"LandscapeRight"] == 0);
+        v4 = 4 * ([stringCopy caseInsensitiveCompare:@"LandscapeRight"] == 0);
       }
 
       else
@@ -760,11 +760,11 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
   return v4;
 }
 
-+ (void)setDoNotDisturb:(BOOL)a3
++ (void)setDoNotDisturb:(BOOL)disturb
 {
   v5[6] = *MEMORY[0x277D85DE8];
   v3 = "0";
-  if (a3)
+  if (disturb)
   {
     v3 = "1";
   }
@@ -779,11 +779,11 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setAirplaneMode:(BOOL)a3
++ (void)setAirplaneMode:(BOOL)mode
 {
   v5[6] = *MEMORY[0x277D85DE8];
   v3 = "NO";
-  if (a3)
+  if (mode)
   {
     v3 = "YES";
   }
@@ -825,22 +825,22 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
   }
 }
 
-+ (void)launchRecap:(id)a3 completion:(id)a4
++ (void)launchRecap:(id)recap completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recapCopy = recap;
+  completionCopy = completion;
   v29 = dispatch_semaphore_create(0);
-  if (v5 && [v5 count])
+  if (recapCopy && [recapCopy count])
   {
-    v26 = v6;
+    v26 = completionCopy;
     v7 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = v5;
-    obj = v5;
+    v27 = recapCopy;
+    obj = recapCopy;
     v8 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v8)
     {
@@ -862,17 +862,17 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
           {
             TYLog(@"\n### Recap Command [%@]:\n%@\n###", v14, v15, v16, v17, v18, v19, v20, v13);
             v21 = +[TypistKeyboardUtilities sharedRecapInlinePlayer];
-            v22 = [v12 eventStream];
-            [v21 prewarmForEventStream:v22 completion:0];
+            eventStream = [v12 eventStream];
+            [v21 prewarmForEventStream:eventStream completion:0];
 
-            v23 = [v12 eventStream];
+            eventStream2 = [v12 eventStream];
             v30[0] = MEMORY[0x277D85DD0];
             v30[1] = 3221225472;
             v30[2] = __66__TypistKeyboardUtilities_RecapUtilities__launchRecap_completion___block_invoke;
             v30[3] = &unk_279DF4650;
             v24 = v29;
             v31 = v24;
-            [v21 playEventStream:v23 options:v7 completion:v30];
+            [v21 playEventStream:eventStream2 options:v7 completion:v30];
 
             dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
           }
@@ -880,8 +880,8 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
           else if (![TypistKeyboardUtilities waitForKeyboardPlane:v12])
           {
 
-            v6 = v26;
-            v5 = v27;
+            completionCopy = v26;
+            recapCopy = v27;
             goto LABEL_17;
           }
 
@@ -899,13 +899,13 @@ uint64_t __71__TypistKeyboardUtilities_SystemSettings__sharedFBSOrientationObser
       }
     }
 
-    v6 = v26;
-    v5 = v27;
+    completionCopy = v26;
+    recapCopy = v27;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_17:
@@ -913,9 +913,9 @@ LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)launchRecapWithSyntheticEventStream:(id)a3
++ (void)launchRecapWithSyntheticEventStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v4 = objc_opt_new();
   v5 = objc_alloc_init(MEMORY[0x277CCAAF8]);
   v14[0] = 0;
@@ -929,7 +929,7 @@ LABEL_17:
   v13[4] = v14;
   v6 = MEMORY[0x274398FD0](v13);
   v7 = +[TypistKeyboardUtilities sharedRecapInlinePlayer];
-  [v7 prewarmForEventStream:v3 completion:0];
+  [v7 prewarmForEventStream:streamCopy completion:0];
 
   v8 = +[TypistKeyboardUtilities sharedRecapInlinePlayer];
   v10[0] = MEMORY[0x277D85DD0];
@@ -939,7 +939,7 @@ LABEL_17:
   v9 = v5;
   v11 = v9;
   v12 = v14;
-  [v8 playEventStream:v3 options:v4 completion:v10];
+  [v8 playEventStream:streamCopy options:v4 completion:v10];
 
   v6[2](v6);
   _Block_object_dispose(v14, 8);
@@ -975,17 +975,17 @@ uint64_t __79__TypistKeyboardUtilities_RecapUtilities__launchRecapWithSyntheticE
   return result;
 }
 
-+ (id)convertRecapCommands:(id)a3
++ (id)convertRecapCommands:(id)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  if ([v3 count])
+  if ([commandsCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v6];
+      v7 = [commandsCopy objectAtIndexedSubscript:v6];
       v8 = [v7 objectForKeyedSubscript:@"actions"];
       v9 = v8;
       if (v8 && [v8 count])
@@ -996,7 +996,7 @@ uint64_t __79__TypistKeyboardUtilities_RecapUtilities__launchRecapWithSyntheticE
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([commandsCopy count] > v6);
   }
 
   v10 = [TypistKeyboardUtilities convertRecapCommandsFromListOfActions:v5];
@@ -1006,11 +1006,11 @@ uint64_t __79__TypistKeyboardUtilities_RecapUtilities__launchRecapWithSyntheticE
   return v10;
 }
 
-+ (id)convertRecapCommandsFromListOfActions:(id)a3
++ (id)convertRecapCommandsFromListOfActions:(id)actions
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  actionsCopy = actions;
+  v4 = actionsCopy;
+  if (actionsCopy && [actionsCopy count])
   {
     v5 = objc_opt_new();
     v28 = 0;
@@ -1258,21 +1258,21 @@ LABEL_25:
 LABEL_26:
 }
 
-+ (BOOL)waitForKeyboardPlane:(id)a3
++ (BOOL)waitForKeyboardPlane:(id)plane
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v5 = [v3 commandString];
-  v6 = [v5 stringByTrimmingCharactersInSet:v4];
-  v7 = [v6 componentsSeparatedByCharactersInSet:v4];
+  planeCopy = plane;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  commandString = [planeCopy commandString];
+  v6 = [commandString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+  v7 = [v6 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v8 = [v7 lastObject];
-  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData switchToPlane:"switchToPlane:", v8];
+  lastObject = [v7 lastObject];
+  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData switchToPlane:"switchToPlane:", lastObject];
   v9 = 20;
   while (1)
   {
     [MEMORY[0x277CCACC8] sleepForTimeInterval:0.15];
-    if (currentKeyboardPlaneIsSameAs(v8))
+    if (currentKeyboardPlaneIsSameAs(lastObject))
     {
       break;
     }
@@ -1285,7 +1285,7 @@ LABEL_26:
 
   TYLog(@"Waiting done. Expected keyboard plane has been detected.", v10, v11, v12, v13, v14, v15, v16, v26);
 LABEL_6:
-  IsSameAs = currentKeyboardPlaneIsSameAs(v8);
+  IsSameAs = currentKeyboardPlaneIsSameAs(lastObject);
   if ((IsSameAs & 1) == 0)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:3.0];
@@ -1295,14 +1295,14 @@ LABEL_6:
   return IsSameAs;
 }
 
-+ (id)replaceWaitForKeyboardPlane:(id)a3 withWait:(double)a4
++ (id)replaceWaitForKeyboardPlane:(id)plane withWait:(double)wait
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 copy];
+  v5 = [plane copy];
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1321,9 +1321,9 @@ LABEL_6:
         if (![v10 commandType])
         {
           v11 = MEMORY[0x277CCACA8];
-          v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+          v12 = [MEMORY[0x277CCABB0] numberWithDouble:wait];
           v13 = [v11 stringWithFormat:@"wait %@ ", v12];
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Waiting %f in lieu of detecting keyplane availability", *&a4];
+          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Waiting %f in lieu of detecting keyplane availability", *&wait];
           [v10 updateCommand:1 commandString:v13 commandDescription:v14];
         }
       }
@@ -1339,66 +1339,66 @@ LABEL_6:
   return v5;
 }
 
-+ (BOOL)setPrefSettings:(id)a3
++ (BOOL)setPrefSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setTIPreferences:"setTIPreferences:", v3];
-  v5 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setKeyboardUISettings:"setKeyboardUISettings:", v3];
+  settingsCopy = settings;
+  settingsCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setTIPreferences:"setTIPreferences:", settingsCopy];
+  settingsCopy2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setKeyboardUISettings:"setKeyboardUISettings:", settingsCopy];
 
   return 1;
 }
 
 + (id)getKeyboardsForKeyboardSetting
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 valueForKey:0];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] valueForKey:0];
 
   return v3;
 }
 
-+ (id)setKeyboardForKeyboardSetting:(id)a3
++ (id)setKeyboardForKeyboardSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = +[TypistKeyboardData keyboardData];
-  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v3, 0}];
+  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{settingCopy, 0}];
 
   v6 = [(objc_class *)v4 setKeyboards:v5];
 
   return v6;
 }
 
-+ (id)appendKeyboardForKeyboardSetting:(id)a3
++ (id)appendKeyboardForKeyboardSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = +[TypistKeyboardData keyboardData];
-  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v3, 0}];
+  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{settingCopy, 0}];
 
   v6 = [(objc_class *)v4 addKeyboards:v5];
 
   return v6;
 }
 
-+ (id)removeKeyboardForKeyboardSetting:(id)a3
++ (id)removeKeyboardForKeyboardSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = +[TypistKeyboardData keyboardData];
-  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v3, 0}];
+  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{settingCopy, 0}];
 
   v6 = [(objc_class *)v4 removeKeyboards:v5];
 
   return v6;
 }
 
-+ (BOOL)isDictationSupported:(id)a3
++ (BOOL)isDictationSupported:(id)supported
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  supportedCopy = supported;
+  v4 = supportedCopy;
+  if (!supportedCopy)
   {
     goto LABEL_4;
   }
 
-  v5 = [v3 componentsSeparatedByString:@"@"];
+  v5 = [supportedCopy componentsSeparatedByString:@"@"];
   v6 = [v5 objectAtIndexedSubscript:0];
   v7 = [v6 componentsSeparatedByString:@"_"];
   v8 = [v7 componentsJoinedByString:@"-"];
@@ -1419,35 +1419,35 @@ LABEL_4:
 
 + (BOOL)shouldShowDictationKey
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:@"shouldShowDictationKey"];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:@"shouldShowDictationKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)shouldShowGlobeKey
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:@"shouldShowGlobeKey"];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:@"shouldShowGlobeKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)allOneTimeActionsAlreadyTriggered
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  if ([v2 oneTimeActionCompleted:*MEMORY[0x277D6F620]])
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  if ([mEMORY[0x277D6F470] oneTimeActionCompleted:*MEMORY[0x277D6F620]])
   {
-    v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    if ([v3 oneTimeActionCompleted:*MEMORY[0x277D6FD10]])
+    mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+    if ([mEMORY[0x277D6F470]2 oneTimeActionCompleted:*MEMORY[0x277D6FD10]])
     {
-      v4 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      if ([v4 oneTimeActionCompleted:*MEMORY[0x277D6F650]])
+      mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+      if ([mEMORY[0x277D6F470]3 oneTimeActionCompleted:*MEMORY[0x277D6F650]])
       {
-        v5 = [MEMORY[0x277D6F470] sharedPreferencesController];
-        v6 = [v5 oneTimeActionCompleted:*MEMORY[0x277D6F618]];
+        mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+        v6 = [mEMORY[0x277D6F470]4 oneTimeActionCompleted:*MEMORY[0x277D6F618]];
       }
 
       else
@@ -1473,31 +1473,31 @@ LABEL_4:
 + (BOOL)triggerAllTIOneTimeActions
 {
   TYLog(@"Triggering all one time actions to YES", a2, v2, v3, v4, v5, v6, v7, v15);
-  v8 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v8 didTriggerOneTimeAction:*MEMORY[0x277D6F620]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470] didTriggerOneTimeAction:*MEMORY[0x277D6F620]];
 
-  v9 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v9 didTriggerOneTimeAction:*MEMORY[0x277D6FD10]];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]2 didTriggerOneTimeAction:*MEMORY[0x277D6FD10]];
 
-  v10 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v10 didTriggerOneTimeAction:*MEMORY[0x277D6F650]];
+  mEMORY[0x277D6F470]3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]3 didTriggerOneTimeAction:*MEMORY[0x277D6F650]];
 
-  v11 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v11 didTriggerOneTimeAction:*MEMORY[0x277D6F618]];
+  mEMORY[0x277D6F470]4 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]4 didTriggerOneTimeAction:*MEMORY[0x277D6F618]];
 
-  v12 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v12 didTriggerOneTimeAction:*MEMORY[0x277D6F9F0]];
+  mEMORY[0x277D6F470]5 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]5 didTriggerOneTimeAction:*MEMORY[0x277D6F9F0]];
 
-  v13 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  [v13 didTriggerOneTimeAction:*MEMORY[0x277D6F9F8]];
+  mEMORY[0x277D6F470]6 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  [mEMORY[0x277D6F470]6 didTriggerOneTimeAction:*MEMORY[0x277D6F9F8]];
 
   return +[TypistKeyboardUtilities allOneTimeActionsAlreadyTriggered];
 }
 
-+ (BOOL)inhibitGlobalAlerts:(BOOL)a3
++ (BOOL)inhibitGlobalAlerts:(BOOL)alerts
 {
   result = assertion;
-  if (a3)
+  if (alerts)
   {
     if (assertion)
     {
@@ -1523,164 +1523,164 @@ LABEL_4:
 
 + (BOOL)getAutoCapitalizationPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F7B8]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F7B8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getAutoCorrectionPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F7C0]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F7C0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getCheckSpellingPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F820]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F820]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getPeriodShortcutPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F920]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F920]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getCapsLockPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F818]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F818]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getPredictivePrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F928]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F928]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getFuzzyPinyinPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F630]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F630]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getKeyPaddlePrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F7A0]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F7A0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getSmartQuotesPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FA88]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FA88]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getSmartDashesPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FA78]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FA78]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getGestureKeyPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D76AA8]];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:*MEMORY[0x277D76AA8]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getSmallDisplayPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:@"LowerCaseKeyboard"];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:@"LowerCaseKeyboard"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getTypologyEnabled
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FD08]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FD08]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getDictationEnabled
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:@"dictation"];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:@"dictation"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)getSmartFullWidthSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FA80]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FA80]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (int)getShuangpinPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FA70]];
-  v4 = [v3 intValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FA70]];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 + (BOOL)getHWKeyboardCapsLockRomanSwitchPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F640]];
-  v4 = [v3 BOOLValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6F640]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (int)getWubiPrefSetting
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6FD18]];
-  v4 = [v3 intValue];
+  getTIPreferences = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getTIPreferences];
+  v3 = [getTIPreferences objectForKeyedSubscript:*MEMORY[0x277D6FD18]];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 + (id)getAggregatedTIPreferences
@@ -1692,8 +1692,8 @@ LABEL_4:
 
 + (id)getOneHandedKeyboardHandBias
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D6F7C8]];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:*MEMORY[0x277D6F7C8]];
   v4 = v3;
   if (v3)
   {
@@ -1710,12 +1710,12 @@ LABEL_4:
   return v5;
 }
 
-+ (id)setOneHandedKeyboardHandBias:(id)a3
++ (id)setOneHandedKeyboardHandBias:(id)bias
 {
-  v3 = a3;
+  biasCopy = bias;
   v4 = +[TypistKeyboardData keyboardData];
   v5 = *MEMORY[0x277D6F7C8];
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v3 forKey:*MEMORY[0x277D6F7C8]];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:biasCopy forKey:*MEMORY[0x277D6F7C8]];
 
   v7 = [(objc_class *)v4 setKeyboardUISettings:v6];
   v8 = [v7 objectForKeyedSubscript:v5];
@@ -1725,11 +1725,11 @@ LABEL_4:
 
 + (BOOL)isFloating
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
-  v3 = [v2 objectForKeyedSubscript:@"floatingKeyboard"];
-  v4 = [v3 BOOLValue];
+  getKeyboardUISettings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyboardUISettings];
+  v3 = [getKeyboardUISettings objectForKeyedSubscript:@"floatingKeyboard"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (CGPoint)floatingKeyboardDraggablePoint
@@ -1742,9 +1742,9 @@ LABEL_4:
   return result;
 }
 
-+ (id)getRegionCodeFromKeyboardID:(id)a3
++ (id)getRegionCodeFromKeyboardID:(id)d
 {
-  v3 = [a3 componentsSeparatedByString:@"@"];
+  v3 = [d componentsSeparatedByString:@"@"];
   v4 = MEMORY[0x277CCACC0];
   v5 = [v3 objectAtIndexedSubscript:0];
   v6 = [v4 matchText:v5 withPattern:@"_[a-zA-Z]+-"];
@@ -1752,8 +1752,8 @@ LABEL_4:
   if (v6)
   {
     v7 = [v3 objectAtIndexedSubscript:0];
-    v8 = [v6 range];
-    v10 = [v7 substringWithRange:{v8, v9}];
+    range = [v6 range];
+    v10 = [v7 substringWithRange:{range, v9}];
 
     v11 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-_"];
     v12 = [v10 stringByTrimmingCharactersInSet:v11];
@@ -1769,8 +1769,8 @@ LABEL_5:
   if (v10)
   {
     v15 = [v3 objectAtIndexedSubscript:0];
-    v16 = [v10 range];
-    v11 = [v15 substringWithRange:{v16, v17}];
+    range2 = [v10 range];
+    v11 = [v15 substringWithRange:{range2, v17}];
 
     v18 = [v11 componentsSeparatedByString:@"_"];
     v12 = [v18 objectAtIndexedSubscript:1];
@@ -1784,45 +1784,45 @@ LABEL_6:
   return v12;
 }
 
-+ (void)correctForRotation:(CGVector *)a3 orientation:(int64_t)a4
++ (void)correctForRotation:(CGVector *)rotation orientation:(int64_t)orientation
 {
-  switch(a4)
+  switch(orientation)
   {
     case 4:
-      dy = a3->dy;
-      dx = -a3->dx;
+      dy = rotation->dy;
+      dx = -rotation->dx;
       goto LABEL_7;
     case 3:
-      dx = a3->dx;
-      dy = -a3->dy;
+      dx = rotation->dx;
+      dy = -rotation->dy;
 LABEL_7:
-      a3->dx = dy;
-      a3->dy = dx;
+      rotation->dx = dy;
+      rotation->dy = dx;
       return;
     case 2:
-      *a3 = vnegq_f64(*a3);
+      *rotation = vnegq_f64(*rotation);
       break;
   }
 }
 
 + (id)formattedKeyplaneName
 {
-  v2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getVisibleKeyplaneName];
-  if ([v2 containsString:@"_"])
+  getVisibleKeyplaneName = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getVisibleKeyplaneName];
+  if ([getVisibleKeyplaneName containsString:@"_"])
   {
-    v3 = [v2 componentsSeparatedByString:@"_"];
-    v4 = [v3 lastObject];
-    v5 = [v4 lowercaseString];
+    v3 = [getVisibleKeyplaneName componentsSeparatedByString:@"_"];
+    lastObject = [v3 lastObject];
+    lowercaseString = [lastObject lowercaseString];
 
-    v2 = v5;
+    getVisibleKeyplaneName = lowercaseString;
   }
 
-  return v2;
+  return getVisibleKeyplaneName;
 }
 
-+ (id)searchForWindow:(id)a3
++ (id)searchForWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -1833,7 +1833,7 @@ LABEL_7:
   v7[1] = 3221225472;
   v7[2] = __55__TypistKeyboardUtilities_KeyboardUI__searchForWindow___block_invoke;
   v7[3] = &unk_279DF4758;
-  v4 = v3;
+  v4 = windowCopy;
   v8 = v4;
   v9 = &v10;
   [TypistKeyboardUtilities runOnMainThread:v7];
@@ -1890,16 +1890,16 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)searchForViewInKeyboardWindow:(id)a3
++ (id)searchForViewInKeyboardWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__3;
   v12 = __Block_byref_object_dispose__3;
   v13 = 0;
-  v4 = NSClassFromString(v3);
+  v4 = NSClassFromString(windowCopy);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__TypistKeyboardUtilities_KeyboardUI__searchForViewInKeyboardWindow___block_invoke;
@@ -1939,10 +1939,10 @@ void __69__TypistKeyboardUtilities_KeyboardUI__searchForViewInKeyboardWindow___b
   *(v5 + 40) = v3;
 }
 
-+ (CGRect)findKeyBoundsInKeyboard:(id)a3
++ (CGRect)findKeyBoundsInKeyboard:(id)keyboard
 {
-  v3 = a3;
-  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData findKeyBoundsInKeyboard:"findKeyBoundsInKeyboard:", v3];
+  keyboardCopy = keyboard;
+  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData findKeyBoundsInKeyboard:"findKeyBoundsInKeyboard:", keyboardCopy];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1961,8 +1961,8 @@ void __69__TypistKeyboardUtilities_KeyboardUI__searchForViewInKeyboardWindow___b
 
 + (id)getRootViewControllerViaScene
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 connectedScenes];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
 
   v7 = 0;
   v8 = &v7;
@@ -1975,7 +1975,7 @@ void __69__TypistKeyboardUtilities_KeyboardUI__searchForViewInKeyboardWindow___b
   v6[2] = __68__TypistKeyboardUtilities_KeyboardUI__getRootViewControllerViaScene__block_invoke;
   v6[3] = &unk_279DF49A0;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [connectedScenes enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -2095,9 +2095,9 @@ LABEL_13:
     [v39[5] size];
     if (v9 >= v10)
     {
-      v16 = [MEMORY[0x277D75418] currentDevice];
-      v17 = [v16 model];
-      v18 = [v17 isEqualToString:@"iPhone"];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      model = [currentDevice model];
+      v18 = [model isEqualToString:@"iPhone"];
 
       if (v18)
       {

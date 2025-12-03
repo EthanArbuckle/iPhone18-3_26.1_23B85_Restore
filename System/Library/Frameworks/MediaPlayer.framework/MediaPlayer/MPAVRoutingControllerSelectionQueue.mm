@@ -1,20 +1,20 @@
 @interface MPAVRoutingControllerSelectionQueue
 - (BOOL)hasPendingRoutes;
-- (BOOL)routeIsPendingPick:(id)a3;
+- (BOOL)routeIsPendingPick:(id)pick;
 - (MPAVRoute)pendingPickedRoute;
 - (MPAVRoutingController)routingController;
-- (MPAVRoutingControllerSelectionQueue)initWithRoutingController:(id)a3;
+- (MPAVRoutingControllerSelectionQueue)initWithRoutingController:(id)controller;
 - (NSSet)pendingPickedRoutes;
 - (void)_dequeue;
 - (void)_dequeueSelectionWhenPossible;
-- (void)_enqueue:(id)a3;
-- (void)_processSelection:(id)a3 completion:(id)a4;
-- (void)addPendingRoutes:(id)a3;
-- (void)cancelInProgressSelectionForRoute:(id)a3;
-- (void)enqueueSelectionOperation:(int64_t)a3 forRoutes:(id)a4 completion:(id)a5;
+- (void)_enqueue:(id)_enqueue;
+- (void)_processSelection:(id)selection completion:(id)completion;
+- (void)addPendingRoutes:(id)routes;
+- (void)cancelInProgressSelectionForRoute:(id)route;
+- (void)enqueueSelectionOperation:(int64_t)operation forRoutes:(id)routes completion:(id)completion;
 - (void)pickedRouteDidChange;
 - (void)removeAllPendingRoutes;
-- (void)removePendingRoutes:(id)a3 withError:(BOOL)a4;
+- (void)removePendingRoutes:(id)routes withError:(BOOL)error;
 @end
 
 @implementation MPAVRoutingControllerSelectionQueue
@@ -193,39 +193,39 @@ uint64_t __47__MPAVRoutingControllerSelectionQueue__dequeue__block_invoke(uint64
   return WeakRetained;
 }
 
-- (void)_processSelection:(id)a3 completion:(id)a4
+- (void)_processSelection:(id)selection completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 routes];
-  v9 = [v8 mutableCopy];
+  selectionCopy = selection;
+  completionCopy = completion;
+  routes = [selectionCopy routes];
+  v9 = [routes mutableCopy];
 
-  v10 = [v6 selectionOperation];
+  selectionOperation = [selectionCopy selectionOperation];
   WeakRetained = objc_loadWeakRetained(&self->_routingController);
-  v12 = [WeakRetained dataSource];
+  dataSource = [WeakRetained dataSource];
   [WeakRetained _clearLegacyCachedRoute];
   if (WeakRetained)
   {
-    v13 = [WeakRetained pickedRoute];
-    v14 = v13;
-    if (!v10)
+    pickedRoute = [WeakRetained pickedRoute];
+    v14 = pickedRoute;
+    if (!selectionOperation)
     {
 LABEL_38:
-      v36 = [v9 firstObject];
+      firstObject = [v9 firstObject];
       v37 = os_log_create("com.apple.amp.mediaplayer", "Routing");
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *v48 = v36;
+        *v48 = firstObject;
         _os_log_impl(&dword_1A238D000, v37, OS_LOG_TYPE_DEFAULT, "RCS set picked route %{public}@", buf, 0xCu);
       }
 
-      [v12 setPickedRoute:v36 withPassword:0 completion:v7];
+      [dataSource setPickedRoute:firstObject withPassword:0 completion:completionCopy];
       goto LABEL_41;
     }
 
-    if (v10 == 2)
+    if (selectionOperation == 2)
     {
       v28 = os_log_create("com.apple.amp.mediaplayer", "Routing");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -235,32 +235,32 @@ LABEL_38:
         _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "RCS remove routes %{public}@", buf, 0xCu);
       }
 
-      [v12 removeRoutesFromGroup:v9 completion:v7];
+      [dataSource removeRoutesFromGroup:v9 completion:completionCopy];
       goto LABEL_41;
     }
 
-    if (v10 != 1)
+    if (selectionOperation != 1)
     {
 LABEL_41:
 
       goto LABEL_42;
     }
 
-    v41 = v13;
-    v15 = [WeakRetained supportsMultipleSelection];
+    v41 = pickedRoute;
+    supportsMultipleSelection = [WeakRetained supportsMultipleSelection];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v16 = [v6 routes];
-    v17 = [v16 countByEnumeratingWithState:&v42 objects:v53 count:16];
+    routes2 = [selectionCopy routes];
+    v17 = [routes2 countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v17)
     {
       v18 = v17;
-      v39 = v12;
-      v40 = v7;
-      LODWORD(v38) = v15;
-      HIDWORD(v38) = v15 ^ 1;
+      v39 = dataSource;
+      v40 = completionCopy;
+      LODWORD(v38) = supportsMultipleSelection;
+      HIDWORD(v38) = supportsMultipleSelection ^ 1;
       v19 = *v43;
       do
       {
@@ -268,26 +268,26 @@ LABEL_41:
         {
           if (*v43 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(routes2);
           }
 
           v21 = *(*(&v42 + 1) + 8 * i);
-          v22 = [v21 isDeviceSpeakerRoute];
-          v23 = [v21 supportsGrouping];
+          isDeviceSpeakerRoute = [v21 isDeviceSpeakerRoute];
+          supportsGrouping = [v21 supportsGrouping];
         }
 
-        v24 = v23;
-        v18 = [v16 countByEnumeratingWithState:&v42 objects:v53 count:16];
+        v24 = supportsGrouping;
+        v18 = [routes2 countByEnumeratingWithState:&v42 objects:v53 count:16];
       }
 
       while (v18);
       v25 = v24 ^ 1;
 
-      if (v22)
+      if (isDeviceSpeakerRoute)
       {
         v26 = os_log_create("com.apple.amp.mediaplayer", "Routing");
-        v12 = v39;
-        v7 = v40;
+        dataSource = v39;
+        completionCopy = v40;
         v14 = v41;
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
@@ -300,8 +300,8 @@ LABEL_41:
         goto LABEL_31;
       }
 
-      v12 = v39;
-      v7 = v40;
+      dataSource = v39;
+      completionCopy = v40;
       v14 = v41;
       if (v38)
       {
@@ -335,8 +335,8 @@ LABEL_31:
             }
           }
 
-          v34 = [v9 firstObject];
-          v46 = v34;
+          firstObject2 = [v9 firstObject];
+          v46 = firstObject2;
           v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
 
           v9 = v35;
@@ -352,7 +352,7 @@ LABEL_25:
           _os_log_impl(&dword_1A238D000, v29, OS_LOG_TYPE_DEFAULT, "RCS add routes %{public}@", buf, 0xCu);
         }
 
-        [v12 addRoutesToGroup:v9 completion:v7];
+        [dataSource addRoutesToGroup:v9 completion:completionCopy];
         goto LABEL_41;
       }
     }
@@ -361,7 +361,7 @@ LABEL_25:
     {
 
       v14 = v41;
-      if (v15)
+      if (supportsMultipleSelection)
       {
         goto LABEL_25;
       }
@@ -560,19 +560,19 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
   *(v2 + 24) = 0;
 }
 
-- (void)_enqueue:(id)a3
+- (void)_enqueue:(id)_enqueue
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _enqueueCopy = _enqueue;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Routing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = _enqueueCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "RCS enqueue %{public}@", &buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v64 = 0x3032000000;
@@ -585,7 +585,7 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
   block[2] = __48__MPAVRoutingControllerSelectionQueue__enqueue___block_invoke;
   block[3] = &unk_1E7681330;
   block[4] = self;
-  v8 = v4;
+  v8 = _enqueueCopy;
   v51 = v8;
   p_buf = &buf;
   dispatch_sync(serialQueue, block);
@@ -600,29 +600,29 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
       _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "RCS will use existing selection %{public}@", &v55, 0xCu);
     }
 
-    v11 = [*(*(&buf + 1) + 40) completion];
-    if (v11)
+    completion = [*(*(&buf + 1) + 40) completion];
+    if (completion)
     {
       v12 = MEMORY[0x1E696ABC0];
       v61 = *MEMORY[0x1E696A278];
       v62 = @"Enqueued route was cancelled because a new selection for the same route was enqueued.";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
       v14 = [v12 errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:6 userInfo:v13];
-      (v11)[2](v11, v14);
+      (completion)[2](completion, v14);
     }
 
-    v15 = [v8 completion];
-    [*(*(&buf + 1) + 40) setCompletion:v15];
+    completion2 = [v8 completion];
+    [*(*(&buf + 1) + 40) setCompletion:completion2];
 
-    v16 = [v8 selectionOperation];
-    [*(*(&buf + 1) + 40) setSelectionOperation:v16];
+    selectionOperation = [v8 selectionOperation];
+    [*(*(&buf + 1) + 40) setSelectionOperation:selectionOperation];
     v35 = v8;
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v17 = [*(*(&buf + 1) + 40) routes];
-    v18 = [v17 countByEnumeratingWithState:&v46 objects:v60 count:16];
+    routes = [*(*(&buf + 1) + 40) routes];
+    v18 = [routes countByEnumeratingWithState:&v46 objects:v60 count:16];
     if (v18)
     {
       v19 = *v47;
@@ -632,7 +632,7 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
         {
           if (*v47 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(routes);
           }
 
           v21 = *(*(&v46 + 1) + 8 * i);
@@ -659,11 +659,11 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
           v24 = ([v21 isPicked] & 1) == 0 && objc_msgSend(*(*(&buf + 1) + 40), "selectionOperation") == 2;
           if (v22 || v23 || v24)
           {
-            [v6 addObject:v21];
+            [array addObject:v21];
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v46 objects:v60 count:16];
+        v18 = [routes countByEnumeratingWithState:&v46 objects:v60 count:16];
       }
 
       while (v18);
@@ -687,7 +687,7 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
     v42[3] = &unk_1E7681330;
     v26 = v8;
     v43 = v26;
-    v44 = self;
+    selfCopy = self;
     v45 = &v55;
     dispatch_sync(v25, v42);
     v27 = *(*(&v55 + 1) + 40);
@@ -700,17 +700,17 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
       v38[3] = &unk_1E7681330;
       v41 = &v55;
       v39 = v26;
-      v40 = self;
+      selfCopy2 = self;
       dispatch_sync(v30, v38);
-      v31 = [*(*(&v55 + 1) + 40) completion];
-      if (v31)
+      completion3 = [*(*(&v55 + 1) + 40) completion];
+      if (completion3)
       {
         v32 = MEMORY[0x1E696ABC0];
         v53 = *MEMORY[0x1E696A278];
         v54 = @"Route in progress was interrupted by a new selection for the same route.";
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
         v34 = [v32 errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:6 userInfo:v33];
-        (v31)[2](v31, v34);
+        (completion3)[2](completion3, v34);
       }
 
       [*(*(&v55 + 1) + 40) setCompletion:0];
@@ -731,7 +731,7 @@ void __68__MPAVRoutingControllerSelectionQueue__dequeueSelectionWhenPossible__bl
     _Block_object_dispose(&v55, 8);
   }
 
-  [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:v6];
+  [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:array];
   [(MPAVRoutingControllerSelectionQueue *)self _dequeue];
 
   _Block_object_dispose(&buf, 8);
@@ -814,11 +814,11 @@ uint64_t __48__MPAVRoutingControllerSelectionQueue__enqueue___block_invoke_2(voi
   return [*(a1[5] + 16) insertObject:a1[4] atIndex:0];
 }
 
-- (void)removePendingRoutes:(id)a3 withError:(BOOL)a4
+- (void)removePendingRoutes:(id)routes withError:(BOOL)error
 {
-  v4 = a4;
+  errorCopy = error;
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  routesCopy = routes;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -830,18 +830,18 @@ uint64_t __48__MPAVRoutingControllerSelectionQueue__enqueue___block_invoke_2(voi
   block[1] = 3221225472;
   block[2] = __69__MPAVRoutingControllerSelectionQueue_removePendingRoutes_withError___block_invoke;
   block[3] = &unk_1E7681330;
-  v8 = v6;
+  v8 = routesCopy;
   v24 = v8;
-  v25 = self;
+  selfCopy = self;
   v26 = &v27;
   dispatch_sync(serialQueue, block);
   v9 = v28[5];
   if (v9)
   {
-    v10 = [v9 completion];
-    if (v10)
+    completion = [v9 completion];
+    if (completion)
     {
-      if (v4)
+      if (errorCopy)
       {
         v11 = MEMORY[0x1E696ABC0];
         v33 = *MEMORY[0x1E696A278];
@@ -855,7 +855,7 @@ uint64_t __48__MPAVRoutingControllerSelectionQueue__enqueue___block_invoke_2(voi
         v13 = 0;
       }
 
-      (v10)[2](v10, v13);
+      (completion)[2](completion, v13);
     }
 
     [v28[5] setCompletion:0];
@@ -868,7 +868,7 @@ uint64_t __48__MPAVRoutingControllerSelectionQueue__enqueue___block_invoke_2(voi
   v20[3] = &unk_1E76823C0;
   v15 = v8;
   v21 = v15;
-  v22 = self;
+  selfCopy2 = self;
   dispatch_sync(v14, v20);
   WeakRetained = objc_loadWeakRetained(&self->_routingController);
   v17 = WeakRetained;
@@ -986,14 +986,14 @@ void __69__MPAVRoutingControllerSelectionQueue_removePendingRoutes_withError___b
 
 - (void)removeAllPendingRoutes
 {
-  v3 = [(NSMutableSet *)self->_pendingRoutes allObjects];
-  [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:v3];
+  allObjects = [(NSMutableSet *)self->_pendingRoutes allObjects];
+  [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:allObjects];
 }
 
-- (void)addPendingRoutes:(id)a3
+- (void)addPendingRoutes:(id)routes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69B14D8];
   v27[0] = MEMORY[0x1E69E9820];
@@ -1001,7 +1001,7 @@ void __69__MPAVRoutingControllerSelectionQueue_removePendingRoutes_withError___b
   v27[2] = __56__MPAVRoutingControllerSelectionQueue_addPendingRoutes___block_invoke;
   v27[3] = &unk_1E767FE98;
   objc_copyWeak(&v29, &location);
-  v6 = v4;
+  v6 = routesCopy;
   v28 = v6;
   v7 = [v5 timerWithInterval:0 repeats:v27 block:60.0];
   v23 = 0;
@@ -1015,7 +1015,7 @@ void __69__MPAVRoutingControllerSelectionQueue_removePendingRoutes_withError___b
   block[3] = &unk_1E7681900;
   v9 = v6;
   v19 = v9;
-  v20 = self;
+  selfCopy = self;
   v10 = v7;
   v21 = v10;
   v22 = &v23;
@@ -1122,9 +1122,9 @@ void __56__MPAVRoutingControllerSelectionQueue_addPendingRoutes___block_invoke_4
   }
 }
 
-- (BOOL)routeIsPendingPick:(id)a3
+- (BOOL)routeIsPendingPick:(id)pick
 {
-  v4 = a3;
+  pickCopy = pick;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1135,9 +1135,9 @@ void __56__MPAVRoutingControllerSelectionQueue_addPendingRoutes___block_invoke_4
   block[2] = __58__MPAVRoutingControllerSelectionQueue_routeIsPendingPick___block_invoke;
   block[3] = &unk_1E7681330;
   block[4] = self;
-  v9 = v4;
+  v9 = pickCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = pickCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -1273,20 +1273,20 @@ uint64_t __55__MPAVRoutingControllerSelectionQueue_hasPendingRoutes__block_invok
   return result;
 }
 
-- (void)enqueueSelectionOperation:(int64_t)a3 forRoutes:(id)a4 completion:(id)a5
+- (void)enqueueSelectionOperation:(int64_t)operation forRoutes:(id)routes completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[MPAVRoutingControllerSelection alloc] initWithRoutes:v9 selectionOperation:a3];
+  completionCopy = completion;
+  routesCopy = routes;
+  v10 = [[MPAVRoutingControllerSelection alloc] initWithRoutes:routesCopy selectionOperation:operation];
 
-  [(MPAVRoutingControllerSelection *)v10 setCompletion:v8];
+  [(MPAVRoutingControllerSelection *)v10 setCompletion:completionCopy];
   [(MPAVRoutingControllerSelectionQueue *)self _enqueue:v10];
 }
 
-- (void)cancelInProgressSelectionForRoute:(id)a3
+- (void)cancelInProgressSelectionForRoute:(id)route
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routeCopy = route;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1312,18 +1312,18 @@ uint64_t __55__MPAVRoutingControllerSelectionQueue_hasPendingRoutes__block_invok
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "RCS cancelling in-progress selection %{public}@", buf, 0xCu);
     }
 
-    v8 = [v19[5] completion];
-    v9 = v8 == 0;
+    completion = [v19[5] completion];
+    v9 = completion == 0;
 
     if (!v9)
     {
-      v10 = [v19[5] completion];
+      completion2 = [v19[5] completion];
       v11 = MEMORY[0x1E696ABC0];
       v24 = *MEMORY[0x1E696A278];
       v25 = @"Route selection cancelled by MPAVRoutingController cancelInProgressSelectionForRoute:";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v13 = [v11 errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:6 userInfo:v12];
-      (v10)[2](v10, v13);
+      (completion2)[2](completion2, v13);
     }
 
     [v19[5] setCompletion:0];
@@ -1334,8 +1334,8 @@ uint64_t __55__MPAVRoutingControllerSelectionQueue_hasPendingRoutes__block_invok
     v16[3] = &unk_1E7682518;
     v16[4] = self;
     dispatch_sync(v14, v16);
-    v15 = [v19[5] routes];
-    [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:v15];
+    routes = [v19[5] routes];
+    [(MPAVRoutingControllerSelectionQueue *)self removePendingRoutes:routes];
 
     [(MPAVRoutingControllerSelectionQueue *)self _dequeue];
   }
@@ -1350,9 +1350,9 @@ void __73__MPAVRoutingControllerSelectionQueue_cancelInProgressSelectionForRoute
   *(v1 + 24) = 0;
 }
 
-- (MPAVRoutingControllerSelectionQueue)initWithRoutingController:(id)a3
+- (MPAVRoutingControllerSelectionQueue)initWithRoutingController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = MPAVRoutingControllerSelectionQueue;
   v5 = [(MPAVRoutingControllerSelectionQueue *)&v15 init];
@@ -1362,18 +1362,18 @@ void __73__MPAVRoutingControllerSelectionQueue_cancelInProgressSelectionForRoute
     serialQueue = v5->_serialQueue;
     v5->_serialQueue = v6;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     selectionsEnqueued = v5->_selectionsEnqueued;
-    v5->_selectionsEnqueued = v8;
+    v5->_selectionsEnqueued = array;
 
-    objc_storeWeak(&v5->_routingController, v4);
+    objc_storeWeak(&v5->_routingController, controllerCopy);
     v10 = [MEMORY[0x1E695DFA8] set];
     pendingRoutes = v5->_pendingRoutes;
     v5->_pendingRoutes = v10;
 
-    v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     pendingSelectionTimers = v5->_pendingSelectionTimers;
-    v5->_pendingSelectionTimers = v12;
+    v5->_pendingSelectionTimers = weakToStrongObjectsMapTable;
   }
 
   return v5;

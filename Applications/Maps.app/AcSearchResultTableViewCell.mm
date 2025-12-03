@@ -1,9 +1,9 @@
 @interface AcSearchResultTableViewCell
-+ (id)identifierWithChildItemsCount:(unint64_t)a3;
-- (AcSearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (id)identifierWithChildItemsCount:(unint64_t)count;
+- (AcSearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (AcSearchResultTableViewCellDelegate)delegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)estimatedChildItemsStackViewWidthWithContentViewWidth:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)estimatedChildItemsStackViewWidthWithContentViewWidth:(double)width;
 - (double)iconSize;
 - (double)trailingMargin;
 - (id)_highlightedLabelColor;
@@ -21,18 +21,18 @@
 - (int64_t)containerAlignment;
 - (void)_setHighlightedLabelColors;
 - (void)_updateAccessoryTintColor;
-- (void)addTransitLabelWithFirstPartDetailString:(id)a3 secondPartDetailString:(id)a4;
-- (void)didTapChildItemButtonForChildItem:(id)a3;
+- (void)addTransitLabelWithFirstPartDetailString:(id)string secondPartDetailString:(id)detailString;
+- (void)didTapChildItemButtonForChildItem:(id)item;
 - (void)didUpdateMapItem;
 - (void)didUpdatePublisherResult;
 - (void)loadPhoto;
 - (void)prepareForReuse;
 - (void)removeTransitLabel;
-- (void)setAccessoryViewType:(int64_t)a3;
-- (void)setChildItems:(id)a3 viewModel:(id)a4;
-- (void)setObject:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupPlaceContextContent:(id)a3;
+- (void)setAccessoryViewType:(int64_t)type;
+- (void)setChildItems:(id)items viewModel:(id)model;
+- (void)setObject:(id)object;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setupPlaceContextContent:(id)content;
 - (void)updateChildItemGridAlignmentRectInset;
 - (void)updateChildItems;
 - (void)updateContent;
@@ -48,27 +48,27 @@
   return WeakRetained;
 }
 
-- (void)didTapChildItemButtonForChildItem:(id)a3
+- (void)didTapChildItemButtonForChildItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v10 = v4;
-    v5 = [(AcSearchResultTableViewCell *)self delegate];
+    v10 = itemCopy;
+    delegate = [(AcSearchResultTableViewCell *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
-    v4 = v10;
+    itemCopy = v10;
     if (v6)
     {
       v7 = [(NSArray *)self->_childItems indexOfObject:v10];
-      v4 = v10;
+      itemCopy = v10;
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v8 = [NSIndexPath indexPathForRow:v7 inSection:0];
-        v9 = [(AcSearchResultTableViewCell *)self delegate];
-        [v9 didTapItemInChildItems:self->_childItems atIndexPath:v8 forCell:self];
+        delegate2 = [(AcSearchResultTableViewCell *)self delegate];
+        [delegate2 didTapItemInChildItems:self->_childItems atIndexPath:v8 forCell:self];
 
-        v4 = v10;
+        itemCopy = v10;
       }
     }
   }
@@ -92,13 +92,13 @@
   }
 }
 
-- (void)addTransitLabelWithFirstPartDetailString:(id)a3 secondPartDetailString:(id)a4
+- (void)addTransitLabelWithFirstPartDetailString:(id)string secondPartDetailString:(id)detailString
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [(AcSearchResultTableViewCell *)self wantsTwoLineLayout];
+  stringCopy = string;
+  detailStringCopy = detailString;
+  wantsTwoLineLayout = [(AcSearchResultTableViewCell *)self wantsTwoLineLayout];
   transitInfoLabel = self->super._transitInfoLabel;
-  if (v7)
+  if (wantsTwoLineLayout)
   {
     if (!transitInfoLabel)
     {
@@ -113,32 +113,32 @@
       [(MKTransitInfoLabelView *)self->super._transitInfoLabel setContentCompressionResistancePriority:0 forAxis:v12];
     }
 
-    v13 = v25;
-    if (!v25)
+    attributedFirstPartDetailString = stringCopy;
+    if (!stringCopy)
     {
-      v13 = [(AcSearchResultTableViewCell *)self attributedFirstPartDetailString];
+      attributedFirstPartDetailString = [(AcSearchResultTableViewCell *)self attributedFirstPartDetailString];
     }
 
-    v25 = v13;
-    if ([v13 length])
+    stringCopy = attributedFirstPartDetailString;
+    if ([attributedFirstPartDetailString length])
     {
       goto LABEL_10;
     }
 
-    if (!v6)
+    if (!detailStringCopy)
     {
-      v6 = [(AcSearchResultTableViewCell *)self attributedSecondPartDetailString];
+      detailStringCopy = [(AcSearchResultTableViewCell *)self attributedSecondPartDetailString];
     }
 
-    if ([v6 length])
+    if ([detailStringCopy length])
     {
 LABEL_10:
       transitDelimiterLabel = self->super._transitDelimiterLabel;
       if (!transitDelimiterLabel)
       {
-        v15 = [(_SearchResultTableViewCell *)self _delimiterLabel];
+        _delimiterLabel = [(_SearchResultTableViewCell *)self _delimiterLabel];
         v16 = self->super._transitDelimiterLabel;
-        self->super._transitDelimiterLabel = v15;
+        self->super._transitDelimiterLabel = _delimiterLabel;
 
         LODWORD(v17) = 1144717312;
         [(UILabel *)self->super._transitDelimiterLabel setContentCompressionResistancePriority:0 forAxis:v17];
@@ -216,15 +216,15 @@ LABEL_22:
   return v3;
 }
 
-- (void)setChildItems:(id)a3 viewModel:(id)a4
+- (void)setChildItems:(id)items viewModel:(id)model
 {
-  v24 = a4;
-  v7 = [a3 copy];
+  modelCopy = model;
+  v7 = [items copy];
   childItems = self->_childItems;
   self->_childItems = v7;
 
   v9 = self->_childItemsViewModel;
-  objc_storeStrong(&self->_childItemsViewModel, a4);
+  objc_storeStrong(&self->_childItemsViewModel, model);
   if (![(ChildItemsViewModel *)self->_childItemsViewModel isEqual:v9])
   {
     childItemGrid = self->_childItemGrid;
@@ -232,18 +232,18 @@ LABEL_22:
     {
       v23 = v9;
       [(_SearchResultChildItemGridView *)childItemGrid removeAllArrangedSubviews];
-      v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v24 numberOfColumns] * objc_msgSend(v24, "numberOfRows"));
-      if ([v24 numberOfRows])
+      v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [modelCopy numberOfColumns] * objc_msgSend(modelCopy, "numberOfRows"));
+      if ([modelCopy numberOfRows])
       {
         v12 = 0;
         v13 = 0;
         do
         {
-          v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v24 numberOfColumns]);
-          if ([v24 numberOfColumns])
+          v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [modelCopy numberOfColumns]);
+          if ([modelCopy numberOfColumns])
           {
             v15 = 0;
-            v16 = v24;
+            v16 = modelCopy;
             do
             {
               if (v13 + v15 >= [v16 childItemsCount])
@@ -270,8 +270,8 @@ LABEL_22:
 
               [v18 addObject:v17];
 
-              v19 = ++v15 >= [v24 numberOfColumns];
-              v16 = v24;
+              v19 = ++v15 >= [modelCopy numberOfColumns];
+              v16 = modelCopy;
             }
 
             while (!v19);
@@ -286,7 +286,7 @@ LABEL_22:
           ++v12;
         }
 
-        while (v12 < [v24 numberOfRows]);
+        while (v12 < [modelCopy numberOfRows]);
       }
 
       v21 = [v11 copy];
@@ -300,7 +300,7 @@ LABEL_22:
 
 - (void)updateChildItems
 {
-  v6 = [(AcSearchResultTableViewCell *)self childItems];
+  childItems = [(AcSearchResultTableViewCell *)self childItems];
   if ([(ChildItemButtonProtocol *)self->_childItemButtons count])
   {
     v3 = 0;
@@ -308,7 +308,7 @@ LABEL_22:
     {
       v4 = [(ChildItemButtonProtocol *)self->_childItemButtons objectAtIndexedSubscript:v3];
       [v4 setDelegate:self];
-      v5 = [v6 objectAtIndexedSubscript:v3];
+      v5 = [childItems objectAtIndexedSubscript:v3];
       [v4 setChildItem:v5];
 
       ++v3;
@@ -328,25 +328,25 @@ LABEL_22:
   v24 = imageState;
   v23[4] = self;
   v4 = objc_retainBlock(v23);
-  v5 = [(_SearchResultTableViewCell *)self mapItem];
+  mapItem = [(_SearchResultTableViewCell *)self mapItem];
   v6 = self->_completion;
   [(AcSearchResultTableViewCell *)self iconSize];
   v8 = v7;
-  v9 = [(_SearchResultTableViewCell *)self publisherResult];
+  publisherResult = [(_SearchResultTableViewCell *)self publisherResult];
 
-  if (v9)
+  if (publisherResult)
   {
     v10 = +[MapsUIImageCache sharedCache];
-    v11 = [(_SearchResultTableViewCell *)self publisherResult];
-    v12 = [v11 publisher];
-    v13 = [v12 publisherAttribution];
-    v14 = [v13 iconIdentifier];
+    publisherResult2 = [(_SearchResultTableViewCell *)self publisherResult];
+    publisher = [publisherResult2 publisher];
+    publisherAttribution = [publisher publisherAttribution];
+    iconIdentifier = [publisherAttribution iconIdentifier];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100BBD1C4;
     v21[3] = &unk_10165FEF8;
     v22 = v4;
-    [v10 getImageForPublisherWithIconIdentifier:v14 completion:v21];
+    [v10 getImageForPublisherWithIconIdentifier:iconIdentifier completion:v21];
 
     v15 = 5.0;
     v16 = v22;
@@ -358,8 +358,8 @@ LABEL_22:
     if (v6 && (![(MKLocalSearchCompletion *)v6 _type]|| [(MKLocalSearchCompletion *)v6 _type]== 3))
     {
       v16 = +[MapsUIImageCache sharedCache];
-      v17 = [v16 searchImage];
-      [(UIImageView *)self->_imageView setImage:v17];
+      searchImage = [v16 searchImage];
+      [(UIImageView *)self->_imageView setImage:searchImage];
     }
 
     else
@@ -370,7 +370,7 @@ LABEL_22:
       v19[2] = sub_100BBD248;
       v19[3] = &unk_10165FEF8;
       v20 = v4;
-      [v18 getImageForMapItem:v5 completion:v19];
+      [v18 getImageForMapItem:mapItem completion:v19];
 
       v16 = v20;
     }
@@ -379,19 +379,19 @@ LABEL_22:
   [(UIImageView *)self->_imageView _setContinuousCornerRadius:v15];
 }
 
-- (void)setupPlaceContextContent:(id)a3
+- (void)setupPlaceContextContent:(id)content
 {
   labelStackView = self->super._labelStackView;
   v4.receiver = self;
   v4.super_class = AcSearchResultTableViewCell;
-  [(_SearchResultTableViewCell *)&v4 setupPlaceContextContent:a3 inStackView:labelStackView];
+  [(_SearchResultTableViewCell *)&v4 setupPlaceContextContent:content inStackView:labelStackView];
 }
 
-- (void)setAccessoryViewType:(int64_t)a3
+- (void)setAccessoryViewType:(int64_t)type
 {
   v4.receiver = self;
   v4.super_class = AcSearchResultTableViewCell;
-  [(_SearchResultTableViewCell *)&v4 setAccessoryViewType:a3];
+  [(_SearchResultTableViewCell *)&v4 setAccessoryViewType:type];
   [(AcSearchResultTableViewCell *)self _updateAccessoryTintColor];
 }
 
@@ -401,18 +401,18 @@ LABEL_22:
   {
     if ([(AcSearchResultTableViewCell *)self isSelected])
     {
-      v6 = +[UIColor whiteColor];
-      v3 = [(AcSearchResultTableViewCell *)self accessoryView];
-      [v3 setTintColor:v6];
+      accessoryView2 = +[UIColor whiteColor];
+      accessoryView = [(AcSearchResultTableViewCell *)self accessoryView];
+      [accessoryView setTintColor:accessoryView2];
     }
 
     else
     {
-      v6 = [(AcSearchResultTableViewCell *)self accessoryView];
-      v3 = [v6 theme];
-      v4 = [v3 keyColor];
-      v5 = [(AcSearchResultTableViewCell *)self accessoryView];
-      [v5 setTintColor:v4];
+      accessoryView2 = [(AcSearchResultTableViewCell *)self accessoryView];
+      accessoryView = [accessoryView2 theme];
+      keyColor = [accessoryView keyColor];
+      accessoryView3 = [(AcSearchResultTableViewCell *)self accessoryView];
+      [accessoryView3 setTintColor:keyColor];
     }
   }
 }
@@ -430,16 +430,16 @@ LABEL_22:
 {
   if ([(AcSearchResultTableViewCell *)self wantsTwoLineLayout])
   {
-    v3 = [(UILabel *)self->super._secondLabel text];
-    if ([v3 length])
+    text = [(UILabel *)self->super._secondLabel text];
+    if ([text length])
     {
     }
 
     else
     {
-      v4 = [(UILabel *)self->super._thirdLabel isHidden];
+      isHidden = [(UILabel *)self->super._thirdLabel isHidden];
 
-      if ((v4 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         return;
       }
@@ -473,48 +473,48 @@ LABEL_22:
 
 - (id)distanceString
 {
-  if (![(AcSearchResultTableViewCell *)self isCompletionTypeAddress]|| (v10 = 0.0, v11 = 0.0, ([(MKLocalSearchCompletion *)self->_completion getCoordinate:&v10]& 1) == 0) || (v3 = v10, v4 = v11, [(_SearchResultTableViewCell *)self currentLocation], v5 = objc_claimAutoreleasedReturnValue(), [(_SearchResultTableViewCell *)self mapItem], v6 = objc_claimAutoreleasedReturnValue(), [NSString distanceStringFromLocation:v5 toCoordinate:v6 withMapItem:&self->super._showDistance showsDistance:1 onlyUseThreshold:0 maximumDistance:1 useShortThreshold:v3, v4], v7 = objc_claimAutoreleasedReturnValue(), v6, v5, !v7))
+  if (![(AcSearchResultTableViewCell *)self isCompletionTypeAddress]|| (v10 = 0.0, v11 = 0.0, ([(MKLocalSearchCompletion *)self->_completion getCoordinate:&v10]& 1) == 0) || (v3 = v10, v4 = v11, [(_SearchResultTableViewCell *)self currentLocation], v5 = objc_claimAutoreleasedReturnValue(), [(_SearchResultTableViewCell *)self mapItem], v6 = objc_claimAutoreleasedReturnValue(), [NSString distanceStringFromLocation:v5 toCoordinate:v6 withMapItem:&self->super._showDistance showsDistance:1 onlyUseThreshold:0 maximumDistance:1 useShortThreshold:v3, v4], distanceString = objc_claimAutoreleasedReturnValue(), v6, v5, !distanceString))
   {
     v9.receiver = self;
     v9.super_class = AcSearchResultTableViewCell;
-    v7 = [(_SearchResultTableViewCell *)&v9 distanceString];
+    distanceString = [(_SearchResultTableViewCell *)&v9 distanceString];
   }
 
-  return v7;
+  return distanceString;
 }
 
 - (id)attributedSubtitleString
 {
   if ([(AcSearchResultTableViewCell *)self isCompletionTypeAddress]|| ([(_SearchResultTableViewCell *)self publisherResult], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = 0;
+    attributedSubtitleString = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = AcSearchResultTableViewCell;
-    v4 = [(_SearchResultTableViewCell *)&v6 attributedSubtitleString];
+    attributedSubtitleString = [(_SearchResultTableViewCell *)&v6 attributedSubtitleString];
   }
 
-  return v4;
+  return attributedSubtitleString;
 }
 
 - (id)delimiterColor
 {
   if ([(AcSearchResultTableViewCell *)self wantsTwoLineLayout])
   {
-    v3 = UIColor;
+    selfCopy = UIColor;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  v4 = [(_SearchResultTableViewCell *)v3 secondaryLabelColor];
+  secondaryLabelColor = [(_SearchResultTableViewCell *)selfCopy secondaryLabelColor];
 
-  return v4;
+  return secondaryLabelColor;
 }
 
 - (id)attributedSecondPartDetailString
@@ -528,19 +528,19 @@ LABEL_22:
   {
     if ([(AcSearchResultTableViewCell *)self wantsTwoLineLayout]&& [(_SearchResultTableViewCell *)self _showOpenStateLabel])
     {
-      v6 = [(_SearchResultTableViewCell *)self hoursBuilderForSearchCell];
-      v7 = [v6 localizedOpenState];
+      hoursBuilderForSearchCell = [(_SearchResultTableViewCell *)self hoursBuilderForSearchCell];
+      localizedOpenState = [hoursBuilderForSearchCell localizedOpenState];
     }
 
     else
     {
-      v7 = 0;
+      localizedOpenState = 0;
     }
 
     v8 = [NSAttributedString alloc];
-    if (v7)
+    if (localizedOpenState)
     {
-      v9 = v7;
+      v9 = localizedOpenState;
     }
 
     else
@@ -565,10 +565,10 @@ LABEL_22:
 - (id)attributedFirstPartDetailString
 {
   v3 = +[NSMutableArray array];
-  v4 = [(AcSearchResultTableViewCell *)self autocompleteClientSourceString];
-  if ([v4 length])
+  autocompleteClientSourceString = [(AcSearchResultTableViewCell *)self autocompleteClientSourceString];
+  if ([autocompleteClientSourceString length])
   {
-    [v3 addObject:v4];
+    [v3 addObject:autocompleteClientSourceString];
   }
 
   if ([(AcSearchResultTableViewCell *)self wantsTwoLineLayout])
@@ -581,39 +581,39 @@ LABEL_22:
     +[UIColor labelColor];
   }
   v5 = ;
-  v6 = [(_SearchResultTableViewCell *)self publisherResult];
+  publisherResult = [(_SearchResultTableViewCell *)self publisherResult];
 
-  if (v6)
+  if (publisherResult)
   {
-    v7 = [(_SearchResultTableViewCell *)self publisherResult];
-    v8 = [v7 publisher];
-    v9 = [v8 publisherAttribution];
-    v10 = [v9 subtitle];
+    publisherResult2 = [(_SearchResultTableViewCell *)self publisherResult];
+    publisher = [publisherResult2 publisher];
+    publisherAttribution = [publisher publisherAttribution];
+    subtitle = [publisherAttribution subtitle];
 
-    if ([v10 length])
+    if ([subtitle length])
     {
-      [v3 addObject:v10];
+      [v3 addObject:subtitle];
     }
   }
 
   else
   {
-    v10 = [(AcSearchResultTableViewCell *)self distanceString];
-    if ([v10 length])
+    subtitle = [(AcSearchResultTableViewCell *)self distanceString];
+    if ([subtitle length])
     {
-      [v3 addObject:v10];
+      [v3 addObject:subtitle];
     }
 
-    v11 = [(_SearchResultTableViewCell *)self mapItem];
-    v12 = [(_SearchResultTableViewCell *)self shortenedAddressStringForMapItem:v11];
+    mapItem = [(_SearchResultTableViewCell *)self mapItem];
+    v12 = [(_SearchResultTableViewCell *)self shortenedAddressStringForMapItem:mapItem];
 
     if ([(AcSearchResultTableViewCell *)self isCompletionTypeAddress])
     {
-      v13 = [(MKLocalSearchCompletion *)self->_completion subtitle];
+      subtitle2 = [(MKLocalSearchCompletion *)self->_completion subtitle];
 
       v14 = +[UIColor secondaryLabelColor];
 
-      v12 = v13;
+      v12 = subtitle2;
       v5 = v14;
     }
 
@@ -624,19 +624,19 @@ LABEL_22:
   }
 
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v15 userInterfaceLayoutDirection];
 
-  if (v16 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
-    v17 = [v3 reverseObjectEnumerator];
-    v18 = [v17 allObjects];
-    v19 = [v18 mutableCopy];
+    reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v19 = [allObjects mutableCopy];
 
     v3 = v19;
   }
 
-  v20 = [objc_opt_class() _delimiterString];
-  v21 = [v3 componentsJoinedByString:v20];
+  _delimiterString = [objc_opt_class() _delimiterString];
+  v21 = [v3 componentsJoinedByString:_delimiterString];
 
   v22 = [NSMutableAttributedString alloc];
   if (v21)
@@ -712,13 +712,13 @@ LABEL_22:
 
 - (id)attributedTitleString
 {
-  v3 = [(AcSearchResultTableViewCell *)self titleRegularFont];
-  v4 = [(AcSearchResultTableViewCell *)self titleHighlightFont];
+  titleRegularFont = [(AcSearchResultTableViewCell *)self titleRegularFont];
+  titleHighlightFont = [(AcSearchResultTableViewCell *)self titleHighlightFont];
   completion = self->_completion;
   if (completion)
   {
-    v6 = [(MKLocalSearchCompletion *)completion title];
-    v7 = [(MKLocalSearchCompletion *)self->_completion titleHighlightRanges];
+    title = [(MKLocalSearchCompletion *)completion title];
+    titleHighlightRanges = [(MKLocalSearchCompletion *)self->_completion titleHighlightRanges];
     if (sub_10000FA08(self) == 5)
     {
       if (([(AcSearchResultTableViewCell *)self isSelected]& 1) != 0)
@@ -742,14 +742,14 @@ LABEL_22:
       }
       v18 = ;
       [(UILabel *)self->super._titleLabel setTextColor:v18];
-      v19 = [NSAttributedString attributedStringWithText:v6 highlightRanges:v7 font:v3 highlightedFont:v4 highlightedTextColor:v17];
+      v19 = [NSAttributedString attributedStringWithText:title highlightRanges:titleHighlightRanges font:titleRegularFont highlightedFont:titleHighlightFont highlightedTextColor:v17];
     }
 
     else
     {
       if (![(AcSearchResultTableViewCell *)self shouldEnableGrayscaleHighlighting])
       {
-        v9 = [NSAttributedString attributedStringWithText:v6 boldInRange:v7 font:v3 bold:v4];
+        attributedTitleString = [NSAttributedString attributedStringWithText:title boldInRange:titleHighlightRanges font:titleRegularFont bold:titleHighlightFont];
 LABEL_19:
 
         goto LABEL_22;
@@ -757,10 +757,10 @@ LABEL_19:
 
       v17 = +[UIColor labelColor];
       v18 = +[UIColor secondaryLabelColor];
-      v19 = [NSAttributedString attributedStringWithText:v6 highlightRanges:v7 font:v4 highlightedFont:v4 highlightedTextColor:v17 unhighlightedTextColor:v18];
+      v19 = [NSAttributedString attributedStringWithText:title highlightRanges:titleHighlightRanges font:titleHighlightFont highlightedFont:titleHighlightFont highlightedTextColor:v17 unhighlightedTextColor:v18];
     }
 
-    v9 = v19;
+    attributedTitleString = v19;
 
     goto LABEL_19;
   }
@@ -773,46 +773,46 @@ LABEL_19:
 
   v22.receiver = self;
   v22.super_class = AcSearchResultTableViewCell;
-  v9 = [(_SearchResultTableViewCell *)&v22 attributedTitleString];
-  v10 = [(AcSearchResultTableViewCell *)self searchQuery];
+  attributedTitleString = [(_SearchResultTableViewCell *)&v22 attributedTitleString];
+  searchQuery = [(AcSearchResultTableViewCell *)self searchQuery];
 
-  if (v10)
+  if (searchQuery)
   {
-    v11 = [v9 string];
-    v12 = [(AcSearchResultTableViewCell *)self searchQuery];
-    v13 = [v11 _maps_prefixMatchesForSearchString:v12];
+    string = [attributedTitleString string];
+    searchQuery2 = [(AcSearchResultTableViewCell *)self searchQuery];
+    v13 = [string _maps_prefixMatchesForSearchString:searchQuery2];
 
-    LODWORD(v12) = [(AcSearchResultTableViewCell *)self shouldEnableGrayscaleHighlighting];
-    v14 = [v9 string];
-    if (v12)
+    LODWORD(searchQuery2) = [(AcSearchResultTableViewCell *)self shouldEnableGrayscaleHighlighting];
+    string2 = [attributedTitleString string];
+    if (searchQuery2)
     {
-      v15 = +[UIColor labelColor];
-      v16 = +[UIColor secondaryLabelColor];
-      [NSAttributedString attributedStringWithText:v14 highlightRanges:v13 font:v4 highlightedFont:v4 highlightedTextColor:v15 unhighlightedTextColor:v16];
+      titleRegularFont2 = +[UIColor labelColor];
+      titleHighlightFont2 = +[UIColor secondaryLabelColor];
+      [NSAttributedString attributedStringWithText:string2 highlightRanges:v13 font:titleHighlightFont highlightedFont:titleHighlightFont highlightedTextColor:titleRegularFont2 unhighlightedTextColor:titleHighlightFont2];
     }
 
     else
     {
-      v15 = [(AcSearchResultTableViewCell *)self titleRegularFont];
-      v16 = [(AcSearchResultTableViewCell *)self titleHighlightFont];
-      [NSAttributedString attributedStringWithText:v14 boldInRange:v13 font:v15 bold:v16];
+      titleRegularFont2 = [(AcSearchResultTableViewCell *)self titleRegularFont];
+      titleHighlightFont2 = [(AcSearchResultTableViewCell *)self titleHighlightFont];
+      [NSAttributedString attributedStringWithText:string2 boldInRange:v13 font:titleRegularFont2 bold:titleHighlightFont2];
     }
     v20 = ;
 
-    v9 = v20;
+    attributedTitleString = v20;
   }
 
 LABEL_22:
 
-  return v9;
+  return attributedTitleString;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   [(_SearchResultTableViewCell *)self setPublisherResult:0];
-  objc_storeStrong(&self->_object, a3);
-  v6 = v5;
+  objc_storeStrong(&self->_object, object);
+  v6 = objectCopy;
   v7 = &OBJC_PROTOCOL___MSPHistoryEntryPlaceDisplay;
   objc_opt_class();
   v28 = v6;
@@ -858,17 +858,17 @@ LABEL_22:
 
     if (v17 && ([v17 historyEntry], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "conformsToProtocol:", v14), v18, v19))
     {
-      v20 = v15;
+      mapItem = v15;
     }
 
     else
     {
-      v20 = 0;
+      mapItem = 0;
     }
 
-    v21 = [v20 historyEntry];
-    v22 = [v21 geoMapItem];
-    v23 = [MKMapItem _itemWithGeoMapItem:v22];
+    historyEntry = [mapItem historyEntry];
+    geoMapItem = [historyEntry geoMapItem];
+    v23 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
 
     [(_SearchResultTableViewCell *)self setMapItem:v23];
     goto LABEL_24;
@@ -887,36 +887,36 @@ LABEL_22:
     self->_completion = 0;
     v27 = v28;
 
-    v20 = [v27 mapItem];
+    mapItem = [v27 mapItem];
 
     goto LABEL_23;
   }
 
-  objc_storeStrong(&self->_completion, a3);
-  v24 = [(MKLocalSearchCompletion *)self->_completion publisherResult];
+  objc_storeStrong(&self->_completion, object);
+  publisherResult = [(MKLocalSearchCompletion *)self->_completion publisherResult];
 
   v25 = self->_completion;
-  if (!v24)
+  if (!publisherResult)
   {
-    v20 = [(MKLocalSearchCompletion *)v25 mapItem];
+    mapItem = [(MKLocalSearchCompletion *)v25 mapItem];
 LABEL_23:
-    [(_SearchResultTableViewCell *)self setMapItem:v20];
+    [(_SearchResultTableViewCell *)self setMapItem:mapItem];
     goto LABEL_24;
   }
 
-  v20 = [(MKLocalSearchCompletion *)v25 publisherResult];
-  [(_SearchResultTableViewCell *)self setPublisherResult:v20];
+  mapItem = [(MKLocalSearchCompletion *)v25 publisherResult];
+  [(_SearchResultTableViewCell *)self setPublisherResult:mapItem];
 LABEL_24:
 
 LABEL_25:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(AcSearchResultTableViewCell *)self reuseIdentifier];
-  if (([v6 containsString:@"ChildItems"] & 1) != 0 || self->super._accessibilityEnabled)
+  height = fits.height;
+  width = fits.width;
+  reuseIdentifier = [(AcSearchResultTableViewCell *)self reuseIdentifier];
+  if (([reuseIdentifier containsString:@"ChildItems"] & 1) != 0 || self->super._accessibilityEnabled)
   {
 
 LABEL_4:
@@ -933,9 +933,9 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v11 = [(AcSearchResultTableViewCell *)self autocompleteCellType];
+  autocompleteCellType = [(AcSearchResultTableViewCell *)self autocompleteCellType];
   v12 = objc_opt_class();
-  if (v11 == 3)
+  if (autocompleteCellType == 3)
   {
     [v12 estimatedTwoLinesCellHeight];
   }
@@ -946,15 +946,15 @@ LABEL_4:
   }
 
   v14 = v13;
-  v15 = [(_SearchResultTableViewCell *)self placeContextViewModel];
+  placeContextViewModel = [(_SearchResultTableViewCell *)self placeContextViewModel];
 
-  if (v15)
+  if (placeContextViewModel)
   {
-    v16 = [(UILabel *)self->super._contextualInformationLabel font];
-    v17 = [(UILabel *)self->super._contextualInformationLabel numberOfLines];
-    v18 = [(AcSearchResultTableViewCell *)self traitCollection];
-    [v18 displayScale];
-    [UILabel _maps_maximumHeightWithFont:v16 numberOfLines:v17 displayScale:?];
+    font = [(UILabel *)self->super._contextualInformationLabel font];
+    numberOfLines = [(UILabel *)self->super._contextualInformationLabel numberOfLines];
+    traitCollection = [(AcSearchResultTableViewCell *)self traitCollection];
+    [traitCollection displayScale];
+    [UILabel _maps_maximumHeightWithFont:font numberOfLines:numberOfLines displayScale:?];
     v20 = v19;
 
     [(AcSearchResultTableViewCell *)self paddingAboveContextualInformationStackView];
@@ -1002,9 +1002,9 @@ LABEL_14:
     return 3;
   }
 
-  v3 = [(_SearchResultTableViewCell *)self numberOfLines];
+  numberOfLines = [(_SearchResultTableViewCell *)self numberOfLines];
   imageView = self->_imageView;
-  if (v3 == 1)
+  if (numberOfLines == 1)
   {
     v5 = -3.0;
   }
@@ -1014,7 +1014,7 @@ LABEL_14:
     v5 = 0.0;
   }
 
-  if (v3 == 1)
+  if (numberOfLines == 1)
   {
     v6 = 3;
   }
@@ -1028,15 +1028,15 @@ LABEL_14:
   return v6;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AcSearchResultTableViewCell *)self isSelected];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  isSelected = [(AcSearchResultTableViewCell *)self isSelected];
   v8.receiver = self;
   v8.super_class = AcSearchResultTableViewCell;
-  [(AcSearchResultTableViewCell *)&v8 setSelected:v5 animated:v4];
-  if (v7 != v5)
+  [(AcSearchResultTableViewCell *)&v8 setSelected:selectedCopy animated:animatedCopy];
+  if (isSelected != selectedCopy)
   {
     [(AcSearchResultTableViewCell *)self updateContent];
   }
@@ -1052,22 +1052,22 @@ LABEL_14:
 
 - (void)_setHighlightedLabelColors
 {
-  v3 = [(AcSearchResultTableViewCell *)self _highlightedLabelColor];
-  [(UILabel *)self->super._titleLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._secondLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._thirdLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._secondPartLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._secondPartDelimiterLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._transitDelimiterLabel setHighlightedTextColor:v3];
-  [(UILabel *)self->super._contextualInformationLabel setHighlightedTextColor:v3];
+  _highlightedLabelColor = [(AcSearchResultTableViewCell *)self _highlightedLabelColor];
+  [(UILabel *)self->super._titleLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._secondLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._thirdLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._secondPartLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._secondPartDelimiterLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._transitDelimiterLabel setHighlightedTextColor:_highlightedLabelColor];
+  [(UILabel *)self->super._contextualInformationLabel setHighlightedTextColor:_highlightedLabelColor];
 }
 
-- (AcSearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AcSearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = AcSearchResultTableViewCell;
-  v7 = [(_SearchResultTableViewCell *)&v25 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(_SearchResultTableViewCell *)&v25 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -1095,11 +1095,11 @@ LABEL_14:
       [(NUIContainerStackView *)v8->super._containerStackView insertArrangedSubview:v8->_imageView atIndex:0];
     }
 
-    if ([v6 containsString:@"ChildItems"])
+    if ([identifierCopy containsString:@"ChildItems"])
     {
-      v18 = [[_SearchResultChildItemGridView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+      height = [[_SearchResultChildItemGridView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
       childItemGrid = v8->_childItemGrid;
-      v8->_childItemGrid = v18;
+      v8->_childItemGrid = height;
 
       [objc_opt_class() childItemRowSpacing];
       [(_SearchResultChildItemGridView *)v8->_childItemGrid setRowSpacing:?];
@@ -1154,7 +1154,7 @@ LABEL_14:
   return result;
 }
 
-- (double)estimatedChildItemsStackViewWidthWithContentViewWidth:(double)a3
+- (double)estimatedChildItemsStackViewWidthWithContentViewWidth:(double)width
 {
   v5 = 0.0;
   if (!self->super._accessibilityEnabled)
@@ -1168,17 +1168,17 @@ LABEL_14:
   [(_SearchResultTableViewCell *)self leadingMargin];
   v10 = v9;
   [(AcSearchResultTableViewCell *)self trailingMargin];
-  return a3 - (v5 + v10 + v11);
+  return width - (v5 + v10 + v11);
 }
 
-+ (id)identifierWithChildItemsCount:(unint64_t)a3
++ (id)identifierWithChildItemsCount:(unint64_t)count
 {
   v4 = [NSMutableString alloc];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v4 initWithString:v6];
 
-  if (a3)
+  if (count)
   {
     [v7 appendString:@"ChildItems"];
   }

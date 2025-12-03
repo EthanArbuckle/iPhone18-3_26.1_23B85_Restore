@@ -1,23 +1,23 @@
 @interface BMProtoField
-- (BMProtoField)initWithName:(id)a3 number:(int64_t)a4 type:(int64_t)a5 subMessageClass:(Class)a6;
+- (BMProtoField)initWithName:(id)name number:(int64_t)number type:(int64_t)type subMessageClass:(Class)class;
 - (id)description;
 @end
 
 @implementation BMProtoField
 
-- (BMProtoField)initWithName:(id)a3 number:(int64_t)a4 type:(int64_t)a5 subMessageClass:(Class)a6
+- (BMProtoField)initWithName:(id)name number:(int64_t)number type:(int64_t)type subMessageClass:(Class)class
 {
-  v11 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BMProtoField;
   v12 = [(BMProtoField *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    v13->_number = a4;
-    v13->_type = a5;
-    objc_storeStrong(&v13->_subMessageClass, a6);
+    objc_storeStrong(&v12->_name, name);
+    v13->_number = number;
+    v13->_type = type;
+    objc_storeStrong(&v13->_subMessageClass, class);
   }
 
   return v13;

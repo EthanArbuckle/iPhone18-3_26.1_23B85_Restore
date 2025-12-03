@@ -1,11 +1,11 @@
 @interface ENUIPublicHealthAgencyModel
 + (NSArray)allRegions;
 + (NSString)dummyRegionCountryCode;
-+ (id)defaultModelWithBundleId:(id)a3 isAuthorized:(BOOL)a4;
-+ (id)regionForRegionCode:(id)a3;
-+ (void)refreshRegionsWithCompletion:(id)a3;
-+ (void)setActiveRegion:(id)a3;
-+ (void)setTurndownEntity:(id)a3;
++ (id)defaultModelWithBundleId:(id)id isAuthorized:(BOOL)authorized;
++ (id)regionForRegionCode:(id)code;
++ (void)refreshRegionsWithCompletion:(id)completion;
++ (void)setActiveRegion:(id)region;
++ (void)setTurndownEntity:(id)entity;
 - (BOOL)isAppInstalled;
 - (BOOL)isAppInstalledAndRegionYetToBeOnboarded;
 - (BOOL)isRegionUsingApp;
@@ -16,9 +16,9 @@
 - (NSString)installedAppName;
 - (UIImage)installedAppIcon;
 - (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)init;
-- (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)initWithRegion:(id)a3 name:(id)a4 appBundleId:(id)a5 introductoryText:(id)a6 header:(id)a7 legalese:(id)a8 consentStatus:(id)a9 consentVersion:(id)a10 diagnosisKeysPreAuthorization:(id)a11 isAssociatedDomainAllowed:(BOOL)a12 isPreauthorizationDomainAllowed:(BOOL)a13 isAuthorized:(BOOL)a14 regionVersion:(int64_t)a15 regionWebsiteURL:(id)a16 regionFAQWebsiteURL:(id)a17 featureFlags:(unsigned int)a18 wantsAnalytics:(BOOL)a19 analyticsConsentStatus:(int64_t)a20 analyticsConsentText:(id)a21 verificationIntroductoryText:(id)a22 selfReportIntroductoryText:(id)a23 verificationCodeHelpURL:(id)a24 verificationSymptomOnsetText:(id)a25 verificationTravelStatusText:(id)a26 vaccinationQuestionText:(id)a27 webReportURL:(id)a28;
+- (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)initWithRegion:(id)region name:(id)name appBundleId:(id)id introductoryText:(id)text header:(id)header legalese:(id)legalese consentStatus:(id)status consentVersion:(id)self0 diagnosisKeysPreAuthorization:(id)self1 isAssociatedDomainAllowed:(BOOL)self2 isPreauthorizationDomainAllowed:(BOOL)self3 isAuthorized:(BOOL)self4 regionVersion:(int64_t)self5 regionWebsiteURL:(id)self6 regionFAQWebsiteURL:(id)self7 featureFlags:(unsigned int)self8 wantsAnalytics:(BOOL)self9 analyticsConsentStatus:(int64_t)consentStatus analyticsConsentText:(id)consentText verificationIntroductoryText:(id)introductoryText selfReportIntroductoryText:(id)reportIntroductoryText verificationCodeHelpURL:(id)uRL verificationSymptomOnsetText:(id)onsetText verificationTravelStatusText:(id)statusText vaccinationQuestionText:(id)questionText webReportURL:(id)reportURL;
 - (int64_t)analyticsConsentStatus;
-- (void)setAnalyticsConsentStatus:(int64_t)a3;
+- (void)setAnalyticsConsentStatus:(int64_t)status;
 @end
 
 @implementation ENUIPublicHealthAgencyModel
@@ -30,11 +30,11 @@
   return *(self + v3);
 }
 
-- (void)setAnalyticsConsentStatus:(int64_t)a3
+- (void)setAnalyticsConsentStatus:(int64_t)status
 {
   v5 = OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_analyticsConsentStatus;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = status;
 }
 
 - (BOOL)isSymptomOnsetNeeded
@@ -71,18 +71,18 @@
 
 - (BOOL)isVaccinationQuestionNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ENUIPublicHealthAgencyModel.isVaccinationQuestionNeeded.getter();
 
   return v3;
 }
 
-- (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)initWithRegion:(id)a3 name:(id)a4 appBundleId:(id)a5 introductoryText:(id)a6 header:(id)a7 legalese:(id)a8 consentStatus:(id)a9 consentVersion:(id)a10 diagnosisKeysPreAuthorization:(id)a11 isAssociatedDomainAllowed:(BOOL)a12 isPreauthorizationDomainAllowed:(BOOL)a13 isAuthorized:(BOOL)a14 regionVersion:(int64_t)a15 regionWebsiteURL:(id)a16 regionFAQWebsiteURL:(id)a17 featureFlags:(unsigned int)a18 wantsAnalytics:(BOOL)a19 analyticsConsentStatus:(int64_t)a20 analyticsConsentText:(id)a21 verificationIntroductoryText:(id)a22 selfReportIntroductoryText:(id)a23 verificationCodeHelpURL:(id)a24 verificationSymptomOnsetText:(id)a25 verificationTravelStatusText:(id)a26 vaccinationQuestionText:(id)a27 webReportURL:(id)a28
+- (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)initWithRegion:(id)region name:(id)name appBundleId:(id)id introductoryText:(id)text header:(id)header legalese:(id)legalese consentStatus:(id)status consentVersion:(id)self0 diagnosisKeysPreAuthorization:(id)self1 isAssociatedDomainAllowed:(BOOL)self2 isPreauthorizationDomainAllowed:(BOOL)self3 isAuthorized:(BOOL)self4 regionVersion:(int64_t)self5 regionWebsiteURL:(id)self6 regionFAQWebsiteURL:(id)self7 featureFlags:(unsigned int)self8 wantsAnalytics:(BOOL)self9 analyticsConsentStatus:(int64_t)consentStatus analyticsConsentText:(id)consentText verificationIntroductoryText:(id)introductoryText selfReportIntroductoryText:(id)reportIntroductoryText verificationCodeHelpURL:(id)uRL verificationSymptomOnsetText:(id)onsetText verificationTravelStatusText:(id)statusText vaccinationQuestionText:(id)questionText webReportURL:(id)reportURL
 {
-  v143 = a8;
-  v144 = a7;
-  v142 = a3;
-  v133 = self;
+  legaleseCopy = legalese;
+  headerCopy = header;
+  regionCopy = region;
+  selfCopy = self;
   v29 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F453E10, &unk_251708160);
   v30 = *(*(v29 - 8) + 64);
   v31 = MEMORY[0x28223BE20](v29 - 8);
@@ -96,7 +96,7 @@
   v39 = sub_251703164();
   v131 = v40;
   v132 = v39;
-  if (a5)
+  if (id)
   {
     v41 = sub_251703164();
     v128 = v42;
@@ -109,15 +109,15 @@
     v129 = 0;
   }
 
-  v137 = a26;
-  v138 = a27;
-  v135 = a22;
-  v136 = a23;
+  statusTextCopy = statusText;
+  questionTextCopy = questionText;
+  introductoryTextCopy = introductoryText;
+  regionVersionCopy = reportIntroductoryText;
   v43 = sub_251703164();
   v126 = v44;
   v127 = v43;
-  v120 = a25;
-  if (a10)
+  onsetTextCopy = onsetText;
+  if (version)
   {
     v45 = sub_251703164();
     v124 = v46;
@@ -131,33 +131,33 @@
   }
 
   v130 = v33;
-  v123 = a9;
-  v122 = a11;
-  v121 = a28;
-  if (a16)
+  statusCopy = status;
+  authorizationCopy = authorization;
+  reportURLCopy = reportURL;
+  if (l)
   {
     v47 = v139;
     sub_251702D84();
     v48 = sub_251702DA4();
     v49 = *(*(v48 - 8) + 56);
-    v50 = v142;
-    v51 = v144;
-    v52 = v143;
-    v53 = a9;
-    v54 = a11;
-    v55 = a17;
-    v56 = a21;
-    v57 = v135;
-    v58 = v136;
-    v59 = a24;
-    v60 = v120;
-    v61 = v120;
-    v62 = v137;
-    v63 = v138;
-    v64 = a28;
+    v50 = regionCopy;
+    v51 = headerCopy;
+    v52 = legaleseCopy;
+    statusCopy2 = status;
+    authorizationCopy2 = authorization;
+    rLCopy = rL;
+    consentTextCopy = consentText;
+    v57 = introductoryTextCopy;
+    v58 = regionVersionCopy;
+    uRLCopy = uRL;
+    v60 = onsetTextCopy;
+    v61 = onsetTextCopy;
+    v62 = statusTextCopy;
+    v63 = questionTextCopy;
+    reportURLCopy2 = reportURL;
     v49(v47, 0, 1, v48);
     v65 = v141;
-    if (a17)
+    if (rL)
     {
 LABEL_9:
       sub_251702D84();
@@ -171,23 +171,23 @@ LABEL_9:
   {
     v67 = sub_251702DA4();
     (*(*(v67 - 8) + 56))(v139, 1, 1, v67);
-    v68 = v142;
-    v69 = v144;
-    v70 = v143;
-    v71 = a9;
-    v72 = a11;
-    v73 = a17;
-    v74 = a21;
-    v75 = v135;
-    v76 = v136;
-    v77 = a24;
-    v60 = v120;
-    v78 = v120;
-    v79 = v137;
-    v80 = v138;
-    v81 = a28;
+    v68 = regionCopy;
+    v69 = headerCopy;
+    v70 = legaleseCopy;
+    statusCopy3 = status;
+    authorizationCopy3 = authorization;
+    rLCopy2 = rL;
+    consentTextCopy2 = consentText;
+    v75 = introductoryTextCopy;
+    v76 = regionVersionCopy;
+    uRLCopy2 = uRL;
+    v60 = onsetTextCopy;
+    v78 = onsetTextCopy;
+    v79 = statusTextCopy;
+    v80 = questionTextCopy;
+    reportURLCopy3 = reportURL;
     v65 = v141;
-    if (a17)
+    if (rL)
     {
       goto LABEL_9;
     }
@@ -200,7 +200,7 @@ LABEL_12:
   v84 = *(v83 + 56);
   v134 = v83 + 56;
   v84(v65, v66, 1, v82);
-  if (a21)
+  if (consentText)
   {
     v119 = sub_251703164();
     v118 = v85;
@@ -213,15 +213,15 @@ LABEL_12:
   }
 
   v86 = v140;
-  v87 = v135;
+  v87 = introductoryTextCopy;
   v117 = sub_251703164();
   v116 = v88;
 
-  v89 = v136;
-  v135 = sub_251703164();
+  v89 = regionVersionCopy;
+  introductoryTextCopy = sub_251703164();
   v115 = v90;
 
-  if (a24)
+  if (uRL)
   {
     sub_251702D84();
 
@@ -233,30 +233,30 @@ LABEL_12:
     v91 = 1;
   }
 
-  v111 = a20;
-  v110 = a19;
-  v109 = a18;
-  v136 = a15;
-  v114 = a14;
-  v113 = a13;
-  v112 = a12;
+  consentStatusCopy = consentStatus;
+  analyticsCopy = analytics;
+  flagsCopy = flags;
+  regionVersionCopy = regionVersion;
+  authorizedCopy = authorized;
+  domainAllowedCopy = domainAllowed;
+  allowedCopy = allowed;
   v92 = 1;
   v93 = v84;
   v84(v86, v91, 1, v82);
   v94 = sub_251703164();
   v96 = v95;
 
-  v97 = v137;
+  v97 = statusTextCopy;
   v98 = sub_251703164();
   v100 = v99;
 
-  v101 = v138;
+  v101 = questionTextCopy;
   v102 = sub_251703164();
   v104 = v103;
 
-  if (v121)
+  if (reportURLCopy)
   {
-    v105 = v121;
+    v105 = reportURLCopy;
     v106 = v130;
     sub_251702D84();
 
@@ -269,12 +269,12 @@ LABEL_12:
   }
 
   v93(v106, v92, 1, v82);
-  return ENUIPublicHealthAgencyModel.init(region:name:appBundleId:introductoryText:header:legalese:consentStatus:consentVersion:diagnosisKeysPreAuthorization:isAssociatedDomainAllowed:isPreauthorizationDomainAllowed:isAuthorized:regionVersion:regionWebsiteURL:regionFAQWebsiteURL:featureFlags:wantsAnalytics:analyticsConsentStatus:analyticsConsentText:verificationIntroductoryText:selfReportIntroductoryText:verificationCodeHelpURL:verificationSymptomOnsetText:verificationTravelStatusText:vaccinationQuestionText:webReportURL:)(v142, v132, v131, v129, v128, v127, v126, v144, v143, v123, v125, v124, v122, v112, v113, v114, v136, v139, v141, v109, v110, v111, v119, v118, v117, v116, v135, v115, v140, v94, v96, v98, v100, v102, v104, v106);
+  return ENUIPublicHealthAgencyModel.init(region:name:appBundleId:introductoryText:header:legalese:consentStatus:consentVersion:diagnosisKeysPreAuthorization:isAssociatedDomainAllowed:isPreauthorizationDomainAllowed:isAuthorized:regionVersion:regionWebsiteURL:regionFAQWebsiteURL:featureFlags:wantsAnalytics:analyticsConsentStatus:analyticsConsentText:verificationIntroductoryText:selfReportIntroductoryText:verificationCodeHelpURL:verificationSymptomOnsetText:verificationTravelStatusText:vaccinationQuestionText:webReportURL:)(regionCopy, v132, v131, v129, v128, v127, v126, headerCopy, legaleseCopy, statusCopy, v125, v124, authorizationCopy, allowedCopy, domainAllowedCopy, authorizedCopy, regionVersionCopy, v139, v141, flagsCopy, analyticsCopy, consentStatusCopy, v119, v118, v117, v116, introductoryTextCopy, v115, v140, v94, v96, v98, v100, v102, v104, v106);
 }
 
 - (BOOL)isAppInstalled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ENUIPublicHealthAgencyModel.isAppInstalled.getter();
 
   return v3 & 1;
@@ -282,10 +282,10 @@ LABEL_12:
 
 - (BOOL)isRegionUsingApp
 {
-  v2 = self;
+  selfCopy = self;
   if (ENUIPublicHealthAgencyModel.isAppInstalled.getter())
   {
-    if (*(v2 + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_regionVersion) <= 1)
+    if (*(selfCopy + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_regionVersion) <= 1)
     {
 
       LOBYTE(v3) = 1;
@@ -293,10 +293,10 @@ LABEL_12:
 
     else
     {
-      v3 = *(v2 + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_appBundleId + 8);
+      v3 = *(selfCopy + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_appBundleId + 8);
       if (v3)
       {
-        v4 = *(v2 + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_appBundleId);
+        v4 = *(selfCopy + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_appBundleId);
         if (qword_28151EB60 != -1)
         {
           swift_once();
@@ -325,10 +325,10 @@ LABEL_12:
 
 - (BOOL)isAppInstalledAndRegionYetToBeOnboarded
 {
-  v2 = self;
+  selfCopy = self;
   if (ENUIPublicHealthAgencyModel.isAppInstalled.getter())
   {
-    v3 = *(v2 + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_isAuthorized);
+    v3 = *(selfCopy + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_isAuthorized);
 
     v4 = v3 ^ 1;
   }
@@ -344,7 +344,7 @@ LABEL_12:
 
 - (NSString)installedAppName
 {
-  v2 = self;
+  selfCopy = self;
   ENUIPublicHealthAgencyModel.installedAppName.getter();
   v4 = v3;
 
@@ -363,7 +363,7 @@ LABEL_12:
 
 - (UIImage)installedAppIcon
 {
-  v2 = self;
+  selfCopy = self;
   ENUIPublicHealthAgencyModel.installedAppIcon.getter();
   v4 = v3;
 
@@ -373,8 +373,8 @@ LABEL_12:
 - (BOOL)regionIsPlaceholder
 {
   v2 = *(self + OBJC_IVAR____TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel_region);
-  v3 = self;
-  v4 = [v2 regionCode];
+  selfCopy = self;
+  regionCode = [v2 regionCode];
   v5 = sub_251703164();
   v7 = v6;
 
@@ -392,20 +392,20 @@ LABEL_12:
   return v9 & 1;
 }
 
-+ (void)setActiveRegion:(id)a3
++ (void)setActiveRegion:(id)region
 {
   swift_beginAccess();
   v4 = static ENUIPublicHealthAgencyModel.activeRegion;
-  static ENUIPublicHealthAgencyModel.activeRegion = a3;
-  v5 = a3;
+  static ENUIPublicHealthAgencyModel.activeRegion = region;
+  regionCopy = region;
 }
 
-+ (void)setTurndownEntity:(id)a3
++ (void)setTurndownEntity:(id)entity
 {
   swift_beginAccess();
   v4 = static ENUIPublicHealthAgencyModel.turndownEntity;
-  static ENUIPublicHealthAgencyModel.turndownEntity = a3;
-  v5 = a3;
+  static ENUIPublicHealthAgencyModel.turndownEntity = entity;
+  entityCopy = entity;
 }
 
 + (NSString)dummyRegionCountryCode
@@ -424,7 +424,7 @@ LABEL_12:
   return v2;
 }
 
-+ (id)regionForRegionCode:(id)a3
++ (id)regionForRegionCode:(id)code
 {
   v3 = sub_251703164();
   v5 = _s28HealthExposureNotificationUI010ENUIPublicA11AgencyModelC9regionFor0H4CodeACSgSS_tFZ_0(v3, v4);
@@ -439,20 +439,20 @@ LABEL_12:
   return result;
 }
 
-+ (void)refreshRegionsWithCompletion:(id)a3
++ (void)refreshRegionsWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   swift_getObjCClassMetadata();
   static ENUIPublicHealthAgencyModel.refreshRegions(completion:)(sub_2516963FC, v4);
 }
 
-+ (id)defaultModelWithBundleId:(id)a3 isAuthorized:(BOOL)a4
++ (id)defaultModelWithBundleId:(id)id isAuthorized:(BOOL)authorized
 {
-  v4 = a4;
+  authorizedCopy = authorized;
   v5 = sub_251703164();
-  v7 = sub_251695CDC(v5, v6, v4);
+  v7 = sub_251695CDC(v5, v6, authorizedCopy);
 
   return v7;
 }

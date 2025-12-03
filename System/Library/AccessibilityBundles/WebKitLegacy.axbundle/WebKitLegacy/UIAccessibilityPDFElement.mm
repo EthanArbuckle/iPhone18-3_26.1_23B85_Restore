@@ -7,10 +7,10 @@
 
 - (CGRect)frame
 {
-  v3 = [(UIAccessibilityPDFElement *)self accessibilityContainer];
-  v4 = [v3 accessibilityContainer];
+  accessibilityContainer = [(UIAccessibilityPDFElement *)self accessibilityContainer];
+  v3AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-  v5 = [v4 safeValueForKey:@"_scroller"];
+  v5 = [v3AccessibilityContainer safeValueForKey:@"_scroller"];
   v6 = v5;
   if (v5)
   {
@@ -48,13 +48,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIAccessibilityPDFElement *)self accessibilityContainer];
-  v12 = [v11 accessibilityContainer];
+  accessibilityContainer = [(UIAccessibilityPDFElement *)self accessibilityContainer];
+  v11AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-  v13 = [v12 safeValueForKey:@"_scroller"];
-  v14 = [v13 window];
-  [v13 convertRect:v14 toView:{v4, v6, v8, v10}];
-  [v14 convertRect:0 toWindow:?];
+  v13 = [v11AccessibilityContainer safeValueForKey:@"_scroller"];
+  window = [v13 window];
+  [v13 convertRect:window toView:{v4, v6, v8, v10}];
+  [window convertRect:0 toWindow:?];
   v16 = v15;
   v18 = v17;
   v20 = v19;

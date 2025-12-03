@@ -1,10 +1,10 @@
 @interface APPCMetricsView
 - (APPCDiagnosticMetricsHelping)diagnosticMetricHelper;
-- (APPCMetricsView)initWithFrame:(CGRect)a3;
+- (APPCMetricsView)initWithFrame:(CGRect)frame;
 - (APPCPromotedContentInfo)promotedContentInfo;
 - (APPrivacyMarker)privacyMarkerView;
 - (BOOL)ready;
-- (BOOL)safeExpandAndReturnError:(id *)a3;
+- (BOOL)safeExpandAndReturnError:(id *)error;
 - (CGRect)frame;
 - (CGRect)privacyMarkerFrame;
 - (UIEdgeInsets)metricsViewEdgeInsets;
@@ -13,57 +13,57 @@
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)expand;
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3;
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure;
 - (void)removeHandler;
-- (void)setFrame:(CGRect)a3;
-- (void)setInteractionPresentationDelegate:(id)a3;
-- (void)setPromotedContentInfo:(id)a3;
-- (void)setReady:(BOOL)a3;
-- (void)setReadyDelegate:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setInteractionPresentationDelegate:(id)delegate;
+- (void)setPromotedContentInfo:(id)info;
+- (void)setReady:(BOOL)ready;
+- (void)setReadyDelegate:(id)delegate;
 - (void)unloadAdViewIfRequired;
 - (void)willEnterforeground;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation APPCMetricsView
 
-- (void)setPromotedContentInfo:(id)a3
+- (void)setPromotedContentInfo:(id)info
 {
   v5 = OBJC_IVAR___APPCMetricsView_promotedContentInfo;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = info;
+  infoCopy = info;
 }
 
-- (void)setReady:(BOOL)a3
+- (void)setReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___APPCMetricsView_ready;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = ready;
+  selfCopy = self;
   sub_1C199DA50();
 }
 
 - (void)collapse
 {
-  v2 = self;
+  selfCopy = self;
   MetricsView.collapse()();
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for MetricsView();
   v7 = v9.receiver;
   [(APPCMetricsView *)&v9 setFrame:x, y, width, height];
   sub_1C199BA6C();
-  v8 = [v7 superview];
-  if (v8 || (v8 = [v7 window]) != 0)
+  superview = [v7 superview];
+  if (superview || (superview = [v7 window]) != 0)
   {
 
     sub_1C19DACB8(0, 0, 0);
@@ -89,16 +89,16 @@
   return *(self + v3);
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C19A0EA8(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  sub_1C19A0EA8(superview);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19A1600("MetricsView is being moved to a new window, the superview is %{private}s. PC Identifier: %{private}s", &selRef_didMoveToWindow, &selRef_window);
 }
 
@@ -111,26 +111,26 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19A1600("MetricsView super view changed, the superview is %{private}s. PC Identifier: %{private}s", &selRef_didMoveToSuperview, &selRef_superview);
 }
 
 - (void)unloadAdViewIfRequired
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19CC250();
 }
 
 - (void)willEnterforeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19CC52C();
 }
 
-- (void)setInteractionPresentationDelegate:(id)a3
+- (void)setInteractionPresentationDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C19DC498();
 }
 
@@ -158,7 +158,7 @@
   {
     v4 = *(v3 + OBJC_IVAR___APPCPromotedContentView_privacyMarkerView);
     v5 = v3;
-    v6 = self;
+    selfCopy = self;
     v7 = v4;
 
     [v7 frame];
@@ -187,18 +187,18 @@
   return result;
 }
 
-- (void)setReadyDelegate:(id)a3
+- (void)setReadyDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C19DCB18();
 }
 
 - (APPCDiagnosticMetricsHelping)diagnosticMetricHelper
 {
-  v2 = [*(self + OBJC_IVAR___APPCMetricsView_promotedContent) diagnosticMetricHelper];
+  diagnosticMetricHelper = [*(self + OBJC_IVAR___APPCMetricsView_promotedContent) diagnosticMetricHelper];
 
-  return v2;
+  return diagnosticMetricHelper;
 }
 
 - (UIEdgeInsets)metricsViewEdgeInsets
@@ -209,7 +209,7 @@
   {
     v5 = v4;
     v6 = *((*v3 & *v4) + 0x2B0);
-    v7 = self;
+    selfCopy = self;
     v8 = v6();
     v10 = v9;
     v12 = v11;
@@ -237,13 +237,13 @@
 
 - (void)expand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19DDA38();
 }
 
-- (BOOL)safeExpandAndReturnError:(id *)a3
+- (BOOL)safeExpandAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C19DDA38();
 
   return 1;
@@ -251,31 +251,31 @@
 
 - (void)didBecomeVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19DEE6C();
 }
 
-- (APPCMetricsView)initWithFrame:(CGRect)a3
+- (APPCMetricsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(closure);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   MetricsView.registerHandlerForAllMetrics(closure:)(sub_1C19E2CE4, v5);
 }
 
 - (void)removeHandler
 {
   v2 = *(self + OBJC_IVAR___APPCMetricsView_promotedContent);
-  v3 = self;
-  v4 = [v2 metricsHelper];
+  selfCopy = self;
+  metricsHelper = [v2 metricsHelper];
   v5 = swift_dynamicCastObjCProtocolConditional();
   if (v5)
   {

@@ -1,11 +1,11 @@
 @interface AVMIDISysexEvent
 - (AVMIDISysexEvent)initWithData:(NSData *)data;
-- (AVMIDISysexEvent)initWithMIDIRawData:(MIDIRawData *)a3;
+- (AVMIDISysexEvent)initWithMIDIRawData:(MIDIRawData *)data;
 @end
 
 @implementation AVMIDISysexEvent
 
-- (AVMIDISysexEvent)initWithMIDIRawData:(MIDIRawData *)a3
+- (AVMIDISysexEvent)initWithMIDIRawData:(MIDIRawData *)data
 {
   v11.receiver = self;
   v11.super_class = AVMIDISysexEvent;
@@ -16,10 +16,10 @@
     sysexData = v4->_sysexData;
     v4->_sysexData = v5;
 
-    length = a3->length;
+    length = data->length;
     [(NSMutableData *)v4->_sysexData appendBytes:&length length:4];
     v7 = v4->_sysexData;
-    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:a3->data length:length];
+    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:data->data length:length];
     [(NSMutableData *)v7 appendData:v8];
   }
 

@@ -1,15 +1,15 @@
 @interface ReviewSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ReviewSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"AppStore.ReviewSummaryView" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"AppStore.ReviewSummaryView" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

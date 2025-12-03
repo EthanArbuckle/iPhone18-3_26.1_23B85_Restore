@@ -1,26 +1,26 @@
 @interface REMTemplateContentAttributes
-- (BOOL)isEqual:(id)a3;
-- (REMTemplateContentAttributes)initWithCoder:(id)a3;
-- (REMTemplateContentAttributes)initWithReminderCount:(int64_t)a3 hasDisplayDate:(BOOL)a4 hasHashtags:(BOOL)a5 hasLocationTriggersOrVehicleEventTriggers:(BOOL)a6 hasImageAttachments:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMTemplateContentAttributes)initWithCoder:(id)coder;
+- (REMTemplateContentAttributes)initWithReminderCount:(int64_t)count hasDisplayDate:(BOOL)date hasHashtags:(BOOL)hashtags hasLocationTriggersOrVehicleEventTriggers:(BOOL)triggers hasImageAttachments:(BOOL)attachments;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTemplateContentAttributes
 
-- (REMTemplateContentAttributes)initWithReminderCount:(int64_t)a3 hasDisplayDate:(BOOL)a4 hasHashtags:(BOOL)a5 hasLocationTriggersOrVehicleEventTriggers:(BOOL)a6 hasImageAttachments:(BOOL)a7
+- (REMTemplateContentAttributes)initWithReminderCount:(int64_t)count hasDisplayDate:(BOOL)date hasHashtags:(BOOL)hashtags hasLocationTriggersOrVehicleEventTriggers:(BOOL)triggers hasImageAttachments:(BOOL)attachments
 {
   v13.receiver = self;
   v13.super_class = REMTemplateContentAttributes;
   result = [(REMTemplateContentAttributes *)&v13 init];
   if (result)
   {
-    result->_reminderCount = a3;
-    result->_hasDisplayDate = a4;
-    result->_hasHashtags = a5;
-    result->_hasLocationTriggersOrVehicleEventTriggers = a6;
-    result->_hasImageAttachments = a7;
+    result->_reminderCount = count;
+    result->_hasDisplayDate = date;
+    result->_hasHashtags = hashtags;
+    result->_hasLocationTriggersOrVehicleEventTriggers = triggers;
+    result->_hasImageAttachments = attachments;
   }
 
   return result;
@@ -40,14 +40,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMTemplateContentAttributes reminderCount](self, "reminderCount"), v5 == [v4 reminderCount]) && (v6 = -[REMTemplateContentAttributes hasDisplayDate](self, "hasDisplayDate"), v6 == objc_msgSend(v4, "hasDisplayDate")) && (v7 = -[REMTemplateContentAttributes hasHashtags](self, "hasHashtags"), v7 == objc_msgSend(v4, "hasHashtags")) && (v8 = -[REMTemplateContentAttributes hasLocationTriggersOrVehicleEventTriggers](self, "hasLocationTriggersOrVehicleEventTriggers"), v8 == objc_msgSend(v4, "hasLocationTriggersOrVehicleEventTriggers")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMTemplateContentAttributes reminderCount](self, "reminderCount"), v5 == [equalCopy reminderCount]) && (v6 = -[REMTemplateContentAttributes hasDisplayDate](self, "hasDisplayDate"), v6 == objc_msgSend(equalCopy, "hasDisplayDate")) && (v7 = -[REMTemplateContentAttributes hasHashtags](self, "hasHashtags"), v7 == objc_msgSend(equalCopy, "hasHashtags")) && (v8 = -[REMTemplateContentAttributes hasLocationTriggersOrVehicleEventTriggers](self, "hasLocationTriggersOrVehicleEventTriggers"), v8 == objc_msgSend(equalCopy, "hasLocationTriggersOrVehicleEventTriggers")))
   {
-    v11 = [(REMTemplateContentAttributes *)self hasImageAttachments];
-    v9 = v11 ^ [v4 hasImageAttachments] ^ 1;
+    hasImageAttachments = [(REMTemplateContentAttributes *)self hasImageAttachments];
+    v9 = hasImageAttachments ^ [equalCopy hasImageAttachments] ^ 1;
   }
 
   else
@@ -58,38 +58,38 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMTemplateContentAttributes alloc];
-  v5 = [(REMTemplateContentAttributes *)self reminderCount];
-  v6 = [(REMTemplateContentAttributes *)self hasDisplayDate];
-  v7 = [(REMTemplateContentAttributes *)self hasHashtags];
-  v8 = [(REMTemplateContentAttributes *)self hasLocationTriggersOrVehicleEventTriggers];
-  v9 = [(REMTemplateContentAttributes *)self hasImageAttachments];
+  reminderCount = [(REMTemplateContentAttributes *)self reminderCount];
+  hasDisplayDate = [(REMTemplateContentAttributes *)self hasDisplayDate];
+  hasHashtags = [(REMTemplateContentAttributes *)self hasHashtags];
+  hasLocationTriggersOrVehicleEventTriggers = [(REMTemplateContentAttributes *)self hasLocationTriggersOrVehicleEventTriggers];
+  hasImageAttachments = [(REMTemplateContentAttributes *)self hasImageAttachments];
 
-  return [(REMTemplateContentAttributes *)v4 initWithReminderCount:v5 hasDisplayDate:v6 hasHashtags:v7 hasLocationTriggersOrVehicleEventTriggers:v8 hasImageAttachments:v9];
+  return [(REMTemplateContentAttributes *)v4 initWithReminderCount:reminderCount hasDisplayDate:hasDisplayDate hasHashtags:hasHashtags hasLocationTriggersOrVehicleEventTriggers:hasLocationTriggersOrVehicleEventTriggers hasImageAttachments:hasImageAttachments];
 }
 
-- (REMTemplateContentAttributes)initWithCoder:(id)a3
+- (REMTemplateContentAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"reminderCount"];
-  v6 = [v4 decodeBoolForKey:@"hasDisplayDate"];
-  v7 = [v4 decodeBoolForKey:@"hasHashtags"];
-  v8 = [v4 decodeBoolForKey:@"hasLocationTriggersOrVehicleEventTriggers"];
-  v9 = [v4 decodeBoolForKey:@"hasImageAttachments"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"reminderCount"];
+  v6 = [coderCopy decodeBoolForKey:@"hasDisplayDate"];
+  v7 = [coderCopy decodeBoolForKey:@"hasHashtags"];
+  v8 = [coderCopy decodeBoolForKey:@"hasLocationTriggersOrVehicleEventTriggers"];
+  v9 = [coderCopy decodeBoolForKey:@"hasImageAttachments"];
 
   return [(REMTemplateContentAttributes *)self initWithReminderCount:v5 hasDisplayDate:v6 hasHashtags:v7 hasLocationTriggersOrVehicleEventTriggers:v8 hasImageAttachments:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMTemplateContentAttributes reminderCount](self forKey:{"reminderCount"), @"reminderCount"}];
-  [v4 encodeBool:-[REMTemplateContentAttributes hasDisplayDate](self forKey:{"hasDisplayDate"), @"hasDisplayDate"}];
-  [v4 encodeBool:-[REMTemplateContentAttributes hasHashtags](self forKey:{"hasHashtags"), @"hasHashtags"}];
-  [v4 encodeBool:-[REMTemplateContentAttributes hasLocationTriggersOrVehicleEventTriggers](self forKey:{"hasLocationTriggersOrVehicleEventTriggers"), @"hasLocationTriggersOrVehicleEventTriggers"}];
-  [v4 encodeBool:-[REMTemplateContentAttributes hasImageAttachments](self forKey:{"hasImageAttachments"), @"hasImageAttachments"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMTemplateContentAttributes reminderCount](self forKey:{"reminderCount"), @"reminderCount"}];
+  [coderCopy encodeBool:-[REMTemplateContentAttributes hasDisplayDate](self forKey:{"hasDisplayDate"), @"hasDisplayDate"}];
+  [coderCopy encodeBool:-[REMTemplateContentAttributes hasHashtags](self forKey:{"hasHashtags"), @"hasHashtags"}];
+  [coderCopy encodeBool:-[REMTemplateContentAttributes hasLocationTriggersOrVehicleEventTriggers](self forKey:{"hasLocationTriggersOrVehicleEventTriggers"), @"hasLocationTriggersOrVehicleEventTriggers"}];
+  [coderCopy encodeBool:-[REMTemplateContentAttributes hasImageAttachments](self forKey:{"hasImageAttachments"), @"hasImageAttachments"}];
 }
 
 @end

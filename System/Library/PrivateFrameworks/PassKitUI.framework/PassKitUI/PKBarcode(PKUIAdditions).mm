@@ -10,17 +10,17 @@
 - (id)_imageFromBarcodeMessage
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 format];
+  format = [self format];
   v4 = MEMORY[0x1E695F648];
   v5 = PKBarcodeFilterNameForFormat();
   v6 = [v4 filterWithName:v5];
 
-  v7 = [a1 messageData];
-  [v6 setValue:v7 forKey:@"inputMessage"];
+  messageData = [self messageData];
+  [v6 setValue:messageData forKey:@"inputMessage"];
 
-  if (v3 == 4)
+  if (format == 4)
   {
-    if ([a1 shouldRemoveQuietZone])
+    if ([self shouldRemoveQuietZone])
     {
       [v6 setValue:&unk_1F3CC6C68 forKey:@"inputQuietSpace"];
     }
@@ -28,18 +28,18 @@
 
   else
   {
-    v8 = [a1 options];
-    v9 = v8;
+    options = [self options];
+    v9 = options;
     v10 = MEMORY[0x1E695E0F8];
-    if (v8)
+    if (options)
     {
-      v10 = v8;
+      v10 = options;
     }
 
     v11 = v10;
 
     [v6 setValue:v11 forKey:@"inputOptions"];
-    [a1 shouldRemoveQuietZone];
+    [self shouldRemoveQuietZone];
   }
 
   if (objc_opt_respondsToSelector())
@@ -70,32 +70,32 @@
 
 - (id)imageWithSize:()PKUIAdditions
 {
-  v6 = [a1 image];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  image = [self image];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   v10 = a2 * v9;
   v11 = a3 * v9;
-  [v6 size];
+  [image size];
   v13 = a2 * v9 / v12;
-  [v6 size];
+  [image size];
   v15 = a3 * v9 / v14;
-  [v6 size];
+  [image size];
   v48 = v16;
   v17 = v13;
   v47 = floorf(v17);
-  [v6 size];
+  [image size];
   v46 = v18;
   *&a3 = v15;
   v19 = floorf(*&a3);
-  [v6 size];
+  [image size];
   v21 = v20;
   v22 = ceilf(v17);
-  [v6 size];
+  [image size];
   v24 = v23;
   v25 = ceilf(*&a3);
-  [a1 variance];
+  [self variance];
   v28 = vabdd_f64(v46 * v19, v11);
   v29 = v24 * v25 - v11;
   v30 = vabdd_f64(v48 * v47, v10);
@@ -152,11 +152,11 @@
     v36 = v34;
   }
 
-  [v6 size];
+  [image size];
   v38 = v37 * (v36 / v9);
-  [v6 size];
+  [image size];
   v40 = v39 * (v35 / v9);
-  v41 = [v6 CGImage];
+  cGImage = [image CGImage];
   v51.width = v38;
   v51.height = v40;
   UIGraphicsBeginImageContextWithOptions(v51, 0, v9);
@@ -172,10 +172,10 @@
   v52.origin.y = 0.0;
   v52.size.width = v38;
   v52.size.height = v40;
-  CGContextDrawImage(CurrentContext, v52, v41);
+  CGContextDrawImage(CurrentContext, v52, cGImage);
   Image = CGBitmapContextCreateImage(CurrentContext);
   UIGraphicsEndImageContext();
-  v44 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image scale:objc_msgSend(v6 orientation:{"imageOrientation"), v9}];
+  v44 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image scale:objc_msgSend(image orientation:{"imageOrientation"), v9}];
   CGImageRelease(Image);
 
   return v44;
@@ -183,7 +183,7 @@
 
 - (double)variance
 {
-  v1 = [a1 format] - 1;
+  v1 = [self format] - 1;
   if (v1 > 2)
   {
     return *MEMORY[0x1E695F060];
@@ -200,7 +200,7 @@
   if (a3 < 8)
   {
 LABEL_2:
-    v3 = [a1 format] - 1;
+    v3 = [self format] - 1;
     if (v3 < 4)
     {
       return dbl_1BE115450[v3];
@@ -211,13 +211,13 @@ LABEL_2:
 
   if (a3 == 8)
   {
-    v5 = [a1 format];
+    format = [self format];
     result = 245.0;
-    if (v5 > 2)
+    if (format > 2)
     {
-      if (v5 != 4)
+      if (format != 4)
       {
-        if (v5 == 3)
+        if (format == 3)
         {
           return 160.0;
         }
@@ -228,12 +228,12 @@ LABEL_2:
 
     else
     {
-      if (v5 == 1)
+      if (format == 1)
       {
         return dbl_1BE115400[PKUseTallPasses() == 0];
       }
 
-      if (v5 != 2)
+      if (format != 2)
       {
         return *MEMORY[0x1E695F060];
       }
@@ -252,10 +252,10 @@ LABEL_2:
     return *MEMORY[0x1E695F060];
   }
 
-  v6 = [a1 format];
-  if (v6 <= 1)
+  format2 = [self format];
+  if (format2 <= 1)
   {
-    if (v6 != 1)
+    if (format2 != 1)
     {
       return *MEMORY[0x1E695F060];
     }
@@ -264,17 +264,17 @@ LABEL_2:
   }
 
   result = 245.0;
-  if (v6 == 2)
+  if (format2 == 2)
   {
     return result;
   }
 
-  if (v6 == 3)
+  if (format2 == 3)
   {
     return 135.0;
   }
 
-  if (v6 != 4)
+  if (format2 != 4)
   {
     return *MEMORY[0x1E695F060];
   }

@@ -1,11 +1,11 @@
 @interface PXOneSidedRegion
 + (PXOneSidedRegion)identityRegion;
-- (BOOL)_getIntersectionWithLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 intersectionFromPoint:(CGPoint *)a5 toPoint:(CGPoint *)a6;
-- (BOOL)isEqual:(id)a3;
-- (CGPath)createPathInRect:(CGRect)a3;
-- (PXOneSidedRegion)initWithA:(double)a3 b:(double)a4 c:(double)a5;
-- (PXOneSidedRegion)initWithSideAngle:(double)a3 point:(CGPoint)a4 width:(double)a5 offset:(double)a6;
-- (id)transformedWithAffineTransform:(CGAffineTransform *)a3;
+- (BOOL)_getIntersectionWithLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint intersectionFromPoint:(CGPoint *)fromPoint toPoint:(CGPoint *)a6;
+- (BOOL)isEqual:(id)equal;
+- (CGPath)createPathInRect:(CGRect)rect;
+- (PXOneSidedRegion)initWithA:(double)a b:(double)b c:(double)c;
+- (PXOneSidedRegion)initWithSideAngle:(double)angle point:(CGPoint)point width:(double)width offset:(double)offset;
+- (id)transformedWithAffineTransform:(CGAffineTransform *)transform;
 - (unint64_t)hash;
 @end
 
@@ -21,16 +21,16 @@
   return (v6 + v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = PXOneSidedRegion;
-  v5 = [(PXOneSidedRegion *)&v18 isEqual:v4];
+  v5 = [(PXOneSidedRegion *)&v18 isEqual:equalCopy];
   v6 = v5;
-  if (v4 != self && v5)
+  if (equalCopy != self && v5)
   {
-    v7 = v4;
+    v7 = equalCopy;
     [(PXOneSidedRegion *)self a];
     v9 = v8;
     [(PXOneSidedRegion *)v7 a];
@@ -51,12 +51,12 @@
   return v6;
 }
 
-- (BOOL)_getIntersectionWithLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 intersectionFromPoint:(CGPoint *)a5 toPoint:(CGPoint *)a6
+- (BOOL)_getIntersectionWithLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint intersectionFromPoint:(CGPoint *)fromPoint toPoint:(CGPoint *)a6
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v10 = point.y;
+  v11 = point.x;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__PXOneSidedRegion__getIntersectionWithLineFromPoint_toPoint_intersectionFromPoint_toPoint___block_invoke;
@@ -69,7 +69,7 @@
   if (!v15 || v13 >= 0.0 && v14 >= 0.0)
   {
 LABEL_9:
-    if (!a5)
+    if (!fromPoint)
     {
       goto LABEL_11;
     }
@@ -88,11 +88,11 @@ LABEL_9:
   v18 = -v13 / (v14 - v13);
   v11 = v11 + v18 * (x - v11);
   v10 = v10 + v18 * (y - v10);
-  if (a5)
+  if (fromPoint)
   {
 LABEL_10:
-    a5->x = v11;
-    a5->y = v10;
+    fromPoint->x = v11;
+    fromPoint->y = v10;
   }
 
 LABEL_11:
@@ -105,12 +105,12 @@ LABEL_11:
   return v15;
 }
 
-- (CGPath)createPathInRect:(CGRect)a3
+- (CGPath)createPathInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v29 = 0;
   v30 = &v29;
@@ -241,9 +241,9 @@ uint64_t __37__PXOneSidedRegion_createPathInRect___block_invoke_2(uint64_t resul
   return result;
 }
 
-- (id)transformedWithAffineTransform:(CGAffineTransform *)a3
+- (id)transformedWithAffineTransform:(CGAffineTransform *)transform
 {
-  if (a3->b != 0.0 || a3->c != 0.0)
+  if (transform->b != 0.0 || transform->c != 0.0)
   {
     v5 = PXAssertGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -253,30 +253,30 @@ uint64_t __37__PXOneSidedRegion_createPathInRect___block_invoke_2(uint64_t resul
     }
   }
 
-  v6 = self->_b / a3->d;
-  v7 = [[PXOneSidedRegion alloc] initWithA:self->_a / a3->a b:v6 c:self->_c - self->_a / a3->a * a3->tx - v6 * a3->ty];
+  v6 = self->_b / transform->d;
+  v7 = [[PXOneSidedRegion alloc] initWithA:self->_a / transform->a b:v6 c:self->_c - self->_a / transform->a * transform->tx - v6 * transform->ty];
 
   return v7;
 }
 
-- (PXOneSidedRegion)initWithA:(double)a3 b:(double)a4 c:(double)a5
+- (PXOneSidedRegion)initWithA:(double)a b:(double)b c:(double)c
 {
   v9.receiver = self;
   v9.super_class = PXOneSidedRegion;
   result = [(PXOneSidedRegion *)&v9 init];
   if (result)
   {
-    result->_a = a3;
-    result->_b = a4;
-    result->_c = a5;
+    result->_a = a;
+    result->_b = b;
+    result->_c = c;
   }
 
   return result;
 }
 
-- (PXOneSidedRegion)initWithSideAngle:(double)a3 point:(CGPoint)a4 width:(double)a5 offset:(double)a6
+- (PXOneSidedRegion)initWithSideAngle:(double)angle point:(CGPoint)point width:(double)width offset:(double)offset
 {
-  __sincos_stret(a3);
+  __sincos_stret(angle);
 
   return [PXOneSidedRegion initWithA:"initWithA:b:c:" b:? c:?];
 }

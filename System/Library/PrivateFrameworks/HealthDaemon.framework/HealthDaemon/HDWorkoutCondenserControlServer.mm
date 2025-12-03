@@ -1,10 +1,10 @@
 @interface HDWorkoutCondenserControlServer
 + (id)requiredEntitlements;
-- (id)_condenserWithError:(void *)a1;
-- (void)remote_condensableWorkoutsWithCompletion:(id)a3;
-- (void)remote_condenseWorkoutWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5;
-- (void)remote_condensedWorkoutsWithCompletion:(id)a3;
+- (id)_condenserWithError:(void *)error;
+- (void)remote_condensableWorkoutsWithCompletion:(id)completion;
+- (void)remote_condenseWorkoutWithUUID:(id)d completion:(id)completion;
+- (void)remote_condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion;
+- (void)remote_condensedWorkoutsWithCompletion:(id)completion;
 @end
 
 @implementation HDWorkoutCondenserControlServer
@@ -19,28 +19,28 @@
   return v2;
 }
 
-- (id)_condenserWithError:(void *)a1
+- (id)_condenserWithError:(void *)error
 {
-  if (a1)
+  if (error)
   {
-    v4 = [a1 profile];
-    v5 = [v4 workoutCondenser];
+    profile = [error profile];
+    workoutCondenser = [profile workoutCondenser];
 
-    if (v5)
+    if (workoutCondenser)
     {
-      v6 = [a1 profile];
-      v7 = [v6 workoutCondenser];
+      profile2 = [error profile];
+      workoutCondenser2 = [profile2 workoutCondenser];
 
       goto LABEL_12;
     }
 
-    v8 = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
-    if (v8)
+    hk_featureUnavailableForProfileError = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
+    if (hk_featureUnavailableForProfileError)
     {
       if (a2)
       {
-        v9 = v8;
-        *a2 = v8;
+        v9 = hk_featureUnavailableForProfileError;
+        *a2 = hk_featureUnavailableForProfileError;
       }
 
       else
@@ -58,36 +58,36 @@
     }
   }
 
-  v7 = 0;
+  workoutCondenser2 = 0;
 LABEL_12:
 
-  return v7;
+  return workoutCondenser2;
 }
 
-- (void)remote_condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5
+- (void)remote_condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion
 {
   v11 = 0;
-  v8 = a5;
+  completionCopy = completion;
   v9 = [(HDWorkoutCondenserControlServer *)self _condenserWithError:?];
   v10 = v11;
   if (v9)
   {
-    [v9 condenseWorkoutsForReason:a3 workoutBatchLimit:a4 completion:v8];
+    [v9 condenseWorkoutsForReason:reason workoutBatchLimit:limit completion:completionCopy];
   }
 
   else
   {
-    v8[2](v8, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)remote_condenseWorkoutWithUUID:(id)a3 completion:(id)a4
+- (void)remote_condenseWorkoutWithUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HDStandardTaskServer *)self profile];
+  dCopy = d;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
   v19 = 0;
-  v10 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:v7 encodingOptions:0 profile:v9 error:&v19];
+  v10 = [(HDDataEntity *)HDWorkoutEntity objectWithUUID:dCopy encodingOptions:0 profile:profile error:&v19];
   v11 = v19;
 
   if (v10)
@@ -102,13 +102,13 @@ LABEL_12:
       v15 = [v12 condenseWorkout:v10 error:&v17];
       v16 = v17;
 
-      v8[2](v8, v15, v16);
+      completionCopy[2](completionCopy, v15, v16);
       v14 = v16;
     }
 
     else
     {
-      v8[2](v8, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
   }
 
@@ -116,16 +116,16 @@ LABEL_12:
   {
     if (!v11)
     {
-      v11 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"No workout found with UUID %@", v7}];
+      v11 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"No workout found with UUID %@", dCopy}];
     }
 
-    v8[2](v8, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (void)remote_condensedWorkoutsWithCompletion:(id)a3
+- (void)remote_condensedWorkoutsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11 = 0;
   v5 = [(HDWorkoutCondenserControlServer *)self _condenserWithError:?];
   v6 = v11;
@@ -136,19 +136,19 @@ LABEL_12:
     v8 = [v5 condensedWorkoutsWithError:&v10];
     v9 = v10;
 
-    v4[2](v4, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
     v7 = v9;
   }
 
   else
   {
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-- (void)remote_condensableWorkoutsWithCompletion:(id)a3
+- (void)remote_condensableWorkoutsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11 = 0;
   v5 = [(HDWorkoutCondenserControlServer *)self _condenserWithError:?];
   v6 = v11;
@@ -159,13 +159,13 @@ LABEL_12:
     v8 = [v5 condensableWorkoutsWithError:&v10];
     v9 = v10;
 
-    v4[2](v4, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
     v7 = v9;
   }
 
   else
   {
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 

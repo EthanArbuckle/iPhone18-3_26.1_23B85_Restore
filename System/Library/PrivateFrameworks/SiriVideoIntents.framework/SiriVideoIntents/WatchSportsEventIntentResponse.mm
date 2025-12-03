@@ -1,12 +1,12 @@
 @interface WatchSportsEventIntentResponse
-- (WatchSportsEventIntentResponse)initWithPropertiesByName:(id)a3;
+- (WatchSportsEventIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation WatchSportsEventIntentResponse
 
-- (WatchSportsEventIntentResponse)initWithPropertiesByName:(id)a3
+- (WatchSportsEventIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2698549E4();
   }

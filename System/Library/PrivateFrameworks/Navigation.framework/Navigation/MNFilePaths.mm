@@ -1,5 +1,5 @@
 @interface MNFilePaths
-+ (BOOL)createFolderIfNotPresent:(id)a3 error:(id *)a4;
++ (BOOL)createFolderIfNotPresent:(id)present error:(id *)error;
 + (NSDictionary)fileAttributes;
 + (NSString)commuteTracesDirectoryPath;
 + (NSString)navTempDirectoryPath;
@@ -9,8 +9,8 @@
 + (NSString)routePlanningTracesDirectoryPath;
 + (id)_cachesDirectoryPath;
 + (id)_homeDirectoryPath;
-+ (id)_validFilenameForTraceName:(id)a3;
-+ (id)tracePathForTraceName:(id)a3 extension:(id)a4 directoryPath:(id)a5;
++ (id)_validFilenameForTraceName:(id)name;
++ (id)tracePathForTraceName:(id)name extension:(id)extension directoryPath:(id)path;
 @end
 
 @implementation MNFilePaths
@@ -27,46 +27,46 @@
   return v3;
 }
 
-+ (id)_validFilenameForTraceName:(id)a3
++ (id)_validFilenameForTraceName:(id)name
 {
-  v3 = [a3 componentsSeparatedByString:@"\n"];
-  v4 = [v3 firstObject];
+  v3 = [name componentsSeparatedByString:@"\n"];
+  firstObject = [v3 firstObject];
 
   v5 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"[\x00/\\\\]+" options:0 error:0];
-  v6 = [v5 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), @"_"}];
+  v6 = [v5 stringByReplacingMatchesInString:firstObject options:0 range:0 withTemplate:{objc_msgSend(firstObject, "length"), @"_"}];
 
   return v6;
 }
 
-+ (id)tracePathForTraceName:(id)a3 extension:(id)a4 directoryPath:(id)a5
++ (id)tracePathForTraceName:(id)name extension:(id)extension directoryPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [MNFilePaths _validFilenameForTraceName:a3];
-  v10 = [v9 stringByAppendingPathExtension:v8];
+  pathCopy = path;
+  extensionCopy = extension;
+  v9 = [MNFilePaths _validFilenameForTraceName:name];
+  v10 = [v9 stringByAppendingPathExtension:extensionCopy];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v11 fileExistsAtPath:v7 isDirectory:0] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:pathCopy isDirectory:0] & 1) == 0)
   {
-    [MNFilePaths createFolderIfNotPresent:v7 error:0];
+    [MNFilePaths createFolderIfNotPresent:pathCopy error:0];
   }
 
-  v12 = [v7 stringByAppendingPathComponent:v10];
+  v12 = [pathCopy stringByAppendingPathComponent:v10];
 
   return v12;
 }
 
-+ (BOOL)createFolderIfNotPresent:(id)a3 error:(id *)a4
++ (BOOL)createFolderIfNotPresent:(id)present error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  presentCopy = present;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  if (![v6 fileExistsAtPath:v5 isDirectory:&v13])
+  if (![defaultManager fileExistsAtPath:presentCopy isDirectory:&v13])
   {
     v8 = +[MNFilePaths fileAttributes];
     v7 = 1;
-    if ([v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v8 error:a4])
+    if ([defaultManager createDirectoryAtPath:presentCopy withIntermediateDirectories:1 attributes:v8 error:error])
     {
 LABEL_11:
 
@@ -76,9 +76,9 @@ LABEL_11:
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = *a4;
+      v10 = *error;
       *buf = 138412546;
-      v15 = v5;
+      v15 = presentCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&dword_1D311E000, v9, OS_LOG_TYPE_ERROR, "Could not create trace directory at path: %@. Error: %@", buf, 0x16u);
@@ -95,7 +95,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = presentCopy;
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEBUG, "File exists in place of traces directory at path: %@. Please remove it.", buf, 0xCu);
     }
 

@@ -1,7 +1,7 @@
 @interface PKPaletteOptionCell
 - (PKPaletteOptionCell)init;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation PKPaletteOptionCell
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v5 = MEMORY[0x1E69DCDC0];
-  [(PKPaletteOptionCell *)self bounds:a3];
+  [(PKPaletteOptionCell *)self bounds:interaction];
 
   return [v5 regionWithRect:0 identifier:?];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v5 = [MEMORY[0x1E69DCDA8] effectWithPreview:v4];

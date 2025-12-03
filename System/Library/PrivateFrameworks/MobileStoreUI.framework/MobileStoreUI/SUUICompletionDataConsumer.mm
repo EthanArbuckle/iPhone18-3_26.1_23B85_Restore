@@ -1,25 +1,25 @@
 @interface SUUICompletionDataConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUICompletionDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v8 = a3;
-  if ([a4 statusCode] != 200)
+  dataCopy = data;
+  if ([response statusCode] != 200)
   {
-    if (a5)
+    if (error)
     {
       [(SUUICompletionDataConsumer *)self _invalidResponseError];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_18;
     }
 
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
 LABEL_11:
     v14 = 0;
@@ -27,7 +27,7 @@ LABEL_11:
   }
 
   v16 = 0;
-  v9 = [MEMORY[0x277CCAC58] propertyListWithData:v8 options:0 format:0 error:&v16];
+  v9 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:&v16];
   v10 = v16;
   v11 = v10;
   if (v9)
@@ -49,10 +49,10 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    if (a5)
+    if (error)
     {
       [(SUUICompletionDataConsumer *)self _invalidResponseError];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_17;
     }
 
@@ -61,14 +61,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_16;
   }
 
   v13 = v10;
   v14 = 0;
-  *a5 = v11;
+  *error = v11;
 LABEL_17:
 
 LABEL_18:

@@ -1,9 +1,9 @@
 @interface WKLiveWallpaper
 + (id)na_identity;
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (WKLiveWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 type:(unint64_t)a5 thumbnailImageURL:(id)a6 fullsizeImageURL:(id)a7 videoAssetURL:(id)a8 stillTimeInVideo:(double)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (WKLiveWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name type:(unint64_t)type thumbnailImageURL:(id)l fullsizeImageURL:(id)rL videoAssetURL:(id)uRL stillTimeInVideo:(double)video;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (unint64_t)hash;
@@ -11,35 +11,35 @@
 
 @implementation WKLiveWallpaper
 
-- (WKLiveWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 type:(unint64_t)a5 thumbnailImageURL:(id)a6 fullsizeImageURL:(id)a7 videoAssetURL:(id)a8 stillTimeInVideo:(double)a9
+- (WKLiveWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name type:(unint64_t)type thumbnailImageURL:(id)l fullsizeImageURL:(id)rL videoAssetURL:(id)uRL stillTimeInVideo:(double)video
 {
-  v16 = a8;
+  uRLCopy = uRL;
   v21.receiver = self;
   v21.super_class = WKLiveWallpaper;
-  v17 = [(WKStillWallpaper *)&v21 initWithIdentifier:a3 name:a4 type:a5 thumbnailImageURL:a6 fullsizeImageURL:a7];
+  v17 = [(WKStillWallpaper *)&v21 initWithIdentifier:identifier name:name type:type thumbnailImageURL:l fullsizeImageURL:rL];
   if (v17)
   {
-    v18 = [v16 copy];
+    v18 = [uRLCopy copy];
     videoAssetURL = v17->_videoAssetURL;
     v17->_videoAssetURL = v18;
 
-    v17->_stillTimeInVideo = a9;
+    v17->_stillTimeInVideo = video;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKAbstractWallpaper *)self identifier];
-  v6 = [(WKAbstractWallpaper *)self name];
-  v7 = [(WKAbstractWallpaper *)self type];
-  v8 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-  v9 = [(WKStillWallpaper *)self fullsizeImageURL];
-  v10 = [(WKLiveWallpaper *)self videoAssetURL];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  type = [(WKAbstractWallpaper *)self type];
+  thumbnailImageURL = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+  fullsizeImageURL = [(WKStillWallpaper *)self fullsizeImageURL];
+  videoAssetURL = [(WKLiveWallpaper *)self videoAssetURL];
   [(WKLiveWallpaper *)self stillTimeInVideo];
-  v11 = [v4 initWithIdentifier:v5 name:v6 type:v7 thumbnailImageURL:v8 fullsizeImageURL:v9 videoAssetURL:v10 stillTimeInVideo:?];
+  v11 = [v4 initWithIdentifier:identifier name:name type:type thumbnailImageURL:thumbnailImageURL fullsizeImageURL:fullsizeImageURL videoAssetURL:videoAssetURL stillTimeInVideo:?];
 
   return v11;
 }
@@ -48,17 +48,17 @@
 {
   v11.receiver = self;
   v11.super_class = WKLiveWallpaper;
-  v3 = [(WKStillWallpaper *)&v11 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKStillWallpaper *)&v11 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKLiveWallpaper *)self videoAssetURL];
-  v7 = [v6 lastPathComponent];
-  [v5 na_safeSetObject:v7 forKey:@"videoFileName"];
+  videoAssetURL = [(WKLiveWallpaper *)self videoAssetURL];
+  lastPathComponent = [videoAssetURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent forKey:@"videoFileName"];
 
   v8 = MEMORY[0x1E696AD98];
   [(WKLiveWallpaper *)self stillTimeInVideo];
@@ -68,19 +68,19 @@
   return v5;
 }
 
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = WKLiveWallpaper;
-  if ([(WKStillWallpaper *)&v14 copyWallpaperContentsToDestinationDirectoryURL:v6 error:a4])
+  if ([(WKStillWallpaper *)&v14 copyWallpaperContentsToDestinationDirectoryURL:lCopy error:error])
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [(WKLiveWallpaper *)self videoAssetURL];
-    v9 = [(WKLiveWallpaper *)self videoAssetURL];
-    v10 = [v9 lastPathComponent];
-    v11 = [v6 URLByAppendingPathComponent:v10];
-    v12 = [v7 copyItemAtURL:v8 toURL:v11 error:a4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    videoAssetURL = [(WKLiveWallpaper *)self videoAssetURL];
+    videoAssetURL2 = [(WKLiveWallpaper *)self videoAssetURL];
+    lastPathComponent = [videoAssetURL2 lastPathComponent];
+    v11 = [lCopy URLByAppendingPathComponent:lastPathComponent];
+    v12 = [defaultManager copyItemAtURL:videoAssetURL toURL:v11 error:error];
   }
 
   else
@@ -97,7 +97,7 @@
   v4[1] = 3221225472;
   v4[2] = __30__WKLiveWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __30__WKLiveWallpaper_na_identity__block_invoke(v4);
 
   return v2;
@@ -147,19 +147,19 @@ id __30__WKLiveWallpaper_na_identity__block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -168,14 +168,14 @@ id __30__WKLiveWallpaper_na_identity__block_invoke_3(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = WKLiveWallpaper;
-  v3 = [(WKStillWallpaper *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKStillWallpaper *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __42__WKLiveWallpaper_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

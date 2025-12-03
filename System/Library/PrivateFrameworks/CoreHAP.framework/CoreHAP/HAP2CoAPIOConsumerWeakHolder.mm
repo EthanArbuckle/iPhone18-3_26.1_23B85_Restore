@@ -2,7 +2,7 @@
 + (id)new;
 - (HAP2CoAPIOConsumer)consumer;
 - (HAP2CoAPIOConsumerWeakHolder)init;
-- (HAP2CoAPIOConsumerWeakHolder)initWithConsumer:(id)a3;
+- (HAP2CoAPIOConsumerWeakHolder)initWithConsumer:(id)consumer;
 @end
 
 @implementation HAP2CoAPIOConsumerWeakHolder
@@ -14,16 +14,16 @@
   return WeakRetained;
 }
 
-- (HAP2CoAPIOConsumerWeakHolder)initWithConsumer:(id)a3
+- (HAP2CoAPIOConsumerWeakHolder)initWithConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v8.receiver = self;
   v8.super_class = HAP2CoAPIOConsumerWeakHolder;
   v5 = [(HAP2CoAPIOConsumerWeakHolder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_consumer, v4);
+    objc_storeWeak(&v5->_consumer, consumerCopy);
   }
 
   return v6;

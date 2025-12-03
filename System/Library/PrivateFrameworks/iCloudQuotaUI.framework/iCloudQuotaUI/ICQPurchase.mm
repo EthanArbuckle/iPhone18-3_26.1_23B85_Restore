@@ -1,43 +1,43 @@
 @interface ICQPurchase
-+ (id)clearCacheAndNotifyClientsWithCompletion:(id)a3;
-+ (id)parseParameters:(id)a3 action:(int64_t)a4;
-+ (id)upgradeStorageKeyBagForOffer:(id)a3 buttonID:(id)a4;
-+ (id)upgradeStorageQueryDictionaryForOffer:(id)a3 buttonID:(id)a4;
-+ (id)userAgentForBundleIdentifier:(id)a3 appVersion:(id)a4 attributionSuffix:(id)a5;
++ (id)clearCacheAndNotifyClientsWithCompletion:(id)completion;
++ (id)parseParameters:(id)parameters action:(int64_t)action;
++ (id)upgradeStorageKeyBagForOffer:(id)offer buttonID:(id)d;
++ (id)upgradeStorageQueryDictionaryForOffer:(id)offer buttonID:(id)d;
++ (id)userAgentForBundleIdentifier:(id)identifier appVersion:(id)version attributionSuffix:(id)suffix;
 + (void)clearCacheAndNotifyClients;
-- (ICQPurchase)initWithOffer:(id)a3 clientInfo:(id)a4;
+- (ICQPurchase)initWithOffer:(id)offer clientInfo:(id)info;
 - (ICQPurchaseDelegate)delegate;
 - (id)actionString;
 - (int64_t)offerAction;
 - (void)_enableCloudPhotoLibraryIfApplicable;
 - (void)beginPurchaseFlow;
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handlePurchaseCompletionWithError:(id)a3;
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handlePurchaseCompletionWithError:(id)error;
 - (void)preparePurchase;
-- (void)startPurchaseWithCompletion:(id)a3;
+- (void)startPurchaseWithCompletion:(id)completion;
 @end
 
 @implementation ICQPurchase
 
-- (ICQPurchase)initWithOffer:(id)a3 clientInfo:(id)a4
+- (ICQPurchase)initWithOffer:(id)offer clientInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = ICQPurchase;
   v8 = [(ICQPurchase *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(ICQPurchase *)v8 setOffer:v6];
-    objc_storeStrong(&v9->_clientInfo, a4);
-    v10 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [(ICQPurchase *)v8 setOffer:offerCopy];
+    objc_storeStrong(&v9->_clientInfo, info);
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v11 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"ICQPurchaseURLSession"];
-    [v10 set_appleIDContext:v11];
+    [defaultSessionConfiguration set_appleIDContext:v11];
 
-    v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v10];
+    v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     session = v9->_session;
     v9->_session = v12;
   }
@@ -47,38 +47,38 @@
 
 - (id)actionString
 {
-  v2 = [(ICQPurchase *)self clientInfo];
-  v3 = [v2 objectForKeyedSubscript:@"action"];
+  clientInfo = [(ICQPurchase *)self clientInfo];
+  v3 = [clientInfo objectForKeyedSubscript:@"action"];
 
   return v3;
 }
 
 - (int64_t)offerAction
 {
-  v2 = [(ICQPurchase *)self actionString];
+  actionString = [(ICQPurchase *)self actionString];
   v3 = _ICQActionForServerActionString();
 
   return v3;
 }
 
-- (void)startPurchaseWithCompletion:(id)a3
+- (void)startPurchaseWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQPurchase *)self clientInfo];
-  v6 = [v5 objectForKeyedSubscript:@"parameters"];
+  completionCopy = completion;
+  clientInfo = [(ICQPurchase *)self clientInfo];
+  v6 = [clientInfo objectForKeyedSubscript:@"parameters"];
 
-  v7 = [(ICQPurchase *)self offerAction];
+  offerAction = [(ICQPurchase *)self offerAction];
   [(ICQPurchase *)self preparePurchase];
-  v8 = [ICQPurchase parseParameters:v6 action:v7];
+  v8 = [ICQPurchase parseParameters:v6 action:offerAction];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [completionCopy copy];
     [(ICQPurchase *)self setCompletionHandler:v9];
 
-    v10 = [(ICQPurchase *)self offer];
-    v11 = [(ICQPurchase *)self actionString];
-    [v10 updateOfferWithPlanDetails:v8 actionString:v11];
+    offer = [(ICQPurchase *)self offer];
+    actionString = [(ICQPurchase *)self actionString];
+    [offer updateOfferWithPlanDetails:v8 actionString:actionString];
 
     [(ICQPurchase *)self beginPurchaseFlow];
   }
@@ -88,16 +88,16 @@
     v12 = _ICQGetLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ICQPurchase *)self actionString];
+      actionString2 = [(ICQPurchase *)self actionString];
       v15 = 138412546;
       v16 = 0;
       v17 = 2112;
-      v18 = v13;
+      v18 = actionString2;
       _os_log_impl(&dword_275623000, v12, OS_LOG_TYPE_DEFAULT, "No plan details found for planDetails %@ and actionString %@.", &v15, 0x16u);
     }
 
     v14 = ICQCreateError();
-    (*(v4 + 2))(v4, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -112,13 +112,13 @@
 {
   v45 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CEE650]);
-  v4 = [MEMORY[0x277CEE3F8] quotaBag];
-  v5 = [v3 initWithBag:v4];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
+  v5 = [v3 initWithBag:quotaBag];
 
   [v5 setDelegate:self];
   v6 = [objc_alloc(MEMORY[0x277CEE648]) initWithConfiguration:v5];
-  v7 = [(ICQPurchase *)self offer];
-  v8 = [ICQPurchase upgradeStorageKeyBagForOffer:v7 buttonID:0];
+  offer = [(ICQPurchase *)self offer];
+  v8 = [ICQPurchase upgradeStorageKeyBagForOffer:offer buttonID:0];
   v9 = [v8 objectForKey:@"buyParams"];
 
   v10 = objc_alloc(MEMORY[0x277CEE640]);
@@ -140,21 +140,21 @@
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
   [v12 setMetricsOverlay:v15];
 
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 bundleIdentifier];
-  v18 = [v17 isEqualToString:@"com.apple.iCloudQuotaUI.RemoteiCloudQuotaUI"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v18 = [bundleIdentifier isEqualToString:@"com.apple.iCloudQuotaUI.RemoteiCloudQuotaUI"];
 
   if (v18)
   {
-    v19 = [objc_alloc(MEMORY[0x277CEE620]) initWithBundleIdentifier:@"com.apple.RemoteiCloudQuotaUI"];
+    currentProcess = [objc_alloc(MEMORY[0x277CEE620]) initWithBundleIdentifier:@"com.apple.RemoteiCloudQuotaUI"];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CEE620] currentProcess];
+    currentProcess = [MEMORY[0x277CEE620] currentProcess];
   }
 
-  v20 = v19;
+  v20 = currentProcess;
   if (self->_presentingSceneBundleIdentifier)
   {
     v21 = _ICQGetLogSystem();
@@ -169,27 +169,27 @@
     [v20 setProxyAppBundleID:self->_presentingSceneBundleIdentifier];
   }
 
-  v23 = [(ICQPurchase *)self offer];
-  v24 = [v23 appVersionId];
+  offer2 = [(ICQPurchase *)self offer];
+  appVersionId = [offer2 appVersionId];
 
-  v25 = [(ICQPurchase *)self offer];
-  v26 = [v25 bundleIdentifier];
-  v27 = [ICQPurchase userAgentForBundleIdentifier:v26 appVersion:v24 attributionSuffix:self->_userAgentSuffix];
+  offer3 = [(ICQPurchase *)self offer];
+  bundleIdentifier2 = [offer3 bundleIdentifier];
+  v27 = [ICQPurchase userAgentForBundleIdentifier:bundleIdentifier2 appVersion:appVersionId attributionSuffix:self->_userAgentSuffix];
   [v20 setUserAgentSuffix:v27];
 
   [v12 setClientInfo:v20];
   if (objc_opt_respondsToSelector())
   {
-    v28 = [MEMORY[0x277CB8F48] defaultStore];
-    v29 = [v28 aa_primaryAppleAccount];
-    if (v29)
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    if (aa_primaryAppleAccount)
     {
-      [v12 setAccount:v29];
+      [v12 setAccount:aa_primaryAppleAccount];
       v30 = _ICQGetLogSystem();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v29;
+        v44 = aa_primaryAppleAccount;
         v31 = "Account %@ successfully added";
         v32 = v30;
         v33 = 12;
@@ -214,8 +214,8 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v28 = _ICQGetLogSystem();
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+  defaultStore = _ICQGetLogSystem();
+  if (os_log_type_enabled(defaultStore, OS_LOG_TYPE_ERROR))
   {
     [ICQPurchase beginPurchaseFlow];
   }
@@ -242,13 +242,13 @@ LABEL_20:
   [v36 addFinishBlock:v37];
 }
 
-- (void)handlePurchaseCompletionWithError:(id)a3
+- (void)handlePurchaseCompletionWithError:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = _ICQGetLogSystem();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -262,23 +262,23 @@ LABEL_20:
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Oslo purchase completed without any error!", &v41, 2u);
   }
 
-  v7 = [(ICQPurchase *)self delegate];
+  delegate = [(ICQPurchase *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(ICQPurchase *)self delegate];
-    [v9 stopActivityIndicator];
+    delegate2 = [(ICQPurchase *)self delegate];
+    [delegate2 stopActivityIndicator];
   }
 
   [(ICQPurchase *)self setAmsServerErrorCode:0];
-  v10 = [v4 domain];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CEE188]];
+  domain = [errorCopy domain];
+  v11 = [domain isEqualToString:*MEMORY[0x277CEE188]];
 
   if (!v11)
   {
 LABEL_20:
-    if ([v4 code] == 305)
+    if ([errorCopy code] == 305)
     {
       interruptedBuyErrorCodes = self->_interruptedBuyErrorCodes;
       if (interruptedBuyErrorCodes)
@@ -292,9 +292,9 @@ LABEL_20:
         {
           if (v32)
           {
-            v33 = [(ICQPurchase *)self amsServerErrorCode];
+            amsServerErrorCode = [(ICQPurchase *)self amsServerErrorCode];
             v41 = 134217984;
-            v42 = v33;
+            v42 = amsServerErrorCode;
             v34 = "interrupted flow with error code = %ld";
             v35 = v31;
             v36 = 12;
@@ -308,24 +308,24 @@ LABEL_31:
 
         if (v32)
         {
-          v37 = [(ICQPurchase *)self amsServerErrorCode];
+          amsServerErrorCode2 = [(ICQPurchase *)self amsServerErrorCode];
           v41 = 134217984;
-          v42 = v37;
+          v42 = amsServerErrorCode2;
           _os_log_impl(&dword_275623000, v31, OS_LOG_TYPE_DEFAULT, "uninterrupted flow with error code = %ld", &v41, 0xCu);
         }
       }
     }
 
-    if (![v4 icq_isPSD2StepUpError])
+    if (![errorCopy icq_isPSD2StepUpError])
     {
-      if (v4 && [(ICQPurchase *)self amsServerErrorCode]!= 3067 && [(ICQPurchase *)self amsServerErrorCode]!= 3068 && [(ICQPurchase *)self amsServerErrorCode]!= 8067 && [(ICQPurchase *)self amsServerErrorCode]!= 8068)
+      if (errorCopy && [(ICQPurchase *)self amsServerErrorCode]!= 3067 && [(ICQPurchase *)self amsServerErrorCode]!= 3068 && [(ICQPurchase *)self amsServerErrorCode]!= 8067 && [(ICQPurchase *)self amsServerErrorCode]!= 8068)
       {
-        v19 = self;
-        v18 = 1;
+        selfCopy2 = self;
+        code = 1;
 LABEL_16:
-        [(ICQPurchase *)v19 setStatusCode:v18];
-        v20 = [(ICQPurchase *)self completionHandler];
-        v21 = v20[2];
+        [(ICQPurchase *)selfCopy2 setStatusCode:code];
+        completionHandler = [(ICQPurchase *)self completionHandler];
+        v21 = completionHandler[2];
 LABEL_44:
         v21();
         goto LABEL_45;
@@ -335,14 +335,14 @@ LABEL_44:
       [(ICQPurchase *)self _enableCloudPhotoLibraryIfApplicable];
       if (![(ICQPurchase *)self isLegacyNativeFlow]|| [(ICQPurchase *)self amsServerErrorCode]!= 3068 && [(ICQPurchase *)self amsServerErrorCode]!= 8068)
       {
-        v20 = [(ICQPurchase *)self completionHandler];
-        v21 = v20[2];
+        completionHandler = [(ICQPurchase *)self completionHandler];
+        v21 = completionHandler[2];
         goto LABEL_44;
       }
 
-      v20 = [(ICQPurchase *)self completionHandler];
+      completionHandler = [(ICQPurchase *)self completionHandler];
       v40 = ICQCreateErrorWithMessage();
-      (v20[2])(v20, 1, v40);
+      (completionHandler[2])(completionHandler, 1, v40);
 
       goto LABEL_45;
     }
@@ -359,7 +359,7 @@ LABEL_44:
 
 LABEL_32:
 
-    v38 = [(ICQPurchase *)self delegate];
+    delegate3 = [(ICQPurchase *)self delegate];
     v39 = objc_opt_respondsToSelector();
 
     if ((v39 & 1) == 0)
@@ -367,26 +367,26 @@ LABEL_32:
       goto LABEL_46;
     }
 
-    v20 = [(ICQPurchase *)self delegate];
-    [v20 registerForDarwinNotifications];
+    completionHandler = [(ICQPurchase *)self delegate];
+    [completionHandler registerForDarwinNotifications];
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  if ([v4 code] != 6)
+  if ([errorCopy code] != 6)
   {
-    if ([v4 code] == 305)
+    if ([errorCopy code] == 305)
     {
-      v22 = [v4 userInfo];
+      userInfo = [errorCopy userInfo];
       v23 = *MEMORY[0x277CEE198];
-      v24 = [v22 objectForKeyedSubscript:*MEMORY[0x277CEE198]];
+      v24 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEE198]];
       v25 = objc_opt_respondsToSelector();
 
       if (v25)
       {
-        v26 = [v4 userInfo];
-        v27 = [v26 objectForKeyedSubscript:v23];
+        userInfo2 = [errorCopy userInfo];
+        v27 = [userInfo2 objectForKeyedSubscript:v23];
         -[ICQPurchase setAmsServerErrorCode:](self, "setAmsServerErrorCode:", [v27 longValue]);
       }
     }
@@ -394,20 +394,20 @@ LABEL_45:
     goto LABEL_20;
   }
 
-  v12 = [(ICQPurchase *)self delegate];
-  v13 = [v12 isLiftUIFlow];
+  delegate4 = [(ICQPurchase *)self delegate];
+  isLiftUIFlow = [delegate4 isLiftUIFlow];
 
-  if (v13)
+  if (isLiftUIFlow)
   {
     [(ICQPurchase *)self setStatusCode:1];
-    v14 = [(ICQPurchase *)self completionHandler];
-    (v14)[2](v14, 0, v4);
+    completionHandler2 = [(ICQPurchase *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, 0, errorCopy);
   }
 
-  v15 = [(ICQPurchase *)self offer];
-  v16 = [v15 action];
+  offer = [(ICQPurchase *)self offer];
+  action = [offer action];
 
-  if (v16 == 118)
+  if (action == 118)
   {
     v17 = _ICQGetLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -416,8 +416,8 @@ LABEL_45:
       _os_log_impl(&dword_275623000, v17, OS_LOG_TYPE_DEFAULT, "Purchase cancelled during direct to oslo, running completion", &v41, 2u);
     }
 
-    v18 = [v4 code];
-    v19 = self;
+    code = [errorCopy code];
+    selfCopy2 = self;
     goto LABEL_16;
   }
 
@@ -426,19 +426,19 @@ LABEL_46:
 
 - (void)_enableCloudPhotoLibraryIfApplicable
 {
-  v3 = [(ICQPurchase *)self clientInfo];
-  v4 = [v3 objectForKeyedSubscript:@"action"];
+  clientInfo = [(ICQPurchase *)self clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:@"action"];
   v5 = [v4 isEqualToString:@"UPGRADE_ENABLE_ICPL_OSLO"];
 
   if (v5)
   {
-    v6 = [(ICQPurchase *)self delegate];
+    delegate = [(ICQPurchase *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v9 = [(ICQPurchase *)self delegate];
-      [v9 enableCloudPhotoLibraryWithCompletion:&__block_literal_global_2];
+      delegate2 = [(ICQPurchase *)self delegate];
+      [delegate2 enableCloudPhotoLibraryWithCompletion:&__block_literal_global_2];
     }
 
     else
@@ -472,19 +472,19 @@ void __51__ICQPurchase__enableCloudPhotoLibraryIfApplicable__block_invoke(uint64
   }
 }
 
-+ (id)upgradeStorageQueryDictionaryForOffer:(id)a3 buttonID:(id)a4
++ (id)upgradeStorageQueryDictionaryForOffer:(id)offer buttonID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  dCopy = d;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [ICQPurchase upgradeStorageKeyBagForOffer:v6 buttonID:v7];
+  v9 = [ICQPurchase upgradeStorageKeyBagForOffer:offerCopy buttonID:dCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a1 upgradeStorageQueryKeySet];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  upgradeStorageQueryKeySet = [self upgradeStorageQueryKeySet];
+  v11 = [upgradeStorageQueryKeySet countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -495,7 +495,7 @@ void __51__ICQPurchase__enableCloudPhotoLibraryIfApplicable__block_invoke(uint64
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(upgradeStorageQueryKeySet);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
@@ -506,7 +506,7 @@ void __51__ICQPurchase__enableCloudPhotoLibraryIfApplicable__block_invoke(uint64
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [upgradeStorageQueryKeySet countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -515,38 +515,38 @@ void __51__ICQPurchase__enableCloudPhotoLibraryIfApplicable__block_invoke(uint64
   return v8;
 }
 
-+ (id)upgradeStorageKeyBagForOffer:(id)a3 buttonID:(id)a4
++ (id)upgradeStorageKeyBagForOffer:(id)offer buttonID:(id)d
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  offerCopy = offer;
+  v6 = offerCopy;
+  if (d)
   {
-    v7 = [v5 storagePurchaseKeybagForButtonId:a4];
+    v7 = [offerCopy storagePurchaseKeybagForButtonId:d];
   }
 
   else
   {
-    v8 = [v5 buttonSpecification];
-    v9 = [v8 buttonLink];
-    v10 = [v9 parameters];
+    buttonSpecification = [offerCopy buttonSpecification];
+    buttonLink = [buttonSpecification buttonLink];
+    parameters = [buttonLink parameters];
 
-    v11 = [v10 objectForKeyedSubscript:@"ServerLinkId"];
+    v11 = [parameters objectForKeyedSubscript:@"ServerLinkId"];
     v7 = [v6 storagePurchaseKeybagForButtonId:v11];
 
-    v6 = v10;
+    v6 = parameters;
   }
 
   return v7;
 }
 
-+ (id)parseParameters:(id)a3 action:(int64_t)a4
++ (id)parseParameters:(id)parameters action:(int64_t)action
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  parametersCopy = parameters;
+  v6 = parametersCopy;
   v7 = 0;
-  v8 = a4 - 105;
-  if ((a4 - 105) <= 0x16)
+  v8 = action - 105;
+  if ((action - 105) <= 0x16)
   {
     if (((1 << v8) & 0x403800) != 0)
     {
@@ -564,7 +564,7 @@ void __51__ICQPurchase__enableCloudPhotoLibraryIfApplicable__block_invoke(uint64
         goto LABEL_7;
       }
 
-      v10 = [v5 dataUsingEncoding:4];
+      v10 = [parametersCopy dataUsingEncoding:4];
       v13 = 0;
       v11 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v13];
     }
@@ -577,32 +577,32 @@ LABEL_7:
   return v7;
 }
 
-+ (id)userAgentForBundleIdentifier:(id)a3 appVersion:(id)a4 attributionSuffix:(id)a5
++ (id)userAgentForBundleIdentifier:(id)identifier appVersion:(id)version attributionSuffix:(id)suffix
 {
-  if (a5)
+  if (suffix)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@ %@%@", a3, a4, a5, @" CastleSettings/1.0"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@ %@%@", identifier, version, suffix, @" CastleSettings/1.0"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@%@", a3, a4, @" CastleSettings/1.0", v7];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@%@", identifier, version, @" CastleSettings/1.0", v7];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)clearCacheAndNotifyClientsWithCompletion:(id)a3
++ (id)clearCacheAndNotifyClientsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__ICQPurchase_clearCacheAndNotifyClientsWithCompletion___block_invoke;
   v8[3] = &unk_27A65A778;
-  v9 = v4;
-  v10 = a1;
-  v5 = v4;
+  v9 = completionCopy;
+  selfCopy = self;
+  v5 = completionCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -658,9 +658,9 @@ uint64_t __56__ICQPurchase_clearCacheAndNotifyClientsWithCompletion___block_invo
   _Block_object_dispose(&v9, 8);
   v5 = objc_alloc_init(v3);
   v6 = [v5 daemonWithErrorHandler:{&__block_literal_global_131, v9}];
-  v7 = [MEMORY[0x277CB8F48] defaultStore];
-  v8 = [v7 aa_primaryAppleAccount];
-  [v6 teardownOffersForAccount:v8 withCompletion:&__block_literal_global_135];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  [v6 teardownOffersForAccount:aa_primaryAppleAccount withCompletion:&__block_literal_global_135];
 }
 
 void __41__ICQPurchase_clearCacheAndNotifyClients__block_invoke()
@@ -698,10 +698,10 @@ void __41__ICQPurchase_clearCacheAndNotifyClients__block_invoke_137(uint64_t a1,
   }
 }
 
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a6;
-  v9 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -709,14 +709,14 @@ void __41__ICQPurchase_clearCacheAndNotifyClients__block_invoke_137(uint64_t a1,
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "We were asked to authenticate.  Attempting silent authentication.", v12, 2u);
   }
 
-  v11 = [(ICQPurchase *)self delegate];
-  [v11 handleAuthenticateRequest:v9 purchase:self completion:v8];
+  delegate = [(ICQPurchase *)self delegate];
+  [delegate handleAuthenticateRequest:requestCopy purchase:self completion:completionCopy];
 }
 
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a6;
-  v9 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -724,14 +724,14 @@ void __41__ICQPurchase_clearCacheAndNotifyClients__block_invoke_137(uint64_t a1,
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "We were asked to handle a dialog request", v12, 2u);
   }
 
-  v11 = [(ICQPurchase *)self delegate];
-  [v11 handleDialogRequest:v9 purchase:self completion:v8];
+  delegate = [(ICQPurchase *)self delegate];
+  [delegate handleDialogRequest:requestCopy purchase:self completion:completionCopy];
 }
 
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a6;
-  v9 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -739,8 +739,8 @@ void __41__ICQPurchase_clearCacheAndNotifyClients__block_invoke_137(uint64_t a1,
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "We were asked to handle an engagement request", v12, 2u);
   }
 
-  v11 = [(ICQPurchase *)self delegate];
-  [v11 handleEngagementRequest:v9 purchase:self completion:v8];
+  delegate = [(ICQPurchase *)self delegate];
+  [delegate handleEngagementRequest:requestCopy purchase:self completion:completionCopy];
 }
 
 - (ICQPurchaseDelegate)delegate

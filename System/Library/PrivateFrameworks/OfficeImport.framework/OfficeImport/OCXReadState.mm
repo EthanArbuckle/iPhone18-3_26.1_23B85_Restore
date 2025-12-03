@@ -1,20 +1,20 @@
 @interface OCXReadState
-- (id)OCXReadRelationshipForNode:(_xmlNode *)a3 attributeName:(const char *)a4 packagePart:(id)a5;
-- (id)OCXReadRelationshipForNode:(_xmlNode *)a3 packagePart:(id)a4;
-- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)a3 attributeName:(const char *)a4 packagePart:(id)a5;
-- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)a3 packagePart:(id)a4;
+- (id)OCXReadRelationshipForNode:(_xmlNode *)node attributeName:(const char *)name packagePart:(id)part;
+- (id)OCXReadRelationshipForNode:(_xmlNode *)node packagePart:(id)part;
+- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)node attributeName:(const char *)name packagePart:(id)part;
+- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)node packagePart:(id)part;
 @end
 
 @implementation OCXReadState
 
-- (id)OCXReadRelationshipForNode:(_xmlNode *)a3 attributeName:(const char *)a4 packagePart:(id)a5
+- (id)OCXReadRelationshipForNode:(_xmlNode *)node attributeName:(const char *)name packagePart:(id)part
 {
-  v8 = a5;
-  v9 = CXXmlHasNsPropWithFallbackNs(a3, a4, self->super.mOCXRelationshipsNamespace);
+  partCopy = part;
+  v9 = CXXmlHasNsPropWithFallbackNs(node, name, self->super.mOCXRelationshipsNamespace);
   if (v9)
   {
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithValueOfXmlAttribute:v9];
-    v11 = [v8 relationshipForIdentifier:v10];
+    v11 = [partCopy relationshipForIdentifier:v10];
   }
 
   else
@@ -25,27 +25,27 @@
   return v11;
 }
 
-- (id)OCXReadRelationshipForNode:(_xmlNode *)a3 packagePart:(id)a4
+- (id)OCXReadRelationshipForNode:(_xmlNode *)node packagePart:(id)part
 {
-  v4 = [(OCXReadState *)self OCXReadRelationshipForNode:a3 attributeName:"id" packagePart:a4];
+  v4 = [(OCXReadState *)self OCXReadRelationshipForNode:node attributeName:"id" packagePart:part];
 
   return v4;
 }
 
-- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)a3 attributeName:(const char *)a4 packagePart:(id)a5
+- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)node attributeName:(const char *)name packagePart:(id)part
 {
-  v6 = [(OCXReadState *)self OCXReadRelationshipForNode:a3 attributeName:a4 packagePart:a5];
+  v6 = [(OCXReadState *)self OCXReadRelationshipForNode:node attributeName:name packagePart:part];
   if (!v6)
   {
-    [MEMORY[0x277CBEAD8] raise:@"OCXException" format:{@"Could not find required relationship: %s", a4}];
+    [MEMORY[0x277CBEAD8] raise:@"OCXException" format:{@"Could not find required relationship: %s", name}];
   }
 
   return v6;
 }
 
-- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)a3 packagePart:(id)a4
+- (id)OCXReadRequiredRelationshipForNode:(_xmlNode *)node packagePart:(id)part
 {
-  v4 = [(OCXReadState *)self OCXReadRelationshipForNode:a3 attributeName:"id" packagePart:a4];
+  v4 = [(OCXReadState *)self OCXReadRelationshipForNode:node attributeName:"id" packagePart:part];
   if (!v4)
   {
     [MEMORY[0x277CBEAD8] raise:@"OCXException" format:@"Could not find required relationship: id"];

@@ -1,16 +1,16 @@
 @interface SidecarMutableItem
-- (BOOL)appendData:(id)a3;
-- (SidecarMutableItem)initWithType:(id)a3 capacity:(unint64_t)a4;
+- (BOOL)appendData:(id)data;
+- (SidecarMutableItem)initWithType:(id)type capacity:(unint64_t)capacity;
 - (id)data;
 @end
 
 @implementation SidecarMutableItem
 
-- (BOOL)appendData:(id)a3
+- (BOOL)appendData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   capacity = self->_capacity;
   v7 = capacity - [(NSMutableData *)self->_mutableData length];
   if (v5 > v7)
@@ -19,13 +19,13 @@
     v13 = v16;
     if (v16 && os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(SidecarItem *)self type];
+      type = [(SidecarItem *)self type];
       v20 = v7;
-      v21 = [v4 length];
+      v21 = [dataCopy length];
       v22 = [(NSMutableData *)self->_mutableData length];
       v23 = self->_capacity;
       v24 = 138544130;
-      v25 = v19;
+      v25 = type;
       v26 = 2048;
       v27 = v21;
       v7 = v20;
@@ -39,7 +39,7 @@
     goto LABEL_11;
   }
 
-  [(NSMutableData *)self->_mutableData appendData:v4];
+  [(NSMutableData *)self->_mutableData appendData:dataCopy];
   v8 = [(NSMutableData *)self->_mutableData length];
   v9 = self->_capacity;
   v10 = v8 == v9;
@@ -60,10 +60,10 @@
     v13 = v12;
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v14 = [(SidecarItem *)self type];
+      type2 = [(SidecarItem *)self type];
       v15 = self->_capacity;
       v24 = 138543618;
-      v25 = v14;
+      v25 = type2;
       v26 = 2048;
       v27 = v15;
       _os_log_impl(&dword_26604C000, v13, OS_LOG_TYPE_INFO, "item complete: %{public}@ (%lu bytes)", &v24, 0x16u);
@@ -91,16 +91,16 @@ LABEL_11:
   return mutableData;
 }
 
-- (SidecarMutableItem)initWithType:(id)a3 capacity:(unint64_t)a4
+- (SidecarMutableItem)initWithType:(id)type capacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = SidecarMutableItem;
-  v5 = [(SidecarItem *)&v10 initWithData:0 type:a3];
+  v5 = [(SidecarItem *)&v10 initWithData:0 type:type];
   v6 = v5;
   if (v5)
   {
-    v5->_capacity = a4;
-    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:a4];
+    v5->_capacity = capacity;
+    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:capacity];
     mutableData = v6->_mutableData;
     v6->_mutableData = v7;
   }

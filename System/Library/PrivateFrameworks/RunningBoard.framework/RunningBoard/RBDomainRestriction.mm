@@ -1,23 +1,23 @@
 @interface RBDomainRestriction
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4;
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
 - (id)_init;
 - (id)allEntitlements;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RBDomainRestriction
 
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error
 {
   v32[13] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKey:@"Class"];
+    v6 = [dictionaryCopy objectForKey:@"Class"];
     if (v6)
     {
       v31[0] = @"OriginatorEntitlement";
@@ -50,12 +50,12 @@
       v8 = [v7 objectForKey:v6];
       if (v8)
       {
-        v9 = [v8 domainRestrictionForDictionary:v5 withError:a4];
+        v9 = [v8 domainRestrictionForDictionary:dictionaryCopy withError:error];
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
           v18 = MEMORY[0x277CCA9B8];
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBDomainRestriction invalid class name: %@", v6, *MEMORY[0x277CCA470]];
@@ -64,7 +64,7 @@
           v21 = [v18 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v20];
 
           v22 = v21;
-          *a4 = v21;
+          *error = v21;
         }
 
         v9 = 0;
@@ -73,7 +73,7 @@
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v9 = 0;
         goto LABEL_14;
@@ -81,20 +81,20 @@
 
       v14 = MEMORY[0x277CCA9B8];
       v27 = *MEMORY[0x277CCA470];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBDomainRestriction doesn't specify class: %@", v5];
-      v28 = v15;
+      dictionaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"RBDomainRestriction doesn't specify class: %@", dictionaryCopy];
+      v28 = dictionaryCopy;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v7 = [v14 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:1 userInfo:v16];
 
       v17 = v7;
       v9 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v9 = 0;
       goto LABEL_15;
@@ -102,14 +102,14 @@
 
     v10 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA470];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBDomainRestriction malformed: %@", v5];
-    v30 = v11;
+    dictionaryCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBDomainRestriction malformed: %@", dictionaryCopy];
+    v30 = dictionaryCopy2;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v6 = [v10 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v12];
 
     v13 = v6;
     v9 = 0;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_14:
@@ -144,7 +144,7 @@ LABEL_15:
   return 0;
 }
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
   OUTLINED_FUNCTION_0_0();
   v4 = objc_opt_class();
@@ -160,7 +160,7 @@ LABEL_15:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   OUTLINED_FUNCTION_0_0();
   v3 = objc_opt_class();

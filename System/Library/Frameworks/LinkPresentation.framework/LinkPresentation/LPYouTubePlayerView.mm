@@ -1,32 +1,32 @@
 @interface LPYouTubePlayerView
 - (LPYouTubePlayerDelegate)delegate;
-- (LPYouTubePlayerView)initWithFrame:(CGRect)a3;
+- (LPYouTubePlayerView)initWithFrame:(CGRect)frame;
 - (id)_parameterScript;
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6;
-- (void)_evaluatePlayerCommand:(id)a3;
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features;
+- (void)_evaluatePlayerCommand:(id)command;
 - (void)createVideoPlayerView;
 - (void)dealloc;
-- (void)didReceiveScriptMessage:(id)a3;
-- (void)dispatchErrorWithCode:(int64_t)a3;
+- (void)didReceiveScriptMessage:(id)message;
+- (void)dispatchErrorWithCode:(int64_t)code;
 - (void)enterFullScreen;
 - (void)exitFullScreen;
 - (void)layoutSubviews;
-- (void)loadVideoWithEmbedURL:(id)a3;
-- (void)loadVideoWithID:(id)a3;
-- (void)loadVideoWithURL:(id)a3;
-- (void)seekTo:(double)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)loadVideoWithEmbedURL:(id)l;
+- (void)loadVideoWithID:(id)d;
+- (void)loadVideoWithURL:(id)l;
+- (void)seekTo:(double)to;
+- (void)setMuted:(BOOL)muted;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation LPYouTubePlayerView
 
-- (LPYouTubePlayerView)initWithFrame:(CGRect)a3
+- (LPYouTubePlayerView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = LPYouTubePlayerView;
-  v3 = [(LPYouTubePlayerView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LPYouTubePlayerView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,13 +36,13 @@
     v3->_endTime = -1.0;
     if (+[LPSettings showDebugIndicators])
     {
-      v5 = [MEMORY[0x1E69DC888] redColor];
-      v6 = [v5 CGColor];
-      v7 = [(LPYouTubePlayerView *)v4 layer];
-      [v7 setBorderColor:v6];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      cGColor = [redColor CGColor];
+      layer = [(LPYouTubePlayerView *)v4 layer];
+      [layer setBorderColor:cGColor];
 
-      v8 = [(LPYouTubePlayerView *)v4 layer];
-      [v8 setBorderWidth:6.0];
+      layer2 = [(LPYouTubePlayerView *)v4 layer];
+      [layer2 setBorderWidth:6.0];
     }
 
     v9 = v4;
@@ -51,27 +51,27 @@
   return v4;
 }
 
-- (void)dispatchErrorWithCode:(int64_t)a3
+- (void)dispatchErrorWithCode:(int64_t)code
 {
-  v7 = [(LPYouTubePlayerView *)self delegate];
+  delegate = [(LPYouTubePlayerView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(LPYouTubePlayerView *)self delegate];
-    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LPYouTubePlayerErrorDomain" code:a3 userInfo:0];
-    [v8 youTubePlayer:self didReceiveError:v6];
+    delegate2 = [(LPYouTubePlayerView *)self delegate];
+    v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LPYouTubePlayerErrorDomain" code:code userInfo:0];
+    [delegate2 youTubePlayer:self didReceiveError:v6];
   }
 }
 
-- (void)loadVideoWithURL:(id)a3
+- (void)loadVideoWithURL:(id)l
 {
-  v4 = [LPPresentationSpecializations youTubeVideoComponentsForVideoURL:a3];
-  v5 = [v4 videoID];
+  v4 = [LPPresentationSpecializations youTubeVideoComponentsForVideoURL:l];
+  videoID = [v4 videoID];
 
-  if (v5)
+  if (videoID)
   {
-    [(LPYouTubePlayerView *)self loadVideoWithID:v5];
+    [(LPYouTubePlayerView *)self loadVideoWithID:videoID];
   }
 
   else
@@ -80,14 +80,14 @@
   }
 }
 
-- (void)loadVideoWithEmbedURL:(id)a3
+- (void)loadVideoWithEmbedURL:(id)l
 {
-  v4 = [LPPresentationSpecializations youTubeVideoComponentsForEmbedURL:a3];
-  v5 = [v4 videoID];
+  v4 = [LPPresentationSpecializations youTubeVideoComponentsForEmbedURL:l];
+  videoID = [v4 videoID];
 
-  if (v5)
+  if (videoID)
   {
-    [(LPYouTubePlayerView *)self loadVideoWithID:v5];
+    [(LPYouTubePlayerView *)self loadVideoWithID:videoID];
   }
 
   else
@@ -96,10 +96,10 @@
   }
 }
 
-- (void)loadVideoWithID:(id)a3
+- (void)loadVideoWithID:(id)d
 {
-  v9 = a3;
-  objc_storeStrong(&self->_videoID, a3);
+  dCopy = d;
+  objc_storeStrong(&self->_videoID, d);
   self->_state = 0;
   if (self->_videoID || ([(LPYouTubePlayerView *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
   {
@@ -108,17 +108,17 @@
 
   else
   {
-    v7 = [(LPYouTubePlayerView *)self delegate];
+    delegate = [(LPYouTubePlayerView *)self delegate];
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LPYouTubePlayerErrorDomain" code:5 userInfo:0];
-    [v7 youTubePlayer:self didReceiveError:v8];
+    [delegate youTubePlayer:self didReceiveError:v8];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(LPYouTubePlayerWebView *)self->_webView configuration];
-  v4 = [v3 userContentController];
-  [v4 removeScriptMessageHandlerForName:@"playerContainer"];
+  configuration = [(LPYouTubePlayerWebView *)self->_webView configuration];
+  userContentController = [configuration userContentController];
+  [userContentController removeScriptMessageHandlerForName:@"playerContainer"];
 
   [(LPYouTubePlayerWebView *)self->_webView _close];
   webView = self->_webView;
@@ -129,13 +129,13 @@
   [(LPYouTubePlayerView *)&v6 dealloc];
 }
 
-- (void)_evaluatePlayerCommand:(id)a3
+- (void)_evaluatePlayerCommand:(id)command
 {
-  v4 = a3;
-  v8 = v4;
+  commandCopy = command;
+  v8 = commandCopy;
   if (self->_ready)
   {
-    [(LPYouTubePlayerWebView *)self->_webView evaluateJavaScript:v4 completionHandler:0];
+    [(LPYouTubePlayerWebView *)self->_webView evaluateJavaScript:commandCopy completionHandler:0];
   }
 
   else
@@ -148,16 +148,16 @@
       self->_commandsPendingPlayerReadiness = v6;
 
       commandsPendingPlayerReadiness = self->_commandsPendingPlayerReadiness;
-      v4 = v8;
+      commandCopy = v8;
     }
 
-    [(NSMutableArray *)commandsPendingPlayerReadiness addObject:v4];
+    [(NSMutableArray *)commandsPendingPlayerReadiness addObject:commandCopy];
   }
 }
 
-- (void)seekTo:(double)a3
+- (void)seekTo:(double)to
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"seekTo(%f)", *&a3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"seekTo(%f)", *&to];
   [(LPYouTubePlayerView *)self _evaluatePlayerCommand:?];
 }
 
@@ -189,12 +189,12 @@
   [(LPYouTubePlayerWebView *)webView setAllowFirstResponder:0];
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  if (self->_muted != a3)
+  if (self->_muted != muted)
   {
-    self->_muted = a3;
-    if (a3)
+    self->_muted = muted;
+    if (muted)
     {
       v3 = @"mute()";
     }
@@ -270,20 +270,20 @@
   v38 = objc_alloc_init(MEMORY[0x1E69853A8]);
   v5 = objc_alloc_init(MEMORY[0x1E69853F0]);
   v6 = linkPresentationBundle();
-  v7 = [v6 builtInPlugInsURL];
-  v8 = [v7 URLByAppendingPathComponent:@"YouTubePlayer.wkbundle"];
+  builtInPlugInsURL = [v6 builtInPlugInsURL];
+  v8 = [builtInPlugInsURL URLByAppendingPathComponent:@"YouTubePlayer.wkbundle"];
   [v5 setInjectedBundleURL:v8];
 
   v9 = [objc_alloc(MEMORY[0x1E6985340]) _initWithConfiguration:v5];
   [v38 setProcessPool:v9];
 
-  v10 = [v38 processPool];
+  processPool = [v38 processPool];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{+[LPApplicationIdentification isMessagesOrMessagesViewService](LPApplicationIdentification, "isMessagesOrMessagesViewService")}];
-  [v10 _setObject:v11 forBundleParameter:@"isMessagesOrMessagesViewService"];
+  [processPool _setObject:v11 forBundleParameter:@"isMessagesOrMessagesViewService"];
 
-  v12 = [objc_alloc(MEMORY[0x1E6985430]) initNonPersistentConfiguration];
-  [v12 setDeviceManagementRestrictionsEnabled:1];
-  v13 = [objc_alloc(MEMORY[0x1E69853B8]) _initWithConfiguration:v12];
+  initNonPersistentConfiguration = [objc_alloc(MEMORY[0x1E6985430]) initNonPersistentConfiguration];
+  [initNonPersistentConfiguration setDeviceManagementRestrictionsEnabled:1];
+  v13 = [objc_alloc(MEMORY[0x1E69853B8]) _initWithConfiguration:initNonPersistentConfiguration];
   [v38 setWebsiteDataStore:v13];
 
   [v38 _setIgnoresAppBoundDomains:1];
@@ -293,22 +293,22 @@
   [v38 setAllowsPictureInPictureMediaPlayback:0];
   if (+[LPSettings showDebugIndicators])
   {
-    v14 = [v38 preferences];
-    [v14 _setCompositingBordersVisible:1];
+    preferences = [v38 preferences];
+    [preferences _setCompositingBordersVisible:1];
   }
 
   if ([(LPYouTubePlayerView *)self _shouldUseElementFullScreen])
   {
-    v15 = [v38 preferences];
-    [v15 setElementFullscreenEnabled:1];
+    preferences2 = [v38 preferences];
+    [preferences2 setElementFullscreenEnabled:1];
   }
 
-  v16 = [v38 userContentController];
-  [v16 addScriptMessageHandler:self->_scriptMessageHandler name:@"playerContainer"];
+  userContentController = [v38 userContentController];
+  [userContentController addScriptMessageHandler:self->_scriptMessageHandler name:@"playerContainer"];
   v17 = objc_alloc(MEMORY[0x1E6985358]);
-  v18 = [(LPYouTubePlayerView *)self _parameterScript];
-  v19 = [v17 initWithSource:v18 injectionTime:0 forMainFrameOnly:1];
-  [v16 addUserScript:v19];
+  _parameterScript = [(LPYouTubePlayerView *)self _parameterScript];
+  v19 = [v17 initWithSource:_parameterScript injectionTime:0 forMainFrameOnly:1];
+  [userContentController addUserScript:v19];
 
   v20 = [LPYouTubePlayerWebView alloc];
   [(LPYouTubePlayerView *)self bounds];
@@ -319,14 +319,14 @@
   [(LPYouTubePlayerWebView *)self->_webView setNavigationDelegate:self];
   [(LPYouTubePlayerWebView *)self->_webView setUIDelegate:self];
   [(LPYouTubePlayerWebView *)self->_webView setCustomUserAgent:@"Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1"];
-  v23 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
-  [v23 setDelegate:self];
+  scrollView = [(LPYouTubePlayerWebView *)self->_webView scrollView];
+  [scrollView setDelegate:self];
 
-  v24 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
-  [v24 setScrollEnabled:0];
+  scrollView2 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
+  [scrollView2 setScrollEnabled:0];
 
-  v25 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
-  [v25 setContentInsetAdjustmentBehavior:2];
+  scrollView3 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
+  [scrollView3 setContentInsetAdjustmentBehavior:2];
 
   v26 = objc_alloc_init(LPYouTubePlayerViewFullScreenDelegate);
   fullScreenDelegate = self->_fullScreenDelegate;
@@ -335,13 +335,13 @@
   [(LPYouTubePlayerWebView *)self->_webView _setFullscreenDelegate:self->_fullScreenDelegate];
   if (+[LPSettings showDebugIndicators])
   {
-    v28 = [MEMORY[0x1E69DC888] greenColor];
-    v29 = [v28 CGColor];
-    v30 = [(LPYouTubePlayerWebView *)self->_webView layer];
-    [v30 setBorderColor:v29];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    cGColor = [greenColor CGColor];
+    layer = [(LPYouTubePlayerWebView *)self->_webView layer];
+    [layer setBorderColor:cGColor];
 
-    v31 = [(LPYouTubePlayerWebView *)self->_webView layer];
-    [v31 setBorderWidth:9.0];
+    layer2 = [(LPYouTubePlayerWebView *)self->_webView layer];
+    [layer2 setBorderWidth:9.0];
   }
 
   v32 = linkPresentationBundle();
@@ -355,7 +355,7 @@
   [(LPYouTubePlayerView *)self addSubview:self->_webView];
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   v4 = LPLogChannelVideo();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -366,39 +366,39 @@
   [(LPYouTubePlayerView *)self dispatchErrorWithCode:7];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler
 {
-  v14 = a4;
-  v8 = a5;
-  v9 = a6;
-  v10 = [v14 request];
-  v11 = [v10 URL];
+  actionCopy = action;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
+  request = [actionCopy request];
+  v11 = [request URL];
 
-  if ([v14 navigationType] || !objc_msgSend(v11, "_lp_isHTTPFamilyURL"))
+  if ([actionCopy navigationType] || !objc_msgSend(v11, "_lp_isHTTPFamilyURL"))
   {
     v13 = 1;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v12 openURL:v11 options:MEMORY[0x1E695E0F8] completionHandler:&__block_literal_global_21];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] openURL:v11 options:MEMORY[0x1E695E0F8] completionHandler:&__block_literal_global_21];
 
     v13 = 0;
   }
 
-  v9[2](v9, v13, v8);
+  handlerCopy[2](handlerCopy, v13, preferencesCopy);
 }
 
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features
 {
-  v6 = [a5 request];
-  v7 = [v6 URL];
+  request = [action request];
+  v7 = [request URL];
 
   if ([v7 _lp_isHTTPFamilyURL])
   {
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v8 openURL:v7 options:MEMORY[0x1E695E0F8] completionHandler:&__block_literal_global_206];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] openURL:v7 options:MEMORY[0x1E695E0F8] completionHandler:&__block_literal_global_206];
   }
 
   return 0;
@@ -429,21 +429,21 @@
     [(LPYouTubePlayerWebView *)self->_webView setFrame:?];
     v15 = *MEMORY[0x1E695EFF8];
     v16 = *(MEMORY[0x1E695EFF8] + 8);
-    v17 = [(LPYouTubePlayerWebView *)self->_webView scrollView];
-    [v17 setContentOffset:{v15, v16}];
+    scrollView = [(LPYouTubePlayerWebView *)self->_webView scrollView];
+    [scrollView setContentOffset:{v15, v16}];
   }
 }
 
-- (void)didReceiveScriptMessage:(id)a3
+- (void)didReceiveScriptMessage:(id)message
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = [a3 body];
-  v5 = [v4 objectForKeyedSubscript:@"message"];
+  body = [message body];
+  v5 = [body objectForKeyedSubscript:@"message"];
   if (![v5 isEqualToString:@"onReady"])
   {
     if ([v5 isEqualToString:@"onStateChange"])
     {
-      v14 = [v4 objectForKeyedSubscript:@"data"];
+      v14 = [body objectForKeyedSubscript:@"data"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && (v15 = [v14 integerValue], (v15 + 1) <= 6))
       {
@@ -456,7 +456,7 @@
       }
 
       self->_state = v16;
-      v21 = [(LPYouTubePlayerView *)self delegate];
+      delegate = [(LPYouTubePlayerView *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if ((v22 & 1) == 0)
@@ -464,8 +464,8 @@
         goto LABEL_40;
       }
 
-      v23 = [(LPYouTubePlayerView *)self delegate];
-      [v23 youTubePlayer:self didChangeToState:self->_state];
+      delegate2 = [(LPYouTubePlayerView *)self delegate];
+      [delegate2 youTubePlayer:self didChangeToState:self->_state];
 LABEL_39:
 
       goto LABEL_40;
@@ -478,13 +478,13 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v23 = [v4 objectForKeyedSubscript:@"isFullScreen"];
-      if (([v23 BOOLValue] & 1) == 0)
+      delegate2 = [body objectForKeyedSubscript:@"isFullScreen"];
+      if (([delegate2 BOOLValue] & 1) == 0)
       {
         [(LPYouTubePlayerWebView *)self->_webView resignFirstResponder];
       }
 
-      v24 = [(LPYouTubePlayerView *)self delegate];
+      delegate3 = [(LPYouTubePlayerView *)self delegate];
       v25 = objc_opt_respondsToSelector();
 
       if ((v25 & 1) == 0)
@@ -492,14 +492,14 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      v26 = [(LPYouTubePlayerView *)self delegate];
-      [v26 youTubePlayer:self didChangeToFullScreen:{objc_msgSend(v23, "BOOLValue")}];
+      delegate4 = [(LPYouTubePlayerView *)self delegate];
+      [delegate4 youTubePlayer:self didChangeToFullScreen:{objc_msgSend(delegate2, "BOOLValue")}];
 LABEL_38:
 
       goto LABEL_39;
     }
 
-    v17 = [(LPYouTubePlayerView *)self delegate];
+    delegate5 = [(LPYouTubePlayerView *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if ((v18 & 1) == 0)
@@ -507,26 +507,26 @@ LABEL_38:
       goto LABEL_40;
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"data"];
+    v19 = [body objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 integerValue];
-      if (v20 <= 100)
+      integerValue = [v19 integerValue];
+      if (integerValue <= 100)
       {
-        if (v20 == 2)
+        if (integerValue == 2)
         {
           v27 = 0;
           goto LABEL_37;
         }
 
-        if (v20 == 5)
+        if (integerValue == 5)
         {
           v27 = 1;
           goto LABEL_37;
         }
 
-        if (v20 != 100)
+        if (integerValue != 100)
         {
           goto LABEL_36;
         }
@@ -536,7 +536,7 @@ LABEL_41:
         goto LABEL_37;
       }
 
-      switch(v20)
+      switch(integerValue)
       {
         case 101:
           goto LABEL_35;
@@ -547,9 +547,9 @@ LABEL_35:
           v27 = 3;
 LABEL_37:
 
-          v23 = [(LPYouTubePlayerView *)self delegate];
-          v26 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LPYouTubePlayerErrorDomain" code:v27 userInfo:0];
-          [v23 youTubePlayer:self didReceiveError:v26];
+          delegate2 = [(LPYouTubePlayerView *)self delegate];
+          delegate4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LPYouTubePlayerErrorDomain" code:v27 userInfo:0];
+          [delegate2 youTubePlayer:self didReceiveError:delegate4];
           goto LABEL_38;
       }
     }
@@ -559,13 +559,13 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v6 = [(LPYouTubePlayerView *)self delegate];
+  delegate6 = [(LPYouTubePlayerView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(LPYouTubePlayerView *)self delegate];
-    [v8 youTubePlayerDidBecomeReady:self];
+    delegate7 = [(LPYouTubePlayerView *)self delegate];
+    [delegate7 youTubePlayerDidBecomeReady:self];
   }
 
   self->_ready = 1;

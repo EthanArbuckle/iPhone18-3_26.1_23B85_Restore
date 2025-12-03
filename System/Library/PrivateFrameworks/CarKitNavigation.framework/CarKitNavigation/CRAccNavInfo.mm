@@ -1,8 +1,8 @@
 @interface CRAccNavInfo
-- (CRAccNavInfo)initWithCoder:(id)a3;
-- (CRAccNavInfo)initWithComponent:(id)a3 accNavInfo:(id)a4;
+- (CRAccNavInfo)initWithCoder:(id)coder;
+- (CRAccNavInfo)initWithComponent:(id)component accNavInfo:(id)info;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRAccNavInfo
@@ -11,53 +11,53 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRAccNavInfo *)self component];
-  v6 = [v5 uuid];
-  v7 = [(CRAccNavInfo *)self accNavInfo];
-  v8 = [v7 cr_dictionary];
-  v9 = [v3 stringWithFormat:@"<%@: %p> component=%@ accNavInfo={\n%@\n}", v4, self, v6, v8];
+  component = [(CRAccNavInfo *)self component];
+  uuid = [component uuid];
+  accNavInfo = [(CRAccNavInfo *)self accNavInfo];
+  cr_dictionary = [accNavInfo cr_dictionary];
+  v9 = [v3 stringWithFormat:@"<%@: %p> component=%@ accNavInfo={\n%@\n}", v4, self, uuid, cr_dictionary];
 
   return v9;
 }
 
-- (CRAccNavInfo)initWithComponent:(id)a3 accNavInfo:(id)a4
+- (CRAccNavInfo)initWithComponent:(id)component accNavInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = CRAccNavInfo;
   v8 = [(CRAccNavInfo *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [componentCopy copy];
     component = v8->_component;
     v8->_component = v9;
 
-    objc_storeStrong(&v8->_accNavInfo, a4);
+    objc_storeStrong(&v8->_accNavInfo, info);
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRAccNavInfo *)self component];
+  coderCopy = coder;
+  component = [(CRAccNavInfo *)self component];
   v6 = NSStringFromSelector(sel_component);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:component forKey:v6];
 
-  v9 = [(CRAccNavInfo *)self accNavInfo];
-  v7 = [v9 cr_dictionary];
+  accNavInfo = [(CRAccNavInfo *)self accNavInfo];
+  cr_dictionary = [accNavInfo cr_dictionary];
   v8 = NSStringFromSelector(sel_accNavInfo);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:cr_dictionary forKey:v8];
 }
 
-- (CRAccNavInfo)initWithCoder:(id)a3
+- (CRAccNavInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_component);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
@@ -65,7 +65,7 @@
   v11 = objc_opt_class();
   v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
   v13 = NSStringFromSelector(sel_accNavInfo);
-  v14 = [v4 decodeObjectOfClasses:v12 forKey:v13];
+  v14 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
 
   [objc_opt_class() ACCNavigationInfoClass];
   v15 = objc_opt_new();

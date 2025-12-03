@@ -1,37 +1,37 @@
 @interface _SFPBRFAspectRatio
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFAspectRatio)initWithDictionary:(id)a3;
-- (_SFPBRFAspectRatio)initWithFacade:(id)a3;
-- (_SFPBRFAspectRatio)initWithJSON:(id)a3;
+- (_SFPBRFAspectRatio)initWithDictionary:(id)dictionary;
+- (_SFPBRFAspectRatio)initWithFacade:(id)facade;
+- (_SFPBRFAspectRatio)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFAspectRatio
 
-- (_SFPBRFAspectRatio)initWithFacade:(id)a3
+- (_SFPBRFAspectRatio)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFAspectRatio *)self init];
   if (v5)
   {
-    v6 = [v4 width];
+    width = [facadeCopy width];
 
-    if (v6)
+    if (width)
     {
-      v7 = [v4 width];
-      [v7 floatValue];
+      width2 = [facadeCopy width];
+      [width2 floatValue];
       [(_SFPBRFAspectRatio *)v5 setWidth:?];
     }
 
-    v8 = [v4 height];
+    height = [facadeCopy height];
 
-    if (v8)
+    if (height)
     {
-      v9 = [v4 height];
-      [v9 floatValue];
+      height2 = [facadeCopy height];
+      [height2 floatValue];
       [(_SFPBRFAspectRatio *)v5 setHeight:?];
     }
 
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBRFAspectRatio)initWithDictionary:(id)a3
+- (_SFPBRFAspectRatio)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFAspectRatio;
   v5 = [(_SFPBRFAspectRatio *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"width"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"width"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBRFAspectRatio *)v5 setWidth:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"height"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"height"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBRFAspectRatio)initWithJSON:(id)a3
+- (_SFPBRFAspectRatio)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFAspectRatio *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFAspectRatio *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFAspectRatio *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,13 +107,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_height != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBRFAspectRatio *)self height];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"height"];
+    [dictionary setObject:v5 forKeyedSubscript:@"height"];
   }
 
   if (self->_width != 0.0)
@@ -121,10 +121,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBRFAspectRatio *)self width];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"width"];
+    [dictionary setObject:v7 forKeyedSubscript:@"width"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,13 +203,13 @@
   return v15 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (width = self->_width, objc_msgSend(v4, "width"), width == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (width = self->_width, objc_msgSend(equalCopy, "width"), width == v6))
   {
     height = self->_height;
-    [v4 height];
+    [equalCopy height];
     v7 = height == v10;
   }
 
@@ -221,9 +221,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   [(_SFPBRFAspectRatio *)self width];
   if (v4 != 0.0)
   {

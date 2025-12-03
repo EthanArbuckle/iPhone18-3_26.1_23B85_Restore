@@ -1,17 +1,17 @@
 @interface SDAirDropUserSafetyInterventionAlert
 - (_TtC16DaemoniOSLibrary36SDAirDropUserSafetyInterventionAlert)init;
-- (void)showInterventionWithIsSend:(BOOL)a3 completion:(id)a4;
+- (void)showInterventionWithIsSend:(BOOL)send completion:(id)completion;
 @end
 
 @implementation SDAirDropUserSafetyInterventionAlert
 
-- (void)showInterventionWithIsSend:(BOOL)a3 completion:(id)a4
+- (void)showInterventionWithIsSend:(BOOL)send completion:(id)completion
 {
   v7 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = type metadata accessor for TaskPriority();
@@ -19,11 +19,11 @@
   v14 = swift_allocObject();
   *(v14 + 16) = 0;
   *(v14 + 24) = 0;
-  *(v14 + 32) = a3;
+  *(v14 + 32) = send;
   *(v14 + 40) = self;
   *(v14 + 48) = sub_1004B2790;
   *(v14 + 56) = v12;
-  v15 = self;
+  selfCopy = self;
   sub_1002B3098(0, 0, v10, &unk_100805FF8, v14);
 }
 

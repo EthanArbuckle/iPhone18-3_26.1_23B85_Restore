@@ -1,26 +1,26 @@
 @interface WBSFileLockFactoryPOSIX
-- (id)coordinationLockURL:(id)a3;
-- (id)lockURL:(id)a3 error:(id *)a4;
+- (id)coordinationLockURL:(id)l;
+- (id)lockURL:(id)l error:(id *)error;
 @end
 
 @implementation WBSFileLockFactoryPOSIX
 
-- (id)coordinationLockURL:(id)a3
+- (id)coordinationLockURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"file"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"file"];
 
   if (v5)
   {
-    v6 = [v3 path];
-    v7 = [v6 length];
+    path = [lCopy path];
+    v7 = [path length];
 
     if (v7)
     {
       v8 = MEMORY[0x1E695DFF8];
-      v9 = [v3 absoluteString];
-      v10 = [v9 stringByAppendingString:@"-lock"];
+      absoluteString = [lCopy absoluteString];
+      v10 = [absoluteString stringByAppendingString:@"-lock"];
       v11 = [v8 URLWithString:v10];
 
       goto LABEL_7;
@@ -32,7 +32,7 @@
     v12 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(WBSFileLockFactoryPOSIX *)v3 coordinationLockURL:v12, v13, v14, v15, v16, v17, v18];
+      [(WBSFileLockFactoryPOSIX *)lCopy coordinationLockURL:v12, v13, v14, v15, v16, v17, v18];
     }
   }
 
@@ -42,49 +42,49 @@ LABEL_7:
   return v11;
 }
 
-- (id)lockURL:(id)a3 error:(id *)a4
+- (id)lockURL:(id)l error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 scheme];
-  v8 = [v7 isEqualToString:@"file"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v8 = [scheme isEqualToString:@"file"];
 
   if ((v8 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
     }
 
     v14 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(WBSFileLockFactoryPOSIX *)v6 coordinationLockURL:v14, v15, v16, v17, v18, v19, v20];
+      [(WBSFileLockFactoryPOSIX *)lCopy coordinationLockURL:v14, v15, v16, v17, v18, v19, v20];
     }
 
     goto LABEL_14;
   }
 
-  v9 = [(WBSFileLockFactoryPOSIX *)self coordinationLockURL:v6];
-  v10 = [v9 fileSystemRepresentation];
+  v9 = [(WBSFileLockFactoryPOSIX *)self coordinationLockURL:lCopy];
+  fileSystemRepresentation = [v9 fileSystemRepresentation];
 
-  if (!v10)
+  if (!fileSystemRepresentation)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
     }
 
     v21 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [(WBSFileLockFactoryPOSIX *)v6 lockURL:v21 error:v22, v23, v24, v25, v26, v27];
+      [(WBSFileLockFactoryPOSIX *)lCopy lockURL:v21 error:v22, v23, v24, v25, v26, v27];
     }
 
     goto LABEL_14;
   }
 
-  v11 = open(v10, 512, 438);
+  v11 = open(fileSystemRepresentation, 512, 438);
   if (v11 != -1)
   {
     v12 = v11;
@@ -102,13 +102,13 @@ LABEL_7:
       v36 = v35;
       v37 = *__error();
       *buf = 136380931;
-      v39 = v10;
+      v39 = fileSystemRepresentation;
       v40 = 1024;
       v41 = v37;
       _os_log_impl(&dword_1BB6F3000, v36, OS_LOG_TYPE_INFO, "Failed to acquire coordination lock at %{private}s: %{errno}d", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v32 = MEMORY[0x1E696ABC0];
       v33 = *MEMORY[0x1E696A798];
@@ -126,13 +126,13 @@ LABEL_14:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
     *buf = 136380931;
-    v39 = v10;
+    v39 = fileSystemRepresentation;
     v40 = 1024;
     v41 = v29;
     _os_log_impl(&dword_1BB6F3000, v30, OS_LOG_TYPE_INFO, "Failed to open coordination lock at %{private}s: %{errno}d", buf, 0x12u);
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_14;
   }
@@ -142,7 +142,7 @@ LABEL_14:
   v33 = *MEMORY[0x1E696A798];
 LABEL_26:
   [v32 errorWithDomain:v33 code:v31 userInfo:0];
-  *a4 = v13 = 0;
+  *error = v13 = 0;
 LABEL_15:
 
   return v13;

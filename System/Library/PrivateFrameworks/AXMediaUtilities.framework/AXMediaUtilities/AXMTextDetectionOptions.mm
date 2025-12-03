@@ -1,19 +1,19 @@
 @interface AXMTextDetectionOptions
 + (id)defaultOptions;
-- (AXMTextDetectionOptions)initWithCoder:(id)a3;
+- (AXMTextDetectionOptions)initWithCoder:(id)coder;
 - (NSArray)textDetectionLocales;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMTextDetectionOptions
 
 + (id)defaultOptions
 {
-  v2 = [[AXMTextDetectionOptions alloc] _init];
+  _init = [[AXMTextDetectionOptions alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init
@@ -32,37 +32,37 @@
   return result;
 }
 
-- (AXMTextDetectionOptions)initWithCoder:(id)a3
+- (AXMTextDetectionOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMTextDetectionOptions *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(AXMTextDetectionOptions *)self _init];
+  if (_init)
   {
-    -[AXMTextDetectionOptions setRecognitionLevel:](v5, "setRecognitionLevel:", [v4 decodeIntegerForKey:@"recognitionLevel"]);
-    [v4 decodeDoubleForKey:@"normalizedMinimumTextHeightRatio"];
-    [(AXMTextDetectionOptions *)v5 setNormalizedMinimumTextHeightRatio:?];
-    -[AXMTextDetectionOptions setUsesLanguageCorrection:](v5, "setUsesLanguageCorrection:", [v4 decodeBoolForKey:@"usesLanguageCorrection"]);
+    -[AXMTextDetectionOptions setRecognitionLevel:](_init, "setRecognitionLevel:", [coderCopy decodeIntegerForKey:@"recognitionLevel"]);
+    [coderCopy decodeDoubleForKey:@"normalizedMinimumTextHeightRatio"];
+    [(AXMTextDetectionOptions *)_init setNormalizedMinimumTextHeightRatio:?];
+    -[AXMTextDetectionOptions setUsesLanguageCorrection:](_init, "setUsesLanguageCorrection:", [coderCopy decodeBoolForKey:@"usesLanguageCorrection"]);
     v6 = AXMSecureCodingClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"textDetectionLocales"];
-    [(AXMTextDetectionOptions *)v5 setTextDetectionLocales:v7];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"textDetectionLocales"];
+    [(AXMTextDetectionOptions *)_init setTextDetectionLocales:v7];
 
-    -[AXMTextDetectionOptions setPostProcessingOptions:](v5, "setPostProcessingOptions:", [v4 decodeIntegerForKey:@"postProcessingOptions"]);
+    -[AXMTextDetectionOptions setPostProcessingOptions:](_init, "setPostProcessingOptions:", [coderCopy decodeIntegerForKey:@"postProcessingOptions"]);
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[AXMTextDetectionOptions recognitionLevel](self forKey:{"recognitionLevel"), @"recognitionLevel"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AXMTextDetectionOptions recognitionLevel](self forKey:{"recognitionLevel"), @"recognitionLevel"}];
   [(AXMTextDetectionOptions *)self normalizedMinimumTextHeightRatio];
-  [v5 encodeDouble:@"normalizedMinimumTextHeightRatio" forKey:?];
-  [v5 encodeBool:-[AXMTextDetectionOptions usesLanguageCorrection](self forKey:{"usesLanguageCorrection"), @"usesLanguageCorrection"}];
-  v4 = [(AXMTextDetectionOptions *)self textDetectionLocales];
-  [v5 encodeObject:v4 forKey:@"textDetectionLocales"];
+  [coderCopy encodeDouble:@"normalizedMinimumTextHeightRatio" forKey:?];
+  [coderCopy encodeBool:-[AXMTextDetectionOptions usesLanguageCorrection](self forKey:{"usesLanguageCorrection"), @"usesLanguageCorrection"}];
+  textDetectionLocales = [(AXMTextDetectionOptions *)self textDetectionLocales];
+  [coderCopy encodeObject:textDetectionLocales forKey:@"textDetectionLocales"];
 
-  [v5 encodeInteger:-[AXMTextDetectionOptions postProcessingOptions](self forKey:{"postProcessingOptions"), @"postProcessingOptions"}];
+  [coderCopy encodeInteger:-[AXMTextDetectionOptions postProcessingOptions](self forKey:{"postProcessingOptions"), @"postProcessingOptions"}];
 }
 
 - (id)description
@@ -73,8 +73,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AXMTextDetectionOptions *)self textDetectionLocales];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  textDetectionLocales = [(AXMTextDetectionOptions *)self textDetectionLocales];
+  v5 = [textDetectionLocales countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -85,14 +85,14 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(textDetectionLocales);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) languageCode];
-        [v3 appendFormat:@"%@ ", v9];
+        languageCode = [*(*(&v15 + 1) + 8 * i) languageCode];
+        [v3 appendFormat:@"%@ ", languageCode];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [textDetectionLocales countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -101,9 +101,9 @@
   [v3 appendString:@"]"];
   v10 = [MEMORY[0x1E696AD60] stringWithFormat:@"AXMTextDetectionOptions<%p>\n", self];
   [v10 appendFormat:@"  Options: \n"];
-  v11 = [(AXMTextDetectionOptions *)self recognitionLevel];
+  recognitionLevel = [(AXMTextDetectionOptions *)self recognitionLevel];
   v12 = @"Accurate";
-  if (!v11)
+  if (!recognitionLevel)
   {
     v12 = @"Fast";
   }
@@ -123,29 +123,29 @@
   textDetectionLocales = self->_textDetectionLocales;
   if (!textDetectionLocales)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v6 = [v5 firstObject];
+    array = [MEMORY[0x1E695DF70] array];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      v7 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v6];
+      v7 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:firstObject];
       if (v7)
       {
-        [v4 addObject:v7];
+        [array addObject:v7];
       }
     }
 
-    if (![v4 count])
+    if (![array count])
     {
-      v8 = [MEMORY[0x1E695DF58] currentLocale];
-      if (v8)
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      if (currentLocale)
       {
-        [v4 addObject:v8];
+        [array addObject:currentLocale];
       }
     }
 
-    v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+    v9 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
     v10 = self->_textDetectionLocales;
     self->_textDetectionLocales = v9;
 

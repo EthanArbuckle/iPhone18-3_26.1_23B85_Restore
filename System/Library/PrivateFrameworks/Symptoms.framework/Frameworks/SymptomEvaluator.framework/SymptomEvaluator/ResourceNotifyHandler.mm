@@ -1,9 +1,9 @@
 @interface ResourceNotifyHandler
 + (BOOL)processOnBatteryOnly;
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (ResourceNotifyHandler)init;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
 - (void)setupResourceNotifyReceiver;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __39__ResourceNotifyHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_31 != -1)
   {
     dispatch_once(&sharedInstance_pred_31, block);
@@ -204,21 +204,21 @@ void __45__ResourceNotifyHandler_processOnBatteryOnly__block_invoke_2(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[ResourceNotifyHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

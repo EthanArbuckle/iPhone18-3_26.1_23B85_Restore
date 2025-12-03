@@ -1,43 +1,43 @@
 @interface CKPinnedConversationActivityView
-- (BOOL)haveAttachedContactItemViewsForActivityViews:(id)a3;
-- (CGPoint)_convertPointInOwnCoordinateSpace:(CGPoint)a3 toUnscaledCoordinateSpaceOfSubview:(id)a4;
+- (BOOL)haveAttachedContactItemViewsForActivityViews:(id)views;
+- (CGPoint)_convertPointInOwnCoordinateSpace:(CGPoint)space toUnscaledCoordinateSpaceOfSubview:(id)subview;
 - (CGPoint)activityItemOriginationPoint;
-- (CGPoint)pointAlongCircle:(CGRect)a3 atArcLength:(double)a4 fromPoint:(CGPoint)a5 clockwise:(BOOL)a6;
+- (CGPoint)pointAlongCircle:(CGRect)circle atArcLength:(double)length fromPoint:(CGPoint)point clockwise:(BOOL)clockwise;
 - (CGRect)activityItemOriginationSubAvatarFrame;
 - (CGRect)avatarFrame;
 - (CGRect)innerContentAlignmentFrame;
 - (CGRect)outerContentAlignmentFrame;
-- (CKPinnedConversationActivityView)initWithFrame:(CGRect)a3;
+- (CKPinnedConversationActivityView)initWithFrame:(CGRect)frame;
 - (NSArray)displayedContacts;
-- (double)circleXCoordinateForYCoordinate:(double)a3 radius:(double)a4 centerPoint:(CGPoint)a5 contentAlignment:(int64_t)a6;
-- (double)contactItemViewCenterXCoordinateForYCoordinate:(double)a3 avatarFrame:(CGRect)a4 contentAlignment:(int64_t)a5;
-- (double)tailAttachmentXCoordinateForYCoordinate:(double)a3 avatarFrame:(CGRect)a4 contentAlignment:(int64_t)a5;
-- (id)_activityItemViewWithActivityItemIdentifier:(id)a3;
+- (double)circleXCoordinateForYCoordinate:(double)coordinate radius:(double)radius centerPoint:(CGPoint)point contentAlignment:(int64_t)alignment;
+- (double)contactItemViewCenterXCoordinateForYCoordinate:(double)coordinate avatarFrame:(CGRect)frame contentAlignment:(int64_t)alignment;
+- (double)tailAttachmentXCoordinateForYCoordinate:(double)coordinate avatarFrame:(CGRect)frame contentAlignment:(int64_t)alignment;
+- (id)_activityItemViewWithActivityItemIdentifier:(id)identifier;
 - (id)_presentedActivityItems;
 - (id)_unattachedContactItemViews;
-- (id)contactItemViewMatchingContactItemIdentifier:(id)a3 fromContactItemViews:(id)a4;
-- (void)_layoutUnattachedContactItemViews:(id)a3 withContentScale:(id)a4 applyingTransform:(BOOL)a5;
-- (void)_layoutViewsAssociatedWithActivityItemViews:(id)a3 excludingContactItemViews:(id)a4 withContentScale:(id)a5 applyingTransform:(BOOL)a6 updatingActivityItemViews:(BOOL)a7 updatingAttachedContactItemViews:(BOOL)a8;
-- (void)_updateSnapshotAnimated:(BOOL)a3 completion:(id)a4;
-- (void)applySnapshot:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (id)contactItemViewMatchingContactItemIdentifier:(id)identifier fromContactItemViews:(id)views;
+- (void)_layoutUnattachedContactItemViews:(id)views withContentScale:(id)scale applyingTransform:(BOOL)transform;
+- (void)_layoutViewsAssociatedWithActivityItemViews:(id)views excludingContactItemViews:(id)itemViews withContentScale:(id)scale applyingTransform:(BOOL)transform updatingActivityItemViews:(BOOL)activityItemViews updatingAttachedContactItemViews:(BOOL)contactItemViews;
+- (void)_updateSnapshotAnimated:(BOOL)animated completion:(id)completion;
+- (void)applySnapshot:(id)snapshot animated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
 - (void)resetToEmptySnapshot;
-- (void)setActivityItemOriginationDirection:(int64_t)a3;
-- (void)setActivityItemOriginationPoint:(CGPoint)a3;
-- (void)setInnerContentAlignmentFrame:(CGRect)a3;
-- (void)setOuterContentAlignmentFrame:(CGRect)a3;
-- (void)setShowContentAlignmentDebugFrames:(BOOL)a3;
-- (void)setSuppressingActivity:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setActivityItemOriginationDirection:(int64_t)direction;
+- (void)setActivityItemOriginationPoint:(CGPoint)point;
+- (void)setInnerContentAlignmentFrame:(CGRect)frame;
+- (void)setOuterContentAlignmentFrame:(CGRect)frame;
+- (void)setShowContentAlignmentDebugFrames:(BOOL)frames;
+- (void)setSuppressingActivity:(BOOL)activity animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CKPinnedConversationActivityView
 
-- (CKPinnedConversationActivityView)initWithFrame:(CGRect)a3
+- (CKPinnedConversationActivityView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = CKPinnedConversationActivityView;
   v7 = [(CKPinnedConversationActivityView *)&v20 initWithFrame:?];
@@ -76,58 +76,58 @@
   return v8;
 }
 
-- (void)setShowContentAlignmentDebugFrames:(BOOL)a3
+- (void)setShowContentAlignmentDebugFrames:(BOOL)frames
 {
-  if (self->_showContentAlignmentDebugFrames != a3)
+  if (self->_showContentAlignmentDebugFrames != frames)
   {
-    self->_showContentAlignmentDebugFrames = a3;
-    if (a3)
+    self->_showContentAlignmentDebugFrames = frames;
+    if (frames)
     {
       v5 = objc_alloc_init(MEMORY[0x1E69794A0]);
       innerContentAlignmentDebugLayer = self->_innerContentAlignmentDebugLayer;
       self->_innerContentAlignmentDebugLayer = v5;
 
       [(CAShapeLayer *)self->_innerContentAlignmentDebugLayer setFillColor:0];
-      v7 = [MEMORY[0x1E69DC888] systemPinkColor];
-      -[CAShapeLayer setStrokeColor:](self->_innerContentAlignmentDebugLayer, "setStrokeColor:", [v7 CGColor]);
+      systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
+      -[CAShapeLayer setStrokeColor:](self->_innerContentAlignmentDebugLayer, "setStrokeColor:", [systemPinkColor CGColor]);
 
       [(CAShapeLayer *)self->_innerContentAlignmentDebugLayer setLineDashPattern:&unk_1F04E6858];
-      v8 = [(CKPinnedConversationActivityView *)self layer];
-      [v8 addSublayer:self->_innerContentAlignmentDebugLayer];
+      layer = [(CKPinnedConversationActivityView *)self layer];
+      [layer addSublayer:self->_innerContentAlignmentDebugLayer];
 
       v9 = objc_alloc_init(MEMORY[0x1E69794A0]);
       outerContentAlignmentDebugLayer = self->_outerContentAlignmentDebugLayer;
       self->_outerContentAlignmentDebugLayer = v9;
 
       [(CAShapeLayer *)self->_outerContentAlignmentDebugLayer setFillColor:0];
-      v11 = [MEMORY[0x1E69DC888] systemBlueColor];
-      -[CAShapeLayer setStrokeColor:](self->_outerContentAlignmentDebugLayer, "setStrokeColor:", [v11 CGColor]);
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      -[CAShapeLayer setStrokeColor:](self->_outerContentAlignmentDebugLayer, "setStrokeColor:", [systemBlueColor CGColor]);
 
       [(CAShapeLayer *)self->_outerContentAlignmentDebugLayer setLineDashPattern:&unk_1F04E6870];
-      v12 = [(CKPinnedConversationActivityView *)self layer];
-      [v12 addSublayer:self->_outerContentAlignmentDebugLayer];
+      layer2 = [(CKPinnedConversationActivityView *)self layer];
+      [layer2 addSublayer:self->_outerContentAlignmentDebugLayer];
 
       v13 = objc_alloc_init(MEMORY[0x1E69794A0]);
       activityItemAttachmentCircleDebugLayer = self->_activityItemAttachmentCircleDebugLayer;
       self->_activityItemAttachmentCircleDebugLayer = v13;
 
       [(CAShapeLayer *)self->_activityItemAttachmentCircleDebugLayer setFillColor:0];
-      v15 = [MEMORY[0x1E69DC888] systemOrangeColor];
-      -[CAShapeLayer setStrokeColor:](self->_activityItemAttachmentCircleDebugLayer, "setStrokeColor:", [v15 CGColor]);
+      systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+      -[CAShapeLayer setStrokeColor:](self->_activityItemAttachmentCircleDebugLayer, "setStrokeColor:", [systemOrangeColor CGColor]);
 
       [(CAShapeLayer *)self->_activityItemAttachmentCircleDebugLayer setLineDashPattern:&unk_1F04E6888];
-      v16 = [(CKPinnedConversationActivityView *)self layer];
-      [v16 addSublayer:self->_activityItemAttachmentCircleDebugLayer];
+      layer3 = [(CKPinnedConversationActivityView *)self layer];
+      [layer3 addSublayer:self->_activityItemAttachmentCircleDebugLayer];
 
       v17 = objc_alloc_init(MEMORY[0x1E69794A0]);
       originationPointDebugLayer = self->_originationPointDebugLayer;
       self->_originationPointDebugLayer = v17;
 
-      v19 = [MEMORY[0x1E69DC888] redColor];
-      -[CAShapeLayer setFillColor:](self->_originationPointDebugLayer, "setFillColor:", [v19 CGColor]);
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      -[CAShapeLayer setFillColor:](self->_originationPointDebugLayer, "setFillColor:", [redColor CGColor]);
 
-      v20 = [(CKPinnedConversationActivityView *)self layer];
-      [v20 addSublayer:self->_originationPointDebugLayer];
+      layer4 = [(CKPinnedConversationActivityView *)self layer];
+      [layer4 addSublayer:self->_originationPointDebugLayer];
     }
 
     else
@@ -145,7 +145,7 @@
       self->_activityItemAttachmentCircleDebugLayer = 0;
 
       [(CAShapeLayer *)self->_originationPointDebugLayer removeFromSuperlayer];
-      v20 = self->_originationPointDebugLayer;
+      layer4 = self->_originationPointDebugLayer;
       self->_originationPointDebugLayer = 0;
     }
 
@@ -159,8 +159,8 @@
   v9.super_class = CKPinnedConversationActivityView;
   [(CKPinnedConversationActivityView *)&v9 layoutSubviews];
   [(CKPinnedConversationActivityView *)self _layoutViewsAssociatedWithActivityItemViews:self->_activityItemViews excludingContactItemViews:MEMORY[0x1E695E0F0] withContentScale:0 applyingTransform:0 updatingActivityItemViews:1 updatingAttachedContactItemViews:1];
-  v3 = [(CKPinnedConversationActivityView *)self _unattachedContactItemViews];
-  [(CKPinnedConversationActivityView *)self _layoutUnattachedContactItemViews:v3 withContentScale:0 applyingTransform:0];
+  _unattachedContactItemViews = [(CKPinnedConversationActivityView *)self _unattachedContactItemViews];
+  [(CKPinnedConversationActivityView *)self _layoutUnattachedContactItemViews:_unattachedContactItemViews withContentScale:0 applyingTransform:0];
   if (self->_showContentAlignmentDebugFrames)
   {
     [(CKPinnedConversationActivityView *)self bounds];
@@ -208,12 +208,12 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v26 + 1) + 8 * i) activityItem];
-        v10 = [v9 attachedContactItemIdentifier];
+        activityItem = [*(*(&v26 + 1) + 8 * i) activityItem];
+        attachedContactItemIdentifier = [activityItem attachedContactItemIdentifier];
 
-        if ([v10 length])
+        if ([attachedContactItemIdentifier length])
         {
-          [v3 addObject:v10];
+          [v3 addObject:attachedContactItemIdentifier];
         }
       }
 
@@ -244,10 +244,10 @@
         }
 
         v17 = *(*(&v22 + 1) + 8 * j);
-        v18 = [v17 pinnedConversationContactItem];
-        v19 = [v18 contactItemIdentifier];
+        pinnedConversationContactItem = [v17 pinnedConversationContactItem];
+        contactItemIdentifier = [pinnedConversationContactItem contactItemIdentifier];
 
-        if ([v19 length] && (objc_msgSend(v3, "containsObject:", v19) & 1) == 0)
+        if ([contactItemIdentifier length] && (objc_msgSend(v3, "containsObject:", contactItemIdentifier) & 1) == 0)
         {
           [v11 addObject:v17];
         }
@@ -287,10 +287,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) activityItem];
-        if (v9)
+        activityItem = [*(*(&v12 + 1) + 8 * i) activityItem];
+        if (activityItem)
         {
-          [v3 addObject:v9];
+          [v3 addObject:activityItem];
         }
       }
 
@@ -305,10 +305,10 @@
   return v10;
 }
 
-- (id)_activityItemViewWithActivityItemIdentifier:(id)a3
+- (id)_activityItemViewWithActivityItemIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -328,9 +328,9 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 activityItem];
-        v11 = [v10 activityItemIdentifier];
-        if ([v11 isEqualToString:v4])
+        activityItem = [v9 activityItem];
+        activityItemIdentifier = [activityItem activityItemIdentifier];
+        if ([activityItemIdentifier isEqualToString:identifierCopy])
         {
           v6 = v9;
 
@@ -353,23 +353,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)setActivityItemOriginationDirection:(int64_t)a3
+- (void)setActivityItemOriginationDirection:(int64_t)direction
 {
-  if (self->_activityItemOriginationDirection != a3)
+  if (self->_activityItemOriginationDirection != direction)
   {
-    self->_activityItemOriginationDirection = a3;
+    self->_activityItemOriginationDirection = direction;
     [(CKPinnedConversationActivityView *)self setNeedsLayout];
   }
 }
 
-- (void)setInnerContentAlignmentFrame:(CGRect)a3
+- (void)setInnerContentAlignmentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_innerContentAlignmentFrame = &self->_innerContentAlignmentFrame;
-  if (!CGRectEqualToRect(a3, self->_innerContentAlignmentFrame))
+  if (!CGRectEqualToRect(frame, self->_innerContentAlignmentFrame))
   {
     p_innerContentAlignmentFrame->origin.x = x;
     p_innerContentAlignmentFrame->origin.y = y;
@@ -380,14 +380,14 @@ LABEL_11:
   }
 }
 
-- (void)setOuterContentAlignmentFrame:(CGRect)a3
+- (void)setOuterContentAlignmentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_outerContentAlignmentFrame = &self->_outerContentAlignmentFrame;
-  if (!CGRectEqualToRect(a3, self->_outerContentAlignmentFrame))
+  if (!CGRectEqualToRect(frame, self->_outerContentAlignmentFrame))
   {
     p_outerContentAlignmentFrame->origin.x = x;
     p_outerContentAlignmentFrame->origin.y = y;
@@ -398,25 +398,25 @@ LABEL_11:
   }
 }
 
-- (void)setActivityItemOriginationPoint:(CGPoint)a3
+- (void)setActivityItemOriginationPoint:(CGPoint)point
 {
-  if (self->_activityItemOriginationPoint.x != a3.x || self->_activityItemOriginationPoint.y != a3.y)
+  if (self->_activityItemOriginationPoint.x != point.x || self->_activityItemOriginationPoint.y != point.y)
   {
-    self->_activityItemOriginationPoint = a3;
+    self->_activityItemOriginationPoint = point;
     [(CKPinnedConversationActivityView *)self setNeedsLayout];
   }
 }
 
-- (id)contactItemViewMatchingContactItemIdentifier:(id)a3 fromContactItemViews:(id)a4
+- (id)contactItemViewMatchingContactItemIdentifier:(id)identifier fromContactItemViews:(id)views
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewsCopy = views;
+  v7 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -426,14 +426,14 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 pinnedConversationContactItem];
-        v12 = [v11 contactItemIdentifier];
+        pinnedConversationContactItem = [v10 pinnedConversationContactItem];
+        contactItemIdentifier = [pinnedConversationContactItem contactItemIdentifier];
 
-        if ([v12 isEqualToString:v5])
+        if ([contactItemIdentifier isEqualToString:identifierCopy])
         {
           v7 = v10;
 
@@ -441,7 +441,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [viewsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -456,19 +456,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)applySnapshot:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)applySnapshot:(id)snapshot animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  objc_storeStrong(&self->_latestSnapshot, a3);
-  v8 = a5;
-  [(CKPinnedConversationActivityView *)self _updateSnapshotAnimated:v6 completion:v8];
+  animatedCopy = animated;
+  objc_storeStrong(&self->_latestSnapshot, snapshot);
+  completionCopy = completion;
+  [(CKPinnedConversationActivityView *)self _updateSnapshotAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)_updateSnapshotAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateSnapshotAnimated:(BOOL)animated completion:(id)completion
 {
-  v164 = a3;
+  animatedCopy = animated;
   v260 = *MEMORY[0x1E69E9840];
-  v136 = a4;
+  completionCopy = completion;
   if ([(CKPinnedConversationActivityView *)self isSuppressingActivity])
   {
     v5 = +[CKPinnedConversationActivitySnapshot emptySnapshot];
@@ -480,9 +480,9 @@ LABEL_11:
   }
 
   v6 = v5;
-  v7 = [(CKPinnedConversationActivityView *)self _presentedActivityItems];
+  _presentedActivityItems = [(CKPinnedConversationActivityView *)self _presentedActivityItems];
   v137 = v6;
-  v8 = [(CKPinnedConversationActivitySnapshot *)v6 activityItems];
+  activityItems = [(CKPinnedConversationActivitySnapshot *)v6 activityItems];
   v151 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v150 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -492,7 +492,7 @@ LABEL_11:
   v243 = 0u;
   v244 = 0u;
   v245 = 0u;
-  v10 = v8;
+  v10 = activityItems;
   v11 = [v10 countByEnumeratingWithState:&v242 objects:v259 count:16];
   if (v11)
   {
@@ -508,8 +508,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v242 + 1) + 8 * i);
-        v16 = [v15 activityItemIdentifier];
-        v17 = __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion___block_invoke(v16, v7, v16);
+        activityItemIdentifier = [v15 activityItemIdentifier];
+        v17 = __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion___block_invoke(activityItemIdentifier, _presentedActivityItems, activityItemIdentifier);
         v18 = v9;
         if (!v17)
         {
@@ -537,7 +537,7 @@ LABEL_11:
   v241 = 0u;
   v238 = 0u;
   v239 = 0u;
-  v19 = v7;
+  v19 = _presentedActivityItems;
   v20 = [v19 countByEnumeratingWithState:&v238 objects:v258 count:16];
   if (v20)
   {
@@ -553,8 +553,8 @@ LABEL_11:
         }
 
         v24 = *(*(&v238 + 1) + 8 * j);
-        v25 = [v24 activityItemIdentifier];
-        if (!__71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion___block_invoke(v25, v9, v25))
+        activityItemIdentifier2 = [v24 activityItemIdentifier];
+        if (!__71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion___block_invoke(activityItemIdentifier2, v9, activityItemIdentifier2))
         {
           if ([v24 activityItemDisappearsWithAnimation])
           {
@@ -598,10 +598,10 @@ LABEL_11:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v234 + 1) + 8 * k) attachedContactItemIdentifier];
-        if ([v33 length])
+        attachedContactItemIdentifier = [*(*(&v234 + 1) + 8 * k) attachedContactItemIdentifier];
+        if ([attachedContactItemIdentifier length])
         {
-          [v27 addObject:v33];
+          [v27 addObject:attachedContactItemIdentifier];
         }
       }
 
@@ -631,10 +631,10 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v39 = [*(*(&v230 + 1) + 8 * m) attachedContactItemIdentifier];
-        if ([v39 length])
+        attachedContactItemIdentifier2 = [*(*(&v230 + 1) + 8 * m) attachedContactItemIdentifier];
+        if ([attachedContactItemIdentifier2 length])
         {
-          [v34 addObject:v39];
+          [v34 addObject:attachedContactItemIdentifier2];
         }
       }
 
@@ -653,8 +653,8 @@ LABEL_11:
   v142 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v146 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v138 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v40 = [(CKPinnedConversationActivityView *)self contactItemViews];
-  v162 = [v40 copy];
+  contactItemViews = [(CKPinnedConversationActivityView *)self contactItemViews];
+  v162 = [contactItemViews copy];
 
   [(CKPinnedConversationActivitySnapshot *)v137 contactItems];
   v226 = 0u;
@@ -679,9 +679,9 @@ LABEL_11:
         }
 
         v44 = *(*(&v226 + 1) + 8 * v43);
-        v45 = [v44 contactItemIdentifier];
-        v46 = [v34 containsObject:v45];
-        v47 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:v45 fromContactItemViews:v162];
+        contactItemIdentifier = [v44 contactItemIdentifier];
+        v46 = [v34 containsObject:contactItemIdentifier];
+        v47 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:contactItemIdentifier fromContactItemViews:v162];
         v48 = v47;
         if (v46)
         {
@@ -690,22 +690,22 @@ LABEL_11:
             goto LABEL_55;
           }
 
-          v49 = [v27 containsObject:v45];
-          v50 = [v48 pinnedConversationContactItem];
-          v51 = [v50 contactItemAlignment];
-          v52 = [v44 contactItemAlignment];
+          v49 = [v27 containsObject:contactItemIdentifier];
+          pinnedConversationContactItem = [v48 pinnedConversationContactItem];
+          contactItemAlignment = [pinnedConversationContactItem contactItemAlignment];
+          contactItemAlignment2 = [v44 contactItemAlignment];
 
-          if ((v49 & 1) == 0 && v51 != v52)
+          if ((v49 & 1) == 0 && contactItemAlignment != contactItemAlignment2)
           {
             [v139 addObject:v48];
             v34 = v144;
             v27 = v145;
 LABEL_55:
-            v53 = [v44 contactItemView];
-            [group addObject:v53];
+            contactItemView = [v44 contactItemView];
+            [group addObject:contactItemView];
             v54 = v147;
 LABEL_62:
-            [v54 addObject:v53];
+            [v54 addObject:contactItemView];
 
             goto LABEL_63;
           }
@@ -720,19 +720,19 @@ LABEL_62:
         {
           if (!v47 || ([v47 pinnedConversationContactItem], v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v55, "contactItemAlignment"), v55, v56 != objc_msgSend(v44, "contactItemAlignment")))
           {
-            v53 = [v44 contactItemView];
-            [group addObject:v53];
+            contactItemView = [v44 contactItemView];
+            [group addObject:contactItemView];
             v54 = v146;
-            if (v164)
+            if (animatedCopy)
             {
-              [v142 addObject:v53];
+              [v142 addObject:contactItemView];
               v54 = v140;
             }
 
             goto LABEL_62;
           }
 
-          if (v164)
+          if (animatedCopy)
           {
             v57 = v142;
           }
@@ -816,8 +816,8 @@ LABEL_63:
         }
 
         v70 = *(*(&v218 + 1) + 8 * ii);
-        v71 = [v70 contactItemIdentifier];
-        v72 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:v71 fromContactItemViews:v59];
+        contactItemIdentifier2 = [v70 contactItemIdentifier];
+        v72 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:contactItemIdentifier2 fromContactItemViews:v59];
         [v72 setPinnedConversationContactItem:v70];
       }
 
@@ -856,9 +856,9 @@ LABEL_63:
         }
 
         v78 = *(*(&v214 + 1) + 8 * jj);
-        v79 = [v78 activityItemIdentifier];
-        v80 = [(CKPinnedConversationActivityView *)self _activityItemViewWithActivityItemIdentifier:v79];
-        if (v164 && [v78 activityItemDisappearsWithAnimation])
+        activityItemIdentifier3 = [v78 activityItemIdentifier];
+        v80 = [(CKPinnedConversationActivityView *)self _activityItemViewWithActivityItemIdentifier:activityItemIdentifier3];
+        if (animatedCopy && [v78 activityItemDisappearsWithAnimation])
         {
           [v141 addObject:v80];
         }
@@ -899,23 +899,23 @@ LABEL_63:
         }
 
         v86 = *(*(&v210 + 1) + 8 * kk);
-        v87 = [v86 activityItemView];
-        [v87 setActivityItemViewDelegate:self];
-        [(NSMutableArray *)self->_activityItemViews addObject:v87];
-        [(CKPinnedConversationActivityView *)self addSubview:v87];
+        activityItemView = [v86 activityItemView];
+        [activityItemView setActivityItemViewDelegate:self];
+        [(NSMutableArray *)self->_activityItemViews addObject:activityItemView];
+        [(CKPinnedConversationActivityView *)self addSubview:activityItemView];
         v88 = v163;
-        if (v164)
+        if (animatedCopy)
         {
-          v89 = [v86 activityItemAppearsWithAnimation];
+          activityItemAppearsWithAnimation = [v86 activityItemAppearsWithAnimation];
           v88 = v163;
-          if (v89)
+          if (activityItemAppearsWithAnimation)
           {
-            [v143 addObject:v87];
+            [v143 addObject:activityItemView];
             v88 = v161;
           }
         }
 
-        [v88 addObject:v87];
+        [v88 addObject:activityItemView];
       }
 
       v83 = [v152 countByEnumeratingWithState:&v210 objects:v251 count:16];
@@ -995,8 +995,8 @@ LABEL_63:
     [v98 animateWithDuration:4 delay:v199 usingSpringWithDamping:v196 initialSpringVelocity:0.8 options:0.0 animations:0.75 completion:0.0];
   }
 
-  v99 = [(CKPinnedConversationActivitySnapshot *)v137 contactItems];
-  v100 = [v99 count];
+  contactItems = [(CKPinnedConversationActivitySnapshot *)v137 contactItems];
+  v100 = [contactItems count];
   v101 = [(NSMutableArray *)self->_contactItemViews count];
 
   if (v100 != v101)
@@ -1015,8 +1015,8 @@ LABEL_63:
   v193 = 0u;
   v194 = 0u;
   v195 = 0u;
-  v104 = [(CKPinnedConversationActivitySnapshot *)v137 contactItems];
-  v105 = [v104 countByEnumeratingWithState:&v192 objects:v249 count:16];
+  contactItems2 = [(CKPinnedConversationActivitySnapshot *)v137 contactItems];
+  v105 = [contactItems2 countByEnumeratingWithState:&v192 objects:v249 count:16];
   if (v105)
   {
     v106 = v105;
@@ -1027,11 +1027,11 @@ LABEL_63:
       {
         if (*v193 != v107)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(contactItems2);
         }
 
-        v109 = [*(*(&v192 + 1) + 8 * nn) contactItemIdentifier];
-        v110 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:v109 fromContactItemViews:v159];
+        contactItemIdentifier3 = [*(*(&v192 + 1) + 8 * nn) contactItemIdentifier];
+        v110 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:contactItemIdentifier3 fromContactItemViews:v159];
         if (v110)
         {
           [v103 addObject:v110];
@@ -1043,7 +1043,7 @@ LABEL_63:
           if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v248 = v109;
+            v248 = contactItemIdentifier3;
             _os_log_error_impl(&dword_19020E000, v111, OS_LOG_TYPE_ERROR, "Inconsistent state applying snapshot. Could not find contactItemView matching identifier: %@", buf, 0xCu);
           }
         }
@@ -1051,7 +1051,7 @@ LABEL_63:
         objc_storeStrong(&self->_contactItemViews, v103);
       }
 
-      v106 = [v104 countByEnumeratingWithState:&v192 objects:v249 count:16];
+      v106 = [contactItems2 countByEnumeratingWithState:&v192 objects:v249 count:16];
     }
 
     while (v106);
@@ -1077,8 +1077,8 @@ LABEL_63:
         }
 
         v117 = *(*(&v188 + 1) + 8 * i1);
-        v118 = [v117 activityItemIdentifier];
-        v119 = [(CKPinnedConversationActivityView *)self _activityItemViewWithActivityItemIdentifier:v118];
+        activityItemIdentifier4 = [v117 activityItemIdentifier];
+        v119 = [(CKPinnedConversationActivityView *)self _activityItemViewWithActivityItemIdentifier:activityItemIdentifier4];
         [v119 setActivityItem:v117];
         [v161 addObject:v119];
       }
@@ -1201,7 +1201,7 @@ LABEL_63:
     [v128 performWithoutAnimation:v167];
   }
 
-  if (v136)
+  if (completionCopy)
   {
     v129 = MEMORY[0x1E69E96A0];
     v130 = MEMORY[0x1E69E96A0];
@@ -1209,7 +1209,7 @@ LABEL_63:
     block[1] = 3221225472;
     block[2] = __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion___block_invoke_8;
     block[3] = &unk_1E72EBDB8;
-    v166 = v136;
+    v166 = completionCopy;
     dispatch_group_notify(groupa, v129, block);
   }
 }
@@ -1309,15 +1309,15 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_layoutViewsAssociatedWithActivityItemViews:(id)a3 excludingContactItemViews:(id)a4 withContentScale:(id)a5 applyingTransform:(BOOL)a6 updatingActivityItemViews:(BOOL)a7 updatingAttachedContactItemViews:(BOOL)a8
+- (void)_layoutViewsAssociatedWithActivityItemViews:(id)views excludingContactItemViews:(id)itemViews withContentScale:(id)scale applyingTransform:(BOOL)transform updatingActivityItemViews:(BOOL)activityItemViews updatingAttachedContactItemViews:(BOOL)contactItemViews
 {
-  v113 = a6;
-  v114 = a8;
-  v124 = a7;
+  transformCopy = transform;
+  contactItemViewsCopy = contactItemViews;
+  activityItemViewsCopy = activityItemViews;
   v132 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v106 = a4;
-  v115 = a5;
+  viewsCopy = views;
+  itemViewsCopy = itemViews;
+  scaleCopy = scale;
   [(CKPinnedConversationActivityView *)self avatarFrame];
   v13 = v12;
   v15 = v14;
@@ -1334,7 +1334,7 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
   v123 = v17;
   [(CKPinnedConversationActivityView *)self contactItemViewDiameterForAvatarFrame:v13, v15, v17, v19];
   v95 = v24;
-  v121 = [(CKPinnedConversationActivityView *)self activityItemOriginationDirection];
+  activityItemOriginationDirection = [(CKPinnedConversationActivityView *)self activityItemOriginationDirection];
   [(CKPinnedConversationActivityView *)self activityItemOriginationPoint];
   v104 = v26;
   v105 = v25;
@@ -1345,7 +1345,7 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  obj = v11;
+  obj = viewsCopy;
   v116 = [obj countByEnumeratingWithState:&v127 objects:v131 count:16];
   if (v116)
   {
@@ -1363,16 +1363,16 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
         }
 
         v29 = *(*(&v127 + 1) + 8 * i);
-        v30 = [v29 activityItem];
+        activityItem = [v29 activityItem];
         [v29 setParentAvatarViewSize:{v123, v122}];
-        v31 = [v30 attachedContactItemIdentifier];
-        if ([v31 length])
+        attachedContactItemIdentifier = [activityItem attachedContactItemIdentifier];
+        if ([attachedContactItemIdentifier length])
         {
-          v32 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:v31 fromContactItemViews:self->_contactItemViews];
-          v33 = [v32 pinnedConversationContactItem];
-          v34 = [v33 contactItemAlignment];
+          v32 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:attachedContactItemIdentifier fromContactItemViews:self->_contactItemViews];
+          pinnedConversationContactItem = [v32 pinnedConversationContactItem];
+          contactItemAlignment = [pinnedConversationContactItem contactItemAlignment];
 
-          v35 = [(CKPinnedConversationActivityView *)self activityViewContentAlignmentForContactItemAlignment:v34];
+          v35 = [(CKPinnedConversationActivityView *)self activityViewContentAlignmentForContactItemAlignment:contactItemAlignment];
         }
 
         else
@@ -1381,9 +1381,9 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
           v35 = 1;
         }
 
-        if (v114)
+        if (contactItemViewsCopy)
         {
-          v36 = [v106 containsObjectIdenticalTo:v32] ^ 1;
+          v36 = [itemViewsCopy containsObjectIdenticalTo:v32] ^ 1;
         }
 
         else
@@ -1391,22 +1391,22 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
           v36 = 0;
         }
 
-        if (v115)
+        if (scaleCopy)
         {
-          [v115 doubleValue];
+          [scaleCopy doubleValue];
         }
 
         else
         {
-          [v30 activityItemContentScale];
+          [activityItem activityItemContentScale];
         }
 
         v38 = v37;
-        if (v113)
+        if (transformCopy)
         {
           memset(&v126, 0, sizeof(v126));
           CGAffineTransformMakeScale(&v126, v37, v37);
-          if (v124)
+          if (activityItemViewsCopy)
           {
             v125 = v126;
             [v29 setTransform:&v125];
@@ -1436,10 +1436,10 @@ void __71__CKPinnedConversationActivityView__updateSnapshotAnimated_completion__
         v41 = v42;
 LABEL_24:
         v43 = v39;
-        if (v124)
+        if (activityItemViewsCopy)
         {
           [v29 setBounds:{0.0, 0.0, v41, v39}];
-          [v29 setOriginationDirection:v121];
+          [v29 setOriginationDirection:activityItemOriginationDirection];
         }
 
         x = p_outerContentAlignmentFrame->origin.x;
@@ -1447,7 +1447,7 @@ LABEL_24:
         v46 = self->_outerContentAlignmentFrame.size.width;
         v47 = self->_outerContentAlignmentFrame.size.height;
         v120 = v38;
-        if (v121)
+        if (activityItemOriginationDirection)
         {
           CGRectGetMaxY(*&x);
           UIRoundToViewScale();
@@ -1466,7 +1466,7 @@ LABEL_24:
 
           [v29 activityItemToContactItemVerticalOverlap];
           v53 = v49 + v52;
-          [v30 activityItemContentScale];
+          [activityItem activityItemContentScale];
           v55 = -(v95 * 0.5);
         }
 
@@ -1516,7 +1516,7 @@ LABEL_35:
 
           [v29 activityItemToContactItemVerticalOverlap];
           v53 = v49 - v58;
-          [v30 activityItemContentScale];
+          [activityItem activityItemContentScale];
           v55 = v95 * 0.5;
         }
 
@@ -1527,8 +1527,8 @@ LABEL_35:
         {
           [v32 setCenter:{v60, v59}];
           [v32 setBounds:{0.0, 0.0, v95, v95}];
-          v62 = [v32 layer];
-          [v62 setZPosition:1.0];
+          layer = [v32 layer];
+          [layer setZPosition:1.0];
         }
 
         v63 = v49 + (v51 - v49) * v38;
@@ -1670,7 +1670,7 @@ LABEL_57:
         v148.size.width = v41;
         v148.size.height = v43;
         v88 = CGRectGetWidth(v148);
-        if (v124)
+        if (activityItemViewsCopy)
         {
           v89 = v59;
           v90 = v84 + v88 * -0.5;
@@ -1678,8 +1678,8 @@ LABEL_57:
           [v29 setPreferredTailAttachmentPointXCoordinate:v64 - v90];
           [v29 tailAttachmentPoint];
           [v29 setCenter:{v90 + v91 + (v84 - (v90 + v91)) * v120, v63}];
-          v92 = [v29 layer];
-          [v92 setZPosition:2.0];
+          layer2 = [v29 layer];
+          [layer2 setZPosition:2.0];
 
           v94 = v104;
           v93 = v105;
@@ -1702,15 +1702,15 @@ LABEL_57:
   }
 }
 
-- (CGPoint)_convertPointInOwnCoordinateSpace:(CGPoint)a3 toUnscaledCoordinateSpaceOfSubview:(id)a4
+- (CGPoint)_convertPointInOwnCoordinateSpace:(CGPoint)space toUnscaledCoordinateSpaceOfSubview:(id)subview
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 center];
+  y = space.y;
+  x = space.x;
+  subviewCopy = subview;
+  [subviewCopy center];
   v8 = v7;
   v10 = v9;
-  [v6 bounds];
+  [subviewCopy bounds];
   v12 = v11;
   v14 = v13;
 
@@ -1721,11 +1721,11 @@ LABEL_57:
   return result;
 }
 
-- (void)_layoutUnattachedContactItemViews:(id)a3 withContentScale:(id)a4 applyingTransform:(BOOL)a5
+- (void)_layoutUnattachedContactItemViews:(id)views withContentScale:(id)scale applyingTransform:(BOOL)transform
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  viewsCopy = views;
+  scaleCopy = scale;
+  if ([viewsCopy count])
   {
     [(CKPinnedConversationActivityView *)self avatarFrame];
     v11 = v10;
@@ -1734,11 +1734,11 @@ LABEL_57:
     v17 = v16;
     [(CKPinnedConversationActivityView *)self contactItemViewDiameterForAvatarFrame:?];
     v19 = v18;
-    v20 = [(NSMutableArray *)self->_activityItemViews firstObject];
-    v21 = [v20 activityItem];
-    v22 = [v21 attachedContactItemIdentifier];
+    firstObject = [(NSMutableArray *)self->_activityItemViews firstObject];
+    activityItem = [firstObject activityItem];
+    attachedContactItemIdentifier = [activityItem attachedContactItemIdentifier];
 
-    v23 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:v22 fromContactItemViews:self->_contactItemViews];
+    v23 = [(CKPinnedConversationActivityView *)self contactItemViewMatchingContactItemIdentifier:attachedContactItemIdentifier fromContactItemViews:self->_contactItemViews];
     v45[0] = 0;
     v45[1] = v45;
     v45[2] = 0x3032000000;
@@ -1760,16 +1760,16 @@ LABEL_57:
     if (v23)
     {
       objc_storeStrong(&v46, v23);
-      v24 = [v23 pinnedConversationContactItem];
-      v25 = [v24 contactItemAlignment];
+      pinnedConversationContactItem = [v23 pinnedConversationContactItem];
+      contactItemAlignment = [pinnedConversationContactItem contactItemAlignment];
 
-      if (!v25)
+      if (!contactItemAlignment)
       {
         v26 = v43;
         goto LABEL_7;
       }
 
-      if (v25 == 1)
+      if (contactItemAlignment == 1)
       {
         v26 = v40;
 LABEL_7:
@@ -1781,8 +1781,8 @@ LABEL_7:
     v27[1] = 3221225472;
     v27[2] = __105__CKPinnedConversationActivityView__layoutUnattachedContactItemViews_withContentScale_applyingTransform___block_invoke;
     v27[3] = &unk_1E72EEBF8;
-    v28 = v9;
-    v29 = self;
+    v28 = scaleCopy;
+    selfCopy = self;
     v30 = &v42;
     v31 = &v39;
     v33 = v11;
@@ -1791,8 +1791,8 @@ LABEL_7:
     v36 = v17;
     v37 = v19;
     v32 = v45;
-    v38 = a5;
-    [v8 enumerateObjectsUsingBlock:v27];
+    transformCopy = transform;
+    [viewsCopy enumerateObjectsUsingBlock:v27];
 
     _Block_object_dispose(&v39, 8);
     _Block_object_dispose(&v42, 8);
@@ -1921,16 +1921,16 @@ LABEL_25:
   }
 }
 
-- (CGPoint)pointAlongCircle:(CGRect)a3 atArcLength:(double)a4 fromPoint:(CGPoint)a5 clockwise:(BOOL)a6
+- (CGPoint)pointAlongCircle:(CGRect)circle atArcLength:(double)length fromPoint:(CGPoint)point clockwise:(BOOL)clockwise
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  clockwiseCopy = clockwise;
+  y = point.y;
+  x = point.x;
+  height = circle.size.height;
+  width = circle.size.width;
+  v12 = circle.origin.y;
+  v13 = circle.origin.x;
+  MidX = CGRectGetMidX(circle);
   v25.origin.x = v13;
   v25.origin.y = v12;
   v25.size.width = width;
@@ -1955,10 +1955,10 @@ LABEL_25:
       }
     }
 
-    v20 = a4 / v16;
-    if (!v6)
+    v20 = length / v16;
+    if (!clockwiseCopy)
     {
-      v20 = -(a4 / v16);
+      v20 = -(length / v16);
     }
 
     v21 = __sincos_stret(v20 + v19);
@@ -1973,25 +1973,25 @@ LABEL_25:
   return result;
 }
 
-- (double)circleXCoordinateForYCoordinate:(double)a3 radius:(double)a4 centerPoint:(CGPoint)a5 contentAlignment:(int64_t)a6
+- (double)circleXCoordinateForYCoordinate:(double)coordinate radius:(double)radius centerPoint:(CGPoint)point contentAlignment:(int64_t)alignment
 {
-  v6 = sqrt(fmax(a4 * a4 - (a3 - a5.y) * (a3 - a5.y), 0.0));
-  if (a6 != 1)
+  v6 = sqrt(fmax(radius * radius - (coordinate - point.y) * (coordinate - point.y), 0.0));
+  if (alignment != 1)
   {
     v6 = -v6;
   }
 
-  return a5.x + v6;
+  return point.x + v6;
 }
 
-- (double)tailAttachmentXCoordinateForYCoordinate:(double)a3 avatarFrame:(CGRect)a4 contentAlignment:(int64_t)a5
+- (double)tailAttachmentXCoordinateForYCoordinate:(double)coordinate avatarFrame:(CGRect)frame contentAlignment:(int64_t)alignment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a4.size.width * 0.5;
-  [(CKPinnedConversationActivityView *)self activityItemAttachmentCircleRadiusInsetForAvatarFrame:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = frame.size.width * 0.5;
+  [(CKPinnedConversationActivityView *)self activityItemAttachmentCircleRadiusInsetForAvatarFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v14 = v12 - v13;
   v19.origin.x = x;
   v19.origin.y = y;
@@ -2004,25 +2004,25 @@ LABEL_25:
   v20.size.height = height;
   MidY = CGRectGetMidY(v20);
 
-  [(CKPinnedConversationActivityView *)self circleXCoordinateForYCoordinate:a5 radius:a3 centerPoint:v14 contentAlignment:MidX, MidY];
+  [(CKPinnedConversationActivityView *)self circleXCoordinateForYCoordinate:alignment radius:coordinate centerPoint:v14 contentAlignment:MidX, MidY];
   return result;
 }
 
-- (double)contactItemViewCenterXCoordinateForYCoordinate:(double)a3 avatarFrame:(CGRect)a4 contentAlignment:(int64_t)a5
+- (double)contactItemViewCenterXCoordinateForYCoordinate:(double)coordinate avatarFrame:(CGRect)frame contentAlignment:(int64_t)alignment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a4.size.width * 0.5;
-  MidX = CGRectGetMidX(a4);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = frame.size.width * 0.5;
+  MidX = CGRectGetMidX(frame);
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
   MidY = CGRectGetMidY(v17);
 
-  [(CKPinnedConversationActivityView *)self circleXCoordinateForYCoordinate:a5 radius:a3 centerPoint:v12 contentAlignment:MidX, MidY];
+  [(CKPinnedConversationActivityView *)self circleXCoordinateForYCoordinate:alignment radius:coordinate centerPoint:v12 contentAlignment:MidX, MidY];
   return result;
 }
 
@@ -2034,8 +2034,8 @@ LABEL_25:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CKPinnedConversationActivityView *)self contactItemViews];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  contactItemViews = [(CKPinnedConversationActivityView *)self contactItemViews];
+  v5 = [contactItemViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2047,15 +2047,15 @@ LABEL_25:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contactItemViews);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) pinnedConversationContactItem];
-        v11 = [v10 cnContactWithKeys:v8];
+        pinnedConversationContactItem = [*(*(&v14 + 1) + 8 * i) pinnedConversationContactItem];
+        v11 = [pinnedConversationContactItem cnContactWithKeys:v8];
         [v3 addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [contactItemViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -2073,8 +2073,8 @@ LABEL_25:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(CKPinnedConversationActivityView *)self activityItemViews];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  activityItemViews = [(CKPinnedConversationActivityView *)self activityItemViews];
+  v4 = [activityItemViews countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2086,14 +2086,14 @@ LABEL_25:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activityItemViews);
         }
 
         [*(*(&v23 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v5 = [activityItemViews countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v5);
@@ -2107,8 +2107,8 @@ LABEL_25:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(CKPinnedConversationActivityView *)self contactItemViews];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  contactItemViews = [(CKPinnedConversationActivityView *)self contactItemViews];
+  v11 = [contactItemViews countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2120,14 +2120,14 @@ LABEL_25:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(contactItemViews);
         }
 
         [*(*(&v19 + 1) + 8 * v14++) removeFromSuperview];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v12 = [contactItemViews countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v12);
@@ -2144,43 +2144,43 @@ LABEL_25:
   self->_suppressingActivity = 0;
 }
 
-- (void)setSuppressingActivity:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setSuppressingActivity:(BOOL)activity animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (self->_suppressingActivity == v6)
+  animatedCopy = animated;
+  activityCopy = activity;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_suppressingActivity == activityCopy)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = v8;
-    (*(v8 + 2))(v8);
+    v10 = completionCopy;
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    self->_suppressingActivity = v6;
-    v10 = v8;
-    [(CKPinnedConversationActivityView *)self _updateSnapshotAnimated:v5 completion:v8];
+    self->_suppressingActivity = activityCopy;
+    v10 = completionCopy;
+    [(CKPinnedConversationActivityView *)self _updateSnapshotAnimated:animatedCopy completion:completionCopy];
   }
 
   v9 = v10;
 LABEL_6:
 }
 
-- (BOOL)haveAttachedContactItemViewsForActivityViews:(id)a3
+- (BOOL)haveAttachedContactItemViewsForActivityViews:(id)views
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  viewsCopy = views;
+  v4 = [viewsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -2190,12 +2190,12 @@ LABEL_6:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsCopy);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) activityItem];
-        v8 = [v7 attachedContactItemIdentifier];
-        v9 = [v8 length];
+        activityItem = [*(*(&v11 + 1) + 8 * i) activityItem];
+        attachedContactItemIdentifier = [activityItem attachedContactItemIdentifier];
+        v9 = [attachedContactItemIdentifier length];
 
         if (v9)
         {
@@ -2204,7 +2204,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [viewsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;

@@ -1,7 +1,7 @@
 @interface _UIUpdateTarget
-+ (_UIUpdateTarget)targetWithCADisplay:(uint64_t)a1;
++ (_UIUpdateTarget)targetWithCADisplay:(uint64_t)display;
 - (_UIUpdateTarget)init;
-- (uint64_t)requestPresentaionForMode:(uint64_t)a3@<X2> earliestReferenceDeadlineTime:(uint64_t)a4@<X3> earliestCommitDeadlineTime:(uint64_t *)a5@<X8>;
+- (uint64_t)requestPresentaionForMode:(uint64_t)mode@<X2> earliestReferenceDeadlineTime:(uint64_t)time@<X3> earliestCommitDeadlineTime:(uint64_t *)deadlineTime@<X8>;
 - (uint64_t)start;
 - (uint64_t)stop;
 - (uint64_t)sync;
@@ -18,10 +18,10 @@
     v1 = result;
     [*(result + 8) heartbeatRate];
     v2 = UCTimeFromSeconds();
-    v3 = [*(v1 + 8) minimumFrameDuration];
+    minimumFrameDuration = [*(v1 + 8) minimumFrameDuration];
     if (v2)
     {
-      v4 = v3;
+      v4 = minimumFrameDuration;
     }
 
     else
@@ -178,7 +178,7 @@
   [(_UIUpdateTarget *)&v5 dealloc];
 }
 
-+ (_UIUpdateTarget)targetWithCADisplay:(uint64_t)a1
++ (_UIUpdateTarget)targetWithCADisplay:(uint64_t)display
 {
   objc_opt_self();
   v3 = [_UIUpdateTarget alloc];
@@ -196,7 +196,7 @@
   return v3;
 }
 
-- (uint64_t)requestPresentaionForMode:(uint64_t)a3@<X2> earliestReferenceDeadlineTime:(uint64_t)a4@<X3> earliestCommitDeadlineTime:(uint64_t *)a5@<X8>
+- (uint64_t)requestPresentaionForMode:(uint64_t)mode@<X2> earliestReferenceDeadlineTime:(uint64_t)time@<X3> earliestCommitDeadlineTime:(uint64_t *)deadlineTime@<X8>
 {
   if (result)
   {
@@ -205,37 +205,37 @@
     UCTimeToSeconds();
     [*(v9 + 16) commitDeadlineAfterTimestamp:?];
     result = UCTimeFromSeconds();
-    v11 = result;
+    timeCopy = result;
     if (!result)
     {
       result = mach_absolute_time();
-      v12 = *(v9 + 40) + result;
-      if (v12 <= a3)
+      modeCopy = *(v9 + 40) + result;
+      if (modeCopy <= mode)
       {
-        v12 = a3;
+        modeCopy = mode;
       }
 
-      if (v12 <= a4)
+      if (modeCopy <= time)
       {
-        v11 = a4;
+        timeCopy = time;
       }
 
       else
       {
-        v11 = v12;
+        timeCopy = modeCopy;
       }
     }
 
-    v13 = v11 - *(v9 + 8 * a2 + 64);
+    v13 = timeCopy - *(v9 + 8 * a2 + 64);
     v14 = *(v9 + 48 + 8 * a2);
-    v15 = v11 - *(v9 + 80);
+    v15 = timeCopy - *(v9 + 80);
     v16 = v14 - *(v9 + 48);
-    *a5 = v11;
-    a5[1] = v13;
-    a5[2] = v15;
-    a5[3] = v14 + v11;
-    a5[4] = v16;
-    a5[5] = v13 + v10;
+    *deadlineTime = timeCopy;
+    deadlineTime[1] = v13;
+    deadlineTime[2] = v15;
+    deadlineTime[3] = v14 + timeCopy;
+    deadlineTime[4] = v16;
+    deadlineTime[5] = v13 + v10;
     if (_UIUpdateCycleDebugTracingCheck)
     {
       result = _UIUpdateCycleDebugTracingCheck();
@@ -249,9 +249,9 @@
 
   else
   {
-    *(a5 + 1) = 0u;
-    *(a5 + 2) = 0u;
-    *a5 = 0u;
+    *(deadlineTime + 1) = 0u;
+    *(deadlineTime + 2) = 0u;
+    *deadlineTime = 0u;
   }
 
   return result;

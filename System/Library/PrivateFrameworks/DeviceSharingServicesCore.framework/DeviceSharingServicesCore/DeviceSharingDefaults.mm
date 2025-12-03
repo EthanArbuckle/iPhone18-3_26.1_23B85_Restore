@@ -22,7 +22,7 @@
 
 - (void)log
 {
-  v2 = self;
+  selfCopy = self;
   DeviceSharingDefaults.log()();
 }
 

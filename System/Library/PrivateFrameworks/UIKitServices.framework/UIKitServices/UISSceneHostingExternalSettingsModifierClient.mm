@@ -1,10 +1,10 @@
 @interface UISSceneHostingExternalSettingsModifierClient
 + (BSServiceConnectionEndpoint)defaultShellEndpoint;
 - (UISSceneHostingExternalSettingsModifierClient)init;
-- (UISSceneHostingExternalSettingsModifierClient)initWithServerEndpoint:(id)a3;
+- (UISSceneHostingExternalSettingsModifierClient)initWithServerEndpoint:(id)endpoint;
 - (void)dealloc;
 - (void)invalidate;
-- (void)requestSettingsModifiersForProcessIdentity:(id)a3 withCompletion:(id)a4;
+- (void)requestSettingsModifiersForProcessIdentity:(id)identity withCompletion:(id)completion;
 @end
 
 @implementation UISSceneHostingExternalSettingsModifierClient
@@ -22,7 +22,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"UISSceneHostingExternalSettingsModifierClient.m";
     v17 = 1024;
@@ -38,16 +38,16 @@
   return result;
 }
 
-- (UISSceneHostingExternalSettingsModifierClient)initWithServerEndpoint:(id)a3
+- (UISSceneHostingExternalSettingsModifierClient)initWithServerEndpoint:(id)endpoint
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  endpointCopy = endpoint;
   v16.receiver = self;
   v16.super_class = UISSceneHostingExternalSettingsModifierClient;
   v7 = [(UISSceneHostingExternalSettingsModifierClient *)&v16 init];
   if (v7)
   {
-    if (!v6)
+    if (!endpointCopy)
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"serverEndpoint"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@
     queue = v7->_queue;
     v7->_queue = v9;
 
-    objc_storeStrong(&v7->_endpoint, a3);
+    objc_storeStrong(&v7->_endpoint, endpoint);
   }
 
   return v7;
@@ -103,7 +103,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"UISSceneHostingExternalSettingsModifierClient.m";
       v17 = 1024;
@@ -124,12 +124,12 @@
   [(UISSceneHostingExternalSettingsModifierClient *)&v8 dealloc];
 }
 
-- (void)requestSettingsModifiersForProcessIdentity:(id)a3 withCompletion:(id)a4
+- (void)requestSettingsModifiersForProcessIdentity:(id)identity withCompletion:(id)completion
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identityCopy = identity;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"completion"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -142,7 +142,7 @@
       *&block[12] = 2114;
       *&block[14] = v15;
       *&block[22] = 2048;
-      v25 = self;
+      selfCopy = self;
       LOWORD(v26) = 2114;
       *(&v26 + 2) = @"UISSceneHostingExternalSettingsModifierClient.m";
       WORD5(v26) = 1024;
@@ -158,7 +158,7 @@
     JUMPOUT(0x19600D6F4);
   }
 
-  v9 = v8;
+  v9 = completionCopy;
   if (self)
   {
     BSDispatchQueueAssertNot();
@@ -172,7 +172,7 @@
     *block = MEMORY[0x1E69E9820];
     *&block[8] = 3221225472;
     *&block[16] = __62__UISSceneHostingExternalSettingsModifierClient__remoteTarget__block_invoke;
-    v25 = &unk_1E7458EC0;
+    selfCopy = &unk_1E7458EC0;
     *&v26 = self;
     *(&v26 + 1) = &v18;
     v27[0] = sel__remoteTarget;
@@ -187,7 +187,7 @@
   v16[3] = &unk_1E7459500;
   v17 = v9;
   v11 = v9;
-  [(UISSceneHostingExternalSettingsModifierClient *)self requestSettingsModifiersForProcessIdentity:v7 withCompletion:v16];
+  [(UISSceneHostingExternalSettingsModifierClient *)self requestSettingsModifiersForProcessIdentity:identityCopy withCompletion:v16];
 }
 
 void __107__UISSceneHostingExternalSettingsModifierClient_requestSettingsModifiersForProcessIdentity_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -203,8 +203,8 @@ void __107__UISSceneHostingExternalSettingsModifierClient_requestSettingsModifie
 + (BSServiceConnectionEndpoint)defaultShellEndpoint
 {
   v2 = MEMORY[0x1E698F498];
-  v3 = [MEMORY[0x1E698F498] defaultShellMachName];
-  v4 = [v2 endpointForMachName:v3 service:0x1F0A7DEB8 instance:0];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
+  v4 = [v2 endpointForMachName:defaultShellMachName service:0x1F0A7DEB8 instance:0];
 
   return v4;
 }

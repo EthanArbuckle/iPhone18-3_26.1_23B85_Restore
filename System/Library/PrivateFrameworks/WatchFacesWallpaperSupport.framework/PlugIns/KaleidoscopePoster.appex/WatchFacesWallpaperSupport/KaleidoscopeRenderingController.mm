@@ -1,36 +1,36 @@
 @interface KaleidoscopeRenderingController
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation KaleidoscopeRenderingController
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10001DF34(v6, a4);
+  selfCopy = self;
+  sub_10001DF34(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v7 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  sub_10001E8B4(v7);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10001E8B4(rendererCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_10001EA0C();
 }
 

@@ -1,5 +1,5 @@
 @interface HeadphoneYodelHearingSwitchListeningModeViewController
-- (_TtC20HeadphoneProxService54HeadphoneYodelHearingSwitchListeningModeViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService54HeadphoneYodelHearingSwitchListeningModeViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039A80();
 }
 
-- (_TtC20HeadphoneProxService54HeadphoneYodelHearingSwitchListeningModeViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService54HeadphoneYodelHearingSwitchListeningModeViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_10003B1A0(a3);
+  viewCopy = view;
+  v5 = sub_10003B1A0(view);
 
   return v5;
 }

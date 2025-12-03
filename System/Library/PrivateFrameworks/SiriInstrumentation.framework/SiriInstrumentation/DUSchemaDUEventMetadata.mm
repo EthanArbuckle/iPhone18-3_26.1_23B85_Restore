@@ -1,25 +1,25 @@
 @interface DUSchemaDUEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (DUSchemaDUEventMetadata)initWithDictionary:(id)a3;
-- (DUSchemaDUEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DUSchemaDUEventMetadata)initWithDictionary:(id)dictionary;
+- (DUSchemaDUEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DUSchemaDUEventMetadata
 
-- (DUSchemaDUEventMetadata)initWithDictionary:(id)a3
+- (DUSchemaDUEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = DUSchemaDUEventMetadata;
   v5 = [(DUSchemaDUEventMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assetIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assetIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (DUSchemaDUEventMetadata)initWithJSON:(id)a3
+- (DUSchemaDUEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DUSchemaDUEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DUSchemaDUEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DUSchemaDUEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetIdentifier)
   {
-    v4 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    assetIdentifier = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+    dictionaryRepresentation = [assetIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"assetIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"assetIdentifier"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"assetIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"assetIdentifier"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
-    v6 = [v4 assetIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    assetIdentifier = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+    assetIdentifier2 = [equalCopy assetIdentifier];
+    v7 = assetIdentifier2;
+    if ((assetIdentifier != 0) != (assetIdentifier2 == 0))
     {
-      v8 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
-      if (!v8)
+      assetIdentifier3 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+      if (!assetIdentifier3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
-      v11 = [v4 assetIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = assetIdentifier3;
+      assetIdentifier4 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+      assetIdentifier5 = [equalCopy assetIdentifier];
+      v12 = [assetIdentifier4 isEqual:assetIdentifier5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+  toCopy = to;
+  assetIdentifier = [(DUSchemaDUEventMetadata *)self assetIdentifier];
 
-  if (v4)
+  if (assetIdentifier)
   {
-    v5 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
+    assetIdentifier2 = [(DUSchemaDUEventMetadata *)self assetIdentifier];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DUSchemaDUEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DUSchemaDUEventMetadata *)self assetIdentifier:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DUSchemaDUEventMetadata *)self deleteAssetIdentifier];
   }

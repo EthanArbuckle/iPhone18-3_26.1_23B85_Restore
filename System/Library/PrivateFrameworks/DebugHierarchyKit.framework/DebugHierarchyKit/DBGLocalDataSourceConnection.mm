@@ -1,30 +1,30 @@
 @interface DBGLocalDataSourceConnection
 - (DBGDataSourceConnectionDelegate)delegate;
-- (DBGLocalDataSourceConnection)initWithPid:(int)a3 agentConnection:(id)a4;
+- (DBGLocalDataSourceConnection)initWithPid:(int)pid agentConnection:(id)connection;
 - (void)closeConnection;
 - (void)dealloc;
-- (void)performRequest:(id)a3;
+- (void)performRequest:(id)request;
 @end
 
 @implementation DBGLocalDataSourceConnection
 
-- (DBGLocalDataSourceConnection)initWithPid:(int)a3 agentConnection:(id)a4
+- (DBGLocalDataSourceConnection)initWithPid:(int)pid agentConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = DBGLocalDataSourceConnection;
   v7 = [(DBGLocalDataSourceConnection *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_pid = a3;
+    v7->_pid = pid;
     v9 = dispatch_queue_create("LocalConnectionQueue", 0);
     connectionQueue = v8->_connectionQueue;
     v8->_connectionQueue = v9;
 
-    if (v6)
+    if (connectionCopy)
     {
-      mach_service = v6;
+      mach_service = connectionCopy;
     }
 
     else
@@ -57,25 +57,25 @@
   [(DBGLocalDataSourceConnection *)&v5 dealloc];
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 temporaryDirectory];
+  temporaryDirectory = [v5 temporaryDirectory];
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  uUIDString = [v7 UUIDString];
+  v9 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [v9 path];
-  [v10 createFileAtPath:v11 contents:0 attributes:0];
+  path = [v9 path];
+  [v10 createFileAtPath:path contents:0 attributes:0];
 
   v12 = [NSFileHandle fileHandleForWritingToURL:v9 error:0];
   empty = xpc_dictionary_create_empty();
   xpc_dictionary_set_string(empty, "action", "performRequest");
   xpc_dictionary_set_uint64(empty, "pid", self->_pid);
-  v14 = [v4 base64Encoded];
-  xpc_dictionary_set_string(empty, "request", [v14 cStringUsingEncoding:4]);
+  base64Encoded = [requestCopy base64Encoded];
+  xpc_dictionary_set_string(empty, "request", [base64Encoded cStringUsingEncoding:4]);
 
   xpc_dictionary_set_fd(empty, "fd", [v12 fileDescriptor]);
   connectionQueue = self->_connectionQueue;
@@ -85,11 +85,11 @@
   v20[2] = __47__DBGLocalDataSourceConnection_performRequest___block_invoke;
   v20[3] = &unk_244D0;
   v21 = v9;
-  v22 = self;
-  v23 = v4;
+  selfCopy = self;
+  v23 = requestCopy;
   v24 = v12;
   v17 = v12;
-  v18 = v4;
+  v18 = requestCopy;
   v19 = v9;
   xpc_connection_send_message_with_reply(connection, empty, connectionQueue, v20);
 }

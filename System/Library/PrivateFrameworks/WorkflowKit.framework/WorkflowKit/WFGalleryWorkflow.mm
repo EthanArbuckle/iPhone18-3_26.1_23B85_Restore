@@ -1,14 +1,14 @@
 @interface WFGalleryWorkflow
 + (NSDictionary)properties;
-- (BOOL)isEqual:(id)a3;
-- (WFGalleryWorkflow)initWithIdentifier:(id)a3 name:(id)a4 shortDescription:(id)a5 longDescription:(id)a6 icon:(id)a7 workflowRecord:(id)a8 searchable:(id)a9 minVersion:(int64_t)a10 hiddenRegions:(id)a11 supportedIdioms:(id)a12 createdAt:(id)a13 modifiedAt:(id)a14 language:(id)a15 base:(id)a16 persistentIdentifier:(id)a17 shortcutFile:(id)a18 iconFile:(id)a19;
+- (BOOL)isEqual:(id)equal;
+- (WFGalleryWorkflow)initWithIdentifier:(id)identifier name:(id)name shortDescription:(id)description longDescription:(id)longDescription icon:(id)icon workflowRecord:(id)record searchable:(id)searchable minVersion:(int64_t)self0 hiddenRegions:(id)self1 supportedIdioms:(id)self2 createdAt:(id)self3 modifiedAt:(id)self4 language:(id)self5 base:(id)self6 persistentIdentifier:(id)self7 shortcutFile:(id)self8 iconFile:(id)self9;
 - (WFWorkflowIcon)icon;
 - (WFWorkflowRecord)workflowRecord;
 - (id)ensureFileAssets;
 - (id)propertiesForEventLogging;
 - (id)sharingURL;
 - (unint64_t)hash;
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5;
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by;
 @end
 
 @implementation WFGalleryWorkflow
@@ -17,14 +17,14 @@
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v9[0] = @"workflow_identifier";
-  v3 = [(WFGalleryWorkflow *)self persistentIdentifier];
-  v10[0] = v3;
+  persistentIdentifier = [(WFGalleryWorkflow *)self persistentIdentifier];
+  v10[0] = persistentIdentifier;
   v9[1] = @"workflow_name";
-  v4 = [(WFGalleryWorkflow *)self name];
-  v10[1] = v4;
+  name = [(WFGalleryWorkflow *)self name];
+  v10[1] = name;
   v9[2] = @"workflow_record_type";
-  v5 = [objc_opt_class() recordType];
-  v10[2] = v5;
+  recordType = [objc_opt_class() recordType];
+  v10[2] = recordType;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -32,10 +32,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -45,10 +45,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFGalleryWorkflow *)self identifier];
-      v6 = [(WFGalleryWorkflow *)v4 identifier];
-      v7 = v5;
-      v8 = v6;
+      identifier = [(WFGalleryWorkflow *)self identifier];
+      identifier2 = [(WFGalleryWorkflow *)equalCopy identifier];
+      v7 = identifier;
+      v8 = identifier2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -75,10 +75,10 @@ LABEL_69:
         }
       }
 
-      v14 = [(WFGalleryWorkflow *)self name];
-      v15 = [(WFGalleryWorkflow *)v4 name];
-      v12 = v14;
-      v16 = v15;
+      name = [(WFGalleryWorkflow *)self name];
+      name2 = [(WFGalleryWorkflow *)equalCopy name];
+      v12 = name;
+      v16 = name2;
       v11 = v16;
       if (v12 == v16)
       {
@@ -105,10 +105,10 @@ LABEL_68:
         }
       }
 
-      v20 = [(WFGalleryWorkflow *)self createdAt];
-      v21 = [(WFGalleryWorkflow *)v4 createdAt];
-      v18 = v20;
-      v22 = v21;
+      createdAt = [(WFGalleryWorkflow *)self createdAt];
+      createdAt2 = [(WFGalleryWorkflow *)equalCopy createdAt];
+      v18 = createdAt;
+      v22 = createdAt2;
       v17 = v22;
       if (v18 == v22)
       {
@@ -135,10 +135,10 @@ LABEL_67:
         }
       }
 
-      v26 = [(WFGalleryWorkflow *)self modifiedAt];
-      v27 = [(WFGalleryWorkflow *)v4 modifiedAt];
-      v24 = v26;
-      v28 = v27;
+      modifiedAt = [(WFGalleryWorkflow *)self modifiedAt];
+      modifiedAt2 = [(WFGalleryWorkflow *)equalCopy modifiedAt];
+      v24 = modifiedAt;
+      v28 = modifiedAt2;
       v63 = v28;
       if (v24 != v28)
       {
@@ -159,8 +159,8 @@ LABEL_67:
             }
 
 LABEL_29:
-            v31 = [(WFGalleryWorkflow *)self minVersion];
-            if (v31 != [(WFGalleryWorkflow *)v4 minVersion])
+            minVersion = [(WFGalleryWorkflow *)self minVersion];
+            if (minVersion != [(WFGalleryWorkflow *)equalCopy minVersion])
             {
 LABEL_35:
               v10 = 0;
@@ -172,10 +172,10 @@ LABEL_66:
 
             v61 = v24;
             v62 = v17;
-            v32 = [(WFGalleryWorkflow *)self hiddenRegions];
-            v33 = [(WFGalleryWorkflow *)v4 hiddenRegions];
-            v34 = v32;
-            v35 = v33;
+            hiddenRegions = [(WFGalleryWorkflow *)self hiddenRegions];
+            hiddenRegions2 = [(WFGalleryWorkflow *)equalCopy hiddenRegions];
+            v34 = hiddenRegions;
+            v35 = hiddenRegions2;
             v58 = v35;
             v59 = v34;
             if (v34 == v35)
@@ -214,10 +214,10 @@ LABEL_64:
               }
             }
 
-            v38 = [(WFGalleryWorkflow *)self supportedIdioms];
-            v39 = [(WFGalleryWorkflow *)v4 supportedIdioms];
-            v34 = v38;
-            v40 = v39;
+            supportedIdioms = [(WFGalleryWorkflow *)self supportedIdioms];
+            supportedIdioms2 = [(WFGalleryWorkflow *)equalCopy supportedIdioms];
+            v34 = supportedIdioms;
+            v40 = supportedIdioms2;
             v56 = v34;
             v57 = v40;
             if (v34 != v40)
@@ -240,10 +240,10 @@ LABEL_64:
                   }
 
 LABEL_44:
-                  v43 = [(WFGalleryWorkflow *)self shortDescription];
-                  v44 = [(WFGalleryWorkflow *)v4 shortDescription];
-                  v45 = v43;
-                  v46 = v44;
+                  shortDescription = [(WFGalleryWorkflow *)self shortDescription];
+                  shortDescription2 = [(WFGalleryWorkflow *)equalCopy shortDescription];
+                  v45 = shortDescription;
+                  v46 = shortDescription2;
                   v54 = v46;
                   v55 = v45;
                   if (v45 == v46)
@@ -282,10 +282,10 @@ LABEL_61:
                     }
                   }
 
-                  v49 = [(WFGalleryWorkflow *)self longDescription];
-                  v50 = [(WFGalleryWorkflow *)v4 longDescription];
-                  v45 = v49;
-                  v51 = v50;
+                  longDescription = [(WFGalleryWorkflow *)self longDescription];
+                  longDescription2 = [(WFGalleryWorkflow *)equalCopy longDescription];
+                  v45 = longDescription;
+                  v51 = longDescription2;
                   v52 = v51;
                   if (v45 == v51)
                   {
@@ -358,19 +358,19 @@ LABEL_70:
 
 - (unint64_t)hash
 {
-  v3 = [(WFGalleryWorkflow *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(WFGalleryWorkflow *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFGalleryWorkflow *)self createdAt];
-  v8 = [v7 hash];
+  identifier = [(WFGalleryWorkflow *)self identifier];
+  v4 = [identifier hash];
+  name = [(WFGalleryWorkflow *)self name];
+  v6 = [name hash] ^ v4;
+  createdAt = [(WFGalleryWorkflow *)self createdAt];
+  v8 = [createdAt hash];
   v9 = v6 ^ v8 ^ [(WFGalleryWorkflow *)self minVersion];
-  v10 = [(WFGalleryWorkflow *)self modifiedAt];
-  v11 = [v10 hash];
-  v12 = [(WFGalleryWorkflow *)self shortDescription];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(WFGalleryWorkflow *)self longDescription];
-  v15 = v13 ^ [v14 hash];
+  modifiedAt = [(WFGalleryWorkflow *)self modifiedAt];
+  v11 = [modifiedAt hash];
+  shortDescription = [(WFGalleryWorkflow *)self shortDescription];
+  v13 = v11 ^ [shortDescription hash];
+  longDescription = [(WFGalleryWorkflow *)self longDescription];
+  v15 = v13 ^ [longDescription hash];
 
   return v9 ^ v15;
 }
@@ -379,32 +379,32 @@ LABEL_70:
 {
   if (self->_workflowRecord)
   {
-    v3 = [(WFGalleryWorkflow *)self workflowRecord];
-    v4 = [v3 fileRepresentation];
+    workflowRecord = [(WFGalleryWorkflow *)self workflowRecord];
+    fileRepresentation = [workflowRecord fileRepresentation];
 
-    v5 = [(WFGalleryWorkflow *)self identifier];
-    v6 = [v5 recordName];
-    [v4 setName:v6];
+    identifier = [(WFGalleryWorkflow *)self identifier];
+    recordName = [identifier recordName];
+    [fileRepresentation setName:recordName];
 
-    v7 = [v4 writeToDiskWithError:0];
+    v7 = [fileRepresentation writeToDiskWithError:0];
     shortcutFile = self->_shortcutFile;
     self->_shortcutFile = v7;
   }
 
-  v9 = [(WFGalleryWorkflow *)self icon];
+  icon = [(WFGalleryWorkflow *)self icon];
 
-  if (v9)
+  if (icon)
   {
     v10 = objc_alloc(MEMORY[0x1E69E0E08]);
-    v11 = [(WFGalleryWorkflow *)self icon];
-    v12 = [v10 initWithIcon:v11];
+    icon2 = [(WFGalleryWorkflow *)self icon];
+    v12 = [v10 initWithIcon:icon2];
 
     [(WFFileRepresentation *)v12 setCornerRadius:8.0];
     v13 = [(WFFileRepresentation *)v12 imageWithSize:60.0, 60.0];
     v14 = MEMORY[0x1E6996E20];
-    v15 = [v13 PNGRepresentation];
+    pNGRepresentation = [v13 PNGRepresentation];
     v16 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982F28]];
-    v17 = [v14 fileWithData:v15 ofType:v16 proposedFilename:0];
+    v17 = [v14 fileWithData:pNGRepresentation ofType:v16 proposedFilename:0];
     iconFile = self->_iconFile;
     self->_iconFile = v17;
   }
@@ -426,16 +426,16 @@ LABEL_70:
     goto LABEL_2;
   }
 
-  v4 = [(WFGalleryWorkflow *)self shortcutFile];
-  if (v4)
+  shortcutFile = [(WFGalleryWorkflow *)self shortcutFile];
+  if (shortcutFile)
   {
   }
 
   else
   {
-    v5 = [(WFGalleryWorkflow *)self signedShortcutFile];
+    signedShortcutFile = [(WFGalleryWorkflow *)self signedShortcutFile];
 
-    if (!v5)
+    if (!signedShortcutFile)
     {
 LABEL_2:
       v3 = self->_workflowRecord;
@@ -443,20 +443,20 @@ LABEL_2:
     }
   }
 
-  v6 = [(WFGalleryWorkflow *)self signedShortcutFile];
+  signedShortcutFile2 = [(WFGalleryWorkflow *)self signedShortcutFile];
 
-  if (v6)
+  if (signedShortcutFile2)
   {
     v7 = [WFShortcutPackageFile alloc];
-    v8 = [(WFGalleryWorkflow *)self signedShortcutFile];
-    v9 = [v8 data];
-    v10 = [(WFGalleryWorkflow *)self name];
-    v11 = [(WFShortcutPackageFile *)v7 initWithSignedShortcutData:v9 shortcutName:v10];
+    signedShortcutFile3 = [(WFGalleryWorkflow *)self signedShortcutFile];
+    data = [signedShortcutFile3 data];
+    name = [(WFGalleryWorkflow *)self name];
+    v11 = [(WFShortcutPackageFile *)v7 initWithSignedShortcutData:data shortcutName:name];
 
     v31 = 0;
-    v12 = [(WFShortcutPackageFile *)v11 extractShortcutFileRepresentationWithError:&v31];
+    shortcutFile2 = [(WFShortcutPackageFile *)v11 extractShortcutFileRepresentationWithError:&v31];
     v13 = v31;
-    if (!v12 || (-[WFGalleryWorkflow signingStatus](self, "signingStatus"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isEqualToString:@"APPROVED"], v14, (v15 & 1) == 0))
+    if (!shortcutFile2 || (-[WFGalleryWorkflow signingStatus](self, "signingStatus"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isEqualToString:@"APPROVED"], v14, (v15 & 1) == 0))
     {
       v16 = getWFGeneralLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -474,17 +474,17 @@ LABEL_2:
 
   else
   {
-    v12 = [(WFGalleryWorkflow *)self shortcutFile];
+    shortcutFile2 = [(WFGalleryWorkflow *)self shortcutFile];
 
-    if (v12)
+    if (shortcutFile2)
     {
-      v12 = [(WFGalleryWorkflow *)self shortcutFile];
+      shortcutFile2 = [(WFGalleryWorkflow *)self shortcutFile];
     }
   }
 
   v17 = [WFWorkflowFileDescriptor alloc];
-  v18 = [(WFGalleryWorkflow *)self name];
-  v19 = [(WFWorkflowFileDescriptor *)v17 initWithFile:v12 name:v18];
+  name2 = [(WFGalleryWorkflow *)self name];
+  v19 = [(WFWorkflowFileDescriptor *)v17 initWithFile:shortcutFile2 name:name2];
 
   v30 = 0;
   v20 = [[WFWorkflowFile alloc] initWithDescriptor:v19 error:&v30];
@@ -493,8 +493,8 @@ LABEL_2:
   v22 = [(WFWorkflowFile *)v20 recordRepresentationWithError:&v29];
   v23 = v29;
 
-  v24 = [(WFGalleryWorkflow *)self persistentIdentifier];
-  [v22 setGalleryIdentifier:v24];
+  persistentIdentifier = [(WFGalleryWorkflow *)self persistentIdentifier];
+  [v22 setGalleryIdentifier:persistentIdentifier];
 
   [v22 setSource:@"ShortcutSourceGallery"];
   if (v22)
@@ -532,128 +532,128 @@ LABEL_21:
 
 - (WFWorkflowIcon)icon
 {
-  v3 = [(WFGalleryWorkflow *)self iconGlyph];
-  v4 = [(WFGalleryWorkflow *)self iconColor];
-  if (!v3)
+  iconGlyph = [(WFGalleryWorkflow *)self iconGlyph];
+  iconColor = [(WFGalleryWorkflow *)self iconColor];
+  if (!iconGlyph)
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(MEMORY[0x1E69E0E00], "defaultGlyphCharacter")}];
+    iconGlyph = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(MEMORY[0x1E69E0E00], "defaultGlyphCharacter")}];
   }
 
-  if (!v4)
+  if (!iconColor)
   {
-    v4 = &unk_1F4A9A588;
+    iconColor = &unk_1F4A9A588;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E69E0E00]) initWithBackgroundColorValue:objc_msgSend(v4 glyphCharacter:"integerValue") customImageData:{objc_msgSend(v3, "unsignedIntegerValue"), 0}];
+  v5 = [objc_alloc(MEMORY[0x1E69E0E00]) initWithBackgroundColorValue:objc_msgSend(iconColor glyphCharacter:"integerValue") customImageData:{objc_msgSend(iconGlyph, "unsignedIntegerValue"), 0}];
 
   return v5;
 }
 
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by
 {
-  v7 = a3;
-  v8 = a4;
+  atCopy = at;
+  modifiedAtCopy = modifiedAt;
   createdAt = self->_createdAt;
-  self->_createdAt = v7;
-  v11 = v7;
+  self->_createdAt = atCopy;
+  v11 = atCopy;
 
   modifiedAt = self->_modifiedAt;
-  self->_modifiedAt = v8;
+  self->_modifiedAt = modifiedAtCopy;
 }
 
 - (id)sharingURL
 {
-  v2 = [(WFGalleryWorkflow *)self identifier];
-  v3 = [v2 recordName];
-  v4 = WFGallerySharingURLForIdentifier(v3);
+  identifier = [(WFGalleryWorkflow *)self identifier];
+  recordName = [identifier recordName];
+  v4 = WFGallerySharingURLForIdentifier(recordName);
 
   return v4;
 }
 
-- (WFGalleryWorkflow)initWithIdentifier:(id)a3 name:(id)a4 shortDescription:(id)a5 longDescription:(id)a6 icon:(id)a7 workflowRecord:(id)a8 searchable:(id)a9 minVersion:(int64_t)a10 hiddenRegions:(id)a11 supportedIdioms:(id)a12 createdAt:(id)a13 modifiedAt:(id)a14 language:(id)a15 base:(id)a16 persistentIdentifier:(id)a17 shortcutFile:(id)a18 iconFile:(id)a19
+- (WFGalleryWorkflow)initWithIdentifier:(id)identifier name:(id)name shortDescription:(id)description longDescription:(id)longDescription icon:(id)icon workflowRecord:(id)record searchable:(id)searchable minVersion:(int64_t)self0 hiddenRegions:(id)self1 supportedIdioms:(id)self2 createdAt:(id)self3 modifiedAt:(id)self4 language:(id)self5 base:(id)self6 persistentIdentifier:(id)self7 shortcutFile:(id)self8 iconFile:(id)self9
 {
-  v68 = a3;
-  v74 = a4;
-  v73 = a5;
-  v72 = a6;
-  v24 = a7;
-  v65 = a8;
-  v67 = a8;
-  v69 = a9;
-  v25 = a11;
-  v71 = a12;
-  v70 = a13;
-  v26 = a14;
-  v27 = a15;
-  v28 = a16;
-  v29 = a17;
-  v30 = a18;
-  v31 = a19;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  longDescriptionCopy = longDescription;
+  iconCopy = icon;
+  recordCopy = record;
+  recordCopy2 = record;
+  searchableCopy = searchable;
+  regionsCopy = regions;
+  idiomsCopy = idioms;
+  atCopy = at;
+  modifiedAtCopy = modifiedAt;
+  languageCopy = language;
+  baseCopy = base;
+  persistentIdentifierCopy = persistentIdentifier;
+  fileCopy = file;
+  iconFileCopy = iconFile;
   v75.receiver = self;
   v75.super_class = WFGalleryWorkflow;
   v32 = [(WFGalleryWorkflow *)&v75 init];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_identifier, a3);
-    v34 = [v74 copy];
+    objc_storeStrong(&v32->_identifier, identifier);
+    v34 = [nameCopy copy];
     name = v33->_name;
     v33->_name = v34;
 
-    v36 = [v73 copy];
+    v36 = [descriptionCopy copy];
     shortDescription = v33->_shortDescription;
     v33->_shortDescription = v36;
 
-    v38 = [v72 copy];
+    v38 = [longDescriptionCopy copy];
     longDescription = v33->_longDescription;
     v33->_longDescription = v38;
 
-    v40 = v25;
-    v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v24, "backgroundColorValue")}];
+    v40 = regionsCopy;
+    v41 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(iconCopy, "backgroundColorValue")}];
     iconColor = v33->_iconColor;
     v33->_iconColor = v41;
 
     v43 = MEMORY[0x1E696AD98];
-    v44 = [v24 glyphCharacter];
+    glyphCharacter = [iconCopy glyphCharacter];
     v45 = v43;
-    v25 = v40;
-    v46 = [v45 numberWithUnsignedShort:v44];
+    regionsCopy = v40;
+    v46 = [v45 numberWithUnsignedShort:glyphCharacter];
     iconGlyph = v33->_iconGlyph;
     v33->_iconGlyph = v46;
 
-    objc_storeStrong(&v33->_workflowRecord, v65);
-    v48 = [v69 copy];
+    objc_storeStrong(&v33->_workflowRecord, recordCopy);
+    v48 = [searchableCopy copy];
     searchable = v33->_searchable;
     v33->_searchable = v48;
 
-    v33->_minVersion = a10;
+    v33->_minVersion = version;
     v50 = [v40 copy];
     hiddenRegions = v33->_hiddenRegions;
     v33->_hiddenRegions = v50;
 
-    v52 = [v71 copy];
+    v52 = [idiomsCopy copy];
     supportedIdioms = v33->_supportedIdioms;
     v33->_supportedIdioms = v52;
 
-    v54 = [v70 copy];
+    v54 = [atCopy copy];
     createdAt = v33->_createdAt;
     v33->_createdAt = v54;
 
-    v56 = [v26 copy];
+    v56 = [modifiedAtCopy copy];
     modifiedAt = v33->_modifiedAt;
     v33->_modifiedAt = v56;
 
-    v58 = [v27 copy];
+    v58 = [languageCopy copy];
     language = v33->_language;
     v33->_language = v58;
 
-    objc_storeStrong(&v33->_base, a16);
-    v60 = [v29 copy];
+    objc_storeStrong(&v33->_base, base);
+    v60 = [persistentIdentifierCopy copy];
     persistentIdentifier = v33->_persistentIdentifier;
     v33->_persistentIdentifier = v60;
 
-    objc_storeStrong(&v33->_shortcutFile, a18);
-    objc_storeStrong(&v33->_iconFile, a19);
+    objc_storeStrong(&v33->_shortcutFile, file);
+    objc_storeStrong(&v33->_iconFile, iconFile);
     v62 = v33;
   }
 

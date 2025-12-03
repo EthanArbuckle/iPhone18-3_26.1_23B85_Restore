@@ -2,7 +2,7 @@
 + (id)SystemInfo;
 + (id)configurationForSystemInfo;
 + (id)storeConfigurationForSystemInfo;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -12,11 +12,11 @@
 + (id)sublibraries
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 Device];
-  v4 = [a1 GazeKit];
-  v9[1] = v4;
-  v5 = [a1 Perception];
-  v9[2] = v5;
+  device = [self Device];
+  gazeKit = [self GazeKit];
+  v9[1] = gazeKit;
+  perception = [self Perception];
+  v9[2] = perception;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -24,19 +24,19 @@
   return v6;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"SystemInfo"])
+  if ([name isEqualToString:@"SystemInfo"])
   {
-    v4 = [a1 SystemInfo];
+    systemInfo = [self SystemInfo];
   }
 
   else
   {
-    v4 = 0;
+    systemInfo = 0;
   }
 
-  return v4;
+  return systemInfo;
 }
 
 + (id)validKeyPaths
@@ -52,13 +52,13 @@
 
 + (id)configurationForSystemInfo
 {
-  v3 = [a1 storeConfigurationForSystemInfo];
-  v4 = [a1 syncPolicyForSystemInfo];
+  storeConfigurationForSystemInfo = [self storeConfigurationForSystemInfo];
+  syncPolicyForSystemInfo = [self syncPolicyForSystemInfo];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"05848D64-3A31-4472-AFCE-C27EDB32E30C"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.SystemInfo" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.arkitd" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OasisAnalytics.SystemInfo" eventClass:objc_opt_class() storeConfig:storeConfigurationForSystemInfo syncPolicy:syncPolicyForSystemInfo legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.arkitd" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -75,7 +75,7 @@
 + (id)SystemInfo
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSystemInfo];
+  configurationForSystemInfo = [self configurationForSystemInfo];
   v3 = +[BMOasisAnalyticsSystemInfo columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -87,7 +87,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OasisAnalytics.SystemInfo" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.SystemInfo" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OasisAnalytics.SystemInfo" schema:v9 configuration:configurationForSystemInfo];
 
   v11 = *MEMORY[0x1E69E9840];
 

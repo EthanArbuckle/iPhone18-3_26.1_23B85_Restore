@@ -1,10 +1,10 @@
 @interface MZKeyValueStoreSerializer
 - (BOOL)_isGetAllSinceDomainVersionRequest;
 - (BOOL)_isRemoveAllSinceDomainVersion;
-- (MZKeyValueStoreDataVerionPair)objectVersionPairForKey:(id)a3;
-- (MZKeyValueStoreSerializer)initWithTransaction:(id)a3;
+- (MZKeyValueStoreDataVerionPair)objectVersionPairForKey:(id)key;
+- (MZKeyValueStoreSerializer)initWithTransaction:(id)transaction;
 - (id)baseDictionary;
-- (id)dataWithNodes:(id)a3;
+- (id)dataWithNodes:(id)nodes;
 - (id)keys;
 - (id)payload;
 - (id)sinceDomainVersion;
@@ -12,16 +12,16 @@
 
 @implementation MZKeyValueStoreSerializer
 
-- (MZKeyValueStoreSerializer)initWithTransaction:(id)a3
+- (MZKeyValueStoreSerializer)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = MZKeyValueStoreSerializer;
   v6 = [(MZKeyValueStoreSerializer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
   }
 
   return v7;
@@ -30,15 +30,15 @@
 - (id)payload
 {
   v21 = +[NSMutableArray array];
-  v2 = [(MZKeyValueStoreSerializer *)self keys];
-  v3 = [(MZKeyValueStoreSerializer *)self transaction];
-  v4 = [v3 type];
+  keys = [(MZKeyValueStoreSerializer *)self keys];
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  type = [transaction type];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v2;
+  obj = keys;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -59,7 +59,7 @@
         v13 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, @"key", v11, @"base-version", 0];
         if (v10)
         {
-          v14 = v4 == 2;
+          v14 = type == 2;
         }
 
         else
@@ -68,20 +68,20 @@
         }
 
         v15 = v14;
-        if (v4 == 3 || v15)
+        if (type == 3 || v15)
         {
           v16 = v10;
-          v17 = [v16 MZDataByDeflatingWithGZip];
+          mZDataByDeflatingWithGZip = [v16 MZDataByDeflatingWithGZip];
 
-          if (v17)
+          if (mZDataByDeflatingWithGZip)
           {
-            [v13 setValue:v17 forKey:@"value"];
+            [v13 setValue:mZDataByDeflatingWithGZip forKey:@"value"];
           }
 
           [v21 addObject:v13];
         }
 
-        else if (v4 == 1)
+        else if (type == 1)
         {
           [v21 addObject:v13];
         }
@@ -102,33 +102,33 @@
 
 - (id)sinceDomainVersion
 {
-  v3 = [(MZKeyValueStoreSerializer *)self transaction];
-  v4 = [v3 sinceDomainVersion];
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  sinceDomainVersion = [transaction sinceDomainVersion];
 
-  v5 = [(MZKeyValueStoreSerializer *)self transaction];
-  v6 = [v5 processor];
+  transaction2 = [(MZKeyValueStoreSerializer *)self transaction];
+  processor = [transaction2 processor];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MZKeyValueStoreSerializer *)self transaction];
-    v9 = [v8 processor];
-    v10 = [(MZKeyValueStoreSerializer *)self transaction];
-    v11 = [v9 sinceDomainVersionForTransaction:v10];
+    transaction3 = [(MZKeyValueStoreSerializer *)self transaction];
+    processor2 = [transaction3 processor];
+    transaction4 = [(MZKeyValueStoreSerializer *)self transaction];
+    v11 = [processor2 sinceDomainVersionForTransaction:transaction4];
 
-    v4 = v11;
+    sinceDomainVersion = v11;
   }
 
-  return v4;
+  return sinceDomainVersion;
 }
 
 - (BOOL)_isGetAllSinceDomainVersionRequest
 {
-  v3 = [(MZKeyValueStoreSerializer *)self transaction];
-  if ([v3 type] == 1)
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  if ([transaction type] == 1)
   {
-    v4 = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
-    v5 = v4 != 0;
+    sinceDomainVersion = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
+    v5 = sinceDomainVersion != 0;
   }
 
   else
@@ -141,11 +141,11 @@
 
 - (BOOL)_isRemoveAllSinceDomainVersion
 {
-  v3 = [(MZKeyValueStoreSerializer *)self transaction];
-  if ([v3 type] == 3)
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  if ([transaction type] == 3)
   {
-    v4 = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
-    v5 = v4 != 0;
+    sinceDomainVersion = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
+    v5 = sinceDomainVersion != 0;
   }
 
   else
@@ -159,40 +159,40 @@
 - (id)baseDictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MZKeyValueStoreSerializer *)self transaction];
-  v5 = [v4 domain];
-  [v3 setObject:v5 forKey:@"domain"];
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  domain = [transaction domain];
+  [v3 setObject:domain forKey:@"domain"];
 
   if ([(MZKeyValueStoreSerializer *)self _isGetAllSinceDomainVersionRequest]|| [(MZKeyValueStoreSerializer *)self _isRemoveAllSinceDomainVersion])
   {
-    v6 = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
-    if ([(__CFString *)v6 isEqualToString:@"0"])
+    sinceDomainVersion = [(MZKeyValueStoreSerializer *)self sinceDomainVersion];
+    if ([(__CFString *)sinceDomainVersion isEqualToString:@"0"])
     {
 
-      v6 = @"0";
+      sinceDomainVersion = @"0";
     }
 
-    [v3 setObject:v6 forKey:@"since-domain-version"];
+    [v3 setObject:sinceDomainVersion forKey:@"since-domain-version"];
   }
 
   return v3;
 }
 
-- (id)dataWithNodes:(id)a3
+- (id)dataWithNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count] || -[MZKeyValueStoreSerializer _isGetAllSinceDomainVersionRequest](self, "_isGetAllSinceDomainVersionRequest") || -[MZKeyValueStoreSerializer _isRemoveAllSinceDomainVersion](self, "_isRemoveAllSinceDomainVersion"))
+  nodesCopy = nodes;
+  if ([nodesCopy count] || -[MZKeyValueStoreSerializer _isGetAllSinceDomainVersionRequest](self, "_isGetAllSinceDomainVersionRequest") || -[MZKeyValueStoreSerializer _isRemoveAllSinceDomainVersion](self, "_isRemoveAllSinceDomainVersion"))
   {
-    v5 = [(MZKeyValueStoreSerializer *)self baseDictionary];
-    if (!v4)
+    baseDictionary = [(MZKeyValueStoreSerializer *)self baseDictionary];
+    if (!nodesCopy)
     {
-      v4 = +[NSArray array];
+      nodesCopy = +[NSArray array];
     }
 
-    [v5 setValue:v4 forKey:@"keys"];
-    if (v5)
+    [baseDictionary setValue:nodesCopy forKey:@"keys"];
+    if (baseDictionary)
     {
-      v6 = [NSPropertyListSerialization dataWithPropertyList:v5 format:kMZKeyValueStorePlistFormatNetworkData options:0 error:0];
+      v6 = [NSPropertyListSerialization dataWithPropertyList:baseDictionary format:kMZKeyValueStorePlistFormatNetworkData options:0 error:0];
     }
 
     else
@@ -211,38 +211,38 @@
 
 - (id)keys
 {
-  v3 = [(MZKeyValueStoreSerializer *)self transaction];
-  v4 = [v3 keys];
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  keys = [transaction keys];
 
-  v5 = [(MZKeyValueStoreSerializer *)self transaction];
-  v6 = [v5 processor];
+  transaction2 = [(MZKeyValueStoreSerializer *)self transaction];
+  processor = [transaction2 processor];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MZKeyValueStoreSerializer *)self transaction];
-    v9 = [v8 processor];
-    v10 = [(MZKeyValueStoreSerializer *)self transaction];
-    v11 = [v9 keysForTransaction:v10];
+    transaction3 = [(MZKeyValueStoreSerializer *)self transaction];
+    processor2 = [transaction3 processor];
+    transaction4 = [(MZKeyValueStoreSerializer *)self transaction];
+    v11 = [processor2 keysForTransaction:transaction4];
 
-    v4 = v11;
+    keys = v11;
   }
 
-  return v4;
+  return keys;
 }
 
-- (MZKeyValueStoreDataVerionPair)objectVersionPairForKey:(id)a3
+- (MZKeyValueStoreDataVerionPair)objectVersionPairForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MZKeyValueStoreSerializer *)self transaction];
-  v6 = [v5 type];
+  keyCopy = key;
+  transaction = [(MZKeyValueStoreSerializer *)self transaction];
+  type = [transaction type];
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v7 = [(MZKeyValueStoreSerializer *)self transaction];
-    v8 = [v7 processor];
-    v9 = [(MZKeyValueStoreSerializer *)self transaction];
-    v10 = [v8 versionForGetTransaction:v9 key:v4];
+    transaction2 = [(MZKeyValueStoreSerializer *)self transaction];
+    processor = [transaction2 processor];
+    transaction3 = [(MZKeyValueStoreSerializer *)self transaction];
+    v10 = [processor versionForGetTransaction:transaction3 key:keyCopy];
 
     v11 = 0;
     if (v10)
@@ -256,13 +256,13 @@
     }
   }
 
-  else if ((v6 & 0xFFFFFFFE) == 2)
+  else if ((type & 0xFFFFFFFE) == 2)
   {
-    v13 = [(MZKeyValueStoreSerializer *)self transaction];
-    v14 = [v13 processor];
-    v15 = [(MZKeyValueStoreSerializer *)self transaction];
+    transaction4 = [(MZKeyValueStoreSerializer *)self transaction];
+    processor2 = [transaction4 processor];
+    transaction5 = [(MZKeyValueStoreSerializer *)self transaction];
     v19 = 0;
-    v11 = [v14 dataForSetTransaction:v15 key:v4 version:&v19];
+    v11 = [processor2 dataForSetTransaction:transaction5 key:keyCopy version:&v19];
     v16 = v19;
 
     if (v16)

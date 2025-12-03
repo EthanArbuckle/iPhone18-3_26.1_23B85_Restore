@@ -1,28 +1,28 @@
 @interface VSVoiceSubscription
-- (VSVoiceSubscription)initWithClient:(id)a3 accessory:(id)a4 voice:(id)a5;
-- (VSVoiceSubscription)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VSVoiceSubscription)initWithClient:(id)client accessory:(id)accessory voice:(id)voice;
+- (VSVoiceSubscription)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSVoiceSubscription
 
-- (VSVoiceSubscription)initWithCoder:(id)a3
+- (VSVoiceSubscription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = VSVoiceSubscription;
   v5 = [(VSVoiceSubscription *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientID"];
     clientID = v5->_clientID;
     v5->_clientID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accessoryID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accessoryID"];
     accessoryID = v5->_accessoryID;
     v5->_accessoryID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voice"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voice"];
     voice = v5->_voice;
     v5->_voice = v10;
   }
@@ -30,29 +30,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
-  v5 = a3;
-  [v5 encodeObject:clientID forKey:@"_clientID"];
-  [v5 encodeObject:self->_accessoryID forKey:@"_accessoryID"];
-  [v5 encodeObject:self->_voice forKey:@"_voice"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientID forKey:@"_clientID"];
+  [coderCopy encodeObject:self->_accessoryID forKey:@"_accessoryID"];
+  [coderCopy encodeObject:self->_voice forKey:@"_voice"];
 }
 
-- (VSVoiceSubscription)initWithClient:(id)a3 accessory:(id)a4 voice:(id)a5
+- (VSVoiceSubscription)initWithClient:(id)client accessory:(id)accessory voice:(id)voice
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  clientCopy = client;
+  accessoryCopy = accessory;
+  voiceCopy = voice;
   v15.receiver = self;
   v15.super_class = VSVoiceSubscription;
   v12 = [(VSVoiceSubscription *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientID, a3);
-    objc_storeStrong(&v13->_accessoryID, a4);
-    objc_storeStrong(&v13->_voice, a5);
+    objc_storeStrong(&v12->_clientID, client);
+    objc_storeStrong(&v13->_accessoryID, accessory);
+    objc_storeStrong(&v13->_voice, voice);
   }
 
   return v13;

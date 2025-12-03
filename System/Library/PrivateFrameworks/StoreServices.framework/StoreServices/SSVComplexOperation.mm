@@ -1,24 +1,24 @@
 @interface SSVComplexOperation
 - (NSDictionary)URLBagDictionary;
 - (SSVFairPlaySAPSession)SAPSession;
-- (id)newLoadURLOperationWithRequest:(id)a3;
-- (void)configureWithURLBag:(id)a3;
-- (void)configureWithURLBagDictionary:(id)a3;
-- (void)setSAPSession:(id)a3;
+- (id)newLoadURLOperationWithRequest:(id)request;
+- (void)configureWithURLBag:(id)bag;
+- (void)configureWithURLBagDictionary:(id)dictionary;
+- (void)setSAPSession:(id)session;
 @end
 
 @implementation SSVComplexOperation
 
-- (void)configureWithURLBag:(id)a3
+- (void)configureWithURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SSVComplexOperation_configureWithURLBag___block_invoke;
   v6[3] = &unk_1E84AC028;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = bagCopy;
+  v5 = bagCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -30,16 +30,16 @@ void __43__SSVComplexOperation_configureWithURLBag___block_invoke(uint64_t a1)
   *(v2 + 304) = 0;
 }
 
-- (void)configureWithURLBagDictionary:(id)a3
+- (void)configureWithURLBagDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SSVComplexOperation_configureWithURLBagDictionary___block_invoke;
   v6[3] = &unk_1E84AC028;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dictionaryCopy;
+  v5 = dictionaryCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -55,21 +55,21 @@ void __53__SSVComplexOperation_configureWithURLBagDictionary___block_invoke(uint
   *(v5 + 304) = v4;
 }
 
-- (id)newLoadURLOperationWithRequest:(id)a3
+- (id)newLoadURLOperationWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[SSVLoadURLOperation alloc] initWithURLRequest:v4];
+  requestCopy = request;
+  v5 = [[SSVLoadURLOperation alloc] initWithURLRequest:requestCopy];
 
   [(SSVLoadURLOperation *)v5 setITunesStoreRequest:1];
-  v6 = [(SSVComplexOperation *)self URLBagDictionary];
-  if (v6)
+  uRLBagDictionary = [(SSVComplexOperation *)self URLBagDictionary];
+  if (uRLBagDictionary)
   {
-    v7 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:v6];
+    v7 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:uRLBagDictionary];
     [(SSVLoadURLOperation *)v5 _configureWithURLBagInterpreter:v7];
     [(SSVLoadURLOperation *)v5 setMachineDataStyle:2];
     v8 = [[SSVSAPSignaturePolicy alloc] initWithPolicyType:1];
-    v9 = [(SSVComplexOperation *)self SAPSession];
-    [(SSVLoadURLOperation *)v5 setSAPSession:v9];
+    sAPSession = [(SSVComplexOperation *)self SAPSession];
+    [(SSVLoadURLOperation *)v5 setSAPSession:sAPSession];
 
     [(SSVLoadURLOperation *)v5 setSAPSignaturePolicy:v8];
   }
@@ -98,16 +98,16 @@ void __53__SSVComplexOperation_configureWithURLBagDictionary___block_invoke(uint
   return v2;
 }
 
-- (void)setSAPSession:(id)a3
+- (void)setSAPSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__SSVComplexOperation_setSAPSession___block_invoke;
   v6[3] = &unk_1E84AC028;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sessionCopy;
+  v5 = sessionCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 

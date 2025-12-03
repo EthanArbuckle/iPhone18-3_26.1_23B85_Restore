@@ -1,5 +1,5 @@
 @interface IRCompanionLinkClient
-- (IRCompanionLinkClient)initWithRapportProvider:(id)a3 targetQueue:(id)a4;
+- (IRCompanionLinkClient)initWithRapportProvider:(id)provider targetQueue:(id)queue;
 - (IRRapportProvider)rapportProvider;
 - (RPCompanionLinkClient)client;
 - (int64_t)currentRssiThreshold;
@@ -12,20 +12,20 @@
 
 @implementation IRCompanionLinkClient
 
-- (IRCompanionLinkClient)initWithRapportProvider:(id)a3 targetQueue:(id)a4
+- (IRCompanionLinkClient)initWithRapportProvider:(id)provider targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = IRCompanionLinkClient;
   v8 = [(IRCompanionLinkClient *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_rapportProvider, v6);
-    if (v7)
+    objc_storeWeak(&v8->_rapportProvider, providerCopy);
+    if (queueCopy)
     {
-      v10 = v7;
+      v10 = queueCopy;
       dispatchQueue = v9->_dispatchQueue;
       v9->_dispatchQueue = v10;
     }
@@ -59,18 +59,18 @@
     v5 = self->_client;
     self->_client = v4;
 
-    v6 = [(IRCompanionLinkClient *)self dispatchQueue];
+    dispatchQueue = [(IRCompanionLinkClient *)self dispatchQueue];
 
-    if (v6)
+    if (dispatchQueue)
     {
-      v7 = [(IRCompanionLinkClient *)self dispatchQueue];
-      [(RPCompanionLinkClient *)self->_client setDispatchQueue:v7];
+      dispatchQueue2 = [(IRCompanionLinkClient *)self dispatchQueue];
+      [(RPCompanionLinkClient *)self->_client setDispatchQueue:dispatchQueue2];
     }
 
-    v8 = [(IRCompanionLinkClient *)self client];
-    v9 = [v8 controlFlags];
+    client = [(IRCompanionLinkClient *)self client];
+    controlFlags = [client controlFlags];
 
-    [(RPCompanionLinkClient *)self->_client setControlFlags:v9 | 0x1C04];
+    [(RPCompanionLinkClient *)self->_client setControlFlags:controlFlags | 0x1C04];
     [(RPCompanionLinkClient *)self->_client setRssiThreshold:-75];
     client = self->_client;
   }
@@ -81,55 +81,55 @@
 - (void)startDiscovery
 {
   objc_initWeak(&location, self);
-  v3 = [(IRCompanionLinkClient *)self client];
+  client = [(IRCompanionLinkClient *)self client];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke;
   v19[3] = &unk_2797E11D8;
   objc_copyWeak(&v20, &location);
-  [v3 setDeviceFoundHandler:v19];
+  [client setDeviceFoundHandler:v19];
 
-  v4 = [(IRCompanionLinkClient *)self client];
+  client2 = [(IRCompanionLinkClient *)self client];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke_20;
   v17[3] = &unk_2797E11D8;
   objc_copyWeak(&v18, &location);
-  [v4 setDeviceLostHandler:v17];
+  [client2 setDeviceLostHandler:v17];
 
-  v5 = [(IRCompanionLinkClient *)self client];
+  client3 = [(IRCompanionLinkClient *)self client];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke_21;
   v15[3] = &unk_2797E1200;
   objc_copyWeak(&v16, &location);
-  [v5 setDeviceChangedHandler:v15];
+  [client3 setDeviceChangedHandler:v15];
 
-  v6 = [(IRCompanionLinkClient *)self client];
+  client4 = [(IRCompanionLinkClient *)self client];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke_23;
   v13[3] = &unk_2797E0C18;
   objc_copyWeak(&v14, &location);
-  [v6 setInterruptionHandler:v13];
+  [client4 setInterruptionHandler:v13];
 
-  v7 = [(IRCompanionLinkClient *)self client];
+  client5 = [(IRCompanionLinkClient *)self client];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke_26;
   v11[3] = &unk_2797E0C18;
   objc_copyWeak(&v12, &location);
-  [v7 setInvalidationHandler:v11];
+  [client5 setInvalidationHandler:v11];
 
   if (!self->_companionLinkClientActive)
   {
-    v8 = [(IRCompanionLinkClient *)self client];
+    client6 = [(IRCompanionLinkClient *)self client];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __39__IRCompanionLinkClient_startDiscovery__block_invoke_27;
     v9[3] = &unk_2797E1088;
     objc_copyWeak(&v10, &location);
-    [v8 activateWithCompletion:v9];
+    [client6 activateWithCompletion:v9];
 
     objc_destroyWeak(&v10);
   }
@@ -287,9 +287,9 @@ void __39__IRCompanionLinkClient_startDiscovery__block_invoke_27(uint64_t a1, vo
 
 - (void)_didUpdateRapportDevices
 {
-  v3 = [(IRCompanionLinkClient *)self client];
-  v4 = [v3 activeDevices];
-  v5 = [v4 copy];
+  client = [(IRCompanionLinkClient *)self client];
+  activeDevices = [client activeDevices];
+  v5 = [activeDevices copy];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v10[0] = MEMORY[0x277D85DD0];
@@ -299,9 +299,9 @@ void __39__IRCompanionLinkClient_startDiscovery__block_invoke_27(uint64_t a1, vo
   v11 = v6;
   v7 = v6;
   [v5 enumerateObjectsUsingBlock:v10];
-  v8 = [(IRCompanionLinkClient *)self rapportProvider];
+  rapportProvider = [(IRCompanionLinkClient *)self rapportProvider];
   v9 = [v7 copy];
-  [v8 didUpdateRapportDevices:v9];
+  [rapportProvider didUpdateRapportDevices:v9];
 }
 
 void __49__IRCompanionLinkClient__didUpdateRapportDevices__block_invoke(uint64_t a1, void *a2)
@@ -322,20 +322,20 @@ void __49__IRCompanionLinkClient__didUpdateRapportDevices__block_invoke(uint64_t
 
 - (void)stopDiscovery
 {
-  v3 = [(IRCompanionLinkClient *)self client];
-  [v3 setDeviceFoundHandler:0];
+  client = [(IRCompanionLinkClient *)self client];
+  [client setDeviceFoundHandler:0];
 
-  v4 = [(IRCompanionLinkClient *)self client];
-  [v4 setDeviceLostHandler:0];
+  client2 = [(IRCompanionLinkClient *)self client];
+  [client2 setDeviceLostHandler:0];
 
-  v5 = [(IRCompanionLinkClient *)self client];
-  [v5 setInterruptionHandler:0];
+  client3 = [(IRCompanionLinkClient *)self client];
+  [client3 setInterruptionHandler:0];
 
-  v6 = [(IRCompanionLinkClient *)self client];
-  [v6 setInvalidationHandler:0];
+  client4 = [(IRCompanionLinkClient *)self client];
+  [client4 setInvalidationHandler:0];
 
-  v7 = [(IRCompanionLinkClient *)self client];
-  [v7 invalidate];
+  client5 = [(IRCompanionLinkClient *)self client];
+  [client5 invalidate];
 
   [(IRCompanionLinkClient *)self setClient:0];
   self->_companionLinkClientActive = 0;
@@ -343,18 +343,18 @@ void __49__IRCompanionLinkClient__didUpdateRapportDevices__block_invoke(uint64_t
 
 - (unint64_t)currentControlFlags
 {
-  v2 = [(IRCompanionLinkClient *)self client];
-  v3 = [v2 controlFlags];
+  client = [(IRCompanionLinkClient *)self client];
+  controlFlags = [client controlFlags];
 
-  return v3;
+  return controlFlags;
 }
 
 - (int64_t)currentRssiThreshold
 {
-  v2 = [(IRCompanionLinkClient *)self client];
-  v3 = [v2 rssiThreshold];
+  client = [(IRCompanionLinkClient *)self client];
+  rssiThreshold = [client rssiThreshold];
 
-  return v3;
+  return rssiThreshold;
 }
 
 - (IRRapportProvider)rapportProvider

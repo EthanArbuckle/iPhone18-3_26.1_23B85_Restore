@@ -1,14 +1,14 @@
 @interface MIOWriterStreamInput
 - (BOOL)canAppend;
 - (BOOL)canBeConfigured;
-- (BOOL)establishAssociationsWithError:(id *)a3;
+- (BOOL)establishAssociationsWithError:(id *)error;
 - (BOOL)finalizeProcessing;
 - (BOOL)pendSample;
-- (BOOL)prepareForAppendWithTimeStamp:(id *)a3 error:(id *)a4;
-- (BOOL)prepareInputWithWriter:(id)a3 error:(id *)a4;
-- (BOOL)registerForAssociating:(id)a3 trackRelation:(id)a4;
-- (BOOL)shutDownOutError:(id *)a3;
-- (BOOL)verifyNewAppendTimeStamp:(id *)a3 error:(id *)a4;
+- (BOOL)prepareForAppendWithTimeStamp:(id *)stamp error:(id *)error;
+- (BOOL)prepareInputWithWriter:(id)writer error:(id *)error;
+- (BOOL)registerForAssociating:(id)associating trackRelation:(id)relation;
+- (BOOL)shutDownOutError:(id *)error;
+- (BOOL)verifyNewAppendTimeStamp:(id *)stamp error:(id *)error;
 - (MIOThread)assignedWritingThread;
 - (MIOWriter)writer;
 - (MIOWriterStreamInput)init;
@@ -17,19 +17,19 @@
 - (id)stats;
 - (int64_t)pendingSamples;
 - (unint64_t)bufferingCapacity;
-- (void)finishProcessingInDispatchGroup:(id)a3;
+- (void)finishProcessingInDispatchGroup:(id)group;
 - (void)invalidate;
 - (void)observeIsReadyStatus;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onAVInputsAvailable:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onAVInputsAvailable:(id)available;
 - (void)resolveSample;
-- (void)setBufferingCapacity:(unint64_t)a3;
-- (void)setCustomMetadata:(id)a3;
-- (void)setCustomMetadataItems:(id)a3;
-- (void)setMediaTimeScale:(int)a3;
-- (void)setThreadingOption:(int64_t)a3;
-- (void)setUseOwnProcessingQueue:(BOOL)a3;
-- (void)setUseOwnWritingThread:(BOOL)a3;
+- (void)setBufferingCapacity:(unint64_t)capacity;
+- (void)setCustomMetadata:(id)metadata;
+- (void)setCustomMetadataItems:(id)items;
+- (void)setMediaTimeScale:(int)scale;
+- (void)setThreadingOption:(int64_t)option;
+- (void)setUseOwnProcessingQueue:(BOOL)queue;
+- (void)setUseOwnWritingThread:(BOOL)thread;
 - (void)setupSignPost;
 - (void)stopObservingIsReadyStatus;
 @end
@@ -64,17 +64,17 @@
   return v3;
 }
 
-- (BOOL)registerForAssociating:(id)a3 trackRelation:(id)a4
+- (BOOL)registerForAssociating:(id)associating trackRelation:(id)relation
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MIOWriterStreamInput *)self canBeConfigured];
-  if (v8)
+  associatingCopy = associating;
+  relationCopy = relation;
+  canBeConfigured = [(MIOWriterStreamInput *)self canBeConfigured];
+  if (canBeConfigured)
   {
-    v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v6];
+    v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:associatingCopy];
     v13[0] = v9;
-    v13[1] = v7;
+    v13[1] = relationCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
     [(NSMutableArray *)self->_associatedInputs addObject:v10];
@@ -82,26 +82,26 @@
 
   else
   {
-    v11 = [(MIOWriterStreamInput *)self writer];
-    [v11 reportWarning:@"Cannot register input for association after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot register input for association after preparing.  No-op."];
   }
 
-  return v8;
+  return canBeConfigured;
 }
 
-- (BOOL)establishAssociationsWithError:(id *)a3
+- (BOOL)establishAssociationsWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(MIOWriterStreamInput *)self associatedInputs];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  associatedInputs = [(MIOWriterStreamInput *)self associatedInputs];
+  v6 = [associatedInputs countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
-    v25 = a3;
+    errorCopy = error;
     v8 = *v27;
     while (2)
     {
@@ -109,36 +109,36 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(associatedInputs);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
         v11 = [v10 objectAtIndexedSubscript:0];
-        v12 = [v11 nonretainedObjectValue];
+        nonretainedObjectValue = [v11 nonretainedObjectValue];
 
         v13 = [v10 objectAtIndexedSubscript:1];
-        v14 = [v12 mainAVInput];
-        v15 = [(MIOWriterStreamInput *)self mainAVInput];
-        v16 = [v14 canAddTrackAssociationWithTrackOfInput:v15 type:v13];
+        mainAVInput = [nonretainedObjectValue mainAVInput];
+        mainAVInput2 = [(MIOWriterStreamInput *)self mainAVInput];
+        v16 = [mainAVInput canAddTrackAssociationWithTrackOfInput:mainAVInput2 type:v13];
 
         if ((v16 & 1) == 0)
         {
           v20 = MEMORY[0x277CCACA8];
-          v21 = [v12 streamId];
-          v22 = [(MIOWriterStreamInput *)self streamId];
-          v23 = [v20 stringWithFormat:@"Cannot associate(%@) %@ with %@.", v13, v21, v22];
+          streamId = [nonretainedObjectValue streamId];
+          streamId2 = [(MIOWriterStreamInput *)self streamId];
+          v23 = [v20 stringWithFormat:@"Cannot associate(%@) %@ with %@.", v13, streamId, streamId2];
 
-          [MEMORY[0x277CCA9B8] populateStreamError:v25 message:v23 code:13];
+          [MEMORY[0x277CCA9B8] populateStreamError:errorCopy message:v23 code:13];
           v19 = 0;
           goto LABEL_11;
         }
 
-        v17 = [v12 mainAVInput];
-        v18 = [(MIOWriterStreamInput *)self mainAVInput];
-        [v17 addTrackAssociationWithTrackOfInput:v18 type:v13];
+        mainAVInput3 = [nonretainedObjectValue mainAVInput];
+        mainAVInput4 = [(MIOWriterStreamInput *)self mainAVInput];
+        [mainAVInput3 addTrackAssociationWithTrackOfInput:mainAVInput4 type:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v7 = [associatedInputs countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v7)
       {
         continue;
@@ -156,11 +156,11 @@ LABEL_11:
 
 - (BOOL)canBeConfigured
 {
-  v3 = [(MIOWriterStreamInput *)self writer];
-  if (v3)
+  writer = [(MIOWriterStreamInput *)self writer];
+  if (writer)
   {
-    v4 = [(MIOWriterStreamInput *)self writer];
-    v5 = [v4 checkStatus:1768843636];
+    writer2 = [(MIOWriterStreamInput *)self writer];
+    v5 = [writer2 checkStatus:1768843636];
   }
 
   else
@@ -171,12 +171,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)setCustomMetadata:(id)a3
+- (void)setCustomMetadata:(id)metadata
 {
-  v6 = a3;
+  metadataCopy = metadata;
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
-    v4 = v6;
+    v4 = metadataCopy;
     customMetadata = self->_customMetadata;
     self->_customMetadata = v4;
   }
@@ -188,12 +188,12 @@ LABEL_11:
   }
 }
 
-- (void)setCustomMetadataItems:(id)a3
+- (void)setCustomMetadataItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
-    v4 = v6;
+    v4 = itemsCopy;
     customMetadataItems = self->_customMetadataItems;
     self->_customMetadataItems = v4;
   }
@@ -205,7 +205,7 @@ LABEL_11:
   }
 }
 
-- (void)setBufferingCapacity:(unint64_t)a3
+- (void)setBufferingCapacity:(unint64_t)capacity
 {
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
@@ -215,53 +215,53 @@ LABEL_11:
       objc_exception_throw(v5);
     }
 
-    self->_initFifoCapacity = a3;
+    self->_initFifoCapacity = capacity;
   }
 
   else
   {
-    v6 = [(MIOWriterStreamInput *)self writer];
-    [v6 reportWarning:@"Cannot set input's bufferingCapacity after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot set input's bufferingCapacity after preparing.  No-op."];
   }
 }
 
-- (void)setMediaTimeScale:(int)a3
+- (void)setMediaTimeScale:(int)scale
 {
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
-    self->_mediaTimeScale = a3;
+    self->_mediaTimeScale = scale;
   }
 
   else
   {
-    v5 = [(MIOWriterStreamInput *)self writer];
-    [v5 reportWarning:@"Cannot set input's mediaTimeScale after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot set input's mediaTimeScale after preparing.  No-op."];
   }
 }
 
-- (void)setUseOwnWritingThread:(BOOL)a3
+- (void)setUseOwnWritingThread:(BOOL)thread
 {
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
-    v5 = [(MIOWriterStreamInput *)self assignedWritingThread];
+    assignedWritingThread = [(MIOWriterStreamInput *)self assignedWritingThread];
 
-    if (v5)
+    if (assignedWritingThread)
     {
       v6 = [MEMORY[0x277CBEAD8] exceptionWithName:@"WritingThreadAlreadyAssigned" reason:@"A writing thread is already assigned userInfo:{cannot set usage of own writing thread.", 0}];
       objc_exception_throw(v6);
     }
 
-    self->_useOwnWritingThread = a3;
+    self->_useOwnWritingThread = thread;
   }
 
   else
   {
-    v7 = [(MIOWriterStreamInput *)self writer];
-    [v7 reportWarning:@"Cannot set input's useOwnWritingThread after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot set input's useOwnWritingThread after preparing.  No-op."];
   }
 }
 
-- (void)setUseOwnProcessingQueue:(BOOL)a3
+- (void)setUseOwnProcessingQueue:(BOOL)queue
 {
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
@@ -271,44 +271,44 @@ LABEL_11:
       objc_exception_throw(v5);
     }
 
-    self->_useOwnProcessingQueue = a3;
+    self->_useOwnProcessingQueue = queue;
   }
 
   else
   {
-    v6 = [(MIOWriterStreamInput *)self writer];
-    [v6 reportWarning:@"Cannot set input's useOwnProcessingQueue after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot set input's useOwnProcessingQueue after preparing.  No-op."];
   }
 }
 
-- (void)setThreadingOption:(int64_t)a3
+- (void)setThreadingOption:(int64_t)option
 {
   if ([(MIOWriterStreamInput *)self canBeConfigured])
   {
-    self->_threadingOption = a3;
+    self->_threadingOption = option;
   }
 
   else
   {
-    v5 = [(MIOWriterStreamInput *)self writer];
-    [v5 reportWarning:@"Cannot set input's threadingOption after preparing.  No-op."];
+    writer = [(MIOWriterStreamInput *)self writer];
+    [writer reportWarning:@"Cannot set input's threadingOption after preparing.  No-op."];
   }
 }
 
 - (id)stats
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MIOWriterStreamInput *)self uuid];
-  v5 = [(MIOWriterStreamInput *)self pendingSamples];
-  v6 = [(MIOWriterStreamInput *)self fifoBuffer];
-  v7 = [v3 stringWithFormat:@"%@: PEND: %lld (FIFO: %zu) REDY: %d", v4, v5, objc_msgSend(v6, "usage"), -[MIOWriterStreamInput areAllInputsReady](self, "areAllInputsReady")];
+  uuid = [(MIOWriterStreamInput *)self uuid];
+  pendingSamples = [(MIOWriterStreamInput *)self pendingSamples];
+  fifoBuffer = [(MIOWriterStreamInput *)self fifoBuffer];
+  v7 = [v3 stringWithFormat:@"%@: PEND: %lld (FIFO: %zu) REDY: %d", uuid, pendingSamples, objc_msgSend(fifoBuffer, "usage"), -[MIOWriterStreamInput areAllInputsReady](self, "areAllInputsReady")];
 
   return v7;
 }
 
-- (void)onAVInputsAvailable:(id)a3
+- (void)onAVInputsAvailable:(id)available
 {
-  self->_inputsAvailableHandler = MEMORY[0x259C68980](a3, a2);
+  self->_inputsAvailableHandler = MEMORY[0x259C68980](available, a2);
 
   MEMORY[0x2821F96F8]();
 }
@@ -319,14 +319,14 @@ LABEL_11:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MIOWriterStreamInput *)self countingQueue];
+  countingQueue = [(MIOWriterStreamInput *)self countingQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MIOWriterStreamInput_pendingSamples__block_invoke;
   v6[3] = &unk_279847C70;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(countingQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -339,8 +339,8 @@ LABEL_11:
   if (!uuid)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(MIOWriterStreamInput *)self streamId];
-    v6 = [v4 stringWithFormat:@"%@_%ld", v5, -[MIOWriterStreamInput mediaType](self, "mediaType")];
+    streamId = [(MIOWriterStreamInput *)self streamId];
+    v6 = [v4 stringWithFormat:@"%@_%ld", streamId, -[MIOWriterStreamInput mediaType](self, "mediaType")];
     v7 = self->_uuid;
     self->_uuid = v6;
 
@@ -350,12 +350,12 @@ LABEL_11:
   return uuid;
 }
 
-- (BOOL)verifyNewAppendTimeStamp:(id *)a3 error:(id *)a4
+- (BOOL)verifyNewAppendTimeStamp:(id *)stamp error:(id *)error
 {
   [(MIOWriterStreamInput *)self lastAppendTimeStamp];
-  if ((v13 & 1) == 0 || ([(MIOWriterStreamInput *)self lastAppendTimeStamp], time2 = *a3, CMTimeCompare(&time1, &time2) < 0))
+  if ((v13 & 1) == 0 || ([(MIOWriterStreamInput *)self lastAppendTimeStamp], time2 = *stamp, CMTimeCompare(&time1, &time2) < 0))
   {
-    time1 = *a3;
+    time1 = *stamp;
     [(MIOWriterStreamInput *)self setLastAppendTimeStamp:&time1];
     return 1;
   }
@@ -363,11 +363,11 @@ LABEL_11:
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    time1 = *a3;
+    time1 = *stamp;
     Seconds = CMTimeGetSeconds(&time1);
     [(MIOWriterStreamInput *)self lastAppendTimeStamp];
     v9 = [v7 stringWithFormat:@"Invalid time stamp (%f). Time stamp must be higher than %f.", *&Seconds, CMTimeGetSeconds(&time1)];
-    [MEMORY[0x277CCA9B8] populateWriterError:a4 message:v9 code:17];
+    [MEMORY[0x277CCA9B8] populateWriterError:error message:v9 code:17];
 
     return 0;
   }
@@ -397,24 +397,24 @@ LABEL_11:
     v13 = 1;
     if ([(MIOWriterStreamInput *)self strictlyEnforceBufferCapacity])
     {
-      v6 = [(MIOWriterStreamInput *)self countingQueue];
+      countingQueue = [(MIOWriterStreamInput *)self countingQueue];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __33__MIOWriterStreamInput_canAppend__block_invoke_2;
       v8[3] = &unk_279847C70;
       v8[4] = self;
       v8[5] = &v10;
-      dispatch_sync(v6, v8);
+      dispatch_sync(countingQueue, v8);
     }
 
     if (*(v11 + 24) == 1)
     {
-      v2 = [(MIOWriterStreamInput *)self areAllInputsReady];
+      areAllInputsReady = [(MIOWriterStreamInput *)self areAllInputsReady];
     }
 
     else
     {
-      v2 = 0;
+      areAllInputsReady = 0;
     }
 
     goto LABEL_9;
@@ -426,21 +426,21 @@ LABEL_11:
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v5 = [(MIOWriterStreamInput *)self countingQueue];
+    countingQueue2 = [(MIOWriterStreamInput *)self countingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__MIOWriterStreamInput_canAppend__block_invoke;
     block[3] = &unk_279847C70;
     block[4] = self;
     block[5] = &v10;
-    dispatch_sync(v5, block);
+    dispatch_sync(countingQueue2, block);
 
-    v2 = *(v11 + 24);
+    areAllInputsReady = *(v11 + 24);
 LABEL_9:
     _Block_object_dispose(&v10, 8);
   }
 
-  return v2 & 1;
+  return areAllInputsReady & 1;
 }
 
 unint64_t __33__MIOWriterStreamInput_canAppend__block_invoke(uint64_t a1)
@@ -463,23 +463,23 @@ unint64_t __33__MIOWriterStreamInput_canAppend__block_invoke_2(uint64_t a1)
 
 - (BOOL)pendSample
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MIOWriterStreamInput *)self countingQueue];
+  countingQueue = [(MIOWriterStreamInput *)self countingQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__MIOWriterStreamInput_pendSample__block_invoke;
   v5[3] = &unk_279847C98;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(countingQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 unint64_t __34__MIOWriterStreamInput_pendSample__block_invoke(uint64_t a1)
@@ -505,13 +505,13 @@ unint64_t __34__MIOWriterStreamInput_pendSample__block_invoke(uint64_t a1)
 - (void)resolveSample
 {
   objc_initWeak(&location, self);
-  v3 = [(MIOWriterStreamInput *)self countingQueue];
+  countingQueue = [(MIOWriterStreamInput *)self countingQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__MIOWriterStreamInput_resolveSample__block_invoke;
   v4[3] = &unk_279847CC0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(countingQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -526,22 +526,22 @@ void __37__MIOWriterStreamInput_resolveSample__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)prepareForAppendWithTimeStamp:(id *)a3 error:(id *)a4
+- (BOOL)prepareForAppendWithTimeStamp:(id *)stamp error:(id *)error
 {
-  v7 = [(MIOWriterStreamInput *)self writer];
-  v8 = [v7 checkStatus:1919247481];
+  writer = [(MIOWriterStreamInput *)self writer];
+  v8 = [writer checkStatus:1919247481];
 
   if ((v8 & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] populateWriterError:a4 message:@"Writer not in state MIOWriterReady. Cannot append" code:17];
+    [MEMORY[0x277CCA9B8] populateWriterError:error message:@"Writer not in state MIOWriterReady. Cannot append" code:17];
 LABEL_8:
     LOBYTE(v9) = 0;
     return v9;
   }
 
-  v18 = *&a3->var0;
-  var3 = a3->var3;
-  v9 = [(MIOWriterStreamInput *)self verifyNewAppendTimeStamp:&v18 error:a4];
+  v18 = *&stamp->var0;
+  var3 = stamp->var3;
+  v9 = [(MIOWriterStreamInput *)self verifyNewAppendTimeStamp:&v18 error:error];
   if (!v9)
   {
     return v9;
@@ -550,50 +550,50 @@ LABEL_8:
   if (self->_threadingOption == 1 && ![(MIOWriterStreamInput *)self areAllInputsReady])
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(MIOWriterStreamInput *)self streamId];
-    v16 = [v14 stringWithFormat:@"Stream: %@ inputs are not ready, dropping sample", v15];
+    streamId = [(MIOWriterStreamInput *)self streamId];
+    v16 = [v14 stringWithFormat:@"Stream: %@ inputs are not ready, dropping sample", streamId];
 
-    [MEMORY[0x277CCA9B8] populateWriterError:a4 message:v16 code:21];
+    [MEMORY[0x277CCA9B8] populateWriterError:error message:v16 code:21];
     goto LABEL_8;
   }
 
   if (![(MIOWriterStreamInput *)self pendSample])
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(MIOWriterStreamInput *)self streamId];
-    v13 = [v11 stringWithFormat:@"Stream: %@ buffering capacity reached (%zu), dropping sample", v12, -[MIOWriterStreamInput bufferingCapacity](self, "bufferingCapacity")];
+    streamId2 = [(MIOWriterStreamInput *)self streamId];
+    v13 = [v11 stringWithFormat:@"Stream: %@ buffering capacity reached (%zu), dropping sample", streamId2, -[MIOWriterStreamInput bufferingCapacity](self, "bufferingCapacity")];
 
-    [MEMORY[0x277CCA9B8] populateWriterError:a4 message:v13 code:18];
+    [MEMORY[0x277CCA9B8] populateWriterError:error message:v13 code:18];
     goto LABEL_8;
   }
 
-  v10 = [(MIOWriterStreamInput *)self writer];
-  v18 = *&a3->var0;
-  var3 = a3->var3;
-  [v10 proposeSessionStartTime:&v18];
+  writer2 = [(MIOWriterStreamInput *)self writer];
+  v18 = *&stamp->var0;
+  var3 = stamp->var3;
+  [writer2 proposeSessionStartTime:&v18];
 
   LOBYTE(v9) = 1;
   return v9;
 }
 
-- (BOOL)prepareInputWithWriter:(id)a3 error:(id *)a4
+- (BOOL)prepareInputWithWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
-  [(MIOWriterStreamInput *)self setWriter:v6];
-  v7 = [(MIOWriterStreamInput *)self setupInputsWithWriter:v6 error:a4];
+  writerCopy = writer;
+  [(MIOWriterStreamInput *)self setWriter:writerCopy];
+  v7 = [(MIOWriterStreamInput *)self setupInputsWithWriter:writerCopy error:error];
 
   if (v7)
   {
     inputsAvailableHandler = self->_inputsAvailableHandler;
     if (inputsAvailableHandler)
     {
-      v9 = [(MIOWriterStreamInput *)self allWriterInputs];
-      inputsAvailableHandler[2](inputsAvailableHandler, self, v9);
+      allWriterInputs = [(MIOWriterStreamInput *)self allWriterInputs];
+      inputsAvailableHandler[2](inputsAvailableHandler, self, allWriterInputs);
     }
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(MIOWriterStreamInput *)self uuid];
-    v12 = [v10 stringWithFormat:@"mio.counting.%@", v11];
+    uuid = [(MIOWriterStreamInput *)self uuid];
+    v12 = [v10 stringWithFormat:@"mio.counting.%@", uuid];
 
     v13 = dispatch_queue_create([v12 UTF8String], 0);
     countingQueue = self->_countingQueue;
@@ -616,8 +616,8 @@ LABEL_8:
   if ([(MIOWriterStreamInput *)self useOwnProcessingQueue])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(MIOWriterStreamInput *)self uuid];
-    v10 = [v3 stringWithFormat:@"com.apple.mio.processing.%@", v4];
+    uuid = [(MIOWriterStreamInput *)self uuid];
+    v10 = [v3 stringWithFormat:@"com.apple.mio.processing.%@", uuid];
   }
 
   else
@@ -629,18 +629,18 @@ LABEL_8:
   v6 = os_log_create([(__CFString *)v10 UTF8String], "PointsOfInterest");
   [(MIOWriterStreamInput *)self setPerfLogHandle:v6];
 
-  v7 = [(MIOWriterStreamInput *)self perfLogHandle];
-  [(MIOWriterStreamInput *)self setProcessingSignPostID:os_signpost_id_generate(v7)];
+  perfLogHandle = [(MIOWriterStreamInput *)self perfLogHandle];
+  [(MIOWriterStreamInput *)self setProcessingSignPostID:os_signpost_id_generate(perfLogHandle)];
 
-  v8 = [(MIOWriterStreamInput *)self assignedWritingThread];
-  v9 = [v8 perfLogHandle];
-  [(MIOWriterStreamInput *)self setAvfAppendSignPostID:os_signpost_id_generate(v9)];
+  assignedWritingThread = [(MIOWriterStreamInput *)self assignedWritingThread];
+  perfLogHandle2 = [assignedWritingThread perfLogHandle];
+  [(MIOWriterStreamInput *)self setAvfAppendSignPostID:os_signpost_id_generate(perfLogHandle2)];
 }
 
 - (BOOL)finalizeProcessing
 {
-  v3 = [(MIOWriterStreamInput *)self threadingOption];
-  if (v3 == 1)
+  threadingOption = [(MIOWriterStreamInput *)self threadingOption];
+  if (threadingOption == 1)
   {
 
     return [(MIOWriterStreamInput *)self writeNextItemFromFifo];
@@ -648,10 +648,10 @@ LABEL_8:
 
   else
   {
-    if (!v3)
+    if (!threadingOption)
     {
-      v4 = [(MIOWriterStreamInput *)self assignedWritingThread];
-      [v4 proceed];
+      assignedWritingThread = [(MIOWriterStreamInput *)self assignedWritingThread];
+      [assignedWritingThread proceed];
     }
 
     return 1;
@@ -666,8 +666,8 @@ LABEL_8:
     if (self->_useOwnProcessingQueue)
     {
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(MIOWriterStreamInput *)self uuid];
-      v6 = [v4 stringWithFormat:@"mio.processing.%@", v5];
+      uuid = [(MIOWriterStreamInput *)self uuid];
+      v6 = [v4 stringWithFormat:@"mio.processing.%@", uuid];
 
       v7 = dispatch_queue_create([v6 UTF8String], self->_processingQueueAttributes);
       processingQueue = self->_processingQueue;
@@ -704,19 +704,19 @@ void __39__MIOWriterStreamInput_processingQueue__block_invoke(uint64_t a1)
   processingQueue_proc = v2;
 }
 
-- (void)finishProcessingInDispatchGroup:(id)a3
+- (void)finishProcessingInDispatchGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (self->_threadingOption != 1 || [(MIOWriterStreamInput *)self strictlyEnforceBufferCapacity])
   {
     objc_initWeak(&location, self);
-    v5 = [(MIOWriterStreamInput *)self processingQueue];
+    processingQueue = [(MIOWriterStreamInput *)self processingQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke;
     v6[3] = &unk_279847CC0;
     objc_copyWeak(&v7, &location);
-    dispatch_group_async(v4, v5, v6);
+    dispatch_group_async(groupCopy, processingQueue, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -734,11 +734,11 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
   }
 }
 
-- (BOOL)shutDownOutError:(id *)a3
+- (BOOL)shutDownOutError:(id *)error
 {
   [(MIOWriterStreamInput *)self stopObservingIsReadyStatus];
-  v4 = [(MIOWriterStreamInput *)self fifoBuffer];
-  [v4 emptyFifoBuffer];
+  fifoBuffer = [(MIOWriterStreamInput *)self fifoBuffer];
+  [fifoBuffer emptyFifoBuffer];
 
   return 1;
 }
@@ -746,8 +746,8 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
 - (void)invalidate
 {
   [(MIOWriterStreamInput *)self stopObservingIsReadyStatus];
-  v3 = [(MIOWriterStreamInput *)self fifoBuffer];
-  [v3 emptyFifoBuffer];
+  fifoBuffer = [(MIOWriterStreamInput *)self fifoBuffer];
+  [fifoBuffer emptyFifoBuffer];
 }
 
 - (void)observeIsReadyStatus
@@ -760,8 +760,8 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(MIOWriterStreamInput *)self allWriterInputs];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allWriterInputs = [(MIOWriterStreamInput *)self allWriterInputs];
+    v4 = [allWriterInputs countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -773,14 +773,14 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allWriterInputs);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) addObserver:self forKeyPath:@"readyForMoreMediaData" options:1 context:0];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [allWriterInputs countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -798,8 +798,8 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(MIOWriterStreamInput *)self allWriterInputs];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allWriterInputs = [(MIOWriterStreamInput *)self allWriterInputs];
+    v4 = [allWriterInputs countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -811,14 +811,14 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allWriterInputs);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) removeObserver:self forKeyPath:@"readyForMoreMediaData"];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [allWriterInputs countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -826,22 +826,22 @@ void __56__MIOWriterStreamInput_finishProcessingInDispatchGroup___block_invoke(u
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [a5 objectForKey:{*MEMORY[0x277CCA2F0], a4}];
-  v8 = [v7 BOOLValue];
+  v7 = [change objectForKey:{*MEMORY[0x277CCA2F0], object}];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if ([(MIOWriterStreamInput *)self areAllInputsReady])
     {
-      v9 = [(MIOWriterStreamInput *)self writer];
-      v10 = [v9 canWrite];
+      writer = [(MIOWriterStreamInput *)self writer];
+      canWrite = [writer canWrite];
 
-      if (v10)
+      if (canWrite)
       {
-        v11 = [(MIOWriterStreamInput *)self assignedWritingThread];
-        [v11 proceed];
+        assignedWritingThread = [(MIOWriterStreamInput *)self assignedWritingThread];
+        [assignedWritingThread proceed];
       }
     }
   }

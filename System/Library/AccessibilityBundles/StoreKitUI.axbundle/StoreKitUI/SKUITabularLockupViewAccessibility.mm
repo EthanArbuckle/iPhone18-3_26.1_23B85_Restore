@@ -1,17 +1,17 @@
 @interface SKUITabularLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKUITabularLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUITabularLockupView" hasInstanceVariable:@"_layout" withType:"SKUITabularLockupLayout"];
-  [v3 validateClass:@"SKUITabularLockupView" hasInstanceVariable:@"_viewElementViews" withType:"NSMapTable"];
-  [v3 validateClass:@"SKUITabularLockupLayout" hasInstanceMethod:@"columns" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUITabularLockupColumn" hasInstanceMethod:@"childViewElements" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUITabularLockupView" hasInstanceVariable:@"_layout" withType:"SKUITabularLockupLayout"];
+  [validationsCopy validateClass:@"SKUITabularLockupView" hasInstanceVariable:@"_viewElementViews" withType:"NSMapTable"];
+  [validationsCopy validateClass:@"SKUITabularLockupLayout" hasInstanceMethod:@"columns" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUITabularLockupColumn" hasInstanceMethod:@"childViewElements" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -28,7 +28,7 @@
   v7 = [(SKUITabularLockupViewAccessibility *)self safeValueForKey:@"_viewElementViews"];
   v8 = __UIAccessibilitySafeClass();
 
-  v9 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -79,7 +79,7 @@
               NSClassFromString(&cfstr_Skuiattributed_0.isa);
               if (objc_opt_isKindOfClass())
               {
-                [v9 addObject:v23];
+                [array addObject:v23];
               }
             }
 
@@ -100,7 +100,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v38 = v9;
+  v38 = array;
   v24 = [v38 countByEnumeratingWithState:&v39 objects:v52 count:16];
   if (v24)
   {
@@ -118,8 +118,8 @@
           objc_enumerationMutation(v38);
         }
 
-        v30 = [*(*(&v39 + 1) + 8 * v28) accessibilityLabel];
-        v31 = [v30 stringByReplacingOccurrencesOfString:@"•" withString:{@", "}];
+        accessibilityLabel = [*(*(&v39 + 1) + 8 * v28) accessibilityLabel];
+        v31 = [accessibilityLabel stringByReplacingOccurrencesOfString:@"•" withString:{@", "}];
 
         v34 = v31;
         v35 = @"__AXStringForVariablesSentinel";

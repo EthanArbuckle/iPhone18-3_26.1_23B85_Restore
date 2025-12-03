@@ -1,18 +1,18 @@
 @interface SUScriptDonationViewController
-- (SUScriptDonationViewController)initWithCharityIdentifier:(id)a3;
+- (SUScriptDonationViewController)initWithCharityIdentifier:(id)identifier;
 - (id)newNativeViewController;
 @end
 
 @implementation SUScriptDonationViewController
 
-- (SUScriptDonationViewController)initWithCharityIdentifier:(id)a3
+- (SUScriptDonationViewController)initWithCharityIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = SUScriptDonationViewController;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_charityIdentifier = [a3 copy];
+    v4->_charityIdentifier = [identifier copy];
   }
 
   return v4;

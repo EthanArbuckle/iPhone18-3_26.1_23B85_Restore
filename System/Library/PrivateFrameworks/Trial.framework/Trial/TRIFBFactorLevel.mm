@@ -1,5 +1,5 @@
 @interface TRIFBFactorLevel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)verifyUTF8Fields;
 - (NSArray)metadata;
 - (NSData)aliasAsData;
@@ -16,7 +16,7 @@
 - (TRIFBBoxedBool)levelAsBoolVal;
 - (TRIFBBoxedDouble)levelAsDoubleVal;
 - (TRIFBBoxedInt64)levelAsInt64Val;
-- (TRIFBFactorLevel)initWithBufRef:(id)a3 cppPointer:(const FactorLevel *)a4;
+- (TRIFBFactorLevel)initWithBufRef:(id)ref cppPointer:(const FactorLevel *)pointer;
 - (TRIFBMobileAssetReference)levelAsMaRefVal;
 - (TRIFBTrialManagedAsset)levelAsTrialAssetVal;
 - (const)aliasAsCString;
@@ -24,9 +24,9 @@
 - (const)factorNamespaceNameAsCString;
 - (const)levelAsStringValCString;
 - (const)nameAsCString;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)hash;
 - (unsigned)cacheKey;
 - (unsigned)levelType;
@@ -54,8 +54,8 @@
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 5)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3150 description:{@"Accessed union field TRIFBFactorLevel.levelAsTrialAssetVal, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3150 description:{@"Accessed union field TRIFBFactorLevel.levelAsTrialAssetVal, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -68,8 +68,8 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3152 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3152 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -90,8 +90,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3051 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3051 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -166,8 +166,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3169 description:{@"Invalid parameter not satisfying: %@", @"vec"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3169 description:{@"Invalid parameter not satisfying: %@", @"vec"}];
 
     var0 = 0;
   }
@@ -205,18 +205,18 @@
 
 - (BOOL)verifyUTF8Fields
 {
-  v3 = [(TRIFBFactorLevel *)self levelType];
-  if (v3 == 6)
+  levelType = [(TRIFBFactorLevel *)self levelType];
+  if (levelType == 6)
   {
-    v4 = [(TRIFBFactorLevel *)self levelAsMaRefVal];
-    v5 = [v4 verifyUTF8Fields];
+    levelAsMaRefVal = [(TRIFBFactorLevel *)self levelAsMaRefVal];
+    verifyUTF8Fields = [levelAsMaRefVal verifyUTF8Fields];
   }
 
   else
   {
-    if (v3 != 5)
+    if (levelType != 5)
     {
-      if (v3 == 2 && FactorLevel::level_as_string_val(self->_ptr) && (AFBIsValidUTF8() & 1) == 0)
+      if (levelType == 2 && FactorLevel::level_as_string_val(self->_ptr) && (AFBIsValidUTF8() & 1) == 0)
       {
         goto LABEL_17;
       }
@@ -224,11 +224,11 @@
       goto LABEL_10;
     }
 
-    v4 = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
-    v5 = [v4 verifyUTF8Fields];
+    levelAsMaRefVal = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
+    verifyUTF8Fields = [levelAsMaRefVal verifyUTF8Fields];
   }
 
-  v6 = v5;
+  v6 = verifyUTF8Fields;
 
   if ((v6 & 1) == 0)
   {
@@ -238,9 +238,9 @@ LABEL_17:
   }
 
 LABEL_10:
-  v7 = [(TRIFBFactorLevel *)self metadata];
-  v8 = v7;
-  if (v7)
+  metadata = [(TRIFBFactorLevel *)self metadata];
+  v8 = metadata;
+  if (metadata)
   {
     v28 = 0;
     v29 = &v28;
@@ -251,7 +251,7 @@ LABEL_10:
     v27[2] = __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke;
     v27[3] = &unk_27885E918;
     v27[4] = &v28;
-    [v7 enumerateObjectsUsingBlock:v27];
+    [metadata enumerateObjectsUsingBlock:v27];
     v9 = *(v29 + 24);
     _Block_object_dispose(&v28, 8);
     if ((v9 & 1) == 0)
@@ -346,8 +346,8 @@ LABEL_30:
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 1)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3080 description:{@"Accessed union field TRIFBFactorLevel.levelAsBoolVal, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3080 description:{@"Accessed union field TRIFBFactorLevel.levelAsBoolVal, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -360,8 +360,8 @@ LABEL_30:
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3082 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3082 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -375,8 +375,8 @@ LABEL_30:
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 4)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3140 description:{@"Accessed union field TRIFBFactorLevel.levelAsDoubleVal, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3140 description:{@"Accessed union field TRIFBFactorLevel.levelAsDoubleVal, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -389,8 +389,8 @@ LABEL_30:
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3142 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3142 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -430,8 +430,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 6)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3160 description:{@"Accessed union field TRIFBFactorLevel.levelAsMaRefVal, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3160 description:{@"Accessed union field TRIFBFactorLevel.levelAsMaRefVal, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -444,8 +444,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3162 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3162 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -459,15 +459,15 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 2)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3090 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringVal, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3090 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringVal, but the value stored in the union does not match this type."}];
   }
 
   v4 = FactorLevel::level_as_string_val(self->_ptr);
   if (!v4)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3092 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3092 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
   }
 
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:&v4[4]];
@@ -495,8 +495,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3057 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3057 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -515,18 +515,18 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3063 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3063 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -537,15 +537,15 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 2)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3108 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringValCString, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3108 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringValCString, but the value stored in the union does not match this type."}];
   }
 
   v4 = FactorLevel::level_as_string_val(self->_ptr);
   if (!v4)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3110 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3110 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
   }
 
   return &v4[4];
@@ -555,25 +555,25 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 2)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3117 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringValData, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3117 description:{@"Accessed union field TRIFBFactorLevel.levelAsStringValData, but the value stored in the union does not match this type."}];
   }
 
   v4 = FactorLevel::level_as_string_val(self->_ptr);
   if (!v4)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3119 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3119 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
   }
 
   v5 = v4 + 4;
   v6 = strlen(&v4[4]);
   v7 = objc_autoreleasePoolPush();
-  v8 = [(AFBBufRef *)self->_br data];
-  v9 = &v5[-[v8 bytes]];
+  data = [(AFBBufRef *)self->_br data];
+  v9 = &v5[-[data bytes]];
 
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = [v10 subdataWithRange:{v9, v6}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v11 = [data2 subdataWithRange:{v9, v6}];
 
   objc_autoreleasePoolPop(v7);
 
@@ -584,8 +584,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 {
   if ([(TRIFBFactorLevel *)self levelType]!= 3)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3130 description:{@"Accessed union field TRIFBFactorLevel.levelAsInt64Val, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3130 description:{@"Accessed union field TRIFBFactorLevel.levelAsInt64Val, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -598,8 +598,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3132 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3132 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -620,8 +620,8 @@ uint64_t __36__TRIFBFactorLevel_verifyUTF8Fields__block_invoke(uint64_t a1, void
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3182 description:{@"Invalid parameter not satisfying: %@", @"vec"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3182 description:{@"Invalid parameter not satisfying: %@", @"vec"}];
 
     var0 = 0;
   }
@@ -741,12 +741,12 @@ TRIFBFactorMetadataKeyValue *__34__TRIFBFactorLevel_metadataAsDict__block_invoke
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -783,12 +783,12 @@ TRIFBFactorMetadataKeyValue *__34__TRIFBFactorLevel_metadataAsDict__block_invoke
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -825,12 +825,12 @@ TRIFBFactorMetadataKeyValue *__34__TRIFBFactorLevel_metadataAsDict__block_invoke
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -843,36 +843,36 @@ TRIFBFactorMetadataKeyValue *__34__TRIFBFactorLevel_metadataAsDict__block_invoke
   return v13;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(TRIFBFactorLevel *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(TRIFBFactorLevel *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3298 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3298 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   context = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 3)];
+    v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 3)];
     goto LABEL_13;
   }
 
-  if (v8[8])
+  if (changesCopy[8])
   {
     v11 = 0;
   }
@@ -881,10 +881,10 @@ TRIFBFactorMetadataKeyValue *__34__TRIFBFactorLevel_metadataAsDict__block_invoke
   {
 LABEL_6:
     v9 = objc_autoreleasePoolPush();
-    v10 = [(TRIFBFactorLevel *)self nameAsCString];
-    if (v10)
+    nameAsCString = [(TRIFBFactorLevel *)self nameAsCString];
+    if (nameAsCString)
     {
-      v11 = [v7 createStringWithCString:v10];
+      v11 = [builderCopy createStringWithCString:nameAsCString];
     }
 
     else
@@ -893,26 +893,26 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v9);
-    if (!v8)
+    if (!changesCopy)
     {
 LABEL_15:
-      v12 = [(TRIFBFactorLevel *)self levelType];
+      levelType = [(TRIFBFactorLevel *)self levelType];
       v13 = 0;
-      if (v12 > 3)
+      if (levelType > 3)
       {
-        switch(v12)
+        switch(levelType)
         {
           case 4:
-            v14 = [(TRIFBFactorLevel *)self levelAsDoubleVal];
-            v15 = [v7 trifbCreateBoxedDoubleFromBoxedDouble:v14];
+            levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsDoubleVal];
+            v15 = [builderCopy trifbCreateBoxedDoubleFromBoxedDouble:levelAsDoubleVal];
             break;
           case 5:
-            v14 = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
-            v15 = [v14 deepCopyUsingBufferBuilder:v7];
+            levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
+            v15 = [levelAsDoubleVal deepCopyUsingBufferBuilder:builderCopy];
             break;
           case 6:
-            v14 = [(TRIFBFactorLevel *)self levelAsMaRefVal];
-            v15 = [v14 deepCopyUsingBufferBuilder:v7];
+            levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsMaRefVal];
+            v15 = [levelAsDoubleVal deepCopyUsingBufferBuilder:builderCopy];
             break;
           default:
             goto LABEL_29;
@@ -921,24 +921,24 @@ LABEL_15:
 
       else
       {
-        if (v12 != 1)
+        if (levelType != 1)
         {
-          if (v12 == 2)
+          if (levelType == 2)
           {
             v16 = objc_autoreleasePoolPush();
-            v13 = [v7 createStringWithCString:{-[TRIFBFactorLevel levelAsStringValCString](self, "levelAsStringValCString")}];
+            v13 = [builderCopy createStringWithCString:{-[TRIFBFactorLevel levelAsStringValCString](self, "levelAsStringValCString")}];
             objc_autoreleasePoolPop(v16);
           }
 
-          else if (v12 == 3)
+          else if (levelType == 3)
           {
-            v14 = [(TRIFBFactorLevel *)self levelAsInt64Val];
-            v15 = [v7 trifbCreateBoxedInt64FromBoxedInt64:v14];
+            levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsInt64Val];
+            v15 = [builderCopy trifbCreateBoxedInt64FromBoxedInt64:levelAsDoubleVal];
             goto LABEL_32;
           }
 
 LABEL_29:
-          if (!v8)
+          if (!changesCopy)
           {
             goto LABEL_35;
           }
@@ -946,14 +946,14 @@ LABEL_29:
           goto LABEL_33;
         }
 
-        v14 = [(TRIFBFactorLevel *)self levelAsBoolVal];
-        v15 = [v7 trifbCreateBoxedBoolFromBoxedBool:v14];
+        levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsBoolVal];
+        v15 = [builderCopy trifbCreateBoxedBoolFromBoxedBool:levelAsDoubleVal];
       }
 
 LABEL_32:
       v13 = v15;
 
-      if (!v8)
+      if (!changesCopy)
       {
         goto LABEL_35;
       }
@@ -963,14 +963,14 @@ LABEL_32:
   }
 
 LABEL_13:
-  if (v8[17] == 1)
+  if (changesCopy[17] == 1)
   {
-    v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 5)];
+    v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 5)];
   }
 
   else
   {
-    if (!v8[17])
+    if (!changesCopy[17])
     {
       goto LABEL_15;
     }
@@ -979,32 +979,32 @@ LABEL_13:
   }
 
 LABEL_33:
-  if (v8[24] == 1)
+  if (changesCopy[24] == 1)
   {
-    v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 7)];
+    v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 7)];
     goto LABEL_41;
   }
 
-  if (v8[24])
+  if (changesCopy[24])
   {
     v21 = 0;
     goto LABEL_41;
   }
 
 LABEL_35:
-  v17 = [(TRIFBFactorLevel *)self metadata];
-  if (v17)
+  metadata = [(TRIFBFactorLevel *)self metadata];
+  if (metadata)
   {
-    v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(metadata, "count")}];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __55__TRIFBFactorLevel_deepCopyUsingBufferBuilder_changes___block_invoke;
     v51[3] = &unk_27885E8C8;
     v19 = v18;
     v52 = v19;
-    v20 = v7;
+    v20 = builderCopy;
     v53 = v20;
-    [v17 enumerateObjectsUsingBlock:v51];
+    [metadata enumerateObjectsUsingBlock:v51];
     v21 = [v20 trifbCreateSortedVectorOfFactorMetadataKeyValueWithOffsets:v19];
   }
 
@@ -1013,14 +1013,14 @@ LABEL_35:
     v21 = 0;
   }
 
-  if (!v8)
+  if (!changesCopy)
   {
 LABEL_43:
     v22 = objc_autoreleasePoolPush();
-    v23 = [(TRIFBFactorLevel *)self aliasAsCString];
-    if (v23)
+    aliasAsCString = [(TRIFBFactorLevel *)self aliasAsCString];
+    if (aliasAsCString)
     {
-      v24 = [v7 createStringWithCString:v23];
+      v24 = [builderCopy createStringWithCString:aliasAsCString];
     }
 
     else
@@ -1029,7 +1029,7 @@ LABEL_43:
     }
 
     objc_autoreleasePoolPop(v22);
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_51;
     }
@@ -1038,14 +1038,14 @@ LABEL_43:
   }
 
 LABEL_41:
-  if (v8[40] == 1)
+  if (changesCopy[40] == 1)
   {
-    v24 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 11)];
+    v24 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 11)];
   }
 
   else
   {
-    if (!v8[40])
+    if (!changesCopy[40])
     {
       goto LABEL_43;
     }
@@ -1054,13 +1054,13 @@ LABEL_41:
   }
 
 LABEL_49:
-  if (v8[48] == 1)
+  if (changesCopy[48] == 1)
   {
-    v27 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 13)];
+    v27 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 13)];
     goto LABEL_57;
   }
 
-  if (v8[48])
+  if (changesCopy[48])
   {
     v27 = 0;
     goto LABEL_57;
@@ -1068,10 +1068,10 @@ LABEL_49:
 
 LABEL_51:
   v25 = objc_autoreleasePoolPush();
-  v26 = [(TRIFBFactorLevel *)self factorNamespaceNameAsCString];
-  if (v26)
+  factorNamespaceNameAsCString = [(TRIFBFactorLevel *)self factorNamespaceNameAsCString];
+  if (factorNamespaceNameAsCString)
   {
-    v27 = [v7 createStringWithCString:v26];
+    v27 = [builderCopy createStringWithCString:factorNamespaceNameAsCString];
   }
 
   else
@@ -1080,27 +1080,27 @@ LABEL_51:
   }
 
   objc_autoreleasePoolPop(v25);
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_59;
   }
 
 LABEL_57:
-  if (v8[56] == 1)
+  if (changesCopy[56] == 1)
   {
-    v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 15)];
+    v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 15)];
   }
 
   else
   {
-    if (!v8[56])
+    if (!changesCopy[56])
     {
 LABEL_59:
       v28 = objc_autoreleasePoolPush();
-      v29 = [(TRIFBFactorLevel *)self factorIdAsCString];
-      if (v29)
+      factorIdAsCString = [(TRIFBFactorLevel *)self factorIdAsCString];
+      if (factorIdAsCString)
       {
-        v30 = [v7 createStringWithCString:v29];
+        v30 = [builderCopy createStringWithCString:factorIdAsCString];
       }
 
       else
@@ -1124,9 +1124,9 @@ LABEL_65:
   v43 = v31;
   v32 = v13;
   v44 = v32;
-  v33 = v8;
+  v33 = changesCopy;
   v45 = v33;
-  v46 = self;
+  selfCopy = self;
   v34 = v21;
   v47 = v34;
   v35 = v24;
@@ -1135,7 +1135,7 @@ LABEL_65:
   v49 = v36;
   v50 = v30;
   v37 = v30;
-  v38 = [v7 trifbCreateFactorLevelUsingBlock:v42];
+  v38 = [builderCopy trifbCreateFactorLevelUsingBlock:v42];
 
   objc_autoreleasePoolPop(context);
 
@@ -1263,30 +1263,30 @@ LABEL_40:
 LABEL_41:
 }
 
-- (TRIFBFactorLevel)initWithBufRef:(id)a3 cppPointer:(const FactorLevel *)a4
+- (TRIFBFactorLevel)initWithBufRef:(id)ref cppPointer:(const FactorLevel *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TRIFBFactorLevel;
   v8 = [(TRIFBFactorLevel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -1294,13 +1294,13 @@ LABEL_41:
     v13 = &emptyCArrayStorage;
   }
 
-  v14 = [v10 length];
+  v14 = [dataCopy length];
   v23 = v13;
   v24 = v14;
   LODWORD(v25) = 0;
-  HIDWORD(v25) = a5;
+  HIDWORD(v25) = depth;
   LODWORD(v26) = 0;
-  HIDWORD(v26) = a6;
+  HIDWORD(v26) = tables;
   v27 = 0;
   LOBYTE(v28) = 1;
   if (v14 >= 0x7FFFFFFF)
@@ -1312,24 +1312,24 @@ LABEL_41:
   {
     v17 = *v13->var0;
     v18 = objc_alloc(MEMORY[0x277CED178]);
-    v19 = [v18 initWithData:{v10, v23, v24, v25, v26, v27, v28}];
+    v19 = [v18 initWithData:{dataCopy, v23, v24, v25, v26, v27, v28}];
     self = [(TRIFBFactorLevel *)self initWithBufRef:v19 cppPointer:&v13[v17]];
 
-    v20 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(TRIFBFactorLevel *)self verifyUTF8Fields])
       {
-        v20 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v21 = v20;
+    v21 = selfCopy2;
   }
 
   else
@@ -1345,35 +1345,35 @@ LABEL_41:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIFBFactorLevel *)self name];
-  v5 = [v4 hash];
+  name = [(TRIFBFactorLevel *)self name];
+  v5 = [name hash];
 
-  v6 = [(TRIFBFactorLevel *)self levelType];
-  v7 = [(TRIFBFactorLevel *)self metadata];
-  v8 = [v7 hash];
+  levelType = [(TRIFBFactorLevel *)self levelType];
+  metadata = [(TRIFBFactorLevel *)self metadata];
+  v8 = [metadata hash];
 
-  v9 = [(TRIFBFactorLevel *)self cacheKey];
-  v10 = [(TRIFBFactorLevel *)self alias];
-  v11 = [v10 hash];
+  cacheKey = [(TRIFBFactorLevel *)self cacheKey];
+  alias = [(TRIFBFactorLevel *)self alias];
+  v11 = [alias hash];
 
-  v12 = [(TRIFBFactorLevel *)self factorNamespaceName];
-  v13 = [v12 hash];
+  factorNamespaceName = [(TRIFBFactorLevel *)self factorNamespaceName];
+  v13 = [factorNamespaceName hash];
 
-  v14 = [(TRIFBFactorLevel *)self factorId];
-  v15 = [v14 hash] + 37 * (v13 + 37 * (v11 + 37 * (37 * (v8 + 37 * (37 * v5 + v6)) + v9)));
+  factorId = [(TRIFBFactorLevel *)self factorId];
+  v15 = [factorId hash] + 37 * (v13 + 37 * (v11 + 37 * (37 * (v8 + 37 * (37 * v5 + levelType)) + cacheKey)));
 
   v16 = 37 * v15 + [(TRIFBFactorLevel *)self namespaceId];
   objc_autoreleasePoolPop(v3);
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1384,42 +1384,42 @@ LABEL_39:
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [(TRIFBFactorLevel *)self levelType];
-    if (v8 != [v6 levelType])
+    levelType = [(TRIFBFactorLevel *)self levelType];
+    if (levelType != [v6 levelType])
     {
       goto LABEL_37;
     }
 
-    v9 = [(TRIFBFactorLevel *)self levelType];
-    if (v9 > 3)
+    levelType2 = [(TRIFBFactorLevel *)self levelType];
+    if (levelType2 > 3)
     {
-      switch(v9)
+      switch(levelType2)
       {
         case 4:
-          v10 = [(TRIFBFactorLevel *)self levelAsDoubleVal];
-          v11 = [v6 levelAsDoubleVal];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsDoubleVal];
+          levelAsDoubleVal2 = [v6 levelAsDoubleVal];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
             goto LABEL_24;
           }
 
           break;
         case 5:
-          v10 = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
-          v11 = [v6 levelAsTrialAssetVal];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsTrialAssetVal];
+          levelAsDoubleVal2 = [v6 levelAsTrialAssetVal];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
             goto LABEL_24;
           }
 
           break;
         case 6:
-          v10 = [(TRIFBFactorLevel *)self levelAsMaRefVal];
-          v11 = [v6 levelAsMaRefVal];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsMaRefVal];
+          levelAsDoubleVal2 = [v6 levelAsMaRefVal];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
 LABEL_24:
-            v13 = [v10 isEqual:v11];
+            v13 = [levelAsDoubleVal isEqual:levelAsDoubleVal2];
 
             if ((v13 & 1) == 0)
             {
@@ -1433,30 +1433,30 @@ LABEL_24:
 
     else
     {
-      switch(v9)
+      switch(levelType2)
       {
         case 1:
-          v10 = [(TRIFBFactorLevel *)self levelAsBoolVal];
-          v11 = [v6 levelAsBoolVal];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsBoolVal];
+          levelAsDoubleVal2 = [v6 levelAsBoolVal];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
             goto LABEL_24;
           }
 
           break;
         case 2:
-          v10 = [(TRIFBFactorLevel *)self levelAsStringVal];
-          v11 = [v6 levelAsStringVal];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsStringVal];
+          levelAsDoubleVal2 = [v6 levelAsStringVal];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
             goto LABEL_24;
           }
 
           break;
         case 3:
-          v10 = [(TRIFBFactorLevel *)self levelAsInt64Val];
-          v11 = [v6 levelAsInt64Val];
-          if (v10 | v11)
+          levelAsDoubleVal = [(TRIFBFactorLevel *)self levelAsInt64Val];
+          levelAsDoubleVal2 = [v6 levelAsInt64Val];
+          if (levelAsDoubleVal | levelAsDoubleVal2)
           {
             goto LABEL_24;
           }
@@ -1465,31 +1465,31 @@ LABEL_24:
       }
     }
 
-    v14 = [(TRIFBFactorLevel *)self name];
-    v15 = [v6 name];
-    if (!(v14 | v15) || (v16 = [v14 isEqual:v15], v15, v14, v16))
+    name = [(TRIFBFactorLevel *)self name];
+    name2 = [v6 name];
+    if (!(name | name2) || (v16 = [name isEqual:name2], name2, name, v16))
     {
-      v17 = [(TRIFBFactorLevel *)self metadata];
-      v18 = [v6 metadata];
-      if (!(v17 | v18) || (v19 = [v17 isEqual:v18], v18, v17, v19))
+      metadata = [(TRIFBFactorLevel *)self metadata];
+      metadata2 = [v6 metadata];
+      if (!(metadata | metadata2) || (v19 = [metadata isEqual:metadata2], metadata2, metadata, v19))
       {
-        v20 = [(TRIFBFactorLevel *)self cacheKey];
-        if (v20 == [v6 cacheKey])
+        cacheKey = [(TRIFBFactorLevel *)self cacheKey];
+        if (cacheKey == [v6 cacheKey])
         {
-          v21 = [(TRIFBFactorLevel *)self alias];
-          v22 = [v6 alias];
-          if (!(v21 | v22) || (v23 = [v21 isEqual:v22], v22, v21, v23))
+          alias = [(TRIFBFactorLevel *)self alias];
+          alias2 = [v6 alias];
+          if (!(alias | alias2) || (v23 = [alias isEqual:alias2], alias2, alias, v23))
           {
-            v24 = [(TRIFBFactorLevel *)self factorNamespaceName];
-            v25 = [v6 factorNamespaceName];
-            if (!(v24 | v25) || (v26 = [v24 isEqual:v25], v25, v24, v26))
+            factorNamespaceName = [(TRIFBFactorLevel *)self factorNamespaceName];
+            factorNamespaceName2 = [v6 factorNamespaceName];
+            if (!(factorNamespaceName | factorNamespaceName2) || (v26 = [factorNamespaceName isEqual:factorNamespaceName2], factorNamespaceName2, factorNamespaceName, v26))
             {
-              v27 = [(TRIFBFactorLevel *)self factorId];
-              v28 = [v6 factorId];
-              if (!(v27 | v28) || (v29 = [v27 isEqual:v28], v28, v27, v29))
+              factorId = [(TRIFBFactorLevel *)self factorId];
+              factorId2 = [v6 factorId];
+              if (!(factorId | factorId2) || (v29 = [factorId isEqual:factorId2], factorId2, factorId, v29))
               {
-                v30 = [(TRIFBFactorLevel *)self namespaceId];
-                v12 = v30 == [v6 namespaceId];
+                namespaceId = [(TRIFBFactorLevel *)self namespaceId];
+                v12 = namespaceId == [v6 namespaceId];
 LABEL_38:
                 objc_autoreleasePoolPop(v7);
                 goto LABEL_39;

@@ -1,10 +1,10 @@
 @interface PPTripPart
-+ (id)descriptionForTripMode:(unsigned __int8)a3;
-- (PPTripPart)initWithCoder:(id)a3;
-- (PPTripPart)initWithStartDate:(id)a3 endDate:(id)a4 eventIdentifiers:(id)a5 mode:(unsigned __int8)a6 location:(id)a7 fallbackLocationString:(id)a8;
++ (id)descriptionForTripMode:(unsigned __int8)mode;
+- (PPTripPart)initWithCoder:(id)coder;
+- (PPTripPart)initWithStartDate:(id)date endDate:(id)endDate eventIdentifiers:(id)identifiers mode:(unsigned __int8)mode location:(id)location fallbackLocationString:(id)string;
 - (id)description;
 - (id)destinationString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTripPart
@@ -15,141 +15,141 @@
   [v3 setDateFormat:@"d MMM yyyy"];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = [objc_opt_class() descriptionForTripMode:{-[PPTripPart tripMode](self, "tripMode")}];
-  v6 = [(PPTripPart *)self destinationString];
-  v7 = [(PPTripPart *)self startDate];
-  v8 = [v3 stringFromDate:v7];
-  v9 = [(PPTripPart *)self endDate];
-  v10 = [v3 stringFromDate:v9];
-  v11 = [v4 initWithFormat:@"[%@] %@, %@ -> %@ ", v5, v6, v8, v10];
+  destinationString = [(PPTripPart *)self destinationString];
+  startDate = [(PPTripPart *)self startDate];
+  v8 = [v3 stringFromDate:startDate];
+  endDate = [(PPTripPart *)self endDate];
+  v10 = [v3 stringFromDate:endDate];
+  v11 = [v4 initWithFormat:@"[%@] %@, %@ -> %@ ", v5, destinationString, v8, v10];
 
   return v11;
 }
 
 - (id)destinationString
 {
-  v3 = [(PPTripPart *)self mainLocation];
+  mainLocation = [(PPTripPart *)self mainLocation];
 
-  if (v3)
+  if (mainLocation)
   {
-    v4 = [(PPTripPart *)self mainLocation];
-    v5 = [v4 locality];
+    mainLocation2 = [(PPTripPart *)self mainLocation];
+    locality = [mainLocation2 locality];
 
-    v6 = [(PPTripPart *)self mainLocation];
-    v7 = [v6 country];
+    mainLocation3 = [(PPTripPart *)self mainLocation];
+    country = [mainLocation3 country];
 
-    if (v5 && v7)
+    if (locality && country)
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@", v5, v7];
+      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@, %@", locality, country];
 LABEL_11:
-      v10 = v8;
+      fallbackLocationString2 = v8;
 
       goto LABEL_13;
     }
 
-    if (v5)
+    if (locality)
     {
-      v8 = v5;
+      v8 = locality;
       goto LABEL_11;
     }
 
-    if (v7)
+    if (country)
     {
-      v8 = v7;
+      v8 = country;
       goto LABEL_11;
     }
   }
 
   else
   {
-    v9 = [(PPTripPart *)self fallbackLocationString];
+    fallbackLocationString = [(PPTripPart *)self fallbackLocationString];
 
-    if (v9)
+    if (fallbackLocationString)
     {
-      v10 = [(PPTripPart *)self fallbackLocationString];
+      fallbackLocationString2 = [(PPTripPart *)self fallbackLocationString];
       goto LABEL_13;
     }
   }
 
-  v10 = &stru_1F1B327D8;
+  fallbackLocationString2 = &stru_1F1B327D8;
 LABEL_13:
 
-  return v10;
+  return fallbackLocationString2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"sdt"];
-  [v5 encodeObject:self->_endDate forKey:@"edt"];
-  [v5 encodeInt32:self->_tripMode forKey:@"tpm"];
-  [v5 encodeObject:self->_eventIdentifiers forKey:@"eid"];
-  [v5 encodeObject:self->_mainLocation forKey:@"tploc"];
-  [v5 encodeObject:self->_fallbackLocationString forKey:@"tpfallloc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"sdt"];
+  [coderCopy encodeObject:self->_endDate forKey:@"edt"];
+  [coderCopy encodeInt32:self->_tripMode forKey:@"tpm"];
+  [coderCopy encodeObject:self->_eventIdentifiers forKey:@"eid"];
+  [coderCopy encodeObject:self->_mainLocation forKey:@"tploc"];
+  [coderCopy encodeObject:self->_fallbackLocationString forKey:@"tpfallloc"];
 }
 
-- (PPTripPart)initWithCoder:(id)a3
+- (PPTripPart)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"sdt"];
-  v8 = [v4 decodeObjectOfClass:v6 forKey:@"edt"];
-  v9 = [v4 decodeInt32ForKey:@"tpm"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"sdt"];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"edt"];
+  v9 = [coderCopy decodeInt32ForKey:@"tpm"];
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc(MEMORY[0x1E695DFD8]);
   v12 = objc_opt_class();
   v13 = [v11 initWithObjects:{v12, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v10);
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"eid"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"eid"];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tploc"];
-  v16 = [v4 decodeObjectOfClass:v5 forKey:@"tpfallloc"];
-  v17 = 0;
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tploc"];
+  v16 = [coderCopy decodeObjectOfClass:v5 forKey:@"tpfallloc"];
+  selfCopy = 0;
   if (v7 && v8 && v14)
   {
     self = [(PPTripPart *)self initWithStartDate:v7 endDate:v8 eventIdentifiers:v14 mode:v9 location:v15 fallbackLocationString:v16];
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (PPTripPart)initWithStartDate:(id)a3 endDate:(id)a4 eventIdentifiers:(id)a5 mode:(unsigned __int8)a6 location:(id)a7 fallbackLocationString:(id)a8
+- (PPTripPart)initWithStartDate:(id)date endDate:(id)endDate eventIdentifiers:(id)identifiers mode:(unsigned __int8)mode location:(id)location fallbackLocationString:(id)string
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifiersCopy = identifiers;
+  locationCopy = location;
+  stringCopy = string;
   v23.receiver = self;
   v23.super_class = PPTripPart;
   v18 = [(PPTripPart *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_startDate, a3);
-    objc_storeStrong(&v19->_endDate, a4);
-    objc_storeStrong(&v19->_eventIdentifiers, a5);
-    v19->_tripMode = a6;
-    objc_storeStrong(&v19->_mainLocation, a7);
-    objc_storeStrong(&v19->_fallbackLocationString, a8);
+    objc_storeStrong(&v18->_startDate, date);
+    objc_storeStrong(&v19->_endDate, endDate);
+    objc_storeStrong(&v19->_eventIdentifiers, identifiers);
+    v19->_tripMode = mode;
+    objc_storeStrong(&v19->_mainLocation, location);
+    objc_storeStrong(&v19->_fallbackLocationString, string);
   }
 
   return v19;
 }
 
-+ (id)descriptionForTripMode:(unsigned __int8)a3
++ (id)descriptionForTripMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 >= 9u)
+  if (mode >= 9u)
   {
     v5 = pp_default_log_handle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = modeCopy;
       _os_log_fault_impl(&dword_1A7FD3000, v5, OS_LOG_TYPE_FAULT, "PPScoredEvent::descriptionForTripMode, unsupported trip mode: %hhu", v7, 8u);
     }
 
@@ -158,7 +158,7 @@ LABEL_13:
 
   else
   {
-    result = off_1E77F7C38[a3];
+    result = off_1E77F7C38[mode];
   }
 
   v6 = *MEMORY[0x1E69E9840];

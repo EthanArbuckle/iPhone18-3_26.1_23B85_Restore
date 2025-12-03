@@ -1,44 +1,44 @@
 @interface WFActionUserInterfaceListener
-- (WFActionUserInterfaceListener)initWithUserInterfaceType:(id)a3 actionClassName:(id)a4 classNamesByType:(id)a5 attribution:(id)a6;
+- (WFActionUserInterfaceListener)initWithUserInterfaceType:(id)type actionClassName:(id)name classNamesByType:(id)byType attribution:(id)attribution;
 @end
 
 @implementation WFActionUserInterfaceListener
 
-- (WFActionUserInterfaceListener)initWithUserInterfaceType:(id)a3 actionClassName:(id)a4 classNamesByType:(id)a5 attribution:(id)a6
+- (WFActionUserInterfaceListener)initWithUserInterfaceType:(id)type actionClassName:(id)name classNamesByType:(id)byType attribution:(id)attribution
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = NSClassFromString(v11);
+  typeCopy = type;
+  nameCopy = name;
+  byTypeCopy = byType;
+  attributionCopy = attribution;
+  v14 = NSClassFromString(nameCopy);
   if (v14)
   {
-    v15 = [(objc_class *)v14 userInterfaceXPCInterface];
-    v16 = [v12 objectForKeyedSubscript:v10];
+    userInterfaceXPCInterface = [(objc_class *)v14 userInterfaceXPCInterface];
+    v16 = [byTypeCopy objectForKeyedSubscript:typeCopy];
     v17 = v16;
     if (v16)
     {
       v18 = NSClassFromString(v16);
       if (v18)
       {
-        v19 = [[v18 alloc] initWithUserInterfaceType:v10 attribution:v13];
+        v19 = [[v18 alloc] initWithUserInterfaceType:typeCopy attribution:attributionCopy];
         v27.receiver = self;
         v27.super_class = WFActionUserInterfaceListener;
-        v20 = [(WFSingleConnectionXPCListener *)&v27 initWithExportedObject:v19 exportedInterface:v15];
+        v20 = [(WFSingleConnectionXPCListener *)&v27 initWithExportedObject:v19 exportedInterface:userInterfaceXPCInterface];
         self = v20;
         if (v20)
         {
           objc_storeStrong(&v20->_actionInterface, v19);
           self = self;
-          v21 = self;
+          selfCopy = self;
 LABEL_15:
 
           goto LABEL_16;
         }
 
 LABEL_14:
-        v21 = 0;
+        selfCopy = 0;
         goto LABEL_15;
       }
 
@@ -69,9 +69,9 @@ LABEL_14:
       *buf = 136315650;
       v29 = "[WFActionUserInterfaceListener initWithUserInterfaceType:actionClassName:classNamesByType:attribution:]";
       v30 = 2114;
-      v31 = v10;
+      v31 = typeCopy;
       v32 = 2114;
-      v33 = v11;
+      v33 = nameCopy;
       v22 = "%s No user interface of type %{public}@ for action: %{public}@";
       v23 = v19;
       v24 = OS_LOG_TYPE_ERROR;
@@ -82,20 +82,20 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v15 = getWFDialogLogObject();
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+  userInterfaceXPCInterface = getWFDialogLogObject();
+  if (os_log_type_enabled(userInterfaceXPCInterface, OS_LOG_TYPE_FAULT))
   {
     *buf = 136315394;
     v29 = "[WFActionUserInterfaceListener initWithUserInterfaceType:actionClassName:classNamesByType:attribution:]";
     v30 = 2114;
-    v31 = v11;
-    _os_log_impl(&dword_274AD4000, v15, OS_LOG_TYPE_FAULT, "%s Action class not loaded: %{public}@", buf, 0x16u);
+    v31 = nameCopy;
+    _os_log_impl(&dword_274AD4000, userInterfaceXPCInterface, OS_LOG_TYPE_FAULT, "%s Action class not loaded: %{public}@", buf, 0x16u);
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v21;
+  return selfCopy;
 }
 
 @end

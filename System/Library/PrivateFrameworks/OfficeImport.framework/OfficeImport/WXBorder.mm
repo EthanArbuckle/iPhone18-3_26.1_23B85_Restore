@@ -1,7 +1,7 @@
 @interface WXBorder
 + (id)borderStylesEnumMap;
 + (void)borderStylesEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXBorder
@@ -29,19 +29,19 @@ void __31__WXBorder_borderStylesEnumMap__block_invoke()
   +[WXBorder borderStylesEnumMap]::sBorderStylesEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  stateCopy = state;
   v24 = 0;
-  v10 = [a1 borderStylesEnumMap];
-  readEnumProperty<WDBorderStyle>(a3, "val", v10, &v24);
+  borderStylesEnumMap = [self borderStylesEnumMap];
+  readEnumProperty<WDBorderStyle>(from, "val", borderStylesEnumMap, &v24);
 
-  [v8 setStyle:v24];
-  if ([v8 style] != 253)
+  [toCopy setStyle:v24];
+  if ([toCopy style] != 253)
   {
-    v11 = [v9 WXMainNamespace];
-    v12 = CXDefaultStringAttribute(a3, v11, "color", 0);
+    wXMainNamespace = [stateCopy WXMainNamespace];
+    v12 = CXDefaultStringAttribute(from, wXMainNamespace, "color", 0);
 
     v13 = [WXShading getColorFromString:v12];
     if (!v13)
@@ -49,39 +49,39 @@ void __31__WXBorder_borderStylesEnumMap__block_invoke()
       v13 = +[OITSUColor blackColor];
     }
 
-    [v8 setColor:v13];
+    [toCopy setColor:v13];
     v23 = 0;
-    v14 = [v9 WXMainNamespace];
-    v15 = CXOptionalLongAttribute(a3, v14, "sz", &v23);
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v15 = CXOptionalLongAttribute(from, wXMainNamespace2, "sz", &v23);
 
     if (v15)
     {
-      [v8 setWidth:v23];
+      [toCopy setWidth:v23];
     }
 
-    v16 = [v9 WXMainNamespace];
-    v17 = CXOptionalLongAttribute(a3, v16, "space", &v23);
+    wXMainNamespace3 = [stateCopy WXMainNamespace];
+    v17 = CXOptionalLongAttribute(from, wXMainNamespace3, "space", &v23);
 
     if (v17)
     {
-      [v8 setSpace:v23];
+      [toCopy setSpace:v23];
     }
 
     v22 = 0;
-    v18 = [v9 WXMainNamespace];
-    v19 = CXOptionalBoolAttribute(a3, v18, "shadow", &v22);
+    wXMainNamespace4 = [stateCopy WXMainNamespace];
+    v19 = CXOptionalBoolAttribute(from, wXMainNamespace4, "shadow", &v22);
 
     if (v19)
     {
-      [v8 setShadow:v22];
+      [toCopy setShadow:v22];
     }
 
-    v20 = [v9 WXMainNamespace];
-    v21 = CXOptionalBoolAttribute(a3, v20, "frame", &v22);
+    wXMainNamespace5 = [stateCopy WXMainNamespace];
+    v21 = CXOptionalBoolAttribute(from, wXMainNamespace5, "frame", &v22);
 
     if (v21)
     {
-      [v8 setFrame:v22];
+      [toCopy setFrame:v22];
     }
   }
 }

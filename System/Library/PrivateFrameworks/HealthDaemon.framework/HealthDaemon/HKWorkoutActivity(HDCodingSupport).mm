@@ -13,12 +13,12 @@
   {
     v4 = v3;
     v5 = objc_alloc(MEMORY[0x277CCAD78]);
-    v6 = [v4 uuid];
-    v7 = [v5 initWithUUIDString:v6];
+    uuid = [v4 uuid];
+    v7 = [v5 initWithUUIDString:uuid];
 
     v8 = MEMORY[0x277CCDC38];
-    v9 = [v4 configuration];
-    v10 = [v8 createWithCodable:v9];
+    configuration = [v4 configuration];
+    v10 = [v8 createWithCodable:configuration];
 
     [v4 startDate];
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
@@ -38,8 +38,8 @@
     if ([v4 hasMetadata])
     {
       v16 = MEMORY[0x277CBEAC0];
-      v17 = [v4 metadata];
-      v18 = [v16 hk_dictionaryWithCodableMetadata:v17];
+      metadata = [v4 metadata];
+      v18 = [v16 hk_dictionaryWithCodableMetadata:metadata];
     }
 
     else
@@ -47,11 +47,11 @@
       v18 = 0;
     }
 
-    v19 = [v4 statistics];
+    statistics = [v4 statistics];
     v20 = v11;
     v21 = v12;
     objc_opt_self();
-    if ([v19 count])
+    if ([statistics count])
     {
       v53 = v21;
       v47 = v18;
@@ -59,13 +59,13 @@
       v49 = v7;
       v50 = v4;
       v51 = v3;
-      v52 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v19, "count")}];
+      v52 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(statistics, "count")}];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v46 = v19;
-      v22 = v19;
+      v46 = statistics;
+      v22 = statistics;
       v23 = [v22 countByEnumeratingWithState:&v54 objects:v60 count:16];
       if (v23)
       {
@@ -81,20 +81,20 @@
             }
 
             v27 = *(*(&v54 + 1) + 8 * i);
-            v28 = [v27 quantityType];
+            quantityType = [v27 quantityType];
             if (_HKValidDataTypeCode())
             {
-              v29 = [MEMORY[0x277CCD830] _quantityTypeWithCode:v28];
+              v29 = [MEMORY[0x277CCD830] _quantityTypeWithCode:quantityType];
               if (v29)
               {
                 v30 = v20;
                 v31 = [objc_alloc(MEMORY[0x277CCDA50]) initWithDataType:v29 startDate:v20 endDate:v53];
-                v32 = [v29 canonicalUnit];
+                canonicalUnit = [v29 canonicalUnit];
                 if ([v27 hasSumQuantity])
                 {
                   v33 = MEMORY[0x277CCD7E8];
                   [v27 sumQuantity];
-                  v34 = [v33 quantityWithUnit:v32 doubleValue:?];
+                  v34 = [v33 quantityWithUnit:canonicalUnit doubleValue:?];
                   [v31 setSumQuantity:v34];
                 }
 
@@ -102,7 +102,7 @@
                 {
                   v35 = MEMORY[0x277CCD7E8];
                   [v27 minQuantity];
-                  v36 = [v35 quantityWithUnit:v32 doubleValue:?];
+                  v36 = [v35 quantityWithUnit:canonicalUnit doubleValue:?];
                   [v31 setMinimumQuantity:v36];
                 }
 
@@ -110,7 +110,7 @@
                 {
                   v37 = MEMORY[0x277CCD7E8];
                   [v27 maxQuantity];
-                  v38 = [v37 quantityWithUnit:v32 doubleValue:?];
+                  v38 = [v37 quantityWithUnit:canonicalUnit doubleValue:?];
                   [v31 setMaximumQuantity:v38];
                 }
 
@@ -118,7 +118,7 @@
                 {
                   v39 = MEMORY[0x277CCD7E8];
                   [v27 avgQuantity];
-                  v40 = [v39 quantityWithUnit:v32 doubleValue:?];
+                  v40 = [v39 quantityWithUnit:canonicalUnit doubleValue:?];
                   [v31 setAverageQuantity:v40];
                 }
 
@@ -135,7 +135,7 @@
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 *buf = 134217984;
-                v59 = v28;
+                v59 = quantityType;
                 _os_log_error_impl(&dword_228986000, v41, OS_LOG_TYPE_ERROR, "Ignoring workout statistics for invalid data type code %ld", buf, 0xCu);
               }
             }
@@ -151,7 +151,7 @@
       v3 = v51;
       v10 = v48;
       v7 = v49;
-      v19 = v46;
+      statistics = v46;
       v18 = v47;
       v42 = v52;
       v21 = v53;

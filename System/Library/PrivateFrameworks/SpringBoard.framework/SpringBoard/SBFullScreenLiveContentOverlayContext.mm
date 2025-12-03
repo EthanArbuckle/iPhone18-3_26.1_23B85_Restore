@@ -1,20 +1,20 @@
 @interface SBFullScreenLiveContentOverlayContext
-- (SBFullScreenLiveContentOverlayContext)initWithOverlay:(id)a3;
+- (SBFullScreenLiveContentOverlayContext)initWithOverlay:(id)overlay;
 @end
 
 @implementation SBFullScreenLiveContentOverlayContext
 
-- (SBFullScreenLiveContentOverlayContext)initWithOverlay:(id)a3
+- (SBFullScreenLiveContentOverlayContext)initWithOverlay:(id)overlay
 {
-  v5 = a3;
+  overlayCopy = overlay;
   v9.receiver = self;
   v9.super_class = SBFullScreenLiveContentOverlayContext;
   v6 = [(SBFullScreenLiveContentOverlayContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_overlay, a3);
-    v7->_overlayType = [v5 overlayType];
+    objc_storeStrong(&v6->_overlay, overlay);
+    v7->_overlayType = [overlayCopy overlayType];
   }
 
   return v7;

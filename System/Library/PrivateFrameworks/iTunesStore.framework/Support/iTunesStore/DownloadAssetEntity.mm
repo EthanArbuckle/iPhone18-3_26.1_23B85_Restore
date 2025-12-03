@@ -1,8 +1,8 @@
 @interface DownloadAssetEntity
-+ (id)copyDatabaseDictionaryWithRequestProperties:(id)a3;
-+ (id)databasePropertyToSetClientProperty:(id)a3;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)newDownloadKeyCookieWithValue:(id)a3 URL:(id)a4;
++ (id)copyDatabaseDictionaryWithRequestProperties:(id)properties;
++ (id)databasePropertyToSetClientProperty:(id)property;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)newDownloadKeyCookieWithValue:(id)value URL:(id)l;
 + (void)initialize;
 - (BOOL)deleteFromDatabase;
 - (NSArray)sinfs;
@@ -12,53 +12,53 @@
 
 @implementation DownloadAssetEntity
 
-+ (id)copyDatabaseDictionaryWithRequestProperties:(id)a3
++ (id)copyDatabaseDictionaryWithRequestProperties:(id)properties
 {
   v4 = objc_alloc_init(NSMutableDictionary);
-  if (a3)
+  if (properties)
   {
-    [v4 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(a3, "allowedRetryCount")), @"retry_count"}];
-    [v4 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(a3, "isITunesStoreRequest") ^ 1), @"is_external"}];
-    [v4 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(a3, "networkServiceType")), @"service_type"}];
-    [a3 timeoutInterval];
+    [v4 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(properties, "allowedRetryCount")), @"retry_count"}];
+    [v4 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", objc_msgSend(properties, "isITunesStoreRequest") ^ 1), @"is_external"}];
+    [v4 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", objc_msgSend(properties, "networkServiceType")), @"service_type"}];
+    [properties timeoutInterval];
     [v4 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"timeout_interval"}];
-    v5 = [a3 HTTPBody];
-    if (v5)
+    hTTPBody = [properties HTTPBody];
+    if (hTTPBody)
     {
-      [v4 setObject:v5 forKey:@"body_data"];
+      [v4 setObject:hTTPBody forKey:@"body_data"];
     }
 
-    v6 = [a3 HTTPHeaders];
-    if (v6)
+    hTTPHeaders = [properties HTTPHeaders];
+    if (hTTPHeaders)
     {
-      v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:0];
+      v7 = [NSPropertyListSerialization dataWithPropertyList:hTTPHeaders format:200 options:0 error:0];
       if (v7)
       {
         [v4 setObject:v7 forKey:@"http_headers"];
       }
     }
 
-    v8 = [a3 HTTPMethod];
-    if (v8)
+    hTTPMethod = [properties HTTPMethod];
+    if (hTTPMethod)
     {
-      [v4 setObject:v8 forKey:@"http_method"];
+      [v4 setObject:hTTPMethod forKey:@"http_method"];
     }
 
-    v9 = [a3 requestParameters];
-    if (v9)
+    requestParameters = [properties requestParameters];
+    if (requestParameters)
     {
-      v10 = [NSPropertyListSerialization dataWithPropertyList:v9 format:200 options:0 error:0];
+      v10 = [NSPropertyListSerialization dataWithPropertyList:requestParameters format:200 options:0 error:0];
       if (v10)
       {
         [v4 setObject:v10 forKey:@"request_parameters"];
       }
     }
 
-    v11 = [a3 URL];
-    v12 = [v11 absoluteString];
-    if (v12)
+    v11 = [properties URL];
+    absoluteString = [v11 absoluteString];
+    if (absoluteString)
     {
-      v13 = v12;
+      v13 = absoluteString;
       v14 = [objc_msgSend(v11 "path")];
       if (v14)
       {
@@ -72,15 +72,15 @@
   return v4;
 }
 
-+ (id)newDownloadKeyCookieWithValue:(id)a3 URL:(id)a4
++ (id)newDownloadKeyCookieWithValue:(id)value URL:(id)l
 {
   v6 = objc_alloc_init(NSMutableDictionary);
   [v6 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", 604800), NSHTTPCookieMaximumAge}];
-  [v6 setObject:objc_msgSend(a4 forKey:{"host"), NSHTTPCookieDomain}];
+  [v6 setObject:objc_msgSend(l forKey:{"host"), NSHTTPCookieDomain}];
   [v6 setObject:@"downloadKey" forKey:NSHTTPCookieName];
-  [v6 setObject:objc_msgSend(a4 forKey:{"path"), NSHTTPCookiePath}];
-  [v6 setObject:a4 forKey:NSHTTPCookieOriginURL];
-  [v6 setObject:a3 forKey:NSHTTPCookieValue];
+  [v6 setObject:objc_msgSend(l forKey:{"path"), NSHTTPCookiePath}];
+  [v6 setObject:l forKey:NSHTTPCookieOriginURL];
+  [v6 setObject:value forKey:NSHTTPCookieValue];
   v7 = [[NSHTTPCookie alloc] initWithProperties:v6];
 
   return v7;
@@ -154,15 +154,15 @@
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v8 shouldLog];
+      shouldLog = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
       if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
@@ -201,15 +201,15 @@
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v8 shouldLog];
+      shouldLog2 = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog2 | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -243,8 +243,8 @@
     [v3 setHTTPBody:v32];
   }
 
-  v21 = [v36 BOOLValue];
-  if (v21)
+  bOOLValue = [v36 BOOLValue];
+  if (bOOLValue)
   {
     v22 = 2;
   }
@@ -254,7 +254,7 @@
     v22 = 0;
   }
 
-  [v3 setITunesStoreRequest:v21 ^ 1];
+  [v3 setITunesStoreRequest:bOOLValue ^ 1];
   [v3 setURLBagType:v22];
   if (v34)
   {
@@ -297,33 +297,33 @@
 
   v4 = [DownloadEntity alloc];
   v5 = -[DownloadEntity initWithPersistentID:inDatabase:](v4, "initWithPersistentID:inDatabase:", [v8 longLongValue], -[DownloadAssetEntity database](self, "database"));
-  v6 = [(DownloadEntity *)v5 copyStoreDownloadMetadata];
-  v3 = [v6 sinfs];
+  copyStoreDownloadMetadata = [(DownloadEntity *)v5 copyStoreDownloadMetadata];
+  sinfs = [copyStoreDownloadMetadata sinfs];
 
-  return v3;
+  return sinfs;
 }
 
-+ (id)databasePropertyToSetClientProperty:(id)a3
++ (id)databasePropertyToSetClientProperty:(id)property
 {
   result = [qword_100383EC0 objectForKey:?];
   if (!result)
   {
     v5 = qword_100383EB8;
 
-    return [v5 objectForKey:a3];
+    return [v5 objectForKey:property];
   }
 
   return result;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
   result = [qword_100383EC8 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___DownloadAssetEntity;
-    return objc_msgSendSuper2(&v6, "disambiguatedSQLForProperty:", a3);
+    return objc_msgSendSuper2(&v6, "disambiguatedSQLForProperty:", property);
   }
 
   return result;
@@ -333,8 +333,8 @@
 {
   v6.receiver = self;
   v6.super_class = DownloadAssetEntity;
-  v3 = [(DownloadAssetEntity *)&v6 deleteFromDatabase];
-  if (v3)
+  deleteFromDatabase = [(DownloadAssetEntity *)&v6 deleteFromDatabase];
+  if (deleteFromDatabase)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -344,12 +344,12 @@
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
   }
 
-  return v3;
+  return deleteFromDatabase;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{@"IFNULL(asset.local_path, ITSDGetAssetPath(asset.download_id, asset.ROWID))", @"IFNULL(asset.blocked_reason, 0)", @"IFNULL(asset.blocked_reason, 0)", 0}];
     v4 = [[NSArray alloc] initWithObjects:{@"retry_count", @"asset_order", @"avfoundation_blocked", @"bytes_total", @"destination_url", @"download_id", @"download_token", @"dpinfo_data", @"uncompressed_size", @"file_protection", @"hash_array", @"hash_type", @"body_data", @"body_data_file_path", @"http_headers", @"http_method", @"is_discretionary", @"is_downloaded", @"is_drm_free", @"is_external", @"is_hls", @"is_local_cache_server", @"is_zip_streamable", @"local_path", @"service_type", @"bytes_to_hash", @"path_extension", @"processing_types", @"protection_type", @"request_parameters", @"server_guid", @"sinfs_data", @"store_flavor", @"timeout_interval", @"asset_type", @"url", @"video_dimensions", 0}];
@@ -371,7 +371,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [v3 setObject:objc_msgSend(a1 forKey:{"disambiguatedSQLForProperty:", *(*(&v11 + 1) + 8 * i)), *(*(&v11 + 1) + 8 * i)}];
+          [v3 setObject:objc_msgSend(self forKey:{"disambiguatedSQLForProperty:", *(*(&v11 + 1) + 8 * i)), *(*(&v11 + 1) + 8 * i)}];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

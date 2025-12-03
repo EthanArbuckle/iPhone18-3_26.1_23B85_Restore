@@ -1,13 +1,13 @@
 @interface CLSAuthTree
 - (CLSAuthTree)init;
-- (CLSAuthTree)initWithCoder:(id)a3;
-- (CLSAuthTree)initWithOverridingStatus:(int64_t)a3;
-- (CLSAuthTree)initWithStatus:(int64_t)a3 statusID:(id)a4 identifier:(id)a5;
-- (int64_t)authStatusAtIdentifierPath:(id)a3;
-- (int64_t)authStatusFor:(id)a3;
-- (void)_addNode:(id)a3 parentStatusID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAuthStatus:(int64_t)a3 forIdentifier:(id)a4 statusID:(id)a5 parentStatusID:(id)a6;
+- (CLSAuthTree)initWithCoder:(id)coder;
+- (CLSAuthTree)initWithOverridingStatus:(int64_t)status;
+- (CLSAuthTree)initWithStatus:(int64_t)status statusID:(id)d identifier:(id)identifier;
+- (int64_t)authStatusAtIdentifierPath:(id)path;
+- (int64_t)authStatusFor:(id)for;
+- (void)_addNode:(id)node parentStatusID:(id)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAuthStatus:(int64_t)status forIdentifier:(id)identifier statusID:(id)d parentStatusID:(id)iD;
 @end
 
 @implementation CLSAuthTree
@@ -26,14 +26,14 @@
   objc_exception_throw(v11);
 }
 
-- (CLSAuthTree)initWithOverridingStatus:(int64_t)a3
+- (CLSAuthTree)initWithOverridingStatus:(int64_t)status
 {
   v9.receiver = self;
   v9.super_class = CLSAuthTree;
   v5 = [(CLSAuthTree *)&v9 init];
   if (v5)
   {
-    v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v4, a3);
+    v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v4, status);
     overridingStatus = v5->_overridingStatus;
     v5->_overridingStatus = v6;
   }
@@ -41,10 +41,10 @@
   return v5;
 }
 
-- (CLSAuthTree)initWithStatus:(int64_t)a3 statusID:(id)a4 identifier:(id)a5
+- (CLSAuthTree)initWithStatus:(int64_t)status statusID:(id)d identifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = CLSAuthTree;
   v10 = [(CLSAuthTree *)&v18 init];
@@ -55,16 +55,16 @@
     v10->_graph = v11;
 
     v13 = [CLSAuthTreeNode alloc];
-    v15 = objc_msgSend_initWithStatusID_identifier_status_(v13, v14, v8, v9, a3);
+    v15 = objc_msgSend_initWithStatusID_identifier_status_(v13, v14, dCopy, identifierCopy, status);
     objc_msgSend__addNode_parentStatusID_(v10, v16, v15, @"__ROOT__");
   }
 
   return v10;
 }
 
-- (CLSAuthTree)initWithCoder:(id)a3
+- (CLSAuthTree)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CLSAuthTree;
   v5 = [(CLSAuthTree *)&v24 init];
@@ -76,13 +76,13 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v12 = objc_msgSend_initWithObjects_(v6, v11, v7, v8, v9, v10, 0);
-    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v13, v12, @"graph");
+    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v13, v12, @"graph");
     v17 = objc_msgSend_mutableCopy(v14, v15, v16);
     graph = v5->_graph;
     v5->_graph = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"overridingStatus");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"overridingStatus");
     overridingStatus = v5->_overridingStatus;
     v5->_overridingStatus = v21;
   }
@@ -90,29 +90,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   graph = self->_graph;
-  v7 = a3;
-  objc_msgSend_encodeObject_forKey_(v7, v5, graph, @"graph");
-  objc_msgSend_encodeObject_forKey_(v7, v6, self->_overridingStatus, @"overridingStatus");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, graph, @"graph");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_overridingStatus, @"overridingStatus");
 }
 
-- (void)setAuthStatus:(int64_t)a3 forIdentifier:(id)a4 statusID:(id)a5 parentStatusID:(id)a6
+- (void)setAuthStatus:(int64_t)status forIdentifier:(id)identifier statusID:(id)d parentStatusID:(id)iD
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  iDCopy = iD;
+  dCopy = d;
+  identifierCopy = identifier;
   v13 = [CLSAuthTreeNode alloc];
-  v16 = objc_msgSend_initWithStatusID_identifier_status_(v13, v14, v11, v12, a3);
+  v16 = objc_msgSend_initWithStatusID_identifier_status_(v13, v14, dCopy, identifierCopy, status);
 
-  objc_msgSend__addNode_parentStatusID_(self, v15, v16, v10);
+  objc_msgSend__addNode_parentStatusID_(self, v15, v16, iDCopy);
 }
 
-- (int64_t)authStatusAtIdentifierPath:(id)a3
+- (int64_t)authStatusAtIdentifierPath:(id)path
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   overridingStatus = self->_overridingStatus;
   if (overridingStatus)
   {
@@ -125,14 +125,14 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v39 = v6;
-    obj = v6;
+    v39 = pathCopy;
+    obj = pathCopy;
     v42 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v50, v55, 16);
     if (v42)
     {
       v43 = *v51;
       v11 = @"__ROOT__";
-      v41 = self;
+      selfCopy = self;
       while (2)
       {
         v12 = 0;
@@ -231,7 +231,7 @@ LABEL_10:
 
           v12 = v44 + 1;
           v13 = v11;
-          self = v41;
+          self = selfCopy;
         }
 
         while (v44 + 1 != v42);
@@ -253,17 +253,17 @@ LABEL_10:
 
 LABEL_30:
 
-    v6 = v39;
+    pathCopy = v39;
   }
 
   v37 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (int64_t)authStatusFor:(id)a3
+- (int64_t)authStatusFor:(id)for
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   overridingStatus = self->_overridingStatus;
   if (overridingStatus)
   {
@@ -293,7 +293,7 @@ LABEL_30:
 
           v17 = *(*(&v29 + 1) + 8 * i);
           v18 = objc_msgSend_identifier(v17, v12, v13, v29);
-          if (!(v6 | v18))
+          if (!(forCopy | v18))
           {
 LABEL_17:
             v8 = objc_msgSend_status(v17, v12, v13);
@@ -303,10 +303,10 @@ LABEL_17:
           v19 = v18;
           v20 = objc_msgSend_identifier(v17, v12, v13);
           v23 = v20;
-          if (v6 && v20)
+          if (forCopy && v20)
           {
             v24 = objc_msgSend_identifier(v17, v21, v22);
-            isEqualToString = objc_msgSend_isEqualToString_(v24, v25, v6);
+            isEqualToString = objc_msgSend_isEqualToString_(v24, v25, forCopy);
 
             if (isEqualToString)
             {
@@ -337,20 +337,20 @@ LABEL_18:
   return v8;
 }
 
-- (void)_addNode:(id)a3 parentStatusID:(id)a4
+- (void)_addNode:(id)node parentStatusID:(id)d
 {
-  v11 = a3;
-  v7 = a4;
-  if (v7)
+  nodeCopy = node;
+  dCopy = d;
+  if (dCopy)
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(self->_graph, v6, v7);
+    v9 = objc_msgSend_objectForKeyedSubscript_(self->_graph, v6, dCopy);
     if (!v9)
     {
       v9 = objc_opt_new();
-      objc_msgSend_setObject_forKeyedSubscript_(self->_graph, v10, v9, v7);
+      objc_msgSend_setObject_forKeyedSubscript_(self->_graph, v10, v9, dCopy);
     }
 
-    objc_msgSend_addObject_(v9, v8, v11);
+    objc_msgSend_addObject_(v9, v8, nodeCopy);
   }
 }
 

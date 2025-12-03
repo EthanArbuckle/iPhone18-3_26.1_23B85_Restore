@@ -1,6 +1,6 @@
 @interface PSEnrollmentNavigationController
 - (CGSize)preferredContentSize;
-- (PSEnrollmentNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PSEnrollmentNavigationController)initWithNibName:(id)name bundle:(id)bundle;
 - (PSEnrollmentNavigationControllerDismissalDelegate)dismissalDelegate;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
@@ -8,13 +8,13 @@
 
 @implementation PSEnrollmentNavigationController
 
-- (PSEnrollmentNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (PSEnrollmentNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v13.receiver = self;
   v13.super_class = PSEnrollmentNavigationController;
-  v8 = [(PSEnrollmentNavigationController *)&v13 initWithNibName:v6 bundle:v7];
+  v8 = [(PSEnrollmentNavigationController *)&v13 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v15 = 0;
@@ -35,8 +35,8 @@
 
     v10 = v9;
     _Block_object_dispose(&v15, 8);
-    v11 = [v9 sharedStyle];
-    [v11 applyThemeToNavigationController:v8];
+    sharedStyle = [v9 sharedStyle];
+    [sharedStyle applyThemeToNavigationController:v8];
   }
 
   return v8;
@@ -44,8 +44,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isiPad])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v3 = 30;
   }
@@ -60,16 +60,16 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(PSEnrollmentNavigationController *)self topViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  topViewController = [(PSEnrollmentNavigationController *)self topViewController];
+  preferredStatusBarStyle = [topViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(PSEnrollmentNavigationController *)self topViewController];
-  [v2 preferredContentSize];
+  topViewController = [(PSEnrollmentNavigationController *)self topViewController];
+  [topViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 

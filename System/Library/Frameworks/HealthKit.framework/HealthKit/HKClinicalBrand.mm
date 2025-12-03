@@ -1,11 +1,11 @@
 @interface HKClinicalBrand
 + (id)createFakeBrandForTestAccounts;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalBrand)init;
-- (HKClinicalBrand)initWithCoder:(id)a3;
-- (HKClinicalBrand)initWithExternalID:(id)a3 batchID:(id)a4;
+- (HKClinicalBrand)initWithCoder:(id)coder;
+- (HKClinicalBrand)initWithExternalID:(id)d batchID:(id)iD;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalBrand
@@ -20,20 +20,20 @@
   return 0;
 }
 
-- (HKClinicalBrand)initWithExternalID:(id)a3 batchID:(id)a4
+- (HKClinicalBrand)initWithExternalID:(id)d batchID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HKClinicalBrand;
   v8 = [(HKClinicalBrand *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     externalID = v8->_externalID;
     v8->_externalID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     batchID = v8->_batchID;
     v8->_batchID = v11;
   }
@@ -48,20 +48,20 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HKClinicalBrand *)self externalID];
-    v7 = [v5 externalID];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    externalID = [(HKClinicalBrand *)self externalID];
+    externalID2 = [v5 externalID];
+    if ([externalID isEqualToString:externalID2])
     {
-      v8 = [(HKClinicalBrand *)self batchID];
-      v9 = [v5 batchID];
-      v10 = [v8 isEqualToString:v9];
+      batchID = [(HKClinicalBrand *)self batchID];
+      batchID2 = [v5 batchID];
+      v10 = [batchID isEqualToString:batchID2];
     }
 
     else
@@ -80,29 +80,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKClinicalBrand *)self externalID];
-  v4 = [v3 hash];
-  v5 = [(HKClinicalBrand *)self batchID];
-  v6 = [v5 hash];
+  externalID = [(HKClinicalBrand *)self externalID];
+  v4 = [externalID hash];
+  batchID = [(HKClinicalBrand *)self batchID];
+  v6 = [batchID hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKClinicalBrand *)self externalID];
-  [v4 encodeObject:v5 forKey:@"externalID"];
+  coderCopy = coder;
+  externalID = [(HKClinicalBrand *)self externalID];
+  [coderCopy encodeObject:externalID forKey:@"externalID"];
 
-  v6 = [(HKClinicalBrand *)self batchID];
-  [v4 encodeObject:v6 forKey:@"batchID"];
+  batchID = [(HKClinicalBrand *)self batchID];
+  [coderCopy encodeObject:batchID forKey:@"batchID"];
 }
 
-- (HKClinicalBrand)initWithCoder:(id)a3
+- (HKClinicalBrand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchID"];
   v7 = v6;
   if (v5)
   {
@@ -118,18 +118,18 @@
   {
     v9 = objc_alloc(MEMORY[0x1E696ABC0]);
     v10 = [v9 initWithDomain:*MEMORY[0x1E696A250] code:4865 userInfo:0];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HKClinicalBrand *)self initWithExternalID:v5 batchID:v6];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

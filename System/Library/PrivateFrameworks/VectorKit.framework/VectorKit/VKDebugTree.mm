@@ -1,10 +1,10 @@
 @interface VKDebugTree
-- (BOOL)deserializeTree:(id)a3;
-- (BOOL)deserializeZippedTree:(id)a3;
+- (BOOL)deserializeTree:(id)tree;
+- (BOOL)deserializeZippedTree:(id)tree;
 - (id).cxx_construct;
-- (id)_serializeNode:(const void *)a3;
-- (id)_serializeProperty:(const void *)a3;
-- (id)_serializeValue:(const void *)a3;
+- (id)_serializeNode:(const void *)node;
+- (id)_serializeProperty:(const void *)property;
+- (id)_serializeValue:(const void *)value;
 - (id)logTree;
 - (id)serializeTree;
 - (id)serializeZippedTree;
@@ -12,10 +12,10 @@
 - (optional<gdc::DebugTreeProperty>)_deserializeProperty:(optional<gdc::DebugTreeProperty> *__return_ptr)retstr;
 - (optional<gdc::DebugTreeValue>)_deserializeValue:(optional<gdc::DebugTreeValue> *__return_ptr)retstr;
 - (void)_populateData;
-- (void)populateData:(id)a3;
-- (void)replaceInternalData:(const void *)a3;
-- (void)setOption:(unint64_t)a3 value:(BOOL)a4;
-- (void)setOptions:(id)a3;
+- (void)populateData:(id)data;
+- (void)replaceInternalData:(const void *)data;
+- (void)setOption:(unint64_t)option value:(BOOL)value;
+- (void)setOptions:(id)options;
 @end
 
 @implementation VKDebugTree
@@ -32,11 +32,11 @@
   return self;
 }
 
-- (BOOL)deserializeZippedTree:(id)a3
+- (BOOL)deserializeZippedTree:(id)tree
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  treeCopy = tree;
+  v5 = treeCopy;
+  if (treeCopy && [treeCopy length])
   {
     v6 = [v5 length];
     v7 = [v5 length];
@@ -59,8 +59,8 @@
         [v8 increaseLengthBy:v9];
       }
 
-      v11 = [v8 mutableBytes];
-      v20.next_out = (v11 + v20.total_out);
+      mutableBytes = [v8 mutableBytes];
+      v20.next_out = (mutableBytes + v20.total_out);
       v12 = [v8 length];
       v20.avail_out = v12 - LODWORD(v20.total_out);
       v13 = inflate(&v20, 2);
@@ -99,8 +99,8 @@ LABEL_14:
 
 - (id)serializeZippedTree
 {
-  v2 = [(VKDebugTree *)self serializeTree];
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v2 requiringSecureCoding:0 error:0];
+  serializeTree = [(VKDebugTree *)self serializeTree];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:serializeTree requiringSecureCoding:0 error:0];
   v10.total_out = 0;
   memset(&v10.zalloc, 0, 24);
   v10.avail_in = [v3 length];
@@ -120,8 +120,8 @@ LABEL_14:
         [v5 increaseLengthBy:1024];
       }
 
-      v7 = [v5 mutableBytes];
-      v10.next_out = (v7 + v10.total_out);
+      mutableBytes = [v5 mutableBytes];
+      v10.next_out = (mutableBytes + v10.total_out);
       v8 = [v5 length];
       v10.avail_out = v8 - LODWORD(v10.total_out);
       deflate(&v10, 4);
@@ -136,10 +136,10 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)deserializeTree:(id)a3
+- (BOOL)deserializeTree:(id)tree
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  treeCopy = tree;
   std::string::basic_string[abi:nn200100]<0>(v27, "Root");
   gdc::DebugTreeNode::DebugTreeNode(v14, v27);
   if (*(&self->_debugTree._name.__rep_.__l + 23) < 0)
@@ -190,9 +190,9 @@ LABEL_14:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 objectForKey:@"Version"], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "intValue"), v5, v6 <= 3))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([treeCopy objectForKey:@"Version"], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "intValue"), v5, v6 <= 3))
   {
-    v8 = [v4 objectForKey:@"Root Nodes"];
+    v8 = [treeCopy objectForKey:@"Root Nodes"];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -261,7 +261,7 @@ LABEL_29:
 
 - (id)serializeTree
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*&self->_anon_28[24] - *&self->_anon_28[16]) >> 5)];
   v5 = *&self->_anon_28[16];
   v6 = *&self->_anon_28[24];
@@ -273,10 +273,10 @@ LABEL_29:
     v5 += 96;
   }
 
-  [v3 setObject:&unk_1F2A88398 forKey:@"Version"];
-  [v3 setObject:v4 forKey:@"Root Nodes"];
+  [dictionary setObject:&unk_1F2A88398 forKey:@"Version"];
+  [dictionary setObject:v4 forKey:@"Root Nodes"];
 
-  return v3;
+  return dictionary;
 }
 
 - (optional<gdc::DebugTreeNode>)_deserializeNode:(optional<gdc::DebugTreeNode> *__return_ptr)retstr
@@ -496,18 +496,18 @@ LABEL_40:
   return result;
 }
 
-- (id)_serializeNode:(const void *)a3
+- (id)_serializeNode:(const void *)node
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:@"Node" forKey:@"Type"];
-  v6 = a3;
-  if ((*(a3 + 23) & 0x80000000) == 0 || (v6 = *a3) != 0)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Node" forKey:@"Type"];
+  nodeCopy = node;
+  if ((*(node + 23) & 0x80000000) == 0 || (nodeCopy = *node) != 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
-    [v5 setObject:v7 forKey:@"Name"];
+    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:nodeCopy];
+    [dictionary setObject:v7 forKey:@"Name"];
   }
 
-  v8 = gdc::DebugTreeNode::identifier(a3);
+  v8 = gdc::DebugTreeNode::identifier(node);
   v9 = *(v8 + 23);
   v10 = v9;
   if ((v9 & 0x80u) != 0)
@@ -528,13 +528,13 @@ LABEL_40:
     }
 
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v11];
-    [v5 setObject:v12 forKey:@"Identifier"];
+    [dictionary setObject:v12 forKey:@"Identifier"];
   }
 
-  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a3 + 7) - *(a3 + 6)) >> 5)];
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 10) - *(a3 + 9)) >> 4)];
-  v15 = *(a3 + 9);
-  v16 = *(a3 + 10);
+  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(node + 7) - *(node + 6)) >> 5)];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((*(node + 10) - *(node + 9)) >> 4)];
+  v15 = *(node + 9);
+  v16 = *(node + 10);
   while (v15 != v16)
   {
     v17 = [(VKDebugTree *)self _serializeProperty:v15];
@@ -543,8 +543,8 @@ LABEL_40:
     v15 += 80;
   }
 
-  v18 = *(a3 + 6);
-  v19 = *(a3 + 7);
+  v18 = *(node + 6);
+  v19 = *(node + 7);
   while (v18 != v19)
   {
     v20 = [(VKDebugTree *)self _serializeNode:v18];
@@ -555,15 +555,15 @@ LABEL_40:
 
   if ([v14 count])
   {
-    [v5 setObject:v14 forKey:@"Properties"];
+    [dictionary setObject:v14 forKey:@"Properties"];
   }
 
   if ([v13 count])
   {
-    [v5 setObject:v13 forKey:@"Children"];
+    [dictionary setObject:v13 forKey:@"Children"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (optional<gdc::DebugTreeProperty>)_deserializeProperty:(optional<gdc::DebugTreeProperty> *__return_ptr)retstr
@@ -765,26 +765,26 @@ LABEL_43:
   return result;
 }
 
-- (id)_serializeProperty:(const void *)a3
+- (id)_serializeProperty:(const void *)property
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:@"Property" forKey:@"Type"];
-  v6 = a3;
-  if ((*(a3 + 23) & 0x80000000) == 0 || (v6 = *a3) != 0)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Property" forKey:@"Type"];
+  propertyCopy = property;
+  if ((*(property + 23) & 0x80000000) == 0 || (propertyCopy = *property) != 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
-    [v5 setObject:v7 forKey:@"Name"];
+    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:propertyCopy];
+    [dictionary setObject:v7 forKey:@"Name"];
   }
 
-  v8 = *(a3 + 6);
+  v8 = *(property + 6);
   if (v8 <= 2)
   {
-    [v5 setObject:*(&off_1E7B33D90 + v8) forKey:@"Visual Type"];
+    [dictionary setObject:*(&off_1E7B33D90 + v8) forKey:@"Visual Type"];
   }
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:(*(a3 + 5) - *(a3 + 4)) >> 6];
-  v10 = *(a3 + 4);
-  v11 = *(a3 + 5);
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:(*(property + 5) - *(property + 4)) >> 6];
+  v10 = *(property + 4);
+  v11 = *(property + 5);
   while (v10 != v11)
   {
     v12 = [(VKDebugTree *)self _serializeValue:v10];
@@ -793,10 +793,10 @@ LABEL_43:
     v10 += 64;
   }
 
-  [v5 setObject:v9 forKey:@"Values"];
-  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(a3 + 8) - *(a3 + 7)) >> 3)];
-  v15 = *(a3 + 7);
-  for (i = *(a3 + 8); v15 != i; v15 += 3)
+  [dictionary setObject:v9 forKey:@"Values"];
+  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(property + 8) - *(property + 7)) >> 3)];
+  v15 = *(property + 7);
+  for (i = *(property + 8); v15 != i; v15 += 3)
   {
     v16 = v15;
     if (*(v15 + 23) < 0)
@@ -808,9 +808,9 @@ LABEL_43:
     [v13 addObject:v17];
   }
 
-  [v5 setObject:v13 forKey:@"Tags"];
+  [dictionary setObject:v13 forKey:@"Tags"];
 
-  return v5;
+  return dictionary;
 }
 
 - (optional<gdc::DebugTreeValue>)_deserializeValue:(optional<gdc::DebugTreeValue> *__return_ptr)retstr
@@ -894,11 +894,11 @@ LABEL_18:
   return result;
 }
 
-- (id)_serializeValue:(const void *)a3
+- (id)_serializeValue:(const void *)value
 {
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v4 setObject:@"Value" forKey:@"Type"];
-  v5 = *(a3 + 14);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Value" forKey:@"Type"];
+  v5 = *(value + 14);
   if (v5 <= 1)
   {
     if (v5)
@@ -908,16 +908,16 @@ LABEL_18:
         goto LABEL_20;
       }
 
-      [v4 setObject:@"Unsigned Number" forKey:@"Value Type"];
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(a3 + 1)];
-      [v4 setObject:v9 forKey:@"Value"];
+      [dictionary setObject:@"Unsigned Number" forKey:@"Value Type"];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(value + 1)];
+      [dictionary setObject:v9 forKey:@"Value"];
     }
 
     else
     {
-      [v4 setObject:@"Number" forKey:@"Value Type"];
-      v9 = [MEMORY[0x1E696AD98] numberWithLongLong:*a3];
-      [v4 setObject:v9 forKey:@"Value"];
+      [dictionary setObject:@"Number" forKey:@"Value Type"];
+      v9 = [MEMORY[0x1E696AD98] numberWithLongLong:*value];
+      [dictionary setObject:v9 forKey:@"Value"];
     }
 
     goto LABEL_19;
@@ -926,15 +926,15 @@ LABEL_18:
   switch(v5)
   {
     case 2:
-      [v4 setObject:@"Double" forKey:@"Value Type"];
-      v9 = [MEMORY[0x1E696AD98] numberWithDouble:*(a3 + 2)];
-      [v4 setObject:v9 forKey:@"Value"];
+      [dictionary setObject:@"Double" forKey:@"Value Type"];
+      v9 = [MEMORY[0x1E696AD98] numberWithDouble:*(value + 2)];
+      [dictionary setObject:v9 forKey:@"Value"];
 LABEL_19:
 
       break;
     case 3:
-      [v4 setObject:@"Boolean" forKey:@"Value Type"];
-      if (geo::codec::VectorTile::hasComputedJunctions(*(a3 + 24)))
+      [dictionary setObject:@"Boolean" forKey:@"Value Type"];
+      if (geo::codec::VectorTile::hasComputedJunctions(*(value + 24)))
       {
         v10 = @"True";
       }
@@ -944,15 +944,15 @@ LABEL_19:
         v10 = @"False";
       }
 
-      [v4 setObject:v10 forKey:@"Value"];
+      [dictionary setObject:v10 forKey:@"Value"];
       break;
     case 4:
-      [v4 setObject:@"String" forKey:@"Value Type"];
+      [dictionary setObject:@"String" forKey:@"Value Type"];
       v6 = MEMORY[0x1E696AEC0];
-      gdc::DebugTreeValue::string(&__p, a3);
+      gdc::DebugTreeValue::string(&__p, value);
       v7 = (__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? &__p : __p.__r_.__value_.__r.__words[0];
       v8 = [v6 stringWithUTF8String:v7];
-      [v4 setObject:v8 forKey:@"Value"];
+      [dictionary setObject:v8 forKey:@"Value"];
 
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -964,7 +964,7 @@ LABEL_19:
 
 LABEL_20:
 
-  return v4;
+  return dictionary;
 }
 
 - (id)logTree
@@ -1049,24 +1049,24 @@ LABEL_14:
   return v8;
 }
 
-- (void)replaceInternalData:(const void *)a3
+- (void)replaceInternalData:(const void *)data
 {
   p_debugTree = &self->_debugTree;
-  std::string::operator=(&self->_debugTree, a3);
-  std::string::operator=(&self->_debugTree.var0, a3 + 1);
-  if (p_debugTree != a3)
+  std::string::operator=(&self->_debugTree, data);
+  std::string::operator=(&self->_debugTree.var0, data + 1);
+  if (p_debugTree != data)
   {
-    std::vector<gdc::DebugTreeNode>::__assign_with_size[abi:nn200100]<gdc::DebugTreeNode*,gdc::DebugTreeNode*>(&self->_anon_28[16], *(a3 + 6), *(a3 + 7), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 7) - *(a3 + 6)) >> 5));
-    v6 = *(a3 + 9);
-    v7 = *(a3 + 10);
+    std::vector<gdc::DebugTreeNode>::__assign_with_size[abi:nn200100]<gdc::DebugTreeNode*,gdc::DebugTreeNode*>(&self->_anon_28[16], *(data + 6), *(data + 7), 0xAAAAAAAAAAAAAAABLL * ((*(data + 7) - *(data + 6)) >> 5));
+    v6 = *(data + 9);
+    v7 = *(data + 10);
 
     std::vector<gdc::DebugTreeProperty>::__assign_with_size[abi:nn200100]<gdc::DebugTreeProperty*,gdc::DebugTreeProperty*>(&self->_anon_28[40], v6, v7, 0xCCCCCCCCCCCCCCCDLL * ((v7 - v6) >> 4));
   }
 }
 
-- (void)populateData:(id)a3
+- (void)populateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   std::string::basic_string[abi:nn200100]<0>(v6, "Root");
   gdc::DebugTreeNode::DebugTreeNode(v8, v6);
   if (*(&self->_debugTree._name.__rep_.__l + 23) < 0)
@@ -1123,7 +1123,7 @@ LABEL_14:
     operator delete(v8[0]);
   }
 
-  [v4 populateDebugNode:ChildNode withOptions:&self->_options];
+  [dataCopy populateDebugNode:ChildNode withOptions:&self->_options];
 }
 
 - (void)_populateData
@@ -1141,15 +1141,15 @@ LABEL_14:
   self->_nodes = v3;
 }
 
-- (void)setOption:(unint64_t)a3 value:(BOOL)a4
+- (void)setOption:(unint64_t)option value:(BOOL)value
 {
-  if (a3 >= 8)
+  if (option >= 8)
   {
     abort();
   }
 
-  v4 = 1 << a3;
-  if (a4)
+  v4 = 1 << option;
+  if (value)
   {
     v5 = self->_options.__first_ | v4;
   }
@@ -1162,15 +1162,15 @@ LABEL_14:
   self->_options.__first_ = v5;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v7 = a3;
-  if (v7)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     for (i = 0; i != 8; ++i)
     {
       v5 = [&unk_1F2A885C0 objectAtIndex:i];
-      v6 = [v7 containsObject:v5];
+      v6 = [optionsCopy containsObject:v5];
 
       if (v6)
       {

@@ -1,10 +1,10 @@
 @interface QDSchemaQDClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (QDSchemaQDAppPreLaunchTriggered)appPreLaunchTriggered;
-- (QDSchemaQDClientEvent)initWithDictionary:(id)a3;
-- (QDSchemaQDClientEvent)initWithJSON:(id)a3;
+- (QDSchemaQDClientEvent)initWithDictionary:(id)dictionary;
+- (QDSchemaQDClientEvent)initWithJSON:(id)n;
 - (QDSchemaQDCollectionContext)collectionContext;
 - (QDSchemaQDContextStatementIdsReported)contextStatementIdsReported;
 - (QDSchemaQDEntitiesCollected)entitiesCollected;
@@ -13,7 +13,7 @@
 - (QDSchemaQDToolboxSizeReported)toolboxSizeReported;
 - (QDSchemaQDTuplesGenerated)tuplesGenerated;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -28,28 +28,28 @@
 - (void)deleteSubComponentContext;
 - (void)deleteToolboxSizeReported;
 - (void)deleteTuplesGenerated;
-- (void)setAppPreLaunchTriggered:(id)a3;
-- (void)setCollectionContext:(id)a3;
-- (void)setContextStatementIdsReported:(id)a3;
-- (void)setEntitiesCollected:(id)a3;
-- (void)setEntitiesRanked:(id)a3;
-- (void)setSubComponentContext:(id)a3;
-- (void)setToolboxSizeReported:(id)a3;
-- (void)setTuplesGenerated:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAppPreLaunchTriggered:(id)triggered;
+- (void)setCollectionContext:(id)context;
+- (void)setContextStatementIdsReported:(id)reported;
+- (void)setEntitiesCollected:(id)collected;
+- (void)setEntitiesRanked:(id)ranked;
+- (void)setSubComponentContext:(id)context;
+- (void)setToolboxSizeReported:(id)reported;
+- (void)setTuplesGenerated:(id)generated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDClientEvent
 
-- (QDSchemaQDClientEvent)initWithDictionary:(id)a3
+- (QDSchemaQDClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = QDSchemaQDClientEvent;
   v5 = [(QDSchemaQDClientEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
     }
 
     v27 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"collectionContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"collectionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(QDSchemaQDClientEvent *)v5 setCollectionContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"entitiesCollected", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"entitiesCollected", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(QDSchemaQDClientEvent *)v5 setEntitiesCollected:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"tuplesGenerated"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tuplesGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(QDSchemaQDClientEvent *)v5 setTuplesGenerated:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"entitiesRanked"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"entitiesRanked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(QDSchemaQDClientEvent *)v5 setEntitiesRanked:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"subComponentContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"subComponentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       [(QDSchemaQDClientEvent *)v5 setSubComponentContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"contextStatementIdsReported"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"contextStatementIdsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,7 +106,7 @@
       [(QDSchemaQDClientEvent *)v5 setContextStatementIdsReported:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"appPreLaunchTriggered"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"appPreLaunchTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
       [(QDSchemaQDClientEvent *)v5 setAppPreLaunchTriggered:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"toolboxSizeReported"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"toolboxSizeReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,30 +128,30 @@
   return v5;
 }
 
-- (QDSchemaQDClientEvent)initWithJSON:(id)a3
+- (QDSchemaQDClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -164,154 +164,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appPreLaunchTriggered)
   {
-    v4 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appPreLaunchTriggered = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+    dictionaryRepresentation = [appPreLaunchTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appPreLaunchTriggered"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appPreLaunchTriggered"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appPreLaunchTriggered"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appPreLaunchTriggered"];
     }
   }
 
   if (self->_collectionContext)
   {
-    v7 = [(QDSchemaQDClientEvent *)self collectionContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    collectionContext = [(QDSchemaQDClientEvent *)self collectionContext];
+    dictionaryRepresentation2 = [collectionContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"collectionContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"collectionContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"collectionContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"collectionContext"];
     }
   }
 
   if (self->_contextStatementIdsReported)
   {
-    v10 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    contextStatementIdsReported = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+    dictionaryRepresentation3 = [contextStatementIdsReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"contextStatementIdsReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"contextStatementIdsReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"contextStatementIdsReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"contextStatementIdsReported"];
     }
   }
 
   if (self->_entitiesCollected)
   {
-    v13 = [(QDSchemaQDClientEvent *)self entitiesCollected];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    entitiesCollected = [(QDSchemaQDClientEvent *)self entitiesCollected];
+    dictionaryRepresentation4 = [entitiesCollected dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"entitiesCollected"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"entitiesCollected"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"entitiesCollected"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"entitiesCollected"];
     }
   }
 
   if (self->_entitiesRanked)
   {
-    v16 = [(QDSchemaQDClientEvent *)self entitiesRanked];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    entitiesRanked = [(QDSchemaQDClientEvent *)self entitiesRanked];
+    dictionaryRepresentation5 = [entitiesRanked dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"entitiesRanked"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"entitiesRanked"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"entitiesRanked"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"entitiesRanked"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v19 = [(QDSchemaQDClientEvent *)self eventMetadata];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
+    dictionaryRepresentation6 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"eventMetadata"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_subComponentContext)
   {
-    v22 = [(QDSchemaQDClientEvent *)self subComponentContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    subComponentContext = [(QDSchemaQDClientEvent *)self subComponentContext];
+    dictionaryRepresentation7 = [subComponentContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"subComponentContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"subComponentContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"subComponentContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"subComponentContext"];
     }
   }
 
   if (self->_toolboxSizeReported)
   {
-    v25 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    toolboxSizeReported = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+    dictionaryRepresentation8 = [toolboxSizeReported dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"toolboxSizeReported"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"toolboxSizeReported"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"toolboxSizeReported"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"toolboxSizeReported"];
     }
   }
 
   if (self->_tuplesGenerated)
   {
-    v28 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    tuplesGenerated = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+    dictionaryRepresentation9 = [tuplesGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"tuplesGenerated"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"tuplesGenerated"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"tuplesGenerated"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"tuplesGenerated"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -327,34 +327,34 @@
   return v9 ^ v10 ^ [(QDSchemaQDToolboxSizeReported *)self->_toolboxSizeReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_48;
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v8 = [(QDSchemaQDClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(QDSchemaQDClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(QDSchemaQDClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(QDSchemaQDClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -366,20 +366,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self collectionContext];
-  v7 = [v4 collectionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self collectionContext];
+  eventMetadata2 = [equalCopy collectionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v13 = [(QDSchemaQDClientEvent *)self collectionContext];
-  if (v13)
+  collectionContext = [(QDSchemaQDClientEvent *)self collectionContext];
+  if (collectionContext)
   {
-    v14 = v13;
-    v15 = [(QDSchemaQDClientEvent *)self collectionContext];
-    v16 = [v4 collectionContext];
-    v17 = [v15 isEqual:v16];
+    v14 = collectionContext;
+    collectionContext2 = [(QDSchemaQDClientEvent *)self collectionContext];
+    collectionContext3 = [equalCopy collectionContext];
+    v17 = [collectionContext2 isEqual:collectionContext3];
 
     if (!v17)
     {
@@ -391,20 +391,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self entitiesCollected];
-  v7 = [v4 entitiesCollected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self entitiesCollected];
+  eventMetadata2 = [equalCopy entitiesCollected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v18 = [(QDSchemaQDClientEvent *)self entitiesCollected];
-  if (v18)
+  entitiesCollected = [(QDSchemaQDClientEvent *)self entitiesCollected];
+  if (entitiesCollected)
   {
-    v19 = v18;
-    v20 = [(QDSchemaQDClientEvent *)self entitiesCollected];
-    v21 = [v4 entitiesCollected];
-    v22 = [v20 isEqual:v21];
+    v19 = entitiesCollected;
+    entitiesCollected2 = [(QDSchemaQDClientEvent *)self entitiesCollected];
+    entitiesCollected3 = [equalCopy entitiesCollected];
+    v22 = [entitiesCollected2 isEqual:entitiesCollected3];
 
     if (!v22)
     {
@@ -416,20 +416,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
-  v7 = [v4 tuplesGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+  eventMetadata2 = [equalCopy tuplesGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v23 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
-  if (v23)
+  tuplesGenerated = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+  if (tuplesGenerated)
   {
-    v24 = v23;
-    v25 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
-    v26 = [v4 tuplesGenerated];
-    v27 = [v25 isEqual:v26];
+    v24 = tuplesGenerated;
+    tuplesGenerated2 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+    tuplesGenerated3 = [equalCopy tuplesGenerated];
+    v27 = [tuplesGenerated2 isEqual:tuplesGenerated3];
 
     if (!v27)
     {
@@ -441,20 +441,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self entitiesRanked];
-  v7 = [v4 entitiesRanked];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self entitiesRanked];
+  eventMetadata2 = [equalCopy entitiesRanked];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v28 = [(QDSchemaQDClientEvent *)self entitiesRanked];
-  if (v28)
+  entitiesRanked = [(QDSchemaQDClientEvent *)self entitiesRanked];
+  if (entitiesRanked)
   {
-    v29 = v28;
-    v30 = [(QDSchemaQDClientEvent *)self entitiesRanked];
-    v31 = [v4 entitiesRanked];
-    v32 = [v30 isEqual:v31];
+    v29 = entitiesRanked;
+    entitiesRanked2 = [(QDSchemaQDClientEvent *)self entitiesRanked];
+    entitiesRanked3 = [equalCopy entitiesRanked];
+    v32 = [entitiesRanked2 isEqual:entitiesRanked3];
 
     if (!v32)
     {
@@ -466,20 +466,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self subComponentContext];
-  v7 = [v4 subComponentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self subComponentContext];
+  eventMetadata2 = [equalCopy subComponentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v33 = [(QDSchemaQDClientEvent *)self subComponentContext];
-  if (v33)
+  subComponentContext = [(QDSchemaQDClientEvent *)self subComponentContext];
+  if (subComponentContext)
   {
-    v34 = v33;
-    v35 = [(QDSchemaQDClientEvent *)self subComponentContext];
-    v36 = [v4 subComponentContext];
-    v37 = [v35 isEqual:v36];
+    v34 = subComponentContext;
+    subComponentContext2 = [(QDSchemaQDClientEvent *)self subComponentContext];
+    subComponentContext3 = [equalCopy subComponentContext];
+    v37 = [subComponentContext2 isEqual:subComponentContext3];
 
     if (!v37)
     {
@@ -491,20 +491,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
-  v7 = [v4 contextStatementIdsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+  eventMetadata2 = [equalCopy contextStatementIdsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v38 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
-  if (v38)
+  contextStatementIdsReported = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+  if (contextStatementIdsReported)
   {
-    v39 = v38;
-    v40 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
-    v41 = [v4 contextStatementIdsReported];
-    v42 = [v40 isEqual:v41];
+    v39 = contextStatementIdsReported;
+    contextStatementIdsReported2 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+    contextStatementIdsReported3 = [equalCopy contextStatementIdsReported];
+    v42 = [contextStatementIdsReported2 isEqual:contextStatementIdsReported3];
 
     if (!v42)
     {
@@ -516,20 +516,20 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
-  v7 = [v4 appPreLaunchTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+  eventMetadata2 = [equalCopy appPreLaunchTriggered];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v43 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
-  if (v43)
+  appPreLaunchTriggered = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+  if (appPreLaunchTriggered)
   {
-    v44 = v43;
-    v45 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
-    v46 = [v4 appPreLaunchTriggered];
-    v47 = [v45 isEqual:v46];
+    v44 = appPreLaunchTriggered;
+    appPreLaunchTriggered2 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+    appPreLaunchTriggered3 = [equalCopy appPreLaunchTriggered];
+    v47 = [appPreLaunchTriggered2 isEqual:appPreLaunchTriggered3];
 
     if (!v47)
     {
@@ -541,12 +541,12 @@
   {
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
-  v7 = [v4 toolboxSizeReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+  eventMetadata2 = [equalCopy toolboxSizeReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v48 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
-    if (!v48)
+    toolboxSizeReported = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+    if (!toolboxSizeReported)
     {
 
 LABEL_51:
@@ -554,10 +554,10 @@ LABEL_51:
       goto LABEL_49;
     }
 
-    v49 = v48;
-    v50 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
-    v51 = [v4 toolboxSizeReported];
-    v52 = [v50 isEqual:v51];
+    v49 = toolboxSizeReported;
+    toolboxSizeReported2 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+    toolboxSizeReported3 = [equalCopy toolboxSizeReported];
+    v52 = [toolboxSizeReported2 isEqual:toolboxSizeReported3];
 
     if (v52)
     {
@@ -577,82 +577,82 @@ LABEL_49:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(QDSchemaQDClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(QDSchemaQDClientEvent *)self eventMetadata];
+    eventMetadata2 = [(QDSchemaQDClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(QDSchemaQDClientEvent *)self collectionContext];
+  collectionContext = [(QDSchemaQDClientEvent *)self collectionContext];
 
-  if (v6)
+  if (collectionContext)
   {
-    v7 = [(QDSchemaQDClientEvent *)self collectionContext];
+    collectionContext2 = [(QDSchemaQDClientEvent *)self collectionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(QDSchemaQDClientEvent *)self entitiesCollected];
+  entitiesCollected = [(QDSchemaQDClientEvent *)self entitiesCollected];
 
-  if (v8)
+  if (entitiesCollected)
   {
-    v9 = [(QDSchemaQDClientEvent *)self entitiesCollected];
+    entitiesCollected2 = [(QDSchemaQDClientEvent *)self entitiesCollected];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+  tuplesGenerated = [(QDSchemaQDClientEvent *)self tuplesGenerated];
 
-  if (v10)
+  if (tuplesGenerated)
   {
-    v11 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+    tuplesGenerated2 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(QDSchemaQDClientEvent *)self entitiesRanked];
+  entitiesRanked = [(QDSchemaQDClientEvent *)self entitiesRanked];
 
-  if (v12)
+  if (entitiesRanked)
   {
-    v13 = [(QDSchemaQDClientEvent *)self entitiesRanked];
+    entitiesRanked2 = [(QDSchemaQDClientEvent *)self entitiesRanked];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(QDSchemaQDClientEvent *)self subComponentContext];
+  subComponentContext = [(QDSchemaQDClientEvent *)self subComponentContext];
 
-  if (v14)
+  if (subComponentContext)
   {
-    v15 = [(QDSchemaQDClientEvent *)self subComponentContext];
+    subComponentContext2 = [(QDSchemaQDClientEvent *)self subComponentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+  contextStatementIdsReported = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
 
-  if (v16)
+  if (contextStatementIdsReported)
   {
-    v17 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+    contextStatementIdsReported2 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+  appPreLaunchTriggered = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
 
-  if (v18)
+  if (appPreLaunchTriggered)
   {
-    v19 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+    appPreLaunchTriggered2 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+  toolboxSizeReported = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (toolboxSizeReported)
   {
-    v22 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+    toolboxSizeReported2 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -681,9 +681,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setToolboxSizeReported:(id)a3
+- (void)setToolboxSizeReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -706,14 +706,14 @@ LABEL_49:
   self->_appPreLaunchTriggered = 0;
 
   v12 = 107;
-  if (!v4)
+  if (!reportedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   toolboxSizeReported = self->_toolboxSizeReported;
-  self->_toolboxSizeReported = v4;
+  self->_toolboxSizeReported = reportedCopy;
 }
 
 - (void)deleteAppPreLaunchTriggered
@@ -741,9 +741,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setAppPreLaunchTriggered:(id)a3
+- (void)setAppPreLaunchTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -766,14 +766,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 106;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   appPreLaunchTriggered = self->_appPreLaunchTriggered;
-  self->_appPreLaunchTriggered = v4;
+  self->_appPreLaunchTriggered = triggeredCopy;
 }
 
 - (void)deleteContextStatementIdsReported
@@ -801,9 +801,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setContextStatementIdsReported:(id)a3
+- (void)setContextStatementIdsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -826,14 +826,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 105;
-  if (!v4)
+  if (!reportedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   contextStatementIdsReported = self->_contextStatementIdsReported;
-  self->_contextStatementIdsReported = v4;
+  self->_contextStatementIdsReported = reportedCopy;
 }
 
 - (void)deleteSubComponentContext
@@ -861,9 +861,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setSubComponentContext:(id)a3
+- (void)setSubComponentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -886,14 +886,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   subComponentContext = self->_subComponentContext;
-  self->_subComponentContext = v4;
+  self->_subComponentContext = contextCopy;
 }
 
 - (void)deleteEntitiesRanked
@@ -921,9 +921,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setEntitiesRanked:(id)a3
+- (void)setEntitiesRanked:(id)ranked
 {
-  v4 = a3;
+  rankedCopy = ranked;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -946,14 +946,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 103;
-  if (!v4)
+  if (!rankedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   entitiesRanked = self->_entitiesRanked;
-  self->_entitiesRanked = v4;
+  self->_entitiesRanked = rankedCopy;
 }
 
 - (void)deleteTuplesGenerated
@@ -981,9 +981,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setTuplesGenerated:(id)a3
+- (void)setTuplesGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -1006,14 +1006,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 102;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   tuplesGenerated = self->_tuplesGenerated;
-  self->_tuplesGenerated = v4;
+  self->_tuplesGenerated = generatedCopy;
 }
 
 - (void)deleteEntitiesCollected
@@ -1041,9 +1041,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setEntitiesCollected:(id)a3
+- (void)setEntitiesCollected:(id)collected
 {
-  v4 = a3;
+  collectedCopy = collected;
   collectionContext = self->_collectionContext;
   self->_collectionContext = 0;
 
@@ -1066,14 +1066,14 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 101;
-  if (!v4)
+  if (!collectedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   entitiesCollected = self->_entitiesCollected;
-  self->_entitiesCollected = v4;
+  self->_entitiesCollected = collectedCopy;
 }
 
 - (void)deleteCollectionContext
@@ -1101,9 +1101,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setCollectionContext:(id)a3
+- (void)setCollectionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   entitiesCollected = self->_entitiesCollected;
   self->_entitiesCollected = 0;
 
@@ -1126,113 +1126,113 @@ LABEL_49:
   self->_toolboxSizeReported = 0;
 
   v12 = 100;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   collectionContext = self->_collectionContext;
-  self->_collectionContext = v4;
+  self->_collectionContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(QDSchemaQDClientEvent *)self whichEvent_Type];
-  if (v2 - 100 > 7)
+  whichEvent_Type = [(QDSchemaQDClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 100 > 7)
   {
     return @"com.apple.aiml.siri.qd.QDClientEvent";
   }
 
   else
   {
-    return off_1E78E1698[v2 - 100];
+    return off_1E78E1698[whichEvent_Type - 100];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = QDSchemaQDClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(QDSchemaQDClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(QDSchemaQDClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(QDSchemaQDClientEvent *)self collectionContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  collectionContext = [(QDSchemaQDClientEvent *)self collectionContext];
+  v10 = [collectionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(QDSchemaQDClientEvent *)self deleteCollectionContext];
   }
 
-  v12 = [(QDSchemaQDClientEvent *)self entitiesCollected];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  entitiesCollected = [(QDSchemaQDClientEvent *)self entitiesCollected];
+  v13 = [entitiesCollected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(QDSchemaQDClientEvent *)self deleteEntitiesCollected];
   }
 
-  v15 = [(QDSchemaQDClientEvent *)self tuplesGenerated];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  tuplesGenerated = [(QDSchemaQDClientEvent *)self tuplesGenerated];
+  v16 = [tuplesGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(QDSchemaQDClientEvent *)self deleteTuplesGenerated];
   }
 
-  v18 = [(QDSchemaQDClientEvent *)self entitiesRanked];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  entitiesRanked = [(QDSchemaQDClientEvent *)self entitiesRanked];
+  v19 = [entitiesRanked applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(QDSchemaQDClientEvent *)self deleteEntitiesRanked];
   }
 
-  v21 = [(QDSchemaQDClientEvent *)self subComponentContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  subComponentContext = [(QDSchemaQDClientEvent *)self subComponentContext];
+  v22 = [subComponentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(QDSchemaQDClientEvent *)self deleteSubComponentContext];
   }
 
-  v24 = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  contextStatementIdsReported = [(QDSchemaQDClientEvent *)self contextStatementIdsReported];
+  v25 = [contextStatementIdsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(QDSchemaQDClientEvent *)self deleteContextStatementIdsReported];
   }
 
-  v27 = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  appPreLaunchTriggered = [(QDSchemaQDClientEvent *)self appPreLaunchTriggered];
+  v28 = [appPreLaunchTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(QDSchemaQDClientEvent *)self deleteAppPreLaunchTriggered];
   }
 
-  v30 = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  toolboxSizeReported = [(QDSchemaQDClientEvent *)self toolboxSizeReported];
+  v31 = [toolboxSizeReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(QDSchemaQDClientEvent *)self deleteToolboxSizeReported];
   }
@@ -1250,98 +1250,98 @@ LABEL_49:
 
 - (int)componentName
 {
-  v2 = [(QDSchemaQDClientEvent *)self eventMetadata];
-  v3 = [v2 qdId];
+  eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
+  qdId = [eventMetadata qdId];
 
-  if (v3)
+  if (qdId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [qdId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [qdId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 50;
+        LODWORD(value) = 50;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(QDSchemaQDClientEvent *)self eventMetadata];
-  v3 = [v2 qdId];
+  eventMetadata = [(QDSchemaQDClientEvent *)self eventMetadata];
+  qdId = [eventMetadata qdId];
 
-  if (!v3)
+  if (!qdId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [qdId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [qdId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = qdId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(QDSchemaQDClientEvent *)self whichEvent_Type];
-  if (v3 - 100 > 7)
+  whichEvent_Type = [(QDSchemaQDClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 100 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EADB8[v3 - 100]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EADB8[whichEvent_Type - 100]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 100 > 7)
+  if (tag - 100 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EADF8[a3 - 100];
+    return off_1E78EADF8[tag - 100];
   }
 }
 

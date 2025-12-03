@@ -1,9 +1,9 @@
 @interface UARPTLVPersonalizationFTABPayload
 + (id)metaDataTableEntry;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationFTABPayload)init;
 - (id)description;
-- (void)setTLVs:(id)a3;
+- (void)setTLVs:(id)vs;
 @end
 
 @implementation UARPTLVPersonalizationFTABPayload
@@ -23,36 +23,36 @@
   return v2;
 }
 
-- (void)setTLVs:(id)a3
+- (void)setTLVs:(id)vs
 {
-  v12 = a3;
-  v4 = v12;
-  v5 = [v12 bytes];
-  if ([v12 length])
+  vsCopy = vs;
+  v4 = vsCopy;
+  bytes = [vsCopy bytes];
+  if ([vsCopy length])
   {
     v6 = 0;
     do
     {
-      if (v6 + 4 > [v12 length])
+      if (v6 + 4 > [vsCopy length])
       {
         break;
       }
 
-      v7 = uarpHtonl(*(v5 + v6));
+      v7 = uarpHtonl(*(bytes + v6));
       v8 = v6 + 8;
-      if (v6 + 8 > [v12 length])
+      if (v6 + 8 > [vsCopy length])
       {
         break;
       }
 
-      v9 = uarpHtonl(*(v5 + v6 + 4));
+      v9 = uarpHtonl(*(bytes + v6 + 4));
       v6 = v8 + v9;
-      if (v6 > [v12 length])
+      if (v6 > [vsCopy length])
       {
         break;
       }
 
-      v10 = [UARPMetaDataTLV tlvFromType:v7 length:v9 value:v5 + v8];
+      v10 = [UARPMetaDataTLV tlvFromType:v7 length:v9 value:bytes + v8];
       if (!v10)
       {
         break;
@@ -62,7 +62,7 @@
       [(NSMutableArray *)self->_tlvs addObject:v10];
     }
 
-    while (v6 < [v12 length]);
+    while (v6 < [vsCopy length]);
   }
 }
 
@@ -125,9 +125,9 @@
   return v3;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a3];
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
   v5 = objc_opt_new();
   [v5 setTLVs:v4];
 

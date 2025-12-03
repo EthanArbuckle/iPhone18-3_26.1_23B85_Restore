@@ -1,23 +1,23 @@
 @interface _PASArgToplevelHandlerParams
-- (_PASArgToplevelHandlerParams)initWithParser:(id)a3 options:(id)a4 positionalArguments:(id)a5;
+- (_PASArgToplevelHandlerParams)initWithParser:(id)parser options:(id)options positionalArguments:(id)arguments;
 @end
 
 @implementation _PASArgToplevelHandlerParams
 
-- (_PASArgToplevelHandlerParams)initWithParser:(id)a3 options:(id)a4 positionalArguments:(id)a5
+- (_PASArgToplevelHandlerParams)initWithParser:(id)parser options:(id)options positionalArguments:(id)arguments
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  parserCopy = parser;
+  optionsCopy = options;
+  argumentsCopy = arguments;
   v15.receiver = self;
   v15.super_class = _PASArgToplevelHandlerParams;
   v12 = [(_PASArgToplevelHandlerParams *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parser, a3);
-    objc_storeStrong(&v13->_options, a4);
-    objc_storeStrong(&v13->_positionalArguments, a5);
+    objc_storeStrong(&v12->_parser, parser);
+    objc_storeStrong(&v13->_options, options);
+    objc_storeStrong(&v13->_positionalArguments, arguments);
   }
 
   return v13;

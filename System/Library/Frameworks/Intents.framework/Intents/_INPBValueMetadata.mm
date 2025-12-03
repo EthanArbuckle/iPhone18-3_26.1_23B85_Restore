@@ -1,19 +1,19 @@
 @interface _INPBValueMetadata
-- (BOOL)isEqual:(id)a3;
-- (_INPBValueMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBValueMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequiredEntitlements:(id)a3;
+- (int)StringAsRequiredEntitlements:(id)entitlements;
 - (unint64_t)hash;
-- (void)addRequiredEntitlement:(int)a3;
+- (void)addRequiredEntitlement:(int)entitlement;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCanonicalValue:(id)a3;
-- (void)setInput:(id)a3;
-- (void)setSource:(id)a3;
-- (void)setSourceAppBundleIdentifier:(id)a3;
-- (void)setUuid:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCanonicalValue:(id)value;
+- (void)setInput:(id)input;
+- (void)setSource:(id)source;
+- (void)setSourceAppBundleIdentifier:(id)identifier;
+- (void)setUuid:(id)uuid;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBValueMetadata
@@ -28,29 +28,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_canonicalValue)
   {
-    v4 = [(_INPBValueMetadata *)self canonicalValue];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"canonicalValue"];
+    canonicalValue = [(_INPBValueMetadata *)self canonicalValue];
+    v5 = [canonicalValue copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"canonicalValue"];
   }
 
-  v6 = [(_INPBValueMetadata *)self confidenceScore];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"confidenceScore"];
+  confidenceScore = [(_INPBValueMetadata *)self confidenceScore];
+  dictionaryRepresentation = [confidenceScore dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"confidenceScore"];
 
   if ([(_INPBValueMetadata *)self hasConfirmed])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBValueMetadata confirmed](self, "confirmed")}];
-    [v3 setObject:v8 forKeyedSubscript:@"confirmed"];
+    [dictionary setObject:v8 forKeyedSubscript:@"confirmed"];
   }
 
   if (self->_input)
   {
-    v9 = [(_INPBValueMetadata *)self input];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"input"];
+    input = [(_INPBValueMetadata *)self input];
+    v10 = [input copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"input"];
   }
 
   if (self->_requiredEntitlements.count)
@@ -85,31 +85,31 @@
       while (v12 < [(_INPBValueMetadata *)self requiredEntitlementsCount]);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"requiredEntitlement"];
+    [dictionary setObject:v11 forKeyedSubscript:@"requiredEntitlement"];
   }
 
   if (self->_source)
   {
-    v15 = [(_INPBValueMetadata *)self source];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"source"];
+    source = [(_INPBValueMetadata *)self source];
+    v16 = [source copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"source"];
   }
 
   if (self->_sourceAppBundleIdentifier)
   {
-    v17 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"sourceAppBundleIdentifier"];
+    sourceAppBundleIdentifier = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
+    v18 = [sourceAppBundleIdentifier copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"sourceAppBundleIdentifier"];
   }
 
   if (self->_uuid)
   {
-    v19 = [(_INPBValueMetadata *)self uuid];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"uuid"];
+    uuid = [(_INPBValueMetadata *)self uuid];
+    v20 = [uuid copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"uuid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -133,28 +133,28 @@
   return v9 ^ [(NSString *)self->_uuid hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(_INPBValueMetadata *)self canonicalValue];
-  v6 = [v4 canonicalValue];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self canonicalValue];
+  canonicalValue2 = [equalCopy canonicalValue];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(_INPBValueMetadata *)self canonicalValue];
-  if (v7)
+  canonicalValue3 = [(_INPBValueMetadata *)self canonicalValue];
+  if (canonicalValue3)
   {
-    v8 = v7;
-    v9 = [(_INPBValueMetadata *)self canonicalValue];
-    v10 = [v4 canonicalValue];
-    v11 = [v9 isEqual:v10];
+    v8 = canonicalValue3;
+    canonicalValue4 = [(_INPBValueMetadata *)self canonicalValue];
+    canonicalValue5 = [equalCopy canonicalValue];
+    v11 = [canonicalValue4 isEqual:canonicalValue5];
 
     if (!v11)
     {
@@ -166,20 +166,20 @@
   {
   }
 
-  v5 = [(_INPBValueMetadata *)self confidenceScore];
-  v6 = [v4 confidenceScore];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self confidenceScore];
+  canonicalValue2 = [equalCopy confidenceScore];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(_INPBValueMetadata *)self confidenceScore];
-  if (v12)
+  confidenceScore = [(_INPBValueMetadata *)self confidenceScore];
+  if (confidenceScore)
   {
-    v13 = v12;
-    v14 = [(_INPBValueMetadata *)self confidenceScore];
-    v15 = [v4 confidenceScore];
-    v16 = [v14 isEqual:v15];
+    v13 = confidenceScore;
+    confidenceScore2 = [(_INPBValueMetadata *)self confidenceScore];
+    confidenceScore3 = [equalCopy confidenceScore];
+    v16 = [confidenceScore2 isEqual:confidenceScore3];
 
     if (!v16)
     {
@@ -191,38 +191,38 @@
   {
   }
 
-  v17 = [(_INPBValueMetadata *)self hasConfirmed];
-  if (v17 != [v4 hasConfirmed])
+  hasConfirmed = [(_INPBValueMetadata *)self hasConfirmed];
+  if (hasConfirmed != [equalCopy hasConfirmed])
   {
     goto LABEL_37;
   }
 
   if ([(_INPBValueMetadata *)self hasConfirmed])
   {
-    if ([v4 hasConfirmed])
+    if ([equalCopy hasConfirmed])
     {
       confirmed = self->_confirmed;
-      if (confirmed != [v4 confirmed])
+      if (confirmed != [equalCopy confirmed])
       {
         goto LABEL_37;
       }
     }
   }
 
-  v5 = [(_INPBValueMetadata *)self input];
-  v6 = [v4 input];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self input];
+  canonicalValue2 = [equalCopy input];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
     goto LABEL_36;
   }
 
-  v19 = [(_INPBValueMetadata *)self input];
-  if (v19)
+  input = [(_INPBValueMetadata *)self input];
+  if (input)
   {
-    v20 = v19;
-    v21 = [(_INPBValueMetadata *)self input];
-    v22 = [v4 input];
-    v23 = [v21 isEqual:v22];
+    v20 = input;
+    input2 = [(_INPBValueMetadata *)self input];
+    input3 = [equalCopy input];
+    v23 = [input2 isEqual:input3];
 
     if (!v23)
     {
@@ -239,20 +239,20 @@
     goto LABEL_37;
   }
 
-  v5 = [(_INPBValueMetadata *)self source];
-  v6 = [v4 source];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self source];
+  canonicalValue2 = [equalCopy source];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
     goto LABEL_36;
   }
 
-  v24 = [(_INPBValueMetadata *)self source];
-  if (v24)
+  source = [(_INPBValueMetadata *)self source];
+  if (source)
   {
-    v25 = v24;
-    v26 = [(_INPBValueMetadata *)self source];
-    v27 = [v4 source];
-    v28 = [v26 isEqual:v27];
+    v25 = source;
+    source2 = [(_INPBValueMetadata *)self source];
+    source3 = [equalCopy source];
+    v28 = [source2 isEqual:source3];
 
     if (!v28)
     {
@@ -264,20 +264,20 @@
   {
   }
 
-  v5 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
-  v6 = [v4 sourceAppBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
+  canonicalValue2 = [equalCopy sourceAppBundleIdentifier];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
     goto LABEL_36;
   }
 
-  v29 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
-  if (v29)
+  sourceAppBundleIdentifier = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
+  if (sourceAppBundleIdentifier)
   {
-    v30 = v29;
-    v31 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
-    v32 = [v4 sourceAppBundleIdentifier];
-    v33 = [v31 isEqual:v32];
+    v30 = sourceAppBundleIdentifier;
+    sourceAppBundleIdentifier2 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
+    sourceAppBundleIdentifier3 = [equalCopy sourceAppBundleIdentifier];
+    v33 = [sourceAppBundleIdentifier2 isEqual:sourceAppBundleIdentifier3];
 
     if (!v33)
     {
@@ -289,17 +289,17 @@
   {
   }
 
-  v5 = [(_INPBValueMetadata *)self uuid];
-  v6 = [v4 uuid];
-  if ((v5 != 0) == (v6 == 0))
+  canonicalValue = [(_INPBValueMetadata *)self uuid];
+  canonicalValue2 = [equalCopy uuid];
+  if ((canonicalValue != 0) == (canonicalValue2 == 0))
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v34 = [(_INPBValueMetadata *)self uuid];
-  if (!v34)
+  uuid = [(_INPBValueMetadata *)self uuid];
+  if (!uuid)
   {
 
 LABEL_40:
@@ -307,10 +307,10 @@ LABEL_40:
     goto LABEL_38;
   }
 
-  v35 = v34;
-  v36 = [(_INPBValueMetadata *)self uuid];
-  v37 = [v4 uuid];
-  v38 = [v36 isEqual:v37];
+  v35 = uuid;
+  uuid2 = [(_INPBValueMetadata *)self uuid];
+  uuid3 = [equalCopy uuid];
+  v38 = [uuid2 isEqual:uuid3];
 
   if (v38)
   {
@@ -324,13 +324,13 @@ LABEL_38:
   return v39;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBValueMetadata allocWithZone:](_INPBValueMetadata init];
-  v6 = [(NSString *)self->_canonicalValue copyWithZone:a3];
+  v6 = [(NSString *)self->_canonicalValue copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setCanonicalValue:v6];
 
-  v7 = [(_INPBConfidenceScore *)self->_confidenceScore copyWithZone:a3];
+  v7 = [(_INPBConfidenceScore *)self->_confidenceScore copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setConfidenceScore:v7];
 
   if ([(_INPBValueMetadata *)self hasConfirmed])
@@ -338,62 +338,62 @@ LABEL_38:
     [(_INPBValueMetadata *)v5 setConfirmed:[(_INPBValueMetadata *)self confirmed]];
   }
 
-  v8 = [(NSString *)self->_input copyWithZone:a3];
+  v8 = [(NSString *)self->_input copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setInput:v8];
 
   PBRepeatedInt32Copy();
-  v9 = [(NSString *)self->_source copyWithZone:a3];
+  v9 = [(NSString *)self->_source copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setSource:v9];
 
-  v10 = [(NSString *)self->_sourceAppBundleIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceAppBundleIdentifier copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setSourceAppBundleIdentifier:v10];
 
-  v11 = [(NSString *)self->_uuid copyWithZone:a3];
+  v11 = [(NSString *)self->_uuid copyWithZone:zone];
   [(_INPBValueMetadata *)v5 setUuid:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBValueMetadata *)self data];
+  coderCopy = coder;
+  data = [(_INPBValueMetadata *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBValueMetadata)initWithCoder:(id)a3
+- (_INPBValueMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBValueMetadata *)self initWithData:v6];
+    self = [(_INPBValueMetadata *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v20 = a3;
-  v4 = [(_INPBValueMetadata *)self canonicalValue];
+  toCopy = to;
+  canonicalValue = [(_INPBValueMetadata *)self canonicalValue];
 
-  if (v4)
+  if (canonicalValue)
   {
     canonicalValue = self->_canonicalValue;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBValueMetadata *)self confidenceScore];
+  confidenceScore = [(_INPBValueMetadata *)self confidenceScore];
 
-  if (v6)
+  if (confidenceScore)
   {
-    v7 = [(_INPBValueMetadata *)self confidenceScore];
+    confidenceScore2 = [(_INPBValueMetadata *)self confidenceScore];
     PBDataWriterWriteSubmessage();
   }
 
@@ -403,9 +403,9 @@ LABEL_38:
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(_INPBValueMetadata *)self input];
+  input = [(_INPBValueMetadata *)self input];
 
-  if (v9)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
@@ -424,67 +424,67 @@ LABEL_38:
     while (v11 < self->_requiredEntitlements.count);
   }
 
-  v13 = [(_INPBValueMetadata *)self source];
+  source = [(_INPBValueMetadata *)self source];
 
-  if (v13)
+  if (source)
   {
     source = self->_source;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
+  sourceAppBundleIdentifier = [(_INPBValueMetadata *)self sourceAppBundleIdentifier];
 
-  if (v15)
+  if (sourceAppBundleIdentifier)
   {
     sourceAppBundleIdentifier = self->_sourceAppBundleIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_INPBValueMetadata *)self uuid];
+  uuid = [(_INPBValueMetadata *)self uuid];
 
-  v18 = v20;
-  if (v17)
+  v18 = toCopy;
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
-    v18 = v20;
+    v18 = toCopy;
   }
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = [a3 copy];
+  v4 = [uuid copy];
   uuid = self->_uuid;
   self->_uuid = v4;
 
   MEMORY[0x1EEE66BB8](v4, uuid);
 }
 
-- (void)setSourceAppBundleIdentifier:(id)a3
+- (void)setSourceAppBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sourceAppBundleIdentifier = self->_sourceAppBundleIdentifier;
   self->_sourceAppBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, sourceAppBundleIdentifier);
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v4 = [a3 copy];
+  v4 = [source copy];
   source = self->_source;
   self->_source = v4;
 
   MEMORY[0x1EEE66BB8](v4, source);
 }
 
-- (int)StringAsRequiredEntitlements:(id)a3
+- (int)StringAsRequiredEntitlements:(id)entitlements
 {
-  v3 = a3;
+  entitlementsCopy = entitlements;
   v4 = 1;
-  if (([v3 isEqualToString:@"CONTACTS"] & 1) == 0)
+  if (([entitlementsCopy isEqualToString:@"CONTACTS"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"LOCATION"])
+    if ([entitlementsCopy isEqualToString:@"LOCATION"])
     {
       v4 = 2;
     }
@@ -498,26 +498,26 @@ LABEL_38:
   return v4;
 }
 
-- (void)addRequiredEntitlement:(int)a3
+- (void)addRequiredEntitlement:(int)entitlement
 {
-  if (a3 != 0x7FFFFFFF)
+  if (entitlement != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
-  v4 = [a3 copy];
+  v4 = [input copy];
   input = self->_input;
   self->_input = v4;
 
   MEMORY[0x1EEE66BB8](v4, input);
 }
 
-- (void)setCanonicalValue:(id)a3
+- (void)setCanonicalValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   canonicalValue = self->_canonicalValue;
   self->_canonicalValue = v4;
 

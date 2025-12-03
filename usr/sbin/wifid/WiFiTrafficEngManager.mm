@@ -1,15 +1,15 @@
 @interface WiFiTrafficEngManager
-- (WiFiTrafficEngManager)initWithArgs:(__WiFiLQAMgr *)a3;
+- (WiFiTrafficEngManager)initWithArgs:(__WiFiLQAMgr *)args;
 - (__CFDictionary)retrieveCurrentLinkHealth;
 - (__CFDictionary)retrieveEventDetails;
 - (void)dealloc;
 - (void)discoveryIndication;
-- (void)handleCriticalAppEvent:(id)a3;
+- (void)handleCriticalAppEvent:(id)event;
 @end
 
 @implementation WiFiTrafficEngManager
 
-- (WiFiTrafficEngManager)initWithArgs:(__WiFiLQAMgr *)a3
+- (WiFiTrafficEngManager)initWithArgs:(__WiFiLQAMgr *)args
 {
   v9.receiver = self;
   v9.super_class = WiFiTrafficEngManager;
@@ -41,7 +41,7 @@ LABEL_9:
   }
 
   v6 = v5;
-  [(WiFiTrafficEngManager *)v4 setLqaMgr:a3];
+  [(WiFiTrafficEngManager *)v4 setLqaMgr:args];
   [(WiFiTrafficEngManager *)v4 setTrafficEng:v6];
 
   return v4;
@@ -56,30 +56,30 @@ LABEL_9:
 
 - (__CFDictionary)retrieveCurrentLinkHealth
 {
-  v2 = [(WiFiTrafficEngManager *)self lqaMgr];
+  lqaMgr = [(WiFiTrafficEngManager *)self lqaMgr];
 
-  return sub_100140368(v2);
+  return sub_100140368(lqaMgr);
 }
 
-- (void)handleCriticalAppEvent:(id)a3
+- (void)handleCriticalAppEvent:(id)event
 {
-  v4 = [(WiFiTrafficEngManager *)self lqaMgr];
+  lqaMgr = [(WiFiTrafficEngManager *)self lqaMgr];
 
-  sub_100048BD4(v4, a3);
+  sub_100048BD4(lqaMgr, event);
 }
 
 - (void)discoveryIndication
 {
-  v2 = [(WiFiTrafficEngManager *)self lqaMgr];
+  lqaMgr = [(WiFiTrafficEngManager *)self lqaMgr];
 
-  nullsub_4(v2, v3);
+  nullsub_4(lqaMgr, v3);
 }
 
 - (__CFDictionary)retrieveEventDetails
 {
-  v2 = [(WiFiTrafficEngManager *)self lqaMgr];
+  lqaMgr = [(WiFiTrafficEngManager *)self lqaMgr];
 
-  return sub_1001405E0(v2);
+  return sub_1001405E0(lqaMgr);
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface SASSignalServer
 + (id)interface;
-+ (id)serverForConnection:(id)a3;
-+ (void)_unregisterConnection:(id)a3;
++ (id)serverForConnection:(id)connection;
++ (void)_unregisterConnection:(id)connection;
 - (SASSignalServerDelegate)weak_delegate;
-- (void)_activationRequestFromDirectActionEventWithContext:(id)a3 completion:(id)a4;
-- (void)_registerSourceForIdentifier:(id)a3;
-- (void)_setConnection:(id)a3;
-- (void)_unregisterSourceForIdentifier:(id)a3;
-- (void)activationRequestFromBluetoothKeyboardActivation:(id)a3;
+- (void)_activationRequestFromDirectActionEventWithContext:(id)context completion:(id)completion;
+- (void)_registerSourceForIdentifier:(id)identifier;
+- (void)_setConnection:(id)connection;
+- (void)_unregisterSourceForIdentifier:(id)identifier;
+- (void)activationRequestFromBluetoothKeyboardActivation:(id)activation;
 - (void)activationRequestFromBreadcrumb;
-- (void)activationRequestFromButtonIdentifier:(id)a3 context:(id)a4;
-- (void)activationRequestFromContinuityWithContext:(id)a3;
-- (void)activationRequestFromRemotePresentationBringUpWithContext:(id)a3;
-- (void)activationRequestFromSimpleActivation:(id)a3;
-- (void)activationRequestFromSpotlightWithContext:(id)a3;
-- (void)activationRequestFromTestingWithContext:(id)a3;
-- (void)activationRequestFromTostadaWithContext:(id)a3;
-- (void)activationRequestFromVocalShortcutWithContext:(id)a3;
-- (void)buttonDownFromButtonIdentifier:(id)a3 timestamp:(id)a4 context:(id)a5;
-- (void)buttonLongPressFromButtonIdentifier:(id)a3 context:(id)a4;
-- (void)buttonTapFromButtonIdentifier:(id)a3 timestamp:(id)a4 context:(id)a5;
-- (void)buttonUpFromButtonIdentifier:(id)a3 deviceIdentifier:(id)a4 timestamp:(id)a5 context:(id)a6;
+- (void)activationRequestFromButtonIdentifier:(id)identifier context:(id)context;
+- (void)activationRequestFromContinuityWithContext:(id)context;
+- (void)activationRequestFromRemotePresentationBringUpWithContext:(id)context;
+- (void)activationRequestFromSimpleActivation:(id)activation;
+- (void)activationRequestFromSpotlightWithContext:(id)context;
+- (void)activationRequestFromTestingWithContext:(id)context;
+- (void)activationRequestFromTostadaWithContext:(id)context;
+- (void)activationRequestFromVocalShortcutWithContext:(id)context;
+- (void)buttonDownFromButtonIdentifier:(id)identifier timestamp:(id)timestamp context:(id)context;
+- (void)buttonLongPressFromButtonIdentifier:(id)identifier context:(id)context;
+- (void)buttonTapFromButtonIdentifier:(id)identifier timestamp:(id)timestamp context:(id)context;
+- (void)buttonUpFromButtonIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier timestamp:(id)timestamp context:(id)context;
 - (void)cancelPrewarmForFirstTapOfQuickTypeToSiriGesture;
-- (void)cancelPrewarmFromButtonIdentifier:(id)a3;
-- (void)deactivationRequestFromButtonIdentifier:(id)a3 context:(id)a4 options:(id)a5;
+- (void)cancelPrewarmFromButtonIdentifier:(id)identifier;
+- (void)deactivationRequestFromButtonIdentifier:(id)identifier context:(id)context options:(id)options;
 - (void)prewarmForFirstTapOfQuickTypeToSiriGesture;
-- (void)prewarmFromButtonIdentifier:(id)a3;
-- (void)prewarmFromButtonIdentifier:(id)a3 longPressInterval:(id)a4;
-- (void)prewarmWithRequest:(id)a3;
-- (void)registerAssertionWithIdentifier:(id)a3 reason:(id)a4;
-- (void)registerButtonEventListenerWithIdentifier:(id)a3;
-- (void)registerButtonIdentifier:(id)a3 withUUID:(id)a4;
-- (void)registerNonButtonSourceWithType:(id)a3 withUUID:(id)a4;
-- (void)setHintGlowAssertionFromButtonIdentifier:(id)a3 context:(id)a4;
-- (void)specifySenderForInstrumentation:(id)a3;
-- (void)unregisterAssertionWithIdentifier:(id)a3;
-- (void)unregisterButtonEventListenerWithIdentifier:(id)a3;
-- (void)unregisterButtonIdentifier:(id)a3 withUUID:(id)a4;
-- (void)unregisterNonButtonSourceWithType:(id)a3 withUUID:(id)a4;
+- (void)prewarmFromButtonIdentifier:(id)identifier;
+- (void)prewarmFromButtonIdentifier:(id)identifier longPressInterval:(id)interval;
+- (void)prewarmWithRequest:(id)request;
+- (void)registerAssertionWithIdentifier:(id)identifier reason:(id)reason;
+- (void)registerButtonEventListenerWithIdentifier:(id)identifier;
+- (void)registerButtonIdentifier:(id)identifier withUUID:(id)d;
+- (void)registerNonButtonSourceWithType:(id)type withUUID:(id)d;
+- (void)setHintGlowAssertionFromButtonIdentifier:(id)identifier context:(id)context;
+- (void)specifySenderForInstrumentation:(id)instrumentation;
+- (void)unregisterAssertionWithIdentifier:(id)identifier;
+- (void)unregisterButtonEventListenerWithIdentifier:(id)identifier;
+- (void)unregisterButtonIdentifier:(id)identifier withUUID:(id)d;
+- (void)unregisterNonButtonSourceWithType:(id)type withUUID:(id)d;
 @end
 
 @implementation SASSignalServer
@@ -51,11 +51,11 @@
   return v4;
 }
 
-+ (id)serverForConnection:(id)a3
++ (id)serverForConnection:(id)connection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [serversByConnection_0 objectForKey:v3];
+  connectionCopy = connection;
+  v4 = [serversByConnection_0 objectForKey:connectionCopy];
   if (!v4)
   {
     v4 = objc_alloc_init(SASSignalServer);
@@ -65,11 +65,11 @@
     {
       v7 = MEMORY[0x1E696AF00];
       v8 = v6;
-      v9 = [v7 currentThread];
+      currentThread = [v7 currentThread];
       v17 = 136315394;
       v18 = "+[SASSignalServer serverForConnection:]";
       v19 = 2048;
-      v20 = [v9 qualityOfService];
+      qualityOfService = [currentThread qualityOfService];
       _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy lock about to lock with qos: %zd", &v17, 0x16u);
     }
 
@@ -92,7 +92,7 @@
       v11 = serversByConnection_0;
     }
 
-    [v11 setObject:v4 forKey:v3];
+    [v11 setObject:v4 forKey:connectionCopy];
     os_unfair_lock_unlock(&lock_0);
     v14 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
@@ -102,7 +102,7 @@
       _os_log_impl(&dword_1C8137000, v14, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy lock unlocked", &v17, 0xCu);
     }
 
-    [(SASSignalServer *)v4 _setConnection:v3];
+    [(SASSignalServer *)v4 _setConnection:connectionCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -110,22 +110,22 @@
   return v4;
 }
 
-- (void)_setConnection:(id)a3
+- (void)_setConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 remoteProcess];
-  v6 = [v5 hasEntitlement:@"com.apple.siri.activation.service"];
-  if (!v5 || (v6 & 1) != 0)
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v6 = [remoteProcess hasEntitlement:@"com.apple.siri.activation.service"];
+  if (!remoteProcess || (v6 & 1) != 0)
   {
-    v8 = [(SASSignalServer *)self connection];
-    if (v8)
+    connection = [(SASSignalServer *)self connection];
+    if (connection)
     {
     }
 
     else if (![(SASSignalServer *)self invalidated])
     {
-      [(SASSignalServer *)self setConnection:v4];
+      [(SASSignalServer *)self setConnection:connectionCopy];
       connection = self->_connection;
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -143,7 +143,7 @@
       *buf = 136315394;
       v14 = "[SASSignalServer _setConnection:]";
       v15 = 2114;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s Unexpectedly attempted to assign a new connection to the activation server with an existing connection: %{public}@", buf, 0x16u);
     }
   }
@@ -153,11 +153,11 @@
     v7 = *MEMORY[0x1E698D0A0];
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
     {
-      [(SASSignalServer *)self _setConnection:v7, v5];
+      [(SASSignalServer *)self _setConnection:v7, remoteProcess];
     }
   }
 
-  [v4 invalidate];
+  [connectionCopy invalidate];
 LABEL_11:
 
   v10 = *MEMORY[0x1E69E9840];
@@ -252,21 +252,21 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_unregisterConnection:(id)a3
++ (void)_unregisterConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = MEMORY[0x1E698D0A0];
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x1E696AF00];
     v7 = v5;
-    v8 = [v6 currentThread];
+    currentThread = [v6 currentThread];
     v15 = 136315394;
     v16 = "+[SASSignalServer _unregisterConnection:]";
     v17 = 2048;
-    v18 = [v8 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy lock about to lock with qos: %zd", &v15, 0x16u);
   }
 
@@ -279,12 +279,12 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy lock successfully locked", &v15, 0xCu);
   }
 
-  v10 = [serversByConnection_0 objectForKey:v3];
+  v10 = [serversByConnection_0 objectForKey:connectionCopy];
   v11 = +[SiriActivationService service];
-  v12 = [v10 assertionClientIdentifier];
-  [v11 unregisterActivationAssertionWithIdentifier:v12];
+  assertionClientIdentifier = [v10 assertionClientIdentifier];
+  [v11 unregisterActivationAssertionWithIdentifier:assertionClientIdentifier];
 
-  [serversByConnection_0 removeObjectForKey:v3];
+  [serversByConnection_0 removeObjectForKey:connectionCopy];
   os_unfair_lock_unlock(&lock_0);
   v13 = *v4;
   if (os_log_type_enabled(*v4, OS_LOG_TYPE_DEFAULT))
@@ -297,141 +297,141 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerSourceForIdentifier:(id)a3
+- (void)_registerSourceForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SiriActivationService service];
-  [v5 registerActivationSource:self withIdentifier:v4];
+  [v5 registerActivationSource:self withIdentifier:identifierCopy];
 }
 
-- (void)_unregisterSourceForIdentifier:(id)a3
+- (void)_unregisterSourceForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SiriActivationService service];
-  [v4 unregisterActivationSourceIdentifier:v3];
+  [v4 unregisterActivationSourceIdentifier:identifierCopy];
 }
 
-- (void)registerButtonIdentifier:(id)a3 withUUID:(id)a4
+- (void)registerButtonIdentifier:(id)identifier withUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   kdebug_trace();
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SASSignalServer *)self connection];
-    v11 = [v10 remoteProcess];
-    v12 = [v11 bundleIdentifier];
+    connection = [(SASSignalServer *)self connection];
+    remoteProcess = [connection remoteProcess];
+    bundleIdentifier = [remoteProcess bundleIdentifier];
     v14 = 136315906;
     v15 = "[SASSignalServer registerButtonIdentifier:withUUID:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v12;
+    v21 = bundleIdentifier;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation Button identifier %@ with uuid '%@' registered by %@", &v14, 0x2Au);
   }
 
-  -[SASSignalServer setButtonSourceIdentifier:](self, "setButtonSourceIdentifier:", [v6 siriButtonIdentifier]);
-  [(SASSignalServer *)self _registerSourceForIdentifier:v7];
+  -[SASSignalServer setButtonSourceIdentifier:](self, "setButtonSourceIdentifier:", [identifierCopy siriButtonIdentifier]);
+  [(SASSignalServer *)self _registerSourceForIdentifier:dCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterButtonIdentifier:(id)a3 withUUID:(id)a4
+- (void)unregisterButtonIdentifier:(id)identifier withUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   kdebug_trace();
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SASSignalServer *)self connection];
-    v11 = [v10 remoteProcess];
-    v12 = [v11 bundleIdentifier];
+    connection = [(SASSignalServer *)self connection];
+    remoteProcess = [connection remoteProcess];
+    bundleIdentifier = [remoteProcess bundleIdentifier];
     v14 = 136315906;
     v15 = "[SASSignalServer unregisterButtonIdentifier:withUUID:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v12;
+    v21 = bundleIdentifier;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation Button identifier %@ with uuid '%@' unregistered by %@", &v14, 0x2Au);
   }
 
   [(SASSignalServer *)self setButtonSourceIdentifier:0];
-  [(SASSignalServer *)self _unregisterSourceForIdentifier:v7];
+  [(SASSignalServer *)self _unregisterSourceForIdentifier:dCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerNonButtonSourceWithType:(id)a3 withUUID:(id)a4
+- (void)registerNonButtonSourceWithType:(id)type withUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  dCopy = d;
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SASSignalServer *)self connection];
-    v11 = [v10 remoteProcess];
-    v12 = [v11 bundleIdentifier];
+    connection = [(SASSignalServer *)self connection];
+    remoteProcess = [connection remoteProcess];
+    bundleIdentifier = [remoteProcess bundleIdentifier];
     v14 = 136315906;
     v15 = "[SASSignalServer registerNonButtonSourceWithType:withUUID:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = typeCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v12;
+    v21 = bundleIdentifier;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation Non-button source of type %@ with uuid '%@' registered by %@", &v14, 0x2Au);
   }
 
-  [(SASSignalServer *)self _registerSourceForIdentifier:v7];
+  [(SASSignalServer *)self _registerSourceForIdentifier:dCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterNonButtonSourceWithType:(id)a3 withUUID:(id)a4
+- (void)unregisterNonButtonSourceWithType:(id)type withUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  dCopy = d;
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SASSignalServer *)self connection];
-    v11 = [v10 remoteProcess];
-    v12 = [v11 bundleIdentifier];
+    connection = [(SASSignalServer *)self connection];
+    remoteProcess = [connection remoteProcess];
+    bundleIdentifier = [remoteProcess bundleIdentifier];
     v14 = 136315906;
     v15 = "[SASSignalServer unregisterNonButtonSourceWithType:withUUID:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = typeCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v12;
+    v21 = bundleIdentifier;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation Non-button source of type %@ with uuid '%@' unregistered by %@", &v14, 0x2Au);
   }
 
-  [(SASSignalServer *)self _unregisterSourceForIdentifier:v7];
+  [(SASSignalServer *)self _unregisterSourceForIdentifier:dCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromButtonIdentifier:(id)a3 context:(id)a4
+- (void)activationRequestFromButtonIdentifier:(id)identifier context:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   kdebug_trace();
   v7 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -439,47 +439,47 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v10 = 136315650;
     v11 = "[SASSignalServer activationRequestFromButtonIdentifier:context:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = contextCopy;
     _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromButtonIdentifier:%@ context:%@", &v10, 0x20u);
   }
 
   v8 = +[SiriActivationService service];
-  [v8 activationRequestFromButtonIdentifier:objc_msgSend(v5 context:{"siriButtonIdentifier"), v6}];
+  [v8 activationRequestFromButtonIdentifier:objc_msgSend(identifierCopy context:{"siriButtonIdentifier"), contextCopy}];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deactivationRequestFromButtonIdentifier:(id)a3 context:(id)a4 options:(id)a5
+- (void)deactivationRequestFromButtonIdentifier:(id)identifier context:(id)context options:(id)options
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
+  optionsCopy = options;
   v10 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315650;
     v14 = "[SASSignalServer deactivationRequestFromButtonIdentifier:context:options:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = contextCopy;
     _os_log_impl(&dword_1C8137000, v10, OS_LOG_TYPE_DEFAULT, "%s #activation deactivationRequestFromButtonIdentifier:%@ context:%@", &v13, 0x20u);
   }
 
   v11 = +[SiriActivationService service];
-  [v11 deactivationRequestFromButtonIdentifier:objc_msgSend(v7 context:"siriButtonIdentifier") options:{v8, v9}];
+  [v11 deactivationRequestFromButtonIdentifier:objc_msgSend(identifierCopy context:"siriButtonIdentifier") options:{contextCopy, optionsCopy}];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_activationRequestFromDirectActionEventWithContext:(id)a3 completion:(id)a4
+- (void)_activationRequestFromDirectActionEventWithContext:(id)context completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   kdebug_trace();
   v8 = MEMORY[0x1E698D0A0];
   v9 = *MEMORY[0x1E698D0A0];
@@ -488,23 +488,23 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v24 = 136315394;
     v25 = "[SASSignalServer _activationRequestFromDirectActionEventWithContext:completion:]";
     v26 = 2112;
-    v27 = v6;
+    v27 = contextCopy;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation _activationRequestFromDirectActionEventWithContext:%@", &v24, 0x16u);
   }
 
-  v10 = [(SiriDirectActionContext *)v6 payload];
-  if (v10)
+  payload = [(SiriDirectActionContext *)contextCopy payload];
+  if (payload)
   {
-    v11 = v10;
-    v12 = [(SiriDirectActionContext *)v6 payload];
-    v13 = [v12 allKeys];
-    v14 = [v13 containsObject:@"SBSAssistantActivationContextBundleID"];
+    v11 = payload;
+    payload2 = [(SiriDirectActionContext *)contextCopy payload];
+    allKeys = [payload2 allKeys];
+    v14 = [allKeys containsObject:@"SBSAssistantActivationContextBundleID"];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(SASSignalServer *)self connection];
-      v16 = [v15 remoteProcess];
-      v17 = [v16 bundleIdentifier];
+      connection = [(SASSignalServer *)self connection];
+      remoteProcess = [connection remoteProcess];
+      bundleIdentifier = [remoteProcess bundleIdentifier];
 
       v18 = *v8;
       if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
@@ -512,30 +512,30 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
         v24 = 136315394;
         v25 = "[SASSignalServer _activationRequestFromDirectActionEventWithContext:completion:]";
         v26 = 2112;
-        v27 = v17;
+        v27 = bundleIdentifier;
         _os_log_impl(&dword_1C8137000, v18, OS_LOG_TYPE_DEFAULT, "%s #activation _activationRequestFromDirectActionEventWithContext payload missing bundleId, using connection bundle id:%@", &v24, 0x16u);
       }
 
-      v19 = [(SiriDirectActionContext *)v6 payload];
-      v20 = [v19 mutableCopy];
+      payload3 = [(SiriDirectActionContext *)contextCopy payload];
+      v20 = [payload3 mutableCopy];
 
-      [v20 setValue:v17 forKey:@"SBSAssistantActivationContextBundleID"];
+      [v20 setValue:bundleIdentifier forKey:@"SBSAssistantActivationContextBundleID"];
       v21 = [[SiriDirectActionContext alloc] initWithPayload:v20];
 
-      v6 = v21;
+      contextCopy = v21;
     }
   }
 
   v22 = +[SiriActivationService service];
-  [v22 activationRequestFromDirectActionEventWithContext:v6 completion:v7];
+  [v22 activationRequestFromDirectActionEventWithContext:contextCopy completion:completionCopy];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromContinuityWithContext:(id)a3
+- (void)activationRequestFromContinuityWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -543,20 +543,20 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromContinuityWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromContinuityWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromContinuityWithContext:v3];
+  [v5 activationRequestFromContinuityWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromRemotePresentationBringUpWithContext:(id)a3
+- (void)activationRequestFromRemotePresentationBringUpWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -564,12 +564,12 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromRemotePresentationBringUpWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromRemotePresentationBringUpWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromRemotePresentationBringUpWithContext:v3];
+  [v5 activationRequestFromRemotePresentationBringUpWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -592,10 +592,10 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromBluetoothKeyboardActivation:(id)a3
+- (void)activationRequestFromBluetoothKeyboardActivation:(id)activation
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activationCopy = activation;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
@@ -605,15 +605,15 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromBluetoothKeyboardActivation:{objc_msgSend(v3, "integerValue")}];
+  [v5 activationRequestFromBluetoothKeyboardActivation:{objc_msgSend(activationCopy, "integerValue")}];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromSimpleActivation:(id)a3
+- (void)activationRequestFromSimpleActivation:(id)activation
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activationCopy = activation;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
@@ -623,15 +623,15 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromSimpleActivation:{objc_msgSend(v3, "integerValue")}];
+  [v5 activationRequestFromSimpleActivation:{objc_msgSend(activationCopy, "integerValue")}];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromSpotlightWithContext:(id)a3
+- (void)activationRequestFromSpotlightWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -639,20 +639,20 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromSpotlightWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromSpotlightWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromSpotlightWithContext:v3];
+  [v5 activationRequestFromSpotlightWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromTestingWithContext:(id)a3
+- (void)activationRequestFromTestingWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -660,83 +660,83 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromTestingWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromTestingWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromTestingWithContext:v3];
+  [v5 activationRequestFromTestingWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromVocalShortcutWithContext:(id)a3
+- (void)activationRequestFromVocalShortcutWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromVocalShortcutWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromVocalShortcutWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromVocalShortcutWithContext:v3];
+  [v5 activationRequestFromVocalShortcutWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activationRequestFromTostadaWithContext:(id)a3
+- (void)activationRequestFromTostadaWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SASSignalServer activationRequestFromTostadaWithContext:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = contextCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s #activation activationRequestFromTostadaWithContext:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 activationRequestFromTostadaWithContext:v3];
+  [v5 activationRequestFromTostadaWithContext:contextCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHintGlowAssertionFromButtonIdentifier:(id)a3 context:(id)a4
+- (void)setHintGlowAssertionFromButtonIdentifier:(id)identifier context:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v7 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[SASSignalServer setHintGlowAssertionFromButtonIdentifier:context:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = contextCopy;
     _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s #activation setHintGlowAssertionFromButtonIdentifier: %@, context: %@", &v10, 0x20u);
   }
 
   v8 = +[SiriActivationService service];
-  [v8 setHintGlowAssertionFromButtonIdentifier:objc_msgSend(v5 context:{"siriButtonIdentifier"), v6}];
+  [v8 setHintGlowAssertionFromButtonIdentifier:objc_msgSend(identifierCopy context:{"siriButtonIdentifier"), contextCopy}];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmFromButtonIdentifier:(id)a3
+- (void)prewarmFromButtonIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -744,21 +744,21 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer prewarmFromButtonIdentifier:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s prewarmFromButtonIdentifier:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 prewarmFromButtonIdentifier:objc_msgSend(v3 longPressInterval:{"siriButtonIdentifier"), 0.0}];
+  [v5 prewarmFromButtonIdentifier:objc_msgSend(identifierCopy longPressInterval:{"siriButtonIdentifier"), 0.0}];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmFromButtonIdentifier:(id)a3 longPressInterval:(id)a4
+- (void)prewarmFromButtonIdentifier:(id)identifier longPressInterval:(id)interval
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  intervalCopy = interval;
   kdebug_trace();
   v7 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -766,23 +766,23 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v13 = 136315394;
     v14 = "[SASSignalServer prewarmFromButtonIdentifier:longPressInterval:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v7, OS_LOG_TYPE_DEFAULT, "%s prewarmFromButtonIdentifier:%@", &v13, 0x16u);
   }
 
   v8 = +[SiriActivationService service];
-  v9 = [v5 siriButtonIdentifier];
-  [v6 timeInterval];
+  siriButtonIdentifier = [identifierCopy siriButtonIdentifier];
+  [intervalCopy timeInterval];
   v11 = v10;
 
-  [v8 prewarmFromButtonIdentifier:v9 longPressInterval:v11];
+  [v8 prewarmFromButtonIdentifier:siriButtonIdentifier longPressInterval:v11];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelPrewarmFromButtonIdentifier:(id)a3
+- (void)cancelPrewarmFromButtonIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -790,22 +790,22 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v7 = 136315394;
     v8 = "[SASSignalServer cancelPrewarmFromButtonIdentifier:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s cancelPrewarmFromButtonIdentifier:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 cancelPrewarmFromButtonIdentifier:{objc_msgSend(v3, "siriButtonIdentifier")}];
+  [v5 cancelPrewarmFromButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier")}];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonDownFromButtonIdentifier:(id)a3 timestamp:(id)a4 context:(id)a5
+- (void)buttonDownFromButtonIdentifier:(id)identifier timestamp:(id)timestamp context:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  contextCopy = context;
   kdebug_trace();
   v11 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -813,31 +813,31 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     *buf = 136315650;
     v29 = "[SASSignalServer buttonDownFromButtonIdentifier:timestamp:context:]";
     v30 = 2112;
-    v31 = v8;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = timestampCopy;
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s buttonDownFromButtonIdentifier:%@ timestamp:%@", buf, 0x20u);
   }
 
-  v12 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v13 = [v12 assistantIsEnabled];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x1E698D1C0] assistantIsEnabled];
 
-  if (v13)
+  if (assistantIsEnabled)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(v8, "siriButtonIdentifier", @"eventSource"}];
+    v14 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier", @"eventSource"}];
     v27 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-    v16 = [MEMORY[0x1E698D0C8] sharedAnalytics];
+    mEMORY[0x1E698D0C8] = [MEMORY[0x1E698D0C8] sharedAnalytics];
     v17 = AFAnalyticsEventCreateCurrent();
-    [v16 logEvent:v17];
+    [mEMORY[0x1E698D0C8] logEvent:v17];
 
     activationInstrumentation = self->_activationInstrumentation;
-    v19 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(v8, "siriButtonIdentifier")}];
+    v19 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier")}];
     v20 = [(SASActivationInstrumentation *)activationInstrumentation buttonDownWithIdentifier:v19];
 
-    [v10 setActivationEventInstrumentationIdentifier:v20];
-    v21 = [v8 siriButtonIdentifier] - 1;
+    [contextCopy setActivationEventInstrumentationIdentifier:v20];
+    v21 = [identifierCopy siriButtonIdentifier] - 1;
     if (v21 <= 8 && ((0x173u >> v21) & 1) != 0)
     {
       v22 = dword_1C818FB60[v21];
@@ -846,20 +846,20 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   }
 
   v23 = +[SiriActivationService service];
-  v24 = [v8 siriButtonIdentifier];
-  [v9 timeInterval];
-  [v23 buttonDownFromButtonIdentifier:v24 timestamp:v10 context:?];
+  siriButtonIdentifier = [identifierCopy siriButtonIdentifier];
+  [timestampCopy timeInterval];
+  [v23 buttonDownFromButtonIdentifier:siriButtonIdentifier timestamp:contextCopy context:?];
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonUpFromButtonIdentifier:(id)a3 deviceIdentifier:(id)a4 timestamp:(id)a5 context:(id)a6
+- (void)buttonUpFromButtonIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier timestamp:(id)timestamp context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  contextCopy = context;
+  deviceIdentifierCopy = deviceIdentifier;
   kdebug_trace();
   v14 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -867,31 +867,31 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     *buf = 136315650;
     v32 = "[SASSignalServer buttonUpFromButtonIdentifier:deviceIdentifier:timestamp:context:]";
     v33 = 2112;
-    v34 = v10;
+    v34 = identifierCopy;
     v35 = 2112;
-    v36 = v11;
+    v36 = timestampCopy;
     _os_log_impl(&dword_1C8137000, v14, OS_LOG_TYPE_DEFAULT, "%s buttonUpFromButtonIdentifier:%@ timestamp:%@", buf, 0x20u);
   }
 
-  v15 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v16 = [v15 assistantIsEnabled];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x1E698D1C0] assistantIsEnabled];
 
-  if (v16)
+  if (assistantIsEnabled)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(v10, "siriButtonIdentifier", @"eventSource"}];
+    v17 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier", @"eventSource"}];
     v30 = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-    v19 = [MEMORY[0x1E698D0C8] sharedAnalytics];
+    mEMORY[0x1E698D0C8] = [MEMORY[0x1E698D0C8] sharedAnalytics];
     v20 = AFAnalyticsEventCreateCurrent();
-    [v19 logEvent:v20];
+    [mEMORY[0x1E698D0C8] logEvent:v20];
 
     activationInstrumentation = self->_activationInstrumentation;
-    v22 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(v10, "siriButtonIdentifier")}];
+    v22 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier")}];
     v23 = [(SASActivationInstrumentation *)activationInstrumentation buttonUpWithIdentifier:v22];
 
-    [v12 setActivationEventInstrumentationIdentifier:v23];
-    v24 = [v10 siriButtonIdentifier] - 1;
+    [contextCopy setActivationEventInstrumentationIdentifier:v23];
+    v24 = [identifierCopy siriButtonIdentifier] - 1;
     if (v24 <= 8 && ((0x173u >> v24) & 1) != 0)
     {
       v25 = dword_1C818FB84[v24];
@@ -900,19 +900,19 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   }
 
   v26 = +[SiriActivationService service];
-  v27 = [v10 siriButtonIdentifier];
-  [v11 timeInterval];
-  [v26 buttonUpFromButtonIdentifier:v27 deviceIdentifier:v13 timestamp:v12 context:?];
+  siriButtonIdentifier = [identifierCopy siriButtonIdentifier];
+  [timestampCopy timeInterval];
+  [v26 buttonUpFromButtonIdentifier:siriButtonIdentifier deviceIdentifier:deviceIdentifierCopy timestamp:contextCopy context:?];
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonTapFromButtonIdentifier:(id)a3 timestamp:(id)a4 context:(id)a5
+- (void)buttonTapFromButtonIdentifier:(id)identifier timestamp:(id)timestamp context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
+  timestampCopy = timestamp;
   kdebug_trace();
   v11 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -920,29 +920,29 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v20 = 136315394;
     v21 = "[SASSignalServer buttonTapFromButtonIdentifier:timestamp:context:]";
     v22 = 2112;
-    v23 = v8;
+    v23 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v11, OS_LOG_TYPE_DEFAULT, "%s buttonTapFromButtonIdentifier:%@", &v20, 0x16u);
   }
 
   activationInstrumentation = self->_activationInstrumentation;
-  v13 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(v8, "siriButtonIdentifier")}];
+  v13 = [MEMORY[0x1E696AEC0] stringWithSiriButtonIdentifier:{objc_msgSend(identifierCopy, "siriButtonIdentifier")}];
   v14 = [(SASActivationInstrumentation *)activationInstrumentation buttonTapWithIdentifier:v13 associateWithButtonDown:1];
 
-  [v9 setActivationEventInstrumentationIdentifier:v14];
+  [contextCopy setActivationEventInstrumentationIdentifier:v14];
   v15 = +[SiriActivationService service];
-  v16 = [v8 siriButtonIdentifier];
-  [v10 timeInterval];
+  siriButtonIdentifier = [identifierCopy siriButtonIdentifier];
+  [timestampCopy timeInterval];
   v18 = v17;
 
-  [v15 buttonTapFromButtonIdentifier:v16 timestamp:v9 context:v18];
+  [v15 buttonTapFromButtonIdentifier:siriButtonIdentifier timestamp:contextCopy context:v18];
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)buttonLongPressFromButtonIdentifier:(id)a3 context:(id)a4
+- (void)buttonLongPressFromButtonIdentifier:(id)identifier context:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   kdebug_trace();
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -950,17 +950,17 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
     v12 = 136315650;
     v13 = "[SASSignalServer buttonLongPressFromButtonIdentifier:context:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = contextCopy;
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s buttonLongPressFromButtonIdentifier:%@ context:%@", &v12, 0x20u);
   }
 
-  v9 = [(SASActivationInstrumentation *)self->_activationInstrumentation mostRecentAtivationEvenIdentifier];
-  [v7 setActivationEventInstrumentationIdentifier:v9];
+  mostRecentAtivationEvenIdentifier = [(SASActivationInstrumentation *)self->_activationInstrumentation mostRecentAtivationEvenIdentifier];
+  [contextCopy setActivationEventInstrumentationIdentifier:mostRecentAtivationEvenIdentifier];
 
   v10 = +[SiriActivationService service];
-  [v10 buttonLongPressFromButtonIdentifier:objc_msgSend(v6 context:{"siriButtonIdentifier"), v7}];
+  [v10 buttonLongPressFromButtonIdentifier:objc_msgSend(identifierCopy context:{"siriButtonIdentifier"), contextCopy}];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -983,10 +983,10 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prewarmWithRequest:(id)a3
+- (void)prewarmWithRequest:(id)request
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   kdebug_trace();
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -997,7 +997,7 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   }
 
   v5 = +[SiriActivationService service];
-  [v5 prewarmWithRequest:v3];
+  [v5 prewarmWithRequest:requestCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -1020,11 +1020,11 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)specifySenderForInstrumentation:(id)a3
+- (void)specifySenderForInstrumentation:(id)instrumentation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[SASActivationInstrumentation alloc] initWithSender:v4];
+  instrumentationCopy = instrumentation;
+  v5 = [[SASActivationInstrumentation alloc] initWithSender:instrumentationCopy];
 
   activationInstrumentation = self->_activationInstrumentation;
   self->_activationInstrumentation = v5;
@@ -1043,87 +1043,87 @@ void __34__SASSignalServer__setConnection___block_invoke_23(uint64_t a1, uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerAssertionWithIdentifier:(id)a3 reason:(id)a4
+- (void)registerAssertionWithIdentifier:(id)identifier reason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[SASSignalServer registerAssertionWithIdentifier:reason:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = identifierCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = reasonCopy;
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation registerAssertionWithIdentifier:%@ reason:%@", &v11, 0x20u);
   }
 
   v9 = +[SiriActivationService service];
-  [v9 registerActivationAssertion:self withIdentifier:v6];
+  [v9 registerActivationAssertion:self withIdentifier:identifierCopy];
 
-  [(SASSignalServer *)self setAssertionClientIdentifier:v6];
+  [(SASSignalServer *)self setAssertionClientIdentifier:identifierCopy];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterAssertionWithIdentifier:(id)a3
+- (void)unregisterAssertionWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SASSignalServer unregisterAssertionWithIdentifier:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s #activation unregisterAssertionWithIdentifier:%@", &v8, 0x16u);
   }
 
   v6 = +[SiriActivationService service];
-  [v6 unregisterActivationAssertionWithIdentifier:v4];
+  [v6 unregisterActivationAssertionWithIdentifier:identifierCopy];
 
   [(SASSignalServer *)self setAssertionClientIdentifier:0];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerButtonEventListenerWithIdentifier:(id)a3
+- (void)registerButtonEventListenerWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SASSignalServer registerButtonEventListenerWithIdentifier:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s registerButtonEventListenerWithIdentifier:%@", &v8, 0x16u);
   }
 
   v6 = +[SiriActivationService service];
-  [v6 registerButtonEventListenerServer:self identifier:v4];
+  [v6 registerButtonEventListenerServer:self identifier:identifierCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterButtonEventListenerWithIdentifier:(id)a3
+- (void)unregisterButtonEventListenerWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SASSignalServer unregisterButtonEventListenerWithIdentifier:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1C8137000, v4, OS_LOG_TYPE_DEFAULT, "%s unregisterButtonEventListenerWithIdentifier:%@", &v7, 0x16u);
   }
 
   v5 = +[SiriActivationService service];
-  [v5 unregisterButtonEventListenerWithIdentifier:v3];
+  [v5 unregisterButtonEventListenerWithIdentifier:identifierCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }

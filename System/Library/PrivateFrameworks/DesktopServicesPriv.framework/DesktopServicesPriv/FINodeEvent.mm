@@ -1,6 +1,6 @@
 @interface FINodeEvent
 - (id).cxx_construct;
-- (id)init:(const void *)a3;
+- (id)init:(const void *)init;
 @end
 
 @implementation FINodeEvent
@@ -17,17 +17,17 @@
   return self;
 }
 
-- (id)init:(const void *)a3
+- (id)init:(const void *)init
 {
   v9.receiver = self;
   v9.super_class = FINodeEvent;
   v4 = [(FINodeEvent *)&v9 init];
-  v4->_event.fEventKind = *a3;
-  objc_storeStrong(&v4->_event.fFINode, *(a3 + 1));
-  v4->_event.fProperty = *(a3 + 4);
-  TPropertyValue::operator=(&v4->_event.fPropertyValue, a3 + 1);
-  v6 = *(a3 + 6);
-  v5 = *(a3 + 7);
+  v4->_event.fEventKind = *init;
+  objc_storeStrong(&v4->_event.fFINode, *(init + 1));
+  v4->_event.fProperty = *(init + 4);
+  TPropertyValue::operator=(&v4->_event.fPropertyValue, init + 1);
+  v6 = *(init + 6);
+  v5 = *(init + 7);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);
@@ -41,7 +41,7 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
   }
 
-  TRef<TDSNotifier *,TRetainReleasePolicy<TDSNotifier *>>::operator=(&v4->_event.fNotifier.fRef, *(a3 + 8));
+  TRef<TDSNotifier *,TRetainReleasePolicy<TDSNotifier *>>::operator=(&v4->_event.fNotifier.fRef, *(init + 8));
   return v4;
 }
 

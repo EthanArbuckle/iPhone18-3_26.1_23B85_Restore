@@ -1,14 +1,14 @@
 @interface EKEventAttachmentDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)parentViewControllerForAttachmentCellController:(id)a3;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)parentViewControllerForAttachmentCellController:(id)controller;
 - (unint64_t)numberOfSubitems;
 - (void)_cleanUpCellControllers;
 - (void)_setUpCellControllers;
 - (void)dealloc;
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem;
 - (void)reset;
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5;
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store;
 @end
 
 @implementation EKEventAttachmentDetailItem
@@ -25,33 +25,33 @@
 - (void)_setUpCellControllers
 {
   self->_visibilityChanged = 0;
-  v3 = [(EKEvent *)self->super._event calendar];
-  v10 = [v3 source];
+  calendar = [(EKEvent *)self->super._event calendar];
+  source = [calendar source];
 
-  v4 = [MEMORY[0x1E6993370] sharedInstance];
-  v5 = [v4 sourceIsManaged:v10];
+  mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+  v5 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
-  v6 = [(EKEvent *)self->super._event attachments];
-  v7 = [EKEventAttachmentCellController cellControllersForAttachments:v6 givenExistingControllers:self->_cellControllers sourceIsManaged:v5];
+  attachments = [(EKEvent *)self->super._event attachments];
+  array = [EKEventAttachmentCellController cellControllersForAttachments:attachments givenExistingControllers:self->_cellControllers sourceIsManaged:v5];
 
-  if (!v7)
+  if (!array)
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   [(NSArray *)self->_cellControllers makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
   cellControllers = self->_cellControllers;
-  self->_cellControllers = v7;
-  v9 = v7;
+  self->_cellControllers = array;
+  v9 = array;
 
   [(NSArray *)self->_cellControllers makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
 }
 
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store
 {
   v6.receiver = self;
   v6.super_class = EKEventAttachmentDetailItem;
-  [(EKEventDetailItem *)&v6 setEvent:a3 reminder:a4 store:a5];
+  [(EKEventDetailItem *)&v6 setEvent:event reminder:reminder store:store];
   [(EKEventAttachmentDetailItem *)self _setUpCellControllers];
 }
 
@@ -77,19 +77,19 @@
   [(EKEventDetailItem *)&v3 dealloc];
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
   cellControllers = self->_cellControllers;
   if (!cellControllers)
   {
-    [(EKEventAttachmentDetailItem *)self _setUpCellControllers:a3];
+    [(EKEventAttachmentDetailItem *)self _setUpCellControllers:event];
     cellControllers = self->_cellControllers;
   }
 
-  return [(NSArray *)cellControllers count:a3]!= 0;
+  return [(NSArray *)cellControllers count:event]!= 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cellControllers = self->_cellControllers;
   if (!cellControllers)
@@ -98,7 +98,7 @@
     cellControllers = self->_cellControllers;
   }
 
-  if ([(NSArray *)cellControllers count]<= a3)
+  if ([(NSArray *)cellControllers count]<= index)
   {
     v8 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -107,16 +107,16 @@
       _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_ERROR, "No cellControllers found in the attachment detail item.  We shouldn't be drawn, but tableview thinks we want to display, returning empty cell", v10, 2u);
     }
 
-    v7 = objc_opt_new();
+    cell = objc_opt_new();
   }
 
   else
   {
-    v6 = [(NSArray *)self->_cellControllers objectAtIndex:a3];
-    v7 = [v6 cell];
+    v6 = [(NSArray *)self->_cellControllers objectAtIndex:index];
+    cell = [v6 cell];
   }
 
-  return v7;
+  return cell;
 }
 
 - (unint64_t)numberOfSubitems
@@ -131,24 +131,24 @@
   return [(NSArray *)cellControllers count];
 }
 
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem
 {
-  if ([(NSArray *)self->_cellControllers count]> a4)
+  if ([(NSArray *)self->_cellControllers count]> subitem)
   {
-    v6 = [(NSArray *)self->_cellControllers objectAtIndex:a4];
+    v6 = [(NSArray *)self->_cellControllers objectAtIndex:subitem];
     [v6 cellSelected];
   }
 }
 
-- (id)parentViewControllerForAttachmentCellController:(id)a3
+- (id)parentViewControllerForAttachmentCellController:(id)controller
 {
-  v4 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKEventDetailItem *)self delegate];
-    v7 = [v6 viewControllerForEventItem:self];
+    delegate2 = [(EKEventDetailItem *)self delegate];
+    v7 = [delegate2 viewControllerForEventItem:self];
   }
 
   else

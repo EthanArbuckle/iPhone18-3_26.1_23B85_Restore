@@ -2,12 +2,12 @@
 - (ASKNetworkQualityInquiry)init;
 - (BOOL)areKnownNetworksReady;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
 - (void)drainKnownNetworksReadyHandlers;
-- (void)investigateNetworksWithCompletionBlock:(id)a3;
-- (void)performWhenKnownNetworksReady:(id)a3;
+- (void)investigateNetworksWithCompletionBlock:(id)block;
+- (void)performWhenKnownNetworksReady:(id)ready;
 @end
 
 @implementation ASKNetworkQualityInquiry
@@ -61,27 +61,27 @@ LABEL_6:
 
 - (BOOL)areKnownNetworksReady
 {
-  v3 = [(ASKNetworkQualityInquiry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ASKNetworkQualityInquiry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ASKNetworkQualityInquiry *)self knownNetworks];
-  LOBYTE(v3) = [v4 count] == 3;
+  knownNetworks = [(ASKNetworkQualityInquiry *)self knownNetworks];
+  LOBYTE(queue) = [knownNetworks count] == 3;
 
-  return v3;
+  return queue;
 }
 
-- (void)performWhenKnownNetworksReady:(id)a3
+- (void)performWhenKnownNetworksReady:(id)ready
 {
-  v4 = a3;
-  v5 = [(ASKNetworkQualityInquiry *)self queue];
+  readyCopy = ready;
+  queue = [(ASKNetworkQualityInquiry *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke;
   v7[3] = &unk_1E870C5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = readyCopy;
+  v6 = readyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke(uint64_t a1)
@@ -113,15 +113,15 @@ void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
 - (void)drainKnownNetworksReadyHandlers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(ASKNetworkQualityInquiry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ASKNetworkQualityInquiry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(ASKNetworkQualityInquiry *)self knownNetworksReadyHandlers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  knownNetworksReadyHandlers = [(ASKNetworkQualityInquiry *)self knownNetworksReadyHandlers];
+  v5 = [knownNetworksReadyHandlers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knownNetworksReadyHandlers);
         }
 
         (*(*(*(&v9 + 1) + 8 * v8++) + 16))();
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [knownNetworksReadyHandlers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -149,11 +149,11 @@ void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
   [(ASKNetworkQualityInquiry *)self setKnownNetworksReadyHandlers:0];
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
-  v5 = [(ASKNetworkQualityInquiry *)self knownNetworks];
-  [v5 addObject:v4];
+  iCopy = i;
+  knownNetworks = [(ASKNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks addObject:iCopy];
 
   if ([(ASKNetworkQualityInquiry *)self areKnownNetworksReady])
   {
@@ -162,42 +162,42 @@ void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
   }
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ASKNetworkQualityInquiry *)self knownNetworks];
-  [v5 removeObject:v4];
+  iCopy = i;
+  knownNetworks = [(ASKNetworkQualityInquiry *)self knownNetworks];
+  [knownNetworks removeObject:iCopy];
 
-  v6 = [MEMORY[0x1E698C968] ask_generalLogConfig];
-  if (!v6)
+  ask_generalLogConfig = [MEMORY[0x1E698C968] ask_generalLogConfig];
+  if (!ask_generalLogConfig)
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    ask_generalLogConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [ask_generalLogConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
-    _os_log_impl(&dword_1E12FC000, v7, OS_LOG_TYPE_DEBUG, "%@: Stopped tracking %@, searching for interface again", &v9, 0x16u);
+    v12 = iCopy;
+    _os_log_impl(&dword_1E12FC000, oSLogObject, OS_LOG_TYPE_DEBUG, "%@: Stopped tracking %@, searching for interface again", &v9, 0x16u);
   }
 
-  v8 = [(ASKNetworkQualityInquiry *)self manager];
-  [v8 trackNOIAnyForInterfaceType:objc_msgSend(v4 options:{"interface"), 0}];
+  manager = [(ASKNetworkQualityInquiry *)self manager];
+  [manager trackNOIAnyForInterfaceType:objc_msgSend(iCopy options:{"interface"), 0}];
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  isCopy = is;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [isCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -209,29 +209,29 @@ void __58__ASKNetworkQualityInquiry_performWhenKnownNetworksReady___block_invoke
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(isCopy);
         }
 
         [(ASKNetworkQualityInquiry *)self didStopTrackingNOI:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [isCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)investigateNetworksWithCompletionBlock:(id)a3
+- (void)investigateNetworksWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__ASKNetworkQualityInquiry_investigateNetworksWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E870C660;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(ASKNetworkQualityInquiry *)self performWhenKnownNetworksReady:v6];
 }
 

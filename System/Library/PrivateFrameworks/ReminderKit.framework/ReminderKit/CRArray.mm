@@ -1,122 +1,122 @@
 @interface CRArray
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wantsUndoCommands;
-- (CRArray)initWithCRCoder:(id)a3;
-- (CRArray)initWithCRCoder:(id)a3 array:(const void *)a4;
-- (CRArray)initWithDocument:(id)a3;
-- (CRArray)initWithTTArray:(id)a3 contents:(id)a4 document:(id)a5;
+- (CRArray)initWithCRCoder:(id)coder;
+- (CRArray)initWithCRCoder:(id)coder array:(const void *)array;
+- (CRArray)initWithDocument:(id)document;
+- (CRArray)initWithTTArray:(id)array contents:(id)contents document:(id)document;
 - (CRDocument)document;
 - (CRUndoDelegate)delegate;
 - (NSString)description;
 - (NSUUID)replicaUUID;
-- (id)_addObject:(id)a3;
-- (id)_insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (id)_insertObject:(id)a3 withIdentifier:(id)a4 atIndex:(unint64_t)a5 forUndo:(BOOL)a6;
-- (id)deltaSince:(id)a3 in:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)_addObject:(id)object;
+- (id)_insertObject:(id)object atIndex:(unint64_t)index;
+- (id)_insertObject:(id)object withIdentifier:(id)identifier atIndex:(unint64_t)index forUndo:(BOOL)undo;
+- (id)deltaSince:(id)since in:(id)in;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)tombstone;
 - (unint64_t)count;
-- (unint64_t)firstIndexOf:(id)a3 fromIndex:(unint64_t)a4;
+- (unint64_t)firstIndexOf:(id)of fromIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)encodeWithCRCoder:(id)a3 array:(void *)a4;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)realizeLocalChangesIn:(id)a3;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)encodeWithCRCoder:(id)coder array:(void *)array;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)mergeWith:(id)with;
+- (void)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)realizeLocalChangesIn:(id)in;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3 forUndo:(BOOL)a4;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)setDocument:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)removeObjectAtIndex:(unint64_t)index forUndo:(BOOL)undo;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)setDocument:(id)document;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation CRArray
 
-- (CRArray)initWithDocument:(id)a3
+- (CRArray)initWithDocument:(id)document
 {
-  v4 = a3;
-  v5 = [[TTArray alloc] initWithDocument:v4];
-  v6 = [[CRDictionary alloc] initWithDocument:v4];
-  v7 = [(CRArray *)self initWithTTArray:v5 contents:v6 document:v4];
+  documentCopy = document;
+  v5 = [[TTArray alloc] initWithDocument:documentCopy];
+  v6 = [[CRDictionary alloc] initWithDocument:documentCopy];
+  v7 = [(CRArray *)self initWithTTArray:v5 contents:v6 document:documentCopy];
 
   return v7;
 }
 
-- (CRArray)initWithTTArray:(id)a3 contents:(id)a4 document:(id)a5
+- (CRArray)initWithTTArray:(id)array contents:(id)contents document:(id)document
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  contentsCopy = contents;
+  documentCopy = document;
   v13.receiver = self;
   v13.super_class = CRArray;
   v11 = [(CRArray *)&v13 init];
   if (v11)
   {
-    [v8 setDelegate:v11];
-    [(CRArray *)v11 setArray:v8];
-    [(CRArray *)v11 setContents:v9];
-    [(CRArray *)v11 setDocument:v10];
+    [arrayCopy setDelegate:v11];
+    [(CRArray *)v11 setArray:arrayCopy];
+    [(CRArray *)v11 setContents:contentsCopy];
+    [(CRArray *)v11 setDocument:documentCopy];
   }
 
   return v11;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v5 = [(CRArray *)self array];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  array = [(CRArray *)self array];
+  v6 = [array objectAtIndexedSubscript:index];
 
-  v7 = [(CRArray *)self contents];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  contents = [(CRArray *)self contents];
+  v8 = [contents objectForKeyedSubscript:v6];
 
   return v8;
 }
 
-- (id)_addObject:(id)a3
+- (id)_addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(CRArray *)self _insertObject:v4 atIndex:[(CRArray *)self count]];
+  objectCopy = object;
+  v5 = [(CRArray *)self _insertObject:objectCopy atIndex:[(CRArray *)self count]];
 
   return v5;
 }
 
-- (id)_insertObject:(id)a3 atIndex:(unint64_t)a4
+- (id)_insertObject:(id)object atIndex:(unint64_t)index
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [(CRArray *)self _insertObject:v7 withIdentifier:v8 atIndex:a4 forUndo:0];
+  objectCopy = object;
+  uUID = [v6 UUID];
+  v9 = [(CRArray *)self _insertObject:objectCopy withIdentifier:uUID atIndex:index forUndo:0];
 
   return v9;
 }
 
-- (id)_insertObject:(id)a3 withIdentifier:(id)a4 atIndex:(unint64_t)a5 forUndo:(BOOL)a6
+- (id)_insertObject:(id)object withIdentifier:(id)identifier atIndex:(unint64_t)index forUndo:(BOOL)undo
 {
-  v10 = a3;
-  v11 = a4;
-  if (!a6)
+  objectCopy = object;
+  identifierCopy = identifier;
+  if (!undo)
   {
-    v12 = [(CRArray *)self array];
-    [v12 insertObject:v11 atIndex:a5];
+    array = [(CRArray *)self array];
+    [array insertObject:identifierCopy atIndex:index];
   }
 
-  v13 = [(CRArray *)self contents];
-  [v13 setObject:v10 forKeyedSubscript:v11];
+  contents = [(CRArray *)self contents];
+  [contents setObject:objectCopy forKeyedSubscript:identifierCopy];
 
   if ([(CRArray *)self wantsUndoCommands])
   {
-    v14 = [(CRArray *)self delegate];
+    delegate = [(CRArray *)self delegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __56__CRArray__insertObject_withIdentifier_atIndex_forUndo___block_invoke;
     v16[3] = &unk_1E7509CA8;
-    v17 = v11;
-    [v14 addUndoCommandsForObject:self block:v16];
+    v17 = identifierCopy;
+    [delegate addUndoCommandsForObject:self block:v16];
   }
 
-  return v11;
+  return identifierCopy;
 }
 
 void __56__CRArray__insertObject_withIdentifier_atIndex_forUndo___block_invoke(uint64_t a1, void *a2)
@@ -141,34 +141,34 @@ void __56__CRArray__insertObject_withIdentifier_atIndex_forUndo___block_invoke(u
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3 forUndo:(BOOL)a4
+- (void)removeObjectAtIndex:(unint64_t)index forUndo:(BOOL)undo
 {
-  v7 = [(CRArray *)self array];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  array = [(CRArray *)self array];
+  v8 = [array objectAtIndexedSubscript:index];
 
   if ([(CRArray *)self wantsUndoCommands])
   {
-    v9 = [(CRArray *)self objectAtIndexedSubscript:a3];
-    v10 = [(CRArray *)self delegate];
+    v9 = [(CRArray *)self objectAtIndexedSubscript:index];
+    delegate = [(CRArray *)self delegate];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __39__CRArray_removeObjectAtIndex_forUndo___block_invoke;
     v14[3] = &unk_1E7509CD0;
     v15 = v9;
     v16 = v8;
-    v17 = a3;
+    indexCopy = index;
     v11 = v9;
-    [v10 addUndoCommandsForObject:self block:v14];
+    [delegate addUndoCommandsForObject:self block:v14];
   }
 
-  if (!a4)
+  if (!undo)
   {
-    v12 = [(CRArray *)self array];
-    [v12 removeObjectAtIndex:a3];
+    array2 = [(CRArray *)self array];
+    [array2 removeObjectAtIndex:index];
   }
 
-  v13 = [(CRArray *)self contents];
-  [v13 removeObjectForKey:v8];
+  contents = [(CRArray *)self contents];
+  [contents removeObjectForKey:v8];
 }
 
 void __39__CRArray_removeObjectAtIndex_forUndo___block_invoke(void *a1, void *a2)
@@ -190,39 +190,39 @@ void __39__CRArray_removeObjectAtIndex_forUndo___block_invoke(void *a1, void *a2
   v7 = [v8 _insertObject:v3 withIdentifier:v4 atIndex:v6 forUndo:1];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  [(CRArray *)self removeObjectAtIndex:a3];
-  [(CRArray *)self insertObject:v6 atIndex:a3];
+  objectCopy = object;
+  [(CRArray *)self removeObjectAtIndex:index];
+  [(CRArray *)self insertObject:objectCopy atIndex:index];
 }
 
-- (void)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v7 = [(CRArray *)self array];
-  v10 = [v7 objectAtIndexedSubscript:a3];
+  array = [(CRArray *)self array];
+  v10 = [array objectAtIndexedSubscript:index];
 
-  v8 = [(CRArray *)self array];
-  [v8 removeObjectAtIndex:a3];
+  array2 = [(CRArray *)self array];
+  [array2 removeObjectAtIndex:index];
 
-  v9 = [(CRArray *)self array];
-  [v9 insertObject:v10 atIndex:a4];
+  array3 = [(CRArray *)self array];
+  [array3 insertObject:v10 atIndex:toIndex];
 
   [(CRArray *)self setMoveClock:1];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRArray *)self array];
+  blockCopy = block;
+  array = [(CRArray *)self array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CRArray_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7509CF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [array enumerateObjectsUsingBlock:v7];
 }
 
 void __38__CRArray_enumerateObjectsUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -237,49 +237,49 @@ void __38__CRArray_enumerateObjectsUsingBlock___block_invoke(uint64_t a1, void *
 
 - (unint64_t)count
 {
-  v2 = [(CRArray *)self array];
-  v3 = [v2 count];
+  array = [(CRArray *)self array];
+  v3 = [array count];
 
   return v3;
 }
 
 - (NSUUID)replicaUUID
 {
-  v2 = [(CRArray *)self document];
-  v3 = [v2 replica];
+  document = [(CRArray *)self document];
+  replica = [document replica];
 
-  return v3;
+  return replica;
 }
 
-- (unint64_t)firstIndexOf:(id)a3 fromIndex:(unint64_t)a4
+- (unint64_t)firstIndexOf:(id)of fromIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(CRArray *)self count]<= a4)
+  ofCopy = of;
+  if ([(CRArray *)self count]<= index)
   {
 LABEL_4:
-    a4 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
     while (1)
     {
-      v7 = [(CRArray *)self objectAtIndexedSubscript:a4];
-      v8 = [v7 isEqual:v6];
+      v7 = [(CRArray *)self objectAtIndexedSubscript:index];
+      v8 = [v7 isEqual:ofCopy];
 
       if (v8)
       {
         break;
       }
 
-      if (++a4 >= [(CRArray *)self count])
+      if (++index >= [(CRArray *)self count])
       {
         goto LABEL_4;
       }
     }
   }
 
-  return a4;
+  return index;
 }
 
 - (NSString)description
@@ -340,20 +340,20 @@ void __22__CRArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   [*(*(*(a1 + 32) + 8) + 40) appendString:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CRArray *)self contents];
-    v7 = [v5 contents];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    contents = [(CRArray *)self contents];
+    contents2 = [v5 contents];
+    if ([contents isEqual:contents2])
     {
-      v8 = [(CRArray *)self array];
-      v9 = [v5 array];
-      v10 = [v8 isEqual:v9];
+      array = [(CRArray *)self array];
+      array2 = [v5 array];
+      v10 = [array isEqual:array2];
     }
 
     else
@@ -372,17 +372,17 @@ void __22__CRArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
 
 - (unint64_t)hash
 {
-  v3 = [(CRArray *)self contents];
-  v4 = [v3 hash];
-  v5 = [(CRArray *)self array];
-  v6 = [v5 hash];
+  contents = [(CRArray *)self contents];
+  v4 = [contents hash];
+  array = [(CRArray *)self array];
+  v6 = [array hash];
 
   return v6 ^ v4;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -398,44 +398,44 @@ void __22__CRArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
     objc_exception_throw(v12);
   }
 
-  v13 = v4;
-  v5 = [(CRArray *)self array];
-  v6 = [v13 array];
-  [v5 mergeWith:v6];
+  v13 = withCopy;
+  array = [(CRArray *)self array];
+  array2 = [v13 array];
+  [array mergeWith:array2];
 
-  v7 = [(CRArray *)self contents];
-  v8 = [v13 contents];
+  contents = [(CRArray *)self contents];
+  contents2 = [v13 contents];
 
-  [v7 mergeWith:v8];
+  [contents mergeWith:contents2];
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRArray *)self array];
-  v9 = [v8 deltaSince:v7 in:v6];
+  inCopy = in;
+  sinceCopy = since;
+  array = [(CRArray *)self array];
+  v9 = [array deltaSince:sinceCopy in:inCopy];
 
-  v10 = [(CRArray *)self contents];
-  v11 = [v10 deltaSince:v7 in:v6];
+  contents = [(CRArray *)self contents];
+  v11 = [contents deltaSince:sinceCopy in:inCopy];
 
-  v12 = [[CRArray alloc] initWithTTArray:v9 contents:v11 document:v6];
+  v12 = [[CRArray alloc] initWithTTArray:v9 contents:v11 document:inCopy];
 
   return v12;
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
-  v6 = a3;
-  v4 = [(CRArray *)self array];
-  [v4 realizeLocalChangesIn:v6];
+  inCopy = in;
+  array = [(CRArray *)self array];
+  [array realizeLocalChangesIn:inCopy];
 
-  v5 = [(CRArray *)self contents];
-  [v5 realizeLocalChangesIn:v6];
+  contents = [(CRArray *)self contents];
+  [contents realizeLocalChangesIn:inCopy];
 
   if ([(CRArray *)self moveClock])
   {
-    [v6 setUnserializedReplicaClock:{objc_msgSend(v6, "unserializedReplicaClock") + -[CRArray moveClock](self, "moveClock")}];
+    [inCopy setUnserializedReplicaClock:{objc_msgSend(inCopy, "unserializedReplicaClock") + -[CRArray moveClock](self, "moveClock")}];
   }
 
   [(CRArray *)self setMoveClock:0];
@@ -443,50 +443,50 @@ void __22__CRArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
 
 - (id)tombstone
 {
-  v3 = [(CRArray *)self array];
-  v4 = [v3 tombstone];
+  array = [(CRArray *)self array];
+  tombstone = [array tombstone];
 
-  v5 = [(CRArray *)self contents];
-  v6 = [v5 tombstone];
+  contents = [(CRArray *)self contents];
+  tombstone2 = [contents tombstone];
 
   v7 = [CRArray alloc];
-  v8 = [(CRArray *)self document];
-  v9 = [(CRArray *)v7 initWithTTArray:v4 contents:v6 document:v8];
+  document = [(CRArray *)self document];
+  v9 = [(CRArray *)v7 initWithTTArray:tombstone contents:tombstone2 document:document];
 
   return v9;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(CRArray *)self array];
-  [v5 walkGraph:v4];
+  graphCopy = graph;
+  array = [(CRArray *)self array];
+  [array walkGraph:graphCopy];
 
-  v6 = [(CRArray *)self contents];
-  [v6 walkGraph:v4];
+  contents = [(CRArray *)self contents];
+  [contents walkGraph:graphCopy];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(CRArray *)self array];
-  [v5 setDocument:v4];
+  documentCopy = document;
+  array = [(CRArray *)self array];
+  [array setDocument:documentCopy];
 
-  v6 = [(CRArray *)self contents];
-  [v6 setDocument:v4];
+  contents = [(CRArray *)self contents];
+  [contents setDocument:documentCopy];
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = [(CRArray *)self delegate];
+  blockCopy = block;
+  delegate = [(CRArray *)self delegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__CRArray_addUndoCommandsForObject_block___block_invoke;
   v8[3] = &unk_1E7509D48;
-  v9 = v5;
-  v7 = v5;
-  [v6 addUndoCommandsForObject:self block:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [delegate addUndoCommandsForObject:self block:v8];
 }
 
 void __42__CRArray_addUndoCommandsForObject_block___block_invoke(uint64_t a1, void *a2)
@@ -498,10 +498,10 @@ void __42__CRArray_addUndoCommandsForObject_block___block_invoke(uint64_t a1, vo
 
 - (BOOL)wantsUndoCommands
 {
-  v2 = [(CRArray *)self delegate];
-  v3 = [v2 wantsUndoCommands];
+  delegate = [(CRArray *)self delegate];
+  wantsUndoCommands = [delegate wantsUndoCommands];
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 - (CRDocument)document
@@ -518,86 +518,86 @@ void __42__CRArray_addUndoCommandsForObject_block___block_invoke(uint64_t a1, vo
   return WeakRetained;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 15)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 15)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 15;
     operator new();
   }
 
-  [(CRArray *)self encodeWithCRCoder:v6 array:*(v4 + 40)];
+  [(CRArray *)self encodeWithCRCoder:coderCopy array:*(currentDocumentObjectForEncoding + 40)];
 }
 
-- (void)encodeWithCRCoder:(id)a3 array:(void *)a4
+- (void)encodeWithCRCoder:(id)coder array:(void *)array
 {
-  v10 = a3;
-  v6 = [(CRArray *)self array];
-  *(a4 + 8) |= 1u;
-  v7 = *(a4 + 5);
+  coderCopy = coder;
+  array = [(CRArray *)self array];
+  *(array + 8) |= 1u;
+  v7 = *(array + 5);
   if (!v7)
   {
     operator new();
   }
 
-  [v6 saveToArchive:v7];
+  [array saveToArchive:v7];
 
-  v8 = [(CRArray *)self contents];
-  *(a4 + 8) |= 2u;
-  v9 = *(a4 + 6);
+  contents = [(CRArray *)self contents];
+  *(array + 8) |= 2u;
+  v9 = *(array + 6);
   if (!v9)
   {
     operator new();
   }
 
-  [v8 encodeWithCRCoder:v10 dictionary:v9];
+  [contents encodeWithCRCoder:coderCopy dictionary:v9];
 }
 
-- (CRArray)initWithCRCoder:(id)a3
+- (CRArray)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 15)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 15)
   {
-    v6 = [(CRArray *)self initWithCRCoder:v4 array:*(v5 + 40)];
+    v6 = [(CRArray *)self initWithCRCoder:coderCopy array:*(currentDocumentObjectForDecoding + 40)];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(CRArray *)self initWithDocument:v7];
+    document = [coderCopy document];
+    v6 = [(CRArray *)self initWithDocument:document];
   }
 
   return v6;
 }
 
-- (CRArray)initWithCRCoder:(id)a3 array:(const void *)a4
+- (CRArray)initWithCRCoder:(id)coder array:(const void *)array
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = [CRDictionary alloc];
   v8 = v7;
-  v9 = *(a4 + 6);
+  v9 = *(array + 6);
   if (!v9)
   {
     v9 = *(CRDT::Array::default_instance(v7) + 48);
   }
 
-  v10 = [(CRDictionary *)v8 initWithCRCoder:v6 dictionary:v9];
+  v10 = [(CRDictionary *)v8 initWithCRCoder:coderCopy dictionary:v9];
   v11 = [TTArray alloc];
   v12 = v11;
-  v13 = *(a4 + 5);
+  v13 = *(array + 5);
   if (!v13)
   {
     v13 = *(CRDT::Array::default_instance(v11) + 40);
   }
 
-  v14 = [(TTArray *)v12 initWithCRCoder:v6 stringArray:v13];
-  v15 = [v6 document];
-  v16 = [(CRArray *)self initWithTTArray:v14 contents:v10 document:v15];
+  v14 = [(TTArray *)v12 initWithCRCoder:coderCopy stringArray:v13];
+  document = [coderCopy document];
+  v16 = [(CRArray *)self initWithTTArray:v14 contents:v10 document:document];
 
   return v16;
 }

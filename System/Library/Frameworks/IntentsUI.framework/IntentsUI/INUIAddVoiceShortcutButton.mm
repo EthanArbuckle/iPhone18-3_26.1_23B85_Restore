@@ -6,11 +6,11 @@
 - (UILabel)addToSiriLabel;
 - (UILabel)phraseLabel;
 - (double)_cornerRadius;
-- (double)_strokeWidthForStyle:(unint64_t)a3;
+- (double)_strokeWidthForStyle:(unint64_t)style;
 - (id)_addToSiriFont;
 - (id)_addToSiriText;
 - (id)_addedToSiriText;
-- (id)_backgroundColorForStyle:(unint64_t)a3;
+- (id)_backgroundColorForStyle:(unint64_t)style;
 - (id)_checkmarkImage;
 - (id)_darkSphiriImage;
 - (id)_dynamicBlackColor;
@@ -20,14 +20,14 @@
 - (id)_lightSphiriImage;
 - (id)_phraseFont;
 - (id)_phraseText;
-- (id)_sphiriImageForStyle:(unint64_t)a3;
-- (id)_strokeColorForStyle:(unint64_t)a3;
-- (id)_textColorForStyle:(unint64_t)a3;
+- (id)_sphiriImageForStyle:(unint64_t)style;
+- (id)_strokeColorForStyle:(unint64_t)style;
+- (id)_textColorForStyle:(unint64_t)style;
 - (id)accessibilityLabel;
 - (id)delegate;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
 - (void)_checkAndUpdateForShortcut;
-- (void)_configureWithStyle:(unint64_t)a3;
+- (void)_configureWithStyle:(unint64_t)style;
 - (void)_createHighlightFilterIfNecessary;
 - (void)_didTapButton;
 - (void)_updateColors;
@@ -37,11 +37,11 @@
 - (void)layoutSubviews;
 - (void)prepareForInterfaceBuilder;
 - (void)setDelegate:(id)delegate;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setShortcut:(INShortcut *)shortcut;
 - (void)setStyle:(INUIAddVoiceShortcutButtonStyle)style;
-- (void)setVoiceShortcut:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setVoiceShortcut:(id)shortcut;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation INUIAddVoiceShortcutButton
@@ -81,16 +81,16 @@
   return WeakRetained;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(INUIAddVoiceShortcutButton *)self shortcut:a3];
+  v5 = [(INUIAddVoiceShortcutButton *)self shortcut:interaction];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCAA88]);
-    v7 = [(INUIAddVoiceShortcutButton *)self shortcut];
-    v8 = [v6 initWithObject:v7];
+    shortcut = [(INUIAddVoiceShortcutButton *)self shortcut];
+    v8 = [v6 initWithObject:shortcut];
 
     v9 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v8];
     v13[0] = v9;
@@ -117,63 +117,63 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
 
-  if (v3)
+  if (voiceShortcut)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(INUIAddVoiceShortcutButton *)self _phraseText];
-    v6 = [v4 localizedStringWithFormat:@"Added to Siri with phrase: %@", v5];
+    _phraseText = [(INUIAddVoiceShortcutButton *)self _phraseText];
+    _addToSiriText = [v4 localizedStringWithFormat:@"Added to Siri with phrase: %@", _phraseText];
   }
 
   else
   {
-    v6 = [(INUIAddVoiceShortcutButton *)self _addToSiriText];
+    _addToSiriText = [(INUIAddVoiceShortcutButton *)self _addToSiriText];
   }
 
-  return v6;
+  return _addToSiriText;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v15.receiver = self;
   v15.super_class = INUIAddVoiceShortcutButton;
-  [(INUIAddVoiceShortcutButton *)&v15 traitCollectionDidChange:v4];
-  v5 = [(INUIAddVoiceShortcutButton *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  [(INUIAddVoiceShortcutButton *)&v15 traitCollectionDidChange:changeCopy];
+  traitCollection = [(INUIAddVoiceShortcutButton *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(INUIAddVoiceShortcutButton *)self _updateColors];
   }
 
-  v8 = [(INUIAddVoiceShortcutButton *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = [v4 preferredContentSizeCategory];
+  traitCollection2 = [(INUIAddVoiceShortcutButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v9 != v10)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v11 = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
-    v12 = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
-    [v11 setFont:v12];
+    addToSiriLabel = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
+    _addToSiriFont = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
+    [addToSiriLabel setFont:_addToSiriFont];
 
-    v13 = [(INUIAddVoiceShortcutButton *)self phraseLabel];
-    v14 = [(INUIAddVoiceShortcutButton *)self _phraseFont];
-    [v13 setFont:v14];
+    phraseLabel = [(INUIAddVoiceShortcutButton *)self phraseLabel];
+    _phraseFont = [(INUIAddVoiceShortcutButton *)self _phraseFont];
+    [phraseLabel setFont:_phraseFont];
   }
 }
 
 - (void)_checkAndUpdateForShortcut
 {
-  v3 = [MEMORY[0x277CD42F8] sharedCenter];
+  mEMORY[0x277CD42F8] = [MEMORY[0x277CD42F8] sharedCenter];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__INUIAddVoiceShortcutButton__checkAndUpdateForShortcut__block_invoke;
   v4[3] = &unk_27872BF08;
   v4[4] = self;
-  [v3 getAllVoiceShortcutsWithCompletion:v4];
+  [mEMORY[0x277CD42F8] getAllVoiceShortcutsWithCompletion:v4];
 }
 
 void __56__INUIAddVoiceShortcutButton__checkAndUpdateForShortcut__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -361,32 +361,32 @@ LABEL_28:
 
 - (void)_didTapButton
 {
-  v10 = [(INUIAddVoiceShortcutButton *)self delegate];
-  v3 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  delegate = [(INUIAddVoiceShortcutButton *)self delegate];
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
 
-  if (v3)
+  if (voiceShortcut)
   {
     v4 = [INUIEditVoiceShortcutViewController alloc];
-    v5 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
-    v6 = [(INUIEditVoiceShortcutViewController *)v4 initWithVoiceShortcut:v5];
+    voiceShortcut2 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+    v6 = [(INUIEditVoiceShortcutViewController *)v4 initWithVoiceShortcut:voiceShortcut2];
 
-    [v10 presentEditVoiceShortcutViewController:v6 forAddVoiceShortcutButton:self];
+    [delegate presentEditVoiceShortcutViewController:v6 forAddVoiceShortcutButton:self];
   }
 
   else
   {
-    v7 = [(INUIAddVoiceShortcutButton *)self shortcut];
+    shortcut = [(INUIAddVoiceShortcutButton *)self shortcut];
 
-    if (!v7)
+    if (!shortcut)
     {
       goto LABEL_6;
     }
 
     v8 = [INUIAddVoiceShortcutViewController alloc];
-    v9 = [(INUIAddVoiceShortcutButton *)self shortcut];
-    v6 = [(INUIAddVoiceShortcutViewController *)v8 initWithShortcut:v9];
+    shortcut2 = [(INUIAddVoiceShortcutButton *)self shortcut];
+    v6 = [(INUIAddVoiceShortcutViewController *)v8 initWithShortcut:shortcut2];
 
-    [v10 presentAddVoiceShortcutViewController:v6 forAddVoiceShortcutButton:self];
+    [delegate presentAddVoiceShortcutViewController:v6 forAddVoiceShortcutButton:self];
   }
 
 LABEL_6:
@@ -394,8 +394,8 @@ LABEL_6:
 
 - (void)_updatePhraseVisibility
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
-  if (v3)
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  if (voiceShortcut)
   {
     [(INUIAddVoiceShortcutButton *)self bounds];
     v4 = CGRectGetHeight(v9) >= 36.0;
@@ -406,22 +406,22 @@ LABEL_6:
     v4 = 0;
   }
 
-  v5 = [(INUIAddVoiceShortcutButton *)self phraseLabel];
-  [v5 setHidden:v4 ^ 1];
+  phraseLabel = [(INUIAddVoiceShortcutButton *)self phraseLabel];
+  [phraseLabel setHidden:v4 ^ 1];
 
-  v6 = [(INUIAddVoiceShortcutButton *)self addToSiriLeadingConstraint];
-  [v6 setActive:v4 ^ 1];
+  addToSiriLeadingConstraint = [(INUIAddVoiceShortcutButton *)self addToSiriLeadingConstraint];
+  [addToSiriLeadingConstraint setActive:v4 ^ 1];
 
-  v7 = [(INUIAddVoiceShortcutButton *)self addedToSiriLeadingConstraint];
-  [v7 setActive:v4];
+  addedToSiriLeadingConstraint = [(INUIAddVoiceShortcutButton *)self addedToSiriLeadingConstraint];
+  [addedToSiriLeadingConstraint setActive:v4];
 }
 
 - (void)_updateContent
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
 
-  v4 = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
-  if (v3)
+  addToSiriLabel = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
+  if (voiceShortcut)
   {
     [(INUIAddVoiceShortcutButton *)self _addedToSiriText];
   }
@@ -431,30 +431,30 @@ LABEL_6:
     [(INUIAddVoiceShortcutButton *)self _addToSiriText];
   }
   v5 = ;
-  [v4 _inui_setText:v5];
+  [addToSiriLabel _inui_setText:v5];
 
-  v6 = [(INUIAddVoiceShortcutButton *)self phraseLabel];
-  v7 = v6;
-  if (v3)
+  phraseLabel = [(INUIAddVoiceShortcutButton *)self phraseLabel];
+  v7 = phraseLabel;
+  if (voiceShortcut)
   {
-    v8 = [(INUIAddVoiceShortcutButton *)self _phraseText];
-    [v7 _inui_setText:v8];
+    _phraseText = [(INUIAddVoiceShortcutButton *)self _phraseText];
+    [v7 _inui_setText:_phraseText];
   }
 
   else
   {
-    [v6 _inui_setText:0];
+    [phraseLabel _inui_setText:0];
   }
 
-  v9 = v3 == 0;
-  v10 = v3 == 0;
+  v9 = voiceShortcut == 0;
+  v10 = voiceShortcut == 0;
   v11 = !v9;
 
-  v12 = [(INUIAddVoiceShortcutButton *)self sphiriImageView];
-  [v12 setHidden:v11];
+  sphiriImageView = [(INUIAddVoiceShortcutButton *)self sphiriImageView];
+  [sphiriImageView setHidden:v11];
 
-  v13 = [(INUIAddVoiceShortcutButton *)self checkmarkImageView];
-  [v13 setHidden:v10];
+  checkmarkImageView = [(INUIAddVoiceShortcutButton *)self checkmarkImageView];
+  [checkmarkImageView setHidden:v10];
 
   [(INUIAddVoiceShortcutButton *)self _updatePhraseVisibility];
 
@@ -490,18 +490,18 @@ LABEL_6:
 
 - (id)_dynamicDarkSphiriImage
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
-  v4 = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
-  v5 = [MEMORY[0x277D755B8] _inui_imageWithLightModeImage:v3 darkModeImage:v4];
+  _darkSphiriImage = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
+  _lightSphiriImage = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
+  v5 = [MEMORY[0x277D755B8] _inui_imageWithLightModeImage:_darkSphiriImage darkModeImage:_lightSphiriImage];
 
   return v5;
 }
 
 - (id)_dynamicLightSphiriImage
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
-  v4 = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
-  v5 = [MEMORY[0x277D755B8] _inui_imageWithLightModeImage:v3 darkModeImage:v4];
+  _lightSphiriImage = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
+  _darkSphiriImage = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
+  v5 = [MEMORY[0x277D755B8] _inui_imageWithLightModeImage:_lightSphiriImage darkModeImage:_darkSphiriImage];
 
   return v5;
 }
@@ -527,9 +527,9 @@ LABEL_6:
 - (id)_phraseFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(INUIAddVoiceShortcutButton *)self _shouldUseLargerFont];
+  _shouldUseLargerFont = [(INUIAddVoiceShortcutButton *)self _shouldUseLargerFont];
   v4 = MEMORY[0x277D76968];
-  if (!v3)
+  if (!_shouldUseLargerFont)
   {
     v4 = MEMORY[0x277D76940];
   }
@@ -542,9 +542,9 @@ LABEL_6:
 - (id)_addToSiriFont
 {
   v2 = MEMORY[0x277D74310];
-  v3 = [(INUIAddVoiceShortcutButton *)self _shouldUseLargerFont];
+  _shouldUseLargerFont = [(INUIAddVoiceShortcutButton *)self _shouldUseLargerFont];
   v4 = MEMORY[0x277D769D0];
-  if (!v3)
+  if (!_shouldUseLargerFont)
   {
     v4 = MEMORY[0x277D76968];
   }
@@ -558,13 +558,13 @@ LABEL_6:
 
 - (id)_phraseText
 {
-  v2 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
-  v3 = [v2 invocationPhrase];
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  invocationPhrase = [voiceShortcut invocationPhrase];
 
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"“%@”" value:&stru_283FD21E8 table:0];
-  v7 = [v4 localizedStringWithFormat:v6, v3];
+  v7 = [v4 localizedStringWithFormat:v6, invocationPhrase];
 
   return v7;
 }
@@ -590,7 +590,7 @@ LABEL_6:
   v11[1] = *MEMORY[0x277D85DE8];
   if (!self->_highlightFilter)
   {
-    v3 = [(INUIAddVoiceShortcutButton *)self layer];
+    layer = [(INUIAddVoiceShortcutButton *)self layer];
     v4 = objc_alloc(MEMORY[0x277CD9EA0]);
     v5 = [v4 initWithType:*MEMORY[0x277CDA5B0]];
     highlightFilter = self->_highlightFilter;
@@ -603,34 +603,34 @@ LABEL_6:
 
     v11[0] = self->_highlightFilter;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    [v3 setFilters:v9];
+    [layer setFilters:v9];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_strokeWidthForStyle:(unint64_t)a3
+- (double)_strokeWidthForStyle:(unint64_t)style
 {
   result = 0.0;
-  if (a3 - 1 <= 4)
+  if (style - 1 <= 4)
   {
-    return dbl_22CA48998[a3 - 1];
+    return dbl_22CA48998[style - 1];
   }
 
   return result;
 }
 
-- (id)_strokeColorForStyle:(unint64_t)a3
+- (id)_strokeColorForStyle:(unint64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 1uLL:
       v3 = MEMORY[0x277D75348];
       v4 = 0.0;
       break;
     case 5uLL:
-      v5 = [(INUIAddVoiceShortcutButton *)self _dynamicBlackColor];
-      v6 = [v5 colorWithAlphaComponent:0.3];
+      _dynamicBlackColor = [(INUIAddVoiceShortcutButton *)self _dynamicBlackColor];
+      v6 = [_dynamicBlackColor colorWithAlphaComponent:0.3];
 
       goto LABEL_10;
     case 3uLL:
@@ -638,39 +638,39 @@ LABEL_6:
       v4 = 1.0;
       break;
     default:
-      v7 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
       goto LABEL_9;
   }
 
-  v7 = [v3 colorWithWhite:v4 alpha:0.3];
+  clearColor = [v3 colorWithWhite:v4 alpha:0.3];
 LABEL_9:
-  v6 = v7;
+  v6 = clearColor;
 LABEL_10:
 
   return v6;
 }
 
-- (id)_textColorForStyle:(unint64_t)a3
+- (id)_textColorForStyle:(unint64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       self = [(INUIAddVoiceShortcutButton *)self _dynamicWhiteColor];
     }
 
-    else if (a3 == 5)
+    else if (style == 5)
     {
       self = [(INUIAddVoiceShortcutButton *)self _dynamicBlackColor];
     }
   }
 
-  else if (a3 < 2)
+  else if (style < 2)
   {
     self = [MEMORY[0x277D75348] blackColor];
   }
 
-  else if (a3 - 2 < 2)
+  else if (style - 2 < 2)
   {
     self = [MEMORY[0x277D75348] whiteColor];
   }
@@ -678,27 +678,27 @@ LABEL_10:
   return self;
 }
 
-- (id)_backgroundColorForStyle:(unint64_t)a3
+- (id)_backgroundColorForStyle:(unint64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       self = [(INUIAddVoiceShortcutButton *)self _dynamicBlackColor];
     }
 
-    else if (a3 == 5)
+    else if (style == 5)
     {
       self = [(INUIAddVoiceShortcutButton *)self _dynamicWhiteColor];
     }
   }
 
-  else if (a3 < 2)
+  else if (style < 2)
   {
     self = [MEMORY[0x277D75348] whiteColor];
   }
 
-  else if (a3 - 2 < 2)
+  else if (style - 2 < 2)
   {
     self = [MEMORY[0x277D75348] blackColor];
   }
@@ -706,42 +706,42 @@ LABEL_10:
   return self;
 }
 
-- (id)_sphiriImageForStyle:(unint64_t)a3
+- (id)_sphiriImageForStyle:(unint64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
-      v3 = [(INUIAddVoiceShortcutButton *)self _dynamicDarkSphiriImage];
+      _dynamicDarkSphiriImage = [(INUIAddVoiceShortcutButton *)self _dynamicDarkSphiriImage];
     }
 
     else
     {
-      if (a3 != 5)
+      if (style != 5)
       {
         goto LABEL_11;
       }
 
-      v3 = [(INUIAddVoiceShortcutButton *)self _dynamicLightSphiriImage];
+      _dynamicDarkSphiriImage = [(INUIAddVoiceShortcutButton *)self _dynamicLightSphiriImage];
     }
   }
 
-  else if (a3 < 2)
+  else if (style < 2)
   {
-    v3 = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
+    _dynamicDarkSphiriImage = [(INUIAddVoiceShortcutButton *)self _lightSphiriImage];
   }
 
   else
   {
-    if (a3 - 2 >= 2)
+    if (style - 2 >= 2)
     {
       goto LABEL_11;
     }
 
-    v3 = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
+    _dynamicDarkSphiriImage = [(INUIAddVoiceShortcutButton *)self _darkSphiriImage];
   }
 
-  a2 = v3;
+  a2 = _dynamicDarkSphiriImage;
 LABEL_11:
 
   return a2;
@@ -749,34 +749,34 @@ LABEL_11:
 
 - (void)_updateColors
 {
-  v3 = [(INUIAddVoiceShortcutButton *)self style];
-  v4 = [(INUIAddVoiceShortcutButton *)self layer];
-  v5 = [(INUIAddVoiceShortcutButton *)self _backgroundColorForStyle:v3];
-  [v4 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  style = [(INUIAddVoiceShortcutButton *)self style];
+  layer = [(INUIAddVoiceShortcutButton *)self layer];
+  v5 = [(INUIAddVoiceShortcutButton *)self _backgroundColorForStyle:style];
+  [layer setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
 
-  v6 = [(INUIAddVoiceShortcutButton *)self layer];
-  v7 = [(INUIAddVoiceShortcutButton *)self _strokeColorForStyle:v3];
-  [v6 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+  layer2 = [(INUIAddVoiceShortcutButton *)self layer];
+  v7 = [(INUIAddVoiceShortcutButton *)self _strokeColorForStyle:style];
+  [layer2 setBorderColor:{objc_msgSend(v7, "CGColor")}];
 
-  v8 = [(INUIAddVoiceShortcutButton *)self layer];
-  [(INUIAddVoiceShortcutButton *)self _strokeWidthForStyle:v3];
-  [v8 setBorderWidth:?];
+  layer3 = [(INUIAddVoiceShortcutButton *)self layer];
+  [(INUIAddVoiceShortcutButton *)self _strokeWidthForStyle:style];
+  [layer3 setBorderWidth:?];
 
-  v9 = [(INUIAddVoiceShortcutButton *)self checkmarkImageView];
-  v10 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:v3];
-  [v9 _inui_setTintColor:v10];
+  checkmarkImageView = [(INUIAddVoiceShortcutButton *)self checkmarkImageView];
+  v10 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:style];
+  [checkmarkImageView _inui_setTintColor:v10];
 
-  v12 = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
-  v11 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:v3];
-  [v12 setTextColor:v11];
+  addToSiriLabel = [(INUIAddVoiceShortcutButton *)self addToSiriLabel];
+  v11 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:style];
+  [addToSiriLabel setTextColor:v11];
 }
 
 - (CGSize)intrinsicContentSize
 {
   v3 = [MEMORY[0x277D756B8] _inui_labelWithText:0];
-  v4 = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
+  voiceShortcut = [(INUIAddVoiceShortcutButton *)self voiceShortcut];
 
-  if (v4)
+  if (voiceShortcut)
   {
     [(INUIAddVoiceShortcutButton *)self _addedToSiriText];
   }
@@ -788,8 +788,8 @@ LABEL_11:
   v5 = ;
   [v3 _inui_setText:v5];
 
-  v6 = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
-  [v3 setFont:v6];
+  _addToSiriFont = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
+  [v3 setFont:_addToSiriFont];
 
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutDefaultHorizontalMargin];
   v8 = v7;
@@ -827,47 +827,47 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = INUIAddVoiceShortcutButton;
   [(INUIAddVoiceShortcutButton *)&v4 layoutSubviews];
-  v3 = [(INUIAddVoiceShortcutButton *)self layer];
+  layer = [(INUIAddVoiceShortcutButton *)self layer];
   [(INUIAddVoiceShortcutButton *)self _cornerRadius];
-  [v3 setCornerRadius:?];
+  [layer setCornerRadius:?];
 
   [(INUIAddVoiceShortcutButton *)self _updatePhraseVisibility];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12.receiver = self;
   v12.super_class = INUIAddVoiceShortcutButton;
   [(INUIAddVoiceShortcutButton *)&v12 setHighlighted:?];
   [(INUIAddVoiceShortcutButton *)self _createHighlightFilterIfNecessary];
-  v5 = [(INUIAddVoiceShortcutButton *)self layer];
+  layer = [(INUIAddVoiceShortcutButton *)self layer];
   v6 = 0.6;
-  if (!v3)
+  if (!highlightedCopy)
   {
     v6 = 1.0;
   }
 
   v7 = [MEMORY[0x277D75348] colorWithWhite:v6 alpha:?];
   v8 = MEMORY[0x277D75348];
-  v9 = [v5 valueForKeyPath:@"filters.highlightFilter.inputColor"];
+  v9 = [layer valueForKeyPath:@"filters.highlightFilter.inputColor"];
   v10 = [v8 colorWithCGColor:v9];
 
-  [v5 setValue:objc_msgSend(v7 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
+  [layer setValue:objc_msgSend(v7 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
   v11 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"filters.highlightFilter.inputColor"];
   [v11 setDuration:0.15];
   [v11 setFillMode:*MEMORY[0x277CDA238]];
   [v11 setFromValue:{objc_msgSend(v10, "CGColor")}];
   [v11 setToValue:{objc_msgSend(v7, "CGColor")}];
-  [v5 addAnimation:v11 forKey:@"filters.highlightFilter.inputColor"];
+  [layer addAnimation:v11 forKey:@"filters.highlightFilter.inputColor"];
 }
 
-- (void)setVoiceShortcut:(id)a3
+- (void)setVoiceShortcut:(id)shortcut
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_voiceShortcut] & 1) == 0)
+  shortcutCopy = shortcut;
+  if (([shortcutCopy isEqual:self->_voiceShortcut] & 1) == 0)
   {
-    objc_storeStrong(&self->_voiceShortcut, a3);
+    objc_storeStrong(&self->_voiceShortcut, shortcut);
     [(INUIAddVoiceShortcutButton *)self _updateContent];
   }
 }
@@ -914,50 +914,50 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
 
   v6.receiver = self;
   v6.super_class = INUIAddVoiceShortcutButton;
   [(INUIAddVoiceShortcutButton *)&v6 dealloc];
 }
 
-- (void)_configureWithStyle:(unint64_t)a3
+- (void)_configureWithStyle:(unint64_t)style
 {
   v117[2] = *MEMORY[0x277D85DE8];
-  self->_style = a3;
+  self->_style = style;
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutDefaultCornerRadius];
   self->_cornerRadius = v5;
-  v6 = [(INUIAddVoiceShortcutButton *)self layer];
-  v7 = [(INUIAddVoiceShortcutButton *)self _backgroundColorForStyle:a3];
-  [v6 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+  layer = [(INUIAddVoiceShortcutButton *)self layer];
+  v7 = [(INUIAddVoiceShortcutButton *)self _backgroundColorForStyle:style];
+  [layer setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 
-  v8 = [(INUIAddVoiceShortcutButton *)self layer];
-  [v8 setMasksToBounds:1];
+  layer2 = [(INUIAddVoiceShortcutButton *)self layer];
+  [layer2 setMasksToBounds:1];
 
-  v9 = [(INUIAddVoiceShortcutButton *)self layer];
-  v10 = [(INUIAddVoiceShortcutButton *)self _strokeColorForStyle:a3];
-  [v9 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+  layer3 = [(INUIAddVoiceShortcutButton *)self layer];
+  v10 = [(INUIAddVoiceShortcutButton *)self _strokeColorForStyle:style];
+  [layer3 setBorderColor:{objc_msgSend(v10, "CGColor")}];
 
-  v11 = [(INUIAddVoiceShortcutButton *)self layer];
-  [(INUIAddVoiceShortcutButton *)self _strokeWidthForStyle:a3];
-  [v11 setBorderWidth:?];
+  layer4 = [(INUIAddVoiceShortcutButton *)self layer];
+  [(INUIAddVoiceShortcutButton *)self _strokeWidthForStyle:style];
+  [layer4 setBorderWidth:?];
 
-  v12 = [(INUIAddVoiceShortcutButton *)self layer];
-  [v12 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer5 = [(INUIAddVoiceShortcutButton *)self layer];
+  [layer5 setCornerCurve:*MEMORY[0x277CDA138]];
 
   LODWORD(v13) = 1148846080;
   [(UIView *)self _inui_setContentHuggingPriority:0 forAxis:v13];
   LODWORD(v14) = 1148846080;
   [(UIView *)self _inui_setContentHuggingPriority:1 forAxis:v14];
   v15 = MEMORY[0x277D755E8];
-  v16 = [(INUIAddVoiceShortcutButton *)self _sphiriImageForStyle:a3];
+  v16 = [(INUIAddVoiceShortcutButton *)self _sphiriImageForStyle:style];
   v17 = [v15 _inui_imageViewWithImage:v16];
 
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -968,37 +968,37 @@ LABEL_11:
   v19 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(INUIAddVoiceShortcutButton *)self addLayoutGuide:?];
   v20 = MEMORY[0x277D755E8];
-  v21 = [(INUIAddVoiceShortcutButton *)self _checkmarkImage];
-  v22 = [v20 _inui_imageViewWithImage:v21];
+  _checkmarkImage = [(INUIAddVoiceShortcutButton *)self _checkmarkImage];
+  v22 = [v20 _inui_imageViewWithImage:_checkmarkImage];
 
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:a3];
+  v23 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:style];
   [v22 _inui_setTintColor:v23];
 
   [v22 setHidden:1];
   [(INUIAddVoiceShortcutButton *)self addSubview:v22];
   objc_storeWeak(&self->_checkmarkImageView, v22);
   v24 = MEMORY[0x277D756B8];
-  v25 = [(INUIAddVoiceShortcutButton *)self _addToSiriText];
-  v26 = [v24 _inui_labelWithText:v25];
+  _addToSiriText = [(INUIAddVoiceShortcutButton *)self _addToSiriText];
+  v26 = [v24 _inui_labelWithText:_addToSiriText];
 
   v27 = v26;
   [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v28 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:a3];
+  v28 = [(INUIAddVoiceShortcutButton *)self _textColorForStyle:style];
   [v27 setTextColor:v28];
 
-  v29 = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
-  [v27 setFont:v29];
+  _addToSiriFont = [(INUIAddVoiceShortcutButton *)self _addToSiriFont];
+  [v27 setFont:_addToSiriFont];
 
   v113 = v27;
   objc_storeWeak(&self->_addToSiriLabel, v27);
   v112 = [MEMORY[0x277D756B8] _inui_labelWithText:0];
   [v112 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [MEMORY[0x277D75348] grayColor];
-  [v112 setTextColor:v30];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [v112 setTextColor:grayColor];
 
-  v31 = [(INUIAddVoiceShortcutButton *)self _phraseFont];
-  [v112 setFont:v31];
+  _phraseFont = [(INUIAddVoiceShortcutButton *)self _phraseFont];
+  [v112 setFont:_phraseFont];
 
   [v112 setHidden:1];
   objc_storeWeak(&self->_phraseLabel, v112);
@@ -1015,118 +1015,118 @@ LABEL_11:
   [(INUIAddVoiceShortcutButton *)self addSubview:v34];
   v36 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(INUIAddVoiceShortcutButton *)self addLayoutGuide:v36];
-  v37 = [v18 heightAnchor];
-  v38 = [v18 widthAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  heightAnchor = [v18 heightAnchor];
+  widthAnchor = [v18 widthAnchor];
+  v39 = [heightAnchor constraintEqualToAnchor:widthAnchor];
 
   v105 = v39;
   LODWORD(v40) = 1148846080;
   [v39 setPriority:v40];
-  v41 = [v22 heightAnchor];
-  v42 = [v22 widthAnchor];
-  v115 = [v41 constraintEqualToAnchor:v42];
+  heightAnchor2 = [v22 heightAnchor];
+  widthAnchor2 = [v22 widthAnchor];
+  v115 = [heightAnchor2 constraintEqualToAnchor:widthAnchor2];
 
   LODWORD(v43) = 1148846080;
   [v115 setPriority:v43];
   v44 = v36;
-  v45 = [v36 leadingAnchor];
-  v46 = [v18 trailingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  leadingAnchor = [v36 leadingAnchor];
+  trailingAnchor = [v18 trailingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
 
   addToSiriLeadingConstraint = self->_addToSiriLeadingConstraint;
   self->_addToSiriLeadingConstraint = v47;
   v114 = v47;
 
   v91 = MEMORY[0x277CCAAD0];
-  v110 = [v19 leadingAnchor];
-  v109 = [(INUIAddVoiceShortcutButton *)self leadingAnchor];
+  leadingAnchor2 = [v19 leadingAnchor];
+  leadingAnchor3 = [(INUIAddVoiceShortcutButton *)self leadingAnchor];
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutDefaultHorizontalMargin];
-  v108 = [v110 constraintGreaterThanOrEqualToAnchor:v109 constant:?];
+  v108 = [leadingAnchor2 constraintGreaterThanOrEqualToAnchor:leadingAnchor3 constant:?];
   v116[0] = v108;
-  v106 = [v19 trailingAnchor];
-  v104 = [(INUIAddVoiceShortcutButton *)self trailingAnchor];
+  trailingAnchor2 = [v19 trailingAnchor];
+  trailingAnchor3 = [(INUIAddVoiceShortcutButton *)self trailingAnchor];
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutDefaultHorizontalMargin];
-  v103 = [v106 constraintLessThanOrEqualToAnchor:v104 constant:-v49];
+  v103 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-v49];
   v116[1] = v103;
-  v102 = [v19 centerXAnchor];
-  v101 = [(INUIAddVoiceShortcutButton *)self centerXAnchor];
-  v99 = [v102 constraintEqualToAnchor:v101];
+  centerXAnchor = [v19 centerXAnchor];
+  centerXAnchor2 = [(INUIAddVoiceShortcutButton *)self centerXAnchor];
+  v99 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v116[2] = v99;
-  v98 = [v19 centerYAnchor];
-  v97 = [(INUIAddVoiceShortcutButton *)self centerYAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97];
+  centerYAnchor = [v19 centerYAnchor];
+  centerYAnchor2 = [(INUIAddVoiceShortcutButton *)self centerYAnchor];
+  v96 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v116[3] = v96;
-  v95 = [v35 topAnchor];
-  v94 = [v19 topAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  topAnchor = [v35 topAnchor];
+  topAnchor2 = [v19 topAnchor];
+  v93 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v116[4] = v93;
-  v92 = [v35 leadingAnchor];
+  leadingAnchor4 = [v35 leadingAnchor];
   v50 = v44;
   v81 = v44;
-  v90 = [v44 trailingAnchor];
-  v89 = [v92 constraintEqualToAnchor:v90];
+  trailingAnchor4 = [v44 trailingAnchor];
+  v89 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4];
   v116[5] = v89;
   v111 = v35;
-  v88 = [v35 bottomAnchor];
-  v87 = [v19 bottomAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  bottomAnchor = [v35 bottomAnchor];
+  bottomAnchor2 = [v19 bottomAnchor];
+  v86 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v116[6] = v86;
-  v85 = [v35 trailingAnchor];
+  trailingAnchor5 = [v35 trailingAnchor];
   v51 = v19;
-  v83 = [v19 trailingAnchor];
-  v82 = [v85 constraintEqualToAnchor:v83];
+  trailingAnchor6 = [v19 trailingAnchor];
+  v82 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v116[7] = v82;
-  v80 = [v18 centerYAnchor];
-  v79 = [v19 centerYAnchor];
-  v78 = [v80 constraintEqualToAnchor:v79];
+  centerYAnchor3 = [v18 centerYAnchor];
+  centerYAnchor4 = [v19 centerYAnchor];
+  v78 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v116[8] = v78;
   v107 = v18;
-  v77 = [v18 heightAnchor];
+  heightAnchor3 = [v18 heightAnchor];
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutIconWidthHeight];
-  v76 = [v77 constraintEqualToConstant:?];
+  v76 = [heightAnchor3 constraintEqualToConstant:?];
   v116[9] = v76;
   v116[10] = v39;
-  v75 = [v18 leadingAnchor];
+  leadingAnchor5 = [v18 leadingAnchor];
   v100 = v19;
-  v74 = [v19 leadingAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  leadingAnchor6 = [v19 leadingAnchor];
+  v73 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v116[11] = v73;
-  v72 = [v22 centerYAnchor];
-  v71 = [(INUIAddVoiceShortcutButton *)self centerYAnchor];
-  v52 = [v72 constraintEqualToAnchor:v71];
+  centerYAnchor5 = [v22 centerYAnchor];
+  centerYAnchor6 = [(INUIAddVoiceShortcutButton *)self centerYAnchor];
+  v52 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v116[12] = v52;
   v84 = v22;
-  v53 = [v22 heightAnchor];
+  heightAnchor4 = [v22 heightAnchor];
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutIconWidthHeight];
-  v54 = [v53 constraintEqualToConstant:?];
+  v54 = [heightAnchor4 constraintEqualToConstant:?];
   v116[13] = v54;
   v116[14] = v115;
-  v55 = [v22 leadingAnchor];
-  v56 = [v51 leadingAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  leadingAnchor7 = [v22 leadingAnchor];
+  leadingAnchor8 = [v51 leadingAnchor];
+  v57 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v116[15] = v57;
   v116[16] = v114;
-  v58 = [v50 widthAnchor];
+  widthAnchor3 = [v50 widthAnchor];
   [(INUIAddVoiceShortcutButton *)self INUIAddVoiceShortcutDefaultHorizontalPadding];
-  v59 = [v58 constraintEqualToConstant:?];
+  v59 = [widthAnchor3 constraintEqualToConstant:?];
   v116[17] = v59;
   v60 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:18];
   [v91 activateConstraints:v60];
 
-  v61 = [v81 leadingAnchor];
-  v62 = [v84 trailingAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  leadingAnchor9 = [v81 leadingAnchor];
+  trailingAnchor7 = [v84 trailingAnchor];
+  v63 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7];
   addedToSiriLeadingConstraint = self->_addedToSiriLeadingConstraint;
   self->_addedToSiriLeadingConstraint = v63;
 
-  v65 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v65 addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIAddVoiceShortcutViewController.didAddVoiceShortcut" object:0];
 
-  v66 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v66 addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:0];
 
-  v67 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v67 addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleVoiceShortcutUpdateNotification_ name:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
 
   v68 = objc_alloc(MEMORY[0x277D75468]);
   v69 = [v68 initWithDelegate:self];

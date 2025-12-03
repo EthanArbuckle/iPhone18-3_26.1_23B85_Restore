@@ -4,40 +4,40 @@
 - (BOOL)shouldShowNextButton;
 - (BOOL)shouldShowPreviousButton;
 - (BOOL)showsDetectedConferenceItem;
-- (BOOL)titleCellShouldPresentShareSheet:(id)a3;
-- (BOOL)titleShouldInsetForEditButton:(id)a3;
+- (BOOL)titleCellShouldPresentShareSheet:(id)sheet;
+- (BOOL)titleShouldInsetForEditButton:(id)button;
 - (EKEventTitleDetailItemDelegate)editDelegate;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)owningViewController;
-- (void)_updateCellIfNeededForWidth:(double)a3;
+- (void)_updateCellIfNeededForWidth:(double)width;
 - (void)editButtonPressed;
 - (void)nextButtonPressed;
 - (void)previousButtonPressed;
 - (void)refreshForHeightChange;
-- (void)setCellPosition:(int)a3;
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5;
-- (void)setHidesBottomSeparator:(BOOL)a3;
-- (void)setHidesTopSeparator:(BOOL)a3;
-- (void)setNumberOfTitleLines:(unint64_t)a3;
-- (void)titleCell:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5;
+- (void)setCellPosition:(int)position;
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store;
+- (void)setHidesBottomSeparator:(BOOL)separator;
+- (void)setHidesTopSeparator:(BOOL)separator;
+- (void)setNumberOfTitleLines:(unint64_t)lines;
+- (void)titleCell:(id)cell requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view;
 @end
 
 @implementation EKEventTitleDetailItem
 
-- (void)setEvent:(id)a3 reminder:(id)a4 store:(id)a5
+- (void)setEvent:(id)event reminder:(id)reminder store:(id)store
 {
   v9.receiver = self;
   v9.super_class = EKEventTitleDetailItem;
-  v8 = a3;
-  [(EKEventDetailItem *)&v9 setEvent:v8 reminder:a4 store:a5];
-  [(EKEventDetailCell *)self->_cell setEvent:v8, v9.receiver, v9.super_class];
+  eventCopy = event;
+  [(EKEventDetailItem *)&v9 setEvent:eventCopy reminder:reminder store:store];
+  [(EKEventDetailCell *)self->_cell setEvent:eventCopy, v9.receiver, v9.super_class];
 }
 
-- (void)setCellPosition:(int)a3
+- (void)setCellPosition:(int)position
 {
-  v3 = *&a3;
-  if ([(EKEventDetailItem *)self cellPosition]!= a3)
+  v3 = *&position;
+  if ([(EKEventDetailItem *)self cellPosition]!= position)
   {
     self->_cellNeedsUpdate = 1;
   }
@@ -47,19 +47,19 @@
   [(EKEventDetailItem *)&v5 setCellPosition:v3];
 }
 
-- (void)_updateCellIfNeededForWidth:(double)a3
+- (void)_updateCellIfNeededForWidth:(double)width
 {
   if (self->_cellNeedsUpdate)
   {
     [(EKEventDetailTitleCell *)self->_cell update];
-    [(EKEventDetailTitleCell *)self->_cell layoutForWidth:[(EKEventDetailItem *)self cellPosition] position:a3];
+    [(EKEventDetailTitleCell *)self->_cell layoutForWidth:[(EKEventDetailItem *)self cellPosition] position:width];
     self->_cellNeedsUpdate = 0;
   }
 }
 
-- (void)setHidesTopSeparator:(BOOL)a3
+- (void)setHidesTopSeparator:(BOOL)separator
 {
-  self->_hidesTopSeparator = a3;
+  self->_hidesTopSeparator = separator;
   cell = self->_cell;
   if (cell)
   {
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)setHidesBottomSeparator:(BOOL)a3
+- (void)setHidesBottomSeparator:(BOOL)separator
 {
-  self->_hidesBottomSeparator = a3;
+  self->_hidesBottomSeparator = separator;
   cell = self->_cell;
   if (cell)
   {
@@ -77,28 +77,28 @@
   }
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
   if (self->_cell)
   {
-    if (a5)
+    if (update)
     {
       self->_cellNeedsUpdate = 1;
     }
 
-    [(EKEventTitleDetailItem *)self _updateCellIfNeededForWidth:a3, a4];
+    [(EKEventTitleDetailItem *)self _updateCellIfNeededForWidth:index, width];
   }
 
   else
   {
-    v6 = [(EKEventTitleDetailItem *)self cellForSubitemAtIndex:0, a5, a4];
+    width = [(EKEventTitleDetailItem *)self cellForSubitemAtIndex:0, update, width];
   }
 
   [(EKEventDetailTitleCell *)self->_cell frame];
   return v7;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -133,81 +133,81 @@
   return v8;
 }
 
-- (void)setNumberOfTitleLines:(unint64_t)a3
+- (void)setNumberOfTitleLines:(unint64_t)lines
 {
-  if (self->_numberOfTitleLines != a3)
+  if (self->_numberOfTitleLines != lines)
   {
-    self->_numberOfTitleLines = a3;
+    self->_numberOfTitleLines = lines;
     [(EKEventDetailTitleCell *)self->_cell setNumberOfTitleLines:?];
   }
 }
 
 - (void)editButtonPressed
 {
-  v2 = [(EKEventTitleDetailItem *)self editDelegate];
-  [v2 editButtonPressed];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
+  [editDelegate editButtonPressed];
 }
 
 - (BOOL)shouldShowEditButtonInline
 {
-  v3 = [(EKEventTitleDetailItem *)self editDelegate];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
 
-  if (!v3)
+  if (!editDelegate)
   {
     return 0;
   }
 
-  v4 = [(EKEventTitleDetailItem *)self editDelegate];
-  v5 = [v4 shouldShowEditButtonInline];
+  editDelegate2 = [(EKEventTitleDetailItem *)self editDelegate];
+  shouldShowEditButtonInline = [editDelegate2 shouldShowEditButtonInline];
 
-  return v5;
+  return shouldShowEditButtonInline;
 }
 
 - (BOOL)shouldShowNextButton
 {
-  v3 = [(EKEventTitleDetailItem *)self editDelegate];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
 
-  if (!v3)
+  if (!editDelegate)
   {
     return 0;
   }
 
-  v4 = [(EKEventTitleDetailItem *)self editDelegate];
-  v5 = [v4 shouldShowNextButton];
+  editDelegate2 = [(EKEventTitleDetailItem *)self editDelegate];
+  shouldShowNextButton = [editDelegate2 shouldShowNextButton];
 
-  return v5;
+  return shouldShowNextButton;
 }
 
 - (BOOL)shouldShowPreviousButton
 {
-  v3 = [(EKEventTitleDetailItem *)self editDelegate];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
 
-  if (!v3)
+  if (!editDelegate)
   {
     return 0;
   }
 
-  v4 = [(EKEventTitleDetailItem *)self editDelegate];
-  v5 = [v4 shouldShowPreviousButton];
+  editDelegate2 = [(EKEventTitleDetailItem *)self editDelegate];
+  shouldShowPreviousButton = [editDelegate2 shouldShowPreviousButton];
 
-  return v5;
+  return shouldShowPreviousButton;
 }
 
 - (void)nextButtonPressed
 {
-  v2 = [(EKEventTitleDetailItem *)self editDelegate];
-  [v2 nextButtonPressed];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
+  [editDelegate nextButtonPressed];
 }
 
 - (void)previousButtonPressed
 {
-  v2 = [(EKEventTitleDetailItem *)self editDelegate];
-  [v2 previousButtonPressed];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
+  [editDelegate previousButtonPressed];
 }
 
-- (BOOL)titleShouldInsetForEditButton:(id)a3
+- (BOOL)titleShouldInsetForEditButton:(id)button
 {
-  v4 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -215,45 +215,45 @@
     return 0;
   }
 
-  v6 = [(EKEventDetailItem *)self delegate];
-  v7 = [v6 titleShouldInsetForEditButton:self];
+  delegate2 = [(EKEventDetailItem *)self delegate];
+  v7 = [delegate2 titleShouldInsetForEditButton:self];
 
   return v7;
 }
 
 - (BOOL)minimalMode
 {
-  v2 = [(EKEventTitleDetailItem *)self editDelegate];
-  v3 = [v2 minimalMode];
+  editDelegate = [(EKEventTitleDetailItem *)self editDelegate];
+  minimalMode = [editDelegate minimalMode];
 
-  return v3;
+  return minimalMode;
 }
 
 - (id)owningViewController
 {
-  v3 = [(EKEventDetailItem *)self delegate];
-  v4 = [v3 viewControllerForEventItem:self];
+  delegate = [(EKEventDetailItem *)self delegate];
+  v4 = [delegate viewControllerForEventItem:self];
 
   return v4;
 }
 
 - (BOOL)showsDetectedConferenceItem
 {
-  v2 = [(EKEventDetailItem *)self delegate];
-  v3 = [v2 showsDetectedConferenceItem];
+  delegate = [(EKEventDetailItem *)self delegate];
+  showsDetectedConferenceItem = [delegate showsDetectedConferenceItem];
 
-  return v3;
+  return showsDetectedConferenceItem;
 }
 
 - (void)refreshForHeightChange
 {
-  v2 = [(EKEventDetailItem *)self delegate];
-  [v2 eventDetailItemWantsRefeshForHeightChange];
+  delegate = [(EKEventDetailItem *)self delegate];
+  [delegate eventDetailItemWantsRefeshForHeightChange];
 }
 
-- (BOOL)titleCellShouldPresentShareSheet:(id)a3
+- (BOOL)titleCellShouldPresentShareSheet:(id)sheet
 {
-  v4 = [(EKEventDetailItem *)self delegate];
+  delegate = [(EKEventDetailItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -261,23 +261,23 @@
     return 1;
   }
 
-  v6 = [(EKEventDetailItem *)self delegate];
-  v7 = [v6 eventDetailItemShouldPresentShareSheet:self];
+  delegate2 = [(EKEventDetailItem *)self delegate];
+  v7 = [delegate2 eventDetailItemShouldPresentShareSheet:self];
 
   return v7;
 }
 
-- (void)titleCell:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5
+- (void)titleCell:(id)cell requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(EKEventDetailItem *)self delegate];
+  itemsCopy = items;
+  viewCopy = view;
+  delegate = [(EKEventDetailItem *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(EKEventDetailItem *)self delegate];
-    [v10 eventDetailItem:self requestPresentShareSheetWithActivityItems:v11 withPopoverSourceView:v7];
+    delegate2 = [(EKEventDetailItem *)self delegate];
+    [delegate2 eventDetailItem:self requestPresentShareSheetWithActivityItems:itemsCopy withPopoverSourceView:viewCopy];
   }
 }
 

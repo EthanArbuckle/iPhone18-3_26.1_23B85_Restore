@@ -1,17 +1,17 @@
 @interface SCMLCombinedImageSanitizerBackend
 - (_TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend)init;
-- (_TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend)initWithConfiguration:(id)a3 error:(id *)a4;
-- (void)sanitizeWithRequest:(SCMLImageSanitizerRequest *)a3 output:(SCMLImageSanitization *)a4 backends:(unint64_t)a5 completionHandler:(id)a6;
+- (_TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend)initWithConfiguration:(id)configuration error:(id *)error;
+- (void)sanitizeWithRequest:(SCMLImageSanitizerRequest *)request output:(SCMLImageSanitization *)output backends:(unint64_t)backends completionHandler:(id)handler;
 @end
 
 @implementation SCMLCombinedImageSanitizerBackend
 
-- (_TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend)initWithConfiguration:(id)a3 error:(id *)a4
+- (_TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend)initWithConfiguration:(id)configuration error:(id *)error
 {
   type metadata accessor for CombinedImageSanitizerBackend();
   v6 = swift_allocObject();
-  v7 = a3;
-  sub_1B8AA3440(v7);
+  configurationCopy = configuration;
+  sub_1B8AA3440(configurationCopy);
   *(&self->super.isa + OBJC_IVAR____TtC26SensitiveContentAnalysisML33SCMLCombinedImageSanitizerBackend_backend) = v6;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SCMLCombinedImageSanitizerBackend();
@@ -20,17 +20,17 @@
   return v8;
 }
 
-- (void)sanitizeWithRequest:(SCMLImageSanitizerRequest *)a3 output:(SCMLImageSanitization *)a4 backends:(unint64_t)a5 completionHandler:(id)a6
+- (void)sanitizeWithRequest:(SCMLImageSanitizerRequest *)request output:(SCMLImageSanitization *)output backends:(unint64_t)backends completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA96B88, &qword_1B8AFAB20);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = request;
+  v16[3] = output;
+  v16[4] = backends;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_1B8AF0888();
@@ -45,9 +45,9 @@
   v19[3] = 0;
   v19[4] = &unk_1B8AF8B60;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = self;
+  requestCopy = request;
+  outputCopy = output;
+  selfCopy = self;
   sub_1B8AD7798(0, 0, v14, &unk_1B8AFAB40, v19);
 }
 

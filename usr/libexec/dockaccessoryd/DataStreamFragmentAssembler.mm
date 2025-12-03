@@ -1,24 +1,24 @@
 @interface DataStreamFragmentAssembler
-- (BOOL)addFragmentChunk:(id)a3 error:(id *)a4;
-- (DataStreamFragmentAssembler)initWithSequenceNumber:(id)a3 type:(id)a4;
+- (BOOL)addFragmentChunk:(id)chunk error:(id *)error;
+- (DataStreamFragmentAssembler)initWithSequenceNumber:(id)number type:(id)type;
 - (id)attributeDescriptions;
 @end
 
 @implementation DataStreamFragmentAssembler
 
-- (DataStreamFragmentAssembler)initWithSequenceNumber:(id)a3 type:(id)a4
+- (DataStreamFragmentAssembler)initWithSequenceNumber:(id)number type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  numberCopy = number;
+  typeCopy = type;
+  if (!numberCopy)
   {
     sub_1001F7A54();
 LABEL_9:
     sub_1001F7A3C();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_9;
   }
@@ -29,7 +29,7 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sequenceNumber, a3);
+    objc_storeStrong(&v10->_sequenceNumber, number);
     v12 = [v9 copy];
     type = v11->_type;
     v11->_type = v12;
@@ -49,7 +49,7 @@ LABEL_9:
       *buf = 138543874;
       v23 = v19;
       v24 = 2112;
-      v25 = v7;
+      v25 = numberCopy;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%{public}@Initialized data chunk assembler with sequence number: %@ type: %@", buf, 0x20u);
@@ -62,51 +62,51 @@ LABEL_9:
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v20 = [(DataStreamFragmentAssembler *)self sequenceNumber];
-  v19 = [v3 initWithName:@"Sequence Number" value:v20];
+  sequenceNumber = [(DataStreamFragmentAssembler *)self sequenceNumber];
+  v19 = [v3 initWithName:@"Sequence Number" value:sequenceNumber];
   v21[0] = v19;
   v4 = [HMFAttributeDescription alloc];
-  v5 = [(DataStreamFragmentAssembler *)self type];
-  v6 = [v4 initWithName:@"Type" value:v5];
+  type = [(DataStreamFragmentAssembler *)self type];
+  v6 = [v4 initWithName:@"Type" value:type];
   v21[1] = v6;
   v7 = [HMFAttributeDescription alloc];
-  v8 = [(DataStreamFragmentAssembler *)self data];
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 length]);
+  data = [(DataStreamFragmentAssembler *)self data];
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
   v10 = [v7 initWithName:@"Data Length" value:v9];
   v21[2] = v10;
   v11 = [HMFAttributeDescription alloc];
-  v12 = [(DataStreamFragmentAssembler *)self currentChunkSequenceNumber];
-  v13 = [v11 initWithName:@"Current Chunk Sequence Number" value:v12];
+  currentChunkSequenceNumber = [(DataStreamFragmentAssembler *)self currentChunkSequenceNumber];
+  v13 = [v11 initWithName:@"Current Chunk Sequence Number" value:currentChunkSequenceNumber];
   v21[3] = v13;
   v14 = [HMFAttributeDescription alloc];
-  v15 = [(DataStreamFragmentAssembler *)self assembledFragment];
-  v16 = [v14 initWithName:@"Assembled Fragment" value:v15];
+  assembledFragment = [(DataStreamFragmentAssembler *)self assembledFragment];
+  v16 = [v14 initWithName:@"Assembled Fragment" value:assembledFragment];
   v21[4] = v16;
   v17 = [NSArray arrayWithObjects:v21 count:5];
 
   return v17;
 }
 
-- (BOOL)addFragmentChunk:(id)a3 error:(id *)a4
+- (BOOL)addFragmentChunk:(id)chunk error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
+  chunkCopy = chunk;
+  selfCopy = self;
   v8 = sub_10007FAA0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = sub_10007FAFC(v7);
+    v9 = sub_10007FAFC(selfCopy);
     v36 = 138543618;
     v37 = v9;
     v38 = 2112;
-    v39 = v6;
+    v39 = chunkCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}@Adding chunk: %@", &v36, 0x16u);
   }
 
-  v10 = [(DataStreamFragmentAssembler *)v7 assembledFragment];
+  assembledFragment = [(DataStreamFragmentAssembler *)selfCopy assembledFragment];
 
-  if (v10)
+  if (assembledFragment)
   {
-    v11 = v7;
+    v11 = selfCopy;
     v12 = sub_10007FAA0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -114,46 +114,46 @@ LABEL_9:
       v36 = 138543618;
       v37 = v13;
       v38 = 2112;
-      v39 = v6;
+      v39 = chunkCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@Asked to add fragment chunk %@ but the last data chunk has already been received", &v36, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = 1;
 LABEL_18:
       [NSError errorWithDomain:@"DataStreamFragmentAssemblerErrorDomain" code:v14 userInfo:0];
-      *a4 = v27 = 0;
+      *error = v27 = 0;
       goto LABEL_24;
     }
 
     goto LABEL_23;
   }
 
-  v15 = [(DataStreamFragmentAssembler *)v7 currentChunkSequenceNumber];
-  v16 = [v15 unsignedLongLongValue];
+  currentChunkSequenceNumber = [(DataStreamFragmentAssembler *)selfCopy currentChunkSequenceNumber];
+  unsignedLongLongValue = [currentChunkSequenceNumber unsignedLongLongValue];
 
-  v17 = [v6 sequenceNumber];
-  v18 = [v17 unsignedLongLongValue];
+  sequenceNumber = [chunkCopy sequenceNumber];
+  unsignedLongLongValue2 = [sequenceNumber unsignedLongLongValue];
 
-  if (v18 != v16 + 1)
+  if (unsignedLongLongValue2 != unsignedLongLongValue + 1)
   {
-    v28 = v7;
+    v28 = selfCopy;
     v29 = sub_10007FAA0();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       v30 = sub_10007FAFC(v28);
-      v31 = [(DataStreamFragmentAssembler *)v28 currentChunkSequenceNumber];
+      currentChunkSequenceNumber2 = [(DataStreamFragmentAssembler *)v28 currentChunkSequenceNumber];
       v36 = 138543874;
       v37 = v30;
       v38 = 2112;
-      v39 = v6;
+      v39 = chunkCopy;
       v40 = 2112;
-      v41 = v31;
+      v41 = currentChunkSequenceNumber2;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%{public}@Asked to add fragment chunk %@ with non-sequential sequence number compared to current stream data chunk sequence number %@", &v36, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = 2;
       goto LABEL_18;
@@ -164,9 +164,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v18 == -1 && ([v6 isLast] & 1) == 0)
+  if (unsignedLongLongValue2 == -1 && ([chunkCopy isLast] & 1) == 0)
   {
-    v32 = v7;
+    v32 = selfCopy;
     v33 = sub_10007FAA0();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -174,11 +174,11 @@ LABEL_23:
       v36 = 138543618;
       v37 = v34;
       v38 = 2112;
-      v39 = v6;
+      v39 = chunkCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%{public}@Asked to add non-last fragment chunk with maximum allowed sequence number: %@", &v36, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = 3;
       goto LABEL_18;
@@ -187,21 +187,21 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v19 = [v6 sequenceNumber];
-  [(DataStreamFragmentAssembler *)v7 setCurrentChunkSequenceNumber:v19];
+  sequenceNumber2 = [chunkCopy sequenceNumber];
+  [(DataStreamFragmentAssembler *)selfCopy setCurrentChunkSequenceNumber:sequenceNumber2];
 
-  v20 = [(DataStreamFragmentAssembler *)v7 data];
-  v21 = [v6 data];
-  [v20 appendData:v21];
+  data = [(DataStreamFragmentAssembler *)selfCopy data];
+  data2 = [chunkCopy data];
+  [data appendData:data2];
 
-  if ([v6 isLast])
+  if ([chunkCopy isLast])
   {
     v22 = [DataStreamFragment alloc];
-    v23 = [(DataStreamFragmentAssembler *)v7 data];
-    v24 = [(DataStreamFragmentAssembler *)v7 sequenceNumber];
-    v25 = [(DataStreamFragmentAssembler *)v7 type];
-    v26 = [(DataStreamFragment *)v22 initWithData:v23 sequenceNumber:v24 type:v25];
-    [(DataStreamFragmentAssembler *)v7 setAssembledFragment:v26];
+    data3 = [(DataStreamFragmentAssembler *)selfCopy data];
+    sequenceNumber3 = [(DataStreamFragmentAssembler *)selfCopy sequenceNumber];
+    type = [(DataStreamFragmentAssembler *)selfCopy type];
+    v26 = [(DataStreamFragment *)v22 initWithData:data3 sequenceNumber:sequenceNumber3 type:type];
+    [(DataStreamFragmentAssembler *)selfCopy setAssembledFragment:v26];
   }
 
   v27 = 1;

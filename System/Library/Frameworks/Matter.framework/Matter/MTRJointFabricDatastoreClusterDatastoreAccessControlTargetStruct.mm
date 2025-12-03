@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct
 - (MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self cluster];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setCluster:v5];
+  cluster = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self cluster];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setCluster:cluster];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self endpoint];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setEndpoint:v6];
+  endpoint = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self endpoint];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setEndpoint:endpoint];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self deviceType];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setDeviceType:v7];
+  deviceType = [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)self deviceType];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlTargetStruct *)v4 setDeviceType:deviceType];
 
   return v4;
 }

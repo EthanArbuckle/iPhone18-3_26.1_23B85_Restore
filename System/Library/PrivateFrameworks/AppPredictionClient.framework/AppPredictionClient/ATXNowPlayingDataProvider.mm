@@ -24,8 +24,8 @@
 - (id)currentNowPlayingEvent
 {
   coreDuetContextHelper = self->_coreDuetContextHelper;
-  v3 = [MEMORY[0x1E6997A68] keyPathForNowPlayingDataDictionary];
-  v4 = [(ATXCoreDuetContextHelper *)coreDuetContextHelper fetchDataDictionaryForKeyPath:v3];
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x1E6997A68] keyPathForNowPlayingDataDictionary];
+  v4 = [(ATXCoreDuetContextHelper *)coreDuetContextHelper fetchDataDictionaryForKeyPath:keyPathForNowPlayingDataDictionary];
 
   v5 = [[ATXNowPlayingEvent alloc] initWithContextInfo:v4];
 
@@ -37,9 +37,9 @@
   lastNowPlayingEvent = self->_lastNowPlayingEvent;
   if (!lastNowPlayingEvent)
   {
-    v4 = [(ATXNowPlayingDataProvider *)self currentNowPlayingEvent];
+    currentNowPlayingEvent = [(ATXNowPlayingDataProvider *)self currentNowPlayingEvent];
     v5 = self->_lastNowPlayingEvent;
-    self->_lastNowPlayingEvent = v4;
+    self->_lastNowPlayingEvent = currentNowPlayingEvent;
 
     lastNowPlayingEvent = self->_lastNowPlayingEvent;
   }

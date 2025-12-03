@@ -4,9 +4,9 @@
 - (NSNumber)rateLimitRequestsPerSecond;
 - (NSNumber)rateLimitTimeWindow;
 - (id)_init;
-- (void)setOverlaysLoadTimeout:(id)a3;
-- (void)setRateLimitRequestsPerSecond:(id)a3;
-- (void)setRateLimitTimeWindow:(id)a3;
+- (void)setOverlaysLoadTimeout:(id)timeout;
+- (void)setRateLimitRequestsPerSecond:(id)second;
+- (void)setRateLimitTimeWindow:(id)window;
 @end
 
 @implementation ASCOverlaySettings
@@ -41,46 +41,46 @@ uint64_t __36__ASCOverlaySettings_sharedSettings__block_invoke()
 - (NSNumber)rateLimitRequestsPerSecond
 {
   v2 = +[ASCDefaults daemonDefaults];
-  v3 = [v2 overlaysRateLimitRequestsPerSecond];
+  overlaysRateLimitRequestsPerSecond = [v2 overlaysRateLimitRequestsPerSecond];
 
-  return v3;
+  return overlaysRateLimitRequestsPerSecond;
 }
 
-- (void)setRateLimitRequestsPerSecond:(id)a3
+- (void)setRateLimitRequestsPerSecond:(id)second
 {
-  v3 = a3;
+  secondCopy = second;
   v4 = +[ASCDefaults daemonDefaults];
-  [v4 setOverlaysRateLimitRequestsPerSecond:v3];
+  [v4 setOverlaysRateLimitRequestsPerSecond:secondCopy];
 }
 
 - (NSNumber)rateLimitTimeWindow
 {
   v2 = +[ASCDefaults daemonDefaults];
-  v3 = [v2 overlaysRateLimitTimeWindow];
+  overlaysRateLimitTimeWindow = [v2 overlaysRateLimitTimeWindow];
 
-  return v3;
+  return overlaysRateLimitTimeWindow;
 }
 
-- (void)setRateLimitTimeWindow:(id)a3
+- (void)setRateLimitTimeWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   v4 = +[ASCDefaults daemonDefaults];
-  [v4 setOverlaysRateLimitTimeWindow:v3];
+  [v4 setOverlaysRateLimitTimeWindow:windowCopy];
 }
 
 - (NSNumber)overlaysLoadTimeout
 {
   v2 = +[ASCDefaults daemonDefaults];
-  v3 = [v2 overlaysLoadTimeout];
+  overlaysLoadTimeout = [v2 overlaysLoadTimeout];
 
-  return v3;
+  return overlaysLoadTimeout;
 }
 
-- (void)setOverlaysLoadTimeout:(id)a3
+- (void)setOverlaysLoadTimeout:(id)timeout
 {
-  v3 = a3;
+  timeoutCopy = timeout;
   v4 = +[ASCDefaults daemonDefaults];
-  [v4 setOverlaysLoadTimeout:v3];
+  [v4 setOverlaysLoadTimeout:timeoutCopy];
 }
 
 @end

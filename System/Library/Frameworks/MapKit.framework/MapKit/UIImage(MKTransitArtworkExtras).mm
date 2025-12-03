@@ -13,11 +13,11 @@
     v4 = MEMORY[0x1E69DCAB8];
     v5 = a3;
     v6 = [v4 alloc];
-    v7 = [v5 image];
+    image = [v5 image];
     [v5 contentScale];
     v9 = v8;
 
-    v10 = [v6 initWithCGImage:v7 scale:0 orientation:v9];
+    v10 = [v6 initWithCGImage:image scale:0 orientation:v9];
   }
 
   else
@@ -32,7 +32,7 @@
 {
   v9 = a5;
   v10 = +[MKTransitArtworkManager sharedInstance];
-  v11 = [v10 transitArtworkImageWithDataSource:v9 size:a6 featureType:2 scale:0 nightMode:a1 withWidthPaddingMultiple:a2];
+  v11 = [v10 transitArtworkImageWithDataSource:v9 size:a6 featureType:2 scale:0 nightMode:self withWidthPaddingMultiple:a2];
 
   return v11;
 }
@@ -41,7 +41,7 @@
 {
   v9 = a4;
   v10 = +[MKTransitArtworkManager sharedInstance];
-  v11 = [v10 transitArtworkImageWithDataSource:v9 size:a5 featureType:2 scale:a6 nightMode:a1];
+  v11 = [v10 transitArtworkImageWithDataSource:v9 size:a5 featureType:2 scale:a6 nightMode:self];
 
   return v11;
 }

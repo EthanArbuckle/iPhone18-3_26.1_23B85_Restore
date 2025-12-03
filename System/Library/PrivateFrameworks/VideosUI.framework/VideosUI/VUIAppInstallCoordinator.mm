@@ -1,27 +1,27 @@
 @interface VUIAppInstallCoordinator
-- (BOOL)isEqual:(id)a3;
-- (VUIAppInstallCoordinator)initWithChannelDetails:(id)a3 contentTitle:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIAppInstallCoordinator)initWithChannelDetails:(id)details contentTitle:(id)title;
 - (unint64_t)hash;
-- (void)_installAppWithChannel:(id)a3 punchoutURL:(id)a4 completion:(id)a5;
-- (void)installAppWithPunchoutURL:(id)a3 completion:(id)a4;
+- (void)_installAppWithChannel:(id)channel punchoutURL:(id)l completion:(id)completion;
+- (void)installAppWithPunchoutURL:(id)l completion:(id)completion;
 @end
 
 @implementation VUIAppInstallCoordinator
 
-- (VUIAppInstallCoordinator)initWithChannelDetails:(id)a3 contentTitle:(id)a4
+- (VUIAppInstallCoordinator)initWithChannelDetails:(id)details contentTitle:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = VUIAppInstallCoordinator;
   v9 = [(VUIAppInstallCoordinator *)&v14 init];
   v10 = v9;
-  if (v7)
+  if (detailsCopy)
   {
     if (v9)
     {
-      objc_storeStrong(&v9->_contentTitle, a4);
-      objc_storeStrong(&v10->_channelDetails, a3);
+      objc_storeStrong(&v9->_contentTitle, title);
+      objc_storeStrong(&v10->_channelDetails, details);
       v11 = objc_opt_new();
       uuid = v10->_uuid;
       v10->_uuid = v11;
@@ -44,27 +44,27 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VUIAppInstallCoordinator *)self uuid];
-  v3 = [v2 UUIDString];
-  v4 = [v3 hash];
+  uuid = [(VUIAppInstallCoordinator *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v4 = [uUIDString hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(VUIAppInstallCoordinator *)self uuid];
-    v7 = [(VUIAppInstallCoordinator *)v5 uuid];
-    v8 = [v6 isEqual:v7];
+    uuid = [(VUIAppInstallCoordinator *)self uuid];
+    uuid2 = [(VUIAppInstallCoordinator *)v5 uuid];
+    v8 = [uuid isEqual:uuid2];
   }
 
   else
@@ -75,31 +75,31 @@
   return v8;
 }
 
-- (void)installAppWithPunchoutURL:(id)a3 completion:(id)a4
+- (void)installAppWithPunchoutURL:(id)l completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
-  v8 = [v7 firstObject];
+  lCopy = l;
+  completionCopy = completion;
+  appBundleIDs = [(WLKChannelDetails *)self->_channelDetails appBundleIDs];
+  firstObject = [appBundleIDs firstObject];
 
-  if ([v8 length])
+  if ([firstObject length])
   {
-    [(VUIAppInstallCoordinator *)self _installAppWithChannel:self->_channelDetails punchoutURL:v9 completion:v6];
+    [(VUIAppInstallCoordinator *)self _installAppWithChannel:self->_channelDetails punchoutURL:lCopy completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
-- (void)_installAppWithChannel:(id)a3 punchoutURL:(id)a4 completion:(id)a5
+- (void)_installAppWithChannel:(id)channel punchoutURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  channelCopy = channel;
+  lCopy = l;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (channelCopy)
   {
     objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
@@ -107,8 +107,8 @@
     v14 = __74__VUIAppInstallCoordinator__installAppWithChannel_punchoutURL_completion___block_invoke;
     v15 = &unk_1E872DFB8;
     objc_copyWeak(&v19, &location);
-    v16 = v8;
-    v17 = v9;
+    v16 = channelCopy;
+    v17 = lCopy;
     v18 = v11;
     v12 = v13;
     if ([MEMORY[0x1E696AF00] isMainThread])
@@ -125,9 +125,9 @@
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 

@@ -7,20 +7,20 @@
 - (id)predicateWithProfile:()HDSQLitePredicate
 {
   v4 = a3;
-  v5 = [v4 ontologyConceptManager];
-  v6 = [a1 coding];
-  v7 = [v6 codingSystem];
-  v8 = [v5 attributeIdentifierForCodingSystem:v7];
+  ontologyConceptManager = [v4 ontologyConceptManager];
+  coding = [self coding];
+  codingSystem = [coding codingSystem];
+  v8 = [ontologyConceptManager attributeIdentifierForCodingSystem:codingSystem];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CCD020]);
-    v10 = [v8 longLongValue];
-    v11 = [a1 coding];
-    v12 = [v11 code];
-    v13 = [v9 initWithAttribute:v10 operatorType:4 value:v12];
+    longLongValue = [v8 longLongValue];
+    coding2 = [self coding];
+    code = [coding2 code];
+    v13 = [v9 initWithAttribute:longLongValue operatorType:4 value:code];
 
-    v14 = [v13 predicateWithProfile:v4];
+    falsePredicate = [v13 predicateWithProfile:v4];
   }
 
   else
@@ -29,13 +29,13 @@
     v15 = HKLogHealthOntology();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(HKMedicalCodingConceptSelection(HDSQLitePredicate) *)a1 predicateWithProfile:v15];
+      [(HKMedicalCodingConceptSelection(HDSQLitePredicate) *)self predicateWithProfile:v15];
     }
 
-    v14 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
-  return v14;
+  return falsePredicate;
 }
 
 - (void)predicateWithProfile:()HDSQLitePredicate .cold.1(void *a1, NSObject *a2)

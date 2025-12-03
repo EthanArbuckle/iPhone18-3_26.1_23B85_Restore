@@ -1,35 +1,35 @@
 @interface AVBackgroundView
-- (AVBackgroundView)initWithFrame:(CGRect)a3;
+- (AVBackgroundView)initWithFrame:(CGRect)frame;
 - (BOOL)_isContainedInOverlappingBackgroundView;
 - (void)_ensureOrRemoveLayoutView;
 - (void)_updateBackdropShape;
-- (void)addSubview:(id)a3 applyingMaterialStyle:(int64_t)a4 tintEffectStyle:(int64_t)a5;
+- (void)addSubview:(id)subview applyingMaterialStyle:(int64_t)style tintEffectStyle:(int64_t)effectStyle;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAutomaticallyDrawsRoundedCorners:(BOOL)a3;
-- (void)setCircular:(BOOL)a3;
-- (void)setPrefersLowQualityEffects:(BOOL)a3;
+- (void)setAutomaticallyDrawsRoundedCorners:(BOOL)corners;
+- (void)setCircular:(BOOL)circular;
+- (void)setPrefersLowQualityEffects:(BOOL)effects;
 @end
 
 @implementation AVBackgroundView
 
 - (BOOL)_isContainedInOverlappingBackgroundView
 {
-  v2 = [(AVBackgroundView *)self superview];
-  if (!v2)
+  superview = [(AVBackgroundView *)self superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v3 = v2;
+  superview2 = superview;
   do
   {
-    v4 = v3;
+    v4 = superview2;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = superview2;
     }
 
     else
@@ -38,24 +38,24 @@
     }
 
     v6 = v5;
-    v3 = [v3 superview];
+    superview2 = [superview2 superview];
 
     v7 = v6 != 0;
   }
 
-  while (v3 && !v6);
+  while (superview2 && !v6);
 
   return v7;
 }
 
 - (void)_ensureOrRemoveLayoutView
 {
-  v3 = [(AVBackgroundView *)self _isContainedInOverlappingBackgroundView];
-  v4 = [(AVBackgroundView *)self layoutView];
-  v5 = v4;
-  if (v3)
+  _isContainedInOverlappingBackgroundView = [(AVBackgroundView *)self _isContainedInOverlappingBackgroundView];
+  layoutView = [(AVBackgroundView *)self layoutView];
+  v5 = layoutView;
+  if (_isContainedInOverlappingBackgroundView)
   {
-    [v4 removeFromSuperview];
+    [layoutView removeFromSuperview];
 
     [(AVBackgroundView *)self setLayoutView:0];
   }
@@ -71,19 +71,19 @@
       [(AVBackgroundView *)self setLayoutView:v7];
 
       [(AVBackgroundView *)self _updateBackdropShape];
-      v8 = [(AVBackgroundView *)self layoutView];
-      [v8 setPrefersLowQualityEffects:{-[AVBackgroundView prefersLowQualityEffects](self, "prefersLowQualityEffects")}];
+      layoutView2 = [(AVBackgroundView *)self layoutView];
+      [layoutView2 setPrefersLowQualityEffects:{-[AVBackgroundView prefersLowQualityEffects](self, "prefersLowQualityEffects")}];
 
-      v9 = [(AVBackgroundView *)self layoutView];
-      [(AVBackgroundView *)self insertSubview:v9 atIndex:0];
+      layoutView3 = [(AVBackgroundView *)self layoutView];
+      [(AVBackgroundView *)self insertSubview:layoutView3 atIndex:0];
     }
 
-    v10 = [(AVBackgroundView *)self layoutView];
-    [(AVBackgroundView *)self sendSubviewToBack:v10];
+    layoutView4 = [(AVBackgroundView *)self layoutView];
+    [(AVBackgroundView *)self sendSubviewToBack:layoutView4];
 
-    v11 = [(AVBackgroundView *)self layoutView];
+    layoutView5 = [(AVBackgroundView *)self layoutView];
     [(AVBackgroundView *)self bounds];
-    [v11 setFrame:?];
+    [layoutView5 setFrame:?];
   }
 }
 
@@ -128,59 +128,59 @@
     v3 = 2;
   }
 
-  v4 = [(AVBackgroundView *)self layoutView];
-  [v4 setShapeStyle:v3];
+  layoutView = [(AVBackgroundView *)self layoutView];
+  [layoutView setShapeStyle:v3];
 }
 
-- (void)setPrefersLowQualityEffects:(BOOL)a3
+- (void)setPrefersLowQualityEffects:(BOOL)effects
 {
-  if (self->_prefersLowQualityEffects != a3)
+  if (self->_prefersLowQualityEffects != effects)
   {
-    v4 = a3;
-    self->_prefersLowQualityEffects = a3;
-    v5 = [(AVBackgroundView *)self layoutView];
-    [v5 setPrefersLowQualityEffects:v4];
+    effectsCopy = effects;
+    self->_prefersLowQualityEffects = effects;
+    layoutView = [(AVBackgroundView *)self layoutView];
+    [layoutView setPrefersLowQualityEffects:effectsCopy];
   }
 }
 
-- (void)setCircular:(BOOL)a3
+- (void)setCircular:(BOOL)circular
 {
-  if (self->_circular != a3)
+  if (self->_circular != circular)
   {
-    self->_circular = a3;
+    self->_circular = circular;
     [(AVBackgroundView *)self _updateBackdropShape];
   }
 }
 
-- (void)setAutomaticallyDrawsRoundedCorners:(BOOL)a3
+- (void)setAutomaticallyDrawsRoundedCorners:(BOOL)corners
 {
-  if (self->_automaticallyDrawsRoundedCorners != a3)
+  if (self->_automaticallyDrawsRoundedCorners != corners)
   {
-    self->_automaticallyDrawsRoundedCorners = a3;
+    self->_automaticallyDrawsRoundedCorners = corners;
     [(AVBackgroundView *)self _updateBackdropShape];
   }
 }
 
-- (void)addSubview:(id)a3 applyingMaterialStyle:(int64_t)a4 tintEffectStyle:(int64_t)a5
+- (void)addSubview:(id)subview applyingMaterialStyle:(int64_t)style tintEffectStyle:(int64_t)effectStyle
 {
-  v8 = a3;
-  if (v8)
+  subviewCopy = subview;
+  if (subviewCopy)
   {
-    v12 = v8;
+    v12 = subviewCopy;
     [(AVBackgroundView *)self _ensureOrRemoveLayoutView];
-    if (a5 == 1)
+    if (effectStyle == 1)
     {
       [AVBackdropView applySecondaryGlyphTintToView:v12];
     }
 
-    else if (!a5)
+    else if (!effectStyle)
     {
       [AVBackdropView applyPrimaryGlyphTintToView:v12];
     }
 
     [(AVBackgroundView *)self addSubview:v12];
-    v8 = v12;
-    if (a4 == 1)
+    subviewCopy = v12;
+    if (style == 1)
     {
       v9 = +[AVBackdropView secondaryMaterialOverlayView];
       [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -189,22 +189,22 @@
       v11 = [v9 avkit_constraintsFromCenterAndDimensionAnchorsToCenterAndDimensionAnchorsOfItem:v12];
       [v10 activateConstraints:v11];
 
-      v8 = v12;
+      subviewCopy = v12;
     }
   }
 }
 
-- (AVBackgroundView)initWithFrame:(CGRect)a3
+- (AVBackgroundView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AVBackgroundView;
-  v3 = [(AVBackgroundView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVBackgroundView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_automaticallyDrawsRoundedCorners = 1;
-    v5 = [(AVBackgroundView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(AVBackgroundView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
   }
 
   return v4;

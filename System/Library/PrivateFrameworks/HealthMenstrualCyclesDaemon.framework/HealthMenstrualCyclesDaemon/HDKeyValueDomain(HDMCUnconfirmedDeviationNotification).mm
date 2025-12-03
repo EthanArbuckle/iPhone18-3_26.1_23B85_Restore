@@ -19,21 +19,21 @@
 {
   v48 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [a1 domainName];
-  v8 = [v7 isEqualToString:@"com.apple.private.health.menstrual-cycles.unconfirmed-deviation-notification-state"];
+  domainName = [self domainName];
+  v8 = [domainName isEqualToString:@"com.apple.private.health.menstrual-cycles.unconfirmed-deviation-notification-state"];
 
   if ((v8 & 1) == 0)
   {
     [HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) hdmc_menstrualCyclesUnconfirmedDeviationNotificationSetValuesWithState:error:];
   }
 
-  if ([a1 category] != 1)
+  if ([self category] != 1)
   {
     [HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) hdmc_menstrualCyclesUnconfirmedDeviationNotificationSetValuesWithState:error:];
   }
 
   v39 = 0;
-  v9 = [a1 setValueForAllKeys:0 error:&v39];
+  v9 = [self setValueForAllKeys:0 error:&v39];
   v10 = v39;
   v11 = v10;
   if ((v9 & 1) == 0)
@@ -57,7 +57,7 @@
     v29 = *MEMORY[0x277CCC2E8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
     {
-      [(HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) *)v29 hdmc_menstrualCyclesUnconfirmedDeviationNotificationSetValuesWithState:a1 error:v19];
+      [(HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) *)v29 hdmc_menstrualCyclesUnconfirmedDeviationNotificationSetValuesWithState:self error:v19];
     }
 
     goto LABEL_24;
@@ -76,9 +76,9 @@
     _os_log_impl(&dword_2293D1000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cleared key value domain of unconfirmed deviation notification state", buf, 0xCu);
   }
 
-  v17 = [v6 dictionaryRepresentation];
+  dictionaryRepresentation = [v6 dictionaryRepresentation];
   v38 = v11;
-  v18 = [a1 setValuesWithDictionary:v17 error:&v38];
+  v18 = [self setValuesWithDictionary:dictionaryRepresentation error:&v38];
   v19 = v38;
 
   if ((v18 & 1) == 0)
@@ -106,13 +106,13 @@
       v34 = objc_opt_class();
       v35 = v34;
       v36 = HKSensitiveLogItem();
-      v37 = [a1 domainName];
+      domainName2 = [self domainName];
       *buf = 138544130;
       v41 = v34;
       v42 = 2112;
       v43 = v36;
       v44 = 2112;
-      v45 = v37;
+      v45 = domainName2;
       v46 = 2114;
       v47 = v19;
       _os_log_error_impl(&dword_2293D1000, v33, OS_LOG_TYPE_ERROR, "[%{public}@] Error saving state:%@ in key value domain: %@ error: %{public}@", buf, 0x2Au);
@@ -131,13 +131,13 @@ LABEL_24:
     v22 = objc_opt_class();
     v23 = v22;
     v24 = HKSensitiveLogItem();
-    v25 = [a1 domainName];
+    domainName3 = [self domainName];
     *buf = 138543874;
     v41 = v22;
     v42 = 2112;
     v43 = v24;
     v44 = 2112;
-    v45 = v25;
+    v45 = domainName3;
     _os_log_impl(&dword_2293D1000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully saved new state:%@ in key value domain:%@", buf, 0x20u);
   }
 
@@ -150,21 +150,21 @@ LABEL_25:
 
 - (id)hdmc_menstrualCyclesUnconfirmedDeviationNotificationGetStateWithError:()HDMCUnconfirmedDeviationNotification
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:@"com.apple.private.health.menstrual-cycles.unconfirmed-deviation-notification-state"];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:@"com.apple.private.health.menstrual-cycles.unconfirmed-deviation-notification-state"];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) hdmc_menstrualCyclesUnconfirmedDeviationNotificationGetStateWithError:];
   }
 
-  if ([a1 category] != 1)
+  if ([self category] != 1)
   {
     [HDKeyValueDomain(HDMCUnconfirmedDeviationNotification) hdmc_menstrualCyclesUnconfirmedDeviationNotificationGetStateWithError:];
   }
 
   v15 = 0;
-  v7 = [a1 allValuesWithError:&v15];
+  v7 = [self allValuesWithError:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -193,7 +193,7 @@ LABEL_25:
     v13 = *MEMORY[0x277CCC2E8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
     {
-      [(HDKeyValueDomain(HDMCOvulationConfirmationNotification) *)v13 hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:a1];
+      [(HDKeyValueDomain(HDMCOvulationConfirmationNotification) *)v13 hdmc_menstrualCyclesOvulationConfirmationNotificationGetStateWithError:self];
     }
 
     v10 = 0;

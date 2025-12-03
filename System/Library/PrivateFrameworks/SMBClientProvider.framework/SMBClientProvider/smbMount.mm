@@ -1,115 +1,115 @@
 @interface smbMount
-+ (id)smbMountFromServerURL:(id)a3 shareName:(id)a4 password:(id)a5 result:(int *)a6;
++ (id)smbMountFromServerURL:(id)l shareName:(id)name password:(id)password result:(int *)result;
 - ($153B227C17007545984278727FAEAED4)serverGuid;
-- (id)initForServerURL:(id)a3 shareName:(id)a4 password:(id)a5 result:(int *)a6;
-- (id)lookupHandle:(id)a3 IsStale:(BOOL *)a4;
+- (id)initForServerURL:(id)l shareName:(id)name password:(id)password result:(int *)result;
+- (id)lookupHandle:(id)handle IsStale:(BOOL *)stale;
 - (int)checkServerConnection;
 - (int)connectToServer;
 - (int)connectionState;
-- (int)deliverSearchResults:(id)a3;
+- (int)deliverSearchResults:(id)results;
 - (int)tryCreateRootNode;
 - (timespec)lastRequestTime;
-- (unint64_t)newConnectionIDOrError:(id *)a3;
-- (void)LIRead:(id)a3 atOffset:(unint64_t)a4 withPointer:(char *)a5 length:(unint64_t)a6 reply:(id)a7;
-- (void)SetShutDownReason:(int)a3;
-- (void)_LIAccessCheck:(id)a3 requestedAccess:(unsigned int)a4 reply:(id)a5;
-- (void)_LIClose:(id)a3 keepingMode:(int)a4 reply:(id)a5;
-- (void)_LICreate:(id)a3 named:(id)a4 withAttrs:(id)a5 andClient:(unint64_t)a6 reply:(id)a7;
-- (void)_LIGetFsAttr:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)_LIGetXattr:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)_LIListXattrs:(id)a3 reply:(id)a4;
-- (void)_LILookup:(id)a3 name:(id)a4 forClient:(unint64_t)a5 reply:(id)a6;
-- (void)_LIMakeDir:(id)a3 named:(id)a4 withAttrs:(id)a5 andClient:(unint64_t)a6 reply:(id)a7;
-- (void)_LIMakeSymLink:(id)a3 named:(id)a4 withContents:(id)a5 andAttrs:(id)a6 andClient:(unint64_t)a7 reply:(id)a8;
-- (void)_LIPathConf:(id)a3 reply:(id)a4;
-- (void)_LIRead:(id)a3 atOffset:(unint64_t)a4 withPointer:(char *)a5 length:(unint64_t)a6 reply:(id)a7;
-- (void)_LIReadDir:(id)a3 intoBuffer:(id)a4 forCookie:(unint64_t)a5 andVerifier:(unint64_t)a6 reply:(id)a7;
-- (void)_LIReadDirAndAttrs:(id)a3 intoBuffer:(id)a4 forCookie:(unint64_t)a5 andVerifier:(unint64_t)a6 reply:(id)a7;
-- (void)_LIReadLink:(id)a3 reply:(id)a4;
-- (void)_LIReclaim:(id)a3 forClient:(unint64_t)a4 reply:(id)a5;
-- (void)_LIRemove:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)_LIRemoveDir:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)_LIRename:(id)a3 name:(id)a4 toDir:(id)a5 andName:(id)a6 withFlags:(unsigned int)a7 reply:(id)a8;
-- (void)_LISearch:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 withCallerID:(unint64_t)a7 reply:(id)a8;
-- (void)_LISearchAbort:(id)a3 reply:(id)a4;
-- (void)_LISearchAbortAllClientSearches:(unint64_t)a3;
-- (void)_LISetAttr:(id)a3 setAttrs:(id)a4 reply:(id)a5;
-- (void)_LISetUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 reply:(id)a6;
-- (void)_LISetXattr:(id)a3 name:(id)a4 value:(id)a5 how:(int)a6 reply:(id)a7;
-- (void)_LIStatFS:(id)a3 reply:(id)a4;
-- (void)_LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6;
-- (void)_getAttr:(id)a3 reply:(id)a4;
-- (void)_invalidateFileNodesForConnection:(unint64_t)a3;
-- (void)_setConnectionState:(int)a3;
-- (void)_submitRequestBlock:(id)a3 continuationBlock:(id)a4 allowRetries:(BOOL)a5;
-- (void)abortAllClientSearchesFor:(unint64_t)a3;
-- (void)abortSearch:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
+- (unint64_t)newConnectionIDOrError:(id *)error;
+- (void)LIRead:(id)read atOffset:(unint64_t)offset withPointer:(char *)pointer length:(unint64_t)length reply:(id)reply;
+- (void)SetShutDownReason:(int)reason;
+- (void)_LIAccessCheck:(id)check requestedAccess:(unsigned int)access reply:(id)reply;
+- (void)_LIClose:(id)close keepingMode:(int)mode reply:(id)reply;
+- (void)_LICreate:(id)create named:(id)named withAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply;
+- (void)_LIGetFsAttr:(id)attr name:(id)name reply:(id)reply;
+- (void)_LIGetXattr:(id)xattr name:(id)name reply:(id)reply;
+- (void)_LIListXattrs:(id)xattrs reply:(id)reply;
+- (void)_LILookup:(id)lookup name:(id)name forClient:(unint64_t)client reply:(id)reply;
+- (void)_LIMakeDir:(id)dir named:(id)named withAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply;
+- (void)_LIMakeSymLink:(id)link named:(id)named withContents:(id)contents andAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply;
+- (void)_LIPathConf:(id)conf reply:(id)reply;
+- (void)_LIRead:(id)read atOffset:(unint64_t)offset withPointer:(char *)pointer length:(unint64_t)length reply:(id)reply;
+- (void)_LIReadDir:(id)dir intoBuffer:(id)buffer forCookie:(unint64_t)cookie andVerifier:(unint64_t)verifier reply:(id)reply;
+- (void)_LIReadDirAndAttrs:(id)attrs intoBuffer:(id)buffer forCookie:(unint64_t)cookie andVerifier:(unint64_t)verifier reply:(id)reply;
+- (void)_LIReadLink:(id)link reply:(id)reply;
+- (void)_LIReclaim:(id)reclaim forClient:(unint64_t)client reply:(id)reply;
+- (void)_LIRemove:(id)remove name:(id)name reply:(id)reply;
+- (void)_LIRemoveDir:(id)dir name:(id)name reply:(id)reply;
+- (void)_LIRename:(id)rename name:(id)name toDir:(id)dir andName:(id)andName withFlags:(unsigned int)flags reply:(id)reply;
+- (void)_LISearch:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy withCallerID:(unint64_t)d reply:(id)reply;
+- (void)_LISearchAbort:(id)abort reply:(id)reply;
+- (void)_LISearchAbortAllClientSearches:(unint64_t)searches;
+- (void)_LISetAttr:(id)attr setAttrs:(id)attrs reply:(id)reply;
+- (void)_LISetUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client reply:(id)reply;
+- (void)_LISetXattr:(id)xattr name:(id)name value:(id)value how:(int)how reply:(id)reply;
+- (void)_LIStatFS:(id)s reply:(id)reply;
+- (void)_LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply;
+- (void)_getAttr:(id)attr reply:(id)reply;
+- (void)_invalidateFileNodesForConnection:(unint64_t)connection;
+- (void)_setConnectionState:(int)state;
+- (void)_submitRequestBlock:(id)block continuationBlock:(id)continuationBlock allowRetries:(BOOL)retries;
+- (void)abortAllClientSearchesFor:(unint64_t)for;
+- (void)abortSearch:(id)search requestID:(unint64_t)d reply:(id)reply;
 - (void)cancelIdleTimer;
-- (void)checkAccessTo:(id)a3 requestedAccess:(unsigned int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
+- (void)checkAccessTo:(id)to requestedAccess:(unsigned int)access requestID:(unint64_t)d reply:(id)reply;
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
 - (void)dealloc;
-- (void)decreaseChangeNotifyCount:(unint64_t)a3;
-- (void)decreaseOpenFileCount:(unint64_t)a3;
+- (void)decreaseChangeNotifyCount:(unint64_t)count;
+- (void)decreaseOpenFileCount:(unint64_t)count;
 - (void)disconnect;
 - (void)disconnectFromServer;
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
 - (void)flushAndDisconnect;
 - (void)flushAndReconnect;
 - (void)flushEIOCancelWait;
-- (void)handleNodeDisappeared:(id)a3;
+- (void)handleNodeDisappeared:(id)disappeared;
 - (void)idleTimerFired;
-- (void)increaseChangeNotifyCount:(unint64_t)a3;
-- (void)increaseOpenFileCount:(unint64_t)a3;
-- (void)invalidateFileNodesForConnection:(unint64_t)a3;
-- (void)listXattrsOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)lookupin:(id)a3 name:(id)a4 forClient:(unint64_t)a5 usingFlags:(unsigned int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 andClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
+- (void)increaseChangeNotifyCount:(unint64_t)count;
+- (void)increaseOpenFileCount:(unint64_t)count;
+- (void)invalidateFileNodesForConnection:(unint64_t)connection;
+- (void)listXattrsOf:(id)of requestID:(unint64_t)d reply:(id)reply;
+- (void)lookupin:(id)lookupin name:(id)name forClient:(unint64_t)client usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
 - (void)notifyConnectionLost;
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)readFrom:(id)a3 atOffset:(unint64_t)a4 intoBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)readFrom:(id)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)readRequest:(id)a3 bptr:(char *)a4 smbNode:(id)a5 fileRef:(id)a6 rdparamPtr:(smb_read_write *)a7 result:(int)a8 thisOffset:(unint64_t)a9 bytesRemain:(unint64_t)a10 bytesRead:(unint64_t)a11 pass:(unint64_t)a12 reply:(id)a13;
-- (void)reclaim:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6;
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply;
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory amount:(unint64_t)amount cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory amount:(unint64_t)amount requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readFrom:(id)from atOffset:(unint64_t)offset intoBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
+- (void)readFrom:(id)from length:(unint64_t)length atOffset:(unint64_t)offset requestID:(unint64_t)d reply:(id)reply;
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply;
+- (void)readRequest:(id)request bptr:(char *)bptr smbNode:(id)node fileRef:(id)ref rdparamPtr:(smb_read_write *)ptr result:(int)result thisOffset:(unint64_t)offset bytesRemain:(unint64_t)self0 bytesRead:(unint64_t)self1 pass:(unint64_t)self2 reply:(id)self3;
+- (void)reclaim:(id)reclaim forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
 - (void)reconnectCancelWait;
 - (void)reconnectSession;
-- (void)releaseConnectionAllocation:(unint64_t)a3;
-- (void)removeDirectory:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)renameItemIn:(id)a3 named:(id)a4 toDirectory:(id)a5 newName:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)renameOverExistingDir:(id)a3 FromName:(id)a4 toDir:(id)a5 NewName:(id)a6 ToFile:(id)a7 CompletionHandler:(id)a8;
-- (void)renameOverExistingFile:(id)a3 FromName:(id)a4 toDir:(id)a5 NewName:(id)a6 ToFile:(id)a7 CompletionHandler:(id)a8;
-- (void)replenishSearchCreditsFor:(id)a3 credits:(unsigned int)a4 requestID:(unint64_t)a5 reply:(id)a6;
+- (void)releaseConnectionAllocation:(unint64_t)allocation;
+- (void)removeDirectory:(id)directory from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)renameItemIn:(id)in named:(id)named toDirectory:(id)directory newName:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)renameOverExistingDir:(id)dir FromName:(id)name toDir:(id)toDir NewName:(id)newName ToFile:(id)file CompletionHandler:(id)handler;
+- (void)renameOverExistingFile:(id)file FromName:(id)name toDir:(id)dir NewName:(id)newName ToFile:(id)toFile CompletionHandler:(id)handler;
+- (void)replenishSearchCreditsFor:(id)for credits:(unsigned int)credits requestID:(unint64_t)d reply:(id)reply;
 - (void)requestDisconnect;
 - (void)resetChangeNotifyCount;
 - (void)resetOpenFileCount;
 - (void)resumeIdleTimer;
-- (void)rootFileHandleForClient:(unint64_t)a3 reply:(id)a4;
-- (void)search:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 forClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)setAttrInternalLocked:(id)a3 setAttrs:(id)a4 CompletionHandler:(id)a5;
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)setXattrOf:(id)a3 named:(id)a4 value:(id)a5 how:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)writeRequest:(id)a3 withBuffer:(id)a4 smbNode:(id)a5 fileRef:(id)a6 wrparamPtr:(smb_read_write *)a7 result:(int)a8 thisOffset:(unint64_t)a9 bytesWritten:(unint64_t)a10 bytesRemain:(unint64_t)a11 pass:(unint64_t)a12 reply:(id)a13;
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 fromBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)xattrOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
+- (void)rootFileHandleForClient:(unint64_t)client reply:(id)reply;
+- (void)search:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)setAttrInternalLocked:(id)locked setAttrs:(id)attrs CompletionHandler:(id)handler;
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply;
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply;
+- (void)setXattrOf:(id)of named:(id)named value:(id)value how:(int)how requestID:(unint64_t)d reply:(id)reply;
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply;
+- (void)writeRequest:(id)request withBuffer:(id)buffer smbNode:(id)node fileRef:(id)ref wrparamPtr:(smb_read_write *)ptr result:(int)result thisOffset:(unint64_t)offset bytesWritten:(unint64_t)self0 bytesRemain:(unint64_t)self1 pass:(unint64_t)self2 reply:(id)self3;
+- (void)writeTo:(id)to atOffset:(unint64_t)offset fromBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
+- (void)xattrOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation smbMount
 
-- (id)initForServerURL:(id)a3 shareName:(id)a4 password:(id)a5 result:(int *)a6
+- (id)initForServerURL:(id)l shareName:(id)name password:(id)password result:(int *)result
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  nameCopy = name;
   v50.receiver = self;
   v50.super_class = smbMount;
   v10 = [(smbMount *)&v50 init];
@@ -154,14 +154,14 @@
     v11->_connState = 0;
     v11->_shutdownReason = 0;
     v11->_serverConnected = 0;
-    v29 = [v8 host];
+    host = [lCopy host];
     serverName = v11->_serverName;
-    v11->_serverName = v29;
+    v11->_serverName = host;
 
-    objc_storeStrong(&v11->_shareName, a4);
-    v31 = [v8 user];
+    objc_storeStrong(&v11->_shareName, name);
+    user = [lCopy user];
     userName = v11->_userName;
-    v11->_userName = v31;
+    v11->_userName = user;
 
     v11->_isGuestLogin = 0;
     mountURL = v11->_mountURL;
@@ -193,7 +193,7 @@
     searchLock = v11->_searchLock;
     v11->_searchLock = v44;
 
-    v46 = [v8 URLByAppendingPathComponent:v9];
+    v46 = [lCopy URLByAppendingPathComponent:nameCopy];
     v47 = v11->_mountURL;
     v11->_mountURL = v46;
 
@@ -301,9 +301,9 @@
   }
 
   v16 = qword_1000954F0;
-  v17 = [(smbMount *)self mountURL];
+  mountURL = [(smbMount *)self mountURL];
   v42 = 0;
-  v18 = [v16 getPasswordForIdentifier:v17 error:&v42];
+  v18 = [v16 getPasswordForIdentifier:mountURL error:&v42];
   v19 = v42;
 
   if (!v18)
@@ -320,9 +320,9 @@
   if ((v52 & 2) != 0)
   {
     v20 = objc_opt_new();
-    v21 = [v20 realms];
+    realms = [v20 realms];
 
-    if (self->_userDomain && [v21 count])
+    if (self->_userDomain && [realms count])
     {
       LODWORD(v46) = 8;
       v10 = [smb_subr sendSessionSetup:v3 User:self->_userName Password:v18 Realm:self->_userDomain Param:&v46];
@@ -420,9 +420,9 @@ LABEL_37:
         v28 = [smb_subr queryShareRootSync:v3 ShareID:self->_shareID FAttrs:v53];
         if (!v28)
         {
-          v29 = [(smbMount *)self rootNode];
+          rootNode = [(smbMount *)self rootNode];
 
-          if (!v29)
+          if (!rootNode)
           {
             v30 = [[smbNode alloc] initWithName:@"TheRooT" andParent:0 andAttr:v53];
             if (!v30)
@@ -575,8 +575,8 @@ LABEL_9:
   tv_sec = v6.tv_sec;
   if (tv_sec - [(smbMount *)self lastRequestTime]>= 120)
   {
-    v4 = [(smbMount *)self connState];
-    switch(v4)
+    connState = [(smbMount *)self connState];
+    switch(connState)
     {
       case 7u:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -621,9 +621,9 @@ LABEL_25:
 
         break;
       case 0u:
-        v5 = [(smbMount *)self rootNode];
+        rootNode = [(smbMount *)self rootNode];
 
-        if (v5)
+        if (rootNode)
         {
           goto LABEL_25;
         }
@@ -652,122 +652,122 @@ LABEL_25:
 
 - (void)resumeIdleTimer
 {
-  v3 = [(smbMount *)self idleTimer];
+  idleTimer = [(smbMount *)self idleTimer];
 
-  if (!v3)
+  if (!idleTimer)
   {
     v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, 0);
     [(smbMount *)self setIdleTimer:v4];
 
-    v5 = [(smbMount *)self idleTimer];
+    idleTimer2 = [(smbMount *)self idleTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10000A5F8;
     handler[3] = &unk_10008C880;
     handler[4] = self;
-    dispatch_source_set_event_handler(v5, handler);
+    dispatch_source_set_event_handler(idleTimer2, handler);
   }
 
-  v6 = [(smbMount *)self idleTimer];
+  idleTimer3 = [(smbMount *)self idleTimer];
   v7 = dispatch_time(0, 30000000000);
-  dispatch_source_set_timer(v6, v7, 0x6FC23AC00uLL, 0x2FAF080uLL);
+  dispatch_source_set_timer(idleTimer3, v7, 0x6FC23AC00uLL, 0x2FAF080uLL);
 
   if (![(smbMount *)self idleTimerRunning])
   {
     [(smbMount *)self setIdleTimerRunning:1];
-    v8 = [(smbMount *)self idleTimer];
-    dispatch_resume(v8);
+    idleTimer4 = [(smbMount *)self idleTimer];
+    dispatch_resume(idleTimer4);
   }
 }
 
 - (void)cancelIdleTimer
 {
-  v3 = [(smbMount *)self idleTimer];
+  idleTimer = [(smbMount *)self idleTimer];
 
-  if (v3 && [(smbMount *)self idleTimerRunning]== 1)
+  if (idleTimer && [(smbMount *)self idleTimerRunning]== 1)
   {
     [(smbMount *)self setIdleTimerRunning:0];
-    v4 = [(smbMount *)self idleTimer];
-    dispatch_suspend(v4);
+    idleTimer2 = [(smbMount *)self idleTimer];
+    dispatch_suspend(idleTimer2);
   }
 }
 
-- (void)increaseOpenFileCount:(unint64_t)a3
+- (void)increaseOpenFileCount:(unint64_t)count
 {
-  v5 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A7B4;
   v6[3] = &unk_10008C8A8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(connectionSyncQueue, v6);
 }
 
-- (void)decreaseOpenFileCount:(unint64_t)a3
+- (void)decreaseOpenFileCount:(unint64_t)count
 {
-  v5 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A890;
   v6[3] = &unk_10008C8A8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(connectionSyncQueue, v6);
 }
 
 - (void)resetOpenFileCount
 {
-  v3 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A9C0;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(connectionSyncQueue, block);
 }
 
-- (void)increaseChangeNotifyCount:(unint64_t)a3
+- (void)increaseChangeNotifyCount:(unint64_t)count
 {
-  v5 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AA60;
   v6[3] = &unk_10008C8A8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(connectionSyncQueue, v6);
 }
 
-- (void)decreaseChangeNotifyCount:(unint64_t)a3
+- (void)decreaseChangeNotifyCount:(unint64_t)count
 {
-  v5 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AB3C;
   v6[3] = &unk_10008C8A8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(connectionSyncQueue, v6);
 }
 
 - (void)resetChangeNotifyCount
 {
-  v3 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AC6C;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(connectionSyncQueue, block);
 }
 
-+ (id)smbMountFromServerURL:(id)a3 shareName:(id)a4 password:(id)a5 result:(int *)a6
++ (id)smbMountFromServerURL:(id)l shareName:(id)name password:(id)password result:(int *)result
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initForServerURL:v12 shareName:v11 password:v10 result:a6];
+  passwordCopy = password;
+  nameCopy = name;
+  lCopy = l;
+  v13 = [[self alloc] initForServerURL:lCopy shareName:nameCopy password:passwordCopy result:result];
 
   return v13;
 }
@@ -784,13 +784,13 @@ LABEL_25:
   [(smbMount *)self requestDisconnect];
 }
 
-- (void)invalidateFileNodesForConnection:(unint64_t)a3
+- (void)invalidateFileNodesForConnection:(unint64_t)connection
 {
   if ([(smbMount *)self connState])
   {
     v5 = dispatch_time(0, 15000000000);
-    v6 = [(smbMount *)self opsSyncGroup];
-    v7 = dispatch_group_wait(v6, v5);
+    opsSyncGroup = [(smbMount *)self opsSyncGroup];
+    v7 = dispatch_group_wait(opsSyncGroup, v5);
 
     if (v7)
     {
@@ -802,22 +802,22 @@ LABEL_25:
 
     else
     {
-      v8 = [(smbMount *)self namespaceChangingGroup];
-      dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+      namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+      dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-      v9 = [(smbMount *)self opsQueue];
+      opsQueue = [(smbMount *)self opsQueue];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_10000AF34;
       v10[3] = &unk_10008C8A8;
       v10[4] = self;
-      v10[5] = a3;
-      dispatch_async(v9, v10);
+      v10[5] = connection;
+      dispatch_async(opsQueue, v10);
     }
   }
 }
 
-- (void)_invalidateFileNodesForConnection:(unint64_t)a3
+- (void)_invalidateFileNodesForConnection:(unint64_t)connection
 {
   v32 = 0;
   v33 = &v32;
@@ -846,15 +846,15 @@ LABEL_25:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [(smbMount *)self handleTable];
+  handleTable = [(smbMount *)self handleTable];
   v9 = 0;
-  v10 = [v8 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  v10 = [handleTable countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v10)
   {
-    v11 = ~a3;
+    v11 = ~connection;
     v12 = *v29;
     v22 = v25;
-    obj = v8;
+    obj = handleTable;
     do
     {
       v13 = 0;
@@ -866,30 +866,30 @@ LABEL_25:
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
-        v15 = [(smbMount *)self handleTable];
-        v16 = [v15 objectForKey:v14];
+        handleTable2 = [(smbMount *)self handleTable];
+        v16 = [handleTable2 objectForKey:v14];
 
         v9 = v16;
         [v16 setInterestedClients:{objc_msgSend(v16, "interestedClients") & v11}];
-        v17 = [v16 inUseClientSet];
-        [v16 setInUseClientSet:v17 & v11];
-        if ((v17 & a3) != 0 && ![v16 inUseClientSet])
+        inUseClientSet = [v16 inUseClientSet];
+        [v16 setInUseClientSet:inUseClientSet & v11];
+        if ((inUseClientSet & connection) != 0 && ![v16 inUseClientSet])
         {
-          v18 = [(smbMount *)self rootNode];
-          v19 = [v18 fh];
+          rootNode = [(smbMount *)self rootNode];
+          v19 = [rootNode fh];
           v20 = [v14 isEqualToString:v19];
 
           if ((v20 & 1) == 0)
           {
             dispatch_group_enter(v33[5]);
-            v21 = [v9 fileRefSyncQueue];
+            fileRefSyncQueue = [v9 fileRefSyncQueue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             v25[0] = sub_10000B2B8;
             v25[1] = &unk_10008C858;
             v26 = v9;
             v27 = &v32;
-            dispatch_async(v21, block);
+            dispatch_async(fileRefSyncQueue, block);
 
             dispatch_group_wait(v33[5], 0xFFFFFFFFFFFFFFFFLL);
           }
@@ -899,7 +899,7 @@ LABEL_25:
       }
 
       while (v10 != v13);
-      v8 = obj;
+      handleTable = obj;
       v10 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
     }
 
@@ -909,18 +909,18 @@ LABEL_25:
   _Block_object_dispose(&v32, 8);
 }
 
-- (unint64_t)newConnectionIDOrError:(id *)a3
+- (unint64_t)newConnectionIDOrError:(id *)error
 {
   v4.receiver = self;
   v4.super_class = smbMount;
-  return [(smbMount *)&v4 newConnectionIDOrError:a3];
+  return [(smbMount *)&v4 newConnectionIDOrError:error];
 }
 
-- (void)releaseConnectionAllocation:(unint64_t)a3
+- (void)releaseConnectionAllocation:(unint64_t)allocation
 {
   v3.receiver = self;
   v3.super_class = smbMount;
-  [(smbMount *)&v3 releaseConnectionAllocation:a3];
+  [(smbMount *)&v3 releaseConnectionAllocation:allocation];
 }
 
 - (void)dealloc
@@ -954,36 +954,36 @@ LABEL_25:
   [(smbMount *)&v11 dealloc];
 }
 
-- (id)lookupHandle:(id)a3 IsStale:(BOOL *)a4
+- (id)lookupHandle:(id)handle IsStale:(BOOL *)stale
 {
-  v5 = [(NSMutableDictionary *)self->_handleTable objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_handleTable objectForKey:handle];
   v6 = v5;
   if (v5)
   {
-    *a4 = [v5 isViable] ^ 1;
+    *stale = [v5 isViable] ^ 1;
   }
 
   return v6;
 }
 
-- (void)handleNodeDisappeared:(id)a3
+- (void)handleNodeDisappeared:(id)disappeared
 {
-  v9 = a3;
-  [v9 setZombieState:1];
-  if (([v9 isRoot] & 1) == 0)
+  disappearedCopy = disappeared;
+  [disappearedCopy setZombieState:1];
+  if (([disappearedCopy isRoot] & 1) == 0)
   {
-    v4 = [(smbMount *)self nameTable];
-    v5 = [v9 parent];
-    v6 = [v5 fh];
-    v7 = [v9 name];
-    v8 = [LiveFSItemPair newWithParent:v6 fname:v7 caseSensitivity:[(smbMount *)self isCaseSensitive]];
-    [v4 removeObjectForKey:v8];
+    nameTable = [(smbMount *)self nameTable];
+    parent = [disappearedCopy parent];
+    v6 = [parent fh];
+    name = [disappearedCopy name];
+    v8 = [LiveFSItemPair newWithParent:v6 fname:name caseSensitivity:[(smbMount *)self isCaseSensitive]];
+    [nameTable removeObjectForKey:v8];
   }
 }
 
-- (void)rootFileHandleForClient:(unint64_t)a3 reply:(id)a4
+- (void)rootFileHandleForClient:(unint64_t)client reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   rootNode = self->_rootNode;
   if (rootNode)
   {
@@ -1000,7 +1000,7 @@ LABEL_25:
     rootNode = self->_rootNode;
 LABEL_2:
     v7 = [(smbNode *)rootNode fh];
-    v5[2](v5, v7, 0);
+    replyCopy[2](replyCopy, v7, 0);
     goto LABEL_9;
   }
 
@@ -1010,20 +1010,20 @@ LABEL_2:
   }
 
   v7 = getNSErrorFromLiveFSErrno();
-  (v5)[2](v5, 0, v7);
+  (replyCopy)[2](replyCopy, 0, v7);
 LABEL_9:
 }
 
-- (void)lookupin:(id)a3 name:(id)a4 forClient:(unint64_t)a5 usingFlags:(unsigned int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)lookupin:(id)lookupin name:(id)name forClient:(unint64_t)client usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a8;
-  v15 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
+  lookupinCopy = lookupin;
+  nameCopy = name;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v16 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v16);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1031,21 +1031,21 @@ LABEL_9:
   block[2] = sub_10000B800;
   block[3] = &unk_10008C920;
   block[4] = self;
-  v22 = v12;
-  v24 = v14;
-  v25 = a5;
-  v23 = v13;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = lookupinCopy;
+  v24 = replyCopy;
+  clientCopy = client;
+  v23 = nameCopy;
+  v18 = replyCopy;
+  v19 = nameCopy;
+  v20 = lookupinCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LILookup:(id)a3 name:(id)a4 forClient:(unint64_t)a5 reply:(id)a6
+- (void)_LILookup:(id)lookup name:(id)name forClient:(unint64_t)client reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lookupCopy = lookup;
+  nameCopy = name;
+  replyCopy = reply;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -1068,8 +1068,8 @@ LABEL_9:
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v13 = [(smbMount *)self checkServerConnection];
-  if (v13)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
     v14 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1084,19 +1084,19 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  if (!v10 || ![v10 length])
+  if (!lookupCopy || ![lookupCopy length])
   {
     v20 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v21 = v11;
-      sub_10005116C([v11 UTF8String], v74);
+      v21 = nameCopy;
+      sub_10005116C([nameCopy UTF8String], v74);
     }
 
     goto LABEL_20;
   }
 
-  if (!v11 || ![v11 length])
+  if (!nameCopy || ![nameCopy length])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -1104,9 +1104,9 @@ LABEL_9:
     }
 
 LABEL_20:
-    v13 = 22;
+    checkServerConnection = 22;
 LABEL_21:
-    (*(v12 + 2))(v12, v13, 0, 0);
+    (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0);
     goto LABEL_22;
   }
 
@@ -1117,7 +1117,7 @@ LABEL_21:
   block[3] = &unk_10008C948;
   v54 = &v62;
   block[4] = self;
-  v16 = v10;
+  v16 = lookupCopy;
   v53 = v16;
   v55 = &v56;
   dispatch_sync(nodeTableSyncQueue, block);
@@ -1127,13 +1127,13 @@ LABEL_21:
     v46[1] = 3221225472;
     v46[2] = sub_10000C02C;
     v46[3] = &unk_10008C9C0;
-    v22 = v12;
+    v22 = replyCopy;
     v49 = v22;
     v50 = &v62;
-    v51 = a5;
-    v23 = v11;
+    clientCopy = client;
+    v23 = nameCopy;
     v47 = v23;
-    v48 = self;
+    selfCopy = self;
     v24 = objc_retainBlock(v46);
     v25 = self->_nodeTableSyncQueue;
     v42[0] = _NSConcreteStackBlock;
@@ -1170,7 +1170,7 @@ LABEL_21:
       v35 = &v62;
       v30 = v39;
       v33 = v22;
-      v31 = self;
+      selfCopy2 = self;
       v36 = v60;
       v32 = v26;
       v34 = v24;
@@ -1183,8 +1183,8 @@ LABEL_21:
     v17 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v18 = v11;
-      sub_1000510A4([v11 UTF8String], v74);
+      v18 = nameCopy;
+      sub_1000510A4([nameCopy UTF8String], v74);
     }
 
     if (*(v57 + 24) == 1)
@@ -1202,7 +1202,7 @@ LABEL_21:
       v19 = 2;
     }
 
-    (*(v12 + 2))(v12, v19, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v19, 0, 0);
   }
 
 LABEL_22:
@@ -1213,15 +1213,15 @@ LABEL_22:
   _Block_object_dispose(&v68, 8);
 }
 
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  attributesCopy = attributes;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v10 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v10);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1229,17 +1229,17 @@ LABEL_22:
   block[2] = sub_10000D1C0;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
+  v15 = attributesCopy;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = attributesCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_getAttr:(id)a3 reply:(id)a4
+- (void)_getAttr:(id)attr reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  attrCopy = attr;
+  replyCopy = reply;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1250,8 +1250,8 @@ LABEL_22:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v8 = [(smbMount *)self checkServerConnection];
-  if (!v8)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1260,7 +1260,7 @@ LABEL_22:
     block[3] = &unk_10008C948;
     v19 = &v25;
     block[4] = self;
-    v18 = v6;
+    v18 = attrCopy;
     v20 = &v21;
     dispatch_sync(nodeTableSyncQueue, block);
     v11 = v26[5];
@@ -1275,7 +1275,7 @@ LABEL_22:
         v14[3] = &unk_10008CC18;
         v16 = &v25;
         v14[4] = self;
-        v15 = v7;
+        v15 = replyCopy;
         [v11 fetchAttrDataWithCompletionHandler:v14];
 
         goto LABEL_13;
@@ -1294,7 +1294,7 @@ LABEL_22:
       v13 = 2;
     }
 
-    (*(v7 + 2))(v7, v13, 0);
+    (*(replyCopy + 2))(replyCopy, v13, 0);
 LABEL_13:
 
     goto LABEL_14;
@@ -1310,21 +1310,21 @@ LABEL_13:
     sub_1000514B8();
   }
 
-  (*(v7 + 2))(v7, v8, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0);
 LABEL_14:
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+  openCopy = open;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v12 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v12);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v16[0] = _NSConcreteStackBlock;
@@ -1332,23 +1332,23 @@ LABEL_14:
   v16[2] = sub_10000D848;
   v16[3] = &unk_10008CC68;
   v16[4] = self;
-  v17 = v9;
-  v19 = a4;
-  v18 = v10;
-  v14 = v10;
-  v15 = v9;
+  v17 = openCopy;
+  modeCopy = mode;
+  v18 = replyCopy;
+  v14 = replyCopy;
+  v15 = openCopy;
   dispatch_async(opsQueue, v16);
 }
 
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+  closeCopy = close;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v12 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v12);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v16[0] = _NSConcreteStackBlock;
@@ -1356,18 +1356,18 @@ LABEL_14:
   v16[2] = sub_10000E4B8;
   v16[3] = &unk_10008CC68;
   v16[4] = self;
-  v17 = v9;
-  v19 = a4;
-  v18 = v10;
-  v14 = v10;
-  v15 = v9;
+  v17 = closeCopy;
+  modeCopy = mode;
+  v18 = replyCopy;
+  v14 = replyCopy;
+  v15 = closeCopy;
   dispatch_async(opsQueue, v16);
 }
 
-- (void)_LIClose:(id)a3 keepingMode:(int)a4 reply:(id)a5
+- (void)_LIClose:(id)close keepingMode:(int)mode reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  closeCopy = close;
+  replyCopy = reply;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -1406,8 +1406,8 @@ LABEL_14:
   v34[1] = v34;
   v34[2] = 0x2020000000;
   v34[3] = 0;
-  v10 = [(smbMount *)self checkServerConnection];
-  if (!v10)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1416,7 +1416,7 @@ LABEL_14:
     block[3] = &unk_10008C948;
     v32 = &v38;
     block[4] = self;
-    v31 = v8;
+    v31 = closeCopy;
     v33 = &v50;
     dispatch_sync(nodeTableSyncQueue, block);
     v13 = v39[5];
@@ -1425,9 +1425,9 @@ LABEL_14:
     {
       if ((v51[3] & 1) == 0)
       {
-        v15 = [v13 isDir];
+        isDir = [v13 isDir];
         v16 = v39[5];
-        if (v15)
+        if (isDir)
         {
           [v16 decDirRefCount];
           v17 = 0;
@@ -1437,12 +1437,12 @@ LABEL_14:
         {
           if ([v16 openFileRefs] > 0)
           {
-            v18 = [v39[5] fileRefSyncQueue];
+            fileRefSyncQueue = [v39[5] fileRefSyncQueue];
             v20[0] = _NSConcreteStackBlock;
             v20[1] = 3221225472;
             v20[2] = sub_10000EBC4;
             v20[3] = &unk_10008CDA8;
-            v29 = a4;
+            modeCopy = mode;
             v22 = &v38;
             v23 = v34;
             v24 = v46;
@@ -1450,8 +1450,8 @@ LABEL_14:
             v26 = v44;
             v27 = v35;
             v28 = v36;
-            v21 = v9;
-            dispatch_async(v18, v20);
+            v21 = replyCopy;
+            dispatch_async(fileRefSyncQueue, v20);
 
 LABEL_22:
             goto LABEL_23;
@@ -1469,7 +1469,7 @@ LABEL_22:
         }
 
 LABEL_21:
-        (*(v9 + 2))(v9, v17, 0, 0, 0, 0, 0, 0);
+        (*(replyCopy + 2))(replyCopy, v17, 0, 0, 0, 0, 0, 0);
         goto LABEL_22;
       }
     }
@@ -1504,7 +1504,7 @@ LABEL_21:
     sub_100051770();
   }
 
-  (*(v9 + 2))(v9, v10, 0, 0, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0, 0, 0);
 LABEL_23:
   _Block_object_dispose(v34, 8);
   _Block_object_dispose(v35, 8);
@@ -1518,15 +1518,15 @@ LABEL_23:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)reclaim:(id)a3 forClient:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)reclaim:(id)reclaim forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+  reclaimCopy = reclaim;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v12 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v12);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v16[0] = _NSConcreteStackBlock;
@@ -1534,18 +1534,18 @@ LABEL_23:
   v16[2] = sub_10000EF70;
   v16[3] = &unk_10008CDD0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = a4;
-  v14 = v10;
-  v15 = v9;
+  v17 = reclaimCopy;
+  v18 = replyCopy;
+  clientCopy = client;
+  v14 = replyCopy;
+  v15 = reclaimCopy;
   dispatch_async(opsQueue, v16);
 }
 
-- (void)_LIReclaim:(id)a3 forClient:(unint64_t)a4 reply:(id)a5
+- (void)_LIReclaim:(id)reclaim forClient:(unint64_t)client reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  reclaimCopy = reclaim;
+  replyCopy = reply;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1576,7 +1576,7 @@ LABEL_23:
   block[3] = &unk_10008C948;
   v25 = &v29;
   block[4] = self;
-  v12 = v8;
+  v12 = reclaimCopy;
   v24 = v12;
   v26 = v27;
   dispatch_sync(nodeTableSyncQueue, block);
@@ -1594,53 +1594,53 @@ LABEL_23:
   }
 
   [v13 lockMeta];
-  v14 = [v30[5] inUseClientSet];
-  [v30[5] setInUseClientSet:v14 & ~a4];
+  inUseClientSet = [v30[5] inUseClientSet];
+  [v30[5] setInUseClientSet:inUseClientSet & ~client];
   [v30[5] unlockMeta];
-  if ((v14 & a4) == 0 || [v30[5] inUseClientSet])
+  if ((inUseClientSet & client) == 0 || [v30[5] inUseClientSet])
   {
 LABEL_14:
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_15;
   }
 
   [v30[5] setZombieState:1];
   if (([v30[5] isRoot] & 1) == 0)
   {
-    v15 = [(smbMount *)self nodeTableSyncQueue];
+    nodeTableSyncQueue = [(smbMount *)self nodeTableSyncQueue];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10000F4A0;
     v22[3] = &unk_10008C858;
     v22[4] = self;
     v22[5] = &v29;
-    dispatch_sync(v15, v22);
+    dispatch_sync(nodeTableSyncQueue, v22);
   }
 
-  v16 = [v30[5] fileRefSyncQueue];
+  fileRefSyncQueue = [v30[5] fileRefSyncQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10000F5B8;
   v19[3] = &unk_10008CDF8;
   v21 = &v29;
-  v20 = v9;
-  dispatch_async(v16, v19);
+  v20 = replyCopy;
+  dispatch_async(fileRefSyncQueue, v19);
 
 LABEL_15:
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
+  directoryCopy = directory;
+  bufferCopy = buffer;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v17 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v17);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v22[0] = _NSConcreteStackBlock;
@@ -1648,22 +1648,22 @@ LABEL_15:
   v22[2] = sub_10000F7A0;
   v22[3] = &unk_10008CE48;
   v22[4] = self;
-  v23 = v13;
-  v26 = a5;
-  v27 = a6;
-  v24 = v14;
-  v25 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
+  v23 = directoryCopy;
+  cookieCopy = cookie;
+  verifierCopy = verifier;
+  v24 = bufferCopy;
+  v25 = replyCopy;
+  v19 = replyCopy;
+  v20 = bufferCopy;
+  v21 = directoryCopy;
   dispatch_async(opsQueue, v22);
 }
 
-- (void)_LIReadDir:(id)a3 intoBuffer:(id)a4 forCookie:(unint64_t)a5 andVerifier:(unint64_t)a6 reply:(id)a7
+- (void)_LIReadDir:(id)dir intoBuffer:(id)buffer forCookie:(unint64_t)cookie andVerifier:(unint64_t)verifier reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dirCopy = dir;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
@@ -1687,9 +1687,9 @@ LABEL_15:
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  v15 = [(smbMount *)self checkServerConnection];
-  v58 = v15;
-  if (!v15)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  v58 = checkServerConnection;
+  if (!checkServerConnection)
   {
     v60[3] = 0;
     v64[3] = 0;
@@ -1700,7 +1700,7 @@ LABEL_15:
     block[3] = &unk_10008C948;
     v52 = &v69;
     block[4] = self;
-    v19 = v12;
+    v19 = dirCopy;
     v51 = v19;
     v53 = &v54;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -1723,21 +1723,21 @@ LABEL_15:
             v46 = &v63;
             v17 = v22;
             v42 = v17;
-            v48 = a5;
-            v49 = a6;
-            v43 = v13;
-            v44 = self;
+            cookieCopy = cookie;
+            verifierCopy = verifier;
+            v43 = bufferCopy;
+            selfCopy = self;
             v47 = v67;
             v34[0] = _NSConcreteStackBlock;
             v34[1] = 3221225472;
             v34[2] = sub_100010098;
             v34[3] = &unk_10008CEC0;
             v36 = &v59;
-            v35 = v14;
+            v35 = replyCopy;
             v37 = &v63;
             v38 = &v69;
-            v39 = a5;
-            v40 = a6;
+            cookieCopy2 = cookie;
+            verifierCopy2 = verifier;
             [(smbMount *)self submitRequestBlock:v41 continuationBlock:v34];
 
 LABEL_16:
@@ -1747,9 +1747,9 @@ LABEL_16:
           v31 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            v32 = [v70[5] name];
-            v33 = v32;
-            sub_100051A28([v32 UTF8String], &v58, v75, v32);
+            name = [v70[5] name];
+            v33 = name;
+            sub_100051A28([name UTF8String], &v58, v75, name);
           }
 
           v25 = v58;
@@ -1760,9 +1760,9 @@ LABEL_16:
           v28 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v70[5] name];
-            v30 = v29;
-            [v29 UTF8String];
+            name2 = [v70[5] name];
+            v30 = name2;
+            [name2 UTF8String];
             sub_1000519DC();
           }
 
@@ -1770,7 +1770,7 @@ LABEL_16:
         }
 
 LABEL_15:
-        (*(v14 + 2))(v14, v25, 0, 0);
+        (*(replyCopy + 2))(replyCopy, v25, 0, 0);
         v17 = 0;
         goto LABEL_16;
       }
@@ -1813,7 +1813,7 @@ LABEL_14:
     sub_10005198C();
   }
 
-  (*(v14 + 2))(v14, v15, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0);
   v17 = 0;
 LABEL_17:
   _Block_object_dispose(&v54, 8);
@@ -1823,11 +1823,11 @@ LABEL_17:
   _Block_object_dispose(&v69, 8);
 }
 
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)readDirectory:(id)directory amount:(unint64_t)amount cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = [LiveFSSharedMutableBuffer dataWithLength:a4];
+  directoryCopy = directory;
+  replyCopy = reply;
+  v16 = [LiveFSSharedMutableBuffer dataWithLength:amount];
   v17 = v16;
   if (v16)
   {
@@ -1836,22 +1836,22 @@ LABEL_17:
     v18[2] = sub_100010290;
     v18[3] = &unk_10008CEE8;
     v19 = v16;
-    v21 = a4;
-    v20 = v15;
-    [(smbMount *)self readDirectory:v14 intoBuffer:v19 cookie:a5 verifier:a6 requestID:a7 reply:v18];
+    amountCopy = amount;
+    v20 = replyCopy;
+    [(smbMount *)self readDirectory:directoryCopy intoBuffer:v19 cookie:cookie verifier:verifier requestID:d reply:v18];
   }
 
   else
   {
-    (*(v15 + 2))(v15, 12, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 12, 0, 0, 0);
   }
 }
 
-- (void)readDirectory:(id)a3 amount:(unint64_t)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)readDirectory:(id)directory amount:(unint64_t)amount requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v15 = a3;
-  v16 = a9;
-  v17 = [LiveFSSharedMutableBuffer dataWithLength:a4];
+  directoryCopy = directory;
+  replyCopy = reply;
+  v17 = [LiveFSSharedMutableBuffer dataWithLength:amount];
   v18 = v17;
   if (v17)
   {
@@ -1860,27 +1860,27 @@ LABEL_17:
     v19[2] = sub_1000104A8;
     v19[3] = &unk_10008CEE8;
     v20 = v17;
-    v22 = a4;
-    v21 = v16;
-    [(smbMount *)self readDirectory:v15 intoBuffer:v20 requestedAttributes:a5 cookie:a6 verifier:a7 requestID:a8 reply:v19];
+    amountCopy = amount;
+    v21 = replyCopy;
+    [(smbMount *)self readDirectory:directoryCopy intoBuffer:v20 requestedAttributes:attributes cookie:cookie verifier:verifier requestID:d reply:v19];
   }
 
   else
   {
-    (*(v16 + 2))(v16, 12, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 12, 0, 0, 0);
   }
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a9;
-  v16 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
+  directoryCopy = directory;
+  bufferCopy = buffer;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v17 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v17);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v22[0] = _NSConcreteStackBlock;
@@ -1888,22 +1888,22 @@ LABEL_17:
   v22[2] = sub_1000106B0;
   v22[3] = &unk_10008CE48;
   v22[4] = self;
-  v23 = v13;
-  v26 = a6;
-  v27 = a7;
-  v24 = v14;
-  v25 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
+  v23 = directoryCopy;
+  cookieCopy = cookie;
+  verifierCopy = verifier;
+  v24 = bufferCopy;
+  v25 = replyCopy;
+  v19 = replyCopy;
+  v20 = bufferCopy;
+  v21 = directoryCopy;
   dispatch_async(opsQueue, v22);
 }
 
-- (void)_LIReadDirAndAttrs:(id)a3 intoBuffer:(id)a4 forCookie:(unint64_t)a5 andVerifier:(unint64_t)a6 reply:(id)a7
+- (void)_LIReadDirAndAttrs:(id)attrs intoBuffer:(id)buffer forCookie:(unint64_t)cookie andVerifier:(unint64_t)verifier reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  attrsCopy = attrs;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -1927,9 +1927,9 @@ LABEL_17:
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v15 = [(smbMount *)self checkServerConnection];
-  v48 = v15;
-  if (!v15)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  v48 = checkServerConnection;
+  if (!checkServerConnection)
   {
     v50[3] = 0;
     v54[3] = 0;
@@ -1940,7 +1940,7 @@ LABEL_17:
     block[3] = &unk_10008C948;
     v42 = &v59;
     block[4] = self;
-    v41 = v12;
+    v41 = attrsCopy;
     v43 = &v44;
     dispatch_sync(nodeTableSyncQueue, block);
     v19 = v60[5];
@@ -1962,20 +1962,20 @@ LABEL_17:
             v36 = &v53;
             v17 = v21;
             v33 = v17;
-            v38 = a5;
-            v39 = a6;
-            v34 = v13;
+            cookieCopy = cookie;
+            verifierCopy = verifier;
+            v34 = bufferCopy;
             v37 = v57;
             v25[0] = _NSConcreteStackBlock;
             v25[1] = 3221225472;
             v25[2] = sub_100010E9C;
             v25[3] = &unk_10008CEC0;
             v27 = &v49;
-            v26 = v14;
+            v26 = replyCopy;
             v28 = &v53;
             v29 = &v59;
-            v30 = a5;
-            v31 = a6;
+            cookieCopy2 = cookie;
+            verifierCopy2 = verifier;
             [(smbMount *)self submitRequestBlock:v32 continuationBlock:v25];
 
 LABEL_21:
@@ -1992,7 +1992,7 @@ LABEL_21:
 
           v22 = v48;
 LABEL_20:
-          (*(v14 + 2))(v14, v22, 0, 0);
+          (*(replyCopy + 2))(replyCopy, v22, 0, 0);
           v17 = 0;
           goto LABEL_21;
         }
@@ -2042,7 +2042,7 @@ LABEL_19:
     sub_100051C34();
   }
 
-  (*(v14 + 2))(v14, v15, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0);
   v17 = 0;
 LABEL_22:
   _Block_object_dispose(&v44, 8);
@@ -2052,17 +2052,17 @@ LABEL_22:
   _Block_object_dispose(&v59, 8);
 }
 
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+  inCopy = in;
+  namedCopy = named;
+  attributesCopy = attributes;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v18 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v18);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v24[0] = _NSConcreteStackBlock;
@@ -2070,24 +2070,24 @@ LABEL_22:
   v24[2] = sub_1000110AC;
   v24[3] = &unk_10008CF88;
   v24[4] = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = a6;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v25 = inCopy;
+  v26 = namedCopy;
+  v27 = attributesCopy;
+  v28 = replyCopy;
+  clientCopy = client;
+  v20 = replyCopy;
+  v21 = attributesCopy;
+  v22 = namedCopy;
+  v23 = inCopy;
   dispatch_async(opsQueue, v24);
 }
 
-- (void)_LICreate:(id)a3 named:(id)a4 withAttrs:(id)a5 andClient:(unint64_t)a6 reply:(id)a7
+- (void)_LICreate:(id)create named:(id)named withAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  createCopy = create;
+  namedCopy = named;
+  attrsCopy = attrs;
+  replyCopy = reply;
   v72 = 0;
   v73 = &v72;
   v74 = 0x3032000000;
@@ -2124,18 +2124,18 @@ LABEL_22:
   v56[1] = v56;
   v56[2] = 0x2020000000;
   v56[3] = 0;
-  v16 = [(smbMount *)self checkServerConnection];
-  if (!v16)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
-    if ([v14 length] <= 0xB7)
+    if ([attrsCopy length] <= 0xB7)
     {
       v18 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_100052064(v78, [v14 length]);
+        sub_100052064(v78, [attrsCopy length]);
       }
 
-      v16 = 22;
+      checkServerConnection = 22;
       goto LABEL_8;
     }
 
@@ -2146,7 +2146,7 @@ LABEL_22:
     block[3] = &unk_10008C948;
     v54 = &v72;
     block[4] = self;
-    v20 = v12;
+    v20 = createCopy;
     v53 = v20;
     v55 = &v57;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -2163,7 +2163,7 @@ LABEL_22:
         v51 = &v61;
         v48[4] = self;
         v49 = v20;
-        v23 = v13;
+        v23 = namedCopy;
         v50 = v23;
         dispatch_sync(v22, v48);
         if (v62[5])
@@ -2176,7 +2176,7 @@ LABEL_22:
             sub_100051F98();
           }
 
-          (*(v15 + 2))(v15, 17, 0, 0, 0, 0);
+          (*(replyCopy + 2))(replyCopy, 17, 0, 0, 0, 0);
         }
 
         else
@@ -2196,13 +2196,13 @@ LABEL_22:
           v42 = v30;
           v32 = v45;
           v36 = &v72;
-          v35 = v15;
-          v33 = self;
+          v35 = replyCopy;
+          selfCopy = self;
           v37 = v56;
           v38 = &v61;
-          v43 = a6;
+          clientCopy = client;
           v39 = v67;
-          v34 = v14;
+          v34 = attrsCopy;
           v40 = v68;
           v41 = v70;
           [(smbMount *)self submitRequestBlockOnce:v44 continuationBlock:v31];
@@ -2217,8 +2217,8 @@ LABEL_22:
       v28 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v29 = v13;
-        sub_100051FE4([v13 UTF8String], v78);
+        v29 = namedCopy;
+        sub_100051FE4([namedCopy UTF8String], v78);
       }
 
       v27 = 2;
@@ -2235,7 +2235,7 @@ LABEL_22:
     v27 = 70;
 LABEL_23:
 
-    (*(v15 + 2))(v15, v27, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v27, 0, 0, 0, 0);
 LABEL_26:
 
     goto LABEL_9;
@@ -2253,7 +2253,7 @@ LABEL_26:
 
 LABEL_8:
 
-  (*(v15 + 2))(v15, v16, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0);
 LABEL_9:
   _Block_object_dispose(v56, 8);
   _Block_object_dispose(&v57, 8);
@@ -2266,17 +2266,17 @@ LABEL_9:
   _Block_object_dispose(&v72, 8);
 }
 
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 andClient:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+  inCopy = in;
+  namedCopy = named;
+  attributesCopy = attributes;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v18 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v18);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v24[0] = _NSConcreteStackBlock;
@@ -2284,24 +2284,24 @@ LABEL_9:
   v24[2] = sub_1000126B4;
   v24[3] = &unk_10008CF88;
   v24[4] = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = a6;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v25 = inCopy;
+  v26 = namedCopy;
+  v27 = attributesCopy;
+  v28 = replyCopy;
+  clientCopy = client;
+  v20 = replyCopy;
+  v21 = attributesCopy;
+  v22 = namedCopy;
+  v23 = inCopy;
   dispatch_async(opsQueue, v24);
 }
 
-- (void)_LIMakeDir:(id)a3 named:(id)a4 withAttrs:(id)a5 andClient:(unint64_t)a6 reply:(id)a7
+- (void)_LIMakeDir:(id)dir named:(id)named withAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dirCopy = dir;
+  namedCopy = named;
+  attrsCopy = attrs;
+  replyCopy = reply;
   v76[0] = 0;
   v76[1] = v76;
   v76[2] = 0x3032000000;
@@ -2338,18 +2338,18 @@ LABEL_9:
   v56[1] = v56;
   v56[2] = 0x2020000000;
   v56[3] = 0;
-  v16 = [(smbMount *)self checkServerConnection];
-  if (!v16)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
-    if ([v14 length] <= 0xB7)
+    if ([attrsCopy length] <= 0xB7)
     {
       v18 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_1000524CC(v78, [v14 length]);
+        sub_1000524CC(v78, [attrsCopy length]);
       }
 
-      v16 = 22;
+      checkServerConnection = 22;
       goto LABEL_8;
     }
 
@@ -2360,7 +2360,7 @@ LABEL_9:
     block[3] = &unk_10008C948;
     v54 = &v67;
     block[4] = self;
-    v20 = v12;
+    v20 = dirCopy;
     v53 = v20;
     v55 = &v57;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -2377,7 +2377,7 @@ LABEL_9:
         v51 = &v61;
         v48[4] = self;
         v49 = v20;
-        v23 = v13;
+        v23 = namedCopy;
         v50 = v23;
         dispatch_sync(v22, v48);
         if (v62[5])
@@ -2390,7 +2390,7 @@ LABEL_9:
             sub_100052400();
           }
 
-          (*(v15 + 2))(v15, 17, 0, 0, 0, 0);
+          (*(replyCopy + 2))(replyCopy, 17, 0, 0, 0, 0);
         }
 
         else
@@ -2410,13 +2410,13 @@ LABEL_9:
           v42 = v30;
           v32 = v45;
           v36 = &v67;
-          v35 = v15;
-          v33 = self;
+          v35 = replyCopy;
+          selfCopy = self;
           v37 = v56;
           v38 = &v61;
-          v43 = a6;
+          clientCopy = client;
           v39 = v73;
-          v34 = v14;
+          v34 = attrsCopy;
           v40 = v74;
           v41 = v76;
           [(smbMount *)self submitRequestBlockOnce:v44 continuationBlock:v31];
@@ -2431,8 +2431,8 @@ LABEL_9:
       v28 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v29 = v13;
-        sub_10005244C([v13 UTF8String], v78);
+        v29 = namedCopy;
+        sub_10005244C([namedCopy UTF8String], v78);
       }
 
       v27 = 2;
@@ -2449,7 +2449,7 @@ LABEL_9:
     v27 = 70;
 LABEL_23:
 
-    (*(v15 + 2))(v15, v27, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v27, 0, 0, 0, 0);
 LABEL_26:
 
     goto LABEL_9;
@@ -2467,7 +2467,7 @@ LABEL_26:
 
 LABEL_8:
 
-  (*(v15 + 2))(v15, v16, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0);
 LABEL_9:
   _Block_object_dispose(v56, 8);
   _Block_object_dispose(&v57, 8);
@@ -2480,16 +2480,16 @@ LABEL_9:
   _Block_object_dispose(v76, 8);
 }
 
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  namedCopy = named;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v13 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v13);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v18[0] = _NSConcreteStackBlock;
@@ -2497,27 +2497,27 @@ LABEL_9:
   v18[2] = sub_100013C88;
   v18[3] = &unk_10008D0C8;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v19 = ofCopy;
+  v20 = namedCopy;
+  v21 = replyCopy;
+  v15 = replyCopy;
+  v16 = namedCopy;
+  v17 = ofCopy;
   dispatch_async(opsQueue, v18);
 }
 
-- (void)_LIGetFsAttr:(id)a3 name:(id)a4 reply:(id)a5
+- (void)_LIGetFsAttr:(id)attr name:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attrCopy = attr;
+  nameCopy = name;
+  replyCopy = reply;
   v76 = 0;
   v77 = &v76;
   v78 = 0x2810000000;
   v79 = "";
   v80 = 0;
-  v11 = [(smbMount *)self checkServerConnection];
-  if (v11)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
     v12 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -2532,28 +2532,28 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if ([v9 isEqualToString:@"_N_PC_LINK_MAX"])
+  if ([nameCopy isEqualToString:@"_N_PC_LINK_MAX"])
   {
     v15 = v77;
     v77[4] = 1;
     v14 = [NSData dataWithBytes:v15 + 4 length:8];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
     }
 
 LABEL_81:
-    v11 = 12;
+    checkServerConnection = 12;
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:@"_N_PC_NAME_MAX"])
+  if ([nameCopy isEqualToString:@"_N_PC_NAME_MAX"])
   {
     v16 = v77;
     v77[4] = self->_shareInfo.maxComponentNameLen;
     v14 = [NSData dataWithBytes:v16 + 4 length:8];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
@@ -2562,12 +2562,12 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if ([v9 isEqualToString:@"_B_PC_NO_TRUNC"])
+  if ([nameCopy isEqualToString:@"_B_PC_NO_TRUNC"])
   {
     v17 = v77;
     *(v77 + 32) = 0;
     v14 = [NSData dataWithBytes:v17 + 4 length:8];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
@@ -2576,7 +2576,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if ([v9 isEqualToString:@"_N_PC_FILESIZEBITS"])
+  if ([nameCopy isEqualToString:@"_N_PC_FILESIZEBITS"])
   {
     v18 = v77;
     v19 = 64;
@@ -2587,7 +2587,7 @@ LABEL_81:
 
     v77[4] = v19;
     v14 = [NSData dataWithBytes:v18 + 4 length:8];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
@@ -2596,14 +2596,14 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if ([v9 isEqualToString:@"_N_PC_XATTR_SIZE_BITS"])
+  if ([nameCopy isEqualToString:@"_N_PC_XATTR_SIZE_BITS"])
   {
     if ((self->_shareInfo.fileSystemAttrs & 0x40000) != 0)
     {
       v20 = v77;
       v77[4] = 33;
       v14 = [NSData dataWithBytes:v20 + 4 length:8];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2613,17 +2613,17 @@ LABEL_81:
     }
 
 LABEL_25:
-    v11 = 45;
+    checkServerConnection = 45;
 LABEL_5:
-    v13 = v10[2];
+    v13 = replyCopy[2];
 LABEL_6:
-    v13(v10, v11, 0);
+    v13(replyCopy, checkServerConnection, 0);
 LABEL_7:
     v14 = 0;
     goto LABEL_8;
   }
 
-  if ([v9 isEqualToString:@"_N_f_bsize"])
+  if ([nameCopy isEqualToString:@"_N_f_bsize"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2640,7 +2640,7 @@ LABEL_7:
     v70[2] = sub_100014C4C;
     v70[3] = &unk_10008D118;
     v74 = 0;
-    v71 = v10;
+    v71 = replyCopy;
     v72 = &v76;
     v73 = &v81;
     [(smbMount *)self submitRequestBlock:v75 continuationBlock:v70];
@@ -2650,7 +2650,7 @@ LABEL_40:
     goto LABEL_7;
   }
 
-  if ([v9 isEqualToString:@"_N_f_iosize"])
+  if ([nameCopy isEqualToString:@"_N_f_iosize"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2667,7 +2667,7 @@ LABEL_40:
     v64[2] = sub_100014E54;
     v64[3] = &unk_10008D118;
     v68 = 0;
-    v65 = v10;
+    v65 = replyCopy;
     v66 = &v76;
     v67 = &v81;
     [(smbMount *)self submitRequestBlock:v69 continuationBlock:v64];
@@ -2675,7 +2675,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"_N_f_blocks"])
+  if ([nameCopy isEqualToString:@"_N_f_blocks"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2692,7 +2692,7 @@ LABEL_40:
     v58[2] = sub_100015064;
     v58[3] = &unk_10008D118;
     v62 = 0;
-    v59 = v10;
+    v59 = replyCopy;
     v60 = &v76;
     v61 = &v81;
     [(smbMount *)self submitRequestBlock:v63 continuationBlock:v58];
@@ -2700,7 +2700,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"_N_f_bfree"])
+  if ([nameCopy isEqualToString:@"_N_f_bfree"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2717,7 +2717,7 @@ LABEL_40:
     v52[2] = sub_100015274;
     v52[3] = &unk_10008D118;
     v56 = 0;
-    v53 = v10;
+    v53 = replyCopy;
     v54 = &v76;
     v55 = &v81;
     [(smbMount *)self submitRequestBlock:v57 continuationBlock:v52];
@@ -2725,7 +2725,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"_N_f_bavail"])
+  if ([nameCopy isEqualToString:@"_N_f_bavail"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2742,7 +2742,7 @@ LABEL_40:
     v46[2] = sub_100015484;
     v46[3] = &unk_10008D118;
     v50 = 0;
-    v47 = v10;
+    v47 = replyCopy;
     v48 = &v76;
     v49 = &v81;
     [(smbMount *)self submitRequestBlock:v51 continuationBlock:v46];
@@ -2750,7 +2750,7 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"_N_f_bused"])
+  if ([nameCopy isEqualToString:@"_N_f_bused"])
   {
     v81 = 0;
     v82 = &v81;
@@ -2767,7 +2767,7 @@ LABEL_40:
     v40[2] = sub_100015694;
     v40[3] = &unk_10008D118;
     v44 = 0;
-    v41 = v10;
+    v41 = replyCopy;
     v42 = &v76;
     v43 = &v81;
     [(smbMount *)self submitRequestBlock:v45 continuationBlock:v40];
@@ -2775,10 +2775,10 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"_S_f_type"])
+  if ([nameCopy isEqualToString:@"_S_f_type"])
   {
     v14 = [NSData dataWithBytes:"smb" length:4];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
@@ -2787,10 +2787,10 @@ LABEL_40:
     goto LABEL_81;
   }
 
-  if ([v9 isEqualToString:@"_S_f_subtype"])
+  if ([nameCopy isEqualToString:@"_S_f_subtype"])
   {
     v14 = [NSData dataWithBytes:"SMB2" length:5];
-    v13 = v10[2];
+    v13 = replyCopy[2];
     if (v14)
     {
       goto LABEL_80;
@@ -2799,33 +2799,33 @@ LABEL_40:
     goto LABEL_81;
   }
 
-  if (![v9 isEqualToString:@"_S_f_location"])
+  if (![nameCopy isEqualToString:@"_S_f_location"])
   {
-    if ([v9 isEqualToString:@"_S_f_vol_name"])
+    if ([nameCopy isEqualToString:@"_S_f_vol_name"])
     {
-      v27 = [(smbMount *)self shareName];
-      v28 = v27;
-      v29 = [v27 UTF8String];
+      shareName = [(smbMount *)self shareName];
+      v28 = shareName;
+      uTF8String = [shareName UTF8String];
 
-      v14 = [NSData dataWithBytes:v29 length:strlen(v29) + 1];
-      v13 = v10[2];
+      v14 = [NSData dataWithBytes:uTF8String length:strlen(uTF8String) + 1];
+      v13 = replyCopy[2];
       if (!v14)
       {
-        v13(v10, 12, 0);
+        v13(replyCopy, 12, 0);
         goto LABEL_7;
       }
 
 LABEL_80:
-      v13(v10, 0, v14);
+      v13(replyCopy, 0, v14);
       goto LABEL_8;
     }
 
-    if ([v9 isEqualToString:@"_B_has_perm_enforcement"])
+    if ([nameCopy isEqualToString:@"_B_has_perm_enforcement"])
     {
       v30 = v77;
       *(v77 + 32) = 1;
       v14 = [NSData dataWithBytes:v30 + 4 length:8];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2834,12 +2834,12 @@ LABEL_80:
       goto LABEL_81;
     }
 
-    if ([v9 isEqualToString:@"_B_has_access_check"])
+    if ([nameCopy isEqualToString:@"_B_has_access_check"])
     {
       v31 = v77;
       *(v77 + 32) = 1;
       v14 = [NSData dataWithBytes:v31 + 4 length:8];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2848,7 +2848,7 @@ LABEL_80:
       goto LABEL_81;
     }
 
-    if ([v9 isEqualToString:@"_N_caps_format"])
+    if ([nameCopy isEqualToString:@"_N_caps_format"])
     {
       v32 = v77;
       v77[4] = 139266;
@@ -2880,7 +2880,7 @@ LABEL_80:
       }
 
       v14 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2889,13 +2889,13 @@ LABEL_80:
       goto LABEL_81;
     }
 
-    if ([v9 isEqualToString:@"_N_mntflags"])
+    if ([nameCopy isEqualToString:@"_N_mntflags"])
     {
       v36 = v77;
       v77[4] = 0;
       v36[4] = (self->_shareInfo.fileSystemAttrs & 0x40000) == 0;
       v14 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2904,7 +2904,7 @@ LABEL_80:
       goto LABEL_81;
     }
 
-    if ([v9 isEqualToString:@"_N_caps_interfaces"])
+    if ([nameCopy isEqualToString:@"_N_caps_interfaces"])
     {
       v37 = v77;
       v38 = 0x100000;
@@ -2917,7 +2917,7 @@ LABEL_80:
 
       *v39 = v38;
       v14 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-      v13 = v10[2];
+      v13 = replyCopy[2];
       if (v14)
       {
         goto LABEL_80;
@@ -2929,40 +2929,40 @@ LABEL_80:
     goto LABEL_25;
   }
 
-  v21 = [(smbMount *)self userName];
-  v22 = [(smbMount *)self serverName];
-  v23 = [NSString stringWithFormat:@"%@@%@", v21, v22];
+  userName = [(smbMount *)self userName];
+  serverName = [(smbMount *)self serverName];
+  v23 = [NSString stringWithFormat:@"%@@%@", userName, serverName];
 
   v24 = v23;
-  v25 = [v23 UTF8String];
-  v14 = [NSData dataWithBytes:v25 length:strlen(v25) + 1];
-  v26 = v10[2];
+  uTF8String2 = [v23 UTF8String];
+  v14 = [NSData dataWithBytes:uTF8String2 length:strlen(uTF8String2) + 1];
+  v26 = replyCopy[2];
   if (v14)
   {
-    v26(v10, 0, v14);
+    v26(replyCopy, 0, v14);
   }
 
   else
   {
-    v26(v10, 12, 0);
+    v26(replyCopy, 12, 0);
   }
 
 LABEL_8:
   _Block_object_dispose(&v76, 8);
 }
 
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 andClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes andClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
+  inCopy = in;
+  namedCopy = named;
+  contentsCopy = contents;
+  attributesCopy = attributes;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v20 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v20);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2970,27 +2970,27 @@ LABEL_8:
   block[2] = sub_100015900;
   block[3] = &unk_10008D140;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v32 = v18;
-  v33 = a7;
-  v31 = v17;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = inCopy;
+  v29 = namedCopy;
+  v30 = contentsCopy;
+  v32 = replyCopy;
+  clientCopy = client;
+  v31 = attributesCopy;
+  v22 = replyCopy;
+  v23 = attributesCopy;
+  v24 = contentsCopy;
+  v25 = namedCopy;
+  v26 = inCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LIMakeSymLink:(id)a3 named:(id)a4 withContents:(id)a5 andAttrs:(id)a6 andClient:(unint64_t)a7 reply:(id)a8
+- (void)_LIMakeSymLink:(id)link named:(id)named withContents:(id)contents andAttrs:(id)attrs andClient:(unint64_t)client reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  linkCopy = link;
+  namedCopy = named;
+  contentsCopy = contents;
+  attrsCopy = attrs;
+  replyCopy = reply;
   v115[0] = 0;
   v115[1] = v115;
   v115[2] = 0x3032000000;
@@ -3035,18 +3035,18 @@ LABEL_8:
   v87[1] = v87;
   v87[2] = 0x2020000000;
   v87[3] = 0;
-  v19 = [(smbMount *)self checkServerConnection];
-  if (!v19)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
-    if ([v17 length] <= 0xB7)
+    if ([attrsCopy length] <= 0xB7)
     {
       v21 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_1000529CC(v117, [v17 length]);
+        sub_1000529CC(v117, [attrsCopy length]);
       }
 
-      v19 = 22;
+      checkServerConnection = 22;
       goto LABEL_8;
     }
 
@@ -3057,7 +3057,7 @@ LABEL_8:
     block[3] = &unk_10008C948;
     v85 = &v102;
     block[4] = self;
-    v23 = v14;
+    v23 = linkCopy;
     v84 = v23;
     v86 = &v88;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -3074,7 +3074,7 @@ LABEL_8:
         v82 = &v96;
         v79[4] = self;
         v80 = v23;
-        v26 = v15;
+        v26 = namedCopy;
         v81 = v26;
         dispatch_sync(v25, v79);
         if (v97[5])
@@ -3087,7 +3087,7 @@ LABEL_8:
             sub_1000528BC();
           }
 
-          (*(v18 + 2))(v18, 17, 0, 0, 0, 0);
+          (*(replyCopy + 2))(replyCopy, 17, 0, 0, 0, 0);
         }
 
         else
@@ -3096,13 +3096,13 @@ LABEL_8:
           v73[1] = 3221225472;
           v73[2] = sub_1000165A0;
           v73[3] = &unk_10008CFB0;
-          v78 = a7;
+          clientCopy = client;
           v73[4] = self;
           v76 = &v102;
           v33 = v26;
           v74 = v33;
           v77 = v87;
-          v34 = v18;
+          v34 = replyCopy;
           v75 = v34;
           v35 = objc_retainBlock(v73);
           v59[0] = _NSConcreteStackBlock;
@@ -3110,7 +3110,7 @@ LABEL_8:
           v59[2] = sub_100016748;
           v59[3] = &unk_10008D1E0;
           v66 = &v102;
-          v36 = v16;
+          v36 = contentsCopy;
           v60 = v36;
           v67 = &v108;
           v37 = v34;
@@ -3120,8 +3120,8 @@ LABEL_8:
           v61 = v38;
           v69 = &v92;
           v70 = v112;
-          v62 = v17;
-          v63 = self;
+          v62 = attrsCopy;
+          selfCopy = self;
           v71 = v113;
           v72 = v115;
           v43 = v35;
@@ -3202,8 +3202,8 @@ LABEL_8:
       v31 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v32 = v15;
-        sub_10005294C([v15 UTF8String], v117);
+        v32 = namedCopy;
+        sub_10005294C([namedCopy UTF8String], v117);
       }
 
       v30 = 2;
@@ -3220,7 +3220,7 @@ LABEL_8:
     v30 = 70;
 LABEL_23:
 
-    (*(v18 + 2))(v18, v30, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v30, 0, 0, 0, 0);
 LABEL_34:
 
     goto LABEL_9;
@@ -3238,7 +3238,7 @@ LABEL_34:
 
 LABEL_8:
 
-  (*(v18 + 2))(v18, v19, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0);
 LABEL_9:
   _Block_object_dispose(v87, 8);
   _Block_object_dispose(&v88, 8);
@@ -3253,43 +3253,43 @@ LABEL_9:
   _Block_object_dispose(v115, 8);
 }
 
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  configurationCopy = configuration;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v10 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v10);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
-  v11 = [(smbMount *)self opsQueue];
+  opsQueue = [(smbMount *)self opsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017418;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
-  dispatch_async(v11, block);
+  v15 = configurationCopy;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = configurationCopy;
+  dispatch_async(opsQueue, block);
 }
 
-- (void)_LIPathConf:(id)a3 reply:(id)a4
+- (void)_LIPathConf:(id)conf reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v15 = 0;
-  v6 = [(smbMount *)self checkServerConnection];
-  if (v6)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
-    v7 = v6;
+    v7 = checkServerConnection;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100052D5C();
     }
 
-    v5[2](v5, v7, 0);
+    replyCopy[2](replyCopy, v7, 0);
   }
 
   else
@@ -3332,19 +3332,19 @@ LABEL_9:
       v13 = 0;
     }
 
-    (v5)[2](v5, v12, v13);
+    (replyCopy)[2](replyCopy, v12, v13);
   }
 }
 
-- (void)LIRead:(id)a3 atOffset:(unint64_t)a4 withPointer:(char *)a5 length:(unint64_t)a6 reply:(id)a7
+- (void)LIRead:(id)read atOffset:(unint64_t)offset withPointer:(char *)pointer length:(unint64_t)length reply:(id)reply
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
+  readCopy = read;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v15 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v15);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v19[0] = _NSConcreteStackBlock;
@@ -3352,20 +3352,20 @@ LABEL_9:
   v19[2] = sub_100017790;
   v19[3] = &unk_10008D2A8;
   v19[4] = self;
-  v20 = v12;
-  v23 = a5;
-  v24 = a6;
-  v21 = v13;
-  v22 = a4;
-  v17 = v13;
-  v18 = v12;
+  v20 = readCopy;
+  pointerCopy = pointer;
+  lengthCopy = length;
+  v21 = replyCopy;
+  offsetCopy = offset;
+  v17 = replyCopy;
+  v18 = readCopy;
   dispatch_async(opsQueue, v19);
 }
 
-- (void)_LIRead:(id)a3 atOffset:(unint64_t)a4 withPointer:(char *)a5 length:(unint64_t)a6 reply:(id)a7
+- (void)_LIRead:(id)read atOffset:(unint64_t)offset withPointer:(char *)pointer length:(unint64_t)length reply:(id)reply
 {
-  v12 = a3;
-  v13 = a7;
+  readCopy = read;
+  replyCopy = reply;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -3382,8 +3382,8 @@ LABEL_9:
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v14 = [(smbMount *)self checkServerConnection];
-  if (!v14)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -3392,7 +3392,7 @@ LABEL_9:
     block[3] = &unk_10008C948;
     v31 = &v43;
     block[4] = self;
-    v17 = v12;
+    v17 = readCopy;
     v30 = v17;
     v32 = &v33;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -3412,23 +3412,23 @@ LABEL_9:
 
     else
     {
-      v19 = [v18 fileRefSyncQueue];
+      fileRefSyncQueue = [v18 fileRefSyncQueue];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100017D78;
       v28[3] = &unk_10008CD08;
       v28[4] = &v37;
       v28[5] = &v43;
-      dispatch_sync(v19, v28);
+      dispatch_sync(fileRefSyncQueue, v28);
 
       v20 = v38[5];
       if (v20)
       {
-        v21 = [v20 fidCtx];
-        if (v21)
+        fidCtx = [v20 fidCtx];
+        if (fidCtx)
         {
           v22 = malloc_type_malloc(0x20uLL, 0x1010040BA4D407CuLL);
-          [(smbMount *)self readRequest:v17 bptr:a5 smbNode:v44[5] fileRef:v38[5] rdparamPtr:v22 result:0 thisOffset:a4 bytesRemain:a6 bytesRead:0 pass:0 reply:v13];
+          [(smbMount *)self readRequest:v17 bptr:pointer smbNode:v44[5] fileRef:v38[5] rdparamPtr:v22 result:0 thisOffset:offset bytesRemain:length bytesRead:0 pass:0 reply:replyCopy];
 LABEL_20:
 
           goto LABEL_21;
@@ -3437,9 +3437,9 @@ LABEL_20:
         v25 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v44[5] name];
-          v27 = v26;
-          [v26 UTF8String];
+          name = [v44[5] name];
+          v27 = name;
+          [name UTF8String];
           sub_100052E5C();
         }
       }
@@ -3458,8 +3458,8 @@ LABEL_20:
       v23 = 9;
     }
 
-    v13[2](v13, v23, 0);
-    v21 = 0;
+    replyCopy[2](replyCopy, v23, 0);
+    fidCtx = 0;
     goto LABEL_20;
   }
 
@@ -3473,7 +3473,7 @@ LABEL_20:
     sub_100052E0C();
   }
 
-  v13[2](v13, v14, 0);
+  replyCopy[2](replyCopy, checkServerConnection, 0);
 LABEL_21:
   _Block_object_dispose(&v33, 8);
   _Block_object_dispose(&v37, 8);
@@ -3481,59 +3481,59 @@ LABEL_21:
   _Block_object_dispose(&v43, 8);
 }
 
-- (void)readRequest:(id)a3 bptr:(char *)a4 smbNode:(id)a5 fileRef:(id)a6 rdparamPtr:(smb_read_write *)a7 result:(int)a8 thisOffset:(unint64_t)a9 bytesRemain:(unint64_t)a10 bytesRead:(unint64_t)a11 pass:(unint64_t)a12 reply:(id)a13
+- (void)readRequest:(id)request bptr:(char *)bptr smbNode:(id)node fileRef:(id)ref rdparamPtr:(smb_read_write *)ptr result:(int)result thisOffset:(unint64_t)offset bytesRemain:(unint64_t)self0 bytesRead:(unint64_t)self1 pass:(unint64_t)self2 reply:(id)self3
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = a13;
-  v21 = [(smbMount *)self readwriteSyncQueue];
+  requestCopy = request;
+  nodeCopy = node;
+  refCopy = ref;
+  replyCopy = reply;
+  readwriteSyncQueue = [(smbMount *)self readwriteSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017F34;
   block[3] = &unk_10008D320;
-  v40 = a8;
-  v33 = v20;
-  v34 = a10;
-  v35 = a7;
-  v36 = a11;
-  v29 = v19;
-  v30 = self;
-  v37 = a4;
-  v38 = a9;
-  v39 = a12;
-  v31 = v18;
-  v32 = v17;
-  v22 = v17;
-  v23 = v18;
-  v24 = v20;
-  v25 = v19;
-  dispatch_async(v21, block);
+  resultCopy = result;
+  v33 = replyCopy;
+  remainCopy = remain;
+  ptrCopy = ptr;
+  readCopy = read;
+  v29 = refCopy;
+  selfCopy = self;
+  bptrCopy = bptr;
+  offsetCopy = offset;
+  passCopy = pass;
+  v31 = nodeCopy;
+  v32 = requestCopy;
+  v22 = requestCopy;
+  v23 = nodeCopy;
+  v24 = replyCopy;
+  v25 = refCopy;
+  dispatch_async(readwriteSyncQueue, block);
 }
 
-- (void)readFrom:(id)a3 atOffset:(unint64_t)a4 intoBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)readFrom:(id)from atOffset:(unint64_t)offset intoBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
+  fromCopy = from;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = sub_10000B2A0;
   v20[4] = sub_10000B2B0;
-  v14 = v12;
+  v14 = bufferCopy;
   v21 = v14;
-  v15 = [v14 mutableBytes];
-  if (v15)
+  mutableBytes = [v14 mutableBytes];
+  if (mutableBytes)
   {
     v16 = [v14 length];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000184B4;
     v17[3] = &unk_10008D348;
-    v18 = v13;
+    v18 = replyCopy;
     v19 = v20;
-    [(smbMount *)self LIRead:v11 atOffset:a4 withPointer:v15 length:v16 reply:v17];
+    [(smbMount *)self LIRead:fromCopy atOffset:offset withPointer:mutableBytes length:v16 reply:v17];
   }
 
   else
@@ -3543,29 +3543,29 @@ LABEL_21:
       sub_100052FA8();
     }
 
-    (*(v13 + 2))(v13, 12, 0);
+    (*(replyCopy + 2))(replyCopy, 12, 0);
   }
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)readFrom:(id)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)readFrom:(id)from length:(unint64_t)length atOffset:(unint64_t)offset requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = [NSMutableData dataWithLength:a4];
+  fromCopy = from;
+  replyCopy = reply;
+  v13 = [NSMutableData dataWithLength:length];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 mutableBytes];
+    mutableBytes = [v13 mutableBytes];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100018658;
     v16[3] = &unk_10008D370;
     v17 = v14;
-    v19 = a4;
-    v18 = v12;
-    [(smbMount *)self LIRead:v11 atOffset:a5 withPointer:v15 length:a4 reply:v16];
+    lengthCopy = length;
+    v18 = replyCopy;
+    [(smbMount *)self LIRead:fromCopy atOffset:offset withPointer:mutableBytes length:length reply:v16];
   }
 
   else
@@ -3575,19 +3575,19 @@ LABEL_21:
       sub_10005302C();
     }
 
-    (*(v12 + 2))(v12, 12, 0);
+    (*(replyCopy + 2))(replyCopy, 12, 0);
   }
 }
 
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v10 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v10);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -3595,17 +3595,17 @@ LABEL_21:
   block[2] = sub_10001880C;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
+  v15 = ofCopy;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = ofCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LIReadLink:(id)a3 reply:(id)a4
+- (void)_LIReadLink:(id)link reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  replyCopy = reply;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -3622,8 +3622,8 @@ LABEL_21:
   v41 = &v40;
   v42 = 0x2020000000;
   v43 = 0;
-  v8 = [(smbMount *)self checkServerConnection];
-  if (!v8)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -3632,7 +3632,7 @@ LABEL_21:
     block[3] = &unk_10008C948;
     v38 = &v44;
     block[4] = self;
-    v11 = v6;
+    v11 = linkCopy;
     v37 = v11;
     v39 = &v40;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -3644,9 +3644,9 @@ LABEL_21:
       {
         if ([v12 isSymlink])
         {
-          v14 = [v45[5] symlinkTargetCache];
+          symlinkTargetCache = [v45[5] symlinkTargetCache];
           v15 = v51[5];
-          v51[5] = v14;
+          v51[5] = symlinkTargetCache;
 
           if (v51[5])
           {
@@ -3657,7 +3657,7 @@ LABEL_21:
             v32[3] = &unk_10008D398;
             v32[4] = self;
             v34 = &v44;
-            v33 = v7;
+            v33 = replyCopy;
             v35 = &v50;
             [v16 fetchAttrDataWithCompletionHandler:v32];
           }
@@ -3677,7 +3677,7 @@ LABEL_21:
             v29 = &v44;
             v30 = &v50;
             v27[4] = self;
-            v28 = v7;
+            v28 = replyCopy;
             [(smbMount *)self submitRequestBlockOnce:v31 continuationBlock:v27];
           }
 
@@ -3687,16 +3687,16 @@ LABEL_21:
         v24 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [v45[5] name];
-          v26 = v25;
-          [v25 UTF8String];
+          name = [v45[5] name];
+          v26 = name;
+          [name UTF8String];
           sub_1000530F4();
         }
 
         v19 = 22;
 LABEL_22:
 
-        (*(v7 + 2))(v7, v19, 0, 0);
+        (*(replyCopy + 2))(replyCopy, v19, 0, 0);
 LABEL_23:
 
         goto LABEL_24;
@@ -3746,7 +3746,7 @@ LABEL_17:
     sub_1000530A4();
   }
 
-  (*(v7 + 2))(v7, v8, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0);
 LABEL_24:
   _Block_object_dispose(&v40, 8);
   _Block_object_dispose(&v44, 8);
@@ -3754,14 +3754,14 @@ LABEL_24:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a8;
+  fromCopy = from;
+  namedCopy = named;
+  replyCopy = reply;
   v14 = dispatch_time(0, 15000000000);
-  v15 = [(smbMount *)self opsSyncGroup];
-  v16 = dispatch_group_wait(v15, v14);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  v16 = dispatch_group_wait(opsSyncGroup, v14);
 
   if (v16)
   {
@@ -3770,16 +3770,16 @@ LABEL_24:
       sub_100053254();
     }
 
-    (*(v13 + 2))(v13, 60, 0, 0, 0, &stru_10008EA58, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 60, 0, 0, 0, &stru_10008EA58, 0, 0);
   }
 
   else
   {
-    v17 = [(smbMount *)self namespaceChangingGroup];
-    dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+    namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+    dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-    v18 = [(smbMount *)self namespaceChangingGroup];
-    dispatch_group_enter(v18);
+    namespaceChangingGroup2 = [(smbMount *)self namespaceChangingGroup];
+    dispatch_group_enter(namespaceChangingGroup2);
 
     opsQueue = self->_opsQueue;
     v20[0] = _NSConcreteStackBlock;
@@ -3787,18 +3787,18 @@ LABEL_24:
     v20[2] = sub_100019554;
     v20[3] = &unk_10008D0C8;
     v20[4] = self;
-    v21 = v11;
-    v22 = v12;
-    v23 = v13;
+    v21 = fromCopy;
+    v22 = namedCopy;
+    v23 = replyCopy;
     dispatch_sync(opsQueue, v20);
   }
 }
 
-- (void)_LIRemove:(id)a3 name:(id)a4 reply:(id)a5
+- (void)_LIRemove:(id)remove name:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  removeCopy = remove;
+  nameCopy = name;
+  replyCopy = reply;
   v55 = 0;
   v56 = &v55;
   v57 = 0x3032000000;
@@ -3823,8 +3823,8 @@ LABEL_24:
   v53 = sub_10000B2B0;
   v54 = 0;
   v48 = 1;
-  v11 = [(smbMount *)self checkServerConnection];
-  if (!v11)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -3833,7 +3833,7 @@ LABEL_24:
     block[3] = &unk_10008C948;
     v39 = &v55;
     block[4] = self;
-    v14 = v8;
+    v14 = removeCopy;
     v38 = v14;
     v40 = &v43;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -3849,10 +3849,10 @@ LABEL_24:
         v34 = v41;
         v31[4] = self;
         v35 = &v55;
-        v16 = v9;
+        v16 = nameCopy;
         v32 = v16;
         v36 = v47;
-        v17 = v10;
+        v17 = replyCopy;
         v33 = v17;
         v18 = objc_retainBlock(v31);
         v19 = self->_nodeTableSyncQueue;
@@ -3914,7 +3914,7 @@ LABEL_24:
 
     v21 = 70;
 LABEL_17:
-    (*(v10 + 2))(v10, v21, 0, 0, 0, &stru_10008EA58, 0);
+    (*(replyCopy + 2))(replyCopy, v21, 0, 0, 0, &stru_10008EA58, 0);
 LABEL_21:
 
     goto LABEL_22;
@@ -3930,7 +3930,7 @@ LABEL_21:
     sub_100053298();
   }
 
-  (*(v10 + 2))(v10, v11, 0, 0, 0, &stru_10008EA58, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, &stru_10008EA58, 0);
 LABEL_22:
   _Block_object_dispose(v41, 8);
   _Block_object_dispose(&v43, 8);
@@ -3940,14 +3940,14 @@ LABEL_22:
   _Block_object_dispose(&v55, 8);
 }
 
-- (void)removeDirectory:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)removeDirectory:(id)directory from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a8;
+  fromCopy = from;
+  namedCopy = named;
+  replyCopy = reply;
   v14 = dispatch_time(0, 15000000000);
-  v15 = [(smbMount *)self opsSyncGroup];
-  v16 = dispatch_group_wait(v15, v14);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  v16 = dispatch_group_wait(opsSyncGroup, v14);
 
   if (v16)
   {
@@ -3956,35 +3956,35 @@ LABEL_22:
       sub_1000534F4();
     }
 
-    (*(v13 + 2))(v13, 60, 0, 0, 0, &stru_10008EA58, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 60, 0, 0, 0, &stru_10008EA58, 0, 0);
   }
 
   else
   {
-    v17 = [(smbMount *)self namespaceChangingGroup];
-    dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+    namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+    dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-    v18 = [(smbMount *)self namespaceChangingGroup];
-    dispatch_group_enter(v18);
+    namespaceChangingGroup2 = [(smbMount *)self namespaceChangingGroup];
+    dispatch_group_enter(namespaceChangingGroup2);
 
-    v19 = [(smbMount *)self opsQueue];
+    opsQueue = [(smbMount *)self opsQueue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10001A568;
     v20[3] = &unk_10008D0C8;
     v20[4] = self;
-    v21 = v11;
-    v22 = v12;
-    v23 = v13;
-    dispatch_sync(v19, v20);
+    v21 = fromCopy;
+    v22 = namedCopy;
+    v23 = replyCopy;
+    dispatch_sync(opsQueue, v20);
   }
 }
 
-- (void)_LIRemoveDir:(id)a3 name:(id)a4 reply:(id)a5
+- (void)_LIRemoveDir:(id)dir name:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dirCopy = dir;
+  nameCopy = name;
+  replyCopy = reply;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -4005,8 +4005,8 @@ LABEL_22:
   v48 = 0;
   v57 = sub_10000B2B0;
   v58 = 0;
-  v11 = [(smbMount *)self checkServerConnection];
-  if (!v11)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -4015,7 +4015,7 @@ LABEL_22:
     block[3] = &unk_10008C948;
     v45 = &v59;
     block[4] = self;
-    v14 = v8;
+    v14 = dirCopy;
     v44 = v14;
     v46 = &v49;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -4031,9 +4031,9 @@ LABEL_22:
         v41 = v47;
         v37[4] = self;
         v42 = &v59;
-        v16 = v9;
+        v16 = nameCopy;
         v38 = v16;
-        v17 = v10;
+        v17 = replyCopy;
         v40 = v17;
         v18 = v14;
         v39 = v18;
@@ -4044,7 +4044,7 @@ LABEL_22:
         v31 = sub_10001B2F0;
         v32 = &unk_10008C9E8;
         v36 = &v53;
-        v33 = self;
+        selfCopy = self;
         v34 = v18;
         v35 = v16;
         dispatch_sync(v20, &v29);
@@ -4090,8 +4090,8 @@ LABEL_26:
       v26 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v27 = v9;
-        sub_1000535CC([v9 UTF8String], v65);
+        v27 = nameCopy;
+        sub_1000535CC([nameCopy UTF8String], v65);
       }
 
       v25 = 2;
@@ -4108,7 +4108,7 @@ LABEL_26:
     v25 = 70;
 LABEL_20:
 
-    (*(v10 + 2))(v10, v25, 0, 0, 0, &stru_10008EA58, 0);
+    (*(replyCopy + 2))(replyCopy, v25, 0, 0, 0, &stru_10008EA58, 0);
 LABEL_27:
 
     goto LABEL_28;
@@ -4124,7 +4124,7 @@ LABEL_27:
     sub_100053538();
   }
 
-  (*(v10 + 2))(v10, v11, 0, 0, 0, &stru_10008EA58, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, &stru_10008EA58, 0);
 LABEL_28:
   _Block_object_dispose(v47, 8);
   _Block_object_dispose(&v49, 8);
@@ -4133,14 +4133,14 @@ LABEL_28:
   _Block_object_dispose(&v59, 8);
 }
 
-- (void)renameItemIn:(id)a3 named:(id)a4 toDirectory:(id)a5 newName:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)renameItemIn:(id)in named:(id)named toDirectory:(id)directory newName:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  if (a7)
+  inCopy = in;
+  namedCopy = named;
+  directoryCopy = directory;
+  nameCopy = name;
+  replyCopy = reply;
+  if (flags)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -4149,14 +4149,14 @@ LABEL_28:
 
     v27 = 0;
     v25 = 0;
-    (*(v18 + 2))(v18, 45, 0, 0, 0, 0, 0, 0, v25, 0, 0, v27, 0);
+    (*(replyCopy + 2))(replyCopy, 45, 0, 0, 0, 0, 0, 0, v25, 0, 0, v27, 0);
   }
 
   else
   {
     v19 = dispatch_time(0, 15000000000);
-    v20 = [(smbMount *)self opsSyncGroup];
-    v21 = dispatch_group_wait(v20, v19);
+    opsSyncGroup = [(smbMount *)self opsSyncGroup];
+    v21 = dispatch_group_wait(opsSyncGroup, v19);
 
     if (v21)
     {
@@ -4167,41 +4167,41 @@ LABEL_28:
 
       v28 = 0;
       v26 = 0;
-      (*(v18 + 2))(v18, 60, 0, 0, 0, 0, 0, 0, v26, 0, 0, v28, 0);
+      (*(replyCopy + 2))(replyCopy, 60, 0, 0, 0, 0, 0, 0, v26, 0, 0, v28, 0);
     }
 
     else
     {
-      v22 = [(smbMount *)self namespaceChangingGroup];
-      dispatch_group_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
+      namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+      dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-      v23 = [(smbMount *)self namespaceChangingGroup];
-      dispatch_group_enter(v23);
+      namespaceChangingGroup2 = [(smbMount *)self namespaceChangingGroup];
+      dispatch_group_enter(namespaceChangingGroup2);
 
-      v24 = [(smbMount *)self opsQueue];
+      opsQueue = [(smbMount *)self opsQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001B5F8;
       block[3] = &unk_10008D5F0;
       block[4] = self;
-      v30 = v14;
-      v31 = v15;
-      v32 = v16;
-      v33 = v17;
+      v30 = inCopy;
+      v31 = namedCopy;
+      v32 = directoryCopy;
+      v33 = nameCopy;
       v35 = 0;
-      v34 = v18;
-      dispatch_sync(v24, block);
+      v34 = replyCopy;
+      dispatch_sync(opsQueue, block);
     }
   }
 }
 
-- (void)_LIRename:(id)a3 name:(id)a4 toDir:(id)a5 andName:(id)a6 withFlags:(unsigned int)a7 reply:(id)a8
+- (void)_LIRename:(id)rename name:(id)name toDir:(id)dir andName:(id)andName withFlags:(unsigned int)flags reply:(id)reply
 {
-  v71 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  renameCopy = rename;
+  nameCopy = name;
+  dirCopy = dir;
+  andNameCopy = andName;
+  replyCopy = reply;
   v146[0] = 0;
   v146[1] = v146;
   v146[2] = 0x3032000000;
@@ -4299,8 +4299,8 @@ LABEL_28:
   v125 = 0;
   v137 = 0;
 
-  v17 = [(smbMount *)self checkServerConnection];
-  if (!v17)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -4309,7 +4309,7 @@ LABEL_28:
     block[3] = &unk_10008C948;
     v107 = &v138;
     block[4] = self;
-    v20 = v71;
+    v20 = renameCopy;
     v106 = v20;
     v108 = &v116;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -4318,7 +4318,7 @@ LABEL_28:
     {
       if ((v117[3] & 1) == 0)
       {
-        v22 = [v20 isEqualToString:v14];
+        v22 = [v20 isEqualToString:dirCopy];
         v23 = v22;
         if (v22)
         {
@@ -4333,7 +4333,7 @@ LABEL_28:
         v101[3] = &unk_10008C948;
         v103 = &v126;
         v101[4] = self;
-        v102 = v14;
+        v102 = dirCopy;
         v104 = &v116;
         dispatch_sync(v25, v101);
         v26 = *(v117 + 24);
@@ -4351,37 +4351,37 @@ LABEL_20:
             v100[6] = &v132;
             v100[4] = self;
             v100[7] = &v138;
-            v28 = v13;
+            v28 = nameCopy;
             v100[5] = v28;
             dispatch_sync(v27, v100);
             v29 = v133[5];
             if (v29)
             {
               v30 = v178;
-              v31 = [v29 getSmbFattr];
-              v32 = *v31;
-              v33 = v31[2];
-              *(v30 + 3) = v31[1];
+              getSmbFattr = [v29 getSmbFattr];
+              v32 = *getSmbFattr;
+              v33 = getSmbFattr[2];
+              *(v30 + 3) = getSmbFattr[1];
               *(v30 + 4) = v33;
               *(v30 + 2) = v32;
-              v34 = v31[3];
-              v35 = v31[4];
-              v36 = v31[6];
-              *(v30 + 7) = v31[5];
+              v34 = getSmbFattr[3];
+              v35 = getSmbFattr[4];
+              v36 = getSmbFattr[6];
+              *(v30 + 7) = getSmbFattr[5];
               *(v30 + 8) = v36;
               *(v30 + 5) = v34;
               *(v30 + 6) = v35;
-              v37 = v31[7];
-              v38 = v31[8];
-              v39 = v31[10];
-              *(v30 + 11) = v31[9];
+              v37 = getSmbFattr[7];
+              v38 = getSmbFattr[8];
+              v39 = getSmbFattr[10];
+              *(v30 + 11) = getSmbFattr[9];
               *(v30 + 12) = v39;
               *(v30 + 9) = v37;
               *(v30 + 10) = v38;
-              v40 = v31[11];
-              v41 = v31[12];
-              v42 = v31[14];
-              *(v30 + 15) = v31[13];
+              v40 = getSmbFattr[11];
+              v41 = getSmbFattr[12];
+              v42 = getSmbFattr[14];
+              *(v30 + 15) = getSmbFattr[13];
               *(v30 + 16) = v42;
               *(v30 + 13) = v40;
               *(v30 + 14) = v41;
@@ -4413,7 +4413,7 @@ LABEL_20:
             v98 = &v120;
             v96[4] = self;
             v99 = &v126;
-            v45 = v15;
+            v45 = andNameCopy;
             v97 = v45;
             dispatch_sync(v44, v96);
             v46 = v133[5];
@@ -4433,30 +4433,30 @@ LABEL_20:
             if (v49)
             {
               v50 = v159;
-              v51 = [v49 getSmbFattr];
-              v52 = *v51;
-              v53 = v51[2];
-              *(v50 + 3) = v51[1];
+              getSmbFattr2 = [v49 getSmbFattr];
+              v52 = *getSmbFattr2;
+              v53 = getSmbFattr2[2];
+              *(v50 + 3) = getSmbFattr2[1];
               *(v50 + 4) = v53;
               *(v50 + 2) = v52;
-              v54 = v51[3];
-              v55 = v51[4];
-              v56 = v51[6];
-              *(v50 + 7) = v51[5];
+              v54 = getSmbFattr2[3];
+              v55 = getSmbFattr2[4];
+              v56 = getSmbFattr2[6];
+              *(v50 + 7) = getSmbFattr2[5];
               *(v50 + 8) = v56;
               *(v50 + 5) = v54;
               *(v50 + 6) = v55;
-              v57 = v51[7];
-              v58 = v51[8];
-              v59 = v51[10];
-              *(v50 + 11) = v51[9];
+              v57 = getSmbFattr2[7];
+              v58 = getSmbFattr2[8];
+              v59 = getSmbFattr2[10];
+              *(v50 + 11) = getSmbFattr2[9];
               *(v50 + 12) = v59;
               *(v50 + 9) = v57;
               *(v50 + 10) = v58;
-              v60 = v51[11];
-              v61 = v51[12];
-              v62 = v51[14];
-              *(v50 + 15) = v51[13];
+              v60 = getSmbFattr2[11];
+              v61 = getSmbFattr2[12];
+              v62 = getSmbFattr2[14];
+              *(v50 + 15) = getSmbFattr2[13];
               *(v50 + 16) = v62;
               *(v50 + 13) = v60;
               *(v50 + 14) = v61;
@@ -4512,7 +4512,7 @@ LABEL_35:
                 v84 = v114;
                 v85 = &v177;
                 v74 = v90;
-                v75 = v16;
+                v75 = replyCopy;
                 v86 = v146;
                 v87 = v144;
                 [(smbMount *)self submitRequestBlockOnce:v89 continuationBlock:v72];
@@ -4549,7 +4549,7 @@ LABEL_48:
               _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "LIRename: type mismatch, fromName: %@, fa_vtype: 0x%x, toName: %@, fa_vtype: 0x%x, error: %d\n", buf, 0x28u);
             }
 
-            (*(v16 + 2))(v16, v67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            (*(replyCopy + 2))(replyCopy, v67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             goto LABEL_36;
           }
         }
@@ -4572,7 +4572,7 @@ LABEL_48:
 
         v66 = 70;
 LABEL_47:
-        (*(v16 + 2))(v16, v66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        (*(replyCopy + 2))(replyCopy, v66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         v65 = v101;
         goto LABEL_48;
       }
@@ -4596,7 +4596,7 @@ LABEL_47:
 
     v24 = 70;
 LABEL_16:
-    (*(v16 + 2))(v16, v24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 LABEL_49:
 
     goto LABEL_50;
@@ -4612,7 +4612,7 @@ LABEL_49:
     sub_100053838();
   }
 
-  (*(v16 + 2))(v16, v17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 LABEL_50:
   _Block_object_dispose(v109, 8);
   _Block_object_dispose(v111, 8);
@@ -4633,11 +4633,11 @@ LABEL_50:
   _Block_object_dispose(v146, 8);
 }
 
-- (void)setAttrInternalLocked:(id)a3 setAttrs:(id)a4 CompletionHandler:(id)a5
+- (void)setAttrInternalLocked:(id)locked setAttrs:(id)attrs CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lockedCopy = locked;
+  attrsCopy = attrs;
+  handlerCopy = handler;
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x2020000000;
@@ -4662,26 +4662,26 @@ LABEL_50:
   v58 = 0u;
   v47[2] = "";
   v59 = 0;
-  v11 = v9;
-  v12 = [v9 bytes];
-  v13 = *v12;
-  v14 = v12[1];
-  v15 = v12[3];
-  v50 = v12[2];
+  v11 = attrsCopy;
+  bytes = [attrsCopy bytes];
+  v13 = *bytes;
+  v14 = bytes[1];
+  v15 = bytes[3];
+  v50 = bytes[2];
   v51 = v15;
   v48 = v13;
   v49 = v14;
-  v16 = v12[4];
-  v17 = v12[5];
-  v18 = v12[7];
-  v54 = v12[6];
+  v16 = bytes[4];
+  v17 = bytes[5];
+  v18 = bytes[7];
+  v54 = bytes[6];
   v55 = v18;
   v52 = v16;
   v53 = v17;
-  v19 = v12[8];
-  v20 = v12[9];
-  v21 = v12[10];
-  v59 = *(v12 + 22);
+  v19 = bytes[8];
+  v20 = bytes[9];
+  v21 = bytes[10];
+  v59 = *(bytes + 22);
   v57 = v20;
   v58 = v21;
   v56 = v19;
@@ -4689,12 +4689,12 @@ LABEL_50:
   {
     v27 = 0;
 LABEL_7:
-    v10[2](v10, v27);
+    handlerCopy[2](handlerCopy, v27);
     goto LABEL_13;
   }
 
-  v22 = [v8 getSmbFattr];
-  v61[3] = v22;
+  getSmbFattr = [lockedCopy getSmbFattr];
+  v61[3] = getSmbFattr;
   v23 = *(v47[0] + 40);
   *(v47[0] + 40) = v23 & 0xFFFFFFFFFFFFFFFDLL;
   if ((v23 & 0x184) != 0)
@@ -4702,9 +4702,9 @@ LABEL_7:
     v24 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v8 name];
-      v26 = v25;
-      sub_100053D5C([v25 UTF8String], v47, v66, v25);
+      name = [lockedCopy name];
+      v26 = name;
+      sub_100053D5C([name UTF8String], v47, v66, name);
     }
 
     v27 = 22;
@@ -4718,11 +4718,11 @@ LABEL_7:
   v39[4] = self;
   v42 = &v46;
   v43 = v64;
-  v28 = v8;
+  v28 = lockedCopy;
   v40 = v28;
   v44 = &v60;
   v45 = 0;
-  v29 = v10;
+  v29 = handlerCopy;
   v41 = v29;
   v30 = objc_retainBlock(v39);
   if ((*(v47[0] + 40) & 0x40) != 0 && [v28 isReg])
@@ -4755,16 +4755,16 @@ LABEL_13:
   _Block_object_dispose(v64, 8);
 }
 
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  toCopy = to;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v13 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v13);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v18[0] = _NSConcreteStackBlock;
@@ -4772,20 +4772,20 @@ LABEL_13:
   v18[2] = sub_10001E318;
   v18[3] = &unk_10008D0C8;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v19 = ofCopy;
+  v20 = toCopy;
+  v21 = replyCopy;
+  v15 = replyCopy;
+  v16 = toCopy;
+  v17 = ofCopy;
   dispatch_async(opsQueue, v18);
 }
 
-- (void)_LISetAttr:(id)a3 setAttrs:(id)a4 reply:(id)a5
+- (void)_LISetAttr:(id)attr setAttrs:(id)attrs reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attrCopy = attr;
+  attrsCopy = attrs;
+  replyCopy = reply;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
@@ -4806,8 +4806,8 @@ LABEL_13:
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v11 = [(smbMount *)self checkServerConnection];
-  if (v11)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
     v12 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -4821,19 +4821,19 @@ LABEL_13:
 
 LABEL_8:
 
-    (*(v10 + 2))(v10, v11, 0, 0, 0, 0, 0, 2);
+    (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0, 0, 2);
     goto LABEL_9;
   }
 
-  if ([v9 length] <= 0xB7)
+  if ([attrsCopy length] <= 0xB7)
   {
     v13 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100053F4C(location, [v9 length]);
+      sub_100053F4C(location, [attrsCopy length]);
     }
 
-    v11 = 22;
+    checkServerConnection = 22;
     goto LABEL_8;
   }
 
@@ -4844,7 +4844,7 @@ LABEL_8:
   block[3] = &unk_10008C948;
   v26 = &v32;
   block[4] = self;
-  v25 = v8;
+  v25 = attrCopy;
   v27 = &v28;
   dispatch_sync(nodeTableSyncQueue, block);
   v15 = v33[5];
@@ -4860,7 +4860,7 @@ LABEL_8:
       v17 = 2;
     }
 
-    (*(v10 + 2))(v10, v17, 0, 0, 0, 0, 0, 2);
+    (*(replyCopy + 2))(replyCopy, v17, 0, 0, 0, 0, 0, 2);
   }
 
   else
@@ -4874,9 +4874,9 @@ LABEL_8:
     objc_copyWeak(&v23, location);
     v20 = v38;
     v21 = &v32;
-    v19 = v10;
+    v19 = replyCopy;
     v22 = v39;
-    [(smbMount *)self setAttrInternalLocked:v16 setAttrs:v9 CompletionHandler:v18];
+    [(smbMount *)self setAttrInternalLocked:v16 setAttrs:attrsCopy CompletionHandler:v18];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(location);
@@ -4890,15 +4890,15 @@ LABEL_9:
   _Block_object_dispose(v39, 8);
 }
 
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  statisticsCopy = statistics;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v10 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v10);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -4906,17 +4906,17 @@ LABEL_9:
   block[2] = sub_10001EDB0;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
+  v15 = statisticsCopy;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = statisticsCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LIStatFS:(id)a3 reply:(id)a4
+- (void)_LIStatFS:(id)s reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  replyCopy = reply;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
@@ -4931,8 +4931,8 @@ LABEL_9:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v8 = [(smbMount *)self checkServerConnection];
-  if (v8)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
     v9 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -4944,7 +4944,7 @@ LABEL_9:
       sub_100054024();
     }
 
-    v7[2](v7, v8, 0);
+    replyCopy[2](replyCopy, checkServerConnection, 0);
   }
 
   else
@@ -4956,7 +4956,7 @@ LABEL_9:
     block[3] = &unk_10008C948;
     v19 = &v25;
     block[4] = self;
-    v18 = v6;
+    v18 = sCopy;
     v20 = &v21;
     dispatch_sync(nodeTableSyncQueue, block);
     v11 = v26[5];
@@ -4972,7 +4972,7 @@ LABEL_9:
         v12 = 2;
       }
 
-      v7[2](v7, v12, 0);
+      replyCopy[2](replyCopy, v12, 0);
     }
 
     else
@@ -4987,7 +4987,7 @@ LABEL_9:
       v13[1] = 3221225472;
       v13[2] = sub_10001F360;
       v13[3] = &unk_10008D870;
-      v14 = v7;
+      v14 = replyCopy;
       v15 = v31;
       [(smbMount *)self submitRequestBlock:v16 continuationBlock:v13];
     }
@@ -4999,16 +4999,16 @@ LABEL_9:
   _Block_object_dispose(v31, 8);
 }
 
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 fromBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)writeTo:(id)to atOffset:(unint64_t)offset fromBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
+  toCopy = to;
+  bufferCopy = buffer;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v15 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v15);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -5016,21 +5016,21 @@ LABEL_9:
   block[2] = sub_10001F578;
   block[3] = &unk_10008C920;
   block[4] = self;
-  v21 = v11;
-  v23 = v13;
-  v24 = a4;
-  v22 = v12;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
+  v21 = toCopy;
+  v23 = replyCopy;
+  offsetCopy = offset;
+  v22 = bufferCopy;
+  v17 = replyCopy;
+  v18 = bufferCopy;
+  v19 = toCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 reply:(id)a6
+- (void)_LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer reply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  writeCopy = write;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -5047,8 +5047,8 @@ LABEL_9:
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
-  v13 = [(smbMount *)self checkServerConnection];
-  if (!v13)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -5057,7 +5057,7 @@ LABEL_9:
     block[3] = &unk_10008C948;
     v32 = &v44;
     block[4] = self;
-    v16 = v10;
+    v16 = writeCopy;
     v31 = v16;
     v33 = &v34;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -5067,25 +5067,25 @@ LABEL_9:
     {
       if ((v35[3] & 1) == 0)
       {
-        v19 = [v17 fileRefSyncQueue];
+        fileRefSyncQueue = [v17 fileRefSyncQueue];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10001FB9C;
         v29[3] = &unk_10008CD08;
         v29[4] = &v38;
         v29[5] = &v44;
-        dispatch_sync(v19, v29);
+        dispatch_sync(fileRefSyncQueue, v29);
 
         v20 = v39[5];
         if (v20)
         {
-          v21 = [v20 fidCtx];
-          v22 = v21 == 0;
+          fidCtx = [v20 fidCtx];
+          v22 = fidCtx == 0;
 
           if (!v22)
           {
             v23 = malloc_type_malloc(0x20uLL, 0x1010040BA4D407CuLL);
-            -[smbMount writeRequest:withBuffer:smbNode:fileRef:wrparamPtr:result:thisOffset:bytesWritten:bytesRemain:pass:reply:](self, "writeRequest:withBuffer:smbNode:fileRef:wrparamPtr:result:thisOffset:bytesWritten:bytesRemain:pass:reply:", v16, v11, v45[5], v39[5], v23, 0, a4, 0, [v11 length], 0, v12);
+            -[smbMount writeRequest:withBuffer:smbNode:fileRef:wrparamPtr:result:thisOffset:bytesWritten:bytesRemain:pass:reply:](self, "writeRequest:withBuffer:smbNode:fileRef:wrparamPtr:result:thisOffset:bytesWritten:bytesRemain:pass:reply:", v16, bufferCopy, v45[5], v39[5], v23, 0, offset, 0, [bufferCopy length], 0, replyCopy);
 LABEL_24:
 
             goto LABEL_25;
@@ -5094,9 +5094,9 @@ LABEL_24:
           v26 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v45[5] name];
-            v28 = v27;
-            [v27 UTF8String];
+            name = [v45[5] name];
+            v28 = name;
+            [name UTF8String];
             sub_10005413C();
           }
         }
@@ -5114,7 +5114,7 @@ LABEL_24:
 
         v24 = 9;
 LABEL_23:
-        v12[2](v12, v24, 0);
+        replyCopy[2](replyCopy, v24, 0);
         goto LABEL_24;
       }
     }
@@ -5149,7 +5149,7 @@ LABEL_23:
     sub_1000540EC();
   }
 
-  v12[2](v12, v13, 0);
+  replyCopy[2](replyCopy, checkServerConnection, 0);
 LABEL_25:
   _Block_object_dispose(&v34, 8);
   _Block_object_dispose(&v38, 8);
@@ -5157,48 +5157,48 @@ LABEL_25:
   _Block_object_dispose(&v44, 8);
 }
 
-- (void)writeRequest:(id)a3 withBuffer:(id)a4 smbNode:(id)a5 fileRef:(id)a6 wrparamPtr:(smb_read_write *)a7 result:(int)a8 thisOffset:(unint64_t)a9 bytesWritten:(unint64_t)a10 bytesRemain:(unint64_t)a11 pass:(unint64_t)a12 reply:(id)a13
+- (void)writeRequest:(id)request withBuffer:(id)buffer smbNode:(id)node fileRef:(id)ref wrparamPtr:(smb_read_write *)ptr result:(int)result thisOffset:(unint64_t)offset bytesWritten:(unint64_t)self0 bytesRemain:(unint64_t)self1 pass:(unint64_t)self2 reply:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a13;
-  v23 = [(smbMount *)self readwriteSyncQueue];
+  requestCopy = request;
+  bufferCopy = buffer;
+  nodeCopy = node;
+  refCopy = ref;
+  replyCopy = reply;
+  readwriteSyncQueue = [(smbMount *)self readwriteSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001FD7C;
   block[3] = &unk_10008D8E8;
-  v42 = a8;
-  v37 = a11;
-  v38 = a7;
-  v31 = v21;
-  v32 = v20;
-  v33 = self;
-  v34 = v19;
-  v39 = a10;
-  v40 = a9;
-  v41 = a12;
-  v35 = v18;
-  v36 = v22;
-  v24 = v18;
-  v25 = v19;
-  v26 = v22;
-  v27 = v20;
-  v28 = v21;
-  dispatch_async(v23, block);
+  resultCopy = result;
+  remainCopy = remain;
+  ptrCopy = ptr;
+  v31 = refCopy;
+  v32 = nodeCopy;
+  selfCopy = self;
+  v34 = bufferCopy;
+  writtenCopy = written;
+  offsetCopy = offset;
+  passCopy = pass;
+  v35 = requestCopy;
+  v36 = replyCopy;
+  v24 = requestCopy;
+  v25 = bufferCopy;
+  v26 = replyCopy;
+  v27 = nodeCopy;
+  v28 = refCopy;
+  dispatch_async(readwriteSyncQueue, block);
 }
 
-- (void)xattrOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)xattrOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  namedCopy = named;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v13 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v13);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v18[0] = _NSConcreteStackBlock;
@@ -5206,20 +5206,20 @@ LABEL_25:
   v18[2] = sub_100020340;
   v18[3] = &unk_10008D0C8;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v19 = ofCopy;
+  v20 = namedCopy;
+  v21 = replyCopy;
+  v15 = replyCopy;
+  v16 = namedCopy;
+  v17 = ofCopy;
   dispatch_async(opsQueue, v18);
 }
 
-- (void)_LIGetXattr:(id)a3 name:(id)a4 reply:(id)a5
+- (void)_LIGetXattr:(id)xattr name:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  xattrCopy = xattr;
+  nameCopy = name;
+  replyCopy = reply;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -5240,8 +5240,8 @@ LABEL_25:
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  v11 = [(smbMount *)self checkServerConnection];
-  if (!v11)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -5250,7 +5250,7 @@ LABEL_25:
     block[3] = &unk_10008C948;
     v43 = &v59;
     block[4] = self;
-    v14 = v8;
+    v14 = xattrCopy;
     v42 = v14;
     v44 = &v45;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -5262,17 +5262,17 @@ LABEL_25:
       {
         if ((self->_shareInfo.fileSystemAttrs & 0x40000) != 0)
         {
-          v22 = [v15 xattrCache];
+          xattrCache = [v15 xattrCache];
           v65[0] = 0;
-          v23 = [v22 dataForName:v9 wasNegative:v65];
+          v23 = [xattrCache dataForName:nameCopy wasNegative:v65];
           if (v23)
           {
-            v10[2](v10, 0, v23);
+            replyCopy[2](replyCopy, 0, v23);
           }
 
           else if (v65[0] == 1)
           {
-            v10[2](v10, 93, 0);
+            replyCopy[2](replyCopy, 93, 0);
           }
 
           else
@@ -5288,8 +5288,8 @@ LABEL_25:
             v35[2] = sub_100020A04;
             v35[3] = &unk_10008D938;
             v38 = &v59;
-            v36 = v9;
-            v37 = self;
+            v36 = nameCopy;
+            selfCopy = self;
             v39 = &v53;
             v40 = &v49;
             v27[0] = _NSConcreteStackBlock;
@@ -5297,12 +5297,12 @@ LABEL_25:
             v27[2] = sub_100020B0C;
             v27[3] = &unk_10008D988;
             v32 = &v53;
-            v28 = v22;
+            v28 = xattrCache;
             v29 = v36;
             v33 = &v59;
             v34 = &v49;
-            v30 = self;
-            v31 = v10;
+            selfCopy2 = self;
+            v31 = replyCopy;
             [(smbMount *)self submitRequestBlock:v35 continuationBlock:v27];
           }
 
@@ -5311,7 +5311,7 @@ LABEL_25:
 
         v17 = 93;
 LABEL_17:
-        v10[2](v10, v17, 0);
+        replyCopy[2](replyCopy, v17, 0);
 LABEL_18:
 
         goto LABEL_19;
@@ -5354,7 +5354,7 @@ LABEL_16:
     sub_100054378();
   }
 
-  v10[2](v10, v11, 0);
+  replyCopy[2](replyCopy, checkServerConnection, 0);
 LABEL_19:
   _Block_object_dispose(&v45, 8);
   _Block_object_dispose(&v49, 8);
@@ -5363,17 +5363,17 @@ LABEL_19:
   _Block_object_dispose(&v59, 8);
 }
 
-- (void)setXattrOf:(id)a3 named:(id)a4 value:(id)a5 how:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)setXattrOf:(id)of named:(id)named value:(id)value how:(int)how requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  namedCopy = named;
+  valueCopy = value;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v18 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v18);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v24[0] = _NSConcreteStackBlock;
@@ -5381,24 +5381,24 @@ LABEL_19:
   v24[2] = sub_1000210CC;
   v24[3] = &unk_10008D9D8;
   v24[4] = self;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v29 = a6;
-  v28 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v25 = ofCopy;
+  v26 = namedCopy;
+  v27 = valueCopy;
+  howCopy = how;
+  v28 = replyCopy;
+  v20 = replyCopy;
+  v21 = valueCopy;
+  v22 = namedCopy;
+  v23 = ofCopy;
   dispatch_async(opsQueue, v24);
 }
 
-- (void)_LISetXattr:(id)a3 name:(id)a4 value:(id)a5 how:(int)a6 reply:(id)a7
+- (void)_LISetXattr:(id)xattr name:(id)name value:(id)value how:(int)how reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  xattrCopy = xattr;
+  nameCopy = name;
+  valueCopy = value;
+  replyCopy = reply;
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -5423,8 +5423,8 @@ LABEL_19:
   v54[3] = sub_10000B2A0;
   v54[4] = sub_10000B2B0;
   v55 = 0;
-  v16 = [(smbMount *)self checkServerConnection];
-  if (!v16)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     v62[3] = 0;
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
@@ -5434,7 +5434,7 @@ LABEL_19:
     block[3] = &unk_10008C948;
     v52 = &v65;
     block[4] = self;
-    v51 = v12;
+    v51 = xattrCopy;
     v53 = &v56;
     dispatch_sync(nodeTableSyncQueue, block);
     v19 = v66[5];
@@ -5443,7 +5443,7 @@ LABEL_19:
     {
       if ((v57[3] & 1) == 0)
       {
-        v21 = [v19 xattrCache];
+        xattrCache = [v19 xattrCache];
         v44[0] = _NSConcreteStackBlock;
         v44[1] = 3221225472;
         v44[2] = sub_1000218D8;
@@ -5452,11 +5452,11 @@ LABEL_19:
         v47 = &v65;
         v48 = v54;
         v49 = v60;
-        v45 = v15;
+        v45 = replyCopy;
         v22 = objc_retainBlock(v44);
-        if (a6 >= 3)
+        if (how >= 3)
         {
-          if (a6 != 3)
+          if (how != 3)
           {
 LABEL_20:
 
@@ -5468,14 +5468,14 @@ LABEL_20:
           v30[2] = sub_100021C10;
           v30[3] = &unk_10008D528;
           v31[1] = &v65;
-          v31[0] = v13;
+          v31[0] = nameCopy;
           v25[0] = _NSConcreteStackBlock;
           v25[1] = 3221225472;
           v25[2] = sub_100021CD8;
           v25[3] = &unk_10008D960;
           v29 = &v65;
           v26 = v31[0];
-          v27 = v21;
+          v27 = xattrCache;
           v28 = v22;
           [(smbMount *)self submitRequestBlockOnce:v30 continuationBlock:v25];
 
@@ -5489,18 +5489,18 @@ LABEL_20:
           v39[2] = sub_100021AA8;
           v39[3] = &unk_10008DA28;
           v42 = &v65;
-          v43 = a6;
-          v40[0] = v13;
+          howCopy = how;
+          v40[0] = nameCopy;
           v40[1] = self;
-          v41 = v14;
+          v41 = valueCopy;
           v32[0] = _NSConcreteStackBlock;
           v32[1] = 3221225472;
           v32[2] = sub_100021BA4;
           v32[3] = &unk_10008DA50;
           v37 = &v65;
           v33 = v40[0];
-          v38 = a6;
-          v34 = v21;
+          howCopy2 = how;
+          v34 = xattrCache;
           v35 = v41;
           v36 = v22;
           [(smbMount *)self submitRequestBlockOnce:v39 continuationBlock:v32];
@@ -5530,7 +5530,7 @@ LABEL_20:
 
     v24 = 70;
 LABEL_16:
-    (*(v15 + 2))(v15, v24, 0, 0, 0, 0, 2);
+    (*(replyCopy + 2))(replyCopy, v24, 0, 0, 0, 0, 2);
 LABEL_21:
 
     goto LABEL_22;
@@ -5546,7 +5546,7 @@ LABEL_21:
     sub_100054634();
   }
 
-  (*(v15 + 2))(v15, v16, 0, 0, 0, 0, 2);
+  (*(replyCopy + 2))(replyCopy, checkServerConnection, 0, 0, 0, 0, 2);
 LABEL_22:
   _Block_object_dispose(v54, 8);
 
@@ -5556,15 +5556,15 @@ LABEL_22:
   _Block_object_dispose(&v65, 8);
 }
 
-- (void)listXattrsOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)listXattrsOf:(id)of requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
+  ofCopy = of;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v10 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v10);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -5572,17 +5572,17 @@ LABEL_22:
   block[2] = sub_100021E50;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v12 = v8;
-  v13 = v7;
+  v15 = ofCopy;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = ofCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LIListXattrs:(id)a3 reply:(id)a4
+- (void)_LIListXattrs:(id)xattrs reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  xattrsCopy = xattrs;
+  replyCopy = reply;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -5599,8 +5599,8 @@ LABEL_22:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v8 = [(smbMount *)self checkServerConnection];
-  if (!v8)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
     nodeTableSyncQueue = self->_nodeTableSyncQueue;
     block[0] = _NSConcreteStackBlock;
@@ -5609,7 +5609,7 @@ LABEL_22:
     block[3] = &unk_10008C948;
     v27 = &v35;
     block[4] = self;
-    v11 = v6;
+    v11 = xattrsCopy;
     v26 = v11;
     v28 = &v29;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -5619,10 +5619,10 @@ LABEL_22:
     {
       if ((v30[3] & 1) == 0)
       {
-        v14 = [v12 xattrCache];
-        if ([v14 noXattrsPresent])
+        xattrCache = [v12 xattrCache];
+        if ([xattrCache noXattrsPresent])
         {
-          v7[2](v7, 0, &__NSArray0__struct);
+          replyCopy[2](replyCopy, 0, &__NSArray0__struct);
         }
 
         else
@@ -5637,8 +5637,8 @@ LABEL_22:
           v20[1] = 3221225472;
           v20[2] = sub_100022534;
           v20[3] = &unk_10008DAC8;
-          v22 = v7;
-          v21 = v14;
+          v22 = replyCopy;
+          v21 = xattrCache;
           v23 = v33;
           [(smbMount *)self submitRequestBlock:v24 continuationBlock:v20];
         }
@@ -5670,7 +5670,7 @@ LABEL_22:
     v17 = 70;
 LABEL_16:
 
-    v7[2](v7, v17, 0);
+    replyCopy[2](replyCopy, v17, 0);
 LABEL_19:
 
     goto LABEL_20;
@@ -5686,7 +5686,7 @@ LABEL_19:
     sub_1000548D0();
   }
 
-  v7[2](v7, v8, 0);
+  replyCopy[2](replyCopy, checkServerConnection, 0);
 LABEL_20:
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(v33, 8);
@@ -5694,26 +5694,26 @@ LABEL_20:
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)search:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 forClient:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)search:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
+  searchCopy = search;
+  tokenCopy = token;
+  criteriaCopy = criteria;
+  proxyCopy = proxy;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v20 = [(smbMount *)self searchObjects];
+  searchObjects = [(smbMount *)self searchObjects];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10002285C;
   v35[3] = &unk_10008DAE8;
-  v35[4] = a7;
-  [v20 enumerateKeysAndObjectsUsingBlock:v35];
+  v35[4] = client;
+  [searchObjects enumerateKeysAndObjectsUsingBlock:v35];
 
-  v21 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v21);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v28[0] = _NSConcreteStackBlock;
@@ -5721,27 +5721,27 @@ LABEL_20:
   v28[2] = sub_1000228B8;
   v28[3] = &unk_10008D140;
   v28[4] = self;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v33 = v18;
-  v34 = a7;
-  v32 = v17;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
+  v29 = searchCopy;
+  v30 = tokenCopy;
+  v31 = criteriaCopy;
+  v33 = replyCopy;
+  clientCopy = client;
+  v32 = proxyCopy;
+  v23 = replyCopy;
+  v24 = proxyCopy;
+  v25 = criteriaCopy;
+  v26 = tokenCopy;
+  v27 = searchCopy;
   dispatch_async(opsQueue, v28);
 }
 
-- (void)_LISearch:(id)a3 token:(id)a4 criteria:(id)a5 returnProxy:(id)a6 withCallerID:(unint64_t)a7 reply:(id)a8
+- (void)_LISearch:(id)search token:(id)token criteria:(id)criteria returnProxy:(id)proxy withCallerID:(unint64_t)d reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  searchCopy = search;
+  tokenCopy = token;
+  criteriaCopy = criteria;
+  proxyCopy = proxy;
+  replyCopy = reply;
   v85 = 0;
   v86 = &v85;
   v87 = 0x3032000000;
@@ -5754,17 +5754,17 @@ LABEL_20:
   v83 = 0;
   v79 = 0;
   v84 = 0;
-  v19 = [(smbMount *)self checkServerConnection];
-  if (!v19)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (!checkServerConnection)
   {
-    v22 = [(smbMount *)self searchLock];
-    [v22 lock];
+    searchLock = [(smbMount *)self searchLock];
+    [searchLock lock];
 
-    v23 = [(smbMount *)self searchObjects];
-    v21 = [v23 objectForKey:v15];
+    searchObjects = [(smbMount *)self searchObjects];
+    v21 = [searchObjects objectForKey:tokenCopy];
 
-    v24 = [(smbMount *)self searchLock];
-    [v24 unlock];
+    searchLock2 = [(smbMount *)self searchLock];
+    [searchLock2 unlock];
 
     if (v21)
     {
@@ -5773,7 +5773,7 @@ LABEL_20:
         sub_100054AAC();
       }
 
-      v18[2](v18, 17);
+      replyCopy[2](replyCopy, 17);
       goto LABEL_9;
     }
 
@@ -5784,7 +5784,7 @@ LABEL_20:
     block[3] = &unk_10008C948;
     v77 = &v85;
     block[4] = self;
-    v28 = v14;
+    v28 = searchCopy;
     v76 = v28;
     v78 = &v80;
     dispatch_sync(nodeTableSyncQueue, block);
@@ -5797,8 +5797,8 @@ LABEL_20:
         if ([v29 isRoot])
         {
           v31 = [NSString alloc];
-          v32 = [(smbMount *)self shareName];
-          v26 = [v31 initWithFormat:@"%@", v32];
+          shareName = [(smbMount *)self shareName];
+          v26 = [v31 initWithFormat:@"%@", shareName];
           v65 = 0;
 LABEL_24:
 
@@ -5818,7 +5818,7 @@ LABEL_24:
               sub_1000552D0();
             }
 
-            v18[2](v18, 12);
+            replyCopy[2](replyCopy, 12);
             v71 = 0;
             v72 = 0;
             v41 = 0;
@@ -5834,7 +5834,7 @@ LABEL_24:
               sub_10005528C();
             }
 
-            v18[2](v18, 12);
+            replyCopy[2](replyCopy, 12);
             v71 = 0;
             v72 = 0;
             goto LABEL_55;
@@ -5849,7 +5849,7 @@ LABEL_24:
             }
 
 LABEL_49:
-            v18[2](v18, v40);
+            replyCopy[2](replyCopy, v40);
             v71 = 0;
 LABEL_55:
             v41 = 0;
@@ -5870,36 +5870,36 @@ LABEL_56:
             goto LABEL_49;
           }
 
-          v43 = [(smbMount *)self serverName];
-          [v72 setServerName:v43];
+          serverName = [(smbMount *)self serverName];
+          [v72 setServerName:serverName];
 
-          v44 = [(smbMount *)self userName];
-          [v72 setUserName:v44];
+          userName = [(smbMount *)self userName];
+          [v72 setUserName:userName];
 
           [v72 setClientMachineName:v71];
           [v72 setSearchPath:v26];
           v45 = [(smbMount *)self pd];
           [(smbSearchContext *)v21 setPd:v45];
 
-          [(smbSearchContext *)v21 setSearchToken:v15];
-          [(smbSearchContext *)v21 setCallerID:a7];
-          [(smbSearchContext *)v21 setHandler:v17];
+          [(smbSearchContext *)v21 setSearchToken:tokenCopy];
+          [(smbSearchContext *)v21 setCallerID:d];
+          [(smbSearchContext *)v21 setHandler:proxyCopy];
           [(smbSearchContext *)v21 setWctx:v72];
-          if ([(smbSearchContext *)v21 parseSearchCriteria:v16])
+          if ([(smbSearchContext *)v21 parseSearchCriteria:criteriaCopy])
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
               sub_100054C34();
             }
 
-            v46 = 12;
+            doTreeConnect = 12;
 LABEL_54:
-            v18[2](v18, v46);
+            replyCopy[2](replyCopy, doTreeConnect);
             goto LABEL_55;
           }
 
-          v46 = [(smbSearchContext *)v21 doTreeConnect];
-          if (v46)
+          doTreeConnect = [(smbSearchContext *)v21 doTreeConnect];
+          if (doTreeConnect)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
@@ -5932,7 +5932,7 @@ LABEL_54:
             }
 
 LABEL_76:
-            v18[2](v18, v47);
+            replyCopy[2](replyCopy, v47);
             v41 = 0;
             goto LABEL_57;
           }
@@ -5980,17 +5980,17 @@ LABEL_76:
                 sub_100054E9C(v93, [v41 cRowsTotal], objc_msgSend(v41, "cResultsFound"));
               }
 
-              v67 = [(smbMount *)self searchLock];
-              [v67 lock];
+              searchLock3 = [(smbMount *)self searchLock];
+              [searchLock3 lock];
 
-              v68 = [(smbMount *)self searchObjects];
-              v60 = [(smbSearchContext *)v21 searchToken];
-              [v68 setObject:v21 forKey:v60];
+              searchObjects2 = [(smbMount *)self searchObjects];
+              searchToken = [(smbSearchContext *)v21 searchToken];
+              [searchObjects2 setObject:v21 forKey:searchToken];
 
-              v69 = [(smbMount *)self searchLock];
-              [v69 unlock];
+              searchLock4 = [(smbMount *)self searchLock];
+              [searchLock4 unlock];
 
-              v18[2](v18, 0);
+              replyCopy[2](replyCopy, 0);
               if ([(smbSearchContext *)v21 checkSearchAborted])
               {
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -6022,8 +6022,8 @@ LABEL_112:
                     goto LABEL_100;
                   }
 
-                  v49 = [(smbSearchContext *)v21 searchRows];
-                  v61 = v49 == 0;
+                  searchRows = [(smbSearchContext *)v21 searchRows];
+                  v61 = searchRows == 0;
 
                   if (v61)
                   {
@@ -6038,9 +6038,9 @@ LABEL_112:
                     v50 = &_os_log_default;
                     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                     {
-                      v62 = [(smbSearchContext *)v21 searchRows];
-                      v58 = [v62 rows];
-                      v51 = [v58 count];
+                      searchRows2 = [(smbSearchContext *)v21 searchRows];
+                      rows = [searchRows2 rows];
+                      v51 = [rows count];
                       *buf = 134217984;
                       v92 = v51;
                       _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "LISearch: received %lu rows", buf, 0xCu);
@@ -6063,30 +6063,30 @@ LABEL_112:
 
               v70 = 0;
 LABEL_100:
-              v63 = [(smbMount *)self searchLock];
-              [v63 lock];
+              searchLock5 = [(smbMount *)self searchLock];
+              [searchLock5 lock];
 
-              v64 = [(smbMount *)self searchObjects];
-              v59 = [(smbSearchContext *)v21 searchToken];
-              [v64 removeObjectForKey:v59];
+              searchObjects3 = [(smbMount *)self searchObjects];
+              searchToken2 = [(smbSearchContext *)v21 searchToken];
+              [searchObjects3 removeObjectForKey:searchToken2];
 
-              v52 = [(smbMount *)self searchLock];
-              [v52 unlock];
+              searchLock6 = [(smbMount *)self searchLock];
+              [searchLock6 unlock];
 
-              v53 = [(smbSearchContext *)v21 searchLock];
-              [v53 lock];
+              searchLock7 = [(smbSearchContext *)v21 searchLock];
+              [searchLock7 lock];
 
-              LOBYTE(v53) = [(smbSearchContext *)v21 isAborted];
+              LOBYTE(searchLock7) = [(smbSearchContext *)v21 isAborted];
               v54 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-              if (v53)
+              if (searchLock7)
               {
                 if (v54)
                 {
                   sub_100055138();
                 }
 
-                v55 = [(smbSearchContext *)v21 handler];
-                [v55 tokenDone:89];
+                handler = [(smbSearchContext *)v21 handler];
+                [handler tokenDone:89];
 
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                 {
@@ -6101,8 +6101,8 @@ LABEL_100:
                   sub_10005507C();
                 }
 
-                v56 = [(smbSearchContext *)v21 handler];
-                [v56 tokenDone:v70];
+                handler2 = [(smbSearchContext *)v21 handler];
+                [handler2 tokenDone:v70];
 
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                 {
@@ -6111,8 +6111,8 @@ LABEL_100:
               }
 
               [(smbSearchContext *)v21 setIsFinished:1];
-              v57 = [(smbSearchContext *)v21 searchLock];
-              [v57 unlock];
+              searchLock8 = [(smbSearchContext *)v21 searchLock];
+              [searchLock8 unlock];
 
               [(smbSearchContext *)v21 doFreeCursor:0];
               [(smbSearchContext *)v21 doFreeCursor:1];
@@ -6128,7 +6128,7 @@ LABEL_100:
             }
           }
 
-          v18[2](v18, v66);
+          replyCopy[2](replyCopy, v66);
 LABEL_57:
 
           goto LABEL_10;
@@ -6138,8 +6138,8 @@ LABEL_57:
         if (v65)
         {
           v38 = [NSString alloc];
-          v32 = [(smbMount *)self shareName];
-          v26 = [v38 initWithFormat:@"%@/%@", v32, v65];
+          shareName = [(smbMount *)self shareName];
+          v26 = [v38 initWithFormat:@"%@/%@", shareName, v65];
           goto LABEL_24;
         }
 
@@ -6154,7 +6154,7 @@ LABEL_57:
         v35 = 22;
 LABEL_40:
 
-        v18[2](v18, v35);
+        replyCopy[2](replyCopy, v35);
         v71 = 0;
         v72 = 0;
         v41 = 0;
@@ -6199,7 +6199,7 @@ LABEL_40:
     sub_100054A5C();
   }
 
-  v18[2](v18, v19);
+  replyCopy[2](replyCopy, checkServerConnection);
   v21 = 0;
 LABEL_9:
   v25 = 0;
@@ -6210,50 +6210,50 @@ LABEL_10:
   _Block_object_dispose(&v85, 8);
 }
 
-- (void)replenishSearchCreditsFor:(id)a3 credits:(unsigned int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)replenishSearchCreditsFor:(id)for credits:(unsigned int)credits requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
+  forCopy = for;
+  replyCopy = reply;
   opsQueue = self->_opsQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100023860;
   v14[3] = &unk_10008CC68;
   v14[4] = self;
-  v15 = v9;
-  v17 = a4;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = forCopy;
+  creditsCopy = credits;
+  v16 = replyCopy;
+  v12 = replyCopy;
+  v13 = forCopy;
   dispatch_async(opsQueue, v14);
 }
 
-- (void)abortSearch:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)abortSearch:(id)search requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  searchCopy = search;
+  replyCopy = reply;
   opsQueue = self->_opsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023AD8;
   block[3] = &unk_10008CBF0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = searchCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = searchCopy;
   dispatch_async(opsQueue, block);
 }
 
-- (void)_LISearchAbort:(id)a3 reply:(id)a4
+- (void)_LISearchAbort:(id)abort reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(smbMount *)self searchLock];
-  [v8 lock];
+  replyCopy = reply;
+  abortCopy = abort;
+  searchLock = [(smbMount *)self searchLock];
+  [searchLock lock];
 
-  v9 = [(smbMount *)self searchObjects];
-  v12 = [v9 objectForKey:v7];
+  searchObjects = [(smbMount *)self searchObjects];
+  v12 = [searchObjects objectForKey:abortCopy];
 
   if (v12)
   {
@@ -6266,13 +6266,13 @@ LABEL_10:
     v10 = 2;
   }
 
-  v11 = [(smbMount *)self searchLock];
-  [v11 unlock];
+  searchLock2 = [(smbMount *)self searchLock];
+  [searchLock2 unlock];
 
-  v6[2](v6, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)abortAllClientSearchesFor:(unint64_t)a3
+- (void)abortAllClientSearchesFor:(unint64_t)for
 {
   opsQueue = self->_opsQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -6280,43 +6280,43 @@ LABEL_10:
   v4[2] = sub_100023CD4;
   v4[3] = &unk_10008C8A8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = for;
   dispatch_sync(opsQueue, v4);
 }
 
-- (void)_LISearchAbortAllClientSearches:(unint64_t)a3
+- (void)_LISearchAbortAllClientSearches:(unint64_t)searches
 {
-  v5 = [(smbMount *)self searchLock];
-  [v5 lock];
+  searchLock = [(smbMount *)self searchLock];
+  [searchLock lock];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v10 = a3;
+    searchesCopy = searches;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "LISearchAbortAllClientSearches- stopping all live searches for client %llu", buf, 0xCu);
   }
 
-  v6 = [(smbMount *)self searchObjects];
+  searchObjects = [(smbMount *)self searchObjects];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100023E1C;
   v8[3] = &unk_10008DB08;
-  v8[4] = a3;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v8[4] = searches;
+  [searchObjects enumerateKeysAndObjectsUsingBlock:v8];
 
-  v7 = [(smbMount *)self searchLock];
-  [v7 unlock];
+  searchLock2 = [(smbMount *)self searchLock];
+  [searchLock2 unlock];
 }
 
-- (void)checkAccessTo:(id)a3 requestedAccess:(unsigned int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)checkAccessTo:(id)to requestedAccess:(unsigned int)access requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(smbMount *)self namespaceChangingGroup];
-  dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
+  toCopy = to;
+  replyCopy = reply;
+  namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+  dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
-  v12 = [(smbMount *)self opsSyncGroup];
-  dispatch_group_enter(v12);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  dispatch_group_enter(opsSyncGroup);
 
   opsQueue = self->_opsQueue;
   v16[0] = _NSConcreteStackBlock;
@@ -6324,18 +6324,18 @@ LABEL_10:
   v16[2] = sub_100023F8C;
   v16[3] = &unk_10008CC68;
   v16[4] = self;
-  v17 = v9;
-  v19 = a4;
-  v18 = v10;
-  v14 = v10;
-  v15 = v9;
+  v17 = toCopy;
+  accessCopy = access;
+  v18 = replyCopy;
+  v14 = replyCopy;
+  v15 = toCopy;
   dispatch_async(opsQueue, v16);
 }
 
-- (void)_LIAccessCheck:(id)a3 requestedAccess:(unsigned int)a4 reply:(id)a5
+- (void)_LIAccessCheck:(id)check requestedAccess:(unsigned int)access reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  checkCopy = check;
+  replyCopy = reply;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -6350,8 +6350,8 @@ LABEL_10:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v10 = [(smbMount *)self checkServerConnection];
-  if (v10)
+  checkServerConnection = [(smbMount *)self checkServerConnection];
+  if (checkServerConnection)
   {
     v11 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -6363,7 +6363,7 @@ LABEL_10:
       sub_100055394();
     }
 
-    v9[2](v9, v10);
+    replyCopy[2](replyCopy, checkServerConnection);
   }
 
   else
@@ -6375,7 +6375,7 @@ LABEL_10:
     block[3] = &unk_10008C948;
     v27 = &v37;
     block[4] = self;
-    v26 = v8;
+    v26 = checkCopy;
     v28 = &v33;
     dispatch_sync(nodeTableSyncQueue, block);
     v13 = v38[5];
@@ -6391,7 +6391,7 @@ LABEL_10:
         v15 = 2;
       }
 
-      v9[2](v9, v15);
+      replyCopy[2](replyCopy, v15);
     }
 
     else
@@ -6400,10 +6400,10 @@ LABEL_10:
       v21[1] = 3221225472;
       v21[2] = sub_1000244D8;
       v21[3] = &unk_10008DB30;
-      v24 = a4;
+      accessCopy = access;
       v23 = &v37;
       v21[4] = self;
-      v22 = v9;
+      v22 = replyCopy;
       v14 = objc_retainBlock(v21);
       if ([v38[5] getMaxAccessAttr:v30 + 3])
       {
@@ -6435,13 +6435,13 @@ LABEL_10:
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a7;
+  interestCopy = interest;
+  replyCopy = reply;
   v13 = dispatch_time(0, 15000000000);
-  v14 = [(smbMount *)self opsSyncGroup];
-  v15 = dispatch_group_wait(v14, v13);
+  opsSyncGroup = [(smbMount *)self opsSyncGroup];
+  v15 = dispatch_group_wait(opsSyncGroup, v13);
 
   if (v15)
   {
@@ -6450,13 +6450,13 @@ LABEL_10:
       sub_100055C6C();
     }
 
-    v12[2](v12, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v16 = [(smbMount *)self namespaceChangingGroup];
-    dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
+    namespaceChangingGroup = [(smbMount *)self namespaceChangingGroup];
+    dispatch_group_wait(namespaceChangingGroup, 0xFFFFFFFFFFFFFFFFLL);
 
     opsQueue = self->_opsQueue;
     block[0] = _NSConcreteStackBlock;
@@ -6465,48 +6465,48 @@ LABEL_10:
     block[3] = &unk_10008DBA8;
     block[4] = self;
     v22 = a4;
-    v19 = v11;
-    v21 = a5;
-    v20 = v12;
+    v19 = interestCopy;
+    clientCopy = client;
+    v20 = replyCopy;
     dispatch_async(opsQueue, block);
   }
 }
 
-- (void)_LISetUpdateInterest:(id)a3 interest:(BOOL)a4 forClient:(unint64_t)a5 reply:(id)a6
+- (void)_LISetUpdateInterest:(id)interest interest:(BOOL)a4 forClient:(unint64_t)client reply:(id)reply
 {
   v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  interestCopy = interest;
+  replyCopy = reply;
   location = 0;
-  v12 = self;
+  selfCopy = self;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
   v43[3] = sub_10000B2A0;
   v43[4] = sub_10000B2B0;
-  v31 = v10;
+  v31 = interestCopy;
   v44 = v31;
-  if ([(smbMount *)v12 checkServerConnection])
+  if ([(smbMount *)selfCopy checkServerConnection])
   {
     v13 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      [(smbMount *)v12 serverName];
+      [(smbMount *)selfCopy serverName];
       objc_claimAutoreleasedReturnValue();
-      [(smbMount *)v12 shareName];
+      [(smbMount *)selfCopy shareName];
       objc_claimAutoreleasedReturnValue();
       sub_100055CB0();
     }
 
     v14 = getNSErrorFromLiveFSErrno();
-    v11[2](v11, v14);
+    replyCopy[2](replyCopy, v14);
     goto LABEL_5;
   }
 
-  v16 = ~a5;
+  v16 = ~client;
   if (![v31 isEqualToString:LIUpdateNSFileProviderRootContainerItemIdentifier])
   {
-    v17 = [(NSMutableDictionary *)v12->_handleTable objectForKey:v31];
+    v17 = [(NSMutableDictionary *)selfCopy->_handleTable objectForKey:v31];
     v15 = v17;
     if (!v17)
     {
@@ -6515,13 +6515,13 @@ LABEL_10:
 
     if (v8)
     {
-      [v17 setInterestedClients:{objc_msgSend(v17, "interestedClients") | a5}];
+      [v17 setInterestedClients:{objc_msgSend(v17, "interestedClients") | client}];
       if ([v15 isDir])
       {
         objc_storeWeak(&location, v15);
         v18 = [NSString alloc];
-        v19 = [v15 name];
-        v20 = [v18 initWithString:v19];
+        name = [v15 name];
+        v20 = [v18 initWithString:name];
 
         v21 = v38;
         v38[0] = _NSConcreteStackBlock;
@@ -6530,14 +6530,14 @@ LABEL_10:
         v38[3] = &unk_10008CC40;
         v22 = v20;
         v38[4] = v22;
-        v38[5] = v11;
+        v38[5] = replyCopy;
         v33[0] = _NSConcreteStackBlock;
         v33[1] = 3221225472;
         v33[2] = sub_100025204;
         v33[3] = &unk_10008DBF8;
         v14 = v22;
         v34 = v14;
-        v35 = v12;
+        v35 = selfCopy;
         v36 = v43;
         objc_copyWeak(&v37, &location);
         [v15 addChangeNotify:v38 NotifyHandler:v33];
@@ -6555,8 +6555,8 @@ LABEL_26:
       {
         objc_storeWeak(&location, v15);
         v28 = [NSString alloc];
-        v29 = [v15 name];
-        v30 = [v28 initWithString:v29];
+        name2 = [v15 name];
+        v30 = [v28 initWithString:name2];
 
         v21 = v32;
         v32[0] = _NSConcreteStackBlock;
@@ -6565,14 +6565,14 @@ LABEL_26:
         v32[3] = &unk_10008CC40;
         v14 = v30;
         v32[4] = v14;
-        v32[5] = v11;
+        v32[5] = replyCopy;
         [v15 clearChangeNotify:1 completionHandler:v32];
         goto LABEL_26;
       }
     }
 
 LABEL_27:
-    v11[2](v11, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_7;
   }
 
@@ -6582,9 +6582,9 @@ LABEL_27:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v23 = [(NSMutableDictionary *)v12->_handleTable allKeys];
+    allKeys = [(NSMutableDictionary *)selfCopy->_handleTable allKeys];
     v15 = 0;
-    v24 = [v23 countByEnumeratingWithState:&v39 objects:v46 count:16];
+    v24 = [allKeys countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (v24)
     {
       v25 = *v40;
@@ -6596,10 +6596,10 @@ LABEL_27:
         {
           if (*v40 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allKeys);
           }
 
-          v15 = [(NSMutableDictionary *)v12->_handleTable objectForKey:*(*(&v39 + 1) + 8 * v26)];
+          v15 = [(NSMutableDictionary *)selfCopy->_handleTable objectForKey:*(*(&v39 + 1) + 8 * v26)];
 
           [v15 setInterestedClients:{objc_msgSend(v15, "interestedClients") & v16}];
           v26 = v26 + 1;
@@ -6607,7 +6607,7 @@ LABEL_27:
         }
 
         while (v24 != v26);
-        v24 = [v23 countByEnumeratingWithState:&v39 objects:v46 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v39 objects:v46 count:16];
       }
 
       while (v24);
@@ -6618,7 +6618,7 @@ LABEL_27:
 
 LABEL_10:
   v14 = getNSErrorFromLiveFSErrno();
-  v11[2](v11, v14);
+  replyCopy[2](replyCopy, v14);
 LABEL_5:
   v15 = 0;
 LABEL_6:
@@ -6631,26 +6631,26 @@ LABEL_7:
 
 - (int)connectionState
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
   dispatch_assert_queue_not_V2(self->_connectionSyncQueue);
-  connectionSyncQueue = v2->_connectionSyncQueue;
+  connectionSyncQueue = selfCopy->_connectionSyncQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100025538;
   v5[3] = &unk_10008DC20;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(connectionSyncQueue, v5);
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setConnectionState:(int)a3
+- (void)_setConnectionState:(int)state
 {
   connectionSyncQueue = self->_connectionSyncQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -6658,11 +6658,11 @@ LABEL_7:
   v4[2] = sub_1000255D4;
   v4[3] = &unk_10008DC48;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_sync(connectionSyncQueue, v4);
 }
 
-- (void)SetShutDownReason:(int)a3
+- (void)SetShutDownReason:(int)reason
 {
   connectionSyncQueue = self->_connectionSyncQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -6670,20 +6670,20 @@ LABEL_7:
   v4[2] = sub_10002566C;
   v4[3] = &unk_10008DC48;
   v4[4] = self;
-  v5 = a3;
+  reasonCopy = reason;
   dispatch_sync(connectionSyncQueue, v4);
 }
 
-- (void)_submitRequestBlock:(id)a3 continuationBlock:(id)a4 allowRetries:(BOOL)a5
+- (void)_submitRequestBlock:(id)block continuationBlock:(id)continuationBlock allowRetries:(BOOL)retries
 {
-  v8 = a3;
+  blockCopy = block;
   atomic_fetch_add(&self->_pendingRequests, 1uLL);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10002588C;
   v16[3] = &unk_10008CC40;
   v16[4] = self;
-  v9 = objc_retainBlock(a4);
+  v9 = objc_retainBlock(continuationBlock);
   v17 = v9;
   v10 = objc_retainBlock(v16);
   if ([(smbMount *)self connectionState]- 3 > 0xFFFFFFFD)
@@ -6695,8 +6695,8 @@ LABEL_7:
     v12[3] = &unk_10008DC98;
     v12[4] = self;
     v13 = v10;
-    v14 = v8;
-    v15 = a5;
+    v14 = blockCopy;
+    retriesCopy = retries;
     dispatch_async(connQueue, v12);
   }
 
@@ -6724,13 +6724,13 @@ LABEL_7:
 
 - (void)notifyConnectionLost
 {
-  v3 = [(smbMount *)self connectionSyncQueue];
+  connectionSyncQueue = [(smbMount *)self connectionSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000260D4;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(connectionSyncQueue, block);
 }
 
 - (void)reconnectSession
@@ -6760,10 +6760,10 @@ LABEL_7:
   v95 = 0u;
   v93 = 0u;
   memset(v117, 0, sizeof(v117));
-  v3 = [(smbMount *)self connectionState];
+  connectionState = [(smbMount *)self connectionState];
   v4 = &_os_log_default;
   v5 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-  if (v3 != 2)
+  if (connectionState != 2)
   {
     if (v5)
     {
@@ -6835,9 +6835,9 @@ LABEL_17:
   }
 
   v14 = qword_1000954F0;
-  v15 = [(smbMount *)self mountURL];
+  mountURL = [(smbMount *)self mountURL];
   v92 = 0;
-  v7 = [v14 getPasswordForIdentifier:v15 error:&v92];
+  v7 = [v14 getPasswordForIdentifier:mountURL error:&v92];
   v85 = v92;
 
   if (v7)
@@ -6917,16 +6917,16 @@ LABEL_32:
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
-              v82 = [(smbMount *)self serverName];
-              v83 = [(smbMount *)self shareName];
+              serverName = [(smbMount *)self serverName];
+              shareName = [(smbMount *)self shareName];
               *buf = v84;
               *&buf[4] = v18;
               *&buf[8] = 2048;
               *&buf[10] = v21;
               *&buf[18] = 2112;
-              *&buf[20] = v82;
+              *&buf[20] = serverName;
               *&buf[28] = 2112;
-              *&buf[30] = v83;
+              *&buf[30] = shareName;
               _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: pass: %u, reconnect timed out after %ld seconds on server: %@, share: %@ \n", buf, 0x26u);
             }
 
@@ -6935,19 +6935,19 @@ LABEL_32:
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            v35 = [(smbMount *)self serverName];
-            v36 = [(smbMount *)self shareName];
+            serverName2 = [(smbMount *)self serverName];
+            shareName2 = [(smbMount *)self shareName];
             *buf = 67109634;
             *&buf[4] = v18;
             *&buf[8] = 2112;
-            *&buf[10] = v35;
+            *&buf[10] = serverName2;
             *&buf[18] = 2112;
-            *&buf[20] = v36;
+            *&buf[20] = shareName2;
             _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "reconnectSession: starting pass: %u on server: %@, share: %@ \n", buf, 0x1Cu);
           }
 
-          v23 = [(smbMount *)self serverName];
-          v24 = [smb_subr sendNegotiate:v6 Server:v23 netBIOSName:0 VPNCookie:0 Result:&v118];
+          serverName3 = [(smbMount *)self serverName];
+          v24 = [smb_subr sendNegotiate:v6 Server:serverName3 netBIOSName:0 VPNCookie:0 Result:&v118];
 
           if (!v24)
           {
@@ -6958,16 +6958,16 @@ LABEL_32:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
             v48 = v118;
-            v49 = [(smbMount *)self serverName];
-            v50 = [(smbMount *)self shareName];
+            serverName4 = [(smbMount *)self serverName];
+            shareName3 = [(smbMount *)self shareName];
             *buf = v84;
             *&buf[4] = v24;
             *&buf[8] = 1024;
             *&buf[10] = v48;
             *&buf[14] = 2112;
-            *&buf[16] = v49;
+            *&buf[16] = serverName4;
             *&buf[24] = 2112;
-            *&buf[26] = v50;
+            *&buf[26] = shareName3;
             _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: sendNegotiate error: %u, ntstatus: 0x%x on server: %@, share: %@ \n", buf, 0x22u);
           }
         }
@@ -6980,8 +6980,8 @@ LABEL_32:
         if ([(smbMount *)self isGuestLogin])
         {
           LODWORD(v102) = 1;
-          v27 = [(smbMount *)self userName];
-          v28 = [smb_subr sendSessionSetup:v6 User:v27 Password:0 Realm:0 Param:&v102];
+          userName = [(smbMount *)self userName];
+          v28 = [smb_subr sendSessionSetup:v6 User:userName Password:0 Realm:0 Param:&v102];
 LABEL_52:
 
           goto LABEL_53;
@@ -6990,10 +6990,10 @@ LABEL_52:
         if ((v121 & 2) != 0)
         {
           v29 = objc_opt_new();
-          v30 = [v29 realms];
+          realms = [v29 realms];
 
-          v31 = [(smbMount *)self userDomain];
-          if (!v31 || (v32 = [v30 count] == 0, v31, v32))
+          userDomain = [(smbMount *)self userDomain];
+          if (!userDomain || (v32 = [realms count] == 0, userDomain, v32))
           {
           }
 
@@ -7001,8 +7001,8 @@ LABEL_52:
           {
             LODWORD(v102) = 8;
             userName = self->_userName;
-            v34 = [(smbMount *)self userDomain];
-            v28 = [smb_subr sendSessionSetup:v6 User:userName Password:v7 Realm:v34 Param:&v102];
+            userDomain2 = [(smbMount *)self userDomain];
+            v28 = [smb_subr sendSessionSetup:v6 User:userName Password:v7 Realm:userDomain2 Param:&v102];
 
             if (v28 != 80)
             {
@@ -7014,9 +7014,9 @@ LABEL_52:
         if ((v121 & 0x44) == 0 || (LODWORD(v102) = 2, [(smbMount *)self userName], v37 = objc_claimAutoreleasedReturnValue(), v28 = [smb_subr sendSessionSetup:v6 User:v37 Password:v7 Realm:@"WELLKNOWN:COM.APPLE.LKDC" Param:&v102], v37, v28 == 80))
         {
           LODWORD(v102) = 4;
-          v27 = [(smbMount *)self userName];
-          v38 = [(smbMount *)self userDomain];
-          v28 = [smb_subr sendSessionSetup:v6 User:v27 Password:v7 Realm:v38 Param:&v102];
+          userName = [(smbMount *)self userName];
+          userDomain3 = [(smbMount *)self userDomain];
+          v28 = [smb_subr sendSessionSetup:v6 User:userName Password:v7 Realm:userDomain3 Param:&v102];
 
           goto LABEL_52;
         }
@@ -7028,24 +7028,24 @@ LABEL_53:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
             v55 = v103;
-            v56 = [(smbMount *)self serverName];
-            v57 = [(smbMount *)self shareName];
+            serverName5 = [(smbMount *)self serverName];
+            shareName4 = [(smbMount *)self shareName];
             *buf = v84;
             *&buf[4] = v28;
             *&buf[8] = 1024;
             *&buf[10] = v55;
             *&buf[14] = 2112;
-            *&buf[16] = v56;
+            *&buf[16] = serverName5;
             *&buf[24] = 2112;
-            *&buf[26] = v57;
+            *&buf[26] = shareName4;
             _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: sendSessionSetup error: %u, ntstatus: 0x%x on server: %@, share: %@ \n", buf, 0x22u);
           }
         }
 
         else
         {
-          v40 = [(smbMount *)self shareName];
-          v41 = [smb_subr sendTreeConnect:v6 ShareName:v40 Param:&v99];
+          shareName5 = [(smbMount *)self shareName];
+          v41 = [smb_subr sendTreeConnect:v6 ShareName:shareName5 Param:&v99];
 
           if (v41)
           {
@@ -7053,16 +7053,16 @@ LABEL_53:
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
               v60 = v99;
-              v61 = [(smbMount *)self serverName];
-              v62 = [(smbMount *)self shareName];
+              serverName6 = [(smbMount *)self serverName];
+              shareName6 = [(smbMount *)self shareName];
               *buf = v84;
               *&buf[4] = v41;
               *&buf[8] = 1024;
               *&buf[10] = v60;
               *&buf[14] = 2112;
-              *&buf[16] = v61;
+              *&buf[16] = serverName6;
               *&buf[24] = 2112;
-              *&buf[26] = v62;
+              *&buf[26] = shareName6;
               _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: sendTreeConnect error: %u, ntstatus: 0x%x on server: %@, share: %@ \n", buf, 0x22u);
             }
           }
@@ -7076,16 +7076,16 @@ LABEL_53:
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
                 v45 = v93;
-                v46 = [(smbMount *)self serverName];
-                v47 = [(smbMount *)self shareName];
+                serverName7 = [(smbMount *)self serverName];
+                shareName7 = [(smbMount *)self shareName];
                 *buf = v84;
                 *&buf[4] = v43;
                 *&buf[8] = 1024;
                 *&buf[10] = v45;
                 *&buf[14] = 2112;
-                *&buf[16] = v46;
+                *&buf[16] = serverName7;
                 *&buf[24] = 2112;
-                *&buf[26] = v47;
+                *&buf[26] = shareName7;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: sendQueryShare error: %u, ntstatus: 0x%x on server: %@, share: %@ \n", buf, 0x22u);
               }
             }
@@ -7098,14 +7098,14 @@ LABEL_53:
                 v52 = &_os_log_default;
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                 {
-                  v53 = [(smbMount *)self serverName];
-                  v54 = [(smbMount *)self shareName];
+                  serverName8 = [(smbMount *)self serverName];
+                  shareName8 = [(smbMount *)self shareName];
                   *buf = 67109634;
                   *&buf[4] = v51;
                   *&buf[8] = 2112;
-                  *&buf[10] = v53;
+                  *&buf[10] = serverName8;
                   *&buf[18] = 2112;
-                  *&buf[20] = v54;
+                  *&buf[20] = shareName8;
                   _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: queryShareRoot error: %d on server: %@, share: %@ \n", buf, 0x1Cu);
                 }
               }
@@ -7125,14 +7125,14 @@ LABEL_53:
                 v59 = &_os_log_default;
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                 {
-                  v63 = [(smbMount *)self serverName];
-                  v64 = [(smbMount *)self shareName];
+                  serverName9 = [(smbMount *)self serverName];
+                  shareName9 = [(smbMount *)self shareName];
                   *buf = 67109634;
                   *&buf[4] = v58;
                   *&buf[8] = 2112;
-                  *&buf[10] = v63;
+                  *&buf[10] = serverName9;
                   *&buf[18] = 2112;
-                  *&buf[20] = v64;
+                  *&buf[20] = shareName9;
                   _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "reconnectSession: getPeerAddress error: %d on server: %@, share: %@ \n", buf, 0x1Cu);
                 }
               }
@@ -7148,10 +7148,10 @@ LABEL_53:
       }
     }
 
-    v68 = [(smbMount *)self connectionState];
+    connectionState2 = [(smbMount *)self connectionState];
     v69 = &_os_log_default;
     v70 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-    if (v68 == 2)
+    if (connectionState2 == 2)
     {
       if (v70)
       {
@@ -7178,11 +7178,11 @@ LABEL_53:
       [(smbMount *)self setShareFlags:v100];
       [(smbMount *)self setShareCaps:HIDWORD(v100)];
       [(smbMount *)self setShareMaxAccess:v101];
-      v71 = [(smbMount *)self modelName];
-      [v71 setString:v87];
+      modelName = [(smbMount *)self modelName];
+      [modelName setString:v87];
 
-      v72 = [(smbMount *)self fsName];
-      [v72 setString:v86];
+      fsName = [(smbMount *)self fsName];
+      [fsName setString:v86];
 
       *&buf[32] = v95;
       v114 = v96;
@@ -7278,13 +7278,13 @@ LABEL_53:
         [(smbMount *)self _setConnectionState:1];
         clock_gettime(_CLOCK_REALTIME, &self->_lastRequestTime);
         [(smbMount *)self resumeIdleTimer];
-        v80 = [(smbMount *)self connQueue];
-        dispatch_resume(v80);
+        connQueue = [(smbMount *)self connQueue];
+        dispatch_resume(connQueue);
       }
 
       else
       {
-        v80 = &_os_log_default;
+        connQueue = &_os_log_default;
         v81 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -7328,10 +7328,10 @@ LABEL_108:
 
 LABEL_18:
 
-  v10 = [(smbMount *)self connectionState];
+  connectionState3 = [(smbMount *)self connectionState];
   v11 = &_os_log_default;
   v12 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-  if (v10 != 2)
+  if (connectionState3 != 2)
   {
     if (v12)
     {
@@ -7376,16 +7376,16 @@ LABEL_77:
     sub_100056BA4();
   }
 
-  v3 = [(smbMount *)self connQueue];
-  dispatch_resume(v3);
+  connQueue = [(smbMount *)self connQueue];
+  dispatch_resume(connQueue);
 
-  v4 = [(smbMount *)self connQueue];
+  connQueue2 = [(smbMount *)self connQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027FB4;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_barrier_async(v4, block);
+  dispatch_barrier_async(connQueue2, block);
 }
 
 - (void)flushAndDisconnect
@@ -7434,15 +7434,15 @@ LABEL_77:
         v7 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v21 = [(smbMount *)self serverName];
-          v22 = [(smbMount *)self shareName];
-          v23 = [(smbMount *)self connState];
+          serverName = [(smbMount *)self serverName];
+          shareName = [(smbMount *)self shareName];
+          connState = [(smbMount *)self connState];
           *buf = 138413314;
-          *&buf[4] = v21;
+          *&buf[4] = serverName;
           *&buf[12] = 2112;
-          *&buf[14] = v22;
+          *&buf[14] = shareName;
           *&buf[22] = 1024;
-          *&buf[24] = v23;
+          *&buf[24] = connState;
           *&buf[28] = 2048;
           *&buf[30] = v6;
           *&buf[38] = 1024;
@@ -7521,8 +7521,8 @@ LABEL_77:
     }
 
     v17 = qword_1000954F0;
-    v18 = [(smbMount *)self mountURL];
-    v15 = [v17 ejectVolumeForURL:v18 share:self->_shareName how:13];
+    mountURL = [(smbMount *)self mountURL];
+    v15 = [v17 ejectVolumeForURL:mountURL share:self->_shareName how:13];
 
     if (v15)
     {
@@ -7568,16 +7568,16 @@ LABEL_77:
   }
 
   [(smbMount *)self setConnState:6];
-  v3 = [(smbMount *)self connQueue];
-  dispatch_resume(v3);
+  connQueue = [(smbMount *)self connQueue];
+  dispatch_resume(connQueue);
 
-  v4 = [(smbMount *)self connQueue];
+  connQueue2 = [(smbMount *)self connQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028BAC;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_barrier_async(v4, block);
+  dispatch_barrier_async(connQueue2, block);
 }
 
 - (void)flushEIOCancelWait
@@ -7588,70 +7588,70 @@ LABEL_77:
   }
 
   [(smbMount *)self setConnState:6];
-  v3 = [(smbMount *)self connQueue];
-  dispatch_resume(v3);
+  connQueue = [(smbMount *)self connQueue];
+  dispatch_resume(connQueue);
 
-  v4 = [(smbMount *)self connQueue];
+  connQueue2 = [(smbMount *)self connQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028C80;
   block[3] = &unk_10008C880;
   block[4] = self;
-  dispatch_barrier_async(v4, block);
+  dispatch_barrier_async(connQueue2, block);
 }
 
-- (void)renameOverExistingDir:(id)a3 FromName:(id)a4 toDir:(id)a5 NewName:(id)a6 ToFile:(id)a7 CompletionHandler:(id)a8
+- (void)renameOverExistingDir:(id)dir FromName:(id)name toDir:(id)toDir NewName:(id)newName ToFile:(id)file CompletionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dirCopy = dir;
+  nameCopy = name;
+  toDirCopy = toDir;
+  newNameCopy = newName;
+  fileCopy = file;
+  handlerCopy = handler;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_100028E60;
   v35[3] = &unk_10008DD88;
-  v36 = v16;
-  v37 = v18;
+  v36 = toDirCopy;
+  v37 = fileCopy;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100028F38;
   v26[3] = &unk_10008DE00;
   v27 = v36;
   v28 = v37;
-  v29 = self;
-  v30 = v14;
-  v34 = v16 == v14;
-  v31 = v15;
-  v32 = v17;
-  v33 = v19;
-  v20 = v19;
-  v21 = v17;
-  v22 = v15;
-  v23 = v14;
+  selfCopy = self;
+  v30 = dirCopy;
+  v34 = toDirCopy == dirCopy;
+  v31 = nameCopy;
+  v32 = newNameCopy;
+  v33 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = newNameCopy;
+  v22 = nameCopy;
+  v23 = dirCopy;
   v24 = v37;
   v25 = v36;
   [(smbMount *)self submitRequestBlockOnce:v35 continuationBlock:v26];
 }
 
-- (void)renameOverExistingFile:(id)a3 FromName:(id)a4 toDir:(id)a5 NewName:(id)a6 ToFile:(id)a7 CompletionHandler:(id)a8
+- (void)renameOverExistingFile:(id)file FromName:(id)name toDir:(id)dir NewName:(id)newName ToFile:(id)toFile CompletionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = *([v17 getSmbFattr] + 30);
-  v20 = [v17 makeSillyDeleteName];
+  fileCopy = file;
+  nameCopy = name;
+  dirCopy = dir;
+  newNameCopy = newName;
+  toFileCopy = toFile;
+  handlerCopy = handler;
+  v19 = *([toFileCopy getSmbFattr] + 30);
+  makeSillyDeleteName = [toFileCopy makeSillyDeleteName];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100029498;
   v40[3] = &unk_10008DE28;
-  v41 = v15;
-  v42 = v17;
-  v43 = v20;
+  v41 = dirCopy;
+  v42 = toFileCopy;
+  v43 = makeSillyDeleteName;
   v44 = v19;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -7659,27 +7659,27 @@ LABEL_77:
   v29[3] = &unk_10008DEA0;
   v30 = v41;
   v31 = v42;
-  v32 = self;
-  v33 = v13;
-  v39 = v15 == v13;
-  v34 = v14;
-  v35 = v16;
+  selfCopy = self;
+  v33 = fileCopy;
+  v39 = dirCopy == fileCopy;
+  v34 = nameCopy;
+  v35 = newNameCopy;
   v38 = v19;
   v36 = v43;
-  v37 = v18;
+  v37 = handlerCopy;
   v21 = v43;
-  v22 = v16;
-  v23 = v14;
-  v24 = v13;
-  v25 = v18;
+  v22 = newNameCopy;
+  v23 = nameCopy;
+  v24 = fileCopy;
+  v25 = handlerCopy;
   v26 = v42;
   v27 = v41;
   [(smbMount *)self submitRequestBlockOnce:v40 continuationBlock:v29];
 }
 
-- (int)deliverSearchResults:(id)a3
+- (int)deliverSearchResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v45 = 0;
   v43 = 0u;
   v44 = 0u;
@@ -7697,8 +7697,8 @@ LABEL_77:
     sub_100057510();
   }
 
-  v4 = [v3 searchRows];
-  v5 = [v3 parseSearchResults:v4];
+  searchRows = [resultsCopy searchRows];
+  v5 = [resultsCopy parseSearchResults:searchRows];
   v6 = v5;
   if (v5)
   {
@@ -7710,15 +7710,15 @@ LABEL_77:
     if (v7)
     {
       v8 = v7;
-      v17 = v4;
+      v17 = searchRows;
       v9 = 0;
-      v10 = 0;
+      path = 0;
       v11 = *v31;
       do
       {
         v12 = 0;
         v13 = v9;
-        v14 = v10;
+        v14 = path;
         do
         {
           if (*v31 != v11)
@@ -7761,19 +7761,19 @@ LABEL_77:
           v35 = v19;
           v36 = v20;
           v37 = v21;
-          v10 = [v9 path];
+          path = [v9 path];
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            sub_100057554(v46, v10, &v47);
+            sub_100057554(v46, path, &v47);
           }
 
-          v15 = [v3 handler];
-          [v15 addSearchResult:v10 attributes:&v34 attributeSize:184 xAttrs:&__NSDictionary0__struct];
+          handler = [resultsCopy handler];
+          [handler addSearchResult:path attributes:&v34 attributeSize:184 xAttrs:&__NSDictionary0__struct];
 
           v12 = v12 + 1;
           v13 = v9;
-          v14 = v10;
+          v14 = path;
         }
 
         while (v8 != v12);
@@ -7782,7 +7782,7 @@ LABEL_77:
 
       while (v8);
 
-      v4 = v17;
+      searchRows = v17;
     }
   }
 

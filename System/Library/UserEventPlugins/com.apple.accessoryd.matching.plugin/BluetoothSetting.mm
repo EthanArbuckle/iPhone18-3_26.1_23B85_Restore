@@ -1,6 +1,6 @@
 @interface BluetoothSetting
 - (BluetoothSetting)init;
-- (void)btSettingChanged:(id)a3;
+- (void)btSettingChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -133,10 +133,10 @@ void __24__BluetoothSetting_init__block_invoke(uint64_t a1)
   [(BluetoothSetting *)&v8 dealloc];
 }
 
-- (void)btSettingChanged:(id)a3
+- (void)btSettingChanged:(id)changed
 {
   v4 = +[BluetoothManager sharedInstance];
-  v5 = [v4 powerState];
+  powerState = [v4 powerState];
 
   if (gLogObjects)
   {
@@ -167,11 +167,11 @@ void __24__BluetoothSetting_init__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v18 = v5;
+    v18 = powerState;
     _os_log_impl(&def_3A0E8, v8, OS_LOG_TYPE_INFO, "btSettingChanged: powerState = %d", buf, 8u);
   }
 
-  if (v5 == 1)
+  if (powerState == 1)
   {
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -228,11 +228,11 @@ void __24__BluetoothSetting_init__block_invoke(uint64_t a1)
       *buf = 67109376;
       v18 = bluetoothEnabled;
       v19 = 1024;
-      v20 = v5 == 2;
+      v20 = powerState == 2;
       _os_log_impl(&def_3A0E8, v10, OS_LOG_TYPE_INFO, "btSettingChanged: bluetoothEnabled = %d -> %d", buf, 0xEu);
     }
 
-    self->_bluetoothEnabled = v5 == 2;
+    self->_bluetoothEnabled = powerState == 2;
     self->_initComplete = 1;
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 postNotificationName:ueaPluginSystemSettingsBluetoothSettomgChanged object:0];

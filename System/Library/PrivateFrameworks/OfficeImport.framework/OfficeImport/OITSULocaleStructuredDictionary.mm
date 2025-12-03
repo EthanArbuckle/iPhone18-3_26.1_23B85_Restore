@@ -1,31 +1,31 @@
 @interface OITSULocaleStructuredDictionary
-+ (OITSULocaleStructuredDictionary)dictionaryWithContentsOfFileForLocale:(id)a3 inDirectory:(id)a4 inBundle:(id)a5;
++ (OITSULocaleStructuredDictionary)dictionaryWithContentsOfFileForLocale:(id)locale inDirectory:(id)directory inBundle:(id)bundle;
 + (id)dateFormatterSymbolsFallbackDictionary;
 + (id)numberFormatterSymbolsFallbackDictionary;
-- (BOOL)p_extractLanguage:(id *)a3 script:(id *)a4 region:(id *)a5 fromString:(id)a6;
-- (OITSULocaleStructuredDictionary)initWithDictionary:(id)a3 locale:(id)a4;
-- (id)objectForKey:(id)a3 locale:(id)a4;
-- (id)p_makeLocaleIdentifierWithLanguage:(id)a3 script:(id)a4 region:(id)a5;
-- (void)p_remakeWorkingDictionaryWithLocale:(id)a3;
+- (BOOL)p_extractLanguage:(id *)language script:(id *)script region:(id *)region fromString:(id)string;
+- (OITSULocaleStructuredDictionary)initWithDictionary:(id)dictionary locale:(id)locale;
+- (id)objectForKey:(id)key locale:(id)locale;
+- (id)p_makeLocaleIdentifierWithLanguage:(id)language script:(id)script region:(id)region;
+- (void)p_remakeWorkingDictionaryWithLocale:(id)locale;
 @end
 
 @implementation OITSULocaleStructuredDictionary
 
-+ (OITSULocaleStructuredDictionary)dictionaryWithContentsOfFileForLocale:(id)a3 inDirectory:(id)a4 inBundle:(id)a5
++ (OITSULocaleStructuredDictionary)dictionaryWithContentsOfFileForLocale:(id)locale inDirectory:(id)directory inBundle:(id)bundle
 {
-  v8 = a3;
+  localeCopy = locale;
   v9 = *MEMORY[0x277CBE6C8];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v8 objectForKey:v9];
-  v13 = [v12 lowercaseString];
-  v14 = [v10 pathForResource:v13 ofType:@"plist" inDirectory:v11];
+  bundleCopy = bundle;
+  directoryCopy = directory;
+  v12 = [localeCopy objectForKey:v9];
+  lowercaseString = [v12 lowercaseString];
+  v14 = [bundleCopy pathForResource:lowercaseString ofType:@"plist" inDirectory:directoryCopy];
 
   if (v14)
   {
-    v15 = [a1 alloc];
+    v15 = [self alloc];
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v14];
-    v17 = [v15 initWithDictionary:v16 locale:v8];
+    v17 = [v15 initWithDictionary:v16 locale:localeCopy];
   }
 
   else
@@ -36,17 +36,17 @@
   return v17;
 }
 
-- (OITSULocaleStructuredDictionary)initWithDictionary:(id)a3 locale:(id)a4
+- (OITSULocaleStructuredDictionary)initWithDictionary:(id)dictionary locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  localeCopy = locale;
   v16.receiver = self;
   v16.super_class = OITSULocaleStructuredDictionary;
   v9 = [(OITSULocaleStructuredDictionary *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dictionary, a3);
+    objc_storeStrong(&v9->_dictionary, dictionary);
     v11 = objc_opt_new();
     cldrLanguageScriptRegionForKey = v10->_cldrLanguageScriptRegionForKey;
     v10->_cldrLanguageScriptRegionForKey = v11;
@@ -55,39 +55,39 @@
     cldrLanguageScriptForKey = v10->_cldrLanguageScriptForKey;
     v10->_cldrLanguageScriptForKey = v13;
 
-    [(OITSULocaleStructuredDictionary *)v10 p_remakeWorkingDictionaryWithLocale:v8];
+    [(OITSULocaleStructuredDictionary *)v10 p_remakeWorkingDictionaryWithLocale:localeCopy];
   }
 
   return v10;
 }
 
-- (id)objectForKey:(id)a3 locale:(id)a4
+- (id)objectForKey:(id)key locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_workingLocale != v7 || v8->_workingLocaleIsAutoUpdating && (autoUpdatingCount = v8->_autoUpdatingCount, autoUpdatingCount != +[OITSULocale autoupdatingCurrentLocaleChangeCount]))
+  keyCopy = key;
+  localeCopy = locale;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_workingLocale != localeCopy || selfCopy->_workingLocaleIsAutoUpdating && (autoUpdatingCount = selfCopy->_autoUpdatingCount, autoUpdatingCount != +[OITSULocale autoupdatingCurrentLocaleChangeCount]))
   {
-    [(OITSULocaleStructuredDictionary *)v8 p_remakeWorkingDictionaryWithLocale:v7];
+    [(OITSULocaleStructuredDictionary *)selfCopy p_remakeWorkingDictionaryWithLocale:localeCopy];
   }
 
-  v10 = [(NSMutableDictionary *)v8->_workingDictionary objectForKeyedSubscript:v6];
-  objc_sync_exit(v8);
+  v10 = [(NSMutableDictionary *)selfCopy->_workingDictionary objectForKeyedSubscript:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)p_remakeWorkingDictionaryWithLocale:(id)a3
+- (void)p_remakeWorkingDictionaryWithLocale:(id)locale
 {
   v63 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v49 = v5;
-  objc_storeStrong(&v5->_workingLocale, a3);
-  v6 = [OITSULocale localeIsAutoUpdating:v42];
-  v5->_workingLocaleIsAutoUpdating = v6;
+  localeCopy = locale;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v49 = selfCopy;
+  objc_storeStrong(&selfCopy->_workingLocale, locale);
+  v6 = [OITSULocale localeIsAutoUpdating:localeCopy];
+  selfCopy->_workingLocaleIsAutoUpdating = v6;
   if (v6)
   {
     v7 = +[OITSULocale autoupdatingCurrentLocaleChangeCount];
@@ -98,15 +98,15 @@
     v7 = 0;
   }
 
-  v5->_autoUpdatingCount = v7;
-  v41 = [v42 localeIdentifier];
-  v45 = [v42 objectForKey:*MEMORY[0x277CBE6C8]];
-  v44 = [v42 objectForKey:*MEMORY[0x277CBE690]];
-  v48 = [(NSMutableDictionary *)v5->_cldrLanguageScriptRegionForKey objectForKeyedSubscript:v41];
-  v46 = [(NSMutableDictionary *)v5->_cldrLanguageScriptForKey objectForKeyedSubscript:v41];
+  selfCopy->_autoUpdatingCount = v7;
+  localeIdentifier = [localeCopy localeIdentifier];
+  v45 = [localeCopy objectForKey:*MEMORY[0x277CBE6C8]];
+  v44 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
+  v48 = [(NSMutableDictionary *)selfCopy->_cldrLanguageScriptRegionForKey objectForKeyedSubscript:localeIdentifier];
+  v46 = [(NSMutableDictionary *)selfCopy->_cldrLanguageScriptForKey objectForKeyedSubscript:localeIdentifier];
   if (!v48 || !v46)
   {
-    v8 = [OITSULocale canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:v41];
+    v8 = [OITSULocale canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly:localeIdentifier];
     if (!v48)
     {
       v39 = v8;
@@ -115,7 +115,7 @@
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v10 = v5->_dictionary;
+      v10 = selfCopy->_dictionary;
       v11 = [(NSDictionary *)v10 countByEnumeratingWithState:&v57 objects:v62 count:16];
       if (v11)
       {
@@ -154,7 +154,7 @@
         v48 = v9;
       }
 
-      [(NSMutableDictionary *)v49->_cldrLanguageScriptRegionForKey setObject:v48 forKeyedSubscript:v41];
+      [(NSMutableDictionary *)v49->_cldrLanguageScriptRegionForKey setObject:v48 forKeyedSubscript:localeIdentifier];
       v8 = v39;
     }
 
@@ -216,7 +216,7 @@
         v46 = v43;
       }
 
-      [(NSMutableDictionary *)v49->_cldrLanguageScriptForKey setObject:v46 forKeyedSubscript:v41];
+      [(NSMutableDictionary *)v49->_cldrLanguageScriptForKey setObject:v46 forKeyedSubscript:localeIdentifier];
       v8 = v40;
     }
   }
@@ -255,10 +255,10 @@
   objc_sync_exit(v49);
 }
 
-- (BOOL)p_extractLanguage:(id *)a3 script:(id *)a4 region:(id *)a5 fromString:(id)a6
+- (BOOL)p_extractLanguage:(id *)language script:(id *)script region:(id *)region fromString:(id)string
 {
-  v9 = a6;
-  v10 = [v9 componentsSeparatedByString:@"-"];
+  stringCopy = string;
+  v10 = [stringCopy componentsSeparatedByString:@"-"];
   v11 = [v10 objectAtIndexedSubscript:0];
   if ([v11 length] == 2)
   {
@@ -299,16 +299,16 @@ LABEL_17:
           }
 
           [v10 objectAtIndexedSubscript:2];
-          v36 = v9;
-          v26 = a3;
-          v27 = a4;
-          v29 = v28 = a5;
+          v36 = stringCopy;
+          languageCopy = language;
+          scriptCopy = script;
+          v29 = v28 = region;
           v30 = [v29 length];
 
-          a5 = v28;
-          a4 = v27;
-          a3 = v26;
-          v9 = v36;
+          region = v28;
+          script = scriptCopy;
+          language = languageCopy;
+          stringCopy = v36;
 
           if (v30 == 3)
           {
@@ -318,11 +318,11 @@ LABEL_17:
 
 LABEL_18:
         v32 = v14;
-        *a3 = v14;
+        *language = v14;
         v33 = v18;
-        *a4 = v18;
+        *script = v18;
         v34 = v24;
-        *a5 = v24;
+        *region = v24;
 
         v21 = 1;
         goto LABEL_19;
@@ -352,7 +352,7 @@ LABEL_10:
 
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSULocaleStructuredDictionary p_extractLanguage:script:region:fromString:]"];
   v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSULocaleStructuredDictionary.m"];
-  [OITSUAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:244 isFatal:0 description:"Got an identifier (%@) whose first component isn't 2 or 3 char long, which violates BCP47. How did that go into our CLDR?", v9];
+  [OITSUAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:244 isFatal:0 description:"Got an identifier (%@) whose first component isn't 2 or 3 char long, which violates BCP47. How did that go into our CLDR?", stringCopy];
 
   +[OITSUAssertionHandler logBacktraceThrottled];
   v21 = 0;
@@ -361,26 +361,26 @@ LABEL_19:
   return v21;
 }
 
-- (id)p_makeLocaleIdentifierWithLanguage:(id)a3 script:(id)a4 region:(id)a5
+- (id)p_makeLocaleIdentifierWithLanguage:(id)language script:(id)script region:(id)region
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v7)
+  languageCopy = language;
+  scriptCopy = script;
+  regionCopy = region;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (languageCopy)
   {
-    [v10 setObject:v7 forKeyedSubscript:*MEMORY[0x277CBE6C8]];
+    [dictionary setObject:languageCopy forKeyedSubscript:*MEMORY[0x277CBE6C8]];
   }
 
-  if (v8)
+  if (scriptCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:*MEMORY[0x277CBE6F8]];
+    [v11 setObject:scriptCopy forKeyedSubscript:*MEMORY[0x277CBE6F8]];
   }
 
-  if (v9)
+  if (regionCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x277CBE690]];
+    [v11 setObject:regionCopy forKeyedSubscript:*MEMORY[0x277CBE690]];
   }
 
   v12 = MEMORY[0x277CBEAF8];
@@ -392,18 +392,18 @@ LABEL_19:
 
 + (id)dateFormatterSymbolsFallbackDictionary
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v2 initWithDictionary:&unk_286F6DE30 locale:v3];
+  v2 = [self alloc];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [v2 initWithDictionary:&unk_286F6DE30 locale:currentLocale];
 
   return v4;
 }
 
 + (id)numberFormatterSymbolsFallbackDictionary
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v2 initWithDictionary:&unk_286F6DE80 locale:v3];
+  v2 = [self alloc];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [v2 initWithDictionary:&unk_286F6DE80 locale:currentLocale];
 
   return v4;
 }

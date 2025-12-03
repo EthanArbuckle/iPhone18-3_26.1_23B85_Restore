@@ -1,7 +1,7 @@
 @interface SUSUIExternalSettingsAppDefaults
 - (BOOL)isBadgedForSoftwareUpdate;
 - (SUSUIExternalSettingsAppDefaults)init;
-- (void)setBadgedForSoftwareUpdate:(BOOL)a3;
+- (void)setBadgedForSoftwareUpdate:(BOOL)update;
 @end
 
 @implementation SUSUIExternalSettingsAppDefaults
@@ -17,20 +17,20 @@
 
 - (BOOL)isBadgedForSoftwareUpdate
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  v4 = [v3 BOOLForKey:@"kBadgedForSoftwareUpdateKey"];
-  MEMORY[0x277D82BD8](v3);
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v4 = [_store BOOLForKey:@"kBadgedForSoftwareUpdateKey"];
+  MEMORY[0x277D82BD8](_store);
   return v4;
 }
 
-- (void)setBadgedForSoftwareUpdate:(BOOL)a3
+- (void)setBadgedForSoftwareUpdate:(BOOL)update
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  [v3 setBool:a3 forKey:?];
-  MEMORY[0x277D82BD8](v3);
-  v4 = [(BSAbstractDefaultDomain *)self _store];
-  [v4 synchronize];
-  MEMORY[0x277D82BD8](v4);
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store setBool:update forKey:?];
+  MEMORY[0x277D82BD8](_store);
+  _store2 = [(BSAbstractDefaultDomain *)self _store];
+  [_store2 synchronize];
+  MEMORY[0x277D82BD8](_store2);
   GSSendAppPreferencesChanged();
 }
 

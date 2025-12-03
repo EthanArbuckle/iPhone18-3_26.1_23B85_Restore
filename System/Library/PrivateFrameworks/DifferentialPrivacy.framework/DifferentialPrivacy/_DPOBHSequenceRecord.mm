@@ -1,6 +1,6 @@
 @interface _DPOBHSequenceRecord
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
 - (id)description;
 - (id)jsonString;
 @end
@@ -38,15 +38,15 @@
   return v10;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DPOBHSequenceRecord, [(_DPOBHRecord *)&v9 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DPOBHSequenceRecord, [(_DPOBHRecord *)&v9 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [(_DPOBHSequenceRecord *)self plainSequence];
-    [v5 setPlainSequence:v6];
+    v5 = objectCopy;
+    plainSequence = [(_DPOBHSequenceRecord *)self plainSequence];
+    [v5 setPlainSequence:plainSequence];
 
     [v5 setSequenceBitPosition:{-[_DPOBHSequenceRecord sequenceBitPosition](self, "sequenceBitPosition")}];
     [v5 setSequenceBitValue:{-[_DPOBHSequenceRecord sequenceBitValue](self, "sequenceBitValue")}];
@@ -62,20 +62,20 @@
   return v7;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPOBHSequenceRecord, [(_DPOBHRecord *)&v10 copyFromManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = _DPOBHSequenceRecord, [(_DPOBHRecord *)&v10 copyFromManagedObject:objectCopy]))
   {
-    v5 = v4;
-    v6 = [v5 plainSequence];
-    [(_DPOBHSequenceRecord *)self setPlainSequence:v6];
+    v5 = objectCopy;
+    plainSequence = [v5 plainSequence];
+    [(_DPOBHSequenceRecord *)self setPlainSequence:plainSequence];
 
     -[_DPOBHSequenceRecord setSequenceBitPosition:](self, "setSequenceBitPosition:", [v5 sequenceBitPosition]);
-    v7 = [v5 sequenceBitValue];
+    sequenceBitValue = [v5 sequenceBitValue];
 
-    [(_DPOBHSequenceRecord *)self setSequenceBitValue:v7];
+    [(_DPOBHSequenceRecord *)self setSequenceBitValue:sequenceBitValue];
     v8 = 1;
   }
 
@@ -90,15 +90,15 @@
 - (id)jsonString
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_DPOBHSequenceRecord *)self sequenceBitPosition];
-  v5 = [(_DPOBHSequenceRecord *)self sequenceBitValue];
+  sequenceBitPosition = [(_DPOBHSequenceRecord *)self sequenceBitPosition];
+  sequenceBitValue = [(_DPOBHSequenceRecord *)self sequenceBitValue];
   v6 = @"-1";
-  if (v5)
+  if (sequenceBitValue)
   {
     v6 = @"+1";
   }
 
-  return [v3 stringWithFormat:@"%lld, %@", v4, v6];
+  return [v3 stringWithFormat:@"%lld, %@", sequenceBitPosition, v6];
 }
 
 @end

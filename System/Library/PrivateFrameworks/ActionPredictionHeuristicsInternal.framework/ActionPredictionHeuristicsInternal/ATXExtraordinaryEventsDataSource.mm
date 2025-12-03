@@ -1,24 +1,24 @@
 @interface ATXExtraordinaryEventsDataSource
-+ (id)_endOfDayAfterDate:(id)a3 numberOfDays:(int64_t)a4;
-- (ATXExtraordinaryEventsDataSource)initWithDevice:(id)a3;
-- (id)_ekEventForHighlight:(id)a3 eventStore:(id)a4;
++ (id)_endOfDayAfterDate:(id)date numberOfDays:(int64_t)days;
+- (ATXExtraordinaryEventsDataSource)initWithDevice:(id)device;
+- (id)_ekEventForHighlight:(id)highlight eventStore:(id)store;
 - (id)_fetchExtraordinaryEvents;
 - (void)_fetchExtraordinaryEvents;
-- (void)getEventsWithProminentFeature:(id)a3 callback:(id)a4;
+- (void)getEventsWithProminentFeature:(id)feature callback:(id)callback;
 @end
 
 @implementation ATXExtraordinaryEventsDataSource
 
-- (ATXExtraordinaryEventsDataSource)initWithDevice:(id)a3
+- (ATXExtraordinaryEventsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = ATXExtraordinaryEventsDataSource;
   v6 = [(ATXExtraordinaryEventsDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     extraordinaryEventStore = v7->_extraordinaryEventStore;
     v7->_extraordinaryEventStore = v8;
@@ -27,19 +27,19 @@
   return v7;
 }
 
-- (id)_ekEventForHighlight:(id)a3 eventStore:(id)a4
+- (id)_ekEventForHighlight:(id)highlight eventStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 eventIdentifier];
-  v8 = [v6 eventWithIdentifier:v7];
+  highlightCopy = highlight;
+  storeCopy = store;
+  eventIdentifier = [highlightCopy eventIdentifier];
+  v8 = [storeCopy eventWithIdentifier:eventIdentifier];
 
   if (!v8)
   {
     v9 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ATXExtraordinaryEventsDataSource _ekEventForHighlight:v5 eventStore:v9];
+      [ATXExtraordinaryEventsDataSource _ekEventForHighlight:highlightCopy eventStore:v9];
     }
   }
 
@@ -87,28 +87,28 @@
   return v7;
 }
 
-- (void)getEventsWithProminentFeature:(id)a3 callback:(id)a4
+- (void)getEventsWithProminentFeature:(id)feature callback:(id)callback
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  featureCopy = feature;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA2C0))
   {
-    v30 = v7;
+    v30 = callbackCopy;
     v32 = objc_opt_new();
-    v8 = [(ATXExtraordinaryEventsDataSource *)self _fetchExtraordinaryEvents];
-    v35 = [(ATXHeuristicDevice *)self->_device eventStore];
+    _fetchExtraordinaryEvents = [(ATXExtraordinaryEventsDataSource *)self _fetchExtraordinaryEvents];
+    eventStore = [(ATXHeuristicDevice *)self->_device eventStore];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v8;
+    obj = _fetchExtraordinaryEvents;
     v9 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
       v10 = v9;
       v11 = *v37;
-      v31 = v6;
+      v31 = featureCopy;
       do
       {
         v12 = 0;
@@ -122,12 +122,12 @@
 
           v13 = *(*(&v36 + 1) + 8 * v12);
           v14 = objc_autoreleasePoolPush();
-          if (!v6 || (v15 = [v13 prominentFeature], v15 == objc_msgSend(v6, "unsignedIntegerValue")))
+          if (!featureCopy || (v15 = [v13 prominentFeature], v15 == objc_msgSend(featureCopy, "unsignedIntegerValue")))
           {
-            v16 = [(ATXExtraordinaryEventsDataSource *)self _ekEventForHighlight:v13 eventStore:v35, v30];
+            v16 = [(ATXExtraordinaryEventsDataSource *)self _ekEventForHighlight:v13 eventStore:eventStore, v30];
             if (v16)
             {
-              v17 = self;
+              selfCopy = self;
               v18 = [(ATXHeuristicDevice *)self->_device dictForEvent:v16];
               v19 = [v18 mutableCopy];
 
@@ -153,11 +153,11 @@
                   }
 
                   [v32 addObject:v19];
-                  v6 = v31;
+                  featureCopy = v31;
                 }
               }
 
-              self = v17;
+              self = selfCopy;
               v10 = v33;
             }
           }
@@ -180,35 +180,35 @@
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
     [v32 sortUsingDescriptors:v28];
 
-    v7 = v30;
+    callbackCopy = v30;
     (*(v30 + 2))(v30, v32, 0);
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8], 0);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_endOfDayAfterDate:(id)a3 numberOfDays:(int64_t)a4
++ (id)_endOfDayAfterDate:(id)date numberOfDays:(int64_t)days
 {
-  if (a3)
+  if (date)
   {
     v5 = MEMORY[0x277CBEA80];
-    v6 = a3;
-    v7 = [v5 currentCalendar];
-    v8 = [v7 components:28 fromDate:v6];
+    dateCopy = date;
+    currentCalendar = [v5 currentCalendar];
+    v8 = [currentCalendar components:28 fromDate:dateCopy];
 
     [v8 setHour:23];
     [v8 setMinute:59];
     [v8 setSecond:59];
     [v8 setNanosecond:999999999];
-    v9 = [v7 dateFromComponents:v8];
+    v9 = [currentCalendar dateFromComponents:v8];
     v10 = objc_opt_new();
-    [v10 setDay:a4];
-    v11 = [v7 dateByAddingComponents:v10 toDate:v9 options:0];
+    [v10 setDay:days];
+    v11 = [currentCalendar dateByAddingComponents:v10 toDate:v9 options:0];
   }
 
   else
@@ -234,7 +234,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23E3EA000, a2, OS_LOG_TYPE_ERROR, "Error when fetching event highlights from PersonalPortrait: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

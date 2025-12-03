@@ -1,11 +1,11 @@
 @interface JavaLangRuntime
 + (id)getRuntime;
 + (void)initialize;
-- (BOOL)removeShutdownHookWithJavaLangThread:(id)a3;
+- (BOOL)removeShutdownHookWithJavaLangThread:(id)thread;
 - (int64_t)freeMemory;
 - (int64_t)maxMemory;
 - (int64_t)totalMemory;
-- (void)addShutdownHookWithJavaLangThread:(id)a3;
+- (void)addShutdownHookWithJavaLangThread:(id)thread;
 - (void)dealloc;
 - (void)registerShutdownHooks;
 - (void)runShutdownHooks;
@@ -57,7 +57,7 @@
   return v5 * LODWORD(v4[0]);
 }
 
-- (void)addShutdownHookWithJavaLangThread:(id)a3
+- (void)addShutdownHookWithJavaLangThread:(id)thread
 {
   if (!self->shutdownHooks_)
   {
@@ -65,12 +65,12 @@
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!thread)
   {
     goto LABEL_9;
   }
 
-  if ([a3 isAlive])
+  if ([thread isAlive])
   {
     v8 = @"hook already started";
 LABEL_13:
@@ -86,7 +86,7 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  if ([(JavaUtilList *)shutdownHooks containsWithId:a3])
+  if ([(JavaUtilList *)shutdownHooks containsWithId:thread])
   {
     v8 = @"hook previously added";
     goto LABEL_13;
@@ -94,10 +94,10 @@ LABEL_9:
 
   v6 = self->shutdownHooks_;
 
-  [(JavaUtilList *)v6 addWithId:a3];
+  [(JavaUtilList *)v6 addWithId:thread];
 }
 
-- (BOOL)removeShutdownHookWithJavaLangThread:(id)a3
+- (BOOL)removeShutdownHookWithJavaLangThread:(id)thread
 {
   shutdownHooks = self->shutdownHooks_;
   if (!shutdownHooks)
@@ -105,7 +105,7 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)shutdownHooks removeWithId:a3];
+  return [(JavaUtilList *)shutdownHooks removeWithId:thread];
 }
 
 - (void)runShutdownHooks
@@ -173,7 +173,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaLangRuntime alloc];
     sub_10024B070(v2);

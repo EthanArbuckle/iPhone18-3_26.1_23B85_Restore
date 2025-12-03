@@ -1,24 +1,24 @@
 @interface PFEIDrawablePlacement
-- (id)wrapPropertyValueWithState:(id)a3;
-- (void)mapNonChildPlacementModeWithState:(id)a3;
+- (id)wrapPropertyValueWithState:(id)state;
+- (void)mapNonChildPlacementModeWithState:(id)state;
 @end
 
 @implementation PFEIDrawablePlacement
 
-- (void)mapNonChildPlacementModeWithState:(id)a3
+- (void)mapNonChildPlacementModeWithState:(id)state
 {
-  if ([a3 ancestorEntryWithReaderClass:objc_opt_class()] || (-[PFXDrawablePlacement setMode:](self, "setMode:", 3), xmlStrEqual(objc_msgSend(objc_msgSend(a3, "currentHtmlStackEntry"), "xmlElementName"), "table")))
+  if ([state ancestorEntryWithReaderClass:objc_opt_class()] || (-[PFXDrawablePlacement setMode:](self, "setMode:", 3), xmlStrEqual(objc_msgSend(objc_msgSend(state, "currentHtmlStackEntry"), "xmlElementName"), "table")))
   {
 
     [(PFXDrawablePlacement *)self setMode:2];
   }
 }
 
-- (id)wrapPropertyValueWithState:(id)a3
+- (id)wrapPropertyValueWithState:(id)state
 {
   v4.receiver = self;
   v4.super_class = PFEIDrawablePlacement;
-  return [(PFXDrawablePlacement *)&v4 wrapPropertyValueWithState:a3];
+  return [(PFXDrawablePlacement *)&v4 wrapPropertyValueWithState:state];
 }
 
 @end

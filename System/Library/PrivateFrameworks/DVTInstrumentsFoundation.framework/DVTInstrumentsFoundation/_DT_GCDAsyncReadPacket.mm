@@ -1,19 +1,19 @@
 @interface _DT_GCDAsyncReadPacket
-- (_DT_GCDAsyncReadPacket)initWithData:(id)a3 startOffset:(unint64_t)a4 maxLength:(unint64_t)a5 timeout:(double)a6 readLength:(unint64_t)a7 terminator:(id)a8 tag:(int64_t)a9;
-- (int64_t)searchForTermAfterPreBuffering:(int64_t)a3;
-- (unint64_t)optimalReadLengthWithDefault:(unint64_t)a3 shouldPreBuffer:(BOOL *)a4;
-- (unint64_t)readLengthForNonTermWithHint:(unint64_t)a3;
-- (unint64_t)readLengthForTermWithHint:(unint64_t)a3 shouldPreBuffer:(BOOL *)a4;
-- (unint64_t)readLengthForTermWithPreBuffer:(id)a3 found:(BOOL *)a4;
-- (void)ensureCapacityForAdditionalDataOfLength:(unint64_t)a3;
+- (_DT_GCDAsyncReadPacket)initWithData:(id)data startOffset:(unint64_t)offset maxLength:(unint64_t)length timeout:(double)timeout readLength:(unint64_t)readLength terminator:(id)terminator tag:(int64_t)tag;
+- (int64_t)searchForTermAfterPreBuffering:(int64_t)buffering;
+- (unint64_t)optimalReadLengthWithDefault:(unint64_t)default shouldPreBuffer:(BOOL *)buffer;
+- (unint64_t)readLengthForNonTermWithHint:(unint64_t)hint;
+- (unint64_t)readLengthForTermWithHint:(unint64_t)hint shouldPreBuffer:(BOOL *)buffer;
+- (unint64_t)readLengthForTermWithPreBuffer:(id)buffer found:(BOOL *)found;
+- (void)ensureCapacityForAdditionalDataOfLength:(unint64_t)length;
 @end
 
 @implementation _DT_GCDAsyncReadPacket
 
-- (_DT_GCDAsyncReadPacket)initWithData:(id)a3 startOffset:(unint64_t)a4 maxLength:(unint64_t)a5 timeout:(double)a6 readLength:(unint64_t)a7 terminator:(id)a8 tag:(int64_t)a9
+- (_DT_GCDAsyncReadPacket)initWithData:(id)data startOffset:(unint64_t)offset maxLength:(unint64_t)length timeout:(double)timeout readLength:(unint64_t)readLength terminator:(id)terminator tag:(int64_t)tag
 {
-  v17 = a3;
-  v18 = a8;
+  dataCopy = data;
+  terminatorCopy = terminator;
   v30.receiver = self;
   v30.super_class = _DT_GCDAsyncReadPacket;
   v19 = [(_DT_GCDAsyncReadPacket *)&v30 init];
@@ -21,20 +21,20 @@
   if (v19)
   {
     v19->bytesDone = 0;
-    v19->maxLength = a5;
-    v19->timeout = a6;
-    v19->readLength = a7;
-    v21 = [v18 copy];
+    v19->maxLength = length;
+    v19->timeout = timeout;
+    v19->readLength = readLength;
+    v21 = [terminatorCopy copy];
     term = v20->term;
     v20->term = v21;
 
-    v20->tag = a9;
-    if (v17)
+    v20->tag = tag;
+    if (dataCopy)
     {
-      objc_storeStrong(&v20->buffer, a3);
-      v20->startOffset = a4;
+      objc_storeStrong(&v20->buffer, data);
+      v20->startOffset = offset;
       v20->bufferOwner = 0;
-      v23 = [v17 length];
+      v23 = [dataCopy length];
     }
 
     else
@@ -66,9 +66,9 @@
   return v20;
 }
 
-- (void)ensureCapacityForAdditionalDataOfLength:(unint64_t)a3
+- (void)ensureCapacityForAdditionalDataOfLength:(unint64_t)length
 {
-  if (a3 > [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone))
+  if (length > [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone))
   {
     buffer = self->buffer;
 
@@ -76,23 +76,23 @@
   }
 }
 
-- (unint64_t)optimalReadLengthWithDefault:(unint64_t)a3 shouldPreBuffer:(BOOL *)a4
+- (unint64_t)optimalReadLengthWithDefault:(unint64_t)default shouldPreBuffer:(BOOL *)buffer
 {
-  v5 = a3;
+  defaultCopy = default;
   readLength = self->readLength;
   if (readLength)
   {
     v7 = readLength - self->bytesDone;
-    if (v7 < a3)
+    if (v7 < default)
     {
-      v5 = v7;
+      defaultCopy = v7;
     }
 
-    if (a4)
+    if (buffer)
     {
       v8 = 0;
 LABEL_11:
-      *a4 = v8;
+      *buffer = v8;
     }
   }
 
@@ -102,28 +102,28 @@ LABEL_11:
     if (maxLength)
     {
       v10 = maxLength - self->bytesDone;
-      if (v10 < a3)
+      if (v10 < default)
       {
-        v5 = v10;
+        defaultCopy = v10;
       }
     }
 
-    if (a4)
+    if (buffer)
     {
-      v8 = [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone) < v5;
+      v8 = [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone) < defaultCopy;
       goto LABEL_11;
     }
   }
 
-  return v5;
+  return defaultCopy;
 }
 
-- (unint64_t)readLengthForNonTermWithHint:(unint64_t)a3
+- (unint64_t)readLengthForNonTermWithHint:(unint64_t)hint
 {
   if (self->term)
   {
     sub_24802D514();
-    if (a3)
+    if (hint)
     {
       goto LABEL_3;
     }
@@ -133,7 +133,7 @@ LABEL_10:
     goto LABEL_3;
   }
 
-  if (!a3)
+  if (!hint)
   {
     goto LABEL_10;
   }
@@ -145,14 +145,14 @@ LABEL_3:
     readLength = self->maxLength;
     if (!readLength)
     {
-      return a3;
+      return hint;
     }
   }
 
   v6 = readLength - self->bytesDone;
-  if (v6 >= a3)
+  if (v6 >= hint)
   {
-    return a3;
+    return hint;
   }
 
   else
@@ -161,13 +161,13 @@ LABEL_3:
   }
 }
 
-- (unint64_t)readLengthForTermWithHint:(unint64_t)a3 shouldPreBuffer:(BOOL *)a4
+- (unint64_t)readLengthForTermWithHint:(unint64_t)hint shouldPreBuffer:(BOOL *)buffer
 {
-  v5 = a3;
+  hintCopy = hint;
   if (!self->term)
   {
     sub_24802D5EC();
-    if (v5)
+    if (hintCopy)
     {
       goto LABEL_3;
     }
@@ -177,7 +177,7 @@ LABEL_10:
     goto LABEL_3;
   }
 
-  if (!a3)
+  if (!hint)
   {
     goto LABEL_10;
   }
@@ -187,46 +187,46 @@ LABEL_3:
   if (maxLength)
   {
     v8 = maxLength - self->bytesDone;
-    if (v8 < v5)
+    if (v8 < hintCopy)
     {
-      v5 = v8;
+      hintCopy = v8;
     }
   }
 
-  if (a4)
+  if (buffer)
   {
-    *a4 = [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone) < v5;
+    *buffer = [(NSMutableData *)self->buffer length]- (self->startOffset + self->bytesDone) < hintCopy;
   }
 
-  return v5;
+  return hintCopy;
 }
 
-- (unint64_t)readLengthForTermWithPreBuffer:(id)a3 found:(BOOL *)a4
+- (unint64_t)readLengthForTermWithPreBuffer:(id)buffer found:(BOOL *)found
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bufferCopy = buffer;
   if (!self->term)
   {
     sub_24802D6C4();
   }
 
-  if (![v6 availableBytes])
+  if (![bufferCopy availableBytes])
   {
     sub_24802D730();
   }
 
   v7 = [(NSData *)self->term length];
-  v8 = [v6 availableBytes];
-  v9 = v8;
+  availableBytes = [bufferCopy availableBytes];
+  v9 = availableBytes;
   bytesDone = self->bytesDone;
-  if (bytesDone + v8 >= v7)
+  if (bytesDone + availableBytes >= v7)
   {
-    v30 = &v28;
+    v30 = &foundCopy;
     maxLength = self->maxLength;
     v12 = maxLength - bytesDone;
-    if (v8 < v12)
+    if (availableBytes < v12)
     {
-      v12 = v8;
+      v12 = availableBytes;
     }
 
     if (maxLength)
@@ -234,7 +234,7 @@ LABEL_3:
       v9 = v12;
     }
 
-    v32 = [(NSData *)self->term bytes];
+    bytes = [(NSData *)self->term bytes];
     if (self->bytesDone >= v7 - 1)
     {
       v13 = v7 - 1;
@@ -245,20 +245,20 @@ LABEL_3:
       v13 = self->bytesDone;
     }
 
-    v14 = [(NSMutableData *)self->buffer mutableBytes];
+    mutableBytes = [(NSMutableData *)self->buffer mutableBytes];
     startOffset = self->startOffset;
     v16 = self->bytesDone;
-    v31 = v6;
-    v17 = [v6 readBuffer];
+    v31 = bufferCopy;
+    readBuffer = [bufferCopy readBuffer];
     v29 = v9;
     v18 = v9 - v7 + v13;
     v19 = v18 + 1;
     if (v18 != -1)
     {
-      v20 = v17;
-      v28 = a4;
+      v20 = readBuffer;
+      foundCopy = found;
       v21 = v7 - v13;
-      v22 = &v14[startOffset + v16 - v13];
+      v22 = &mutableBytes[startOffset + v16 - v13];
       v23 = 1;
       v24 = v18 + 1;
       v25 = 1;
@@ -266,9 +266,9 @@ LABEL_3:
       {
         if (v13)
         {
-          memcpy(&v28 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v22, v13);
-          memcpy(&v28 + v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v20, v21);
-          if (!memcmp(&v28 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v32, v7))
+          memcpy(&foundCopy - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v22, v13);
+          memcpy(&foundCopy + v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), v20, v21);
+          if (!memcmp(&foundCopy - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), bytes, v7))
           {
             v9 = v21;
             goto LABEL_29;
@@ -281,20 +281,20 @@ LABEL_3:
 
         else
         {
-          if (!memcmp(v20, v32, v7))
+          if (!memcmp(v20, bytes, v7))
           {
             v9 = &v20[v7 - [v31 readBuffer]];
 LABEL_29:
-            a4 = v28;
-            if (!v28)
+            found = foundCopy;
+            if (!foundCopy)
             {
 LABEL_25:
-              v6 = v31;
+              bufferCopy = v31;
               goto LABEL_26;
             }
 
 LABEL_24:
-            *a4 = v25;
+            *found = v25;
             goto LABEL_25;
           }
 
@@ -305,7 +305,7 @@ LABEL_24:
         v25 = v23++ < v19;
         if (!--v24)
         {
-          a4 = v28;
+          found = foundCopy;
           goto LABEL_23;
         }
       }
@@ -314,7 +314,7 @@ LABEL_24:
     v25 = 0;
 LABEL_23:
     v9 = v29;
-    if (!a4)
+    if (!found)
     {
       goto LABEL_25;
     }
@@ -328,16 +328,16 @@ LABEL_26:
   return v9;
 }
 
-- (int64_t)searchForTermAfterPreBuffering:(int64_t)a3
+- (int64_t)searchForTermAfterPreBuffering:(int64_t)buffering
 {
   if (!self->term)
   {
     sub_24802D79C();
   }
 
-  v5 = [(NSMutableData *)self->buffer mutableBytes];
+  mutableBytes = [(NSMutableData *)self->buffer mutableBytes];
   bytesDone = self->bytesDone;
-  v7 = [(NSData *)self->term bytes];
+  bytes = [(NSData *)self->term bytes];
   v8 = [(NSData *)self->term length];
   v9 = v8;
   if (bytesDone >= v8)
@@ -350,16 +350,16 @@ LABEL_26:
     v10 = 0;
   }
 
-  v11 = &v5[v10];
+  v11 = &mutableBytes[v10];
   v12 = v10 + v8;
-  while (v12 <= bytesDone + a3)
+  while (v12 <= bytesDone + buffering)
   {
-    v13 = memcmp(&v11[self->startOffset], v7, v9);
+    v13 = memcmp(&v11[self->startOffset], bytes, v9);
     ++v11;
     ++v12;
     if (!v13)
     {
-      return bytesDone + a3 - v12 + 1;
+      return bytesDone + buffering - v12 + 1;
     }
   }
 

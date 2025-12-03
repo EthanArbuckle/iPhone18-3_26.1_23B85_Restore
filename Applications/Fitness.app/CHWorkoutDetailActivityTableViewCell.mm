@@ -1,8 +1,8 @@
 @interface CHWorkoutDetailActivityTableViewCell
-+ (double)preferredHeightForWorkout:(id)a3 indexPath:(id)a4 numberOfRows:(int64_t)a5;
-- (CHWorkoutDetailActivityTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)preferredHeightForWorkout:(id)workout indexPath:(id)path numberOfRows:(int64_t)rows;
+- (CHWorkoutDetailActivityTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CHWorkoutDetailNavigationDelegate)navigationDelegate;
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5 dataCalculator:(id)a6;
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager dataCalculator:(id)calculator;
 - (void)didTapWorkoutActivity;
 - (void)prepareForReuse;
 @end
@@ -16,7 +16,7 @@
   return Strong;
 }
 
-+ (double)preferredHeightForWorkout:(id)a3 indexPath:(id)a4 numberOfRows:(int64_t)a5
++ (double)preferredHeightForWorkout:(id)workout indexPath:(id)path numberOfRows:(int64_t)rows
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -27,11 +27,11 @@
   return 74.0;
 }
 
-- (CHWorkoutDetailActivityTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailActivityTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -40,28 +40,28 @@
     v6 = 0;
   }
 
-  return sub_100688844(a3, a4, v6);
+  return sub_100688844(style, identifier, v6);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100688E90();
 }
 
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5 dataCalculator:(id)a6
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager dataCalculator:(id)calculator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10068B1D8(v10, v11, v12, v13);
+  workoutCopy = workout;
+  activityCopy = activity;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  selfCopy = self;
+  sub_10068B1D8(workoutCopy, activityCopy, managerCopy, calculatorCopy);
 }
 
 - (void)didTapWorkoutActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_10068C1D8();
 }
 

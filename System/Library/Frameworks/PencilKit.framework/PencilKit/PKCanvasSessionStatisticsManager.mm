@@ -1,9 +1,9 @@
 @interface PKCanvasSessionStatisticsManager
 + (id)sharedStatisticsManager;
-- (void)_logFeatureUsed:(uint64_t)a1;
+- (void)_logFeatureUsed:(uint64_t)used;
 - (void)_sendUsageSessionStatistics;
 - (void)endSession;
-- (void)logFeatureUsed:(uint64_t)a1;
+- (void)logFeatureUsed:(uint64_t)used;
 @end
 
 @implementation PKCanvasSessionStatisticsManager
@@ -28,21 +28,21 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
   qword_1ED6A5220 = v0;
 }
 
-- (void)_logFeatureUsed:(uint64_t)a1
+- (void)_logFeatureUsed:(uint64_t)used
 {
   v3 = a2;
-  if (a1)
+  if (used)
   {
-    v4 = *(a1 + 8);
+    v4 = *(used + 8);
     v11 = v3;
     if (!v4)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v6 = *(a1 + 8);
-      *(a1 + 8) = v5;
+      v6 = *(used + 8);
+      *(used + 8) = v5;
 
       v3 = v11;
-      v4 = *(a1 + 8);
+      v4 = *(used + 8);
     }
 
     v7 = [v4 objectForKey:v3];
@@ -58,20 +58,20 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
     }
 
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
-    [*(a1 + 8) setObject:v10 forKeyedSubscript:v11];
+    [*(used + 8) setObject:v10 forKeyedSubscript:v11];
 
     v3 = v11;
   }
 }
 
-- (void)logFeatureUsed:(uint64_t)a1
+- (void)logFeatureUsed:(uint64_t)used
 {
   v3 = a2;
-  if (a1)
+  if (used)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      [(PKCanvasSessionStatisticsManager *)a1 _logFeatureUsed:v3];
+      [(PKCanvasSessionStatisticsManager *)used _logFeatureUsed:v3];
     }
 
     else
@@ -80,7 +80,7 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
       v4[1] = 3221225472;
       v4[2] = __51__PKCanvasSessionStatisticsManager_logFeatureUsed___block_invoke;
       v4[3] = &unk_1E82D6E70;
-      v4[4] = a1;
+      v4[4] = used;
       v5 = v3;
       dispatch_async(MEMORY[0x1E69E96A0], v4);
     }
@@ -91,16 +91,16 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
 {
   v28[16] = *MEMORY[0x1E69E9840];
   v2 = +[PKRecognitionSessionManager enabledLocales];
-  v3 = [v2 firstObject];
-  v18 = [v3 localeIdentifier];
+  firstObject = [v2 firstObject];
+  localeIdentifier = [firstObject localeIdentifier];
 
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(a1 + 8), "count")}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(self + 8), "count")}];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [*(a1 + 8) allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  allKeys = [*(self + 8) allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = *v25;
@@ -110,11 +110,11 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [*(a1 + 8) objectForKeyedSubscript:v9];
+        v10 = [*(self + 8) objectForKeyedSubscript:v9];
         if ([v10 intValue] <= 0)
         {
           v11 = &unk_1F47C1538;
@@ -128,7 +128,7 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
         [v4 setObject:v11 forKeyedSubscript:v9];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v6);
@@ -139,8 +139,8 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
   v20 = __63__PKCanvasSessionStatisticsManager__sendUsageSessionStatistics__block_invoke;
   v21 = &unk_1E82DAAF8;
   v22 = v4;
-  v23 = v18;
-  v12 = v18;
+  v23 = localeIdentifier;
+  v12 = localeIdentifier;
   v13 = v4;
   v14 = v19;
   v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.handwritingd.pkanalytics" options:0];
@@ -169,13 +169,13 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
 
 - (void)endSession
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      [(PKCanvasSessionStatisticsManager *)a1 _sendUsageSessionStatistics];
-      v2 = *(a1 + 8);
-      *(a1 + 8) = 0;
+      [(PKCanvasSessionStatisticsManager *)self _sendUsageSessionStatistics];
+      v2 = *(self + 8);
+      *(self + 8) = 0;
     }
 
     else
@@ -184,7 +184,7 @@ void __59__PKCanvasSessionStatisticsManager_sharedStatisticsManager__block_invok
       block[1] = 3221225472;
       block[2] = __46__PKCanvasSessionStatisticsManager_endSession__block_invoke;
       block[3] = &unk_1E82D7148;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }

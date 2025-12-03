@@ -1,17 +1,17 @@
 @interface RS3DSurface
 - ($B105B208EB85D2C79E2C4B589F71A8CA)edgeConfidence;
-- (BOOL)fillWithDictionaryRepresentation:(id)a3;
+- (BOOL)fillWithDictionaryRepresentation:(id)representation;
 - (RS3DSurface)init;
-- (RS3DSurface)initWithCoder:(id)a3;
-- (RS3DSurface)initWithDictionaryRepresentation:(id)a3 WithGroupId:(unsigned int)a4;
-- (__n128)initWithQuad:(__n128)a3 withConfidence:(__n128)a4 withColor:(__n128)a5 withGroupId:(float)a6 withType:(__n128)a7;
+- (RS3DSurface)initWithCoder:(id)coder;
+- (RS3DSurface)initWithDictionaryRepresentation:(id)representation WithGroupId:(unsigned int)id;
+- (__n128)initWithQuad:(__n128)quad withConfidence:(__n128)confidence withColor:(__n128)color withGroupId:(float)id withType:(__n128)type;
 - (double)dimensions;
 - (double)transform;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)rotateAlongZAxisRightHand:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)rotateAlongZAxisRightHand:(float)hand;
 - (void)translateBy:(RS3DSurface *)self;
 @end
 
@@ -63,9 +63,9 @@
   }
 }
 
-- (void)rotateAlongZAxisRightHand:(float)a3
+- (void)rotateAlongZAxisRightHand:(float)hand
 {
-  v4 = __sincosf_stret(a3);
+  v4 = __sincosf_stret(hand);
   v5 = 0;
   v6.i64[1] = 0;
   v6.f32[0] = -v4.__sinval;
@@ -92,61 +92,61 @@
   }
 }
 
-- (__n128)initWithQuad:(__n128)a3 withConfidence:(__n128)a4 withColor:(__n128)a5 withGroupId:(float)a6 withType:(__n128)a7
+- (__n128)initWithQuad:(__n128)quad withConfidence:(__n128)confidence withColor:(__n128)color withGroupId:(float)id withType:(__n128)type
 {
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = RS3DSurface;
   v13 = [(RS3DSurface *)&v20 init];
   *&v13[1].super.isa = a2;
-  *&v13[1]._anon_8[8] = a3;
-  *&v13[1]._polygonEdgeStates.__begin_ = a4;
-  *&v13[1]._polygonEdgeStates.__cap_ = a5;
-  v13->confidence = a6;
-  result = a7;
-  *v13->color = a7;
+  *&v13[1]._anon_8[8] = quad;
+  *&v13[1]._polygonEdgeStates.__begin_ = confidence;
+  *&v13[1]._polygonEdgeStates.__cap_ = color;
+  v13->confidence = id;
+  result = type;
+  *v13->color = type;
   v13->groupId = a9;
   v13->type = a10;
   return result;
 }
 
-- (RS3DSurface)initWithCoder:(id)a3
+- (RS3DSurface)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v65.receiver = self;
   v65.super_class = RS3DSurface;
   v6 = [(RS3DSurface *)&v65 init];
   if (v6)
   {
-    v6->type = objc_msgSend_decodeIntForKey_(v4, v5, @"type");
+    v6->type = objc_msgSend_decodeIntForKey_(coderCopy, v5, @"type");
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v64 = objc_msgSend_setWithObjects_(v7, v10, v8, v9, 0);
-    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v11, v64, @"quad");
+    v63 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v11, v64, @"quad");
     sub_2622C2794(v63, &v6[1]);
-    objc_msgSend_decodeFloatForKey_(v4, v12, @"conf");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v12, @"conf");
     v6->confidence = v13;
-    v62 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v14, v64, @"color");
+    v62 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v14, v64, @"color");
     sub_2622C2884(v62, v6->color);
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"identifier");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"identifier");
     identifier = v6->identifier;
     v6->identifier = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"parentIdentifier");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"parentIdentifier");
     parentIdentifier = v6->parentIdentifier;
     v6->parentIdentifier = v21;
 
-    objc_msgSend_decodeFloatForKey_(v4, v23, @"offset");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v23, @"offset");
     v6->offset = v24;
-    objc_msgSend_decodeFloatForKey_(v4, v25, @"depth");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v25, @"depth");
     v6->depth = v26;
-    v61 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v27, v64, @"polygon");
+    v61 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v27, v64, @"polygon");
     sub_2622C29BC(v61, v6->_anon_8);
-    v60 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v28, v64, @"polygon_edge_states");
+    v60 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v28, v64, @"polygon_edge_states");
     sub_2622C2B70(v60, &v6->_polygonEdgeStates);
-    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v29, v64, @"polygon_edge_score");
+    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v29, v64, @"polygon_edge_score");
     for (i = 0; objc_msgSend_count(v32, v30, v31) > i; ++i)
     {
       v35 = objc_msgSend_objectAtIndexedSubscript_(v32, v34, i);
@@ -210,38 +210,38 @@
       v6->_polygonEdgeConfidence.__end_ = v41;
     }
 
-    v53 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v52, v64, @"polygon_edge_sides");
+    v53 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v52, v64, @"polygon_edge_sides");
     sub_2622C2D10(v53, &v6->_polygonEdgeSides);
-    v55 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v54, v64, @"appear_pose_pts");
+    v55 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v54, v64, @"appear_pose_pts");
     sub_2622C2EB0(v55, v6->appearPosePts);
 
-    v57 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v56, v64, @"appear_major_views");
+    v57 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v56, v64, @"appear_major_views");
     sub_2622C2EB0(v57, v6->appearMajorViews);
 
-    v6->storyLevel = objc_msgSend_decodeIntegerForKey_(v4, v58, @"story");
+    v6->storyLevel = objc_msgSend_decodeIntegerForKey_(coderCopy, v58, @"story");
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v61 = a3;
-  objc_msgSend_encodeInt_forKey_(v61, v4, self->type, @"type");
+  coderCopy = coder;
+  objc_msgSend_encodeInt_forKey_(coderCopy, v4, self->type, @"type");
   v7 = sub_2622C3298(&self[1], v5, v6);
-  objc_msgSend_encodeObject_forKey_(v61, v8, v7, @"quad");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"quad");
 
   *&v9 = self->confidence;
-  v11 = objc_msgSend_encodeFloat_forKey_(v61, v10, @"conf", v9);
+  v11 = objc_msgSend_encodeFloat_forKey_(coderCopy, v10, @"conf", v9);
   v14 = sub_2622C33C8(*self->color, v11, v12, v13);
-  objc_msgSend_encodeObject_forKey_(v61, v15, v14, @"color");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"color");
 
-  objc_msgSend_encodeObject_forKey_(v61, v16, self->identifier, @"identifier");
-  objc_msgSend_encodeObject_forKey_(v61, v17, self->parentIdentifier, @"parentIdentifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, self->parentIdentifier, @"parentIdentifier");
   *&v18 = self->depth;
-  objc_msgSend_encodeFloat_forKey_(v61, v19, @"depth", v18);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v19, @"depth", v18);
   *&v20 = self->offset;
-  objc_msgSend_encodeFloat_forKey_(v61, v21, @"offset", v20);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v21, @"offset", v20);
   v24 = objc_msgSend_array(MEMORY[0x277CBEB18], v22, v23);
   v27 = v24;
   v28 = *self->_anon_8;
@@ -254,10 +254,10 @@
     ++v28;
   }
 
-  objc_msgSend_encodeObject_forKey_(v61, v25, v27, @"polygon");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v25, v27, @"polygon");
 
   v34 = sub_2622C362C(&self->_polygonEdgeStates.__begin_, v32, v33);
-  objc_msgSend_encodeObject_forKey_(v61, v35, v34, @"polygon_edge_states");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v35, v34, @"polygon_edge_states");
 
   v40 = objc_msgSend_array(MEMORY[0x277CBEB18], v36, v37);
   begin = self->_polygonEdgeConfidence.__begin_;
@@ -268,21 +268,21 @@
     objc_msgSend_addObject_(v40, v45, v44);
   }
 
-  objc_msgSend_encodeObject_forKey_(v61, v38, v40, @"polygon_edge_score");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v38, v40, @"polygon_edge_score");
 
   v48 = sub_2622C3758(&self->_polygonEdgeSides.__begin_, v46, v47);
-  objc_msgSend_encodeObject_forKey_(v61, v49, v48, @"polygon_edge_sides");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v49, v48, @"polygon_edge_sides");
 
   v53 = sub_2622C3514(*self->appearPosePts, v50, v51, v52);
-  objc_msgSend_encodeObject_forKey_(v61, v54, v53, @"appear_pose_pts");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v54, v53, @"appear_pose_pts");
 
   v58 = sub_2622C3514(*self->appearMajorViews, v55, v56, v57);
-  objc_msgSend_encodeObject_forKey_(v61, v59, v58, @"appear_major_views");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v59, v58, @"appear_major_views");
 
-  objc_msgSend_encodeInteger_forKey_(v61, v60, self->storyLevel, @"story");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v60, self->storyLevel, @"story");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = *&self[1]._polygonEdgeStates.__cap_;
@@ -601,13 +601,13 @@
   return v92;
 }
 
-- (RS3DSurface)initWithDictionaryRepresentation:(id)a3 WithGroupId:(unsigned int)a4
+- (RS3DSurface)initWithDictionaryRepresentation:(id)representation WithGroupId:(unsigned int)id
 {
-  v6 = a3;
+  representationCopy = representation;
   v9 = objc_msgSend_init(self, v7, v8);
-  if (objc_msgSend_fillWithDictionaryRepresentation_(v9, v10, v6))
+  if (objc_msgSend_fillWithDictionaryRepresentation_(v9, v10, representationCopy))
   {
-    v9[28] = a4;
+    v9[28] = id;
     v11 = v9;
   }
 
@@ -619,11 +619,11 @@
   return v11;
 }
 
-- (BOOL)fillWithDictionaryRepresentation:(id)a3
+- (BOOL)fillWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v141 = v4;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"type");
+  representationCopy = representation;
+  v141 = representationCopy;
+  v6 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v5, @"type");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -640,7 +640,7 @@
     self->type = objc_msgSend_intValue(v7, v8, v9);
   }
 
-  v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"quad");
+  v11 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v10, @"quad");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -654,7 +654,7 @@
 
   if (v12 && (v13 = sub_2622C2794(v12, &self[1]), v12, v13))
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"conf");
+    v15 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v14, @"conf");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -678,7 +678,7 @@
 
     self->confidence = v20;
 
-    v22 = objc_msgSend_objectForKeyedSubscript_(v4, v21, @"wall_status");
+    v22 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v21, @"wall_status");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -695,7 +695,7 @@
       self->wallStatus = objc_msgSend_intValue(v23, v24, v25);
     }
 
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"parent_wall_status");
+    v27 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v26, @"parent_wall_status");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -712,7 +712,7 @@
       self->parentWallStatus = objc_msgSend_intValue(v28, v29, v30);
     }
 
-    v32 = objc_msgSend_objectForKeyedSubscript_(v4, v31, @"color");
+    v32 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v31, @"color");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -729,7 +729,7 @@
       sub_2622C2884(v33, self->color);
     }
 
-    v35 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"identifier");
+    v35 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v34, @"identifier");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -753,7 +753,7 @@
       self->identifier = v41;
     }
 
-    v44 = objc_msgSend_objectForKeyedSubscript_(v4, v43, @"parentIdentifier");
+    v44 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v43, @"parentIdentifier");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -773,7 +773,7 @@
       self->parentIdentifier = v50;
     }
 
-    v53 = objc_msgSend_objectForKeyedSubscript_(v4, v52, @"individualUpdate");
+    v53 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v52, @"individualUpdate");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -790,7 +790,7 @@
       self->individualUpdate = objc_msgSend_intValue(v54, v55, v56);
     }
 
-    v58 = objc_msgSend_objectForKeyedSubscript_(v4, v57, @"edgeStates");
+    v58 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v57, @"edgeStates");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -815,7 +815,7 @@
       }
     }
 
-    v71 = objc_msgSend_objectForKeyedSubscript_(v4, v70, @"edgeConfidence");
+    v71 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v70, @"edgeConfidence");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -841,7 +841,7 @@
       }
     }
 
-    v85 = objc_msgSend_objectForKeyedSubscript_(v4, v84, @"offset");
+    v85 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v84, @"offset");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -859,7 +859,7 @@
       self->offset = v89;
     }
 
-    v91 = objc_msgSend_objectForKeyedSubscript_(v4, v90, @"depth");
+    v91 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v90, @"depth");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -877,7 +877,7 @@
       self->depth = v95;
     }
 
-    v97 = objc_msgSend_objectForKeyedSubscript_(v4, v96, @"polygon");
+    v97 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v96, @"polygon");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -894,7 +894,7 @@
       sub_2622C29BC(v98, self->_anon_8);
     }
 
-    v100 = objc_msgSend_objectForKeyedSubscript_(v4, v99, @"polygon_edge_states");
+    v100 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v99, @"polygon_edge_states");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -911,7 +911,7 @@
       sub_2622C2B70(v101, &self->_polygonEdgeStates);
     }
 
-    v103 = objc_msgSend_objectForKeyedSubscript_(v4, v102, @"polygon_edge_score");
+    v103 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v102, @"polygon_edge_score");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -979,7 +979,7 @@
             operator delete(v126);
           }
 
-          v4 = v141;
+          representationCopy = v141;
         }
 
         else
@@ -992,7 +992,7 @@
       }
     }
 
-    v128 = objc_msgSend_objectForKeyedSubscript_(v4, v127, @"polygon_edge_sides");
+    v128 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v127, @"polygon_edge_sides");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1009,7 +1009,7 @@
       sub_2622C2D10(v129, &self->_polygonEdgeSides);
     }
 
-    v131 = objc_msgSend_objectForKeyedSubscript_(v4, v130, @"appear_pose_pts");
+    v131 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v130, @"appear_pose_pts");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1026,7 +1026,7 @@
       sub_2622C2EB0(v132, self->appearPosePts);
     }
 
-    v134 = objc_msgSend_objectForKeyedSubscript_(v4, v133, @"appear_major_views");
+    v134 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v133, @"appear_major_views");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1043,7 +1043,7 @@
       sub_2622C2EB0(v135, self->appearMajorViews);
     }
 
-    v137 = objc_msgSend_objectForKeyedSubscript_(v4, v136, @"story");
+    v137 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v136, @"story");
     self->storyLevel = objc_msgSend_integerValue(v137, v138, v139);
 
     v17 = 1;
@@ -1063,13 +1063,13 @@
   v3 = 0uLL;
   do
   {
-    v3 = vaddq_f32(v3, a1[v2 + 17]);
+    v3 = vaddq_f32(v3, self[v2 + 17]);
     ++v2;
   }
 
   while (v2 != 4);
-  v5 = a1[17];
-  v4 = a1[18];
+  v5 = self[17];
+  v4 = self[18];
   v6 = vceqq_f32(v4, v5);
   v6.i32[3] = v6.i32[2];
   v7 = xmmword_2623A78C0;
@@ -1077,7 +1077,7 @@
   v9 = xmmword_2623A7700;
   if ((vminvq_u32(v6) & 0x80000000) == 0)
   {
-    v10 = a1[19];
+    v10 = self[19];
     v11 = vceqq_f32(v4, v10);
     v11.i32[3] = v11.i32[2];
     v12 = vminvq_u32(v11);
@@ -1094,7 +1094,7 @@
       *v1.i8 = vmul_f32(v16, v16);
       *v8.i8 = vrsqrts_f32(v8.u32[0], *v1.i8);
       v16.i32[0] = vmul_f32(v16, *v8.i8).u32[0];
-      v8.i8[0] = a1[6].i8[8];
+      v8.i8[0] = self[6].i8[8];
       v1.i32[0] = 5;
       v17 = vdupq_lane_s8(*&vceqq_s8(v8, v1), 0);
       v18 = vsubq_f32(v4, v10);
@@ -1140,15 +1140,15 @@
 
 - (double)dimensions
 {
-  v1 = a1[18];
-  v2 = vsubq_f32(a1[17], v1);
+  v1 = self[18];
+  v2 = vsubq_f32(self[17], v1);
   v3 = vmulq_f32(v2, v2);
   v3.f32[0] = sqrtf(v3.f32[2] + vaddv_f32(*v3.f32));
-  v4 = a1[8].i32[1];
-  v5 = vsubq_f32(v1, a1[19]);
+  v4 = self[8].i32[1];
+  v5 = vsubq_f32(v1, self[19]);
   v6 = vmulq_f32(v5, v5);
   v7 = sqrtf(v6.f32[2] + vaddv_f32(*v6.f32));
-  v8 = a1[6].u8[8];
+  v8 = self[6].u8[8];
   if (v8 == 5)
   {
     v9 = v7;
@@ -1156,12 +1156,12 @@
 
   else
   {
-    v9 = a1[8].f32[1];
+    v9 = self[8].f32[1];
   }
 
   if (v8 == 5)
   {
-    v10 = a1[8].i32[1];
+    v10 = self[8].i32[1];
   }
 
   v3.f32[1] = v9;

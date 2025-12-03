@@ -1,39 +1,39 @@
 @interface WiFiUsageUserSession
-- (WiFiUsageUserSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4;
-- (void)displayStateDidChange:(BOOL)a3;
-- (void)lockStateDidChange:(BOOL)a3;
+- (WiFiUsageUserSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (void)displayStateDidChange:(BOOL)change;
+- (void)lockStateDidChange:(BOOL)change;
 @end
 
 @implementation WiFiUsageUserSession
 
-- (WiFiUsageUserSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4
+- (WiFiUsageUserSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageUserSession;
-  return [(WiFiUsageSession *)&v5 initWithSessionType:2 andInterfaceName:a3 andCapabilities:a4];
+  return [(WiFiUsageSession *)&v5 initWithSessionType:2 andInterfaceName:name andCapabilities:capabilities];
 }
 
-- (void)lockStateDidChange:(BOOL)a3
+- (void)lockStateDidChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageUserSession;
   [(WiFiUsageSession *)&v5 lockStateDidChange:?];
-  if (!a3 && self->_userInactive)
+  if (!change && self->_userInactive)
   {
     NSLog(&cfstr_SUserSessionSt.isa, "[WiFiUsageUserSession lockStateDidChange:]");
     [(WiFiUsageSession *)self sessionDidStart];
     self->_userInactive = 0;
   }
 
-  self->_deviceLocked = a3;
+  self->_deviceLocked = change;
 }
 
-- (void)displayStateDidChange:(BOOL)a3
+- (void)displayStateDidChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageUserSession;
   [(WiFiUsageSession *)&v5 displayStateDidChange:?];
-  if (a3)
+  if (change)
   {
     if (self->_userInactive && !self->_deviceLocked)
     {

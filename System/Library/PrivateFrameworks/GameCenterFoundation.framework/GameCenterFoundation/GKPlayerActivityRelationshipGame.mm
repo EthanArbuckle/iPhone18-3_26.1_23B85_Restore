@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipGame
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipGame)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipGame)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __59__GKPlayerActivityRelationshipGame_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_408 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_408, block);
@@ -45,19 +45,19 @@ void __59__GKPlayerActivityRelationshipGame_secureCodedPropertyKeys__block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipGame)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipGame)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GKPlayerActivityRelationshipGame;
-  v5 = [(GKPlayerActivityRelationshipBase *)&v11 initWithDictionary:v4];
+  v5 = [(GKPlayerActivityRelationshipBase *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"adam-id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"adam-id"];
     [(GKPlayerActivityRelationshipGame *)v5 setAdamId:v6];
 
     v7 = [GKPlayerActivityRelationshipIcon alloc];
-    v8 = [v4 objectForKeyedSubscript:@"icon"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"icon"];
     v9 = [(GKPlayerActivityRelationshipIcon *)v7 initWithDictionary:v8];
     [(GKPlayerActivityRelationshipGame *)v5 setIcon:v9];
   }
@@ -71,9 +71,9 @@ void __59__GKPlayerActivityRelationshipGame_secureCodedPropertyKeys__block_invok
   v9.receiver = self;
   v9.super_class = GKPlayerActivityRelationshipGame;
   v4 = [(GKPlayerActivityRelationshipBase *)&v9 description];
-  v5 = [(GKPlayerActivityRelationshipGame *)self adamId];
-  v6 = [(GKPlayerActivityRelationshipGame *)self icon];
-  v7 = [v3 stringWithFormat:@"%@ \nadamId: %@\nicon: %@", v4, v5, v6];
+  adamId = [(GKPlayerActivityRelationshipGame *)self adamId];
+  icon = [(GKPlayerActivityRelationshipGame *)self icon];
+  v7 = [v3 stringWithFormat:@"%@ \nadamId: %@\nicon: %@", v4, adamId, icon];
 
   return v7;
 }

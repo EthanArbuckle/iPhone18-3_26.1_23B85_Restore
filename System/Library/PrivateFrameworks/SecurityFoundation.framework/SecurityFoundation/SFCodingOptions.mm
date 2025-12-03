@@ -1,12 +1,12 @@
 @interface SFCodingOptions
 - (NSString)encryptionPassphrase;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEncryptionPassphrase:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEncryptionPassphrase:(id)passphrase;
 @end
 
 @implementation SFCodingOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setEncoding:*(self->_codingOptionsInternal + 1)];
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)setEncryptionPassphrase:(id)a3
+- (void)setEncryptionPassphrase:(id)passphrase
 {
-  v4 = [a3 copy];
+  v4 = [passphrase copy];
   codingOptionsInternal = self->_codingOptionsInternal;
   v6 = codingOptionsInternal[2];
   codingOptionsInternal[2] = v4;

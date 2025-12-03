@@ -1,31 +1,31 @@
 @interface ICDocCamCVPixelBufferUtilities
-+ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)a3;
-+ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)a3 colorSpace:(CGColorSpace *)a4 copyMemory:(BOOL)a5;
-+ (id)coreImageForPixelBuffer:(__CVBuffer *)a3 colorSpace:(CGColorSpace *)a4;
++ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)buffer;
++ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)buffer colorSpace:(CGColorSpace *)space copyMemory:(BOOL)memory;
++ (id)coreImageForPixelBuffer:(__CVBuffer *)buffer colorSpace:(CGColorSpace *)space;
 @end
 
 @implementation ICDocCamCVPixelBufferUtilities
 
-+ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)a3
++ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)buffer
 {
-  result = CVBufferGetAttachment(a3, *MEMORY[0x277CC4B78], 0);
+  result = CVBufferGetAttachment(buffer, *MEMORY[0x277CC4B78], 0);
   if (result)
   {
 
-    return [a1 createImageWithCVPixelBuffer:a3 colorSpace:result];
+    return [self createImageWithCVPixelBuffer:buffer colorSpace:result];
   }
 
   return result;
 }
 
-+ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)a3 colorSpace:(CGColorSpace *)a4 copyMemory:(BOOL)a5
++ (CGImage)createImageWithCVPixelBuffer:(__CVBuffer *)buffer colorSpace:(CGColorSpace *)space copyMemory:(BOOL)memory
 {
-  v5 = a5;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  memoryCopy = memory;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType == 32)
   {
     v9 = 16390;
-    if (!a4)
+    if (!space)
     {
       return 0;
     }
@@ -39,38 +39,38 @@
     }
 
     v9 = 8198;
-    if (!a4)
+    if (!space)
     {
       return 0;
     }
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVPixelBufferLockBaseAddress(a3, 1uLL))
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (CVPixelBufferLockBaseAddress(buffer, 1uLL))
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
     if (BaseAddress)
     {
       v14 = BaseAddress;
-      if (!v5)
+      if (!memoryCopy)
       {
-        v21 = CGDataProviderCreateWithData(a3, BaseAddress, Height * BytesPerRow, sReleaseCVPixelBuffer);
+        v21 = CGDataProviderCreateWithData(buffer, BaseAddress, Height * BytesPerRow, sReleaseCVPixelBuffer);
         if (!v21)
         {
-          if (a3)
+          if (buffer)
           {
-            CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-            CVPixelBufferRelease(a3);
+            CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+            CVPixelBufferRelease(buffer);
           }
 
           return 0;
         }
 
         v22 = v21;
-        CVPixelBufferRetain(a3);
-        v19 = CGImageCreate(Width, Height, 8uLL, 0x20uLL, BytesPerRow, a4, v9, v22, 0, 1, kCGRenderingIntentDefault);
+        CVPixelBufferRetain(buffer);
+        v19 = CGImageCreate(Width, Height, 8uLL, 0x20uLL, BytesPerRow, space, v9, v22, 0, 1, kCGRenderingIntentDefault);
         v20 = v22;
 LABEL_14:
         CGDataProviderRelease(v20);
@@ -86,7 +86,7 @@ LABEL_14:
         if (v17)
         {
           v18 = v17;
-          v19 = CGImageCreate(Width, Height, 8uLL, 0x20uLL, BytesPerRow, a4, v9, v17, 0, 1, kCGRenderingIntentDefault);
+          v19 = CGImageCreate(Width, Height, 8uLL, 0x20uLL, BytesPerRow, space, v9, v17, 0, 1, kCGRenderingIntentDefault);
           v20 = v18;
           goto LABEL_14;
         }
@@ -97,9 +97,9 @@ LABEL_14:
   return 0;
 }
 
-+ (id)coreImageForPixelBuffer:(__CVBuffer *)a3 colorSpace:(CGColorSpace *)a4
++ (id)coreImageForPixelBuffer:(__CVBuffer *)buffer colorSpace:(CGColorSpace *)space
 {
-  v4 = [a1 createImageWithCVPixelBuffer:a3 colorSpace:a4];
+  v4 = [self createImageWithCVPixelBuffer:buffer colorSpace:space];
   if (v4)
   {
     v5 = [MEMORY[0x277CBF758] imageWithCGImage:v4];

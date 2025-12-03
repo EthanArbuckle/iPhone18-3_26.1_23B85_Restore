@@ -1,126 +1,126 @@
 @interface _OSLogStreamFilter
 - (NSData)data;
-- (_OSLogStreamFilter)initWithPredicate:(id)a3;
-- (id)dictionaryForComparisonPredicate:(id)a3;
-- (id)encodePredicate:(id)a3;
-- (void)addCategory:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)addProcess:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)addProcessID:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)addProcessImagePath:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)addSubsystem:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)addUserID:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5;
-- (void)processComparisonPredicate:(id)a3;
-- (void)processLeftExpression:(id)a3 andRightExpression:(id)a4 flags:(unint64_t)a5 returningDict:(id *)a6;
-- (void)reduceFilter:(id)a3;
-- (void)visitPredicate:(id)a3;
+- (_OSLogStreamFilter)initWithPredicate:(id)predicate;
+- (id)dictionaryForComparisonPredicate:(id)predicate;
+- (id)encodePredicate:(id)predicate;
+- (void)addCategory:(id)category flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)addProcess:(id)process flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)addProcessID:(id)d flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)addProcessImagePath:(id)path flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)addSubsystem:(id)subsystem flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)addUserID:(id)d flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)processComparisonPredicate:(id)predicate;
+- (void)processLeftExpression:(id)expression andRightExpression:(id)rightExpression flags:(unint64_t)flags returningDict:(id *)dict;
+- (void)reduceFilter:(id)filter;
+- (void)visitPredicate:(id)predicate;
 @end
 
 @implementation _OSLogStreamFilter
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_OSLogStreamFilter *)self processComparisonPredicate:v4];
+    [(_OSLogStreamFilter *)self processComparisonPredicate:predicateCopy];
   }
 }
 
-- (void)processComparisonPredicate:(id)a3
+- (void)processComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v7 = [v4 leftExpression];
-  v5 = [v4 rightExpression];
-  v6 = [(_OSLogStreamFilter *)self flagsForPredicate:v4];
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  v6 = [(_OSLogStreamFilter *)self flagsForPredicate:predicateCopy];
 
-  [(_OSLogStreamFilter *)self processLeftExpression:v7 andRightExpression:v5 flags:v6];
-  [(_OSLogStreamFilter *)self processLeftExpression:v5 andRightExpression:v7 flags:v6];
+  [(_OSLogStreamFilter *)self processLeftExpression:leftExpression andRightExpression:rightExpression flags:v6];
+  [(_OSLogStreamFilter *)self processLeftExpression:rightExpression andRightExpression:leftExpression flags:v6];
 }
 
-- (id)dictionaryForComparisonPredicate:(id)a3
+- (id)dictionaryForComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [v4 leftExpression];
-  v6 = [v4 rightExpression];
-  v7 = [(_OSLogStreamFilter *)self flagsForPredicate:v4];
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  v7 = [(_OSLogStreamFilter *)self flagsForPredicate:predicateCopy];
 
   v11 = 0;
-  [(_OSLogStreamFilter *)self processLeftExpression:v5 andRightExpression:v6 flags:v7 returningDict:&v11];
+  [(_OSLogStreamFilter *)self processLeftExpression:leftExpression andRightExpression:rightExpression flags:v7 returningDict:&v11];
   v8 = v11;
   if (!v8)
   {
     v10 = 0;
-    [(_OSLogStreamFilter *)self processLeftExpression:v6 andRightExpression:v5 flags:v7 returningDict:&v10];
+    [(_OSLogStreamFilter *)self processLeftExpression:rightExpression andRightExpression:leftExpression flags:v7 returningDict:&v10];
     v8 = v10;
   }
 
   return v8;
 }
 
-- (void)processLeftExpression:(id)a3 andRightExpression:(id)a4 flags:(unint64_t)a5 returningDict:(id *)a6
+- (void)processLeftExpression:(id)expression andRightExpression:(id)rightExpression flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v13 = a3;
-  v10 = a4;
-  if ([v13 expressionType] == 3)
+  expressionCopy = expression;
+  rightExpressionCopy = rightExpression;
+  if ([expressionCopy expressionType] == 3)
   {
-    v11 = [v13 keyPath];
-    if (([v11 isEqualToString:@"processID"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"processIdentifier"))
+    keyPath = [expressionCopy keyPath];
+    if (([keyPath isEqualToString:@"processID"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"processIdentifier"))
     {
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addProcessID:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addProcessID:constantValue flags:flags returningDict:dict];
     }
 
-    else if ([v11 isEqualToString:@"process"])
+    else if ([keyPath isEqualToString:@"process"])
     {
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addProcess:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addProcess:constantValue flags:flags returningDict:dict];
     }
 
-    else if ([v11 isEqualToString:@"processImagePath"])
+    else if ([keyPath isEqualToString:@"processImagePath"])
     {
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addProcessImagePath:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addProcessImagePath:constantValue flags:flags returningDict:dict];
     }
 
-    else if (([v11 isEqualToString:@"userID"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"userIdentifier"))
+    else if (([keyPath isEqualToString:@"userID"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"userIdentifier"))
     {
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addUserID:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addUserID:constantValue flags:flags returningDict:dict];
     }
 
-    else if ([v11 isEqualToString:@"subsystem"])
+    else if ([keyPath isEqualToString:@"subsystem"])
     {
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addSubsystem:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addSubsystem:constantValue flags:flags returningDict:dict];
     }
 
     else
     {
-      if (![v11 isEqualToString:@"category"])
+      if (![keyPath isEqualToString:@"category"])
       {
         goto LABEL_6;
       }
 
-      v12 = [v10 constantValue];
-      [(_OSLogStreamFilter *)self addCategory:v12 flags:a5 returningDict:a6];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogStreamFilter *)self addCategory:constantValue flags:flags returningDict:dict];
     }
 
 LABEL_6:
   }
 }
 
-- (void)addCategory:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addCategory:(id)category flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  categoryCopy = category;
+  if (dict | self->_filter)
   {
-    v17 = v8;
-    if (a5)
+    v17 = categoryCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -141,26 +141,26 @@ LABEL_6:
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"category"];
     v14 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v17];
-    v15 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15 | a4];
-    [(NSMutableDictionary *)v9 setObject:v16 forKeyedSubscript:v17];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:v17];
 
-    v8 = v17;
+    categoryCopy = v17;
   }
 }
 
-- (void)addSubsystem:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addSubsystem:(id)subsystem flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  subsystemCopy = subsystem;
+  if (dict | self->_filter)
   {
-    v17 = v8;
-    if (a5)
+    v17 = subsystemCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -181,26 +181,26 @@ LABEL_6:
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"subsystem"];
     v14 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v17];
-    v15 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15 | a4];
-    [(NSMutableDictionary *)v9 setObject:v16 forKeyedSubscript:v17];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:v17];
 
-    v8 = v17;
+    subsystemCopy = v17;
   }
 }
 
-- (void)addUserID:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addUserID:(id)d flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  dCopy = d;
+  if (dict | self->_filter)
   {
-    v18 = v8;
-    if (a5)
+    v18 = dCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -220,28 +220,28 @@ LABEL_6:
     }
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"uid"];
-    v14 = [v18 stringValue];
-    v15 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v14];
-    v16 = [v15 unsignedLongLongValue];
+    stringValue = [v18 stringValue];
+    v15 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:stringValue];
+    unsignedLongLongValue = [v15 unsignedLongLongValue];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v16 | a4];
-    [(NSMutableDictionary *)v9 setObject:v17 forKeyedSubscript:v14];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:stringValue];
 
-    v8 = v18;
+    dCopy = v18;
   }
 }
 
-- (void)addProcessImagePath:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addProcessImagePath:(id)path flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  pathCopy = path;
+  if (dict | self->_filter)
   {
-    v17 = v8;
-    if (a5)
+    v17 = pathCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -262,26 +262,26 @@ LABEL_6:
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"processImagePath"];
     v14 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v17];
-    v15 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15 | a4];
-    [(NSMutableDictionary *)v9 setObject:v16 forKeyedSubscript:v17];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:v17];
 
-    v8 = v17;
+    pathCopy = v17;
   }
 }
 
-- (void)addProcess:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addProcess:(id)process flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  processCopy = process;
+  if (dict | self->_filter)
   {
-    v17 = v8;
-    if (a5)
+    v17 = processCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -302,26 +302,26 @@ LABEL_6:
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"process"];
     v14 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v17];
-    v15 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15 | a4];
-    [(NSMutableDictionary *)v9 setObject:v16 forKeyedSubscript:v17];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:v17];
 
-    v8 = v17;
+    processCopy = v17;
   }
 }
 
-- (void)addProcessID:(id)a3 flags:(unint64_t)a4 returningDict:(id *)a5
+- (void)addProcessID:(id)d flags:(unint64_t)flags returningDict:(id *)dict
 {
-  v8 = a3;
-  if (a5 | self->_filter)
+  dCopy = d;
+  if (dict | self->_filter)
   {
-    v18 = v8;
-    if (a5)
+    v18 = dCopy;
+    if (dict)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      *a5 = v10;
+      *dict = v10;
     }
 
     else
@@ -341,14 +341,14 @@ LABEL_6:
     }
 
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:@"pid"];
-    v14 = [v18 stringValue];
-    v15 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v14];
-    v16 = [v15 unsignedLongLongValue];
+    stringValue = [v18 stringValue];
+    v15 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:stringValue];
+    unsignedLongLongValue = [v15 unsignedLongLongValue];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v16 | a4];
-    [(NSMutableDictionary *)v9 setObject:v17 forKeyedSubscript:v14];
+    flags = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue | flags];
+    [(NSMutableDictionary *)v9 setObject:flags forKeyedSubscript:stringValue];
 
-    v8 = v18;
+    dCopy = v18;
   }
 }
 
@@ -367,15 +367,15 @@ LABEL_6:
   return filter;
 }
 
-- (void)reduceFilter:(id)a3
+- (void)reduceFilter:(id)filter
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"logicalExp"];
+  filterCopy = filter;
+  v5 = [filterCopy objectForKeyedSubscript:@"logicalExp"];
   v6 = v5;
   if (v5)
   {
-    v61 = v4;
+    v61 = filterCopy;
     v62 = v5;
     v7 = [v5 objectForKeyedSubscript:@"subfilters"];
     v79 = 0u;
@@ -424,7 +424,7 @@ LABEL_6:
       while (v12 < [v7 count]);
     }
 
-    v4 = v61;
+    filterCopy = v61;
     v6 = v62;
     if ([v7 count])
     {
@@ -436,11 +436,11 @@ LABEL_6:
       }
 
       v16 = v15;
-      v17 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-      if (v17)
+      if (unsignedIntegerValue)
       {
-        if (v17 == 1)
+        if (unsignedIntegerValue == 1)
         {
           if ([v7 count])
           {
@@ -456,9 +456,9 @@ LABEL_6:
                 if (v22)
                 {
                   v23 = v22;
-                  v24 = [v22 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
-                  if (v24 == 1)
+                  if (unsignedIntegerValue2 == 1)
                   {
                     v25 = [v21 objectForKeyedSubscript:@"subfilters"];
                     [v65 removeObjectAtIndex:v18--];
@@ -474,7 +474,7 @@ LABEL_6:
             while (v18 < [v65 count]);
           }
 
-          v4 = v61;
+          filterCopy = v61;
           v6 = v62;
           if ([v7 count] != 1)
           {
@@ -493,7 +493,7 @@ LABEL_6:
         if (!v27)
         {
 
-          v4 = v61;
+          filterCopy = v61;
 LABEL_69:
           v6 = v62;
           goto LABEL_70;
@@ -501,14 +501,14 @@ LABEL_69:
 
         v28 = v27;
         v29 = [v27 objectForKeyedSubscript:@"operator"];
-        v17 = v29;
+        unsignedIntegerValue = v29;
         if (v29)
         {
-          v30 = [v29 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v29 unsignedIntegerValue];
 
-          if (v30)
+          if (unsignedIntegerValue3)
           {
-            v17 = 0;
+            unsignedIntegerValue = 0;
           }
 
           else
@@ -519,14 +519,14 @@ LABEL_69:
             [v7 addObject:v32];
             [v62 setObject:0 forKeyedSubscript:@"operator"];
 
-            v17 = 2;
+            unsignedIntegerValue = 2;
           }
         }
       }
 
-      v4 = v61;
+      filterCopy = v61;
       v6 = v62;
-      if (v17 == 2)
+      if (unsignedIntegerValue == 2)
       {
 LABEL_36:
         [v6 setObject:0 forKeyedSubscript:@"operator"];
@@ -612,12 +612,12 @@ LABEL_36:
 
                             v52 = *(*(&v71 + 1) + 8 * j);
                             v53 = [v47 objectForKeyedSubscript:v52];
-                            v54 = [v53 unsignedLongLongValue];
+                            unsignedLongLongValue = [v53 unsignedLongLongValue];
 
                             v55 = [v46 objectForKeyedSubscript:v52];
-                            v56 = [v55 unsignedLongLongValue];
+                            unsignedLongLongValue2 = [v55 unsignedLongLongValue];
 
-                            v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v56 | v54];
+                            v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue2 | unsignedLongLongValue];
                             [v46 setObject:v57 forKeyedSubscript:v52];
                           }
 
@@ -662,7 +662,7 @@ LABEL_36:
           v68 = 0;
         }
 
-        v4 = v61;
+        filterCopy = v61;
         if ([v7 count] == 1)
         {
           v59 = [v7 objectAtIndexedSubscript:0];
@@ -685,14 +685,14 @@ LABEL_70:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodePredicate:(id)a3
+- (id)encodePredicate:(id)predicate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_OSLogStreamFilter *)self dictionaryForComparisonPredicate:v4];
+    v5 = [(_OSLogStreamFilter *)self dictionaryForComparisonPredicate:predicateCopy];
   }
 
   else
@@ -703,7 +703,7 @@ LABEL_70:
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [v5 setObject:v6 forKeyedSubscript:@"logicalExp"];
-      v7 = v4;
+      v7 = predicateCopy;
       if ([v7 compoundPredicateType] != 2)
       {
         v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "compoundPredicateType")}];
@@ -711,8 +711,8 @@ LABEL_70:
       }
 
       v9 = MEMORY[0x277CBEB18];
-      v10 = [v7 subpredicates];
-      v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+      subpredicates = [v7 subpredicates];
+      v11 = [v9 arrayWithCapacity:{objc_msgSend(subpredicates, "count")}];
 
       v20 = v6;
       [v6 setObject:v11 forKeyedSubscript:@"subfilters"];
@@ -720,8 +720,8 @@ LABEL_70:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v12 = [v7 subpredicates];
-      v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      subpredicates2 = [v7 subpredicates];
+      v13 = [subpredicates2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v13)
       {
         v14 = v13;
@@ -732,7 +732,7 @@ LABEL_70:
           {
             if (*v22 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(subpredicates2);
             }
 
             v17 = [(_OSLogStreamFilter *)self encodePredicate:*(*(&v21 + 1) + 8 * i)];
@@ -742,7 +742,7 @@ LABEL_70:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v14 = [subpredicates2 countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v14);
@@ -755,13 +755,13 @@ LABEL_70:
   return v5;
 }
 
-- (_OSLogStreamFilter)initWithPredicate:(id)a3
+- (_OSLogStreamFilter)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = getenv("LOG_USE_STREAMFILTER");
   if (v5 && *v5 == 48 && !v5[1])
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -774,7 +774,7 @@ LABEL_70:
     v9 = [(_OSLogStreamFilter *)&v17 init];
     if (v9)
     {
-      v10 = _OSLogGetSimplePredicate(v4, v6, v7, v8);
+      v10 = _OSLogGetSimplePredicate(predicateCopy, v6, v7, v8);
       if (requiresLogicalExpression(v10))
       {
         v11 = [(_OSLogStreamFilter *)v9 encodePredicate:v10];
@@ -796,10 +796,10 @@ LABEL_70:
 
     self = v9;
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

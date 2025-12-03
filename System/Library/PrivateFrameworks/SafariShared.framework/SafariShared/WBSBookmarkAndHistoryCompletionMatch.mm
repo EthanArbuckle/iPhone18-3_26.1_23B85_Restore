@@ -3,7 +3,7 @@
 - (BOOL)containsReadingListItem;
 - (BOOL)matchesAutocompleteTrigger;
 - (BOOL)onlyContainsCloudTab;
-- (WBSBookmarkAndHistoryCompletionMatch)initWithBookmarkAndHistoryCompletionMatch:(void *)a3 userInput:(id)a4 forQueryID:(int64_t)a5;
+- (WBSBookmarkAndHistoryCompletionMatch)initWithBookmarkAndHistoryCompletionMatch:(void *)match userInput:(id)input forQueryID:(int64_t)d;
 - (double)lastVisitTimeInterval;
 - (id)cloudTabDeviceName;
 - (id)parsecDomainIdentifier;
@@ -11,17 +11,17 @@
 
 @implementation WBSBookmarkAndHistoryCompletionMatch
 
-- (WBSBookmarkAndHistoryCompletionMatch)initWithBookmarkAndHistoryCompletionMatch:(void *)a3 userInput:(id)a4 forQueryID:(int64_t)a5
+- (WBSBookmarkAndHistoryCompletionMatch)initWithBookmarkAndHistoryCompletionMatch:(void *)match userInput:(id)input forQueryID:(int64_t)d
 {
-  v8 = a4;
-  v9 = *(*a3 + 8);
+  inputCopy = input;
+  v9 = *(*match + 8);
   v13.receiver = self;
   v13.super_class = WBSBookmarkAndHistoryCompletionMatch;
-  v10 = [(WBSURLCompletionMatch *)&v13 initWithMatchLocation:v9 userInput:v8 forQueryID:a5];
+  v10 = [(WBSURLCompletionMatch *)&v13 initWithMatchLocation:v9 userInput:inputCopy forQueryID:d];
   if (v10)
   {
-    v12 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*a3);
-    -[WBSBookmarkAndHistoryCompletionMatch initWithBookmarkAndHistoryCompletionMatch:userInput:forQueryID:].cold.1(v10, [v12 isSynthesized], v12, a3);
+    v12 = SafariShared::BookmarkAndHistoryCompletionMatch::data(*match);
+    -[WBSBookmarkAndHistoryCompletionMatch initWithBookmarkAndHistoryCompletionMatch:userInput:forQueryID:].cold.1(v10, [v12 isSynthesized], v12, match);
   }
 
   return v10;
@@ -29,9 +29,9 @@
 
 - (BOOL)matchesAutocompleteTrigger
 {
-  v3 = [(WBSBookmarkAndHistoryCompletionMatch *)self data];
-  v4 = [(WBSURLCompletionMatch *)self userInput];
-  v5 = [v3 matchesAutocompleteTrigger:v4 isStrengthened:0];
+  data = [(WBSBookmarkAndHistoryCompletionMatch *)self data];
+  userInput = [(WBSURLCompletionMatch *)self userInput];
+  v5 = [data matchesAutocompleteTrigger:userInput isStrengthened:0];
 
   return v5;
 }
@@ -39,9 +39,9 @@
 - (BOOL)containsBookmark
 {
   v2 = SafariShared::BookmarkAndHistoryCompletionMatch::data(self->_match.m_ptr);
-  v3 = [v2 containsBookmark];
+  containsBookmark = [v2 containsBookmark];
 
-  return v3;
+  return containsBookmark;
 }
 
 - (BOOL)containsReadingListItem
@@ -49,15 +49,15 @@
   v2 = SafariShared::BookmarkAndHistoryCompletionMatch::data(self->_match.m_ptr);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 containsReadingListItem];
+    containsReadingListItem = [v2 containsReadingListItem];
   }
 
   else
   {
-    v3 = 0;
+    containsReadingListItem = 0;
   }
 
-  return v3;
+  return containsReadingListItem;
 }
 
 - (BOOL)onlyContainsCloudTab
@@ -65,15 +65,15 @@
   v2 = SafariShared::BookmarkAndHistoryCompletionMatch::data(self->_match.m_ptr);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 onlyContainsCloudTab];
+    onlyContainsCloudTab = [v2 onlyContainsCloudTab];
   }
 
   else
   {
-    v3 = 0;
+    onlyContainsCloudTab = 0;
   }
 
-  return v3;
+  return onlyContainsCloudTab;
 }
 
 - (id)cloudTabDeviceName
@@ -81,15 +81,15 @@
   v2 = SafariShared::BookmarkAndHistoryCompletionMatch::data(self->_match.m_ptr);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 cloudTabDeviceName];
+    cloudTabDeviceName = [v2 cloudTabDeviceName];
   }
 
   else
   {
-    v3 = 0;
+    cloudTabDeviceName = 0;
   }
 
-  return v3;
+  return cloudTabDeviceName;
 }
 
 - (double)lastVisitTimeInterval
@@ -103,10 +103,10 @@
 
 - (id)parsecDomainIdentifier
 {
-  v2 = [(WBSBookmarkAndHistoryCompletionMatch *)self data];
-  v3 = [v2 containsBookmark];
+  data = [(WBSBookmarkAndHistoryCompletionMatch *)self data];
+  containsBookmark = [data containsBookmark];
   v4 = WBSParsecDomainSafariBookmark;
-  if (!v3)
+  if (!containsBookmark)
   {
     v4 = WBSParsecDomainSafariHistory;
   }

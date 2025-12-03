@@ -9,15 +9,15 @@
 
 - (id)af_objectsPassingTest:()AFCollectionUtilities
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }
 
 - (id)af_firstObjectPassingTest:()AFCollectionUtilities
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -25,7 +25,7 @@
 
   else
   {
-    v3 = [a1 objectAtIndexedSubscript:v2];
+    v3 = [self objectAtIndexedSubscript:v2];
   }
 
   return v3;
@@ -40,8 +40,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -52,7 +52,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -62,7 +62,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -83,8 +83,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -95,7 +95,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = v5[2](v5, *(*(&v16 + 1) + 8 * i));
@@ -105,7 +105,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

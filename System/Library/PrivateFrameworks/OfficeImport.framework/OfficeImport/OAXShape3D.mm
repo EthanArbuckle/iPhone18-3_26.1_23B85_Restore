@@ -1,14 +1,14 @@
 @interface OAXShape3D
-+ (BOOL)isEmpty:(id)a3;
++ (BOOL)isEmpty:(id)empty;
 + (id)bevelTypeEnumMap;
 + (id)materialEnumMap;
-+ (id)readBevelFromXmlNode:(_xmlNode *)a3;
-+ (id)readShape3DFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5;
++ (id)readBevelFromXmlNode:(_xmlNode *)node;
++ (id)readShape3DFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state;
 + (void)bevelTypeEnumMap;
 + (void)materialEnumMap;
-+ (void)writeBevel:(id)a3 to:(id)a4;
-+ (void)writeShape3D:(id)a3 to:(id)a4;
-+ (void)writeShape3DMaterialOnly:(id)a3 to:(id)a4;
++ (void)writeBevel:(id)bevel to:(id)to;
++ (void)writeShape3D:(id)d to:(id)to;
++ (void)writeShape3DMaterialOnly:(id)only to:(id)to;
 @end
 
 @implementation OAXShape3D
@@ -51,11 +51,11 @@
   return v2;
 }
 
-+ (id)readBevelFromXmlNode:(_xmlNode *)a3
++ (id)readBevelFromXmlNode:(_xmlNode *)node
 {
   v5 = objc_alloc_init(OADBevel);
   v13 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "w", &v13))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "w", &v13))
   {
     v6 = v13 / 12700.0;
     *&v6 = v6;
@@ -63,18 +63,18 @@
   }
 
   v12 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "h", &v12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "h", &v12))
   {
     v7 = v12 / 12700.0;
     *&v7 = v7;
     [(OADBevel *)v5 setHeight:v7];
   }
 
-  v8 = CXDefaultStringAttribute(a3, CXNoNamespace, "prst", 0);
+  v8 = CXDefaultStringAttribute(node, CXNoNamespace, "prst", 0);
   if (v8)
   {
-    v9 = [a1 bevelTypeEnumMap];
-    v10 = [v9 valueForString:v8];
+    bevelTypeEnumMap = [self bevelTypeEnumMap];
+    v10 = [bevelTypeEnumMap valueForString:v8];
 
     [(OADBevel *)v5 setType:v10];
   }
@@ -82,30 +82,30 @@
   return v5;
 }
 
-+ (id)readShape3DFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5
++ (id)readShape3DFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state
 {
-  v7 = a5;
+  stateCopy = state;
   v8 = objc_alloc_init(OADShape3D);
-  v9 = [v7 OAXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "bevelT");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(node, oAXMainNamespace, "bevelT");
 
   if (v10)
   {
-    v11 = [a1 readBevelFromXmlNode:v10];
+    v11 = [self readBevelFromXmlNode:v10];
     [(OADShape3D *)v8 setTopBevel:v11];
   }
 
-  v12 = [v7 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "bevelB");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace2, "bevelB");
 
   if (v13)
   {
-    v14 = [a1 readBevelFromXmlNode:v13];
+    v14 = [self readBevelFromXmlNode:v13];
     [(OADShape3D *)v8 setBottomBevel:v14];
   }
 
-  v15 = [v7 OAXMainNamespace];
-  v16 = OCXFindChild(a3, v15, "extrusionClr");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v16 = OCXFindChild(node, oAXMainNamespace3, "extrusionClr");
 
   if (v16)
   {
@@ -113,8 +113,8 @@
     [(OADShape3D *)v8 setExtrusionColor:v17];
   }
 
-  v18 = [v7 OAXMainNamespace];
-  v19 = OCXFindChild(a3, v18, "contourClr");
+  oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+  v19 = OCXFindChild(node, oAXMainNamespace4, "contourClr");
 
   if (v19)
   {
@@ -123,7 +123,7 @@
   }
 
   v30 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "z", &v30, 12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "z", &v30, 12))
   {
     v21 = v30 / 12700.0;
     *&v21 = v21;
@@ -131,7 +131,7 @@
   }
 
   v29 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "extrusionH", &v29))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "extrusionH", &v29))
   {
     v22 = v29 / 12700.0;
     *&v22 = v22;
@@ -139,18 +139,18 @@
   }
 
   v28 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "contourW", &v28))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "contourW", &v28))
   {
     v23 = v28 / 12700.0;
     *&v23 = v23;
     [(OADShape3D *)v8 setContourWidth:v23];
   }
 
-  v24 = CXDefaultStringAttribute(a3, CXNoNamespace, "prstMaterial", 0);
+  v24 = CXDefaultStringAttribute(node, CXNoNamespace, "prstMaterial", 0);
   if (v24)
   {
-    v25 = [a1 materialEnumMap];
-    v26 = [v25 valueForString:v24];
+    materialEnumMap = [self materialEnumMap];
+    v26 = [materialEnumMap valueForString:v24];
 
     [(OADShape3D *)v8 setMaterial:v26];
   }
@@ -158,121 +158,121 @@
   return v8;
 }
 
-+ (void)writeBevel:(id)a3 to:(id)a4
++ (void)writeBevel:(id)bevel to:(id)to
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [a1 bevelTypeEnumMap];
-  v8 = [v7 stringForValue:{objc_msgSend(v21, "type")}];
+  bevelCopy = bevel;
+  toCopy = to;
+  bevelTypeEnumMap = [self bevelTypeEnumMap];
+  v8 = [bevelTypeEnumMap stringForValue:{objc_msgSend(bevelCopy, "type")}];
 
-  [v6 writeOAAttribute:@"prst" content:v8];
+  [toCopy writeOAAttribute:@"prst" content:v8];
   v9 = MEMORY[0x277CCABB0];
-  [v21 width];
+  [bevelCopy width];
   *&v11 = v10 * 12700.0;
   v12 = [v9 numberWithFloat:v11];
-  v13 = [v12 longValue];
+  longValue = [v12 longValue];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v13];
-  [v6 writeOAAttribute:@"w" content:v14];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"w" content:v14];
 
   v15 = MEMORY[0x277CCABB0];
-  [v21 height];
+  [bevelCopy height];
   *&v17 = v16 * 12700.0;
   v18 = [v15 numberWithFloat:v17];
-  v19 = [v18 longValue];
+  longValue2 = [v18 longValue];
 
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v19];
-  [v6 writeOAAttribute:@"h" content:v20];
+  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+  [toCopy writeOAAttribute:@"h" content:v20];
 }
 
-+ (void)writeShape3D:(id)a3 to:(id)a4
++ (void)writeShape3D:(id)d to:(id)to
 {
-  v31 = a3;
-  v6 = a4;
+  dCopy = d;
+  toCopy = to;
   v7 = MEMORY[0x277CCABB0];
-  [v31 shapeDepth];
+  [dCopy shapeDepth];
   *&v9 = v8 * 12700.0;
   v10 = [v7 numberWithFloat:v9];
-  v11 = [v10 longValue];
+  longValue = [v10 longValue];
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v11];
-  [v6 writeOAAttribute:@"z" content:v12];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"z" content:v12];
 
   v13 = MEMORY[0x277CCABB0];
-  [v31 extrusionHeight];
+  [dCopy extrusionHeight];
   *&v15 = v14 * 12700.0;
   v16 = [v13 numberWithFloat:v15];
-  v17 = [v16 longValue];
+  longValue2 = [v16 longValue];
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v17];
-  [v6 writeOAAttribute:@"extrusionH" content:v18];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+  [toCopy writeOAAttribute:@"extrusionH" content:v18];
 
   v19 = MEMORY[0x277CCABB0];
-  [v31 contourWidth];
+  [dCopy contourWidth];
   *&v21 = v20 * 12700.0;
   v22 = [v19 numberWithFloat:v21];
-  v23 = [v22 longValue];
+  longValue3 = [v22 longValue];
 
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v23];
-  [v6 writeOAAttribute:@"contourW" content:v24];
+  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue3];
+  [toCopy writeOAAttribute:@"contourW" content:v24];
 
-  v25 = [a1 materialEnumMap];
-  v26 = [v25 stringForValue:{objc_msgSend(v31, "material")}];
+  materialEnumMap = [self materialEnumMap];
+  v26 = [materialEnumMap stringForValue:{objc_msgSend(dCopy, "material")}];
 
-  [v6 writeOAAttribute:@"prstMaterial" content:v26];
-  v27 = [v31 topBevel];
-  if (v27)
+  [toCopy writeOAAttribute:@"prstMaterial" content:v26];
+  topBevel = [dCopy topBevel];
+  if (topBevel)
   {
-    [v6 startOAElement:@"bevelT"];
-    [a1 writeBevel:v27 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"bevelT"];
+    [self writeBevel:topBevel to:toCopy];
+    [toCopy endElement];
   }
 
-  v28 = [v31 bottomBevel];
-  if (v28)
+  bottomBevel = [dCopy bottomBevel];
+  if (bottomBevel)
   {
-    [v6 startOAElement:@"bevelB"];
-    [a1 writeBevel:v28 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"bevelB"];
+    [self writeBevel:bottomBevel to:toCopy];
+    [toCopy endElement];
   }
 
-  v29 = [v31 extrusionColor];
-  if (v29)
+  extrusionColor = [dCopy extrusionColor];
+  if (extrusionColor)
   {
-    [v6 startOAElement:@"extrusionClr"];
-    [OAXColor writeColor:v29 to:v6];
-    [v6 endElement];
+    [toCopy startOAElement:@"extrusionClr"];
+    [OAXColor writeColor:extrusionColor to:toCopy];
+    [toCopy endElement];
   }
 
-  v30 = [v31 contourColor];
-  if (v30)
+  contourColor = [dCopy contourColor];
+  if (contourColor)
   {
-    [v6 startOAElement:@"contourClr"];
-    [OAXColor writeColor:v30 to:v6];
-    [v6 endElement];
-  }
-}
-
-+ (void)writeShape3DMaterialOnly:(id)a3 to:(id)a4
-{
-  v9 = a3;
-  v6 = a4;
-  if (![OAXShape3D isEmpty:v9])
-  {
-    v7 = [a1 materialEnumMap];
-    v8 = [v7 stringForValue:{objc_msgSend(v9, "material")}];
-    [v6 writeOAAttribute:@"prstMaterial" content:v8];
+    [toCopy startOAElement:@"contourClr"];
+    [OAXColor writeColor:contourColor to:toCopy];
+    [toCopy endElement];
   }
 }
 
-+ (BOOL)isEmpty:(id)a3
++ (void)writeShape3DMaterialOnly:(id)only to:(id)to
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 material])
+  onlyCopy = only;
+  toCopy = to;
+  if (![OAXShape3D isEmpty:onlyCopy])
   {
-    v6 = [a1 materialEnumMap];
-    v7 = [v6 stringForValue:{objc_msgSend(v5, "material")}];
+    materialEnumMap = [self materialEnumMap];
+    v8 = [materialEnumMap stringForValue:{objc_msgSend(onlyCopy, "material")}];
+    [toCopy writeOAAttribute:@"prstMaterial" content:v8];
+  }
+}
+
++ (BOOL)isEmpty:(id)empty
+{
+  emptyCopy = empty;
+  v5 = emptyCopy;
+  if (emptyCopy && [emptyCopy material])
+  {
+    materialEnumMap = [self materialEnumMap];
+    v7 = [materialEnumMap stringForValue:{objc_msgSend(v5, "material")}];
     v8 = v7 == 0;
   }
 

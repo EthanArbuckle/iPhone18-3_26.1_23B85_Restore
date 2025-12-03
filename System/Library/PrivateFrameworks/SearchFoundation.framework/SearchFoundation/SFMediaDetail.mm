@@ -1,39 +1,39 @@
 @interface SFMediaDetail
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMediaDetail)initWithCoder:(id)a3;
-- (SFMediaDetail)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMediaDetail)initWithCoder:(id)coder;
+- (SFMediaDetail)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMediaDetail
 
-- (SFMediaDetail)initWithProtobuf:(id)a3
+- (SFMediaDetail)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFMediaDetail;
   v5 = [(SFMediaDetail *)&v14 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(SFMediaDetail *)v5 setTitle:v7];
+      title2 = [protobufCopy title];
+      [(SFMediaDetail *)v5 setTitle:title2];
     }
 
-    v8 = [v4 content];
+    content = [protobufCopy content];
 
-    if (v8)
+    if (content)
     {
       v9 = [SFText alloc];
-      v10 = [v4 content];
-      v11 = [(SFText *)v9 initWithProtobuf:v10];
+      content2 = [protobufCopy content];
+      v11 = [(SFText *)v9 initWithProtobuf:content2];
       [(SFMediaDetail *)v5 setContent:v11];
     }
 
@@ -45,30 +45,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFMediaDetail *)self title];
-  v4 = [v3 hash];
-  v5 = [(SFMediaDetail *)self content];
-  v6 = [v5 hash];
+  title = [(SFMediaDetail *)self title];
+  v4 = [title hash];
+  content = [(SFMediaDetail *)self content];
+  v6 = [content hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFMediaDetail *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMediaDetail *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFMediaDetail *)self title];
-      v8 = [(SFMediaDetail *)v6 title];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      title = [(SFMediaDetail *)self title];
+      title2 = [(SFMediaDetail *)v6 title];
+      if ((title != 0) == (title2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -76,12 +76,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFMediaDetail *)self title];
-      if (v9)
+      title3 = [(SFMediaDetail *)self title];
+      if (title3)
       {
-        v3 = [(SFMediaDetail *)self title];
-        v10 = [(SFMediaDetail *)v6 title];
-        if (![v3 isEqual:v10])
+        title4 = [(SFMediaDetail *)self title];
+        title5 = [(SFMediaDetail *)v6 title];
+        if (![title4 isEqual:title5])
         {
           v11 = 0;
 LABEL_17:
@@ -90,13 +90,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = title5;
       }
 
-      v12 = [(SFMediaDetail *)self content];
-      v13 = [(SFMediaDetail *)v6 content];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      content = [(SFMediaDetail *)self content];
+      content2 = [(SFMediaDetail *)v6 content];
+      v14 = content2;
+      if ((content != 0) == (content2 == 0))
       {
 
         v11 = 0;
@@ -104,16 +104,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFMediaDetail *)self content];
-        if (v15)
+        content3 = [(SFMediaDetail *)self content];
+        if (content3)
         {
-          v16 = v15;
-          v19 = [(SFMediaDetail *)self content];
+          v16 = content3;
+          content4 = [(SFMediaDetail *)self content];
           [(SFMediaDetail *)v6 content];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = title4;
+          v11 = [content4 isEqual:v17];
 
-          v3 = v20;
+          title4 = v20;
         }
 
         else
@@ -123,8 +123,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      title5 = v21;
+      if (!title3)
       {
         goto LABEL_18;
       }
@@ -140,15 +140,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFMediaDetail *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(SFMediaDetail *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
-  v7 = [(SFMediaDetail *)self content];
-  v8 = [v7 copy];
+  content = [(SFMediaDetail *)self content];
+  v8 = [content copy];
   [v4 setContent:v8];
 
   return v4;
@@ -157,31 +157,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMediaDetail alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaDetail *)v2 jsonData];
+  jsonData = [(_SFPBMediaDetail *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMediaDetail alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaDetail *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMediaDetail *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMediaDetail alloc] initWithFacade:self];
-  v5 = [(_SFPBMediaDetail *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMediaDetail *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMediaDetail)initWithCoder:(id)a3
+- (SFMediaDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMediaDetail alloc] initWithData:v5];
   v7 = [(SFMediaDetail *)self initWithProtobuf:v6];

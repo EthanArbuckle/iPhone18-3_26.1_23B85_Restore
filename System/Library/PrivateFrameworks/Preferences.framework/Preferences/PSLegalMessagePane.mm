@@ -1,20 +1,20 @@
 @interface PSLegalMessagePane
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5;
-- (PSLegalMessagePane)initWithFrame:(CGRect)a3;
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type;
+- (PSLegalMessagePane)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)layoutInsetContent:(CGRect)a3;
+- (void)layoutInsetContent:(CGRect)content;
 - (void)viewDidBecomeVisible;
-- (void)webViewDidFinishLoad:(id)a3;
+- (void)webViewDidFinishLoad:(id)load;
 @end
 
 @implementation PSLegalMessagePane
 
-- (PSLegalMessagePane)initWithFrame:(CGRect)a3
+- (PSLegalMessagePane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PSLegalMessagePane;
@@ -22,32 +22,32 @@
   v8 = v7;
   if (v7)
   {
-    v9 = [(PSLegalMessagePane *)v7 markupString];
-    if (v9)
+    markupString = [(PSLegalMessagePane *)v7 markupString];
+    if (markupString)
     {
-      v10 = v9;
-      v11 = &stru_1EFE45030;
+      v10 = markupString;
+      htmlFileLocation = &stru_1EFE45030;
     }
 
     else
     {
-      v11 = [(PSLegalMessagePane *)v8 htmlFileLocation];
+      htmlFileLocation = [(PSLegalMessagePane *)v8 htmlFileLocation];
       v22 = 0;
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithContentsOfFile:v11 encoding:4 error:&v22];
+      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithContentsOfFile:htmlFileLocation encoding:4 error:&v22];
       v21 = v22;
       if (v21)
       {
-        v15 = v21;
-        v16 = _PSLoggingFacility();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        _browserView = v21;
+        _scrollView = _PSLoggingFacility();
+        if (os_log_type_enabled(_scrollView, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109634;
           v25 = 36;
           v26 = 2080;
           v27 = "[PSLegalMessagePane initWithFrame:]";
           v28 = 2112;
-          v29 = v15;
-          _os_log_impl(&dword_18B008000, v16, OS_LOG_TYPE_DEFAULT, "%d %s %@", buf, 0x1Cu);
+          v29 = _browserView;
+          _os_log_impl(&dword_18B008000, _scrollView, OS_LOG_TYPE_DEFAULT, "%d %s %@", buf, 0x1Cu);
         }
 
         goto LABEL_5;
@@ -62,22 +62,22 @@
     [(UIWebView *)v8->_webView setDelegate:v8];
     [(UIWebView *)v8->_webView setDataDetectorTypes:0];
     [(UIWebView *)v8->_webView _setDrawsCheckeredPattern:0];
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIWebView *)v8->_webView setBackgroundColor:v14];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIWebView *)v8->_webView setBackgroundColor:whiteColor];
 
     [(PSLegalMessagePane *)v8 addSubview:v8->_webView];
-    v15 = [(UIWebView *)v8->_webView _browserView];
-    [v15 setTilesOpaque:0];
-    [v15 setLoadsSynchronously:1];
-    [v15 setDetectsPhoneNumbers:0];
-    v16 = [(UIWebView *)v8->_webView _scrollView];
-    v17 = [MEMORY[0x1E69DC888] whiteColor];
-    [v16 setBackgroundColor:v17];
+    _browserView = [(UIWebView *)v8->_webView _browserView];
+    [_browserView setTilesOpaque:0];
+    [_browserView setLoadsSynchronously:1];
+    [_browserView setDetectsPhoneNumbers:0];
+    _scrollView = [(UIWebView *)v8->_webView _scrollView];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [_scrollView setBackgroundColor:whiteColor2];
 
-    [v16 _setShowsBackgroundShadow:0];
-    [v16 setDecelerationRate:0.998];
+    [_scrollView _setShowsBackgroundShadow:0];
+    [_scrollView setDecelerationRate:0.998];
     v18 = v8->_webView;
-    v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
+    v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:htmlFileLocation];
     [(UIWebView *)v18 loadHTMLString:v10 baseURL:v19];
 
 LABEL_5:
@@ -86,24 +86,24 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type
 {
-  if (!a5)
+  if (!type)
   {
     v6 = MEMORY[0x1E69DC668];
-    v7 = a4;
-    v8 = [v6 sharedApplication];
-    v9 = [v7 URL];
+    requestCopy = request;
+    sharedApplication = [v6 sharedApplication];
+    v9 = [requestCopy URL];
 
-    [v8 openURL:v9 options:MEMORY[0x1E695E0F8] completionHandler:0];
+    [sharedApplication openURL:v9 options:MEMORY[0x1E695E0F8] completionHandler:0];
   }
 
-  return a5 != 0;
+  return type != 0;
 }
 
-- (void)webViewDidFinishLoad:(id)a3
+- (void)webViewDidFinishLoad:(id)load
 {
-  v19 = a3;
+  loadCopy = load;
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v3 pointSize];
   v5 = v4;
@@ -113,17 +113,17 @@ LABEL_5:
   {
     v7 = v5 / v6 * 100.0;
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='%f%%'", floorf(v7)];
-    v9 = [v19 stringByEvaluatingJavaScriptFromString:v8];
-    v10 = [v19 stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"];
+    v9 = [loadCopy stringByEvaluatingJavaScriptFromString:v8];
+    v10 = [loadCopy stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"];
     [v10 floatValue];
     v12 = v11;
     v13 = LODWORD(v11);
 
-    v14 = [v19 scrollView];
-    v15 = v14;
+    scrollView = [loadCopy scrollView];
+    v15 = scrollView;
     if (v13 >= 0 && ((v13 & 0x7FFFFFFFu) - 0x800000) >> 24 <= 0x7E || (v13 - 1) <= 0x7FFFFE)
     {
-      [v14 contentSize];
+      [scrollView contentSize];
       if (v18 != v12)
       {
         [v15 contentSize];
@@ -135,19 +135,19 @@ LABEL_5:
 
 - (void)viewDidBecomeVisible
 {
-  v3 = [(UIWebView *)self->_webView scrollView];
-  [v3 frame];
+  scrollView = [(UIWebView *)self->_webView scrollView];
+  [scrollView frame];
   v5 = v4;
 
-  v8 = [(UIWebView *)self->_webView _browserView];
-  [v8 frame];
+  _browserView = [(UIWebView *)self->_webView _browserView];
+  [_browserView frame];
   if (v6 != v5)
   {
-    [v8 setFrame:?];
+    [_browserView setFrame:?];
   }
 
-  v7 = [(UIWebView *)self->_webView _scrollView];
-  [v7 flashScrollIndicators];
+  _scrollView = [(UIWebView *)self->_webView _scrollView];
+  [_scrollView flashScrollIndicators];
 }
 
 - (void)dealloc
@@ -158,12 +158,12 @@ LABEL_5:
   [(PSLegalMessagePane *)&v3 dealloc];
 }
 
-- (void)layoutInsetContent:(CGRect)a3
+- (void)layoutInsetContent:(CGRect)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = content.size.height;
+  width = content.size.width;
+  y = content.origin.y;
+  x = content.origin.x;
   webView = self->_webView;
   v8 = PSTableViewSideInset();
   v10.origin.x = x;

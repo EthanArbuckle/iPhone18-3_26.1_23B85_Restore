@@ -1,5 +1,5 @@
 @interface HDHealthAppNewDeviceNotificationService
-- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)a3 error:(id *)a4;
+- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)kind error:(id *)error;
 - (HDHealthAppNewDeviceNotificationService)init;
 @end
 
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)a3 error:(id *)a4
+- (BOOL)sendNewDeviceNotificationWithMessageKind:(int64_t)kind error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -29,7 +29,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CCC300], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v37 = self;
+    selfCopy4 = self;
     v38 = 2114;
     v39 = @"com.apple.private.alloy.healthapp.messaging";
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Attempting to send IDS notification with service: %{public}@", buf, 0x16u);
@@ -70,7 +70,7 @@
     while (v12);
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CCD4A0]) initWithMessageKind:a3];
+  v17 = [objc_alloc(MEMORY[0x277CCD4A0]) initWithMessageKind:kind];
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v17 requiringSecureCoding:1 error:0];
   notificationService = self->_notificationService;
@@ -87,7 +87,7 @@
     if (v25)
     {
       *buf = 138543618;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2114;
       v39 = v22;
       _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: Data successfully sent with identifier: %{public}@", buf, 0x16u);
@@ -99,7 +99,7 @@
     if (v25)
     {
       *buf = 138543362;
-      v37 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: Data was not sent successfully.", buf, 0xCu);
     }
 
@@ -108,7 +108,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC300], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2114;
       v39 = v23;
       _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Error occured when sending new device IDS notification: %{public}@", buf, 0x16u);

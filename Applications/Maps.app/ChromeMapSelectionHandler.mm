@@ -1,42 +1,42 @@
 @interface ChromeMapSelectionHandler
-- (BOOL)_checkAndPropagateSpecificCallbacksForAnnotationView:(id)a3;
-- (BOOL)_checkAndPropagateSpecificCallbacksForMarker:(id)a3;
-- (BOOL)_propagateDidSelectInvocation:(id)a3;
-- (BOOL)_propagateShouldSelectInvocation:(id)a3;
-- (BOOL)mapSelectionManager:(id)a3 shouldSelectAnnotationView:(id)a4;
-- (BOOL)mapSelectionManager:(id)a3 shouldSelectVKLabelMarker:(id)a4;
-- (ChromeMapSelectionHandler)initWithChromeViewController:(id)a3;
-- (id)_invocationWithSelector:(SEL)a3 argument:(id)a4;
-- (id)protocolMethodSignatureForSelector:(SEL)a3;
-- (id)searchPinsManagerForMapSelectionManager:(id)a3;
+- (BOOL)_checkAndPropagateSpecificCallbacksForAnnotationView:(id)view;
+- (BOOL)_checkAndPropagateSpecificCallbacksForMarker:(id)marker;
+- (BOOL)_propagateDidSelectInvocation:(id)invocation;
+- (BOOL)_propagateShouldSelectInvocation:(id)invocation;
+- (BOOL)mapSelectionManager:(id)manager shouldSelectAnnotationView:(id)view;
+- (BOOL)mapSelectionManager:(id)manager shouldSelectVKLabelMarker:(id)marker;
+- (ChromeMapSelectionHandler)initWithChromeViewController:(id)controller;
+- (id)_invocationWithSelector:(SEL)selector argument:(id)argument;
+- (id)protocolMethodSignatureForSelector:(SEL)selector;
+- (id)searchPinsManagerForMapSelectionManager:(id)manager;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (void)mapSelectionManager:(id)a3 selectAnnotationView:(id)a4;
-- (void)mapSelectionManager:(id)a3 selectVKLabelMarker:(id)a4;
-- (void)mapSelectionManagerClearSelection:(id)a3;
+- (void)mapSelectionManager:(id)manager selectAnnotationView:(id)view;
+- (void)mapSelectionManager:(id)manager selectVKLabelMarker:(id)marker;
+- (void)mapSelectionManagerClearSelection:(id)selection;
 @end
 
 @implementation ChromeMapSelectionHandler
 
-- (BOOL)_propagateDidSelectInvocation:(id)a3
+- (BOOL)_propagateDidSelectInvocation:(id)invocation
 {
-  v4 = a3;
-  v95 = self;
+  invocationCopy = invocation;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v5 = [WeakRetained contexts];
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  contexts = [WeakRetained contexts];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v8 = [v4 selector];
+  selector = [invocationCopy selector];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v9 = v7;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v101 objects:v111 count:16];
-  v98 = v4;
+  v98 = invocationCopy;
   v94 = v9;
-  aSelector = v8;
+  aSelector = selector;
   if (v10)
   {
     v11 = v10;
@@ -55,30 +55,30 @@
         }
 
         v16 = *(*(&v101 + 1) + 8 * v14);
-        v17 = v16;
+        mapSelectionDelegate = v16;
         if (objc_opt_respondsToSelector())
         {
-          v17 = [v16 mapSelectionDelegate];
+          mapSelectionDelegate = [v16 mapSelectionDelegate];
         }
 
         if (objc_opt_respondsToSelector())
         {
           v18 = v11;
-          v19 = [v98 _maps_copy];
-          [v19 invokeWithTarget:v17];
+          _maps_copy = [v98 _maps_copy];
+          [_maps_copy invokeWithTarget:mapSelectionDelegate];
           v100 = 0;
-          v99 = v19;
-          [v19 getReturnValue:&v100];
-          LODWORD(v19) = v100;
+          v99 = _maps_copy;
+          [_maps_copy getReturnValue:&v100];
+          LODWORD(_maps_copy) = v100;
           v20 = sub_10006C9F8();
           v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-          if (v19 == 1)
+          if (_maps_copy == 1)
           {
             if (v21)
             {
-              v37 = v95;
+              v37 = selfCopy;
               v38 = WeakRetained;
-              if (v95)
+              if (selfCopy)
               {
                 v39 = objc_opt_class();
                 v40 = NSStringFromClass(v39);
@@ -108,8 +108,8 @@ LABEL_43:
               }
 
               v60 = v43;
-              v17 = v17;
-              if (v17)
+              mapSelectionDelegate = mapSelectionDelegate;
+              if (mapSelectionDelegate)
               {
                 v61 = objc_opt_class();
                 v62 = NSStringFromClass(v61);
@@ -118,18 +118,18 @@ LABEL_43:
                   goto LABEL_71;
                 }
 
-                v63 = [v17 performSelector:v97];
+                v63 = [mapSelectionDelegate performSelector:v97];
                 v64 = v63;
                 if (v63 && ![v63 isEqualToString:v62])
                 {
-                  v65 = [NSString stringWithFormat:@"%@<%p, %@>", v62, v17, v64];
+                  v65 = [NSString stringWithFormat:@"%@<%p, %@>", v62, mapSelectionDelegate, v64];
                 }
 
                 else
                 {
 
 LABEL_71:
-                  v65 = [NSString stringWithFormat:@"%@<%p>", v62, v17];
+                  v65 = [NSString stringWithFormat:@"%@<%p>", v62, mapSelectionDelegate];
                 }
               }
 
@@ -156,14 +156,14 @@ LABEL_71:
             }
 
             v67 = 1;
-            v44 = v9;
+            _maps_copy2 = v9;
             goto LABEL_109;
           }
 
           if (v21)
           {
-            v22 = v95;
-            if (v95)
+            v22 = selfCopy;
+            if (selfCopy)
             {
               v23 = objc_opt_class();
               v24 = NSStringFromClass(v23);
@@ -193,7 +193,7 @@ LABEL_16:
             }
 
             v28 = v27;
-            v29 = v17;
+            v29 = mapSelectionDelegate;
             if (v29)
             {
               v30 = objc_opt_class();
@@ -267,15 +267,15 @@ LABEL_46:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_98:
-    v44 = sub_10006C9F8();
-    if (!os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
+    _maps_copy2 = sub_10006C9F8();
+    if (!os_log_type_enabled(_maps_copy2, OS_LOG_TYPE_INFO))
     {
 LABEL_108:
       v67 = 0;
       goto LABEL_109;
     }
 
-    v84 = v95;
+    v84 = selfCopy;
     if (!v84)
     {
       v89 = @"<nil>";
@@ -305,15 +305,15 @@ LABEL_107:
     v106 = v89;
     v107 = 2114;
     v108 = v90;
-    _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "[%{public}@] Nothing handled %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, _maps_copy2, OS_LOG_TYPE_INFO, "[%{public}@] Nothing handled %{public}@", buf, 0x16u);
 
     goto LABEL_108;
   }
 
-  v44 = [v98 _maps_copy];
-  [v44 invokeWithTarget:WeakRetained];
+  _maps_copy2 = [v98 _maps_copy];
+  [_maps_copy2 invokeWithTarget:WeakRetained];
   v100 = 0;
-  [v44 getReturnValue:&v100];
+  [_maps_copy2 getReturnValue:&v100];
   v45 = v100;
   v46 = sub_10006C9F8();
   v47 = os_log_type_enabled(v46, OS_LOG_TYPE_INFO);
@@ -326,7 +326,7 @@ LABEL_97:
       goto LABEL_98;
     }
 
-    v54 = v95;
+    v54 = selfCopy;
     if (!v54)
     {
       v59 = @"<nil>";
@@ -395,7 +395,7 @@ LABEL_63:
 
   if (v47)
   {
-    v48 = v95;
+    v48 = selfCopy;
     if (!v48)
     {
       v53 = @"<nil>";
@@ -470,29 +470,29 @@ LABEL_109:
   return v67;
 }
 
-- (BOOL)_propagateShouldSelectInvocation:(id)a3
+- (BOOL)_propagateShouldSelectInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v94 = 1;
-  v83 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v5 = [WeakRetained contexts];
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  contexts = [WeakRetained contexts];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  aSelector = [v4 selector];
+  aSelector = [invocationCopy selector];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  obj = v7;
+  obj = allObjects;
   v87 = [obj countByEnumeratingWithState:&v90 objects:v103 count:16];
   v8 = 0;
   if (v87)
   {
     v9 = &selRef__updatePIPLayout;
     v86 = *v91;
-    v82 = v4;
+    v82 = invocationCopy;
     do
     {
       v10 = 0;
@@ -505,10 +505,10 @@ LABEL_109:
         }
 
         v11 = *(*(&v90 + 1) + 8 * v10);
-        v12 = v11;
+        mapSelectionDelegate = v11;
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v11 mapSelectionDelegate];
+          mapSelectionDelegate = [v11 mapSelectionDelegate];
         }
 
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -516,8 +516,8 @@ LABEL_109:
           v22 = sub_10006C9F8();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
-            v23 = v83;
-            if (v83)
+            v23 = selfCopy;
+            if (selfCopy)
             {
               v24 = objc_opt_class();
               v25 = NSStringFromClass(v24);
@@ -547,7 +547,7 @@ LABEL_23:
             }
 
             v36 = v28;
-            v37 = v12;
+            v37 = mapSelectionDelegate;
             if (v37)
             {
               v38 = objc_opt_class();
@@ -563,13 +563,13 @@ LABEL_23:
               {
                 v42 = [NSString stringWithFormat:@"%@<%p, %@>", v39, v37, v41];
 
-                v4 = v82;
+                invocationCopy = v82;
               }
 
               else
               {
 
-                v4 = v82;
+                invocationCopy = v82;
 LABEL_41:
                 v42 = [NSString stringWithFormat:@"%@<%p>", v39, v37];
               }
@@ -593,10 +593,10 @@ LABEL_41:
           goto LABEL_52;
         }
 
-        v13 = [v4 _maps_copy];
-        [v13 invokeWithTarget:v12];
+        _maps_copy = [invocationCopy _maps_copy];
+        [_maps_copy invokeWithTarget:mapSelectionDelegate];
         v89 = 1;
-        [v13 getReturnValue:&v89];
+        [_maps_copy getReturnValue:&v89];
         v14 = v94 & v89;
         v94 &= v89;
         v15 = sub_10006C9F8();
@@ -612,8 +612,8 @@ LABEL_41:
           goto LABEL_52;
         }
 
-        v16 = v83;
-        if (v83)
+        v16 = selfCopy;
+        if (selfCopy)
         {
           v17 = objc_opt_class();
           v18 = NSStringFromClass(v17);
@@ -643,7 +643,7 @@ LABEL_15:
 LABEL_28:
 
         v29 = v21;
-        v30 = v12;
+        v30 = mapSelectionDelegate;
         if (v30)
         {
           v31 = objc_opt_class();
@@ -696,7 +696,7 @@ LABEL_44:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ %s %{public}@ ", buf, 0x2Au);
 
         v45 = v94;
-        v4 = v82;
+        invocationCopy = v82;
         if ((v45 & 1) == 0)
         {
           goto LABEL_82;
@@ -708,8 +708,8 @@ LABEL_52:
           v48 = sub_10006C9F8();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
           {
-            v49 = v83;
-            if (v83)
+            v49 = selfCopy;
+            if (selfCopy)
             {
               v50 = objc_opt_class();
               v51 = NSStringFromClass(v50);
@@ -739,8 +739,8 @@ LABEL_68:
             }
 
             v55 = v54;
-            v12 = v12;
-            if (v12)
+            mapSelectionDelegate = mapSelectionDelegate;
+            if (mapSelectionDelegate)
             {
               v56 = objc_opt_class();
               v57 = NSStringFromClass(v56);
@@ -749,18 +749,18 @@ LABEL_68:
                 goto LABEL_76;
               }
 
-              v58 = [v12 performSelector:v85];
+              v58 = [mapSelectionDelegate performSelector:v85];
               v59 = v58;
               if (v58 && ![v58 isEqualToString:v57])
               {
-                v60 = [NSString stringWithFormat:@"%@<%p, %@>", v57, v12, v59];
+                v60 = [NSString stringWithFormat:@"%@<%p, %@>", v57, mapSelectionDelegate, v59];
               }
 
               else
               {
 
 LABEL_76:
-                v60 = [NSString stringWithFormat:@"%@<%p>", v57, v12];
+                v60 = [NSString stringWithFormat:@"%@<%p>", v57, mapSelectionDelegate];
               }
             }
 
@@ -780,7 +780,7 @@ LABEL_76:
           }
 
 LABEL_81:
-          v30 = v12;
+          v30 = mapSelectionDelegate;
 LABEL_82:
 
           goto LABEL_83;
@@ -802,10 +802,10 @@ LABEL_83:
 
   if (v94 == 1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v62 = [v4 _maps_copy];
-    [v62 invokeWithTarget:WeakRetained];
+    _maps_copy2 = [invocationCopy _maps_copy];
+    [_maps_copy2 invokeWithTarget:WeakRetained];
     v89 = 1;
-    [v62 getReturnValue:&v89];
+    [_maps_copy2 getReturnValue:&v89];
     v94 = v89;
     v63 = sub_10006C9F8();
     if (!os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
@@ -815,7 +815,7 @@ LABEL_108:
       goto LABEL_109;
     }
 
-    v64 = v83;
+    v64 = selfCopy;
     if (!v64)
     {
       v69 = @"<nil>";
@@ -894,7 +894,7 @@ LABEL_92:
   if (v8)
   {
 LABEL_109:
-    [v4 setReturnValue:&v94];
+    [invocationCopy setReturnValue:&v94];
     v70 = 1;
     goto LABEL_110;
   }
@@ -905,29 +905,29 @@ LABEL_110:
   return v70;
 }
 
-- (id)protocolMethodSignatureForSelector:(SEL)a3
+- (id)protocolMethodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 0, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 0, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, a3, 1, 1), types = v7.types, v7.name))
+  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, selector, 1, 1), types = v7.types, v7.name))
   {
     v8 = [NSMethodSignature signatureWithObjCTypes:types];
   }
 
   else
   {
-    [(ChromeMapSelectionHandler *)self doesNotRecognizeSelector:a3];
+    [(ChromeMapSelectionHandler *)self doesNotRecognizeSelector:selector];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (id)_invocationWithSelector:(SEL)a3 argument:(id)a4
+- (id)_invocationWithSelector:(SEL)selector argument:(id)argument
 {
-  v6 = a4;
-  v13 = v6;
-  v7 = [(ChromeMapSelectionHandler *)self protocolMethodSignatureForSelector:a3];
+  argumentCopy = argument;
+  v13 = argumentCopy;
+  v7 = [(ChromeMapSelectionHandler *)self protocolMethodSignatureForSelector:selector];
   if (!v7)
   {
     v10 = sub_10006D178();
@@ -958,8 +958,8 @@ LABEL_110:
   }
 
   v8 = [NSInvocation invocationWithMethodSignature:v7];
-  [v8 setSelector:a3];
-  if (v6)
+  [v8 setSelector:selector];
+  if (argumentCopy)
   {
     [v8 setArgument:&v13 atIndex:2];
   }
@@ -980,15 +980,15 @@ LABEL_110:
   v5 = objc_loadWeakRetained(&self->_chromeViewController);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [v5 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
@@ -1004,38 +1004,38 @@ LABEL_110:
   v5 = objc_loadWeakRetained(&self->_chromeViewController);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [v5 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (id)searchPinsManagerForMapSelectionManager:(id)a3
+- (id)searchPinsManagerForMapSelectionManager:(id)manager
 {
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v4 = [WeakRetained searchPinsManager];
+  searchPinsManager = [WeakRetained searchPinsManager];
 
-  return v4;
+  return searchPinsManager;
 }
 
-- (void)mapSelectionManagerClearSelection:(id)a3
+- (void)mapSelectionManagerClearSelection:(id)selection
 {
   v4 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidClearMapSelection" argument:0];
   [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v4];
 }
 
-- (BOOL)_checkAndPropagateSpecificCallbacksForAnnotationView:(id)a3
+- (BOOL)_checkAndPropagateSpecificCallbacksForAnnotationView:(id)view
 {
-  v4 = [a3 annotation];
+  annotation = [view annotation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectUserLocationAnnotation:" argument:v4];
+    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectUserLocationAnnotation:" argument:annotation];
     v6 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v5];
   }
 
@@ -1047,19 +1047,19 @@ LABEL_110:
   return v6;
 }
 
-- (void)mapSelectionManager:(id)a3 selectAnnotationView:(id)a4
+- (void)mapSelectionManager:(id)manager selectAnnotationView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   if (![(ChromeMapSelectionHandler *)self _checkAndPropagateSpecificCallbacksForAnnotationView:?])
   {
-    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectAnnotationView:" argument:v6];
+    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectAnnotationView:" argument:viewCopy];
     [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v5];
   }
 }
 
-- (BOOL)mapSelectionManager:(id)a3 shouldSelectAnnotationView:(id)a4
+- (BOOL)mapSelectionManager:(id)manager shouldSelectAnnotationView:(id)view
 {
-  v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeShouldAllowSelectingAnnotationView:" argument:a4];
+  v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeShouldAllowSelectingAnnotationView:" argument:view];
   v6 = [(ChromeMapSelectionHandler *)self _propagateShouldSelectInvocation:v5];
   v7 = 1;
   if (v6)
@@ -1072,17 +1072,17 @@ LABEL_110:
   return v7 & 1;
 }
 
-- (BOOL)_checkAndPropagateSpecificCallbacksForMarker:(id)a3
+- (BOOL)_checkAndPropagateSpecificCallbacksForMarker:(id)marker
 {
-  v4 = a3;
-  if (![v4 _maps_hasCustomPOIAnnotation])
+  markerCopy = marker;
+  if (![markerCopy _maps_hasCustomPOIAnnotation])
   {
-    if ([v4 isRouteEta])
+    if ([markerCopy isRouteEta])
     {
-      v10 = [v4 routeInfo];
-      v5 = [v10 route];
+      routeInfo = [markerCopy routeInfo];
+      route = [routeInfo route];
 
-      if (!v5)
+      if (!route)
       {
         v31 = sub_10006D178();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1115,10 +1115,10 @@ LABEL_110:
       goto LABEL_8;
     }
 
-    if ([v4 isFlyoverTour])
+    if ([markerCopy isFlyoverTour])
     {
-      v5 = [v4 flyoverTourIdentifier];
-      if (!v5)
+      route = [markerCopy flyoverTourIdentifier];
+      if (!route)
       {
         v34 = sub_10006D178();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1149,24 +1149,24 @@ LABEL_110:
 
       v11 = "chromeDidSelectFlyoverTourLabelMarker:";
 LABEL_16:
-      v12 = self;
-      v13 = v4;
+      selfCopy4 = self;
+      v13 = markerCopy;
       goto LABEL_17;
     }
 
-    if ([v4 isTransitLine])
+    if ([markerCopy isTransitLine])
     {
       v19 = "chromeDidSelectTransitLineMarker:";
 LABEL_24:
-      v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:v19 argument:v4];
-      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v5];
+      route = [(ChromeMapSelectionHandler *)self _invocationWithSelector:v19 argument:markerCopy];
+      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:route];
       goto LABEL_20;
     }
 
-    if ([v4 isTrafficIncident])
+    if ([markerCopy isTrafficIncident])
     {
-      v5 = [v4 incident];
-      if (!v5)
+      route = [markerCopy incident];
+      if (!route)
       {
         v37 = sub_10006D178();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1195,42 +1195,42 @@ LABEL_24:
         }
       }
 
-      v7 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectTrafficIncident:latitude:longitude:" argument:v5];
-      [v4 coordinate];
+      composedWaypoint = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectTrafficIncident:latitude:longitude:" argument:route];
+      [markerCopy coordinate];
       v21 = v20;
       *buf = [NSNumber numberWithDouble:?];
       v43 = [NSNumber numberWithDouble:v21];
-      [v7 setArgument:buf atIndex:3];
-      [v7 setArgument:&v43 atIndex:4];
-      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v7];
+      [composedWaypoint setArgument:buf atIndex:3];
+      [composedWaypoint setArgument:&v43 atIndex:4];
+      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:composedWaypoint];
 
       goto LABEL_19;
     }
 
-    if ([v4 isRouteWaypoint])
+    if ([markerCopy isRouteWaypoint])
     {
-      v22 = [v4 waypointInfo];
-      v5 = [v22 waypoint];
+      waypointInfo = [markerCopy waypointInfo];
+      route = [waypointInfo waypoint];
 
-      if (![v5 hasFindMyHandleID])
+      if (![route hasFindMyHandleID])
       {
-        v24 = [v5 addressBookAddress];
-        v7 = v24;
-        if (v24 && ([v24 isMeCard] & 1) == 0)
+        addressBookAddress = [route addressBookAddress];
+        composedWaypoint = addressBookAddress;
+        if (addressBookAddress && ([addressBookAddress isMeCard] & 1) == 0)
         {
           v14 = "chromeDidSelectWaypointMarkerForAddress:";
-          v15 = self;
-          v16 = v7;
+          selfCopy5 = self;
+          v16 = composedWaypoint;
         }
 
         else
         {
-          if (![v4 featureID])
+          if (![markerCopy featureID])
           {
-            v9 = [v4 _maps_mapItem];
-            if (v9)
+            _maps_mapItem = [markerCopy _maps_mapItem];
+            if (_maps_mapItem)
             {
-              v25 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectMarkerForMapItem:" argument:v9];
+              v25 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectMarkerForMapItem:" argument:_maps_mapItem];
               v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v25];
             }
 
@@ -1243,25 +1243,25 @@ LABEL_24:
           }
 
           v14 = "chromeDidSelectRouteWaypointMarker:";
-          v15 = self;
-          v16 = v4;
+          selfCopy5 = self;
+          v16 = markerCopy;
         }
 
         goto LABEL_10;
       }
 
-      v23 = [v5 findMyHandleID];
-      v7 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:" argument:v23];
+      findMyHandleID = [route findMyHandleID];
+      composedWaypoint = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:" argument:findMyHandleID];
 
 LABEL_18:
-      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v7];
+      v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:composedWaypoint];
       goto LABEL_19;
     }
 
-    if ([v4 isRouteAnnotation])
+    if ([markerCopy isRouteAnnotation])
     {
-      v5 = [v4 _maps_selectableRouteAnnotations];
-      if (![v5 count])
+      route = [markerCopy _maps_selectableRouteAnnotations];
+      if (![route count])
       {
         v40 = sub_10006D178();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -1294,18 +1294,18 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    if (([v4 _maps_isOfflineAnnotation] & 1) != 0 || objc_msgSend(v4, "_maps_isOfflineClusterAnnotation"))
+    if (([markerCopy _maps_isOfflineAnnotation] & 1) != 0 || objc_msgSend(markerCopy, "_maps_isOfflineClusterAnnotation"))
     {
       v19 = "chromeDidSelectOfflineAnnotationMarker:";
       goto LABEL_24;
     }
 
-    if ([v4 isCluster])
+    if ([markerCopy isCluster])
     {
-      v5 = [v4 clusterWaypointInfos];
-      if ([v5 count] <= 1)
+      route = [markerCopy clusterWaypointInfos];
+      if ([route count] <= 1)
       {
-        if (![v4 clusterFeatureCount] || (objc_msgSend(v4, "_maps_isOfflineClusterAnnotation") & 1) != 0)
+        if (![markerCopy clusterFeatureCount] || (objc_msgSend(markerCopy, "_maps_isOfflineClusterAnnotation") & 1) != 0)
         {
           v17 = 0;
           goto LABEL_20;
@@ -1325,27 +1325,27 @@ LABEL_18:
 
     if (MapsFeature_IsEnabled_ShelbyvilleSearch())
     {
-      if (([v4 _mapkit_hasMUID] & 1) == 0)
+      if (([markerCopy _mapkit_hasMUID] & 1) == 0)
       {
         goto LABEL_57;
       }
     }
 
-    else if (![v4 hasBusinessID])
+    else if (![markerCopy hasBusinessID])
     {
       goto LABEL_57;
     }
 
-    v27 = [v4 _maps_mapItem];
-    if (v27)
+    _maps_mapItem2 = [markerCopy _maps_mapItem];
+    if (_maps_mapItem2)
     {
-      v5 = v27;
+      route = _maps_mapItem2;
       v11 = "chromeDidSelectMarkerForMapItem:";
 LABEL_8:
-      v12 = self;
-      v13 = v5;
+      selfCopy4 = self;
+      v13 = route;
 LABEL_17:
-      v7 = [(ChromeMapSelectionHandler *)v12 _invocationWithSelector:v11 argument:v13];
+      composedWaypoint = [(ChromeMapSelectionHandler *)selfCopy4 _invocationWithSelector:v11 argument:v13];
       goto LABEL_18;
     }
 
@@ -1354,8 +1354,8 @@ LABEL_57:
     goto LABEL_21;
   }
 
-  v5 = [v4 _maps_customPOIAnnotation];
-  if (!v5)
+  route = [markerCopy _maps_customPOIAnnotation];
+  if (!route)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1384,24 +1384,24 @@ LABEL_57:
     }
   }
 
-  v6 = [v5 searchResult];
-  v7 = [v6 composedWaypoint];
+  searchResult = [route searchResult];
+  composedWaypoint = [searchResult composedWaypoint];
 
-  if (![v7 hasFindMyHandleID])
+  if (![composedWaypoint hasFindMyHandleID])
   {
     v14 = "chromeDidSelectCustomPOIAnnotation:";
-    v15 = self;
-    v16 = v5;
+    selfCopy5 = self;
+    v16 = route;
 LABEL_10:
-    v9 = [(ChromeMapSelectionHandler *)v15 _invocationWithSelector:v14 argument:v16];
+    _maps_mapItem = [(ChromeMapSelectionHandler *)selfCopy5 _invocationWithSelector:v14 argument:v16];
     goto LABEL_11;
   }
 
-  v8 = [v7 findMyHandleID];
-  v9 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:" argument:v8];
+  findMyHandleID2 = [composedWaypoint findMyHandleID];
+  _maps_mapItem = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectWaypointMarkerForFindMyHandleIdentifier:" argument:findMyHandleID2];
 
 LABEL_11:
-  v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v9];
+  v17 = [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:_maps_mapItem];
 LABEL_12:
 
 LABEL_19:
@@ -1411,19 +1411,19 @@ LABEL_21:
   return v17;
 }
 
-- (void)mapSelectionManager:(id)a3 selectVKLabelMarker:(id)a4
+- (void)mapSelectionManager:(id)manager selectVKLabelMarker:(id)marker
 {
-  v6 = a4;
+  markerCopy = marker;
   if (![(ChromeMapSelectionHandler *)self _checkAndPropagateSpecificCallbacksForMarker:?])
   {
-    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectLabelMarker:" argument:v6];
+    v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeDidSelectLabelMarker:" argument:markerCopy];
     [(ChromeMapSelectionHandler *)self _propagateDidSelectInvocation:v5];
   }
 }
 
-- (BOOL)mapSelectionManager:(id)a3 shouldSelectVKLabelMarker:(id)a4
+- (BOOL)mapSelectionManager:(id)manager shouldSelectVKLabelMarker:(id)marker
 {
-  v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeShouldAllowSelectingLabelMarker:" argument:a4];
+  v5 = [(ChromeMapSelectionHandler *)self _invocationWithSelector:"chromeShouldAllowSelectingLabelMarker:" argument:marker];
   v6 = [(ChromeMapSelectionHandler *)self _propagateShouldSelectInvocation:v5];
   v7 = 1;
   if (v6)
@@ -1436,16 +1436,16 @@ LABEL_21:
   return v7 & 1;
 }
 
-- (ChromeMapSelectionHandler)initWithChromeViewController:(id)a3
+- (ChromeMapSelectionHandler)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = ChromeMapSelectionHandler;
   v5 = [(ChromeMapSelectionHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_chromeViewController, v4);
+    objc_storeWeak(&v5->_chromeViewController, controllerCopy);
     objc_storeStrong(&v6->_protocol, &OBJC_PROTOCOL___ChromeMapSelectionDelegate);
   }
 

@@ -1,11 +1,11 @@
 @interface CKOperationCallbackProxy
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CKOperationCallbackProxy)initWithOperation:(id)a3 callbackProtocol:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CKOperationCallbackProxy)initWithOperation:(id)operation callbackProtocol:(id)protocol;
 - (CKOperationCallbackProxyEndpoint)endpoint;
 - (NSXPCListener)listener;
 - (void)activate;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invalidate;
 @end
 
@@ -13,30 +13,30 @@
 
 - (NSXPCListener)listener
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_listener;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_listener;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_listener)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_listener)
   {
     v5 = objc_msgSend_anonymousListener(MEMORY[0x1E696B0D8], v3, v4);
-    listener = v2->_listener;
-    v2->_listener = v5;
+    listener = selfCopy->_listener;
+    selfCopy->_listener = v5;
 
-    objc_msgSend_setDelegate_(v2->_listener, v7, v2);
+    objc_msgSend_setDelegate_(selfCopy->_listener, v7, selfCopy);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v12 = objc_msgSend_listener(v2, v8, v9);
+  v12 = objc_msgSend_listener(selfCopy, v8, v9);
   objc_msgSend_activate(v12, v10, v11);
 }
 
@@ -109,12 +109,12 @@
   [(CKOperationCallbackProxy *)&v4 dealloc];
 }
 
-- (CKOperationCallbackProxy)initWithOperation:(id)a3 callbackProtocol:(id)a4
+- (CKOperationCallbackProxy)initWithOperation:(id)operation callbackProtocol:(id)protocol
 {
-  v6 = a3;
+  operationCopy = operation;
   v15.receiver = self;
   v15.super_class = CKOperationCallbackProxy;
-  v7 = [(CKWeakObjectCallbackProxy *)&v15 initWithWeakObject:v6 callbackProtocol:a4];
+  v7 = [(CKWeakObjectCallbackProxy *)&v15 initWithWeakObject:operationCopy callbackProtocol:protocol];
   if (v7)
   {
     v8 = objc_opt_class();
@@ -129,12 +129,12 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  objc_msgSend_retainArguments(v4, v5, v6);
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v5, v6);
   v9 = objc_msgSend_callbackProtocol(self, v7, v8);
-  v12 = objc_msgSend_selector(v4, v10, v11);
+  v12 = objc_msgSend_selector(invocationCopy, v10, v11);
   name = protocol_getMethodDescription(v9, v12, 1, 1).name;
 
   if (name)
@@ -146,9 +146,9 @@
     aBlock[3] = &unk_1E70BE820;
     v17 = v16;
     v66 = v17;
-    v18 = v4;
+    v18 = invocationCopy;
     v67 = v18;
-    v68 = self;
+    selfCopy = self;
     v19 = _Block_copy(aBlock);
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -232,34 +232,34 @@
   {
     v69.receiver = self;
     v69.super_class = CKOperationCallbackProxy;
-    [(CKWeakObjectCallbackProxy *)&v69 forwardInvocation:v4];
+    [(CKWeakObjectCallbackProxy *)&v69 forwardInvocation:invocationCopy];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v10 = objc_msgSend_endpoint(self, v8, v9);
   v13 = objc_msgSend_interface(v10, v11, v12);
-  objc_msgSend_setExportedInterface_(v7, v14, v13);
+  objc_msgSend_setExportedInterface_(connectionCopy, v14, v13);
 
-  objc_msgSend_setExportedObject_(v7, v15, self);
+  objc_msgSend_setExportedObject_(connectionCopy, v15, self);
   v18 = objc_msgSend_weakObject(self, v16, v17);
   v21 = v18;
   if (v18)
   {
     v22 = objc_msgSend_callbackQueue(v18, v19, v20);
-    objc_msgSend__setQueue_(v7, v23, v22);
+    objc_msgSend__setQueue_(connectionCopy, v23, v22);
   }
 
   v24 = objc_msgSend_connections(self, v19, v20);
   objc_sync_enter(v24);
   v27 = objc_msgSend_connections(self, v25, v26);
-  objc_msgSend_addObject_(v27, v28, v7);
+  objc_msgSend_addObject_(v27, v28, connectionCopy);
 
   objc_sync_exit(v24);
-  objc_msgSend_resume(v7, v29, v30);
+  objc_msgSend_resume(connectionCopy, v29, v30);
 
   return 1;
 }

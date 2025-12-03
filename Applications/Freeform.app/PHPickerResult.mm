@@ -1,16 +1,16 @@
 @interface PHPickerResult
-+ (id)crl_loadFileRepresentationsForResultItemProviders:(id)a3 supportedTypeIdentifiers:(id)a4 completionHandler:(id)a5;
-+ (id)crl_safeLastPathComponentForItemURL:(id)a3 registeredTypeIdentifier:(id)a4;
-+ (id)crl_typeIdentifiersForResults:(id)a3;
++ (id)crl_loadFileRepresentationsForResultItemProviders:(id)providers supportedTypeIdentifiers:(id)identifiers completionHandler:(id)handler;
++ (id)crl_safeLastPathComponentForItemURL:(id)l registeredTypeIdentifier:(id)identifier;
++ (id)crl_typeIdentifiersForResults:(id)results;
 @end
 
 @implementation PHPickerResult
 
-+ (id)crl_loadFileRepresentationsForResultItemProviders:(id)a3 supportedTypeIdentifiers:(id)a4 completionHandler:(id)a5
++ (id)crl_loadFileRepresentationsForResultItemProviders:(id)providers supportedTypeIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v21 = a3;
-  v7 = a4;
-  v22 = a5;
+  providersCopy = providers;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v54 = 0;
   v29 = [[CRLTemporaryDirectory alloc] initWithSignature:@"PHPickerResult.crl_loadFileRepresentationsForResultItemProviders" error:&v54];
   v20 = v54;
@@ -35,7 +35,7 @@
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v21;
+    obj = providersCopy;
     v8 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
     if (v8)
     {
@@ -54,8 +54,8 @@
           v43 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v11 = [v10 registeredTypeIdentifiers];
-          v12 = [v11 countByEnumeratingWithState:&v42 objects:v55 count:16];
+          registeredTypeIdentifiers = [v10 registeredTypeIdentifiers];
+          v12 = [registeredTypeIdentifiers countByEnumeratingWithState:&v42 objects:v55 count:16];
           if (v12)
           {
             v13 = *v43;
@@ -65,11 +65,11 @@
               {
                 if (*v43 != v13)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(registeredTypeIdentifiers);
                 }
 
                 v15 = *(*(&v42 + 1) + 8 * j);
-                if ([v15 crl_conformsToAnyUTI:v7])
+                if ([v15 crl_conformsToAnyUTI:identifiersCopy])
                 {
                   dispatch_group_enter(group);
                   v40[0] = 0;
@@ -87,7 +87,7 @@
                   v34[6] = v25;
                   v34[7] = v28;
                   v38 = v50;
-                  v39 = a1;
+                  selfCopy = self;
                   v35 = group;
                   v16 = [v10 loadFileRepresentationForTypeIdentifier:v15 completionHandler:v34];
                   [v26 addObject:v16];
@@ -97,7 +97,7 @@
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v42 objects:v55 count:16];
+              v12 = [registeredTypeIdentifiers countByEnumeratingWithState:&v42 objects:v55 count:16];
               if (v12)
               {
                 continue;
@@ -122,7 +122,7 @@ LABEL_17:
     block[3] = &unk_1018714F8;
     block[4] = v29;
     block[5] = v28;
-    v32 = v22;
+    v32 = handlerCopy;
     v33 = v50;
     dispatch_group_notify(group, &_dispatch_main_q, block);
     v17 = [NSProgress crl_progressWithChildren:v26];
@@ -144,9 +144,9 @@ LABEL_17:
       sub_101398F70(v18, v20);
     }
 
-    if (v22)
+    if (handlerCopy)
     {
-      (*(v22 + 2))(v22, 0, 0, v20);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
     }
 
     v17 = [NSProgress discreteProgressWithTotalUnitCount:1];
@@ -155,32 +155,32 @@ LABEL_17:
   return v17;
 }
 
-+ (id)crl_safeLastPathComponentForItemURL:(id)a3 registeredTypeIdentifier:(id)a4
++ (id)crl_safeLastPathComponentForItemURL:(id)l registeredTypeIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lastPathComponent];
-  v8 = [v7 pathExtension];
-  v9 = [v8 length];
+  lCopy = l;
+  identifierCopy = identifier;
+  lastPathComponent = [lCopy lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  v9 = [pathExtension length];
 
   if (v9)
   {
-    v10 = v7;
+    v10 = lastPathComponent;
 LABEL_16:
     v20 = v10;
     goto LABEL_17;
   }
 
-  v11 = [UTTypeImage identifier];
-  v12 = [v6 crl_conformsToUTI:v11];
+  identifier = [UTTypeImage identifier];
+  v12 = [identifierCopy crl_conformsToUTI:identifier];
 
   if ((v12 & 1) == 0)
   {
-    v10 = [v7 stringByAppendingPathExtension:@"mov"];
+    v10 = [lastPathComponent stringByAppendingPathExtension:@"mov"];
     goto LABEL_16;
   }
 
-  v13 = CGImageSourceCreateWithURL(v5, 0);
+  v13 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v13)
   {
     v22 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -209,15 +209,15 @@ LABEL_16:
     v15 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[PHPickerResult(CRLAdditions) crl_safeLastPathComponentForItemURL:registeredTypeIdentifier:]");
     v18 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/PHPickerResult_CRLAdditions.m"];
     [CRLAssertionHandler handleFailureInFunction:v15 file:v18 lineNumber:127 isFatal:0 description:"Unable to create image source to check file type for photo picker file URL with no file extension."];
-    v16 = 0;
+    crl_UTIFilenameExtension = 0;
     goto LABEL_29;
   }
 
   v14 = v13;
   v15 = CGImageSourceGetType(v13);
   CFRelease(v14);
-  v16 = [v15 crl_UTIFilenameExtension];
-  if (![(__CFString *)v16 length])
+  crl_UTIFilenameExtension = [v15 crl_UTIFilenameExtension];
+  if (![(__CFString *)crl_UTIFilenameExtension length])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -248,16 +248,16 @@ LABEL_16:
 LABEL_29:
   }
 
-  if ([(__CFString *)v16 length])
+  if ([(__CFString *)crl_UTIFilenameExtension length])
   {
-    v25 = v16;
+    crl_UTIFilenameExtension2 = crl_UTIFilenameExtension;
   }
 
   else
   {
-    v25 = [v6 crl_UTIFilenameExtension];
+    crl_UTIFilenameExtension2 = [identifierCopy crl_UTIFilenameExtension];
 
-    if (![(__CFString *)v25 length])
+    if (![(__CFString *)crl_UTIFilenameExtension2 length])
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -283,13 +283,13 @@ LABEL_29:
 
       v27 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[PHPickerResult(CRLAdditions) crl_safeLastPathComponentForItemURL:registeredTypeIdentifier:]");
       v28 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/PHPickerResult_CRLAdditions.m"];
-      [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:132 isFatal:0 description:"No file extension for file URL with registered type identifier: %{public}@", v6];
+      [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:132 isFatal:0 description:"No file extension for file URL with registered type identifier: %{public}@", identifierCopy];
     }
   }
 
-  if (v25)
+  if (crl_UTIFilenameExtension2)
   {
-    v29 = v25;
+    v29 = crl_UTIFilenameExtension2;
   }
 
   else
@@ -297,24 +297,24 @@ LABEL_29:
     v29 = @"jpeg";
   }
 
-  v20 = [v7 stringByAppendingPathExtension:v29];
+  v20 = [lastPathComponent stringByAppendingPathExtension:v29];
 
 LABEL_17:
 
   return v20;
 }
 
-+ (id)crl_typeIdentifiersForResults:(id)a3
++ (id)crl_typeIdentifiersForResults:(id)results
 {
-  v3 = a3;
-  v4 = [UTTypeImage identifier];
-  v5 = [UTTypeMovie identifier];
+  resultsCopy = results;
+  identifier = [UTTypeImage identifier];
+  identifier2 = [UTTypeMovie identifier];
   v22 = objc_alloc_init(NSMutableSet);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = resultsCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -334,10 +334,10 @@ LABEL_17:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v11 = [v10 itemProvider];
-        v12 = [v11 registeredTypeIdentifiers];
+        itemProvider = [v10 itemProvider];
+        registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
 
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v13 = [registeredTypeIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (!v13)
         {
           goto LABEL_19;
@@ -351,26 +351,26 @@ LABEL_17:
           {
             if (*v24 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(registeredTypeIdentifiers);
             }
 
             v17 = *(*(&v23 + 1) + 8 * j);
-            if ([v17 crl_conformsToUTI:v4])
+            if ([v17 crl_conformsToUTI:identifier])
             {
-              v18 = v4;
+              v18 = identifier;
 LABEL_18:
               [v22 addObject:v18];
               goto LABEL_19;
             }
 
-            if ([v17 crl_conformsToUTI:v5])
+            if ([v17 crl_conformsToUTI:identifier2])
             {
-              v18 = v5;
+              v18 = identifier2;
               goto LABEL_18;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v14 = [registeredTypeIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v14)
           {
             continue;

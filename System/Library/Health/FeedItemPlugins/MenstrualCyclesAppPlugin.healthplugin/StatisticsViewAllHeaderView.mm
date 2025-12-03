@@ -1,13 +1,13 @@
 @interface StatisticsViewAllHeaderView
-- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation StatisticsViewAllHeaderView
 
-- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_29E1AD498(v3, v4);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin27StatisticsViewAllHeaderView_headerLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];

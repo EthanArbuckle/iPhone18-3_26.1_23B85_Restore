@@ -1,42 +1,42 @@
 @interface PXContentSyndicationPhotoKitSocialLayerHighlightProvider
 + (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)sharedInstance;
-- (BOOL)isSocialLayerHighlightCachedForAsset:(id)a3;
+- (BOOL)isSocialLayerHighlightCachedForAsset:(id)asset;
 - (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)init;
-- (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)initWithHighlightFetchBlock:(id)a3;
-- (id)_serialQueue_fetchSocialLayerHighlightForAsset:(id)a3 usingHighlightResultBlock:(id)a4;
-- (id)cachedSocialLayerHighlightForAsset:(id)a3;
-- (id)socialLayerHighlightForAsset:(id)a3;
-- (void)_didChangeHighlight:(id)a3 forAsset:(id)a4 withChangeObservers:(id)a5;
-- (void)_serialQueue_registerChangeObserver:(id)a3 forAsset:(id)a4;
-- (void)_serialQueue_unregisterChangeObserver:(id)a3 forAsset:(id)a4;
-- (void)fetchSocialLayerHighlightForAsset:(id)a3 completion:(id)a4;
-- (void)registerChangeObserver:(id)a3 forAsset:(id)a4;
-- (void)unregisterChangeObserver:(id)a3 forAsset:(id)a4;
+- (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)initWithHighlightFetchBlock:(id)block;
+- (id)_serialQueue_fetchSocialLayerHighlightForAsset:(id)asset usingHighlightResultBlock:(id)block;
+- (id)cachedSocialLayerHighlightForAsset:(id)asset;
+- (id)socialLayerHighlightForAsset:(id)asset;
+- (void)_didChangeHighlight:(id)highlight forAsset:(id)asset withChangeObservers:(id)observers;
+- (void)_serialQueue_registerChangeObserver:(id)observer forAsset:(id)asset;
+- (void)_serialQueue_unregisterChangeObserver:(id)observer forAsset:(id)asset;
+- (void)fetchSocialLayerHighlightForAsset:(id)asset completion:(id)completion;
+- (void)registerChangeObserver:(id)observer forAsset:(id)asset;
+- (void)unregisterChangeObserver:(id)observer forAsset:(id)asset;
 @end
 
 @implementation PXContentSyndicationPhotoKitSocialLayerHighlightProvider
 
-- (void)_didChangeHighlight:(id)a3 forAsset:(id)a4 withChangeObservers:(id)a5
+- (void)_didChangeHighlight:(id)highlight forAsset:(id)asset withChangeObservers:(id)observers
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  highlightCopy = highlight;
+  assetCopy = asset;
+  observersCopy = observers;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v11 = PLSocialLayerHighlightProviderGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = objc_opt_class();
     v13 = objc_opt_class();
-    v14 = [v10 componentsJoinedByString:{@", "}];
+    v14 = [observersCopy componentsJoinedByString:{@", "}];
     *buf = 138413314;
     v21 = v12;
     v22 = 2048;
-    v23 = v8;
+    v23 = highlightCopy;
     v24 = 2112;
     v25 = v13;
     v26 = 2048;
-    v27 = v9;
+    v27 = assetCopy;
     v28 = 2112;
     v29 = v14;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "Did change SLHighlight: <%@:%p> for asset: <%@:%p> with change observers: (%@)", buf, 0x34u);
@@ -47,22 +47,22 @@
   v17[2] = __109__PXContentSyndicationPhotoKitSocialLayerHighlightProvider__didChangeHighlight_forAsset_withChangeObservers___block_invoke;
   v17[3] = &unk_1E7741D78;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
-  [v10 enumerateObjectsUsingBlock:v17];
+  v18 = highlightCopy;
+  v19 = assetCopy;
+  v15 = assetCopy;
+  v16 = highlightCopy;
+  [observersCopy enumerateObjectsUsingBlock:v17];
 }
 
-- (void)_serialQueue_unregisterChangeObserver:(id)a3 forAsset:(id)a4
+- (void)_serialQueue_unregisterChangeObserver:(id)observer forAsset:(id)asset
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  assetCopy = asset;
   serialQueue = self->_serialQueue;
-  v8 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(serialQueue);
-  v9 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v6];
-  [v9 removeObject:v8];
+  v9 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:assetCopy];
+  [v9 removeObject:observerCopy];
 
   if (![v9 count])
   {
@@ -72,39 +72,39 @@
       v11 = 138412546;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = v6;
+      v14 = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "No observers for asset: <%@:%p>", &v11, 0x16u);
     }
 
-    [(PXLRUMemoryCache *)self->_highlightsCache removeObjectForKey:v6];
+    [(PXLRUMemoryCache *)self->_highlightsCache removeObjectForKey:assetCopy];
   }
 }
 
-- (void)_serialQueue_registerChangeObserver:(id)a3 forAsset:(id)a4
+- (void)_serialQueue_registerChangeObserver:(id)observer forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v8 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v7];
-  if (!v8)
+  weakObjectsHashTable = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:assetCopy];
+  if (!weakObjectsHashTable)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(NSMutableDictionary *)self->_observers setObject:v8 forKeyedSubscript:v7];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(NSMutableDictionary *)self->_observers setObject:weakObjectsHashTable forKeyedSubscript:assetCopy];
   }
 
-  [v8 addObject:v6];
+  [weakObjectsHashTable addObject:observerCopy];
   objc_initWeak(&location, self);
-  v9 = [(PXContentSyndicationPhotoKitSocialLayerHighlightProvider *)self _serialQueue_fetchSocialLayerHighlightForAsset:v7 usingHighlightResultBlock:self->_highlightFetchBlock];
+  v9 = [(PXContentSyndicationPhotoKitSocialLayerHighlightProvider *)self _serialQueue_fetchSocialLayerHighlightForAsset:assetCopy usingHighlightResultBlock:self->_highlightFetchBlock];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider__serialQueue_registerChangeObserver_forAsset___block_invoke;
   block[3] = &unk_1E7748228;
   objc_copyWeak(&v17, &location);
   v14 = v9;
-  v15 = v7;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
+  v15 = assetCopy;
+  v16 = observerCopy;
+  v10 = observerCopy;
+  v11 = assetCopy;
   v12 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -123,15 +123,15 @@ void __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider__serialQueu
   [WeakRetained _didChangeHighlight:v3 forAsset:v4 withChangeObservers:v5];
 }
 
-- (id)_serialQueue_fetchSocialLayerHighlightForAsset:(id)a3 usingHighlightResultBlock:(id)a4
+- (id)_serialQueue_fetchSocialLayerHighlightForAsset:(id)asset usingHighlightResultBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v7)
+  if (assetCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -139,26 +139,26 @@ void __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider__serialQueu
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"highlightFetchBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"highlightFetchBlock"}];
 
 LABEL_3:
-  v9 = [(PXLRUMemoryCache *)self->_highlightsCache objectForKey:v7];
+  v9 = [(PXLRUMemoryCache *)self->_highlightsCache objectForKey:assetCopy];
   if (v9)
   {
     goto LABEL_13;
   }
 
-  if (![(NSHashTable *)self->_assetsWithNilHighlightsCache containsObject:v7])
+  if (![(NSHashTable *)self->_assetsWithNilHighlightsCache containsObject:assetCopy])
   {
     v10 = PLSocialLayerHighlightProviderGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -166,27 +166,27 @@ LABEL_3:
       *buf = 138412546;
       v18 = objc_opt_class();
       v19 = 2048;
-      v20 = v7;
+      v20 = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "Fetching highlight for asset: <%@:%p>", buf, 0x16u);
     }
 
-    v11 = v8[2](v8, v7);
+    v11 = blockCopy[2](blockCopy, assetCopy);
     if (v11)
     {
       v9 = v11;
-      [(PXLRUMemoryCache *)self->_highlightsCache setObject:v11 forKey:v7];
-      [(NSHashTable *)self->_assetsWithNilHighlightsCache removeObject:v7];
+      [(PXLRUMemoryCache *)self->_highlightsCache setObject:v11 forKey:assetCopy];
+      [(NSHashTable *)self->_assetsWithNilHighlightsCache removeObject:assetCopy];
       goto LABEL_13;
     }
 
     if ([(NSHashTable *)self->_assetsWithNilHighlightsCache count]== 128)
     {
       assetsWithNilHighlightsCache = self->_assetsWithNilHighlightsCache;
-      v13 = [(NSHashTable *)assetsWithNilHighlightsCache anyObject];
-      [(NSHashTable *)assetsWithNilHighlightsCache removeObject:v13];
+      anyObject = [(NSHashTable *)assetsWithNilHighlightsCache anyObject];
+      [(NSHashTable *)assetsWithNilHighlightsCache removeObject:anyObject];
     }
 
-    [(NSHashTable *)self->_assetsWithNilHighlightsCache addObject:v7];
+    [(NSHashTable *)self->_assetsWithNilHighlightsCache addObject:assetCopy];
   }
 
   v9 = 0;
@@ -195,36 +195,36 @@ LABEL_13:
   return v9;
 }
 
-- (id)socialLayerHighlightForAsset:(id)a3
+- (id)socialLayerHighlightForAsset:(id)asset
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (assetCopy)
   {
-    v7 = v5;
+    v7 = assetCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_3;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v19 = NSStringFromClass(v20);
-    v21 = [v7 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, v21}];
+    px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:126 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
   }
 
 LABEL_3:
@@ -275,63 +275,63 @@ void __89__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_socialLayerH
   *(v3 + 40) = v2;
 }
 
-- (id)cachedSocialLayerHighlightForAsset:(id)a3
+- (id)cachedSocialLayerHighlightForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [(PXLRUMemoryCache *)self->_highlightsCache objectForKey:v5];
+  v6 = [(PXLRUMemoryCache *)self->_highlightsCache objectForKey:assetCopy];
 
   return v6;
 }
 
-- (BOOL)isSocialLayerHighlightCachedForAsset:(id)a3
+- (BOOL)isSocialLayerHighlightCachedForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [(PXLRUMemoryCache *)self->_highlightsCache allKeys];
-  v7 = [v6 containsObject:v5];
+  allKeys = [(PXLRUMemoryCache *)self->_highlightsCache allKeys];
+  v7 = [allKeys containsObject:assetCopy];
 
-  v8 = (v7 & 1) != 0 || [(NSHashTable *)self->_assetsWithNilHighlightsCache containsObject:v5];
+  v8 = (v7 & 1) != 0 || [(NSHashTable *)self->_assetsWithNilHighlightsCache containsObject:assetCopy];
   return v8;
 }
 
-- (void)fetchSocialLayerHighlightForAsset:(id)a3 completion:(id)a4
+- (void)fetchSocialLayerHighlightForAsset:(id)asset completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  completionCopy = completion;
+  if (!assetCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:95 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v16}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:95 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v16}];
 LABEL_6:
 
     goto LABEL_3;
   }
 
-  v9 = v7;
+  v9 = assetCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v9 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:95 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v16, v18}];
+    px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:95 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v16, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -343,10 +343,10 @@ LABEL_3:
   block[2] = __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_fetchSocialLayerHighlightForAsset_completion___block_invoke;
   block[3] = &unk_1E774A0E0;
   block[4] = self;
-  v20 = v7;
-  v21 = v8;
-  v11 = v8;
-  v12 = v7;
+  v20 = assetCopy;
+  v21 = completionCopy;
+  v11 = completionCopy;
+  v12 = assetCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -391,15 +391,15 @@ uint64_t __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_fetchSo
   return (*(a1[6] + 16))();
 }
 
-- (void)unregisterChangeObserver:(id)a3 forAsset:(id)a4
+- (void)unregisterChangeObserver:(id)observer forAsset:(id)asset
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  observerCopy = observer;
+  assetCopy = asset;
+  v9 = assetCopy;
+  if (observerCopy)
   {
-    if (v8)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -407,8 +407,8 @@ uint64_t __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_fetchSo
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
 
     if (v9)
     {
@@ -416,8 +416,8 @@ uint64_t __105__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_fetchSo
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
 LABEL_3:
   v10 = PLSocialLayerHighlightProviderGetLog();
@@ -426,7 +426,7 @@ LABEL_3:
     *buf = 138413058;
     v27 = objc_opt_class();
     v28 = 2048;
-    v29 = v7;
+    v29 = observerCopy;
     v30 = 2112;
     v31 = objc_opt_class();
     v32 = 2048;
@@ -437,10 +437,10 @@ LABEL_3:
   v11 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:84 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:84 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
 LABEL_12:
 
     goto LABEL_7;
@@ -449,11 +449,11 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v19 = NSStringFromClass(v20);
-    v21 = [v11 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:84 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, v21}];
+    px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:84 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
@@ -466,10 +466,10 @@ LABEL_7:
   block[2] = __94__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_unregisterChangeObserver_forAsset___block_invoke;
   block[3] = &unk_1E774B708;
   objc_copyWeak(&v25, buf);
-  v23 = v7;
+  v23 = observerCopy;
   v24 = v11;
   v13 = v11;
-  v14 = v7;
+  v14 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v25);
@@ -482,15 +482,15 @@ void __94__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_unregisterCh
   [WeakRetained _serialQueue_unregisterChangeObserver:*(a1 + 32) forAsset:*(a1 + 40)];
 }
 
-- (void)registerChangeObserver:(id)a3 forAsset:(id)a4
+- (void)registerChangeObserver:(id)observer forAsset:(id)asset
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  observerCopy = observer;
+  assetCopy = asset;
+  v9 = assetCopy;
+  if (observerCopy)
   {
-    if (v8)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -498,8 +498,8 @@ void __94__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_unregisterCh
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"changeObserver"}];
 
     if (v9)
     {
@@ -507,8 +507,8 @@ void __94__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_unregisterCh
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
 LABEL_3:
   v10 = PLSocialLayerHighlightProviderGetLog();
@@ -517,7 +517,7 @@ LABEL_3:
     *buf = 138413058;
     v27 = objc_opt_class();
     v28 = 2048;
-    v29 = v7;
+    v29 = observerCopy;
     v30 = 2112;
     v31 = objc_opt_class();
     v32 = 2048;
@@ -528,10 +528,10 @@ LABEL_3:
   v11 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v19}];
 LABEL_12:
 
     goto LABEL_7;
@@ -540,11 +540,11 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v19 = NSStringFromClass(v20);
-    v21 = [v11 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, v21}];
+    px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:70 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v19, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
@@ -557,10 +557,10 @@ LABEL_7:
   block[2] = __92__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_registerChangeObserver_forAsset___block_invoke;
   block[3] = &unk_1E774B708;
   objc_copyWeak(&v25, buf);
-  v23 = v7;
+  v23 = observerCopy;
   v24 = v11;
   v13 = v11;
-  v14 = v7;
+  v14 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v25);
@@ -573,13 +573,13 @@ void __92__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_registerChan
   [WeakRetained _serialQueue_registerChangeObserver:*(a1 + 32) forAsset:*(a1 + 40)];
 }
 
-- (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)initWithHighlightFetchBlock:(id)a3
+- (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)initWithHighlightFetchBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"highlightFetchBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"highlightFetchBlock"}];
   }
 
   v20.receiver = self;
@@ -604,7 +604,7 @@ void __92__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_registerChan
     assetsWithNilHighlightsCache = v6->_assetsWithNilHighlightsCache;
     v6->_assetsWithNilHighlightsCache = v14;
 
-    v16 = [v5 copy];
+    v16 = [blockCopy copy];
     highlightFetchBlock = v6->_highlightFetchBlock;
     v6->_highlightFetchBlock = v16;
   }
@@ -614,8 +614,8 @@ void __92__PXContentSyndicationPhotoKitSocialLayerHighlightProvider_registerChan
 
 - (PXContentSyndicationPhotoKitSocialLayerHighlightProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXContentSyndicationPhotoKitSocialLayerHighlightProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationPhotoKitSocialLayerHighlightProvider.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXContentSyndicationPhotoKitSocialLayerHighlightProvider init]"}];
 
   abort();
 }

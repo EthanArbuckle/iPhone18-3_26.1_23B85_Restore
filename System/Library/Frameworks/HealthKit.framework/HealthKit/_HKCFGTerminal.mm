@@ -1,80 +1,80 @@
 @interface _HKCFGTerminal
-+ (id)_terminalMatchingDoubleWithCondition:(id)a3;
-+ (id)_terminalMatchingIntegerWithCondition:(id)a3;
-+ (id)terminalMatchingCharacterInSet:(id)a3;
-+ (id)terminalMatchingCharacterInString:(id)a3;
-+ (id)terminalMatchingSequenceOfCharactersInSet:(id)a3;
-- (BOOL)_scanValue:(id *)a3 withScanner:(id)a4;
++ (id)_terminalMatchingDoubleWithCondition:(id)condition;
++ (id)_terminalMatchingIntegerWithCondition:(id)condition;
++ (id)terminalMatchingCharacterInSet:(id)set;
++ (id)terminalMatchingCharacterInString:(id)string;
++ (id)terminalMatchingSequenceOfCharactersInSet:(id)set;
+- (BOOL)_scanValue:(id *)value withScanner:(id)scanner;
 - (id)_label;
 - (id)characterSet;
 - (unint64_t)_minimumLength;
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4;
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test;
 @end
 
 @implementation _HKCFGTerminal
 
-+ (id)terminalMatchingCharacterInSet:(id)a3
++ (id)terminalMatchingCharacterInSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(_HKCFGCharacterTerminal);
-  [(_HKCFGCharacterTerminal *)v4 setCharacterSet:v3];
+  [(_HKCFGCharacterTerminal *)v4 setCharacterSet:setCopy];
 
   return v4;
 }
 
-+ (id)terminalMatchingCharacterInString:(id)a3
++ (id)terminalMatchingCharacterInString:(id)string
 {
-  v4 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:a3];
-  v5 = [a1 terminalMatchingCharacterInSet:v4];
+  v4 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:string];
+  v5 = [self terminalMatchingCharacterInSet:v4];
 
   return v5;
 }
 
-+ (id)_terminalMatchingIntegerWithCondition:(id)a3
++ (id)_terminalMatchingIntegerWithCondition:(id)condition
 {
-  v3 = a3;
+  conditionCopy = condition;
   v4 = objc_alloc_init(_HKCFGIntegerTerminal);
-  [(_HKCFGIntegerTerminal *)v4 setCondition:v3];
+  [(_HKCFGIntegerTerminal *)v4 setCondition:conditionCopy];
 
   return v4;
 }
 
-+ (id)_terminalMatchingDoubleWithCondition:(id)a3
++ (id)_terminalMatchingDoubleWithCondition:(id)condition
 {
-  v3 = a3;
+  conditionCopy = condition;
   v4 = objc_alloc_init(_HKCFGDoubleTerminal);
-  [(_HKCFGDoubleTerminal *)v4 setCondition:v3];
+  [(_HKCFGDoubleTerminal *)v4 setCondition:conditionCopy];
 
   return v4;
 }
 
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test
 {
-  v6 = a4;
-  v7 = [a3 scanner];
-  v8 = [v7 scanLocation];
+  testCopy = test;
+  scanner = [context scanner];
+  scanLocation = [scanner scanLocation];
   v12 = 0;
-  v9 = [(_HKCFGTerminal *)self _scanValue:&v12 withScanner:v7];
+  v9 = [(_HKCFGTerminal *)self _scanValue:&v12 withScanner:scanner];
   v10 = v12;
   if (v9)
   {
-    v11 = +[_HKCFGTerminalNode nodeWithValue:rangeOfString:](_HKCFGTerminalNode, "nodeWithValue:rangeOfString:", v10, v8, [v7 scanLocation] - v8);
-    v6[2](v6, v11);
+    v11 = +[_HKCFGTerminalNode nodeWithValue:rangeOfString:](_HKCFGTerminalNode, "nodeWithValue:rangeOfString:", v10, scanLocation, [scanner scanLocation] - scanLocation);
+    testCopy[2](testCopy, v11);
   }
 
-  [v7 setScanLocation:v8];
+  [scanner setScanLocation:scanLocation];
 }
 
-+ (id)terminalMatchingSequenceOfCharactersInSet:(id)a3
++ (id)terminalMatchingSequenceOfCharactersInSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(_HKCFGCharacterSequenceTerminal);
-  [(_HKCFGCharacterSequenceTerminal *)v4 setCharacterSet:v3];
+  [(_HKCFGCharacterSequenceTerminal *)v4 setCharacterSet:setCopy];
 
   return v4;
 }
 
-- (BOOL)_scanValue:(id *)a3 withScanner:(id)a4
+- (BOOL)_scanValue:(id *)value withScanner:(id)scanner
 {
   OUTLINED_FUNCTION_0_0();
   objc_opt_class();

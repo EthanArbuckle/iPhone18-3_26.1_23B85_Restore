@@ -1,14 +1,14 @@
 @interface BrowserNIDelegate
-- (BrowserNIDelegate)initWithBrowser:(OpaqueAPBrowser *)a3;
+- (BrowserNIDelegate)initWithBrowser:(OpaqueAPBrowser *)browser;
 - (void)dealloc;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5;
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason;
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation BrowserNIDelegate
 
-- (BrowserNIDelegate)initWithBrowser:(OpaqueAPBrowser *)a3
+- (BrowserNIDelegate)initWithBrowser:(OpaqueAPBrowser *)browser
 {
   v6.receiver = self;
   v6.super_class = BrowserNIDelegate;
@@ -41,7 +41,7 @@
   [(BrowserNIDelegate *)&v4 dealloc];
 }
 
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects
 {
   v51 = *MEMORY[0x277D85DE8];
   browserWeak = self->_browserWeak;
@@ -65,7 +65,7 @@
         v31 = *v9;
       }
 
-      v32 = [a4 count];
+      v32 = [objects count];
       LogPrintF();
     }
 
@@ -74,7 +74,7 @@ LABEL_6:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v37 objects:v50 count:{16, v32}];
+    v11 = [objects countByEnumeratingWithState:&v37 objects:v50 count:{16, v32}];
     if (!v11)
     {
       goto LABEL_37;
@@ -89,7 +89,7 @@ LABEL_6:
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(objects);
         }
 
         v14 = *(*(&v37 + 1) + 8 * v13);
@@ -110,7 +110,7 @@ LABEL_6:
             v28 = *v16;
           }
 
-          v33 = [v14 discoveryToken];
+          discoveryToken = [v14 discoveryToken];
           v34 = v14;
           LogPrintF();
         }
@@ -198,7 +198,7 @@ LABEL_31:
       }
 
       while (v11 != v13);
-      v29 = [a4 countByEnumeratingWithState:&v37 objects:v50 count:16];
+      v29 = [objects countByEnumeratingWithState:&v37 objects:v50 count:16];
       v11 = v29;
       if (!v29)
       {
@@ -212,7 +212,7 @@ LABEL_37:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason
 {
   v30 = *MEMORY[0x277D85DE8];
   browserWeak = self->_browserWeak;
@@ -237,14 +237,14 @@ LABEL_37:
         v25 = *v12;
       }
 
-      v26 = [a4 count];
-      v28 = a5;
+      v26 = [objects count];
+      reasonCopy = reason;
       OUTLINED_FUNCTION_1();
       DerivedStorage = LogPrintF();
     }
 
 LABEL_6:
-    v15 = OUTLINED_FUNCTION_19_1(DerivedStorage, v11, v26, v28, 0);
+    v15 = OUTLINED_FUNCTION_19_1(DerivedStorage, v11, v26, reasonCopy, 0);
     if (!v15)
     {
       goto LABEL_19;
@@ -259,7 +259,7 @@ LABEL_6:
       {
         if (MEMORY[0] != v18)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(objects);
         }
 
         v20 = **v12;
@@ -277,7 +277,7 @@ LABEL_6:
           {
             v23 = *v12;
 LABEL_13:
-            v27 = [v21 discoveryToken];
+            discoveryToken = [v21 discoveryToken];
             v29 = v21;
             OUTLINED_FUNCTION_1();
             v15 = LogPrintF();
@@ -302,7 +302,7 @@ LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
   browserWeak = self->_browserWeak;
   v5 = FigCFWeakReferenceHolderCopyReferencedObject();

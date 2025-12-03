@@ -16,7 +16,7 @@
 
 - (double)_accessibilityFrameExpansion
 {
-  v1 = [a1 _accessibilityValueForKey:@"AXFrameSizeExpansion"];
+  v1 = [self _accessibilityValueForKey:@"AXFrameSizeExpansion"];
   [v1 sizeValue];
   v3 = v2;
 
@@ -26,16 +26,16 @@
 - (void)_accessibilitySetFrameExpansion:()UIAccessibilityPrivate
 {
   v2 = [MEMORY[0x1E696B098] valueWithSize:?];
-  [a1 _accessibilitySetRetainedValue:v2 forKey:@"AXFrameSizeExpansion"];
+  [self _accessibilitySetRetainedValue:v2 forKey:@"AXFrameSizeExpansion"];
 }
 
 - (uint64_t)_accessibilityViewIsActive
 {
-  result = [a1 _accessibilityViewIsVisible];
+  result = [self _accessibilityViewIsVisible];
   if (result)
   {
 
-    return [a1 isUserInteractionEnabled];
+    return [self isUserInteractionEnabled];
   }
 
   return result;
@@ -44,13 +44,13 @@
 - (void)_accessibilitySetViewIsVisible:()UIAccessibilityPrivate
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, &kAccessibilityViewIsVisibleStorage, v2, 0x301);
+  objc_setAssociatedObject(self, &kAccessibilityViewIsVisibleStorage, v2, 0x301);
 }
 
 - (uint64_t)_accessibilityViewIsVisibleIgnoringAXOverrides:()UIAccessibilityPrivate
 {
-  v5 = [*MEMORY[0x1E69DDA98] _accessibilityContainerToStopVisibilityCheck];
-  v6 = [a1 _accessibilityViewIsVisibleIgnoringAXOverrides:a3 stoppingBeforeContainer:v5];
+  _accessibilityContainerToStopVisibilityCheck = [*MEMORY[0x1E69DDA98] _accessibilityContainerToStopVisibilityCheck];
+  v6 = [self _accessibilityViewIsVisibleIgnoringAXOverrides:a3 stoppingBeforeContainer:_accessibilityContainerToStopVisibilityCheck];
 
   return v6;
 }
@@ -58,13 +58,13 @@
 - (uint64_t)_accessibilityViewIsVisibleIgnoringAXOverrides:()UIAccessibilityPrivate stoppingBeforeContainer:
 {
   v6 = a4;
-  v7 = objc_getAssociatedObject(a1, &kAccessibilityViewIsVisibleStorage);
+  v7 = objc_getAssociatedObject(self, &kAccessibilityViewIsVisibleStorage);
   v8 = v7;
   if (!v7)
   {
-    if (a3 & 1) == 0 && ([a1 accessibilityElementsHidden])
+    if (a3 & 1) == 0 && ([self accessibilityElementsHidden])
     {
-      v9 = 0;
+      bOOLValue = 0;
       goto LABEL_20;
     }
 
@@ -73,8 +73,8 @@
     v20[2] = __105__UIView_UIAccessibilityPrivate___accessibilityViewIsVisibleIgnoringAXOverrides_stoppingBeforeContainer___block_invoke;
     v20[3] = &unk_1E78AB6B8;
     v21 = v6;
-    v10 = [a1 _accessibilityFindViewAncestor:v20 startWithSelf:1];
-    if (v10 && ![a1 _accessibilityOverridesInvisibility])
+    v10 = [self _accessibilityFindViewAncestor:v20 startWithSelf:1];
+    if (v10 && ![self _accessibilityOverridesInvisibility])
     {
       goto LABEL_18;
     }
@@ -82,48 +82,48 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [a1 window];
-      if (!v13)
+      window = [self window];
+      if (!window)
       {
         goto LABEL_18;
       }
 
-      v14 = v13;
-      v15 = [a1 window];
-      [v15 alpha];
+      v14 = window;
+      window2 = [self window];
+      [window2 alpha];
       if (v16 <= 0.0)
       {
 
         goto LABEL_18;
       }
 
-      v17 = [a1 window];
-      v18 = [v17 isHidden];
+      window3 = [self window];
+      isHidden = [window3 isHidden];
 
-      if (v18)
+      if (isHidden)
       {
         goto LABEL_18;
       }
     }
 
-    [a1 frame];
-    if (fabs(v12) >= 0.001 && fabs(v11) >= 0.001 || [a1 _accessibilityOverridesInvalidFrames])
+    [self frame];
+    if (fabs(v12) >= 0.001 && fabs(v11) >= 0.001 || [self _accessibilityOverridesInvalidFrames])
     {
-      v9 = 1;
+      bOOLValue = 1;
 LABEL_19:
 
       goto LABEL_20;
     }
 
 LABEL_18:
-    v9 = 0;
+    bOOLValue = 0;
     goto LABEL_19;
   }
 
-  v9 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_20:
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)_accessibleSubviews:()UIAccessibilityPrivate
@@ -131,26 +131,26 @@ LABEL_20:
   v5 = +[UIAccessibilityElementTraversalOptions options];
   [v5 setShouldUseAllSubviews:1];
   [v5 setSorted:a3 == 0];
-  v6 = [a1 _accessibilityViewChildrenWithOptions:v5];
+  v6 = [self _accessibilityViewChildrenWithOptions:v5];
 
   return v6;
 }
 
 - (uint64_t)_accessibleSubviews
 {
-  v2 = [a1 _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
+  v2 = [self _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
 
-  return [a1 _accessibleSubviews:v2];
+  return [self _accessibleSubviews:v2];
 }
 
 - (id)_accessibleNonSupplementarySubviews
 {
-  v2 = [a1 _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
+  v2 = [self _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
   v3 = +[UIAccessibilityElementTraversalOptions options];
   [v3 setShouldUseAllSubviews:1];
   [v3 setSorted:v2 ^ 1u];
   [v3 setShouldExcludeSupplementaryViews:1];
-  v4 = [a1 _accessibilityViewChildrenWithOptions:v3];
+  v4 = [self _accessibilityViewChildrenWithOptions:v3];
 
   return v4;
 }
@@ -163,26 +163,26 @@ LABEL_20:
     goto LABEL_7;
   }
 
-  v5 = [a1 accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [self accessibilityUserDefinedLabel];
 
-  if (v5)
+  if (accessibilityUserDefinedLabel)
   {
-    v6 = [a1 accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [self accessibilityUserDefinedLabel];
     goto LABEL_26;
   }
 
-  v7 = [a1 window];
+  window = [self window];
 
-  if (!v7)
+  if (!window)
   {
 LABEL_7:
-    v6 = 0;
+    accessibilityUserDefinedLabel2 = 0;
     goto LABEL_26;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 safeValueForKey:@"image"];
+    v8 = [self safeValueForKey:@"image"];
   }
 
   else
@@ -210,43 +210,43 @@ LABEL_15:
     }
   }
 
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = UIView_0;
   v12 = objc_msgSendSuper2(&v20, sel_accessibilityLabel);
 LABEL_17:
-  v6 = v12;
+  accessibilityUserDefinedLabel2 = v12;
   if (![v12 length] && objc_msgSend(v4, "isSystemItem"))
   {
     v13 = [MEMORY[0x1E69DD250] _accessibilityTitleForSystemTag:{objc_msgSend(v4, "systemItem")}];
 
-    v6 = v13;
+    accessibilityUserDefinedLabel2 = v13;
   }
 
-  if (![v6 length])
+  if (![accessibilityUserDefinedLabel2 length])
   {
-    v14 = [a1 accessibilityIdentification];
+    accessibilityIdentification = [self accessibilityIdentification];
 
-    if (v14)
+    if (accessibilityIdentification)
     {
-      v15 = [a1 accessibilityIdentification];
-      v16 = [v15 integerValue];
+      accessibilityIdentification2 = [self accessibilityIdentification];
+      integerValue = [accessibilityIdentification2 integerValue];
 
-      v17 = [MEMORY[0x1E69DD250] _accessibilityTitleForSystemTag:v16];
+      v17 = [MEMORY[0x1E69DD250] _accessibilityTitleForSystemTag:integerValue];
 
-      v6 = v17;
+      accessibilityUserDefinedLabel2 = v17;
     }
   }
 
-  if (![v6 length])
+  if (![accessibilityUserDefinedLabel2 length])
   {
-    v18 = [v4 title];
+    title = [v4 title];
 
-    v6 = v18;
+    accessibilityUserDefinedLabel2 = title;
   }
 
 LABEL_26:
 
-  return v6;
+  return accessibilityUserDefinedLabel2;
 }
 
 + (id)_accessibilityTitleForSystemTag:()UIAccessibilityPrivate

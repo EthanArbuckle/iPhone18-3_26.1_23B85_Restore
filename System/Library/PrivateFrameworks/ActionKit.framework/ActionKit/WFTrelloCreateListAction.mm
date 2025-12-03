@@ -1,48 +1,48 @@
 @interface WFTrelloCreateListAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)updateListCacheForBoard:(id)a3 onAccount:(id)a4;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)updateListCacheForBoard:(id)board onAccount:(id)account;
 @end
 
 @implementation WFTrelloCreateListAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to create a new Trello list with %2$@?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to create a new Trello list?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)updateListCacheForBoard:(id)a3 onAccount:(id)a4
+- (void)updateListCacheForBoard:(id)board onAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  boardCopy = board;
+  accountCopy = account;
+  identifier = [boardCopy identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [v6 identifier];
-    v17 = WFDiskCacheKey(v9, v10, v11, v12, v13, v14, v15, v16, @"WFTrelloLists");
+    identifier2 = [boardCopy identifier];
+    v17 = WFDiskCacheKey(identifier2, v10, v11, v12, v13, v14, v15, v16, @"WFTrelloLists");
 
-    if ([v7 isValid])
+    if ([accountCopy isValid])
     {
       v18 = [WFTrelloSessionManager alloc];
-      v19 = [v7 token];
-      v20 = [(WFTrelloSessionManager *)v18 initWithConfiguration:0 token:v19];
+      token = [accountCopy token];
+      v20 = [(WFTrelloSessionManager *)v18 initWithConfiguration:0 token:token];
 
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
@@ -50,7 +50,7 @@
       v22[3] = &unk_278C21150;
       v22[4] = self;
       v23 = v17;
-      [(WFTrelloSessionManager *)v20 getListsForBoard:v6 completionHandler:v22];
+      [(WFTrelloSessionManager *)v20 getListsForBoard:boardCopy completionHandler:v22];
     }
 
     else
@@ -116,15 +116,15 @@ uint64_t __62__WFTrelloCreateListAction_updateListCacheForBoard_onAccount___bloc
   return [v3 finishRunningWithError:0];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = [(WFTrelloCreateListAction *)self resourceManager];
-  v5 = [v4 resourceObjectsOfClass:objc_opt_class()];
-  v6 = [v5 anyObject];
+  resourceManager = [(WFTrelloCreateListAction *)self resourceManager];
+  v5 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v5 anyObject];
 
-  v7 = [v6 accounts];
-  v8 = [v7 firstObject];
+  accounts = [anyObject accounts];
+  firstObject = [accounts firstObject];
 
   v9 = [(WFTrelloCreateListAction *)self parameterValueForKey:@"WFTrelloBoard" ofClass:objc_opt_class()];
   if (v9)
@@ -132,18 +132,18 @@ uint64_t __62__WFTrelloCreateListAction_updateListCacheForBoard_onAccount___bloc
     v10 = [(WFTrelloCreateListAction *)self parameterValueForKey:@"WFTrelloName" ofClass:objc_opt_class()];
     v11 = [(WFTrelloCreateListAction *)self parameterValueForKey:@"WFTrelloPosition" ofClass:objc_opt_class()];
     v12 = [WFTrelloSessionManager alloc];
-    v13 = [v8 token];
-    v14 = [(WFTrelloSessionManager *)v12 initWithConfiguration:0 token:v13];
+    token = [firstObject token];
+    v14 = [(WFTrelloSessionManager *)v12 initWithConfiguration:0 token:token];
 
-    v15 = [v9 identifier];
+    identifier = [v9 identifier];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __55__WFTrelloCreateListAction_runAsynchronouslyWithInput___block_invoke;
     v19[3] = &unk_278C196F8;
     v19[4] = self;
     v20 = v9;
-    v21 = v8;
-    [(WFTrelloSessionManager *)v14 createListWithName:v10 onBoardWithIdentifier:v15 position:v11 completionHandler:v19];
+    v21 = firstObject;
+    [(WFTrelloSessionManager *)v14 createListWithName:v10 onBoardWithIdentifier:identifier position:v11 completionHandler:v19];
   }
 
   else

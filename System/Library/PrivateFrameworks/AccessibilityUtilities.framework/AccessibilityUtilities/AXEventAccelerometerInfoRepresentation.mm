@@ -1,33 +1,33 @@
 @interface AXEventAccelerometerInfoRepresentation
-- (AXEventAccelerometerInfoRepresentation)initWithCoder:(id)a3;
+- (AXEventAccelerometerInfoRepresentation)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXEventAccelerometerInfoRepresentation
 
-- (AXEventAccelerometerInfoRepresentation)initWithCoder:(id)a3
+- (AXEventAccelerometerInfoRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXEventAccelerometerInfoRepresentation;
   v5 = [(AXEventAccelerometerInfoRepresentation *)&v7 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"x"];
+    [coderCopy decodeFloatForKey:@"x"];
     [(AXEventAccelerometerInfoRepresentation *)v5 setX:?];
-    [v4 decodeFloatForKey:@"y"];
+    [coderCopy decodeFloatForKey:@"y"];
     [(AXEventAccelerometerInfoRepresentation *)v5 setY:?];
-    [v4 decodeFloatForKey:@"z"];
+    [coderCopy decodeFloatForKey:@"z"];
     [(AXEventAccelerometerInfoRepresentation *)v5 setZ:?];
-    -[AXEventAccelerometerInfoRepresentation setType:](v5, "setType:", [v4 decodeInt32ForKey:@"type"]);
+    -[AXEventAccelerometerInfoRepresentation setType:](v5, "setType:", [coderCopy decodeInt32ForKey:@"type"]);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXEventAccelerometerInfoRepresentation);
   [(AXEventAccelerometerInfoRepresentation *)self x];
@@ -40,16 +40,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[AXEventAccelerometerInfoRepresentation type](self forKey:{"type"), @"type"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[AXEventAccelerometerInfoRepresentation type](self forKey:{"type"), @"type"}];
   [(AXEventAccelerometerInfoRepresentation *)self x];
-  [v4 encodeFloat:@"x" forKey:?];
+  [coderCopy encodeFloat:@"x" forKey:?];
   [(AXEventAccelerometerInfoRepresentation *)self y];
-  [v4 encodeFloat:@"y" forKey:?];
+  [coderCopy encodeFloat:@"y" forKey:?];
   [(AXEventAccelerometerInfoRepresentation *)self z];
-  [v4 encodeFloat:@"z" forKey:?];
+  [coderCopy encodeFloat:@"z" forKey:?];
 }
 
 - (NSString)description

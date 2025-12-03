@@ -1,30 +1,30 @@
 @interface BFPhoneNumberNormalizer
 + (id)countryCode;
-+ (id)normalizedPhoneNumberForPhoneNumber:(id)a3;
++ (id)normalizedPhoneNumberForPhoneNumber:(id)number;
 @end
 
 @implementation BFPhoneNumberNormalizer
 
-+ (id)normalizedPhoneNumberForPhoneNumber:(id)a3
++ (id)normalizedPhoneNumberForPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_alloc_init(_NBPhoneNumberUtil);
-  v6 = [a1 countryCode];
+  countryCode = [self countryCode];
   v14 = 0;
-  v7 = [(_NBPhoneNumberUtil *)v5 parse:v4 defaultRegion:v6 error:&v14];
+  v7 = [(_NBPhoneNumberUtil *)v5 parse:numberCopy defaultRegion:countryCode error:&v14];
   v8 = v14;
-  if (![v6 caseInsensitiveCompare:@"us"])
+  if (![countryCode caseInsensitiveCompare:@"us"])
   {
-    v9 = [v7 countryCode];
-    v10 = [v9 integerValue];
+    countryCode2 = [v7 countryCode];
+    integerValue = [countryCode2 integerValue];
 
-    if (v10 == 1)
+    if (integerValue == 1)
     {
       [(_NBPhoneNumberUtil *)v5 truncateTooLongNumber:v7];
     }
   }
 
-  v11 = v4;
+  v11 = numberCopy;
   if (!v8)
   {
     v13 = 0;
@@ -37,11 +37,11 @@
 
 + (id)countryCode
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
-  v4 = [v3 lowercaseString];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
+  lowercaseString = [countryCode lowercaseString];
 
-  return v4;
+  return lowercaseString;
 }
 
 @end

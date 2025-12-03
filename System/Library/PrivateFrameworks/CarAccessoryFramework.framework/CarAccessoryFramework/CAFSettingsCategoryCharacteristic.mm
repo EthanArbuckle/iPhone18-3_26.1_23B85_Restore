@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSettingsCategoryCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSettingsCategoryCharacteristic *)self settingsCategoryValue];
+  settingsCategoryValue = [(CAFSettingsCategoryCharacteristic *)self settingsCategoryValue];
 
-  return NSStringFromSettingsCategory(v2);
+  return NSStringFromSettingsCategory(settingsCategoryValue);
 }
 
 @end

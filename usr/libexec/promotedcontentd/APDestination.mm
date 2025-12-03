@@ -1,12 +1,12 @@
 @interface APDestination
 + (APDestination)ecRouter;
-- (APDestination)initWithCoder:(id)a3;
-- (APDestination)initWithString:(id)a3;
+- (APDestination)initWithCoder:(id)coder;
+- (APDestination)initWithString:(id)string;
 - (APProtectedDestination)protectedDestination;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDestination:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDestination:(id)destination;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APDestination
@@ -14,27 +14,27 @@
 - (APProtectedDestination)protectedDestination
 {
   v3 = [APProtectedDestination alloc];
-  v4 = [(APDestination *)self value];
-  v5 = [(APProtectedDestination *)v3 initWithString:v4];
+  value = [(APDestination *)self value];
+  v5 = [(APProtectedDestination *)v3 initWithString:value];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(APDestination *)self value];
-  v3 = [v2 hash];
+  value = [(APDestination *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (APDestination)initWithString:(id)a3
+- (APDestination)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = APDestination;
   v5 = [(APDestination *)&v10 init];
-  if (v5 && (v6 = [v4 copy], value = v5->_value, v5->_value = v6, value, !v5->_value))
+  if (v5 && (v6 = [stringCopy copy], value = v5->_value, v5->_value = v6, value, !v5->_value))
   {
     v8 = 0;
   }
@@ -47,26 +47,26 @@
   return v8;
 }
 
-- (BOOL)isEqualToDestination:(id)a3
+- (BOOL)isEqualToDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(APDestination *)self value];
-  v6 = [v4 value];
+  destinationCopy = destination;
+  value = [(APDestination *)self value];
+  value2 = [destinationCopy value];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(destinationCopy) = [value isEqualToString:value2];
+  return destinationCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -89,15 +89,15 @@ LABEL_7:
   return v6;
 }
 
-- (APDestination)initWithCoder:(id)a3
+- (APDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = APDestination;
   v5 = [(APDestination *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
   }
@@ -105,11 +105,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APDestination *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  value = [(APDestination *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
 + (APDestination)ecRouter

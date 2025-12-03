@@ -1,14 +1,14 @@
 @interface FCPurchaseLookupResult
-- (void)setIntroOffer:(uint64_t)a1;
+- (void)setIntroOffer:(uint64_t)offer;
 @end
 
 @implementation FCPurchaseLookupResult
 
-- (void)setIntroOffer:(uint64_t)a1
+- (void)setIntroOffer:(uint64_t)offer
 {
-  if (a1)
+  if (offer)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((offer + 56), a2);
   }
 }
 

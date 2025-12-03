@@ -1,6 +1,6 @@
 @interface VCVideoReceiverDefault
 - (BOOL)initializeDisplayLink;
-- (VCVideoReceiverDefault)initWithConfig:(tagVCVideoReceiverConfig *)a3 delegate:(id)a4 delegateFunctions:(const tagVCVideoReceiverDelegateRealtimeInstanceVTable *)a5 reportingAgent:(opaqueRTCReporting *)a6 statisticsCollector:(id)a7 transmitterHandle:(tagHANDLE *)a8 sensitiveContentAnalyzer:(id)a9;
+- (VCVideoReceiverDefault)initWithConfig:(tagVCVideoReceiverConfig *)config delegate:(id)delegate delegateFunctions:(const tagVCVideoReceiverDelegateRealtimeInstanceVTable *)functions reportingAgent:(opaqueRTCReporting *)agent statisticsCollector:(id)collector transmitterHandle:(tagHANDLE *)handle sensitiveContentAnalyzer:(id)analyzer;
 - (double)activeVideoStallDuration;
 - (double)lastReceivedVideoRTCPPacketTime;
 - (double)lastReceivedVideoRTPPacketTime;
@@ -10,45 +10,45 @@
 - (int)startVideo;
 - (unsigned)lastDisplayedFrameRTPTimestamp;
 - (void)cleanUpDisplayLink;
-- (void)collectChannelMetrics:(id *)a3 interval:(float)a4;
+- (void)collectChannelMetrics:(id *)metrics interval:(float)interval;
 - (void)dealloc;
-- (void)didSwitchFromStreamID:(unsigned __int16)a3 toStreamID:(unsigned __int16)a4;
-- (void)handleKeyFrameRequestWithSizeAndFistMBs:(unsigned __int16 *)a3 count:(int)a4 didReceiveRTCPFB:(BOOL)a5 didReceiveFIR:(BOOL)a6;
-- (void)handleRequestingKeyFrameGenerationWithStreamID:(unsigned __int16)a3 firType:(int)a4;
+- (void)didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD;
+- (void)handleKeyFrameRequestWithSizeAndFistMBs:(unsigned __int16 *)bs count:(int)count didReceiveRTCPFB:(BOOL)b didReceiveFIR:(BOOL)r;
+- (void)handleRequestingKeyFrameGenerationWithStreamID:(unsigned __int16)d firType:(int)type;
 - (void)initializeDisplayLink;
-- (void)setMode:(int)a3;
-- (void)setShouldEnableFaceZoom:(BOOL)a3;
-- (void)setShouldEnableMLEnhance:(BOOL)a3 streamID:(unsigned __int16)a4;
-- (void)setTargetStreamID:(unsigned __int16)a3;
-- (void)setUpCannedInjector:(tagVCVideoReceiverConfig *)a3;
+- (void)setMode:(int)mode;
+- (void)setShouldEnableFaceZoom:(BOOL)zoom;
+- (void)setShouldEnableMLEnhance:(BOOL)enhance streamID:(unsigned __int16)d;
+- (void)setTargetStreamID:(unsigned __int16)d;
+- (void)setUpCannedInjector:(tagVCVideoReceiverConfig *)injector;
 - (void)setUpOneToOneReceiveSettings;
 - (void)setUpRemoteAspectRatios;
-- (void)setUpRemoteAspectRatiosForPayload:(int)a3;
-- (void)setUpRemoteAspectRatiosFromFreatureListString:(const char *)a3;
+- (void)setUpRemoteAspectRatiosForPayload:(int)payload;
+- (void)setUpRemoteAspectRatiosFromFreatureListString:(const char *)string;
 - (void)startVideo;
 - (void)stopVideo;
-- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)a3;
+- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)time;
 - (void)videoReceiverRxFrameRate;
 @end
 
 @implementation VCVideoReceiverDefault
 
-- (void)setUpCannedInjector:(tagVCVideoReceiverConfig *)a3
+- (void)setUpCannedInjector:(tagVCVideoReceiverConfig *)injector
 {
   if ([+[VCDefaults useCannedVideoPackets] sharedInstance]
   {
     v6 = VCDefaults_CopyStringValueForKey(@"cannedVideoPacketFile");
     v5 = -[VCCannedVideoPacketSource initWithMode:filePath:]([VCCannedVideoPacketSource alloc], "initWithMode:filePath:", [+[VCDefaults sharedInstance](VCDefaults cannedVideoPacketMode], v6);
     self->_cannedPacketSource = v5;
-    a3->cannedReplayContext = v5;
+    injector->cannedReplayContext = v5;
   }
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
   v25 = *MEMORY[0x1E69E9840];
-  self->_videoReceiverConfig.mode = a3;
-  self->_notifyDelegateVideoAttributeChanges = a3 == 0;
+  self->_videoReceiverConfig.mode = mode;
+  self->_notifyDelegateVideoAttributeChanges = mode == 0;
   [(VCVideoReceiverDefault *)self setUpOneToOneReceiveSettings];
   self->_pendingVideoAttributesUpdateOnModeChange = 1;
   if (objc_opt_class() == self)
@@ -66,7 +66,7 @@
         v17 = 1024;
         v18 = 253;
         v19 = 1024;
-        LODWORD(v20) = a3;
+        LODWORD(v20) = mode;
         v8 = " [%s] %s:%d New mode=%d";
         v9 = v7;
         v10 = 34;
@@ -103,9 +103,9 @@ LABEL_11:
         v19 = 2112;
         v20 = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 1024;
-        v24 = a3;
+        modeCopy = mode;
         v8 = " [%s] %s:%d %@(%p) New mode=%d";
         v9 = v12;
         v10 = 54;
@@ -165,8 +165,8 @@ LABEL_2:
         *v28 = mode;
         *&v28[4] = 1024;
         *&v28[6] = v12;
-        LOWORD(v29) = 1024;
-        *(&v29 + 2) = v4;
+        LOWORD(selfCopy) = 1024;
+        *(&selfCopy + 2) = v4;
         v13 = " [%s] %s:%d mode=%d, streamCount=%d, streamIndex=%d";
         v14 = v10;
         v15 = 46;
@@ -205,7 +205,7 @@ LABEL_18:
         v27 = 2112;
         *v28 = v5;
         *&v28[8] = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 1024;
         v31 = v18;
         v32 = 1024;
@@ -230,13 +230,13 @@ LABEL_18:
   [(VCVideoReceiverDefault *)self setUpRemoteAspectRatiosForPayload:v3];
 }
 
-- (void)setUpRemoteAspectRatiosForPayload:(int)a3
+- (void)setUpRemoteAspectRatiosForPayload:(int)payload
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 != 128)
+  if (payload != 128)
   {
-    v3 = *&a3;
-    v5 = [(VCVideoReceiverDefault *)self oneToOneStreamIndex];
+    v3 = *&payload;
+    oneToOneStreamIndex = [(VCVideoReceiverDefault *)self oneToOneStreamIndex];
     *&v8[14] = 0xAAAAAAAAAAAAAAAALL;
     *&v6 = 0xAAAAAAAAAAAAAAAALL;
     *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -249,25 +249,25 @@ LABEL_18:
     v7[1] = v6;
     v7[2] = v6;
     v7[0] = v6;
-    if ([VCVideoFeatureListStringHelper featureListString:v7 maxSize:150 payload:v3 featureListStrings:self->_videoReceiverConfig.streamConfigs[v5].featureListStrings])
+    if ([VCVideoFeatureListStringHelper featureListString:v7 maxSize:150 payload:v3 featureListStrings:self->_videoReceiverConfig.streamConfigs[oneToOneStreamIndex].featureListStrings])
     {
       [(VCVideoReceiverDefault *)self setUpRemoteAspectRatiosFromFreatureListString:v7];
     }
   }
 }
 
-- (void)setUpRemoteAspectRatiosFromFreatureListString:(const char *)a3
+- (void)setUpRemoteAspectRatiosFromFreatureListString:(const char *)string
 {
   v67 = *MEMORY[0x1E69E9840];
   v54 = 3;
   v52 = 3;
   v53 = 0x200000002;
-  v5 = [VCVideoFeatureListStringHelper extractAspectRatios:a3 landscapeX:&v54 landscapeY:&v53 + 4 portraitX:&v53 portraitY:&v52];
-  self->_canRemoteResizePIP = +[VCVideoFeatureListStringHelper isResizePIPSupportedInFeatureListString:](VCVideoFeatureListStringHelper, "isResizePIPSupportedInFeatureListString:", [MEMORY[0x1E696AEC0] stringWithUTF8String:a3]);
+  v5 = [VCVideoFeatureListStringHelper extractAspectRatios:string landscapeX:&v54 landscapeY:&v53 + 4 portraitX:&v53 portraitY:&v52];
+  self->_canRemoteResizePIP = +[VCVideoFeatureListStringHelper isResizePIPSupportedInFeatureListString:](VCVideoFeatureListStringHelper, "isResizePIPSupportedInFeatureListString:", [MEMORY[0x1E696AEC0] stringWithUTF8String:string]);
   v51 = -1431655766;
   v49 = -1431655766;
   v50 = 0xAAAAAAAAAAAAAAAALL;
-  v6 = [VCVideoFeatureListStringHelper extractExpectedAspectRatios:a3 expectedLandscapeX:&v51 expectedLandscapeY:&v50 + 4 expectedPortraitX:&v50 expectedPortraitY:&v49];
+  v6 = [VCVideoFeatureListStringHelper extractExpectedAspectRatios:string expectedLandscapeX:&v51 expectedLandscapeY:&v50 + 4 expectedPortraitX:&v50 expectedPortraitY:&v49];
   self->_remoteSupportsExpectedAspectRatio = v6;
   if (!v6)
   {
@@ -278,7 +278,7 @@ LABEL_18:
 
   v47 = *MEMORY[0x1E695F060];
   v48 = v47;
-  [VCVideoFeatureListStringHelper extractExpectedAspectRatiosFromFeatureString:a3 expectedFullScreenAspectRatios:&v47];
+  [VCVideoFeatureListStringHelper extractExpectedAspectRatiosFromFeatureString:string expectedFullScreenAspectRatios:&v47];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -363,7 +363,7 @@ LABEL_13:
         v59 = 1024;
         v60 = 338;
         v61 = 2080;
-        *v62 = a3;
+        *v62 = string;
         *&v62[8] = 1024;
         *v63 = v54;
         *&v63[4] = 1024;
@@ -410,7 +410,7 @@ LABEL_24:
         *&v62[8] = 2048;
         *v63 = self;
         *&v63[8] = 2080;
-        *v64 = a3;
+        *v64 = string;
         *&v64[8] = 1024;
         *&v64[10] = v54;
         *&v64[14] = 1024;
@@ -588,7 +588,7 @@ LABEL_11:
         v25 = 2112;
         v26 = v3;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) dealloc called";
         v7 = v10;
         v8 = 48;
@@ -682,7 +682,7 @@ LABEL_11:
   v8 = 3221225472;
   v9 = __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke;
   v10 = &unk_1E85F6B38;
-  v11 = self;
+  selfCopy = self;
   v5 = [[VCDisplayLink alloc] initWithHandler:&v7 threadPriority:v4 threadOptions:v3 threadIdentifier:@"com.apple.VCVideoReceiverDefault.VCDisplayLink" preferredFrameRate:0.0];
   self->_displayLink = v5;
   if (!v5)
@@ -777,7 +777,7 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
           v17 = 2112;
           v18 = v5;
           v19 = 2048;
-          v20 = self;
+          selfCopy2 = self;
           v21 = 1024;
           v22 = v3;
           _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) VideoReceiver_SetVTHandleAndStart failed, result=%x", &v11, 0x36u);
@@ -825,7 +825,7 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
         v17 = 2112;
         v18 = v8;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 1024;
         v22 = v3;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) failed, result=%x", &v11, 0x36u);
@@ -872,12 +872,12 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
   return v3;
 }
 
-- (void)setTargetStreamID:(unsigned __int16)a3
+- (void)setTargetStreamID:(unsigned __int16)d
 {
   videoReceiverHandle = self->_videoReceiverHandle;
   if (videoReceiverHandle != 0xFFFFFFFFLL)
   {
-    VideoReceiver_SetTargetStreamID(videoReceiverHandle, a3);
+    VideoReceiver_SetTargetStreamID(videoReceiverHandle, d);
   }
 }
 
@@ -894,13 +894,13 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
   }
 }
 
-- (void)handleRequestingKeyFrameGenerationWithStreamID:(unsigned __int16)a3 firType:(int)a4
+- (void)handleRequestingKeyFrameGenerationWithStreamID:(unsigned __int16)d firType:(int)type
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&type;
+  dCopy = d;
   v40 = *MEMORY[0x1E69E9840];
   v7 = micro();
-  if (!self->_videoReceiverConfig.mode || self->_lastKeyFrameRequestStreamID != v5 || ((lastKeyFrameRequestTime = self->_lastKeyFrameRequestTime, lastKeyFrameRequestTime != 0.0) ? (v9 = v7 - lastKeyFrameRequestTime < 0.5) : (v9 = 0), !v9))
+  if (!self->_videoReceiverConfig.mode || self->_lastKeyFrameRequestStreamID != dCopy || ((lastKeyFrameRequestTime = self->_lastKeyFrameRequestTime, lastKeyFrameRequestTime != 0.0) ? (v9 = v7 - lastKeyFrameRequestTime < 0.5) : (v9 = 0), !v9))
   {
     if (objc_opt_class() == self)
     {
@@ -923,7 +923,7 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
       v31 = 1024;
       v32 = 829;
       v33 = 1024;
-      *v34 = v5;
+      *v34 = dCopy;
       *&v34[4] = 1024;
       *&v34[6] = v4;
       v13 = " [%s] %s:%d Requesting Key Frame with streamID:%d FIRType:%d";
@@ -964,9 +964,9 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
       v33 = 2112;
       *v34 = v10;
       *&v34[8] = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 1024;
-      v37 = v5;
+      v37 = dCopy;
       v38 = 1024;
       v39 = v4;
       v13 = " [%s] %s:%d %@(%p) Requesting Key Frame with streamID:%d FIRType:%d";
@@ -977,9 +977,9 @@ uint64_t __47__VCVideoReceiverDefault_initializeDisplayLink__block_invoke(uint64
     _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, &v27, v15);
 LABEL_18:
     self->_lastKeyFrameRequestTime = v7;
-    self->_lastKeyFrameRequestStreamID = v5;
+    self->_lastKeyFrameRequestStreamID = dCopy;
     v18 = MEMORY[0x1E1289F20](&self->super._delegate);
-    [v18 vcVideoReceiver:self requestKeyFrameGenerationWithStreamID:v5 firType:v4];
+    [v18 vcVideoReceiver:self requestKeyFrameGenerationWithStreamID:dCopy firType:v4];
     CFRelease(v18);
     VideoReceiver_IncrementFIRCount(self->_videoReceiverHandle, v4);
     return;
@@ -1000,7 +1000,7 @@ LABEL_18:
         v31 = 1024;
         v32 = 825;
         v33 = 1024;
-        *v34 = v5;
+        *v34 = dCopy;
         v22 = " [%s] %s:%d Ignoring key frame request key frame too soon for the same streamID:%d";
         v23 = v21;
         v24 = 34;
@@ -1037,9 +1037,9 @@ LABEL_30:
         v33 = 2112;
         *v34 = v19;
         *&v34[8] = 2048;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 1024;
-        v37 = v5;
+        v37 = dCopy;
         v22 = " [%s] %s:%d %@(%p) Ignoring key frame request key frame too soon for the same streamID:%d";
         v23 = v26;
         v24 = 54;
@@ -1049,62 +1049,62 @@ LABEL_30:
   }
 }
 
-- (void)handleKeyFrameRequestWithSizeAndFistMBs:(unsigned __int16 *)a3 count:(int)a4 didReceiveRTCPFB:(BOOL)a5 didReceiveFIR:(BOOL)a6
+- (void)handleKeyFrameRequestWithSizeAndFistMBs:(unsigned __int16 *)bs count:(int)count didReceiveRTCPFB:(BOOL)b didReceiveFIR:(BOOL)r
 {
-  v7 = MEMORY[0x1E1289F20](&self->super._delegate, a2, a3, *&a4, a5, a6);
+  v7 = MEMORY[0x1E1289F20](&self->super._delegate, a2, bs, *&count, b, r);
   [v7 vcVideoReceiverRequestKeyFrame:self rtcpPSFBType:4];
 
   CFRelease(v7);
 }
 
-- (void)didSwitchFromStreamID:(unsigned __int16)a3 toStreamID:(unsigned __int16)a4
+- (void)didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD
 {
-  v4 = a4;
-  v5 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = MEMORY[0x1E1289F20](&self->super._delegate, a2);
   if (objc_opt_respondsToSelector())
   {
-    [v7 vcVideoReceiver:self didSwitchFromStreamID:v5 toStreamID:v4];
+    [v7 vcVideoReceiver:self didSwitchFromStreamID:dCopy toStreamID:iDCopy];
   }
 
   CFRelease(v7);
 }
 
-- (void)collectChannelMetrics:(id *)a3 interval:(float)a4
+- (void)collectChannelMetrics:(id *)metrics interval:(float)interval
 {
-  a3->var0 = 0;
-  a3->var2 = 0;
-  a3->var4.width = 0.0;
-  a3->var4.height = 0.0;
-  a3->var3 = 0.0;
-  VideoReceiver_GetMediaChannelMetrics(a4, self->_videoReceiverHandle, a3);
+  metrics->var0 = 0;
+  metrics->var2 = 0;
+  metrics->var4.width = 0.0;
+  metrics->var4.height = 0.0;
+  metrics->var3 = 0.0;
+  VideoReceiver_GetMediaChannelMetrics(interval, self->_videoReceiverHandle, metrics);
 }
 
-- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)a3
+- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)time
 {
   videoReceiverHandle = self->_videoReceiverHandle;
   if (videoReceiverHandle != 0xFFFFFFFFLL)
   {
-    VideoReceiver_UpdateSourcePlayoutTime(videoReceiverHandle, a3);
+    VideoReceiver_UpdateSourcePlayoutTime(videoReceiverHandle, time);
   }
 }
 
-- (void)setShouldEnableFaceZoom:(BOOL)a3
+- (void)setShouldEnableFaceZoom:(BOOL)zoom
 {
-  self->_shouldEnableFaceZoom = a3;
+  self->_shouldEnableFaceZoom = zoom;
   videoReceiverHandle = self->_videoReceiverHandle;
   if (videoReceiverHandle != 0xFFFFFFFFLL)
   {
-    VideoReceiver_SetShouldEnableFaceZoom(videoReceiverHandle, a3);
+    VideoReceiver_SetShouldEnableFaceZoom(videoReceiverHandle, zoom);
   }
 }
 
-- (void)setShouldEnableMLEnhance:(BOOL)a3 streamID:(unsigned __int16)a4
+- (void)setShouldEnableMLEnhance:(BOOL)enhance streamID:(unsigned __int16)d
 {
   videoReceiverHandle = self->_videoReceiverHandle;
   if (videoReceiverHandle != 0xFFFFFFFFLL)
   {
-    VideoReceiver_SetShouldEnableMLEnhance(videoReceiverHandle, a4, a3);
+    VideoReceiver_SetShouldEnableMLEnhance(videoReceiverHandle, d, enhance);
   }
 }
 
@@ -1146,12 +1146,12 @@ LABEL_30:
   return self->_videoReceiverRxFrameRate;
 }
 
-- (VCVideoReceiverDefault)initWithConfig:(tagVCVideoReceiverConfig *)a3 delegate:(id)a4 delegateFunctions:(const tagVCVideoReceiverDelegateRealtimeInstanceVTable *)a5 reportingAgent:(opaqueRTCReporting *)a6 statisticsCollector:(id)a7 transmitterHandle:(tagHANDLE *)a8 sensitiveContentAnalyzer:(id)a9
+- (VCVideoReceiverDefault)initWithConfig:(tagVCVideoReceiverConfig *)config delegate:(id)delegate delegateFunctions:(const tagVCVideoReceiverDelegateRealtimeInstanceVTable *)functions reportingAgent:(opaqueRTCReporting *)agent statisticsCollector:(id)collector transmitterHandle:(tagHANDLE *)handle sensitiveContentAnalyzer:(id)analyzer
 {
   v65 = *MEMORY[0x1E69E9840];
   v51.receiver = self;
   v51.super_class = VCVideoReceiverDefault;
-  v13 = [(VCVideoReceiverBase *)&v51 initWithDelegate:a4 delegateFunctions:a5];
+  v13 = [(VCVideoReceiverBase *)&v51 initWithDelegate:delegate delegateFunctions:functions];
   v14 = v13;
   if (!v13)
   {
@@ -1159,7 +1159,7 @@ LABEL_30:
   }
 
   p_videoReceiverConfig = &v13->_videoReceiverConfig;
-  memcpy(&v13->_videoReceiverConfig, a3, sizeof(v13->_videoReceiverConfig));
+  memcpy(&v13->_videoReceiverConfig, config, sizeof(v13->_videoReceiverConfig));
   v14->super._vTable.setExternalOutputLatency = _VCVideoReceiverDefault_SetExternalOutputLatency;
   participantId = v14->_videoReceiverConfig.participantId;
   if (participantId)
@@ -1174,7 +1174,7 @@ LABEL_30:
   }
 
   v14->_notifyDelegateVideoAttributeChanges = v14->_videoReceiverConfig.mode == 0;
-  mediaControlInfoGenerator = a3->mediaControlInfoGenerator;
+  mediaControlInfoGenerator = config->mediaControlInfoGenerator;
   if (mediaControlInfoGenerator)
   {
     mediaControlInfoGenerator = CFRetain(mediaControlInfoGenerator);
@@ -1206,38 +1206,38 @@ LABEL_30:
   }
 
   [(VCVideoReceiverDefault *)v14 setUpRemoteAspectRatios];
-  [(VCVideoReceiverDefault *)v14 setUpCannedInjector:a3];
-  a3->callbackContext = v14;
-  a3->remoteFrameCallback = _VCVideoReceiverDefault_RemoteFrameCallback;
-  a3->sampleBufferCallback = _VCVideoReceiverDefault_SampleBufferCallback;
-  a3->streamSwitchCallback = streamSwitchCallback;
-  a3->keyFrameGenerationCallback = keyFrameGenerationCallback;
-  a3->ackLTRFrameCallback = _VCVideoReceiverDefault_ackLTRWithTS;
-  a3->sendLTRAckCallback = _VCVideoReceiverDefault_sendLTRAckWithTS;
-  a3->modeSwitchCallback = _VCVideoReceiverDefault_ModeSwitchCallback;
-  a3->videoStallPercentageThreshold = [+[GKSConnectivitySettings readStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings readStorebagValueForStorebagKey:@"vc-reporting-video-stall-percentage-symptom-threshold" userDefaultKey:0 defaultValue:&unk_1F5799CF0 isDoubleType:{0), "intValue"}];
-  if (a9)
+  [(VCVideoReceiverDefault *)v14 setUpCannedInjector:config];
+  config->callbackContext = v14;
+  config->remoteFrameCallback = _VCVideoReceiverDefault_RemoteFrameCallback;
+  config->sampleBufferCallback = _VCVideoReceiverDefault_SampleBufferCallback;
+  config->streamSwitchCallback = streamSwitchCallback;
+  config->keyFrameGenerationCallback = keyFrameGenerationCallback;
+  config->ackLTRFrameCallback = _VCVideoReceiverDefault_ackLTRWithTS;
+  config->sendLTRAckCallback = _VCVideoReceiverDefault_sendLTRAckWithTS;
+  config->modeSwitchCallback = _VCVideoReceiverDefault_ModeSwitchCallback;
+  config->videoStallPercentageThreshold = [+[GKSConnectivitySettings readStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings readStorebagValueForStorebagKey:@"vc-reporting-video-stall-percentage-symptom-threshold" userDefaultKey:0 defaultValue:&unk_1F5799CF0 isDoubleType:{0), "intValue"}];
+  if (analyzer)
   {
-    v14->_sensitiveContentAnalyzer = a9;
-    a3->beginSensitiveContentAnalysisCallback = _VCVideoReceiverDefault_BeginSensitiveContentAnalysisCallback;
-    a3->endSensitiveContentAnalysisCallback = _VCVideoReceiverDefault_EndSensitiveContentAnalysisCallback;
+    v14->_sensitiveContentAnalyzer = analyzer;
+    config->beginSensitiveContentAnalysisCallback = _VCVideoReceiverDefault_BeginSensitiveContentAnalysisCallback;
+    config->endSensitiveContentAnalysisCallback = _VCVideoReceiverDefault_EndSensitiveContentAnalysisCallback;
   }
 
   v22 = [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-video-enable-late-frame-recovery" userDefaultKey:@"enableLateVideoFrameRecovery" defaultValue:MEMORY[0x1E695E118] isDoubleType:{0), "BOOLValue"}];
   isLateFrameRecoveryEnabled = 0;
   if (v22)
   {
-    isLateFrameRecoveryEnabled = a3->isLateFrameRecoveryEnabled;
+    isLateFrameRecoveryEnabled = config->isLateFrameRecoveryEnabled;
   }
 
-  a3->isLateFrameRecoveryEnabled = isLateFrameRecoveryEnabled;
+  config->isLateFrameRecoveryEnabled = isLateFrameRecoveryEnabled;
   if ([+[VCDefaults isReceiverTestVerificationEnabled] sharedInstance]
   {
     v14->_validationContext = objc_alloc_init(VCVideoHardwareDumpCollector);
   }
 
   [(VCVideoReceiverDefault *)v14 setUpOneToOneReceiveSettings];
-  Handle = VideoReceiver_CreateHandle(&v14->_videoReceiverHandle, a3, a6, 0, a7);
+  Handle = VideoReceiver_CreateHandle(&v14->_videoReceiverHandle, config, agent, 0, collector);
   if (objc_opt_class() == v14)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1311,12 +1311,12 @@ LABEL_31:
 
   if ((Handle & 0x80000000) == 0)
   {
-    v14->super._rtpTimestampRate = a3->videoTSRate;
-    v14->_videoTransmitterHandle = a8;
-    v14->_forceZeroRegionOfInterestOrigin = a3->forceZeroRegionOfInterestOrigin;
-    v41 = a3 + 128 * [(VCVideoReceiverDefault *)v14 oneToOneStreamIndex];
+    v14->super._rtpTimestampRate = config->videoTSRate;
+    v14->_videoTransmitterHandle = handle;
+    v14->_forceZeroRegionOfInterestOrigin = config->forceZeroRegionOfInterestOrigin;
+    v41 = config + 128 * [(VCVideoReceiverDefault *)v14 oneToOneStreamIndex];
     v14->_videoFrameMetadataSupportedVersion = *(v41 + 32);
-    if (a3->isReceiverSideVCRCFeedbackEnabled)
+    if (config->isReceiverSideVCRCFeedbackEnabled)
     {
       v42 = *(v41 + 7);
       if (v42 == 0xFFFFFFFFLL)
@@ -1343,7 +1343,7 @@ LABEL_31:
 
       else
       {
-        v14->_rateAdaptation = a3->rateAdaptation;
+        v14->_rateAdaptation = config->rateAdaptation;
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v43 = VRTraceErrorLogLevelToCSTR();

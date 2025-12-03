@@ -1,10 +1,10 @@
 @interface AMLFeaturesDecoder
-+ (id)dataMetricsForFeatureProvider:(id)a3;
-+ (id)dictionariesFromBatchProvider:(id)a3;
++ (id)dataMetricsForFeatureProvider:(id)provider;
++ (id)dictionariesFromBatchProvider:(id)provider;
 + (id)logger;
-+ (id)modelArrayForArrayProvider:(id)a3;
-+ (id)modelContentForBatchProvider:(id)a3;
-+ (id)modelDataFrom:(id)a3;
++ (id)modelArrayForArrayProvider:(id)provider;
++ (id)modelContentForBatchProvider:(id)provider;
++ (id)modelDataFrom:(id)from;
 @end
 
 @implementation AMLFeaturesDecoder
@@ -21,17 +21,17 @@
   return v3;
 }
 
-+ (id)modelDataFrom:(id)a3
++ (id)modelDataFrom:(id)from
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v3 setWithObjects:{v5, v6, v7, v8, objc_opt_class(), 0}];
   v14 = 0;
-  v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v9 fromData:v4 error:&v14];
+  v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v9 fromData:fromCopy error:&v14];
 
   v11 = v14;
   if (v11)
@@ -46,22 +46,22 @@
   return v10;
 }
 
-+ (id)modelArrayForArrayProvider:(id)a3
++ (id)modelArrayForArrayProvider:(id)provider
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providerCopy = provider;
   v27 = objc_opt_new();
-  v23 = v3;
-  v4 = [v3 array];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 featureNames];
-  v26 = [v6 allObjects];
+  v23 = providerCopy;
+  array = [providerCopy array];
+  v5 = [array objectAtIndexedSubscript:0];
+  featureNames = [v5 featureNames];
+  allObjects = [featureNames allObjects];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = array;
   v28 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v28)
   {
@@ -83,7 +83,7 @@
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v10 = v26;
+        v10 = allObjects;
         v11 = [v10 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v11)
         {
@@ -103,10 +103,10 @@
               v16 = [v8 featureValueForName:v15];
               if ([v16 type] == 1)
               {
-                v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "int64Value")}];
+                stringValue = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "int64Value")}];
 LABEL_17:
-                v19 = v17;
-                [v9 setObject:v17 forKeyedSubscript:v15];
+                v19 = stringValue;
+                [v9 setObject:stringValue forKeyedSubscript:v15];
 
                 goto LABEL_18;
               }
@@ -115,13 +115,13 @@ LABEL_17:
               {
                 v18 = MEMORY[0x277CCABB0];
                 [v16 doubleValue];
-                v17 = [v18 numberWithDouble:?];
+                stringValue = [v18 numberWithDouble:?];
                 goto LABEL_17;
               }
 
               if ([v16 type] == 3)
               {
-                v17 = [v16 stringValue];
+                stringValue = [v16 stringValue];
                 goto LABEL_17;
               }
 
@@ -155,13 +155,13 @@ LABEL_18:
   return v27;
 }
 
-+ (id)dataMetricsForFeatureProvider:(id)a3
++ (id)dataMetricsForFeatureProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = providerCopy;
   }
 
   else
@@ -172,24 +172,24 @@ LABEL_18:
   return v4;
 }
 
-+ (id)dictionariesFromBatchProvider:(id)a3
++ (id)dictionariesFromBatchProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providerCopy = provider;
   v16 = objc_opt_new();
-  if ([v3 count])
+  if ([providerCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
-      v6 = [v3 featuresAtIndex:v4];
-      v7 = [v6 featureNames];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v6 = [providerCopy featuresAtIndex:v4];
+      featureNames = [v6 featureNames];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [featureNames countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         v9 = v8;
@@ -200,26 +200,26 @@ LABEL_18:
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(featureNames);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
             v13 = [v6 featureValueForName:v12];
-            [v5 setObject:v13 forKeyedSubscript:v12];
+            [dictionary setObject:v13 forKeyedSubscript:v12];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v9 = [featureNames countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v9);
       }
 
-      [v16 addObject:v5];
+      [v16 addObject:dictionary];
 
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [providerCopy count]);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -227,13 +227,13 @@ LABEL_18:
   return v16;
 }
 
-+ (id)modelContentForBatchProvider:(id)a3
++ (id)modelContentForBatchProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 dictionariesFromBatchProvider:v4];
+    v5 = [self dictionariesFromBatchProvider:providerCopy];
   }
 
   else

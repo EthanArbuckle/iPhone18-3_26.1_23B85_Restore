@@ -1,41 +1,41 @@
 @interface PKAccountBillPaymentController
-- (PKAccountBillPaymentController)initWithAccount:(id)a3 paymentPass:(id)a4;
+- (PKAccountBillPaymentController)initWithAccount:(id)account paymentPass:(id)pass;
 - (PKAccountBillPaymentControllerDelegate)delegate;
-- (id)_achPaymentWithAmount:(id)a3 bankInformation:(id)a4;
-- (id)_apcPaymentWithAmount:(id)a3;
-- (id)_bankAccountsForFundingSources:(id)a3;
-- (id)_buildTransferRequestForDate:(id)a3;
-- (id)_createSchedulePaymentRequestWithSelectedMethods:(unint64_t)a3 bankInformation:(id)a4;
-- (id)_paymentSummaryItemsForPaymentAmountACH:(id)a3 apc:(id)a4 bankInformation:(id)a5;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
-- (void)_accountDidChange:(id)a3;
-- (void)_addNewBankAccountIfNecessary:(id)a3;
-- (void)_billPaymentHasCompletedWithState:(unint64_t)a3 error:(id)a4;
+- (id)_achPaymentWithAmount:(id)amount bankInformation:(id)information;
+- (id)_apcPaymentWithAmount:(id)amount;
+- (id)_bankAccountsForFundingSources:(id)sources;
+- (id)_buildTransferRequestForDate:(id)date;
+- (id)_createSchedulePaymentRequestWithSelectedMethods:(unint64_t)methods bankInformation:(id)information;
+- (id)_paymentSummaryItemsForPaymentAmountACH:(id)h apc:(id)apc bankInformation:(id)information;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
+- (void)_accountDidChange:(id)change;
+- (void)_addNewBankAccountIfNecessary:(id)necessary;
+- (void)_billPaymentHasCompletedWithState:(unint64_t)state error:(id)error;
 - (void)_completeFetchingFundingSources;
 - (void)_fetchFundingSources;
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4;
-- (void)_presentPaymentAuthorizationWithPaymentRequest:(id)a3 completion:(id)a4;
-- (void)_updateUseApplePayCashSetting:(BOOL)a3;
-- (void)canPerformBillPaymentWithAmount:(id)a3 scheduledDate:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)performBillPaymentActionWithAmount:(id)a3 scheduledDate:(id)a4 billPaymentSuggestedAmountDataEvent:(id)a5;
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion;
+- (void)_presentPaymentAuthorizationWithPaymentRequest:(id)request completion:(id)completion;
+- (void)_updateUseApplePayCashSetting:(BOOL)setting;
+- (void)canPerformBillPaymentWithAmount:(id)amount scheduledDate:(id)date completion:(id)completion;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)performBillPaymentActionWithAmount:(id)amount scheduledDate:(id)date billPaymentSuggestedAmountDataEvent:(id)event;
 @end
 
 @implementation PKAccountBillPaymentController
 
-- (PKAccountBillPaymentController)initWithAccount:(id)a3 paymentPass:(id)a4
+- (PKAccountBillPaymentController)initWithAccount:(id)account paymentPass:(id)pass
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  passCopy = pass;
   v23.receiver = self;
   v23.super_class = PKAccountBillPaymentController;
   v9 = [(PKAccountBillPaymentController *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_pass, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_pass, pass);
     v11 = [MEMORY[0x1E695DFA8] set];
     dataFetchingCompletionHandlers = v10->_dataFetchingCompletionHandlers;
     v10->_dataFetchingCompletionHandlers = v11;
@@ -52,13 +52,13 @@
     webService = v10->_webService;
     v10->_webService = v17;
 
-    v19 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     totalPaymentAmount = v10->_totalPaymentAmount;
-    v10->_totalPaymentAmount = v19;
+    v10->_totalPaymentAmount = zero;
 
     [(PKAccountBillPaymentController *)v10 _fetchFundingSources];
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v10 selector:sel__accountDidChange_ name:@"PKAccountServiceAccountsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__accountDidChange_ name:@"PKAccountServiceAccountsChangedNotification" object:0];
   }
 
   return v10;
@@ -80,9 +80,9 @@
     if (PKUIOnlyDemoModeEnabled())
     {
       v4 = [[PKAccountPaymentFundingSource alloc] initWithType:1];
-      v5 = [MEMORY[0x1E696AFB0] UUID];
-      v6 = [v5 UUIDString];
-      [(PKAccountPaymentFundingSource *)v4 setIdentifier:v6];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [(PKAccountPaymentFundingSource *)v4 setIdentifier:uUIDString];
 
       [(PKAccountPaymentFundingSource *)v4 setAccountSuffix:@"12345"];
       v13[0] = v4;
@@ -96,13 +96,13 @@
     {
       objc_initWeak(buf, self);
       v8 = +[PKAccountService sharedInstance];
-      v9 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke;
       v10[3] = &unk_1E79C9550;
       objc_copyWeak(&v11, buf);
-      [v8 updatePaymentFundingSourcesForAccountIdentifier:v9 force:1 completion:v10];
+      [v8 updatePaymentFundingSourcesForAccountIdentifier:accountIdentifier force:1 completion:v10];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(buf);
@@ -172,8 +172,8 @@ void __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke_2(u
 {
   v15 = *MEMORY[0x1E69E9840];
   self->_fetchingData = 0;
-  v3 = [(NSMutableSet *)self->_dataFetchingCompletionHandlers allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSMutableSet *)self->_dataFetchingCompletionHandlers allObjects];
+  v4 = [allObjects copy];
 
   [(NSMutableSet *)self->_dataFetchingCompletionHandlers removeAllObjects];
   v12 = 0u;
@@ -208,15 +208,15 @@ void __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke_2(u
   }
 }
 
-- (void)_updateUseApplePayCashSetting:(BOOL)a3
+- (void)_updateUseApplePayCashSetting:(BOOL)setting
 {
-  v3 = a3;
-  v5 = [(PKObject *)self->_pass settings];
-  if (((v5 >> 9) & 1) != v3)
+  settingCopy = setting;
+  settings = [(PKObject *)self->_pass settings];
+  if (((settings >> 9) & 1) != settingCopy)
   {
-    v6 = v5 & 0xFFFFFFFFFFFFFDFFLL;
+    v6 = settings & 0xFFFFFFFFFFFFFDFFLL;
     v7 = 512;
-    if (!v3)
+    if (!settingCopy)
     {
       v7 = 0;
     }
@@ -227,11 +227,11 @@ void __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke_2(u
   }
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_schedulePaymentAuthorizationCoordinator == v4)
+  finishCopy = finish;
+  if (self->_schedulePaymentAuthorizationCoordinator == finishCopy)
   {
     v5 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -239,7 +239,7 @@ void __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke_2(u
       *buf = 136315394;
       v9 = "[PKAccountBillPaymentController paymentAuthorizationCoordinatorDidFinish:]";
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "%s %p: paymentAuthorizationCoordinatorDidFinish: callback called.", buf, 0x16u);
     }
 
@@ -248,7 +248,7 @@ void __54__PKAccountBillPaymentController__fetchFundingSources__block_invoke_2(u
     v6[2] = __75__PKAccountBillPaymentController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
     v6[3] = &unk_1E79C4DD8;
     v6[4] = self;
-    v7 = v4;
+    v7 = finishCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -285,7 +285,7 @@ void __75__PKAccountBillPaymentController_paymentAuthorizationCoordinatorDidFini
   }
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -301,21 +301,21 @@ void __75__PKAccountBillPaymentController_paymentAuthorizationCoordinatorDidFini
   return v5;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  methodCopy = method;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__PKAccountBillPaymentController_paymentAuthorizationCoordinator_didUpdateAccountServicePaymentMethod_handler___block_invoke;
   aBlock[3] = &unk_1E79C95A0;
-  v9 = v7;
+  v9 = methodCopy;
   v17 = v9;
-  v18 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     webService = self->_webService;
@@ -324,7 +324,7 @@ void __75__PKAccountBillPaymentController_paymentAuthorizationCoordinatorDidFini
     v14[2] = __111__PKAccountBillPaymentController_paymentAuthorizationCoordinator_didUpdateAccountServicePaymentMethod_handler___block_invoke_4;
     v14[3] = &unk_1E79C5180;
     v15 = v11;
-    [v12 paymentWebService:webService deviceMetadataWithFields:251 completion:v14];
+    [targetDevice paymentWebService:webService deviceMetadataWithFields:251 completion:v14];
   }
 
   else
@@ -425,20 +425,20 @@ void __111__PKAccountBillPaymentController_paymentAuthorizationCoordinator_didUp
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)canPerformBillPaymentWithAmount:(id)a3 scheduledDate:(id)a4 completion:(id)a5
+- (void)canPerformBillPaymentWithAmount:(id)amount scheduledDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  amountCopy = amount;
+  dateCopy = date;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PKAccountBillPaymentController_canPerformBillPaymentWithAmount_scheduledDate_completion___block_invoke;
   aBlock[3] = &unk_1E79C95C8;
   objc_copyWeak(&v26, &location);
-  v11 = v8;
+  v11 = amountCopy;
   v24 = v11;
-  v12 = v9;
+  v12 = dateCopy;
   v25 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
@@ -450,7 +450,7 @@ void __111__PKAccountBillPaymentController_paymentAuthorizationCoordinator_didUp
     v19 = __91__PKAccountBillPaymentController_canPerformBillPaymentWithAmount_scheduledDate_completion___block_invoke_2;
     v20 = &unk_1E79C95F0;
     v21 = v13;
-    v22 = v10;
+    v22 = completionCopy;
     v16 = _Block_copy(&v17);
     [(NSMutableSet *)dataFetchingCompletionHandlers addObject:v16, v17, v18, v19, v20];
 
@@ -462,7 +462,7 @@ void __111__PKAccountBillPaymentController_paymentAuthorizationCoordinator_didUp
 
   else
   {
-    (*(v13 + 2))(v13, v10);
+    (*(v13 + 2))(v13, completionCopy);
   }
 
   objc_destroyWeak(&v26);
@@ -489,22 +489,22 @@ void __91__PKAccountBillPaymentController_canPerformBillPaymentWithAmount_schedu
   }
 }
 
-- (void)performBillPaymentActionWithAmount:(id)a3 scheduledDate:(id)a4 billPaymentSuggestedAmountDataEvent:(id)a5
+- (void)performBillPaymentActionWithAmount:(id)amount scheduledDate:(id)date billPaymentSuggestedAmountDataEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  amountCopy = amount;
+  dateCopy = date;
+  eventCopy = event;
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_scheduledDate_billPaymentSuggestedAmountDataEvent___block_invoke;
   v22 = &unk_1E79C9668;
-  v23 = self;
-  v11 = v8;
+  selfCopy = self;
+  v11 = amountCopy;
   v24 = v11;
-  v12 = v9;
+  v12 = dateCopy;
   v25 = v12;
-  v13 = v10;
+  v13 = eventCopy;
   v26 = v13;
   v14 = _Block_copy(&v19);
   v15 = v14;
@@ -518,14 +518,14 @@ void __91__PKAccountBillPaymentController_canPerformBillPaymentWithAmount_schedu
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "%s: Cannot Present - already performing action", buf, 0xCu);
     }
 
-    [(PKAccountBillPaymentController *)self _billPaymentHasCompletedWithState:2 error:0, v19, v20, v21, v22, v23, v24, v25];
+    [(PKAccountBillPaymentController *)self _billPaymentHasCompletedWithState:2 error:0, v19, v20, v21, v22, selfCopy, v24, v25];
   }
 
   else if (self->_fetchingData)
   {
     dataFetchingCompletionHandlers = self->_dataFetchingCompletionHandlers;
     v18 = _Block_copy(v14);
-    [(NSMutableSet *)dataFetchingCompletionHandlers addObject:v18, v19, v20, v21, v22, v23, v24, v25];
+    [(NSMutableSet *)dataFetchingCompletionHandlers addObject:v18, v19, v20, v21, v22, selfCopy, v24, v25];
   }
 
   else
@@ -650,21 +650,21 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
   [v2 _billPaymentHasCompletedWithState:v4 error:v3];
 }
 
-- (id)_createSchedulePaymentRequestWithSelectedMethods:(unint64_t)a3 bankInformation:(id)a4
+- (id)_createSchedulePaymentRequestWithSelectedMethods:(unint64_t)methods bankInformation:(id)information
 {
   v6 = MEMORY[0x1E696AB90];
-  v7 = a4;
-  v8 = [v6 zero];
-  v9 = [MEMORY[0x1E696AB90] zero];
+  informationCopy = information;
+  zero = [v6 zero];
+  zero2 = [MEMORY[0x1E696AB90] zero];
   paymentRequest = self->_paymentRequest;
-  v26 = v9;
-  v27 = v8;
-  [(PKAccountServiceTransferRequest *)paymentRequest paymentAmountsWithFundingSources:a3 apc:&v27 ach:&v26];
+  v26 = zero2;
+  v27 = zero;
+  [(PKAccountServiceTransferRequest *)paymentRequest paymentAmountsWithFundingSources:methods apc:&v27 ach:&v26];
   v11 = v27;
 
   v12 = v26;
   v13 = objc_alloc_init(PKAccountScheduledPaymentList);
-  v14 = [(PKAccountBillPaymentController *)self _achPaymentWithAmount:v12 bankInformation:v7];
+  v14 = [(PKAccountBillPaymentController *)self _achPaymentWithAmount:v12 bankInformation:informationCopy];
 
   [(PKAccountScheduledPaymentList *)v13 addScheduledPayment:v14];
   v15 = [(PKAccountBillPaymentController *)self _apcPaymentWithAmount:v11];
@@ -673,73 +673,73 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
   v16 = objc_alloc_init(PKAccountPaymentScheduleDetails);
   [(PKAccountPaymentScheduleDetails *)v16 setFrequency:[(PKPaymentRequest *)self->_paymentRequest paymentFrequency]];
   [(PKAccountPaymentScheduleDetails *)v16 setPreset:1];
-  v17 = [(PKAccount *)self->_account creditDetails];
-  v18 = [v17 productTimeZone];
-  [(PKAccountPaymentScheduleDetails *)v16 setScheduleTimeZone:v18];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
+  [(PKAccountPaymentScheduleDetails *)v16 setScheduleTimeZone:productTimeZone];
 
   if ([(PKPaymentRequest *)self->_paymentRequest paymentFrequency]!= 1)
   {
-    v19 = [(PKPaymentRequest *)self->_paymentRequest paymentDate];
-    [(PKAccountPaymentScheduleDetails *)v16 setScheduledDate:v19];
+    paymentDate = [(PKPaymentRequest *)self->_paymentRequest paymentDate];
+    [(PKAccountPaymentScheduleDetails *)v16 setScheduledDate:paymentDate];
   }
 
   if (v14)
   {
-    v20 = [(PKAccount *)self->_account schedulePaymentFeatureDescriptor];
-    v21 = [v20 paymentTermsIdentifier];
+    schedulePaymentFeatureDescriptor = [(PKAccount *)self->_account schedulePaymentFeatureDescriptor];
+    paymentTermsIdentifier = [schedulePaymentFeatureDescriptor paymentTermsIdentifier];
 
-    [(PKAccountPaymentScheduleDetails *)v16 setPaymentTermsIdentifier:v21];
+    [(PKAccountPaymentScheduleDetails *)v16 setPaymentTermsIdentifier:paymentTermsIdentifier];
   }
 
   v22 = objc_alloc_init(PKAccountWebServiceSchedulePaymentRequest);
   [(PKAccountWebServiceSchedulePaymentRequest *)v22 setScheduledPayments:v13];
   [(PKAccountWebServiceSchedulePaymentRequest *)v22 setScheduleDetails:v16];
-  v23 = [(PKAccount *)self->_account accountIdentifier];
-  [(PKAccountWebServiceSchedulePaymentRequest *)v22 setAccountIdentifier:v23];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [(PKAccountWebServiceSchedulePaymentRequest *)v22 setAccountIdentifier:accountIdentifier];
 
-  v24 = [(PKAccount *)self->_account accountBaseURL];
-  [(PKAccountWebServiceSchedulePaymentRequest *)v22 setBaseURL:v24];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [(PKAccountWebServiceSchedulePaymentRequest *)v22 setBaseURL:accountBaseURL];
 
   [(PKAccountWebServiceSchedulePaymentRequest *)v22 setCertificatesResponse:0];
 
   return v22;
 }
 
-- (id)_achPaymentWithAmount:(id)a3 bankInformation:(id)a4
+- (id)_achPaymentWithAmount:(id)amount bankInformation:(id)information
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AB90] zero];
-  v9 = [v8 compare:v6];
+  amountCopy = amount;
+  informationCopy = information;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v9 = [zero compare:amountCopy];
 
   if (v9 == -1)
   {
     v11 = [[PKAccountPaymentFundingSource alloc] initWithType:1];
-    v12 = [(PKAccountPaymentFundingSource *)v11 fundingDetails];
-    v13 = [v7 identifier];
-    if (v13)
+    fundingDetails = [(PKAccountPaymentFundingSource *)v11 fundingDetails];
+    identifier = [informationCopy identifier];
+    if (identifier)
     {
-      [(PKAccountPaymentFundingSource *)v11 setIdentifier:v13];
+      [(PKAccountPaymentFundingSource *)v11 setIdentifier:identifier];
     }
 
     else
     {
-      v14 = [(PKAccount *)self->_account accountIdentifier];
-      [v12 setAccountIdentifier:v14];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+      [fundingDetails setAccountIdentifier:accountIdentifier];
 
-      v15 = [v7 accountNumber];
-      [v12 setAccountNumber:v15];
+      accountNumber = [informationCopy accountNumber];
+      [fundingDetails setAccountNumber:accountNumber];
 
-      v16 = [v7 routingNumber];
-      [v12 setRoutingNumber:v16];
+      routingNumber = [informationCopy routingNumber];
+      [fundingDetails setRoutingNumber:routingNumber];
 
-      v17 = [v7 bankName];
-      [v12 setName:v17];
+      bankName = [informationCopy bankName];
+      [fundingDetails setName:bankName];
     }
 
-    v18 = [(PKAccount *)self->_account creditDetails];
-    v19 = [v18 currencyCode];
-    v20 = PKCurrencyAmountCreate(v6, v19, 0);
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    currencyCode = [creditDetails currencyCode];
+    v20 = PKCurrencyAmountCreate(amountCopy, currencyCode, 0);
 
     v10 = [[PKAccountScheduledPayment alloc] initWithCurrencyAmount:v20 fundingSource:v11];
   }
@@ -752,18 +752,18 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
   return v10;
 }
 
-- (id)_apcPaymentWithAmount:(id)a3
+- (id)_apcPaymentWithAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AB90] zero];
-  v6 = [v5 compare:v4];
+  amountCopy = amount;
+  zero = [MEMORY[0x1E696AB90] zero];
+  v6 = [zero compare:amountCopy];
 
   if (v6 == -1)
   {
     v8 = [[PKAccountPaymentFundingSource alloc] initWithType:2];
-    v9 = [(PKAccount *)self->_account creditDetails];
-    v10 = [v9 currencyCode];
-    v11 = PKCurrencyAmountCreate(v4, v10, 0);
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    currencyCode = [creditDetails currencyCode];
+    v11 = PKCurrencyAmountCreate(amountCopy, currencyCode, 0);
 
     v7 = [[PKAccountScheduledPayment alloc] initWithCurrencyAmount:v11 fundingSource:v8];
   }
@@ -776,41 +776,41 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
   return v7;
 }
 
-- (id)_buildTransferRequestForDate:(id)a3
+- (id)_buildTransferRequestForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[PKPeerPaymentService sharedInstance];
-  v6 = [v5 account];
+  account = [v5 account];
 
   v7 = +[PKPassLibrary sharedInstance];
-  v8 = [v6 associatedPassUniqueID];
-  v9 = [v7 passWithUniqueID:v8];
-  v10 = [v9 paymentPass];
+  associatedPassUniqueID = [account associatedPassUniqueID];
+  v9 = [v7 passWithUniqueID:associatedPassUniqueID];
+  paymentPass = [v9 paymentPass];
 
   totalPaymentAmount = self->_totalPaymentAmount;
-  v12 = [(PKAccount *)self->_account creditDetails];
-  v13 = [v12 currencyCode];
-  v14 = PKCurrencyAmountCreate(totalPaymentAmount, v13, 0);
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
+  v14 = PKCurrencyAmountCreate(totalPaymentAmount, currencyCode, 0);
 
-  v15 = [[PKAccountServiceTransferRequest alloc] initWithAccount:self->_account peerPaymentAccount:v6 peerPaymentPass:v10 transferType:1 fundingSources:self->_fundingSources currencyAmount:v14 paymentDate:v4 objectSettings:self->_pass];
+  v15 = [[PKAccountServiceTransferRequest alloc] initWithAccount:self->_account peerPaymentAccount:account peerPaymentPass:paymentPass transferType:1 fundingSources:self->_fundingSources currencyAmount:v14 paymentDate:dateCopy objectSettings:self->_pass];
   [(PKPaymentRequest *)v15 setConfirmationStyle:0];
   [(PKPaymentRequest *)v15 setApplePayTrustSignatureRequest:0];
 
   return v15;
 }
 
-- (id)_bankAccountsForFundingSources:(id)a3
+- (id)_bankAccountsForFundingSources:(id)sources
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v3 count])
+  if ([sourcesCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = sourcesCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -825,8 +825,8 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) bankAccountRepresentation];
-          [v4 safelyAddObject:v10];
+          bankAccountRepresentation = [*(*(&v13 + 1) + 8 * i) bankAccountRepresentation];
+          [v4 safelyAddObject:bankAccountRepresentation];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -841,11 +841,11 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
   return v11;
 }
 
-- (void)_addNewBankAccountIfNecessary:(id)a3
+- (void)_addNewBankAccountIfNecessary:(id)necessary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
     v26 = 0u;
     v27 = 0u;
@@ -866,10 +866,10 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) identifier];
-          v11 = [v4 identifier];
-          v12 = v10;
-          v13 = v11;
+          identifier = [*(*(&v24 + 1) + 8 * i) identifier];
+          identifier2 = [necessaryCopy identifier];
+          v12 = identifier;
+          v13 = identifier2;
           fundingSources = v13;
           if (v12 == v13)
           {
@@ -913,25 +913,25 @@ void __119__PKAccountBillPaymentController_performBillPaymentActionWithAmount_sc
     }
 
     v5 = objc_alloc_init(PKAccountPaymentFundingDetailsBankAccount);
-    v17 = [(PKAccount *)self->_account accountIdentifier];
-    [(NSArray *)v5 setAccountIdentifier:v17];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [(NSArray *)v5 setAccountIdentifier:accountIdentifier];
 
-    v18 = [v4 bankName];
-    [(NSArray *)v5 setName:v18];
+    bankName = [necessaryCopy bankName];
+    [(NSArray *)v5 setName:bankName];
 
-    -[NSArray setStatus:](v5, "setStatus:", [v4 status]);
-    v19 = [v4 routingNumber];
-    [(NSArray *)v5 setRoutingNumber:v19];
+    -[NSArray setStatus:](v5, "setStatus:", [necessaryCopy status]);
+    routingNumber = [necessaryCopy routingNumber];
+    [(NSArray *)v5 setRoutingNumber:routingNumber];
 
-    v20 = [v4 accountNumber];
-    [(NSArray *)v5 setAccountNumber:v20];
+    accountNumber = [necessaryCopy accountNumber];
+    [(NSArray *)v5 setAccountNumber:accountNumber];
 
     v12 = [[PKAccountPaymentFundingSource alloc] initWithType:1];
-    v21 = [v4 identifier];
-    [(PKAccountPaymentFundingSource *)v12 setIdentifier:v21];
+    identifier3 = [necessaryCopy identifier];
+    [(PKAccountPaymentFundingSource *)v12 setIdentifier:identifier3];
 
-    v22 = [v4 accountSuffix];
-    [(PKAccountPaymentFundingSource *)v12 setAccountSuffix:v22];
+    accountSuffix = [necessaryCopy accountSuffix];
+    [(PKAccountPaymentFundingSource *)v12 setAccountSuffix:accountSuffix];
 
     [(PKAccountPaymentFundingSource *)v12 setFundingDetails:v5];
     v23 = [(NSArray *)self->_fundingSources mutableCopy];
@@ -944,55 +944,55 @@ LABEL_20:
   }
 }
 
-- (id)_paymentSummaryItemsForPaymentAmountACH:(id)a3 apc:(id)a4 bankInformation:(id)a5
+- (id)_paymentSummaryItemsForPaymentAmountACH:(id)h apc:(id)apc bankInformation:(id)information
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v17 = [(PKAccount *)self->_account feature];
-  if (v9)
+  hCopy = h;
+  apcCopy = apc;
+  informationCopy = information;
+  array = [MEMORY[0x1E695DF70] array];
+  feature = [(PKAccount *)self->_account feature];
+  if (apcCopy)
   {
-    v18 = [MEMORY[0x1E696AB90] zero];
-    v19 = [v18 compare:v9];
-    if (!v8 || v19 != -1)
+    zero = [MEMORY[0x1E696AB90] zero];
+    v19 = [zero compare:apcCopy];
+    if (!hCopy || v19 != -1)
     {
       goto LABEL_7;
     }
 
-    v20 = [MEMORY[0x1E696AB90] zero];
-    v21 = [v20 compare:v8];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v21 = [zero2 compare:hCopy];
 
-    if (v10 && v21 == -1)
+    if (informationCopy && v21 == -1)
     {
-      v18 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_APC_ITEM", v17, 0, v12, v13, v14, v15, v16, v35);
-      v22 = [v10 bankName];
-      v28 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_ACH_ITEM_FORMAT", v17, @"%@", v23, v24, v25, v26, v27, v22);
+      zero = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_APC_ITEM", feature, 0, v12, v13, v14, v15, v16, v35);
+      bankName = [informationCopy bankName];
+      v28 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_ACH_ITEM_FORMAT", feature, @"%@", v23, v24, v25, v26, v27, bankName);
 
-      v29 = [PKPaymentSummaryItem summaryItemWithLabel:v28 amount:v8];
-      v30 = [PKPaymentSummaryItem summaryItemWithLabel:v18 amount:v9];
-      [v11 safelyAddObject:v30];
-      [v11 safelyAddObject:v29];
+      v29 = [PKPaymentSummaryItem summaryItemWithLabel:v28 amount:hCopy];
+      v30 = [PKPaymentSummaryItem summaryItemWithLabel:zero amount:apcCopy];
+      [array safelyAddObject:v30];
+      [array safelyAddObject:v29];
 
 LABEL_7:
     }
   }
 
-  v31 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_ITEM_TOTAL", v17, 0, v12, v13, v14, v15, v16, v35);
+  v31 = PKLocalizedFeatureString(@"ACCOUNT_SERVICE_SCHEDULE_PAYMENT_ITEM_TOTAL", feature, 0, v12, v13, v14, v15, v16, v35);
   v32 = [PKPaymentSummaryItem summaryItemWithLabel:v31 amount:self->_totalPaymentAmount];
-  [v11 addObject:v32];
+  [array addObject:v32];
 
-  v33 = [v11 copy];
+  v33 = [array copy];
 
   return v33;
 }
 
-- (void)_presentPaymentAuthorizationWithPaymentRequest:(id)a3 completion:(id)a4
+- (void)_presentPaymentAuthorizationWithPaymentRequest:(id)request completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[PKPaymentAuthorizationCoordinator alloc] initWithPaymentRequest:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = [[PKPaymentAuthorizationCoordinator alloc] initWithPaymentRequest:requestCopy];
   schedulePaymentAuthorizationCoordinator = self->_schedulePaymentAuthorizationCoordinator;
   self->_schedulePaymentAuthorizationCoordinator = v8;
 
@@ -1005,8 +1005,8 @@ LABEL_7:
     v16[1] = 3221225472;
     v16[2] = __92__PKAccountBillPaymentController__presentPaymentAuthorizationWithPaymentRequest_completion___block_invoke;
     v16[3] = &unk_1E79C4770;
-    v17 = v6;
-    v18 = v7;
+    v17 = requestCopy;
+    v18 = completionCopy;
     [(PKPaymentAuthorizationCoordinator *)v10 presentWithCompletion:v16];
 
     v11 = v17;
@@ -1020,22 +1020,22 @@ LABEL_7:
       *buf = 136315650;
       v22 = "[PKAccountBillPaymentController _presentPaymentAuthorizationWithPaymentRequest:completion:]";
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2048;
-      v26 = v6;
+      v26 = requestCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "%s %p: PKPaymentAuthorizationCoordinator could not be instantiated with paymentRequest: %p.", buf, 0x20u);
     }
 
     v13 = MEMORY[0x1E696ABC0];
     v19 = *MEMORY[0x1E696A578];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPaymentAuthorizationCoordinator could not be instantiated with paymentRequest: %@.", v6];
-    v20 = v14;
+    requestCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPaymentAuthorizationCoordinator could not be instantiated with paymentRequest: %@.", requestCopy];
+    v20 = requestCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v11 = [v13 errorWithDomain:@"PKPassKitErrorDomain" code:0 userInfo:v15];
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
     }
   }
 }
@@ -1064,10 +1064,10 @@ void __92__PKAccountBillPaymentController__presentPaymentAuthorizationWithPaymen
   }
 }
 
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__PKAccountBillPaymentController__performApplePayTrustSignatureRequestWithSignature_completion___block_invoke;
@@ -1079,18 +1079,18 @@ void __92__PKAccountBillPaymentController__presentPaymentAuthorizationWithPaymen
     v9 = [[PKPaymentAuthorizationResult alloc] initWithStatus:0 errors:0];
     self->_completedBillPayment = 1;
     v10 = [(PKAccount *)self->_account copy];
-    v11 = [(PKAccountWebServiceApplePayTrustRequest *)v10 creditDetails];
-    v24 = [v11 accountSummary];
+    creditDetails = [(PKAccountWebServiceApplePayTrustRequest *)v10 creditDetails];
+    accountSummary = [creditDetails accountSummary];
 
-    v12 = [v24 adjustedBalance];
-    v13 = [v12 decimalNumberBySubtracting:self->_totalPaymentAmount];
+    adjustedBalance = [accountSummary adjustedBalance];
+    v13 = [adjustedBalance decimalNumberBySubtracting:self->_totalPaymentAmount];
     [(PKAccountWebServiceApplePayTrustRequest *)v10 creditDetails];
-    v15 = v14 = v7;
+    v15 = v14 = completionCopy;
     [v15 accountSummary];
-    v17 = v16 = v6;
+    v17 = v16 = signatureCopy;
     [v17 setCurrentBalance:v13];
 
-    v7 = v14;
+    completionCopy = v14;
     v8[2](v8);
     accountService = self->_accountService;
     v25[0] = MEMORY[0x1E69E9820];
@@ -1101,17 +1101,17 @@ void __92__PKAccountBillPaymentController__presentPaymentAuthorizationWithPaymen
     v27 = v14;
     v19 = v9;
     v20 = accountService;
-    v6 = v16;
+    signatureCopy = v16;
     [(PKAccountService *)v20 updateMockAccountWithAccount:v10 completion:v25];
 
-    v21 = v24;
+    v21 = accountSummary;
   }
 
   else
   {
     dispatch_group_enter(self->_performBillPaymentGroup);
     v10 = [[PKAccountWebServiceApplePayTrustRequest alloc] initWithApplePayTrustProtocol:self->_schedulePaymentRequest];
-    [(PKAccountWebServiceApplePayTrustRequest *)v10 setSignature:v6];
+    [(PKAccountWebServiceApplePayTrustRequest *)v10 setSignature:signatureCopy];
     webService = self->_webService;
     account = self->_account;
     v28[0] = MEMORY[0x1E69E9820];
@@ -1120,7 +1120,7 @@ void __92__PKAccountBillPaymentController__presentPaymentAuthorizationWithPaymen
     v28[3] = &unk_1E79C9700;
     v28[4] = self;
     v29 = v8;
-    v30 = v7;
+    v30 = completionCopy;
     [(PKPaymentWebService *)webService applePayTrustSignatureRequestWithRequest:v10 account:account completion:v28];
 
     v21 = v29;
@@ -1304,9 +1304,9 @@ uint64_t __96__PKAccountBillPaymentController__performApplePayTrustSignatureRequ
   return result;
 }
 
-- (void)_billPaymentHasCompletedWithState:(unint64_t)a3 error:(id)a4
+- (void)_billPaymentHasCompletedWithState:(unint64_t)state error:(id)error
 {
-  v13 = a4;
+  errorCopy = error;
   applePayTrustResponseError = self->_applePayTrustResponseError;
   self->_applePayTrustResponseError = 0;
 
@@ -1322,36 +1322,36 @@ uint64_t __96__PKAccountBillPaymentController__performApplePayTrustSignatureRequ
   self->_performBillPaymentGroup = 0;
 
   self->_dismissedBillPayment = 0;
-  v10 = [(PKAccountBillPaymentController *)self delegate];
-  v11 = v10;
-  if (a3 == 1)
+  delegate = [(PKAccountBillPaymentController *)self delegate];
+  accountIdentifier = delegate;
+  if (state == 1)
   {
-    [v10 accountBillPaymentController:self hasChangedState:1 error:0 updatedAccount:0];
+    [delegate accountBillPaymentController:self hasChangedState:1 error:0 updatedAccount:0];
 
     accountService = self->_accountService;
-    v11 = [(PKAccount *)self->_account accountIdentifier];
-    [(PKAccountService *)accountService updateAccountWithIdentifier:v11 extended:0 completion:0];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [(PKAccountService *)accountService updateAccountWithIdentifier:accountIdentifier extended:0 completion:0];
   }
 
   else
   {
-    [v10 accountBillPaymentController:self hasChangedState:a3 error:v13 updatedAccount:0];
+    [delegate accountBillPaymentController:self hasChangedState:state error:errorCopy updatedAccount:0];
   }
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
   account = self->_account;
   if (account)
   {
     accountService = self->_accountService;
-    v6 = [(PKAccount *)account accountIdentifier];
+    accountIdentifier = [(PKAccount *)account accountIdentifier];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__PKAccountBillPaymentController__accountDidChange___block_invoke;
     v7[3] = &unk_1E79C9750;
     v7[4] = self;
-    [(PKAccountService *)accountService accountWithIdentifier:v6 completion:v7];
+    [(PKAccountService *)accountService accountWithIdentifier:accountIdentifier completion:v7];
   }
 }
 

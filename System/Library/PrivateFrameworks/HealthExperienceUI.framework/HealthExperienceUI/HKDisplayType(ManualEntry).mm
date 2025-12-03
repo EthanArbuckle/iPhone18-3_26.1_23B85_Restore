@@ -8,7 +8,7 @@
 
 - (id)wd_addDataViewControllerClass
 {
-  [a1 displayTypeIdentifier];
+  [self displayTypeIdentifier];
   v1 = objc_opt_class();
 
   return v1;
@@ -16,10 +16,10 @@
 
 - (void)wd_valueOrderForAddDataViewController
 {
-  v1 = [a1 displayTypeIdentifier];
-  if (v1 <= 94)
+  displayTypeIdentifier = [self displayTypeIdentifier];
+  if (displayTypeIdentifier <= 94)
   {
-    switch(v1)
+    switch(displayTypeIdentifier)
     {
       case '?':
         return &unk_1F3846888;
@@ -34,7 +34,7 @@
 
   else
   {
-    v2 = v1 - 157;
+    v2 = displayTypeIdentifier - 157;
     result = &unk_1F3846780;
     switch(v2)
     {
@@ -164,14 +164,14 @@
 
 - (void)wd_defaultValueForAddDataViewController
 {
-  v1 = [a1 displayTypeIdentifier];
-  v2 = v1 + 99;
-  if ((v1 - 157) <= 0x32 && (((1 << v2) & 0x7F00000004F7FLL) != 0 || ((1 << v2) & 0x1080) != 0 || v1 == 170) || (v1 - 220) <= 0x16 && ((1 << (v1 + 36)) & 0x70FE7F) != 0)
+  displayTypeIdentifier = [self displayTypeIdentifier];
+  v2 = displayTypeIdentifier + 99;
+  if ((displayTypeIdentifier - 157) <= 0x32 && (((1 << v2) & 0x7F00000004F7FLL) != 0 || ((1 << v2) & 0x1080) != 0 || displayTypeIdentifier == 170) || (displayTypeIdentifier - 220) <= 0x16 && ((1 << (displayTypeIdentifier + 36)) & 0x70FE7F) != 0)
   {
     return &unk_1F3846528;
   }
 
-  if (v1 == 63)
+  if (displayTypeIdentifier == 63)
   {
     return &unk_1F3846528;
   }

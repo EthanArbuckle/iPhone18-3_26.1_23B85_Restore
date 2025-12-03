@@ -2,35 +2,35 @@
 - (NSArray)featureNames;
 - (NSString)name;
 - (PGFeatureExtractorAssetAverage)init;
-- (PGFeatureExtractorAssetAverage)initWithFeatureExtractor:(id)a3 skipAssetsWithErrors:(BOOL)a4;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (PGFeatureExtractorAssetAverage)initWithFeatureExtractor:(id)extractor skipAssetsWithErrors:(BOOL)errors;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetAverage
 
-- (PGFeatureExtractorAssetAverage)initWithFeatureExtractor:(id)a3 skipAssetsWithErrors:(BOOL)a4
+- (PGFeatureExtractorAssetAverage)initWithFeatureExtractor:(id)extractor skipAssetsWithErrors:(BOOL)errors
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.super.super.isa + OBJC_IVAR___PGFeatureExtractorAssetAverage_featureExtractor) = a3;
-  *(&self->super.super.super.isa + OBJC_IVAR___PGFeatureExtractorAssetAverage_skipAssetsWithErrors) = a4;
+  *(&self->super.super.super.isa + OBJC_IVAR___PGFeatureExtractorAssetAverage_featureExtractor) = extractor;
+  *(&self->super.super.super.isa + OBJC_IVAR___PGFeatureExtractorAssetAverage_skipAssetsWithErrors) = errors;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = a3;
+  extractorCopy = extractor;
   return [(PGFeatureExtractorAssetAverage *)&v10 init];
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = FeatureExtractorAssetAverage.floatVector(withEntity:)(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  v7 = FeatureExtractorAssetAverage.floatVector(withEntity:)(entityCopy);
 
   return v7;
 }
 
 - (NSArray)featureNames
 {
-  v2 = self;
+  selfCopy = self;
   FeatureExtractorAssetAverage.featureNames.getter();
 
   v3 = sub_22F741160();
@@ -41,8 +41,8 @@
 - (NSString)name
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___PGFeatureExtractorAssetAverage_featureExtractor);
-  v3 = self;
-  v4 = [v2 name];
+  selfCopy = self;
+  name = [v2 name];
   v5 = sub_22F740E20();
   v7 = v6;
 

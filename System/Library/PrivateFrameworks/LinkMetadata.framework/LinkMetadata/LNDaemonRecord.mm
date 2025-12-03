@@ -1,27 +1,27 @@
 @interface LNDaemonRecord
-+ (id)daemonRecordWithBundleIdentifier:(id)a3;
++ (id)daemonRecordWithBundleIdentifier:(id)identifier;
 + (id)enumerated;
-- (LNDaemonRecord)initWithBundleIdentifier:(id)a3;
-- (LNDaemonRecord)initWithDaemonRecord:(id)a3;
+- (LNDaemonRecord)initWithBundleIdentifier:(id)identifier;
+- (LNDaemonRecord)initWithDaemonRecord:(id)record;
 @end
 
 @implementation LNDaemonRecord
 
-- (LNDaemonRecord)initWithDaemonRecord:(id)a3
+- (LNDaemonRecord)initWithDaemonRecord:(id)record
 {
-  v4 = [a3 bundleIdentifier];
-  v5 = [(LNDaemonRecord *)self initWithBundleIdentifier:v4];
+  bundleIdentifier = [record bundleIdentifier];
+  v5 = [(LNDaemonRecord *)self initWithBundleIdentifier:bundleIdentifier];
 
   return v5;
 }
 
-- (LNDaemonRecord)initWithBundleIdentifier:(id)a3
+- (LNDaemonRecord)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNDaemonRecord.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDaemonRecord.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v12.receiver = self;
@@ -29,7 +29,7 @@
   v6 = [(LNDaemonRecord *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v7;
 
@@ -39,9 +39,9 @@
   return v6;
 }
 
-+ (id)daemonRecordWithBundleIdentifier:(id)a3
++ (id)daemonRecordWithBundleIdentifier:(id)identifier
 {
-  v3 = [swift_DaemonRecord fromBundleIdentifier:a3];
+  v3 = [swift_DaemonRecord fromBundleIdentifier:identifier];
   if (v3)
   {
     v4 = [[LNDaemonRecord alloc] initWithDaemonRecord:v3];

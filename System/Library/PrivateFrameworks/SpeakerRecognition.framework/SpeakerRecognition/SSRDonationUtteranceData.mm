@@ -1,14 +1,14 @@
 @interface SSRDonationUtteranceData
-- (SSRDonationUtteranceData)initWithDonationInfoString:(id)a3 locale:(id)a4;
+- (SSRDonationUtteranceData)initWithDonationInfoString:(id)string locale:(id)locale;
 @end
 
 @implementation SSRDonationUtteranceData
 
-- (SSRDonationUtteranceData)initWithDonationInfoString:(id)a3 locale:(id)a4
+- (SSRDonationUtteranceData)initWithDonationInfoString:(id)string locale:(id)locale
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   v20.receiver = self;
   v20.super_class = SSRDonationUtteranceData;
   v8 = [(SSRDonationUtteranceData *)&v20 init];
@@ -19,7 +19,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [SSRUtils convertToUtteranceDataWithDonationString:v6];
+  v9 = [SSRUtils convertToUtteranceDataWithDonationString:stringCopy];
   v10 = v9;
   if (!v9)
   {
@@ -55,7 +55,7 @@ LABEL_15:
       v8->_triggerPhrase = +[SSRUtils convertToEnrollmentTriggerPhraseWithPhId:](SSRUtils, "convertToEnrollmentTriggerPhraseWithPhId:", [v17 unsignedIntegerValue]);
     }
 
-    objc_storeStrong(&v8->_locale, a4);
+    objc_storeStrong(&v8->_locale, locale);
 
     goto LABEL_12;
   }

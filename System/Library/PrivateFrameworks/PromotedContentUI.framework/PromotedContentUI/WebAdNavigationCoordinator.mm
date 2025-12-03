@@ -1,23 +1,23 @@
 @interface WebAdNavigationCoordinator
 - (_TtC17PromotedContentUI26WebAdNavigationCoordinator)init;
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)_webView:(id)a3 webContentProcessDidTerminateWithReason:(int64_t)a4;
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change;
+- (void)_webView:(id)view webContentProcessDidTerminateWithReason:(int64_t)reason;
 @end
 
 @implementation WebAdNavigationCoordinator
 
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change
 {
-  v7 = a3;
-  v8 = self;
-  sub_1C19B4AC4(a3, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C19B4AC4(view, change);
 }
 
-- (void)_webView:(id)a3 webContentProcessDidTerminateWithReason:(int64_t)a4
+- (void)_webView:(id)view webContentProcessDidTerminateWithReason:(int64_t)reason
 {
-  v7 = a3;
-  v8 = self;
-  sub_1C19B4EDC(a3, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C19B4EDC(view, reason);
 }
 
 - (_TtC17PromotedContentUI26WebAdNavigationCoordinator)init

@@ -1,53 +1,53 @@
 @interface _UIVibrantSettings
-+ (_UIVibrantSettings)vibrantSettingsWithReferenceColor:(id)a3 referenceContrast:(double)a4 legibilitySettings:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (_UIVibrantSettings)vibrantSettingsWithReferenceColor:(id)color referenceContrast:(double)contrast legibilitySettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
 - (UIColor)chevronShimmerColor;
 - (UIColor)highlightColor;
 - (UIColor)highlightLimitingColor;
 - (UIColor)shimmerColor;
 - (UIColor)tintColor;
-- (_UIVibrantSettings)initWithReferenceColor:(id)a3 referenceContrast:(double)a4 legibilitySettings:(id)a5;
-- (id)_computeSourceColorDodgeColorForDestinationColor:(id)a3 producingLuminanceChange:(double)a4;
-- (id)highlightLimitingViewWithFrame:(CGRect)a3;
-- (id)tintViewWithFrame:(CGRect)a3;
+- (_UIVibrantSettings)initWithReferenceColor:(id)color referenceContrast:(double)contrast legibilitySettings:(id)settings;
+- (id)_computeSourceColorDodgeColorForDestinationColor:(id)color producingLuminanceChange:(double)change;
+- (id)highlightLimitingViewWithFrame:(CGRect)frame;
+- (id)tintViewWithFrame:(CGRect)frame;
 - (int64_t)_style;
 @end
 
 @implementation _UIVibrantSettings
 
-+ (_UIVibrantSettings)vibrantSettingsWithReferenceColor:(id)a3 referenceContrast:(double)a4 legibilitySettings:(id)a5
++ (_UIVibrantSettings)vibrantSettingsWithReferenceColor:(id)color referenceContrast:(double)contrast legibilitySettings:(id)settings
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithReferenceColor:v9 referenceContrast:v8 legibilitySettings:a4];
+  settingsCopy = settings;
+  colorCopy = color;
+  v10 = [[self alloc] initWithReferenceColor:colorCopy referenceContrast:settingsCopy legibilitySettings:contrast];
 
   return v10;
 }
 
-- (_UIVibrantSettings)initWithReferenceColor:(id)a3 referenceContrast:(double)a4 legibilitySettings:(id)a5
+- (_UIVibrantSettings)initWithReferenceColor:(id)color referenceContrast:(double)contrast legibilitySettings:(id)settings
 {
-  v8 = a3;
-  v9 = a5;
+  colorCopy = color;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = _UIVibrantSettings;
   v10 = [(_UIVibrantSettings *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [colorCopy copy];
     referenceColor = v10->_referenceColor;
     v10->_referenceColor = v11;
 
-    v10->_referenceContrast = a4;
-    objc_storeStrong(&v10->_legibilitySettings, a5);
+    v10->_referenceContrast = contrast;
+    objc_storeStrong(&v10->_legibilitySettings, settings);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -58,7 +58,7 @@
     if (objc_opt_isKindOfClass())
     {
       referenceColor = self->_referenceColor;
-      if (referenceColor | v4->_referenceColor)
+      if (referenceColor | equalCopy->_referenceColor)
       {
         v6 = [(UIColor *)referenceColor isEqual:?];
       }
@@ -68,9 +68,9 @@
         v6 = 1;
       }
 
-      v8 = vabdd_f64(self->_referenceContrast, v4->_referenceContrast);
+      v8 = vabdd_f64(self->_referenceContrast, equalCopy->_referenceContrast);
       legibilitySettings = self->_legibilitySettings;
-      if (legibilitySettings | v4->_legibilitySettings)
+      if (legibilitySettings | equalCopy->_legibilitySettings)
       {
         v10 = [(_UILegibilitySettings *)legibilitySettings isEqual:?];
       }
@@ -162,8 +162,8 @@ LABEL_11:
   tintColor = self->_tintColor;
   if (!tintColor)
   {
-    v4 = [(_UIVibrantSettings *)self _style];
-    if (v4 == -1)
+    _style = [(_UIVibrantSettings *)self _style];
+    if (_style == -1)
     {
       legibilitySettings = self->_legibilitySettings;
       if (legibilitySettings && [(_UILegibilitySettings *)legibilitySettings style]== 2)
@@ -185,7 +185,7 @@ LABEL_11:
 
     else
     {
-      if (v4 == 2)
+      if (_style == 2)
       {
         v9 = self->_legibilitySettings;
         if (v9)
@@ -203,7 +203,7 @@ LABEL_11:
 
       else
       {
-        if (v4 != 1)
+        if (_style != 1)
         {
 LABEL_17:
           tintColor = self->_tintColor;
@@ -261,8 +261,8 @@ LABEL_18:
       v5 = [UIColor colorWithWhite:1.0 alpha:0.2];
       v6 = [(UIColor *)referenceColor _colorBlendedWithColor:v5];
 
-      v7 = [(_UIVibrantSettings *)self tintColor];
-      v8 = [v6 _colorBlendedWithColor:v7 compositingFilter:*MEMORY[0x1E6979860]];
+      tintColor = [(_UIVibrantSettings *)self tintColor];
+      v8 = [v6 _colorBlendedWithColor:tintColor compositingFilter:*MEMORY[0x1E6979860]];
       [v8 _luminance];
       v10 = [(_UIVibrantSettings *)self _computeSourceColorDodgeColorForDestinationColor:v8 producingLuminanceChange:fmax(0.98 - v9, 0.2)];
       v11 = self->_shimmerColor;
@@ -282,8 +282,8 @@ LABEL_18:
   chevronShimmerColor = self->_chevronShimmerColor;
   if (!chevronShimmerColor)
   {
-    v4 = [(_UIVibrantSettings *)self _style];
-    if (v4 == 2)
+    _style = [(_UIVibrantSettings *)self _style];
+    if (_style == 2)
     {
       v11 = [UIColor colorWithWhite:0.6 alpha:1.0];
       v7 = self->_chevronShimmerColor;
@@ -292,7 +292,7 @@ LABEL_18:
 
     else
     {
-      if (v4 != 1)
+      if (_style != 1)
       {
 LABEL_7:
         chevronShimmerColor = self->_chevronShimmerColor;
@@ -323,8 +323,8 @@ LABEL_8:
   highlightColor = self->_highlightColor;
   if (!highlightColor)
   {
-    v4 = [(_UIVibrantSettings *)self _style];
-    if (v4 == 2)
+    _style = [(_UIVibrantSettings *)self _style];
+    if (_style == 2)
     {
       legibilitySettings = self->_legibilitySettings;
       if (legibilitySettings)
@@ -338,13 +338,13 @@ LABEL_8:
       }
       v7 = ;
       v14 = [v7 colorWithAlphaComponent:0.7];
-      v8 = self->_highlightColor;
+      tintColor = self->_highlightColor;
       self->_highlightColor = v14;
     }
 
     else
     {
-      if (v4 != 1)
+      if (_style != 1)
       {
 LABEL_10:
         highlightColor = self->_highlightColor;
@@ -355,8 +355,8 @@ LABEL_10:
       v6 = [UIColor colorWithWhite:1.0 alpha:0.2];
       v7 = [(UIColor *)referenceColor _colorBlendedWithColor:v6];
 
-      v8 = [(_UIVibrantSettings *)self tintColor];
-      v9 = [v7 _colorBlendedWithColor:v8 compositingFilter:*MEMORY[0x1E6979860]];
+      tintColor = [(_UIVibrantSettings *)self tintColor];
+      v9 = [v7 _colorBlendedWithColor:tintColor compositingFilter:*MEMORY[0x1E6979860]];
       [v9 _luminance];
       v11 = [(_UIVibrantSettings *)self _computeSourceColorDodgeColorForDestinationColor:v9 producingLuminanceChange:fmax(0.98 - v10, 0.2) * 0.75];
       v12 = self->_highlightColor;
@@ -372,28 +372,28 @@ LABEL_11:
   return v15;
 }
 
-- (id)_computeSourceColorDodgeColorForDestinationColor:(id)a3 producingLuminanceChange:(double)a4
+- (id)_computeSourceColorDodgeColorForDestinationColor:(id)color producingLuminanceChange:(double)change
 {
-  v5 = a3;
-  [v5 _luminance];
+  colorCopy = color;
+  [colorCopy _luminance];
   v28 = 0.0;
   v29 = 0.0;
-  v18 = fmin(v6 + a4, 1.0);
+  v18 = fmin(v6 + change, 1.0);
   v27 = 0.0;
-  [v5 getRed:&v29 green:&v28 blue:&v27 alpha:0];
+  [colorCopy getRed:&v29 green:&v28 blue:&v27 alpha:0];
   v25 = 0.0;
   v26 = 0.0;
   v24 = 0;
-  _UIGetHSBValuesForColor(v5, &v26, &v25, &v24);
+  _UIGetHSBValuesForColor(colorCopy, &v26, &v25, &v24);
   v25 = v25 * 0.15;
   v7 = [UIColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v26 brightness:? alpha:?];
   v22 = 0.0;
   v23 = 0.0;
   v21 = 0.0;
   [v7 getRed:&v23 green:&v22 blue:&v21 alpha:0];
-  v19 = v22 + a4;
-  v20 = v23 + a4;
-  v8 = v21 + a4;
+  v19 = v22 + change;
+  v20 = v23 + change;
+  v8 = v21 + change;
   v9 = 0.0;
   do
   {
@@ -413,29 +413,29 @@ LABEL_11:
   return v16;
 }
 
-- (id)tintViewWithFrame:(CGRect)a3
+- (id)tintViewWithFrame:(CGRect)frame
 {
-  v4 = [[UIView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(_UIVibrantSettings *)self tintColor];
-  [(UIView *)v4 setBackgroundColor:v5];
+  v4 = [[UIView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  tintColor = [(_UIVibrantSettings *)self tintColor];
+  [(UIView *)v4 setBackgroundColor:tintColor];
 
   if ([(_UIVibrantSettings *)self _style]== 1)
   {
-    v6 = [(UIView *)v4 layer];
-    [v6 setCompositingFilter:*MEMORY[0x1E6979860]];
+    layer = [(UIView *)v4 layer];
+    [layer setCompositingFilter:*MEMORY[0x1E6979860]];
   }
 
   return v4;
 }
 
-- (id)highlightLimitingViewWithFrame:(CGRect)a3
+- (id)highlightLimitingViewWithFrame:(CGRect)frame
 {
-  v4 = [[UIView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(_UIVibrantSettings *)self highlightLimitingColor];
-  [(UIView *)v4 setBackgroundColor:v5];
+  v4 = [[UIView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  highlightLimitingColor = [(_UIVibrantSettings *)self highlightLimitingColor];
+  [(UIView *)v4 setBackgroundColor:highlightLimitingColor];
 
-  v6 = [(UIView *)v4 layer];
-  [v6 setCompositingFilter:*MEMORY[0x1E69798C0]];
+  layer = [(UIView *)v4 layer];
+  [layer setCompositingFilter:*MEMORY[0x1E69798C0]];
 
   return v4;
 }

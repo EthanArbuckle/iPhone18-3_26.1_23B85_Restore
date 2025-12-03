@@ -1,39 +1,39 @@
 @interface AccountStatusHandlerCalDAV
-- (id)getStatusInfoFromAccount:(id)a3;
+- (id)getStatusInfoFromAccount:(id)account;
 @end
 
 @implementation AccountStatusHandlerCalDAV
 
-- (id)getStatusInfoFromAccount:(id)a3
+- (id)getStatusInfoFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [RMModelStatusAccountListCalDAV buildRequiredOnlyWithIdentifier:v4];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v5 = [RMModelStatusAccountListCalDAV buildRequiredOnlyWithIdentifier:identifier];
 
-  v6 = [v3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v6 = [accountCopy objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   [v5 setStatusDeclarationIdentifier:v6];
 
-  v7 = [v3 accountDescription];
-  [v5 setStatusVisibleName:v7];
+  accountDescription = [accountCopy accountDescription];
+  [v5 setStatusVisibleName:accountDescription];
 
-  v8 = [DAAccount daAccountSubclassWithBackingAccountInfo:v3];
-  v9 = [v8 host];
-  [v5 setStatusHostname:v9];
+  v8 = [DAAccount daAccountSubclassWithBackingAccountInfo:accountCopy];
+  host = [v8 host];
+  [v5 setStatusHostname:host];
 
-  v10 = [v8 port];
-  if (v10)
+  port = [v8 port];
+  if (port)
   {
-    v11 = [NSNumber numberWithInteger:v10];
+    v11 = [NSNumber numberWithInteger:port];
     [v5 setStatusPort:v11];
   }
 
-  v12 = [v3 username];
-  [v5 setStatusUsername:v12];
+  username = [accountCopy username];
+  [v5 setStatusUsername:username];
 
-  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:kASSAccountDataclassCalendars]);
+  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:kASSAccountDataclassCalendars]);
   [v5 setStatusAreCalendarsEnabled:v13];
 
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:kASSAccountDataclassReminders]);
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:kASSAccountDataclassReminders]);
   [v5 setStatusAreRemindersEnabled:v14];
 
   v15 = [v5 serializeWithType:1];

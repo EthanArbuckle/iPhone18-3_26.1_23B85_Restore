@@ -2,36 +2,36 @@
 + (SCNPhysicsShape)shapeWithGeometry:(SCNGeometry *)geometry options:(NSDictionary *)options;
 + (SCNPhysicsShape)shapeWithNode:(SCNNode *)node options:(NSDictionary *)options;
 + (SCNPhysicsShape)shapeWithShapes:(NSArray *)shapes transforms:(NSArray *)transforms;
-+ (id)defaultShapeForGeometry:(id)a3;
-- (SCNPhysicsShape)initWithCachedObject:(void *)a3 options:(id)a4;
-- (SCNPhysicsShape)initWithCoder:(id)a3;
-- (SCNPhysicsShape)initWithContent:(id)a3 options:(id)a4;
++ (id)defaultShapeForGeometry:(id)geometry;
+- (SCNPhysicsShape)initWithCachedObject:(void *)object options:(id)options;
+- (SCNPhysicsShape)initWithCoder:(id)coder;
+- (SCNPhysicsShape)initWithContent:(id)content options:(id)options;
 - (btCollisionShape)_handle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_customDecodingOfSCNPhysicsShape:(id)a3;
-- (void)_customEncodingOfSCNPhysicsShape:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_customDecodingOfSCNPhysicsShape:(id)shape;
+- (void)_customEncodingOfSCNPhysicsShape:(id)shape;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setReferenceObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setReferenceObject:(id)object;
 @end
 
 @implementation SCNPhysicsShape
 
-- (SCNPhysicsShape)initWithContent:(id)a3 options:(id)a4
+- (SCNPhysicsShape)initWithContent:(id)content options:(id)options
 {
   v8.receiver = self;
   v8.super_class = SCNPhysicsShape;
   v6 = [(SCNPhysicsShape *)&v8 init];
   if (v6)
   {
-    v6->_referenceObject = a3;
-    v6->_options = a4;
+    v6->_referenceObject = content;
+    v6->_options = options;
   }
 
   return v6;
 }
 
-- (SCNPhysicsShape)initWithCachedObject:(void *)a3 options:(id)a4
+- (SCNPhysicsShape)initWithCachedObject:(void *)object options:(id)options
 {
   v9.receiver = self;
   v9.super_class = SCNPhysicsShape;
@@ -39,8 +39,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cachedObject = a3;
-    v6->_options = a4;
+    v6->_cachedObject = object;
+    v6->_options = options;
   }
 
   return v7;
@@ -55,14 +55,14 @@
   [(SCNPhysicsShape *)&v3 dealloc];
 }
 
-- (void)setReferenceObject:(id)a3
+- (void)setReferenceObject:(id)object
 {
   referenceObject = self->_referenceObject;
-  if (referenceObject != a3)
+  if (referenceObject != object)
   {
     v10 = v3;
     v11 = v4;
-    if (a3 && referenceObject)
+    if (object && referenceObject)
     {
       v8 = scn_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -72,7 +72,7 @@
       }
     }
 
-    self->_referenceObject = a3;
+    self->_referenceObject = object;
   }
 }
 
@@ -89,17 +89,17 @@
     v5 = CFGetTypeID(cachedObject);
     if (CFTypeIsC3DGeometry(v5))
     {
-      v6 = self->_cachedObject;
+      geometryRef = self->_cachedObject;
 LABEL_8:
-      ShapeForGeometry = _createShapeForGeometry(v6, self->_options);
+      ShapeForGeometry = _createShapeForGeometry(geometryRef, self->_options);
       goto LABEL_14;
     }
 
     if (v5 == C3DNodeGetTypeID())
     {
-      v8 = self->_cachedObject;
+      nodeRef = self->_cachedObject;
 LABEL_13:
-      ShapeForGeometry = _createShapeForNode(v8, self->_options);
+      ShapeForGeometry = _createShapeForNode(nodeRef, self->_options);
       goto LABEL_14;
     }
 
@@ -109,14 +109,14 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [self->_referenceObject geometryRef];
+    geometryRef = [self->_referenceObject geometryRef];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [self->_referenceObject nodeRef];
+    nodeRef = [self->_referenceObject nodeRef];
     goto LABEL_13;
   }
 
@@ -231,26 +231,26 @@ LABEL_19:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-+ (id)defaultShapeForGeometry:(id)a3
++ (id)defaultShapeForGeometry:(id)geometry
 {
-  v4 = [objc_msgSend(a3 valueForKey:{@"SCNDefaultPhysicsShape", "pointerValue"}];
+  v4 = [objc_msgSend(geometry valueForKey:{@"SCNDefaultPhysicsShape", "pointerValue"}];
   if (!v4)
   {
-    v4 = [SCNPhysicsShape shapeWithGeometry:a3 options:0];
-    [a3 setValue:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithPointer:", v4), @"SCNDefaultPhysicsShape"}];
+    v4 = [SCNPhysicsShape shapeWithGeometry:geometry options:0];
+    [geometry setValue:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithPointer:", v4), @"SCNDefaultPhysicsShape"}];
   }
 
   return v4;
 }
 
-- (void)_customEncodingOfSCNPhysicsShape:(id)a3
+- (void)_customEncodingOfSCNPhysicsShape:(id)shape
 {
   transforms = self->_transforms;
   if (transforms)
@@ -259,13 +259,13 @@ LABEL_19:
     v8[1] = v8;
     v8[2] = 0x2020000000;
     v9 = 0;
-    [a3 encodeInteger:-[NSArray count](transforms forKey:{"count"), @"transformsCount"}];
+    [shape encodeInteger:-[NSArray count](transforms forKey:{"count"), @"transformsCount"}];
     v6 = self->_transforms;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52__SCNPhysicsShape__customEncodingOfSCNPhysicsShape___block_invoke;
     v7[3] = &unk_2782FCAE0;
-    v7[4] = a3;
+    v7[4] = shape;
     v7[5] = v8;
     [(NSArray *)v6 enumerateObjectsUsingBlock:v7];
     _Block_object_dispose(v8, 8);
@@ -293,9 +293,9 @@ uint64_t __52__SCNPhysicsShape__customEncodingOfSCNPhysicsShape___block_invoke(u
   return SCNEncodeSCNMatrix4(v4, v7, v9);
 }
 
-- (void)_customDecodingOfSCNPhysicsShape:(id)a3
+- (void)_customDecodingOfSCNPhysicsShape:(id)shape
 {
-  v5 = [a3 decodeIntegerForKey:@"transformsCount"];
+  v5 = [shape decodeIntegerForKey:@"transformsCount"];
   if (v5 >= 1)
   {
     v6 = v5;
@@ -305,7 +305,7 @@ uint64_t __52__SCNPhysicsShape__customEncodingOfSCNPhysicsShape___block_invoke(u
     {
       transforms = self->_transforms;
       v9 = MEMORY[0x277CCAE60];
-      SCNDecodeSCNMatrix4(a3, [MEMORY[0x277CCACA8] stringWithFormat:@"transform%d", v7], v10);
+      SCNDecodeSCNMatrix4(shape, [MEMORY[0x277CCACA8] stringWithFormat:@"transform%d", v7], v10);
       -[NSArray addObject:](transforms, "addObject:", [v9 valueWithSCNMatrix4:v10]);
       ++v7;
     }
@@ -314,23 +314,23 @@ uint64_t __52__SCNPhysicsShape__customEncodingOfSCNPhysicsShape___block_invoke(u
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNPhysicsShape *)self _customEncodingOfSCNPhysicsShape:?];
   referenceObject = self->_referenceObject;
   if (referenceObject)
   {
-    [a3 encodeObject:referenceObject forKey:@"referenceObject"];
+    [coder encodeObject:referenceObject forKey:@"referenceObject"];
   }
 
   if (self->_options)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SCNPhysicsShape)initWithCoder:(id)a3
+- (SCNPhysicsShape)initWithCoder:(id)coder
 {
   v9[4] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -340,14 +340,14 @@ uint64_t __52__SCNPhysicsShape__customEncodingOfSCNPhysicsShape___block_invoke(u
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNPhysicsShape *)v4 _customDecodingOfSCNPhysicsShape:a3];
+    [(SCNPhysicsShape *)v4 _customDecodingOfSCNPhysicsShape:coder];
     v6 = MEMORY[0x277CBEB98];
     v9[0] = objc_opt_class();
     v9[1] = objc_opt_class();
     v9[2] = objc_opt_class();
     v9[3] = objc_opt_class();
-    -[SCNPhysicsShape setReferenceObject:](v4, "setReferenceObject:", [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v9, 4)), @"referenceObject"}]);
-    v4->_options = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"options"];
+    -[SCNPhysicsShape setReferenceObject:](v4, "setReferenceObject:", [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v9, 4)), @"referenceObject"}]);
+    v4->_options = [coder decodeObjectOfClasses:SCNPlistClasses() forKey:@"options"];
     [SCNTransaction setImmediateMode:v5];
   }
 

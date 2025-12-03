@@ -1,10 +1,10 @@
 @interface SleepFocusPromotionCell
-- (_TtC20SleepHealthAppPluginP33_2908C9C3B675E281B22851DB0A656EF223SleepFocusPromotionCell)initWithCoder:(id)a3;
+- (_TtC20SleepHealthAppPluginP33_2908C9C3B675E281B22851DB0A656EF223SleepFocusPromotionCell)initWithCoder:(id)coder;
 @end
 
 @implementation SleepFocusPromotionCell
 
-- (_TtC20SleepHealthAppPluginP33_2908C9C3B675E281B22851DB0A656EF223SleepFocusPromotionCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPluginP33_2908C9C3B675E281B22851DB0A656EF223SleepFocusPromotionCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();

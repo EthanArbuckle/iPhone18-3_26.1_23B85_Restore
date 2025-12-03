@@ -1,24 +1,24 @@
 @interface CARSetupPassConfiguration
-+ (id)passConfigurationFromDigitalCarKeyInfo:(id)a3 vehicleName:(id)a4;
++ (id)passConfigurationFromDigitalCarKeyInfo:(id)info vehicleName:(id)name;
 @end
 
 @implementation CARSetupPassConfiguration
 
-+ (id)passConfigurationFromDigitalCarKeyInfo:(id)a3 vehicleName:(id)a4
++ (id)passConfigurationFromDigitalCarKeyInfo:(id)info vehicleName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  nameCopy = name;
   v7 = objc_alloc_init(PKAddCarKeyPassConfiguration);
   [v7 setReferralSource:3];
-  if (v6)
+  if (nameCopy)
   {
-    [v7 setVehicleName:v6];
+    [v7 setVehicleName:nameCopy];
   }
 
-  v46 = v6;
+  v46 = nameCopy;
   v8 = kCFACCProperties_Endpoint_DigitalCarKey_VehicleIdentifier;
   objc_opt_class();
-  v9 = [v5 objectForKey:v8];
+  v9 = [infoCopy objectForKey:v8];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
@@ -36,7 +36,7 @@
 
   v45 = v10;
   objc_opt_class();
-  v11 = [v5 objectForKey:kACCProperties_Endpoint_DigitalCarKey_CCCManufacturer];
+  v11 = [infoCopy objectForKey:kACCProperties_Endpoint_DigitalCarKey_CCCManufacturer];
   if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v12 = v11;
@@ -54,7 +54,7 @@
 
   v44 = v12;
   objc_opt_class();
-  v13 = [v5 objectForKey:kACCProperties_Endpoint_DigitalCarKey_CCCBrand];
+  v13 = [infoCopy objectForKey:kACCProperties_Endpoint_DigitalCarKey_CCCBrand];
   if (v13 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v14 = v13;
@@ -72,7 +72,7 @@
 
   v43 = v14;
   objc_opt_class();
-  v15 = [v5 objectForKey:kACCProperties_Endpoint_DigitalCarKey_ProductPlanUID];
+  v15 = [infoCopy objectForKey:kACCProperties_Endpoint_DigitalCarKey_ProductPlanUID];
   if (v15 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v16 = v15;
@@ -90,7 +90,7 @@
 
   v42 = v16;
   objc_opt_class();
-  v17 = [v5 objectForKey:kACCProperties_Endpoint_DigitalCarKey_SupportedRadioTechnologies];
+  v17 = [infoCopy objectForKey:kACCProperties_Endpoint_DigitalCarKey_SupportedRadioTechnologies];
   if (v17 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v18 = v17;
@@ -102,7 +102,7 @@
   }
 
   v47 = v7;
-  v48 = v5;
+  v48 = infoCopy;
 
   v51 = 0u;
   v52 = 0u;
@@ -142,14 +142,14 @@
             v30 = 0;
           }
 
-          v31 = [v30 integerValue];
+          integerValue = [v30 integerValue];
           v32 = v22 | 2;
-          if (v31 != v25)
+          if (integerValue != v25)
           {
             v32 = v22;
           }
 
-          if (v31 == v24)
+          if (integerValue == v24)
           {
             v22 |= 1uLL;
           }

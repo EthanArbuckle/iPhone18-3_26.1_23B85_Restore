@@ -1,19 +1,19 @@
 @interface WK_RTCWrappedEncodedImageBuffer
-- (WK_RTCWrappedEncodedImageBuffer)initWithEncodedImageBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3;
+- (WK_RTCWrappedEncodedImageBuffer)initWithEncodedImageBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)buffer;
 - (scoped_refptr<webrtc::EncodedImageBufferInterface>)buffer;
-- (void)setBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3;
+- (void)setBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)buffer;
 @end
 
 @implementation WK_RTCWrappedEncodedImageBuffer
 
-- (WK_RTCWrappedEncodedImageBuffer)initWithEncodedImageBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3
+- (WK_RTCWrappedEncodedImageBuffer)initWithEncodedImageBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)buffer
 {
   v8.receiver = self;
   v8.super_class = WK_RTCWrappedEncodedImageBuffer;
   v4 = [(WK_RTCWrappedEncodedImageBuffer *)&v8 init];
   if (v4)
   {
-    v5 = *a3.ptr_;
+    v5 = *buffer.ptr_;
     if (v5)
     {
       (**v5)(v5);
@@ -43,12 +43,12 @@
   return ptr;
 }
 
-- (void)setBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3
+- (void)setBuffer:(scoped_refptr<webrtc::EncodedImageBufferInterface>)buffer
 {
-  v4 = *a3.ptr_;
-  if (*a3.ptr_)
+  v4 = *buffer.ptr_;
+  if (*buffer.ptr_)
   {
-    (**v4)(*a3.ptr_, a2);
+    (**v4)(*buffer.ptr_, a2);
   }
 
   ptr = self->_buffer.ptr_;

@@ -1,21 +1,21 @@
 @interface PKPayLaterMerchandisingUtilities
 + (id)sharedInstance;
-- (BOOL)_evaluateLocalChecksForConfiguration:(id)a3 outError:(id *)a4 invalidProperties:(id *)a5;
-- (BOOL)_formValidationError:(id *)a3 underlyingError:(id)a4;
+- (BOOL)_evaluateLocalChecksForConfiguration:(id)configuration outError:(id *)error invalidProperties:(id *)properties;
+- (BOOL)_formValidationError:(id *)error underlyingError:(id)underlyingError;
 - (PKPayLaterMerchandisingUtilities)init;
 - (id)_baseURLComponents;
-- (id)_dynamicMerchandisingURLWithRegionCode:(id)a3;
-- (id)_fragmentForModalConfiguration:(id)a3;
+- (id)_dynamicMerchandisingURLWithRegionCode:(id)code;
+- (id)_fragmentForModalConfiguration:(id)configuration;
 - (id)_localeString;
-- (id)_urlWithBaseURL:(id)a3 pathComponents:(id)a4 queryParameters:(id)a5 fragment:(id)a6;
-- (id)merchandisingBaseURLForEnviornmentType:(unint64_t)a3;
-- (id)merchandisingEligibilityURLWithConfiguration:(id)a3;
-- (id)merchandisingModalURLWithConfiguration:(id)a3;
-- (void)_performWebRequestForURL:(id)a3 completion:(id)a4;
-- (void)_validateRemoteChecksForConfiguration:(id)a3 completion:(id)a4;
+- (id)_urlWithBaseURL:(id)l pathComponents:(id)components queryParameters:(id)parameters fragment:(id)fragment;
+- (id)merchandisingBaseURLForEnviornmentType:(unint64_t)type;
+- (id)merchandisingEligibilityURLWithConfiguration:(id)configuration;
+- (id)merchandisingModalURLWithConfiguration:(id)configuration;
+- (void)_performWebRequestForURL:(id)l completion:(id)completion;
+- (void)_validateRemoteChecksForConfiguration:(id)configuration completion:(id)completion;
 - (void)clearWebRequestCache;
-- (void)evaluateEligibilityForConfiguration:(id)a3 completion:(id)a4;
-- (void)merchandisingWidgetHTMLWithConfiguration:(id)a3 completion:(id)a4;
+- (void)evaluateEligibilityForConfiguration:(id)configuration completion:(id)completion;
+- (void)merchandisingWidgetHTMLWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation PKPayLaterMerchandisingUtilities
@@ -27,13 +27,13 @@
   v2 = [(PKPayLaterMerchandisingUtilities *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695AC78] sharedSession];
+    mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
     urlSession = v2->_urlSession;
-    v2->_urlSession = v3;
+    v2->_urlSession = mEMORY[0x1E695AC78];
 
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v2->_locale;
-    v2->_locale = v5;
+    v2->_locale = currentLocale;
   }
 
   return v2;
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __50__PKPayLaterMerchandisingUtilities_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_260 != -1)
   {
     dispatch_once(&_MergedGlobals_260, block);
@@ -63,14 +63,14 @@ void __50__PKPayLaterMerchandisingUtilities_sharedInstance__block_invoke(uint64_
   qword_1ED6D2030 = v1;
 }
 
-- (void)merchandisingWidgetHTMLWithConfiguration:(id)a3 completion:(id)a4
+- (void)merchandisingWidgetHTMLWithConfiguration:(id)configuration completion:(id)completion
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [v6 environmentType]);
+    v8 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [configurationCopy environmentType]);
     v15[0] = @"jsapi";
     v15[1] = @"v1.1.0";
     v15[2] = @"apple-pay-sdk.merchandising.js";
@@ -80,9 +80,9 @@ void __50__PKPayLaterMerchandisingUtilities_sharedInstance__block_invoke(uint64_
     v11[1] = 3221225472;
     v11[2] = __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfiguration_completion___block_invoke;
     v11[3] = &unk_1E79DE958;
-    v14 = v7;
-    v12 = v6;
-    v13 = self;
+    v14 = completionCopy;
+    v12 = configurationCopy;
+    selfCopy = self;
     [(PKPayLaterMerchandisingUtilities *)self _performWebRequestForURL:v10 completion:v11];
   }
 }
@@ -123,21 +123,21 @@ void __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfigura
   }
 }
 
-- (id)merchandisingModalURLWithConfiguration:(id)a3
+- (id)merchandisingModalURLWithConfiguration:(id)configuration
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [v4 environmentType]);
-  v6 = [(PKPayLaterMerchandisingUtilities *)self _fragmentForModalConfiguration:v4];
-  v7 = [v4 action];
+  configurationCopy = configuration;
+  v5 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [configurationCopy environmentType]);
+  v6 = [(PKPayLaterMerchandisingUtilities *)self _fragmentForModalConfiguration:configurationCopy];
+  action = [configurationCopy action];
 
   v8 = @"calculator.html";
-  if (v7 != 1)
+  if (action != 1)
   {
     v8 = 0;
   }
 
-  if (!v7)
+  if (!action)
   {
     v8 = @"learn-more.html";
   }
@@ -151,14 +151,14 @@ void __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfigura
   return v10;
 }
 
-- (id)merchandisingEligibilityURLWithConfiguration:(id)a3
+- (id)merchandisingEligibilityURLWithConfiguration:(id)configuration
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [v4 environmentType]);
-  v6 = [v4 region];
+  configurationCopy = configuration;
+  v5 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [configurationCopy environmentType]);
+  region = [configurationCopy region];
 
-  v7 = [(PKPayLaterMerchandisingUtilities *)self _dynamicMerchandisingURLWithRegionCode:v6];
+  v7 = [(PKPayLaterMerchandisingUtilities *)self _dynamicMerchandisingURLWithRegionCode:region];
   v11[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
 
@@ -167,44 +167,44 @@ void __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfigura
   return v9;
 }
 
-- (id)merchandisingBaseURLForEnviornmentType:(unint64_t)a3
+- (id)merchandisingBaseURLForEnviornmentType:(unint64_t)type
 {
-  v4 = [(PKPayLaterMerchandisingUtilities *)self _baseURLComponents];
-  v5 = v4;
-  if (a3 > 3)
+  _baseURLComponents = [(PKPayLaterMerchandisingUtilities *)self _baseURLComponents];
+  v5 = _baseURLComponents;
+  if (type > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E79DE9C8[a3];
+    v6 = off_1E79DE9C8[type];
   }
 
-  [v4 setHost:v6];
+  [_baseURLComponents setHost:v6];
   v7 = [v5 URL];
 
   return v7;
 }
 
-- (void)evaluateEligibilityForConfiguration:(id)a3 completion:(id)a4
+- (void)evaluateEligibilityForConfiguration:(id)configuration completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = configurationCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Evaluating eligiblity for configuration: %@", buf, 0xCu);
     }
 
     v16 = 0;
     v17 = 0;
-    v9 = [(PKPayLaterMerchandisingUtilities *)self _evaluateLocalChecksForConfiguration:v6 outError:&v17 invalidProperties:&v16];
+    v9 = [(PKPayLaterMerchandisingUtilities *)self _evaluateLocalChecksForConfiguration:configurationCopy outError:&v17 invalidProperties:&v16];
     v10 = v17;
     v11 = v16;
     if (v9)
@@ -213,9 +213,9 @@ void __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfigura
       v12[1] = 3221225472;
       v12[2] = __83__PKPayLaterMerchandisingUtilities_evaluateEligibilityForConfiguration_completion___block_invoke;
       v12[3] = &unk_1E79DE980;
-      v13 = v6;
+      v13 = configurationCopy;
       v14 = v11;
-      v15 = v7;
+      v15 = completionCopy;
       [(PKPayLaterMerchandisingUtilities *)self _validateRemoteChecksForConfiguration:v13 completion:v12];
     }
 
@@ -230,7 +230,7 @@ void __88__PKPayLaterMerchandisingUtilities_merchandisingWidgetHTMLWithConfigura
         _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Pay later widget did not pass local checks: %@. Invalid properties %@", buf, 0x16u);
       }
 
-      (*(v7 + 2))(v7, v10, v11);
+      (*(completionCopy + 2))(completionCopy, v10, v11);
     }
   }
 }
@@ -277,23 +277,23 @@ LABEL_6:
 
 - (void)clearWebRequestCache
 {
-  v3 = [(NSURLSession *)self->_urlSession configuration];
-  v2 = [v3 URLCache];
-  [v2 removeAllCachedResponses];
+  configuration = [(NSURLSession *)self->_urlSession configuration];
+  uRLCache = [configuration URLCache];
+  [uRLCache removeAllCachedResponses];
 }
 
-- (void)_performWebRequestForURL:(id)a3 completion:(id)a4
+- (void)_performWebRequestForURL:(id)l completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = lCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKPayLaterMerchandisingUtilities requesting contents of URL %@", buf, 0xCu);
     }
 
@@ -302,8 +302,8 @@ LABEL_6:
     v11[1] = 3221225472;
     v11[2] = __72__PKPayLaterMerchandisingUtilities__performWebRequestForURL_completion___block_invoke;
     v11[3] = &unk_1E79CB9F0;
-    v12 = v7;
-    v10 = [(NSURLSession *)urlSession dataTaskWithURL:v6 completionHandler:v11];
+    v12 = completionCopy;
+    v10 = [(NSURLSession *)urlSession dataTaskWithURL:lCopy completionHandler:v11];
     [v10 resume];
   }
 }
@@ -347,23 +347,23 @@ void __72__PKPayLaterMerchandisingUtilities__performWebRequestForURL_completion_
   }
 }
 
-- (BOOL)_evaluateLocalChecksForConfiguration:(id)a3 outError:(id *)a4 invalidProperties:(id *)a5
+- (BOOL)_evaluateLocalChecksForConfiguration:(id)configuration outError:(id *)error invalidProperties:(id *)properties
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  configurationCopy = configuration;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
   {
-    [(PKPayLaterMerchandisingUtilities *)self _formValidationError:a4 underlyingError:0];
+    [(PKPayLaterMerchandisingUtilities *)self _formValidationError:error underlyingError:0];
   }
 
-  v10 = [v8 amount];
+  amount = [configurationCopy amount];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = amount;
     if ([v11 pk_isNotANumber])
     {
       v12 = @"amount must be a number";
@@ -387,17 +387,17 @@ void __72__PKPayLaterMerchandisingUtilities__performWebRequestForURL_completion_
 
   else
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported value for amount", v10];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported value for amount", amount];
   }
 
-  v43 = a5;
-  if (a4 && v12)
+  propertiesCopy = properties;
+  if (error && v12)
   {
     v13 = MEMORY[0x1E696ABC0];
     v46 = *MEMORY[0x1E696A578];
     v47[0] = v12;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
-    *a4 = [v13 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v14];
+    *error = [v13 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v14];
   }
 
   else
@@ -410,16 +410,16 @@ void __72__PKPayLaterMerchandisingUtilities__performWebRequestForURL_completion_
   }
 
   [v9 addObject:&unk_1F23B5420];
-  [(PKPayLaterMerchandisingUtilities *)self _formValidationError:a4 underlyingError:0];
+  [(PKPayLaterMerchandisingUtilities *)self _formValidationError:error underlyingError:0];
 LABEL_19:
   v45 = v9;
-  v15 = [v8 currency];
-  v16 = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
-  v17 = v15;
-  v18 = v16;
+  currency = [configurationCopy currency];
+  iSOCurrencyCodes = [MEMORY[0x1E695DF58] ISOCurrencyCodes];
+  v17 = currency;
+  v18 = iSOCurrencyCodes;
   v19 = v18;
-  v20 = self;
-  v44 = v8;
+  selfCopy = self;
+  v44 = configurationCopy;
   if (v17)
   {
     objc_opt_class();
@@ -451,7 +451,7 @@ LABEL_24:
   if ((v22 & 1) == 0)
   {
     [v45 addObject:&unk_1F23B5438];
-    [(PKPayLaterMerchandisingUtilities *)self _formValidationError:a4 underlyingError:v27];
+    [(PKPayLaterMerchandisingUtilities *)self _formValidationError:error underlyingError:v27];
   }
 
   v28 = self->_locale;
@@ -459,14 +459,14 @@ LABEL_24:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported value for locale", v28];
-    if (a4)
+    if (error)
     {
       goto LABEL_33;
     }
 
 LABEL_35:
 
-    v36 = v43;
+    v36 = propertiesCopy;
     v37 = v45;
     if (!v33)
     {
@@ -477,9 +477,9 @@ LABEL_35:
   }
 
   v29 = v28;
-  v30 = [MEMORY[0x1E695DF58] availableLocaleIdentifiers];
-  v31 = [(NSLocale *)v29 localeIdentifier];
-  v32 = [v30 containsObject:v31];
+  availableLocaleIdentifiers = [MEMORY[0x1E695DF58] availableLocaleIdentifiers];
+  localeIdentifier = [(NSLocale *)v29 localeIdentifier];
+  v32 = [availableLocaleIdentifiers containsObject:localeIdentifier];
 
   if (v32)
   {
@@ -491,8 +491,8 @@ LABEL_35:
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a valid locale", v29];
   }
 
-  self = v20;
-  if (!a4)
+  self = selfCopy;
+  if (!error)
   {
     goto LABEL_35;
   }
@@ -507,14 +507,14 @@ LABEL_33:
   v46 = *MEMORY[0x1E696A578];
   v47[0] = v33;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
-  self = v20;
-  *a4 = [v34 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v35];
+  self = selfCopy;
+  *error = [v34 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v35];
 
-  v36 = v43;
+  v36 = propertiesCopy;
   v37 = v45;
 LABEL_36:
   [v37 addObject:&unk_1F23B5450];
-  [(PKPayLaterMerchandisingUtilities *)self _formValidationError:a4 underlyingError:v27];
+  [(PKPayLaterMerchandisingUtilities *)self _formValidationError:error underlyingError:v27];
 LABEL_37:
   if (v36)
   {
@@ -545,21 +545,21 @@ LABEL_37:
   return isKindOfClass & v40;
 }
 
-- (void)_validateRemoteChecksForConfiguration:(id)a3 completion:(id)a4
+- (void)_validateRemoteChecksForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v9 = [(PKPayLaterMerchandisingUtilities *)self merchandisingEligibilityURLWithConfiguration:v6];
+    v9 = [(PKPayLaterMerchandisingUtilities *)self merchandisingEligibilityURLWithConfiguration:configurationCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __85__PKPayLaterMerchandisingUtilities__validateRemoteChecksForConfiguration_completion___block_invoke;
     v11[3] = &unk_1E79DE9A8;
     v11[4] = self;
-    v14 = v7;
-    v12 = v6;
+    v14 = completionCopy;
+    v12 = configurationCopy;
     v13 = v8;
     v10 = v8;
     [(PKPayLaterMerchandisingUtilities *)self _performWebRequestForURL:v9 completion:v11];
@@ -710,17 +710,17 @@ LABEL_21:
 LABEL_33:
 }
 
-- (BOOL)_formValidationError:(id *)a3 underlyingError:(id)a4
+- (BOOL)_formValidationError:(id *)error underlyingError:(id)underlyingError
 {
-  if (a3)
+  if (error)
   {
     v5 = MEMORY[0x1E695DF90];
-    v6 = a4;
+    underlyingErrorCopy = underlyingError;
     v7 = objc_alloc_init(v5);
     [v7 safelySetObject:@"Invalid pay later merchandising configuration" forKey:*MEMORY[0x1E696A578]];
-    [v7 safelySetObject:v6 forKey:*MEMORY[0x1E696AA08]];
+    [v7 safelySetObject:underlyingErrorCopy forKey:*MEMORY[0x1E696AA08]];
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v7];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v7];
   }
 
   return 0;
@@ -734,27 +734,27 @@ LABEL_33:
   return v2;
 }
 
-- (id)_fragmentForModalConfiguration:(id)a3
+- (id)_fragmentForModalConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v4 action] <= 1)
+  if ([configurationCopy action] <= 1)
   {
-    v6 = [v4 amountString];
-    [v5 safelySetObject:v6 forKey:@"amount"];
+    amountString = [configurationCopy amountString];
+    [v5 safelySetObject:amountString forKey:@"amount"];
 
     [v5 safelySetObject:@"4" forKey:@"frequency"];
-    v7 = PKPayLaterThemeToString([v4 theme]);
+    v7 = PKPayLaterThemeToString([configurationCopy theme]);
     [v5 safelySetObject:v7 forKey:@"theme"];
 
-    v8 = [(PKPayLaterMerchandisingUtilities *)self _localeString];
-    [v5 safelySetObject:v8 forKey:@"locale"];
+    _localeString = [(PKPayLaterMerchandisingUtilities *)self _localeString];
+    [v5 safelySetObject:_localeString forKey:@"locale"];
 
-    v9 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [v4 environmentType]);
-    v10 = [v9 host];
+    v9 = -[PKPayLaterMerchandisingUtilities merchandisingBaseURLForEnviornmentType:](self, "merchandisingBaseURLForEnviornmentType:", [configurationCopy environmentType]);
+    host = [v9 host];
 
-    [v5 safelySetObject:v10 forKey:@"referralUrl"];
+    [v5 safelySetObject:host forKey:@"referralUrl"];
   }
 
   if (![v5 count])
@@ -802,27 +802,27 @@ LABEL_14:
   return v14;
 }
 
-- (id)_dynamicMerchandisingURLWithRegionCode:(id)a3
+- (id)_dynamicMerchandisingURLWithRegionCode:(id)code
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 lowercaseString];
-  v5 = [v3 stringWithFormat:@"merchandising-%@.json", v4];
+  lowercaseString = [code lowercaseString];
+  v5 = [v3 stringWithFormat:@"merchandising-%@.json", lowercaseString];
 
   return v5;
 }
 
-- (id)_urlWithBaseURL:(id)a3 pathComponents:(id)a4 queryParameters:(id)a5 fragment:(id)a6
+- (id)_urlWithBaseURL:(id)l pathComponents:(id)components queryParameters:(id)parameters fragment:(id)fragment
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v36 = a6;
+  lCopy = l;
+  componentsCopy = components;
+  parametersCopy = parameters;
+  fragmentCopy = fragment;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  v12 = [componentsCopy countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v12)
   {
     v13 = v12;
@@ -830,38 +830,38 @@ LABEL_14:
     do
     {
       v15 = 0;
-      v16 = v9;
+      v16 = lCopy;
       do
       {
         if (*v45 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v17 = *(*(&v44 + 1) + 8 * v15);
-        v18 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-        v19 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:v18];
-        v9 = [v16 URLByAppendingPathComponent:v19];
+        uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+        v19 = [v17 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
+        lCopy = [v16 URLByAppendingPathComponent:v19];
 
         ++v15;
-        v16 = v9;
+        v16 = lCopy;
       }
 
       while (v13 != v15);
-      v13 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v13 = [componentsCopy countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v13);
   }
 
-  v37 = v10;
+  v37 = componentsCopy;
   v39 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v20 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v11;
+  obj = parametersCopy;
   v21 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v21)
   {
@@ -878,10 +878,10 @@ LABEL_14:
         }
 
         v26 = *(*(&v40 + 1) + 8 * i);
-        v27 = [v26 name];
-        v28 = [v26 value];
-        v29 = [v27 stringByAddingPercentEncodingWithAllowedCharacters:v20];
-        v30 = [v28 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+        name = [v26 name];
+        value = [v26 value];
+        v29 = [name stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
+        v30 = [value stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
         [v39 appendFormat:@"%@%@=%@", v24, v29, v30];
 
         v24 = @"&";
@@ -893,14 +893,14 @@ LABEL_14:
     while (v22);
   }
 
-  if ([v36 length])
+  if ([fragmentCopy length])
   {
-    [v39 appendFormat:@"#%@", v36];
+    [v39 appendFormat:@"#%@", fragmentCopy];
   }
 
   v31 = MEMORY[0x1E695DFF8];
-  v32 = [v9 absoluteString];
-  v33 = [v32 stringByAppendingString:v39];
+  absoluteString = [lCopy absoluteString];
+  v33 = [absoluteString stringByAppendingString:v39];
   v34 = [v31 URLWithString:v33];
 
   return v34;
@@ -908,8 +908,8 @@ LABEL_14:
 
 - (id)_localeString
 {
-  v2 = [(NSLocale *)self->_locale localeIdentifier];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  v3 = [localeIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   return v3;
 }

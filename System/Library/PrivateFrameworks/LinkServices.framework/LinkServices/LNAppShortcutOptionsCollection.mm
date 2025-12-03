@@ -1,64 +1,64 @@
 @interface LNAppShortcutOptionsCollection
-- (BOOL)isEqual:(id)a3;
-- (LNAppShortcutOptionsCollection)initWithCoder:(id)a3;
-- (LNAppShortcutOptionsCollection)initWithLocalizedTitle:(id)a3 systemImageName:(id)a4 optionsProviderReference:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNAppShortcutOptionsCollection)initWithCoder:(id)coder;
+- (LNAppShortcutOptionsCollection)initWithLocalizedTitle:(id)title systemImageName:(id)name optionsProviderReference:(id)reference;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAppShortcutOptionsCollection
 
-- (LNAppShortcutOptionsCollection)initWithCoder:(id)a3
+- (LNAppShortcutOptionsCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionsProviderReference"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionsProviderReference"];
 
   if (v5)
   {
     self = [(LNAppShortcutOptionsCollection *)self initWithLocalizedTitle:v5 systemImageName:v6 optionsProviderReference:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAppShortcutOptionsCollection *)self localizedTitle];
-  [v4 encodeObject:v5 forKey:@"localizedTitle"];
+  coderCopy = coder;
+  localizedTitle = [(LNAppShortcutOptionsCollection *)self localizedTitle];
+  [coderCopy encodeObject:localizedTitle forKey:@"localizedTitle"];
 
-  v6 = [(LNAppShortcutOptionsCollection *)self systemImageName];
-  [v4 encodeObject:v6 forKey:@"systemImageName"];
+  systemImageName = [(LNAppShortcutOptionsCollection *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 
-  v7 = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
-  [v4 encodeObject:v7 forKey:@"optionsProviderReference"];
+  optionsProviderReference = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
+  [coderCopy encodeObject:optionsProviderReference forKey:@"optionsProviderReference"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAppShortcutOptionsCollection *)self localizedTitle];
-  v4 = [v3 hash];
-  v5 = [(LNAppShortcutOptionsCollection *)self systemImageName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
-  v8 = [v7 hash];
+  localizedTitle = [(LNAppShortcutOptionsCollection *)self localizedTitle];
+  v4 = [localizedTitle hash];
+  systemImageName = [(LNAppShortcutOptionsCollection *)self systemImageName];
+  v6 = [systemImageName hash] ^ v4;
+  optionsProviderReference = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
+  v8 = [optionsProviderReference hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -67,9 +67,9 @@
   {
     v24.receiver = self;
     v24.super_class = LNAppShortcutOptionsCollection;
-    if ([(LNAppShortcutOptionsCollection *)&v24 isEqual:v4])
+    if ([(LNAppShortcutOptionsCollection *)&v24 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         LOBYTE(v11) = 0;
@@ -78,10 +78,10 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v6 = [(LNAppShortcutOptionsCollection *)self localizedTitle];
-      v7 = [(LNAppShortcutOptionsCollection *)v5 localizedTitle];
-      v8 = v6;
-      v9 = v7;
+      localizedTitle = [(LNAppShortcutOptionsCollection *)self localizedTitle];
+      localizedTitle2 = [(LNAppShortcutOptionsCollection *)v5 localizedTitle];
+      v8 = localizedTitle;
+      v9 = localizedTitle2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -108,10 +108,10 @@ LABEL_28:
         }
       }
 
-      v15 = [(LNAppShortcutOptionsCollection *)self systemImageName];
-      v16 = [(LNAppShortcutOptionsCollection *)v5 systemImageName];
-      v13 = v15;
-      v17 = v16;
+      systemImageName = [(LNAppShortcutOptionsCollection *)self systemImageName];
+      systemImageName2 = [(LNAppShortcutOptionsCollection *)v5 systemImageName];
+      v13 = systemImageName;
+      v17 = systemImageName2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -138,10 +138,10 @@ LABEL_27:
         }
       }
 
-      v20 = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
-      v21 = [(LNAppShortcutOptionsCollection *)v5 optionsProviderReference];
-      v19 = v20;
-      v22 = v21;
+      optionsProviderReference = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
+      optionsProviderReference2 = [(LNAppShortcutOptionsCollection *)v5 optionsProviderReference];
+      v19 = optionsProviderReference;
+      v22 = optionsProviderReference2;
       v18 = v22;
       if (v19 == v22)
       {
@@ -173,23 +173,23 @@ LABEL_30:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAppShortcutOptionsCollection *)self localizedTitle];
-  v7 = [(LNAppShortcutOptionsCollection *)self systemImageName];
-  v8 = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
-  v9 = [v3 stringWithFormat:@"<%@: %p, localizedTitle: %@, systemImageName: %@, optionsProviderReference: %@>", v5, self, v6, v7, v8];
+  localizedTitle = [(LNAppShortcutOptionsCollection *)self localizedTitle];
+  systemImageName = [(LNAppShortcutOptionsCollection *)self systemImageName];
+  optionsProviderReference = [(LNAppShortcutOptionsCollection *)self optionsProviderReference];
+  v9 = [v3 stringWithFormat:@"<%@: %p, localizedTitle: %@, systemImageName: %@, optionsProviderReference: %@>", v5, self, localizedTitle, systemImageName, optionsProviderReference];
 
   return v9;
 }
 
-- (LNAppShortcutOptionsCollection)initWithLocalizedTitle:(id)a3 systemImageName:(id)a4 optionsProviderReference:(id)a5
+- (LNAppShortcutOptionsCollection)initWithLocalizedTitle:(id)title systemImageName:(id)name optionsProviderReference:(id)reference
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  titleCopy = title;
+  nameCopy = name;
+  referenceCopy = reference;
+  if (!titleCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNAppShortcutOptionsCollection.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"localizedTitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppShortcutOptionsCollection.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"localizedTitle"}];
   }
 
   v20.receiver = self;
@@ -197,15 +197,15 @@ LABEL_30:
   v12 = [(LNAppShortcutOptionsCollection *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [titleCopy copy];
     localizedTitle = v12->_localizedTitle;
     v12->_localizedTitle = v13;
 
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     systemImageName = v12->_systemImageName;
     v12->_systemImageName = v15;
 
-    objc_storeStrong(&v12->_optionsProviderReference, a5);
+    objc_storeStrong(&v12->_optionsProviderReference, reference);
     v17 = v12;
   }
 

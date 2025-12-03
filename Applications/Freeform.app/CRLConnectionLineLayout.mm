@@ -1,22 +1,22 @@
 @interface CRLConnectionLineLayout
 - (BOOL)shouldApplyOffsetWhenComputingLayoutGeometry;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3] clipPath:(BOOL)a6;
-- (id)quadraticCurve:(CGPoint)a3[3];
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3] clipPath:(BOOL)path;
+- (id)quadraticCurve:(CGPoint)curve[3];
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker;
 @end
 
 @implementation CRLConnectionLineLayout
 
-- (id)quadraticCurve:(CGPoint)a3[3]
+- (id)quadraticCurve:(CGPoint)curve[3]
 {
-  x = a3->x;
-  y = a3->y;
-  v5 = a3[1].x;
-  v6 = a3[1].y;
-  v8 = a3[2].x;
-  v7 = a3[2].y;
+  x = curve->x;
+  y = curve->y;
+  v5 = curve[1].x;
+  v6 = curve[1].y;
+  v8 = curve[2].x;
+  v7 = curve[2].y;
   v9 = +[CRLBezierPath bezierPath];
   if (sub_10011F010(x, y, v5, v6, v8, v7) && (v38.origin.x = sub_10011EC88(x, y, v8), v37.x = v5, v37.y = v6, CGRectContainsPoint(v38, v37)))
   {
@@ -51,77 +51,77 @@
   return v9;
 }
 
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3] clipPath:(BOOL)a6
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3] clipPath:(BOOL)path
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(CRLConnectionLineLayout *)self quadraticCurve:a5];
+  pathCopy = path;
+  fromCopy = from;
+  toCopy = to;
+  v12 = [(CRLConnectionLineLayout *)self quadraticCurve:points];
   v29 = 1;
   [(CRLConnectionLineAbstractLayout *)self setTailClipT:0.0];
   [(CRLConnectionLineAbstractLayout *)self setHeadClipT:1.0];
-  if (v10)
+  if (fromCopy)
   {
     [(CRLConnectionLineAbstractLayout *)self outsetFrom];
-    v13 = [(CRLConnectionLineAbstractLayout *)self clipPath:v12 onLayout:v10 outset:0 reversed:&v29 isValid:?];
+    v13 = [(CRLConnectionLineAbstractLayout *)self clipPath:v12 onLayout:fromCopy outset:0 reversed:&v29 isValid:?];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 segment];
+      segment = [v13 segment];
       [v14 t];
       [(CRLConnectionLineAbstractLayout *)self setTailClipT:?];
     }
 
     else
     {
-      v15 = -1;
+      segment = -1;
     }
 
-    if (v11)
+    if (toCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_5:
-    v16 = -1;
+    segment2 = -1;
     goto LABEL_12;
   }
 
-  v15 = -1;
-  if (!v11)
+  segment = -1;
+  if (!toCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_8:
   [(CRLConnectionLineAbstractLayout *)self outsetTo];
-  v17 = [(CRLConnectionLineAbstractLayout *)self clipPath:v12 onLayout:v11 outset:1 reversed:&v29 isValid:?];
+  v17 = [(CRLConnectionLineAbstractLayout *)self clipPath:v12 onLayout:toCopy outset:1 reversed:&v29 isValid:?];
   v18 = v17;
   if (v17)
   {
-    v16 = [v17 segment];
+    segment2 = [v17 segment];
     [v18 t];
     [(CRLConnectionLineAbstractLayout *)self setHeadClipT:?];
   }
 
   else
   {
-    v16 = -1;
+    segment2 = -1;
   }
 
 LABEL_12:
   [(CRLConnectionLineAbstractLayout *)self i_setVisibleLine:1];
-  if (v15 < 0 && v16 < 0)
+  if (segment < 0 && segment2 < 0)
   {
     v19 = v12;
     goto LABEL_37;
   }
 
   v20 = 0;
-  if (v15 < 0 || v16 < 0 || v15 < v16)
+  if (segment < 0 || segment2 < 0 || segment < segment2)
   {
 LABEL_20:
-    if (!v10)
+    if (!fromCopy)
     {
       goto LABEL_25;
     }
@@ -129,7 +129,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v15 == v16)
+  if (segment == segment2)
   {
     [(CRLConnectionLineAbstractLayout *)self tailClipT];
     v22 = v21;
@@ -139,13 +139,13 @@ LABEL_20:
   }
 
   v20 = 1;
-  if (!v10)
+  if (!fromCopy)
   {
     goto LABEL_25;
   }
 
 LABEL_21:
-  if (v11)
+  if (toCopy)
   {
     if (v20 || (v29 & 1) == 0)
     {
@@ -163,7 +163,7 @@ LABEL_21:
   }
 
 LABEL_25:
-  if (v10 | v11 && (v29 & 1) == 0)
+  if (fromCopy | toCopy && (v29 & 1) == 0)
   {
 LABEL_36:
     v19 = v12;
@@ -183,7 +183,7 @@ LABEL_27:
     [(CRLConnectionLineAbstractLayout *)self setHeadClipT:1.0];
   }
 
-  if (v6)
+  if (pathCopy)
   {
     [(CRLConnectionLineAbstractLayout *)self tailClipT];
     v25 = v24;
@@ -198,22 +198,22 @@ LABEL_27:
   }
 
   v19 = +[CRLBezierPath bezierPath];
-  [v19 appendBezierPath:v12 fromSegment:v15 t:v16 toSegment:0 t:v25 withoutMove:v27];
+  [v19 appendBezierPath:v12 fromSegment:segment t:segment2 toSegment:0 t:v25 withoutMove:v27];
 LABEL_37:
 
   return v19;
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = originalB.y;
+  x = originalB.x;
+  v8 = originalA.y;
+  v9 = originalA.x;
+  v10 = b.y;
+  v11 = b.x;
+  v12 = a.y;
+  v13 = a.x;
   v15 = objc_opt_class();
   v16 = v15;
   v17 = *(&self->super.super.mCachedEditableBezierPathSource + 3);
@@ -224,31 +224,31 @@ LABEL_37:
 
   else
   {
-    v19 = [(CRLShapeLayout *)self shapeInfo];
-    v20 = [v19 pathSource];
-    v18 = sub_100014370(v16, v20);
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo pathSource];
+    v18 = sub_100014370(v16, pathSource);
   }
 
   v21 = *(&self->super.super.mCachedPathSource + 3);
   if (v21)
   {
-    v22 = v21;
+    geometry = v21;
     v33 = 0u;
     v34 = 0u;
     v32 = 0u;
 LABEL_7:
-    [v22 transform];
+    [geometry transform];
 
     goto LABEL_8;
   }
 
-  v23 = [(CRLCanvasLayout *)self info];
-  v22 = [v23 geometry];
+  info = [(CRLCanvasLayout *)self info];
+  geometry = [info geometry];
 
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
-  if (v22)
+  if (geometry)
   {
     goto LABEL_7;
   }
@@ -268,18 +268,18 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
-  [v4 getControlKnobPosition:10];
+  connectedPathSource = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
+  [connectedPathSource getControlKnobPosition:10];
   v6 = v5;
   v8 = v7;
   v38.f64[0] = v5;
   v38.f64[1] = v7;
-  [v4 getControlKnobPosition:12];
+  [connectedPathSource getControlKnobPosition:12];
   v10 = v9;
   v12 = v11;
-  [v4 getControlKnobPosition:11];
+  [connectedPathSource getControlKnobPosition:11];
   v14 = v13;
   v16 = v15;
   v41 = v13;
@@ -301,9 +301,9 @@ LABEL_8:
 
   else
   {
-    v29 = [(CRLConnectionLineAbstractLayout *)self i_visibleLine];
+    i_visibleLine = [(CRLConnectionLineAbstractLayout *)self i_visibleLine];
     v28 = 0.5;
-    if (v29)
+    if (i_visibleLine)
     {
       [(CRLConnectionLineAbstractLayout *)self tailClipT];
       v31 = v30;
@@ -322,24 +322,24 @@ LABEL_8:
   return result;
 }
 
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = a4;
-  v6 = [v5 knob];
-  v7 = [v6 tag];
+  y = to.y;
+  x = to.x;
+  trackerCopy = tracker;
+  knob = [trackerCopy knob];
+  v7 = [knob tag];
 
   if (v7 == 12)
   {
-    v8 = [(CRLCanvasLayout *)self originalGeometry];
-    v9 = v8;
+    originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
+    v9 = originalGeometry;
     v10 = 0uLL;
     v11 = 0uLL;
     v12 = 0uLL;
-    if (v8)
+    if (originalGeometry)
     {
-      [v8 transform];
+      [originalGeometry transform];
       v11 = *&v48.a;
       v12 = *&v48.c;
       v10 = *&v48.tx;
@@ -350,18 +350,18 @@ LABEL_8:
 
     v46 = CGPointZero;
     v47 = v46;
-    v13 = [(CRLConnectionLineAbstractLayout *)self i_originalPathSource];
-    v14 = [v13 bezierPath];
-    [v14 getStartPoint:&v47 andEndPoint:&v46];
+    i_originalPathSource = [(CRLConnectionLineAbstractLayout *)self i_originalPathSource];
+    bezierPath = [i_originalPathSource bezierPath];
+    [bezierPath getStartPoint:&v47 andEndPoint:&v46];
 
-    v15 = [(CRLCanvasLayout *)self originalPureGeometry];
-    v16 = v15;
+    originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+    v16 = originalPureGeometry;
     v17 = 0uLL;
     v18 = 0uLL;
     v19 = 0uLL;
-    if (v15)
+    if (originalPureGeometry)
     {
-      [v15 transform];
+      [originalPureGeometry transform];
       v17 = *&v48.a;
       v18 = *&v48.c;
       v19 = *&v48.tx;
@@ -370,11 +370,11 @@ LABEL_8:
     v42 = vaddq_f64(v37, v41);
     v47 = vaddq_f64(v19, vmlaq_n_f64(vmulq_n_f64(v18, v47.f64[1]), v17, v47.f64[0]));
 
-    v20 = [(CRLCanvasLayout *)self originalPureGeometry];
-    v21 = v20;
-    if (v20)
+    originalPureGeometry2 = [(CRLCanvasLayout *)self originalPureGeometry];
+    v21 = originalPureGeometry2;
+    if (originalPureGeometry2)
     {
-      [v20 transform];
+      [originalPureGeometry2 transform];
       v22 = *&v48.a;
       v23 = *&v48.c;
       v24 = *&v48.tx;
@@ -395,7 +395,7 @@ LABEL_8:
     v26 = sub_100404B24(v49.f64, v42.f64[0], v42.f64[1]);
     v27 = sub_100120ABC(v49.f64[0], v49.f64[1], v50.x, v50.y, v26);
     v29 = sub_100120090(v27, v28, v42.f64[0], v42.f64[1]);
-    v30 = [v5 icc];
+    v30 = [trackerCopy icc];
     [v30 viewScale];
     v32 = 7 / v31;
 
@@ -406,11 +406,11 @@ LABEL_8:
       v42.f64[0] = v33;
     }
 
-    v35 = [(CRLCanvasLayout *)self originalGeometry];
-    v36 = v35;
-    if (v35)
+    originalGeometry2 = [(CRLCanvasLayout *)self originalGeometry];
+    v36 = originalGeometry2;
+    if (originalGeometry2)
     {
-      [v35 transform];
+      [originalGeometry2 transform];
     }
 
     else
@@ -432,21 +432,21 @@ LABEL_8:
 
   v44.receiver = self;
   v44.super_class = CRLConnectionLineLayout;
-  [(CRLConnectionLineAbstractLayout *)&v44 dynamicallyMovedSmartShapeKnobTo:v5 withTracker:*&v25];
+  [(CRLConnectionLineAbstractLayout *)&v44 dynamicallyMovedSmartShapeKnobTo:trackerCopy withTracker:*&v25];
 }
 
 - (BOOL)shouldApplyOffsetWhenComputingLayoutGeometry
 {
-  v3 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  if (v3)
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  if (connectedFrom)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-    v4 = v5 == 0;
+    connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+    v4 = connectedTo == 0;
   }
 
   return v4;

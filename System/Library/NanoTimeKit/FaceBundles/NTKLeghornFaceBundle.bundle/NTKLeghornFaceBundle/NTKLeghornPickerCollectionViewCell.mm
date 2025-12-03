@@ -1,16 +1,16 @@
 @interface NTKLeghornPickerCollectionViewCell
-- (NTKLeghornPickerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (NTKLeghornPickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKLeghornPickerCollectionViewCell
 
-- (NTKLeghornPickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (NTKLeghornPickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v39.receiver = self;
   v39.super_class = NTKLeghornPickerCollectionViewCell;
   v7 = [(NTKLeghornPickerCollectionViewCell *)&v39 initWithFrame:?];

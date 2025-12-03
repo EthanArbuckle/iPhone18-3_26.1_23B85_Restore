@@ -1,16 +1,16 @@
 @interface IMSPIChat
-+ (void)enumerateAllChatsWithBlock:(id)a3;
-- (IMSPIChat)initWithChatRecord:(_IMDChatRecordStruct *)a3;
++ (void)enumerateAllChatsWithBlock:(id)block;
+- (IMSPIChat)initWithChatRecord:(_IMDChatRecordStruct *)record;
 - (id)description;
-- (void)enumerateAllAttachmentsWithBlock:(id)a3;
-- (void)enumerateAllMessagesWithBlock:(id)a3;
+- (void)enumerateAllAttachmentsWithBlock:(id)block;
+- (void)enumerateAllMessagesWithBlock:(id)block;
 @end
 
 @implementation IMSPIChat
 
-+ (void)enumerateAllChatsWithBlock:(id)a3
++ (void)enumerateAllChatsWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   if (qword_1EB2EA310 != -1)
   {
     sub_1A84E10A0();
@@ -32,7 +32,7 @@
         v11 = objc_msgSend_initWithChatRecord_(v9, v10, ValueAtIndex);
         if (v11)
         {
-          v3[2](v3, v11, &v13);
+          blockCopy[2](blockCopy, v11, &v13);
         }
 
         v12 = v13;
@@ -53,10 +53,10 @@
   }
 }
 
-- (void)enumerateAllAttachmentsWithBlock:(id)a3
+- (void)enumerateAllAttachmentsWithBlock:(id)block
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v42 = a3;
+  blockCopy = block;
   v6 = objc_msgSend_chatIdentifier(self, v4, v5);
   v56[0] = v6;
   v8 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v56, 1);
@@ -148,7 +148,7 @@
           }
 
           CFRelease(v43);
-          v42[2](v42, isOutgoing_attributionInfo_creationDate_adaptiveImageGlyphContentIdentifier_adaptiveImageGlyphContentDescription, &v54);
+          blockCopy[2](blockCopy, isOutgoing_attributionInfo_creationDate_adaptiveImageGlyphContentIdentifier_adaptiveImageGlyphContentDescription, &v54);
           v37 = v54;
 
           v15 = v41;
@@ -178,10 +178,10 @@ LABEL_23:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateAllMessagesWithBlock:(id)a3
+- (void)enumerateAllMessagesWithBlock:(id)block
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_chatIdentifier(self, v5, v6);
   v48[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v48, 1);
@@ -265,7 +265,7 @@ LABEL_13:
           }
 
 LABEL_12:
-          v4[2](v4, v33, &v46);
+          blockCopy[2](blockCopy, v33, &v46);
           if ((v46 & 1) == 0)
           {
             goto LABEL_13;
@@ -296,7 +296,7 @@ LABEL_19:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (IMSPIChat)initWithChatRecord:(_IMDChatRecordStruct *)a3
+- (IMSPIChat)initWithChatRecord:(_IMDChatRecordStruct *)record
 {
   v39 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -322,7 +322,7 @@ LABEL_14:
     sub_1A84E440C();
   }
 
-  off_1EB2EA4C8(a3, &v29, 0, 0, 0, &v31, &v33, &v32, 0, &v30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &v28, 0, 0, &v27, &v26);
+  off_1EB2EA4C8(record, &v29, 0, 0, 0, &v31, &v33, &v32, 0, &v30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, &v28, 0, 0, &v27, &v26);
   serviceName = v4->_serviceName;
   v4->_serviceName = v33;
 
@@ -344,7 +344,7 @@ LABEL_14:
       sub_1A84E4434();
     }
 
-    v9 = off_1EB2EA4D8(a3);
+    v9 = off_1EB2EA4D8(record);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (objc_msgSend_count(v9, v11, v12))
     {

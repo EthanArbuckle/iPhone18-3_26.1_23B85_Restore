@@ -1,6 +1,6 @@
 @interface URLOpener
 + (id)sharedInstance;
-- (id)openURL:(id)a3;
+- (id)openURL:(id)l;
 @end
 
 @implementation URLOpener
@@ -17,9 +17,9 @@
   return v3;
 }
 
-- (id)openURL:(id)a3
+- (id)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v10[0] = FBSOpenApplicationOptionKeyUnlockDevice;
   v10[1] = FBSOpenApplicationOptionKeyPromptUnlockDevice;
@@ -27,7 +27,7 @@
   v11[1] = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
   v9 = 0;
-  [v4 openURL:v3 withOptions:v5 error:&v9];
+  [v4 openURL:lCopy withOptions:v5 error:&v9];
 
   v6 = v9;
   v7 = v9;

@@ -1,23 +1,23 @@
 @interface IMRemoteObject
 + (id)_remoteObjects;
-+ (void)_registerIMRemoteObject:(id)a3;
-+ (void)_unregisterIMRemoteObject:(id)a3;
++ (void)_registerIMRemoteObject:(id)object;
++ (void)_unregisterIMRemoteObject:(id)object;
 + (void)initialize;
 - (BOOL)isValid;
-- (id)_initWithConnection:(id)a3 portName:(id)a4 protocol:(id)a5 alreadyConfigured:(BOOL)a6 forceSecureCoding:(BOOL)a7;
+- (id)_initWithConnection:(id)connection portName:(id)name protocol:(id)protocol alreadyConfigured:(BOOL)configured forceSecureCoding:(BOOL)coding;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (int)pid;
-- (unint64_t)forwardXPCObject:(id)a3 messageContext:(id)a4 locked:(BOOL)a5;
+- (unint64_t)forwardXPCObject:(id)object messageContext:(id)context locked:(BOOL)locked;
 - (void)_portDidBecomeInvalid;
-- (void)_systemShutdown:(id)a3;
+- (void)_systemShutdown:(id)shutdown;
 - (void)blockUntilSendQueueIsEmpty;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invalidate;
-- (void)setPid:(int)a3;
-- (void)setPortName:(id)a3;
-- (void)setProcessName:(id)a3;
+- (void)setPid:(int)pid;
+- (void)setPortName:(id)name;
+- (void)setProcessName:(id)name;
 @end
 
 @implementation IMRemoteObject
@@ -39,12 +39,12 @@
 
 - (int)pid
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   os_unfair_recursive_lock_lock_with_options();
-  LODWORD(v2) = *(v2->_internal + 14);
+  LODWORD(selfCopy) = *(selfCopy->_internal + 14);
   os_unfair_recursive_lock_unlock();
-  return v2;
+  return selfCopy;
 }
 
 + (void)initialize
@@ -73,7 +73,7 @@
 
 - (void)invalidate
 {
-  v19 = self;
+  selfCopy = self;
   if ((dword_1ED517080 & 0x80000000) == 0)
   {
     if (!dword_1ED517080)
@@ -87,7 +87,7 @@
   if (qword_1ED517528 != -1)
   {
     sub_19598C678();
-    self = v19;
+    self = selfCopy;
   }
 
   if (dword_1ED517080 > 0)
@@ -96,26 +96,26 @@ LABEL_3:
     internal = self->_internal;
     v18 = internal[1];
     _IMLog(@"* Invalidating IMRemoteObject: %@ (connection=%p)", a2, v2, v3, v4, v5, v6, v7, internal[4]);
-    self = v19;
+    self = selfCopy;
   }
 
 LABEL_4:
   v9 = self->_internal;
   os_unfair_recursive_lock_lock_with_options();
-  v10 = v19;
+  v10 = selfCopy;
   v13 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v11, v12);
-  objc_msgSend_removeObserver_name_object_(v13, v14, v19, @"IMSystemShuttingDownNotification", 0);
-  v15 = *(v19->_internal + 1);
+  objc_msgSend_removeObserver_name_object_(v13, v14, selfCopy, @"IMSystemShuttingDownNotification", 0);
+  v15 = *(selfCopy->_internal + 1);
   if (v15)
   {
     xpc_connection_cancel(v15);
-    xpc_release(*(v19->_internal + 1));
-    *(v19->_internal + 1) = 0;
-    v16 = v19->_internal;
+    xpc_release(*(selfCopy->_internal + 1));
+    *(selfCopy->_internal + 1) = 0;
+    v16 = selfCopy->_internal;
   }
 
   os_unfair_recursive_lock_unlock();
-  objc_msgSend__cleanupMachBitsCanPost_locked_(v19, v17, 1, 0);
+  objc_msgSend__cleanupMachBitsCanPost_locked_(selfCopy, v17, 1, 0);
 }
 
 - (void)dealloc
@@ -193,35 +193,35 @@ LABEL_4:
   [(IMRemoteObject *)&v25 dealloc];
 }
 
-+ (void)_registerIMRemoteObject:(id)a3
++ (void)_registerIMRemoteObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    objc_msgSend_lock(qword_1ED517548, a2, a3);
-    objc_msgSend_addObject_(qword_1ED517538, v4, a3);
+    objc_msgSend_lock(qword_1ED517548, a2, object);
+    objc_msgSend_addObject_(qword_1ED517538, v4, object);
     v7 = qword_1ED517548;
 
     objc_msgSend_unlock(v7, v5, v6);
   }
 }
 
-+ (void)_unregisterIMRemoteObject:(id)a3
++ (void)_unregisterIMRemoteObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    objc_msgSend_lock(qword_1ED517548, a2, a3);
-    objc_msgSend_removeObjectIdenticalTo_(qword_1ED517538, v4, a3);
+    objc_msgSend_lock(qword_1ED517548, a2, object);
+    objc_msgSend_removeObjectIdenticalTo_(qword_1ED517538, v4, object);
     v7 = qword_1ED517548;
 
     objc_msgSend_unlock(v7, v5, v6);
   }
 }
 
-- (id)_initWithConnection:(id)a3 portName:(id)a4 protocol:(id)a5 alreadyConfigured:(BOOL)a6 forceSecureCoding:(BOOL)a7
+- (id)_initWithConnection:(id)connection portName:(id)name protocol:(id)protocol alreadyConfigured:(BOOL)configured forceSecureCoding:(BOOL)coding
 {
-  if (!a3 && !objc_msgSend_length(a4, a2, 0) || (v13 = objc_msgSend_sharedInstance(IMSystemMonitor, a2, a3), objc_msgSend_systemIsShuttingDown(v13, v14, v15)) || !a7)
+  if (!connection && !objc_msgSend_length(name, a2, 0) || (v13 = objc_msgSend_sharedInstance(IMSystemMonitor, a2, connection), objc_msgSend_systemIsShuttingDown(v13, v14, v15)) || !coding)
   {
-    objc_msgSend_dealloc(self, a2, a3);
+    objc_msgSend_dealloc(self, a2, connection);
     return 0;
   }
 
@@ -252,8 +252,8 @@ LABEL_4:
   if (dword_1ED517080)
   {
 LABEL_8:
-    NSStringFromProtocol(a5);
-    _IMLog(@"* Creating IMRemoteObject with connection: %p  protocol: %@", v19, v20, v21, v22, v23, v24, v25, a3);
+    NSStringFromProtocol(protocol);
+    _IMLog(@"* Creating IMRemoteObject with connection: %p  protocol: %@", v19, v20, v21, v22, v23, v24, v25, connection);
   }
 
 LABEL_9:
@@ -263,22 +263,22 @@ LABEL_9:
   v38[2] = sub_1959B72DC;
   v38[3] = &unk_1E74394F8;
   v38[4] = v18;
-  if (a3)
+  if (connection)
   {
-    *(v18->_internal + 1) = xpc_retain(a3);
-    if (!a6)
+    *(v18->_internal + 1) = xpc_retain(connection);
+    if (!configured)
     {
-      IMXPCConfigureConnection(a3, v38, 0);
+      IMXPCConfigureConnection(connection, v38, 0);
     }
   }
 
   else
   {
-    v29 = objc_msgSend_UTF8String(a4, v26, v27);
+    v29 = objc_msgSend_UTF8String(name, v26, v27);
     *(v18->_internal + 1) = IMXPCCreateConnectionForService(1, v29, v38, 0);
   }
 
-  *(v18->_internal + 3) = a5;
+  *(v18->_internal + 3) = protocol;
   v30 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   if (_os_feature_enabled_impl() && im_primary_base_queue())
   {
@@ -301,7 +301,7 @@ LABEL_9:
 
 - (void)_portDidBecomeInvalid
 {
-  v10 = self;
+  selfCopy = self;
   if ((dword_1ED517080 & 0x80000000) == 0)
   {
     if (!dword_1ED517080)
@@ -315,7 +315,7 @@ LABEL_9:
   if (qword_1ED517528 != -1)
   {
     sub_19598C678();
-    self = v10;
+    self = selfCopy;
   }
 
   if (dword_1ED517080 > 0)
@@ -325,11 +325,11 @@ LABEL_3:
   }
 
 LABEL_4:
-  v8 = v10;
-  objc_msgSend__cleanupMachBitsCanPost_locked_(v10, v9, 1, 0);
+  v8 = selfCopy;
+  objc_msgSend__cleanupMachBitsCanPost_locked_(selfCopy, v9, 1, 0);
 }
 
-- (void)_systemShutdown:(id)a3
+- (void)_systemShutdown:(id)shutdown
 {
   if ((dword_1ED517080 & 0x80000000) == 0)
   {
@@ -351,20 +351,20 @@ LABEL_4:
 LABEL_3:
     internal = self->_internal;
     v10 = internal[1];
-    _IMLog(@"* Received shutdown notice for IMLocalObject: %@ (connection=%p)", a2, a3, v3, v4, v5, v6, v7, internal[4]);
+    _IMLog(@"* Received shutdown notice for IMLocalObject: %@ (connection=%p)", a2, shutdown, v3, v4, v5, v6, v7, internal[4]);
   }
 
 LABEL_4:
 
-  objc_msgSend_invalidate(self, a2, a3);
+  objc_msgSend_invalidate(self, a2, shutdown);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  if (sel_terminated != a3)
+  if (sel_terminated != selector)
   {
     v4 = *(self->_internal + 3);
-    MethodDescription = protocol_getMethodDescription(v4, a3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(v4, selector, 1, 1);
     types = MethodDescription.types;
     if (MethodDescription.name)
     {
@@ -379,7 +379,7 @@ LABEL_4:
 
     else
     {
-      types = protocol_getMethodDescription(v4, a3, 0, 1).types;
+      types = protocol_getMethodDescription(v4, selector, 0, 1).types;
       if (types)
       {
         goto LABEL_4;
@@ -389,7 +389,7 @@ LABEL_4:
     return 0;
   }
 
-  return MEMORY[0x1EEE66B58](IMLocalObject, sel_instanceMethodSignatureForSelector_, a3);
+  return MEMORY[0x1EEE66B58](IMLocalObject, sel_instanceMethodSignatureForSelector_, selector);
 }
 
 - (void)blockUntilSendQueueIsEmpty
@@ -402,14 +402,14 @@ LABEL_4:
   }
 }
 
-- (unint64_t)forwardXPCObject:(id)a3 messageContext:(id)a4 locked:(BOOL)a5
+- (unint64_t)forwardXPCObject:(id)object messageContext:(id)context locked:(BOOL)locked
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
 
-  if (!a5)
+  if (!locked)
   {
     internal = self->_internal;
     os_unfair_recursive_lock_lock_with_options();
@@ -421,11 +421,11 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if (!a4 || !objc_msgSend_shouldBoost(a4, a2, a3))
+  if (!context || !objc_msgSend_shouldBoost(context, a2, object))
   {
     xpc_connection_send_notification();
 LABEL_12:
-    if (a5)
+    if (locked)
     {
       return 0;
     }
@@ -433,10 +433,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (objc_msgSend_isSync(a4, v11, v12))
+  if (objc_msgSend_isSync(context, v11, v12))
   {
-    v15 = xpc_connection_send_message_with_reply_sync(v10, a3);
-    if (!a5)
+    v15 = xpc_connection_send_message_with_reply_sync(v10, object);
+    if (!locked)
     {
       v16 = self->_internal;
       os_unfair_recursive_lock_unlock();
@@ -447,7 +447,7 @@ LABEL_12:
     return 0;
   }
 
-  if (objc_msgSend_needReply(a4, v13, v14))
+  if (objc_msgSend_needReply(context, v13, v14))
   {
     if (qword_1EAED90F0 != -1)
     {
@@ -459,19 +459,19 @@ LABEL_12:
     handler[2] = sub_1959B794C;
     handler[3] = &unk_1E7439570;
     handler[4] = v10;
-    xpc_connection_send_message_with_reply(v10, a3, qword_1EAED90E8, handler);
+    xpc_connection_send_message_with_reply(v10, object, qword_1EAED90E8, handler);
   }
 
-  else if (objc_msgSend_isReply(a4, v19, v20) && objc_msgSend_xpcMessage(a4, v21, v22) && (v25 = objc_msgSend_localObject(a4, v23, v24), objc_msgSend_isSameConnection_(v25, v26, v10)))
+  else if (objc_msgSend_isReply(context, v19, v20) && objc_msgSend_xpcMessage(context, v21, v22) && (v25 = objc_msgSend_localObject(context, v23, v24), objc_msgSend_isSameConnection_(v25, v26, v10)))
   {
-    v29 = objc_msgSend_xpcMessage(a4, v27, v28);
+    v29 = objc_msgSend_xpcMessage(context, v27, v28);
     reply = xpc_dictionary_create_reply(v29);
     if (reply)
     {
       v31 = reply;
-      value = xpc_dictionary_get_value(a3, "invocation");
+      value = xpc_dictionary_get_value(object, "invocation");
       xpc_dictionary_set_value(v31, "invocation", value);
-      int64 = xpc_dictionary_get_int64(a3, "priority");
+      int64 = xpc_dictionary_get_int64(object, "priority");
       xpc_dictionary_set_int64(v31, "priority", int64);
       xpc_connection_send_message(v10, v31);
       xpc_release(v31);
@@ -480,11 +480,11 @@ LABEL_12:
 
   else
   {
-    xpc_connection_send_message(v10, a3);
+    xpc_connection_send_message(v10, object);
   }
 
   kdebug_trace();
-  if (!a5)
+  if (!locked)
   {
 LABEL_13:
     v17 = self->_internal;
@@ -494,7 +494,7 @@ LABEL_13:
   return 0;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (!*(self->_internal + 1))
   {
@@ -514,12 +514,12 @@ LABEL_13:
     else if (!dword_1ED517080)
     {
 LABEL_11:
-      v34 = objc_msgSend_callStackSymbols(MEMORY[0x1E696AF00], a2, a3);
+      v34 = objc_msgSend_callStackSymbols(MEMORY[0x1E696AF00], a2, invocation);
       NSLog(&cfstr_Imremoteobject_4.isa, v34);
       return;
     }
 
-    v23 = objc_msgSend_selector(a3, a2, a3);
+    v23 = objc_msgSend_selector(invocation, a2, invocation);
     v24 = NSStringFromSelector(v23);
     _IMLog(@"Messaging invalid remote port: %@", v25, v26, v27, v28, v29, v30, v31, v24);
     goto LABEL_11;
@@ -544,11 +544,11 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v7 = objc_msgSend_selector(a3, v5, v6);
+  v7 = objc_msgSend_selector(invocation, v5, v6);
   v8 = NSStringFromSelector(v7);
   _IMLog(@"*** Forwarding invocation: %@", v9, v10, v11, v12, v13, v14, v15, v8);
 LABEL_5:
-  v16 = IMCreateXPCObjectFromInvocation(a3);
+  v16 = IMCreateXPCObjectFromInvocation(invocation);
   if (v16)
   {
     v18 = v16;
@@ -571,33 +571,33 @@ LABEL_5:
   }
 }
 
-- (void)setPid:(int)a3
+- (void)setPid:(int)pid
 {
   internal = self->_internal;
   os_unfair_recursive_lock_lock_with_options();
-  *(self->_internal + 14) = a3;
+  *(self->_internal + 14) = pid;
   v6 = self->_internal + 48;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setProcessName:(id)a3
+- (void)setProcessName:(id)name
 {
   v3 = *(self->_internal + 5);
-  if (v3 != a3)
+  if (v3 != name)
   {
 
-    *(self->_internal + 5) = a3;
+    *(self->_internal + 5) = name;
   }
 }
 
-- (void)setPortName:(id)a3
+- (void)setPortName:(id)name
 {
   v3 = *(self->_internal + 4);
-  if (v3 != a3)
+  if (v3 != name)
   {
 
-    *(self->_internal + 4) = a3;
+    *(self->_internal + 4) = name;
   }
 }
 

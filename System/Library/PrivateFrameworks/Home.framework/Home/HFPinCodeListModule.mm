@@ -1,28 +1,28 @@
 @interface HFPinCodeListModule
 - (HFItemSectionAccessoryButtonHeaderDelegate)editButtonHeaderDelegate;
-- (HFPinCodeListModule)initWithItemUpdater:(id)a3 pinCodeManager:(id)a4 listType:(unint64_t)a5 home:(id)a6 forAccessory:(id)a7;
+- (HFPinCodeListModule)initWithItemUpdater:(id)updater pinCodeManager:(id)manager listType:(unint64_t)type home:(id)home forAccessory:(id)accessory;
 - (id)_sectionIdentifier;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 @end
 
 @implementation HFPinCodeListModule
 
-- (HFPinCodeListModule)initWithItemUpdater:(id)a3 pinCodeManager:(id)a4 listType:(unint64_t)a5 home:(id)a6 forAccessory:(id)a7
+- (HFPinCodeListModule)initWithItemUpdater:(id)updater pinCodeManager:(id)manager listType:(unint64_t)type home:(id)home forAccessory:(id)accessory
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  managerCopy = manager;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v19.receiver = self;
   v19.super_class = HFPinCodeListModule;
-  v16 = [(HFItemModule *)&v19 initWithItemUpdater:a3];
+  v16 = [(HFItemModule *)&v19 initWithItemUpdater:updater];
   v17 = v16;
   if (v16)
   {
-    v16->_listType = a5;
-    objc_storeStrong(&v16->_pinCodeManager, a4);
-    objc_storeStrong(&v17->_home, a6);
-    objc_storeStrong(&v17->_accessory, a7);
+    v16->_listType = type;
+    objc_storeStrong(&v16->_pinCodeManager, manager);
+    objc_storeStrong(&v17->_home, home);
+    objc_storeStrong(&v17->_accessory, accessory);
   }
 
   return v17;
@@ -47,7 +47,7 @@
 
       v8 = [HFStaticItemProvider alloc];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [(HFPinCodeListModule *)self addPinCodeItem];
+      addPinCodeItem = [(HFPinCodeListModule *)self addPinCodeItem];
     }
 
     else
@@ -56,10 +56,10 @@
       {
 LABEL_8:
         objc_opt_class();
-        v15 = [(HFItemModule *)self itemUpdater];
+        itemUpdater = [(HFItemModule *)self itemUpdater];
         if (objc_opt_isKindOfClass())
         {
-          v16 = v15;
+          v16 = itemUpdater;
         }
 
         else
@@ -70,16 +70,16 @@ LABEL_8:
         v17 = v16;
 
         v18 = [HFPinCodeItemProvider alloc];
-        v19 = [v17 home];
+        home = [v17 home];
 
-        v20 = [(HFPinCodeListModule *)self pinCodeManager];
-        v21 = [(HFPinCodeListModule *)self listType];
-        v22 = [(HFPinCodeListModule *)self accessory];
-        v23 = [(HFPinCodeItemProvider *)v18 initWithHome:v19 pinCodeManager:v20 listType:v21 forAccessory:v22];
+        pinCodeManager = [(HFPinCodeListModule *)self pinCodeManager];
+        listType = [(HFPinCodeListModule *)self listType];
+        accessory = [(HFPinCodeListModule *)self accessory];
+        v23 = [(HFPinCodeItemProvider *)v18 initWithHome:home pinCodeManager:pinCodeManager listType:listType forAccessory:accessory];
         [(HFPinCodeListModule *)self setPinCodeItemProvider:v23];
 
-        v24 = [(HFPinCodeListModule *)self pinCodeItemProvider];
-        [(NSSet *)v5 addObject:v24];
+        pinCodeItemProvider = [(HFPinCodeListModule *)self pinCodeItemProvider];
+        [(NSSet *)v5 addObject:pinCodeItemProvider];
 
         v25 = self->_itemProviders;
         self->_itemProviders = v5;
@@ -94,11 +94,11 @@ LABEL_8:
 
       v8 = [HFStaticItemProvider alloc];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [(HFPinCodeListModule *)self revokePinCodeItem];
+      addPinCodeItem = [(HFPinCodeListModule *)self revokePinCodeItem];
     }
 
-    v12 = v10;
-    v13 = [v9 setWithObject:v10];
+    v12 = addPinCodeItem;
+    v13 = [v9 setWithObject:addPinCodeItem];
     v14 = [(HFStaticItemProvider *)v8 initWithItems:v13];
     [(NSSet *)v5 addObject:v14];
 
@@ -177,28 +177,28 @@ id __36__HFPinCodeListModule_itemProviders__block_invoke_15()
 
 - (id)_sectionIdentifier
 {
-  v2 = [(HFPinCodeListModule *)self listType];
-  if (v2 - 1 > 3)
+  listType = [(HFPinCodeListModule *)self listType];
+  if (listType - 1 > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_277DF7D20[v2 - 1];
+    v3 = off_277DF7D20[listType - 1];
   }
 
   return [MEMORY[0x277CCACA8] stringWithFormat:@"PinCodes-%@", v3];
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPinCodeListModule *)self pinCodeItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 allObjects];
-  v8 = [v7 mutableCopy];
+  itemsCopy = items;
+  pinCodeItemProvider = [(HFPinCodeListModule *)self pinCodeItemProvider];
+  items = [pinCodeItemProvider items];
+  allObjects = [items allObjects];
+  v8 = [allObjects mutableCopy];
 
   v9 = +[HFItemSection defaultItemComparator];
   [v8 sortUsingComparator:v9];
@@ -209,27 +209,27 @@ id __36__HFPinCodeListModule_itemProviders__block_invoke_15()
     goto LABEL_24;
   }
 
-  v10 = [(HFPinCodeListModule *)self addPinCodeItem];
+  addPinCodeItem = [(HFPinCodeListModule *)self addPinCodeItem];
 
-  if (v10)
+  if (addPinCodeItem)
   {
-    v11 = [(HFPinCodeListModule *)self addPinCodeItem];
+    addPinCodeItem2 = [(HFPinCodeListModule *)self addPinCodeItem];
   }
 
   else
   {
-    v13 = [(HFPinCodeListModule *)self revokePinCodeItem];
+    revokePinCodeItem = [(HFPinCodeListModule *)self revokePinCodeItem];
 
-    if (!v13)
+    if (!revokePinCodeItem)
     {
       goto LABEL_11;
     }
 
-    v11 = [(HFPinCodeListModule *)self revokePinCodeItem];
+    addPinCodeItem2 = [(HFPinCodeListModule *)self revokePinCodeItem];
   }
 
-  v14 = v11;
-  [v8 addObject:v11];
+  v14 = addPinCodeItem2;
+  [v8 addObject:addPinCodeItem2];
 
 LABEL_11:
   v15 = [(HFPinCodeListModule *)self listType]- 1;
@@ -244,20 +244,20 @@ LABEL_11:
   }
 
   v17 = [HFMutableItemSection alloc];
-  v18 = [(HFPinCodeListModule *)self _sectionIdentifier];
-  v19 = [(HFItemSection *)v17 initWithIdentifier:v18];
+  _sectionIdentifier = [(HFPinCodeListModule *)self _sectionIdentifier];
+  v19 = [(HFItemSection *)v17 initWithIdentifier:_sectionIdentifier];
 
-  [(HFMutableItemSection *)v19 setItems:v8 filteringToDisplayedItems:v4];
+  [(HFMutableItemSection *)v19 setItems:v8 filteringToDisplayedItems:itemsCopy];
   [(HFItemSection *)v19 setHeaderTitle:v16];
-  v20 = [(HFPinCodeListModule *)self accessory];
+  accessory = [(HFPinCodeListModule *)self accessory];
 
-  if (!v20)
+  if (!accessory)
   {
     goto LABEL_23;
   }
 
-  v21 = [(HFPinCodeListModule *)self listType];
-  switch(v21)
+  listType = [(HFPinCodeListModule *)self listType];
+  switch(listType)
   {
     case 3uLL:
       v22 = @"HFPinCodeRemovedUsersSectionFooter";
@@ -266,16 +266,16 @@ LABEL_11:
       v23 = _HFLocalizedStringWithDefaultValue(@"HFPinCodeListGuestsHeaderButtonEditTitle", @"HFPinCodeListGuestsHeaderButtonEditTitle", 1);
       [(HFItemSection *)v19 setHeaderAccessoryButtonTitle:v23];
 
-      v24 = [(HFPinCodeListModule *)self editButtonHeaderDelegate];
-      [(HFItemSection *)v19 setHeaderAccessoryButtonDelegate:v24];
+      editButtonHeaderDelegate = [(HFPinCodeListModule *)self editButtonHeaderDelegate];
+      [(HFItemSection *)v19 setHeaderAccessoryButtonDelegate:editButtonHeaderDelegate];
 LABEL_22:
 
       break;
     case 1uLL:
       v22 = @"HFPinCodeUserSectionFooter";
 LABEL_21:
-      v24 = _HFLocalizedStringWithDefaultValue(v22, v22, 1);
-      [(HFItemSection *)v19 setFooterTitle:v24];
+      editButtonHeaderDelegate = _HFLocalizedStringWithDefaultValue(v22, v22, 1);
+      [(HFItemSection *)v19 setFooterTitle:editButtonHeaderDelegate];
       goto LABEL_22;
   }
 

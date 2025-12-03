@@ -11,16 +11,16 @@
   v8 = a3;
   v9 = a5;
   v10 = objc_alloc_init(MEMORY[0x277D0FCB0]);
-  v11 = [a1 _dayIndexAfterLastDeviationOfType:0 profile:v8 calendar:v9];
+  v11 = [self _dayIndexAfterLastDeviationOfType:0 profile:v8 calendar:v9];
   [v10 setJulianDayMinAnalysisWindowStartProlonged:v11];
 
-  v12 = [a1 _dayIndexAfterLastDeviationOfType:1 profile:v8 calendar:v9];
+  v12 = [self _dayIndexAfterLastDeviationOfType:1 profile:v8 calendar:v9];
   [v10 setJulianDayMinAnalysisWindowStartSpotting:v12];
 
-  v13 = [a1 _dayIndexAfterLastDeviationOfType:2 profile:v8 calendar:v9];
+  v13 = [self _dayIndexAfterLastDeviationOfType:2 profile:v8 calendar:v9];
   [v10 setJulianDayMinAnalysisWindowStartIrregular:v13];
 
-  v14 = [a1 _dayIndexAfterLastDeviationOfType:3 profile:v8 calendar:v9];
+  v14 = [self _dayIndexAfterLastDeviationOfType:3 profile:v8 calendar:v9];
   [v10 setJulianDayMinAnalysisWindowStartInfrequent:v14];
 
   v15 = HKShowSensitiveLogItems();
@@ -34,11 +34,11 @@
       v18 = v17;
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [v10 julianDayMinAnalysisWindowStartProlonged];
+      julianDayMinAnalysisWindowStartProlonged = [v10 julianDayMinAnalysisWindowStartProlonged];
       *buf = 138543618;
       v75 = v19;
       v76 = 2112;
-      v77 = v21;
+      v77 = julianDayMinAnalysisWindowStartProlonged;
       _os_log_impl(&dword_2293D1000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Minimum deviation analysis start day (prolonged): %@", buf, 0x16u);
 
       v16 = MEMORY[0x277CCC2E8];
@@ -51,11 +51,11 @@
       v23 = v22;
       v24 = objc_opt_class();
       v25 = v24;
-      v26 = [v10 julianDayMinAnalysisWindowStartSpotting];
+      julianDayMinAnalysisWindowStartSpotting = [v10 julianDayMinAnalysisWindowStartSpotting];
       *buf = 138543618;
       v75 = v24;
       v76 = 2112;
-      v77 = v26;
+      v77 = julianDayMinAnalysisWindowStartSpotting;
       _os_log_impl(&dword_2293D1000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Minimum deviation analysis start day (spotting): %@", buf, 0x16u);
 
       v16 = MEMORY[0x277CCC2E8];
@@ -68,11 +68,11 @@
       v28 = v27;
       v29 = objc_opt_class();
       v30 = v29;
-      v31 = [v10 julianDayMinAnalysisWindowStartIrregular];
+      julianDayMinAnalysisWindowStartIrregular = [v10 julianDayMinAnalysisWindowStartIrregular];
       *buf = 138543618;
       v75 = v29;
       v76 = 2112;
-      v77 = v31;
+      v77 = julianDayMinAnalysisWindowStartIrregular;
       _os_log_impl(&dword_2293D1000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] Minimum deviation analysis start day (irregular): %@", buf, 0x16u);
 
       v16 = MEMORY[0x277CCC2E8];
@@ -85,21 +85,21 @@
       v33 = v32;
       v34 = objc_opt_class();
       v35 = v34;
-      v36 = [v10 julianDayMinAnalysisWindowStartInfrequent];
+      julianDayMinAnalysisWindowStartInfrequent = [v10 julianDayMinAnalysisWindowStartInfrequent];
       *buf = 138543618;
       v75 = v34;
       v76 = 2112;
-      v77 = v36;
+      v77 = julianDayMinAnalysisWindowStartInfrequent;
       _os_log_impl(&dword_2293D1000, v33, OS_LOG_TYPE_DEFAULT, "[%{public}@] Minimum deviation analysis start day (infrequent): %@", buf, 0x16u);
 
       v16 = MEMORY[0x277CCC2E8];
     }
   }
 
-  v37 = [v8 onboardingCompletionManager];
+  onboardingCompletionManager = [v8 onboardingCompletionManager];
   v38 = *MEMORY[0x277CCC098];
   v73 = 0;
-  v39 = [v37 onboardingCompletionsForHighestVersionOfFeatureIdentifier:v38 error:&v73];
+  v39 = [onboardingCompletionManager onboardingCompletionsForHighestVersionOfFeatureIdentifier:v38 error:&v73];
   v40 = v73;
 
   if (!v39)
@@ -115,10 +115,10 @@
   if ([v39 count])
   {
     v42 = [v39 hk_firstSortedObjectWithComparison:&__block_literal_global];
-    v43 = [v42 completionDate];
+    completionDate = [v42 completionDate];
 
-    v69 = v43;
-    v71 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v43, "hk_dayIndexWithCalendar:", v9)}];
+    v69 = completionDate;
+    v71 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(completionDate, "hk_dayIndexWithCalendar:", v9)}];
     [MEMORY[0x277D10718] hdmc_syncedMenstrualCyclesDefaultsDomainWithProfile:v8];
     v68 = v72 = v40;
     v44 = [v68 hdmc_unconfirmedDeviationDismissalDayIndexWithError:&v72];
@@ -143,16 +143,16 @@ LABEL_24:
           if (v52 && v71)
           {
             v67 = MEMORY[0x277CCABB0];
-            v56 = [v52 integerValue];
-            v57 = [v71 integerValue];
-            if (v56 <= v57)
+            integerValue = [v52 integerValue];
+            integerValue2 = [v71 integerValue];
+            if (integerValue <= integerValue2)
             {
-              v58 = v57;
+              v58 = integerValue2;
             }
 
             else
             {
-              v58 = v56;
+              v58 = integerValue;
             }
 
             v54 = [v67 numberWithInteger:v58];

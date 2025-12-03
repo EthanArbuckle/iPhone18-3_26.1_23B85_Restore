@@ -10,8 +10,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 unit];
-    v8 = [v6 measurementByConvertingToUnit:v7];
+    unit = [self unit];
+    v8 = [v6 measurementByConvertingToUnit:unit];
 
     v6 = v8;
   }
@@ -47,7 +47,7 @@
       v45[1] = 3221225472;
       v45[2] = __85__NSMeasurement_INCodableAttributeRelationComparing___intents_compareValue_relation___block_invoke;
       v45[3] = &unk_1E7286E18;
-      v45[4] = a1;
+      v45[4] = self;
       v6 = [v11 if_flatMap:v45];
     }
   }
@@ -60,7 +60,7 @@
       if (a4 != 6)
       {
         v18 = MEMORY[0x1E696AD98];
-        [a1 doubleValue];
+        [self doubleValue];
         v14 = [v18 numberWithDouble:?];
         v19 = MEMORY[0x1E696AD98];
         v16 = v6;
@@ -96,7 +96,7 @@
       }
 
       v21 = MEMORY[0x1E696AD98];
-      [a1 doubleValue];
+      [self doubleValue];
       v22 = [v21 numberWithDouble:?];
       v23 = MEMORY[0x1E696AD98];
       v24 = v6;
@@ -155,11 +155,11 @@
 
       if ([v14 count] == 2)
       {
-        v39 = [v14 firstObject];
-        v40 = [v14 lastObject];
-        if ([a1 _intents_compareValue:v39 relation:5])
+        firstObject = [v14 firstObject];
+        lastObject = [v14 lastObject];
+        if ([self _intents_compareValue:firstObject relation:5])
         {
-          v12 = [a1 _intents_compareValue:v40 relation:7];
+          v12 = [self _intents_compareValue:lastObject relation:7];
         }
 
         else
@@ -187,7 +187,7 @@
     }
 
 LABEL_25:
-    v12 = [a1 isEqual:v6];
+    v12 = [self isEqual:v6];
     goto LABEL_65;
   }
 
@@ -198,7 +198,7 @@ LABEL_25:
       if (a4 != 4)
       {
         v13 = MEMORY[0x1E696AD98];
-        [a1 doubleValue];
+        [self doubleValue];
         v14 = [v13 numberWithDouble:?];
         v15 = MEMORY[0x1E696AD98];
         v16 = v6;
@@ -233,7 +233,7 @@ LABEL_56:
         }
 
 LABEL_46:
-        v12 = [a1 isEqual:v16];
+        v12 = [self isEqual:v16];
 LABEL_57:
 
 LABEL_58:
@@ -241,7 +241,7 @@ LABEL_58:
       }
 
       v28 = MEMORY[0x1E696AD98];
-      [a1 doubleValue];
+      [self doubleValue];
       v22 = [v28 numberWithDouble:?];
       v29 = MEMORY[0x1E696AD98];
       v30 = v6;
@@ -278,7 +278,7 @@ LABEL_61:
     }
 
 LABEL_22:
-    v12 = [a1 isEqual:v6] ^ 1;
+    v12 = [self isEqual:v6] ^ 1;
     goto LABEL_65;
   }
 

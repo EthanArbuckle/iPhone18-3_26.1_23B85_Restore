@@ -1,13 +1,13 @@
 @interface BKDisplayRenderOverlayPinkForTesting
-+ (id)overlayWithLevel:(float)a3 display:(id)a4;
++ (id)overlayWithLevel:(float)level display:(id)display;
 + (void)doItHide;
 + (void)doItShow;
 + (void)doItShowKernel;
-- (BKDisplayRenderOverlayPinkForTesting)initWithOverlayDescriptor:(id)a3 level:(float)a4;
+- (BKDisplayRenderOverlayPinkForTesting)initWithOverlayDescriptor:(id)descriptor level:(float)level;
 - (BOOL)_applyProgressIndicatorPropertiesToKernelIfNecessary;
-- (BOOL)_presentWithAnimationSettings:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)_dismissWithAnimationSettings:(id)a3;
+- (BOOL)_presentWithAnimationSettings:(id)settings;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)_dismissWithAnimationSettings:(id)settings;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
 
 - (BOOL)_applyProgressIndicatorPropertiesToKernelIfNecessary
 {
-  v3 = [(BKDisplayRenderOverlay *)self descriptor];
-  v4 = [v3 progressIndicatorProperties];
+  descriptor = [(BKDisplayRenderOverlay *)self descriptor];
+  progressIndicatorProperties = [descriptor progressIndicatorProperties];
 
-  if (v4)
+  if (progressIndicatorProperties)
   {
     v32 = 0;
     v31 = 0u;
     v30 = 0u;
-    if ([v4 style] == 2)
+    if ([progressIndicatorProperties style] == 2)
     {
       v5 = 22;
     }
@@ -37,13 +37,13 @@
     v27 = 0.0;
     v28 = 0.0;
     v26 = 1.0;
-    v6 = [(BKDisplayRenderOverlay *)self display];
-    v7 = [v6 uniqueId];
-    sub_100007090(v7, &v28, &v27, &v26, 0, 0);
+    display = [(BKDisplayRenderOverlay *)self display];
+    uniqueId = [display uniqueId];
+    sub_100007090(uniqueId, &v28, &v27, &v26, 0, 0);
 
     v8 = v28 / v26;
     v9 = v27 / v26;
-    [v4 position];
+    [progressIndicatorProperties position];
     v11 = v10;
     v13 = v12;
     if (BSFloatEqualToFloat())
@@ -71,9 +71,9 @@
     v17 = sub_100052810();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v4 style];
+      style = [progressIndicatorProperties style];
       *buf = 67109632;
-      v34 = v25;
+      v34 = style;
       v35 = 1024;
       v36 = v14;
       v37 = 1024;
@@ -117,11 +117,11 @@ LABEL_19:
   return v15;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = BKDisplayRenderOverlayPinkForTesting;
-  v4 = [(BKDisplayRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BKDisplayRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   context = self->_context;
   if (context)
   {
@@ -132,7 +132,7 @@ LABEL_19:
   return v4;
 }
 
-- (void)_dismissWithAnimationSettings:(id)a3
+- (void)_dismissWithAnimationSettings:(id)settings
 {
   [(CAContext *)self->_context setLayer:0];
   [(CAContext *)self->_context invalidate];
@@ -143,9 +143,9 @@ LABEL_19:
   self->_layer = 0;
 }
 
-- (BOOL)_presentWithAnimationSettings:(id)a3
+- (BOOL)_presentWithAnimationSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (self->_context)
   {
     v28 = +[NSAssertionHandler currentHandler];
@@ -196,9 +196,9 @@ LABEL_19:
     CFRelease(v12);
   }
 
-  v15 = [(BKDisplayRenderOverlay *)self descriptor];
-  v16 = [v15 display];
-  [v16 bounds];
+  descriptor = [(BKDisplayRenderOverlay *)self descriptor];
+  display = [descriptor display];
+  [display bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -224,11 +224,11 @@ LABEL_19:
   [(BKDisplayRenderOverlay *)&v3 dealloc];
 }
 
-- (BKDisplayRenderOverlayPinkForTesting)initWithOverlayDescriptor:(id)a3 level:(float)a4
+- (BKDisplayRenderOverlayPinkForTesting)initWithOverlayDescriptor:(id)descriptor level:(float)level
 {
   v7.receiver = self;
   v7.super_class = BKDisplayRenderOverlayPinkForTesting;
-  v4 = [(BKDisplayRenderOverlay *)&v7 initWithOverlayDescriptor:a3 level:?];
+  v4 = [(BKDisplayRenderOverlay *)&v7 initWithOverlayDescriptor:descriptor level:?];
   v5 = v4;
   if (v4)
   {
@@ -282,17 +282,17 @@ LABEL_19:
   [qword_100126028 presentWithAnimationSettings:0];
 }
 
-+ (id)overlayWithLevel:(float)a3 display:(id)a4
++ (id)overlayWithLevel:(float)level display:(id)display
 {
-  v5 = a4;
+  displayCopy = display;
   v6 = [BKSDisplayRenderOverlayDescriptor alloc];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 initWithName:v8 display:v5];
+  v9 = [v6 initWithName:v8 display:displayCopy];
 
   [v9 setLockBacklight:0];
   v10 = [BKDisplayRenderOverlayPinkForTesting alloc];
-  *&v11 = a3;
+  *&v11 = level;
   v12 = [(BKDisplayRenderOverlayPinkForTesting *)v10 initWithOverlayDescriptor:v9 level:v11];
 
   return v12;

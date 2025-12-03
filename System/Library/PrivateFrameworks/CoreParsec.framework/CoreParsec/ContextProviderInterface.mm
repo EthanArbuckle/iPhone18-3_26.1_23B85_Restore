@@ -1,10 +1,10 @@
 @interface ContextProviderInterface
-- (void)searchPerformedNotification:(id)a3;
+- (void)searchPerformedNotification:(id)notification;
 @end
 
 @implementation ContextProviderInterface
 
-- (void)searchPerformedNotification:(id)a3
+- (void)searchPerformedNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

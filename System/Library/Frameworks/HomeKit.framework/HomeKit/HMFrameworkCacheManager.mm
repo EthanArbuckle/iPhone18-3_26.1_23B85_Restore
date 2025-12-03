@@ -1,29 +1,29 @@
 @interface HMFrameworkCacheManager
 + (id)sharedInstance;
-- (HMFrameworkCacheManager)initWithTimerFactory:(id)a3;
+- (HMFrameworkCacheManager)initWithTimerFactory:(id)factory;
 @end
 
 @implementation HMFrameworkCacheManager
 
-- (HMFrameworkCacheManager)initWithTimerFactory:(id)a3
+- (HMFrameworkCacheManager)initWithTimerFactory:(id)factory
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  factoryCopy = factory;
   v5 = HMCreateFrameworkCacheDirectory();
   if (v5)
   {
     v6 = [[HMDiskCache alloc] initWithCachePath:v5];
     v14.receiver = self;
     v14.super_class = HMFrameworkCacheManager;
-    v7 = [(HMCacheManager *)&v14 initWithTimerFactory:v4 persistentCache:v6];
+    selfCopy = [(HMCacheManager *)&v14 initWithTimerFactory:factoryCopy persistentCache:v6];
 
-    v8 = v7;
+    v8 = selfCopy;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

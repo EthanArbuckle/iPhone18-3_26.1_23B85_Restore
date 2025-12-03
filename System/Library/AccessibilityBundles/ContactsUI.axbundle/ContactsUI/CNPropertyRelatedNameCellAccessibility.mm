@@ -1,15 +1,15 @@
 @interface CNPropertyRelatedNameCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CNPropertyRelatedNameCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPropertyCell" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CNPropertyRelatedNameCell" isKindOfClass:@"CNPropertyCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPropertyCell" hasInstanceMethod:@"copy:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CNPropertyRelatedNameCell" isKindOfClass:@"CNPropertyCell"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

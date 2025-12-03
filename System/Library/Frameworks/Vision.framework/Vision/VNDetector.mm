@@ -1,60 +1,60 @@
 @interface VNDetector
-+ (BOOL)areExistingInitializationOptions:(id)a3 compatibleWithOptions:(id)a4;
-+ (BOOL)loadedInstanceWithBoundComputeStageDevices:(id)a3 canBeUsedForRequestedComputeStageDevices:(id)a4;
-+ (BOOL)loadedInstanceWithComputeDevice:(id)a3 boundToComputeStage:(id)a4 canBeUsedForProcessingDeviceBridge:(id)a5;
-+ (BOOL)runSuccessReportingBlockSynchronously:(id)a3 detector:(id)a4 qosClass:(unsigned int)a5 error:(id *)a6;
-+ (Class)detectorClassAndConfigurationOptions:(id *)a3 forDetectorType:(id)a4 options:(id)a5 error:(id *)a6;
-+ (Class)detectorClassForDetectorType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5;
-+ (Class)detectorClassForDetectorType:(id)a3 error:(id *)a4;
++ (BOOL)areExistingInitializationOptions:(id)options compatibleWithOptions:(id)withOptions;
++ (BOOL)loadedInstanceWithBoundComputeStageDevices:(id)devices canBeUsedForRequestedComputeStageDevices:(id)stageDevices;
++ (BOOL)loadedInstanceWithComputeDevice:(id)device boundToComputeStage:(id)stage canBeUsedForProcessingDeviceBridge:(id)bridge;
++ (BOOL)runSuccessReportingBlockSynchronously:(id)synchronously detector:(id)detector qosClass:(unsigned int)class error:(id *)error;
++ (Class)detectorClassAndConfigurationOptions:(id *)options forDetectorType:(id)type options:(id)a5 error:(id *)error;
++ (Class)detectorClassForDetectorType:(id)type configuredWithOptions:(id)options error:(id *)error;
++ (Class)detectorClassForDetectorType:(id)type error:(id *)error;
 + (VNControlledCapacityTasksQueue)detectorCropCreationAsyncTasksQueue;
 + (VNControlledCapacityTasksQueue)detectorCropProcessingAsyncTasksQueue;
 + (VNControlledCapacityTasksQueue)detectorInternalProcessingAsyncTasksQueue;
-+ (id)_computeStageDeviceBindingsForConfiguration:(id)a3 error:(id *)a4;
-+ (id)_detectorClassForDetectorType:(void *)a3 options:(void *)a4 detectorCreationOptions:(uint64_t)a5 error:;
-+ (id)computeDeviceForComputeStage:(id)a3 configurationOptions:(id)a4 error:(id *)a5;
-+ (id)computeDeviceForConfiguredProcessingDeviceBridge:(id)a3 computeStage:(id)a4 supportedComputeDevices:(id)a5 error:(id *)a6;
-+ (id)computeStageDevicesForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)_computeStageDeviceBindingsForConfiguration:(id)configuration error:(id *)error;
++ (id)_detectorClassForDetectorType:(void *)type options:(void *)options detectorCreationOptions:(uint64_t)creationOptions error:;
++ (id)computeDeviceForComputeStage:(id)stage configurationOptions:(id)options error:(id *)error;
++ (id)computeDeviceForConfiguredProcessingDeviceBridge:(id)bridge computeStage:(id)stage supportedComputeDevices:(id)devices error:(id *)error;
++ (id)computeStageDevicesForConfigurationOptions:(id)options error:(id *)error;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
 + (id)detectorName;
-+ (id)detectorWithConfigurationOptions:(id)a3 forSession:(id)a4 error:(id *)a5;
-+ (id)fullyPopulatedConfigurationOptionsWithOverridingOptions:(id)a3 populateComputeDevice:(BOOL)a4;
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForEspressoModelAtPath:(id)a3 inputImageBlobName:(id)a4 analysisPixelFormatType:(unsigned int)a5 error:(id *)a6;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
++ (id)detectorWithConfigurationOptions:(id)options forSession:(id)session error:(id *)error;
++ (id)fullyPopulatedConfigurationOptionsWithOverridingOptions:(id)options populateComputeDevice:(BOOL)device;
++ (id)keyForDetectorWithConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForEspressoModelAtPath:(id)path inputImageBlobName:(id)name analysisPixelFormatType:(unsigned int)type error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
 + (unsigned)VNClassCode;
-+ (void)fullyPopulateConfigurationOptions:(id)a3;
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (void)fullyPopulateConfigurationOptions:(id)options;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (BOOL)currentQueueIsSynchronizationQueue;
-- (BOOL)getOptionalCanceller:(id *)a3 inOptions:(id)a4 error:(id *)a5;
+- (BOOL)getOptionalCanceller:(id *)canceller inOptions:(id)options error:(id *)error;
 - (BOOL)needsMetalContext;
-- (BOOL)validateImageBuffer:(id)a3 error:(id *)a4;
+- (BOOL)validateImageBuffer:(id)buffer error:(id *)error;
 - (NSString)description;
-- (VNDetector)initWithConfigurationOptions:(id)a3;
-- (id)boundComputeDeviceForComputeStage:(id)a3 error:(id *)a4;
-- (id)computeDeviceForComputeStage:(id)a3 processingOptions:(id)a4 error:(id *)a5;
-- (id)computeDeviceOfTypes:(unint64_t)a3 forComputeStage:(id)a4 processingOptions:(id)a5 error:(id *)a6;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)newMetalContextForConfigurationOptions:(id)a3 error:(id *)a4;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)requiredCancellerInOptions:(id)a3 error:(id *)a4;
-- (id)validatedImageBufferFromOptions:(id)a3 error:(id *)a4;
+- (VNDetector)initWithConfigurationOptions:(id)options;
+- (id)boundComputeDeviceForComputeStage:(id)stage error:(id *)error;
+- (id)computeDeviceForComputeStage:(id)stage processingOptions:(id)options error:(id *)error;
+- (id)computeDeviceOfTypes:(unint64_t)types forComputeStage:(id)stage processingOptions:(id)options error:(id *)error;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)newMetalContextForConfigurationOptions:(id)options error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)requiredCancellerInOptions:(id)options error:(id *)error;
+- (id)validatedImageBufferFromOptions:(id)options error:(id *)error;
 - (void)dealloc;
-- (void)produceObservationsWithRegionOfInterest:(CGRect)a3 detectorProcessingOptions:(NSDictionary *)a4 completionHandler:(id)a5;
-- (void)recordImageCropQuickLookInfoFromOptions:(id)a3 toObservation:(id)a4;
-- (void)recordImageCropQuickLookInfoFromOptionsSafe:(id)a3 toObservation:(id)a4;
-- (void)recordImageCropQuickLookInfoToOptions:(id)a3 cacheKey:(id)a4 imageBuffer:(id)a5;
-- (void)recordImageCropQuickLookInfoToOptionsSafe:(id)a3 cacheKey:(id)a4 imageBuffer:(id)a5;
+- (void)produceObservationsWithRegionOfInterest:(CGRect)interest detectorProcessingOptions:(NSDictionary *)options completionHandler:(id)handler;
+- (void)recordImageCropQuickLookInfoFromOptions:(id)options toObservation:(id)observation;
+- (void)recordImageCropQuickLookInfoFromOptionsSafe:(id)safe toObservation:(id)observation;
+- (void)recordImageCropQuickLookInfoToOptions:(id)options cacheKey:(id)key imageBuffer:(id)buffer;
+- (void)recordImageCropQuickLookInfoToOptionsSafe:(id)safe cacheKey:(id)key imageBuffer:(id)buffer;
 @end
 
 @implementation VNDetector
 
-+ (BOOL)areExistingInitializationOptions:(id)a3 compatibleWithOptions:(id)a4
++ (BOOL)areExistingInitializationOptions:(id)options compatibleWithOptions:(id)withOptions
 {
   v4 = sub_1A5FD3C0C();
   v5 = sub_1A5FD3C0C();
@@ -64,22 +64,22 @@
   return v6 & 1;
 }
 
-- (void)produceObservationsWithRegionOfInterest:(CGRect)a3 detectorProcessingOptions:(NSDictionary *)a4 completionHandler:(id)a5
+- (void)produceObservationsWithRegionOfInterest:(CGRect)interest detectorProcessingOptions:(NSDictionary *)options completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB1F30E0);
   MEMORY[0x1EEE9AC00](v12 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a5);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
   v16[2] = x;
   v16[3] = y;
   v16[4] = width;
   v16[5] = height;
-  *(v16 + 6) = a4;
+  *(v16 + 6) = options;
   *(v16 + 7) = v15;
   *(v16 + 8) = self;
   v17 = sub_1A5FD40AC();
@@ -94,8 +94,8 @@
   v19[3] = 0;
   v19[4] = &unk_1A6016AD0;
   v19[5] = v18;
-  v20 = a4;
-  v21 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1A5C5AA24(0, 0, v14, &unk_1A6016AE0, v19);
 }
 
@@ -104,8 +104,8 @@
   v15.receiver = self;
   v15.super_class = VNDetector;
   v3 = [(VNDetector *)&v15 description];
-  v4 = [(VNDetector *)self boundComputeStageDevices];
-  if ([v4 count])
+  boundComputeStageDevices = [(VNDetector *)self boundComputeStageDevices];
+  if ([boundComputeStageDevices count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = MEMORY[0x1E69E9820];
@@ -114,7 +114,7 @@
     v13 = &unk_1E77B3F58;
     v6 = v5;
     v14 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v10];
+    [boundComputeStageDevices enumerateKeysAndObjectsUsingBlock:&v10];
     v7 = [v6 componentsJoinedByString:{@", "}];
     v8 = [v3 stringByAppendingFormat:@" bound to [%@]", v7, v10, v11, v12, v13];
 
@@ -132,68 +132,68 @@ void __25__VNDetector_description__block_invoke(uint64_t a1, void *a2, void *a3)
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)recordImageCropQuickLookInfoFromOptionsSafe:(id)a3 toObservation:(id)a4
+- (void)recordImageCropQuickLookInfoFromOptionsSafe:(id)safe toObservation:(id)observation
 {
-  v7 = a3;
-  v6 = a4;
+  safeCopy = safe;
+  observationCopy = observation;
   os_unfair_lock_lock(&self->_detectorMultiSessionAccessLock);
-  [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v7 toObservation:v6];
+  [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:safeCopy toObservation:observationCopy];
   os_unfair_lock_unlock(&self->_detectorMultiSessionAccessLock);
 }
 
-- (void)recordImageCropQuickLookInfoToOptionsSafe:(id)a3 cacheKey:(id)a4 imageBuffer:(id)a5
+- (void)recordImageCropQuickLookInfoToOptionsSafe:(id)safe cacheKey:(id)key imageBuffer:(id)buffer
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  safeCopy = safe;
+  keyCopy = key;
+  bufferCopy = buffer;
   os_unfair_lock_lock(&self->_detectorMultiSessionAccessLock);
-  [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v10 cacheKey:v8 imageBuffer:v9];
+  [(VNDetector *)self recordImageCropQuickLookInfoToOptions:safeCopy cacheKey:keyCopy imageBuffer:bufferCopy];
   os_unfair_lock_unlock(&self->_detectorMultiSessionAccessLock);
 }
 
-- (void)recordImageCropQuickLookInfoFromOptions:(id)a3 toObservation:(id)a4
+- (void)recordImageCropQuickLookInfoFromOptions:(id)options toObservation:(id)observation
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 objectForKey:@"VNDetectorInternalProcessOption_CacheKeys"];
-  [v5 setRequestImageBuffersCacheKeys:v6];
-  v7 = [v8 objectForKey:@"VNDetectorInternalProcessOption_ImageBuffers"];
-  [v5 setRequestImageBuffers:v7];
+  optionsCopy = options;
+  observationCopy = observation;
+  v6 = [optionsCopy objectForKey:@"VNDetectorInternalProcessOption_CacheKeys"];
+  [observationCopy setRequestImageBuffersCacheKeys:v6];
+  v7 = [optionsCopy objectForKey:@"VNDetectorInternalProcessOption_ImageBuffers"];
+  [observationCopy setRequestImageBuffers:v7];
 }
 
-- (void)recordImageCropQuickLookInfoToOptions:(id)a3 cacheKey:(id)a4 imageBuffer:(id)a5
+- (void)recordImageCropQuickLookInfoToOptions:(id)options cacheKey:(id)key imageBuffer:(id)buffer
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
-  [v9 addPointer:v7];
-  v10 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-  [v10 addPointer:v8];
-  [v11 setObject:v9 forKey:@"VNDetectorInternalProcessOption_CacheKeys"];
-  [v11 setObject:v10 forKey:@"VNDetectorInternalProcessOption_ImageBuffers"];
+  optionsCopy = options;
+  keyCopy = key;
+  bufferCopy = buffer;
+  strongObjectsPointerArray = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
+  [strongObjectsPointerArray addPointer:keyCopy];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  [weakObjectsPointerArray addPointer:bufferCopy];
+  [optionsCopy setObject:strongObjectsPointerArray forKey:@"VNDetectorInternalProcessOption_CacheKeys"];
+  [optionsCopy setObject:weakObjectsPointerArray forKey:@"VNDetectorInternalProcessOption_ImageBuffers"];
 }
 
-- (id)computeDeviceOfTypes:(unint64_t)a3 forComputeStage:(id)a4 processingOptions:(id)a5 error:(id *)a6
+- (id)computeDeviceOfTypes:(unint64_t)types forComputeStage:(id)stage processingOptions:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(VNDetector *)self computeDeviceForComputeStage:v10 processingOptions:v11 error:a6];
+  stageCopy = stage;
+  optionsCopy = options;
+  v12 = [(VNDetector *)self computeDeviceForComputeStage:stageCopy processingOptions:optionsCopy error:error];
   if (!v12)
   {
     goto LABEL_6;
   }
 
-  if ([VNComputeDeviceUtilities computeDevice:v12 isOneTypeOfTypes:a3])
+  if ([VNComputeDeviceUtilities computeDevice:v12 isOneTypeOfTypes:types])
   {
     v13 = v12;
     goto LABEL_7;
   }
 
-  if (a6)
+  if (error)
   {
     [VNError errorForUnsupportedComputeDevice:v12];
-    *a6 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -207,14 +207,14 @@ LABEL_7:
   return v13;
 }
 
-- (id)computeDeviceForComputeStage:(id)a3 processingOptions:(id)a4 error:(id *)a5
+- (id)computeDeviceForComputeStage:(id)stage processingOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VNDetector *)self boundComputeStageDevices];
-  v11 = [v10 objectForKeyedSubscript:v8];
-  v12 = [v9 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  stageCopy = stage;
+  optionsCopy = options;
+  boundComputeStageDevices = [(VNDetector *)self boundComputeStageDevices];
+  v11 = [boundComputeStageDevices objectForKeyedSubscript:stageCopy];
+  v12 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+  v13 = [v12 objectForKeyedSubscript:stageCopy];
   if (!v13)
   {
     if (!v11)
@@ -228,11 +228,11 @@ LABEL_7:
   if (!v11)
   {
 LABEL_9:
-    v15 = [(VNDetector *)self configurationOptions];
-    v16 = [v15 mutableCopy];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v16 = [configurationOptions mutableCopy];
 
-    [v16 addEntriesFromDictionary:v9];
-    v14 = [objc_opt_class() computeDeviceForComputeStage:v8 configurationOptions:v16 error:a5];
+    [v16 addEntriesFromDictionary:optionsCopy];
+    v14 = [objc_opt_class() computeDeviceForComputeStage:stageCopy configurationOptions:v16 error:error];
 
     goto LABEL_10;
   }
@@ -250,10 +250,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
     [VNError errorForUnsupportedComputeDevice:v13];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -266,50 +266,50 @@ LABEL_10:
   return v14;
 }
 
-- (id)requiredCancellerInOptions:(id)a3 error:(id *)a4
+- (id)requiredCancellerInOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Canceller" inOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Canceller" inOptions:optionsCopy error:error];
 
   return v6;
 }
 
-- (BOOL)getOptionalCanceller:(id *)a3 inOptions:(id)a4 error:(id *)a5
+- (BOOL)getOptionalCanceller:(id *)canceller inOptions:(id)options error:(id *)error
 {
-  v7 = a4;
-  LOBYTE(a5) = [VNValidationUtilities getOptionalObject:a3 ofClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Canceller" inOptions:v7 error:a5];
+  optionsCopy = options;
+  LOBYTE(error) = [VNValidationUtilities getOptionalObject:canceller ofClass:objc_opt_class() forKey:@"VNDetectorProcessOption_Canceller" inOptions:optionsCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)boundComputeDeviceForComputeStage:(id)a3 error:(id *)a4
+- (id)boundComputeDeviceForComputeStage:(id)stage error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNDetector *)self boundComputeStageDevices];
-  v8 = [v7 objectForKey:v6];
+  stageCopy = stage;
+  boundComputeStageDevices = [(VNDetector *)self boundComputeStageDevices];
+  v8 = [boundComputeStageDevices objectForKey:stageCopy];
   v9 = v8;
   if (v8)
   {
     v10 = v8;
   }
 
-  else if (a4)
+  else if (error)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ was not bound to a compute device", v6];
-    *a4 = [VNError errorForInvalidModelWithLocalizedDescription:v11];
+    stageCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ was not bound to a compute device", stageCopy];
+    *error = [VNError errorForInvalidModelWithLocalizedDescription:stageCopy];
   }
 
   return v9;
 }
 
-- (id)newMetalContextForConfigurationOptions:(id)a3 error:(id *)a4
+- (id)newMetalContextForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [objc_opt_class() computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:optionsCopy error:error];
   if (v6)
   {
     v7 = [VNComputeDeviceUtilities metalDeviceForComputeDevice:v6];
-    v8 = [VNMetalContext metalContextForDevice:v7 error:a4];
+    v8 = [VNMetalContext metalContextForDevice:v7 error:error];
     v9 = v8;
     if (v8)
     {
@@ -327,8 +327,8 @@ LABEL_10:
 
 - (BOOL)needsMetalContext
 {
-  v2 = [(VNDetector *)self configurationOptions];
-  v3 = [objc_opt_class() computeStageDevicesForConfigurationOptions:v2 error:0];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v3 = [objc_opt_class() computeStageDevicesForConfigurationOptions:configurationOptions error:0];
   v4 = v3;
   if (v3)
   {
@@ -352,19 +352,19 @@ LABEL_10:
   return v6;
 }
 
-- (id)validatedImageBufferFromOptions:(id)a3 error:(id *)a4
+- (id)validatedImageBufferFromOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v13 = 0;
-  v7 = [VNValidationUtilities getArray:&v13 forKey:@"VNDetectorProcessOption_InputImageBuffers" inOptions:v6 withElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:a4];
+  v7 = [VNValidationUtilities getArray:&v13 forKey:@"VNDetectorProcessOption_InputImageBuffers" inOptions:optionsCopy withElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:error];
   v8 = v13;
   v9 = v8;
   if (v7)
   {
-    v10 = [v8 firstObject];
-    if ([(VNDetector *)self validateImageBuffer:v10 error:a4])
+    firstObject = [v8 firstObject];
+    if ([(VNDetector *)self validateImageBuffer:firstObject error:error])
     {
-      v11 = v10;
+      v11 = firstObject;
     }
 
     else
@@ -381,49 +381,49 @@ LABEL_10:
   return v11;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  if (a8)
+  if (error)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = NSStringFromSelector(a2);
     v15 = [v11 stringWithFormat:@"%@ does not implement %@", v13, v14];
-    *a8 = [VNError errorWithCode:3 message:v15];
+    *error = [VNError errorWithCode:3 message:v15];
   }
 
   return 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  if (a8)
+  if (error)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = NSStringFromSelector(a2);
     v15 = [v11 stringWithFormat:@"%@ does not implement %@", v13, v14];
-    *a8 = [VNError errorWithCode:3 message:v15];
+    *error = [VNError errorWithCode:3 message:v15];
   }
 
   return 0;
 }
 
-- (BOOL)validateImageBuffer:(id)a3 error:(id *)a4
+- (BOOL)validateImageBuffer:(id)buffer error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 width];
-  v8 = [v6 height];
+  bufferCopy = buffer;
+  width = [bufferCopy width];
+  height = [bufferCopy height];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__VNDetector_validateImageBuffer_error___block_invoke;
   v10[3] = &unk_1E77B6810;
   v10[4] = self;
-  LOBYTE(a4) = [VNValidationUtilities validateNonZeroImageWidth:v7 height:v8 componentNameProvidingBlock:v10 error:a4];
+  LOBYTE(error) = [VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v10 error:error];
 
-  return a4;
+  return error;
 }
 
 uint64_t __40__VNDetector_validateImageBuffer_error___block_invoke()
@@ -433,17 +433,17 @@ uint64_t __40__VNDetector_validateImageBuffer_error___block_invoke()
   return [v0 detectorName];
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   objc_initWeak(location, self);
-  v20 = [objc_opt_class() VNClassCode];
+  vNClassCode = [objc_opt_class() VNClassCode];
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x2020000000;
@@ -466,27 +466,27 @@ uint64_t __40__VNDetector_validateImageBuffer_error___block_invoke()
   block[3] = &unk_1E77B3E90;
   objc_copyWeak(v47, location);
   v45 = &v50;
-  v48 = v20;
-  v49 = a3;
+  v48 = vNClassCode;
+  classCopy = class;
   v47[1] = *&x;
   v47[2] = *&y;
   v47[3] = *&width;
   v47[4] = *&height;
-  v21 = v17;
+  v21 = optionsCopy;
   v42 = v21;
-  v22 = v18;
+  v22 = recorderCopy;
   v43 = v22;
   v46 = v62;
-  v23 = v19;
+  v23 = handlerCopy;
   v44 = v23;
-  v24 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, block);
+  v24 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __119__VNDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_3;
   v31[3] = &unk_1E77B3F08;
   objc_copyWeak(v38, location);
-  v39 = a3;
-  v40 = v20;
+  classCopy2 = class;
+  v40 = vNClassCode;
   v35 = &v50;
   v36 = &v56;
   v38[1] = *&x;
@@ -500,10 +500,10 @@ uint64_t __40__VNDetector_validateImageBuffer_error___block_invoke()
   v33 = v26;
   v27 = v23;
   v34 = v27;
-  v28 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v31);
+  v28 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v31);
   v24[2](v24);
   v28[2](v28);
-  if ([VNValidationUtilities validateAsyncStatusResult:v51[5] error:a7])
+  if ([VNValidationUtilities validateAsyncStatusResult:v51[5] error:error])
   {
     v29 = v57[5];
   }
@@ -689,17 +689,17 @@ BOOL __119__VNDetector_internalProcessUsingQualityOfServiceClass_options_regionO
   return synchronizationQueue;
 }
 
-- (id)processUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)processUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = [objc_opt_class() VNClassCode];
-  v21 = [(VNDetector *)self signPostAdditionalParameter];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  vNClassCode = [objc_opt_class() VNClassCode];
+  signPostAdditionalParameter = [(VNDetector *)self signPostAdditionalParameter];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -710,20 +710,20 @@ BOOL __119__VNDetector_internalProcessUsingQualityOfServiceClass_options_regionO
   aBlock[1] = 3221225472;
   aBlock[2] = __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke;
   aBlock[3] = &unk_1E77B3E40;
-  v44 = a3;
-  v22 = v17;
+  classCopy = class;
+  v22 = optionsCopy;
   v34 = v22;
-  v35 = self;
-  v45 = v20;
+  selfCopy = self;
+  v45 = vNClassCode;
   v38 = &v46;
-  v39 = v21;
+  v39 = signPostAdditionalParameter;
   v40 = x;
   v41 = y;
   v42 = width;
   v43 = height;
-  v23 = v18;
+  v23 = recorderCopy;
   v36 = v23;
-  v24 = v19;
+  v24 = handlerCopy;
   v37 = v24;
   v25 = _Block_copy(aBlock);
   v32 = 0;
@@ -735,11 +735,11 @@ BOOL __119__VNDetector_internalProcessUsingQualityOfServiceClass_options_regionO
     v29 = v47[5];
   }
 
-  else if (a7)
+  else if (error)
   {
     v30 = v27;
     v29 = 0;
-    *a7 = v28;
+    *error = v28;
   }
 
   else
@@ -784,22 +784,22 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
   return v18;
 }
 
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(objc_class *)a3 keyForDetectorWithConfigurationOptions:v6];
+  configurationCopy = configuration;
+  v7 = [(objc_class *)class keyForDetectorWithConfigurationOptions:configurationCopy];
   v8 = objc_opt_class();
-  v9 = [(VNDetector *)self configurationOptions];
-  v10 = [v8 keyForDetectorWithConfigurationOptions:v9];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v10 = [v8 keyForDetectorWithConfigurationOptions:configurationOptions];
 
   if ([v7 isEqual:v10])
   {
-    v11 = [(VNDetector *)self boundComputeStageDevices];
+    boundComputeStageDevices = [(VNDetector *)self boundComputeStageDevices];
     v14 = 1;
-    if (v11)
+    if (boundComputeStageDevices)
     {
-      v12 = [v6 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
-      if (!v12 || (v13 = [objc_opt_class() loadedInstanceWithBoundComputeStageDevices:v11 canBeUsedForRequestedComputeStageDevices:v12], v12, (v13 & 1) == 0))
+      v12 = [configurationCopy objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+      if (!v12 || (v13 = [objc_opt_class() loadedInstanceWithBoundComputeStageDevices:boundComputeStageDevices canBeUsedForRequestedComputeStageDevices:v12], v12, (v13 & 1) == 0))
       {
         v14 = 0;
       }
@@ -814,10 +814,10 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
   return v14;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = [(VNDetector *)self configurationOptions];
-  v7 = [objc_opt_class() _computeStageDeviceBindingsForConfiguration:v6 error:a4];
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v7 = [objc_opt_class() _computeStageDeviceBindingsForConfiguration:configurationOptions error:error];
   v8 = v7;
   if (v7)
   {
@@ -826,21 +826,21 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
     self->_boundComputeStageDevices = v9;
 
     self->_backingStore = 0;
-    v11 = [v6 objectForKeyedSubscript:@"VNDetectorInitOption_ModelBackingStore"];
+    v11 = [configurationOptions objectForKeyedSubscript:@"VNDetectorInitOption_ModelBackingStore"];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 unsignedIntegerValue];
-      if (v13 < 3)
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
+      if (unsignedIntegerValue < 3)
       {
-        self->_backingStore = v13;
+        self->_backingStore = unsignedIntegerValue;
       }
     }
 
     v16 = 1;
     if ([(VNDetector *)self needsMetalContext])
     {
-      v14 = [(VNDetector *)self newMetalContextForConfigurationOptions:v6 error:a4];
+      v14 = [(VNDetector *)self newMetalContextForConfigurationOptions:configurationOptions error:error];
       metalContext = self->_metalContext;
       self->_metalContext = v14;
 
@@ -868,9 +868,9 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
   [(VNDetector *)&v3 dealloc];
 }
 
-- (VNDetector)initWithConfigurationOptions:(id)a3
+- (VNDetector)initWithConfigurationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = VNDetector;
   v5 = [(VNDetector *)&v14 init];
@@ -886,7 +886,7 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
       v5->_synchronizationQueue = v9;
     }
 
-    v11 = [v4 copy];
+    v11 = [optionsCopy copy];
     configurationOptions = v5->_configurationOptions;
     v5->_configurationOptions = v11;
 
@@ -899,15 +899,15 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
 + (unsigned)VNClassCode
 {
   v3 = 0;
-  [VNClassRegistrar getClassCode:&v3 forClass:a1 error:0];
+  [VNClassRegistrar getClassCode:&v3 forClass:self error:0];
   return v3;
 }
 
-+ (id)computeStageDevicesForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)computeStageDevicesForConfigurationOptions:(id)options error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 supportedComputeStageDevicesForOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [self supportedComputeStageDevicesForOptions:optionsCopy error:error];
   v17 = v7;
   if (v7)
   {
@@ -931,7 +931,7 @@ BOOL __111__VNDetector_processUsingQualityOfServiceClass_options_regionOfInteres
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [a1 computeDeviceForComputeStage:v13 configurationOptions:v6 error:a4];
+          v14 = [self computeDeviceForComputeStage:v13 configurationOptions:optionsCopy error:error];
           if (!v14)
           {
 
@@ -964,11 +964,11 @@ LABEL_12:
   return v15;
 }
 
-+ (id)computeDeviceForComputeStage:(id)a3 configurationOptions:(id)a4 error:(id *)a5
++ (id)computeDeviceForComputeStage:(id)stage configurationOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 supportedComputeStageDevicesForOptions:v9 error:a5];
+  stageCopy = stage;
+  optionsCopy = options;
+  v10 = [self supportedComputeStageDevicesForOptions:optionsCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -976,11 +976,11 @@ LABEL_12:
     goto LABEL_28;
   }
 
-  v12 = [v10 objectForKeyedSubscript:v8];
+  v12 = [v10 objectForKeyedSubscript:stageCopy];
   if ([v12 count])
   {
-    v13 = [v9 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
-    v14 = [v13 objectForKeyedSubscript:v8];
+    stageCopy = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+    v14 = [stageCopy objectForKeyedSubscript:stageCopy];
     if (v14)
     {
       objc_opt_class();
@@ -995,10 +995,10 @@ LABEL_20:
           goto LABEL_25;
         }
 
-        if (a5)
+        if (error)
         {
           [VNError errorForUnsupportedComputeDevice:v14];
-          *a5 = v17 = 0;
+          *error = v17 = 0;
           goto LABEL_25;
         }
 
@@ -1008,7 +1008,7 @@ LABEL_24:
       }
 
       v15 = v14;
-      v14 = [a1 computeDeviceForConfiguredProcessingDeviceBridge:v15 computeStage:v8 supportedComputeDevices:v12 error:a5];
+      v14 = [self computeDeviceForConfiguredProcessingDeviceBridge:v15 computeStage:stageCopy supportedComputeDevices:v12 error:error];
 
       if (!v14)
       {
@@ -1035,24 +1035,24 @@ LABEL_25:
       goto LABEL_20;
     }
 
-    if (a5)
+    if (error)
     {
       v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v21 = NSStringFromClass(a1);
+      v21 = NSStringFromClass(self);
       v22 = [v20 initWithFormat:@"%@ could not resolve a compute device", v21];
 
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v22];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v22];
     }
 
     v14 = 0;
     goto LABEL_24;
   }
 
-  if (a5)
+  if (error)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No available compute device for %@", v8];
-    [VNError errorForInvalidOperationWithLocalizedDescription:v13];
-    *a5 = v17 = 0;
+    stageCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No available compute device for %@", stageCopy];
+    [VNError errorForInvalidOperationWithLocalizedDescription:stageCopy];
+    *error = v17 = 0;
 LABEL_26:
 
     goto LABEL_27;
@@ -1066,21 +1066,21 @@ LABEL_28:
   return v17;
 }
 
-+ (id)computeDeviceForConfiguredProcessingDeviceBridge:(id)a3 computeStage:(id)a4 supportedComputeDevices:(id)a5 error:(id *)a6
++ (id)computeDeviceForConfiguredProcessingDeviceBridge:(id)bridge computeStage:(id)stage supportedComputeDevices:(id)devices error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 computeDevice];
-  v11 = [VNComputeDeviceUtilities computeDeviceOfComputeDevices:v9 mostCompatibleWithComputeDevice:v10 options:3];
+  bridgeCopy = bridge;
+  devicesCopy = devices;
+  computeDevice = [bridgeCopy computeDevice];
+  v11 = [VNComputeDeviceUtilities computeDeviceOfComputeDevices:devicesCopy mostCompatibleWithComputeDevice:computeDevice options:3];
   if (!v11)
   {
-    v11 = [VNComputeDeviceUtilities mostPerformantComputeDeviceOfComputeDevices:v9];
+    v11 = [VNComputeDeviceUtilities mostPerformantComputeDeviceOfComputeDevices:devicesCopy];
     if (!v11)
     {
-      if (a6)
+      if (error)
       {
-        v12 = [v8 processingDevice];
-        *a6 = [VNError errorForUnsupportedProcessingDevice:v12];
+        processingDevice = [bridgeCopy processingDevice];
+        *error = [VNError errorForUnsupportedProcessingDevice:processingDevice];
       }
 
       v11 = 0;
@@ -1090,7 +1090,7 @@ LABEL_28:
   return v11;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -1099,30 +1099,30 @@ LABEL_28:
   return v3;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-+ (BOOL)runSuccessReportingBlockSynchronously:(id)a3 detector:(id)a4 qosClass:(unsigned int)a5 error:(id *)a6
++ (BOOL)runSuccessReportingBlockSynchronously:(id)synchronously detector:(id)detector qosClass:(unsigned int)class error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  synchronouslyCopy = synchronously;
+  detectorCopy = detector;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1137,16 +1137,16 @@ LABEL_28:
   v17 = 3221225472;
   v18 = __76__VNDetector_runSuccessReportingBlockSynchronously_detector_qosClass_error___block_invoke;
   v19 = &unk_1E77B3F30;
-  v23 = a5;
+  classCopy = class;
   v21 = &v30;
-  v11 = v9;
+  v11 = synchronouslyCopy;
   v20 = v11;
   v22 = &v24;
-  v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a5, 0, &v16);
-  v13 = [v10 synchronizationQueue];
-  if (v13 && ([v10 currentQueueIsSynchronizationQueue] & 1) == 0)
+  v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, &v16);
+  synchronizationQueue = [detectorCopy synchronizationQueue];
+  if (synchronizationQueue && ([detectorCopy currentQueueIsSynchronizationQueue] & 1) == 0)
   {
-    [v13 dispatchSyncByPreservingQueueCapacity:v12];
+    [synchronizationQueue dispatchSyncByPreservingQueueCapacity:v12];
   }
 
   else
@@ -1155,9 +1155,9 @@ LABEL_28:
   }
 
   v14 = *(v31 + 24);
-  if (a6 && (v31[3] & 1) == 0)
+  if (error && (v31[3] & 1) == 0)
   {
-    *a6 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1176,16 +1176,16 @@ void __76__VNDetector_runSuccessReportingBlockSynchronously_detector_qosClass_er
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-+ (BOOL)loadedInstanceWithBoundComputeStageDevices:(id)a3 canBeUsedForRequestedComputeStageDevices:(id)a4
++ (BOOL)loadedInstanceWithBoundComputeStageDevices:(id)devices canBeUsedForRequestedComputeStageDevices:(id)stageDevices
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  devicesCopy = devices;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  stageDevicesCopy = stageDevices;
+  v8 = [stageDevicesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -1195,22 +1195,22 @@ void __76__VNDetector_runSuccessReportingBlockSynchronously_detector_qosClass_er
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(stageDevicesCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v6 objectForKeyedSubscript:{v11, v16}];
+        v12 = [devicesCopy objectForKeyedSubscript:{v11, v16}];
         if (v12)
         {
-          v14 = [v7 objectForKeyedSubscript:v11];
-          LOBYTE(a1) = ([v14 isEqual:v12] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(a1, "loadedInstanceWithComputeDevice:boundToComputeStage:canBeUsedForProcessingDeviceBridge:", v12, v11, v14) & 1) != 0;
+          v14 = [stageDevicesCopy objectForKeyedSubscript:v11];
+          LOBYTE(self) = ([v14 isEqual:v12] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(self, "loadedInstanceWithComputeDevice:boundToComputeStage:canBeUsedForProcessingDeviceBridge:", v12, v11, v14) & 1) != 0;
 
           v13 = 0;
           goto LABEL_16;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [stageDevicesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -1223,26 +1223,26 @@ void __76__VNDetector_runSuccessReportingBlockSynchronously_detector_qosClass_er
   v13 = 1;
 LABEL_16:
 
-  return (v13 | a1) & 1;
+  return (v13 | self) & 1;
 }
 
-+ (BOOL)loadedInstanceWithComputeDevice:(id)a3 boundToComputeStage:(id)a4 canBeUsedForProcessingDeviceBridge:(id)a5
++ (BOOL)loadedInstanceWithComputeDevice:(id)device boundToComputeStage:(id)stage canBeUsedForProcessingDeviceBridge:(id)bridge
 {
-  v6 = a5;
-  v7 = [VNComputeDeviceUtilities typeOfComputeDevice:a3];
-  v8 = [v6 computeDevice];
-  LOBYTE(v7) = v7 == [VNComputeDeviceUtilities typeOfComputeDevice:v8];
+  bridgeCopy = bridge;
+  v7 = [VNComputeDeviceUtilities typeOfComputeDevice:device];
+  computeDevice = [bridgeCopy computeDevice];
+  LOBYTE(v7) = v7 == [VNComputeDeviceUtilities typeOfComputeDevice:computeDevice];
 
   return v7;
 }
 
-+ (id)supportedImageSizeSetForEspressoModelAtPath:(id)a3 inputImageBlobName:(id)a4 analysisPixelFormatType:(unsigned int)a5 error:(id *)a6
++ (id)supportedImageSizeSetForEspressoModelAtPath:(id)path inputImageBlobName:(id)name analysisPixelFormatType:(unsigned int)type error:(id *)error
 {
-  v6 = *&a5;
+  v6 = *&type;
   v13[1] = *MEMORY[0x1E69E9840];
   v11 = 0;
   v12 = 0;
-  if ([VNEspressoHelpers getWidth:&v12 height:&v11 ofBlobNamed:a4 forNetworkModelFileWithPath:a3 error:a6])
+  if ([VNEspressoHelpers getWidth:&v12 height:&v11 ofBlobNamed:name forNetworkModelFileWithPath:path error:error])
   {
     v7 = [VNSupportedImageSize alloc];
     v8 = [(VNSupportedImageSize *)v7 initWithIdealFormat:v6 width:v12 height:v11 orientation:1 aspectRatioHandling:0 orientationAgnostic:0];
@@ -1258,20 +1258,20 @@ LABEL_16:
   return v9;
 }
 
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3
++ (id)keyForDetectorWithConfigurationOptions:(id)options
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = [a1 configurationOptionKeysForDetectorKey];
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{(objc_msgSend(v15, "count") << 6) + 64}];
-  v6 = NSStringFromClass(a1);
+  optionsCopy = options;
+  configurationOptionKeysForDetectorKey = [self configurationOptionKeysForDetectorKey];
+  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{(objc_msgSend(configurationOptionKeysForDetectorKey, "count") << 6) + 64}];
+  v6 = NSStringFromClass(self);
   [v5 appendString:v6];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v15;
+  obj = configurationOptionKeysForDetectorKey;
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1286,8 +1286,8 @@ LABEL_16:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
-        v12 = [a1 detectorKeyComponentForDetectorConfigurationOptionKey:v10 value:v11];
+        v11 = [optionsCopy objectForKeyedSubscript:v10];
+        v12 = [self detectorKeyComponentForDetectorConfigurationOptionKey:v10 value:v11];
         [v5 appendFormat:@":%@=%@", v10, v12];
       }
 
@@ -1324,11 +1324,11 @@ void __51__VNDetector_configurationOptionKeysForDetectorKey__block_invoke()
   +[VNDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v1;
 }
 
-+ (id)_computeStageDeviceBindingsForConfiguration:(id)a3 error:(id *)a4
++ (id)_computeStageDeviceBindingsForConfiguration:(id)configuration error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v16 = [a1 computeStagesToBindForConfigurationOptions:v6];
+  configurationCopy = configuration;
+  v16 = [self computeStagesToBindForConfigurationOptions:configurationCopy];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
@@ -1349,7 +1349,7 @@ void __51__VNDetector_configurationOptionKeysForDetectorKey__block_invoke()
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [a1 computeDeviceForComputeStage:v12 configurationOptions:v6 error:a4];
+        v13 = [self computeDeviceForComputeStage:v12 configurationOptions:configurationCopy error:error];
         if (!v13)
         {
 
@@ -1376,25 +1376,25 @@ LABEL_11:
   return v14;
 }
 
-+ (id)detectorWithConfigurationOptions:(id)a3 forSession:(id)a4 error:(id *)a5
++ (id)detectorWithConfigurationOptions:(id)options forSession:(id)session error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 detectorClassForConfigurationOptions:v8 error:a5];
+  optionsCopy = options;
+  sessionCopy = session;
+  v10 = [self detectorClassForConfigurationOptions:optionsCopy error:error];
   if (!v10)
   {
     v13 = 0;
     goto LABEL_10;
   }
 
-  v11 = [[v10 alloc] initWithConfigurationOptions:v8];
+  v11 = [[v10 alloc] initWithConfigurationOptions:optionsCopy];
   v12 = v11;
   if (!v11)
   {
-    if (a5)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_9;
     }
 
@@ -1403,7 +1403,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v11 completeInitializationForSession:v9 error:a5])
+  if (![v11 completeInitializationForSession:sessionCopy error:error])
   {
     goto LABEL_8;
   }
@@ -1416,21 +1416,21 @@ LABEL_10:
   return v13;
 }
 
-+ (id)fullyPopulatedConfigurationOptionsWithOverridingOptions:(id)a3 populateComputeDevice:(BOOL)a4
++ (id)fullyPopulatedConfigurationOptionsWithOverridingOptions:(id)options populateComputeDevice:(BOOL)device
 {
-  v4 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 recordDefaultConfigurationOptionsInDictionary:v7];
-  [v7 addEntriesFromDictionary:v6];
-  [a1 fullyPopulateConfigurationOptions:v7];
-  if (v4)
+  [self recordDefaultConfigurationOptionsInDictionary:v7];
+  [v7 addEntriesFromDictionary:optionsCopy];
+  [self fullyPopulateConfigurationOptions:v7];
+  if (deviceCopy)
   {
     v8 = [v7 objectForKeyedSubscript:@"VNDetectorInternalOption_ModelComputeDevice"];
 
     if (!v8)
     {
-      v9 = [a1 computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v7 error:0];
+      v9 = [self computeDeviceForComputeStage:@"VNComputeStageMain" configurationOptions:v7 error:0];
       [v7 setObject:v9 forKeyedSubscript:@"VNDetectorInternalOption_ModelComputeDevice"];
     }
   }
@@ -1438,35 +1438,35 @@ LABEL_10:
   return v7;
 }
 
-+ (void)fullyPopulateConfigurationOptions:(id)a3
++ (void)fullyPopulateConfigurationOptions:(id)options
 {
-  v3 = a3;
-  [v3 removeObjectForKey:@"VNDetectorProcessOption_InputImageBuffers"];
-  [v3 removeObjectForKey:@"VNDetectorProcessOption_Canceller"];
+  optionsCopy = options;
+  [optionsCopy removeObjectForKey:@"VNDetectorProcessOption_InputImageBuffers"];
+  [optionsCopy removeObjectForKey:@"VNDetectorProcessOption_Canceller"];
 }
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v3 = a3;
-  [v3 setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorInitOption_ModelBackingStore"];
-  [v3 setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
-  [v3 setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorOption_RequestDetectionLevel"];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorInitOption_ModelBackingStore"];
+  [dictionaryCopy setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
+  [dictionaryCopy setObject:&unk_1F19C14C8 forKeyedSubscript:@"VNDetectorOption_RequestDetectionLevel"];
 }
 
 + (id)detectorName
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   if ([v2 hasPrefix:@"VN"])
   {
     v3 = [v2 substringFromIndex:2];
-    v4 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+    uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
     v5 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(v3, "length") + 5}];
     v6 = [MEMORY[0x1E696AE88] scannerWithString:v3];
     v7 = 0;
     while (([v6 isAtEnd] & 1) == 0)
     {
       v14 = 0;
-      v8 = [v6 scanUpToCharactersFromSet:v4 intoString:&v14];
+      v8 = [v6 scanUpToCharactersFromSet:uppercaseLetterCharacterSet intoString:&v14];
       v9 = v14;
       if (v8)
       {
@@ -1474,7 +1474,7 @@ LABEL_10:
       }
 
       v13 = v9;
-      v10 = [v6 scanCharactersFromSet:v4 intoString:&v13];
+      v10 = [v6 scanCharactersFromSet:uppercaseLetterCharacterSet intoString:&v13];
       v11 = v13;
 
       if (v10)
@@ -1498,29 +1498,29 @@ LABEL_10:
   return v5;
 }
 
-+ (Class)detectorClassAndConfigurationOptions:(id *)a3 forDetectorType:(id)a4 options:(id)a5 error:(id *)a6
++ (Class)detectorClassAndConfigurationOptions:(id *)options forDetectorType:(id)type options:(id)a5 error:(id *)error
 {
-  v6 = [(VNDetector *)a1 _detectorClassForDetectorType:a4 options:a5 detectorCreationOptions:a3 error:a6];
+  v6 = [(VNDetector *)self _detectorClassForDetectorType:type options:a5 detectorCreationOptions:options error:error];
 
   return v6;
 }
 
-+ (id)_detectorClassForDetectorType:(void *)a3 options:(void *)a4 detectorCreationOptions:(uint64_t)a5 error:
++ (id)_detectorClassForDetectorType:(void *)type options:(void *)options detectorCreationOptions:(uint64_t)creationOptions error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = [objc_opt_self() detectorClassForDetectorType:v8 error:a5];
+  typeCopy = type;
+  v10 = [objc_opt_self() detectorClassForDetectorType:v8 error:creationOptions];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 fullyPopulatedConfigurationOptionsWithOverridingOptions:v9 populateComputeDevice:0];
-    v13 = [v11 detectorClassForConfigurationOptions:v12 error:a5];
+    v12 = [v10 fullyPopulatedConfigurationOptionsWithOverridingOptions:typeCopy populateComputeDevice:0];
+    v13 = [v11 detectorClassForConfigurationOptions:v12 error:creationOptions];
     if (v13)
     {
-      if (a4)
+      if (options)
       {
         v14 = v12;
-        *a4 = v12;
+        *options = v12;
       }
 
       v15 = v13;
@@ -1535,33 +1535,33 @@ LABEL_10:
   return v13;
 }
 
-+ (Class)detectorClassForDetectorType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5
++ (Class)detectorClassForDetectorType:(id)type configuredWithOptions:(id)options error:(id *)error
 {
-  v5 = [(VNDetector *)a1 _detectorClassForDetectorType:a3 options:a4 detectorCreationOptions:0 error:a5];
+  v5 = [(VNDetector *)self _detectorClassForDetectorType:type options:options detectorCreationOptions:0 error:error];
 
   return v5;
 }
 
-+ (Class)detectorClassForDetectorType:(id)a3 error:(id *)a4
++ (Class)detectorClassForDetectorType:(id)type error:(id *)error
 {
-  v5 = a3;
+  typeCopy = type;
   if (_detectorTypeToClassDictionary(void)::onceToken != -1)
   {
     dispatch_once(&_detectorTypeToClassDictionary(void)::onceToken, &__block_literal_global_550);
   }
 
   v6 = _detectorTypeToClassDictionary(void)::ourDetectorTypeToClassLookup;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [v6 objectForKeyedSubscript:typeCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown detector type '%@'", v5];
-    *a4 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v10];
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown detector type '%@'", typeCopy];
+    *error = [VNError errorForUnimplementedFunctionWithLocalizedDescription:typeCopy];
   }
 
   return v8;
@@ -1570,20 +1570,20 @@ LABEL_10:
 + (VNControlledCapacityTasksQueue)detectorInternalProcessingAsyncTasksQueue
 {
   v3 = +[VNDetectorAsyncTasksQueueCache sharedCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 queueWithUniqueAppendix:v4];
 
   if ([v5 maximumTasksCount] >= 5)
   {
-    v6 = [objc_opt_class() maximumAllowedTasksInTheQueue];
-    if (v6 >= 4)
+    maximumAllowedTasksInTheQueue = [objc_opt_class() maximumAllowedTasksInTheQueue];
+    if (maximumAllowedTasksInTheQueue >= 4)
     {
       v7 = 4;
     }
 
     else
     {
-      v7 = v6;
+      v7 = maximumAllowedTasksInTheQueue;
     }
 
     [v5 setMaximumTasksCount:v7];

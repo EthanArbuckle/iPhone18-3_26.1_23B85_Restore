@@ -1,6 +1,6 @@
 @interface SBLockScreenDisableAssertion
 + (void)initialize;
-- (SBLockScreenDisableAssertion)initWithIdentifier:(id)a3;
+- (SBLockScreenDisableAssertion)initWithIdentifier:(id)identifier;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x277D679C0];
     v3 = objc_opt_class();
@@ -19,20 +19,20 @@
   }
 }
 
-- (SBLockScreenDisableAssertion)initWithIdentifier:(id)a3
+- (SBLockScreenDisableAssertion)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBLockScreenDisableAssertion;
   v5 = [(SBLockScreenDisableAssertion *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [SBApp authenticationController];
-    v9 = [v8 createKeybagUnlockAssertionWithReason:v5->_identifier];
+    authenticationController = [SBApp authenticationController];
+    v9 = [authenticationController createKeybagUnlockAssertionWithReason:v5->_identifier];
     disableLockAssertion = v5->_disableLockAssertion;
     v5->_disableLockAssertion = v9;
 

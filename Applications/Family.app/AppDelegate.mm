@@ -1,12 +1,12 @@
 @interface AppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
 @end
 
 @implementation AppDelegate
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v3 = _FALogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -16,7 +16,7 @@
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v3 = _FALogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -26,13 +26,13 @@
   }
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  v8 = [v6 initWithName:@"Default Configuration" sessionRole:v7];
+  v8 = [v6 initWithName:@"Default Configuration" sessionRole:role];
 
   return v8;
 }

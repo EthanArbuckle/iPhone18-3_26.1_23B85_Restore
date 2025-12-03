@@ -1,7 +1,7 @@
 @interface MPNowPlayingContentItemLegacyRemoteArtworkToken
-- (BOOL)isEqual:(id)a3;
-- (MPNowPlayingContentItemLegacyRemoteArtworkToken)initWithIdentifier:(id)a3 artworkProperties:(id)a4 artworkIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPNowPlayingContentItemLegacyRemoteArtworkToken)initWithIdentifier:(id)identifier artworkProperties:(id)properties artworkIdentifier:(id)artworkIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringRepresentation;
 @end
 
@@ -9,27 +9,27 @@
 
 - (id)stringRepresentation
 {
-  v2 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkIdentifier];
-  v3 = [v2 copy];
+  artworkIdentifier = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkIdentifier];
+  v3 = [artworkIdentifier copy];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPNowPlayingContentItemLegacyRemoteArtworkToken alloc];
-  v5 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self identifier];
-  v6 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkProperties];
-  v7 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkIdentifier];
-  v8 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)v4 initWithIdentifier:v5 artworkProperties:v6 artworkIdentifier:v7];
+  identifier = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self identifier];
+  artworkProperties = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkProperties];
+  artworkIdentifier = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)self artworkIdentifier];
+  v8 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)v4 initWithIdentifier:identifier artworkProperties:artworkProperties artworkIdentifier:artworkIdentifier];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -39,7 +39,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(NSString *)self->_identifier isEqualToString:v5->_identifier]&& [(MPExportableArtworkProperties *)self->_artworkProperties isEqual:v5->_artworkProperties]&& [(NSString *)self->_artworkIdentifier isEqualToString:v5->_artworkIdentifier];
     }
 
@@ -52,25 +52,25 @@
   return v6;
 }
 
-- (MPNowPlayingContentItemLegacyRemoteArtworkToken)initWithIdentifier:(id)a3 artworkProperties:(id)a4 artworkIdentifier:(id)a5
+- (MPNowPlayingContentItemLegacyRemoteArtworkToken)initWithIdentifier:(id)identifier artworkProperties:(id)properties artworkIdentifier:(id)artworkIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  artworkIdentifierCopy = artworkIdentifier;
   v19.receiver = self;
   v19.super_class = MPNowPlayingContentItemLegacyRemoteArtworkToken;
   v11 = [(MPNowPlayingContentItemLegacyRemoteArtworkToken *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [propertiesCopy copy];
     artworkProperties = v11->_artworkProperties;
     v11->_artworkProperties = v14;
 
-    v16 = [v10 copy];
+    v16 = [artworkIdentifierCopy copy];
     artworkIdentifier = v11->_artworkIdentifier;
     v11->_artworkIdentifier = v16;
   }

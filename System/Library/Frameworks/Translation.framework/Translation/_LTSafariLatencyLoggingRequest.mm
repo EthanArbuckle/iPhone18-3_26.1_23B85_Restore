@@ -1,8 +1,8 @@
 @interface _LTSafariLatencyLoggingRequest
 - (NSDictionary)dict;
 - (_LTSafariLatencyLoggingRequest)init;
-- (_LTSafariLatencyLoggingRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_LTSafariLatencyLoggingRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)markFirstParagraphComplete;
 - (void)markPageComplete;
 - (void)markProgressDone;
@@ -11,37 +11,37 @@
 
 @implementation _LTSafariLatencyLoggingRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   start = self->_start;
-  v5 = a3;
-  [v5 encodeDouble:@"start" forKey:start];
-  [v5 encodeDouble:@"firstResponse" forKey:self->_firstResponse];
-  [v5 encodeDouble:@"firstParagraphComplete" forKey:self->_firstParagraphComplete];
-  [v5 encodeDouble:@"progressComplete" forKey:self->_progressComplete];
-  [v5 encodeDouble:@"pageComplete" forKey:self->_pageComplete];
-  [v5 encodeObject:self->_localePair forKey:@"localePair"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"start" forKey:start];
+  [coderCopy encodeDouble:@"firstResponse" forKey:self->_firstResponse];
+  [coderCopy encodeDouble:@"firstParagraphComplete" forKey:self->_firstParagraphComplete];
+  [coderCopy encodeDouble:@"progressComplete" forKey:self->_progressComplete];
+  [coderCopy encodeDouble:@"pageComplete" forKey:self->_pageComplete];
+  [coderCopy encodeObject:self->_localePair forKey:@"localePair"];
 }
 
-- (_LTSafariLatencyLoggingRequest)initWithCoder:(id)a3
+- (_LTSafariLatencyLoggingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _LTSafariLatencyLoggingRequest;
   v5 = [(_LTSafariLatencyLoggingRequest *)&v15 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"start"];
+    [coderCopy decodeDoubleForKey:@"start"];
     v5->_start = v6;
-    [v4 decodeDoubleForKey:@"firstResponse"];
+    [coderCopy decodeDoubleForKey:@"firstResponse"];
     v5->_firstResponse = v7;
-    [v4 decodeDoubleForKey:@"firstParagraphComplete"];
+    [coderCopy decodeDoubleForKey:@"firstParagraphComplete"];
     v5->_firstParagraphComplete = v8;
-    [v4 decodeDoubleForKey:@"progressComplete"];
+    [coderCopy decodeDoubleForKey:@"progressComplete"];
     v5->_progressComplete = v9;
-    [v4 decodeDoubleForKey:@"pageComplete"];
+    [coderCopy decodeDoubleForKey:@"pageComplete"];
     v5->_pageComplete = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localePair"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localePair"];
     localePair = v5->_localePair;
     v5->_localePair = v11;
 
@@ -58,8 +58,8 @@
   v2 = [(_LTSafariLatencyLoggingRequest *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     *(v2 + 2) = v4;
 
     *(v2 + 6) = 0xBFF0000000000000;
@@ -76,8 +76,8 @@
 {
   if (self->_firstResponse < 0.0)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     self->_firstResponse = v4;
   }
 }
@@ -86,8 +86,8 @@
 {
   if (self->_firstParagraphComplete < 0.0)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     self->_firstParagraphComplete = v4;
   }
 }
@@ -96,8 +96,8 @@
 {
   if (self->_progressComplete < 0.0)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     self->_progressComplete = v4;
   }
 }
@@ -106,8 +106,8 @@
 {
   if (self->_pageComplete < 0.0)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     self->_pageComplete = v4;
   }
 }
@@ -132,9 +132,9 @@
   }
 
   v13[0] = @"localePair";
-  v4 = [(_LTLocalePair *)self->_localePair combinedLocaleIdentifier];
+  combinedLocaleIdentifier = [(_LTLocalePair *)self->_localePair combinedLocaleIdentifier];
   processName = self->_processName;
-  v14[0] = v4;
+  v14[0] = combinedLocaleIdentifier;
   v14[1] = processName;
   v13[1] = @"processName";
   v13[2] = @"timeToFirstResponse";

@@ -1,30 +1,30 @@
 @interface RCMirroringContainer
-- (RCMirroringContainer)initWithURL:(id)a3;
+- (RCMirroringContainer)initWithURL:(id)l;
 - (id)mirroringDelegate;
-- (id)storeDescriptionWithURL:(id)a3;
+- (id)storeDescriptionWithURL:(id)l;
 @end
 
 @implementation RCMirroringContainer
 
-- (RCMirroringContainer)initWithURL:(id)a3
+- (RCMirroringContainer)initWithURL:(id)l
 {
   v13.receiver = self;
   v13.super_class = RCMirroringContainer;
-  v3 = [(RCMirroringContainer *)&v13 initWithURL:a3];
+  v3 = [(RCMirroringContainer *)&v13 initWithURL:l];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(RCMirroringContainer *)v3 persistentContainer];
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [v6 persistentStores];
-  v8 = [v7 firstObject];
+  persistentContainer = [(RCMirroringContainer *)v3 persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v9 = [v8 rc_mirroringDelegate];
+  rc_mirroringDelegate = [firstObject rc_mirroringDelegate];
 
-  if (v9)
+  if (rc_mirroringDelegate)
   {
 
 LABEL_4:
@@ -35,7 +35,7 @@ LABEL_4:
   v11 = OSLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
-    sub_100034284(v8, v11);
+    sub_100034284(firstObject, v11);
   }
 
   v10 = 0;
@@ -44,13 +44,13 @@ LABEL_8:
   return v10;
 }
 
-- (id)storeDescriptionWithURL:(id)a3
+- (id)storeDescriptionWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_opt_class() storeDescriptionForURL:v4 isXPCClient:0 configuration:RCCloudConfiguration];
+  lCopy = l;
+  v5 = [objc_opt_class() storeDescriptionForURL:lCopy isXPCClient:0 configuration:RCCloudConfiguration];
 
-  v6 = [(RCMirroringContainer *)self mirroringDelegate];
-  [v5 setOption:v6 forMirroringKey:NSPersistentStoreMirroringDelegateOptionKey];
+  mirroringDelegate = [(RCMirroringContainer *)self mirroringDelegate];
+  [v5 setOption:mirroringDelegate forMirroringKey:NSPersistentStoreMirroringDelegateOptionKey];
   v7 = objc_opt_new();
   regulatoryLogger = self->_regulatoryLogger;
   self->_regulatoryLogger = v7;

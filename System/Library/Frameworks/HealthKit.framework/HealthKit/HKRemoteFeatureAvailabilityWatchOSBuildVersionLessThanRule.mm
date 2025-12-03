@@ -1,37 +1,37 @@
 @interface HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"BuildVersion"];
+  v4 = [info objectForKeyedSubscript:@"BuildVersion"];
   [(HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule *)self setBuildVersion:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule *)self buildVersion];
+  buildVersion = [(HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule *)self buildVersion];
 
-  if (!v3)
+  if (!buildVersion)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 watchOSBuildVersion];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchOSBuildVersion = [dataSource watchOSBuildVersion];
 
-  if (!v5)
+  if (!watchOSBuildVersion)
   {
     return 0;
   }
 
-  v6 = [(HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule *)self buildVersion];
-  v7 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v8 = [v7 watchOSBuildVersion];
-  v9 = [v6 hk_compareBuildVersionWithString:v8] == 1;
+  buildVersion2 = [(HKRemoteFeatureAvailabilityWatchOSBuildVersionLessThanRule *)self buildVersion];
+  dataSource2 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchOSBuildVersion2 = [dataSource2 watchOSBuildVersion];
+  v9 = [buildVersion2 hk_compareBuildVersionWithString:watchOSBuildVersion2] == 1;
 
   return v9;
 }

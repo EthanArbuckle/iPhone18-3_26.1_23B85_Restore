@@ -1,16 +1,16 @@
 @interface ActionSetState.Observer
 - (_TtCC13HomeKitDaemon14ActionSetState8Observer)init;
-- (void)currentStateForActionSetUUIDs:(NSArray *)a3 completionHandler:(id)a4;
-- (void)device:(id)a3 stateChanged:(unint64_t)a4;
-- (void)handleWithCharacteristicsChangedNotification:(id)a3;
-- (void)stateRegistrationsDidChangeForActionSetUUIDs:(id)a3;
-- (void)stopMonitoringActionSet:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)currentStateForActionSetUUIDs:(NSArray *)ds completionHandler:(id)handler;
+- (void)device:(id)device stateChanged:(unint64_t)changed;
+- (void)handleWithCharacteristicsChangedNotification:(id)notification;
+- (void)stateRegistrationsDidChangeForActionSetUUIDs:(id)ds;
+- (void)stopMonitoringActionSet:(id)set;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation ActionSetState.Observer
 
-- (void)stopMonitoringActionSet:(id)a3
+- (void)stopMonitoringActionSet:(id)set
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
@@ -22,13 +22,13 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a3;
+  v10[5] = set;
+  setCopy = set;
 
   sub_22957F3C0(0, 0, v8, &unk_22A581EC0, v10);
 }
 
-- (void)stateRegistrationsDidChangeForActionSetUUIDs:(id)a3
+- (void)stateRegistrationsDidChangeForActionSetUUIDs:(id)ds
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v5 = *(*(v4 - 8) + 64);
@@ -47,7 +47,7 @@
   sub_22957F3C0(0, 0, v7, &unk_22A5832D0, v10);
 }
 
-- (void)handleWithCharacteristicsChangedNotification:(id)a3
+- (void)handleWithCharacteristicsChangedNotification:(id)notification
 {
   v3 = sub_22A4DB21C();
   v4 = *(v3 - 8);
@@ -61,15 +61,15 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)currentStateForActionSetUUIDs:(NSArray *)a3 completionHandler:(id)a4
+- (void)currentStateForActionSetUUIDs:(NSArray *)ds completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = ds;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -84,12 +84,12 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
+  dsCopy = ds;
 
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   ObjectType = swift_getObjectType();
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
@@ -115,11 +115,11 @@
   return result;
 }
 
-- (void)device:(id)a3 stateChanged:(unint64_t)a4
+- (void)device:(id)device stateChanged:(unint64_t)changed
 {
-  v5 = a3;
+  deviceCopy = device;
 
-  sub_22975C8B8(v5, a4);
+  sub_22975C8B8(deviceCopy, changed);
 }
 
 @end

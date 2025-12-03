@@ -1,23 +1,23 @@
 @interface SummaryMetricGridView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI21SummaryMetricGridView)initWithCoder:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC9SeymourUI21SummaryMetricGridView)initWithCoder:(id)coder;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SummaryMetricGridView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for SummaryMetricGridView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(SummaryMetricGridView *)&v6 traitCollectionDidChange:v4];
+  [(SummaryMetricGridView *)&v6 traitCollectionDidChange:changeCopy];
   sub_20BA00968();
 }
 
-- (_TtC9SeymourUI21SummaryMetricGridView)initWithCoder:(id)a3
+- (_TtC9SeymourUI21SummaryMetricGridView)initWithCoder:(id)coder
 {
   v4 = sub_20C132EE4();
   v5 = *(v4 - 8);
@@ -46,16 +46,16 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_20C133244();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v10 = a3;
-  v11 = self;
-  sub_20BA00D0C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_20BA00D0C(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);

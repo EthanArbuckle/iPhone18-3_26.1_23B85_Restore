@@ -1,12 +1,12 @@
 @interface SeekTimeIntentResponse
-- (SeekTimeIntentResponse)initWithPropertiesByName:(id)a3;
+- (SeekTimeIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SeekTimeIntentResponse
 
-- (SeekTimeIntentResponse)initWithPropertiesByName:(id)a3
+- (SeekTimeIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

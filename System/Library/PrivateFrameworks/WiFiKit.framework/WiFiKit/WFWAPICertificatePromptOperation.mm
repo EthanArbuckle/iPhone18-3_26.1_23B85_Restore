@@ -1,8 +1,8 @@
 @interface WFWAPICertificatePromptOperation
-- (WFWAPICertificatePromptOperation)initWithRootViewController:(id)a3 network:(id)a4;
+- (WFWAPICertificatePromptOperation)initWithRootViewController:(id)controller network:(id)network;
 - (void)finish;
-- (void)otherNetworkViewControllerUserDidTapCancel:(id)a3;
-- (void)otherNetworkViewControllerUserDidTapJoin:(id)a3;
+- (void)otherNetworkViewControllerUserDidTapCancel:(id)cancel;
+- (void)otherNetworkViewControllerUserDidTapJoin:(id)join;
 - (void)start;
 @end
 
@@ -13,8 +13,8 @@
   v4.receiver = self;
   v4.super_class = WFWAPICertificatePromptOperation;
   [(WFOperation *)&v4 finish];
-  v3 = [(WFWAPICertificatePromptOperation *)self rootViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  rootViewController = [(WFWAPICertificatePromptOperation *)self rootViewController];
+  [rootViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)start
@@ -23,13 +23,13 @@
   v18.super_class = WFWAPICertificatePromptOperation;
   [(WFOperation *)&v18 start];
   v3 = objc_alloc(MEMORY[0x277D7B9F0]);
-  v4 = [(WFWAPICertificatePromptOperation *)self network];
-  v5 = [v4 ssid];
-  v6 = [v3 initWithOtherNetworkStyle:2 networkName:v5];
+  network = [(WFWAPICertificatePromptOperation *)self network];
+  ssid = [network ssid];
+  v6 = [v3 initWithOtherNetworkStyle:2 networkName:ssid];
 
-  v7 = [(WFWAPICertificatePromptOperation *)self network];
-  v8 = [v7 ssid];
-  [v6 setNetworkName:v8];
+  network2 = [(WFWAPICertificatePromptOperation *)self network];
+  ssid2 = [network2 ssid];
+  [v6 setNetworkName:ssid2];
 
   [v6 setDelegate:self];
   theArray = 0;
@@ -54,34 +54,34 @@
 
   [(WFWAPICertificatePromptOperation *)self setPromptViewController:v6];
   v9 = objc_alloc(MEMORY[0x277D757A0]);
-  v10 = [(WFWAPICertificatePromptOperation *)self promptViewController];
-  v11 = [v9 initWithRootViewController:v10];
+  promptViewController = [(WFWAPICertificatePromptOperation *)self promptViewController];
+  v11 = [v9 initWithRootViewController:promptViewController];
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [v11 setModalPresentationStyle:2];
   }
 
-  v14 = [(WFWAPICertificatePromptOperation *)self rootViewController];
-  [v14 presentViewController:v11 animated:1 completion:0];
+  rootViewController = [(WFWAPICertificatePromptOperation *)self rootViewController];
+  [rootViewController presentViewController:v11 animated:1 completion:0];
 
   [(WFWAPICertificatePromptOperation *)self setNavigationController:v11];
 }
 
-- (void)otherNetworkViewControllerUserDidTapCancel:(id)a3
+- (void)otherNetworkViewControllerUserDidTapCancel:(id)cancel
 {
   [(WFWAPICertificatePromptOperation *)self setUserCancelled:1];
 
   [(WFWAPICertificatePromptOperation *)self finish];
 }
 
-- (void)otherNetworkViewControllerUserDidTapJoin:(id)a3
+- (void)otherNetworkViewControllerUserDidTapJoin:(id)join
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  joinCopy = join;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -103,8 +103,8 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v10 valueForKey:{@"certRef", v16}];
-        v12 = [v4 WAPIIdentity];
-        LODWORD(v11) = CFEqual(v11, v12);
+        wAPIIdentity = [joinCopy WAPIIdentity];
+        LODWORD(v11) = CFEqual(v11, wAPIIdentity);
 
         if (v11)
         {
@@ -119,22 +119,22 @@
     while (v7);
   }
 
-  v14 = [v4 WAPIRootCertificate];
-  [(WFWAPICertificatePromptOperation *)self setWAPIRootCertificate:v14];
+  wAPIRootCertificate = [joinCopy WAPIRootCertificate];
+  [(WFWAPICertificatePromptOperation *)self setWAPIRootCertificate:wAPIRootCertificate];
 
   [(WFWAPICertificatePromptOperation *)self finish];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (WFWAPICertificatePromptOperation)initWithRootViewController:(id)a3 network:(id)a4
+- (WFWAPICertificatePromptOperation)initWithRootViewController:(id)controller network:(id)network
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  networkCopy = network;
   v14.receiver = self;
   v14.super_class = WFWAPICertificatePromptOperation;
   v9 = [(WFWAPICertificatePromptOperation *)&v14 init];
   v10 = v9;
-  if (!v7)
+  if (!controllerCopy)
   {
     goto LABEL_6;
   }
@@ -145,10 +145,10 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v9->_rootViewController, a3);
-  if (v8)
+  objc_storeStrong(&v9->_rootViewController, controller);
+  if (networkCopy)
   {
-    v11 = v8;
+    v11 = networkCopy;
     network = v10->_network;
     v10->_network = v11;
   }

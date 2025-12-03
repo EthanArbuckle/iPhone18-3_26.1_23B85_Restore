@@ -1,14 +1,14 @@
 @interface WKScrollViewDelegateForwarder
-- (BOOL)respondsToSelector:(SEL)a3;
-- (WKScrollViewDelegateForwarder)initWithInternalDelegate:(id)a3 externalDelegate:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (WKScrollViewDelegateForwarder)initWithInternalDelegate:(id)delegate externalDelegate:(id)externalDelegate;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation WKScrollViewDelegateForwarder
 
-- (WKScrollViewDelegateForwarder)initWithInternalDelegate:(id)a3 externalDelegate:(id)a4
+- (WKScrollViewDelegateForwarder)initWithInternalDelegate:(id)delegate externalDelegate:(id)externalDelegate
 {
   v9.receiver = self;
   v9.super_class = WKScrollViewDelegateForwarder;
@@ -16,25 +16,25 @@
   v7 = v6;
   if (v6)
   {
-    v6->_internalDelegate = a3;
-    objc_storeWeak(&v6->_externalDelegate.m_weakReference, a4);
+    v6->_internalDelegate = delegate;
+    objc_storeWeak(&v6->_externalDelegate.m_weakReference, externalDelegate);
   }
 
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_externalDelegate.m_weakReference);
   v8.receiver = self;
   v8.super_class = WKScrollViewDelegateForwarder;
-  v6 = [(WKScrollViewDelegateForwarder *)&v8 methodSignatureForSelector:a3];
+  v6 = [(WKScrollViewDelegateForwarder *)&v8 methodSignatureForSelector:selector];
   if (!v6)
   {
-    v6 = [(WKWebView *)self->_internalDelegate methodSignatureForSelector:a3];
+    v6 = [(WKWebView *)self->_internalDelegate methodSignatureForSelector:selector];
     if (!v6)
     {
-      v6 = [WeakRetained methodSignatureForSelector:a3];
+      v6 = [WeakRetained methodSignatureForSelector:selector];
     }
   }
 
@@ -45,7 +45,7 @@
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = WKScrollViewDelegateForwarder;
@@ -66,12 +66,12 @@
   return v4 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   WeakRetained = objc_loadWeakRetained(&self->_externalDelegate.m_weakReference);
-  v6 = [a3 selector];
+  selector = [invocation selector];
   v7 = objc_opt_respondsToSelector();
-  if (sel_isEqual(v6, sel_viewForZoomingInScrollView_))
+  if (sel_isEqual(selector, sel_viewForZoomingInScrollView_))
   {
     v8 = 0;
     goto LABEL_6;
@@ -96,13 +96,13 @@ LABEL_6:
   if (v7)
   {
 LABEL_7:
-    [a3 invokeWithTarget:self->_internalDelegate];
+    [invocation invokeWithTarget:self->_internalDelegate];
   }
 
 LABEL_8:
   if (v8)
   {
-    [a3 invokeWithTarget:WeakRetained];
+    [invocation invokeWithTarget:WeakRetained];
   }
 
   if ((v9 & 1) == 0)
@@ -114,7 +114,7 @@ LABEL_8:
   {
     v10.receiver = self;
     v10.super_class = WKScrollViewDelegateForwarder;
-    [(WKScrollViewDelegateForwarder *)&v10 forwardInvocation:a3];
+    [(WKScrollViewDelegateForwarder *)&v10 forwardInvocation:invocation];
   }
 
   if (WeakRetained)
@@ -122,10 +122,10 @@ LABEL_8:
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v5 = objc_opt_respondsToSelector();
-  if (sel_isEqual(a3, sel_viewForZoomingInScrollView_))
+  if (sel_isEqual(selector, sel_viewForZoomingInScrollView_))
   {
     v6 = 0;
   }

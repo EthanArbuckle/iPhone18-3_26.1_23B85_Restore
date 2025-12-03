@@ -1,12 +1,12 @@
 @interface VCCCMessageAcknowledgment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCCMessageAcknowledgment
@@ -21,17 +21,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_transactionID), @"transactionID"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_transactionID), @"transactionID"}];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint64Field();
   if (*&self->_has)
@@ -41,19 +41,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = self->_transactionID;
+  *(to + 1) = self->_transactionID;
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_status;
-    *(a3 + 20) |= 1u;
+    *(to + 4) = self->_status;
+    *(to + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_transactionID;
   if (*&self->_has)
   {
@@ -64,20 +64,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_transactionID != *(a3 + 1))
+    if (self->_transactionID != *(equal + 1))
     {
       goto LABEL_7;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) != 0 && self->_status == *(a3 + 4))
+      if ((*(equal + 20) & 1) != 0 && self->_status == *(equal + 4))
       {
         LOBYTE(v5) = 1;
         return v5;
@@ -106,12 +106,12 @@ LABEL_7:
   return v2 ^ (2654435761u * self->_transactionID);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_transactionID = *(a3 + 1);
-  if (*(a3 + 20))
+  self->_transactionID = *(from + 1);
+  if (*(from + 20))
   {
-    self->_status = *(a3 + 4);
+    self->_status = *(from + 4);
     *&self->_has |= 1u;
   }
 }

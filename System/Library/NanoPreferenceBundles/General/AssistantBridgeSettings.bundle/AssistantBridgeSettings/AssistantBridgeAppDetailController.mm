@@ -1,15 +1,15 @@
 @interface AssistantBridgeAppDetailController
 - (AssistantBridgeAppDetailController)init;
-- (BOOL)appHasCustomSettingsWithBundleId:(id)a3;
+- (BOOL)appHasCustomSettingsWithBundleId:(id)id;
 - (id)_bundleId;
-- (id)_iOSBundleToMirrorWithBundleId:(id)a3;
-- (id)inAppShowSiriSuggestionsEnabled:(id)a3;
+- (id)_iOSBundleToMirrorWithBundleId:(id)id;
+- (id)inAppShowSiriSuggestionsEnabled:(id)enabled;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setAppHasCustomSettingsWithBundleId:(id)a3 hasCustomSettings:(BOOL)a4;
-- (void)setInAppShowSiriSuggestionsEnabled:(BOOL)a3 bundleId:(id)a4;
-- (void)setInAppShowSiriSuggestionsEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAppHasCustomSettingsWithBundleId:(id)id hasCustomSettings:(BOOL)settings;
+- (void)setInAppShowSiriSuggestionsEnabled:(BOOL)enabled bundleId:(id)id;
+- (void)setInAppShowSiriSuggestionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantBridgeAppDetailController
@@ -76,8 +76,8 @@
 
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_HEADER" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
-    v15 = [(AssistantBridgeAppDetailController *)self _appName];
-    v16 = [NSString stringWithFormat:v14, v15];
+    _appName = [(AssistantBridgeAppDetailController *)self _appName];
+    v16 = [NSString stringWithFormat:v14, _appName];
     v17 = [PSSpecifier groupSpecifierWithName:v16];
     inAppGroup = self->_inAppGroup;
     self->_inAppGroup = v17;
@@ -85,8 +85,8 @@
     v19 = self->_inAppGroup;
     v20 = [NSBundle bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"SIRIANDSEARCH_PERAPP_INAPP_SHOWONLY_FOOTER" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
-    v22 = [(AssistantBridgeAppDetailController *)self _appName];
-    v23 = [NSString stringWithFormat:v21, v22];
+    _appName2 = [(AssistantBridgeAppDetailController *)self _appName];
+    v23 = [NSString stringWithFormat:v21, _appName2];
     [(PSSpecifier *)v19 setProperty:v23 forKey:PSFooterTextGroupKey];
 
     v24 = [NSBundle bundleForClass:objc_opt_class()];
@@ -96,8 +96,8 @@
     self->_showToggle = v26;
 
     [(PSSpecifier *)self->_showToggle setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-    v28 = [(AssistantBridgeAppDetailController *)self _bundleId];
-    LODWORD(v25) = [(AssistantBridgeAppDetailController *)self appHasCustomSettingsWithBundleId:v28];
+    _bundleId = [(AssistantBridgeAppDetailController *)self _bundleId];
+    LODWORD(v25) = [(AssistantBridgeAppDetailController *)self appHasCustomSettingsWithBundleId:_bundleId];
 
     if (v25)
     {
@@ -134,20 +134,20 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AssistantBridgeAppDetailController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AssistantBridgeAppDetailController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [(PSSpecifier *)self->_mirrorRadio identifier];
-  v12 = [v10 isEqualToString:v11];
+  identifier = [v9 identifier];
+  identifier2 = [(PSSpecifier *)self->_mirrorRadio identifier];
+  v12 = [identifier isEqualToString:identifier2];
 
   if (v12)
   {
-    v13 = [(AssistantBridgeAppDetailController *)self _bundleId];
-    [(AssistantBridgeAppDetailController *)self setAppHasCustomSettingsWithBundleId:v13 hasCustomSettings:0];
+    _bundleId = [(AssistantBridgeAppDetailController *)self _bundleId];
+    [(AssistantBridgeAppDetailController *)self setAppHasCustomSettingsWithBundleId:_bundleId hasCustomSettings:0];
 
     showToggle = self->_showToggle;
     v23[0] = self->_inAppGroup;
@@ -159,14 +159,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v16 = [v9 identifier];
-  v17 = [(PSSpecifier *)self->_customRadio identifier];
-  v18 = [v16 isEqualToString:v17];
+  identifier3 = [v9 identifier];
+  identifier4 = [(PSSpecifier *)self->_customRadio identifier];
+  v18 = [identifier3 isEqualToString:identifier4];
 
   if (v18)
   {
-    v19 = [(AssistantBridgeAppDetailController *)self _bundleId];
-    [(AssistantBridgeAppDetailController *)self setAppHasCustomSettingsWithBundleId:v19 hasCustomSettings:1];
+    _bundleId2 = [(AssistantBridgeAppDetailController *)self _bundleId];
+    [(AssistantBridgeAppDetailController *)self setAppHasCustomSettingsWithBundleId:_bundleId2 hasCustomSettings:1];
 
     v20 = self->_showToggle;
     v22[0] = self->_inAppGroup;
@@ -179,43 +179,43 @@ LABEL_5:
 LABEL_6:
   v21.receiver = self;
   v21.super_class = AssistantBridgeAppDetailController;
-  [(AssistantBridgeAppDetailController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AssistantBridgeAppDetailController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (id)inAppShowSiriSuggestionsEnabled:(id)a3
+- (id)inAppShowSiriSuggestionsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_8E4C();
   }
 
-  v5 = [(AssistantBridgeAppDetailController *)self _bundleId];
+  _bundleId = [(AssistantBridgeAppDetailController *)self _bundleId];
   v6 = CFPreferencesCopyAppValue(@"NanoAppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
-  v7 = [v6 containsObject:v5];
+  v7 = [v6 containsObject:_bundleId];
 
   v8 = [NSNumber numberWithBool:v7 ^ 1];
 
   return v8;
 }
 
-- (void)setInAppShowSiriSuggestionsEnabled:(id)a3 specifier:(id)a4
+- (void)setInAppShowSiriSuggestionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(AssistantBridgeAppDetailController *)self _bundleId];
-  [(AssistantBridgeAppDetailController *)self setInAppShowSiriSuggestionsEnabled:v5 bundleId:v6];
+  bOOLValue = [enabled BOOLValue];
+  _bundleId = [(AssistantBridgeAppDetailController *)self _bundleId];
+  [(AssistantBridgeAppDetailController *)self setInAppShowSiriSuggestionsEnabled:bOOLValue bundleId:_bundleId];
 }
 
-- (void)setInAppShowSiriSuggestionsEnabled:(BOOL)a3 bundleId:(id)a4
+- (void)setInAppShowSiriSuggestionsEnabled:(BOOL)enabled bundleId:(id)id
 {
-  v4 = a3;
-  v5 = a4;
+  enabledCopy = enabled;
+  idCopy = id;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_8ECC();
   }
 
-  v6 = v5;
+  v6 = idCopy;
   v7 = CFPreferencesCopyAppValue(@"NanoAppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   v8 = v7;
   if (v7)
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
   v10 = v9;
-  if (v4)
+  if (enabledCopy)
   {
     [v9 removeObject:v6];
   }
@@ -250,37 +250,37 @@ LABEL_6:
 
 - (id)_bundleId
 {
-  v2 = [(AssistantBridgeAppDetailController *)self specifier];
-  v3 = [v2 propertyForKey:PSIDKey];
+  specifier = [(AssistantBridgeAppDetailController *)self specifier];
+  v3 = [specifier propertyForKey:PSIDKey];
 
   return v3;
 }
 
-- (BOOL)appHasCustomSettingsWithBundleId:(id)a3
+- (BOOL)appHasCustomSettingsWithBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_8F40();
   }
 
-  v4 = v3;
+  v4 = idCopy;
   v5 = CFPreferencesCopyAppValue(@"AppHasCustomBridgeSettings", @"com.apple.suggestions");
   v6 = [v5 containsObject:v4];
 
   return v6;
 }
 
-- (void)setAppHasCustomSettingsWithBundleId:(id)a3 hasCustomSettings:(BOOL)a4
+- (void)setAppHasCustomSettingsWithBundleId:(id)id hasCustomSettings:(BOOL)settings
 {
-  v4 = a4;
-  v6 = a3;
+  settingsCopy = settings;
+  idCopy = id;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     sub_8FC0();
   }
 
-  v7 = v6;
+  v7 = idCopy;
   v8 = CFPreferencesCopyAppValue(@"AppHasCustomBridgeSettings", @"com.apple.suggestions");
   v9 = v8;
   if (v8)
@@ -294,7 +294,7 @@ LABEL_6:
   }
 
   v11 = v10;
-  if (v4)
+  if (settingsCopy)
   {
     if (([v10 containsObject:v7] & 1) == 0)
     {
@@ -311,7 +311,7 @@ LABEL_6:
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.suggestions.settingsChanged", 0, 0, 1u);
 
-  if (v4)
+  if (settingsCopy)
   {
     [(AssistantBridgeAppDetailController *)self setInAppShowSiriSuggestionsEnabled:1 bundleId:v7];
   }
@@ -330,13 +330,13 @@ LABEL_6:
   [v17 synchronizeUserDefaultsDomain:@"com.apple.suggestions" keys:v16];
 }
 
-- (id)_iOSBundleToMirrorWithBundleId:(id)a3
+- (id)_iOSBundleToMirrorWithBundleId:(id)id
 {
-  v5 = a3;
-  v6 = [&off_115B0 objectForKeyedSubscript:v5];
+  idCopy = id;
+  v6 = [&off_115B0 objectForKeyedSubscript:idCopy];
   if (!v6)
   {
-    sub_9034(a2, self, v5);
+    sub_9034(a2, self, idCopy);
   }
 
   return v6;

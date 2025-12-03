@@ -1,49 +1,49 @@
 @interface HMPersonManager
-- (HMPersonManager)initWithContext:(id)a3 UUID:(id)a4 zoneName:(id)a5 notificationCenter:(id)a6;
+- (HMPersonManager)initWithContext:(id)context UUID:(id)d zoneName:(id)name notificationCenter:(id)center;
 - (NSString)description;
-- (void)addObserver:(id)a3;
-- (void)addOrUpdateFaceCrops:(id)a3 completion:(id)a4;
-- (void)addOrUpdateFaceprints:(id)a3 completion:(id)a4;
-- (void)addOrUpdatePersons:(id)a3 completion:(id)a4;
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 completion:(id)a5;
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5 completion:(id)a6;
+- (void)addObserver:(id)observer;
+- (void)addOrUpdateFaceCrops:(id)crops completion:(id)completion;
+- (void)addOrUpdateFaceprints:(id)faceprints completion:(id)completion;
+- (void)addOrUpdatePersons:(id)persons completion:(id)completion;
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d completion:(id)completion;
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source completion:(id)completion;
 - (void)configure;
 - (void)dealloc;
-- (void)disassociateFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllFaceprintsWithCompletion:(id)a3;
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3;
-- (void)fetchAllPersonsWithCompletion:(id)a3;
-- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)a3;
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)handleDaemonReconnectedNotification:(id)a3;
-- (void)handleDidChangePersonDataMessage:(id)a3;
-- (void)notifyObserversWithBlock:(id)a3;
-- (void)performCloudPullWithCompletion:(id)a3;
-- (void)removeFaceCropsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removePersonsWithUUIDs:(id)a3 completion:(id)a4;
+- (void)disassociateFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchAllFaceprintsWithCompletion:(id)completion;
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion;
+- (void)fetchAllPersonsWithCompletion:(id)completion;
+- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)completion;
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion;
+- (void)handleDaemonReconnectedNotification:(id)notification;
+- (void)handleDidChangePersonDataMessage:(id)message;
+- (void)notifyObserversWithBlock:(id)block;
+- (void)performCloudPullWithCompletion:(id)completion;
+- (void)removeFaceCropsWithUUIDs:(id)ds completion:(id)completion;
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removePersonsWithUUIDs:(id)ds completion:(id)completion;
 - (void)subscribe;
 - (void)unsubscribe;
 @end
 
 @implementation HMPersonManager
 
-- (void)notifyObserversWithBlock:(id)a3
+- (void)notifyObserversWithBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v5;
+  obj = allObjects;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -59,16 +59,16 @@
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(HMPersonManager *)self context];
-        v11 = [v10 delegateCaller];
+        context = [(HMPersonManager *)self context];
+        delegateCaller = [context delegateCaller];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __44__HMPersonManager_notifyObserversWithBlock___block_invoke;
         v15[3] = &unk_1E754E458;
-        v12 = v4;
+        v12 = blockCopy;
         v15[4] = v9;
         v16 = v12;
-        [v11 invokeBlock:v15];
+        [delegateCaller invokeBlock:v15];
 
         ++v8;
       }
@@ -83,12 +83,12 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDaemonReconnectedNotification:(id)a3
+- (void)handleDaemonReconnectedNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -100,22 +100,22 @@
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [(NSHashTable *)v6->_observers count];
-  os_unfair_lock_unlock(&v6->_lock);
+  v9 = [(NSHashTable *)selfCopy->_observers count];
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v9)
   {
-    [(HMPersonManager *)v6 subscribe];
+    [(HMPersonManager *)selfCopy subscribe];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidChangePersonDataMessage:(id)a3
+- (void)handleDidChangePersonDataMessage:(id)message
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -129,32 +129,32 @@
   v43[0] = objc_opt_class();
   v43[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
-  v10 = [v4 unarchivedObjectForKey:@"HMPM.mk.up" ofClasses:v9];
+  v10 = [messageCopy unarchivedObjectForKey:@"HMPM.mk.up" ofClasses:v9];
 
   v42[0] = objc_opt_class();
   v42[1] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
-  v12 = [v4 unarchivedObjectForKey:@"HMPM.mk.uufc" ofClasses:v11];
+  v12 = [messageCopy unarchivedObjectForKey:@"HMPM.mk.uufc" ofClasses:v11];
 
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-  v14 = [v4 unarchivedObjectForKey:@"HMPM.mk.upfc" ofClasses:v13];
+  v14 = [messageCopy unarchivedObjectForKey:@"HMPM.mk.upfc" ofClasses:v13];
 
   v40[0] = objc_opt_class();
   v40[1] = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
-  v16 = [v4 unarchivedObjectForKey:@"HMPM.mk.uf" ofClasses:v15];
+  v16 = [messageCopy unarchivedObjectForKey:@"HMPM.mk.uf" ofClasses:v15];
 
-  v17 = [v4 setForKey:@"HMPM.mk.rpu"];
-  v18 = [v4 setForKey:@"HMPM.mk.rfcu"];
-  v19 = [v4 setForKey:@"HMPM.mk.rfu"];
+  v17 = [messageCopy setForKey:@"HMPM.mk.rpu"];
+  v18 = [messageCopy setForKey:@"HMPM.mk.rfcu"];
+  v19 = [messageCopy setForKey:@"HMPM.mk.rfu"];
   v28 = MEMORY[0x1E69E9820];
   v29 = 3221225472;
   v30 = __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke;
   v31 = &unk_1E7546968;
   v32 = v10;
-  v33 = v6;
+  v33 = selfCopy;
   v34 = v12;
   v35 = v14;
   v36 = v16;
@@ -168,8 +168,8 @@
   v24 = v14;
   v25 = v12;
   v26 = v10;
-  [(HMPersonManager *)v6 notifyObserversWithBlock:&v28];
-  [v4 respondWithPayload:{0, v28, v29, v30, v31}];
+  [(HMPersonManager *)selfCopy notifyObserversWithBlock:&v28];
+  [messageCopy respondWithPayload:{0, v28, v29, v30, v31}];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -346,7 +346,7 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -358,13 +358,13 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
 
   objc_autoreleasePoolPop(v3);
   v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v8 = [(HMPersonManager *)v4 UUID];
-  v9 = [v7 initWithTarget:v8];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v9 = [v7 initWithTarget:uUID];
 
   v10 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.u" destination:v9 payload:0];
-  v11 = [(HMPersonManager *)v4 context];
-  v12 = [v11 messageDispatcher];
-  [v12 sendMessage:v10];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v10];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -373,7 +373,7 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -385,13 +385,13 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
 
   objc_autoreleasePoolPop(v3);
   v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v8 = [(HMPersonManager *)v4 UUID];
-  v9 = [v7 initWithTarget:v8];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v9 = [v7 initWithTarget:uUID];
 
   v10 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.s" destination:v9 payload:0];
-  v11 = [(HMPersonManager *)v4 context];
-  v12 = [v11 messageDispatcher];
-  [v12 sendMessage:v10];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v10];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -400,7 +400,7 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -411,69 +411,69 @@ void __52__HMPersonManager_handleDidChangePersonDataMessage___block_invoke(id *a
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMPersonManager *)v4 context];
-  v8 = [v7 messageDispatcher];
-  [v8 registerForMessage:@"HMPM.m.dcpd" receiver:v4 selector:sel_handleDidChangePersonDataMessage_];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMPM.m.dcpd" receiver:selfCopy selector:sel_handleDidChangePersonDataMessage_];
 
-  v9 = [(HMPersonManager *)v4 notificationCenter];
-  [v9 addObserver:v4 selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
+  notificationCenter = [(HMPersonManager *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFaceprintsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeFaceprintsWithUUIDs:(id)ds completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Remove faceprints"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v13;
     v39 = 2114;
-    v40 = v15;
+    v40 = shortDescription;
     v41 = 2112;
-    v42 = v6;
+    v42 = dsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing faceprints with UUIDs from persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v35 = @"HMPM.mk.fu";
-  v36 = v6;
+  v36 = dsCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v18 = [(HMPersonManager *)v11 UUID];
-  v19 = [v17 initWithTarget:v18];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v19 = [v17 initWithTarget:uUID];
 
   v20 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.rf" destination:v19 payload:v16];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __56__HMPersonManager_removeFaceprintsWithUUIDs_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v11;
+  v31 = selfCopy;
   v32 = v9;
-  v33 = v6;
+  v33 = dsCopy;
   v34 = v8;
   v21 = v8;
-  v22 = v6;
+  v22 = dsCopy;
   v23 = v9;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMPersonManager *)v11 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20];
+  v24 = [(HMPersonManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -534,59 +534,59 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removeFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Remove face crops"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v13;
     v39 = 2114;
-    v40 = v15;
+    v40 = shortDescription;
     v41 = 2112;
-    v42 = v6;
+    v42 = dsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing faceCrops with UUIDs from persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v35 = @"HMPM.mk.fcu";
-  v36 = v6;
+  v36 = dsCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v18 = [(HMPersonManager *)v11 UUID];
-  v19 = [v17 initWithTarget:v18];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v19 = [v17 initWithTarget:uUID];
 
   v20 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.rfc" destination:v19 payload:v16];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __55__HMPersonManager_removeFaceCropsWithUUIDs_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v11;
+  v31 = selfCopy;
   v32 = v9;
-  v33 = v6;
+  v33 = dsCopy;
   v34 = v8;
   v21 = v8;
-  v22 = v6;
+  v22 = dsCopy;
   v23 = v9;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMPersonManager *)v11 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20];
+  v24 = [(HMPersonManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -647,59 +647,59 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)removePersonsWithUUIDs:(id)ds completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Remove persons"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v13;
     v39 = 2114;
-    v40 = v15;
+    v40 = shortDescription;
     v41 = 2112;
-    v42 = v6;
+    v42 = dsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing persons with UUIDs from persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v35 = @"HMPM.mk.pu";
-  v36 = v6;
+  v36 = dsCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v18 = [(HMPersonManager *)v11 UUID];
-  v19 = [v17 initWithTarget:v18];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v19 = [v17 initWithTarget:uUID];
 
   v20 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.rp" destination:v19 payload:v16];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __53__HMPersonManager_removePersonsWithUUIDs_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v11;
+  v31 = selfCopy;
   v32 = v9;
-  v33 = v6;
+  v33 = dsCopy;
   v34 = v8;
   v21 = v8;
-  v22 = v6;
+  v22 = dsCopy;
   v23 = v9;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMPersonManager *)v11 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20];
+  v24 = [(HMPersonManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -760,59 +760,59 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disassociateFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)disassociateFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Disassociate face crops"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v13;
     v39 = 2114;
-    v40 = v15;
+    v40 = shortDescription;
     v41 = 2112;
-    v42 = v6;
+    v42 = dsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Disassociating unassociated face crops with UUIDs %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v35 = @"HMPM.mk.fcu";
-  v36 = v6;
+  v36 = dsCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v18 = [(HMPersonManager *)v11 UUID];
-  v19 = [v17 initWithTarget:v18];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v19 = [v17 initWithTarget:uUID];
 
   v20 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.dfc" destination:v19 payload:v16];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __61__HMPersonManager_disassociateFaceCropsWithUUIDs_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v11;
+  v31 = selfCopy;
   v32 = v9;
-  v33 = v6;
+  v33 = dsCopy;
   v34 = v8;
   v21 = v8;
-  v22 = v6;
+  v22 = dsCopy;
   v23 = v9;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMPersonManager *)v11 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20];
+  v24 = [(HMPersonManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -873,51 +873,51 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 completion:(id)a5
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dsCopy = ds;
+  dCopy = d;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_14:
     _HMFPreconditionFailure();
   }
 
-  if (!v9)
+  if (!dCopy)
   {
     goto LABEL_14;
   }
 
-  v11 = v10;
+  v11 = completionCopy;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [MEMORY[0x1E696AE30] processInfo];
-    v17 = [v16 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
     v29 = 138544130;
     v30 = v15;
     v31 = 2112;
-    v32 = v8;
+    v32 = dsCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v17;
+    v36 = processName;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Associating face crops with UUIDs %@ to person with UUID %@ (processName: %@)", &v29, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  v18 = [MEMORY[0x1E696AE30] processInfo];
-  v19 = [v18 processName];
-  v20 = [v19 isEqualToString:@"Home"];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  processName2 = [processInfo2 processName];
+  v20 = [processName2 isEqualToString:@"Home"];
 
   v21 = objc_autoreleasePoolPush();
-  v22 = v13;
+  v22 = selfCopy;
   v23 = HMFGetOSLogHandle();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
   if (v20)
@@ -947,92 +947,92 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v21);
-  [(HMPersonManager *)v22 associateFaceCropsWithUUIDs:v8 toPersonWithUUID:v9 forSource:v26 completion:v11];
+  [(HMPersonManager *)v22 associateFaceCropsWithUUIDs:dsCopy toPersonWithUUID:dCopy forSource:v26 completion:v11];
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5 completion:(id)a6
+- (void)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  dsCopy = ds;
+  dCopy = d;
+  completionCopy = completion;
+  if (!dsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     goto LABEL_7;
   }
 
-  v13 = v12;
+  v13 = completionCopy;
   v14 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Associate face crops"];
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v18 = v37 = v13;
-    v19 = [v14 identifier];
-    v20 = [v19 shortDescription];
-    HMStringFromPersonFaceCropSource(a5);
+    identifier = [v14 identifier];
+    shortDescription = [identifier shortDescription];
+    HMStringFromPersonFaceCropSource(source);
     v36 = v14;
-    v22 = v21 = a5;
+    v22 = v21 = source;
     *buf = 138544386;
     v45 = v18;
     v46 = 2114;
-    v47 = v20;
+    v47 = shortDescription;
     v48 = 2112;
-    v49 = v10;
+    v49 = dsCopy;
     v50 = 2112;
-    v51 = v11;
+    v51 = dCopy;
     v52 = 2112;
     v53 = v22;
     _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Associating face crops with UUIDs %@ to person with UUID %@ for source: %@", buf, 0x34u);
 
-    a5 = v21;
+    source = v21;
     v14 = v36;
 
     v13 = v37;
   }
 
   objc_autoreleasePoolPop(v15);
-  v43[0] = v10;
+  v43[0] = dsCopy;
   v42[0] = @"HMPM.mk.fcu";
   v42[1] = @"HMPM.mk.pu";
-  v23 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+  v23 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
   v43[1] = v23;
   v42[2] = @"HMPM.mk.s";
-  v24 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v24 = [MEMORY[0x1E696AD98] numberWithInteger:source];
   v43[2] = v24;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:3];
 
   v26 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v27 = [(HMPersonManager *)v16 UUID];
-  v28 = [v26 initWithTarget:v27];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v28 = [v26 initWithTarget:uUID];
 
   v29 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.afc" destination:v28 payload:v25];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __85__HMPersonManager_associateFaceCropsWithUUIDs_toPersonWithUUID_forSource_completion___block_invoke;
   v38[3] = &unk_1E754D030;
-  v38[4] = v16;
+  v38[4] = selfCopy;
   v39 = v14;
-  v40 = v10;
+  v40 = dsCopy;
   v41 = v13;
   v30 = v13;
-  v31 = v10;
+  v31 = dsCopy;
   v32 = v14;
   [v29 setResponseHandler:v38];
-  v33 = [(HMPersonManager *)v16 context];
-  v34 = [v33 messageDispatcher];
-  [v34 sendMessage:v29];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v29];
 
   v35 = *MEMORY[0x1E69E9840];
 }
@@ -1093,78 +1093,78 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addOrUpdateFaceprints:(id)a3 completion:(id)a4
+- (void)addOrUpdateFaceprints:(id)faceprints completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  faceprintsCopy = faceprints;
+  completionCopy = completion;
+  if (!faceprintsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Add faceprints"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v41 = v13;
     v42 = 2114;
-    v43 = v15;
+    v43 = shortDescription;
     v44 = 2112;
-    v45 = v6;
+    v45 = faceprintsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Adding/updating faceprints to persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v37 = 0;
-  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v37];
+  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:faceprintsCopy requiringSecureCoding:1 error:&v37];
   v17 = v37;
   if (v16)
   {
     v38 = @"HMPM.mk.f";
     v39 = v16;
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
+    context2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v20 = [(HMPersonManager *)v11 UUID];
-    v21 = [v19 initWithTarget:v20];
+    uUID = [(HMPersonManager *)selfCopy UUID];
+    delegateCaller = [v19 initWithTarget:uUID];
 
-    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aouf" destination:v21 payload:v18];
+    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aouf" destination:delegateCaller payload:context2];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __52__HMPersonManager_addOrUpdateFaceprints_completion___block_invoke;
     v33[3] = &unk_1E754D030;
-    v33[4] = v11;
+    v33[4] = selfCopy;
     v34 = v9;
-    v35 = v6;
+    v35 = faceprintsCopy;
     v36 = v8;
     [v22 setResponseHandler:v33];
-    v23 = [(HMPersonManager *)v11 context];
-    v24 = [v23 messageDispatcher];
-    [v24 sendMessage:v22];
+    context = [(HMPersonManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v22];
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = HMFGetLogIdentifier();
       [v9 identifier];
       v29 = v32 = v8;
-      v30 = [v29 shortDescription];
+      shortDescription2 = [v29 shortDescription];
       *buf = 138543874;
       v41 = v28;
       v42 = 2114;
-      v43 = v30;
+      v43 = shortDescription2;
       v44 = 2112;
       v45 = v17;
       _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to serialize faceprints: %@", buf, 0x20u);
@@ -1173,10 +1173,10 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v25);
-    v18 = [(HMPersonManager *)v26 context];
-    v21 = [v18 delegateCaller];
+    context2 = [(HMPersonManager *)v26 context];
+    delegateCaller = [context2 delegateCaller];
     v22 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-    [v21 callCompletion:v8 error:v22];
+    [delegateCaller callCompletion:v8 error:v22];
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1238,78 +1238,78 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addOrUpdateFaceCrops:(id)a3 completion:(id)a4
+- (void)addOrUpdateFaceCrops:(id)crops completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  cropsCopy = crops;
+  completionCopy = completion;
+  if (!cropsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Add face crops"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v41 = v13;
     v42 = 2114;
-    v43 = v15;
+    v43 = shortDescription;
     v44 = 2112;
-    v45 = v6;
+    v45 = cropsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Adding/updating face crops to persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v37 = 0;
-  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v37];
+  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:cropsCopy requiringSecureCoding:1 error:&v37];
   v17 = v37;
   if (v16)
   {
     v38 = @"HMPM.mk.fc";
     v39 = v16;
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
+    context2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v20 = [(HMPersonManager *)v11 UUID];
-    v21 = [v19 initWithTarget:v20];
+    uUID = [(HMPersonManager *)selfCopy UUID];
+    delegateCaller = [v19 initWithTarget:uUID];
 
-    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aoufc" destination:v21 payload:v18];
+    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aoufc" destination:delegateCaller payload:context2];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __51__HMPersonManager_addOrUpdateFaceCrops_completion___block_invoke;
     v33[3] = &unk_1E754D030;
-    v33[4] = v11;
+    v33[4] = selfCopy;
     v34 = v9;
-    v35 = v6;
+    v35 = cropsCopy;
     v36 = v8;
     [v22 setResponseHandler:v33];
-    v23 = [(HMPersonManager *)v11 context];
-    v24 = [v23 messageDispatcher];
-    [v24 sendMessage:v22];
+    context = [(HMPersonManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v22];
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = HMFGetLogIdentifier();
       [v9 identifier];
       v29 = v32 = v8;
-      v30 = [v29 shortDescription];
+      shortDescription2 = [v29 shortDescription];
       *buf = 138543874;
       v41 = v28;
       v42 = 2114;
-      v43 = v30;
+      v43 = shortDescription2;
       v44 = 2112;
       v45 = v17;
       _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to serialize face crops: %@", buf, 0x20u);
@@ -1318,10 +1318,10 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v25);
-    v18 = [(HMPersonManager *)v26 context];
-    v21 = [v18 delegateCaller];
+    context2 = [(HMPersonManager *)v26 context];
+    delegateCaller = [context2 delegateCaller];
     v22 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-    [v21 callCompletion:v8 error:v22];
+    [delegateCaller callCompletion:v8 error:v22];
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1383,78 +1383,78 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addOrUpdatePersons:(id)a3 completion:(id)a4
+- (void)addOrUpdatePersons:(id)persons completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  personsCopy = persons;
+  completionCopy = completion;
+  if (!personsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Add persons"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v41 = v13;
     v42 = 2114;
-    v43 = v15;
+    v43 = shortDescription;
     v44 = 2112;
-    v45 = v6;
+    v45 = personsCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Adding/updating persons to persons data set: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v37 = 0;
-  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v37];
+  v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:personsCopy requiringSecureCoding:1 error:&v37];
   v17 = v37;
   if (v16)
   {
     v38 = @"HMPM.mk.p";
     v39 = v16;
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
+    context2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v20 = [(HMPersonManager *)v11 UUID];
-    v21 = [v19 initWithTarget:v20];
+    uUID = [(HMPersonManager *)selfCopy UUID];
+    delegateCaller = [v19 initWithTarget:uUID];
 
-    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aoup" destination:v21 payload:v18];
+    v22 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.aoup" destination:delegateCaller payload:context2];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __49__HMPersonManager_addOrUpdatePersons_completion___block_invoke;
     v33[3] = &unk_1E754D030;
-    v33[4] = v11;
+    v33[4] = selfCopy;
     v34 = v9;
-    v35 = v6;
+    v35 = personsCopy;
     v36 = v8;
     [v22 setResponseHandler:v33];
-    v23 = [(HMPersonManager *)v11 context];
-    v24 = [v23 messageDispatcher];
-    [v24 sendMessage:v22];
+    context = [(HMPersonManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v22];
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v11;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = HMFGetLogIdentifier();
       [v9 identifier];
       v29 = v32 = v8;
-      v30 = [v29 shortDescription];
+      shortDescription2 = [v29 shortDescription];
       *buf = 138543874;
       v41 = v28;
       v42 = 2114;
-      v43 = v30;
+      v43 = shortDescription2;
       v44 = 2112;
       v45 = v17;
       _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to serialize persons: %@", buf, 0x20u);
@@ -1463,10 +1463,10 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v25);
-    v18 = [(HMPersonManager *)v26 context];
-    v21 = [v18 delegateCaller];
+    context2 = [(HMPersonManager *)v26 context];
+    delegateCaller = [context2 delegateCaller];
     v22 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-    [v21 callCompletion:v8 error:v22];
+    [delegateCaller callCompletion:v8 error:v22];
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1528,45 +1528,45 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllFaceprintsWithCompletion:(id)a3
+- (void)fetchAllFaceprintsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch all faceprints"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v26 = v9;
     v27 = 2114;
-    v28 = v11;
+    v28 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching all faceprints", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMPersonManager *)v7 UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v14 = [v12 initWithTarget:uUID];
 
-  v15 = [(HMPersonManager *)v7 fetchClientFactory];
-  v16 = [v5 identifier];
-  v17 = [(HMPersonManager *)v7 context];
-  v18 = (v15)[2](v15, v16, v17, @"HMPM.m.ff", v14);
+  fetchClientFactory = [(HMPersonManager *)selfCopy fetchClientFactory];
+  identifier2 = [v5 identifier];
+  context = [(HMPersonManager *)selfCopy context];
+  v18 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMPM.m.ff", v14);
 
   [v18 setClassForUnarchiving:objc_opt_class()];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __52__HMPersonManager_fetchAllFaceprintsWithCompletion___block_invoke;
   v22[3] = &unk_1E754C418;
-  v22[4] = v7;
+  v22[4] = selfCopy;
   v23 = v5;
-  v24 = v4;
-  v19 = v4;
+  v24 = completionCopy;
+  v19 = completionCopy;
   v20 = v5;
   [v18 fetchWithCompletion:v22];
 
@@ -1627,41 +1627,41 @@ void __52__HMPersonManager_fetchAllFaceprintsWithCompletion___block_invoke(uint6
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceprintsForFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch faceprints"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v32 = v12;
     v33 = 2114;
-    v34 = v14;
+    v34 = shortDescription;
     v35 = 2112;
-    v36 = v6;
+    v36 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching faceprints for face crops with UUIDs: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v29 = @"HMPM.mk.fcu";
-  v30 = v6;
+  v30 = dsCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMPersonManager *)v10 UUID];
-  v18 = [v16 initWithTarget:v17];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v18 = [v16 initWithTarget:uUID];
 
-  v19 = [(HMPersonManager *)v10 fetchClientFactory];
-  v20 = [v8 identifier];
-  v21 = [(HMPersonManager *)v10 context];
-  v22 = (v19)[2](v19, v20, v21, @"HMPM.m.ff", v18);
+  fetchClientFactory = [(HMPersonManager *)selfCopy fetchClientFactory];
+  identifier2 = [v8 identifier];
+  context = [(HMPersonManager *)selfCopy context];
+  v22 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMPM.m.ff", v18);
 
   [v22 setClassForUnarchiving:objc_opt_class()];
   [v22 setPayload:v15];
@@ -1669,10 +1669,10 @@ void __52__HMPersonManager_fetchAllFaceprintsWithCompletion___block_invoke(uint6
   v26[1] = 3221225472;
   v26[2] = __67__HMPersonManager_fetchFaceprintsForFaceCropsWithUUIDs_completion___block_invoke;
   v26[3] = &unk_1E754C418;
-  v26[4] = v10;
+  v26[4] = selfCopy;
   v27 = v8;
-  v28 = v7;
-  v23 = v7;
+  v28 = completionCopy;
+  v23 = completionCopy;
   v24 = v8;
   [v22 fetchWithCompletion:v26];
 
@@ -1733,45 +1733,45 @@ void __67__HMPersonManager_fetchFaceprintsForFaceCropsWithUUIDs_completion___blo
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)a3
+- (void)fetchAllUnassociatedFaceCropsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch all face crops"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v26 = v9;
     v27 = 2114;
-    v28 = v11;
+    v28 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching all unassociated face crops", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMPersonManager *)v7 UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v14 = [v12 initWithTarget:uUID];
 
-  v15 = [(HMPersonManager *)v7 fetchClientFactory];
-  v16 = [v5 identifier];
-  v17 = [(HMPersonManager *)v7 context];
-  v18 = (v15)[2](v15, v16, v17, @"HMPM.m.fufc", v14);
+  fetchClientFactory = [(HMPersonManager *)selfCopy fetchClientFactory];
+  identifier2 = [v5 identifier];
+  context = [(HMPersonManager *)selfCopy context];
+  v18 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMPM.m.fufc", v14);
 
   [v18 setClassForUnarchiving:objc_opt_class()];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __63__HMPersonManager_fetchAllUnassociatedFaceCropsWithCompletion___block_invoke;
   v22[3] = &unk_1E754C418;
-  v22[4] = v7;
+  v22[4] = selfCopy;
   v23 = v5;
-  v24 = v4;
-  v19 = v4;
+  v24 = completionCopy;
+  v19 = completionCopy;
   v20 = v5;
   [v18 fetchWithCompletion:v22];
 
@@ -1832,45 +1832,45 @@ void __63__HMPersonManager_fetchAllUnassociatedFaceCropsWithCompletion___block_i
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllPersonFaceCropsWithCompletion:(id)a3
+- (void)fetchAllPersonFaceCropsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch all person face crops"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v26 = v9;
     v27 = 2114;
-    v28 = v11;
+    v28 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching all person face crops", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMPersonManager *)v7 UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v14 = [v12 initWithTarget:uUID];
 
-  v15 = [(HMPersonManager *)v7 fetchClientFactory];
-  v16 = [v5 identifier];
-  v17 = [(HMPersonManager *)v7 context];
-  v18 = (v15)[2](v15, v16, v17, @"HMPM.m.fpfc", v14);
+  fetchClientFactory = [(HMPersonManager *)selfCopy fetchClientFactory];
+  identifier2 = [v5 identifier];
+  context = [(HMPersonManager *)selfCopy context];
+  v18 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMPM.m.fpfc", v14);
 
   [v18 setClassForUnarchiving:objc_opt_class()];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __57__HMPersonManager_fetchAllPersonFaceCropsWithCompletion___block_invoke;
   v22[3] = &unk_1E754C418;
-  v22[4] = v7;
+  v22[4] = selfCopy;
   v23 = v5;
-  v24 = v4;
-  v19 = v4;
+  v24 = completionCopy;
+  v19 = completionCopy;
   v20 = v5;
   [v18 fetchWithCompletion:v22];
 
@@ -1931,51 +1931,51 @@ void __57__HMPersonManager_fetchAllPersonFaceCropsWithCompletion___block_invoke(
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFaceCropsForPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceCropsForPersonsWithUUIDs:(id)ds completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch face crops for persons"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching face crops for persons with UUIDs: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v28 = @"HMPM.mk.pu";
-  v29 = v6;
+  v29 = dsCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMPersonManager *)v10 UUID];
-  v18 = [v16 initWithTarget:v17];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v18 = [v16 initWithTarget:uUID];
 
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.fpfc" destination:v18 payload:v15];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__HMPersonManager_fetchFaceCropsForPersonsWithUUIDs_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMPersonManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -2096,51 +2096,51 @@ void __64__HMPersonManager_fetchFaceCropsForPersonsWithUUIDs_completion___block_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)fetchFaceCropsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchFaceCropsWithUUIDs:(id)ds completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch face crops"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching face crops with UUIDs: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v28 = @"HMPM.mk.fcu";
-  v29 = v6;
+  v29 = dsCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMPersonManager *)v10 UUID];
-  v18 = [v16 initWithTarget:v17];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v18 = [v16 initWithTarget:uUID];
 
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.ffc" destination:v18 payload:v15];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __54__HMPersonManager_fetchFaceCropsWithUUIDs_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMPersonManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -2261,45 +2261,45 @@ void __54__HMPersonManager_fetchFaceCropsWithUUIDs_completion___block_invoke_136
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)fetchAllPersonsWithCompletion:(id)a3
+- (void)fetchAllPersonsWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch all persons"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v26 = v9;
     v27 = 2114;
-    v28 = v11;
+    v28 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching all persons", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMPersonManager *)v7 UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v14 = [v12 initWithTarget:uUID];
 
-  v15 = [(HMPersonManager *)v7 fetchClientFactory];
-  v16 = [v5 identifier];
-  v17 = [(HMPersonManager *)v7 context];
-  v18 = (v15)[2](v15, v16, v17, @"HMPM.m.fp", v14);
+  fetchClientFactory = [(HMPersonManager *)selfCopy fetchClientFactory];
+  identifier2 = [v5 identifier];
+  context = [(HMPersonManager *)selfCopy context];
+  v18 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMPM.m.fp", v14);
 
   [v18 setClassForUnarchiving:objc_opt_class()];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __49__HMPersonManager_fetchAllPersonsWithCompletion___block_invoke;
   v22[3] = &unk_1E754C418;
-  v22[4] = v7;
+  v22[4] = selfCopy;
   v23 = v5;
-  v24 = v4;
-  v19 = v4;
+  v24 = completionCopy;
+  v19 = completionCopy;
   v20 = v5;
   [v18 fetchWithCompletion:v22];
 
@@ -2509,51 +2509,51 @@ LABEL_30:
   v61 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPersonsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchPersonsWithUUIDs:(id)ds completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch persons"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching persons with UUIDs: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v28 = @"HMPM.mk.pu";
-  v29 = v6;
+  v29 = dsCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMPersonManager *)v10 UUID];
-  v18 = [v16 initWithTarget:v17];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v18 = [v16 initWithTarget:uUID];
 
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.fp" destination:v18 payload:v15];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __52__HMPersonManager_fetchPersonsWithUUIDs_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMPersonManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -2674,45 +2674,45 @@ void __52__HMPersonManager_fetchPersonsWithUUIDs_completion___block_invoke_122(u
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)performCloudPullWithCompletion:(id)a3
+- (void)performCloudPullWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Perform cloud pull"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v11;
+    v27 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Performing cloud pull", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMPersonManager *)v7 UUID];
-  v14 = [v12 initWithTarget:v13];
+  uUID = [(HMPersonManager *)selfCopy UUID];
+  v14 = [v12 initWithTarget:uUID];
 
   v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMPM.m.pcp" destination:v14 payload:0];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __50__HMPersonManager_performCloudPullWithCompletion___block_invoke;
   v21[3] = &unk_1E754E480;
-  v21[4] = v7;
+  v21[4] = selfCopy;
   v22 = v5;
-  v23 = v4;
-  v16 = v4;
+  v23 = completionCopy;
+  v16 = completionCopy;
   v17 = v5;
   [v15 setResponseHandler:v21];
-  v18 = [(HMPersonManager *)v7 context];
-  v19 = [v18 messageDispatcher];
-  [v19 sendMessage:v15];
+  context = [(HMPersonManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -2772,12 +2772,12 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
   v4 = [(NSHashTable *)self->_observers count];
-  [(NSHashTable *)self->_observers removeObject:v6];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   v5 = [(NSHashTable *)self->_observers count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5 && v4)
@@ -2786,12 +2786,12 @@ LABEL_6:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
   v4 = [(NSHashTable *)self->_observers count];
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v4)
   {
@@ -2802,8 +2802,8 @@ LABEL_6:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(HMPersonManager *)self UUID];
-  [v3 appendFormat:@" UUID: %@", v4];
+  uUID = [(HMPersonManager *)self UUID];
+  [v3 appendFormat:@" UUID: %@", uUID];
 
   [v3 appendString:@">"];
   v5 = [v3 copy];
@@ -2813,44 +2813,44 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(NSHashTable *)self->_observers anyObject];
+  anyObject = [(NSHashTable *)self->_observers anyObject];
 
-  if (v3)
+  if (anyObject)
   {
     [(HMPersonManager *)self unsubscribe];
   }
 
-  v4 = [(HMPersonManager *)self context];
-  v5 = [v4 messageDispatcher];
-  [v5 deregisterReceiver:self];
+  context = [(HMPersonManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v6.receiver = self;
   v6.super_class = HMPersonManager;
   [(HMPersonManager *)&v6 dealloc];
 }
 
-- (HMPersonManager)initWithContext:(id)a3 UUID:(id)a4 zoneName:(id)a5 notificationCenter:(id)a6
+- (HMPersonManager)initWithContext:(id)context UUID:(id)d zoneName:(id)name notificationCenter:(id)center
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  dCopy = d;
+  nameCopy = name;
+  centerCopy = center;
   v23.receiver = self;
   v23.super_class = HMPersonManager;
   v15 = [(HMPersonManager *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    v17 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v12];
+    objc_storeStrong(&v15->_context, context);
+    v17 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:dCopy];
     UUID = v16->_UUID;
     v16->_UUID = v17;
 
-    objc_storeStrong(&v16->_zoneName, a5);
-    objc_storeStrong(&v16->_notificationCenter, a6);
-    v19 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v16->_zoneName, name);
+    objc_storeStrong(&v16->_notificationCenter, center);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v16->_observers;
-    v16->_observers = v19;
+    v16->_observers = weakObjectsHashTable;
 
     fetchClientFactory = v16->_fetchClientFactory;
     v16->_fetchClientFactory = &__block_literal_global;

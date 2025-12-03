@@ -4,29 +4,29 @@
 - (PXCuratedLibraryChapterHeaderLayout)init;
 - (PXSimpleIndexPath)sectionIndexPath;
 - (UIEdgeInsets)padding;
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)_createAttributedTitleWithEmphasizedAttributes:(id)a3 deemphasizedAttributes:(id)a4;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)_createAttributedTitleWithEmphasizedAttributes:(id)attributes deemphasizedAttributes:(id)deemphasizedAttributes;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (void)_handleAsyncRawTitle:(id)a3 generation:(int64_t)a4;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout;
+- (void)_handleAsyncRawTitle:(id)title generation:(int64_t)generation;
 - (void)_invalidateAttributedTitle;
 - (void)_invalidateChevron;
 - (void)_updateSprites;
 - (void)_updateTitle;
 - (void)displayScaleDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceOptionsDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAssetCollectionReference:(id)a3;
-- (void)setRawTitle:(id)a3;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setSpec:(id)a3;
-- (void)setTitleDeemphasizedAttributes:(id)a3;
-- (void)setTitleEmphasizedAttributes:(id)a3;
+- (void)setAssetCollectionReference:(id)reference;
+- (void)setRawTitle:(id)title;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
+- (void)setSpec:(id)spec;
+- (void)setTitleDeemphasizedAttributes:(id)attributes;
+- (void)setTitleEmphasizedAttributes:(id)attributes;
 - (void)update;
 - (void)viewEnvironmentDidChange;
 - (void)visibleRectDidChange;
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->_sectionIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->_sectionIndexPath.item = v3;
 }
 
@@ -69,15 +69,15 @@
   return v2;
 }
 
-- (id)imageConfigurationAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)imageConfigurationAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXCuratedLibraryChapterHeaderLayout *)self spec:*&a3];
-  v5 = [v4 chevronImageConfiguration];
+  v4 = [(PXCuratedLibraryChapterHeaderLayout *)self spec:*&index];
+  chevronImageConfiguration = [v4 chevronImageConfiguration];
 
-  return v5;
+  return chevronImageConfiguration;
 }
 
-- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (UIEdgeInsets)paddingForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *off_1E77220A0;
   v5 = *(off_1E77220A0 + 1);
@@ -90,42 +90,42 @@
   return result;
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:a3];
+  layoutCopy = layout;
+  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:index];
   v9 = v8;
   if (v8 == @"PXCuratedLibraryChapterHeaderLayoutItemTitle")
   {
-    v10 = [(PXCuratedLibraryChapterHeaderLayout *)self attributedTitle];
+    attributedTitle = [(PXCuratedLibraryChapterHeaderLayout *)self attributedTitle];
   }
 
   else
   {
     if (v8 != @"PXCuratedLibraryChapterHeaderLayoutItemFloatingTitle")
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:563 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:563 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v10 = [(PXCuratedLibraryChapterHeaderLayout *)self floatingAttributedTitle];
+    attributedTitle = [(PXCuratedLibraryChapterHeaderLayout *)self floatingAttributedTitle];
   }
 
-  v11 = v10;
+  v11 = attributedTitle;
 
   return v11;
 }
 
-- (id)stringAttributesAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAttributesAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:a3];
+  layoutCopy = layout;
+  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:index];
   if (v8 != @"PXCuratedLibraryChapterHeaderLayoutItemTitle" && v8 != @"PXCuratedLibraryChapterHeaderLayoutItemFloatingTitle")
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:546 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:546 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -133,14 +133,14 @@
   return 0;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:a3];
+  layoutCopy = layout;
+  v8 = [(NSArray *)self->_itemIdentifierBySpriteIndex objectAtIndexedSubscript:index];
   if (v8 != @"PXCuratedLibraryChapterHeaderLayoutItemTitle" && v8 != @"PXCuratedLibraryChapterHeaderLayoutItemFloatingTitle")
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:538 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:538 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -148,26 +148,26 @@
   return &stru_1F1741150;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (AlternateAppearanceMixAnimatorObservationContext_79802 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (AlternateAppearanceMixAnimatorObservationContext_79802 != context)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:527 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:527 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
-    v18 = v9;
-    v10 = [(PXCuratedLibraryChapterHeaderLayout *)self alternateAppearanceMixAnimator];
-    v11 = [v10 isBeingMutated];
+    v18 = observableCopy;
+    alternateAppearanceMixAnimator = [(PXCuratedLibraryChapterHeaderLayout *)self alternateAppearanceMixAnimator];
+    isBeingMutated = [alternateAppearanceMixAnimator isBeingMutated];
 
-    v9 = v18;
-    if ((v11 & 1) == 0)
+    observableCopy = v18;
+    if ((isBeingMutated & 1) == 0)
     {
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
@@ -183,9 +183,9 @@ LABEL_9:
 LABEL_8:
         if (self->_updateFlags.updated)
         {
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout observable:didChange:context:]"];
-          [v16 handleFailureInFunction:v17 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 1}];
+          [currentHandler2 handleFailureInFunction:v17 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 1}];
 
           abort();
         }
@@ -203,7 +203,7 @@ LABEL_8:
       if (!willPerformUpdate)
       {
         [(PXCuratedLibraryChapterHeaderLayout *)self setNeedsUpdate];
-        v9 = v18;
+        observableCopy = v18;
       }
     }
   }
@@ -211,9 +211,9 @@ LABEL_8:
 LABEL_10:
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   if ([(PXCuratedLibraryChapterHeaderLayout *)self presentedAlternateAppearance])
   {
     v5 = 0;
@@ -221,12 +221,12 @@ LABEL_10:
 
   else
   {
-    v6 = [(PXCuratedLibraryChapterHeaderLayout *)self assetCollectionReference];
+    assetCollectionReference = [(PXCuratedLibraryChapterHeaderLayout *)self assetCollectionReference];
     v7 = [(PXCuratedLibraryChapterHeaderLayout *)self spriteReferenceForSpriteIndex:v3 objectReference:0];
     v8 = [off_1E7721520 alloc];
-    if (v6)
+    if (assetCollectionReference)
     {
-      v9 = [v8 initWithControl:4 spriteReference:v7 layout:self assetCollectionReference:v6];
+      v9 = [v8 initWithControl:4 spriteReference:v7 layout:self assetCollectionReference:assetCollectionReference];
     }
 
     else
@@ -260,9 +260,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 3) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout referenceOptionsDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:499 description:{@"invalidating %lu after it already has been updated", 3}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:499 description:{@"invalidating %lu after it already has been updated", 3}];
 
       abort();
     }
@@ -310,9 +310,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:488 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:488 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -352,9 +352,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout referenceSizeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:483 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:483 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -394,9 +394,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout visibleRectDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:478 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:478 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -417,12 +417,12 @@ LABEL_5:
   }
 }
 
-- (id)_createAttributedTitleWithEmphasizedAttributes:(id)a3 deemphasizedAttributes:(id)a4
+- (id)_createAttributedTitleWithEmphasizedAttributes:(id)attributes deemphasizedAttributes:(id)deemphasizedAttributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXCuratedLibraryChapterHeaderLayout *)self rawTitle];
-  v9 = [v8 componentsSeparatedByString:@""];
+  attributesCopy = attributes;
+  deemphasizedAttributesCopy = deemphasizedAttributes;
+  rawTitle = [(PXCuratedLibraryChapterHeaderLayout *)self rawTitle];
+  v9 = [rawTitle componentsSeparatedByString:@""];
 
   v10 = objc_alloc_init(MEMORY[0x1E696AD40]);
   LODWORD(self) = ([(PXCuratedLibraryChapterHeaderLayout *)self referenceOptions]>> 1) & 1;
@@ -437,11 +437,11 @@ LABEL_5:
   v11 = v10;
   v21 = v11;
   v25 = v27;
-  v12 = v6;
+  v12 = attributesCopy;
   v22 = v12;
-  v13 = v7;
+  v13 = deemphasizedAttributesCopy;
   v23 = v13;
-  v26 = self;
+  selfCopy = self;
   v14 = v9;
   v24 = v14;
   [v14 enumerateObjectsUsingBlock:&v17];
@@ -482,9 +482,9 @@ void __109__PXCuratedLibraryChapterHeaderLayout__createAttributedTitleWithEmphas
   floatingAttributedTitle = self->_floatingAttributedTitle;
   if (!floatingAttributedTitle)
   {
-    v4 = [(PXCuratedLibraryChapterHeaderLayout *)self floatingTitleEmphasizedAttributes];
-    v5 = [(PXCuratedLibraryChapterHeaderLayout *)self floatingTitleDeemphasizedAttributes];
-    v6 = [(PXCuratedLibraryChapterHeaderLayout *)self _createAttributedTitleWithEmphasizedAttributes:v4 deemphasizedAttributes:v5];
+    floatingTitleEmphasizedAttributes = [(PXCuratedLibraryChapterHeaderLayout *)self floatingTitleEmphasizedAttributes];
+    floatingTitleDeemphasizedAttributes = [(PXCuratedLibraryChapterHeaderLayout *)self floatingTitleDeemphasizedAttributes];
+    v6 = [(PXCuratedLibraryChapterHeaderLayout *)self _createAttributedTitleWithEmphasizedAttributes:floatingTitleEmphasizedAttributes deemphasizedAttributes:floatingTitleDeemphasizedAttributes];
     v7 = self->_floatingAttributedTitle;
     self->_floatingAttributedTitle = v6;
 
@@ -499,9 +499,9 @@ void __109__PXCuratedLibraryChapterHeaderLayout__createAttributedTitleWithEmphas
   attributedTitle = self->_attributedTitle;
   if (!attributedTitle)
   {
-    v4 = [(PXCuratedLibraryChapterHeaderLayout *)self titleEmphasizedAttributes];
-    v5 = [(PXCuratedLibraryChapterHeaderLayout *)self titleDeemphasizedAttributes];
-    v6 = [(PXCuratedLibraryChapterHeaderLayout *)self _createAttributedTitleWithEmphasizedAttributes:v4 deemphasizedAttributes:v5];
+    titleEmphasizedAttributes = [(PXCuratedLibraryChapterHeaderLayout *)self titleEmphasizedAttributes];
+    titleDeemphasizedAttributes = [(PXCuratedLibraryChapterHeaderLayout *)self titleDeemphasizedAttributes];
+    v6 = [(PXCuratedLibraryChapterHeaderLayout *)self _createAttributedTitleWithEmphasizedAttributes:titleEmphasizedAttributes deemphasizedAttributes:titleDeemphasizedAttributes];
     v7 = self->_attributedTitle;
     self->_attributedTitle = v6;
 
@@ -511,19 +511,19 @@ void __109__PXCuratedLibraryChapterHeaderLayout__createAttributedTitleWithEmphas
   return attributedTitle;
 }
 
-- (void)_handleAsyncRawTitle:(id)a3 generation:(int64_t)a4
+- (void)_handleAsyncRawTitle:(id)title generation:(int64_t)generation
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_asyncDateGeneration == a4)
+  titleCopy = title;
+  v7 = titleCopy;
+  if (self->_asyncDateGeneration == generation)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__PXCuratedLibraryChapterHeaderLayout__handleAsyncRawTitle_generation___block_invoke;
     block[3] = &unk_1E7749FF8;
-    v10 = a4;
+    generationCopy = generation;
     block[4] = self;
-    v9 = v6;
+    v9 = titleCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -541,10 +541,10 @@ uint64_t __71__PXCuratedLibraryChapterHeaderLayout__handleAsyncRawTitle_generati
 - (void)_updateTitle
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCuratedLibraryChapterHeaderLayout *)self spec];
-  v4 = [v3 titleFont];
-  v5 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v6 = [v5 mutableCopy];
+  spec = [(PXCuratedLibraryChapterHeaderLayout *)self spec];
+  titleFont = [spec titleFont];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v6 = [defaultParagraphStyle mutableCopy];
 
   [v6 setLineBreakMode:4];
   if (([(PXCuratedLibraryChapterHeaderLayout *)self referenceOptions]& 2) != 0)
@@ -553,51 +553,51 @@ uint64_t __71__PXCuratedLibraryChapterHeaderLayout__handleAsyncRawTitle_generati
   }
 
   v7 = *MEMORY[0x1E69DB648];
-  v35[0] = v4;
+  v35[0] = titleFont;
   v8 = *MEMORY[0x1E69DB650];
   v33[0] = v7;
   v33[1] = v8;
-  v9 = [v3 titleEmphasizedColor];
+  titleEmphasizedColor = [spec titleEmphasizedColor];
   v34 = *MEMORY[0x1E69DB688];
   v10 = v34;
-  v35[1] = v9;
+  v35[1] = titleEmphasizedColor;
   v35[2] = v6;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v33 count:3];
   [(PXCuratedLibraryChapterHeaderLayout *)self setTitleEmphasizedAttributes:v11];
 
-  v32[0] = v4;
+  v32[0] = titleFont;
   v31[0] = v7;
   v31[1] = v8;
-  v12 = [v3 floatingTitleEmphasizedColor];
+  floatingTitleEmphasizedColor = [spec floatingTitleEmphasizedColor];
   v31[2] = v10;
-  v32[1] = v12;
+  v32[1] = floatingTitleEmphasizedColor;
   v32[2] = v6;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];
   [(PXCuratedLibraryChapterHeaderLayout *)self setFloatingTitleEmphasizedAttributes:v13];
 
-  v30[0] = v4;
+  v30[0] = titleFont;
   v29[0] = v7;
   v29[1] = v8;
-  v14 = [v3 titleDeemphasizedColor];
+  titleDeemphasizedColor = [spec titleDeemphasizedColor];
   v29[2] = v10;
-  v30[1] = v14;
+  v30[1] = titleDeemphasizedColor;
   v30[2] = v6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
   [(PXCuratedLibraryChapterHeaderLayout *)self setTitleDeemphasizedAttributes:v15];
 
-  v28[0] = v4;
+  v28[0] = titleFont;
   v27[0] = v7;
   v27[1] = v8;
-  v16 = [v3 floatingTitleDeemphasizedColor];
+  floatingTitleDeemphasizedColor = [spec floatingTitleDeemphasizedColor];
   v27[2] = v10;
-  v28[1] = v16;
+  v28[1] = floatingTitleDeemphasizedColor;
   v28[2] = v6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
   [(PXCuratedLibraryChapterHeaderLayout *)self setFloatingTitleDeemphasizedAttributes:v17];
 
-  LOBYTE(v17) = [v3 shouldAbbreviateMonth];
-  v18 = [(PXCuratedLibraryChapterHeaderLayout *)self assetCollectionReference];
-  v19 = [v18 assetCollection];
+  LOBYTE(v17) = [spec shouldAbbreviateMonth];
+  assetCollectionReference = [(PXCuratedLibraryChapterHeaderLayout *)self assetCollectionReference];
+  assetCollection = [assetCollectionReference assetCollection];
 
   if (v17)
   {
@@ -609,7 +609,7 @@ uint64_t __71__PXCuratedLibraryChapterHeaderLayout__handleAsyncRawTitle_generati
     block[1] = 3221225472;
     block[2] = __51__PXCuratedLibraryChapterHeaderLayout__updateTitle__block_invoke;
     block[3] = &unk_1E7735A38;
-    v24 = v19;
+    v24 = assetCollection;
     v25[1] = 3;
     objc_copyWeak(v25, &location);
     v25[2] = v20;
@@ -621,8 +621,8 @@ uint64_t __71__PXCuratedLibraryChapterHeaderLayout__handleAsyncRawTitle_generati
 
   else
   {
-    v22 = [v19 localizedSubtitle];
-    [(PXCuratedLibraryChapterHeaderLayout *)self setRawTitle:v22];
+    localizedSubtitle = [assetCollection localizedSubtitle];
+    [(PXCuratedLibraryChapterHeaderLayout *)self setRawTitle:localizedSubtitle];
   }
 }
 
@@ -633,14 +633,14 @@ void __51__PXCuratedLibraryChapterHeaderLayout__updateTitle__block_invoke(uint64
   [WeakRetained _handleAsyncRawTitle:v3 generation:*(a1 + 56)];
 }
 
-- (void)setTitleDeemphasizedAttributes:(id)a3
+- (void)setTitleDeemphasizedAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleDeemphasizedAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_titleDeemphasizedAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -671,9 +671,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout _invalidateChevron]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:371 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:371 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -719,9 +719,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout _invalidateAttributedTitle]"];
-      [v8 handleFailureInFunction:v9 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:366 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:366 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -743,14 +743,14 @@ LABEL_5:
   }
 }
 
-- (void)setTitleEmphasizedAttributes:(id)a3
+- (void)setTitleEmphasizedAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleEmphasizedAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_titleEmphasizedAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -764,15 +764,15 @@ LABEL_5:
   }
 }
 
-- (void)setRawTitle:(id)a3
+- (void)setRawTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   rawTitle = self->_rawTitle;
-  if (rawTitle != v4)
+  if (rawTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)rawTitle isEqualToString:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)rawTitle isEqualToString:titleCopy];
+    titleCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -780,23 +780,23 @@ LABEL_5:
       self->_rawTitle = v7;
 
       [(PXCuratedLibraryChapterHeaderLayout *)self _invalidateAttributedTitle];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setAssetCollectionReference:(id)a3
+- (void)setAssetCollectionReference:(id)reference
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_assetCollectionReference != v5)
+  referenceCopy = reference;
+  v6 = referenceCopy;
+  if (self->_assetCollectionReference != referenceCopy)
   {
-    v13 = v5;
-    v7 = [(PXAssetCollectionReference *)v5 isEqual:?];
+    v13 = referenceCopy;
+    v7 = [(PXAssetCollectionReference *)referenceCopy isEqual:?];
     v6 = v13;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_assetCollectionReference, a3);
+      objc_storeStrong(&self->_assetCollectionReference, reference);
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
       if (needsUpdate)
@@ -813,9 +813,9 @@ LABEL_9:
 LABEL_7:
         if ((self->_updateFlags.updated & 2) != 0)
         {
-          v11 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout setAssetCollectionReference:]"];
-          [v11 handleFailureInFunction:v12 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:342 description:{@"invalidating %lu after it already has been updated", 2}];
+          [currentHandler handleFailureInFunction:v12 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:342 description:{@"invalidating %lu after it already has been updated", 2}];
 
           abort();
         }
@@ -862,9 +862,9 @@ LABEL_10:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout update]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -877,9 +877,9 @@ LABEL_10:
       [(PXCuratedLibraryChapterHeaderLayout *)self _updateTitle];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout update]"];
-        [v8 handleFailureInFunction:v9 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v9 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -895,9 +895,9 @@ LABEL_10:
     p_updateFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:107 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v11 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:107 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -906,18 +906,18 @@ LABEL_10:
   [(PXCuratedLibraryChapterHeaderLayout *)&v12 update];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_spec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_spec != specCopy)
   {
-    v13 = v5;
-    v7 = [(PXCuratedLibraryChapterHeaderLayoutSpec *)v5 isEqual:?];
+    v13 = specCopy;
+    v7 = [(PXCuratedLibraryChapterHeaderLayoutSpec *)specCopy isEqual:?];
     v6 = v13;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_spec, a3);
+      objc_storeStrong(&self->_spec, spec);
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
       if (needsUpdate)
@@ -934,9 +934,9 @@ LABEL_9:
 LABEL_7:
         if ((self->_updateFlags.updated & 3) != 0)
         {
-          v11 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryChapterHeaderLayout setSpec:]"];
-          [v11 handleFailureInFunction:v12 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:96 description:{@"invalidating %lu after it already has been updated", 3}];
+          [currentHandler handleFailureInFunction:v12 file:@"PXCuratedLibraryChapterHeaderLayout.m" lineNumber:96 description:{@"invalidating %lu after it already has been updated", 3}];
 
           abort();
         }

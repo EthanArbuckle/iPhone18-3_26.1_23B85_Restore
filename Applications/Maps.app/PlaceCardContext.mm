@@ -1,10 +1,10 @@
 @interface PlaceCardContext
 - (AppCoordinator)appCoordinator;
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3;
-- (BOOL)placeCardViewController:(id)a3 shouldShowTransitScheduleForMapItem:(id)a4 departureSequence:(id)a5;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation;
+- (BOOL)placeCardViewController:(id)controller shouldShowTransitScheduleForMapItem:(id)item departureSequence:(id)sequence;
 - (ChromeViewController)chromeViewController;
 - (ContainerViewController)containerViewController;
 - (GEOMapServiceTraits)newTraits;
@@ -12,69 +12,69 @@
 - (_TtC4Maps16PlaceCardContext)init;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3;
-- (id)searchResultFor:(id)a3;
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c;
+- (id)searchResultFor:(id)for;
 - (int64_t)displayedViewMode;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)collectionPickerClosed:(id)a3;
-- (void)collectionPickerNewCollection:(id)a3;
-- (void)configureNavigationDisplay:(id)a3;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)createNewUserGuideWithSaveSession:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)collectionPickerClosed:(id)closed;
+- (void)collectionPickerNewCollection:(id)collection;
+- (void)configureNavigationDisplay:(id)display;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)createNewUserGuideWithSaveSession:(id)session;
 - (void)ensureMapSelectionVisible;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)markedLocationRefinementViewControllerDidCancel:(id)a3;
-- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)a3;
-- (void)placeCardViewController:(id)a3 createDroppedPin:(id)a4;
-- (void)placeCardViewController:(id)a3 createNewCollectionWithSession:(id)a4;
-- (void)placeCardViewController:(id)a3 didRequestEditingNoteWithInitialText:(id)a4 libraryAccessProvider:(id)a5 placeMUID:(unint64_t)a6 completion:(id)a7;
-- (void)placeCardViewController:(id)a3 didSelectParent:(id)a4;
-- (void)placeCardViewController:(id)a3 didUpdateLinkedPlacesFromPlaceCardItem:(id)a4;
-- (void)placeCardViewController:(id)a3 dismissAnimated:(BOOL)a4 completion:(id)a5;
-- (void)placeCardViewController:(id)a3 displayStoreViewControllerForAppWithiTunesIdentifier:(id)a4;
-- (void)placeCardViewController:(id)a3 doDirectionItem:(id)a4 userInfo:(id)a5;
-- (void)placeCardViewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5;
-- (void)placeCardViewController:(id)a3 editLocationOfMarkedLocation:(id)a4;
-- (void)placeCardViewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
-- (void)placeCardViewController:(id)a3 editShortcut:(id)a4;
-- (void)placeCardViewController:(id)a3 mapItemDidChange:(id)a4;
-- (void)placeCardViewController:(id)a3 openURL:(id)a4;
-- (void)placeCardViewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
-- (void)placeCardViewController:(id)a3 placeCardItemWillChange:(id)a4;
-- (void)placeCardViewController:(id)a3 presentPOIEnrichmentWithCoordinator:(id)a4;
-- (void)placeCardViewController:(id)a3 removeDroppedPin:(id)a4;
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4;
-- (void)placeCardViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6;
-- (void)placeCardViewController:(id)a3 selectDisplayedAddressFromPlaceCardItem:(id)a4;
-- (void)placeCardViewController:(id)a3 selectTransitLineItem:(id)a4;
-- (void)placeCardViewController:(id)a3 showCollection:(id)a4;
-- (void)placeCardViewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 muid:(unint64_t)a6 shouldShowDataManagementAfterDownload:(BOOL)a7;
-- (void)placeCardViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7;
-- (void)placeCardViewController:(id)a3 showTransitIncidents:(id)a4;
-- (void)placeCardViewController:(id)a3 showTransitScheduleForMapItem:(id)a4 departureSequence:(id)a5;
-- (void)placeCardViewControllerRemovedObservingHandle:(id)a3;
-- (void)placeCardViewControllerShowOfflineMaps:(id)a3;
-- (void)placeViewControllerViewContactsClosed:(id)a3;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
-- (void)refinePlaceItemIfNeededWithPlaceItem:(id)a3;
-- (void)removeDroppedPinWithDroppedPin:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setShortcutEditSessionController:(id)a3;
-- (void)setUserGuidesPicker:(id)a3;
-- (void)showAndSelectPlaceOnMapIfNeededWithPlaceCardItem:(id)a3 animated:(BOOL)a4;
-- (void)updateConfiguration:(id)a3;
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)markedLocationRefinementViewControllerDidCancel:(id)cancel;
+- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)location;
+- (void)placeCardViewController:(id)controller createDroppedPin:(id)pin;
+- (void)placeCardViewController:(id)controller createNewCollectionWithSession:(id)session;
+- (void)placeCardViewController:(id)controller didRequestEditingNoteWithInitialText:(id)text libraryAccessProvider:(id)provider placeMUID:(unint64_t)d completion:(id)completion;
+- (void)placeCardViewController:(id)controller didSelectParent:(id)parent;
+- (void)placeCardViewController:(id)controller didUpdateLinkedPlacesFromPlaceCardItem:(id)item;
+- (void)placeCardViewController:(id)controller dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)placeCardViewController:(id)controller displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier;
+- (void)placeCardViewController:(id)controller doDirectionItem:(id)item userInfo:(id)info;
+- (void)placeCardViewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info;
+- (void)placeCardViewController:(id)controller editLocationOfMarkedLocation:(id)location;
+- (void)placeCardViewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)placeCardViewController:(id)controller editShortcut:(id)shortcut;
+- (void)placeCardViewController:(id)controller mapItemDidChange:(id)change;
+- (void)placeCardViewController:(id)controller openURL:(id)l;
+- (void)placeCardViewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)placeCardViewController:(id)controller placeCardItemWillChange:(id)change;
+- (void)placeCardViewController:(id)controller presentPOIEnrichmentWithCoordinator:(id)coordinator;
+- (void)placeCardViewController:(id)controller removeDroppedPin:(id)pin;
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard;
+- (void)placeCardViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids;
+- (void)placeCardViewController:(id)controller selectDisplayedAddressFromPlaceCardItem:(id)item;
+- (void)placeCardViewController:(id)controller selectTransitLineItem:(id)item;
+- (void)placeCardViewController:(id)controller showCollection:(id)collection;
+- (void)placeCardViewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name muid:(unint64_t)muid shouldShowDataManagementAfterDownload:(BOOL)download;
+- (void)placeCardViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate;
+- (void)placeCardViewController:(id)controller showTransitIncidents:(id)incidents;
+- (void)placeCardViewController:(id)controller showTransitScheduleForMapItem:(id)item departureSequence:(id)sequence;
+- (void)placeCardViewControllerRemovedObservingHandle:(id)handle;
+- (void)placeCardViewControllerShowOfflineMaps:(id)maps;
+- (void)placeViewControllerViewContactsClosed:(id)closed;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
+- (void)refinePlaceItemIfNeededWithPlaceItem:(id)item;
+- (void)removeDroppedPinWithDroppedPin:(id)pin;
+- (void)setConfiguration:(id)configuration;
+- (void)setShortcutEditSessionController:(id)controller;
+- (void)setUserGuidesPicker:(id)picker;
+- (void)showAndSelectPlaceOnMapIfNeededWithPlaceCardItem:(id)item animated:(BOOL)animated;
+- (void)updateConfiguration:(id)configuration;
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
 @end
 
 @implementation PlaceCardContext
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -83,8 +83,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
   sub_10013603C();
@@ -92,16 +92,16 @@
   sub_1000DB2F4(v10);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v4 = a3;
-  v5 = self;
+  externallyCopy = externally;
+  selfCopy = self;
   sub_100136128();
 }
 
 - (id)desiredCards
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C4240();
 
   sub_1000CE6B8(&unk_10190B260);
@@ -110,17 +110,17 @@
   return v3.super.isa;
 }
 
-- (void)configureNavigationDisplay:(id)a3
+- (void)configureNavigationDisplay:(id)display
 {
   sub_100014C84(0, &qword_101909920);
-  v5 = a3;
+  displayCopy = display;
   isa = NSNumber.init(integerLiteral:)(1).super.super.isa;
-  [v5 setCameraPaused:isa];
+  [displayCopy setCameraPaused:isa];
 }
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_100182128();
 
   sub_100014C84(0, &qword_101909CF0);
@@ -129,21 +129,21 @@
   return v3.super.isa;
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001828A4();
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
-  v6 = self;
-  v7 = [v5 isAnimated];
+  animationCopy = animation;
+  selfCopy = self;
+  isAnimated = [animationCopy isAnimated];
   v8 = swift_allocObject();
-  *(v8 + 16) = v6;
-  *(v8 + 24) = v7;
+  *(v8 + 16) = selfCopy;
+  *(v8 + 24) = isAnimated;
   v11[4] = sub_100182B78;
   v11[5] = v8;
   v11[0] = _NSConcreteStackBlock;
@@ -151,34 +151,34 @@
   v11[2] = sub_100039C64;
   v11[3] = &unk_101607530;
   v9 = _Block_copy(v11);
-  v10 = v6;
+  v10 = selfCopy;
 
-  [v5 addAnimations:v9];
+  [animationCopy addAnimations:v9];
 
   _Block_release(v9);
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001829E0(v6, v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1001829E0(controllerCopy, animationCopy);
 }
 
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c
 {
   v3 = [objc_allocWithZone(MKMapView) init];
 
   return v3;
 }
 
-- (void)placeCardViewController:(id)a3 openURL:(id)a4
+- (void)placeCardViewController:(id)controller openURL:(id)l
 {
   v7 = sub_1000CE6B8(&unk_101909B00);
   __chkstk_darwin(v7 - 8);
   v9 = &v14 - v8;
-  if (a4)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for URL();
@@ -191,52 +191,52 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = a3;
-  v13 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002B6F88(v9);
 
   sub_100024F64(v9, &unk_101909B00);
 }
 
-- (void)placeCardViewController:(id)a3 placeCardItemWillChange:(id)a4
+- (void)placeCardViewController:(id)controller placeCardItemWillChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B7128(a4);
+  controllerCopy = controller;
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002B7128(change);
 }
 
-- (void)placeCardViewController:(id)a3 mapItemDidChange:(id)a4
+- (void)placeCardViewController:(id)controller mapItemDidChange:(id)change
 {
-  v8 = self;
-  v4 = [(PlaceCardContext *)v8 iosBasedChromeViewController];
-  if (v4)
+  selfCopy = self;
+  iosBasedChromeViewController = [(PlaceCardContext *)selfCopy iosBasedChromeViewController];
+  if (iosBasedChromeViewController)
   {
-    v5 = v4;
-    [v4 setNeedsUpdateComponent:@"lookAroundButton" animated:1];
+    v5 = iosBasedChromeViewController;
+    [iosBasedChromeViewController setNeedsUpdateComponent:@"lookAroundButton" animated:1];
   }
 
-  v6 = [(PlaceCardContext *)v8 iosChromeViewController];
-  if (v6)
+  iosChromeViewController = [(PlaceCardContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v7 = v6;
-    [v6 updateComponentsIfNeeded];
+    v7 = iosChromeViewController;
+    [iosChromeViewController updateComponentsIfNeeded];
   }
 }
 
-- (void)placeCardViewController:(id)a3 selectTransitLineItem:(id)a4
+- (void)placeCardViewController:(id)controller selectTransitLineItem:(id)item
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    if (a4)
+    if (item)
     {
       v8 = Strong;
       v9 = objc_allocWithZone(type metadata accessor for TransitLineContext());
       swift_unknownObjectRetain_n();
-      v10 = a3;
-      v11 = self;
-      v12 = sub_10032D920(a4);
+      controllerCopy = controller;
+      selfCopy = self;
+      v12 = sub_10032D920(item);
       [v8 pushContext:v12 animated:1 completion:0];
 
       swift_unknownObjectRelease();
@@ -249,27 +249,27 @@
   }
 }
 
-- (void)placeCardViewController:(id)a3 showTransitScheduleForMapItem:(id)a4 departureSequence:(id)a5
+- (void)placeCardViewController:(id)controller showTransitScheduleForMapItem:(id)item departureSequence:(id)sequence
 {
-  v7 = a4;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v10 = self;
-  v8 = [(PlaceCardContext *)v10 iosBasedChromeViewController];
-  v9 = [v8 appCoordinator];
+  selfCopy = self;
+  iosBasedChromeViewController = [(PlaceCardContext *)selfCopy iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  [v9 displayTransitSchedulesForMapItem:v7 departureSequence:a5];
+  [appCoordinator displayTransitSchedulesForMapItem:itemCopy departureSequence:sequence];
   swift_unknownObjectRelease();
 }
 
-- (BOOL)placeCardViewController:(id)a3 shouldShowTransitScheduleForMapItem:(id)a4 departureSequence:(id)a5
+- (BOOL)placeCardViewController:(id)controller shouldShowTransitScheduleForMapItem:(id)item departureSequence:(id)sequence
 {
-  if (!a4)
+  if (!item)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  if (!a5)
+  if (!sequence)
   {
 LABEL_7:
     __break(1u);
@@ -278,13 +278,13 @@ LABEL_7:
 
   v7 = objc_opt_self();
 
-  LOBYTE(self) = [v7 shouldShowScheduleForTransitMapItem:a4 sequence:a5];
+  LOBYTE(self) = [v7 shouldShowScheduleForTransitMapItem:item sequence:sequence];
   return self;
 }
 
-- (void)placeCardViewController:(id)a3 showTransitIncidents:(id)a4
+- (void)placeCardViewController:(id)controller showTransitIncidents:(id)incidents
 {
-  if (a4)
+  if (incidents)
   {
     sub_1000CE6B8(&unk_10190A7F0);
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -293,7 +293,7 @@ LABEL_7:
     *&v7[OBJC_IVAR____TtCO4Maps25PlaceCardContextContainee21TransitIncidentsModel_transitIncidents] = v5;
     v10.receiver = v7;
     v10.super_class = v6;
-    v8 = self;
+    selfCopy = self;
     v9 = [(PlaceCardContext *)&v10 init];
     sub_1003C43C8(v9 | 0x6000000000000000);
   }
@@ -304,58 +304,58 @@ LABEL_7:
   }
 }
 
-- (void)placeCardViewController:(id)a3 removeDroppedPin:(id)a4
+- (void)placeCardViewController:(id)controller removeDroppedPin:(id)pin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  pinCopy = pin;
+  selfCopy = self;
   sub_1002B8A10();
 }
 
-- (void)placeCardViewController:(id)a3 createDroppedPin:(id)a4
+- (void)placeCardViewController:(id)controller createDroppedPin:(id)pin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B74D4(a4);
+  controllerCopy = controller;
+  pinCopy = pin;
+  selfCopy = self;
+  sub_1002B74D4(pin);
 }
 
-- (void)placeCardViewController:(id)a3 editLocationOfMarkedLocation:(id)a4
+- (void)placeCardViewController:(id)controller editLocationOfMarkedLocation:(id)location
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1002B5294(a3, a4);
+  controllerCopy = controller;
+  locationCopy = location;
+  selfCopy = self;
+  sub_1002B5294(controller, location);
 }
 
-- (void)placeCardViewController:(id)a3 displayStoreViewControllerForAppWithiTunesIdentifier:(id)a4
+- (void)placeCardViewController:(id)controller displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B7660(a4);
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1002B7660(identifier);
 }
 
-- (void)placeCardViewController:(id)a3 didSelectParent:(id)a4
+- (void)placeCardViewController:(id)controller didSelectParent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B784C(a4);
+  controllerCopy = controller;
+  parentCopy = parent;
+  selfCopy = self;
+  sub_1002B784C(parent);
 }
 
-- (void)placeCardViewController:(id)a3 showCollection:(id)a4
+- (void)placeCardViewController:(id)controller showCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1002B5768(a3, a4);
+  controllerCopy = controller;
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1002B5768(controller, collection);
 }
 
-- (void)placeCardViewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)placeCardViewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(cancelHandler);
   v12 = v11;
   if (v10)
   {
@@ -383,27 +383,27 @@ LABEL_3:
 
   v14 = 0;
 LABEL_6:
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  sub_1002B7AF4(a4, v10, v13, v12, v14);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_1002B7AF4(item, v10, v13, v12, v14);
   sub_1000588AC(v12);
   sub_1000588AC(v10);
 }
 
-- (void)placeCardViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7
+- (void)placeCardViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate
 {
-  v9 = a4;
-  if (a4)
+  itemsCopy = items;
+  if (items)
   {
     sub_100014C84(0, &unk_101918390);
-    v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    itemsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a5)
+  if (title)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v13;
+    title = v13;
   }
 
   else
@@ -411,29 +411,29 @@ LABEL_6:
     v12 = 0;
   }
 
-  v14 = a3;
-  v15 = a6;
+  controllerCopy = controller;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v16 = self;
-  sub_1002B7CF8(v9, v12, a5);
+  selfCopy = self;
+  sub_1002B7CF8(itemsCopy, v12, title);
 
   swift_unknownObjectRelease();
 }
 
-- (void)placeCardViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6
+- (void)placeCardViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids
 {
-  v8 = a4;
-  if (a4)
+  collectionsCopy = collections;
+  if (collections)
   {
     sub_100014C84(0, &qword_10190D6B0);
-    v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    collectionsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  if (a5)
+  if (title)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v12;
-    if (!a6)
+    title = v12;
+    if (!ids)
     {
       goto LABEL_6;
     }
@@ -442,7 +442,7 @@ LABEL_6:
   }
 
   v11 = 0;
-  if (a6)
+  if (ids)
   {
 LABEL_5:
     sub_100014C84(0, &qword_101919ED0);
@@ -450,28 +450,28 @@ LABEL_5:
   }
 
 LABEL_6:
-  v13 = a3;
-  v14 = self;
-  sub_1002B7E28(v8, v11, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1002B7E28(collectionsCopy, v11, title);
 }
 
-- (void)placeCardViewController:(id)a3 didUpdateLinkedPlacesFromPlaceCardItem:(id)a4
+- (void)placeCardViewController:(id)controller didUpdateLinkedPlacesFromPlaceCardItem:(id)item
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = a4;
-    v10 = self;
-    v9 = [v7 searchPinsManager];
+    itemCopy = item;
+    selfCopy = self;
+    searchPinsManager = [v7 searchPinsManager];
 
-    [v9 showLinkedPlacesAndPolygonForPlaceCardItem:v8];
+    [searchPinsManager showLinkedPlacesAndPolygonForPlaceCardItem:itemCopy];
   }
 }
 
-- (void)placeCardViewController:(id)a3 doDirectionItem:(id)a4 userInfo:(id)a5
+- (void)placeCardViewController:(id)controller doDirectionItem:(id)item userInfo:(id)info
 {
-  if (a5)
+  if (info)
   {
     v7 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -481,12 +481,12 @@ LABEL_6:
     v7 = 0;
   }
 
-  v12 = self;
-  v8 = a4;
-  v9 = [(PlaceCardContext *)v12 iosBasedChromeViewController];
-  v10 = [v9 appCoordinator];
+  selfCopy = self;
+  itemCopy = item;
+  iosBasedChromeViewController = [(PlaceCardContext *)selfCopy iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  if (v10)
+  if (appCoordinator)
   {
     if (v7)
     {
@@ -498,7 +498,7 @@ LABEL_6:
       v11.super.isa = 0;
     }
 
-    [v10 enterRoutePlanningWithDirectionItem:v8 allowToPromptEditing:1 withUserInfo:v11.super.isa];
+    [appCoordinator enterRoutePlanningWithDirectionItem:itemCopy allowToPromptEditing:1 withUserInfo:v11.super.isa];
   }
 
   else
@@ -506,29 +506,29 @@ LABEL_6:
   }
 }
 
-- (void)placeCardViewController:(id)a3 selectDisplayedAddressFromPlaceCardItem:(id)a4
+- (void)placeCardViewController:(id)controller selectDisplayedAddressFromPlaceCardItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   sub_1002B5F9C();
 }
 
 - (void)ensureMapSelectionVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B5F9C();
 }
 
-- (void)placeCardViewController:(id)a3 presentPOIEnrichmentWithCoordinator:(id)a4
+- (void)placeCardViewController:(id)controller presentPOIEnrichmentWithCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B7F3C(a4);
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_1002B7F3C(coordinator);
 }
 
-- (void)placeCardViewController:(id)a3 showOfflineMapRegionSelectorForRegion:(id)a4 name:(id)a5 muid:(unint64_t)a6 shouldShowDataManagementAfterDownload:(BOOL)a7
+- (void)placeCardViewController:(id)controller showOfflineMapRegionSelectorForRegion:(id)region name:(id)name muid:(unint64_t)muid shouldShowDataManagementAfterDownload:(BOOL)download
 {
-  if (a5)
+  if (name)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
@@ -540,20 +540,20 @@ LABEL_6:
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a4;
-  v16 = self;
-  sub_1002B8060(a3, a4, v11, v13, a7);
+  controllerCopy = controller;
+  regionCopy = region;
+  selfCopy = self;
+  sub_1002B8060(controller, region, v11, v13, download);
 }
 
-- (void)placeCardViewControllerShowOfflineMaps:(id)a3
+- (void)placeCardViewControllerShowOfflineMaps:(id)maps
 {
-  v4 = a3;
-  v5 = self;
+  mapsCopy = maps;
+  selfCopy = self;
   sub_1002B81E8();
 }
 
-- (void)placeCardViewControllerRemovedObservingHandle:(id)a3
+- (void)placeCardViewControllerRemovedObservingHandle:(id)handle
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -563,7 +563,7 @@ LABEL_6:
   }
 }
 
-- (void)placeCardViewController:(id)a3 dismissAnimated:(BOOL)a4 completion:(id)a5
+- (void)placeCardViewController:(id)controller dismissAnimated:(BOOL)animated completion:(id)completion
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -573,12 +573,12 @@ LABEL_6:
   }
 }
 
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard
 {
-  if (a4)
+  if (clipboard)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -587,8 +587,8 @@ LABEL_6:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
   sub_1002B8360(v10);
@@ -596,9 +596,9 @@ LABEL_6:
   sub_100024F64(v10, &unk_101908380);
 }
 
-- (void)placeCardViewController:(id)a3 doSearchItem:(id)a4 withUserInfo:(id)a5
+- (void)placeCardViewController:(id)controller doSearchItem:(id)item withUserInfo:(id)info
 {
-  if (a5)
+  if (info)
   {
     v7 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -608,12 +608,12 @@ LABEL_6:
     v7 = 0;
   }
 
-  v12 = self;
-  v8 = a4;
-  v9 = [(PlaceCardContext *)v12 iosBasedChromeViewController];
-  v10 = [v9 appCoordinator];
+  selfCopy = self;
+  itemCopy = item;
+  iosBasedChromeViewController = [(PlaceCardContext *)selfCopy iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  if (v10)
+  if (appCoordinator)
   {
     if (v7)
     {
@@ -625,7 +625,7 @@ LABEL_6:
       v11.super.isa = 0;
     }
 
-    [v10 openSearch:v8 userInfo:v11.super.isa];
+    [appCoordinator openSearch:itemCopy userInfo:v11.super.isa];
   }
 
   else
@@ -633,40 +633,40 @@ LABEL_6:
   }
 }
 
-- (void)placeCardViewController:(id)a3 editShortcut:(id)a4
+- (void)placeCardViewController:(id)controller editShortcut:(id)shortcut
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B84F8(a4);
+  controllerCopy = controller;
+  shortcutCopy = shortcut;
+  selfCopy = self;
+  sub_1002B84F8(shortcut);
 }
 
-- (void)placeCardViewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)placeCardViewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  sub_1002B8630(a4, a5, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  sessionCopy = session;
+  viewCopy = view;
+  selfCopy = self;
+  sub_1002B8630(session, view, x, y, width, height);
 }
 
-- (void)placeCardViewController:(id)a3 createNewCollectionWithSession:(id)a4
+- (void)placeCardViewController:(id)controller createNewCollectionWithSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002B88D0(a4);
+  controllerCopy = controller;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1002B88D0(session);
 }
 
-- (void)placeCardViewController:(id)a3 didRequestEditingNoteWithInitialText:(id)a4 libraryAccessProvider:(id)a5 placeMUID:(unint64_t)a6 completion:(id)a7
+- (void)placeCardViewController:(id)controller didRequestEditingNoteWithInitialText:(id)text libraryAccessProvider:(id)provider placeMUID:(unint64_t)d completion:(id)completion
 {
-  v10 = _Block_copy(a7);
+  v10 = _Block_copy(completion);
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v12 = 0;
     v14 = 0;
@@ -697,11 +697,11 @@ LABEL_6:
   v18 = &v17[OBJC_IVAR____TtCO4Maps25PlaceCardContextContainee10NotesModel_initialText];
   *v18 = v12;
   v18[1] = v14;
-  *&v17[OBJC_IVAR____TtCO4Maps25PlaceCardContextContainee10NotesModel_placeMUID] = a6;
+  *&v17[OBJC_IVAR____TtCO4Maps25PlaceCardContextContainee10NotesModel_placeMUID] = d;
   v19 = &v17[OBJC_IVAR____TtCO4Maps25PlaceCardContextContainee10NotesModel_completion];
   *v19 = v11;
   v19[1] = v15;
-  v20 = self;
+  selfCopy = self;
   sub_1000CD9D4(v11);
   v22.receiver = v17;
   v22.super_class = v16;
@@ -710,134 +710,134 @@ LABEL_6:
   sub_1000588AC(v11);
 }
 
-- (void)createNewUserGuideWithSaveSession:(id)a3
+- (void)createNewUserGuideWithSaveSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002B6ABC(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_1002B6ABC(sessionCopy);
 }
 
-- (void)removeDroppedPinWithDroppedPin:(id)a3
+- (void)removeDroppedPinWithDroppedPin:(id)pin
 {
-  v4 = a3;
-  v5 = self;
+  pinCopy = pin;
+  selfCopy = self;
   sub_1002B8A10();
 }
 
-- (void)placeViewControllerViewContactsClosed:(id)a3
+- (void)placeViewControllerViewContactsClosed:(id)closed
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v6 = self;
-  v5 = [Strong mapSelectionManager];
-  [v5 clearSelection];
+  selfCopy = self;
+  mapSelectionManager = [Strong mapSelectionManager];
+  [mapSelectionManager clearSelection];
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10033E684(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10033E684(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_10033E7E4(a3);
+  selfCopy = self;
+  v6 = sub_10033E7E4(annotation);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10033EA40(v4);
+  annotationCopy = annotation;
+  selfCopy = self;
+  LOBYTE(self) = sub_10033EA40(annotationCopy);
 
   return self & 1;
 }
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10033EBF4();
 
   return v3;
 }
 
-- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)a3
+- (void)markedLocationRefinementViewControllerSelectedRemoveMarkedLocation:(id)location
 {
-  v4 = a3;
-  v5 = self;
-  sub_100392B38(v4);
+  locationCopy = location;
+  selfCopy = self;
+  sub_100392B38(locationCopy);
 }
 
-- (void)markedLocationRefinementViewControllerDidCancel:(id)a3
+- (void)markedLocationRefinementViewControllerDidCancel:(id)cancel
 {
-  v5 = a3;
-  v3 = [v5 presentingViewController];
-  if (v3)
+  cancelCopy = cancel;
+  presentingViewController = [cancelCopy presentingViewController];
+  if (presentingViewController)
   {
-    v4 = v3;
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    v4 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_configuration);
-  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_configuration) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_configuration) = configuration;
+  configurationCopy = configuration;
 }
 
 - (AppCoordinator)appCoordinator
 {
-  v2 = self;
-  v3 = [(PlaceCardContext *)v2 iosBasedChromeViewController];
-  v4 = [v3 appCoordinator];
+  selfCopy = self;
+  iosBasedChromeViewController = [(PlaceCardContext *)selfCopy iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  return v4;
+  return appCoordinator;
 }
 
 - (ContainerViewController)containerViewController
 {
-  v2 = self;
-  v3 = [(PlaceCardContext *)v2 iosChromeViewController];
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(PlaceCardContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v4 = v3;
-    v5 = [v3 _currentContainerViewController];
+    v4 = iosChromeViewController;
+    _currentContainerViewController = [iosChromeViewController _currentContainerViewController];
   }
 
   else
   {
-    v5 = 0;
+    _currentContainerViewController = 0;
   }
 
-  return v5;
+  return _currentContainerViewController;
 }
 
 - (GEOMapServiceTraits)newTraits
 {
-  v2 = self;
-  v3 = [(PlaceCardContext *)v2 iosChromeViewController];
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(PlaceCardContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v4 = v3;
-    v5 = [(GEOMapServiceTraits *)v4 currentTraits];
+    v4 = iosChromeViewController;
+    currentTraits = [(GEOMapServiceTraits *)v4 currentTraits];
 
 LABEL_5:
-    return v5;
+    return currentTraits;
   }
 
   result = [objc_opt_self() sharedService];
   if (result)
   {
     v4 = result;
-    v5 = [(GEOMapServiceTraits *)result defaultTraits];
+    currentTraits = [(GEOMapServiceTraits *)result defaultTraits];
     goto LABEL_5;
   }
 
@@ -847,27 +847,27 @@ LABEL_5:
 
 - (int64_t)displayedViewMode
 {
-  v2 = self;
-  v3 = [(PlaceCardContext *)v2 iosChromeViewController];
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(PlaceCardContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v4 = v3;
-    v5 = [v4 displayedViewMode];
+    v4 = iosChromeViewController;
+    displayedViewMode = [v4 displayedViewMode];
   }
 
   else
   {
-    v5 = -1;
+    displayedViewMode = -1;
   }
 
-  return v5;
+  return displayedViewMode;
 }
 
-- (void)setUserGuidesPicker:(id)a3
+- (void)setUserGuidesPicker:(id)picker
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_userGuidesPicker);
-  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_userGuidesPicker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_userGuidesPicker) = picker;
+  pickerCopy = picker;
 }
 
 - (ShortcutEditSessionController)shortcutEditSessionController
@@ -877,9 +877,9 @@ LABEL_5:
   return v2;
 }
 
-- (void)setShortcutEditSessionController:(id)a3
+- (void)setShortcutEditSessionController:(id)controller
 {
-  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_shortcutEditSessionController) = a3;
+  *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_shortcutEditSessionController) = controller;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -892,34 +892,34 @@ LABEL_5:
   return Strong;
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_100504028(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100504028(configurationCopy);
 }
 
-- (id)searchResultFor:(id)a3
+- (id)searchResultFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10050530C(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_10050530C(forCopy);
 
   return v6;
 }
 
-- (void)showAndSelectPlaceOnMapIfNeededWithPlaceCardItem:(id)a3 animated:(BOOL)a4
+- (void)showAndSelectPlaceOnMapIfNeededWithPlaceCardItem:(id)item animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_100503C08(v6, a4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100503C08(itemCopy, animated);
 }
 
-- (void)refinePlaceItemIfNeededWithPlaceItem:(id)a3
+- (void)refinePlaceItemIfNeededWithPlaceItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100503ADC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100503ADC(itemCopy);
 }
 
 - (_TtC4Maps16PlaceCardContext)init
@@ -929,29 +929,29 @@ LABEL_5:
   return result;
 }
 
-- (void)collectionPickerNewCollection:(id)a3
+- (void)collectionPickerNewCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  sub_100534BC4(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_100534BC4(collectionCopy);
 }
 
-- (void)collectionPickerClosed:(id)a3
+- (void)collectionPickerClosed:(id)closed
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_userGuidesPicker);
   *(self + OBJC_IVAR____TtC4Maps16PlaceCardContext_userGuidesPicker) = 0;
 }
 
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(cancelHandler);
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_100534ED4(v14, sub_100534E7C, v12);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_100534ED4(itemCopy, sub_100534E7C, v12);
   _Block_release(v11);
 }
 

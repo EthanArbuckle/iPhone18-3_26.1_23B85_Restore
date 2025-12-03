@@ -1,19 +1,19 @@
 @interface UIPointFIFO
-- (UIPointFIFO)initWithFIFO:(id)a3;
+- (UIPointFIFO)initWithFIFO:(id)o;
 - (void)dealloc;
 - (void)emitPoint:(UIPointFIFO *)self;
 @end
 
 @implementation UIPointFIFO
 
-- (UIPointFIFO)initWithFIFO:(id)a3
+- (UIPointFIFO)initWithFIFO:(id)o
 {
   v6.receiver = self;
   v6.super_class = UIPointFIFO;
   v4 = [(UIPointFIFO *)&v6 init];
   if (v4)
   {
-    v4->_nextFIFO = a3;
+    v4->_nextFIFO = o;
   }
 
   return v4;
@@ -30,9 +30,9 @@
 - (void)emitPoint:(UIPointFIFO *)self
 {
   v4 = v2;
-  v3 = [(UIPointFIFO *)self nextFIFO];
+  nextFIFO = [(UIPointFIFO *)self nextFIFO];
 
-  [(UIPointFIFO *)v3 addPoint:v4];
+  [(UIPointFIFO *)nextFIFO addPoint:v4];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface CACCustomCommandActionViewController
-- (BOOL)_shouldDisallowSelectingRowAtIndexPath:(id)a3;
+- (BOOL)_shouldDisallowSelectingRowAtIndexPath:(id)path;
 - (BOOL)_useDetailCell;
 - (CACCustomCommandActionViewController)init;
 - (CACCustomCommandActionViewControllerDelegate)delegate;
-- (id)_stringFromPasteboardDataArray:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_updateForAction:(int64_t)a3;
-- (void)didSelectShortcut:(id)a3;
-- (void)gestureRecorder:(id)a3 saveReplayableGesture:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)_stringFromPasteboardDataArray:(id)array;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_updateForAction:(int64_t)action;
+- (void)didSelectShortcut:(id)shortcut;
+- (void)gestureRecorder:(id)recorder saveReplayableGesture:(id)gesture;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CACCustomCommandActionViewController
@@ -30,13 +30,13 @@
     [(CACCustomCommandActionViewController *)v2 setTitle:v3];
 
     objc_initWeak(&location, v2);
-    v4 = [MEMORY[0x277CE7E38] sharedManager];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__CACCustomCommandActionViewController_init__block_invoke;
     v7[3] = &unk_279CEB640;
     objc_copyWeak(&v8, &location);
-    v5 = [v4 registerShortcutsDidChangeBlock:v7];
+    v5 = [mEMORY[0x277CE7E38] registerShortcutsDidChangeBlock:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -86,62 +86,62 @@ uint64_t __44__CACCustomCommandActionViewController_init__block_invoke_2(uint64_
   v10.receiver = self;
   v10.super_class = CACCustomCommandActionViewController;
   [(CACCustomCommandActionViewController *)&v10 viewDidLoad];
-  v3 = [(CACCustomCommandActionViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandActionCheckmarkCell"];
+  tableView = [(CACCustomCommandActionViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandActionCheckmarkCell"];
 
-  v4 = [(CACCustomCommandActionViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandShortcutsViewCell"];
+  tableView2 = [(CACCustomCommandActionViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandShortcutsViewCell"];
 
-  v5 = [(CACCustomCommandActionViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandActionTextViewCell"];
+  tableView3 = [(CACCustomCommandActionViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CustomCommandActionTextViewCell"];
 
   v6 = objc_alloc(MEMORY[0x277D75B80]);
-  v7 = [(CACCustomCommandActionViewController *)self view];
-  v8 = [v6 initWithTarget:v7 action:sel_endEditing_];
+  view = [(CACCustomCommandActionViewController *)self view];
+  v8 = [v6 initWithTarget:view action:sel_endEditing_];
 
   [v8 setCancelsTouchesInView:0];
-  v9 = [(CACCustomCommandActionViewController *)self view];
-  [v9 addGestureRecognizer:v8];
+  view2 = [(CACCustomCommandActionViewController *)self view];
+  [view2 addGestureRecognizer:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CACCustomCommandActionViewController;
-  [(CACCustomCommandActionViewController *)&v4 viewWillAppear:a3];
+  [(CACCustomCommandActionViewController *)&v4 viewWillAppear:appear];
   [(CACCustomCommandActionViewController *)self setIsPresentingGestureRecorder:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = CACCustomCommandActionViewController;
-  [(CACCustomCommandActionViewController *)&v8 viewWillDisappear:a3];
-  v4 = [(CACCustomCommandActionViewController *)self tableView];
+  [(CACCustomCommandActionViewController *)&v8 viewWillDisappear:disappear];
+  tableView = [(CACCustomCommandActionViewController *)self tableView];
   v5 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
-  v6 = [v4 cellForRowAtIndexPath:v5];
+  v6 = [tableView cellForRowAtIndexPath:v5];
 
-  v7 = [v6 textView];
-  [v7 resignFirstResponder];
+  textView = [v6 textView];
+  [textView resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CACCustomCommandActionViewController;
-  [(CACCustomCommandActionViewController *)&v5 viewDidDisappear:a3];
+  [(CACCustomCommandActionViewController *)&v5 viewDidDisappear:disappear];
   if (![(CACCustomCommandActionViewController *)self isPresentingGestureRecorder])
   {
-    v4 = [(CACCustomCommandActionViewController *)self delegate];
-    [v4 didDismissActionViewController:self];
+    delegate = [(CACCustomCommandActionViewController *)self delegate];
+    [delegate didDismissActionViewController:self];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    return a4 == 1;
+    return section == 1;
   }
 
   else
@@ -150,23 +150,23 @@ uint64_t __44__CACCustomCommandActionViewController_init__block_invoke_2(uint64_
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] != 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] != 1)
   {
-    if ([v7 section])
+    if ([pathCopy section])
     {
       v16 = 0;
       goto LABEL_33;
     }
 
-    v16 = [v6 dequeueReusableCellWithIdentifier:@"CustomCommandActionCheckmarkCell" forIndexPath:v7];
-    v17 = [(CACCustomCommandActionViewController *)self commandItem];
-    v13 = [v17 customType];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:@"CustomCommandActionCheckmarkCell" forIndexPath:pathCopy];
+    commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+    customType = [commandItem customType];
 
-    v18 = [v13 isEqualToString:@"RunShortcutsWorkflow"];
+    v18 = [customType isEqualToString:@"RunShortcutsWorkflow"];
     v19 = @"CustomCommandShortcutsViewCell";
     if (!v18)
     {
@@ -174,50 +174,50 @@ uint64_t __44__CACCustomCommandActionViewController_init__block_invoke_2(uint64_
     }
 
     v20 = v19;
-    if ([(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:v7])
+    if ([(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:pathCopy])
     {
 
       v20 = @"CustomCommandShortcutsViewCell";
     }
 
-    v21 = [v7 row];
-    v15 = 0;
+    v21 = [pathCopy row];
+    shortcutName = 0;
     v22 = 0;
     v41 = v20;
     if (v21 > 1)
     {
       if (v21 == 2)
       {
-        v14 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunShortcutsWorkflow"];
-        v24 = [MEMORY[0x277CE7E38] sharedManager];
-        v25 = [(CACCustomCommandActionViewController *)self commandItem];
-        v26 = [v25 customShortcutsWorkflowIdentifier];
-        v40 = [v24 shortcutForIdentifier:v26];
+        commandItem4 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunShortcutsWorkflow"];
+        mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+        commandItem2 = [(CACCustomCommandActionViewController *)self commandItem];
+        customShortcutsWorkflowIdentifier = [commandItem2 customShortcutsWorkflowIdentifier];
+        v40 = [mEMORY[0x277CE7E38] shortcutForIdentifier:customShortcutsWorkflowIdentifier];
 
-        v22 = [v13 isEqualToString:@"RunShortcutsWorkflow"];
-        v27 = [MEMORY[0x277CE7E38] sharedManager];
-        v28 = [v27 shortcuts];
-        v29 = [v28 count];
+        v22 = [customType isEqualToString:@"RunShortcutsWorkflow"];
+        mEMORY[0x277CE7E38]2 = [MEMORY[0x277CE7E38] sharedManager];
+        shortcuts = [mEMORY[0x277CE7E38]2 shortcuts];
+        v29 = [shortcuts count];
 
         if (v29)
         {
           v30 = v40;
-          v15 = [v40 shortcutName];
+          shortcutName = [v40 shortcutName];
         }
 
         else
         {
-          v15 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunShortcutsWorkflowSetupShortcuts"];
+          shortcutName = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunShortcutsWorkflowSetupShortcuts"];
           v30 = v40;
         }
 
         goto LABEL_22;
       }
 
-      v14 = 0;
+      commandItem4 = 0;
       if (v21 == 3)
       {
-        v14 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunUserActionFlow"];
+        commandItem4 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunUserActionFlow"];
         v23 = @"RunUserActionFlow";
         goto LABEL_17;
       }
@@ -227,28 +227,28 @@ uint64_t __44__CACCustomCommandActionViewController_init__block_invoke_2(uint64_
     {
       if (!v21)
       {
-        v14 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.PasteText"];
+        commandItem4 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.PasteText"];
         v23 = @"PasteText";
         goto LABEL_17;
       }
 
-      v14 = 0;
+      commandItem4 = 0;
       if (v21 == 1)
       {
-        v14 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunGesture"];
+        commandItem4 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.RunGesture"];
         v23 = @"RunGesture";
 LABEL_17:
-        v22 = [v13 isEqualToString:v23];
-        v15 = 0;
+        v22 = [customType isEqualToString:v23];
+        shortcutName = 0;
       }
     }
 
 LABEL_22:
-    v31 = [v16 textLabel];
-    [v31 setText:v14];
+    textLabel = [v16 textLabel];
+    [textLabel setText:commandItem4];
 
-    v32 = [v16 detailTextLabel];
-    [v32 setText:v15];
+    detailTextLabel = [v16 detailTextLabel];
+    [detailTextLabel setText:shortcutName];
 
     if (v22)
     {
@@ -261,7 +261,7 @@ LABEL_22:
     }
 
     [v16 setAccessoryType:v33];
-    v34 = [(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:v7];
+    v34 = [(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:pathCopy];
     if (v34)
     {
       [MEMORY[0x277D75348] systemGrayColor];
@@ -272,8 +272,8 @@ LABEL_22:
       [MEMORY[0x277D75348] labelColor];
     }
     v35 = ;
-    v36 = [v16 textLabel];
-    [v36 setTextColor:v35];
+    textLabel2 = [v16 textLabel];
+    [textLabel2 setTextColor:v35];
 
     if (v34)
     {
@@ -285,26 +285,26 @@ LABEL_22:
       [MEMORY[0x277D75348] labelColor];
     }
     v37 = ;
-    v38 = [v16 detailTextLabel];
-    [v38 setTextColor:v37];
+    detailTextLabel2 = [v16 detailTextLabel];
+    [detailTextLabel2 setTextColor:v37];
 
     goto LABEL_32;
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"CustomCommandActionTextViewCell" forIndexPath:v7];
-  v9 = [(CACCustomCommandActionViewController *)self commandItem];
-  v10 = [v9 customTextToInsert];
-  v11 = [v8 textView];
-  [v11 setText:v10];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"CustomCommandActionTextViewCell" forIndexPath:pathCopy];
+  commandItem3 = [(CACCustomCommandActionViewController *)self commandItem];
+  customTextToInsert = [commandItem3 customTextToInsert];
+  textView = [v8 textView];
+  [textView setText:customTextToInsert];
 
-  v12 = [v8 textView];
-  [v12 setDelegate:self];
+  textView2 = [v8 textView];
+  [textView2 setDelegate:self];
 
-  v13 = v8;
-  v14 = [(CACCustomCommandActionViewController *)self commandItem];
-  v15 = [v14 customType];
-  [v13 setHidden:{objc_msgSend(v15, "isEqualToString:", @"PasteText"}];
-  v16 = v13;
+  customType = v8;
+  commandItem4 = [(CACCustomCommandActionViewController *)self commandItem];
+  shortcutName = [commandItem4 customType];
+  [customType setHidden:{objc_msgSend(shortcutName, "isEqualToString:", @"PasteText"}];
+  v16 = customType;
 LABEL_32:
 
 LABEL_33:
@@ -312,9 +312,9 @@ LABEL_33:
   return v16;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
@@ -327,24 +327,24 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)_shouldDisallowSelectingRowAtIndexPath:(id)a3
+- (BOOL)_shouldDisallowSelectingRowAtIndexPath:(id)path
 {
-  v3 = a3;
-  if (![v3 section] && objc_msgSend(v3, "row") == 3 || objc_msgSend(v3, "section") == 1)
+  pathCopy = path;
+  if (![pathCopy section] && objc_msgSend(pathCopy, "row") == 3 || objc_msgSend(pathCopy, "section") == 1)
   {
     v4 = 1;
   }
 
-  else if ([v3 section] || objc_msgSend(v3, "row") != 2)
+  else if ([pathCopy section] || objc_msgSend(pathCopy, "row") != 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CE7E38] sharedManager];
-    v6 = [v5 shortcuts];
-    v4 = [v6 count] == 0;
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+    shortcuts = [mEMORY[0x277CE7E38] shortcuts];
+    v4 = [shortcuts count] == 0;
   }
 
   return v4;
@@ -352,72 +352,72 @@ LABEL_33:
 
 - (BOOL)_useDetailCell
 {
-  v3 = [(CACCustomCommandActionViewController *)self commandItem];
-  v4 = [v3 customType];
-  if ([v4 isEqualToString:@"RunShortcutsWorkflow"])
+  commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+  customType = [commandItem customType];
+  if ([customType isEqualToString:@"RunShortcutsWorkflow"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(CACCustomCommandActionViewController *)self commandItem];
-    v7 = [v6 customType];
-    if (v7)
+    commandItem2 = [(CACCustomCommandActionViewController *)self commandItem];
+    customType2 = [commandItem2 customType];
+    if (customType2)
     {
       v5 = 0;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CE7E38] sharedManager];
-      v9 = [v8 shortcuts];
-      v5 = [v9 count] == 0;
+      mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+      shortcuts = [mEMORY[0x277CE7E38] shortcuts];
+      v5 = [shortcuts count] == 0;
     }
   }
 
   return v5;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:v5])
+  pathCopy = path;
+  if ([(CACCustomCommandActionViewController *)self _shouldDisallowSelectingRowAtIndexPath:pathCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a4;
-  v6 = a3;
-  v7 = [v18 section];
-  v8 = v18;
-  if (!v7)
+  pathCopy = path;
+  viewCopy = view;
+  section = [pathCopy section];
+  v8 = pathCopy;
+  if (!section)
   {
-    if ([v18 row] != 2)
+    if ([pathCopy row] != 2)
     {
-      v9 = [(CACCustomCommandActionViewController *)self commandItem];
-      [v9 setCustomShortcutsWorkflowIdentifier:0];
+      commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+      [commandItem setCustomShortcutsWorkflowIdentifier:0];
     }
 
-    v10 = [v18 row];
+    v10 = [pathCopy row];
     if (v10)
     {
       if (v10 == 2)
       {
-        v13 = [MEMORY[0x277CE7E38] sharedManager];
-        v14 = [(CACCustomCommandActionViewController *)self commandItem];
-        v15 = [v14 customShortcutsWorkflowIdentifier];
-        v11 = [v13 shortcutForIdentifier:v15];
+        mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+        commandItem2 = [(CACCustomCommandActionViewController *)self commandItem];
+        customShortcutsWorkflowIdentifier = [commandItem2 customShortcutsWorkflowIdentifier];
+        v11 = [mEMORY[0x277CE7E38] shortcutForIdentifier:customShortcutsWorkflowIdentifier];
 
         v12 = [[CACShortcutsSelectionTableViewController alloc] initWithPreviouslySelectedShortcut:v11];
         v16 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v12];
@@ -427,7 +427,7 @@ LABEL_33:
 
       else
       {
-        v8 = v18;
+        v8 = pathCopy;
         if (v10 != 1)
         {
           goto LABEL_12;
@@ -448,43 +448,43 @@ LABEL_33:
       [(CACCustomCommandActionViewController *)self _updateForAction:0];
     }
 
-    v8 = v18;
+    v8 = pathCopy;
   }
 
 LABEL_12:
-  [v6 deselectRowAtIndexPath:v8 animated:1];
-  v17 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v6, "numberOfSections")}];
-  [v6 reloadSections:v17 withRowAnimation:100];
+  [viewCopy deselectRowAtIndexPath:v8 animated:1];
+  v17 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(viewCopy, "numberOfSections")}];
+  [viewCopy reloadSections:v17 withRowAnimation:100];
 }
 
-- (void)_updateForAction:(int64_t)a3
+- (void)_updateForAction:(int64_t)action
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3 > 3)
+  if (action > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_279CEC640[a3];
+    v5 = off_279CEC640[action];
   }
 
-  v6 = [(CACCustomCommandActionViewController *)self commandItem];
-  [v6 setCustomType:v5];
+  commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+  [commandItem setCustomType:v5];
 
-  v7 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
-  v8 = [(CACCustomCommandActionViewController *)self tableView];
-  v9 = [v8 cellForRowAtIndexPath:v7];
+  v7 = [MEMORY[0x277CCAA70] indexPathForRow:action inSection:0];
+  tableView = [(CACCustomCommandActionViewController *)self tableView];
+  v9 = [tableView cellForRowAtIndexPath:v7];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(CACCustomCommandActionViewController *)self tableView];
-  v11 = [v10 visibleCells];
+  tableView2 = [(CACCustomCommandActionViewController *)self tableView];
+  visibleCells = [tableView2 visibleCells];
 
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v12 = [visibleCells countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -496,7 +496,7 @@ LABEL_12:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(visibleCells);
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
@@ -515,79 +515,79 @@ LABEL_12:
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [visibleCells countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
   }
 
-  v18 = [(CACCustomCommandActionViewController *)self tableView];
-  [v18 deselectRowAtIndexPath:v7 animated:1];
+  tableView3 = [(CACCustomCommandActionViewController *)self tableView];
+  [tableView3 deselectRowAtIndexPath:v7 animated:1];
 
-  v19 = [(CACCustomCommandActionViewController *)self delegate];
-  [v19 didUpdateCommandItemForActionViewController:self];
+  delegate = [(CACCustomCommandActionViewController *)self delegate];
+  [delegate didUpdateCommandItemForActionViewController:self];
 }
 
-- (void)gestureRecorder:(id)a3 saveReplayableGesture:(id)a4
+- (void)gestureRecorder:(id)recorder saveReplayableGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(CACCustomCommandActionViewController *)self commandItem];
-  [v6 setCustomGesture:v5];
+  gestureCopy = gesture;
+  commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+  [commandItem setCustomGesture:gestureCopy];
 
   [(CACCustomCommandActionViewController *)self _updateForAction:1];
-  v7 = [(CACCustomCommandActionViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(CACCustomCommandActionViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)didSelectShortcut:(id)a3
+- (void)didSelectShortcut:(id)shortcut
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  shortcutCopy = shortcut;
+  v5 = shortcutCopy;
+  if (shortcutCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [(CACCustomCommandActionViewController *)self commandItem];
-    [v7 setCustomShortcutsWorkflowIdentifier:v6];
+    identifier = [shortcutCopy identifier];
+    commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+    [commandItem setCustomShortcutsWorkflowIdentifier:identifier];
 
     v8 = CACLogShortcuts();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CACCustomCommandActionViewController *)self commandItem];
+      commandItem2 = [(CACCustomCommandActionViewController *)self commandItem];
       v11 = 138412546;
       v12 = v5;
       v13 = 2112;
-      v14 = v9;
+      v14 = commandItem2;
       _os_log_impl(&dword_26B354000, v8, OS_LOG_TYPE_DEFAULT, "Delegate received shortcut %@ for commandItem %@", &v11, 0x16u);
     }
 
     [(CACCustomCommandActionViewController *)self _updateForAction:2];
-    v10 = [(CACCustomCommandActionViewController *)self tableView];
-    [v10 reloadData];
+    tableView = [(CACCustomCommandActionViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  v5 = [(CACCustomCommandActionViewController *)self commandItem];
-  [v5 setCustomTextToInsert:v4];
+  text = [editing text];
+  commandItem = [(CACCustomCommandActionViewController *)self commandItem];
+  [commandItem setCustomTextToInsert:text];
 
-  v6 = [(CACCustomCommandActionViewController *)self delegate];
-  [v6 didUpdateCommandItemForActionViewController:self];
+  delegate = [(CACCustomCommandActionViewController *)self delegate];
+  [delegate didUpdateCommandItemForActionViewController:self];
 }
 
-- (id)_stringFromPasteboardDataArray:(id)a3
+- (id)_stringFromPasteboardDataArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D75810] pasteboardWithUniqueName];
+  arrayCopy = array;
+  pasteboardWithUniqueName = [MEMORY[0x277D75810] pasteboardWithUniqueName];
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v7)
   {
@@ -629,10 +629,10 @@ LABEL_12:
 
   v23 = v5;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-  [v4 setItems:v15];
+  [pasteboardWithUniqueName setItems:v15];
 
-  v16 = [v4 strings];
-  v17 = [v16 componentsJoinedByString:@"\n"];
+  strings = [pasteboardWithUniqueName strings];
+  v17 = [strings componentsJoinedByString:@"\n"];
 
   return v17;
 }

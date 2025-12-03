@@ -101,8 +101,8 @@ uint64_t __52__PXMemoriesFeedSettings_UI___resetRejectedMemories__block_invoke()
   v18 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Font Diagnostics" output:&__block_literal_global_345];
   v47[1] = v18;
   v19 = MEMORY[0x1E69C65E8];
-  v20 = [a1 _resetRejectedMemories];
-  v21 = [v19 rowWithTitle:@"Reset Rejected Memories" action:v20];
+  _resetRejectedMemories = [self _resetRejectedMemories];
+  v21 = [v19 rowWithTitle:@"Reset Rejected Memories" action:_resetRejectedMemories];
   v47[2] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:3];
   v23 = [v16 sectionWithRows:v22];
@@ -113,13 +113,13 @@ uint64_t __52__PXMemoriesFeedSettings_UI___resetRejectedMemories__block_invoke()
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
   v27 = [v24 sectionWithRows:v26];
 
-  v28 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v29 = MEMORY[0x1E69C6638];
   v45[0] = v41;
   v45[1] = v15;
   v45[2] = v23;
   v45[3] = v27;
-  v45[4] = v28;
+  v45[4] = px_restoreDefaultsSection;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:5];
   v31 = [v29 moduleWithTitle:@"Memories Feed" contents:v30];
 

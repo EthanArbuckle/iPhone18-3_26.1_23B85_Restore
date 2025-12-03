@@ -1,7 +1,7 @@
 @interface CDRapportDiscovery
 - (CDRapportDiscovery)init;
 - (void)_activated;
-- (void)_handleDeviceFound:(id)a3;
+- (void)_handleDeviceFound:(id)found;
 - (void)_invalidateDiscoveryTimer;
 - (void)_invalidated;
 - (void)_startDiscoveryTimer;
@@ -157,22 +157,22 @@
   }
 }
 
-- (void)_handleDeviceFound:(id)a3
+- (void)_handleDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v4 idsDeviceIdentifier];
-  if (v5)
+  idsDeviceIdentifier = [foundCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
     if (self->_deviceFoundHandler)
     {
-      if (([v4 statusFlags] & 0x40000000) != 0)
+      if (([foundCopy statusFlags] & 0x40000000) != 0)
       {
         v6 = sub_100010C78();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138412546;
-          v9 = v5;
+          v9 = idsDeviceIdentifier;
           v10 = 2112;
           v11 = @"CompanionAuthentication";
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "FoundDevice, device=%@, type=%@", &v8, 0x16u);
@@ -181,13 +181,13 @@
         goto LABEL_13;
       }
 
-      if (([v4 statusFlags] & 0x200000) != 0)
+      if (([foundCopy statusFlags] & 0x200000) != 0)
       {
         v6 = sub_100010C78();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138412546;
-          v9 = v5;
+          v9 = idsDeviceIdentifier;
           v10 = 2112;
           v11 = @"LegacyAppSignIn";
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "FoundDevice, device=%@, type=%@", &v8, 0x16u);
@@ -206,7 +206,7 @@ LABEL_13:
     v7 = sub_100010C78();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10006385C(v4, v7);
+      sub_10006385C(foundCopy, v7);
     }
   }
 }

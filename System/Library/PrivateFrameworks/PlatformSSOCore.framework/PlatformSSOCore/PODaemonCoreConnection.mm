@@ -1,24 +1,24 @@
 @interface PODaemonCoreConnection
 + (id)xpcQueue;
 - (BOOL)_connectToService;
-- (PODaemonCoreConnection)initWithVolume:(id)a3;
+- (PODaemonCoreConnection)initWithVolume:(id)volume;
 - (void)_connectToService;
 - (void)dealloc;
-- (void)deviceConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)insertTokenForUserName:(id)a3 completion:(id)a4;
-- (void)loginConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)retrievePendingSSOTokenForIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveStashedDecryptionContextForIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveStashedSSOTokenForIdentifier:(id)a3 completion:(id)a4;
-- (void)saveCachedContextsToDiskWithCompletion:(id)a3;
-- (void)savePendingSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveStashedDecryptionContext:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveStashedSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)updateLoginStateForIdentifier:(id)a3 state:(id)a4 loginDate:(id)a5 loginType:(id)a6 completion:(id)a7;
-- (void)useVolume:(id)a3 completion:(id)a4;
-- (void)userConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)userLoginStateForIdentifier:(id)a3 completion:(id)a4;
-- (void)verifyTokenForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5;
+- (void)deviceConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)insertTokenForUserName:(id)name completion:(id)completion;
+- (void)loginConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)retrievePendingSSOTokenForIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveStashedDecryptionContextForIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveStashedSSOTokenForIdentifier:(id)identifier completion:(id)completion;
+- (void)saveCachedContextsToDiskWithCompletion:(id)completion;
+- (void)savePendingSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion;
+- (void)saveStashedDecryptionContext:(id)context identifier:(id)identifier completion:(id)completion;
+- (void)saveStashedSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion;
+- (void)updateLoginStateForIdentifier:(id)identifier state:(id)state loginDate:(id)date loginType:(id)type completion:(id)completion;
+- (void)useVolume:(id)volume completion:(id)completion;
+- (void)userConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)userLoginStateForIdentifier:(id)identifier completion:(id)completion;
+- (void)verifyTokenForUserName:(id)name passwordContext:(id)context completion:(id)completion;
 @end
 
 @implementation PODaemonCoreConnection
@@ -44,9 +44,9 @@ uint64_t __34__PODaemonCoreConnection_xpcQueue__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (PODaemonCoreConnection)initWithVolume:(id)a3
+- (PODaemonCoreConnection)initWithVolume:(id)volume
 {
-  v5 = a3;
+  volumeCopy = volume;
   v6 = PO_LOG_PODaemonCoreConnection();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -59,7 +59,7 @@ uint64_t __34__PODaemonCoreConnection_xpcQueue__block_invoke()
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_volume, a3);
+    objc_storeStrong(&v7->_volume, volume);
     [(PODaemonCoreConnection *)v8 _connectToService];
   }
 
@@ -75,27 +75,27 @@ uint64_t __34__PODaemonCoreConnection_xpcQueue__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)deviceConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __70__PODaemonCoreConnection_deviceConfigurationForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 deviceConfigurationForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 deviceConfigurationForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -115,27 +115,27 @@ void __70__PODaemonCoreConnection_deviceConfigurationForIdentifier_completion___
   }
 }
 
-- (void)loginConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)loginConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __69__PODaemonCoreConnection_loginConfigurationForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 loginConfigurationForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 loginConfigurationForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -155,27 +155,27 @@ void __69__PODaemonCoreConnection_loginConfigurationForIdentifier_completion___b
   }
 }
 
-- (void)userConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)userConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__PODaemonCoreConnection_userConfigurationForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 userConfigurationForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 userConfigurationForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -195,27 +195,27 @@ void __68__PODaemonCoreConnection_userConfigurationForIdentifier_completion___bl
   }
 }
 
-- (void)userLoginStateForIdentifier:(id)a3 completion:(id)a4
+- (void)userLoginStateForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__PODaemonCoreConnection_userLoginStateForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 userLoginStateForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 userLoginStateForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -235,30 +235,30 @@ void __65__PODaemonCoreConnection_userLoginStateForIdentifier_completion___block
   }
 }
 
-- (void)updateLoginStateForIdentifier:(id)a3 state:(id)a4 loginDate:(id)a5 loginType:(id)a6 completion:(id)a7
+- (void)updateLoginStateForIdentifier:(id)identifier state:(id)state loginDate:(id)date loginType:(id)type completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  stateCopy = state;
+  dateCopy = date;
+  typeCopy = type;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v17 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __93__PODaemonCoreConnection_updateLoginStateForIdentifier_state_loginDate_loginType_completion___block_invoke;
     v21[3] = &unk_279A3E488;
-    v18 = v16;
+    v18 = completionCopy;
     v22 = v18;
-    v19 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v21];
-    [v19 updateLoginStateForIdentifier:v12 state:v13 loginDate:v14 loginType:v15 completion:v18];
+    v19 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
+    [v19 updateLoginStateForIdentifier:identifierCopy state:stateCopy loginDate:dateCopy loginType:typeCopy completion:v18];
   }
 
-  else if (v16)
+  else if (completionCopy)
   {
     v20 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v16 + 2))(v16, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 }
 
@@ -278,28 +278,28 @@ void __93__PODaemonCoreConnection_updateLoginStateForIdentifier_state_loginDate_
   }
 }
 
-- (void)savePendingSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)savePendingSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v11 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__PODaemonCoreConnection_savePendingSSOTokens_identifier_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 savePendingSSOTokens:v8 identifier:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 savePendingSSOTokens:tokensCopy identifier:identifierCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -319,27 +319,27 @@ void __69__PODaemonCoreConnection_savePendingSSOTokens_identifier_completion___b
   }
 }
 
-- (void)retrievePendingSSOTokenForIdentifier:(id)a3 completion:(id)a4
+- (void)retrievePendingSSOTokenForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__PODaemonCoreConnection_retrievePendingSSOTokenForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 retrievePendingSSOTokenForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 retrievePendingSSOTokenForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -359,28 +359,28 @@ void __74__PODaemonCoreConnection_retrievePendingSSOTokenForIdentifier_completio
   }
 }
 
-- (void)saveStashedSSOTokens:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveStashedSSOTokens:(id)tokens identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v11 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__PODaemonCoreConnection_saveStashedSSOTokens_identifier_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 saveStashedSSOTokens:v8 identifier:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 saveStashedSSOTokens:tokensCopy identifier:identifierCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -400,27 +400,27 @@ void __69__PODaemonCoreConnection_saveStashedSSOTokens_identifier_completion___b
   }
 }
 
-- (void)retrieveStashedSSOTokenForIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveStashedSSOTokenForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__PODaemonCoreConnection_retrieveStashedSSOTokenForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 retrieveStashedSSOTokenForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 retrieveStashedSSOTokenForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -440,28 +440,28 @@ void __74__PODaemonCoreConnection_retrieveStashedSSOTokenForIdentifier_completio
   }
 }
 
-- (void)saveStashedDecryptionContext:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveStashedDecryptionContext:(id)context identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v11 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __77__PODaemonCoreConnection_saveStashedDecryptionContext_identifier_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 saveStashedDecryptionContext:v8 identifier:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 saveStashedDecryptionContext:contextCopy identifier:identifierCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -481,27 +481,27 @@ void __77__PODaemonCoreConnection_saveStashedDecryptionContext_identifier_comple
   }
 }
 
-- (void)retrieveStashedDecryptionContextForIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveStashedDecryptionContextForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __83__PODaemonCoreConnection_retrieveStashedDecryptionContextForIdentifier_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 retrieveStashedDecryptionContextForIdentifier:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 retrieveStashedDecryptionContextForIdentifier:identifierCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -521,26 +521,26 @@ void __83__PODaemonCoreConnection_retrieveStashedDecryptionContextForIdentifier_
   }
 }
 
-- (void)saveCachedContextsToDiskWithCompletion:(id)a3
+- (void)saveCachedContextsToDiskWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v5 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __65__PODaemonCoreConnection_saveCachedContextsToDiskWithCompletion___block_invoke;
     v9[3] = &unk_279A3E488;
-    v6 = v4;
+    v6 = completionCopy;
     v10 = v6;
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
     [v7 saveCachedContextsToDiskWithCompletion:v6];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v8 = [POError internalErrorWithMessage:@"Failed to connect to PSSO daemon"];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 }
 
@@ -560,27 +560,27 @@ void __65__PODaemonCoreConnection_saveCachedContextsToDiskWithCompletion___block
   }
 }
 
-- (void)insertTokenForUserName:(id)a3 completion:(id)a4
+- (void)insertTokenForUserName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__PODaemonCoreConnection_insertTokenForUserName_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 insertTokenForUserName:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 insertTokenForUserName:nameCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
@@ -600,28 +600,28 @@ void __60__PODaemonCoreConnection_insertTokenForUserName_completion___block_invo
   }
 }
 
-- (void)verifyTokenForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyTokenForUserName:(id)name passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v11 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __76__PODaemonCoreConnection_verifyTokenForUserName_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 verifyTokenForUserName:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 verifyTokenForUserName:nameCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -641,27 +641,27 @@ void __76__PODaemonCoreConnection_verifyTokenForUserName_passwordContext_complet
   }
 }
 
-- (void)useVolume:(id)a3 completion:(id)a4
+- (void)useVolume:(id)volume completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  volumeCopy = volume;
+  completionCopy = completion;
   if ([(PODaemonCoreConnection *)self _connectToService])
   {
-    v8 = [(PODaemonCoreConnection *)self xpcConnection];
+    xpcConnection = [(PODaemonCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __47__PODaemonCoreConnection_useVolume_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 useVolume:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 useVolume:volumeCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -683,9 +683,9 @@ void __47__PODaemonCoreConnection_useVolume_completion___block_invoke(uint64_t a
 
 - (BOOL)_connectToService
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_xpcConnection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_xpcConnection)
   {
     v3 = PO_LOG_PODaemonCoreConnection();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -699,60 +699,60 @@ LABEL_11:
   }
 
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.PlatformSSO.daemon-xpc" options:4096];
-  xpcConnection = v2->_xpcConnection;
-  v2->_xpcConnection = v4;
+  xpcConnection = selfCopy->_xpcConnection;
+  selfCopy->_xpcConnection = v4;
 
-  if (v2->_xpcConnection)
+  if (selfCopy->_xpcConnection)
   {
     v6 = [POInternalProtocols interfaceWithInternalProtocol:&unk_2870AD398];
-    [(NSXPCConnection *)v2->_xpcConnection setRemoteObjectInterface:v6];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setRemoteObjectInterface:v6];
 
-    v7 = [(NSXPCConnection *)v2->_xpcConnection remoteObjectInterface];
-    [v7 setClass:objc_opt_class() forSelector:sel_userLoginStateForIdentifier_completion_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    [remoteObjectInterface setClass:objc_opt_class() forSelector:sel_userLoginStateForIdentifier_completion_ argumentIndex:0 ofReply:1];
 
-    v8 = [(NSXPCConnection *)v2->_xpcConnection remoteObjectInterface];
-    [v8 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:1 ofReply:0];
+    remoteObjectInterface2 = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    [remoteObjectInterface2 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:1 ofReply:0];
 
-    v9 = [(NSXPCConnection *)v2->_xpcConnection remoteObjectInterface];
-    [v9 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:3 ofReply:0];
+    remoteObjectInterface3 = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    [remoteObjectInterface3 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:3 ofReply:0];
 
-    v10 = [(NSXPCConnection *)v2->_xpcConnection remoteObjectInterface];
-    [v10 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:2 ofReply:0];
+    remoteObjectInterface4 = [(NSXPCConnection *)selfCopy->_xpcConnection remoteObjectInterface];
+    [remoteObjectInterface4 setClass:objc_opt_class() forSelector:sel_updateLoginStateForIdentifier_state_loginDate_loginType_completion_ argumentIndex:2 ofReply:0];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __43__PODaemonCoreConnection__connectToService__block_invoke;
     v23[3] = &unk_279A3E4B0;
     objc_copyWeak(&v24, &location);
-    [(NSXPCConnection *)v2->_xpcConnection setInvalidationHandler:v23];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInvalidationHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __43__PODaemonCoreConnection__connectToService__block_invoke_77;
     v21[3] = &unk_279A3E4B0;
     objc_copyWeak(&v22, &location);
-    [(NSXPCConnection *)v2->_xpcConnection setInterruptionHandler:v21];
-    v11 = v2->_xpcConnection;
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInterruptionHandler:v21];
+    v11 = selfCopy->_xpcConnection;
     v12 = +[PODaemonCoreConnection xpcQueue];
     [(NSXPCConnection *)v11 _setQueue:v12];
 
-    [(NSXPCConnection *)v2->_xpcConnection resume];
+    [(NSXPCConnection *)selfCopy->_xpcConnection resume];
     v13 = PO_LOG_PODaemonCoreConnection();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       [PODaemonCoreConnection _connectToService];
     }
 
-    if (v2->_volume)
+    if (selfCopy->_volume)
     {
-      v14 = [(PODaemonCoreConnection *)v2 xpcConnection];
-      v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_81];
-      volume = v2->_volume;
+      xpcConnection = [(PODaemonCoreConnection *)selfCopy xpcConnection];
+      v15 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_81];
+      volume = selfCopy->_volume;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __43__PODaemonCoreConnection__connectToService__block_invoke_82;
       v20[3] = &unk_279A3E4F8;
-      v20[4] = v2;
+      v20[4] = selfCopy;
       [v15 useVolume:volume completion:v20];
     }
 
@@ -770,7 +770,7 @@ LABEL_11:
 
   v17 = 0;
 LABEL_12:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }

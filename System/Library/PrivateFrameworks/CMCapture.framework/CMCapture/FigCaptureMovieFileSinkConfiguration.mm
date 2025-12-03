@@ -1,7 +1,7 @@
 @interface FigCaptureMovieFileSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureMovieFileSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureMovieFileSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 - (void)dealloc;
@@ -9,16 +9,16 @@
 
 @implementation FigCaptureMovieFileSinkConfiguration
 
-- (FigCaptureMovieFileSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureMovieFileSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v7.receiver = self;
   v7.super_class = FigCaptureMovieFileSinkConfiguration;
   v4 = [(FigCaptureSinkConfiguration *)&v7 initWithXPCEncoding:?];
   if (v4)
   {
-    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(a3, "trueVideoCaptureEnabled");
-    *(&v4->super._deferredStartEnabled + 2) = xpc_dictionary_get_BOOL(a3, "multiCamClientCompositingEnabled");
-    string = xpc_dictionary_get_string(a3, "multiCamClientCompositingPrimaryConnectionID");
+    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(encoding, "trueVideoCaptureEnabled");
+    *(&v4->super._deferredStartEnabled + 2) = xpc_dictionary_get_BOOL(encoding, "multiCamClientCompositingEnabled");
+    string = xpc_dictionary_get_string(encoding, "multiCamClientCompositingPrimaryConnectionID");
     if (string)
     {
       *&v4->_trueVideoCaptureEnabled = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:string];
@@ -39,15 +39,15 @@
 {
   v5.receiver = self;
   v5.super_class = FigCaptureMovieFileSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_BOOL(v3, "trueVideoCaptureEnabled", [(FigCaptureMovieFileSinkConfiguration *)self trueVideoCaptureEnabled]);
-  xpc_dictionary_set_BOOL(v3, "multiCamClientCompositingEnabled", [(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingEnabled]);
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "trueVideoCaptureEnabled", [(FigCaptureMovieFileSinkConfiguration *)self trueVideoCaptureEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "multiCamClientCompositingEnabled", [(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingEnabled]);
   if ([(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingPrimaryConnectionID])
   {
-    xpc_dictionary_set_string(v3, "multiCamClientCompositingPrimaryConnectionID", [(NSString *)[(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingPrimaryConnectionID] UTF8String]);
+    xpc_dictionary_set_string(copyXPCEncoding, "multiCamClientCompositingPrimaryConnectionID", [(NSString *)[(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingPrimaryConnectionID] UTF8String]);
   }
 
-  return v3;
+  return copyXPCEncoding;
 }
 
 - (id)description
@@ -67,18 +67,18 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ trueVideo:%d%@", -[FigCaptureSinkConfiguration description](&v5, sel_description), -[FigCaptureMovieFileSinkConfiguration trueVideoCaptureEnabled](self, "trueVideoCaptureEnabled"), v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCaptureMovieFileSinkConfiguration;
-  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:zone];
   [v4 setTrueVideoCaptureEnabled:{-[FigCaptureMovieFileSinkConfiguration trueVideoCaptureEnabled](self, "trueVideoCaptureEnabled")}];
   [v4 setMultiCamClientCompositingEnabled:{-[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingEnabled](self, "multiCamClientCompositingEnabled")}];
   [v4 setMultiCamClientCompositingPrimaryConnectionID:{-[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingPrimaryConnectionID](self, "multiCamClientCompositingPrimaryConnectionID")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = FigCaptureMovieFileSinkConfiguration;
@@ -86,10 +86,10 @@
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCaptureMovieFileSinkConfiguration trueVideoCaptureEnabled](self, "trueVideoCaptureEnabled"), v6 == [a3 trueVideoCaptureEnabled]) && (v7 = -[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingEnabled](self, "multiCamClientCompositingEnabled"), v7 == objc_msgSend(a3, "multiCamClientCompositingEnabled")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCaptureMovieFileSinkConfiguration trueVideoCaptureEnabled](self, "trueVideoCaptureEnabled"), v6 == [equal trueVideoCaptureEnabled]) && (v7 = -[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingEnabled](self, "multiCamClientCompositingEnabled"), v7 == objc_msgSend(equal, "multiCamClientCompositingEnabled")))
     {
-      v8 = [(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingPrimaryConnectionID];
-      if (v8 == [a3 multiCamClientCompositingPrimaryConnectionID] || (v5 = -[NSString isEqualToString:](-[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingPrimaryConnectionID](self, "multiCamClientCompositingPrimaryConnectionID"), "isEqualToString:", objc_msgSend(a3, "multiCamClientCompositingPrimaryConnectionID"))))
+      multiCamClientCompositingPrimaryConnectionID = [(FigCaptureMovieFileSinkConfiguration *)self multiCamClientCompositingPrimaryConnectionID];
+      if (multiCamClientCompositingPrimaryConnectionID == [equal multiCamClientCompositingPrimaryConnectionID] || (v5 = -[NSString isEqualToString:](-[FigCaptureMovieFileSinkConfiguration multiCamClientCompositingPrimaryConnectionID](self, "multiCamClientCompositingPrimaryConnectionID"), "isEqualToString:", objc_msgSend(equal, "multiCamClientCompositingPrimaryConnectionID"))))
       {
         LOBYTE(v5) = 1;
       }

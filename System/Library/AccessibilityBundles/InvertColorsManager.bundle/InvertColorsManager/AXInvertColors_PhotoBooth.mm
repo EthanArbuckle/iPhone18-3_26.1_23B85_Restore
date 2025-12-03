@@ -1,14 +1,14 @@
 @interface AXInvertColors_PhotoBooth
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PhotoBooth
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PBController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PBController"];
 }
 
 @end

@@ -2,43 +2,43 @@
 - (ADCloudKitAccountStatusDataStore)init;
 - (BOOL)hasSetUpRecordZoneSubscription;
 - (CKServerChangeToken)serverChangeToken;
-- (void)deleteUserData:(id)a3;
-- (void)fetchDeviceTypesForAllLanguages:(id)a3;
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4;
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3;
-- (void)setServerChangeToken:(id)a3;
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4;
-- (void)synchronizeWithCompletion:(id)a3;
+- (void)deleteUserData:(id)data;
+- (void)fetchDeviceTypesForAllLanguages:(id)languages;
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion;
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription;
+- (void)setServerChangeToken:(id)token;
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion;
+- (void)synchronizeWithCompletion:(id)completion;
 @end
 
 @implementation ADCloudKitAccountStatusDataStore
 
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)fetchDeviceTypesForAllLanguages:(id)a3
+- (void)fetchDeviceTypesForAllLanguages:(id)languages
 {
-  if (a3)
+  if (languages)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(languages + 2))(languages, 0, 0);
   }
 }
 
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)deleteUserData:(id)a3
+- (void)deleteUserData:(id)data
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -51,24 +51,24 @@
   [(ADCloudKitAccountStatusDataStore *)self setServerChangeToken:0];
 }
 
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changesCopy = changes;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [v10 count];
-    v16 = [v11 count];
+    v15 = [recordsCopy count];
+    v16 = [dsCopy count];
     v17 = @"partial";
     *buf = 136315906;
     v54 = "[ADCloudKitAccountStatusDataStore mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
     v56 = v15;
     v55 = 2048;
-    if (v7)
+    if (changesCopy)
     {
       v17 = @"full";
     }
@@ -81,22 +81,22 @@
   }
 
   v18 = +[AFPreferences sharedPreferences];
-  v19 = [v18 cloudSyncEnabled];
-  self->_cloudSyncEnabled = v19;
-  if (v19)
+  cloudSyncEnabled = [v18 cloudSyncEnabled];
+  self->_cloudSyncEnabled = cloudSyncEnabled;
+  if (cloudSyncEnabled)
   {
-    v44 = v12;
+    v44 = completionCopy;
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v20 = v10;
+    v20 = recordsCopy;
     v21 = [v20 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v21)
     {
-      v42 = v10;
+      v42 = recordsCopy;
       v43 = v18;
-      v41 = v11;
+      v41 = dsCopy;
       v22 = *v48;
 LABEL_8:
       v23 = 0;
@@ -108,26 +108,26 @@ LABEL_8:
         }
 
         v24 = *(*(&v47 + 1) + 8 * v23);
-        v25 = [v24 recordType];
-        v26 = [(NSArray *)self->_supportedRecordTypes firstObject];
-        v27 = [v25 isEqualToString:v26];
+        recordType = [v24 recordType];
+        firstObject = [(NSArray *)self->_supportedRecordTypes firstObject];
+        v27 = [recordType isEqualToString:firstObject];
 
         if (v27)
         {
-          v28 = [v24 recordID];
-          v29 = [v28 recordName];
+          recordID = [v24 recordID];
+          recordName = [recordID recordName];
 
-          if ([v29 length])
+          if ([recordName length])
           {
-            if ([v29 isEqualToString:@"SyncEnabled"])
+            if ([recordName isEqualToString:@"SyncEnabled"])
             {
               v21 = v24;
 
               if (!v21)
               {
                 v34 = 0;
-                v11 = v41;
-                v10 = v42;
+                dsCopy = v41;
+                recordsCopy = v42;
                 v18 = v43;
                 goto LABEL_31;
               }
@@ -138,20 +138,20 @@ LABEL_8:
               v36 = [NSSet setWithArray:v35];
               v20 = [v21 _ad_dataOfClasses:v36];
 
-              v11 = v41;
-              v10 = v42;
+              dsCopy = v41;
+              recordsCopy = v42;
               v18 = v43;
               if (!v20 || ([v20 BOOLValue] & 1) != 0)
               {
                 break;
               }
 
-              v37 = [v43 cloudSyncEnabledModificationDate];
-              if (v37)
+              cloudSyncEnabledModificationDate = [v43 cloudSyncEnabledModificationDate];
+              if (cloudSyncEnabledModificationDate)
               {
-                v38 = [v21 modificationDate];
-                v39 = v38;
-                if (!v38 || [v38 compare:v37] == 1)
+                modificationDate = [v21 modificationDate];
+                v39 = modificationDate;
+                if (!modificationDate || [modificationDate compare:cloudSyncEnabledModificationDate] == 1)
                 {
                   [v43 setCloudSyncEnabled:0];
 
@@ -203,11 +203,11 @@ LABEL_41:
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
             v31 = v30;
-            v32 = [v24 recordType];
+            recordType2 = [v24 recordType];
             *buf = 136315394;
             v54 = "[ADCloudKitAccountStatusDataStore mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
             v55 = 2112;
-            v56 = v32;
+            v56 = recordType2;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%s Unsupported record type : (%@)", buf, 0x16u);
           }
         }
@@ -221,8 +221,8 @@ LABEL_41:
           }
 
           v34 = 0;
-          v11 = v41;
-          v10 = v42;
+          dsCopy = v41;
+          recordsCopy = v42;
           v18 = v43;
           goto LABEL_29;
         }
@@ -233,40 +233,40 @@ LABEL_41:
 LABEL_29:
 
 LABEL_31:
-    v12 = v44;
+    completionCopy = v44;
     if (v44 && (v34 & 1) == 0)
     {
       v44[2](v44, 0);
     }
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)synchronizeWithCompletion:(id)a3
+- (void)synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 cloudSyncEnabled];
+  cloudSyncEnabled = [v5 cloudSyncEnabled];
 
-  if (self->_cloudSyncEnabled != v6)
+  if (self->_cloudSyncEnabled != cloudSyncEnabled)
   {
-    self->_cloudSyncEnabled = v6;
-    if (v6)
+    self->_cloudSyncEnabled = cloudSyncEnabled;
+    if (cloudSyncEnabled)
     {
-      v7 = [(ADCloudKitAccountStatusDataStore *)self isMirroredDataStore];
+      isMirroredDataStore = [(ADCloudKitAccountStatusDataStore *)self isMirroredDataStore];
       v8 = +[ADCloudKitManager sharedManager];
       v9 = v8;
-      if (v7)
+      if (isMirroredDataStore)
       {
         v10[0] = _NSConcreteStackBlock;
         v10[1] = 3221225472;
         v10[2] = sub_100361E04;
         v10[3] = &unk_10051D5D8;
-        v11 = v4;
+        v11 = completionCopy;
         [v9 saveCloudSyncEnabledRecord:1 mirror:1 completion:v10];
 
         goto LABEL_8;
@@ -281,22 +281,22 @@ LABEL_31:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_8:
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  v7 = a3;
+  tokenCopy = token;
   if (![(ADCloudKitAccountStatusDataStore *)self isMirroredDataStore])
   {
-    if (v7)
+    if (tokenCopy)
     {
-      v4 = [v7 ad_archiveTokenToDataWithExceptionBlock:&stru_10051D548];
+      v4 = [tokenCopy ad_archiveTokenToDataWithExceptionBlock:&stru_10051D548];
       if (!v4)
       {
         goto LABEL_7;
@@ -328,19 +328,19 @@ LABEL_7:
   else
   {
     v3 = +[ADPreferences sharedPreferences];
-    v4 = [v3 accountStatusServerChangeToken];
+    accountStatusServerChangeToken = [v3 accountStatusServerChangeToken];
 
-    v2 = [CKServerChangeToken ad_unarchiveTokenFromData:v4 withExceptionBlock:&stru_10051D528];
+    v2 = [CKServerChangeToken ad_unarchiveTokenFromData:accountStatusServerChangeToken withExceptionBlock:&stru_10051D528];
   }
 
   return v2;
 }
 
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = a3;
+  subscriptionCopy = subscription;
   v4 = +[ADPreferences sharedPreferences];
-  [v4 setHasSetUpAccountStatusRecordZoneSubscription:v3];
+  [v4 setHasSetUpAccountStatusRecordZoneSubscription:subscriptionCopy];
 
   v5 = +[ADPreferences sharedPreferences];
   [v5 synchronize];
@@ -349,9 +349,9 @@ LABEL_7:
 - (BOOL)hasSetUpRecordZoneSubscription
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 hasSetUpAccountStatusRecordZoneSubscription];
+  hasSetUpAccountStatusRecordZoneSubscription = [v2 hasSetUpAccountStatusRecordZoneSubscription];
 
-  return v3;
+  return hasSetUpAccountStatusRecordZoneSubscription;
 }
 
 - (ADCloudKitAccountStatusDataStore)init

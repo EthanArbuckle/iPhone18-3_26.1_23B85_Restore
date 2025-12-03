@@ -6,12 +6,12 @@
 
 - (void)main
 {
-  v4 = [MEMORY[0x1E69B7800] sharedContext];
-  v5 = [v4 workerManagedObjectContext];
-  [(ICAttachmentPreviewGeneratorOCROperation *)self setManagedObjectContext:v5];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
+  [(ICAttachmentPreviewGeneratorOCROperation *)self setManagedObjectContext:workerManagedObjectContext];
 
-  v6 = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
-  [v6 setIc_debugName:@"ocrGenerator"];
+  managedObjectContext = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
+  [managedObjectContext setIc_debugName:@"ocrGenerator"];
 
   v16[0] = 0;
   v16[1] = v16;
@@ -23,7 +23,7 @@
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v7 = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
+  managedObjectContext2 = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__ICAttachmentPreviewGeneratorOCROperation_main__block_invoke;
@@ -32,23 +32,23 @@
   v11[5] = v16;
   v11[6] = &v12;
   v11[7] = a2;
-  [v7 performBlockAndWait:v11];
+  [managedObjectContext2 performBlockAndWait:v11];
 
   if (*(v13 + 24) == 1)
   {
-    v8 = [(ICAttachmentPreviewGeneratorOCROperation *)self attachmentModel];
-    [v8 generateOCRInOperation:self];
+    attachmentModel = [(ICAttachmentPreviewGeneratorOCROperation *)self attachmentModel];
+    [attachmentModel generateOCRInOperation:self];
   }
 
   else
   {
-    v8 = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
+    attachmentModel = [(ICAttachmentPreviewGeneratorOCROperation *)self managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __48__ICAttachmentPreviewGeneratorOCROperation_main__block_invoke_13;
     v10[3] = &unk_1E8469370;
     v10[4] = v16;
-    [v8 performBlockAndWait:v10];
+    [attachmentModel performBlockAndWait:v10];
   }
 
   v9 = +[ICAttachmentPreviewGenerator sharedGenerator];

@@ -1,5 +1,5 @@
 @interface CCUIMenuModuleItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -9,14 +9,14 @@
 
 @implementation CCUIMenuModuleItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIMenuModuleItemView" hasInstanceVariable:@"_titleLabel" withType:"BSUIEmojiLabelView"];
-  [v3 validateClass:@"CCUIMenuModuleItemView" hasInstanceVariable:@"_subtitleLabel" withType:"BSUIEmojiLabelView"];
-  [v3 validateClass:@"CCUIMenuModuleItemView" hasProperty:@"menuItem" withType:"@"];
-  [v3 validateClass:@"CCUIMenuModuleItem" hasProperty:@"selected" customGetter:@"isSelected" customSetter:0 withType:"B"];
-  [v3 validateClass:@"CCUIMenuModuleItem" hasProperty:@"placeholder" customGetter:@"isPlaceholder" customSetter:0 withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIMenuModuleItemView" hasInstanceVariable:@"_titleLabel" withType:"BSUIEmojiLabelView"];
+  [validationsCopy validateClass:@"CCUIMenuModuleItemView" hasInstanceVariable:@"_subtitleLabel" withType:"BSUIEmojiLabelView"];
+  [validationsCopy validateClass:@"CCUIMenuModuleItemView" hasProperty:@"menuItem" withType:"@"];
+  [validationsCopy validateClass:@"CCUIMenuModuleItem" hasProperty:@"selected" customGetter:@"isSelected" customSetter:0 withType:"B"];
+  [validationsCopy validateClass:@"CCUIMenuModuleItem" hasProperty:@"placeholder" customGetter:@"isPlaceholder" customSetter:0 withType:"B"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -38,17 +38,17 @@
 - (id)accessibilityLabel
 {
   v2 = [(CCUIMenuModuleItemViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(CCUIMenuModuleItemViewAccessibility *)self safeValueForKey:@"_subtitleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -71,9 +71,9 @@
   v9.receiver = self;
   v9.super_class = CCUIMenuModuleItemViewAccessibility;
   v4 = [(CCUIMenuModuleItemViewAccessibility *)&v9 description];
-  v5 = [(CCUIMenuModuleItemViewAccessibility *)self accessibilityLabel];
-  v6 = [(CCUIMenuModuleItemViewAccessibility *)self accessibilityValue];
-  v7 = [v3 stringWithFormat:@"[%@ label:%@ value:%@]", v4, v5, v6];
+  accessibilityLabel = [(CCUIMenuModuleItemViewAccessibility *)self accessibilityLabel];
+  accessibilityValue = [(CCUIMenuModuleItemViewAccessibility *)self accessibilityValue];
+  v7 = [v3 stringWithFormat:@"[%@ label:%@ value:%@]", v4, accessibilityLabel, accessibilityValue];
 
   return v7;
 }

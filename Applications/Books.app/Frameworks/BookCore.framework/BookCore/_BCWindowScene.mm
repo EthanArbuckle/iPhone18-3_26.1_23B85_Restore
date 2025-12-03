@@ -1,34 +1,34 @@
 @interface _BCWindowScene
 - (BAAnalyticsController)ba_analyticsController;
 - (BCSceneControlling)controller;
-- (void)attemptRotateToPortraitWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)attemptRotateToPortraitWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _BCWindowScene
 
 - (BAAnalyticsController)ba_analyticsController
 {
-  v2 = [(_BCWindowScene *)self controller];
-  v3 = [v2 ba_analyticsController];
+  controller = [(_BCWindowScene *)self controller];
+  ba_analyticsController = [controller ba_analyticsController];
 
-  return v3;
+  return ba_analyticsController;
 }
 
-- (void)attemptRotateToPortraitWithCompletion:(id)a3
+- (void)attemptRotateToPortraitWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_BCWindowScene *)self effectiveGeometry];
-  v6 = [v5 interfaceOrientation] - 3;
+  completionCopy = completion;
+  effectiveGeometry = [(_BCWindowScene *)self effectiveGeometry];
+  v6 = [effectiveGeometry interfaceOrientation] - 3;
 
   if (v6 > 1)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(completionCopy);
     rotateCompletion = self->_rotateCompletion;
     self->_rotateCompletion = v7;
 
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_33EB20 == a6)
+  if (off_33EB20 == context)
   {
-    v7 = [(_BCWindowScene *)self effectiveGeometry:a3];
+    v7 = [(_BCWindowScene *)self effectiveGeometry:path];
     v8 = [v7 interfaceOrientation] - 1;
 
     if (v8 <= 1)

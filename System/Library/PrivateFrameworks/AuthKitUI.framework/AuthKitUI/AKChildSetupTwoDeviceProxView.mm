@@ -1,40 +1,40 @@
 @interface AKChildSetupTwoDeviceProxView
-- (AKChildSetupTwoDeviceProxView)initWithFrame:(CGRect)a3;
-- (id)_helloBackgroundForProductType:(id)a3;
-- (id)_helloScreenViewForProductType:(id)a3;
-- (id)_helloScreenViewWithBackgroundImage:(id)a3 cursiveImage:(id)a4 labelBottomOffset:(double)a5 labelHorizontalInset:(double)a6;
-- (id)_homeScreenImageForProductType:(id)a3;
-- (id)_homeScreenViewForProductType:(id)a3;
-- (id)_homeScreenViewWithImage:(id)a3;
+- (AKChildSetupTwoDeviceProxView)initWithFrame:(CGRect)frame;
+- (id)_helloBackgroundForProductType:(id)type;
+- (id)_helloScreenViewForProductType:(id)type;
+- (id)_helloScreenViewWithBackgroundImage:(id)image cursiveImage:(id)cursiveImage labelBottomOffset:(double)offset labelHorizontalInset:(double)inset;
+- (id)_homeScreenImageForProductType:(id)type;
+- (id)_homeScreenViewForProductType:(id)type;
+- (id)_homeScreenViewWithImage:(id)image;
 - (id)_localizedHelloCursiveAssetForDeviceType;
-- (id)_screenImagePrefixForProductType:(id)a3;
-- (int64_t)_deviceTypeForProductType:(id)a3;
+- (id)_screenImagePrefixForProductType:(id)type;
+- (int64_t)_deviceTypeForProductType:(id)type;
 - (void)_addPairForiPad;
 - (void)_addPairForiPhone;
 @end
 
 @implementation AKChildSetupTwoDeviceProxView
 
-- (AKChildSetupTwoDeviceProxView)initWithFrame:(CGRect)a3
+- (AKChildSetupTwoDeviceProxView)initWithFrame:(CGRect)frame
 {
-  v13 = a3;
+  frameCopy = frame;
   v11 = a2;
   v12 = 0;
   v10.receiver = self;
   v10.super_class = AKChildSetupTwoDeviceProxView;
-  v12 = [(AKChildSetupTwoDeviceProxView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v12 = [(AKChildSetupTwoDeviceProxView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v12, v12);
   if (v12)
   {
-    v7 = [MEMORY[0x277D75348] systemGray6Color];
+    systemGray6Color = [MEMORY[0x277D75348] systemGray6Color];
     [(AKChildSetupTwoDeviceProxView *)v12 setBackgroundColor:?];
-    *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+    *&v3 = MEMORY[0x277D82BD8](systemGray6Color).n128_u64[0];
     [(AKChildSetupTwoDeviceProxView *)v12 setClipsToBounds:1, v3];
     [(AKChildSetupTwoDeviceProxView *)v12 setAccessibilityIgnoresInvertColors:1];
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
-    *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    if (v9 == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+    *&v4 = MEMORY[0x277D82BD8](currentDevice).n128_u64[0];
+    if (userInterfaceIdiom == 1)
     {
       [(AKChildSetupTwoDeviceProxView *)v12 _addPairForiPad];
     }
@@ -55,11 +55,11 @@
   v18[2] = self;
   v18[1] = a2;
   v11 = MEMORY[0x277CCA8D8];
-  v13 = [MEMORY[0x277CBEAF8] preferredLanguages];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
   v12 = [v11 preferredLocalizationsFromArray:&unk_2835AB060 forPreferences:?];
   v18[0] = [v12 firstObject];
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](preferredLanguages);
   v17 = MEMORY[0x277D82BE0](&unk_2835AAFF0);
   v14 = [v17 objectForKey:v18[0]];
   v2 = MEMORY[0x277D82BD8](v14).n128_u64[0];
@@ -97,111 +97,111 @@
 - (void)_addPairForiPad
 {
   v53[11] = *MEMORY[0x277D85DE8];
-  v52 = self;
+  selfCopy = self;
   v51[1] = a2;
   v51[0] = [(AKChildSetupTwoDeviceProxView *)self _localizedHelloCursiveAssetForDeviceType];
-  v6 = v52;
+  v6 = selfCopy;
   v5 = MEMORY[0x277D755B8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 imageNamed:@"iPad Pair Hello" inBundle:?];
   v50 = [AKChildSetupTwoDeviceProxView _helloScreenViewWithBackgroundImage:v6 cursiveImage:"_helloScreenViewWithBackgroundImage:cursiveImage:labelBottomOffset:labelHorizontalInset:" labelBottomOffset:88.0 labelHorizontalInset:?];
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
-  v10 = v52;
+  v10 = selfCopy;
   v9 = MEMORY[0x277D755B8];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v9 imageNamed:@"iPad Phone Pair Home" inBundle:?];
   v49 = [(AKChildSetupTwoDeviceProxView *)v10 _homeScreenViewWithImage:?];
   MEMORY[0x277D82BD8](v11);
   *&v2 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-  [(AKChildSetupTwoDeviceProxView *)v52 addSubview:v50, v2];
-  [(AKChildSetupTwoDeviceProxView *)v52 addSubview:v49];
+  [(AKChildSetupTwoDeviceProxView *)selfCopy addSubview:v50, v2];
+  [(AKChildSetupTwoDeviceProxView *)selfCopy addSubview:v49];
   v3 = objc_alloc(MEMORY[0x277D75D18]);
   v48 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [MEMORY[0x277D75348] systemGray6Color];
+  systemGray6Color = [MEMORY[0x277D75348] systemGray6Color];
   [v48 setBackgroundColor:?];
-  *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  [(AKChildSetupTwoDeviceProxView *)v52 addSubview:v48, v4];
+  *&v4 = MEMORY[0x277D82BD8](systemGray6Color).n128_u64[0];
+  [(AKChildSetupTwoDeviceProxView *)selfCopy addSubview:v48, v4];
   v14 = MEMORY[0x277CCAAD0];
-  v47 = [v50 leadingAnchor];
-  v46 = [(AKChildSetupTwoDeviceProxView *)v52 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:?];
+  leadingAnchor = [v50 leadingAnchor];
+  leadingAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:?];
   v53[0] = v45;
-  v44 = [v50 trailingAnchor];
-  v43 = [(AKChildSetupTwoDeviceProxView *)v52 trailingAnchor];
-  v42 = [v44 constraintEqualToAnchor:?];
+  trailingAnchor = [v50 trailingAnchor];
+  trailingAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy trailingAnchor];
+  v42 = [trailingAnchor constraintEqualToAnchor:?];
   v53[1] = v42;
-  v41 = [v50 topAnchor];
-  v40 = [(AKChildSetupTwoDeviceProxView *)v52 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:?];
+  topAnchor = [v50 topAnchor];
+  topAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:?];
   v53[2] = v39;
-  v38 = [v50 bottomAnchor];
-  v37 = [(AKChildSetupTwoDeviceProxView *)v52 bottomAnchor];
-  v36 = [v38 constraintEqualToAnchor:?];
+  bottomAnchor = [v50 bottomAnchor];
+  bottomAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy bottomAnchor];
+  v36 = [bottomAnchor constraintEqualToAnchor:?];
   v53[3] = v36;
-  v35 = [v49 topAnchor];
-  v34 = [(AKChildSetupTwoDeviceProxView *)v52 topAnchor];
-  v33 = [v35 constraintGreaterThanOrEqualToAnchor:?];
+  topAnchor3 = [v49 topAnchor];
+  topAnchor4 = [(AKChildSetupTwoDeviceProxView *)selfCopy topAnchor];
+  v33 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:?];
   v53[4] = v33;
-  v32 = [v49 bottomAnchor];
-  v31 = [(AKChildSetupTwoDeviceProxView *)v52 bottomAnchor];
-  v30 = [v32 constraintEqualToAnchor:?];
+  bottomAnchor3 = [v49 bottomAnchor];
+  bottomAnchor4 = [(AKChildSetupTwoDeviceProxView *)selfCopy bottomAnchor];
+  v30 = [bottomAnchor3 constraintEqualToAnchor:?];
   v53[5] = v30;
-  v29 = [(AKChildSetupTwoDeviceProxView *)v52 trailingAnchor];
-  v28 = [v49 trailingAnchor];
-  v27 = [v29 constraintEqualToAnchor:28.0 constant:?];
+  trailingAnchor3 = [(AKChildSetupTwoDeviceProxView *)selfCopy trailingAnchor];
+  trailingAnchor4 = [v49 trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:28.0 constant:?];
   v53[6] = v27;
-  v26 = [v48 leadingAnchor];
-  v25 = [(AKChildSetupTwoDeviceProxView *)v52 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:?];
+  leadingAnchor3 = [v48 leadingAnchor];
+  leadingAnchor4 = [(AKChildSetupTwoDeviceProxView *)selfCopy leadingAnchor];
+  v24 = [leadingAnchor3 constraintEqualToAnchor:?];
   v53[7] = v24;
-  v23 = [v48 trailingAnchor];
-  v22 = [(AKChildSetupTwoDeviceProxView *)v52 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:?];
+  trailingAnchor5 = [v48 trailingAnchor];
+  trailingAnchor6 = [(AKChildSetupTwoDeviceProxView *)selfCopy trailingAnchor];
+  v21 = [trailingAnchor5 constraintEqualToAnchor:?];
   v53[8] = v21;
-  v20 = [v48 bottomAnchor];
-  v19 = [(AKChildSetupTwoDeviceProxView *)v52 bottomAnchor];
-  v18 = [v20 constraintEqualToAnchor:?];
+  bottomAnchor5 = [v48 bottomAnchor];
+  bottomAnchor6 = [(AKChildSetupTwoDeviceProxView *)selfCopy bottomAnchor];
+  v18 = [bottomAnchor5 constraintEqualToAnchor:?];
   v53[9] = v18;
-  v17 = [v48 heightAnchor];
-  v16 = [v17 constraintEqualToConstant:0.5];
+  heightAnchor = [v48 heightAnchor];
+  v16 = [heightAnchor constraintEqualToConstant:0.5];
   v53[10] = v16;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:11];
   [v14 activateConstraints:?];
   MEMORY[0x277D82BD8](v15);
   MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](heightAnchor);
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](bottomAnchor6);
+  MEMORY[0x277D82BD8](bottomAnchor5);
   MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
+  MEMORY[0x277D82BD8](trailingAnchor6);
+  MEMORY[0x277D82BD8](trailingAnchor5);
   MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](leadingAnchor3);
   MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
-  MEMORY[0x277D82BD8](v29);
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](trailingAnchor3);
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  MEMORY[0x277D82BD8](bottomAnchor3);
   MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
-  MEMORY[0x277D82BD8](v35);
+  MEMORY[0x277D82BD8](topAnchor4);
+  MEMORY[0x277D82BD8](topAnchor3);
   MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
   MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](leadingAnchor);
   objc_storeStrong(&v48, 0);
   objc_storeStrong(&v49, 0);
   objc_storeStrong(&v50, 0);
@@ -212,47 +212,47 @@
 - (void)_addPairForiPhone
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v54 = self;
+  selfCopy = self;
   v53[1] = a2;
   v2 = objc_alloc(MEMORY[0x277D75D18]);
   v53[0] = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v53[0] setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(AKChildSetupTwoDeviceProxView *)v54 addSubview:v53[0]];
+  [(AKChildSetupTwoDeviceProxView *)selfCopy addSubview:v53[0]];
   v35 = MEMORY[0x277CCAAD0];
-  v45 = [v53[0] centerXAnchor];
-  v44 = [(AKChildSetupTwoDeviceProxView *)v54 centerXAnchor];
-  v43 = [v45 constraintEqualToAnchor:?];
+  centerXAnchor = [v53[0] centerXAnchor];
+  centerXAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy centerXAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:?];
   v56[0] = v43;
-  v42 = [v53[0] topAnchor];
-  v41 = [(AKChildSetupTwoDeviceProxView *)v54 topAnchor];
-  v40 = [v42 constraintGreaterThanOrEqualToAnchor:?];
+  topAnchor = [v53[0] topAnchor];
+  topAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy topAnchor];
+  v40 = [topAnchor constraintGreaterThanOrEqualToAnchor:?];
   v56[1] = v40;
-  v39 = [v53[0] bottomAnchor];
-  v38 = [(AKChildSetupTwoDeviceProxView *)v54 bottomAnchor];
-  v37 = [v39 constraintEqualToAnchor:?];
+  bottomAnchor = [v53[0] bottomAnchor];
+  bottomAnchor2 = [(AKChildSetupTwoDeviceProxView *)selfCopy bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:?];
   v56[2] = v37;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:3];
   [v35 activateConstraints:?];
   MEMORY[0x277D82BD8](v36);
   MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
+  MEMORY[0x277D82BD8](centerXAnchor2);
+  MEMORY[0x277D82BD8](centerXAnchor);
   v52 = MGCopyAnswer();
-  v51 = [(AKChildSetupTwoDeviceProxView *)v54 _helloScreenViewForProductType:v52];
-  v50 = [(AKChildSetupTwoDeviceProxView *)v54 _homeScreenViewForProductType:v52];
+  v51 = [(AKChildSetupTwoDeviceProxView *)selfCopy _helloScreenViewForProductType:v52];
+  v50 = [(AKChildSetupTwoDeviceProxView *)selfCopy _homeScreenViewForProductType:v52];
   [v51 setContentCompressionResistancePriority:? forAxis:?];
   LODWORD(v3) = 1148846080;
   [v50 setContentCompressionResistancePriority:0 forAxis:v3];
   [v53[0] addSubview:v51];
   [v53[0] addSubview:v50];
   v49 = 0.0;
-  v46 = [(AKChildSetupTwoDeviceProxView *)v54 _deviceTypeForProductType:v52];
+  v46 = [(AKChildSetupTwoDeviceProxView *)selfCopy _deviceTypeForProductType:v52];
   switch(v46)
   {
     case 1:
@@ -273,71 +273,71 @@
   }
 
   v9 = MEMORY[0x277CCAAD0];
-  v31 = [v53[0] topAnchor];
-  v30 = [v51 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:?];
+  topAnchor3 = [v53[0] topAnchor];
+  topAnchor4 = [v51 topAnchor];
+  v29 = [topAnchor3 constraintEqualToAnchor:?];
   v55[0] = v29;
-  v28 = [v53[0] bottomAnchor];
-  v27 = [v50 bottomAnchor];
-  v26 = [v28 constraintEqualToAnchor:?];
+  bottomAnchor3 = [v53[0] bottomAnchor];
+  bottomAnchor4 = [v50 bottomAnchor];
+  v26 = [bottomAnchor3 constraintEqualToAnchor:?];
   v55[1] = v26;
-  v25 = [v53[0] leftAnchor];
-  v24 = [v51 leftAnchor];
-  v23 = [v25 constraintEqualToAnchor:?];
+  leftAnchor = [v53[0] leftAnchor];
+  leftAnchor2 = [v51 leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:?];
   v55[2] = v23;
-  v22 = [v53[0] rightAnchor];
-  v21 = [v50 rightAnchor];
-  v20 = [v22 constraintEqualToAnchor:?];
+  rightAnchor = [v53[0] rightAnchor];
+  rightAnchor2 = [v50 rightAnchor];
+  v20 = [rightAnchor constraintEqualToAnchor:?];
   v55[3] = v20;
-  v19 = [v53[0] bottomAnchor];
-  v18 = [v51 bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:? constant:?];
+  bottomAnchor5 = [v53[0] bottomAnchor];
+  bottomAnchor6 = [v51 bottomAnchor];
+  v17 = [bottomAnchor5 constraintEqualToAnchor:? constant:?];
   v55[4] = v17;
-  v16 = [v50 topAnchor];
-  v15 = [v51 topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v49 constant:?];
+  topAnchor5 = [v50 topAnchor];
+  topAnchor6 = [v51 topAnchor];
+  v14 = [topAnchor5 constraintEqualToAnchor:v49 constant:?];
   v55[5] = v14;
-  v13 = [v51 rightAnchor];
-  v12 = [v50 leftAnchor];
-  v11 = [v13 constraintEqualToAnchor:20.0 constant:?];
+  rightAnchor3 = [v51 rightAnchor];
+  leftAnchor3 = [v50 leftAnchor];
+  v11 = [rightAnchor3 constraintEqualToAnchor:20.0 constant:?];
   v55[6] = v11;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:7];
   [v9 activateConstraints:?];
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](leftAnchor3);
+  MEMORY[0x277D82BD8](rightAnchor3);
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](topAnchor6);
+  MEMORY[0x277D82BD8](topAnchor5);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](bottomAnchor6);
+  MEMORY[0x277D82BD8](bottomAnchor5);
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
+  MEMORY[0x277D82BD8](leftAnchor2);
+  MEMORY[0x277D82BD8](leftAnchor);
   MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  MEMORY[0x277D82BD8](bottomAnchor3);
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  *&v4 = MEMORY[0x277D82BD8](v31).n128_u64[0];
-  v32 = [v50 layer];
+  MEMORY[0x277D82BD8](topAnchor4);
+  *&v4 = MEMORY[0x277D82BD8](topAnchor3).n128_u64[0];
+  layer = [v50 layer];
   LODWORD(v5) = 1045220557;
-  [v32 setShadowOpacity:v5];
-  *&v6 = MEMORY[0x277D82BD8](v32).n128_u64[0];
-  v33 = [v50 layer];
-  [v33 setShadowRadius:?];
-  MEMORY[0x277D82BD8](v33);
+  [layer setShadowOpacity:v5];
+  *&v6 = MEMORY[0x277D82BD8](layer).n128_u64[0];
+  layer2 = [v50 layer];
+  [layer2 setShadowRadius:?];
+  MEMORY[0x277D82BD8](layer2);
   CGSizeMake_9();
   v47 = v7;
   v48 = v8;
-  v34 = [v50 layer];
-  [v34 setShadowOffset:{v47, v48}];
-  MEMORY[0x277D82BD8](v34);
+  layer3 = [v50 layer];
+  [layer3 setShadowOffset:{v47, v48}];
+  MEMORY[0x277D82BD8](layer3);
   objc_storeStrong(&v50, 0);
   objc_storeStrong(&v51, 0);
   objc_storeStrong(&v52, 0);
@@ -345,16 +345,16 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_helloScreenViewForProductType:(id)a3
+- (id)_helloScreenViewForProductType:(id)type
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(AKChildSetupTwoDeviceProxView *)v11 _localizedHelloCursiveAssetForDeviceType];
-  v8 = [(AKChildSetupTwoDeviceProxView *)v11 _helloBackgroundForProductType:location[0]];
+  objc_storeStrong(location, type);
+  _localizedHelloCursiveAssetForDeviceType = [(AKChildSetupTwoDeviceProxView *)selfCopy _localizedHelloCursiveAssetForDeviceType];
+  v8 = [(AKChildSetupTwoDeviceProxView *)selfCopy _helloBackgroundForProductType:location[0]];
   v7 = 0.0;
-  v6 = [(AKChildSetupTwoDeviceProxView *)v11 _deviceTypeForProductType:location[0]];
+  v6 = [(AKChildSetupTwoDeviceProxView *)selfCopy _deviceTypeForProductType:location[0]];
   switch(v6)
   {
     case 1:
@@ -374,25 +374,25 @@
       break;
   }
 
-  v5 = [(AKChildSetupTwoDeviceProxView *)v11 _helloScreenViewWithBackgroundImage:v8 cursiveImage:v9 labelBottomOffset:v7 labelHorizontalInset:10.0, &v8];
+  v5 = [(AKChildSetupTwoDeviceProxView *)selfCopy _helloScreenViewWithBackgroundImage:v8 cursiveImage:_localizedHelloCursiveAssetForDeviceType labelBottomOffset:v7 labelHorizontalInset:10.0, &v8];
   objc_storeStrong(v4, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&_localizedHelloCursiveAssetForDeviceType, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)_helloScreenViewWithBackgroundImage:(id)a3 cursiveImage:(id)a4 labelBottomOffset:(double)a5 labelHorizontalInset:(double)a6
+- (id)_helloScreenViewWithBackgroundImage:(id)image cursiveImage:(id)cursiveImage labelBottomOffset:(double)offset labelHorizontalInset:(double)inset
 {
   v58[4] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   v55 = 0;
-  objc_storeStrong(&v55, a4);
-  v54 = a5;
-  v53 = a6;
+  objc_storeStrong(&v55, cursiveImage);
+  offsetCopy = offset;
+  insetCopy = inset;
   v6 = objc_alloc(MEMORY[0x277D755E8]);
   v52 = [v6 initWithImage:location[0]];
   [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -405,20 +405,20 @@
   [v51 setContentHuggingPriority:0 forAxis:v8];
   [v52 addSubview:v51];
   v33 = MEMORY[0x277CCAAD0];
-  v46 = [v51 topAnchor];
-  v45 = [v52 topAnchor];
-  v44 = [v46 constraintEqualToAnchor:?];
+  topAnchor = [v51 topAnchor];
+  topAnchor2 = [v52 topAnchor];
+  v44 = [topAnchor constraintEqualToAnchor:?];
   v58[0] = v44;
-  v43 = [v51 bottomAnchor];
-  v42 = [v52 bottomAnchor];
-  v41 = [v43 constraintEqualToAnchor:?];
+  bottomAnchor = [v51 bottomAnchor];
+  bottomAnchor2 = [v52 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:?];
   v58[1] = v41;
-  v40 = [v51 centerXAnchor];
-  v39 = [v52 centerXAnchor];
-  v38 = [v40 constraintEqualToAnchor:?];
+  centerXAnchor = [v51 centerXAnchor];
+  centerXAnchor2 = [v52 centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:?];
   v58[2] = v38;
-  v37 = [v51 widthAnchor];
-  v36 = [v51 heightAnchor];
+  widthAnchor = [v51 widthAnchor];
+  heightAnchor = [v51 heightAnchor];
   [location[0] size];
   v50[3] = v9;
   v50[4] = v10;
@@ -426,67 +426,67 @@
   [location[0] size];
   v50[1] = v11;
   v50[2] = v12;
-  v35 = [v37 constraintEqualToAnchor:v36 multiplier:v32 / *&v12];
+  v35 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:v32 / *&v12];
   v58[3] = v35;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:4];
   [v33 activateConstraints:?];
   MEMORY[0x277D82BD8](v34);
   MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
+  MEMORY[0x277D82BD8](heightAnchor);
+  MEMORY[0x277D82BD8](widthAnchor);
   MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
+  MEMORY[0x277D82BD8](centerXAnchor2);
+  MEMORY[0x277D82BD8](centerXAnchor);
   MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   v13 = objc_alloc(MEMORY[0x277D755E8]);
   v50[0] = [v13 initWithImage:v55];
   [v50[0] setContentMode:1];
   [v50[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   [v52 addSubview:v50[0]];
   v49 = 20.0;
-  v47 = [MEMORY[0x277D75418] currentDevice];
-  v48 = [v47 userInterfaceIdiom];
-  MEMORY[0x277D82BD8](v47);
-  if (v48 == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  MEMORY[0x277D82BD8](currentDevice);
+  if (userInterfaceIdiom == 1)
   {
     v49 = 30.0;
   }
 
   v15 = MEMORY[0x277CCAAD0];
-  v27 = [v51 centerXAnchor];
-  v26 = [v50[0] centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:?];
+  centerXAnchor3 = [v51 centerXAnchor];
+  centerXAnchor4 = [v50[0] centerXAnchor];
+  v25 = [centerXAnchor3 constraintEqualToAnchor:?];
   v57[0] = v25;
-  v24 = [v51 widthAnchor];
-  v23 = [v50[0] widthAnchor];
-  v22 = [v24 constraintGreaterThanOrEqualToAnchor:v53 * 2.0 constant:?];
+  widthAnchor2 = [v51 widthAnchor];
+  widthAnchor3 = [v50[0] widthAnchor];
+  v22 = [widthAnchor2 constraintGreaterThanOrEqualToAnchor:insetCopy * 2.0 constant:?];
   v57[1] = v22;
-  v21 = [v52 bottomAnchor];
-  v20 = [v50[0] bottomAnchor];
-  v19 = [v21 constraintEqualToAnchor:v54 constant:?];
+  bottomAnchor3 = [v52 bottomAnchor];
+  bottomAnchor4 = [v50[0] bottomAnchor];
+  v19 = [bottomAnchor3 constraintEqualToAnchor:offsetCopy constant:?];
   v57[2] = v19;
-  v18 = [v50[0] heightAnchor];
-  v17 = [v18 constraintLessThanOrEqualToConstant:v49];
+  heightAnchor2 = [v50[0] heightAnchor];
+  v17 = [heightAnchor2 constraintLessThanOrEqualToConstant:v49];
   v57[3] = v17;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:4];
   [v15 activateConstraints:?];
   MEMORY[0x277D82BD8](v16);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](heightAnchor2);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  MEMORY[0x277D82BD8](bottomAnchor3);
   MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
+  MEMORY[0x277D82BD8](widthAnchor3);
+  MEMORY[0x277D82BD8](widthAnchor2);
   MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](centerXAnchor4);
+  MEMORY[0x277D82BD8](centerXAnchor3);
   v28 = MEMORY[0x277D82BE0](v52);
   objc_storeStrong(v50, 0);
   objc_storeStrong(&v51, 0);
@@ -498,26 +498,26 @@
   return v28;
 }
 
-- (id)_homeScreenViewForProductType:(id)a3
+- (id)_homeScreenViewForProductType:(id)type
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKChildSetupTwoDeviceProxView *)v7 _homeScreenImageForProductType:location[0]];
-  v4 = [(AKChildSetupTwoDeviceProxView *)v7 _homeScreenViewWithImage:v5];
+  objc_storeStrong(location, type);
+  v5 = [(AKChildSetupTwoDeviceProxView *)selfCopy _homeScreenImageForProductType:location[0]];
+  v4 = [(AKChildSetupTwoDeviceProxView *)selfCopy _homeScreenViewWithImage:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)_homeScreenViewWithImage:(id)a3
+- (id)_homeScreenViewWithImage:(id)image
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   v3 = objc_alloc(MEMORY[0x277D755E8]);
   v6 = [v3 initWithImage:location[0]];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -529,13 +529,13 @@
   return v5;
 }
 
-- (id)_homeScreenImageForProductType:(id)a3
+- (id)_homeScreenImageForProductType:(id)type
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKChildSetupTwoDeviceProxView *)v10 _screenImagePrefixForProductType:location[0]];
+  objc_storeStrong(location, type);
+  v8 = [(AKChildSetupTwoDeviceProxView *)selfCopy _screenImagePrefixForProductType:location[0]];
   v4 = MEMORY[0x277D755B8];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Pair Home", v8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -548,15 +548,15 @@
   return v7;
 }
 
-- (id)_helloBackgroundForProductType:(id)a3
+- (id)_helloBackgroundForProductType:(id)type
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v5 = MEMORY[0x277D755B8];
   v4 = MEMORY[0x277CCACA8];
-  v8 = [(AKChildSetupTwoDeviceProxView *)v11 _screenImagePrefixForProductType:location[0]];
+  v8 = [(AKChildSetupTwoDeviceProxView *)selfCopy _screenImagePrefixForProductType:location[0]];
   v7 = [v4 stringWithFormat:@"%@ Pair Hello", v8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v5 imageNamed:v7 inBundle:?];
@@ -568,13 +568,13 @@
   return v9;
 }
 
-- (id)_screenImagePrefixForProductType:(id)a3
+- (id)_screenImagePrefixForProductType:(id)type
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKChildSetupTwoDeviceProxView *)v8 _deviceTypeForProductType:location[0]];
+  objc_storeStrong(location, type);
+  v6 = [(AKChildSetupTwoDeviceProxView *)selfCopy _deviceTypeForProductType:location[0]];
   v5 = 0;
   switch(v6)
   {
@@ -602,12 +602,12 @@
   return v4;
 }
 
-- (int64_t)_deviceTypeForProductType:(id)a3
+- (int64_t)_deviceTypeForProductType:(id)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (([location[0] containsString:@"iPhone"] & 1) == 0)
   {
     goto LABEL_21;

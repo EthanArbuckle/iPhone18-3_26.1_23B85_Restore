@@ -1,21 +1,21 @@
 @interface FindBaseAccount
-- (BOOL)hasSameRelevantInfoAs:(id)a3;
+- (BOOL)hasSameRelevantInfoAs:(id)as;
 - (BOOL)isValid;
 - (NSString)apsEnvironmentConstant;
-- (void)copyInfoFromAccount:(id)a3;
-- (void)setApsEnvironment:(id)a3;
+- (void)copyInfoFromAccount:(id)account;
+- (void)setApsEnvironment:(id)environment;
 @end
 
 @implementation FindBaseAccount
 
-- (void)setApsEnvironment:(id)a3
+- (void)setApsEnvironment:(id)environment
 {
-  v5 = a3;
-  objc_storeStrong(&self->_apsEnvironment, a3);
+  environmentCopy = environment;
+  objc_storeStrong(&self->_apsEnvironment, environment);
   v6 = +[FMSystemInfo sharedInstance];
-  v7 = [v6 isInternalBuild];
+  isInternalBuild = [v6 isInternalBuild];
 
-  if (v7)
+  if (isInternalBuild)
   {
     v8 = [FMPreferencesUtil stringForKey:@"ApsEnvOverride" inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
     if (v8)
@@ -35,19 +35,19 @@
 
 - (NSString)apsEnvironmentConstant
 {
-  v2 = [(FindBaseAccount *)self apsEnvironment];
-  v3 = [FMAPSHandler constantForEnvironmentString:v2];
+  apsEnvironment = [(FindBaseAccount *)self apsEnvironment];
+  v3 = [FMAPSHandler constantForEnvironmentString:apsEnvironment];
 
   return v3;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(FindBaseAccount *)self authId];
-  if (v3)
+  authId = [(FindBaseAccount *)self authId];
+  if (authId)
   {
-    v4 = [(FindBaseAccount *)self authToken];
-    v5 = v4 != 0;
+    authToken = [(FindBaseAccount *)self authToken];
+    v5 = authToken != 0;
   }
 
   else
@@ -58,25 +58,25 @@
   return v5;
 }
 
-- (BOOL)hasSameRelevantInfoAs:(id)a3
+- (BOOL)hasSameRelevantInfoAs:(id)as
 {
-  v8 = a3;
+  asCopy = as;
   v44.receiver = self;
   v44.super_class = FindBaseAccount;
-  if (![(Account *)&v44 hasSameRelevantInfoAs:v8])
+  if (![(Account *)&v44 hasSameRelevantInfoAs:asCopy])
   {
     v11 = 0;
     goto LABEL_56;
   }
 
-  v9 = v8;
-  v10 = [v9 authId];
-  if (v10 || ([(FindBaseAccount *)self authId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = asCopy;
+  authId = [v9 authId];
+  if (authId || ([(FindBaseAccount *)self authId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [v9 authId];
-    v5 = [(FindBaseAccount *)self authId];
-    v43 = v4;
-    if (([v4 isEqualToString:v5] & 1) == 0)
+    authId2 = [v9 authId];
+    authId3 = [(FindBaseAccount *)self authId];
+    v43 = authId2;
+    if (([authId2 isEqualToString:authId3] & 1) == 0)
     {
 
       v11 = 0;
@@ -91,35 +91,35 @@
     v42 = 0;
   }
 
-  v12 = [v9 authToken];
-  if (!v12)
+  authToken = [v9 authToken];
+  if (!authToken)
   {
-    v40 = [(FindBaseAccount *)self authToken];
-    if (!v40)
+    authToken2 = [(FindBaseAccount *)self authToken];
+    if (!authToken2)
     {
-      v40 = 0;
+      authToken2 = 0;
       v41 = 0;
       goto LABEL_19;
     }
   }
 
   v13 = v3;
-  v14 = [v9 authToken];
-  v15 = [(FindBaseAccount *)self authToken];
-  if ([v14 isEqualToString:v15])
+  authToken3 = [v9 authToken];
+  authToken4 = [(FindBaseAccount *)self authToken];
+  if ([authToken3 isEqualToString:authToken4])
   {
-    v36 = v14;
+    v36 = authToken3;
     v41 = 1;
     v3 = v13;
-    v6 = v15;
+    v6 = authToken4;
 LABEL_19:
-    v16 = [v9 serverHost];
-    if (v16 || ([(FindBaseAccount *)self serverHost], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+    serverHost = [v9 serverHost];
+    if (serverHost || ([(FindBaseAccount *)self serverHost], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v4 = [v9 serverHost];
-      v37 = [(FindBaseAccount *)self serverHost];
-      v38 = v4;
-      if (![v4 isEqualToString:?])
+      authId2 = [v9 serverHost];
+      serverHost2 = [(FindBaseAccount *)self serverHost];
+      v38 = authId2;
+      if (![authId2 isEqualToString:?])
       {
         v11 = 0;
         goto LABEL_44;
@@ -134,22 +134,22 @@ LABEL_19:
       v35 = 0;
     }
 
-    v39 = [v9 serverProtocolScheme];
-    if (v39 || ([(FindBaseAccount *)self serverProtocolScheme], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+    serverProtocolScheme = [v9 serverProtocolScheme];
+    if (serverProtocolScheme || ([(FindBaseAccount *)self serverProtocolScheme], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v17 = [v9 serverProtocolScheme];
-      v18 = [(FindBaseAccount *)self serverProtocolScheme];
-      v34 = v17;
-      v19 = v17;
-      v4 = v18;
-      if (![v19 isEqualToString:v18])
+      serverProtocolScheme2 = [v9 serverProtocolScheme];
+      serverProtocolScheme3 = [(FindBaseAccount *)self serverProtocolScheme];
+      v34 = serverProtocolScheme2;
+      v19 = serverProtocolScheme2;
+      authId2 = serverProtocolScheme3;
+      if (![v19 isEqualToString:serverProtocolScheme3])
       {
         v11 = 0;
 LABEL_40:
 
 LABEL_41:
-        v24 = v39;
-        if (!v39)
+        v24 = serverProtocolScheme;
+        if (!serverProtocolScheme)
         {
 
           v24 = 0;
@@ -158,7 +158,7 @@ LABEL_41:
         if (!v35)
         {
 LABEL_45:
-          if (!v16)
+          if (!serverHost)
           {
           }
 
@@ -166,7 +166,7 @@ LABEL_45:
           {
           }
 
-          if (!v12)
+          if (!authToken)
           {
           }
 
@@ -183,40 +183,40 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v31 = v16;
+      v31 = serverHost;
       v32 = v6;
       v30 = 1;
     }
 
     else
     {
-      v31 = v16;
+      v31 = serverHost;
       v32 = v6;
       v28 = 0;
       v30 = 0;
     }
 
-    v20 = [v9 apsEnvironment];
-    if (v20 || ([(FindBaseAccount *)self apsEnvironment], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    apsEnvironment = [v9 apsEnvironment];
+    if (apsEnvironment || ([(FindBaseAccount *)self apsEnvironment], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v3;
-      v21 = [v9 apsEnvironment];
-      v22 = [(FindBaseAccount *)self apsEnvironment];
-      v11 = [v21 isEqualToString:v22];
+      apsEnvironment2 = [v9 apsEnvironment];
+      apsEnvironment3 = [(FindBaseAccount *)self apsEnvironment];
+      v11 = [apsEnvironment2 isEqualToString:apsEnvironment3];
 
-      if (v20)
+      if (apsEnvironment)
       {
 
         if (!v30)
         {
           v3 = v29;
-          v16 = v31;
+          serverHost = v31;
           v6 = v32;
           goto LABEL_41;
         }
 
         v3 = v29;
-        v16 = v31;
+        serverHost = v31;
         v6 = v32;
         goto LABEL_40;
       }
@@ -233,7 +233,7 @@ LABEL_44:
       v6 = v32;
     }
 
-    v16 = v31;
+    serverHost = v31;
     if ((v30 & 1) == 0)
     {
       goto LABEL_41;
@@ -242,7 +242,7 @@ LABEL_44:
     goto LABEL_40;
   }
 
-  if (v12)
+  if (authToken)
   {
   }
 
@@ -258,7 +258,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  if (!v10)
+  if (!authId)
   {
   }
 
@@ -266,33 +266,33 @@ LABEL_56:
   return v11;
 }
 
-- (void)copyInfoFromAccount:(id)a3
+- (void)copyInfoFromAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = FindBaseAccount;
-  [(Account *)&v12 copyInfoFromAccount:v4];
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  [(Account *)&v12 copyInfoFromAccount:accountCopy];
+  if ([accountCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 username];
-    [(FindBaseAccount *)self setUsername:v6];
+    v5 = accountCopy;
+    username = [v5 username];
+    [(FindBaseAccount *)self setUsername:username];
 
-    v7 = [v5 serverHost];
-    [(FindBaseAccount *)self setServerHost:v7];
+    serverHost = [v5 serverHost];
+    [(FindBaseAccount *)self setServerHost:serverHost];
 
-    v8 = [v5 serverProtocolScheme];
-    [(FindBaseAccount *)self setServerProtocolScheme:v8];
+    serverProtocolScheme = [v5 serverProtocolScheme];
+    [(FindBaseAccount *)self setServerProtocolScheme:serverProtocolScheme];
 
-    v9 = [v5 apsEnvironment];
-    [(FindBaseAccount *)self setApsEnvironment:v9];
+    apsEnvironment = [v5 apsEnvironment];
+    [(FindBaseAccount *)self setApsEnvironment:apsEnvironment];
 
-    v10 = [v5 versionHistory];
-    [(FindBaseAccount *)self setVersionHistory:v10];
+    versionHistory = [v5 versionHistory];
+    [(FindBaseAccount *)self setVersionHistory:versionHistory];
 
-    v11 = [v5 accountAddTime];
+    accountAddTime = [v5 accountAddTime];
 
-    [(FindBaseAccount *)self setAccountAddTime:v11];
+    [(FindBaseAccount *)self setAccountAddTime:accountAddTime];
   }
 }
 

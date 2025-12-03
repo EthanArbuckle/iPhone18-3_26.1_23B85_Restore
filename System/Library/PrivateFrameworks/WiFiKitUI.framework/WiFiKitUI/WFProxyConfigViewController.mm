@@ -1,31 +1,31 @@
 @interface WFProxyConfigViewController
-- (WFProxyConfigViewController)initWithConfig:(id)a3;
-- (WFProxyConfigViewController)initWithConfig:(id)a3 appearanceProxy:(id)a4;
+- (WFProxyConfigViewController)initWithConfig:(id)config;
+- (WFProxyConfigViewController)initWithConfig:(id)config appearanceProxy:(id)proxy;
 - (WFTextFieldCell)passwordCell;
 - (WFTextFieldCell)portCell;
 - (WFTextFieldCell)serverCell;
 - (WFTextFieldCell)urlCell;
 - (WFTextFieldCell)userCell;
 - (double)_configCellLeadingInset;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_changeProxyAuthentication:(id)a3;
-- (void)_setFirstResponderAfterCell:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_changeProxyAuthentication:(id)authentication;
+- (void)_setFirstResponderAfterCell:(id)cell;
 - (void)_updateSaveEnabled;
-- (void)save:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)save:(id)save;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFProxyConfigViewController
 
-- (WFProxyConfigViewController)initWithConfig:(id)a3
+- (WFProxyConfigViewController)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = +[WFAppearanceProxy defaultAppearanceProxy];
-  v6 = [(WFProxyConfigViewController *)self initWithConfig:v4 appearanceProxy:v5];
+  v6 = [(WFProxyConfigViewController *)self initWithConfig:configCopy appearanceProxy:v5];
 
   return v6;
 }
@@ -40,89 +40,89 @@
   [(WFProxyConfigViewController *)self setTitle:v4];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:3 target:self action:sel_save_];
-  v6 = [(WFProxyConfigViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(WFProxyConfigViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(WFProxyConfigViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:0];
+  navigationItem2 = [(WFProxyConfigViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v9 = MEMORY[0x277D757B0];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v9 nibWithNibName:@"WFTextFieldCell" bundle:v10];
 
-  v12 = [(WFProxyConfigViewController *)self tableView];
-  [v12 registerNib:v11 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
+  tableView = [(WFProxyConfigViewController *)self tableView];
+  [tableView registerNib:v11 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
 
   v13 = *MEMORY[0x277D76F30];
-  v14 = [(WFProxyConfigViewController *)self tableView];
-  [v14 setRowHeight:v13];
+  tableView2 = [(WFProxyConfigViewController *)self tableView];
+  [tableView2 setRowHeight:v13];
 
-  v15 = [(WFProxyConfigViewController *)self tableView];
-  [v15 setEstimatedRowHeight:44.0];
+  tableView3 = [(WFProxyConfigViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:44.0];
 
-  v16 = [(WFProxyConfigViewController *)self tableView];
-  [v16 setEstimatedSectionHeaderHeight:0.0];
+  tableView4 = [(WFProxyConfigViewController *)self tableView];
+  [tableView4 setEstimatedSectionHeaderHeight:0.0];
 
-  v17 = [(WFProxyConfigViewController *)self tableView];
-  [v17 setEstimatedSectionFooterHeight:0.0];
+  tableView5 = [(WFProxyConfigViewController *)self tableView];
+  [tableView5 setEstimatedSectionFooterHeight:0.0];
 
   if ([MEMORY[0x277D75418] currentIsIPad])
   {
-    v18 = [(WFProxyConfigViewController *)self tableView];
-    [v18 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
+    tableView6 = [(WFProxyConfigViewController *)self tableView];
+    [tableView6 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
   }
 }
 
 - (void)_updateSaveEnabled
 {
-  v3 = [(WFProxyConfigViewController *)self modifiedConfig];
-  v4 = [(WFProxyConfigViewController *)self originalConfig];
-  v5 = [v3 isEqual:v4];
+  modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+  originalConfig = [(WFProxyConfigViewController *)self originalConfig];
+  v5 = [modifiedConfig isEqual:originalConfig];
 
   if (v5)
   {
-    v6 = 0;
+    validProxyConfiguration = 0;
   }
 
   else
   {
-    v7 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v6 = [v7 validProxyConfiguration];
+    modifiedConfig2 = [(WFProxyConfigViewController *)self modifiedConfig];
+    validProxyConfiguration = [modifiedConfig2 validProxyConfiguration];
   }
 
-  v9 = [(WFProxyConfigViewController *)self navigationItem];
-  v8 = [v9 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  navigationItem = [(WFProxyConfigViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:validProxyConfiguration];
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = [(WFProxyConfigViewController *)self saveHandler];
+  saveHandler = [(WFProxyConfigViewController *)self saveHandler];
 
-  if (v4)
+  if (saveHandler)
   {
-    v5 = [(WFProxyConfigViewController *)self saveHandler];
-    v6 = [(WFProxyConfigViewController *)self modifiedConfig];
-    (v5)[2](v5, v6);
+    saveHandler2 = [(WFProxyConfigViewController *)self saveHandler];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    (saveHandler2)[2](saveHandler2, modifiedConfig);
   }
 
   [(UIViewController *)self wf_popViewControllerAnimated:1];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(WFProxyConfigViewController *)self modifiedConfig];
-  if ([v4 httpProxyConfig] == 1)
+  modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+  if ([modifiedConfig httpProxyConfig] == 1)
   {
 
     return 2;
   }
 
-  v5 = [(WFProxyConfigViewController *)self modifiedConfig];
-  v6 = [v5 httpProxyConfig];
+  modifiedConfig2 = [(WFProxyConfigViewController *)self modifiedConfig];
+  httpProxyConfig = [modifiedConfig2 httpProxyConfig];
 
-  if (v6 == 2)
+  if (httpProxyConfig == 2)
   {
     return 2;
   }
@@ -130,23 +130,23 @@
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
-      v7 = [(WFProxyConfigViewController *)self modifiedConfig];
-      v8 = [v7 httpProxyConfig];
+      modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+      httpProxyConfig = [modifiedConfig httpProxyConfig];
 
-      v9 = [(WFProxyConfigViewController *)self modifiedConfig];
-      v10 = v9;
-      if (v8 == 1)
+      modifiedConfig2 = [(WFProxyConfigViewController *)self modifiedConfig];
+      v10 = modifiedConfig2;
+      if (httpProxyConfig == 1)
       {
-        v11 = [v9 httpProxyAuthenticationRequired];
+        httpProxyAuthenticationRequired = [modifiedConfig2 httpProxyAuthenticationRequired];
 
-        if (v11)
+        if (httpProxyAuthenticationRequired)
         {
           v12 = 5;
         }
@@ -159,7 +159,7 @@
 
       else
       {
-        v12 = [v9 httpProxyConfig] == 2;
+        v12 = [modifiedConfig2 httpProxyConfig] == 2;
       }
     }
 
@@ -177,39 +177,39 @@
   return v12;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (![v5 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
-    if ([v5 row])
+    if ([pathCopy row])
     {
-      if ([v5 row] == 1)
+      if ([pathCopy row] == 1)
       {
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v11 = [v10 localizedStringForKey:@"kWFLocSettingsProxyConfigManualTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v12 = [v9 textLabel];
-        [v12 setText:v11];
+        textLabel = [v9 textLabel];
+        [textLabel setText:v11];
 
-        v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-        v14 = [v13 httpProxyConfig] == 1;
+        modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+        v14 = [modifiedConfig httpProxyConfig] == 1;
       }
 
       else
       {
-        if ([v5 row] != 2)
+        if ([pathCopy row] != 2)
         {
           goto LABEL_30;
         }
 
         v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v21 = [v20 localizedStringForKey:@"kWFLocSettingsProxyConfigAutomaticTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v22 = [v9 textLabel];
-        [v22 setText:v21];
+        textLabel2 = [v9 textLabel];
+        [textLabel2 setText:v21];
 
-        v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-        v14 = [v13 httpProxyConfig] == 2;
+        modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+        v14 = [modifiedConfig httpProxyConfig] == 2;
       }
     }
 
@@ -217,11 +217,11 @@
     {
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"kWFLocSettingsProxyConfigOffTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v19 = [v9 textLabel];
-      [v19 setText:v18];
+      textLabel3 = [v9 textLabel];
+      [textLabel3 setText:v18];
 
-      v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-      v14 = [v13 httpProxyConfig] == 0;
+      modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+      v14 = [modifiedConfig httpProxyConfig] == 0;
     }
 
     if (v14)
@@ -238,47 +238,47 @@
     goto LABEL_20;
   }
 
-  if ([v5 section] != 1)
+  if ([pathCopy section] != 1)
   {
     goto LABEL_29;
   }
 
-  v6 = [(WFProxyConfigViewController *)self modifiedConfig];
-  v7 = [v6 httpProxyConfig];
+  modifiedConfig2 = [(WFProxyConfigViewController *)self modifiedConfig];
+  httpProxyConfig = [modifiedConfig2 httpProxyConfig];
 
-  if (v7 != 2)
+  if (httpProxyConfig != 2)
   {
-    v15 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v16 = [v15 httpProxyConfig];
+    modifiedConfig3 = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyConfig2 = [modifiedConfig3 httpProxyConfig];
 
-    if (v16 != 1)
+    if (httpProxyConfig2 != 1)
     {
       goto LABEL_29;
     }
 
-    if (![v5 row])
+    if (![pathCopy row])
     {
-      v8 = [(WFProxyConfigViewController *)self serverCell];
+      serverCell = [(WFProxyConfigViewController *)self serverCell];
       goto LABEL_22;
     }
 
-    if ([v5 row] == 1)
+    if ([pathCopy row] == 1)
     {
-      v8 = [(WFProxyConfigViewController *)self portCell];
+      serverCell = [(WFProxyConfigViewController *)self portCell];
       goto LABEL_22;
     }
 
-    if ([v5 row] != 2)
+    if ([pathCopy row] != 2)
     {
-      if ([v5 row] == 3)
+      if ([pathCopy row] == 3)
       {
-        v8 = [(WFProxyConfigViewController *)self userCell];
+        serverCell = [(WFProxyConfigViewController *)self userCell];
         goto LABEL_22;
       }
 
-      if ([v5 row] == 4)
+      if ([pathCopy row] == 4)
       {
-        v8 = [(WFProxyConfigViewController *)self passwordCell];
+        serverCell = [(WFProxyConfigViewController *)self passwordCell];
         goto LABEL_22;
       }
 
@@ -288,100 +288,100 @@
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"kWFLocSettingsProxyAuthenticationCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v26 = [v9 textLabel];
-    [v26 setText:v25];
+    textLabel4 = [v9 textLabel];
+    [textLabel4 setText:v25];
 
     v27 = objc_alloc(MEMORY[0x277D75AE8]);
-    v13 = [v27 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v28 = [(WFProxyConfigViewController *)self modifiedConfig];
-    [v13 setOn:{objc_msgSend(v28, "httpProxyAuthenticationRequired")}];
+    modifiedConfig = [v27 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    modifiedConfig4 = [(WFProxyConfigViewController *)self modifiedConfig];
+    [modifiedConfig setOn:{objc_msgSend(modifiedConfig4, "httpProxyAuthenticationRequired")}];
 
-    [v13 addTarget:self action:sel__changeProxyAuthentication_ forControlEvents:4096];
-    [v9 setAccessoryView:v13];
+    [modifiedConfig addTarget:self action:sel__changeProxyAuthentication_ forControlEvents:4096];
+    [v9 setAccessoryView:modifiedConfig];
     [v9 setSelectionStyle:0];
 LABEL_20:
 
     goto LABEL_30;
   }
 
-  if (![v5 row])
+  if (![pathCopy row])
   {
-    v8 = [(WFProxyConfigViewController *)self urlCell];
+    serverCell = [(WFProxyConfigViewController *)self urlCell];
 LABEL_22:
-    v9 = v8;
+    v9 = serverCell;
     goto LABEL_30;
   }
 
 LABEL_29:
   v9 = 0;
 LABEL_30:
-  v29 = [(WFProxyConfigViewController *)self appearanceProxy];
-  v30 = [v29 cellTextLabelFont];
+  appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+  cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-  if (v30)
+  if (cellTextLabelFont)
   {
-    v31 = [(WFProxyConfigViewController *)self appearanceProxy];
-    v32 = [v31 cellTextLabelFont];
-    v33 = [v9 textLabel];
-    [v33 setFont:v32];
+    appearanceProxy2 = [(WFProxyConfigViewController *)self appearanceProxy];
+    cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+    textLabel5 = [v9 textLabel];
+    [textLabel5 setFont:cellTextLabelFont2];
   }
 
   return v9;
 }
 
-- (void)_setFirstResponderAfterCell:(id)a3
+- (void)_setFirstResponderAfterCell:(id)cell
 {
-  v11 = a3;
-  v4 = [(WFProxyConfigViewController *)self serverCell];
+  cellCopy = cell;
+  serverCell = [(WFProxyConfigViewController *)self serverCell];
 
-  v5 = [(WFProxyConfigViewController *)self portCell];
-  v6 = v11;
-  if (v4 != v11)
+  portCell = [(WFProxyConfigViewController *)self portCell];
+  v6 = cellCopy;
+  if (serverCell != cellCopy)
   {
 
-    if (v5 == v11)
+    if (portCell == cellCopy)
     {
-      v8 = [(WFProxyConfigViewController *)self modifiedConfig];
-      v9 = [v8 httpProxyAuthenticationRequired];
+      modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+      httpProxyAuthenticationRequired = [modifiedConfig httpProxyAuthenticationRequired];
 
-      if (v9)
+      if (httpProxyAuthenticationRequired)
       {
-        v10 = [(WFProxyConfigViewController *)self userCell];
+        userCell = [(WFProxyConfigViewController *)self userCell];
 LABEL_9:
-        v5 = v10;
-        v6 = v11;
+        portCell = userCell;
+        v6 = cellCopy;
         goto LABEL_10;
       }
     }
 
     else
     {
-      v7 = [(WFProxyConfigViewController *)self userCell];
+      userCell2 = [(WFProxyConfigViewController *)self userCell];
 
-      v5 = [(WFProxyConfigViewController *)self passwordCell];
-      v6 = v11;
-      if (v7 == v11)
+      portCell = [(WFProxyConfigViewController *)self passwordCell];
+      v6 = cellCopy;
+      if (userCell2 == cellCopy)
       {
         goto LABEL_10;
       }
 
-      v6 = v11;
-      if (v5 != v11)
+      v6 = cellCopy;
+      if (portCell != cellCopy)
       {
         goto LABEL_12;
       }
     }
 
-    v10 = [(WFProxyConfigViewController *)self serverCell];
+    userCell = [(WFProxyConfigViewController *)self serverCell];
     goto LABEL_9;
   }
 
 LABEL_10:
-  if (v5)
+  if (portCell)
   {
-    [v5 becomeFirstResponder];
+    [portCell becomeFirstResponder];
 
-    v6 = v11;
+    v6 = cellCopy;
   }
 
 LABEL_12:
@@ -398,21 +398,21 @@ LABEL_12:
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsProxyServerCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFProxyConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFTextFieldCell *)v6 textField];
-    [v12 setKeyboardType:3];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setKeyboardType:3];
 
-    v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v14 = [v13 httpProxyServerAddress];
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setText:v14];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyServerAddress = [modifiedConfig httpProxyServerAddress];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setText:httpProxyServerAddress];
 
     objc_initWeak(&location, self);
     v25[0] = MEMORY[0x277D85DD0];
@@ -427,15 +427,15 @@ LABEL_12:
     v23[3] = &unk_279EC5D70;
     objc_copyWeak(&v24, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v23];
-    v16 = [(WFProxyConfigViewController *)self appearanceProxy];
-    v17 = [v16 cellTextLabelFont];
+    appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v17)
+    if (cellTextLabelFont)
     {
-      v18 = [(WFProxyConfigViewController *)self appearanceProxy];
-      v19 = [v18 cellTextLabelFont];
-      v20 = [(WFTextFieldCell *)v6 textLabel];
-      [v20 setFont:v19];
+      appearanceProxy2 = [(WFProxyConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v21 = self->_serverCell;
@@ -488,21 +488,21 @@ void __41__WFProxyConfigViewController_serverCell__block_invoke_2(uint64_t a1, v
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsProxyPortCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFProxyConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v13 = [v12 httpProxyServerPort];
-    v14 = [(WFTextFieldCell *)v6 textField];
-    [v14 setText:v13];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyServerPort = [modifiedConfig httpProxyServerPort];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:httpProxyServerPort];
 
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setKeyboardType:4];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setKeyboardType:4];
 
     objc_initWeak(&location, self);
     v25[0] = MEMORY[0x277D85DD0];
@@ -517,15 +517,15 @@ void __41__WFProxyConfigViewController_serverCell__block_invoke_2(uint64_t a1, v
     v23[3] = &unk_279EC5D70;
     objc_copyWeak(&v24, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v23];
-    v16 = [(WFProxyConfigViewController *)self appearanceProxy];
-    v17 = [v16 cellTextLabelFont];
+    appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v17)
+    if (cellTextLabelFont)
     {
-      v18 = [(WFProxyConfigViewController *)self appearanceProxy];
-      v19 = [v18 cellTextLabelFont];
-      v20 = [(WFTextFieldCell *)v6 textLabel];
-      [v20 setFont:v19];
+      appearanceProxy2 = [(WFProxyConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v21 = self->_portCell;
@@ -578,21 +578,21 @@ void __39__WFProxyConfigViewController_portCell__block_invoke_2(uint64_t a1, voi
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsProxyUsernameCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFProxyConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFTextFieldCell *)v6 textField];
-    [v12 setTextContentType:*MEMORY[0x277D77090]];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setTextContentType:*MEMORY[0x277D77090]];
 
-    v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v14 = [v13 httpProxyUsername];
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setText:v14];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyUsername = [modifiedConfig httpProxyUsername];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setText:httpProxyUsername];
 
     objc_initWeak(&location, self);
     v25[0] = MEMORY[0x277D85DD0];
@@ -607,15 +607,15 @@ void __39__WFProxyConfigViewController_portCell__block_invoke_2(uint64_t a1, voi
     v23[3] = &unk_279EC5D70;
     objc_copyWeak(&v24, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v23];
-    v16 = [(WFProxyConfigViewController *)self appearanceProxy];
-    v17 = [v16 cellTextLabelFont];
+    appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v17)
+    if (cellTextLabelFont)
     {
-      v18 = [(WFProxyConfigViewController *)self appearanceProxy];
-      v19 = [v18 cellTextLabelFont];
-      v20 = [(WFTextFieldCell *)v6 textLabel];
-      [v20 setFont:v19];
+      appearanceProxy2 = [(WFProxyConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v21 = self->_userCell;
@@ -668,24 +668,24 @@ void __39__WFProxyConfigViewController_userCell__block_invoke_2(uint64_t a1, voi
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsProxyPasswordCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFProxyConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFTextFieldCell *)v6 textField];
-    [v12 setTextContentType:*MEMORY[0x277D77030]];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setTextContentType:*MEMORY[0x277D77030]];
 
-    v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v14 = [v13 httpProxyPassword];
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setText:v14];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyPassword = [modifiedConfig httpProxyPassword];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setText:httpProxyPassword];
 
-    v16 = [(WFTextFieldCell *)v6 textField];
-    [v16 setSecureTextEntry:1];
+    textField4 = [(WFTextFieldCell *)v6 textField];
+    [textField4 setSecureTextEntry:1];
 
     objc_initWeak(&location, self);
     v26[0] = MEMORY[0x277D85DD0];
@@ -700,15 +700,15 @@ void __39__WFProxyConfigViewController_userCell__block_invoke_2(uint64_t a1, voi
     v24[3] = &unk_279EC5D70;
     objc_copyWeak(&v25, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v24];
-    v17 = [(WFProxyConfigViewController *)self appearanceProxy];
-    v18 = [v17 cellTextLabelFont];
+    appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v18)
+    if (cellTextLabelFont)
     {
-      v19 = [(WFProxyConfigViewController *)self appearanceProxy];
-      v20 = [v19 cellTextLabelFont];
-      v21 = [(WFTextFieldCell *)v6 textLabel];
-      [v21 setFont:v20];
+      appearanceProxy2 = [(WFProxyConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v22 = self->_passwordCell;
@@ -763,19 +763,19 @@ void __43__WFProxyConfigViewController_passwordCell__block_invoke_2(uint64_t a1,
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v7, 0.0, 0.0];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"kWFLocSettingsProxyURLCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v10 = [(WFTextFieldCell *)v6 label];
-    [v10 setText:v9];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v9];
 
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setKeyboardType:3];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setKeyboardType:3];
 
-    v12 = [(WFTextFieldCell *)v6 textField];
-    [v12 setTextAlignment:2];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setTextAlignment:2];
 
-    v13 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v14 = [v13 httpProxyConfigPAC];
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setText:v14];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyConfigPAC = [modifiedConfig httpProxyConfigPAC];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setText:httpProxyConfigPAC];
 
     objc_initWeak(&location, self);
     v23 = MEMORY[0x277D85DD0];
@@ -785,14 +785,14 @@ void __43__WFProxyConfigViewController_passwordCell__block_invoke_2(uint64_t a1,
     objc_copyWeak(&v27, &location);
     [(WFTextFieldCell *)v6 setTextChangeHandler:&v23];
     v16 = [(WFProxyConfigViewController *)self appearanceProxy:v23];
-    v17 = [v16 cellTextLabelFont];
+    cellTextLabelFont = [v16 cellTextLabelFont];
 
-    if (v17)
+    if (cellTextLabelFont)
     {
-      v18 = [(WFProxyConfigViewController *)self appearanceProxy];
-      v19 = [v18 cellTextLabelFont];
-      v20 = [(WFTextFieldCell *)v6 textLabel];
-      [v20 setFont:v19];
+      appearanceProxy = [(WFProxyConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v21 = self->_urlCell;
@@ -816,117 +816,117 @@ void __38__WFProxyConfigViewController_urlCell__block_invoke(uint64_t a1, void *
   [WeakRetained _updateSaveEnabled];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  if (![v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if (![pathCopy section])
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
 
-    v10 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v11 = [v10 httpProxyConfig];
+    modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyConfig = [modifiedConfig httpProxyConfig];
 
-    if (v11 == v9)
+    if (httpProxyConfig == v9)
     {
       goto LABEL_31;
     }
 
-    v12 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v13 = [v12 httpProxyConfig];
+    modifiedConfig2 = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyConfig2 = [modifiedConfig2 httpProxyConfig];
 
-    v14 = [(WFProxyConfigViewController *)self modifiedConfig];
-    v15 = [v14 httpProxyAuthenticationRequired];
+    modifiedConfig3 = [(WFProxyConfigViewController *)self modifiedConfig];
+    httpProxyAuthenticationRequired = [modifiedConfig3 httpProxyAuthenticationRequired];
 
-    v16 = [(WFProxyConfigViewController *)self modifiedConfig];
-    [v16 setHttpProxyConfig:v9];
+    modifiedConfig4 = [(WFProxyConfigViewController *)self modifiedConfig];
+    [modifiedConfig4 setHttpProxyConfig:v9];
 
-    if (v15 && v9 != 1)
+    if (httpProxyAuthenticationRequired && v9 != 1)
     {
-      v17 = [(WFProxyConfigViewController *)self modifiedConfig];
-      [v17 setHttpProxyAuthenticationRequired:0];
+      modifiedConfig5 = [(WFProxyConfigViewController *)self modifiedConfig];
+      [modifiedConfig5 setHttpProxyAuthenticationRequired:0];
     }
 
     if (v9 == 2)
     {
       v36 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-      v37 = [v6 cellForRowAtIndexPath:v36];
+      v37 = [viewCopy cellForRowAtIndexPath:v36];
       [v37 setAccessoryType:0];
 
       v38 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-      v39 = [v6 cellForRowAtIndexPath:v38];
+      v39 = [viewCopy cellForRowAtIndexPath:v38];
       [v39 setAccessoryType:0];
 
       v40 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:0];
-      v41 = [v6 cellForRowAtIndexPath:v40];
+      v41 = [viewCopy cellForRowAtIndexPath:v40];
       [v41 setAccessoryType:3];
 
-      if (v13)
+      if (httpProxyConfig2)
       {
-        if (v13 == 1)
+        if (httpProxyConfig2 == 1)
         {
-          [v6 beginUpdates];
+          [viewCopy beginUpdates];
           v42 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
           v58 = v42;
           v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
-          [v6 reloadRowsAtIndexPaths:v43 withRowAnimation:0];
+          [viewCopy reloadRowsAtIndexPaths:v43 withRowAnimation:0];
 
           v44 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:1];
           v57[0] = v44;
           v45 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
           v57[1] = v45;
           v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
-          [v6 deleteRowsAtIndexPaths:v46 withRowAnimation:0];
+          [viewCopy deleteRowsAtIndexPaths:v46 withRowAnimation:0];
 
-          if (v15)
+          if (httpProxyAuthenticationRequired)
           {
             v47 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:1];
             v56[0] = v47;
             v48 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:1];
             v56[1] = v48;
             v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:2];
-            [v6 deleteRowsAtIndexPaths:v49 withRowAnimation:0];
+            [viewCopy deleteRowsAtIndexPaths:v49 withRowAnimation:0];
           }
 
-          [v6 endUpdates];
+          [viewCopy endUpdates];
           v50 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-          [v6 reloadSections:v50 withRowAnimation:5];
+          [viewCopy reloadSections:v50 withRowAnimation:5];
         }
 
         goto LABEL_30;
       }
 
-      [v6 beginUpdates];
+      [viewCopy beginUpdates];
       v53 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v6 insertSections:v53 withRowAnimation:0];
+      [viewCopy insertSections:v53 withRowAnimation:0];
 
       v25 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
       v55 = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-      [v6 insertRowsAtIndexPaths:v26 withRowAnimation:0];
+      [viewCopy insertRowsAtIndexPaths:v26 withRowAnimation:0];
       goto LABEL_28;
     }
 
     if (v9 == 1)
     {
       v27 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-      v28 = [v6 cellForRowAtIndexPath:v27];
+      v28 = [viewCopy cellForRowAtIndexPath:v27];
       [v28 setAccessoryType:0];
 
       v29 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-      v30 = [v6 cellForRowAtIndexPath:v29];
+      v30 = [viewCopy cellForRowAtIndexPath:v29];
       [v30 setAccessoryType:3];
 
       v31 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:0];
-      v32 = [v6 cellForRowAtIndexPath:v31];
+      v32 = [viewCopy cellForRowAtIndexPath:v31];
       [v32 setAccessoryType:0];
 
-      [v6 beginUpdates];
-      if (v13)
+      [viewCopy beginUpdates];
+      if (httpProxyConfig2)
       {
-        if (v13 != 2)
+        if (httpProxyConfig2 != 2)
         {
           goto LABEL_29;
         }
@@ -934,21 +934,21 @@ void __38__WFProxyConfigViewController_urlCell__block_invoke(uint64_t a1, void *
         v33 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
         v61 = v33;
         v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-        [v6 reloadRowsAtIndexPaths:v34 withRowAnimation:0];
+        [viewCopy reloadRowsAtIndexPaths:v34 withRowAnimation:0];
 
         v25 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:1];
         v60[0] = v25;
         v26 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
         v60[1] = v26;
         v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
-        [v6 insertRowsAtIndexPaths:v35 withRowAnimation:0];
+        [viewCopy insertRowsAtIndexPaths:v35 withRowAnimation:0];
 LABEL_27:
 
         goto LABEL_28;
       }
 
       v51 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v6 insertSections:v51 withRowAnimation:0];
+      [viewCopy insertSections:v51 withRowAnimation:0];
 
       v25 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
       v59[0] = v25;
@@ -957,7 +957,7 @@ LABEL_27:
       v35 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
       v59[2] = v35;
       v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
-      [v6 insertRowsAtIndexPaths:v52 withRowAnimation:0];
+      [viewCopy insertRowsAtIndexPaths:v52 withRowAnimation:0];
     }
 
     else
@@ -970,34 +970,34 @@ LABEL_30:
       }
 
       v18 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-      v19 = [v6 cellForRowAtIndexPath:v18];
+      v19 = [viewCopy cellForRowAtIndexPath:v18];
       [v19 setAccessoryType:3];
 
       v20 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-      v21 = [v6 cellForRowAtIndexPath:v20];
+      v21 = [viewCopy cellForRowAtIndexPath:v20];
       [v21 setAccessoryType:0];
 
       v22 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:0];
-      v23 = [v6 cellForRowAtIndexPath:v22];
+      v23 = [viewCopy cellForRowAtIndexPath:v22];
       [v23 setAccessoryType:0];
 
-      [v6 beginUpdates];
+      [viewCopy beginUpdates];
       v24 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v6 deleteSections:v24 withRowAnimation:0];
+      [viewCopy deleteSections:v24 withRowAnimation:0];
 
-      if (v13 != 1)
+      if (httpProxyConfig2 != 1)
       {
-        if (v13 == 2)
+        if (httpProxyConfig2 == 2)
         {
           v25 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
           v63[0] = v25;
           v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:1];
-          [v6 deleteRowsAtIndexPaths:v26 withRowAnimation:0];
+          [viewCopy deleteRowsAtIndexPaths:v26 withRowAnimation:0];
 LABEL_28:
         }
 
 LABEL_29:
-        [v6 endUpdates];
+        [viewCopy endUpdates];
         goto LABEL_30;
       }
 
@@ -1008,13 +1008,13 @@ LABEL_29:
       v35 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
       v62[2] = v35;
       v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:3];
-      [v6 deleteRowsAtIndexPaths:v52 withRowAnimation:0];
+      [viewCopy deleteRowsAtIndexPaths:v52 withRowAnimation:0];
     }
 
     goto LABEL_27;
   }
 
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1026,9 +1026,9 @@ LABEL_31:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4 == 1 && (-[WFProxyConfigViewController modifiedConfig](self, "modifiedConfig", a3), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 httpProxyAuthenticationRequired], v4, v5))
+  if (section == 1 && (-[WFProxyConfigViewController modifiedConfig](self, "modifiedConfig", view), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 httpProxyAuthenticationRequired], v4, v5))
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"kWFLocProxyAuthenticationWarningFooter" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
@@ -1042,54 +1042,54 @@ LABEL_31:
   return v7;
 }
 
-- (void)_changeProxyAuthentication:(id)a3
+- (void)_changeProxyAuthentication:(id)authentication
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 isOn];
-  v5 = [(WFProxyConfigViewController *)self modifiedConfig];
-  v6 = v5;
-  if (v4)
+  isOn = [authentication isOn];
+  modifiedConfig = [(WFProxyConfigViewController *)self modifiedConfig];
+  v6 = modifiedConfig;
+  if (isOn)
   {
-    [v5 setHttpProxyAuthenticationRequired:1];
+    [modifiedConfig setHttpProxyAuthenticationRequired:1];
 
-    v7 = [(WFProxyConfigViewController *)self tableView];
+    tableView = [(WFProxyConfigViewController *)self tableView];
     v8 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:1];
     v15[0] = v8;
     v9 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:1];
     v15[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-    [v7 insertRowsAtIndexPaths:v10 withRowAnimation:0];
+    [tableView insertRowsAtIndexPaths:v10 withRowAnimation:0];
   }
 
   else
   {
-    [v5 setHttpProxyAuthenticationRequired:0];
+    [modifiedConfig setHttpProxyAuthenticationRequired:0];
 
-    v7 = [(WFProxyConfigViewController *)self tableView];
+    tableView = [(WFProxyConfigViewController *)self tableView];
     v8 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:1];
     v14[0] = v8;
     v9 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:1];
     v14[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-    [v7 deleteRowsAtIndexPaths:v10 withRowAnimation:0];
+    [tableView deleteRowsAtIndexPaths:v10 withRowAnimation:0];
   }
 
   [(WFProxyConfigViewController *)self _updateSaveEnabled];
-  v11 = [(WFProxyConfigViewController *)self tableView];
+  tableView2 = [(WFProxyConfigViewController *)self tableView];
   v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-  [v11 reloadSections:v12 withRowAnimation:5];
+  [tableView2 reloadSections:v12 withRowAnimation:5];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (double)_configCellLeadingInset
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -1112,24 +1112,24 @@ LABEL_31:
   return result;
 }
 
-- (WFProxyConfigViewController)initWithConfig:(id)a3 appearanceProxy:(id)a4
+- (WFProxyConfigViewController)initWithConfig:(id)config appearanceProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  proxyCopy = proxy;
   v16.receiver = self;
   v16.super_class = WFProxyConfigViewController;
-  v9 = -[WFProxyConfigViewController initWithStyle:](&v16, sel_initWithStyle_, [v8 tableViewStyle]);
+  v9 = -[WFProxyConfigViewController initWithStyle:](&v16, sel_initWithStyle_, [proxyCopy tableViewStyle]);
   v10 = v9;
-  if (v7)
+  if (configCopy)
   {
     if (v9)
     {
-      objc_storeStrong(&v9->_originalConfig, a3);
-      v11 = [v7 copy];
+      objc_storeStrong(&v9->_originalConfig, config);
+      v11 = [configCopy copy];
       modifiedConfig = v10->_modifiedConfig;
       v10->_modifiedConfig = v11;
 
-      v13 = v8;
+      v13 = proxyCopy;
       appearanceProxy = v10->_appearanceProxy;
       v10->_appearanceProxy = v13;
     }

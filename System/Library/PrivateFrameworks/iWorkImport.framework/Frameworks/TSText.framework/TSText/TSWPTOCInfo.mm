@@ -1,24 +1,24 @@
 @interface TSWPTOCInfo
-- (BOOL)p_startingTOCIsRTLForEntries:(id)a3;
+- (BOOL)p_startingTOCIsRTLForEntries:(id)entries;
 - (BOOL)textIsVertical;
 - (NSArray)visibleTOCEntries;
 - (NSSet)paragraphStylesShownInTOC;
-- (id)containedStorageFormattedUsingParagraphStyle:(id)a3;
+- (id)containedStorageFormattedUsingParagraphStyle:(id)style;
 - (id)containedStorageFormattedUsingParagraphStyles;
 - (id)partitioner;
 - (id)referencedStyles;
 - (id)textualEquivalent;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)i_setTOCEntries:(id)a3;
-- (void)i_setTOCSettings:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)loadTOCInfoMessage:(const void *)a3 unarchiver:(id)a4;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)i_setTOCEntries:(id)entries;
+- (void)i_setTOCSettings:(id)settings;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)loadTOCInfoMessage:(const void *)message unarchiver:(id)unarchiver;
 - (void)regenerateStorageContent;
 - (void)resetStorageStyles;
-- (void)saveTOCInfoMessage:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setTOCEntries:(id)a3;
-- (void)setTOCSettings:(id)a3;
+- (void)saveTOCInfoMessage:(void *)message archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setTOCEntries:(id)entries;
+- (void)setTOCSettings:(id)settings;
 @end
 
 @implementation TSWPTOCInfo
@@ -77,23 +77,23 @@
   return partitioner;
 }
 
-- (void)setTOCEntries:(id)a3
+- (void)setTOCEntries:(id)entries
 {
-  v8 = a3;
-  if ((objc_msgSend_isEqualToArray_(self->_tocEntries, v4, v8) & 1) == 0)
+  entriesCopy = entries;
+  if ((objc_msgSend_isEqualToArray_(self->_tocEntries, v4, entriesCopy) & 1) == 0)
   {
-    objc_msgSend_i_setTOCEntries_(self, v5, v8);
+    objc_msgSend_i_setTOCEntries_(self, v5, entriesCopy);
     objc_msgSend_regenerateStorageContent(self, v6, v7);
   }
 }
 
-- (void)i_setTOCEntries:(id)a3
+- (void)i_setTOCEntries:(id)entries
 {
-  v8 = a3;
-  if ((objc_msgSend_isEqualToArray_(self->_tocEntries, v5, v8) & 1) == 0)
+  entriesCopy = entries;
+  if ((objc_msgSend_isEqualToArray_(self->_tocEntries, v5, entriesCopy) & 1) == 0)
   {
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->_tocEntries, a3);
+    objc_storeStrong(&self->_tocEntries, entries);
   }
 }
 
@@ -110,23 +110,23 @@
   return v3;
 }
 
-- (void)setTOCSettings:(id)a3
+- (void)setTOCSettings:(id)settings
 {
-  v7 = a3;
-  if (self->_tocSettings != v7)
+  settingsCopy = settings;
+  if (self->_tocSettings != settingsCopy)
   {
-    objc_msgSend_i_setTOCSettings_(self, v4, v7);
+    objc_msgSend_i_setTOCSettings_(self, v4, settingsCopy);
     objc_msgSend_regenerateStorageContent(self, v5, v6);
   }
 }
 
-- (void)i_setTOCSettings:(id)a3
+- (void)i_setTOCSettings:(id)settings
 {
-  v7 = a3;
-  if (self->_tocSettings != v7)
+  settingsCopy = settings;
+  if (self->_tocSettings != settingsCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_tocSettings, a3);
+    objc_storeStrong(&self->_tocSettings, settings);
   }
 }
 
@@ -138,10 +138,10 @@
   return v6;
 }
 
-- (id)containedStorageFormattedUsingParagraphStyle:(id)a3
+- (id)containedStorageFormattedUsingParagraphStyle:(id)style
 {
-  v6 = a3;
-  if (!v6)
+  styleCopy = style;
+  if (!styleCopy)
   {
     goto LABEL_6;
   }
@@ -155,7 +155,7 @@
   {
     for (i = 0; i != v15; ++i)
     {
-      objc_msgSend_setParagraphStyle_atParIndex_undoTransaction_(v12, v4, v6, i, 0);
+      objc_msgSend_setParagraphStyle_atParIndex_undoTransaction_(v12, v4, styleCopy, i, 0);
     }
   }
 
@@ -213,9 +213,9 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)p_startingTOCIsRTLForEntries:(id)a3
+- (BOOL)p_startingTOCIsRTLForEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   objc_opt_class();
   v7 = objc_msgSend_owningAttachment(self, v5, v6);
   v8 = TSUDynamicCast();
@@ -223,7 +223,7 @@ LABEL_6:
   if (v8)
   {
     v11 = objc_msgSend_parentStorage(v8, v9, v10);
-    v14 = objc_msgSend_firstObject(v4, v12, v13);
+    v14 = objc_msgSend_firstObject(entriesCopy, v12, v13);
     v17 = v14;
     if (v11 && v14)
     {
@@ -321,7 +321,7 @@ LABEL_6:
   }
 
   objc_opt_class();
-  v194 = self;
+  selfCopy = self;
   v7 = objc_msgSend_owningAttachment(self, v5, v6);
   v8 = TSUCheckedDynamicCast();
 
@@ -338,13 +338,13 @@ LABEL_6:
 
   if (!v11 || (objc_msgSend_parentStorage(v8, v9, v10), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
-    objc_msgSend_resetStorageStyles(v194, v9, v10);
+    objc_msgSend_resetStorageStyles(selfCopy, v9, v10);
     goto LABEL_57;
   }
 
-  v185 = objc_msgSend_visibleTOCEntries(v194, v9, v10);
-  v195 = objc_msgSend_textStorage(v194, v13, v14);
-  v187 = objc_msgSend_p_startingTOCIsRTLForEntries_(v194, v15, v185);
+  v185 = objc_msgSend_visibleTOCEntries(selfCopy, v9, v10);
+  v195 = objc_msgSend_textStorage(selfCopy, v13, v14);
+  v187 = objc_msgSend_p_startingTOCIsRTLForEntries_(selfCopy, v15, v185);
   v18 = objc_msgSend_range(v195, v16, v17);
   objc_msgSend_replaceCharactersInRange_withString_undoTransaction_(v195, v19, v18, v19, &stru_28860A0F0, 0);
   v20 = MEMORY[0x277CBEB18];
@@ -375,7 +375,7 @@ LABEL_6:
           objc_msgSend_appendString_undoTransaction_(v195, v31, @"\n", 0);
         }
 
-        v33 = objc_msgSend_tocSettings(v194, v31, v32);
+        v33 = objc_msgSend_tocSettings(selfCopy, v31, v32);
         v36 = objc_msgSend_indexedStyle(v30, v34, v35);
         v38 = objc_msgSend_entryStyleForParagraphStyle_(v33, v37, v36);
 
@@ -389,7 +389,7 @@ LABEL_6:
           v49 = objc_msgSend_appendString_undoTransaction_(v195, v47, @"\t", 0);
           v51 = v50;
           v52 = [TSWPTOCPageNumberAttachment alloc];
-          v55 = objc_msgSend_context(v194, v53, v54);
+          v55 = objc_msgSend_context(selfCopy, v53, v54);
           v57 = objc_msgSend_initWithContext_(v52, v56, v55);
 
           v62 = objc_msgSend_pageNumber(v30, v58, v59);
@@ -432,10 +432,10 @@ LABEL_6:
     while (v26);
   }
 
-  objc_msgSend_setPageNumberRanges_(v194, v76, v190);
+  objc_msgSend_setPageNumberRanges_(selfCopy, v76, v190);
   if (!objc_msgSend_length(v195, v77, v78))
   {
-    v81 = objc_msgSend_tocSettings(v194, v79, v80);
+    v81 = objc_msgSend_tocSettings(selfCopy, v79, v80);
     v84 = objc_msgSend_paragraphStylesShownInTOC(v81, v82, v83);
     v87 = objc_msgSend_count(v84, v85, v86) == 0;
 
@@ -469,7 +469,7 @@ LABEL_6:
 LABEL_34:
   if (!objc_msgSend_count(obj, v79, v80))
   {
-    objc_msgSend_resetStorageStyles(v194, v107, v108);
+    objc_msgSend_resetStorageStyles(selfCopy, v107, v108);
   }
 
   if (v187 != objc_msgSend_isWritingDirectionRightToLeftForParagraphAtCharIndex_(v195, v107, 0))
@@ -484,7 +484,7 @@ LABEL_34:
   while (v113 < objc_msgSend_count(obj, v109, v110))
   {
     v117 = objc_msgSend_objectAtIndexedSubscript_(obj, v115, v113);
-    v120 = objc_msgSend_tocSettings(v194, v118, v119);
+    v120 = objc_msgSend_tocSettings(selfCopy, v118, v119);
     v123 = objc_msgSend_indexedStyle(v117, v121, v122);
     v125 = objc_msgSend_entryStyleForParagraphStyle_(v120, v124, v123);
 
@@ -562,26 +562,26 @@ LABEL_34:
 LABEL_57:
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
   objc_msgSend_willModify(self, v8, v9);
-  objc_msgSend_pushMappingContext_(v7, v10, self);
+  objc_msgSend_pushMappingContext_(mapperCopy, v10, self);
   v28.receiver = self;
   v28.super_class = TSWPTOCInfo;
-  [(TSWPShapeInfo *)&v28 adoptStylesheet:v6 withMapper:v7];
+  [(TSWPShapeInfo *)&v28 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
   v13 = objc_msgSend_tocSettings(self, v11, v12);
-  objc_msgSend_adoptStylesheet_withMapper_(v13, v14, v6, v7);
+  objc_msgSend_adoptStylesheet_withMapper_(v13, v14, stylesheetCopy, mapperCopy);
 
   v17 = objc_msgSend_tocEntries(self, v15, v16);
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = sub_276E293AC;
   v25 = &unk_27A6F5860;
-  v18 = v6;
+  v18 = stylesheetCopy;
   v26 = v18;
-  v19 = v7;
+  v19 = mapperCopy;
   v27 = v19;
   objc_msgSend_enumerateObjectsUsingBlock_(v17, v20, &v22);
 
@@ -593,8 +593,8 @@ LABEL_57:
   v3 = MEMORY[0x277D81258];
   v23.receiver = self;
   v23.super_class = TSWPTOCInfo;
-  v4 = [(TSWPTOCInfo *)&v23 referencedStyles];
-  v6 = objc_msgSend_setWithSet_(v3, v5, v4);
+  referencedStyles = [(TSWPTOCInfo *)&v23 referencedStyles];
+  v6 = objc_msgSend_setWithSet_(v3, v5, referencedStyles);
 
   v9 = objc_msgSend_tocEntries(self, v7, v8);
   v22[0] = MEMORY[0x277D85DD0];
@@ -616,21 +616,21 @@ LABEL_57:
   return v6;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[116]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[116]);
 
-  objc_msgSend_loadTOCInfoMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadTOCInfoMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadTOCInfoMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadTOCInfoMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 9))
+  unarchiverCopy = unarchiver;
+  if (*(message + 9))
   {
-    v7 = *(a3 + 9);
+    v7 = *(message + 9);
   }
 
   else
@@ -640,28 +640,28 @@ LABEL_57:
 
   v37.receiver = self;
   v37.super_class = TSWPTOCInfo;
-  [(TSWPShapeInfo *)&v37 loadFromArchive:v7 unarchiver:v6];
-  if (*(a3 + 8) >= 1)
+  [(TSWPShapeInfo *)&v37 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if (*(message + 8) >= 1)
   {
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = sub_276E299E8;
     v36[3] = &unk_27A6F4740;
     v36[4] = self;
-    v9 = v6;
+    v9 = unarchiverCopy;
     v10 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v9, v11, a3 + 24, v10, 0, v36);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v9, v11, message + 24, v10, 0, v36);
   }
 
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(message + 16) & 2) != 0)
   {
-    v20 = *(a3 + 10);
+    v20 = *(message + 10);
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = sub_276E299FC;
     v35[3] = &unk_27A6F58B0;
     v35[4] = self;
-    v21 = v6;
+    v21 = unarchiverCopy;
     v22 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v21, v23, v20, v22, 0, v35);
   }
@@ -676,7 +676,7 @@ LABEL_57:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  v24 = *(a3 + 14);
+  v24 = *(message + 14);
   if (v24 >= 1)
   {
     v25 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -697,41 +697,41 @@ LABEL_57:
     self->_pageNumberRanges = v27;
   }
 
-  self->_shouldSyncTOCSettingsWithTOCNavigator = *(a3 + 88) & ((*(a3 + 4) << 29) >> 31);
+  self->_shouldSyncTOCSettingsWithTOCNavigator = *(message + 88) & ((*(message + 4) << 29) >> 31);
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = sub_276E29A10;
   v34[3] = &unk_27A6F46E8;
   v34[4] = self;
-  objc_msgSend_addFinalizeHandler_(v6, v19, v34);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v19, v34);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276E2A168, off_2812DC408[116]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276E2A168, off_2812DC408[116]);
 
-  objc_msgSend_saveTOCInfoMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveTOCInfoMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveTOCInfoMessage:(void *)a3 archiver:(id)a4
+- (void)saveTOCInfoMessage:(void *)message archiver:(id)archiver
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = sub_276E29F90;
   v38[3] = &unk_27A6F3E30;
-  v41 = a3;
-  v7 = v6;
+  messageCopy = message;
+  v7 = archiverCopy;
   v39 = v7;
-  v40 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v38);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, message, v38);
   tocEntries = self->_tocEntries;
   if (tocEntries)
   {
-    objc_msgSend_setStrongReferenceArray_message_(v7, v9, tocEntries, a3 + 24);
+    objc_msgSend_setStrongReferenceArray_message_(v7, v9, tocEntries, message + 24);
   }
 
   v11 = objc_msgSend_tocSettings(self, v9, tocEntries);
@@ -740,18 +740,18 @@ LABEL_57:
   if (!v12)
   {
     v16 = objc_msgSend_tocSettings(self, v13, v14);
-    *(a3 + 4) |= 2u;
-    v17 = *(a3 + 10);
+    *(message + 4) |= 2u;
+    v17 = *(message + 10);
     if (!v17)
     {
-      v18 = *(a3 + 1);
+      v18 = *(message + 1);
       if (v18)
       {
         v18 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v17 = MEMORY[0x277CA3250](v18);
-      *(a3 + 10) = v17;
+      *(message + 10) = v17;
     }
 
     objc_msgSend_setStrongReference_message_(v7, v15, v16, v17);
@@ -776,33 +776,33 @@ LABEL_57:
         }
 
         objc_msgSend_rangeValue(*(*(&v34 + 1) + 8 * i), v21, v22);
-        v26 = *(a3 + 8);
+        v26 = *(message + 8);
         if (!v26)
         {
           goto LABEL_19;
         }
 
-        v27 = *(a3 + 14);
+        v27 = *(message + 14);
         v28 = *v26;
         if (v27 < *v26)
         {
-          *(a3 + 14) = v27 + 1;
+          *(message + 14) = v27 + 1;
           goto LABEL_21;
         }
 
-        if (v28 == *(a3 + 15))
+        if (v28 == *(message + 15))
         {
 LABEL_19:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 48));
-          v26 = *(a3 + 8);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((message + 48));
+          v26 = *(message + 8);
           v28 = *v26;
         }
 
         *v26 = v28 + 1;
-        v29 = MEMORY[0x277CA3230](*(a3 + 6));
-        v30 = *(a3 + 14);
-        v31 = *(a3 + 8) + 8 * v30;
-        *(a3 + 14) = v30 + 1;
+        v29 = MEMORY[0x277CA3230](*(message + 6));
+        v30 = *(message + 14);
+        v31 = *(message + 8) + 8 * v30;
+        *(message + 14) = v30 + 1;
         *(v31 + 8) = v29;
 LABEL_21:
         TSPNSRangeCopyToMessage();
@@ -815,9 +815,9 @@ LABEL_21:
   }
 
   shouldSyncTOCSettingsWithTOCNavigator = self->_shouldSyncTOCSettingsWithTOCNavigator;
-  *(a3 + 4) |= 4u;
-  *(a3 + 88) = shouldSyncTOCSettingsWithTOCNavigator;
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v33, 5, a3);
+  *(message + 4) |= 4u;
+  *(message + 88) = shouldSyncTOCSettingsWithTOCNavigator;
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v33, 5, message);
 }
 
 - (id)textualEquivalent

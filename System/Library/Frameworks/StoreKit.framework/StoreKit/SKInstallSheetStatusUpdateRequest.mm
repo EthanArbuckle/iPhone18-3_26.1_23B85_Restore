@@ -1,13 +1,13 @@
 @interface SKInstallSheetStatusUpdateRequest
-- (SKInstallSheetStatusUpdateRequest)initWithAppBundleId:(id)a3 isInstallSheetOpen:(BOOL)a4 completionHandler:(id)a5;
+- (SKInstallSheetStatusUpdateRequest)initWithAppBundleId:(id)id isInstallSheetOpen:(BOOL)open completionHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation SKInstallSheetStatusUpdateRequest
 
-- (SKInstallSheetStatusUpdateRequest)initWithAppBundleId:(id)a3 isInstallSheetOpen:(BOOL)a4 completionHandler:(id)a5
+- (SKInstallSheetStatusUpdateRequest)initWithAppBundleId:(id)id isInstallSheetOpen:(BOOL)open completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1B256D9BC();
   v9 = v8;
   if (v6)
@@ -23,12 +23,12 @@
     v10 = 0;
   }
 
-  return sub_1B2515C28(v7, v9, a4, v11, v10);
+  return sub_1B2515C28(v7, v9, open, v11, v10);
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B2515DB4();
 }
 

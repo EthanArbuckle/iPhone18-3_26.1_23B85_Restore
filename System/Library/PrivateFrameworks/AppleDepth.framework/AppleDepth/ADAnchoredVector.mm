@@ -1,15 +1,15 @@
 @interface ADAnchoredVector
-+ (id)vectorWithOrigin:(id)a1 direction:(SEL)a2;
-+ (id)vectorWithTransform:(double)a3;
-- (double)intersectWithPlane:(float32x4_t)a3 normal:;
++ (id)vectorWithOrigin:(id)origin direction:(SEL)direction;
++ (id)vectorWithTransform:(double)transform;
+- (double)intersectWithPlane:(float32x4_t)plane normal:;
 @end
 
 @implementation ADAnchoredVector
 
-- (double)intersectWithPlane:(float32x4_t)a3 normal:
+- (double)intersectWithPlane:(float32x4_t)plane normal:
 {
-  v3 = a1[2];
-  v4 = vmulq_f32(v3, a3);
+  v3 = self[2];
+  v4 = vmulq_f32(v3, plane);
   v5 = v4.f32[2] + vaddv_f32(*v4.f32);
   if (fabsf(v5) < 0.00000011921)
   {
@@ -27,8 +27,8 @@ LABEL_10:
     return 0.0;
   }
 
-  v9 = a1[1];
-  v10 = vmulq_f32(vsubq_f32(a2, v9), a3);
+  v9 = self[1];
+  v10 = vmulq_f32(vsubq_f32(a2, v9), plane);
   v11 = (v10.f32[2] + vaddv_f32(*v10.f32)) / v5;
   if (v11 < 0.0)
   {
@@ -48,15 +48,15 @@ LABEL_10:
   return result;
 }
 
-+ (id)vectorWithTransform:(double)a3
++ (id)vectorWithTransform:(double)transform
 {
   v4 = [ADAnchoredVector vectorWithOrigin:0.0 direction:0.0];
-  v5 = [v4 vectorByChangingPOV:{a1, a2, a3, a4}];
+  v5 = [v4 vectorByChangingPOV:{self, a2, transform, a4}];
 
   return v5;
 }
 
-+ (id)vectorWithOrigin:(id)a1 direction:(SEL)a2
++ (id)vectorWithOrigin:(id)origin direction:(SEL)direction
 {
   v6 = v3;
   v7 = v2;

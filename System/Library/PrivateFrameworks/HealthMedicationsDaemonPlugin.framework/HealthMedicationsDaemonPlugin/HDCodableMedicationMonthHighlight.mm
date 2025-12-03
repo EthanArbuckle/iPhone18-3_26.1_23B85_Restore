@@ -1,32 +1,32 @@
 @interface HDCodableMedicationMonthHighlight
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addDays:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDays:(id)days;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicationMonthHighlight
 
-- (void)addDays:(id)a3
+- (void)addDays:(id)days
 {
-  v4 = a3;
+  daysCopy = days;
   days = self->_days;
-  v8 = v4;
+  v8 = daysCopy;
   if (!days)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_days;
     self->_days = v6;
 
-    v4 = v8;
+    daysCopy = v8;
     days = self->_days;
   }
 
-  [(NSMutableArray *)days addObject:v4];
+  [(NSMutableArray *)days addObject:daysCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicationMonthHighlight;
   v4 = [(HDCodableMedicationMonthHighlight *)&v8 description];
-  v5 = [(HDCodableMedicationMonthHighlight *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicationMonthHighlight *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_days count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_days, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -77,18 +77,18 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"days"];
+    [dictionary setObject:v4 forKey:@"days"];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -124,29 +124,29 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HDCodableMedicationMonthHighlight *)self daysCount])
   {
-    [v8 clearDays];
-    v4 = [(HDCodableMedicationMonthHighlight *)self daysCount];
-    if (v4)
+    [toCopy clearDays];
+    daysCount = [(HDCodableMedicationMonthHighlight *)self daysCount];
+    if (daysCount)
     {
-      v5 = v4;
+      v5 = daysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableMedicationMonthHighlight *)self daysAtIndex:i];
-        [v8 addDays:v7];
+        [toCopy addDays:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -167,7 +167,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addDays:v11];
 
         ++v10;
@@ -184,13 +184,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     days = self->_days;
-    if (days | v4[1])
+    if (days | equalCopy[1])
     {
       v6 = [(NSMutableArray *)days isEqual:?];
     }
@@ -209,14 +209,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

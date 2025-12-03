@@ -1,35 +1,35 @@
 @interface SCLTimeIntervalTableViewCell
-- (SCLTimeIntervalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (SCLTimeIntervalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)constraintInterval;
 - (id)dateConverter;
 - (id)scheduleTimeFormatter;
-- (id)snapshotForPickerState:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)snapshotForPickerState:(unint64_t)state;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (id)timeInterval;
 - (unint64_t)pickerState;
-- (void)configureTimeCell:(id)a3 forRow:(unint64_t)a4;
-- (void)configureTimePickerCell:(id)a3 forRow:(unint64_t)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)timePickerCell:(id)a3 didUpdateDate:(id)a4;
+- (void)configureTimeCell:(id)cell forRow:(unint64_t)row;
+- (void)configureTimePickerCell:(id)cell forRow:(unint64_t)row;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)timePickerCell:(id)cell didUpdateDate:(id)date;
 @end
 
 @implementation SCLTimeIntervalTableViewCell
 
-- (SCLTimeIntervalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SCLTimeIntervalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v45[4] = *MEMORY[0x277D85DE8];
   v44.receiver = self;
   v44.super_class = SCLTimeIntervalTableViewCell;
-  v39 = a4;
-  v40 = a5;
-  v7 = [(PSTableCell *)&v44 initWithStyle:a3 reuseIdentifier:v39 specifier:?];
+  identifierCopy = identifier;
+  specifierCopy = specifier;
+  v7 = [(PSTableCell *)&v44 initWithStyle:style reuseIdentifier:identifierCopy specifier:?];
   if (v7)
   {
     v8 = [SCLSingleGroupTableView alloc];
-    v9 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    [v9 bounds];
+    contentView = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    [contentView bounds];
     v10 = [(SCLSingleGroupTableView *)v8 initWithFrame:?];
     tableView = v7->_tableView;
     v7->_tableView = v10;
@@ -54,29 +54,29 @@
     v17 = [(SCLTimeIntervalTableViewCell *)v7 snapshotForPickerState:0];
     [(UITableViewDiffableDataSource *)v16 applySnapshot:v17 animatingDifferences:0];
 
-    v18 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    [v18 addSubview:v7->_tableView];
+    contentView2 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    [contentView2 addSubview:v7->_tableView];
 
     v30 = MEMORY[0x277CCAAD0];
-    v38 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    v37 = [v38 topAnchor];
-    v36 = [(UITableView *)v7->_tableView topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    contentView3 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    topAnchor = [contentView3 topAnchor];
+    topAnchor2 = [(UITableView *)v7->_tableView topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v45[0] = v35;
-    v34 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    v33 = [v34 bottomAnchor];
-    v32 = [(UITableView *)v7->_tableView bottomAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    contentView4 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    bottomAnchor = [contentView4 bottomAnchor];
+    bottomAnchor2 = [(UITableView *)v7->_tableView bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v45[1] = v31;
-    v19 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    v20 = [v19 leadingAnchor];
-    v21 = [(UITableView *)v7->_tableView leadingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    contentView5 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    leadingAnchor = [contentView5 leadingAnchor];
+    leadingAnchor2 = [(UITableView *)v7->_tableView leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v45[2] = v22;
-    v23 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
-    v24 = [v23 trailingAnchor];
-    v25 = [(UITableView *)v7->_tableView trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    contentView6 = [(SCLTimeIntervalTableViewCell *)v7 contentView];
+    trailingAnchor = [contentView6 trailingAnchor];
+    trailingAnchor2 = [(UITableView *)v7->_tableView trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v45[3] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
     [v30 activateConstraints:v27];
@@ -100,111 +100,111 @@ id __72__SCLTimeIntervalTableViewCell_initWithStyle_reuseIdentifier_specifier___
   return v11;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = SCLTimeIntervalTableViewCell;
-  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:specifier];
   v4 = [(SCLTimeIntervalTableViewCell *)self snapshotForPickerState:[(SCLTimeIntervalTableViewCell *)self pickerState]];
   [v4 reloadItemsWithIdentifiers:&unk_28762D8C8];
-  v5 = [(SCLTimeIntervalTableViewCell *)self dataSource];
-  [v5 applySnapshot:v4 animatingDifferences:{-[SCLTimeIntervalTableViewCell isReloadingAnimated](self, "isReloadingAnimated")}];
+  dataSource = [(SCLTimeIntervalTableViewCell *)self dataSource];
+  [dataSource applySnapshot:v4 animatingDifferences:{-[SCLTimeIntervalTableViewCell isReloadingAnimated](self, "isReloadingAnimated")}];
 }
 
 - (id)timeInterval
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D401A8]];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier objectForKeyedSubscript:*MEMORY[0x277D401A8]];
 
   return v3;
 }
 
 - (id)constraintInterval
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellConstrainingInterval"];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellConstrainingInterval"];
 
   return v3;
 }
 
 - (unint64_t)pickerState
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellPickerState"];
-  v4 = [v3 unsignedIntegerValue];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellPickerState"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)dateConverter
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellDateConverter"];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellDateConverter"];
 
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
   dataSource = self->_dataSource;
-  v8 = a3;
-  v9 = [(UITableViewDiffableDataSource *)dataSource itemIdentifierForIndexPath:a4];
-  v10 = [v9 unsignedIntegerValue];
+  viewCopy = view;
+  v9 = [(UITableViewDiffableDataSource *)dataSource itemIdentifierForIndexPath:path];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((unsignedIntegerValue & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    v11 = [v8 dequeueReusableCellWithIdentifier:@"DatePicker"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"DatePicker"];
 
     if (!v11)
     {
       v11 = [[SCLTimePickerTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"DatePicker"];
-      v12 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-      v13 = [v12 calendar];
-      [(SCLTimePickerTableViewCell *)v11 setCalendar:v13];
+      dateConverter = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+      calendar = [dateConverter calendar];
+      [(SCLTimePickerTableViewCell *)v11 setCalendar:calendar];
 
       [(SCLTimePickerTableViewCell *)v11 setDelegate:self];
     }
 
-    [(SCLTimeIntervalTableViewCell *)self configureTimePickerCell:v11 forRow:v10];
+    [(SCLTimeIntervalTableViewCell *)self configureTimePickerCell:v11 forRow:unsignedIntegerValue];
   }
 
   else
   {
-    v11 = [v8 dequeueReusableCellWithIdentifier:@"kReuseIdentifier"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kReuseIdentifier"];
 
     if (!v11)
     {
       v11 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"kReuseIdentifier"];
     }
 
-    [(SCLTimeIntervalTableViewCell *)self configureTimeCell:v11 forRow:v10];
+    [(SCLTimeIntervalTableViewCell *)self configureTimeCell:v11 forRow:unsignedIntegerValue];
   }
 
   return v11;
 }
 
-- (void)configureTimePickerCell:(id)a3 forRow:(unint64_t)a4
+- (void)configureTimePickerCell:(id)cell forRow:(unint64_t)row
 {
-  v6 = a3;
-  v7 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-  v8 = [(SCLTimeIntervalTableViewCell *)self timeInterval];
-  v21 = [v7 canonicalDateIntervalForTimeInterval:v8];
+  cellCopy = cell;
+  dateConverter = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+  timeInterval = [(SCLTimeIntervalTableViewCell *)self timeInterval];
+  v21 = [dateConverter canonicalDateIntervalForTimeInterval:timeInterval];
 
-  v9 = [(SCLTimeIntervalTableViewCell *)self constraintInterval];
-  if (a4 == 3)
+  constraintInterval = [(SCLTimeIntervalTableViewCell *)self constraintInterval];
+  if (row == 3)
   {
-    v10 = [v21 endDate];
-    if (v9)
+    endDate = [v21 endDate];
+    if (constraintInterval)
     {
-      v15 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-      v16 = [v15 calendar];
+      dateConverter2 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+      calendar = [dateConverter2 calendar];
 
-      v17 = [v21 startDate];
-      v13 = [v16 dateByAddingUnit:64 value:1 toDate:v17 options:0];
+      startDate = [v21 startDate];
+      startDate2 = [calendar dateByAddingUnit:64 value:1 toDate:startDate options:0];
 
-      v18 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-      v19 = [v18 canonicalDateIntervalForTimeInterval:v9];
-      v14 = [v19 endDate];
+      dateConverter3 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+      v19 = [dateConverter3 canonicalDateIntervalForTimeInterval:constraintInterval];
+      endDate2 = [v19 endDate];
 
       goto LABEL_9;
     }
@@ -212,68 +212,68 @@ id __72__SCLTimeIntervalTableViewCell_initWithStyle_reuseIdentifier_specifier___
 
   else
   {
-    if (a4 != 1)
+    if (row != 1)
     {
-      v14 = 0;
-      v13 = 0;
-      v10 = 0;
+      endDate2 = 0;
+      startDate2 = 0;
+      endDate = 0;
       goto LABEL_9;
     }
 
-    v10 = [v21 startDate];
-    if (v9)
+    endDate = [v21 startDate];
+    if (constraintInterval)
     {
-      v11 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-      v12 = [v11 canonicalDateIntervalForTimeInterval:v9];
-      v13 = [v12 startDate];
+      dateConverter4 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+      v12 = [dateConverter4 canonicalDateIntervalForTimeInterval:constraintInterval];
+      startDate2 = [v12 startDate];
 
-      v14 = [v21 endDate];
+      endDate2 = [v21 endDate];
       goto LABEL_9;
     }
   }
 
-  v14 = 0;
-  v13 = 0;
+  endDate2 = 0;
+  startDate2 = 0;
 LABEL_9:
-  v20 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v13 endDate:v14];
-  [v6 setConstraintInterval:v20];
+  v20 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate2 endDate:endDate2];
+  [cellCopy setConstraintInterval:v20];
 
-  [v6 setSelectedDate:v10];
+  [cellCopy setSelectedDate:endDate];
 }
 
-- (void)configureTimeCell:(id)a3 forRow:(unint64_t)a4
+- (void)configureTimeCell:(id)cell forRow:(unint64_t)row
 {
-  v19 = a3;
+  cellCopy = cell;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (a4)
+  if (row)
   {
     v8 = [v6 localizedStringForKey:@"REPEATED_SCHEDULE_TO_TIME_TITLE" value:&stru_28762AB68 table:@"SchoolTimeSettings"];
-    v9 = [(SCLTimeIntervalTableViewCell *)self scheduleTimeFormatter];
-    v10 = [(SCLTimeIntervalTableViewCell *)self timeInterval];
-    v11 = [v10 endTime];
-    v12 = [v9 stringForObjectValue:v11];
+    scheduleTimeFormatter = [(SCLTimeIntervalTableViewCell *)self scheduleTimeFormatter];
+    timeInterval = [(SCLTimeIntervalTableViewCell *)self timeInterval];
+    endTime = [timeInterval endTime];
+    v12 = [scheduleTimeFormatter stringForObjectValue:endTime];
     v13 = 2;
   }
 
   else
   {
     v8 = [v6 localizedStringForKey:@"REPEATED_SCHEDULE_FROM_TIME_TITLE" value:&stru_28762AB68 table:@"SchoolTimeSettings"];
-    v9 = [(SCLTimeIntervalTableViewCell *)self scheduleTimeFormatter];
-    v10 = [(SCLTimeIntervalTableViewCell *)self timeInterval];
-    v11 = [v10 startTime];
-    v12 = [v9 stringForObjectValue:v11];
+    scheduleTimeFormatter = [(SCLTimeIntervalTableViewCell *)self scheduleTimeFormatter];
+    timeInterval = [(SCLTimeIntervalTableViewCell *)self timeInterval];
+    endTime = [timeInterval startTime];
+    v12 = [scheduleTimeFormatter stringForObjectValue:endTime];
     v13 = 1;
   }
 
-  v14 = [(SCLTimeIntervalTableViewCell *)self pickerState];
-  v15 = [v19 textLabel];
-  [v15 setText:v8];
+  pickerState = [(SCLTimeIntervalTableViewCell *)self pickerState];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v8];
 
-  v16 = [v19 detailTextLabel];
-  [v16 setText:v12];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:v12];
 
-  if (v14 == v13)
+  if (pickerState == v13)
   {
     [MEMORY[0x277D75348] systemOrangeColor];
   }
@@ -283,17 +283,17 @@ LABEL_9:
     [MEMORY[0x277D75348] labelColor];
   }
   v17 = ;
-  v18 = [v19 detailTextLabel];
-  [v18 setTextColor:v17];
+  detailTextLabel2 = [cellCopy detailTextLabel];
+  [detailTextLabel2 setTextColor:v17];
 }
 
-- (id)snapshotForPickerState:(unint64_t)a3
+- (id)snapshotForPickerState:(unint64_t)state
 {
   v4 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v4 appendSectionsWithIdentifiers:&unk_28762D8E0];
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    [v4 appendItemsWithIdentifiers:qword_279B6F048[a3]];
+    [v4 appendItemsWithIdentifiers:qword_279B6F048[state]];
   }
 
   return v4;
@@ -301,16 +301,16 @@ LABEL_9:
 
 - (id)scheduleTimeFormatter
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 propertyForKey:@"SCLTimeIntervalTableViewCellScheduleTimeFormatter"];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier propertyForKey:@"SCLTimeIntervalTableViewCellScheduleTimeFormatter"];
 
   return v3;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   if (([v6 unsignedIntegerValue] & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v7 = 0;
@@ -318,20 +318,20 @@ LABEL_9:
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v13 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v13 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [v13 unsignedIntegerValue];
-  if ([(SCLTimeIntervalTableViewCell *)self pickerState]== 2 && v7 == 2)
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
+  if ([(SCLTimeIntervalTableViewCell *)self pickerState]== 2 && unsignedIntegerValue == 2)
   {
     v8 = 0;
   }
@@ -339,17 +339,17 @@ LABEL_9:
   else
   {
     v9 = [(SCLTimeIntervalTableViewCell *)self pickerState]== 1;
-    if (v7 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v7 == 0;
+      v10 = unsignedIntegerValue == 0;
     }
 
-    if (v9 && v7 == 0)
+    if (v9 && unsignedIntegerValue == 0)
     {
       v8 = 0;
     }
@@ -360,8 +360,8 @@ LABEL_9:
     }
   }
 
-  v11 = [(PSTableCell *)self specifier];
-  v12 = [v11 objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellPickerStateHandler"];
+  specifier = [(PSTableCell *)self specifier];
+  v12 = [specifier objectForKeyedSubscript:@"SCLTimeIntervalTableViewCellPickerStateHandler"];
 
   if (v12)
   {
@@ -369,55 +369,55 @@ LABEL_9:
   }
 }
 
-- (void)timePickerCell:(id)a3 didUpdateDate:(id)a4
+- (void)timePickerCell:(id)cell didUpdateDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCLTimeIntervalTableViewCell *)self tableView];
-  v25 = [v8 indexPathForCell:v7];
+  dateCopy = date;
+  cellCopy = cell;
+  tableView = [(SCLTimeIntervalTableViewCell *)self tableView];
+  v25 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(SCLTimeIntervalTableViewCell *)self dataSource];
-  v10 = [v9 itemIdentifierForIndexPath:v25];
-  v11 = [v10 unsignedIntegerValue];
+  dataSource = [(SCLTimeIntervalTableViewCell *)self dataSource];
+  v10 = [dataSource itemIdentifierForIndexPath:v25];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [(SCLTimeIntervalTableViewCell *)self dateConverter];
-  v13 = [v12 scheduleTimeWithDate:v6];
+  dateConverter = [(SCLTimeIntervalTableViewCell *)self dateConverter];
+  v13 = [dateConverter scheduleTimeWithDate:dateCopy];
 
-  v14 = [(SCLTimeIntervalTableViewCell *)self timeInterval];
-  if (v11 == 3)
+  timeInterval = [(SCLTimeIntervalTableViewCell *)self timeInterval];
+  if (unsignedIntegerValue == 3)
   {
     v20 = objc_alloc(MEMORY[0x277D4B778]);
-    v16 = [v14 startTime];
+    startTime = [timeInterval startTime];
     v17 = v20;
-    v18 = v16;
+    v18 = startTime;
     v19 = v13;
   }
 
   else
   {
-    if (v11 != 1)
+    if (unsignedIntegerValue != 1)
     {
       goto LABEL_6;
     }
 
     v15 = objc_alloc(MEMORY[0x277D4B778]);
-    v16 = [v14 endTime];
+    startTime = [timeInterval endTime];
     v17 = v15;
     v18 = v13;
-    v19 = v16;
+    v19 = startTime;
   }
 
   v21 = [v17 initWithStartTime:v18 endTime:v19];
 
-  v14 = v21;
+  timeInterval = v21;
 LABEL_6:
-  v22 = [(PSTableCell *)self specifier];
-  v23 = [v22 hasValidSetter];
+  specifier = [(PSTableCell *)self specifier];
+  hasValidSetter = [specifier hasValidSetter];
 
-  if (v23)
+  if (hasValidSetter)
   {
-    v24 = [(PSTableCell *)self specifier];
-    [v24 performSetterWithValue:v14];
+    specifier2 = [(PSTableCell *)self specifier];
+    [specifier2 performSetterWithValue:timeInterval];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface NSNotificationCenter
 + (id)uikitInternalCenter;
-- (void)_uiRemoveObserver:(void *)a3 names:;
+- (void)_uiRemoveObserver:(void *)observer names:;
 @end
 
 @implementation NSNotificationCenter
@@ -32,19 +32,19 @@ void __51__NSNotificationCenter_UIKitAdditions__uikitCenter__block_invoke()
   qword_1ED49FFE8 = v0;
 }
 
-- (void)_uiRemoveObserver:(void *)a3 names:
+- (void)_uiRemoveObserver:(void *)observer names:
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (self)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [observerCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -59,7 +59,7 @@ void __51__NSNotificationCenter_UIKitAdditions__uikitCenter__block_invoke()
             objc_enumerationMutation(v7);
           }
 
-          [a1 removeObserver:v5 name:*(*(&v12 + 1) + 8 * v11++) object:0];
+          [self removeObserver:v5 name:*(*(&v12 + 1) + 8 * v11++) object:0];
         }
 
         while (v9 != v11);

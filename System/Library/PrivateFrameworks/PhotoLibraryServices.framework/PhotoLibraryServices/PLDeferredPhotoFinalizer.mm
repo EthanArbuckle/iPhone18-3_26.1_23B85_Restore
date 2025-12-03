@@ -1,54 +1,54 @@
 @interface PLDeferredPhotoFinalizer
-+ (BOOL)errorIsRecoverable:(id)a3;
-- (BOOL)_assetNeedsFinalization:(id)a3 isRender:(BOOL)a4;
-- (BOOL)isRenderFromMetadata:(id)a3;
-- (id)_createAssetAdjustmentsForAsset:(id)a3 error:(id *)a4;
-- (id)_imageConversionOptionsForAsset:(id)a3 adjustments:(id)a4 isBackgroundPriority:(BOOL)a5 reason:(id)a6;
-- (id)initForUseCase:(int64_t)a3;
-- (id)requestFrameDropRecoveryForAsset:(id)a3 completionHandler:(id)a4;
-- (id)thumbnailDimensionsForFinalizationRequestsForAsset:(id)a3;
-- (int64_t)_requestFrameDropRecoveryForAssetURL:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (void)_callCompletionHandlersForPhotoProxy:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)_copyFrameRecoveredVideoComplementToFinalSlot:(id)a3 libraryServicesManager:(id)a4 resultURL:(id)a5 completionHandler:(id)a6;
-- (void)_copyOriginalVideoComplementToDiagnosticPath:(id)a3;
-- (void)_createTTRForError:(id)a3 assetDescription:(id)a4 asset:(id)a5 isCorruptImageError:(BOOL)a6 finalizedPhotoData:(id)a7 finalPhotoMetadata:(id)a8;
-- (void)_prepareFinalizedAssetForSemanticDevelopment:(id)a3 finalizedPhotoData:(id)a4;
-- (void)_promoteProxyAndRecoverErrors:(id)a3 libraryServicesManager:(id)a4 inError:(id)a5 completionHandler:(id)a6;
-- (void)_repushOriginalVideoComplementIfNeeded:(id)a3;
-- (void)_setupMediaConversionSourceCollections:(id)a3 destinationCollection:(id)a4 forAsset:(id)a5;
-- (void)_transaction_fixVideoDurationIfNeededWithLibrary:(id)a3 asset:(id)a4;
-- (void)_transitionDeferredProcessingNeededToNextStateForAsset:(id)a3 originalHeight:(int64_t)a4 originalWidth:(int64_t)a5;
-- (void)_writeDebugFileFromProxyMetadata:(id)a3 withPath:(id)a4;
++ (BOOL)errorIsRecoverable:(id)recoverable;
+- (BOOL)_assetNeedsFinalization:(id)finalization isRender:(BOOL)render;
+- (BOOL)isRenderFromMetadata:(id)metadata;
+- (id)_createAssetAdjustmentsForAsset:(id)asset error:(id *)error;
+- (id)_imageConversionOptionsForAsset:(id)asset adjustments:(id)adjustments isBackgroundPriority:(BOOL)priority reason:(id)reason;
+- (id)initForUseCase:(int64_t)case;
+- (id)requestFrameDropRecoveryForAsset:(id)asset completionHandler:(id)handler;
+- (id)thumbnailDimensionsForFinalizationRequestsForAsset:(id)asset;
+- (int64_t)_requestFrameDropRecoveryForAssetURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (void)_callCompletionHandlersForPhotoProxy:(id)proxy success:(BOOL)success error:(id)error;
+- (void)_copyFrameRecoveredVideoComplementToFinalSlot:(id)slot libraryServicesManager:(id)manager resultURL:(id)l completionHandler:(id)handler;
+- (void)_copyOriginalVideoComplementToDiagnosticPath:(id)path;
+- (void)_createTTRForError:(id)error assetDescription:(id)description asset:(id)asset isCorruptImageError:(BOOL)imageError finalizedPhotoData:(id)data finalPhotoMetadata:(id)metadata;
+- (void)_prepareFinalizedAssetForSemanticDevelopment:(id)development finalizedPhotoData:(id)data;
+- (void)_promoteProxyAndRecoverErrors:(id)errors libraryServicesManager:(id)manager inError:(id)error completionHandler:(id)handler;
+- (void)_repushOriginalVideoComplementIfNeeded:(id)needed;
+- (void)_setupMediaConversionSourceCollections:(id)collections destinationCollection:(id)collection forAsset:(id)asset;
+- (void)_transaction_fixVideoDurationIfNeededWithLibrary:(id)library asset:(id)asset;
+- (void)_transitionDeferredProcessingNeededToNextStateForAsset:(id)asset originalHeight:(int64_t)height originalWidth:(int64_t)width;
+- (void)_writeDebugFileFromProxyMetadata:(id)metadata withPath:(id)path;
 - (void)cancelOutstandingFrameDropRecoveryRequests;
-- (void)deleteIntermediatesExcludingDeferredIdentifierRequestIdentifiers:(id)a3 withCompletionHandler:(id)a4;
-- (void)performSemanticEnhanceForAsset:(id)a3 isBackgroundPriority:(BOOL)a4 reason:(id)a5 completionHandler:(id)a6;
-- (void)processor:(id)a3 didFinishProcessingPhotoProxy:(id)a4 finalPhoto:(id)a5 error:(id)a6;
-- (void)requestFinalizationOfAsset:(id)a3 isBackgroundPriority:(BOOL)a4 reason:(id)a5 clientBundleIdentifier:(id)a6 completionHandler:(id)a7;
+- (void)deleteIntermediatesExcludingDeferredIdentifierRequestIdentifiers:(id)identifiers withCompletionHandler:(id)handler;
+- (void)performSemanticEnhanceForAsset:(id)asset isBackgroundPriority:(BOOL)priority reason:(id)reason completionHandler:(id)handler;
+- (void)processor:(id)processor didFinishProcessingPhotoProxy:(id)proxy finalPhoto:(id)photo error:(id)error;
+- (void)requestFinalizationOfAsset:(id)asset isBackgroundPriority:(BOOL)priority reason:(id)reason clientBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation PLDeferredPhotoFinalizer
 
 - (void)cancelOutstandingFrameDropRecoveryRequests
 {
-  v2 = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
-  [v2 cancelAllRequests];
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
+  [sharedAnalysisService cancelAllRequests];
 }
 
-- (void)_copyOriginalVideoComplementToDiagnosticPath:(id)a3
+- (void)_copyOriginalVideoComplementToDiagnosticPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 pathForDeferredVideoComplementFile];
-  v6 = [v3 pathForOriginalVideoComplementDiagnosticFile];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathForDeferredVideoComplementFile = [pathCopy pathForDeferredVideoComplementFile];
+  pathForOriginalVideoComplementDiagnosticFile = [pathCopy pathForOriginalVideoComplementDiagnosticFile];
   v14 = 0;
-  v7 = [v4 copyItemAtPath:v5 toPath:v6 error:&v14];
+  v7 = [defaultManager copyItemAtPath:pathForDeferredVideoComplementFile toPath:pathForOriginalVideoComplementDiagnosticFile error:&v14];
   v8 = v14;
 
   if ((v7 & 1) == 0)
   {
-    v9 = PLDeferredProcessingGetLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    pathForOriginalVideoComplementDiagnosticFile2 = PLDeferredProcessingGetLog();
+    if (!os_log_type_enabled(pathForOriginalVideoComplementDiagnosticFile2, OS_LOG_TYPE_ERROR))
     {
 LABEL_7:
 
@@ -58,7 +58,7 @@ LABEL_7:
     *buf = 138412290;
     v16 = v8;
     v11 = "[FDR] Unable to copy original video complement file to diagnostic path with error: %@";
-    v10 = v9;
+    v10 = pathForOriginalVideoComplementDiagnosticFile2;
     v12 = OS_LOG_TYPE_ERROR;
     v13 = 12;
 LABEL_6:
@@ -68,9 +68,9 @@ LABEL_6:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 pathForOriginalVideoComplementDiagnosticFile];
+    pathForOriginalVideoComplementDiagnosticFile2 = [pathCopy pathForOriginalVideoComplementDiagnosticFile];
     *buf = 138412546;
-    v16 = v9;
+    v16 = pathForOriginalVideoComplementDiagnosticFile2;
     v17 = 2112;
     v18 = @"PLFrameDropRecoverySaveOriginalVideoComplement";
     v10 = MEMORY[0x1E69E9C10];
@@ -83,16 +83,16 @@ LABEL_6:
 LABEL_8:
 }
 
-- (int64_t)_requestFrameDropRecoveryForAssetURL:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int64_t)_requestFrameDropRecoveryForAssetURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass() sharedAnalysisService];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 requestFRCForAssetURL:v9 withOptions:v10 progressHandler:v11 andCompletionHandler:v12];
+    v14 = [sharedAnalysisService requestFRCForAssetURL:lCopy withOptions:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   }
 
   else
@@ -103,30 +103,30 @@ LABEL_8:
   return v14;
 }
 
-- (void)_repushOriginalVideoComplementIfNeeded:(id)a3
+- (void)_repushOriginalVideoComplementIfNeeded:(id)needed
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 master];
+  neededCopy = needed;
+  master = [neededCopy master];
 
-  if (v4)
+  if (master)
   {
     v5 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v3 master];
-      v7 = [v3 uuid];
+      master2 = [neededCopy master];
+      uuid = [neededCopy uuid];
       v10 = 138543618;
-      v11 = v6;
+      v11 = master2;
       v12 = 2114;
-      v13 = v7;
+      v13 = uuid;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "[FDR] Marking existing master %{public}@ for asset %{public}@ as not pushed to repush master resource to CPL", &v10, 0x16u);
     }
 
-    v8 = [v3 master];
-    [v8 setCloudLocalState:0];
+    master3 = [neededCopy master];
+    [master3 setCloudLocalState:0];
 
-    v9 = [v3 masterResourceForCPLType:18];
+    v9 = [neededCopy masterResourceForCPLType:18];
     if ([v9 cloudLocalState])
     {
       [v9 setCloudLocalState:0];
@@ -134,14 +134,14 @@ LABEL_8:
   }
 }
 
-- (void)_copyFrameRecoveredVideoComplementToFinalSlot:(id)a3 libraryServicesManager:(id)a4 resultURL:(id)a5 completionHandler:(id)a6
+- (void)_copyFrameRecoveredVideoComplementToFinalSlot:(id)slot libraryServicesManager:(id)manager resultURL:(id)l completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 databaseContext];
-  v15 = [v14 newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer _copyFrameRecoveredVideoComplementToFinalSlot:libraryServicesManager:resultURL:completionHandler:]"];
+  slotCopy = slot;
+  managerCopy = manager;
+  lCopy = l;
+  handlerCopy = handler;
+  databaseContext = [managerCopy databaseContext];
+  v15 = [databaseContext newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer _copyFrameRecoveredVideoComplementToFinalSlot:libraryServicesManager:resultURL:completionHandler:]"];
 
   v25 = 0;
   v26 = &v25;
@@ -155,14 +155,14 @@ LABEL_8:
   v19[3] = &unk_1E75780D8;
   v16 = v15;
   v20 = v16;
-  v17 = v10;
+  v17 = slotCopy;
   v21 = v17;
-  v18 = v12;
-  v23 = self;
+  v18 = lCopy;
+  selfCopy = self;
   v24 = &v25;
   v22 = v18;
   [v16 performTransactionAndWait:v19];
-  v13[2](v13, v26[5]);
+  handlerCopy[2](handlerCopy, v26[5]);
 
   _Block_object_dispose(&v25, 8);
 }
@@ -294,20 +294,20 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_promoteProxyAndRecoverErrors:(id)a3 libraryServicesManager:(id)a4 inError:(id)a5 completionHandler:(id)a6
+- (void)_promoteProxyAndRecoverErrors:(id)errors libraryServicesManager:(id)manager inError:(id)error completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorsCopy = errors;
+  managerCopy = manager;
+  errorCopy = error;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__33087;
   v29 = __Block_byref_object_dispose__33088;
   v30 = 0;
-  v14 = [v11 databaseContext];
-  v15 = [v14 newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer _promoteProxyAndRecoverErrors:libraryServicesManager:inError:completionHandler:]"];
+  databaseContext = [managerCopy databaseContext];
+  v15 = [databaseContext newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer _promoteProxyAndRecoverErrors:libraryServicesManager:inError:completionHandler:]"];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -315,14 +315,14 @@ LABEL_18:
   v19[3] = &unk_1E75780D8;
   v16 = v15;
   v20 = v16;
-  v17 = v10;
+  v17 = errorsCopy;
   v24 = &v25;
   v21 = v17;
-  v22 = self;
-  v18 = v12;
+  selfCopy = self;
+  v18 = errorCopy;
   v23 = v18;
   [v16 performTransactionAndWait:v19];
-  v13[2](v13, v26[5]);
+  handlerCopy[2](handlerCopy, v26[5]);
 
   _Block_object_dispose(&v25, 8);
 }
@@ -402,11 +402,11 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
   }
 }
 
-- (void)_transaction_fixVideoDurationIfNeededWithLibrary:(id)a3 asset:(id)a4
+- (void)_transaction_fixVideoDurationIfNeededWithLibrary:(id)library asset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 videoCpDurationValue])
+  libraryCopy = library;
+  assetCopy = asset;
+  if (![assetCopy videoCpDurationValue])
   {
     v7 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -416,12 +416,12 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
     }
 
     v8 = objc_alloc(MEMORY[0x1E69C0718]);
-    v9 = [v6 fileURLForOriginalVideoComplement];
-    v10 = [v5 libraryBundle];
-    v11 = [v10 timeZoneLookup];
-    v12 = [v8 initWithAVURL:v9 timeZoneLookup:v11];
+    fileURLForOriginalVideoComplement = [assetCopy fileURLForOriginalVideoComplement];
+    libraryBundle = [libraryCopy libraryBundle];
+    timeZoneLookup = [libraryBundle timeZoneLookup];
+    v12 = [v8 initWithAVURL:fileURLForOriginalVideoComplement timeZoneLookup:timeZoneLookup];
 
-    v13 = [v12 livePhotoPairingIdentifier];
+    livePhotoPairingIdentifier = [v12 livePhotoPairingIdentifier];
     if (v12)
     {
       [v12 duration];
@@ -436,20 +436,20 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
       memset(v14, 0, sizeof(v14));
     }
 
-    [v6 updatePhotoIrisMetadataWithMediaGroupUUID:v13 videoDuration:buf stillDisplayTime:v14];
+    [assetCopy updatePhotoIrisMetadataWithMediaGroupUUID:livePhotoPairingIdentifier videoDuration:buf stillDisplayTime:v14];
 
-    if ([v6 canPlayPhotoIris])
+    if ([assetCopy canPlayPhotoIris])
     {
-      [v6 setPlaybackStyle:3];
+      [assetCopy setPlaybackStyle:3];
     }
   }
 }
 
-- (id)requestFrameDropRecoveryForAsset:(id)a3 completionHandler:(id)a4
+- (id)requestFrameDropRecoveryForAsset:(id)asset completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v28 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   val = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
   objc_initWeak(&location, self);
   v43[0] = MEMORY[0x1E69E9820];
@@ -458,11 +458,11 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
   v43[3] = &unk_1E75788C0;
   objc_copyWeak(&v44, &location);
   [val setCancellationHandler:v43];
-  v6 = [v29 uuid];
-  v7 = [v29 uuidDescription];
-  v8 = [v29 objectID];
-  v9 = [v29 photoLibrary];
-  v10 = [v9 libraryServicesManager];
+  uuid = [assetCopy uuid];
+  uuidDescription = [assetCopy uuidDescription];
+  objectID = [assetCopy objectID];
+  photoLibrary = [assetCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
 
   v11 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -470,7 +470,7 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
     qos_class_self();
     v12 = PLShortStringFromQoSClass();
     *buf = 138543618;
-    v47 = v7;
+    v47 = uuidDescription;
     v48 = 2114;
     v49 = v12;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[FDR] Requesting frame drop recovery for asset %{public}@, QoS: %{public}@", buf, 0x16u);
@@ -484,13 +484,13 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 138543362;
-    v47 = v6;
+    v47 = uuid;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "requestFrameDropRecoveryForAsset", "uuid: %{public}@", buf, 0xCu);
   }
 
   v17 = MEMORY[0x1E695DFF8];
-  v18 = [v29 pathForDeferredVideoComplementFile];
-  v19 = [v17 fileURLWithPath:v18];
+  pathForDeferredVideoComplementFile = [assetCopy pathForDeferredVideoComplementFile];
+  v19 = [v17 fileURLWithPath:pathForDeferredVideoComplementFile];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionHandler___block_invoke_266;
@@ -500,22 +500,22 @@ void __107__PLDeferredPhotoFinalizer__promoteProxyAndRecoverErrors_libraryServic
   v31[1] = 3221225472;
   v31[2] = __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionHandler___block_invoke_268;
   v31[3] = &unk_1E756AF08;
-  v20 = v7;
+  v20 = uuidDescription;
   v32 = v20;
   v21 = v16;
   v33 = v21;
   v39 = v14;
-  v22 = v6;
+  v22 = uuid;
   v34 = v22;
-  v35 = self;
-  v23 = self;
-  v24 = v8;
+  selfCopy = self;
+  selfCopy2 = self;
+  v24 = objectID;
   v36 = v24;
-  v25 = v10;
+  v25 = libraryServicesManager;
   v37 = v25;
-  v26 = v28;
+  v26 = handlerCopy;
   v38 = v26;
-  [(PLDeferredPhotoFinalizer *)v23 _requestFrameDropRecoveryForAssetURL:v19 withOptions:0 progressHandler:v40 andCompletionHandler:v31];
+  [(PLDeferredPhotoFinalizer *)selfCopy2 _requestFrameDropRecoveryForAssetURL:v19 withOptions:0 progressHandler:v40 andCompletionHandler:v31];
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&from);
@@ -601,30 +601,30 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   }
 }
 
-- (void)_prepareFinalizedAssetForSemanticDevelopment:(id)a3 finalizedPhotoData:(id)a4
+- (void)_prepareFinalizedAssetForSemanticDevelopment:(id)development finalizedPhotoData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  developmentCopy = development;
+  dataCopy = data;
   v7 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 uuidDescription];
+    uuidDescription = [developmentCopy uuidDescription];
     *buf = 138543362;
-    v22 = v8;
+    v22 = uuidDescription;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "[SemDev] Transferring finalized DF asset %{public}@ to SemDev proxy slot", buf, 0xCu);
   }
 
-  v9 = [v5 fileURLForCurrentDeferredProcessingPreviewFile];
-  [v5 setDeferredProcessingNeeded:10];
-  v10 = [v5 fileURLForCurrentDeferredProcessingPreviewFile];
-  if ([v9 isEqual:v10])
+  fileURLForCurrentDeferredProcessingPreviewFile = [developmentCopy fileURLForCurrentDeferredProcessingPreviewFile];
+  [developmentCopy setDeferredProcessingNeeded:10];
+  fileURLForCurrentDeferredProcessingPreviewFile2 = [developmentCopy fileURLForCurrentDeferredProcessingPreviewFile];
+  if ([fileURLForCurrentDeferredProcessingPreviewFile isEqual:fileURLForCurrentDeferredProcessingPreviewFile2])
   {
     v11 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v10;
+      v22 = fileURLForCurrentDeferredProcessingPreviewFile2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[SemDev] already transferred proxy to semdev url: :%@, skipping copy", buf, 0xCu);
     }
   }
@@ -632,25 +632,25 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   else
   {
     v20 = 0;
-    v12 = [v6 writeToURL:v10 options:1073741825 error:&v20];
+    v12 = [dataCopy writeToURL:fileURLForCurrentDeferredProcessingPreviewFile2 options:1073741825 error:&v20];
     v11 = v20;
     if ((v12 & 1) == 0)
     {
       v13 = PLDeferredProcessingGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v5 fileURLForCurrentDeferredProcessingPreviewFile];
+        fileURLForCurrentDeferredProcessingPreviewFile3 = [developmentCopy fileURLForCurrentDeferredProcessingPreviewFile];
         *buf = 138412546;
-        v22 = v14;
+        v22 = fileURLForCurrentDeferredProcessingPreviewFile3;
         v23 = 2112;
         v24 = v11;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "[SemDev] Error copying finalized photo data to semdev url %@, error: %@", buf, 0x16u);
       }
     }
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v19 = 0;
-    v16 = [v15 removeItemAtURL:v9 error:&v19];
+    v16 = [defaultManager removeItemAtURL:fileURLForCurrentDeferredProcessingPreviewFile error:&v19];
     v17 = v19;
 
     if ((v16 & 1) == 0)
@@ -659,7 +659,7 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v22 = v9;
+        v22 = fileURLForCurrentDeferredProcessingPreviewFile;
         v23 = 2112;
         v24 = v17;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "[SemDev] Error removing proxy photo url: %@, error: %@", buf, 0x16u);
@@ -668,27 +668,27 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   }
 }
 
-- (void)_setupMediaConversionSourceCollections:(id)a3 destinationCollection:(id)a4 forAsset:(id)a5
+- (void)_setupMediaConversionSourceCollections:(id)collections destinationCollection:(id)collection forAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 fileURLForCurrentDeferredProcessingPreviewFile];
+  collectionsCopy = collections;
+  assetCopy = asset;
+  collectionCopy = collection;
+  fileURLForCurrentDeferredProcessingPreviewFile = [assetCopy fileURLForCurrentDeferredProcessingPreviewFile];
   v11 = *MEMORY[0x1E69AE8B8];
-  [v7 setResourceURL:v10 forRole:*MEMORY[0x1E69AE8B8] deleteOnDeallocation:0];
+  [collectionsCopy setResourceURL:fileURLForCurrentDeferredProcessingPreviewFile forRole:*MEMORY[0x1E69AE8B8] deleteOnDeallocation:0];
 
-  v12 = [v8 pathManager];
-  v13 = [v8 mainFileURL];
+  pathManager = [assetCopy pathManager];
+  mainFileURL = [assetCopy mainFileURL];
 
-  v14 = [v13 pathExtension];
-  v15 = [v12 temporaryRenderContentURLForInternalRendersWithExtension:v14];
+  pathExtension = [mainFileURL pathExtension];
+  v15 = [pathManager temporaryRenderContentURLForInternalRendersWithExtension:pathExtension];
 
-  [v9 setResourceURL:v15 forRole:v11 deleteOnDeallocation:1];
+  [collectionCopy setResourceURL:v15 forRole:v11 deleteOnDeallocation:1];
   v16 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 resourceURLForRole:v11];
+    v17 = [collectionsCopy resourceURLForRole:v11];
     v18 = 138412546;
     v19 = v17;
     v20 = 2112;
@@ -697,40 +697,40 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   }
 }
 
-- (id)_imageConversionOptionsForAsset:(id)a3 adjustments:(id)a4 isBackgroundPriority:(BOOL)a5 reason:(id)a6
+- (id)_imageConversionOptionsForAsset:(id)asset adjustments:(id)adjustments isBackgroundPriority:(BOOL)priority reason:(id)reason
 {
-  v6 = a5;
+  priorityCopy = priority;
   v26[3] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E695DF90];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 dictionary];
+  reasonCopy = reason;
+  adjustmentsCopy = adjustments;
+  assetCopy = asset;
+  dictionary = [v9 dictionary];
   v25[0] = *MEMORY[0x1E69AE8C8];
-  v14 = [v11 adjustmentData];
-  v26[0] = v14;
+  adjustmentData = [adjustmentsCopy adjustmentData];
+  v26[0] = adjustmentData;
   v25[1] = *MEMORY[0x1E69AE8D0];
-  v15 = [v11 adjustmentFormatIdentifier];
-  v26[1] = v15;
+  adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+  v26[1] = adjustmentFormatIdentifier;
   v25[2] = *MEMORY[0x1E69AE8D8];
-  v16 = [v11 adjustmentFormatVersion];
+  adjustmentFormatVersion = [adjustmentsCopy adjustmentFormatVersion];
 
-  v26[2] = v16;
+  v26[2] = adjustmentFormatVersion;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
-  [v13 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69AE918]];
+  [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x1E69AE918]];
 
-  v18 = [MEMORY[0x1E69C06C0] standardPolicy];
-  [v13 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69AE968]];
+  standardPolicy = [MEMORY[0x1E69C06C0] standardPolicy];
+  [dictionary setObject:standardPolicy forKeyedSubscript:*MEMORY[0x1E69AE968]];
 
-  [v13 setObject:&unk_1F0FBC1F0 forKeyedSubscript:*MEMORY[0x1E69AE990]];
-  [v13 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE920]];
+  [dictionary setObject:&unk_1F0FBC1F0 forKeyedSubscript:*MEMORY[0x1E69AE990]];
+  [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E69AE920]];
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [v12 uuidDescription];
+  uuidDescription = [assetCopy uuidDescription];
 
-  v21 = [v19 stringWithFormat:@"%@ for asset %@", v10, v20];
+  v21 = [v19 stringWithFormat:@"%@ for asset %@", reasonCopy, uuidDescription];
 
-  [v13 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69AE980]];
-  if (v6)
+  [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x1E69AE980]];
+  if (priorityCopy)
   {
     v22 = 2;
   }
@@ -741,20 +741,20 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithInteger:v22];
-  [v13 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69AE950]];
+  [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x1E69AE950]];
 
-  [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE938]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69AE938]];
 
-  return v13;
+  return dictionary;
 }
 
-- (id)_createAssetAdjustmentsForAsset:(id)a3 error:(id *)a4
+- (id)_createAssetAdjustmentsForAsset:(id)asset error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetCopy = asset;
   v6 = MEMORY[0x1E695DEF0];
-  v7 = [v5 pathForCameraMetadataFile];
-  v8 = [v6 dataWithContentsOfFile:v7];
+  pathForCameraMetadataFile = [assetCopy pathForCameraMetadataFile];
+  v8 = [v6 dataWithContentsOfFile:pathForCameraMetadataFile];
 
   v9 = MEMORY[0x1E696ACD0];
   v10 = MEMORY[0x1E695DFD8];
@@ -766,7 +766,7 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
 
   if (v13)
   {
-    v15 = +[PLPhotoEditExportProperties exportPropertiesWithImageWidth:imageHeight:exifOrientation:](PLPhotoEditExportProperties, "exportPropertiesWithImageWidth:imageHeight:exifOrientation:", [v5 originalWidth], objc_msgSend(v5, "originalHeight"), objc_msgSend(v5, "orientation"));
+    v15 = +[PLPhotoEditExportProperties exportPropertiesWithImageWidth:imageHeight:exifOrientation:](PLPhotoEditExportProperties, "exportPropertiesWithImageWidth:imageHeight:exifOrientation:", [assetCopy originalWidth], objc_msgSend(assetCopy, "originalHeight"), objc_msgSend(assetCopy, "orientation"));
     v16 = +[PLCompositionHelper newIdentityCompositionController];
     [PLCompositionHelper compositionController:v16 updateSemanticEnhanceFromCameraMetadata:v13 exportProperties:v15];
     v17 = [PLImageWriter assetAdjustmentsFromCompositionController:v16 exportProperties:v15];
@@ -777,19 +777,19 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
     v18 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v5 pathForCameraMetadataFile];
+      pathForCameraMetadataFile2 = [assetCopy pathForCameraMetadataFile];
       *buf = 138412546;
-      v24 = v19;
+      v24 = pathForCameraMetadataFile2;
       v25 = 2112;
       v26 = v14;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "[SemDev] Error deserializing camera metadata from path: %@, error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v14;
       v17 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -801,19 +801,19 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   return v17;
 }
 
-- (void)performSemanticEnhanceForAsset:(id)a3 isBackgroundPriority:(BOOL)a4 reason:(id)a5 completionHandler:(id)a6
+- (void)performSemanticEnhanceForAsset:(id)asset isBackgroundPriority:(BOOL)priority reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a4;
+  priorityCopy = priority;
   v61[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v39 = a6;
+  assetCopy = asset;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v12 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 uuidDescription];
+    uuidDescription = [assetCopy uuidDescription];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = uuidDescription;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "[SemDev] performing semantic enhance for asset %{public}@", &buf, 0xCu);
   }
 
@@ -823,9 +823,9 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v10 uuid];
+    uuid = [assetCopy uuid];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v18;
+    *(&buf + 4) = uuid;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "performSemanticEnhanceForAsset", "uuid: %{public}@", &buf, 0xCu);
   }
 
@@ -838,20 +838,20 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
   v60 = __Block_byref_object_dispose__33088;
   v61[0] = 0;
   obj = 0;
-  v40 = [(PLDeferredPhotoFinalizer *)self _createAssetAdjustmentsForAsset:v10 error:&obj];
+  v40 = [(PLDeferredPhotoFinalizer *)self _createAssetAdjustmentsForAsset:assetCopy error:&obj];
   objc_storeStrong(v61, obj);
   if (v40)
   {
-    v19 = [(PLDeferredPhotoFinalizer *)self _imageConversionOptionsForAsset:v10 adjustments:v40 isBackgroundPriority:v8 reason:v11];
+    v19 = [(PLDeferredPhotoFinalizer *)self _imageConversionOptionsForAsset:assetCopy adjustments:v40 isBackgroundPriority:priorityCopy reason:reasonCopy];
     v20 = objc_opt_new();
     v21 = objc_opt_new();
-    [(PLDeferredPhotoFinalizer *)self _setupMediaConversionSourceCollections:v20 destinationCollection:v21 forAsset:v10];
-    v22 = [v10 objectID];
+    [(PLDeferredPhotoFinalizer *)self _setupMediaConversionSourceCollections:v20 destinationCollection:v21 forAsset:assetCopy];
+    objectID = [assetCopy objectID];
     v37 = v19;
-    v23 = [v10 photoLibrary];
-    v24 = [v23 libraryServicesManager];
+    photoLibrary = [assetCopy photoLibrary];
+    libraryServicesManager = [photoLibrary libraryServicesManager];
 
-    v25 = v11;
+    v25 = reasonCopy;
     v26 = [v21 resourceURLForRole:*MEMORY[0x1E69AE8B8]];
     imageConversionServiceClient = self->_imageConversionServiceClient;
     v41[0] = MEMORY[0x1E69E9820];
@@ -860,17 +860,17 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
     v41[3] = &unk_1E756AEB8;
     v42 = v38;
     v48 = v15;
-    v28 = v24;
+    v28 = libraryServicesManager;
     v43 = v28;
-    v29 = v22;
+    v29 = objectID;
     v44 = v29;
     v30 = v26;
     v45 = v30;
-    v46 = v10;
-    v47 = v39;
+    v46 = assetCopy;
+    v47 = handlerCopy;
     [(PAImageConversionServiceClient *)imageConversionServiceClient convertImageAtSourceURLCollection:v20 toDestinationURLCollection:v21 options:v37 completionHandler:v41];
 
-    v11 = v25;
+    reasonCopy = v25;
     v31 = v37;
   }
 
@@ -879,28 +879,28 @@ void __79__PLDeferredPhotoFinalizer_requestFrameDropRecoveryForAsset_completionH
     v32 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = v11;
+      v33 = reasonCopy;
       v34 = *(*(&buf + 1) + 40);
-      v35 = [v10 uuidDescription];
+      uuidDescription2 = [assetCopy uuidDescription];
       *v53 = 138412546;
       v54 = v34;
       v55 = 2114;
-      v56 = v35;
+      v56 = uuidDescription2;
       _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "[SemDev] adjustments are nil: %@ for asset uuid: %{public}@ ", v53, 0x16u);
 
-      v11 = v33;
+      reasonCopy = v33;
     }
 
-    v36 = [v10 photoLibrary];
+    photoLibrary2 = [assetCopy photoLibrary];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackgroundPriority_reason_completionHandler___block_invoke;
     v49[3] = &unk_1E7578910;
-    v50 = v10;
+    v50 = assetCopy;
     p_buf = &buf;
-    [v36 performBlockAndWait:v49];
+    [photoLibrary2 performBlockAndWait:v49];
 
-    (*(v39 + 2))(v39, *(*(&buf + 1) + 40));
+    (*(handlerCopy + 2))(handlerCopy, *(*(&buf + 1) + 40));
     v31 = v50;
   }
 
@@ -1166,27 +1166,27 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
   }
 }
 
-- (void)_createTTRForError:(id)a3 assetDescription:(id)a4 asset:(id)a5 isCorruptImageError:(BOOL)a6 finalizedPhotoData:(id)a7 finalPhotoMetadata:(id)a8
+- (void)_createTTRForError:(id)error assetDescription:(id)description asset:(id)asset isCorruptImageError:(BOOL)imageError finalizedPhotoData:(id)data finalPhotoMetadata:(id)metadata
 {
-  v10 = a6;
+  imageErrorCopy = imageError;
   v124[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  errorCopy = error;
+  descriptionCopy = description;
+  assetCopy = asset;
+  dataCopy = data;
+  metadataCopy = metadata;
   if (MEMORY[0x19EAEE230]())
   {
-    v92 = self;
-    v101 = v18;
-    v102 = v17;
+    selfCopy = self;
+    v101 = metadataCopy;
+    v102 = dataCopy;
     v19 = MEMORY[0x1E696AD60];
-    v20 = [v16 additionalAttributes];
-    v21 = [v20 deferredPhotoIdentifier];
+    additionalAttributes = [assetCopy additionalAttributes];
+    deferredPhotoIdentifier = [additionalAttributes deferredPhotoIdentifier];
     v22 = [MEMORY[0x1E695DF00] now];
     v23 = v22;
-    v105 = v10;
-    if (v10)
+    v105 = imageErrorCopy;
+    if (imageErrorCopy)
     {
       v24 = &stru_1F0F06D80;
     }
@@ -1196,9 +1196,9 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
       v24 = @"NON-";
     }
 
-    v89 = v15;
-    v98 = v15;
-    if (v10)
+    v89 = descriptionCopy;
+    v98 = descriptionCopy;
+    if (imageErrorCopy)
     {
       v25 = @"This radar is only actionable if filed with Image and Intermediates. File a radar?";
     }
@@ -1208,7 +1208,7 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
       v25 = @"File a radar with this photo and its intermediate processing files?";
     }
 
-    if (v10)
+    if (imageErrorCopy)
     {
       v26 = @"Hit Corrupt final image in";
     }
@@ -1218,30 +1218,30 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
       v26 = @"Non-recoverable";
     }
 
-    v97 = [v19 stringWithFormat:@"Failed during finalization in a %@recoverable way for asset: %@ with deferredPhotoIdentifier: %@ reason: %@ at time of tap to radar: %@", v24, v89, v21, v14, v22];
+    v97 = [v19 stringWithFormat:@"Failed during finalization in a %@recoverable way for asset: %@ with deferredPhotoIdentifier: %@ reason: %@ at time of tap to radar: %@", v24, v89, deferredPhotoIdentifier, errorCopy, v22];
 
     v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"A higher-quality image couldn't be processed. %@", v25];
-    v99 = v14;
-    v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TTR Photos: %@ deferredmediad error when processing the proxy (Error Code: %ld)", v26, objc_msgSend(v14, "code")];
-    v106 = [MEMORY[0x1E695DF70] array];
-    v27 = [MEMORY[0x1E696AC08] defaultManager];
-    v28 = [v16 additionalAttributes];
-    v29 = [v28 deferredPhotoIdentifier];
+    v99 = errorCopy;
+    v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TTR Photos: %@ deferredmediad error when processing the proxy (Error Code: %ld)", v26, objc_msgSend(errorCopy, "code")];
+    array = [MEMORY[0x1E695DF70] array];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    additionalAttributes2 = [assetCopy additionalAttributes];
+    deferredPhotoIdentifier2 = [additionalAttributes2 deferredPhotoIdentifier];
 
-    v100 = v29;
-    v30 = [v29 componentsSeparatedByString:@"/"];
-    v31 = [v30 firstObject];
+    v100 = deferredPhotoIdentifier2;
+    v30 = [deferredPhotoIdentifier2 componentsSeparatedByString:@"/"];
+    firstObject = [v30 firstObject];
 
-    v104 = v16;
-    v32 = [v16 pathManager];
-    v33 = [v32 photoDirectoryWithType:1];
+    v104 = assetCopy;
+    pathManager = [assetCopy pathManager];
+    v33 = [pathManager photoDirectoryWithType:1];
 
     v94 = v33;
     v103 = [v33 stringByAppendingString:@"/Deferred/CaptureContainers"];
     v34 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
     v124[0] = *MEMORY[0x1E695DC30];
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:1];
-    v36 = [v27 enumeratorAtURL:v34 includingPropertiesForKeys:v35 options:0 errorHandler:&__block_literal_global_33170];
+    v36 = [defaultManager enumeratorAtURL:v34 includingPropertiesForKeys:v35 options:0 errorHandler:&__block_literal_global_33170];
 
     v112 = 0u;
     v113 = 0u;
@@ -1262,29 +1262,29 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v110 + 1) + 8 * i) path];
-          v43 = [v42 stringByAppendingPathComponent:v31];
+          path = [*(*(&v110 + 1) + 8 * i) path];
+          v43 = [path stringByAppendingPathComponent:firstObject];
 
-          if ([v27 fileExistsAtPath:v43])
+          if ([defaultManager fileExistsAtPath:v43])
           {
-            v44 = [v103 stringByDeletingLastPathComponent];
-            v45 = [v44 stringByAppendingPathComponent:@"tmpCaptureContainers"];
+            stringByDeletingLastPathComponent = [v103 stringByDeletingLastPathComponent];
+            v45 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"tmpCaptureContainers"];
 
-            if (([v27 directoryExistsAtPath:v45] & 1) == 0)
+            if (([defaultManager directoryExistsAtPath:v45] & 1) == 0)
             {
               v109 = 0;
-              v46 = [v27 createDirectoryAtPath:v45 withIntermediateDirectories:0 attributes:0 error:&v109];
+              v46 = [defaultManager createDirectoryAtPath:v45 withIntermediateDirectories:0 attributes:0 error:&v109];
               v47 = v109;
               if ((v46 & 1) == 0)
               {
                 v48 = PLBackendGetLog();
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
                 {
-                  v49 = [v16 uuid];
+                  uuid = [assetCopy uuid];
                   *buf = 138412802;
                   v118 = v45;
                   v119 = 2112;
-                  v120 = v49;
+                  v120 = uuid;
                   v121 = 2112;
                   v122 = v100;
                   _os_log_impl(&dword_19BF1F000, v48, OS_LOG_TYPE_ERROR, "Failed to create temporary capture containers directory: %@ for asset with uuid: %@ and deferred identifier: %@", buf, 0x20u);
@@ -1292,13 +1292,13 @@ void __105__PLDeferredPhotoFinalizer_performSemanticEnhanceForAsset_isBackground
               }
             }
 
-            v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-copy", v31];
+            v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-copy", firstObject];
             v51 = [v45 stringByAppendingPathComponent:v50];
 
             v108 = 0;
-            [v27 copyItemAtPath:v43 toPath:v51 error:&v108];
+            [defaultManager copyItemAtPath:v43 toPath:v51 error:&v108];
             v52 = [MEMORY[0x1E695DFF8] fileURLWithPath:v51];
-            [v106 addObject:v52];
+            [array addObject:v52];
 
             goto LABEL_27;
           }
@@ -1320,8 +1320,8 @@ LABEL_27:
     {
       v53 = NSTemporaryDirectory();
       v54 = MEMORY[0x1E696AEC0];
-      v55 = [v16 filename];
-      v56 = [v54 stringWithFormat:@"Corrupt_%@", v55];
+      filename = [assetCopy filename];
+      v56 = [v54 stringWithFormat:@"Corrupt_%@", filename];
       v57 = [v53 stringByAppendingPathComponent:v56];
 
       v58 = [MEMORY[0x1E695DFF8] fileURLWithPath:v57];
@@ -1343,21 +1343,21 @@ LABEL_27:
         }
       }
 
-      v63 = [v58 URLByDeletingPathExtension];
-      v64 = [v63 URLByAppendingPathExtension:@"DBG"];
+      uRLByDeletingPathExtension = [v58 URLByDeletingPathExtension];
+      v64 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"DBG"];
 
       v65 = v64;
-      v66 = [v64 path];
-      [(PLDeferredPhotoFinalizer *)v92 _writeDebugFileFromProxyMetadata:v101 withPath:v66];
+      path2 = [v64 path];
+      [(PLDeferredPhotoFinalizer *)selfCopy _writeDebugFileFromProxyMetadata:v101 withPath:path2];
 
       if (v58)
       {
-        v67 = [v58 path];
-        v68 = [v27 fileExistsAtPath:v67];
+        path3 = [v58 path];
+        v68 = [defaultManager fileExistsAtPath:path3];
 
         if (v68)
         {
-          [v106 addObject:v58];
+          [array addObject:v58];
         }
       }
     }
@@ -1368,63 +1368,63 @@ LABEL_27:
       v65 = 0;
     }
 
-    v69 = [v16 pathForDiagnosticFile];
-    v70 = [v27 fileExistsAtPath:v69];
+    pathForDiagnosticFile = [assetCopy pathForDiagnosticFile];
+    v70 = [defaultManager fileExistsAtPath:pathForDiagnosticFile];
 
     if (v70)
     {
       v71 = MEMORY[0x1E695DFF8];
-      v72 = [v16 pathForDiagnosticFile];
-      v73 = [v71 fileURLWithPath:v72];
+      pathForDiagnosticFile2 = [assetCopy pathForDiagnosticFile];
+      v73 = [v71 fileURLWithPath:pathForDiagnosticFile2];
 
-      [v106 addObject:v73];
+      [array addObject:v73];
     }
 
     if (v65)
     {
-      v74 = [v65 path];
-      v75 = [v27 fileExistsAtPath:v74];
+      path4 = [v65 path];
+      v75 = [defaultManager fileExistsAtPath:path4];
 
       if (v75)
       {
-        [v106 addObject:v65];
+        [array addObject:v65];
       }
     }
 
-    v76 = [v16 mainFileURL];
-    v77 = [v76 path];
-    v78 = [v27 fileExistsAtPath:v77];
+    mainFileURL = [assetCopy mainFileURL];
+    path5 = [mainFileURL path];
+    v78 = [defaultManager fileExistsAtPath:path5];
 
     if (v78)
     {
-      v79 = [v16 mainFileURL];
-      [v106 addObject:v79];
+      mainFileURL2 = [assetCopy mainFileURL];
+      [array addObject:mainFileURL2];
     }
 
     v91 = v65;
     v93 = v58;
-    v80 = [v16 uuid];
+    uuid2 = [assetCopy uuid];
 
-    if (v80)
+    if (uuid2)
     {
       v81 = objc_alloc_init(MEMORY[0x1E696ABE0]);
       v116[0] = @"currentAssets";
       v115[0] = @"previewStyle";
       v115[1] = @"assetLocalIdentifiers";
-      v90 = [v16 uuid];
-      v114 = v90;
+      uuid3 = [assetCopy uuid];
+      v114 = uuid3;
       v82 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v114 count:1];
       v116[1] = v82;
       v115[2] = @"photoLibraryURLString";
-      v83 = [v16 photoLibrary];
-      v84 = [v83 pathManager];
-      v85 = [v84 libraryURL];
-      v86 = [v85 absoluteString];
-      v116[2] = v86;
+      photoLibrary = [assetCopy photoLibrary];
+      pathManager2 = [photoLibrary pathManager];
+      libraryURL = [pathManager2 libraryURL];
+      absoluteString = [libraryURL absoluteString];
+      v116[2] = absoluteString;
       v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v116 forKeys:v115 count:3];
       [v81 setUserInfo:v87];
 
-      v16 = v104;
+      assetCopy = v104;
     }
 
     else
@@ -1432,7 +1432,7 @@ LABEL_27:
       v81 = 0;
     }
 
-    v18 = v101;
+    metadataCopy = v101;
     if (v105)
     {
       v88 = 2;
@@ -1443,11 +1443,11 @@ LABEL_27:
       v88 = 1;
     }
 
-    [PLDiagnostics fileRadarUserNotificationWithHeader:@"Failure occured while processing Photo" message:v96 radarTitle:v95 radarDescription:v97 radarComponent:2 diagnosticTTRType:v88 attachments:v106 extensionItem:v81];
+    [PLDiagnostics fileRadarUserNotificationWithHeader:@"Failure occured while processing Photo" message:v96 radarTitle:v95 radarDescription:v97 radarComponent:2 diagnosticTTRType:v88 attachments:array extensionItem:v81];
 
-    v15 = v98;
-    v14 = v99;
-    v17 = v102;
+    descriptionCopy = v98;
+    errorCopy = v99;
+    dataCopy = v102;
   }
 }
 
@@ -1470,20 +1470,20 @@ uint64_t __128__PLDeferredPhotoFinalizer__createTTRForError_assetDescription_ass
   return 1;
 }
 
-- (void)deleteIntermediatesExcludingDeferredIdentifierRequestIdentifiers:(id)a3 withCompletionHandler:(id)a4
+- (void)deleteIntermediatesExcludingDeferredIdentifierRequestIdentifiers:(id)identifiers withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   finalizer = self->_finalizer;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __115__PLDeferredPhotoFinalizer_deleteIntermediatesExcludingDeferredIdentifierRequestIdentifiers_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E756AE90;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifiersCopy;
   [(PLCaptureDeferredPhotoProcessor *)finalizer persistentlyStoredDeferredPhotoProxiesWithCompletionHandler:v11];
 }
 
@@ -1551,51 +1551,51 @@ void __115__PLDeferredPhotoFinalizer_deleteIntermediatesExcludingDeferredIdentif
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_callCompletionHandlersForPhotoProxy:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_callCompletionHandlersForPhotoProxy:(id)proxy success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  proxyCopy = proxy;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_identifierToPendingRecordsLock);
   identifierToPendingRecords = self->_identifierToPendingRecords;
-  v11 = [v8 deferredPhotoIdentifier];
-  v12 = [(NSMutableDictionary *)identifierToPendingRecords objectForKeyedSubscript:v11];
+  deferredPhotoIdentifier = [proxyCopy deferredPhotoIdentifier];
+  v12 = [(NSMutableDictionary *)identifierToPendingRecords objectForKeyedSubscript:deferredPhotoIdentifier];
 
   v13 = self->_identifierToPendingRecords;
-  v14 = [v8 deferredPhotoIdentifier];
-  [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:v14];
+  deferredPhotoIdentifier2 = [proxyCopy deferredPhotoIdentifier];
+  [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:deferredPhotoIdentifier2];
 
   os_unfair_lock_unlock(&self->_identifierToPendingRecordsLock);
-  if (v6)
+  if (successCopy)
   {
     v15 = PLDeferredProcessingGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v8 deferredPhotoIdentifier];
+      deferredPhotoIdentifier3 = [proxyCopy deferredPhotoIdentifier];
       qos_class_self();
       v17 = PLShortStringFromQoSClass();
       *buf = 138412546;
-      v38 = v16;
+      v38 = deferredPhotoIdentifier3;
       v39 = 2114;
       v40 = v17;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Requesting deletion of intermediates for deferredUUID: %@ QoS: %{public}@", buf, 0x16u);
     }
 
-    [(PLCaptureDeferredPhotoProcessor *)self->_finalizer deletePersistentStorageForPhotoProxy:v8];
+    [(PLCaptureDeferredPhotoProcessor *)self->_finalizer deletePersistentStorageForPhotoProxy:proxyCopy];
     v18 = 0;
   }
 
   else
   {
-    v18 = v9;
-    if (!v9)
+    v18 = errorCopy;
+    if (!errorCopy)
     {
-      v19 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v20 = NSStringFromPLErrorCode();
-      [v19 setObject:v20 forKeyedSubscript:*MEMORY[0x1E696A578]];
+      [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-      v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:48001 userInfo:v19];
+      v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:48001 userInfo:dictionary];
     }
   }
 
@@ -1619,8 +1619,8 @@ void __115__PLDeferredPhotoFinalizer_deleteIntermediatesExcludingDeferredIdentif
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v32 + 1) + 8 * v25) completionHandler];
-        (v26)[2](v26, v18);
+        completionHandler = [*(*(&v32 + 1) + 8 * v25) completionHandler];
+        (completionHandler)[2](completionHandler, v18);
 
         ++v25;
       }
@@ -1632,70 +1632,70 @@ void __115__PLDeferredPhotoFinalizer_deleteIntermediatesExcludingDeferredIdentif
     while (v23);
   }
 
-  if (v6 && !self->_useCase)
+  if (successCopy && !self->_useCase)
   {
     os_unfair_lock_lock(&self->_identifierToPendingRecordsLock);
     v27 = [(NSMutableDictionary *)self->_identifierToPendingRecords count];
     os_unfair_lock_unlock(&self->_identifierToPendingRecordsLock);
     if (!v27)
     {
-      v28 = [v21 firstObject];
-      v29 = [v28 lsm];
-      v30 = [v29 libraryBundle];
-      v31 = [v30 constraintsDirector];
-      [v31 informAssetsFinishedDeferredProcessing];
+      firstObject = [v21 firstObject];
+      v29 = [firstObject lsm];
+      libraryBundle = [v29 libraryBundle];
+      constraintsDirector = [libraryBundle constraintsDirector];
+      [constraintsDirector informAssetsFinishedDeferredProcessing];
     }
   }
 }
 
-- (void)_transitionDeferredProcessingNeededToNextStateForAsset:(id)a3 originalHeight:(int64_t)a4 originalWidth:(int64_t)a5
+- (void)_transitionDeferredProcessingNeededToNextStateForAsset:(id)asset originalHeight:(int64_t)height originalWidth:(int64_t)width
 {
-  v10 = a3;
-  v7 = [v10 transitionToDeferredProcessingNeededAdjustmentWithOriginalWidth:a5 originalHeight:a4 shouldSignalBackgroundProcessingNeeded:0 reason:@"Deferred photo finalizer transitioned to next processing state"];
-  v8 = v10;
+  assetCopy = asset;
+  v7 = [assetCopy transitionToDeferredProcessingNeededAdjustmentWithOriginalWidth:width originalHeight:height shouldSignalBackgroundProcessingNeeded:0 reason:@"Deferred photo finalizer transitioned to next processing state"];
+  v8 = assetCopy;
   if ((v7 & 1) == 0)
   {
-    if ([v10 isSemanticEnhanceProcessingCandidate])
+    if ([assetCopy isSemanticEnhanceProcessingCandidate])
     {
-      v9 = 7;
-      v8 = v10;
+      expectedDeferredProcessingNeededOnAssetCreation = 7;
+      v8 = assetCopy;
     }
 
     else
     {
-      [v10 setDeferredProcessingNeeded:0];
-      v9 = [v10 expectedDeferredProcessingNeededOnAssetCreation];
-      v8 = v10;
-      if (!v9)
+      [assetCopy setDeferredProcessingNeeded:0];
+      expectedDeferredProcessingNeededOnAssetCreation = [assetCopy expectedDeferredProcessingNeededOnAssetCreation];
+      v8 = assetCopy;
+      if (!expectedDeferredProcessingNeededOnAssetCreation)
       {
         goto LABEL_6;
       }
     }
 
-    [v8 setDeferredProcessingNeeded:v9];
-    v8 = v10;
+    [v8 setDeferredProcessingNeeded:expectedDeferredProcessingNeededOnAssetCreation];
+    v8 = assetCopy;
   }
 
 LABEL_6:
 }
 
-- (void)processor:(id)a3 didFinishProcessingPhotoProxy:(id)a4 finalPhoto:(id)a5 error:(id)a6
+- (void)processor:(id)processor didFinishProcessingPhotoProxy:(id)proxy finalPhoto:(id)photo error:(id)error
 {
   v134 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v9 = a4;
-  v58 = a5;
-  obj = a6;
-  v55 = a6;
-  v60 = v9;
-  v59 = [v9 deferredPhotoIdentifier];
+  processorCopy = processor;
+  proxyCopy = proxy;
+  photoCopy = photo;
+  obj = error;
+  errorCopy = error;
+  v60 = proxyCopy;
+  deferredPhotoIdentifier = [proxyCopy deferredPhotoIdentifier];
   v10 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     qos_class_self();
     v11 = PLShortStringFromQoSClass();
     *buf = 138412546;
-    *&buf[4] = v59;
+    *&buf[4] = deferredPhotoIdentifier;
     *&buf[12] = 2114;
     *&buf[14] = v11;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Received didFinishProcessing callback for identifier: %@ QoS: %{public}@", buf, 0x16u);
@@ -1711,13 +1711,13 @@ LABEL_6:
   v131 = __Block_byref_object_copy__33087;
   v132 = __Block_byref_object_dispose__33088;
   v133 = 0;
-  v54 = [v58 fileDataRepresentation];
-  v51 = [v58 photoLibraryThumbnails];
-  v12 = [v58 metadata];
-  v53 = v12;
-  if (v12)
+  fileDataRepresentation = [photoCopy fileDataRepresentation];
+  photoLibraryThumbnails = [photoCopy photoLibraryThumbnails];
+  metadata = [photoCopy metadata];
+  v53 = metadata;
+  if (metadata)
   {
-    v52 = [(PLDeferredPhotoFinalizer *)self isRenderFromMetadata:v12];
+    v52 = [(PLDeferredPhotoFinalizer *)self isRenderFromMetadata:metadata];
   }
 
   else
@@ -1727,14 +1727,14 @@ LABEL_6:
 
   os_unfair_lock_lock(&self->_identifierToPendingRecordsLock);
   identifierToPendingRecords = self->_identifierToPendingRecords;
-  v14 = [v60 deferredPhotoIdentifier];
-  v57 = [(NSMutableDictionary *)identifierToPendingRecords objectForKeyedSubscript:v14];
+  deferredPhotoIdentifier2 = [v60 deferredPhotoIdentifier];
+  v57 = [(NSMutableDictionary *)identifierToPendingRecords objectForKeyedSubscript:deferredPhotoIdentifier2];
 
   if (v57)
   {
-    v15 = [v57 firstObject];
+    firstObject = [v57 firstObject];
     v16 = PLBackendGetLog();
-    v56 = v15;
+    v56 = firstObject;
     v119 = 0u;
     v120 = 0u;
     v117 = 0u;
@@ -1755,11 +1755,11 @@ LABEL_6:
 
           v21 = *(*(&v117 + 1) + 8 * i);
           v22 = v16;
-          v23 = [v21 signpostId];
-          if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
+          signpostId = [v21 signpostId];
+          if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
           {
             *v125 = 0;
-            _os_signpost_emit_with_name_impl(&dword_19BF1F000, v22, OS_SIGNPOST_INTERVAL_END, v23, "requestFinalizationOfAsset", "", v125, 2u);
+            _os_signpost_emit_with_name_impl(&dword_19BF1F000, v22, OS_SIGNPOST_INTERVAL_END, signpostId, "requestFinalizationOfAsset", "", v125, 2u);
           }
         }
 
@@ -1770,16 +1770,16 @@ LABEL_6:
     }
 
     os_unfair_lock_unlock(&self->_identifierToPendingRecordsLock);
-    v24 = [v56 assetObjectID];
+    assetObjectID = [v56 assetObjectID];
     v25 = [v56 lsm];
-    v26 = [v56 expectsSecondProcessingCallback];
-    v27 = [v56 logDescription];
+    expectsSecondProcessingCallback = [v56 expectsSecondProcessingCallback];
+    logDescription = [v56 logDescription];
     [v56 startTimestamp];
     v29 = v28;
-    v30 = [v25 databaseContext];
-    v31 = [v30 newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer processor:didFinishProcessingPhotoProxy:finalPhoto:error:]" libraryRole:2];
+    databaseContext = [v25 databaseContext];
+    v31 = [databaseContext newShortLivedLibraryWithName:"-[PLDeferredPhotoFinalizer processor:didFinishProcessingPhotoProxy:finalPhoto:error:]" libraryRole:2];
 
-    v32 = [v56 needsSemanticDevelopment];
+    needsSemanticDevelopment = [v56 needsSemanticDevelopment];
     *v125 = 0;
     *&v125[8] = v125;
     *&v125[16] = 0x3032000000;
@@ -1808,16 +1808,16 @@ LABEL_6:
     v104[1] = 3221225472;
     v104[2] = __85__PLDeferredPhotoFinalizer_processor_didFinishProcessingPhotoProxy_finalPhoto_error___block_invoke;
     v104[3] = &unk_1E7572710;
-    v38 = v24;
+    v38 = assetObjectID;
     v105 = v38;
     v39 = v31;
     v106 = v39;
-    v40 = v27;
+    v40 = logDescription;
     v110 = &v113;
     v107 = v40;
-    v108 = self;
+    selfCopy = self;
     v112 = v52;
-    v41 = v59;
+    v41 = deferredPhotoIdentifier;
     v109 = v41;
     v111 = &v121;
     [v39 performBlockAndWait:v104];
@@ -1832,7 +1832,7 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v55)
+    if (errorCopy)
     {
       objc_storeStrong((*&buf[8] + 40), obj);
       v42 = v97;
@@ -1845,8 +1845,8 @@ LABEL_31:
       v97[5] = v43;
       v97[6] = v40;
       v97[7] = self;
-      v98 = v55;
-      v99 = v54;
+      v98 = errorCopy;
+      v99 = fileDataRepresentation;
       v100 = v53;
       v102 = buf;
       v103 = &v121;
@@ -1856,7 +1856,7 @@ LABEL_31:
 
     else
     {
-      if (!v32)
+      if (!needsSemanticDevelopment)
       {
         v76[0] = MEMORY[0x1E69E9820];
         v76[1] = 3221225472;
@@ -1867,24 +1867,24 @@ LABEL_31:
         v79 = v40;
         v85 = v125;
         v86 = buf;
-        v80 = v54;
-        v81 = self;
+        v80 = fileDataRepresentation;
+        selfCopy2 = self;
         v82 = v53;
         v88 = v52;
-        v83 = v51;
+        v83 = photoLibraryThumbnails;
         v87 = &v121;
         v84 = v37;
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
         v62[2] = __85__PLDeferredPhotoFinalizer_processor_didFinishProcessingPhotoProxy_finalPhoto_error___block_invoke_178;
         v62[3] = &unk_1E756AE68;
-        v74 = v26;
+        v74 = expectsSecondProcessingCallback;
         v75 = v52;
         v73 = v29;
         v63 = v79;
         v71 = &v121;
         v64 = v41;
-        v65 = self;
+        selfCopy3 = self;
         v66 = v78;
         v67 = v77;
         v68 = 0;
@@ -1911,7 +1911,7 @@ LABEL_31:
       v89[7] = self;
       v90 = v60;
       v95 = &v121;
-      v91 = v54;
+      v91 = fileDataRepresentation;
       v92 = v53;
       v45 = v56;
       v96 = buf;
@@ -1931,11 +1931,11 @@ LABEL_30:
   v34 = PLDeferredProcessingGetLog();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
-    v35 = [(NSMutableDictionary *)self->_identifierToPendingRecords allKeys];
+    allKeys = [(NSMutableDictionary *)self->_identifierToPendingRecords allKeys];
     *v125 = 138543618;
-    *&v125[4] = v59;
+    *&v125[4] = deferredPhotoIdentifier;
     *&v125[12] = 2114;
-    *&v125[14] = v35;
+    *&v125[14] = allKeys;
     _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "Received finished proxy for an asset we weren't tracking. identifier:%{public}@, current list:%{public}@", v125, 0x16u);
   }
 
@@ -2644,22 +2644,22 @@ void __85__PLDeferredPhotoFinalizer_processor_didFinishProcessingPhotoProxy_fina
   PLBuildAndSendFinalizationAnalytics(v12, v8, v7, v9, v10, v11, v6, v5);
 }
 
-- (BOOL)_assetNeedsFinalization:(id)a3 isRender:(BOOL)a4
+- (BOOL)_assetNeedsFinalization:(id)finalization isRender:(BOOL)render
 {
-  v4 = a4;
+  renderCopy = render;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 deferredProcessingNeeded];
-  if (v4)
+  finalizationCopy = finalization;
+  deferredProcessingNeeded = [finalizationCopy deferredProcessingNeeded];
+  if (renderCopy)
   {
-    v7 = v6 == 2;
+    v7 = deferredProcessingNeeded == 2;
   }
 
   else
   {
-    if (v6 != 1)
+    if (deferredProcessingNeeded != 1)
     {
-      if (![v5 resourceModelIndicatesDeepFusionNeeded])
+      if (![finalizationCopy resourceModelIndicatesDeepFusionNeeded])
       {
         v7 = 0;
         goto LABEL_10;
@@ -2668,11 +2668,11 @@ void __85__PLDeferredPhotoFinalizer_processor_didFinishProcessingPhotoProxy_fina
       v8 = PLDeferredProcessingGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v5 uuid];
+        uuid = [finalizationCopy uuid];
         v11 = 138543618;
-        v12 = v9;
+        v12 = uuid;
         v13 = 1024;
-        v14 = [v5 deferredProcessingNeeded];
+        deferredProcessingNeeded2 = [finalizationCopy deferredProcessingNeeded];
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Asset %{public}@ DP needed state %hu does not indicate finalization was needed, but resource model does", &v11, 0x12u);
       }
     }
@@ -2685,42 +2685,42 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)isRenderFromMetadata:(id)a3
+- (BOOL)isRenderFromMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69867F8]];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return (v5 >> 3) & 1;
+  return (longValue >> 3) & 1;
 }
 
-- (void)requestFinalizationOfAsset:(id)a3 isBackgroundPriority:(BOOL)a4 reason:(id)a5 clientBundleIdentifier:(id)a6 completionHandler:(id)a7
+- (void)requestFinalizationOfAsset:(id)asset isBackgroundPriority:(BOOL)priority reason:(id)reason clientBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a4;
+  priorityCopy = priority;
   v80 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v64 = a6;
-  v14 = a7;
-  v66 = v13;
-  if ([v12 deferredProcessingNeeded] != 10)
+  assetCopy = asset;
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v66 = reasonCopy;
+  if ([assetCopy deferredProcessingNeeded] != 10)
   {
-    v61 = v10;
-    v15 = [v12 additionalAttributes];
-    v63 = [v15 deferredPhotoIdentifier];
+    v61 = priorityCopy;
+    additionalAttributes = [assetCopy additionalAttributes];
+    deferredPhotoIdentifier = [additionalAttributes deferredPhotoIdentifier];
 
-    if ([v12 hasAdjustments])
+    if ([assetCopy hasAdjustments])
     {
-      v65 = [objc_alloc(MEMORY[0x1E6987088]) initWithDeferredPhotoIdentifier:v63 applicationIdentifier:@"com.apple.camera"];
+      v65 = [objc_alloc(MEMORY[0x1E6987088]) initWithDeferredPhotoIdentifier:deferredPhotoIdentifier applicationIdentifier:@"com.apple.camera"];
     }
 
     else
     {
-      v16 = [(PLDeferredPhotoFinalizer *)self thumbnailDimensionsForFinalizationRequestsForAsset:v12];
-      v65 = [objc_alloc(MEMORY[0x1E6987088]) initWithDeferredPhotoIdentifier:v63 applicationIdentifier:@"com.apple.camera" photoLibraryThumbnailDimensions:v16];
+      v16 = [(PLDeferredPhotoFinalizer *)self thumbnailDimensionsForFinalizationRequestsForAsset:assetCopy];
+      v65 = [objc_alloc(MEMORY[0x1E6987088]) initWithDeferredPhotoIdentifier:deferredPhotoIdentifier applicationIdentifier:@"com.apple.camera" photoLibraryThumbnailDimensions:v16];
     }
 
-    v62 = [v12 uuidDescription];
+    uuidDescription = [assetCopy uuidDescription];
     finalizer = self->_finalizer;
     if (v65)
     {
@@ -2730,41 +2730,41 @@ LABEL_10:
         spid = os_signpost_id_generate(log);
         if (!self->_useCase)
         {
-          v18 = [v12 photoLibrary];
-          v19 = [v18 constraintsDirector];
-          [v19 informAssetDeferredProcessingOccurring];
+          photoLibrary = [assetCopy photoLibrary];
+          constraintsDirector = [photoLibrary constraintsDirector];
+          [constraintsDirector informAssetDeferredProcessingOccurring];
         }
 
-        v20 = [v12 additionalAttributes];
-        v21 = [v20 deferredProcessingCandidateOptions];
+        additionalAttributes2 = [assetCopy additionalAttributes];
+        deferredProcessingCandidateOptions = [additionalAttributes2 deferredProcessingCandidateOptions];
 
         qos_class_self();
         v60 = PLShortStringFromQoSClass();
         v22 = [PLDeferredPhotoPendingAssetRecord alloc];
-        v23 = [v12 objectID];
-        v24 = [v12 photoLibrary];
-        v25 = [v24 libraryServicesManager];
-        v26 = [v12 fileURLForFullsizeRenderImage];
-        v27 = [v12 mainFileURL];
+        objectID = [assetCopy objectID];
+        photoLibrary2 = [assetCopy photoLibrary];
+        libraryServicesManager = [photoLibrary2 libraryServicesManager];
+        fileURLForFullsizeRenderImage = [assetCopy fileURLForFullsizeRenderImage];
+        mainFileURL = [assetCopy mainFileURL];
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-        LOBYTE(v56) = (v21 & 8) != 0;
-        v57 = [(PLDeferredPhotoPendingAssetRecord *)v22 initWithAssetObjectID:v23 lsm:v25 requestReason:v66 isBackgroundPriority:v61 signpostId:spid expectsSecondProcessingCallback:(v21 >> 4) & 1 needsSemanticDevelopment:v56 fileURLForFullsizeRenderImage:v26 mainFileURL:v27 logDescription:v62 startTimestamp:v60 deferredmediadQos:v64 clientBundleID:v14 completionHandler:?];
+        LOBYTE(v56) = (deferredProcessingCandidateOptions & 8) != 0;
+        v57 = [(PLDeferredPhotoPendingAssetRecord *)v22 initWithAssetObjectID:objectID lsm:libraryServicesManager requestReason:v66 isBackgroundPriority:v61 signpostId:spid expectsSecondProcessingCallback:(deferredProcessingCandidateOptions >> 4) & 1 needsSemanticDevelopment:v56 fileURLForFullsizeRenderImage:fileURLForFullsizeRenderImage mainFileURL:mainFileURL logDescription:uuidDescription startTimestamp:v60 deferredmediadQos:identifierCopy clientBundleID:handlerCopy completionHandler:?];
 
         os_unfair_lock_lock(&self->_identifierToPendingRecordsLock);
         identifierToPendingRecords = self->_identifierToPendingRecords;
-        v29 = [v65 deferredPhotoIdentifier];
-        v30 = [(NSMutableDictionary *)identifierToPendingRecords objectForKey:v29];
+        deferredPhotoIdentifier2 = [v65 deferredPhotoIdentifier];
+        v30 = [(NSMutableDictionary *)identifierToPendingRecords objectForKey:deferredPhotoIdentifier2];
 
         if (v30)
         {
           v31 = PLDeferredProcessingGetLog();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v65 deferredPhotoIdentifier];
+            deferredPhotoIdentifier3 = [v65 deferredPhotoIdentifier];
             *buf = 138543874;
-            v69 = v62;
+            v69 = uuidDescription;
             v70 = 2114;
-            v71 = v32;
+            v71 = deferredPhotoIdentifier3;
             v72 = 2114;
             v73 = v60;
             _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "Adding another pending asset record for asset: %{public}@ with deferred identifier: %{public}@, QoS: %{public}@", buf, 0x20u);
@@ -2777,11 +2777,11 @@ LABEL_10:
           v31 = PLDeferredProcessingGetLog();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v41 = [v65 deferredPhotoIdentifier];
+            deferredPhotoIdentifier4 = [v65 deferredPhotoIdentifier];
             *buf = 138543874;
-            v69 = v62;
+            v69 = uuidDescription;
             v70 = 2114;
-            v71 = v41;
+            v71 = deferredPhotoIdentifier4;
             v72 = 2114;
             v73 = v60;
             _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "First instance of request finalization for asset: %{public}@ with deferred identifier: %{public}@, QoS %{public}@", buf, 0x20u);
@@ -2790,17 +2790,17 @@ LABEL_10:
 
         [v30 addObject:v57];
         v42 = self->_identifierToPendingRecords;
-        v43 = [v65 deferredPhotoIdentifier];
-        [(NSMutableDictionary *)v42 setObject:v30 forKey:v43];
+        deferredPhotoIdentifier5 = [v65 deferredPhotoIdentifier];
+        [(NSMutableDictionary *)v42 setObject:v30 forKey:deferredPhotoIdentifier5];
 
         os_unfair_lock_unlock(&self->_identifierToPendingRecordsLock);
         v44 = log;
         v39 = v44;
         if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
         {
-          v45 = [v12 uuid];
+          uuid = [assetCopy uuid];
           *buf = 138543362;
-          v69 = v45;
+          v69 = uuid;
           _os_signpost_emit_with_name_impl(&dword_19BF1F000, v39, OS_SIGNPOST_INTERVAL_BEGIN, spid, "requestFinalizationOfAsset", "uuid: %{public}@", buf, 0xCu);
         }
 
@@ -2814,19 +2814,19 @@ LABEL_10:
         v48 = PLDeferredProcessingGetLog();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [v65 deferredPhotoIdentifier];
+          deferredPhotoIdentifier6 = [v65 deferredPhotoIdentifier];
           v50 = PLDeferredPhotoFinalizerUseCaseToString(self->_useCase);
           v51 = v50;
           v52 = @"NO";
           *buf = 138544642;
-          v69 = v62;
+          v69 = uuidDescription;
           v70 = 2114;
           if (v61)
           {
             v52 = @"YES";
           }
 
-          v71 = v49;
+          v71 = deferredPhotoIdentifier6;
           v72 = 2114;
           v73 = v60;
           v74 = 2114;
@@ -2857,14 +2857,14 @@ LABEL_39:
     {
       v33 = PLDeferredProcessingGetLog();
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
-      if (v63)
+      if (deferredPhotoIdentifier)
       {
         if (v34)
         {
-          v35 = [v12 additionalAttributes];
-          v36 = [v35 deferredPhotoIdentifier];
+          additionalAttributes3 = [assetCopy additionalAttributes];
+          deferredPhotoIdentifier7 = [additionalAttributes3 deferredPhotoIdentifier];
           *buf = 138543362;
-          v69 = v36;
+          v69 = deferredPhotoIdentifier7;
           _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "deferredPhotoIdentifier not recognized by deferredmediad, attempting promotion of preview: %{public}@", buf, 0xCu);
         }
 
@@ -2874,7 +2874,7 @@ LABEL_39:
       if (v34)
       {
         *buf = 138543362;
-        v69 = v62;
+        v69 = uuidDescription;
         v37 = "deferredPhotoIdentifier is nil for asset: %{public}@ likely due to asset deletion, bailing out";
         goto LABEL_19;
       }
@@ -2882,7 +2882,7 @@ LABEL_39:
 LABEL_20:
 
       v67 = 0;
-      v38 = [v12 promoteDeferredPreviewToFinalImageWithOutError:&v67];
+      v38 = [assetCopy promoteDeferredPreviewToFinalImageWithOutError:&v67];
       v39 = v67;
       if ((v38 & 1) == 0)
       {
@@ -2890,14 +2890,14 @@ LABEL_20:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v69 = v62;
+          v69 = uuidDescription;
           v70 = 2112;
           v71 = v39;
           _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_ERROR, "Failed to promote deferred preview of asset %{public}@ with error: %@", buf, 0x16u);
         }
       }
 
-      v14[2](v14, v39);
+      handlerCopy[2](handlerCopy, v39);
       goto LABEL_39;
     }
 
@@ -2905,7 +2905,7 @@ LABEL_20:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v69 = v62;
+      v69 = uuidDescription;
       v37 = "nil shared photo processor when trying to finalize asset: %{public}@";
 LABEL_19:
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, v37, buf, 0xCu);
@@ -2915,19 +2915,19 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(PLDeferredPhotoFinalizer *)self performSemanticEnhanceForAsset:v12 isBackgroundPriority:v10 reason:v13 completionHandler:v14];
+  [(PLDeferredPhotoFinalizer *)self performSemanticEnhanceForAsset:assetCopy isBackgroundPriority:priorityCopy reason:reasonCopy completionHandler:handlerCopy];
 LABEL_40:
 }
 
-- (id)thumbnailDimensionsForFinalizationRequestsForAsset:(id)a3
+- (id)thumbnailDimensionsForFinalizationRequestsForAsset:(id)asset
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  [a3 unorientedSize];
+  [asset unorientedSize];
   v3 = PLSizeFromCGSize();
-  v4 = [MEMORY[0x1E69BF248] defaultFormatChooser];
+  defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
   v5 = MEMORY[0x1E69BF308];
-  v6 = [v4 masterThumbnailFormat];
-  v7 = [v5 maxMasterSizeFromSourceImageSize:v3 format:v6];
+  masterThumbnailFormat = [defaultFormatChooser masterThumbnailFormat];
+  v7 = [v5 maxMasterSizeFromSourceImageSize:v3 format:masterThumbnailFormat];
   LODWORD(v3) = v7;
   v8 = HIDWORD(v7);
 
@@ -2940,12 +2940,12 @@ LABEL_40:
   return v10;
 }
 
-- (void)_writeDebugFileFromProxyMetadata:(id)a3 withPath:(id)a4
+- (void)_writeDebugFileFromProxyMetadata:(id)metadata withPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"{Diagnostic}"];
+  metadataCopy = metadata;
+  pathCopy = path;
+  v7 = [metadataCopy objectForKey:@"{Diagnostic}"];
   if (![v7 count])
   {
     XMPData = 0;
@@ -2988,7 +2988,7 @@ LABEL_9:
 LABEL_10:
   if ([(__CFData *)XMPData length])
   {
-    v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v19 = 0;
     v16 = [(__CFData *)XMPData writeToURL:v15 options:0 error:&v19];
     v17 = v19;
@@ -3007,7 +3007,7 @@ LABEL_10:
   }
 }
 
-- (id)initForUseCase:(int64_t)a3
+- (id)initForUseCase:(int64_t)case
 {
   v18.receiver = self;
   v18.super_class = PLDeferredPhotoFinalizer;
@@ -3046,7 +3046,7 @@ LABEL_10:
     imageConversionServiceClient = v4->_imageConversionServiceClient;
     v4->_imageConversionServiceClient = v10;
 
-    v4->_useCase = a3;
+    v4->_useCase = case;
     v12 = pl_dispatch_queue_create_with_qos_and_fallback_qos();
     finalizerQueueUI = v4->_finalizerQueueUI;
     v4->_finalizerQueueUI = v12;
@@ -3059,30 +3059,30 @@ LABEL_10:
   return v4;
 }
 
-+ (BOOL)errorIsRecoverable:(id)a3
++ (BOOL)errorIsRecoverable:(id)recoverable
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69BFF48]];
+  recoverableCopy = recoverable;
+  domain = [recoverableCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
   v6 = MEMORY[0x1E696AA08];
-  v7 = v3;
+  v7 = recoverableCopy;
   if (v5)
   {
-    v8 = [v3 userInfo];
-    v7 = [v8 objectForKeyedSubscript:*v6];
+    userInfo = [recoverableCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*v6];
   }
 
-  v9 = [v7 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69874D8]];
+  domain2 = [v7 domain];
+  v10 = [domain2 isEqualToString:*MEMORY[0x1E69874D8]];
 
   if (v10)
   {
-    v11 = [v7 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*v6];
+    userInfo2 = [v7 userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*v6];
 
-    v13 = [v12 code];
-    v16 = (v13 + 16825) <= 4 && ((1 << (v13 - 71)) & 0x19) != 0 || v13 == -73199;
+    code = [v12 code];
+    v16 = (code + 16825) <= 4 && ((1 << (code - 71)) & 0x19) != 0 || code == -73199;
   }
 
   else

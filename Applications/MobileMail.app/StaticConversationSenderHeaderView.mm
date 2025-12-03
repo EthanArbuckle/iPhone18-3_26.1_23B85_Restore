@@ -4,9 +4,9 @@
 - (int64_t)appearance;
 - (void)configureViewHierarchy;
 - (void)layoutSubviews;
-- (void)setAppearance:(int64_t)a3;
+- (void)setAppearance:(int64_t)appearance;
 - (void)setupViews;
-- (void)updateWith:(id)a3;
+- (void)updateWith:(id)with;
 @end
 
 @implementation StaticConversationSenderHeaderView
@@ -19,10 +19,10 @@
   return v4;
 }
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
   _objc_retain(self);
-  sub_100459B58(a3);
+  sub_100459B58(appearance);
   _objc_release(self);
 }
 
@@ -51,13 +51,13 @@
   _objc_release(self);
 }
 
-- (void)updateWith:(id)a3
+- (void)updateWith:(id)with
 {
-  _objc_retain(a3);
+  _objc_retain(with);
   _objc_retain(self);
-  sub_10045A46C(a3);
+  sub_10045A46C(with);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(with);
 }
 
 - (void)setupViews

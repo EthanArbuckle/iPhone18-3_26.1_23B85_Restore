@@ -2,19 +2,19 @@
 - (CGSize)boundingSize;
 - (CGSize)containerSize;
 - (CGSize)downloadSize;
-- (VUIRemoteImageDescriptor)initWithSrc:(id)a3 size:(CGSize)a4 containerSize:(CGSize)a5;
+- (VUIRemoteImageDescriptor)initWithSrc:(id)src size:(CGSize)size containerSize:(CGSize)containerSize;
 - (_VUICornerRadii)borderRadii;
 @end
 
 @implementation VUIRemoteImageDescriptor
 
-- (VUIRemoteImageDescriptor)initWithSrc:(id)a3 size:(CGSize)a4 containerSize:(CGSize)a5
+- (VUIRemoteImageDescriptor)initWithSrc:(id)src size:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v11 = a3;
+  height = containerSize.height;
+  width = containerSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  srcCopy = src;
   v16.receiver = self;
   v16.super_class = VUIRemoteImageDescriptor;
   v12 = [(VUIRemoteImageDescriptor *)&v16 init];
@@ -27,7 +27,7 @@
 
   else
   {
-    objc_storeStrong(&v12->_src, a3);
+    objc_storeStrong(&v12->_src, src);
     v13->_boundingSize.width = v8;
     v13->_boundingSize.height = v7;
     v13->_containerSize.width = width;

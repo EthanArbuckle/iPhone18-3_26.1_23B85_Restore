@@ -1,56 +1,56 @@
 @interface APEducationVCPresentingViewController
-- (APEducationVCPresentingViewController)initWithCoder:(id)a3;
-- (APEducationVCPresentingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (APEducationVCPresentingViewController)initWithCoder:(id)coder;
+- (APEducationVCPresentingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)presentEducationViewController:(id)a3;
+- (void)presentEducationViewController:(id)controller;
 @end
 
 @implementation APEducationVCPresentingViewController
 
-- (void)presentEducationViewController:(id)a3
+- (void)presentEducationViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  [v4 setModalInPresentation_];
-  -[APEducationVCPresentingViewController presentViewController:animated:completion:](v5, sel_presentViewController_animated_completion_, v4, [v4 wantsAnimatedPresentation], 0);
+  controllerCopy = controller;
+  selfCopy = self;
+  [controllerCopy setModalInPresentation_];
+  -[APEducationVCPresentingViewController presentViewController:animated:completion:](selfCopy, sel_presentViewController_animated_completion_, controllerCopy, [controllerCopy wantsAnimatedPresentation], 0);
 }
 
 - (void)loadView
 {
   v3 = objc_allocWithZone(MEMORY[0x1E69DD250]);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(APEducationVCPresentingViewController *)v5 setView:v4];
+  [(APEducationVCPresentingViewController *)selfCopy setView:v4];
 }
 
-- (APEducationVCPresentingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (APEducationVCPresentingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1AEA32454();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1AEA32444();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = APEducationVCPresentingViewController;
-  v9 = [(APEducationVCPresentingViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(APEducationVCPresentingViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (APEducationVCPresentingViewController)initWithCoder:(id)a3
+- (APEducationVCPresentingViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = APEducationVCPresentingViewController;
-  v3 = a3;
-  v4 = [(APEducationVCPresentingViewController *)&v6 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(APEducationVCPresentingViewController *)&v6 initWithCoder:coderCopy];
 
   if (v4)
   {

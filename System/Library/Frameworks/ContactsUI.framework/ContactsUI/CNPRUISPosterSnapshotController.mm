@@ -1,37 +1,37 @@
 @interface CNPRUISPosterSnapshotController
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4;
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error;
 - (id)sharedController;
-- (void)acquireKeepActiveAssertionForReason:(id)a3;
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4;
-- (void)releaseKeepActiveAssertionForReason:(id)a3;
+- (void)acquireKeepActiveAssertionForReason:(id)reason;
+- (void)executeSnapshotRequest:(id)request completion:(id)completion;
+- (void)releaseKeepActiveAssertionForReason:(id)reason;
 @end
 
 @implementation CNPRUISPosterSnapshotController
 
-- (void)releaseKeepActiveAssertionForReason:(id)a3
+- (void)releaseKeepActiveAssertionForReason:(id)reason
 {
   v5 = *MEMORY[0x1E6996568];
   v6 = *(*MEMORY[0x1E6996568] + 16);
-  v7 = a3;
-  if (v6(v5, v7))
+  reasonCopy = reason;
+  if (v6(v5, reasonCopy))
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CNPostersSoftLinkWrappers.m" lineNumber:717 description:@"assertion reason must be non-empty"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNPostersSoftLinkWrappers.m" lineNumber:717 description:@"assertion reason must be non-empty"];
   }
 
-  v9 = [_assertions objectForKeyedSubscript:v7];
+  v9 = [_assertions objectForKeyedSubscript:reasonCopy];
   [v9 invalidate];
-  [_assertions setObject:0 forKeyedSubscript:v7];
+  [_assertions setObject:0 forKeyedSubscript:reasonCopy];
 }
 
-- (void)acquireKeepActiveAssertionForReason:(id)a3
+- (void)acquireKeepActiveAssertionForReason:(id)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  reasonCopy = reason;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v8 = CNUILogPosters();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -49,8 +49,8 @@ LABEL_11:
   {
     if ((*(*MEMORY[0x1E6996568] + 16))())
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"CNPostersSoftLinkWrappers.m" lineNumber:699 description:@"assertion reason must be non-empty"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CNPostersSoftLinkWrappers.m" lineNumber:699 description:@"assertion reason must be non-empty"];
     }
 
     if (acquireKeepActiveAssertionForReason__onceToken != -1)
@@ -58,14 +58,14 @@ LABEL_11:
       dispatch_once(&acquireKeepActiveAssertionForReason__onceToken, &__block_literal_global_65724);
     }
 
-    v12 = [_assertions objectForKeyedSubscript:v5];
+    v12 = [_assertions objectForKeyedSubscript:reasonCopy];
 
     if (!v12)
     {
-      v13 = [(CNPRUISPosterSnapshotController *)self sharedController];
-      v14 = [v13 acquireKeepActiveAssertionForReason:v5];
+      sharedController = [(CNPRUISPosterSnapshotController *)self sharedController];
+      v14 = [sharedController acquireKeepActiveAssertionForReason:reasonCopy];
 
-      [_assertions setObject:v14 forKeyedSubscript:v5];
+      [_assertions setObject:v14 forKeyedSubscript:reasonCopy];
       goto LABEL_13;
     }
 
@@ -73,7 +73,7 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v5;
+      v17 = reasonCopy;
       v9 = "There's already an assertion for reason: %@, skipping adding another one";
       v10 = v8;
       v11 = 12;
@@ -93,20 +93,20 @@ uint64_t __71__CNPRUISPosterSnapshotController_acquireKeepActiveAssertionForReas
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4
+- (void)executeSnapshotRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNPRUISPosterSnapshotController *)self sharedController];
-  v9 = [v7 wrappedRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  sharedController = [(CNPRUISPosterSnapshotController *)self sharedController];
+  wrappedRequest = [requestCopy wrappedRequest];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__CNPRUISPosterSnapshotController_executeSnapshotRequest_completion___block_invoke;
   v11[3] = &unk_1E74E74B0;
-  v12 = v6;
-  v10 = v6;
-  [v8 executeSnapshotRequest:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [sharedController executeSnapshotRequest:wrappedRequest completion:v11];
 }
 
 void __69__CNPRUISPosterSnapshotController_executeSnapshotRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -123,13 +123,13 @@ void __69__CNPRUISPosterSnapshotController_executeSnapshotRequest_completion___b
   }
 }
 
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNPRUISPosterSnapshotController *)self sharedController];
-  v8 = [v6 wrappedRequest];
+  requestCopy = request;
+  sharedController = [(CNPRUISPosterSnapshotController *)self sharedController];
+  wrappedRequest = [requestCopy wrappedRequest];
 
-  v9 = [v7 latestSnapshotBundleForRequest:v8 error:a4];
+  v9 = [sharedController latestSnapshotBundleForRequest:wrappedRequest error:error];
 
   if (v9)
   {
@@ -164,9 +164,9 @@ void __69__CNPRUISPosterSnapshotController_executeSnapshotRequest_completion___b
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedIncomingCallSnapshotController];
+  sharedIncomingCallSnapshotController = [v2 sharedIncomingCallSnapshotController];
 
-  return v4;
+  return sharedIncomingCallSnapshotController;
 }
 
 @end

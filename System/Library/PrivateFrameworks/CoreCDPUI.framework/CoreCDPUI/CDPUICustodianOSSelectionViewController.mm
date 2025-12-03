@@ -1,36 +1,36 @@
 @interface CDPUICustodianOSSelectionViewController
-- (CDPUICustodianOSSelectionViewController)initWithViewModel:(id)a3 cdpContext:(id)a4;
-- (double)heightForFooterInTableView:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_makeEventForEscapeOptionSelected:(id)a3;
+- (CDPUICustodianOSSelectionViewController)initWithViewModel:(id)model cdpContext:(id)context;
+- (double)heightForFooterInTableView:(id)view;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_makeEventForEscapeOptionSelected:(id)selected;
 - (id)_makeViewAppearedEvent;
 - (id)_offersJoinedByComma;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)viewForFooterInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)viewForFooterInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CDPUICustodianOSSelectionViewController
 
-- (CDPUICustodianOSSelectionViewController)initWithViewModel:(id)a3 cdpContext:(id)a4
+- (CDPUICustodianOSSelectionViewController)initWithViewModel:(id)model cdpContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 title];
-  v10 = [v7 message];
+  modelCopy = model;
+  contextCopy = context;
+  title = [modelCopy title];
+  message = [modelCopy message];
   v14.receiver = self;
   v14.super_class = CDPUICustodianOSSelectionViewController;
-  v11 = [(CDPTableViewController *)&v14 initWithTitle:v9 subTitle:v10];
+  v11 = [(CDPTableViewController *)&v14 initWithTitle:title subTitle:message];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_viewModel, a3);
-    objc_storeStrong(&v11->_cdpContext, a4);
-    v12 = [(CDPUICustodianOSSelectionViewModel *)v11->_viewModel icon];
-    [(CDPTableViewController *)v11 setIcon:v12];
+    objc_storeStrong(&v11->_viewModel, model);
+    objc_storeStrong(&v11->_cdpContext, context);
+    icon = [(CDPUICustodianOSSelectionViewModel *)v11->_viewModel icon];
+    [(CDPTableViewController *)v11 setIcon:icon];
 
     [(CDPTableViewController *)v11 setTableViewStyle:[(CDPUICustodianOSSelectionViewModel *)v11->_viewModel tableViewStyle]];
   }
@@ -38,42 +38,42 @@
   return v11;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CDPUICustodianOSSelectionViewController;
-  [(CDPUICustodianOSSelectionViewController *)&v6 viewDidAppear:a3];
-  v4 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  v5 = [(CDPUICustodianOSSelectionViewController *)self _makeViewAppearedEvent];
-  [v4 sendEvent:v5];
+  [(CDPUICustodianOSSelectionViewController *)&v6 viewDidAppear:appear];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  _makeViewAppearedEvent = [(CDPUICustodianOSSelectionViewController *)self _makeViewAppearedEvent];
+  [rtcAnalyticsReporter sendEvent:_makeViewAppearedEvent];
 }
 
 - (id)_makeViewAppearedEvent
 {
   v3 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD7E8] category:*MEMORY[0x277CFD930]];
-  v4 = [(CDPUICustodianOSSelectionViewController *)self _offersJoinedByComma];
-  if (v4)
+  _offersJoinedByComma = [(CDPUICustodianOSSelectionViewController *)self _offersJoinedByComma];
+  if (_offersJoinedByComma)
   {
-    [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x277CFD6C8]];
+    [v3 setObject:_offersJoinedByComma forKeyedSubscript:*MEMORY[0x277CFD6C8]];
   }
 
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle:a3]== 2;
-  v6 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
-  v7 = [v6 count] - v5;
+  v5 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle:view]== 2;
+  options = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
+  v7 = [options count] - v5;
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CDPTableViewController *)self tableView];
-  v7 = [v6 dequeueReusableCellWithIdentifier:@"CDPOSCell"];
+  pathCopy = path;
+  tableView = [(CDPTableViewController *)self tableView];
+  v7 = [tableView dequeueReusableCellWithIdentifier:@"CDPOSCell"];
 
   if (!v7)
   {
@@ -81,26 +81,26 @@
     [v7 setAccessoryType:1];
   }
 
-  v8 = [v5 row];
+  v8 = [pathCopy row];
   if ([(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle]== 2)
   {
     ++v8;
   }
 
-  v9 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  options = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
+  v10 = [options objectAtIndexedSubscript:v8];
 
-  v11 = [v10 title];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  title = [v10 title];
+  textLabel = [v7 textLabel];
+  [textLabel setText:title];
 
   v13 = MEMORY[0x277D74300];
-  v14 = [v7 textLabel];
-  v15 = [v14 font];
-  [v15 pointSize];
+  textLabel2 = [v7 textLabel];
+  font = [textLabel2 font];
+  [font pointSize];
   v16 = [v13 systemFontOfSize:?];
-  v17 = [v7 textLabel];
-  [v17 setFont:v16];
+  textLabel3 = [v7 textLabel];
+  [textLabel3 setFont:v16];
 
   if ([(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle]== 2)
   {
@@ -117,50 +117,50 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle:a3]== 2)
+  if ([(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle:view]== 2)
   {
-    v5 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 title];
+    options = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
+    v6 = [options objectAtIndexedSubscript:0];
+    title = [v6 title];
   }
 
   else
   {
-    v7 = 0;
+    title = 0;
   }
 
-  return v7;
+  return title;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   if ([(CDPUICustodianOSSelectionViewModel *)self->_viewModel tableViewStyle]== 2)
   {
     ++v5;
   }
 
-  v6 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
-  v11 = [v6 objectAtIndexedSubscript:v5];
+  options = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
+  v11 = [options objectAtIndexedSubscript:v5];
 
-  v7 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
   v8 = [(CDPUICustodianOSSelectionViewController *)self _makeEventForEscapeOptionSelected:v11];
-  [v7 sendEvent:v8];
+  [rtcAnalyticsReporter sendEvent:v8];
 
-  v9 = [v11 escapeAction];
+  escapeAction = [v11 escapeAction];
 
-  if (v9)
+  if (escapeAction)
   {
-    v10 = [v11 escapeAction];
-    v10[2]();
+    escapeAction2 = [v11 escapeAction];
+    escapeAction2[2]();
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  if ([a3 style] == 2)
+  if ([view style] == 2)
   {
     v5 = 44.0;
   }
@@ -170,9 +170,9 @@
     v5 = 60.0;
   }
 
-  v6 = [(CDPUICustodianOSSelectionViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v7))
+  traitCollection = [(CDPUICustodianOSSelectionViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = *MEMORY[0x277D76F30];
   }
@@ -180,11 +180,11 @@
   return v5;
 }
 
-- (double)heightForFooterInTableView:(id)a3
+- (double)heightForFooterInTableView:(id)view
 {
-  v3 = [MEMORY[0x277CFD560] isNaturalUIEnabled];
+  isNaturalUIEnabled = [MEMORY[0x277CFD560] isNaturalUIEnabled];
   result = 90.0;
-  if (v3)
+  if (isNaturalUIEnabled)
   {
     return 110.0;
   }
@@ -192,7 +192,7 @@
   return result;
 }
 
-- (id)viewForFooterInTableView:(id)a3
+- (id)viewForFooterInTableView:(id)view
 {
   v32 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -206,41 +206,41 @@
     [v4 setAlignment:0];
     [v4 setDistribution:1];
     [v4 setSpacing:10.0];
-    v5 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
-    v6 = [v5 firstObject];
+    escapeOffers = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
+    firstObject = [escapeOffers firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      v7 = [MEMORY[0x277D37618] boldButton];
-      v8 = [v6 escapeOfferName];
-      [v7 setTitle:v8 forState:0];
+      boldButton = [MEMORY[0x277D37618] boldButton];
+      escapeOfferName = [firstObject escapeOfferName];
+      [boldButton setTitle:escapeOfferName forState:0];
 
-      [v7 addTarget:v6 action:sel_handleEscapeAction_ forControlEvents:0x2000];
-      [v4 addArrangedSubview:v7];
+      [boldButton addTarget:firstObject action:sel_handleEscapeAction_ forControlEvents:0x2000];
+      [v4 addArrangedSubview:boldButton];
     }
 
     else
     {
-      v7 = 0;
+      boldButton = 0;
     }
 
-    v19 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
-    v20 = [v19 count];
+    escapeOffers2 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
+    v20 = [escapeOffers2 count];
 
     if (v20 >= 2)
     {
-      v21 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
-      v22 = [v21 objectAtIndexedSubscript:1];
+      escapeOffers3 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
+      v22 = [escapeOffers3 objectAtIndexedSubscript:1];
 
-      v23 = [MEMORY[0x277D37650] linkButton];
+      linkButton = [MEMORY[0x277D37650] linkButton];
 
-      v24 = [v22 escapeOfferName];
-      [v23 setTitle:v24 forState:0];
+      escapeOfferName2 = [v22 escapeOfferName];
+      [linkButton setTitle:escapeOfferName2 forState:0];
 
-      [v23 addTarget:v22 action:sel_handleEscapeAction_ forControlEvents:64];
-      [v4 addArrangedSubview:v23];
-      v7 = v23;
-      v6 = v22;
+      [linkButton addTarget:v22 action:sel_handleEscapeAction_ forControlEvents:64];
+      [v4 addArrangedSubview:linkButton];
+      boldButton = linkButton;
+      firstObject = v22;
     }
   }
 
@@ -267,15 +267,15 @@
 
           v13 = *(*(&v27 + 1) + 8 * i);
           v14 = [MEMORY[0x277D75220] buttonWithType:1];
-          v15 = [v13 escapeOfferName];
-          [v14 setTitle:v15 forState:0];
+          escapeOfferName3 = [v13 escapeOfferName];
+          [v14 setTitle:escapeOfferName3 forState:0];
 
-          v16 = [v14 titleLabel];
+          titleLabel = [v14 titleLabel];
           v17 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
-          [v16 setFont:v17];
+          [titleLabel setFont:v17];
 
-          v18 = [v14 titleLabel];
-          [v18 setTextAlignment:1];
+          titleLabel2 = [v14 titleLabel];
+          [titleLabel2 setTextAlignment:1];
 
           [v14 addTarget:v13 action:sel_handleEscapeAction_ forControlEvents:64];
           [v14 sizeToFit];
@@ -294,21 +294,21 @@
 
 - (id)_offersJoinedByComma
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CDPUICustodianOSSelectionViewController *)self navigationItem];
-  v5 = [v4 backBarButtonItem];
+  array = [MEMORY[0x277CBEB18] array];
+  navigationItem = [(CDPUICustodianOSSelectionViewController *)self navigationItem];
+  backBarButtonItem = [navigationItem backBarButtonItem];
 
-  if (v5)
+  if (backBarButtonItem)
   {
     v6 = MEMORY[0x277CFD950];
   }
 
   else
   {
-    v7 = [(CDPUICustodianOSSelectionViewController *)self navigationItem];
-    v8 = [v7 leftBarButtonItem];
+    navigationItem2 = [(CDPUICustodianOSSelectionViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
 
-    if (!v8)
+    if (!leftBarButtonItem)
     {
       goto LABEL_6;
     }
@@ -316,37 +316,37 @@
     v6 = MEMORY[0x277CFD958];
   }
 
-  [v3 addObject:*v6];
+  [array addObject:*v6];
 LABEL_6:
-  v9 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
+  options = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel options];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__CDPUICustodianOSSelectionViewController__offersJoinedByComma__block_invoke;
   v20[3] = &unk_278E2BF08;
-  v10 = v3;
+  v10 = array;
   v21 = v10;
-  [v9 enumerateObjectsUsingBlock:v20];
+  [options enumerateObjectsUsingBlock:v20];
 
-  v11 = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
+  escapeOffers = [(CDPUICustodianOSSelectionViewModel *)self->_viewModel escapeOffers];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __63__CDPUICustodianOSSelectionViewController__offersJoinedByComma__block_invoke_2;
   v18 = &unk_278E2B7D0;
   v12 = v10;
   v19 = v12;
-  [v11 enumerateObjectsUsingBlock:&v15];
+  [escapeOffers enumerateObjectsUsingBlock:&v15];
 
   if ([v12 count])
   {
-    v13 = [v12 aaf_arrayAsCommaSeperatedString];
+    aaf_arrayAsCommaSeperatedString = [v12 aaf_arrayAsCommaSeperatedString];
   }
 
   else
   {
-    v13 = 0;
+    aaf_arrayAsCommaSeperatedString = 0;
   }
 
-  return v13;
+  return aaf_arrayAsCommaSeperatedString;
 }
 
 void __63__CDPUICustodianOSSelectionViewController__offersJoinedByComma__block_invoke(uint64_t a1, void *a2)
@@ -375,16 +375,16 @@ void __63__CDPUICustodianOSSelectionViewController__offersJoinedByComma__block_i
   }
 }
 
-- (id)_makeEventForEscapeOptionSelected:(id)a3
+- (id)_makeEventForEscapeOptionSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   v5 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD6E0] category:*MEMORY[0x277CFD930]];
-  v6 = [v4 titleTelemetryKey];
+  titleTelemetryKey = [selectedCopy titleTelemetryKey];
 
-  if (v6)
+  if (titleTelemetryKey)
   {
-    v7 = [v4 titleTelemetryKey];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277CFD6D8]];
+    titleTelemetryKey2 = [selectedCopy titleTelemetryKey];
+    [v5 setObject:titleTelemetryKey2 forKeyedSubscript:*MEMORY[0x277CFD6D8]];
   }
 
   return v5;

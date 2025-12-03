@@ -1,9 +1,9 @@
 @interface PRUISPosterChannelStateCoordinatorTransition
-+ (id)initialTransitionForModelCoordinatorWithModelCoordinator:(id)a3 channelIdentifier:(id)a4 updater:(id)a5 error:(id *)a6;
-- (BOOL)commitStateTransitionAndReturnError:(id *)a3;
++ (id)initialTransitionForModelCoordinatorWithModelCoordinator:(id)coordinator channelIdentifier:(id)identifier updater:(id)updater error:(id *)error;
+- (BOOL)commitStateTransitionAndReturnError:(id *)error;
 - (NSArray)stagedFileSystemURLs;
 - (_TtC21PosterBoardUIServices44PRUISPosterChannelStateCoordinatorTransition)init;
-- (_TtC21PosterBoardUIServices44PRUISPosterChannelStateCoordinatorTransition)initWithModelCoordinator:(id)a3 currentState:(id)a4 updater:(id)a5 error:(id *)a6;
+- (_TtC21PosterBoardUIServices44PRUISPosterChannelStateCoordinatorTransition)initWithModelCoordinator:(id)coordinator currentState:(id)state updater:(id)updater error:(id *)error;
 @end
 
 @implementation PRUISPosterChannelStateCoordinatorTransition
@@ -17,43 +17,43 @@
   return v2;
 }
 
-+ (id)initialTransitionForModelCoordinatorWithModelCoordinator:(id)a3 channelIdentifier:(id)a4 updater:(id)a5 error:(id *)a6
++ (id)initialTransitionForModelCoordinatorWithModelCoordinator:(id)coordinator channelIdentifier:(id)identifier updater:(id)updater error:(id *)error
 {
   v8 = sub_1CAEF9E1C();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CAEF9DFC();
-  v12 = a3;
+  coordinatorCopy = coordinator;
   swift_unknownObjectRetain();
-  v13 = sub_1CAECAD88(v12, v11, a5);
+  v13 = sub_1CAECAD88(coordinatorCopy, v11, updater);
   (*(v9 + 8))(v11, v8);
   swift_unknownObjectRelease();
 
   return v13;
 }
 
-- (_TtC21PosterBoardUIServices44PRUISPosterChannelStateCoordinatorTransition)initWithModelCoordinator:(id)a3 currentState:(id)a4 updater:(id)a5 error:(id *)a6
+- (_TtC21PosterBoardUIServices44PRUISPosterChannelStateCoordinatorTransition)initWithModelCoordinator:(id)coordinator currentState:(id)state updater:(id)updater error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  stateCopy = state;
   swift_unknownObjectRetain();
-  return PRUISPosterChannelStateCoordinatorTransition.init(modelCoordinator:currentState:updater:)(v8, v9, a5);
+  return PRUISPosterChannelStateCoordinatorTransition.init(modelCoordinator:currentState:updater:)(coordinatorCopy, stateCopy, updater);
 }
 
-- (BOOL)commitStateTransitionAndReturnError:(id *)a3
+- (BOOL)commitStateTransitionAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   PRUISPosterChannelStateCoordinatorTransition.commitStateTransition()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = sub_1CAEF9BEC();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else

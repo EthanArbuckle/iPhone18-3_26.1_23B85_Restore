@@ -1,11 +1,11 @@
 @interface CTLazuliSuggestedActionDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliSuggestedActionDevice:(id)a3;
-- (CTLazuliSuggestedActionDevice)initWithCoder:(id)a3;
-- (CTLazuliSuggestedActionDevice)initWithReflection:(const SuggestedActionDevice *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliSuggestedActionDevice:(id)device;
+- (CTLazuliSuggestedActionDevice)initWithCoder:(id)coder;
+- (CTLazuliSuggestedActionDevice)initWithReflection:(const SuggestedActionDevice *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliSuggestedActionDevice
@@ -13,77 +13,77 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliSuggestedActionDevice *)self type];
-  v6 = [(CTLazuliSuggestedActionDevice *)self type];
-  [v3 appendFormat:@", type = [%ld - %s]", v4, print_CTLazuliDeviceActionType(&v6)];
+  type = [(CTLazuliSuggestedActionDevice *)self type];
+  type2 = [(CTLazuliSuggestedActionDevice *)self type];
+  [v3 appendFormat:@", type = [%ld - %s]", type, print_CTLazuliDeviceActionType(&type2)];
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliSuggestedActionDevice:(id)a3
+- (BOOL)isEqualToCTLazuliSuggestedActionDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(CTLazuliSuggestedActionDevice *)self type];
-  LOBYTE(v5) = v5 == [v4 type];
+  deviceCopy = device;
+  type = [(CTLazuliSuggestedActionDevice *)self type];
+  LOBYTE(type) = type == [deviceCopy type];
 
-  return v5;
+  return type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionDevice *)self isEqualToCTLazuliSuggestedActionDevice:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionDevice *)self isEqualToCTLazuliSuggestedActionDevice:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTLazuliSuggestedActionDevice allocWithZone:a3];
+  v4 = [CTLazuliSuggestedActionDevice allocWithZone:zone];
   [(CTLazuliSuggestedActionDevice *)v4 setType:self->_type];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithLong:self->_type];
-  [v5 encodeObject:v4 forKey:@"kTypeKey"];
+  [coderCopy encodeObject:v4 forKey:@"kTypeKey"];
 }
 
-- (CTLazuliSuggestedActionDevice)initWithCoder:(id)a3
+- (CTLazuliSuggestedActionDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CTLazuliSuggestedActionDevice;
   v5 = [(CTLazuliSuggestedActionDevice *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTypeKey"];
     v5->_type = [v6 longValue];
   }
 
   return v5;
 }
 
-- (CTLazuliSuggestedActionDevice)initWithReflection:(const SuggestedActionDevice *)a3
+- (CTLazuliSuggestedActionDevice)initWithReflection:(const SuggestedActionDevice *)reflection
 {
   v6.receiver = self;
   v6.super_class = CTLazuliSuggestedActionDevice;
   v4 = [(CTLazuliSuggestedActionDevice *)&v6 init];
   if (v4)
   {
-    v4->_type = encode_CTLazuliChatBotMediaLabelType(a3);
+    v4->_type = encode_CTLazuliChatBotMediaLabelType(reflection);
   }
 
   return v4;

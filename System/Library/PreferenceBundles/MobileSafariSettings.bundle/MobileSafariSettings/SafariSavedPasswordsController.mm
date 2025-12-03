@@ -1,6 +1,6 @@
 @interface SafariSavedPasswordsController
 - (void)emitNavigationEvent;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -13,18 +13,18 @@
   [(SafariSavedPasswordsController *)&v8 viewDidLoad];
   v3 = +[PMPasswordOptionsController makePasswordOptionsViewController];
   [(SafariSavedPasswordsController *)self addChildViewController:v3];
-  v4 = [v3 title];
-  [(SafariSavedPasswordsController *)self setTitle:v4];
+  title = [v3 title];
+  [(SafariSavedPasswordsController *)self setTitle:title];
 
-  v5 = [(SafariSavedPasswordsController *)self view];
-  v6 = [v3 view];
-  [v5 addSubview:v6];
-  [v5 bounds];
-  [v6 setFrame:?];
-  v7 = [v5 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  view = [(SafariSavedPasswordsController *)self view];
+  view2 = [v3 view];
+  [view addSubview:view2];
+  [view bounds];
+  [view2 setFrame:?];
+  backgroundColor = [view backgroundColor];
+  [view2 setBackgroundColor:backgroundColor];
 
-  [v6 setAutoresizingMask:18];
+  [view2 setAutoresizingMask:18];
   [v3 didMoveToParentViewController:self];
 }
 
@@ -34,28 +34,28 @@
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"AutoFill & Passwords" table:0 locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"AutoFill & Passwords" table:0 locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"General" table:0 locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"General" table:0 locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
   [(SafariSavedPasswordsController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.autofill" title:v8 localizedNavigationComponents:v14 deepLink:v3];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v4 = PSTitleKey;
-  v5 = a3;
-  [v5 setObject:@"PASSWORDS" forKeyedSubscript:v4];
+  specifierCopy = specifier;
+  [specifierCopy setObject:@"PASSWORDS" forKeyedSubscript:v4];
   v6.receiver = self;
   v6.super_class = SafariSavedPasswordsController;
-  [(SafariSavedPasswordsController *)&v6 setSpecifier:v5];
+  [(SafariSavedPasswordsController *)&v6 setSpecifier:specifierCopy];
 }
 
 @end

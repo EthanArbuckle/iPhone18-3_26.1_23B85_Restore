@@ -1,18 +1,18 @@
 @interface CNVisualIdentityAvatarViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomContent;
 - (id)axAvatarContacts;
-- (id)axContactNameForCNContact:(id)a3;
+- (id)axContactNameForCNContact:(id)contact;
 - (id)axContacts;
 @end
 
 @implementation CNVisualIdentityAvatarViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"visualIdentity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentity" hasInstanceMethod:@"contacts" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"visualIdentity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentity" hasInstanceMethod:@"contacts" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityCustomContent
@@ -21,20 +21,20 @@
   v3 = objc_opt_new();
   v21.receiver = self;
   v21.super_class = CNVisualIdentityAvatarViewControllerAccessibility;
-  v4 = [(CNVisualIdentityAvatarViewControllerAccessibility *)&v21 accessibilityCustomContent];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomContent = [(CNVisualIdentityAvatarViewControllerAccessibility *)&v21 accessibilityCustomContent];
+  [v3 axSafelyAddObjectsFromArray:accessibilityCustomContent];
 
-  v5 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
-  v6 = [v5 count];
+  axContacts = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
+  v6 = [axContacts count];
 
   if (v6 >= 3)
   {
-    v7 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
+    axContacts2 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v8 = [axContacts2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -45,7 +45,7 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(axContacts2);
           }
 
           v12 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContactNameForCNContact:*(*(&v17 + 1) + 8 * i)];
@@ -59,7 +59,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v9 = [axContacts2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v9);
@@ -69,52 +69,52 @@
   return v3;
 }
 
-- (id)axContactNameForCNContact:(id)a3
+- (id)axContactNameForCNContact:(id)contact
 {
-  v3 = a3;
-  if (!v3 || ([MEMORY[0x29EDB8BA8] stringFromContact:v3 style:0], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  contactCopy = contact;
+  if (!contactCopy || ([MEMORY[0x29EDB8BA8] stringFromContact:contactCopy style:0], (stringValue = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [v3 phoneNumbers];
-    v6 = [v3 emailAddresses];
-    if ([v5 count])
+    phoneNumbers = [contactCopy phoneNumbers];
+    emailAddresses = [contactCopy emailAddresses];
+    if ([phoneNumbers count])
     {
-      v7 = [v5 firstObject];
-      v8 = [v7 value];
-      v4 = [v8 stringValue];
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
+      stringValue = [value stringValue];
     }
 
     else
     {
-      if (![v6 count])
+      if (![emailAddresses count])
       {
-        v4 = 0;
+        stringValue = 0;
         goto LABEL_8;
       }
 
-      v7 = [v6 firstObject];
-      v4 = [v7 value];
+      firstObject = [emailAddresses firstObject];
+      stringValue = [firstObject value];
     }
 
 LABEL_8:
   }
 
-  return v4;
+  return stringValue;
 }
 
 - (id)axAvatarContacts
 {
-  v3 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
-  if ([v3 count])
+  axContacts = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContacts];
+  if ([axContacts count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [axContacts objectAtIndexedSubscript:0];
     v5 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContactNameForCNContact:v4];
 
-    v6 = [v3 count];
+    v6 = [axContacts count];
     if (v6 != 1)
     {
       if (v6 == 2)
       {
-        v7 = [v3 objectAtIndexedSubscript:1];
+        v7 = [axContacts objectAtIndexedSubscript:1];
         v8 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContactNameForCNContact:v7];
 
         v9 = MEMORY[0x29EDBA0F8];
@@ -124,12 +124,12 @@ LABEL_8:
 
       else
       {
-        v12 = [v3 objectAtIndexedSubscript:1];
+        v12 = [axContacts objectAtIndexedSubscript:1];
         v8 = [(CNVisualIdentityAvatarViewControllerAccessibility *)self axContactNameForCNContact:v12];
 
         v13 = MEMORY[0x29EDBA0F8];
         v10 = accessibilityLocalizedString(@"avatar.contacts.overflow");
-        v15 = [v13 localizedStringWithFormat:v10, v8, objc_msgSend(v3, "count") - 2];
+        v15 = [v13 localizedStringWithFormat:v10, v8, objc_msgSend(axContacts, "count") - 2];
         v11 = __UIAXStringForVariables();
 
         v5 = v15;

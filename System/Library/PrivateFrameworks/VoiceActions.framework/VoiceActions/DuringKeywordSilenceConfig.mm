@@ -3,8 +3,8 @@
 - (NSString)description;
 - (float)minPercentageOfNonSilenceFrames;
 - (float)silenceProbability;
-- (void)setMinPercentageOfNonSilenceFrames:(float)a3;
-- (void)setSilenceProbability:(float)a3;
+- (void)setMinPercentageOfNonSilenceFrames:(float)frames;
+- (void)setSilenceProbability:(float)probability;
 @end
 
 @implementation DuringKeywordSilenceConfig
@@ -16,11 +16,11 @@
   return *v2;
 }
 
-- (void)setMinPercentageOfNonSilenceFrames:(float)a3
+- (void)setMinPercentageOfNonSilenceFrames:(float)frames
 {
   v4 = (self + OBJC_IVAR___DuringKeywordSilenceConfig_minPercentageOfNonSilenceFrames);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = frames;
 }
 
 - (float)silenceProbability
@@ -30,11 +30,11 @@
   return *v2;
 }
 
-- (void)setSilenceProbability:(float)a3
+- (void)setSilenceProbability:(float)probability
 {
   v4 = (self + OBJC_IVAR___DuringKeywordSilenceConfig_silenceProbability);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = probability;
 }
 
 - (DuringKeywordSilenceConfig)init
@@ -55,7 +55,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for DuringKeywordSilence();
   sub_27227DA80(&qword_2808822B8, v9, type metadata accessor for DuringKeywordSilence);

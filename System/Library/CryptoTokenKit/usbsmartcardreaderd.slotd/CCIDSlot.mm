@@ -1,51 +1,51 @@
 @interface CCIDSlot
-- (BOOL)PPSForProtocol:(unint64_t)a3 withFIndexDindex:(id)a4 andSPU:(id)a5;
+- (BOOL)PPSForProtocol:(unint64_t)protocol withFIndexDindex:(id)dindex andSPU:(id)u;
 - (BOOL)allowAlternativeFiDi;
-- (BOOL)engine:(id)a3 powerDownWithEject:(BOOL)a4;
+- (BOOL)engine:(id)engine powerDownWithEject:(BOOL)eject;
 - (BOOL)simulateCardReinsertion;
-- (id)changePINSecure:(id)a3 error:(id *)a4;
+- (id)changePINSecure:(id)secure error:(id *)error;
 - (id)coldResetCard;
-- (id)engine:(id)a3 escape:(id)a4;
-- (id)engine:(id)a3 runUserInteraction:(id)a4 error:(id *)a5;
-- (id)engine:(id)a3 transmit:(id)a4;
-- (id)engineResetCard:(id)a3;
-- (id)escapeCommand:(id)a3;
-- (id)findSuitableFDIndexes:(id)a3;
-- (id)findSuitableFIndexDIndex:(id)a3;
+- (id)engine:(id)engine escape:(id)escape;
+- (id)engine:(id)engine runUserInteraction:(id)interaction error:(id *)error;
+- (id)engine:(id)engine transmit:(id)transmit;
+- (id)engineResetCard:(id)card;
+- (id)escapeCommand:(id)command;
+- (id)findSuitableFDIndexes:(id)indexes;
+- (id)findSuitableFIndexDIndex:(id)index;
 - (id)getCardsNeedsBaseFiDi;
 - (id)getClockFrequencies;
 - (id)getDataRates;
 - (id)getParameters;
-- (id)receiveMessageWitMaxPayload:(unint64_t)a3 sequenceNumber:(unsigned __int8)a4 duplicateMessage:(unsigned __int8)a5 timeout:(id)a6;
+- (id)receiveMessageWitMaxPayload:(unint64_t)payload sequenceNumber:(unsigned __int8)number duplicateMessage:(unsigned __int8)message timeout:(id)timeout;
 - (id)resetParameters;
-- (id)setParameters:(id)a3;
-- (id)transmitAndReceive:(id)a3 maxPayload:(unint64_t)a4 sequence:(id)a5 outTimeout:(id)a6 inTimeout:(id)a7 transmitted:(id)a8;
-- (id)verifyPINSecure:(id)a3 error:(id *)a4;
+- (id)setParameters:(id)parameters;
+- (id)transmitAndReceive:(id)receive maxPayload:(unint64_t)payload sequence:(id)sequence outTimeout:(id)timeout inTimeout:(id)inTimeout transmitted:(id)transmitted;
+- (id)verifyPINSecure:(id)secure error:(id *)error;
 - (id)warmResetCard;
-- (unint64_t)engine:(id)a3 setProtocol:(unint64_t)a4;
-- (unint64_t)setProtocol:(unint64_t)a3;
-- (unint64_t)setProtocol_v1:(unint64_t)a3;
-- (unint64_t)setProtocol_v2:(unint64_t)a3;
+- (unint64_t)engine:(id)engine setProtocol:(unint64_t)protocol;
+- (unint64_t)setProtocol:(unint64_t)protocol;
+- (unint64_t)setProtocol_v1:(unint64_t)protocol_v1;
+- (unint64_t)setProtocol_v2:(unint64_t)protocol_v2;
 - (unsigned)PPSVersion;
-- (void)cardNeedsBaseFiDi:(id)a3;
-- (void)didWakeUpOnEngine:(id)a3;
-- (void)sendAnalyticsFailure:(unsigned __int8)a3;
-- (void)setDataRateAndClockFrequency:(id)a3;
-- (void)willSleepOnEngine:(id)a3;
+- (void)cardNeedsBaseFiDi:(id)di;
+- (void)didWakeUpOnEngine:(id)engine;
+- (void)sendAnalyticsFailure:(unsigned __int8)failure;
+- (void)setDataRateAndClockFrequency:(id)frequency;
+- (void)willSleepOnEngine:(id)engine;
 @end
 
 @implementation CCIDSlot
 
-- (void)sendAnalyticsFailure:(unsigned __int8)a3
+- (void)sendAnalyticsFailure:(unsigned __int8)failure
 {
-  if (a3 > 5u)
+  if (failure > 5u)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1000247A0[a3];
+    v3 = off_1000247A0[failure];
   }
 
   v4 = v3;
@@ -77,8 +77,8 @@
   if ([v7 messageType] == 128 && (objc_msgSend(v7, "status"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "bmCommandStatus"), v8, !v9))
   {
     v15 = [TKSmartCardATR alloc];
-    v16 = [v7 aPayload];
-    v17 = [v15 initWithBytes:v16];
+    aPayload = [v7 aPayload];
+    v17 = [v15 initWithBytes:aPayload];
     lastATR = self->_lastATR;
     self->_lastATR = v17;
 
@@ -117,11 +117,11 @@
   }
 
   v4 = [CCIDMessageView create:98];
-  v5 = [(Slot *)self device];
-  v6 = [v5 CCIDDescriptor];
-  v7 = [v6 automaticICCActivation];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  automaticICCActivation = [cCIDDescriptor automaticICCActivation];
 
-  if (v7)
+  if (automaticICCActivation)
   {
     v8 = 0;
     v9 = 0;
@@ -130,9 +130,9 @@
 
   else
   {
-    v11 = [(Slot *)self device];
-    v12 = [v11 CCIDDescriptor];
-    if ([v12 bVoltageSupport])
+    device2 = [(Slot *)self device];
+    cCIDDescriptor2 = [device2 CCIDDescriptor];
+    if ([cCIDDescriptor2 bVoltageSupport])
     {
 
       v8 = 1;
@@ -142,19 +142,19 @@
 
     else
     {
-      v13 = [(Slot *)self device];
-      v14 = [v13 CCIDDescriptor];
-      v15 = [v14 bVoltageSupport];
-      if ((v15 & 2) != 0)
+      device3 = [(Slot *)self device];
+      cCIDDescriptor3 = [device3 CCIDDescriptor];
+      bVoltageSupport = [cCIDDescriptor3 bVoltageSupport];
+      if ((bVoltageSupport & 2) != 0)
       {
-        v9 = v15 & 2;
+        v9 = bVoltageSupport & 2;
       }
 
       else
       {
-        v16 = [(Slot *)self device];
-        v17 = [v16 CCIDDescriptor];
-        v9 = [v17 bVoltageSupport] & 4;
+        device4 = [(Slot *)self device];
+        cCIDDescriptor4 = [device4 CCIDDescriptor];
+        v9 = [cCIDDescriptor4 bVoltageSupport] & 4;
       }
 
       v8 = v9;
@@ -172,17 +172,17 @@
 
   [v4 setBPowerSelect:v10];
   v18 = [(CCIDSlot *)self transmitAndReceive:v4 maxPayload:33 transmitted:0];
-  v19 = [v18 messageType];
+  messageType = [v18 messageType];
   v20 = sub_100002620();
   v21 = v20;
-  if (v19 != 128)
+  if (messageType != 128)
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       sub_100014738();
     }
 
-    v27 = self;
+    selfCopy2 = self;
     v28 = 0;
     goto LABEL_24;
   }
@@ -192,14 +192,14 @@
     sub_10001486C(v18);
   }
 
-  v22 = [(Slot *)self device];
-  v23 = [v22 CCIDDescriptor];
-  if ([v23 automaticICCActivation])
+  device5 = [(Slot *)self device];
+  cCIDDescriptor5 = [device5 CCIDDescriptor];
+  if ([cCIDDescriptor5 automaticICCActivation])
   {
-    v24 = [v18 status];
-    v25 = [v24 bmICCStatus];
+    status = [v18 status];
+    bmICCStatus = [status bmICCStatus];
 
-    if (v25)
+    if (bmICCStatus)
     {
       v26 = sub_100002620();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -207,10 +207,10 @@
         sub_100014910();
       }
 
-      v27 = self;
+      selfCopy2 = self;
       v28 = 1;
 LABEL_24:
-      [(CCIDSlot *)v27 sendAnalyticsFailure:v28];
+      [(CCIDSlot *)selfCopy2 sendAnalyticsFailure:v28];
       v29 = 0;
       goto LABEL_72;
     }
@@ -220,10 +220,10 @@ LABEL_24:
   {
   }
 
-  v30 = [v18 status];
-  v31 = [v30 bmCommandStatus];
+  status2 = [v18 status];
+  bmCommandStatus = [status2 bmCommandStatus];
 
-  if (v31)
+  if (bmCommandStatus)
   {
     v32 = 0;
     v33 = 0;
@@ -232,8 +232,8 @@ LABEL_24:
   else
   {
     v34 = [TKSmartCardATR alloc];
-    v35 = [v18 aPayload];
-    v33 = [v34 initWithBytes:v35];
+    aPayload = [v18 aPayload];
+    v33 = [v34 initWithBytes:aPayload];
 
     v36 = [v33 interfaceGroupForProtocol:0x8000];
     v37 = [v36 TA];
@@ -254,16 +254,16 @@ LABEL_24:
     }
   }
 
-  v39 = [(Slot *)self device];
-  v40 = [v39 CCIDDescriptor];
-  v41 = [v40 automaticICCVoltageSelection];
+  device6 = [(Slot *)self device];
+  cCIDDescriptor6 = [device6 CCIDDescriptor];
+  automaticICCVoltageSelection = [cCIDDescriptor6 automaticICCVoltageSelection];
 
-  if (v41)
+  if (automaticICCVoltageSelection)
   {
-    v42 = [v18 status];
-    v43 = [v42 bmCommandStatus];
+    status3 = [v18 status];
+    bmCommandStatus2 = [status3 bmCommandStatus];
 
-    if (!v43)
+    if (!bmCommandStatus2)
     {
       goto LABEL_70;
     }
@@ -288,9 +288,9 @@ LABEL_24:
       goto LABEL_70;
     }
 
-    v46 = [(Slot *)self device];
-    v47 = [v46 CCIDDescriptor];
-    v48 = [v47 bVoltageSupport] & v32;
+    device7 = [(Slot *)self device];
+    cCIDDescriptor7 = [device7 CCIDDescriptor];
+    v48 = [cCIDDescriptor7 bVoltageSupport] & v32;
 
     v49 = v48 & 4;
     if ((v48 & 2) != 0)
@@ -317,9 +317,9 @@ LABEL_24:
 
   else
   {
-    v51 = [(Slot *)self device];
-    v52 = [v51 CCIDDescriptor];
-    v9 &= [v52 bVoltageSupport];
+    device8 = [(Slot *)self device];
+    cCIDDescriptor8 = [device8 CCIDDescriptor];
+    v9 &= [cCIDDescriptor8 bVoltageSupport];
 
     v50 = sub_100002620();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -349,10 +349,10 @@ LABEL_24:
       break;
     }
 
-    v56 = [v55 status];
-    v57 = [v56 bmCommandStatus];
+    status4 = [v55 status];
+    bmCommandStatus3 = [status4 bmCommandStatus];
 
-    if (v57)
+    if (bmCommandStatus3)
     {
       break;
     }
@@ -375,14 +375,14 @@ LABEL_24:
 
     if ([v18 messageType] == 128)
     {
-      v61 = [v18 status];
-      v62 = [v61 bmCommandStatus];
+      status5 = [v18 status];
+      bmCommandStatus4 = [status5 bmCommandStatus];
 
-      if (!v62)
+      if (!bmCommandStatus4)
       {
         v66 = [TKSmartCardATR alloc];
-        v67 = [v18 aPayload];
-        v33 = [v66 initWithBytes:v67];
+        aPayload2 = [v18 aPayload];
+        v33 = [v66 initWithBytes:aPayload2];
 
         v68 = sub_100002620();
         if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -431,23 +431,23 @@ LABEL_72:
   return v29;
 }
 
-- (id)engineResetCard:(id)a3
+- (id)engineResetCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = sub_100002ED4;
   v13 = sub_100002EE4;
   v14 = 0;
-  v5 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002EEC;
   v8[3] = &unk_100024560;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 sync:v8];
+  [synchronize sync:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -463,39 +463,39 @@ LABEL_72:
     sub_100014C98(self);
   }
 
-  v4 = [(Slot *)self device];
-  v5 = [v4 CCIDDescriptor];
-  v6 = [v5 bNumDataRatesSupported];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  bNumDataRatesSupported = [cCIDDescriptor bNumDataRatesSupported];
 
-  if (v6)
+  if (bNumDataRatesSupported)
   {
     v31 = 0;
-    v7 = [(Slot *)self device];
-    v8 = [v7 CCIDDescriptor];
-    v9 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [v8 bNumDataRatesSupported]);
+    device2 = [(Slot *)self device];
+    cCIDDescriptor2 = [device2 CCIDDescriptor];
+    v9 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [cCIDDescriptor2 bNumDataRatesSupported]);
 
-    v10 = [(Slot *)self device];
-    v11 = [v10 interface];
-    v12 = *([v11 interfaceDescriptor] + 8);
+    device3 = [(Slot *)self device];
+    interface = [device3 interface];
+    v12 = *([interface interfaceDescriptor] + 8);
     v13 = [v9 length];
 
-    v14 = [(Slot *)self device];
-    v15 = [v14 interface];
+    device4 = [(Slot *)self device];
+    interface2 = [device4 interface];
     v30 = 0;
-    LODWORD(v13) = [v15 sendDeviceRequest:(v12 << 32) | (v13 << 48) | 0x3A1 data:v9 bytesTransferred:&v31 error:&v30];
+    LODWORD(v13) = [interface2 sendDeviceRequest:(v12 << 32) | (v13 << 48) | 0x3A1 data:v9 bytesTransferred:&v31 error:&v30];
     v16 = v30;
 
     if (v13)
     {
-      v17 = [(Slot *)self device];
-      v18 = [v17 CCIDDescriptor];
-      v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v18 bNumDataRatesSupported]);
+      device5 = [(Slot *)self device];
+      cCIDDescriptor3 = [device5 CCIDDescriptor];
+      v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cCIDDescriptor3 bNumDataRatesSupported]);
 
-      v20 = [(Slot *)self device];
-      v21 = [v20 CCIDDescriptor];
-      v22 = [v21 bNumDataRatesSupported];
+      device6 = [(Slot *)self device];
+      cCIDDescriptor4 = [device6 CCIDDescriptor];
+      bNumDataRatesSupported2 = [cCIDDescriptor4 bNumDataRatesSupported];
 
-      if (v22)
+      if (bNumDataRatesSupported2)
       {
         v23 = 0;
         do
@@ -504,12 +504,12 @@ LABEL_72:
           [v19 addObject:v24];
 
           ++v23;
-          v25 = [(Slot *)self device];
-          v26 = [v25 CCIDDescriptor];
-          v27 = [v26 bNumDataRatesSupported];
+          device7 = [(Slot *)self device];
+          cCIDDescriptor5 = [device7 CCIDDescriptor];
+          bNumDataRatesSupported3 = [cCIDDescriptor5 bNumDataRatesSupported];
         }
 
-        while (v23 < v27);
+        while (v23 < bNumDataRatesSupported3);
       }
 
       v28 = [v19 sortedArrayUsingComparator:&stru_1000245A0];
@@ -543,39 +543,39 @@ LABEL_72:
     sub_100014DB0(self);
   }
 
-  v4 = [(Slot *)self device];
-  v5 = [v4 CCIDDescriptor];
-  v6 = [v5 bNumClockSupported];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  bNumClockSupported = [cCIDDescriptor bNumClockSupported];
 
-  if (v6)
+  if (bNumClockSupported)
   {
     v31 = 0;
-    v7 = [(Slot *)self device];
-    v8 = [v7 CCIDDescriptor];
-    v9 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [v8 bNumClockSupported]);
+    device2 = [(Slot *)self device];
+    cCIDDescriptor2 = [device2 CCIDDescriptor];
+    v9 = +[NSMutableData dataWithLength:](NSMutableData, "dataWithLength:", 4 * [cCIDDescriptor2 bNumClockSupported]);
 
-    v10 = [(Slot *)self device];
-    v11 = [v10 interface];
-    v12 = *([v11 interfaceDescriptor] + 8);
+    device3 = [(Slot *)self device];
+    interface = [device3 interface];
+    v12 = *([interface interfaceDescriptor] + 8);
     v13 = [v9 length];
 
-    v14 = [(Slot *)self device];
-    v15 = [v14 interface];
+    device4 = [(Slot *)self device];
+    interface2 = [device4 interface];
     v30 = 0;
-    LODWORD(v13) = [v15 sendDeviceRequest:(v12 << 32) | (v13 << 48) | 0x2A1 data:v9 bytesTransferred:&v31 error:&v30];
+    LODWORD(v13) = [interface2 sendDeviceRequest:(v12 << 32) | (v13 << 48) | 0x2A1 data:v9 bytesTransferred:&v31 error:&v30];
     v16 = v30;
 
     if (v13)
     {
-      v17 = [(Slot *)self device];
-      v18 = [v17 CCIDDescriptor];
-      v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v18 bNumDataRatesSupported]);
+      device5 = [(Slot *)self device];
+      cCIDDescriptor3 = [device5 CCIDDescriptor];
+      v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cCIDDescriptor3 bNumDataRatesSupported]);
 
-      v20 = [(Slot *)self device];
-      v21 = [v20 CCIDDescriptor];
-      v22 = [v21 bNumClockSupported];
+      device6 = [(Slot *)self device];
+      cCIDDescriptor4 = [device6 CCIDDescriptor];
+      bNumClockSupported2 = [cCIDDescriptor4 bNumClockSupported];
 
-      if (v22)
+      if (bNumClockSupported2)
       {
         v23 = 0;
         do
@@ -584,12 +584,12 @@ LABEL_72:
           [v19 addObject:v24];
 
           ++v23;
-          v25 = [(Slot *)self device];
-          v26 = [v25 CCIDDescriptor];
-          v27 = [v26 bNumClockSupported];
+          device7 = [(Slot *)self device];
+          cCIDDescriptor5 = [device7 CCIDDescriptor];
+          bNumClockSupported3 = [cCIDDescriptor5 bNumClockSupported];
         }
 
-        while (v23 < v27);
+        while (v23 < bNumClockSupported3);
       }
 
       v28 = [v19 sortedArrayUsingComparator:&stru_1000245C0];
@@ -615,22 +615,22 @@ LABEL_72:
   return v28;
 }
 
-- (BOOL)engine:(id)a3 powerDownWithEject:(BOOL)a4
+- (BOOL)engine:(id)engine powerDownWithEject:(BOOL)eject
 {
-  v6 = a3;
+  engineCopy = engine;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v7 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100003828;
   v10[3] = &unk_1000245E8;
-  v11 = a4;
+  ejectCopy = eject;
   v10[4] = self;
   v10[5] = &v12;
-  [v7 sync:v10];
+  [synchronize sync:v10];
 
   v8 = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -645,16 +645,16 @@ LABEL_72:
 
   if ([v4 messageType] == 130 && (objc_msgSend(v4, "status"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "bmCommandStatus"), v5, !v6))
   {
-    v10 = [v4 aPayload];
-    v11 = [v10 length];
+    aPayload = [v4 aPayload];
+    v11 = [aPayload length];
     v12 = off_100024348;
     v13 = +[ProtocolT0DataView length];
 
     if (v11 == v13 || ([v4 aPayload], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v12 = off_100024350, v16 = +[ProtocolT1DataView length](ProtocolT1DataView, "length"), v14, v15 == v16))
     {
       v17 = *v12;
-      v18 = [v4 aPayload];
-      v8 = [(__objc2_class *)v17 createWithData:v18];
+      aPayload2 = [v4 aPayload];
+      v8 = [(__objc2_class *)v17 createWithData:aPayload2];
     }
 
     else
@@ -683,25 +683,25 @@ LABEL_72:
   return v8;
 }
 
-- (id)setParameters:(id)a3
+- (id)setParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = sub_100002620();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100015064(v4);
+    sub_100015064(parametersCopy);
   }
 
-  v6 = [v4 buffer];
-  v7 = [CCIDMessageView create:97 withPayload:v6];
+  buffer = [parametersCopy buffer];
+  v7 = [CCIDMessageView create:97 withPayload:buffer];
 
   v8 = objc_opt_class();
   [v7 setBProtocolNum:{objc_msgSend(v8, "isEqual:", objc_opt_class())}];
   v9 = [(CCIDSlot *)self transmitAndReceive:v7 maxPayload:0 transmitted:0];
-  v10 = [v9 status];
-  v11 = [v10 bmCommandStatus];
+  status = [v9 status];
+  bmCommandStatus = [status bmCommandStatus];
 
-  if (v11)
+  if (bmCommandStatus)
   {
     v12 = sub_100002620();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -714,16 +714,16 @@ LABEL_72:
 
   else if ([v9 messageType] == 130)
   {
-    v14 = [v9 aPayload];
-    v15 = [v14 length];
+    aPayload = [v9 aPayload];
+    v15 = [aPayload length];
     v16 = off_100024348;
     v17 = +[ProtocolT0DataView length];
 
     if (v15 == v17 || ([v9 aPayload], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v16 = off_100024350, v20 = +[ProtocolT1DataView length](ProtocolT1DataView, "length"), v18, v19 == v20))
     {
       v21 = *v16;
-      v22 = [v9 aPayload];
-      v13 = [(__objc2_class *)v21 createWithData:v22];
+      aPayload2 = [v9 aPayload];
+      v13 = [(__objc2_class *)v21 createWithData:aPayload2];
     }
 
     else
@@ -746,7 +746,7 @@ LABEL_72:
       sub_100015158();
     }
 
-    v13 = v4;
+    v13 = parametersCopy;
   }
 
   return v13;
@@ -764,16 +764,16 @@ LABEL_72:
   v5 = [(CCIDSlot *)self transmitAndReceive:v4 maxPayload:0 transmitted:0];
   if ([v5 messageType] == 130 && (objc_msgSend(v5, "status"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "bmCommandStatus"), v6, !v7))
   {
-    v11 = [v5 aPayload];
-    v12 = [v11 length];
+    aPayload = [v5 aPayload];
+    v12 = [aPayload length];
     v13 = off_100024348;
     v14 = +[ProtocolT0DataView length];
 
     if (v12 == v14 || ([v5 aPayload], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v13 = off_100024350, v17 = +[ProtocolT1DataView length](ProtocolT1DataView, "length"), v15, v16 == v17))
     {
       v18 = *v13;
-      v19 = [v5 aPayload];
-      v9 = [(__objc2_class *)v18 createWithData:v19];
+      aPayload2 = [v5 aPayload];
+      v9 = [(__objc2_class *)v18 createWithData:aPayload2];
     }
 
     else
@@ -802,20 +802,20 @@ LABEL_72:
   return v9;
 }
 
-- (id)escapeCommand:(id)a3
+- (id)escapeCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = sub_100002620();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000152EC();
   }
 
-  v6 = [CCIDMessageView create:107 withPayload:v4];
+  v6 = [CCIDMessageView create:107 withPayload:commandCopy];
   v7 = [(CCIDSlot *)self transmitAndReceive:v6 maxPayload:0 transmitted:0];
   if ([v7 messageType] == 131 && (objc_msgSend(v7, "status"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "bmCommandStatus"), v8, !v9))
   {
-    v11 = [v7 aPayload];
+    aPayload = [v7 aPayload];
   }
 
   else
@@ -826,17 +826,17 @@ LABEL_72:
       sub_10001535C();
     }
 
-    v11 = 0;
+    aPayload = 0;
   }
 
-  return v11;
+  return aPayload;
 }
 
-- (BOOL)PPSForProtocol:(unint64_t)a3 withFIndexDindex:(id)a4 andSPU:(id)a5
+- (BOOL)PPSForProtocol:(unint64_t)protocol withFIndexDindex:(id)dindex andSPU:(id)u
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 1 && [v8 fIndexDIndex] == 17)
+  dindexCopy = dindex;
+  uCopy = u;
+  if (protocol == 1 && [dindexCopy fIndexDIndex] == 17)
   {
     v10 = sub_100002620();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -852,7 +852,7 @@ LABEL_72:
     v12 = +[NSMutableData data];
     v10 = v12;
     v26 = -1;
-    if (v9)
+    if (uCopy)
     {
       v13 = 48;
     }
@@ -862,7 +862,7 @@ LABEL_72:
       v13 = 16;
     }
 
-    if (a3 == 2)
+    if (protocol == 2)
     {
       ++v13;
     }
@@ -870,12 +870,12 @@ LABEL_72:
     v25 = v13;
     [v12 appendBytes:&v26 length:1];
     [v10 appendBytes:&v25 length:1];
-    v24 = [v8 fIndexDIndex];
-    [v10 appendBytes:&v24 length:1];
-    if (v9)
+    fIndexDIndex = [dindexCopy fIndexDIndex];
+    [v10 appendBytes:&fIndexDIndex length:1];
+    if (uCopy)
     {
-      v23 = [v9 unsignedCharValue];
-      [v10 appendBytes:&v23 length:1];
+      unsignedCharValue = [uCopy unsignedCharValue];
+      [v10 appendBytes:&unsignedCharValue length:1];
     }
 
     v22 = [RedundancyCheck lrc:v10];
@@ -909,19 +909,19 @@ LABEL_72:
     [v17 setWLevelParameter:0];
     [v17 setBBWI:0];
     v18 = [(CCIDSlot *)self transmitAndReceive:v17 maxPayload:6 transmitted:0];
-    v19 = [v18 status];
+    status = [v18 status];
     v11 = 0;
-    if (![v19 bmCommandStatus])
+    if (![status bmCommandStatus])
     {
-      v20 = [v18 status];
-      v11 = [v20 bmICCStatus] == 0;
+      status2 = [v18 status];
+      v11 = [status2 bmICCStatus] == 0;
     }
   }
 
   return v11;
 }
 
-- (unint64_t)setProtocol_v1:(unint64_t)a3
+- (unint64_t)setProtocol_v1:(unint64_t)protocol_v1
 {
   v5 = sub_100002620();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -929,7 +929,7 @@ LABEL_72:
     sub_100015444();
   }
 
-  v105 = [(CCIDSlot *)self getParameters];
+  getParameters = [(CCIDSlot *)self getParameters];
   v6 = [(TKSmartCardATR *)self->_lastATR interfaceGroupAtIndex:1];
   v7 = [v6 TA];
 
@@ -951,12 +951,12 @@ LABEL_72:
 
   if (v14)
   {
-    v95 = [v14 unsignedCharValue];
+    unsignedCharValue = [v14 unsignedCharValue];
   }
 
   else
   {
-    v95 = 0;
+    unsignedCharValue = 0;
   }
 
   v15 = [(TKSmartCardATR *)self->_lastATR interfaceGroupAtIndex:2];
@@ -964,12 +964,12 @@ LABEL_72:
 
   if (v16)
   {
-    v98 = [v16 unsignedCharValue];
+    unsignedCharValue2 = [v16 unsignedCharValue];
   }
 
   else
   {
-    v98 = 10;
+    unsignedCharValue2 = 10;
   }
 
   v17 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -978,12 +978,12 @@ LABEL_72:
   v104 = v14;
   if (v18)
   {
-    v19 = [v18 unsignedCharValue];
+    unsignedCharValue3 = [v18 unsignedCharValue];
   }
 
   else
   {
-    v19 = 32;
+    unsignedCharValue3 = 32;
   }
 
   v20 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -992,12 +992,12 @@ LABEL_72:
   v103 = v16;
   if (v21)
   {
-    v96 = [v21 unsignedCharValue];
+    unsignedCharValue4 = [v21 unsignedCharValue];
   }
 
   else
   {
-    v96 = 77;
+    unsignedCharValue4 = 77;
   }
 
   v22 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -1013,18 +1013,18 @@ LABEL_72:
     v25 = [v24 unsignedCharValue] & 1 | 0x10;
   }
 
-  v26 = [(Slot *)self device];
-  v27 = [v26 CCIDDescriptor];
-  v28 = [v27 dwMaxIFSD];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  dwMaxIFSD = [cCIDDescriptor dwMaxIFSD];
 
-  if (v19 >= v28)
+  if (unsignedCharValue3 >= dwMaxIFSD)
   {
-    v29 = v28;
+    v29 = dwMaxIFSD;
   }
 
   else
   {
-    v29 = v19;
+    v29 = unsignedCharValue3;
   }
 
   v97 = v29;
@@ -1037,67 +1037,67 @@ LABEL_72:
     v32 = v7;
     v100 = v9;
     v33 = (1 << [v31 unsignedCharValue]) & 0xF;
-    v34 = v105;
+    v34 = getParameters;
     goto LABEL_48;
   }
 
-  v93 = a3;
-  v35 = [(Slot *)self device];
-  v36 = [v35 CCIDDescriptor];
-  if ([v36 levelOfExchange] != 2)
+  protocol_v1Copy = protocol_v1;
+  device2 = [(Slot *)self device];
+  cCIDDescriptor2 = [device2 CCIDDescriptor];
+  if ([cCIDDescriptor2 levelOfExchange] != 2)
   {
-    v37 = [(Slot *)self device];
-    v38 = [v37 CCIDDescriptor];
-    [v38 levelOfExchange];
+    device3 = [(Slot *)self device];
+    cCIDDescriptor3 = [device3 CCIDDescriptor];
+    [cCIDDescriptor3 levelOfExchange];
   }
 
   v39 = [(CCIDSlot *)self findSuitableFIndexDIndex:v7];
-  v40 = [(Slot *)self device];
-  v41 = [v40 CCIDDescriptor];
+  device4 = [(Slot *)self device];
+  cCIDDescriptor4 = [device4 CCIDDescriptor];
   v94 = v7;
-  if (([v41 automaticPPS]& 1) != 0)
+  if (([cCIDDescriptor4 automaticPPS]& 1) != 0)
   {
-    v34 = v105;
+    v34 = getParameters;
 LABEL_30:
 
     goto LABEL_32;
   }
 
-  v42 = [(Slot *)self device];
-  [v42 CCIDDescriptor];
+  device5 = [(Slot *)self device];
+  [device5 CCIDDescriptor];
   v44 = v43 = v9;
-  v45 = [v44 automaticParametersNegotation];
+  automaticParametersNegotation = [v44 automaticParametersNegotation];
 
   v9 = v43;
-  v34 = v105;
-  if ((v45 & 1) == 0)
+  v34 = getParameters;
+  if ((automaticParametersNegotation & 1) == 0)
   {
     v50 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:0x8000];
-    v41 = [v50 TB];
+    cCIDDescriptor4 = [v50 TB];
 
-    if (v41)
+    if (cCIDDescriptor4)
     {
-      v51 = v93;
+      v51 = protocol_v1Copy;
       v49 = v94;
-      if (([v41 unsignedCharValue]& 0x80) != 0 && ([v41 unsignedCharValue]& 0x7F) != 0)
+      if (([cCIDDescriptor4 unsignedCharValue]& 0x80) != 0 && ([cCIDDescriptor4 unsignedCharValue]& 0x7F) != 0)
       {
-        v40 = [NSNumber numberWithInt:[v41 unsignedCharValue]& 0x7F];
+        device4 = [NSNumber numberWithInt:[cCIDDescriptor4 unsignedCharValue]& 0x7F];
       }
 
       else
       {
-        v40 = 0;
+        device4 = 0;
       }
     }
 
     else
     {
-      v40 = 0;
-      v51 = v93;
+      device4 = 0;
+      v51 = protocol_v1Copy;
       v49 = v94;
     }
 
-    if (![(CCIDSlot *)self PPSForProtocol:v51 withFIndexDindex:v39 andSPU:v40])
+    if (![(CCIDSlot *)self PPSForProtocol:v51 withFIndexDindex:v39 andSPU:device4])
     {
       v90 = sub_100002620();
       if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
@@ -1105,9 +1105,9 @@ LABEL_30:
         sub_1000154B4(v39);
       }
 
-      v91 = [(TKSmartCardATR *)self->_lastATR bytes];
-      v92 = [v91 hexString];
-      [(CCIDSlot *)self cardNeedsBaseFiDi:v92];
+      bytes = [(TKSmartCardATR *)self->_lastATR bytes];
+      hexString = [bytes hexString];
+      [(CCIDSlot *)self cardNeedsBaseFiDi:hexString];
 
       goto LABEL_80;
     }
@@ -1116,41 +1116,41 @@ LABEL_30:
   }
 
 LABEL_32:
-  v46 = [(Slot *)self device];
-  v47 = [v46 CCIDDescriptor];
-  v48 = [v47 automaticParametersNegotation];
+  device6 = [(Slot *)self device];
+  cCIDDescriptor5 = [device6 CCIDDescriptor];
+  automaticParametersNegotation2 = [cCIDDescriptor5 automaticParametersNegotation];
 
-  if ((v48 & 1) == 0)
+  if ((automaticParametersNegotation2 & 1) == 0)
   {
     v49 = v94;
-    if (v93 == 1)
+    if (protocol_v1Copy == 1)
     {
-      v40 = objc_opt_new();
-      [v40 setBmFindexDindex:{-[NSObject fIndexDIndex](v39, "fIndexDIndex")}];
-      [v40 setBClockStop:v99];
-      [v40 setBmTCCKS:0];
-      [v40 setBGuardTime:v95];
-      [v40 setBWaitingInteger:v98];
+      device4 = objc_opt_new();
+      [device4 setBmFindexDindex:{-[NSObject fIndexDIndex](v39, "fIndexDIndex")}];
+      [device4 setBClockStop:v99];
+      [device4 setBmTCCKS:0];
+      [device4 setBGuardTime:unsignedCharValue];
+      [device4 setBWaitingInteger:unsignedCharValue2];
     }
 
-    else if (v93 == 2)
+    else if (protocol_v1Copy == 2)
     {
-      v40 = objc_opt_new();
-      [v40 setBmFindexDindex:{-[NSObject fIndexDIndex](v39, "fIndexDIndex")}];
-      [v40 setBClockStop:v99];
-      [v40 setBmTCCKS:v25];
-      [v40 setBGuardTime:v95];
-      [v40 setBmWaitingIntegers:v96];
-      [v40 setBIFSC:v97];
-      [v40 setBNadValue:0];
+      device4 = objc_opt_new();
+      [device4 setBmFindexDindex:{-[NSObject fIndexDIndex](v39, "fIndexDIndex")}];
+      [device4 setBClockStop:v99];
+      [device4 setBmTCCKS:v25];
+      [device4 setBGuardTime:unsignedCharValue];
+      [device4 setBmWaitingIntegers:unsignedCharValue4];
+      [device4 setBIFSC:v97];
+      [device4 setBNadValue:0];
     }
 
     else
     {
-      v40 = 0;
+      device4 = 0;
     }
 
-    v52 = [(CCIDSlot *)self setParameters:v40];
+    v52 = [(CCIDSlot *)self setParameters:device4];
 
     if (v52)
     {
@@ -1171,8 +1171,8 @@ LABEL_32:
       goto LABEL_47;
     }
 
-    v41 = sub_100002620();
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+    cCIDDescriptor4 = sub_100002620();
+    if (os_log_type_enabled(cCIDDescriptor4, OS_LOG_TYPE_ERROR))
     {
       sub_100015534();
     }
@@ -1188,37 +1188,37 @@ LABEL_80:
   }
 
   v100 = v9;
-  v33 = v93;
+  v33 = protocol_v1Copy;
   v32 = v94;
 LABEL_47:
 
 LABEL_48:
-  v54 = [(Slot *)self device];
-  v55 = [v54 CCIDDescriptor];
-  if (([v55 automaticICCClockFrequency] & 1) == 0)
+  device7 = [(Slot *)self device];
+  cCIDDescriptor6 = [device7 CCIDDescriptor];
+  if (([cCIDDescriptor6 automaticICCClockFrequency] & 1) == 0)
   {
 
     v59 = v106;
     goto LABEL_52;
   }
 
-  v56 = [(Slot *)self device];
-  v57 = [v56 CCIDDescriptor];
-  v58 = [v57 automaticBaudRateChange];
+  device8 = [(Slot *)self device];
+  cCIDDescriptor7 = [device8 CCIDDescriptor];
+  automaticBaudRateChange = [cCIDDescriptor7 automaticBaudRateChange];
 
   v59 = v106;
-  if ((v58 & 1) == 0)
+  if ((automaticBaudRateChange & 1) == 0)
   {
 LABEL_52:
     v60 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v34 bmFindexDindex]);
     [(CCIDSlot *)self setDataRateAndClockFrequency:v60];
   }
 
-  v61 = [(Slot *)self device];
-  v62 = [v61 CCIDDescriptor];
-  v63 = [v62 levelOfExchange];
+  device9 = [(Slot *)self device];
+  cCIDDescriptor8 = [device9 CCIDDescriptor];
+  levelOfExchange = [cCIDDescriptor8 levelOfExchange];
 
-  if (v63 != 1)
+  if (levelOfExchange != 1)
   {
     v75 = [[APDUMapping alloc] initWithTransmitter:self];
     mapping = self->_mapping;
@@ -1233,7 +1233,7 @@ LABEL_52:
   v64 = v107;
   if (v33 != 1)
   {
-    v76 = [v34 bmTCCKS];
+    bmTCCKS = [v34 bmTCCKS];
     v77 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v34 bmFindexDindex]);
     if (!v77)
     {
@@ -1251,19 +1251,19 @@ LABEL_52:
     }
 
     mapping = v77;
-    v78 = ldexp(1.0, v96 >> 4) * 960.0 * 372.0;
+    v78 = ldexp(1.0, unsignedCharValue4 >> 4) * 960.0 * 372.0;
     v79 = (v78 / (1000 * [(APDUMapping *)mapping fMax]) + 11.0);
     v80 = [(APDUMapping *)mapping Fi];
     *&v78 = (v80 / [(APDUMapping *)mapping Di]);
     *&v78 = (1.0 / (1000 * [(APDUMapping *)mapping fMax])) * *&v78;
     v81 = [T1TPDUMapping alloc];
-    v82 = [(Slot *)self device];
-    v83 = [v82 CCIDDescriptor];
-    v84 = [v83 automaticIFSD];
+    device10 = [(Slot *)self device];
+    cCIDDescriptor9 = [device10 CCIDDescriptor];
+    automaticIFSD = [cCIDDescriptor9 automaticIFSD];
     *&v85 = *&v78 * v79;
     v86 = v81;
     v64 = v107;
-    v87 = [(T1TPDUMapping *)v86 initWithTransmitter:self autoIfs:v84 ifs:v97 redundancyCode:v76 & 1 bwt:v85];
+    v87 = [(T1TPDUMapping *)v86 initWithTransmitter:self autoIfs:automaticIFSD ifs:v97 redundancyCode:bmTCCKS & 1 bwt:v85];
     v88 = self->_mapping;
     self->_mapping = v87;
 
@@ -1292,7 +1292,7 @@ LABEL_61:
   {
     mapping = v66;
     v69 = [(APDUMapping *)v66 Fi];
-    v70 = (v69 / (1000 * [(APDUMapping *)mapping fMax])) * v98;
+    v70 = (v69 / (1000 * [(APDUMapping *)mapping fMax])) * unsignedCharValue2;
     v71 = [APDUMapping alloc];
     *&v72 = v70;
     v73 = [(APDUMapping *)v71 initWithTransmitter:self wt:v72];
@@ -1316,7 +1316,7 @@ LABEL_63:
   return v65;
 }
 
-- (unint64_t)setProtocol_v2:(unint64_t)a3
+- (unint64_t)setProtocol_v2:(unint64_t)protocol_v2
 {
   v5 = sub_100002620();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1324,7 +1324,7 @@ LABEL_63:
     sub_100015444();
   }
 
-  v6 = [(CCIDSlot *)self getParameters];
+  getParameters = [(CCIDSlot *)self getParameters];
   v7 = [(TKSmartCardATR *)self->_lastATR interfaceGroupAtIndex:1];
   v8 = [v7 TA];
 
@@ -1346,12 +1346,12 @@ LABEL_63:
 
   if (v15)
   {
-    v105 = [v15 unsignedCharValue];
+    unsignedCharValue = [v15 unsignedCharValue];
   }
 
   else
   {
-    v105 = 0;
+    unsignedCharValue = 0;
   }
 
   v16 = [(TKSmartCardATR *)self->_lastATR interfaceGroupAtIndex:2];
@@ -1359,12 +1359,12 @@ LABEL_63:
 
   if (v17)
   {
-    v103 = [v17 unsignedCharValue];
+    unsignedCharValue2 = [v17 unsignedCharValue];
   }
 
   else
   {
-    v103 = 10;
+    unsignedCharValue2 = 10;
   }
 
   v18 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -1374,12 +1374,12 @@ LABEL_63:
   v97 = v17;
   if (v19)
   {
-    v20 = [v19 unsignedCharValue];
+    unsignedCharValue3 = [v19 unsignedCharValue];
   }
 
   else
   {
-    v20 = 32;
+    unsignedCharValue3 = 32;
   }
 
   v21 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -1388,12 +1388,12 @@ LABEL_63:
   v95 = v22;
   if (v22)
   {
-    v101 = [v22 unsignedCharValue];
+    unsignedCharValue4 = [v22 unsignedCharValue];
   }
 
   else
   {
-    v101 = 77;
+    unsignedCharValue4 = 77;
   }
 
   v23 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:2];
@@ -1411,18 +1411,18 @@ LABEL_63:
     v100 = 16;
   }
 
-  v25 = [(Slot *)self device];
-  v26 = [v25 CCIDDescriptor];
-  v27 = [v26 dwMaxIFSD];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  dwMaxIFSD = [cCIDDescriptor dwMaxIFSD];
 
-  if (v20 >= v27)
+  if (unsignedCharValue3 >= dwMaxIFSD)
   {
-    v28 = v27;
+    v28 = dwMaxIFSD;
   }
 
   else
   {
-    v28 = v20;
+    v28 = unsignedCharValue3;
   }
 
   v102 = v28;
@@ -1433,7 +1433,7 @@ LABEL_63:
   v93 = v30;
   if (v30)
   {
-    v31 = (1 << ([v30 unsignedCharValue] & 0xF));
+    protocol_v2Copy = (1 << ([v30 unsignedCharValue] & 0xF));
     v32 = sub_100002620();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
@@ -1451,37 +1451,37 @@ LABEL_63:
   v108 = [obj countByEnumeratingWithState:&v110 objects:v116 count:16];
   if (!v108)
   {
-    a3 = 0;
+    protocol_v2 = 0;
 LABEL_72:
-    v31 = a3;
+    protocol_v2Copy = protocol_v2;
     v32 = obj;
 
 LABEL_73:
-    v58 = [(Slot *)self device];
-    v59 = [v58 CCIDDescriptor];
-    if ([v59 automaticICCClockFrequency])
+    device2 = [(Slot *)self device];
+    cCIDDescriptor2 = [device2 CCIDDescriptor];
+    if ([cCIDDescriptor2 automaticICCClockFrequency])
     {
-      v60 = [(Slot *)self device];
-      v61 = [v60 CCIDDescriptor];
-      v62 = [v61 automaticBaudRateChange];
+      device3 = [(Slot *)self device];
+      cCIDDescriptor3 = [device3 CCIDDescriptor];
+      automaticBaudRateChange = [cCIDDescriptor3 automaticBaudRateChange];
 
-      if (v62)
+      if (automaticBaudRateChange)
       {
 LABEL_78:
-        v64 = [(Slot *)self device];
-        v65 = [v64 CCIDDescriptor];
-        v66 = [v65 levelOfExchange];
+        device4 = [(Slot *)self device];
+        cCIDDescriptor4 = [device4 CCIDDescriptor];
+        levelOfExchange = [cCIDDescriptor4 levelOfExchange];
 
-        if (v66 == 1)
+        if (levelOfExchange == 1)
         {
-          if (v31 == 1)
+          if (protocol_v2Copy == 1)
           {
-            v67 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v6 bmFindexDindex]);
+            v67 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [getParameters bmFindexDindex]);
             if (v67)
             {
               v68 = v67;
               v69 = [(APDUMapping *)v67 Fi];
-              v70 = (v69 / (1000 * [(APDUMapping *)v68 fMax])) * v103;
+              v70 = (v69 / (1000 * [(APDUMapping *)v68 fMax])) * unsignedCharValue2;
               v71 = [APDUMapping alloc];
               *&v72 = v70;
               v73 = [(APDUMapping *)v71 initWithTransmitter:self wt:v72];
@@ -1498,14 +1498,14 @@ LABEL_78:
             }
 
 LABEL_93:
-            v31 = 0;
+            protocol_v2Copy = 0;
 LABEL_87:
             v55 = v98;
             goto LABEL_88;
           }
 
-          v76 = [v6 bmTCCKS];
-          v77 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v6 bmFindexDindex]);
+          bmTCCKS = [getParameters bmTCCKS];
+          v77 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [getParameters bmFindexDindex]);
           if (!v77)
           {
             v56 = sub_100002620();
@@ -1518,23 +1518,23 @@ LABEL_87:
           }
 
           v68 = v77;
-          v78 = ldexp(1.0, v101 >> 4) * 960.0 * 372.0;
-          v109 = v76;
+          v78 = ldexp(1.0, unsignedCharValue4 >> 4) * 960.0 * 372.0;
+          v109 = bmTCCKS;
           v79 = v8;
-          v80 = v6;
+          v80 = getParameters;
           v81 = (v78 / (1000 * [(APDUMapping *)v68 fMax]) + 11.0);
           v82 = [(APDUMapping *)v68 Fi];
           *&v78 = (v82 / [(APDUMapping *)v68 Di]);
           *&v78 = (1.0 / (1000 * [(APDUMapping *)v68 fMax])) * *&v78;
           v83 = [T1TPDUMapping alloc];
-          v84 = [(Slot *)self device];
-          v85 = [v84 CCIDDescriptor];
-          v86 = [v85 automaticIFSD];
+          device5 = [(Slot *)self device];
+          cCIDDescriptor5 = [device5 CCIDDescriptor];
+          automaticIFSD = [cCIDDescriptor5 automaticIFSD];
           v87 = v81;
-          v6 = v80;
+          getParameters = v80;
           v8 = v79;
           *&v88 = *&v78 * v87;
-          v89 = [(T1TPDUMapping *)v83 initWithTransmitter:self autoIfs:v86 ifs:v102 redundancyCode:v109 & 1 bwt:v88];
+          v89 = [(T1TPDUMapping *)v83 initWithTransmitter:self autoIfs:automaticIFSD ifs:v102 redundancyCode:v109 & 1 bwt:v88];
           v90 = self->_mapping;
           self->_mapping = v89;
         }
@@ -1562,7 +1562,7 @@ LABEL_85:
     {
     }
 
-    v63 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v6 bmFindexDindex]);
+    v63 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [getParameters bmFindexDindex]);
     [(CCIDSlot *)self setDataRateAndClockFrequency:v63];
 
     goto LABEL_78;
@@ -1580,41 +1580,41 @@ LABEL_30:
     }
 
     v34 = *(*(&v110 + 1) + 8 * v33);
-    v35 = [(Slot *)self device];
-    v36 = [v35 CCIDDescriptor];
-    if ([v36 automaticPPS])
+    device6 = [(Slot *)self device];
+    cCIDDescriptor6 = [device6 CCIDDescriptor];
+    if ([cCIDDescriptor6 automaticPPS])
     {
       break;
     }
 
-    v37 = [(Slot *)self device];
-    [v37 CCIDDescriptor];
-    v38 = a3;
-    v40 = v39 = v6;
-    v41 = [v40 automaticParametersNegotation];
+    device7 = [(Slot *)self device];
+    [device7 CCIDDescriptor];
+    protocol_v2Copy2 = protocol_v2;
+    v40 = v39 = getParameters;
+    automaticParametersNegotation = [v40 automaticParametersNegotation];
 
-    v6 = v39;
-    a3 = v38;
+    getParameters = v39;
+    protocol_v2 = protocol_v2Copy2;
 
-    if (v41)
+    if (automaticParametersNegotation)
     {
       goto LABEL_36;
     }
 
     v48 = [(TKSmartCardATR *)self->_lastATR interfaceGroupForProtocol:0x8000];
-    v36 = [v48 TB];
+    cCIDDescriptor6 = [v48 TB];
 
-    if (v36 && ([v36 unsignedCharValue] & 0x80) != 0 && (objc_msgSend(v36, "unsignedCharValue") & 0x7F) != 0)
+    if (cCIDDescriptor6 && ([cCIDDescriptor6 unsignedCharValue] & 0x80) != 0 && (objc_msgSend(cCIDDescriptor6, "unsignedCharValue") & 0x7F) != 0)
     {
-      v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v36 unsignedCharValue] & 0x7F);
+      device6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [cCIDDescriptor6 unsignedCharValue] & 0x7F);
     }
 
     else
     {
-      v35 = 0;
+      device6 = 0;
     }
 
-    v49 = [(CCIDSlot *)self PPSForProtocol:v38 withFIndexDindex:v34 andSPU:v35];
+    v49 = [(CCIDSlot *)self PPSForProtocol:protocol_v2Copy2 withFIndexDindex:v34 andSPU:device6];
     v50 = sub_100002620();
     v51 = os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG);
     if (v49)
@@ -1636,7 +1636,7 @@ LABEL_30:
       _os_log_debug_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEBUG, "card rejected FIndexDIndex: %{public}@", buf, 0xCu);
     }
 
-    v52 = [(CCIDSlot *)self warmResetCard];
+    warmResetCard = [(CCIDSlot *)self warmResetCard];
 LABEL_46:
 
     if (v108 == ++v33)
@@ -1645,7 +1645,7 @@ LABEL_46:
       v108 = v53;
       if (!v53)
       {
-        a3 = 0;
+        protocol_v2 = 0;
 LABEL_71:
         v8 = v92;
         goto LABEL_72;
@@ -1656,55 +1656,55 @@ LABEL_71:
   }
 
 LABEL_36:
-  v42 = [(Slot *)self device];
-  v43 = [v42 CCIDDescriptor];
-  v44 = [v43 automaticParametersNegotation];
+  device8 = [(Slot *)self device];
+  cCIDDescriptor7 = [device8 CCIDDescriptor];
+  automaticParametersNegotation2 = [cCIDDescriptor7 automaticParametersNegotation];
 
-  if ((v44 & 1) == 0)
+  if ((automaticParametersNegotation2 & 1) == 0)
   {
-    if (a3 == 1)
+    if (protocol_v2 == 1)
     {
-      v35 = objc_opt_new();
-      [v35 setBmFindexDindex:{objc_msgSend(v34, "fIndexDIndex")}];
-      [v35 setBClockStop:v106];
-      [v35 setBmTCCKS:0];
-      [v35 setBGuardTime:v105];
-      [v35 setBWaitingInteger:v103];
+      device6 = objc_opt_new();
+      [device6 setBmFindexDindex:{objc_msgSend(v34, "fIndexDIndex")}];
+      [device6 setBClockStop:v106];
+      [device6 setBmTCCKS:0];
+      [device6 setBGuardTime:unsignedCharValue];
+      [device6 setBWaitingInteger:unsignedCharValue2];
     }
 
-    else if (a3 == 2)
+    else if (protocol_v2 == 2)
     {
-      v35 = objc_opt_new();
-      [v35 setBmFindexDindex:{objc_msgSend(v34, "fIndexDIndex")}];
-      [v35 setBClockStop:v106];
-      [v35 setBmTCCKS:v100];
-      [v35 setBGuardTime:v105];
-      [v35 setBmWaitingIntegers:v101];
-      [v35 setBIFSC:v102];
-      [v35 setBNadValue:0];
+      device6 = objc_opt_new();
+      [device6 setBmFindexDindex:{objc_msgSend(v34, "fIndexDIndex")}];
+      [device6 setBClockStop:v106];
+      [device6 setBmTCCKS:v100];
+      [device6 setBGuardTime:unsignedCharValue];
+      [device6 setBmWaitingIntegers:unsignedCharValue4];
+      [device6 setBIFSC:v102];
+      [device6 setBNadValue:0];
     }
 
     else
     {
-      v35 = 0;
+      device6 = 0;
     }
 
-    v45 = [(CCIDSlot *)self setParameters:v35];
+    v45 = [(CCIDSlot *)self setParameters:device6];
 
     if (v45)
     {
       v57 = objc_opt_class();
       if ([v57 isEqual:objc_opt_class()])
       {
-        a3 = 2;
+        protocol_v2 = 2;
       }
 
       else
       {
-        a3 = 1;
+        protocol_v2 = 1;
       }
 
-      v6 = v45;
+      getParameters = v45;
       goto LABEL_71;
     }
 
@@ -1712,16 +1712,16 @@ LABEL_36:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v115 = v35;
+      v115 = device6;
       _os_log_error_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "failed to set parameters: %{public}@", buf, 0xCu);
     }
 
-    v47 = [(CCIDSlot *)self warmResetCard];
-    v6 = 0;
+    warmResetCard2 = [(CCIDSlot *)self warmResetCard];
+    getParameters = 0;
     goto LABEL_46;
   }
 
-  if (a3)
+  if (protocol_v2)
   {
     goto LABEL_71;
   }
@@ -1735,40 +1735,40 @@ LABEL_36:
   }
 
   v56 = obj;
-  v31 = 0;
+  protocol_v2Copy = 0;
 LABEL_88:
 
-  return v31;
+  return protocol_v2Copy;
 }
 
-- (unint64_t)setProtocol:(unint64_t)a3
+- (unint64_t)setProtocol:(unint64_t)protocol
 {
   if (self->_PPSVersion == 1)
   {
-    return [(CCIDSlot *)self setProtocol_v1:a3];
+    return [(CCIDSlot *)self setProtocol_v1:protocol];
   }
 
   else
   {
-    return [(CCIDSlot *)self setProtocol_v2:a3];
+    return [(CCIDSlot *)self setProtocol_v2:protocol];
   }
 }
 
-- (void)setDataRateAndClockFrequency:(id)a3
+- (void)setDataRateAndClockFrequency:(id)frequency
 {
-  v4 = a3;
-  v5 = [(CCIDSlot *)self getClockFrequencies];
-  v39 = self;
+  frequencyCopy = frequency;
+  getClockFrequencies = [(CCIDSlot *)self getClockFrequencies];
+  selfCopy = self;
   [(CCIDSlot *)self getDataRates];
-  v38 = v37 = v5;
+  v38 = v37 = getClockFrequencies;
   v50 = 0;
-  if (v5)
+  if (getClockFrequencies)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v6 = v5;
+    v6 = getClockFrequencies;
     v7 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v7)
     {
@@ -1784,22 +1784,22 @@ LABEL_88:
           }
 
           v11 = *(*(&v44 + 1) + 8 * i);
-          v12 = [v11 unsignedIntValue];
-          if (v12 <= [v4 fMax])
+          unsignedIntValue = [v11 unsignedIntValue];
+          if (unsignedIntValue <= [frequencyCopy fMax])
           {
-            v13 = [v11 unsignedIntValue];
-            v14 = [(Slot *)v39 device];
-            v15 = [v14 CCIDDescriptor];
-            v16 = [v15 dwMaximumClock];
+            unsignedIntValue2 = [v11 unsignedIntValue];
+            device = [(Slot *)selfCopy device];
+            cCIDDescriptor = [device CCIDDescriptor];
+            dwMaximumClock = [cCIDDescriptor dwMaximumClock];
 
-            if (v13 <= v16)
+            if (unsignedIntValue2 <= dwMaximumClock)
             {
-              v17 = [v11 unsignedIntValue];
-              LODWORD(v50) = v17;
+              unsignedIntValue3 = [v11 unsignedIntValue];
+              LODWORD(v50) = unsignedIntValue3;
               v18 = sub_100002620();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
               {
-                sub_10001576C(v17);
+                sub_10001576C(unsignedIntValue3);
               }
 
               goto LABEL_15;
@@ -1819,7 +1819,7 @@ LABEL_88:
 
 LABEL_15:
 
-    v5 = v37;
+    getClockFrequencies = v37;
   }
 
   if (v38)
@@ -1844,22 +1844,22 @@ LABEL_15:
           }
 
           v24 = *(*(&v40 + 1) + 8 * j);
-          v25 = [v24 unsignedIntValue];
-          if (v25 <= [v4 bpsMax])
+          unsignedIntValue4 = [v24 unsignedIntValue];
+          if (unsignedIntValue4 <= [frequencyCopy bpsMax])
           {
-            v26 = [v24 unsignedIntValue];
-            v27 = [(Slot *)v39 device];
-            v28 = [v27 CCIDDescriptor];
-            v29 = [v28 dwMaxDataRate];
+            unsignedIntValue5 = [v24 unsignedIntValue];
+            device2 = [(Slot *)selfCopy device];
+            cCIDDescriptor2 = [device2 CCIDDescriptor];
+            dwMaxDataRate = [cCIDDescriptor2 dwMaxDataRate];
 
-            if (v26 <= v29)
+            if (unsignedIntValue5 <= dwMaxDataRate)
             {
-              v30 = [v24 unsignedIntValue];
-              HIDWORD(v50) = v30;
+              unsignedIntValue6 = [v24 unsignedIntValue];
+              HIDWORD(v50) = unsignedIntValue6;
               v31 = sub_100002620();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
               {
-                sub_1000157E8(v30);
+                sub_1000157E8(unsignedIntValue6);
               }
 
               goto LABEL_30;
@@ -1879,32 +1879,32 @@ LABEL_15:
 
 LABEL_30:
 
-    v5 = v37;
+    getClockFrequencies = v37;
   }
 
   v32 = [NSData dataWithBytes:&v50 length:8];
   v33 = [CCIDMessageView create:115 withPayload:v32];
-  v34 = [(CCIDSlot *)v39 transmitAndReceive:v33 maxPayload:0 sequence:&off_100026F40 outTimeout:0 inTimeout:0 transmitted:0];
+  v34 = [(CCIDSlot *)selfCopy transmitAndReceive:v33 maxPayload:0 sequence:&off_100026F40 outTimeout:0 inTimeout:0 transmitted:0];
   if ([v34 messageType] != 132)
   {
     goto LABEL_34;
   }
 
-  v35 = [v34 status];
-  if (![v35 bmCommandStatus])
+  status = [v34 status];
+  if (![status bmCommandStatus])
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v36 = [v34 bError];
+  bError = [v34 bError];
 
-  if (v36 != -2)
+  if (bError != -2)
   {
 LABEL_34:
-    v35 = sub_100002620();
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    status = sub_100002620();
+    if (os_log_type_enabled(status, OS_LOG_TYPE_ERROR))
     {
       sub_100015864();
     }
@@ -1915,22 +1915,22 @@ LABEL_34:
 LABEL_37:
 }
 
-- (unint64_t)engine:(id)a3 setProtocol:(unint64_t)a4
+- (unint64_t)engine:(id)engine setProtocol:(unint64_t)protocol
 {
-  v6 = a3;
+  engineCopy = engine;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005E74;
   v10[3] = &unk_100024610;
   v10[5] = &v11;
-  v10[6] = a4;
+  v10[6] = protocol;
   v10[4] = self;
-  [v7 sync:v10];
+  [synchronize sync:v10];
 
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
@@ -1938,26 +1938,26 @@ LABEL_37:
   return v8;
 }
 
-- (id)engine:(id)a3 transmit:(id)a4
+- (id)engine:(id)engine transmit:(id)transmit
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  transmitCopy = transmit;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100002ED4;
   v19 = sub_100002EE4;
   v20 = 0;
-  v8 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000612C;
   v12[3] = &unk_100024638;
   v12[4] = self;
   v14 = &v15;
-  v9 = v7;
+  v9 = transmitCopy;
   v13 = v9;
-  [v8 sync:v12];
+  [synchronize sync:v12];
 
   v10 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -1965,26 +1965,26 @@ LABEL_37:
   return v10;
 }
 
-- (id)engine:(id)a3 escape:(id)a4
+- (id)engine:(id)engine escape:(id)escape
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  escapeCopy = escape;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100002ED4;
   v19 = sub_100002EE4;
   v20 = 0;
-  v8 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100006334;
   v12[3] = &unk_100024660;
   v14 = &v15;
   v12[4] = self;
-  v9 = v7;
+  v9 = escapeCopy;
   v13 = v9;
-  [v8 sync:v12];
+  [synchronize sync:v12];
 
   v10 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -1992,49 +1992,49 @@ LABEL_37:
   return v10;
 }
 
-- (void)willSleepOnEngine:(id)a3
+- (void)willSleepOnEngine:(id)engine
 {
-  v4 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100006424;
   v5[3] = &unk_1000244F0;
   v5[4] = self;
-  [v4 sync:v5];
+  [synchronize sync:v5];
 }
 
-- (void)didWakeUpOnEngine:(id)a3
+- (void)didWakeUpOnEngine:(id)engine
 {
-  v4 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100006500;
   v5[3] = &unk_1000244F0;
   v5[4] = self;
-  [v4 sync:v5];
+  [synchronize sync:v5];
 }
 
-- (id)engine:(id)a3 runUserInteraction:(id)a4 error:(id *)a5
+- (id)engine:(id)engine runUserInteraction:(id)interaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  engineCopy = engine;
+  interactionCopy = interaction;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_100002ED4;
   v22 = sub_100002EE4;
   v23 = 0;
-  v10 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100006768;
   v14[3] = &unk_100024688;
   v14[4] = self;
-  v11 = v9;
+  v11 = interactionCopy;
   v15 = v11;
   v16 = &v18;
-  v17 = a5;
-  [v10 sync:v14];
+  errorCopy = error;
+  [synchronize sync:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -2049,26 +2049,26 @@ LABEL_37:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v3 = [(Slot *)self synchronize];
+  synchronize = [(Slot *)self synchronize];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100006AB0;
   v11[3] = &unk_1000246B0;
   objc_copyWeak(&v12, &location);
   v11[4] = &v13;
-  [v3 sync:v11];
+  [synchronize sync:v11];
 
   if (*(v14 + 24) == 1)
   {
     v4 = dispatch_time(0, 1000000000);
-    v5 = [(Slot *)self synchronize];
-    v6 = [v5 queue];
+    synchronize2 = [(Slot *)self synchronize];
+    queue = [synchronize2 queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100006B58;
     v9[3] = &unk_1000246D8;
     objc_copyWeak(&v10, &location);
-    dispatch_after(v4, v6, v9);
+    dispatch_after(v4, queue, v9);
 
     objc_destroyWeak(&v10);
     v7 = *(v14 + 24);
@@ -2085,27 +2085,27 @@ LABEL_37:
   return v7 & 1;
 }
 
-- (id)verifyPINSecure:(id)a3 error:(id *)a4
+- (id)verifyPINSecure:(id)secure error:(id *)error
 {
-  v6 = a3;
+  secureCopy = secure;
   v7 = sub_100002620();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_100015C88();
   }
 
-  v8 = [(Slot *)self device];
-  v9 = [v8 CCIDDescriptor];
-  v10 = [v9 bPINSupport];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  bPINSupport = [cCIDDescriptor bPINSupport];
 
-  if (v10)
+  if (bPINSupport)
   {
-    v11 = [PINVerificationDataView createWithInteraction:v6 error:a4];
+    v11 = [PINVerificationDataView createWithInteraction:secureCopy error:error];
     if (v11)
     {
       mapping = self->_mapping;
-      v13 = [v6 APDU];
-      v14 = [(APDUMapping *)mapping secure:v11 APDU:v13];
+      aPDU = [secureCopy APDU];
+      v14 = [(APDUMapping *)mapping secure:v11 APDU:aPDU];
 
       goto LABEL_11;
     }
@@ -2113,9 +2113,9 @@ LABEL_37:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:TKErrorDomain code:-8 userInfo:0];
+      *error = [NSError errorWithDomain:TKErrorDomain code:-8 userInfo:0];
     }
 
     v11 = sub_100002620();
@@ -2131,27 +2131,27 @@ LABEL_11:
   return v14;
 }
 
-- (id)changePINSecure:(id)a3 error:(id *)a4
+- (id)changePINSecure:(id)secure error:(id *)error
 {
-  v6 = a3;
+  secureCopy = secure;
   v7 = sub_100002620();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_100015D00();
   }
 
-  v8 = [(Slot *)self device];
-  v9 = [v8 CCIDDescriptor];
-  v10 = [v9 bPINSupport];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  bPINSupport = [cCIDDescriptor bPINSupport];
 
-  if ((v10 & 2) != 0)
+  if ((bPINSupport & 2) != 0)
   {
-    v11 = [PINModificationDataView createWithInteraction:v6 error:a4];
+    v11 = [PINModificationDataView createWithInteraction:secureCopy error:error];
     if (v11)
     {
       mapping = self->_mapping;
-      v13 = [v6 APDU];
-      v14 = [(APDUMapping *)mapping secure:v11 APDU:v13];
+      aPDU = [secureCopy APDU];
+      v14 = [(APDUMapping *)mapping secure:v11 APDU:aPDU];
 
       goto LABEL_11;
     }
@@ -2159,9 +2159,9 @@ LABEL_11:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:TKErrorDomain code:-8 userInfo:0];
+      *error = [NSError errorWithDomain:TKErrorDomain code:-8 userInfo:0];
     }
 
     v11 = sub_100002620();
@@ -2177,13 +2177,13 @@ LABEL_11:
   return v14;
 }
 
-- (id)findSuitableFIndexDIndex:(id)a3
+- (id)findSuitableFIndexDIndex:(id)index
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  indexCopy = index;
+  v5 = indexCopy;
+  if (indexCopy)
   {
-    v6 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v4 unsignedCharValue]);
+    v6 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [indexCopy unsignedCharValue]);
     v7 = sub_100002620();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -2191,23 +2191,23 @@ LABEL_11:
     }
 
     v42 = +[NSMutableArray array];
-    v8 = [(Slot *)self device];
-    v9 = [v8 CCIDDescriptor];
-    v10 = [v9 dwMaximumClock];
+    device = [(Slot *)self device];
+    cCIDDescriptor = [device CCIDDescriptor];
+    dwMaximumClock = [cCIDDescriptor dwMaximumClock];
 
-    v11 = [(Slot *)self device];
-    v12 = [v11 CCIDDescriptor];
-    v43 = [v12 dwMaxDataRate];
+    device2 = [(Slot *)self device];
+    cCIDDescriptor2 = [device2 CCIDDescriptor];
+    dwMaxDataRate = [cCIDDescriptor2 dwMaxDataRate];
 
     v13 = sub_100002620();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_100015DE8(v10);
+      sub_100015DE8(dwMaximumClock);
     }
 
-    v14 = [(TKSmartCardATR *)self->_lastATR bytes];
-    v15 = [v14 hexString];
-    v16 = [(CCIDSlot *)self tryAlternativeFiDi:v15];
+    bytes = [(TKSmartCardATR *)self->_lastATR bytes];
+    hexString = [bytes hexString];
+    v16 = [(CCIDSlot *)self tryAlternativeFiDi:hexString];
 
     if (v16)
     {
@@ -2253,11 +2253,11 @@ LABEL_11:
                   }
 
                   v24 = -[CCIDFiAndDi initWithFIndex:DIndex:]([CCIDFiAndDi alloc], "initWithFIndex:DIndex:", [v18 unsignedCharValue], objc_msgSend(*(*(&v48 + 1) + 8 * i), "unsignedCharValue"));
-                  v25 = [(CCIDFiAndDi *)v24 fIndex];
-                  if (v25 == [v6 fIndex])
+                  fIndex = [(CCIDFiAndDi *)v24 fIndex];
+                  if (fIndex == [v6 fIndex])
                   {
-                    v26 = [(CCIDFiAndDi *)v24 bpsMax];
-                    if (v26 <= [v6 bpsMax] && -[CCIDFiAndDi baseBps](v24, "baseBps") <= v43)
+                    bpsMax = [(CCIDFiAndDi *)v24 bpsMax];
+                    if (bpsMax <= [v6 bpsMax] && -[CCIDFiAndDi baseBps](v24, "baseBps") <= dwMaxDataRate)
                     {
                       [v42 addObject:v24];
                     }
@@ -2322,12 +2322,12 @@ LABEL_11:
           while (v29);
         }
 
-        v34 = [v27 firstObject];
+        firstObject = [v27 firstObject];
 
         v5 = v37;
 LABEL_40:
 
-        if (v34)
+        if (firstObject)
         {
           goto LABEL_42;
         }
@@ -2336,15 +2336,15 @@ LABEL_40:
       }
     }
 
-    else if ([v6 bpsMax] <= v43 && objc_msgSend(v6, "fMax") <= v10)
+    else if ([v6 bpsMax] <= dwMaxDataRate && objc_msgSend(v6, "fMax") <= dwMaximumClock)
     {
-      v34 = v6;
+      firstObject = v6;
       goto LABEL_40;
     }
   }
 
 LABEL_41:
-  v34 = [CCIDFiAndDi createWithFIndexDIndex:17];
+  firstObject = [CCIDFiAndDi createWithFIndexDIndex:17];
 LABEL_42:
   v35 = sub_100002620();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -2352,20 +2352,20 @@ LABEL_42:
     sub_100015E68();
   }
 
-  return v34;
+  return firstObject;
 }
 
-- (id)findSuitableFDIndexes:(id)a3
+- (id)findSuitableFDIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  indexesCopy = indexes;
+  v5 = indexesCopy;
+  if (!indexesCopy)
   {
     goto LABEL_37;
   }
 
-  v33 = v4;
-  v6 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [v4 unsignedCharValue]);
+  v33 = indexesCopy;
+  v6 = +[CCIDFiAndDi createWithFIndexDIndex:](CCIDFiAndDi, "createWithFIndexDIndex:", [indexesCopy unsignedCharValue]);
   v7 = sub_100002620();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2373,18 +2373,18 @@ LABEL_42:
   }
 
   v38 = +[NSMutableArray array];
-  v8 = [(Slot *)self device];
-  v9 = [v8 CCIDDescriptor];
-  v10 = [v9 dwMaximumClock];
+  device = [(Slot *)self device];
+  cCIDDescriptor = [device CCIDDescriptor];
+  dwMaximumClock = [cCIDDescriptor dwMaximumClock];
 
-  v11 = [(Slot *)self device];
-  v12 = [v11 CCIDDescriptor];
-  v39 = [v12 dwMaxDataRate];
+  device2 = [(Slot *)self device];
+  cCIDDescriptor2 = [device2 CCIDDescriptor];
+  dwMaxDataRate = [cCIDDescriptor2 dwMaxDataRate];
 
   v13 = sub_100002620();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    sub_100015DE8(v10);
+    sub_100015DE8(dwMaximumClock);
   }
 
   v50 = 0u;
@@ -2428,11 +2428,11 @@ LABEL_42:
               }
 
               v21 = -[CCIDFiAndDi initWithFIndex:DIndex:]([CCIDFiAndDi alloc], "initWithFIndex:DIndex:", [v15 unsignedCharValue], objc_msgSend(*(*(&v44 + 1) + 8 * i), "unsignedCharValue"));
-              v22 = [(CCIDFiAndDi *)v21 fMax];
-              if (v22 <= [v6 fMax])
+              fMax = [(CCIDFiAndDi *)v21 fMax];
+              if (fMax <= [v6 fMax])
               {
-                v23 = [(CCIDFiAndDi *)v21 bpsMax];
-                if (v23 <= [v6 bpsMax] && -[CCIDFiAndDi baseBps](v21, "baseBps") <= v39)
+                bpsMax = [(CCIDFiAndDi *)v21 bpsMax];
+                if (bpsMax <= [v6 bpsMax] && -[CCIDFiAndDi baseBps](v21, "baseBps") <= dwMaxDataRate)
                 {
                   [v38 addObject:v21];
                 }
@@ -2517,11 +2517,11 @@ LABEL_38:
   return v24;
 }
 
-- (id)receiveMessageWitMaxPayload:(unint64_t)a3 sequenceNumber:(unsigned __int8)a4 duplicateMessage:(unsigned __int8)a5 timeout:(id)a6
+- (id)receiveMessageWitMaxPayload:(unint64_t)payload sequenceNumber:(unsigned __int8)number duplicateMessage:(unsigned __int8)message timeout:(id)timeout
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
+  messageCopy = message;
+  numberCopy = number;
+  timeoutCopy = timeout;
   v11 = +[NSDate date];
   v12 = +[NSDate date];
   [v12 timeIntervalSinceDate:v11];
@@ -2546,9 +2546,9 @@ LABEL_19:
     while (1)
     {
       pipeIn = self->_pipeIn;
-      v17 = [(Slot *)self device];
-      v18 = [v17 CCIDDescriptor];
-      v19 = -[IOUSBHostPipe receive:timeout:](pipeIn, "receive:timeout:", [v18 dwMaxCCIDMessageLength], v10);
+      device = [(Slot *)self device];
+      cCIDDescriptor = [device CCIDDescriptor];
+      v19 = -[IOUSBHostPipe receive:timeout:](pipeIn, "receive:timeout:", [cCIDDescriptor dwMaxCCIDMessageLength], timeoutCopy);
 
       v20 = [v19 length];
       if (v20 < +[CCIDMessageView length])
@@ -2557,7 +2557,7 @@ LABEL_19:
       }
 
       v21 = [v19 length];
-      if (v21 > +[CCIDMessageView length]+ a3)
+      if (v21 > +[CCIDMessageView length]+ payload)
       {
         v22 = sub_100002620();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -2567,8 +2567,8 @@ LABEL_19:
       }
 
       v23 = [CCIDMessageView createWithData:v19];
-      v24 = [v23 bSlot];
-      if (v24 != [(Slot *)self slotNumber])
+      bSlot = [v23 bSlot];
+      if (bSlot != [(Slot *)self slotNumber])
       {
         v37 = sub_100002620();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -2576,19 +2576,19 @@ LABEL_19:
           sub_100015F38();
         }
 
-        v38 = self;
+        selfCopy2 = self;
         v39 = 4;
 LABEL_32:
-        [(CCIDSlot *)v38 sendAnalyticsFailure:v39];
+        [(CCIDSlot *)selfCopy2 sendAnalyticsFailure:v39];
         v35 = 0;
 LABEL_34:
 
         goto LABEL_35;
       }
 
-      if ([v23 bSeq] == v7 || v6 > 0x1F)
+      if ([v23 bSeq] == numberCopy || messageCopy > 0x1F)
       {
-        if ([v23 bSeq] != v7)
+        if ([v23 bSeq] != numberCopy)
         {
           v40 = sub_100002620();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -2596,21 +2596,21 @@ LABEL_34:
             sub_100015FA8();
           }
 
-          v38 = self;
+          selfCopy2 = self;
           v39 = 5;
           goto LABEL_32;
         }
 
         v43 = v19;
         v27 = v11;
-        v28 = v10;
-        v29 = [v23 status];
-        v30 = [v29 bmCommandStatus];
+        v28 = timeoutCopy;
+        status = [v23 status];
+        bmCommandStatus = [status bmCommandStatus];
 
-        if (v30 != 128)
+        if (bmCommandStatus != 128)
         {
           v35 = v23;
-          v10 = v28;
+          timeoutCopy = v28;
           v11 = v27;
           v19 = v43;
           goto LABEL_34;
@@ -2618,7 +2618,7 @@ LABEL_34:
 
         [(APDUMapping *)self->_mapping waitingTime:1];
         v25 = sub_100002620();
-        v10 = v28;
+        timeoutCopy = v28;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           sub_100016018(&v44, v45, v25);
@@ -2630,17 +2630,17 @@ LABEL_34:
 
       else
       {
-        ++v6;
+        ++messageCopy;
         v25 = sub_100002620();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v23 bSeq];
+          bSeq = [v23 bSeq];
           *buf = v42;
-          v47 = v26;
+          v47 = bSeq;
           v48 = 1024;
-          v49 = v7;
+          v49 = numberCopy;
           v50 = 1024;
-          v51 = v6;
+          v51 = messageCopy;
           _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Duplicate message detected (%u, %u, %u)!", buf, 0x14u);
         }
       }
@@ -2670,31 +2670,31 @@ LABEL_35:
   return v35;
 }
 
-- (id)transmitAndReceive:(id)a3 maxPayload:(unint64_t)a4 sequence:(id)a5 outTimeout:(id)a6 inTimeout:(id)a7 transmitted:(id)a8
+- (id)transmitAndReceive:(id)receive maxPayload:(unint64_t)payload sequence:(id)sequence outTimeout:(id)timeout inTimeout:(id)inTimeout transmitted:(id)transmitted
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(Slot *)self device];
+  receiveCopy = receive;
+  sequenceCopy = sequence;
+  timeoutCopy = timeout;
+  inTimeoutCopy = inTimeout;
+  transmittedCopy = transmitted;
+  device = [(Slot *)self device];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100007EE4;
   v27[3] = &unk_100024760;
-  v32 = v18;
-  v33 = a4;
+  v32 = transmittedCopy;
+  payloadCopy = payload;
   v27[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v20 = v17;
-  v21 = v18;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  v25 = [v19 deviceAccessBlock:v27];
+  v28 = receiveCopy;
+  v29 = sequenceCopy;
+  v30 = timeoutCopy;
+  v31 = inTimeoutCopy;
+  v20 = inTimeoutCopy;
+  v21 = transmittedCopy;
+  v22 = timeoutCopy;
+  v23 = sequenceCopy;
+  v24 = receiveCopy;
+  v25 = [device deviceAccessBlock:v27];
 
   return v25;
 }
@@ -2705,15 +2705,15 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)getCardsNeedsBaseFiDi
@@ -2735,18 +2735,18 @@ LABEL_35:
   return v4;
 }
 
-- (void)cardNeedsBaseFiDi:(id)a3
+- (void)cardNeedsBaseFiDi:(id)di
 {
-  v6 = a3;
-  if (v6)
+  diCopy = di;
+  if (diCopy)
   {
-    v4 = [(CCIDSlot *)self getCardsNeedsBaseFiDi];
+    getCardsNeedsBaseFiDi = [(CCIDSlot *)self getCardsNeedsBaseFiDi];
     cardsNeedsBaseFiDi = self->_cardsNeedsBaseFiDi;
-    self->_cardsNeedsBaseFiDi = v4;
+    self->_cardsNeedsBaseFiDi = getCardsNeedsBaseFiDi;
 
-    if (([(NSMutableArray *)self->_cardsNeedsBaseFiDi containsObject:v6]& 1) == 0)
+    if (([(NSMutableArray *)self->_cardsNeedsBaseFiDi containsObject:diCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_cardsNeedsBaseFiDi addObject:v6];
+      [(NSMutableArray *)self->_cardsNeedsBaseFiDi addObject:diCopy];
       [(CCIDSlot *)self setDeviceAndCardBaseFiDi:self->_cardsNeedsBaseFiDi];
     }
   }
@@ -2758,15 +2758,15 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 @end

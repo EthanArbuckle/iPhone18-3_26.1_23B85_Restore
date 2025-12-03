@@ -1,7 +1,7 @@
 @interface PLExclusiveFileLock
 - (PLExclusiveFileLock)init;
-- (PLExclusiveFileLock)initWithURL:(id)a3;
-- (PLExclusiveFileLock)lockWithError:(id *)a3;
+- (PLExclusiveFileLock)initWithURL:(id)l;
+- (PLExclusiveFileLock)lockWithError:(id *)error;
 - (id)lockData;
 - (id)lockFailure;
 - (void)dealloc;
@@ -50,14 +50,14 @@
 
   v5 = v4;
   v6 = [v4 objectForKeyedSubscript:@"pid"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v5 objectForKeyedSubscript:@"hostuuid"];
   v9 = [v8 isEqualToString:qword_1EB41BD28];
 
   if (v9)
   {
-    if (!v7)
+    if (!intValue)
     {
       v10 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A998];
@@ -72,7 +72,7 @@
       goto LABEL_14;
     }
 
-    if (v7 == getpid())
+    if (intValue == getpid())
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A998];
@@ -101,12 +101,12 @@ LABEL_14:
 
     v25 = v34;
 
-    v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"locked by process %@(%d)", v25, v7];
+    v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"locked by process %@(%d)", v25, intValue];
     memset(buffer, 0, sizeof(buffer));
     v35 = getpid();
     if (proc_pidinfo(v35, 13, 1uLL, buffer, 64) && HIDWORD(buffer[0]) == 5)
     {
-      v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"locked by zombie process %@(%d)", v25, v7];
+      v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"locked by zombie process %@(%d)", v25, intValue];
 
       v28 = v36;
     }
@@ -196,21 +196,21 @@ LABEL_22:
 {
   if ((self->_fd & 0x80000000) == 0)
   {
-    v3 = [(NSURL *)self->_url path];
-    unlink([v3 fileSystemRepresentation]);
+    path = [(NSURL *)self->_url path];
+    unlink([path fileSystemRepresentation]);
 
     close(self->_fd);
     self->_fd = -1;
   }
 }
 
-- (PLExclusiveFileLock)lockWithError:(id *)a3
+- (PLExclusiveFileLock)lockWithError:(id *)error
 {
-  v3 = a3;
+  errorCopy = error;
   v23[2] = *MEMORY[0x1E69E9840];
   if (self->_fd == -1)
   {
-    if (a3)
+    if (error)
     {
       goto LABEL_4;
     }
@@ -218,15 +218,15 @@ LABEL_22:
     goto LABEL_3;
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  v20 = [(NSURL *)self->_url path];
-  [v19 handleFailureInMethod:a2 object:self file:@"PLExclusiveFileLock.m" lineNumber:83 description:{@"already locked: %@", v20}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  path = [(NSURL *)self->_url path];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLExclusiveFileLock.m" lineNumber:83 description:{@"already locked: %@", path}];
 
-  if (!v3)
+  if (!errorCopy)
   {
 LABEL_3:
     v21 = 0;
-    v3 = &v21;
+    errorCopy = &v21;
   }
 
 LABEL_4:
@@ -235,23 +235,23 @@ LABEL_4:
     dispatch_once(&lockWithError__onceToken, &__block_literal_global_6720);
   }
 
-  v5 = [(NSURL *)self->_url path];
-  self->_fd = open([v5 fileSystemRepresentation], 1573, 420);
+  path2 = [(NSURL *)self->_url path];
+  self->_fd = open([path2 fileSystemRepresentation], 1573, 420);
 
   if (self->_fd == -1)
   {
     v8 = *__error();
     if (v8 == 35 || v8 == 16)
     {
-      v9 = [(PLExclusiveFileLock *)self lockFailure];
-      v10 = v9;
+      lockFailure = [(PLExclusiveFileLock *)self lockFailure];
+      v10 = lockFailure;
       result = 0;
-      *v3 = v9;
+      *errorCopy = lockFailure;
     }
 
     else if (v8 == 4)
     {
-      return [(PLExclusiveFileLock *)self lockWithError:v3];
+      return [(PLExclusiveFileLock *)self lockWithError:errorCopy];
     }
 
     else
@@ -267,7 +267,7 @@ LABEL_4:
       v23[0] = v16;
       v23[1] = self->_url;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-      *v3 = [v11 errorWithDomain:v12 code:v13 userInfo:v17];
+      *errorCopy = [v11 errorWithDomain:v12 code:v13 userInfo:v17];
 
       return 0;
     }
@@ -275,8 +275,8 @@ LABEL_4:
 
   else
   {
-    v6 = [(PLExclusiveFileLock *)self lockData];
-    write(self->_fd, [v6 bytes], objc_msgSend(v6, "length"));
+    lockData = [(PLExclusiveFileLock *)self lockData];
+    write(self->_fd, [lockData bytes], objc_msgSend(lockData, "length"));
     fsync(self->_fd);
 
     return 1;
@@ -306,9 +306,9 @@ void __37__PLExclusiveFileLock_lockWithError___block_invoke()
 {
   if (self->_fd != -1)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    v5 = [(NSURL *)self->_url path];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLExclusiveFileLock.m" lineNumber:73 description:{@"deallocated while locked: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    path = [(NSURL *)self->_url path];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLExclusiveFileLock.m" lineNumber:73 description:{@"deallocated while locked: %@", path}];
   }
 
   v6.receiver = self;
@@ -316,9 +316,9 @@ void __37__PLExclusiveFileLock_lockWithError___block_invoke()
   [(PLExclusiveFileLock *)&v6 dealloc];
 }
 
-- (PLExclusiveFileLock)initWithURL:(id)a3
+- (PLExclusiveFileLock)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PLExclusiveFileLock;
   v6 = [(PLExclusiveFileLock *)&v9 init];
@@ -326,7 +326,7 @@ void __37__PLExclusiveFileLock_lockWithError___block_invoke()
   if (v6)
   {
     v6->_fd = -1;
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;

@@ -23,16 +23,16 @@
   p_contentSize = &self->_contentSize;
   v4 = MEMORY[0x1E695F060];
   self->_contentSize = *MEMORY[0x1E695F060];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   typesetViewController = self->_typesetViewController;
   if (typesetViewController)
   {
-    v69 = [(UIViewController *)typesetViewController view];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v69 setBackgroundColor:v7];
+    view = [(UIViewController *)typesetViewController view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)view setBackgroundColor:clearColor];
 
 LABEL_5:
-    [(UIImageView *)v69 intrinsicContentSize];
+    [(UIImageView *)view intrinsicContentSize];
     v10 = v9;
     v12 = v11;
     p_contentSize->width = v9;
@@ -43,12 +43,12 @@ LABEL_5:
   typesetImageView = self->_typesetImageView;
   if (typesetImageView)
   {
-    v69 = typesetImageView;
-    [(UIImageView *)v69 sizeToFit];
+    view = typesetImageView;
+    [(UIImageView *)view sizeToFit];
     goto LABEL_5;
   }
 
-  v69 = 0;
+  view = 0;
   v10 = *v4;
   v12 = v4[1];
 LABEL_6:
@@ -64,8 +64,8 @@ LABEL_6:
     [(UILabel *)self->_footerLabel setText:self->_footerString];
     v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
     v19 = MEMORY[0x1E69DB878];
-    v20 = [v18 fontDescriptor];
-    v21 = [v20 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v18 fontDescriptor];
+    v21 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
     [v18 pointSize];
     v22 = [v19 fontWithDescriptor:v21 size:?];
 
@@ -96,7 +96,7 @@ LABEL_6:
     }
 
     p_contentSize->height = p_contentSize->height + v27;
-    if (v69)
+    if (view)
     {
       if (v29 <= v10)
       {
@@ -122,40 +122,40 @@ LABEL_6:
     [(UILabel *)self->_footerLabel setFrame:v31, v30];
   }
 
-  [(UIImageView *)v69 setFrame:v23, v24, v10, v12];
+  [(UIImageView *)view setFrame:v23, v24, v10, v12];
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [v13 widthAnchor];
-  v33 = [v32 constraintEqualToConstant:p_contentSize->width];
-  [v5 addObject:v33];
+  widthAnchor = [v13 widthAnchor];
+  v33 = [widthAnchor constraintEqualToConstant:p_contentSize->width];
+  [array addObject:v33];
 
-  v34 = [v13 heightAnchor];
-  v35 = [v34 constraintEqualToConstant:p_contentSize->height];
-  [v5 addObject:v35];
+  heightAnchor = [v13 heightAnchor];
+  v35 = [heightAnchor constraintEqualToConstant:p_contentSize->height];
+  [array addObject:v35];
 
   [v13 setFrame:{0.0, 0.0, p_contentSize->width, p_contentSize->height}];
-  if (v69)
+  if (view)
   {
-    [(UIImageView *)v69 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v13 addSubview:v69];
-    v36 = [(UIImageView *)v69 widthAnchor];
-    v37 = [v36 constraintEqualToConstant:v10];
-    [v5 addObject:v37];
+    [(UIImageView *)view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v13 addSubview:view];
+    widthAnchor2 = [(UIImageView *)view widthAnchor];
+    v37 = [widthAnchor2 constraintEqualToConstant:v10];
+    [array addObject:v37];
 
-    v38 = [(UIImageView *)v69 heightAnchor];
-    v39 = [v38 constraintEqualToConstant:v12];
-    [v5 addObject:v39];
+    heightAnchor2 = [(UIImageView *)view heightAnchor];
+    v39 = [heightAnchor2 constraintEqualToConstant:v12];
+    [array addObject:v39];
 
-    v40 = [v13 safeAreaLayoutGuide];
-    v41 = [v40 topAnchor];
-    v42 = [(UIImageView *)v69 topAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
-    [v5 addObject:v43];
+    safeAreaLayoutGuide = [v13 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
+    topAnchor2 = [(UIImageView *)view topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v43];
 
-    v44 = [v13 safeAreaLayoutGuide];
-    v45 = [v44 leadingAnchor];
-    v46 = [(UIImageView *)v69 leadingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:-v23];
-    [v5 addObject:v47];
+    safeAreaLayoutGuide2 = [v13 safeAreaLayoutGuide];
+    leadingAnchor = [safeAreaLayoutGuide2 leadingAnchor];
+    leadingAnchor2 = [(UIImageView *)view leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-v23];
+    [array addObject:v47];
   }
 
   if (self->_typesetViewController)
@@ -175,41 +175,41 @@ LABEL_6:
     v56 = v55;
     [(UILabel *)self->_footerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [v13 addSubview:self->_footerLabel];
-    v57 = [(UILabel *)self->_footerLabel widthAnchor];
-    v58 = [v57 constraintEqualToConstant:v50];
-    [v5 addObject:v58];
+    widthAnchor3 = [(UILabel *)self->_footerLabel widthAnchor];
+    v58 = [widthAnchor3 constraintEqualToConstant:v50];
+    [array addObject:v58];
 
-    v59 = [(UILabel *)self->_footerLabel heightAnchor];
-    v60 = [v59 constraintEqualToConstant:v52];
-    [v5 addObject:v60];
+    heightAnchor3 = [(UILabel *)self->_footerLabel heightAnchor];
+    v60 = [heightAnchor3 constraintEqualToConstant:v52];
+    [array addObject:v60];
 
-    v61 = [v13 safeAreaLayoutGuide];
-    v62 = [v61 topAnchor];
-    v63 = [(UILabel *)self->_footerLabel topAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63 constant:-v56];
-    [v5 addObject:v64];
+    safeAreaLayoutGuide3 = [v13 safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide3 topAnchor];
+    topAnchor4 = [(UILabel *)self->_footerLabel topAnchor];
+    v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-v56];
+    [array addObject:v64];
 
-    v65 = [v13 safeAreaLayoutGuide];
-    v66 = [v65 leadingAnchor];
-    v67 = [(UILabel *)self->_footerLabel leadingAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 constant:-v54];
-    [v5 addObject:v68];
+    safeAreaLayoutGuide4 = [v13 safeAreaLayoutGuide];
+    leadingAnchor3 = [safeAreaLayoutGuide4 leadingAnchor];
+    leadingAnchor4 = [(UILabel *)self->_footerLabel leadingAnchor];
+    v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-v54];
+    [array addObject:v68];
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v5];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   [(PKMathTypesetViewController *)self setView:v13];
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_typesetViewController;
   }
 
   [(PKMathTypesetViewController *)self removeFromParentViewController];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = PKMathTypesetViewController;
   [(PKMathTypesetViewController *)&v3 dealloc];
 }

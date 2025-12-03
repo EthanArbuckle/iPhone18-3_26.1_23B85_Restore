@@ -1,18 +1,18 @@
 @interface RTStoreNotificationAvailabilityDidChange
-- (RTStoreNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)a3;
+- (RTStoreNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)availability;
 - (id)description;
 @end
 
 @implementation RTStoreNotificationAvailabilityDidChange
 
-- (RTStoreNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)a3
+- (RTStoreNotificationAvailabilityDidChange)initWithAvailability:(unint64_t)availability
 {
   v5.receiver = self;
   v5.super_class = RTStoreNotificationAvailabilityDidChange;
   result = [(RTNotification *)&v5 init];
   if (result)
   {
-    result->_availability = a3;
+    result->_availability = availability;
   }
 
   return result;

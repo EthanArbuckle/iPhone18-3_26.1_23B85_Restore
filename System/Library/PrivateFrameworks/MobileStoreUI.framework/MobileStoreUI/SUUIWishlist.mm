@@ -1,19 +1,19 @@
 @interface SUUIWishlist
 + (id)activeWishlist;
-- (BOOL)containsItemWithIdentifier:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsItemWithIdentifier:(int64_t)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)items;
-- (SUUIWishlist)initWithAccountIdentifier:(int64_t)a3;
-- (void)addItem:(id)a3;
+- (SUUIWishlist)initWithAccountIdentifier:(int64_t)identifier;
+- (void)addItem:(id)item;
 - (void)postChangeNotification;
-- (void)removeItemsWithItemIdentifiers:(id)a3;
+- (void)removeItemsWithItemIdentifiers:(id)identifiers;
 @end
 
 @implementation SUUIWishlist
 
-- (SUUIWishlist)initWithAccountIdentifier:(int64_t)a3
+- (SUUIWishlist)initWithAccountIdentifier:(int64_t)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Invalid accountID"];
   }
@@ -23,7 +23,7 @@
   v5 = [(SUUIWishlist *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D69D58]) initWithAccountIdentifier:a3];
+    v6 = [objc_alloc(MEMORY[0x277D69D58]) initWithAccountIdentifier:identifier];
     database = v5->_database;
     v5->_database = v6;
   }
@@ -33,22 +33,22 @@
 
 + (id)activeWishlist
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 longLongValue];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  longLongValue = [uniqueIdentifier longLongValue];
 
   v6 = activeWishlist_sActiveWishlist;
-  if (!v3)
+  if (!activeAccount)
   {
     v7 = 0;
     goto LABEL_6;
   }
 
-  if (!activeWishlist_sActiveWishlist || [activeWishlist_sActiveWishlist accountIdentifier] != v5)
+  if (!activeWishlist_sActiveWishlist || [activeWishlist_sActiveWishlist accountIdentifier] != longLongValue)
   {
-    v7 = [[SUUIWishlist alloc] initWithAccountIdentifier:v5];
+    v7 = [[SUUIWishlist alloc] initWithAccountIdentifier:longLongValue];
     v6 = activeWishlist_sActiveWishlist;
 LABEL_6:
     activeWishlist_sActiveWishlist = v7;
@@ -60,9 +60,9 @@ LABEL_6:
   return v8;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -72,8 +72,8 @@ LABEL_6:
   v9[1] = 3221225472;
   v9[2] = __24__SUUIWishlist_addItem___block_invoke;
   v9[3] = &unk_2798FE698;
-  v6 = v4;
-  v11 = self;
+  v6 = itemCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
   [(SSWishlist *)database performTransactionWithBlock:v9];
@@ -137,7 +137,7 @@ uint64_t __24__SUUIWishlist_addItem___block_invoke(uint64_t a1, void *a2)
   return v13 & 1;
 }
 
-- (BOOL)containsItemWithIdentifier:(int64_t)a3
+- (BOOL)containsItemWithIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -149,7 +149,7 @@ uint64_t __24__SUUIWishlist_addItem___block_invoke(uint64_t a1, void *a2)
   v6[2] = __43__SUUIWishlist_containsItemWithIdentifier___block_invoke;
   v6[3] = &unk_2798FE6C0;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = identifier;
   [(SSWishlist *)database performTransactionWithBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -173,13 +173,13 @@ uint64_t __43__SUUIWishlist_containsItemWithIdentifier___block_invoke(uint64_t a
 
 - (NSArray)items
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   database = self->_database;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __21__SUUIWishlist_items__block_invoke;
   v7[3] = &unk_2798F8300;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   [(SSWishlist *)database performTransactionWithBlock:v7];
 
@@ -237,23 +237,23 @@ void __21__SUUIWishlist_items__block_invoke_19(uint64_t a1, uint64_t a2, void *a
 
 - (void)postChangeNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SUUIWishlistDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIWishlistDidChangeNotification" object:self];
 }
 
-- (void)removeItemsWithItemIdentifiers:(id)a3
+- (void)removeItemsWithItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SUUIWishlistOperationQueue();
   database = self->_database;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SUUIWishlist_removeItemsWithItemIdentifiers___block_invoke;
   v9[3] = &unk_2798FE6E8;
-  v10 = v4;
+  v10 = identifiersCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = identifiersCopy;
   [(SSWishlist *)database performTransactionWithBlock:v9];
 }
 
@@ -288,14 +288,14 @@ void __47__SUUIWishlist_removeItemsWithItemIdentifiers___block_invoke_2(uint64_t
   objc_autoreleasePoolPop(v6);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SUUIWishlist *)self accountIdentifier];
-    v6 = v7 == [v4 accountIdentifier];
+    accountIdentifier = [(SUUIWishlist *)self accountIdentifier];
+    v6 = accountIdentifier == [equalCopy accountIdentifier];
   }
 
   else

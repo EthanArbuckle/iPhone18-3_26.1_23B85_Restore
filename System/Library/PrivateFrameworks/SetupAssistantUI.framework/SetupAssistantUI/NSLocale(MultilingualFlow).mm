@@ -14,8 +14,8 @@
   v45 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v5 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   v6 = [v5 isEqualToString:@"IN"];
 
   if (v6)
@@ -42,11 +42,11 @@
           }
 
           v13 = *(*(&v39 + 1) + 8 * i);
-          v14 = [v13 homeSubregionISOCodes];
-          [v7 addObjectsFromArray:v14];
+          homeSubregionISOCodes = [v13 homeSubregionISOCodes];
+          [v7 addObjectsFromArray:homeSubregionISOCodes];
 
-          v15 = [v13 networkSubregionISOCodes];
-          [v7 addObjectsFromArray:v15];
+          networkSubregionISOCodes = [v13 networkSubregionISOCodes];
+          [v7 addObjectsFromArray:networkSubregionISOCodes];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -75,16 +75,16 @@
           }
 
           v20 = [*(*(&v35 + 1) + 8 * j) stringByReplacingOccurrencesOfString:@"-" withString:&stru_287761F90];
-          v21 = [v20 lowercaseString];
+          lowercaseString = [v20 lowercaseString];
 
           v22 = objc_alloc(MEMORY[0x277CBEB38]);
           v23 = MEMORY[0x277CBEAF8];
-          v24 = [MEMORY[0x277CBEAF8] currentLocale];
-          v25 = [v24 localeIdentifier];
-          v26 = [v23 componentsFromLocaleIdentifier:v25];
+          currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+          localeIdentifier = [currentLocale2 localeIdentifier];
+          v26 = [v23 componentsFromLocaleIdentifier:localeIdentifier];
           v27 = [v22 initWithDictionary:v26];
 
-          [v27 setValue:v21 forKey:@"sd"];
+          [v27 setValue:lowercaseString forKey:@"sd"];
           v28 = MEMORY[0x277CBEAF8];
           v29 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v27];
           v30 = [v28 localeWithLocaleIdentifier:v29];
@@ -107,15 +107,15 @@
 + (id)buddySuggestedLanguages
 {
   v21 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v1 = objc_alloc_init(MEMORY[0x277D4DA58]);
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [v1 cellularNetworkInformation];
-  v4 = [v2 buddySubregionLocalesForCellularInformation:v3];
+  cellularNetworkInformation = [v1 cellularNetworkInformation];
+  v4 = [v2 buddySubregionLocalesForCellularInformation:cellularNetworkInformation];
 
   v5 = objc_alloc(MEMORY[0x277CBEB40]);
-  v6 = [v0 languagesForMultilingualSetup];
-  v7 = [v5 initWithArray:v6];
+  languagesForMultilingualSetup = [currentLocale languagesForMultilingualSetup];
+  v7 = [v5 initWithArray:languagesForMultilingualSetup];
 
   v18 = 0u;
   v19 = 0u;
@@ -136,8 +136,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) languagesForMultilingualSetup];
-        [v7 addObjectsFromArray:v13];
+        languagesForMultilingualSetup2 = [*(*(&v16 + 1) + 8 * i) languagesForMultilingualSetup];
+        [v7 addObjectsFromArray:languagesForMultilingualSetup2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -146,23 +146,23 @@
     while (v10);
   }
 
-  v14 = [v7 array];
+  array = [v7 array];
 
-  return v14;
+  return array;
 }
 
 + (id)buddyDefaultLanguages
 {
   v21 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v1 = objc_alloc_init(MEMORY[0x277D4DA58]);
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [v1 cellularNetworkInformation];
-  v4 = [v2 buddySubregionLocalesForCellularInformation:v3];
+  cellularNetworkInformation = [v1 cellularNetworkInformation];
+  v4 = [v2 buddySubregionLocalesForCellularInformation:cellularNetworkInformation];
 
   v5 = objc_alloc(MEMORY[0x277CBEB40]);
-  v6 = [v0 defaultLanguagesForMultilingualSetup];
-  v7 = [v5 initWithArray:v6];
+  defaultLanguagesForMultilingualSetup = [currentLocale defaultLanguagesForMultilingualSetup];
+  v7 = [v5 initWithArray:defaultLanguagesForMultilingualSetup];
 
   v18 = 0u;
   v19 = 0u;
@@ -183,8 +183,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) defaultLanguagesForMultilingualSetup];
-        [v7 addObjectsFromArray:v13];
+        defaultLanguagesForMultilingualSetup2 = [*(*(&v16 + 1) + 8 * i) defaultLanguagesForMultilingualSetup];
+        [v7 addObjectsFromArray:defaultLanguagesForMultilingualSetup2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -193,39 +193,39 @@
     while (v10);
   }
 
-  v14 = [v7 array];
+  array = [v7 array];
 
-  return v14;
+  return array;
 }
 
 + (id)buddySuggestedKeyboards
 {
-  v2 = [MEMORY[0x277CBEAF8] buddyDefaultLanguages];
-  v3 = [v2 mutableCopy];
+  buddyDefaultLanguages = [MEMORY[0x277CBEAF8] buddyDefaultLanguages];
+  v3 = [buddyDefaultLanguages mutableCopy];
 
-  v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  [v3 addObjectsFromArray:v4];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  [v3 addObjectsFromArray:preferredLanguages];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__NSLocale_MultilingualFlow__buddySuggestedKeyboards__block_invoke;
   v10[3] = &__block_descriptor_40_e28___NSLocale_16__0__NSString_8l;
-  v10[4] = a1;
+  v10[4] = self;
   v5 = [v3 buddy_mapOrderedSet:v10];
-  v6 = [MEMORY[0x277D75688] sharedInputModeController];
-  v7 = [v5 array];
-  v8 = [v6 suggestedInputModesForLocales:v7];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  array = [v5 array];
+  v8 = [mEMORY[0x277D75688] suggestedInputModesForLocales:array];
 
   return v8;
 }
 
 + (id)buddyDefaultKeyboards
 {
-  v1 = [a1 buddySuggestedKeyboards];
-  v2 = [v1 buddy_filterToOrderedSet:&__block_literal_global];
-  v3 = [v2 array];
+  buddySuggestedKeyboards = [self buddySuggestedKeyboards];
+  v2 = [buddySuggestedKeyboards buddy_filterToOrderedSet:&__block_literal_global];
+  array = [v2 array];
 
-  return v3;
+  return array;
 }
 
 + (id)buddyLocaleIdentifierFromIdentifier:()MultilingualFlow byAddingRegion:

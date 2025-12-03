@@ -2,20 +2,20 @@
 - (BOOL)p_knobContainsCurrentPosition;
 - (BOOL)traceIfDesiredForBeginOperation;
 - (BOOL)traceIfDesiredForEndOperation;
-- (CRLCanvasButtonKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLCanvasButtonKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (SEL)action;
 - (id)target;
 - (void)endMovingKnob;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
-- (void)setAction:(SEL)a3;
+- (void)moveKnobToRepPosition:(CGPoint)position;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation CRLCanvasButtonKnobTracker
 
-- (CRLCanvasButtonKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLCanvasButtonKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -49,26 +49,26 @@
 
   v15.receiver = self;
   v15.super_class = CRLCanvasButtonKnobTracker;
-  v13 = [(CRLCanvasKnobTracker *)&v15 initWithRep:v6 knob:v7];
+  v13 = [(CRLCanvasKnobTracker *)&v15 initWithRep:repCopy knob:knobCopy];
 
   return v13;
 }
 
 - (BOOL)p_knobContainsCurrentPosition
 {
-  v2 = self;
-  v3 = [(CRLCanvasKnobTracker *)self knob];
-  [(CRLCanvasKnobTracker *)v2 currentPosition];
-  LOBYTE(v2) = [v3 isHitByUnscaledPoint:1 inputType:?];
+  selfCopy = self;
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  [(CRLCanvasKnobTracker *)selfCopy currentPosition];
+  LOBYTE(selfCopy) = [knob isHitByUnscaledPoint:1 inputType:?];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasKnobTracker *)self knob];
-  v6 = sub_100014370(v4, v5);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v6 = sub_100014370(v4, knob);
 
   if ([v6 isEnabled])
   {
@@ -79,18 +79,18 @@
 - (void)endMovingKnob
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasKnobTracker *)self knob];
-  v5 = sub_100014370(v3, v4);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v5 = sub_100014370(v3, knob);
 
   [v5 setHighlighted:0];
-  v6 = self;
-  if ([v5 isEnabled] && -[CRLCanvasButtonKnobTracker p_knobContainsCurrentPosition](v6, "p_knobContainsCurrentPosition"))
+  selfCopy = self;
+  if ([v5 isEnabled] && -[CRLCanvasButtonKnobTracker p_knobContainsCurrentPosition](selfCopy, "p_knobContainsCurrentPosition"))
   {
-    v7 = [(CRLCanvasButtonKnobTracker *)v6 target];
-    [v7 -[CRLCanvasButtonKnobTracker action](v6];
+    target = [(CRLCanvasButtonKnobTracker *)selfCopy target];
+    [target -[CRLCanvasButtonKnobTracker action](selfCopy];
   }
 
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = CRLCanvasButtonKnobTracker;
   [(CRLCanvasKnobTracker *)&v8 endMovingKnob];
 }
@@ -149,19 +149,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->mAction = v3;
+  self->mAction = actionCopy;
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface EpisodeListAvailableViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (EpisodeListAvailableViewController)initWithNotification:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (EpisodeListAvailableViewController)initWithNotification:(id)notification;
 - (double)_preferredCollectionViewHeight;
-- (id)_episodeSourceAtIndexPath:(id)a3;
-- (id)_loadedIndexPathForEpisodeWithUuid:(id)a3;
-- (id)actionsWithDefaultActions:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_episodeSourceAtIndexPath:(id)path;
+- (id)_loadedIndexPathForEpisodeWithUuid:(id)uuid;
+- (id)actionsWithDefaultActions:(id)actions;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)headerTitle;
 - (unint64_t)countOfAllEpisodes;
 - (void)_removeNotificationFromHistory;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)episodesPropertySourceController:(id)a3 didUpdateEpisodePropertySourcesAtIndexes:(id)a4;
-- (void)episodesPropertySourceControllerDidUpdatingNeedingFullReload:(id)a3;
-- (void)handlePlayActionForEpisodeAvailableCell:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)episodesPropertySourceController:(id)controller didUpdateEpisodePropertySourcesAtIndexes:(id)indexes;
+- (void)episodesPropertySourceControllerDidUpdatingNeedingFullReload:(id)reload;
+- (void)handlePlayActionForEpisodeAvailableCell:(id)cell;
 - (void)loadCollectionView;
 - (void)loadConstraints;
 - (void)loadContentViews;
-- (void)playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:(id)a3;
+- (void)playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:(id)source;
 - (void)revealMoreEpisodes;
-- (void)setNumberOfRevealedEpisodes:(unint64_t)a3;
-- (void)showEpisodeDetailsForEpisodeWithDataSource:(id)a3;
+- (void)setNumberOfRevealedEpisodes:(unint64_t)episodes;
+- (void)showEpisodeDetailsForEpisodeWithDataSource:(id)source;
 - (void)showPodcastDetails;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDynamicConstraints;
 - (void)updateViewConstraints;
 @end
 
 @implementation EpisodeListAvailableViewController
 
-- (EpisodeListAvailableViewController)initWithNotification:(id)a3
+- (EpisodeListAvailableViewController)initWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 mt_notificationEpisodes];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  mt_notificationEpisodes = [content mt_notificationEpisodes];
 
-  if (v7)
+  if (mt_notificationEpisodes)
   {
     v14.receiver = self;
     v14.super_class = EpisodeListAvailableViewController;
-    v8 = [(ContentAvailableViewController *)&v14 initWithNotification:v4];
+    v8 = [(ContentAvailableViewController *)&v14 initWithNotification:notificationCopy];
     if (v8)
     {
       v9 = +[EpisodeListAvailableStyle defaultStyle];
@@ -49,7 +49,7 @@
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -61,17 +61,17 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Unexpected state encountered.  We should never have no episodes in a notification!", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = EpisodeListAvailableViewController;
-  [(EpisodeListAvailableViewController *)&v4 traitCollectionDidChange:a3];
+  [(EpisodeListAvailableViewController *)&v4 traitCollectionDidChange:change];
   [(EpisodeListAvailableViewController *)self updateDynamicConstraints];
 }
 
@@ -90,53 +90,53 @@
   [(EpisodeListAvailableViewController *)self setNumberOfRevealedEpisodes:v3];
 }
 
-- (void)showEpisodeDetailsForEpisodeWithDataSource:(id)a3
+- (void)showEpisodeDetailsForEpisodeWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   [(EpisodeListAvailableViewController *)self _removeNotificationFromHistory];
-  v6 = [v4 openEpisodeDetailInAppURL];
+  openEpisodeDetailInAppURL = [sourceCopy openEpisodeDetailInAppURL];
 
-  if (v6)
+  if (openEpisodeDetailInAppURL)
   {
-    v5 = [(EpisodeListAvailableViewController *)self extensionContext];
-    [v5 openURL:v6 completionHandler:0];
+    extensionContext = [(EpisodeListAvailableViewController *)self extensionContext];
+    [extensionContext openURL:openEpisodeDetailInAppURL completionHandler:0];
   }
 }
 
 - (void)showPodcastDetails
 {
   [(EpisodeListAvailableViewController *)self _removeNotificationFromHistory];
-  v3 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v6 = [v3 firstEpisodePropertySource];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  firstEpisodePropertySource = [episodesPropertySourceController firstEpisodePropertySource];
 
-  v4 = [v6 openPodcastDetailInAppURL];
-  if (v4)
+  openPodcastDetailInAppURL = [firstEpisodePropertySource openPodcastDetailInAppURL];
+  if (openPodcastDetailInAppURL)
   {
-    v5 = [(EpisodeListAvailableViewController *)self extensionContext];
-    [v5 openURL:v4 completionHandler:0];
+    extensionContext = [(EpisodeListAvailableViewController *)self extensionContext];
+    [extensionContext openURL:openPodcastDetailInAppURL completionHandler:0];
   }
 }
 
-- (void)playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:(id)a3
+- (void)playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:(id)source
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100006C98;
   v3[3] = &unk_10002CAC8;
   v3[4] = self;
-  [a3 initiatePlaybackWithCompletion:v3];
+  [source initiatePlaybackWithCompletion:v3];
 }
 
-- (id)actionsWithDefaultActions:(id)a3
+- (id)actionsWithDefaultActions:(id)actions
 {
-  v3 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  [v3 firstEpisodePropertySource];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  [episodesPropertySourceController firstEpisodePropertySource];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100006E90;
   v4 = v12[3] = &unk_10002CAF0;
   v13 = v4;
-  v5 = [v3 firstEpisodePropertySourcePassingTest:v12];
+  v5 = [episodesPropertySourceController firstEpisodePropertySourcePassingTest:v12];
 
   if ([v4 requiresForegroundLaunch])
   {
@@ -148,7 +148,7 @@
     v6 = 0;
   }
 
-  v7 = +[UNNotificationAction mt_playMultipleEpisodesActionWithCount:options:](UNNotificationAction, "mt_playMultipleEpisodesActionWithCount:options:", [v3 countOfEpisodePropertySources], v6);
+  v7 = +[UNNotificationAction mt_playMultipleEpisodesActionWithCount:options:](UNNotificationAction, "mt_playMultipleEpisodesActionWithCount:options:", [episodesPropertySourceController countOfEpisodePropertySources], v6);
   v8 = v7;
   if (v5)
   {
@@ -172,8 +172,8 @@
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"NOTIFICATION_EPISODE_N_AVAILABLE_HEADER_FORMAT" value:&stru_10002D1C8 table:0];
 
-  v5 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v6 = +[NSString localizedStringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "localizedStringWithValidatedFormat:validFormatSpecifiers:error:", v4, @"%u", 0, [v5 countOfEpisodePropertySources]);
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  v6 = +[NSString localizedStringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "localizedStringWithValidatedFormat:validFormatSpecifiers:error:", v4, @"%u", 0, [episodesPropertySourceController countOfEpisodePropertySources]);
 
   return v6;
 }
@@ -208,8 +208,8 @@
   [(UICollectionView *)self->_collectionView mt_registerSupplementaryViewClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionFooter];
   [(UICollectionView *)self->_collectionView setDelegate:self];
   [(UICollectionView *)self->_collectionView setDataSource:self];
-  v9 = [(ContentAvailableViewController *)self headerTitleLabel];
-  [v9 contentCompressionResistancePriorityForAxis:1];
+  headerTitleLabel = [(ContentAvailableViewController *)self headerTitleLabel];
+  [headerTitleLabel contentCompressionResistancePriorityForAxis:1];
   v11 = v10;
 
   *&v12 = v11 + -1.0;
@@ -218,8 +218,8 @@
   v13 = +[UIColor backgroundColor];
   [(UICollectionView *)self->_collectionView setBackgroundColor:v13];
 
-  v14 = [(EpisodeListAvailableViewController *)self view];
-  [v14 addSubview:self->_collectionView];
+  view = [(EpisodeListAvailableViewController *)self view];
+  [view addSubview:self->_collectionView];
 }
 
 - (void)loadConstraints
@@ -227,62 +227,62 @@
   v45.receiver = self;
   v45.super_class = EpisodeListAvailableViewController;
   [(ContentAvailableViewController *)&v45 loadConstraints];
-  v3 = [(EpisodeListAvailableViewController *)self style];
-  v4 = [(EpisodeListAvailableViewController *)self view];
-  v5 = [(ContentAvailableViewController *)self headerTitleLabel];
-  v6 = [(EpisodeListAvailableViewController *)self collectionView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 defaultMarginH];
+  style = [(EpisodeListAvailableViewController *)self style];
+  view = [(EpisodeListAvailableViewController *)self view];
+  headerTitleLabel = [(ContentAvailableViewController *)self headerTitleLabel];
+  collectionView = [(EpisodeListAvailableViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [style defaultMarginH];
   v8 = v7;
-  [v3 defaultMarginH];
-  [v6 setLayoutMargins:{0.0, v8, 0.0, v9}];
-  v10 = [v5 firstBaselineAnchor];
-  v11 = [v4 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
-  v13 = [v3 cell_container_To_mainHeaderBL];
-  v44 = [v12 mt_copyWithDynamicTypeConstant:v13];
+  [style defaultMarginH];
+  [collectionView setLayoutMargins:{0.0, v8, 0.0, v9}];
+  firstBaselineAnchor = [headerTitleLabel firstBaselineAnchor];
+  topAnchor = [view topAnchor];
+  v12 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
+  cell_container_To_mainHeaderBL = [style cell_container_To_mainHeaderBL];
+  v44 = [v12 mt_copyWithDynamicTypeConstant:cell_container_To_mainHeaderBL];
 
   v46[0] = v44;
-  v14 = [v5 leadingAnchor];
-  v15 = [v4 leadingAnchor];
-  [v3 defaultMarginH];
-  v43 = [v14 constraintEqualToAnchor:v15 constant:?];
+  leadingAnchor = [headerTitleLabel leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  [style defaultMarginH];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
   v46[1] = v43;
-  v42 = v5;
-  v16 = [v5 trailingAnchor];
-  v17 = [v4 trailingAnchor];
-  [v3 defaultMarginH];
-  v41 = [v16 constraintEqualToAnchor:v17 constant:-v18];
+  v42 = headerTitleLabel;
+  trailingAnchor = [headerTitleLabel trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  [style defaultMarginH];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v18];
 
   v46[2] = v41;
-  v40 = [v6 heightAnchor];
+  heightAnchor = [collectionView heightAnchor];
   [(EpisodeListAvailableViewController *)self _preferredCollectionViewHeight];
-  v19 = [v40 constraintEqualToConstant:?];
+  v19 = [heightAnchor constraintEqualToConstant:?];
   collectionViewHeightConstraint = self->_collectionViewHeightConstraint;
   self->_collectionViewHeightConstraint = v19;
 
   v46[3] = v19;
-  v21 = [v6 topAnchor];
-  v22 = [v5 lastBaselineAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
-  v24 = [v3 cell_mainHeaderBL_To_collectionViewTop];
-  v25 = [v23 mt_copyWithDynamicTypeConstant:v24];
+  topAnchor2 = [collectionView topAnchor];
+  lastBaselineAnchor = [headerTitleLabel lastBaselineAnchor];
+  v23 = [topAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
+  cell_mainHeaderBL_To_collectionViewTop = [style cell_mainHeaderBL_To_collectionViewTop];
+  v25 = [v23 mt_copyWithDynamicTypeConstant:cell_mainHeaderBL_To_collectionViewTop];
 
   v46[4] = v25;
-  v26 = [v6 leadingAnchor];
-  v27 = [v4 leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:0.0];
+  leadingAnchor3 = [collectionView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.0];
 
   v46[5] = v28;
-  v29 = [v6 trailingAnchor];
-  v30 = [v4 trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:0.0];
+  trailingAnchor3 = [collectionView trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
 
   v46[6] = v31;
-  v32 = [v4 bottomAnchor];
-  v33 = [v6 bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:0.0];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [collectionView bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
 
   v46[7] = v34;
   v35 = [NSArray arrayWithObjects:v46 count:8];
@@ -291,84 +291,84 @@
 
   LODWORD(v37) = 1112014848;
   [v34 setPriority:v37];
-  [v6 reloadData];
-  v38 = [(EpisodeListAvailableViewController *)self installedConstraints];
-  [NSLayoutConstraint activateConstraints:v38];
+  [collectionView reloadData];
+  installedConstraints = [(EpisodeListAvailableViewController *)self installedConstraints];
+  [NSLayoutConstraint activateConstraints:installedConstraints];
 
   [(EpisodeListAvailableViewController *)self updateDynamicConstraints];
-  v39 = [(EpisodeListAvailableViewController *)self view];
-  [v39 invalidateIntrinsicContentSize];
+  view2 = [(EpisodeListAvailableViewController *)self view];
+  [view2 invalidateIntrinsicContentSize];
 }
 
 - (void)updateDynamicConstraints
 {
-  v3 = [(EpisodeListAvailableViewController *)self installedConstraints];
-  [MTDynamicTypeConstant updateDynamicConstantInConstraints:v3];
+  installedConstraints = [(EpisodeListAvailableViewController *)self installedConstraints];
+  [MTDynamicTypeConstant updateDynamicConstantInConstraints:installedConstraints];
 
   [(EpisodeListAvailableViewController *)self _preferredCollectionViewHeight];
   v5 = v4;
-  v6 = [(EpisodeListAvailableViewController *)self collectionViewHeightConstraint];
-  [v6 setConstant:v5];
+  collectionViewHeightConstraint = [(EpisodeListAvailableViewController *)self collectionViewHeightConstraint];
+  [collectionViewHeightConstraint setConstant:v5];
 }
 
-- (void)episodesPropertySourceControllerDidUpdatingNeedingFullReload:(id)a3
+- (void)episodesPropertySourceControllerDidUpdatingNeedingFullReload:(id)reload
 {
-  v3 = [(EpisodeListAvailableViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(EpisodeListAvailableViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)episodesPropertySourceController:(id)a3 didUpdateEpisodePropertySourcesAtIndexes:(id)a4
+- (void)episodesPropertySourceController:(id)controller didUpdateEpisodePropertySourcesAtIndexes:(id)indexes
 {
-  v9 = a4;
+  indexesCopy = indexes;
   v5 = +[NSMutableArray array];
-  for (i = [v9 firstIndex]; i < -[EpisodeListAvailableViewController numberOfRevealedEpisodes](self, "numberOfRevealedEpisodes"); i = objc_msgSend(v9, "indexGreaterThanIndex:", i))
+  for (i = [indexesCopy firstIndex]; i < -[EpisodeListAvailableViewController numberOfRevealedEpisodes](self, "numberOfRevealedEpisodes"); i = objc_msgSend(indexesCopy, "indexGreaterThanIndex:", i))
   {
     v7 = [NSIndexPath indexPathForRow:i inSection:0];
     [v5 addObject:v7];
   }
 
-  v8 = [(EpisodeListAvailableViewController *)self collectionView];
-  [v8 reloadItemsAtIndexPaths:v5];
+  collectionView = [(EpisodeListAvailableViewController *)self collectionView];
+  [collectionView reloadItemsAtIndexPaths:v5];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 mt_dequeueReusableCellClass:objc_opt_class() forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy mt_dequeueReusableCellClass:objc_opt_class() forIndexPath:pathCopy];
 
   [v8 setDelegate:self];
-  v9 = [(EpisodeListAvailableViewController *)self _episodeSourceAtIndexPath:v6];
+  v9 = [(EpisodeListAvailableViewController *)self _episodeSourceAtIndexPath:pathCopy];
   [v8 setEpisodePropertySource:v9];
-  v10 = ![(EpisodeListAvailableViewController *)self shouldShowRevealMoreFooter]&& [(EpisodeListAvailableViewController *)self _isLastEpisodeRowForIndexPath:v6];
+  v10 = ![(EpisodeListAvailableViewController *)self shouldShowRevealMoreFooter]&& [(EpisodeListAvailableViewController *)self _isLastEpisodeRowForIndexPath:pathCopy];
   [v8 setSeparatorHidden:v10];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view cellForItemAtIndexPath:pathCopy];
   [v7 setHighlighted:1];
 
-  v8 = [(EpisodeListAvailableViewController *)self _episodeSourceAtIndexPath:v6];
+  v8 = [(EpisodeListAvailableViewController *)self _episodeSourceAtIndexPath:pathCopy];
 
   [(EpisodeListAvailableViewController *)self showEpisodeDetailsForEpisodeWithDataSource:v8];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  [v6 contentInset];
+  viewCopy = view;
+  [viewCopy contentInset];
   v8 = v7;
   v10 = v9;
-  [v6 frame];
+  [viewCopy frame];
   v12 = v11;
 
   v13 = v12 - (v8 + v10);
-  v14 = [(EpisodeListAvailableViewController *)self flowLayout];
-  [v14 itemSize];
+  flowLayout = [(EpisodeListAvailableViewController *)self flowLayout];
+  [flowLayout itemSize];
   v16 = v15;
 
   v17 = v13;
@@ -378,54 +378,54 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 mt_dequeueReusableSupplementaryViewClass:objc_opt_class() supplementaryViewKind:v9 forIndexPath:v8];
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
+  v11 = [viewCopy mt_dequeueReusableSupplementaryViewClass:objc_opt_class() supplementaryViewKind:kindCopy forIndexPath:pathCopy];
 
   [v11 setActionHandler:self];
 
   return v11;
 }
 
-- (void)handlePlayActionForEpisodeAvailableCell:(id)a3
+- (void)handlePlayActionForEpisodeAvailableCell:(id)cell
 {
-  v4 = [a3 episodePropertySource];
-  [(EpisodeListAvailableViewController *)self playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:v4];
+  episodePropertySource = [cell episodePropertySource];
+  [(EpisodeListAvailableViewController *)self playEpisodeWithDefaultBehaviorForEpisodeWithDataSource:episodePropertySource];
 }
 
 - (unint64_t)countOfAllEpisodes
 {
-  v2 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v3 = [v2 countOfEpisodePropertySources];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  countOfEpisodePropertySources = [episodesPropertySourceController countOfEpisodePropertySources];
 
-  return v3;
+  return countOfEpisodePropertySources;
 }
 
-- (void)setNumberOfRevealedEpisodes:(unint64_t)a3
+- (void)setNumberOfRevealedEpisodes:(unint64_t)episodes
 {
-  if (self->_numberOfRevealedEpisodes != a3)
+  if (self->_numberOfRevealedEpisodes != episodes)
   {
-    v5 = [(EpisodeListAvailableViewController *)self countOfAllEpisodes];
-    if (v5 >= a3)
+    countOfAllEpisodes = [(EpisodeListAvailableViewController *)self countOfAllEpisodes];
+    if (countOfAllEpisodes >= episodes)
     {
-      v6 = a3;
+      episodesCopy = episodes;
     }
 
     else
     {
-      v6 = v5;
+      episodesCopy = countOfAllEpisodes;
     }
 
-    self->_numberOfRevealedEpisodes = v6;
+    self->_numberOfRevealedEpisodes = episodesCopy;
     if ([(EpisodeListAvailableViewController *)self shouldShowRevealMoreFooter])
     {
       +[ShowMoreFooterView defaultHeight];
       v8 = v7;
-      v9 = [(EpisodeListAvailableViewController *)self flowLayout];
-      v10 = v9;
+      flowLayout = [(EpisodeListAvailableViewController *)self flowLayout];
+      v10 = flowLayout;
       width = 0.0;
       v12 = v8;
     }
@@ -433,37 +433,37 @@
     else
     {
       height = CGSizeZero.height;
-      v9 = [(EpisodeListAvailableViewController *)self flowLayout];
-      v10 = v9;
+      flowLayout = [(EpisodeListAvailableViewController *)self flowLayout];
+      v10 = flowLayout;
       width = CGSizeZero.width;
       v12 = height;
     }
 
-    [v9 setFooterReferenceSize:{width, v12}];
+    [flowLayout setFooterReferenceSize:{width, v12}];
 
-    v14 = [(EpisodeListAvailableViewController *)self flowLayout];
-    [v14 invalidateLayout];
+    flowLayout2 = [(EpisodeListAvailableViewController *)self flowLayout];
+    [flowLayout2 invalidateLayout];
 
-    v15 = [(EpisodeListAvailableViewController *)self collectionView];
-    [v15 reloadData];
+    collectionView = [(EpisodeListAvailableViewController *)self collectionView];
+    [collectionView reloadData];
 
-    v16 = [(EpisodeListAvailableViewController *)self view];
-    [v16 setNeedsUpdateConstraints];
+    view = [(EpisodeListAvailableViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (id)_loadedIndexPathForEpisodeWithUuid:(id)a3
+- (id)_loadedIndexPathForEpisodeWithUuid:(id)uuid
 {
-  v4 = a3;
-  if ([v4 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
-    v5 = [(ContentAvailableViewController *)self episodesPropertySourceController];
+    episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100007E28;
     v9[3] = &unk_10002CAF0;
-    v10 = v4;
-    v6 = [v5 indexOfPropertySourcePassingTest:v9];
+    v10 = uuidCopy;
+    v6 = [episodesPropertySourceController indexOfPropertySourcePassingTest:v9];
 
     if (v6 >= [(EpisodeListAvailableViewController *)self numberOfRevealedEpisodes])
     {
@@ -484,10 +484,10 @@
   return v7;
 }
 
-- (id)_episodeSourceAtIndexPath:(id)a3
+- (id)_episodeSourceAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   if (v5 >= [(EpisodeListAvailableViewController *)self countOfAllEpisodes])
   {
     v7 = 0;
@@ -495,8 +495,8 @@
 
   else
   {
-    v6 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-    v7 = [v6 episodePropertySourceAtIndex:{objc_msgSend(v4, "row")}];
+    episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+    v7 = [episodesPropertySourceController episodePropertySourceAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v7;
@@ -523,9 +523,9 @@
 
 - (void)_removeNotificationFromHistory
 {
-  v3 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v2 = [v3 notification];
-  [v2 mt_removeFromUserNotificationCenter];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  notification = [episodesPropertySourceController notification];
+  [notification mt_removeFromUserNotificationCenter];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface CryptexRemoteServiceNonce
-- (CryptexRemoteServiceNonce)initWithNonce:(const _img4_nonce *)a3;
+- (CryptexRemoteServiceNonce)initWithNonce:(const _img4_nonce *)nonce;
 - (void)dealloc;
 @end
 
 @implementation CryptexRemoteServiceNonce
 
-- (CryptexRemoteServiceNonce)initWithNonce:(const _img4_nonce *)a3
+- (CryptexRemoteServiceNonce)initWithNonce:(const _img4_nonce *)nonce
 {
   v12 = *MEMORY[0x29EDCA608];
   v9.receiver = self;
@@ -18,11 +18,11 @@
   }
 
   v4->_nonce = v5;
-  v6 = *&a3->var1[14];
-  *&v5->var0 = *&a3->var0;
+  v6 = *&nonce->var1[14];
+  *&v5->var0 = *&nonce->var0;
   *&v5->var1[14] = v6;
-  *&v5->var1[30] = *&a3->var1[30];
-  *&v5->var1[46] = *&a3->var1[46];
+  *&v5->var1[30] = *&nonce->var1[30];
+  *&v5->var1[46] = *&nonce->var1[46];
   v7 = *MEMORY[0x29EDCA608];
   return v4;
 }

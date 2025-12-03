@@ -1,16 +1,16 @@
 @interface UIAvoidanceCoordinator
 - (CGRect)avoidanceFrame;
 - (UIAvoidanceCoordinator)init;
-- (id)findBlockadesForName:(id)a3;
-- (id)findClientsForBlockade:(id)a3;
-- (id)findNamesForBlockade:(id)a3;
-- (void)addAvoidanceObject:(id)a3;
+- (id)findBlockadesForName:(id)name;
+- (id)findClientsForBlockade:(id)blockade;
+- (id)findNamesForBlockade:(id)blockade;
+- (void)addAvoidanceObject:(id)object;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)releaseAll:(id)a3 withType:(unint64_t)a4;
-- (void)removeAvoidanceObject:(id)a3;
-- (void)setGroupOfBlockades:(id)a3 forBlockadeIdentifier:(id)a4;
-- (void)updateClients:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)releaseAll:(id)all withType:(unint64_t)type;
+- (void)removeAvoidanceObject:(id)object;
+- (void)setGroupOfBlockades:(id)blockades forBlockadeIdentifier:(id)identifier;
+- (void)updateClients:(id)clients;
 @end
 
 @implementation UIAvoidanceCoordinator
@@ -22,9 +22,9 @@
   v2 = [(UIAvoidanceCoordinator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     blockades = v2->_blockades;
-    v2->_blockades = v3;
+    v2->_blockades = dictionary;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     clients = v2->_clients;
@@ -34,15 +34,15 @@
   return v2;
 }
 
-- (void)releaseAll:(id)a3 withType:(unint64_t)a4
+- (void)releaseAll:(id)all withType:(unint64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  allCopy = all;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -54,7 +54,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -63,12 +63,12 @@
         v12[2] = __46__UIAvoidanceCoordinator_releaseAll_withType___block_invoke;
         v12[3] = &unk_1E712A2B8;
         v12[4] = self;
-        ForPropertiesMatchingType(a4, v11, v12);
+        ForPropertiesMatchingType(type, v11, v12);
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -84,19 +84,19 @@
   [(UIAvoidanceCoordinator *)&v3 dealloc];
 }
 
-- (void)setGroupOfBlockades:(id)a3 forBlockadeIdentifier:(id)a4
+- (void)setGroupOfBlockades:(id)blockades forBlockadeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_blockades objectForKey:v6];
-  if (v8)
+  blockadesCopy = blockades;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_blockades objectForKey:identifierCopy];
+  if (blockadesCopy)
   {
     if (v7)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A blockade already exists with the name '%@', unable to create group", v6}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A blockade already exists with the name '%@', unable to create group", identifierCopy}];
       }
     }
 
@@ -106,7 +106,7 @@
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Expected NSArray, got %@", objc_opt_class()}];
     }
 
-    [(NSMutableDictionary *)self->_blockades setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_blockades setObject:blockadesCopy forKeyedSubscript:identifierCopy];
   }
 
   else if (v7)
@@ -114,26 +114,26 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Blockade name '%@' is not a group", v6}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Blockade name '%@' is not a group", identifierCopy}];
     }
 
-    [(NSMutableDictionary *)self->_blockades removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_blockades removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)addAvoidanceObject:(id)a3
+- (void)addAvoidanceObject:(id)object
 {
-  v4 = a3;
-  Type = FindType(v4);
+  objectCopy = object;
+  Type = FindType(objectCopy);
   v6 = Type;
   if (Type)
   {
     if (Type)
     {
-      v7 = v4;
+      v7 = objectCopy;
       blockades = self->_blockades;
-      v9 = [v7 blockadeIdentifier];
-      v10 = [(NSMutableDictionary *)blockades objectForKey:v9];
+      blockadeIdentifier = [v7 blockadeIdentifier];
+      v10 = [(NSMutableDictionary *)blockades objectForKey:blockadeIdentifier];
 
       if (v10)
       {
@@ -145,12 +145,12 @@
         ForPropertiesMatchingType(1, v10, v19);
       }
 
-      v11 = [v7 blockadeIdentifier];
-      if (v11 && (v12 = v11, [v7 blockadeIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", &stru_1EFB14550), v13, v12, (v14 & 1) == 0))
+      blockadeIdentifier2 = [v7 blockadeIdentifier];
+      if (blockadeIdentifier2 && (v12 = blockadeIdentifier2, [v7 blockadeIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", &stru_1EFB14550), v13, v12, (v14 & 1) == 0))
       {
         v15 = self->_blockades;
-        v16 = [v7 blockadeIdentifier];
-        [(NSMutableDictionary *)v15 setObject:v7 forKey:v16];
+        blockadeIdentifier3 = [v7 blockadeIdentifier];
+        [(NSMutableDictionary *)v15 setObject:v7 forKey:blockadeIdentifier3];
       }
 
       else
@@ -161,26 +161,26 @@
 
     if ((v6 & 2) != 0)
     {
-      if ([(NSMutableSet *)self->_clients containsObject:v4])
+      if ([(NSMutableSet *)self->_clients containsObject:objectCopy])
       {
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __45__UIAvoidanceCoordinator_addAvoidanceObject___block_invoke_2;
         v18[3] = &unk_1E712A2B8;
         v18[4] = self;
-        ForPropertiesMatchingType(2, v4, v18);
+        ForPropertiesMatchingType(2, objectCopy, v18);
       }
 
       else
       {
-        [(NSMutableSet *)self->_clients addObject:v4];
+        [(NSMutableSet *)self->_clients addObject:objectCopy];
       }
     }
   }
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Object %@ must conform to at least one of UIAvoidanceBlockade, UIAvoidanceClient", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Object %@ must conform to at least one of UIAvoidanceBlockade, UIAvoidanceClient", objectCopy}];
   }
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -188,25 +188,25 @@
   v17[2] = __45__UIAvoidanceCoordinator_addAvoidanceObject___block_invoke_3;
   v17[3] = &unk_1E712A2B8;
   v17[4] = self;
-  ForPropertiesMatchingType(v6, v4, v17);
+  ForPropertiesMatchingType(v6, objectCopy, v17);
 }
 
-- (void)removeAvoidanceObject:(id)a3
+- (void)removeAvoidanceObject:(id)object
 {
-  v4 = a3;
-  Type = FindType(v4);
+  objectCopy = object;
+  Type = FindType(objectCopy);
   if (Type)
   {
-    v6 = v4;
+    v6 = objectCopy;
     blockades = self->_blockades;
-    v8 = [v6 blockadeIdentifier];
-    v9 = [(NSMutableDictionary *)blockades objectForKey:v8];
+    blockadeIdentifier = [v6 blockadeIdentifier];
+    v9 = [(NSMutableDictionary *)blockades objectForKey:blockadeIdentifier];
 
     if (v9)
     {
       v10 = self->_blockades;
-      v11 = [v6 blockadeIdentifier];
-      [(NSMutableDictionary *)v10 removeObjectForKey:v11];
+      blockadeIdentifier2 = [v6 blockadeIdentifier];
+      [(NSMutableDictionary *)v10 removeObjectForKey:blockadeIdentifier2];
     }
 
     else
@@ -226,36 +226,36 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (![(NSMutableSet *)self->_clients containsObject:v4])
+  if (![(NSMutableSet *)self->_clients containsObject:objectCopy])
   {
     Type &= ~2uLL;
     goto LABEL_10;
   }
 
-  [(NSMutableSet *)self->_clients removeObject:v4];
+  [(NSMutableSet *)self->_clients removeObject:objectCopy];
 LABEL_11:
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__UIAvoidanceCoordinator_removeAvoidanceObject___block_invoke;
   v14[3] = &unk_1E712A2B8;
   v14[4] = self;
-  ForPropertiesMatchingType(Type, v4, v14);
+  ForPropertiesMatchingType(Type, objectCopy, v14);
   if (Type)
   {
-    v12 = [v4 blockadeIdentifier];
-    v13 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:v12];
+    blockadeIdentifier3 = [objectCopy blockadeIdentifier];
+    v13 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:blockadeIdentifier3];
     [(UIAvoidanceCoordinator *)self updateClients:v13];
   }
 
 LABEL_13:
 }
 
-- (id)findNamesForBlockade:(id)a3
+- (id)findNamesForBlockade:(id)blockade
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithObject:v4];
-  v6 = v4;
+  blockadeCopy = blockade;
+  v5 = [MEMORY[0x1E695DFA8] setWithObject:blockadeCopy];
+  v6 = blockadeCopy;
   v7 = 0;
   v17 = v6;
   while (2)
@@ -321,12 +321,12 @@ LABEL_14:
   return v5;
 }
 
-- (id)findClientsForBlockade:(id)a3
+- (id)findClientsForBlockade:(id)blockade
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:&stru_1EFB14550])
+  blockadeCopy = blockade;
+  v5 = blockadeCopy;
+  if (blockadeCopy && ![blockadeCopy isEqualToString:&stru_1EFB14550])
   {
     v17 = v5;
     v7 = [(UIAvoidanceCoordinator *)self findNamesForBlockade:v5];
@@ -353,8 +353,8 @@ LABEL_14:
           v13 = *(*(&v18 + 1) + 8 * i);
           if ([v13 conformsToProtocol:&unk_1F016E310])
           {
-            v14 = [v13 blockades];
-            v15 = [v7 intersectsSet:v14];
+            blockades = [v13 blockades];
+            v15 = [v7 intersectsSet:blockades];
 
             if (v15)
             {
@@ -380,16 +380,16 @@ LABEL_14:
   return v6;
 }
 
-- (id)findBlockadesForName:(id)a3
+- (id)findBlockadesForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
+  v6 = [MEMORY[0x1E695DF70] arrayWithObject:nameCopy];
   while ([v6 count])
   {
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     [v6 removeLastObject];
-    v8 = [(NSMutableDictionary *)self->_blockades objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_blockades objectForKey:lastObject];
     if ([v8 conformsToProtocol:&unk_1F016E2B0])
     {
       [v5 addObject:v8];
@@ -404,10 +404,10 @@ LABEL_14:
   return v5;
 }
 
-- (void)updateClients:(id)a3
+- (void)updateClients:(id)clients
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientsCopy = clients;
   recurseCount = self->_recurseCount;
   if (recurseCount <= 10)
   {
@@ -416,8 +416,8 @@ LABEL_14:
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = v4;
-    v27 = [v4 countByEnumeratingWithState:&v41 objects:v47 count:16];
+    obj = clientsCopy;
+    v27 = [clientsCopy countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v27)
     {
       v26 = *v42;
@@ -434,14 +434,14 @@ LABEL_14:
 
           v29 = v6;
           v7 = *(*(&v41 + 1) + 8 * v6);
-          v32 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v28 = v7;
-          v30 = [v7 blockades];
-          v8 = [v30 countByEnumeratingWithState:&v37 objects:v46 count:16];
+          blockades = [v7 blockades];
+          v8 = [blockades countByEnumeratingWithState:&v37 objects:v46 count:16];
           if (v8)
           {
             v9 = v8;
@@ -452,11 +452,11 @@ LABEL_14:
               {
                 if (*v38 != v31)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(blockades);
                 }
 
                 v11 = *(*(&v37 + 1) + 8 * i);
-                v12 = self;
+                selfCopy = self;
                 v13 = [(UIAvoidanceCoordinator *)self findBlockadesForName:v11];
                 v14 = [MEMORY[0x1E695DFA8] set];
                 v33 = 0u;
@@ -478,8 +478,8 @@ LABEL_14:
                         objc_enumerationMutation(v15);
                       }
 
-                      v20 = [*(*(&v33 + 1) + 8 * j) blockadeShapes];
-                      [v14 unionSet:v20];
+                      blockadeShapes = [*(*(&v33 + 1) + 8 * j) blockadeShapes];
+                      [v14 unionSet:blockadeShapes];
                     }
 
                     v17 = [v15 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -488,25 +488,25 @@ LABEL_14:
                   while (v17);
                 }
 
-                [v32 setObject:v14 forKey:v11];
-                self = v12;
+                [dictionary setObject:v14 forKey:v11];
+                self = selfCopy;
               }
 
-              v9 = [v30 countByEnumeratingWithState:&v37 objects:v46 count:16];
+              v9 = [blockades countByEnumeratingWithState:&v37 objects:v46 count:16];
             }
 
             while (v9);
           }
 
-          v21 = [v28 avoidanceApplicator];
-          if (!v21)
+          avoidanceApplicator = [v28 avoidanceApplicator];
+          if (!avoidanceApplicator)
           {
             [MEMORY[0x1E695DF30] raise:v24 format:{@"Client %@ needs an applicator", v28}];
           }
 
-          v22 = [v28 avoidanceController];
-          v23 = [v22 avoid:v32 forClient:v28 withCoordinator:self];
-          [v21 updateClient:v28 toPosition:v23];
+          avoidanceController = [v28 avoidanceController];
+          v23 = [avoidanceController avoid:dictionary forClient:v28 withCoordinator:self];
+          [avoidanceApplicator updateClient:v28 toPosition:v23];
 
           v6 = v29 + 1;
         }
@@ -519,27 +519,27 @@ LABEL_14:
     }
 
     --self->_recurseCount;
-    v4 = obj;
+    clientsCopy = obj;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v24 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6 - 3 < 4)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = changeCopy;
+  if (context - 3 < 4)
   {
-    v13 = [MEMORY[0x1E695DFD8] setWithObject:v10];
+    v13 = [MEMORY[0x1E695DFD8] setWithObject:objectCopy];
     [(UIAvoidanceCoordinator *)self updateClients:v13];
 
     goto LABEL_20;
   }
 
-  if (a6 == 1)
+  if (context == 1)
   {
-    v16 = [v11 objectForKey:*MEMORY[0x1E696A500]];
+    v16 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
     if (v16)
     {
       v15 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:v16];
@@ -555,7 +555,7 @@ LABEL_14:
     if (v17)
     {
       v18 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:v17];
-      [(NSMutableDictionary *)self->_blockades setObject:v10 forKeyedSubscript:v17];
+      [(NSMutableDictionary *)self->_blockades setObject:objectCopy forKeyedSubscript:v17];
       v19 = v15;
       v20 = v18;
       v21 = v20;
@@ -592,14 +592,14 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a6 != 2)
+  if (context != 2)
   {
-    NSLog(&cfstr_UnknownContext.isa, a6);
+    NSLog(&cfstr_UnknownContext.isa, context);
     goto LABEL_20;
   }
 
-  v14 = [v10 blockadeIdentifier];
-  v15 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:v14];
+  blockadeIdentifier = [objectCopy blockadeIdentifier];
+  v15 = [(UIAvoidanceCoordinator *)self findClientsForBlockade:blockadeIdentifier];
 
   [(UIAvoidanceCoordinator *)self updateClients:v15];
 LABEL_19:

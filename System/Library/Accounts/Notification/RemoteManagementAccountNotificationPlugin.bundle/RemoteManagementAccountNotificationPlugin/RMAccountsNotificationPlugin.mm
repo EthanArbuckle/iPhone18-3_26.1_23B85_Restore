@@ -1,43 +1,43 @@
 @interface RMAccountsNotificationPlugin
-- (BOOL)_changeIsSignificantForAccount:(id)a3 oldAccount:(id)a4;
-- (BOOL)_shouldNotifyForAccount:(id)a3;
+- (BOOL)_changeIsSignificantForAccount:(id)account oldAccount:(id)oldAccount;
+- (BOOL)_shouldNotifyForAccount:(id)account;
 - (void)_postNotification;
-- (void)_sendStatusNotificationIfNeededForAccount:(id)a3 oldAccount:(id)a4 changeType:(int)a5;
+- (void)_sendStatusNotificationIfNeededForAccount:(id)account oldAccount:(id)oldAccount changeType:(int)type;
 @end
 
 @implementation RMAccountsNotificationPlugin
 
-- (void)_sendStatusNotificationIfNeededForAccount:(id)a3 oldAccount:(id)a4 changeType:(int)a5
+- (void)_sendStatusNotificationIfNeededForAccount:(id)account oldAccount:(id)oldAccount changeType:(int)type
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(RMAccountsNotificationPlugin *)self _shouldNotifyForAccount:v8]|| [(RMAccountsNotificationPlugin *)self _shouldNotifyForAccount:v9])
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  if ([(RMAccountsNotificationPlugin *)self _shouldNotifyForAccount:accountCopy]|| [(RMAccountsNotificationPlugin *)self _shouldNotifyForAccount:oldAccountCopy])
   {
     v10 = +[RMLog accountsNotificationPlugin];
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-    switch(a5)
+    switch(type)
     {
       case 3:
         if (v11)
         {
-          sub_2CA0(v9);
+          sub_2CA0(oldAccountCopy);
         }
 
         goto LABEL_15;
       case 2:
         if (v11)
         {
-          sub_2B14(v8);
+          sub_2B14(accountCopy);
         }
 
-        v12 = [(RMAccountsNotificationPlugin *)self _changeIsSignificantForAccount:v8 oldAccount:v9];
+        v12 = [(RMAccountsNotificationPlugin *)self _changeIsSignificantForAccount:accountCopy oldAccount:oldAccountCopy];
         v10 = +[RMLog accountsNotificationPlugin];
         v13 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
         if (v12)
         {
           if (v13)
           {
-            sub_2C1C(v8);
+            sub_2C1C(accountCopy);
           }
 
           goto LABEL_15;
@@ -45,14 +45,14 @@
 
         if (v13)
         {
-          sub_2B98(v8);
+          sub_2B98(accountCopy);
         }
 
         break;
       case 1:
         if (v11)
         {
-          sub_2D24(v8);
+          sub_2D24(accountCopy);
         }
 
 LABEL_15:
@@ -62,7 +62,7 @@ LABEL_15:
       default:
         if (v11)
         {
-          sub_2DA8(a5, v10);
+          sub_2DA8(type, v10);
         }
 
         break;
@@ -90,28 +90,28 @@ LABEL_21:
   }
 }
 
-- (BOOL)_shouldNotifyForAccount:(id)a3
+- (BOOL)_shouldNotifyForAccount:(id)account
 {
-  if (!a3)
+  if (!account)
   {
     return 0;
   }
 
-  v3 = [a3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v3 = [account objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)_changeIsSignificantForAccount:(id)a3 oldAccount:(id)a4
+- (BOOL)_changeIsSignificantForAccount:(id)account oldAccount:(id)oldAccount
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [AccountStatusHandler handlerForAccount:v5];
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  v7 = [AccountStatusHandler handlerForAccount:accountCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 statusHasChangedForAccount:v5 oldAccount:v6];
+    v9 = [v7 statusHasChangedForAccount:accountCopy oldAccount:oldAccountCopy];
   }
 
   else

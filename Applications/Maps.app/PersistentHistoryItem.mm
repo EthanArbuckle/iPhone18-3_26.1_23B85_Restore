@@ -1,22 +1,22 @@
 @interface PersistentHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentHistoryItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   searchRequestHistoryItem = self->_searchRequestHistoryItem;
-  v13 = v4;
-  v6 = v4[3];
+  v13 = fromCopy;
+  v6 = fromCopy[3];
   if (searchRequestHistoryItem)
   {
     if (v6)
@@ -84,13 +84,13 @@
   return v4 ^ v5 ^ [(PersistentAddressBookAddress *)self->_addressBookItem hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((searchRequestHistoryItem = self->_searchRequestHistoryItem, !(searchRequestHistoryItem | v4[3])) || -[PersistentSearchRequestHistoryItem isEqual:](searchRequestHistoryItem, "isEqual:")) && ((searchResultHistoryItem = self->_searchResultHistoryItem, !(searchResultHistoryItem | v4[4])) || -[PersistentSearchResultHistoryItem isEqual:](searchResultHistoryItem, "isEqual:")) && ((directionsHistoryItem = self->_directionsHistoryItem, !(directionsHistoryItem | v4[2])) || -[PersistentDirectionsHistoryItem isEqual:](directionsHistoryItem, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((searchRequestHistoryItem = self->_searchRequestHistoryItem, !(searchRequestHistoryItem | equalCopy[3])) || -[PersistentSearchRequestHistoryItem isEqual:](searchRequestHistoryItem, "isEqual:")) && ((searchResultHistoryItem = self->_searchResultHistoryItem, !(searchResultHistoryItem | equalCopy[4])) || -[PersistentSearchResultHistoryItem isEqual:](searchResultHistoryItem, "isEqual:")) && ((directionsHistoryItem = self->_directionsHistoryItem, !(directionsHistoryItem | equalCopy[2])) || -[PersistentDirectionsHistoryItem isEqual:](directionsHistoryItem, "isEqual:")))
   {
     addressBookItem = self->_addressBookItem;
-    if (addressBookItem | v4[1])
+    if (addressBookItem | equalCopy[1])
     {
       v9 = [(PersistentAddressBookAddress *)addressBookItem isEqual:?];
     }
@@ -109,83 +109,83 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PersistentSearchRequestHistoryItem *)self->_searchRequestHistoryItem copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PersistentSearchRequestHistoryItem *)self->_searchRequestHistoryItem copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(PersistentSearchResultHistoryItem *)self->_searchResultHistoryItem copyWithZone:a3];
+  v8 = [(PersistentSearchResultHistoryItem *)self->_searchResultHistoryItem copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(PersistentDirectionsHistoryItem *)self->_directionsHistoryItem copyWithZone:a3];
+  v10 = [(PersistentDirectionsHistoryItem *)self->_directionsHistoryItem copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(PersistentAddressBookAddress *)self->_addressBookItem copyWithZone:a3];
+  v12 = [(PersistentAddressBookAddress *)self->_addressBookItem copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_searchRequestHistoryItem)
   {
-    [v4 setSearchRequestHistoryItem:?];
-    v4 = v5;
+    [toCopy setSearchRequestHistoryItem:?];
+    toCopy = v5;
   }
 
   if (self->_searchResultHistoryItem)
   {
     [v5 setSearchResultHistoryItem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_directionsHistoryItem)
   {
     [v5 setDirectionsHistoryItem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressBookItem)
   {
     [v5 setAddressBookItem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_searchRequestHistoryItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_searchResultHistoryItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_directionsHistoryItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addressBookItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
@@ -195,29 +195,29 @@
   addressBookItem = self->_addressBookItem;
   if (addressBookItem)
   {
-    v5 = [(PersistentAddressBookAddress *)addressBookItem dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"addressBookItem"];
+    dictionaryRepresentation = [(PersistentAddressBookAddress *)addressBookItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"addressBookItem"];
   }
 
   searchRequestHistoryItem = self->_searchRequestHistoryItem;
   if (searchRequestHistoryItem)
   {
-    v7 = [(PersistentSearchRequestHistoryItem *)searchRequestHistoryItem dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"searchRequestHistoryItem"];
+    dictionaryRepresentation2 = [(PersistentSearchRequestHistoryItem *)searchRequestHistoryItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"searchRequestHistoryItem"];
   }
 
   searchResultHistoryItem = self->_searchResultHistoryItem;
   if (searchResultHistoryItem)
   {
-    v9 = [(PersistentSearchResultHistoryItem *)searchResultHistoryItem dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"searchResultHistoryItem"];
+    dictionaryRepresentation3 = [(PersistentSearchResultHistoryItem *)searchResultHistoryItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"searchResultHistoryItem"];
   }
 
   directionsHistoryItem = self->_directionsHistoryItem;
   if (directionsHistoryItem)
   {
-    v11 = [(PersistentDirectionsHistoryItem *)directionsHistoryItem dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"directionsHistoryItem"];
+    dictionaryRepresentation4 = [(PersistentDirectionsHistoryItem *)directionsHistoryItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"directionsHistoryItem"];
   }
 
   return v3;
@@ -228,8 +228,8 @@
   v7.receiver = self;
   v7.super_class = PersistentHistoryItem;
   v3 = [(PersistentHistoryItem *)&v7 description];
-  v4 = [(PersistentHistoryItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentHistoryItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

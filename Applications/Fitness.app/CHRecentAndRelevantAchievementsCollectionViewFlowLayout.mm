@@ -1,33 +1,33 @@
 @interface CHRecentAndRelevantAchievementsCollectionViewFlowLayout
-- (id)_transformAttributes:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)_transformAttributes:(id)attributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation CHRecentAndRelevantAchievementsCollectionViewFlowLayout
 
-- (id)_transformAttributes:(id)a3
+- (id)_transformAttributes:(id)attributes
 {
-  v4 = [a3 copy];
-  v5 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
-  v6 = [v5 delegate];
+  v4 = [attributes copy];
+  collectionView = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  v7 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
-  v8 = [v7 dataSource];
+  collectionView2 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
+  dataSource = [collectionView2 dataSource];
 
-  v9 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
-  [v6 collectionView:v9 layout:self referenceSizeForHeaderInSection:0];
+  collectionView3 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
+  [delegate collectionView:collectionView3 layout:self referenceSizeForHeaderInSection:0];
   v11 = v10;
   height = v12;
 
-  v14 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
+  collectionView4 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
   v15 = [NSIndexPath indexPathForItem:0 inSection:0];
-  [v6 collectionView:v14 layout:self sizeForItemAtIndexPath:v15];
+  [delegate collectionView:collectionView4 layout:self sizeForItemAtIndexPath:v15];
   width = v16;
 
-  v18 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
-  v19 = [v4 indexPath];
-  v20 = [v8 collectionView:v18 numberOfItemsInSection:{objc_msgSend(v19, "section")}];
+  collectionView5 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self collectionView];
+  indexPath = [v4 indexPath];
+  v20 = [dataSource collectionView:collectionView5 numberOfItemsInSection:{objc_msgSend(indexPath, "section")}];
 
   if (![v4 representedElementCategory])
   {
@@ -41,8 +41,8 @@
 
   if ([v4 representedElementCategory] == 1)
   {
-    v21 = [v4 representedElementKind];
-    v22 = [v21 isEqualToString:UICollectionElementKindSectionHeader];
+    representedElementKind = [v4 representedElementKind];
+    v22 = [representedElementKind isEqualToString:UICollectionElementKindSectionHeader];
 
     if (v22)
     {
@@ -65,8 +65,8 @@ LABEL_13:
 
   if ([v4 representedElementCategory] == 1)
   {
-    v25 = [v4 representedElementKind];
-    v26 = [v25 isEqualToString:UICollectionElementKindSectionFooter];
+    representedElementKind2 = [v4 representedElementKind];
+    v26 = [representedElementKind2 isEqualToString:UICollectionElementKindSectionFooter];
 
     if (v26)
     {
@@ -96,11 +96,11 @@ LABEL_15:
   return v4;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v17.receiver = self;
   v17.super_class = CHRecentAndRelevantAchievementsCollectionViewFlowLayout;
-  v4 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
@@ -134,11 +134,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CHRecentAndRelevantAchievementsCollectionViewFlowLayout;
-  v4 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:path];
   v5 = [(CHRecentAndRelevantAchievementsCollectionViewFlowLayout *)self _transformAttributes:v4];
 
   return v5;

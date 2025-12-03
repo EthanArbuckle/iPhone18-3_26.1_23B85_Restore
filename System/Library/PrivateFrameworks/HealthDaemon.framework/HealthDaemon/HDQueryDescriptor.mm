@@ -1,9 +1,9 @@
 @interface HDQueryDescriptor
-+ (HDQueryDescriptor)queryDescriptorWithSampleType:(id)a3;
-+ (HDQueryDescriptor)queryDescriptorWithSampleTypes:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (HDQueryDescriptor)queryDescriptorWithSampleType:(id)type;
++ (HDQueryDescriptor)queryDescriptorWithSampleTypes:(id)types;
+- (BOOL)isEqual:(id)equal;
 - (HDQueryDescriptor)init;
-- (HDQueryDescriptor)initWithSampleTypes:(id)a3 encodingOptions:(id)a4 restrictedSourceEntities:(id)a5 authorizationFilter:(id)a6 filter:(id)a7 samplePredicate:(id)a8 deletedObjectsPredicate:(id)a9;
+- (HDQueryDescriptor)initWithSampleTypes:(id)types encodingOptions:(id)options restrictedSourceEntities:(id)entities authorizationFilter:(id)filter filter:(id)a7 samplePredicate:(id)predicate deletedObjectsPredicate:(id)objectsPredicate;
 - (unint64_t)hash;
 @end
 
@@ -19,44 +19,44 @@
   return 0;
 }
 
-+ (HDQueryDescriptor)queryDescriptorWithSampleType:(id)a3
++ (HDQueryDescriptor)queryDescriptorWithSampleType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  typeCopy = type;
+  v5 = [self alloc];
+  v6 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
 
   v7 = [v5 initWithSampleTypes:v6 encodingOptions:0 restrictedSourceEntities:0 authorizationFilter:0 filter:0 samplePredicate:0 deletedObjectsPredicate:0];
 
   return v7;
 }
 
-+ (HDQueryDescriptor)queryDescriptorWithSampleTypes:(id)a3
++ (HDQueryDescriptor)queryDescriptorWithSampleTypes:(id)types
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSampleTypes:v4 encodingOptions:0 restrictedSourceEntities:0 authorizationFilter:0 filter:0 samplePredicate:0 deletedObjectsPredicate:0];
+  typesCopy = types;
+  v5 = [[self alloc] initWithSampleTypes:typesCopy encodingOptions:0 restrictedSourceEntities:0 authorizationFilter:0 filter:0 samplePredicate:0 deletedObjectsPredicate:0];
 
   return v5;
 }
 
-- (HDQueryDescriptor)initWithSampleTypes:(id)a3 encodingOptions:(id)a4 restrictedSourceEntities:(id)a5 authorizationFilter:(id)a6 filter:(id)a7 samplePredicate:(id)a8 deletedObjectsPredicate:(id)a9
+- (HDQueryDescriptor)initWithSampleTypes:(id)types encodingOptions:(id)options restrictedSourceEntities:(id)entities authorizationFilter:(id)filter filter:(id)a7 samplePredicate:(id)predicate deletedObjectsPredicate:(id)objectsPredicate
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  typesCopy = types;
+  optionsCopy = options;
+  entitiesCopy = entities;
+  filterCopy = filter;
   v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (!v16)
+  predicateCopy = predicate;
+  objectsPredicateCopy = objectsPredicate;
+  if (!typesCopy)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"HDQueryDescriptor.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"sampleTypes"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQueryDescriptor.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"sampleTypes"}];
   }
 
-  if (![v16 count])
+  if (![typesCopy count])
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"HDQueryDescriptor.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"sampleTypes.count"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDQueryDescriptor.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"sampleTypes.count"}];
   }
 
   v41.receiver = self;
@@ -64,19 +64,19 @@
   v23 = [(HDQueryDescriptor *)&v41 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [typesCopy copy];
     sampleTypes = v23->_sampleTypes;
     v23->_sampleTypes = v24;
 
-    v26 = [v17 copy];
+    v26 = [optionsCopy copy];
     encodingOptions = v23->_encodingOptions;
     v23->_encodingOptions = v26;
 
-    v28 = [v18 copy];
+    v28 = [entitiesCopy copy];
     restrictedSourceEntities = v23->_restrictedSourceEntities;
     v23->_restrictedSourceEntities = v28;
 
-    v30 = _Block_copy(v19);
+    v30 = _Block_copy(filterCopy);
     authorizationFilter = v23->_authorizationFilter;
     v23->_authorizationFilter = v30;
 
@@ -84,11 +84,11 @@
     filter = v23->_filter;
     v23->_filter = v32;
 
-    v34 = [v21 copy];
+    v34 = [predicateCopy copy];
     samplePredicate = v23->_samplePredicate;
     v23->_samplePredicate = v34;
 
-    v36 = [v22 copy];
+    v36 = [objectsPredicateCopy copy];
     deletedObjectsPredicate = v23->_deletedObjectsPredicate;
     v23->_deletedObjectsPredicate = v36;
   }
@@ -98,28 +98,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HDQueryDescriptor *)self sampleTypes];
-  v4 = [v3 hash];
-  v5 = [(HDQueryDescriptor *)self encodingOptions];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HDQueryDescriptor *)self restrictedSourceEntities];
-  v8 = [v7 hash];
-  v9 = [(HDQueryDescriptor *)self authorizationFilter];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HDQueryDescriptor *)self filter];
-  v12 = [v11 hash];
-  v13 = [(HDQueryDescriptor *)self samplePredicate];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(HDQueryDescriptor *)self deletedObjectsPredicate];
-  v16 = v14 ^ [v15 hash];
+  sampleTypes = [(HDQueryDescriptor *)self sampleTypes];
+  v4 = [sampleTypes hash];
+  encodingOptions = [(HDQueryDescriptor *)self encodingOptions];
+  v6 = [encodingOptions hash] ^ v4;
+  restrictedSourceEntities = [(HDQueryDescriptor *)self restrictedSourceEntities];
+  v8 = [restrictedSourceEntities hash];
+  authorizationFilter = [(HDQueryDescriptor *)self authorizationFilter];
+  v10 = v6 ^ v8 ^ [authorizationFilter hash];
+  filter = [(HDQueryDescriptor *)self filter];
+  v12 = [filter hash];
+  samplePredicate = [(HDQueryDescriptor *)self samplePredicate];
+  v14 = v12 ^ [samplePredicate hash];
+  deletedObjectsPredicate = [(HDQueryDescriptor *)self deletedObjectsPredicate];
+  v16 = v14 ^ [deletedObjectsPredicate hash];
 
   return v10 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -129,26 +129,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HDQueryDescriptor *)self sampleTypes];
-      v7 = [(HDQueryDescriptor *)v5 sampleTypes];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      sampleTypes = [(HDQueryDescriptor *)self sampleTypes];
+      sampleTypes2 = [(HDQueryDescriptor *)v5 sampleTypes];
+      v8 = sampleTypes2;
+      if (sampleTypes == sampleTypes2)
       {
       }
 
       else
       {
-        v9 = [(HDQueryDescriptor *)v5 sampleTypes];
-        if (!v9)
+        sampleTypes3 = [(HDQueryDescriptor *)v5 sampleTypes];
+        if (!sampleTypes3)
         {
           goto LABEL_39;
         }
 
-        v10 = v9;
-        v11 = [(HDQueryDescriptor *)self sampleTypes];
-        v12 = [(HDQueryDescriptor *)v5 sampleTypes];
-        v13 = [v11 isEqualToSet:v12];
+        v10 = sampleTypes3;
+        sampleTypes4 = [(HDQueryDescriptor *)self sampleTypes];
+        sampleTypes5 = [(HDQueryDescriptor *)v5 sampleTypes];
+        v13 = [sampleTypes4 isEqualToSet:sampleTypes5];
 
         if (!v13)
         {
@@ -156,25 +156,25 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self encodingOptions];
-      v15 = [(HDQueryDescriptor *)v5 encodingOptions];
-      v8 = v15;
-      if (v6 == v15)
+      sampleTypes = [(HDQueryDescriptor *)self encodingOptions];
+      encodingOptions = [(HDQueryDescriptor *)v5 encodingOptions];
+      v8 = encodingOptions;
+      if (sampleTypes == encodingOptions)
       {
       }
 
       else
       {
-        v16 = [(HDQueryDescriptor *)v5 encodingOptions];
-        if (!v16)
+        encodingOptions2 = [(HDQueryDescriptor *)v5 encodingOptions];
+        if (!encodingOptions2)
         {
           goto LABEL_39;
         }
 
-        v17 = v16;
-        v18 = [(HDQueryDescriptor *)self encodingOptions];
-        v19 = [(HDQueryDescriptor *)v5 encodingOptions];
-        v20 = [v18 isEqual:v19];
+        v17 = encodingOptions2;
+        encodingOptions3 = [(HDQueryDescriptor *)self encodingOptions];
+        encodingOptions4 = [(HDQueryDescriptor *)v5 encodingOptions];
+        v20 = [encodingOptions3 isEqual:encodingOptions4];
 
         if (!v20)
         {
@@ -182,25 +182,25 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self restrictedSourceEntities];
-      v21 = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
-      v8 = v21;
-      if (v6 == v21)
+      sampleTypes = [(HDQueryDescriptor *)self restrictedSourceEntities];
+      restrictedSourceEntities = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
+      v8 = restrictedSourceEntities;
+      if (sampleTypes == restrictedSourceEntities)
       {
       }
 
       else
       {
-        v22 = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
-        if (!v22)
+        restrictedSourceEntities2 = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
+        if (!restrictedSourceEntities2)
         {
           goto LABEL_39;
         }
 
-        v23 = v22;
-        v24 = [(HDQueryDescriptor *)self restrictedSourceEntities];
-        v25 = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
-        v26 = [v24 isEqual:v25];
+        v23 = restrictedSourceEntities2;
+        restrictedSourceEntities3 = [(HDQueryDescriptor *)self restrictedSourceEntities];
+        restrictedSourceEntities4 = [(HDQueryDescriptor *)v5 restrictedSourceEntities];
+        v26 = [restrictedSourceEntities3 isEqual:restrictedSourceEntities4];
 
         if (!v26)
         {
@@ -208,26 +208,26 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self authorizationFilter];
-      v27 = [(HDQueryDescriptor *)v5 authorizationFilter];
-      v8 = v27;
-      if (v6 == v27)
+      sampleTypes = [(HDQueryDescriptor *)self authorizationFilter];
+      authorizationFilter = [(HDQueryDescriptor *)v5 authorizationFilter];
+      v8 = authorizationFilter;
+      if (sampleTypes == authorizationFilter)
       {
       }
 
       else
       {
-        v28 = [(HDQueryDescriptor *)v5 authorizationFilter];
-        if (!v28)
+        authorizationFilter2 = [(HDQueryDescriptor *)v5 authorizationFilter];
+        if (!authorizationFilter2)
         {
           goto LABEL_39;
         }
 
-        v29 = v28;
-        v30 = [(HDQueryDescriptor *)self authorizationFilter];
-        v31 = [(HDQueryDescriptor *)v5 authorizationFilter];
-        v32 = _Block_copy(v31);
-        v33 = [v30 isEqual:v32];
+        v29 = authorizationFilter2;
+        authorizationFilter3 = [(HDQueryDescriptor *)self authorizationFilter];
+        authorizationFilter4 = [(HDQueryDescriptor *)v5 authorizationFilter];
+        v32 = _Block_copy(authorizationFilter4);
+        v33 = [authorizationFilter3 isEqual:v32];
 
         if (!v33)
         {
@@ -235,25 +235,25 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self filter];
-      v34 = [(HDQueryDescriptor *)v5 filter];
-      v8 = v34;
-      if (v6 == v34)
+      sampleTypes = [(HDQueryDescriptor *)self filter];
+      filter = [(HDQueryDescriptor *)v5 filter];
+      v8 = filter;
+      if (sampleTypes == filter)
       {
       }
 
       else
       {
-        v35 = [(HDQueryDescriptor *)v5 filter];
-        if (!v35)
+        filter2 = [(HDQueryDescriptor *)v5 filter];
+        if (!filter2)
         {
           goto LABEL_39;
         }
 
-        v36 = v35;
-        v37 = [(HDQueryDescriptor *)self filter];
-        v38 = [(HDQueryDescriptor *)v5 filter];
-        v39 = [v37 isEqual:v38];
+        v36 = filter2;
+        filter3 = [(HDQueryDescriptor *)self filter];
+        filter4 = [(HDQueryDescriptor *)v5 filter];
+        v39 = [filter3 isEqual:filter4];
 
         if (!v39)
         {
@@ -261,25 +261,25 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self samplePredicate];
-      v40 = [(HDQueryDescriptor *)v5 samplePredicate];
-      v8 = v40;
-      if (v6 == v40)
+      sampleTypes = [(HDQueryDescriptor *)self samplePredicate];
+      samplePredicate = [(HDQueryDescriptor *)v5 samplePredicate];
+      v8 = samplePredicate;
+      if (sampleTypes == samplePredicate)
       {
       }
 
       else
       {
-        v41 = [(HDQueryDescriptor *)v5 samplePredicate];
-        if (!v41)
+        samplePredicate2 = [(HDQueryDescriptor *)v5 samplePredicate];
+        if (!samplePredicate2)
         {
           goto LABEL_39;
         }
 
-        v42 = v41;
-        v43 = [(HDQueryDescriptor *)self samplePredicate];
-        v44 = [(HDQueryDescriptor *)v5 samplePredicate];
-        v45 = [v43 isEqual:v44];
+        v42 = samplePredicate2;
+        samplePredicate3 = [(HDQueryDescriptor *)self samplePredicate];
+        samplePredicate4 = [(HDQueryDescriptor *)v5 samplePredicate];
+        v45 = [samplePredicate3 isEqual:samplePredicate4];
 
         if (!v45)
         {
@@ -287,10 +287,10 @@
         }
       }
 
-      v6 = [(HDQueryDescriptor *)self deletedObjectsPredicate];
-      v46 = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
-      v8 = v46;
-      if (v6 == v46)
+      sampleTypes = [(HDQueryDescriptor *)self deletedObjectsPredicate];
+      deletedObjectsPredicate = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
+      v8 = deletedObjectsPredicate;
+      if (sampleTypes == deletedObjectsPredicate)
       {
 
 LABEL_44:
@@ -298,13 +298,13 @@ LABEL_44:
         goto LABEL_41;
       }
 
-      v47 = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
-      if (v47)
+      deletedObjectsPredicate2 = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
+      if (deletedObjectsPredicate2)
       {
-        v48 = v47;
-        v49 = [(HDQueryDescriptor *)self deletedObjectsPredicate];
-        v50 = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
-        v51 = [v49 isEqual:v50];
+        v48 = deletedObjectsPredicate2;
+        deletedObjectsPredicate3 = [(HDQueryDescriptor *)self deletedObjectsPredicate];
+        deletedObjectsPredicate4 = [(HDQueryDescriptor *)v5 deletedObjectsPredicate];
+        v51 = [deletedObjectsPredicate3 isEqual:deletedObjectsPredicate4];
 
         if (v51)
         {

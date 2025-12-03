@@ -1,26 +1,26 @@
 @interface VUIURLImageLoader
-+ (id)sharedInstanceWithMinimalSession:(BOOL)a3;
-- (VUIURLImageLoader)initWithMinimalSessionImageLoading:(BOOL)a3;
-- (id)URLForObject:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_executeOnProcessingQueue:(id)a3;
-- (void)cancelLoad:(id)a3;
++ (id)sharedInstanceWithMinimalSession:(BOOL)session;
+- (VUIURLImageLoader)initWithMinimalSessionImageLoading:(BOOL)loading;
+- (id)URLForObject:(id)object;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_executeOnProcessingQueue:(id)queue;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation VUIURLImageLoader
 
-+ (id)sharedInstanceWithMinimalSession:(BOOL)a3
++ (id)sharedInstanceWithMinimalSession:(BOOL)session
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__VUIURLImageLoader_sharedInstanceWithMinimalSession___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  sessionCopy = session;
   if (sharedInstanceWithMinimalSession__onceToken != -1)
   {
     dispatch_once(&sharedInstanceWithMinimalSession__onceToken, block);
@@ -38,36 +38,36 @@ uint64_t __54__VUIURLImageLoader_sharedInstanceWithMinimalSession___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (VUIURLImageLoader)initWithMinimalSessionImageLoading:(BOOL)a3
+- (VUIURLImageLoader)initWithMinimalSessionImageLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v26[1] = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = VUIURLImageLoader;
   v4 = [(VUIURLImageLoader *)&v24 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v5 setHTTPMaximumConnectionsPerHost:4];
-    [v5 setHTTPShouldUsePipelining:1];
-    [v5 setWaitsForConnectivity:0];
-    [v5 set_timingDataOptions:1];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:4];
+    [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+    [defaultSessionConfiguration setWaitsForConnectivity:0];
+    [defaultSessionConfiguration set_timingDataOptions:1];
     v6 = MEMORY[0x277CEE708];
-    v7 = [MEMORY[0x277CEE620] currentProcess];
-    v8 = [v6 userAgentForProcessInfo:v7];
+    currentProcess = [MEMORY[0x277CEE620] currentProcess];
+    v8 = [v6 userAgentForProcessInfo:currentProcess];
 
     if ([v8 length])
     {
       v25 = @"User-Agent";
       v26[0] = v8;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-      [v5 setHTTPAdditionalHeaders:v9];
+      [defaultSessionConfiguration setHTTPAdditionalHeaders:v9];
     }
 
-    v4->_useMinimalSessionImageLoading = v3;
-    if (v3)
+    v4->_useMinimalSessionImageLoading = loadingCopy;
+    if (loadingCopy)
     {
-      v10 = [MEMORY[0x277CEE6F0] minimalSessionUsing:v5];
+      v10 = [MEMORY[0x277CEE6F0] minimalSessionUsing:defaultSessionConfiguration];
       session = v4->_session;
       v4->_session = v10;
 
@@ -76,7 +76,7 @@ uint64_t __54__VUIURLImageLoader_sharedInstanceWithMinimalSession___block_invoke
 
     else
     {
-      v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v5 delegate:v4 delegateQueue:0];
+      v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:v4 delegateQueue:0];
       urlSession = v4->_urlSession;
       v4->_urlSession = v12;
     }
@@ -86,35 +86,35 @@ uint64_t __54__VUIURLImageLoader_sharedInstanceWithMinimalSession___block_invoke
     processingQueue = v4->_processingQueue;
     v4->_processingQueue = v15;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     loadOptionsByID = v4->_loadOptionsByID;
-    v4->_loadOptionsByID = v17;
+    v4->_loadOptionsByID = dictionary;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     loadIDsByURL = v4->_loadIDsByURL;
-    v4->_loadIDsByURL = v19;
+    v4->_loadIDsByURL = dictionary2;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     taskOptionsByURL = v4->_taskOptionsByURL;
-    v4->_taskOptionsByURL = v21;
+    v4->_taskOptionsByURL = dictionary3;
   }
 
   return v4;
 }
 
-- (void)_executeOnProcessingQueue:(id)a3
+- (void)_executeOnProcessingQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
-  v5 = [(VUIURLImageLoader *)self processingQueue];
+  processingQueue = [(VUIURLImageLoader *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__VUIURLImageLoader__executeOnProcessingQueue___block_invoke;
   block[3] = &unk_279E220A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(processingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -130,13 +130,13 @@ uint64_t __47__VUIURLImageLoader__executeOnProcessingQueue___block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -145,7 +145,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 url];
+    v4 = [objectCopy url];
     goto LABEL_5;
   }
 
@@ -155,23 +155,23 @@ LABEL_7:
   return v5;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [objectCopy absoluteString];
 LABEL_5:
-    v5 = v4;
+    v5 = absoluteString;
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 identifier];
+    absoluteString = [objectCopy identifier];
     goto LABEL_5;
   }
 
@@ -186,23 +186,23 @@ LABEL_5:
 
   v5 = 0;
 LABEL_9:
-  v8 = [v5 vui_SHA256String];
+  vui_SHA256String = [v5 vui_SHA256String];
 
-  return v8;
+  return vui_SHA256String;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  v32 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v34 = a7;
+  objectCopy = object;
+  handlerCopy = handler;
   v37 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v35 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v36;
+    v8 = objectCopy;
     v9 = v8;
   }
 
@@ -221,14 +221,14 @@ LABEL_9:
       }
 
       v29 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:0];
-      (*(v34 + 2))(v34, 0, 0, 0, 0, v29);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v29);
 
       v9 = 0;
       v8 = 0;
       goto LABEL_21;
     }
 
-    v10 = v36;
+    v10 = objectCopy;
     v9 = [v10 url];
     v11 = objc_alloc(MEMORY[0x277CCAB70]);
     v12 = [v10 url];
@@ -238,8 +238,8 @@ LABEL_9:
     v47 = 0u;
     v48 = 0u;
     v46 = 0u;
-    v13 = [v10 headers];
-    v14 = [v13 countByEnumeratingWithState:&v46 objects:v55 count:16];
+    headers = [v10 headers];
+    v14 = [headers countByEnumeratingWithState:&v46 objects:v55 count:16];
     if (v14)
     {
       v15 = *v47;
@@ -249,27 +249,27 @@ LABEL_9:
         {
           if (*v47 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(headers);
           }
 
           v17 = *(*(&v46 + 1) + 8 * i);
-          v18 = [v10 headers];
-          v19 = [v18 objectForKey:v17];
+          headers2 = [v10 headers];
+          v19 = [headers2 objectForKey:v17];
           [v8 setValue:v19 forHTTPHeaderField:v17];
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        v14 = [headers countByEnumeratingWithState:&v46 objects:v55 count:16];
       }
 
       while (v14);
     }
 
-    v20 = [v10 decrypter];
+    decrypter = [v10 decrypter];
 
-    if (v20)
+    if (decrypter)
     {
-      v21 = [v10 decrypter];
-      [v35 setObject:v21 forKey:@"VUIURLImageLoaderTaskDecryptorKey"];
+      decrypter2 = [v10 decrypter];
+      [v35 setObject:decrypter2 forKey:@"VUIURLImageLoaderTaskDecryptorKey"];
     }
   }
 
@@ -280,19 +280,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v22 = [MEMORY[0x277CCAD78] UUID];
-  v23 = [v22 description];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v23 = [uUID description];
 
   [v37 setObject:v23 forKey:@"VUIURLImageLoaderOptionsIDKey"];
   [v37 setObject:v9 forKey:@"VUIURLImageLoaderOptionsURLKey"];
-  if (v34)
+  if (handlerCopy)
   {
-    v24 = [v34 copy];
+    v24 = [handlerCopy copy];
     [v37 setObject:v24 forKey:@"VUIURLImageLoaderOptionsCompletionHandlerKey"];
   }
 
-  v25 = [MEMORY[0x277CBEB28] data];
-  [v35 setObject:v25 forKey:@"VUIURLImageLoaderTaskReceivedDataKey"];
+  data = [MEMORY[0x277CBEB28] data];
+  [v35 setObject:data forKey:@"VUIURLImageLoaderTaskReceivedDataKey"];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -428,9 +428,9 @@ LABEL_16:
   }
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -438,7 +438,7 @@ LABEL_16:
     v5[1] = 3221225472;
     v5[2] = __32__VUIURLImageLoader_cancelLoad___block_invoke;
     v5[3] = &unk_279E220F8;
-    v6 = v4;
+    v6 = loadCopy;
     [(VUIURLImageLoader *)self _executeOnProcessingQueue:v5];
   }
 }
@@ -502,18 +502,18 @@ void __32__VUIURLImageLoader_cancelLoad___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a6;
+  taskCopy = task;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__VUIURLImageLoader_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   v12[3] = &unk_279E22120;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = taskCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = taskCopy;
   [(VUIURLImageLoader *)self _executeOnProcessingQueue:v12];
 }
 
@@ -525,18 +525,18 @@ void __78__VUIURLImageLoader_URLSession_dataTask_didReceiveResponse_completionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__VUIURLImageLoader_URLSession_dataTask_didReceiveData___block_invoke;
   v11[3] = &unk_279E22148;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = taskCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = taskCopy;
   [(VUIURLImageLoader *)self _executeOnProcessingQueue:v11];
 }
 
@@ -555,32 +555,32 @@ void __56__VUIURLImageLoader_URLSession_dataTask_didReceiveData___block_invoke(u
   [v8 appendData:*(a1 + 40)];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
   v7 = MEMORY[0x277CCA8F0];
-  v8 = a6;
-  v9 = a5;
+  handlerCopy = handler;
+  responseCopy = response;
   v10 = [v7 alloc];
-  v11 = [v9 response];
-  v12 = [v9 data];
-  v13 = [v9 userInfo];
+  response = [responseCopy response];
+  data = [responseCopy data];
+  userInfo = [responseCopy userInfo];
 
-  v14 = [v10 initWithResponse:v11 data:v12 userInfo:v13 storagePolicy:2];
-  v8[2](v8, v14);
+  v14 = [v10 initWithResponse:response data:data userInfo:userInfo storagePolicy:2];
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__VUIURLImageLoader_URLSession_task_didCompleteWithError___block_invoke;
   v11[3] = &unk_279E22148;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = taskCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = taskCopy;
   [(VUIURLImageLoader *)self _executeOnProcessingQueue:v11];
 }
 

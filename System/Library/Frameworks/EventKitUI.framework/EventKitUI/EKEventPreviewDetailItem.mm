@@ -1,25 +1,25 @@
 @interface EKEventPreviewDetailItem
-- (EKEventPreviewDetailItem)initWithModel:(id)a3;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
+- (EKEventPreviewDetailItem)initWithModel:(id)model;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
 - (id)_dayPreviewViewController;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_datesForPreviewViewControllerWithStartDate:(id *)a3 endDate:(id *)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_datesForPreviewViewControllerWithStartDate:(id *)date endDate:(id *)endDate;
 - (void)_reloadContainedViewControllerIfNeeded;
-- (void)eventViewController:(id)a3 didSelectReadOnlySubitem:(unint64_t)a4;
+- (void)eventViewController:(id)controller didSelectReadOnlySubitem:(unint64_t)subitem;
 @end
 
 @implementation EKEventPreviewDetailItem
 
-- (EKEventPreviewDetailItem)initWithModel:(id)a3
+- (EKEventPreviewDetailItem)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = EKEventPreviewDetailItem;
   v6 = [(EKEventPreviewDetailItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
@@ -38,24 +38,24 @@
   }
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
   containedDayViewController = self->_containedDayViewController;
   if (containedDayViewController)
   {
-    [(EKDayPreviewController *)containedDayViewController preferredContentSize:a3];
+    [(EKDayPreviewController *)containedDayViewController preferredContentSize:index];
     v7 = v6;
   }
 
   else
   {
-    v7 = 1.0 / EKUIGoldenRatioPhi() * a4;
+    v7 = 1.0 / EKUIGoldenRatioPhi() * width;
   }
 
   return CalCeilToScreenScale(v7);
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v28[4] = *MEMORY[0x1E69E9840];
   cell = self->_cell;
@@ -65,25 +65,25 @@
     v6 = self->_cell;
     self->_cell = &v5->super;
 
-    v7 = [(EKEventPreviewDetailItem *)self _dayPreviewViewController];
-    [v7 setHidesAllDayEvents:1];
+    _dayPreviewViewController = [(EKEventPreviewDetailItem *)self _dayPreviewViewController];
+    [_dayPreviewViewController setHidesAllDayEvents:1];
     if ([(EKEventPreviewDetailItem *)self hideBottomSeparator])
     {
       [(UITableViewCell *)self->_cell setSeparatorInset:0.0, 0.0, 0.0, 1.79769313e308];
     }
 
-    v8 = [(EKEventDetailItem *)self delegate];
-    v9 = [v8 viewControllerForEventItem:self];
+    delegate = [(EKEventDetailItem *)self delegate];
+    v9 = [delegate viewControllerForEventItem:self];
 
     v27 = v9;
-    [v7 setHostingViewController:v9];
-    [v9 addChildViewController:v7];
-    [v7 didMoveToParentViewController:v9];
-    [v7 setRespectsSelectedCalendarsFilter:{-[EKEventPreviewDetailItem inlineDayViewRespectsSelectedCalendarsFilter](self, "inlineDayViewRespectsSelectedCalendarsFilter")}];
-    v26 = [(UITableViewCell *)self->_cell contentView];
-    v10 = [v7 view];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v26 addSubview:v10];
+    [_dayPreviewViewController setHostingViewController:v9];
+    [v9 addChildViewController:_dayPreviewViewController];
+    [_dayPreviewViewController didMoveToParentViewController:v9];
+    [_dayPreviewViewController setRespectsSelectedCalendarsFilter:{-[EKEventPreviewDetailItem inlineDayViewRespectsSelectedCalendarsFilter](self, "inlineDayViewRespectsSelectedCalendarsFilter")}];
+    contentView = [(UITableViewCell *)self->_cell contentView];
+    view = [_dayPreviewViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [contentView addSubview:view];
     v11 = [(UITableViewCell *)self->_cell setSelectionStyle:0];
     v12 = MEMORY[0x1E696ACD8];
     v13 = self->_cell;
@@ -97,7 +97,7 @@
       v14 = 17;
     }
 
-    v15 = [v12 constraintWithItem:v10 attribute:5 relatedBy:0 toItem:v13 attribute:v14 multiplier:1.0 constant:0.0];
+    v15 = [v12 constraintWithItem:view attribute:5 relatedBy:0 toItem:v13 attribute:v14 multiplier:1.0 constant:0.0];
     v16 = MEMORY[0x1E696ACD8];
     v17 = self->_cell;
     if (MEMORY[0x1D38B98D0]())
@@ -110,13 +110,13 @@
       v18 = 18;
     }
 
-    v19 = [v16 constraintWithItem:v10 attribute:6 relatedBy:0 toItem:v17 attribute:v18 multiplier:1.0 constant:0.0];
+    v19 = [v16 constraintWithItem:view attribute:6 relatedBy:0 toItem:v17 attribute:v18 multiplier:1.0 constant:0.0];
     v20 = MEMORY[0x1E696ACD8];
     v28[0] = v15;
     v28[1] = v19;
-    v21 = [MEMORY[0x1E696ACD8] constraintWithItem:v10 attribute:3 relatedBy:0 toItem:self->_cell attribute:3 multiplier:1.0 constant:0.0];
+    v21 = [MEMORY[0x1E696ACD8] constraintWithItem:view attribute:3 relatedBy:0 toItem:self->_cell attribute:3 multiplier:1.0 constant:0.0];
     v28[2] = v21;
-    v22 = [MEMORY[0x1E696ACD8] constraintWithItem:v10 attribute:4 relatedBy:0 toItem:self->_cell attribute:4 multiplier:1.0 constant:0.0];
+    v22 = [MEMORY[0x1E696ACD8] constraintWithItem:view attribute:4 relatedBy:0 toItem:self->_cell attribute:4 multiplier:1.0 constant:0.0];
     v28[3] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [v20 activateConstraints:v23];
@@ -130,38 +130,38 @@
   return v24;
 }
 
-- (void)_datesForPreviewViewControllerWithStartDate:(id *)a3 endDate:(id *)a4
+- (void)_datesForPreviewViewControllerWithStartDate:(id *)date endDate:(id *)endDate
 {
-  v19 = [(EKEvent *)self->super._event startDate];
-  v7 = [(EKEventPreviewDetailItem *)self proposedTime];
+  startDate = [(EKEvent *)self->super._event startDate];
+  proposedTime = [(EKEventPreviewDetailItem *)self proposedTime];
 
-  if (v7)
+  if (proposedTime)
   {
-    v8 = [(EKEventPreviewDetailItem *)self proposedTime];
+    proposedTime2 = [(EKEventPreviewDetailItem *)self proposedTime];
 
-    v9 = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
-    v10 = [(EKEvent *)self->super._event startDate];
-    [v9 timeIntervalSinceDate:v10];
+    endDateUnadjustedForLegacyClients = [(EKEvent *)self->super._event endDateUnadjustedForLegacyClients];
+    startDate2 = [(EKEvent *)self->super._event startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate2];
     v12 = v11;
 
     v13 = MEMORY[0x1E695DF00];
-    v14 = [(EKEventPreviewDetailItem *)self proposedTime];
-    v15 = [v13 dateWithTimeInterval:v14 sinceDate:v12];
+    proposedTime3 = [(EKEventPreviewDetailItem *)self proposedTime];
+    v15 = [v13 dateWithTimeInterval:proposedTime3 sinceDate:v12];
 
-    v16 = v8;
+    v16 = proposedTime2;
   }
 
   else
   {
     v15 = 0;
-    v16 = v19;
+    v16 = startDate;
   }
 
   v20 = v16;
   v17 = v16;
-  *a3 = v20;
+  *date = v20;
   v18 = v15;
-  *a4 = v15;
+  *endDate = v15;
 }
 
 - (id)_dayPreviewViewController
@@ -204,9 +204,9 @@
   return containedDayViewController;
 }
 
-- (void)eventViewController:(id)a3 didSelectReadOnlySubitem:(unint64_t)a4
+- (void)eventViewController:(id)controller didSelectReadOnlySubitem:(unint64_t)subitem
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (self->_cell && ([(EKEvent *)self->super._event isIntegrationEvent]& 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];

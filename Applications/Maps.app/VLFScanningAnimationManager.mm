@@ -1,29 +1,29 @@
 @interface VLFScanningAnimationManager
-- (VLFScanningAnimationManager)initWithLayer:(id)a3;
-- (VLFScanningAnimationManager)initWithLayer:(id)a3 animationDuration:(double)a4 timingFunction:(id)a5;
-- (id)opacityAnimationWithToValue:(double)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)fadeWithFadeOutCompletion:(id)a3;
-- (void)replaceOnGoingFadeOutCompletion:(id)a3;
+- (VLFScanningAnimationManager)initWithLayer:(id)layer;
+- (VLFScanningAnimationManager)initWithLayer:(id)layer animationDuration:(double)duration timingFunction:(id)function;
+- (id)opacityAnimationWithToValue:(double)value;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)fadeWithFadeOutCompletion:(id)completion;
+- (void)replaceOnGoingFadeOutCompletion:(id)completion;
 @end
 
 @implementation VLFScanningAnimationManager
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VLFScanningAnimationManager *)self layer];
-  v8 = [v7 animationForKey:@"fadeOut"];
+  finishedCopy = finished;
+  stopCopy = stop;
+  layer = [(VLFScanningAnimationManager *)self layer];
+  v8 = [layer animationForKey:@"fadeOut"];
 
   v9 = sub_1006CFFD8();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-  if (v8 == v6)
+  if (v8 == stopCopy)
   {
     if (v10)
     {
       v14 = @"NO";
-      if (v4)
+      if (finishedCopy)
       {
         v14 = @"YES";
       }
@@ -34,13 +34,13 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Fade out animation finished: %@", &v20, 0xCu);
     }
 
-    v16 = [(VLFScanningAnimationManager *)self layer];
-    [v16 removeAnimationForKey:@"fadeOut"];
+    layer2 = [(VLFScanningAnimationManager *)self layer];
+    [layer2 removeAnimationForKey:@"fadeOut"];
 
-    v13 = [(VLFScanningAnimationManager *)self fadeOutCompletion];
+    fadeOutCompletion = [(VLFScanningAnimationManager *)self fadeOutCompletion];
     [(VLFScanningAnimationManager *)self setFadeOutCompletion:0];
-    v13[2](v13);
-    if (v4)
+    fadeOutCompletion[2](fadeOutCompletion);
+    if (finishedCopy)
     {
       v17 = sub_1006CFFD8();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -49,9 +49,9 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Starting a new fade in animation", &v20, 2u);
       }
 
-      v18 = [(VLFScanningAnimationManager *)self layer];
+      layer3 = [(VLFScanningAnimationManager *)self layer];
       v19 = [(VLFScanningAnimationManager *)self opacityAnimationWithToValue:1.0];
-      [v18 addAnimation:v19 forKey:@"fadeIn"];
+      [layer3 addAnimation:v19 forKey:@"fadeIn"];
     }
   }
 
@@ -60,7 +60,7 @@
     if (v10)
     {
       v11 = @"NO";
-      if (v4)
+      if (finishedCopy)
       {
         v11 = @"YES";
       }
@@ -71,30 +71,30 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Fade in animation finished: %@", &v20, 0xCu);
     }
 
-    v13 = [(VLFScanningAnimationManager *)self layer];
-    [v13 removeAnimationForKey:@"fadeIn"];
+    fadeOutCompletion = [(VLFScanningAnimationManager *)self layer];
+    [fadeOutCompletion removeAnimationForKey:@"fadeIn"];
   }
 }
 
-- (id)opacityAnimationWithToValue:(double)a3
+- (id)opacityAnimationWithToValue:(double)value
 {
   v5 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   [v5 setDelegate:self];
-  v6 = [(VLFScanningAnimationManager *)self layer];
-  v7 = [v6 presentationLayer];
+  layer = [(VLFScanningAnimationManager *)self layer];
+  presentationLayer = [layer presentationLayer];
 
-  v8 = [(VLFScanningAnimationManager *)self layer];
-  v9 = v8;
-  if (v7)
+  layer2 = [(VLFScanningAnimationManager *)self layer];
+  v9 = layer2;
+  if (presentationLayer)
   {
-    v10 = [v8 presentationLayer];
-    [v10 opacity];
+    presentationLayer2 = [layer2 presentationLayer];
+    [presentationLayer2 opacity];
     v12 = v11;
   }
 
   else
   {
-    [v8 opacity];
+    [layer2 opacity];
     v12 = v13;
   }
 
@@ -105,14 +105,14 @@
     v26 = 134218240;
     v27 = *&v14;
     v28 = 2048;
-    v29 = a3;
+    valueCopy = value;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Creating new opacity animation from: %f, to: %f", &v26, 0x16u);
   }
 
   v16 = [NSNumber numberWithDouble:v14];
   [v5 setFromValue:v16];
 
-  v17 = [NSNumber numberWithDouble:a3];
+  v17 = [NSNumber numberWithDouble:value];
   [v5 setToValue:v17];
 
   v18 = +[NSUserDefaults standardUserDefaults];
@@ -150,22 +150,22 @@
   _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, v22, &v26, 0xCu);
 LABEL_12:
 
-  [v5 setDuration:{v21 * vabdd_f64(v14, a3)}];
+  [v5 setDuration:{v21 * vabdd_f64(v14, value)}];
   [v5 setRemovedOnCompletion:0];
   [v5 setFillMode:kCAFillModeForwards];
-  v24 = [(VLFScanningAnimationManager *)self timingFunction];
-  [v5 setTimingFunction:v24];
+  timingFunction = [(VLFScanningAnimationManager *)self timingFunction];
+  [v5 setTimingFunction:timingFunction];
 
   return v5;
 }
 
-- (void)replaceOnGoingFadeOutCompletion:(id)a3
+- (void)replaceOnGoingFadeOutCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(VLFScanningAnimationManager *)self layer];
-    v6 = [v5 animationForKey:@"fadeOut"];
+    layer = [(VLFScanningAnimationManager *)self layer];
+    v6 = [layer animationForKey:@"fadeOut"];
 
     v7 = sub_1006CFFD8();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -177,7 +177,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Replacing existing fade out completion block", &v13, 2u);
       }
 
-      [(VLFScanningAnimationManager *)self setFadeOutCompletion:v4];
+      [(VLFScanningAnimationManager *)self setFadeOutCompletion:completionCopy];
     }
 
     else
@@ -188,7 +188,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "There is no on-going fade out animation; executing completion block immediately", &v13, 2u);
       }
 
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -229,10 +229,10 @@ LABEL_12:
   }
 }
 
-- (void)fadeWithFadeOutCompletion:(id)a3
+- (void)fadeWithFadeOutCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = sub_1006CFFD8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -241,8 +241,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Begin a new fade", &v21, 2u);
     }
 
-    v6 = [(VLFScanningAnimationManager *)self layer];
-    v7 = [v6 animationForKey:@"fadeIn"];
+    layer = [(VLFScanningAnimationManager *)self layer];
+    v7 = [layer animationForKey:@"fadeIn"];
 
     if (v7)
     {
@@ -253,23 +253,23 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "There is an on-going fade in animation; removing it first", &v21, 2u);
       }
 
-      v9 = [(VLFScanningAnimationManager *)self layer];
-      [v9 removeAnimationForKey:@"fadeIn"];
+      layer2 = [(VLFScanningAnimationManager *)self layer];
+      [layer2 removeAnimationForKey:@"fadeIn"];
     }
 
-    [(VLFScanningAnimationManager *)self setFadeOutCompletion:v4];
-    v10 = [(VLFScanningAnimationManager *)self layer];
-    v11 = [v10 animationForKey:@"fadeOut"];
+    [(VLFScanningAnimationManager *)self setFadeOutCompletion:completionCopy];
+    layer3 = [(VLFScanningAnimationManager *)self layer];
+    v11 = [layer3 animationForKey:@"fadeOut"];
 
-    v12 = sub_1006CFFD8();
-    v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
+    layer4 = sub_1006CFFD8();
+    v13 = os_log_type_enabled(layer4, OS_LOG_TYPE_DEBUG);
     if (v11)
     {
       if (v13)
       {
         LOWORD(v21) = 0;
         v14 = "There is an on-going fade out animation; letting it finish with the new completion block";
-        v15 = v12;
+        v15 = layer4;
         v16 = OS_LOG_TYPE_DEBUG;
 LABEL_11:
         _os_log_impl(&_mh_execute_header, v15, v16, v14, &v21, 2u);
@@ -281,12 +281,12 @@ LABEL_11:
       if (v13)
       {
         LOWORD(v21) = 0;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Starting a new fade out animation", &v21, 2u);
+        _os_log_impl(&_mh_execute_header, layer4, OS_LOG_TYPE_DEBUG, "Starting a new fade out animation", &v21, 2u);
       }
 
-      v12 = [(VLFScanningAnimationManager *)self layer];
+      layer4 = [(VLFScanningAnimationManager *)self layer];
       v17 = [(VLFScanningAnimationManager *)self opacityAnimationWithToValue:0.0];
-      [v12 addAnimation:v17 forKey:@"fadeOut"];
+      [layer4 addAnimation:v17 forKey:@"fadeOut"];
     }
   }
 
@@ -318,23 +318,23 @@ LABEL_11:
       }
     }
 
-    v12 = sub_1006CFFD8();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    layer4 = sub_1006CFFD8();
+    if (os_log_type_enabled(layer4, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v21) = 0;
       v14 = "Completion block cannot be nil";
-      v15 = v12;
+      v15 = layer4;
       v16 = OS_LOG_TYPE_ERROR;
       goto LABEL_11;
     }
   }
 }
 
-- (VLFScanningAnimationManager)initWithLayer:(id)a3 animationDuration:(double)a4 timingFunction:(id)a5
+- (VLFScanningAnimationManager)initWithLayer:(id)layer animationDuration:(double)duration timingFunction:(id)function
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  layerCopy = layer;
+  functionCopy = function;
+  if (!layerCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -363,7 +363,7 @@ LABEL_11:
     }
   }
 
-  if (!v10)
+  if (!functionCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -398,22 +398,22 @@ LABEL_11:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_layer, a3);
-    v12->_animationDuration = a4;
-    objc_storeStrong(&v12->_timingFunction, a5);
+    objc_storeStrong(&v11->_layer, layer);
+    v12->_animationDuration = duration;
+    objc_storeStrong(&v12->_timingFunction, function);
   }
 
   return v12;
 }
 
-- (VLFScanningAnimationManager)initWithLayer:(id)a3
+- (VLFScanningAnimationManager)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   LODWORD(v5) = 1051260355;
   LODWORD(v6) = 1059816735;
   LODWORD(v7) = 1.0;
   v8 = [CAMediaTimingFunction functionWithControlPoints:v5];
-  v9 = [(VLFScanningAnimationManager *)self initWithLayer:v4 animationDuration:v8 timingFunction:0.35];
+  v9 = [(VLFScanningAnimationManager *)self initWithLayer:layerCopy animationDuration:v8 timingFunction:0.35];
 
   return v9;
 }

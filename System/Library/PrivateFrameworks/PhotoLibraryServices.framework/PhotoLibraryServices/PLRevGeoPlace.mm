@@ -1,69 +1,69 @@
 @interface PLRevGeoPlace
-+ (id)_newFilterSortedPlaceInfos:(id)a3 usingPlaceAnnotation:(id)a4 outFoundOrderType:(unint64_t *)a5 outPreviousOrderType:(unint64_t *)a6;
-+ (id)placeWithMapItem:(id)a3 placeAnnotation:(id)a4;
-+ (unint64_t)_dominantOrderTypeForPlaceType:(id)a3 lastOrderType:(unint64_t)a4;
-- (PLRevGeoPlace)initWithCoder:(id)a3;
-- (PLRevGeoPlace)initWithPlaceInfosForOrderType:(id)a3;
-- (id)bestPlaceInfoForOrderType:(unint64_t)a3;
++ (id)_newFilterSortedPlaceInfos:(id)infos usingPlaceAnnotation:(id)annotation outFoundOrderType:(unint64_t *)type outPreviousOrderType:(unint64_t *)orderType;
++ (id)placeWithMapItem:(id)item placeAnnotation:(id)annotation;
++ (unint64_t)_dominantOrderTypeForPlaceType:(id)type lastOrderType:(unint64_t)orderType;
+- (PLRevGeoPlace)initWithCoder:(id)coder;
+- (PLRevGeoPlace)initWithPlaceInfosForOrderType:(id)type;
+- (id)bestPlaceInfoForOrderType:(unint64_t)type;
 @end
 
 @implementation PLRevGeoPlace
 
-- (PLRevGeoPlace)initWithCoder:(id)a3
+- (PLRevGeoPlace)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:PLRevGeoPlacePlaceInfosMapKey];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:PLRevGeoPlacePlaceInfosMapKey];
 
   if (v8)
   {
     self = [(PLRevGeoPlace *)self initWithPlaceInfosForOrderType:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)bestPlaceInfoForOrderType:(unint64_t)a3
+- (id)bestPlaceInfoForOrderType:(unint64_t)type
 {
   placeInfosForOrderType = self->_placeInfosForOrderType;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v5 = [(NSDictionary *)placeInfosForOrderType objectForKeyedSubscript:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (PLRevGeoPlace)initWithPlaceInfosForOrderType:(id)a3
+- (PLRevGeoPlace)initWithPlaceInfosForOrderType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = PLRevGeoPlace;
   v6 = [(PLRevGeoPlace *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placeInfosForOrderType, a3);
+    objc_storeStrong(&v6->_placeInfosForOrderType, type);
   }
 
   return v7;
 }
 
-+ (unint64_t)_dominantOrderTypeForPlaceType:(id)a3 lastOrderType:(unint64_t)a4
++ (unint64_t)_dominantOrderTypeForPlaceType:(id)type lastOrderType:(unint64_t)orderType
 {
-  v5 = [a3 intValue];
-  if (v5 > 7)
+  intValue = [type intValue];
+  if (intValue > 7)
   {
-    if ((v5 - 8) >= 4)
+    if ((intValue - 8) >= 4)
     {
-      if (v5 == 12 || v5 == 15)
+      if (intValue == 12 || intValue == 15)
       {
         return 2;
       }
@@ -79,22 +79,22 @@
       v14 = 4;
       v15 = 9;
       v16 = 14;
-      if (a4 <= 0xB)
+      if (orderType <= 0xB)
       {
         v16 = 0;
       }
 
-      if (a4 >= 0xA)
+      if (orderType >= 0xA)
       {
         v15 = v16;
       }
 
-      if (a4 >= 5)
+      if (orderType >= 5)
       {
         v14 = v15;
       }
 
-      if (a4 >= 3)
+      if (orderType >= 3)
       {
         return v14;
       }
@@ -111,28 +111,28 @@
     v6 = 5;
     v7 = 3;
     v8 = 6;
-    if (a4 >= 7)
+    if (orderType >= 7)
     {
-      v8 = 8 * (a4 < 0xA);
+      v8 = 8 * (orderType < 0xA);
     }
 
-    if (a4 >= 5)
+    if (orderType >= 5)
     {
       v7 = v8;
     }
 
     v9 = 14;
-    if (v5 != 7)
+    if (intValue != 7)
     {
       v9 = 0;
     }
 
-    if (v5 != 6)
+    if (intValue != 6)
     {
       v7 = v9;
     }
 
-    if (v5 != 4)
+    if (intValue != 4)
     {
       v6 = v7;
     }
@@ -140,22 +140,22 @@
     v10 = 12;
     v11 = 10;
     v12 = 7;
-    if (v5 != 3)
+    if (intValue != 3)
     {
       v12 = 0;
     }
 
-    if (v5 != 2)
+    if (intValue != 2)
     {
       v11 = v12;
     }
 
-    if (v5 != 1)
+    if (intValue != 1)
     {
       v10 = v11;
     }
 
-    if (v5 <= 3)
+    if (intValue <= 3)
     {
       return v10;
     }
@@ -167,17 +167,17 @@
   }
 }
 
-+ (id)placeWithMapItem:(id)a3 placeAnnotation:(id)a4
++ (id)placeWithMapItem:(id)item placeAnnotation:(id)annotation
 {
   v62 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v34 = a4;
+  itemCopy = item;
+  annotationCopy = annotation;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy__112180;
   v57 = __Block_byref_object_dispose__112181;
-  v58 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__PLRevGeoPlace_placeWithMapItem_placeAnnotation___block_invoke;
@@ -191,8 +191,8 @@
   v51[4] = &v53;
   v35 = _Block_copy(v51);
   v50 = 0;
-  v7 = [v36 sortedPlaceInfos];
-  v8 = [v7 count] == 0;
+  sortedPlaceInfos = [itemCopy sortedPlaceInfos];
+  v8 = [sortedPlaceInfos count] == 0;
 
   if (v8)
   {
@@ -200,8 +200,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v19 = [v36 backupPlaceInfos];
-    v20 = [v19 countByEnumeratingWithState:&v41 objects:v60 count:16];
+    backupPlaceInfos = [itemCopy backupPlaceInfos];
+    v20 = [backupPlaceInfos countByEnumeratingWithState:&v41 objects:v60 count:16];
     if (v20)
     {
       v21 = *v42;
@@ -211,7 +211,7 @@
         {
           if (*v42 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(backupPlaceInfos);
           }
 
           v23 = *(*(&v41 + 1) + 8 * i);
@@ -222,7 +222,7 @@
           }
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v41 objects:v60 count:16];
+        v20 = [backupPlaceInfos countByEnumeratingWithState:&v41 objects:v60 count:16];
       }
 
       while (v20);
@@ -232,8 +232,8 @@
   else
   {
     v49 = 0;
-    v9 = [v36 sortedPlaceInfos];
-    v10 = [PLRevGeoPlace _newFilterSortedPlaceInfos:v9 usingPlaceAnnotation:v34 outFoundOrderType:&v50 outPreviousOrderType:&v49];
+    sortedPlaceInfos2 = [itemCopy sortedPlaceInfos];
+    v10 = [PLRevGeoPlace _newFilterSortedPlaceInfos:sortedPlaceInfos2 usingPlaceAnnotation:annotationCopy outFoundOrderType:&v50 outPreviousOrderType:&v49];
 
     v47 = 0u;
     v48 = 0u;
@@ -254,8 +254,8 @@
           }
 
           v15 = *(*(&v45 + 1) + 8 * j);
-          v16 = [v15 placeType];
-          v17 = [a1 _dominantOrderTypeForPlaceType:v16 lastOrderType:v49];
+          placeType = [v15 placeType];
+          v17 = [self _dominantOrderTypeForPlaceType:placeType lastOrderType:v49];
 
           v6[2](v6, v15, v17);
           v49 = v17;
@@ -276,8 +276,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v25 = [v36 finalPlaceInfos];
-  v26 = [v25 countByEnumeratingWithState:&v37 objects:v59 count:16];
+  finalPlaceInfos = [itemCopy finalPlaceInfos];
+  v26 = [finalPlaceInfos countByEnumeratingWithState:&v37 objects:v59 count:16];
   if (v26)
   {
     v27 = *v38;
@@ -287,7 +287,7 @@
       {
         if (*v38 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(finalPlaceInfos);
         }
 
         v29 = *(*(&v37 + 1) + 8 * k);
@@ -298,7 +298,7 @@
         }
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v37 objects:v59 count:16];
+      v26 = [finalPlaceInfos countByEnumeratingWithState:&v37 objects:v59 count:16];
     }
 
     while (v26);
@@ -410,11 +410,11 @@ void __50__PLRevGeoPlace_placeWithMapItem_placeAnnotation___block_invoke_2(uint6
   }
 }
 
-+ (id)_newFilterSortedPlaceInfos:(id)a3 usingPlaceAnnotation:(id)a4 outFoundOrderType:(unint64_t *)a5 outPreviousOrderType:(unint64_t *)a6
++ (id)_newFilterSortedPlaceInfos:(id)infos usingPlaceAnnotation:(id)annotation outFoundOrderType:(unint64_t *)type outPreviousOrderType:(unint64_t *)orderType
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 placeLevel];
+  infosCopy = infos;
+  annotationCopy = annotation;
+  placeLevel = [annotationCopy placeLevel];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -424,25 +424,25 @@ void __50__PLRevGeoPlace_placeWithMapItem_placeAnnotation___block_invoke_2(uint6
   v19[2] = __104__PLRevGeoPlace__newFilterSortedPlaceInfos_usingPlaceAnnotation_outFoundOrderType_outPreviousOrderType___block_invoke;
   v19[3] = &unk_1E75777B8;
   v19[4] = &v21;
-  v19[5] = a1;
-  v20 = v12;
-  v19[6] = a5;
-  v13 = [v10 indexOfObjectPassingTest:v19];
+  v19[5] = self;
+  v20 = placeLevel;
+  v19[6] = type;
+  v13 = [infosCopy indexOfObjectPassingTest:v19];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = v10;
+    v14 = infosCopy;
   }
 
   else
   {
-    v15 = [v10 count];
+    v15 = [infosCopy count];
     v16 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v17 = [v10 subarrayWithRange:{v13, v15 - v13}];
+    v17 = [infosCopy subarrayWithRange:{v13, v15 - v13}];
     v14 = [v16 initWithArray:v17];
 
-    if (a6)
+    if (orderType)
     {
-      *a6 = v22[3];
+      *orderType = v22[3];
     }
   }
 

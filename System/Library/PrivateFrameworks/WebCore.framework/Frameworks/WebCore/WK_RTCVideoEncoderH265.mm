@@ -1,36 +1,36 @@
 @interface WK_RTCVideoEncoderH265
-- (WK_RTCVideoEncoderH265)initWithCodecInfo:(id)a3;
+- (WK_RTCVideoEncoderH265)initWithCodecInfo:(id)info;
 - (id).cxx_construct;
 - (id)scalingSettings;
 - (int)resetCompressionSession;
-- (int)setBitrate:(unsigned int)a3 framerate:(unsigned int)a4;
-- (int64_t)encode:(id)a3 codecSpecificInfo:(id)a4 frameTypes:(id)a5;
+- (int)setBitrate:(unsigned int)bitrate framerate:(unsigned int)framerate;
+- (int64_t)encode:(id)encode codecSpecificInfo:(id)info frameTypes:(id)types;
 - (int64_t)releaseEncoder;
-- (int64_t)startEncodeWithSettings:(id)a3 numberOfCores:(int)a4;
+- (int64_t)startEncodeWithSettings:(id)settings numberOfCores:(int)cores;
 - (void)configureCompressionSession;
 - (void)dealloc;
 - (void)destroyCompressionSession;
 - (void)flush;
-- (void)frameWasEncoded:(int)a3 flags:(unsigned int)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 width:(int)a6 height:(int)a7 renderTimeMs:(int64_t)a8 timestamp:(unsigned int)a9 rotation:(int64_t)a10;
-- (void)setBitrateBps:(unsigned int)a3;
-- (void)setCallback:(id)a3;
-- (void)setDescriptionCallback:(id)a3;
-- (void)setEncoderBitrateBps:(unsigned int)a3;
-- (void)setErrorCallback:(id)a3;
+- (void)frameWasEncoded:(int)encoded flags:(unsigned int)flags sampleBuffer:(opaqueCMSampleBuffer *)buffer width:(int)width height:(int)height renderTimeMs:(int64_t)ms timestamp:(unsigned int)timestamp rotation:(int64_t)self0;
+- (void)setBitrateBps:(unsigned int)bps;
+- (void)setCallback:(id)callback;
+- (void)setDescriptionCallback:(id)callback;
+- (void)setEncoderBitrateBps:(unsigned int)bps;
+- (void)setErrorCallback:(id)callback;
 @end
 
 @implementation WK_RTCVideoEncoderH265
 
-- (WK_RTCVideoEncoderH265)initWithCodecInfo:(id)a3
+- (WK_RTCVideoEncoderH265)initWithCodecInfo:(id)info
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = WK_RTCVideoEncoderH265;
   v6 = [(WK_RTCVideoEncoderH265 *)&v8 init];
   if (v6)
   {
-    objc_storeStrong(&v6->_codecInfo, a3);
+    objc_storeStrong(&v6->_codecInfo, info);
     operator new();
   }
 
@@ -45,50 +45,50 @@
   [(WK_RTCVideoEncoderH265 *)&v3 dealloc];
 }
 
-- (int64_t)startEncodeWithSettings:(id)a3 numberOfCores:(int)a4
+- (int64_t)startEncodeWithSettings:(id)settings numberOfCores:(int)cores
 {
-  v5 = a3;
-  self->_width = [v5 width];
-  self->_height = [v5 height];
-  self->_mode = [v5 mode];
-  v6 = [v5 startBitrate];
-  self->_targetBitrateBps = v6;
+  settingsCopy = settings;
+  self->_width = [settingsCopy width];
+  self->_height = [settingsCopy height];
+  self->_mode = [settingsCopy mode];
+  startBitrate = [settingsCopy startBitrate];
+  self->_targetBitrateBps = startBitrate;
   ptr = self->_bitrateAdjuster.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v8 = *(ptr + 20);
-  if (!v8 || (vabds_f32(v6, v8) / v8) >= 0.1 || (v9 = *(ptr + 22)) == 0 || (vabds_f32(v6, v9) / v9) >= 0.1)
+  if (!v8 || (vabds_f32(startBitrate, v8) / v8) >= 0.1 || (v9 = *(ptr + 22)) == 0 || (vabds_f32(startBitrate, v9) / v9) >= 0.1)
   {
-    *(ptr + 21) = v6;
-    *(ptr + 22) = v6;
+    *(ptr + 21) = startBitrate;
+    *(ptr + 22) = startBitrate;
   }
 
-  *(ptr + 20) = v6;
+  *(ptr + 20) = startBitrate;
   pthread_mutex_unlock((ptr + 8));
-  v10 = [(WK_RTCVideoEncoderH265 *)self resetCompressionSession];
+  resetCompressionSession = [(WK_RTCVideoEncoderH265 *)self resetCompressionSession];
 
-  return v10;
+  return resetCompressionSession;
 }
 
-- (void)setDescriptionCallback:(id)a3
+- (void)setDescriptionCallback:(id)callback
 {
-  self->_descriptionCallback = MEMORY[0x2743DACF0](a3, a2);
+  self->_descriptionCallback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setErrorCallback:(id)a3
+- (void)setErrorCallback:(id)callback
 {
-  self->_errorCallback = MEMORY[0x2743DACF0](a3, a2);
+  self->_errorCallback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)encode:(id)a3 codecSpecificInfo:(id)a4 frameTypes:(id)a5
+- (int64_t)encode:(id)encode codecSpecificInfo:(id)info frameTypes:(id)types
 {
   v104 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  encodeCopy = encode;
+  infoCopy = info;
+  typesCopy = types;
   if (self->_callback)
   {
     compressionSession = self->_compressionSession;
@@ -107,14 +107,14 @@
         }
       }
 
-      v22 = [v8 buffer];
+      buffer = [encodeCopy buffer];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v24 = [v8 buffer];
-        if ([v24 requiresCropping])
+        buffer2 = [encodeCopy buffer];
+        if ([buffer2 requiresCropping])
         {
           if (!v14)
           {
@@ -158,9 +158,9 @@ LABEL_44:
 
           Width = CVPixelBufferGetWidth(pixelBufferOut.value);
           Height = CVPixelBufferGetHeight(value);
-          if ([v24 requiresScalingToWidth:Width height:Height])
+          if ([buffer2 requiresScalingToWidth:Width height:Height])
           {
-            v72 = [v24 bufferSizeForCroppingAndScalingToWidth:Width height:Height];
+            v72 = [buffer2 bufferSizeForCroppingAndScalingToWidth:Width height:Height];
             begin = self->_nv12ScaleBuffer.__begin_;
             end = self->_nv12ScaleBuffer.__end_;
             if (v72 <= end - begin)
@@ -228,7 +228,7 @@ LABEL_44:
             }
           }
 
-          if (([v24 cropAndScaleTo:value withTempBuffer:v88] & 1) == 0)
+          if (([buffer2 cropAndScaleTo:value withTempBuffer:v88] & 1) == 0)
           {
             errorCallback = self->_errorCallback;
             if (!errorCallback)
@@ -242,19 +242,19 @@ LABEL_44:
           goto LABEL_76;
         }
 
-        v34 = [v24 pixelBuffer];
-        CVBufferRetain(v34);
+        pixelBuffer = [buffer2 pixelBuffer];
+        CVBufferRetain(pixelBuffer);
 
-        if (v34)
+        if (pixelBuffer)
         {
 LABEL_16:
-          if (v10 && PixelBufferPool)
+          if (typesCopy && PixelBufferPool)
           {
             v99 = 0u;
             v100 = 0u;
             v97 = 0u;
             v98 = 0u;
-            v35 = v10;
+            v35 = typesCopy;
             v36 = [v35 countByEnumeratingWithState:&v97 objects:v103 count:16];
             if (v36)
             {
@@ -289,7 +289,7 @@ LABEL_48:
           }
 
           memset(&pixelBufferOut, 0, sizeof(pixelBufferOut));
-          CMTimeMake(&pixelBufferOut, [v8 timeStampNs] / 1000000, 1000);
+          CMTimeMake(&pixelBufferOut, [encodeCopy timeStampNs] / 1000000, 1000);
           if (v13)
           {
             keys[0] = *MEMORY[0x277CE27C0];
@@ -335,8 +335,8 @@ LABEL_58:
         goto LABEL_60;
       }
 
-      v24 = [v8 buffer];
-      v54 = [v24 toI420];
+      buffer2 = [encodeCopy buffer];
+      toI420 = [buffer2 toI420];
       if (CVPixelBufferLockBaseAddress(v53, 0))
       {
         if (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>())
@@ -359,7 +359,7 @@ LABEL_55:
         imageBuffer = CVPixelBufferGetBytesPerRowOfPlane(v53, 0);
         v93 = CVPixelBufferGetBaseAddressOfPlane(v53, 1uLL);
         BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(v53, 1uLL);
-        LODWORD(BaseAddressOfPlane) = I420ToNV12([v54 dataY], objc_msgSend(v54, "strideY"), objc_msgSend(v54, "dataU"), objc_msgSend(v54, "strideU"), objc_msgSend(v54, "dataV"), objc_msgSend(v54, "strideV"), BaseAddressOfPlane, imageBuffer, v93, BytesPerRowOfPlane, objc_msgSend(v54, "width"), objc_msgSend(v54, "height"));
+        LODWORD(BaseAddressOfPlane) = I420ToNV12([toI420 dataY], objc_msgSend(toI420, "strideY"), objc_msgSend(toI420, "dataU"), objc_msgSend(toI420, "strideU"), objc_msgSend(toI420, "dataV"), objc_msgSend(toI420, "strideV"), BaseAddressOfPlane, imageBuffer, v93, BytesPerRowOfPlane, objc_msgSend(toI420, "width"), objc_msgSend(toI420, "height"));
         CVPixelBufferUnlockBaseAddress(v53, 0);
         if (!BaseAddressOfPlane)
         {
@@ -391,17 +391,17 @@ LABEL_61:
   return v33;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  self->_callback = MEMORY[0x2743DACF0](a3, a2);
+  self->_callback = MEMORY[0x2743DACF0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (int)setBitrate:(unsigned int)a3 framerate:(unsigned int)a4
+- (int)setBitrate:(unsigned int)bitrate framerate:(unsigned int)framerate
 {
-  v5 = 1000 * a3;
-  self->_targetBitrateBps = 1000 * a3;
+  v5 = 1000 * bitrate;
+  self->_targetBitrateBps = 1000 * bitrate;
   ptr = self->_bitrateAdjuster.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v7 = *(ptr + 20);
@@ -530,27 +530,27 @@ LABEL_9:
   }
 }
 
-- (void)setBitrateBps:(unsigned int)a3
+- (void)setBitrateBps:(unsigned int)bps
 {
-  if (self->_encoderBitrateBps != a3)
+  if (self->_encoderBitrateBps != bps)
   {
     [(WK_RTCVideoEncoderH265 *)self setEncoderBitrateBps:?];
   }
 }
 
-- (void)setEncoderBitrateBps:(unsigned int)a3
+- (void)setEncoderBitrateBps:(unsigned int)bps
 {
   compressionSession = self->_compressionSession;
   if (compressionSession)
   {
-    SetVTSessionProperty(compressionSession, *MEMORY[0x277CE2518], a3);
-    self->_encoderBitrateBps = a3;
+    SetVTSessionProperty(compressionSession, *MEMORY[0x277CE2518], bps);
+    self->_encoderBitrateBps = bps;
   }
 }
 
-- (void)frameWasEncoded:(int)a3 flags:(unsigned int)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5 width:(int)a6 height:(int)a7 renderTimeMs:(int64_t)a8 timestamp:(unsigned int)a9 rotation:(int64_t)a10
+- (void)frameWasEncoded:(int)encoded flags:(unsigned int)flags sampleBuffer:(opaqueCMSampleBuffer *)buffer width:(int)width height:(int)height renderTimeMs:(int64_t)ms timestamp:(unsigned int)timestamp rotation:(int64_t)self0
 {
-  if (a3)
+  if (encoded)
   {
     if ((webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
     {
@@ -569,9 +569,9 @@ LABEL_15:
 
   else
   {
-    if ((a4 & 2) == 0)
+    if ((flags & 2) == 0)
     {
-      SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a5, 0);
+      SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(buffer, 0);
       if (SampleAttachmentsArray)
       {
         v21 = SampleAttachmentsArray;

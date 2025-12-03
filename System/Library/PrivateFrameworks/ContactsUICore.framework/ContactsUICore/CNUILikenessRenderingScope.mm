@@ -1,15 +1,15 @@
 @interface CNUILikenessRenderingScope
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 rightToLeft:(BOOL)a5 style:(unint64_t)a6 color:(id)a7;
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11;
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 color:(id)a9;
-- (BOOL)isEqual:(id)a3;
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale rightToLeft:(BOOL)left style:(unint64_t)style color:(id)color;
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1;
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style color:(id)a9;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)pointSize;
-- (CNUILikenessRenderingScope)initWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CNUILikenessRenderingScope)initWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation CNUILikenessRenderingScope
@@ -64,50 +64,50 @@
   return [MEMORY[0x1E6996730] objectHash:self->_maskedAvatarIndices] - v11 + 32 * v11;
 }
 
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1
 {
-  v14 = a7;
-  height = a3.height;
-  width = a3.width;
-  v21 = a11;
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
+  indicesCopy = indices;
   v22 = a10;
-  v23 = [[a1 alloc] initWithPointSize:a6 scale:v14 strokeWidth:a8 strokeColor:a9 rightToLeft:v22 style:v21 backgroundStyle:width color:height maskedAvatarIndices:{a4, a5}];
+  v23 = [[self alloc] initWithPointSize:color scale:leftCopy strokeWidth:style strokeColor:backgroundStyle rightToLeft:v22 style:indicesCopy backgroundStyle:width color:height maskedAvatarIndices:{scale, width}];
 
   return v23;
 }
 
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 color:(id)a9
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style color:(id)a9
 {
-  v10 = a7;
-  height = a3.height;
-  width = a3.width;
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
   v17 = a9;
-  v18 = [a1 alloc];
-  v19 = [MEMORY[0x1E696AC90] indexSet];
-  v20 = [v18 initWithPointSize:a6 scale:v10 strokeWidth:a8 strokeColor:0 rightToLeft:v17 style:v19 backgroundStyle:width color:height maskedAvatarIndices:{a4, a5}];
+  v18 = [self alloc];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  v20 = [v18 initWithPointSize:color scale:leftCopy strokeWidth:style strokeColor:0 rightToLeft:v17 style:indexSet backgroundStyle:width color:height maskedAvatarIndices:{scale, width}];
 
   return v20;
 }
 
-+ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)a3 scale:(double)a4 rightToLeft:(BOOL)a5 style:(unint64_t)a6 color:(id)a7
++ (CNUILikenessRenderingScope)renderingScopeWithPointSize:(CGSize)size scale:(double)scale rightToLeft:(BOOL)left style:(unint64_t)style color:(id)color
 {
-  v8 = a5;
-  height = a3.height;
-  width = a3.width;
-  v13 = a7;
-  v14 = [a1 alloc];
-  v15 = [MEMORY[0x1E696AC90] indexSet];
-  v16 = [v14 initWithPointSize:0 scale:v8 strokeWidth:a6 strokeColor:0 rightToLeft:v13 style:v15 backgroundStyle:width color:height maskedAvatarIndices:{a4, 0.0}];
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  v14 = [self alloc];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  v16 = [v14 initWithPointSize:0 scale:leftCopy strokeWidth:style strokeColor:0 rightToLeft:colorCopy style:indexSet backgroundStyle:width color:height maskedAvatarIndices:{scale, 0.0}];
 
   return v16;
 }
 
-- (CNUILikenessRenderingScope)initWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(CGColor *)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11
+- (CNUILikenessRenderingScope)initWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(CGColor *)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = a10;
-  v22 = a11;
+  indicesCopy = indices;
   v32.receiver = self;
   v32.super_class = CNUILikenessRenderingScope;
   v23 = [(CNUILikenessRenderingScope *)&v32 init];
@@ -116,18 +116,18 @@
   {
     v23->_pointSize.width = width;
     v23->_pointSize.height = height;
-    v23->_scale = a4;
-    v23->_strokeWidth = a5;
-    Copy = CGColorCreateCopy(a6);
-    v24->_rightToLeft = a7;
+    v23->_scale = scale;
+    v23->_strokeWidth = width;
+    Copy = CGColorCreateCopy(color);
+    v24->_rightToLeft = left;
     v24->_strokeColor = Copy;
-    v24->_style = a8;
-    v24->_backgroundStyle = a9;
+    v24->_style = style;
+    v24->_backgroundStyle = backgroundStyle;
     v26 = [v21 copy];
     color = v24->_color;
     v24->_color = v26;
 
-    v28 = [v22 copy];
+    v28 = [indicesCopy copy];
     maskedAvatarIndices = v24->_maskedAvatarIndices;
     v24->_maskedAvatarIndices = v28;
 
@@ -159,22 +159,22 @@
     v14 = [v3 appendName:@"text-direction" object:@"RTL"];
   }
 
-  v15 = [(CNUILikenessRenderingScope *)self color];
+  color = [(CNUILikenessRenderingScope *)self color];
 
-  if (v15)
+  if (color)
   {
-    v16 = [(CNUILikenessRenderingScope *)self color];
-    v17 = [v16 colorName];
-    v18 = [v3 appendName:@"color" object:v17];
+    color2 = [(CNUILikenessRenderingScope *)self color];
+    colorName = [color2 colorName];
+    v18 = [v3 appendName:@"color" object:colorName];
   }
 
   v19 = [v3 appendName:@"style" unsignedInteger:{-[CNUILikenessRenderingScope style](self, "style")}];
   v20 = [v3 appendName:@"backgroundStyle" unsignedInteger:{-[CNUILikenessRenderingScope backgroundStyle](self, "backgroundStyle")}];
-  v21 = [(CNUILikenessRenderingScope *)self maskedAvatarIndices];
-  v22 = v21;
-  if (v21)
+  maskedAvatarIndices = [(CNUILikenessRenderingScope *)self maskedAvatarIndices];
+  v22 = maskedAvatarIndices;
+  if (maskedAvatarIndices)
   {
-    v23 = [v21 _cn_map:&__block_literal_global_6];
+    v23 = [maskedAvatarIndices _cn_map:&__block_literal_global_6];
     v24 = [v23 componentsJoinedByString:{@", "}];
   }
 
@@ -185,32 +185,32 @@
 
   v25 = [v3 appendName:@"maskedAvatarIndices" object:v24];
 
-  v26 = [v3 build];
+  build = [v3 build];
 
-  return v26;
+  return build;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
   strokeColor = self->_strokeColor;
-  if (strokeColor != a3)
+  if (strokeColor != color)
   {
     if (strokeColor)
     {
       CGColorRelease(strokeColor);
     }
 
-    self->_strokeColor = CGColorRetain(a3);
+    self->_strokeColor = CGColorRetain(color);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![(CNUILikenessRenderingScope *)self excludePointSizeInEqualityCheck]&& (self->_pointSize.width == v4->_pointSize.width ? (v5 = self->_pointSize.height == v4->_pointSize.height) : (v5 = 0), !v5) || vabdd_f64(self->_scale, v4->_scale) >= 0.0001 || vabdd_f64(self->_strokeWidth, v4->_strokeWidth) >= 0.0001 || !CGColorEqualToColor(self->_strokeColor, v4->_strokeColor) || self->_rightToLeft != v4->_rightToLeft || self->_style != v4->_style || self->_backgroundStyle != v4->_backgroundStyle || (color = self->_color, color | v4->_color) && ![(PRMonogramColor *)color isEqual:?]|| (maskedAvatarIndices = self->_maskedAvatarIndices, maskedAvatarIndices | v4->_maskedAvatarIndices) && ![(NSIndexSet *)maskedAvatarIndices isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![(CNUILikenessRenderingScope *)self excludePointSizeInEqualityCheck]&& (self->_pointSize.width == equalCopy->_pointSize.width ? (v5 = self->_pointSize.height == equalCopy->_pointSize.height) : (v5 = 0), !v5) || vabdd_f64(self->_scale, equalCopy->_scale) >= 0.0001 || vabdd_f64(self->_strokeWidth, equalCopy->_strokeWidth) >= 0.0001 || !CGColorEqualToColor(self->_strokeColor, equalCopy->_strokeColor) || self->_rightToLeft != equalCopy->_rightToLeft || self->_style != equalCopy->_style || self->_backgroundStyle != equalCopy->_backgroundStyle || (color = self->_color, color | equalCopy->_color) && ![(PRMonogramColor *)color isEqual:?]|| (maskedAvatarIndices = self->_maskedAvatarIndices, maskedAvatarIndices | equalCopy->_maskedAvatarIndices) && ![(NSIndexSet *)maskedAvatarIndices isEqual:?])
     {
       v8 = 0;
     }
@@ -219,7 +219,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNUILikenessRenderingScope alloc];
   [(CNUILikenessRenderingScope *)self pointSize];
@@ -229,13 +229,13 @@
   v10 = v9;
   [(CNUILikenessRenderingScope *)self strokeWidth];
   v12 = v11;
-  v13 = [(CNUILikenessRenderingScope *)self strokeColor];
-  v14 = [(CNUILikenessRenderingScope *)self rightToLeft];
-  v15 = [(CNUILikenessRenderingScope *)self style];
-  v16 = [(CNUILikenessRenderingScope *)self backgroundStyle];
-  v17 = [(CNUILikenessRenderingScope *)self color];
-  v18 = [(CNUILikenessRenderingScope *)self maskedAvatarIndices];
-  v19 = [(CNUILikenessRenderingScope *)v4 initWithPointSize:v13 scale:v14 strokeWidth:v15 strokeColor:v16 rightToLeft:v17 style:v18 backgroundStyle:v6 color:v8 maskedAvatarIndices:v10, v12];
+  strokeColor = [(CNUILikenessRenderingScope *)self strokeColor];
+  rightToLeft = [(CNUILikenessRenderingScope *)self rightToLeft];
+  style = [(CNUILikenessRenderingScope *)self style];
+  backgroundStyle = [(CNUILikenessRenderingScope *)self backgroundStyle];
+  color = [(CNUILikenessRenderingScope *)self color];
+  maskedAvatarIndices = [(CNUILikenessRenderingScope *)self maskedAvatarIndices];
+  v19 = [(CNUILikenessRenderingScope *)v4 initWithPointSize:strokeColor scale:rightToLeft strokeWidth:style strokeColor:backgroundStyle rightToLeft:color style:maskedAvatarIndices backgroundStyle:v6 color:v8 maskedAvatarIndices:v10, v12];
 
   [(CNUILikenessRenderingScope *)v19 setExcludePointSizeInEqualityCheck:[(CNUILikenessRenderingScope *)self excludePointSizeInEqualityCheck]];
   return v19;

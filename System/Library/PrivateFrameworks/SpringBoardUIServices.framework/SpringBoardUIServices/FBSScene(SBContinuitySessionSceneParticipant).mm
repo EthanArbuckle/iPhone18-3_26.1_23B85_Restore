@@ -6,22 +6,22 @@
 
 - (id)continuitySessionSceneParticipant
 {
-  v2 = [a1 continuitySessionParticipantClientComponent];
-  v3 = v2;
-  if (v2)
+  continuitySessionParticipantClientComponent = [self continuitySessionParticipantClientComponent];
+  v3 = continuitySessionParticipantClientComponent;
+  if (continuitySessionParticipantClientComponent)
   {
-    v4 = v2;
+    settings2 = continuitySessionParticipantClientComponent;
 LABEL_5:
-    v7 = v4;
+    v7 = settings2;
     goto LABEL_6;
   }
 
-  v5 = [a1 settings];
+  settings = [self settings];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v4 = [a1 settings];
+    settings2 = [self settings];
     goto LABEL_5;
   }
 

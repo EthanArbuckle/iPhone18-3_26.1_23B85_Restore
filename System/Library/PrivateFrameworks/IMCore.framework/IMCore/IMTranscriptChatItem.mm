@@ -1,9 +1,9 @@
 @interface IMTranscriptChatItem
-- (BOOL)isContiguousWithChatItem:(id)a3;
+- (BOOL)isContiguousWithChatItem:(id)item;
 - (NSString)description;
 - (NSString)serviceName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setGUID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setGUID:(id)d;
 @end
 
 @implementation IMTranscriptChatItem
@@ -27,7 +27,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -36,9 +36,9 @@
   return v9;
 }
 
-- (BOOL)isContiguousWithChatItem:(id)a3
+- (BOOL)isContiguousWithChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = &selRef_setCallProviderManager_;
   if (!objc_msgSend_conformsToProtocol_(self, v6, &unk_1F1BB2640))
   {
@@ -54,7 +54,7 @@
     }
   }
 
-  if (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend_messageHighlightChatItem(self, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v12, v12) || !objc_msgSend_conformsToProtocol_(v4, v10, &unk_1F1BB2640) || (objc_msgSend_isReplyContextPreview(self, v13, v14) & 1) != 0 || (objc_msgSend_isReplyContextPreview(v4, v15, v16) & 1) != 0 || (objc_msgSend_itemIsThreadOriginator(self, v17, v18) & 1) != 0 || (objc_msgSend_itemIsThreadOriginator(v4, v19, v20))
+  if (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend_messageHighlightChatItem(self, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v12, v12) || !objc_msgSend_conformsToProtocol_(itemCopy, v10, &unk_1F1BB2640) || (objc_msgSend_isReplyContextPreview(self, v13, v14) & 1) != 0 || (objc_msgSend_isReplyContextPreview(itemCopy, v15, v16) & 1) != 0 || (objc_msgSend_itemIsThreadOriginator(self, v17, v18) & 1) != 0 || (objc_msgSend_itemIsThreadOriginator(itemCopy, v19, v20))
   {
 LABEL_41:
     v9 = 0;
@@ -64,7 +64,7 @@ LABEL_41:
   v23 = objc_msgSend__item(self, v21, v22);
   isReply = objc_msgSend_isReply(v23, v24, v25);
   v29 = isReply;
-  if (isReply && (objc_msgSend__item(v4, v27, v28), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend_isReply(v5, v30, v31)))
+  if (isReply && (objc_msgSend__item(itemCopy, v27, v28), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend_isReply(v5, v30, v31)))
   {
   }
 
@@ -81,7 +81,7 @@ LABEL_41:
       goto LABEL_41;
     }
 
-    v39 = objc_msgSend__item(v4, v37, v38);
+    v39 = objc_msgSend__item(itemCopy, v37, v38);
     v42 = objc_msgSend_isReply(v39, v40, v41);
 
     if (v29)
@@ -95,12 +95,12 @@ LABEL_41:
   }
 
   v43 = objc_msgSend__item(self, v32, v33);
-  v46 = objc_msgSend__item(v4, v44, v45);
+  v46 = objc_msgSend__item(itemCopy, v44, v45);
 
   if (v43 != v46)
   {
     isEditedMessageHistory = objc_msgSend_isEditedMessageHistory(self, v47, v48);
-    if (isEditedMessageHistory == objc_msgSend_isEditedMessageHistory(v4, v50, v51))
+    if (isEditedMessageHistory == objc_msgSend_isEditedMessageHistory(itemCopy, v50, v51))
     {
       v54 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v52, v53);
       isGroupTypingIndicatorsEnabled = objc_msgSend_isGroupTypingIndicatorsEnabled(v54, v55, v56);
@@ -113,11 +113,11 @@ LABEL_41:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v60 = self;
-            v61 = v4;
-            v64 = objc_msgSend_requiresSiriAttribution(v60, v62, v63);
+            selfCopy = self;
+            v61 = itemCopy;
+            v64 = objc_msgSend_requiresSiriAttribution(selfCopy, v62, v63);
             v69 = v64 ^ objc_msgSend_requiresSiriAttribution(v61, v65, v66);
-            if ((v69 & 1) != 0 || objc_msgSend_requiresFaceTimeAttribution(v60, v67, v68) && objc_msgSend_requiresFaceTimeAttribution(v61, v70, v71) && (v74 = objc_msgSend_isFromMe(v60, v72, v73), v74 == objc_msgSend_isFromMe(v61, v75, v76)))
+            if ((v69 & 1) != 0 || objc_msgSend_requiresFaceTimeAttribution(selfCopy, v67, v68) && objc_msgSend_requiresFaceTimeAttribution(v61, v70, v71) && (v74 = objc_msgSend_isFromMe(selfCopy, v72, v73), v74 == objc_msgSend_isFromMe(v61, v75, v76)))
             {
               v9 = v69 ^ 1;
 
@@ -127,9 +127,9 @@ LABEL_41:
         }
 
         v77 = objc_msgSend_isFromMe(self, v58, v59);
-        if (v77 == objc_msgSend_isFromMe(v4, v78, v79))
+        if (v77 == objc_msgSend_isFromMe(itemCopy, v78, v79))
         {
-          v82 = objc_msgSend_time(v4, v80, v81);
+          v82 = objc_msgSend_time(itemCopy, v80, v81);
           v85 = objc_msgSend_time(self, v83, v84);
           objc_msgSend_timeIntervalSinceDate_(v82, v86, v85);
           v88 = fabs(v87);
@@ -158,16 +158,16 @@ LABEL_42:
   return v9 & 1;
 }
 
-- (void)_setGUID:(id)a3
+- (void)_setGUID:(id)d
 {
-  v4 = a3;
-  if (self->_guid != v4)
+  dCopy = d;
+  if (self->_guid != dCopy)
   {
-    v8 = v4;
-    v7 = objc_msgSend_copy(v4, v5, v6);
+    v8 = dCopy;
+    v7 = objc_msgSend_copy(dCopy, v5, v6);
 
     objc_storeStrong(&self->_guid, v7);
-    v4 = v7;
+    dCopy = v7;
   }
 }
 

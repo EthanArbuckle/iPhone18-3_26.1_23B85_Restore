@@ -4,42 +4,42 @@
 - (MTLPipelineCache)pipelineCache;
 - (NSArray)pipelineNames;
 - (NSString)label;
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (void)setLabel:(id)a3;
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLToolsPipelineLibrary
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (NSArray)pipelineNames
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pipelineNames];
+  return [baseObject pipelineNames];
 }
 
 - (BOOL)disableRunTimeCompilation
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 disableRunTimeCompilation];
+  return [baseObject disableRunTimeCompilation];
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -69,16 +69,16 @@
 
 - (MTLPipelineCache)pipelineCache
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pipelineCache];
+  return [baseObject pipelineCache];
 }
 
 - (MTLPipelineCache)functionCache
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionCache];
+  return [baseObject functionCache];
 }
 
 @end

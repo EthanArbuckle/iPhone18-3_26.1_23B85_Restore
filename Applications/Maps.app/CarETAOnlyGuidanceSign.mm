@@ -1,16 +1,16 @@
 @interface CarETAOnlyGuidanceSign
 + ($739592BE61D20756836E46D36864A6CE)viewMetrics;
-- (CarETAOnlyGuidanceSign)initWithFrame:(CGRect)a3;
+- (CarETAOnlyGuidanceSign)initWithFrame:(CGRect)frame;
 - (id)viewForLastBaselineLayout;
 - (void)_addDescriptionLabel;
 - (void)_refreshBottomConstraint;
 - (void)_updateContents;
-- (void)setDescriptionText:(id)a3;
-- (void)setLatestETA:(id)a3;
-- (void)setNumberOfStops:(unint64_t)a3;
-- (void)setShowsEvLabel:(BOOL)a3;
-- (void)setSubtitleOverride:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setLatestETA:(id)a;
+- (void)setNumberOfStops:(unint64_t)stops;
+- (void)setShowsEvLabel:(BOOL)label;
+- (void)setSubtitleOverride:(id)override;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CarETAOnlyGuidanceSign
@@ -18,29 +18,29 @@
 - (id)viewForLastBaselineLayout
 {
   IsEnabled_LocationIntelligenceMaps = MapsFeature_IsEnabled_LocationIntelligenceMaps();
-  v4 = [(CarETAOnlyGuidanceSign *)self showsEvLabel];
+  showsEvLabel = [(CarETAOnlyGuidanceSign *)self showsEvLabel];
   if (IsEnabled_LocationIntelligenceMaps)
   {
-    if ((v4 & 1) == 0)
+    if ((showsEvLabel & 1) == 0)
     {
-      v5 = [(CarETAOnlyGuidanceSign *)self descriptionLabel];
+      descriptionLabel = [(CarETAOnlyGuidanceSign *)self descriptionLabel];
       goto LABEL_7;
     }
 
     goto LABEL_5;
   }
 
-  if (v4)
+  if (showsEvLabel)
   {
 LABEL_5:
-    v5 = [(CarETAOnlyGuidanceSign *)self evArrivalInfoLabel];
+    descriptionLabel = [(CarETAOnlyGuidanceSign *)self evArrivalInfoLabel];
     goto LABEL_7;
   }
 
-  v5 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+  descriptionLabel = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
 LABEL_7:
 
-  return v5;
+  return descriptionLabel;
 }
 
 - (void)_refreshBottomConstraint
@@ -77,8 +77,8 @@ LABEL_10:
   }
 
   p_descriptionLabel = &self->_descriptionLabel;
-  v8 = [(UILabel *)self->_descriptionLabel text];
-  if (![v8 length])
+  text = [(UILabel *)self->_descriptionLabel text];
+  if (![text length])
   {
     p_descriptionLabel = &self->_subtitleLabel;
   }
@@ -86,10 +86,10 @@ LABEL_10:
   v6 = *p_descriptionLabel;
 
 LABEL_14:
-  v9 = [(UILabel *)v6 lastBaselineAnchor];
-  v10 = [(CarETAOnlyGuidanceSign *)self bottomAnchor];
+  lastBaselineAnchor = [(UILabel *)v6 lastBaselineAnchor];
+  bottomAnchor = [(CarETAOnlyGuidanceSign *)self bottomAnchor];
   LODWORD(v11) = 1148829696;
-  v12 = [v9 constraintEqualToAnchor:v10 constant:0.0 priority:v11];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:0.0 priority:v11];
   v13 = self->_bottomConstraint;
   self->_bottomConstraint = v12;
 
@@ -98,66 +98,66 @@ LABEL_14:
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_descriptionText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_descriptionText] & 1) == 0)
   {
-    objc_storeStrong(&self->_descriptionText, a3);
+    objc_storeStrong(&self->_descriptionText, text);
     descriptionText = self->_descriptionText;
-    v6 = [(CarETAOnlyGuidanceSign *)self descriptionLabel];
-    [v6 setText:descriptionText];
+    descriptionLabel = [(CarETAOnlyGuidanceSign *)self descriptionLabel];
+    [descriptionLabel setText:descriptionText];
   }
 
   [(CarETAOnlyGuidanceSign *)self _refreshBottomConstraint];
 }
 
-- (void)setLatestETA:(id)a3
+- (void)setLatestETA:(id)a
 {
-  v5 = a3;
-  if (self->_latestETA != v5)
+  aCopy = a;
+  if (self->_latestETA != aCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_latestETA, a3);
+    v6 = aCopy;
+    objc_storeStrong(&self->_latestETA, a);
     [(CarETAOnlyGuidanceSign *)self _updateContents];
-    v5 = v6;
+    aCopy = v6;
   }
 }
 
-- (void)setSubtitleOverride:(id)a3
+- (void)setSubtitleOverride:(id)override
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_subtitleOverride] & 1) == 0)
+  overrideCopy = override;
+  if (([overrideCopy isEqualToString:self->_subtitleOverride] & 1) == 0)
   {
-    objc_storeStrong(&self->_subtitleOverride, a3);
-    [(CarETAOnlyGuidanceSign *)self _updateContents];
-  }
-}
-
-- (void)setNumberOfStops:(unint64_t)a3
-{
-  if (self->_numberOfStops != a3)
-  {
-    self->_numberOfStops = a3;
+    objc_storeStrong(&self->_subtitleOverride, override);
     [(CarETAOnlyGuidanceSign *)self _updateContents];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setNumberOfStops:(unint64_t)stops
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_title] & 1) == 0)
+  if (self->_numberOfStops != stops)
   {
-    objc_storeStrong(&self->_title, a3);
+    self->_numberOfStops = stops;
     [(CarETAOnlyGuidanceSign *)self _updateContents];
   }
 }
 
-- (void)setShowsEvLabel:(BOOL)a3
+- (void)setTitle:(id)title
 {
-  if (self->_showsEvLabel != a3)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_title] & 1) == 0)
   {
-    self->_showsEvLabel = a3;
+    objc_storeStrong(&self->_title, title);
+    [(CarETAOnlyGuidanceSign *)self _updateContents];
+  }
+}
+
+- (void)setShowsEvLabel:(BOOL)label
+{
+  if (self->_showsEvLabel != label)
+  {
+    self->_showsEvLabel = label;
     [(CarETAOnlyGuidanceSign *)self _refreshBottomConstraint];
   }
 }
@@ -172,11 +172,11 @@ LABEL_14:
   v42 = v3;
   v5 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
   v6 = [NSAttributedString alloc];
-  v7 = [(CarETAOnlyGuidanceSign *)self title];
-  v8 = v7;
-  if (v7)
+  title = [(CarETAOnlyGuidanceSign *)self title];
+  v8 = title;
+  if (title)
   {
-    v9 = v7;
+    v9 = title;
   }
 
   else
@@ -185,10 +185,10 @@ LABEL_14:
   }
 
   v10 = [v6 initWithString:v9 attributes:v5];
-  v11 = [(CarETAOnlyGuidanceSign *)self titleLabel];
-  [v11 setAttributedText:v10];
+  titleLabel = [(CarETAOnlyGuidanceSign *)self titleLabel];
+  [titleLabel setAttributedText:v10];
 
-  v12 = 40;
+  subtitleLabel2 = 40;
   if (self->_numberOfStops)
   {
     v13 = +[NSBundle mainBundle];
@@ -201,99 +201,99 @@ LABEL_14:
     v15 = 0;
   }
 
-  v16 = [(CarETAOnlyGuidanceSign *)self latestETA];
+  latestETA = [(CarETAOnlyGuidanceSign *)self latestETA];
 
-  if (v16)
+  if (latestETA)
   {
-    v17 = [[NSMutableArray alloc] initWithCapacity:2];
-    v18 = [(CarETAOnlyGuidanceSign *)self latestETA];
-    v19 = [v18 etaDateString];
-    [v17 addObject:v19];
+    subtitleLabel4 = [[NSMutableArray alloc] initWithCapacity:2];
+    latestETA2 = [(CarETAOnlyGuidanceSign *)self latestETA];
+    etaDateString = [latestETA2 etaDateString];
+    [subtitleLabel4 addObject:etaDateString];
 
     if (v15)
     {
-      [v17 addObject:v15];
+      [subtitleLabel4 addObject:v15];
     }
 
     else
     {
-      v21 = [(CarETAOnlyGuidanceSign *)self latestETA];
-      v22 = +[NSString _navigation_stringWithMinutes:andAbbreviationType:](NSString, "_navigation_stringWithMinutes:andAbbreviationType:", [v21 remainingMinutes], 1);
+      latestETA3 = [(CarETAOnlyGuidanceSign *)self latestETA];
+      v22 = +[NSString _navigation_stringWithMinutes:andAbbreviationType:](NSString, "_navigation_stringWithMinutes:andAbbreviationType:", [latestETA3 remainingMinutes], 1);
 
-      [v17 addObject:v22];
+      [subtitleLabel4 addObject:v22];
     }
 
     v23 = +[NSBundle mainBundle];
-    v24 = [v23 localizedStringForKey:@" · [List view details separator]" value:@"localized string not found" table:0];
+    subtitleLabel6 = [v23 localizedStringForKey:@" · [List view details separator]" value:@"localized string not found" table:0];
 
     v25 = +[UIApplication sharedApplication];
-    v26 = [v25 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v25 userInterfaceLayoutDirection];
 
-    if (v26 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v27 = [NSMutableArray alloc];
-      v28 = [v17 reverseObjectEnumerator];
-      v29 = [v28 allObjects];
-      v30 = [v27 initWithArray:v29];
+      reverseObjectEnumerator = [subtitleLabel4 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v30 = [v27 initWithArray:allObjects];
 
-      v17 = v30;
+      subtitleLabel4 = v30;
     }
 
-    v31 = [v17 componentsJoinedByString:v24];
-    v32 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-    [v32 setText:v31];
+    v31 = [subtitleLabel4 componentsJoinedByString:subtitleLabel6];
+    subtitleLabel = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+    [subtitleLabel setText:v31];
 
-    v12 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-    [v12 setNumberOfLines:1];
+    subtitleLabel2 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+    [subtitleLabel2 setNumberOfLines:1];
   }
 
   else
   {
     if (v15)
     {
-      v20 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-      [v20 setNumberOfLines:0];
+      subtitleLabel3 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+      [subtitleLabel3 setNumberOfLines:0];
 
-      v17 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-      [v17 setText:v15];
+      subtitleLabel4 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+      [subtitleLabel4 setText:v15];
       goto LABEL_18;
     }
 
-    v38 = [(CarETAOnlyGuidanceSign *)self subtitleOverride];
+    subtitleOverride = [(CarETAOnlyGuidanceSign *)self subtitleOverride];
 
-    v39 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-    v40 = v39;
-    if (v38)
+    subtitleLabel5 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+    v40 = subtitleLabel5;
+    if (subtitleOverride)
     {
-      [v39 setNumberOfLines:0];
+      [subtitleLabel5 setNumberOfLines:0];
 
-      v17 = [(CarETAOnlyGuidanceSign *)self subtitleOverride];
-      v24 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-      [v24 setText:v17];
+      subtitleLabel4 = [(CarETAOnlyGuidanceSign *)self subtitleOverride];
+      subtitleLabel6 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+      [subtitleLabel6 setText:subtitleLabel4];
       goto LABEL_17;
     }
 
-    [v39 setNumberOfLines:1];
+    [subtitleLabel5 setNumberOfLines:1];
 
-    v17 = +[NSBundle mainBundle];
-    v24 = [v17 localizedStringForKey:@"Car_PROACTIVE_Calculating ETA" value:@"localized string not found" table:0];
-    v12 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
-    [v12 setText:v24];
+    subtitleLabel4 = +[NSBundle mainBundle];
+    subtitleLabel6 = [subtitleLabel4 localizedStringForKey:@"Car_PROACTIVE_Calculating ETA" value:@"localized string not found" table:0];
+    subtitleLabel2 = [(CarETAOnlyGuidanceSign *)self subtitleLabel];
+    [subtitleLabel2 setText:subtitleLabel6];
   }
 
 LABEL_17:
 LABEL_18:
 
-  v33 = [(CarETAOnlyGuidanceSign *)self latestETA];
-  v34 = [v33 arrivalBatteryCharge];
-  [(CarETAOnlyGuidanceSign *)self setShowsEvLabel:v34 != 0];
+  latestETA4 = [(CarETAOnlyGuidanceSign *)self latestETA];
+  arrivalBatteryCharge = [latestETA4 arrivalBatteryCharge];
+  [(CarETAOnlyGuidanceSign *)self setShowsEvLabel:arrivalBatteryCharge != 0];
 
-  v35 = [(CarETAOnlyGuidanceSign *)self showsEvLabel];
-  if (v35)
+  showsEvLabel = [(CarETAOnlyGuidanceSign *)self showsEvLabel];
+  if (showsEvLabel)
   {
-    v33 = [(CarETAOnlyGuidanceSign *)self latestETA];
-    v12 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption1 weight:UIFontWeightRegular];
-    v36 = [v33 extendedArrivalBatteryChargeStringWithFont:v12];
+    latestETA4 = [(CarETAOnlyGuidanceSign *)self latestETA];
+    subtitleLabel2 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption1 weight:UIFontWeightRegular];
+    v36 = [latestETA4 extendedArrivalBatteryChargeStringWithFont:subtitleLabel2];
   }
 
   else
@@ -301,10 +301,10 @@ LABEL_18:
     v36 = 0;
   }
 
-  v37 = [(CarETAOnlyGuidanceSign *)self evArrivalInfoLabel];
-  [v37 setAttributedText:v36];
+  evArrivalInfoLabel = [(CarETAOnlyGuidanceSign *)self evArrivalInfoLabel];
+  [evArrivalInfoLabel setAttributedText:v36];
 
-  if (v35)
+  if (showsEvLabel)
   {
   }
 }
@@ -335,11 +335,11 @@ LABEL_18:
   [(CarETAOnlyGuidanceSign *)self addSubview:v9];
 }
 
-- (CarETAOnlyGuidanceSign)initWithFrame:(CGRect)a3
+- (CarETAOnlyGuidanceSign)initWithFrame:(CGRect)frame
 {
   v68.receiver = self;
   v68.super_class = CarETAOnlyGuidanceSign;
-  v3 = [(CarETAOnlyGuidanceSign *)&v68 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarETAOnlyGuidanceSign *)&v68 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {
@@ -411,77 +411,77 @@ LABEL_18:
     [(UILabel *)v5->_evArrivalInfoLabel setContentHuggingPriority:1 forAxis:v27];
     [(CarETAOnlyGuidanceSign *)v5 addSubview:v5->_evArrivalInfoLabel];
     v28 = objc_opt_new();
-    v29 = [(UILabel *)v5->_titleLabel firstBaselineAnchor];
-    v30 = [(CarETAOnlyGuidanceSign *)v5 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:18.0];
+    firstBaselineAnchor = [(UILabel *)v5->_titleLabel firstBaselineAnchor];
+    topAnchor = [(CarETAOnlyGuidanceSign *)v5 topAnchor];
+    v31 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:18.0];
     [v28 addObject:v31];
 
-    v32 = [(UILabel *)v5->_titleLabel leadingAnchor];
-    v33 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:10.0];
+    leadingAnchor = [(UILabel *)v5->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     [v28 addObject:v34];
 
-    v35 = [(UILabel *)v5->_titleLabel trailingAnchor];
-    v36 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:-10.0];
+    trailingAnchor = [(UILabel *)v5->_titleLabel trailingAnchor];
+    trailingAnchor2 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     [v28 addObject:v37];
 
-    v38 = [(UILabel *)v5->_subtitleLabel firstBaselineAnchor];
-    v39 = [(UILabel *)v5->_titleLabel lastBaselineAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:18.0];
+    firstBaselineAnchor2 = [(UILabel *)v5->_subtitleLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_titleLabel lastBaselineAnchor];
+    v40 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:18.0];
     [v28 addObject:v40];
 
-    v41 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
-    v42 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:10.0];
+    leadingAnchor3 = [(UILabel *)v5->_subtitleLabel leadingAnchor];
+    leadingAnchor4 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
+    v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
     [v28 addObject:v43];
 
-    v44 = [(UILabel *)v5->_subtitleLabel trailingAnchor];
-    v45 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:-10.0];
+    trailingAnchor3 = [(UILabel *)v5->_subtitleLabel trailingAnchor];
+    trailingAnchor4 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
+    v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
     [v28 addObject:v46];
 
     if (MapsFeature_IsEnabled_LocationIntelligenceMaps())
     {
       [(CarETAOnlyGuidanceSign *)v5 _addDescriptionLabel];
-      v64 = [(UILabel *)v5->_descriptionLabel firstBaselineAnchor];
-      v47 = [(UILabel *)v5->_subtitleLabel lastBaselineAnchor];
-      v48 = [v64 constraintEqualToAnchor:v47 constant:18.0];
+      firstBaselineAnchor3 = [(UILabel *)v5->_descriptionLabel firstBaselineAnchor];
+      lastBaselineAnchor2 = [(UILabel *)v5->_subtitleLabel lastBaselineAnchor];
+      v48 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:18.0];
       v69[0] = v48;
-      v67 = [(UILabel *)v5->_descriptionLabel leadingAnchor];
-      v66 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
-      v65 = [v67 constraintEqualToAnchor:v66 constant:10.0];
+      leadingAnchor5 = [(UILabel *)v5->_descriptionLabel leadingAnchor];
+      leadingAnchor6 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
+      v65 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
       v69[1] = v65;
-      v63 = [(UILabel *)v5->_descriptionLabel trailingAnchor];
-      v62 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
-      v49 = [v63 constraintEqualToAnchor:v62 constant:-10.0];
+      trailingAnchor5 = [(UILabel *)v5->_descriptionLabel trailingAnchor];
+      trailingAnchor6 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
+      v49 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-10.0];
       v69[2] = v49;
-      v50 = [(UILabel *)v5->_evArrivalInfoLabel firstBaselineAnchor];
-      v51 = [(UILabel *)v5->_descriptionLabel lastBaselineAnchor];
-      v52 = [v50 constraintEqualToAnchor:v51 constant:16.0];
+      firstBaselineAnchor4 = [(UILabel *)v5->_evArrivalInfoLabel firstBaselineAnchor];
+      lastBaselineAnchor3 = [(UILabel *)v5->_descriptionLabel lastBaselineAnchor];
+      v52 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor3 constant:16.0];
       v69[3] = v52;
       v53 = [NSArray arrayWithObjects:v69 count:4];
       [v28 addObjectsFromArray:v53];
 
-      v54 = v64;
+      firstBaselineAnchor5 = firstBaselineAnchor3;
     }
 
     else
     {
-      v54 = [(UILabel *)v5->_evArrivalInfoLabel firstBaselineAnchor];
-      v47 = [(UILabel *)v5->_subtitleLabel lastBaselineAnchor];
-      v48 = [v54 constraintEqualToAnchor:v47 constant:16.0];
+      firstBaselineAnchor5 = [(UILabel *)v5->_evArrivalInfoLabel firstBaselineAnchor];
+      lastBaselineAnchor2 = [(UILabel *)v5->_subtitleLabel lastBaselineAnchor];
+      v48 = [firstBaselineAnchor5 constraintEqualToAnchor:lastBaselineAnchor2 constant:16.0];
       [v28 addObject:v48];
     }
 
-    v55 = [(UILabel *)v5->_evArrivalInfoLabel leadingAnchor];
-    v56 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:10.0];
+    leadingAnchor7 = [(UILabel *)v5->_evArrivalInfoLabel leadingAnchor];
+    leadingAnchor8 = [(CarETAOnlyGuidanceSign *)v5 leadingAnchor];
+    v57 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:10.0];
     [v28 addObject:v57];
 
-    v58 = [(UILabel *)v5->_evArrivalInfoLabel trailingAnchor];
-    v59 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59 constant:-10.0];
+    trailingAnchor7 = [(UILabel *)v5->_evArrivalInfoLabel trailingAnchor];
+    trailingAnchor8 = [(CarETAOnlyGuidanceSign *)v5 trailingAnchor];
+    v60 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-10.0];
     [v28 addObject:v60];
 
     [(CarETAOnlyGuidanceSign *)v5 _refreshBottomConstraint];

@@ -1,40 +1,40 @@
 @interface PUOneUpViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axApplyCustomActionsToTileControllers;
-- (void)_axExecuteBlockOnTileViewControllers:(id)a3;
-- (void)_setAccessoryVisible:(BOOL)a3;
+- (void)_axExecuteBlockOnTileViewControllers:(id)controllers;
+- (void)_setAccessoryVisible:(BOOL)visible;
 - (void)_updateBarsControllerIfNeeded;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUImageTileViewController"];
-  [v3 validateClass:@"PUOneUpBarsController"];
-  [v3 validateClass:@"PUOneUpViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_tilingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUImageTileViewController" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"ppt_barsController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_barsController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"actionsController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpDefaultActionsController" hasInstanceMethod:@"togglePlayback" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_needsUpdateBarsController" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_accessoryVisibilityInteractionController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_options" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"contentOffset" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_isAccessoryVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"viewModel:didChange:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_updateBarsControllerIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_setAccessoryVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_accessoryContentKindForCurrentAsset" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PUAccessoryVisibilityInteractionController" hasInstanceMethod:@"_currentAssetViewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUImageTileViewController"];
+  [validationsCopy validateClass:@"PUOneUpBarsController"];
+  [validationsCopy validateClass:@"PUOneUpViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_tilingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUImageTileViewController" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"ppt_barsController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_barsController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"actionsController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpDefaultActionsController" hasInstanceMethod:@"togglePlayback" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_needsUpdateBarsController" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_accessoryVisibilityInteractionController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_options" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"contentOffset" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_isAccessoryVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"viewModel:didChange:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_updateBarsControllerIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_setAccessoryVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_accessoryContentKindForCurrentAsset" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PUAccessoryVisibilityInteractionController" hasInstanceMethod:@"_currentAssetViewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -51,11 +51,11 @@
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = PUOneUpViewControllerAccessibility;
-  [(PUOneUpViewControllerAccessibility *)&v5 viewModel:a3 didChange:a4];
+  [(PUOneUpViewControllerAccessibility *)&v5 viewModel:model didChange:change];
   [(PUOneUpViewControllerAccessibility *)self _axApplyCustomActionsToTileControllers];
 }
 
@@ -71,7 +71,7 @@
   }
 }
 
-- (void)_setAccessoryVisible:(BOOL)a3
+- (void)_setAccessoryVisible:(BOOL)visible
 {
   v7.receiver = self;
   v7.super_class = PUOneUpViewControllerAccessibility;
@@ -80,7 +80,7 @@
   v5[1] = 3221225472;
   v5[2] = __59__PUOneUpViewControllerAccessibility__setAccessoryVisible___block_invoke;
   v5[3] = &__block_descriptor_33_e62_v16__0__PUTileController_AXFullScreenTileControllerDelegate__8l;
-  v6 = a3;
+  visibleCopy = visible;
   [(PUOneUpViewControllerAccessibility *)self _axExecuteBlockOnTileViewControllers:v5];
 }
 
@@ -95,12 +95,12 @@ void __59__PUOneUpViewControllerAccessibility__setAccessoryVisible___block_invok
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(PUOneUpViewControllerAccessibility *)self safeBoolForKey:@"_isAccessoryVisible"];
-  if (a3 != 4 || (v5 & 1) != 0)
+  if (scroll != 4 || (v5 & 1) != 0)
   {
-    if (((a3 == 3) & v5) == 1)
+    if (((scroll == 3) & v5) == 1)
     {
       v7 = [(PUOneUpViewControllerAccessibility *)self safeValueForKey:@"_accessoryVisibilityInteractionController"];
       v8 = [v7 safeValueForKey:@"_currentAssetViewModel"];
@@ -194,9 +194,9 @@ void __76__PUOneUpViewControllerAccessibility__axApplyCustomActionsToTileControl
 LABEL_8:
 }
 
-- (void)_axExecuteBlockOnTileViewControllers:(id)a3
+- (void)_axExecuteBlockOnTileViewControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v10 = 0;
   objc_opt_class();
   v5 = [(PUOneUpViewControllerAccessibility *)self safeValueForKey:@"_tilingView"];
@@ -206,8 +206,8 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = __75__PUOneUpViewControllerAccessibility__axExecuteBlockOnTileViewControllers___block_invoke;
   v8[3] = &unk_29F2E83E0;
-  v9 = v4;
-  v7 = v4;
+  v9 = controllersCopy;
+  v7 = controllersCopy;
   [v6 enumerateAllTileControllersUsingBlock:v8];
 }
 

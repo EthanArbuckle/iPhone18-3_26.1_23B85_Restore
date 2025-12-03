@@ -1,19 +1,19 @@
 @interface MPSNDArrayMatrixMultiplicationSparse
-- (MPSNDArrayMatrixMultiplicationSparse)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayMatrixMultiplicationSparse)initWithDevice:(id)a3 sourceCount:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
+- (MPSNDArrayMatrixMultiplicationSparse)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayMatrixMultiplicationSparse)initWithDevice:(id)device sourceCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayMatrixMultiplicationSparse
 
-- (MPSNDArrayMatrixMultiplicationSparse)initWithDevice:(id)a3 sourceCount:(unint64_t)a4
+- (MPSNDArrayMatrixMultiplicationSparse)initWithDevice:(id)device sourceCount:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayMatrixMultiplicationSparse;
-  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithDevice:a3 sourceCount:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithDevice:device sourceCount:count];
   if (result)
   {
     result->_denseSparse = 0;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (MPSNDArrayMatrixMultiplicationSparse)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayMatrixMultiplicationSparse)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayMatrixMultiplicationSparse;
-  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->_sparseFormat = 2;
@@ -42,18 +42,18 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayMatrixMultiplicationSparse;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayMatrixMultiplicationSparse;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 37) = self->_sparseFormat;
@@ -71,11 +71,11 @@
   [(MPSNDArrayMultiaryBase *)&v2 dealloc];
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayMatrixMultiplicationSparse;
-  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
+  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
 }
 
 @end

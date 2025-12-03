@@ -1,14 +1,14 @@
 @interface CycleChartDayBackgroundView
 - (NSString)description;
-- (_TtC24MenstrualCyclesAppPlugin27CycleChartDayBackgroundView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin27CycleChartDayBackgroundView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CycleChartDayBackgroundView
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E28A908();
 
   v3 = sub_29E2C33A4();
@@ -16,20 +16,20 @@
   return v3;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin27CycleChartDayBackgroundView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin27CycleChartDayBackgroundView)initWithCoder:(id)coder
 {
   result = sub_29E2C4724();
   __break(1u);
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_29E28AC0C(x, y, width, height);
 }
 

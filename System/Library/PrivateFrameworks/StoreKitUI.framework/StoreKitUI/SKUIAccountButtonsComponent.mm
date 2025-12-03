@@ -1,14 +1,14 @@
 @interface SKUIAccountButtonsComponent
-- (SKUIAccountButtonsComponent)initWithCustomPageContext:(id)a3;
-- (SKUIAccountButtonsComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SKUIAccountButtonsComponent)initWithViewElement:(id)a3;
+- (SKUIAccountButtonsComponent)initWithCustomPageContext:(id)context;
+- (SKUIAccountButtonsComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SKUIAccountButtonsComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SKUIAccountButtonsComponent
 
-- (SKUIAccountButtonsComponent)initWithCustomPageContext:(id)a3
+- (SKUIAccountButtonsComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,11 +23,11 @@
 
   v17.receiver = self;
   v17.super_class = SKUIAccountButtonsComponent;
-  v13 = [(SKUIPageComponent *)&v17 initWithCustomPageContext:v4];
+  v13 = [(SKUIPageComponent *)&v17 initWithCustomPageContext:contextCopy];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
-    v15 = [v14 objectForKey:@"hideTerms"];
+    componentDictionary = [contextCopy componentDictionary];
+    v15 = [componentDictionary objectForKey:@"hideTerms"];
     if (objc_opt_respondsToSelector())
     {
       v13->_hidesTermsAndConditions = [v15 BOOLValue];
@@ -37,9 +37,9 @@
   return v13;
 }
 
-- (SKUIAccountButtonsComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SKUIAccountButtonsComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -54,11 +54,11 @@
 
   v21.receiver = self;
   v21.super_class = SKUIAccountButtonsComponent;
-  v15 = [(SKUIPageComponent *)&v21 initWithFeaturedContentContext:v6 kind:a4];
+  v15 = [(SKUIPageComponent *)&v21 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v15)
   {
-    v16 = [v6 componentDictionary];
-    v17 = [v16 objectForKey:@"ecommerceLink"];
+    componentDictionary = [contextCopy componentDictionary];
+    v17 = [componentDictionary objectForKey:@"ecommerceLink"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,9 +71,9 @@
   return v15;
 }
 
-- (SKUIAccountButtonsComponent)initWithViewElement:(id)a3
+- (SKUIAccountButtonsComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -88,7 +88,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUIAccountButtonsComponent;
-  v13 = [(SKUIPageComponent *)&v15 initWithViewElement:v4];
+  v13 = [(SKUIPageComponent *)&v15 initWithViewElement:elementCopy];
 
   return v13;
 }

@@ -1,37 +1,37 @@
 @interface TSDGestureDispatcher
-- (BOOL)gestureActionShouldBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleGesture:(id)a3 withTarget:(id)a4;
-- (TSDGestureDispatcher)initWithInteractiveCanvasController:(id)a3;
-- (id)p_getGestureTarget:(id)a3;
-- (void)allowSimultaneousRecognitionByRecognizers:(id)a3;
+- (BOOL)gestureActionShouldBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleGesture:(id)gesture withTarget:(id)target;
+- (TSDGestureDispatcher)initWithInteractiveCanvasController:(id)controller;
+- (id)p_getGestureTarget:(id)target;
+- (void)allowSimultaneousRecognitionByRecognizers:(id)recognizers;
 - (void)dealloc;
-- (void)gestureRemovedFromView:(id)a3;
-- (void)handleGesture:(id)a3;
-- (void)p_gestureNoLongerInFlight:(id)a3;
-- (void)prioritizeRecognizer:(id)a3 overRecognizer:(id)a4;
+- (void)gestureRemovedFromView:(id)view;
+- (void)handleGesture:(id)gesture;
+- (void)p_gestureNoLongerInFlight:(id)flight;
+- (void)prioritizeRecognizer:(id)recognizer overRecognizer:(id)overRecognizer;
 - (void)teardown;
 @end
 
 @implementation TSDGestureDispatcher
 
-- (TSDGestureDispatcher)initWithInteractiveCanvasController:(id)a3
+- (TSDGestureDispatcher)initWithInteractiveCanvasController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = TSDGestureDispatcher;
   v4 = [(TSDGestureDispatcher *)&v8 init];
   if (v4)
   {
-    if (!a3)
+    if (!controller)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGestureDispatcher initWithInteractiveCanvasController:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 243, @"invalid nil value for '%s'", "icc"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 243, @"invalid nil value for '%s'", "icc"}];
     }
 
-    [(TSDGestureDispatcher *)v4 setInteractiveCanvasController:a3];
+    [(TSDGestureDispatcher *)v4 setInteractiveCanvasController:controller];
   }
 
   return v4;
@@ -58,12 +58,12 @@
   [(NSMutableArray *)gesturesInFlight removeAllObjects];
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v5 = [a3 cachedGestureTarget];
-  if (v5)
+  cachedGestureTarget = [gesture cachedGestureTarget];
+  if (cachedGestureTarget)
   {
-    v6 = v5;
+    v6 = cachedGestureTarget;
     targetsInFlight = self->_targetsInFlight;
     if (!targetsInFlight)
     {
@@ -83,55 +83,55 @@
 
     self->_gestureDidFire = 1;
     self->_runningTargetHandleGesture = 1;
-    if (([v6 handleGesture:a3] & 1) == 0)
+    if (([v6 handleGesture:gesture] & 1) == 0)
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGestureDispatcher handleGesture:]"];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"];
-      v11 = [a3 gestureKind];
+      gestureKind = [gesture gestureKind];
       v12 = objc_opt_class();
-      [v8 handleFailureInFunction:v9 file:v10 lineNumber:296 description:{@"canHandleGesture previously said YES, but it wasn't handled: %@ (target=<%@=%p>)", v11, NSStringFromClass(v12), v6}];
+      [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:296 description:{@"canHandleGesture previously said YES, but it wasn't handled: %@ (target=<%@=%p>)", gestureKind, NSStringFromClass(v12), v6}];
     }
 
     self->_runningTargetHandleGesture = 0;
-    if ([a3 isDone])
+    if ([gesture isDone])
     {
 
-      [a3 setTargetRep:0];
+      [gesture setTargetRep:0];
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGestureDispatcher handleGesture:]"];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"];
 
-    [v13 handleFailureInFunction:v14 file:v15 lineNumber:275 description:{@"gestureTarget should not be nil, shouldReceiveTouch should have failed this gesture"}];
+    [currentHandler2 handleFailureInFunction:v14 file:v15 lineNumber:275 description:{@"gestureTarget should not be nil, shouldReceiveTouch should have failed this gesture"}];
   }
 }
 
-- (BOOL)handleGesture:(id)a3 withTarget:(id)a4
+- (BOOL)handleGesture:(id)gesture withTarget:(id)target
 {
   if (!self->_runningTargetHandleGesture)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGestureDispatcher handleGesture:withTarget:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 307, @"handleGesture:withTarget: can only be called from a target's handleGesture: method"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGestureDispatcher.m"), 307, @"handleGesture:withTarget: can only be called from a target's handleGesture: method"}];
   }
 
-  [a3 setCachedGestureTarget:a4];
+  [gesture setCachedGestureTarget:target];
 
-  return [a4 handleGesture:a3];
+  return [target handleGesture:gesture];
 }
 
-- (void)allowSimultaneousRecognitionByRecognizers:(id)a3
+- (void)allowSimultaneousRecognitionByRecognizers:(id)recognizers
 {
   v5 = TSUSupportsTextInteraction();
-  if (a3 || (v5 & 1) == 0)
+  if (recognizers || (v5 & 1) == 0)
   {
     v9 = &v10;
-    for (i = [MEMORY[0x277CBEB58] setWithObject:a3]; ; objc_msgSend(i, "addObject:"))
+    for (i = [MEMORY[0x277CBEB58] setWithObject:recognizers]; ; objc_msgSend(i, "addObject:"))
     {
       v7 = v9++;
       if (!*v7)
@@ -151,7 +151,7 @@
   }
 }
 
-- (void)prioritizeRecognizer:(id)a3 overRecognizer:(id)a4
+- (void)prioritizeRecognizer:(id)recognizer overRecognizer:(id)overRecognizer
 {
   priorityMap = self->_priorityMap;
   if (!priorityMap)
@@ -160,32 +160,32 @@
     self->_priorityMap = priorityMap;
   }
 
-  v8 = [(TSUNoCopyDictionary *)priorityMap objectForKey:a4];
+  v8 = [(TSUNoCopyDictionary *)priorityMap objectForKey:overRecognizer];
   if (v8)
   {
-    v9 = [v8 setByAddingObject:a3];
+    v9 = [v8 setByAddingObject:recognizer];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB98] setWithObject:a3];
+    v9 = [MEMORY[0x277CBEB98] setWithObject:recognizer];
   }
 
   v10 = v9;
   v11 = self->_priorityMap;
 
-  [(TSUNoCopyDictionary *)v11 setObject:v10 forUncopiedKey:a4];
+  [(TSUNoCopyDictionary *)v11 setObject:v10 forUncopiedKey:overRecognizer];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v22 = *MEMORY[0x277D85DE8];
-  if ([(TSDInteractiveCanvasController *)self->_interactiveCanvasController currentlyScrolling]|| (v5 = [(TSDGestureDispatcher *)self p_getGestureTarget:a3]) == 0)
+  if ([(TSDInteractiveCanvasController *)self->_interactiveCanvasController currentlyScrolling]|| (v5 = [(TSDGestureDispatcher *)self p_getGestureTarget:begin]) == 0)
   {
-    if ([a3 gestureKind] != @"TSWPUndefinedGestureKind" || (-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), (v8 = TSUProtocolCast()) == 0) || !objc_msgSend(v8, "gestureRecognizerShouldBegin:", a3))
+    if ([begin gestureKind] != @"TSWPUndefinedGestureKind" || (-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), (v8 = TSUProtocolCast()) == 0) || !objc_msgSend(v8, "gestureRecognizerShouldBegin:", begin))
     {
 LABEL_5:
-      [a3 setCachedGestureTarget:0];
+      [begin setCachedGestureTarget:0];
       return 0;
     }
 
@@ -195,13 +195,13 @@ LABEL_5:
   else
   {
     v6 = v5;
-    [a3 setCachedGestureTarget:v5];
+    [begin setCachedGestureTarget:v5];
   }
 
   priorityMap = self->_priorityMap;
   if (priorityMap)
   {
-    v10 = [(TSUNoCopyDictionary *)priorityMap objectForKey:a3];
+    v10 = [(TSUNoCopyDictionary *)priorityMap objectForKey:begin];
     if (v10)
     {
       v11 = v10;
@@ -249,20 +249,20 @@ LABEL_13:
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 willBeginHandlingGesture:a3];
+    [v6 willBeginHandlingGesture:begin];
   }
 
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if ([-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController "layerHost")])
   {
     goto LABEL_2;
   }
 
-  if ([a3 gestureKind] == @"TSWPUndefinedGestureKind")
+  if ([recognizer gestureKind] == @"TSWPUndefinedGestureKind")
   {
     v7 = TSUProtocolCast();
     if (!v7)
@@ -270,7 +270,7 @@ LABEL_13:
       return v7;
     }
 
-    LODWORD(v7) = [v7 gestureRecognizer:a3 shouldReceiveTouch:a4];
+    LODWORD(v7) = [v7 gestureRecognizer:recognizer shouldReceiveTouch:touch];
     if (!v7)
     {
       return v7;
@@ -279,8 +279,8 @@ LABEL_13:
 
   else
   {
-    v8 = [a4 view];
-    if (v8 != -[TSDInteractiveCanvasController canvasView](self->_interactiveCanvasController, "canvasView") && ([-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController "layerHost")] & 1) == 0)
+    view = [touch view];
+    if (view != -[TSDInteractiveCanvasController canvasView](self->_interactiveCanvasController, "canvasView") && ([-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController "layerHost")] & 1) == 0)
     {
 LABEL_2:
       LOBYTE(v7) = 0;
@@ -295,9 +295,9 @@ LABEL_2:
     self->_gesturesInFlight = gesturesInFlight;
   }
 
-  if ([(NSMutableArray *)gesturesInFlight indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)gesturesInFlight indexOfObjectIdenticalTo:recognizer]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_gesturesInFlight addObject:a3];
+    [(NSMutableArray *)self->_gesturesInFlight addObject:recognizer];
   }
 
   if ([(NSMutableArray *)self->_gesturesInFlight count]== 1)
@@ -310,7 +310,7 @@ LABEL_2:
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v18 = *MEMORY[0x277D85DE8];
   simultaneitySets = self->_simultaneitySets;
@@ -336,7 +336,7 @@ LABEL_2:
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
-          if ([v11 containsObject:a3] && (objc_msgSend(v11, "containsObject:", a4) & 1) != 0)
+          if ([v11 containsObject:recognizer] && (objc_msgSend(v11, "containsObject:", gestureRecognizer) & 1) != 0)
           {
             LOBYTE(v7) = 1;
             return v7;
@@ -366,10 +366,10 @@ LABEL_2:
   return v7;
 }
 
-- (id)p_getGestureTarget:(id)a3
+- (id)p_getGestureTarget:(id)target
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(TSDInteractiveCanvasController *)[(TSDGestureDispatcher *)self interactiveCanvasController] gestureTargetStack:a3];
+  v4 = [(TSDInteractiveCanvasController *)[(TSDGestureDispatcher *)self interactiveCanvasController] gestureTargetStack:target];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -392,7 +392,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 canHandleGesture:a3])
+    if ([v9 canHandleGesture:target])
     {
       return v9;
     }
@@ -410,19 +410,19 @@ LABEL_3:
   }
 }
 
-- (BOOL)gestureActionShouldBegin:(id)a3
+- (BOOL)gestureActionShouldBegin:(id)begin
 {
   v5 = [(TSDGestureDispatcher *)self p_getGestureTarget:?];
   if (v5)
   {
-    [a3 setCachedGestureTarget:v5];
+    [begin setCachedGestureTarget:v5];
     return 1;
   }
 
-  else if ([a3 gestureKind] == @"TSWPUndefinedGestureKind" && (-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), v7 = TSUProtocolCast(), (objc_opt_respondsToSelector() & 1) != 0))
+  else if ([begin gestureKind] == @"TSWPUndefinedGestureKind" && (-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self->_interactiveCanvasController, "layerHost"), "asiOSCVC"), v7 = TSUProtocolCast(), (objc_opt_respondsToSelector() & 1) != 0))
   {
 
-    return [v7 gestureActionShouldBegin:a3];
+    return [v7 gestureActionShouldBegin:begin];
   }
 
   else
@@ -431,20 +431,20 @@ LABEL_3:
   }
 }
 
-- (void)gestureRemovedFromView:(id)a3
+- (void)gestureRemovedFromView:(id)view
 {
   if ([(NSMutableArray *)self->_gesturesInFlight indexOfObjectIdenticalTo:?]!= 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(TSDGestureDispatcher *)self p_gestureNoLongerInFlight:a3];
+    [(TSDGestureDispatcher *)self p_gestureNoLongerInFlight:view];
   }
 }
 
-- (void)p_gestureNoLongerInFlight:(id)a3
+- (void)p_gestureNoLongerInFlight:(id)flight
 {
   v17 = *MEMORY[0x277D85DE8];
-  [a3 setCachedGestureTarget:0];
-  [(NSMutableArray *)self->_gesturesInFlight removeObjectIdenticalTo:a3];
+  [flight setCachedGestureTarget:0];
+  [(NSMutableArray *)self->_gesturesInFlight removeObjectIdenticalTo:flight];
   if (![(NSMutableArray *)self->_gesturesInFlight count])
   {
     if ([(NSMutableArray *)self->_targetsInFlight count])
@@ -484,8 +484,8 @@ LABEL_3:
       [(NSMutableArray *)self->_targetsInFlight removeAllObjects];
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"TSDTextGesturesDidEndNotification" object:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", self->_gestureDidFire)}];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TSDTextGesturesDidEndNotification" object:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", self->_gestureDidFire)}];
   }
 }
 

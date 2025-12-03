@@ -1,5 +1,5 @@
 @interface FPMonitor
-- (FPMonitor)initWithDelegate:(id)a3;
+- (FPMonitor)initWithDelegate:(id)delegate;
 - (FPMonitorDelegate)delegate;
 - (NSDictionary)domainsByPath;
 - (void)beginMonitoring;
@@ -7,16 +7,16 @@
 
 @implementation FPMonitor
 
-- (FPMonitor)initWithDelegate:(id)a3
+- (FPMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = FPMonitor;
   v5 = [(FPMonitor *)&v8 init];
   v6 = v5;
   if (v5 == self)
   {
-    [(FPMonitor *)v5 setDelegate:v4];
+    [(FPMonitor *)v5 setDelegate:delegateCopy];
     [(FPMonitor *)v6 beginMonitoring];
   }
 
@@ -25,10 +25,10 @@
 
 - (NSDictionary)domainsByPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->__domainsByPath copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->__domainsByPath copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

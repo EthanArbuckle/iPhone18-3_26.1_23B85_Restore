@@ -2,7 +2,7 @@
 + (NSArray)supportedAudibleImportTypes;
 + (NSArray)supportedAudiobookImportTypes;
 + (NSArray)supportedFileImportTypes;
-- (BKAppSceneManager)initWithLaunchCoordinator:(id)a3 importCoordinator:(id)a4;
+- (BKAppSceneManager)initWithLaunchCoordinator:(id)coordinator importCoordinator:(id)importCoordinator;
 - (BKAppStoreReviewManager)appStoreReviewManager;
 - (BKBookFlowController)bookFlowController;
 - (BKJSStoreFlowController)storeFlowController;
@@ -11,93 +11,93 @@
 - (BOOL)isPresentingWelcome;
 - (BOOL)shouldOpenLastBook;
 - (NSString)figaroPageContext;
-- (double)minifiedFlowControllerMinibarBottomGuideWithViewController:(id)a3;
-- (id)_audibleURLsInURLs:(id)a3;
-- (id)_findImportEligibleURLsAtURL:(id)a3;
-- (id)_lastKnownStateRestorationUserInfoForSceneSession:(id)a3;
+- (double)minifiedFlowControllerMinibarBottomGuideWithViewController:(id)controller;
+- (id)_audibleURLsInURLs:(id)ls;
+- (id)_findImportEligibleURLsAtURL:(id)l;
+- (id)_lastKnownStateRestorationUserInfoForSceneSession:(id)session;
 - (id)_primarySceneControllerObject;
 - (id)_welcomeItems;
 - (id)anySceneController;
-- (id)appGroupIdentifierForBridge:(id)a3;
+- (id)appGroupIdentifierForBridge:(id)bridge;
 - (id)classRegistrations;
 - (id)currentSceneController;
-- (id)defaultSceneControllerForTransaction:(id)a3;
+- (id)defaultSceneControllerForTransaction:(id)transaction;
 - (id)flowControllers;
 - (id)mainFlowController;
 - (id)minifiedFlowControllerMinibarContainingViewController;
-- (id)minifiedFlowControllerPresentedAssetID:(id)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)navigationControllerForItem:(id)a3;
-- (id)newBookSceneControllerProviderWithRequestAssetID:(id)a3;
-- (id)newTransactionWithName:(id)a3 originatingSceneController:(id)a4 targetSceneDescriptor:(id)a5;
-- (id)objectRegistrationsForBridge:(id)a3;
+- (id)minifiedFlowControllerPresentedAssetID:(id)d;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)navigationControllerForItem:(id)item;
+- (id)newBookSceneControllerProviderWithRequestAssetID:(id)d;
+- (id)newTransactionWithName:(id)name originatingSceneController:(id)controller targetSceneDescriptor:(id)descriptor;
+- (id)objectRegistrationsForBridge:(id)bridge;
 - (id)primarySceneController;
-- (id)rootBarCoordinatorForSceneController:(id)a3;
-- (id)sceneControllerForViewController:(id)a3;
-- (id)sceneControllerForWindow:(id)a3;
-- (id)sceneInfoPresentingAssetID:(id)a3;
-- (id)windowFromSceneType:(unint64_t)a3 assetID:(id)a4;
-- (void)_afterSceneWillConnect:(id)a3;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_bagDidUpdate:(id)a3;
-- (void)_bridgeDidReload:(id)a3;
-- (void)_didFinishSceneStateRestoration:(id)a3;
-- (void)_enqueueDismissWelcomePresenter:(id)a3;
-- (void)_openExternalURL:(id)a3 sourceApplication:(id)a4;
-- (void)_retrieveTabsWithCompletion:(id)a3;
-- (void)_setCurrentWelcomePresenterIfNeeded:(id)a3;
-- (void)_setWelcomePresenterIfNoneExists:(id)a3 shouldPresent:(BOOL)a4;
+- (id)rootBarCoordinatorForSceneController:(id)controller;
+- (id)sceneControllerForViewController:(id)controller;
+- (id)sceneControllerForWindow:(id)window;
+- (id)sceneInfoPresentingAssetID:(id)d;
+- (id)windowFromSceneType:(unint64_t)type assetID:(id)d;
+- (void)_afterSceneWillConnect:(id)connect;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_bagDidUpdate:(id)update;
+- (void)_bridgeDidReload:(id)reload;
+- (void)_didFinishSceneStateRestoration:(id)restoration;
+- (void)_enqueueDismissWelcomePresenter:(id)presenter;
+- (void)_openExternalURL:(id)l sourceApplication:(id)application;
+- (void)_retrieveTabsWithCompletion:(id)completion;
+- (void)_setCurrentWelcomePresenterIfNeeded:(id)needed;
+- (void)_setWelcomePresenterIfNoneExists:(id)exists shouldPresent:(BOOL)present;
 - (void)_setupMinibarContainerView;
 - (void)_setupURLHandler;
-- (void)_setupWelcomeScreenWithPresenterIfNeeded:(id)a3;
+- (void)_setupWelcomeScreenWithPresenterIfNeeded:(id)needed;
 - (void)_showMainViewController;
 - (void)_showMainViewControllerOrWelcomeScreen;
 - (void)_showMainViewControllerOrWelcomeScreenNow;
-- (void)_welcomePresenterDidDisconnect:(id)a3;
+- (void)_welcomePresenterDidDisconnect:(id)disconnect;
 - (void)analyticsForceEndSession;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
 - (void)attemptToPresentStoreReview;
-- (void)carPlayScene:(id)a3 didConnectInterfaceController:(id)a4;
+- (void)carPlayScene:(id)scene didConnectInterfaceController:(id)controller;
 - (void)dealloc;
-- (void)destroySceneForAssetID:(id)a3;
-- (void)enumerateSceneController:(id)a3 includeHidden:(BOOL)a4;
-- (void)enumerateSceneInfo:(id)a3;
-- (void)forceTransaction:(id)a3 ontoPrimarySceneWithContinuation:(id)a4;
-- (void)handleApplicationURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 likelyUserInitiated:(id)a6 canImport:(BOOL)a7 openAfterImport:(BOOL)a8 importInPlace:(BOOL)a9 showLibraryAllCollection:(BOOL)a10 switchToLibrary:(BOOL)a11 transaction:(id)a12 completion:(id)a13;
-- (void)handleApplicationURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 likelyUserInitiated:(id)a6 transaction:(id)a7;
-- (void)handleImportURLs:(id)a3 openAfterImport:(BOOL)a4 importInPlace:(BOOL)a5 showLibraryAllCollection:(BOOL)a6 switchToLibrary:(BOOL)a7 transaction:(id)a8 perURLCompletion:(id)a9 completion:(id)a10;
-- (void)minifiedFlowControllerHandleAssetPresentationError:(id)a3 assetID:(id)a4 isRetry:(BOOL)a5;
-- (void)minifiedFlowControllerRequestShowStoreForStoreID:(id)a3 fromViewController:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)processAccountSwitchWithCompletion:(id)a3;
-- (void)reloadStandardItemsWithAnimated:(BOOL)a3 completion:(id)a4;
+- (void)destroySceneForAssetID:(id)d;
+- (void)enumerateSceneController:(id)controller includeHidden:(BOOL)hidden;
+- (void)enumerateSceneInfo:(id)info;
+- (void)forceTransaction:(id)transaction ontoPrimarySceneWithContinuation:(id)continuation;
+- (void)handleApplicationURL:(id)l sourceApplication:(id)application annotation:(id)annotation likelyUserInitiated:(id)initiated canImport:(BOOL)import openAfterImport:(BOOL)afterImport importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)self0 switchToLibrary:(BOOL)self1 transaction:(id)self2 completion:(id)self3;
+- (void)handleApplicationURL:(id)l sourceApplication:(id)application annotation:(id)annotation likelyUserInitiated:(id)initiated transaction:(id)transaction;
+- (void)handleImportURLs:(id)ls openAfterImport:(BOOL)import importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)collection switchToLibrary:(BOOL)library transaction:(id)transaction perURLCompletion:(id)completion completion:(id)self0;
+- (void)minifiedFlowControllerHandleAssetPresentationError:(id)error assetID:(id)d isRetry:(BOOL)retry;
+- (void)minifiedFlowControllerRequestShowStoreForStoreID:(id)d fromViewController:(id)controller;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)processAccountSwitchWithCompletion:(id)completion;
+- (void)reloadStandardItemsWithAnimated:(BOOL)animated completion:(id)completion;
 - (void)requestAccountInfoScene;
-- (void)requestBookSceneWithAssetID:(id)a3 completion:(id)a4;
-- (void)requestEndOfBookSceneWithOptions:(id)a3 completion:(id)a4;
-- (void)requestPrimaryOrBookScene:(id)a3;
-- (void)requestPrimaryScene:(id)a3;
-- (void)requestSceneWithAssetID:(id)a3 completion:(id)a4;
-- (void)requestTabBarSceneController:(id)a3;
-- (void)restrictionsForBookStoreAllowedChanged:(BOOL)a3;
-- (void)routeScene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)saveStateClosing:(BOOL)a3;
-- (void)setRootBarCoordinator:(id)a3;
-- (void)setScriptDataSource:(id)a3 completion:(id)a4;
-- (void)startJavascriptAppWithLibrary:(id)a3 libraryItemStateProvider:(id)a4 downloadProgressCenter:(id)a5 serviceCenter:(id)a6 storeController:(id)a7 engagementManager:(id)a8 jetActionHandler:(id)a9 pageHostingControllerProvider:(id)a10;
-- (void)viewControllerForItem:(id)a3 completion:(id)a4;
+- (void)requestBookSceneWithAssetID:(id)d completion:(id)completion;
+- (void)requestEndOfBookSceneWithOptions:(id)options completion:(id)completion;
+- (void)requestPrimaryOrBookScene:(id)scene;
+- (void)requestPrimaryScene:(id)scene;
+- (void)requestSceneWithAssetID:(id)d completion:(id)completion;
+- (void)requestTabBarSceneController:(id)controller;
+- (void)restrictionsForBookStoreAllowedChanged:(BOOL)changed;
+- (void)routeScene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)saveStateClosing:(BOOL)closing;
+- (void)setRootBarCoordinator:(id)coordinator;
+- (void)setScriptDataSource:(id)source completion:(id)completion;
+- (void)startJavascriptAppWithLibrary:(id)library libraryItemStateProvider:(id)provider downloadProgressCenter:(id)center serviceCenter:(id)serviceCenter storeController:(id)controller engagementManager:(id)manager jetActionHandler:(id)handler pageHostingControllerProvider:(id)self0;
+- (void)viewControllerForItem:(id)item completion:(id)completion;
 @end
 
 @implementation BKAppSceneManager
 
 - (void)_setupMinibarContainerView
 {
-  v3 = [(BKAppSceneManager *)self launchCoordinator];
+  launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100198CF8;
   v4[3] = &unk_100A038D0;
   v4[4] = self;
-  [v3 appLaunchCoordinatorOnConditionMask:65 blockID:@"_setupMinibarContainerView" performBlock:v4];
+  [launchCoordinator appLaunchCoordinatorOnConditionMask:65 blockID:@"_setupMinibarContainerView" performBlock:v4];
 }
 
 - (id)_welcomeItems
@@ -116,8 +116,8 @@
 {
   if (self->_welcomeScreenManager)
   {
-    v2 = [(BKAppSceneManager *)self launchCoordinator];
-    v3 = [v2 appLaunchCoordinatorIsConditionSatisfied:2] ^ 1;
+    launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
+    v3 = [launchCoordinator appLaunchCoordinatorIsConditionSatisfied:2] ^ 1;
   }
 
   else
@@ -130,24 +130,24 @@
 
 - (id)currentSceneController
 {
-  v2 = [(BKAppSceneManager *)self sceneFlowController];
-  v3 = [v2 currentSceneController];
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  currentSceneController = [sceneFlowController currentSceneController];
 
-  return v3;
+  return currentSceneController;
 }
 
 - (id)primarySceneController
 {
-  v2 = [(BKAppSceneManager *)self sceneFlowController];
-  v3 = [v2 primarySceneController];
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  primarySceneController = [sceneFlowController primarySceneController];
 
-  return v3;
+  return primarySceneController;
 }
 
-- (void)setScriptDataSource:(id)a3 completion:(id)a4
+- (void)setScriptDataSource:(id)source completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  completionCopy = completion;
   v8 = byte_100AF7640;
   if (byte_100AF7640 == 1)
   {
@@ -160,12 +160,12 @@
     v10 = 1;
   }
 
-  v11 = [qword_100AF7638 value];
-  v12 = [v11 context];
-  v13 = [v12 virtualMachine];
-  [v13 removeManagedReference:qword_100AF7638 withOwner:self];
+  value = [qword_100AF7638 value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:qword_100AF7638 withOwner:self];
 
-  v14 = [JSManagedValue managedValueWithValue:v6 andOwner:self];
+  v14 = [JSManagedValue managedValueWithValue:sourceCopy andOwner:self];
   v15 = qword_100AF7638;
   qword_100AF7638 = v14;
 
@@ -187,12 +187,12 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}s Reloading RootBarItems due to new JS", &v20, 0xCu);
     }
 
-    [(BKAppSceneManager *)self reloadStandardItemsWithAnimated:1 completion:v7];
+    [(BKAppSceneManager *)self reloadStandardItemsWithAnimated:1 completion:completionCopy];
   }
 
   else
   {
-    v18 = objc_retainBlock(v7);
+    v18 = objc_retainBlock(completionCopy);
     v19 = v18;
     if (v18)
     {
@@ -201,23 +201,23 @@
   }
 }
 
-- (void)viewControllerForItem:(id)a3 completion:(id)a4
+- (void)viewControllerForItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isLibraryCollection])
+  itemCopy = item;
+  completionCopy = completion;
+  if ([itemCopy isLibraryCollection])
   {
-    v8 = [v6 identifier];
-    v9 = [BKLibraryBookshelfController libraryViewControllerWithIdentifier:v8];
-    v7[2](v7, v9);
+    identifier = [itemCopy identifier];
+    v9 = [BKLibraryBookshelfController libraryViewControllerWithIdentifier:identifier];
+    completionCopy[2](completionCopy, v9);
   }
 
   else if (qword_100AF7638)
   {
-    v10 = [v6 tabBarTitle];
-    v11 = [v6 identifier];
+    tabBarTitle = [itemCopy tabBarTitle];
+    identifier2 = [itemCopy identifier];
     v12 = +[BKRootBarItemsProvider HomeIdentifier];
-    v13 = [v11 isEqualToString:v12];
+    v13 = [identifier2 isEqualToString:v12];
 
     if (v13)
     {
@@ -225,8 +225,8 @@
       v14 = +[BKContextMenuProvider sharedProvider];
       v53[0] = v14;
       v52[1] = @"identifier";
-      v15 = [v6 identifier];
-      v53[1] = v15;
+      identifier3 = [itemCopy identifier];
+      v53[1] = identifier3;
       v53[2] = &__kCFBooleanTrue;
       v52[2] = @"isInitialFeed";
       v52[3] = @"isRootFeed";
@@ -236,13 +236,13 @@
       v52[5] = @"reading-now-homepage";
       v53[5] = &__kCFBooleanTrue;
       v52[6] = @"tab";
-      v16 = [v6 identifier];
-      v53[6] = v16;
-      v53[7] = v10;
-      v17 = v10;
+      identifier4 = [itemCopy identifier];
+      v53[6] = identifier4;
+      v53[7] = tabBarTitle;
+      v17 = tabBarTitle;
       v52[7] = @"title";
       v52[8] = @"url";
-      v18 = [v6 url];
+      v18 = [itemCopy url];
       v19 = v18;
       if (!v18)
       {
@@ -262,33 +262,33 @@
         *buf = 138543618;
         v49 = v21;
         v50 = 2114;
-        v51 = v6;
+        v51 = itemCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "VC %{public}@ for %{public}@", buf, 0x16u);
       }
 
-      v7[2](v7, v21);
-      v10 = v17;
+      completionCopy[2](completionCopy, v21);
+      tabBarTitle = v17;
     }
 
     else if (qword_100AF7638)
     {
-      v40 = v10;
-      v24 = [(BKAppSceneManager *)self primarySceneController];
-      v25 = [v24 bk_window];
+      v40 = tabBarTitle;
+      primarySceneController = [(BKAppSceneManager *)self primarySceneController];
+      bk_window = [primarySceneController bk_window];
 
-      v26 = [v25 rootViewController];
-      v27 = [v26 ba_effectiveAnalyticsTracker];
-      v28 = [v6 suggestedTrackerName];
-      v29 = [v27 chainWithName:v28];
+      rootViewController = [bk_window rootViewController];
+      ba_effectiveAnalyticsTracker = [rootViewController ba_effectiveAnalyticsTracker];
+      suggestedTrackerName = [itemCopy suggestedTrackerName];
+      v29 = [ba_effectiveAnalyticsTracker chainWithName:suggestedTrackerName];
 
       v46[0] = @"identifier";
-      v30 = [v6 identifier];
-      v47[0] = v30;
+      identifier5 = [itemCopy identifier];
+      v47[0] = identifier5;
       v46[1] = @"isDefault";
-      v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isPlaceholder]);
+      v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [itemCopy isPlaceholder]);
       v47[1] = v31;
       v46[2] = @"url";
-      v32 = [v6 url];
+      v32 = [itemCopy url];
       v33 = v32;
       if (!v32)
       {
@@ -313,13 +313,13 @@
       block[3] = &unk_100A04FE8;
       v42 = v35;
       v43 = v34;
-      v44 = v6;
-      v45 = v7;
+      v44 = itemCopy;
+      v45 = completionCopy;
       v37 = v34;
       v38 = v35;
       dispatch_async(v36, block);
 
-      v10 = v40;
+      tabBarTitle = v40;
     }
 
     else
@@ -328,11 +328,11 @@
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = v6;
+        v49 = itemCopy;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "No VC for now due to lack of JS data source: %{public}@", buf, 0xCu);
       }
 
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -342,48 +342,48 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v6;
+      v49 = itemCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "No VC for now due to lack of JS data source: %{public}@", buf, 0xCu);
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)navigationControllerForItem:(id)a3
+- (id)navigationControllerForItem:(id)item
 {
-  v4 = a3;
-  [v4 isLibraryCollection];
+  itemCopy = item;
+  [itemCopy isLibraryCollection];
   v5 = objc_opt_new();
   [v5 setDelegate:self];
   [v5 setIsRoot:1];
-  v6 = [(BKAppSceneManager *)self primarySceneController];
-  v7 = [v6 bk_window];
+  primarySceneController = [(BKAppSceneManager *)self primarySceneController];
+  bk_window = [primarySceneController bk_window];
 
-  v8 = [v7 rootViewController];
-  v9 = [v8 ba_effectiveAnalyticsTracker];
-  v10 = [v4 suggestedTrackerName];
-  v11 = [v9 chainWithName:v10];
+  rootViewController = [bk_window rootViewController];
+  ba_effectiveAnalyticsTracker = [rootViewController ba_effectiveAnalyticsTracker];
+  suggestedTrackerName = [itemCopy suggestedTrackerName];
+  v11 = [ba_effectiveAnalyticsTracker chainWithName:suggestedTrackerName];
 
   [v5 ba_setAnalyticsTracker:v11];
-  v12 = [v4 identifier];
+  identifier = [itemCopy identifier];
 
-  v13 = [BKRootBarItemsProvider tabTypeFor:v12];
+  v13 = [BKRootBarItemsProvider tabTypeFor:identifier];
   [v11 pushTabDataWithType:v13 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/BKAppSceneManager+BKTabBarControllerJSApp.m" line:207];
 
   return v5;
 }
 
-- (void)reloadStandardItemsWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)reloadStandardItemsWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100102B10;
   v14[3] = &unk_100A04058;
   objc_copyWeak(&v16, &location);
-  v6 = v5;
+  v6 = completionCopy;
   v15 = v6;
   v7 = objc_retainBlock(v14);
   v10[0] = _NSConcreteStackBlock;
@@ -402,9 +402,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_retrieveTabsWithCompletion:(id)a3
+- (void)_retrieveTabsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -413,17 +413,17 @@
   }
 
   v5 = +[BUBag defaultBag];
-  v6 = [v5 booksTabs];
+  booksTabs = [v5 booksTabs];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100102F7C;
   v8[3] = &unk_100A07520;
-  v9 = v3;
-  v7 = v3;
-  [v6 jsa_valueWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [booksTabs jsa_valueWithCompletion:v8];
 }
 
-- (void)_bagDidUpdate:(id)a3
+- (void)_bagDidUpdate:(id)update
 {
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -436,7 +436,7 @@
   [(BKAppSceneManager *)self reloadStandardItemsWithAnimated:1 completion:&stru_100A07540];
 }
 
-- (void)restrictionsForBookStoreAllowedChanged:(BOOL)a3
+- (void)restrictionsForBookStoreAllowedChanged:(BOOL)changed
 {
   v4 = JSALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -452,35 +452,35 @@
 - (id)_primarySceneControllerObject
 {
   objc_opt_class();
-  v3 = [(BKAppSceneManager *)self primarySceneController];
+  primarySceneController = [(BKAppSceneManager *)self primarySceneController];
   v4 = BUDynamicCast();
 
   return v4;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v16 = a3;
-  v8 = a4;
-  v9 = [v16 viewIfLoaded];
-  v10 = [v9 window];
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (window)
   {
-    v11 = v10;
-    v12 = [v16 parentViewController];
+    v11 = window;
+    parentViewController = [controllerCopy parentViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v8 transitionCoordinator];
+      transitionCoordinator = [viewControllerCopy transitionCoordinator];
 
-      if (!v13)
+      if (!transitionCoordinator)
       {
         goto LABEL_7;
       }
 
-      v9 = [(BKAppSceneManager *)self rootBarCoordinator];
-      [v9 dismissCardStackForCurrentlySelected];
+      viewIfLoaded = [(BKAppSceneManager *)self rootBarCoordinator];
+      [viewIfLoaded dismissCardStackForCurrentlySelected];
     }
 
     else
@@ -489,118 +489,118 @@
   }
 
 LABEL_7:
-  v14 = [(BKAppSceneManager *)self _primarySceneControllerObject];
-  v15 = [v14 mainFlowController];
-  [v15 navigationController:v16 willShowViewController:v8 animated:v5];
+  _primarySceneControllerObject = [(BKAppSceneManager *)self _primarySceneControllerObject];
+  mainFlowController = [_primarySceneControllerObject mainFlowController];
+  [mainFlowController navigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy];
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(BKAppSceneManager *)self _primarySceneControllerObject];
-  v14 = [v13 mainFlowController];
-  v15 = [v14 navigationController:v12 animationControllerForOperation:a4 fromViewController:v11 toViewController:v10];
+  toViewControllerCopy = toViewController;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  _primarySceneControllerObject = [(BKAppSceneManager *)self _primarySceneControllerObject];
+  mainFlowController = [_primarySceneControllerObject mainFlowController];
+  v15 = [mainFlowController navigationController:controllerCopy animationControllerForOperation:operation fromViewController:viewControllerCopy toViewController:toViewControllerCopy];
 
   return v15;
 }
 
 - (void)requestAccountInfoScene
 {
-  v2 = [(BKAppSceneManager *)self sceneFlowController];
-  [v2 requestAccountScene:0];
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestAccountScene:0];
 }
 
 - (void)_setupURLHandler
 {
   v3 = [BKAppURLHandler alloc];
-  v4 = [(BKAppSceneManager *)self mainLibrary];
-  v6 = [(BKAppURLHandler *)v3 initWithLibraryAssetProvider:v4];
+  mainLibrary = [(BKAppSceneManager *)self mainLibrary];
+  v6 = [(BKAppURLHandler *)v3 initWithLibraryAssetProvider:mainLibrary];
 
   [(BKAppURLHandler *)v6 setDelegate:self];
   [(BKAppSceneManager *)self setUrlHandler:v6];
-  v5 = [(BKAppSceneManager *)self urlHandlingQueue];
-  dispatch_activate(v5);
+  urlHandlingQueue = [(BKAppSceneManager *)self urlHandlingQueue];
+  dispatch_activate(urlHandlingQueue);
 }
 
-- (void)handleApplicationURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 likelyUserInitiated:(id)a6 transaction:(id)a7
+- (void)handleApplicationURL:(id)l sourceApplication:(id)application annotation:(id)annotation likelyUserInitiated:(id)initiated transaction:(id)transaction
 {
   BYTE2(v7) = 1;
   LOWORD(v7) = 0;
-  [BKAppSceneManager handleApplicationURL:"handleApplicationURL:sourceApplication:annotation:likelyUserInitiated:canImport:openAfterImport:importInPlace:showLibraryAllCollection:switchToLibrary:transaction:completion:" sourceApplication:a3 annotation:a4 likelyUserInitiated:a5 canImport:a6 openAfterImport:0 importInPlace:1 showLibraryAllCollection:v7 switchToLibrary:a7 transaction:0 completion:?];
+  [BKAppSceneManager handleApplicationURL:"handleApplicationURL:sourceApplication:annotation:likelyUserInitiated:canImport:openAfterImport:importInPlace:showLibraryAllCollection:switchToLibrary:transaction:completion:" sourceApplication:l annotation:application likelyUserInitiated:annotation canImport:initiated openAfterImport:0 importInPlace:1 showLibraryAllCollection:v7 switchToLibrary:transaction transaction:0 completion:?];
 }
 
-- (void)handleApplicationURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 likelyUserInitiated:(id)a6 canImport:(BOOL)a7 openAfterImport:(BOOL)a8 importInPlace:(BOOL)a9 showLibraryAllCollection:(BOOL)a10 switchToLibrary:(BOOL)a11 transaction:(id)a12 completion:(id)a13
+- (void)handleApplicationURL:(id)l sourceApplication:(id)application annotation:(id)annotation likelyUserInitiated:(id)initiated canImport:(BOOL)import openAfterImport:(BOOL)afterImport importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)self0 switchToLibrary:(BOOL)self1 transaction:(id)self2 completion:(id)self3
 {
-  v31 = a3;
-  v30 = a4;
-  v28 = a5;
-  v25 = a6;
-  v26 = a12;
+  lCopy = l;
+  applicationCopy = application;
+  annotationCopy = annotation;
+  initiatedCopy = initiated;
+  transactionCopy = transaction;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_100114894;
   v48[3] = &unk_100A07A98;
-  v32 = a13;
-  v49 = v32;
+  completionCopy = completion;
+  v49 = completionCopy;
   v17 = objc_retainBlock(v48);
   objc_initWeak(&location, self);
-  v18 = [(BKAppSceneManager *)self urlHandlingQueue];
+  urlHandlingQueue = [(BKAppSceneManager *)self urlHandlingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100114910;
   block[3] = &unk_100A07B38;
   objc_copyWeak(&v41, &location);
-  v34 = v31;
-  v35 = v30;
-  v36 = v28;
-  v37 = v26;
-  v42 = a7;
-  v43 = a8;
-  v44 = a9;
-  v45 = a10;
-  v46 = a11;
-  v38 = self;
-  v39 = v25;
+  v34 = lCopy;
+  v35 = applicationCopy;
+  v36 = annotationCopy;
+  v37 = transactionCopy;
+  importCopy = import;
+  afterImportCopy = afterImport;
+  placeCopy = place;
+  collectionCopy = collection;
+  libraryCopy = library;
+  selfCopy = self;
+  v39 = initiatedCopy;
   v40 = v17;
-  v19 = v25;
+  v19 = initiatedCopy;
   v20 = v17;
-  v21 = v26;
-  v22 = v28;
-  v23 = v30;
-  v24 = v31;
-  dispatch_async(v18, block);
+  v21 = transactionCopy;
+  v22 = annotationCopy;
+  v23 = applicationCopy;
+  v24 = lCopy;
+  dispatch_async(urlHandlingQueue, block);
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&location);
 }
 
-- (void)handleImportURLs:(id)a3 openAfterImport:(BOOL)a4 importInPlace:(BOOL)a5 showLibraryAllCollection:(BOOL)a6 switchToLibrary:(BOOL)a7 transaction:(id)a8 perURLCompletion:(id)a9 completion:(id)a10
+- (void)handleImportURLs:(id)ls openAfterImport:(BOOL)import importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)collection switchToLibrary:(BOOL)library transaction:(id)transaction perURLCompletion:(id)completion completion:(id)self0
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  lsCopy = ls;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v19 = a10;
-  v20 = [(BKAppSceneManager *)self urlHandlingQueue];
+  urlHandlingQueue = [(BKAppSceneManager *)self urlHandlingQueue];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100115354;
   v25[3] = &unk_100A07B88;
-  v26 = v16;
-  v27 = self;
-  v31 = a7;
-  v32 = a6;
-  v33 = a4;
-  v34 = a5;
-  v28 = v17;
-  v29 = v18;
+  v26 = lsCopy;
+  selfCopy = self;
+  libraryCopy = library;
+  collectionCopy = collection;
+  importCopy = import;
+  placeCopy = place;
+  v28 = transactionCopy;
+  v29 = completionCopy;
   v30 = v19;
   v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  dispatch_async(v20, v25);
+  v22 = completionCopy;
+  v23 = transactionCopy;
+  v24 = lsCopy;
+  dispatch_async(urlHandlingQueue, v25);
 }
 
 + (NSArray)supportedFileImportTypes
@@ -639,9 +639,9 @@ LABEL_7:
   return v3;
 }
 
-- (id)_audibleURLsInURLs:(id)a3
+- (id)_audibleURLsInURLs:(id)ls
 {
-  v3 = a3;
+  lsCopy = ls;
   v23 = +[NSMutableArray array];
   v45 = NSURLContentTypeKey;
   v4 = [NSArray arrayWithObjects:&v45 count:1];
@@ -649,7 +649,7 @@ LABEL_7:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = lsCopy;
   v5 = [obj countByEnumeratingWithState:&v33 objects:v44 count:16];
   if (v5)
   {
@@ -671,7 +671,7 @@ LABEL_7:
         }
 
         v10 = *(*(&v33 + 1) + 8 * v9);
-        v11 = [v10 startAccessingSecurityScopedResource];
+        startAccessingSecurityScopedResource = [v10 startAccessingSecurityScopedResource];
         v32 = 0;
         v12 = [v10 resourceValuesForKeys:v4 error:&v32];
         v13 = v32;
@@ -736,7 +736,7 @@ LABEL_19:
           v7 = v26;
         }
 
-        if (v11)
+        if (startAccessingSecurityScopedResource)
         {
           [v10 stopAccessingSecurityScopedResource];
         }
@@ -756,21 +756,21 @@ LABEL_19:
   return v20;
 }
 
-- (id)_findImportEligibleURLsAtURL:(id)a3
+- (id)_findImportEligibleURLsAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSMutableArray array];
-  v5 = [v3 startAccessingSecurityScopedResource];
-  v6 = v5;
-  if (sub_100116288(v5, v3))
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  v6 = startAccessingSecurityScopedResource;
+  if (sub_100116288(startAccessingSecurityScopedResource, lCopy))
   {
-    [v4 addObject:v3];
+    [v4 addObject:lCopy];
   }
 
-  else if ([v3 bu_isFolder])
+  else if ([lCopy bu_isFolder])
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [v7 enumeratorAtURL:v3 includingPropertiesForKeys:&__NSArray0__struct options:2 errorHandler:&stru_100A07C28];
+    v8 = [v7 enumeratorAtURL:lCopy includingPropertiesForKeys:&__NSArray0__struct options:2 errorHandler:&stru_100A07C28];
 
     v21 = 0u;
     v22 = 0u;
@@ -792,9 +792,9 @@ LABEL_19:
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 startAccessingSecurityScopedResource];
-          v16 = v15;
-          if (sub_100116288(v15, v14))
+          startAccessingSecurityScopedResource2 = [v14 startAccessingSecurityScopedResource];
+          v16 = startAccessingSecurityScopedResource2;
+          if (sub_100116288(startAccessingSecurityScopedResource2, v14))
           {
             [v4 addObject:v14];
           }
@@ -814,7 +814,7 @@ LABEL_19:
 
   if (v6)
   {
-    [v3 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 
   v17 = [v4 copy];
@@ -822,47 +822,47 @@ LABEL_19:
   return v17;
 }
 
-- (void)_openExternalURL:(id)a3 sourceApplication:(id)a4
+- (void)_openExternalURL:(id)l sourceApplication:(id)application
 {
-  v16 = a3;
-  v6 = a4;
-  if (v16)
+  lCopy = l;
+  applicationCopy = application;
+  if (lCopy)
   {
-    v7 = [v16 scheme];
-    v8 = [v7 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if (v8 && (([v8 isEqualToString:@"itms-books"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"itms-bookss") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ibooks") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"prefs") & 1) != 0))
+    if (lowercaseString && (([lowercaseString isEqualToString:@"itms-books"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"itms-bookss") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"ibooks") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"prefs") & 1) != 0))
     {
-      if (![v6 isEqualToString:@"com.apple.iBooks.BooksWidget"])
+      if (![applicationCopy isEqualToString:@"com.apple.iBooks.BooksWidget"])
       {
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v9 = +[LSApplicationWorkspace defaultWorkspace];
-      [v9 openSensitiveURL:v16 withOptions:0];
+      bk_window = +[LSApplicationWorkspace defaultWorkspace];
+      [bk_window openSensitiveURL:lCopy withOptions:0];
     }
 
     else
     {
-      v10 = [(BKAppSceneManager *)self currentSceneController];
-      v9 = [v10 bk_window];
+      currentSceneController = [(BKAppSceneManager *)self currentSceneController];
+      bk_window = [currentSceneController bk_window];
 
-      if (!v9)
+      if (!bk_window)
       {
         sub_100790040();
       }
 
-      v11 = [v9 rootViewController];
-      v12 = [v11 bc_deepestVisibleChildViewControllerIncludePresented:1];
+      rootViewController = [bk_window rootViewController];
+      v12 = [rootViewController bc_deepestVisibleChildViewControllerIncludePresented:1];
 
-      v13 = [v12 ba_effectiveAnalyticsTracker];
+      ba_effectiveAnalyticsTracker = [v12 ba_effectiveAnalyticsTracker];
       v14 = +[BAEventReporter sharedReporter];
-      [v14 emitExitLinkTapEventWithTracker:v13 url:v16];
+      [v14 emitExitLinkTapEventWithTracker:ba_effectiveAnalyticsTracker url:lCopy];
 
       v15 = +[UIApplication sharedApplication];
-      [v15 openURL:v16 options:&__NSDictionary0__struct completionHandler:0];
+      [v15 openURL:lCopy options:&__NSDictionary0__struct completionHandler:0];
     }
 
     goto LABEL_13;
@@ -871,16 +871,16 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)startJavascriptAppWithLibrary:(id)a3 libraryItemStateProvider:(id)a4 downloadProgressCenter:(id)a5 serviceCenter:(id)a6 storeController:(id)a7 engagementManager:(id)a8 jetActionHandler:(id)a9 pageHostingControllerProvider:(id)a10
+- (void)startJavascriptAppWithLibrary:(id)library libraryItemStateProvider:(id)provider downloadProgressCenter:(id)center serviceCenter:(id)serviceCenter storeController:(id)controller engagementManager:(id)manager jetActionHandler:(id)handler pageHostingControllerProvider:(id)self0
 {
-  v42 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  controllerProviderCopy = controllerProvider;
+  handlerCopy = handler;
+  managerCopy = manager;
+  controllerCopy = controller;
+  serviceCenterCopy = serviceCenter;
+  centerCopy = center;
+  providerCopy = provider;
+  libraryCopy = library;
   v24 = JSALog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -888,45 +888,45 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Starting JS App", buf, 2u);
   }
 
-  [(BKAppSceneManager *)self setServiceCenter:v20];
+  [(BKAppSceneManager *)self setServiceCenter:serviceCenterCopy];
   kdebug_trace();
   v25 = +[BSUITemplate manager];
-  v26 = [v25 dynamicRegistry];
-  v27 = [v22 stateCenter];
+  dynamicRegistry = [v25 dynamicRegistry];
+  stateCenter = [providerCopy stateCenter];
 
-  [v26 registerStateProvider:v27 forKind:@"libraryItem"];
-  v28 = [v25 resourceRegistry];
+  [dynamicRegistry registerStateProvider:stateCenter forKind:@"libraryItem"];
+  resourceRegistry = [v25 resourceRegistry];
   v29 = +[BKCoverResourceProvider sharedInstance];
-  [v28 registerImageProvider:v29 forKind:@"libraryItem"];
+  [resourceRegistry registerImageProvider:v29 forKind:@"libraryItem"];
 
-  v30 = [v25 resourceRegistry];
-  v31 = [(BKAppSceneManager *)self minifiedFlowController];
-  v32 = [v31 currentBookProvider];
-  [v30 registerImageProvider:v32 forKind:@"currentBookSnapshot"];
+  resourceRegistry2 = [v25 resourceRegistry];
+  minifiedFlowController = [(BKAppSceneManager *)self minifiedFlowController];
+  currentBookProvider = [minifiedFlowController currentBookProvider];
+  [resourceRegistry2 registerImageProvider:currentBookProvider forKind:@"currentBookSnapshot"];
 
-  v33 = [v25 dynamicRegistry];
-  [v33 registerProgressProvider:v21 forKind:@"downloadProgress"];
+  dynamicRegistry2 = [v25 dynamicRegistry];
+  [dynamicRegistry2 registerProgressProvider:centerCopy forKind:@"downloadProgress"];
 
-  v34 = [v25 dynamicRegistry];
+  dynamicRegistry3 = [v25 dynamicRegistry];
   v35 = objc_alloc_init(BKLibraryAudiobookProgressCenter);
-  [v34 registerProgressProvider:v35 forKind:@"audiobookProgress"];
+  [dynamicRegistry3 registerProgressProvider:v35 forKind:@"audiobookProgress"];
 
   kdebug_trace();
   [(BKAppSceneManager *)self _setupURLHandler];
   v36 = +[JSABridge sharedInstance];
-  v37 = [(BKAppSceneManager *)self classRegistrations];
-  [v36 bootstrapWithObjectRegistrations:v37];
+  classRegistrations = [(BKAppSceneManager *)self classRegistrations];
+  [v36 bootstrapWithObjectRegistrations:classRegistrations];
 
   v38 = [[BKJSAAppWindowProvider alloc] initWithSceneManager:self];
   [(BKAppSceneManager *)self setWindowProvider:v38];
 
-  v39 = [[BKJSALibraryManager alloc] initWithLibraryAssetProvider:v23 presentersProvider:self storeController:v19];
+  v39 = [[BKJSALibraryManager alloc] initWithLibraryAssetProvider:libraryCopy presentersProvider:self storeController:controllerCopy];
   [(BKAppSceneManager *)self setJsaLibraryManager:v39];
 
-  [(BKAppSceneManager *)self setEngagementManager:v18];
-  [(BKAppSceneManager *)self setJetActionHandler:v17];
+  [(BKAppSceneManager *)self setEngagementManager:managerCopy];
+  [(BKAppSceneManager *)self setJetActionHandler:handlerCopy];
 
-  [(BKAppSceneManager *)self setPageHostingControllerProvider:v42];
+  [(BKAppSceneManager *)self setPageHostingControllerProvider:controllerProviderCopy];
   v40 = +[JSABridge sharedInstance];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
@@ -939,7 +939,7 @@ LABEL_14:
   [v41 addObserver:self selector:"_bridgeDidReload:" name:JSABridgeDidReloadNotification object:0];
 }
 
-- (void)_bridgeDidReload:(id)a3
+- (void)_bridgeDidReload:(id)reload
 {
   v3 = +[BRCConfigurationManager sharedInstance];
   [v3 resetForJavascript];
@@ -949,33 +949,33 @@ LABEL_14:
   dispatch_after(v4, v5, &stru_100A07C90);
 }
 
-- (id)appGroupIdentifierForBridge:(id)a3
+- (id)appGroupIdentifierForBridge:(id)bridge
 {
   v3 = +[BUAppGroup books];
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)objectRegistrationsForBridge:(id)a3
+- (id)objectRegistrationsForBridge:(id)bridge
 {
   v4 = [BKJSAAppController alloc];
-  v5 = [(BKAppSceneManager *)self jetActionHandler];
-  v6 = [(BKJSAAppController *)v4 initWithSceneManager:self jetActionHandler:v5];
+  jetActionHandler = [(BKAppSceneManager *)self jetActionHandler];
+  v6 = [(BKJSAAppController *)v4 initWithSceneManager:self jetActionHandler:jetActionHandler];
 
-  v7 = [(BKAppSceneManager *)self minifiedPresenter];
-  v8 = [v7 currentBookProvider];
+  minifiedPresenter = [(BKAppSceneManager *)self minifiedPresenter];
+  currentBookProvider = [minifiedPresenter currentBookProvider];
 
-  v9 = [(BKAppSceneManager *)self jsaLibraryManager];
-  v10 = [(BKAppSceneManager *)self serviceCenter];
-  v36 = [v10 priceTrackingService];
+  jsaLibraryManager = [(BKAppSceneManager *)self jsaLibraryManager];
+  serviceCenter = [(BKAppSceneManager *)self serviceCenter];
+  priceTrackingService = [serviceCenter priceTrackingService];
 
-  v11 = [(BKAppSceneManager *)self serviceCenter];
-  v35 = [v11 readingActivityService];
+  serviceCenter2 = [(BKAppSceneManager *)self serviceCenter];
+  readingActivityService = [serviceCenter2 readingActivityService];
 
   v34 = +[BCRCDataContainer defaultContainer];
-  v12 = [(BKAppSceneManager *)self serviceCenter];
-  v32 = [v12 yearInReviewEligibilityService];
+  serviceCenter3 = [(BKAppSceneManager *)self serviceCenter];
+  yearInReviewEligibilityService = [serviceCenter3 yearInReviewEligibilityService];
 
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_USER_INITIATED, 0);
@@ -987,7 +987,7 @@ LABEL_14:
   v17 = objc_alloc_init(BKGenreRecommendationProvider);
   v18 = objc_alloc_init(BKMediaTypeRecommendationProvider);
   v30 = +[BKTVAppService shared];
-  if (!v6 || !v8 || !v9 || !v36 || !v35 || !v34 || !v33 || !v16 || !v17 || !v18 || !v32)
+  if (!v6 || !currentBookProvider || !jsaLibraryManager || !priceTrackingService || !readingActivityService || !v34 || !v33 || !v16 || !v17 || !v18 || !yearInReviewEligibilityService)
   {
     v19 = JSALog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -995,19 +995,19 @@ LABEL_14:
       *buf = 138414082;
       v40 = v6;
       v41 = 2112;
-      v42 = v8;
+      v42 = currentBookProvider;
       v43 = 2112;
-      v44 = v9;
+      v44 = jsaLibraryManager;
       v45 = 2112;
-      v46 = v36;
+      v46 = priceTrackingService;
       v47 = 2112;
-      v48 = v35;
+      v48 = readingActivityService;
       v49 = 2112;
       v50 = v34;
       v51 = 2112;
       v52 = v33;
       v53 = 2112;
-      v54 = v32;
+      v54 = yearInReviewEligibilityService;
       _os_log_fault_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "Some of the JS native objects are nil. appController: %@, currentBookProvider: %@, jsaLibraryManager: %@,, priceTrackingService: %@ readingActivityService: %@, remoteConfigDataContainer: %@, transactionController: %@, yearInReviewEligibilityService: %@", buf, 0x52u);
     }
   }
@@ -1017,39 +1017,39 @@ LABEL_14:
   v28 = v6;
   v38[0] = v6;
   v38[1] = v16;
-  v38[2] = v8;
+  v38[2] = currentBookProvider;
   v37[2] = @"currentBookProvider";
   v37[3] = @"engagementEventController";
-  v20 = [(BKAppSceneManager *)self engagementManager];
-  [v20 eventController];
-  v21 = v29 = v8;
+  engagementManager = [(BKAppSceneManager *)self engagementManager];
+  [engagementManager eventController];
+  v21 = v29 = currentBookProvider;
   v38[3] = v21;
   v38[4] = v17;
   v37[4] = @"genreRecommendationProvider";
   v37[5] = @"libraryInterface";
-  v38[5] = v9;
+  v38[5] = jsaLibraryManager;
   v38[6] = v18;
   v37[6] = @"mediaTypeRecommendationProvider";
   v37[7] = @"PageHostingControllerProvider";
-  v22 = [(BKAppSceneManager *)self pageHostingControllerProvider];
-  v38[7] = v22;
-  v38[8] = v36;
+  pageHostingControllerProvider = [(BKAppSceneManager *)self pageHostingControllerProvider];
+  v38[7] = pageHostingControllerProvider;
+  v38[8] = priceTrackingService;
   v37[8] = @"priceTrackingService";
   v37[9] = @"readingActivityStateProvider";
-  v38[9] = v35;
+  v38[9] = readingActivityService;
   v38[10] = v34;
   v37[10] = @"remoteConfigDataContainer";
   v37[11] = @"sessionDonor";
   [(BKAppSceneManager *)self engagementManager];
-  v23 = v27 = v9;
-  v24 = [v23 sessionDonor];
-  v38[11] = v24;
+  v23 = v27 = jsaLibraryManager;
+  sessionDonor = [v23 sessionDonor];
+  v38[11] = sessionDonor;
   v38[12] = v33;
   v37[12] = @"transactionController";
   v37[13] = @"TVAppService";
   v37[14] = @"yearInReviewEligibilityService";
   v38[13] = v30;
-  v38[14] = v32;
+  v38[14] = yearInReviewEligibilityService;
   v26 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:15];
 
   return v26;
@@ -1122,10 +1122,10 @@ LABEL_14:
   return v2;
 }
 
-- (BKAppSceneManager)initWithLaunchCoordinator:(id)a3 importCoordinator:(id)a4
+- (BKAppSceneManager)initWithLaunchCoordinator:(id)coordinator importCoordinator:(id)importCoordinator
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  importCoordinatorCopy = importCoordinator;
   v33.receiver = self;
   v33.super_class = BKAppSceneManager;
   v9 = [(BKAppSceneManager *)&v33 init];
@@ -1135,7 +1135,7 @@ LABEL_14:
     criticalAlertCoordinator = v9->_criticalAlertCoordinator;
     v9->_criticalAlertCoordinator = v10;
 
-    v12 = [[BKSceneFlowController alloc] initWithLaunchCoordinator:v7 criticalAlertCoordinator:v9->_criticalAlertCoordinator];
+    v12 = [[BKSceneFlowController alloc] initWithLaunchCoordinator:coordinatorCopy criticalAlertCoordinator:v9->_criticalAlertCoordinator];
     sceneFlowController = v9->_sceneFlowController;
     v9->_sceneFlowController = v12;
 
@@ -1143,12 +1143,12 @@ LABEL_14:
     minifiedFlowController = v9->_minifiedFlowController;
     v9->_minifiedFlowController = v14;
 
-    v16 = [(BKAppSceneManager *)v9 sceneFlowController];
-    [(BKMinifiedFlowController *)v9->_minifiedFlowController setSceneHosting:v16];
+    sceneFlowController = [(BKAppSceneManager *)v9 sceneFlowController];
+    [(BKMinifiedFlowController *)v9->_minifiedFlowController setSceneHosting:sceneFlowController];
 
     [(BKMinifiedFlowController *)v9->_minifiedFlowController setDelegate:v9];
-    objc_storeStrong(&v9->_launchCoordinator, a3);
-    objc_storeStrong(&v9->_importCoordinator, a4);
+    objc_storeStrong(&v9->_launchCoordinator, coordinator);
+    objc_storeStrong(&v9->_importCoordinator, importCoordinator);
     v17 = [BCTransactionQueue newWithOptions:1 queue:&_dispatch_main_q];
     userTransactionQueue = v9->_userTransactionQueue;
     v9->_userTransactionQueue = v17;
@@ -1190,8 +1190,8 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [(BKAppSceneManager *)self pendingCriticalAlertAssertion];
-  [v3 invalidate];
+  pendingCriticalAlertAssertion = [(BKAppSceneManager *)self pendingCriticalAlertAssertion];
+  [pendingCriticalAlertAssertion invalidate];
 
   v4 = +[BURestrictionsProvider sharedInstance];
   [v4 removeObserver:self];
@@ -1203,224 +1203,224 @@ LABEL_14:
   v6 = +[BKReachability sharedReachabilityForInternetConnection];
   [v6 stopNotifier];
 
-  v7 = [(BKAppSceneManager *)self bookFlowController];
-  [v7 setStorePresenter:0];
+  bookFlowController = [(BKAppSceneManager *)self bookFlowController];
+  [bookFlowController setStorePresenter:0];
 
-  v8 = [(BKAppSceneManager *)self bookFlowController];
-  [v8 setMinifiedPresenter:0];
+  bookFlowController2 = [(BKAppSceneManager *)self bookFlowController];
+  [bookFlowController2 setMinifiedPresenter:0];
 
   v9.receiver = self;
   v9.super_class = BKAppSceneManager;
   [(BKAppSceneManager *)&v9 dealloc];
 }
 
-- (id)rootBarCoordinatorForSceneController:(id)a3
+- (id)rootBarCoordinatorForSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self rootBarCoordinator];
+  controllerCopy = controller;
+  rootBarCoordinator = [(BKAppSceneManager *)self rootBarCoordinator];
 
-  if (!v5)
+  if (!rootBarCoordinator)
   {
     v6 = [BKRootBarCoordinator alloc];
-    v7 = [(BKAppSceneManager *)self viewControllerProvider];
-    v8 = [(BKRootBarCoordinator *)v6 initWithSceneController:v4 presentersProvider:self viewControllerProvider:v7];
+    viewControllerProvider = [(BKAppSceneManager *)self viewControllerProvider];
+    v8 = [(BKRootBarCoordinator *)v6 initWithSceneController:controllerCopy presentersProvider:self viewControllerProvider:viewControllerProvider];
     [(BKAppSceneManager *)self setRootBarCoordinator:v8];
 
     v9 = +[JSABridge sharedInstance];
     [JSAMetricsAppLaunchEvent updateRequiredBlockingBagLoad:0];
   }
 
-  v10 = [(BKAppSceneManager *)self rootBarCoordinator];
+  rootBarCoordinator2 = [(BKAppSceneManager *)self rootBarCoordinator];
 
-  return v10;
+  return rootBarCoordinator2;
 }
 
-- (void)setRootBarCoordinator:(id)a3
+- (void)setRootBarCoordinator:(id)coordinator
 {
-  objc_storeStrong(&self->_rootBarCoordinator, a3);
+  objc_storeStrong(&self->_rootBarCoordinator, coordinator);
 
   [(BKAppSceneManager *)self _setupMinibarContainerView];
 }
 
-- (id)_lastKnownStateRestorationUserInfoForSceneSession:(id)a3
+- (id)_lastKnownStateRestorationUserInfoForSceneSession:(id)session
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  v6 = [v5 _lastKnownStateRestorationUserInfoForSceneSession:v4];
+  sessionCopy = session;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v6 = [sceneFlowController _lastKnownStateRestorationUserInfoForSceneSession:sessionCopy];
 
   return v6;
 }
 
-- (id)newTransactionWithName:(id)a3 originatingSceneController:(id)a4 targetSceneDescriptor:(id)a5
+- (id)newTransactionWithName:(id)name originatingSceneController:(id)controller targetSceneDescriptor:(id)descriptor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKAppSceneManager *)self userTransactionQueue];
-  v12 = [v11 newTransactionWithName:v10 info:0 context:0 originatingSceneController:v9 targetSceneDescriptor:v8];
+  descriptorCopy = descriptor;
+  controllerCopy = controller;
+  nameCopy = name;
+  userTransactionQueue = [(BKAppSceneManager *)self userTransactionQueue];
+  v12 = [userTransactionQueue newTransactionWithName:nameCopy info:0 context:0 originatingSceneController:controllerCopy targetSceneDescriptor:descriptorCopy];
 
   return v12;
 }
 
-- (id)defaultSceneControllerForTransaction:(id)a3
+- (id)defaultSceneControllerForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  v6 = [v5 defaultSceneControllerForTransaction:v4];
+  transactionCopy = transaction;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v6 = [sceneFlowController defaultSceneControllerForTransaction:transactionCopy];
 
   return v6;
 }
 
 - (id)anySceneController
 {
-  v2 = [(BKAppSceneManager *)self sceneFlowController];
-  v3 = [v2 anySceneController];
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  anySceneController = [sceneFlowController anySceneController];
 
-  return v3;
+  return anySceneController;
 }
 
-- (id)sceneControllerForViewController:(id)a3
+- (id)sceneControllerForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  v6 = [v5 sceneControllerForViewController:v4];
+  controllerCopy = controller;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v6 = [sceneFlowController sceneControllerForViewController:controllerCopy];
 
   return v6;
 }
 
-- (id)sceneControllerForWindow:(id)a3
+- (id)sceneControllerForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  v6 = [v5 sceneControllerForWindow:v4];
+  windowCopy = window;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v6 = [sceneFlowController sceneControllerForWindow:windowCopy];
 
   return v6;
 }
 
-- (void)enumerateSceneInfo:(id)a3
+- (void)enumerateSceneInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  [v5 enumerateSceneInfo:v4];
+  infoCopy = info;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController enumerateSceneInfo:infoCopy];
 }
 
-- (void)enumerateSceneController:(id)a3 includeHidden:(BOOL)a4
+- (void)enumerateSceneController:(id)controller includeHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKAppSceneManager *)self sceneFlowController];
-  [v7 enumerateSceneController:v6 includeHidden:v4];
+  hiddenCopy = hidden;
+  controllerCopy = controller;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController enumerateSceneController:controllerCopy includeHidden:hiddenCopy];
 }
 
 - (id)mainFlowController
 {
   objc_opt_class();
-  v3 = [(BKAppSceneManager *)self primarySceneController];
+  primarySceneController = [(BKAppSceneManager *)self primarySceneController];
   v4 = BUDynamicCast();
 
-  v5 = [v4 mainFlowController];
+  mainFlowController = [v4 mainFlowController];
 
-  return v5;
+  return mainFlowController;
 }
 
-- (void)requestTabBarSceneController:(id)a3
+- (void)requestTabBarSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
+  controllerCopy = controller;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100197DBC;
   v7[3] = &unk_100A07828;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestTabBarSceneController:v7];
+  v8 = controllerCopy;
+  v6 = controllerCopy;
+  [sceneFlowController requestTabBarSceneController:v7];
 }
 
-- (void)requestPrimaryScene:(id)a3
+- (void)requestPrimaryScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  [v5 requestPrimaryScene:v4];
+  sceneCopy = scene;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestPrimaryScene:sceneCopy];
 }
 
-- (void)forceTransaction:(id)a3 ontoPrimarySceneWithContinuation:(id)a4
+- (void)forceTransaction:(id)transaction ontoPrimarySceneWithContinuation:(id)continuation
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100197F44;
   v8[3] = &unk_100A07788;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  transactionCopy = transaction;
+  continuationCopy = continuation;
+  v6 = continuationCopy;
+  v7 = transactionCopy;
   [(BKAppSceneManager *)self requestPrimaryScene:v8];
 }
 
-- (void)requestBookSceneWithAssetID:(id)a3 completion:(id)a4
+- (void)requestBookSceneWithAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppSceneManager *)self sceneFlowController];
-  [v8 requestBookSceneWithAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestBookSceneWithAssetID:dCopy completion:completionCopy];
 }
 
-- (void)requestSceneWithAssetID:(id)a3 completion:(id)a4
+- (void)requestSceneWithAssetID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppSceneManager *)self sceneFlowController];
-  [v8 requestSceneWithAssetID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestSceneWithAssetID:dCopy completion:completionCopy];
 }
 
-- (void)requestEndOfBookSceneWithOptions:(id)a3 completion:(id)a4
+- (void)requestEndOfBookSceneWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppSceneManager *)self sceneFlowController];
-  [v8 requestEndOfBookSceneWithOptions:v7 completion:v6];
+  completionCopy = completion;
+  optionsCopy = options;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestEndOfBookSceneWithOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)requestPrimaryOrBookScene:(id)a3
+- (void)requestPrimaryOrBookScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  [v5 requestPrimaryOrBookScene:v4];
+  sceneCopy = scene;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController requestPrimaryOrBookScene:sceneCopy];
 }
 
-- (id)newBookSceneControllerProviderWithRequestAssetID:(id)a3
+- (id)newBookSceneControllerProviderWithRequestAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [[_BKBookSceneControllerProvider alloc] initWithSceneManager:self requestAssetID:v4];
+  dCopy = d;
+  v5 = [[_BKBookSceneControllerProvider alloc] initWithSceneManager:self requestAssetID:dCopy];
 
   return v5;
 }
 
-- (id)sceneInfoPresentingAssetID:(id)a3
+- (id)sceneInfoPresentingAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  v6 = [v5 sceneInfoPresentingAssetID:v4];
+  dCopy = d;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v6 = [sceneFlowController sceneInfoPresentingAssetID:dCopy];
 
   return v6;
 }
 
-- (void)destroySceneForAssetID:(id)a3
+- (void)destroySceneForAssetID:(id)d
 {
-  v5 = [(BKAppSceneManager *)self sceneInfoPresentingAssetID:a3];
+  v5 = [(BKAppSceneManager *)self sceneInfoPresentingAssetID:d];
   v3 = +[BKSceneUtilities sharedInstance];
-  v4 = [v5 sceneSession];
-  [v3 destroySceneWithSceneSession:v4 withAnimationType:1];
+  sceneSession = [v5 sceneSession];
+  [v3 destroySceneWithSceneSession:sceneSession withAnimationType:1];
 }
 
-- (id)windowFromSceneType:(unint64_t)a3 assetID:(id)a4
+- (id)windowFromSceneType:(unint64_t)type assetID:(id)d
 {
-  v6 = a4;
-  v7 = [(BKAppSceneManager *)self sceneFlowController];
-  v8 = [v7 sceneControllerForSceneType:a3 assetID:v6];
+  dCopy = d;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  v8 = [sceneFlowController sceneControllerForSceneType:type assetID:dCopy];
 
-  v9 = [v8 bk_window];
+  bk_window = [v8 bk_window];
 
-  return v9;
+  return bk_window;
 }
 
 - (BKJSStoreFlowController)storeFlowController
@@ -1481,14 +1481,14 @@ LABEL_14:
     v7 = self->_bookFlowController;
     self->_bookFlowController = v6;
 
-    v8 = [(BKAppSceneManager *)self sceneFlowController];
-    [(BKBookFlowController *)self->_bookFlowController setSceneHosting:v8];
+    sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+    [(BKBookFlowController *)self->_bookFlowController setSceneHosting:sceneFlowController];
 
-    v9 = [(BKAppSceneManager *)self minifiedFlowController];
-    [(BKBookFlowController *)self->_bookFlowController setMinifiedPresenter:v9];
+    minifiedFlowController = [(BKAppSceneManager *)self minifiedFlowController];
+    [(BKBookFlowController *)self->_bookFlowController setMinifiedPresenter:minifiedFlowController];
 
-    v10 = [(BKAppSceneManager *)self storePresenter];
-    [(BKBookFlowController *)self->_bookFlowController setStorePresenter:v10];
+    storePresenter = [(BKAppSceneManager *)self storePresenter];
+    [(BKBookFlowController *)self->_bookFlowController setStorePresenter:storePresenter];
 
     bookFlowController = self->_bookFlowController;
   }
@@ -1496,27 +1496,27 @@ LABEL_14:
   return bookFlowController;
 }
 
-- (void)saveStateClosing:(BOOL)a3
+- (void)saveStateClosing:(BOOL)closing
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100198614;
   v3[3] = &unk_100A09E08;
-  v4 = a3;
+  closingCopy = closing;
   [(BKAppSceneManager *)self enumerateSceneController:v3 includeHidden:1];
 }
 
 - (void)analyticsForceEndSession
 {
   [(BKAppSceneManager *)self enumerateSceneController:&stru_100A09E48 includeHidden:0];
-  v3 = [(BKAppSceneManager *)self minifiedPresenter];
-  v4 = [v3 minifiedPresenterAssetCurrentPresenters];
+  minifiedPresenter = [(BKAppSceneManager *)self minifiedPresenter];
+  minifiedPresenterAssetCurrentPresenters = [minifiedPresenter minifiedPresenterAssetCurrentPresenters];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = minifiedPresenterAssetCurrentPresenters;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1532,8 +1532,8 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) minifiedAssetPresenterAssetViewControllerFuture];
-        v11 = [v10 getNonBlockingError:0];
+        minifiedAssetPresenterAssetViewControllerFuture = [*(*(&v12 + 1) + 8 * v9) minifiedAssetPresenterAssetViewControllerFuture];
+        v11 = [minifiedAssetPresenterAssetViewControllerFuture getNonBlockingError:0];
         [v11 bc_analyticsSubtreeForceEndSession];
 
         v9 = v9 + 1;
@@ -1547,7 +1547,7 @@ LABEL_14:
   }
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1557,135 +1557,135 @@ LABEL_14:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)routeScene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)routeScene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKAppSceneManager *)self sceneFlowController];
-  [v11 routeScene:v10 willConnectToSession:v9 options:v8];
+  optionsCopy = options;
+  sessionCopy = session;
+  sceneCopy = scene;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController routeScene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
 
-  v12 = [(BKAppSceneManager *)self launchCoordinator];
-  LOBYTE(v10) = [v12 appLaunchCoordinatorIsConditionSatisfied:6];
+  launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
+  LOBYTE(sceneCopy) = [launchCoordinator appLaunchCoordinatorIsConditionSatisfied:6];
 
-  if ((v10 & 1) == 0)
+  if ((sceneCopy & 1) == 0)
   {
-    v13 = [(BKAppSceneManager *)self launchCoordinator];
-    [v13 signalConditionSatisfied:6];
+    launchCoordinator2 = [(BKAppSceneManager *)self launchCoordinator];
+    [launchCoordinator2 signalConditionSatisfied:6];
   }
 }
 
-- (void)carPlayScene:(id)a3 didConnectInterfaceController:(id)a4
+- (void)carPlayScene:(id)scene didConnectInterfaceController:(id)controller
 {
-  v5 = [(BKAppSceneManager *)self launchCoordinator:a3];
+  v5 = [(BKAppSceneManager *)self launchCoordinator:scene];
   v6 = [v5 appLaunchCoordinatorIsConditionSatisfied:8];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(BKAppSceneManager *)self launchCoordinator];
-    [v7 signalConditionSatisfied:8];
+    launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
+    [launchCoordinator signalConditionSatisfied:8];
   }
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppSceneManager *)self sceneFlowController];
-  [v8 application:v7 didDiscardSceneSessions:v6];
+  sessionsCopy = sessions;
+  applicationCopy = application;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController application:applicationCopy didDiscardSceneSessions:sessionsCopy];
 }
 
-- (void)_afterSceneWillConnect:(id)a3
+- (void)_afterSceneWillConnect:(id)connect
 {
-  v3 = [a3 object];
-  v4 = [v3 session];
-  v5 = [v4 persistentIdentifier];
+  object = [connect object];
+  session = [object session];
+  persistentIdentifier = [session persistentIdentifier];
 
   v6 = BCSceneLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v3 delegate];
+    delegate = [object delegate];
     v8 = 138543618;
-    v9 = v5;
+    v9 = persistentIdentifier;
     v10 = 2114;
-    v11 = v7;
+    v11 = delegate;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_afterSceneWillConnect: sceneIdentifier: %{public}@, sceneDelegate: %{public}@", &v8, 0x16u);
   }
 }
 
-- (void)_didFinishSceneStateRestoration:(id)a3
+- (void)_didFinishSceneStateRestoration:(id)restoration
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self sceneFlowController];
-  [v5 _didFinishSceneStateRestoration:v4];
+  restorationCopy = restoration;
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  [sceneFlowController _didFinishSceneStateRestoration:restorationCopy];
 }
 
 - (id)minifiedFlowControllerMinibarContainingViewController
 {
-  v2 = [(BKAppSceneManager *)self rootBarCoordinator];
-  v3 = [v2 rootViewController];
+  rootBarCoordinator = [(BKAppSceneManager *)self rootBarCoordinator];
+  rootViewController = [rootBarCoordinator rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
-- (double)minifiedFlowControllerMinibarBottomGuideWithViewController:(id)a3
+- (double)minifiedFlowControllerMinibarBottomGuideWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKAppSceneManager *)self rootBarCoordinator];
-  v6 = [v5 hostingViewController];
+  controllerCopy = controller;
+  rootBarCoordinator = [(BKAppSceneManager *)self rootBarCoordinator];
+  hostingViewController = [rootBarCoordinator hostingViewController];
 
-  v7 = [v6 view];
-  [v7 bounds];
+  view = [hostingViewController view];
+  [view bounds];
   Height = CGRectGetHeight(v18);
-  v9 = [v6 view];
-  [v9 safeAreaInsets];
+  view2 = [hostingViewController view];
+  [view2 safeAreaInsets];
   v11 = v10;
 
-  if (!v4)
+  if (!controllerCopy)
   {
-    v12 = [(BKAppSceneManager *)self rootBarCoordinator];
-    v4 = [v12 selectedTopViewController];
+    rootBarCoordinator2 = [(BKAppSceneManager *)self rootBarCoordinator];
+    controllerCopy = [rootBarCoordinator2 selectedTopViewController];
   }
 
   MinY = Height - v11;
   objc_opt_class();
   v14 = BUDynamicCast();
   v15 = v14;
-  if (v14 && (v14 == v4 || [v14 im_isAncestorOfChildViewController:v4]))
+  if (v14 && (v14 == controllerCopy || [v14 im_isAncestorOfChildViewController:controllerCopy]))
   {
-    v16 = [v15 tabBar];
-    [v16 frame];
+    tabBar = [v15 tabBar];
+    [tabBar frame];
     MinY = CGRectGetMinY(v19);
   }
 
   return MinY;
 }
 
-- (void)minifiedFlowControllerRequestShowStoreForStoreID:(id)a3 fromViewController:(id)a4
+- (void)minifiedFlowControllerRequestShowStoreForStoreID:(id)d fromViewController:(id)controller
 {
-  v6 = a3;
-  v9 = [(BKAppSceneManager *)self sceneControllerForViewController:a4];
-  v7 = [v9 newShowURLTransaction];
-  v8 = [(BKAppSceneManager *)self storePresenter];
-  [v8 storeShowBookWithStoreID:v6 resourceType:3 transaction:v7];
+  dCopy = d;
+  v9 = [(BKAppSceneManager *)self sceneControllerForViewController:controller];
+  newShowURLTransaction = [v9 newShowURLTransaction];
+  storePresenter = [(BKAppSceneManager *)self storePresenter];
+  [storePresenter storeShowBookWithStoreID:dCopy resourceType:3 transaction:newShowURLTransaction];
 }
 
-- (id)minifiedFlowControllerPresentedAssetID:(id)a3
+- (id)minifiedFlowControllerPresentedAssetID:(id)d
 {
-  v4 = [(BKAppSceneManager *)self primarySceneController];
-  v5 = [(BKAppSceneManager *)self bookFlowController];
-  v6 = [v5 bookPresenterCurrentlyOpenBookForSingleScene:v4];
-  v7 = [v6 assetPresenterAssetID];
+  primarySceneController = [(BKAppSceneManager *)self primarySceneController];
+  bookFlowController = [(BKAppSceneManager *)self bookFlowController];
+  v6 = [bookFlowController bookPresenterCurrentlyOpenBookForSingleScene:primarySceneController];
+  assetPresenterAssetID = [v6 assetPresenterAssetID];
 
-  return v7;
+  return assetPresenterAssetID;
 }
 
-- (void)minifiedFlowControllerHandleAssetPresentationError:(id)a3 assetID:(id)a4 isRetry:(BOOL)a5
+- (void)minifiedFlowControllerHandleAssetPresentationError:(id)error assetID:(id)d isRetry:(BOOL)retry
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v31 = self;
+  retryCopy = retry;
+  errorCopy = error;
+  dCopy = d;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v57[0] = 0;
   v57[1] = v57;
@@ -1694,14 +1694,14 @@ LABEL_14:
   v57[4] = sub_100027688;
   v58 = 0;
   v29 = +[BKLibraryManager defaultManager];
-  v10 = [v29 libraryAssetOnMainQueueWithAssetID:v9];
+  v10 = [v29 libraryAssetOnMainQueueWithAssetID:dCopy];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_100199608;
   v53[3] = &unk_100A09EF8;
   v55 = v57;
   objc_copyWeak(&v56, &location);
-  v11 = v9;
+  v11 = dCopy;
   v54 = v11;
   v12 = objc_retainBlock(v53);
   v50[0] = _NSConcreteStackBlock;
@@ -1718,7 +1718,7 @@ LABEL_14:
   v46[2] = sub_100199B98;
   v46[3] = &unk_100A09F68;
   v48 = &stru_100A09F18;
-  v15 = v8;
+  v15 = errorCopy;
   v47 = v15;
   v16 = v14;
   v49 = v16;
@@ -1751,11 +1751,11 @@ LABEL_14:
     v62 = 2112;
     v63 = v20;
     v64 = 1024;
-    v65 = v5;
+    v65 = retryCopy;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Asset %@ did not open, error=%@ retry=%{BOOL}d.  Fetching scene controller", buf, 0x1Cu);
   }
 
-  v25 = [v18 contentType];
+  contentType = [v18 contentType];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10019A338;
@@ -1764,12 +1764,12 @@ LABEL_14:
   v36 = v57;
   v26 = v20;
   v33 = v26;
-  v38 = v5;
+  v38 = retryCopy;
   v27 = v22;
   v34 = v27;
   v28 = v23;
   v35 = v28;
-  [(BKAppSceneManager *)v31 _sceneForReportingErrorWithContentType:v25 assetID:v11 completion:v32];
+  [(BKAppSceneManager *)selfCopy _sceneForReportingErrorWithContentType:contentType assetID:v11 completion:v32];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&v56);
@@ -1781,40 +1781,40 @@ LABEL_14:
 - (id)flowControllers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(BKAppSceneManager *)self sceneFlowController];
-  if (v4)
+  sceneFlowController = [(BKAppSceneManager *)self sceneFlowController];
+  if (sceneFlowController)
   {
-    [v3 addObject:v4];
+    [v3 addObject:sceneFlowController];
   }
 
-  v5 = [(BKAppSceneManager *)self storeFlowController];
-  if (v5)
+  storeFlowController = [(BKAppSceneManager *)self storeFlowController];
+  if (storeFlowController)
   {
-    [v3 addObject:v5];
+    [v3 addObject:storeFlowController];
   }
 
-  v6 = [(BKAppSceneManager *)self minifiedFlowController];
-  if (v6)
+  minifiedFlowController = [(BKAppSceneManager *)self minifiedFlowController];
+  if (minifiedFlowController)
   {
-    [v3 addObject:v6];
+    [v3 addObject:minifiedFlowController];
   }
 
-  v7 = [(BKAppSceneManager *)self bookFlowController];
-  if (v7)
+  bookFlowController = [(BKAppSceneManager *)self bookFlowController];
+  if (bookFlowController)
   {
-    [v3 addObject:v7];
+    [v3 addObject:bookFlowController];
   }
 
-  v8 = [(BKAppSceneManager *)self libraryCollectionsFlowController];
-  if (v8)
+  libraryCollectionsFlowController = [(BKAppSceneManager *)self libraryCollectionsFlowController];
+  if (libraryCollectionsFlowController)
   {
-    [v3 addObject:v8];
+    [v3 addObject:libraryCollectionsFlowController];
   }
 
-  v9 = [(BKAppSceneManager *)self jetActionHandler];
-  if (v9)
+  jetActionHandler = [(BKAppSceneManager *)self jetActionHandler];
+  if (jetActionHandler)
   {
-    [v3 addObject:v9];
+    [v3 addObject:jetActionHandler];
   }
 
   return v3;
@@ -1822,19 +1822,19 @@ LABEL_14:
 
 - (BOOL)isPresentingWelcome
 {
-  v2 = [(BKAppSceneManager *)self welcomePresenter];
-  v3 = [v2 welcomePresenterIsPresentingWelcome];
+  welcomePresenter = [(BKAppSceneManager *)self welcomePresenter];
+  welcomePresenterIsPresentingWelcome = [welcomePresenter welcomePresenterIsPresentingWelcome];
 
-  return v3;
+  return welcomePresenterIsPresentingWelcome;
 }
 
-- (void)_setupWelcomeScreenWithPresenterIfNeeded:(id)a3
+- (void)_setupWelcomeScreenWithPresenterIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (!self->_welcomeScreenManager)
   {
-    v5 = [(BKAppSceneManager *)self launchCoordinator];
-    v6 = [v5 appLaunchCoordinatorIsConditionSatisfied:2];
+    launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
+    v6 = [launchCoordinator appLaunchCoordinatorIsConditionSatisfied:2];
 
     if ((v6 & 1) == 0)
     {
@@ -1842,7 +1842,7 @@ LABEL_14:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v16 = v4;
+        v16 = neededCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_setupWelcomeScreenWithPresenterIfNeeded: welcomePresenter: %{public}@", buf, 0xCu);
       }
 
@@ -1855,17 +1855,17 @@ LABEL_14:
       v12[3] = &unk_100A0A008;
       v12[4] = self;
       v14 = v9;
-      v13 = v4;
+      v13 = neededCopy;
       v10 = objc_retainBlock(v12);
-      v11 = [(BKAppSceneManager *)self _welcomeItems];
-      (v10[2])(v10, v11);
+      _welcomeItems = [(BKAppSceneManager *)self _welcomeItems];
+      (v10[2])(v10, _welcomeItems);
     }
   }
 }
 
-- (void)_enqueueDismissWelcomePresenter:(id)a3
+- (void)_enqueueDismissWelcomePresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5 = BCSceneLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1873,13 +1873,13 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_enqueueDismissWelcomePresenter", buf, 2u);
   }
 
-  v6 = [(BKAppSceneManager *)self pendingWelcomePresenterDismissCompletionBlocks];
-  v7 = [v6 count];
+  pendingWelcomePresenterDismissCompletionBlocks = [(BKAppSceneManager *)self pendingWelcomePresenterDismissCompletionBlocks];
+  v7 = [pendingWelcomePresenterDismissCompletionBlocks count];
 
-  v8 = [(BKAppSceneManager *)self pendingWelcomePresenterDismissCompletionBlocks];
-  v9 = objc_retainBlock(v4);
+  pendingWelcomePresenterDismissCompletionBlocks2 = [(BKAppSceneManager *)self pendingWelcomePresenterDismissCompletionBlocks];
+  v9 = objc_retainBlock(presenterCopy);
 
-  [v8 addObject:v9];
+  [pendingWelcomePresenterDismissCompletionBlocks2 addObject:v9];
   if (!v7)
   {
     v17[0] = _NSConcreteStackBlock;
@@ -1888,9 +1888,9 @@ LABEL_14:
     v17[3] = &unk_100A033C8;
     v17[4] = self;
     v10 = objc_retainBlock(v17);
-    v11 = [(BKAppSceneManager *)self welcomePresenter];
+    welcomePresenter = [(BKAppSceneManager *)self welcomePresenter];
 
-    if (v11)
+    if (welcomePresenter)
     {
       [(BKAppSceneManager *)self welcomePresenter];
       v14[0] = _NSConcreteStackBlock;
@@ -1914,52 +1914,52 @@ LABEL_14:
   }
 }
 
-- (void)_setWelcomePresenterIfNoneExists:(id)a3 shouldPresent:(BOOL)a4
+- (void)_setWelcomePresenterIfNoneExists:(id)exists shouldPresent:(BOOL)present
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(BKAppSceneManager *)self welcomePresenter];
+  presentCopy = present;
+  existsCopy = exists;
+  welcomePresenter = [(BKAppSceneManager *)self welcomePresenter];
 
-  if (!v6)
+  if (!welcomePresenter)
   {
-    [(BKAppSceneManager *)self setWelcomePresenter:v9];
-    if (v4)
+    [(BKAppSceneManager *)self setWelcomePresenter:existsCopy];
+    if (presentCopy)
     {
-      v7 = [(BKAppSceneManager *)self welcomePresenter];
-      v8 = [(BKWelcomeScreenManager *)self->_welcomeScreenManager navigationController];
-      [v7 presentWelcomeViewController:v8 completion:0];
+      welcomePresenter2 = [(BKAppSceneManager *)self welcomePresenter];
+      navigationController = [(BKWelcomeScreenManager *)self->_welcomeScreenManager navigationController];
+      [welcomePresenter2 presentWelcomeViewController:navigationController completion:0];
     }
   }
 }
 
-- (void)_setCurrentWelcomePresenterIfNeeded:(id)a3
+- (void)_setCurrentWelcomePresenterIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(BKAppSceneManager *)self _isRunningWelcomeFlow])
   {
-    v5 = [(BKAppSceneManager *)self welcomePresenter];
+    welcomePresenter = [(BKAppSceneManager *)self welcomePresenter];
 
-    if (v5 != v4)
+    if (welcomePresenter != neededCopy)
     {
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_10019ADC0;
       v6[3] = &unk_100A03440;
       v6[4] = self;
-      v7 = v4;
+      v7 = neededCopy;
       [(BKAppSceneManager *)self _enqueueDismissWelcomePresenter:v6];
     }
   }
 }
 
-- (void)_welcomePresenterDidDisconnect:(id)a3
+- (void)_welcomePresenterDidDisconnect:(id)disconnect
 {
-  v5 = a3;
+  disconnectCopy = disconnect;
   if ([(BKAppSceneManager *)self _isRunningWelcomeFlow])
   {
-    v4 = [(BKAppSceneManager *)self welcomePresenter];
+    welcomePresenter = [(BKAppSceneManager *)self welcomePresenter];
 
-    if (v4 == v5)
+    if (welcomePresenter == disconnectCopy)
     {
       [(BKAppSceneManager *)self _setCurrentWelcomePresenterIfNeeded:0];
     }
@@ -1976,13 +1976,13 @@ LABEL_14:
 
   else
   {
-    v3 = [(BKAppSceneManager *)self launchCoordinator];
+    launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_10019AF14;
     v4[3] = &unk_100A038D0;
     v4[4] = self;
-    [v3 appLaunchCoordinatorOnConditionMask:2112 blockID:@"_showMainViewControllerOrWelcomeScreen" performBlock:v4];
+    [launchCoordinator appLaunchCoordinatorOnConditionMask:2112 blockID:@"_showMainViewControllerOrWelcomeScreen" performBlock:v4];
   }
 }
 
@@ -2004,8 +2004,8 @@ LABEL_14:
 
     else
     {
-      v5 = [(BKAppSceneManager *)self primarySceneController];
-      v4 = [v5 willAttemptBookReopen] ^ 1;
+      primarySceneController = [(BKAppSceneManager *)self primarySceneController];
+      v4 = [primarySceneController willAttemptBookReopen] ^ 1;
     }
 
     return v4;
@@ -2034,17 +2034,17 @@ LABEL_14:
 - (void)attemptToPresentStoreReview
 {
   v3 = +[BKAudiobookPlayer sharedInstance];
-  v4 = [v3 currentAudiobook];
+  currentAudiobook = [v3 currentAudiobook];
 
-  if (!v4)
+  if (!currentAudiobook)
   {
-    v9 = [(BKAppSceneManager *)self anySceneController];
+    anySceneController = [(BKAppSceneManager *)self anySceneController];
     v5 = +[BKAppDelegate delegate];
-    v6 = [v5 keyWindowAnalyticsTracker];
+    keyWindowAnalyticsTracker = [v5 keyWindowAnalyticsTracker];
 
-    v7 = [(BKAppSceneManager *)self appStoreReviewManager];
-    v8 = [v9 scene];
-    [v7 attemptToPresentStoreReviewIn:v8 tracker:v6];
+    appStoreReviewManager = [(BKAppSceneManager *)self appStoreReviewManager];
+    scene = [anySceneController scene];
+    [appStoreReviewManager attemptToPresentStoreReviewIn:scene tracker:keyWindowAnalyticsTracker];
   }
 }
 
@@ -2058,29 +2058,29 @@ LABEL_14:
   }
 
   kdebug_trace();
-  v4 = [(BKWelcomeScreenManager *)self->_welcomeScreenManager didShowWelcome];
-  v5 = [(BKAppSceneManager *)self launchCoordinator];
+  didShowWelcome = [(BKWelcomeScreenManager *)self->_welcomeScreenManager didShowWelcome];
+  launchCoordinator = [(BKAppSceneManager *)self launchCoordinator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10019B4B4;
   v6[3] = &unk_100A05D78;
   v6[4] = self;
-  v7 = v4;
-  [v5 signalConditionSatisfied:2 notifyWithTimeout:@"showMainViewController" blockID:v6 block:3.0];
+  v7 = didShowWelcome;
+  [launchCoordinator signalConditionSatisfied:2 notifyWithTimeout:@"showMainViewController" blockID:v6 block:3.0];
 }
 
-- (void)processAccountSwitchWithCompletion:(id)a3
+- (void)processAccountSwitchWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10051D1F8(sub_1002427EC, v5);
 }
 
 - (NSString)figaroPageContext
 {
-  v2 = self;
+  selfCopy = self;
   BKAppSceneManager.figaroPageContext.getter();
   v4 = v3;
 

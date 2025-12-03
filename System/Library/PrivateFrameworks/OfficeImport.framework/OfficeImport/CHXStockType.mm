@@ -1,25 +1,25 @@
 @interface CHXStockType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXStockType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [CHXLine2DType chdChartTypeFromXmlChartTypeElement:a3 state:v5];
-  v7 = [v5 chart];
-  v8 = [v7 plotArea];
-  v9 = [v8 chartTypes];
-  v10 = [v9 objectAtIndex:0];
+  stateCopy = state;
+  v6 = [CHXLine2DType chdChartTypeFromXmlChartTypeElement:element state:stateCopy];
+  chart = [stateCopy chart];
+  plotArea = [chart plotArea];
+  chartTypes = [plotArea chartTypes];
+  v10 = [chartTypes objectAtIndex:0];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [v5 chart];
-    v13 = [v12 plotArea];
-    [v13 setContainsVolumeStockType:1];
+    chart2 = [stateCopy chart];
+    plotArea2 = [chart2 plotArea];
+    [plotArea2 setContainsVolumeStockType:1];
   }
 
   else

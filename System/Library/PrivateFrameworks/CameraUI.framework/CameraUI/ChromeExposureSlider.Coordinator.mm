@@ -1,19 +1,19 @@
 @interface ChromeExposureSlider.Coordinator
 - (_TtCV8CameraUI20ChromeExposureSlider11Coordinator)init;
-- (void)exposureValueChanged:(id)a3;
+- (void)exposureValueChanged:(id)changed;
 @end
 
 @implementation ChromeExposureSlider.Coordinator
 
-- (void)exposureValueChanged:(id)a3
+- (void)exposureValueChanged:(id)changed
 {
   v4 = self->parent[OBJC_IVAR____TtCV8CameraUI20ChromeExposureSlider11Coordinator_parent + 16];
-  v5 = a3;
-  v12 = self;
+  changedCopy = changed;
+  selfCopy = self;
   v6 = sub_1A3A2EA60();
   v7 = sub_1A39A12B8(v6, v4);
 
-  [v5 exposureValue];
+  [changedCopy exposureValue];
   v9 = v8;
   v10 = v7[153];
   v11 = v7[154];

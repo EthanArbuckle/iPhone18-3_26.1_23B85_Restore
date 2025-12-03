@@ -1,23 +1,23 @@
 @interface VCPMADServiceImageProcessingTask
-+ (id)taskWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 andCompletionHandler:(id)a6;
++ (id)taskWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block andCompletionHandler:(id)handler;
 - (BOOL)run:(id *)p_isa;
-- (VCPMADServiceImageProcessingTask)initWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 andCompletionHandler:(id)a6;
+- (VCPMADServiceImageProcessingTask)initWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block andCompletionHandler:(id)handler;
 - (void)cancel;
 @end
 
 @implementation VCPMADServiceImageProcessingTask
 
-- (VCPMADServiceImageProcessingTask)initWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 andCompletionHandler:(id)a6
+- (VCPMADServiceImageProcessingTask)initWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block andCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestsCopy = requests;
+  assetCopy = asset;
+  blockCopy = block;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __95__VCPMADServiceImageProcessingTask_initWithRequests_forAsset_cancelBlock_andCompletionHandler___block_invoke;
   v25[3] = &unk_1E834C7A0;
-  v15 = v14;
+  v15 = handlerCopy;
   v26 = v15;
   v24.receiver = self;
   v24.super_class = VCPMADServiceImageProcessingTask;
@@ -25,16 +25,16 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_requests, a3);
-    objc_storeStrong(&v17->_asset, a4);
+    objc_storeStrong(&v16->_requests, requests);
+    objc_storeStrong(&v17->_asset, asset);
     signpostPayload = v17->_signpostPayload;
     v17->_signpostPayload = &stru_1F496CB30;
 
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     subtasks = v17->_subtasks;
-    v17->_subtasks = v19;
+    v17->_subtasks = array;
 
-    [(VCPMABaseTask *)v17 setCancelBlock:v13];
+    [(VCPMABaseTask *)v17 setCancelBlock:blockCopy];
     v21 = dispatch_queue_create("VCPMADServiceImageProcessingTask", 0);
     cancelQueue = v17->_cancelQueue;
     v17->_cancelQueue = v21;
@@ -43,13 +43,13 @@
   return v17;
 }
 
-+ (id)taskWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block andCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithRequests:v9 forAsset:v10 cancelBlock:v11 andCompletionHandler:v12];
+  requestsCopy = requests;
+  assetCopy = asset;
+  blockCopy = block;
+  handlerCopy = handler;
+  v13 = [objc_alloc(objc_opt_class()) initWithRequests:requestsCopy forAsset:assetCopy cancelBlock:blockCopy andCompletionHandler:handlerCopy];
 
   return v13;
 }
@@ -84,8 +84,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v11 = self->_subtasks;
-    v15 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v43 objects:v56 count:16];
+    completionHandler = self->_subtasks;
+    v15 = [(NSMutableArray *)completionHandler countByEnumeratingWithState:&v43 objects:v56 count:16];
     if (!v15)
     {
 LABEL_37:
@@ -100,8 +100,8 @@ LABEL_37:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, p_isa, OS_SIGNPOST_INTERVAL_END, spid, "VCPMADServiceImageProcessingTask_Run", "%@", buf, 0xCu);
       }
 
-      v11 = [(VCPMABaseTask *)self completionHandler];
-      (v11[2].super.super.isa)(v11, 0, 0);
+      completionHandler = [(VCPMABaseTask *)self completionHandler];
+      (completionHandler[2].super.super.isa)(completionHandler, 0, 0);
       LOBYTE(p_isa) = 1;
 LABEL_41:
 
@@ -117,7 +117,7 @@ LABEL_13:
     {
       if (*v44 != v16)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(completionHandler);
       }
 
       v18 = *(*(&v43 + 1) + 8 * v17);
@@ -202,7 +202,7 @@ LABEL_34:
 
       if (v15 == ++v17)
       {
-        v15 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v43 objects:v56 count:16];
+        v15 = [(NSMutableArray *)completionHandler countByEnumeratingWithState:&v43 objects:v56 count:16];
         if (!v15)
         {
           goto LABEL_37;
@@ -223,8 +223,8 @@ LABEL_34:
   {
     v10 = MEMORY[0x1E696ABC0];
     v57 = *MEMORY[0x1E696A578];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request was canceled"];
-    v58[0] = v11;
+    completionHandler = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request was canceled"];
+    v58[0] = completionHandler;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
     v13 = [v10 errorWithDomain:*MEMORY[0x1E696A768] code:-128 userInfo:v12];
     v14 = *p_isa;

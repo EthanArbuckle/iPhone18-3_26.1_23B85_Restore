@@ -1,15 +1,15 @@
 @interface RWIProtocolDebuggerAssertPauseReason
 - (NSString)message;
-- (void)setMessage:(id)a3;
+- (void)setMessage:(id)message;
 @end
 
 @implementation RWIProtocolDebuggerAssertPauseReason
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerAssertPauseReason;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"message"];
+  [(RWIProtocolJSONObject *)&v3 setString:message forKey:@"message"];
 }
 
 - (NSString)message

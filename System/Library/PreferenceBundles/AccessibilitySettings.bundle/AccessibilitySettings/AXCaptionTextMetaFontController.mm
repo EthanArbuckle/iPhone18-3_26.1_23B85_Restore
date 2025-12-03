@@ -1,28 +1,28 @@
 @interface AXCaptionTextMetaFontController
-- (id)_fontForCategory:(id)a3;
+- (id)_fontForCategory:(id)category;
 - (id)specifiers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXCaptionTextMetaFontController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
     v25 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(AXCaptionStyleChooserController *)v2 captionPreviewSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)selfCopy captionPreviewSpecifiers];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v30 = v4;
-    v6 = [v4 lastObject];
+    lastObject = [v4 lastObject];
     v7 = settingsLocString(@"FONT_CATEGORY_FOOTER_TEXT", @"CaptioningStyle");
-    v24 = v6;
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    v24 = lastObject;
+    [lastObject setProperty:v7 forKey:PSFooterTextGroupKey];
 
     v33 = 0u;
     v34 = 0u;
@@ -48,23 +48,23 @@
 
           v12 = *(*(&v31 + 1) + 8 * i);
           v13 = [v12 objectForKeyedSubscript:@"category"];
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
 
-          if (v14)
+          if (intValue)
           {
             v15 = [v12 objectForKeyedSubscript:@"category"];
             v16 = AXCaptionFontCategoryName([v15 intValue]);
 
-            v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:v2 set:0 get:"_fontForCategory:" detail:objc_opt_class() cell:1 edit:0];
+            v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:selfCopy set:0 get:"_fontForCategory:" detail:objc_opt_class() cell:1 edit:0];
             [v17 setProperty:objc_opt_class() forKey:v29];
             [v12 objectForKeyedSubscript:@"category"];
-            v19 = v18 = v2;
+            v19 = v18 = selfCopy;
             [v17 setProperty:v19 forKey:@"category"];
 
             v20 = [v12 objectForKeyedSubscript:@"name"];
             [v17 setProperty:v20 forKey:v28];
 
-            v2 = v18;
+            selfCopy = v18;
             v21 = [v12 objectForKeyedSubscript:@"isBold"];
             [v17 setProperty:v21 forKey:@"isBold"];
 
@@ -80,10 +80,10 @@
       while (v9);
     }
 
-    v22 = *&v2->super.AXUISettingsBaseListController_opaque[v25];
-    *&v2->super.AXUISettingsBaseListController_opaque[v25] = v30;
+    v22 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v25];
+    *&selfCopy->super.AXUISettingsBaseListController_opaque[v25] = v30;
 
-    v3 = *&v2->super.AXUISettingsBaseListController_opaque[v25];
+    v3 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v25];
   }
 
   return v3;
@@ -94,25 +94,25 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTextMetaFontController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTextMetaFontController *)self table];
+  table = [(AXCaptionTextMetaFontController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionFontCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXCaptionTextMetaFontController;
-  [(AXCaptionTextMetaFontController *)&v4 viewWillAppear:a3];
+  [(AXCaptionTextMetaFontController *)&v4 viewWillAppear:appear];
   [(AXCaptionTextMetaFontController *)self reloadSpecifiers];
 }
 
-- (id)_fontForCategory:(id)a3
+- (id)_fontForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"category"];
-  v6 = [v5 intValue];
+  categoryCopy = category;
+  v5 = [categoryCopy propertyForKey:@"category"];
+  intValue = [v5 intValue];
 
   v27 = -1;
   [(AXCaptionStyleChooserController *)self profileId];
@@ -121,7 +121,7 @@
   v7 = MACaptionAppearancePrefCopyFontForStyle();
   if (!v7)
   {
-    v9 = AXCaptionDefaultFontForCategory(v6);
+    v9 = AXCaptionDefaultFontForCategory(intValue);
     v13 = [v9 objectForKeyedSubscript:@"displayName"];
     goto LABEL_17;
   }
@@ -138,7 +138,7 @@
   {
     v12 = v11;
     v21 = v8;
-    v22 = v4;
+    v22 = categoryCopy;
     v13 = 0;
     v14 = *v24;
     do
@@ -168,7 +168,7 @@
     while (v12);
 
     v8 = v21;
-    v4 = v22;
+    categoryCopy = v22;
     if (v13)
     {
       goto LABEL_16;

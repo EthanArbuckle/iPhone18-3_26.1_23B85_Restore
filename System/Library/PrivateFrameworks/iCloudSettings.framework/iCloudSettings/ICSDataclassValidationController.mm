@@ -1,8 +1,8 @@
 @interface ICSDataclassValidationController
-- (BOOL)_isDataclassAllowlisted:(id)a3;
+- (BOOL)_isDataclassAllowlisted:(id)allowlisted;
 - (BOOL)_isEligibleForWalrus;
-- (BOOL)isDataclassAvailable:(id)a3;
-- (ICSDataclassValidationController)initWithAccount:(id)a3 presentingViewController:(id)a4;
+- (BOOL)isDataclassAvailable:(id)available;
+- (ICSDataclassValidationController)initWithAccount:(id)account presentingViewController:(id)controller;
 - (ICSDataclassValidationControllerDelegate)delegate;
 - (UIViewController)presentingViewController;
 - (unint64_t)_currentWalrusStatus;
@@ -13,26 +13,26 @@
 - (void)_stopObservingManateeAvailabilityNotification;
 - (void)_stopObservingNotifications;
 - (void)_stopObservingWalrusStateChangeNotification;
-- (void)_walrusPresentUnknownErrorWithCompletionHandler:(id)a3;
-- (void)_walrusValidateAccessForDataclass:(id)a3 completion:(id)a4;
+- (void)_walrusPresentUnknownErrorWithCompletionHandler:(id)handler;
+- (void)_walrusValidateAccessForDataclass:(id)dataclass completion:(id)completion;
 - (void)dealloc;
-- (void)validateAccessForDataclass:(id)a3 completion:(id)a4;
+- (void)validateAccessForDataclass:(id)dataclass completion:(id)completion;
 @end
 
 @implementation ICSDataclassValidationController
 
-- (ICSDataclassValidationController)initWithAccount:(id)a3 presentingViewController:(id)a4
+- (ICSDataclassValidationController)initWithAccount:(id)account presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = ICSDataclassValidationController;
   v9 = [(ICSDataclassValidationController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
     v11 = dispatch_semaphore_create(1);
     validationAccessSemaphore = v10->_validationAccessSemaphore;
     v10->_validationAccessSemaphore = v11;
@@ -56,30 +56,30 @@
   [(ICSDataclassValidationController *)&v3 dealloc];
 }
 
-- (BOOL)isDataclassAvailable:(id)a3
+- (BOOL)isDataclassAvailable:(id)available
 {
-  v4 = a3;
-  v5 = self->_manateeAvailable || [(ICSDataclassValidationController *)self _currentWalrusStatus]== 2 || [(ICSDataclassValidationController *)self _isDataclassAllowlisted:v4];
+  availableCopy = available;
+  v5 = self->_manateeAvailable || [(ICSDataclassValidationController *)self _currentWalrusStatus]== 2 || [(ICSDataclassValidationController *)self _isDataclassAllowlisted:availableCopy];
 
   return v5;
 }
 
-- (void)validateAccessForDataclass:(id)a3 completion:(id)a4
+- (void)validateAccessForDataclass:(id)dataclass completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataclassCopy = dataclass;
+  completionCopy = completion;
   v8 = LogSubsystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = dataclassCopy;
     _os_log_impl(&dword_275819000, v8, OS_LOG_TYPE_DEFAULT, "[ICSDataclassValidationController validateAccessForDataclass] dataclass: %@", buf, 0xCu);
   }
 
-  if (self->_manateeAvailable || [(ICSDataclassValidationController *)self _currentWalrusStatus]== 2 || [(ICSDataclassValidationController *)self _isDataclassAllowlisted:v6])
+  if (self->_manateeAvailable || [(ICSDataclassValidationController *)self _currentWalrusStatus]== 2 || [(ICSDataclassValidationController *)self _isDataclassAllowlisted:dataclassCopy])
   {
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -94,8 +94,8 @@
     v14 = v10;
     v12 = v10;
     objc_copyWeak(&v17, buf);
-    v16 = v7;
-    v15 = v6;
+    v16 = completionCopy;
+    v15 = dataclassCopy;
     dispatch_async(validationAccessQueue, v13);
 
     objc_destroyWeak(&v17);
@@ -200,14 +200,14 @@ void __74__ICSDataclassValidationController_validateAccessForDataclass_completio
 
 - (void)_reloadSpecifiers
 {
-  v3 = [(ICSDataclassValidationController *)self delegate];
-  [v3 reloadSpecifiersForDataclassValidationController:self];
+  delegate = [(ICSDataclassValidationController *)self delegate];
+  [delegate reloadSpecifiersForDataclassValidationController:self];
 }
 
 - (BOOL)_isEligibleForWalrus
 {
-  v2 = [(ICSDataclassValidationController *)self account];
-  v3 = [v2 aa_isAccountClass:*MEMORY[0x277CEC688]];
+  account = [(ICSDataclassValidationController *)self account];
+  v3 = [account aa_isAccountClass:*MEMORY[0x277CEC688]];
 
   return v3;
 }
@@ -235,7 +235,7 @@ void __74__ICSDataclassValidationController_validateAccessForDataclass_completio
     aBlock[2] = __80__ICSDataclassValidationController__startObservingWalrusStateChangeNotification__block_invoke;
     aBlock[3] = &unk_27A666300;
     v9 = v3;
-    v10 = self;
+    selfCopy = self;
     v4 = v3;
     v7 = _Block_copy(aBlock);
     v5 = v7[2];
@@ -360,8 +360,8 @@ uint64_t __80__ICSDataclassValidationController__startObservingWalrusStateChange
   v5 = self->_walrusStateChangeNotificationObserver;
   if (v5)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:v5];
   }
 
   walrusStateChangeNotificationObserver = self->_walrusStateChangeNotificationObserver;
@@ -372,7 +372,7 @@ uint64_t __80__ICSDataclassValidationController__startObservingWalrusStateChange
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_275819000, a2, OS_LOG_TYPE_ERROR, "Failed to determine manatee availability: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -406,30 +406,30 @@ void __82__ICSDataclassValidationController__startObservingManateeAvailabilityNo
   v5 = self->_manateeAvailabilityNotificationObserver;
   if (v5)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:v5];
   }
 
   manateeAvailabilityNotificationObserver = self->_manateeAvailabilityNotificationObserver;
   self->_manateeAvailabilityNotificationObserver = 0;
 }
 
-- (void)_walrusValidateAccessForDataclass:(id)a3 completion:(id)a4
+- (void)_walrusValidateAccessForDataclass:(id)dataclass completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__ICSDataclassValidationController__walrusValidateAccessForDataclass_completion___block_invoke;
   aBlock[3] = &unk_27A6663A0;
-  v6 = v5;
+  v6 = completionCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
   if ([(ICSDataclassValidationController *)self _isEligibleForWalrus])
   {
     v8 = [objc_alloc(MEMORY[0x277CECA18]) initWithType:4];
     v9 = objc_alloc(MEMORY[0x277CECA70]);
-    v10 = [(ICSDataclassValidationController *)self presentingViewController];
-    v11 = [v9 initWithFlowContext:v8 withPresentingViewController:v10];
+    presentingViewController = [(ICSDataclassValidationController *)self presentingViewController];
+    v11 = [v9 initWithFlowContext:v8 withPresentingViewController:presentingViewController];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -489,9 +489,9 @@ void __81__ICSDataclassValidationController__walrusValidateAccessForDataclass_co
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_walrusPresentUnknownErrorWithCompletionHandler:(id)a3
+- (void)_walrusPresentUnknownErrorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = MEMORY[0x277D75110];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -502,20 +502,20 @@ void __81__ICSDataclassValidationController__walrusValidateAccessForDataclass_co
   v11 = [v10 localizedStringForKey:@"ACCESS_DATACLASS_VALIDATION_FAILED_BUTTON_TITLE" value:&stru_288487370 table:@"Localizable-Walrus"];
   v13 = [v5 alertWithTitle:v7 message:v9 buttonTitle:v11];
 
-  v12 = [(ICSDataclassValidationController *)self presentingViewController];
-  [v12 presentViewController:v13 animated:1 completion:v4];
+  presentingViewController = [(ICSDataclassValidationController *)self presentingViewController];
+  [presentingViewController presentViewController:v13 animated:1 completion:handlerCopy];
 }
 
-- (BOOL)_isDataclassAllowlisted:(id)a3
+- (BOOL)_isDataclassAllowlisted:(id)allowlisted
 {
   v3 = _isDataclassAllowlisted__once;
-  v4 = a3;
+  allowlistedCopy = allowlisted;
   if (v3 != -1)
   {
     [ICSDataclassValidationController _isDataclassAllowlisted:];
   }
 
-  v5 = [_isDataclassAllowlisted__allowlistedDataclasses containsObject:v4];
+  v5 = [_isDataclassAllowlisted__allowlistedDataclasses containsObject:allowlistedCopy];
 
   return v5;
 }

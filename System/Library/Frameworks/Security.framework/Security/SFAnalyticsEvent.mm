@@ -1,18 +1,18 @@
 @interface SFAnalyticsEvent
-- (id)initFromRow:(id)a3;
+- (id)initFromRow:(id)row;
 @end
 
 @implementation SFAnalyticsEvent
 
-- (id)initFromRow:(id)a3
+- (id)initFromRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v14.receiver = self;
   v14.super_class = SFAnalyticsEvent;
   v5 = [(SFAnalyticsEvent *)&v14 init];
   if (v5)
   {
-    v6 = deserializedRecordFromRow(v4);
+    v6 = deserializedRecordFromRow(rowCopy);
     record = v5->_record;
     v5->_record = v6;
 
@@ -22,9 +22,9 @@
       goto LABEL_6;
     }
 
-    v8 = [v4 indexForColumnName:@"timestamp"];
+    v8 = [rowCopy indexForColumnName:@"timestamp"];
     v9 = MEMORY[0x1E696AD98];
-    [v4 doubleAtIndex:v8];
+    [rowCopy doubleAtIndex:v8];
     v10 = [v9 numberWithDouble:?];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;

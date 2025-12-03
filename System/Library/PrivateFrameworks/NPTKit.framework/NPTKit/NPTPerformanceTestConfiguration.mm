@@ -3,10 +3,10 @@
 + (id)defaultConfigurationCellular;
 + (id)defaultConfigurationWiFi;
 + (id)defaultConfigurationWiredEthernet;
-+ (id)evaluateInterfaceName:(int)a3;
-+ (id)interfaceServiceName:(int)a3;
++ (id)evaluateInterfaceName:(int)name;
++ (id)interfaceServiceName:(int)name;
 - (NPTPerformanceTestConfiguration)init;
-- (NPTPerformanceTestConfiguration)initWithCoder:(id)a3;
+- (NPTPerformanceTestConfiguration)initWithCoder:(id)coder;
 - (NSDictionary)asDictionary;
 - (NSString)clientName;
 - (NSString)pingHost;
@@ -17,10 +17,10 @@
 - (NetworkQualityConfiguration)NQUploadConfiguration;
 - (id)cdnDownloadURL;
 - (id)cdnUploadURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInterfaceType:(int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInterfaceType:(int)type;
 @end
 
 @implementation NPTPerformanceTestConfiguration
@@ -37,8 +37,8 @@
 
   if ([(NPTPerformanceTestConfiguration *)self interfaceType]!= 3)
   {
-    v4 = [(NPTPerformanceTestConfiguration *)self interfaceName];
-    [v3 setNetworkInterfaceName:v4];
+    interfaceName = [(NPTPerformanceTestConfiguration *)self interfaceName];
+    [v3 setNetworkInterfaceName:interfaceName];
   }
 
   if ([(NPTPerformanceTestConfiguration *)self testDuration])
@@ -65,22 +65,22 @@
 
 - (NetworkQualityConfiguration)NQDownloadConfiguration
 {
-  v2 = [(NPTPerformanceTestConfiguration *)self NQConfiguration];
-  [v2 setParallel:0];
-  [v2 setDownload:1];
-  [v2 setUpload:0];
+  nQConfiguration = [(NPTPerformanceTestConfiguration *)self NQConfiguration];
+  [nQConfiguration setParallel:0];
+  [nQConfiguration setDownload:1];
+  [nQConfiguration setUpload:0];
 
-  return v2;
+  return nQConfiguration;
 }
 
 - (NetworkQualityConfiguration)NQUploadConfiguration
 {
-  v2 = [(NPTPerformanceTestConfiguration *)self NQConfiguration];
-  [v2 setParallel:0];
-  [v2 setDownload:0];
-  [v2 setUpload:1];
+  nQConfiguration = [(NPTPerformanceTestConfiguration *)self NQConfiguration];
+  [nQConfiguration setParallel:0];
+  [nQConfiguration setDownload:0];
+  [nQConfiguration setUpload:1];
 
-  return v2;
+  return nQConfiguration;
 }
 
 - (NPTPerformanceTestConfiguration)init
@@ -115,15 +115,15 @@
   privateUploadURL = self->privateUploadURL;
   if (privateUploadURL)
   {
-    v3 = privateUploadURL;
+    cdnUploadURL = privateUploadURL;
   }
 
   else
   {
-    v3 = [(NPTPerformanceTestConfiguration *)self cdnUploadURL];
+    cdnUploadURL = [(NPTPerformanceTestConfiguration *)self cdnUploadURL];
   }
 
-  return v3;
+  return cdnUploadURL;
 }
 
 - (id)cdnUploadURL
@@ -146,15 +146,15 @@
   privateDownloadURL = self->privateDownloadURL;
   if (privateDownloadURL)
   {
-    v3 = privateDownloadURL;
+    cdnDownloadURL = privateDownloadURL;
   }
 
   else
   {
-    v3 = [(NPTPerformanceTestConfiguration *)self cdnDownloadURL];
+    cdnDownloadURL = [(NPTPerformanceTestConfiguration *)self cdnDownloadURL];
   }
 
-  return v3;
+  return cdnDownloadURL;
 }
 
 - (id)cdnDownloadURL
@@ -200,16 +200,16 @@
   privateClientName = self->privateClientName;
   if (privateClientName)
   {
-    v3 = privateClientName;
+    bundleIdentifier = privateClientName;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v3 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 + (id)defaultConfiguration
@@ -243,14 +243,14 @@
   return v2;
 }
 
-- (void)setInterfaceType:(int)a3
+- (void)setInterfaceType:(int)type
 {
-  self->_interfaceType = a3;
+  self->_interfaceType = type;
   v4 = [NPTPerformanceTestConfiguration evaluateInterfaceName:[(NPTPerformanceTestConfiguration *)self interfaceType]];
   [(NPTPerformanceTestConfiguration *)self setInterfaceName:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTPerformanceTestConfiguration allocWithZone:?]];
   [(NPTPerformanceTestConfiguration *)v4 setInterfaceType:[(NPTPerformanceTestConfiguration *)self interfaceType]];
@@ -260,21 +260,21 @@
   [(NPTPerformanceTestConfiguration *)v4 setPingAddressStyle:[(NPTPerformanceTestConfiguration *)self pingAddressStyle]];
   [(NPTPerformanceTestConfiguration *)v4 setPingCount:[(NPTPerformanceTestConfiguration *)self pingCount]];
   [(NPTPerformanceTestConfiguration *)v4 setCollectMetadata:[(NPTPerformanceTestConfiguration *)self collectMetadata]];
-  v5 = [(NPTPerformanceTestConfiguration *)self downloadURL];
-  [(NPTPerformanceTestConfiguration *)v4 setDownloadURL:v5];
+  downloadURL = [(NPTPerformanceTestConfiguration *)self downloadURL];
+  [(NPTPerformanceTestConfiguration *)v4 setDownloadURL:downloadURL];
 
-  v6 = [(NPTPerformanceTestConfiguration *)self uploadURL];
-  [(NPTPerformanceTestConfiguration *)v4 setUploadURL:v6];
+  uploadURL = [(NPTPerformanceTestConfiguration *)self uploadURL];
+  [(NPTPerformanceTestConfiguration *)v4 setUploadURL:uploadURL];
 
-  v7 = [(NPTPerformanceTestConfiguration *)self pingHost];
-  [(NPTPerformanceTestConfiguration *)v4 setPingHost:v7];
+  pingHost = [(NPTPerformanceTestConfiguration *)self pingHost];
+  [(NPTPerformanceTestConfiguration *)v4 setPingHost:pingHost];
 
   [(NPTPerformanceTestConfiguration *)v4 setConcurrentStreams:[(NPTPerformanceTestConfiguration *)self concurrentStreams]];
-  v8 = [(NPTPerformanceTestConfiguration *)self uuid];
-  [(NPTPerformanceTestConfiguration *)v4 setUuid:v8];
+  uuid = [(NPTPerformanceTestConfiguration *)self uuid];
+  [(NPTPerformanceTestConfiguration *)v4 setUuid:uuid];
 
-  v9 = [(NPTPerformanceTestConfiguration *)self clientName];
-  [(NPTPerformanceTestConfiguration *)v4 setClientName:v9];
+  clientName = [(NPTPerformanceTestConfiguration *)self clientName];
+  [(NPTPerformanceTestConfiguration *)v4 setClientName:clientName];
 
   [(NPTPerformanceTestConfiguration *)v4 setTestDuration:[(NPTPerformanceTestConfiguration *)self testDuration]];
   [(NPTPerformanceTestConfiguration *)v4 setEndWhenStable:[(NPTPerformanceTestConfiguration *)self endWhenStable]];
@@ -285,49 +285,49 @@
   return v4;
 }
 
-+ (id)evaluateInterfaceName:(int)a3
++ (id)evaluateInterfaceName:(int)name
 {
   v4 = objc_alloc_init(MEMORY[0x277CD91F0]);
   v5 = v4;
-  if (a3 > 2)
+  if (name > 2)
   {
     v6 = 0;
-    v9 = 0;
+    interfaceName = 0;
   }
 
   else
   {
-    [v4 setRequiredInterfaceType:qword_233476AC0[a3]];
+    [v4 setRequiredInterfaceType:qword_233476AC0[name]];
     v6 = [objc_alloc(MEMORY[0x277CD9200]) initWithEndpoint:0 parameters:v5];
-    v7 = [v6 path];
-    v8 = [v7 interface];
-    v9 = [v8 interfaceName];
+    path = [v6 path];
+    interface = [path interface];
+    interfaceName = [interface interfaceName];
   }
 
-  return v9;
+  return interfaceName;
 }
 
-+ (id)interfaceServiceName:(int)a3
++ (id)interfaceServiceName:(int)name
 {
-  if (a3 > 2)
+  if (name > 2)
   {
     return @"Unspecified";
   }
 
   else
   {
-    return off_2789D4318[a3];
+    return off_2789D4318[name];
   }
 }
 
 - (NSDictionary)asDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(NPTPerformanceTestConfiguration *)self clientName];
-  v5 = v4;
-  if (v4)
+  clientName = [(NPTPerformanceTestConfiguration *)self clientName];
+  v5 = clientName;
+  if (clientName)
   {
-    v6 = v4;
+    v6 = clientName;
   }
 
   else
@@ -355,11 +355,11 @@
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[NPTPerformanceTestConfiguration stopAtFileSize](self, "stopAtFileSize")}];
   [v3 setObject:v12 forKeyedSubscript:@"stop_at_file_size"];
 
-  v13 = [(NPTPerformanceTestConfiguration *)self interfaceName];
-  v14 = v13;
-  if (v13)
+  interfaceName = [(NPTPerformanceTestConfiguration *)self interfaceName];
+  v14 = interfaceName;
+  if (interfaceName)
   {
-    v15 = v13;
+    v15 = interfaceName;
   }
 
   else
@@ -399,7 +399,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NPTPerformanceTestConfiguration *)self testDuration];
+  testDuration = [(NPTPerformanceTestConfiguration *)self testDuration];
   if ([(NPTPerformanceTestConfiguration *)self endWhenStable])
   {
     v5 = @"YES";
@@ -410,7 +410,7 @@
     v5 = @"NO";
   }
 
-  v6 = [(NPTPerformanceTestConfiguration *)self concurrentStreams];
+  concurrentStreams = [(NPTPerformanceTestConfiguration *)self concurrentStreams];
   if ([(NPTPerformanceTestConfiguration *)self customURLSet])
   {
     v7 = @"YES";
@@ -442,15 +442,15 @@
     v10 = @"NO";
   }
 
-  v11 = [v3 stringWithFormat:@"Test Duration: %lu, End when stable: %@, Number of concurrent streams: %lu, \nCustom URL set: %@, Use Secure Connection: %@, Interface type: %@, Legacy Mode: %@ \n", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"Test Duration: %lu, End when stable: %@, Number of concurrent streams: %lu, \nCustom URL set: %@, Use Secure Connection: %@, Interface type: %@, Legacy Mode: %@ \n", testDuration, v5, concurrentStreams, v7, v8, v9, v10];
 
-  v12 = [(NPTPerformanceTestConfiguration *)self interfaceName];
+  interfaceName = [(NPTPerformanceTestConfiguration *)self interfaceName];
 
-  if (v12)
+  if (interfaceName)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(NPTPerformanceTestConfiguration *)self interfaceName];
-    v15 = [v13 stringWithFormat:@", interface name: %@", v14];
+    interfaceName2 = [(NPTPerformanceTestConfiguration *)self interfaceName];
+    v15 = [v13 stringWithFormat:@", interface name: %@", interfaceName2];
 
     v16 = [v11 stringByAppendingString:v15];
 
@@ -460,75 +460,75 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:-[NPTPerformanceTestConfiguration interfaceType](self forKey:{"interfaceType"), @"interfaceType"}];
-  [v9 encodeInteger:-[NPTPerformanceTestConfiguration downloadSize](self forKey:{"downloadSize"), @"downloadSize"}];
-  [v9 encodeInteger:-[NPTPerformanceTestConfiguration uploadSize](self forKey:{"uploadSize"), @"uploadSize"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration useSecureConnection](self forKey:{"useSecureConnection"), @"useSecureConnection"}];
-  [v9 encodeInteger:-[NPTPerformanceTestConfiguration pingAddressStyle](self forKey:{"pingAddressStyle"), @"pingAddressStyle"}];
-  [v9 encodeInt64:-[NPTPerformanceTestConfiguration pingCount](self forKey:{"pingCount"), @"pingCount"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration collectMetadata](self forKey:{"collectMetadata"), @"collectMetadata"}];
-  v4 = [(NPTPerformanceTestConfiguration *)self downloadURL];
-  [v9 encodeObject:v4 forKey:@"downloadURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NPTPerformanceTestConfiguration interfaceType](self forKey:{"interfaceType"), @"interfaceType"}];
+  [coderCopy encodeInteger:-[NPTPerformanceTestConfiguration downloadSize](self forKey:{"downloadSize"), @"downloadSize"}];
+  [coderCopy encodeInteger:-[NPTPerformanceTestConfiguration uploadSize](self forKey:{"uploadSize"), @"uploadSize"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration useSecureConnection](self forKey:{"useSecureConnection"), @"useSecureConnection"}];
+  [coderCopy encodeInteger:-[NPTPerformanceTestConfiguration pingAddressStyle](self forKey:{"pingAddressStyle"), @"pingAddressStyle"}];
+  [coderCopy encodeInt64:-[NPTPerformanceTestConfiguration pingCount](self forKey:{"pingCount"), @"pingCount"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration collectMetadata](self forKey:{"collectMetadata"), @"collectMetadata"}];
+  downloadURL = [(NPTPerformanceTestConfiguration *)self downloadURL];
+  [coderCopy encodeObject:downloadURL forKey:@"downloadURL"];
 
-  v5 = [(NPTPerformanceTestConfiguration *)self uploadURL];
-  [v9 encodeObject:v5 forKey:@"uploadURL"];
+  uploadURL = [(NPTPerformanceTestConfiguration *)self uploadURL];
+  [coderCopy encodeObject:uploadURL forKey:@"uploadURL"];
 
-  v6 = [(NPTPerformanceTestConfiguration *)self pingHost];
-  [v9 encodeObject:v6 forKey:@"pingHost"];
+  pingHost = [(NPTPerformanceTestConfiguration *)self pingHost];
+  [coderCopy encodeObject:pingHost forKey:@"pingHost"];
 
-  [v9 encodeInteger:-[NPTPerformanceTestConfiguration concurrentStreams](self forKey:{"concurrentStreams"), @"concurrentStreams"}];
-  v7 = [(NPTPerformanceTestConfiguration *)self uuid];
-  [v9 encodeObject:v7 forKey:@"uuid"];
+  [coderCopy encodeInteger:-[NPTPerformanceTestConfiguration concurrentStreams](self forKey:{"concurrentStreams"), @"concurrentStreams"}];
+  uuid = [(NPTPerformanceTestConfiguration *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v8 = [(NPTPerformanceTestConfiguration *)self clientName];
-  [v9 encodeObject:v8 forKey:@"clientName"];
+  clientName = [(NPTPerformanceTestConfiguration *)self clientName];
+  [coderCopy encodeObject:clientName forKey:@"clientName"];
 
-  [v9 encodeInt64:-[NPTPerformanceTestConfiguration testDuration](self forKey:{"testDuration"), @"testDuration"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration endWhenStable](self forKey:{"endWhenStable"), @"endWhenStable"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration stopAtFileSize](self forKey:{"stopAtFileSize"), @"stopAtFileSize"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration collectWRMMetrics](self forKey:{"collectWRMMetrics"), @"collectWRMMetrics"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration legacyMode](self forKey:{"legacyMode"), @"legacyMode"}];
-  [v9 encodeBool:-[NPTPerformanceTestConfiguration multiStream](self forKey:{"multiStream"), @"multiStream"}];
+  [coderCopy encodeInt64:-[NPTPerformanceTestConfiguration testDuration](self forKey:{"testDuration"), @"testDuration"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration endWhenStable](self forKey:{"endWhenStable"), @"endWhenStable"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration stopAtFileSize](self forKey:{"stopAtFileSize"), @"stopAtFileSize"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration collectWRMMetrics](self forKey:{"collectWRMMetrics"), @"collectWRMMetrics"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration legacyMode](self forKey:{"legacyMode"), @"legacyMode"}];
+  [coderCopy encodeBool:-[NPTPerformanceTestConfiguration multiStream](self forKey:{"multiStream"), @"multiStream"}];
 }
 
-- (NPTPerformanceTestConfiguration)initWithCoder:(id)a3
+- (NPTPerformanceTestConfiguration)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = NPTPerformanceTestConfiguration;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTPerformanceTestConfiguration *)&v12 init];
-  -[NPTPerformanceTestConfiguration setInterfaceType:](v4, "setInterfaceType:", [v3 decodeIntegerForKey:{@"interfaceType", v12.receiver, v12.super_class}]);
-  -[NPTPerformanceTestConfiguration setDownloadSize:](v4, "setDownloadSize:", [v3 decodeIntegerForKey:@"downloadSize"]);
-  -[NPTPerformanceTestConfiguration setUploadSize:](v4, "setUploadSize:", [v3 decodeIntegerForKey:@"uploadSize"]);
-  -[NPTPerformanceTestConfiguration setUseSecureConnection:](v4, "setUseSecureConnection:", [v3 decodeBoolForKey:@"useSecureConnection"]);
-  -[NPTPerformanceTestConfiguration setPingAddressStyle:](v4, "setPingAddressStyle:", [v3 decodeIntegerForKey:@"pingAddressStyle"]);
-  -[NPTPerformanceTestConfiguration setPingCount:](v4, "setPingCount:", [v3 decodeInt64ForKey:@"pingCount"]);
-  -[NPTPerformanceTestConfiguration setCollectMetadata:](v4, "setCollectMetadata:", [v3 decodeBoolForKey:@"collectMetadata"]);
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"downloadURL"];
+  -[NPTPerformanceTestConfiguration setInterfaceType:](v4, "setInterfaceType:", [coderCopy decodeIntegerForKey:{@"interfaceType", v12.receiver, v12.super_class}]);
+  -[NPTPerformanceTestConfiguration setDownloadSize:](v4, "setDownloadSize:", [coderCopy decodeIntegerForKey:@"downloadSize"]);
+  -[NPTPerformanceTestConfiguration setUploadSize:](v4, "setUploadSize:", [coderCopy decodeIntegerForKey:@"uploadSize"]);
+  -[NPTPerformanceTestConfiguration setUseSecureConnection:](v4, "setUseSecureConnection:", [coderCopy decodeBoolForKey:@"useSecureConnection"]);
+  -[NPTPerformanceTestConfiguration setPingAddressStyle:](v4, "setPingAddressStyle:", [coderCopy decodeIntegerForKey:@"pingAddressStyle"]);
+  -[NPTPerformanceTestConfiguration setPingCount:](v4, "setPingCount:", [coderCopy decodeInt64ForKey:@"pingCount"]);
+  -[NPTPerformanceTestConfiguration setCollectMetadata:](v4, "setCollectMetadata:", [coderCopy decodeBoolForKey:@"collectMetadata"]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadURL"];
   [(NPTPerformanceTestConfiguration *)v4 setDownloadURL:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"];
   [(NPTPerformanceTestConfiguration *)v4 setUploadURL:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pingHost"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pingHost"];
   [(NPTPerformanceTestConfiguration *)v4 setPingHost:v7];
 
-  -[NPTPerformanceTestConfiguration setConcurrentStreams:](v4, "setConcurrentStreams:", [v3 decodeIntegerForKey:@"concurrentStreams"]);
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  -[NPTPerformanceTestConfiguration setConcurrentStreams:](v4, "setConcurrentStreams:", [coderCopy decodeIntegerForKey:@"concurrentStreams"]);
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   [(NPTPerformanceTestConfiguration *)v4 setUuid:v8];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
   [(NPTPerformanceTestConfiguration *)v4 setClientName:v9];
 
-  -[NPTPerformanceTestConfiguration setTestDuration:](v4, "setTestDuration:", [v3 decodeInt64ForKey:@"testDuration"]);
-  -[NPTPerformanceTestConfiguration setEndWhenStable:](v4, "setEndWhenStable:", [v3 decodeBoolForKey:@"endWhenStable"]);
-  -[NPTPerformanceTestConfiguration setStopAtFileSize:](v4, "setStopAtFileSize:", [v3 decodeBoolForKey:@"stopAtFileSize"]);
-  -[NPTPerformanceTestConfiguration setCollectWRMMetrics:](v4, "setCollectWRMMetrics:", [v3 decodeBoolForKey:@"collectWRMMetrics"]);
-  -[NPTPerformanceTestConfiguration setLegacyMode:](v4, "setLegacyMode:", [v3 decodeBoolForKey:@"legacyMode"]);
-  v10 = [v3 decodeBoolForKey:@"multiStream"];
+  -[NPTPerformanceTestConfiguration setTestDuration:](v4, "setTestDuration:", [coderCopy decodeInt64ForKey:@"testDuration"]);
+  -[NPTPerformanceTestConfiguration setEndWhenStable:](v4, "setEndWhenStable:", [coderCopy decodeBoolForKey:@"endWhenStable"]);
+  -[NPTPerformanceTestConfiguration setStopAtFileSize:](v4, "setStopAtFileSize:", [coderCopy decodeBoolForKey:@"stopAtFileSize"]);
+  -[NPTPerformanceTestConfiguration setCollectWRMMetrics:](v4, "setCollectWRMMetrics:", [coderCopy decodeBoolForKey:@"collectWRMMetrics"]);
+  -[NPTPerformanceTestConfiguration setLegacyMode:](v4, "setLegacyMode:", [coderCopy decodeBoolForKey:@"legacyMode"]);
+  v10 = [coderCopy decodeBoolForKey:@"multiStream"];
 
   [(NPTPerformanceTestConfiguration *)v4 setMultiStream:v10];
   return v4;

@@ -8,20 +8,20 @@
 - (void)dealloc;
 - (void)fireImmediately;
 - (void)requestFire;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation ICSelectorDelayer
 
 - (void)dealloc
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100068674;
   block[3] = &unk_1008D9990;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   v4.receiver = self;
   v4.super_class = ICSelectorDelayer;
@@ -30,24 +30,24 @@
 
 - (void)requestFire
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100068704;
   block[3] = &unk_1008D9990;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 - (void)fireImmediately
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100068A6C;
   block[3] = &unk_1008D9990;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   if ([(ICSelectorDelayer *)self callOnMainThread]&& !+[NSThread isMainThread])
   {
@@ -67,13 +67,13 @@
 
 - (void)callTargetSelector
 {
-  v3 = [(ICSelectorDelayer *)self target];
-  v4 = [v3 methodForSelector:{-[ICSelectorDelayer selector](self, "selector")}];
+  target = [(ICSelectorDelayer *)self target];
+  v4 = [target methodForSelector:{-[ICSelectorDelayer selector](self, "selector")}];
 
   if (v4)
   {
-    v6 = [(ICSelectorDelayer *)self target];
-    v4(v6, [(ICSelectorDelayer *)self selector]);
+    target2 = [(ICSelectorDelayer *)self target];
+    v4(target2, [(ICSelectorDelayer *)self selector]);
   }
 
   else
@@ -88,44 +88,44 @@
 
 - (BOOL)isScheduledToFire
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100068C30;
   v5[3] = &unk_1008D9A28;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(requestQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)cancelPreviousFireRequests
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100068D08;
   block[3] = &unk_1008D9990;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 - (void)_cancelFireRequests
 {
-  v3 = [(ICSelectorDelayer *)self fireBlock];
+  fireBlock = [(ICSelectorDelayer *)self fireBlock];
 
-  if (v3)
+  if (fireBlock)
   {
-    v4 = [(ICSelectorDelayer *)self fireBlock];
-    dispatch_block_cancel(v4);
+    fireBlock2 = [(ICSelectorDelayer *)self fireBlock];
+    dispatch_block_cancel(fireBlock2);
 
     [(ICSelectorDelayer *)self setFireBlock:0];
   }
@@ -151,19 +151,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

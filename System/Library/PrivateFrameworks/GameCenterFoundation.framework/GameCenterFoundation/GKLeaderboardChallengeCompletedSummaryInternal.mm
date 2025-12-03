@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeCompletedSummaryInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeCompletedSummaryInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeCompletedSummaryInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeCompletedSummaryInternal
@@ -47,28 +47,28 @@ void __73__GKLeaderboardChallengeCompletedSummaryInternal_secureCodedPropertyKey
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeCompletedSummaryInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeCompletedSummaryInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = GKLeaderboardChallengeCompletedSummaryInternal;
   v5 = [(GKLeaderboardChallengeCompletedSummaryInternal *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"total-count"];
+    v6 = [representationCopy objectForKeyedSubscript:@"total-count"];
     [(GKLeaderboardChallengeCompletedSummaryInternal *)v5 setTotalCount:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"total-games"];
+    v7 = [representationCopy objectForKeyedSubscript:@"total-games"];
     [(GKLeaderboardChallengeCompletedSummaryInternal *)v5 setTotalGames:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"total-friends"];
+    v8 = [representationCopy objectForKeyedSubscript:@"total-friends"];
     [(GKLeaderboardChallengeCompletedSummaryInternal *)v5 setTotalFriends:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"by-games"];
+    v9 = [representationCopy objectForKeyedSubscript:@"by-games"];
     v10 = [v9 _gkMapWithBlock:&__block_literal_global_702];
     [(GKLeaderboardChallengeCompletedSummaryInternal *)v5 setGameCounts:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"by-players"];
+    v11 = [representationCopy objectForKeyedSubscript:@"by-players"];
     v12 = [v11 _gkMapWithBlock:&__block_literal_global_707];
     [(GKLeaderboardChallengeCompletedSummaryInternal *)v5 setPlayerCounts:v12];
   }

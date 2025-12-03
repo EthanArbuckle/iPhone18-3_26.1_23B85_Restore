@@ -1,12 +1,12 @@
 @interface TSUStreamCompression
-- (BOOL)processBytes:(char *)a3 size:(unint64_t)a4 flags:(int)a5;
-- (TSUStreamCompression)initWithAlgorithm:(int)a3 operation:(int)a4;
+- (BOOL)processBytes:(char *)bytes size:(unint64_t)size flags:(int)flags;
+- (TSUStreamCompression)initWithAlgorithm:(int)algorithm operation:(int)operation;
 - (void)dealloc;
 @end
 
 @implementation TSUStreamCompression
 
-- (TSUStreamCompression)initWithAlgorithm:(int)a3 operation:(int)a4
+- (TSUStreamCompression)initWithAlgorithm:(int)algorithm operation:(int)operation
 {
   v9.receiver = self;
   v9.super_class = TSUStreamCompression;
@@ -14,12 +14,12 @@
   v7 = v6;
   if (v6)
   {
-    compression_stream_init((v6 + 16), a4, a3);
+    compression_stream_init((v6 + 16), operation, algorithm);
     v7->_stream.dst_ptr = &unk_280A63E68;
     v7->_stream.dst_size = 0;
     v7->_stream.src_ptr = &unk_280A63E68;
     v7->_stream.src_size = 0;
-    v7->_operation = a4;
+    v7->_operation = operation;
     v7->_status = 0;
   }
 
@@ -34,17 +34,17 @@
   [(TSUStreamCompression *)&v3 dealloc];
 }
 
-- (BOOL)processBytes:(char *)a3 size:(unint64_t)a4 flags:(int)a5
+- (BOOL)processBytes:(char *)bytes size:(unint64_t)size flags:(int)flags
 {
   status = self->_status;
   if (status)
   {
-    return !a4 && status == 1;
+    return !size && status == 1;
   }
 
   v10 = MEMORY[0x277D85CB0];
-  self->_stream.src_ptr = a3;
-  self->_stream.src_size = a4;
+  self->_stream.src_ptr = bytes;
+  self->_stream.src_size = size;
   v11 = *v10;
   v12 = *MEMORY[0x277CCA050];
   v13 = MEMORY[0x277D85CC8];
@@ -82,7 +82,7 @@ LABEL_46:
       if (!v14)
       {
 LABEL_10:
-        v14 = compression_stream_process(&self->_stream, a5);
+        v14 = compression_stream_process(&self->_stream, flags);
       }
     }
 
@@ -151,7 +151,7 @@ LABEL_36:
       break;
     }
 
-    if (a5 != 1 && !self->_stream.src_size)
+    if (flags != 1 && !self->_stream.src_size)
     {
       result = 1;
       goto LABEL_43;

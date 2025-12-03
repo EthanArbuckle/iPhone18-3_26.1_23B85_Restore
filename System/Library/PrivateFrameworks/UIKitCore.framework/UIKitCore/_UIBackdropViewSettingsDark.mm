@@ -1,5 +1,5 @@
 @interface _UIBackdropViewSettingsDark
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)setDefaultValues;
 @end
 
@@ -62,13 +62,13 @@ LABEL_7:
   self->super._legibleColor = v15;
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5.receiver = self;
   v5.super_class = _UIBackdropViewSettingsDark;
-  [(_UIBackdropViewSettings *)&v5 computeOutputSettingsUsingModel:v4];
-  if (v4[4] == 10 && v4[7] == 2)
+  [(_UIBackdropViewSettings *)&v5 computeOutputSettingsUsingModel:modelCopy];
+  if (modelCopy[4] == 10 && modelCopy[7] == 2)
   {
     self->super._grayscaleTintAlpha = 0.86;
   }

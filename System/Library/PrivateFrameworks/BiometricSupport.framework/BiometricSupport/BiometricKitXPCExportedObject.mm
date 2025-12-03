@@ -1,94 +1,94 @@
 @interface BiometricKitXPCExportedObject
 - (BiometricKitXPCExportedObject)init;
-- (id)client:(unint64_t)a3;
+- (id)client:(unint64_t)client;
 - (id)clients;
-- (id)entitlementsNeededForPermissionGroup:(int)a3;
-- (int64_t)clientThrottleRatio:(id)a3;
-- (unsigned)hashClientName:(id)a3;
-- (void)cancel:(unint64_t)a3 replyBlock:(id)a4;
-- (void)completeEnrollment:(unint64_t)a3 replyBlock:(id)a4;
-- (void)connect:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
+- (id)entitlementsNeededForPermissionGroup:(int)group;
+- (int64_t)clientThrottleRatio:(id)ratio;
+- (unsigned)hashClientName:(id)name;
+- (void)cancel:(unint64_t)cancel replyBlock:(id)block;
+- (void)completeEnrollment:(unint64_t)enrollment replyBlock:(id)block;
+- (void)connect:(id)connect client:(unint64_t)client replyBlock:(id)block;
 - (void)dealloc;
-- (void)detectPresenceWithOptions:(id)a3 async:(BOOL)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)disconnect:(unint64_t)a3 replyBlock:(id)a4;
-- (void)dropUnlockToken:(unint64_t)a3 replyBlock:(id)a4;
-- (void)enroll:(int)a3 user:(unsigned int)a4 options:(id)a5 async:(BOOL)a6 client:(unint64_t)a7 replyBlock:(id)a8;
-- (void)enrollContinue:(unint64_t)a3 replyBlock:(id)a4;
-- (void)fileRadarWithLogs:(id)a3 description:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)getCalibrationDataInfo:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getCountersignedStoreToken:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getDeviceHardwareState:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getDeviceState:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getIdentityFromUUID:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)getLastMatchEvent:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getNodeTopologyForIdentity:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)getPreferencesValueForKey:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)getProvisioningState:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getSensorCalibrationStatus:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getSensorInfo:(unint64_t)a3 replyBlock:(id)a4;
-- (void)getSystemProtectedConfiguration:(unint64_t)a3 replyBlock:(id)a4;
-- (void)identities:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)isAriadneSignpostsEnabled:(unint64_t)a3 replyBlock:(id)a4;
-- (void)isFingerOn:(unint64_t)a3 replyBlock:(id)a4;
-- (void)isPeriocularEnrollmentSupported:(unint64_t)a3 replyBlock:(id)a4;
-- (void)isXARTAvailable:(unint64_t)a3 replyBlock:(id)a4;
-- (void)listAccessories:(unint64_t)a3 replyBlock:(id)a4;
-- (void)logEventOrCode:(unint64_t)a3;
-- (void)match:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7;
-- (void)notifyAppIsBackground:(BOOL)a3 client:(unint64_t)a4;
-- (void)notifyAppIsInactive:(BOOL)a3 client:(unint64_t)a4;
-- (void)prewarmCamera:(unint64_t)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)pullAlignmentData:(unint64_t)a3 replyBlock:(id)a4;
-- (void)pullCalibrationData:(unint64_t)a3 replyBlock:(id)a4;
-- (void)pullCaptureBuffer:(unint64_t)a3 replyBlock:(id)a4;
-- (void)pullMatchPolicyInfoData:(unint64_t)a3 replyBlock:(id)a4;
-- (void)registerDSID:(unint64_t)a3 options:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)registerStoreToken:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5;
-- (void)removeAllIdentitiesForUser:(unsigned int)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7;
-- (void)removeIdentity:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7;
-- (void)removePeriocularTemplatesWithOptions:(id)a3 async:(BOOL)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)resetAppleConnectCounter:(unint64_t)a3 replyBlock:(id)a4;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)setProtectedConfiguration:(id)a3 user:(unsigned int)a4 options:(id)a5 async:(BOOL)a6 client:(unint64_t)a7 replyBlock:(id)a8;
-- (void)setSystemProtectedConfiguration:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7;
-- (void)setTemplate:(id)a3 forIdentity:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)setUserDSID:(unint64_t)a3 options:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)startNewMatchAttempt:(unint64_t)a3 replyBlock:(id)a4;
+- (void)detectPresenceWithOptions:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)disconnect:(unint64_t)disconnect replyBlock:(id)block;
+- (void)dropUnlockToken:(unint64_t)token replyBlock:(id)block;
+- (void)enroll:(int)enroll user:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)enrollContinue:(unint64_t)continue replyBlock:(id)block;
+- (void)fileRadarWithLogs:(id)logs description:(id)description client:(unint64_t)client replyBlock:(id)block;
+- (void)getCalibrationDataInfo:(unint64_t)info replyBlock:(id)block;
+- (void)getCountersignedStoreToken:(unint64_t)token replyBlock:(id)block;
+- (void)getDeviceHardwareState:(unint64_t)state replyBlock:(id)block;
+- (void)getDeviceState:(unint64_t)state replyBlock:(id)block;
+- (void)getIdentityFromUUID:(id)d client:(unint64_t)client replyBlock:(id)block;
+- (void)getLastMatchEvent:(unint64_t)event replyBlock:(id)block;
+- (void)getNodeTopologyForIdentity:(id)identity client:(unint64_t)client replyBlock:(id)block;
+- (void)getPreferencesValueForKey:(id)key client:(unint64_t)client replyBlock:(id)block;
+- (void)getProvisioningState:(unint64_t)state replyBlock:(id)block;
+- (void)getSensorCalibrationStatus:(unint64_t)status replyBlock:(id)block;
+- (void)getSensorInfo:(unint64_t)info replyBlock:(id)block;
+- (void)getSystemProtectedConfiguration:(unint64_t)configuration replyBlock:(id)block;
+- (void)identities:(id)identities client:(unint64_t)client replyBlock:(id)block;
+- (void)isAriadneSignpostsEnabled:(unint64_t)enabled replyBlock:(id)block;
+- (void)isFingerOn:(unint64_t)on replyBlock:(id)block;
+- (void)isPeriocularEnrollmentSupported:(unint64_t)supported replyBlock:(id)block;
+- (void)isXARTAvailable:(unint64_t)available replyBlock:(id)block;
+- (void)listAccessories:(unint64_t)accessories replyBlock:(id)block;
+- (void)logEventOrCode:(unint64_t)code;
+- (void)match:(id)match options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)notifyAppIsBackground:(BOOL)background client:(unint64_t)client;
+- (void)notifyAppIsInactive:(BOOL)inactive client:(unint64_t)client;
+- (void)prewarmCamera:(unint64_t)camera client:(unint64_t)client replyBlock:(id)block;
+- (void)pullAlignmentData:(unint64_t)data replyBlock:(id)block;
+- (void)pullCalibrationData:(unint64_t)data replyBlock:(id)block;
+- (void)pullCaptureBuffer:(unint64_t)buffer replyBlock:(id)block;
+- (void)pullMatchPolicyInfoData:(unint64_t)data replyBlock:(id)block;
+- (void)registerDSID:(unint64_t)d options:(id)options client:(unint64_t)client replyBlock:(id)block;
+- (void)registerStoreToken:(id)token client:(unint64_t)client replyBlock:(id)block;
+- (void)removeAllIdentitiesForUser:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)removeIdentity:(id)identity options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)removePeriocularTemplatesWithOptions:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)resetAppleConnectCounter:(unint64_t)counter replyBlock:(id)block;
+- (void)setPreferencesValue:(id)value forKey:(id)key client:(unint64_t)client replyBlock:(id)block;
+- (void)setProtectedConfiguration:(id)configuration user:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)setSystemProtectedConfiguration:(id)configuration options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
+- (void)setTemplate:(id)template forIdentity:(id)identity client:(unint64_t)client replyBlock:(id)block;
+- (void)setUserDSID:(unint64_t)d options:(id)options client:(unint64_t)client replyBlock:(id)block;
+- (void)startNewMatchAttempt:(unint64_t)attempt replyBlock:(id)block;
 - (void)terminate;
-- (void)timestampEvent:(unint64_t)a3 absoluteTime:(unint64_t)a4 client:(unint64_t)a5 replyBlock:(id)a6;
-- (void)updateIdentity:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7;
+- (void)timestampEvent:(unint64_t)event absoluteTime:(unint64_t)time client:(unint64_t)client replyBlock:(id)block;
+- (void)updateIdentity:(id)identity options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block;
 @end
 
 @implementation BiometricKitXPCExportedObject
 
 - (id)clients
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_clients allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_clients allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
-- (id)entitlementsNeededForPermissionGroup:(int)a3
+- (id)entitlementsNeededForPermissionGroup:(int)group
 {
-  if (a3 > 7)
+  if (group > 7)
   {
     return @"(unknown)";
   }
 
   else
   {
-    return off_2784FA358[a3];
+    return off_2784FA358[group];
   }
 }
 
-- (unsigned)hashClientName:(id)a3
+- (unsigned)hashClientName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 cStringUsingEncoding:1];
+  nameCopy = name;
+  v4 = [nameCopy cStringUsingEncoding:1];
   if (v4)
   {
     v5 = *v4;
@@ -127,7 +127,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = nameCopy;
       _os_log_impl(&dword_223E00000, v9, OS_LOG_TYPE_ERROR, "Invalid bundleId %@\n", &v12, 0xCu);
     }
 
@@ -138,19 +138,19 @@
   return v7;
 }
 
-- (int64_t)clientThrottleRatio:(id)a3
+- (int64_t)clientThrottleRatio:(id)ratio
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ratioCopy = ratio;
   if (clientThrottleRatio__once != -1)
   {
     [BiometricKitXPCExportedObject clientThrottleRatio:];
   }
 
-  v5 = [(BiometricKitXPCExportedObject *)self currentPlatform];
-  if (v4)
+  currentPlatform = [(BiometricKitXPCExportedObject *)self currentPlatform];
+  if (ratioCopy)
   {
-    v6 = [(BiometricKitXPCExportedObject *)self hashClientName:v4];
+    v6 = [(BiometricKitXPCExportedObject *)self hashClientName:ratioCopy];
     v7 = clientThrottleRatio__graylisted;
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
     v9 = [v7 objectForKeyedSubscript:v8];
@@ -182,9 +182,9 @@
             {
               v16 = [v15 objectAtIndexedSubscript:0];
               v17 = [v15 objectAtIndexedSubscript:1];
-              if ([v5 isEqualToString:v16])
+              if ([currentPlatform isEqualToString:v16])
               {
-                v18 = [v17 integerValue];
+                integerValue = [v17 integerValue];
 
                 goto LABEL_19;
               }
@@ -200,26 +200,26 @@
           break;
         }
 
-        v18 = 0;
+        integerValue = 0;
 LABEL_19:
         v9 = v22;
       }
 
       else
       {
-        v18 = 0;
+        integerValue = 0;
       }
     }
 
     else
     {
-      v18 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    integerValue = 0;
   }
 
   if (__osLog)
@@ -235,16 +235,16 @@ LABEL_19:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v28 = v4;
+    v28 = ratioCopy;
     v29 = 2112;
-    v30 = v5;
+    v30 = currentPlatform;
     v31 = 1024;
-    v32 = v18;
+    v32 = integerValue;
     _os_log_impl(&dword_223E00000, v19, OS_LOG_TYPE_INFO, "Client %@/%@ throttling value=%d\n", buf, 0x1Cu);
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v18;
+  return integerValue;
 }
 
 void __53__BiometricKitXPCExportedObject_clientThrottleRatio___block_invoke()
@@ -536,9 +536,9 @@ void __53__BiometricKitXPCExportedObject_clientThrottleRatio___block_invoke()
   v2 = [(BiometricKitXPCExportedObject *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clients = v2->_clients;
-    v2->_clients = v3;
+    v2->_clients = dictionary;
   }
 
   return v2;
@@ -555,15 +555,15 @@ void __53__BiometricKitXPCExportedObject_clientThrottleRatio___block_invoke()
   [(BiometricKitXPCExportedObject *)&v4 dealloc];
 }
 
-- (id)client:(unint64_t)a3
+- (id)client:(unint64_t)client
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  clients = v4->_clients;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clients = selfCopy->_clients;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:client];
   v7 = [(NSMutableDictionary *)clients objectForKey:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -573,14 +573,14 @@ void __53__BiometricKitXPCExportedObject_clientThrottleRatio___block_invoke()
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
   v4 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject terminate]"];
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)v5->_clients allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_clients allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -591,50 +591,50 @@ void __53__BiometricKitXPCExportedObject_clientThrottleRatio___block_invoke()
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [(BiometricKitXPCServer *)v5->_server cancelWithClient:*(*(&v11 + 1) + 8 * v9++)];
+        [(BiometricKitXPCServer *)selfCopy->_server cancelWithClient:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(NSMutableDictionary *)v5->_clients removeAllObjects];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_clients removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   objc_autoreleasePoolPop(v3);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connect:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)connect:(id)connect client:(unint64_t)client replyBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  connectCopy = connect;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject connect:client:replyBlock:]"];
-  if (![(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject connect:client:replyBlock:]"])
+  if (![(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject connect:client:replyBlock:]"])
   {
     [BiometricKitXPCExportedObject connect:client:replyBlock:];
     v30 = *buf;
     goto LABEL_23;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  clients = v12->_clients;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clients = selfCopy->_clients;
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:client];
   v15 = [(NSMutableDictionary *)clients objectForKey:v14];
 
   if (v15)
   {
-    v16 = [(BiometricKitXPCExportedClientObject *)v15 clientInfo];
-    v17 = [v16 isEqualToDictionary:v8];
+    clientInfo = [(BiometricKitXPCExportedClientObject *)v15 clientInfo];
+    v17 = [clientInfo isEqualToDictionary:connectCopy];
 
     if ((v17 & 1) == 0)
     {
@@ -648,28 +648,28 @@ LABEL_26:
 
   else
   {
-    v15 = [[BiometricKitXPCExportedClientObject alloc] initWithClientID:a4 clientInfo:v8 exportedObject:v12];
+    v15 = [[BiometricKitXPCExportedClientObject alloc] initWithClientID:client clientInfo:connectCopy exportedObject:selfCopy];
     if (!v15)
     {
       [BiometricKitXPCExportedObject connect:client:replyBlock:];
       goto LABEL_26;
     }
 
-    v18 = v12->_clients;
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+    v18 = selfCopy->_clients;
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:client];
     [(NSMutableDictionary *)v18 setObject:v15 forKey:v19];
   }
 
-  if (([(BiometricKitXPCExportedObject *)v12 clientEntitlement]& 1) != 0 && isInternalBuild())
+  if (([(BiometricKitXPCExportedObject *)selfCopy clientEntitlement]& 1) != 0 && isInternalBuild())
   {
-    v20 = [(BiometricKitXPCExportedClientObject *)v15 name];
-    v21 = [(BiometricKitXPCExportedClientObject *)v15 processName];
-    v22 = [(BiometricKitXPCExportedClientObject *)v15 uuid];
-    v33 = [(BiometricKitXPCExportedObject *)v12 currentPlatform];
+    name = [(BiometricKitXPCExportedClientObject *)v15 name];
+    processName = [(BiometricKitXPCExportedClientObject *)v15 processName];
+    uuid = [(BiometricKitXPCExportedClientObject *)v15 uuid];
+    currentPlatform = [(BiometricKitXPCExportedObject *)selfCopy currentPlatform];
     v23 = @"<unknown_process_name>";
-    if (v21)
+    if (processName)
     {
-      v23 = v21;
+      v23 = processName;
     }
 
     v32 = v23;
@@ -682,17 +682,17 @@ LABEL_26:
     v25 = v24;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(BiometricKitXPCExportedObject *)v12 connection];
+      connection = [(BiometricKitXPCExportedObject *)selfCopy connection];
       *buf = 138412802;
-      *&buf[4] = v20;
+      *&buf[4] = name;
       v36 = 2112;
-      v37 = v22;
+      v37 = uuid;
       v38 = 1024;
-      v39 = [v26 processIdentifier];
+      processIdentifier = [connection processIdentifier];
       _os_log_impl(&dword_223E00000, v25, OS_LOG_TYPE_ERROR, "Client %@[uuid=%@] with PID %d does have legacy entitlement com.apple.private.bmk.allow, please set one of fine grained entitlements com.apple.private.biometrickit.allow-*\n", buf, 0x1Cu);
     }
 
-    v27 = [(BiometricKitXPCExportedObject *)v12 clientThrottleRatio:v20];
+    v27 = [(BiometricKitXPCExportedObject *)selfCopy clientThrottleRatio:name];
     if (v27)
     {
       if (arc4random_uniform(v27))
@@ -703,16 +703,16 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v28 = [(BiometricKitXPCExportedObject *)v12 server];
-      v29 = [v28 reporter];
-      [v29 reportGraylistedClient:v20 withProcessName:v32 clientUUID:v22 platform:v33];
+      server = [(BiometricKitXPCExportedObject *)selfCopy server];
+      reporter = [server reporter];
+      [reporter reportGraylistedClient:name withProcessName:v32 clientUUID:uuid platform:currentPlatform];
     }
 
     else
     {
-      v28 = [(BiometricKitXPCExportedObject *)v12 server];
-      v29 = [v28 reporter];
-      [v29 reportLegacyClient:v20 withProcessName:v32 clientUUID:v22 platform:v33];
+      server = [(BiometricKitXPCExportedObject *)selfCopy server];
+      reporter = [server reporter];
+      [reporter reportLegacyClient:name withProcessName:v32 clientUUID:uuid platform:currentPlatform];
     }
 
     goto LABEL_21;
@@ -721,18 +721,18 @@ LABEL_21:
   v30 = 0;
 LABEL_22:
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 LABEL_23:
 
   objc_autoreleasePoolPop(v10);
-  v9[2](v9, v30);
+  blockCopy[2](blockCopy, v30);
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnect:(unint64_t)a3 replyBlock:(id)a4
+- (void)disconnect:(unint64_t)disconnect replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v17 = 0;
   v18 = &v17;
@@ -741,36 +741,36 @@ LABEL_23:
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject disconnect:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject disconnect:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:disconnect entitled:1 forMethod:"[BiometricKitXPCExportedObject disconnect:replyBlock:]"])
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(BiometricKitXPCExportedObject *)v9 client:a3];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = [(BiometricKitXPCExportedObject *)selfCopy client:disconnect];
     v11 = v18[5];
     v18[5] = v10;
 
     if (v18[5])
     {
-      clients = v9->_clients;
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+      clients = selfCopy->_clients;
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:disconnect];
       [(NSMutableDictionary *)clients removeObjectForKey:v13];
 
-      objc_sync_exit(v9);
-      v14 = [(BiometricKitXPCServer *)v9->_server cmdDispatchQueue];
+      objc_sync_exit(selfCopy);
+      cmdDispatchQueue = [(BiometricKitXPCServer *)selfCopy->_server cmdDispatchQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke;
       block[3] = &unk_2784FA220;
-      block[4] = v9;
+      block[4] = selfCopy;
       block[5] = &v17;
-      dispatch_async(v14, block);
+      dispatch_async(cmdDispatchQueue, block);
 
       v15 = 0;
     }
 
     else
     {
-      [BiometricKitXPCExportedObject disconnect:v9 replyBlock:?];
+      [BiometricKitXPCExportedObject disconnect:selfCopy replyBlock:?];
       v15 = 22;
     }
   }
@@ -783,7 +783,7 @@ LABEL_23:
 
   _Block_object_dispose(&v17, 8);
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v15);
+  blockCopy[2](blockCopy, v15);
 }
 
 void __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke(uint64_t a1)
@@ -798,13 +798,13 @@ void __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke(ui
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)notifyAppIsBackground:(BOOL)a3 client:(unint64_t)a4
+- (void)notifyAppIsBackground:(BOOL)background client:(unint64_t)client
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject notifyAppIsBackground:client:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject notifyAppIsBackground:client:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject notifyAppIsBackground:client:]"])
   {
-    [(BiometricKitXPCExportedObject *)self notifyAppIsBackground:a4 client:a3];
+    [(BiometricKitXPCExportedObject *)self notifyAppIsBackground:client client:background];
   }
 
   else
@@ -815,13 +815,13 @@ void __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke(ui
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)notifyAppIsInactive:(BOOL)a3 client:(unint64_t)a4
+- (void)notifyAppIsInactive:(BOOL)inactive client:(unint64_t)client
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject notifyAppIsInactive:client:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject notifyAppIsInactive:client:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject notifyAppIsInactive:client:]"])
   {
-    [(BiometricKitXPCExportedObject *)&self->super.isa notifyAppIsInactive:a4 client:a3];
+    [(BiometricKitXPCExportedObject *)&self->super.isa notifyAppIsInactive:client client:inactive];
   }
 
   else
@@ -832,11 +832,11 @@ void __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke(ui
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)enroll:(int)a3 user:(unsigned int)a4 options:(id)a5 async:(BOOL)a6 client:(unint64_t)a7 replyBlock:(id)a8
+- (void)enroll:(int)enroll user:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a6;
-  v14 = a5;
-  v15 = a8;
+  asyncCopy = async;
+  optionsCopy = options;
+  blockCopy = block;
   v16 = objc_autoreleasePoolPush();
   v29 = 0;
   v30 = &v29;
@@ -845,15 +845,15 @@ void __55__BiometricKitXPCExportedObject_disconnect_replyBlock___block_invoke(ui
   v33 = __Block_byref_object_dispose_;
   v34 = 0;
   v17 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject enroll:user:options:async:client:replyBlock:]"];
-  if (![(BiometricKitXPCExportedObject *)self isClient:a7 entitled:2 forMethod:"[BiometricKitXPCExportedObject enroll:user:options:async:client:replyBlock:]"])
+  if (![(BiometricKitXPCExportedObject *)self isClient:client entitled:2 forMethod:"[BiometricKitXPCExportedObject enroll:user:options:async:client:replyBlock:]"])
   {
     [BiometricKitXPCExportedObject enroll:user:options:async:client:replyBlock:];
 LABEL_10:
-    v15[2](v15, v35);
+    blockCopy[2](blockCopy, v35);
     goto LABEL_7;
   }
 
-  v18 = [(BiometricKitXPCExportedObject *)self client:a7];
+  v18 = [(BiometricKitXPCExportedObject *)self client:client];
   v19 = v30[5];
   v30[5] = v18;
 
@@ -868,15 +868,15 @@ LABEL_10:
   block[2] = __77__BiometricKitXPCExportedObject_enroll_user_options_async_client_replyBlock___block_invoke;
   block[3] = &unk_2784FA248;
   block[4] = self;
-  v27 = a3;
-  v28 = a4;
-  v23 = v14;
+  enrollCopy = enroll;
+  userCopy = user;
+  v23 = optionsCopy;
   v26 = &v29;
   v24 = v17;
-  v25 = v15;
+  v25 = blockCopy;
   v20 = dispatch_block_create(0, block);
   [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
-  if (v10)
+  if (asyncCopy)
     v21 = {;
     dispatch_async(v21, v20);
   }
@@ -910,12 +910,12 @@ uint64_t __77__BiometricKitXPCExportedObject_enroll_user_options_async_client_re
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)match:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7
+- (void)match:(id)match options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  asyncCopy = async;
+  matchCopy = match;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = objc_autoreleasePoolPush();
   v27 = 0;
   v28 = &v27;
@@ -924,15 +924,15 @@ uint64_t __77__BiometricKitXPCExportedObject_enroll_user_options_async_client_re
   v31 = __Block_byref_object_dispose_;
   v32 = 0;
   v16 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject match:options:async:client:replyBlock:]"];
-  if (![(BiometricKitXPCExportedObject *)self isClient:a6 entitled:4 forMethod:"[BiometricKitXPCExportedObject match:options:async:client:replyBlock:]"])
+  if (![(BiometricKitXPCExportedObject *)self isClient:client entitled:4 forMethod:"[BiometricKitXPCExportedObject match:options:async:client:replyBlock:]"])
   {
     [BiometricKitXPCExportedObject match:options:async:client:replyBlock:];
 LABEL_10:
-    v14[2](v14, v33);
+    blockCopy[2](blockCopy, v33);
     goto LABEL_7;
   }
 
-  v17 = [(BiometricKitXPCExportedObject *)self client:a6];
+  v17 = [(BiometricKitXPCExportedObject *)self client:client];
   v18 = v28[5];
   v28[5] = v17;
 
@@ -947,14 +947,14 @@ LABEL_10:
   block[2] = __71__BiometricKitXPCExportedObject_match_options_async_client_replyBlock___block_invoke;
   block[3] = &unk_2784FA270;
   block[4] = self;
-  v22 = v12;
-  v23 = v13;
+  v22 = matchCopy;
+  v23 = optionsCopy;
   v26 = &v27;
   v24 = v16;
-  v25 = v14;
+  v25 = blockCopy;
   v19 = dispatch_block_create(0, block);
   [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
-  if (v9)
+  if (asyncCopy)
     v20 = {;
     dispatch_async(v20, v19);
   }
@@ -988,11 +988,11 @@ uint64_t __71__BiometricKitXPCExportedObject_match_options_async_client_replyBlo
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)detectPresenceWithOptions:(id)a3 async:(BOOL)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)detectPresenceWithOptions:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  asyncCopy = async;
+  optionsCopy = options;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
   v27 = 0;
   v28 = &v27;
@@ -1001,15 +1001,15 @@ uint64_t __71__BiometricKitXPCExportedObject_match_options_async_client_replyBlo
   v31 = __Block_byref_object_dispose_;
   v32 = 0;
   v13 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject detectPresenceWithOptions:async:client:replyBlock:]"];
-  if (![(BiometricKitXPCExportedObject *)self isClient:a5 entitled:1 forMethod:"[BiometricKitXPCExportedObject detectPresenceWithOptions:async:client:replyBlock:]"])
+  if (![(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject detectPresenceWithOptions:async:client:replyBlock:]"])
   {
     [BiometricKitXPCExportedObject detectPresenceWithOptions:async:client:replyBlock:];
 LABEL_10:
-    v11[2](v11, v33);
+    blockCopy[2](blockCopy, v33);
     goto LABEL_7;
   }
 
-  v14 = [(BiometricKitXPCExportedObject *)self client:a5];
+  v14 = [(BiometricKitXPCExportedObject *)self client:client];
   v15 = v28[5];
   v28[5] = v14;
 
@@ -1023,14 +1023,14 @@ LABEL_10:
   v19 = 3221225472;
   v20 = __83__BiometricKitXPCExportedObject_detectPresenceWithOptions_async_client_replyBlock___block_invoke;
   v21 = &unk_2784FA298;
-  v22 = self;
-  v23 = v10;
+  selfCopy = self;
+  v23 = optionsCopy;
   v26 = &v27;
   v24 = v13;
-  v25 = v11;
+  v25 = blockCopy;
   v16 = dispatch_block_create(0, &v18);
   [(BiometricKitXPCServer *)self->_server cmdDispatchQueue:v18];
-  if (v8)
+  if (asyncCopy)
     v17 = {;
     dispatch_async(v17, v16);
   }
@@ -1064,9 +1064,9 @@ uint64_t __83__BiometricKitXPCExportedObject_detectPresenceWithOptions_async_cli
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)cancel:(unint64_t)a3 replyBlock:(id)a4
+- (void)cancel:(unint64_t)cancel replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v16 = 0;
   v17 = &v16;
@@ -1075,15 +1075,15 @@ uint64_t __83__BiometricKitXPCExportedObject_detectPresenceWithOptions_async_cli
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject cancel:replyBlock:]"];
-  if (![(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject cancel:replyBlock:]"])
+  if (![(BiometricKitXPCExportedObject *)self isClient:cancel entitled:1 forMethod:"[BiometricKitXPCExportedObject cancel:replyBlock:]"])
   {
     [BiometricKitXPCExportedObject cancel:replyBlock:];
 LABEL_7:
-    v6[2](v6, v22);
+    blockCopy[2](blockCopy, v22);
     goto LABEL_4;
   }
 
-  v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+  v9 = [(BiometricKitXPCExportedObject *)self client:cancel];
   v10 = v17[5];
   v17[5] = v9;
 
@@ -1093,7 +1093,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v11 = [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
+  cmdDispatchQueue = [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__BiometricKitXPCExportedObject_cancel_replyBlock___block_invoke;
@@ -1101,8 +1101,8 @@ LABEL_7:
   block[4] = self;
   v15 = &v16;
   v13 = v8;
-  v14 = v6;
-  dispatch_async(v11, block);
+  v14 = blockCopy;
+  dispatch_async(cmdDispatchQueue, block);
 
 LABEL_4:
   _Block_object_dispose(&v16, 8);
@@ -1128,37 +1128,37 @@ uint64_t __51__BiometricKitXPCExportedObject_cancel_replyBlock___block_invoke(ui
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)updateIdentity:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7
+- (void)updateIdentity:(id)identity options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  asyncCopy = async;
+  identityCopy = identity;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = objc_autoreleasePoolPush();
   v16 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject updateIdentity:options:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a6 entitled:3 forMethod:"[BiometricKitXPCExportedObject updateIdentity:options:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:3 forMethod:"[BiometricKitXPCExportedObject updateIdentity:options:async:client:replyBlock:]"])
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
     v32 = __Block_byref_object_copy_;
     v33 = __Block_byref_object_dispose_;
-    v34 = [(BiometricKitXPCExportedObject *)self client:a6];
+    v34 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v30[5])
     {
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __80__BiometricKitXPCExportedObject_updateIdentity_options_async_client_replyBlock___block_invoke;
       v22 = &unk_2784FA270;
-      v23 = self;
-      v24 = v12;
-      v25 = v13;
+      selfCopy = self;
+      v24 = identityCopy;
+      v25 = optionsCopy;
       v28 = &v29;
       v26 = v16;
-      v27 = v14;
+      v27 = blockCopy;
       v17 = dispatch_block_create(0, &v19);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue:v19];
-      if (v9)
+      if (asyncCopy)
         v18 = {;
         dispatch_async(v18, v17);
       }
@@ -1172,7 +1172,7 @@ uint64_t __51__BiometricKitXPCExportedObject_cancel_replyBlock___block_invoke(ui
     else
     {
       [BiometricKitXPCExportedObject updateIdentity:options:async:client:replyBlock:];
-      (*(v14 + 2))(v14, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v29, 8);
@@ -1204,37 +1204,37 @@ uint64_t __80__BiometricKitXPCExportedObject_updateIdentity_options_async_client
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)removeIdentity:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7
+- (void)removeIdentity:(id)identity options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  asyncCopy = async;
+  identityCopy = identity;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = objc_autoreleasePoolPush();
   v16 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject removeIdentity:options:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a6 entitled:3 forMethod:"[BiometricKitXPCExportedObject removeIdentity:options:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:3 forMethod:"[BiometricKitXPCExportedObject removeIdentity:options:async:client:replyBlock:]"])
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
     v32 = __Block_byref_object_copy_;
     v33 = __Block_byref_object_dispose_;
-    v34 = [(BiometricKitXPCExportedObject *)self client:a6];
+    v34 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v30[5])
     {
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __80__BiometricKitXPCExportedObject_removeIdentity_options_async_client_replyBlock___block_invoke;
       v22 = &unk_2784FA270;
-      v23 = self;
-      v24 = v12;
-      v25 = v13;
+      selfCopy = self;
+      v24 = identityCopy;
+      v25 = optionsCopy;
       v28 = &v29;
       v26 = v16;
-      v27 = v14;
+      v27 = blockCopy;
       v17 = dispatch_block_create(0, &v19);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue:v19];
-      if (v9)
+      if (asyncCopy)
         v18 = {;
         dispatch_async(v18, v17);
       }
@@ -1248,7 +1248,7 @@ uint64_t __80__BiometricKitXPCExportedObject_updateIdentity_options_async_client
     else
     {
       [BiometricKitXPCExportedObject removeIdentity:options:async:client:replyBlock:];
-      (*(v14 + 2))(v14, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v29, 8);
@@ -1280,36 +1280,36 @@ uint64_t __80__BiometricKitXPCExportedObject_removeIdentity_options_async_client
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)removeAllIdentitiesForUser:(unsigned int)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7
+- (void)removeAllIdentitiesForUser:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a7;
+  asyncCopy = async;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = objc_autoreleasePoolPush();
   v15 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject removeAllIdentitiesForUser:options:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a6 entitled:3 forMethod:"[BiometricKitXPCExportedObject removeAllIdentitiesForUser:options:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:3 forMethod:"[BiometricKitXPCExportedObject removeAllIdentitiesForUser:options:async:client:replyBlock:]"])
   {
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
     v31 = __Block_byref_object_copy_;
     v32 = __Block_byref_object_dispose_;
-    v33 = [(BiometricKitXPCExportedObject *)self client:a6];
+    v33 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v29[5])
     {
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_async_client_replyBlock___block_invoke;
       v21 = &unk_2784FA2E8;
-      v22 = self;
-      v27 = a3;
-      v23 = v12;
+      selfCopy = self;
+      userCopy = user;
+      v23 = optionsCopy;
       v26 = &v28;
       v24 = v15;
-      v25 = v13;
+      v25 = blockCopy;
       v16 = dispatch_block_create(0, &v18);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue:v18];
-      if (v9)
+      if (asyncCopy)
         v17 = {;
         dispatch_async(v17, v16);
       }
@@ -1323,7 +1323,7 @@ uint64_t __80__BiometricKitXPCExportedObject_removeIdentity_options_async_client
     else
     {
       [BiometricKitXPCExportedObject removeAllIdentitiesForUser:options:async:client:replyBlock:];
-      (*(v13 + 2))(v13, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v28, 8);
@@ -1355,15 +1355,15 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)getIdentityFromUUID:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)getIdentityFromUUID:(id)d client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getIdentityFromUUID:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject getIdentityFromUUID:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject getIdentityFromUUID:client:replyBlock:]"])
   {
-    v12 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v12 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v12)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1371,7 +1371,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject getIdentityFromUUID:client:replyBlock:];
       }
 
-      v13 = [(BiometricKitXPCServer *)self->_server getIdentityFromUUID:v8 withClient:v12];
+      v13 = [(BiometricKitXPCServer *)self->_server getIdentityFromUUID:dCopy withClient:v12];
     }
 
     else
@@ -1388,18 +1388,18 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v10);
-  v9[2](v9, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (void)identities:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)identities:(id)identities client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  identitiesCopy = identities;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject identities:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject identities:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject identities:client:replyBlock:]"])
   {
-    v12 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v12 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v12)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1407,7 +1407,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject identities:client:replyBlock:];
       }
 
-      v13 = [(BiometricKitXPCServer *)self->_server identities:v8 withClient:v12];
+      v13 = [(BiometricKitXPCServer *)self->_server identities:identitiesCopy withClient:v12];
     }
 
     else
@@ -1424,18 +1424,18 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v10);
-  v9[2](v9, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (void)registerDSID:(unint64_t)a3 options:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)registerDSID:(unint64_t)d options:(id)options client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
+  optionsCopy = options;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
   v13 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject registerDSID:options:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:7 forMethod:"[BiometricKitXPCExportedObject registerDSID:options:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:7 forMethod:"[BiometricKitXPCExportedObject registerDSID:options:client:replyBlock:]"])
   {
-    v14 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v14 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v14)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1443,7 +1443,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject registerDSID:options:client:replyBlock:];
       }
 
-      v15 = [(BiometricKitXPCServer *)self->_server registerDSID:a3 withOptions:v10 withClient:v14];
+      v15 = [(BiometricKitXPCServer *)self->_server registerDSID:d withOptions:optionsCopy withClient:v14];
     }
 
     else
@@ -1460,18 +1460,18 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v12);
-  v11[2](v11, v15);
+  blockCopy[2](blockCopy, v15);
 }
 
-- (void)registerStoreToken:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)registerStoreToken:(id)token client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  tokenCopy = token;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject registerStoreToken:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:7 forMethod:"[BiometricKitXPCExportedObject registerStoreToken:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:7 forMethod:"[BiometricKitXPCExportedObject registerStoreToken:client:replyBlock:]"])
   {
-    v12 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v12 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v12)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1479,7 +1479,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject registerStoreToken:client:replyBlock:];
       }
 
-      v13 = [(BiometricKitXPCServer *)self->_server registerStoreToken:v8 withClient:v12];
+      v13 = [(BiometricKitXPCServer *)self->_server registerStoreToken:tokenCopy withClient:v12];
     }
 
     else
@@ -1496,17 +1496,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v10);
-  v9[2](v9, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (void)getCountersignedStoreToken:(unint64_t)a3 replyBlock:(id)a4
+- (void)getCountersignedStoreToken:(unint64_t)token replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getCountersignedStoreToken:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:7 forMethod:"[BiometricKitXPCExportedObject getCountersignedStoreToken:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:token entitled:7 forMethod:"[BiometricKitXPCExportedObject getCountersignedStoreToken:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:token];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1536,17 +1536,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v11, v12);
+  blockCopy[2](blockCopy, v11, v12);
 }
 
-- (void)timestampEvent:(unint64_t)a3 absoluteTime:(unint64_t)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)timestampEvent:(unint64_t)event absoluteTime:(unint64_t)time client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v11 = objc_autoreleasePoolPush();
   v12 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject timestampEvent:absoluteTime:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:1 forMethod:"[BiometricKitXPCExportedObject timestampEvent:absoluteTime:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject timestampEvent:absoluteTime:client:replyBlock:]"])
   {
-    v13 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v13 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v13)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1554,7 +1554,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject timestampEvent:absoluteTime:client:replyBlock:];
       }
 
-      [(BiometricKitXPCServer *)self->_server timestampEvent:a3 absoluteTime:a4];
+      [(BiometricKitXPCServer *)self->_server timestampEvent:event absoluteTime:time];
       v14 = 0;
     }
 
@@ -1572,18 +1572,18 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v11);
-  v10[2](v10, v14);
+  blockCopy[2](blockCopy, v14);
 }
 
-- (void)setUserDSID:(unint64_t)a3 options:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)setUserDSID:(unint64_t)d options:(id)options client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a4;
-  v11 = a6;
+  optionsCopy = options;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
   v13 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject setUserDSID:options:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:7 forMethod:"[BiometricKitXPCExportedObject setUserDSID:options:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:7 forMethod:"[BiometricKitXPCExportedObject setUserDSID:options:client:replyBlock:]"])
   {
-    v14 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v14 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v14)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1591,7 +1591,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject setUserDSID:options:client:replyBlock:];
       }
 
-      v15 = [(BiometricKitXPCServer *)self->_server setUserDSID:a3 withOptions:v10 withClient:v14];
+      v15 = [(BiometricKitXPCServer *)self->_server setUserDSID:d withOptions:optionsCopy withClient:v14];
     }
 
     else
@@ -1608,17 +1608,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v12);
-  v11[2](v11, v15);
+  blockCopy[2](blockCopy, v15);
 }
 
-- (void)resetAppleConnectCounter:(unint64_t)a3 replyBlock:(id)a4
+- (void)resetAppleConnectCounter:(unint64_t)counter replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject resetAppleConnectCounter:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:7 forMethod:"[BiometricKitXPCExportedObject resetAppleConnectCounter:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:counter entitled:7 forMethod:"[BiometricKitXPCExportedObject resetAppleConnectCounter:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:counter];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1643,17 +1643,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)dropUnlockToken:(unint64_t)a3 replyBlock:(id)a4
+- (void)dropUnlockToken:(unint64_t)token replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject dropUnlockToken:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject dropUnlockToken:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:token entitled:1 forMethod:"[BiometricKitXPCExportedObject dropUnlockToken:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:token];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1678,17 +1678,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)enrollContinue:(unint64_t)a3 replyBlock:(id)a4
+- (void)enrollContinue:(unint64_t)continue replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject enrollContinue:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:2 forMethod:"[BiometricKitXPCExportedObject enrollContinue:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:continue entitled:2 forMethod:"[BiometricKitXPCExportedObject enrollContinue:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:continue];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1696,34 +1696,34 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject enrollContinue:replyBlock:];
       }
 
-      v10 = [(BiometricKitXPCServer *)self->_server enrollContinue];
+      enrollContinue = [(BiometricKitXPCServer *)self->_server enrollContinue];
     }
 
     else
     {
       [BiometricKitXPCExportedObject enrollContinue:replyBlock:];
-      v10 = v12;
+      enrollContinue = v12;
     }
   }
 
   else
   {
     [BiometricKitXPCExportedObject enrollContinue:replyBlock:];
-    v10 = v11;
+    enrollContinue = v11;
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, enrollContinue);
 }
 
-- (void)pullAlignmentData:(unint64_t)a3 replyBlock:(id)a4
+- (void)pullAlignmentData:(unint64_t)data replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject pullAlignmentData:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:2 forMethod:"[BiometricKitXPCExportedObject pullAlignmentData:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:data entitled:2 forMethod:"[BiometricKitXPCExportedObject pullAlignmentData:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:data];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1731,34 +1731,34 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject pullAlignmentData:replyBlock:];
       }
 
-      v10 = [(BiometricKitXPCServer *)self->_server pullAlignmentData];
+      pullAlignmentData = [(BiometricKitXPCServer *)self->_server pullAlignmentData];
     }
 
     else
     {
       [BiometricKitXPCExportedObject pullAlignmentData:replyBlock:];
-      v10 = v11;
+      pullAlignmentData = v11;
     }
   }
 
   else
   {
     [BiometricKitXPCExportedObject pullAlignmentData:replyBlock:];
-    v10 = v11;
+    pullAlignmentData = v11;
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, pullAlignmentData);
 }
 
-- (void)pullMatchPolicyInfoData:(unint64_t)a3 replyBlock:(id)a4
+- (void)pullMatchPolicyInfoData:(unint64_t)data replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:7 forMethod:"[BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:data entitled:7 forMethod:"[BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:data];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1766,35 +1766,35 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:];
       }
 
-      v10 = [(BiometricKitXPCServer *)self->_server pullMatchPolicyInfoData];
+      pullMatchPolicyInfoData = [(BiometricKitXPCServer *)self->_server pullMatchPolicyInfoData];
     }
 
     else
     {
       [BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:];
-      v10 = v11;
+      pullMatchPolicyInfoData = v11;
     }
   }
 
   else
   {
     [BiometricKitXPCExportedObject pullMatchPolicyInfoData:replyBlock:];
-    v10 = v11;
+    pullMatchPolicyInfoData = v11;
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, pullMatchPolicyInfoData);
 }
 
-- (void)getNodeTopologyForIdentity:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)getNodeTopologyForIdentity:(id)identity client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getNodeTopologyForIdentity:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:6 forMethod:"[BiometricKitXPCExportedObject getNodeTopologyForIdentity:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:6 forMethod:"[BiometricKitXPCExportedObject getNodeTopologyForIdentity:client:replyBlock:]"])
   {
-    v12 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v12 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v12)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1802,7 +1802,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
         [BiometricKitXPCExportedObject getNodeTopologyForIdentity:client:replyBlock:];
       }
 
-      v13 = [(BiometricKitXPCServer *)self->_server getNodeTopologyForIdentity:v8 withClient:v12];
+      v13 = [(BiometricKitXPCServer *)self->_server getNodeTopologyForIdentity:identityCopy withClient:v12];
     }
 
     else
@@ -1819,17 +1819,17 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v10);
-  v9[2](v9, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (void)getSystemProtectedConfiguration:(unint64_t)a3 replyBlock:(id)a4
+- (void)getSystemProtectedConfiguration:(unint64_t)configuration replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getSystemProtectedConfiguration:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject getSystemProtectedConfiguration:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:configuration entitled:1 forMethod:"[BiometricKitXPCExportedObject getSystemProtectedConfiguration:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:configuration];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -1854,25 +1854,25 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)setProtectedConfiguration:(id)a3 user:(unsigned int)a4 options:(id)a5 async:(BOOL)a6 client:(unint64_t)a7 replyBlock:(id)a8
+- (void)setProtectedConfiguration:(id)configuration user:(unsigned int)user options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
+  asyncCopy = async;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  blockCopy = block;
   v17 = objc_autoreleasePoolPush();
   v18 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject setProtectedConfiguration:user:options:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a7 entitled:5 forMethod:"[BiometricKitXPCExportedObject setProtectedConfiguration:user:options:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:5 forMethod:"[BiometricKitXPCExportedObject setProtectedConfiguration:user:options:async:client:replyBlock:]"])
   {
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
     v31 = __Block_byref_object_copy_;
     v32 = __Block_byref_object_dispose_;
-    v33 = [(BiometricKitXPCExportedObject *)self client:a7];
+    v33 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v29[5])
     {
       block[0] = MEMORY[0x277D85DD0];
@@ -1880,15 +1880,15 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
       block[2] = __96__BiometricKitXPCExportedObject_setProtectedConfiguration_user_options_async_client_replyBlock___block_invoke;
       block[3] = &unk_2784FA310;
       block[4] = self;
-      v22 = v14;
-      v27 = a4;
-      v23 = v15;
+      v22 = configurationCopy;
+      userCopy = user;
+      v23 = optionsCopy;
       v26 = &v28;
       v24 = v18;
-      v25 = v16;
+      v25 = blockCopy;
       v19 = dispatch_block_create(0, block);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
-      if (v10)
+      if (asyncCopy)
         v20 = {;
         dispatch_async(v20, v19);
       }
@@ -1902,7 +1902,7 @@ uint64_t __92__BiometricKitXPCExportedObject_removeAllIdentitiesForUser_options_
     else
     {
       [BiometricKitXPCExportedObject setProtectedConfiguration:user:options:async:client:replyBlock:];
-      (*(v16 + 2))(v16, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v28, 8);
@@ -1934,37 +1934,37 @@ uint64_t __96__BiometricKitXPCExportedObject_setProtectedConfiguration_user_opti
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)setSystemProtectedConfiguration:(id)a3 options:(id)a4 async:(BOOL)a5 client:(unint64_t)a6 replyBlock:(id)a7
+- (void)setSystemProtectedConfiguration:(id)configuration options:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  asyncCopy = async;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  blockCopy = block;
   v15 = objc_autoreleasePoolPush();
   v16 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject setSystemProtectedConfiguration:options:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a6 entitled:5 forMethod:"[BiometricKitXPCExportedObject setSystemProtectedConfiguration:options:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:5 forMethod:"[BiometricKitXPCExportedObject setSystemProtectedConfiguration:options:async:client:replyBlock:]"])
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
     v32 = __Block_byref_object_copy_;
     v33 = __Block_byref_object_dispose_;
-    v34 = [(BiometricKitXPCExportedObject *)self client:a6];
+    v34 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v30[5])
     {
       v19 = MEMORY[0x277D85DD0];
       v20 = 3221225472;
       v21 = __97__BiometricKitXPCExportedObject_setSystemProtectedConfiguration_options_async_client_replyBlock___block_invoke;
       v22 = &unk_2784FA270;
-      v23 = self;
-      v24 = v12;
-      v25 = v13;
+      selfCopy = self;
+      v24 = configurationCopy;
+      v25 = optionsCopy;
       v28 = &v29;
       v26 = v16;
-      v27 = v14;
+      v27 = blockCopy;
       v17 = dispatch_block_create(0, &v19);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue:v19];
-      if (v9)
+      if (asyncCopy)
         v18 = {;
         dispatch_async(v18, v17);
       }
@@ -1978,7 +1978,7 @@ uint64_t __96__BiometricKitXPCExportedObject_setProtectedConfiguration_user_opti
     else
     {
       [BiometricKitXPCExportedObject setSystemProtectedConfiguration:options:async:client:replyBlock:];
-      (*(v14 + 2))(v14, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v29, 8);
@@ -2010,14 +2010,14 @@ uint64_t __97__BiometricKitXPCExportedObject_setSystemProtectedConfiguration_opt
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)getProvisioningState:(unint64_t)a3 replyBlock:(id)a4
+- (void)getProvisioningState:(unint64_t)state replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getProvisioningState:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:6 forMethod:"[BiometricKitXPCExportedObject getProvisioningState:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:state entitled:6 forMethod:"[BiometricKitXPCExportedObject getProvisioningState:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:state];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2042,7 +2042,7 @@ uint64_t __97__BiometricKitXPCExportedObject_setSystemProtectedConfiguration_opt
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
 void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyBlock___block_invoke(uint64_t a1)
@@ -2053,14 +2053,14 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 }
 
-- (void)getSensorCalibrationStatus:(unint64_t)a3 replyBlock:(id)a4
+- (void)getSensorCalibrationStatus:(unint64_t)status replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getSensorCalibrationStatus:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:6 forMethod:"[BiometricKitXPCExportedObject getSensorCalibrationStatus:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:status entitled:6 forMethod:"[BiometricKitXPCExportedObject getSensorCalibrationStatus:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:status];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2085,17 +2085,17 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)getCalibrationDataInfo:(unint64_t)a3 replyBlock:(id)a4
+- (void)getCalibrationDataInfo:(unint64_t)info replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getCalibrationDataInfo:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:6 forMethod:"[BiometricKitXPCExportedObject getCalibrationDataInfo:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:info entitled:6 forMethod:"[BiometricKitXPCExportedObject getCalibrationDataInfo:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:info];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2120,17 +2120,17 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)getSensorInfo:(unint64_t)a3 replyBlock:(id)a4
+- (void)getSensorInfo:(unint64_t)info replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getSensorInfo:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:6 forMethod:"[BiometricKitXPCExportedObject getSensorInfo:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:info entitled:6 forMethod:"[BiometricKitXPCExportedObject getSensorInfo:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:info];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2155,17 +2155,17 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)pullCalibrationData:(unint64_t)a3 replyBlock:(id)a4
+- (void)pullCalibrationData:(unint64_t)data replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject pullCalibrationData:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:6 forMethod:"[BiometricKitXPCExportedObject pullCalibrationData:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:data entitled:6 forMethod:"[BiometricKitXPCExportedObject pullCalibrationData:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:data];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2190,17 +2190,17 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)pullCaptureBuffer:(unint64_t)a3 replyBlock:(id)a4
+- (void)pullCaptureBuffer:(unint64_t)buffer replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject pullCaptureBuffer:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:7 forMethod:"[BiometricKitXPCExportedObject pullCaptureBuffer:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:buffer entitled:7 forMethod:"[BiometricKitXPCExportedObject pullCaptureBuffer:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:buffer];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2225,19 +2225,19 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)fileRadarWithLogs:(id)a3 description:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)fileRadarWithLogs:(id)logs description:(id)description client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  logsCopy = logs;
+  descriptionCopy = description;
+  blockCopy = block;
   v13 = objc_autoreleasePoolPush();
   v14 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject fileRadarWithLogs:description:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:6 forMethod:"[BiometricKitXPCExportedObject fileRadarWithLogs:description:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:6 forMethod:"[BiometricKitXPCExportedObject fileRadarWithLogs:description:client:replyBlock:]"])
   {
-    v15 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v15 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v15)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2245,7 +2245,7 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
         [BiometricKitXPCExportedObject fileRadarWithLogs:description:client:replyBlock:];
       }
 
-      v16 = [(BiometricKitXPCServer *)self->_server fileRadarWithLogs:v10 withDescription:v11];
+      v16 = [(BiometricKitXPCServer *)self->_server fileRadarWithLogs:logsCopy withDescription:descriptionCopy];
     }
 
     else
@@ -2262,17 +2262,17 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v13);
-  v12[2](v12, v16);
+  blockCopy[2](blockCopy, v16);
 }
 
-- (void)isFingerOn:(unint64_t)a3 replyBlock:(id)a4
+- (void)isFingerOn:(unint64_t)on replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject isFingerOn:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject isFingerOn:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:on entitled:1 forMethod:"[BiometricKitXPCExportedObject isFingerOn:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:on];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2297,7 +2297,7 @@ void __77__BiometricKitXPCExportedObject_getBioLockoutStateForUser_client_replyB
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
 void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock___block_invoke(uint64_t a1)
@@ -2308,14 +2308,14 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 }
 
-- (void)isAriadneSignpostsEnabled:(unint64_t)a3 replyBlock:(id)a4
+- (void)isAriadneSignpostsEnabled:(unint64_t)enabled replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:enabled entitled:1 forMethod:"[BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:enabled];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2323,34 +2323,34 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
         [BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:];
       }
 
-      v10 = [(BiometricKitXPCServer *)self->_server ariadneSignposts];
+      ariadneSignposts = [(BiometricKitXPCServer *)self->_server ariadneSignposts];
     }
 
     else
     {
       [BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:];
-      v10 = v12;
+      ariadneSignposts = v12;
     }
   }
 
   else
   {
     [BiometricKitXPCExportedObject isAriadneSignpostsEnabled:replyBlock:];
-    v10 = v11;
+    ariadneSignposts = v11;
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, ariadneSignposts);
 }
 
-- (void)isXARTAvailable:(unint64_t)a3 replyBlock:(id)a4
+- (void)isXARTAvailable:(unint64_t)available replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject isXARTAvailable:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject isXARTAvailable:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:available entitled:1 forMethod:"[BiometricKitXPCExportedObject isXARTAvailable:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:available];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2375,17 +2375,17 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)getDeviceState:(unint64_t)a3 replyBlock:(id)a4
+- (void)getDeviceState:(unint64_t)state replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getDeviceState:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject getDeviceState:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:state entitled:1 forMethod:"[BiometricKitXPCExportedObject getDeviceState:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:state];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2410,17 +2410,17 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)startNewMatchAttempt:(unint64_t)a3 replyBlock:(id)a4
+- (void)startNewMatchAttempt:(unint64_t)attempt replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject startNewMatchAttempt:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:4 forMethod:"[BiometricKitXPCExportedObject startNewMatchAttempt:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:attempt entitled:4 forMethod:"[BiometricKitXPCExportedObject startNewMatchAttempt:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:attempt];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2445,17 +2445,17 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)completeEnrollment:(unint64_t)a3 replyBlock:(id)a4
+- (void)completeEnrollment:(unint64_t)enrollment replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject completeEnrollment:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:2 forMethod:"[BiometricKitXPCExportedObject completeEnrollment:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:enrollment entitled:2 forMethod:"[BiometricKitXPCExportedObject completeEnrollment:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:enrollment];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2480,19 +2480,19 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)setTemplate:(id)a3 forIdentity:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)setTemplate:(id)template forIdentity:(id)identity client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  templateCopy = template;
+  identityCopy = identity;
+  blockCopy = block;
   v13 = objc_autoreleasePoolPush();
   v14 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject setTemplate:forIdentity:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:6 forMethod:"[BiometricKitXPCExportedObject setTemplate:forIdentity:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:6 forMethod:"[BiometricKitXPCExportedObject setTemplate:forIdentity:client:replyBlock:]"])
   {
-    v15 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v15 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v15)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2500,7 +2500,7 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
         [BiometricKitXPCExportedObject setTemplate:forIdentity:client:replyBlock:];
       }
 
-      v16 = [(BiometricKitXPCServer *)self->_server setTemplate:v10 forIdentity:v11 withClient:v15];
+      v16 = [(BiometricKitXPCServer *)self->_server setTemplate:templateCopy forIdentity:identityCopy withClient:v15];
     }
 
     else
@@ -2517,18 +2517,18 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v13);
-  v12[2](v12, v16);
+  blockCopy[2](blockCopy, v16);
 }
 
-- (void)isPeriocularEnrollmentSupported:(unint64_t)a3 replyBlock:(id)a4
+- (void)isPeriocularEnrollmentSupported:(unint64_t)supported replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11 = 0;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject isPeriocularEnrollmentSupported:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject isPeriocularEnrollmentSupported:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:supported entitled:1 forMethod:"[BiometricKitXPCExportedObject isPeriocularEnrollmentSupported:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:supported];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2553,24 +2553,24 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10, v11);
+  blockCopy[2](blockCopy, v10, v11);
 }
 
-- (void)removePeriocularTemplatesWithOptions:(id)a3 async:(BOOL)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)removePeriocularTemplatesWithOptions:(id)options async:(BOOL)async client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  asyncCopy = async;
+  optionsCopy = options;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
   v13 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject removePeriocularTemplatesWithOptions:async:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:3 forMethod:"[BiometricKitXPCExportedObject removePeriocularTemplatesWithOptions:async:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:3 forMethod:"[BiometricKitXPCExportedObject removePeriocularTemplatesWithOptions:async:client:replyBlock:]"])
   {
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy_;
     v25 = __Block_byref_object_dispose_;
-    v26 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v26 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v22[5])
     {
       block[0] = MEMORY[0x277D85DD0];
@@ -2578,13 +2578,13 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
       block[2] = __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOptions_async_client_replyBlock___block_invoke;
       block[3] = &unk_2784FA298;
       block[4] = self;
-      v17 = v10;
+      v17 = optionsCopy;
       v20 = &v21;
       v18 = v13;
-      v19 = v11;
+      v19 = blockCopy;
       v14 = dispatch_block_create(0, block);
       [(BiometricKitXPCServer *)self->_server cmdDispatchQueue];
-      if (v8)
+      if (asyncCopy)
         v15 = {;
         dispatch_async(v15, v14);
       }
@@ -2598,7 +2598,7 @@ void __72__BiometricKitXPCExportedObject_enableBackgroundFdet_client_replyBlock_
     else
     {
       [BiometricKitXPCExportedObject removePeriocularTemplatesWithOptions:async:client:replyBlock:];
-      (*(v11 + 2))(v11, 22);
+      (*(blockCopy + 2))(blockCopy, 22);
     }
 
     _Block_object_dispose(&v21, 8);
@@ -2630,7 +2630,7 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)logEventOrCode:(unint64_t)a3
+- (void)logEventOrCode:(unint64_t)code
 {
   v4 = objc_autoreleasePoolPush();
   v5 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject logEventOrCode:]"];
@@ -2647,14 +2647,14 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)getLastMatchEvent:(unint64_t)a3 replyBlock:(id)a4
+- (void)getLastMatchEvent:(unint64_t)event replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getLastMatchEvent:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject getLastMatchEvent:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:event entitled:1 forMethod:"[BiometricKitXPCExportedObject getLastMatchEvent:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:event];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2684,18 +2684,18 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v11, v12);
+  blockCopy[2](blockCopy, v11, v12);
 }
 
-- (void)getDeviceHardwareState:(unint64_t)a3 replyBlock:(id)a4
+- (void)getDeviceHardwareState:(unint64_t)state replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = 0;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getDeviceHardwareState:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject getDeviceHardwareState:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:state entitled:1 forMethod:"[BiometricKitXPCExportedObject getDeviceHardwareState:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:state];
     if (v9)
     {
       v10 = [(BiometricKitXPCServer *)self->_server getDeviceHardwareState:v11 withClient:v9];
@@ -2715,17 +2715,17 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v10, v11[0]);
+  blockCopy[2](blockCopy, v10, v11[0]);
 }
 
-- (void)listAccessories:(unint64_t)a3 replyBlock:(id)a4
+- (void)listAccessories:(unint64_t)accessories replyBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject listAccessories:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a3 entitled:1 forMethod:"[BiometricKitXPCExportedObject listAccessories:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:accessories entitled:1 forMethod:"[BiometricKitXPCExportedObject listAccessories:replyBlock:]"])
   {
-    v9 = [(BiometricKitXPCExportedObject *)self client:a3];
+    v9 = [(BiometricKitXPCExportedObject *)self client:accessories];
     if (v9)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2755,24 +2755,24 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 
   objc_autoreleasePoolPop(v7);
-  v6[2](v6, v11, v12);
+  blockCopy[2](blockCopy, v11, v12);
 }
 
-- (void)getPreferencesValueForKey:(id)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)getPreferencesValueForKey:(id)key client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
   v11 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject getPreferencesValueForKey:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject getPreferencesValueForKey:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject getPreferencesValueForKey:client:replyBlock:]"])
   {
-    v12 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v12 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v12)
     {
       v13 = v12;
       server = self->_server;
       v18 = 0;
-      v15 = [(BiometricKitXPCServer *)server getPreferencesValue:&v18 forKey:v8 withClient:v13];
+      v15 = [(BiometricKitXPCServer *)server getPreferencesValue:&v18 forKey:keyCopy withClient:v13];
       v16 = v18;
       v17 = v16;
       if (v15)
@@ -2782,7 +2782,7 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
       }
 
       objc_autoreleasePoolPop(v10);
-      v9[2](v9, v15, v17);
+      blockCopy[2](blockCopy, v15, v17);
     }
 
     else
@@ -2797,26 +2797,26 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4 client:(unint64_t)a5 replyBlock:(id)a6
+- (void)setPreferencesValue:(id)value forKey:(id)key client:(unint64_t)client replyBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  valueCopy = value;
+  keyCopy = key;
+  blockCopy = block;
   v13 = objc_autoreleasePoolPush();
   v14 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject setPreferencesValue:forKey:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a5 entitled:5 forMethod:"[BiometricKitXPCExportedObject setPreferencesValue:forKey:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:5 forMethod:"[BiometricKitXPCExportedObject setPreferencesValue:forKey:client:replyBlock:]"])
   {
-    v15 = [(BiometricKitXPCExportedObject *)self client:a5];
+    v15 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v15)
     {
       v16 = v15;
-      if (![(BiometricKitXPCServer *)self->_server setPreferencesValue:v10 forKey:v11 withClient:v15])
+      if (![(BiometricKitXPCServer *)self->_server setPreferencesValue:valueCopy forKey:keyCopy withClient:v15])
       {
         [BiometricKitXPCExportedObject setPreferencesValue:forKey:client:replyBlock:];
       }
 
       objc_autoreleasePoolPop(v13);
-      v12[2](v12, 0);
+      blockCopy[2](blockCopy, 0);
     }
 
     else
@@ -2831,14 +2831,14 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 }
 
-- (void)prewarmCamera:(unint64_t)a3 client:(unint64_t)a4 replyBlock:(id)a5
+- (void)prewarmCamera:(unint64_t)camera client:(unint64_t)client replyBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = objc_autoreleasePoolPush();
   v10 = [WatchdogTimer watchdogWithName:"[BiometricKitXPCExportedObject prewarmCamera:client:replyBlock:]"];
-  if ([(BiometricKitXPCExportedObject *)self isClient:a4 entitled:1 forMethod:"[BiometricKitXPCExportedObject prewarmCamera:client:replyBlock:]"])
+  if ([(BiometricKitXPCExportedObject *)self isClient:client entitled:1 forMethod:"[BiometricKitXPCExportedObject prewarmCamera:client:replyBlock:]"])
   {
-    v11 = [(BiometricKitXPCExportedObject *)self client:a4];
+    v11 = [(BiometricKitXPCExportedObject *)self client:client];
     if (v11)
     {
       if ([(BiometricKitXPCServer *)self->_server loadCatacombAfterFirstUnlock])
@@ -2846,7 +2846,7 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
         [BiometricKitXPCExportedObject prewarmCamera:client:replyBlock:];
       }
 
-      v12 = [(BiometricKitXPCServer *)self->_server prewarmCamera:a3 withClient:v11];
+      v12 = [(BiometricKitXPCServer *)self->_server prewarmCamera:camera withClient:v11];
     }
 
     else
@@ -2863,7 +2863,7 @@ uint64_t __94__BiometricKitXPCExportedObject_removePeriocularTemplatesWithOption
   }
 
   objc_autoreleasePoolPop(v9);
-  v8[2](v8, v12);
+  blockCopy[2](blockCopy, v12);
 }
 
 - (void)connect:client:replyBlock:.cold.1()

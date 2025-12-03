@@ -3,9 +3,9 @@
 - (BOOL)presentingTip;
 - (BOOL)presentingTopAlignedTip;
 - (_TtC7ChatKit16CKChatTipManager)init;
-- (_TtC7ChatKit16CKChatTipManager)initWithChatController:(id)a3;
+- (_TtC7ChatKit16CKChatTipManager)initWithChatController:(id)controller;
 - (double)tipHeight;
-- (id)presentTranslationTipWithLanguages:(id)a3;
+- (id)presentTranslationTipWithLanguages:(id)languages;
 - (void)chatControllerDidDisappear;
 - (void)dismissTipIfPresented;
 - (void)undoOrEditMessageUsed;
@@ -13,17 +13,17 @@
 
 @implementation CKChatTipManager
 
-- (_TtC7ChatKit16CKChatTipManager)initWithChatController:(id)a3
+- (_TtC7ChatKit16CKChatTipManager)initWithChatController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_190B44AB0(v3);
+  controllerCopy = controller;
+  v4 = sub_190B44AB0(controllerCopy);
 
   return v4;
 }
 
 - (void)chatControllerDidDisappear
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B3E888();
 }
 
@@ -33,7 +33,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = v9 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   v9[0] = sub_190B3CEC8();
   v9[1] = v8;
   (*(v4 + 104))(v6, *MEMORY[0x1E6982AE0], v3);
@@ -45,13 +45,13 @@
 
 - (void)dismissTipIfPresented
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B42B5C();
 }
 
 - (BOOL)presentingTip
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_190B42E6C())
   {
     v3 = 1;
@@ -67,7 +67,7 @@
 
 - (BOOL)presentingTopAlignedTip
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B42E6C();
 
   return v3 & 1;
@@ -75,7 +75,7 @@
 
 - (BOOL)presentingBottomAlignedTip
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B43164();
 
   return v3 & 1;
@@ -83,7 +83,7 @@
 
 - (double)tipHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B432B4();
   v4 = v3;
 
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (id)presentTranslationTipWithLanguages:(id)a3
+- (id)presentTranslationTipWithLanguages:(id)languages
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD54C10);
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -106,7 +106,7 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD57920);
   sub_190B4C634(&qword_1EAD46BD0, MEMORY[0x1E6969770]);
   v8 = sub_190D56D90();
-  v9 = self;
+  selfCopy = self;
   CKChatTipManager.presentTranslationTip(languages:)(v8, v6);
 
   v10 = *(v7 - 8);

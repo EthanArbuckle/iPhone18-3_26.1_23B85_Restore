@@ -1,8 +1,8 @@
 @interface AnswerETAIntent
 - (AnswerETAIntent)init;
-- (AnswerETAIntent)initWithCoder:(id)a3;
-- (AnswerETAIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (AnswerETAIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (AnswerETAIntent)initWithCoder:(id)coder;
+- (AnswerETAIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (AnswerETAIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation AnswerETAIntent
@@ -14,12 +14,12 @@
   return [(AnswerETAIntent *)&v3 init];
 }
 
-- (AnswerETAIntent)initWithCoder:(id)a3
+- (AnswerETAIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AnswerETAIntent();
-  v4 = a3;
-  v5 = [(AnswerETAIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AnswerETAIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -28,48 +28,48 @@
   return v5;
 }
 
-- (AnswerETAIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (AnswerETAIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    storeCopy = store;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    storeCopy2 = store;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AnswerETAIntent();
-  v9 = [(AnswerETAIntent *)&v11 initWithIdentifier:v7 backingStore:a4];
+  v9 = [(AnswerETAIntent *)&v11 initWithIdentifier:v7 backingStore:store];
 
   return v9;
 }
 
-- (AnswerETAIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (AnswerETAIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  if (a5)
+  if (name)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    v8 = a3;
-    v9 = a4;
+    domainCopy = domain;
+    verbCopy = verb;
     v10.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v11 = a3;
-    v12 = a4;
+    domainCopy2 = domain;
+    verbCopy2 = verb;
     v10.super.isa = 0;
   }
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for AnswerETAIntent();
-  v13 = [(AnswerETAIntent *)&v15 initWithDomain:a3 verb:a4 parametersByName:v10.super.isa];
+  v13 = [(AnswerETAIntent *)&v15 initWithDomain:domain verb:verb parametersByName:v10.super.isa];
 
   return v13;
 }

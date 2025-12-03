@@ -1,42 +1,42 @@
 @interface HUActionSetAccessoryPickerViewController
-- (HUActionSetAccessoryPickerViewController)initWithActionSetBuilder:(id)a3 delegate:(id)a4;
-- (HUActionSetAccessoryPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)cancelWithSender:(id)a3;
-- (void)doneWithSender:(id)a3;
+- (HUActionSetAccessoryPickerViewController)initWithActionSetBuilder:(id)builder delegate:(id)delegate;
+- (HUActionSetAccessoryPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)cancelWithSender:(id)sender;
+- (void)doneWithSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation HUActionSetAccessoryPickerViewController
 
-- (HUActionSetAccessoryPickerViewController)initWithActionSetBuilder:(id)a3 delegate:(id)a4
+- (HUActionSetAccessoryPickerViewController)initWithActionSetBuilder:(id)builder delegate:(id)delegate
 {
-  v4 = a3;
+  builderCopy = builder;
   swift_unknownObjectRetain();
-  return ActionSetAccessoryPickerViewController.init(actionSetBuilder:delegate:)(v4);
+  return ActionSetAccessoryPickerViewController.init(actionSetBuilder:delegate:)(builderCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D026ED0();
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20D027B44(v4);
+  moduleCopy = module;
+  selfCopy = self;
+  v6 = sub_20D027B44(moduleCopy);
 
   return v6;
 }
 
-- (void)cancelWithSender:(id)a3
+- (void)cancelWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -54,10 +54,10 @@
   __swift_destroy_boxed_opaque_existential_1(&v6);
 }
 
-- (void)doneWithSender:(id)a3
+- (void)doneWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   sub_20D027290();
@@ -65,7 +65,7 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
@@ -76,25 +76,25 @@
   sub_20D563878();
   if (v10 == sub_20D567838() && v12 == v13)
   {
-    v18 = a3;
-    v19 = self;
+    kindCopy = kind;
+    selfCopy = self;
   }
 
   else
   {
     v15 = sub_20D568BF8();
-    v16 = a3;
-    v17 = self;
+    kindCopy2 = kind;
+    selfCopy2 = self;
 
     if ((v15 & 1) == 0)
     {
       v21 = sub_20D563868();
       v22 = type metadata accessor for ActionSetAccessoryPickerViewController();
-      v24.receiver = v17;
+      v24.receiver = selfCopy2;
       v24.super_class = v22;
-      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:v16 atIndexPath:v21];
+      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:kindCopy2 atIndexPath:v21];
 
-      self = v16;
+      self = kindCopy2;
       goto LABEL_12;
     }
   }
@@ -112,14 +112,14 @@ LABEL_12:
   return v20;
 }
 
-- (HUActionSetAccessoryPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUActionSetAccessoryPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

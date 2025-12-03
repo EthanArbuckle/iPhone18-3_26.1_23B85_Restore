@@ -1,48 +1,48 @@
 @interface TransitDirectionsListItemTransitTrip
 - (BOOL)shouldEnableExpandedButton;
-- (TransitDirectionsListItemTransitTrip)initWithTripStep:(id)a3;
+- (TransitDirectionsListItemTransitTrip)initWithTripStep:(id)step;
 - (id)_collapseButtonTitleByVehicleType;
 - (id)_countStopsStringClientFallback;
 - (id)_countStopsStringFromServer;
 - (id)_expandButtonTitleFromServer;
-- (id)expandingButtonTitleForExpandedState:(BOOL)a3;
-- (id)subItemsWithForceExpand:(BOOL)a3;
-- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)a3;
+- (id)expandingButtonTitleForExpandedState:(BOOL)state;
+- (id)subItemsWithForceExpand:(BOOL)expand;
+- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)expand;
 - (void)_rebuildSubItems;
-- (void)setExpandedItems:(id)a3;
+- (void)setExpandedItems:(id)items;
 @end
 
 @implementation TransitDirectionsListItemTransitTrip
 
-- (void)setExpandedItems:(id)a3
+- (void)setExpandedItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   expandedItems = self->_expandedItems;
   self->_expandedItems = v4;
 
   [(TransitDirectionsListItem *)self _invalidateSubItems];
 }
 
-- (TransitDirectionsListItemTransitTrip)initWithTripStep:(id)a3
+- (TransitDirectionsListItemTransitTrip)initWithTripStep:(id)step
 {
-  v5 = a3;
-  v6 = [v5 routeDetailsPrimaryArtwork];
-  v7 = [v6 firstObject];
+  stepCopy = step;
+  routeDetailsPrimaryArtwork = [stepCopy routeDetailsPrimaryArtwork];
+  firstObject = [routeDetailsPrimaryArtwork firstObject];
 
-  v8 = [v5 steppingArtwork];
-  v9 = [v8 firstObject];
+  steppingArtwork = [stepCopy steppingArtwork];
+  firstObject2 = [steppingArtwork firstObject];
 
-  v10 = [MNTransitStepInstruction instructionForStep:v5 context:1];
-  if (v7)
+  v10 = [MNTransitStepInstruction instructionForStep:stepCopy context:1];
+  if (firstObject)
   {
     v23 = &off_1016E6CF8;
-    v24 = v7;
+    v24 = firstObject;
     v11 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    if (v9)
+    if (firstObject2)
     {
 LABEL_3:
       v21 = &off_1016E6CF8;
-      v22 = v9;
+      v22 = firstObject2;
       v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       goto LABEL_6;
     }
@@ -51,7 +51,7 @@ LABEL_3:
   else
   {
     v11 = &__NSDictionary0__struct;
-    if (v9)
+    if (firstObject2)
     {
       goto LABEL_3;
     }
@@ -65,10 +65,10 @@ LABEL_6:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_tripStep, a3);
-    v15 = [v5 transitStep];
-    v16 = [v15 badges];
-    v17 = [v16 copy];
+    objc_storeStrong(&v13->_tripStep, step);
+    transitStep = [stepCopy transitStep];
+    badges = [transitStep badges];
+    v17 = [badges copy];
     badges = v14->super.super._badges;
     v14->super.super._badges = v17;
   }
@@ -76,18 +76,18 @@ LABEL_6:
   return v14;
 }
 
-- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)a3
+- (unint64_t)numberOfSubItemsWithForceExpand:(BOOL)expand
 {
-  v3 = [(TransitDirectionsListItemTransitTrip *)self subItemsWithForceExpand:a3];
+  v3 = [(TransitDirectionsListItemTransitTrip *)self subItemsWithForceExpand:expand];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)subItemsWithForceExpand:(BOOL)a3
+- (id)subItemsWithForceExpand:(BOOL)expand
 {
-  v3 = a3;
-  if ([(TransitDirectionsListItemTransitTrip *)self expanded]|| v3)
+  expandCopy = expand;
+  if ([(TransitDirectionsListItemTransitTrip *)self expanded]|| expandCopy)
   {
     subItemsExpanded = self->super.super._subItemsExpanded;
     if (!subItemsExpanded)
@@ -99,15 +99,15 @@ LABEL_6:
       subItemsExpanded = self->super.super._subItemsExpanded;
     }
 
-    v5 = subItemsExpanded;
+    subItems = subItemsExpanded;
   }
 
   else
   {
-    v5 = [(TransitDirectionsListItem *)self subItems];
+    subItems = [(TransitDirectionsListItem *)self subItems];
   }
 
-  return v5;
+  return subItems;
 }
 
 - (void)_rebuildSubItems
@@ -119,36 +119,36 @@ LABEL_6:
 
 - (BOOL)shouldEnableExpandedButton
 {
-  v2 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-  v3 = [v2 count] != 0;
+  expandedItems = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+  v3 = [expandedItems count] != 0;
 
   return v3;
 }
 
 - (id)_countStopsStringClientFallback
 {
-  v3 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-  v4 = [v3 count];
+  expandedItems = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+  v4 = [expandedItems count];
   v5 = v4 + 1;
 
-  v6 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-  v7 = [v6 lastObject];
+  expandedItems2 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+  lastObject = [expandedItems2 lastObject];
 
-  if (v7 && [v7 type] != 5)
+  if (lastObject && [lastObject type] != 5)
   {
-    v8 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-    v9 = [v8 count];
+    expandedItems3 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+    v9 = [expandedItems3 count];
 
     if (v9 == 2)
     {
-      v10 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-      v11 = [v10 firstObject];
+      expandedItems4 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+      firstObject = [expandedItems4 firstObject];
 
-      v12 = [v11 composedRouteSteps];
-      v13 = [v12 lastObject];
+      composedRouteSteps = [firstObject composedRouteSteps];
+      lastObject2 = [composedRouteSteps lastObject];
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 maneuver] == 5)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [lastObject2 maneuver] == 5)
       {
         v4 = 1;
       }
@@ -157,10 +157,10 @@ LABEL_6:
     v5 = v4;
   }
 
-  v14 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
-  v15 = [v14 isBus];
+  tripStep = [(TransitDirectionsListItemTransitTrip *)self tripStep];
+  isBus = [tripStep isBus];
 
-  if (v15)
+  if (isBus)
   {
     v16 = +[NSBundle mainBundle];
     v17 = v16;
@@ -169,12 +169,12 @@ LABEL_6:
 
   else
   {
-    v19 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
-    v20 = [v19 isRail];
+    tripStep2 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
+    isRail = [tripStep2 isRail];
 
     v16 = +[NSBundle mainBundle];
     v17 = v16;
-    if (v20)
+    if (isRail)
     {
       v18 = @"%d stop [RAIL]";
     }
@@ -194,46 +194,46 @@ LABEL_6:
 
 - (id)_countStopsStringFromServer
 {
-  v2 = [(TransitDirectionsListItem *)self transitInstruction];
-  v3 = [v2 countStopsString];
+  transitInstruction = [(TransitDirectionsListItem *)self transitInstruction];
+  countStopsString = [transitInstruction countStopsString];
 
-  v4 = [v3 optionsWithArgumentHandler:&stru_101657568];
-  v5 = [v3 stringWithOptions:v4];
+  v4 = [countStopsString optionsWithArgumentHandler:&stru_101657568];
+  v5 = [countStopsString stringWithOptions:v4];
 
   return v5;
 }
 
 - (id)_expandButtonTitleFromServer
 {
-  v3 = [(TransitDirectionsListItem *)self transitInstruction];
-  v4 = [v3 expandableListString];
+  transitInstruction = [(TransitDirectionsListItem *)self transitInstruction];
+  expandableListString = [transitInstruction expandableListString];
 
-  if (!v4)
+  if (!expandableListString)
   {
     if (-[TransitDirectionsListItem type](self, "type") == 3 && (-[TransitDirectionsListItem previousItem](self, "previousItem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], v5, v6 == 2))
     {
-      v7 = [(TransitDirectionsListItem *)self previousItem];
-      v8 = [v7 transitInstruction];
-      v4 = [v8 expandableListString];
+      previousItem = [(TransitDirectionsListItem *)self previousItem];
+      transitInstruction2 = [previousItem transitInstruction];
+      expandableListString = [transitInstruction2 expandableListString];
     }
 
     else
     {
-      v4 = 0;
+      expandableListString = 0;
     }
   }
 
-  v9 = [v4 stringWithDefaultOptions];
+  stringWithDefaultOptions = [expandableListString stringWithDefaultOptions];
 
-  return v9;
+  return stringWithDefaultOptions;
 }
 
 - (id)_collapseButtonTitleByVehicleType
 {
-  v3 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
-  v4 = [v3 isBus];
+  tripStep = [(TransitDirectionsListItemTransitTrip *)self tripStep];
+  isBus = [tripStep isBus];
 
-  if (v4)
+  if (isBus)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
@@ -242,12 +242,12 @@ LABEL_6:
 
   else
   {
-    v8 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
-    v9 = [v8 isRail];
+    tripStep2 = [(TransitDirectionsListItemTransitTrip *)self tripStep];
+    isRail = [tripStep2 isRail];
 
     v5 = +[NSBundle mainBundle];
     v6 = v5;
-    if (v9)
+    if (isRail)
     {
       v7 = @"Transit_Ride_Steps_Hide_Rail";
     }
@@ -259,38 +259,38 @@ LABEL_6:
   }
 
   v10 = [v5 localizedStringForKey:v7 value:@"localized string not found" table:0];
-  v11 = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v10, [v11 count]);
+  expandedItems = [(TransitDirectionsListItemTransitTrip *)self expandedItems];
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v10, [expandedItems count]);
 
   return v12;
 }
 
-- (id)expandingButtonTitleForExpandedState:(BOOL)a3
+- (id)expandingButtonTitleForExpandedState:(BOOL)state
 {
-  if (a3 && (-[TransitDirectionsListItemTransitTrip expandedItems](self, "expandedItems"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, v5))
+  if (state && (-[TransitDirectionsListItemTransitTrip expandedItems](self, "expandedItems"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, v5))
   {
-    v6 = [(TransitDirectionsListItemTransitTrip *)self _collapseButtonTitleByVehicleType];
+    _collapseButtonTitleByVehicleType = [(TransitDirectionsListItemTransitTrip *)self _collapseButtonTitleByVehicleType];
   }
 
   else
   {
-    v6 = [(TransitDirectionsListItemTransitTrip *)self _expandButtonTitleFromServer];
-    if (![v6 length])
+    _collapseButtonTitleByVehicleType = [(TransitDirectionsListItemTransitTrip *)self _expandButtonTitleFromServer];
+    if (![_collapseButtonTitleByVehicleType length])
     {
-      v7 = [(TransitDirectionsListItemTransitTrip *)self _countStopsStringFromServer];
+      _countStopsStringFromServer = [(TransitDirectionsListItemTransitTrip *)self _countStopsStringFromServer];
 
-      v6 = v7;
+      _collapseButtonTitleByVehicleType = _countStopsStringFromServer;
     }
 
-    if (![v6 length])
+    if (![_collapseButtonTitleByVehicleType length])
     {
-      v8 = [(TransitDirectionsListItemTransitTrip *)self _countStopsStringClientFallback];
+      _countStopsStringClientFallback = [(TransitDirectionsListItemTransitTrip *)self _countStopsStringClientFallback];
 
-      v6 = v8;
+      _collapseButtonTitleByVehicleType = _countStopsStringClientFallback;
     }
   }
 
-  return v6;
+  return _collapseButtonTitleByVehicleType;
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   JSImpressionsBatch.debugDescription.getter();
 
   v3 = String._bridgeToObjectiveC()();

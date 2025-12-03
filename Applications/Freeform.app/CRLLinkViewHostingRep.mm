@@ -1,14 +1,14 @@
 @interface CRLLinkViewHostingRep
 - (BOOL)directlyManagesContentPlatformView;
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)crlaxUserInputLabels;
 - (NSString)crlaxLabel;
 - (UIView)contentPlatformView;
-- (_TtC8Freeform21CRLLinkViewHostingRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (void)cancelReload:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)a3;
+- (_TtC8Freeform21CRLLinkViewHostingRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (void)cancelReload:(id)reload;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)only;
 - (void)handleFadeInForZoom;
 - (void)handleFadeOutForZoom;
 - (void)viewScaleDidChange;
@@ -18,7 +18,7 @@
 
 - (NSString)crlaxLabel
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.getAccessibilityLabelTokens(forUserInput:)(0);
   sub_1005B981C(&unk_1019F4D80);
   sub_10001A2F8(&qword_1019F61E0, &unk_1019F4D80);
@@ -31,7 +31,7 @@
 
 - (NSArray)crlaxUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.getAccessibilityLabelTokens(forUserInput:)(1);
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -42,40 +42,40 @@
 - (BOOL)directlyManagesContentPlatformView
 {
   v3 = objc_opt_self();
-  v4 = self;
-  if ([v3 isMainThread] && (v5 = -[CRLCanvasRep canvas](v4, "canvas")) != 0)
+  selfCopy = self;
+  if ([v3 isMainThread] && (v5 = -[CRLCanvasRep canvas](selfCopy, "canvas")) != 0)
   {
     v6 = v5;
-    v7 = [(CRLCanvas *)v5 isCanvasInteractive];
+    isCanvasInteractive = [(CRLCanvas *)v5 isCanvasInteractive];
   }
 
   else
   {
-    v7 = 0;
+    isCanvasInteractive = 0;
   }
 
-  return v7;
+  return isCanvasInteractive;
 }
 
 - (UIView)contentPlatformView
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.contentPlatformView.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  CRLLinkViewHostingRep.draw(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  CRLLinkViewHostingRep.draw(in:)(contextCopy);
 }
 
-- (void)cancelReload:(id)a3
+- (void)cancelReload:(id)reload
 {
-  if (a3)
+  if (reload)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -92,40 +92,40 @@
 
 - (void)handleFadeOutForZoom
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.handleFadeOutForZoom()();
 }
 
 - (void)handleFadeInForZoom
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.handleFadeInForZoom()();
 }
 
 - (void)viewScaleDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.viewScaleDidChange()();
 }
 
-- (BOOL)handleDoubleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleDoubleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  v4 = self;
+  selfCopy = self;
   v5 = _s8Freeform21CRLLinkViewHostingRepC15handleDoubleTap2at9inputTypeSbSo7CGPointV_So08CRLInputK0VtF_0();
 
   return v5 & 1;
 }
 
-- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)a3
+- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)only
 {
-  v4 = a3;
-  v5 = self;
-  CRLLinkViewHostingRep.drawInContextWithoutEffectsForAlphaOnly(_:)(v4);
+  onlyCopy = only;
+  selfCopy = self;
+  CRLLinkViewHostingRep.drawInContextWithoutEffectsForAlphaOnly(_:)(onlyCopy);
 }
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLLinkViewHostingRep.accessibilityCustomActions.getter();
 
   if (v3)
@@ -142,11 +142,11 @@
   return v4.super.isa;
 }
 
-- (_TtC8Freeform21CRLLinkViewHostingRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform21CRLLinkViewHostingRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_100FDEE48(v5, a4);
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  v7 = sub_100FDEE48(layoutCopy, canvas);
 
   return v7;
 }

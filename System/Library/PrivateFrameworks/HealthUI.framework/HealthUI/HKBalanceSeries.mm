@@ -1,86 +1,86 @@
 @interface HKBalanceSeries
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (id)marginsForYAxis:(id)a3 xAxisRange:(id)a4 zoomLevel:(int64_t)a5 chartRect:(CGRect)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (id)marginsForYAxis:(id)axis xAxisRange:(id)range zoomLevel:(int64_t)level chartRect:(CGRect)rect;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 - (void)finishSelection;
-- (void)selectPathsinPathRange:(id *)a3 coordinateRange:(id)a4;
+- (void)selectPathsinPathRange:(id *)range coordinateRange:(id)coordinateRange;
 @end
 
 @implementation HKBalanceSeries
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  index = a4->index;
-  zoom = a4->zoom;
-  resolution = a4->resolution;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  sub_1C3CBBF1C(v12, index, zoom, resolution, v13, v14);
+  index = path->index;
+  zoom = path->zoom;
+  resolution = path->resolution;
+  blockCopy = block;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  selfCopy = self;
+  sub_1C3CBBF1C(blockCopy, index, zoom, resolution, axisCopy, yAxisCopy);
   v17 = v16;
 
   return v17;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = *&a6->c;
-  v24[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v18 = *&transform->c;
+  v24[0] = *&transform->a;
   v24[1] = v18;
-  v24[2] = *&a6->tx;
-  v19 = a3;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
+  v24[2] = *&transform->tx;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  contextCopy = context;
+  renderContextCopy = renderContext;
   swift_unknownObjectRetain();
-  v23 = self;
-  sub_1C3CBF478(v19, v20, v24, v21, a9, x, y, width, height);
+  selfCopy = self;
+  sub_1C3CBF478(coordinatesCopy, configurationCopy, v24, contextCopy, delegate, x, y, width, height);
 
   swift_unknownObjectRelease();
 }
 
-- (id)marginsForYAxis:(id)a3 xAxisRange:(id)a4 zoomLevel:(int64_t)a5 chartRect:(CGRect)a6
+- (id)marginsForYAxis:(id)axis xAxisRange:(id)range zoomLevel:(int64_t)level chartRect:(CGRect)rect
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = sub_1C3CC07AC(a3);
+  axisCopy = axis;
+  rangeCopy = range;
+  selfCopy = self;
+  v12 = sub_1C3CC07AC(axis);
 
   return v12;
 }
 
-- (void)selectPathsinPathRange:(id *)a3 coordinateRange:(id)a4
+- (void)selectPathsinPathRange:(id *)range coordinateRange:(id)coordinateRange
 {
-  index = a3->var0.var0.index;
-  zoom = a3->var0.var0.zoom;
-  resolution = a3->var0.var0.resolution;
-  var1 = a3->var0.var1;
-  v10 = a3->var1.var0.index;
-  v11 = a3->var1.var0.zoom;
-  v12 = a3->var1.var0.resolution;
-  v13 = a3->var1.var1;
-  if (a4)
+  index = range->var0.var0.index;
+  zoom = range->var0.var0.zoom;
+  resolution = range->var0.var0.resolution;
+  var1 = range->var0.var1;
+  v10 = range->var1.var0.index;
+  v11 = range->var1.var0.zoom;
+  v12 = range->var1.var0.resolution;
+  v13 = range->var1.var1;
+  if (coordinateRange)
   {
-    v26 = a3->var1.var1;
-    v14 = a3->var1.var0.resolution;
-    v15 = a3->var1.var0.zoom;
-    v16 = a3->var1.var0.index;
-    v17 = a3->var0.var1;
-    v18 = a3->var0.var0.resolution;
-    v19 = a3->var0.var0.zoom;
-    v20 = a3->var0.var0.index;
+    v26 = range->var1.var1;
+    v14 = range->var1.var0.resolution;
+    v15 = range->var1.var0.zoom;
+    v16 = range->var1.var0.index;
+    v17 = range->var0.var1;
+    v18 = range->var0.var0.resolution;
+    v19 = range->var0.var0.zoom;
+    v20 = range->var0.var0.index;
     v21 = *(&self->super.super.isa + OBJC_IVAR___HKBalanceSeries_lollipopPathRangeLock);
-    v22 = self;
-    v23 = a4;
+    selfCopy = self;
+    coordinateRangeCopy = coordinateRange;
     os_unfair_lock_lock((v21 + 84));
     LOBYTE(v27[0]) = 0;
     *(v21 + 16) = v20;
@@ -106,7 +106,7 @@
 
   else
   {
-    v25 = self;
+    selfCopy2 = self;
   }
 
   v28.receiver = self;
@@ -119,13 +119,13 @@
   v27[5] = v11;
   v27[6] = v12;
   v27[7] = v13;
-  [(HKGraphSeries *)&v28 selectPathsinPathRange:v27 coordinateRange:a4];
+  [(HKGraphSeries *)&v28 selectPathsinPathRange:v27 coordinateRange:coordinateRange];
 }
 
 - (void)finishSelection
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___HKBalanceSeries_lollipopPathRangeLock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 84));
   *(v2 + 16) = 0u;
   *(v2 + 32) = 0u;
@@ -135,12 +135,12 @@
   os_unfair_lock_unlock((v2 + 84));
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   type metadata accessor for BalanceCoordinate();
   v8 = swift_dynamicCastClass();
   if (v8)
@@ -176,10 +176,10 @@
   return v8;
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1C3CC08CC();
   v8 = v7;
   swift_unknownObjectRelease();
@@ -187,9 +187,9 @@
   return v8;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
+  x = point.x;
   type metadata accessor for BalanceCoordinate();
   v6 = swift_dynamicCastClass();
   if (v6)
@@ -203,9 +203,9 @@
   }
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
+  y = point.y;
   type metadata accessor for BalanceCoordinate();
   v6 = swift_dynamicCastClass();
   if (!v6)

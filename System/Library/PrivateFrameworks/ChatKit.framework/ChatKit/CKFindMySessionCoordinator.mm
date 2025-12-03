@@ -1,41 +1,41 @@
 @interface CKFindMySessionCoordinator
 - (BOOL)findMyNavBarEnabled;
-- (CKFindMySessionCoordinator)initWithConversation:(id)a3 observesNotifications:(BOOL)a4 statusUpdateChangeProvider:(id)a5;
-- (id)_targetFindMyHandleFromNotification:(id)a3;
+- (CKFindMySessionCoordinator)initWithConversation:(id)conversation observesNotifications:(BOOL)notifications statusUpdateChangeProvider:(id)provider;
+- (id)_targetFindMyHandleFromNotification:(id)notification;
 - (void)_setupNotificationObservers;
 - (void)_updateLocationLabel;
 - (void)dealloc;
-- (void)fmfSessionChatLocationReceived:(id)a3;
-- (void)fmfSessionChatLocationRefreshed:(id)a3;
-- (void)fmfSessionRelationshipDidChange:(id)a3;
+- (void)fmfSessionChatLocationReceived:(id)received;
+- (void)fmfSessionChatLocationRefreshed:(id)refreshed;
+- (void)fmfSessionRelationshipDidChange:(id)change;
 - (void)refreshFMFLocationIfNecessary;
-- (void)setLocationToDisplay:(id)a3;
-- (void)updateLocationToDisplayWithHandle:(id)a3;
+- (void)setLocationToDisplay:(id)display;
+- (void)updateLocationToDisplayWithHandle:(id)handle;
 @end
 
 @implementation CKFindMySessionCoordinator
 
-- (CKFindMySessionCoordinator)initWithConversation:(id)a3 observesNotifications:(BOOL)a4 statusUpdateChangeProvider:(id)a5
+- (CKFindMySessionCoordinator)initWithConversation:(id)conversation observesNotifications:(BOOL)notifications statusUpdateChangeProvider:(id)provider
 {
-  v6 = a4;
+  notificationsCopy = notifications;
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  conversationCopy = conversation;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = CKFindMySessionCoordinator;
   v11 = [(CKFindMySessionCoordinator *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_conversation, a3);
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_conversation, conversation);
+    v13 = _Block_copy(providerCopy);
     statusUpdateProvider = v12->_statusUpdateProvider;
     v12->_statusUpdateProvider = v13;
 
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      if (v6)
+      if (notificationsCopy)
       {
         v16 = @"YES";
       }
@@ -45,9 +45,9 @@
         v16 = @"NO";
       }
 
-      v17 = [(CKFindMySessionCoordinator *)v12 findMyNavBarEnabled];
+      findMyNavBarEnabled = [(CKFindMySessionCoordinator *)v12 findMyNavBarEnabled];
       *buf = 138412802;
-      if (v17)
+      if (findMyNavBarEnabled)
       {
         v18 = @"YES";
       }
@@ -57,7 +57,7 @@
         v18 = @"NO";
       }
 
-      v22 = v9;
+      v22 = conversationCopy;
       v23 = 2112;
       v24 = v16;
       v25 = 2112;
@@ -65,7 +65,7 @@
       _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Initializing for conversation={%@} observesNotifications={%@} isFindMyNavBarEnabled={%@}.", buf, 0x20u);
     }
 
-    if (v6)
+    if (notificationsCopy)
     {
       [(CKFindMySessionCoordinator *)v12 _setupNotificationObservers];
     }
@@ -82,9 +82,9 @@
   v3 = IMLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CKFindMySessionCoordinator *)self conversation];
+    conversation = [(CKFindMySessionCoordinator *)self conversation];
     *buf = 138412290;
-    v7 = v4;
+    v7 = conversation;
     _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Deallocating FMF coordinator for conversation={%@}", buf, 0xCu);
   }
 
@@ -95,17 +95,17 @@
 
 - (BOOL)findMyNavBarEnabled
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isFindMyNavBarEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isFindMyNavBarEnabled = [mEMORY[0x1E69A8070] isFindMyNavBarEnabled];
 
-  v5 = [MEMORY[0x1E69A5B70] sharedInstance];
-  v6 = [v5 disableLocationSharing];
+  mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+  disableLocationSharing = [mEMORY[0x1E69A5B70] disableLocationSharing];
 
-  v7 = [(CKFindMySessionCoordinator *)self conversation];
-  if (v7)
+  conversation = [(CKFindMySessionCoordinator *)self conversation];
+  if (conversation)
   {
-    v8 = [(CKFindMySessionCoordinator *)self conversation];
-    v9 = [v8 isGroupConversation] ^ 1;
+    conversation2 = [(CKFindMySessionCoordinator *)self conversation];
+    v9 = [conversation2 isGroupConversation] ^ 1;
   }
 
   else
@@ -113,7 +113,7 @@
     LOBYTE(v9) = 0;
   }
 
-  return v4 & v9 & (v6 ^ 1);
+  return isFindMyNavBarEnabled & v9 & (disableLocationSharing ^ 1);
 }
 
 - (void)_setupNotificationObservers
@@ -121,24 +121,24 @@
   v14 = *MEMORY[0x1E69E9840];
   if ([(CKFindMySessionCoordinator *)self findMyNavBarEnabled])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel_fmfSessionRelationshipDidChange_ name:*MEMORY[0x1E69A5990] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_fmfSessionRelationshipDidChange_ name:*MEMORY[0x1E69A5990] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = *MEMORY[0x1E69A5980];
-    v6 = [(CKFindMySessionCoordinator *)self conversation];
-    v7 = [v6 chat];
-    [v4 addObserver:self selector:sel_fmfSessionChatLocationRefreshed_ name:v5 object:v7];
+    conversation = [(CKFindMySessionCoordinator *)self conversation];
+    chat = [conversation chat];
+    [defaultCenter2 addObserver:self selector:sel_fmfSessionChatLocationRefreshed_ name:v5 object:chat];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_fmfSessionChatLocationReceived_ name:*MEMORY[0x1E69A5988] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_fmfSessionChatLocationReceived_ name:*MEMORY[0x1E69A5988] object:0];
 
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CKFindMySessionCoordinator *)self conversation];
+      conversation2 = [(CKFindMySessionCoordinator *)self conversation];
       v12 = 134217984;
-      v13 = v10;
+      v13 = conversation2;
       v11 = "Registered notification observers for FindMy in conversation {%p}.";
 LABEL_6:
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, v11, &v12, 0xCu);
@@ -150,92 +150,92 @@ LABEL_6:
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CKFindMySessionCoordinator *)self conversation];
+      conversation2 = [(CKFindMySessionCoordinator *)self conversation];
       v12 = 134217984;
-      v13 = v10;
+      v13 = conversation2;
       v11 = "Location support in this chat is not available. No need to observe for this conversation {%p}.";
       goto LABEL_6;
     }
   }
 }
 
-- (id)_targetFindMyHandleFromNotification:(id)a3
+- (id)_targetFindMyHandleFromNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 object];
+    object2 = [notificationCopy object];
   }
 
   else
   {
-    v5 = 0;
+    object2 = 0;
   }
 
-  return v5;
+  return object2;
 }
 
-- (void)fmfSessionChatLocationRefreshed:(id)a3
+- (void)fmfSessionChatLocationRefreshed:(id)refreshed
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  refreshedCopy = refreshed;
+  object = [refreshedCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 object];
+    object2 = [refreshedCopy object];
   }
 
   else
   {
-    v6 = 0;
+    object2 = 0;
   }
 
-  v7 = [(CKFindMySessionCoordinator *)self conversation];
-  v8 = [v7 chat];
-  v9 = [v6 isEqual:v8];
+  conversation = [(CKFindMySessionCoordinator *)self conversation];
+  chat = [conversation chat];
+  v9 = [object2 isEqual:chat];
 
   if (v9)
   {
     v10 = IMLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(CKFindMySessionCoordinator *)self conversation];
-      v12 = [v11 recipient];
-      v13 = [v12 defaultIMHandle];
+      conversation2 = [(CKFindMySessionCoordinator *)self conversation];
+      recipient = [conversation2 recipient];
+      defaultIMHandle = [recipient defaultIMHandle];
       v17 = 136315394;
       v18 = "[CKFindMySessionCoordinator fmfSessionChatLocationRefreshed:]";
       v19 = 2112;
-      v20 = v13;
+      v20 = defaultIMHandle;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "%s handle: %@", &v17, 0x16u);
     }
 
-    v14 = [(CKFindMySessionCoordinator *)self conversation];
-    v15 = [v14 recipient];
-    v16 = [v15 defaultIMHandle];
-    [(CKFindMySessionCoordinator *)self updateLocationToDisplayWithHandle:v16];
+    conversation3 = [(CKFindMySessionCoordinator *)self conversation];
+    recipient2 = [conversation3 recipient];
+    defaultIMHandle2 = [recipient2 defaultIMHandle];
+    [(CKFindMySessionCoordinator *)self updateLocationToDisplayWithHandle:defaultIMHandle2];
   }
 }
 
-- (void)fmfSessionChatLocationReceived:(id)a3
+- (void)fmfSessionChatLocationReceived:(id)received
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(CKFindMySessionCoordinator *)self _targetFindMyHandleFromNotification:a3];
-  v5 = [(CKFindMySessionCoordinator *)self conversation];
-  v6 = [v5 chat];
+  v4 = [(CKFindMySessionCoordinator *)self _targetFindMyHandleFromNotification:received];
+  conversation = [(CKFindMySessionCoordinator *)self conversation];
+  chat = [conversation chat];
 
-  v7 = [v6 recipient];
-  v8 = [v4 identifier];
-  if ([v7 isEqual:v8])
+  recipient = [chat recipient];
+  identifier = [v4 identifier];
+  if ([recipient isEqual:identifier])
   {
   }
 
   else
   {
-    v9 = [v6 allSiblingFindMyHandles];
-    v10 = [v9 containsObject:v4];
+    allSiblingFindMyHandles = [chat allSiblingFindMyHandles];
+    v10 = [allSiblingFindMyHandles containsObject:v4];
 
     if (!v10)
     {
@@ -253,24 +253,24 @@ LABEL_6:
     _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "%s handle: %@", &v15, 0x16u);
   }
 
-  v12 = [(CKFindMySessionCoordinator *)self conversation];
-  v13 = [v12 recipient];
-  v14 = [v13 defaultIMHandle];
-  [(CKFindMySessionCoordinator *)self updateLocationToDisplayWithHandle:v14];
+  conversation2 = [(CKFindMySessionCoordinator *)self conversation];
+  recipient2 = [conversation2 recipient];
+  defaultIMHandle = [recipient2 defaultIMHandle];
+  [(CKFindMySessionCoordinator *)self updateLocationToDisplayWithHandle:defaultIMHandle];
 
 LABEL_7:
 }
 
-- (void)fmfSessionRelationshipDidChange:(id)a3
+- (void)fmfSessionRelationshipDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(CKFindMySessionCoordinator *)self _targetFindMyHandleFromNotification:a3];
+  v4 = [(CKFindMySessionCoordinator *)self _targetFindMyHandleFromNotification:change];
   if (v4)
   {
-    v5 = [(CKFindMySessionCoordinator *)self conversation];
-    v6 = [v5 chat];
-    v7 = [v6 allSiblingFindMyHandles];
-    v8 = [v7 containsObject:v4];
+    conversation = [(CKFindMySessionCoordinator *)self conversation];
+    chat = [conversation chat];
+    allSiblingFindMyHandles = [chat allSiblingFindMyHandles];
+    v8 = [allSiblingFindMyHandles containsObject:v4];
 
     if (v8)
     {
@@ -289,27 +289,27 @@ LABEL_7:
   }
 }
 
-- (void)updateLocationToDisplayWithHandle:(id)a3
+- (void)updateLocationToDisplayWithHandle:(id)handle
 {
-  v16 = a3;
-  v4 = [(CKFindMySessionCoordinator *)self findMyNavBarEnabled];
-  if (v16)
+  handleCopy = handle;
+  findMyNavBarEnabled = [(CKFindMySessionCoordinator *)self findMyNavBarEnabled];
+  if (handleCopy)
   {
-    if (v4)
+    if (findMyNavBarEnabled)
     {
-      v5 = [(CKFindMySessionCoordinator *)self conversation];
-      v6 = [v5 chat];
-      v7 = [v6 allSiblingFindMyHandles];
-      v8 = [v16 findMyHandle];
-      v9 = [v7 containsObject:v8];
+      conversation = [(CKFindMySessionCoordinator *)self conversation];
+      chat = [conversation chat];
+      allSiblingFindMyHandles = [chat allSiblingFindMyHandles];
+      findMyHandle = [handleCopy findMyHandle];
+      v9 = [allSiblingFindMyHandles containsObject:findMyHandle];
 
       if (v9)
       {
-        v10 = [MEMORY[0x1E69A5B70] sharedInstance];
-        v11 = [(CKFindMySessionCoordinator *)self conversation];
-        v12 = [v11 recipient];
-        v13 = [v12 defaultIMHandle];
-        v14 = [v10 findMyLocationForHandleOrSibling:v13];
+        mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+        conversation2 = [(CKFindMySessionCoordinator *)self conversation];
+        recipient = [conversation2 recipient];
+        defaultIMHandle = [recipient defaultIMHandle];
+        v14 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:defaultIMHandle];
 
         if (v14)
         {
@@ -331,12 +331,12 @@ LABEL_7:
 {
   if ([(CKFindMySessionCoordinator *)self findMyNavBarEnabled])
   {
-    v3 = [(CKFindMySessionCoordinator *)self conversation];
-    v4 = [v3 recipient];
-    v8 = [v4 defaultIMHandle];
+    conversation = [(CKFindMySessionCoordinator *)self conversation];
+    recipient = [conversation recipient];
+    defaultIMHandle = [recipient defaultIMHandle];
 
-    v5 = [MEMORY[0x1E69A5B70] sharedInstance];
-    v6 = [v5 findMyLocationForHandleOrSibling:v8];
+    mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+    v6 = [mEMORY[0x1E69A5B70] findMyLocationForHandleOrSibling:defaultIMHandle];
 
     if (v6)
     {
@@ -352,12 +352,12 @@ LABEL_7:
   }
 }
 
-- (void)setLocationToDisplay:(id)a3
+- (void)setLocationToDisplay:(id)display
 {
-  v5 = a3;
-  if (-[CKFindMySessionCoordinator findMyNavBarEnabled](self, "findMyNavBarEnabled") && ([v5 isEqual:self->_locationToDisplay] & 1) == 0)
+  displayCopy = display;
+  if (-[CKFindMySessionCoordinator findMyNavBarEnabled](self, "findMyNavBarEnabled") && ([displayCopy isEqual:self->_locationToDisplay] & 1) == 0)
   {
-    objc_storeStrong(&self->_locationToDisplay, a3);
+    objc_storeStrong(&self->_locationToDisplay, display);
     [(CKFindMySessionCoordinator *)self _updateLocationLabel];
   }
 }
@@ -367,12 +367,12 @@ LABEL_7:
   v11 = *MEMORY[0x1E69E9840];
   if ([(CKFindMySessionCoordinator *)self findMyNavBarEnabled])
   {
-    v3 = [(CKFindMySessionCoordinator *)self locationToDisplay];
-    v4 = [v3 shortAddress];
+    locationToDisplay = [(CKFindMySessionCoordinator *)self locationToDisplay];
+    shortAddress = [locationToDisplay shortAddress];
 
-    if (v4)
+    if (shortAddress)
     {
-      v5 = [CKFindMySessionStatusUpdate statusUpdateWithLocationText:v4 isLocationAvailableForDisplay:1];
+      v5 = [CKFindMySessionStatusUpdate statusUpdateWithLocationText:shortAddress isLocationAvailableForDisplay:1];
       v6 = IMLogHandleForCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
@@ -397,8 +397,8 @@ LABEL_7:
       }
     }
 
-    v8 = [(CKFindMySessionCoordinator *)self statusUpdateProvider];
-    (v8)[2](v8, v5);
+    statusUpdateProvider = [(CKFindMySessionCoordinator *)self statusUpdateProvider];
+    (statusUpdateProvider)[2](statusUpdateProvider, v5);
   }
 }
 

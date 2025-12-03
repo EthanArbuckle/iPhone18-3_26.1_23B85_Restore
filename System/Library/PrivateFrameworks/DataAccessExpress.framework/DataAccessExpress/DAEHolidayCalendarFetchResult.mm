@@ -1,7 +1,7 @@
 @interface DAEHolidayCalendarFetchResult
-- (DAEHolidayCalendarFetchResult)initWithCoder:(id)a3;
+- (DAEHolidayCalendarFetchResult)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAEHolidayCalendarFetchResult
@@ -12,53 +12,53 @@
   v11.receiver = self;
   v11.super_class = DAEHolidayCalendarFetchResult;
   v4 = [(DAEHolidayCalendarFetchResult *)&v11 description];
-  v5 = [(DAEHolidayCalendarFetchResult *)self region];
-  v6 = [(DAEHolidayCalendarFetchResult *)self language];
-  v7 = [(DAEHolidayCalendarFetchResult *)self URLString];
-  v8 = [(DAEHolidayCalendarFetchResult *)self calendarDescription];
-  v9 = [v3 initWithFormat:@"[%@] region: %@  language: %@  URL: %@  description: %@", v4, v5, v6, v7, v8];
+  region = [(DAEHolidayCalendarFetchResult *)self region];
+  language = [(DAEHolidayCalendarFetchResult *)self language];
+  uRLString = [(DAEHolidayCalendarFetchResult *)self URLString];
+  calendarDescription = [(DAEHolidayCalendarFetchResult *)self calendarDescription];
+  v9 = [v3 initWithFormat:@"[%@] region: %@  language: %@  URL: %@  description: %@", v4, region, language, uRLString, calendarDescription];
 
   return v9;
 }
 
-- (DAEHolidayCalendarFetchResult)initWithCoder:(id)a3
+- (DAEHolidayCalendarFetchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DAEHolidayCalendarFetchResult;
   v5 = [(DAEHolidayCalendarFetchResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     [(DAEHolidayCalendarFetchResult *)v5 setRegion:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
     [(DAEHolidayCalendarFetchResult *)v5 setLanguage:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URLString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URLString"];
     [(DAEHolidayCalendarFetchResult *)v5 setURLString:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarDescription"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarDescription"];
     [(DAEHolidayCalendarFetchResult *)v5 setCalendarDescription:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAEHolidayCalendarFetchResult *)self region];
-  [v4 encodeObject:v5 forKey:@"region"];
+  coderCopy = coder;
+  region = [(DAEHolidayCalendarFetchResult *)self region];
+  [coderCopy encodeObject:region forKey:@"region"];
 
-  v6 = [(DAEHolidayCalendarFetchResult *)self language];
-  [v4 encodeObject:v6 forKey:@"language"];
+  language = [(DAEHolidayCalendarFetchResult *)self language];
+  [coderCopy encodeObject:language forKey:@"language"];
 
-  v7 = [(DAEHolidayCalendarFetchResult *)self URLString];
-  [v4 encodeObject:v7 forKey:@"URLString"];
+  uRLString = [(DAEHolidayCalendarFetchResult *)self URLString];
+  [coderCopy encodeObject:uRLString forKey:@"URLString"];
 
-  v8 = [(DAEHolidayCalendarFetchResult *)self calendarDescription];
-  [v4 encodeObject:v8 forKey:@"calendarDescription"];
+  calendarDescription = [(DAEHolidayCalendarFetchResult *)self calendarDescription];
+  [coderCopy encodeObject:calendarDescription forKey:@"calendarDescription"];
 }
 
 @end

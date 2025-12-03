@@ -1,18 +1,18 @@
 @interface MCMConcreteContainerIdentity
-+ (id)concreteContainerIdentityFromPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConcreteContainerIdentity:(id)a3;
++ (id)concreteContainerIdentityFromPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConcreteContainerIdentity:(id)identity;
 - (MCMConcreteContainerIdentity)init;
-- (MCMConcreteContainerIdentity)initWithContainerIdentity:(id)a3 UUID:(id)a4 error:(unint64_t *)a5;
-- (MCMConcreteContainerIdentity)initWithLibsystemContainer:(container_object_s *)a3 defaultUserIdentity:(id)a4 userIdentityCache:(id)a5 error:(unint64_t *)a6;
-- (MCMConcreteContainerIdentity)initWithPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5;
-- (MCMConcreteContainerIdentity)initWithVersion1PlistDictionary:(id)a3 containerIdentity:(id)a4 error:(unint64_t *)a5;
+- (MCMConcreteContainerIdentity)initWithContainerIdentity:(id)identity UUID:(id)d error:(unint64_t *)error;
+- (MCMConcreteContainerIdentity)initWithLibsystemContainer:(container_object_s *)container defaultUserIdentity:(id)identity userIdentityCache:(id)cache error:(unint64_t *)error;
+- (MCMConcreteContainerIdentity)initWithPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error;
+- (MCMConcreteContainerIdentity)initWithVersion1PlistDictionary:(id)dictionary containerIdentity:(id)identity error:(unint64_t *)error;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSUUID)uuid;
-- (container_object_s)createLibsystemContainerWithContainerPathIdentifier:(id)a3 existed:(BOOL)a4 error:(unint64_t *)a5;
+- (container_object_s)createLibsystemContainerWithContainerPathIdentifier:(id)identifier existed:(BOOL)existed error:(unint64_t *)error;
 - (id)containerIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)plist;
 - (unint64_t)hash;
 @end
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -35,7 +35,7 @@
   v5 = [(MCMContainerIdentity *)&v10 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
+    v6 = [(NSUUID *)self->_uuid copyWithZone:zone];
     v7 = v5[7];
     v5[7] = v6;
   }
@@ -44,24 +44,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MCMConcreteContainerIdentity *)self isEqualToConcreteContainerIdentity:v4];
+    v5 = [(MCMConcreteContainerIdentity *)self isEqualToConcreteContainerIdentity:equalCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_6;
   }
 
-  v6 = self == v4;
+  v6 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MCMContainerIdentity *)self isEqualToContainerIdentity:v4];
+    v5 = [(MCMContainerIdentity *)self isEqualToContainerIdentity:equalCopy];
     goto LABEL_5;
   }
 
@@ -71,15 +71,15 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqualToConcreteContainerIdentity:(id)a3
+- (BOOL)isEqualToConcreteContainerIdentity:(id)identity
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSUUID *)self->_uuid isEqual:v4[7]])
+  identityCopy = identity;
+  if ([(NSUUID *)self->_uuid isEqual:identityCopy[7]])
   {
     v8.receiver = self;
     v8.super_class = MCMConcreteContainerIdentity;
-    v5 = [(MCMContainerIdentity *)&v8 isEqualToContainerIdentity:v4];
+    v5 = [(MCMContainerIdentity *)&v8 isEqualToContainerIdentity:identityCopy];
   }
 
   else
@@ -232,40 +232,40 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = [MCMContainerIdentity alloc];
-  v4 = [(MCMContainerIdentityMinimal *)self userIdentity];
-  v5 = [(MCMContainerIdentityMinimal *)self identifier];
-  v6 = [(MCMContainerIdentityMinimal *)self containerConfig];
-  v7 = [(MCMContainerIdentityMinimal *)self platform];
-  v8 = [(MCMContainerIdentity *)self transient];
-  v9 = [(MCMContainerIdentityMinimal *)self userIdentityCache];
-  v10 = [(MCMContainerIdentity *)v3 initWithUserIdentity:v4 identifier:v5 containerConfig:v6 platform:v7 transient:v8 userIdentityCache:v9 error:0];
+  userIdentity = [(MCMContainerIdentityMinimal *)self userIdentity];
+  identifier = [(MCMContainerIdentityMinimal *)self identifier];
+  containerConfig = [(MCMContainerIdentityMinimal *)self containerConfig];
+  platform = [(MCMContainerIdentityMinimal *)self platform];
+  transient = [(MCMContainerIdentity *)self transient];
+  userIdentityCache = [(MCMContainerIdentityMinimal *)self userIdentityCache];
+  v10 = [(MCMContainerIdentity *)v3 initWithUserIdentity:userIdentity identifier:identifier containerConfig:containerConfig platform:platform transient:transient userIdentityCache:userIdentityCache error:0];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (container_object_s)createLibsystemContainerWithContainerPathIdentifier:(id)a3 existed:(BOOL)a4 error:(unint64_t *)a5
+- (container_object_s)createLibsystemContainerWithContainerPathIdentifier:(id)identifier existed:(BOOL)existed error:(unint64_t *)error
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v17[0] = 0;
   v17[1] = 0;
-  v6 = a3;
-  v7 = [(MCMConcreteContainerIdentity *)self uuid];
-  [v7 getUUIDBytes:v17];
+  identifierCopy = identifier;
+  uuid = [(MCMConcreteContainerIdentity *)self uuid];
+  [uuid getUUIDBytes:v17];
 
-  v8 = [(MCMContainerIdentityMinimal *)self identifier];
-  [v8 UTF8String];
-  v16 = [(MCMContainerIdentityMinimal *)self containerConfig];
-  [v16 containerClass];
-  v9 = [(MCMContainerIdentityMinimal *)self userIdentity];
-  v10 = [v9 posixUser];
-  [v10 UID];
-  [v6 UTF8String];
+  identifier = [(MCMContainerIdentityMinimal *)self identifier];
+  [identifier UTF8String];
+  containerConfig = [(MCMContainerIdentityMinimal *)self containerConfig];
+  [containerConfig containerClass];
+  userIdentity = [(MCMContainerIdentityMinimal *)self userIdentity];
+  posixUser = [userIdentity posixUser];
+  [posixUser UID];
+  [identifierCopy UTF8String];
 
-  v11 = [(MCMContainerIdentityMinimal *)self userIdentity];
-  v12 = [v11 personaUniqueString];
-  [v12 UTF8String];
+  userIdentity2 = [(MCMContainerIdentityMinimal *)self userIdentity];
+  personaUniqueString = [userIdentity2 personaUniqueString];
+  [personaUniqueString UTF8String];
   [(MCMContainerIdentity *)self transient];
   v13 = container_object_create();
 
@@ -278,11 +278,11 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = MCMConcreteContainerIdentity;
-  v3 = [(MCMContainerIdentity *)&v10 plist];
-  v4 = [v3 mutableCopy];
-  v5 = [(MCMConcreteContainerIdentity *)self uuid];
-  v6 = [v5 UUIDString];
-  [v4 setObject:v6 forKeyedSubscript:@"UUID"];
+  plist = [(MCMContainerIdentity *)&v10 plist];
+  v4 = [plist mutableCopy];
+  uuid = [(MCMConcreteContainerIdentity *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
   v7 = [v4 copy];
   v8 = *MEMORY[0x1E69E9840];
@@ -290,7 +290,7 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
   return v7;
 }
 
-- (MCMConcreteContainerIdentity)initWithLibsystemContainer:(container_object_s *)a3 defaultUserIdentity:(id)a4 userIdentityCache:(id)a5 error:(unint64_t *)a6
+- (MCMConcreteContainerIdentity)initWithLibsystemContainer:(container_object_s *)container defaultUserIdentity:(id)identity userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v13 = 1;
@@ -304,22 +304,22 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
     v7->_uuid = v8;
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = v13;
+    *error = v13;
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (MCMConcreteContainerIdentity)initWithVersion1PlistDictionary:(id)a3 containerIdentity:(id)a4 error:(unint64_t *)a5
+- (MCMConcreteContainerIdentity)initWithVersion1PlistDictionary:(id)dictionary containerIdentity:(id)identity error:(unint64_t *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  identityCopy = identity;
   v18 = 1;
-  v10 = [v8 objectForKeyedSubscript:@"UUID"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"UUID"];
   if (v10)
   {
     objc_opt_class();
@@ -329,9 +329,9 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
       if (v11)
       {
         v12 = v11;
-        v13 = [(MCMConcreteContainerIdentity *)self initWithContainerIdentity:v9 UUID:v11 error:&v18];
+        v13 = [(MCMConcreteContainerIdentity *)self initWithContainerIdentity:identityCopy UUID:v11 error:&v18];
         self = v13;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_11;
         }
@@ -350,19 +350,19 @@ id __43__MCMConcreteContainerIdentity_description__block_invoke(uint64_t a1, int
     v21 = 2112;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = v8;
+    v24 = dictionaryCopy;
     v17 = v22;
     _os_log_error_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_ERROR, "Invalid container identity plist data. Expected UUID string for %@, got %@. Data: %@", buf, 0x20u);
   }
 
   v12 = 0;
   v13 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_9:
     if (!v13)
     {
-      *a5 = v18;
+      *error = v18;
     }
   }
 
@@ -372,40 +372,40 @@ LABEL_11:
   return v13;
 }
 
-- (MCMConcreteContainerIdentity)initWithContainerIdentity:(id)a3 UUID:(id)a4 error:(unint64_t *)a5
+- (MCMConcreteContainerIdentity)initWithContainerIdentity:(id)identity UUID:(id)d error:(unint64_t *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 userIdentity];
-  v11 = [v9 identifier];
-  v12 = [v9 containerConfig];
-  v13 = [v9 platform];
-  v14 = [v9 transient];
-  v15 = [v9 userIdentityCache];
+  dCopy = d;
+  identityCopy = identity;
+  userIdentity = [identityCopy userIdentity];
+  identifier = [identityCopy identifier];
+  containerConfig = [identityCopy containerConfig];
+  platform = [identityCopy platform];
+  transient = [identityCopy transient];
+  userIdentityCache = [identityCopy userIdentityCache];
 
-  v16 = [(MCMConcreteContainerIdentity *)self initWithUUID:v8 userIdentity:v10 identifier:v11 containerConfig:v12 platform:v13 transient:v14 userIdentityCache:v15 error:a5];
+  v16 = [(MCMConcreteContainerIdentity *)self initWithUUID:dCopy userIdentity:userIdentity identifier:identifier containerConfig:containerConfig platform:platform transient:transient userIdentityCache:userIdentityCache error:error];
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (MCMConcreteContainerIdentity)initWithPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5
+- (MCMConcreteContainerIdentity)initWithPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  plistCopy = plist;
   v17[0] = 1;
   v16.receiver = self;
   v16.super_class = MCMConcreteContainerIdentity;
-  v9 = [(MCMContainerIdentityMinimal *)&v16 initWithPlist:v8 userIdentityCache:a4 error:v17];
+  v9 = [(MCMContainerIdentityMinimal *)&v16 initWithPlist:plistCopy userIdentityCache:cache error:v17];
   if (v9)
   {
-    v10 = v8;
+    v10 = plistCopy;
     v11 = [v10 objectForKeyedSubscript:@"version"];
     v12 = [v11 isEqual:@"1"];
 
     if (v12)
     {
-      v13 = [(MCMConcreteContainerIdentity *)v9 initWithVersion1PlistDictionary:v10 containerIdentity:v9 error:a5];
+      v13 = [(MCMConcreteContainerIdentity *)v9 initWithVersion1PlistDictionary:v10 containerIdentity:v9 error:error];
     }
 
     else
@@ -438,12 +438,12 @@ LABEL_11:
   return 0;
 }
 
-+ (id)concreteContainerIdentityFromPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5
++ (id)concreteContainerIdentityFromPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPlist:v9 userIdentityCache:v8 error:a5];
+  cacheCopy = cache;
+  plistCopy = plist;
+  v10 = [[self alloc] initWithPlist:plistCopy userIdentityCache:cacheCopy error:error];
 
   v11 = *MEMORY[0x1E69E9840];
 

@@ -1,102 +1,102 @@
 @interface FMFAnnotationView
 - (BOOL)isLiveAnimated;
-- (FMFAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 tintColor:(id)a5;
+- (FMFAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier tintColor:(id)color;
 - (id)buildAccuracyLayer;
-- (id)buildPulseLayerWithDiameter:(double)a3 centeredInParentLayer:(id)a4;
-- (id)buildStewieLayerWithDiameter:(double)a3 image:(id)a4 size:(CGSize)a5 offsetInParentLayer:(id)a6 by:(CGPoint)a7;
-- (void)setIsLiveAnimated:(BOOL)a3;
+- (id)buildPulseLayerWithDiameter:(double)diameter centeredInParentLayer:(id)layer;
+- (id)buildStewieLayerWithDiameter:(double)diameter image:(id)image size:(CGSize)size offsetInParentLayer:(id)layer by:(CGPoint)by;
+- (void)setIsLiveAnimated:(BOOL)animated;
 - (void)startLiveAnimation;
 - (void)stopLiveAnimation;
-- (void)updateWithLocation:(id)a3;
+- (void)updateWithLocation:(id)location;
 @end
 
 @implementation FMFAnnotationView
 
-- (FMFAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4 tintColor:(id)a5
+- (FMFAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier tintColor:(id)color
 {
   v20.receiver = self;
   v20.super_class = FMFAnnotationView;
-  v7 = a3;
-  v8 = [(FMAnnotationView *)&v20 initWithAnnotation:v7 reuseIdentifier:a4 tintColor:a5];
+  annotationCopy = annotation;
+  v8 = [(FMAnnotationView *)&v20 initWithAnnotation:annotationCopy reuseIdentifier:identifier tintColor:color];
   v9 = [(FMFAnnotationView *)v8 buildAccuracyLayer:v20.receiver];
   [(FMFAnnotationView *)v8 setAccuracyLayer:v9];
 
   [(FMFAnnotationView *)v8 setLastAccuracyRadius:-1.0];
-  v10 = [(FMAnnotationView *)v8 locationOuterLayer];
-  v11 = [(FMFAnnotationView *)v8 accuracyLayer];
-  [v10 addSublayer:v11];
+  locationOuterLayer = [(FMAnnotationView *)v8 locationOuterLayer];
+  accuracyLayer = [(FMFAnnotationView *)v8 accuracyLayer];
+  [locationOuterLayer addSublayer:accuracyLayer];
 
   v12 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:1];
   v13 = [MEMORY[0x277D755B8] _systemImageNamed:@"satellite.fill"];
   v14 = [v13 imageByApplyingSymbolConfiguration:v12];
 
-  v15 = [(FMAnnotationView *)v8 smallCircleLayer];
-  v16 = [(FMFAnnotationView *)v8 buildStewieLayerWithDiameter:v14 image:v15 size:26.0 offsetInParentLayer:22.0 by:22.0, 16.0, 16.0];
+  smallCircleLayer = [(FMAnnotationView *)v8 smallCircleLayer];
+  v16 = [(FMFAnnotationView *)v8 buildStewieLayerWithDiameter:v14 image:smallCircleLayer size:26.0 offsetInParentLayer:22.0 by:22.0, 16.0, 16.0];
   [(FMFAnnotationView *)v8 setStewieSmallBadgeLayer:v16];
 
-  v17 = [(FMAnnotationView *)v8 largeCircleLayer];
-  v18 = [(FMFAnnotationView *)v8 buildStewieLayerWithDiameter:v14 image:v17 size:64.0 offsetInParentLayer:30.0 by:30.0, 46.0, 46.0];
+  largeCircleLayer = [(FMAnnotationView *)v8 largeCircleLayer];
+  v18 = [(FMFAnnotationView *)v8 buildStewieLayerWithDiameter:v14 image:largeCircleLayer size:64.0 offsetInParentLayer:30.0 by:30.0, 46.0, 46.0];
   [(FMFAnnotationView *)v8 setStewieLargeBadgeLayer:v18];
 
-  [(FMFAnnotationView *)v8 updateWithLocation:v7];
+  [(FMFAnnotationView *)v8 updateWithLocation:annotationCopy];
   return v8;
 }
 
-- (void)updateWithLocation:(id)a3
+- (void)updateWithLocation:(id)location
 {
-  v4 = a3;
-  [v4 horizontalAccuracy];
+  locationCopy = location;
+  [locationCopy horizontalAccuracy];
   v6 = v5;
-  v7 = [v4 locationType];
-  v9 = v6 <= 200.0 && v7 == 2;
+  locationType = [locationCopy locationType];
+  v9 = v6 <= 200.0 && locationType == 2;
   [(FMFAnnotationView *)self setIsLiveAnimated:v9];
-  v10 = [v4 locationType];
-  [v4 horizontalAccuracy];
+  locationType2 = [locationCopy locationType];
+  [locationCopy horizontalAccuracy];
   v12 = v11;
 
   [(MKAnnotationView *)self _pointsForDistance:v12];
   v14 = v13;
-  v15 = [(FMAnnotationView *)self locationOuterLayer];
-  [v15 bounds];
+  locationOuterLayer = [(FMAnnotationView *)self locationOuterLayer];
+  [locationOuterLayer bounds];
   v17 = v16;
-  v18 = [(FMAnnotationView *)self locationOuterLayer];
-  [v18 bounds];
+  locationOuterLayer2 = [(FMAnnotationView *)self locationOuterLayer];
+  [locationOuterLayer2 bounds];
   v20 = v19;
-  v21 = [(FMAnnotationView *)self locationOuterLayer];
-  [v21 bounds];
+  locationOuterLayer3 = [(FMAnnotationView *)self locationOuterLayer];
+  [locationOuterLayer3 bounds];
   v23 = v22;
-  v24 = [(FMAnnotationView *)self locationOuterLayer];
-  [v24 bounds];
+  locationOuterLayer4 = [(FMAnnotationView *)self locationOuterLayer];
+  [locationOuterLayer4 bounds];
   v26 = v25;
 
-  v27 = [MEMORY[0x277D75348] systemBlueColor];
-  v28 = [v27 colorWithAlphaComponent:0.2];
-  v29 = [v28 CGColor];
-  v30 = [(FMFAnnotationView *)self accuracyLayer];
-  [v30 setFillColor:v29];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v28 = [systemBlueColor colorWithAlphaComponent:0.2];
+  cGColor = [v28 CGColor];
+  accuracyLayer = [(FMFAnnotationView *)self accuracyLayer];
+  [accuracyLayer setFillColor:cGColor];
 
-  v31 = [MEMORY[0x277D75348] clearColor];
-  v32 = [v31 CGColor];
-  v33 = [(FMFAnnotationView *)self accuracyLayer];
-  [v33 setStrokeColor:v32];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor CGColor];
+  accuracyLayer2 = [(FMFAnnotationView *)self accuracyLayer];
+  [accuracyLayer2 setStrokeColor:cGColor2];
 
-  v34 = [(FMFAnnotationView *)self accuracyLayer];
-  [v34 setLineWidth:3.0];
+  accuracyLayer3 = [(FMFAnnotationView *)self accuracyLayer];
+  [accuracyLayer3 setLineWidth:3.0];
 
   [(FMFAnnotationView *)self lastAccuracyRadius];
   if (v35 != v14)
   {
     v36 = v14 + v14;
     v37 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, v36, v36}];
-    v38 = [v37 CGPath];
+    cGPath = [v37 CGPath];
 
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    v39 = [(FMFAnnotationView *)self accuracyLayer];
-    [v39 setPath:v38];
+    accuracyLayer4 = [(FMFAnnotationView *)self accuracyLayer];
+    [accuracyLayer4 setPath:cGPath];
 
-    v40 = [(FMFAnnotationView *)self accuracyLayer];
-    [v40 setFrame:{v17 + v20 * 0.5 - v36 * 0.5, v23 + v26 * 0.5 - v36 * 0.5, v36, v36}];
+    accuracyLayer5 = [(FMFAnnotationView *)self accuracyLayer];
+    [accuracyLayer5 setFrame:{v17 + v20 * 0.5 - v36 * 0.5, v23 + v26 * 0.5 - v36 * 0.5, v36, v36}];
 
     [MEMORY[0x277CD9FF0] commit];
   }
@@ -115,16 +115,16 @@
     }
   }
 
-  v42 = [(FMFAnnotationView *)self accuracyLayer];
-  [v42 opacity];
+  accuracyLayer6 = [(FMFAnnotationView *)self accuracyLayer];
+  [accuracyLayer6 opacity];
   v44 = v43;
 
   if (v41 != v44)
   {
     v45 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     v46 = MEMORY[0x277CCABB0];
-    v47 = [(FMFAnnotationView *)self accuracyLayer];
-    [v47 opacity];
+    accuracyLayer7 = [(FMFAnnotationView *)self accuracyLayer];
+    [accuracyLayer7 opacity];
     v48 = [v46 numberWithFloat:?];
     [v45 setFromValue:v48];
 
@@ -133,11 +133,11 @@
 
     [v45 setDuration:0.5];
     [v45 setRemovedOnCompletion:0];
-    v50 = [(FMFAnnotationView *)self accuracyLayer];
-    [v50 addAnimation:v45 forKey:@"opacity"];
+    accuracyLayer8 = [(FMFAnnotationView *)self accuracyLayer];
+    [accuracyLayer8 addAnimation:v45 forKey:@"opacity"];
   }
 
-  if (v10 == 3)
+  if (locationType2 == 3)
   {
     v51 = 1.0;
   }
@@ -147,13 +147,13 @@
     v51 = 0.0;
   }
 
-  v52 = [(FMFAnnotationView *)self stewieSmallBadgeLayer];
+  stewieSmallBadgeLayer = [(FMFAnnotationView *)self stewieSmallBadgeLayer];
   *&v53 = v51;
-  [v52 setOpacity:v53];
+  [stewieSmallBadgeLayer setOpacity:v53];
 
-  v55 = [(FMFAnnotationView *)self stewieLargeBadgeLayer];
+  stewieLargeBadgeLayer = [(FMFAnnotationView *)self stewieLargeBadgeLayer];
   *&v54 = v51;
-  [v55 setOpacity:v54];
+  [stewieLargeBadgeLayer setOpacity:v54];
 }
 
 - (id)buildAccuracyLayer
@@ -165,24 +165,24 @@
   return v2;
 }
 
-- (id)buildPulseLayerWithDiameter:(double)a3 centeredInParentLayer:(id)a4
+- (id)buildPulseLayerWithDiameter:(double)diameter centeredInParentLayer:(id)layer
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D75348];
-  v6 = a4;
-  v7 = [v5 systemGreenColor];
-  v8 = [v7 CGColor];
+  layerCopy = layer;
+  systemGreenColor = [v5 systemGreenColor];
+  cGColor = [systemGreenColor CGColor];
 
   v9 = objc_opt_new();
-  [v6 bounds];
-  v11 = (v10 - a3) * 0.5;
-  [v6 bounds];
-  [v9 setFrame:{v11, (v12 - a3) * 0.5, a3, a3}];
-  v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, a3, a3}];
+  [layerCopy bounds];
+  v11 = (v10 - diameter) * 0.5;
+  [layerCopy bounds];
+  [v9 setFrame:{v11, (v12 - diameter) * 0.5, diameter, diameter}];
+  v13 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, diameter, diameter}];
   [v9 setPath:{objc_msgSend(v13, "CGPath")}];
 
   [v9 setAnchorPoint:{0.5, 0.5}];
-  [v9 setFillColor:v8];
+  [v9 setFillColor:cGColor];
   [v9 setOpacity:0.0];
   v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
   [v14 setFromValue:&unk_285D9C5D0];
@@ -208,7 +208,7 @@
   [v15 setRemovedOnCompletion:0];
   LODWORD(v19) = 2139095039;
   [v16 setRepeatCount:v19];
-  [v6 insertSublayer:v9 atIndex:0];
+  [layerCopy insertSublayer:v9 atIndex:0];
 
   [v9 addAnimation:v16 forKey:@"pulse"];
   v20 = *MEMORY[0x277D85DE8];
@@ -218,19 +218,19 @@
 
 - (BOOL)isLiveAnimated
 {
-  v2 = [(FMFAnnotationView *)self smallPulseLayer];
-  v3 = [v2 animationKeys];
-  v4 = [v3 count] != 0;
+  smallPulseLayer = [(FMFAnnotationView *)self smallPulseLayer];
+  animationKeys = [smallPulseLayer animationKeys];
+  v4 = [animationKeys count] != 0;
 
   return v4;
 }
 
-- (void)setIsLiveAnimated:(BOOL)a3
+- (void)setIsLiveAnimated:(BOOL)animated
 {
-  v3 = a3;
-  if ([(FMFAnnotationView *)self isLiveAnimated]!= a3)
+  animatedCopy = animated;
+  if ([(FMFAnnotationView *)self isLiveAnimated]!= animated)
   {
-    if (v3)
+    if (animatedCopy)
     {
 
       [(FMFAnnotationView *)self startLiveAnimation];
@@ -246,53 +246,53 @@
 
 - (void)startLiveAnimation
 {
-  v3 = [(FMAnnotationView *)self smallCircleLayer];
-  v4 = [(FMFAnnotationView *)self buildPulseLayerWithDiameter:v3 centeredInParentLayer:26.0];
+  smallCircleLayer = [(FMAnnotationView *)self smallCircleLayer];
+  v4 = [(FMFAnnotationView *)self buildPulseLayerWithDiameter:smallCircleLayer centeredInParentLayer:26.0];
   [(FMFAnnotationView *)self setSmallPulseLayer:v4];
 
-  v6 = [(FMAnnotationView *)self largeCircleLayer];
-  v5 = [(FMFAnnotationView *)self buildPulseLayerWithDiameter:v6 centeredInParentLayer:64.0];
+  largeCircleLayer = [(FMAnnotationView *)self largeCircleLayer];
+  v5 = [(FMFAnnotationView *)self buildPulseLayerWithDiameter:largeCircleLayer centeredInParentLayer:64.0];
   [(FMFAnnotationView *)self setLargePulseLayer:v5];
 }
 
 - (void)stopLiveAnimation
 {
-  v3 = [(FMFAnnotationView *)self smallPulseLayer];
-  [v3 removeAllAnimations];
+  smallPulseLayer = [(FMFAnnotationView *)self smallPulseLayer];
+  [smallPulseLayer removeAllAnimations];
 
-  v4 = [(FMFAnnotationView *)self smallPulseLayer];
-  [v4 removeFromSuperlayer];
+  smallPulseLayer2 = [(FMFAnnotationView *)self smallPulseLayer];
+  [smallPulseLayer2 removeFromSuperlayer];
 
   [(FMFAnnotationView *)self setSmallPulseLayer:0];
-  v5 = [(FMFAnnotationView *)self largePulseLayer];
-  [v5 removeAllAnimations];
+  largePulseLayer = [(FMFAnnotationView *)self largePulseLayer];
+  [largePulseLayer removeAllAnimations];
 
-  v6 = [(FMFAnnotationView *)self largePulseLayer];
-  [v6 removeFromSuperlayer];
+  largePulseLayer2 = [(FMFAnnotationView *)self largePulseLayer];
+  [largePulseLayer2 removeFromSuperlayer];
 
   [(FMFAnnotationView *)self setLargePulseLayer:0];
 }
 
-- (id)buildStewieLayerWithDiameter:(double)a3 image:(id)a4 size:(CGSize)a5 offsetInParentLayer:(id)a6 by:(CGPoint)a7
+- (id)buildStewieLayerWithDiameter:(double)diameter image:(id)image size:(CGSize)size offsetInParentLayer:(id)layer by:(CGPoint)by
 {
-  y = a7.y;
-  x = a7.x;
-  height = a5.height;
-  width = a5.width;
-  v13 = a6;
-  v14 = a4;
+  y = by.y;
+  x = by.x;
+  height = size.height;
+  width = size.width;
+  layerCopy = layer;
+  imageCopy = image;
   v15 = objc_opt_new();
-  [v13 bounds];
-  v17 = x + (v16 - a3) * 0.5;
-  [v13 bounds];
-  [v15 setFrame:{v17, y + (v18 - a3) * 0.5, width, height}];
+  [layerCopy bounds];
+  v17 = x + (v16 - diameter) * 0.5;
+  [layerCopy bounds];
+  [v15 setFrame:{v17, y + (v18 - diameter) * 0.5, width, height}];
   v19 = objc_opt_new();
   [v19 setFrame:{0.0, 0.0, width, height}];
   v20 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, width, height}];
   [v19 setPath:{objc_msgSend(v20, "CGPath")}];
 
-  v21 = [MEMORY[0x277D75348] whiteColor];
-  [v19 setFillColor:{objc_msgSend(v21, "CGColor")}];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v19 setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 
   v22 = objc_opt_new();
   [v19 frame];
@@ -301,22 +301,22 @@
   v23 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, width + -4.0, height + -4.0}];
   [v22 setPath:{objc_msgSend(v23, "CGPath")}];
 
-  v24 = [MEMORY[0x277D75348] blackColor];
-  [v22 setFillColor:{objc_msgSend(v24, "CGColor")}];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v22 setFillColor:{objc_msgSend(blackColor, "CGColor")}];
 
   v25 = objc_opt_new();
   [v22 frame];
   v33 = CGRectInset(v32, 2.0, 2.0);
   [v25 setFrame:{v33.origin.x, v33.origin.y, v33.size.width, v33.size.height}];
   [v25 setContentsGravity:*MEMORY[0x277CDA720]];
-  v26 = [MEMORY[0x277D75348] whiteColor];
-  v27 = [v14 tintedImageWithColor:v26];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  v27 = [imageCopy tintedImageWithColor:whiteColor2];
 
   [v25 setContents:{objc_msgSend(v27, "CGImage")}];
   [v15 addSublayer:v19];
   [v15 addSublayer:v22];
   [v15 addSublayer:v25];
-  [v13 addSublayer:v15];
+  [layerCopy addSublayer:v15];
 
   return v15;
 }

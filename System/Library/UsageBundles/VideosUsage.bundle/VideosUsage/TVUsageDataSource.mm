@@ -1,5 +1,5 @@
 @interface TVUsageDataSource
-- (TVUsageDataSource)initWithQuery:(id)a3 entityType:(int64_t)a4 categoryIdentifier:(id)a5 usageItemBlock:(id)a6 usageHeaderBlock:(id)a7;
+- (TVUsageDataSource)initWithQuery:(id)query entityType:(int64_t)type categoryIdentifier:(id)identifier usageItemBlock:(id)block usageHeaderBlock:(id)headerBlock;
 - (id)_prunedDataSource;
 - (id)headerItem;
 - (unint64_t)count;
@@ -7,23 +7,23 @@
 
 @implementation TVUsageDataSource
 
-- (TVUsageDataSource)initWithQuery:(id)a3 entityType:(int64_t)a4 categoryIdentifier:(id)a5 usageItemBlock:(id)a6 usageHeaderBlock:(id)a7
+- (TVUsageDataSource)initWithQuery:(id)query entityType:(int64_t)type categoryIdentifier:(id)identifier usageItemBlock:(id)block usageHeaderBlock:(id)headerBlock
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  blockCopy = block;
+  headerBlockCopy = headerBlock;
   v23.receiver = self;
   v23.super_class = TVUsageDataSource;
-  v16 = [(TVUsageDataSource *)&v23 initWithQuery:a3 entityType:a4];
+  v16 = [(TVUsageDataSource *)&v23 initWithQuery:query entityType:type];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_categoryIdentifier, a5);
-    v18 = [v14 copy];
+    objc_storeStrong(&v16->_categoryIdentifier, identifier);
+    v18 = [blockCopy copy];
     itemBlock = v17->_itemBlock;
     v17->_itemBlock = v18;
 
-    v20 = [v15 copy];
+    v20 = [headerBlockCopy copy];
     headerBlock = v17->_headerBlock;
     v17->_headerBlock = v20;
   }
@@ -33,13 +33,13 @@
 
 - (unint64_t)count
 {
-  v3 = [(TVUsageDataSource *)self categoryIdentifier];
-  v4 = [v3 isEqualToString:@"CATEGORY_TV_SHOWS"];
+  categoryIdentifier = [(TVUsageDataSource *)self categoryIdentifier];
+  v4 = [categoryIdentifier isEqualToString:@"CATEGORY_TV_SHOWS"];
 
   if (v4)
   {
-    v5 = [(TVUsageDataSource *)self entities];
-    v6 = [v5 count];
+    entities = [(TVUsageDataSource *)self entities];
+    v6 = [entities count];
 
     return v6;
   }
@@ -57,8 +57,8 @@
   headerBlock = self->_headerBlock;
   if (headerBlock)
   {
-    v3 = [(TVUsageDataSource *)self query];
-    headerBlock = (headerBlock)[2](headerBlock, v3);
+    query = [(TVUsageDataSource *)self query];
+    headerBlock = (headerBlock)[2](headerBlock, query);
   }
 
   return headerBlock;
@@ -66,14 +66,14 @@
 
 - (id)_prunedDataSource
 {
-  v3 = [(TVUsageDataSource *)self query];
-  v4 = [v3 filterPredicates];
+  query = [(TVUsageDataSource *)self query];
+  filterPredicates = [query filterPredicates];
 
-  v5 = [[MPMediaQuery alloc] initWithFilterPredicates:v4];
+  v5 = [[MPMediaQuery alloc] initWithFilterPredicates:filterPredicates];
   [v5 setIgnoreSystemFilterPredicates:1];
   [v5 setIgnoreRestrictionsPredicates:1];
-  v6 = [(TVUsageDataSource *)self query];
-  [v5 setGroupingType:{objc_msgSend(v6, "groupingType")}];
+  query2 = [(TVUsageDataSource *)self query];
+  [v5 setGroupingType:{objc_msgSend(query2, "groupingType")}];
 
   v7 = [objc_alloc(objc_opt_class()) initWithQuery:v5 entityType:-[TVUsageDataSource entityType](self categoryIdentifier:"entityType") usageItemBlock:self->_categoryIdentifier usageHeaderBlock:{self->_itemBlock, self->_headerBlock}];
 

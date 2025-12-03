@@ -1,16 +1,16 @@
 @interface HMDResidentLocationProvider
-- (void)didDetermineLocation:(id)a3;
+- (void)didDetermineLocation:(id)location;
 - (void)requestResidentLocation;
 @end
 
 @implementation HMDResidentLocationProvider
 
-- (void)didDetermineLocation:(id)a3
+- (void)didDetermineLocation:(id)location
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -18,14 +18,14 @@
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = locationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@didDetermineLocation: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDResidentLocationProvider *)v6 setLocation:v4];
-  v9 = [(HMDResidentLocationProvider *)v6 residentLocationUpdatedPromise];
-  [v9 fulfillWithNoValue];
+  [(HMDResidentLocationProvider *)selfCopy setLocation:locationCopy];
+  residentLocationUpdatedPromise = [(HMDResidentLocationProvider *)selfCopy residentLocationUpdatedPromise];
+  [residentLocationUpdatedPromise fulfillWithNoValue];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -34,7 +34,7 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -48,12 +48,12 @@
   *obj = 0;
   v7 = [MEMORY[0x277D0F7C0] futureWithPromise:obj];
   v8 = [v7 timeout:30.0];
-  locationUpdatedFuture = v4->_locationUpdatedFuture;
-  v4->_locationUpdatedFuture = v8;
+  locationUpdatedFuture = selfCopy->_locationUpdatedFuture;
+  selfCopy->_locationUpdatedFuture = v8;
 
-  objc_storeStrong(&v4->_residentLocationUpdatedPromise, *obj);
+  objc_storeStrong(&selfCopy->_residentLocationUpdatedPromise, *obj);
   v10 = +[HMDLocation sharedManager];
-  [v10 startExtractingSingleLocationForDelegate:v4];
+  [v10 startExtractingSingleLocationForDelegate:selfCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }

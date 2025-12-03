@@ -1,28 +1,28 @@
 @interface DataComparisonByBits
-+ (id)dataComparisonByBitsWithData1:(id)a3 data2:(id)a4 reference:(id)a5;
-+ (id)dataComparisonByBitsWithData1:(id)a3 string2:(id)a4 reference:(id)a5;
++ (id)dataComparisonByBitsWithData1:(id)data1 data2:(id)data2 reference:(id)reference;
++ (id)dataComparisonByBitsWithData1:(id)data1 string2:(id)string2 reference:(id)reference;
 @end
 
 @implementation DataComparisonByBits
 
-+ (id)dataComparisonByBitsWithData1:(id)a3 data2:(id)a4 reference:(id)a5
++ (id)dataComparisonByBitsWithData1:(id)data1 data2:(id)data2 reference:(id)reference
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [WiFiUsagePrivacyFilter toBinString:a3];
-  v11 = [WiFiUsagePrivacyFilter toBinString:v9];
+  referenceCopy = reference;
+  data2Copy = data2;
+  v10 = [WiFiUsagePrivacyFilter toBinString:data1];
+  v11 = [WiFiUsagePrivacyFilter toBinString:data2Copy];
 
-  v12 = [[a1 alloc] initWithString1:v10 string2:v11 reference:v8];
+  v12 = [[self alloc] initWithString1:v10 string2:v11 reference:referenceCopy];
 
   return v12;
 }
 
-+ (id)dataComparisonByBitsWithData1:(id)a3 string2:(id)a4 reference:(id)a5
++ (id)dataComparisonByBitsWithData1:(id)data1 string2:(id)string2 reference:(id)reference
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [WiFiUsagePrivacyFilter toBinString:a3];
-  v11 = [[a1 alloc] initWithString1:v10 string2:v9 reference:v8];
+  referenceCopy = reference;
+  string2Copy = string2;
+  v10 = [WiFiUsagePrivacyFilter toBinString:data1];
+  v11 = [[self alloc] initWithString1:v10 string2:string2Copy reference:referenceCopy];
 
   return v11;
 }

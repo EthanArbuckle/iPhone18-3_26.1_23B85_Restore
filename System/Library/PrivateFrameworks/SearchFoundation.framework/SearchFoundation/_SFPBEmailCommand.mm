@@ -1,28 +1,28 @@
 @interface _SFPBEmailCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBEmailCommand)initWithDictionary:(id)a3;
-- (_SFPBEmailCommand)initWithFacade:(id)a3;
-- (_SFPBEmailCommand)initWithJSON:(id)a3;
+- (_SFPBEmailCommand)initWithDictionary:(id)dictionary;
+- (_SFPBEmailCommand)initWithFacade:(id)facade;
+- (_SFPBEmailCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setEmail:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEmail:(id)email;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBEmailCommand
 
-- (_SFPBEmailCommand)initWithFacade:(id)a3
+- (_SFPBEmailCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBEmailCommand *)self init];
   if (v5)
   {
-    v6 = [v4 email];
+    email = [facadeCopy email];
 
-    if (v6)
+    if (email)
     {
-      v7 = [v4 email];
-      [(_SFPBEmailCommand *)v5 setEmail:v7];
+      email2 = [facadeCopy email];
+      [(_SFPBEmailCommand *)v5 setEmail:email2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBEmailCommand)initWithDictionary:(id)a3
+- (_SFPBEmailCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBEmailCommand;
   v5 = [(_SFPBEmailCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"email"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"email"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBEmailCommand)initWithJSON:(id)a3
+- (_SFPBEmailCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBEmailCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBEmailCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBEmailCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_email)
   {
-    v4 = [(_SFPBEmailCommand *)self email];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"email"];
+    email = [(_SFPBEmailCommand *)self email];
+    v5 = [email copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"email"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBEmailCommand *)self email];
-    v6 = [v4 email];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    email = [(_SFPBEmailCommand *)self email];
+    email2 = [equalCopy email];
+    v7 = email2;
+    if ((email != 0) != (email2 == 0))
     {
-      v8 = [(_SFPBEmailCommand *)self email];
-      if (!v8)
+      email3 = [(_SFPBEmailCommand *)self email];
+      if (!email3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBEmailCommand *)self email];
-      v11 = [v4 email];
-      v12 = [v10 isEqual:v11];
+      v9 = email3;
+      email4 = [(_SFPBEmailCommand *)self email];
+      email5 = [equalCopy email];
+      v12 = [email4 isEqual:email5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBEmailCommand *)self email];
-  if (v4)
+  toCopy = to;
+  email = [(_SFPBEmailCommand *)self email];
+  if (email)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v4 = [a3 copy];
+  v4 = [email copy];
   email = self->_email;
   self->_email = v4;
 

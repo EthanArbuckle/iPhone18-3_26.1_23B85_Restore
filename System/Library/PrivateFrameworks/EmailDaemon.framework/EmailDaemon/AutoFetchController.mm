@@ -1,9 +1,9 @@
 @interface AutoFetchController
 + (AutoFetchController)sharedController;
-+ (BOOL)shouldSyncAccountByMailbox:(id)a3;
++ (BOOL)shouldSyncAccountByMailbox:(id)mailbox;
 + (id)activeAccountsToSyncByAccount;
-+ (id)partitionAccounts:(id)a3;
-+ (id)partitionMailboxes:(id)a3;
++ (id)partitionAccounts:(id)accounts;
++ (id)partitionMailboxes:(id)mailboxes;
 - (AutoFetchController)init;
 - (AutoFetchControllerDataSource)dataSource;
 - (MFAccountsProvider)accountsProvider;
@@ -12,14 +12,14 @@
 - (NSSet)displayedAccountsToSyncByMailbox;
 - (id)diagnosticInformation;
 - (id)favoritesPersistence;
-- (void)_accountContentsDidChange:(id)a3;
-- (void)_freeSpaceStatusDidChange:(id)a3;
-- (void)_networkConfigurationChanged:(id)a3;
-- (void)_networkHasAlternateAdvice:(id)a3;
-- (void)_updateState:(int64_t)a3;
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4;
-- (void)resetPushStateWithCompletion:(id)a3;
-- (void)setSuppressedContexts:(id)a3;
+- (void)_accountContentsDidChange:(id)change;
+- (void)_freeSpaceStatusDidChange:(id)change;
+- (void)_networkConfigurationChanged:(id)changed;
+- (void)_networkHasAlternateAdvice:(id)advice;
+- (void)_updateState:(int64_t)state;
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes;
+- (void)resetPushStateWithCompletion:(id)completion;
+- (void)setSuppressedContexts:(id)contexts;
 @end
 
 @implementation AutoFetchController
@@ -38,18 +38,18 @@
 
 - (NSArray)visibleMailboxesToSyncByMailbox
 {
-  v3 = [(AutoFetchController *)self dataSource];
-  v4 = [v3 visibleMailboxes];
+  dataSource = [(AutoFetchController *)self dataSource];
+  visibleMailboxes = [dataSource visibleMailboxes];
 
-  if (![v4 count])
+  if (![visibleMailboxes count])
   {
-    v5 = [(AutoFetchController *)self favoritesPersistence];
-    v6 = [v5 mailboxesForAutoFetch];
+    favoritesPersistence = [(AutoFetchController *)self favoritesPersistence];
+    mailboxesForAutoFetch = [favoritesPersistence mailboxesForAutoFetch];
 
-    v4 = v6;
+    visibleMailboxes = mailboxesForAutoFetch;
   }
 
-  v7 = [v4 ef_filter:&stru_100156650];
+  v7 = [visibleMailboxes ef_filter:&stru_100156650];
 
   return v7;
 }
@@ -71,9 +71,9 @@
 
 - (NSSet)displayedAccountsToSyncByMailbox
 {
-  v2 = [(AutoFetchController *)self accountsProvider];
-  v3 = [v2 displayedAccounts];
-  v4 = [v3 ef_filter:&stru_100156630];
+  accountsProvider = [(AutoFetchController *)self accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
+  v4 = [displayedAccounts ef_filter:&stru_100156630];
 
   return v4;
 }
@@ -81,9 +81,9 @@
 - (MFAccountsProvider)accountsProvider
 {
   v2 = sub_100027C70();
-  v3 = [v2 accountsProvider];
+  accountsProvider = [v2 accountsProvider];
 
-  return v3;
+  return accountsProvider;
 }
 
 - (AutoFetchController)init
@@ -103,12 +103,12 @@
     accountController = v2->_accountController;
     v2->_accountController = v7;
 
-    v9 = [(AutoFetchController *)v2 mailboxController];
-    [v9 setDataSource:v2];
+    mailboxController = [(AutoFetchController *)v2 mailboxController];
+    [mailboxController setDataSource:v2];
 
     v10 = +[NSNotificationCenter defaultCenter];
-    v11 = [(AutoFetchController *)v2 freeSpaceMonitor];
-    [v10 addObserver:v2 selector:"_freeSpaceStatusDidChange:" name:@"MFDiskFreeSpaceMonitorDidChangeNotification" object:v11];
+    freeSpaceMonitor = [(AutoFetchController *)v2 freeSpaceMonitor];
+    [v10 addObserver:v2 selector:"_freeSpaceStatusDidChange:" name:@"MFDiskFreeSpaceMonitorDidChangeNotification" object:freeSpaceMonitor];
 
     [v10 addObserver:v2 selector:"_networkConfigurationChanged:" name:NetworkConfigurationDidChangeNotification object:0];
     [v10 addObserver:v2 selector:"_networkHasAlternateAdvice:" name:NetworkSymptomsHasAlternativeAdvice object:0];
@@ -121,32 +121,32 @@
   return v2;
 }
 
-- (void)_updateState:(int64_t)a3
+- (void)_updateState:(int64_t)state
 {
-  v5 = [(AutoFetchController *)self state];
+  state = [(AutoFetchController *)self state];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100009AD4;
   v6[3] = &unk_1001564C0;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 performWhileLocked:v6];
+  v6[5] = state;
+  [state performWhileLocked:v6];
 }
 
 - (id)favoritesPersistence
 {
   v2 = sub_100027C70();
-  v3 = [v2 favoritesPersistence];
+  favoritesPersistence = [v2 favoritesPersistence];
 
-  return v3;
+  return favoritesPersistence;
 }
 
-- (void)_freeSpaceStatusDidChange:(id)a3
+- (void)_freeSpaceStatusDidChange:(id)change
 {
-  v4 = [(AutoFetchController *)self freeSpaceMonitor];
-  v5 = [v4 isFreeSpaceCritical];
+  freeSpaceMonitor = [(AutoFetchController *)self freeSpaceMonitor];
+  isFreeSpaceCritical = [freeSpaceMonitor isFreeSpaceCritical];
 
-  if ((v5 & 1) == 0)
+  if ((isFreeSpaceCritical & 1) == 0)
   {
     v6 = MFAutoFetchLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -159,35 +159,35 @@
   }
 }
 
-- (void)_accountContentsDidChange:(id)a3
+- (void)_accountContentsDidChange:(id)change
 {
-  v10 = a3;
+  changeCopy = change;
   v4 = MFUserAgent();
-  v5 = [v4 isMaild];
+  isMaild = [v4 isMaild];
 
-  if (v5)
+  if (isMaild)
   {
-    v6 = [v10 object];
-    v7 = [v10 userInfo];
-    v8 = [v7 objectForKey:MailAccountContentsDidChangeUids];
+    object = [changeCopy object];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKey:MailAccountContentsDidChangeUids];
 
     if (!v8)
     {
-      v9 = [v6 primaryMailboxUid];
-      v8 = [NSArray arrayWithObject:v9];
+      primaryMailboxUid = [object primaryMailboxUid];
+      v8 = [NSArray arrayWithObject:primaryMailboxUid];
     }
 
     [(AutoFetchController *)self fetchNow:EMFetchTypePush withMailboxes:v8];
   }
 }
 
-- (void)_networkConfigurationChanged:(id)a3
+- (void)_networkConfigurationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(AutoFetchController *)self networkController];
-  v6 = [v5 isNetworkUp];
+  changedCopy = changed;
+  networkController = [(AutoFetchController *)self networkController];
+  isNetworkUp = [networkController isNetworkUp];
 
-  if (v6)
+  if (isNetworkUp)
   {
     v7 = dispatch_get_global_queue(17, 0);
     v10[0] = _NSConcreteStackBlock;
@@ -195,7 +195,7 @@
     v10[2] = sub_10000A0A8;
     v10[3] = &unk_1001563D8;
     v10[4] = self;
-    v11 = v4;
+    v11 = changedCopy;
     dispatch_async(v7, v10);
   }
 
@@ -204,15 +204,15 @@
     v8 = sub_10000A284();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 name];
+      name = [changedCopy name];
       *buf = 138412290;
-      v13 = v9;
+      v13 = name;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: network down", buf, 0xCu);
     }
   }
 }
 
-- (void)_networkHasAlternateAdvice:(id)a3
+- (void)_networkHasAlternateAdvice:(id)advice
 {
   v4 = sub_10000A284();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -230,32 +230,32 @@
   dispatch_async(v5, block);
 }
 
-+ (BOOL)shouldSyncAccountByMailbox:(id)a3
++ (BOOL)shouldSyncAccountByMailbox:(id)mailbox
 {
-  v3 = [a3 taskManager];
-  v4 = v3 == 0;
+  taskManager = [mailbox taskManager];
+  v4 = taskManager == 0;
 
   return v4;
 }
 
-+ (id)partitionAccounts:(id)a3
++ (id)partitionAccounts:(id)accounts
 {
-  v3 = [a3 ef_partition:&stru_100156500];
+  v3 = [accounts ef_partition:&stru_100156500];
   v4 = [AutoFetchPartition alloc];
-  v5 = [v3 first];
-  v6 = [v3 second];
-  v7 = [(AutoFetchPartition *)v4 initWithSyncedByMailbox:v5 syncedByAccount:v6];
+  first = [v3 first];
+  second = [v3 second];
+  v7 = [(AutoFetchPartition *)v4 initWithSyncedByMailbox:first syncedByAccount:second];
 
   return v7;
 }
 
-+ (id)partitionMailboxes:(id)a3
++ (id)partitionMailboxes:(id)mailboxes
 {
-  v3 = [a3 ef_partition:&stru_100156540];
+  v3 = [mailboxes ef_partition:&stru_100156540];
   v4 = [AutoFetchPartition alloc];
-  v5 = [v3 first];
-  v6 = [v3 second];
-  v7 = [(AutoFetchPartition *)v4 initWithSyncedByMailbox:v5 syncedByAccount:v6];
+  first = [v3 first];
+  second = [v3 second];
+  v7 = [(AutoFetchPartition *)v4 initWithSyncedByMailbox:first syncedByAccount:second];
 
   return v7;
 }
@@ -268,12 +268,12 @@
   return v3;
 }
 
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes
 {
-  v19 = a4;
+  mailboxesCopy = mailboxes;
   v21 = [AutoFetchController partitionMailboxes:?];
-  v5 = [v21 syncedByAccount];
-  v20 = [v5 ef_groupBy:&stru_1001565C8];
+  syncedByAccount = [v21 syncedByAccount];
+  v20 = [syncedByAccount ef_groupBy:&stru_1001565C8];
 
   v6 = +[NSNotificationCenter defaultCenter];
   v40 = 0u;
@@ -284,7 +284,7 @@
   v24 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v24)
   {
-    v7 = a3 & 0x800;
+    v7 = now & 0x800;
     v22 = *v39;
     do
     {
@@ -331,7 +331,7 @@
           }
         }
 
-        v15 = [(AutoFetchController *)self accountController];
+        accountController = [(AutoFetchController *)self accountController];
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_10000B188;
@@ -341,8 +341,8 @@
         v30 = v26;
         v33 = v7 >> 11;
         v31 = v6;
-        v32 = self;
-        [v15 fetchNow:a3 withMailboxes:v16 fromAccount:v26 completion:v28];
+        selfCopy = self;
+        [accountController fetchNow:now withMailboxes:v16 fromAccount:v26 completion:v28];
       }
 
       v24 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
@@ -351,14 +351,14 @@
     while (v24);
   }
 
-  v17 = [(AutoFetchController *)self mailboxController];
-  v18 = [v21 syncedByMailbox];
-  [v17 fetchNow:a3 withMailboxes:v18];
+  mailboxController = [(AutoFetchController *)self mailboxController];
+  syncedByMailbox = [v21 syncedByMailbox];
+  [mailboxController fetchNow:now withMailboxes:syncedByMailbox];
 }
 
-- (void)resetPushStateWithCompletion:(id)a3
+- (void)resetPushStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[MailAccount mailAccounts];
   v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
   v26 = 0u;
@@ -401,9 +401,9 @@
   else
   {
     v12 = +[MFPowerController sharedInstance];
-    v13 = [v12 gameModeEnabled];
+    gameModeEnabled = [v12 gameModeEnabled];
 
-    if ((v13 & 1) == 0)
+    if ((gameModeEnabled & 1) == 0)
     {
       sub_10000B850(v5, "startListeningForNotifications");
     }
@@ -458,22 +458,22 @@ LABEL_24:
     v19 = v15;
   }
 
-  v3[2](v3, 1, v19, ClassPollInterval, 0);
+  completionCopy[2](completionCopy, 1, v19, ClassPollInterval, 0);
 }
 
-- (void)setSuppressedContexts:(id)a3
+- (void)setSuppressedContexts:(id)contexts
 {
-  v5 = a3;
-  v4 = [(AutoFetchController *)self mailboxController];
-  [v4 setSuppressedContexts:v5];
+  contextsCopy = contexts;
+  mailboxController = [(AutoFetchController *)self mailboxController];
+  [mailboxController setSuppressedContexts:contextsCopy];
 }
 
 - (id)diagnosticInformation
 {
-  v2 = [(AutoFetchController *)self mailboxController];
-  v3 = [v2 diagnosticInformation];
+  mailboxController = [(AutoFetchController *)self mailboxController];
+  diagnosticInformation = [mailboxController diagnosticInformation];
 
-  return v3;
+  return diagnosticInformation;
 }
 
 @end

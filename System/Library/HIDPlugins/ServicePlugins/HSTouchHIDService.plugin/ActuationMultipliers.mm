@@ -1,21 +1,21 @@
 @interface ActuationMultipliers
-- (ActuationMultipliers)initWithDictionary:(id)a3;
+- (ActuationMultipliers)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionary;
 @end
 
 @implementation ActuationMultipliers
 
-- (ActuationMultipliers)initWithDictionary:(id)a3
+- (ActuationMultipliers)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ActuationMultipliers;
   v5 = [(ActuationMultipliers *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Light"];
-    v7 = [v4 objectForKeyedSubscript:@"Medium"];
-    v8 = [v4 objectForKeyedSubscript:@"Firm"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Light"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"Medium"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"Firm"];
     v9 = 1.0;
     LODWORD(v10) = 1.0;
     if (v6)

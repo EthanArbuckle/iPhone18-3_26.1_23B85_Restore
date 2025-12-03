@@ -1,69 +1,69 @@
 @interface CNEither
-+ (CNEither)eitherWithBlock:(id)a3;
-+ (CNEither)eitherWithBool:(BOOL)a3 error:(id)a4;
-+ (CNEither)eitherWithLeft:(id)a3;
-+ (CNEither)eitherWithLeft:(id)a3 right:(id)a4;
-+ (CNEither)eitherWithRight:(id)a3;
-+ (id)firstLeftInLazyChain:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CNEither)eitherWithBlock:(id)block;
++ (CNEither)eitherWithBool:(BOOL)bool error:(id)error;
++ (CNEither)eitherWithLeft:(id)left;
++ (CNEither)eitherWithLeft:(id)left right:(id)right;
++ (CNEither)eitherWithRight:(id)right;
++ (id)firstLeftInLazyChain:(id)chain;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLeft;
 - (BOOL)isRight;
-- (CNEither)initWithCoder:(id)a3;
-- (CNEither)initWithLeft:(id)a3 right:(id)a4;
+- (CNEither)initWithCoder:(id)coder;
+- (CNEither)initWithLeft:(id)left right:(id)right;
 - (id)description;
 - (id)left;
 - (id)right;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNEither
 
 - (id)right
 {
-  v2 = [(CNEither *)self pair];
-  v3 = [v2 second];
+  pair = [(CNEither *)self pair];
+  second = [pair second];
 
-  return v3;
+  return second;
 }
 
 - (id)left
 {
-  v2 = [(CNEither *)self pair];
-  v3 = [v2 first];
+  pair = [(CNEither *)self pair];
+  first = [pair first];
 
-  return v3;
+  return first;
 }
 
 - (BOOL)isLeft
 {
-  v2 = [(CNEither *)self left];
-  v3 = v2 != 0;
+  left = [(CNEither *)self left];
+  v3 = left != 0;
 
   return v3;
 }
 
 - (BOOL)isRight
 {
-  v2 = [(CNEither *)self right];
-  v3 = v2 != 0;
+  right = [(CNEither *)self right];
+  v3 = right != 0;
 
   return v3;
 }
 
-+ (CNEither)eitherWithLeft:(id)a3 right:(id)a4
++ (CNEither)eitherWithLeft:(id)left right:(id)right
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithLeft:v7 right:v6];
+  rightCopy = right;
+  leftCopy = left;
+  v8 = [[self alloc] initWithLeft:leftCopy right:rightCopy];
 
   return v8;
 }
 
-+ (CNEither)eitherWithLeft:(id)a3
++ (CNEither)eitherWithLeft:(id)left
 {
-  v4 = a3;
-  if (!v4)
+  leftCopy = left;
+  if (!leftCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_0 != -1)
     {
@@ -77,15 +77,15 @@
     }
   }
 
-  v13 = [a1 eitherWithLeft:v4 right:0];
+  v13 = [self eitherWithLeft:leftCopy right:0];
 
   return v13;
 }
 
-+ (CNEither)eitherWithRight:(id)a3
++ (CNEither)eitherWithRight:(id)right
 {
-  v4 = a3;
-  if (!v4)
+  rightCopy = right;
+  if (!rightCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_0 != -1)
     {
@@ -99,17 +99,17 @@
     }
   }
 
-  v13 = [a1 eitherWithLeft:0 right:v4];
+  v13 = [self eitherWithLeft:0 right:rightCopy];
 
   return v13;
 }
 
-+ (CNEither)eitherWithBool:(BOOL)a3 error:(id)a4
++ (CNEither)eitherWithBool:(BOOL)bool error:(id)error
 {
-  v4 = a3;
-  v5 = a4;
+  boolCopy = bool;
+  errorCopy = error;
   v6 = [CNEither alloc];
-  if (v4)
+  if (boolCopy)
   {
     v7 = MEMORY[0x1E695E118];
   }
@@ -119,17 +119,17 @@
     v7 = 0;
   }
 
-  v8 = [(CNEither *)v6 initWithLeft:v7 right:v5];
+  v8 = [(CNEither *)v6 initWithLeft:v7 right:errorCopy];
 
   return v8;
 }
 
-+ (CNEither)eitherWithBlock:(id)a3
++ (CNEither)eitherWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_autoreleasePoolPush();
   v9 = 0;
-  v5 = v3[2](v3, &v9);
+  v5 = blockCopy[2](blockCopy, &v9);
   v6 = v9;
   v7 = [CNEither eitherWithLeft:v5 right:v6];
 
@@ -138,11 +138,11 @@
   return v7;
 }
 
-+ (id)firstLeftInLazyChain:(id)a3
++ (id)firstLeftInLazyChain:(id)chain
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  chainCopy = chain;
+  if (!chainCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_0 != -1)
     {
@@ -156,7 +156,7 @@
     }
   }
 
-  if (![v3 count])
+  if (![chainCopy count])
   {
     v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"no either blocks passed to firstLeftInLazyChain" userInfo:0];
     objc_exception_throw(v21);
@@ -166,7 +166,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v3;
+  v12 = chainCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -215,16 +215,16 @@ LABEL_9:
   return v15;
 }
 
-- (CNEither)initWithLeft:(id)a3 right:(id)a4
+- (CNEither)initWithLeft:(id)left right:(id)right
 {
-  v6 = a3;
-  v7 = a4;
+  leftCopy = left;
+  rightCopy = right;
   v13.receiver = self;
   v13.super_class = CNEither;
   v8 = [(CNEither *)&v13 init];
   if (v8)
   {
-    v9 = [CNPair pairWithFirst:v6 second:v7];
+    v9 = [CNPair pairWithFirst:leftCopy second:rightCopy];
     pair = v8->_pair;
     v8->_pair = v9;
 
@@ -237,15 +237,15 @@ LABEL_9:
 - (id)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(CNEither *)self left];
-  v5 = [v3 appendName:@"left" object:v4];
+  left = [(CNEither *)self left];
+  v5 = [v3 appendName:@"left" object:left];
 
-  v6 = [(CNEither *)self right];
-  v7 = [v3 appendName:@"right" object:v6];
+  right = [(CNEither *)self right];
+  v7 = [v3 appendName:@"right" object:right];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (unint64_t)hash
@@ -282,14 +282,14 @@ unint64_t __16__CNEither_hash__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (pair = self->_pair, pair | v4->_pair) && ![(CNPair *)pair isEqual:?])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (pair = self->_pair, pair | equalCopy->_pair) && ![(CNPair *)pair isEqual:?])
     {
       v6 = 0;
     }
@@ -298,24 +298,24 @@ unint64_t __16__CNEither_hash__block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (CNEither)initWithCoder:(id)a3
+- (CNEither)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"left"];
-  v6 = [v4 decodeObjectForKey:@"right"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"left"];
+  v6 = [coderCopy decodeObjectForKey:@"right"];
 
   v7 = [(CNEither *)self initWithLeft:v5 right:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CNEither *)self left];
-  [v4 encodeObject:v5 forKey:@"left"];
+  coderCopy = coder;
+  left = [(CNEither *)self left];
+  [coderCopy encodeObject:left forKey:@"left"];
 
-  v6 = [(CNEither *)self right];
-  [v4 encodeObject:v6 forKey:@"right"];
+  right = [(CNEither *)self right];
+  [coderCopy encodeObject:right forKey:@"right"];
 }
 
 @end

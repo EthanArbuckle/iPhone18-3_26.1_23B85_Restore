@@ -1,15 +1,15 @@
 @interface TSCH3DTextureAtlasTexture
-- (TSCH3DTextureAtlasTexture)initWithSize:(tvec2<int>)a3;
+- (TSCH3DTextureAtlasTexture)initWithSize:(tvec2<int>)size;
 - (id).cxx_construct;
 - (id)getTextureDataBuffer;
 - (id)resource;
-- (tvec2<int>)addLabel:(id)a3;
+- (tvec2<int>)addLabel:(id)label;
 - (void)p_invalidateResource;
 @end
 
 @implementation TSCH3DTextureAtlasTexture
 
-- (TSCH3DTextureAtlasTexture)initWithSize:(tvec2<int>)a3
+- (TSCH3DTextureAtlasTexture)initWithSize:(tvec2<int>)size
 {
   v9.receiver = self;
   v9.super_class = TSCH3DTextureAtlasTexture;
@@ -17,8 +17,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size.var0.var0 = *a3.var0.var0;
-    v4->_size.var1.var0 = *(*&a3 + 4);
+    v4->_size.var0.var0 = *size.var0.var0;
+    v4->_size.var1.var0 = *(*&size + 4);
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     labels = v5->_labels;
     v5->_labels = v6;
@@ -37,14 +37,14 @@
   self->_resource = 0;
 }
 
-- (tvec2<int>)addLabel:(id)a3
+- (tvec2<int>)addLabel:(id)label
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  labelCopy = label;
+  v11 = labelCopy;
+  if (labelCopy)
   {
-    objc_msgSend_clampedLabelSampledSize(v6, v7, v8, v9, v10);
+    objc_msgSend_clampedLabelSampledSize(labelCopy, v7, v8, v9, v10);
     v12 = v26;
   }
 
@@ -120,22 +120,22 @@ LABEL_8:
 
 - (id)getTextureDataBuffer
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_bufferWithCapacitySize_components_(TSCH3DVectorN2DDataBuffer, a2, v2, v3, v4, &self->_size, 4);
   objc_msgSend_fillCapacity(v6, v7, v8, v9, v10);
-  objc_msgSend_size(v5, v11, v12, v13, v14);
+  objc_msgSend_size(selfCopy, v11, v12, v13, v14);
   v106 = v6;
   v19 = objc_msgSend_container(v6, v15, v16, v17, v18);
   v24 = 0;
   v25 = 0x277D81000uLL;
   v107 = *v19;
-  v108 = v5;
+  v108 = selfCopy;
   v26 = 0x277CCA000uLL;
-  while (v24 < objc_msgSend_count(v5->_labels, v20, v21, v22, v23))
+  while (v24 < objc_msgSend_count(selfCopy->_labels, v20, v21, v22, v23))
   {
-    v31 = objc_msgSend_objectAtIndexedSubscript_(v5->_labels, v27, v28, v29, v30, v24);
+    v31 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_labels, v27, v28, v29, v30, v24);
     v37 = objc_msgSend_get(v31, v32, v33, v34, v35);
-    v41 = (v5->_positions.__begin_ + 8 * v24);
+    v41 = (selfCopy->_positions.__begin_ + 8 * v24);
     v42 = *v41;
     v110 = v41[1];
     if (v31)
@@ -214,7 +214,7 @@ LABEL_8:
       v95 = *(v71 + 336);
       v37 = v109;
       objc_msgSend_logBacktraceThrottled(v95, v96, v97, v98, v99);
-      v5 = v108;
+      selfCopy = v108;
     }
 
     v100 = objc_msgSend_container(v37, v36, v38, v39, v40);

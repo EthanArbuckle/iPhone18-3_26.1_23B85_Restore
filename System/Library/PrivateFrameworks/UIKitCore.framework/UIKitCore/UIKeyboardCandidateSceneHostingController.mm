@@ -1,14 +1,14 @@
 @interface UIKeyboardCandidateSceneHostingController
 - (BOOL)isExpanded;
 - (UIKeyboardCandidateSceneHostingController)init;
-- (UIKeyboardCandidateSceneHostingController)initWithDelegate:(id)a3;
-- (void)setHostIsTextVertical:(BOOL)a3;
+- (UIKeyboardCandidateSceneHostingController)initWithDelegate:(id)delegate;
+- (void)setHostIsTextVertical:(BOOL)vertical;
 - (void)setupSceneHosting;
 @end
 
 @implementation UIKeyboardCandidateSceneHostingController
 
-- (UIKeyboardCandidateSceneHostingController)initWithDelegate:(id)a3
+- (UIKeyboardCandidateSceneHostingController)initWithDelegate:(id)delegate
 {
   *(&self->super.isa + OBJC_IVAR___UIKeyboardCandidateSceneHostingController_sceneHostingController) = 0;
   swift_unknownObjectWeakInit();
@@ -24,22 +24,22 @@
 
 - (void)setupSceneHosting
 {
-  v2 = self;
+  selfCopy = self;
   UIKeyboardCandidateSceneHostingController.setupSceneHosting()();
 }
 
 - (BOOL)isExpanded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKeyboardCandidateSceneHostingController.isExpanded()();
 
   return v3;
 }
 
-- (void)setHostIsTextVertical:(BOOL)a3
+- (void)setHostIsTextVertical:(BOOL)vertical
 {
-  v4 = self;
-  UIKeyboardCandidateSceneHostingController.setHostIsTextVertical(_:)(a3);
+  selfCopy = self;
+  UIKeyboardCandidateSceneHostingController.setHostIsTextVertical(_:)(vertical);
 }
 
 - (UIKeyboardCandidateSceneHostingController)init

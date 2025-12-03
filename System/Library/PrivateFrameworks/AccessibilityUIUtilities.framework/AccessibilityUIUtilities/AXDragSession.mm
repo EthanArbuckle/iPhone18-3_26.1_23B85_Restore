@@ -1,27 +1,27 @@
 @interface AXDragSession
-- (AXDragSession)initWithDruidConnection:(id)a3;
+- (AXDragSession)initWithDruidConnection:(id)connection;
 - (AXDragSessionDelegate)delegate;
 - (void)abort;
 - (void)cancel;
-- (void)dragDidEndWithOperation:(unint64_t)a3;
-- (void)dragStatusDidChange:(id)a3;
-- (void)dragWillBeginWithReply:(id)a3;
+- (void)dragDidEndWithOperation:(unint64_t)operation;
+- (void)dragStatusDidChange:(id)change;
+- (void)dragWillBeginWithReply:(id)reply;
 - (void)drop;
-- (void)moveToPoint:(CGPoint)a3 forRequestor:(id)a4 completion:(id)a5;
+- (void)moveToPoint:(CGPoint)point forRequestor:(id)requestor completion:(id)completion;
 @end
 
 @implementation AXDragSession
 
-- (AXDragSession)initWithDruidConnection:(id)a3
+- (AXDragSession)initWithDruidConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = AXDragSession;
   v6 = [(AXDragSession *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = _DUINewServerSessionAccessibilityInterface();
     [(NSXPCConnection *)v7->_connection setRemoteObjectInterface:v8];
 
@@ -53,25 +53,25 @@ void __41__AXDragSession_initWithDruidConnection___block_invoke(uint64_t a1)
   [v2 sessionWasTerminated:WeakRetained];
 }
 
-- (void)dragWillBeginWithReply:(id)a3
+- (void)dragWillBeginWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    (*(a3 + 2))(a3);
+    (*(reply + 2))(reply);
   }
 }
 
-- (void)dragStatusDidChange:(id)a3
+- (void)dragStatusDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AXDragSession *)self delegate];
-  [v5 dragSessionChanged:self toStatus:v4];
+  changeCopy = change;
+  delegate = [(AXDragSession *)self delegate];
+  [delegate dragSessionChanged:self toStatus:changeCopy];
 }
 
-- (void)dragDidEndWithOperation:(unint64_t)a3
+- (void)dragDidEndWithOperation:(unint64_t)operation
 {
-  v5 = [(AXDragSession *)self delegate];
-  [v5 dragSessionEnded:self withOperation:a3];
+  delegate = [(AXDragSession *)self delegate];
+  [delegate dragSessionEnded:self withOperation:operation];
 
   connection = self->_connection;
 
@@ -81,46 +81,46 @@ void __41__AXDragSession_initWithDruidConnection___block_invoke(uint64_t a1)
 - (void)abort
 {
   self->_aborted = 1;
-  v3 = [(AXDragSession *)self delegate];
-  [v3 dragSessionWasTerminated:self];
+  delegate = [(AXDragSession *)self delegate];
+  [delegate dragSessionWasTerminated:self];
 
-  v4 = [(AXDragSession *)self manager];
-  [v4 sessionWasTerminated:self];
+  manager = [(AXDragSession *)self manager];
+  [manager sessionWasTerminated:self];
 }
 
 - (void)drop
 {
-  v2 = [(AXDragSession *)self _serverSession];
-  [v2 accessibilityDrop];
+  _serverSession = [(AXDragSession *)self _serverSession];
+  [_serverSession accessibilityDrop];
 }
 
 - (void)cancel
 {
-  v3 = [(AXDragSession *)self _serverSession];
-  [v3 accessibilityCancel];
+  _serverSession = [(AXDragSession *)self _serverSession];
+  [_serverSession accessibilityCancel];
 
   connection = self->_connection;
 
   [(NSXPCConnection *)connection invalidate];
 }
 
-- (void)moveToPoint:(CGPoint)a3 forRequestor:(id)a4 completion:(id)a5
+- (void)moveToPoint:(CGPoint)point forRequestor:(id)requestor completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v9 = a5;
-  v10 = [(AXDragSession *)self _serverSession];
-  [v10 accessibilityMoveToPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  requestorCopy = requestor;
+  completionCopy = completion;
+  _serverSession = [(AXDragSession *)self _serverSession];
+  [_serverSession accessibilityMoveToPoint:{x, y}];
 
-  v9[2](v9, 1);
+  completionCopy[2](completionCopy, 1);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v10) = objc_opt_respondsToSelector();
+  LOBYTE(_serverSession) = objc_opt_respondsToSelector();
 
-  if (v10)
+  if (_serverSession)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 dragSession:self movedToPoint:v13 byRequestor:{x, y}];
+    [v12 dragSession:self movedToPoint:requestorCopy byRequestor:{x, y}];
   }
 }
 

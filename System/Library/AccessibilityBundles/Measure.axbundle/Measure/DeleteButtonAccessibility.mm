@@ -1,21 +1,21 @@
 @interface DeleteButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (DeleteButtonAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (DeleteButtonAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateActualButton;
-- (void)tapDeleteFrom:(id)a3;
+- (void)tapDeleteFrom:(id)from;
 @end
 
 @implementation DeleteButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASVRoundedButton" isKindOfClass:@"ASVButton"];
-  [v3 validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"tapDeleteFrom:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ASVButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASVRoundedButton" isKindOfClass:@"ASVButton"];
+  [validationsCopy validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"Measure.DeleteButton" hasInstanceMethod:@"tapDeleteFrom:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ASVButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
 }
 
 - (void)_axAnnotateActualButton
@@ -33,11 +33,11 @@
   [(DeleteButtonAccessibility *)self _axAnnotateActualButton];
 }
 
-- (DeleteButtonAccessibility)initWithFrame:(CGRect)a3
+- (DeleteButtonAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DeleteButtonAccessibility;
-  v3 = [(DeleteButtonAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DeleteButtonAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (void)tapDeleteFrom:(id)a3
+- (void)tapDeleteFrom:(id)from
 {
   v4.receiver = self;
   v4.super_class = DeleteButtonAccessibility;
-  [(DeleteButtonAccessibility *)&v4 tapDeleteFrom:a3];
+  [(DeleteButtonAccessibility *)&v4 tapDeleteFrom:from];
   v3 = accessibilityLocalizedString(@"DID_CLEAR_POINTS");
   AXMeasureSpeakMeasurementAnnouncement(v3);
 }

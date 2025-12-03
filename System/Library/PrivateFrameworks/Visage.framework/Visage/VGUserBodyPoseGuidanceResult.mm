@@ -1,7 +1,7 @@
 @interface VGUserBodyPoseGuidanceResult
 - (FrameRejectionState)rejection;
 - (id).cxx_construct;
-- (void)setRejection:(FrameRejectionState *)a3;
+- (void)setRejection:(FrameRejectionState *)rejection;
 @end
 
 @implementation VGUserBodyPoseGuidanceResult
@@ -19,14 +19,14 @@
   return result;
 }
 
-- (void)setRejection:(FrameRejectionState *)a3
+- (void)setRejection:(FrameRejectionState *)rejection
 {
-  self->_rejection.reason = a3->reason;
-  objc_storeStrong(&self->_rejection.description, a3->description);
-  *&self->_rejection.outOfFovOffset = *&a3->outOfFovOffset;
-  objc_storeStrong(&self->_rejection.debugDictionary, a3->debugDictionary);
+  self->_rejection.reason = rejection->reason;
+  objc_storeStrong(&self->_rejection.description, rejection->description);
+  *&self->_rejection.outOfFovOffset = *&rejection->outOfFovOffset;
+  objc_storeStrong(&self->_rejection.debugDictionary, rejection->debugDictionary);
 
-  description = a3->description;
+  description = rejection->description;
 }
 
 - (id).cxx_construct

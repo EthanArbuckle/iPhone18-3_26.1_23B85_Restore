@@ -1,42 +1,42 @@
 @interface GKDelayedRequestsNetworkWriter
-+ (id)writerWithTransport:(id)a3 forBagKey:(id)a4;
-- (GKDelayedRequestsNetworkWriter)initWithTransport:(id)a3 forBagKey:(id)a4;
-- (void)writeResources:(id)a3 handler:(id)a4;
++ (id)writerWithTransport:(id)transport forBagKey:(id)key;
+- (GKDelayedRequestsNetworkWriter)initWithTransport:(id)transport forBagKey:(id)key;
+- (void)writeResources:(id)resources handler:(id)handler;
 @end
 
 @implementation GKDelayedRequestsNetworkWriter
 
-+ (id)writerWithTransport:(id)a3 forBagKey:(id)a4
++ (id)writerWithTransport:(id)transport forBagKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[GKDelayedRequestsNetworkWriter alloc] initWithTransport:v6 forBagKey:v5];
+  keyCopy = key;
+  transportCopy = transport;
+  v7 = [[GKDelayedRequestsNetworkWriter alloc] initWithTransport:transportCopy forBagKey:keyCopy];
 
   return v7;
 }
 
-- (GKDelayedRequestsNetworkWriter)initWithTransport:(id)a3 forBagKey:(id)a4
+- (GKDelayedRequestsNetworkWriter)initWithTransport:(id)transport forBagKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = GKDelayedRequestsNetworkWriter;
   v8 = [(GKDelayedRequestsNetworkWriter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(GKDelayedRequestsNetworkWriter *)v8 setTransport:v6];
-    [(GKDelayedRequestsNetworkWriter *)v9 setBagKey:v7];
+    [(GKDelayedRequestsNetworkWriter *)v8 setTransport:transportCopy];
+    [(GKDelayedRequestsNetworkWriter *)v9 setBagKey:keyCopy];
   }
 
   return v9;
 }
 
-- (void)writeResources:(id)a3 handler:(id)a4
+- (void)writeResources:(id)resources handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _gkValuesForKeyPath:@"resourceID"];
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  v8 = [resourcesCopy _gkValuesForKeyPath:@"resourceID"];
   if ([v8 count] >= 2)
   {
     v17 = [NSString stringWithFormat:@"%@ is being asked to submit a delayed request for multiple players:%@. This is not currently supported. Bag key: %@", v8, objc_opt_class(), self->_bagKey];
@@ -65,8 +65,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [v6 _gkResourceWithID:*(*(&v23 + 1) + 8 * i)];
-        v14 = [v13 representedItem];
+        v13 = [resourcesCopy _gkResourceWithID:*(*(&v23 + 1) + 8 * i)];
+        representedItem = [v13 representedItem];
 
         bagKey = self->_bagKey;
         transport = self->_transport;
@@ -74,8 +74,8 @@
         v21[1] = 3221225472;
         v21[2] = sub_100115480;
         v21[3] = &unk_100361CB8;
-        v22 = v7;
-        [(GKDataTransport *)transport postRequest:v14 forBagKey:bagKey result:v21];
+        v22 = handlerCopy;
+        [(GKDataTransport *)transport postRequest:representedItem forBagKey:bagKey result:v21];
       }
 
       v10 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];

@@ -1,12 +1,12 @@
 @interface GEORPFeedbackBusinessHours
-- (id)initWithHoursType:(int)a3;
+- (id)initWithHoursType:(int)type;
 @end
 
 @implementation GEORPFeedbackBusinessHours
 
-- (id)initWithHoursType:(int)a3
+- (id)initWithHoursType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v7.receiver = self;
   v7.super_class = GEORPFeedbackBusinessHours;
   v4 = [(GEORPFeedbackBusinessHours *)&v7 init];

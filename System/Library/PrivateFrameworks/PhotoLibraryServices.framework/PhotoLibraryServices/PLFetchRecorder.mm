@@ -1,20 +1,20 @@
 @interface PLFetchRecorder
-+ (BOOL)_isRecordingFileFromURL:(id)a3;
-+ (BOOL)isCurrentProcessEnabledForRecordingBundle:(id)a3;
-+ (PLFetchRecorderSQLGeneralizationResult)_generalizedStringByFactoringOutInClausesFromSQL:(id)a3;
-+ (PLFetchRecorderSQLGeneralizationResult)generalizedSQLFromSQL:(id)a3 bindVariables:(id)a4 fromFetchRequest:(id)a5;
-+ (id)_findRecordingsWithinURL:(id)a3;
-+ (id)_generalizedStringByFactoringOutLimitClauseFrom:(id)a3;
-+ (id)_paramStringFromBindVariableComponent:(id)a3;
++ (BOOL)_isRecordingFileFromURL:(id)l;
++ (BOOL)isCurrentProcessEnabledForRecordingBundle:(id)bundle;
++ (PLFetchRecorderSQLGeneralizationResult)_generalizedStringByFactoringOutInClausesFromSQL:(id)l;
++ (PLFetchRecorderSQLGeneralizationResult)generalizedSQLFromSQL:(id)l bindVariables:(id)variables fromFetchRequest:(id)request;
++ (id)_findRecordingsWithinURL:(id)l;
++ (id)_generalizedStringByFactoringOutLimitClauseFrom:(id)from;
++ (id)_paramStringFromBindVariableComponent:(id)component;
 + (id)fileURLsToExistingRecordings;
-+ (id)sqlFromGeneralizedSQL:(id)a3 bindVars:(id)a4 multiInCounts:(id)a5 error:(id *)a6;
++ (id)sqlFromGeneralizedSQL:(id)l bindVars:(id)vars multiInCounts:(id)counts error:(id *)error;
 - (PLFetchRecorder)init;
 - (void)_startRecording;
 - (void)_startWatchingRecordingFile;
 - (void)_stopRecording;
 - (void)_stopWatchingRecordingFile;
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7;
-- (void)managedObjectContext:(id)a3 willExecuteFetchRequest:(id)a4;
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count;
+- (void)managedObjectContext:(id)context willExecuteFetchRequest:(id)request;
 @end
 
 @implementation PLFetchRecorder
@@ -59,8 +59,8 @@ LABEL_12:
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"lofr"];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v5])
   {
 LABEL_7:
     v10 = +[PLFetchRecording suggestedFilenameForCurrentProcess];
@@ -88,7 +88,7 @@ LABEL_7:
   }
 
   v17 = 0;
-  v7 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v17];
+  v7 = [defaultManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v17];
   v8 = v17;
   v9 = v8;
   if (v7)
@@ -110,59 +110,59 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count
 {
-  v38 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"lofr_preStats"];
+  countCopy = count;
+  contextCopy = context;
+  requestCopy = request;
+  stringCopy = string;
+  variablesCopy = variables;
+  userInfo = [contextCopy userInfo];
+  v16 = [userInfo objectForKeyedSubscript:@"lofr_preStats"];
 
-  v17 = [v11 userInfo];
-  v18 = [v17 objectForKeyedSubscript:@"lofr_statementStartTime"];
+  userInfo2 = [contextCopy userInfo];
+  v18 = [userInfo2 objectForKeyedSubscript:@"lofr_statementStartTime"];
 
   v34 = v18;
   [v18 doubleValue];
   v20 = v19;
-  v21 = [v11 databaseStatistics];
+  databaseStatistics = [contextCopy databaseStatistics];
   v35 = v16;
-  v22 = [v21 databaseStatisticsBySubtracting:v16];
+  v22 = [databaseStatistics databaseStatisticsBySubtracting:v16];
 
-  v23 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __100__PLFetchRecorder_managedObjectContext_didExecuteFetchRequest_withSQLString_bindVariables_rowCount___block_invoke;
   v39[3] = &unk_1E7578398;
-  v24 = v23;
+  v24 = string;
   v40 = v24;
-  v25 = v14;
+  v25 = variablesCopy;
   v41 = v25;
   [v25 enumerateObjectsUsingBlock:v39];
-  if ([v12 fetchLimit])
+  if ([requestCopy fetchLimit])
   {
     if ([v24 length])
     {
       [v24 appendString:{@", "}];
     }
 
-    [v24 appendFormat:@"%lu", objc_msgSend(v12, "fetchLimit")];
+    [v24 appendFormat:@"%lu", objc_msgSend(requestCopy, "fetchLimit")];
   }
 
-  v36 = v13;
-  v37 = v12;
-  v26 = [objc_opt_class() generalizedSQLFromSQL:v13 bindVariables:v25 fromFetchRequest:v12];
+  v36 = stringCopy;
+  v37 = requestCopy;
+  v26 = [objc_opt_class() generalizedSQLFromSQL:stringCopy bindVariables:v25 fromFetchRequest:requestCopy];
   v28 = v27;
   [(PLFetchRecorder *)self _startRecording];
   os_unfair_lock_lock(&self->_stateLock);
   v29 = self->_recording;
   os_unfair_lock_unlock(&self->_stateLock);
-  v30 = [v11 description];
-  v31 = [v22 cacheHitPages];
-  v32 = [v22 cacheMissPages];
+  v30 = [contextCopy description];
+  cacheHitPages = [v22 cacheHitPages];
+  cacheMissPages = [v22 cacheMissPages];
   Current = CFAbsoluteTimeGetCurrent();
-  [(PLFetchRecording *)v29 recordStatementWithNormalizedSQL:v26 bindVariablesAsString:v24 multiInCounts:v28 contextName:v30 pagesHit:v31 pagesMissed:v32 rowCount:Current - v20 duration:__PAIR64__(qos_class_self() QOS:v38)];
+  [(PLFetchRecording *)v29 recordStatementWithNormalizedSQL:v26 bindVariablesAsString:v24 multiInCounts:v28 contextName:v30 pagesHit:cacheHitPages pagesMissed:cacheMissPages rowCount:Current - v20 duration:__PAIR64__(qos_class_self() QOS:countCopy)];
 }
 
 void __100__PLFetchRecorder_managedObjectContext_didExecuteFetchRequest_withSQLString_bindVariables_rowCount___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -186,17 +186,17 @@ void __100__PLFetchRecorder_managedObjectContext_didExecuteFetchRequest_withSQLS
   }
 }
 
-- (void)managedObjectContext:(id)a3 willExecuteFetchRequest:(id)a4
+- (void)managedObjectContext:(id)context willExecuteFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 databaseStatistics];
-  v6 = [v4 userInfo];
-  [v6 setObject:v5 forKeyedSubscript:@"lofr_preStats"];
+  contextCopy = context;
+  databaseStatistics = [contextCopy databaseStatistics];
+  userInfo = [contextCopy userInfo];
+  [userInfo setObject:databaseStatistics forKeyedSubscript:@"lofr_preStats"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:CFAbsoluteTimeGetCurrent()];
-  v7 = [v4 userInfo];
+  userInfo2 = [contextCopy userInfo];
 
-  [v7 setObject:v8 forKeyedSubscript:@"lofr_statementStartTime"];
+  [userInfo2 setObject:v8 forKeyedSubscript:@"lofr_statementStartTime"];
 }
 
 - (void)_stopWatchingRecordingFile
@@ -215,8 +215,8 @@ void __100__PLFetchRecorder_managedObjectContext_didExecuteFetchRequest_withSQLS
 {
   if (self->_fileWatcherSource)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLFetchRecorder.m" lineNumber:233 description:@"Cannot start watching when watcher already set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchRecorder.m" lineNumber:233 description:@"Cannot start watching when watcher already set."];
   }
 
   v3 = [(PLFetchRecording *)self->_recording fd];
@@ -282,15 +282,15 @@ void __46__PLFetchRecorder__startWatchingRecordingFile__block_invoke(uint64_t a1
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-+ (id)sqlFromGeneralizedSQL:(id)a3 bindVars:(id)a4 multiInCounts:(id)a5 error:(id *)a6
++ (id)sqlFromGeneralizedSQL:(id)l bindVars:(id)vars multiInCounts:(id)counts error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AD60] string];
-  v14 = [v11 componentsSeparatedByString:{@", "}];
-  v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v16 = [v10 componentsSeparatedByCharactersInSet:v15];
+  lCopy = l;
+  varsCopy = vars;
+  countsCopy = counts;
+  string = [MEMORY[0x1E696AD60] string];
+  v14 = [varsCopy componentsSeparatedByString:{@", "}];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v16 = [lCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v34[0] = 0;
   v34[1] = v34;
@@ -307,18 +307,18 @@ void __46__PLFetchRecorder__startWatchingRecordingFile__block_invoke(uint64_t a1
   v29 = v34;
   v17 = v14;
   v25 = v17;
-  v18 = v13;
+  v18 = string;
   v26 = v18;
-  v31 = a1;
-  v19 = v12;
+  selfCopy = self;
+  v19 = countsCopy;
   v27 = v19;
   v30 = v33;
-  v32 = a6;
+  errorCopy = error;
   v20 = v16;
   v28 = v20;
   [v20 enumerateObjectsUsingBlock:v24];
-  v21 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v22 = [v18 stringByTrimmingCharactersInSet:v21];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v22 = [v18 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   _Block_object_dispose(v33, 8);
   _Block_object_dispose(v34, 8);
@@ -458,26 +458,26 @@ LABEL_31:
 LABEL_32:
 }
 
-+ (PLFetchRecorderSQLGeneralizationResult)generalizedSQLFromSQL:(id)a3 bindVariables:(id)a4 fromFetchRequest:(id)a5
++ (PLFetchRecorderSQLGeneralizationResult)generalizedSQLFromSQL:(id)l bindVariables:(id)variables fromFetchRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  lCopy = l;
+  variablesCopy = variables;
+  requestCopy = request;
+  v10 = lCopy;
   v11 = v10;
-  if ([v9 fetchLimit])
+  if ([requestCopy fetchLimit])
   {
     v11 = [objc_opt_class() _generalizedStringByFactoringOutLimitClauseFrom:v10];
   }
 
-  if ([v8 count] < 2)
+  if ([variablesCopy count] < 2)
   {
     goto LABEL_8;
   }
 
   v12 = objc_alloc_init(PLFetchRecorderPredicateVisitor);
-  v13 = [v9 predicate];
-  [(PLFetchRecorderPredicateVisitor *)v12 examinePredicate:v13];
+  predicate = [requestCopy predicate];
+  [(PLFetchRecorderPredicateVisitor *)v12 examinePredicate:predicate];
 
   if (![(PLFetchRecorderPredicateVisitor *)v12 foundOperatorIN])
   {
@@ -498,7 +498,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  if ([v14 isEqualToString:v10] && objc_msgSend(v8, "count") >= 0x33)
+  if ([v14 isEqualToString:v10] && objc_msgSend(variablesCopy, "count") >= 0x33)
   {
 
     v14 = 0;
@@ -514,38 +514,38 @@ LABEL_10:
 
 + (id)fileURLsToExistingRecordings
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v4 = MEMORY[0x1E695DFF8];
   v5 = NSTemporaryDirectory();
   v6 = [v4 fileURLWithPath:v5];
 
-  v7 = [a1 _findRecordingsWithinURL:v6];
-  [v3 unionOrderedSet:v7];
+  v7 = [self _findRecordingsWithinURL:v6];
+  [orderedSet unionOrderedSet:v7];
 
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/mobile/Containers/Data/PluginKitPlugin"];
-  v9 = [a1 _findRecordingsWithinURL:v8];
-  [v3 unionOrderedSet:v9];
+  v9 = [self _findRecordingsWithinURL:v8];
+  [orderedSet unionOrderedSet:v9];
 
   v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/mobile/tmp"];
-  v11 = [a1 _findRecordingsWithinURL:v10];
-  [v3 unionOrderedSet:v11];
+  v11 = [self _findRecordingsWithinURL:v10];
+  [orderedSet unionOrderedSet:v11];
 
-  v12 = [v3 array];
+  array = [orderedSet array];
 
-  return v12;
+  return array;
 }
 
-+ (BOOL)isCurrentProcessEnabledForRecordingBundle:(id)a3
++ (BOOL)isCurrentProcessEnabledForRecordingBundle:(id)bundle
 {
-  v3 = a3;
-  if (MEMORY[0x19EAEE230]() && ((PLIsAssetsd() & 1) != 0 || (PLIsPTPD() & 1) != 0 || (PFIsPhotosAppAnyPlatform() & 1) != 0 || (PFIsCameraAppAnyPlatform() & 1) != 0 || (PLIsInternalTool() & 1) != 0 || (PFIsPhotosPicker() & 1) != 0 || (PLIsMediaanalysisd() & 1) != 0 || (PLIsImagePlaygroundApp() & 1) != 0 || PLIsPhotoanalysisd()) && [v3 isSystemPhotoLibrary])
+  bundleCopy = bundle;
+  if (MEMORY[0x19EAEE230]() && ((PLIsAssetsd() & 1) != 0 || (PLIsPTPD() & 1) != 0 || (PFIsPhotosAppAnyPlatform() & 1) != 0 || (PFIsCameraAppAnyPlatform() & 1) != 0 || (PLIsInternalTool() & 1) != 0 || (PFIsPhotosPicker() & 1) != 0 || (PLIsMediaanalysisd() & 1) != 0 || (PLIsImagePlaygroundApp() & 1) != 0 || PLIsPhotoanalysisd()) && [bundleCopy isSystemPhotoLibrary])
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"com.apple.photos.lofr.enabled" inDomain:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"com.apple.photos.lofr.enabled" inDomain:*MEMORY[0x1E696A400]];
 
     if (v5)
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
@@ -555,16 +555,16 @@ LABEL_10:
         dispatch_once(&isCurrentProcessEnabledForRecordingBundle__onceToken, &__block_literal_global_69_115942);
       }
 
-      v6 = isCurrentProcessEnabledForRecordingBundle__launchedForTesting == 0;
+      bOOLValue = isCurrentProcessEnabledForRecordingBundle__launchedForTesting == 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 void __61__PLFetchRecorder_isCurrentProcessEnabledForRecordingBundle___block_invoke()
@@ -573,22 +573,22 @@ void __61__PLFetchRecorder_isCurrentProcessEnabledForRecordingBundle___block_inv
   isCurrentProcessEnabledForRecordingBundle__launchedForTesting = [v0 launchedToTest];
 }
 
-+ (id)_findRecordingsWithinURL:(id)a3
++ (id)_findRecordingsWithinURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA0] orderedSet];
+  lCopy = l;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x1E69BF240]);
-  v8 = [v4 path];
-  v9 = [v7 initWithFilePath:v8];
+  path = [lCopy path];
+  v9 = [v7 initWithFilePath:path];
 
   [v9 setContinueAfterError:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__PLFetchRecorder__findRecordingsWithinURL___block_invoke;
   v12[3] = &unk_1E7578370;
-  v14 = a1;
-  v10 = v5;
+  selfCopy = self;
+  v10 = orderedSet;
   v13 = v10;
   [v9 visitURLsLoadingPropertiesForKeys:MEMORY[0x1E695E0F0] withBlock:v12];
 
@@ -608,23 +608,23 @@ uint64_t __44__PLFetchRecorder__findRecordingsWithinURL___block_invoke(uint64_t 
   return 1;
 }
 
-+ (BOOL)_isRecordingFileFromURL:(id)a3
++ (BOOL)_isRecordingFileFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 isEqualToString:@"lofr"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v5 = [pathExtension isEqualToString:@"lofr"];
 
   if (v5)
   {
-    v6 = [v3 pathComponents];
-    if ([v6 count] < 2)
+    pathComponents = [lCopy pathComponents];
+    if ([pathComponents count] < 2)
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 2}];
+      v7 = [pathComponents objectAtIndexedSubscript:{objc_msgSend(pathComponents, "count") - 2}];
       LOBYTE(v5) = [v7 isEqualToString:@"lofr"];
     }
   }
@@ -632,15 +632,15 @@ uint64_t __44__PLFetchRecorder__findRecordingsWithinURL___block_invoke(uint64_t 
   return v5;
 }
 
-+ (id)_paramStringFromBindVariableComponent:(id)a3
++ (id)_paramStringFromBindVariableComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   if (_paramStringFromBindVariableComponent__onceToken != -1)
   {
     dispatch_once(&_paramStringFromBindVariableComponent__onceToken, &__block_literal_global_115949);
   }
 
-  v4 = [_paramStringFromBindVariableComponent__formatter numberFromString:v3];
+  v4 = [_paramStringFromBindVariableComponent__formatter numberFromString:componentCopy];
   if (v4)
   {
     v5 = [_paramStringFromBindVariableComponent__formatter stringFromNumber:v4];
@@ -652,14 +652,14 @@ uint64_t __44__PLFetchRecorder__findRecordingsWithinURL___block_invoke(uint64_t 
   }
 
   v6 = [v5 length];
-  if (v6 == [v3 length])
+  if (v6 == [componentCopy length])
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v5];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", v3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", componentCopy];
   }
   v7 = ;
 
@@ -677,32 +677,32 @@ uint64_t __57__PLFetchRecorder__paramStringFromBindVariableComponent___block_inv
   return [v2 setNumberStyle:1];
 }
 
-+ (PLFetchRecorderSQLGeneralizationResult)_generalizedStringByFactoringOutInClausesFromSQL:(id)a3
++ (PLFetchRecorderSQLGeneralizationResult)_generalizedStringByFactoringOutInClausesFromSQL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_msgSend(@"IN  (?,?"), "length";
-  v5 = [v3 length];
+  v5 = [lCopy length];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
   v7 = ~v4 - v5;
   while (1)
   {
-    v8 = [v3 length];
+    v8 = [lCopy length];
     v9 = (v7 + v8) & ~((v7 + v8) >> 63);
-    v10 = objc_msgSend(v3, "rangeOfString:options:range:", @"IN  (?,?"), 4, v9, objc_msgSend(v3, "length") - v9;
+    v10 = objc_msgSend(lCopy, "rangeOfString:options:range:", @"IN  (?,?"), 4, v9, objc_msgSend(lCopy, "length") - v9;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
     v11 = v10;
-    v12 = [v3 rangeOfString:@"" options:? range:?], 0, v11, objc_msgSend(v3, "length") - v11);
+    v12 = [lCopy rangeOfString:@"" options:? range:?], 0, v11, objc_msgSend(lCopy, "length") - v11);
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
     v13 = v12 - v11;
-    v14 = [v3 substringWithRange:{v11, v12 - v11 + 1}];
+    v14 = [lCopy substringWithRange:{v11, v12 - v11 + 1}];
     v15 = [v14 componentsSeparatedByString:@"?"];
     v16 = [v15 count] - 1;
 
@@ -711,45 +711,45 @@ uint64_t __57__PLFetchRecorder__paramStringFromBindVariableComponent___block_inv
       v17 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
       [v6 insertObject:v17 atIndex:0];
 
-      v18 = [v3 stringByReplacingOccurrencesOfString:v14 withString:@"IN (*)" options:0 range:{v11, v13 + 1}];
+      v18 = [lCopy stringByReplacingOccurrencesOfString:v14 withString:@"IN (*)" options:0 range:{v11, v13 + 1}];
 
-      v3 = v18;
+      lCopy = v18;
     }
   }
 
-  v19 = v3;
+  v19 = lCopy;
   v20 = v6;
   result.var1 = v20;
   result.var0 = v19;
   return result;
 }
 
-+ (id)_generalizedStringByFactoringOutLimitClauseFrom:(id)a3
++ (id)_generalizedStringByFactoringOutLimitClauseFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = [@"LIMIT " length];
-  v5 = [v3 length] + ~v4;
+  v5 = [fromCopy length] + ~v4;
   if (v5 <= 100)
   {
     v5 = 100;
   }
 
-  v6 = [v3 rangeOfString:@"LIMIT " options:4 range:{v5 - 100, objc_msgSend(v3, "length") - (v5 - 100)}];
+  v6 = [fromCopy rangeOfString:@"LIMIT " options:4 range:{v5 - 100, objc_msgSend(fromCopy, "length") - (v5 - 100)}];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
-    v8 = [v3 length];
+    v8 = [fromCopy length];
     if (v8 != 0x8000000000000000)
     {
       v9 = v8 - v7;
-      v10 = [v3 substringWithRange:{v7, v8 - v7}];
-      v11 = [v3 stringByReplacingOccurrencesOfString:v10 withString:@"LIMIT N" options:0 range:{v7, v9}];
+      v10 = [fromCopy substringWithRange:{v7, v8 - v7}];
+      v11 = [fromCopy stringByReplacingOccurrencesOfString:v10 withString:@"LIMIT N" options:0 range:{v7, v9}];
 
-      v3 = v11;
+      fromCopy = v11;
     }
   }
 
-  return v3;
+  return fromCopy;
 }
 
 @end

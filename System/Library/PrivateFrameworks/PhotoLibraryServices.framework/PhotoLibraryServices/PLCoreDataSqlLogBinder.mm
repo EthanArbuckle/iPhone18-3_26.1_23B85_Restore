@@ -1,10 +1,10 @@
 @interface PLCoreDataSqlLogBinder
-+ (id)bindSelectString:(id)a3 bindValueStrings:(id)a4;
-+ (id)stringFromBindVariable:(id)a3 withTypePrefix:(BOOL)a4;
++ (id)bindSelectString:(id)string bindValueStrings:(id)strings;
++ (id)stringFromBindVariable:(id)variable withTypePrefix:(BOOL)prefix;
 - (NSString)boundSql;
 - (PLCoreDataSqlLogBinder)init;
-- (void)addLogLine:(id)a3;
-- (void)setSelectString:(id)a3 bindValueStrings:(id)a4;
+- (void)addLogLine:(id)line;
+- (void)setSelectString:(id)string bindValueStrings:(id)strings;
 @end
 
 @implementation PLCoreDataSqlLogBinder
@@ -23,20 +23,20 @@
 
       if ([v7 count] == v4 + 1)
       {
-        v8 = [MEMORY[0x1E696AD60] string];
+        string = [MEMORY[0x1E696AD60] string];
         for (i = 0; i != v4; ++i)
         {
           v10 = [v7 objectAtIndexedSubscript:i];
-          [v8 appendString:v10];
+          [string appendString:v10];
 
           v11 = [(NSMutableArray *)self->_bindValues objectAtIndexedSubscript:i];
-          [v8 appendString:v11];
+          [string appendString:v11];
         }
 
         v12 = [v7 objectAtIndexedSubscript:v4];
-        [v8 appendString:v12];
+        [string appendString:v12];
 
-        self = [v8 copy];
+        self = [string copy];
       }
 
       else
@@ -68,27 +68,27 @@
   return self;
 }
 
-- (void)setSelectString:(id)a3 bindValueStrings:(id)a4
+- (void)setSelectString:(id)string bindValueStrings:(id)strings
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  stringsCopy = strings;
+  v7 = [string copy];
   selectString = self->_selectString;
   self->_selectString = v7;
 
-  v9 = [v6 copy];
+  v9 = [stringsCopy copy];
   bindValues = self->_bindValues;
   self->_bindValues = v9;
 }
 
-- (void)addLogLine:(id)a3
+- (void)addLogLine:(id)line
 {
-  v16 = a3;
-  v4 = -[NSRegularExpression firstMatchInString:options:range:](self->_selectRegex, "firstMatchInString:options:range:", v16, 0, 0, [v16 length]);
+  lineCopy = line;
+  v4 = -[NSRegularExpression firstMatchInString:options:range:](self->_selectRegex, "firstMatchInString:options:range:", lineCopy, 0, 0, [lineCopy length]);
   if (v4)
   {
     v5 = v4;
     v6 = [v4 rangeAtIndex:1];
-    v8 = [v16 substringWithRange:{v6, v7}];
+    v8 = [lineCopy substringWithRange:{v6, v7}];
     v9 = [v8 copy];
     selectString = self->_selectString;
     self->_selectString = v9;
@@ -96,7 +96,7 @@
     goto LABEL_3;
   }
 
-  v11 = -[NSRegularExpression firstMatchInString:options:range:](self->_bindRegex, "firstMatchInString:options:range:", v16, 0, 0, [v16 length]);
+  v11 = -[NSRegularExpression firstMatchInString:options:range:](self->_bindRegex, "firstMatchInString:options:range:", lineCopy, 0, 0, [lineCopy length]);
   if (v11)
   {
     v5 = v11;
@@ -107,7 +107,7 @@
     }
 
     v13 = [v5 rangeAtIndex:3];
-    v15 = [v16 substringWithRange:{v13, v14}];
+    v15 = [lineCopy substringWithRange:{v13, v14}];
     if (!v15)
     {
       goto LABEL_4;
@@ -146,33 +146,33 @@ LABEL_4:
   return v2;
 }
 
-+ (id)bindSelectString:(id)a3 bindValueStrings:(id)a4
++ (id)bindSelectString:(id)string bindValueStrings:(id)strings
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  stringsCopy = strings;
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(PLCoreDataSqlLogBinder);
-  [(PLCoreDataSqlLogBinder *)v8 setSelectString:v5 bindValueStrings:v6];
-  v9 = [(PLCoreDataSqlLogBinder *)v8 boundSql];
+  [(PLCoreDataSqlLogBinder *)v8 setSelectString:stringCopy bindValueStrings:stringsCopy];
+  boundSql = [(PLCoreDataSqlLogBinder *)v8 boundSql];
 
   objc_autoreleasePoolPop(v7);
 
-  return v9;
+  return boundSql;
 }
 
-+ (id)stringFromBindVariable:(id)a3 withTypePrefix:(BOOL)a4
++ (id)stringFromBindVariable:(id)variable withTypePrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v5 = a3;
-  if (![v5 hasObjectValue])
+  prefixCopy = prefix;
+  variableCopy = variable;
+  if (![variableCopy hasObjectValue])
   {
-    v11 = [v5 int64];
+    int64 = [variableCopy int64];
 
-    if (v11)
+    if (int64)
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%qd", v11];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%qd", int64];
       v13 = @"(int64)";
-      if (!v4)
+      if (!prefixCopy)
       {
         goto LABEL_17;
       }
@@ -185,7 +185,7 @@ LABEL_14:
 LABEL_9:
     v13 = &stru_1F0F06D80;
     v12 = @"nil";
-    if (!v4)
+    if (!prefixCopy)
     {
       goto LABEL_17;
     }
@@ -193,9 +193,9 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v6 = [v5 value];
+  value = [variableCopy value];
 
-  if (!v6)
+  if (!value)
   {
     goto LABEL_9;
   }
@@ -205,7 +205,7 @@ LABEL_9:
   v8 = MEMORY[0x1E696AEC0];
   if (isKindOfClass)
   {
-    v19 = [v6 length];
+    v19 = [value length];
     v9 = @"<NSData len=%tu>";
 LABEL_5:
     v10 = v8;
@@ -220,11 +220,11 @@ LABEL_5:
     v8 = MEMORY[0x1E696AEC0];
     if (v15)
     {
-      [v6 timeIntervalSinceReferenceDate];
+      [value timeIntervalSinceReferenceDate];
       v12 = [v8 stringWithFormat:@"%f", v16];
 
       v13 = @"(timestamp)";
-      if (v4)
+      if (prefixCopy)
       {
         goto LABEL_14;
       }
@@ -232,19 +232,19 @@ LABEL_5:
       goto LABEL_17;
     }
 
-    v19 = v6;
+    v19 = value;
     v9 = @"%@";
     goto LABEL_5;
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v19 = v6;
+  v19 = value;
   v9 = @"%@";
 LABEL_13:
   v12 = [v10 stringWithFormat:v9, v19];
 
   v13 = &stru_1F0F06D80;
-  if (v4)
+  if (prefixCopy)
   {
     goto LABEL_14;
   }

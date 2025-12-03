@@ -1,24 +1,24 @@
 @interface SUUILoadTrendingSearchPageOperation
-- (SUUILoadTrendingSearchPageOperation)initWithClientContext:(id)a3 pageURL:(id)a4 outputBlock:(id)a5;
+- (SUUILoadTrendingSearchPageOperation)initWithClientContext:(id)context pageURL:(id)l outputBlock:(id)block;
 - (void)main;
 @end
 
 @implementation SUUILoadTrendingSearchPageOperation
 
-- (SUUILoadTrendingSearchPageOperation)initWithClientContext:(id)a3 pageURL:(id)a4 outputBlock:(id)a5
+- (SUUILoadTrendingSearchPageOperation)initWithClientContext:(id)context pageURL:(id)l outputBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  lCopy = l;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = SUUILoadTrendingSearchPageOperation;
   v12 = [(SUUILoadTrendingSearchPageOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientContext, a3);
-    objc_storeStrong(&v13->_pageURL, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_clientContext, context);
+    objc_storeStrong(&v13->_pageURL, l);
+    v14 = [blockCopy copy];
     outputBlock = v13->_outputBlock;
     v13->_outputBlock = v14;
   }
@@ -39,15 +39,15 @@
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__23;
   v22 = __Block_byref_object_dispose__23;
-  v23 = [(SUUILoadTrendingSearchPageOperation *)self pageURL];
+  pageURL = [(SUUILoadTrendingSearchPageOperation *)self pageURL];
   if (!v19[5])
   {
-    v3 = [(SUUIClientContext *)self->_clientContext URLBag];
+    uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
 
-    if (v3)
+    if (uRLBag)
     {
       v4 = dispatch_semaphore_create(0);
-      v5 = [(SUUIClientContext *)self->_clientContext URLBag];
+      uRLBag2 = [(SUUIClientContext *)self->_clientContext URLBag];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __43__SUUILoadTrendingSearchPageOperation_main__block_invoke;
@@ -56,7 +56,7 @@
       v17 = v24;
       v6 = v4;
       v15 = v6;
-      [v5 loadValueForKey:@"trending-searches" completionBlock:v14];
+      [uRLBag2 loadValueForKey:@"trending-searches" completionBlock:v14];
 
       dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     }

@@ -1,6 +1,6 @@
 @interface ISSiriConversation
 - (ISSiriConversation)init;
-- (ISSiriConversation)initWithTurns:(id)a3;
+- (ISSiriConversation)initWithTurns:(id)turns;
 - (NSArray)turns;
 - (NSDate)date;
 - (NSUUID)firstTurnId;
@@ -39,9 +39,9 @@ LABEL_10:
     v6 = *(self + OBJC_IVAR___ISSiriConversation_turns);
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_23C871C34();
-  self = v7;
+  self = selfCopy;
   if (!v8)
   {
     goto LABEL_10;
@@ -51,7 +51,7 @@ LABEL_3:
   if ((v2 & 0xC000000000000001) != 0)
   {
 LABEL_11:
-    v9 = self;
+    selfCopy2 = self;
     v10 = MEMORY[0x23EED7610](0, v2);
 
     v3 = v10;
@@ -107,7 +107,7 @@ LABEL_3:
   if ((v8 & 0xC000000000000001) != 0)
   {
 LABEL_13:
-    v16 = self;
+    selfCopy = self;
     v12 = MEMORY[0x23EED7610](0, v8);
     goto LABEL_6;
   }
@@ -119,7 +119,7 @@ LABEL_13:
   }
 
   v10 = *(v8 + 32);
-  v11 = self;
+  selfCopy2 = self;
   v12 = v10;
 LABEL_6:
   v13 = *&v12[OBJC_IVAR___ISEventGraph_timestamp];
@@ -167,7 +167,7 @@ LABEL_3:
   if ((v8 & 0xC000000000000001) != 0)
   {
 LABEL_14:
-    v17 = self;
+    selfCopy = self;
     v12 = MEMORY[0x23EED7610](0, v8);
     goto LABEL_6;
   }
@@ -179,7 +179,7 @@ LABEL_14:
   }
 
   v10 = *(v8 + 32);
-  v11 = self;
+  selfCopy2 = self;
   v12 = v10;
 LABEL_6:
   v13 = v12;
@@ -201,7 +201,7 @@ LABEL_16:
   return v15;
 }
 
-- (ISSiriConversation)initWithTurns:(id)a3
+- (ISSiriConversation)initWithTurns:(id)turns
 {
   type metadata accessor for SiriTurn();
   sub_23C8718A4();

@@ -1,19 +1,19 @@
 @interface ParmesanGalleryReaderDataSource
 - (NSString)description;
-- (void)readerDidChange:(id)a3;
+- (void)readerDidChange:(id)change;
 @end
 
 @implementation ParmesanGalleryReaderDataSource
 
-- (void)readerDidChange:(id)a3
+- (void)readerDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_23BFDBA84();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFDC458();
 
   v3 = sub_23BFFA2C0();

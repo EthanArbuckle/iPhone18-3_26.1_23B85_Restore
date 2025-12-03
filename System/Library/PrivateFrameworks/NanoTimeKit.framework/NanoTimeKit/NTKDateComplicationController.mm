@@ -1,13 +1,13 @@
 @interface NTKDateComplicationController
-+ (id)_textForDate:(id)a3 dateStyle:(unint64_t)a4;
-+ (id)textForDateStyle:(unint64_t)a3;
++ (id)_textForDate:(id)date dateStyle:(unint64_t)style;
++ (id)textForDateStyle:(unint64_t)style;
 - (void)_activate;
-- (void)_configureForLegacyDisplay:(id)a3;
+- (void)_configureForLegacyDisplay:(id)display;
 - (void)_deactivate;
 - (void)_handleTimeChangeNotification;
-- (void)_setTextInDisplayIfNeededWithDate:(id)a3;
+- (void)_setTextInDisplayIfNeededWithDate:(id)date;
 - (void)_updateDisplay;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKDateComplicationController
@@ -15,15 +15,15 @@
 - (void)_activate
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277CBE620] object:0];
-  [v3 addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277D766F0] object:0];
-  [v3 addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277D766F0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleTimeChangeNotification name:*MEMORY[0x277CBE580] object:0];
   v4 = _NTKLoggingObjectForDomain(15, "NTKLoggingDomainSignificantTimeChange");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[NTKDateComplicationController _activate]";
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "%p: %s", &v5, 0x16u);
@@ -33,44 +33,44 @@
 - (void)_deactivate
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D766F0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D766F0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE580] object:0];
   v4 = _NTKLoggingObjectForDomain(15, "NTKLoggingDomainSignificantTimeChange");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[NTKDateComplicationController _deactivate]";
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "%p: %s", &v5, 0x16u);
   }
 }
 
-- (void)_configureForLegacyDisplay:(id)a3
+- (void)_configureForLegacyDisplay:(id)display
 {
-  v5 = a3;
+  displayCopy = display;
   if (objc_opt_respondsToSelector())
   {
-    self->_displayDateStyle = [v5 desiredDateComplicationDateStyle];
+    self->_displayDateStyle = [displayCopy desiredDateComplicationDateStyle];
   }
 
   else
   {
-    v4 = [(NTKComplicationController *)self complication];
-    self->_displayDateStyle = [v4 dateStyle];
+    complication = [(NTKComplicationController *)self complication];
+    self->_displayDateStyle = [complication dateStyle];
   }
 
   [(NTKDateComplicationController *)self _updateDisplay];
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
-  if (([v6 isEqualToDate:self->_timeTravelDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqualToDate:self->_timeTravelDate] & 1) == 0)
   {
-    objc_storeStrong(&self->_timeTravelDate, a3);
+    objc_storeStrong(&self->_timeTravelDate, date);
     [(NTKDateComplicationController *)self _updateDisplay];
   }
 }
@@ -82,7 +82,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[NTKDateComplicationController _handleTimeChangeNotification]";
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%p: %s", buf, 0x16u);
@@ -114,15 +114,15 @@ uint64_t __62__NTKDateComplicationController__handleTimeChangeNotification__bloc
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[NTKDateComplicationController _updateDisplay]";
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%p: %s", &v8, 0x16u);
   }
 
-  v4 = [(NTKComplicationController *)self legacyDisplay];
+  legacyDisplay = [(NTKComplicationController *)self legacyDisplay];
 
-  if (v4)
+  if (legacyDisplay)
   {
     v5 = CLKForcedTime();
     if (!v5)
@@ -145,19 +145,19 @@ uint64_t __62__NTKDateComplicationController__handleTimeChangeNotification__bloc
   }
 }
 
-+ (id)textForDateStyle:(unint64_t)a3
++ (id)textForDateStyle:(unint64_t)style
 {
   v5 = +[(CLKDate *)NTKDate];
-  v6 = [a1 _textForDate:v5 dateStyle:a3];
+  v6 = [self _textForDate:v5 dateStyle:style];
 
   return v6;
 }
 
-+ (id)_textForDate:(id)a3 dateStyle:(unint64_t)a4
++ (id)_textForDate:(id)date dateStyle:(unint64_t)style
 {
-  if (a4)
+  if (style)
   {
-    v5 = [NTKComplicationDateFormatter stringForDate:a3 withStyle:?];
+    v5 = [NTKComplicationDateFormatter stringForDate:date withStyle:?];
   }
 
   else
@@ -168,25 +168,25 @@ uint64_t __62__NTKDateComplicationController__handleTimeChangeNotification__bloc
   return v5;
 }
 
-- (void)_setTextInDisplayIfNeededWithDate:(id)a3
+- (void)_setTextInDisplayIfNeededWithDate:(id)date
 {
   if (self->_displayDateStyle)
   {
-    v4 = a3;
-    v5 = [(NTKComplicationController *)self legacyDisplay];
+    dateCopy = date;
+    legacyDisplay = [(NTKComplicationController *)self legacyDisplay];
     displayDateStyle = self->_displayDateStyle;
-    v14 = v5;
+    v14 = legacyDisplay;
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v14 overrideDateStyle];
+      overrideDateStyle = [v14 overrideDateStyle];
     }
 
     else
     {
-      v7 = 0;
+      overrideDateStyle = 0;
     }
 
-    if (v7)
+    if (overrideDateStyle)
     {
       v8 = displayDateStyle == 8;
     }
@@ -198,12 +198,12 @@ uint64_t __62__NTKDateComplicationController__handleTimeChangeNotification__bloc
 
     if (v8)
     {
-      displayDateStyle = v7;
+      displayDateStyle = overrideDateStyle;
     }
 
-    v9 = [objc_opt_class() _textForDate:v4 dateStyle:displayDateStyle];
+    v9 = [objc_opt_class() _textForDate:dateCopy dateStyle:displayDateStyle];
     v10 = +[NTKComplicationDateFormatter _localizedDayDateFormatter];
-    v11 = [v10 stringFromDate:v4];
+    v11 = [v10 stringFromDate:dateCopy];
 
     v12 = [v9 rangeOfString:v11];
     [v14 setDateComplicationText:v9 withDayRange:v12 forDateStyle:{v13, self->_displayDateStyle}];

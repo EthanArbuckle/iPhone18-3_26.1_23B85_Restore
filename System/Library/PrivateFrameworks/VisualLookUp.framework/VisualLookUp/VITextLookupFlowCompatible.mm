@@ -1,6 +1,6 @@
 @interface VITextLookupFlowCompatible
 - (_TtC12VisualLookUp26VITextLookupFlowCompatible)init;
-- (id)lookupTextWithQuery:(id)a3 completion:(id)a4;
+- (id)lookupTextWithQuery:(id)query completion:(id)completion;
 @end
 
 @implementation VITextLookupFlowCompatible
@@ -15,13 +15,13 @@
   return [(VITextLookupFlowCompatible *)&v4 init];
 }
 
-- (id)lookupTextWithQuery:(id)a3 completion:(id)a4
+- (id)lookupTextWithQuery:(id)query completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1D9C1B248(v7, v8, v6);
+  queryCopy = query;
+  selfCopy = self;
+  v9 = sub_1D9C1B248(queryCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 

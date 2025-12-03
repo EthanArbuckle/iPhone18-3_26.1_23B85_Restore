@@ -1,8 +1,8 @@
 @interface ATXActionLOIBoost
-+ (double)decayRateWithScale:(double)a3 distance:(double)a4;
++ (double)decayRateWithScale:(double)scale distance:(double)distance;
 + (id)sharedInstance;
-- (ATXActionLOIBoost)initWithBoostDictionary:(id)a3;
-- (double)boostForActionKey:(id)a3;
+- (ATXActionLOIBoost)initWithBoostDictionary:(id)dictionary;
+- (double)boostForActionKey:(id)key;
 @end
 
 @implementation ATXActionLOIBoost
@@ -69,12 +69,12 @@ void __35__ATXActionLOIBoost_sharedInstance__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (double)decayRateWithScale:(double)a3 distance:(double)a4
++ (double)decayRateWithScale:(double)scale distance:(double)distance
 {
   result = 0.0;
-  if (a3 > 0.0 && a4 >= 0.0)
+  if (scale > 0.0 && distance >= 0.0)
   {
-    v6 = a4 / (a3 + a3);
+    v6 = distance / (scale + scale);
     if (v6 >= 0.5)
     {
       if (v6 < 1.0)
@@ -92,31 +92,31 @@ void __35__ATXActionLOIBoost_sharedInstance__block_invoke()
   return result;
 }
 
-- (ATXActionLOIBoost)initWithBoostDictionary:(id)a3
+- (ATXActionLOIBoost)initWithBoostDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ATXActionLOIBoost;
   v6 = [(ATXActionLOIBoost *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_boostDictionary, a3);
+    objc_storeStrong(&v6->_boostDictionary, dictionary);
   }
 
   return v7;
 }
 
-- (double)boostForActionKey:(id)a3
+- (double)boostForActionKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_boostDictionary objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_boostDictionary objectForKeyedSubscript:key];
   if (v3)
   {
-    v4 = [MEMORY[0x277D41BF8] sharedInstance];
-    [v4 distanceFromHomeOfCurrentLocationInMeters];
-    [v4 distanceFromWorkOfCurrentLocationInMeters];
-    [v4 distanceFromGymOfCurrentLocationInMeters];
-    [v4 distanceFromSchoolOfCurrentLocationInMeters];
+    mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+    [mEMORY[0x277D41BF8] distanceFromHomeOfCurrentLocationInMeters];
+    [mEMORY[0x277D41BF8] distanceFromWorkOfCurrentLocationInMeters];
+    [mEMORY[0x277D41BF8] distanceFromGymOfCurrentLocationInMeters];
+    [mEMORY[0x277D41BF8] distanceFromSchoolOfCurrentLocationInMeters];
     [v3 homeBoost];
     v6 = v5;
     [v3 homeScale];

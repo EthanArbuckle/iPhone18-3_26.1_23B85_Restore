@@ -1,27 +1,27 @@
 @interface PKCancelingAnimatedTransitioningHandler
-- (void)_updateWithTransitionContext:(id)a3;
-- (void)animationEnded:(BOOL)a3;
-- (void)startInteractiveTransition:(id)a3;
+- (void)_updateWithTransitionContext:(id)context;
+- (void)animationEnded:(BOOL)ended;
+- (void)startInteractiveTransition:(id)transition;
 @end
 
 @implementation PKCancelingAnimatedTransitioningHandler
 
-- (void)_updateWithTransitionContext:(id)a3
+- (void)_updateWithTransitionContext:(id)context
 {
-  objc_storeStrong(&self->_transitionContext, a3);
-  v5 = a3;
-  obj = [v5 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v5 viewForKey:*MEMORY[0x1E69DE770]];
+  objc_storeStrong(&self->_transitionContext, context);
+  contextCopy = context;
+  obj = [contextCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [contextCopy viewForKey:*MEMORY[0x1E69DE770]];
   objc_storeWeak(&self->_presentingVC, obj);
   objc_storeWeak(&self->_presentingView, v6);
-  v7 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v8 = [v5 viewForKey:*MEMORY[0x1E69DE780]];
+  v7 = [contextCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  v8 = [contextCopy viewForKey:*MEMORY[0x1E69DE780]];
 
   objc_storeWeak(&self->_presentedVC, v7);
   objc_storeWeak(&self->_presentedView, v8);
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   if (!self->_completed)
   {
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  [(PKCancelingAnimatedTransitioningHandler *)self _updateWithTransitionContext:a3];
+  [(PKCancelingAnimatedTransitioningHandler *)self _updateWithTransitionContext:transition];
   [(UIViewControllerContextTransitioning *)self->_transitionContext pauseInteractiveTransition];
   [(UIViewControllerContextTransitioning *)self->_transitionContext cancelInteractiveTransition];
   transitionContext = self->_transitionContext;

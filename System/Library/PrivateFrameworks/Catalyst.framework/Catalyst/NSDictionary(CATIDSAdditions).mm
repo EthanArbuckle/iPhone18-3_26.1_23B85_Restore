@@ -6,7 +6,7 @@
 
 - (id)cat_uuidForKey:()CATIDSAdditions
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

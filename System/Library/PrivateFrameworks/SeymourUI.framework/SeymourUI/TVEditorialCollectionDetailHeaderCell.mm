@@ -1,8 +1,8 @@
 @interface TVEditorialCollectionDetailHeaderCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)preferredFocusEnvironments;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)handleTappedButton:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)handleTappedButton:(id)button;
 - (void)prepareForReuse;
 @end
 
@@ -10,7 +10,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7606EC();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C7620E0);
@@ -27,25 +27,25 @@
   v6 = type metadata accessor for TVEditorialCollectionDetailHeaderCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVEditorialCollectionDetailHeaderCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI37TVEditorialCollectionDetailHeaderCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(TVEditorialCollectionDetailHeaderCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(TVEditorialCollectionDetailHeaderCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 
@@ -56,19 +56,19 @@
   return result;
 }
 
-- (void)handleTappedButton:(id)a3
+- (void)handleTappedButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_20B762070(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_20B762070(buttonCopy);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20B7637F4(v6);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20B7637F4(contextCopy);
 }
 
 @end

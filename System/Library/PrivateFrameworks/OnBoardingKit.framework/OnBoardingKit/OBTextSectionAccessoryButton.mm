@@ -17,7 +17,7 @@
 + (id)accessoryButton
 {
   v2 = *MEMORY[0x1E69DDCF8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OBTextSectionAccessoryButton;
   v3 = objc_msgSendSuper2(&v5, sel_accessoryButtonWithTextStyle_, v2);
 

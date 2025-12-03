@@ -1,17 +1,17 @@
 @interface WFSSHKeyFormatED25519
-+ (id)generateKeyPairWithKeySize:(unint64_t)a3 comment:(id)a4;
-+ (id)keyPairFromPrivateKey:(id)a3 comment:(id)a4 error:(id *)a5;
-+ (id)sshPrivateKeyFromED25519PrivateKey:(id)a3 publicKey:(id)a4 comment:(id)a5;
-+ (id)sshPublicKeyFromED25519Data:(id)a3;
++ (id)generateKeyPairWithKeySize:(unint64_t)size comment:(id)comment;
++ (id)keyPairFromPrivateKey:(id)key comment:(id)comment error:(id *)error;
++ (id)sshPrivateKeyFromED25519PrivateKey:(id)key publicKey:(id)publicKey comment:(id)comment;
++ (id)sshPublicKeyFromED25519Data:(id)data;
 @end
 
 @implementation WFSSHKeyFormatED25519
 
-+ (id)sshPrivateKeyFromED25519PrivateKey:(id)a3 publicKey:(id)a4 comment:(id)a5
++ (id)sshPrivateKeyFromED25519PrivateKey:(id)key publicKey:(id)publicKey comment:(id)comment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  commentCopy = comment;
   v11 = objc_alloc_init(WFSSHKeyEncoder);
   [(WFSSHKeyEncoder *)v11 encodeString:@"openssh-key-v1"];
   [(WFSSHKeyEncoder *)v11 encodeChar:0];
@@ -21,7 +21,7 @@
   [(WFSSHKeyEncoder *)v11 encodeDataWithPreceedingLength:v12];
 
   [(WFSSHKeyEncoder *)v11 encodeInteger:1];
-  v13 = [a1 sshPublicKeyFromED25519Data:v9];
+  v13 = [self sshPublicKeyFromED25519Data:publicKeyCopy];
   if (v13)
   {
     [(WFSSHKeyEncoder *)v11 encodeDataWithPreceedingLength:v13];
@@ -29,14 +29,14 @@
     v15 = arc4random_uniform(0xFFFFFFFF);
     [(WFSSHKeyEncoder *)v14 encodeInteger:v15];
     [(WFSSHKeyEncoder *)v14 encodeInteger:v15];
-    v16 = [a1 publicKeyType];
-    [(WFSSHKeyEncoder *)v14 encodeStringWithPreceedingLength:v16];
+    publicKeyType = [self publicKeyType];
+    [(WFSSHKeyEncoder *)v14 encodeStringWithPreceedingLength:publicKeyType];
 
-    [(WFSSHKeyEncoder *)v14 encodeDataWithPreceedingLength:v9];
-    -[WFSSHKeyEncoder encodeInteger:](v14, "encodeInteger:", [v9 length] + objc_msgSend(v8, "length"));
-    [(WFSSHKeyEncoder *)v14 encodeData:v8];
-    [(WFSSHKeyEncoder *)v14 encodeData:v9];
-    [(WFSSHKeyEncoder *)v14 encodeStringWithPreceedingLength:v10];
+    [(WFSSHKeyEncoder *)v14 encodeDataWithPreceedingLength:publicKeyCopy];
+    -[WFSSHKeyEncoder encodeInteger:](v14, "encodeInteger:", [publicKeyCopy length] + objc_msgSend(keyCopy, "length"));
+    [(WFSSHKeyEncoder *)v14 encodeData:keyCopy];
+    [(WFSSHKeyEncoder *)v14 encodeData:publicKeyCopy];
+    [(WFSSHKeyEncoder *)v14 encodeStringWithPreceedingLength:commentCopy];
     v17 = [(WFSSHKeyEncoder *)v14 encodedLength]| 0xFFFFFFFFFFFFFFF8;
     v18 = 1;
     do
@@ -45,71 +45,71 @@
     }
 
     while (!__CFADD__(v17++, 1));
-    v20 = [(WFSSHKeyEncoder *)v14 encodedData];
-    [(WFSSHKeyEncoder *)v11 encodeDataWithPreceedingLength:v20];
+    encodedData = [(WFSSHKeyEncoder *)v14 encodedData];
+    [(WFSSHKeyEncoder *)v11 encodeDataWithPreceedingLength:encodedData];
 
-    v21 = [(WFSSHKeyEncoder *)v11 encodedData];
+    encodedData2 = [(WFSSHKeyEncoder *)v11 encodedData];
   }
 
   else
   {
-    v21 = 0;
+    encodedData2 = 0;
   }
 
-  return v21;
+  return encodedData2;
 }
 
-+ (id)sshPublicKeyFromED25519Data:(id)a3
++ (id)sshPublicKeyFromED25519Data:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(WFSSHKeyEncoder);
   [(WFSSHKeyEncoder *)v5 encodeInteger:11];
-  v6 = [a1 publicKeyType];
-  [(WFSSHKeyEncoder *)v5 encodeString:v6];
+  publicKeyType = [self publicKeyType];
+  [(WFSSHKeyEncoder *)v5 encodeString:publicKeyType];
 
-  [(WFSSHKeyEncoder *)v5 encodeDataWithPreceedingLength:v4];
-  v7 = [(WFSSHKeyEncoder *)v5 encodedData];
+  [(WFSSHKeyEncoder *)v5 encodeDataWithPreceedingLength:dataCopy];
+  encodedData = [(WFSSHKeyEncoder *)v5 encodedData];
 
-  return v7;
+  return encodedData;
 }
 
-+ (id)keyPairFromPrivateKey:(id)a3 comment:(id)a4 error:(id *)a5
++ (id)keyPairFromPrivateKey:(id)key comment:(id)comment error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [[WFSSHKeyDecoder alloc] initWithData:v7];
+  keyCopy = key;
+  v8 = [[WFSSHKeyDecoder alloc] initWithData:keyCopy];
   v9 = -[WFSSHKeyDecoder decodeStringWithLength:](v8, "decodeStringWithLength:", [@"openssh-key-v1" length]);
   if ([v9 isEqualToString:@"openssh-key-v1"])
   {
     [(WFSSHKeyDecoder *)v8 advanceBy:1];
-    v10 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
-    v11 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
-    v12 = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
-    if ([v10 isEqualToString:@"none"])
+    decodeStringWithPrecedingLength = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
+    decodeStringWithPrecedingLength2 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
+    decodeDataWithPrecedingLength = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
+    if ([decodeStringWithPrecedingLength isEqualToString:@"none"])
     {
       if ([(WFSSHKeyDecoder *)v8 decodeInteger]== 1)
       {
         [(WFSSHKeyDecoder *)v8 advanceBy:[(WFSSHKeyDecoder *)v8 decodeInteger]];
         [(WFSSHKeyDecoder *)v8 decodeInteger];
-        v13 = [(WFSSHKeyDecoder *)v8 decodeInteger];
-        if (v13 == [(WFSSHKeyDecoder *)v8 decodeInteger])
+        decodeInteger = [(WFSSHKeyDecoder *)v8 decodeInteger];
+        if (decodeInteger == [(WFSSHKeyDecoder *)v8 decodeInteger])
         {
-          v14 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
-          v15 = [a1 publicKeyType];
-          v16 = [v14 isEqualToString:v15];
+          decodeStringWithPrecedingLength3 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
+          publicKeyType = [self publicKeyType];
+          v16 = [decodeStringWithPrecedingLength3 isEqualToString:publicKeyType];
 
           if (v16)
           {
-            v17 = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
-            v18 = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
-            v31 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
-            if ([v17 length] == 32)
+            decodeDataWithPrecedingLength2 = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
+            decodeDataWithPrecedingLength3 = [(WFSSHKeyDecoder *)v8 decodeDataWithPrecedingLength];
+            decodeStringWithPrecedingLength4 = [(WFSSHKeyDecoder *)v8 decodeStringWithPrecedingLength];
+            if ([decodeDataWithPrecedingLength2 length] == 32)
             {
-              v30 = v18;
-              v19 = [a1 sshPublicKeyFromED25519Data:v17];
+              v30 = decodeDataWithPrecedingLength3;
+              v19 = [self sshPublicKeyFromED25519Data:decodeDataWithPrecedingLength2];
               if (v19)
               {
-                v20 = [[WFSSHKeyPair alloc] initWithFormat:a1 privateKeyData:v7 publicKeyData:v19 keySize:0 comment:v31];
+                v20 = [[WFSSHKeyPair alloc] initWithFormat:self privateKeyData:keyCopy publicKeyData:v19 keySize:0 comment:decodeStringWithPrecedingLength4];
               }
 
               else
@@ -117,7 +117,7 @@
                 v20 = 0;
               }
 
-              v18 = v30;
+              decodeDataWithPrecedingLength3 = v30;
             }
 
             else
@@ -141,7 +141,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -157,7 +157,7 @@ LABEL_18:
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }
@@ -172,12 +172,12 @@ LABEL_18:
     }
 
     v27 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:1];
-    *a5 = [v22 errorWithDomain:@"WFSSHKeyED25519ErrorDomain" code:1 userInfo:v27];
+    *error = [v22 errorWithDomain:@"WFSSHKeyED25519ErrorDomain" code:1 userInfo:v27];
 
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!error)
   {
     v20 = 0;
     goto LABEL_20;
@@ -185,11 +185,11 @@ LABEL_18:
 
   v21 = MEMORY[0x277CCA9B8];
   v36 = *MEMORY[0x277CCA450];
-  v10 = WFLocalizedString(@"Unable to parse magic bytes from OpenSSH key.");
-  v37[0] = v10;
-  v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-  [v21 errorWithDomain:@"WFSSHKeyED25519ErrorDomain" code:1 userInfo:v11];
-  *a5 = v20 = 0;
+  decodeStringWithPrecedingLength = WFLocalizedString(@"Unable to parse magic bytes from OpenSSH key.");
+  v37[0] = decodeStringWithPrecedingLength;
+  decodeStringWithPrecedingLength2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
+  [v21 errorWithDomain:@"WFSSHKeyED25519ErrorDomain" code:1 userInfo:decodeStringWithPrecedingLength2];
+  *error = v20 = 0;
 LABEL_19:
 
 LABEL_20:
@@ -198,21 +198,21 @@ LABEL_20:
   return v20;
 }
 
-+ (id)generateKeyPairWithKeySize:(unint64_t)a3 comment:(id)a4
++ (id)generateKeyPairWithKeySize:(unint64_t)size comment:(id)comment
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  commentCopy = comment;
   if (ccrng() && (memset(v16, 0, sizeof(v16)), v14 = 0u, v15 = 0u, ccsha512_di(), !cced25519_make_key_pair()))
   {
     v7 = [MEMORY[0x277CBEA90] _newZeroingDataWithBytes:v16 length:{32, v14, v15}];
     v8 = [MEMORY[0x277CBEA90] _newZeroingDataWithBytes:&v14 length:32];
-    v9 = [a1 sshPrivateKeyFromED25519PrivateKey:v8 publicKey:v7 comment:v5];
-    v10 = [a1 sshPublicKeyFromED25519Data:v7];
+    v9 = [self sshPrivateKeyFromED25519PrivateKey:v8 publicKey:v7 comment:commentCopy];
+    v10 = [self sshPublicKeyFromED25519Data:v7];
     v11 = v10;
     v6 = 0;
     if (v9 && v10)
     {
-      v6 = [[WFSSHKeyPair alloc] initWithFormat:a1 privateKeyData:v9 publicKeyData:v10 keySize:0 comment:v5];
+      v6 = [[WFSSHKeyPair alloc] initWithFormat:self privateKeyData:v9 publicKeyData:v10 keySize:0 comment:commentCopy];
     }
   }
 

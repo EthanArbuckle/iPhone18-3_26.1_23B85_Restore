@@ -6,7 +6,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ForegroundApp.debugDescription.getter();
   v5 = v4;
 

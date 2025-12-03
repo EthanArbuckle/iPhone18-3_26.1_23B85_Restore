@@ -1,13 +1,13 @@
 @interface HMDCameraClipImportPosterFrameMetadata
-- (HMDCameraClipImportPosterFrameMetadata)initWithPosterFrameMetadata:(id)a3;
+- (HMDCameraClipImportPosterFrameMetadata)initWithPosterFrameMetadata:(id)metadata;
 @end
 
 @implementation HMDCameraClipImportPosterFrameMetadata
 
-- (HMDCameraClipImportPosterFrameMetadata)initWithPosterFrameMetadata:(id)a3
+- (HMDCameraClipImportPosterFrameMetadata)initWithPosterFrameMetadata:(id)metadata
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v33.receiver = self;
   v33.super_class = HMDCameraClipImportPosterFrameMetadata;
   v5 = [(HMDCameraClipImportPosterFrameMetadata *)&v33 init];
@@ -18,7 +18,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v6 = [v4 hmf_stringForKey:@"data"];
+  v6 = [metadataCopy hmf_stringForKey:@"data"];
   if (!v6)
   {
     v14 = objc_autoreleasePoolPush();
@@ -30,7 +30,7 @@ LABEL_22:
       *buf = 138543618;
       v35 = v17;
       v36 = 2112;
-      v37 = v4;
+      v37 = metadataCopy;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@Could not find resourcePath in poster frame segment metadata: %@", buf, 0x16u);
     }
 
@@ -39,7 +39,7 @@ LABEL_22:
   }
 
   v7 = v6;
-  v8 = [v4 hmf_numberForKey:@"offset"];
+  v8 = [metadataCopy hmf_numberForKey:@"offset"];
   if (!v8)
   {
     v18 = objc_autoreleasePoolPush();
@@ -51,7 +51,7 @@ LABEL_22:
       *buf = 138543618;
       v35 = v21;
       v36 = 2112;
-      v37 = v4;
+      v37 = metadataCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Could not find offset in poster frame segment metadata: %@", buf, 0x16u);
     }
 
@@ -60,7 +60,7 @@ LABEL_22:
   }
 
   v9 = v8;
-  v10 = [v4 hmf_numberForKey:@"width"];
+  v10 = [metadataCopy hmf_numberForKey:@"width"];
   if (!v10)
   {
     v22 = objc_autoreleasePoolPush();
@@ -72,7 +72,7 @@ LABEL_22:
       *buf = 138543618;
       v35 = v25;
       v36 = 2112;
-      v37 = v4;
+      v37 = metadataCopy;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Could not find width in poster frame segment metadata: %@", buf, 0x16u);
     }
 
@@ -83,7 +83,7 @@ LABEL_16:
   }
 
   v11 = v10;
-  v12 = [v4 hmf_numberForKey:@"height"];
+  v12 = [metadataCopy hmf_numberForKey:@"height"];
   if (v12)
   {
     objc_storeStrong(&v5->_resourcePath, v7);
@@ -104,7 +104,7 @@ LABEL_16:
       *buf = 138543618;
       v35 = v30;
       v36 = 2112;
-      v37 = v4;
+      v37 = metadataCopy;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Could not find height in poster frame segment metadata: %@", buf, 0x16u);
     }
 

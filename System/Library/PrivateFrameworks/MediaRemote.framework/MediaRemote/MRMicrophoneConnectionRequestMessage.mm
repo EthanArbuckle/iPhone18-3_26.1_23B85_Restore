@@ -1,25 +1,25 @@
 @interface MRMicrophoneConnectionRequestMessage
-- (MRMicrophoneConnectionRequestMessage)initWithDetails:(id)a3 rapportIdentifier:(id)a4;
+- (MRMicrophoneConnectionRequestMessage)initWithDetails:(id)details rapportIdentifier:(id)identifier;
 - (MRRequestDetails)details;
 - (NSString)rapportIdentifier;
 @end
 
 @implementation MRMicrophoneConnectionRequestMessage
 
-- (MRMicrophoneConnectionRequestMessage)initWithDetails:(id)a3 rapportIdentifier:(id)a4
+- (MRMicrophoneConnectionRequestMessage)initWithDetails:(id)details rapportIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MRMicrophoneConnectionRequestMessage;
   v8 = [(MRProtocolMessage *)&v12 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRMicrophoneConnectionRequestMessageProtobuf);
-    v10 = [v6 protobuf];
-    [(_MRMicrophoneConnectionRequestMessageProtobuf *)v9 setDetails:v10];
+    protobuf = [detailsCopy protobuf];
+    [(_MRMicrophoneConnectionRequestMessageProtobuf *)v9 setDetails:protobuf];
 
-    [(_MRMicrophoneConnectionRequestMessageProtobuf *)v9 setRapportIdentifier:v7];
+    [(_MRMicrophoneConnectionRequestMessageProtobuf *)v9 setRapportIdentifier:identifierCopy];
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v9];
   }
 
@@ -29,19 +29,19 @@
 - (MRRequestDetails)details
 {
   v3 = [MRRequestDetails alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 details];
-  v6 = [(MRRequestDetails *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  details = [underlyingCodableMessage details];
+  v6 = [(MRRequestDetails *)v3 initWithProtobuf:details];
 
   return v6;
 }
 
 - (NSString)rapportIdentifier
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 rapportIdentifier];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  rapportIdentifier = [underlyingCodableMessage rapportIdentifier];
 
-  return v3;
+  return rapportIdentifier;
 }
 
 @end

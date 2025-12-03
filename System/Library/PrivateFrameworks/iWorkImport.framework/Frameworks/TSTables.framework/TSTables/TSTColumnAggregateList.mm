@@ -1,30 +1,30 @@
 @interface TSTColumnAggregateList
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFunctionallyEquivalent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFunctionallyEquivalent:(id)equivalent;
 - (NSArray)columnAggregateUuids;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)columnAggregateUidList;
-- (TSTColumnAggregateList)initWithArchive:(const void *)a3;
-- (TSTColumnAggregateList)initWithColumnAggregates:(id)a3;
-- (id)aggregateAtIndex:(unint64_t)a3;
-- (id)aggregatesOnLevel:(unsigned __int8)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (TSTColumnAggregateList)initWithArchive:(const void *)archive;
+- (TSTColumnAggregateList)initWithColumnAggregates:(id)aggregates;
+- (id)aggregateAtIndex:(unint64_t)index;
+- (id)aggregatesOnLevel:(unsigned __int8)level;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTColumnAggregateList
 
-- (TSTColumnAggregateList)initWithColumnAggregates:(id)a3
+- (TSTColumnAggregateList)initWithColumnAggregates:(id)aggregates
 {
-  v4 = a3;
+  aggregatesCopy = aggregates;
   v11.receiver = self;
   v11.super_class = TSTColumnAggregateList;
   v5 = [(TSTColumnAggregateList *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (aggregatesCopy)
     {
       v6 = objc_alloc(MEMORY[0x277CBEA60]);
-      v9 = objc_msgSend_initWithArray_copyItems_(v6, v7, v4, 1, v8);
+      v9 = objc_msgSend_initWithArray_copyItems_(v6, v7, aggregatesCopy, 1, v8);
     }
 
     else
@@ -33,7 +33,7 @@
     }
 
     objc_storeStrong(&v5->_columnAggregates, v9);
-    if (v4)
+    if (aggregatesCopy)
     {
     }
   }
@@ -41,32 +41,32 @@
   return v5;
 }
 
-- (id)aggregateAtIndex:(unint64_t)a3
+- (id)aggregateAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
   }
 
   else
   {
-    if (objc_msgSend_count(self->_columnAggregates, a2, a3, v3, v4) <= a3)
+    if (objc_msgSend_count(self->_columnAggregates, a2, index, v3, v4) <= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_columnAggregates, v10, a3, v11, v12);
+      v6 = objc_msgSend_objectAtIndexedSubscript_(self->_columnAggregates, v10, index, v11, v12);
     }
   }
 
   return v6;
 }
 
-- (id)aggregatesOnLevel:(unsigned __int8)a3
+- (id)aggregatesOnLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v22 = 0u;
@@ -88,7 +88,7 @@
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        if (objc_msgSend_level(v15, v8, v9, v10, v11, v22) == v3)
+        if (objc_msgSend_level(v15, v8, v9, v10, v11, v22) == levelCopy)
         {
           objc_msgSend_addObject_(v5, v8, v15, v10, v11);
         }
@@ -161,7 +161,7 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   columnAggregates = self->_columnAggregates;
@@ -169,17 +169,17 @@
   return objc_msgSend_initWithColumnAggregates_(v4, v5, columnAggregates, v6, v7);
 }
 
-- (TSTColumnAggregateList)initWithArchive:(const void *)a3
+- (TSTColumnAggregateList)initWithArchive:(const void *)archive
 {
   v8 = objc_opt_new();
-  v9 = *(a3 + 6);
+  v9 = *(archive + 6);
   if (v9 >= 1)
   {
     v10 = 8;
     do
     {
       v11 = [TSTColumnAggregate alloc];
-      v18 = objc_msgSend_initWithArchive_(v11, v12, *(*(a3 + 4) + v10), v13, v14);
+      v18 = objc_msgSend_initWithArchive_(v11, v12, *(*(archive + 4) + v10), v13, v14);
       if (v18)
       {
         objc_msgSend_addObject_(v8, v15, v18, v16, v17);
@@ -197,10 +197,10 @@
   return v19;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -221,36 +221,36 @@
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
-        v15 = *(a3 + 4);
+        v15 = *(archive + 4);
         if (!v15)
         {
           goto LABEL_11;
         }
 
-        v16 = *(a3 + 6);
+        v16 = *(archive + 6);
         v17 = *v15;
         if (v16 < *v15)
         {
-          *(a3 + 6) = v16 + 1;
-          objc_msgSend_encodeToArchive_archiver_(v14, v9, *&v15[2 * v16 + 2], v6, v10, v23);
+          *(archive + 6) = v16 + 1;
+          objc_msgSend_encodeToArchive_archiver_(v14, v9, *&v15[2 * v16 + 2], archiverCopy, v10, v23);
           goto LABEL_13;
         }
 
-        if (v17 == *(a3 + 7))
+        if (v17 == *(archive + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v15 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+          v15 = *(archive + 4);
           v17 = *v15;
         }
 
         *v15 = v17 + 1;
-        v18 = google::protobuf::Arena::CreateMaybeMessage<TST::ColumnAggregateArchive>(*(a3 + 2));
-        v19 = *(a3 + 6);
-        v20 = *(a3 + 4) + 8 * v19;
-        *(a3 + 6) = v19 + 1;
+        v18 = google::protobuf::Arena::CreateMaybeMessage<TST::ColumnAggregateArchive>(*(archive + 2));
+        v19 = *(archive + 6);
+        v20 = *(archive + 4) + 8 * v19;
+        *(archive + 6) = v19 + 1;
         *(v20 + 8) = v18;
-        objc_msgSend_encodeToArchive_archiver_(v14, v21, v18, v6, v22, v23);
+        objc_msgSend_encodeToArchive_archiver_(v14, v21, v18, archiverCopy, v22, v23);
 LABEL_13:
         ++v13;
       }
@@ -263,10 +263,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -303,10 +303,10 @@ LABEL_13:
   return v19 & 1;
 }
 
-- (BOOL)isFunctionallyEquivalent:(id)a3
+- (BOOL)isFunctionallyEquivalent:(id)equivalent
 {
-  v8 = a3;
-  if (self == v8)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v18 = 1;
   }
@@ -314,7 +314,7 @@ LABEL_13:
   else
   {
     v9 = objc_msgSend_count(self, v4, v5, v6, v7);
-    if (v9 == objc_msgSend_count(v8, v10, v11, v12, v13))
+    if (v9 == objc_msgSend_count(equivalentCopy, v10, v11, v12, v13))
     {
       v23 = 0;
       v24 = &v23;
@@ -325,7 +325,7 @@ LABEL_13:
       v20[1] = 3221225472;
       v20[2] = sub_2211C9C74;
       v20[3] = &unk_278460D00;
-      v21 = v8;
+      v21 = equivalentCopy;
       v22 = &v23;
       objc_msgSend_enumerateObjectsUsingBlock_(columnAggregates, v15, v20, v16, v17);
       v18 = *(v24 + 24);

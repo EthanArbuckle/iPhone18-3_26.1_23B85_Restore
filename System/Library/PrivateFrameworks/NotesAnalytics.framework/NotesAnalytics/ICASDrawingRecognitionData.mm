@@ -1,30 +1,30 @@
 @interface ICASDrawingRecognitionData
-- (ICASDrawingRecognitionData)initWithCountOfPencilStrokes:(id)a3 countOfFingerStrokes:(id)a4 countOfRecognizedHandwrittenCharacters:(id)a5 countOfRecognizedLines:(id)a6 handwritingLanguage:(id)a7 drawingID:(id)a8;
+- (ICASDrawingRecognitionData)initWithCountOfPencilStrokes:(id)strokes countOfFingerStrokes:(id)fingerStrokes countOfRecognizedHandwrittenCharacters:(id)characters countOfRecognizedLines:(id)lines handwritingLanguage:(id)language drawingID:(id)d;
 - (id)toDict;
 @end
 
 @implementation ICASDrawingRecognitionData
 
-- (ICASDrawingRecognitionData)initWithCountOfPencilStrokes:(id)a3 countOfFingerStrokes:(id)a4 countOfRecognizedHandwrittenCharacters:(id)a5 countOfRecognizedLines:(id)a6 handwritingLanguage:(id)a7 drawingID:(id)a8
+- (ICASDrawingRecognitionData)initWithCountOfPencilStrokes:(id)strokes countOfFingerStrokes:(id)fingerStrokes countOfRecognizedHandwrittenCharacters:(id)characters countOfRecognizedLines:(id)lines handwritingLanguage:(id)language drawingID:(id)d
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  strokesCopy = strokes;
+  fingerStrokesCopy = fingerStrokes;
+  charactersCopy = characters;
+  linesCopy = lines;
+  languageCopy = language;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = ICASDrawingRecognitionData;
   v18 = [(ICASDrawingRecognitionData *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_countOfPencilStrokes, a3);
-    objc_storeStrong(&v19->_countOfFingerStrokes, a4);
-    objc_storeStrong(&v19->_countOfRecognizedHandwrittenCharacters, a5);
-    objc_storeStrong(&v19->_countOfRecognizedLines, a6);
-    objc_storeStrong(&v19->_handwritingLanguage, a7);
-    objc_storeStrong(&v19->_drawingID, a8);
+    objc_storeStrong(&v18->_countOfPencilStrokes, strokes);
+    objc_storeStrong(&v19->_countOfFingerStrokes, fingerStrokes);
+    objc_storeStrong(&v19->_countOfRecognizedHandwrittenCharacters, characters);
+    objc_storeStrong(&v19->_countOfRecognizedLines, lines);
+    objc_storeStrong(&v19->_handwritingLanguage, language);
+    objc_storeStrong(&v19->_drawingID, d);
   }
 
   return v19;
@@ -34,89 +34,89 @@
 {
   v26[6] = *MEMORY[0x277D85DE8];
   v25[0] = @"countOfPencilStrokes";
-  v24 = [(ICASDrawingRecognitionData *)self countOfPencilStrokes];
-  if (v24)
+  countOfPencilStrokes = [(ICASDrawingRecognitionData *)self countOfPencilStrokes];
+  if (countOfPencilStrokes)
   {
-    v3 = [(ICASDrawingRecognitionData *)self countOfPencilStrokes];
+    countOfPencilStrokes2 = [(ICASDrawingRecognitionData *)self countOfPencilStrokes];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    countOfPencilStrokes2 = objc_opt_new();
   }
 
-  v23 = v3;
-  v26[0] = v3;
+  v23 = countOfPencilStrokes2;
+  v26[0] = countOfPencilStrokes2;
   v25[1] = @"countOfFingerStrokes";
-  v21 = [(ICASDrawingRecognitionData *)self countOfFingerStrokes];
-  if (v21)
+  countOfFingerStrokes = [(ICASDrawingRecognitionData *)self countOfFingerStrokes];
+  if (countOfFingerStrokes)
   {
-    v4 = [(ICASDrawingRecognitionData *)self countOfFingerStrokes];
+    countOfFingerStrokes2 = [(ICASDrawingRecognitionData *)self countOfFingerStrokes];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    countOfFingerStrokes2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v26[1] = v4;
+  v5 = countOfFingerStrokes2;
+  v26[1] = countOfFingerStrokes2;
   v25[2] = @"countOfRecognizedHandwrittenCharacters";
-  v6 = [(ICASDrawingRecognitionData *)self countOfRecognizedHandwrittenCharacters];
-  if (v6)
+  countOfRecognizedHandwrittenCharacters = [(ICASDrawingRecognitionData *)self countOfRecognizedHandwrittenCharacters];
+  if (countOfRecognizedHandwrittenCharacters)
   {
-    v7 = [(ICASDrawingRecognitionData *)self countOfRecognizedHandwrittenCharacters];
+    countOfRecognizedHandwrittenCharacters2 = [(ICASDrawingRecognitionData *)self countOfRecognizedHandwrittenCharacters];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfRecognizedHandwrittenCharacters2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v26[2] = v7;
+  v8 = countOfRecognizedHandwrittenCharacters2;
+  v26[2] = countOfRecognizedHandwrittenCharacters2;
   v25[3] = @"countOfRecognizedLines";
-  v9 = [(ICASDrawingRecognitionData *)self countOfRecognizedLines];
-  if (v9)
+  countOfRecognizedLines = [(ICASDrawingRecognitionData *)self countOfRecognizedLines];
+  if (countOfRecognizedLines)
   {
-    v10 = [(ICASDrawingRecognitionData *)self countOfRecognizedLines];
+    countOfRecognizedLines2 = [(ICASDrawingRecognitionData *)self countOfRecognizedLines];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    countOfRecognizedLines2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v26[3] = v10;
+  v11 = countOfRecognizedLines2;
+  v26[3] = countOfRecognizedLines2;
   v25[4] = @"handwritingLanguage";
-  v12 = [(ICASDrawingRecognitionData *)self handwritingLanguage];
-  if (v12)
+  handwritingLanguage = [(ICASDrawingRecognitionData *)self handwritingLanguage];
+  if (handwritingLanguage)
   {
-    v13 = [(ICASDrawingRecognitionData *)self handwritingLanguage];
+    handwritingLanguage2 = [(ICASDrawingRecognitionData *)self handwritingLanguage];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    handwritingLanguage2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v26[4] = v13;
+  v14 = handwritingLanguage2;
+  v26[4] = handwritingLanguage2;
   v25[5] = @"drawingID";
-  v15 = [(ICASDrawingRecognitionData *)self drawingID];
-  if (v15)
+  drawingID = [(ICASDrawingRecognitionData *)self drawingID];
+  if (drawingID)
   {
-    v16 = [(ICASDrawingRecognitionData *)self drawingID];
+    drawingID2 = [(ICASDrawingRecognitionData *)self drawingID];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    drawingID2 = objc_opt_new();
   }
 
-  v17 = v16;
-  v26[5] = v16;
+  v17 = drawingID2;
+  v26[5] = drawingID2;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:6];
 
   v19 = *MEMORY[0x277D85DE8];

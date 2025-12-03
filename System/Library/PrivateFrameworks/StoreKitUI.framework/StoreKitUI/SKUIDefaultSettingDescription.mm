@@ -1,10 +1,10 @@
 @interface SKUIDefaultSettingDescription
-+ (Class)_viewClassForSettingDescription:(id)a3;
++ (Class)_viewClassForSettingDescription:(id)description;
 @end
 
 @implementation SKUIDefaultSettingDescription
 
-+ (Class)_viewClassForSettingDescription:(id)a3
++ (Class)_viewClassForSettingDescription:(id)description
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {

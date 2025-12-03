@@ -1,22 +1,22 @@
 @interface HMObjectMergeCollection
 - (BOOL)isModified;
-- (HMObjectMergeCollection)initWithCurrentObjects:(id)a3 newObjects:(id)a4 commonObjectPredicate:(id)a5;
+- (HMObjectMergeCollection)initWithCurrentObjects:(id)objects newObjects:(id)newObjects commonObjectPredicate:(id)predicate;
 - (NSArray)finalObjects;
 - (void)mergeCommonObjects;
-- (void)replaceAddedObjectsWithObjects:(id)a3;
+- (void)replaceAddedObjectsWithObjects:(id)objects;
 @end
 
 @implementation HMObjectMergeCollection
 
 - (void)mergeCommonObjects
 {
-  v3 = [(HMObjectMergeCollection *)self commonObjectPairs];
+  commonObjectPairs = [(HMObjectMergeCollection *)self commonObjectPairs];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__HMObjectMergeCollection_mergeCommonObjects__block_invoke;
   v4[3] = &unk_1E75477E8;
   v4[4] = self;
-  [v3 hmf_enumerateWithAutoreleasePoolUsingBlock:v4];
+  [commonObjectPairs hmf_enumerateWithAutoreleasePoolUsingBlock:v4];
 }
 
 void __45__HMObjectMergeCollection_mergeCommonObjects__block_invoke(uint64_t a1, void *a2)
@@ -34,17 +34,17 @@ void __45__HMObjectMergeCollection_mergeCommonObjects__block_invoke(uint64_t a1,
   }
 }
 
-- (void)replaceAddedObjectsWithObjects:(id)a3
+- (void)replaceAddedObjectsWithObjects:(id)objects
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  objectsCopy = objects;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(HMObjectMergeCollection *)self addedObjects];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  addedObjects = [(HMObjectMergeCollection *)self addedObjects];
+  v7 = [addedObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -56,82 +56,82 @@ void __45__HMObjectMergeCollection_mergeCommonObjects__block_invoke(uint64_t a1,
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(addedObjects);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) uniqueIdentifier];
-        v12 = [v4 hmf_firstObjectWithValue:v11 forKeyPath:@"uniqueIdentifier"];
+        uniqueIdentifier = [*(*(&v14 + 1) + 8 * v10) uniqueIdentifier];
+        v12 = [objectsCopy hmf_firstObjectWithValue:uniqueIdentifier forKeyPath:@"uniqueIdentifier"];
 
         if (v12)
         {
-          [v5 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [addedObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  [(HMObjectMergeCollection *)self setAddedObjects:v5];
+  [(HMObjectMergeCollection *)self setAddedObjects:array];
   v13 = *MEMORY[0x1E69E9840];
 }
 
 - (NSArray)finalObjects
 {
-  v3 = [(HMObjectMergeCollection *)self commonObjectPairs];
-  v4 = [v3 na_map:&__block_literal_global_7];
-  v5 = [(HMObjectMergeCollection *)self addedObjects];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  commonObjectPairs = [(HMObjectMergeCollection *)self commonObjectPairs];
+  v4 = [commonObjectPairs na_map:&__block_literal_global_7];
+  addedObjects = [(HMObjectMergeCollection *)self addedObjects];
+  v6 = [v4 arrayByAddingObjectsFromArray:addedObjects];
 
   return v6;
 }
 
 - (BOOL)isModified
 {
-  v3 = [(HMObjectMergeCollection *)self addedObjects];
-  v4 = [v3 count];
-  v5 = [(HMObjectMergeCollection *)self removedObjects];
-  v6 = [v5 count] + v4;
-  v7 = [(HMObjectMergeCollection *)self currentUpdatedObjects];
-  LOBYTE(v6) = v6 + [v7 count] != 0;
+  addedObjects = [(HMObjectMergeCollection *)self addedObjects];
+  v4 = [addedObjects count];
+  removedObjects = [(HMObjectMergeCollection *)self removedObjects];
+  v6 = [removedObjects count] + v4;
+  currentUpdatedObjects = [(HMObjectMergeCollection *)self currentUpdatedObjects];
+  LOBYTE(v6) = v6 + [currentUpdatedObjects count] != 0;
 
   return v6;
 }
 
-- (HMObjectMergeCollection)initWithCurrentObjects:(id)a3 newObjects:(id)a4 commonObjectPredicate:(id)a5
+- (HMObjectMergeCollection)initWithCurrentObjects:(id)objects newObjects:(id)newObjects commonObjectPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  newObjectsCopy = newObjects;
+  predicateCopy = predicate;
   v35.receiver = self;
   v35.super_class = HMObjectMergeCollection;
   v11 = [(HMObjectMergeCollection *)&v35 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     currentUpdatedObjects = v11->_currentUpdatedObjects;
-    v11->_currentUpdatedObjects = v12;
+    v11->_currentUpdatedObjects = array;
 
-    v14 = [MEMORY[0x1E695DF70] array];
-    v15 = [MEMORY[0x1E695DF70] arrayWithArray:v8];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    v15 = [MEMORY[0x1E695DF70] arrayWithArray:objectsCopy];
+    array3 = [MEMORY[0x1E695DF70] array];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __83__HMObjectMergeCollection_initWithCurrentObjects_newObjects_commonObjectPredicate___block_invoke;
     v30 = &unk_1E75477A0;
     v31 = v15;
-    v33 = v14;
-    v34 = v10;
-    v32 = v16;
-    v17 = v14;
-    v18 = v16;
+    v33 = array2;
+    v34 = predicateCopy;
+    v32 = array3;
+    v17 = array2;
+    v18 = array3;
     v19 = v15;
-    [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:&v27];
+    [newObjectsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v27];
     v20 = [v17 copy];
     addedObjects = v11->_addedObjects;
     v11->_addedObjects = v20;

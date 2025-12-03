@@ -1,49 +1,49 @@
 @interface SFService
 - (SFService)init;
-- (SFService)initWithCoder:(id)a3;
+- (SFService)initWithCoder:(id)coder;
 - (id)description;
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6 peer:(id)a7;
-- (void)_activateWithCompletion:(id)a3;
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen peer:(id)peer;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_activated;
 - (void)_cleanup;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_performActivateSafeChange:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)clearEncryptionInfoForPeer:(id)a3;
+- (void)_performActivateSafeChange:(id)change;
+- (void)activateWithCompletion:(id)completion;
+- (void)clearEncryptionInfoForPeer:(id)peer;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3 peer:(id)a4;
-- (void)pairSetupWithFlags:(unsigned int)a3 peer:(id)a4;
-- (void)sendEvent:(id)a3;
-- (void)sendRequest:(id)a3;
-- (void)sendResponse:(id)a3;
-- (void)sendToPeer:(id)a3 flags:(unsigned int)a4 object:(id)a5;
-- (void)sendToPeer:(id)a3 type:(unsigned __int8)a4 data:(id)a5;
-- (void)serviceError:(id)a3;
-- (void)servicePeerDisconnected:(id)a3 error:(id)a4;
-- (void)serviceReceivedEvent:(id)a3;
-- (void)serviceReceivedRequest:(id)a3;
-- (void)serviceReceivedResponse:(id)a3;
-- (void)serviceSessionFailed:(id)a3 error:(id)a4;
-- (void)setAdvertiseRate:(int64_t)a3;
-- (void)setAutoUnlockEnabled:(BOOL)a3;
-- (void)setAutoUnlockWatch:(BOOL)a3;
-- (void)setDeviceActionType:(unsigned __int8)a3;
-- (void)setDuetSync:(BOOL)a3;
-- (void)setHasProblem:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setNeedsAWDL:(BOOL)a3;
-- (void)setNeedsKeyboard:(BOOL)a3;
-- (void)setNeedsSetup:(BOOL)a3;
-- (void)setPayloadDovePeace2:(unsigned __int8)a3;
-- (void)setProblemFlags:(unint64_t)a3;
-- (void)setTargetAuthTag:(id)a3;
-- (void)setWakeDevice:(BOOL)a3;
-- (void)setWatchLocked:(BOOL)a3;
-- (void)updateWithService:(id)a3;
+- (void)pairSetupTryPIN:(id)n peer:(id)peer;
+- (void)pairSetupWithFlags:(unsigned int)flags peer:(id)peer;
+- (void)sendEvent:(id)event;
+- (void)sendRequest:(id)request;
+- (void)sendResponse:(id)response;
+- (void)sendToPeer:(id)peer flags:(unsigned int)flags object:(id)object;
+- (void)sendToPeer:(id)peer type:(unsigned __int8)type data:(id)data;
+- (void)serviceError:(id)error;
+- (void)servicePeerDisconnected:(id)disconnected error:(id)error;
+- (void)serviceReceivedEvent:(id)event;
+- (void)serviceReceivedRequest:(id)request;
+- (void)serviceReceivedResponse:(id)response;
+- (void)serviceSessionFailed:(id)failed error:(id)error;
+- (void)setAdvertiseRate:(int64_t)rate;
+- (void)setAutoUnlockEnabled:(BOOL)enabled;
+- (void)setAutoUnlockWatch:(BOOL)watch;
+- (void)setDeviceActionType:(unsigned __int8)type;
+- (void)setDuetSync:(BOOL)sync;
+- (void)setHasProblem:(BOOL)problem;
+- (void)setLabel:(id)label;
+- (void)setNeedsAWDL:(BOOL)l;
+- (void)setNeedsKeyboard:(BOOL)keyboard;
+- (void)setNeedsSetup:(BOOL)setup;
+- (void)setPayloadDovePeace2:(unsigned __int8)peace2;
+- (void)setProblemFlags:(unint64_t)flags;
+- (void)setTargetAuthTag:(id)tag;
+- (void)setWakeDevice:(BOOL)device;
+- (void)setWatchLocked:(BOOL)locked;
+- (void)updateWithService:(id)service;
 @end
 
 @implementation SFService
@@ -227,9 +227,9 @@ LABEL_6:
   return v3;
 }
 
-- (SFService)initWithCoder:(id)a3
+- (SFService)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = SFService;
   v5 = [(SFService *)&v26 init];
@@ -242,12 +242,12 @@ LABEL_6:
 
     v6->_ucatCore = &gLogCategory_SFServiceCore;
     v6->_ucatCrypto = &gLogCategory_SFServiceCrypto;
-    if ([v4 containsValueForKey:@"advR"])
+    if ([coderCopy containsValueForKey:@"advR"])
     {
-      v6->_advertiseRate = [v4 decodeIntegerForKey:@"advR"];
+      v6->_advertiseRate = [coderCopy decodeIntegerForKey:@"advR"];
     }
 
-    v9 = v4;
+    v9 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -382,160 +382,160 @@ LABEL_6:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   advertiseRate = self->_advertiseRate;
-  v13 = v4;
+  v13 = coderCopy;
   if (advertiseRate)
   {
-    [v4 encodeInteger:advertiseRate forKey:@"advR"];
-    v4 = v13;
+    [coderCopy encodeInteger:advertiseRate forKey:@"advR"];
+    coderCopy = v13;
   }
 
   authTagOverride = self->_authTagOverride;
   if (authTagOverride)
   {
     [v13 encodeObject:authTagOverride forKey:@"ato"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_autoUnlockEnabled)
   {
     [v13 encodeBool:1 forKey:@"auE"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_autoUnlockWatch)
   {
     [v13 encodeBool:1 forKey:@"auW"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_deviceActionType)
   {
     [v13 encodeInteger:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_payloadDovePeace2)
   {
     [v13 encodeInt:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_deviceClassCode)
   {
     [v13 encodeInteger:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_deviceColorCode)
   {
     [v13 encodeInteger:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_deviceModelCode)
   {
     [v13 encodeInteger:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_duetSync)
   {
     [v13 encodeBool:1 forKey:@"ds"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_hasProblem)
   {
     [v13 encodeBool:1 forKey:@"prob"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v13 encodeObject:identifier forKey:@"ident"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_needsAWDL)
   {
     [v13 encodeBool:1 forKey:@"awdl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_needsKeyboard)
   {
     [v13 encodeBool:1 forKey:@"kb"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_needsSetup)
   {
     [v13 encodeBool:1 forKey:@"setup"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_overrideScreenOff)
   {
     [v13 encodeBool:1 forKey:@"oso"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   problemFlags = self->_problemFlags;
   if (problemFlags)
   {
     [v13 encodeInt64:problemFlags forKey:@"pf"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   requestSSID = self->_requestSSID;
   if (requestSSID)
   {
     [v13 encodeObject:requestSSID forKey:@"rSSID"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_serviceType)
   {
     [v13 encodeInteger:? forKey:?];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   serviceUUID = self->_serviceUUID;
   if (serviceUUID)
   {
     [v13 encodeObject:serviceUUID forKey:@"svid"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   sessionFlags = self->_sessionFlags;
   if (sessionFlags)
   {
     [v13 encodeInteger:sessionFlags forKey:@"seFl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   targetAuthTag = self->_targetAuthTag;
   if (targetAuthTag)
   {
     [v13 encodeObject:targetAuthTag forKey:@"tATag"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_wakeDevice)
   {
     [v13 encodeBool:1 forKey:@"wake"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   if (self->_watchLocked)
   {
     [v13 encodeBool:1 forKey:@"wl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 }
 
@@ -630,216 +630,216 @@ LABEL_6:
   self->_xpcCnx = 0;
 }
 
-- (void)setAdvertiseRate:(int64_t)a3
+- (void)setAdvertiseRate:(int64_t)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __30__SFService_setAdvertiseRate___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = rate;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setAutoUnlockEnabled:(BOOL)a3
+- (void)setAutoUnlockEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__SFService_setAutoUnlockEnabled___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setAutoUnlockWatch:(BOOL)a3
+- (void)setAutoUnlockWatch:(BOOL)watch
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__SFService_setAutoUnlockWatch___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  watchCopy = watch;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setDeviceActionType:(unsigned __int8)a3
+- (void)setDeviceActionType:(unsigned __int8)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__SFService_setDeviceActionType___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  typeCopy = type;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setPayloadDovePeace2:(unsigned __int8)a3
+- (void)setPayloadDovePeace2:(unsigned __int8)peace2
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__SFService_setPayloadDovePeace2___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  peace2Copy = peace2;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setDuetSync:(BOOL)a3
+- (void)setDuetSync:(BOOL)sync
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __25__SFService_setDuetSync___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  syncCopy = sync;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)clearEncryptionInfoForPeer:(id)a3
+- (void)clearEncryptionInfoForPeer:(id)peer
 {
-  v3 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:peer];
   [v3 clearEncryptionInfo];
 }
 
-- (void)setHasProblem:(BOOL)a3
+- (void)setHasProblem:(BOOL)problem
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27__SFService_setHasProblem___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  problemCopy = problem;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setNeedsAWDL:(BOOL)a3
+- (void)setNeedsAWDL:(BOOL)l
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __26__SFService_setNeedsAWDL___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  lCopy = l;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setNeedsKeyboard:(BOOL)a3
+- (void)setNeedsKeyboard:(BOOL)keyboard
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __30__SFService_setNeedsKeyboard___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  keyboardCopy = keyboard;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setNeedsSetup:(BOOL)a3
+- (void)setNeedsSetup:(BOOL)setup
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27__SFService_setNeedsSetup___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  setupCopy = setup;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setProblemFlags:(unint64_t)a3
+- (void)setProblemFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __29__SFService_setProblemFlags___block_invoke;
   v3[3] = &unk_1E788B260;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setTargetAuthTag:(id)a3
+- (void)setTargetAuthTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__SFService_setTargetAuthTag___block_invoke;
   v6[3] = &unk_1E788A658;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = tagCopy;
+  v5 = tagCopy;
   [(SFService *)self _performActivateSafeChange:v6];
 }
 
-- (void)setWakeDevice:(BOOL)a3
+- (void)setWakeDevice:(BOOL)device
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27__SFService_setWakeDevice___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  deviceCopy = device;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)setWatchLocked:(BOOL)a3
+- (void)setWatchLocked:(BOOL)locked
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __28__SFService_setWatchLocked___block_invoke;
   v3[3] = &unk_1E788B700;
   v3[4] = self;
-  v4 = a3;
+  lockedCopy = locked;
   [(SFService *)self _performActivateSafeChange:v3];
 }
 
-- (void)updateWithService:(id)a3
+- (void)updateWithService:(id)service
 {
-  v6 = a3;
-  if ([v6 advertiseRate])
+  serviceCopy = service;
+  if ([serviceCopy advertiseRate])
   {
-    self->_advertiseRate = [v6 advertiseRate];
+    self->_advertiseRate = [serviceCopy advertiseRate];
   }
 
-  self->_autoUnlockEnabled = [v6 autoUnlockEnabled];
-  self->_autoUnlockWatch = [v6 autoUnlockWatch];
-  self->_deviceActionType = [v6 deviceActionType];
-  self->_payloadDovePeace2 = [v6 payloadDovePeace2];
-  self->_duetSync = [v6 duetSync];
-  self->_hasProblem = [v6 hasProblem];
-  self->_needsAWDL = [v6 needsAWDL];
-  self->_needsKeyboard = [v6 needsKeyboard];
-  self->_needsSetup = [v6 needsSetup];
-  self->_problemFlags = [v6 problemFlags];
-  self->_wakeDevice = [v6 wakeDevice];
-  self->_watchLocked = [v6 watchLocked];
-  v4 = [v6 targetAuthTag];
+  self->_autoUnlockEnabled = [serviceCopy autoUnlockEnabled];
+  self->_autoUnlockWatch = [serviceCopy autoUnlockWatch];
+  self->_deviceActionType = [serviceCopy deviceActionType];
+  self->_payloadDovePeace2 = [serviceCopy payloadDovePeace2];
+  self->_duetSync = [serviceCopy duetSync];
+  self->_hasProblem = [serviceCopy hasProblem];
+  self->_needsAWDL = [serviceCopy needsAWDL];
+  self->_needsKeyboard = [serviceCopy needsKeyboard];
+  self->_needsSetup = [serviceCopy needsSetup];
+  self->_problemFlags = [serviceCopy problemFlags];
+  self->_wakeDevice = [serviceCopy wakeDevice];
+  self->_watchLocked = [serviceCopy watchLocked];
+  targetAuthTag = [serviceCopy targetAuthTag];
   targetAuthTag = self->_targetAuthTag;
-  self->_targetAuthTag = v4;
+  self->_targetAuthTag = targetAuthTag;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__SFService_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFService/serviceActivate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -908,7 +908,7 @@ LABEL_35:
         v33[2] = __37__SFService__activateWithCompletion___block_invoke;
         v33[3] = &unk_1E788BF88;
         v33[4] = self;
-        v18 = v6;
+        v18 = completionCopy;
         v34 = v18;
         v19 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v33];
         v31[0] = MEMORY[0x1E69E9820];
@@ -953,7 +953,7 @@ LABEL_21:
   }
 
 LABEL_23:
-  if (v6)
+  if (completionCopy)
   {
     v23 = v35;
     if (v35)
@@ -978,7 +978,7 @@ LABEL_23:
       v27 = 0;
     }
 
-    (*(v6 + 2))(v6, v27);
+    (*(completionCopy + 2))(completionCopy, v27);
     if (v23)
     {
     }
@@ -1476,24 +1476,24 @@ void __25__SFService__invalidated__block_invoke_2(uint64_t a1, uint64_t a2, void
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performActivateSafeChange:(id)a3
+- (void)_performActivateSafeChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
     v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFService/serviceUpdate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v6, &state);
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __40__SFService__performActivateSafeChange___block_invoke;
     v8[3] = &unk_1E788B318;
-    v8[4] = v5;
-    v9 = v4;
+    v8[4] = selfCopy;
+    v9 = changeCopy;
     dispatch_async(dispatchQueue, v8);
 
     os_activity_scope_leave(&state);
@@ -1501,10 +1501,10 @@ void __25__SFService__invalidated__block_invoke_2(uint64_t a1, uint64_t a2, void
 
   else
   {
-    v4[2](v4);
+    changeCopy[2](changeCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __40__SFService__performActivateSafeChange___block_invoke(uint64_t a1)
@@ -1514,11 +1514,11 @@ void __40__SFService__performActivateSafeChange___block_invoke(uint64_t a1)
   [v2 serviceUpdate:*(a1 + 32)];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [v4 setIdentifier:v5];
+  eventCopy = event;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [eventCopy setIdentifier:uUID];
 
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1526,8 +1526,8 @@ void __40__SFService__performActivateSafeChange___block_invoke(uint64_t a1)
   v8[2] = __23__SFService_sendEvent___block_invoke;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = eventCopy;
+  v7 = eventCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -1565,21 +1565,21 @@ LABEL_5:
   }
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [v4 setIdentifier:v5];
+  requestCopy = request;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [requestCopy setIdentifier:uUID];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __25__SFService_sendRequest___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = requestCopy;
+  v11 = uUID;
+  v7 = uUID;
+  v8 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1619,12 +1619,12 @@ LABEL_5:
   }
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  responseCopy = response;
+  identifier = [responseCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1632,8 +1632,8 @@ LABEL_5:
     block[2] = __26__SFService_sendResponse___block_invoke;
     block[3] = &unk_1E788A658;
     block[4] = self;
-    v10 = v4;
-    v7 = v4;
+    v10 = responseCopy;
+    v7 = responseCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -1678,13 +1678,13 @@ LABEL_5:
   }
 }
 
-- (void)sendToPeer:(id)a3 flags:(unsigned int)a4 object:(id)a5
+- (void)sendToPeer:(id)peer flags:(unsigned int)flags object:(id)object
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  flagsCopy = flags;
+  peerCopy = peer;
+  objectCopy = object;
   dispatchQueue = self->_dispatchQueue;
-  if (v6)
+  if (flagsCopy)
   {
     v11 = v16;
     v16[0] = MEMORY[0x1E69E9820];
@@ -1703,9 +1703,9 @@ LABEL_5:
   v11[2] = v12;
   v11[3] = &unk_1E788BD88;
   v11[4] = self;
-  v13 = v8;
+  v13 = peerCopy;
   v11[5] = v13;
-  v14 = v9;
+  v14 = objectCopy;
   v11[6] = v14;
   dispatch_async(dispatchQueue, v11);
 }
@@ -1754,36 +1754,36 @@ void __37__SFService_sendToPeer_flags_object___block_invoke_2(uint64_t a1)
   [*(a1 + 32) _sendToPeer:*(a1 + 40) type:v5 unencryptedObject:*(a1 + 48)];
 }
 
-- (void)sendToPeer:(id)a3 type:(unsigned __int8)a4 data:(id)a5
+- (void)sendToPeer:(id)peer type:(unsigned __int8)type data:(id)data
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __34__SFService_sendToPeer_type_data___block_invoke;
   v13[3] = &unk_1E788F3E0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = peerCopy;
+  typeCopy = type;
+  v15 = dataCopy;
+  v11 = dataCopy;
+  v12 = peerCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)pairSetupWithFlags:(unsigned int)a3 peer:(id)a4
+- (void)pairSetupWithFlags:(unsigned int)flags peer:(id)peer
 {
-  v6 = a4;
+  peerCopy = peer;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__SFService_pairSetupWithFlags_peer___block_invoke;
   block[3] = &unk_1E788EC90;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = peerCopy;
+  flagsCopy = flags;
+  v8 = peerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1803,20 +1803,20 @@ void __37__SFService_pairSetupWithFlags_peer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)pairSetupTryPIN:(id)a3 peer:(id)a4
+- (void)pairSetupTryPIN:(id)n peer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  nCopy = n;
+  peerCopy = peer;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SFService_pairSetupTryPIN_peer___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = peerCopy;
+  v13 = nCopy;
+  v9 = nCopy;
+  v10 = peerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1836,28 +1836,28 @@ void __34__SFService_pairSetupTryPIN_peer___block_invoke(void *a1)
   }
 }
 
-- (void)serviceError:(id)a3
+- (void)serviceError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   errorHandler = self->_errorHandler;
   if (errorHandler)
   {
-    errorHandler[2](errorHandler, v5);
+    errorHandler[2](errorHandler, errorCopy);
   }
 }
 
-- (void)servicePeerDisconnected:(id)a3 error:(id)a4
+- (void)servicePeerDisconnected:(id)disconnected error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  disconnectedCopy = disconnected;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_xpcCnx)
   {
     goto LABEL_10;
   }
 
-  v7 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v16];
+  v7 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:disconnectedCopy];
   if (!v7)
   {
     goto LABEL_10;
@@ -1879,26 +1879,26 @@ void __34__SFService_pairSetupTryPIN_peer___block_invoke(void *a1)
     }
 
     v14 = SFNearbyBLEServiceTypeToString(self->_serviceType);
-    v15 = v6;
-    v13 = v16;
+    v15 = errorCopy;
+    v13 = disconnectedCopy;
     LogPrintF();
   }
 
 LABEL_7:
-  [(NSMutableDictionary *)self->_sessions removeObjectForKey:v16, v13, v14, v15];
+  [(NSMutableDictionary *)self->_sessions removeObjectForKey:disconnectedCopy, v13, v14, v15];
   [v8 invalidate];
   sessionEndedHandler = self->_sessionEndedHandler;
   if (sessionEndedHandler)
   {
-    sessionEndedHandler[2](sessionEndedHandler, v8, v6);
+    sessionEndedHandler[2](sessionEndedHandler, v8, errorCopy);
   }
 
 LABEL_10:
 }
 
-- (void)serviceReceivedEvent:(id)a3
+- (void)serviceReceivedEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -1919,17 +1919,17 @@ LABEL_3:
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   eventMessageHandler = self->_eventMessageHandler;
-  v6 = v8;
+  v6 = eventCopy;
   if (eventMessageHandler)
   {
-    eventMessageHandler[2](eventMessageHandler, v8);
-    v6 = v8;
+    eventMessageHandler[2](eventMessageHandler, eventCopy);
+    v6 = eventCopy;
   }
 }
 
-- (void)serviceReceivedRequest:(id)a3
+- (void)serviceReceivedRequest:(id)request
 {
-  v8 = a3;
+  requestCopy = request;
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -1950,18 +1950,18 @@ LABEL_3:
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   requestMessageHandler = self->_requestMessageHandler;
-  v6 = v8;
+  v6 = requestCopy;
   if (requestMessageHandler)
   {
-    requestMessageHandler[2](requestMessageHandler, v8);
-    v6 = v8;
+    requestMessageHandler[2](requestMessageHandler, requestCopy);
+    v6 = requestCopy;
   }
 }
 
-- (void)serviceReceivedResponse:(id)a3
+- (void)serviceReceivedResponse:(id)response
 {
-  v12 = a3;
-  v4 = [v12 identifier];
+  responseCopy = response;
+  identifier = [responseCopy identifier];
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -1975,24 +1975,24 @@ LABEL_5:
       ucatCore = self->_ucatCore;
     }
 
-    v11 = v12;
+    v11 = responseCopy;
     LogPrintF();
   }
 
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4 && ([(NSMutableDictionary *)self->_requestQueue objectForKeyedSubscript:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (identifier && ([(NSMutableDictionary *)self->_requestQueue objectForKeyedSubscript:identifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 responseHandler];
+    responseHandler = [v6 responseHandler];
 
-    if (v8)
+    if (responseHandler)
     {
-      v9 = [v7 responseHandler];
-      (v9)[2](v9, 0, v12);
+      responseHandler2 = [v7 responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, responseCopy);
     }
 
-    [(NSMutableDictionary *)self->_requestQueue removeObjectForKey:v4, v11];
+    [(NSMutableDictionary *)self->_requestQueue removeObjectForKey:identifier, v11];
   }
 
   else
@@ -2001,12 +2001,12 @@ LABEL_5:
   }
 }
 
-- (void)serviceSessionFailed:(id)a3 error:(id)a4
+- (void)serviceSessionFailed:(id)failed error:(id)error
 {
-  v15 = a3;
-  v6 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [v15 peer];
+  peer = [failedCopy peer];
   var0 = self->_ucatCore->var0;
   if (var0 <= 30)
   {
@@ -2014,8 +2014,8 @@ LABEL_5:
     {
 LABEL_3:
       v13 = SFNearbyBLEServiceTypeToString(self->_serviceType);
-      v14 = v6;
-      v12 = v7;
+      v14 = errorCopy;
+      v12 = peer;
       LogPrintF();
       goto LABEL_5;
     }
@@ -2029,20 +2029,20 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (v7)
+  if (peer)
   {
-    [(NSMutableDictionary *)self->_sessions removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_sessions removeObjectForKey:peer];
   }
 
-  [v15 invalidate];
+  [failedCopy invalidate];
   sessionEndedHandler = self->_sessionEndedHandler;
   if (sessionEndedHandler)
   {
-    sessionEndedHandler[2](sessionEndedHandler, v15, v6);
+    sessionEndedHandler[2](sessionEndedHandler, failedCopy, errorCopy);
   }
 }
 
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6 peer:(id)a7
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen peer:(id)peer
 {
   OUTLINED_FUNCTION_7_2();
   v13 = [*(v11 + 24) objectForKeyedSubscript:v12];
@@ -2060,9 +2060,9 @@ LABEL_5:
   return v15;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   label = self->_label;
   self->_label = v4;
 

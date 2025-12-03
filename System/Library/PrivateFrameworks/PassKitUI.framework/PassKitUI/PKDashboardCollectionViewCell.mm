@@ -1,16 +1,16 @@
 @interface PKDashboardCollectionViewCell
 + (double)defaultHorizontalInset;
 - (NSDirectionalEdgeInsets)separatorInsets;
-- (PKDashboardCollectionViewCell)initWithFrame:(CGRect)a3;
+- (PKDashboardCollectionViewCell)initWithFrame:(CGRect)frame;
 - (double)horizontalInset;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomSeparatorVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaskType:(unint64_t)a3;
-- (void)setSeparatorInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setShowsBottomSeparator:(BOOL)a3;
-- (void)setWantsCustomAppearance:(BOOL)a3;
+- (void)setBottomSeparatorVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaskType:(unint64_t)type;
+- (void)setSeparatorInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setShowsBottomSeparator:(BOOL)separator;
+- (void)setWantsCustomAppearance:(BOOL)appearance;
 - (void)updateMask;
 @end
 
@@ -49,19 +49,19 @@
   return result;
 }
 
-- (PKDashboardCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKDashboardCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(PKDashboardCollectionViewCell *)v3 setBackgroundView:v4];
 
-    v5 = [(PKDashboardCollectionViewCell *)v3 backgroundView];
-    v6 = [objc_opt_class() defaultBackgroundColor];
-    [v5 setBackgroundColor:v6];
+    backgroundView = [(PKDashboardCollectionViewCell *)v3 backgroundView];
+    defaultBackgroundColor = [objc_opt_class() defaultBackgroundColor];
+    [backgroundView setBackgroundColor:defaultBackgroundColor];
 
     v3->_bottomSeparatorVisible = 1;
     [(PKDashboardCollectionViewCell *)v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9678]];
@@ -85,12 +85,12 @@
   v13.receiver = self;
   v13.super_class = PKDashboardCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(UIView *)self->_separatorView superview];
+  superview = [(UIView *)self->_separatorView superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(PKDashboardCollectionViewCell *)self contentView];
-    [v4 bounds];
+    contentView = [(PKDashboardCollectionViewCell *)self contentView];
+    [contentView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -117,7 +117,7 @@
   }
 
   wantsCustomAppearance = self->_wantsCustomAppearance;
-  v5 = [(PKDashboardCollectionViewCell *)self backgroundView];
+  backgroundView = [(PKDashboardCollectionViewCell *)self backgroundView];
   if (wantsCustomAppearance)
   {
     [MEMORY[0x1E69DC888] clearColor];
@@ -128,7 +128,7 @@
     [objc_opt_class() defaultBackgroundColor];
   }
   v6 = ;
-  [v5 setBackgroundColor:v6];
+  [backgroundView setBackgroundColor:v6];
 }
 
 - (double)horizontalInset
@@ -144,24 +144,24 @@
   return result;
 }
 
-- (void)setSeparatorInsets:(NSDirectionalEdgeInsets)a3
+- (void)setSeparatorInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_separatorInsets.top), vceqq_f64(v4, *&self->_separatorInsets.bottom)))) & 1) == 0)
   {
-    self->_separatorInsets = a3;
+    self->_separatorInsets = insets;
     [(PKDashboardCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setMaskType:(unint64_t)a3
+- (void)setMaskType:(unint64_t)type
 {
-  if (self->_maskType != a3)
+  if (self->_maskType != type)
   {
-    self->_maskType = a3;
+    self->_maskType = type;
     [(PKDashboardCollectionViewCell *)self updateMask];
   }
 }
@@ -201,13 +201,13 @@
   }
 }
 
-- (void)setShowsBottomSeparator:(BOOL)a3
+- (void)setShowsBottomSeparator:(BOOL)separator
 {
-  if (self->_showsBottomSeparator == !a3)
+  if (self->_showsBottomSeparator == !separator)
   {
-    self->_showsBottomSeparator = a3;
+    self->_showsBottomSeparator = separator;
     separatorView = self->_separatorView;
-    if (a3)
+    if (separator)
     {
       if (!separatorView)
       {
@@ -216,8 +216,8 @@
         self->_separatorView = v5;
 
         v7 = self->_separatorView;
-        v8 = [MEMORY[0x1E69DC888] separatorColor];
-        [(UIView *)v7 setBackgroundColor:v8];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [(UIView *)v7 setBackgroundColor:separatorColor];
 
         [(UIView *)self->_separatorView setAutoresizingMask:2];
         v9 = self->_separatorView;
@@ -225,8 +225,8 @@
         [(UIView *)v9 setAlpha:?];
       }
 
-      v10 = [(PKDashboardCollectionViewCell *)self contentView];
-      [v10 addSubview:self->_separatorView];
+      contentView = [(PKDashboardCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_separatorView];
 
       [(PKDashboardCollectionViewCell *)self setNeedsLayout];
     }
@@ -239,20 +239,20 @@
   }
 }
 
-- (void)setBottomSeparatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setBottomSeparatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_bottomSeparatorVisible == !a3)
+  if (self->_bottomSeparatorVisible == !visible)
   {
-    self->_bottomSeparatorVisible = a3;
+    self->_bottomSeparatorVisible = visible;
     separatorView = self->_separatorView;
     if (separatorView)
     {
-      if (a4)
+      if (animated)
       {
-        v6 = [(UIView *)separatorView superview];
+        superview = [(UIView *)separatorView superview];
 
         [(PKDashboardCollectionViewCell *)self _bottomSeparatorAlpha];
-        if (v6)
+        if (superview)
         {
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
@@ -277,14 +277,14 @@
   }
 }
 
-- (void)setWantsCustomAppearance:(BOOL)a3
+- (void)setWantsCustomAppearance:(BOOL)appearance
 {
-  if (self->_wantsCustomAppearance == !a3)
+  if (self->_wantsCustomAppearance == !appearance)
   {
-    v4 = a3;
-    self->_wantsCustomAppearance = a3;
-    v6 = [(PKDashboardCollectionViewCell *)self backgroundView];
-    if (v4)
+    appearanceCopy = appearance;
+    self->_wantsCustomAppearance = appearance;
+    backgroundView = [(PKDashboardCollectionViewCell *)self backgroundView];
+    if (appearanceCopy)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
@@ -294,20 +294,20 @@
       [objc_opt_class() defaultBackgroundColor];
     }
     v5 = ;
-    [v6 setBackgroundColor:v5];
+    [backgroundView setBackgroundColor:v5];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = PKDashboardCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v11 setHighlighted:?];
   if (!self->_wantsCustomAppearance || self->_wantsDefaultHighlightBehavior)
   {
     v5 = MEMORY[0x1E69DD250];
-    if (v3)
+    if (highlightedCopy)
     {
       v6 = v10;
       v10[0] = MEMORY[0x1E69E9820];

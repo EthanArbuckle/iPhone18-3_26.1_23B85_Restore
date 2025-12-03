@@ -1,17 +1,17 @@
 @interface BRCSharedClientZone
 - (id)rootItemID;
-- (id)shareAcceptOperationForItemID:(id)a3;
+- (id)shareAcceptOperationForItemID:(id)d;
 - (id)shareAcceptationSidefaultEnumerator;
-- (void)addAcceptOperation:(id)a3 forItemID:(id)a4;
+- (void)addAcceptOperation:(id)operation forItemID:(id)d;
 - (void)removeAllShareAcceptationSidefaults;
-- (void)setServerZone:(id)a3;
+- (void)setServerZone:(id)zone;
 @end
 
 @implementation BRCSharedClientZone
 
-- (void)setServerZone:(id)a3
+- (void)setServerZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -19,14 +19,14 @@
   }
 
   serverZone = self->super._serverZone;
-  self->super._serverZone = v4;
+  self->super._serverZone = zoneCopy;
 }
 
 - (id)rootItemID
 {
   v3 = [BRCItemID alloc];
-  v4 = [(BRCClientZone *)self dbRowID];
-  v5 = [(BRCItemID *)v3 _initAsZoneRootWithZoneRowID:v4];
+  dbRowID = [(BRCClientZone *)self dbRowID];
+  v5 = [(BRCItemID *)v3 _initAsZoneRootWithZoneRowID:dbRowID];
 
   return v5;
 }
@@ -56,23 +56,23 @@ id __58__BRCSharedClientZone_shareAcceptationSidefaultEnumerator__block_invoke(u
   return v10;
 }
 
-- (void)addAcceptOperation:(id)a3 forItemID:(id)a4
+- (void)addAcceptOperation:(id)operation forItemID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  shareAcceptationByItemID = v8->_shareAcceptationByItemID;
+  operationCopy = operation;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shareAcceptationByItemID = selfCopy->_shareAcceptationByItemID;
   if (!shareAcceptationByItemID)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v11 = v8->_shareAcceptationByItemID;
-    v8->_shareAcceptationByItemID = v10;
+    v11 = selfCopy->_shareAcceptationByItemID;
+    selfCopy->_shareAcceptationByItemID = v10;
 
-    shareAcceptationByItemID = v8->_shareAcceptationByItemID;
+    shareAcceptationByItemID = selfCopy->_shareAcceptationByItemID;
   }
 
-  v12 = [(NSMutableDictionary *)shareAcceptationByItemID objectForKeyedSubscript:v7];
+  v12 = [(NSMutableDictionary *)shareAcceptationByItemID objectForKeyedSubscript:dCopy];
   if (v12)
   {
     v13 = brc_bread_crumbs();
@@ -83,26 +83,26 @@ id __58__BRCSharedClientZone_shareAcceptationSidefaultEnumerator__block_invoke(u
     }
   }
 
-  [(NSMutableDictionary *)v8->_shareAcceptationByItemID setObject:v6 forKeyedSubscript:v7];
-  v15 = [v6 completionBlock];
-  objc_initWeak(&location, v6);
+  [(NSMutableDictionary *)selfCopy->_shareAcceptationByItemID setObject:operationCopy forKeyedSubscript:dCopy];
+  completionBlock = [operationCopy completionBlock];
+  objc_initWeak(&location, operationCopy);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke;
   v18[3] = &unk_278508330;
   objc_copyWeak(&v21, &location);
-  v18[4] = v8;
-  v16 = v7;
+  v18[4] = selfCopy;
+  v16 = dCopy;
   v19 = v16;
-  v17 = v15;
+  v17 = completionBlock;
   v20 = v17;
-  [v6 setCompletionBlock:v18];
+  [operationCopy setCompletionBlock:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 
-  objc_sync_exit(v8);
-  [(BRCClientZone *)v8 addSyncDownDependency:v6];
+  objc_sync_exit(selfCopy);
+  [(BRCClientZone *)selfCopy addSyncDownDependency:operationCopy];
 }
 
 void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint64_t a1)
@@ -133,13 +133,13 @@ void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint6
   }
 }
 
-- (id)shareAcceptOperationForItemID:(id)a3
+- (id)shareAcceptOperationForItemID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_shareAcceptationByItemID objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_shareAcceptationByItemID objectForKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -151,8 +151,8 @@ void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint6
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(BRCSharedClientZone *)self shareAcceptationSidefaultEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  shareAcceptationSidefaultEnumerator = [(BRCSharedClientZone *)self shareAcceptationSidefaultEnumerator];
+  v4 = [shareAcceptationSidefaultEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -164,7 +164,7 @@ void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint6
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(shareAcceptationSidefaultEnumerator);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -174,21 +174,21 @@ void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint6
           [(BRCSharedClientZone *)v19 removeAllShareAcceptationSidefaults];
         }
 
-        v10 = [v8 itemID];
-        v11 = [(BRCClientZone *)self serverItemByItemID:v10];
+        itemID = [v8 itemID];
+        v11 = [(BRCClientZone *)self serverItemByItemID:itemID];
 
-        v12 = [v8 asShareAcceptationFault];
-        v13 = v12;
+        asShareAcceptationFault = [v8 asShareAcceptationFault];
+        v13 = asShareAcceptationFault;
         if (v11)
         {
-          [v12 markNeedsTransformIntoNormalFault];
+          [asShareAcceptationFault markNeedsTransformIntoNormalFault];
 
           [v8 saveToDB];
         }
 
         else
         {
-          [v12 deleteShareAcceptationFault];
+          [asShareAcceptationFault deleteShareAcceptationFault];
         }
 
         objc_autoreleasePoolPop(v9);
@@ -196,7 +196,7 @@ void __52__BRCSharedClientZone_addAcceptOperation_forItemID___block_invoke(uint6
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v5 = [shareAcceptationSidefaultEnumerator countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v5);

@@ -1,8 +1,8 @@
 @interface MTNotificationSettingsPresentationController
 + (_TtC8Podcasts44MTNotificationSettingsPresentationController)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC8Podcasts44MTNotificationSettingsPresentationController)init;
-- (void)presentModalWithHighlightedPodcastUuid:(id)a3;
+- (void)presentModalWithHighlightedPodcastUuid:(id)uuid;
 @end
 
 @implementation MTNotificationSettingsPresentationController
@@ -19,19 +19,19 @@
   return v3;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1005727E8;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = sharedCopy;
     swift_once();
-    v4 = v6;
+    sharedCopy = v6;
   }
 
   v5 = qword_100593468;
-  qword_100593468 = v4;
+  qword_100593468 = sharedCopy;
 }
 
 - (_TtC8Podcasts44MTNotificationSettingsPresentationController)init
@@ -42,9 +42,9 @@
   return [(MTNotificationSettingsPresentationController *)&v4 init];
 }
 
-- (void)presentModalWithHighlightedPodcastUuid:(id)a3
+- (void)presentModalWithHighlightedPodcastUuid:(id)uuid
 {
-  if (a3)
+  if (uuid)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -56,7 +56,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   MTNotificationSettingsPresentationController.presentModal(highlightedPodcastUuid:)(v8);

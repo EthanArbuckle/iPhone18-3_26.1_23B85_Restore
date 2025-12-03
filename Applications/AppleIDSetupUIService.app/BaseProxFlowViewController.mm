@@ -1,17 +1,17 @@
 @interface BaseProxFlowViewController
-- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithCoder:(id)a3;
-- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithCoder:(id)coder;
+- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_willAppearInRemoteViewController;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BaseProxFlowViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100005988(a3);
+  selfCopy = self;
+  sub_100005988(appear);
 }
 
 - (void)_willAppearInRemoteViewController
@@ -31,11 +31,11 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  selfCopy = self;
+  currentDevice = [v3 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v7 = 30;
   }
@@ -48,14 +48,14 @@
   return v7;
 }
 
-- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController____lazy_storage___device] = 1;
     self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController_homeButtonPressedWhileLocked] = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
@@ -63,25 +63,25 @@
   {
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController____lazy_storage___device] = 1;
     self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController_homeButtonPressedWhileLocked] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for BaseProxFlowViewController();
-  v9 = [(BaseProxFlowViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(BaseProxFlowViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithCoder:(id)a3
+- (_TtC21AppleIDSetupUIService26BaseProxFlowViewController)initWithCoder:(id)coder
 {
   *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController____lazy_storage___device] = 1;
   self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC21AppleIDSetupUIService26BaseProxFlowViewController_homeButtonPressedWhileLocked] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BaseProxFlowViewController();
-  v4 = a3;
-  v5 = [(BaseProxFlowViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BaseProxFlowViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

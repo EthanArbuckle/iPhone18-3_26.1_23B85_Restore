@@ -1,8 +1,8 @@
 @interface PFUniformTypeUtilities
-+ (BOOL)filenameExtension:(id)a3 conformsToOneOfTypes:(id)a4;
-+ (BOOL)type:(id)a3 conformsToOneOfTypes:(id)a4;
-+ (BOOL)url:(id)a3 conformsToOneOfTypes:(id)a4;
-+ (BOOL)url:(id)a3 conformsToType:(id)a4;
++ (BOOL)filenameExtension:(id)extension conformsToOneOfTypes:(id)types;
++ (BOOL)type:(id)type conformsToOneOfTypes:(id)types;
++ (BOOL)url:(id)url conformsToOneOfTypes:(id)types;
++ (BOOL)url:(id)url conformsToType:(id)type;
 + (NSArray)imageTypesNotWellSupportedForSharing;
 + (NSArray)imageTypesUnsupportedForImport;
 + (NSArray)supportedAudioTypes;
@@ -41,13 +41,13 @@
 + (UTType)sonyARWRAWImageType;
 + (UTType)supplementalResourceAAEType;
 + (UTType)supplementalResourceXMPType;
-+ (id)preferredOrFallbackFilenameExtensionForType:(id)a3 fallbackIdentifier:(id)a4;
-+ (id)resourceModelTypeForFilenameExtension:(id)a3;
-+ (id)typeForFilenameExtensionOrLastPathComponent:(id)a3;
-+ (id)typeForURL:(id)a3 error:(id *)a4;
-+ (id)typeWithFilenameExtension:(id)a3;
-+ (id)typeWithFilenameExtension:(id)a3 conformingToType:(id)a4;
-+ (id)typeWithIdentifier:(id)a3;
++ (id)preferredOrFallbackFilenameExtensionForType:(id)type fallbackIdentifier:(id)identifier;
++ (id)resourceModelTypeForFilenameExtension:(id)extension;
++ (id)typeForFilenameExtensionOrLastPathComponent:(id)component;
++ (id)typeForURL:(id)l error:(id *)error;
++ (id)typeWithFilenameExtension:(id)extension;
++ (id)typeWithFilenameExtension:(id)extension conformingToType:(id)type;
++ (id)typeWithIdentifier:(id)identifier;
 @end
 
 @implementation PFUniformTypeUtilities
@@ -252,20 +252,20 @@ void __45__PFUniformTypeUtilities_supportedImageTypes__block_invoke()
   supportedImageTypes_supportedImageTypes = v0;
 }
 
-+ (id)typeForFilenameExtensionOrLastPathComponent:(id)a3
++ (id)typeForFilenameExtensionOrLastPathComponent:(id)component
 {
-  if (a3)
+  if (component)
   {
-    v3 = a3;
-    v4 = [v3 pathExtension];
-    if ([v4 isEqualToString:&stru_1F2A8EB68])
+    componentCopy = component;
+    pathExtension = [componentCopy pathExtension];
+    if ([pathExtension isEqualToString:&stru_1F2A8EB68])
     {
-      v5 = v3;
+      v5 = componentCopy;
     }
 
     else
     {
-      v5 = v4;
+      v5 = pathExtension;
     }
 
     v6 = v5;
@@ -310,21 +310,21 @@ void __49__PFUniformTypeUtilities_typesSupportedForImport__block_invoke()
   typesSupportedForImport_supportedTypes = v4;
 }
 
-+ (id)typeForURL:(id)a3 error:(id *)a4
++ (id)typeForURL:(id)l error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v14 = 0;
   v6 = *MEMORY[0x1E695DAA0];
   v13 = 0;
-  v7 = [v5 getResourceValue:&v14 forKey:v6 error:&v13];
+  v7 = [lCopy getResourceValue:&v14 forKey:v6 error:&v13];
   v8 = v14;
   v9 = v13;
   if ((v7 & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_5;
       }
@@ -332,18 +332,18 @@ void __49__PFUniformTypeUtilities_typesSupportedForImport__block_invoke()
       goto LABEL_4;
     }
 
-    v12 = [v5 path];
+    path = [lCopy path];
     *buf = 138412546;
-    v16 = v12;
+    v16 = path;
     v17 = 2112;
     v18 = v9;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to get NSURLContentTypeKey resource value for %@: %@", buf, 0x16u);
 
-    if (a4)
+    if (error)
     {
 LABEL_4:
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -352,18 +352,18 @@ LABEL_5:
   return v8;
 }
 
-+ (id)resourceModelTypeForFilenameExtension:(id)a3
++ (id)resourceModelTypeForFilenameExtension:(id)extension
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  extensionCopy = extension;
+  v4 = extensionCopy;
+  if (!extensionCopy)
   {
 LABEL_6:
     v5 = 0;
     goto LABEL_10;
   }
 
-  if ([v3 caseInsensitiveCompare:@"xmp"])
+  if ([extensionCopy caseInsensitiveCompare:@"xmp"])
   {
     if ([v4 caseInsensitiveCompare:@"aae"])
     {
@@ -390,43 +390,43 @@ LABEL_10:
   return v5;
 }
 
-+ (BOOL)url:(id)a3 conformsToOneOfTypes:(id)a4
++ (BOOL)url:(id)url conformsToOneOfTypes:(id)types
 {
-  v6 = a4;
-  v7 = [a1 typeForURL:a3 error:0];
-  v8 = v7 && ([a1 type:v7 conformsToOneOfTypes:v6] & 1) != 0;
+  typesCopy = types;
+  v7 = [self typeForURL:url error:0];
+  v8 = v7 && ([self type:v7 conformsToOneOfTypes:typesCopy] & 1) != 0;
 
   return v8;
 }
 
-+ (BOOL)url:(id)a3 conformsToType:(id)a4
++ (BOOL)url:(id)url conformsToType:(id)type
 {
-  v6 = a4;
-  v7 = [a1 typeForURL:a3 error:0];
-  LOBYTE(a1) = [v7 conformsToType:v6];
+  typeCopy = type;
+  v7 = [self typeForURL:url error:0];
+  LOBYTE(self) = [v7 conformsToType:typeCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)filenameExtension:(id)a3 conformsToOneOfTypes:(id)a4
++ (BOOL)filenameExtension:(id)extension conformsToOneOfTypes:(id)types
 {
-  v6 = a4;
-  v7 = [a1 typeForFilenameExtensionOrLastPathComponent:a3];
-  LOBYTE(a1) = [a1 type:v7 conformsToOneOfTypes:v6];
+  typesCopy = types;
+  v7 = [self typeForFilenameExtensionOrLastPathComponent:extension];
+  LOBYTE(self) = [self type:v7 conformsToOneOfTypes:typesCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)type:(id)a3 conformsToOneOfTypes:(id)a4
++ (BOOL)type:(id)type conformsToOneOfTypes:(id)types
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  typeCopy = type;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  typesCopy = types;
+  v7 = [typesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -436,17 +436,17 @@ LABEL_10:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(typesCopy);
         }
 
-        if ([v5 conformsToType:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([typeCopy conformsToType:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [typesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -461,63 +461,63 @@ LABEL_11:
   return v7;
 }
 
-+ (id)preferredOrFallbackFilenameExtensionForType:(id)a3 fallbackIdentifier:(id)a4
++ (id)preferredOrFallbackFilenameExtensionForType:(id)type fallbackIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   if (preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__onceToken == -1)
   {
-    if (v6)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v9 = [v6 identifier];
-    v10 = v9;
-    if (v9)
+    identifier = [typeCopy identifier];
+    v10 = identifier;
+    if (identifier)
     {
-      v11 = v9;
+      v11 = identifier;
     }
 
     else
     {
-      v11 = v7;
+      v11 = identifierCopy;
     }
 
     v12 = v11;
 
-    v13 = [a1 canonTIFFRAWImageIdentifier];
-    v14 = [v12 isEqualToString:v13];
+    canonTIFFRAWImageIdentifier = [self canonTIFFRAWImageIdentifier];
+    v14 = [v12 isEqualToString:canonTIFFRAWImageIdentifier];
 
     if (v14)
     {
-      v8 = @"tiff";
+      preferredFilenameExtension = @"tiff";
     }
 
     else
     {
-      v15 = [a1 supplementalResourceAAEIdentifier];
-      v16 = [v12 isEqualToString:v15];
+      supplementalResourceAAEIdentifier = [self supplementalResourceAAEIdentifier];
+      v16 = [v12 isEqualToString:supplementalResourceAAEIdentifier];
 
       if (v16)
       {
-        v8 = @"aae";
+        preferredFilenameExtension = @"aae";
       }
 
       else
       {
-        v17 = [*MEMORY[0x1E6982D60] identifier];
-        v18 = [v12 isEqualToString:v17];
+        identifier2 = [*MEMORY[0x1E6982D60] identifier];
+        v18 = [v12 isEqualToString:identifier2];
 
         if (v18)
         {
-          v8 = @"dat";
+          preferredFilenameExtension = @"dat";
         }
 
         else
         {
-          v8 = 0;
+          preferredFilenameExtension = 0;
         }
       }
     }
@@ -526,37 +526,37 @@ LABEL_5:
   }
 
   dispatch_once(&preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__onceToken, &__block_literal_global_172);
-  if (!v6)
+  if (!typeCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   os_unfair_lock_lock(&preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sLock);
-  v8 = [preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sTypeToPreferredExtensionMap objectForKeyedSubscript:v6];
+  preferredFilenameExtension = [preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sTypeToPreferredExtensionMap objectForKeyedSubscript:typeCopy];
   os_unfair_lock_unlock(&preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sLock);
-  if (v8)
+  if (preferredFilenameExtension)
   {
     goto LABEL_19;
   }
 
-  v8 = [v6 preferredFilenameExtension];
-  if (!v8)
+  preferredFilenameExtension = [typeCopy preferredFilenameExtension];
+  if (!preferredFilenameExtension)
   {
     goto LABEL_5;
   }
 
 LABEL_16:
-  if (v6 && v8)
+  if (typeCopy && preferredFilenameExtension)
   {
     os_unfair_lock_lock(&preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sLock);
-    [preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sTypeToPreferredExtensionMap setObject:v8 forKeyedSubscript:v6];
+    [preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sTypeToPreferredExtensionMap setObject:preferredFilenameExtension forKeyedSubscript:typeCopy];
     os_unfair_lock_unlock(&preferredOrFallbackFilenameExtensionForType_fallbackIdentifier__sLock);
   }
 
 LABEL_19:
 
-  return v8;
+  return preferredFilenameExtension;
 }
 
 uint64_t __89__PFUniformTypeUtilities_preferredOrFallbackFilenameExtensionForType_fallbackIdentifier___block_invoke()
@@ -566,11 +566,11 @@ uint64_t __89__PFUniformTypeUtilities_preferredOrFallbackFilenameExtensionForTyp
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)typeWithFilenameExtension:(id)a3 conformingToType:(id)a4
++ (id)typeWithFilenameExtension:(id)extension conformingToType:(id)type
 {
-  if (a3)
+  if (extension)
   {
-    v5 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:a3 conformingToType:a4];
+    v5 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:extension conformingToType:type];
   }
 
   else
@@ -581,13 +581,13 @@ uint64_t __89__PFUniformTypeUtilities_preferredOrFallbackFilenameExtensionForTyp
   return v5;
 }
 
-+ (id)typeWithFilenameExtension:(id)a3
++ (id)typeWithFilenameExtension:(id)extension
 {
-  v3 = a3;
-  v4 = v3;
+  extensionCopy = extension;
+  v4 = extensionCopy;
   if (typeWithFilenameExtension__onceToken == -1)
   {
-    if (v3)
+    if (extensionCopy)
     {
       goto LABEL_3;
     }
@@ -628,13 +628,13 @@ uint64_t __52__PFUniformTypeUtilities_typeWithFilenameExtension___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)typeWithIdentifier:(id)a3
++ (id)typeWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   if (typeWithIdentifier__onceToken == -1)
   {
-    if (v3)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }

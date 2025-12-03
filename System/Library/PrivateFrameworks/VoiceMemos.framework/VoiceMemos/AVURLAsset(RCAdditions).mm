@@ -22,8 +22,8 @@
     v10 = [v8 tracksWithMediaType:*MEMORY[0x277CE5E48]];
     v34 = [v10 na_filter:&__block_literal_global_129];
 
-    v38 = [v34 firstObject];
-    if (v38)
+    firstObject = [v34 firstObject];
+    if (firstObject)
     {
       v11 = objc_opt_new();
       v46[0] = transcriptionIdentifier(0);
@@ -37,8 +37,8 @@
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v14 = [v38 metadata];
-      v15 = [v14 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      metadata = [firstObject metadata];
+      v15 = [metadata countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v15)
       {
         v16 = *v40;
@@ -48,12 +48,12 @@
           {
             if (*v40 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(metadata);
             }
 
             v18 = *(*(&v39 + 1) + 8 * j);
-            v19 = [v18 identifier];
-            v20 = [v12 containsObject:v19];
+            identifier = [v18 identifier];
+            v20 = [v12 containsObject:identifier];
 
             if ((v20 & 1) == 0)
             {
@@ -61,7 +61,7 @@
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v39 objects:v43 count:16];
+          v15 = [metadata countByEnumeratingWithState:&v39 objects:v43 count:16];
         }
 
         while (v15);
@@ -86,7 +86,7 @@
         [v11 addObject:v24];
       }
 
-      [v38 setMetadata:v11];
+      [firstObject setMetadata:v11];
       v27 = [v9 rc_writeMovieHeaderWithOptions:0 error:v36];
       v28 = v27;
       if (v36)
@@ -158,13 +158,13 @@ LABEL_29:
   v5 = [v4 tracksWithMediaType:*MEMORY[0x277CE5E48]];
   v6 = [v5 na_filter:&__block_literal_global_136_0];
 
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  firstObject = [v6 firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = [v7 metadata];
+    metadata = [firstObject metadata];
     v10 = transcriptionIdentifier([v3 isQuickTime]);
-    v11 = firstDataValue(v9, v10);
+    v11 = firstDataValue(metadata, v10);
   }
 
   else
@@ -177,15 +177,15 @@ LABEL_29:
 
 - (id)rc_transcriptionData
 {
-  v2 = [a1 rc_audioTracks];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  rc_audioTracks = [self rc_audioTracks];
+  firstObject = [rc_audioTracks firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [v3 metadata];
-    v6 = [a1 URL];
+    metadata = [firstObject metadata];
+    v6 = [self URL];
     v7 = transcriptionIdentifier([v6 isQuickTime]);
-    v8 = firstDataValue(v5, v7);
+    v8 = firstDataValue(metadata, v7);
   }
 
   else
@@ -198,16 +198,16 @@ LABEL_29:
 
 - (BOOL)rc_transcriptionDataExists
 {
-  v2 = [a1 rc_audioTracks];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  rc_audioTracks = [self rc_audioTracks];
+  firstObject = [rc_audioTracks firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
     v5 = MEMORY[0x277CE6520];
-    v6 = [v3 metadata];
-    v7 = [a1 URL];
+    metadata = [firstObject metadata];
+    v7 = [self URL];
     v8 = transcriptionIdentifier([v7 isQuickTime]);
-    v9 = [v5 metadataItemsFromArray:v6 filteredByIdentifier:v8];
+    v9 = [v5 metadataItemsFromArray:metadata filteredByIdentifier:v8];
     v10 = [v9 count] != 0;
   }
 

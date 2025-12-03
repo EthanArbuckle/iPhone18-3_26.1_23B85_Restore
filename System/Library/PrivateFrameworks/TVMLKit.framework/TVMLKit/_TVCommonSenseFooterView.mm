@@ -1,17 +1,17 @@
 @interface _TVCommonSenseFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TVCommonSenseFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TVCommonSenseFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLogoView:(id)a3;
+- (void)setLogoView:(id)view;
 @end
 
 @implementation _TVCommonSenseFooterView
 
-- (_TVCommonSenseFooterView)initWithFrame:(CGRect)a3
+- (_TVCommonSenseFooterView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _TVCommonSenseFooterView;
-  v3 = [(_TVCommonSenseFooterView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVCommonSenseFooterView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,33 +30,33 @@
   return v4;
 }
 
-- (void)setLogoView:(id)a3
+- (void)setLogoView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   logoView = self->_logoView;
-  if (logoView != v5)
+  if (logoView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (logoView)
     {
       [(UIView *)logoView removeFromSuperview];
       v7 = self->_logoView;
       self->_logoView = 0;
 
-      v5 = v8;
+      viewCopy = v8;
     }
 
-    if (v5)
+    if (viewCopy)
     {
-      objc_storeStrong(&self->_logoView, a3);
+      objc_storeStrong(&self->_logoView, view);
       [(_TVCommonSenseFooterView *)self addSubview:self->_logoView];
     }
 
     logoView = [(_TVCommonSenseFooterView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](logoView, v5);
+  MEMORY[0x2821F96F8](logoView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -78,9 +78,9 @@
   [(UIView *)self->_logoView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [(UIView *)self->_logoView sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   v5 = v4 + 1.0;
   v6 = width;

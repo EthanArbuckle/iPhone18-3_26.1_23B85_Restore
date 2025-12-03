@@ -1,20 +1,20 @@
 @interface _DPDediscoReporter
-+ (id)filterNonConformingDediscoRecordsFrom:(id)a3;
-- (BOOL)markSubmitted:(id)a3 storage:(id)a4;
-- (BOOL)reportDediscoKeys:(id)a3 storage:(id)a4;
-- (BOOL)reportDediscoRecords:(id)a3;
-- (id)directlyUploadDediscoRecords:(id)a3 forKey:(id)a4 keyProperties:(id)a5 storage:(id)a6;
-- (id)reportToDediscoRecords:(id)a3 forKey:(id)a4 keyProperties:(id)a5 storage:(id)a6;
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4;
++ (id)filterNonConformingDediscoRecordsFrom:(id)from;
+- (BOOL)markSubmitted:(id)submitted storage:(id)storage;
+- (BOOL)reportDediscoKeys:(id)keys storage:(id)storage;
+- (BOOL)reportDediscoRecords:(id)records;
+- (id)directlyUploadDediscoRecords:(id)records forKey:(id)key keyProperties:(id)properties storage:(id)storage;
+- (id)reportToDediscoRecords:(id)records forKey:(id)key keyProperties:(id)properties storage:(id)storage;
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database;
 @end
 
 @implementation _DPDediscoReporter
 
-- (BOOL)reportDediscoRecords:(id)a3
+- (BOOL)reportDediscoRecords:(id)records
 {
   v48 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  if (v37)
+  recordsCopy = records;
+  if (recordsCopy)
   {
     v5 = +[_DPLog daemon];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -39,8 +39,8 @@
         v10 = +[_DPKeyNames keyNamesGroupedByPropertyName];
         v36 = [MEMORY[0x277CBEBF8] mutableCopy];
         v32 = v10;
-        v28 = [v10 allKeys];
-        [objc_opt_class() randomizeKeys:v28 andSortByPriority:1];
+        allKeys = [v10 allKeys];
+        [objc_opt_class() randomizeKeys:allKeys andSortByPriority:1];
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
@@ -90,7 +90,7 @@
                     if ([v22 transport] == 4)
                     {
                       [v15 addObject:v21];
-                      v23 = [objc_opt_class() queryKeysForPattern:v21 storage:v37];
+                      v23 = [objc_opt_class() queryKeysForPattern:v21 storage:recordsCopy];
                       if ([v23 count])
                       {
                         v24 = [objc_opt_class() randomizeKeys:v23 andSortByPriority:0];
@@ -124,7 +124,7 @@
           while (v33);
         }
 
-        v27 = [(_DPDediscoReporter *)self reportDediscoKeys:v36 storage:v37];
+        v27 = [(_DPDediscoReporter *)self reportDediscoKeys:v36 storage:recordsCopy];
         objc_autoreleasePoolPop(v29);
         if (v27)
         {
@@ -157,12 +157,12 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)reportDediscoKeys:(id)a3 storage:(id)a4
+- (BOOL)reportDediscoKeys:(id)keys storage:(id)storage
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v45 = a4;
-  if (v45)
+  keysCopy = keys;
+  storageCopy = storage;
+  if (storageCopy)
   {
     v37 = objc_autoreleasePoolPush();
     v44 = [MEMORY[0x277CBEBF8] mutableCopy];
@@ -170,8 +170,8 @@ LABEL_12:
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v38 = v5;
-    v6 = v5;
+    v38 = keysCopy;
+    v6 = keysCopy;
     v7 = [v6 countByEnumeratingWithState:&v51 objects:v62 count:16];
     if (v7)
     {
@@ -199,7 +199,7 @@ LABEL_12:
           if (v15 && [v15 transport] == 4)
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = [objc_opt_class() queryRecordsForKey:v13 storage:v45];
+            v18 = [objc_opt_class() queryRecordsForKey:v13 storage:storageCopy];
             if ([v18 count])
             {
               v19 = [objc_opt_class() filterNonConformingDediscoRecordsFrom:v18];
@@ -239,7 +239,7 @@ LABEL_12:
 
                       v19 = [v21 objectForKeyedSubscript:*(*(&v47 + 1) + 8 * v25)];
 
-                      v27 = [(_DPDediscoReporter *)self directlyUploadDediscoRecords:v19 forKey:v13 keyProperties:v16 storage:v45];
+                      v27 = [(_DPDediscoReporter *)self directlyUploadDediscoRecords:v19 forKey:v13 keyProperties:v16 storage:storageCopy];
                       if ([v27 count])
                       {
                         [v44 addObjectsFromArray:v27];
@@ -328,14 +328,14 @@ LABEL_28:
     if ([v44 count])
     {
       v30 = objc_autoreleasePoolPush();
-      [_DPPrivacyBudget updateAllBudgetsIn:v45];
+      [_DPPrivacyBudget updateAllBudgetsIn:storageCopy];
       objc_autoreleasePoolPop(v30);
-      [(_DPDediscoReporter *)self markSubmitted:v44 storage:v45];
+      [(_DPDediscoReporter *)self markSubmitted:v44 storage:storageCopy];
     }
 
     v31 = 1;
 LABEL_39:
-    v5 = v38;
+    keysCopy = v38;
 
     objc_autoreleasePoolPop(v37);
   }
@@ -349,21 +349,21 @@ LABEL_39:
   return v31;
 }
 
-- (id)directlyUploadDediscoRecords:(id)a3 forKey:(id)a4 keyProperties:(id)a5 storage:(id)a6
+- (id)directlyUploadDediscoRecords:(id)records forKey:(id)key keyProperties:(id)properties storage:(id)storage
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [_DPPrivacyBudget enforceBudgetForRecords:v12 withKey:v9 inDatabase:v11];
-  v14 = [v12 count];
+  keyCopy = key;
+  propertiesCopy = properties;
+  storageCopy = storage;
+  recordsCopy = records;
+  v13 = [_DPPrivacyBudget enforceBudgetForRecords:recordsCopy withKey:keyCopy inDatabase:storageCopy];
+  v14 = [recordsCopy count];
 
   v15 = v14 - [v13 count];
-  v40 = v10;
-  v16 = [v10 telemetryAllowed];
+  v40 = propertiesCopy;
+  telemetryAllowed = [propertiesCopy telemetryAllowed];
   v17 = 1;
-  if ((v16 & 1) == 0)
+  if ((telemetryAllowed & 1) == 0)
   {
     v17 = +[_DPDeviceInfo isInternalBuild];
   }
@@ -371,12 +371,12 @@ LABEL_39:
   LOBYTE(v36) = v17;
   LODWORD(v34) = 1;
   HIDWORD(v34) = v15;
-  [_DPLHBitacoraLogger donateEventToBitacoraForKey:v9 eventPhase:3 uuid:0 succeeded:0 errorCode:301 errorMessage:@"No budget left" aggregateFunction:v34 count:v36 telemetryAllowed:?];
+  [_DPLHBitacoraLogger donateEventToBitacoraForKey:keyCopy eventPhase:3 uuid:0 succeeded:0 errorCode:301 errorMessage:@"No budget left" aggregateFunction:v34 count:v36 telemetryAllowed:?];
   v18 = +[_DPCoreAnalyticsCollector sharedInstance];
   v43[0] = @"Phase";
   v43[1] = @"TaskName";
   v44[0] = &unk_283975F28;
-  v44[1] = v9;
+  v44[1] = keyCopy;
   v44[2] = MEMORY[0x277CBEC28];
   v43[2] = @"Status";
   v43[3] = @"Counts";
@@ -388,10 +388,10 @@ LABEL_39:
   if ([v13 count])
   {
     v21 = [v13 count];
-    v22 = v10;
-    v23 = [v10 telemetryAllowed];
+    v22 = propertiesCopy;
+    telemetryAllowed2 = [propertiesCopy telemetryAllowed];
     v24 = 1;
-    if ((v23 & 1) == 0)
+    if ((telemetryAllowed2 & 1) == 0)
     {
       v24 = +[_DPDeviceInfo isInternalBuild];
     }
@@ -399,12 +399,12 @@ LABEL_39:
     LOBYTE(v37) = v24;
     LODWORD(v35) = 1;
     HIDWORD(v35) = v21;
-    [_DPLHBitacoraLogger donateEventToBitacoraForKey:v9 eventPhase:3 uuid:0 succeeded:1 errorCode:300 errorMessage:0 aggregateFunction:v35 count:v37 telemetryAllowed:?];
+    [_DPLHBitacoraLogger donateEventToBitacoraForKey:keyCopy eventPhase:3 uuid:0 succeeded:1 errorCode:300 errorMessage:0 aggregateFunction:v35 count:v37 telemetryAllowed:?];
     v25 = +[_DPCoreAnalyticsCollector sharedInstance];
     v41[0] = @"Phase";
     v41[1] = @"TaskName";
     v42[0] = &unk_283975F28;
-    v42[1] = v9;
+    v42[1] = keyCopy;
     v42[2] = MEMORY[0x277CBEC38];
     v41[2] = @"Status";
     v41[3] = @"Counts";
@@ -413,11 +413,11 @@ LABEL_39:
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:4];
     [v25 reportMetricsForEvent:@"com.apple.DifferentialPrivacy.PhaseCount" withMetrics:v27];
 
-    v28 = v11;
-    v29 = [(_DPDediscoReporter *)self reportToDediscoRecords:v13 forKey:v9 keyProperties:v40 storage:v11];
+    v28 = storageCopy;
+    v29 = [(_DPDediscoReporter *)self reportToDediscoRecords:v13 forKey:keyCopy keyProperties:v40 storage:storageCopy];
     if ([v29 count])
     {
-      [_DPPrivacyBudget updateBudgetForRecords:v29 withKey:v9 inDatabase:v11];
+      [_DPPrivacyBudget updateBudgetForRecords:v29 withKey:keyCopy inDatabase:storageCopy];
     }
 
     v30 = v29;
@@ -426,14 +426,14 @@ LABEL_39:
   else
   {
     v31 = +[_DPLog framework];
-    v22 = v10;
+    v22 = propertiesCopy;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
       [_DPDediscoReporter directlyUploadDediscoRecords:a2 forKey:? keyProperties:? storage:?];
     }
 
     v30 = MEMORY[0x277CBEBF8];
-    v28 = v11;
+    v28 = storageCopy;
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -441,20 +441,20 @@ LABEL_39:
   return v30;
 }
 
-- (id)reportToDediscoRecords:(id)a3 forKey:(id)a4 keyProperties:(id)a5 storage:(id)a6
+- (id)reportToDediscoRecords:(id)records forKey:(id)key keyProperties:(id)properties storage:(id)storage
 {
   v82 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v46 = a4;
-  v45 = a5;
-  v44 = a6;
+  recordsCopy = records;
+  keyCopy = key;
+  propertiesCopy = properties;
+  storageCopy = storage;
   v9 = +[_DPLog daemon];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = [v47 count];
+    *&buf[4] = [recordsCopy count];
     *&buf[12] = 2112;
-    *&buf[14] = v46;
+    *&buf[14] = keyCopy;
     _os_log_impl(&dword_22622D000, v9, OS_LOG_TYPE_DEFAULT, "Submitting %lu record(s) to Dedisco for key %@", buf, 0x16u);
   }
 
@@ -471,11 +471,11 @@ LABEL_39:
     v72[2] = __74___DPDediscoReporter_reportToDediscoRecords_forKey_keyProperties_storage___block_invoke;
     v72[3] = &unk_27858AEA8;
     v73 = @"com.apple.DPSubmissionService";
-    v53 = v46;
+    v53 = keyCopy;
     v74 = v53;
-    v11 = v47;
+    v11 = recordsCopy;
     v75 = v11;
-    v12 = v45;
+    v12 = propertiesCopy;
     v76 = v12;
     v51 = [v48 synchronousRemoteObjectProxyWithErrorHandler:v72];
     *buf = 0;
@@ -517,31 +517,31 @@ LABEL_39:
           v60[4] = __Block_byref_object_dispose__3;
           v16 = v15;
           v61 = v16;
-          v17 = [v12 parameterDictionary];
-          v18 = [v16 metadata];
-          v19 = [v18 objectForKeyedSubscript:@"dimensionality"];
+          parameterDictionary = [v12 parameterDictionary];
+          metadata = [v16 metadata];
+          v19 = [metadata objectForKeyedSubscript:@"dimensionality"];
 
           if (v19)
           {
-            v20 = [v17 mutableCopy];
+            v20 = [parameterDictionary mutableCopy];
             [v20 setObject:v19 forKey:@"size"];
             v21 = [v20 copy];
 
-            v17 = v21;
+            parameterDictionary = v21;
           }
 
-          v22 = [v16 metadata];
-          v23 = [v22 mutableCopy];
+          metadata2 = [v16 metadata];
+          v23 = [metadata2 mutableCopy];
 
           v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "telemetryAllowed")}];
           [v23 setObject:v24 forKeyedSubscript:@"telemetryAllowed"];
 
           v25 = [_DPDediscoDonation alloc];
-          v26 = [v16 share1];
-          v27 = [v16 share2];
-          v28 = [v16 dimension];
-          v29 = [v12 serverAlgorithmString];
-          v30 = [(_DPDediscoDonation *)v25 initWithKey:v53 share1:v26 share2:v27 dimension:v28 metadata:v23 serverAlgorithm:v29 algorithmParameters:v17];
+          share1 = [v16 share1];
+          share2 = [v16 share2];
+          dimension = [v16 dimension];
+          serverAlgorithmString = [v12 serverAlgorithmString];
+          v30 = [(_DPDediscoDonation *)v25 initWithKey:v53 share1:share1 share2:share2 dimension:dimension metadata:v23 serverAlgorithm:serverAlgorithmString algorithmParameters:parameterDictionary];
 
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
@@ -583,10 +583,10 @@ LABEL_39:
   else
   {
     v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not create connection to %@", @"com.apple.DPSubmissionService"];
-    v36 = [v47 count];
-    v37 = [v45 telemetryAllowed];
+    v36 = [recordsCopy count];
+    telemetryAllowed = [propertiesCopy telemetryAllowed];
     v38 = 1;
-    if ((v37 & 1) == 0)
+    if ((telemetryAllowed & 1) == 0)
     {
       v38 = +[_DPDeviceInfo isInternalBuild];
     }
@@ -594,7 +594,7 @@ LABEL_39:
     LOBYTE(v42) = v38;
     LODWORD(v41) = 1;
     HIDWORD(v41) = v36;
-    [_DPLHBitacoraLogger donateEventToBitacoraForKey:v46 eventPhase:4 uuid:0 succeeded:0 errorCode:411 errorMessage:v51 aggregateFunction:v41 count:v42 telemetryAllowed:context];
+    [_DPLHBitacoraLogger donateEventToBitacoraForKey:keyCopy eventPhase:4 uuid:0 succeeded:0 errorCode:411 errorMessage:v51 aggregateFunction:v41 count:v42 telemetryAllowed:context];
     v35 = +[_DPLog daemon];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -610,30 +610,30 @@ LABEL_39:
   return v34;
 }
 
-+ (id)filterNonConformingDediscoRecordsFrom:(id)a3
++ (id)filterNonConformingDediscoRecordsFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_3];
-  v5 = [v3 mutableCopy];
+  fromCopy = from;
+  v4 = [fromCopy indexesOfObjectsPassingTest:&__block_literal_global_3];
+  v5 = [fromCopy mutableCopy];
 
   [v5 removeObjectsAtIndexes:v4];
 
   return v5;
 }
 
-- (BOOL)markSubmitted:(id)a3 storage:(id)a4
+- (BOOL)markSubmitted:(id)submitted storage:(id)storage
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  submittedCopy = submitted;
+  storageCopy = storage;
+  if (storageCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = submittedCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -659,29 +659,29 @@ LABEL_39:
       while (v10);
     }
 
-    [v6 updateRecords:v8 withCompletion:0];
+    [storageCopy updateRecords:v8 withCompletion:0];
     objc_autoreleasePoolPop(v7);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v6 != 0;
+  return storageCopy != 0;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database
 {
-  v6 = a4;
+  databaseCopy = database;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __59___DPDediscoReporter_scheduleMaintenanceWithName_database___block_invoke;
   v14 = &unk_27858AF18;
-  v15 = self;
-  v16 = v6;
-  v7 = v6;
-  v8 = a3;
+  selfCopy = self;
+  v16 = databaseCopy;
+  v7 = databaseCopy;
+  nameCopy = name;
   v9 = MEMORY[0x22AA7A8C0](&v11);
-  v10 = [_DPPeriodicTask taskWithName:v8 period:kSecondsIn18Hours handler:v9 networkingRequired:1, v11, v12, v13, v14, v15];
+  selfCopy = [_DPPeriodicTask taskWithName:nameCopy period:kSecondsIn18Hours handler:v9 networkingRequired:1, v11, v12, v13, v14, selfCopy];
 
-  [_DPPeriodicTaskManager registerTask:v10];
+  [_DPPeriodicTaskManager registerTask:selfCopy];
 }
 
 - (void)reportDediscoRecords:(const char *)a1 .cold.1(const char *a1)

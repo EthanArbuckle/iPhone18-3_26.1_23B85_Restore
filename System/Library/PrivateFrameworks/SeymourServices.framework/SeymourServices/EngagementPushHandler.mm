@@ -1,6 +1,6 @@
 @interface EngagementPushHandler
 - (_TtC15SeymourServices21EngagementPushHandler)init;
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4;
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request;
 @end
 
 @implementation EngagementPushHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22745C6EC(v7);
+  payloadCopy = payload;
+  requestCopy = request;
+  selfCopy = self;
+  sub_22745C6EC(requestCopy);
 }
 
 @end

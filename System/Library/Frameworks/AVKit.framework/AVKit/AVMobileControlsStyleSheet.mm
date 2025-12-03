@@ -1,8 +1,8 @@
 @interface AVMobileControlsStyleSheet
-- (AVMobileControlsStyleSheet)initWithTraitCollection:(id)a3;
+- (AVMobileControlsStyleSheet)initWithTraitCollection:(id)collection;
 - (UIEdgeInsets)embeddedInlineInsets;
 - (UIEdgeInsets)landscapeFullscreenInsets;
-- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)a3 keyboardHeight:(double)a4 isFullScreen:(BOOL)a5;
+- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)view keyboardHeight:(double)height isFullScreen:(BOOL)screen;
 - (UIEdgeInsets)portraitFullscreenInsets;
 @end
 
@@ -21,29 +21,29 @@
   return result;
 }
 
-- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)a3 keyboardHeight:(double)a4 isFullScreen:(BOOL)a5
+- (UIEdgeInsets)playbackControlsViewLayoutMarginsForView:(id)view keyboardHeight:(double)height isFullScreen:(BOOL)screen
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(AVMobileControlsStyleSheet *)self traitCollection];
+  screenCopy = screen;
+  viewCopy = view;
+  traitCollection = [(AVMobileControlsStyleSheet *)self traitCollection];
   [(AVMobileControlsStyleSheet *)self standardPaddingFullScreen];
   v11 = v10;
-  v12 = [v9 userInterfaceIdiom];
-  [v8 safeAreaInsets];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  [viewCopy safeAreaInsets];
   v14 = v13;
   v89 = v15;
   v91 = v16;
   v86 = v17;
-  v18 = [v8 window];
-  v19 = [v18 windowScene];
-  v20 = v19;
+  window = [viewCopy window];
+  windowScene = [window windowScene];
+  v20 = windowScene;
   v93 = v14;
-  if (v18)
+  if (window)
   {
-    v85 = a4;
+    heightCopy = height;
     v87 = v11;
-    v21 = [v19 statusBarManager];
-    [v21 statusBarFrame];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -73,12 +73,12 @@
       v27 = v31;
     }
 
-    [v8 convertRect:v18 fromView:{v23, v25, v27, Width}];
+    [viewCopy convertRect:window fromView:{v23, v25, v27, Width}];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    [v8 bounds];
+    [viewCopy bounds];
     v106.origin.x = v40;
     v106.origin.y = v41;
     v106.size.width = v42;
@@ -99,8 +99,8 @@
       v45 = 0.0;
     }
 
-    [v8 bounds];
-    [v18 convertRect:v8 fromView:?];
+    [viewCopy bounds];
+    [window convertRect:viewCopy fromView:?];
     v14 = v93;
     v46 = v93 + CGRectGetMinY(v101);
     v102.origin.x = v23;
@@ -109,8 +109,8 @@
     v102.size.height = Width;
     v11 = v87;
     v47 = v46 > v87 * 0.5 + CGRectGetMaxY(v102);
-    a4 = v85;
-    if (!v5)
+    height = heightCopy;
+    if (!screenCopy)
     {
       goto LABEL_21;
     }
@@ -120,26 +120,26 @@
   {
     v47 = 0;
     v45 = 0.0;
-    if (!v5)
+    if (!screenCopy)
     {
 LABEL_21:
-      v59 = [v8 window];
-      v60 = [v59 screen];
+      window2 = [viewCopy window];
+      screen = [window2 screen];
 
       [(AVMobileControlsStyleSheet *)self embeddedInlineInsets];
-      v61 = [MEMORY[0x1E69DC938] currentDevice];
-      [v61 orientation];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      [currentDevice orientation];
 
-      [v60 _peripheryInsets];
+      [screen _peripheryInsets];
       UIEdgeInsetsAdd();
       v63 = v62;
       v65 = v64;
       v88 = v66;
       v90 = v67;
-      v68 = [v8 avkit_isDescendantOfNonPagingScrollView];
+      avkit_isDescendantOfNonPagingScrollView = [viewCopy avkit_isDescendantOfNonPagingScrollView];
       v69 = v93 + v63;
       v70 = v91 + v65;
-      if (v68)
+      if (avkit_isDescendantOfNonPagingScrollView)
       {
         v70 = v65;
         v69 = v63;
@@ -152,13 +152,13 @@ LABEL_21:
     }
   }
 
-  if (v12 == 5)
+  if (userInterfaceIdiom == 5)
   {
     goto LABEL_21;
   }
 
-  v48 = v11 + a4;
-  if (a4 >= 100.0)
+  v48 = v11 + height;
+  if (height >= 100.0)
   {
     v48 = 0.0;
   }
@@ -173,7 +173,7 @@ LABEL_21:
     v49 = v48;
   }
 
-  [v9 displayCornerRadius];
+  [traitCollection displayCornerRadius];
   if (v50 <= 0.0)
   {
     v71 = v11 * 0.5 + v45;
@@ -198,9 +198,9 @@ LABEL_21:
     v51 = MEMORY[0x1E69DDA98];
     if ([*MEMORY[0x1E69DDA98] _isClassic] && objc_msgSend(*v51, "_classicMode") != 5)
     {
-      [v8 bounds];
+      [viewCopy bounds];
       v76 = CGRectGetWidth(v103);
-      [v8 bounds];
+      [viewCopy bounds];
       if (v76 <= CGRectGetHeight(v104))
       {
         v77 = v11;
@@ -219,7 +219,7 @@ LABEL_21:
 
     else
     {
-      [v8 avkit_overrideLayoutMarginsForCounterRotation];
+      [viewCopy avkit_overrideLayoutMarginsForCounterRotation];
       v56.f64[0] = v52;
       v56.f64[1] = v53;
       v57.f64[0] = v54;
@@ -324,21 +324,21 @@ LABEL_48:
   return result;
 }
 
-- (AVMobileControlsStyleSheet)initWithTraitCollection:(id)a3
+- (AVMobileControlsStyleSheet)initWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = AVMobileControlsStyleSheet;
   v6 = [(AVMobileControlsStyleSheet *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traitCollection, a3);
-    if ([v5 userInterfaceIdiom])
+    objc_storeStrong(&v6->_traitCollection, collection);
+    if ([collectionCopy userInterfaceIdiom])
     {
-      v8 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
       v9 = 25.0;
-      if (v8 != 1)
+      if (userInterfaceIdiom != 1)
       {
         goto LABEL_7;
       }

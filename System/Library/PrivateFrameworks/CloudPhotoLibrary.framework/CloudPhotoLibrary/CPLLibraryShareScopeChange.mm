@@ -1,17 +1,17 @@
 @interface CPLLibraryShareScopeChange
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3;
-+ (id)descriptionForExitState:(int64_t)a3;
-+ (id)descriptionForExitType:(int64_t)a3;
++ (id)cplAdditionalSecureClassesForProperty:(id)property;
++ (id)descriptionForExitState:(int64_t)state;
++ (id)descriptionForExitType:(int64_t)type;
 + (id)mappingForExitState;
 + (id)mappingForExitType;
 - (BOOL)isCurrentUserExiting;
 - (NSArray)exitingUserIdentifiers;
 - (id)_additionalDescription;
 - (int64_t)exitState;
-- (void)addExitingUserIdentifiers:(id)a3;
-- (void)removePendingParticipantIDs:(id)a3;
-- (void)setExitingUserIdentifiers:(id)a3;
-- (void)updateScopeFromScopeChange:(id)a3 direction:(unint64_t)a4 didHaveChanges:(BOOL *)a5;
+- (void)addExitingUserIdentifiers:(id)identifiers;
+- (void)removePendingParticipantIDs:(id)ds;
+- (void)setExitingUserIdentifiers:(id)identifiers;
+- (void)updateScopeFromScopeChange:(id)change direction:(unint64_t)direction didHaveChanges:(BOOL *)changes;
 @end
 
 @implementation CPLLibraryShareScopeChange
@@ -24,37 +24,37 @@
     v4 = [objc_opt_class() descriptionForExitState:{-[CPLLibraryShareScopeChange exitState](self, "exitState")}];
     v5 = [objc_opt_class() descriptionForExitType:{-[CPLLibraryShareScopeChange exitType](self, "exitType")}];
     v6 = [CPLLibraryManager descriptionForExitSource:[(CPLLibraryShareScopeChange *)self exitSource]];
-    v7 = [v3 initWithFormat:@" - exitState: %@, exitType: %@, exitSource: %@", v4, v5, v6];
+    _additionalDescription = [v3 initWithFormat:@" - exitState: %@, exitType: %@, exitSource: %@", v4, v5, v6];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CPLLibraryShareScopeChange;
-    v7 = [(CPLScopeChange *)&v9 _additionalDescription];
+    _additionalDescription = [(CPLScopeChange *)&v9 _additionalDescription];
   }
 
-  return v7;
+  return _additionalDescription;
 }
 
-- (void)updateScopeFromScopeChange:(id)a3 direction:(unint64_t)a4 didHaveChanges:(BOOL *)a5
+- (void)updateScopeFromScopeChange:(id)change direction:(unint64_t)direction didHaveChanges:(BOOL *)changes
 {
-  v8 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = CPLLibraryShareScopeChange;
-  [(CPLScopeChange *)&v19 updateScopeFromScopeChange:v8 direction:a4 didHaveChanges:a5];
-  if (a4 != 1)
+  [(CPLScopeChange *)&v19 updateScopeFromScopeChange:changeCopy direction:direction didHaveChanges:changes];
+  if (direction != 1)
   {
     goto LABEL_14;
   }
 
-  v9 = [v8 userDefinedRules];
-  v10 = [(CPLLibraryShareScopeChange *)self userDefinedRules];
-  v11 = v10;
-  if (!v9 || !v10)
+  userDefinedRules = [changeCopy userDefinedRules];
+  userDefinedRules2 = [(CPLLibraryShareScopeChange *)self userDefinedRules];
+  v11 = userDefinedRules2;
+  if (!userDefinedRules || !userDefinedRules2)
   {
 
-    if (!(v9 | v11))
+    if (!(userDefinedRules | v11))
     {
       goto LABEL_8;
     }
@@ -62,24 +62,24 @@
     goto LABEL_7;
   }
 
-  v12 = [v9 isEqual:v10];
+  v12 = [userDefinedRules isEqual:userDefinedRules2];
 
   if ((v12 & 1) == 0)
   {
 LABEL_7:
-    v13 = [v8 userDefinedRules];
-    [(CPLLibraryShareScopeChange *)self setUserDefinedRules:v13];
+    userDefinedRules3 = [changeCopy userDefinedRules];
+    [(CPLLibraryShareScopeChange *)self setUserDefinedRules:userDefinedRules3];
 
-    *a5 = 1;
+    *changes = 1;
   }
 
 LABEL_8:
-  v14 = [v8 userViewedParticipantTrashNotificationDate];
-  v15 = [(CPLLibraryShareScopeChange *)self userViewedParticipantTrashNotificationDate];
-  v16 = v15;
-  if (v14 && v15)
+  userViewedParticipantTrashNotificationDate = [changeCopy userViewedParticipantTrashNotificationDate];
+  userViewedParticipantTrashNotificationDate2 = [(CPLLibraryShareScopeChange *)self userViewedParticipantTrashNotificationDate];
+  v16 = userViewedParticipantTrashNotificationDate2;
+  if (userViewedParticipantTrashNotificationDate && userViewedParticipantTrashNotificationDate2)
   {
-    v17 = [v14 isEqual:v15];
+    v17 = [userViewedParticipantTrashNotificationDate isEqual:userViewedParticipantTrashNotificationDate2];
 
     if (v17)
     {
@@ -89,36 +89,36 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if (v14 | v16)
+  if (userViewedParticipantTrashNotificationDate | v16)
   {
 LABEL_13:
-    v18 = [v8 userViewedParticipantTrashNotificationDate];
-    [(CPLLibraryShareScopeChange *)self setUserViewedParticipantTrashNotificationDate:v18];
+    userViewedParticipantTrashNotificationDate3 = [changeCopy userViewedParticipantTrashNotificationDate];
+    [(CPLLibraryShareScopeChange *)self setUserViewedParticipantTrashNotificationDate:userViewedParticipantTrashNotificationDate3];
 
-    *a5 = 1;
+    *changes = 1;
   }
 
 LABEL_14:
 }
 
-- (void)removePendingParticipantIDs:(id)a3
+- (void)removePendingParticipantIDs:(id)ds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [(CPLScopeChange *)self share];
-    v6 = [v5 participants];
+    share = [(CPLScopeChange *)self share];
+    participants = [share participants];
 
-    v7 = [v4 count];
-    if (v7 >= [v6 count])
+    v7 = [dsCopy count];
+    if (v7 >= [participants count])
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count") - objc_msgSend(v4, "count")}];
+      v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(participants, "count") - objc_msgSend(dsCopy, "count")}];
     }
 
     v9 = v8;
@@ -126,7 +126,7 @@ LABEL_14:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = participants;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -142,8 +142,8 @@ LABEL_14:
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [v15 participantID];
-          if (!v16 || ([v4 containsObject:v16] & 1) == 0)
+          participantID = [v15 participantID];
+          if (!participantID || ([dsCopy containsObject:participantID] & 1) == 0)
           {
             [v9 addObject:v15];
           }
@@ -156,28 +156,28 @@ LABEL_14:
     }
 
     v17 = [v9 copy];
-    v18 = [(CPLScopeChange *)self share];
-    [v18 setParticipants:v17];
+    share2 = [(CPLScopeChange *)self share];
+    [share2 setParticipants:v17];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addExitingUserIdentifiers:(id)a3
+- (void)addExitingUserIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(CPLScopeChange *)self share];
-    v7 = [v6 participants];
+    share = [(CPLScopeChange *)self share];
+    participants = [share participants];
 
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v8 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -189,20 +189,20 @@ LABEL_14:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(participants);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * v11) userIdentifier];
-          if (v12 && [v4 containsObject:v12])
+          userIdentifier = [*(*(&v16 + 1) + 8 * v11) userIdentifier];
+          if (userIdentifier && [identifiersCopy containsObject:userIdentifier])
           {
-            [v5 addObject:v12];
+            [v5 addObject:userIdentifier];
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [participants countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -227,9 +227,9 @@ LABEL_14:
 
 - (int64_t)exitState
 {
-  v3 = [(CPLScopeChange *)self stagingScopeIdentifier];
+  stagingScopeIdentifier = [(CPLScopeChange *)self stagingScopeIdentifier];
 
-  if (v3)
+  if (stagingScopeIdentifier)
   {
     return 2;
   }
@@ -244,8 +244,8 @@ LABEL_14:
     return 1;
   }
 
-  v5 = [(CPLLibraryShareScopeChange *)self exitingUserIdentifiers];
-  v6 = [v5 count];
+  exitingUserIdentifiers = [(CPLLibraryShareScopeChange *)self exitingUserIdentifiers];
+  v6 = [exitingUserIdentifiers count];
 
   if (v6 == 1)
   {
@@ -260,16 +260,16 @@ LABEL_14:
 
 - (BOOL)isCurrentUserExiting
 {
-  v3 = [(CPLScopeChange *)self share];
-  v4 = [v3 currentUserParticipant];
+  share = [(CPLScopeChange *)self share];
+  currentUserParticipant = [share currentUserParticipant];
 
-  if (v4)
+  if (currentUserParticipant)
   {
-    v5 = [v4 userIdentifier];
-    if (v5)
+    userIdentifier = [currentUserParticipant userIdentifier];
+    if (userIdentifier)
     {
-      v6 = [v4 userIdentifier];
-      v7 = [(CPLLibraryShareScopeChange *)self isUserWithIdentifierExiting:v6];
+      userIdentifier2 = [currentUserParticipant userIdentifier];
+      v7 = [(CPLLibraryShareScopeChange *)self isUserWithIdentifierExiting:userIdentifier2];
     }
 
     else
@@ -286,13 +286,13 @@ LABEL_14:
   return v7;
 }
 
-- (void)setExitingUserIdentifiers:(id)a3
+- (void)setExitingUserIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v4 = [v6 count];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy count];
   if (v4)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v6];
+    v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
   }
 
   exitingUserIdentifiers = self->_exitingUserIdentifiers;
@@ -303,8 +303,8 @@ LABEL_14:
 {
   if ([(NSSet *)self->_exitingUserIdentifiers count])
   {
-    v3 = [(NSSet *)self->_exitingUserIdentifiers allObjects];
-    v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [(NSSet *)self->_exitingUserIdentifiers allObjects];
+    v4 = [allObjects sortedArrayUsingSelector:sel_compare_];
   }
 
   else
@@ -315,23 +315,23 @@ LABEL_14:
   return v4;
 }
 
-+ (id)descriptionForExitType:(int64_t)a3
++ (id)descriptionForExitType:(int64_t)type
 {
-  v4 = [a1 mappingForExitType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mappingForExitType = [self mappingForExitType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [mappingForExitType objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = v6;
+    type = v6;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown exit type (%ld)", a3];
+    type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown exit type (%ld)", type];
   }
 
-  v8 = v7;
+  v8 = type;
 
   return v8;
 }
@@ -366,23 +366,23 @@ void __48__CPLLibraryShareScopeChange_mappingForExitType__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)descriptionForExitState:(int64_t)a3
++ (id)descriptionForExitState:(int64_t)state
 {
-  v4 = [a1 mappingForExitState];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mappingForExitState = [self mappingForExitState];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  v6 = [mappingForExitState objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = v6;
+    state = v6;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown exit state (%ld)", a3];
+    state = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown exit state (%ld)", state];
   }
 
-  v8 = v7;
+  v8 = state;
 
   return v8;
 }
@@ -415,10 +415,10 @@ void __49__CPLLibraryShareScopeChange_mappingForExitState__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3
++ (id)cplAdditionalSecureClassesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"exitingUserIdentifiers"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"exitingUserIdentifiers"])
   {
     if (cplAdditionalSecureClassesForProperty__onceToken_152 != -1)
     {
@@ -430,9 +430,9 @@ void __49__CPLLibraryShareScopeChange_mappingForExitState__block_invoke()
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___CPLLibraryShareScopeChange;
-    v5 = objc_msgSendSuper2(&v8, sel_cplAdditionalSecureClassesForProperty_, v4);
+    v5 = objc_msgSendSuper2(&v8, sel_cplAdditionalSecureClassesForProperty_, propertyCopy);
   }
 
   v6 = v5;

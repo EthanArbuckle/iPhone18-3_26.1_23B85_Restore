@@ -1,16 +1,16 @@
 @interface RPMicAudioCaptureManager
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)a3;
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)stereo;
 + (AudioStreamBasicDescription)descriptionForHQLR;
 - (RPMicAudioCaptureManager)init;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)checkAndHandleMicInterruption;
 - (void)dealloc;
 - (void)dispatchedDidStartHandler;
-- (void)handleAudioSessionInterruption:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCaptureSession:(id)a3;
+- (void)handleAudioSessionInterruption:(id)interruption;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCaptureSession:(id)session;
 - (void)startCaptureSession;
-- (void)startMicrophoneCaptureWithOutput:(id)a3 didStartHandler:(id)a4 useRemoteIOFormat:(BOOL)a5;
+- (void)startMicrophoneCaptureWithOutput:(id)output didStartHandler:(id)handler useRemoteIOFormat:(BOOL)format;
 - (void)stopAllCapture;
 - (void)stopCaptureSession;
 - (void)stopMicrophoneCapture;
@@ -18,7 +18,7 @@
 
 @implementation RPMicAudioCaptureManager
 
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)a3
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionWithStereo:(SEL)stereo
 {
   retstr->mSampleRate = 44100.0;
   *&retstr->mFormatID = 0xE6C70636DLL;
@@ -53,24 +53,24 @@
 + (AudioStreamBasicDescription)descriptionForHQLR
 {
   v7 = [[AVAudioFormat alloc] initWithCommonFormat:1 sampleRate:1 channels:0 interleaved:48000.0];
-  v4 = [v7 streamDescription];
-  v5 = v4[1];
-  *&retstr->mSampleRate = *v4;
+  streamDescription = [v7 streamDescription];
+  v5 = streamDescription[1];
+  *&retstr->mSampleRate = *streamDescription;
   *&retstr->mBytesPerPacket = v5;
-  *&retstr->mBitsPerChannel = *(v4 + 4);
+  *&retstr->mBitsPerChannel = *(streamDescription + 4);
 
   return result;
 }
 
-- (void)handleAudioSessionInterruption:(id)a3
+- (void)handleAudioSessionInterruption:(id)interruption
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVAudioSessionInterruptionTypeKey];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [interruption userInfo];
+  v5 = [userInfo objectForKey:AVAudioSessionInterruptionTypeKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6)
+  if (unsignedIntegerValue)
   {
-    if (v6 == 1)
+    if (unsignedIntegerValue == 1)
     {
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -191,10 +191,10 @@
   self->_lastMicAudioDate = 0;
 }
 
-- (void)startMicrophoneCaptureWithOutput:(id)a3 didStartHandler:(id)a4 useRemoteIOFormat:(BOOL)a5
+- (void)startMicrophoneCaptureWithOutput:(id)output didStartHandler:(id)handler useRemoteIOFormat:(BOOL)format
 {
-  v8 = a3;
-  v9 = a4;
+  outputCopy = output;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -210,23 +210,23 @@
   v13[2] = sub_100006904;
   v13[3] = &unk_1000A1150;
   v13[4] = self;
-  v14 = v8;
-  v16 = a5;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = outputCopy;
+  formatCopy = format;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = outputCopy;
   dispatch_async(audioDispatchQueue, v13);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"running"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"running"])
   {
     [(RPMicAudioCaptureManager *)self dispatchedDidStartHandler];
-    [v10 removeObserver:self forKeyPath:@"running"];
+    [objectCopy removeObserver:self forKeyPath:@"running"];
   }
 }
 
@@ -241,14 +241,14 @@
   dispatch_sync(audioDispatchQueue, block);
 }
 
-- (void)setCaptureSession:(id)a3
+- (void)setCaptureSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   captureSession = self->_captureSession;
-  if (captureSession != v5)
+  if (captureSession != sessionCopy)
   {
     [(AVCaptureSession *)captureSession removeObserver:self forKeyPath:@"running"];
-    objc_storeStrong(&self->_captureSession, a3);
+    objc_storeStrong(&self->_captureSession, session);
   }
 }
 
@@ -292,16 +292,16 @@
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
-  if (self->_captureSessionAudioDataOutput == v8 && self->_microphoneOutputHandler)
+  outputCopy = output;
+  connectionCopy = connection;
+  if (self->_captureSessionAudioDataOutput == outputCopy && self->_microphoneOutputHandler)
   {
     [(RPMicAudioCaptureManager *)self checkAndHandleMicInterruption];
     if (!self->_lastMicAudioDate)
     {
-      v10 = sub_100057EA8(a4);
+      v10 = sub_100057EA8(buffer);
       if (dword_1000B6840 <= 1)
       {
         v11 = *&v10;
@@ -319,13 +319,13 @@
     }
 
     v12 = +[NSDate date];
-    CMSampleBufferGetDuration(buf, a4);
+    CMSampleBufferGetDuration(buf, buffer);
     v13 = [v12 dateByAddingTimeInterval:CMTimeGetSeconds(buf)];
     lastMicAudioDate = self->_lastMicAudioDate;
     self->_lastMicAudioDate = v13;
 
-    CMSampleBufferGetPresentationTimeStamp(&lhs, a4);
-    CMSampleBufferGetDuration(&v15, a4);
+    CMSampleBufferGetPresentationTimeStamp(&lhs, buffer);
+    CMSampleBufferGetDuration(&v15, buffer);
     CMTimeAdd(buf, &lhs, &v15);
     *&self->_micInterruptionPresentationTimeStamp.value = *buf;
     self->_micInterruptionPresentationTimeStamp.epoch = *&buf[16];

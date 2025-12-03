@@ -1,13 +1,13 @@
 @interface FBSSettingsDiffInspector
 - (FBSSettingsDiffInspector)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_observeSetting:(void *)a3 withBlock:;
+- (void)_observeSetting:(void *)setting withBlock:;
 - (void)dealloc;
-- (void)inspectDiff:(id)a3 withContext:(void *)a4;
-- (void)observeOtherSetting:(unint64_t)a3 withBlock:(id)a4;
-- (void)observeProperty:(SEL)a3 withBlock:(id)a4;
+- (void)inspectDiff:(id)diff withContext:(void *)context;
+- (void)observeOtherSetting:(unint64_t)setting withBlock:(id)block;
+- (void)observeProperty:(SEL)property withBlock:(id)block;
 - (void)removeAllObservers;
 @end
 
@@ -37,7 +37,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"can't remove observers in the middle of an iteration"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -54,7 +54,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dealloced in the middle of an iteration"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -66,29 +66,29 @@
   _bs_set_crash_log_message();
 }
 
-- (void)inspectDiff:(id)a3 withContext:(void *)a4
+- (void)inspectDiff:(id)diff withContext:(void *)context
 {
-  v7 = a3;
+  diffCopy = diff;
   if (self->_iteratingObservers)
   {
     [FBSSettingsDiffInspector inspectDiff:a2 withContext:?];
   }
 
-  v8 = v7;
+  v8 = diffCopy;
   self->_iteratingObservers = 1;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__FBSSettingsDiffInspector_inspectDiff_withContext___block_invoke;
   v10[3] = &unk_1E76BE540;
   v10[4] = self;
-  v10[5] = a4;
-  [v7 inspectChangesWithBlock:v10];
+  v10[5] = context;
+  [diffCopy inspectChangesWithBlock:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__FBSSettingsDiffInspector_inspectDiff_withContext___block_invoke_2;
   v9[3] = &unk_1E76BE568;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = context;
   [v8 inspectOtherChangesWithBlock:v9];
   self->_iteratingObservers = 0;
 }
@@ -161,44 +161,44 @@ void __52__FBSSettingsDiffInspector_inspectDiff_withContext___block_invoke_2(uin
   }
 }
 
-- (void)_observeSetting:(void *)a3 withBlock:
+- (void)_observeSetting:(void *)setting withBlock:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  settingCopy = setting;
+  if (self)
   {
     if (!v5)
     {
       [FBSSettingsDiffInspector _observeSetting:? withBlock:?];
     }
 
-    if (!v6)
+    if (!settingCopy)
     {
       [FBSSettingsDiffInspector _observeSetting:? withBlock:?];
     }
 
-    if (*(a1 + 24) == 1)
+    if (*(self + 24) == 1)
     {
       [FBSSettingsDiffInspector _observeSetting:? withBlock:?];
     }
 
-    [(FBSSettingsDiffInspector *)v6 _observeSetting:v5 withBlock:a1, v7];
+    [(FBSSettingsDiffInspector *)settingCopy _observeSetting:v5 withBlock:self, v7];
   }
 }
 
-- (void)observeOtherSetting:(unint64_t)a3 withBlock:(id)a4
+- (void)observeOtherSetting:(unint64_t)setting withBlock:(id)block
 {
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (self->_iteratingObservers)
     {
       [FBSSettingsDiffInspector observeOtherSetting:a2 withBlock:?];
     }
 
-    v11 = v7;
-    v8 = [v7 copy];
-    v9 = [(BSMutableSettings *)self->_otherSettingsObserverInfo objectForSetting:a3];
+    v11 = blockCopy;
+    v8 = [blockCopy copy];
+    v9 = [(BSMutableSettings *)self->_otherSettingsObserverInfo objectForSetting:setting];
     if (v9)
     {
       v10 = v9;
@@ -208,47 +208,47 @@ void __52__FBSSettingsDiffInspector_inspectDiff_withContext___block_invoke_2(uin
     else
     {
       v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v8, 0}];
-      [(BSMutableSettings *)self->_otherSettingsObserverInfo setObject:v10 forSetting:a3];
+      [(BSMutableSettings *)self->_otherSettingsObserverInfo setObject:v10 forSetting:setting];
     }
 
-    v7 = v11;
+    blockCopy = v11;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSettingsDiffInspector *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSettingsDiffInspector *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSettingsDiffInspector *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSettingsDiffInspector *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSettingsDiffInspector *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSettingsDiffInspector *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__FBSSettingsDiffInspector_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
 }
 
-- (void)observeProperty:(SEL)a3 withBlock:(id)a4
+- (void)observeProperty:(SEL)property withBlock:(id)block
 {
   v6 = objc_opt_class();
 

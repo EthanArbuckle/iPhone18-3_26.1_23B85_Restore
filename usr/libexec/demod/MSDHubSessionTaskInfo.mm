@@ -1,7 +1,7 @@
 @interface MSDHubSessionTaskInfo
 - (BOOL)addAuthHeader;
 - (BOOL)isValid;
-- (id)getRequestForTimeout:(double)a3;
+- (id)getRequestForTimeout:(double)timeout;
 @end
 
 @implementation MSDHubSessionTaskInfo
@@ -15,11 +15,11 @@
     return 0;
   }
 
-  v3 = [(MSDHubSessionTaskInfo *)self hmacKey];
-  if (v3)
+  hmacKey = [(MSDHubSessionTaskInfo *)self hmacKey];
+  if (hmacKey)
   {
-    v4 = [(MSDHubSessionTaskInfo *)self deviceUDID];
-    v5 = v4 != 0;
+    deviceUDID = [(MSDHubSessionTaskInfo *)self deviceUDID];
+    v5 = deviceUDID != 0;
   }
 
   else
@@ -32,9 +32,9 @@
 
 - (BOOL)addAuthHeader
 {
-  v3 = [(MSDHubSessionTaskInfo *)self hmacKey];
+  hmacKey = [(MSDHubSessionTaskInfo *)self hmacKey];
 
-  if (!v3)
+  if (!hmacKey)
   {
     v14 = sub_100063A54();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -46,8 +46,8 @@
   }
 
   v4 = [AluminiumAuthenticator alloc];
-  v5 = [(MSDHubSessionTaskInfo *)self hmacKey];
-  v6 = [(AluminiumAuthenticator *)v4 initWithASCIIEncodedKey:v5];
+  hmacKey2 = [(MSDHubSessionTaskInfo *)self hmacKey];
+  v6 = [(AluminiumAuthenticator *)v4 initWithASCIIEncodedKey:hmacKey2];
 
   if (!v6)
   {
@@ -68,10 +68,10 @@ LABEL_13:
   }
 
   v7 = [NSSet setWithObjects:@"X-Apple-OTA-UDID", @"X-Apple-HMAC-Sent-Timestamp", @"Host", 0];
-  v8 = [(MSDSessionTaskInfo *)self request];
-  v9 = [(MSDSessionTaskInfo *)self postData];
+  request = [(MSDSessionTaskInfo *)self request];
+  postData = [(MSDSessionTaskInfo *)self postData];
   v15 = 0;
-  v10 = [(AluminiumAuthenticator *)v6 addAuthenticationHeadersToRequest:v8 includedHeaders:v7 body:v9 algorithm:0 error:&v15];
+  v10 = [(AluminiumAuthenticator *)v6 addAuthenticationHeadersToRequest:request includedHeaders:v7 body:postData algorithm:0 error:&v15];
   v11 = v15;
 
   if ((v10 & 1) == 0)
@@ -91,52 +91,52 @@ LABEL_5:
   return v12;
 }
 
-- (id)getRequestForTimeout:(double)a3
+- (id)getRequestForTimeout:(double)timeout
 {
-  v5 = [(MSDHubSessionTaskInfo *)self deviceUDID];
+  deviceUDID = [(MSDHubSessionTaskInfo *)self deviceUDID];
 
-  if (v5)
+  if (deviceUDID)
   {
-    v6 = [(MSDHubSessionTaskInfo *)self server];
-    v7 = [(MSDHubSessionTaskInfo *)self port];
-    v8 = [(MSDHubSessionTaskInfo *)self endpoint];
-    v9 = [NSString stringWithFormat:@"https://%@:%@%@", v6, v7, v8];
+    server = [(MSDHubSessionTaskInfo *)self server];
+    port = [(MSDHubSessionTaskInfo *)self port];
+    endpoint = [(MSDHubSessionTaskInfo *)self endpoint];
+    v9 = [NSString stringWithFormat:@"https://%@:%@%@", server, port, endpoint];
     v10 = [NSURL URLWithString:v9];
 
-    v11 = [[NSMutableURLRequest alloc] initWithURL:v10 cachePolicy:1 timeoutInterval:a3];
+    v11 = [[NSMutableURLRequest alloc] initWithURL:v10 cachePolicy:1 timeoutInterval:timeout];
     [(MSDSessionTaskInfo *)self setRequest:v11];
 
-    v12 = [(MSDSessionTaskInfo *)self postData];
+    postData = [(MSDSessionTaskInfo *)self postData];
 
-    v13 = [(MSDSessionTaskInfo *)self request];
-    v14 = v13;
-    if (v12)
+    request = [(MSDSessionTaskInfo *)self request];
+    request2 = request;
+    if (postData)
     {
-      [v13 setHTTPMethod:@"POST"];
+      [request setHTTPMethod:@"POST"];
 
-      v14 = [(MSDSessionTaskInfo *)self request];
-      [v14 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+      request2 = [(MSDSessionTaskInfo *)self request];
+      [request2 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     }
 
     else
     {
-      [v13 setHTTPMethod:@"GET"];
+      [request setHTTPMethod:@"GET"];
     }
 
-    v15 = [(MSDSessionTaskInfo *)self request];
-    [v15 setValue:@"15" forHTTPHeaderField:@"X-Protocol-Version"];
+    request3 = [(MSDSessionTaskInfo *)self request];
+    [request3 setValue:@"15" forHTTPHeaderField:@"X-Protocol-Version"];
 
-    v16 = [(MSDHubSessionTaskInfo *)self deviceUDID];
+    deviceUDID2 = [(MSDHubSessionTaskInfo *)self deviceUDID];
 
-    if (v16)
+    if (deviceUDID2)
     {
-      v17 = [(MSDSessionTaskInfo *)self request];
-      v18 = [(MSDHubSessionTaskInfo *)self deviceUDID];
-      [v17 setValue:v18 forHTTPHeaderField:@"X-Apple-OTA-UDID"];
+      request4 = [(MSDSessionTaskInfo *)self request];
+      deviceUDID3 = [(MSDHubSessionTaskInfo *)self deviceUDID];
+      [request4 setValue:deviceUDID3 forHTTPHeaderField:@"X-Apple-OTA-UDID"];
 
       if ([(MSDHubSessionTaskInfo *)self addAuthHeader])
       {
-        v19 = [(MSDSessionTaskInfo *)self request];
+        request5 = [(MSDSessionTaskInfo *)self request];
         goto LABEL_8;
       }
     }
@@ -164,10 +164,10 @@ LABEL_5:
     v10 = 0;
   }
 
-  v19 = 0;
+  request5 = 0;
 LABEL_8:
 
-  return v19;
+  return request5;
 }
 
 @end

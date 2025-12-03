@@ -1,20 +1,20 @@
 @interface NEDNSResourceRecord
-- (void)initFromByteParser:(void *)a1;
+- (void)initFromByteParser:(void *)parser;
 @end
 
 @implementation NEDNSResourceRecord
 
-- (void)initFromByteParser:(void *)a1
+- (void)initFromByteParser:(void *)parser
 {
   v3 = a2;
-  if (!a1)
+  if (!parser)
   {
     v14 = 0;
     goto LABEL_29;
   }
 
   v43 = 1;
-  v42.receiver = a1;
+  v42.receiver = parser;
   v42.super_class = NEDNSResourceRecord;
   v5 = objc_msgSendSuper2(&v42, sel_init);
   if (!v5)
@@ -22,17 +22,17 @@
     goto LABEL_27;
   }
 
-  v6 = [(NEByteParser *)v3 parseDomainName];
+  parseDomainName = [(NEByteParser *)v3 parseDomainName];
   v7 = v5[2];
-  v5[2] = v6;
+  v5[2] = parseDomainName;
 
   if (v5[2])
   {
     v5[1] = [(NEByteParser *)v3 parse16Bits:?];
     if ((v43 & 1) == 0)
     {
-      v12 = ne_log_obj();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      parseDomainName5 = ne_log_obj();
+      if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         v13 = "Failed to parse RR type";
@@ -45,8 +45,8 @@
     v5[3] = [(NEByteParser *)v3 parse16Bits:?];
     if ((v43 & 1) == 0)
     {
-      v12 = ne_log_obj();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      parseDomainName5 = ne_log_obj();
+      if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         v13 = "Failed to parse RR class";
@@ -59,8 +59,8 @@
     v5[4] = [(NEByteParser *)v3 parse32Bits:?];
     if ((v43 & 1) == 0)
     {
-      v12 = ne_log_obj();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      parseDomainName5 = ne_log_obj();
+      if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         v13 = "Failed to parse RR TTL";
@@ -74,8 +74,8 @@
     v5[5] = v8;
     if ((v43 & 1) == 0)
     {
-      v12 = ne_log_obj();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      parseDomainName5 = ne_log_obj();
+      if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
         v13 = "Failed to parse RR length";
@@ -102,8 +102,8 @@
 
           if (!v5[6])
           {
-            v12 = ne_log_obj();
-            if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+            parseDomainName5 = ne_log_obj();
+            if (!os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_26;
             }
@@ -115,14 +115,14 @@
 
           break;
         case 2:
-          v37 = [(NEByteParser *)v3 parseDomainName];
+          parseDomainName2 = [(NEByteParser *)v3 parseDomainName];
           v38 = v5[6];
-          v5[6] = v37;
+          v5[6] = parseDomainName2;
 
           if (!v5[6])
           {
-            v12 = ne_log_obj();
-            if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+            parseDomainName5 = ne_log_obj();
+            if (!os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_26;
             }
@@ -134,14 +134,14 @@
 
           break;
         case 5:
-          v16 = [(NEByteParser *)v3 parseDomainName];
+          parseDomainName3 = [(NEByteParser *)v3 parseDomainName];
           v17 = v5[6];
-          v5[6] = v16;
+          v5[6] = parseDomainName3;
 
           if (!v5[6])
           {
-            v12 = ne_log_obj();
-            if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+            parseDomainName5 = ne_log_obj();
+            if (!os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_26;
             }
@@ -174,8 +174,8 @@
 
           if (!v5[6])
           {
-            v12 = ne_log_obj();
-            if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+            parseDomainName5 = ne_log_obj();
+            if (!os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_26;
             }
@@ -192,8 +192,8 @@
       v35 = [(NEByteParser *)v3 parseBytes:v8];
       if (!v35)
       {
-        v12 = ne_log_obj();
-        if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        parseDomainName5 = ne_log_obj();
+        if (!os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_26;
         }
@@ -204,7 +204,7 @@
       }
 
       v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v35 length:v5[5] encoding:4];
-      v12 = v5[6];
+      parseDomainName5 = v5[6];
       v5[6] = v36;
 LABEL_56:
 
@@ -215,19 +215,19 @@ LABEL_56:
     {
       if (v9 == 12)
       {
-        v10 = [(NEByteParser *)v3 parseDomainName];
+        parseDomainName4 = [(NEByteParser *)v3 parseDomainName];
         v11 = v5[6];
-        v5[6] = v10;
+        v5[6] = parseDomainName4;
 
         if (!v5[6])
         {
-          v12 = ne_log_obj();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          parseDomainName5 = ne_log_obj();
+          if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
             v13 = "Failed to parse RR PTR";
 LABEL_25:
-            _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, v13, buf, 2u);
+            _os_log_error_impl(&dword_1BA83C000, parseDomainName5, OS_LOG_TYPE_ERROR, v13, buf, 2u);
             goto LABEL_26;
           }
 
@@ -240,21 +240,21 @@ LABEL_58:
       goto LABEL_28;
     }
 
-    v12 = [(NEByteParser *)v3 parseDomainName];
-    if (!v12)
+    parseDomainName5 = [(NEByteParser *)v3 parseDomainName];
+    if (!parseDomainName5)
     {
-      v23 = ne_log_obj();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      parseDomainName6 = ne_log_obj();
+      if (os_log_type_enabled(parseDomainName6, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_1BA83C000, v23, OS_LOG_TYPE_ERROR, "Failed to parse RR SOA main name", buf, 2u);
+        _os_log_error_impl(&dword_1BA83C000, parseDomainName6, OS_LOG_TYPE_ERROR, "Failed to parse RR SOA main name", buf, 2u);
       }
 
       goto LABEL_79;
     }
 
-    v23 = [(NEByteParser *)v3 parseDomainName];
-    if (v23)
+    parseDomainName6 = [(NEByteParser *)v3 parseDomainName];
+    if (parseDomainName6)
     {
       v24 = [(NEByteParser *)v3 parse32Bits:?];
       if (v43)
@@ -275,7 +275,7 @@ LABEL_58:
               v32 = [(NEByteParser *)v3 parse32Bits:?];
               if (v43)
               {
-                v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@ %u %u %u %u %u", v12, v23, v25, v27, v29, v31, v32];
+                v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@ %u %u %u %u %u", parseDomainName5, parseDomainName6, v25, v27, v29, v31, v32];
                 v34 = v5[6];
                 v5[6] = v33;
 
@@ -360,8 +360,8 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  v12 = ne_log_obj();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  parseDomainName5 = ne_log_obj();
+  if (os_log_type_enabled(parseDomainName5, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     v13 = "Failed to parse RR name";

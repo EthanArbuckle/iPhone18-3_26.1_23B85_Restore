@@ -1,37 +1,37 @@
 @interface _BCPowerSourceController
 + (void)initialize;
 - (BOOL)_isChargingPaused;
-- (BOOL)_isDevicePartOfPair:(id)a3;
+- (BOOL)_isDevicePartOfPair:(id)pair;
 - (BOOL)_isLowPowerModeActive;
-- (BOOL)_shouldCoalesceDevices:(id)a3 minimumPercentCharge:(int64_t *)a4;
-- (BOOL)_shouldConsiderDeviceWithPowerSourceDescription:(id)a3;
+- (BOOL)_shouldCoalesceDevices:(id)devices minimumPercentCharge:(int64_t *)charge;
+- (BOOL)_shouldConsiderDeviceWithPowerSourceDescription:(id)description;
 - (NSArray)connectedDevices;
 - (_BCPowerSourceController)init;
-- (id)_deviceByCoalescingDevice:(id)a3;
-- (id)_identifierFromPowerSourceDescription:(id)a3;
+- (id)_deviceByCoalescingDevice:(id)device;
+- (id)_identifierFromPowerSourceDescription:(id)description;
 - (id)_nameForCurrentDevice;
-- (id)_nameForVendor:(int64_t)a3 accessoryCategory:(unint64_t)a4 name:(id)a5 partName:(id)a6 isInternal:(BOOL)a7;
-- (id)_orderedDevicesFromPowerSourcesBlob:(void *)a3 powerSourcesList:(__CFArray *)a4;
-- (int)_displayChargePercentForCurrentCapacity:(id)a3 andMaxCapacity:(id)a4 updateZeroValue:(BOOL)a5;
-- (int)_registerForNotification:(const char *)a3 token:(int *)a4 queue:(id)a5 handler:(id)a6;
-- (int)_registerForPowerSourceChangeNotification:(const char *)a3 token:(int *)a4 queue:(id)a5;
-- (int64_t)_lowBatteryLevelForVendor:(int64_t)a3 accessoryCategory:(unint64_t)a4 transportType:(int64_t)a5;
-- (int64_t)_powerSourceStateFromPowerSourceStateString:(id)a3;
-- (int64_t)_transportTypeFromPowerSourceTransportTypeString:(id)a3;
-- (int64_t)_vendorFromPowerSourceDescriptionVendorIdentifier:(id)a3 transportType:(int64_t)a4;
-- (unint64_t)_accessoryCategoryFromPowerSourceAccessoryCategory:(id)a3 partType:(unint64_t)a4 transportType:(int64_t)a5 vendor:(int64_t)a6 productIdentifier:(int64_t)a7;
-- (unint64_t)_partFromPowerSourcePartIdentifier:(id)a3;
+- (id)_nameForVendor:(int64_t)vendor accessoryCategory:(unint64_t)category name:(id)name partName:(id)partName isInternal:(BOOL)internal;
+- (id)_orderedDevicesFromPowerSourcesBlob:(void *)blob powerSourcesList:(__CFArray *)list;
+- (int)_displayChargePercentForCurrentCapacity:(id)capacity andMaxCapacity:(id)maxCapacity updateZeroValue:(BOOL)value;
+- (int)_registerForNotification:(const char *)notification token:(int *)token queue:(id)queue handler:(id)handler;
+- (int)_registerForPowerSourceChangeNotification:(const char *)notification token:(int *)token queue:(id)queue;
+- (int64_t)_lowBatteryLevelForVendor:(int64_t)vendor accessoryCategory:(unint64_t)category transportType:(int64_t)type;
+- (int64_t)_powerSourceStateFromPowerSourceStateString:(id)string;
+- (int64_t)_transportTypeFromPowerSourceTransportTypeString:(id)string;
+- (int64_t)_vendorFromPowerSourceDescriptionVendorIdentifier:(id)identifier transportType:(int64_t)type;
+- (unint64_t)_accessoryCategoryFromPowerSourceAccessoryCategory:(id)category partType:(unint64_t)type transportType:(int64_t)transportType vendor:(int64_t)vendor productIdentifier:(int64_t)identifier;
+- (unint64_t)_partFromPowerSourcePartIdentifier:(id)identifier;
 - (void)_beginPowerSourceObservingIfNecessary;
 - (void)_endPowerSourceObserving;
 - (void)_isChargingPaused;
-- (void)_notifyObserver:(id)a3 block:(id)a4 queue:(id)a5;
-- (void)_notifyObserversWithBlock:(id)a3;
+- (void)_notifyObserver:(id)observer block:(id)block queue:(id)queue;
+- (void)_notifyObserversWithBlock:(id)block;
 - (void)_queryConnectedDevices;
 - (void)_updateLowPowerModeState;
-- (void)addBatteryDeviceObserver:(id)a3 queue:(id)a4;
+- (void)addBatteryDeviceObserver:(id)observer queue:(id)queue;
 - (void)connectedDevices;
 - (void)dealloc;
-- (void)removeBatteryDeviceObserver:(id)a3;
+- (void)removeBatteryDeviceObserver:(id)observer;
 @end
 
 @implementation _BCPowerSourceController
@@ -39,53 +39,53 @@
 - (void)_beginPowerSourceObservingIfNecessary
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_queue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_queue)
   {
     v3 = BCLogPowerSourceController;
     if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = v2;
+      v10 = selfCopy;
       _os_log_impl(&dword_241AC0000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) Registering for power source change notifications", buf, 0xCu);
     }
 
     v4 = dispatch_queue_create("com.apple.BCBatteryDeviceController", 0);
-    queue = v2->_queue;
-    v2->_queue = v4;
+    queue = selfCopy->_queue;
+    selfCopy->_queue = v4;
 
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.powersources.percent" token:&v2->_powerSourceBatteryChangeNotifyToken queue:v2->_queue];
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.powersources.timeremaining" token:&v2->_powerSourceTimeRemainingNotifyToken queue:v2->_queue];
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.source" token:&v2->_accPowerSourceNotifyToken queue:v2->_queue];
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.timeremaining" token:&v2->_accPowerSourceTimeRemainingNotifyToken queue:v2->_queue];
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.attach" token:&v2->_accAttachNotifyToken queue:v2->_queue];
-    [(_BCPowerSourceController *)v2 _registerForPowerSourceChangeNotification:"com.apple.system.powersources.chargingiconography" token:&v2->_chargingIconographyStateNotifyToken queue:v2->_queue];
-    if (notify_is_valid_token(v2->_lowPowerModeNotifyToken))
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.powersources.percent" token:&selfCopy->_powerSourceBatteryChangeNotifyToken queue:selfCopy->_queue];
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.powersources.timeremaining" token:&selfCopy->_powerSourceTimeRemainingNotifyToken queue:selfCopy->_queue];
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.source" token:&selfCopy->_accPowerSourceNotifyToken queue:selfCopy->_queue];
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.timeremaining" token:&selfCopy->_accPowerSourceTimeRemainingNotifyToken queue:selfCopy->_queue];
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.accpowersources.attach" token:&selfCopy->_accAttachNotifyToken queue:selfCopy->_queue];
+    [(_BCPowerSourceController *)selfCopy _registerForPowerSourceChangeNotification:"com.apple.system.powersources.chargingiconography" token:&selfCopy->_chargingIconographyStateNotifyToken queue:selfCopy->_queue];
+    if (notify_is_valid_token(selfCopy->_lowPowerModeNotifyToken))
     {
-      notify_cancel(v2->_lowPowerModeNotifyToken);
+      notify_cancel(selfCopy->_lowPowerModeNotifyToken);
     }
 
-    v6 = v2->_queue;
+    v6 = selfCopy->_queue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __65___BCPowerSourceController__beginPowerSourceObservingIfNecessary__block_invoke;
     v8[3] = &unk_278D05CB0;
-    v8[4] = v2;
-    if (![(_BCPowerSourceController *)v2 _registerForNotification:"com.apple.system.lowpowermode" token:&v2->_lowPowerModeNotifyToken queue:v6 handler:v8])
+    v8[4] = selfCopy;
+    if (![(_BCPowerSourceController *)selfCopy _registerForNotification:"com.apple.system.lowpowermode" token:&selfCopy->_lowPowerModeNotifyToken queue:v6 handler:v8])
     {
-      [(_BCPowerSourceController *)v2 _handleLowPowerModeChanged:v2->_lowPowerModeNotifyToken];
+      [(_BCPowerSourceController *)selfCopy _handleLowPowerModeChanged:selfCopy->_lowPowerModeNotifyToken];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BCRegisterUserNotificationsLogging();
@@ -131,14 +131,14 @@
   if (!notify_get_state(self->_lowPowerModeNotifyToken, &state64))
   {
     v3 = state64 != 0;
-    v4 = self;
-    objc_sync_enter(v4);
-    if (v4->_lowPowerModeActive != v3)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_lowPowerModeActive != v3)
     {
-      v4->_lowPowerModeActive = v3;
+      selfCopy->_lowPowerModeActive = v3;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -149,7 +149,7 @@
   if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241AC0000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) Fetch connected devices", buf, 0xCu);
   }
 
@@ -217,36 +217,36 @@
   [(_BCPowerSourceController *)&v3 dealloc];
 }
 
-- (void)addBatteryDeviceObserver:(id)a3 queue:(id)a4
+- (void)addBatteryDeviceObserver:(id)observer queue:(id)queue
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v21 = v7;
-  v8 = a4;
-  if (!v7)
+  observerCopy = observer;
+  v21 = observerCopy;
+  queueCopy = queue;
+  if (!observerCopy)
   {
     [_BCPowerSourceController addBatteryDeviceObserver:a2 queue:self];
   }
 
-  if (!v8)
+  if (!queueCopy)
   {
     [_BCPowerSourceController addBatteryDeviceObserver:a2 queue:self];
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  observersToQueues = v9->_observersToQueues;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observersToQueues = selfCopy->_observersToQueues;
   if (!observersToQueues)
   {
-    v11 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-    v12 = v9->_observersToQueues;
-    v9->_observersToQueues = v11;
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    v12 = selfCopy->_observersToQueues;
+    selfCopy->_observersToQueues = weakToStrongObjectsMapTable;
 
-    observersToQueues = v9->_observersToQueues;
+    observersToQueues = selfCopy->_observersToQueues;
   }
 
-  [(NSMapTable *)observersToQueues setObject:v8 forKey:v7];
-  objc_sync_exit(v9);
+  [(NSMapTable *)observersToQueues setObject:queueCopy forKey:observerCopy];
+  objc_sync_exit(selfCopy);
 
   v13 = BCLogPowerSourceController;
   if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
@@ -259,7 +259,7 @@
     *buf = 138544130;
     v23 = v16;
     v24 = 2048;
-    v25 = v9;
+    v25 = selfCopy;
     v26 = 2112;
     v27 = v18;
     v28 = 2048;
@@ -271,24 +271,24 @@
   v20[1] = 3221225472;
   v20[2] = __59___BCPowerSourceController_addBatteryDeviceObserver_queue___block_invoke;
   v20[3] = &unk_278D05BF0;
-  v20[4] = v9;
-  [(_BCPowerSourceController *)v9 _notifyObserver:v21 block:v20 queue:v8];
-  [(_BCPowerSourceController *)v9 _beginPowerSourceObservingIfNecessary];
+  v20[4] = selfCopy;
+  [(_BCPowerSourceController *)selfCopy _notifyObserver:v21 block:v20 queue:queueCopy];
+  [(_BCPowerSourceController *)selfCopy _beginPowerSourceObservingIfNecessary];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeBatteryDeviceObserver:(id)a3
+- (void)removeBatteryDeviceObserver:(id)observer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = v4;
-  v5 = self;
-  objc_sync_enter(v5);
-  observersToQueues = v5->_observersToQueues;
+  observerCopy = observer;
+  v16 = observerCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observersToQueues = selfCopy->_observersToQueues;
   if (observersToQueues)
   {
-    v7 = v4 == 0;
+    v7 = observerCopy == 0;
   }
 
   else
@@ -298,17 +298,17 @@
 
   if (!v7)
   {
-    [(NSMapTable *)observersToQueues removeObjectForKey:v4];
-    if (![(NSMapTable *)v5->_observersToQueues count])
+    [(NSMapTable *)observersToQueues removeObjectForKey:observerCopy];
+    if (![(NSMapTable *)selfCopy->_observersToQueues count])
     {
-      v8 = v5->_observersToQueues;
-      v5->_observersToQueues = 0;
+      v8 = selfCopy->_observersToQueues;
+      selfCopy->_observersToQueues = 0;
 
-      [(_BCPowerSourceController *)v5 _endPowerSourceObserving];
+      [(_BCPowerSourceController *)selfCopy _endPowerSourceObserving];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v9 = BCLogPowerSourceController;
   if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
@@ -321,7 +321,7 @@
     *buf = 138544130;
     v18 = v12;
     v19 = 2048;
-    v20 = v5;
+    v20 = selfCopy;
     v21 = 2112;
     v22 = v14;
     v23 = 2048;
@@ -332,9 +332,9 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isDevicePartOfPair:(id)a3
+- (BOOL)_isDevicePartOfPair:(id)pair
 {
-  v3 = a3;
+  pairCopy = pair;
   if (BCCombinedLeftRightBatteryStatus())
   {
     v4 = 0;
@@ -342,10 +342,10 @@
 
   else
   {
-    v5 = [v3 matchIdentifier];
-    if ([v5 length])
+    matchIdentifier = [pairCopy matchIdentifier];
+    if ([matchIdentifier length])
     {
-      v4 = [v3 accessoryCategory] != 2 || objc_msgSend(v3, "parts") != 4;
+      v4 = [pairCopy accessoryCategory] != 2 || objc_msgSend(pairCopy, "parts") != 4;
     }
 
     else
@@ -357,10 +357,10 @@
   return v4;
 }
 
-- (BOOL)_shouldConsiderDeviceWithPowerSourceDescription:(id)a3
+- (BOOL)_shouldConsiderDeviceWithPowerSourceDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"Max Capacity"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKey:@"Max Capacity"];
   [v4 floatValue];
   if (BSFloatIsZero())
   {
@@ -369,7 +369,7 @@
 
   else
   {
-    v6 = [v3 objectForKey:@"Power Source State"];
+    v6 = [descriptionCopy objectForKey:@"Power Source State"];
     v7 = [v6 isEqual:@"Off Line"];
 
     v5 = v7 ^ 1;
@@ -378,62 +378,62 @@
   return v5;
 }
 
-- (id)_identifierFromPowerSourceDescription:(id)a3
+- (id)_identifierFromPowerSourceDescription:(id)description
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"Group Identifier"];
+  descriptionCopy = description;
+  v6 = [descriptionCopy objectForKey:@"Group Identifier"];
   if ([v6 length])
   {
-    v7 = [v5 objectForKey:@"Part Identifier"];
+    v7 = [descriptionCopy objectForKey:@"Part Identifier"];
     if ([v7 length])
     {
-      v8 = [v6 stringByAppendingFormat:@"-%@", v7];
+      stringValue = [v6 stringByAppendingFormat:@"-%@", v7];
     }
 
     else
     {
-      v8 = v6;
+      stringValue = v6;
     }
   }
 
   else
   {
-    v9 = [v5 objectForKey:@"Power Source ID"];
-    v8 = [v9 stringValue];
+    v9 = [descriptionCopy objectForKey:@"Power Source ID"];
+    stringValue = [v9 stringValue];
 
-    if ([v8 length])
+    if ([stringValue length])
     {
       goto LABEL_8;
     }
 
-    [(_BCPowerSourceController *)a2 _identifierFromPowerSourceDescription:v5, &v11];
+    [(_BCPowerSourceController *)a2 _identifierFromPowerSourceDescription:descriptionCopy, &v11];
     v7 = v11;
   }
 
 LABEL_8:
 
-  return v8;
+  return stringValue;
 }
 
-- (int64_t)_transportTypeFromPowerSourceTransportTypeString:(id)a3
+- (int64_t)_transportTypeFromPowerSourceTransportTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Internal"])
+  stringCopy = string;
+  if ([stringCopy isEqual:@"Internal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"Serial"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"USB") & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"AID"))
+  else if ([stringCopy isEqual:@"Serial"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqual:", @"USB") & 1) != 0 || (objc_msgSend(stringCopy, "isEqual:", @"AID"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqual:@"Bluetooth"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"Bluetooth LE"))
+  else if ([stringCopy isEqual:@"Bluetooth"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqual:", @"Bluetooth LE"))
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqual:@"Inductive In-Band"])
+  else if ([stringCopy isEqual:@"Inductive In-Band"])
   {
     v4 = 4;
   }
@@ -446,35 +446,35 @@ LABEL_8:
   return v4;
 }
 
-- (int64_t)_vendorFromPowerSourceDescriptionVendorIdentifier:(id)a3 transportType:(int64_t)a4
+- (int64_t)_vendorFromPowerSourceDescriptionVendorIdentifier:(id)identifier transportType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 < 2)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (type < 2)
   {
     v7 = 1;
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!identifierCopy)
   {
 LABEL_17:
     v7 = 0;
     goto LABEL_18;
   }
 
-  v8 = [v5 integerValue];
-  if (a4 == 3)
+  integerValue = [identifierCopy integerValue];
+  if (type == 3)
   {
     v7 = 1;
-    if (v8 > 1451)
+    if (integerValue > 1451)
     {
-      if (v8 == 1452)
+      if (integerValue == 1452)
       {
         goto LABEL_18;
       }
 
-      if (v8 != 10507)
+      if (integerValue != 10507)
       {
         goto LABEL_17;
       }
@@ -482,12 +482,12 @@ LABEL_17:
 
     else
     {
-      if (v8 == 76)
+      if (integerValue == 76)
       {
         goto LABEL_18;
       }
 
-      if (v8 != 204)
+      if (integerValue != 204)
       {
         goto LABEL_17;
       }
@@ -497,10 +497,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v10 = a4 == 4 && v8 == 1452;
-  if (a4 == 2)
+  v10 = type == 4 && integerValue == 1452;
+  if (type == 2)
   {
-    v7 = v8 == 1452;
+    v7 = integerValue == 1452;
   }
 
   else
@@ -513,32 +513,32 @@ LABEL_18:
   return v7;
 }
 
-- (unint64_t)_partFromPowerSourcePartIdentifier:(id)a3
+- (unint64_t)_partFromPowerSourcePartIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Left"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"Left"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"Right"])
+  else if ([identifierCopy isEqual:@"Right"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqual:@"Case"])
+  else if ([identifierCopy isEqual:@"Case"])
   {
     v4 = 4;
   }
 
-  else if (BCCombinedLeftRightBatteryStatus() && ([v3 isEqual:@"Combined"] & 1) != 0)
+  else if (BCCombinedLeftRightBatteryStatus() && ([identifierCopy isEqual:@"Combined"] & 1) != 0)
   {
     v4 = 3;
   }
 
   else if (BCCombinedLeftRightBatteryStatus())
   {
-    if ([v3 isEqual:@"Combined"])
+    if ([identifierCopy isEqual:@"Combined"])
     {
       v4 = 8;
     }
@@ -557,81 +557,81 @@ LABEL_18:
   return v4;
 }
 
-- (unint64_t)_accessoryCategoryFromPowerSourceAccessoryCategory:(id)a3 partType:(unint64_t)a4 transportType:(int64_t)a5 vendor:(int64_t)a6 productIdentifier:(int64_t)a7
+- (unint64_t)_accessoryCategoryFromPowerSourceAccessoryCategory:(id)category partType:(unint64_t)type transportType:(int64_t)transportType vendor:(int64_t)vendor productIdentifier:(int64_t)identifier
 {
-  v7 = a3;
-  if ([v7 isEqual:@"Speaker"])
+  categoryCopy = category;
+  if ([categoryCopy isEqual:@"Speaker"])
   {
     v8 = 1;
   }
 
-  else if ([v7 isEqual:@"Headphone"] & 1) != 0 || (objc_msgSend(v7, "isEqual:", @"Headset") & 1) != 0 || (objc_msgSend(v7, "isEqual:", @"Audio Battery Case"))
+  else if ([categoryCopy isEqual:@"Headphone"] & 1) != 0 || (objc_msgSend(categoryCopy, "isEqual:", @"Headset") & 1) != 0 || (objc_msgSend(categoryCopy, "isEqual:", @"Audio Battery Case"))
   {
     v8 = 2;
   }
 
-  else if ([v7 isEqual:@"Watch"])
+  else if ([categoryCopy isEqual:@"Watch"])
   {
     v8 = 3;
   }
 
-  else if ([v7 isEqual:@"Battery Case"])
+  else if ([categoryCopy isEqual:@"Battery Case"])
   {
     v8 = 4;
   }
 
-  else if ([v7 isEqual:@"Keyboard"])
+  else if ([categoryCopy isEqual:@"Keyboard"])
   {
     v8 = 5;
   }
 
-  else if ([v7 isEqual:@"Trackpad"])
+  else if ([categoryCopy isEqual:@"Trackpad"])
   {
     v8 = 6;
   }
 
-  else if ([v7 isEqual:@"Pencil"])
+  else if ([categoryCopy isEqual:@"Pencil"])
   {
     v8 = 7;
   }
 
-  else if ([v7 isEqual:@"Game Controller"])
+  else if ([categoryCopy isEqual:@"Game Controller"])
   {
     v8 = 8;
   }
 
-  else if ([v7 isEqual:@"Mouse"])
+  else if ([categoryCopy isEqual:@"Mouse"])
   {
     v8 = 9;
   }
 
-  else if ([v7 isEqual:@"HearingAid"])
+  else if ([categoryCopy isEqual:@"HearingAid"])
   {
     v8 = 10;
   }
 
   else
   {
-    v8 = [v7 isEqual:@"Speaker"];
+    v8 = [categoryCopy isEqual:@"Speaker"];
   }
 
   return v8;
 }
 
-- (int64_t)_powerSourceStateFromPowerSourceStateString:(id)a3
+- (int64_t)_powerSourceStateFromPowerSourceStateString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Off Line"])
+  stringCopy = string;
+  if ([stringCopy isEqual:@"Off Line"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"AC Power"])
+  else if ([stringCopy isEqual:@"AC Power"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqual:@"Battery Power"])
+  else if ([stringCopy isEqual:@"Battery Power"])
   {
     v4 = 3;
   }
@@ -644,29 +644,29 @@ LABEL_18:
   return v4;
 }
 
-- (id)_nameForVendor:(int64_t)a3 accessoryCategory:(unint64_t)a4 name:(id)a5 partName:(id)a6 isInternal:(BOOL)a7
+- (id)_nameForVendor:(int64_t)vendor accessoryCategory:(unint64_t)category name:(id)name partName:(id)partName isInternal:(BOOL)internal
 {
-  v7 = a7;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (v7)
+  internalCopy = internal;
+  nameCopy = name;
+  partNameCopy = partName;
+  v12 = partNameCopy;
+  if (internalCopy)
   {
-    v13 = [(_BCPowerSourceController *)self _nameForCurrentDevice];
+    _nameForCurrentDevice = [(_BCPowerSourceController *)self _nameForCurrentDevice];
   }
 
-  else if ([v11 length])
+  else if ([partNameCopy length])
   {
-    v13 = v12;
+    _nameForCurrentDevice = v12;
   }
 
   else
   {
-    v13 = v10;
+    _nameForCurrentDevice = nameCopy;
   }
 
-  v14 = v13;
-  if ([(__CFString *)v13 length])
+  v14 = _nameForCurrentDevice;
+  if ([(__CFString *)_nameForCurrentDevice length])
   {
     v15 = v14;
   }
@@ -681,13 +681,13 @@ LABEL_18:
   return v15;
 }
 
-- (int)_displayChargePercentForCurrentCapacity:(id)a3 andMaxCapacity:(id)a4 updateZeroValue:(BOOL)a5
+- (int)_displayChargePercentForCurrentCapacity:(id)capacity andMaxCapacity:(id)maxCapacity updateZeroValue:(BOOL)value
 {
-  v5 = a5;
-  v7 = a4;
-  [a3 floatValue];
+  valueCopy = value;
+  maxCapacityCopy = maxCapacity;
+  [capacity floatValue];
   v9 = v8;
-  [v7 floatValue];
+  [maxCapacityCopy floatValue];
   v11 = v10;
 
   v12 = fmax(fmin((v9 / v11), 1.0), 0.0);
@@ -702,7 +702,7 @@ LABEL_18:
     v14 = v13;
   }
 
-  if (v5)
+  if (valueCopy)
   {
     return v14;
   }
@@ -713,24 +713,24 @@ LABEL_18:
   }
 }
 
-- (int64_t)_lowBatteryLevelForVendor:(int64_t)a3 accessoryCategory:(unint64_t)a4 transportType:(int64_t)a5
+- (int64_t)_lowBatteryLevelForVendor:(int64_t)vendor accessoryCategory:(unint64_t)category transportType:(int64_t)type
 {
-  if (a5 == 1)
+  if (type == 1)
   {
-    return [(_BCPowerSourceController *)self _lowBatteryLevelForCurrentDevice:a3];
+    return [(_BCPowerSourceController *)self _lowBatteryLevelForCurrentDevice:vendor];
   }
 
-  if (a3 == 1 && a4 - 5 <= 4)
+  if (vendor == 1 && category - 5 <= 4)
   {
-    return qword_241AC6798[a4 - 5];
+    return qword_241AC6798[category - 5];
   }
 
   return 20;
 }
 
-- (BOOL)_shouldCoalesceDevices:(id)a3 minimumPercentCharge:(int64_t *)a4
+- (BOOL)_shouldCoalesceDevices:(id)devices minimumPercentCharge:(int64_t *)charge
 {
-  v5 = a3;
+  devicesCopy = devices;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -745,13 +745,13 @@ LABEL_18:
     v8[1] = 3221225472;
     v8[2] = __72___BCPowerSourceController__shouldCoalesceDevices_minimumPercentCharge___block_invoke;
     v8[3] = &unk_278D05C18;
-    v9 = v5;
+    v9 = devicesCopy;
     v10 = &v12;
     v11 = &v16;
     [v9 enumerateObjectsUsingBlock:v8];
-    if (a4 && (v17[3] & 1) != 0)
+    if (charge && (v17[3] & 1) != 0)
     {
-      *a4 = v13[3];
+      *charge = v13[3];
     }
 
     _Block_object_dispose(&v12, 8);
@@ -763,28 +763,28 @@ LABEL_18:
   return v6;
 }
 
-- (id)_deviceByCoalescingDevice:(id)a3
+- (id)_deviceByCoalescingDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastObject];
-  v5 = [v4 copy];
+  deviceCopy = device;
+  lastObject = [deviceCopy lastObject];
+  v5 = [lastObject copy];
   if ((BCCombinedLeftRightBatteryStatus() & 1) == 0)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v3 firstObject];
-    v8 = [v7 parts];
+    array = [MEMORY[0x277CBEB18] array];
+    firstObject = [deviceCopy firstObject];
+    parts = [firstObject parts];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v3;
+    v9 = deviceCopy;
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
-      v22 = v4;
+      v22 = lastObject;
       v23 = v5;
       v12 = 0;
       v13 = *v25;
@@ -798,11 +798,11 @@ LABEL_18:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 identifier];
-          [v6 addObject:v16];
+          identifier = [v15 identifier];
+          [array addObject:identifier];
 
-          v12 |= v8 != [v15 parts];
-          v8 |= [v15 parts];
+          v12 |= parts != [v15 parts];
+          parts |= [v15 parts];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -810,26 +810,26 @@ LABEL_18:
 
       while (v11);
 
-      v17 = [v6 componentsJoinedByString:@"-"];
+      v17 = [array componentsJoinedByString:@"-"];
       v5 = v23;
       [v23 setIdentifier:v17];
 
-      [v23 setParts:v8];
-      v4 = v22;
+      [v23 setParts:parts];
+      lastObject = v22;
       if (v12)
       {
-        v18 = [v22 groupName];
-        [v23 setName:v18];
+        groupName = [v22 groupName];
+        [v23 setName:groupName];
       }
     }
 
     else
     {
 
-      v19 = [v6 componentsJoinedByString:@"-"];
+      v19 = [array componentsJoinedByString:@"-"];
       [v5 setIdentifier:v19];
 
-      [v5 setParts:v8];
+      [v5 setParts:parts];
     }
   }
 
@@ -838,21 +838,21 @@ LABEL_18:
   return v5;
 }
 
-- (id)_orderedDevicesFromPowerSourcesBlob:(void *)a3 powerSourcesList:(__CFArray *)a4
+- (id)_orderedDevicesFromPowerSourcesBlob:(void *)blob powerSourcesList:(__CFArray *)list
 {
   v142 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v133[0] = MEMORY[0x277D85DD0];
   v133[1] = 3221225472;
   v133[2] = __81___BCPowerSourceController__orderedDevicesFromPowerSourcesBlob_powerSourcesList___block_invoke;
   v133[3] = &unk_278D05C40;
   v133[4] = self;
-  v91 = v8;
+  v91 = dictionary;
   v134 = v91;
   v92 = MEMORY[0x245CF6EF0](v133);
-  v9 = [MEMORY[0x277CBEB18] array];
-  Count = CFArrayGetCount(a4);
+  array = [MEMORY[0x277CBEB18] array];
+  Count = CFArrayGetCount(list);
   v11 = BCLogPowerSourceController;
   if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
   {
@@ -867,9 +867,9 @@ LABEL_18:
   {
     for (i = 0; i != Count; ++i)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a4, i);
-      v14 = IOPSGetPowerSourceDescription(a3, ValueAtIndex);
-      [v9 addObject:v14];
+      ValueAtIndex = CFArrayGetValueAtIndex(list, i);
+      v14 = IOPSGetPowerSourceDescription(blob, ValueAtIndex);
+      [array addObject:v14];
     }
   }
 
@@ -877,9 +877,9 @@ LABEL_18:
   v132 = 0u;
   v129 = 0u;
   v130 = 0u;
-  obj = v9;
+  obj = array;
   v15 = [obj countByEnumeratingWithState:&v129 objects:v138 count:16];
-  v104 = self;
+  selfCopy = self;
   if (v15)
   {
     v16 = v15;
@@ -932,7 +932,7 @@ LABEL_18:
           v110 = v20;
           v23 = [(_BCPowerSourceController *)self _identifierFromPowerSourceDescription:v19];
           v24 = [v19 objectForKey:@"Product ID"];
-          v25 = [v24 integerValue];
+          integerValue = [v24 integerValue];
 
           v26 = v23;
           v109 = [v19 objectForKey:@"Model Number"];
@@ -970,7 +970,7 @@ LABEL_27:
               goto LABEL_27;
             }
 
-            v33 = [BCBatteryDevice batteryDeviceWithIdentifier:v26 vendor:v30 productIdentifier:v25 parts:v32 matchIdentifier:v108];
+            v33 = [BCBatteryDevice batteryDeviceWithIdentifier:v26 vendor:v30 productIdentifier:integerValue parts:v32 matchIdentifier:v108];
             [v33 setModelNumber:v109];
             [v33 setAccessoryCategory:v112];
             v20 = v110;
@@ -1034,38 +1034,38 @@ LABEL_27:
 
             [v33 setAccessoryIdentifier:v46];
             [v33 setConnected:1];
-            self = v104;
+            self = selfCopy;
             v20 = v110;
             if (v106)
             {
-              v47 = [(_BCPowerSourceController *)v104 _isChargingPaused];
+              _isChargingPaused = [(_BCPowerSourceController *)selfCopy _isChargingPaused];
             }
 
             else
             {
-              v47 = 0;
+              _isChargingPaused = 0;
             }
 
-            [v33 setPaused:v47];
+            [v33 setPaused:_isChargingPaused];
             v98 = [v19 objectForKey:@"AdapterDetails"];
             v48 = [v98 objectForKey:@"IsWireless"];
-            v49 = [v48 BOOLValue];
+            bOOLValue = [v48 BOOLValue];
 
-            [v33 setWirelesslyCharging:v49];
+            [v33 setWirelesslyCharging:bOOLValue];
             v50 = [v19 objectForKey:@"Current Capacity"];
             [v19 objectForKey:@"Max Capacity"];
             v97 = v103 = v50;
-            v51 = -[_BCPowerSourceController _displayChargePercentForCurrentCapacity:andMaxCapacity:updateZeroValue:](v104, "_displayChargePercentForCurrentCapacity:andMaxCapacity:updateZeroValue:", v50, v97, [v33 isInternal]);
+            v51 = -[_BCPowerSourceController _displayChargePercentForCurrentCapacity:andMaxCapacity:updateZeroValue:](selfCopy, "_displayChargePercentForCurrentCapacity:andMaxCapacity:updateZeroValue:", v50, v97, [v33 isInternal]);
             v52 = [v19 objectForKey:@"Is Charging"];
             if ([v52 BOOLValue])
             {
-              v96 = 1;
+              bOOLValue2 = 1;
             }
 
             else
             {
               v53 = [v19 objectForKey:@"Show Charging UI"];
-              v96 = [v53 BOOLValue];
+              bOOLValue2 = [v53 BOOLValue];
             }
 
             v26 = v101;
@@ -1087,8 +1087,8 @@ LABEL_27:
               *buf = 0;
               if (CFNumberGetValue(v55, kCFNumberIntType, buf))
               {
-                v56 = [v103 integerValue];
-                v57 = v56 <= *buf;
+                integerValue2 = [v103 integerValue];
+                v57 = integerValue2 <= *buf;
               }
 
               else
@@ -1099,13 +1099,13 @@ LABEL_27:
 
             else
             {
-              v57 = [(_BCPowerSourceController *)v104 _lowBatteryLevelForVendor:v111 accessoryCategory:v112 transportType:v105]>= v51;
+              v57 = [(_BCPowerSourceController *)selfCopy _lowBatteryLevelForVendor:v111 accessoryCategory:v112 transportType:v105]>= v51;
             }
 
             [v33 setLowBattery:v57];
             if (v106)
             {
-              [v33 setLowPowerModeActive:{-[_BCPowerSourceController _isLowPowerModeActive](v104, "_isLowPowerModeActive")}];
+              [v33 setLowPowerModeActive:{-[_BCPowerSourceController _isLowPowerModeActive](selfCopy, "_isLowPowerModeActive")}];
             }
 
             else
@@ -1114,13 +1114,13 @@ LABEL_27:
               [v33 setLowPowerModeActive:{objc_msgSend(v58, "BOOLValue")}];
             }
 
-            [v33 setCharging:v96];
+            [v33 setCharging:bOOLValue2];
             [v33 setApproximatesPercentCharge:v54];
             v59 = BCLogPowerSourceController;
             if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              *&buf[4] = v104;
+              *&buf[4] = selfCopy;
               v140 = 2114;
               v141 = v33;
               _os_log_impl(&dword_241AC0000, v59, OS_LOG_TYPE_DEFAULT, "(%{public}@) Found device: %{public}@", buf, 0x16u);
@@ -1148,8 +1148,8 @@ LABEL_27:
     v128 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v113 = [v91 allValues];
-    v61 = [v113 countByEnumeratingWithState:&v125 objects:v137 count:16];
+    allValues = [v91 allValues];
+    v61 = [allValues countByEnumeratingWithState:&v125 objects:v137 count:16];
     v62 = 0x277CBE000uLL;
     if (v61)
     {
@@ -1161,44 +1161,44 @@ LABEL_27:
         {
           if (*v126 != v115)
           {
-            objc_enumerationMutation(v113);
+            objc_enumerationMutation(allValues);
           }
 
           v65 = *(*(&v125 + 1) + 8 * j);
-          v66 = [*(v62 + 2840) array];
+          array2 = [*(v62 + 2840) array];
           if ([v65 count] < 2)
           {
-            v79 = [v65 lastObject];
-            [v66 addObject:v79];
+            lastObject = [v65 lastObject];
+            [array2 addObject:lastObject];
           }
 
           else
           {
             v124 = 0;
-            if ([(_BCPowerSourceController *)v104 _shouldCoalesceDevices:v65 minimumPercentCharge:&v124])
+            if ([(_BCPowerSourceController *)selfCopy _shouldCoalesceDevices:v65 minimumPercentCharge:&v124])
             {
-              v67 = [v65 lastObject];
-              v68 = [v67 matchIdentifier];
-              v69 = [v7 objectForKey:v68];
+              lastObject2 = [v65 lastObject];
+              matchIdentifier = [lastObject2 matchIdentifier];
+              lastObject3 = [v7 objectForKey:matchIdentifier];
 
-              if (!v69)
+              if (!lastObject3)
               {
-                v69 = [(_BCPowerSourceController *)v104 _deviceByCoalescingDevice:v65];
-                v70 = [v69 identifier];
-                [v7 setObject:v69 forKey:v70];
+                lastObject3 = [(_BCPowerSourceController *)selfCopy _deviceByCoalescingDevice:v65];
+                identifier = [lastObject3 identifier];
+                [v7 setObject:lastObject3 forKey:identifier];
               }
 
-              [v66 addObject:v69];
-              [v69 setPercentCharge:v124];
-              v71 = -[_BCPowerSourceController _lowBatteryLevelForVendor:accessoryCategory:transportType:](v104, "_lowBatteryLevelForVendor:accessoryCategory:transportType:", [v69 vendor], objc_msgSend(v69, "accessoryCategory"), objc_msgSend(v69, "transportType"));
-              [v69 setLowBattery:v124 <= v71];
+              [array2 addObject:lastObject3];
+              [lastObject3 setPercentCharge:v124];
+              v71 = -[_BCPowerSourceController _lowBatteryLevelForVendor:accessoryCategory:transportType:](selfCopy, "_lowBatteryLevelForVendor:accessoryCategory:transportType:", [lastObject3 vendor], objc_msgSend(lastObject3, "accessoryCategory"), objc_msgSend(lastObject3, "transportType"));
+              [lastObject3 setLowBattery:v124 <= v71];
               v72 = BCLogPowerSourceController;
               if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
-                *&buf[4] = v104;
+                *&buf[4] = selfCopy;
                 v140 = 2114;
-                v141 = v69;
+                v141 = lastObject3;
                 _os_log_impl(&dword_241AC0000, v72, OS_LOG_TYPE_DEFAULT, "(%{public}@) Coalesced device: %{public}@", buf, 0x16u);
               }
 
@@ -1206,8 +1206,8 @@ LABEL_27:
               v123 = 0u;
               v120 = 0u;
               v121 = 0u;
-              v73 = v65;
-              v74 = [v73 countByEnumeratingWithState:&v120 objects:v136 count:16];
+              identifier3 = v65;
+              v74 = [identifier3 countByEnumeratingWithState:&v120 objects:v136 count:16];
               if (v74)
               {
                 v75 = v74;
@@ -1218,14 +1218,14 @@ LABEL_27:
                   {
                     if (*v121 != v76)
                     {
-                      objc_enumerationMutation(v73);
+                      objc_enumerationMutation(identifier3);
                     }
 
-                    v78 = [*(*(&v120 + 1) + 8 * k) identifier];
-                    [v7 removeObjectForKey:v78];
+                    identifier2 = [*(*(&v120 + 1) + 8 * k) identifier];
+                    [v7 removeObjectForKey:identifier2];
                   }
 
-                  v75 = [v73 countByEnumeratingWithState:&v120 objects:v136 count:16];
+                  v75 = [identifier3 countByEnumeratingWithState:&v120 objects:v136 count:16];
                 }
 
                 while (v75);
@@ -1235,10 +1235,10 @@ LABEL_27:
 
             else
             {
-              [v66 addObjectsFromArray:v65];
-              v69 = [v65 lastObject];
-              v73 = [v69 identifier];
-              [v7 removeObjectForKey:v73];
+              [array2 addObjectsFromArray:v65];
+              lastObject3 = [v65 lastObject];
+              identifier3 = [lastObject3 identifier];
+              [v7 removeObjectForKey:identifier3];
             }
           }
 
@@ -1246,7 +1246,7 @@ LABEL_27:
           v119 = 0u;
           v116 = 0u;
           v117 = 0u;
-          v80 = v66;
+          v80 = array2;
           v81 = [v80 countByEnumeratingWithState:&v116 objects:v135 count:16];
           if (v81)
           {
@@ -1262,8 +1262,8 @@ LABEL_27:
                 }
 
                 v85 = *(*(&v116 + 1) + 8 * m);
-                v86 = [v85 identifier];
-                [v7 setObject:v85 forKey:v86];
+                identifier4 = [v85 identifier];
+                [v7 setObject:v85 forKey:identifier4];
               }
 
               v82 = [v80 countByEnumeratingWithState:&v116 objects:v135 count:16];
@@ -1273,28 +1273,28 @@ LABEL_27:
           }
         }
 
-        v63 = [v113 countByEnumeratingWithState:&v125 objects:v137 count:16];
+        v63 = [allValues countByEnumeratingWithState:&v125 objects:v137 count:16];
       }
 
       while (v63);
     }
   }
 
-  v87 = [v7 allValues];
-  v88 = [v87 sortedArrayUsingComparator:&__block_literal_global];
+  allValues2 = [v7 allValues];
+  v88 = [allValues2 sortedArrayUsingComparator:&__block_literal_global];
 
   v89 = *MEMORY[0x277D85DE8];
 
   return v88;
 }
 
-- (int)_registerForNotification:(const char *)a3 token:(int *)a4 queue:(id)a5 handler:(id)a6
+- (int)_registerForNotification:(const char *)notification token:(int *)token queue:(id)queue handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (*a4)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (*token)
   {
     if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_ERROR))
     {
@@ -1306,21 +1306,21 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if (v10 && v11)
+  if (queueCopy && handlerCopy)
   {
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __73___BCPowerSourceController__registerForNotification_token_queue_handler___block_invoke;
     handler[3] = &unk_278D05C88;
     handler[4] = self;
-    v19 = a3;
-    v18 = v11;
-    v13 = notify_register_dispatch(a3, a4, v10, handler);
+    notificationCopy = notification;
+    v18 = handlerCopy;
+    v13 = notify_register_dispatch(notification, token, queueCopy, handler);
   }
 
   else
   {
-    v13 = notify_register_check(a3, a4);
+    v13 = notify_register_check(notification, token);
   }
 
   v14 = BCLogPowerSourceController;
@@ -1329,9 +1329,9 @@ LABEL_4:
     if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy = self;
       v22 = 2082;
-      v23 = a3;
+      notificationCopy2 = notification;
       _os_log_impl(&dword_241AC0000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@) Successfully registered for %{public}s notifications", buf, 0x16u);
     }
 
@@ -1349,44 +1349,44 @@ LABEL_12:
   return v13;
 }
 
-- (int)_registerForPowerSourceChangeNotification:(const char *)a3 token:(int *)a4 queue:(id)a5
+- (int)_registerForPowerSourceChangeNotification:(const char *)notification token:(int *)token queue:(id)queue
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82___BCPowerSourceController__registerForPowerSourceChangeNotification_token_queue___block_invoke;
   v6[3] = &unk_278D05CB0;
   v6[4] = self;
-  return [(_BCPowerSourceController *)self _registerForNotification:a3 token:a4 queue:a5 handler:v6];
+  return [(_BCPowerSourceController *)self _registerForNotification:notification token:token queue:queue handler:v6];
 }
 
 - (void)_endPowerSourceObserving
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_queue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_queue)
   {
     v3 = BCLogPowerSourceController;
     v4 = os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT);
     if (v4)
     {
       v13 = 138543362;
-      v14 = v2;
+      v14 = selfCopy;
       _os_log_impl(&dword_241AC0000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) Unregistering for power source change notifications", &v13, 0xCu);
     }
 
-    v5 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v4, &v2->_powerSourceBatteryChangeNotifyToken);
-    v6 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v5, &v2->_powerSourceTimeRemainingNotifyToken);
-    v7 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v6, &v2->_accPowerSourceNotifyToken);
-    v8 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v7, &v2->_accPowerSourceTimeRemainingNotifyToken);
-    v9 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v8, &v2->_accAttachNotifyToken);
-    v10 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v9, &v2->_chargingIconographyStateNotifyToken);
-    __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v10, &v2->_lowPowerModeNotifyToken);
-    queue = v2->_queue;
-    v2->_queue = 0;
+    v5 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v4, &selfCopy->_powerSourceBatteryChangeNotifyToken);
+    v6 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v5, &selfCopy->_powerSourceTimeRemainingNotifyToken);
+    v7 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v6, &selfCopy->_accPowerSourceNotifyToken);
+    v8 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v7, &selfCopy->_accPowerSourceTimeRemainingNotifyToken);
+    v9 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v8, &selfCopy->_accAttachNotifyToken);
+    v10 = __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v9, &selfCopy->_chargingIconographyStateNotifyToken);
+    __52___BCPowerSourceController__endPowerSourceObserving__block_invoke(v10, &selfCopy->_lowPowerModeNotifyToken);
+    queue = selfCopy->_queue;
+    selfCopy->_queue = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1398,50 +1398,50 @@ LABEL_12:
   if (os_log_type_enabled(BCLogPowerSourceController, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241AC0000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) Query for connected devices", buf, 0xCu);
   }
 
-  v4 = [(_BCPowerSourceController *)self connectedDevices];
+  connectedDevices = [(_BCPowerSourceController *)self connectedDevices];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50___BCPowerSourceController__queryConnectedDevices__block_invoke;
   v7[3] = &unk_278D05BF0;
-  v8 = v4;
-  v5 = v4;
+  v8 = connectedDevices;
+  v5 = connectedDevices;
   [(_BCPowerSourceController *)self _notifyObserversWithBlock:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserver:(id)a3 block:(id)a4 queue:(id)a5
+- (void)_notifyObserver:(id)observer block:(id)block queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9 && a5)
+  observerCopy = observer;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (observerCopy && blockCopy && queue)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56___BCPowerSourceController__notifyObserver_block_queue___block_invoke;
     block[3] = &unk_278D05CD8;
     block[4] = self;
-    v12 = v8;
+    v12 = observerCopy;
     v13 = v10;
-    dispatch_async(a5, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMapTable *)v5->_observersToQueues copy];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMapTable *)selfCopy->_observersToQueues copy];
+    objc_sync_exit(selfCopy);
 
     v16 = 0u;
     v17 = 0u;
@@ -1463,7 +1463,7 @@ LABEL_12:
 
           v11 = *(*(&v14 + 1) + 8 * i);
           v12 = [v7 objectForKey:{v11, v14}];
-          [(_BCPowerSourceController *)v5 _notifyObserver:v11 block:v4 queue:v12];
+          [(_BCPowerSourceController *)selfCopy _notifyObserver:v11 block:blockCopy queue:v12];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];

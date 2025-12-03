@@ -1,24 +1,24 @@
 @interface KSMultilingualInputModeTableCell
 - (BOOL)hasDownloadableAssets;
-- (KSMultilingualInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (KSMultilingualInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)subtitle;
 - (id)title;
 - (void)addDownloadIcon;
 - (void)dealloc;
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4;
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event;
 - (void)updateLabels;
 @end
 
 @implementation KSMultilingualInputModeTableCell
 
-- (KSMultilingualInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (KSMultilingualInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = KSMultilingualInputModeTableCell;
-  v6 = [(PSTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:?];
+  v6 = [(PSTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:?];
   if (v6)
   {
-    -[KSMultilingualInputModeTableCell setInputModes:](v6, "setInputModes:", [a5 propertyForKey:*MEMORY[0x277D401A8]]);
+    -[KSMultilingualInputModeTableCell setInputModes:](v6, "setInputModes:", [specifier propertyForKey:*MEMORY[0x277D401A8]]);
     [(KSMultilingualInputModeTableCell *)v6 updateLabels];
   }
 
@@ -45,9 +45,9 @@
 
 - (id)title
 {
-  v2 = [(KSMultilingualInputModeTableCell *)self inputModes];
+  inputModes = [(KSMultilingualInputModeTableCell *)self inputModes];
 
-  return TIUIGetLocalizedConcatenatedLanguageNamesForInputModes(v2);
+  return TIUIGetLocalizedConcatenatedLanguageNamesForInputModes(inputModes);
 }
 
 - (id)subtitle
@@ -74,8 +74,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(KSMultilingualInputModeTableCell *)self inputModes];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  inputModes = [(KSMultilingualInputModeTableCell *)self inputModes];
+  v3 = [(NSArray *)inputModes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -86,7 +86,7 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(inputModes);
       }
 
       v3 = [objc_msgSend(MEMORY[0x277D6F378] "sharedManager")];
@@ -97,7 +97,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v3 = [(NSArray *)inputModes countByEnumeratingWithState:&v9 objects:v13 count:16];
         v4 = v3;
         if (v3)
         {
@@ -124,14 +124,14 @@ LABEL_3:
   }
 }
 
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(KSMultilingualInputModeTableCell *)self inputModes:a3];
+  v4 = [(KSMultilingualInputModeTableCell *)self inputModes:pressed];
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

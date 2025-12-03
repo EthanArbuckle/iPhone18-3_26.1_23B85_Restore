@@ -1,7 +1,7 @@
 @interface SiriTostadaSource
 - (SiriTostadaSource)init;
 - (id)prepareForActivation;
-- (void)activateWithContext:(id)a3;
+- (void)activateWithContext:(id)context;
 - (void)configureConnection;
 - (void)init;
 - (void)invalidate;
@@ -41,10 +41,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -169,8 +169,8 @@ void __40__SiriTostadaSource_configureConnection__block_invoke_28(uint64_t a1, v
   v11 = v5;
   v6 = [(SASPreheatRequest *)v4 initWithBuilder:v10];
   os_unfair_lock_lock(&self->super._lock);
-  v7 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v7 prewarmWithRequest:v6];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget prewarmWithRequest:v6];
 
   os_unfair_lock_unlock(&self->super._lock);
   v8 = v5;
@@ -187,20 +187,20 @@ void __41__SiriTostadaSource_prepareForActivation__block_invoke(uint64_t a1, voi
   [v3 setRequestSource:54];
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
-  v7 = a3;
-  v4 = [v7 activationIdentifier];
+  contextCopy = context;
+  activationIdentifier = [contextCopy activationIdentifier];
 
-  if (!v4)
+  if (!activationIdentifier)
   {
-    v5 = [(SiriTostadaSource *)self prepareForActivation];
-    [v7 setActivationIdentifier:v5];
+    prepareForActivation = [(SiriTostadaSource *)self prepareForActivation];
+    [contextCopy setActivationIdentifier:prepareForActivation];
   }
 
   os_unfair_lock_lock(&self->super._lock);
-  v6 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v6 activationRequestFromTostadaWithContext:v7];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget activationRequestFromTostadaWithContext:contextCopy];
 
   os_unfair_lock_unlock(&self->super._lock);
 }

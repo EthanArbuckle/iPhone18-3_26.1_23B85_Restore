@@ -1,42 +1,42 @@
 @interface BEWKWebView
-- (BEWKWebView)initWithCoder:(id)a3;
-- (BEWKWebView)initWithFrame:(CGRect)a3 configuration:(id)a4;
-- (BOOL)be_isFontRegistered:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BEWKWebView)initWithCoder:(id)coder;
+- (BEWKWebView)initWithFrame:(CGRect)frame configuration:(id)configuration;
+- (BOOL)be_isFontRegistered:(id)registered;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (CGPoint)_initialContentOffsetForScrollView;
 - (CGRect)_visibleContentRect;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_processPluginProxy;
-- (id)be_updateAXValueForMessage:(id)a3;
-- (id)loadData:(id)a3 MIMEType:(id)a4 characterEncodingName:(id)a5 baseURL:(id)a6;
-- (id)loadFileRequest:(id)a3 allowingReadAccessToURL:(id)a4;
-- (id)loadFileURL:(id)a3 allowingReadAccessToURL:(id)a4;
-- (id)loadHTMLString:(id)a3 baseURL:(id)a4;
-- (id)loadRequest:(id)a3;
-- (id)loadSimulatedRequest:(id)a3 withResponse:(id)a4 responseData:(id)a5;
-- (id)loadSimulatedRequest:(id)a3 withResponseHTMLString:(id)a4;
+- (id)be_updateAXValueForMessage:(id)message;
+- (id)loadData:(id)data MIMEType:(id)type characterEncodingName:(id)name baseURL:(id)l;
+- (id)loadFileRequest:(id)request allowingReadAccessToURL:(id)l;
+- (id)loadFileURL:(id)l allowingReadAccessToURL:(id)rL;
+- (id)loadHTMLString:(id)string baseURL:(id)l;
+- (id)loadRequest:(id)request;
+- (id)loadSimulatedRequest:(id)request withResponse:(id)response responseData:(id)data;
+- (id)loadSimulatedRequest:(id)request withResponseHTMLString:(id)string;
 - (void)_be_sendPendingLoad;
 - (void)_layerTreeCommitComplete;
-- (void)_registerFontFamily:(id)a3 completion:(id)a4;
+- (void)_registerFontFamily:(id)family completion:(id)completion;
 - (void)be_clearRegisteredFonts;
-- (void)be_configureFontWithStyleManager:(id)a3 completion:(id)a4;
+- (void)be_configureFontWithStyleManager:(id)manager completion:(id)completion;
 - (void)be_containsProtectedContent;
 - (void)be_enableAX;
 - (void)be_processPendingFontRegistration;
 - (void)be_resumeLoading;
 - (void)be_suspendLoading;
-- (void)be_updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)be_updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)dealloc;
 @end
 
 @implementation BEWKWebView
 
-- (BEWKWebView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (BEWKWebView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
   v10.receiver = self;
   v10.super_class = BEWKWebView;
-  v4 = [(BEWKWebView *)&v10 initWithFrame:a4 configuration:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(BEWKWebView *)&v10 initWithFrame:configuration configuration:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = [UIColor colorWithDynamicProvider:&stru_328410];
@@ -57,11 +57,11 @@
   return v4;
 }
 
-- (BEWKWebView)initWithCoder:(id)a3
+- (BEWKWebView)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BEWKWebView;
-  v3 = [(BEWKWebView *)&v8 initWithCoder:a3];
+  v3 = [(BEWKWebView *)&v8 initWithCoder:coder];
   if (v3)
   {
     v4 = [UIColor colorWithDynamicProvider:&stru_328410];
@@ -85,7 +85,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEBUG, "Dealloc of #reuse webView:%@", buf, 0xCu);
   }
 
@@ -124,11 +124,11 @@
   }
 }
 
-- (BOOL)be_isFontRegistered:(id)a3
+- (BOOL)be_isFontRegistered:(id)registered
 {
-  v4 = a3;
-  v5 = [(BEWKWebView *)self registeredFonts];
-  v6 = [v5 containsObject:v4];
+  registeredCopy = registered;
+  registeredFonts = [(BEWKWebView *)self registeredFonts];
+  v6 = [registeredFonts containsObject:registeredCopy];
 
   return v6;
 }
@@ -138,30 +138,30 @@
   v3 = _BookEPUBLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BEWKWebView *)self be_identifier];
+    be_identifier = [(BEWKWebView *)self be_identifier];
     v6 = 138412546;
-    v7 = v4;
+    v7 = be_identifier;
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Clearing registered fonts for webView:%@ self:%@", &v6, 0x16u);
   }
 
-  v5 = [(BEWKWebView *)self registeredFonts];
-  [v5 removeAllObjects];
+  registeredFonts = [(BEWKWebView *)self registeredFonts];
+  [registeredFonts removeAllObjects];
 }
 
 - (void)be_processPendingFontRegistration
 {
-  v3 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
-  v4 = [v3 count];
+  pendingFontRegistrationHandlers = [(BEWKWebView *)self pendingFontRegistrationHandlers];
+  v4 = [pendingFontRegistrationHandlers count];
 
   if (v4)
   {
-    v5 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
-    v6 = [v5 copy];
+    pendingFontRegistrationHandlers2 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
+    v6 = [pendingFontRegistrationHandlers2 copy];
 
-    v7 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
-    [v7 removeAllObjects];
+    pendingFontRegistrationHandlers3 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
+    [pendingFontRegistrationHandlers3 removeAllObjects];
 
     if ([v6 count])
     {
@@ -176,15 +176,15 @@
           v11[2] = sub_97F8;
           v11[3] = &unk_328358;
           v12 = v9;
-          v13 = self;
+          selfCopy = self;
           dispatch_async(&_dispatch_main_q, v11);
-          v10 = v12;
+          fontRegistrationHandler = v12;
         }
 
         else
         {
-          v10 = [v9 fontRegistrationHandler];
-          v10[2](v10, 2);
+          fontRegistrationHandler = [v9 fontRegistrationHandler];
+          fontRegistrationHandler[2](fontRegistrationHandler, 2);
         }
 
         ++v8;
@@ -195,40 +195,40 @@
   }
 }
 
-- (void)be_configureFontWithStyleManager:(id)a3 completion:(id)a4
+- (void)be_configureFontWithStyleManager:(id)manager completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  managerCopy = manager;
+  completionCopy = completion;
+  if (managerCopy)
   {
     if ([(BEWKWebView *)self attemptingFontRegistration])
     {
       v8 = _BookEPUBLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v6 font];
+        font = [managerCopy font];
         *buf = 138543362;
-        v17 = v9;
+        v17 = font;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Deferring #fontReg of #fontFamily '%{public}@'", buf, 0xCu);
       }
 
       v10 = objc_opt_new();
-      [v10 setStyleManager:v6];
-      [v10 setFontRegistrationHandler:v7];
-      v11 = [(BEWKWebView *)self pendingFontRegistrationHandlers];
-      [v11 addObject:v10];
+      [v10 setStyleManager:managerCopy];
+      [v10 setFontRegistrationHandler:completionCopy];
+      pendingFontRegistrationHandlers = [(BEWKWebView *)self pendingFontRegistrationHandlers];
+      [pendingFontRegistrationHandlers addObject:v10];
     }
 
     else
     {
-      v12 = [v6 font];
-      v13 = [(BEWKWebView *)self be_isFontRegistered:v12];
+      font2 = [managerCopy font];
+      v13 = [(BEWKWebView *)self be_isFontRegistered:font2];
 
       if (v13)
       {
         [(BEWKWebView *)self be_willAttemptFontRegistration];
         [(BEWKWebView *)self be_fontRegistrationCompleted:1];
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       else
@@ -240,8 +240,8 @@
         v14[2] = sub_9B34;
         v14[3] = &unk_328380;
         v14[4] = self;
-        v15 = v7;
-        [(BEWKWebView *)self _registerFontFamily:v6 completion:v14];
+        v15 = completionCopy;
+        [(BEWKWebView *)self _registerFontFamily:managerCopy completion:v14];
       }
     }
   }
@@ -250,33 +250,33 @@
   {
     [(BEWKWebView *)self be_willAttemptFontRegistration];
     [(BEWKWebView *)self be_fontRegistrationCompleted:0];
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (void)_be_sendPendingLoad
 {
-  v3 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest data];
+  data = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest data];
 
-  v4 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest request];
-  v5 = v4;
-  if (v3)
+  request = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest request];
+  request2 = request;
+  if (data)
   {
-    v6 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest response];
-    v7 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest data];
-    v8 = [(BEWKWebView *)self loadSimulatedRequest:v5 response:v6 responseData:v7];
+    response = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest response];
+    data2 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest data];
+    v8 = [(BEWKWebView *)self loadSimulatedRequest:request2 response:response responseData:data2];
   }
 
   else
   {
 
-    if (!v5)
+    if (!request2)
     {
       goto LABEL_6;
     }
 
-    v5 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest request];
-    v9 = [(BEWKWebView *)self loadRequest:v5];
+    request2 = [(_BEWKWebViewPendingLoad *)self->_be_pendingRequest request];
+    v9 = [(BEWKWebView *)self loadRequest:request2];
   }
 
 LABEL_6:
@@ -284,23 +284,23 @@ LABEL_6:
   self->_be_pendingRequest = 0;
 }
 
-- (void)_registerFontFamily:(id)a3 completion:(id)a4
+- (void)_registerFontFamily:(id)family completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 font];
-  v9 = [(BEWKWebView *)self registeredFonts];
-  v10 = [v9 containsObject:v8];
+  familyCopy = family;
+  completionCopy = completion;
+  font = [familyCopy font];
+  registeredFonts = [(BEWKWebView *)self registeredFonts];
+  v10 = [registeredFonts containsObject:font];
 
-  v11 = [(BEWKWebView *)self fontsAttemptingRegistration];
-  v12 = [v11 containsObject:v8];
+  fontsAttemptingRegistration = [(BEWKWebView *)self fontsAttemptingRegistration];
+  v12 = [fontsAttemptingRegistration containsObject:font];
 
-  if ([v8 length] == 0) | v10 & 1 || (v12)
+  if ([font length] == 0) | v10 & 1 || (v12)
   {
-    if (![v8 length])
+    if (![font length])
     {
 LABEL_20:
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
       goto LABEL_21;
     }
 
@@ -311,7 +311,7 @@ LABEL_20:
       if (v15)
       {
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = font;
         v16 = "#FontFamily '%{public}@' already #fontReg";
 LABEL_18:
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, v16, &buf, 0xCu);
@@ -321,7 +321,7 @@ LABEL_18:
     else if (v15)
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = font;
       v16 = "#FontFamily '%{public}@' already attempting #fontReg";
       goto LABEL_18;
     }
@@ -329,28 +329,28 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if ([v6 isFontPreregistered:v8])
+  if ([familyCopy isFontPreregistered:font])
   {
-    v13 = [(BEWKWebView *)self registeredFonts];
-    [v13 addObject:v8];
+    registeredFonts2 = [(BEWKWebView *)self registeredFonts];
+    [registeredFonts2 addObject:font];
 
-    [(BEWKWebView *)self be_fontFamilySuccessfullyRegistered:v8];
-    v7[2](v7, 1);
+    [(BEWKWebView *)self be_fontFamilySuccessfullyRegistered:font];
+    completionCopy[2](completionCopy, 1);
   }
 
-  else if ([v6 isFontAvailable:v8])
+  else if ([familyCopy isFontAvailable:font])
   {
-    v17 = [(BEWKWebView *)self _processPluginProxy];
-    if (v17)
+    _processPluginProxy = [(BEWKWebView *)self _processPluginProxy];
+    if (_processPluginProxy)
     {
-      v18 = [(BEWKWebView *)self fontsAttemptingRegistration];
-      [v18 addObject:v8];
+      fontsAttemptingRegistration2 = [(BEWKWebView *)self fontsAttemptingRegistration];
+      [fontsAttemptingRegistration2 addObject:font];
 
       v19 = _BookEPUBLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = font;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Attempting #fontReg of #fontFamily '%{public}@'", &buf, 0xCu);
       }
 
@@ -363,13 +363,13 @@ LABEL_18:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *v35 = 138412290;
-        v36 = v8;
+        v36 = font;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Posting font activate notification for font %@", v35, 0xCu);
       }
 
       v21 = +[NSNotificationCenter defaultCenter];
       v33 = @"FontActivateNotificationFontFamilyKey";
-      v34 = v8;
+      v34 = font;
       v22 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       [v21 postNotificationName:@"FontActivateNotification" object:0 userInfo:v22];
 
@@ -378,10 +378,10 @@ LABEL_18:
       v27[2] = sub_A220;
       v27[3] = &unk_3283A8;
       objc_copyWeak(&v31, &location);
-      v28 = v8;
+      v28 = font;
       p_buf = &buf;
-      v29 = v7;
-      [v17 registerFontFamily:v28 completion:v27];
+      v29 = completionCopy;
+      [_processPluginProxy registerFontFamily:v28 completion:v27];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
@@ -394,23 +394,23 @@ LABEL_18:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = font;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "Failed to get process plugin/proxy! Unable to #fontReg fontFamily:%{public}@", &buf, 0xCu);
       }
 
-      v25 = [(BEWKWebView *)self fontsAttemptingRegistration];
-      [v25 addObject:v8];
+      fontsAttemptingRegistration3 = [(BEWKWebView *)self fontsAttemptingRegistration];
+      [fontsAttemptingRegistration3 addObject:font];
 
       v26 = _BookEPUBLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
       {
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v8;
+        *(&buf + 4) = font;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_FAULT, "Unable to access process plugin failure #fontReg #fontFamily '%{public}@'", &buf, 0xCu);
       }
 
-      [(BEWKWebView *)self be_fontFamilyFailedToRegister:v8];
-      v7[2](v7, 0);
+      [(BEWKWebView *)self be_fontFamilyFailedToRegister:font];
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -420,12 +420,12 @@ LABEL_18:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = font;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Skipping #fontReg of #fontFamily '%{public}@' because it is not yet available", &buf, 0xCu);
     }
 
-    [(BEWKWebView *)self be_fontFamilyFailedToRegister:v8];
-    v7[2](v7, 0);
+    [(BEWKWebView *)self be_fontFamilyFailedToRegister:font];
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_21:
@@ -433,33 +433,33 @@ LABEL_21:
 
 - (void)be_containsProtectedContent
 {
-  v2 = [(BEWKWebView *)self _processPluginProxy];
-  [v2 processContainsProtectedContent];
+  _processPluginProxy = [(BEWKWebView *)self _processPluginProxy];
+  [_processPluginProxy processContainsProtectedContent];
 }
 
 - (void)be_enableAX
 {
-  v4 = [(BEWKWebView *)self _processPluginProxy];
-  v3 = [(BEWKWebView *)self be_identifier];
-  [v4 enableAXWithIdentifier:v3];
+  _processPluginProxy = [(BEWKWebView *)self _processPluginProxy];
+  be_identifier = [(BEWKWebView *)self be_identifier];
+  [_processPluginProxy enableAXWithIdentifier:be_identifier];
 }
 
-- (void)be_updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4
+- (void)be_updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BEWKWebView *)self _processPluginProxy];
-  [v8 updateAXCurrentReadingStateWithMessage:v7 forValue:v6];
+  valueCopy = value;
+  messageCopy = message;
+  _processPluginProxy = [(BEWKWebView *)self _processPluginProxy];
+  [_processPluginProxy updateAXCurrentReadingStateWithMessage:messageCopy forValue:valueCopy];
 }
 
-- (id)be_updateAXValueForMessage:(id)a3
+- (id)be_updateAXValueForMessage:(id)message
 {
   v8[0] = @"BEWebProcessPluginIdentifierParameterKey";
-  v4 = a3;
-  v5 = [(BEWKWebView *)self be_identifier];
+  messageCopy = message;
+  be_identifier = [(BEWKWebView *)self be_identifier];
   v8[1] = @"BEWebProcessPluginMessageParameterKey";
-  v9[0] = v5;
-  v9[1] = v4;
+  v9[0] = be_identifier;
+  v9[1] = messageCopy;
   v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
@@ -467,13 +467,13 @@ LABEL_21:
 
 - (id)_processPluginProxy
 {
-  v3 = [(BEWKWebView *)self webProcessPluginProxy];
+  webProcessPluginProxy = [(BEWKWebView *)self webProcessPluginProxy];
 
-  if (!v3)
+  if (!webProcessPluginProxy)
   {
-    v4 = [(BEWKWebView *)self _remoteObjectRegistry];
+    _remoteObjectRegistry = [(BEWKWebView *)self _remoteObjectRegistry];
     v5 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___BEWebProcessControllerProtocol];
-    v6 = [v4 remoteObjectProxyWithInterface:v5];
+    v6 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v5];
     [(BEWKWebView *)self setWebProcessPluginProxy:v6];
 
     if (!v5 || ([(BEWKWebView *)self webProcessPluginProxy], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
@@ -487,20 +487,20 @@ LABEL_21:
     }
   }
 
-  v9 = [(BEWKWebView *)self webProcessPluginProxy];
+  webProcessPluginProxy2 = [(BEWKWebView *)self webProcessPluginProxy];
 
-  return v9;
+  return webProcessPluginProxy2;
 }
 
 - (CGPoint)_initialContentOffsetForScrollView
 {
-  v3 = [(BEWKWebView *)self be_requestedContentOffset];
+  be_requestedContentOffset = [(BEWKWebView *)self be_requestedContentOffset];
   v10.receiver = self;
   v10.super_class = BEWKWebView;
   [(BEWKWebView *)&v10 _initialContentOffsetForScrollView];
-  if (v3)
+  if (be_requestedContentOffset)
   {
-    [v3 CGPointValue];
+    [be_requestedContentOffset CGPointValue];
   }
 
   v6 = v4;
@@ -521,15 +521,15 @@ LABEL_21:
   [(BEWKWebView *)self _be_forceInitialContentOffset];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = NSStringFromSelector(a3);
+  senderCopy = sender;
+  v7 = NSStringFromSelector(action);
   if ([&off_343E00 containsObject:v7])
   {
     v10.receiver = self;
     v10.super_class = BEWKWebView;
-    v8 = [(BEWKWebView *)&v10 canPerformAction:a3 withSender:v6];
+    v8 = [(BEWKWebView *)&v10 canPerformAction:action withSender:senderCopy];
   }
 
   else
@@ -540,19 +540,19 @@ LABEL_21:
   return v8;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   y = CGPointZero.y;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = [(BEWKWebView *)self be_textInputChild];
-  v7 = [v6 interactions];
-  v8 = [v7 reverseObjectEnumerator];
+  be_textInputChild = [(BEWKWebView *)self be_textInputChild];
+  interactions = [be_textInputChild interactions];
+  reverseObjectEnumerator = [interactions reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -565,7 +565,7 @@ LABEL_21:
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         objc_opt_class();
@@ -598,7 +598,7 @@ LABEL_21:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v10);
@@ -612,8 +612,8 @@ LABEL_21:
 
 LABEL_21:
 
-  v23 = [(BEWKWebView *)self be_textInputChild];
-  [(BEWKWebView *)self convertPoint:v23 toView:x, v12];
+  be_textInputChild2 = [(BEWKWebView *)self be_textInputChild];
+  [(BEWKWebView *)self convertPoint:be_textInputChild2 toView:x, v12];
   v25 = v24;
   v27 = v26;
 
@@ -633,13 +633,13 @@ LABEL_21:
     _os_log_impl(&dword_0, v28, OS_LOG_TYPE_INFO, "Building context menu at location - viewPoint:%@ contentPoint:%@", buf, 0x16u);
   }
 
-  v31 = [(BEWKWebView *)self be_uiHandler];
-  [v31 buildMenuWithBuilder:v4 inWebView:self atPoint:{v25, v27}];
+  be_uiHandler = [(BEWKWebView *)self be_uiHandler];
+  [be_uiHandler buildMenuWithBuilder:builderCopy inWebView:self atPoint:{v25, v27}];
 }
 
-- (id)loadRequest:(id)a3
+- (id)loadRequest:(id)request
 {
-  v4 = [a3 mutableCopy];
+  v4 = [request mutableCopy];
   [v4 setAttribution:1];
   if ([(BEWKWebView *)self be_isLoadingSuspended])
   {
@@ -660,10 +660,10 @@ LABEL_21:
   return v7;
 }
 
-- (id)loadFileURL:(id)a3 allowingReadAccessToURL:(id)a4
+- (id)loadFileURL:(id)l allowingReadAccessToURL:(id)rL
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v7 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BEWKWebView loadFileURL:allowingReadAccessToURL:]"];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
   v9 = v8;
@@ -671,10 +671,10 @@ LABEL_21:
   objc_exception_throw(v8);
 }
 
-- (id)loadHTMLString:(id)a3 baseURL:(id)a4
+- (id)loadHTMLString:(id)string baseURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  lCopy = l;
   v7 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BEWKWebView loadHTMLString:baseURL:]"];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
   v9 = v8;
@@ -682,20 +682,20 @@ LABEL_21:
   objc_exception_throw(v8);
 }
 
-- (id)loadData:(id)a3 MIMEType:(id)a4 characterEncodingName:(id)a5 baseURL:(id)a6
+- (id)loadData:(id)data MIMEType:(id)type characterEncodingName:(id)name baseURL:(id)l
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[NSURLResponse alloc] initWithURL:v10 MIMEType:v12 expectedContentLength:objc_msgSend(v13 textEncodingName:{"length"), v11}];
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  dataCopy = data;
+  v14 = [[NSURLResponse alloc] initWithURL:lCopy MIMEType:typeCopy expectedContentLength:objc_msgSend(dataCopy textEncodingName:{"length"), nameCopy}];
 
-  v15 = [NSMutableURLRequest requestWithURL:v10];
+  v15 = [NSMutableURLRequest requestWithURL:lCopy];
 
   [v15 setAttribution:1];
   if ([(BEWKWebView *)self be_isLoadingSuspended])
   {
-    v16 = [_BEWKWebViewPendingLoad pendingLoadWithRequest:v15 response:v14 data:v13];
+    v16 = [_BEWKWebViewPendingLoad pendingLoadWithRequest:v15 response:v14 data:dataCopy];
 
     be_pendingRequest = self->_be_pendingRequest;
     self->_be_pendingRequest = v16;
@@ -707,21 +707,21 @@ LABEL_21:
   {
     v20.receiver = self;
     v20.super_class = BEWKWebView;
-    v18 = [(BEWKWebView *)&v20 loadSimulatedRequest:v15 response:v14 responseData:v13];
+    v18 = [(BEWKWebView *)&v20 loadSimulatedRequest:v15 response:v14 responseData:dataCopy];
   }
 
   return v18;
 }
 
-- (id)loadSimulatedRequest:(id)a3 withResponse:(id)a4 responseData:(id)a5
+- (id)loadSimulatedRequest:(id)request withResponse:(id)response responseData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 mutableCopy];
+  dataCopy = data;
+  responseCopy = response;
+  v10 = [request mutableCopy];
   [v10 setAttribution:1];
   if ([(BEWKWebView *)self be_isLoadingSuspended])
   {
-    v11 = [_BEWKWebViewPendingLoad pendingLoadWithRequest:v10 response:v9 data:v8];
+    v11 = [_BEWKWebViewPendingLoad pendingLoadWithRequest:v10 response:responseCopy data:dataCopy];
 
     be_pendingRequest = self->_be_pendingRequest;
     self->_be_pendingRequest = v11;
@@ -733,16 +733,16 @@ LABEL_21:
   {
     v15.receiver = self;
     v15.super_class = BEWKWebView;
-    v13 = [(BEWKWebView *)&v15 loadSimulatedRequest:v10 withResponse:v9 responseData:v8];
+    v13 = [(BEWKWebView *)&v15 loadSimulatedRequest:v10 withResponse:responseCopy responseData:dataCopy];
   }
 
   return v13;
 }
 
-- (id)loadFileRequest:(id)a3 allowingReadAccessToURL:(id)a4
+- (id)loadFileRequest:(id)request allowingReadAccessToURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  lCopy = l;
   v7 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BEWKWebView loadFileRequest:allowingReadAccessToURL:]"];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
   v9 = v8;
@@ -750,10 +750,10 @@ LABEL_21:
   objc_exception_throw(v8);
 }
 
-- (id)loadSimulatedRequest:(id)a3 withResponseHTMLString:(id)a4
+- (id)loadSimulatedRequest:(id)request withResponseHTMLString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  stringCopy = string;
   v7 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BEWKWebView loadSimulatedRequest:withResponseHTMLString:]"];
   v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v7 userInfo:0];
   v9 = v8;
@@ -770,15 +770,15 @@ LABEL_21:
   y = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BEWKWebView *)self scrollView];
-  [v11 contentSize];
+  scrollView = [(BEWKWebView *)self scrollView];
+  [scrollView contentSize];
   v13 = v12;
   v15 = v14;
 
   [(BEWKWebView *)self be_gutterLength];
   v17 = v16;
-  v18 = [(BEWKWebView *)self _paginationMode];
-  if ((v18 - 3) < 2)
+  _paginationMode = [(BEWKWebView *)self _paginationMode];
+  if ((_paginationMode - 3) < 2)
   {
     v34.origin.x = x;
     v34.origin.y = y;
@@ -807,7 +807,7 @@ LABEL_21:
     }
   }
 
-  else if ((v18 - 1) <= 1)
+  else if ((_paginationMode - 1) <= 1)
   {
     v29 = v15;
     v32.origin.x = x;
@@ -872,11 +872,11 @@ LABEL_19:
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = +[UIAccessibilityElementTraversalOptions defaultVoiceOverOptions];
   v9 = [(BEWKWebView *)self _accessibilityLeafDescendantsWithOptions:v8];
 
@@ -926,7 +926,7 @@ LABEL_19:
 
   v22.receiver = self;
   v22.super_class = BEWKWebView;
-  v20 = [(BEWKWebView *)&v22 _accessibilityHitTest:v7 withEvent:x, y];
+  v20 = [(BEWKWebView *)&v22 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_11:
 
   return v20;

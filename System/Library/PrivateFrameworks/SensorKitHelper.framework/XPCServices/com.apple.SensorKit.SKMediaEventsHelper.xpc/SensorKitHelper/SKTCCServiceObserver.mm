@@ -15,9 +15,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SKTCCServiceObserver *)v2 _mediaEventsStreamIsAuthorizedForBundles];
+    _mediaEventsStreamIsAuthorizedForBundles = [(SKTCCServiceObserver *)v2 _mediaEventsStreamIsAuthorizedForBundles];
     v3->_identifier = @"SKMediaEventsHelper";
-    v3->_numberOfAuthorizedBundles = v4;
+    v3->_numberOfAuthorizedBundles = _mediaEventsStreamIsAuthorizedForBundles;
     v3->_q = dispatch_queue_create("com.apple.SensorKit.SKMediaEventsHelper.TCCEvents", 0);
     [(SKTCCServiceObserver *)v3 _subscribeForTCCEvents];
   }

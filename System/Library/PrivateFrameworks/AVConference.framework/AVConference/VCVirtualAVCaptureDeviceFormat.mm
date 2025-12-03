@@ -1,21 +1,21 @@
 @interface VCVirtualAVCaptureDeviceFormat
-- (BOOL)isEqual:(id)a3;
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent;
 - (void)dealloc;
-- (void)setFormatDescription:(opaqueCMFormatDescription *)a3;
-- (void)setMaxExposureDuration:(id *)a3;
-- (void)setMinExposureDuration:(id *)a3;
+- (void)setFormatDescription:(opaqueCMFormatDescription *)description;
+- (void)setMaxExposureDuration:(id *)duration;
+- (void)setMinExposureDuration:(id *)duration;
 @end
 
 @implementation VCVirtualAVCaptureDeviceFormat
 
-- (void)setFormatDescription:(opaqueCMFormatDescription *)a3
+- (void)setFormatDescription:(opaqueCMFormatDescription *)description
 {
   formatDescription = self->_formatDescription;
-  self->_formatDescription = a3;
-  if (a3)
+  self->_formatDescription = description;
+  if (description)
   {
-    CFRetain(a3);
+    CFRetain(description);
   }
 
   if (formatDescription)
@@ -25,7 +25,7 @@
   }
 }
 
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent
 {
   v4 = objc_opt_class();
 
@@ -48,21 +48,21 @@
   [(VCVirtualAVCaptureDeviceFormat *)&v4 dealloc];
 }
 
-- (void)setMinExposureDuration:(id *)a3
+- (void)setMinExposureDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_minExposureDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_minExposureDuration.value = *&duration->var0;
   self->_minExposureDuration.epoch = var3;
 }
 
-- (void)setMaxExposureDuration:(id *)a3
+- (void)setMaxExposureDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_maxExposureDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_maxExposureDuration.value = *&duration->var0;
   self->_maxExposureDuration.epoch = var3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -72,19 +72,19 @@ LABEL_50:
     return v7;
   }
 
-  v6 = [OUTLINED_FUNCTION_1_6() mediaType];
-  v7 = OUTLINED_FUNCTION_3_11(v6);
+  mediaType = [OUTLINED_FUNCTION_1_6() mediaType];
+  v7 = OUTLINED_FUNCTION_3_11(mediaType);
   if (v7)
   {
-    v8 = [OUTLINED_FUNCTION_1_6() formatDescription];
-    v7 = CMFormatDescriptionEqual(v3, v8);
+    formatDescription = [OUTLINED_FUNCTION_1_6() formatDescription];
+    v7 = CMFormatDescriptionEqual(v3, formatDescription);
     if (v7)
     {
-      v9 = [OUTLINED_FUNCTION_1_6() videoSupportedFrameRateRanges];
-      v7 = OUTLINED_FUNCTION_3_11(v9);
+      videoSupportedFrameRateRanges = [OUTLINED_FUNCTION_1_6() videoSupportedFrameRateRanges];
+      v7 = OUTLINED_FUNCTION_3_11(videoSupportedFrameRateRanges);
       if (v7)
       {
-        [a3 videoFieldOfView];
+        [equal videoFieldOfView];
         OUTLINED_FUNCTION_4_10(v10);
         if (!v11)
         {
@@ -115,9 +115,9 @@ LABEL_50:
           goto LABEL_50;
         }
 
-        if (a3)
+        if (equal)
         {
-          v14 = [a3 minExposureDuration];
+          minExposureDuration = [equal minExposureDuration];
         }
 
         else
@@ -125,16 +125,16 @@ LABEL_50:
           v55 = 0;
         }
 
-        v23 = OUTLINED_FUNCTION_5_11(v14, v15, v16, v17, v18, v19, v20, v21, v49, v51, v53, v55);
-        if (v23)
+        maxExposureDuration = OUTLINED_FUNCTION_5_11(minExposureDuration, v15, v16, v17, v18, v19, v20, v21, v49, v51, v53, v55);
+        if (maxExposureDuration)
         {
           goto LABEL_50;
         }
 
         v31 = self + 88;
-        if (a3)
+        if (equal)
         {
-          v23 = [a3 maxExposureDuration];
+          maxExposureDuration = [equal maxExposureDuration];
         }
 
         else
@@ -142,19 +142,19 @@ LABEL_50:
           v56 = 0;
         }
 
-        if (OUTLINED_FUNCTION_5_11(v23, v24, v25, v26, v27, v28, v29, v30, v50, v52, v54, v56))
+        if (OUTLINED_FUNCTION_5_11(maxExposureDuration, v24, v25, v26, v27, v28, v29, v30, v50, v52, v54, v56))
         {
           goto LABEL_50;
         }
 
-        [a3 minISO];
+        [equal minISO];
         *&v33 = OUTLINED_FUNCTION_4_10(v32);
         if (!v11)
         {
           goto LABEL_50;
         }
 
-        [a3 maxISO];
+        [equal maxISO];
         OUTLINED_FUNCTION_4_10(v34);
         if (!v11)
         {
@@ -172,19 +172,19 @@ LABEL_50:
         }
 
         width = self->_highResolutionStillImageDimensions.width;
-        if (width != [a3 highResolutionStillImageDimensions])
+        if (width != [equal highResolutionStillImageDimensions])
         {
           goto LABEL_50;
         }
 
         height = self->_highResolutionStillImageDimensions.height;
-        if (height != [a3 highResolutionStillImageDimensions] >> 32 || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isHighPhotoQualitySupported") || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isHighestPhotoQualitySupported") || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isPortraitEffectSupported") || height != objc_msgSend(OUTLINED_FUNCTION_1_6(), "autoFocusSystem"))
+        if (height != [equal highResolutionStillImageDimensions] >> 32 || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isHighPhotoQualitySupported") || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isHighestPhotoQualitySupported") || height != objc_msgSend(OUTLINED_FUNCTION_2_12(), "isPortraitEffectSupported") || height != objc_msgSend(OUTLINED_FUNCTION_1_6(), "autoFocusSystem"))
         {
           goto LABEL_50;
         }
 
-        v37 = [OUTLINED_FUNCTION_1_6() supportedColorSpaces];
-        v7 = OUTLINED_FUNCTION_3_11(v37);
+        supportedColorSpaces = [OUTLINED_FUNCTION_1_6() supportedColorSpaces];
+        v7 = OUTLINED_FUNCTION_3_11(supportedColorSpaces);
         if (!v7)
         {
           return v7;
@@ -204,30 +204,30 @@ LABEL_50:
           goto LABEL_50;
         }
 
-        v40 = [OUTLINED_FUNCTION_1_6() supportedVideoZoomFactorsForDepthDataDelivery];
-        v7 = OUTLINED_FUNCTION_3_11(v40);
+        supportedVideoZoomFactorsForDepthDataDelivery = [OUTLINED_FUNCTION_1_6() supportedVideoZoomFactorsForDepthDataDelivery];
+        v7 = OUTLINED_FUNCTION_3_11(supportedVideoZoomFactorsForDepthDataDelivery);
         if (v7)
         {
-          v41 = [OUTLINED_FUNCTION_1_6() supportedDepthDataFormats];
-          v7 = OUTLINED_FUNCTION_3_11(v41);
+          supportedDepthDataFormats = [OUTLINED_FUNCTION_1_6() supportedDepthDataFormats];
+          v7 = OUTLINED_FUNCTION_3_11(supportedDepthDataFormats);
           if (v7)
           {
-            v42 = [OUTLINED_FUNCTION_1_6() unsupportedCaptureOutputClasses];
-            v7 = OUTLINED_FUNCTION_3_11(v42);
+            unsupportedCaptureOutputClasses = [OUTLINED_FUNCTION_1_6() unsupportedCaptureOutputClasses];
+            v7 = OUTLINED_FUNCTION_3_11(unsupportedCaptureOutputClasses);
             if (v7)
             {
-              v43 = [OUTLINED_FUNCTION_1_6() supportedMaxPhotoDimensions];
-              v7 = OUTLINED_FUNCTION_3_11(v43);
+              supportedMaxPhotoDimensions = [OUTLINED_FUNCTION_1_6() supportedMaxPhotoDimensions];
+              v7 = OUTLINED_FUNCTION_3_11(supportedMaxPhotoDimensions);
               if (v7)
               {
-                v44 = [OUTLINED_FUNCTION_1_6() secondaryNativeResolutionZoomFactors];
-                v7 = OUTLINED_FUNCTION_3_11(v44);
+                secondaryNativeResolutionZoomFactors = [OUTLINED_FUNCTION_1_6() secondaryNativeResolutionZoomFactors];
+                v7 = OUTLINED_FUNCTION_3_11(secondaryNativeResolutionZoomFactors);
                 if (v7)
                 {
                   if (height == [OUTLINED_FUNCTION_2_12() isCenterStageSupported])
                   {
-                    v45 = [OUTLINED_FUNCTION_1_6() supportedOutputAspectRatios];
-                    v7 = OUTLINED_FUNCTION_3_11(v45);
+                    supportedOutputAspectRatios = [OUTLINED_FUNCTION_1_6() supportedOutputAspectRatios];
+                    v7 = OUTLINED_FUNCTION_3_11(supportedOutputAspectRatios);
                     if (!v7)
                     {
                       return v7;
@@ -237,7 +237,7 @@ LABEL_50:
                     while (1)
                     {
                       v47 = [(VCVirtualAVCaptureDeviceFormat *)self isVideoStabilizationModeSupported:++v46];
-                      if (v47 != [a3 isVideoStabilizationModeSupported:v46])
+                      if (v47 != [equal isVideoStabilizationModeSupported:v46])
                       {
                         break;
                       }

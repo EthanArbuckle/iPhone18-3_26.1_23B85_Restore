@@ -1,17 +1,17 @@
 @interface GAXTimeRestrictionLockoutViewController
-- (GAXTimeRestrictionLockoutViewController)initWithUIServer:(id)a3;
+- (GAXTimeRestrictionLockoutViewController)initWithUIServer:(id)server;
 - (GAXUIServer)uiServer;
 - (id)_titleFont;
-- (void)contentSizeCategoryPrefChanged:(id)a3;
+- (void)contentSizeCategoryPrefChanged:(id)changed;
 - (void)loadView;
-- (void)setAppTimeRestrictionDuration:(double)a3;
+- (void)setAppTimeRestrictionDuration:(double)duration;
 @end
 
 @implementation GAXTimeRestrictionLockoutViewController
 
-- (GAXTimeRestrictionLockoutViewController)initWithUIServer:(id)a3
+- (GAXTimeRestrictionLockoutViewController)initWithUIServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   if (AXDeviceIsPad())
   {
     v5 = @"GAXTimeRestrictionLockoutView_ipad";
@@ -32,7 +32,7 @@
     v8 = objc_alloc_init(AXUIAlertStyleProvider);
     [(GAXTimeRestrictionLockoutViewController *)v7 setStyleProvider:v8];
 
-    [(GAXTimeRestrictionLockoutViewController *)v7 setUiServer:v4];
+    [(GAXTimeRestrictionLockoutViewController *)v7 setUiServer:serverCopy];
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v7 selector:"contentSizeCategoryPrefChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
   }
@@ -40,19 +40,19 @@
   return v7;
 }
 
-- (void)contentSizeCategoryPrefChanged:(id)a3
+- (void)contentSizeCategoryPrefChanged:(id)changed
 {
-  v4 = [(GAXTimeRestrictionLockoutViewController *)self _titleFont];
-  v5 = [(GAXTimeRestrictionLockoutViewController *)self titleLabel];
-  [v5 setFont:v4];
+  _titleFont = [(GAXTimeRestrictionLockoutViewController *)self _titleFont];
+  titleLabel = [(GAXTimeRestrictionLockoutViewController *)self titleLabel];
+  [titleLabel setFont:_titleFont];
 
-  v6 = [(GAXTimeRestrictionLockoutViewController *)self _subtitleFont];
-  v7 = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
-  [v7 setFont:v6];
+  _subtitleFont = [(GAXTimeRestrictionLockoutViewController *)self _subtitleFont];
+  subtitleLabel = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
+  [subtitleLabel setFont:_subtitleFont];
 
   v12 = +[UIApplication sharedApplication];
-  v8 = [v12 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v8))
+  preferredContentSizeCategory = [v12 preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v9 = 1.0;
   }
@@ -62,9 +62,9 @@
     v9 = 0.0;
   }
 
-  v10 = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
+  subtitleLabel2 = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
   *&v11 = v9;
-  [v10 _setHyphenationFactor:v11];
+  [subtitleLabel2 _setHyphenationFactor:v11];
 }
 
 - (id)_titleFont
@@ -103,51 +103,51 @@
   v80 = objc_opt_new();
   [v80 setIndicatorStyle:2];
   [(GAXTimeRestrictionLockoutViewController *)self setScrollView:v80];
-  v10 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  [v7 addSubview:v11];
+  scrollView2 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  [v7 addSubview:scrollView2];
 
   v12 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-  v13 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  [v13 addSubview:v12];
+  scrollView3 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  [scrollView3 addSubview:v12];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(GAXTimeRestrictionLockoutViewController *)self setContentView:v12];
-  v14 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v15 = [v14 topAnchor];
-  v16 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  contentView = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  scrollView4 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  topAnchor2 = [scrollView4 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v18 setActive:1];
 
-  v19 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v20 = [v19 bottomAnchor];
-  v21 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  contentView2 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  scrollView5 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  bottomAnchor2 = [scrollView5 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 setActive:1];
 
-  v24 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v25 = [v24 leadingAnchor];
-  v26 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v27 = [v26 leadingAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  contentView3 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  scrollView6 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  leadingAnchor2 = [scrollView6 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v28 setActive:1];
 
-  v29 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v30 = [v29 trailingAnchor];
-  v31 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  contentView4 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
+  scrollView7 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  trailingAnchor2 = [scrollView7 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v33 setActive:1];
 
-  v34 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v35 = [v34 widthAnchor];
-  v36 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v37 = [v36 widthAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  contentView5 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  widthAnchor = [contentView5 widthAnchor];
+  scrollView8 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  widthAnchor2 = [scrollView8 widthAnchor];
+  v38 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v38 setActive:1];
 
   v39 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -157,8 +157,8 @@
   v40 = GAXLocString(@"GAX_TIME_RESTRICTION_LOCKOUT_VIEW_TITLE");
   [v39 setText:v40];
 
-  v41 = [(GAXTimeRestrictionLockoutViewController *)self _titleFont];
-  [v39 setFont:v41];
+  _titleFont = [(GAXTimeRestrictionLockoutViewController *)self _titleFont];
+  [v39 setFont:_titleFont];
 
   v42 = +[UIColor whiteColor];
   [v39 setColor:v42];
@@ -169,8 +169,8 @@
   [v12 addSubview:v43];
   [(GAXTimeRestrictionLockoutViewController *)self setSubtitleLabel:v43];
   v44 = +[UIApplication sharedApplication];
-  v45 = [v44 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v45);
+  preferredContentSizeCategory = [v44 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v47 = 0.0;
   if (IsAccessibilityCategory)
   {
@@ -186,8 +186,8 @@
   v51 = [NSString stringWithFormat:v48, v50];
   [v43 setText:v51];
 
-  v52 = [(GAXTimeRestrictionLockoutViewController *)self _subtitleFont];
-  [v43 setFont:v52];
+  _subtitleFont = [(GAXTimeRestrictionLockoutViewController *)self _subtitleFont];
+  [v43 setFont:_subtitleFont];
 
   v53 = +[UIColor whiteColor];
   [v43 setColor:v53];
@@ -238,18 +238,18 @@
   v65 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[titleLabel]-titleBottomPadding-[subtitleLabel]|", 96, v57, v58);
   [v12 addConstraints:v65];
 
-  v66 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
-  v67 = [v66 heightAnchor];
-  v68 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v69 = [v68 heightAnchor];
-  v70 = [v67 constraintEqualToAnchor:v69];
+  contentView6 = [(GAXTimeRestrictionLockoutViewController *)self contentView];
+  heightAnchor = [contentView6 heightAnchor];
+  scrollView9 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  heightAnchor2 = [scrollView9 heightAnchor];
+  v70 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v71) = 1144750080;
   [v70 setPriority:v71];
   [v70 setActive:1];
-  v72 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
-  v73 = [v72 heightAnchor];
-  v74 = [v79 heightAnchor];
+  scrollView10 = [(GAXTimeRestrictionLockoutViewController *)self scrollView];
+  heightAnchor3 = [scrollView10 heightAnchor];
+  heightAnchor4 = [v79 heightAnchor];
   if (AXDeviceIsPad())
   {
     v75 = &off_61830;
@@ -261,19 +261,19 @@
   }
 
   [v75 doubleValue];
-  v77 = [v73 constraintLessThanOrEqualToAnchor:v74 multiplier:1.0 constant:v76 * -2.0];
+  v77 = [heightAnchor3 constraintLessThanOrEqualToAnchor:heightAnchor4 multiplier:1.0 constant:v76 * -2.0];
 
   [v77 setActive:1];
 }
 
-- (void)setAppTimeRestrictionDuration:(double)a3
+- (void)setAppTimeRestrictionDuration:(double)duration
 {
-  self->_appTimeRestrictionDuration = a3;
+  self->_appTimeRestrictionDuration = duration;
   v8 = GAXLocString(@"GAX_TIME_RESTRICTION_LOCKOUT_VIEW_SUBTITLE");
-  v5 = GAXLocalizedStringForTimeDuration(a3);
+  v5 = GAXLocalizedStringForTimeDuration(duration);
   v6 = [NSString stringWithFormat:v8, v5];
-  v7 = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
-  [v7 setText:v6];
+  subtitleLabel = [(GAXTimeRestrictionLockoutViewController *)self subtitleLabel];
+  [subtitleLabel setText:v6];
 }
 
 - (GAXUIServer)uiServer

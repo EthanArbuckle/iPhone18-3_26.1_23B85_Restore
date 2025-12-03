@@ -1,25 +1,25 @@
 @interface MOAggregationManager
-- (MOAggregationManager)initWithUniverse:(id)a3;
-- (id)filterEventBundlesEligibleForSummarization:(id)a3;
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 granularity:(unint64_t)a5 handler:(id)a6;
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 handler:(id)a5;
+- (MOAggregationManager)initWithUniverse:(id)universe;
+- (id)filterEventBundlesEligibleForSummarization:(id)summarization;
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters granularity:(unint64_t)granularity handler:(id)handler;
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters handler:(id)handler;
 @end
 
 @implementation MOAggregationManager
 
-- (MOAggregationManager)initWithUniverse:(id)a3
+- (MOAggregationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v13.receiver = self;
   v13.super_class = MOAggregationManager;
   v6 = [(MOAggregationManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v5 getService:v9];
+    v10 = [universeCopy getService:v9];
     eventBundleRanking = v7->_eventBundleRanking;
     v7->_eventBundleRanking = v10;
   }
@@ -27,7 +27,7 @@
   return v7;
 }
 
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters handler:(id)handler
 {
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@
   [v8 handleFailureInMethod:a2 object:self file:@"MOAggregationManager.m" lineNumber:36 description:{@"Use the derived class (in %s:%d)", "-[MOAggregationManager aggregateBundles:withParameters:handler:]", 36}];
 }
 
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 granularity:(unint64_t)a5 handler:(id)a6
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters granularity:(unint64_t)granularity handler:(id)handler
 {
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -51,9 +51,9 @@
   [v9 handleFailureInMethod:a2 object:self file:@"MOAggregationManager.m" lineNumber:44 description:{@"Use the derived class (in %s:%d)", "-[MOAggregationManager aggregateBundles:withParameters:granularity:handler:]", 44}];
 }
 
-- (id)filterEventBundlesEligibleForSummarization:(id)a3
+- (id)filterEventBundlesEligibleForSummarization:(id)summarization
 {
-  v4 = [a3 mutableCopy];
+  v4 = [summarization mutableCopy];
   [(MOEventBundleRanking *)self->_eventBundleRanking generateBundleRanking:v4 withMinRecommendedBundleCountRequirement:0];
   v5 = [NSArray arrayWithArray:v4];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);

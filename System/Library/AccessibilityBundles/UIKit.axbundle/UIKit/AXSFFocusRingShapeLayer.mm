@@ -1,112 +1,112 @@
 @interface AXSFFocusRingShapeLayer
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3;
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style;
 + (id)layer;
 - (uint64_t)innerBorder;
 - (uint64_t)outerBorder;
-- (void)setInnerBorder:(uint64_t)a1;
-- (void)setOuterBorder:(uint64_t)a1;
-- (void)setPath:(CGPath *)a3;
+- (void)setInnerBorder:(uint64_t)border;
+- (void)setOuterBorder:(uint64_t)border;
+- (void)setPath:(CGPath *)path;
 @end
 
 @implementation AXSFFocusRingShapeLayer
 
 + (id)layer
 {
-  v8[2] = a1;
+  v8[2] = self;
   v8[1] = a2;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AXSFFocusRingShapeLayer;
   v8[0] = objc_msgSendSuper2(&v7, sel_layer);
-  v5 = [MEMORY[0x29EDC7A00] clearColor];
-  v2 = v5;
-  v3 = [v5 CGColor];
-  [v8[0] setFillColor:v3];
-  MEMORY[0x29EDC9740](v5);
+  clearColor = [MEMORY[0x29EDC7A00] clearColor];
+  v2 = clearColor;
+  cGColor = [clearColor CGColor];
+  [v8[0] setFillColor:cGColor];
+  MEMORY[0x29EDC9740](clearColor);
   v6 = MEMORY[0x29EDC9748](v8[0]);
   objc_storeStrong(v8, 0);
 
   return v6;
 }
 
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style
 {
-  v31[3] = a1;
+  v31[3] = self;
   v31[2] = a2;
-  v31[1] = a3;
+  v31[1] = style;
   v31[0] = +[AXSFFocusRingShapeLayer layer];
-  v8 = [MEMORY[0x29EDBBAC0] layer];
-  [(AXSFFocusRingShapeLayer *)v31[0] setInnerBorder:v8];
-  MEMORY[0x29EDC9740](v8);
-  v11 = [MEMORY[0x29EDC7A00] blackColor];
-  v3 = v11;
-  v9 = [v11 CGColor];
-  v10 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
-  [v10 setStrokeColor:v9];
-  MEMORY[0x29EDC9740](v10);
-  MEMORY[0x29EDC9740](v11);
-  v14 = [MEMORY[0x29EDC7A00] clearColor];
-  v4 = v14;
-  v12 = [v14 CGColor];
-  v13 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
-  [v13 setFillColor:v12];
-  MEMORY[0x29EDC9740](v13);
-  MEMORY[0x29EDC9740](v14);
-  v15 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
-  [v15 setLineWidth:3.0];
-  MEMORY[0x29EDC9740](v15);
-  v16 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
-  [v16 setCornerRadius:?];
-  MEMORY[0x29EDC9740](v16);
+  layer = [MEMORY[0x29EDBBAC0] layer];
+  [(AXSFFocusRingShapeLayer *)v31[0] setInnerBorder:layer];
+  MEMORY[0x29EDC9740](layer);
+  blackColor = [MEMORY[0x29EDC7A00] blackColor];
+  v3 = blackColor;
+  cGColor = [blackColor CGColor];
+  innerBorder = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
+  [innerBorder setStrokeColor:cGColor];
+  MEMORY[0x29EDC9740](innerBorder);
+  MEMORY[0x29EDC9740](blackColor);
+  clearColor = [MEMORY[0x29EDC7A00] clearColor];
+  v4 = clearColor;
+  cGColor2 = [clearColor CGColor];
+  innerBorder2 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
+  [innerBorder2 setFillColor:cGColor2];
+  MEMORY[0x29EDC9740](innerBorder2);
+  MEMORY[0x29EDC9740](clearColor);
+  innerBorder3 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
+  [innerBorder3 setLineWidth:3.0];
+  MEMORY[0x29EDC9740](innerBorder3);
+  innerBorder4 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
+  [innerBorder4 setCornerRadius:?];
+  MEMORY[0x29EDC9740](innerBorder4);
   v17 = v31[0];
-  v18 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
+  innerBorder5 = [(AXSFFocusRingShapeLayer *)v31[0] innerBorder];
   [v17 addSublayer:?];
-  MEMORY[0x29EDC9740](v18);
-  v19 = [MEMORY[0x29EDBBAC0] layer];
-  [(AXSFFocusRingShapeLayer *)v31[0] setOuterBorder:v19];
-  MEMORY[0x29EDC9740](v19);
-  v22 = [MEMORY[0x29EDC7A00] whiteColor];
-  v5 = v22;
-  v20 = [v22 CGColor];
-  v21 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
-  [v21 setStrokeColor:v20];
-  MEMORY[0x29EDC9740](v21);
-  MEMORY[0x29EDC9740](v22);
-  v25 = [MEMORY[0x29EDC7A00] clearColor];
-  v6 = v25;
-  v23 = [v25 CGColor];
-  v24 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
-  [v24 setFillColor:v23];
-  MEMORY[0x29EDC9740](v24);
-  MEMORY[0x29EDC9740](v25);
-  v26 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
-  [v26 setLineWidth:1.0];
-  MEMORY[0x29EDC9740](v26);
-  v27 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
-  [v27 setCornerRadius:5.0];
-  MEMORY[0x29EDC9740](v27);
+  MEMORY[0x29EDC9740](innerBorder5);
+  layer2 = [MEMORY[0x29EDBBAC0] layer];
+  [(AXSFFocusRingShapeLayer *)v31[0] setOuterBorder:layer2];
+  MEMORY[0x29EDC9740](layer2);
+  whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+  v5 = whiteColor;
+  cGColor3 = [whiteColor CGColor];
+  outerBorder = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
+  [outerBorder setStrokeColor:cGColor3];
+  MEMORY[0x29EDC9740](outerBorder);
+  MEMORY[0x29EDC9740](whiteColor);
+  clearColor2 = [MEMORY[0x29EDC7A00] clearColor];
+  v6 = clearColor2;
+  cGColor4 = [clearColor2 CGColor];
+  outerBorder2 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
+  [outerBorder2 setFillColor:cGColor4];
+  MEMORY[0x29EDC9740](outerBorder2);
+  MEMORY[0x29EDC9740](clearColor2);
+  outerBorder3 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
+  [outerBorder3 setLineWidth:1.0];
+  MEMORY[0x29EDC9740](outerBorder3);
+  outerBorder4 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
+  [outerBorder4 setCornerRadius:5.0];
+  MEMORY[0x29EDC9740](outerBorder4);
   v28 = v31[0];
-  v29 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
+  outerBorder5 = [(AXSFFocusRingShapeLayer *)v31[0] outerBorder];
   [v28 addSublayer:?];
-  MEMORY[0x29EDC9740](v29);
+  MEMORY[0x29EDC9740](outerBorder5);
   v30 = MEMORY[0x29EDC9748](v31[0]);
   objc_storeStrong(v31, 0);
 
   return v30;
 }
 
-- (void)setInnerBorder:(uint64_t)a1
+- (void)setInnerBorder:(uint64_t)border
 {
-  if (a1)
+  if (border)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((border + 48), a2);
   }
 }
 
 - (uint64_t)innerBorder
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -115,19 +115,19 @@
   }
 }
 
-- (void)setOuterBorder:(uint64_t)a1
+- (void)setOuterBorder:(uint64_t)border
 {
-  if (a1)
+  if (border)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((border + 56), a2);
   }
 }
 
 - (uint64_t)outerBorder
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 56);
+    return *(self + 56);
   }
 
   else
@@ -136,19 +136,19 @@
   }
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
+  pathCopy = path;
   v32.receiver = self;
   v32.super_class = AXSFFocusRingShapeLayer;
-  [(AXSFFocusRingShapeLayer *)&v32 setPath:a3];
-  v8 = v33;
-  v9 = [(AXSFFocusRingShapeLayer *)v35 outerBorder];
-  [v9 setPath:v8];
-  MEMORY[0x29EDC9740](v9);
-  v31 = [MEMORY[0x29EDC7948] bezierPathWithCGPath:v33];
+  [(AXSFFocusRingShapeLayer *)&v32 setPath:path];
+  v8 = pathCopy;
+  outerBorder = [(AXSFFocusRingShapeLayer *)selfCopy outerBorder];
+  [outerBorder setPath:v8];
+  MEMORY[0x29EDC9740](outerBorder);
+  v31 = [MEMORY[0x29EDC7948] bezierPathWithCGPath:pathCopy];
   [v31 bounds];
   v30 = v36;
   v29 = CGRectInset(v36, 1.0, 1.0);
@@ -176,10 +176,10 @@
   [v31 applyTransform:v16];
   v13 = v31;
   v7 = v31;
-  v14 = [v13 CGPath];
-  v15 = [(AXSFFocusRingShapeLayer *)v35 innerBorder];
-  [v15 setPath:v14];
-  MEMORY[0x29EDC9740](v15);
+  cGPath = [v13 CGPath];
+  innerBorder = [(AXSFFocusRingShapeLayer *)selfCopy innerBorder];
+  [innerBorder setPath:cGPath];
+  MEMORY[0x29EDC9740](innerBorder);
   objc_storeStrong(&v31, 0);
 }
 

@@ -15,7 +15,7 @@
   v3 = 24.0;
   if (_UIEnhancedMainMenuEnabled())
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___STUIStatusBarVisualProvider_RoundedPad;
     objc_msgSendSuper2(&v6, sel_height);
     return v4;
@@ -29,7 +29,7 @@
   v3 = 16.0;
   if (_UIEnhancedMainMenuEnabled())
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___STUIStatusBarVisualProvider_RoundedPad;
     objc_msgSendSuper2(&v6, sel_baselineOffset);
     return v4;
@@ -43,7 +43,7 @@
   v3 = 16.0;
   if ((_UIEnhancedMainMenuEnabled() & 1) == 0)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___STUIStatusBarVisualProvider_RoundedPad;
     objc_msgSendSuper2(&v6, sel_expandedBaselineOffset);
     return v4;

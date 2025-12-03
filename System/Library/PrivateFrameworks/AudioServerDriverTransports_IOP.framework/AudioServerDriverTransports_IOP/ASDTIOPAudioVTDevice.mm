@@ -1,18 +1,18 @@
 @interface ASDTIOPAudioVTDevice
-- (BOOL)getChannelMask:(unsigned int *)a3;
-- (BOOL)getDebugEnabled:(unsigned int *)a3;
-- (BOOL)getIsEnabled:(unsigned int *)a3;
-- (BOOL)getModelCRC:(unsigned int *)a3;
+- (BOOL)getChannelMask:(unsigned int *)mask;
+- (BOOL)getDebugEnabled:(unsigned int *)enabled;
+- (BOOL)getIsEnabled:(unsigned int *)enabled;
+- (BOOL)getModelCRC:(unsigned int *)c;
 - (BOOL)isConfigured;
 - (BOOL)open;
-- (BOOL)setConfigurationInfo:(id)a3;
-- (BOOL)setDebugEnabled:(unsigned int)a3;
-- (BOOL)setEnabled:(unsigned int)a3;
-- (BOOL)setPhraseDetectEventBlock:(id)a3;
+- (BOOL)setConfigurationInfo:(id)info;
+- (BOOL)setDebugEnabled:(unsigned int)enabled;
+- (BOOL)setEnabled:(unsigned int)enabled;
+- (BOOL)setPhraseDetectEventBlock:(id)block;
 - (NSDictionary)eventInfo;
 - (id).cxx_construct;
 - (id)getConfigurationInfo;
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4;
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value;
 - (void)close;
 - (void)dealloc;
 - (void)open;
@@ -20,10 +20,10 @@
 
 @implementation ASDTIOPAudioVTDevice
 
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value
 {
   v5 = *MEMORY[0x277D85DE8];
-  [a4 clientType];
+  [value clientType];
   operator new();
 }
 
@@ -48,8 +48,8 @@
     v7 = ASDTIOPLogType();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(ASDTIOService *)self idValue];
-      [(ASDTIOPAudioVTDevice *)v8 open];
+      idValue = [(ASDTIOService *)self idValue];
+      [(ASDTIOPAudioVTDevice *)idValue open];
     }
 
     goto LABEL_12;
@@ -60,8 +60,8 @@
     v5 = ASDTIOPLogType();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(ASDTIOService *)self idValue];
-      [(ASDTIOPAudioVTDevice *)v6 open];
+      idValue2 = [(ASDTIOService *)self idValue];
+      [(ASDTIOPAudioVTDevice *)idValue2 open];
     }
 
     (*(**(self + 3) + 32))(*(self + 3));
@@ -82,7 +82,7 @@ LABEL_13:
 - (void)close
 {
   *a2 = 138412290;
-  *(a2 + 4) = a1;
+  *(a2 + 4) = self;
   OUTLINED_FUNCTION_0(&dword_2416E9000, a2, a3, "%@: Unbalanced open/close calls.", a2);
 }
 
@@ -99,7 +99,7 @@ LABEL_13:
   [(ASDTIOService *)&v4 dealloc];
 }
 
-- (BOOL)getIsEnabled:(unsigned int *)a3
+- (BOOL)getIsEnabled:(unsigned int *)enabled
 {
   v3 = *(self + 3);
   if (!v3)
@@ -107,15 +107,15 @@ LABEL_13:
     [ASDTIOPAudioVTDevice getIsEnabled:];
   }
 
-  if (!a3)
+  if (!enabled)
   {
     [ASDTIOPAudioVTDevice getIsEnabled:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetVoiceTriggerEnabled(v3, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetVoiceTriggerEnabled(v3, enabled);
 }
 
-- (BOOL)setEnabled:(unsigned int)a3
+- (BOOL)setEnabled:(unsigned int)enabled
 {
   v4 = *(self + 3);
   if (!v4)
@@ -123,10 +123,10 @@ LABEL_13:
     [ASDTIOPAudioVTDevice setEnabled:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::SetVoiceTriggerEnabled(v4, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::SetVoiceTriggerEnabled(v4, enabled);
 }
 
-- (BOOL)getChannelMask:(unsigned int *)a3
+- (BOOL)getChannelMask:(unsigned int *)mask
 {
   v3 = *(self + 3);
   if (!v3)
@@ -134,15 +134,15 @@ LABEL_13:
     [ASDTIOPAudioVTDevice getChannelMask:];
   }
 
-  if (!a3)
+  if (!mask)
   {
     [ASDTIOPAudioVTDevice getChannelMask:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetActiveChannelMask(v3, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetActiveChannelMask(v3, mask);
 }
 
-- (BOOL)getModelCRC:(unsigned int *)a3
+- (BOOL)getModelCRC:(unsigned int *)c
 {
   v3 = *(self + 3);
   if (!v3)
@@ -150,15 +150,15 @@ LABEL_13:
     [ASDTIOPAudioVTDevice getModelCRC:];
   }
 
-  if (!a3)
+  if (!c)
   {
     [ASDTIOPAudioVTDevice getModelCRC:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetModelCRC(v3, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetModelCRC(v3, c);
 }
 
-- (BOOL)getDebugEnabled:(unsigned int *)a3
+- (BOOL)getDebugEnabled:(unsigned int *)enabled
 {
   v3 = *(self + 3);
   if (!v3)
@@ -166,15 +166,15 @@ LABEL_13:
     [ASDTIOPAudioVTDevice getDebugEnabled:];
   }
 
-  if (!a3)
+  if (!enabled)
   {
     [ASDTIOPAudioVTDevice getDebugEnabled:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetDebugEnabled(v3, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::GetDebugEnabled(v3, enabled);
 }
 
-- (BOOL)setDebugEnabled:(unsigned int)a3
+- (BOOL)setDebugEnabled:(unsigned int)enabled
 {
   v4 = *(self + 3);
   if (!v4)
@@ -182,7 +182,7 @@ LABEL_13:
     [ASDTIOPAudioVTDevice setDebugEnabled:];
   }
 
-  return ASDT::IOPAudio::VoiceTrigger::UserClient::SetDebugEnabled(v4, a3);
+  return ASDT::IOPAudio::VoiceTrigger::UserClient::SetDebugEnabled(v4, enabled);
 }
 
 - (NSDictionary)eventInfo
@@ -237,19 +237,19 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)setConfigurationInfo:(id)a3
+- (BOOL)setConfigurationInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   v6 = *(self + 3);
   if (!v6)
   {
     __assert_rtn("[ASDTIOPAudioVTDevice setConfigurationInfo:]", "ASDTIOPAudioVTDevice.mm", 175, "_userClient");
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v7 = v4;
+    v7 = infoCopy;
     CFRetain(v7);
     cf = v7;
     v8 = CFGetTypeID(v7);
@@ -275,16 +275,16 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)setPhraseDetectEventBlock:(id)a3
+- (BOOL)setPhraseDetectEventBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = *(self + 3);
   if (!v5)
   {
     __assert_rtn("[ASDTIOPAudioVTDevice setPhraseDetectEventBlock:]", "ASDTIOPAudioVTDevice.mm", 184, "_userClient");
   }
 
-  v6 = ASDT::IOPAudio::VoiceTrigger::UserClient::SetPhraseDetectEventBlock(v5, v4);
+  v6 = ASDT::IOPAudio::VoiceTrigger::UserClient::SetPhraseDetectEventBlock(v5, blockCopy);
 
   return v6;
 }
@@ -321,7 +321,7 @@ LABEL_13:
 - (void)open
 {
   *a2 = 138412290;
-  *(a2 + 4) = a1;
+  *(a2 + 4) = self;
   OUTLINED_FUNCTION_0(&dword_2416E9000, a2, a3, "%@: Failed to Open() IOPAudioVT user client", a2);
 }
 

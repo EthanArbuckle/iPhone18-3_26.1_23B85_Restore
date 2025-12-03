@@ -1,25 +1,25 @@
 @interface VNClassifyFaceAttributesRequest
 + (const)dependentRequestMappingTable;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
 + (id)publicRevisionsSet;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNClassifyFaceAttributesRequest
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u < 7 && ((0x6Du >> a3) & 1) != 0)
+  if (revision - 3737841664u < 7 && ((0x6Du >> revision) & 1) != 0)
   {
-    v5 = off_1E77B4158[a3 - 3737841664u];
+    v5 = off_1E77B4158[revision - 3737841664u];
   }
 
   else
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNClassifyFaceAttributesRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
@@ -67,14 +67,14 @@ uint64_t __54__VNClassifyFaceAttributesRequest_privateRevisionsSet__block_invoke
   return &+[VNClassifyFaceAttributesRequest dependentRequestMappingTable]::ourDependentRequestMappingTable;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 3737841664u > 6 || ((1 << a3) & 0x6D) == 0)
+  if (revision - 3737841664u > 6 || ((1 << revision) & 0x6D) == 0)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-      *a4 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else

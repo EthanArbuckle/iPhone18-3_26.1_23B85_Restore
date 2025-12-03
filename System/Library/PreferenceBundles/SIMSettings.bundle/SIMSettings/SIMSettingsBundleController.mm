@@ -1,12 +1,12 @@
 @interface SIMSettingsBundleController
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 @end
 
 @implementation SIMSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v26 = +[NSMutableArray array];
   v5 = PSBundlePathKey;
   v35 = PSBundlePathKey;
@@ -19,10 +19,10 @@
   v8 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   v9 = OBJC_IVAR___PSBundleController__parent;
   v10 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-  v11 = [v10 bundle];
+  bundle = [v10 bundle];
   WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[v9]);
   v23 = 0;
-  v25 = v4;
+  v25 = specifierCopy;
   v13 = SpecifiersFromPlist();
 
   if (v13)
@@ -40,7 +40,7 @@
   v29 = v15;
   v16 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v17 = objc_loadWeakRetained(&self->PSBundleController_opaque[v9]);
-  v18 = [v17 bundle];
+  bundle2 = [v17 bundle];
   v19 = objc_loadWeakRetained(&self->PSBundleController_opaque[v9]);
   v24 = 0;
   v20 = SpecifiersFromPlist();

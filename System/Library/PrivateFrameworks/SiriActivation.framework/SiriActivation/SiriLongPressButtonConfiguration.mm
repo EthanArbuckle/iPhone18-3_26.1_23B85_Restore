@@ -1,12 +1,12 @@
 @interface SiriLongPressButtonConfiguration
-- (SiriLongPressButtonConfiguration)initWithButtonIdentifier:(int64_t)a3;
+- (SiriLongPressButtonConfiguration)initWithButtonIdentifier:(int64_t)identifier;
 - (double)longPressInterval;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SiriLongPressButtonConfiguration
 
-- (SiriLongPressButtonConfiguration)initWithButtonIdentifier:(int64_t)a3
+- (SiriLongPressButtonConfiguration)initWithButtonIdentifier:(int64_t)identifier
 {
   v10.receiver = self;
   v10.super_class = SiriLongPressButtonConfiguration;
@@ -14,11 +14,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_buttonIdentifer = a3;
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
+    v4->_buttonIdentifer = identifier;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v7;
+    v5->_uniqueIdentifier = uUIDString;
 
     v5->_longPressBehavior = 0;
   }
@@ -42,13 +42,13 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SiriLongPressButtonConfiguration alloc] initWithButtonIdentifier:self->_buttonIdentifer];
   [(SiriLongPressButtonConfiguration *)v4 setLongPressBehavior:[(SiriLongPressButtonConfiguration *)self longPressBehavior]];
-  v5 = self;
+  selfCopy = self;
 
-  return v5;
+  return selfCopy;
 }
 
 @end

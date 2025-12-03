@@ -3,21 +3,21 @@
 - (STSSessionBaseDelegate)delegate;
 - (id)activateChildSession;
 - (id)canStartSession;
-- (id)createHandoffToken:(id *)a3;
-- (id)setActiveCredential:(id)a3;
-- (id)setActiveCredentials:(id)a3;
-- (id)validateCredentials:(id)a3;
-- (void)_tearDownOnQueue:(BOOL)a3 completion:(id)a4;
+- (id)createHandoffToken:(id *)token;
+- (id)setActiveCredential:(id)credential;
+- (id)setActiveCredentials:(id)credentials;
+- (id)validateCredentials:(id)credentials;
+- (void)_tearDownOnQueue:(BOOL)queue completion:(id)completion;
 - (void)clearSessionTimer;
 - (void)dealloc;
-- (void)endSessionWithCompletion:(id)a3;
-- (void)fireSessionDidEndUnexpectedlyEventWithStatus:(unint64_t)a3;
-- (void)handleSessionResumed:(id)a3;
-- (void)handleSessionSuspended:(id)a3 withToken:(id)a4;
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3;
-- (void)setSessionTimeLimit:(double)a3;
-- (void)startWithDelegate:(id)a3 isFirstInQueue:(BOOL *)a4;
-- (void)startWithDelegate:(id)a3 isFirstInQueue:(BOOL *)a4 completion:(id)a5;
+- (void)endSessionWithCompletion:(id)completion;
+- (void)fireSessionDidEndUnexpectedlyEventWithStatus:(unint64_t)status;
+- (void)handleSessionResumed:(id)resumed;
+- (void)handleSessionSuspended:(id)suspended withToken:(id)token;
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)setSessionTimeLimit:(double)limit;
+- (void)startWithDelegate:(id)delegate isFirstInQueue:(BOOL *)queue;
+- (void)startWithDelegate:(id)delegate isFirstInQueue:(BOOL *)queue completion:(id)completion;
 @end
 
 @implementation STSSessionBase
@@ -56,22 +56,22 @@
   [(STSSessionBase *)&v5 dealloc];
 }
 
-- (void)startWithDelegate:(id)a3 isFirstInQueue:(BOOL *)a4
+- (void)startWithDelegate:(id)delegate isFirstInQueue:(BOOL *)queue
 {
-  v6 = a3;
-  [(STSSessionBase *)self setDelegate:v6];
+  delegateCopy = delegate;
+  [(STSSessionBase *)self setDelegate:delegateCopy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_265372674;
   aBlock[3] = &unk_279B93820;
   aBlock[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v7 = v6;
+  v14 = delegateCopy;
+  queueCopy = queue;
+  v7 = delegateCopy;
   v8 = _Block_copy(aBlock);
-  v9 = [(STSSessionBase *)self masterSESession];
+  masterSESession = [(STSSessionBase *)self masterSESession];
 
-  if (v9)
+  if (masterSESession)
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase startWithDelegate:isFirstInQueue:]", 113, self, @"Previous session exists, tear down now", v10, v11, v12);
     [(STSSessionBase *)self _tearDownOnQueue:1 completion:v8];
@@ -83,10 +83,10 @@
   }
 }
 
-- (void)startWithDelegate:(id)a3 isFirstInQueue:(BOOL *)a4 completion:(id)a5
+- (void)startWithDelegate:(id)delegate isFirstInQueue:(BOOL *)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_26536F000, "startWithDelegate:isFirstInQueue:completion:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -94,23 +94,23 @@
   os_activity_scope_leave(&state);
 
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase startWithDelegate:isFirstInQueue:completion:]", 124, self, &stru_2876E3E50, v11, v12, v15[0]);
-  v13 = [(STSSessionBase *)self canStartSession];
-  if (v13)
+  canStartSession = [(STSSessionBase *)self canStartSession];
+  if (canStartSession)
   {
-    v14 = [(STSSessionBase *)self callbackQueue];
+    callbackQueue = [(STSSessionBase *)self callbackQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_265372BA0;
     v15[3] = &unk_279B93848;
-    v17 = v9;
-    v16 = v13;
-    dispatch_async(v14, v15);
+    v17 = completionCopy;
+    v16 = canStartSession;
+    dispatch_async(callbackQueue, v15);
   }
 
   else
   {
-    [(STSSessionBase *)self setTheStartCallback:v9];
-    [(STSSessionBase *)self startWithDelegate:v8 isFirstInQueue:a4];
+    [(STSSessionBase *)self setTheStartCallback:completionCopy];
+    [(STSSessionBase *)self startWithDelegate:delegateCopy isFirstInQueue:queue];
   }
 }
 
@@ -139,9 +139,9 @@
   return v11;
 }
 
-- (void)endSessionWithCompletion:(id)a3
+- (void)endSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_26536F000, "endSessionWithCompletion:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -155,7 +155,7 @@
   v10[2] = sub_265372EC0;
   v10[3] = &unk_279B93870;
   objc_copyWeak(&v12, &state);
-  v8 = v4;
+  v8 = completionCopy;
   v10[4] = self;
   v11 = v8;
   [(STSSessionBase *)self _tearDownOnQueue:1 completion:v10];
@@ -167,14 +167,14 @@
 - (id)activateChildSession
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v4 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(STSSessionBase *)self handler];
-    v6 = [v5 activeChildSession];
+    handler2 = [(STSSessionBase *)self handler];
+    activeChildSession = [handler2 activeChildSession];
 
-    if (v6)
+    if (activeChildSession)
     {
       sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase activateChildSession]", 180, self, @"Child session previously activated", v7, v8, v30);
       v9 = 0;
@@ -182,10 +182,10 @@
 
     else
     {
-      v16 = [(STSSessionBase *)self handler];
-      v17 = [(STSSessionBase *)self masterSESession];
+      handler3 = [(STSSessionBase *)self handler];
+      masterSESession = [(STSSessionBase *)self masterSESession];
       v31 = 0;
-      v18 = [v16 createHandoffTokenFromSession:v17 outError:&v31];
+      v18 = [handler3 createHandoffTokenFromSession:masterSESession outError:&v31];
       v19 = v31;
 
       if (v19)
@@ -198,15 +198,15 @@
         if ([v18 length])
         {
           sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase activateChildSession]", 196, self, @"activating new handler with token: %@", v20, v21, v18);
-          v22 = [(STSSessionBase *)self handler];
-          v9 = [v22 activateWithHandoffToken:v18];
+          handler4 = [(STSSessionBase *)self handler];
+          v9 = [handler4 activateWithHandoffToken:v18];
         }
 
         else
         {
           sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase activateChildSession]", 192, self, @"Invalid token", v20, v21, v30);
           v23 = MEMORY[0x277CCA9B8];
-          v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+          handler4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
           v32[0] = *MEMORY[0x277CCA450];
           v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid State"];
           v33[0] = v24;
@@ -219,7 +219,7 @@
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 193];
           v33[3] = v26;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:4];
-          v9 = [v23 errorWithDomain:v22 code:9 userInfo:v27];
+          v9 = [v23 errorWithDomain:handler4 code:9 userInfo:v27];
         }
       }
     }
@@ -249,57 +249,57 @@
   return v9;
 }
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v58[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialCopy = credential;
   v6 = _os_activity_create(&dword_26536F000, "setActiveCredential:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 205, self, @"%@", v7, v8, v5);
-  v9 = [(STSSessionBase *)self handler];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 205, self, @"%@", v7, v8, credentialCopy);
+  handler = [(STSSessionBase *)self handler];
 
-  if (v9)
+  if (handler)
   {
-    if (!v5 || (-[STSSessionBase handler](self, "handler"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 supportedCredentialType], v14 = objc_msgSend(v5, "type"), v12, v13 == v14))
+    if (!credentialCopy || (-[STSSessionBase handler](self, "handler"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 supportedCredentialType], v14 = objc_msgSend(credentialCopy, "type"), v12, v13 == v14))
     {
       v15 = 0;
       goto LABEL_11;
     }
 
-    v17 = [(STSSessionBase *)self handler];
-    v18 = [v17 activeSTSCredential];
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 217, self, @"new handler required, switching credential from %@ to %@", v19, v20, v18);
+    handler2 = [(STSSessionBase *)self handler];
+    activeSTSCredential = [handler2 activeSTSCredential];
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 217, self, @"new handler required, switching credential from %@ to %@", v19, v20, activeSTSCredential);
 
-    v21 = [(STSSessionBase *)self createHandlerForCredential:v5];
+    v21 = [(STSSessionBase *)self createHandlerForCredential:credentialCopy];
     if (!v21)
     {
       v47 = MEMORY[0x277CCA9B8];
-      v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+      handler7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
       v57[0] = *MEMORY[0x277CCA450];
       v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
       v58[0] = v48;
       v58[1] = &unk_2876ECBB8;
       v57[1] = @"Line";
       v57[2] = @"Method";
-      v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), v5];
-      v58[2] = v49;
+      credentialCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), credentialCopy];
+      v58[2] = credentialCopy;
       v57[3] = *MEMORY[0x277CCA068];
       v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 220];
       v58[3] = v50;
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:4];
-      v35 = [v47 errorWithDomain:v40 code:11 userInfo:v51];
+      activateChildSession = [v47 errorWithDomain:handler7 code:11 userInfo:v51];
 
 LABEL_18:
       goto LABEL_19;
     }
 
     v16 = v21;
-    v22 = [(STSSessionBase *)self handler];
-    [v22 tearDownWithCompletion:0];
+    handler3 = [(STSSessionBase *)self handler];
+    [handler3 tearDownWithCompletion:0];
 
     [(STSSessionBase *)self setHandler:v16];
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 226, self, @"Waiting for Control SE session ready", v23, v24, v53);
@@ -313,22 +313,22 @@ LABEL_18:
 LABEL_10:
 
 LABEL_11:
-    v28 = [(STSSessionBase *)self handler];
+    handler4 = [(STSSessionBase *)self handler];
 
-    if (v28)
+    if (handler4)
     {
-      v31 = [(STSSessionBase *)self handler];
-      v32 = [v31 activateChildSessionOnSetActiveCredential];
+      handler5 = [(STSSessionBase *)self handler];
+      activateChildSessionOnSetActiveCredential = [handler5 activateChildSessionOnSetActiveCredential];
 
-      if (v32)
+      if (activateChildSessionOnSetActiveCredential)
       {
-        v35 = [(STSSessionBase *)self activateChildSession];
+        activateChildSession = [(STSSessionBase *)self activateChildSession];
 
-        if (v35)
+        if (activateChildSession)
         {
-          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredential:]", 240, self, @"Handler activation failure: %@", v36, v37, v35);
-          v38 = [(STSSessionBase *)self handler];
-          [v38 tearDownWithCompletion:0];
+          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredential:]", 240, self, @"Handler activation failure: %@", v36, v37, activateChildSession);
+          handler6 = [(STSSessionBase *)self handler];
+          [handler6 tearDownWithCompletion:0];
 
           [(STSSessionBase *)self setHandler:0];
           goto LABEL_19;
@@ -340,16 +340,16 @@ LABEL_11:
         sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 247, self, @" Handoff not ready to be activated yet", v33, v34, v52);
       }
 
-      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 250, self, @"Seting new activeCredential %@ on handler", v36, v37, v5);
-      v40 = [(STSSessionBase *)self handler];
-      v35 = [v40 setActiveCredential:v5];
+      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 250, self, @"Seting new activeCredential %@ on handler", v36, v37, credentialCopy);
+      handler7 = [(STSSessionBase *)self handler];
+      activateChildSession = [handler7 setActiveCredential:credentialCopy];
     }
 
     else
     {
       sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredential:]", 253, self, @"Unable to find a valid handler", v29, v30, v52);
       v39 = MEMORY[0x277CCA9B8];
-      v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+      handler7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
       v55[0] = *MEMORY[0x277CCA450];
       v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
       v56[0] = v41;
@@ -362,39 +362,39 @@ LABEL_11:
       v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 254];
       v56[3] = v43;
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
-      v35 = [v39 errorWithDomain:v40 code:11 userInfo:v44];
+      activateChildSession = [v39 errorWithDomain:handler7 code:11 userInfo:v44];
     }
 
     goto LABEL_18;
   }
 
-  if (v5)
+  if (credentialCopy)
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredential:]", 213, self, @"Creating initial handler", v10, v11, v52);
-    v16 = [(STSSessionBase *)self createHandlerForCredential:v5];
+    v16 = [(STSSessionBase *)self createHandlerForCredential:credentialCopy];
     [(STSSessionBase *)self setHandler:v16];
     v15 = 0;
     goto LABEL_10;
   }
 
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase setActiveCredential:]", 209, self, @"Handler does not exist for deactivation.", v10, v11, v52);
-  v35 = 0;
+  activateChildSession = 0;
 LABEL_19:
 
   v45 = *MEMORY[0x277D85DE8];
 
-  return v35;
+  return activateChildSession;
 }
 
-- (id)validateCredentials:(id)a3
+- (id)validateCredentials:(id)credentials
 {
   v46[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  credentialsCopy = credentials;
+  if (![credentialsCopy count])
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase validateCredentials:]", 262, self, @"Empty credential array provided.", v6, v7, v34);
     v22 = MEMORY[0x277CCA9B8];
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+    firstObject = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v45[0] = *MEMORY[0x277CCA450];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid Parameter"];
     v46[0] = v13;
@@ -407,15 +407,15 @@ LABEL_19:
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 263];
     v46[3] = v24;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:4];
-    v21 = [v22 errorWithDomain:v8 code:8 userInfo:v25];
+    v21 = [v22 errorWithDomain:firstObject code:8 userInfo:v25];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v8 = [v5 firstObject];
-  v9 = [v8 type];
-  if (!v9)
+  firstObject = [credentialsCopy firstObject];
+  type = [firstObject type];
+  if (!type)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase validateCredentials:]", 270, self, @"Invalid credential type.", v10, v11, v34);
     v31 = MEMORY[0x277CCA9B8];
@@ -438,12 +438,12 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = v9;
+  v12 = type;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v5;
+  v13 = credentialsCopy;
   v14 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v14)
   {
@@ -458,11 +458,11 @@ LABEL_15:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v36 + 1) + 8 * i) type];
-        if (v12 != v18)
+        type2 = [*(*(&v36 + 1) + 8 * i) type];
+        if (v12 != type2)
         {
           v35 = v12;
-          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase validateCredentials:]", 279, self, @"Invalid or mismatching credential types; found %d, expects %d", v19, v20, v18);
+          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase validateCredentials:]", 279, self, @"Invalid or mismatching credential types; found %d, expects %d", v19, v20, type2);
           v26 = MEMORY[0x277CCA9B8];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
           v40[0] = *MEMORY[0x277CCA450];
@@ -503,74 +503,74 @@ LABEL_17:
   return v21;
 }
 
-- (id)setActiveCredentials:(id)a3
+- (id)setActiveCredentials:(id)credentials
 {
   v59[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialsCopy = credentials;
   v6 = _os_activity_create(&dword_26536F000, "setActiveCredentials:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 292, self, @"%@", v7, v8, v5);
-  if ([v5 count] != 1)
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 292, self, @"%@", v7, v8, credentialsCopy);
+  if ([credentialsCopy count] != 1)
   {
-    if (v5)
+    if (credentialsCopy)
     {
-      v10 = [(STSSessionBase *)self validateCredentials:v5];
-      if (v10)
+      activateChildSession = [(STSSessionBase *)self validateCredentials:credentialsCopy];
+      if (activateChildSession)
       {
         goto LABEL_26;
       }
 
-      v9 = [v5 firstObject];
+      firstObject = [credentialsCopy firstObject];
     }
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
 
-    v11 = [(STSSessionBase *)self handler];
+    handler = [(STSSessionBase *)self handler];
 
-    if (v11)
+    if (handler)
     {
-      if (!v9 || (-[STSSessionBase handler](self, "handler"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 supportedCredentialType], v16 = objc_msgSend(v9, "type"), v14, v15 == v16))
+      if (!firstObject || (-[STSSessionBase handler](self, "handler"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 supportedCredentialType], v16 = objc_msgSend(firstObject, "type"), v14, v15 == v16))
       {
         v17 = 0;
         goto LABEL_17;
       }
 
-      v19 = [(STSSessionBase *)self handler];
-      v20 = [v19 activeSTSCredential];
-      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 321, self, @"new handler required, switching credential from %@ to %@", v21, v22, v20);
+      handler2 = [(STSSessionBase *)self handler];
+      activeSTSCredential = [handler2 activeSTSCredential];
+      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 321, self, @"new handler required, switching credential from %@ to %@", v21, v22, activeSTSCredential);
 
-      v23 = [(STSSessionBase *)self createHandlerForCredential:v9];
+      v23 = [(STSSessionBase *)self createHandlerForCredential:firstObject];
       if (!v23)
       {
         v48 = MEMORY[0x277CCA9B8];
-        v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+        handler7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
         v58[0] = *MEMORY[0x277CCA450];
         v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
         v59[0] = v49;
         v59[1] = &unk_2876ECC30;
         v58[1] = @"Line";
         v58[2] = @"Method";
-        v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), v9];
+        v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), firstObject];
         v59[2] = v50;
         v58[3] = *MEMORY[0x277CCA068];
         v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 324];
         v59[3] = v51;
         v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:4];
-        v10 = [v48 errorWithDomain:v41 code:11 userInfo:v52];
+        activateChildSession = [v48 errorWithDomain:handler7 code:11 userInfo:v52];
 
         goto LABEL_24;
       }
 
       v18 = v23;
-      v24 = [(STSSessionBase *)self handler];
-      [v24 tearDownWithCompletion:0];
+      handler3 = [(STSSessionBase *)self handler];
+      [handler3 tearDownWithCompletion:0];
 
       [(STSSessionBase *)self setHandler:v18];
       sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 330, self, @"Waiting for Control SE session ready", v25, v26, v54);
@@ -584,36 +584,36 @@ LABEL_17:
 
     else
     {
-      if (!v5)
+      if (!credentialsCopy)
       {
         sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 313, self, @"Handler does not exist for deactivation.", v12, v13, v53);
-        v10 = 0;
+        activateChildSession = 0;
         goto LABEL_25;
       }
 
       sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 317, self, @"Creating initial handler", v12, v13, v53);
-      v18 = [(STSSessionBase *)self createHandlerForCredential:v9];
+      v18 = [(STSSessionBase *)self createHandlerForCredential:firstObject];
       [(STSSessionBase *)self setHandler:v18];
       v17 = 0;
     }
 
 LABEL_17:
-    v30 = [(STSSessionBase *)self handler];
+    handler4 = [(STSSessionBase *)self handler];
 
-    if (v30)
+    if (handler4)
     {
-      v33 = [(STSSessionBase *)self handler];
-      v34 = [v33 activateChildSessionOnSetActiveCredential];
+      handler5 = [(STSSessionBase *)self handler];
+      activateChildSessionOnSetActiveCredential = [handler5 activateChildSessionOnSetActiveCredential];
 
-      if (v34)
+      if (activateChildSessionOnSetActiveCredential)
       {
-        v10 = [(STSSessionBase *)self activateChildSession];
+        activateChildSession = [(STSSessionBase *)self activateChildSession];
 
-        if (v10)
+        if (activateChildSession)
         {
-          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredentials:]", 344, self, @"Handler activation failure: %@", v37, v38, v10);
-          v39 = [(STSSessionBase *)self handler];
-          [v39 tearDownWithCompletion:0];
+          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredentials:]", 344, self, @"Handler activation failure: %@", v37, v38, activateChildSession);
+          handler6 = [(STSSessionBase *)self handler];
+          [handler6 tearDownWithCompletion:0];
 
           [(STSSessionBase *)self setHandler:0];
           goto LABEL_25;
@@ -625,16 +625,16 @@ LABEL_17:
         sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 350, self, @"Handler not ready to be activated yet", v35, v36, v53);
       }
 
-      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 353, self, @"Setting new activeCredentials %@ on handler", v37, v38, v5);
-      v41 = [(STSSessionBase *)self handler];
-      v10 = [v41 setActiveCredentials:v5];
+      sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase setActiveCredentials:]", 353, self, @"Setting new activeCredentials %@ on handler", v37, v38, credentialsCopy);
+      handler7 = [(STSSessionBase *)self handler];
+      activateChildSession = [handler7 setActiveCredentials:credentialsCopy];
     }
 
     else
     {
       sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase setActiveCredentials:]", 356, self, @"Unable to find a valid handler", v31, v32, v53);
       v40 = MEMORY[0x277CCA9B8];
-      v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+      handler7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
       v56[0] = *MEMORY[0x277CCA450];
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Feature Not Supported"];
       v57[0] = v42;
@@ -647,7 +647,7 @@ LABEL_17:
       v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 357];
       v57[3] = v44;
       v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:4];
-      v10 = [v40 errorWithDomain:v41 code:11 userInfo:v45];
+      activateChildSession = [v40 errorWithDomain:handler7 code:11 userInfo:v45];
     }
 
 LABEL_24:
@@ -655,17 +655,17 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v9 = [v5 firstObject];
-  v10 = [(STSSessionBase *)self setActiveCredential:v9];
+  firstObject = [credentialsCopy firstObject];
+  activateChildSession = [(STSSessionBase *)self setActiveCredential:firstObject];
 LABEL_25:
 
 LABEL_26:
   v46 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return activateChildSession;
 }
 
-- (id)createHandoffToken:(id *)a3
+- (id)createHandoffToken:(id *)token
 {
   v56[4] = *MEMORY[0x277D85DE8];
   v6 = _os_activity_create(&dword_26536F000, "createHandoffToken:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
@@ -674,27 +674,27 @@ LABEL_26:
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = [(STSSessionBase *)self handler];
-  v8 = [v7 consumeHandoffToken];
+  handler = [(STSSessionBase *)self handler];
+  consumeHandoffToken = [handler consumeHandoffToken];
 
-  if (v8)
+  if (consumeHandoffToken)
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase createHandoffToken:]", 372, self, @"Consume existing token from handler", v9, v10, v47);
-    v11 = v8;
+    v11 = consumeHandoffToken;
     v12 = 0;
     v13 = 0;
-    *a3 = v8;
+    *token = consumeHandoffToken;
     goto LABEL_13;
   }
 
-  v14 = [(STSSessionBase *)self handler];
+  handler2 = [(STSSessionBase *)self handler];
 
-  if (v14)
+  if (handler2)
   {
-    v15 = [(STSSessionBase *)self handler];
-    v16 = [v15 activeChildSession];
+    handler3 = [(STSSessionBase *)self handler];
+    activeChildSession = [handler3 activeChildSession];
 
-    if (v16)
+    if (activeChildSession)
     {
       goto LABEL_5;
     }
@@ -702,7 +702,7 @@ LABEL_26:
 LABEL_9:
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSessionBase createHandoffToken:]", 384, self, @"Fail to create session token; missing active session", v17, v18, v47);
     v24 = MEMORY[0x277CCA9B8];
-    v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+    activeChildSession = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v55[0] = *MEMORY[0x277CCA450];
     v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Invalid State"];
     v56[0] = v25;
@@ -715,30 +715,30 @@ LABEL_9:
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 385];
     v56[3] = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
-    v13 = [v24 errorWithDomain:v16 code:9 userInfo:v28];
+    v13 = [v24 errorWithDomain:activeChildSession code:9 userInfo:v28];
 
 LABEL_10:
     v12 = 0;
     goto LABEL_13;
   }
 
-  v16 = [(STSSessionBase *)self masterSESession];
-  if (!v16)
+  activeChildSession = [(STSSessionBase *)self masterSESession];
+  if (!activeChildSession)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  v19 = [(STSSessionBase *)self handler];
+  handler4 = [(STSSessionBase *)self handler];
 
-  if (v19)
+  if (handler4)
   {
-    v20 = [(STSSessionBase *)self handler];
+    handler5 = [(STSSessionBase *)self handler];
     v49 = 0;
-    v21 = [v20 createHandoffTokenFromSession:v16 outError:&v49];
+    v21 = [handler5 createHandoffTokenFromSession:activeChildSession outError:&v49];
     v22 = v49;
     v23 = v21;
-    *a3 = v21;
+    *token = v21;
 
 LABEL_7:
     v12 = v22;
@@ -748,10 +748,10 @@ LABEL_7:
   }
 
   v48 = 0;
-  v29 = [v16 createSessionHandoffToken:&v48];
+  v29 = [activeChildSession createSessionHandoffToken:&v48];
   v12 = v48;
   v30 = v29;
-  *a3 = v29;
+  *token = v29;
   if (!v12)
   {
     if ([v29 length])
@@ -805,7 +805,7 @@ LABEL_13:
   return v13;
 }
 
-- (void)setSessionTimeLimit:(double)a3
+- (void)setSessionTimeLimit:(double)limit
 {
   v5 = _os_activity_create(&dword_26536F000, "setSessionTimeLimit:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -813,7 +813,7 @@ LABEL_13:
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  if (a3 <= 0.0)
+  if (limit <= 0.0)
   {
     [(STSSessionBase *)self clearSessionTimer];
   }
@@ -830,7 +830,7 @@ LABEL_13:
       v12 = sub_265374D58;
       v13 = &unk_279B938C0;
       objc_copyWeak(v14, &state);
-      v14[1] = *&a3;
+      v14[1] = *&limit;
       v8 = [(STSTimer *)v7 initSleepTimerWithCallback:&v10 queue:self->_callbackQueue];
       v9 = self->_sessionKillSwitch;
       self->_sessionKillSwitch = v8;
@@ -840,7 +840,7 @@ LABEL_13:
       sessionKillSwitch = self->_sessionKillSwitch;
     }
 
-    [(STSTimer *)sessionKillSwitch startTimer:a3, v10, v11, v12, v13];
+    [(STSTimer *)sessionKillSwitch startTimer:limit, v10, v11, v12, v13];
   }
 }
 
@@ -852,12 +852,12 @@ LABEL_13:
   self->_sessionKillSwitch = 0;
 }
 
-- (void)_tearDownOnQueue:(BOOL)a3 completion:(id)a4
+- (void)_tearDownOnQueue:(BOOL)queue completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase _tearDownOnQueue:completion:]", 449, self, &stru_2876E3E50, v7, v8, v17[0]);
-  if (v4)
+  if (queueCopy)
   {
     v9 = dispatch_group_create();
   }
@@ -868,119 +868,119 @@ LABEL_13:
   }
 
   os_unfair_lock_lock(&self->_sessionUpdateLock);
-  v10 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v10)
+  if (handler)
   {
     if (v9)
     {
       dispatch_group_enter(v9);
     }
 
-    v11 = [(STSSessionBase *)self handler];
+    handler2 = [(STSSessionBase *)self handler];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_2653752A8;
     v23[3] = &unk_279B938E8;
     v24 = v9;
-    [v11 tearDownWithCompletion:v23];
+    [handler2 tearDownWithCompletion:v23];
 
     [(STSSessionBase *)self setHandler:0];
   }
 
-  v12 = [(STSSessionBase *)self masterSESession];
+  masterSESession = [(STSSessionBase *)self masterSESession];
 
-  if (v12)
+  if (masterSESession)
   {
     if (v9)
     {
       dispatch_group_enter(v9);
     }
 
-    v13 = [(STSSessionBase *)self masterSESession];
+    masterSESession2 = [(STSSessionBase *)self masterSESession];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = sub_2653752B8;
     v21[3] = &unk_279B93910;
     v22 = v9;
-    [v13 endSessionWithCompletion:v21];
+    [masterSESession2 endSessionWithCompletion:v21];
 
     [(STSSessionBase *)self setMasterSESession:0];
   }
 
-  v14 = [(STSSessionBase *)self initiatingSession];
+  initiatingSession = [(STSSessionBase *)self initiatingSession];
 
-  if (v14)
+  if (initiatingSession)
   {
     if (v9)
     {
       dispatch_group_enter(v9);
     }
 
-    v15 = [(STSSessionBase *)self initiatingSession];
+    initiatingSession2 = [(STSSessionBase *)self initiatingSession];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = sub_2653752C8;
     v19[3] = &unk_279B93910;
     v20 = v9;
-    [v15 endSessionWithCompletion:v19];
+    [initiatingSession2 endSessionWithCompletion:v19];
 
     [(STSSessionBase *)self setInitiatingSession:0];
   }
 
   os_unfair_lock_unlock(&self->_sessionUpdateLock);
-  if (v6)
+  if (completionCopy)
   {
     if (v9)
     {
-      v16 = [(STSSessionBase *)self callbackQueue];
+      callbackQueue = [(STSSessionBase *)self callbackQueue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = sub_2653752D8;
       v17[3] = &unk_279B93938;
-      v18 = v6;
-      dispatch_group_notify(v9, v16, v17);
+      v18 = completionCopy;
+      dispatch_group_notify(v9, callbackQueue, v17);
     }
 
     else
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)handleSessionSuspended:(id)a3 withToken:(id)a4
+- (void)handleSessionSuspended:(id)suspended withToken:(id)token
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase handleSessionSuspended:withToken:]", 493, v7, @"Control SE session is suspended with token: %@", v8, v9, v6);
-  v7->_controlSessionSuspended = 1;
+  suspendedCopy = suspended;
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase handleSessionSuspended:withToken:]", 493, selfCopy, @"Control SE session is suspended with token: %@", v8, v9, tokenCopy);
+  selfCopy->_controlSessionSuspended = 1;
   v10 = dispatch_semaphore_create(0);
-  controlSessionSem = v7->_controlSessionSem;
-  v7->_controlSessionSem = v10;
+  controlSessionSem = selfCopy->_controlSessionSem;
+  selfCopy->_controlSessionSem = v10;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleSessionResumed:(id)a3
+- (void)handleSessionResumed:(id)resumed
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase handleSessionResumed:]", 501, v4, @"Control SE session resumed", v5, v6, v8);
-  v4->_controlSessionSuspended = 0;
-  controlSessionSem = v4->_controlSessionSem;
+  resumedCopy = resumed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase handleSessionResumed:]", 501, selfCopy, @"Control SE session resumed", v5, v6, v8);
+  selfCopy->_controlSessionSuspended = 0;
+  controlSessionSem = selfCopy->_controlSessionSem;
   if (controlSessionSem)
   {
     dispatch_semaphore_signal(controlSessionSem);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSessionBase secureElementManagerSessionDidEndUnexpectedly:]", 538, self, @"Connection closed unexpectedly.", v3, v4, v6);
 
@@ -994,13 +994,13 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)fireSessionDidEndUnexpectedlyEventWithStatus:(unint64_t)a3
+- (void)fireSessionDidEndUnexpectedlyEventWithStatus:(unint64_t)status
 {
-  sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase(EVENTS) fireSessionDidEndUnexpectedlyEventWithStatus:]", 16, self, @"fireSessionDidEndUnexpectedlyEventWithStatus %d", v3, v4, a3);
-  v7 = [(STSSessionBase *)self delegate];
+  sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSessionBase(EVENTS) fireSessionDidEndUnexpectedlyEventWithStatus:]", 16, self, @"fireSessionDidEndUnexpectedlyEventWithStatus %d", v3, v4, status);
+  delegate = [(STSSessionBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 stsSessionDidEndUnexpectedly:self errorCode:a3];
+    [delegate stsSessionDidEndUnexpectedly:self errorCode:status];
   }
 }
 

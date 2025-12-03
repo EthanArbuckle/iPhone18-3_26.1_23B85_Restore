@@ -1,11 +1,11 @@
 @interface ICCloudContentTasteUpdateItem
-- (BOOL)isEqual:(id)a3;
-- (ICCloudContentTasteUpdateItem)initWithCoder:(id)a3;
-- (ICCloudContentTasteUpdateItem)initWithGlobalPlaylistID:(id)a3 contentTaste:(int64_t)a4 configuration:(id)a5;
-- (ICCloudContentTasteUpdateItem)initWithStoreItemID:(int64_t)a3 mediaContentTasteItem:(int64_t)a4 contentTaste:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (ICCloudContentTasteUpdateItem)initWithCoder:(id)coder;
+- (ICCloudContentTasteUpdateItem)initWithGlobalPlaylistID:(id)d contentTaste:(int64_t)taste configuration:(id)configuration;
+- (ICCloudContentTasteUpdateItem)initWithStoreItemID:(int64_t)d mediaContentTasteItem:(int64_t)item contentTaste:(int64_t)taste configuration:(id)configuration timeStamp:(id)stamp;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICCloudContentTasteUpdateItem
@@ -128,10 +128,10 @@
   return (v89 + v90) ^ __ROR8__(v89, 47) ^ v92 ^ __ROR8__(v89 + v90, 32) ^ v92 ^ __ROR8__(v90 ^ v91, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -141,7 +141,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v20.receiver = self;
       v20.super_class = ICCloudContentTasteUpdateItem;
       if ([(ICCloudContentTasteUpdateItem *)&v20 isEqual:v5])
@@ -219,35 +219,35 @@ LABEL_22:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   globalPlaylistID = self->_globalPlaylistID;
-  v5 = a3;
-  [v5 encodeObject:globalPlaylistID forKey:@"_ICCloudContentTasteUpdateItemCodingKeyGlobalPlaylistIDKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:globalPlaylistID forKey:@"_ICCloudContentTasteUpdateItemCodingKeyGlobalPlaylistIDKey"];
   [(NSDate *)self->_updateActionTimeStamp timeIntervalSince1970];
-  [v5 encodeDouble:@"_ICCloudContentTasteUpdateItemCodingKeyTimeStampKey" forKey:?];
-  [v5 encodeObject:self->_dsid forKey:@"_ICCloudContentTasteUpdateItemCodingKeyDSIDKey"];
-  [v5 encodeInt64:self->_storeID forKey:@"_ICCloudContentTasteUpdateItemCodingKeyStoreIDKey"];
-  [v5 encodeInteger:self->_contentTasteType forKey:@"_ICCloudContentTasteUpdateItemCodingKeyTasteTypeKey"];
-  [v5 encodeInteger:self->_contentTasteItem forKey:@"_ICCloudContentTasteUpdateItemCodingKeyItemTypeKey"];
+  [coderCopy encodeDouble:@"_ICCloudContentTasteUpdateItemCodingKeyTimeStampKey" forKey:?];
+  [coderCopy encodeObject:self->_dsid forKey:@"_ICCloudContentTasteUpdateItemCodingKeyDSIDKey"];
+  [coderCopy encodeInt64:self->_storeID forKey:@"_ICCloudContentTasteUpdateItemCodingKeyStoreIDKey"];
+  [coderCopy encodeInteger:self->_contentTasteType forKey:@"_ICCloudContentTasteUpdateItemCodingKeyTasteTypeKey"];
+  [coderCopy encodeInteger:self->_contentTasteItem forKey:@"_ICCloudContentTasteUpdateItemCodingKeyItemTypeKey"];
 }
 
-- (ICCloudContentTasteUpdateItem)initWithCoder:(id)a3
+- (ICCloudContentTasteUpdateItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ICCloudContentTasteUpdateItem;
   v5 = [(ICCloudContentTasteUpdateItem *)&v16 init];
   if (v5)
   {
-    v5->_storeID = [v4 decodeInt64ForKey:@"_ICCloudContentTasteUpdateItemCodingKeyStoreIDKey"];
-    v5->_contentTasteItem = [v4 decodeIntegerForKey:@"_ICCloudContentTasteUpdateItemCodingKeyItemTypeKey"];
-    v5->_contentTasteType = [v4 decodeIntegerForKey:@"_ICCloudContentTasteUpdateItemCodingKeyTasteTypeKey"];
-    v6 = [v4 decodeObjectForKey:@"_ICCloudContentTasteUpdateItemCodingKeyGlobalPlaylistIDKey"];
+    v5->_storeID = [coderCopy decodeInt64ForKey:@"_ICCloudContentTasteUpdateItemCodingKeyStoreIDKey"];
+    v5->_contentTasteItem = [coderCopy decodeIntegerForKey:@"_ICCloudContentTasteUpdateItemCodingKeyItemTypeKey"];
+    v5->_contentTasteType = [coderCopy decodeIntegerForKey:@"_ICCloudContentTasteUpdateItemCodingKeyTasteTypeKey"];
+    v6 = [coderCopy decodeObjectForKey:@"_ICCloudContentTasteUpdateItemCodingKeyGlobalPlaylistIDKey"];
     globalPlaylistID = v5->_globalPlaylistID;
     v5->_globalPlaylistID = v6;
 
-    v8 = [v4 decodeObjectForKey:@"_ICCloudContentTasteUpdateItemCodingKeyDSIDKey"];
+    v8 = [coderCopy decodeObjectForKey:@"_ICCloudContentTasteUpdateItemCodingKeyDSIDKey"];
     dsid = v5->_dsid;
     v5->_dsid = v8;
 
@@ -256,7 +256,7 @@ LABEL_22:
     configuration = v5->_configuration;
     v5->_configuration = v11;
 
-    [v4 decodeDoubleForKey:@"_ICCloudContentTasteUpdateItemCodingKeyTimeStampKey"];
+    [coderCopy decodeDoubleForKey:@"_ICCloudContentTasteUpdateItemCodingKeyTimeStampKey"];
     v13 = [NSDate dateWithTimeIntervalSince1970:?];
     updateActionTimeStamp = v5->_updateActionTimeStamp;
     v5->_updateActionTimeStamp = v13;
@@ -268,38 +268,38 @@ LABEL_22:
 - (id)description
 {
   storeID = self->_storeID;
-  v4 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+  userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
   globalPlaylistID = self->_globalPlaylistID;
   contentTasteType = self->_contentTasteType;
   v7 = ICNSStringForICMediaContentTaste();
   contentTasteItem = self->_contentTasteItem;
   v9 = ICNSStringForICMediaContentTasteItem();
-  v10 = [NSString stringWithFormat:@"ICCloudContentTasteUpdateItem (%p) storeID=%lld, identity=%@, globalPlaylistID=%@, contentTasteType=%@, contentTasteItem=%@, updateTimeStamp=%@", self, storeID, v4, globalPlaylistID, v7, v9, self->_updateActionTimeStamp];
+  v10 = [NSString stringWithFormat:@"ICCloudContentTasteUpdateItem (%p) storeID=%lld, identity=%@, globalPlaylistID=%@, contentTasteType=%@, contentTasteItem=%@, updateTimeStamp=%@", self, storeID, userIdentity, globalPlaylistID, v7, v9, self->_updateActionTimeStamp];
 
   return v10;
 }
 
-- (ICCloudContentTasteUpdateItem)initWithGlobalPlaylistID:(id)a3 contentTaste:(int64_t)a4 configuration:(id)a5
+- (ICCloudContentTasteUpdateItem)initWithGlobalPlaylistID:(id)d contentTaste:(int64_t)taste configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = ICCloudContentTasteUpdateItem;
   v11 = [(ICCloudContentTasteUpdateItem *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_configuration, a5);
-    objc_storeStrong(&v12->_globalPlaylistID, a3);
-    v12->_contentTasteType = a4;
+    objc_storeStrong(&v11->_configuration, configuration);
+    objc_storeStrong(&v12->_globalPlaylistID, d);
+    v12->_contentTasteType = taste;
     v12->_contentTasteItem = 4;
     v13 = +[NSDate date];
     updateActionTimeStamp = v12->_updateActionTimeStamp;
     v12->_updateActionTimeStamp = v13;
 
-    v15 = [(ICConnectionConfiguration *)v12->_configuration userIdentityStore];
-    v16 = [(ICConnectionConfiguration *)v12->_configuration userIdentity];
-    v17 = [v15 DSIDForUserIdentity:v16 outError:0];
+    userIdentityStore = [(ICConnectionConfiguration *)v12->_configuration userIdentityStore];
+    userIdentity = [(ICConnectionConfiguration *)v12->_configuration userIdentity];
+    v17 = [userIdentityStore DSIDForUserIdentity:userIdentity outError:0];
     dsid = v12->_dsid;
     v12->_dsid = v17;
   }
@@ -307,24 +307,24 @@ LABEL_22:
   return v12;
 }
 
-- (ICCloudContentTasteUpdateItem)initWithStoreItemID:(int64_t)a3 mediaContentTasteItem:(int64_t)a4 contentTaste:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7
+- (ICCloudContentTasteUpdateItem)initWithStoreItemID:(int64_t)d mediaContentTasteItem:(int64_t)item contentTaste:(int64_t)taste configuration:(id)configuration timeStamp:(id)stamp
 {
-  v13 = a6;
-  v14 = a7;
+  configurationCopy = configuration;
+  stampCopy = stamp;
   v22.receiver = self;
   v22.super_class = ICCloudContentTasteUpdateItem;
   v15 = [(ICCloudContentTasteUpdateItem *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    v15->_storeID = a3;
-    objc_storeStrong(&v15->_configuration, a6);
-    v16->_contentTasteType = a5;
-    v16->_contentTasteItem = a4;
-    objc_storeStrong(&v16->_updateActionTimeStamp, a7);
-    v17 = [(ICConnectionConfiguration *)v16->_configuration userIdentityStore];
-    v18 = [(ICConnectionConfiguration *)v16->_configuration userIdentity];
-    v19 = [v17 DSIDForUserIdentity:v18 outError:0];
+    v15->_storeID = d;
+    objc_storeStrong(&v15->_configuration, configuration);
+    v16->_contentTasteType = taste;
+    v16->_contentTasteItem = item;
+    objc_storeStrong(&v16->_updateActionTimeStamp, stamp);
+    userIdentityStore = [(ICConnectionConfiguration *)v16->_configuration userIdentityStore];
+    userIdentity = [(ICConnectionConfiguration *)v16->_configuration userIdentity];
+    v19 = [userIdentityStore DSIDForUserIdentity:userIdentity outError:0];
     dsid = v16->_dsid;
     v16->_dsid = v19;
   }

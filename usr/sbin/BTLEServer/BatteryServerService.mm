@@ -1,9 +1,9 @@
 @interface BatteryServerService
 - (BatteryServerService)init;
 - (id)batteryLevelValue;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
 - (void)startNotifications;
 - (void)stop;
 - (void)stopNotifications;
@@ -32,8 +32,8 @@
 
     v14 = v2->_batteryLevelCharacteristic;
     v10 = [NSArray arrayWithObjects:&v14 count:1];
-    v11 = [(ServerService *)v2 service];
-    [v11 setCharacteristics:v10];
+    service = [(ServerService *)v2 service];
+    [service setCharacteristics:v10];
 
     v2->_iopsNotifyPercentChangeToken = -1;
   }
@@ -58,16 +58,16 @@
   v2 = +[DataOutputStream outputStream];
   IOPSGetPercentRemaining();
   [v2 writeUint8:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (void)updateBatterylevel
 {
-  v4 = [(BatteryServerService *)self batteryLevelValue];
-  v3 = [(BatteryServerService *)self batteryLevelCharacteristic];
-  [(ServerService *)self updateValue:v4 forCharacteristic:v3 onSubscribedCentrals:0];
+  batteryLevelValue = [(BatteryServerService *)self batteryLevelValue];
+  batteryLevelCharacteristic = [(BatteryServerService *)self batteryLevelCharacteristic];
+  [(ServerService *)self updateValue:batteryLevelValue forCharacteristic:batteryLevelCharacteristic onSubscribedCentrals:0];
 }
 
 - (void)startNotifications
@@ -95,16 +95,16 @@
   [(BatteryServerService *)self setIopsNotifyPercentChangeToken:0xFFFFFFFFLL];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v9 = a4;
-  v5 = [v9 characteristic];
-  v6 = [(BatteryServerService *)self batteryLevelCharacteristic];
+  requestCopy = request;
+  characteristic = [requestCopy characteristic];
+  batteryLevelCharacteristic = [(BatteryServerService *)self batteryLevelCharacteristic];
 
-  if (v5 == v6)
+  if (characteristic == batteryLevelCharacteristic)
   {
-    v8 = [(BatteryServerService *)self batteryLevelValue];
-    [v9 setValue:v8];
+    batteryLevelValue = [(BatteryServerService *)self batteryLevelValue];
+    [requestCopy setValue:batteryLevelValue];
 
     v7 = 0;
   }
@@ -114,19 +114,19 @@
     v7 = 10;
   }
 
-  [(ServerService *)self respondToRequest:v9 withResult:v7];
+  [(ServerService *)self respondToRequest:requestCopy withResult:v7];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v6 = a5;
-  v7 = [(BatteryServerService *)self batteryLevelCharacteristic];
+  characteristicCopy = characteristic;
+  batteryLevelCharacteristic = [(BatteryServerService *)self batteryLevelCharacteristic];
 
-  if (v7 == v6)
+  if (batteryLevelCharacteristic == characteristicCopy)
   {
-    v8 = [(BatteryServerService *)self batteryLevelCharacteristic];
-    v9 = [v8 subscribedCentrals];
-    v10 = [v9 count];
+    batteryLevelCharacteristic2 = [(BatteryServerService *)self batteryLevelCharacteristic];
+    subscribedCentrals = [batteryLevelCharacteristic2 subscribedCentrals];
+    v10 = [subscribedCentrals count];
 
     if (v10 == 1)
     {
@@ -136,16 +136,16 @@
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v6 = a5;
-  v7 = [(BatteryServerService *)self batteryLevelCharacteristic];
+  characteristicCopy = characteristic;
+  batteryLevelCharacteristic = [(BatteryServerService *)self batteryLevelCharacteristic];
 
-  if (v7 == v6)
+  if (batteryLevelCharacteristic == characteristicCopy)
   {
-    v8 = [(BatteryServerService *)self batteryLevelCharacteristic];
-    v9 = [v8 subscribedCentrals];
-    v10 = [v9 count];
+    batteryLevelCharacteristic2 = [(BatteryServerService *)self batteryLevelCharacteristic];
+    subscribedCentrals = [batteryLevelCharacteristic2 subscribedCentrals];
+    v10 = [subscribedCentrals count];
 
     if (!v10)
     {

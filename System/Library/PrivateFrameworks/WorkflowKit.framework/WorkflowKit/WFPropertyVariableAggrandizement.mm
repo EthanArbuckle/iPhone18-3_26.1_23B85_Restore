@@ -3,22 +3,22 @@
 - (NSString)negativePropertyName;
 - (NSString)propertyName;
 - (WFPropertyListObject)propertyUserInfo;
-- (WFPropertyVariableAggrandizement)initWithDictionary:(id)a3;
-- (WFPropertyVariableAggrandizement)initWithPropertyName:(id)a3 propertyUserInfo:(id)a4 negativeProperty:(BOOL)a5 negativePropertyName:(id)a6;
-- (id)processedContentClasses:(id)a3;
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4;
+- (WFPropertyVariableAggrandizement)initWithDictionary:(id)dictionary;
+- (WFPropertyVariableAggrandizement)initWithPropertyName:(id)name propertyUserInfo:(id)info negativeProperty:(BOOL)property negativePropertyName:(id)propertyName;
+- (id)processedContentClasses:(id)classes;
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler;
 @end
 
 @implementation WFPropertyVariableAggrandizement
 
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __79__WFPropertyVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke;
   v4[3] = &unk_1E8373478;
   v4[4] = self;
-  [a3 transformItemsAndFlattenUsingBlock:v4 completionHandler:a4];
+  [collection transformItemsAndFlattenUsingBlock:v4 completionHandler:handler];
 }
 
 void __79__WFPropertyVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -118,19 +118,19 @@ LABEL_5:
   return v5;
 }
 
-- (id)processedContentClasses:(id)a3
+- (id)processedContentClasses:(id)classes
 {
   v4 = MEMORY[0x1E695DFB8];
-  v5 = a3;
+  classesCopy = classes;
   v6 = [v4 alloc];
-  v7 = [v5 array];
+  array = [classesCopy array];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__WFPropertyVariableAggrandizement_processedContentClasses___block_invoke;
   v11[3] = &unk_1E8373450;
   v11[4] = self;
-  v8 = [v7 if_compactMap:v11];
+  v8 = [array if_compactMap:v11];
   v9 = [v6 initWithArray:v8];
 
   return v9;
@@ -147,16 +147,16 @@ id __60__WFPropertyVariableAggrandizement_processedContentClasses___block_invoke
 
 - (NSString)negativePropertyName
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"NegativePropertyName"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"NegativePropertyName"];
 
   return v3;
 }
 
 - (BOOL)negativeProperty
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"NegativeProperty"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"NegativeProperty"];
 
   if (v3)
   {
@@ -179,57 +179,57 @@ id __60__WFPropertyVariableAggrandizement_processedContentClasses___block_invoke
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (WFPropertyListObject)propertyUserInfo
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"PropertyUserInfo"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"PropertyUserInfo"];
 
   return v3;
 }
 
 - (NSString)propertyName
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"PropertyName"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"PropertyName"];
 
   return v3;
 }
 
-- (WFPropertyVariableAggrandizement)initWithDictionary:(id)a3
+- (WFPropertyVariableAggrandizement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"PropertyName"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"PropertyName"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8.receiver = self;
     v8.super_class = WFPropertyVariableAggrandizement;
-    self = [(WFVariableAggrandizement *)&v8 initWithDictionary:v4];
-    v6 = self;
+    self = [(WFVariableAggrandizement *)&v8 initWithDictionary:dictionaryCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (WFPropertyVariableAggrandizement)initWithPropertyName:(id)a3 propertyUserInfo:(id)a4 negativeProperty:(BOOL)a5 negativePropertyName:(id)a6
+- (WFPropertyVariableAggrandizement)initWithPropertyName:(id)name propertyUserInfo:(id)info negativeProperty:(BOOL)property negativePropertyName:(id)propertyName
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  propertyCopy = property;
+  propertyNameCopy = propertyName;
+  infoCopy = info;
+  nameCopy = name;
   v13 = objc_opt_new();
-  [v13 setObject:v12 forKey:@"PropertyName"];
+  [v13 setObject:nameCopy forKey:@"PropertyName"];
 
-  [v13 setValue:v11 forKey:@"PropertyUserInfo"];
-  if (v6)
+  [v13 setValue:infoCopy forKey:@"PropertyUserInfo"];
+  if (propertyCopy)
   {
     v14 = MEMORY[0x1E695E118];
   }
@@ -239,9 +239,9 @@ id __60__WFPropertyVariableAggrandizement_processedContentClasses___block_invoke
     v14 = 0;
   }
 
-  if (v6)
+  if (propertyCopy)
   {
-    v15 = v10;
+    v15 = propertyNameCopy;
   }
 
   else

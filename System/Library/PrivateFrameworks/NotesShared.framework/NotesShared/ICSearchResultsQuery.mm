@@ -1,43 +1,43 @@
 @interface ICSearchResultsQuery
 + (id)queryForClassifiedImages;
-- (ICSearchResultsQuery)initWithQueryString:(id)a3 externalRankingQueries:(id)a4 modernResultsOnly:(BOOL)a5 attributes:(id)a6;
-- (ICSearchResultsQuery)initWithQueryString:(id)a3 rankingQueriesDefinition:(id)a4 modernResultsOnly:(BOOL)a5;
+- (ICSearchResultsQuery)initWithQueryString:(id)string externalRankingQueries:(id)queries modernResultsOnly:(BOOL)only attributes:(id)attributes;
+- (ICSearchResultsQuery)initWithQueryString:(id)string rankingQueriesDefinition:(id)definition modernResultsOnly:(BOOL)only;
 - (id)attributesToFetch;
 - (id)newSearchQueryContext;
-- (id)newSearchQueryWithContext:(id)a3;
+- (id)newSearchQueryWithContext:(id)context;
 @end
 
 @implementation ICSearchResultsQuery
 
-- (ICSearchResultsQuery)initWithQueryString:(id)a3 rankingQueriesDefinition:(id)a4 modernResultsOnly:(BOOL)a5
+- (ICSearchResultsQuery)initWithQueryString:(id)string rankingQueriesDefinition:(id)definition modernResultsOnly:(BOOL)only
 {
-  v9 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = ICSearchResultsQuery;
-  v10 = [(ICSearchQuery *)&v13 initWithRankingQueriesDefinition:a4];
+  v10 = [(ICSearchQuery *)&v13 initWithRankingQueriesDefinition:definition];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queryString, a3);
-    v11->_modernResultsOnly = a5;
+    objc_storeStrong(&v10->_queryString, string);
+    v11->_modernResultsOnly = only;
   }
 
   return v11;
 }
 
-- (ICSearchResultsQuery)initWithQueryString:(id)a3 externalRankingQueries:(id)a4 modernResultsOnly:(BOOL)a5 attributes:(id)a6
+- (ICSearchResultsQuery)initWithQueryString:(id)string externalRankingQueries:(id)queries modernResultsOnly:(BOOL)only attributes:(id)attributes
 {
-  v11 = a3;
-  v12 = a6;
+  stringCopy = string;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = ICSearchResultsQuery;
-  v13 = [(ICSearchQuery *)&v16 initWithExternalRankingQueries:a4];
+  v13 = [(ICSearchQuery *)&v16 initWithExternalRankingQueries:queries];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queryString, a3);
-    v14->_modernResultsOnly = a5;
-    objc_storeStrong(&v14->_attributes, a6);
+    objc_storeStrong(&v13->_queryString, string);
+    v14->_modernResultsOnly = only;
+    objc_storeStrong(&v14->_attributes, attributes);
   }
 
   return v14;
@@ -48,35 +48,35 @@
   attributes = self->_attributes;
   if (attributes)
   {
-    v3 = attributes;
+    attributesToFetch = attributes;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ICSearchResultsQuery;
-    v3 = [(ICSearchQuery *)&v5 attributesToFetch];
+    attributesToFetch = [(ICSearchQuery *)&v5 attributesToFetch];
   }
 
-  return v3;
+  return attributesToFetch;
 }
 
 - (id)newSearchQueryContext
 {
   v3 = objc_alloc_init(MEMORY[0x277CC34A0]);
-  v4 = [(ICSearchQuery *)self rankingQueries];
-  [v3 setRankingQueries:v4];
+  rankingQueries = [(ICSearchQuery *)self rankingQueries];
+  [v3 setRankingQueries:rankingQueries];
 
   return v3;
 }
 
-- (id)newSearchQueryWithContext:(id)a3
+- (id)newSearchQueryWithContext:(id)context
 {
   v4 = MEMORY[0x277CC3498];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
-  v7 = [(ICSearchResultsQuery *)self queryString];
-  v8 = [v6 initWithQueryString:v7 context:v5];
+  queryString = [(ICSearchResultsQuery *)self queryString];
+  v8 = [v6 initWithQueryString:queryString context:contextCopy];
 
   return v8;
 }

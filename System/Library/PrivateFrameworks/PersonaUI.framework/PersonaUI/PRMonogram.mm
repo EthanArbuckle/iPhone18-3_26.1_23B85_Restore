@@ -1,29 +1,29 @@
 @interface PRMonogram
 + (CAGradientLayer)plateOverlayLayer;
-+ (double)kerningForFontIndex:(unint64_t)a3 fontSize:(double)a4;
++ (double)kerningForFontIndex:(unint64_t)index fontSize:(double)size;
 + (id)_fontSpecs;
-+ (id)fontForIndex:(unint64_t)a3 plateDiameter:(double)a4;
++ (id)fontForIndex:(unint64_t)index plateDiameter:(double)diameter;
 + (id)monogram;
-+ (id)monogramWithData:(id)a3;
++ (id)monogramWithData:(id)data;
 + (unint64_t)countOfFonts;
-+ (void)updatePlateOverlayLayer:(id)a3;
-- (BOOL)_renderTextInContext:(CGContext *)a3 frame:(CGRect)a4;
-- (PRMonogram)initWithText:(id)a3 fontIndex:(unint64_t)a4 monogramColor:(id)a5;
++ (void)updatePlateOverlayLayer:(id)layer;
+- (BOOL)_renderTextInContext:(CGContext *)context frame:(CGRect)frame;
+- (PRMonogram)initWithText:(id)text fontIndex:(unint64_t)index monogramColor:(id)color;
 - (UIColor)color;
 - (UIColor)plateGradientEndColor;
 - (UIColor)plateGradientStartColor;
 - (UIColor)plateSelectedActiveColor;
 - (UIColor)plateSelectedActiveTextColor;
 - (UIColor)plateSelectedInactiveColor;
-- (id)_initWithData:(id)a3;
-- (id)dataRepresentationWithVersion:(unsigned __int8)a3;
+- (id)_initWithData:(id)data;
+- (id)dataRepresentationWithVersion:(unsigned __int8)version;
 - (id)description;
-- (id)snapshotWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5;
-- (id)stringAttributesForDiameter:(double)a3;
-- (void)_takeValuesFromDataRepresentation:(id)a3;
-- (void)appendToRecipe:(id)a3 text:(id)a4 fontIndex:(unsigned __int8)a5;
-- (void)setFontIndex:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (id)snapshotWithSize:(CGSize)size scale:(double)scale options:(id)options;
+- (id)stringAttributesForDiameter:(double)diameter;
+- (void)_takeValuesFromDataRepresentation:(id)representation;
+- (void)appendToRecipe:(id)recipe text:(id)text fontIndex:(unsigned __int8)index;
+- (void)setFontIndex:(unint64_t)index;
+- (void)setText:(id)text;
 @end
 
 @implementation PRMonogram
@@ -35,32 +35,32 @@
   return v2;
 }
 
-- (PRMonogram)initWithText:(id)a3 fontIndex:(unint64_t)a4 monogramColor:(id)a5
+- (PRMonogram)initWithText:(id)text fontIndex:(unint64_t)index monogramColor:(id)color
 {
-  v8 = a3;
-  v9 = a5;
+  textCopy = text;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PRMonogram;
   v10 = [(PRMonogram *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_text, a3);
+    objc_storeStrong(&v10->_text, text);
     v11->_fontIndex = 0;
-    objc_storeStrong(&v11->_monogramColor, a5);
+    objc_storeStrong(&v11->_monogramColor, color);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  textCopy = text;
+  v9 = textCopy;
+  if (textCopy)
   {
-    v5 = [v4 lengthOfBytesUsingEncoding:4];
+    v5 = [textCopy lengthOfBytesUsingEncoding:4];
     if (v5 <= 0xC)
     {
       v6 = [v9 copy];
@@ -82,122 +82,122 @@ LABEL_6:
   color = self->_color;
   if (color)
   {
-    v3 = color;
+    plateFlatColor = color;
   }
 
   else
   {
-    v3 = [(PRMonogram *)self plateFlatColor];
+    plateFlatColor = [(PRMonogram *)self plateFlatColor];
   }
 
-  return v3;
+  return plateFlatColor;
 }
 
 - (UIColor)plateGradientStartColor
 {
-  v3 = [(PRMonogram *)self monogramColor];
-  if (v3)
+  monogramColor = [(PRMonogram *)self monogramColor];
+  if (monogramColor)
   {
-    v4 = [(PRMonogram *)self monogramColor];
-    v5 = [v4 gradientStartColor];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    gradientStartColor = [monogramColor2 gradientStartColor];
   }
 
   else
   {
-    v5 = +[PRMonogramColor defaultGradientStartColor];
+    gradientStartColor = +[PRMonogramColor defaultGradientStartColor];
   }
 
-  return v5;
+  return gradientStartColor;
 }
 
 - (UIColor)plateGradientEndColor
 {
-  v3 = [(PRMonogram *)self monogramColor];
-  if (v3)
+  monogramColor = [(PRMonogram *)self monogramColor];
+  if (monogramColor)
   {
-    v4 = [(PRMonogram *)self monogramColor];
-    v5 = [v4 gradientEndColor];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    gradientEndColor = [monogramColor2 gradientEndColor];
   }
 
   else
   {
-    v5 = +[PRMonogramColor defaultGradientEndColor];
+    gradientEndColor = +[PRMonogramColor defaultGradientEndColor];
   }
 
-  return v5;
+  return gradientEndColor;
 }
 
 - (UIColor)plateSelectedActiveColor
 {
-  v3 = [(PRMonogram *)self monogramColor];
-  if (v3)
+  monogramColor = [(PRMonogram *)self monogramColor];
+  if (monogramColor)
   {
-    v4 = [(PRMonogram *)self monogramColor];
-    v5 = [v4 selectedActiveColor];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    selectedActiveColor = [monogramColor2 selectedActiveColor];
   }
 
   else
   {
-    v5 = +[PRMonogramColor defaultSelectedActiveColor];
+    selectedActiveColor = +[PRMonogramColor defaultSelectedActiveColor];
   }
 
-  return v5;
+  return selectedActiveColor;
 }
 
 - (UIColor)plateSelectedInactiveColor
 {
-  v3 = [(PRMonogram *)self monogramColor];
-  if (v3)
+  monogramColor = [(PRMonogram *)self monogramColor];
+  if (monogramColor)
   {
-    v4 = [(PRMonogram *)self monogramColor];
-    v5 = [v4 selectedInactiveColor];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    selectedInactiveColor = [monogramColor2 selectedInactiveColor];
   }
 
   else
   {
-    v5 = +[PRMonogramColor defaultSelectedInactiveColor];
+    selectedInactiveColor = +[PRMonogramColor defaultSelectedInactiveColor];
   }
 
-  return v5;
+  return selectedInactiveColor;
 }
 
 - (UIColor)plateSelectedActiveTextColor
 {
-  v3 = [(PRMonogram *)self monogramColor];
-  if (v3)
+  monogramColor = [(PRMonogram *)self monogramColor];
+  if (monogramColor)
   {
-    v4 = [(PRMonogram *)self monogramColor];
-    v5 = [v4 selectedActiveTextColor];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    selectedActiveTextColor = [monogramColor2 selectedActiveTextColor];
   }
 
   else
   {
-    v5 = +[PRMonogramColor defaultSelectedActiveTextColor];
+    selectedActiveTextColor = +[PRMonogramColor defaultSelectedActiveTextColor];
   }
 
-  return v5;
+  return selectedActiveTextColor;
 }
 
-- (void)setFontIndex:(unint64_t)a3
+- (void)setFontIndex:(unint64_t)index
 {
-  if (a3 >= 9)
+  if (index >= 9)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
     NSLog(&cfstr_PrmonogramSetf.isa, v4, &unk_2870290D8);
 
-    a3 = 0;
+    index = 0;
   }
 
-  self->_fontIndex = a3;
+  self->_fontIndex = index;
 }
 
-- (id)stringAttributesForDiameter:(double)a3
+- (id)stringAttributesForDiameter:(double)diameter
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  v4 = [PRMonogram fontForIndex:[(PRMonogram *)self fontIndex] plateDiameter:a3];
-  v5 = [(PRMonogram *)self fontIndex];
+  v4 = [PRMonogram fontForIndex:[(PRMonogram *)self fontIndex] plateDiameter:diameter];
+  fontIndex = [(PRMonogram *)self fontIndex];
   [v4 pointSize];
-  [PRMonogram kerningForFontIndex:v5 fontSize:?];
+  [PRMonogram kerningForFontIndex:fontIndex fontSize:?];
   v7 = v6;
   v8 = objc_opt_new();
   [v8 setAlignment:1];
@@ -207,8 +207,8 @@ LABEL_6:
   v10 = *MEMORY[0x277D740C0];
   v15[0] = v9;
   v15[1] = v10;
-  v11 = [MEMORY[0x277D75348] whiteColor];
-  v16[1] = v11;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v16[1] = whiteColor;
   v15[2] = *MEMORY[0x277D740D0];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
   v15[3] = *MEMORY[0x277D74118];
@@ -219,22 +219,22 @@ LABEL_6:
   return v13;
 }
 
-- (id)snapshotWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5
+- (id)snapshotWithSize:(CGSize)size scale:(double)scale options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if (DeviceRGB)
   {
     v10 = DeviceRGB;
-    v11 = (width * a4);
+    v11 = (width * scale);
     v12 = CGBitmapContextCreate(0, v11, v11, 8uLL, 4 * v11, DeviceRGB, 0x2001u);
     if (v12)
     {
       v13 = v12;
       v14 = v11;
-      v15 = [MEMORY[0x277D75348] whiteColor];
-      CGContextSetFillColorWithColor(v13, [v15 CGColor]);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      CGContextSetFillColorWithColor(v13, [whiteColor CGColor]);
 
       CGContextSetAlpha(v13, 0.9);
       v31.origin.x = 0.0;
@@ -242,13 +242,13 @@ LABEL_6:
       v31.size.width = v14;
       v31.size.height = v14;
       CGContextFillRect(v13, v31);
-      v16 = [(PRMonogram *)self plateGradientStartColor];
-      v17 = CGColorRetain([v16 CGColor]);
+      plateGradientStartColor = [(PRMonogram *)self plateGradientStartColor];
+      v17 = CGColorRetain([plateGradientStartColor CGColor]);
 
       if (v17)
       {
-        v18 = [(PRMonogram *)self plateGradientEndColor];
-        v19 = CGColorRetain([v18 CGColor]);
+        plateGradientEndColor = [(PRMonogram *)self plateGradientEndColor];
+        v19 = CGColorRetain([plateGradientEndColor CGColor]);
 
         if (v19)
         {
@@ -273,7 +273,7 @@ LABEL_6:
               if (Image)
               {
                 v25 = Image;
-                v26 = [MEMORY[0x277D755B8] pr_imageWithCGImage:Image size:width scale:{height, a4}];
+                v26 = [MEMORY[0x277D755B8] pr_imageWithCGImage:Image size:width scale:{height, scale}];
                 CGImageRelease(v25);
               }
 
@@ -333,13 +333,13 @@ LABEL_6:
   return v26;
 }
 
-- (BOOL)_renderTextInContext:(CGContext *)a3 frame:(CGRect)a4
+- (BOOL)_renderTextInContext:(CGContext *)context frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [(PRMonogram *)self text];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  text = [(PRMonogram *)self text];
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
@@ -383,7 +383,7 @@ LABEL_6:
     v25[1] = 3221225472;
     v25[2] = __41__PRMonogram__renderTextInContext_frame___block_invoke;
     v25[3] = &__block_descriptor_88_e5_v8__0l;
-    v25[4] = a3;
+    v25[4] = context;
     *&v25[5] = MidX;
     *&v25[6] = MidY;
     *&v25[7] = v16;
@@ -393,7 +393,7 @@ LABEL_6:
 
     v26 = vmulq_f64(v17, _Q0);
     v27 = v11;
-    UIGraphicsPushContext(a3);
+    UIGraphicsPushContext(context);
     __41__PRMonogram__renderTextInContext_frame___block_invoke(v25);
     UIGraphicsPopContext();
   }
@@ -420,13 +420,13 @@ void __41__PRMonogram__renderTextInContext_frame___block_invoke(uint64_t a1)
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fontIndex];
   v6 = [v3 stringWithFormat:@"<PRMonogram %p _text %@ _fontIndex %@>", self, text, v5];
 
-  v7 = [(PRMonogram *)self monogramColor];
+  monogramColor = [(PRMonogram *)self monogramColor];
 
-  if (v7)
+  if (monogramColor)
   {
-    v8 = [(PRMonogram *)self monogramColor];
-    v9 = [v8 colorName];
-    v10 = [v6 stringByAppendingFormat:@" color %@", v9];
+    monogramColor2 = [(PRMonogram *)self monogramColor];
+    colorName = [monogramColor2 colorName];
+    v10 = [v6 stringByAppendingFormat:@" color %@", colorName];
 
     v6 = v10;
   }
@@ -473,26 +473,26 @@ void __24__PRMonogram__fontSpecs__block_invoke()
 
 + (unint64_t)countOfFonts
 {
-  v2 = [a1 _fontSpecs];
-  v3 = [v2 count];
+  _fontSpecs = [self _fontSpecs];
+  v3 = [_fontSpecs count];
 
   return v3;
 }
 
-+ (id)fontForIndex:(unint64_t)a3 plateDiameter:(double)a4
++ (id)fontForIndex:(unint64_t)index plateDiameter:(double)diameter
 {
-  v6 = [a1 _fontSpecs];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  _fontSpecs = [self _fontSpecs];
+  v7 = [_fontSpecs objectAtIndexedSubscript:index];
 
   [v7 baseSize];
-  v9 = v8 * a4 / 225.0;
-  v10 = [v7 fontName];
+  v9 = v8 * diameter / 225.0;
+  fontName = [v7 fontName];
 
   v11 = MEMORY[0x277D74300];
-  if (v10)
+  if (fontName)
   {
-    v12 = [v7 fontName];
-    v13 = [v11 fontWithName:v12 size:v9];
+    fontName2 = [v7 fontName];
+    v13 = [v11 fontWithName:fontName2 size:v9];
   }
 
   else
@@ -503,13 +503,13 @@ void __24__PRMonogram__fontSpecs__block_invoke()
   return v13;
 }
 
-+ (double)kerningForFontIndex:(unint64_t)a3 fontSize:(double)a4
++ (double)kerningForFontIndex:(unint64_t)index fontSize:(double)size
 {
-  v6 = [a1 _fontSpecs];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  _fontSpecs = [self _fontSpecs];
+  v7 = [_fontSpecs objectAtIndexedSubscript:index];
 
   [v7 tracking];
-  v9 = v8 * a4 / 1000.0;
+  v9 = v8 * size / 1000.0;
 
   return v9;
 }
@@ -517,86 +517,86 @@ void __24__PRMonogram__fontSpecs__block_invoke()
 + (CAGradientLayer)plateOverlayLayer
 {
   v3 = objc_alloc_init(MEMORY[0x277CD9EB0]);
-  [a1 updatePlateOverlayLayer:v3];
+  [self updatePlateOverlayLayer:v3];
 
   return v3;
 }
 
-+ (void)updatePlateOverlayLayer:(id)a3
++ (void)updatePlateOverlayLayer:(id)layer
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  layerCopy = layer;
   v4 = +[PRMonogramColor defaultGradientStartColor];
   v7[0] = [v4 CGColor];
   v5 = +[PRMonogramColor defaultGradientEndColor];
   v7[1] = [v5 CGColor];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
-  [v3 setColors:v6];
+  [layerCopy setColors:v6];
 
-  [v3 setStartPoint:{0.5, 1.0}];
-  [v3 setEndPoint:{0.5, 0.0}];
+  [layerCopy setStartPoint:{0.5, 1.0}];
+  [layerCopy setEndPoint:{0.5, 0.0}];
 }
 
-+ (id)monogramWithData:(id)a3
++ (id)monogramWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[PRMonogram alloc] _initWithData:v3];
+  dataCopy = data;
+  v4 = [[PRMonogram alloc] _initWithData:dataCopy];
 
   return v4;
 }
 
-- (id)_initWithData:(id)a3
+- (id)_initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(PRMonogram *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (dataCopy && v5)
   {
-    [(PRMonogram *)v5 _takeValuesFromDataRepresentation:v4];
+    [(PRMonogram *)v5 _takeValuesFromDataRepresentation:dataCopy];
   }
 
   return v6;
 }
 
-- (void)appendToRecipe:(id)a3 text:(id)a4 fontIndex:(unsigned __int8)a5
+- (void)appendToRecipe:(id)recipe text:(id)text fontIndex:(unsigned __int8)index
 {
-  v7 = a3;
-  v8 = [a4 copy];
+  recipeCopy = recipe;
+  v8 = [text copy];
   v9 = v8;
   if (v8 && [v8 UTF8String])
   {
     v10 = strlen([v9 UTF8String]);
-    v15 = a5 & 0xF | (16 * v10);
-    [v7 appendBytes:&v15 length:1];
-    v11 = [v9 UTF8String];
-    v12 = v7;
+    v15 = index & 0xF | (16 * v10);
+    [recipeCopy appendBytes:&v15 length:1];
+    uTF8String = [v9 UTF8String];
+    v12 = recipeCopy;
     v13 = v10;
   }
 
   else
   {
-    v14 = a5 & 0xF;
-    v11 = &v14;
-    v12 = v7;
+    v14 = index & 0xF;
+    uTF8String = &v14;
+    v12 = recipeCopy;
     v13 = 1;
   }
 
-  [v12 appendBytes:v11 length:v13];
+  [v12 appendBytes:uTF8String length:v13];
 }
 
-- (id)dataRepresentationWithVersion:(unsigned __int8)a3
+- (id)dataRepresentationWithVersion:(unsigned __int8)version
 {
-  v23 = a3;
+  versionCopy = version;
   v4 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  [v4 appendBytes:&v23 length:1];
-  v5 = [(PRMonogram *)self text];
+  [v4 appendBytes:&versionCopy length:1];
+  text = [(PRMonogram *)self text];
 
-  if (v5)
+  if (text)
   {
-    v6 = [(PRMonogram *)self text];
-    v7 = [v6 UTF8String];
+    text2 = [(PRMonogram *)self text];
+    uTF8String = [text2 UTF8String];
 
-    if (!v7)
+    if (!uTF8String)
     {
       NSLog(&cfstr_PrmonogramCann_0.isa);
     }
@@ -607,14 +607,14 @@ void __24__PRMonogram__fontSpecs__block_invoke()
     NSLog(&cfstr_PrmonogramCann.isa);
   }
 
-  v8 = [(PRMonogram *)self text];
-  [(PRMonogram *)self appendToRecipe:v4 text:v8 fontIndex:[(PRMonogram *)self fontIndex]];
+  text3 = [(PRMonogram *)self text];
+  [(PRMonogram *)self appendToRecipe:v4 text:text3 fontIndex:[(PRMonogram *)self fontIndex]];
 
-  if (v23)
+  if (versionCopy)
   {
-    v9 = [(PRMonogram *)self monogramColor];
-    v10 = [v9 colorName];
-    [(PRMonogram *)self appendToRecipe:v4 text:v10];
+    monogramColor = [(PRMonogram *)self monogramColor];
+    colorName = [monogramColor colorName];
+    [(PRMonogram *)self appendToRecipe:v4 text:colorName];
   }
 
   else
@@ -623,8 +623,8 @@ void __24__PRMonogram__fontSpecs__block_invoke()
     v22 = 0.0;
     v19 = 0.0;
     v20 = 0.0;
-    v11 = [(PRMonogram *)self color];
-    v12 = [v11 getRed:&v22 green:&v21 blue:&v20 alpha:&v19];
+    color = [(PRMonogram *)self color];
+    v12 = [color getRed:&v22 green:&v21 blue:&v20 alpha:&v19];
 
     if (v12)
     {
@@ -652,21 +652,21 @@ void __24__PRMonogram__fontSpecs__block_invoke()
   return v4;
 }
 
-- (void)_takeValuesFromDataRepresentation:(id)a3
+- (void)_takeValuesFromDataRepresentation:(id)representation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] <= 2)
+  representationCopy = representation;
+  if ([representationCopy length] <= 2)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "length")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(representationCopy, "length")}];
     NSLog(&cfstr_PrmonogramFail.isa, v5);
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v6 = [v4 bytes];
-  v7 = *v6;
+  bytes = [representationCopy bytes];
+  v7 = *bytes;
   if (v7 > 1)
   {
     if ((v7 & 1) == 0)
@@ -674,11 +674,11 @@ LABEL_3:
       goto LABEL_4;
     }
 
-    v19 = v6[1];
+    v19 = bytes[1];
     v20 = v19 >> 4;
-    if (v19 > 0xCF || [v4 length] < v20 + 2)
+    if (v19 > 0xCF || [representationCopy length] < v20 + 2)
     {
-      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "length")}];
+      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(representationCopy, "length")}];
       v21 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v7];
       v22 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v20];
       NSLog(&cfstr_PrmonogramFail_0.isa, v5, v21, v22);
@@ -686,7 +686,7 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    [v4 getBytes:v29 range:{2, v20}];
+    [representationCopy getBytes:v29 range:{2, v20}];
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v29 length:v20 encoding:4];
     [(PRMonogram *)self setText:v18];
 LABEL_20:
@@ -694,9 +694,9 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  v8 = v6[1];
+  v8 = bytes[1];
   v9 = v8 >> 4;
-  v10 = &v6[v8 >> 4];
+  v10 = &bytes[v8 >> 4];
   v11 = v10[2];
   if ((v8 & 0xF) <= 8)
   {
@@ -709,9 +709,9 @@ LABEL_20:
   }
 
   self->_fontIndex = v12;
-  if (!v7 && v8 <= 0xCF && [v4 length] == v9 + 6)
+  if (!v7 && v8 <= 0xCF && [representationCopy length] == v9 + 6)
   {
-    [v4 getBytes:v29 range:{2, v9}];
+    [representationCopy getBytes:v29 range:{2, v9}];
     v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v29 length:v9 encoding:4];
     [(PRMonogram *)self setText:v13];
 
@@ -724,7 +724,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v4 getBytes:v29 range:{2, v9}];
+  [representationCopy getBytes:v29 range:{2, v9}];
   v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v29 length:v9 encoding:4];
   [(PRMonogram *)self setText:v23];
 
@@ -732,7 +732,7 @@ LABEL_20:
   {
     MEMORY[0x28223BE20]();
     v25 = &v28[-v24];
-    [v4 getBytes:&v28[-v24] range:?];
+    [representationCopy getBytes:&v28[-v24] range:?];
     v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v25 length:v11 >> 4 encoding:4];
     v27 = [[PRMonogramColor alloc] initWithColorName:v26];
     [(PRMonogram *)self setMonogramColor:v27];

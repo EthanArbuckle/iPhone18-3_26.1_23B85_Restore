@@ -1,21 +1,21 @@
 @interface CNContactContentViewControllerConfiguration
 + (id)log;
 - (CNContactStore)contactStore;
-- (id)initForOutOfProcess:(BOOL)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)initForOutOfProcess:(BOOL)process;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CNContactContentViewControllerConfiguration
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  keyCopy = key;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = keyCopy;
     _os_log_fault_impl(&dword_199A75000, v5, OS_LOG_TYPE_FAULT, "Unsupported CNContactContentViewControllerConfiguration key: %{public}@. Please update the configuration, or update CNContactViewOptionExcludedViewConfigurationKeys", &v6, 0xCu);
   }
 }
@@ -41,7 +41,7 @@
   return contactStore;
 }
 
-- (id)initForOutOfProcess:(BOOL)a3
+- (id)initForOutOfProcess:(BOOL)process
 {
   v11.receiver = self;
   v11.super_class = CNContactContentViewControllerConfiguration;
@@ -49,7 +49,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isOutOfProcess = a3;
+    v4->_isOutOfProcess = process;
     v6 = +[CNContactView allCardProperties];
     displayedProperties = v5->_displayedProperties;
     v5->_displayedProperties = v6;
@@ -64,9 +64,9 @@
     v5->_showsGroupMembership = 1;
     *&v5->_hideCardActions = 0;
     v5->_showContactBlockingFirst = 0;
-    v8 = [MEMORY[0x1E695CD80] sharedFullNameFormatter];
+    mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatter];
     contactFormatter = v5->_contactFormatter;
-    v5->_contactFormatter = v8;
+    v5->_contactFormatter = mEMORY[0x1E695CD80];
   }
 
   return v5;

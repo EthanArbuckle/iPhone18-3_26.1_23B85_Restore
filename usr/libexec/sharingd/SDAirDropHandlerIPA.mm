@@ -2,7 +2,7 @@
 - (BOOL)canHandleTransfer;
 - (NSString)singleItemActionTitle;
 - (NSString)suitableContentsDescription;
-- (_TtC16DaemoniOSLibrary19SDAirDropHandlerIPA)initWithTransfer:(id)a3 bundleIdentifier:(id)a4;
+- (_TtC16DaemoniOSLibrary19SDAirDropHandlerIPA)initWithTransfer:(id)transfer bundleIdentifier:(id)identifier;
 - (int64_t)transferTypes;
 - (void)updatePossibleActions;
 @end
@@ -11,7 +11,7 @@
 
 - (BOOL)canHandleTransfer
 {
-  v2 = self;
+  selfCopy = self;
   sub_100356650();
   v4 = v3;
 
@@ -27,7 +27,7 @@
 
 - (NSString)suitableContentsDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_100356E58();
 
   v3 = String._bridgeToObjectiveC()();
@@ -52,15 +52,15 @@
 
 - (void)updatePossibleActions
 {
-  v2 = self;
+  selfCopy = self;
   sub_100357344();
 }
 
-- (_TtC16DaemoniOSLibrary19SDAirDropHandlerIPA)initWithTransfer:(id)a3 bundleIdentifier:(id)a4
+- (_TtC16DaemoniOSLibrary19SDAirDropHandlerIPA)initWithTransfer:(id)transfer bundleIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(SDAirDropHandler *)&v7 initWithTransfer:a3 bundleIdentifier:a4];
+  return [(SDAirDropHandler *)&v7 initWithTransfer:transfer bundleIdentifier:identifier];
 }
 
 @end

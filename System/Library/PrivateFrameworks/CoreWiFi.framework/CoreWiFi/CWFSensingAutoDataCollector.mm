@@ -1,24 +1,24 @@
 @interface CWFSensingAutoDataCollector
-+ (id)sharedCWFSensingAutoDataCollectorInstanceWith:(id)a3;
-- (BOOL)currentAccessoryInfo:(id)a3;
-- (CWFSensingAutoDataCollector)initWithHomes:(id)a3;
++ (id)sharedCWFSensingAutoDataCollectorInstanceWith:(id)with;
+- (BOOL)currentAccessoryInfo:(id)info;
+- (CWFSensingAutoDataCollector)initWithHomes:(id)homes;
 - (void)cleanUpOutOfScopeAccessory;
-- (void)registerForAccessoriesInRoomWithDelegate:(id)a3;
-- (void)updateRegisteredServiceWithDelegate:(id)a3;
+- (void)registerForAccessoriesInRoomWithDelegate:(id)delegate;
+- (void)updateRegisteredServiceWithDelegate:(id)delegate;
 @end
 
 @implementation CWFSensingAutoDataCollector
 
-+ (id)sharedCWFSensingAutoDataCollectorInstanceWith:(id)a3
++ (id)sharedCWFSensingAutoDataCollectorInstanceWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C1C3CC;
   block[3] = &unk_1E86E6010;
-  v10 = v3;
+  v10 = withCopy;
   v4 = qword_1ED7E3948;
-  v5 = v3;
+  v5 = withCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1ED7E3948, block);
@@ -30,23 +30,23 @@
   return v6;
 }
 
-- (CWFSensingAutoDataCollector)initWithHomes:(id)a3
+- (CWFSensingAutoDataCollector)initWithHomes:(id)homes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  homesCopy = homes;
   v13.receiver = self;
   v13.super_class = CWFSensingAutoDataCollector;
   v5 = [(CWFSensingAutoDataCollector *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    if ([(CWFSensingAutoDataCollector *)v5 currentAccessoryInfo:v4])
+    if ([(CWFSensingAutoDataCollector *)v5 currentAccessoryInfo:homesCopy])
     {
       v7 = dispatch_queue_create("com.apple.wifi.CWFSensingAutoDataCollector", 0);
       [(CWFSensingAutoDataCollector *)v6 set_serviceQueue:v7];
 
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      [(CWFSensingAutoDataCollector *)v6 set_serviceObjects:v8];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(CWFSensingAutoDataCollector *)v6 set_serviceObjects:dictionary];
     }
 
     else
@@ -55,16 +55,16 @@
       v11 = CWFGetOSLog();
       if (v11)
       {
-        v8 = CWFGetOSLog();
+        dictionary = CWFGetOSLog();
       }
 
       else
       {
-        v8 = MEMORY[0x1E69E9C10];
+        dictionary = MEMORY[0x1E69E9C10];
         v12 = MEMORY[0x1E69E9C10];
       }
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
       {
         v14 = 136446722;
         v15 = "[CWFSensingAutoDataCollector initWithHomes:]";
@@ -83,14 +83,14 @@
   return v6;
 }
 
-- (BOOL)currentAccessoryInfo:(id)a3
+- (BOOL)currentAccessoryInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = info;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
@@ -111,8 +111,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 accessories];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        accessories = [v9 accessories];
+        v11 = [accessories countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -123,7 +123,7 @@
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(accessories);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
@@ -135,7 +135,7 @@
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [accessories countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v12)
             {
               continue;
@@ -170,8 +170,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CWFSensingAutoDataCollector *)self _serviceObjects];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _serviceObjects = [(CWFSensingAutoDataCollector *)self _serviceObjects];
+  v4 = [_serviceObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -183,24 +183,24 @@ LABEL_16:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_serviceObjects);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(CWFSensingAutoDataCollector *)self _serviceQueue];
+        _serviceQueue = [(CWFSensingAutoDataCollector *)self _serviceQueue];
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = sub_1E0C1C8E4;
         v11[3] = &unk_1E86E6420;
         v11[4] = self;
         v11[5] = v8;
-        dispatch_async(v9, v11);
+        dispatch_async(_serviceQueue, v11);
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [_serviceObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -209,20 +209,20 @@ LABEL_16:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerForAccessoriesInRoomWithDelegate:(id)a3
+- (void)registerForAccessoriesInRoomWithDelegate:(id)delegate
 {
   v54 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v4 = [(CWFSensingAutoDataCollector *)self _currentAccessory];
-  v5 = [v4 room];
+  delegateCopy = delegate;
+  _currentAccessory = [(CWFSensingAutoDataCollector *)self _currentAccessory];
+  room = [_currentAccessory room];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v33 = v5;
-  v6 = [v5 accessories];
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v53 count:16];
+  v33 = room;
+  accessories = [room accessories];
+  v7 = [accessories countByEnumeratingWithState:&v39 objects:v53 count:16];
   if (!v7)
   {
     goto LABEL_19;
@@ -236,27 +236,27 @@ LABEL_16:
     {
       if (*v40 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(accessories);
       }
 
       v11 = *(*(&v39 + 1) + 8 * i);
       v12 = [(CWFSensingAutoDataCollector *)self _serviceObjects:v31];
-      v13 = [v11 uniqueIdentifier];
-      v14 = [v12 objectForKey:v13];
+      uniqueIdentifier = [v11 uniqueIdentifier];
+      v14 = [v12 objectForKey:uniqueIdentifier];
       if (v14)
       {
       }
 
       else
       {
-        v15 = [v11 isCurrentAccessory];
+        isCurrentAccessory = [v11 isCurrentAccessory];
 
-        if (v15)
+        if (isCurrentAccessory)
         {
           continue;
         }
 
-        v16 = [CWFSensingHMADataCollector createCWFSensingHMADataCollectorFor:v11 withOptions:0 andDelegate:v34];
+        v16 = [CWFSensingHMADataCollector createCWFSensingHMADataCollectorFor:v11 withOptions:0 andDelegate:delegateCopy];
         if (!v16)
         {
           v27 = CWFGetOSLog();
@@ -273,7 +273,7 @@ LABEL_16:
 
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v11 uniqueIdentifier];
+            uniqueIdentifier2 = [v11 uniqueIdentifier];
             v43 = 136446978;
             v44 = "[CWFSensingAutoDataCollector registerForAccessoriesInRoomWithDelegate:]";
             v45 = 2082;
@@ -281,7 +281,7 @@ LABEL_16:
             v47 = 1024;
             v48 = 137;
             v49 = 2114;
-            v50 = v30;
+            v50 = uniqueIdentifier2;
             _os_log_send_and_compose_impl();
           }
 
@@ -289,7 +289,7 @@ LABEL_16:
         }
 
         v17 = v16;
-        v18 = [(CWFSensingAutoDataCollector *)self _serviceQueue];
+        _serviceQueue = [(CWFSensingAutoDataCollector *)self _serviceQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = sub_1E0C1CF3C;
@@ -297,12 +297,12 @@ LABEL_16:
         v12 = v17;
         v36 = v12;
         v37 = v11;
-        v38 = self;
-        dispatch_async(v18, block);
+        selfCopy = self;
+        dispatch_async(_serviceQueue, block);
 
-        v19 = [(CWFSensingAutoDataCollector *)self _serviceObjects];
-        v20 = [v11 uniqueIdentifier];
-        [v19 setObject:v12 forKey:v20];
+        _serviceObjects = [(CWFSensingAutoDataCollector *)self _serviceObjects];
+        uniqueIdentifier3 = [v11 uniqueIdentifier];
+        [_serviceObjects setObject:v12 forKey:uniqueIdentifier3];
 
         v21 = CWFGetOSLog();
         if (v21)
@@ -318,8 +318,8 @@ LABEL_16:
 
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v11 uniqueIdentifier];
-          v25 = [(CWFSensingAutoDataCollector *)self _serviceObjects];
+          uniqueIdentifier4 = [v11 uniqueIdentifier];
+          _serviceObjects2 = [(CWFSensingAutoDataCollector *)self _serviceObjects];
           v43 = 136447234;
           v44 = "[CWFSensingAutoDataCollector registerForAccessoriesInRoomWithDelegate:]";
           v45 = 2082;
@@ -327,19 +327,19 @@ LABEL_16:
           v47 = 1024;
           v48 = 150;
           v49 = 2114;
-          v50 = v24;
+          v50 = uniqueIdentifier4;
           v51 = 2114;
-          v52 = v25;
+          v52 = _serviceObjects2;
           LODWORD(v32) = 48;
           v31 = &v43;
           _os_log_send_and_compose_impl();
         }
 
-        v13 = v36;
+        uniqueIdentifier = v36;
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v39 objects:v53 count:16];
+    v8 = [accessories countByEnumeratingWithState:&v39 objects:v53 count:16];
     if (v8)
     {
       continue;
@@ -353,9 +353,9 @@ LABEL_19:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRegisteredServiceWithDelegate:(id)a3
+- (void)updateRegisteredServiceWithDelegate:(id)delegate
 {
-  [(CWFSensingAutoDataCollector *)self registerForAccessoriesInRoomWithDelegate:a3];
+  [(CWFSensingAutoDataCollector *)self registerForAccessoriesInRoomWithDelegate:delegate];
 
   MEMORY[0x1EEE66B58](self, sel_cleanUpOutOfScopeAccessory);
 }

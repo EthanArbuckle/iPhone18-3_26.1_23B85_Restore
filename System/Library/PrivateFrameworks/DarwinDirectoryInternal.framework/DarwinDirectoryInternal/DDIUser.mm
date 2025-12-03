@@ -1,37 +1,37 @@
 @interface DDIUser
-+ (id)userWithUUID:(id)a3 uid:(unsigned int)a4 name:(id)a5 primaryGroupUUID:(id)a6 fullName:(id)a7 homeDirectory:(id)a8 shell:(id)a9 memberships:(id)a10;
-- (id)initWithUUID:(int)a3 uid:(void *)a4 name:(void *)a5 primaryGroupUUID:(void *)a6 fullName:(void *)a7 homeDirectory:(void *)a8 shell:(void *)a9 memberships:;
++ (id)userWithUUID:(id)d uid:(unsigned int)uid name:(id)name primaryGroupUUID:(id)iD fullName:(id)fullName homeDirectory:(id)directory shell:(id)shell memberships:(id)self0;
+- (id)initWithUUID:(int)d uid:(void *)uid name:(void *)name primaryGroupUUID:(void *)iD fullName:(void *)fullName homeDirectory:(void *)directory shell:(void *)shell memberships:;
 @end
 
 @implementation DDIUser
 
-+ (id)userWithUUID:(id)a3 uid:(unsigned int)a4 name:(id)a5 primaryGroupUUID:(id)a6 fullName:(id)a7 homeDirectory:(id)a8 shell:(id)a9 memberships:(id)a10
++ (id)userWithUUID:(id)d uid:(unsigned int)uid name:(id)name primaryGroupUUID:(id)iD fullName:(id)fullName homeDirectory:(id)directory shell:(id)shell memberships:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
-  v23 = [[DDIUser alloc] initWithUUID:v22 uid:a4 name:v21 primaryGroupUUID:v20 fullName:v19 homeDirectory:v18 shell:v17 memberships:v16];
+  membershipsCopy = memberships;
+  shellCopy = shell;
+  directoryCopy = directory;
+  fullNameCopy = fullName;
+  iDCopy = iD;
+  nameCopy = name;
+  dCopy = d;
+  v23 = [[DDIUser alloc] initWithUUID:dCopy uid:uid name:nameCopy primaryGroupUUID:iDCopy fullName:fullNameCopy homeDirectory:directoryCopy shell:shellCopy memberships:membershipsCopy];
 
   return v23;
 }
 
-- (id)initWithUUID:(int)a3 uid:(void *)a4 name:(void *)a5 primaryGroupUUID:(void *)a6 fullName:(void *)a7 homeDirectory:(void *)a8 shell:(void *)a9 memberships:
+- (id)initWithUUID:(int)d uid:(void *)uid name:(void *)name primaryGroupUUID:(void *)iD fullName:(void *)fullName homeDirectory:(void *)directory shell:(void *)shell memberships:
 {
   v40 = *MEMORY[0x277D85DE8];
   v36 = a2;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (a1)
+  uidCopy = uid;
+  nameCopy = name;
+  iDCopy = iD;
+  fullNameCopy = fullName;
+  directoryCopy = directory;
+  shellCopy = shell;
+  if (self)
   {
-    v38.receiver = a1;
+    v38.receiver = self;
     v38.super_class = DDIUser;
     v23 = objc_msgSendSuper2(&v38, sel_init);
     if (!v23)
@@ -39,34 +39,34 @@
       [DDIUser initWithUUID:v39 uid:? name:? primaryGroupUUID:? fullName:? homeDirectory:? shell:? memberships:?];
     }
 
-    a1 = v23;
+    self = v23;
 
-    objc_storeStrong(a1 + 2, a2);
-    *(a1 + 2) = a3;
-    v24 = [v17 copy];
-    v25 = a1[3];
-    a1[3] = v24;
+    objc_storeStrong(self + 2, a2);
+    *(self + 2) = d;
+    v24 = [uidCopy copy];
+    v25 = self[3];
+    self[3] = v24;
 
-    objc_storeStrong(a1 + 4, a5);
-    v26 = [v19 copy];
-    v27 = a1[5];
-    a1[5] = v26;
+    objc_storeStrong(self + 4, name);
+    v26 = [iDCopy copy];
+    v27 = self[5];
+    self[5] = v26;
 
-    v28 = [v20 copy];
-    v29 = a1[6];
-    a1[6] = v28;
+    v28 = [fullNameCopy copy];
+    v29 = self[6];
+    self[6] = v28;
 
-    v30 = [v21 copy];
-    v31 = a1[7];
-    a1[7] = v30;
+    v30 = [directoryCopy copy];
+    v31 = self[7];
+    self[7] = v30;
 
-    v32 = [v22 mutableCopy];
-    v33 = a1[8];
-    a1[8] = v32;
+    v32 = [shellCopy mutableCopy];
+    v33 = self[8];
+    self[8] = v32;
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 - (void)initWithUUID:(uint64_t *)a1 uid:(_OWORD *)a2 name:primaryGroupUUID:fullName:homeDirectory:shell:memberships:.cold.1(uint64_t *a1, _OWORD *a2)

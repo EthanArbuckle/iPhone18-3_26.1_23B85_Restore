@@ -1,8 +1,8 @@
 @interface OITSUTemporaryDirectory
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
 - (OITSUTemporaryDirectory)init;
-- (OITSUTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
-- (id)initForWritingToURL:(id)a3 error:(id *)a4;
+- (OITSUTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
+- (id)initForWritingToURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -24,15 +24,15 @@
   objc_exception_throw(v7);
 }
 
-- (OITSUTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (OITSUTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
   v13.receiver = self;
   v13.super_class = OITSUTemporaryDirectory;
   v10 = [(OITSUTemporaryDirectory *)&v13 init];
   v11 = v10;
-  if (v10 && ![(OITSUTemporaryDirectory *)v10 _createDirectoryWithSignature:v8 subdirectory:v9 error:a5])
+  if (v10 && ![(OITSUTemporaryDirectory *)v10 _createDirectoryWithSignature:signatureCopy subdirectory:subdirectoryCopy error:error])
   {
 
     v11 = 0;
@@ -41,20 +41,20 @@
   return v11;
 }
 
-- (id)initForWritingToURL:(id)a3 error:(id *)a4
+- (id)initForWritingToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = OITSUTemporaryDirectory;
   v7 = [(OITSUTemporaryDirectory *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v8 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:1 error:a4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
 
-    v10 = [v9 path];
+    path = [v9 path];
     path = v7->_path;
-    v7->_path = v10;
+    v7->_path = path;
 
     if (!v9)
     {
@@ -70,10 +70,10 @@
 {
   if (!self->_leak)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     path = self->_path;
     v10 = 0;
-    v5 = [v3 removeItemAtPath:path error:&v10];
+    v5 = [defaultManager removeItemAtPath:path error:&v10];
     v6 = v10;
     v7 = v6;
     if (v5)
@@ -82,9 +82,9 @@
 
     else
     {
-      v8 = [v6 tsu_isNoSuchFileError];
+      tsu_isNoSuchFileError = [v6 tsu_isNoSuchFileError];
 
-      if ((v8 & 1) == 0 && TSUDefaultCat_init_token != -1)
+      if ((tsu_isNoSuchFileError & 1) == 0 && TSUDefaultCat_init_token != -1)
       {
         [OITSUTemporaryDirectory dealloc];
       }
@@ -103,13 +103,13 @@ void __34__OITSUTemporaryDirectory_dealloc__block_invoke()
   TSUDefaultCat_log_t = v0;
 }
 
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
+  if (signatureCopy)
   {
-    v10 = v8;
+    v10 = signatureCopy;
   }
 
   else
@@ -142,32 +142,32 @@ void __34__OITSUTemporaryDirectory_dealloc__block_invoke()
   }
   v14 = ;
   v15 = v14;
-  if (v9)
+  if (subdirectoryCopy)
   {
-    v16 = [v14 stringByAppendingPathComponent:v9];
+    v16 = [v14 stringByAppendingPathComponent:subdirectoryCopy];
 
     v15 = v16;
   }
 
   v17 = [v15 stringByAppendingPathComponent:v11];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v19 = [v18 createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v24];
+  v19 = [defaultManager createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v24];
   v20 = v24;
 
   objc_storeStrong(&self->_path, v17);
-  if (a5 && (v19 & 1) == 0)
+  if (error && (v19 & 1) == 0)
   {
     if (v20)
     {
       v21 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
     {
       v22 = [MEMORY[0x277CCA9B8] tsu_fileWriteUnknownErrorWithUserInfo:0];
-      *a5 = v22;
+      *error = v22;
     }
   }
 

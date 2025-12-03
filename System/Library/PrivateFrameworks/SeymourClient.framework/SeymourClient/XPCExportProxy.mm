@@ -1,18 +1,18 @@
 @interface XPCExportProxy
-- (void)receiveEvent:(int64_t)a3 data:(id)a4;
-- (void)receiveRequest:(int64_t)a3 data:(id)a4 completion:(id)a5;
+- (void)receiveEvent:(int64_t)event data:(id)data;
+- (void)receiveRequest:(int64_t)request data:(id)data completion:(id)completion;
 @end
 
 @implementation XPCExportProxy
 
-- (void)receiveRequest:(int64_t)a3 data:(id)a4 completion:(id)a5
+- (void)receiveRequest:(int64_t)request data:(id)data completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
 
-  if (a4)
+  if (data)
   {
-    v8 = a4;
-    a4 = sub_1B4F64894();
+    dataCopy = data;
+    data = sub_1B4F64894();
     v10 = v9;
   }
 
@@ -26,11 +26,11 @@
   {
     v12 = Strong;
     _Block_copy(v7);
-    sub_1B4F63484(a3, a4, v10, v12, v7);
+    sub_1B4F63484(request, data, v10, v12, v7);
     _Block_release(v7);
 
     _Block_release(v7);
-    sub_1B4DD2B5C(a4, v10);
+    sub_1B4DD2B5C(data, v10);
   }
 
   else
@@ -38,18 +38,18 @@
 
     _Block_release(v7);
 
-    sub_1B4DD2B5C(a4, v10);
+    sub_1B4DD2B5C(data, v10);
   }
 }
 
-- (void)receiveEvent:(int64_t)a3 data:(id)a4
+- (void)receiveEvent:(int64_t)event data:(id)data
 {
-  v4 = a4;
-  if (a4)
+  dataCopy = data;
+  if (data)
   {
 
-    v6 = v4;
-    v4 = sub_1B4F64894();
+    v6 = dataCopy;
+    dataCopy = sub_1B4F64894();
     v8 = v7;
   }
 
@@ -61,15 +61,15 @@
 
   if (swift_weakLoadStrong())
   {
-    TransportDispatchService.dispatchEvent(_:data:)(a3, v4, v8);
+    TransportDispatchService.dispatchEvent(_:data:)(event, dataCopy, v8);
 
-    sub_1B4DD2B5C(v4, v8);
+    sub_1B4DD2B5C(dataCopy, v8);
   }
 
   else
   {
 
-    sub_1B4DD2B5C(v4, v8);
+    sub_1B4DD2B5C(dataCopy, v8);
   }
 }
 

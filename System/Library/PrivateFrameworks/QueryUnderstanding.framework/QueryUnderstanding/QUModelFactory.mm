@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 - (NSError)loadError;
 - (QUModelFactory)init;
-- (id)getModelForLocale:(id)a3 withTimeoutMS:(unsigned int)a4;
+- (id)getModelForLocale:(id)locale withTimeoutMS:(unsigned int)s;
 - (void)releaseModel;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __21__QUModelFactory_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -79,13 +79,13 @@ uint64_t __32__QUModelFactory_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)getModelForLocale:(id)a3 withTimeoutMS:(unsigned int)a4
+- (id)getModelForLocale:(id)locale withTimeoutMS:(unsigned int)s
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  localeCopy = locale;
   unsupportedLocaleIdentifiers = self->_unsupportedLocaleIdentifiers;
-  v8 = [v6 localeIdentifier];
-  LODWORD(unsupportedLocaleIdentifiers) = [(NSSet *)unsupportedLocaleIdentifiers containsObject:v8];
+  localeIdentifier = [localeCopy localeIdentifier];
+  LODWORD(unsupportedLocaleIdentifiers) = [(NSSet *)unsupportedLocaleIdentifiers containsObject:localeIdentifier];
 
   [(NSCondition *)self->_condition lock];
   if (unsupportedLocaleIdentifiers)
@@ -108,23 +108,23 @@ uint64_t __32__QUModelFactory_sharedInstance__block_invoke()
       self->_releaseBlock = 0;
     }
 
-    v14 = [(QUUnderstandingModel *)self->_quModel locale];
-    v15 = [v14 localeIdentifier];
-    v16 = [v6 localeIdentifier];
-    v17 = [v15 isEqualToString:v16];
+    locale = [(QUUnderstandingModel *)self->_quModel locale];
+    localeIdentifier2 = [locale localeIdentifier];
+    localeIdentifier3 = [localeCopy localeIdentifier];
+    v17 = [localeIdentifier2 isEqualToString:localeIdentifier3];
 
     if ((v17 & 1) == 0)
     {
       v18 = [objc_opt_class() log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 localeIdentifier];
+        localeIdentifier4 = [localeCopy localeIdentifier];
         *buf = 138412290;
-        v34 = *&v19;
+        v34 = *&localeIdentifier4;
         _os_log_impl(&dword_2615A2000, v18, OS_LOG_TYPE_INFO, "[QPNLU] QU creating new model for %@", buf, 0xCu);
       }
 
-      v20 = [[U2OwlModel alloc] initWithLocale:v6];
+      v20 = [[U2OwlModel alloc] initWithLocale:localeCopy];
       quModel = self->_quModel;
       self->_quModel = v20;
 
@@ -146,18 +146,18 @@ uint64_t __32__QUModelFactory_sharedInstance__block_invoke()
     }
 
     state = self->_state;
-    if (a4 && state != 3)
+    if (s && state != 3)
     {
       v27 = [objc_opt_class() log];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v34 = a4 / 1000.0;
+        v34 = s / 1000.0;
         _os_log_impl(&dword_2615A2000, v27, OS_LOG_TYPE_DEFAULT, "[QPNLU] Waiting for model load with timeout (%f)", buf, 0xCu);
       }
 
       self->_state = 2;
-      v28 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a4 / 1000.0];
+      v28 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:s / 1000.0];
       [(NSCondition *)self->_condition waitUntilDate:v28];
       v29 = [objc_opt_class() log];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))

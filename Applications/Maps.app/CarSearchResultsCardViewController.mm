@@ -1,12 +1,12 @@
 @interface CarSearchResultsCardViewController
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithCoder:(id)a3;
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithDelegate:(id)a3;
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithCoder:(id)coder;
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithDelegate:(id)delegate;
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps28CarSearchResultsCardDelegate_)delegate;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 - (void)setLoading;
-- (void)setSearchResults:(id)a3 searchAlongRoute:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setSearchResults:(id)results searchAlongRoute:(BOOL)route;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CarSearchResultsCardViewController
@@ -18,7 +18,7 @@
   return Strong;
 }
 
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithDelegate:(id)a3
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithDelegate:(id)delegate
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -34,7 +34,7 @@
   return v7;
 }
 
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithCoder:(id)a3
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR____TtC4Maps34CarSearchResultsCardViewController_viewModel;
@@ -44,10 +44,10 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003A2088(a3);
+  selfCopy = self;
+  sub_1003A2088(appear);
 }
 
 - (void)setLoading
@@ -59,7 +59,7 @@
   static Published.subscript.setter();
 }
 
-- (void)setSearchResults:(id)a3 searchAlongRoute:(BOOL)a4
+- (void)setSearchResults:(id)results searchAlongRoute:(BOOL)route
 {
   sub_10019152C();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -70,17 +70,17 @@
   static Published.subscript.setter();
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps34CarSearchResultsCardViewController_viewModel);
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
+  errorCopy = error;
   v6 = v4;
   static Published.subscript.setter();
 }
 
-- (_TtC4Maps34CarSearchResultsCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps34CarSearchResultsCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

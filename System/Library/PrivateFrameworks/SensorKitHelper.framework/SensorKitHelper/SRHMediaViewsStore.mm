@@ -2,15 +2,15 @@
 + (void)initialize;
 - (CGRect)scrollViewVisibleArea;
 - (NSXPCConnection)connection;
-- (SRHMediaViewsStore)initWithScrollView:(id)a3;
-- (void)_writeMediaEventsToBiome:(id)a3;
-- (void)addViewToStore:(id)a3;
+- (SRHMediaViewsStore)initWithScrollView:(id)view;
+- (void)_writeMediaEventsToBiome:(id)biome;
+- (void)addViewToStore:(id)store;
 - (void)dealloc;
 - (void)markViewsAsOffScreen;
 - (void)markViewsAsOnScreen;
 - (void)processScrollViewOffset;
 - (void)removeAllViews;
-- (void)removeViewFromStore:(id)a3;
+- (void)removeViewFromStore:(id)store;
 - (void)setupConnection;
 @end
 
@@ -18,20 +18,20 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _MergedGlobals_2 = os_log_create("com.apple.SensorKit", "SRHMediaViewsStore");
   }
 }
 
-- (SRHMediaViewsStore)initWithScrollView:(id)a3
+- (SRHMediaViewsStore)initWithScrollView:(id)view
 {
   v6.receiver = self;
   v6.super_class = SRHMediaViewsStore;
   v4 = [(SRHMediaViewsStore *)&v6 init];
   if (v4)
   {
-    v4->_scrollView = a3;
+    v4->_scrollView = view;
     v4->_offScreenMediaViews = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v4->_onScreenMediaViews = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v4->_q = dispatch_queue_create("com.apple.SensorKit.SKMediaEventsHelper.XPCConnection", 0);
@@ -118,23 +118,23 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
   return self->_connection;
 }
 
-- (void)addViewToStore:(id)a3
+- (void)addViewToStore:(id)store
 {
   if (![(NSMapTable *)self->_offScreenMediaViews objectForKey:?])
   {
     v5 = objc_alloc_init(SRHMediaView);
-    [(NSMapTable *)self->_offScreenMediaViews setObject:v5 forKey:a3];
+    [(NSMapTable *)self->_offScreenMediaViews setObject:v5 forKey:store];
   }
 }
 
-- (void)removeViewFromStore:(id)a3
+- (void)removeViewFromStore:(id)store
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   p_offScreenMediaViews = &self->_offScreenMediaViews;
-  if (![(NSMapTable *)self->_offScreenMediaViews objectForKey:a3])
+  if (![(NSMapTable *)self->_offScreenMediaViews objectForKey:store])
   {
     p_offScreenMediaViews = &self->_onScreenMediaViews;
-    v7 = [(NSMapTable *)self->_onScreenMediaViews objectForKey:a3];
+    v7 = [(NSMapTable *)self->_onScreenMediaViews objectForKey:store];
     if (!v7)
     {
       return;
@@ -146,20 +146,20 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
 
   v8 = *p_offScreenMediaViews;
 
-  [(NSMapTable *)v8 removeObjectForKey:a3];
+  [(NSMapTable *)v8 removeObjectForKey:store];
 }
 
 - (void)markViewsAsOffScreen
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
-  v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v16 objects:v26 count:16];
+  obj = keyEnumerator;
+  v5 = [(NSEnumerator *)keyEnumerator countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v5)
   {
     v7 = v5;
@@ -205,12 +205,12 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v5 = [(NSEnumerator *)keyEnumerator countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v7 = v5;
@@ -224,7 +224,7 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = [(NSMapTable *)self->_onScreenMediaViews objectForKey:*(*(&v14 + 1) + 8 * v9), v13];
@@ -244,7 +244,7 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v7 = [(NSEnumerator *)keyEnumerator countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v7);
@@ -309,13 +309,13 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
   _Block_object_dispose(buf, 8);
   v89 = [objc_msgSend(v3 "sharedApplication")];
   v87 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_onScreenMediaViews keyEnumerator];
   v92 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v108 = 0u;
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v106 objects:v121 count:16];
+  v5 = [(NSEnumerator *)keyEnumerator countByEnumeratingWithState:&v106 objects:v121 count:16];
   if (v5)
   {
     v6 = *v107;
@@ -325,7 +325,7 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
       {
         if (*v107 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v106 + 1) + 8 * i);
@@ -386,7 +386,7 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
         }
       }
 
-      v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v106 objects:v121 count:16];
+      v5 = [(NSEnumerator *)keyEnumerator countByEnumeratingWithState:&v106 objects:v121 count:16];
     }
 
     while (v5);
@@ -450,12 +450,12 @@ void __37__SRHMediaViewsStore_setupConnection__block_invoke_40(uint64_t a1)
             {
               offScreenMediaViews = self->_offScreenMediaViews;
               onScreenMediaViews = self->_onScreenMediaViews;
-              v60 = [(NSMapTable *)onScreenMediaViews keyEnumerator];
+              keyEnumerator2 = [(NSMapTable *)onScreenMediaViews keyEnumerator];
               v116 = 0u;
               v117 = 0u;
               v114 = 0u;
               v115 = 0u;
-              v61 = [(NSEnumerator *)v60 countByEnumeratingWithState:&v114 objects:buf count:16];
+              v61 = [(NSEnumerator *)keyEnumerator2 countByEnumeratingWithState:&v114 objects:buf count:16];
               if (v61)
               {
                 v62 = *v115;
@@ -465,7 +465,7 @@ LABEL_32:
                 {
                   if (*v115 != v62)
                   {
-                    objc_enumerationMutation(v60);
+                    objc_enumerationMutation(keyEnumerator2);
                   }
 
                   [-[NSMapTable objectForKey:](onScreenMediaViews objectForKey:{*(*(&v114 + 1) + 8 * v63)), "position"}];
@@ -476,7 +476,7 @@ LABEL_32:
 
                   if (v61 == ++v63)
                   {
-                    v61 = [(NSEnumerator *)v60 countByEnumeratingWithState:&v114 objects:buf count:16];
+                    v61 = [(NSEnumerator *)keyEnumerator2 countByEnumeratingWithState:&v114 objects:buf count:16];
                     if (v61)
                     {
                       goto LABEL_32;
@@ -632,14 +632,14 @@ LABEL_46:
   [(NSMapTable *)offScreenMediaViews removeAllObjects];
 }
 
-- (void)_writeMediaEventsToBiome:(id)a3
+- (void)_writeMediaEventsToBiome:(id)biome
 {
-  if ([a3 count])
+  if ([biome count])
   {
     Current = CFAbsoluteTimeGetCurrent();
     v6 = [(NSXPCConnection *)[(SRHMediaViewsStore *)self connection] remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
 
-    [v6 writeMediaEvents:a3 withTimestamp:&__block_literal_global_49 reply:Current];
+    [v6 writeMediaEvents:biome withTimestamp:&__block_literal_global_49 reply:Current];
   }
 }
 

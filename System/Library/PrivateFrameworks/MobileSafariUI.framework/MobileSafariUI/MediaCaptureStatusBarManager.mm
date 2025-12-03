@@ -2,11 +2,11 @@
 + (MediaCaptureStatusBarManager)sharedManager;
 - (id)statusString;
 - (void)activateApp;
-- (void)browserControllerDidEnterBackground:(id)a3;
-- (void)browserControllerWillEnterForeground:(id)a3;
-- (void)browserControllerWillEnterTabView:(id)a3;
-- (void)browserControllerWillExitTabView:(id)a3;
-- (void)tabDidBecomeActive:(id)a3;
+- (void)browserControllerDidEnterBackground:(id)background;
+- (void)browserControllerWillEnterForeground:(id)foreground;
+- (void)browserControllerWillEnterTabView:(id)view;
+- (void)browserControllerWillExitTabView:(id)view;
+- (void)tabDidBecomeActive:(id)active;
 @end
 
 @implementation MediaCaptureStatusBarManager
@@ -30,33 +30,33 @@ void __45__MediaCaptureStatusBarManager_sharedManager__block_invoke()
   sharedManager_sharedInstance_0 = v0;
 }
 
-- (void)tabDidBecomeActive:(id)a3
+- (void)tabDidBecomeActive:(id)active
 {
-  v12 = a3;
-  v4 = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
-  if (v4)
+  activeCopy = active;
+  _recordingDocument = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
+  if (_recordingDocument)
   {
-    v5 = [v12 browserController];
-    v6 = [v5 tabCollectionViewProvider];
-    v7 = [v6 tabThumbnailCollectionView];
+    browserController = [activeCopy browserController];
+    tabCollectionViewProvider = [browserController tabCollectionViewProvider];
+    tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
-    v8 = v7;
+    v8 = tabThumbnailCollectionView;
     if ([v8 presentationState] == 1)
     {
     }
 
     else
     {
-      v9 = [v8 presentationState];
+      presentationState = [v8 presentationState];
 
-      if (v9 != 2)
+      if (presentationState != 2)
       {
-        v10 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-        v11 = [v10 browserController];
+        recordingTabDocument = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+        browserController2 = [recordingTabDocument browserController];
 
-        if (v5 == v11)
+        if (browserController == browserController2)
         {
-          if (v4 == v12 && [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
+          if (_recordingDocument == activeCopy && [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
           {
             [(SFMediaCaptureStatusBarManager *)self _releaseStatusBarOverride];
           }
@@ -71,17 +71,17 @@ void __45__MediaCaptureStatusBarManager_sharedManager__block_invoke()
   }
 }
 
-- (void)browserControllerWillEnterTabView:(id)a3
+- (void)browserControllerWillEnterTabView:(id)view
 {
-  v8 = a3;
-  v4 = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
-  if (v4 && [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
+  viewCopy = view;
+  _recordingDocument = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
+  if (_recordingDocument && [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
   {
-    v5 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-    v6 = [v5 browserController];
+    recordingTabDocument = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+    browserController = [recordingTabDocument browserController];
 
-    v7 = v8;
-    if (v6 != v8)
+    v7 = viewCopy;
+    if (browserController != viewCopy)
     {
       goto LABEL_7;
     }
@@ -93,32 +93,32 @@ void __45__MediaCaptureStatusBarManager_sharedManager__block_invoke()
   {
   }
 
-  v7 = v8;
+  v7 = viewCopy;
 LABEL_7:
 }
 
-- (void)browserControllerWillExitTabView:(id)a3
+- (void)browserControllerWillExitTabView:(id)view
 {
-  v9 = a3;
-  v4 = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
-  if (!v4 || [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
+  viewCopy = view;
+  _recordingDocument = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
+  if (!_recordingDocument || [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride])
   {
     goto LABEL_5;
   }
 
-  v5 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-  v6 = [v5 browserController];
-  if (v6 != v9)
+  recordingTabDocument = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+  browserController = [recordingTabDocument browserController];
+  if (browserController != viewCopy)
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-  v8 = [v7 isActive];
+  recordingTabDocument2 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+  isActive = [recordingTabDocument2 isActive];
 
-  if ((v8 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     [(SFMediaCaptureStatusBarManager *)self _acquireStatusBarOverride];
   }
@@ -126,21 +126,21 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)browserControllerDidEnterBackground:(id)a3
+- (void)browserControllerDidEnterBackground:(id)background
 {
-  v11 = a3;
-  v4 = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
-  if (v4)
+  backgroundCopy = background;
+  _recordingDocument = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
+  if (_recordingDocument)
   {
-    v5 = v4;
-    v6 = [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride];
+    v5 = _recordingDocument;
+    _hasStatusBarOverride = [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride];
 
-    if (!v6)
+    if (!_hasStatusBarOverride)
     {
-      v7 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-      v8 = [v7 ownerUUID];
-      v9 = [v11 UUID];
-      v10 = [v8 isEqual:v9];
+      recordingTabDocument = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+      ownerUUID = [recordingTabDocument ownerUUID];
+      uUID = [backgroundCopy UUID];
+      v10 = [ownerUUID isEqual:uUID];
 
       if (v10)
       {
@@ -150,46 +150,46 @@ LABEL_6:
   }
 }
 
-- (void)browserControllerWillEnterForeground:(id)a3
+- (void)browserControllerWillEnterForeground:(id)foreground
 {
-  v17 = a3;
-  v4 = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
+  foregroundCopy = foreground;
+  _recordingDocument = [(SFMediaCaptureStatusBarManager *)self _recordingDocument];
 
-  if (v4)
+  if (_recordingDocument)
   {
-    v5 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-    v6 = [v5 ownerUUID];
-    v7 = [v17 UUID];
-    v8 = [v6 isEqual:v7];
+    recordingTabDocument = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+    ownerUUID = [recordingTabDocument ownerUUID];
+    uUID = [foregroundCopy UUID];
+    v8 = [ownerUUID isEqual:uUID];
 
     if (v8)
     {
-      v9 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-      v10 = [v9 browserController];
-      v11 = [v10 tabCollectionViewProvider];
-      v12 = [v11 tabThumbnailCollectionView];
+      recordingTabDocument2 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+      browserController = [recordingTabDocument2 browserController];
+      tabCollectionViewProvider = [browserController tabCollectionViewProvider];
+      tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
-      v13 = v12;
+      v13 = tabThumbnailCollectionView;
       if ([v13 presentationState] == 1)
       {
       }
 
       else
       {
-        v14 = [v13 presentationState];
+        presentationState = [v13 presentationState];
 
-        if (v14 != 2)
+        if (presentationState != 2)
         {
-          v15 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
-          if (([v15 isActive] & 1) == 0)
+          recordingTabDocument3 = [(MediaCaptureStatusBarManager *)self recordingTabDocument];
+          if (([recordingTabDocument3 isActive] & 1) == 0)
           {
 
             goto LABEL_14;
           }
 
-          v16 = [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride];
+          _hasStatusBarOverride = [(SFMediaCaptureStatusBarManager *)self _hasStatusBarOverride];
 
-          if (!v16)
+          if (!_hasStatusBarOverride)
           {
             goto LABEL_14;
           }
@@ -221,13 +221,13 @@ LABEL_15:
 
 - (void)activateApp
 {
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  if (([v5 supportsMultipleScenes] & 1) == 0 && objc_msgSend(v5, "applicationState"))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (([mEMORY[0x277D75128] supportsMultipleScenes] & 1) == 0 && objc_msgSend(mEMORY[0x277D75128], "applicationState"))
   {
-    v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    [v2 openApplicationWithBundleID:v4];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [defaultWorkspace openApplicationWithBundleID:bundleIdentifier];
   }
 }
 
@@ -235,8 +235,8 @@ LABEL_15:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = _WBSLocalizedString();
-  v5 = [(SFMediaCaptureStatusBarManager *)self simplifiedURLString];
-  v6 = [v3 stringWithFormat:v4, v5];
+  simplifiedURLString = [(SFMediaCaptureStatusBarManager *)self simplifiedURLString];
+  v6 = [v3 stringWithFormat:v4, simplifiedURLString];
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface HFCacheEntry
-- (HFCacheEntry)initWithKey:(id)a3 object:(id)a4 cost:(unint64_t)a5;
+- (HFCacheEntry)initWithKey:(id)key object:(id)object cost:(unint64_t)cost;
 - (id)description;
 @end
 
 @implementation HFCacheEntry
 
-- (HFCacheEntry)initWithKey:(id)a3 object:(id)a4 cost:(unint64_t)a5
+- (HFCacheEntry)initWithKey:(id)key object:(id)object cost:(unint64_t)cost
 {
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = HFCacheEntry;
   v11 = [(HFCacheEntry *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_key, a3);
-    objc_storeStrong(&v12->_object, a4);
-    v12->_cost = a5;
+    objc_storeStrong(&v11->_key, key);
+    objc_storeStrong(&v12->_object, object);
+    v12->_cost = cost;
   }
 
   return v12;
@@ -29,13 +29,13 @@
   v4 = [(HFCacheEntry *)self key];
   v5 = [v3 appendObject:v4 withName:@"key"];
 
-  v6 = [(HFCacheEntry *)self object];
-  v7 = [v3 appendObject:v6 withName:@"object"];
+  object = [(HFCacheEntry *)self object];
+  v7 = [v3 appendObject:object withName:@"object"];
 
   v8 = [v3 appendUnsignedInteger:-[HFCacheEntry cost](self withName:{"cost"), @"cost"}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

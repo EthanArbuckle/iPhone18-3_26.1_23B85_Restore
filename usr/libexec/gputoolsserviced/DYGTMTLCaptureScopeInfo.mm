@@ -1,44 +1,44 @@
 @interface DYGTMTLCaptureScopeInfo
-- (DYGTMTLCaptureScopeInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DYGTMTLCaptureScopeInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYGTMTLCaptureScopeInfo
 
-- (DYGTMTLCaptureScopeInfo)initWithCoder:(id)a3
+- (DYGTMTLCaptureScopeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DYGTMTLCaptureScopeInfo;
   v5 = [(DYGTMTLCaptureScopeInfo *)&v9 init];
   if (v5)
   {
-    v5->_deviceAddress = [v4 decodeInt64ForKey:@"deviceAddress"];
-    v5->_deviceStreamRef = [v4 decodeInt64ForKey:@"deviceStreamRef"];
-    v5->_commandQueueStreamRef = [v4 decodeInt64ForKey:@"commandQueueStreamRef"];
-    v5->_scopeAddress = [v4 decodeInt64ForKey:@"scopeAddress"];
-    v5->_scopeStreamRef = [v4 decodeInt64ForKey:@"scopeStreamRef"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v5->_deviceAddress = [coderCopy decodeInt64ForKey:@"deviceAddress"];
+    v5->_deviceStreamRef = [coderCopy decodeInt64ForKey:@"deviceStreamRef"];
+    v5->_commandQueueStreamRef = [coderCopy decodeInt64ForKey:@"commandQueueStreamRef"];
+    v5->_scopeAddress = [coderCopy decodeInt64ForKey:@"scopeAddress"];
+    v5->_scopeStreamRef = [coderCopy decodeInt64ForKey:@"scopeStreamRef"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v5->_isDefaultCapturable = [v4 decodeBoolForKey:@"isDefaultCapturable"];
+    v5->_isDefaultCapturable = [coderCopy decodeBoolForKey:@"isDefaultCapturable"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceAddress = self->_deviceAddress;
-  v5 = a3;
-  [v5 encodeInt64:deviceAddress forKey:@"deviceAddress"];
-  [v5 encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
-  [v5 encodeInt64:self->_commandQueueStreamRef forKey:@"commandQueueStreamRef"];
-  [v5 encodeInt64:self->_scopeAddress forKey:@"scopeAddress"];
-  [v5 encodeInt64:self->_scopeStreamRef forKey:@"scopeStreamRef"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeBool:self->_isDefaultCapturable forKey:@"isDefaultCapturable"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:deviceAddress forKey:@"deviceAddress"];
+  [coderCopy encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
+  [coderCopy encodeInt64:self->_commandQueueStreamRef forKey:@"commandQueueStreamRef"];
+  [coderCopy encodeInt64:self->_scopeAddress forKey:@"scopeAddress"];
+  [coderCopy encodeInt64:self->_scopeStreamRef forKey:@"scopeStreamRef"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_isDefaultCapturable forKey:@"isDefaultCapturable"];
 }
 
 @end

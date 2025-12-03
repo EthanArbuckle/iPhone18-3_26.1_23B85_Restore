@@ -1,33 +1,33 @@
 @interface PPM2FeedbackAtK
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDomain:(id)a3;
-- (int)StringAsFeedbackType:(id)a3;
+- (int)StringAsDomain:(id)domain;
+- (int)StringAsFeedbackType:(id)type;
 - (int)domain;
 - (int)feedbackType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDomain:(BOOL)a3;
-- (void)setHasEvaluatedCount:(BOOL)a3;
-- (void)setHasFeedbackType:(BOOL)a3;
-- (void)setHasK:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDomain:(BOOL)domain;
+- (void)setHasEvaluatedCount:(BOOL)count;
+- (void)setHasFeedbackType:(BOOL)type;
+- (void)setHasK:(BOOL)k;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2FeedbackAtK
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) != 0)
   {
-    self->_k = *(v4 + 8);
+    self->_k = *(fromCopy + 8);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -40,14 +40,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_evaluatedCount = *(v4 + 6);
+  self->_evaluatedCount = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -60,26 +60,26 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_domain = *(v4 + 5);
+  self->_domain = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_5:
-    self->_feedbackType = *(v4 + 7);
+    self->_feedbackType = *(fromCopy + 7);
     *&self->_has |= 8u;
   }
 
 LABEL_6:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(PPM2FeedbackAtK *)self setActiveTreatments:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_bucket = *(v4 + 4);
+    self->_bucket = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }
@@ -150,70 +150,70 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_k != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_k != *(equalCopy + 8))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_evaluatedCount != *(v4 + 6))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_evaluatedCount != *(equalCopy + 6))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_domain != *(v4 + 5))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_domain != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_feedbackType != *(v4 + 7))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_feedbackType != *(equalCopy + 7))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     if (![(NSString *)activeTreatments isEqual:?])
     {
@@ -223,13 +223,13 @@ LABEL_29:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_bucket != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_bucket != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
@@ -242,9 +242,9 @@ LABEL_30:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -294,7 +294,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v8 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v9 = *(v6 + 8);
   *(v6 + 8) = v8;
 
@@ -307,14 +307,14 @@ LABEL_6:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[8] = self->_k;
-    *(v4 + 36) |= 0x10u;
+    toCopy[8] = self->_k;
+    *(toCopy + 36) |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -333,8 +333,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_evaluatedCount;
-  *(v4 + 36) |= 4u;
+  toCopy[6] = self->_evaluatedCount;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -348,33 +348,33 @@ LABEL_4:
   }
 
 LABEL_15:
-  v4[5] = self->_domain;
-  *(v4 + 36) |= 2u;
+  toCopy[5] = self->_domain;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    v4[7] = self->_feedbackType;
-    *(v4 + 36) |= 8u;
+    toCopy[7] = self->_feedbackType;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_6:
   if (self->_activeTreatments)
   {
-    v6 = v4;
-    [v4 setActiveTreatments:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setActiveTreatments:?];
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[4] = self->_bucket;
-    *(v4 + 36) |= 1u;
+    toCopy[4] = self->_bucket;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -437,12 +437,12 @@ LABEL_6:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_k];
-    [v3 setObject:v5 forKey:@"k"];
+    [dictionary setObject:v5 forKey:@"k"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -463,7 +463,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_evaluatedCount];
-  [v3 setObject:v6 forKey:@"evaluatedCount"];
+  [dictionary setObject:v6 forKey:@"evaluatedCount"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -489,7 +489,7 @@ LABEL_8:
     v8 = off_2789742A8[domain];
   }
 
-  [v3 setObject:v8 forKey:@"domain"];
+  [dictionary setObject:v8 forKey:@"domain"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -505,23 +505,23 @@ LABEL_12:
       v10 = off_2789742E8[feedbackType];
     }
 
-    [v3 setObject:v10 forKey:@"feedbackType"];
+    [dictionary setObject:v10 forKey:@"feedbackType"];
   }
 
 LABEL_16:
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_bucket];
-    [v3 setObject:v12 forKey:@"bucket"];
+    [dictionary setObject:v12 forKey:@"bucket"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -530,41 +530,41 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = PPM2FeedbackAtK;
   v4 = [(PPM2FeedbackAtK *)&v8 description];
-  v5 = [(PPM2FeedbackAtK *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2FeedbackAtK *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsFeedbackType:(id)a3
+- (int)StringAsFeedbackType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Invalid"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Invalid"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EngagedExplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedExplicit"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EngagedImplicit"])
+  else if ([typeCopy isEqualToString:@"EngagedImplicit"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RejectedExplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedExplicit"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RejectedImplicit"])
+  else if ([typeCopy isEqualToString:@"RejectedImplicit"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Offered"])
+  else if ([typeCopy isEqualToString:@"Offered"])
   {
     v4 = 5;
   }
@@ -577,9 +577,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasFeedbackType:(BOOL)a3
+- (void)setHasFeedbackType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -605,45 +605,45 @@ LABEL_16:
   }
 }
 
-- (int)StringAsDomain:(id)a3
+- (int)StringAsDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Topics"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"Topics"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NamedEntities"])
+  else if ([domainCopy isEqualToString:@"NamedEntities"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Locations"])
+  else if ([domainCopy isEqualToString:@"Locations"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Events"])
+  else if ([domainCopy isEqualToString:@"Events"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ContactsDomain"])
+  else if ([domainCopy isEqualToString:@"ContactsDomain"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Connections"])
+  else if ([domainCopy isEqualToString:@"Connections"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"QuickTypeBroker"])
+  else if ([domainCopy isEqualToString:@"QuickTypeBroker"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UniversalSearchSpotlightTopics"])
+  else if ([domainCopy isEqualToString:@"UniversalSearchSpotlightTopics"])
   {
     v4 = 7;
   }
@@ -656,9 +656,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasDomain:(BOOL)a3
+- (void)setHasDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }
@@ -684,9 +684,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasEvaluatedCount:(BOOL)a3
+- (void)setHasEvaluatedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -699,9 +699,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasK:(BOOL)a3
+- (void)setHasK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 16;
   }

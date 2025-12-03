@@ -1,16 +1,16 @@
 @interface SleepStageWidgetCell
-- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SleepStageWidgetCell
 
-- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   sub_29E7544C8();
   sub_29E7544B8();
@@ -25,12 +25,12 @@
   (*(*(v10 - 8) + 56))(self + v9, 1, 1, v10);
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(HostingConfigurationCell *)&v13 initWithFrame:x, y, width, height];
+  height = [(HostingConfigurationCell *)&v13 initWithFrame:x, y, width, height];
 
-  return v11;
+  return height;
 }
 
-- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin20SleepStageWidgetCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_29E7544C8();
@@ -46,8 +46,8 @@
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(HostingConfigurationCell *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(HostingConfigurationCell *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

@@ -1,47 +1,47 @@
 @interface OBPrivacyPresenter
-+ (id)presenterForPrivacySplashWithBundle:(id)a3;
-+ (id)presenterForPrivacySplashWithBundleAtPath:(id)a3;
-+ (id)presenterForPrivacySplashWithIdentifier:(id)a3;
++ (id)presenterForPrivacySplashWithBundle:(id)bundle;
++ (id)presenterForPrivacySplashWithBundleAtPath:(id)path;
++ (id)presenterForPrivacySplashWithIdentifier:(id)identifier;
 + (id)presenterForPrivacyUnifiedAbout;
-+ (id)presenterForPrivacyUnifiedAboutWithBundles:(id)a3;
-+ (id)presenterForPrivacyUnifiedAboutWithBundlesAtPaths:(id)a3;
-+ (id)presenterForPrivacyUnifiedAboutWithIdentifiers:(id)a3;
++ (id)presenterForPrivacyUnifiedAboutWithBundles:(id)bundles;
++ (id)presenterForPrivacyUnifiedAboutWithBundlesAtPaths:(id)paths;
++ (id)presenterForPrivacyUnifiedAboutWithIdentifiers:(id)identifiers;
 - (UIViewController)presentingViewController;
 - (void)_presenterDidDismiss;
 - (void)dismiss;
 - (void)present;
-- (void)setDisplayDeviceType:(unint64_t)a3;
-- (void)setDisplayLanguage:(id)a3;
+- (void)setDisplayDeviceType:(unint64_t)type;
+- (void)setDisplayLanguage:(id)language;
 @end
 
 @implementation OBPrivacyPresenter
 
-+ (id)presenterForPrivacySplashWithBundle:(id)a3
++ (id)presenterForPrivacySplashWithBundle:(id)bundle
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"com.apple.onboarding.imessagefacetime"];
+  bundleCopy = bundle;
+  identifier = [bundleCopy identifier];
+  v6 = [identifier isEqualToString:@"com.apple.onboarding.imessagefacetime"];
 
   if (v6)
   {
-    v7 = [a1 presenterForPrivacyUnifiedAboutWithIdentifiers:&unk_1F2CF8748];
+    v7 = [self presenterForPrivacyUnifiedAboutWithIdentifiers:&unk_1F2CF8748];
   }
 
   else
   {
-    v8 = [v4 privacyFlow];
-    if (v8)
+    privacyFlow = [bundleCopy privacyFlow];
+    if (privacyFlow)
     {
       v7 = objc_alloc_init(OBPrivacyPresenter);
-      v9 = [[OBPrivacySplashController alloc] initWithFlow:v8];
+      v9 = [[OBPrivacySplashController alloc] initWithFlow:privacyFlow];
       [(OBPrivacyPresenter *)v7 setSplashController:v9];
 
-      v10 = [(OBPrivacyPresenter *)v7 splashController];
-      [v10 setShowsLinkToUnifiedAbout:1];
+      splashController = [(OBPrivacyPresenter *)v7 splashController];
+      [splashController setShowsLinkToUnifiedAbout:1];
 
-      v11 = [v8 identifier];
-      v15[0] = v11;
+      identifier2 = [privacyFlow identifier];
+      v15[0] = identifier2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       [(OBPrivacyPresenter *)v7 setPresentedIdentifiers:v12];
 
@@ -60,18 +60,18 @@
   return v7;
 }
 
-+ (id)presenterForPrivacySplashWithIdentifier:(id)a3
++ (id)presenterForPrivacySplashWithIdentifier:(id)identifier
 {
-  v4 = [OBBundle bundleWithIdentifier:a3];
-  v5 = [a1 presenterForPrivacySplashWithBundle:v4];
+  v4 = [OBBundle bundleWithIdentifier:identifier];
+  v5 = [self presenterForPrivacySplashWithBundle:v4];
 
   return v5;
 }
 
-+ (id)presenterForPrivacySplashWithBundleAtPath:(id)a3
++ (id)presenterForPrivacySplashWithBundleAtPath:(id)path
 {
-  v4 = [OBBundle bundleAtPath:a3];
-  v5 = [a1 presenterForPrivacySplashWithBundle:v4];
+  v4 = [OBBundle bundleAtPath:path];
+  v5 = [self presenterForPrivacySplashWithBundle:v4];
 
   return v5;
 }
@@ -88,16 +88,16 @@
   return v2;
 }
 
-+ (id)presenterForPrivacyUnifiedAboutWithBundles:(id)a3
++ (id)presenterForPrivacyUnifiedAboutWithBundles:(id)bundles
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = bundlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -112,8 +112,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) identifier];
-        [v4 addObject:v10];
+        identifier = [*(*(&v15 + 1) + 8 * i) identifier];
+        [v4 addObject:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -135,27 +135,27 @@
   return v11;
 }
 
-+ (id)presenterForPrivacyUnifiedAboutWithIdentifiers:(id)a3
++ (id)presenterForPrivacyUnifiedAboutWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[OBBundleManager sharedManager];
-  v6 = [v5 bundlesWithIdentifiers:v4];
+  v6 = [v5 bundlesWithIdentifiers:identifiersCopy];
 
-  v7 = [a1 presenterForPrivacyUnifiedAboutWithBundles:v6];
+  v7 = [self presenterForPrivacyUnifiedAboutWithBundles:v6];
 
   return v7;
 }
 
-+ (id)presenterForPrivacyUnifiedAboutWithBundlesAtPaths:(id)a3
++ (id)presenterForPrivacyUnifiedAboutWithBundlesAtPaths:(id)paths
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -180,42 +180,42 @@
     while (v8);
   }
 
-  v12 = [a1 presenterForPrivacyUnifiedAboutWithBundles:v5];
+  v12 = [self presenterForPrivacyUnifiedAboutWithBundles:v5];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (void)setDisplayLanguage:(id)a3
+- (void)setDisplayLanguage:(id)language
 {
-  objc_storeStrong(&self->_displayLanguage, a3);
-  v5 = a3;
-  v6 = [(OBPrivacyPresenter *)self splashController];
-  [v6 setDisplayLanguage:v5];
+  objc_storeStrong(&self->_displayLanguage, language);
+  languageCopy = language;
+  splashController = [(OBPrivacyPresenter *)self splashController];
+  [splashController setDisplayLanguage:languageCopy];
 
-  v7 = [(OBPrivacyPresenter *)self combinedController];
-  [v7 setDisplayLanguage:v5];
+  combinedController = [(OBPrivacyPresenter *)self combinedController];
+  [combinedController setDisplayLanguage:languageCopy];
 }
 
-- (void)setDisplayDeviceType:(unint64_t)a3
+- (void)setDisplayDeviceType:(unint64_t)type
 {
-  self->_displayDeviceType = a3;
-  v5 = [(OBPrivacyPresenter *)self splashController];
-  [v5 setDisplayDeviceType:a3];
+  self->_displayDeviceType = type;
+  splashController = [(OBPrivacyPresenter *)self splashController];
+  [splashController setDisplayDeviceType:type];
 
-  v6 = [(OBPrivacyPresenter *)self combinedController];
-  [v6 setDisplayDeviceType:a3];
+  combinedController = [(OBPrivacyPresenter *)self combinedController];
+  [combinedController setDisplayDeviceType:type];
 }
 
 - (void)_presenterDidDismiss
 {
-  v3 = [(OBPrivacyPresenter *)self dismissHandler];
+  dismissHandler = [(OBPrivacyPresenter *)self dismissHandler];
 
-  if (v3)
+  if (dismissHandler)
   {
-    v4 = [(OBPrivacyPresenter *)self dismissHandler];
-    v4[2]();
+    dismissHandler2 = [(OBPrivacyPresenter *)self dismissHandler];
+    dismissHandler2[2]();
   }
 
   [(OBPrivacyPresenter *)self setPresentedController:0];
@@ -223,35 +223,35 @@
 
 - (void)present
 {
-  v3 = [(OBPrivacyPresenter *)self splashController];
-  if (v3 || ([(OBPrivacyPresenter *)self combinedController], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  splashController = [(OBPrivacyPresenter *)self splashController];
+  if (splashController || ([(OBPrivacyPresenter *)self combinedController], (splashController = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
-    v5 = [(OBPrivacyPresenter *)self presentingViewController];
+    v4 = splashController;
+    presentingViewController = [(OBPrivacyPresenter *)self presentingViewController];
 
-    if (v5)
+    if (presentingViewController)
     {
       [(OBPrivacyPresenter *)self setPresentedController:v4];
-      v6 = [(OBPrivacyPresenter *)self customTintColor];
-      v7 = [(OBPrivacyPresenter *)self splashController];
-      [v7 setCustomTintColor:v6];
+      customTintColor = [(OBPrivacyPresenter *)self customTintColor];
+      splashController2 = [(OBPrivacyPresenter *)self splashController];
+      [splashController2 setCustomTintColor:customTintColor];
 
-      v8 = [(OBPrivacyPresenter *)self underlineLinks];
-      v9 = [(OBPrivacyPresenter *)self splashController];
-      [v9 setUnderlineLinks:v8];
+      underlineLinks = [(OBPrivacyPresenter *)self underlineLinks];
+      splashController3 = [(OBPrivacyPresenter *)self splashController];
+      [splashController3 setUnderlineLinks:underlineLinks];
 
-      v10 = [(OBPrivacyPresenter *)self underlineLinks];
-      v11 = [(OBPrivacyPresenter *)self combinedController];
-      [v11 setUnderlineLinks:v10];
+      underlineLinks2 = [(OBPrivacyPresenter *)self underlineLinks];
+      combinedController = [(OBPrivacyPresenter *)self combinedController];
+      [combinedController setUnderlineLinks:underlineLinks2];
 
-      v12 = [(OBPrivacyPresenter *)self customTintColor];
-      v13 = [(OBPrivacyPresenter *)self combinedController];
-      [v13 setCustomTintColor:v12];
+      customTintColor2 = [(OBPrivacyPresenter *)self customTintColor];
+      combinedController2 = [(OBPrivacyPresenter *)self combinedController];
+      [combinedController2 setCustomTintColor:customTintColor2];
 
       v14 = [[OBPrivacyModalNavigationController alloc] initWithRootViewController:v4];
-      v15 = [(OBPrivacyPresenter *)self customTintColor];
-      v16 = [(OBPrivacyModalNavigationController *)v14 view];
-      [v16 setTintColor:v15];
+      customTintColor3 = [(OBPrivacyPresenter *)self customTintColor];
+      view = [(OBPrivacyModalNavigationController *)v14 view];
+      [view setTintColor:customTintColor3];
 
       [(OBPrivacyModalNavigationController *)v14 setDarkMode:[(OBPrivacyPresenter *)self darkMode]];
       [(OBNavigationController *)v14 setSupportedInterfaceOrientations:self->_supportedInterfaceOrientations];
@@ -262,22 +262,22 @@
       v23[3] = &unk_1E7C15590;
       v23[4] = self;
       [(OBPrivacyModalNavigationController *)v14 addDismissButtonWithPressedHandler:v23];
-      v17 = [(OBPrivacyPresenter *)self dismissHandler];
+      dismissHandler = [(OBPrivacyPresenter *)self dismissHandler];
 
-      if (v17)
+      if (dismissHandler)
       {
-        v18 = [(OBPrivacyModalNavigationController *)v14 presentationController];
-        [v18 setDelegate:self];
+        presentationController = [(OBPrivacyModalNavigationController *)v14 presentationController];
+        [presentationController setDelegate:self];
       }
 
-      v19 = [(OBPrivacyPresenter *)self presentingViewController];
-      v20 = [(OBPrivacyPresenter *)self animatePresentAndDismiss];
+      presentingViewController2 = [(OBPrivacyPresenter *)self presentingViewController];
+      animatePresentAndDismiss = [(OBPrivacyPresenter *)self animatePresentAndDismiss];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __29__OBPrivacyPresenter_present__block_invoke_2;
       v22[3] = &unk_1E7C15590;
       v22[4] = self;
-      [v19 presentViewController:v14 animated:v20 completion:v22];
+      [presentingViewController2 presentViewController:v14 animated:animatePresentAndDismiss completion:v22];
     }
 
     else
@@ -305,14 +305,14 @@ void __29__OBPrivacyPresenter_present__block_invoke_2(uint64_t a1)
 
 - (void)dismiss
 {
-  v3 = [(OBPrivacyPresenter *)self presentingViewController];
-  v4 = [(OBPrivacyPresenter *)self animatePresentAndDismiss];
+  presentingViewController = [(OBPrivacyPresenter *)self presentingViewController];
+  animatePresentAndDismiss = [(OBPrivacyPresenter *)self animatePresentAndDismiss];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __29__OBPrivacyPresenter_dismiss__block_invoke;
   v5[3] = &unk_1E7C15590;
   v5[4] = self;
-  [v3 dismissViewControllerAnimated:v4 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:animatePresentAndDismiss completion:v5];
 }
 
 - (UIViewController)presentingViewController

@@ -2,7 +2,7 @@
 + (id)continuousExtensionsObservable;
 + (id)currentExtensionsObservable;
 - (CNDDonorLoader)init;
-- (id)donorWithIdentifier:(id)a3;
+- (id)donorWithIdentifier:(id)identifier;
 @end
 
 @implementation CNDDonorLoader
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (id)donorWithIdentifier:(id)a3
+- (id)donorWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277CFBE28];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __38__CNDDonorLoader_donorWithIdentifier___block_invoke;
   v15[3] = &unk_278569C20;
-  v6 = v4;
+  v6 = identifierCopy;
   v16 = v6;
   v7 = [v5 futureWithBlock:v15];
   v13[0] = MEMORY[0x277D85DD0];
@@ -108,7 +108,7 @@ void __38__CNDDonorLoader_donorWithIdentifier___block_invoke_3(uint64_t a1, void
   v4[1] = 3221225472;
   v4[2] = __45__CNDDonorLoader_currentExtensionsObservable__block_invoke;
   v4[3] = &__block_descriptor_40_e38____CNCancelable__16__0___CNObserver__8l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [MEMORY[0x277CFBE60] observableWithBlock:v4];
 
   return v2;
@@ -222,7 +222,7 @@ void __45__CNDDonorLoader_currentExtensionsObservable__block_invoke_3(uint64_t a
   v4[1] = 3221225472;
   v4[2] = __48__CNDDonorLoader_continuousExtensionsObservable__block_invoke;
   v4[3] = &__block_descriptor_40_e38____CNCancelable__16__0___CNObserver__8l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [MEMORY[0x277CFBE60] observableWithBlock:v4];
 
   return v2;

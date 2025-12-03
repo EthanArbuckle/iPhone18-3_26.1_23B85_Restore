@@ -1,15 +1,15 @@
 @interface THContainerRep
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop;
 - (id)childRepsForHitTesting;
 @end
 
 @implementation THContainerRep
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   if (([(THContainerRep *)self hitTestOptions]& 1) != 0 && ([(THContainerRep *)self naturalBoundsForHitTesting], v27.x = x, v27.y = y, CGRectContainsPoint(v28, v27)))
   {
     LOBYTE(v4) = 1;
@@ -31,10 +31,10 @@
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [objc_msgSend(v10 layout];
-        if (v11)
+        layout = [objc_msgSend(v10 layout];
+        if (layout)
         {
-          [v11 inverseTransform];
+          [layout inverseTransform];
           v12 = v19;
           v13 = v20;
           v14 = v21;
@@ -64,12 +64,12 @@
   return v4 & 1;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop
 {
-  height = a4.height;
-  width = a4.width;
-  v27 = *&a3.x;
-  y = a3.y;
+  height = slop.height;
+  width = slop.width;
+  v27 = *&point.x;
+  y = point.y;
   if (([(THContainerRep *)self hitTestOptions]& 1) != 0 && (TSDRectWithCenterAndSize(), v8 = v7, v10 = v9, v12 = v11, v14 = v13, [(THContainerRep *)self naturalBoundsForHitTesting], v39.origin.x = v8, v39.origin.y = v10, v39.size.width = v12, v39.size.height = v14, CGRectIntersectsRect(v38, v39)))
   {
     LOBYTE(v15) = 1;
@@ -91,10 +91,10 @@
         }
 
         v21 = *(*(&v33 + 1) + 8 * i);
-        v22 = [objc_msgSend(v21 layout];
-        if (v22)
+        layout = [objc_msgSend(v21 layout];
+        if (layout)
         {
-          [v22 inverseTransform];
+          [layout inverseTransform];
           v23 = v30;
           v24 = v31;
           v25 = v32;

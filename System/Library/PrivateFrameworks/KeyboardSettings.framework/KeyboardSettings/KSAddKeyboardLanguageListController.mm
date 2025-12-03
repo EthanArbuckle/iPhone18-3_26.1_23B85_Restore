@@ -1,21 +1,21 @@
 @interface KSAddKeyboardLanguageListController
-- (BOOL)inputMode:(id)a3 matchesPredicate:(id)a4;
+- (BOOL)inputMode:(id)mode matchesPredicate:(id)predicate;
 - (KSAddKeyboardLanguageListController)init;
 - (NSOperationQueue)searchQueue;
 - (id)generateSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)cancelButtonTapped;
-- (void)createAboutPrivacyControllerIfNeeded:(id)a3;
+- (void)createAboutPrivacyControllerIfNeeded:(id)needed;
 - (void)dealloc;
 - (void)dismissForDone;
 - (void)emitNavigationEventForAddKeyboardLanguageListController;
-- (void)handleSoleInputModeAddition:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)showAddExtensionKeyboardSheet:(id)a3;
-- (void)showAddSystemKeyboardSheet:(id)a3;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)handleSoleInputModeAddition:(id)addition;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)showAddExtensionKeyboardSheet:(id)sheet;
+- (void)showAddSystemKeyboardSheet:(id)sheet;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -28,8 +28,8 @@
   v2 = [(KSAddKeyboardLanguageListController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_willResume name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willResume name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -72,9 +72,9 @@
   [objc_msgSend(objc_msgSend(-[KSAddKeyboardLanguageListController navigationItem](self "navigationItem")];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  [(KSAddKeyboardLanguageListController *)self setSearchText:a4];
+  [(KSAddKeyboardLanguageListController *)self setSearchText:change];
   [(NSOperationQueue *)[(KSAddKeyboardLanguageListController *)self searchQueue] cancelAllOperations];
   v5 = objc_alloc_init(MEMORY[0x277CCA8C8]);
   objc_initWeak(&location, v5);
@@ -105,7 +105,7 @@ void __63__KSAddKeyboardLanguageListController_searchBar_textDidChange___block_i
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   [(NSOperationQueue *)[(KSAddKeyboardLanguageListController *)self searchQueue] cancelAllOperations];
   [(KSAddKeyboardLanguageListController *)self setSearchText:0];
@@ -113,11 +113,11 @@ void __63__KSAddKeyboardLanguageListController_searchBar_textDidChange___block_i
   [(KSAddKeyboardLanguageListController *)self reloadSpecifiers];
 }
 
-- (BOOL)inputMode:(id)a3 matchesPredicate:(id)a4
+- (BOOL)inputMode:(id)mode matchesPredicate:(id)predicate
 {
   v38 = *MEMORY[0x277D85DE8];
   LanguageWithRegion = TIInputModeGetLanguageWithRegion();
-  if ([a4 evaluateWithObject:LanguageWithRegion])
+  if ([predicate evaluateWithObject:LanguageWithRegion])
   {
     v6 = 1;
   }
@@ -190,7 +190,7 @@ void __63__KSAddKeyboardLanguageListController_searchBar_textDidChange___block_i
           }
 
           v19 = *(*(&v24 + 1) + 8 * j);
-          if ([a4 evaluateWithObject:v19])
+          if ([predicate evaluateWithObject:v19])
           {
             *(v29 + 24) = 1;
             goto LABEL_25;
@@ -201,7 +201,7 @@ void __63__KSAddKeyboardLanguageListController_searchBar_textDidChange___block_i
           v23[1] = 3221225472;
           v23[2] = __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___block_invoke;
           v23[3] = &unk_2797FA3A0;
-          v23[4] = a4;
+          v23[4] = predicate;
           v23[5] = &v28;
           [v19 enumerateSubstringsInRange:0 options:v20 usingBlock:{3, v23}];
           if (v29[3])
@@ -257,7 +257,7 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
 - (id)generateSpecifiers
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -282,9 +282,9 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
         {
           [v9 identifier];
           LanguageWithRegion = TIInputModeGetLanguageWithRegion();
-          if (([v3 containsObject:LanguageWithRegion] & 1) == 0)
+          if (([array containsObject:LanguageWithRegion] & 1) == 0)
           {
-            [v3 addObject:LanguageWithRegion];
+            [array addObject:LanguageWithRegion];
           }
         }
       }
@@ -296,9 +296,9 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
   }
 
   v48 = [MEMORY[0x277CBEB58] set];
-  v40 = [MEMORY[0x277CBEB18] array];
-  v41 = [MEMORY[0x277CBEB18] array];
-  v45 = [MEMORY[0x277CBEB38] dictionary];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   val = self;
   if ([(NSString *)[(KSAddKeyboardLanguageListController *)self searchText] length])
   {
@@ -351,7 +351,7 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
               }
 
               v19 = v18;
-              v20 = [v17 identifier];
+              identifier = [v17 identifier];
               v21 = [objc_msgSend(v17 "containingBundle")];
               v22 = [objc_msgSend(v17 "containingBundle")];
               if (!v22)
@@ -367,13 +367,13 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
               v21 = TIInputModeGetLanguageWithRegion();
               v23 = [KSKeyboardListController keyboardDisplayNameForIdentifier:v21];
               v19 = 0;
-              v20 = v21;
+              identifier = v21;
             }
 
-            if (![v48 member:v20])
+            if (![v48 member:identifier])
             {
-              [v48 addObject:v20];
-              if (![v17 isExtensionInputMode] || (v24 = objc_msgSend(v45, "objectForKey:", objc_msgSend(objc_msgSend(v17, "containingBundle"), "bundlePath"))) == 0)
+              [v48 addObject:identifier];
+              if (![v17 isExtensionInputMode] || (v24 = objc_msgSend(dictionary, "objectForKey:", objc_msgSend(objc_msgSend(v17, "containingBundle"), "bundlePath"))) == 0)
               {
                 v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v23 target:val set:0 get:0 detail:0 cell:3 edit:0];
                 [v24 setControllerLoadAction:sel_showAddSystemKeyboardSheet_];
@@ -384,41 +384,41 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
 
               if ([v17 isExtensionInputMode])
               {
-                v25 = [v24 propertyForKey:@"TIKBAllIdentifiersKey"];
-                if (!v25)
+                array4 = [v24 propertyForKey:@"TIKBAllIdentifiersKey"];
+                if (!array4)
                 {
-                  v25 = [MEMORY[0x277CBEB18] array];
-                  [v24 setProperty:v25 forKey:@"TIKBAllIdentifiersKey"];
+                  array4 = [MEMORY[0x277CBEB18] array];
+                  [v24 setProperty:array4 forKey:@"TIKBAllIdentifiersKey"];
                 }
 
-                [v25 addObject:v17];
+                [array4 addObject:v17];
                 if (([objc_msgSend(objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")] & 1) == 0)
                 {
-                  v26 = [v24 propertyForKey:@"TIKBIdentifiersKey"];
-                  if (!v26)
+                  array5 = [v24 propertyForKey:@"TIKBIdentifiersKey"];
+                  if (!array5)
                   {
-                    v26 = [MEMORY[0x277CBEB18] array];
-                    [v24 setProperty:v26 forKey:@"TIKBIdentifiersKey"];
+                    array5 = [MEMORY[0x277CBEB18] array];
+                    [v24 setProperty:array5 forKey:@"TIKBIdentifiersKey"];
                   }
 
-                  [v26 addObject:v17];
+                  [array5 addObject:v17];
                   [v24 setProperty:v19 forKey:v39];
                   [v24 setProperty:MEMORY[0x277CBEC38] forKey:v38];
                   [v24 setControllerLoadAction:sel_showAddExtensionKeyboardSheet_];
-                  [v45 setObject:v24 forKey:v19];
+                  [dictionary setObject:v24 forKey:v19];
                 }
               }
 
               else
               {
-                if ([v3 containsObject:{objc_msgSend(v24, "propertyForKey:", v47)}])
+                if ([array containsObject:{objc_msgSend(v24, "propertyForKey:", v47)}])
                 {
-                  v27 = v40;
+                  v27 = array2;
                 }
 
                 else
                 {
-                  v27 = v41;
+                  v27 = array3;
                 }
 
                 [v27 addObject:v24];
@@ -438,24 +438,24 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
   v54[1] = 3221225472;
   v54[2] = __57__KSAddKeyboardLanguageListController_generateSpecifiers__block_invoke;
   v54[3] = &unk_2797FA3C8;
-  v54[4] = v3;
-  [v40 sortUsingComparator:v54];
-  [v41 sortUsingComparator:&__block_literal_global_10];
-  v28 = [objc_msgSend(v45 "allValues")];
-  v29 = [v40 count];
+  v54[4] = array;
+  [array2 sortUsingComparator:v54];
+  [array3 sortUsingComparator:&__block_literal_global_10];
+  v28 = [objc_msgSend(dictionary "allValues")];
+  v29 = [array2 count];
   v30 = [v28 count];
-  v31 = [v41 count];
-  v32 = [MEMORY[0x277CBEB18] array];
+  v31 = [array3 count];
+  array6 = [MEMORY[0x277CBEB18] array];
   if (v29)
   {
-    [v32 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithName:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"SUGGESTED_KEYBOARDS", &stru_28679E3A8, @"Keyboard"}];
+    [array6 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithName:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"SUGGESTED_KEYBOARDS", &stru_28679E3A8, @"Keyboard"}];
   }
 
-  [v32 addObjectsFromArray:v40];
+  [array6 addObjectsFromArray:array2];
   if (v30)
   {
     v33 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"APP_KEYBOARDS", &stru_28679E3A8, @"Keyboard"}];
-    [v32 addObject:v33];
+    [array6 addObject:v33];
     [(KSAddKeyboardLanguageListController *)val createAboutPrivacyControllerIfNeeded:v33];
   }
 
@@ -472,22 +472,22 @@ uint64_t __66__KSAddKeyboardLanguageListController_inputMode_matchesPredicate___
     objc_destroyWeak(&location);
   }
 
-  [v32 addObjectsFromArray:v28];
+  [array6 addObjectsFromArray:v28];
   if (v31)
   {
     v34 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"DEVICE_KEYBOARDS"];
-    v35 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", v34, &stru_28679E3A8, @"Keyboard"}];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] groupSpecifierWithName:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", v34, &stru_28679E3A8, @"Keyboard"}];
   }
 
   else
   {
-    v35 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   }
 
-  [v32 addObject:v35];
-  [v32 addObjectsFromArray:v41];
+  [array6 addObject:emptyGroupSpecifier];
+  [array6 addObjectsFromArray:array3];
   v36 = *MEMORY[0x277D85DE8];
-  return v32;
+  return array6;
 }
 
 uint64_t __57__KSAddKeyboardLanguageListController_generateSpecifiers__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -506,7 +506,7 @@ uint64_t __57__KSAddKeyboardLanguageListController_generateSpecifiers__block_inv
   return [Weak setAboutPrivacyController:0];
 }
 
-- (void)createAboutPrivacyControllerIfNeeded:(id)a3
+- (void)createAboutPrivacyControllerIfNeeded:(id)needed
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -514,7 +514,7 @@ uint64_t __57__KSAddKeyboardLanguageListController_generateSpecifiers__block_inv
   v5 = __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerIfNeeded___block_invoke;
   v6 = &unk_2797FA418;
   objc_copyWeak(&v8, &location);
-  v7 = a3;
+  neededCopy = needed;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5(block);
@@ -548,7 +548,7 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
   }
 }
 
-- (void)handleSoleInputModeAddition:(id)a3
+- (void)handleSoleInputModeAddition:(id)addition
 {
   +[KSKeyboardListController setInputModes:](KSKeyboardListController, "setInputModes:", [objc_msgSend(objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")]);
   v4 = [-[KSAddKeyboardLanguageListController parentController](self "parentController")];
@@ -558,31 +558,31 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
     [v4 reloadSpecifiers];
   }
 
-  v5 = [(KSAddKeyboardLanguageListController *)self parentController];
+  parentController = [(KSAddKeyboardLanguageListController *)self parentController];
 
-  [v5 dismiss];
+  [parentController dismiss];
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v7 = [(KSAddKeyboardLanguageListController *)self aboutPrivacyController];
+  aboutPrivacyController = [(KSAddKeyboardLanguageListController *)self aboutPrivacyController];
 
-  [(KSAboutKeyboardPrivacyController *)v7 addPrivacyLinkViewIfNecessaryToHeaderView:a4 forSection:a5];
+  [(KSAboutKeyboardPrivacyController *)aboutPrivacyController addPrivacyLinkViewIfNecessaryToHeaderView:headerView forSection:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = KSAddKeyboardLanguageListController;
-  v6 = [(KSAddKeyboardLanguageListController *)&v9 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(KSAddKeyboardLanguageListController *)self specifierAtIndex:[(KSAddKeyboardLanguageListController *)self indexForIndexPath:a4]];
+  v6 = [(KSAddKeyboardLanguageListController *)&v9 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(KSAddKeyboardLanguageListController *)self specifierAtIndex:[(KSAddKeyboardLanguageListController *)self indexForIndexPath:path]];
   [v6 setAccessibilityIdentifier:{objc_msgSend(v7, "propertyForKey:", *MEMORY[0x277D3FFB8])}];
   return v6;
 }
 
-- (void)showAddSystemKeyboardSheet:(id)a3
+- (void)showAddSystemKeyboardSheet:(id)sheet
 {
-  v5 = [a3 propertyForKey:*MEMORY[0x277D3FFB8]];
+  v5 = [sheet propertyForKey:*MEMORY[0x277D3FFB8]];
   v6 = [KSKeyboardListController supportedInputModesForLanguage:v5];
   if (!+[KSAddKeyboardController shouldShowAddKeyboardControllerForInputModes:](KSAddKeyboardController, "shouldShowAddKeyboardControllerForInputModes:", v6) && (v7 = +[KSKeyboardListController availableInputModesForLanguage:](KSKeyboardListController, "availableInputModesForLanguage:", v5), v8 = [v6 count], v8 == objc_msgSend(v7, "count")) && (v9 = objc_msgSend(v7, "firstObject")) != 0)
   {
@@ -599,20 +599,20 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
   {
     v11 = objc_alloc_init(KSAddKeyboardController);
     [(KSAddKeyboardController *)v11 setParentController:self];
-    [(KSAddKeyboardController *)v11 setSpecifier:a3];
-    [a3 setTarget:self];
+    [(KSAddKeyboardController *)v11 setSpecifier:sheet];
+    [sheet setTarget:self];
 
     [(KSAddKeyboardLanguageListController *)self showController:v11 animate:1];
   }
 }
 
-- (void)showAddExtensionKeyboardSheet:(id)a3
+- (void)showAddExtensionKeyboardSheet:(id)sheet
 {
   v5 = objc_alloc_init(KSAddExtensionKeyboardController);
   [(KSAddExtensionKeyboardController *)v5 setBehavesAsModalForAddSheet:1];
   [(KSAddExtensionKeyboardController *)v5 setParentController:self];
-  [(KSAddExtensionKeyboardController *)v5 setSpecifier:a3];
-  [a3 setTarget:self];
+  [(KSAddExtensionKeyboardController *)v5 setSpecifier:sheet];
+  [sheet setTarget:self];
   if ([-[KSAddExtensionKeyboardController specifiers](v5 "specifiers")])
   {
 
@@ -621,7 +621,7 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
 
   else
   {
-    v6 = [objc_msgSend(objc_msgSend(a3 propertyForKey:{@"TIKBIdentifiersKey", "firstObject"), "identifier"}];
+    v6 = [objc_msgSend(objc_msgSend(sheet propertyForKey:{@"TIKBIdentifiersKey", "firstObject"), "identifier"}];
 
     [(KSAddKeyboardLanguageListController *)self handleSoleInputModeAddition:v6];
   }
@@ -629,9 +629,9 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
 
 - (void)cancelButtonTapped
 {
-  v2 = [(KSAddKeyboardLanguageListController *)self parentController];
+  parentController = [(KSAddKeyboardLanguageListController *)self parentController];
 
-  [v2 dismiss];
+  [parentController dismiss];
 }
 
 - (void)dismissForDone
@@ -643,9 +643,9 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
     [v3 reloadSpecifiers];
   }
 
-  v4 = [(KSAddKeyboardLanguageListController *)self parentController];
+  parentController = [(KSAddKeyboardLanguageListController *)self parentController];
 
-  [v4 dismiss];
+  [parentController dismiss];
 }
 
 - (void)emitNavigationEventForAddKeyboardLanguageListController
@@ -654,13 +654,13 @@ uint64_t __76__KSAddKeyboardLanguageListController_createAboutPrivacyControllerI
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.General/Keyboard/KEYBOARDS/AddNewKeyboard"];
   v4 = +[KSKeyboardController localizedStringForGeneralKeyboardSpecifier];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"KEYBOARDS_SHORT" table:@"Keyboard" locale:v6 bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"KEYBOARDS_SHORT" table:@"Keyboard" locale:currentLocale bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v11[0] = v4;
   v11[1] = v7;
-  v12 = [v8 initWithKey:@"ADD_NEW_KEYBOARD_SHORT" table:@"Keyboard" locale:v9 bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
+  v12 = [v8 initWithKey:@"ADD_NEW_KEYBOARD_SHORT" table:@"Keyboard" locale:currentLocale2 bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
   -[KSAddKeyboardLanguageListController pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:](self, "pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:", @"com.apple.graphic-icon.keyboard", v12, [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3], v3);
   v10 = *MEMORY[0x277D85DE8];
 }

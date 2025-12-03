@@ -1,37 +1,37 @@
 @interface ASCPair
-- (ASCPair)initWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASCPair)initWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ASCPair
 
-- (ASCPair)initWithFirst:(id)a3 second:(id)a4
+- (ASCPair)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = ASCPair;
   v9 = [(ASCPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(ASCPair *)self first];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(ASCPair *)self second];
-  v9 = [v8 copyWithZone:a3];
+  first = [(ASCPair *)self first];
+  v7 = [first copyWithZone:zone];
+  second = [(ASCPair *)self second];
+  v9 = [second copyWithZone:zone];
   v10 = [v5 initWithFirst:v7 second:v9];
 
   return v10;
@@ -40,21 +40,21 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCPair *)self first];
-  [(ASCHasher *)v3 combineObject:v4];
+  first = [(ASCPair *)self first];
+  [(ASCHasher *)v3 combineObject:first];
 
-  v5 = [(ASCPair *)self second];
-  [(ASCHasher *)v3 combineObject:v5];
+  second = [(ASCPair *)self second];
+  [(ASCHasher *)v3 combineObject:second];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -77,31 +77,31 @@
 
   if (v7)
   {
-    v8 = [(ASCPair *)self first];
-    v9 = [v7 first];
-    v10 = v9;
-    if (v8 && v9)
+    first = [(ASCPair *)self first];
+    first2 = [v7 first];
+    v10 = first2;
+    if (first && first2)
     {
-      if ([v8 isEqual:v9])
+      if ([first isEqual:first2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (first == first2)
     {
 LABEL_10:
-      v11 = [(ASCPair *)self second];
-      v12 = [v7 second];
-      v13 = v12;
-      if (v11 && v12)
+      second = [(ASCPair *)self second];
+      second2 = [v7 second];
+      v13 = second2;
+      if (second && second2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [second isEqual:second2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = second == second2;
       }
 
       goto LABEL_18;
@@ -122,9 +122,9 @@ LABEL_19:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASCPair *)self first];
-  v5 = [(ASCPair *)self second];
-  v6 = [v3 stringWithFormat:@"(%@, %@)", v4, v5];
+  first = [(ASCPair *)self first];
+  second = [(ASCPair *)self second];
+  v6 = [v3 stringWithFormat:@"(%@, %@)", first, second];
 
   return v6;
 }

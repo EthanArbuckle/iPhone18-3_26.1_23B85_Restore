@@ -1,35 +1,35 @@
 @interface RTLearnedPlaceTypeInferenceStore
-+ (id)fetchRequestForLearnedPlaceTypeInferenceEnumerationOptions:(id)a3 error:(id *)a4;
-- (RTLearnedPlaceTypeInferenceStore)initWithPersistenceManager:(id)a3 learnedLocationStore:(id)a4;
-- (id)_getLearnedPlacesMapFromLearnedPlaceIdentifiers:(id)a3 error:(id *)a4;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_deletedLearnedPlaceTypeInferencesPredating:(id)a3 handler:(id)a4;
-- (void)_fetchLearnedPlaceTypeInferencesCountWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchLearnedPlaceTypeInferencesWithOptions:(id)a3 handler:(id)a4;
-- (void)_logCacheStoreWithReason:(id)a3 handler:(id)a4;
-- (void)_storeLearnedPlaceTypeInferences:(id)a3 handler:(id)a4;
-- (void)deletedLearnedPlaceTypeInferencesPredating:(id)a3 handler:(id)a4;
-- (void)fetchLearnedPlaceTypeInferencesCountWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchLearnedPlaceTypeInferencesWithOptions:(id)a3 handler:(id)a4;
-- (void)logCacheStoreWithReason:(id)a3 handler:(id)a4;
-- (void)storeLearnedPlaceTypeInferences:(id)a3 handler:(id)a4;
++ (id)fetchRequestForLearnedPlaceTypeInferenceEnumerationOptions:(id)options error:(id *)error;
+- (RTLearnedPlaceTypeInferenceStore)initWithPersistenceManager:(id)manager learnedLocationStore:(id)store;
+- (id)_getLearnedPlacesMapFromLearnedPlaceIdentifiers:(id)identifiers error:(id *)error;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_deletedLearnedPlaceTypeInferencesPredating:(id)predating handler:(id)handler;
+- (void)_fetchLearnedPlaceTypeInferencesCountWithOptions:(id)options handler:(id)handler;
+- (void)_fetchLearnedPlaceTypeInferencesWithOptions:(id)options handler:(id)handler;
+- (void)_logCacheStoreWithReason:(id)reason handler:(id)handler;
+- (void)_storeLearnedPlaceTypeInferences:(id)inferences handler:(id)handler;
+- (void)deletedLearnedPlaceTypeInferencesPredating:(id)predating handler:(id)handler;
+- (void)fetchLearnedPlaceTypeInferencesCountWithOptions:(id)options handler:(id)handler;
+- (void)fetchLearnedPlaceTypeInferencesWithOptions:(id)options handler:(id)handler;
+- (void)logCacheStoreWithReason:(id)reason handler:(id)handler;
+- (void)storeLearnedPlaceTypeInferences:(id)inferences handler:(id)handler;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceStore
 
-- (RTLearnedPlaceTypeInferenceStore)initWithPersistenceManager:(id)a3 learnedLocationStore:(id)a4
+- (RTLearnedPlaceTypeInferenceStore)initWithPersistenceManager:(id)manager learnedLocationStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  managerCopy = manager;
+  storeCopy = store;
+  v8 = storeCopy;
+  if (!managerCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -40,7 +40,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!storeCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -55,42 +55,42 @@ LABEL_12:
 
   v15.receiver = self;
   v15.super_class = RTLearnedPlaceTypeInferenceStore;
-  v9 = [(RTStore *)&v15 initWithPersistenceManager:v6];
+  v9 = [(RTStore *)&v15 initWithPersistenceManager:managerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_learnedLocationStore, a4);
+    objc_storeStrong(&v9->_learnedLocationStore, store);
   }
 
   self = v10;
-  v11 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)storeLearnedPlaceTypeInferences:(id)a3 handler:(id)a4
+- (void)storeLearnedPlaceTypeInferences:(id)inferences handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  inferencesCopy = inferences;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__RTLearnedPlaceTypeInferenceStore_storeLearnedPlaceTypeInferences_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = inferencesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = inferencesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeLearnedPlaceTypeInferences:(id)a3 handler:(id)a4
+- (void)_storeLearnedPlaceTypeInferences:(id)inferences handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  inferencesCopy = inferences;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -104,45 +104,45 @@ LABEL_10:
       v15 = 2112;
       v16 = v12;
       v17 = 2048;
-      v18 = [v7 count];
+      v18 = [inferencesCopy count];
       _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@, %@, storing learnedPlaceTypeInferences with count, %lu", &v13, 0x20u);
     }
   }
 
-  [(RTStore *)self storeWritableObjects:v7 handler:v8];
+  [(RTStore *)self storeWritableObjects:inferencesCopy handler:handlerCopy];
 }
 
-- (void)fetchLearnedPlaceTypeInferencesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLearnedPlaceTypeInferencesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__RTLearnedPlaceTypeInferenceStore_fetchLearnedPlaceTypeInferencesWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchLearnedPlaceTypeInferencesWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchLearnedPlaceTypeInferencesWithOptions:(id)options handler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__RTLearnedPlaceTypeInferenceStore__fetchLearnedPlaceTypeInferencesWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
     aBlock[4] = self;
-    v20 = v7;
-    v9 = v8;
+    v20 = optionsCopy;
+    v9 = handlerCopy;
     v21 = v9;
     v22 = a2;
     v10 = _Block_copy(aBlock);
@@ -341,37 +341,37 @@ void __88__RTLearnedPlaceTypeInferenceStore__fetchLearnedPlaceTypeInferencesWith
   }
 }
 
-- (void)fetchLearnedPlaceTypeInferencesCountWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLearnedPlaceTypeInferencesCountWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__RTLearnedPlaceTypeInferenceStore_fetchLearnedPlaceTypeInferencesCountWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchLearnedPlaceTypeInferencesCountWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchLearnedPlaceTypeInferencesCountWithOptions:(id)options handler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __93__RTLearnedPlaceTypeInferenceStore__fetchLearnedPlaceTypeInferencesCountWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
     aBlock[4] = self;
-    v20 = v7;
-    v9 = v8;
+    v20 = optionsCopy;
+    v9 = handlerCopy;
     v21 = v9;
     v22 = a2;
     v10 = _Block_copy(aBlock);
@@ -507,36 +507,36 @@ LABEL_11:
   }
 }
 
-- (void)deletedLearnedPlaceTypeInferencesPredating:(id)a3 handler:(id)a4
+- (void)deletedLearnedPlaceTypeInferencesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__RTLearnedPlaceTypeInferenceStore_deletedLearnedPlaceTypeInferencesPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deletedLearnedPlaceTypeInferencesPredating:(id)a3 handler:(id)a4
+- (void)_deletedLearnedPlaceTypeInferencesPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__RTLearnedPlaceTypeInferenceStore__deletedLearnedPlaceTypeInferencesPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -559,42 +559,42 @@ void __88__RTLearnedPlaceTypeInferenceStore__deletedLearnedPlaceTypeInferencesPr
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-- (void)logCacheStoreWithReason:(id)a3 handler:(id)a4
+- (void)logCacheStoreWithReason:(id)reason handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  reasonCopy = reason;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTLearnedPlaceTypeInferenceStore_logCacheStoreWithReason_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = reasonCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = reasonCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_logCacheStoreWithReason:(id)a3 handler:(id)a4
+- (void)_logCacheStoreWithReason:(id)reason handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __69__RTLearnedPlaceTypeInferenceStore__logCacheStoreWithReason_handler___block_invoke;
   v13[3] = &unk_2788C4910;
-  v14 = v7;
-  v15 = self;
+  v14 = reasonCopy;
+  selfCopy = self;
   v17 = a2;
-  v16 = v8;
+  v16 = handlerCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__RTLearnedPlaceTypeInferenceStore__logCacheStoreWithReason_handler___block_invoke_25;
   v11[3] = &unk_2788C48C0;
   v12 = v16;
   v9 = v16;
-  v10 = v7;
+  v10 = reasonCopy;
   [(RTStore *)self _performBlock:v13 contextType:1 errorHandler:v11];
 }
 
@@ -802,12 +802,12 @@ uint64_t __69__RTLearnedPlaceTypeInferenceStore__logCacheStoreWithReason_handler
   return result;
 }
 
-- (id)_getLearnedPlacesMapFromLearnedPlaceIdentifiers:(id)a3 error:(id *)a4
+- (id)_getLearnedPlacesMapFromLearnedPlaceIdentifiers:(id)identifiers error:(id *)error
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  identifiersCopy = identifiers;
+  v7 = identifiersCopy;
+  if (!identifiersCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -816,15 +816,15 @@ uint64_t __69__RTLearnedPlaceTypeInferenceStore__logCacheStoreWithReason_handler
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedPlaceIdentifiers", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"learnedPlaceIdentifiers");
+      *error = _RTErrorInvalidParameterCreate(@"learnedPlaceIdentifiers");
     }
 
     goto LABEL_12;
   }
 
-  if (![v6 count])
+  if (![identifiersCopy count])
   {
 LABEL_12:
     v8 = MEMORY[0x277CBEC10];
@@ -846,7 +846,7 @@ LABEL_12:
   v64 = 0;
   v8 = objc_opt_new();
   v9 = dispatch_semaphore_create(0);
-  v10 = [(RTLearnedPlaceTypeInferenceStore *)self learnedLocationStore];
+  learnedLocationStore = [(RTLearnedPlaceTypeInferenceStore *)self learnedLocationStore];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlaceIdentifiers_error___block_invoke;
@@ -855,7 +855,7 @@ LABEL_12:
   v58 = buf;
   v11 = v9;
   v56 = v11;
-  [v10 fetchPlacesWithIdentifiers:v7 handler:v55];
+  [learnedLocationStore fetchPlacesWithIdentifiers:v7 handler:v55];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -867,11 +867,11 @@ LABEL_12:
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_109];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -898,7 +898,7 @@ LABEL_12:
 
   v29 = v26;
   v49 = v29;
-  if (a4 && v29)
+  if (error && v29)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -920,7 +920,7 @@ LABEL_12:
 
   else
   {
-    if (a4 && *(v66 + 5))
+    if (error && *(v66 + 5))
     {
       v32 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -961,8 +961,8 @@ LABEL_12:
 
             v37 = *(*(&v51 + 1) + 8 * i);
             v38 = objc_autoreleasePoolPush();
-            v39 = [v37 identifier];
-            [v8 setObject:v37 forKeyedSubscript:v39];
+            identifier = [v37 identifier];
+            [v8 setObject:v37 forKeyedSubscript:identifier];
 
             objc_autoreleasePoolPop(v38);
           }
@@ -973,7 +973,7 @@ LABEL_12:
         while (v34);
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_34;
       }
@@ -982,7 +982,7 @@ LABEL_12:
     v31 = *(v66 + 5);
   }
 
-  *a4 = v31;
+  *error = v31;
 LABEL_34:
 
   _Block_object_dispose(&v59, 8);
@@ -1010,10 +1010,10 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)fetchRequestForLearnedPlaceTypeInferenceEnumerationOptions:(id)a3 error:(id *)a4
++ (id)fetchRequestForLearnedPlaceTypeInferenceEnumerationOptions:(id)options error:(id *)error
 {
   v112 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -1022,45 +1022,45 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
       *buf = 136315394;
       v109 = "+[RTLearnedPlaceTypeInferenceStore fetchRequestForLearnedPlaceTypeInferenceEnumerationOptions:error:]";
       v110 = 2112;
-      v111 = v5;
+      v111 = optionsCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, options, %@", buf, 0x16u);
     }
   }
 
-  if (v5)
+  if (optionsCopy)
   {
     v81 = +[RTLearnedPlaceTypeInferenceMO fetchRequest];
     v7 = objc_opt_new();
     v8 = objc_opt_new();
-    if ([v5 sortByCreationDate])
+    if ([optionsCopy sortByCreationDate])
     {
-      v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:{objc_msgSend(v5, "ascending")}];
+      v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:{objc_msgSend(optionsCopy, "ascending")}];
       [v7 addObject:v9];
     }
 
     v80 = v7;
-    v10 = [v5 dateInterval];
+    dateInterval = [optionsCopy dateInterval];
 
-    if (v10)
+    if (dateInterval)
     {
       v11 = MEMORY[0x277CCAC30];
-      v12 = [v5 dateInterval];
-      v13 = [v12 startDate];
-      v14 = [v5 dateInterval];
-      v15 = [v14 endDate];
-      v16 = [v11 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"creationDate", v13, @"creationDate", v15];
+      dateInterval2 = [optionsCopy dateInterval];
+      startDate = [dateInterval2 startDate];
+      dateInterval3 = [optionsCopy dateInterval];
+      endDate = [dateInterval3 endDate];
+      v16 = [v11 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"creationDate", startDate, @"creationDate", endDate];
       [v8 addObject:v16];
     }
 
-    v17 = [v5 filteredToPlaceTypes];
+    filteredToPlaceTypes = [optionsCopy filteredToPlaceTypes];
     v18 = 0x277CCA000;
     v82 = v8;
-    v83 = v5;
-    if (v17)
+    v83 = optionsCopy;
+    if (filteredToPlaceTypes)
     {
-      v19 = v17;
-      v20 = [v5 filteredToPlaceTypes];
-      v21 = [v20 count];
+      v19 = filteredToPlaceTypes;
+      filteredToPlaceTypes2 = [optionsCopy filteredToPlaceTypes];
+      v21 = [filteredToPlaceTypes2 count];
 
       if (v21)
       {
@@ -1069,7 +1069,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v101 = 0u;
         v102 = 0u;
         v103 = 0u;
-        obj = [v5 filteredToPlaceTypes];
+        obj = [optionsCopy filteredToPlaceTypes];
         v23 = [obj countByEnumeratingWithState:&v100 objects:v107 count:16];
         if (v23)
         {
@@ -1102,16 +1102,16 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v30 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v22];
         [v8 addObject:v30];
 
-        v5 = v83;
+        optionsCopy = v83;
       }
     }
 
-    v31 = [v5 filteredToIdentifiers];
-    if (v31)
+    filteredToIdentifiers = [optionsCopy filteredToIdentifiers];
+    if (filteredToIdentifiers)
     {
-      v32 = v31;
-      v33 = [v5 filteredToIdentifiers];
-      v34 = [v33 count];
+      v32 = filteredToIdentifiers;
+      filteredToIdentifiers2 = [optionsCopy filteredToIdentifiers];
+      v34 = [filteredToIdentifiers2 count];
 
       if (v34)
       {
@@ -1120,7 +1120,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
-        obja = [v5 filteredToIdentifiers];
+        obja = [optionsCopy filteredToIdentifiers];
         v36 = [obja countByEnumeratingWithState:&v96 objects:v106 count:16];
         if (v36)
         {
@@ -1138,8 +1138,8 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
               v40 = *(*(&v96 + 1) + 8 * j);
               v41 = objc_autoreleasePoolPush();
               v42 = MEMORY[0x277CCAC30];
-              v43 = [v40 UUIDString];
-              v44 = [v42 predicateWithFormat:@"(%K == %@)", @"identifier", v43];
+              uUIDString = [v40 UUIDString];
+              v44 = [v42 predicateWithFormat:@"(%K == %@)", @"identifier", uUIDString];
               [v35 addObject:v44];
 
               objc_autoreleasePoolPop(v41);
@@ -1156,16 +1156,16 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v8 = v82;
         [v82 addObject:v45];
 
-        v5 = v83;
+        optionsCopy = v83;
       }
     }
 
-    v46 = [v5 filteredToSessionIds];
-    if (v46)
+    filteredToSessionIds = [optionsCopy filteredToSessionIds];
+    if (filteredToSessionIds)
     {
-      v47 = v46;
-      v48 = [v5 filteredToSessionIds];
-      v49 = [v48 count];
+      v47 = filteredToSessionIds;
+      filteredToSessionIds2 = [optionsCopy filteredToSessionIds];
+      v49 = [filteredToSessionIds2 count];
 
       if (v49)
       {
@@ -1174,7 +1174,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        objb = [v5 filteredToSessionIds];
+        objb = [optionsCopy filteredToSessionIds];
         v51 = [objb countByEnumeratingWithState:&v92 objects:v105 count:16];
         if (v51)
         {
@@ -1192,8 +1192,8 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
               v55 = *(*(&v92 + 1) + 8 * k);
               v56 = objc_autoreleasePoolPush();
               v57 = MEMORY[0x277CCAC30];
-              v58 = [v55 UUIDString];
-              v59 = [v57 predicateWithFormat:@"(%K == %@)", @"sessionId", v58];
+              uUIDString2 = [v55 UUIDString];
+              v59 = [v57 predicateWithFormat:@"(%K == %@)", @"sessionId", uUIDString2];
               [v50 addObject:v59];
 
               objc_autoreleasePoolPop(v56);
@@ -1210,16 +1210,16 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v8 = v82;
         [v82 addObject:v60];
 
-        v5 = v83;
+        optionsCopy = v83;
       }
     }
 
-    v61 = [v5 filteredToLearnedPlaceIdentifiers];
-    if (v61)
+    filteredToLearnedPlaceIdentifiers = [optionsCopy filteredToLearnedPlaceIdentifiers];
+    if (filteredToLearnedPlaceIdentifiers)
     {
-      v62 = v61;
-      v63 = [v5 filteredToLearnedPlaceIdentifiers];
-      v64 = [v63 count];
+      v62 = filteredToLearnedPlaceIdentifiers;
+      filteredToLearnedPlaceIdentifiers2 = [optionsCopy filteredToLearnedPlaceIdentifiers];
+      v64 = [filteredToLearnedPlaceIdentifiers2 count];
 
       if (v64)
       {
@@ -1228,7 +1228,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v89 = 0u;
         v90 = 0u;
         v91 = 0u;
-        objc = [v5 filteredToLearnedPlaceIdentifiers];
+        objc = [optionsCopy filteredToLearnedPlaceIdentifiers];
         v66 = [objc countByEnumeratingWithState:&v88 objects:v104 count:16];
         if (v66)
         {
@@ -1246,8 +1246,8 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
               v70 = *(*(&v88 + 1) + 8 * m);
               v71 = objc_autoreleasePoolPush();
               v72 = MEMORY[0x277CCAC30];
-              v73 = [v70 UUIDString];
-              v74 = [v72 predicateWithFormat:@"(%K == %@)", @"learnedPlaceIdentifier", v73];
+              uUIDString3 = [v70 UUIDString];
+              v74 = [v72 predicateWithFormat:@"(%K == %@)", @"learnedPlaceIdentifier", uUIDString3];
               [v65 addObject:v74];
 
               objc_autoreleasePoolPop(v71);
@@ -1264,7 +1264,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
         v8 = v82;
         [v82 addObject:v75];
 
-        v5 = v83;
+        optionsCopy = v83;
       }
     }
 
@@ -1273,9 +1273,9 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
     [v81 setPredicate:v76];
 
     [v81 setSortDescriptors:v80];
-    [v81 setFetchBatchSize:{objc_msgSend(v5, "batchSize")}];
-    [v81 setFetchLimit:{objc_msgSend(v5, "fetchLimit")}];
-    [v81 setFetchOffset:{objc_msgSend(v5, "offset")}];
+    [v81 setFetchBatchSize:{objc_msgSend(optionsCopy, "batchSize")}];
+    [v81 setFetchLimit:{objc_msgSend(optionsCopy, "fetchLimit")}];
+    [v81 setFetchOffset:{objc_msgSend(optionsCopy, "offset")}];
     [v81 setReturnsObjectsAsFaults:0];
   }
 
@@ -1288,10 +1288,10 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
       _os_log_error_impl(&dword_2304B3000, v78, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"options");
-      *a4 = v77 = 0;
+      *error = v77 = 0;
     }
 
     else
@@ -1303,12 +1303,12 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
   return v77;
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (!a5)
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (!error)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1320,7 +1320,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
     goto LABEL_13;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v9 = objc_opt_class();
     if (![v9 isEqual:objc_opt_class()])
@@ -1338,7 +1338,7 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
       v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
 
       v23 = v22;
-      *a5 = v22;
+      *error = v22;
 
       goto LABEL_13;
     }
@@ -1349,14 +1349,14 @@ void __90__RTLearnedPlaceTypeInferenceStore__getLearnedPlacesMapFromLearnedPlace
     if (v11)
     {
       v12 = v11;
-      *a5 = v12;
+      *error = v12;
 
 LABEL_13:
       v10 = 0;
       goto LABEL_14;
     }
 
-    [v10 setFetchOffset:a4];
+    [v10 setFetchOffset:offset];
   }
 
   else
@@ -1369,7 +1369,7 @@ LABEL_13:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_14:

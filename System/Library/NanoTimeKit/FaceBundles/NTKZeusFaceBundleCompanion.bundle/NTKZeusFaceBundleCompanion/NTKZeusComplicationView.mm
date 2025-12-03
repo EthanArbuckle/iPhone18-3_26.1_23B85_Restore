@@ -1,20 +1,20 @@
 @interface NTKZeusComplicationView
-+ (id)viewForComplicationType:(unint64_t)a3 backgroundView:(id)a4;
++ (id)viewForComplicationType:(unint64_t)type backgroundView:(id)view;
 - (CDComplicationDisplayObserver)displayObserver;
 - (CGRect)contentFrame;
-- (NTKZeusComplicationView)initWithBackgroundView:(id)a3;
-- (void)applyPalette:(id)a3;
-- (void)blancEditModeApplyPalette:(id)a3;
+- (NTKZeusComplicationView)initWithBackgroundView:(id)view;
+- (void)applyPalette:(id)palette;
+- (void)blancEditModeApplyPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setLegibilityEnabled:(BOOL)a3;
+- (void)setLegibilityEnabled:(BOOL)enabled;
 @end
 
 @implementation NTKZeusComplicationView
 
-+ (id)viewForComplicationType:(unint64_t)a3 backgroundView:(id)a4
++ (id)viewForComplicationType:(unint64_t)type backgroundView:(id)view
 {
-  v5 = a4;
-  if (a3 <= 0xB && ((0x833u >> a3) & 1) != 0)
+  viewCopy = view;
+  if (type <= 0xB && ((0x833u >> type) & 1) != 0)
   {
     v6 = objc_opt_class();
   }
@@ -24,29 +24,29 @@
     v6 = 0;
   }
 
-  v7 = [[v6 alloc] initWithBackgroundView:v5];
+  v7 = [[v6 alloc] initWithBackgroundView:viewCopy];
 
   return v7;
 }
 
-- (NTKZeusComplicationView)initWithBackgroundView:(id)a3
+- (NTKZeusComplicationView)initWithBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = NTKZeusComplicationView;
   v6 = [(NTKZeusComplicationView *)&v11 init];
   if (v6)
   {
     v7 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v8 = [v7 device];
+    device = [v7 device];
     device = v6->_device;
-    v6->_device = v8;
+    v6->_device = device;
 
-    objc_storeStrong(&v6->_backgroundView, a3);
-    if (v5)
+    objc_storeStrong(&v6->_backgroundView, view);
+    if (viewCopy)
     {
-      [v5 setDevice:v6->_device];
-      [(NTKZeusComplicationView *)v6 addSubview:v5];
+      [viewCopy setDevice:v6->_device];
+      [(NTKZeusComplicationView *)v6 addSubview:viewCopy];
     }
   }
 
@@ -78,27 +78,27 @@
   return result;
 }
 
-- (void)setLegibilityEnabled:(BOOL)a3
+- (void)setLegibilityEnabled:(BOOL)enabled
 {
-  if (self->_legibilityEnabled != a3)
+  if (self->_legibilityEnabled != enabled)
   {
-    self->_legibilityEnabled = a3;
+    self->_legibilityEnabled = enabled;
     [(NTKZeusComplicationView *)self _updateLegibility];
   }
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  [(NTKZeudleComplicationBackgroundView *)self->_backgroundView setPalette:v5];
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  [(NTKZeudleComplicationBackgroundView *)self->_backgroundView setPalette:paletteCopy];
 }
 
-- (void)blancEditModeApplyPalette:(id)a3
+- (void)blancEditModeApplyPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  [(NTKZeudleComplicationBackgroundView *)self->_backgroundView setBlancEditModePalette:v5];
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  [(NTKZeudleComplicationBackgroundView *)self->_backgroundView setBlancEditModePalette:paletteCopy];
 }
 
 - (CDComplicationDisplayObserver)displayObserver

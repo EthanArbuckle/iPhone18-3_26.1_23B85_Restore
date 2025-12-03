@@ -1,54 +1,54 @@
 @interface TransactionReleasedData
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3;
++ (id)_predicateForPaymentTransactionPID:(int64_t)d;
 + (id)_propertySettersForReleasedData;
-+ (id)releasedDataForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertReleasedData:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)releasedDataForPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (void)insertReleasedData:(id)data forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
 - (id)releasedData;
 @end
 
 @implementation TransactionReleasedData
 
-+ (void)insertReleasedData:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertReleasedData:(id)data forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  [a1 deleteEntitiesForPaymentTransactionPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  dataCopy = data;
+  [self deleteEntitiesForPaymentTransactionPID:d inDatabase:databaseCopy];
   v19 = objc_alloc_init(NSMutableDictionary);
-  v10 = [NSNumber numberWithLongLong:a4];
+  v10 = [NSNumber numberWithLongLong:d];
   [v19 setObject:v10 forKey:@"a"];
 
-  v11 = [v9 documentType];
-  [v19 setObjectOrNull:v11 forKey:@"document_type"];
+  documentType = [dataCopy documentType];
+  [v19 setObjectOrNull:documentType forKey:@"document_type"];
 
-  v12 = [v9 privacyPolicyURL];
+  privacyPolicyURL = [dataCopy privacyPolicyURL];
   v13 = _SQLValueForURL();
   [v19 setObjectOrNull:v13 forKey:@"b"];
 
-  v14 = [v9 certificateData];
-  [v19 setObjectOrNull:v14 forKey:@"c"];
+  certificateData = [dataCopy certificateData];
+  [v19 setObjectOrNull:certificateData forKey:@"c"];
 
-  v15 = [v9 merchantNameOverride];
-  [v19 setObjectOrNull:v15 forKey:@"d"];
+  merchantNameOverride = [dataCopy merchantNameOverride];
+  [v19 setObjectOrNull:merchantNameOverride forKey:@"d"];
 
-  v16 = [[a1 alloc] initWithPropertyValues:v19 inDatabase:v8];
-  v17 = [v9 elements];
-  +[TransactionReleasedDataElement insertReleasedDataElements:forPID:inDatabase:](TransactionReleasedDataElement, "insertReleasedDataElements:forPID:inDatabase:", v17, [v16 persistentID], v8);
+  v16 = [[self alloc] initWithPropertyValues:v19 inDatabase:databaseCopy];
+  elements = [dataCopy elements];
+  +[TransactionReleasedDataElement insertReleasedDataElements:forPID:inDatabase:](TransactionReleasedDataElement, "insertReleasedDataElements:forPID:inDatabase:", elements, [v16 persistentID], databaseCopy);
 
-  v18 = [v9 application];
+  application = [dataCopy application];
 
-  +[TransactionReleasedDataApplication insertReleasedDataApplication:forPID:inDatabase:](TransactionReleasedDataApplication, "insertReleasedDataApplication:forPID:inDatabase:", v18, [v16 persistentID], v8);
+  +[TransactionReleasedDataApplication insertReleasedDataApplication:forPID:inDatabase:](TransactionReleasedDataApplication, "insertReleasedDataApplication:forPID:inDatabase:", application, [v16 persistentID], databaseCopy);
 }
 
-+ (id)releasedDataForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4
++ (id)releasedDataForPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPaymentTransactionPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentTransactionPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 releasedData];
+  releasedData = [v8 releasedData];
 
-  return v9;
+  return releasedData;
 }
 
 - (id)releasedData
@@ -57,24 +57,24 @@
   if (v3)
   {
     v4 = [[PKTransactionReleasedData alloc] initWithDocumentType:v3];
-    v5 = [objc_opt_class() _propertySettersForReleasedData];
-    v6 = [v5 allKeys];
+    _propertySettersForReleasedData = [objc_opt_class() _propertySettersForReleasedData];
+    allKeys = [_propertySettersForReleasedData allKeys];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100020E54;
     v15[3] = &unk_10083BEE0;
     v15[4] = self;
-    v16 = v5;
+    v16 = _propertySettersForReleasedData;
     v7 = v4;
     v17 = v7;
-    v8 = v5;
-    [(SQLiteEntity *)self getValuesForProperties:v6 withApplier:v15];
+    v8 = _propertySettersForReleasedData;
+    [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v15];
 
-    v9 = [(SQLiteEntity *)self persistentID];
-    v10 = [(SQLiteEntity *)self database];
-    v11 = [TransactionReleasedDataElement releasedDataElementsForPID:v9 inDatabase:v10];
+    persistentID = [(SQLiteEntity *)self persistentID];
+    database = [(SQLiteEntity *)self database];
+    v11 = [TransactionReleasedDataElement releasedDataElementsForPID:persistentID inDatabase:database];
     [v7 setElements:v11];
-    v12 = [TransactionReleasedDataApplication releasedDataElementsForPID:v9 inDatabase:v10];
+    v12 = [TransactionReleasedDataApplication releasedDataElementsForPID:persistentID inDatabase:database];
     [v7 setApplication:v12];
     v13 = v7;
   }
@@ -87,14 +87,14 @@
   return v13;
 }
 
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPaymentTransactionPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentTransactionPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  +[TransactionReleasedDataElement deleteEntitiesForPID:inDatabase:](TransactionReleasedDataElement, "deleteEntitiesForPID:inDatabase:", [v8 persistentID], v6);
-  +[TransactionReleasedDataApplication deleteEntitiesForPID:inDatabase:](TransactionReleasedDataApplication, "deleteEntitiesForPID:inDatabase:", [v8 persistentID], v6);
+  +[TransactionReleasedDataElement deleteEntitiesForPID:inDatabase:](TransactionReleasedDataElement, "deleteEntitiesForPID:inDatabase:", [v8 persistentID], databaseCopy);
+  +[TransactionReleasedDataApplication deleteEntitiesForPID:inDatabase:](TransactionReleasedDataApplication, "deleteEntitiesForPID:inDatabase:", [v8 persistentID], databaseCopy);
 
   [v8 deleteFromDatabase];
 }
@@ -112,9 +112,9 @@
   return v2;
 }
 
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3
++ (id)_predicateForPaymentTransactionPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

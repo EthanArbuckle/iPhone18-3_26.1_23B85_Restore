@@ -1,9 +1,9 @@
 @interface QSSBatchTranslationStreamingRequest
-- (Offset<siri::speech::qss_fb::BatchTranslationStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::BatchTranslationStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (QSSBatchTranslationFeedbackRequest)contentAsQSSBatchTranslationFeedbackRequest;
 - (QSSBatchTranslationLoggingRequest)contentAsQSSBatchTranslationLoggingRequest;
 - (QSSBatchTranslationRequest)contentAsQSSBatchTranslationRequest;
-- (QSSBatchTranslationStreamingRequest)initWithFlatbuffData:(id)a3 root:(const BatchTranslationStreamingRequest *)a4 verify:(BOOL)a5;
+- (QSSBatchTranslationStreamingRequest)initWithFlatbuffData:(id)data root:(const BatchTranslationStreamingRequest *)root verify:(BOOL)verify;
 - (QSSTranslationSupportedLanguagesRequest)contentAsQSSTranslationSupportedLanguagesRequest;
 - (id)flatbuffData;
 - (int64_t)content_type;
@@ -40,13 +40,13 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::BatchTranslationStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::BatchTranslationStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSBatchTranslationStreamingRequest *)self content_type];
+  content_type = [(QSSBatchTranslationStreamingRequest *)self content_type];
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 1)
   {
-    v6 = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationRequest];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    contentAsQSSBatchTranslationRequest = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationRequest];
+    LODWORD(v7) = [contentAsQSSBatchTranslationRequest addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -58,8 +58,8 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 2)
   {
-    v8 = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationFeedbackRequest];
-    LODWORD(v9) = [v8 addObjectToBuffer:a3];
+    contentAsQSSBatchTranslationFeedbackRequest = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationFeedbackRequest];
+    LODWORD(v9) = [contentAsQSSBatchTranslationFeedbackRequest addObjectToBuffer:buffer];
 
     v9 = v9;
   }
@@ -71,8 +71,8 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 3)
   {
-    v10 = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationLoggingRequest];
-    LODWORD(v11) = [v10 addObjectToBuffer:a3];
+    contentAsQSSBatchTranslationLoggingRequest = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSBatchTranslationLoggingRequest];
+    LODWORD(v11) = [contentAsQSSBatchTranslationLoggingRequest addObjectToBuffer:buffer];
 
     v11 = v11;
   }
@@ -84,8 +84,8 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 4)
   {
-    v12 = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSTranslationSupportedLanguagesRequest];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsQSSTranslationSupportedLanguagesRequest = [(QSSBatchTranslationStreamingRequest *)self contentAsQSSTranslationSupportedLanguagesRequest];
+    v13 = [contentAsQSSTranslationSupportedLanguagesRequest addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -95,33 +95,33 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
     v14 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 5);
-  v16 = *(a3 + 6);
-  v17 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 5);
+  v16 = *(buffer + 6);
+  v17 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v7);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v7);
   }
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v9);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v9);
   }
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 3)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v11);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v11);
   }
 
   if ([(QSSBatchTranslationStreamingRequest *)self content_type]== 4)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v14);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v14);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v17 - v16 + v15);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v17 - v16 + v15);
 }
 
 - (QSSTranslationSupportedLanguagesRequest)contentAsQSSTranslationSupportedLanguagesRequest
@@ -271,10 +271,10 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
   }
 }
 
-- (QSSBatchTranslationStreamingRequest)initWithFlatbuffData:(id)a3 root:(const BatchTranslationStreamingRequest *)a4 verify:(BOOL)a5
+- (QSSBatchTranslationStreamingRequest)initWithFlatbuffData:(id)data root:(const BatchTranslationStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSBatchTranslationStreamingRequest;
   v10 = [(QSSBatchTranslationStreamingRequest *)&v33 init];
@@ -284,32 +284,32 @@ flatbuffers::DetachedBuffer *__51__QSSBatchTranslationStreamingRequest_flatbuffD
     goto LABEL_43;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_44;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_44;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -396,9 +396,9 @@ LABEL_44:
   }
 
 LABEL_42:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_43:
   v26 = v11;

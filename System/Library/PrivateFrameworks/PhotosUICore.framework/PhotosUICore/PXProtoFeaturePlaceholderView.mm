@@ -1,40 +1,40 @@
 @interface PXProtoFeaturePlaceholderView
-- (PXProtoFeaturePlaceholderView)initWithFrame:(CGRect)a3;
-- (void)_setStatusDescription:(id)a3;
+- (PXProtoFeaturePlaceholderView)initWithFrame:(CGRect)frame;
+- (void)_setStatusDescription:(id)description;
 - (void)_updateStatusDescription;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXProtoFeaturePlaceholderView
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXProtoStatusControllerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXProtoStatusControllerObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:289 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:289 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 3) != 0)
+  if ((changeCopy & 3) != 0)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXProtoFeaturePlaceholderView *)self _updateStatusDescription];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)_setStatusDescription:(id)a3
+- (void)_setStatusDescription:(id)description
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_statusDescription != v4)
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (self->_statusDescription != descriptionCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = descriptionCopy;
+    v6 = [(NSString *)descriptionCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -50,13 +50,13 @@
 
 - (void)_updateStatusDescription
 {
-  v3 = [(PXPhotoAnalysisStatusController *)self->_statusController graphStatus];
-  if (v3 == 3)
+  graphStatus = [(PXPhotoAnalysisStatusController *)self->_statusController graphStatus];
+  if (graphStatus == 3)
   {
     v6 = @"An unexpected error occurred";
   }
 
-  else if (v3 == 2)
+  else if (graphStatus == 2)
   {
     v4 = MEMORY[0x1E696AEC0];
     [(PXPhotoAnalysisStatusController *)self->_statusController graphFractionCompleted];
@@ -72,11 +72,11 @@
   [(PXProtoFeaturePlaceholderView *)self _setStatusDescription:v6];
 }
 
-- (PXProtoFeaturePlaceholderView)initWithFrame:(CGRect)a3
+- (PXProtoFeaturePlaceholderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXProtoFeaturePlaceholderView;
-  v3 = [(PXProtoFeaturePlaceholderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXProtoFeaturePlaceholderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PXPhotoAnalysisStatusController sharedStatusController];

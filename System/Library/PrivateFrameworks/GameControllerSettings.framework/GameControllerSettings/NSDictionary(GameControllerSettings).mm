@@ -68,24 +68,24 @@
       while (v9);
     }
 
-    v15 = [a1 initWithDictionary:v6];
-    a1 = v15;
+    v15 = [self initWithDictionary:v6];
+    self = v15;
     if (v15)
     {
       v16 = v15;
     }
 
-    v17 = a1;
+    selfCopy = self;
     v4 = v20;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
 - (id)jsonObject
@@ -96,8 +96,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [a1 allKeys];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [self allKeys];
+  v3 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -108,18 +108,18 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [a1 objectForKey:v7];
+          v8 = [self objectForKey:v7];
           if ([v8 conformsToProtocol:&unk_286195E48])
           {
-            v9 = [v8 jsonObject];
-            [v12 setObject:v9 forKeyedSubscript:v7];
+            jsonObject = [v8 jsonObject];
+            [v12 setObject:jsonObject forKeyedSubscript:v7];
           }
 
           else if ([v8 conformsToProtocol:&unk_286197818])
@@ -129,7 +129,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -177,10 +177,10 @@
 
           else
           {
-            v13 = [v12 jsonObject];
-            if (v13)
+            jsonObject = [v12 jsonObject];
+            if (jsonObject)
             {
-              [v4 setObject:v13 forKeyedSubscript:v11];
+              [v4 setObject:jsonObject forKeyedSubscript:v11];
             }
           }
         }
@@ -294,7 +294,7 @@
 
 - (id)_gcs_stringForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -311,7 +311,7 @@
 
 - (id)_gcs_numberForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -328,7 +328,7 @@
 
 - (id)_gcs_dictionaryForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -345,7 +345,7 @@
 
 - (id)_gcs_arrayForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -362,7 +362,7 @@
 
 - (id)_gcs_dateForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -379,7 +379,7 @@
 
 - (id)_gcs_uuidForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -396,7 +396,7 @@
 
 - (GCSElement)_gcs_gscElementForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -413,7 +413,7 @@
 
 - (GCSProfile)_gcs_gscProfileForJSONKey:()GameControllerSettings
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

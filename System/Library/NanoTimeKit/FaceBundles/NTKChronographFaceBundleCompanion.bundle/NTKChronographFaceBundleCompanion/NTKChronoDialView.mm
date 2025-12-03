@@ -1,17 +1,17 @@
 @interface NTKChronoDialView
-+ (id)createClockDialViewForDevice:(id)a3;
-+ (id)createClockSubdialViewForDevice:(id)a3;
-+ (id)createDialViewForTimescale:(unint64_t)a3 device:(id)a4;
-+ (id)createSubdialViewForTimescale:(unint64_t)a3 device:(id)a4;
++ (id)createClockDialViewForDevice:(id)device;
++ (id)createClockSubdialViewForDevice:(id)device;
++ (id)createDialViewForTimescale:(unint64_t)timescale device:(id)device;
++ (id)createSubdialViewForTimescale:(unint64_t)timescale device:(id)device;
 + (id)sharedCache;
-- (CGRect)_boundsForText:(id)a3 font:(id)a4;
-- (NTKChronoDialView)initWithTimescale:(unint64_t)a3 device:(id)a4;
-- (id)cacheIdentifierForClockComponent:(int)a3;
-- (id)cacheIdentifierForComponent:(int)a3;
-- (id)initClockSubdialWithDevice:(id)a3;
-- (id)initClockWithDevice:(id)a3;
-- (id)initSubdialWithTimescale:(unint64_t)a3 device:(id)a4;
-- (void)applyPalette:(id)a3;
+- (CGRect)_boundsForText:(id)text font:(id)font;
+- (NTKChronoDialView)initWithTimescale:(unint64_t)timescale device:(id)device;
+- (id)cacheIdentifierForClockComponent:(int)component;
+- (id)cacheIdentifierForComponent:(int)component;
+- (id)initClockSubdialWithDevice:(id)device;
+- (id)initClockWithDevice:(id)device;
+- (id)initSubdialWithTimescale:(unint64_t)timescale device:(id)device;
+- (void)applyPalette:(id)palette;
 - (void)create30SecondsSubdialText;
 - (void)create30SecondsText;
 - (void)create3SecondsSubdialText;
@@ -26,41 +26,41 @@
 - (void)createText;
 - (void)createTicks;
 - (void)createTimescaleLabel;
-- (void)setMajorTickColor:(id)a3;
-- (void)setMinorTickColor:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setMajorTickColor:(id)color;
+- (void)setMinorTickColor:(id)color;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation NTKChronoDialView
 
-+ (id)createDialViewForTimescale:(unint64_t)a3 device:(id)a4
++ (id)createDialViewForTimescale:(unint64_t)timescale device:(id)device
 {
-  v5 = a4;
-  v6 = [[NTKChronoDialView alloc] initWithTimescale:a3 device:v5];
+  deviceCopy = device;
+  v6 = [[NTKChronoDialView alloc] initWithTimescale:timescale device:deviceCopy];
 
   return v6;
 }
 
-+ (id)createSubdialViewForTimescale:(unint64_t)a3 device:(id)a4
++ (id)createSubdialViewForTimescale:(unint64_t)timescale device:(id)device
 {
-  v5 = a4;
-  v6 = [[NTKChronoDialView alloc] initSubdialWithTimescale:a3 device:v5];
+  deviceCopy = device;
+  v6 = [[NTKChronoDialView alloc] initSubdialWithTimescale:timescale device:deviceCopy];
 
   return v6;
 }
 
-+ (id)createClockDialViewForDevice:(id)a3
++ (id)createClockDialViewForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKChronoDialView alloc] initClockWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKChronoDialView alloc] initClockWithDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)createClockSubdialViewForDevice:(id)a3
++ (id)createClockSubdialViewForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKChronoDialView alloc] initClockSubdialWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKChronoDialView alloc] initClockSubdialWithDevice:deviceCopy];
 
   return v4;
 }
@@ -77,46 +77,46 @@
   return v3;
 }
 
-- (id)cacheIdentifierForComponent:(int)a3
+- (id)cacheIdentifierForComponent:(int)component
 {
-  v3 = *&a3;
+  v3 = *&component;
   v5 = objc_opt_class();
-  v6 = [(NTKChronoDialView *)self timescale];
-  v7 = [(NTKChronoDialView *)self subdial];
-  v8 = [(NTKChronoDialView *)self device];
-  v9 = [v5 cacheIdentifierForTimescale:v6 subdial:v7 device:objc_msgSend(v8 component:{"sizeClass"), v3}];
+  timescale = [(NTKChronoDialView *)self timescale];
+  subdial = [(NTKChronoDialView *)self subdial];
+  device = [(NTKChronoDialView *)self device];
+  v9 = [v5 cacheIdentifierForTimescale:timescale subdial:subdial device:objc_msgSend(device component:{"sizeClass"), v3}];
 
   return v9;
 }
 
-- (id)cacheIdentifierForClockComponent:(int)a3
+- (id)cacheIdentifierForClockComponent:(int)component
 {
-  v3 = *&a3;
+  v3 = *&component;
   v5 = objc_opt_class();
-  v6 = [(NTKChronoDialView *)self subdial];
-  v7 = [(NTKChronoDialView *)self device];
-  v8 = [v5 cacheIdentifierForClockSubdial:v6 device:objc_msgSend(v7 component:{"sizeClass"), v3}];
+  subdial = [(NTKChronoDialView *)self subdial];
+  device = [(NTKChronoDialView *)self device];
+  v8 = [v5 cacheIdentifierForClockSubdial:subdial device:objc_msgSend(device component:{"sizeClass"), v3}];
 
   return v8;
 }
 
-- (NTKChronoDialView)initWithTimescale:(unint64_t)a3 device:(id)a4
+- (NTKChronoDialView)initWithTimescale:(unint64_t)timescale device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v15 = 0;
   memset(v14, 0, sizeof(v14));
-  sub_5D64(v7, v14);
-  v8 = [NSString stringWithFormat:@"dial-%i", a3];
+  sub_5D64(deviceCopy, v14);
+  timescale = [NSString stringWithFormat:@"dial-%i", timescale];
   v9 = *v14;
   v10 = +[NTKChronoDialView sharedCache];
   v13.receiver = self;
   v13.super_class = NTKChronoDialView;
-  v11 = [(NTKChronoDialView *)&v13 initWithDialDiameter:v7 device:v10 cache:v8 key:v9];
+  v11 = [(NTKChronoDialView *)&v13 initWithDialDiameter:deviceCopy device:v10 cache:timescale key:v9];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_device, a4);
-    v11->_timescale = a3;
+    objc_storeStrong(&v11->_device, device);
+    v11->_timescale = timescale;
     v11->_subdial = 0;
     [(NTKChronoDialView *)v11 createTicks];
     [(NTKChronoDialView *)v11 createText];
@@ -126,23 +126,23 @@
   return v11;
 }
 
-- (id)initSubdialWithTimescale:(unint64_t)a3 device:(id)a4
+- (id)initSubdialWithTimescale:(unint64_t)timescale device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v15 = 0;
   memset(v14, 0, sizeof(v14));
-  sub_5D64(v7, v14);
-  v8 = [NSString stringWithFormat:@"subdial-%i", a3];
+  sub_5D64(deviceCopy, v14);
+  timescale = [NSString stringWithFormat:@"subdial-%i", timescale];
   v9 = *(v14 + 1);
   v10 = +[NTKChronoDialView sharedCache];
   v13.receiver = self;
   v13.super_class = NTKChronoDialView;
-  v11 = [(NTKChronoDialView *)&v13 initWithDialDiameter:v7 device:v10 cache:v8 key:v9];
+  v11 = [(NTKChronoDialView *)&v13 initWithDialDiameter:deviceCopy device:v10 cache:timescale key:v9];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_device, a4);
-    v11->_timescale = a3;
+    objc_storeStrong(&v11->_device, device);
+    v11->_timescale = timescale;
     v11->_subdial = 1;
     [(NTKChronoDialView *)v11 createTicks];
     [(NTKChronoDialView *)v11 createSubdialText];
@@ -151,21 +151,21 @@
   return v11;
 }
 
-- (id)initClockWithDevice:(id)a3
+- (id)initClockWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12 = 0;
   memset(v11, 0, sizeof(v11));
-  sub_5D64(v5, v11);
+  sub_5D64(deviceCopy, v11);
   v6 = *v11;
   v7 = +[NTKChronoDialView sharedCache];
   v10.receiver = self;
   v10.super_class = NTKChronoDialView;
-  v8 = [(NTKChronoDialView *)&v10 initWithDialDiameter:v5 device:v7 cache:@"clock" key:v6];
+  v8 = [(NTKChronoDialView *)&v10 initWithDialDiameter:deviceCopy device:v7 cache:@"clock" key:v6];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
+    objc_storeStrong(&v8->_device, device);
     v8->_timescale = 0;
     v8->_subdial = 0;
     [(NTKChronoDialView *)v8 createTicks];
@@ -175,21 +175,21 @@
   return v8;
 }
 
-- (id)initClockSubdialWithDevice:(id)a3
+- (id)initClockSubdialWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12 = 0;
   memset(v11, 0, sizeof(v11));
-  sub_5D64(v5, v11);
+  sub_5D64(deviceCopy, v11);
   v6 = *(v11 + 1);
   v7 = +[NTKChronoDialView sharedCache];
   v10.receiver = self;
   v10.super_class = NTKChronoDialView;
-  v8 = [(NTKChronoDialView *)&v10 initWithDialDiameter:v5 device:v7 cache:@"subclock" key:v6];
+  v8 = [(NTKChronoDialView *)&v10 initWithDialDiameter:deviceCopy device:v7 cache:@"subclock" key:v6];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
+    objc_storeStrong(&v8->_device, device);
     v8->_timescale = 3;
     v8->_subdial = 1;
     [(NTKChronoDialView *)v8 createTicks];
@@ -203,40 +203,40 @@
 {
   v44 = 0;
   memset(v43, 0, sizeof(v43));
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, v43);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, v43);
 
-  v4 = [(NTKChronoDialView *)self subdial];
+  subdial = [(NTKChronoDialView *)self subdial];
   v5 = 88;
-  if (v4)
+  if (subdial)
   {
     v5 = 136;
   }
 
   v42 = *(v43 + v5);
-  v6 = [(NTKChronoDialView *)self subdial];
+  subdial2 = [(NTKChronoDialView *)self subdial];
   v7 = 104;
-  if (v6)
+  if (subdial2)
   {
     v7 = 152;
   }
 
   v41 = *(v43 + v7);
-  v8 = [(NTKChronoDialView *)self subdial];
+  subdial3 = [(NTKChronoDialView *)self subdial];
   v9 = 120;
-  if (v8)
+  if (subdial3)
   {
     v9 = 168;
   }
 
   v40 = *(v43 + v9);
-  v10 = [(NTKChronoDialView *)self subdial];
-  v11 = [(NTKChronoDialView *)self timescale];
-  if ((v10 & 1) == 0)
+  subdial4 = [(NTKChronoDialView *)self subdial];
+  timescale = [(NTKChronoDialView *)self timescale];
+  if ((subdial4 & 1) == 0)
   {
-    if ((v11 - 2) >= 2)
+    if ((timescale - 2) >= 2)
     {
-      if (v11 == 1)
+      if (timescale == 1)
       {
         v36 = v42;
         v12 = [NSValue valueWithBytes:&v36 objCType:"{CGSize=dd}"];
@@ -249,13 +249,13 @@
         v50[2] = v14;
         v15 = [NSArray arrayWithObjects:v50 count:3];
         v16 = &off_1DF18;
-        v17 = self;
+        selfCopy5 = self;
         v18 = 120;
       }
 
       else
       {
-        if (v11)
+        if (timescale)
         {
           return;
         }
@@ -271,7 +271,7 @@
         v51[2] = v14;
         v15 = [NSArray arrayWithObjects:v51 count:3];
         v16 = &off_1DF00;
-        v17 = self;
+        selfCopy5 = self;
         v18 = 240;
       }
 
@@ -286,16 +286,16 @@
     v49[1] = v13;
     v14 = [NSArray arrayWithObjects:v49 count:2];
     v19 = &off_1DF30;
-    v20 = self;
+    selfCopy4 = self;
     v21 = 300;
 LABEL_26:
-    [(NTKChronoDialView *)v20 addTicksWithCount:v21 moduloGroups:v19 sizes:v14 roundedCorners:0];
+    [(NTKChronoDialView *)selfCopy4 addTicksWithCount:v21 moduloGroups:v19 sizes:v14 roundedCorners:0];
     goto LABEL_27;
   }
 
-  if (v11 > 1)
+  if (timescale > 1)
   {
-    if (v11 == 2)
+    if (timescale == 2)
     {
       v25 = v42;
       v12 = [NSValue valueWithBytes:&v25 objCType:"{CGSize=dd}"];
@@ -309,7 +309,7 @@ LABEL_26:
 
     else
     {
-      if (v11 != 3)
+      if (timescale != 3)
       {
         return;
       }
@@ -324,14 +324,14 @@ LABEL_26:
       v19 = &off_1DF90;
     }
 
-    v20 = self;
+    selfCopy4 = self;
     v21 = 60;
     goto LABEL_26;
   }
 
-  if (v11)
+  if (timescale)
   {
-    if (v11 != 1)
+    if (timescale != 1)
     {
       return;
     }
@@ -364,10 +364,10 @@ LABEL_26:
     v16 = &off_1DF48;
   }
 
-  v17 = self;
+  selfCopy5 = self;
   v18 = 60;
 LABEL_23:
-  [(NTKChronoDialView *)v17 addTicksWithCount:v18 moduloGroups:v16 sizes:v15 roundedCorners:0];
+  [(NTKChronoDialView *)selfCopy5 addTicksWithCount:v18 moduloGroups:v16 sizes:v15 roundedCorners:0];
 
 LABEL_27:
 }
@@ -396,8 +396,8 @@ LABEL_27:
   v23 = 0u;
   v21 = 0u;
   memset(v20, 0, sizeof(v20));
-  v6 = [(NTKChronoDialView *)self device];
-  sub_5D64(v6, v20);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, v20);
 
   v7 = objc_alloc_init(UILabel);
   timeLabel = self->_timeLabel;
@@ -424,89 +424,89 @@ LABEL_27:
   [(NTKChronoDialView *)self addSubview:self->_timeLabel];
 }
 
-- (void)setMajorTickColor:(id)a3
+- (void)setMajorTickColor:(id)color
 {
-  objc_storeStrong(&self->_majorTickColor, a3);
-  v5 = a3;
-  [(NTKChronoDialView *)self applyTickColor:v5 toGroupIndex:0];
+  objc_storeStrong(&self->_majorTickColor, color);
+  colorCopy = color;
+  [(NTKChronoDialView *)self applyTickColor:colorCopy toGroupIndex:0];
 }
 
-- (void)setMinorTickColor:(id)a3
+- (void)setMinorTickColor:(id)color
 {
-  v11 = a3;
-  objc_storeStrong(&self->_minorTickColor, a3);
-  v5 = [(NTKChronoDialView *)self timeLabel];
-  [v5 setTextColor:v11];
+  colorCopy = color;
+  objc_storeStrong(&self->_minorTickColor, color);
+  timeLabel = [(NTKChronoDialView *)self timeLabel];
+  [timeLabel setTextColor:colorCopy];
 
-  v6 = [(NTKChronoDialView *)self tickGroups];
-  v7 = [v6 count];
+  tickGroups = [(NTKChronoDialView *)self tickGroups];
+  v7 = [tickGroups count];
 
   if (v7 >= 2)
   {
     v8 = 1;
     do
     {
-      [(NTKChronoDialView *)self applyTickColor:v11 toGroupIndex:v8++];
-      v9 = [(NTKChronoDialView *)self tickGroups];
-      v10 = [v9 count];
+      [(NTKChronoDialView *)self applyTickColor:colorCopy toGroupIndex:v8++];
+      tickGroups2 = [(NTKChronoDialView *)self tickGroups];
+      v10 = [tickGroups2 count];
     }
 
     while (v8 < v10);
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  objc_storeStrong(&self->_textColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_textColor, color);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_3E44;
   v7[3] = &unk_1C700;
-  v8 = v5;
-  v6 = v5;
+  v8 = colorCopy;
+  v6 = colorCopy;
   [(NTKChronoDialView *)self enumerateTextLayersWithBlock:v7];
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 alternativeTickColor];
-  [v4 largeTickValue];
+  paletteCopy = palette;
+  alternativeTickColor = [paletteCopy alternativeTickColor];
+  [paletteCopy largeTickValue];
   v6 = NTKColorByPremultiplyingAlpha();
   [(NTKChronoDialView *)self setMajorTickColor:v6];
 
-  v7 = [v4 tickColor];
-  [v4 smallTickValue];
+  tickColor = [paletteCopy tickColor];
+  [paletteCopy smallTickValue];
   v8 = NTKColorByPremultiplyingAlpha();
   [(NTKChronoDialView *)self setMinorTickColor:v8];
 
-  v9 = [v4 labelColor];
+  labelColor = [paletteCopy labelColor];
 
-  [(NTKChronoDialView *)self setTextColor:v9];
+  [(NTKChronoDialView *)self setTextColor:labelColor];
 }
 
 - (void)createText
 {
-  v3 = [(NTKChronoDialView *)self timescale];
-  if (v3 > 1)
+  timescale = [(NTKChronoDialView *)self timescale];
+  if (timescale > 1)
   {
-    if (v3 == 2)
+    if (timescale == 2)
     {
 
       [(NTKChronoDialView *)self create6SecondsText];
     }
 
-    else if (v3 == 3)
+    else if (timescale == 3)
     {
 
       [(NTKChronoDialView *)self create3SecondsText];
     }
   }
 
-  else if (v3)
+  else if (timescale)
   {
-    if (v3 == 1)
+    if (timescale == 1)
     {
 
       [(NTKChronoDialView *)self create30SecondsText];
@@ -522,25 +522,25 @@ LABEL_27:
 
 - (void)createSubdialText
 {
-  v3 = [(NTKChronoDialView *)self timescale];
-  if (v3 > 1)
+  timescale = [(NTKChronoDialView *)self timescale];
+  if (timescale > 1)
   {
-    if (v3 == 2)
+    if (timescale == 2)
     {
 
       [(NTKChronoDialView *)self create6SecondsSubdialText];
     }
 
-    else if (v3 == 3)
+    else if (timescale == 3)
     {
 
       [(NTKChronoDialView *)self create3SecondsSubdialText];
     }
   }
 
-  else if (v3)
+  else if (timescale)
   {
-    if (v3 == 1)
+    if (timescale == 1)
     {
 
       [(NTKChronoDialView *)self create30SecondsSubdialText];
@@ -568,8 +568,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v25 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v25 + 1)];
@@ -614,8 +614,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v26 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v26 + 1)];
@@ -660,8 +660,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v25 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v25 + 1)];
@@ -706,8 +706,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v26 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v26 + 1)];
@@ -752,8 +752,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v25 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v25 + 1)];
@@ -798,8 +798,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v26 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v26 + 1)];
@@ -844,8 +844,8 @@ LABEL_27:
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v28);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v28);
 
   v5 = *(&v30 + 1);
   v4 = v31;
@@ -897,8 +897,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v26 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v26 + 1)];
@@ -943,8 +943,8 @@ LABEL_27:
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v28);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v28);
 
   v5 = *(&v30 + 1);
   v4 = v31;
@@ -996,8 +996,8 @@ LABEL_27:
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKChronoDialView *)self device];
-  sub_5D64(v3, &v23);
+  device = [(NTKChronoDialView *)self device];
+  sub_5D64(device, &v23);
 
   v4 = *(&v26 + 1);
   v5 = [CLKFont systemFontOfSize:*(&v26 + 1)];
@@ -1028,16 +1028,16 @@ LABEL_27:
   objc_destroyWeak(&location);
 }
 
-- (CGRect)_boundsForText:(id)a3 font:(id)a4
+- (CGRect)_boundsForText:(id)text font:(id)font
 {
-  v5 = a4;
-  v6 = a3;
+  fontCopy = font;
+  textCopy = text;
   v7 = CLKLocaleCurrentNumberSystem();
-  [v5 capHeight];
+  [fontCopy capHeight];
   v9 = v8;
   if (v7 == 2)
   {
-    [v5 descender];
+    [fontCopy descender];
     v11 = v9 - v10;
   }
 
@@ -1047,14 +1047,14 @@ LABEL_27:
   }
 
   v23 = NSFontAttributeName;
-  v24 = v5;
+  v24 = fontCopy;
   v12 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  [v6 boundingRectWithSize:3 options:v12 attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
+  [textCopy boundingRectWithSize:3 options:v12 attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
   v14 = v13;
 
-  [v5 ascender];
+  [fontCopy ascender];
   v16 = v15;
-  [v5 capHeight];
+  [fontCopy capHeight];
   v18 = v17;
 
   v19 = v16 - v18 + -1.0;

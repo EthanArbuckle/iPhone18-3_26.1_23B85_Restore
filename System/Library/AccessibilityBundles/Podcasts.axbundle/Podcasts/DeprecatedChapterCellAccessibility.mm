@@ -1,19 +1,19 @@
 @interface DeprecatedChapterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityLabelForPlaybackState:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityLabelForPlaybackState:(int64_t)state;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation DeprecatedChapterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityWantsNowPlayingIndicator" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityPlaybackState" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityWantsNowPlayingIndicator" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.DeprecatedChapterCell" hasInstanceMethod:@"accessibilityPlaybackState" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -49,9 +49,9 @@
   return v8;
 }
 
-- (id)_accessibilityLabelForPlaybackState:(int64_t)a3
+- (id)_accessibilityLabelForPlaybackState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v4 = @"paused";
 LABEL_5:
@@ -60,7 +60,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v4 = @"now.playing";
     goto LABEL_5;

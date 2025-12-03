@@ -1,28 +1,28 @@
 @interface LookAroundModeController
-- (LookAroundModeController)initWithEntryPoint:(id)a3 lookAroundView:(id)a4 showsFullScreen:(BOOL)a5 originFrame:(CGRect)a6;
+- (LookAroundModeController)initWithEntryPoint:(id)point lookAroundView:(id)view showsFullScreen:(BOOL)screen originFrame:(CGRect)frame;
 - (id)fullscreenViewControllerDismissalTransition;
 - (id)fullscreenViewControllerPresentationTransition;
 - (id)personalizedItemSources;
-- (id)viewsToRenderMapsScreenshotService:(id)a3;
+- (id)viewsToRenderMapsScreenshotService:(id)service;
 - (int64_t)preferredMapScaleVisibility;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)getCurrentSceneTitleWithCompletion:(id)a3;
-- (void)lookAroundContainerViewControllerDidAnimateFromModeTransition:(id)a3;
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)getCurrentSceneTitleWithCompletion:(id)completion;
+- (void)lookAroundContainerViewControllerDidAnimateFromModeTransition:(id)transition;
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation LookAroundModeController
 
-- (id)viewsToRenderMapsScreenshotService:(id)a3
+- (id)viewsToRenderMapsScreenshotService:(id)service
 {
-  v4 = [(ContainerViewController *)self->_containerViewController chromeViewController];
-  v5 = [v4 mapView];
+  chromeViewController = [(ContainerViewController *)self->_containerViewController chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v6 = [(LookAroundContainerViewController *)self->_containerViewController lookAroundView];
+  lookAroundView = [(LookAroundContainerViewController *)self->_containerViewController lookAroundView];
   if ([(LookAroundModeController *)self isDisplayingLookAroundPIP])
   {
-    v13 = v5;
+    v13 = mapView;
     v7 = &v13;
   }
 
@@ -33,14 +33,14 @@
 
     if (v9)
     {
-      v15[0] = v6;
-      v15[1] = v5;
+      v15[0] = lookAroundView;
+      v15[1] = mapView;
       v7 = v15;
       v10 = 2;
       goto LABEL_7;
     }
 
-    v14 = v6;
+    v14 = lookAroundView;
     v7 = &v14;
   }
 
@@ -51,51 +51,51 @@ LABEL_7:
   return v11;
 }
 
-- (void)lookAroundContainerViewControllerDidAnimateFromModeTransition:(id)a3
+- (void)lookAroundContainerViewControllerDidAnimateFromModeTransition:(id)transition
 {
   lookAroundViewState = self->_lookAroundViewState;
-  v4 = [a3 lookAroundView];
-  [(_LookAroundViewState *)lookAroundViewState restoreStateToLookAroundView:v4];
+  lookAroundView = [transition lookAroundView];
+  [(_LookAroundViewState *)lookAroundViewState restoreStateToLookAroundView:lookAroundView];
 }
 
-- (void)getCurrentSceneTitleWithCompletion:(id)a3
+- (void)getCurrentSceneTitleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(LookAroundModeController *)self isDisplayingLookAroundPIP];
-  v6 = [(LookAroundModeController *)self lookAroundView];
-  v7 = v6;
-  if (v5)
+  completionCopy = completion;
+  isDisplayingLookAroundPIP = [(LookAroundModeController *)self isDisplayingLookAroundPIP];
+  lookAroundView = [(LookAroundModeController *)self lookAroundView];
+  v7 = lookAroundView;
+  if (isDisplayingLookAroundPIP)
   {
-    [v6 sceneTitle];
+    [lookAroundView sceneTitle];
   }
 
   else
   {
-    [v6 expandedSceneTitle];
+    [lookAroundView expandedSceneTitle];
   }
   v8 = ;
 
-  v4[2](v4, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C81108;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C811F0;
   v4[3] = &unk_101661738;
   v4[4] = self;
-  [a4 addCompletion:v4];
+  [animation addCompletion:v4];
 }
 
 - (id)fullscreenViewControllerDismissalTransition
@@ -114,15 +114,15 @@ LABEL_7:
 
 - (id)personalizedItemSources
 {
-  v2 = [(LookAroundModeController *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
+  chromeViewController = [(LookAroundModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v3)
+  if (searchPinsManager)
   {
-    v4 = [v3 searchResultsItemSource];
-    v8[0] = v4;
-    v5 = [v3 singleSearchResultItemSource];
-    v8[1] = v5;
+    searchResultsItemSource = [searchPinsManager searchResultsItemSource];
+    v8[0] = searchResultsItemSource;
+    singleSearchResultItemSource = [searchPinsManager singleSearchResultItemSource];
+    v8[1] = singleSearchResultItemSource;
     v6 = [NSArray arrayWithObjects:v8 count:2];
   }
 
@@ -134,36 +134,36 @@ LABEL_7:
   return v6;
 }
 
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated
 {
-  v4 = [(LookAroundModeController *)self actionCoordinator];
-  v3 = [v4 dataCoordinator];
-  [v3 synchronizeMapViewIfNeeded];
+  actionCoordinator = [(LookAroundModeController *)self actionCoordinator];
+  dataCoordinator = [actionCoordinator dataCoordinator];
+  [dataCoordinator synchronizeMapViewIfNeeded];
 }
 
 - (int64_t)preferredMapScaleVisibility
 {
-  v2 = [(LookAroundModeController *)self chromeViewController];
-  v3 = sub_10000FA08(v2) == 5;
+  chromeViewController = [(LookAroundModeController *)self chromeViewController];
+  v3 = sub_10000FA08(chromeViewController) == 5;
 
   return v3;
 }
 
-- (LookAroundModeController)initWithEntryPoint:(id)a3 lookAroundView:(id)a4 showsFullScreen:(BOOL)a5 originFrame:(CGRect)a6
+- (LookAroundModeController)initWithEntryPoint:(id)point lookAroundView:(id)view showsFullScreen:(BOOL)screen originFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
-  v13 = a3;
-  v14 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  screenCopy = screen;
+  pointCopy = point;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = LookAroundModeController;
   v15 = [(LookAroundModeController *)&v19 init];
   if (v15)
   {
-    v16 = [[LookAroundContainerViewController alloc] initWithEntryPoint:v13 lookAroundView:v14 showsFullScreen:v10];
+    v16 = [[LookAroundContainerViewController alloc] initWithEntryPoint:pointCopy lookAroundView:viewCopy showsFullScreen:screenCopy];
     containerViewController = v15->_containerViewController;
     v15->_containerViewController = v16;
 

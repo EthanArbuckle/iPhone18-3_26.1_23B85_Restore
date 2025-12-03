@@ -1,7 +1,7 @@
 @interface SSSAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (void)_setUpDevelopmentUI;
-- (void)application:(id)a3 didFinishLaunchingSuspendedWithOptions:(id)a4;
+- (void)application:(id)application didFinishLaunchingSuspendedWithOptions:(id)options;
 @end
 
 @implementation SSSAppDelegate
@@ -19,9 +19,9 @@
   [v5 makeKeyAndVisible];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if ([(SSSAppDelegate *)self _shouldSetUpDevelopmentUI:a3])
+  if ([(SSSAppDelegate *)self _shouldSetUpDevelopmentUI:application])
   {
     [(SSSAppDelegate *)self _setUpDevelopmentUI];
   }
@@ -29,7 +29,7 @@
   return 1;
 }
 
-- (void)application:(id)a3 didFinishLaunchingSuspendedWithOptions:(id)a4
+- (void)application:(id)application didFinishLaunchingSuspendedWithOptions:(id)options
 {
   v5 = _SSSignpostLog();
   if (os_signpost_enabled(v5))

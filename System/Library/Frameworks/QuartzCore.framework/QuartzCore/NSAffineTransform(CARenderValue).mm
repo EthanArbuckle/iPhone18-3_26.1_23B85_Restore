@@ -8,9 +8,9 @@
 - (uint64_t)CA_copyNumericValue:()CARenderValue
 {
   v4 = 0uLL;
-  if (a1)
+  if (self)
   {
-    [a1 transformStruct];
+    [self transformStruct];
     v4 = 0uLL;
     v5 = 0uLL;
     v6 = 0uLL;
@@ -31,9 +31,9 @@
 - (_DWORD)CA_copyRenderValue
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 transformStruct];
+    [self transformStruct];
     v3 = v7;
     v4 = v8;
     v5 = v9;

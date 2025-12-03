@@ -1,9 +1,9 @@
 @interface ReservationAvailabilityCollectionViewCell
-- (ReservationAvailabilityCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ReservationAvailabilityCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)initializeConstraints;
-- (void)setColor:(id)a3;
-- (void)setSubText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setColor:(id)color;
+- (void)setSubText:(id)text;
+- (void)setTitleText:(id)text;
 - (void)updateBorderMetrics;
 - (void)updateColors;
 - (void)updateConstraints;
@@ -11,132 +11,132 @@
 
 @implementation ReservationAvailabilityCollectionViewCell
 
-- (void)setSubText:(id)a3
+- (void)setSubText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_subText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     subText = self->_subText;
     self->_subText = v4;
 
-    [(UILabel *)self->_subLabel setText:v6];
+    [(UILabel *)self->_subLabel setText:textCopy];
     [(ReservationAvailabilityCollectionViewCell *)self updateBorderMetrics];
     [(ReservationAvailabilityCollectionViewCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if (![(NSString *)self->_titleText isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [textCopy copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 
-    v6 = [v7 copy];
+    v6 = [textCopy copy];
     [(UILabel *)self->_titleLabel setText:v6];
   }
 }
 
 - (void)updateBorderMetrics
 {
-  v3 = [(ReservationAvailabilityCollectionViewCell *)self subText];
-  v4 = [v3 length];
+  subText = [(ReservationAvailabilityCollectionViewCell *)self subText];
+  v4 = [subText length];
 
-  v8 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v5 = [v8 layer];
-  v6 = v5;
+  containerView = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  layer = [containerView layer];
+  v6 = layer;
   v7 = 1.0;
   if (!v4)
   {
     v7 = 0.0;
   }
 
-  [v5 setBorderWidth:v7];
+  [layer setBorderWidth:v7];
 }
 
 - (void)updateColors
 {
   v3 = +[UIColor clearColor];
-  v4 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  [v4 setBackgroundColor:v3];
+  bottomColorView = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  [bottomColorView setBackgroundColor:v3];
 
   v5 = +[UIColor clearColor];
-  v6 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  [v6 setBackgroundColor:v5];
+  containerView = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  [containerView setBackgroundColor:v5];
 
-  v7 = [(ReservationAvailabilityCollectionViewCell *)self color];
-  v8 = [v7 CGColor];
-  v9 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v10 = [v9 layer];
-  [v10 setBorderColor:v8];
+  color = [(ReservationAvailabilityCollectionViewCell *)self color];
+  cGColor = [color CGColor];
+  containerView2 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  layer = [containerView2 layer];
+  [layer setBorderColor:cGColor];
 
-  v11 = [(ReservationAvailabilityCollectionViewCell *)self color];
-  v12 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  [v12 setBackgroundColor:v11];
+  color2 = [(ReservationAvailabilityCollectionViewCell *)self color];
+  topColorView = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  [topColorView setBackgroundColor:color2];
 
-  v14 = [(ReservationAvailabilityCollectionViewCell *)self color];
-  v13 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  [v13 setTextColor:v14];
+  color3 = [(ReservationAvailabilityCollectionViewCell *)self color];
+  subLabel = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  [subLabel setTextColor:color3];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_color isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(ReservationAvailabilityCollectionViewCell *)self updateColors];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(ReservationAvailabilityCollectionViewCell *)self subText];
-  v4 = [v3 length];
+  subText = [(ReservationAvailabilityCollectionViewCell *)self subText];
+  v4 = [subText length];
 
   if (v4)
   {
-    v5 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
+    bottomColorViewBottomConstraint = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
 
-    if (!v5)
+    if (!bottomColorViewBottomConstraint)
     {
-      v6 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-      v7 = [v6 bottomAnchor];
-      v8 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-      v9 = [v8 lastBaselineAnchor];
-      v10 = [v7 constraintEqualToAnchor:v9 constant:8.0];
+      bottomColorView = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+      bottomAnchor = [bottomColorView bottomAnchor];
+      subLabel = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+      lastBaselineAnchor = [subLabel lastBaselineAnchor];
+      v10 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:8.0];
       [(ReservationAvailabilityCollectionViewCell *)self setBottomColorViewBottomConstraint:v10];
     }
 
-    v11 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
-    [v11 setActive:0];
+    bottomColorViewHeightConstraint = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
+    [bottomColorViewHeightConstraint setActive:0];
 
-    v12 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
+    bottomColorViewBottomConstraint2 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
   }
 
   else
   {
-    v13 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
+    bottomColorViewHeightConstraint2 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
 
-    if (!v13)
+    if (!bottomColorViewHeightConstraint2)
     {
-      v14 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-      v15 = [v14 heightAnchor];
-      v16 = [v15 constraintEqualToConstant:0.0];
+      bottomColorView2 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+      heightAnchor = [bottomColorView2 heightAnchor];
+      v16 = [heightAnchor constraintEqualToConstant:0.0];
       [(ReservationAvailabilityCollectionViewCell *)self setBottomColorViewHeightConstraint:v16];
     }
 
-    v17 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
-    [v17 setActive:0];
+    bottomColorViewBottomConstraint3 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewBottomConstraint];
+    [bottomColorViewBottomConstraint3 setActive:0];
 
-    v12 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
+    bottomColorViewBottomConstraint2 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorViewHeightConstraint];
   }
 
-  v18 = v12;
-  [v12 setActive:1];
+  v18 = bottomColorViewBottomConstraint2;
+  [bottomColorViewBottomConstraint2 setActive:1];
 
   v19.receiver = self;
   v19.super_class = ReservationAvailabilityCollectionViewCell;
@@ -145,135 +145,135 @@
 
 - (void)initializeConstraints
 {
-  v3 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subLabel = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  [subLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  topColorView = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  [topColorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomColorView = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  [bottomColorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v10 = [v9 topAnchor];
-  v11 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v12 = [v11 topAnchor];
-  v102 = [v10 constraintEqualToAnchor:v12 constant:9.0];
+  topColorView2 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  topAnchor = [topColorView2 topAnchor];
+  contentView2 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v102 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
 
-  v13 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v16 = [v15 leadingAnchor];
-  v101 = [v14 constraintEqualToAnchor:v16];
+  topColorView3 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  leadingAnchor = [topColorView3 leadingAnchor];
+  contentView3 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v101 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v17 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v18 = [v17 trailingAnchor];
-  v19 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v20 = [v19 trailingAnchor];
-  v100 = [v18 constraintEqualToAnchor:v20];
+  topColorView4 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  trailingAnchor = [topColorView4 trailingAnchor];
+  contentView4 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v100 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v21 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  v24 = [v23 lastBaselineAnchor];
-  v99 = [v22 constraintEqualToAnchor:v24 constant:12.0];
+  topColorView5 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  bottomAnchor = [topColorView5 bottomAnchor];
+  titleLabel2 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel2 lastBaselineAnchor];
+  v99 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:12.0];
 
-  v25 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v26 = [v25 topAnchor];
-  v27 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v28 = [v27 bottomAnchor];
-  v98 = [v26 constraintEqualToAnchor:v28];
+  bottomColorView2 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  topAnchor3 = [bottomColorView2 topAnchor];
+  topColorView6 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  bottomAnchor2 = [topColorView6 bottomAnchor];
+  v98 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2];
 
-  v29 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v30 = [v29 leadingAnchor];
-  v31 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v32 = [v31 leadingAnchor];
-  v97 = [v30 constraintEqualToAnchor:v32];
+  bottomColorView3 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  leadingAnchor3 = [bottomColorView3 leadingAnchor];
+  contentView5 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v97 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v33 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v34 = [v33 trailingAnchor];
-  v35 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v36 = [v35 trailingAnchor];
-  v96 = [v34 constraintEqualToAnchor:v36];
+  bottomColorView4 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  trailingAnchor3 = [bottomColorView4 trailingAnchor];
+  contentView6 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v96 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v37 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  v38 = [v37 topAnchor];
-  v39 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v40 = [v39 topAnchor];
-  v95 = [v38 constraintEqualToAnchor:v40 constant:8.0];
+  titleLabel3 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  topAnchor4 = [titleLabel3 topAnchor];
+  topColorView7 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  topAnchor5 = [topColorView7 topAnchor];
+  v95 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:8.0];
 
-  v41 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  v42 = [v41 leadingAnchor];
-  v43 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v44 = [v43 leadingAnchor];
-  v94 = [v42 constraintEqualToAnchor:v44 constant:17.5];
+  titleLabel4 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  leadingAnchor5 = [titleLabel4 leadingAnchor];
+  contentView7 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  leadingAnchor6 = [contentView7 leadingAnchor];
+  v94 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:17.5];
 
-  v45 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  v46 = [v45 trailingAnchor];
-  v47 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v48 = [v47 trailingAnchor];
-  v93 = [v46 constraintEqualToAnchor:v48 constant:-17.5];
+  titleLabel5 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  trailingAnchor5 = [titleLabel5 trailingAnchor];
+  contentView8 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  trailingAnchor6 = [contentView8 trailingAnchor];
+  v93 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-17.5];
 
-  v49 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  v50 = [v49 firstBaselineAnchor];
-  v51 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v52 = [v51 topAnchor];
-  v92 = [v50 constraintEqualToAnchor:v52 constant:15.0];
+  subLabel2 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  firstBaselineAnchor = [subLabel2 firstBaselineAnchor];
+  bottomColorView5 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  topAnchor6 = [bottomColorView5 topAnchor];
+  v92 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor6 constant:15.0];
 
-  v53 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v54 = [v53 leadingAnchor];
-  v55 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  v56 = [v55 leadingAnchor];
-  v91 = [v54 constraintLessThanOrEqualToAnchor:v56 constant:-17.5];
+  bottomColorView6 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  leadingAnchor7 = [bottomColorView6 leadingAnchor];
+  subLabel3 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  leadingAnchor8 = [subLabel3 leadingAnchor];
+  v91 = [leadingAnchor7 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:-17.5];
 
-  v57 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v58 = [v57 trailingAnchor];
-  v59 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  v60 = [v59 trailingAnchor];
-  v90 = [v58 constraintGreaterThanOrEqualToAnchor:v60 constant:17.5];
+  bottomColorView7 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  trailingAnchor7 = [bottomColorView7 trailingAnchor];
+  subLabel4 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  trailingAnchor8 = [subLabel4 trailingAnchor];
+  v90 = [trailingAnchor7 constraintGreaterThanOrEqualToAnchor:trailingAnchor8 constant:17.5];
 
-  v61 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
-  v62 = [v61 centerXAnchor];
-  v63 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
-  v64 = [v63 centerXAnchor];
-  v89 = [v62 constraintEqualToAnchor:v64];
+  titleLabel6 = [(ReservationAvailabilityCollectionViewCell *)self titleLabel];
+  centerXAnchor = [titleLabel6 centerXAnchor];
+  subLabel5 = [(ReservationAvailabilityCollectionViewCell *)self subLabel];
+  centerXAnchor2 = [subLabel5 centerXAnchor];
+  v89 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v65 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v66 = [v65 topAnchor];
-  v67 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
-  v68 = [v67 topAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68];
+  containerView2 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  topAnchor7 = [containerView2 topAnchor];
+  topColorView8 = [(ReservationAvailabilityCollectionViewCell *)self topColorView];
+  topAnchor8 = [topColorView8 topAnchor];
+  v69 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
 
-  v70 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v71 = [v70 leadingAnchor];
-  v72 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v73 = [v72 leadingAnchor];
-  v88 = [v71 constraintEqualToAnchor:v73];
+  containerView3 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  leadingAnchor9 = [containerView3 leadingAnchor];
+  contentView9 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  leadingAnchor10 = [contentView9 leadingAnchor];
+  v88 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
 
-  v74 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v75 = [v74 trailingAnchor];
-  v76 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
-  v77 = [v76 trailingAnchor];
-  v87 = [v75 constraintEqualToAnchor:v77];
+  containerView4 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  trailingAnchor9 = [containerView4 trailingAnchor];
+  contentView10 = [(ReservationAvailabilityCollectionViewCell *)self contentView];
+  trailingAnchor10 = [contentView10 trailingAnchor];
+  v87 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
 
-  v78 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v79 = [v78 bottomAnchor];
-  v80 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
-  v81 = [v80 bottomAnchor];
-  v82 = [v79 constraintEqualToAnchor:v81];
+  containerView5 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  bottomAnchor3 = [containerView5 bottomAnchor];
+  bottomColorView8 = [(ReservationAvailabilityCollectionViewCell *)self bottomColorView];
+  bottomAnchor4 = [bottomColorView8 bottomAnchor];
+  v82 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
 
-  v83 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
-  v84 = [v83 widthAnchor];
-  v85 = [v84 constraintGreaterThanOrEqualToConstant:88.0];
+  containerView6 = [(ReservationAvailabilityCollectionViewCell *)self containerView];
+  widthAnchor = [containerView6 widthAnchor];
+  v85 = [widthAnchor constraintGreaterThanOrEqualToConstant:88.0];
 
   v103[0] = v102;
   v103[1] = v101;
@@ -298,57 +298,57 @@
   [NSLayoutConstraint activateConstraints:v86];
 }
 
-- (ReservationAvailabilityCollectionViewCell)initWithFrame:(CGRect)a3
+- (ReservationAvailabilityCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v39.receiver = self;
   v39.super_class = ReservationAvailabilityCollectionViewCell;
-  v3 = [(ReservationAvailabilityCollectionViewCell *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ReservationAvailabilityCollectionViewCell *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
     [(ReservationAvailabilityCollectionViewCell *)v3 setTitleLabel:v4];
 
     v5 = +[UIColor clearColor];
-    v6 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
-    [v6 setBackgroundColor:v5];
+    titleLabel = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
+    [titleLabel setBackgroundColor:v5];
 
-    v7 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
-    [v7 setTextAlignment:1];
+    titleLabel2 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
     v8 = +[UIColor whiteColor];
-    v9 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
-    [v9 setTextColor:v8];
+    titleLabel3 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
+    [titleLabel3 setTextColor:v8];
 
     v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
     [v10 pointSize];
     v12 = v11;
 
     v13 = [UIFont systemFontOfSize:v12 weight:UIFontWeightLight];
-    v14 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
-    [v14 setFont:v13];
+    titleLabel4 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
+    [titleLabel4 setFont:v13];
 
     v15 = objc_alloc_init(UILabel);
     [(ReservationAvailabilityCollectionViewCell *)v3 setSubLabel:v15];
 
-    v16 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
-    [v16 setNumberOfLines:2];
+    subLabel = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
+    [subLabel setNumberOfLines:2];
 
     v17 = +[UIColor clearColor];
-    v18 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
-    [v18 setBackgroundColor:v17];
+    subLabel2 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
+    [subLabel2 setBackgroundColor:v17];
 
-    v19 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
-    [v19 setTextAlignment:1];
+    subLabel3 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
+    [subLabel3 setTextAlignment:1];
 
     v20 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    v21 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
-    [v21 setFont:v20];
+    subLabel4 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
+    [subLabel4 setFont:v20];
 
     v22 = objc_alloc_init(UIView);
     [(ReservationAvailabilityCollectionViewCell *)v3 setContainerView:v22];
 
-    v23 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
-    [v23 setClipsToBounds:1];
+    containerView = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
+    [containerView setClipsToBounds:1];
 
     v24 = objc_alloc_init(UIView);
     [(ReservationAvailabilityCollectionViewCell *)v3 setTopColorView:v24];
@@ -356,29 +356,29 @@
     v25 = objc_alloc_init(UIView);
     [(ReservationAvailabilityCollectionViewCell *)v3 setBottomColorView:v25];
 
-    v26 = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
-    v27 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
-    [v26 addSubview:v27];
+    contentView = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
+    containerView2 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
+    [contentView addSubview:containerView2];
 
-    v28 = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
-    v29 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
-    [v28 addSubview:v29];
+    contentView2 = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
+    titleLabel5 = [(ReservationAvailabilityCollectionViewCell *)v3 titleLabel];
+    [contentView2 addSubview:titleLabel5];
 
-    v30 = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
-    v31 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
-    [v30 addSubview:v31];
+    contentView3 = [(ReservationAvailabilityCollectionViewCell *)v3 contentView];
+    subLabel5 = [(ReservationAvailabilityCollectionViewCell *)v3 subLabel];
+    [contentView3 addSubview:subLabel5];
 
-    v32 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
-    v33 = [(ReservationAvailabilityCollectionViewCell *)v3 topColorView];
-    [v32 addSubview:v33];
+    containerView3 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
+    topColorView = [(ReservationAvailabilityCollectionViewCell *)v3 topColorView];
+    [containerView3 addSubview:topColorView];
 
-    v34 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
-    v35 = [(ReservationAvailabilityCollectionViewCell *)v3 bottomColorView];
-    [v34 addSubview:v35];
+    containerView4 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
+    bottomColorView = [(ReservationAvailabilityCollectionViewCell *)v3 bottomColorView];
+    [containerView4 addSubview:bottomColorView];
 
-    v36 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
-    v37 = [v36 layer];
-    [v37 setCornerRadius:8.0];
+    containerView5 = [(ReservationAvailabilityCollectionViewCell *)v3 containerView];
+    layer = [containerView5 layer];
+    [layer setCornerRadius:8.0];
 
     [(ReservationAvailabilityCollectionViewCell *)v3 updateColors];
     [(ReservationAvailabilityCollectionViewCell *)v3 initializeConstraints];

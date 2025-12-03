@@ -1,97 +1,97 @@
 @interface USUsageTrackingAgent
-- (void)downloadDataWithReplyHandler:(id)a3;
-- (void)fetchActivitiesForClient:(id)a3 replyHandler:(id)a4;
-- (void)fetchBudgetsWithIdentifier:(id)a3 clientIdentifier:(id)a4 replyHandler:(id)a5;
-- (void)fetchEventsForActivity:(id)a3 withClient:(id)a4 replyHandler:(id)a5;
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 replyHandler:(id)a5;
-- (void)fetchScheduleForActivity:(id)a3 withClient:(id)a4 replyHandler:(id)a5;
-- (void)fetchUsageForApplications:(id)a3 webDomains:(id)a4 categories:(id)a5 interval:(id)a6 replyHandler:(id)a7;
-- (void)startMonitoringActivity:(id)a3 withSchedule:(id)a4 events:(id)a5 forClient:(id)a6 withExtension:(id)a7 replyHandler:(id)a8;
-- (void)startMonitoringBudgets:(id)a3 darwinNotificationName:(id)a4 notificationTimes:(id)a5 clientIdentifier:(id)a6 replyHandler:(id)a7;
-- (void)stopMonitoringActivities:(id)a3 forClient:(id)a4 replyHandler:(id)a5;
-- (void)stopMonitoringAllBudgetsWithReplyHandler:(id)a3;
-- (void)stopMonitoringBudgets:(id)a3 clientIdentifier:(id)a4 replyHandler:(id)a5;
-- (void)uploadLocalDataWithReplyHandler:(id)a3;
+- (void)downloadDataWithReplyHandler:(id)handler;
+- (void)fetchActivitiesForClient:(id)client replyHandler:(id)handler;
+- (void)fetchBudgetsWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier replyHandler:(id)handler;
+- (void)fetchEventsForActivity:(id)activity withClient:(id)client replyHandler:(id)handler;
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval replyHandler:(id)handler;
+- (void)fetchScheduleForActivity:(id)activity withClient:(id)client replyHandler:(id)handler;
+- (void)fetchUsageForApplications:(id)applications webDomains:(id)domains categories:(id)categories interval:(id)interval replyHandler:(id)handler;
+- (void)startMonitoringActivity:(id)activity withSchedule:(id)schedule events:(id)events forClient:(id)client withExtension:(id)extension replyHandler:(id)handler;
+- (void)startMonitoringBudgets:(id)budgets darwinNotificationName:(id)name notificationTimes:(id)times clientIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)stopMonitoringActivities:(id)activities forClient:(id)client replyHandler:(id)handler;
+- (void)stopMonitoringAllBudgetsWithReplyHandler:(id)handler;
+- (void)stopMonitoringBudgets:(id)budgets clientIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)uploadLocalDataWithReplyHandler:(id)handler;
 @end
 
 @implementation USUsageTrackingAgent
 
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 replyHandler:(id)a5
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval replyHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  intervalCopy = interval;
   v9 = objc_opt_new();
-  [v9 queryUsageDuringInterval:v8 partitionInterval:v7 completionHandler:a4];
+  [v9 queryUsageDuringInterval:intervalCopy partitionInterval:handlerCopy completionHandler:partitionInterval];
 }
 
-- (void)fetchUsageForApplications:(id)a3 webDomains:(id)a4 categories:(id)a5 interval:(id)a6 replyHandler:(id)a7
+- (void)fetchUsageForApplications:(id)applications webDomains:(id)domains categories:(id)categories interval:(id)interval replyHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  intervalCopy = interval;
+  categoriesCopy = categories;
+  domainsCopy = domains;
+  applicationsCopy = applications;
   v16 = objc_opt_new();
   v17 = +[NSSet set];
   v20 = 0;
-  v18 = [v16 queryForApplications:v15 exemptApplications:v17 webDomains:v14 categories:v13 interval:v12 segmentInterval:&v20 error:86400.0];
+  v18 = [v16 queryForApplications:applicationsCopy exemptApplications:v17 webDomains:domainsCopy categories:categoriesCopy interval:intervalCopy segmentInterval:&v20 error:86400.0];
 
   v19 = v20;
-  v11[2](v11, v18, v19);
+  handlerCopy[2](handlerCopy, v18, v19);
 }
 
-- (void)startMonitoringBudgets:(id)a3 darwinNotificationName:(id)a4 notificationTimes:(id)a5 clientIdentifier:(id)a6 replyHandler:(id)a7
+- (void)startMonitoringBudgets:(id)budgets darwinNotificationName:(id)name notificationTimes:(id)times clientIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  timesCopy = times;
+  nameCopy = name;
+  budgetsCopy = budgets;
   v16 = +[USBudgetRegistration sharedRegistration];
-  [v16 addBudgets:v15 darwinNotificationName:v14 notificationTimes:v13 clientIdentifier:v12 completionHandler:v11];
+  [v16 addBudgets:budgetsCopy darwinNotificationName:nameCopy notificationTimes:timesCopy clientIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)stopMonitoringBudgets:(id)a3 clientIdentifier:(id)a4 replyHandler:(id)a5
+- (void)stopMonitoringBudgets:(id)budgets clientIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  budgetsCopy = budgets;
   v10 = +[USBudgetRegistration sharedRegistration];
-  [v10 removeBudgets:v9 clientIdentifier:v8 completionHandler:v7];
+  [v10 removeBudgets:budgetsCopy clientIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)stopMonitoringAllBudgetsWithReplyHandler:(id)a3
+- (void)stopMonitoringAllBudgetsWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[USBudgetRegistration sharedRegistration];
-  [v4 removeAllBudgetsWithCompletionHandler:v3];
+  [v4 removeAllBudgetsWithCompletionHandler:handlerCopy];
 }
 
-- (void)fetchBudgetsWithIdentifier:(id)a3 clientIdentifier:(id)a4 replyHandler:(id)a5
+- (void)fetchBudgetsWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier replyHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  clientIdentifierCopy = clientIdentifier;
+  identifierCopy = identifier;
   v10 = +[USBudgetRegistration sharedRegistration];
-  [v10 fetchBudgetsWithIdentifier:v9 clientIdentifier:v8 completionHandler:v7];
+  [v10 fetchBudgetsWithIdentifier:identifierCopy clientIdentifier:clientIdentifierCopy completionHandler:handlerCopy];
 }
 
-- (void)startMonitoringActivity:(id)a3 withSchedule:(id)a4 events:(id)a5 forClient:(id)a6 withExtension:(id)a7 replyHandler:(id)a8
+- (void)startMonitoringActivity:(id)activity withSchedule:(id)schedule events:(id)events forClient:(id)client withExtension:(id)extension replyHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v16 | v17)
+  activityCopy = activity;
+  scheduleCopy = schedule;
+  eventsCopy = events;
+  clientCopy = client;
+  extensionCopy = extension;
+  handlerCopy = handler;
+  if (clientCopy | extensionCopy)
   {
     v19 = 1;
   }
 
   else
   {
-    v20 = [v15 keysOfEntriesPassingTest:&stru_1000865F8];
+    v20 = [eventsCopy keysOfEntriesPassingTest:&stru_1000865F8];
     v19 = [v20 count] != 0;
   }
 
@@ -102,7 +102,7 @@
   {
     v31 = +[USBudgetRegistration sharedRegistration];
     v33 = 0;
-    [v31 addBudgetForActivity:v13 withSchedule:v14 events:v15 forClient:v16 withExtension:v17 isPrivateClient:v19 error:&v33];
+    [v31 addBudgetForActivity:activityCopy withSchedule:scheduleCopy events:eventsCopy forClient:clientCopy withExtension:extensionCopy isPrivateClient:v19 error:&v33];
     v30 = v33;
   }
 
@@ -111,9 +111,9 @@
     v23 = +[USUsageTrackingBundle usageTrackingBundle];
     v24 = [v23 localizedStringForKey:@"NotAuthorizedForSPIError" value:&stru_100088840 table:0];
     [v23 localizedStringForKey:@"RequiresPrivateUsageTrackingAgentEntitlement" value:&stru_100088840 table:0];
-    v32 = v15;
-    v25 = v14;
-    v27 = v26 = v13;
+    v32 = eventsCopy;
+    v25 = scheduleCopy;
+    v27 = v26 = activityCopy;
     v34[0] = NSLocalizedDescriptionKey;
     v34[1] = NSLocalizedRecoverySuggestionErrorKey;
     v35[0] = v24;
@@ -122,20 +122,20 @@
     v29 = [NSError alloc];
     v30 = [v29 initWithDomain:USErrorDomain code:3 userInfo:v28];
 
-    v13 = v26;
-    v14 = v25;
-    v15 = v32;
+    activityCopy = v26;
+    scheduleCopy = v25;
+    eventsCopy = v32;
   }
 
-  v18[2](v18, v30);
+  handlerCopy[2](handlerCopy, v30);
 }
 
-- (void)stopMonitoringActivities:(id)a3 forClient:(id)a4 replyHandler:(id)a5
+- (void)stopMonitoringActivities:(id)activities forClient:(id)client replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && (+[NSXPCConnection currentConnection], v10 = objc_claimAutoreleasedReturnValue(), v11 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v10], v10, (v11 & 1) == 0))
+  activitiesCopy = activities;
+  clientCopy = client;
+  handlerCopy = handler;
+  if (clientCopy && (+[NSXPCConnection currentConnection], v10 = objc_claimAutoreleasedReturnValue(), v11 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v10], v10, (v11 & 1) == 0))
   {
     v12 = +[USUsageTrackingBundle usageTrackingBundle];
     v14 = [v12 localizedStringForKey:@"NotAuthorizedForSPIError" value:&stru_100088840 table:0];
@@ -153,18 +153,18 @@
   {
     v12 = +[USBudgetRegistration sharedRegistration];
     v18 = 0;
-    [v12 removeBudgetsForActivities:v7 withClient:v8 error:&v18];
+    [v12 removeBudgetsForActivities:activitiesCopy withClient:clientCopy error:&v18];
     v13 = v18;
   }
 
-  v9[2](v9, v13);
+  handlerCopy[2](handlerCopy, v13);
 }
 
-- (void)fetchActivitiesForClient:(id)a3 replyHandler:(id)a4
+- (void)fetchActivitiesForClient:(id)client replyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (+[NSXPCConnection currentConnection], v7 = objc_claimAutoreleasedReturnValue(), v8 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v7], v7, (v8 & 1) == 0))
+  clientCopy = client;
+  handlerCopy = handler;
+  if (clientCopy && (+[NSXPCConnection currentConnection], v7 = objc_claimAutoreleasedReturnValue(), v8 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v7], v7, (v8 & 1) == 0))
   {
     v12 = +[USUsageTrackingBundle usageTrackingBundle];
     v13 = [v12 localizedStringForKey:@"NotAuthorizedForSPIError" value:&stru_100088840 table:0];
@@ -184,19 +184,19 @@
   {
     v9 = +[USBudgetRegistration sharedRegistration];
     v17 = 0;
-    v10 = [v9 fetchActivitiesForClient:v5 error:&v17];
+    v10 = [v9 fetchActivitiesForClient:clientCopy error:&v17];
     v11 = v17;
   }
 
-  v6[2](v6, v10, v11);
+  handlerCopy[2](handlerCopy, v10, v11);
 }
 
-- (void)fetchScheduleForActivity:(id)a3 withClient:(id)a4 replyHandler:(id)a5
+- (void)fetchScheduleForActivity:(id)activity withClient:(id)client replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && (+[NSXPCConnection currentConnection], v10 = objc_claimAutoreleasedReturnValue(), v11 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v10], v10, (v11 & 1) == 0))
+  activityCopy = activity;
+  clientCopy = client;
+  handlerCopy = handler;
+  if (clientCopy && (+[NSXPCConnection currentConnection], v10 = objc_claimAutoreleasedReturnValue(), v11 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v10], v10, (v11 & 1) == 0))
   {
     v15 = +[USUsageTrackingBundle usageTrackingBundle];
     v16 = [v15 localizedStringForKey:@"NotAuthorizedForSPIError" value:&stru_100088840 table:0];
@@ -216,26 +216,26 @@
   {
     v12 = +[USBudgetRegistration sharedRegistration];
     v20 = 0;
-    v13 = [v12 fetchScheduleForActivity:v7 withClient:v8 error:&v20];
+    v13 = [v12 fetchScheduleForActivity:activityCopy withClient:clientCopy error:&v20];
     v14 = v20;
   }
 
-  v9[2](v9, v13, v14);
+  handlerCopy[2](handlerCopy, v13, v14);
 }
 
-- (void)fetchEventsForActivity:(id)a3 withClient:(id)a4 replyHandler:(id)a5
+- (void)fetchEventsForActivity:(id)activity withClient:(id)client replyHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  clientCopy = client;
+  handlerCopy = handler;
   v10 = +[NSXPCConnection currentConnection];
   v11 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v10];
 
-  if (!v8 || (v11 & 1) != 0)
+  if (!clientCopy || (v11 & 1) != 0)
   {
     v19 = +[USBudgetRegistration sharedRegistration];
     v28 = 0;
-    v18 = [v19 fetchEventsForActivity:v7 withClient:v8 error:&v28];
+    v18 = [v19 fetchEventsForActivity:activityCopy withClient:clientCopy error:&v28];
     v17 = v28;
 
     v20 = [v18 keysOfEntriesPassingTest:&stru_1000865F8];
@@ -276,18 +276,18 @@
     v18 = 0;
   }
 
-  v9[2](v9, v18, v17);
+  handlerCopy[2](handlerCopy, v18, v17);
 }
 
-- (void)uploadLocalDataWithReplyHandler:(id)a3
+- (void)uploadLocalDataWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSXPCConnection currentConnection];
   v5 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v4];
 
   if (_os_feature_enabled_impl() && v5)
   {
-    [_TtC18UsageTrackingAgent15SyncCoordinator uploadLocalDataWithCompletionHandler:v3];
+    [_TtC18UsageTrackingAgent15SyncCoordinator uploadLocalDataWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -303,19 +303,19 @@
     v10 = [NSError alloc];
     v11 = [v10 initWithDomain:USErrorDomain code:3 userInfo:v9];
 
-    v3[2](v3, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (void)downloadDataWithReplyHandler:(id)a3
+- (void)downloadDataWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSXPCConnection currentConnection];
   v5 = [USTrackingAgentPrivateConnection connectionHasPrivateEntitlement:v4];
 
   if (_os_feature_enabled_impl() && v5)
   {
-    [_TtC18UsageTrackingAgent15SyncCoordinator downloadWithCompletionHandler:v3];
+    [_TtC18UsageTrackingAgent15SyncCoordinator downloadWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -331,7 +331,7 @@
     v10 = [NSError alloc];
     v11 = [v10 initWithDomain:USErrorDomain code:3 userInfo:v9];
 
-    v3[2](v3, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 

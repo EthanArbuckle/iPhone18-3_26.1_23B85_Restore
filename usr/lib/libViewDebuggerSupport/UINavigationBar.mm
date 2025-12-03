@@ -1,6 +1,6 @@
 @interface UINavigationBar
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UINavigationBar
@@ -129,46 +129,46 @@
   return v20;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"largeTitleFont"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"largeTitleFont"])
   {
-    v10 = [v9 largeTitleTextAttributes];
-    v11 = v10;
+    largeTitleTextAttributes = [objectCopy largeTitleTextAttributes];
+    v11 = largeTitleTextAttributes;
     v12 = &NSFontAttributeName;
 LABEL_5:
-    v13 = [v10 objectForKeyedSubscript:*v12];
+    shadowColor = [largeTitleTextAttributes objectForKeyedSubscript:*v12];
 LABEL_6:
-    v14 = v13;
+    errorCopy = shadowColor;
 LABEL_7:
 
     v15 = 1;
     goto LABEL_8;
   }
 
-  if ([v8 isEqualToString:@"largeTitleTextColor"])
+  if ([nameCopy isEqualToString:@"largeTitleTextColor"])
   {
-    v10 = [v9 largeTitleTextAttributes];
-    v11 = v10;
+    largeTitleTextAttributes = [objectCopy largeTitleTextAttributes];
+    v11 = largeTitleTextAttributes;
     v12 = &NSForegroundColorAttributeName;
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"largeTitleTextShadowColor"])
+  if ([nameCopy isEqualToString:@"largeTitleTextShadowColor"])
   {
-    v19 = [v9 largeTitleTextAttributes];
-    v11 = [v19 objectForKeyedSubscript:NSShadowAttributeName];
+    largeTitleTextAttributes2 = [objectCopy largeTitleTextAttributes];
+    v11 = [largeTitleTextAttributes2 objectForKeyedSubscript:NSShadowAttributeName];
 
-    v13 = [v11 shadowColor];
+    shadowColor = [v11 shadowColor];
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:@"largeTitleTextShadowOffset"])
+  if ([nameCopy isEqualToString:@"largeTitleTextShadowOffset"])
   {
-    v23 = [v9 largeTitleTextAttributes];
-    v11 = [v23 objectForKeyedSubscript:NSShadowAttributeName];
+    largeTitleTextAttributes3 = [objectCopy largeTitleTextAttributes];
+    v11 = [largeTitleTextAttributes3 objectForKeyedSubscript:NSShadowAttributeName];
 
     [v11 shadowOffset];
     valuePtr = v24;
@@ -176,7 +176,7 @@ LABEL_7:
     v26 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
     *v26 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
     v26[1] = CFNumberCreate(0, kCFNumberCGFloatType, v49);
-    v14 = CFArrayCreate(0, v26, 2, &kCFTypeArrayCallBacks);
+    errorCopy = CFArrayCreate(0, v26, 2, &kCFTypeArrayCallBacks);
     CFRelease(*v26);
     CFRelease(v26[1]);
     free(v26);
@@ -184,55 +184,55 @@ LABEL_7:
   }
 
   v15 = 0;
-  v14 = 0;
+  errorCopy = 0;
 LABEL_8:
-  if ([v8 isEqualToString:@"dbg_hasLargeTitleTextAttributes"])
+  if ([nameCopy isEqualToString:@"dbg_hasLargeTitleTextAttributes"])
   {
-    a6 = &__kCFBooleanTrue;
+    error = &__kCFBooleanTrue;
 LABEL_20:
 
-    v14 = a6;
+    errorCopy = error;
     goto LABEL_21;
   }
 
-  if ([v8 isEqualToString:@"titleFont"])
+  if ([nameCopy isEqualToString:@"titleFont"])
   {
-    v16 = [v9 titleTextAttributes];
-    v17 = v16;
+    titleTextAttributes = [objectCopy titleTextAttributes];
+    v17 = titleTextAttributes;
     v18 = &NSFontAttributeName;
 LABEL_16:
-    v20 = [v16 objectForKeyedSubscript:*v18];
+    shadowColor2 = [titleTextAttributes objectForKeyedSubscript:*v18];
 LABEL_17:
-    a6 = v20;
+    error = shadowColor2;
 LABEL_18:
-    v21 = v14;
-    v14 = v17;
+    v21 = errorCopy;
+    errorCopy = v17;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  if ([v8 isEqualToString:@"titleTextColor"])
+  if ([nameCopy isEqualToString:@"titleTextColor"])
   {
-    v16 = [v9 titleTextAttributes];
-    v17 = v16;
+    titleTextAttributes = [objectCopy titleTextAttributes];
+    v17 = titleTextAttributes;
     v18 = &NSForegroundColorAttributeName;
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"titleTextShadowColor"])
+  if ([nameCopy isEqualToString:@"titleTextShadowColor"])
   {
-    v27 = [v9 titleTextAttributes];
-    v17 = [v27 objectForKeyedSubscript:NSShadowAttributeName];
+    titleTextAttributes2 = [objectCopy titleTextAttributes];
+    v17 = [titleTextAttributes2 objectForKeyedSubscript:NSShadowAttributeName];
 
-    v20 = [v17 shadowColor];
+    shadowColor2 = [v17 shadowColor];
     goto LABEL_17;
   }
 
-  if ([v8 isEqualToString:@"titleTextShadowOffset"])
+  if ([nameCopy isEqualToString:@"titleTextShadowOffset"])
   {
-    v28 = [v9 titleTextAttributes];
-    v17 = [v28 objectForKeyedSubscript:NSShadowAttributeName];
+    titleTextAttributes3 = [objectCopy titleTextAttributes];
+    v17 = [titleTextAttributes3 objectForKeyedSubscript:NSShadowAttributeName];
 
     [v17 shadowOffset];
     valuePtr = v29;
@@ -240,7 +240,7 @@ LABEL_19:
     v31 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
     *v31 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
     v31[1] = CFNumberCreate(0, kCFNumberCGFloatType, v49);
-    a6 = CFArrayCreate(0, v31, 2, &kCFTypeArrayCallBacks);
+    error = CFArrayCreate(0, v31, 2, &kCFTypeArrayCallBacks);
     CFRelease(*v31);
     CFRelease(v31[1]);
     free(v31);
@@ -249,8 +249,8 @@ LABEL_19:
 
   if ((v15 & 1) == 0)
   {
-    v21 = v9;
-    v32 = v8;
+    v21 = objectCopy;
+    v32 = nameCopy;
     if (![v32 length])
     {
       goto LABEL_44;
@@ -266,31 +266,31 @@ LABEL_19:
     {
       if ([v32 length] < 2)
       {
-        v37 = [v32 uppercaseString];
+        uppercaseString = [v32 uppercaseString];
       }
 
       else
       {
         v34 = [v32 substringToIndex:1];
-        v35 = [v34 uppercaseString];
+        uppercaseString2 = [v34 uppercaseString];
         v36 = [v32 substringFromIndex:1];
-        v37 = [v35 stringByAppendingString:v36];
+        uppercaseString = [uppercaseString2 stringByAppendingString:v36];
       }
 
-      v38 = [@"is" stringByAppendingString:v37];
+      v38 = [@"is" stringByAppendingString:uppercaseString];
       NSSelectorFromString(v38);
       v33 = (objc_opt_respondsToSelector() & 1) != 0 ? v38 : 0;
     }
 
     if (v33)
     {
-      a6 = [v21 valueForKey:v33];
+      error = [v21 valueForKey:v33];
     }
 
     else
     {
 LABEL_44:
-      if (a6)
+      if (error)
       {
         v39 = v32;
         if (v21)
@@ -325,10 +325,10 @@ LABEL_44:
         v44 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v43];
 
         v45 = v44;
-        *a6 = v44;
+        *error = v44;
 
         v33 = 0;
-        a6 = 0;
+        error = 0;
       }
 
       else
@@ -342,7 +342,7 @@ LABEL_44:
 
 LABEL_21:
 
-  return v14;
+  return errorCopy;
 }
 
 @end

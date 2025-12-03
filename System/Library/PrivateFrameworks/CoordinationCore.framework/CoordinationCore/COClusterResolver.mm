@@ -1,22 +1,22 @@
 @interface COClusterResolver
-+ (id)resolverForCluster:(id)a3 delegate:(id)a4;
-- (BOOL)_updateIdentifier:(id)a3;
++ (id)resolverForCluster:(id)cluster delegate:(id)delegate;
+- (BOOL)_updateIdentifier:(id)identifier;
 - (COClusterResolverDelegate)delegate;
-- (id)_initWithCluster:(id)a3 delegate:(id)a4;
+- (id)_initWithCluster:(id)cluster delegate:(id)delegate;
 - (id)description;
 - (void)_activate;
-- (void)_delegateNotifyClusterIdentifierChanged:(id)a3;
+- (void)_delegateNotifyClusterIdentifierChanged:(id)changed;
 - (void)_invokeBootstrapBlocks;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)activate;
 @end
 
 @implementation COClusterResolver
 
-- (id)_initWithCluster:(id)a3 delegate:(id)a4
+- (id)_initWithCluster:(id)cluster delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  clusterCopy = cluster;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = COClusterResolver;
   v9 = [(COClusterResolver *)&v12 init];
@@ -24,18 +24,18 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_cluster, a3);
-    objc_storeWeak(p_isa + 3, v8);
+    objc_storeStrong(&v9->_cluster, cluster);
+    objc_storeWeak(p_isa + 3, delegateCopy);
   }
 
   return p_isa;
 }
 
-+ (id)resolverForCluster:(id)a3 delegate:(id)a4
++ (id)resolverForCluster:(id)cluster delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithCluster:v7 delegate:v6];
+  delegateCopy = delegate;
+  clusterCopy = cluster;
+  v8 = [[self alloc] _initWithCluster:clusterCopy delegate:delegateCopy];
 
   return v8;
 }
@@ -45,12 +45,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COClusterResolver *)self currentIdentifier];
-  v7 = [(COClusterResolver *)self cluster];
-  v8 = [(COClusterResolver *)self activatedCluster];
-  v9 = [(COClusterResolver *)self bootstrapCompleted];
+  currentIdentifier = [(COClusterResolver *)self currentIdentifier];
+  cluster = [(COClusterResolver *)self cluster];
+  activatedCluster = [(COClusterResolver *)self activatedCluster];
+  bootstrapCompleted = [(COClusterResolver *)self bootstrapCompleted];
   v10 = 78;
-  if (v9)
+  if (bootstrapCompleted)
   {
     v11 = 89;
   }
@@ -60,12 +60,12 @@
     v11 = 78;
   }
 
-  if (v8)
+  if (activatedCluster)
   {
     v10 = 89;
   }
 
-  v12 = [v3 stringWithFormat:@"<%@: %p, i(%@) c(%@) a(%c) b(%c)>"], v5, self, v6, v7, v10, v11);
+  v12 = [v3 stringWithFormat:@"<%@: %p, i(%@) c(%@) a(%c) b(%c)>"], v5, self, currentIdentifier, cluster, v10, v11);
 
   return v12;
 }
@@ -127,13 +127,13 @@ uint64_t __29__COClusterResolver_activate__block_invoke(uint64_t a1)
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   objc_initWeak(&location, self);
-  v3 = [(COClusterResolver *)self cluster];
+  cluster = [(COClusterResolver *)self cluster];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __30__COClusterResolver__activate__block_invoke;
   v4[3] = &unk_278E15CD8;
   objc_copyWeak(&v5, &location);
-  [v3 activate:v4];
+  [cluster activate:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -244,27 +244,27 @@ uint64_t __43__COClusterResolver__invokeBootstrapBlocks__block_invoke(uint64_t a
   return [v5 setWaitingForBootstrap:0];
 }
 
-- (BOOL)_updateIdentifier:(id)a3
+- (BOOL)_updateIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(COClusterResolver *)self currentIdentifier];
+  currentIdentifier = [(COClusterResolver *)self currentIdentifier];
   v6 = COCoreLogForCategory(13);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v5;
+    v15 = currentIdentifier;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p identifier updated to %@ from %@", &v10, 0x20u);
   }
 
-  if (v4 | v5 && ([v5 isEqual:v4] & 1) == 0)
+  if (identifierCopy | currentIdentifier && ([currentIdentifier isEqual:identifierCopy] & 1) == 0)
   {
-    [(COClusterResolver *)self setCurrentIdentifier:v4];
+    [(COClusterResolver *)self setCurrentIdentifier:identifierCopy];
     v7 = 1;
   }
 
@@ -277,23 +277,23 @@ uint64_t __43__COClusterResolver__invokeBootstrapBlocks__block_invoke(uint64_t a
   return v7;
 }
 
-- (void)_delegateNotifyClusterIdentifierChanged:(id)a3
+- (void)_delegateNotifyClusterIdentifierChanged:(id)changed
 {
-  v6 = a3;
+  changedCopy = changed;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v4 = [(COClusterResolver *)self delegate];
-  v5 = v4;
-  if (v4)
+  delegate = [(COClusterResolver *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    [v4 resolver:self clusterIdentifierChanged:v6];
+    [delegate resolver:self clusterIdentifierChanged:changedCopy];
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

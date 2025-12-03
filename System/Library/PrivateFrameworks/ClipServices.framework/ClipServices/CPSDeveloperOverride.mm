@@ -1,51 +1,51 @@
 @interface CPSDeveloperOverride
 + (id)allOverrides;
-+ (id)overrideForURL:(id)a3;
-+ (unint64_t)_indexOf:(id)a3;
++ (id)overrideForURL:(id)l;
++ (unint64_t)_indexOf:(id)of;
 + (void)loadAllOverridesIfNeeded;
 + (void)persistAllOverrides;
 - (BOOL)isComplete;
 - (BOOL)isValid;
 - (CGImage)heroImage;
-- (CPSDeveloperOverride)initWithCoder:(id)a3;
-- (CPSDeveloperOverride)initWithDictionary:(id)a3;
+- (CPSDeveloperOverride)initWithCoder:(id)coder;
+- (CPSDeveloperOverride)initWithDictionary:(id)dictionary;
 - (NSURL)heroImageURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (void)clear;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)heroImageURL;
 - (void)save;
-- (void)setHeroImage:(CGImage *)a3;
+- (void)setHeroImage:(CGImage *)image;
 @end
 
 @implementation CPSDeveloperOverride
 
-- (CPSDeveloperOverride)initWithDictionary:(id)a3
+- (CPSDeveloperOverride)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CPSDeveloperOverride;
   v5 = [(CPSDeveloperOverride *)&v17 init];
   if (v5)
   {
-    v6 = [v4 safari_stringForKey:@"invocationURL"];
+    v6 = [dictionaryCopy safari_stringForKey:@"invocationURL"];
     invocationURL = v5->_invocationURL;
     v5->_invocationURL = v6;
 
-    v8 = [v4 safari_stringForKey:@"clipBundleID"];
+    v8 = [dictionaryCopy safari_stringForKey:@"clipBundleID"];
     clipBundleID = v5->_clipBundleID;
     v5->_clipBundleID = v8;
 
-    v10 = [v4 safari_stringForKey:@"title"];
+    v10 = [dictionaryCopy safari_stringForKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 safari_stringForKey:@"subtitle"];
+    v12 = [dictionaryCopy safari_stringForKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v12;
 
-    v14 = [v4 safari_numberForKey:@"action"];
+    v14 = [dictionaryCopy safari_numberForKey:@"action"];
     v5->_action = [v14 integerValue];
 
     v15 = v5;
@@ -81,12 +81,12 @@
   v18 = *MEMORY[0x277D85DE8];
   if (!allOverrides)
   {
-    v2 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v3 = allOverrides;
-    allOverrides = v2;
+    allOverrides = array;
 
-    v4 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-    v5 = [v4 arrayForKey:@"DeveloperOverrides"];
+    cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+    v5 = [cps_clipServicesDefaults arrayForKey:@"DeveloperOverrides"];
     v6 = v5;
     if (v5)
     {
@@ -129,18 +129,18 @@
 
 + (id)allOverrides
 {
-  [a1 loadAllOverridesIfNeeded];
+  [self loadAllOverridesIfNeeded];
   v2 = allOverrides;
 
   return v2;
 }
 
-+ (id)overrideForURL:(id)a3
++ (id)overrideForURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 loadAllOverridesIfNeeded];
-  v5 = [v4 absoluteString];
+  lCopy = l;
+  [self loadAllOverridesIfNeeded];
+  absoluteString = [lCopy absoluteString];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -160,12 +160,12 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 invocationURL];
-        if ([v5 hasPrefix:v11])
+        invocationURL = [v10 invocationURL];
+        if ([absoluteString hasPrefix:invocationURL])
         {
-          v12 = [v10 isValid];
+          isValid = [v10 isValid];
 
-          if (v12)
+          if (isValid)
           {
             v7 = v10;
             goto LABEL_12;
@@ -193,7 +193,7 @@ LABEL_12:
 + (void)persistAllOverrides
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -214,8 +214,8 @@ LABEL_12:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) dictionaryRepresentation];
-        [v2 addObject:v8];
+        dictionaryRepresentation = [*(*(&v11 + 1) + 8 * v7) dictionaryRepresentation];
+        [array addObject:dictionaryRepresentation];
 
         ++v7;
       }
@@ -227,16 +227,16 @@ LABEL_12:
     while (v5);
   }
 
-  v9 = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
-  [v9 setObject:v2 forKey:@"DeveloperOverrides"];
-  [v9 synchronize];
+  cps_clipServicesDefaults = [MEMORY[0x277CBEBD0] cps_clipServicesDefaults];
+  [cps_clipServicesDefaults setObject:array forKey:@"DeveloperOverrides"];
+  [cps_clipServicesDefaults synchronize];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)_indexOf:(id)a3
++ (unint64_t)_indexOf:(id)of
 {
-  v3 = a3;
+  ofCopy = of;
   [objc_opt_class() loadAllOverridesIfNeeded];
   v11 = 0;
   v12 = &v11;
@@ -247,7 +247,7 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = __33__CPSDeveloperOverride__indexOf___block_invoke;
   v8[3] = &unk_278DCF350;
-  v5 = v3;
+  v5 = ofCopy;
   v9 = v5;
   v10 = &v11;
   [v4 enumerateObjectsUsingBlock:v8];
@@ -281,9 +281,9 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
   v5 = [v3 fileURLWithPathComponents:v4];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17 = 0;
-  v7 = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v17];
+  v7 = [defaultManager createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v17];
   v8 = v17;
 
   if (v7)
@@ -303,8 +303,8 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(NSString *)self->_invocationURL cps_sha256String];
-  v13 = [v11 stringWithFormat:@"%@-Hero.png", v12];
+  cps_sha256String = [(NSString *)self->_invocationURL cps_sha256String];
+  v13 = [v11 stringWithFormat:@"%@-Hero.png", cps_sha256String];
   v14 = [v9 URLByAppendingPathComponent:v13];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -315,8 +315,8 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
 - (void)save
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 cps_privacyPreservingDescription];
+  selfCopy = self;
+  cps_privacyPreservingDescription = [a2 cps_privacyPreservingDescription];
   OUTLINED_FUNCTION_0(&dword_2436ED000, v5, v6, "Could not save developer override hero image: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -325,8 +325,8 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
 - (void)clear
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 cps_privacyPreservingDescription];
+  selfCopy = self;
+  cps_privacyPreservingDescription = [a2 cps_privacyPreservingDescription];
   OUTLINED_FUNCTION_0(&dword_2436ED000, v5, v6, "Could not delete developer override hero image: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -335,10 +335,10 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
 - (BOOL)isComplete
 {
   v3 = [MEMORY[0x277CBEBC0] URLWithString:self->_invocationURL];
-  v4 = [v3 scheme];
-  v5 = [v4 lowercaseString];
+  scheme = [v3 scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v6 = (([v5 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"https")) && -[NSString length](self->_title, "length") && -[NSString length](self->_subtitle, "length") != 0;
+  v6 = (([lowercaseString isEqualToString:@"http"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"https")) && -[NSString length](self->_title, "length") && -[NSString length](self->_subtitle, "length") != 0;
   return v6;
 }
 
@@ -356,36 +356,36 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
     if ([v4 isBeta])
     {
       v6 = [MEMORY[0x277CBEBC0] URLWithString:self->_invocationURL];
-      v7 = [v4 applicationIdentifier];
-      v8 = [CPSUtilities appClipAssociatedDomainIsApprovedForURL:v6 applicationIdentifier:v7];
+      applicationIdentifier = [v4 applicationIdentifier];
+      isAdHocCodeSigned = [CPSUtilities appClipAssociatedDomainIsApprovedForURL:v6 applicationIdentifier:applicationIdentifier];
     }
 
     else if ([v4 isProfileValidated])
     {
-      v8 = 1;
+      isAdHocCodeSigned = 1;
     }
 
     else
     {
-      v8 = [v4 isAdHocCodeSigned];
+      isAdHocCodeSigned = [v4 isAdHocCodeSigned];
     }
   }
 
   else
   {
-    v8 = 0;
+    isAdHocCodeSigned = 0;
   }
 
-  return v8;
+  return isAdHocCodeSigned;
 }
 
-- (void)setHeroImage:(CGImage *)a3
+- (void)setHeroImage:(CGImage *)image
 {
   heroImage = self->_heroImage;
-  if (heroImage != a3)
+  if (heroImage != image)
   {
     CGImageRelease(heroImage);
-    self->_heroImage = CGImageRetain(a3);
+    self->_heroImage = CGImageRetain(image);
   }
 }
 
@@ -394,9 +394,9 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
   result = self->_heroImage;
   if (!result)
   {
-    v4 = [(CPSDeveloperOverride *)self heroImageURL];
-    v5 = [v4 path];
-    self->_heroImage = CPSCreateImageWithContentsOfFile(v5);
+    heroImageURL = [(CPSDeveloperOverride *)self heroImageURL];
+    path = [heroImageURL path];
+    self->_heroImage = CPSCreateImageWithContentsOfFile(path);
 
     return self->_heroImage;
   }
@@ -404,9 +404,9 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_invocationURL copy];
   v6 = v4[2];
   v4[2] = v5;
@@ -428,57 +428,57 @@ void __33__CPSDeveloperOverride__indexOf___block_invoke(uint64_t a1, void *a2, u
   return v4;
 }
 
-- (CPSDeveloperOverride)initWithCoder:(id)a3
+- (CPSDeveloperOverride)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CPSDeveloperOverride;
   v5 = [(CPSDeveloperOverride *)&v20 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"invocationURL"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"invocationURL"];
     invocationURL = v5->_invocationURL;
     v5->_invocationURL = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"clipBundleID"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"clipBundleID"];
     clipBundleID = v5->_clipBundleID;
     v5->_clipBundleID = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"title"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"title"];
     title = v5->_title;
     v5->_title = v13;
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"subtitle"];
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v16;
 
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
     v18 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   invocationURL = self->_invocationURL;
-  v5 = a3;
-  [v5 encodeObject:invocationURL forKey:@"invocationURL"];
-  [v5 encodeObject:self->_clipBundleID forKey:@"clipBundleID"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeInteger:self->_action forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:invocationURL forKey:@"invocationURL"];
+  [coderCopy encodeObject:self->_clipBundleID forKey:@"clipBundleID"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
 }
 
 - (void)heroImageURL
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 cps_privacyPreservingDescription];
+  selfCopy = self;
+  cps_privacyPreservingDescription = [a2 cps_privacyPreservingDescription];
   OUTLINED_FUNCTION_0(&dword_2436ED000, v5, v6, "Cannot create developer overrides folder with error: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];

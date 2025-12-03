@@ -1,8 +1,8 @@
 @interface ReflowTextView
 - (CGRect)frame;
-- (_TtC8PaperKit14ReflowTextView)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit14ReflowTextView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ReflowTextView
@@ -43,19 +43,19 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  *(*(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14ReflowTextView_layoutManager) + 16) = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  *(*(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14ReflowTextView_layoutManager) + 16) = frame;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ReflowTextView();
   [(ReflowTextView *)&v7 setFrame:x, y, width, height];
 }
 
-- (_TtC8PaperKit14ReflowTextView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit14ReflowTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

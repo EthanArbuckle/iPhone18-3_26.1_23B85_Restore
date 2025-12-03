@@ -1,16 +1,16 @@
 @interface SUUIModernChartHeaderView
-- (SUUIModernChartHeaderView)initWithFrame:(CGRect)a3;
+- (SUUIModernChartHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIModernChartHeaderView
 
-- (SUUIModernChartHeaderView)initWithFrame:(CGRect)a3
+- (SUUIModernChartHeaderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIModernChartHeaderView;
-  v3 = [(SUUIModernChartHeaderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIModernChartHeaderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -28,19 +28,19 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = MEMORY[0x277D74310];
   v5 = *MEMORY[0x277D76940];
-  v6 = a3;
+  titleCopy = title;
   v21 = [v4 preferredFontDescriptorWithTextStyle:v5 addingSymbolicTraits:2 options:2];
   v7 = [MEMORY[0x277D74300] fontWithDescriptor:v21 size:0.0];
   v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:1.3];
   v9 = objc_alloc(MEMORY[0x277CBEAC0]);
   v10 = [v9 initWithObjectsAndKeys:{v7, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D740D0], 0}];
-  v11 = [v6 uppercaseString];
+  uppercaseString = [titleCopy uppercaseString];
 
-  v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v11 attributes:v10];
+  v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:uppercaseString attributes:v10];
   [(UILabel *)self->_label setAttributedText:v12];
   [v7 _scaledValueForValue:16.0];
   v14 = v13;

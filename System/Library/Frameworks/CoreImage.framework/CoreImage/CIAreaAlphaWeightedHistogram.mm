@@ -55,11 +55,11 @@
     return 0;
   }
 
-  v3 = [(CIImage *)self->super.inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->super.inputImage imageByUnpremultiplyingAlpha];
   v4 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_prepHistogram];
-  [(CIImage *)v3 extent];
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
   inputCount = self->super.inputCount;
-  v37[0] = v3;
+  v37[0] = imageByUnpremultiplyingAlpha;
   v37[1] = inputCount;
   v10 = -[CIColorKernel applyWithExtent:arguments:](v4, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2], v6, v7, v8, v9);
   [(CIImage *)self->super.inputImage extent];
@@ -99,9 +99,9 @@
   v36[5] = v28;
   v36[6] = v29;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:7];
-  v31 = [(NSNumber *)self->super.inputCount intValue];
+  intValue = [(NSNumber *)self->super.inputCount intValue];
   v34 = v10;
-  v32 = +[CIImageProcessorKernel applyWithExtent:inputs:arguments:error:](TiledHistogram, "applyWithExtent:inputs:arguments:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1], v30, 0, 0.0, 0.0, v31, 1.0);
+  v32 = +[CIImageProcessorKernel applyWithExtent:inputs:arguments:error:](TiledHistogram, "applyWithExtent:inputs:arguments:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1], v30, 0, 0.0, 0.0, intValue, 1.0);
   [(CIImage *)v32 extent];
   return [(CIImage *)v32 imageBySettingAlphaOneInExtent:?];
 }

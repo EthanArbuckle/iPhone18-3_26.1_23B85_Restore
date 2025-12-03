@@ -1,98 +1,98 @@
 @interface RTTripClusterManager
 + (int64_t)periodicPurgePolicy;
-- (BOOL)_addTripSegmentToCompoundRoute:(id)a3 outLocationsArray:(id)a4 maxDistanceAllowedBetweenDriveSegments:(double)a5 tripSegmentRoadTransitionsStore:(id)a6 outRoadTransitionArray:(id)a7 compoundTripSegmentID:(id)a8 compoundTripSegmentStartDate:(id)a9 compoundRouteMetric:(id)a10;
+- (BOOL)_addTripSegmentToCompoundRoute:(id)route outLocationsArray:(id)array maxDistanceAllowedBetweenDriveSegments:(double)segments tripSegmentRoadTransitionsStore:(id)store outRoadTransitionArray:(id)transitionArray compoundTripSegmentID:(id)d compoundTripSegmentStartDate:(id)date compoundRouteMetric:(id)self0;
 - (BOOL)_shouldMockLearnedRoutesSPI;
-- (BOOL)_significantNonDriveClusterForFetchSPI:(id)a3;
+- (BOOL)_significantNonDriveClusterForFetchSPI:(id)i;
 - (BOOL)_supportsRouteCompoundingWithoutVisitAggregation;
-- (BOOL)areOriginAndDestinationTooClose:(id)a3;
-- (BOOL)areTripSegmentsSpatiallyAligned:(id)a3 withTrip:(id)a4;
-- (BOOL)areTwoPointsTooClose:(id)a3 location2:(id)a4;
-- (BOOL)processTripSegments:(id)a3 outLocationsArray:(id *)a4;
-- (RTTripClusterManager)initWithTripSegmentManager:(id)a3 tripClusterStore:(id)a4 tripClusterRouteStore:(id)a5 tripClusterRouteRoadTransitionsStore:(id)a6 tripClusterRecencyStore:(id)a7 tripClusterScheduleStore:(id)a8 tripSegmentRoadTransitionsStore:(id)a9 tripClusterWaypointStore:(id)a10 defaultsManager:(id)a11;
+- (BOOL)areOriginAndDestinationTooClose:(id)close;
+- (BOOL)areTripSegmentsSpatiallyAligned:(id)aligned withTrip:(id)trip;
+- (BOOL)areTwoPointsTooClose:(id)close location2:(id)location2;
+- (BOOL)processTripSegments:(id)segments outLocationsArray:(id *)array;
+- (RTTripClusterManager)initWithTripSegmentManager:(id)manager tripClusterStore:(id)store tripClusterRouteStore:(id)routeStore tripClusterRouteRoadTransitionsStore:(id)transitionsStore tripClusterRecencyStore:(id)recencyStore tripClusterScheduleStore:(id)scheduleStore tripSegmentRoadTransitionsStore:(id)roadTransitionsStore tripClusterWaypointStore:(id)self0 defaultsManager:(id)self1;
 - (double)maximumInterTripSegmentDistanceAllowedForCompoundRoute;
-- (id)_createNonDriveRTLearnedRouteTravelMode:(id)a3 totalNumberOfRoutes:(int)a4 sumOfTraversalCountOfAllRoutes:(int)a5;
-- (id)_createUnionOfLocations:(id)a3 decimatedLocations:(id)a4;
-- (id)_getClusterLikelihoods:(id)a3 routeDate:(id)a4;
-- (id)_getPurgePolicyOverrideDaysToPersistTripClusterData:(id)a3;
-- (id)_getPurgePolicyOverrideDaysToPersistTripClusterDataShort:(id)a3;
-- (id)_learnedRouteForDriveCluster:(id)a3 tripClusters:(id)a4 routeStartLocation:(id)a5 routeEndLocation:(id)a6 fetchAllRouteLocations:(BOOL)a7 metricsCollector:(id)a8 excludeRouteLocations:(BOOL)a9;
-- (id)_learnedRouteForNoDriveCluster:(id)a3 routeStartLocation:(id)a4 routeEndLocation:(id)a5 metricsCollector:(id)a6;
-- (id)_odPairMetricsPerClusterOrder:(id)a3;
+- (id)_createNonDriveRTLearnedRouteTravelMode:(id)mode totalNumberOfRoutes:(int)routes sumOfTraversalCountOfAllRoutes:(int)allRoutes;
+- (id)_createUnionOfLocations:(id)locations decimatedLocations:(id)decimatedLocations;
+- (id)_getClusterLikelihoods:(id)likelihoods routeDate:(id)date;
+- (id)_getPurgePolicyOverrideDaysToPersistTripClusterData:(id)data;
+- (id)_getPurgePolicyOverrideDaysToPersistTripClusterDataShort:(id)short;
+- (id)_learnedRouteForDriveCluster:(id)cluster tripClusters:(id)clusters routeStartLocation:(id)location routeEndLocation:(id)endLocation fetchAllRouteLocations:(BOOL)locations metricsCollector:(id)collector excludeRouteLocations:(BOOL)routeLocations;
+- (id)_learnedRouteForNoDriveCluster:(id)cluster routeStartLocation:(id)location routeEndLocation:(id)endLocation metricsCollector:(id)collector;
+- (id)_odPairMetricsPerClusterOrder:(id)order;
 - (id)_readMockSPIDataFile;
-- (id)_removeEmptyWaypointClusters:(id)a3;
-- (id)attemptCreatingACompoundRoute:(id)a3 compoundTripSegmentLocations:(id *)a4 numberOfDriveSegments:(unint64_t)a5 tripSegmentRoadTransitionsStore:(id)a6 compoundTripSegmentRoadTransitions:(id *)a7 driveTripDuration:(double *)a8;
-- (id)createMockTripWithSequence:(int)a3 sequenceMax:(int)a4 commuteID:(id)a5 originLat:(double)a6 originLon:(double)a7 destLat:(double)a8 destLon:(double)a9 mode:(int64_t)a10;
-- (id)getWaypointsFromOldStore:(id)a3;
-- (int)_maximumTravelDistanceForSignificantNonDriveCluster:(signed __int16)a3;
-- (int)_maximumTravelTimeForSignificantNonDriveCluster:(signed __int16)a3;
+- (id)_removeEmptyWaypointClusters:(id)clusters;
+- (id)attemptCreatingACompoundRoute:(id)route compoundTripSegmentLocations:(id *)locations numberOfDriveSegments:(unint64_t)segments tripSegmentRoadTransitionsStore:(id)store compoundTripSegmentRoadTransitions:(id *)transitions driveTripDuration:(double *)duration;
+- (id)createMockTripWithSequence:(int)sequence sequenceMax:(int)max commuteID:(id)d originLat:(double)lat originLon:(double)lon destLat:(double)destLat destLon:(double)destLon mode:(int64_t)self0;
+- (id)getWaypointsFromOldStore:(id)store;
+- (int)_maximumTravelDistanceForSignificantNonDriveCluster:(signed __int16)cluster;
+- (int)_maximumTravelTimeForSignificantNonDriveCluster:(signed __int16)cluster;
 - (int)_minimumTravelDistanceForSignificantNonDriveCluster;
 - (int)_minimumTravelTimeForSignificantNonDriveCluster;
 - (int)maximumLocationsInALearnedRoute;
 - (int)minimumTraversalCountForLearnedRoutes;
-- (int64_t)_fetchLearnedRoutesForFetchTypeAny:(id)a3 handler:(id)a4;
-- (int64_t)_fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4;
-- (unint64_t)_bestRoute:(id)a3 routeDate:(id)a4;
-- (unint64_t)_bestScheduleRoute:(id)a3 routeDate:(id)a4;
-- (unint64_t)_mostTravelledRoute:(id)a3;
-- (void)_computeSPIStatisticMetrics:(id)a3 learnedRoutes:(id)a4 error:(id)a5 spiStatisticReasonCode:(int64_t)a6 fetchRequestTime:(id)a7;
-- (void)_deleteAllTripClusterDataForClusterID:(id)a3;
-- (void)_fetchLearnedRoutesWithOptionsDefault:(id)a3 handler:(id)a4;
-- (void)_fetchLearnedRoutesWithOptionsMock:(id)a3 handler:(id)a4;
-- (void)_fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4;
-- (void)_findNonDriveClusterForCommuteID:(id)a3 tripClusters:(id)a4 beforeDriveCluster:(id *)a5 afterDriveCluster:(id *)a6;
-- (void)_findRouteFromCurrentLocation:(id)a3 options:(id)a4 queryStartTime:(id)a5 handler:(id)a6;
-- (void)_getRoadDataFromFetchedRoutes:(id)a3 roadData:(id)a4;
-- (void)_groupTripSegmentsByCommuteID:(id)a3 tripSegmentByCommuteID:(id)a4;
+- (int64_t)_fetchLearnedRoutesForFetchTypeAny:(id)any handler:(id)handler;
+- (int64_t)_fetchLearnedRoutesWithOptions:(id)options handler:(id)handler;
+- (unint64_t)_bestRoute:(id)route routeDate:(id)date;
+- (unint64_t)_bestScheduleRoute:(id)route routeDate:(id)date;
+- (unint64_t)_mostTravelledRoute:(id)route;
+- (void)_computeSPIStatisticMetrics:(id)metrics learnedRoutes:(id)routes error:(id)error spiStatisticReasonCode:(int64_t)code fetchRequestTime:(id)time;
+- (void)_deleteAllTripClusterDataForClusterID:(id)d;
+- (void)_fetchLearnedRoutesWithOptionsDefault:(id)default handler:(id)handler;
+- (void)_fetchLearnedRoutesWithOptionsMock:(id)mock handler:(id)handler;
+- (void)_fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler;
+- (void)_findNonDriveClusterForCommuteID:(id)d tripClusters:(id)clusters beforeDriveCluster:(id *)cluster afterDriveCluster:(id *)driveCluster;
+- (void)_findRouteFromCurrentLocation:(id)location options:(id)options queryStartTime:(id)time handler:(id)handler;
+- (void)_getRoadDataFromFetchedRoutes:(id)routes roadData:(id)data;
+- (void)_groupTripSegmentsByCommuteID:(id)d tripSegmentByCommuteID:(id)iD;
 - (void)_learnClusters;
-- (void)_markTripSegmentsAsProcessedByClustering:(id)a3;
-- (void)_mockLearnedRouteTravelModeConfiguration:(int64_t *)a3 driveTravelMode:(int64_t *)a4 postDriveTravelMode:(int64_t *)a5;
-- (void)_processAllFetchedRouteClustersForIndexRange:(id)a3 handler:(id)a4 tripClusters:(id)a5 originLatitude:(double)a6 originLongitude:(double)a7 destLatitude:(double)a8 destLongitude:(double)a9 startIndexIncluded:(unint64_t)a10 endIndexExcluded:(unint64_t)a11 queryStartTime:(id)a12 excludeRouteLocations:(BOOL)a13;
-- (void)_processAllTripSegmentsGroupedByOD:(id)a3 inCommuteGroups:(id)a4;
-- (void)_routeLocationsForCluster:(id)a3 inRouteLocations:(id)a4 learnedRouteLocations:(id)a5 fetchAllRouteLocations:(BOOL)a6;
-- (void)_routeScoreForDate:(id)a3 learnedRouteLastDate:(id)a4 distanceInWeekday:(unint64_t *)a5 distanceInHour:(unint64_t *)a6;
+- (void)_markTripSegmentsAsProcessedByClustering:(id)clustering;
+- (void)_mockLearnedRouteTravelModeConfiguration:(int64_t *)configuration driveTravelMode:(int64_t *)mode postDriveTravelMode:(int64_t *)travelMode;
+- (void)_processAllFetchedRouteClustersForIndexRange:(id)range handler:(id)handler tripClusters:(id)clusters originLatitude:(double)latitude originLongitude:(double)longitude destLatitude:(double)destLatitude destLongitude:(double)destLongitude startIndexIncluded:(unint64_t)self0 endIndexExcluded:(unint64_t)self1 queryStartTime:(id)self2 excludeRouteLocations:(BOOL)self3;
+- (void)_processAllTripSegmentsGroupedByOD:(id)d inCommuteGroups:(id)groups;
+- (void)_routeLocationsForCluster:(id)cluster inRouteLocations:(id)locations learnedRouteLocations:(id)routeLocations fetchAllRouteLocations:(BOOL)allRouteLocations;
+- (void)_routeScoreForDate:(id)date learnedRouteLastDate:(id)lastDate distanceInWeekday:(unint64_t *)weekday distanceInHour:(unint64_t *)hour;
 - (void)_setup;
-- (void)_topListRoutes:(id)a3 routeDate:(id)a4 handler:(id)a5;
-- (void)_updateSPIMetricReasonCodeAndSubmit:(int64_t)a3;
+- (void)_topListRoutes:(id)routes routeDate:(id)date handler:(id)handler;
+- (void)_updateSPIMetricReasonCodeAndSubmit:(int64_t)submit;
 - (void)computeCloudSyncMetric;
-- (void)deferClusterProcessing:(BOOL)a3;
-- (void)fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4;
+- (void)deferClusterProcessing:(BOOL)processing;
+- (void)fetchLearnedRoutesWithOptions:(id)options handler:(id)handler;
+- (void)fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler;
 - (void)generateMissingRoutesForClusters;
-- (void)groupTripSegments:(id)a3 inOriginDestPair:(id *)a4;
+- (void)groupTripSegments:(id)segments inOriginDestPair:(id *)pair;
 - (void)learnClusters;
-- (void)outputLearnedRouteSPICallDebuggingData:(id)a3 options:(id)a4 queryStartTime:(id)a5 queryResponseTimeMSec:(double)a6 learnedRoutes:(id)a7 type:(id)a8;
-- (void)outputTripSegmentsInDebugLogLine:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)purgeClusterDatabasesPredating:(id)a3 handler:(id)a4;
-- (void)purgeClustersDatabaseWithTripClusterStore:(id)a3 tripClusterRouteStore:(id)a4 tripClusterRoadTransitionStore:(id)a5;
-- (void)purgeTripClusterTable:(int)a3 handler:(id)a4;
-- (void)purgeTripClusterWithClusterID:(id)a3 handler:(id)a4;
+- (void)outputLearnedRouteSPICallDebuggingData:(id)data options:(id)options queryStartTime:(id)time queryResponseTimeMSec:(double)sec learnedRoutes:(id)routes type:(id)type;
+- (void)outputTripSegmentsInDebugLogLine:(id)line;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)purgeClusterDatabasesPredating:(id)predating handler:(id)handler;
+- (void)purgeClustersDatabaseWithTripClusterStore:(id)store tripClusterRouteStore:(id)routeStore tripClusterRoadTransitionStore:(id)transitionStore;
+- (void)purgeTripClusterTable:(int)table handler:(id)handler;
+- (void)purgeTripClusterWithClusterID:(id)d handler:(id)handler;
 - (void)setup;
 - (void)unlockAllRouteClusters;
-- (void)validateAndProcessCommute:(id)a3;
+- (void)validateAndProcessCommute:(id)commute;
 @end
 
 @implementation RTTripClusterManager
 
-- (RTTripClusterManager)initWithTripSegmentManager:(id)a3 tripClusterStore:(id)a4 tripClusterRouteStore:(id)a5 tripClusterRouteRoadTransitionsStore:(id)a6 tripClusterRecencyStore:(id)a7 tripClusterScheduleStore:(id)a8 tripSegmentRoadTransitionsStore:(id)a9 tripClusterWaypointStore:(id)a10 defaultsManager:(id)a11
+- (RTTripClusterManager)initWithTripSegmentManager:(id)manager tripClusterStore:(id)store tripClusterRouteStore:(id)routeStore tripClusterRouteRoadTransitionsStore:(id)transitionsStore tripClusterRecencyStore:(id)recencyStore tripClusterScheduleStore:(id)scheduleStore tripSegmentRoadTransitionsStore:(id)roadTransitionsStore tripClusterWaypointStore:(id)self0 defaultsManager:(id)self1
 {
   v59 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v48 = a4;
-  v17 = a4;
-  v49 = a5;
-  v18 = a5;
-  v50 = a6;
-  v19 = a6;
-  v51 = a7;
-  v20 = a7;
-  v52 = a8;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v54 = v16;
-  v55 = a11;
-  if (!v16)
+  managerCopy = manager;
+  storeCopy = store;
+  storeCopy2 = store;
+  routeStoreCopy = routeStore;
+  routeStoreCopy2 = routeStore;
+  transitionsStoreCopy = transitionsStore;
+  transitionsStoreCopy2 = transitionsStore;
+  recencyStoreCopy = recencyStore;
+  recencyStoreCopy2 = recencyStore;
+  scheduleStoreCopy = scheduleStore;
+  scheduleStoreCopy2 = scheduleStore;
+  roadTransitionsStoreCopy = roadTransitionsStore;
+  waypointStoreCopy = waypointStore;
+  v54 = managerCopy;
+  defaultsManagerCopy = defaultsManager;
+  if (!managerCopy)
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -102,14 +102,14 @@
     }
 
     v39 = 0;
-    v24 = v23;
+    v24 = waypointStoreCopy;
     goto LABEL_22;
   }
 
-  if (!v17)
+  if (!storeCopy2)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v24 = v23;
+    v24 = waypointStoreCopy;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -118,17 +118,17 @@
 
     v39 = 0;
 LABEL_22:
-    v25 = v55;
+    v25 = defaultsManagerCopy;
 LABEL_39:
-    v38 = self;
+    selfCopy = self;
     goto LABEL_40;
   }
 
-  v24 = v23;
-  if (!v18)
+  v24 = waypointStoreCopy;
+  if (!routeStoreCopy2)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v25 = v55;
+    v25 = defaultsManagerCopy;
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_38;
@@ -141,8 +141,8 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v25 = v55;
-  if (!v19)
+  v25 = defaultsManagerCopy;
+  if (!transitionsStoreCopy2)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -155,7 +155,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v20)
+  if (!recencyStoreCopy2)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v21)
+  if (!scheduleStoreCopy2)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v22)
+  if (!roadTransitionsStoreCopy)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -207,7 +207,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v55)
+  if (!defaultsManagerCopy)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -230,16 +230,16 @@ LABEL_38:
   if (v26)
   {
     v28 = v26;
-    objc_storeStrong(&v26->_tripSegmentManager, a3);
-    objc_storeStrong(&v28->_tripClusterStore, v48);
-    objc_storeStrong(&v28->_tripClusterRouteStore, v49);
-    objc_storeStrong(&v28->_tripClusterRouteRoadTransitionsStore, v50);
-    objc_storeStrong(&v28->_tripClusterRecencyStore, v51);
-    objc_storeStrong(&v28->_tripClusterScheduleStore, v52);
-    objc_storeStrong(&v28->_tripSegmentRoadTransitionsStore, a9);
-    objc_storeStrong(&v28->_tripClusterWaypointStore, a10);
-    objc_storeStrong(&v28->_defaultsManager, a11);
-    v29 = [[RTTripClusterProcessorOptions alloc] initWithDefaultsManager:v55];
+    objc_storeStrong(&v26->_tripSegmentManager, manager);
+    objc_storeStrong(&v28->_tripClusterStore, storeCopy);
+    objc_storeStrong(&v28->_tripClusterRouteStore, routeStoreCopy);
+    objc_storeStrong(&v28->_tripClusterRouteRoadTransitionsStore, transitionsStoreCopy);
+    objc_storeStrong(&v28->_tripClusterRecencyStore, recencyStoreCopy);
+    objc_storeStrong(&v28->_tripClusterScheduleStore, scheduleStoreCopy);
+    objc_storeStrong(&v28->_tripSegmentRoadTransitionsStore, roadTransitionsStore);
+    objc_storeStrong(&v28->_tripClusterWaypointStore, waypointStore);
+    objc_storeStrong(&v28->_defaultsManager, defaultsManager);
+    v29 = [[RTTripClusterProcessorOptions alloc] initWithDefaultsManager:defaultsManagerCopy];
     options = v28->_options;
     v28->_options = v29;
 
@@ -256,7 +256,7 @@ LABEL_38:
     v28->_pendingDrivingTripSegment = 0;
 
     [(RTTripClusterManager *)v28 setShouldDeferClusterProcessing:0];
-    v34 = [[RTTripClusterProcessor alloc] initWithOptions:v28->_options defaultsManager:v55];
+    v34 = [[RTTripClusterProcessor alloc] initWithOptions:v28->_options defaultsManager:defaultsManagerCopy];
     tripClusterProcessor = v28->_tripClusterProcessor;
     v28->_tripClusterProcessor = v34;
 
@@ -275,15 +275,15 @@ LABEL_38:
         v58 = v46;
         _os_log_debug_impl(&dword_2304B3000, v37, OS_LOG_TYPE_DEBUG, "%@,RTTripClusterManager successfully initialized", buf, 0xCu);
 
-        v25 = v55;
+        v25 = defaultsManagerCopy;
       }
 
       v27 = v28;
     }
   }
 
-  v38 = v27;
-  v39 = v38;
+  selfCopy = v27;
+  v39 = selfCopy;
 LABEL_40:
 
   return v39;
@@ -291,13 +291,13 @@ LABEL_40:
 
 - (void)setup
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__RTTripClusterManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __29__RTTripClusterManager_setup__block_invoke(uint64_t a1)
@@ -311,10 +311,10 @@ uint64_t __29__RTTripClusterManager_setup__block_invoke(uint64_t a1)
 - (void)_setup
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [(RTTripClusterManager *)self options];
-  v5 = [v4 enableClusterProcessing];
+  options = [(RTTripClusterManager *)self options];
+  enableClusterProcessing = [options enableClusterProcessing];
 
-  if ((v5 & 1) == 0)
+  if ((enableClusterProcessing & 1) == 0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -356,13 +356,13 @@ LABEL_12:
   }
 
   self->_isTripSegmentClusteringEnabled = 0;
-  v6 = [(RTTripClusterManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsTripSegmentClusteringEnablement"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:@"RTDefaultsTripSegmentClusteringEnablement"];
 
   if (v7)
   {
-    v8 = [(RTTripClusterManager *)self defaultsManager];
-    v9 = [v8 objectForKey:@"RTDefaultsTripSegmentClusteringEnablement"];
+    defaultsManager2 = [(RTTripClusterManager *)self defaultsManager];
+    v9 = [defaultsManager2 objectForKey:@"RTDefaultsTripSegmentClusteringEnablement"];
 
     if (v9)
     {
@@ -426,7 +426,7 @@ LABEL_16:
     if ([v5 count])
     {
       v20 = v4;
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -450,7 +450,7 @@ LABEL_16:
             if ([v12 isLocked])
             {
               [v12 unlockCluster];
-              [v6 addObject:v12];
+              [array addObject:v12];
             }
           }
 
@@ -469,7 +469,7 @@ LABEL_16:
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
           v16 = NSStringFromSelector(a2);
-          v17 = [v6 count];
+          v17 = [array count];
           v18 = [v7 count];
           clustersUnlockedAfterStartUp = self->_clustersUnlockedAfterStartUp;
           *buf = 138413314;
@@ -487,17 +487,17 @@ LABEL_16:
       }
 
       v4 = v20;
-      if ([v6 count])
+      if ([array count])
       {
-        [(RTTripClusterStore *)self->_tripClusterStore storeTripClusters:v6];
+        [(RTTripClusterStore *)self->_tripClusterStore storeTripClusters:array];
       }
     }
   }
 }
 
-- (void)deferClusterProcessing:(BOOL)a3
+- (void)deferClusterProcessing:(BOOL)processing
 {
-  v3 = a3;
+  processingCopy = processing;
   v7 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -505,13 +505,13 @@ LABEL_16:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = processingCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "RTTripClusterManager:defer,ClusterProcessing,%d", v6, 8u);
     }
   }
 
-  [(RTTripClusterManager *)self setShouldDeferClusterProcessing:v3];
-  [(RTTripClusterProcessor *)self->_tripClusterProcessor deferClusterProcessing:v3];
+  [(RTTripClusterManager *)self setShouldDeferClusterProcessing:processingCopy];
+  [(RTTripClusterProcessor *)self->_tripClusterProcessor deferClusterProcessing:processingCopy];
 }
 
 - (void)generateMissingRoutesForClusters
@@ -545,10 +545,10 @@ LABEL_14:
     return;
   }
 
-  v9 = [(RTTripClusterManager *)self options];
-  v10 = [v9 enableClusterProcessing];
+  options = [(RTTripClusterManager *)self options];
+  enableClusterProcessing = [options enableClusterProcessing];
 
-  if ((v10 & 1) == 0)
+  if ((enableClusterProcessing & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -573,10 +573,10 @@ LABEL_14:
   }
 
   self->_isClusterLearningInProgress = 1;
-  v11 = [(RTTripClusterManager *)self options];
-  v12 = [v11 rehydrateRouteLocationsFromWaypoints];
+  options2 = [(RTTripClusterManager *)self options];
+  rehydrateRouteLocationsFromWaypoints = [options2 rehydrateRouteLocationsFromWaypoints];
 
-  if (v12)
+  if (rehydrateRouteLocationsFromWaypoints)
   {
     [(RTTripClusterProcessor *)self->_tripClusterProcessor fillInRouteLocationsForClustersInStore:self->_tripClusterStore tripClusterRouteStore:self->_tripClusterRouteStore tripClusterWaypointStore:self->_tripClusterWaypointStore tripClusterRoadTransitionsStore:self->_tripClusterRouteRoadTransitionsStore minimumTraversalCountForLearnedRoutes:[(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes]];
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -625,9 +625,9 @@ LABEL_19:
 
 LABEL_20:
   v20 = [(RTTripClusterManager *)self options:*v28];
-  v21 = [v20 rehydrateRouteLocationsFromWaypoints];
+  rehydrateRouteLocationsFromWaypoints2 = [v20 rehydrateRouteLocationsFromWaypoints];
 
-  if (v21)
+  if (rehydrateRouteLocationsFromWaypoints2)
   {
     [(RTTripClusterProcessor *)self->_tripClusterProcessor deleteWaypointsForClustersWithDuplicateWaypoints:self->_tripClusterStore tripClusterWaypointStore:self->_tripClusterWaypointStore tripClusterRouteStore:self->_tripClusterRouteStore tripClusterRouteTransitionsStore:self->_tripClusterRouteRoadTransitionsStore minimumTraversalCountForLearnedRoutes:[(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes]];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -703,10 +703,10 @@ LABEL_15:
     return;
   }
 
-  v7 = [(RTTripClusterManager *)self options];
-  v8 = [v7 enableClusterProcessing];
+  options = [(RTTripClusterManager *)self options];
+  enableClusterProcessing = [options enableClusterProcessing];
 
-  if ((v8 & 1) == 0)
+  if ((enableClusterProcessing & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -745,11 +745,11 @@ LABEL_15:
   self->_isClusterLearningInProgress = 0;
 }
 
-- (BOOL)processTripSegments:(id)a3 outLocationsArray:(id *)a4
+- (BOOL)processTripSegments:(id)segments outLocationsArray:(id *)array
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!a4)
+  segmentsCopy = segments;
+  if (!array)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -769,42 +769,42 @@ LABEL_15:
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v6 identifier];
-      v12 = [v11 UUIDString];
+      identifier = [segmentsCopy identifier];
+      uUIDString = [identifier UUIDString];
       v42 = 138412546;
       v43 = v10;
       v44 = 2112;
-      v45 = v12;
+      v45 = uUIDString;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@,Fetching locations for tripID,%@", &v42, 0x16u);
     }
   }
 
-  if (v6)
+  if (segmentsCopy)
   {
-    v13 = [v6 identifier];
-    v14 = [v13 UUIDString];
+    identifier2 = [segmentsCopy identifier];
+    uUIDString2 = [identifier2 UUIDString];
 
-    if (!v14 || [v14 hasPrefix:@"00000000"])
+    if (!uUIDString2 || [uUIDString2 hasPrefix:@"00000000"])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v15 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+        startDate = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+        if (os_log_type_enabled(startDate, OS_LOG_TYPE_INFO))
         {
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
           v18 = v17;
           v19 = @"Unknown";
-          if (v14)
+          if (uUIDString2)
           {
-            v19 = v14;
+            v19 = uUIDString2;
           }
 
           v42 = 138412546;
           v43 = v17;
           v44 = 2112;
           v45 = v19;
-          _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@,Skipping invalid or temporary trip segment with ID,%@", &v42, 0x16u);
+          _os_log_impl(&dword_2304B3000, startDate, OS_LOG_TYPE_INFO, "%@,Skipping invalid or temporary trip segment with ID,%@", &v42, 0x16u);
         }
 
         v20 = 0;
@@ -818,23 +818,23 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v23 = [v6 dateInterval];
-    v15 = [v23 startDate];
+    dateInterval = [segmentsCopy dateInterval];
+    startDate = [dateInterval startDate];
 
-    v24 = [v6 dateInterval];
-    v25 = [v24 endDate];
+    dateInterval2 = [segmentsCopy dateInterval];
+    endDate = [dateInterval2 endDate];
 
-    if (v15 && v25)
+    if (startDate && endDate)
     {
-      v26 = [objc_alloc(MEMORY[0x277D01190]) initWithTripSegment:v6 preferredDownsamplingLevel:0 batchSize:0 offset:0];
-      v27 = [(RTTripClusterManager *)self tripSegmentManager];
-      v28 = [v27 getLocationsCountForTripSegmentWithOptions:v26];
+      v26 = [objc_alloc(MEMORY[0x277D01190]) initWithTripSegment:segmentsCopy preferredDownsamplingLevel:0 batchSize:0 offset:0];
+      tripSegmentManager = [(RTTripClusterManager *)self tripSegmentManager];
+      v28 = [tripSegmentManager getLocationsCountForTripSegmentWithOptions:v26];
 
       v29 = v28 > 0;
       if (v28 > 0)
       {
-        v30 = [(RTTripClusterManager *)self tripSegmentManager];
-        *a4 = [v30 getLocationsForTripSegment:v6 withCount:v28];
+        tripSegmentManager2 = [(RTTripClusterManager *)self tripSegmentManager];
+        *array = [tripSegmentManager2 getLocationsForTripSegment:segmentsCopy withCount:v28];
 
         v20 = 1;
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -849,11 +849,11 @@ LABEL_39:
         {
           v32 = objc_opt_class();
           v33 = NSStringFromClass(v32);
-          v34 = [*a4 count];
+          v34 = [*array count];
           v42 = 138412802;
           v43 = v33;
           v44 = 2112;
-          v45 = v14;
+          v45 = uUIDString2;
           v46 = 1024;
           v47 = v34;
           v35 = "%@,Locations fetched for tripID,%@,count,%d";
@@ -878,7 +878,7 @@ LABEL_36:
           v42 = 138412546;
           v43 = v33;
           v44 = 2112;
-          v45 = v14;
+          v45 = uUIDString2;
           v35 = "%@,Error fetching location count for tripID,%@";
           v36 = v31;
           v37 = 22;
@@ -911,7 +911,7 @@ LABEL_41:
         v42 = 138412546;
         v43 = v39;
         v44 = 2112;
-        v45 = v14;
+        v45 = uUIDString2;
         _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@,Error,missing start or end date for tripID,%@", &v42, 0x16u);
       }
     }
@@ -922,14 +922,14 @@ LABEL_41:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    uUIDString2 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+    if (os_log_type_enabled(uUIDString2, OS_LOG_TYPE_INFO))
     {
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       v42 = 138412290;
       v43 = v22;
-      _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,Error,null trip segment provided", &v42, 0xCu);
+      _os_log_impl(&dword_2304B3000, uUIDString2, OS_LOG_TYPE_INFO, "%@,Error,null trip segment provided", &v42, 0xCu);
     }
 
     goto LABEL_21;
@@ -941,18 +941,18 @@ LABEL_43:
   return v20;
 }
 
-- (BOOL)areOriginAndDestinationTooClose:(id)a3
+- (BOOL)areOriginAndDestinationTooClose:(id)close
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  closeCopy = close;
   v4 = objc_alloc_init(RTDistanceCalculator);
-  [v3 originLatitude];
+  [closeCopy originLatitude];
   v6 = v5;
-  [v3 originLongitude];
+  [closeCopy originLongitude];
   v44 = CLLocationCoordinate2DMake(v6, v7);
-  [v3 destinationLatitude];
+  [closeCopy destinationLatitude];
   v9 = v8;
-  [v3 destinationLongitude];
+  [closeCopy destinationLongitude];
   v43 = CLLocationCoordinate2DMake(v9, v10);
   v42 = 0;
   [(RTDistanceCalculator *)v4 distanceFromLocationCoordinate:&v44 toLocationCoordinate:&v43 error:&v42];
@@ -970,19 +970,19 @@ LABEL_43:
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = [v3 identifier];
-        v22 = [v21 UUIDString];
-        [v3 originLatitude];
+        identifier = [closeCopy identifier];
+        uUIDString = [identifier UUIDString];
+        [closeCopy originLatitude];
         v24 = v23;
-        [v3 originLongitude];
+        [closeCopy originLongitude];
         v26 = v25;
-        [v3 destinationLatitude];
+        [closeCopy destinationLatitude];
         v28 = v27;
-        [v3 destinationLongitude];
+        [closeCopy destinationLongitude];
         *buf = 138413827;
         v46 = v20;
         v47 = 2112;
-        v48 = v22;
+        v48 = uUIDString;
         v49 = 2053;
         v50 = v24;
         v51 = 2053;
@@ -1013,19 +1013,19 @@ LABEL_14:
     {
       v33 = objc_opt_class();
       v20 = NSStringFromClass(v33);
-      v21 = [v3 identifier];
-      v22 = [v21 UUIDString];
-      [v3 originLatitude];
+      identifier = [closeCopy identifier];
+      uUIDString = [identifier UUIDString];
+      [closeCopy originLatitude];
       v35 = v34;
-      [v3 originLongitude];
+      [closeCopy originLongitude];
       v37 = v36;
-      [v3 destinationLatitude];
+      [closeCopy destinationLatitude];
       v39 = v38;
-      [v3 destinationLongitude];
+      [closeCopy destinationLongitude];
       *buf = 138414083;
       v46 = v20;
       v47 = 2112;
-      v48 = v22;
+      v48 = uUIDString;
       v49 = 2053;
       v50 = v35;
       v51 = 2053;
@@ -1050,22 +1050,22 @@ LABEL_15:
   return v16;
 }
 
-- (void)outputTripSegmentsInDebugLogLine:(id)a3
+- (void)outputTripSegmentsInDebugLogLine:(id)line
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lineCopy = line;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v63 count:16];
+  v4 = [lineCopy countByEnumeratingWithState:&v35 objects:v63 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v36;
     v7 = MEMORY[0x277D86220];
     v28 = *v36;
-    v29 = v3;
+    v29 = lineCopy;
     do
     {
       v8 = 0;
@@ -1074,7 +1074,7 @@ LABEL_15:
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lineCopy);
         }
 
         v9 = *(*(&v35 + 1) + 8 * v8);
@@ -1085,16 +1085,16 @@ LABEL_15:
           {
             v11 = objc_opt_class();
             v12 = NSStringFromClass(v11);
-            v34 = [v9 identifier];
-            v13 = [v34 UUIDString];
-            v33 = [v9 modeOfTransportation];
-            v32 = [v9 isConsumedByClustering];
-            v31 = [v9 tripSegmentSequence];
-            v14 = [v9 tripSegmentSequenceMax];
-            v15 = [v9 dateInterval];
-            v16 = [v15 startDate];
-            v17 = [v9 dateInterval];
-            v18 = [v17 endDate];
+            identifier = [v9 identifier];
+            uUIDString = [identifier UUIDString];
+            modeOfTransportation = [v9 modeOfTransportation];
+            isConsumedByClustering = [v9 isConsumedByClustering];
+            tripSegmentSequence = [v9 tripSegmentSequence];
+            tripSegmentSequenceMax = [v9 tripSegmentSequenceMax];
+            dateInterval = [v9 dateInterval];
+            startDate = [dateInterval startDate];
+            dateInterval2 = [v9 dateInterval];
+            endDate = [dateInterval2 endDate];
             [v9 originLatitude];
             v20 = v19;
             [v9 originLongitude];
@@ -1106,21 +1106,21 @@ LABEL_15:
             v25 = v12;
             v40 = v12;
             v41 = 2112;
-            v42 = v13;
-            v26 = v13;
+            v42 = uUIDString;
+            v26 = uUIDString;
             v43 = 2048;
-            v44 = v33;
+            v44 = modeOfTransportation;
             v45 = 2048;
-            v46 = v32;
+            v46 = isConsumedByClustering;
             v7 = MEMORY[0x277D86220];
             v47 = 1024;
-            v48 = v31;
+            v48 = tripSegmentSequence;
             v49 = 1024;
-            v50 = v14;
+            v50 = tripSegmentSequenceMax;
             v51 = 2112;
-            v52 = v16;
+            v52 = startDate;
             v53 = 2112;
-            v54 = v18;
+            v54 = endDate;
             v55 = 2053;
             v56 = v20;
             v57 = 2053;
@@ -1134,7 +1134,7 @@ LABEL_15:
             v5 = v30;
             v6 = v28;
 
-            v3 = v29;
+            lineCopy = v29;
           }
         }
 
@@ -1142,21 +1142,21 @@ LABEL_15:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v35 objects:v63 count:16];
+      v5 = [lineCopy countByEnumeratingWithState:&v35 objects:v63 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)groupTripSegments:(id)a3 inOriginDestPair:(id *)a4
+- (void)groupTripSegments:(id)segments inOriginDestPair:(id *)pair
 {
   v63 = *MEMORY[0x277D85DE8];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = a3;
+  obj = segments;
   v5 = [obj countByEnumeratingWithState:&v47 objects:v62 count:16];
   if (v5)
   {
@@ -1178,10 +1178,10 @@ LABEL_15:
         }
 
         v11 = *(*(&v47 + 1) + 8 * v10);
-        v12 = [v11 identifier];
-        v13 = [v12 UUIDString];
+        identifier = [v11 identifier];
+        uUIDString = [identifier UUIDString];
 
-        if (v11 && (-[__CFString hasPrefix:](v13, "hasPrefix:", @"00000000") & 1) == 0 && ([v11 isConsumedByClustering] & 1) == 0 && objc_msgSend(v11, "tripSegmentSequence") > 0)
+        if (v11 && (-[__CFString hasPrefix:](uUIDString, "hasPrefix:", @"00000000") & 1) == 0 && ([v11 isConsumedByClustering] & 1) == 0 && objc_msgSend(v11, "tripSegmentSequence") > 0)
         {
           if (![(RTTripClusterManager *)self areOriginAndDestinationTooClose:v11])
           {
@@ -1189,7 +1189,7 @@ LABEL_15:
             v46 = 0u;
             v43 = 0u;
             v44 = 0u;
-            v14 = *a4;
+            v14 = *pair;
             v23 = [v14 countByEnumeratingWithState:&v43 objects:v51 count:16];
             if (v23)
             {
@@ -1205,8 +1205,8 @@ LABEL_15:
                   }
 
                   v27 = *(*(&v43 + 1) + 8 * i);
-                  v28 = [v27 firstObject];
-                  if ([(RTTripClusterManager *)self areTripSegmentsSpatiallyAligned:v28 withTrip:v11])
+                  firstObject = [v27 firstObject];
+                  if ([(RTTripClusterManager *)self areTripSegmentsSpatiallyAligned:firstObject withTrip:v11])
                   {
                     v8 = MEMORY[0x277D86220];
                     v7 = v41;
@@ -1217,17 +1217,17 @@ LABEL_15:
                       {
                         v29 = objc_opt_class();
                         v37 = NSStringFromClass(v29);
-                        v36 = [v28 identifier];
-                        v34 = [v36 UUIDString];
-                        v35 = [v11 identifier];
-                        v30 = [v35 UUIDString];
+                        identifier2 = [firstObject identifier];
+                        uUIDString2 = [identifier2 UUIDString];
+                        identifier3 = [v11 identifier];
+                        uUIDString3 = [identifier3 UUIDString];
                         *buf = v33;
                         v53 = v37;
                         v54 = 2112;
-                        v55 = v34;
+                        v55 = uUIDString2;
                         v56 = 2112;
-                        v57 = v30;
-                        v31 = v30;
+                        v57 = uUIDString3;
+                        v31 = uUIDString3;
                         _os_log_impl(&dword_2304B3000, v38, OS_LOG_TYPE_INFO, "%@,Representative tripID,%@,and tripID,%@,are spatially aligned", buf, 0x20u);
                       }
                     }
@@ -1250,7 +1250,7 @@ LABEL_15:
             }
 
             v14 = [MEMORY[0x277CBEB18] arrayWithObject:v11];
-            [*a4 addObject:v14];
+            [*pair addObject:v14];
             v8 = MEMORY[0x277D86220];
             v9 = v40;
             v7 = v41;
@@ -1286,9 +1286,9 @@ LABEL_15:
         {
           v17 = objc_opt_class();
           v16 = NSStringFromClass(v17);
-          if (v13)
+          if (uUIDString)
           {
-            v18 = v13;
+            v18 = uUIDString;
           }
 
           else
@@ -1296,23 +1296,23 @@ LABEL_15:
             v18 = @"Unknown";
           }
 
-          v19 = [v11 isConsumedByClustering];
-          v20 = [v11 tripSegmentSequence];
-          v21 = [v11 dateInterval];
-          v22 = [v21 startDate];
+          isConsumedByClustering = [v11 isConsumedByClustering];
+          tripSegmentSequence = [v11 tripSegmentSequence];
+          dateInterval = [v11 dateInterval];
+          startDate = [dateInterval startDate];
           *buf = 138413314;
           v53 = v16;
           v54 = 2112;
           v55 = v18;
           v8 = MEMORY[0x277D86220];
           v56 = 2048;
-          v57 = v19;
+          v57 = isConsumedByClustering;
           v58 = 1024;
-          v59 = v20;
+          v59 = tripSegmentSequence;
           v9 = v40;
           v7 = v41;
           v60 = 2112;
-          v61 = v22;
+          v61 = startDate;
           _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@,Skipping tripID,%@,isTripConsumedByClustering,%lu,tripSequence,%d,tripDate,%@", buf, 0x30u);
 
 LABEL_20:
@@ -1333,11 +1333,11 @@ LABEL_22:
   }
 }
 
-- (void)_groupTripSegmentsByCommuteID:(id)a3 tripSegmentByCommuteID:(id)a4
+- (void)_groupTripSegmentsByCommuteID:(id)d tripSegmentByCommuteID:(id)iD
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v56 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -1354,10 +1354,10 @@ LABEL_22:
     }
   }
 
-  if ([v6 count])
+  if ([dCopy count])
   {
     v11 = 0;
-    if ([v6 count])
+    if ([dCopy count])
     {
       v12 = 0;
       v13 = MEMORY[0x277D86220];
@@ -1366,10 +1366,10 @@ LABEL_22:
       v54 = a2;
       do
       {
-        v15 = [v6 objectAtIndexedSubscript:{v12, v52}];
-        v16 = [v15 tripCommuteID];
+        v15 = [dCopy objectAtIndexedSubscript:{v12, v52}];
+        tripCommuteID = [v15 tripCommuteID];
 
-        if (!v16)
+        if (!tripCommuteID)
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
@@ -1379,8 +1379,8 @@ LABEL_22:
               v18 = objc_opt_class();
               v19 = NSStringFromClass(v18);
               v20 = NSStringFromSelector(a2);
-              [v6 objectAtIndexedSubscript:v12];
-              v22 = v21 = v6;
+              [dCopy objectAtIndexedSubscript:v12];
+              v22 = v21 = dCopy;
               [v22 identifier];
               v23 = v14;
               v24 = v13;
@@ -1397,7 +1397,7 @@ LABEL_22:
               v13 = v24;
               v14 = v23;
 
-              v6 = v21;
+              dCopy = v21;
               a2 = v54;
             }
           }
@@ -1416,23 +1416,23 @@ LABEL_22:
         ++v12;
       }
 
-      while (v12 < [v6 count]);
+      while (v12 < [dCopy count]);
       if (v11)
       {
-        [v6 removeObjectsAtIndexes:v11];
+        [dCopy removeObjectsAtIndexes:v11];
       }
     }
 
-    if ([v6 count])
+    if ([dCopy count])
     {
       v53 = v11;
-      [v6 sortUsingComparator:&__block_literal_global_55];
+      [dCopy sortUsingComparator:&__block_literal_global_55];
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v55 = v6;
-      v27 = v6;
+      v55 = dCopy;
+      v27 = dCopy;
       v28 = [v27 countByEnumeratingWithState:&v57 objects:v61 count:16];
       if (v28)
       {
@@ -1454,15 +1454,15 @@ LABEL_22:
               v34 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
               if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
               {
-                v35 = [v33 tripCommuteID];
-                v36 = [v33 identifier];
-                v37 = [v33 tripSegmentSequence];
+                tripCommuteID2 = [v33 tripCommuteID];
+                identifier = [v33 identifier];
+                tripSegmentSequence = [v33 tripSegmentSequence];
                 *buf = 138412802;
-                v63 = v35;
+                v63 = tripCommuteID2;
                 v64 = 2112;
-                v65 = v36;
+                v65 = identifier;
                 v66 = 1024;
-                LODWORD(v67) = v37;
+                LODWORD(v67) = tripSegmentSequence;
                 _os_log_impl(&dword_2304B3000, v34, OS_LOG_TYPE_INFO, "commuteID,%@,tripID,%@,sequence,%d", buf, 0x1Cu);
               }
             }
@@ -1474,9 +1474,9 @@ LABEL_22:
         while (v29);
       }
 
-      v38 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v39 = [v27 objectAtIndexedSubscript:0];
-      [v38 addObject:v39];
+      [array addObject:v39];
 
       if ([v27 count] >= 2)
       {
@@ -1484,21 +1484,21 @@ LABEL_22:
         do
         {
           v41 = [v27 objectAtIndexedSubscript:v40];
-          v42 = [v41 tripCommuteID];
-          v43 = [v38 lastObject];
-          v44 = [v43 tripCommuteID];
-          v45 = [v42 isEqual:v44];
+          tripCommuteID3 = [v41 tripCommuteID];
+          lastObject = [array lastObject];
+          tripCommuteID4 = [lastObject tripCommuteID];
+          v45 = [tripCommuteID3 isEqual:tripCommuteID4];
 
           if ((v45 & 1) == 0)
           {
-            [v56 addObject:v38];
-            v46 = [MEMORY[0x277CBEB18] array];
+            [iDCopy addObject:array];
+            array2 = [MEMORY[0x277CBEB18] array];
 
-            v38 = v46;
+            array = array2;
           }
 
           v47 = [v27 objectAtIndexedSubscript:v40];
-          [v38 addObject:v47];
+          [array addObject:v47];
 
           ++v40;
         }
@@ -1506,9 +1506,9 @@ LABEL_22:
         while (v40 < [v27 count]);
       }
 
-      [v56 addObject:v38];
+      [iDCopy addObject:array];
 
-      v6 = v55;
+      dCopy = v55;
       v11 = v53;
     }
   }
@@ -1550,15 +1550,15 @@ uint64_t __77__RTTripClusterManager__groupTripSegmentsByCommuteID_tripSegmentByC
   return v7;
 }
 
-- (void)_processAllTripSegmentsGroupedByOD:(id)a3 inCommuteGroups:(id)a4
+- (void)_processAllTripSegmentsGroupedByOD:(id)d inCommuteGroups:(id)groups
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  groupsCopy = groups;
+  v8 = groupsCopy;
+  if (dCopy)
   {
-    if (v7)
+    if (groupsCopy)
     {
       goto LABEL_10;
     }
@@ -1607,18 +1607,18 @@ LABEL_10:
     }
   }
 
-  if ([v6 count])
+  if ([dCopy count])
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v15 = v6;
+    v15 = dCopy;
     v40 = [v15 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v40)
     {
       v37 = v8;
-      v35 = v6;
+      v35 = dCopy;
       v16 = 0;
       v39 = *v56;
       v17 = MEMORY[0x277D86220];
@@ -1747,7 +1747,7 @@ LABEL_10:
 
       while (v40);
 
-      v6 = v35;
+      dCopy = v35;
       v8 = v37;
     }
   }
@@ -1817,8 +1817,8 @@ uint64_t __75__RTTripClusterManager__processAllTripSegmentsGroupedByOD_inCommute
 
     [(RTLearnedRouteCloudKitSyncStatisticsMetrics *)v5 setNumEntriesTripClusterMO:v9];
     v13 = objc_alloc_init(MEMORY[0x277D01388]);
-    v14 = [(RTTripClusterManager *)self tripClusterRecencyStore];
-    v15 = [v14 getTripClusterRecencyWithOptions:v13];
+    tripClusterRecencyStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
+    v15 = [tripClusterRecencyStore getTripClusterRecencyWithOptions:v13];
 
     aSelector = a2;
     v55 = v15;
@@ -1835,7 +1835,7 @@ uint64_t __75__RTTripClusterManager__processAllTripSegmentsGroupedByOD_inCommute
     [(RTLearnedRouteCloudKitSyncStatisticsMetrics *)v5 setNumEntriesTripClusterRecencyMO:v16];
     v17 = dispatch_semaphore_create(0);
     v18 = objc_alloc_init(MEMORY[0x277D013B8]);
-    v19 = [(RTTripClusterManager *)self tripClusterScheduleStore];
+    tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterScheduleStore];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __46__RTTripClusterManager_computeCloudSyncMetric__block_invoke;
@@ -1845,7 +1845,7 @@ uint64_t __75__RTTripClusterManager__processAllTripSegmentsGroupedByOD_inCommute
     v20 = v17;
     v58 = v20;
     v54 = v18;
-    [v19 fetchTripClusterScheduleWithOptions:v18 handler:v56];
+    [tripClusterScheduleStore fetchTripClusterScheduleWithOptions:v18 handler:v56];
 
     v21 = v20;
     v22 = [MEMORY[0x277CBEAA8] now];
@@ -1861,11 +1861,11 @@ uint64_t __75__RTTripClusterManager__processAllTripSegmentsGroupedByOD_inCommute
       v25 = v24;
       v26 = objc_opt_new();
       v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-      v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v29 = [v28 filteredArrayUsingPredicate:v27];
-      v30 = [v29 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+      firstObject = [v29 firstObject];
 
-      [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+      [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
       v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
@@ -1921,8 +1921,8 @@ uint64_t __75__RTTripClusterManager__processAllTripSegmentsGroupedByOD_inCommute
       }
     }
 
-    v40 = [(RTTripClusterManager *)self defaultsManager];
-    v41 = [RTClusterLearnedRouteMetrics sharedInstance:v40];
+    defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+    v41 = [RTClusterLearnedRouteMetrics sharedInstance:defaultsManager];
 
     if (v41)
     {
@@ -1971,9 +1971,9 @@ intptr_t __46__RTTripClusterManager_computeCloudSyncMetric__block_invoke(uint64_
 - (void)_learnClusters
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = [(RTTripClusterManager *)self shouldDeferClusterProcessing];
+  shouldDeferClusterProcessing = [(RTTripClusterManager *)self shouldDeferClusterProcessing];
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (!v4)
+  if (!shouldDeferClusterProcessing)
   {
     if (v5)
     {
@@ -1988,14 +1988,14 @@ intptr_t __46__RTTripClusterManager_computeCloudSyncMetric__block_invoke(uint64_
       }
     }
 
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v14 = objc_alloc(MEMORY[0x277D01328]);
-    v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v6 endDate:v13];
+    v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:distantPast endDate:distantFuture];
     v16 = [v14 initWithAscending:1 dateInterval:v15 limit:0];
 
-    v17 = [(RTTripClusterManager *)self tripSegmentManager];
-    v18 = [v17 getTripSegmentsWithOptions:v16];
+    tripSegmentManager = [(RTTripClusterManager *)self tripSegmentManager];
+    v18 = [tripSegmentManager getTripSegmentsWithOptions:v16];
 
     v19 = [v18 count];
     v20 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
@@ -2065,8 +2065,8 @@ LABEL_21:
       goto LABEL_49;
     }
 
-    v30 = [MEMORY[0x277CBEB18] array];
-    v60 = v30;
+    array = [MEMORY[0x277CBEB18] array];
+    v60 = array;
     [(RTTripClusterManager *)self groupTripSegments:v18 inOriginDestPair:&v60];
     v25 = v60;
 
@@ -2095,14 +2095,14 @@ LABEL_47:
 
     else
     {
-      v55 = v13;
-      v35 = [MEMORY[0x277CBEB18] array];
-      [(RTTripClusterManager *)self _processAllTripSegmentsGroupedByOD:v25 inCommuteGroups:v35];
+      v55 = distantFuture;
+      array2 = [MEMORY[0x277CBEB18] array];
+      [(RTTripClusterManager *)self _processAllTripSegmentsGroupedByOD:v25 inCommuteGroups:array2];
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v31 = v35;
+      v31 = array2;
       v36 = [v31 countByEnumeratingWithState:&v56 objects:v67 count:16];
       if (v36)
       {
@@ -2181,14 +2181,14 @@ LABEL_41:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v47 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-        v13 = v55;
+        distantFuture = v55;
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
           v48 = objc_opt_class();
           v49 = NSStringFromClass(v48);
           v50 = v38;
           v51 = [v31 count];
-          v52 = [(RTTripClusterManager *)self shouldDeferClusterProcessing];
+          shouldDeferClusterProcessing2 = [(RTTripClusterManager *)self shouldDeferClusterProcessing];
           *buf = 138413058;
           v62 = v49;
           v63 = 1024;
@@ -2196,14 +2196,14 @@ LABEL_41:
           *&v64[4] = 1024;
           *&v64[6] = v51;
           v65 = 1024;
-          v66 = v52;
+          v66 = shouldDeferClusterProcessing2;
           _os_log_impl(&dword_2304B3000, v47, OS_LOG_TYPE_INFO, "%@,trip segments processed,%d/%d,exitByDefer,%d", buf, 0x1Eu);
         }
       }
 
       else
       {
-        v13 = v55;
+        distantFuture = v55;
       }
     }
 
@@ -2215,8 +2215,8 @@ LABEL_41:
     return;
   }
 
-  v6 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  distantPast = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+  if (os_log_type_enabled(distantPast, OS_LOG_TYPE_INFO))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -2225,24 +2225,24 @@ LABEL_41:
     v62 = v8;
     v63 = 2112;
     *v64 = v9;
-    _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,%@,Defer cluster learning.", buf, 0x16u);
+    _os_log_impl(&dword_2304B3000, distantPast, OS_LOG_TYPE_INFO, "%@,%@,Defer cluster learning.", buf, 0x16u);
   }
 
 LABEL_50:
 }
 
-- (BOOL)areTripSegmentsSpatiallyAligned:(id)a3 withTrip:(id)a4
+- (BOOL)areTripSegmentsSpatiallyAligned:(id)aligned withTrip:(id)trip
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 originLatitude];
+  alignedCopy = aligned;
+  tripCopy = trip;
+  [alignedCopy originLatitude];
   v8 = v7;
-  [v6 originLatitude];
-  if (vabdd_f64(v8, v9) <= 0.0000001 && ([v5 originLongitude], v11 = v10, objc_msgSend(v6, "originLongitude"), vabdd_f64(v11, v12) <= 0.0000001) && (objc_msgSend(v5, "destinationLatitude"), v14 = v13, objc_msgSend(v6, "destinationLatitude"), vabdd_f64(v14, v15) <= 0.0000001))
+  [tripCopy originLatitude];
+  if (vabdd_f64(v8, v9) <= 0.0000001 && ([alignedCopy originLongitude], v11 = v10, objc_msgSend(tripCopy, "originLongitude"), vabdd_f64(v11, v12) <= 0.0000001) && (objc_msgSend(alignedCopy, "destinationLatitude"), v14 = v13, objc_msgSend(tripCopy, "destinationLatitude"), vabdd_f64(v14, v15) <= 0.0000001))
   {
-    [v5 destinationLongitude];
+    [alignedCopy destinationLongitude];
     v19 = v18;
-    [v6 destinationLongitude];
+    [tripCopy destinationLongitude];
     v16 = vabdd_f64(v19, v20) <= 0.0000001;
   }
 
@@ -2254,19 +2254,19 @@ LABEL_50:
   return v16;
 }
 
-- (BOOL)_addTripSegmentToCompoundRoute:(id)a3 outLocationsArray:(id)a4 maxDistanceAllowedBetweenDriveSegments:(double)a5 tripSegmentRoadTransitionsStore:(id)a6 outRoadTransitionArray:(id)a7 compoundTripSegmentID:(id)a8 compoundTripSegmentStartDate:(id)a9 compoundRouteMetric:(id)a10
+- (BOOL)_addTripSegmentToCompoundRoute:(id)route outLocationsArray:(id)array maxDistanceAllowedBetweenDriveSegments:(double)segments tripSegmentRoadTransitionsStore:(id)store outRoadTransitionArray:(id)transitionArray compoundTripSegmentID:(id)d compoundTripSegmentStartDate:(id)date compoundRouteMetric:(id)self0
 {
   v172 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v155 = a8;
-  v154 = a9;
-  v21 = a10;
-  if (v17)
+  routeCopy = route;
+  arrayCopy = array;
+  storeCopy = store;
+  transitionArrayCopy = transitionArray;
+  dCopy = d;
+  dateCopy = date;
+  metricCopy = metric;
+  if (routeCopy)
   {
-    if (v18)
+    if (arrayCopy)
     {
       goto LABEL_3;
     }
@@ -2284,10 +2284,10 @@ LABEL_50:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: tripSegment (in %s:%d)", buf, 0x12u);
     }
 
-    if (v18)
+    if (arrayCopy)
     {
 LABEL_3:
-      if (v19)
+      if (storeCopy)
       {
         goto LABEL_4;
       }
@@ -2306,10 +2306,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outLocationsArray (in %s:%d)", buf, 0x12u);
   }
 
-  if (v19)
+  if (storeCopy)
   {
 LABEL_4:
-    if (v20)
+    if (transitionArrayCopy)
     {
       goto LABEL_18;
     }
@@ -2328,7 +2328,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: tripSegmentRoadTransitionsStore (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v20)
+  if (!transitionArrayCopy)
   {
 LABEL_15:
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -2348,27 +2348,27 @@ LABEL_18:
     v26 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v57 = [v17 identifier];
-      v58 = [v57 UUIDString];
+      identifier = [routeCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138412290;
-      v163 = v58;
+      v163 = uUIDString;
       _os_log_debug_impl(&dword_2304B3000, v26, OS_LOG_TYPE_DEBUG, "Route compounding,tripID,%@", buf, 0xCu);
     }
   }
 
-  v27 = [v17 identifier];
-  [v27 UUIDString];
+  identifier2 = [routeCopy identifier];
+  [identifier2 UUIDString];
   v28 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
   if (v28 != 0.0 && ![*&v28 hasPrefix:@"00000000"])
   {
-    v35 = [v17 dateInterval];
-    v29 = [v35 startDate];
+    dateInterval = [routeCopy dateInterval];
+    startDate = [dateInterval startDate];
 
-    v36 = [v17 dateInterval];
-    v37 = [v36 endDate];
+    dateInterval2 = [routeCopy dateInterval];
+    endDate = [dateInterval2 endDate];
 
-    if (!v29 || !v37)
+    if (!startDate || !endDate)
     {
       v51 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -2389,12 +2389,12 @@ LABEL_18:
       goto LABEL_57;
     }
 
-    v146 = v37;
-    v144 = v29;
-    v38 = [objc_alloc(MEMORY[0x277D01190]) initWithTripSegment:v17 preferredDownsamplingLevel:0 batchSize:0 offset:0];
-    v39 = [(RTTripClusterManager *)self tripSegmentManager];
+    v146 = endDate;
+    v144 = startDate;
+    v38 = [objc_alloc(MEMORY[0x277D01190]) initWithTripSegment:routeCopy preferredDownsamplingLevel:0 batchSize:0 offset:0];
+    tripSegmentManager = [(RTTripClusterManager *)self tripSegmentManager];
     v145 = v38;
-    v40 = [v39 getLocationsCountForTripSegmentWithOptions:v38];
+    v40 = [tripSegmentManager getLocationsCountForTripSegmentWithOptions:v38];
 
     if (v40 <= 0)
     {
@@ -2411,18 +2411,18 @@ LABEL_18:
       }
 
       v34 = 0;
-      v29 = v144;
+      startDate = v144;
     }
 
     else
     {
-      v41 = [(RTTripClusterManager *)self tripSegmentManager];
-      v42 = [v41 getLocationsForTripSegment:v17 withCount:v40];
+      tripSegmentManager2 = [(RTTripClusterManager *)self tripSegmentManager];
+      v42 = [tripSegmentManager2 getLocationsForTripSegment:routeCopy withCount:v40];
 
       v147 = v42;
       if (v42 && [v42 count])
       {
-        v143 = v21;
+        v143 = metricCopy;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v43 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -2443,44 +2443,44 @@ LABEL_18:
           v42 = v147;
         }
 
-        if ([v18 count])
+        if ([arrayCopy count])
         {
           v140 = v28;
-          [v18 lastObject];
+          [arrayCopy lastObject];
           v45 = v44 = v42;
           [v45 latitude];
-          v46 = [v18 lastObject];
-          [v46 longitude];
-          v47 = [v44 firstObject];
-          [v47 latitude];
-          v48 = [v44 firstObject];
-          [v48 longitude];
+          lastObject = [arrayCopy lastObject];
+          [lastObject longitude];
+          firstObject = [v44 firstObject];
+          [firstObject latitude];
+          firstObject2 = [v44 firstObject];
+          [firstObject2 longitude];
           RTCommonCalculateDistanceHighPrecision();
           v50 = v49;
 
           v51 = v145;
-          v37 = v146;
+          endDate = v146;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
             v52 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
             {
               v120 = objc_opt_class();
-              v150 = NSStringFromClass(v120);
-              [v18 lastObject];
-              v121 = v153 = v20;
+              lastObject4 = NSStringFromClass(v120);
+              [arrayCopy lastObject];
+              v121 = v153 = transitionArrayCopy;
               [v121 latitude];
               v123 = v122;
-              v124 = [v18 lastObject];
-              [v124 longitude];
+              lastObject2 = [arrayCopy lastObject];
+              [lastObject2 longitude];
               v126 = v125;
-              v127 = [v147 firstObject];
-              [v127 latitude];
+              firstObject3 = [v147 firstObject];
+              [firstObject3 latitude];
               v129 = v128;
-              v130 = [v147 firstObject];
-              [v130 longitude];
+              firstObject4 = [v147 firstObject];
+              [firstObject4 longitude];
               *buf = 138413827;
-              v163 = v150;
+              v163 = lastObject4;
               v164 = 2053;
               v165 = v123;
               v166 = 2053;
@@ -2492,21 +2492,21 @@ LABEL_18:
               v168 = 2048;
               v169 = v50;
               v170 = 2048;
-              v171 = a5;
+              segmentsCopy = segments;
               _os_log_debug_impl(&dword_2304B3000, v52, OS_LOG_TYPE_DEBUG, "%@,Route compounding,last loc of previous drive tripSegment,%{sensitive}.7lf,%{sensitive}.7lf,first loc of current drive tripSegment,%{sensitive}.7lf,%{sensitive}.7lf,loc distance,%.7lf,allowed,%.7f", buf, 0x48u);
 
               v51 = v145;
-              v37 = v146;
+              endDate = v146;
 
-              v20 = v153;
+              transitionArrayCopy = v153;
             }
           }
 
           v28 = v140;
-          if (v50 > a5)
+          if (v50 > segments)
           {
-            v21 = v143;
-            v29 = v144;
+            metricCopy = v143;
+            startDate = v144;
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
               v76 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -2519,14 +2519,14 @@ LABEL_18:
                 v164 = 2048;
                 v165 = v50;
                 v166 = 2048;
-                *v167 = a5;
+                *v167 = segments;
                 _os_log_impl(&dword_2304B3000, v76, OS_LOG_TYPE_INFO, "%@,Route compounding not possible,loc distance,%.7lf,allowed,%.7f", buf, 0x20u);
 
-                v29 = v144;
+                startDate = v144;
               }
 
               v51 = v145;
-              v37 = v146;
+              endDate = v146;
             }
 
             if (v143)
@@ -2539,8 +2539,8 @@ LABEL_18:
             goto LABEL_56;
           }
 
-          [v18 addObjectsFromArray:v147];
-          v21 = v143;
+          [arrayCopy addObjectsFromArray:v147];
+          metricCopy = v143;
           if (v143)
           {
             [v143 compoundRoutesDistanceBetweenAdjacentCompoundTripSegmentsAvg];
@@ -2553,7 +2553,7 @@ LABEL_18:
 
         else
         {
-          [v18 addObjectsFromArray:v42];
+          [arrayCopy addObjectsFromArray:v42];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
             v59 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -2561,7 +2561,7 @@ LABEL_18:
             {
               v132 = objc_opt_class();
               v133 = NSStringFromClass(v132);
-              *&v134 = COERCE_DOUBLE([v18 count]);
+              *&v134 = COERCE_DOUBLE([arrayCopy count]);
               *buf = 138412546;
               v163 = v133;
               v164 = 2048;
@@ -2571,10 +2571,10 @@ LABEL_18:
           }
         }
 
-        v152 = v20;
+        v152 = transitionArrayCopy;
         tripSegmentRoadTransitionsStore = self->_tripSegmentRoadTransitionsStore;
-        v61 = [v17 identifier];
-        v62 = [(RTTripClusterRoadTransitionsStore *)tripSegmentRoadTransitionsStore getRoadTransitionsWithID:v61];
+        identifier3 = [routeCopy identifier];
+        v62 = [(RTTripClusterRoadTransitionsStore *)tripSegmentRoadTransitionsStore getRoadTransitionsWithID:identifier3];
 
         if (v62 && [v62 count])
         {
@@ -2583,64 +2583,64 @@ LABEL_18:
           v63 = v160;
 
           v64 = [v63 objectAtIndexedSubscript:0];
-          v65 = [v64 roadSequenceNumber];
+          roadSequenceNumber = [v64 roadSequenceNumber];
 
-          v29 = v144;
+          startDate = v144;
           if ([v152 count])
           {
-            v66 = [v152 lastObject];
-            v65 = [v66 roadSequenceNumber] + 1;
+            lastObject3 = [v152 lastObject];
+            roadSequenceNumber = [lastObject3 roadSequenceNumber] + 1;
           }
 
           v51 = v145;
-          v37 = v146;
+          endDate = v146;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v67 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
             if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
             {
               v141 = v28;
-              v136 = v19;
+              v136 = storeCopy;
               v68 = [v63 count];
-              v138 = v17;
-              [v17 identifier];
+              v138 = routeCopy;
+              [routeCopy identifier];
               v69 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               v70 = [v152 count];
               if (v70)
               {
-                v150 = [v152 lastObject];
-                v71 = [v150 clRoadIDFrom];
+                lastObject4 = [v152 lastObject];
+                clRoadIDFrom = [lastObject4 clRoadIDFrom];
               }
 
               else
               {
-                v71 = 0;
+                clRoadIDFrom = 0;
               }
 
               v89 = [v63 objectAtIndexedSubscript:0];
-              v90 = [v89 clRoadIDFrom];
+              clRoadIDFrom2 = [v89 clRoadIDFrom];
               *buf = 134219010;
               v163 = v68;
               v164 = 2112;
               v165 = v69;
               v166 = 1024;
-              *v167 = v65;
+              *v167 = roadSequenceNumber;
               *&v167[4] = 2048;
-              *&v167[6] = v71;
+              *&v167[6] = clRoadIDFrom;
               *&v167[14] = 2048;
-              *&v167[16] = v90;
+              *&v167[16] = clRoadIDFrom2;
               _os_log_impl(&dword_2304B3000, v67, OS_LOG_TYPE_INFO, "Route compounding,tripSegmentRoadTransitions count,%lu for tripSegmentID,%@,startSeqNum,%d,prevFromRoad,%llu,nextFromRoad,%llu", buf, 0x30u);
 
               if (v70)
               {
               }
 
-              v19 = v136;
-              v17 = v138;
+              storeCopy = v136;
+              routeCopy = v138;
               v28 = v141;
-              v29 = v144;
+              startDate = v144;
               v51 = v145;
-              v37 = v146;
+              endDate = v146;
             }
           }
 
@@ -2653,10 +2653,10 @@ LABEL_18:
           if (v92)
           {
             v93 = v92;
-            v139 = v17;
+            v139 = routeCopy;
             v142 = v28;
-            v135 = v18;
-            v137 = v19;
+            v135 = arrayCopy;
+            v137 = storeCopy;
             loga = v91;
             v151 = *v157;
             do
@@ -2670,8 +2670,8 @@ LABEL_18:
 
                 v95 = *(*(&v156 + 1) + 8 * i);
                 v96 = [RTTripClusterRoadTransitions alloc];
-                v97 = [v95 clRoadIDFrom];
-                v98 = [v95 clRoadIDTo];
+                clRoadIDFrom3 = [v95 clRoadIDFrom];
+                clRoadIDTo = [v95 clRoadIDTo];
                 [v95 fromStartLatitude];
                 v100 = v99;
                 [v95 fromStartLongitude];
@@ -2689,10 +2689,10 @@ LABEL_18:
                 [v95 toEndLongitude];
                 v114 = v113;
                 v115 = [v95 count];
-                v116 = [v95 startRoadCount];
-                v117 = [v95 endRoadCount];
+                startRoadCount = [v95 startRoadCount];
+                endRoadCount = [v95 endRoadCount];
                 [v95 familiarityMetric];
-                v119 = [(RTTripClusterRoadTransitions *)v96 initWithclusterID:v155 clRoadIDFrom:v97 clRoadIDTo:v98 fromStartLatitude:v115 fromStartLongitude:v154 fromEndLatitude:v116 fromEndLongitude:v100 toStartLatitude:v102 toStartLongitude:v104 toEndLatitude:v106 toEndLongitude:v108 count:v110 startDate:v112 startRoadCount:v114 endRoadCount:__PAIR64__(v65++ roadSequenceNumber:v117) familiarityMetric:v118];
+                v119 = [(RTTripClusterRoadTransitions *)v96 initWithclusterID:dCopy clRoadIDFrom:clRoadIDFrom3 clRoadIDTo:clRoadIDTo fromStartLatitude:v115 fromStartLongitude:dateCopy fromEndLatitude:startRoadCount fromEndLongitude:v100 toStartLatitude:v102 toStartLongitude:v104 toEndLatitude:v106 toEndLongitude:v108 count:v110 startDate:v112 startRoadCount:v114 endRoadCount:__PAIR64__(roadSequenceNumber++ roadSequenceNumber:endRoadCount) familiarityMetric:v118];
                 [v152 addObject:v119];
               }
 
@@ -2703,14 +2703,14 @@ LABEL_18:
             v34 = 1;
             v75 = loga;
             v62 = loga;
-            v19 = v137;
-            v17 = v139;
-            v18 = v135;
+            storeCopy = v137;
+            routeCopy = v139;
+            arrayCopy = v135;
             v28 = v142;
-            v21 = v143;
-            v29 = v144;
+            metricCopy = v143;
+            startDate = v144;
             v51 = v145;
-            v37 = v146;
+            endDate = v146;
           }
 
           else
@@ -2718,21 +2718,21 @@ LABEL_18:
             v34 = 1;
             v62 = v91;
             v75 = v91;
-            v21 = v143;
+            metricCopy = v143;
           }
         }
 
         else
         {
-          v29 = v144;
+          startDate = v144;
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v34 = 0;
             v51 = v145;
-            v37 = v146;
+            endDate = v146;
 LABEL_99:
 
-            v20 = v152;
+            transitionArrayCopy = v152;
             goto LABEL_56;
           }
 
@@ -2741,7 +2741,7 @@ LABEL_99:
           {
             v72 = objc_opt_class();
             v73 = NSStringFromClass(v72);
-            [v17 identifier];
+            [routeCopy identifier];
             v74 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             *buf = 138412546;
             v163 = v73;
@@ -2749,12 +2749,12 @@ LABEL_99:
             v165 = v74;
             _os_log_impl(&dword_2304B3000, log, OS_LOG_TYPE_INFO, "%@,Route compounding not possible,tripSegmentRoadTransitions nil for tripSegment,%@", buf, 0x16u);
 
-            v29 = v144;
+            startDate = v144;
           }
 
           v34 = 0;
           v51 = v145;
-          v37 = v146;
+          endDate = v146;
           v75 = log;
         }
 
@@ -2762,7 +2762,7 @@ LABEL_99:
       }
 
       v55 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-      v29 = v144;
+      startDate = v144;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
         v82 = objc_opt_class();
@@ -2773,7 +2773,7 @@ LABEL_99:
         v165 = v28;
         _os_log_error_impl(&dword_2304B3000, v55, OS_LOG_TYPE_ERROR, "%@,Route compounding not possible,No locations for tripSegment,tripID,%@", buf, 0x16u);
 
-        v29 = v144;
+        startDate = v144;
       }
 
       v34 = 0;
@@ -2790,13 +2790,13 @@ LABEL_58:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v29 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+    startDate = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+    if (os_log_type_enabled(startDate, OS_LOG_TYPE_INFO))
     {
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
-      [v17 identifier];
-      v32 = v29;
+      [routeCopy identifier];
+      v32 = startDate;
       v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412546;
       v163 = v31;
@@ -2804,7 +2804,7 @@ LABEL_58:
       v165 = v33;
       _os_log_impl(&dword_2304B3000, v32, OS_LOG_TYPE_INFO, "%@,Route compounding not possible,Invalid tripSegment,%@", buf, 0x16u);
 
-      v29 = v32;
+      startDate = v32;
     }
 
     v34 = 0;
@@ -2817,14 +2817,14 @@ LABEL_59:
   return v34;
 }
 
-- (id)attemptCreatingACompoundRoute:(id)a3 compoundTripSegmentLocations:(id *)a4 numberOfDriveSegments:(unint64_t)a5 tripSegmentRoadTransitionsStore:(id)a6 compoundTripSegmentRoadTransitions:(id *)a7 driveTripDuration:(double *)a8
+- (id)attemptCreatingACompoundRoute:(id)route compoundTripSegmentLocations:(id *)locations numberOfDriveSegments:(unint64_t)segments tripSegmentRoadTransitionsStore:(id)store compoundTripSegmentRoadTransitions:(id *)transitions driveTripDuration:(double *)duration
 {
   v140 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  if (v14)
+  routeCopy = route;
+  storeCopy = store;
+  if (routeCopy)
   {
-    if (a4)
+    if (locations)
     {
       goto LABEL_3;
     }
@@ -2842,10 +2842,10 @@ LABEL_59:
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: commuteTrips (in %s:%d)", buf, 0x12u);
     }
 
-    if (a4)
+    if (locations)
     {
 LABEL_3:
-      if (v15)
+      if (storeCopy)
       {
         goto LABEL_4;
       }
@@ -2864,10 +2864,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: compoundTripSegmentLocations (in %s:%d)", buf, 0x12u);
   }
 
-  if (v15)
+  if (storeCopy)
   {
 LABEL_4:
-    if (a7)
+    if (transitions)
     {
       goto LABEL_5;
     }
@@ -2886,10 +2886,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: tripSegmentRoadTransitionsStore (in %s:%d)", buf, 0x12u);
   }
 
-  if (a7)
+  if (transitions)
   {
 LABEL_5:
-    if (a8)
+    if (duration)
     {
       goto LABEL_22;
     }
@@ -2908,7 +2908,7 @@ LABEL_16:
     _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: compoundTripSegmentRoadTransitions (in %s:%d)", buf, 0x12u);
   }
 
-  if (!a8)
+  if (!duration)
   {
 LABEL_19:
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -2925,62 +2925,62 @@ LABEL_19:
 LABEL_22:
   [(RTTripClusterManager *)self maximumInterTripSegmentDistanceAllowedForCompoundRoute];
   v22 = v21;
-  v23 = [(RTTripClusterManager *)self _supportsRouteCompoundingWithoutVisitAggregation];
-  if (v23)
+  _supportsRouteCompoundingWithoutVisitAggregation = [(RTTripClusterManager *)self _supportsRouteCompoundingWithoutVisitAggregation];
+  if (_supportsRouteCompoundingWithoutVisitAggregation)
   {
-    if ([v14 count])
+    if ([routeCopy count])
     {
-      v24 = [v14 count];
-      if (a5 <= 4 && v24 < 0xA)
+      v24 = [routeCopy count];
+      if (segments <= 4 && v24 < 0xA)
       {
-        v121 = a4;
-        v122 = a7;
-        v123 = a8;
-        v129 = v15;
+        locationsCopy = locations;
+        transitionsCopy = transitions;
+        durationCopy = duration;
+        v129 = storeCopy;
         v125 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v127 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v126 = objc_opt_new();
-        if (![v14 count])
+        if (![routeCopy count])
         {
           v130 = 0;
-          v25 = 0;
+          startDate = 0;
           v30 = 0.0;
           v29 = 0.0;
           v27 = 0.0;
 LABEL_64:
           v91 = objc_opt_new();
-          v92 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v25 endDate:v130];
+          v92 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:v130];
           v93 = objc_alloc(MEMORY[0x277D013D0]);
-          v94 = [v14 objectAtIndexedSubscript:0];
+          v94 = [routeCopy objectAtIndexedSubscript:0];
           [v94 originLatitude];
           v96 = v95;
-          v97 = [v14 objectAtIndexedSubscript:0];
+          v97 = [routeCopy objectAtIndexedSubscript:0];
           [v97 originLongitude];
           v99 = v98;
-          v100 = [v14 objectAtIndexedSubscript:0];
+          v100 = [routeCopy objectAtIndexedSubscript:0];
           [v100 destinationLatitude];
           v102 = v101;
-          [v14 objectAtIndexedSubscript:0];
-          v104 = v103 = v25;
+          [routeCopy objectAtIndexedSubscript:0];
+          v104 = v103 = startDate;
           [v104 destinationLongitude];
           v105 = v93;
           v106 = v126;
           v90 = [v105 initWithTripSegmentIdentifier:v126 dateInterval:v92 tripDistance:2 tripDistanceUncertainty:0 modeOfTransportation:2 isConsumedByClustering:3 tripSegmentSequence:v29 tripSegmentSequenceMax:sqrt(v30) / v29 originLatitude:v96 originLongitude:v99 destinationLatitude:v102 destinationLongitude:v107 tripCommuteID:v91];
 
-          v25 = v103;
+          startDate = v103;
           v36 = v125;
           v108 = v125;
-          *v121 = v125;
+          *locationsCopy = v125;
           v109 = v127;
-          *v122 = v127;
-          *v123 = v27;
+          *transitionsCopy = v127;
+          *durationCopy = v27;
 
           v110 = v130;
-          v15 = v129;
+          storeCopy = v129;
           goto LABEL_65;
         }
 
-        v25 = 0;
+        startDate = 0;
         v130 = 0;
         v124 = 0;
         v128 = 0;
@@ -2989,38 +2989,38 @@ LABEL_64:
         v28 = MEMORY[0x277D86220];
         v29 = 0.0;
         v30 = 0.0;
-        v131 = a5;
+        segmentsCopy = segments;
         while (1)
         {
-          v31 = [v14 objectAtIndexedSubscript:v26];
-          v32 = [v31 dateInterval];
-          if (!v32)
+          v31 = [routeCopy objectAtIndexedSubscript:v26];
+          dateInterval = [v31 dateInterval];
+          if (!dateInterval)
           {
             goto LABEL_31;
           }
 
-          v33 = v32;
-          v34 = [v14 objectAtIndexedSubscript:v26];
+          v33 = dateInterval;
+          v34 = [routeCopy objectAtIndexedSubscript:v26];
           [v34 tripDistance];
           if (v35 < 0.0)
           {
             break;
           }
 
-          v50 = [v14 objectAtIndexedSubscript:v26];
+          v50 = [routeCopy objectAtIndexedSubscript:v26];
           [v50 tripDistanceUncertainty];
           v52 = v51;
 
           if (v52 >= 0.0)
           {
             v36 = objc_alloc_init(RTLearnedRouteCompoundRouteMetrics);
-            v53 = [v14 objectAtIndexedSubscript:v26];
-            v54 = [v53 modeOfTransportation];
+            v53 = [routeCopy objectAtIndexedSubscript:v26];
+            modeOfTransportation = [v53 modeOfTransportation];
 
-            v15 = v129;
-            if (v54 == 2)
+            storeCopy = v129;
+            if (modeOfTransportation == 2)
             {
-              if (++v124 > a5)
+              if (++v124 > segments)
               {
 
                 v110 = v130;
@@ -3048,9 +3048,9 @@ LABEL_64:
                 goto LABEL_87;
               }
 
-              v55 = [v14 objectAtIndexedSubscript:v26];
-              v56 = [v55 dateInterval];
-              [v56 duration];
+              v55 = [routeCopy objectAtIndexedSubscript:v26];
+              dateInterval2 = [v55 dateInterval];
+              [dateInterval2 duration];
               v27 = v27 + v57;
 
               if (v27 > 14400.0)
@@ -3083,8 +3083,8 @@ LABEL_64:
                 goto LABEL_65;
               }
 
-              v58 = [v14 objectAtIndexedSubscript:v26];
-              v59 = [(RTTripClusterManager *)self _addTripSegmentToCompoundRoute:v58 outLocationsArray:v125 maxDistanceAllowedBetweenDriveSegments:v129 tripSegmentRoadTransitionsStore:v127 outRoadTransitionArray:v126 compoundTripSegmentID:v25 compoundTripSegmentStartDate:v22 compoundRouteMetric:v36];
+              v58 = [routeCopy objectAtIndexedSubscript:v26];
+              v59 = [(RTTripClusterManager *)self _addTripSegmentToCompoundRoute:v58 outLocationsArray:v125 maxDistanceAllowedBetweenDriveSegments:v129 tripSegmentRoadTransitionsStore:v127 outRoadTransitionArray:v126 compoundTripSegmentID:startDate compoundTripSegmentStartDate:v22 compoundRouteMetric:v36];
 
               if (!v59)
               {
@@ -3123,53 +3123,53 @@ LABEL_66:
                 [(RTLearnedRouteCompoundRouteMetrics *)v36 compoundRoutesNumDriveSegmentsCompoundedAvg];
                 *&v62 = v61 + v60;
                 [(RTLearnedRouteCompoundRouteMetrics *)v36 setCompoundRoutesNumDriveSegmentsCompoundedAvg:v62];
-                v63 = [(RTTripClusterManager *)self defaultsManager];
-                v64 = [RTClusterLearnedRouteMetrics sharedInstance:v63];
+                defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+                v64 = [RTClusterLearnedRouteMetrics sharedInstance:defaultsManager];
 
                 if (v64)
                 {
-                  v65 = [v64 compoundRoutesArray];
+                  compoundRoutesArray = [v64 compoundRoutesArray];
 
-                  if (!v65)
+                  if (!compoundRoutesArray)
                   {
-                    v66 = [MEMORY[0x277CBEB18] array];
-                    [v64 setCompoundRoutesArray:v66];
+                    array = [MEMORY[0x277CBEB18] array];
+                    [v64 setCompoundRoutesArray:array];
                   }
 
-                  v67 = [v64 compoundRoutesArray];
-                  [v67 addObject:v36];
+                  compoundRoutesArray2 = [v64 compoundRoutesArray];
+                  [compoundRoutesArray2 addObject:v36];
                 }
               }
 
-              v68 = [v14 objectAtIndexedSubscript:v26];
+              v68 = [routeCopy objectAtIndexedSubscript:v26];
               [v68 tripDistance];
               v70 = v69;
-              v71 = [v14 objectAtIndexedSubscript:v26];
+              v71 = [routeCopy objectAtIndexedSubscript:v26];
               [v71 tripDistanceUncertainty];
               v73 = v72;
-              v74 = [v14 objectAtIndexedSubscript:v26];
+              v74 = [routeCopy objectAtIndexedSubscript:v26];
               [v74 tripDistanceUncertainty];
               v76 = v75;
 
-              v77 = [v14 objectAtIndexedSubscript:v26];
+              v77 = [routeCopy objectAtIndexedSubscript:v26];
               [v77 tripDistance];
               v79 = v78;
 
-              if (!v25)
+              if (!startDate)
               {
-                v80 = [v14 objectAtIndexedSubscript:v26];
-                v81 = [v80 dateInterval];
-                v25 = [v81 startDate];
+                v80 = [routeCopy objectAtIndexedSubscript:v26];
+                dateInterval3 = [v80 dateInterval];
+                startDate = [dateInterval3 startDate];
               }
 
               v30 = v30 + v70 * v73 * v76;
               v29 = v29 + v79;
-              v82 = [v14 objectAtIndexedSubscript:v26];
-              v83 = [v82 dateInterval];
-              v84 = [v83 endDate];
+              v82 = [routeCopy objectAtIndexedSubscript:v26];
+              dateInterval4 = [v82 dateInterval];
+              endDate = [dateInterval4 endDate];
 
               v128 = 0;
-              v130 = v84;
+              v130 = endDate;
 LABEL_49:
               v28 = MEMORY[0x277D86220];
               goto LABEL_52;
@@ -3196,7 +3196,7 @@ LABEL_49:
 LABEL_52:
 
 LABEL_53:
-              a5 = v131;
+              segments = segmentsCopy;
             }
 
 LABEL_54:
@@ -3212,17 +3212,17 @@ LABEL_32:
             {
               v37 = objc_opt_class();
               v38 = NSStringFromClass(v37);
-              v132 = [v14 objectAtIndexedSubscript:v26];
+              v132 = [routeCopy objectAtIndexedSubscript:v26];
               [v132 identifier];
               v40 = p_super = &v36->super;
-              [v14 objectAtIndexedSubscript:v26];
-              v41 = v133 = v25;
-              v42 = [v41 dateInterval];
-              v43 = [v14 objectAtIndexedSubscript:v26];
+              [routeCopy objectAtIndexedSubscript:v26];
+              v41 = v133 = startDate;
+              dateInterval5 = [v41 dateInterval];
+              v43 = [routeCopy objectAtIndexedSubscript:v26];
               [v43 tripDistance];
               v45 = v44;
-              [v14 objectAtIndexedSubscript:v26];
-              v46 = v14;
+              [routeCopy objectAtIndexedSubscript:v26];
+              v46 = routeCopy;
               v48 = v47 = self;
               [v48 tripDistanceUncertainty];
               *buf = 138413314;
@@ -3230,7 +3230,7 @@ LABEL_32:
               v136 = 2112;
               *v137 = v40;
               *&v137[8] = 2114;
-              *&v137[10] = v42;
+              *&v137[10] = dateInterval5;
               *&v137[18] = 2050;
               *&v137[20] = v45;
               v138 = 2050;
@@ -3238,10 +3238,10 @@ LABEL_32:
               _os_log_impl(&dword_2304B3000, p_super, OS_LOG_TYPE_INFO, "%@,Route compounding,skipping trip,%@ for compounding,dateInterval,%{public}@,tripDist,%{public}0.2f,distUnc,%{public}0.2f", buf, 0x34u);
 
               self = v47;
-              v14 = v46;
+              routeCopy = v46;
 
               v28 = MEMORY[0x277D86220];
-              v25 = v133;
+              startDate = v133;
 
               v36 = p_super;
               goto LABEL_53;
@@ -3251,7 +3251,7 @@ LABEL_32:
           }
 
 LABEL_55:
-          if (++v26 >= [v14 count])
+          if (++v26 >= [routeCopy count])
           {
             goto LABEL_64;
           }
@@ -3265,21 +3265,21 @@ LABEL_31:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v25 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    startDate = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+    if (os_log_type_enabled(startDate, OS_LOG_TYPE_INFO))
     {
       v87 = objc_opt_class();
       v88 = NSStringFromClass(v87);
-      v89 = [v14 count];
+      v89 = [routeCopy count];
       *buf = 138413058;
       v135 = v88;
       v136 = 1024;
-      *v137 = v23;
+      *v137 = _supportsRouteCompoundingWithoutVisitAggregation;
       *&v137[4] = 2048;
       *&v137[6] = v89;
       *&v137[14] = 2048;
-      *&v137[16] = a5;
-      _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "%@,Route compounding not possible,feature allowed?,%d,total trips,%lu,drive trips,%lu", buf, 0x26u);
+      *&v137[16] = segments;
+      _os_log_impl(&dword_2304B3000, startDate, OS_LOG_TYPE_INFO, "%@,Route compounding not possible,feature allowed?,%d,total trips,%lu,drive trips,%lu", buf, 0x26u);
     }
 
     v90 = 0;
@@ -3292,26 +3292,26 @@ LABEL_67:
   return v90;
 }
 
-- (void)validateAndProcessCommute:(id)a3
+- (void)validateAndProcessCommute:(id)commute
 {
   v249 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count] && objc_msgSend(v5, "count") < 0xA)
+  commuteCopy = commute;
+  if ([commuteCopy count] && objc_msgSend(commuteCopy, "count") < 0xA)
   {
     aSelector = a2;
-    v194 = v5;
+    v194 = commuteCopy;
     v229 = 0u;
     v230 = 0u;
     v227 = 0u;
     v228 = 0u;
-    obj = v5;
+    obj = commuteCopy;
     v9 = [obj countByEnumeratingWithState:&v227 objects:v248 count:16];
     if (v9)
     {
       v10 = v9;
       v11 = *v228;
       v12 = MEMORY[0x277D86220];
-      v196 = self;
+      selfCopy = self;
       do
       {
         v13 = 0;
@@ -3331,16 +3331,16 @@ LABEL_67:
             {
               v16 = objc_opt_class();
               v207 = NSStringFromClass(v16);
-              v212 = [v14 identifier];
-              v17 = [v212 UUIDString];
+              identifier = [v14 identifier];
+              uUIDString = [identifier UUIDString];
               *&v203 = COERCE_DOUBLE([v14 modeOfTransportation]);
-              v200 = [v14 tripSegmentSequence];
+              tripSegmentSequence = [v14 tripSegmentSequence];
               v18 = v11;
-              v19 = [v14 tripSegmentSequenceMax];
-              v20 = [v14 dateInterval];
-              v21 = [v20 startDate];
-              v22 = [v14 dateInterval];
-              v23 = [v22 endDate];
+              tripSegmentSequenceMax = [v14 tripSegmentSequenceMax];
+              dateInterval = [v14 dateInterval];
+              startDate = [dateInterval startDate];
+              dateInterval2 = [v14 dateInterval];
+              endDate = [dateInterval2 endDate];
               [v14 originLatitude];
               v25 = v24;
               [v14 originLongitude];
@@ -3351,19 +3351,19 @@ LABEL_67:
               *buf = 138414851;
               v233 = v207;
               v234 = 2112;
-              *v235 = v17;
+              *v235 = uUIDString;
               *&v235[8] = 2048;
               v236 = *&v203;
               *v237 = 1024;
-              *&v237[2] = v200;
+              *&v237[2] = tripSegmentSequence;
               *&v237[6] = 1024;
-              *&v237[8] = v19;
+              *&v237[8] = tripSegmentSequenceMax;
               v11 = v18;
               v10 = v198;
               *v238 = 2112;
-              *&v238[2] = v21;
+              *&v238[2] = startDate;
               *v239 = 2112;
-              *&v239[2] = v23;
+              *&v239[2] = endDate;
               v240 = 2053;
               v241 = v25;
               v242 = 2053;
@@ -3375,7 +3375,7 @@ LABEL_67:
               _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@,Commute group contains trip ID,%@,Mode,%lu,Sequence,%d/%d,StartDate,%@,EndDate,%@,StartLocation,(%{sensitive}.7lf, %{sensitive}.7lf),EndLocation,(%{sensitive}.7lf, %{sensitive}.7lf)", buf, 0x68u);
 
               v12 = MEMORY[0x277D86220];
-              self = v196;
+              self = selfCopy;
             }
           }
 
@@ -3419,15 +3419,15 @@ LABEL_67:
     if ([v32 count])
     {
       v37 = [v32 objectAtIndexedSubscript:0];
-      v38 = [v37 tripSegmentSequence];
+      tripSegmentSequence2 = [v37 tripSegmentSequence];
 
-      if (v38 == 1)
+      if (tripSegmentSequence2 == 1)
       {
-        v5 = v194;
+        commuteCopy = v194;
         if ([v32 count])
         {
-          v39 = [v32 firstObject];
-          v40 = [v39 tripSegmentSequenceMax];
+          firstObject = [v32 firstObject];
+          tripSegmentSequenceMax2 = [firstObject tripSegmentSequenceMax];
 
           v225 = 0u;
           v226 = 0u;
@@ -3438,7 +3438,7 @@ LABEL_67:
           if (v41)
           {
             v42 = v41;
-            v43 = 0;
+            tripSegmentSequence3 = 0;
             v44 = *v224;
 LABEL_29:
             v45 = 0;
@@ -3450,16 +3450,16 @@ LABEL_29:
               }
 
               v46 = *(*(&v223 + 1) + 8 * v45);
-              if ([v46 tripSegmentSequence] < 1 || objc_msgSend(v46, "tripSegmentSequence") > v40 || objc_msgSend(v46, "tripSegmentSequence") - v43 != 1)
+              if ([v46 tripSegmentSequence] < 1 || objc_msgSend(v46, "tripSegmentSequence") > tripSegmentSequenceMax2 || objc_msgSend(v46, "tripSegmentSequence") - tripSegmentSequence3 != 1)
               {
                 break;
               }
 
-              v43 = [v46 tripSegmentSequence];
+              tripSegmentSequence3 = [v46 tripSegmentSequence];
               if (v42 == ++v45)
               {
                 v42 = [v6 countByEnumeratingWithState:&v223 objects:v231 count:16];
-                v5 = v194;
+                commuteCopy = v194;
                 if (v42)
                 {
                   goto LABEL_29;
@@ -3479,27 +3479,27 @@ LABEL_29:
             {
               v54 = objc_opt_class();
               v55 = NSStringFromClass(v54);
-              v56 = [v46 tripSegmentSequence];
+              tripSegmentSequence4 = [v46 tripSegmentSequence];
               *buf = 138413314;
               v233 = v55;
               v234 = 1024;
               *v235 = 1;
               *&v235[4] = 1024;
-              *&v235[6] = v40;
+              *&v235[6] = tripSegmentSequenceMax2;
               LOWORD(v236) = 1024;
-              *(&v236 + 2) = v56;
+              *(&v236 + 2) = tripSegmentSequence4;
               HIWORD(v236) = 1024;
-              *v237 = v43;
+              *v237 = tripSegmentSequence3;
               _os_log_impl(&dword_2304B3000, v53, OS_LOG_TYPE_INFO, "%@,Invalid or missing TripSegment sequence,min,%d,max,%d,seq,%d,prev,%d", buf, 0x24u);
             }
 
             goto LABEL_89;
           }
 
-          v43 = 0;
+          tripSegmentSequence3 = 0;
 LABEL_49:
 
-          if (v43 != v40)
+          if (tripSegmentSequence3 != tripSegmentSequenceMax2)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -3522,19 +3522,19 @@ LABEL_140:
             v234 = 1024;
             *v235 = 1;
             *&v235[4] = 1024;
-            *&v235[6] = v40;
+            *&v235[6] = tripSegmentSequenceMax2;
             LOWORD(v236) = 1024;
-            *(&v236 + 2) = v43;
+            *(&v236 + 2) = tripSegmentSequence3;
             _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,Missing terminal tripSegment/s,min,%d,max,%d,last tripSegment seq,%d", buf, 0x1Eu);
 LABEL_89:
 
 LABEL_90:
-            v5 = v194;
+            commuteCopy = v194;
             goto LABEL_138;
           }
         }
 
-        v197 = self;
+        selfCopy2 = self;
         if ([v32 count]!= 1)
         {
           v57 = 0;
@@ -3552,8 +3552,8 @@ LABEL_90:
               {
                 v61 = objc_opt_class();
                 v62 = NSStringFromClass(v61);
-                v63 = [v6 identifier];
-                v64 = [v63 UUIDString];
+                identifier2 = [v6 identifier];
+                uUIDString2 = [identifier2 UUIDString];
                 [(RTTripClusterWalkAndBikeTripStats *)v59 identifier];
                 v213 = v6;
                 v65 = v32;
@@ -3563,7 +3563,7 @@ LABEL_90:
                 *buf = 138412802;
                 v233 = v62;
                 v234 = 2112;
-                *v235 = v64;
+                *v235 = uUIDString2;
                 *&v235[8] = 2112;
                 v236 = v68;
                 _os_log_impl(&dword_2304B3000, v60, OS_LOG_TYPE_INFO, "%@,currentTrip with ID,%@,nextTrip with ID,%@", buf, 0x20u);
@@ -3574,25 +3574,25 @@ LABEL_90:
               }
             }
 
-            v69 = [v6 dateInterval];
-            v70 = [v69 endDate];
-            v71 = [(RTTripClusterWalkAndBikeTripStats *)v59 dateInterval];
-            v72 = [v71 startDate];
-            v73 = [v70 compare:v72];
+            dateInterval3 = [v6 dateInterval];
+            endDate2 = [dateInterval3 endDate];
+            dateInterval4 = [(RTTripClusterWalkAndBikeTripStats *)v59 dateInterval];
+            startDate2 = [dateInterval4 startDate];
+            v73 = [endDate2 compare:startDate2];
 
             if (v73 == 1)
             {
               break;
             }
 
-            v5 = v194;
+            commuteCopy = v194;
             if (v57 >= [v32 count]- 1)
             {
               goto LABEL_58;
             }
           }
 
-          v5 = v194;
+          commuteCopy = v194;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v102 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -3600,20 +3600,20 @@ LABEL_90:
             {
               v103 = objc_opt_class();
               v104 = NSStringFromClass(v103);
-              v105 = [v6 identifier];
-              v106 = [v105 UUIDString];
-              v107 = [(RTTripClusterWalkAndBikeTripStats *)v59 identifier];
-              [v107 UUIDString];
+              identifier3 = [v6 identifier];
+              uUIDString3 = [identifier3 UUIDString];
+              identifier4 = [(RTTripClusterWalkAndBikeTripStats *)v59 identifier];
+              [identifier4 UUIDString];
               v108 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               *buf = 138412802;
               v233 = v104;
               v234 = 2112;
-              *v235 = v106;
+              *v235 = uUIDString3;
               *&v235[8] = 2112;
               v236 = v108;
               _os_log_impl(&dword_2304B3000, v102, OS_LOG_TYPE_INFO, "%@,Invalid time continuity in commute: Trip ID,%@,->,%@", buf, 0x20u);
 
-              v5 = v194;
+              commuteCopy = v194;
             }
           }
 
@@ -3652,12 +3652,12 @@ LABEL_58:
 
           v110 = objc_opt_class();
           v51 = NSStringFromClass(v110);
-          v111 = [v6 tripCommuteID];
-          v112 = [v111 UUIDString];
+          tripCommuteID = [v6 tripCommuteID];
+          uUIDString4 = [tripCommuteID UUIDString];
           *buf = 138412546;
           v233 = v51;
           v234 = 2112;
-          *v235 = v112;
+          *v235 = uUIDString4;
           _os_log_impl(&dword_2304B3000, v48, OS_LOG_TYPE_INFO, "%@,Unknown mode of transport in commute ID,%@,dropping this commute", buf, 0x16u);
 
           goto LABEL_43;
@@ -3674,16 +3674,16 @@ LABEL_62:
           do
           {
             v78 = [v32 objectAtIndexedSubscript:v77];
-            v79 = [v78 modeOfTransportation];
+            modeOfTransportation = [v78 modeOfTransportation];
 
-            if (v79 == 2)
+            if (modeOfTransportation == 2)
             {
               ++v75;
               v80 = [v32 objectAtIndexedSubscript:v77];
 
               v81 = [v32 objectAtIndexedSubscript:v77];
-              v82 = [v81 dateInterval];
-              [v82 duration];
+              dateInterval5 = [v81 dateInterval];
+              [dateInterval5 duration];
               v222 = v83;
 
               v76 = v80;
@@ -3704,12 +3704,12 @@ LABEL_62:
             v91 = 0;
             v90 = 0;
             v6 = v76;
-            v5 = v194;
+            commuteCopy = v194;
           }
 
           else
           {
-            v5 = v194;
+            commuteCopy = v194;
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
               v84 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -3728,15 +3728,15 @@ LABEL_62:
                 v236 = v88;
                 _os_log_impl(&dword_2304B3000, v84, OS_LOG_TYPE_INFO, "%@,Commute with > 1,(%lu) drive segments, attempting route compounding, commuteID,%@", buf, 0x20u);
 
-                v5 = v194;
+                commuteCopy = v194;
               }
             }
 
             v221 = 0;
             v222 = 0.0;
-            tripSegmentRoadTransitionsStore = v197->_tripSegmentRoadTransitionsStore;
+            tripSegmentRoadTransitionsStore = selfCopy2->_tripSegmentRoadTransitionsStore;
             v220 = 0;
-            [(RTTripClusterManager *)v197 attemptCreatingACompoundRoute:v32 compoundTripSegmentLocations:&v221 numberOfDriveSegments:v75 tripSegmentRoadTransitionsStore:tripSegmentRoadTransitionsStore compoundTripSegmentRoadTransitions:&v220 driveTripDuration:&v222];
+            [(RTTripClusterManager *)selfCopy2 attemptCreatingACompoundRoute:v32 compoundTripSegmentLocations:&v221 numberOfDriveSegments:v75 tripSegmentRoadTransitionsStore:tripSegmentRoadTransitionsStore compoundTripSegmentRoadTransitions:&v220 driveTripDuration:&v222];
             *&v6 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             v90 = v221;
             v91 = v220;
@@ -3755,7 +3755,7 @@ LABEL_62:
                   v165 = objc_opt_class();
                   v166 = NSStringFromClass(v165);
                   v167 = [v32 objectAtIndexedSubscript:0];
-                  v168 = [v167 tripCommuteID];
+                  tripCommuteID2 = [v167 tripCommuteID];
                   if (v163)
                   {
                     v169 = [v163 count];
@@ -3775,7 +3775,7 @@ LABEL_62:
                   *buf = 138413570;
                   v233 = v166;
                   v234 = 2112;
-                  *v235 = v168;
+                  *v235 = tripCommuteID2;
                   *&v235[8] = 2112;
                   v236 = *&v6;
                   *v237 = 2048;
@@ -3786,7 +3786,7 @@ LABEL_62:
                   *v239 = v222;
                   _os_log_impl(&dword_2304B3000, v164, OS_LOG_TYPE_INFO, "%@,Route compounding not successful, commuteID,%@,driveSegment,%@,loc count,%lu,road transitions count,%lu,duration,%.2f", buf, 0x3Eu);
 
-                  v5 = v194;
+                  commuteCopy = v194;
                   v91 = v216;
                 }
 
@@ -3828,7 +3828,7 @@ LABEL_62:
                 *&v237[2] = v99;
                 *&v237[10] = 2048;
                 *v238 = v100;
-                v5 = v194;
+                commuteCopy = v194;
                 *&v238[8] = 2048;
                 *v239 = v101;
                 _os_log_impl(&dword_2304B3000, v94, OS_LOG_TYPE_INFO, "%@,Route compounding successful, from commuteID,%@,compound tripsegment commuteID,%@,duration,%.2f,location count,%lu,road transition count,%lu", buf, 0x3Eu);
@@ -3871,17 +3871,17 @@ LABEL_62:
             v91 = v118;
             v90 = v116;
 
-            v5 = v194;
+            commuteCopy = v194;
           }
         }
 
         if (*&v6 == 0.0)
         {
-          [(RTTripClusterManager *)v197 _markTripSegmentsAsProcessedByClustering:obj];
-          tripClusterStore = v197->_tripClusterStore;
-          tripClusterProcessor = v197->_tripClusterProcessor;
+          [(RTTripClusterManager *)selfCopy2 _markTripSegmentsAsProcessedByClustering:obj];
+          tripClusterStore = selfCopy2->_tripClusterStore;
+          tripClusterProcessor = selfCopy2->_tripClusterProcessor;
           v215 = v91;
-          tripClusterRouteStore = v197->_tripClusterRouteStore;
+          tripClusterRouteStore = selfCopy2->_tripClusterRouteStore;
           v210 = [obj objectAtIndexedSubscript:0];
           [v210 originLatitude];
           v137 = v136;
@@ -3895,46 +3895,46 @@ LABEL_62:
           [v144 destinationLongitude];
           v146 = v145;
           v147 = [obj objectAtIndexedSubscript:0];
-          v148 = [v147 dateInterval];
-          [v148 endDate];
+          dateInterval6 = [v147 dateInterval];
+          [dateInterval6 endDate];
           v150 = v149 = v90;
           v151 = tripClusterRouteStore;
           v91 = v215;
           [(RTTripClusterProcessor *)tripClusterProcessor processTripSegmentStatsWithNoDrive:v59 tripClusterStore:tripClusterStore tripClusterRouteStore:v151 originLatitude:v150 originLongitude:v137 destLatitude:v140 destLongitude:v143 lastTimeTaken:v146];
 
           v90 = v149;
-          v5 = v194;
+          commuteCopy = v194;
 
           *&v6 = 0.0;
         }
 
         else
         {
-          if (v90 || (v219 = 0, v120 = [(RTTripClusterManager *)v197 processTripSegments:v6 outLocationsArray:&v219], v90 = v219, v120))
+          if (v90 || (v219 = 0, v120 = [(RTTripClusterManager *)selfCopy2 processTripSegments:v6 outLocationsArray:&v219], v90 = v219, v120))
           {
             v121 = v91;
             if (!v91)
             {
-              v122 = v197->_tripSegmentRoadTransitionsStore;
-              v123 = [v6 identifier];
-              v121 = [(RTTripClusterRoadTransitionsStore *)v122 getRoadTransitionsWithID:v123];
+              v122 = selfCopy2->_tripSegmentRoadTransitionsStore;
+              identifier5 = [v6 identifier];
+              v121 = [(RTTripClusterRoadTransitionsStore *)v122 getRoadTransitionsWithID:identifier5];
 
-              v5 = v194;
+              commuteCopy = v194;
             }
 
             v124 = v222;
-            v125 = [(RTTripClusterManager *)v197 options];
-            v126 = [v125 maxTripSegmentTimeForClustering];
+            options = [(RTTripClusterManager *)selfCopy2 options];
+            maxTripSegmentTimeForClustering = [options maxTripSegmentTimeForClustering];
 
-            if (v124 <= v126)
+            if (v124 <= maxTripSegmentTimeForClustering)
             {
               [v6 tripDistance];
               v153 = v152;
-              v154 = [(RTTripClusterManager *)v197 options];
-              v155 = [v154 maxTripSegmentDistanceForClustering];
+              options2 = [(RTTripClusterManager *)selfCopy2 options];
+              maxTripSegmentDistanceForClustering = [options2 maxTripSegmentDistanceForClustering];
 
               v156 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-              if (v153 <= v155)
+              if (v153 <= maxTripSegmentDistanceForClustering)
               {
                 if (v156)
                 {
@@ -3944,16 +3944,16 @@ LABEL_62:
                   {
                     v171 = objc_opt_class();
                     v206 = NSStringFromClass(v171);
-                    v202 = [v6 identifier];
-                    v190 = [v202 UUIDString];
+                    identifier6 = [v6 identifier];
+                    uUIDString5 = [identifier6 UUIDString];
                     *&v195 = COERCE_DOUBLE([v6 modeOfTransportation]);
                     aSelectora = [v6 tripSegmentSequence];
-                    v191 = [v6 tripSegmentSequenceMax];
-                    v199 = [v6 dateInterval];
-                    v172 = [v199 startDate];
+                    tripSegmentSequenceMax3 = [v6 tripSegmentSequenceMax];
+                    dateInterval7 = [v6 dateInterval];
+                    startDate3 = [dateInterval7 startDate];
                     [v6 dateInterval];
                     v173 = v211 = v90;
-                    v174 = [v173 endDate];
+                    endDate3 = [v173 endDate];
                     [v6 originLatitude];
                     v176 = v175;
                     [v6 originLongitude];
@@ -3964,17 +3964,17 @@ LABEL_62:
                     *buf = 138414851;
                     v233 = v206;
                     v234 = 2112;
-                    *v235 = v190;
+                    *v235 = uUIDString5;
                     *&v235[8] = 2048;
                     v236 = *&v195;
                     *v237 = 1024;
                     *&v237[2] = aSelectora;
                     *&v237[6] = 1024;
-                    *&v237[8] = v191;
+                    *&v237[8] = tripSegmentSequenceMax3;
                     *v238 = 2112;
-                    *&v238[2] = v172;
+                    *&v238[2] = startDate3;
                     *v239 = 2112;
-                    *&v239[2] = v174;
+                    *&v239[2] = endDate3;
                     v240 = 2053;
                     v241 = v176;
                     v242 = 2053;
@@ -3986,14 +3986,14 @@ LABEL_62:
                     _os_log_impl(&dword_2304B3000, v170, OS_LOG_TYPE_INFO, "%@,Processing tripID,%@,mode,%lu,sequence,%d/%d,startDate,%@,endDate,%@,startLL,%{sensitive}.7lf, %{sensitive}.7lf,endLL,%{sensitive}.7lf, %{sensitive}.7lf", buf, 0x68u);
 
                     v90 = v211;
-                    v5 = v194;
+                    commuteCopy = v194;
                   }
 
                   v91 = v217;
                 }
 
-                [(RTTripClusterManager *)v197 _markTripSegmentsAsProcessedByClustering:obj];
-                [(RTTripClusterProcessor *)v197->_tripClusterProcessor processTripSegment:v6 locationsArray:v90 tripClusterStore:v197->_tripClusterStore tripClusterRouteStore:v197->_tripClusterRouteStore tripClusterWaypointStore:v197->_tripClusterWaypointStore tripClusterRouteRoadTransitionsStore:v197->_tripClusterRouteRoadTransitionsStore tripClusterRecencyStore:v222 tripClusterScheduleStore:v197->_tripClusterRecencyStore tripSegmentRoadTransitionsStore:v197->_tripClusterScheduleStore walkAndBikeTripStats:v197->_tripSegmentRoadTransitionsStore tripSegmentRoadTransitions:v59 tripDuration:v121];
+                [(RTTripClusterManager *)selfCopy2 _markTripSegmentsAsProcessedByClustering:obj];
+                [(RTTripClusterProcessor *)selfCopy2->_tripClusterProcessor processTripSegment:v6 locationsArray:v90 tripClusterStore:selfCopy2->_tripClusterStore tripClusterRouteStore:selfCopy2->_tripClusterRouteStore tripClusterWaypointStore:selfCopy2->_tripClusterWaypointStore tripClusterRouteRoadTransitionsStore:selfCopy2->_tripClusterRouteRoadTransitionsStore tripClusterRecencyStore:v222 tripClusterScheduleStore:selfCopy2->_tripClusterRecencyStore tripSegmentRoadTransitionsStore:selfCopy2->_tripClusterScheduleStore walkAndBikeTripStats:selfCopy2->_tripSegmentRoadTransitionsStore tripSegmentRoadTransitions:v59 tripDuration:v121];
                 goto LABEL_136;
               }
 
@@ -4008,9 +4008,9 @@ LABEL_62:
                   v130 = v209 = v90;
                   [v6 tripDistance];
                   v159 = v158;
-                  [(RTTripClusterManager *)v197 options];
+                  [(RTTripClusterManager *)selfCopy2 options];
                   v161 = v160 = v91;
-                  v162 = [v161 maxTripSegmentDistanceForClustering];
+                  maxTripSegmentDistanceForClustering2 = [v161 maxTripSegmentDistanceForClustering];
                   *buf = 138413058;
                   v233 = v129;
                   v234 = 2112;
@@ -4018,7 +4018,7 @@ LABEL_62:
                   *&v235[8] = 2048;
                   v236 = v159;
                   *v237 = 2048;
-                  *&v237[2] = v162;
+                  *&v237[2] = maxTripSegmentDistanceForClustering2;
                   _os_log_impl(&dword_2304B3000, v127, OS_LOG_TYPE_INFO, "%@,%@,Skipping commute, duration too long,%lf,threshold,%lu", buf, 0x2Au);
 
                   v91 = v160;
@@ -4039,9 +4039,9 @@ LABEL_116:
                 NSStringFromSelector(aSelector);
                 v130 = v209 = v90;
                 v131 = v222;
-                [(RTTripClusterManager *)v197 options];
+                [(RTTripClusterManager *)selfCopy2 options];
                 v133 = v132 = v91;
-                v134 = [v133 maxTripSegmentTimeForClustering];
+                maxTripSegmentTimeForClustering2 = [v133 maxTripSegmentTimeForClustering];
                 *buf = 138413058;
                 v233 = v129;
                 v234 = 2112;
@@ -4049,14 +4049,14 @@ LABEL_116:
                 *&v235[8] = 2048;
                 v236 = v131;
                 *v237 = 2048;
-                *&v237[2] = v134;
+                *&v237[2] = maxTripSegmentTimeForClustering2;
                 _os_log_impl(&dword_2304B3000, v127, OS_LOG_TYPE_INFO, "%@,%@,Skipping commute, duration too long,%f,threshold,%lu", buf, 0x2Au);
 
                 v91 = v132;
 LABEL_115:
 
                 v90 = v209;
-                v5 = v194;
+                commuteCopy = v194;
                 goto LABEL_116;
               }
 
@@ -4089,7 +4089,7 @@ LABEL_137:
               v91 = v187;
               v90 = v185;
 
-              v5 = v194;
+              commuteCopy = v194;
             }
           }
         }
@@ -4098,7 +4098,7 @@ LABEL_137:
         goto LABEL_136;
       }
 
-      v5 = v194;
+      commuteCopy = v194;
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
 LABEL_139:
@@ -4113,17 +4113,17 @@ LABEL_139:
         v50 = objc_opt_class();
         v48 = NSStringFromClass(v50);
         v51 = [v32 objectAtIndexedSubscript:0];
-        v52 = [v51 tripSegmentSequence];
+        tripSegmentSequence5 = [v51 tripSegmentSequence];
         *buf = 138412802;
         v233 = v48;
         v234 = 1024;
         *v235 = 1;
         *&v235[4] = 1024;
-        *&v235[6] = v52;
+        *&v235[6] = tripSegmentSequence5;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@,missing TripSegment sequence,expectedSeq,%d,seq,%d", buf, 0x18u);
 LABEL_43:
 
-        v5 = v194;
+        commuteCopy = v194;
         goto LABEL_44;
       }
     }
@@ -4132,7 +4132,7 @@ LABEL_43:
     {
       _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
       *&v6 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v5 = v194;
+      commuteCopy = v194;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v47 = objc_opt_class();
@@ -4200,15 +4200,15 @@ uint64_t __50__RTTripClusterManager_validateAndProcessCommute___block_invoke(uin
   return v7;
 }
 
-- (void)_markTripSegmentsAsProcessedByClustering:(id)a3
+- (void)_markTripSegmentsAsProcessedByClustering:(id)clustering
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clusteringCopy = clustering;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [clusteringCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4219,55 +4219,55 @@ uint64_t __50__RTTripClusterManager_validateAndProcessCommute___block_invoke(uin
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(clusteringCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 modeOfTransportation] == 2 || objc_msgSend(v9, "modeOfTransportation") == 1 || objc_msgSend(v9, "modeOfTransportation") == 3)
         {
-          v10 = [(RTTripSegmentManager *)self->_tripSegmentManager tripSegmentStore];
-          v11 = [v9 identifier];
-          [v10 deleteTripSegmentWithUUID:v11];
+          tripSegmentStore = [(RTTripSegmentManager *)self->_tripSegmentManager tripSegmentStore];
+          identifier = [v9 identifier];
+          [tripSegmentStore deleteTripSegmentWithUUID:identifier];
 
           [v9 setIsConsumedByClustering:1];
-          v12 = [(RTTripSegmentManager *)self->_tripSegmentManager tripSegmentStore];
-          [v12 storeTripSegment:v9];
+          tripSegmentStore2 = [(RTTripSegmentManager *)self->_tripSegmentManager tripSegmentStore];
+          [tripSegmentStore2 storeTripSegment:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [clusteringCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)createMockTripWithSequence:(int)a3 sequenceMax:(int)a4 commuteID:(id)a5 originLat:(double)a6 originLon:(double)a7 destLat:(double)a8 destLon:(double)a9 mode:(int64_t)a10
+- (id)createMockTripWithSequence:(int)sequence sequenceMax:(int)max commuteID:(id)d originLat:(double)lat originLon:(double)lon destLat:(double)destLat destLon:(double)destLon mode:(int64_t)self0
 {
-  v15 = *&a4;
-  v16 = *&a3;
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [MEMORY[0x277CCAD78] UUID];
+  v15 = *&max;
+  v16 = *&sequence;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
   if (v16 <= 2)
   {
     if (v16 == 1)
     {
-      v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-21600.0];
+      date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-21600.0];
       goto LABEL_10;
     }
 
     if (v16 == 2)
     {
-      v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-18000.0];
-      v20 = v19;
+      date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-18000.0];
+      v20 = date;
       v21 = 2700.0;
       goto LABEL_12;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
 LABEL_10:
-    v20 = v19;
+    v20 = date;
     v21 = 1800.0;
     goto LABEL_12;
   }
@@ -4276,8 +4276,8 @@ LABEL_10:
   {
     if (v16 == 4)
     {
-      v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-10800.0];
-      v20 = v19;
+      date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-10800.0];
+      v20 = date;
       v21 = 1200.0;
       goto LABEL_12;
     }
@@ -4285,14 +4285,14 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-14400.0];
-  v20 = v19;
+  date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-14400.0];
+  v20 = date;
   v21 = 3600.0;
 LABEL_12:
-  v22 = [v19 dateByAddingTimeInterval:v21];
+  v22 = [date dateByAddingTimeInterval:v21];
   v23 = objc_alloc(MEMORY[0x277D013D0]);
   v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v20 endDate:v22];
-  v25 = [v23 initWithTripSegmentIdentifier:v17 dateInterval:v24 tripDistance:a10 tripDistanceUncertainty:0 modeOfTransportation:v16 isConsumedByClustering:v15 tripSegmentSequence:10.0 tripSegmentSequenceMax:0.1 originLatitude:a6 originLongitude:a7 destinationLatitude:a8 destinationLongitude:a9 tripCommuteID:v18];
+  v25 = [v23 initWithTripSegmentIdentifier:uUID dateInterval:v24 tripDistance:mode tripDistanceUncertainty:0 modeOfTransportation:v16 isConsumedByClustering:v15 tripSegmentSequence:10.0 tripSegmentSequenceMax:0.1 originLatitude:lat originLongitude:lon destinationLatitude:destLat destinationLongitude:destLon tripCommuteID:uUID2];
 
   return v25;
 }
@@ -4317,12 +4317,12 @@ LABEL_12:
   return 3;
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  dateCopy = date;
+  completionCopy = completion;
+  if (dateCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4330,28 +4330,28 @@ LABEL_12:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = NSStringFromSelector(a2);
-        v13 = [v9 getFormattedDateString];
+        getFormattedDateString = [dateCopy getFormattedDateString];
         *buf = 138412802;
         v23 = v12;
         v24 = 1024;
-        v25 = a3;
+        typeCopy = type;
         v26 = 2112;
-        v27 = v13;
+        v27 = getFormattedDateString;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@,type,%d,referenceDate,%@", buf, 0x1Cu);
       }
     }
 
-    v14 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___block_invoke;
     block[3] = &unk_2788C47A8;
-    v20 = a3;
-    v17 = v9;
-    v18 = self;
-    v19 = v10;
+    typeCopy2 = type;
+    v17 = dateCopy;
+    selfCopy = self;
+    v19 = completionCopy;
     v21 = a2;
-    dispatch_async(v14, block);
+    dispatch_async(queue, block);
 
     v15 = v17;
   }
@@ -4419,33 +4419,33 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
 - (BOOL)_shouldMockLearnedRoutesSPI
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRoutesSPI"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRoutesSPI"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)minimumTraversalCountForLearnedRoutes
 {
-  v3 = [(RTTripClusterManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"RTDefaultsTripClusterSPIMinTraversalCountInternalDebug"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"RTDefaultsTripClusterSPIMinTraversalCountInternalDebug"];
 
   if (v4)
   {
-    v5 = [v4 intValue];
-    if (v5 >= 0)
+    intValue = [v4 intValue];
+    if (intValue >= 0)
     {
-      v6 = v5;
+      v6 = intValue;
     }
 
     else
@@ -4456,21 +4456,21 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
   else
   {
-    v7 = [(RTTripClusterManager *)self defaultsManager];
-    v8 = [v7 objectForKey:@"RTDefaultsTripClusterSPIMinTraversalCount"];
+    defaultsManager2 = [(RTTripClusterManager *)self defaultsManager];
+    v8 = [defaultsManager2 objectForKey:@"RTDefaultsTripClusterSPIMinTraversalCount"];
 
     v6 = 3;
     if (v8)
     {
-      v9 = [v8 intValue];
-      if (v9 <= 3)
+      intValue2 = [v8 intValue];
+      if (intValue2 <= 3)
       {
         v6 = 3;
       }
 
       else
       {
-        v6 = v9;
+        v6 = intValue2;
       }
     }
   }
@@ -4480,16 +4480,16 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
 - (int)maximumLocationsInALearnedRoute
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsTripClusterManagerMaxLocationCountPerRouteSPI"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMaxLocationCountPerRouteSPI"];
 
   v4 = 3600;
   if (v3)
   {
-    v5 = [v3 intValue];
-    if (v5 >= 0)
+    intValue = [v3 intValue];
+    if (intValue >= 0)
     {
-      v4 = v5;
+      v4 = intValue;
     }
 
     else
@@ -4503,52 +4503,52 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
 - (int)_minimumTravelTimeForSignificantNonDriveCluster
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsLearnedRoutesMinTravelTimeSecNonDriveCluster"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsLearnedRoutesMinTravelTimeSecNonDriveCluster"];
 
   if (v3 && [v3 intValue] >= 1)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 120;
+    intValue = 120;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)_minimumTravelDistanceForSignificantNonDriveCluster
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsLearnedRoutesMinTravelDistanceMeterNonDriveCluster"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsLearnedRoutesMinTravelDistanceMeterNonDriveCluster"];
 
   if (v3 && [v3 intValue] >= 1)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 100;
+    intValue = 100;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (int)_maximumTravelTimeForSignificantNonDriveCluster:(signed __int16)a3
+- (int)_maximumTravelTimeForSignificantNonDriveCluster:(signed __int16)cluster
 {
-  v3 = a3;
-  v5 = [(RTTripClusterManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelTimeSecNonDriveClusterInADriveTrip"];
+  clusterCopy = cluster;
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsLearnedRoutesMaxTravelTimeSecNonDriveClusterInADriveTrip"];
 
-  if (v3 == 3)
+  if (clusterCopy == 3)
   {
-    v7 = [(RTTripClusterManager *)self defaultsManager];
-    v8 = [v7 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelTimeSecNonDriveCluster"];
+    defaultsManager2 = [(RTTripClusterManager *)self defaultsManager];
+    v8 = [defaultsManager2 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelTimeSecNonDriveCluster"];
 
-    v9 = 7200;
+    intValue = 7200;
     v6 = v8;
     if (!v8)
     {
@@ -4558,7 +4558,7 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
   else
   {
-    v9 = 1800;
+    intValue = 1800;
     if (!v6)
     {
       goto LABEL_7;
@@ -4567,26 +4567,26 @@ void __68__RTTripClusterManager_performPurgeOfType_referenceDate_completion___bl
 
   if ([v6 intValue] >= 1)
   {
-    v9 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
 LABEL_7:
 
-  return v9;
+  return intValue;
 }
 
-- (int)_maximumTravelDistanceForSignificantNonDriveCluster:(signed __int16)a3
+- (int)_maximumTravelDistanceForSignificantNonDriveCluster:(signed __int16)cluster
 {
-  v3 = a3;
-  v5 = [(RTTripClusterManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelDistanceMeterNonDriveClusterInADriveTrip"];
+  clusterCopy = cluster;
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsLearnedRoutesMaxTravelDistanceMeterNonDriveClusterInADriveTrip"];
 
-  if (v3 == 3)
+  if (clusterCopy == 3)
   {
-    v7 = [(RTTripClusterManager *)self defaultsManager];
-    v8 = [v7 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelDistanceMeterNonDriveCluster"];
+    defaultsManager2 = [(RTTripClusterManager *)self defaultsManager];
+    v8 = [defaultsManager2 objectForKey:@"RTDefaultsLearnedRoutesMaxTravelDistanceMeterNonDriveCluster"];
 
-    v9 = 20000;
+    intValue = 20000;
     v6 = v8;
     if (!v8)
     {
@@ -4596,7 +4596,7 @@ LABEL_7:
 
   else
   {
-    v9 = 1000;
+    intValue = 1000;
     if (!v6)
     {
       goto LABEL_7;
@@ -4605,36 +4605,36 @@ LABEL_7:
 
   if ([v6 intValue] >= 1)
   {
-    v9 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
 LABEL_7:
 
-  return v9;
+  return intValue;
 }
 
 - (BOOL)_supportsRouteCompoundingWithoutVisitAggregation
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsTripClusterManagerRouteCompoundingNoVisitAggregation"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerRouteCompoundingNoVisitAggregation"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)maximumInterTripSegmentDistanceAllowedForCompoundRoute
 {
-  v2 = [(RTTripClusterManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsTripClusterManagerMaxInterTripSgmtDstForCompounding"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMaxInterTripSgmtDstForCompounding"];
 
   if (!v3 || ([v3 doubleValue], v5 = v4, v4 < 0.0))
   {
@@ -4644,25 +4644,25 @@ LABEL_7:
   return v5;
 }
 
-- (void)_mockLearnedRouteTravelModeConfiguration:(int64_t *)a3 driveTravelMode:(int64_t *)a4 postDriveTravelMode:(int64_t *)a5
+- (void)_mockLearnedRouteTravelModeConfiguration:(int64_t *)configuration driveTravelMode:(int64_t *)mode postDriveTravelMode:(int64_t *)travelMode
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = [(RTTripClusterManager *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRouteTravelModeConfig"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v10 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRouteTravelModeConfig"];
 
   if (!v10 || [v10 intValue] < 112 || objc_msgSend(v10, "intValue") > 323)
   {
-    v11 = 222;
+    intValue = 222;
     v12 = 2;
     goto LABEL_7;
   }
 
-  v11 = [v10 intValue];
-  v12 = v11 % 10;
-  if ((v11 % 100 - 20) <= 9)
+  intValue = [v10 intValue];
+  v12 = intValue % 10;
+  if ((intValue % 100 - 20) <= 9)
   {
 LABEL_7:
-    *a4 = 2;
+    *mode = 2;
   }
 
   if (v12 == 2)
@@ -4680,11 +4680,11 @@ LABEL_7:
     v13 = 3;
   }
 
-  *a5 = v13;
+  *travelMode = v13;
 LABEL_13:
-  if ((v11 - 200) >= 0x64)
+  if ((intValue - 200) >= 0x64)
   {
-    if ((v11 - 300) > 0x63)
+    if ((intValue - 300) > 0x63)
     {
       goto LABEL_18;
     }
@@ -4697,7 +4697,7 @@ LABEL_13:
     v14 = 1;
   }
 
-  *a3 = v14;
+  *configuration = v14;
 LABEL_18:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -4707,15 +4707,15 @@ LABEL_18:
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v18 = NSStringFromSelector(a2);
-      v19 = *a3;
-      v20 = *a4;
-      v21 = *a5;
+      v19 = *configuration;
+      v20 = *mode;
+      v21 = *travelMode;
       v22 = 138413570;
       v23 = v17;
       v24 = 2112;
       v25 = v18;
       v26 = 1024;
-      v27 = v11;
+      v27 = intValue;
       v28 = 1024;
       v29 = v19;
       v30 = 1024;
@@ -4731,17 +4731,17 @@ LABEL_18:
 {
   v58 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v6 = [v4 stringWithFormat:@"%@/mockSPIData.txt", v5];
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v6 = [v4 stringWithFormat:@"%@/mockSPIData.txt", routineCacheDirectoryPath];
 
-  v7 = [(RTTripClusterManager *)self defaultsManager];
-  v8 = [v7 objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRoutesSPIDataFilePath"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMockLearnedRoutesSPIDataFilePath"];
 
   if (v8)
   {
-    v9 = [v8 stringValue];
+    stringValue = [v8 stringValue];
 
-    v6 = v9;
+    v6 = stringValue;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4770,9 +4770,9 @@ LABEL_18:
     obj = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       *buf = 138412290;
-      v53 = v32;
+      v53 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, obj, OS_LOG_TYPE_ERROR, "Error reading file: %@", buf, 0xCu);
     }
 
@@ -4785,7 +4785,7 @@ LABEL_18:
     v34 = v8;
     v35 = v6;
     v17 = [v14 componentsSeparatedByString:@"\n"];
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -4832,7 +4832,7 @@ LABEL_18:
                   if (v27 != 0.0 || ([v26 isEqualToString:@"0.0"] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", @"0"))
                   {
                     v29 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-                    [v18 addObject:v29];
+                    [array addObject:v29];
                   }
                 }
 
@@ -4851,9 +4851,9 @@ LABEL_18:
     }
 
     v48 = @"waypoints";
-    v49 = v18;
+    v49 = array;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    if ([v18 count])
+    if ([array count])
     {
       v16 = v30;
     }
@@ -4873,12 +4873,12 @@ LABEL_18:
   return v16;
 }
 
-- (void)_fetchLearnedRoutesWithOptionsDefault:(id)a3 handler:(id)a4
+- (void)_fetchLearnedRoutesWithOptionsDefault:(id)default handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  defaultCopy = default;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -4912,7 +4912,7 @@ LABEL_18:
   *&buf[16] = 0x3032000000;
   v29 = __Block_byref_object_copy__72;
   v30 = __Block_byref_object_dispose__72;
-  v31 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -4934,17 +4934,17 @@ LABEL_18:
   }
 
   while (v13 < 0x51);
-  v16 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___block_invoke;
   v21[3] = &unk_2788CA9B8;
-  v22 = v8;
+  v22 = handlerCopy;
   v23 = buf;
   v24 = v26;
   v25 = a2;
-  v17 = v8;
-  dispatch_async(v16, v21);
+  v17 = handlerCopy;
+  dispatch_async(queue, v21);
 
   _Block_object_dispose(v26, 8);
   _Block_object_dispose(buf, 8);
@@ -5005,12 +5005,12 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
   }
 }
 
-- (void)_fetchLearnedRoutesWithOptionsMock:(id)a3 handler:(id)a4
+- (void)_fetchLearnedRoutesWithOptionsMock:(id)mock handler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v40 = a4;
-  if (!v40)
+  mockCopy = mock;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -5039,12 +5039,12 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
     }
   }
 
-  v8 = [(RTTripClusterManager *)self _readMockSPIDataFile];
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (v8)
+  _readMockSPIDataFile = [(RTTripClusterManager *)self _readMockSPIDataFile];
+  array = [MEMORY[0x277CBEB18] array];
+  if (_readMockSPIDataFile)
   {
-    v10 = [v8 objectForKey:@"waypoints"];
-    [v9 addObjectsFromArray:v10];
+    v10 = [_readMockSPIDataFile objectForKey:@"waypoints"];
+    [array addObjectsFromArray:v10];
   }
 
   else
@@ -5052,7 +5052,7 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
     for (i = 0; i != 1210; ++i)
     {
       v12 = [MEMORY[0x277CCABB0] numberWithDouble:dbl_230AFE8E0[i]];
-      [v9 addObject:v12];
+      [array addObject:v12];
     }
   }
 
@@ -5086,27 +5086,27 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
 
   if (v55[3] == 2)
   {
-    v15 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v16 = *(*&buf[8] + 40);
-    *(*&buf[8] + 40) = v15;
+    *(*&buf[8] + 40) = array2;
 
-    for (j = 0; [v9 count] > j; j = v29 + 3)
+    for (j = 0; [array count] > j; j = v29 + 3)
     {
       v18 = j + 4;
-      v19 = [v9 objectAtIndex:v18];
+      v19 = [array objectAtIndex:v18];
       [v19 doubleValue];
       v21 = v20;
 
       v22 = objc_alloc(MEMORY[0x277D01140]);
       v18 -= 4;
-      v23 = [v9 objectAtIndex:v18];
+      v23 = [array objectAtIndex:v18];
       [v23 doubleValue];
       v25 = v24;
-      v26 = [v9 objectAtIndex:++v18];
+      v26 = [array objectAtIndex:++v18];
       [v26 doubleValue];
       v28 = v27;
       v29 = v18 + 1;
-      v30 = [v9 objectAtIndex:v18 + 1];
+      v30 = [array objectAtIndex:v18 + 1];
       [v30 doubleValue];
       v32 = [v22 initWithLatitude:fabs(v21 + -1.0) < 2.22044605e-16 longitude:1 course:v25 followedByUTurn:v28 locationReferenceFrame:v31];
 
@@ -5114,7 +5114,7 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
     }
   }
 
-  v33 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTTripClusterManager__fetchLearnedRoutesWithOptionsMock_handler___block_invoke;
@@ -5123,11 +5123,11 @@ void __70__RTTripClusterManager__fetchLearnedRoutesWithOptionsDefault_handler___
   v46 = v50;
   v47 = v58;
   v48 = v52;
-  v43 = v40;
+  v43 = handlerCopy;
   v44 = &v54;
   v49 = a2;
-  v34 = v40;
-  dispatch_async(v33, block);
+  v34 = handlerCopy;
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v50, 8);
   _Block_object_dispose(buf, 8);
@@ -5259,15 +5259,15 @@ LABEL_10:
   }
 }
 
-- (unint64_t)_mostTravelledRoute:(id)a3
+- (unint64_t)_mostTravelledRoute:(id)route
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  routeCopy = route;
+  queue = [(RTNotifier *)self queue];
 
-  if (v6)
+  if (queue)
   {
-    if (v5)
+    if (routeCopy)
     {
       goto LABEL_10;
     }
@@ -5285,7 +5285,7 @@ LABEL_10:
     _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", &v22, 0x12u);
   }
 
-  if (!v5)
+  if (!routeCopy)
   {
 LABEL_7:
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -5300,22 +5300,22 @@ LABEL_7:
   }
 
 LABEL_10:
-  v9 = [v5 objectAtIndexedSubscript:0];
-  v10 = [v9 countOfTraversal];
+  v9 = [routeCopy objectAtIndexedSubscript:0];
+  countOfTraversal = [v9 countOfTraversal];
 
   v11 = 0;
-  if ([v5 count])
+  if ([routeCopy count])
   {
     v12 = 0;
     do
     {
-      v13 = [v5 objectAtIndexedSubscript:v12];
-      v14 = [v13 countOfTraversal];
+      v13 = [routeCopy objectAtIndexedSubscript:v12];
+      countOfTraversal2 = [v13 countOfTraversal];
 
-      if (v14 > v10)
+      if (countOfTraversal2 > countOfTraversal)
       {
-        v15 = [v5 objectAtIndexedSubscript:v12];
-        v10 = [v15 countOfTraversal];
+        v15 = [routeCopy objectAtIndexedSubscript:v12];
+        countOfTraversal = [v15 countOfTraversal];
 
         v11 = v12;
       }
@@ -5323,10 +5323,10 @@ LABEL_10:
       ++v12;
     }
 
-    while (v12 < [v5 count]);
+    while (v12 < [routeCopy count]);
   }
 
-  if (v11 >= [v5 count])
+  if (v11 >= [routeCopy count])
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -5334,7 +5334,7 @@ LABEL_10:
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       v20 = NSStringFromSelector(a2);
-      v21 = [v5 count];
+      v21 = [routeCopy count];
       v22 = 138413058;
       v23 = v19;
       v24 = 2112;
@@ -5352,15 +5352,15 @@ LABEL_10:
   return v11;
 }
 
-- (void)_getRoadDataFromFetchedRoutes:(id)a3 roadData:(id)a4
+- (void)_getRoadDataFromFetchedRoutes:(id)routes roadData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  routesCopy = routes;
+  dataCopy = data;
+  v7 = dataCopy;
+  if (routesCopy)
   {
-    if (v6)
+    if (dataCopy)
     {
       goto LABEL_10;
     }
@@ -5393,9 +5393,9 @@ LABEL_7:
   }
 
 LABEL_10:
-  v10 = [v5 sortedArrayUsingComparator:&__block_literal_global_325];
+  v10 = [routesCopy sortedArrayUsingComparator:&__block_literal_global_325];
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -5416,22 +5416,22 @@ LABEL_10:
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        if ([v11 count])
+        if ([array count])
         {
-          v18 = [v17 clRoadID];
-          v19 = [v11 lastObject];
-          v20 = [v19 clRoadID];
+          clRoadID = [v17 clRoadID];
+          lastObject = [array lastObject];
+          clRoadID2 = [lastObject clRoadID];
 
-          if (v18 != v20)
+          if (clRoadID != clRoadID2)
           {
-            v21 = [RTTripClusterProcessor getCLTripSegmentRoadDataFromArrayOfRTTripClusterRoute:v11];
+            v21 = [RTTripClusterProcessor getCLTripSegmentRoadDataFromArrayOfRTTripClusterRoute:array];
             [v7 addObject:v21];
 
-            [v11 removeAllObjects];
+            [array removeAllObjects];
           }
         }
 
-        [v11 addObject:v17];
+        [array addObject:v17];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -5460,16 +5460,16 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
   return v7;
 }
 
-- (id)getWaypointsFromOldStore:(id)a3
+- (id)getWaypointsFromOldStore:(id)store
 {
   v31 = *MEMORY[0x277D85DE8];
-  v24 = [RTTripClusterProcessor getWaypointIDFromClusterID:a3];
+  v24 = [RTTripClusterProcessor getWaypointIDFromClusterID:store];
   v4 = [objc_alloc(MEMORY[0x277D013A8]) initWithClusterID:v24];
-  v5 = [(RTTripClusterManager *)self tripClusterRouteStore];
+  tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
   v23 = v4;
-  v6 = [v5 getTripClusterRouteWithOptions:v4];
+  v6 = [tripClusterRouteStore getTripClusterRouteWithOptions:v4];
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -5491,15 +5491,15 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
 
         v12 = *(*(&v26 + 1) + 8 * i);
         v13 = [RTTripClusterWaypoint alloc];
-        v14 = [v12 clusterID];
-        v15 = [v12 clRoadID];
+        clusterID = [v12 clusterID];
+        clRoadID = [v12 clRoadID];
         [v12 latitude];
         v17 = v16;
         [v12 longitude];
         v19 = v18;
         [v12 course];
-        v21 = -[RTTripClusterWaypoint initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:](v13, "initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:", v14, v15, [v12 sequence], objc_msgSend(v12, "followedByUTurn"), v17, v19, v20);
-        [v7 addObject:v21];
+        v21 = -[RTTripClusterWaypoint initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:](v13, "initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:", clusterID, clRoadID, [v12 sequence], objc_msgSend(v12, "followedByUTurn"), v17, v19, v20);
+        [array addObject:v21];
       }
 
       v9 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -5508,20 +5508,20 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
     while (v9);
   }
 
-  return v7;
+  return array;
 }
 
-- (void)_findRouteFromCurrentLocation:(id)a3 options:(id)a4 queryStartTime:(id)a5 handler:(id)a6
+- (void)_findRouteFromCurrentLocation:(id)location options:(id)options queryStartTime:(id)time handler:(id)handler
 {
   v380 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v272 = COERCE_DOUBLE(a4);
-  v273 = a5;
-  v267 = a6;
-  v293 = self;
-  v11 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  v272 = COERCE_DOUBLE(options);
+  timeCopy = time;
+  handlerCopy = handler;
+  selfCopy = self;
+  queue = [(RTNotifier *)self queue];
 
-  if (!v11)
+  if (!queue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -5534,7 +5534,7 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
     }
   }
 
-  if (!v10)
+  if (!locationCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -5560,7 +5560,7 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
     }
   }
 
-  if (!v267)
+  if (!handlerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -5574,19 +5574,19 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
   }
 
   v16 = objc_alloc(MEMORY[0x277CE41F8]);
-  v17 = [*&v272 originVisit];
-  [v17 coordinate];
+  originVisit = [*&v272 originVisit];
+  [originVisit coordinate];
   v19 = v18;
-  v20 = [*&v272 originVisit];
-  [v20 coordinate];
+  originVisit2 = [*&v272 originVisit];
+  [originVisit2 coordinate];
   v269 = [v16 initWithLatitude:v19 longitude:?];
 
   v21 = objc_alloc(MEMORY[0x277CE41F8]);
-  v22 = [*&v272 destinationVisit];
-  [v22 coordinate];
+  destinationVisit = [*&v272 destinationVisit];
+  [destinationVisit coordinate];
   v24 = v23;
-  v25 = [*&v272 destinationVisit];
-  [v25 coordinate];
+  destinationVisit2 = [*&v272 destinationVisit];
+  [destinationVisit2 coordinate];
   v268 = [v21 initWithLatitude:v24 longitude:?];
 
   v26 = objc_alloc(MEMORY[0x277D01140]);
@@ -5604,11 +5604,11 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
   [v268 course];
   v263 = [v32 initWithLatitude:0 longitude:1 course:v34 followedByUTurn:v36 locationReferenceFrame:v37];
   v38 = objc_alloc(MEMORY[0x277CBFC98]);
-  v39 = [*&v272 originVisit];
-  [v39 coordinate];
+  originVisit3 = [*&v272 originVisit];
+  [originVisit3 coordinate];
   v41 = v40;
-  v42 = [*&v272 originVisit];
-  [v42 coordinate];
+  originVisit4 = [*&v272 originVisit];
+  [originVisit4 coordinate];
   v266 = [v38 initWithLatitude:v41 longitude:? altitude:?];
 
   v284 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v266, 0}];
@@ -5634,15 +5634,15 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
   v331 = __Block_byref_object_copy__72;
   v332 = __Block_byref_object_dispose__72;
   v333 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v261 = [(RTTripClusterManager *)self maximumLocationsInALearnedRoute];
-  v265 = [MEMORY[0x277CBEB18] array];
+  maximumLocationsInALearnedRoute = [(RTTripClusterManager *)self maximumLocationsInALearnedRoute];
+  array = [MEMORY[0x277CBEB18] array];
   v286 = objc_alloc_init(MEMORY[0x277CBFCB0]);
   v285 = objc_alloc_init(MEMORY[0x277CBFCA8]);
   v326 = 0u;
   v327 = 0u;
   v324 = 0u;
   v325 = 0u;
-  obj = v10;
+  obj = locationCopy;
   v43 = [obj countByEnumeratingWithState:&v324 objects:v379 count:16];
   if (v43)
   {
@@ -5660,21 +5660,21 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
 
         v45 = *(*(&v324 + 1) + 8 * i);
         v46 = objc_autoreleasePoolPush();
-        v47 = [v45 countOfTraversal];
-        if (v47 >= [(RTTripClusterManager *)v293 minimumTraversalCountForLearnedRoutes])
+        countOfTraversal = [v45 countOfTraversal];
+        if (countOfTraversal >= [(RTTripClusterManager *)selfCopy minimumTraversalCountForLearnedRoutes])
         {
           if ([v45 modeOfTransport] == 2)
           {
             v48 = objc_alloc(MEMORY[0x277D013A8]);
-            v49 = [v45 clusterID];
-            v50 = [v48 initWithClusterID:v49];
+            clusterID = [v45 clusterID];
+            v50 = [v48 initWithClusterID:clusterID];
 
-            v51 = [(RTTripClusterManager *)v293 tripClusterRouteStore];
-            v52 = [v51 getTripClusterRouteWithOptions:v50];
+            tripClusterRouteStore = [(RTTripClusterManager *)selfCopy tripClusterRouteStore];
+            v52 = [tripClusterRouteStore getTripClusterRouteWithOptions:v50];
 
-            v53 = [MEMORY[0x277CBEB18] array];
-            [(RTTripClusterManager *)v293 _getRoadDataFromFetchedRoutes:v52 roadData:v53];
-            if (v53 && [v53 count])
+            array2 = [MEMORY[0x277CBEB18] array];
+            [(RTTripClusterManager *)selfCopy _getRoadDataFromFetchedRoutes:v52 roadData:array2];
+            if (array2 && [array2 count])
             {
               aBlock[0] = MEMORY[0x277D85DD0];
               aBlock[1] = 3221225472;
@@ -5686,11 +5686,11 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
               v322 = &v328;
               v319 = v346;
               aBlock[4] = v45;
-              v54 = v53;
+              v54 = array2;
               v318 = v54;
               v55 = _Block_copy(aBlock);
-              v56 = [v45 clusterID];
-              v57 = [v285 matchLocations:v284 toRoute:v54 withOptions:v286 andRouteID:v56 modeOfTransport:1 outputHandler:v55];
+              clusterID2 = [v45 clusterID];
+              v57 = [v285 matchLocations:v284 toRoute:v54 withOptions:v286 andRouteID:clusterID2 modeOfTransport:1 outputHandler:v55];
 
               if (v57 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
@@ -5701,11 +5701,11 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
                   v280 = NSStringFromClass(v59);
                   [v57 localizedDescription];
                   v276 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                  v278 = [v45 clusterID];
-                  [v278 UUIDString];
+                  clusterID3 = [v45 clusterID];
+                  [clusterID3 UUIDString];
                   v60 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
                   v61 = [MEMORY[0x277CBEAA8] now];
-                  [v61 timeIntervalSinceDate:v273];
+                  [v61 timeIntervalSinceDate:timeCopy];
                   *buf = 138413058;
                   v348 = v280;
                   v349 = 2112;
@@ -5774,7 +5774,7 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
         NSStringFromSelector(a2);
         v74 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         v75 = [MEMORY[0x277CBEAA8] now];
-        [v75 timeIntervalSinceDate:v273];
+        [v75 timeIntervalSinceDate:timeCopy];
         *buf = 138413058;
         v348 = v73;
         v349 = 2112;
@@ -5791,18 +5791,18 @@ uint64_t __63__RTTripClusterManager__getRoadDataFromFetchedRoutes_roadData___blo
     v377 = *MEMORY[0x277CCA450];
     v378 = @"Did not match to any route clusters.";
     v78 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v378 forKeys:&v377 count:1];
-    v69 = [v77 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v78];
+    array3 = [v77 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v78];
 
-    (*(v267 + 2))(v267, 0, 0, v69);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, array3);
     v290 = [MEMORY[0x277CBEAA8] now];
-    [v290 timeIntervalSinceDate:v273];
-    [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:0 learnedRoutes:@"CL-ZeroMatchedCluster" type:v79 * 1000.0];
+    [v290 timeIntervalSinceDate:timeCopy];
+    [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:0 learnedRoutes:@"CL-ZeroMatchedCluster" type:v79 * 1000.0];
     goto LABEL_103;
   }
 
-  v69 = [MEMORY[0x277CBEB18] array];
-  v70 = [*&v272 routeDate];
-  if (!v70)
+  array3 = [MEMORY[0x277CBEB18] array];
+  routeDate = [*&v272 routeDate];
+  if (!routeDate)
   {
     goto LABEL_54;
   }
@@ -5821,8 +5821,8 @@ LABEL_54:
     v316 = 0u;
     v313 = 0u;
     v314 = 0u;
-    v82 = v341[5];
-    v84 = [v82 countByEnumeratingWithState:&v313 objects:v376 count:16];
+    routeDate2 = v341[5];
+    v84 = [routeDate2 countByEnumeratingWithState:&v313 objects:v376 count:16];
     if (v84)
     {
       v85 = *v314;
@@ -5832,14 +5832,14 @@ LABEL_54:
         {
           if (*v314 != v85)
           {
-            objc_enumerationMutation(v82);
+            objc_enumerationMutation(routeDate2);
           }
 
           v87 = [[RTTripClusterWithLikelihood alloc] initWithCluster:*(*(&v313 + 1) + 8 * j) likelihood:1.0];
-          [v69 addObject:v87];
+          [array3 addObject:v87];
         }
 
-        v84 = [v82 countByEnumeratingWithState:&v313 objects:v376 count:16];
+        v84 = [routeDate2 countByEnumeratingWithState:&v313 objects:v376 count:16];
       }
 
       while (v84);
@@ -5850,10 +5850,10 @@ LABEL_54:
 
 LABEL_53:
   v81 = v341[5];
-  v82 = [*&v272 routeDate];
-  v83 = [(RTTripClusterManager *)v293 _getClusterLikelihoods:v81 routeDate:v82];
+  routeDate2 = [*&v272 routeDate];
+  v83 = [(RTTripClusterManager *)selfCopy _getClusterLikelihoods:v81 routeDate:routeDate2];
 
-  v69 = v83;
+  array3 = v83;
 LABEL_61:
 
   if ([v341[5] count] < 2)
@@ -5863,31 +5863,31 @@ LABEL_61:
 
   else
   {
-    v88 = [*&v272 routeFetchType];
-    if (v88 == 1 || v88 == 3)
+    routeFetchType = [*&v272 routeFetchType];
+    if (routeFetchType == 1 || routeFetchType == 3)
     {
-      v90 = [*&v272 routeDate];
-      *&v89 = COERCE_DOUBLE([(RTTripClusterManager *)v293 _bestScheduleRoute:v69 routeDate:v90]);
+      routeDate3 = [*&v272 routeDate];
+      *&v89 = COERCE_DOUBLE([(RTTripClusterManager *)selfCopy _bestScheduleRoute:array3 routeDate:routeDate3]);
     }
 
     else
     {
-      *&v89 = COERCE_DOUBLE([(RTTripClusterManager *)v293 _mostTravelledRoute:v69]);
+      *&v89 = COERCE_DOUBLE([(RTTripClusterManager *)selfCopy _mostTravelledRoute:array3]);
     }
   }
 
   if (v89 < [v341[5] count])
   {
     v290 = [v341[5] objectAtIndex:v89];
-    v91 = [v290 clusterID];
-    v282 = [v91 UUIDString];
+    clusterID4 = [v290 clusterID];
+    uUIDString = [clusterID4 UUIDString];
 
-    v92 = [v335[5] allKeys];
-    v93 = [v92 containsObject:v282];
+    allKeys = [v335[5] allKeys];
+    v93 = [allKeys containsObject:uUIDString];
 
     if (v93)
     {
-      v279 = [v335[5] valueForKey:v282];
+      v279 = [v335[5] valueForKey:uUIDString];
     }
 
     else
@@ -5895,12 +5895,12 @@ LABEL_61:
       v279 = 0;
     }
 
-    v98 = [v329[5] allKeys];
-    v99 = [v98 containsObject:v282];
+    allKeys2 = [v329[5] allKeys];
+    v99 = [allKeys2 containsObject:uUIDString];
 
     if (v99)
     {
-      v100 = [v329[5] valueForKey:v282];
+      v100 = [v329[5] valueForKey:uUIDString];
       v101 = v100;
       if (!v100)
       {
@@ -5912,46 +5912,46 @@ LABEL_61:
         goto LABEL_99;
       }
 
-      v102 = [v100 tripLocations];
-      if (!v102)
+      tripLocations = [v100 tripLocations];
+      if (!tripLocations)
       {
         goto LABEL_99;
       }
 
-      v103 = [v101 routeRoads];
-      if (v103)
+      routeRoads = [v101 routeRoads];
+      if (routeRoads)
       {
-        v104 = [v101 tripLocations];
-        if ([v104 count])
+        tripLocations2 = [v101 tripLocations];
+        if ([tripLocations2 count])
         {
-          v105 = [v101 routeRoads];
+          routeRoads2 = [v101 routeRoads];
           v277 = v101;
-          v106 = [v105 count] == 0;
+          v106 = [routeRoads2 count] == 0;
 
           if (!v106)
           {
             v107 = objc_alloc(MEMORY[0x277D013C8]);
-            v108 = [v290 clusterID];
-            v281 = [v107 initWithClusterID:v108];
+            clusterID5 = [v290 clusterID];
+            v281 = [v107 initWithClusterID:clusterID5];
 
-            v109 = [MEMORY[0x277CBEB18] array];
-            v110 = [(RTTripClusterManager *)v293 tripClusterWaypointStore];
-            v111 = [v110 getTripClusterWaypointWithOptions:v281];
-            [v109 addObjectsFromArray:v111];
+            array4 = [MEMORY[0x277CBEB18] array];
+            tripClusterWaypointStore = [(RTTripClusterManager *)selfCopy tripClusterWaypointStore];
+            v111 = [tripClusterWaypointStore getTripClusterWaypointWithOptions:v281];
+            [array4 addObjectsFromArray:v111];
 
-            if (![v109 count])
+            if (![array4 count])
             {
-              v112 = [v290 clusterID];
-              v113 = [(RTTripClusterManager *)v293 getWaypointsFromOldStore:v112];
-              [v109 addObjectsFromArray:v113];
+              clusterID6 = [v290 clusterID];
+              v113 = [(RTTripClusterManager *)selfCopy getWaypointsFromOldStore:clusterID6];
+              [array4 addObjectsFromArray:v113];
             }
 
-            v114 = [MEMORY[0x277CBEB18] array];
+            array5 = [MEMORY[0x277CBEB18] array];
             v311 = 0u;
             v312 = 0u;
             v309 = 0u;
             v310 = 0u;
-            v292 = v109;
+            v292 = array4;
             v115 = [v292 countByEnumeratingWithState:&v309 objects:v371 count:16];
             if (v115)
             {
@@ -5985,7 +5985,7 @@ LABEL_61:
                     [v123 updateCourse:? andCourseAccuracy:?];
                   }
 
-                  [v114 addObject:v123];
+                  [array5 addObject:v123];
                 }
 
                 v115 = [v292 countByEnumeratingWithState:&v309 objects:v371 count:16];
@@ -6006,12 +6006,12 @@ LABEL_61:
             v302[3] = &unk_2788CAA50;
             v302[4] = &v303;
             v258 = _Block_copy(v302);
-            v124 = [v277 tripLocations];
-            v125 = [v124 firstObject];
-            v126 = [v277 routeRoads];
-            v127 = [v126 firstObject];
-            v128 = [v290 clusterID];
-            v259 = [v285 getWaypointsSubsetFromSnapPointOnRoute:v279 modeOfTransport:1 snapLocation:v125 snapRoad:v127 waypoints:v114 routeID:v128 withOptions:v286 outputHandler:v258];
+            tripLocations3 = [v277 tripLocations];
+            firstObject = [tripLocations3 firstObject];
+            routeRoads3 = [v277 routeRoads];
+            firstObject2 = [routeRoads3 firstObject];
+            clusterID7 = [v290 clusterID];
+            v259 = [v285 getWaypointsSubsetFromSnapPointOnRoute:v279 modeOfTransport:1 snapLocation:firstObject snapRoad:firstObject2 waypoints:array5 routeID:clusterID7 withOptions:v286 outputHandler:v258];
 
             if (v259)
             {
@@ -6023,7 +6023,7 @@ LABEL_61:
                 [v259 localizedDescription];
                 v238 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
                 v239 = [MEMORY[0x277CBEAA8] now];
-                [v239 timeIntervalSinceDate:v273];
+                [v239 timeIntervalSinceDate:timeCopy];
                 *buf = 138412802;
                 v348 = v237;
                 v349 = 2112;
@@ -6037,12 +6037,12 @@ LABEL_61:
               v369 = *MEMORY[0x277CCA450];
               v370 = @"Internal error in processing selected cluster (1)";
               v131 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v370 forKeys:&v369 count:1];
-              v260 = [v130 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v131];
+              tripLocations4 = [v130 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v131];
 
-              (*(v267 + 2))(v267, 0, 0, v260);
-              v274 = [MEMORY[0x277CBEAA8] now];
-              [v274 timeIntervalSinceDate:v273];
-              [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:0 learnedRoutes:@"CL-WPReturnedError" type:v132 * 1000.0];
+              (*(handlerCopy + 2))(handlerCopy, 0, 0, tripLocations4);
+              array6 = [MEMORY[0x277CBEAA8] now];
+              [array6 timeIntervalSinceDate:timeCopy];
+              [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:0 learnedRoutes:@"CL-WPReturnedError" type:v132 * 1000.0];
             }
 
             else
@@ -6050,18 +6050,18 @@ LABEL_61:
               v148 = v304[5];
               if (v148 && ([v148 tripLocations], (v149 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v304[5], "tripLocations"), v150 = objc_claimAutoreleasedReturnValue(), v151 = objc_msgSend(v150, "count") == 0, v150, v149, !v151))
               {
-                v260 = [v304[5] tripLocations];
-                v274 = [MEMORY[0x277CBEB18] array];
-                v152 = [v260 count];
-                if (v261 && v152 > v261)
+                tripLocations4 = [v304[5] tripLocations];
+                array6 = [MEMORY[0x277CBEB18] array];
+                v152 = [tripLocations4 count];
+                if (maximumLocationsInALearnedRoute && v152 > maximumLocationsInALearnedRoute)
                 {
                   v270 = [MEMORY[0x277CBEAA8] now];
-                  v153 = [MEMORY[0x277CBEB18] array];
+                  array7 = [MEMORY[0x277CBEB18] array];
                   v296 = 0u;
                   v297 = 0u;
                   v294 = 0u;
                   v295 = 0u;
-                  v154 = v260;
+                  v154 = tripLocations4;
                   v155 = [v154 countByEnumeratingWithState:&v294 objects:v365 count:16];
                   if (v155)
                   {
@@ -6085,7 +6085,7 @@ LABEL_61:
                         v165 = v164;
                         [v158 courseAccuracy];
                         v167 = [v163 initWithCoordinate:v270 altitude:v162.latitude horizontalAccuracy:v162.longitude verticalAccuracy:-1.0 course:-1.0 courseAccuracy:-1.0 speed:v165 speedAccuracy:v166 timestamp:{-1.0, 0xBFF0000000000000}];
-                        [v153 addObject:v167];
+                        [array7 addObject:v167];
                       }
 
                       v155 = [v154 countByEnumeratingWithState:&v294 objects:v365 count:16];
@@ -6094,11 +6094,11 @@ LABEL_61:
                     while (v155);
                   }
 
-                  v168 = [MEMORY[0x277D01168] downsampleLocations:v153 outputSize:v261];
+                  v168 = [MEMORY[0x277D01168] downsampleLocations:array7 outputSize:maximumLocationsInALearnedRoute];
                   v169 = v168;
                   if (!v168 || ![v168 count])
                   {
-                    v170 = v153;
+                    v170 = array7;
 
                     v169 = v170;
                   }
@@ -6120,7 +6120,7 @@ LABEL_61:
                     [v181 course];
                     v183 = [v174 initWithLatitude:v173 longitude:1 course:v177 followedByUTurn:v180 locationReferenceFrame:v182];
 
-                    [v274 addObject:v183];
+                    [array6 addObject:v183];
                   }
                 }
 
@@ -6130,7 +6130,7 @@ LABEL_61:
                   v301 = 0u;
                   v298 = 0u;
                   v299 = 0u;
-                  v169 = v260;
+                  v169 = tripLocations4;
                   v188 = [v169 countByEnumeratingWithState:&v298 objects:v366 count:16];
                   if (v188)
                   {
@@ -6154,7 +6154,7 @@ LABEL_61:
                         v197 = v196;
                         [v191 course];
                         v199 = [v193 initWithLatitude:v192 longitude:1 course:v195 followedByUTurn:v197 locationReferenceFrame:v198];
-                        [v274 addObject:v199];
+                        [array6 addObject:v199];
                       }
 
                       v188 = [v169 countByEnumeratingWithState:&v298 objects:v366 count:16];
@@ -6164,17 +6164,17 @@ LABEL_61:
                   }
                 }
 
-                v200 = [(RTTripClusterManager *)v293 _odPairMetricsPerClusterOrder:v69];
+                v200 = [(RTTripClusterManager *)selfCopy _odPairMetricsPerClusterOrder:array3];
                 v201 = objc_alloc(MEMORY[0x277D01148]);
-                v202 = [v200 clusterOrderDefault_totalNumberOfRoutes];
-                v203 = [v200 clusterOrderDefault_sumOfTraversalCountOfAllRoutes];
-                v204 = [v290 countOfTraversal];
-                v205 = [v290 lastTimeTaken];
-                v271 = [v201 initWithAllRoutesCountForThisODPair:v202 allTraversalCountBetweenThisODPair:v203 routeTraversalCount:v204 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:v205];
+                clusterOrderDefault_totalNumberOfRoutes = [v200 clusterOrderDefault_totalNumberOfRoutes];
+                clusterOrderDefault_sumOfTraversalCountOfAllRoutes = [v200 clusterOrderDefault_sumOfTraversalCountOfAllRoutes];
+                countOfTraversal2 = [v290 countOfTraversal];
+                lastTimeTaken = [v290 lastTimeTaken];
+                v271 = [v201 initWithAllRoutesCountForThisODPair:clusterOrderDefault_totalNumberOfRoutes allTraversalCountBetweenThisODPair:clusterOrderDefault_sumOfTraversalCountOfAllRoutes routeTraversalCount:countOfTraversal2 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:lastTimeTaken];
                 v262 = v200;
 
                 v206 = objc_alloc(MEMORY[0x277D01150]);
-                v207 = [v290 modeOfTransport];
+                modeOfTransport = [v290 modeOfTransport];
                 [v290 maxTripTime];
                 v209 = v208;
                 [v290 minTripTime];
@@ -6193,22 +6193,22 @@ LABEL_61:
                 *&v222 = v217;
                 *&v224 = v223;
                 *&v223 = v218;
-                v225 = [v206 initWithRouteTravelMode:v207 maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:v274 meanTravelTimeEstimateInSeconds:v271 maxTravelledDistanceEstimateInMeters:v223 minTravelledDistanceEstimateInMeters:v219 meanTravelledDistanceEstimateInMeters:v220 routeLocations:v221 learnedRouteLocations:v222 learnedRouteMetrics:v224];
-                v226 = [MEMORY[0x277CBEB18] array];
-                [v226 addObject:v225];
+                v225 = [v206 initWithRouteTravelMode:modeOfTransport maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:array6 meanTravelTimeEstimateInSeconds:v271 maxTravelledDistanceEstimateInMeters:v223 minTravelledDistanceEstimateInMeters:v219 meanTravelledDistanceEstimateInMeters:v220 routeLocations:v221 learnedRouteLocations:v222 learnedRouteMetrics:v224];
+                array8 = [MEMORY[0x277CBEB18] array];
+                [array8 addObject:v225];
                 v257 = v225;
                 v227 = objc_alloc(MEMORY[0x277D01130]);
-                v228 = [v290 clusterID];
+                clusterID8 = [v290 clusterID];
                 [v290 avgTripTime];
                 v230 = v229;
                 [v290 avgTripDistance];
                 v231 = v230;
                 *&v233 = v232;
                 *&v232 = v231;
-                v234 = [v227 initWithLearnedRouteId:v228 routeStartLocation:v269 routeEndLocation:v268 travelTimeEntireRouteSec:v226 travelDistanceEntireRouteMeter:v264 travelModeRoutes:v263 routeStartLocationWithReferenceFrame:v232 routeEndLocationWithReferenceFrame:v233];
+                v234 = [v227 initWithLearnedRouteId:clusterID8 routeStartLocation:v269 routeEndLocation:v268 travelTimeEntireRouteSec:array8 travelDistanceEntireRouteMeter:v264 travelModeRoutes:v263 routeStartLocationWithReferenceFrame:v232 routeEndLocationWithReferenceFrame:v233];
 
-                [v265 addObject:v234];
-                if ([v274 count])
+                [array addObject:v234];
+                if ([array6 count])
                 {
                   v235 = 0.0;
                 }
@@ -6236,7 +6236,7 @@ LABEL_61:
                 }
 
                 v244 = [MEMORY[0x277CBEAA8] now];
-                [v244 timeIntervalSinceDate:v273];
+                [v244 timeIntervalSinceDate:timeCopy];
                 v246 = v245 * 1000.0;
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
@@ -6247,7 +6247,7 @@ LABEL_61:
                     v249 = NSStringFromClass(v248);
                     NSStringFromSelector(a2);
                     v250 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                    *&v251 = COERCE_DOUBLE([v265 count]);
+                    *&v251 = COERCE_DOUBLE([array count]);
                     v252 = [obj count];
                     *buf = 138413826;
                     v348 = v249;
@@ -6267,8 +6267,8 @@ LABEL_61:
                   }
                 }
 
-                (*(v267 + 2))(v267, v265, 0, COERCE_DOUBLE(*&v235));
-                [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:v265 learnedRoutes:@"CurentLoc" type:v246];
+                (*(handlerCopy + 2))(handlerCopy, array, 0, COERCE_DOUBLE(*&v235));
+                [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:array learnedRoutes:@"CurentLoc" type:v246];
               }
 
               else
@@ -6279,7 +6279,7 @@ LABEL_61:
                   v253 = objc_opt_class();
                   v254 = NSStringFromClass(v253);
                   v255 = [MEMORY[0x277CBEAA8] now];
-                  [v255 timeIntervalSinceDate:v273];
+                  [v255 timeIntervalSinceDate:timeCopy];
                   *buf = 138412546;
                   v348 = v254;
                   v349 = 2048;
@@ -6291,12 +6291,12 @@ LABEL_61:
                 v367 = *MEMORY[0x277CCA450];
                 v368 = @"Internal error in processing selected cluster (2)";
                 v186 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v368 forKeys:&v367 count:1];
-                v260 = [v185 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v186];
+                tripLocations4 = [v185 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v186];
 
-                (*(v267 + 2))(v267, 0, 0, v260);
-                v274 = [MEMORY[0x277CBEAA8] now];
-                [v274 timeIntervalSinceDate:v273];
-                [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidWP" type:v187 * 1000.0];
+                (*(handlerCopy + 2))(handlerCopy, 0, 0, tripLocations4);
+                array6 = [MEMORY[0x277CBEAA8] now];
+                [array6 timeIntervalSinceDate:timeCopy];
+                [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidWP" type:v187 * 1000.0];
               }
             }
 
@@ -6317,7 +6317,7 @@ LABEL_99:
             NSStringFromSelector(a2);
             v145 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             v146 = [MEMORY[0x277CBEAA8] now];
-            [v146 timeIntervalSinceDate:v273];
+            [v146 timeIntervalSinceDate:timeCopy];
             *buf = 138413058;
             v348 = v144;
             v349 = 2112;
@@ -6335,10 +6335,10 @@ LABEL_99:
           v135 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v373 forKeys:&v372 count:1];
           v281 = [v134 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v135];
 
-          (*(v267 + 2))(v267, 0, 0, v281);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v281);
           v292 = [MEMORY[0x277CBEAA8] now];
-          [v292 timeIntervalSinceDate:v273];
-          [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidSelectedClusterData" type:v136 * 1000.0];
+          [v292 timeIntervalSinceDate:timeCopy];
+          [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidSelectedClusterData" type:v136 * 1000.0];
           goto LABEL_102;
         }
       }
@@ -6359,7 +6359,7 @@ LABEL_99:
     v139 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     v140 = [obj count];
     v141 = [MEMORY[0x277CBEAA8] now];
-    [v141 timeIntervalSinceDate:v273];
+    [v141 timeIntervalSinceDate:timeCopy];
     *buf = 138413570;
     v348 = v138;
     v349 = 2112;
@@ -6381,10 +6381,10 @@ LABEL_99:
   v96 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v375 forKeys:&v374 count:1];
   v290 = [v95 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v96];
 
-  (*(v267 + 2))(v267, 0, 0, v290);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v290);
   v283 = [MEMORY[0x277CBEAA8] now];
-  [v283 timeIntervalSinceDate:v273];
-  [(RTTripClusterManager *)v293 outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:v273 queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidSelectedCluster" type:v97 * 1000.0];
+  [v283 timeIntervalSinceDate:timeCopy];
+  [(RTTripClusterManager *)selfCopy outputLearnedRouteSPICallDebuggingData:obj options:*&v272 queryStartTime:timeCopy queryResponseTimeMSec:0 learnedRoutes:@"CL-InvalidSelectedCluster" type:v97 * 1000.0];
 
 LABEL_103:
   _Block_object_dispose(&v328, 8);
@@ -6443,63 +6443,63 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
   }
 }
 
-- (void)outputLearnedRouteSPICallDebuggingData:(id)a3 options:(id)a4 queryStartTime:(id)a5 queryResponseTimeMSec:(double)a6 learnedRoutes:(id)a7 type:(id)a8
+- (void)outputLearnedRouteSPICallDebuggingData:(id)data options:(id)options queryStartTime:(id)time queryResponseTimeMSec:(double)sec learnedRoutes:(id)routes type:(id)type
 {
   v51 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dataCopy = data;
+  optionsCopy = options;
+  timeCopy = time;
+  routesCopy = routes;
+  typeCopy = type;
   if ([(RTTripClusterProcessorOptions *)self->_options recordDebuggingDataInFile])
   {
-    v19 = [v15 bundleIdentifier];
-    v20 = [v19 isEqualToString:@"com.apple.routined.RoutineApp"];
+    bundleIdentifier = [optionsCopy bundleIdentifier];
+    v20 = [bundleIdentifier isEqualToString:@"com.apple.routined.RoutineApp"];
 
     if ((v20 & 1) == 0)
     {
-      v45 = v16;
-      v21 = [MEMORY[0x277CBEB38] dictionary];
-      [v21 setValue:v18 forKey:@"RTLR_SPI_QueryType_NSString"];
+      v45 = timeCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setValue:typeCopy forKey:@"RTLR_SPI_QueryType_NSString"];
       v22 = objc_alloc(MEMORY[0x277D01140]);
-      v23 = [v15 originVisit];
-      [v23 coordinate];
+      originVisit = [optionsCopy originVisit];
+      [originVisit coordinate];
       v25 = v24;
-      v26 = [v15 originVisit];
-      [v26 coordinate];
+      originVisit2 = [optionsCopy originVisit];
+      [originVisit2 coordinate];
       v27 = [v22 initWithLatitude:0 longitude:1 course:v25 followedByUTurn:? locationReferenceFrame:?];
-      [v21 setValue:v27 forKey:@"RTLR_SPI_OriginCoordinate_RTLRLocation"];
+      [dictionary setValue:v27 forKey:@"RTLR_SPI_OriginCoordinate_RTLRLocation"];
 
       v28 = objc_alloc(MEMORY[0x277D01140]);
-      v29 = [v15 destinationVisit];
-      [v29 coordinate];
+      destinationVisit = [optionsCopy destinationVisit];
+      [destinationVisit coordinate];
       v31 = v30;
-      v32 = [v15 destinationVisit];
-      [v32 coordinate];
+      destinationVisit2 = [optionsCopy destinationVisit];
+      [destinationVisit2 coordinate];
       v33 = [v28 initWithLatitude:0 longitude:1 course:v31 followedByUTurn:? locationReferenceFrame:?];
-      [v21 setValue:v33 forKey:@"RTLR_SPI_DestinationCoordinate_RTLRLocation"];
+      [dictionary setValue:v33 forKey:@"RTLR_SPI_DestinationCoordinate_RTLRLocation"];
 
-      if (v14)
+      if (dataCopy)
       {
-        v34 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v14, "count")}];
-        [v21 setValue:v34 forKey:@"RTLR_SPI_ClusterCount_NSNumber"];
+        v34 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(dataCopy, "count")}];
+        [dictionary setValue:v34 forKey:@"RTLR_SPI_ClusterCount_NSNumber"];
       }
 
-      if (v17)
+      if (routesCopy)
       {
-        [v21 setValue:v17 forKey:@"RTLR_SPI_LearnedRoutes_NSArray"];
+        [dictionary setValue:routesCopy forKey:@"RTLR_SPI_LearnedRoutes_NSArray"];
       }
 
-      [v21 setValue:v16 forKey:{@"RTLR_SPI_QueryTime_NSDate", v18}];
-      v35 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
-      [v21 setValue:v35 forKey:@"RTLR_SPI_QueryResponseTimeMSec_NSNumber"];
+      [dictionary setValue:timeCopy forKey:{@"RTLR_SPI_QueryTime_NSDate", typeCopy}];
+      v35 = [MEMORY[0x277CCABB0] numberWithDouble:sec];
+      [dictionary setValue:v35 forKey:@"RTLR_SPI_QueryResponseTimeMSec_NSNumber"];
 
-      v36 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v37 = v14;
+      v37 = dataCopy;
       v38 = [v37 countByEnumeratingWithState:&v46 objects:v50 count:16];
       if (v38)
       {
@@ -6514,8 +6514,8 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
               objc_enumerationMutation(v37);
             }
 
-            v42 = [*(*(&v46 + 1) + 8 * i) clusterID];
-            [v36 addObject:v42];
+            clusterID = [*(*(&v46 + 1) + 8 * i) clusterID];
+            [array addObject:clusterID];
           }
 
           v39 = [v37 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -6524,29 +6524,29 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
         while (v39);
       }
 
-      [v21 setValue:v36 forKey:@"RTLR_SPI_ClusterIDArray_NSArray"];
+      [dictionary setValue:array forKey:@"RTLR_SPI_ClusterIDArray_NSArray"];
       v43 = objc_alloc_init(MEMORY[0x277CBFCA8]);
-      [v43 outputRouteLearningDebuggingDataInCLTSPFile:v21];
+      [v43 outputRouteLearningDebuggingDataInCLTSPFile:dictionary];
 
-      v18 = v44;
-      v16 = v45;
+      typeCopy = v44;
+      timeCopy = v45;
     }
   }
 }
 
-- (id)_getClusterLikelihoods:(id)a3 routeDate:(id)a4
+- (id)_getClusterLikelihoods:(id)likelihoods routeDate:(id)date
 {
   v116 = a2;
   v161[16] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  likelihoodsCopy = likelihoods;
+  dateCopy = date;
+  if ([likelihoodsCopy count])
   {
-    v115 = v7;
-    v8 = [RTTripClusterSchedule getTimeIDFromDate:v7];
+    v115 = dateCopy;
+    v8 = [RTTripClusterSchedule getTimeIDFromDate:dateCopy];
     v133 = [RTTripClusterSchedule getWeekdayIDFromTimeID:v8];
     v132 = [RTTripClusterSchedule getHourIDFromTimeID:v8];
-    v9 = [v6 count];
+    v9 = [likelihoodsCopy count];
     v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
     if (v10)
     {
@@ -6566,7 +6566,7 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
       }
     }
 
-    v124 = v6;
+    v124 = likelihoodsCopy;
     v114 = &v114;
     MEMORY[0x28223BE20](v10);
     v12 = (4 * v9 + 15) & 0x7FFFFFFF0;
@@ -6590,7 +6590,7 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
     MEMORY[0x28223BE20](v20);
     v127 = (&v114 - v16);
     bzero(&v114 - v16, v14);
-    v123 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v9 >= 1)
     {
       v117 = (&v114 - v16);
@@ -6604,15 +6604,15 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
       v130 = *MEMORY[0x277CBE5C0];
       v22 = 0.0;
       v23 = v124;
-      v125 = self;
+      selfCopy = self;
       do
       {
         v24 = [v23 objectAtIndexedSubscript:v21];
-        v25 = [v24 countOfTraversal];
-        v26 = self;
-        v27 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
+        countOfTraversal = [v24 countOfTraversal];
+        selfCopy2 = self;
+        minimumTraversalCountForLearnedRoutes = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
 
-        if (v25 >= v27)
+        if (countOfTraversal >= minimumTraversalCountForLearnedRoutes)
         {
           *&v131[8 * v21] = 0;
           v28 = v117;
@@ -6621,12 +6621,12 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
           v127[v21] = 0.0;
           v29 = objc_alloc(MEMORY[0x277D01388]);
           v30 = [v23 objectAtIndexedSubscript:v21];
-          v31 = [v30 clusterID];
-          v32 = [v29 initWithClusterID:v31];
+          clusterID = [v30 clusterID];
+          v32 = [v29 initWithClusterID:clusterID];
 
-          v33 = [(RTTripClusterManager *)v26 tripClusterRecencyStore];
+          tripClusterRecencyStore = [(RTTripClusterManager *)selfCopy2 tripClusterRecencyStore];
           v122 = v32;
-          v34 = [v33 getTripClusterRecencyWithOptions:v32];
+          v34 = [tripClusterRecencyStore getTripClusterRecencyWithOptions:v32];
 
           v121 = v34;
           if (v34)
@@ -6660,9 +6660,9 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
                   v44 = *(*(&v142 + 1) + 8 * i);
                   v45 = objc_alloc(MEMORY[0x277CBEA80]);
                   v46 = [v45 initWithCalendarIdentifier:v130];
-                  v47 = [v44 startTime];
+                  startTime = [v44 startTime];
                   v48 = [MEMORY[0x277CBEAA8] now];
-                  v49 = [v46 components:16 fromDate:v47 toDate:v48 options:0];
+                  v49 = [v46 components:16 fromDate:startTime toDate:v48 options:0];
 
                   v37 = v37 + exp([v49 day] * -0.0247552564);
                   *&v131[8 * v21] = v37;
@@ -6676,22 +6676,22 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
 
             v22 = v22 + v38 + v37;
             v23 = v124;
-            v50 = v125;
+            v50 = selfCopy;
           }
 
           else
           {
-            v50 = v26;
+            v50 = selfCopy2;
           }
 
           v51 = objc_alloc(MEMORY[0x277D013B8]);
           v52 = [v23 objectAtIndexedSubscript:v21];
-          v53 = [v52 clusterID];
-          v54 = [v51 initWithClusterID:v53];
+          clusterID2 = [v52 clusterID];
+          v54 = [v51 initWithClusterID:clusterID2];
 
-          v55 = [(RTTripClusterManager *)v50 tripClusterScheduleStore];
+          tripClusterScheduleStore = [(RTTripClusterManager *)v50 tripClusterScheduleStore];
           v120 = v54;
-          v56 = [v55 getTripClusterScheduleWithOptions:v54];
+          v56 = [tripClusterScheduleStore getTripClusterScheduleWithOptions:v54];
 
           v140 = 0u;
           v141 = 0u;
@@ -6760,7 +6760,7 @@ void __85__RTTripClusterManager__findRouteFromCurrentLocation_options_queryStart
         }
 
         ++v21;
-        self = v125;
+        self = selfCopy;
       }
 
       while (v21 != v126);
@@ -6825,10 +6825,10 @@ LABEL_49:
 
         v127[v71] = v82;
         v83 = [v23 objectAtIndexedSubscript:v71];
-        v84 = [v83 countOfTraversal];
-        v85 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
+        countOfTraversal2 = [v83 countOfTraversal];
+        minimumTraversalCountForLearnedRoutes2 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
 
-        if (v84 >= v85)
+        if (countOfTraversal2 >= minimumTraversalCountForLearnedRoutes2)
         {
           v74 = v74 + v78 * v80 * v82;
         }
@@ -6851,10 +6851,10 @@ LABEL_49:
             v91 = v77;
             v92 = v124;
             v93 = [v124 objectAtIndexedSubscript:v87];
-            v94 = [v93 countOfTraversal];
-            v95 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
+            countOfTraversal3 = [v93 countOfTraversal];
+            minimumTraversalCountForLearnedRoutes3 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
 
-            if (v94 < v95)
+            if (countOfTraversal3 < minimumTraversalCountForLearnedRoutes3)
             {
               v90 = 0.0;
             }
@@ -6862,7 +6862,7 @@ LABEL_49:
             v96 = objc_alloc(v88[21]);
             v97 = [v92 objectAtIndexedSubscript:v87];
             v98 = [v96 initWithCluster:v97 likelihood:v90];
-            [v123 setObject:v98 atIndexedSubscript:v87];
+            [array setObject:v98 atIndexedSubscript:v87];
 
             if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
             {
@@ -6872,9 +6872,9 @@ LABEL_49:
                 v100 = objc_opt_class();
                 v101 = NSStringFromClass(v100);
                 v102 = NSStringFromSelector(v116);
-                v103 = [v123 objectAtIndexedSubscript:v87];
-                v104 = [v103 clusterID];
-                v105 = [v104 UUIDString];
+                v103 = [array objectAtIndexedSubscript:v87];
+                clusterID3 = [v103 clusterID];
+                uUIDString = [clusterID3 UUIDString];
                 v106 = *v76;
                 v107 = *v91;
                 v108 = *v127;
@@ -6885,7 +6885,7 @@ LABEL_49:
                 v150 = 2048;
                 v151 = v90;
                 v152 = 2112;
-                v153 = v105;
+                v153 = uUIDString;
                 v154 = 2048;
                 v155 = v106;
                 v156 = 2048;
@@ -6903,7 +6903,7 @@ LABEL_49:
             ++v127;
             v77 = v91 + 1;
             ++v76;
-            self = v125;
+            self = selfCopy;
           }
 
           while (v126 != v87);
@@ -6912,29 +6912,29 @@ LABEL_49:
       }
     }
 
-    v7 = v115;
-    v6 = v124;
+    dateCopy = v115;
+    likelihoodsCopy = v124;
   }
 
   else
   {
-    v123 = 0;
+    array = 0;
   }
 
-  v109 = v123;
+  v109 = array;
 
   return v109;
 }
 
-- (unint64_t)_bestScheduleRoute:(id)a3 routeDate:(id)a4
+- (unint64_t)_bestScheduleRoute:(id)route routeDate:(id)date
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(RTNotifier *)self queue];
+  routeCopy = route;
+  queue = [(RTNotifier *)self queue];
 
-  if (v8)
+  if (queue)
   {
-    if (a4)
+    if (date)
     {
       goto LABEL_3;
     }
@@ -6952,10 +6952,10 @@ LABEL_49:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", &v30, 0x12u);
     }
 
-    if (a4)
+    if (date)
     {
 LABEL_3:
-      if (v7)
+      if (routeCopy)
       {
         goto LABEL_14;
       }
@@ -6974,7 +6974,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeDate (in %s:%d)", &v30, 0x12u);
   }
 
-  if (!v7)
+  if (!routeCopy)
   {
 LABEL_11:
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -6989,20 +6989,20 @@ LABEL_11:
   }
 
 LABEL_14:
-  if (![v7 count])
+  if (![routeCopy count])
   {
     v14 = -1;
     goto LABEL_33;
   }
 
-  if (!a4)
+  if (!date)
   {
 LABEL_32:
-    v14 = [(RTTripClusterManager *)self _mostTravelledRoute:v7];
+    v14 = [(RTTripClusterManager *)self _mostTravelledRoute:routeCopy];
     goto LABEL_33;
   }
 
-  if (![v7 count])
+  if (![routeCopy count])
   {
     goto LABEL_36;
   }
@@ -7012,7 +7012,7 @@ LABEL_32:
   LODWORD(v14) = -1;
   do
   {
-    v15 = [v7 objectAtIndexedSubscript:v12];
+    v15 = [routeCopy objectAtIndexedSubscript:v12];
     [v15 likelihood];
     v17 = v16;
 
@@ -7030,7 +7030,7 @@ LABEL_32:
     ++v12;
   }
 
-  while ([v7 count] > v12);
+  while ([routeCopy count] > v12);
   if ((v14 & 0x80000000) != 0)
   {
 LABEL_36:
@@ -7061,15 +7061,15 @@ LABEL_36:
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = NSStringFromSelector(a2);
-      v27 = [v7 objectAtIndexedSubscript:v14];
-      v28 = [v27 clusterID];
-      v29 = [v28 UUIDString];
+      v27 = [routeCopy objectAtIndexedSubscript:v14];
+      clusterID = [v27 clusterID];
+      uUIDString = [clusterID UUIDString];
       v30 = 138412802;
       v31 = v25;
       v32 = 2112;
       v33 = v26;
       v34 = 2112;
-      v35 = v29;
+      v35 = uUIDString;
       _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "%@:%@,Best route found to be clusterID %@", &v30, 0x20u);
     }
   }
@@ -7079,16 +7079,16 @@ LABEL_33:
   return v14;
 }
 
-- (void)_topListRoutes:(id)a3 routeDate:(id)a4 handler:(id)a5
+- (void)_topListRoutes:(id)routes routeDate:(id)date handler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v36 = a5;
-  v10 = [(RTNotifier *)self queue];
+  routesCopy = routes;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
 
-  if (v10)
+  if (queue)
   {
-    if (a4)
+    if (date)
     {
       goto LABEL_3;
     }
@@ -7106,10 +7106,10 @@ LABEL_33:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", buf, 0x12u);
     }
 
-    if (a4)
+    if (date)
     {
 LABEL_3:
-      if (v9)
+      if (routesCopy)
       {
         goto LABEL_14;
       }
@@ -7128,7 +7128,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!routesCopy)
   {
 LABEL_11:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -7143,16 +7143,16 @@ LABEL_11:
   }
 
 LABEL_14:
-  v14 = [(RTTripClusterManager *)self defaultsManager];
-  v15 = [v14 objectForKey:@"RTDefaultsLearnedRoutesFetchSPITopListClusterMaxNum"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v15 = [defaultsManager objectForKey:@"RTDefaultsLearnedRoutesFetchSPITopListClusterMaxNum"];
 
   v16 = 3;
   if (v15)
   {
-    v17 = [v15 intValue];
-    if (v17 >= 0)
+    intValue = [v15 intValue];
+    if (intValue >= 0)
     {
-      v18 = v17;
+      v18 = intValue;
     }
 
     else
@@ -7163,7 +7163,7 @@ LABEL_14:
     v16 = v18;
   }
 
-  v19 = [v9 sortedArrayUsingComparator:&__block_literal_global_412];
+  v19 = [routesCopy sortedArrayUsingComparator:&__block_literal_global_412];
 
   v20 = [v19 count];
   if (v16 >= v20)
@@ -7191,7 +7191,7 @@ LABEL_14:
           v33 = v35 = v15;
           [v33 clusterID];
           v32 = v34 = v16;
-          v28 = [v32 UUIDString];
+          uUIDString = [v32 UUIDString];
           v29 = [v37 objectAtIndexedSubscript:v21];
           [v29 likelihood];
           *buf = 138413314;
@@ -7201,7 +7201,7 @@ LABEL_14:
           v42 = 1024;
           v43 = v21;
           v44 = 2112;
-          v45 = v28;
+          v45 = uUIDString;
           v46 = 2048;
           v47 = v30;
           _os_log_debug_impl(&dword_2304B3000, v24, OS_LOG_TYPE_DEBUG, "%@:%@,top list route number %d,clusterID,%@,likelihood,%.2f", buf, 0x30u);
@@ -7220,7 +7220,7 @@ LABEL_14:
   }
 
   v31 = [v19 subarrayWithRange:{0, v16}];
-  v36[2](v36, v31, 0);
+  handlerCopy[2](handlerCopy, v31, 0);
 }
 
 uint64_t __57__RTTripClusterManager__topListRoutes_routeDate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -7246,16 +7246,16 @@ uint64_t __57__RTTripClusterManager__topListRoutes_routeDate_handler___block_inv
   return v9;
 }
 
-- (void)_routeScoreForDate:(id)a3 learnedRouteLastDate:(id)a4 distanceInWeekday:(unint64_t *)a5 distanceInHour:(unint64_t *)a6
+- (void)_routeScoreForDate:(id)date learnedRouteLastDate:(id)lastDate distanceInWeekday:(unint64_t *)weekday distanceInHour:(unint64_t *)hour
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a3;
-  v12 = [(RTNotifier *)self queue];
+  lastDateCopy = lastDate;
+  dateCopy = date;
+  queue = [(RTNotifier *)self queue];
 
-  if (v12)
+  if (queue)
   {
-    if (v11)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -7273,10 +7273,10 @@ uint64_t __57__RTTripClusterManager__topListRoutes_routeDate_handler___block_inv
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", &v28, 0x12u);
     }
 
-    if (v11)
+    if (dateCopy)
     {
 LABEL_3:
-      if (v10)
+      if (lastDateCopy)
       {
         goto LABEL_4;
       }
@@ -7295,10 +7295,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeDate (in %s:%d)", &v28, 0x12u);
   }
 
-  if (v10)
+  if (lastDateCopy)
   {
 LABEL_4:
-    if (a5)
+    if (weekday)
     {
       goto LABEL_5;
     }
@@ -7317,10 +7317,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedRouteLastDate (in %s:%d)", &v28, 0x12u);
   }
 
-  if (a5)
+  if (weekday)
   {
 LABEL_5:
-    if (a6)
+    if (hour)
     {
       goto LABEL_22;
     }
@@ -7339,7 +7339,7 @@ LABEL_16:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceInWeekday (in %s:%d)", &v28, 0x12u);
   }
 
-  if (!a6)
+  if (!hour)
   {
 LABEL_19:
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -7354,11 +7354,11 @@ LABEL_19:
   }
 
 LABEL_22:
-  v18 = [MEMORY[0x277CBEA80] currentCalendar];
-  v19 = [v18 component:512 fromDate:v11];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v19 = [currentCalendar component:512 fromDate:dateCopy];
 
-  v20 = [MEMORY[0x277CBEA80] currentCalendar];
-  v21 = [v20 component:512 fromDate:v10];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v21 = [currentCalendar2 component:512 fromDate:lastDateCopy];
 
   v22 = v19 - v21;
   if (v19 - v21 < 0)
@@ -7366,12 +7366,12 @@ LABEL_22:
     v22 = v21 - v19;
   }
 
-  *a5 = v22;
-  v23 = [MEMORY[0x277CBEA80] currentCalendar];
-  v24 = [v23 component:32 fromDate:v11];
+  *weekday = v22;
+  currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+  v24 = [currentCalendar3 component:32 fromDate:dateCopy];
 
-  v25 = [MEMORY[0x277CBEA80] currentCalendar];
-  v26 = [v25 component:32 fromDate:v10];
+  currentCalendar4 = [MEMORY[0x277CBEA80] currentCalendar];
+  v26 = [currentCalendar4 component:32 fromDate:lastDateCopy];
 
   v27 = v26 - v24;
   if (v24 >= v26)
@@ -7379,19 +7379,19 @@ LABEL_22:
     v27 = v24 - v26;
   }
 
-  *a6 = v27;
+  *hour = v27;
 }
 
-- (unint64_t)_bestRoute:(id)a3 routeDate:(id)a4
+- (unint64_t)_bestRoute:(id)route routeDate:(id)date
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  routeCopy = route;
+  dateCopy = date;
+  queue = [(RTNotifier *)self queue];
 
-  if (v9)
+  if (queue)
   {
-    if (v7)
+    if (routeCopy)
     {
       goto LABEL_3;
     }
@@ -7407,13 +7407,13 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: clusters (in %s:%d)", &v28[8], 0x12u);
     }
 
-    if (v8)
+    if (dateCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_20:
-    v10 = [(RTTripClusterManager *)self _mostTravelledRoute:v7];
+    v10 = [(RTTripClusterManager *)self _mostTravelledRoute:routeCopy];
     goto LABEL_21;
   }
 
@@ -7427,20 +7427,20 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: self.queue (in %s:%d)", &v28[8], 0x12u);
   }
 
-  if (!v7)
+  if (!routeCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_3:
-  if (!v8)
+  if (!dateCopy)
   {
     goto LABEL_20;
   }
 
 LABEL_4:
   v10 = 0;
-  if ([v7 count])
+  if ([routeCopy count])
   {
     v11 = 0;
     v12 = 23;
@@ -7448,15 +7448,15 @@ LABEL_4:
     do
     {
       *v28 = 0uLL;
-      v14 = [v7 objectAtIndexedSubscript:v11];
-      v15 = [v14 countOfTraversal];
-      v16 = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
+      v14 = [routeCopy objectAtIndexedSubscript:v11];
+      countOfTraversal = [v14 countOfTraversal];
+      minimumTraversalCountForLearnedRoutes = [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes];
 
-      if (v15 >= v16)
+      if (countOfTraversal >= minimumTraversalCountForLearnedRoutes)
       {
-        v17 = [v7 objectAtIndexedSubscript:v11];
-        v18 = [v17 lastTimeTaken];
-        [(RTTripClusterManager *)self _routeScoreForDate:v8 learnedRouteLastDate:v18 distanceInWeekday:&v28[8] distanceInHour:v28];
+        v17 = [routeCopy objectAtIndexedSubscript:v11];
+        lastTimeTaken = [v17 lastTimeTaken];
+        [(RTTripClusterManager *)self _routeScoreForDate:dateCopy learnedRouteLastDate:lastTimeTaken distanceInWeekday:&v28[8] distanceInHour:v28];
 
         if (*v28 < __PAIR128__(v13, v12))
         {
@@ -7469,10 +7469,10 @@ LABEL_4:
       ++v11;
     }
 
-    while (v11 < [v7 count]);
+    while (v11 < [routeCopy count]);
   }
 
-  if (v10 >= [v7 count])
+  if (v10 >= [routeCopy count])
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -7480,7 +7480,7 @@ LABEL_4:
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v25 = NSStringFromSelector(aSelector);
-      v26 = [v7 count];
+      v26 = [routeCopy count];
       *&v28[8] = 138413058;
       *&v28[12] = v24;
       v29 = 2112;
@@ -7500,11 +7500,11 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)_significantNonDriveClusterForFetchSPI:(id)a3
+- (BOOL)_significantNonDriveClusterForFetchSPI:(id)i
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  iCopy = i;
+  if (!iCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -7517,29 +7517,29 @@ LABEL_21:
     }
   }
 
-  v7 = [v5 modeOfTransport];
-  if ((v7 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  modeOfTransport = [iCopy modeOfTransport];
+  if ((modeOfTransport & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     goto LABEL_23;
   }
 
-  if (v7 == 1)
+  if (modeOfTransport == 1)
   {
-    v13 = [v5 countOfWalkTraversal];
-    if (v13 >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
+    countOfWalkTraversal = [iCopy countOfWalkTraversal];
+    if (countOfWalkTraversal >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
     {
-      [v5 avgWalkTime];
+      [iCopy avgWalkTime];
       if (v14 >= [(RTTripClusterManager *)self _minimumTravelTimeForSignificantNonDriveCluster])
       {
-        [v5 avgWalkDistance];
+        [iCopy avgWalkDistance];
         if (v15 >= [(RTTripClusterManager *)self _minimumTravelDistanceForSignificantNonDriveCluster])
         {
-          [v5 avgWalkTime];
-          if (v16 <= -[RTTripClusterManager _maximumTravelTimeForSignificantNonDriveCluster:](self, "_maximumTravelTimeForSignificantNonDriveCluster:", [v5 clusterOrder]))
+          [iCopy avgWalkTime];
+          if (v16 <= -[RTTripClusterManager _maximumTravelTimeForSignificantNonDriveCluster:](self, "_maximumTravelTimeForSignificantNonDriveCluster:", [iCopy clusterOrder]))
           {
-            [v5 avgWalkDistance];
+            [iCopy avgWalkDistance];
 LABEL_18:
-            if (v12 <= -[RTTripClusterManager _maximumTravelDistanceForSignificantNonDriveCluster:](self, "_maximumTravelDistanceForSignificantNonDriveCluster:", [v5 clusterOrder]))
+            if (v12 <= -[RTTripClusterManager _maximumTravelDistanceForSignificantNonDriveCluster:](self, "_maximumTravelDistanceForSignificantNonDriveCluster:", [iCopy clusterOrder]))
             {
               v22 = 1;
               goto LABEL_24;
@@ -7550,21 +7550,21 @@ LABEL_18:
     }
   }
 
-  else if (v7 == 3)
+  else if (modeOfTransport == 3)
   {
-    v8 = [v5 countOfBikeTraversal];
-    if (v8 >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
+    countOfBikeTraversal = [iCopy countOfBikeTraversal];
+    if (countOfBikeTraversal >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
     {
-      [v5 avgBikeTime];
+      [iCopy avgBikeTime];
       if (v9 >= [(RTTripClusterManager *)self _minimumTravelTimeForSignificantNonDriveCluster])
       {
-        [v5 avgBikeDistance];
+        [iCopy avgBikeDistance];
         if (v10 >= [(RTTripClusterManager *)self _minimumTravelDistanceForSignificantNonDriveCluster])
         {
-          [v5 avgBikeTime];
-          if (v11 <= -[RTTripClusterManager _maximumTravelTimeForSignificantNonDriveCluster:](self, "_maximumTravelTimeForSignificantNonDriveCluster:", [v5 clusterOrder]))
+          [iCopy avgBikeTime];
+          if (v11 <= -[RTTripClusterManager _maximumTravelTimeForSignificantNonDriveCluster:](self, "_maximumTravelTimeForSignificantNonDriveCluster:", [iCopy clusterOrder]))
           {
-            [v5 avgBikeDistance];
+            [iCopy avgBikeDistance];
             goto LABEL_18;
           }
         }
@@ -7580,13 +7580,13 @@ LABEL_18:
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       v20 = NSStringFromSelector(a2);
-      v21 = [v5 clusterID];
+      clusterID = [iCopy clusterID];
       v24 = 138412802;
       v25 = v19;
       v26 = 2112;
       v27 = v20;
       v28 = 2112;
-      v29 = v21;
+      v29 = clusterID;
       _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@:%@ Skipping non drive cluster,%@", &v24, 0x20u);
     }
   }
@@ -7598,16 +7598,16 @@ LABEL_24:
   return v22;
 }
 
-- (id)_learnedRouteForNoDriveCluster:(id)a3 routeStartLocation:(id)a4 routeEndLocation:(id)a5 metricsCollector:(id)a6
+- (id)_learnedRouteForNoDriveCluster:(id)cluster routeStartLocation:(id)location routeEndLocation:(id)endLocation metricsCollector:(id)collector
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  clusterCopy = cluster;
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  collectorCopy = collector;
+  if (clusterCopy)
   {
-    if (v11)
+    if (locationCopy)
     {
       goto LABEL_3;
     }
@@ -7625,10 +7625,10 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: cluster (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (locationCopy)
     {
 LABEL_3:
-      if (v12)
+      if (endLocationCopy)
       {
         goto LABEL_4;
       }
@@ -7647,10 +7647,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeStartLocation (in %s:%d)", buf, 0x12u);
   }
 
-  if (v12)
+  if (endLocationCopy)
   {
 LABEL_4:
-    if (v13)
+    if (collectorCopy)
     {
       goto LABEL_18;
     }
@@ -7669,7 +7669,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeEndLocation (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!collectorCopy)
   {
 LABEL_15:
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -7684,29 +7684,29 @@ LABEL_15:
   }
 
 LABEL_18:
-  if ([(RTTripClusterManager *)self _significantNonDriveClusterForFetchSPI:v10])
+  if ([(RTTripClusterManager *)self _significantNonDriveClusterForFetchSPI:clusterCopy])
   {
-    [v10 avgWalkTime];
+    [clusterCopy avgWalkTime];
     v19 = v18;
-    [v10 avgWalkDistance];
+    [clusterCopy avgWalkDistance];
     v21 = v20;
-    if ([v10 modeOfTransport] == 3)
+    if ([clusterCopy modeOfTransport] == 3)
     {
-      [v10 avgBikeTime];
+      [clusterCopy avgBikeTime];
       v19 = v22;
-      [v10 avgBikeDistance];
+      [clusterCopy avgBikeDistance];
       v21 = v23;
     }
 
     v24 = objc_alloc(MEMORY[0x277D01148]);
-    v25 = [v13 clusterOrderNoDrive_totalNumberOfRoutes];
-    v26 = [v13 clusterOrderNoDrive_sumOfTraversalCountOfAllRoutes];
-    v27 = [v10 countOfTraversal];
-    v28 = [v10 lastTimeTaken];
-    v62 = [v24 initWithAllRoutesCountForThisODPair:v25 allTraversalCountBetweenThisODPair:v26 routeTraversalCount:v27 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:v28];
+    clusterOrderNoDrive_totalNumberOfRoutes = [collectorCopy clusterOrderNoDrive_totalNumberOfRoutes];
+    clusterOrderNoDrive_sumOfTraversalCountOfAllRoutes = [collectorCopy clusterOrderNoDrive_sumOfTraversalCountOfAllRoutes];
+    countOfTraversal = [clusterCopy countOfTraversal];
+    lastTimeTaken = [clusterCopy lastTimeTaken];
+    v62 = [v24 initWithAllRoutesCountForThisODPair:clusterOrderNoDrive_totalNumberOfRoutes allTraversalCountBetweenThisODPair:clusterOrderNoDrive_sumOfTraversalCountOfAllRoutes routeTraversalCount:countOfTraversal routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:lastTimeTaken];
 
     v29 = objc_alloc(MEMORY[0x277D01150]);
-    v30 = [v10 modeOfTransport];
+    modeOfTransport = [clusterCopy modeOfTransport];
     v31 = v19;
     v32 = v21;
     LODWORD(v33) = -1.0;
@@ -7715,31 +7715,31 @@ LABEL_18:
     LODWORD(v36) = -1.0;
     *&v37 = v31;
     *&v38 = v32;
-    v39 = [v29 initWithRouteTravelMode:v30 maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:0 meanTravelTimeEstimateInSeconds:v62 maxTravelledDistanceEstimateInMeters:v33 minTravelledDistanceEstimateInMeters:v34 meanTravelledDistanceEstimateInMeters:v37 routeLocations:v35 learnedRouteLocations:v36 learnedRouteMetrics:v38];
-    v40 = [MEMORY[0x277CBEB18] array];
-    [v40 addObject:v39];
-    v41 = v13;
+    v39 = [v29 initWithRouteTravelMode:modeOfTransport maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:0 meanTravelTimeEstimateInSeconds:v62 maxTravelledDistanceEstimateInMeters:v33 minTravelledDistanceEstimateInMeters:v34 meanTravelledDistanceEstimateInMeters:v37 routeLocations:v35 learnedRouteLocations:v36 learnedRouteMetrics:v38];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:v39];
+    v41 = collectorCopy;
     v42 = objc_alloc(MEMORY[0x277D01140]);
-    [v11 coordinate];
+    [locationCopy coordinate];
     v44 = v43;
-    [v11 coordinate];
+    [locationCopy coordinate];
     v46 = v45;
-    [v11 course];
+    [locationCopy course];
     v48 = [v42 initWithLatitude:0 longitude:1 course:v44 followedByUTurn:v46 locationReferenceFrame:v47];
     v49 = objc_alloc(MEMORY[0x277D01140]);
-    [v12 coordinate];
+    [endLocationCopy coordinate];
     v51 = v50;
-    [v12 coordinate];
+    [endLocationCopy coordinate];
     v53 = v52;
-    [v12 course];
+    [endLocationCopy course];
     v55 = [v49 initWithLatitude:0 longitude:1 course:v51 followedByUTurn:v53 locationReferenceFrame:v54];
     v56 = objc_alloc(MEMORY[0x277D01130]);
-    v57 = [v10 clusterID];
+    clusterID = [clusterCopy clusterID];
     *&v58 = v31;
     *&v59 = v32;
-    v60 = [v56 initWithLearnedRouteId:v57 routeStartLocation:v11 routeEndLocation:v12 travelTimeEntireRouteSec:v40 travelDistanceEntireRouteMeter:v48 travelModeRoutes:v55 routeStartLocationWithReferenceFrame:v58 routeEndLocationWithReferenceFrame:v59];
+    v60 = [v56 initWithLearnedRouteId:clusterID routeStartLocation:locationCopy routeEndLocation:endLocationCopy travelTimeEntireRouteSec:array travelDistanceEntireRouteMeter:v48 travelModeRoutes:v55 routeStartLocationWithReferenceFrame:v58 routeEndLocationWithReferenceFrame:v59];
 
-    v13 = v41;
+    collectorCopy = v41;
   }
 
   else
@@ -7750,27 +7750,27 @@ LABEL_18:
   return v60;
 }
 
-- (void)_routeLocationsForCluster:(id)a3 inRouteLocations:(id)a4 learnedRouteLocations:(id)a5 fetchAllRouteLocations:(BOOL)a6
+- (void)_routeLocationsForCluster:(id)cluster inRouteLocations:(id)locations learnedRouteLocations:(id)routeLocations fetchAllRouteLocations:(BOOL)allRouteLocations
 {
   v106 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = v13;
-  if (a6)
+  clusterCopy = cluster;
+  locationsCopy = locations;
+  routeLocationsCopy = routeLocations;
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = array;
+  if (allRouteLocations)
   {
-    v15 = v13;
-    v85 = v12;
-    v86 = v11;
+    v15 = array;
+    v85 = routeLocationsCopy;
+    v86 = locationsCopy;
     v16 = objc_alloc(MEMORY[0x277D013A8]);
-    v91 = v10;
-    v17 = [v10 clusterID];
-    v18 = [v16 initWithClusterID:v17];
+    v91 = clusterCopy;
+    clusterID = [clusterCopy clusterID];
+    v18 = [v16 initWithClusterID:clusterID];
 
-    v89 = self;
-    v19 = [(RTTripClusterManager *)self tripClusterRouteStore];
-    v20 = [v19 getTripClusterRouteWithOptions:v18];
+    selfCopy = self;
+    tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
+    v20 = [tripClusterRouteStore getTripClusterRouteWithOptions:v18];
 
     v97 = 0u;
     v98 = 0u;
@@ -7793,14 +7793,14 @@ LABEL_18:
 
           v25 = *(*(&v95 + 1) + 8 * i);
           v26 = [RTTripClusterWaypoint alloc];
-          v27 = [v25 clusterID];
-          v28 = [v25 clRoadID];
+          clusterID2 = [v25 clusterID];
+          clRoadID = [v25 clRoadID];
           [v25 latitude];
           v30 = v29;
           [v25 longitude];
           v32 = v31;
           [v25 course];
-          v34 = -[RTTripClusterWaypoint initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:](v26, "initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:", v27, v28, [v25 sequence], objc_msgSend(v25, "followedByUTurn"), v30, v32, v33);
+          v34 = -[RTTripClusterWaypoint initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:](v26, "initWithClusterID:clRoadID:latitude:longitude:course:sequence:followedByUTurn:", clusterID2, clRoadID, [v25 sequence], objc_msgSend(v25, "followedByUTurn"), v30, v32, v33);
           [v15 addObject:v34];
         }
 
@@ -7811,10 +7811,10 @@ LABEL_18:
     }
 
     v35 = 0;
-    self = v89;
-    v10 = v91;
-    v12 = v85;
-    v11 = v86;
+    self = selfCopy;
+    clusterCopy = v91;
+    routeLocationsCopy = v85;
+    locationsCopy = v86;
     v14 = v15;
     if (!v15)
     {
@@ -7825,11 +7825,11 @@ LABEL_18:
   else
   {
     v36 = objc_alloc(MEMORY[0x277D013C8]);
-    v37 = [v10 clusterID];
-    v35 = [v36 initWithClusterID:v37];
+    clusterID3 = [clusterCopy clusterID];
+    v35 = [v36 initWithClusterID:clusterID3];
 
-    v38 = [(RTTripClusterManager *)self tripClusterWaypointStore];
-    v39 = [v38 getTripClusterWaypointWithOptions:v35];
+    tripClusterWaypointStore = [(RTTripClusterManager *)self tripClusterWaypointStore];
+    v39 = [tripClusterWaypointStore getTripClusterWaypointWithOptions:v35];
     [v14 addObjectsFromArray:v39];
 
     if ([v14 count])
@@ -7842,8 +7842,8 @@ LABEL_18:
 
     else
     {
-      v62 = [v10 clusterID];
-      v63 = [(RTTripClusterManager *)self getWaypointsFromOldStore:v62];
+      clusterID4 = [clusterCopy clusterID];
+      v63 = [(RTTripClusterManager *)self getWaypointsFromOldStore:clusterID4];
       [v14 addObjectsFromArray:v63];
 
       if (!v14)
@@ -7855,10 +7855,10 @@ LABEL_18:
 
   if ([v14 count])
   {
-    v92 = v10;
+    v92 = clusterCopy;
     obja = v35;
-    v90 = self;
-    v87 = [(RTTripClusterManager *)self maximumLocationsInALearnedRoute];
+    selfCopy2 = self;
+    maximumLocationsInALearnedRoute = [(RTTripClusterManager *)self maximumLocationsInALearnedRoute];
     v40 = [MEMORY[0x277CBEAA8] now];
     if ([v14 count])
     {
@@ -7893,7 +7893,7 @@ LABEL_18:
         v55 = [v14 objectAtIndexedSubscript:v41];
         v56 = [v51 initWithCoordinate:v40 altitude:v48.latitude horizontalAccuracy:v48.longitude verticalAccuracy:-1.0 course:-1.0 courseAccuracy:-1.0 speed:v54 speedAccuracy:v50 timestamp:{-1.0, objc_msgSend(v55, "sequence")}];
 
-        [v11 addObject:v56];
+        [locationsCopy addObject:v56];
         objc_autoreleasePoolPop(v42);
         ++v41;
       }
@@ -7901,17 +7901,17 @@ LABEL_18:
       while (v41 < [v14 count]);
     }
 
-    v57 = [v11 count];
-    if (v87 && v57 > v87)
+    v57 = [locationsCopy count];
+    if (maximumLocationsInALearnedRoute && v57 > maximumLocationsInALearnedRoute)
     {
-      v58 = [MEMORY[0x277D01168] downsampleLocations:v11 outputSize:?];
-      v59 = [(RTTripClusterManager *)v90 _createUnionOfLocations:v11 decimatedLocations:v58];
+      v58 = [MEMORY[0x277D01168] downsampleLocations:locationsCopy outputSize:?];
+      v59 = [(RTTripClusterManager *)selfCopy2 _createUnionOfLocations:locationsCopy decimatedLocations:v58];
       v60 = v59;
       if (v59 && [v59 count])
       {
-        [v11 removeAllObjects];
-        v61 = v11;
-        v11 = [v60 copy];
+        [locationsCopy removeAllObjects];
+        v61 = locationsCopy;
+        locationsCopy = [v60 copy];
       }
 
       else
@@ -7921,7 +7921,7 @@ LABEL_18:
         {
           v82 = objc_opt_class();
           v83 = NSStringFromClass(v82);
-          v84 = [v11 count];
+          v84 = [locationsCopy count];
           *buf = 138412546;
           v100 = v83;
           v101 = 2048;
@@ -7931,34 +7931,34 @@ LABEL_18:
       }
     }
 
-    if ([v11 count])
+    if ([locationsCopy count])
     {
       v69 = 0;
       do
       {
-        v70 = [v11 objectAtIndexedSubscript:v69];
+        v70 = [locationsCopy objectAtIndexedSubscript:v69];
         [v70 courseAccuracy];
         v71 = [RTTripClusterProcessor uTurnFlagFromCourseAccuracy:?];
 
         v72 = objc_alloc(MEMORY[0x277D01140]);
-        v73 = [v11 objectAtIndexedSubscript:v69];
+        v73 = [locationsCopy objectAtIndexedSubscript:v69];
         [v73 coordinate];
         v75 = v74;
-        v76 = [v11 objectAtIndexedSubscript:v69];
+        v76 = [locationsCopy objectAtIndexedSubscript:v69];
         [v76 coordinate];
         v78 = v77;
-        v79 = [v11 objectAtIndexedSubscript:v69];
+        v79 = [locationsCopy objectAtIndexedSubscript:v69];
         [v79 course];
         v81 = [v72 initWithLatitude:v71 longitude:1 course:v75 followedByUTurn:v78 locationReferenceFrame:v80];
 
-        [v12 addObject:v81];
+        [routeLocationsCopy addObject:v81];
         ++v69;
       }
 
-      while (v69 < [v11 count]);
+      while (v69 < [locationsCopy count]);
     }
 
-    v10 = v92;
+    clusterCopy = v92;
     v35 = obja;
     goto LABEL_36;
   }
@@ -7972,8 +7972,8 @@ LABEL_26:
       v64 = objc_opt_class();
       v65 = NSStringFromClass(v64);
       v66 = NSStringFromSelector(a2);
-      [v10 clusterID];
-      v68 = v67 = v10;
+      [clusterCopy clusterID];
+      v68 = v67 = clusterCopy;
       *buf = 138412802;
       v100 = v65;
       v101 = 2112;
@@ -7982,36 +7982,36 @@ LABEL_26:
       v104 = v68;
       _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_INFO, "%@:%@,Zero routes/locations fetched from table4,clusterId,%@", buf, 0x20u);
 
-      v10 = v67;
+      clusterCopy = v67;
     }
 
 LABEL_36:
   }
 }
 
-- (id)_createUnionOfLocations:(id)a3 decimatedLocations:(id)a4
+- (id)_createUnionOfLocations:(id)locations decimatedLocations:(id)decimatedLocations
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 <= [v6 count] || !objc_msgSend(v5, "count") || !objc_msgSend(v6, "count"))
+  locationsCopy = locations;
+  decimatedLocationsCopy = decimatedLocations;
+  v7 = [locationsCopy count];
+  if (v7 <= [decimatedLocationsCopy count] || !objc_msgSend(locationsCopy, "count") || !objc_msgSend(decimatedLocationsCopy, "count"))
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
 LABEL_20:
 
-      v8 = 0;
+      array = 0;
       goto LABEL_21;
     }
 
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    if (v5)
+    if (locationsCopy)
     {
-      v33 = [v5 count];
-      if (v6)
+      v33 = [locationsCopy count];
+      if (decimatedLocationsCopy)
       {
         goto LABEL_26;
       }
@@ -8020,10 +8020,10 @@ LABEL_20:
     else
     {
       v33 = 0;
-      if (v6)
+      if (decimatedLocationsCopy)
       {
 LABEL_26:
-        v34 = [v6 count];
+        v34 = [decimatedLocationsCopy count];
 LABEL_29:
         *buf = 138412802;
         v37 = v32;
@@ -8041,21 +8041,21 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  if ([v5 count])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([locationsCopy count])
   {
     v10 = 0;
     v11 = 0;
     v12 = MEMORY[0x277D86220];
     *&v9 = 138412546;
     v35 = v9;
-    while (v10 < [v6 count])
+    while (v10 < [decimatedLocationsCopy count])
     {
-      v13 = [v5 objectAtIndexedSubscript:v11];
+      v13 = [locationsCopy objectAtIndexedSubscript:v11];
       [v13 speedAccuracy];
       v15 = v14;
 
-      v16 = [v6 objectAtIndexedSubscript:v10];
+      v16 = [decimatedLocationsCopy objectAtIndexedSubscript:v10];
       [v16 speedAccuracy];
       v18 = v17;
 
@@ -8064,8 +8064,8 @@ LABEL_29:
         break;
       }
 
-      v19 = [v6 objectAtIndexedSubscript:v10];
-      [v8 addObject:v19];
+      v19 = [decimatedLocationsCopy objectAtIndexedSubscript:v10];
+      [array addObject:v19];
 
       ++v10;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -8088,13 +8088,13 @@ LABEL_29:
       }
 
 LABEL_15:
-      if (++v11 >= [v5 count])
+      if (++v11 >= [locationsCopy count])
       {
         goto LABEL_21;
       }
     }
 
-    v25 = [v5 objectAtIndexedSubscript:v11];
+    v25 = [locationsCopy objectAtIndexedSubscript:v11];
     [v25 courseAccuracy];
     v26 = [RTTripClusterProcessor uTurnFlagFromCourseAccuracy:?];
 
@@ -8103,8 +8103,8 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v27 = [v5 objectAtIndexedSubscript:v11];
-    [v8 addObject:v27];
+    v27 = [locationsCopy objectAtIndexedSubscript:v11];
+    [array addObject:v27];
 
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -8133,20 +8133,20 @@ LABEL_14:
 
 LABEL_21:
 
-  return v8;
+  return array;
 }
 
-- (void)_findNonDriveClusterForCommuteID:(id)a3 tripClusters:(id)a4 beforeDriveCluster:(id *)a5 afterDriveCluster:(id *)a6
+- (void)_findNonDriveClusterForCommuteID:(id)d tripClusters:(id)clusters beforeDriveCluster:(id *)cluster afterDriveCluster:(id *)driveCluster
 {
-  v32 = self;
+  selfCopy = self;
   aSelector = a2;
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  dCopy = d;
+  clustersCopy = clusters;
+  v11 = clustersCopy;
+  if (dCopy)
   {
-    if (v10)
+    if (clustersCopy)
     {
       goto LABEL_3;
     }
@@ -8167,7 +8167,7 @@ LABEL_21:
     if (v11)
     {
 LABEL_3:
-      if (a5)
+      if (cluster)
       {
         goto LABEL_4;
       }
@@ -8183,7 +8183,7 @@ LABEL_12:
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: beforeDriveCluster (in %s:%d)", buf, 0x12u);
       }
 
-      if (a6)
+      if (driveCluster)
       {
         goto LABEL_18;
       }
@@ -8202,13 +8202,13 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: tripClusters (in %s:%d)", buf, 0x12u);
   }
 
-  if (!a5)
+  if (!cluster)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
-  if (!a6)
+  if (!driveCluster)
   {
 LABEL_15:
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -8246,15 +8246,15 @@ LABEL_18:
       }
 
       v21 = *(*(&v34 + 1) + 8 * i);
-      v22 = [v21 commuteID];
-      v23 = [v22 isEqual:v9];
+      commuteID = [v21 commuteID];
+      v23 = [commuteID isEqual:dCopy];
 
       if (v23)
       {
         if ([v21 clusterOrder] == 1)
         {
           v24 = v21;
-          *a5 = v21;
+          *cluster = v21;
           if (!v21)
           {
             continue;
@@ -8266,16 +8266,16 @@ LABEL_18:
           if ([v21 clusterOrder] == 2)
           {
             v25 = v21;
-            *a6 = v21;
+            *driveCluster = v21;
           }
 
-          if (!*a5)
+          if (!*cluster)
           {
             continue;
           }
         }
 
-        if (*a6)
+        if (*driveCluster)
         {
           goto LABEL_33;
         }
@@ -8296,14 +8296,14 @@ LABEL_33:
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
       v29 = NSStringFromSelector(aSelector);
-      v30 = *a5;
-      v31 = *a6;
+      v30 = *cluster;
+      v31 = *driveCluster;
       *buf = 138413314;
       v39 = v28;
       v40 = 2112;
       v41 = v29;
       v42 = 2112;
-      v43 = v9;
+      v43 = dCopy;
       v44 = 2112;
       v45 = v30;
       v46 = 2112;
@@ -8313,11 +8313,11 @@ LABEL_33:
   }
 }
 
-- (id)_createNonDriveRTLearnedRouteTravelMode:(id)a3 totalNumberOfRoutes:(int)a4 sumOfTraversalCountOfAllRoutes:(int)a5
+- (id)_createNonDriveRTLearnedRouteTravelMode:(id)mode totalNumberOfRoutes:(int)routes sumOfTraversalCountOfAllRoutes:(int)allRoutes
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -8330,38 +8330,38 @@ LABEL_33:
     }
   }
 
-  if ([v8 modeOfTransport] == 1)
+  if ([modeCopy modeOfTransport] == 1)
   {
-    [v8 avgWalkTime];
+    [modeCopy avgWalkTime];
     v11 = v10;
-    [v8 avgWalkDistance];
+    [modeCopy avgWalkDistance];
     v13 = v12;
-    v14 = [v8 countOfWalkTraversal];
+    countOfWalkTraversal = [modeCopy countOfWalkTraversal];
 LABEL_9:
-    v17 = v14;
+    v17 = countOfWalkTraversal;
     v18 = objc_alloc(MEMORY[0x277D01148]);
-    v19 = [v8 lastTimeTaken];
-    v20 = [v18 initWithAllRoutesCountForThisODPair:a4 allTraversalCountBetweenThisODPair:a5 routeTraversalCount:v17 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:v19];
+    lastTimeTaken = [modeCopy lastTimeTaken];
+    v20 = [v18 initWithAllRoutesCountForThisODPair:routes allTraversalCountBetweenThisODPair:allRoutes routeTraversalCount:v17 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:lastTimeTaken];
 
     v21 = objc_alloc(MEMORY[0x277D01150]);
-    v22 = [v8 modeOfTransport];
+    modeOfTransport = [modeCopy modeOfTransport];
     *&v23 = v11;
     *&v24 = v13;
     LODWORD(v25) = -1.0;
     LODWORD(v26) = -1.0;
     LODWORD(v27) = -1.0;
     LODWORD(v28) = -1.0;
-    v29 = [v21 initWithRouteTravelMode:v22 maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:0 meanTravelTimeEstimateInSeconds:v20 maxTravelledDistanceEstimateInMeters:v25 minTravelledDistanceEstimateInMeters:v26 meanTravelledDistanceEstimateInMeters:v23 routeLocations:v27 learnedRouteLocations:v28 learnedRouteMetrics:v24];
+    v29 = [v21 initWithRouteTravelMode:modeOfTransport maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:0 meanTravelTimeEstimateInSeconds:v20 maxTravelledDistanceEstimateInMeters:v25 minTravelledDistanceEstimateInMeters:v26 meanTravelledDistanceEstimateInMeters:v23 routeLocations:v27 learnedRouteLocations:v28 learnedRouteMetrics:v24];
     goto LABEL_13;
   }
 
-  if ([v8 modeOfTransport] == 3)
+  if ([modeCopy modeOfTransport] == 3)
   {
-    [v8 avgBikeTime];
+    [modeCopy avgBikeTime];
     v11 = v15;
-    [v8 avgBikeDistance];
+    [modeCopy avgBikeDistance];
     v13 = v16;
-    v14 = [v8 countOfBikeTraversal];
+    countOfWalkTraversal = [modeCopy countOfBikeTraversal];
     goto LABEL_9;
   }
 
@@ -8371,13 +8371,13 @@ LABEL_9:
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
     v33 = NSStringFromSelector(a2);
-    v34 = [v8 modeOfTransport];
+    modeOfTransport2 = [modeCopy modeOfTransport];
     v35 = 138412802;
     v36 = v32;
     v37 = 2112;
     v38 = v33;
     v39 = 1024;
-    v40 = v34;
+    v40 = modeOfTransport2;
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@:%@ unexpected cluster transport mode,%d", &v35, 0x1Cu);
   }
 
@@ -8387,11 +8387,11 @@ LABEL_13:
   return v29;
 }
 
-- (id)_odPairMetricsPerClusterOrder:(id)a3
+- (id)_odPairMetricsPerClusterOrder:(id)order
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  orderCopy = order;
+  if (!orderCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -8404,14 +8404,14 @@ LABEL_13:
     }
   }
 
-  if ([v3 count])
+  if ([orderCopy count])
   {
     v5 = objc_alloc_init(RTTripClusterMetricsCollector);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v3;
+    v6 = orderCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (!v7)
     {
@@ -8439,15 +8439,15 @@ LABEL_13:
 
           if ([v11 modeOfTransport] == 1)
           {
-            v12 = [v11 countOfWalkTraversal];
+            countOfWalkTraversal = [v11 countOfWalkTraversal];
             goto LABEL_17;
           }
 
           if ([v11 modeOfTransport] == 3)
           {
-            v12 = [v11 countOfBikeTraversal];
+            countOfWalkTraversal = [v11 countOfBikeTraversal];
 LABEL_17:
-            v13 = v12;
+            v13 = countOfWalkTraversal;
           }
 
           else
@@ -8503,18 +8503,18 @@ LABEL_31:
   return v5;
 }
 
-- (id)_learnedRouteForDriveCluster:(id)a3 tripClusters:(id)a4 routeStartLocation:(id)a5 routeEndLocation:(id)a6 fetchAllRouteLocations:(BOOL)a7 metricsCollector:(id)a8 excludeRouteLocations:(BOOL)a9
+- (id)_learnedRouteForDriveCluster:(id)cluster tripClusters:(id)clusters routeStartLocation:(id)location routeEndLocation:(id)endLocation fetchAllRouteLocations:(BOOL)locations metricsCollector:(id)collector excludeRouteLocations:(BOOL)routeLocations
 {
-  v10 = a7;
+  locationsCopy = locations;
   v122 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  if (v16)
+  clusterCopy = cluster;
+  clustersCopy = clusters;
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  collectorCopy = collector;
+  if (clusterCopy)
   {
-    if (v17)
+    if (clustersCopy)
     {
       goto LABEL_3;
     }
@@ -8532,10 +8532,10 @@ LABEL_31:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: driveCluster (in %s:%d)", buf, 0x12u);
     }
 
-    if (v17)
+    if (clustersCopy)
     {
 LABEL_3:
-      if (v18)
+      if (locationCopy)
       {
         goto LABEL_4;
       }
@@ -8554,10 +8554,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: odTripClusters (in %s:%d)", buf, 0x12u);
   }
 
-  if (v18)
+  if (locationCopy)
   {
 LABEL_4:
-    if (v19)
+    if (endLocationCopy)
     {
       goto LABEL_5;
     }
@@ -8576,10 +8576,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeStartLocation (in %s:%d)", buf, 0x12u);
   }
 
-  if (v19)
+  if (endLocationCopy)
   {
 LABEL_5:
-    if (v20)
+    if (collectorCopy)
     {
       goto LABEL_22;
     }
@@ -8598,7 +8598,7 @@ LABEL_16:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: routeEndLocation (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v20)
+  if (!collectorCopy)
   {
 LABEL_19:
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -8613,73 +8613,73 @@ LABEL_19:
   }
 
 LABEL_22:
-  if ([v16 clusterOrder])
+  if ([clusterCopy clusterOrder])
   {
     v26 = 0;
   }
 
   else
   {
-    v113 = v17;
-    v27 = [MEMORY[0x277CBEB18] array];
-    v28 = [MEMORY[0x277CBEB18] array];
-    [(RTTripClusterManager *)self _routeLocationsForCluster:v16 inRouteLocations:v27 learnedRouteLocations:v28 fetchAllRouteLocations:v10];
-    if ([v28 count])
+    v113 = clustersCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(RTTripClusterManager *)self _routeLocationsForCluster:clusterCopy inRouteLocations:array learnedRouteLocations:array2 fetchAllRouteLocations:locationsCopy];
+    if ([array2 count])
     {
-      v108 = self;
-      if (a9)
+      selfCopy = self;
+      if (routeLocations)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
-          v109 = v27;
+          v109 = array;
           v29 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             v30 = objc_opt_class();
             v31 = NSStringFromClass(v30);
             v32 = NSStringFromSelector(a2);
-            v33 = [v16 clusterID];
+            clusterID = [clusterCopy clusterID];
             *buf = 138412802;
             v117 = v31;
             v118 = 2112;
             v119 = v32;
             v120 = 2112;
-            v121 = v33;
+            v121 = clusterID;
             _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "%@:%@,excludeRouteLocations,dropping route locations for clusterID,%@", buf, 0x20u);
           }
 
-          v27 = v109;
+          array = v109;
         }
 
-        v28 = 0;
+        array2 = 0;
         v110 = 0;
       }
 
       else
       {
-        v110 = v27;
+        v110 = array;
       }
 
       v35 = objc_alloc(MEMORY[0x277D01148]);
-      v36 = [v20 clusterOrderDefault_totalNumberOfRoutes];
-      v37 = [v20 clusterOrderDefault_sumOfTraversalCountOfAllRoutes];
-      v38 = [v16 countOfTraversal];
-      v39 = [v16 lastTimeTaken];
-      v40 = [v35 initWithAllRoutesCountForThisODPair:v36 allTraversalCountBetweenThisODPair:v37 routeTraversalCount:v38 routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:v39];
+      clusterOrderDefault_totalNumberOfRoutes = [collectorCopy clusterOrderDefault_totalNumberOfRoutes];
+      clusterOrderDefault_sumOfTraversalCountOfAllRoutes = [collectorCopy clusterOrderDefault_sumOfTraversalCountOfAllRoutes];
+      countOfTraversal = [clusterCopy countOfTraversal];
+      lastTimeTaken = [clusterCopy lastTimeTaken];
+      v40 = [v35 initWithAllRoutesCountForThisODPair:clusterOrderDefault_totalNumberOfRoutes allTraversalCountBetweenThisODPair:clusterOrderDefault_sumOfTraversalCountOfAllRoutes routeTraversalCount:countOfTraversal routeTraversalCountOnTravelDayOfWeek:0 routeTravelCountOnTravelDayOfWeekHourOfDay:0 lastTravelledDate:lastTimeTaken];
 
       v41 = objc_alloc(MEMORY[0x277D01150]);
-      v42 = [v16 modeOfTransport];
-      [v16 maxTripTime];
+      modeOfTransport = [clusterCopy modeOfTransport];
+      [clusterCopy maxTripTime];
       v44 = v43;
-      [v16 minTripTime];
+      [clusterCopy minTripTime];
       v46 = v45;
-      [v16 avgTripTime];
+      [clusterCopy avgTripTime];
       v48 = v47;
-      [v16 maxTripDistance];
+      [clusterCopy maxTripDistance];
       v50 = v49;
-      [v16 minTripDistance];
+      [clusterCopy minTripDistance];
       v52 = v51;
-      [v16 avgTripDistance];
+      [clusterCopy avgTripDistance];
       *&v54 = v53;
       *&v53 = v44;
       *&v55 = v46;
@@ -8687,13 +8687,13 @@ LABEL_22:
       *&v57 = v50;
       *&v58 = v52;
       v106 = v40;
-      v59 = [v41 initWithRouteTravelMode:v42 maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:v28 meanTravelTimeEstimateInSeconds:v40 maxTravelledDistanceEstimateInMeters:v53 minTravelledDistanceEstimateInMeters:v55 meanTravelledDistanceEstimateInMeters:v56 routeLocations:v57 learnedRouteLocations:v58 learnedRouteMetrics:v54];
-      v60 = [MEMORY[0x277CBEB18] array];
-      v61 = [v16 commuteID];
+      v59 = [v41 initWithRouteTravelMode:modeOfTransport maxTravelTimeEstimateInSeconds:0 minTravelTimeEstimateInSeconds:array2 meanTravelTimeEstimateInSeconds:v40 maxTravelledDistanceEstimateInMeters:v53 minTravelledDistanceEstimateInMeters:v55 meanTravelledDistanceEstimateInMeters:v56 routeLocations:v57 learnedRouteLocations:v58 learnedRouteMetrics:v54];
+      array3 = [MEMORY[0x277CBEB18] array];
+      commuteID = [clusterCopy commuteID];
       v114 = 0;
       v115 = 0;
-      v62 = v108;
-      [(RTTripClusterManager *)v108 _findNonDriveClusterForCommuteID:v61 tripClusters:v113 beforeDriveCluster:&v115 afterDriveCluster:&v114];
+      v62 = selfCopy;
+      [(RTTripClusterManager *)selfCopy _findNonDriveClusterForCommuteID:commuteID tripClusters:v113 beforeDriveCluster:&v115 afterDriveCluster:&v114];
       v63 = v115;
       v111 = v114;
 
@@ -8701,12 +8701,12 @@ LABEL_22:
       v107 = v63;
       if (v63)
       {
-        v65 = [(RTTripClusterManager *)v108 _significantNonDriveClusterForFetchSPI:v63];
+        v65 = [(RTTripClusterManager *)selfCopy _significantNonDriveClusterForFetchSPI:v63];
         v66 = 0.0;
         v67 = v111;
         if (v65)
         {
-          v68 = -[RTTripClusterManager _createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:](v108, "_createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:", v107, [v20 clusterOrderBeforeDrive_totalNumberOfRoutes], objc_msgSend(v20, "clusterOrderBeforeDrive_sumOfTraversalCountOfAllRoutes"));
+          v68 = -[RTTripClusterManager _createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:](selfCopy, "_createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:", v107, [collectorCopy clusterOrderBeforeDrive_totalNumberOfRoutes], objc_msgSend(collectorCopy, "clusterOrderBeforeDrive_sumOfTraversalCountOfAllRoutes"));
           v69 = v68;
           if (v68)
           {
@@ -8714,10 +8714,10 @@ LABEL_22:
             v66 = v70 + 0.0;
             [v69 meanTravelledDistanceEstimateInMeters];
             v64 = v71 + 0.0;
-            [v60 addObject:v69];
+            [array3 addObject:v69];
           }
 
-          v62 = v108;
+          v62 = selfCopy;
         }
       }
 
@@ -8731,11 +8731,11 @@ LABEL_22:
       v73 = v66 + v72;
       [v59 meanTravelledDistanceEstimateInMeters];
       v75 = v64 + v74;
-      [v60 addObject:v59];
+      [array3 addObject:v59];
       v105 = v59;
       if (v67 && [(RTTripClusterManager *)v62 _significantNonDriveClusterForFetchSPI:v67])
       {
-        v76 = -[RTTripClusterManager _createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:](v62, "_createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:", v67, [v20 clusterOrderAfterDrive_totalNumberOfRoutes], objc_msgSend(v20, "clusterOrderAfterDrive_sumOfTraversalCountOfAllRoutes"));
+        v76 = -[RTTripClusterManager _createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:](v62, "_createNonDriveRTLearnedRouteTravelMode:totalNumberOfRoutes:sumOfTraversalCountOfAllRoutes:", v67, [collectorCopy clusterOrderAfterDrive_totalNumberOfRoutes], objc_msgSend(collectorCopy, "clusterOrderAfterDrive_sumOfTraversalCountOfAllRoutes"));
         v77 = v76;
         if (v76)
         {
@@ -8743,42 +8743,42 @@ LABEL_22:
           v73 = v73 + v78;
           [v77 meanTravelledDistanceEstimateInMeters];
           v75 = v75 + v79;
-          v80 = v60;
-          [v60 addObject:v77];
+          v80 = array3;
+          [array3 addObject:v77];
         }
 
         else
         {
-          v80 = v60;
+          v80 = array3;
         }
       }
 
       else
       {
-        v80 = v60;
+        v80 = array3;
       }
 
       v81 = objc_alloc(MEMORY[0x277D01140]);
-      [v18 coordinate];
+      [locationCopy coordinate];
       v83 = v82;
-      [v18 coordinate];
+      [locationCopy coordinate];
       v85 = v84;
-      [v18 course];
+      [locationCopy course];
       v87 = [v81 initWithLatitude:0 longitude:1 course:v83 followedByUTurn:v85 locationReferenceFrame:v86];
       v88 = objc_alloc(MEMORY[0x277D01140]);
-      [v19 coordinate];
+      [endLocationCopy coordinate];
       v90 = v89;
-      [v19 coordinate];
+      [endLocationCopy coordinate];
       v92 = v91;
-      [v19 course];
+      [endLocationCopy course];
       v94 = [v88 initWithLatitude:0 longitude:1 course:v90 followedByUTurn:v92 locationReferenceFrame:v93];
       v95 = objc_alloc(MEMORY[0x277D01130]);
-      v96 = [v16 clusterID];
+      clusterID2 = [clusterCopy clusterID];
       *&v97 = v73;
       *&v98 = v75;
-      v26 = [v95 initWithLearnedRouteId:v96 routeStartLocation:v18 routeEndLocation:v19 travelTimeEntireRouteSec:v80 travelDistanceEntireRouteMeter:v87 travelModeRoutes:v94 routeStartLocationWithReferenceFrame:v97 routeEndLocationWithReferenceFrame:v98];
+      v26 = [v95 initWithLearnedRouteId:clusterID2 routeStartLocation:locationCopy routeEndLocation:endLocationCopy travelTimeEntireRouteSec:v80 travelDistanceEntireRouteMeter:v87 travelModeRoutes:v94 routeStartLocationWithReferenceFrame:v97 routeEndLocationWithReferenceFrame:v98];
 
-      v27 = v110;
+      array = v110;
       v34 = v106;
     }
 
@@ -8789,41 +8789,41 @@ LABEL_22:
       {
         v100 = objc_opt_class();
         NSStringFromClass(v100);
-        v112 = v28;
-        v102 = v101 = v27;
+        v112 = array2;
+        v102 = v101 = array;
         v103 = NSStringFromSelector(a2);
-        v104 = [v16 clusterID];
+        clusterID3 = [clusterCopy clusterID];
         *buf = 138412802;
         v117 = v102;
         v118 = 2112;
         v119 = v103;
         v120 = 2112;
-        v121 = v104;
+        v121 = clusterID3;
         _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "%@:%@ Zero route locations for cluster,%@, skipping...", buf, 0x20u);
 
-        v27 = v101;
-        v28 = v112;
+        array = v101;
+        array2 = v112;
       }
 
       v26 = 0;
     }
 
-    v17 = v113;
+    clustersCopy = v113;
   }
 
   return v26;
 }
 
-- (void)_processAllFetchedRouteClustersForIndexRange:(id)a3 handler:(id)a4 tripClusters:(id)a5 originLatitude:(double)a6 originLongitude:(double)a7 destLatitude:(double)a8 destLongitude:(double)a9 startIndexIncluded:(unint64_t)a10 endIndexExcluded:(unint64_t)a11 queryStartTime:(id)a12 excludeRouteLocations:(BOOL)a13
+- (void)_processAllFetchedRouteClustersForIndexRange:(id)range handler:(id)handler tripClusters:(id)clusters originLatitude:(double)latitude originLongitude:(double)longitude destLatitude:(double)destLatitude destLongitude:(double)destLongitude startIndexIncluded:(unint64_t)self0 endIndexExcluded:(unint64_t)self1 queryStartTime:(id)self2 excludeRouteLocations:(BOOL)self3
 {
   v104[1] = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a12;
-  if (v25)
+  rangeCopy = range;
+  handlerCopy = handler;
+  clustersCopy = clusters;
+  timeCopy = time;
+  if (clustersCopy)
   {
-    if (v23)
+    if (rangeCopy)
     {
       goto LABEL_3;
     }
@@ -8841,10 +8841,10 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: tripClusters (in %s:%d)", buf, 0x12u);
     }
 
-    if (v23)
+    if (rangeCopy)
     {
 LABEL_3:
-      if (v24)
+      if (handlerCopy)
       {
         goto LABEL_14;
       }
@@ -8863,7 +8863,7 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v24)
+  if (!handlerCopy)
   {
 LABEL_11:
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -8878,41 +8878,41 @@ LABEL_11:
   }
 
 LABEL_14:
-  v78 = a11;
-  if ([v25 count] > a10)
+  excludedCopy = excluded;
+  if ([clustersCopy count] > included)
   {
-    v30 = [v25 count];
-    if (a10 < a11 && v30 >= a11)
+    v30 = [clustersCopy count];
+    if (included < excluded && v30 >= excluded)
     {
-      v84 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:a6 longitude:a7];
-      v83 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:a8 longitude:a9];
-      v82 = [(RTTripClusterManager *)self _odPairMetricsPerClusterOrder:v25];
-      v81 = [MEMORY[0x277CBEB18] array];
+      v84 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
+      v83 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:destLatitude longitude:destLongitude];
+      v82 = [(RTTripClusterManager *)self _odPairMetricsPerClusterOrder:clustersCopy];
+      array = [MEMORY[0x277CBEB18] array];
       v80 = 0;
-      v76 = v24;
-      v77 = v26;
+      v76 = handlerCopy;
+      v77 = timeCopy;
       while (1)
       {
-        v31 = [v25 objectAtIndexedSubscript:a10];
-        v32 = [v31 countOfTraversal];
-        if (v32 >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
+        v31 = [clustersCopy objectAtIndexedSubscript:included];
+        countOfTraversal = [v31 countOfTraversal];
+        if (countOfTraversal >= [(RTTripClusterManager *)self minimumTraversalCountForLearnedRoutes])
         {
           break;
         }
 
-        v33 = [v25 objectAtIndexedSubscript:a10];
-        v34 = [v33 modeOfTransport];
+        v33 = [clustersCopy objectAtIndexedSubscript:included];
+        modeOfTransport = [v33 modeOfTransport];
 
-        if (v34 != 2)
+        if (modeOfTransport != 2)
         {
           goto LABEL_22;
         }
 
         v80 = 1;
 LABEL_37:
-        if (a11 == ++a10)
+        if (excluded == ++included)
         {
-          if ([v81 count])
+          if ([array count])
           {
             v52 = 0;
           }
@@ -8944,7 +8944,7 @@ LABEL_37:
           }
 
           v63 = [MEMORY[0x277CBEAA8] now];
-          [v63 timeIntervalSinceDate:v26];
+          [v63 timeIntervalSinceDate:timeCopy];
           v65 = v64 * 1000.0;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -8954,66 +8954,66 @@ LABEL_37:
               v67 = objc_opt_class();
               v68 = NSStringFromClass(v67);
               v69 = NSStringFromSelector(a2);
-              v70 = [v81 count];
+              v70 = [array count];
               *buf = 138413570;
               v90 = v68;
               v91 = 2112;
               v92 = v69;
               v93 = 2048;
-              v94 = v70;
+              includedCopy = v70;
               v95 = 2112;
               v96 = v52;
               v97 = 2112;
-              v98 = v23;
+              v98 = rangeCopy;
               v99 = 2048;
               v100 = v65;
               _os_log_impl(&dword_2304B3000, v66, OS_LOG_TYPE_INFO, "%@:%@,Learned route count,%lu,error,%@,options,%@,queryResponseTimeMSec,%.2lf,type,ODPair", buf, 0x3Eu);
             }
 
-            v26 = v77;
+            timeCopy = v77;
           }
 
-          v24[2](v24, v81, 0, v52);
-          [(RTTripClusterManager *)self outputLearnedRouteSPICallDebuggingData:v25 options:v23 queryStartTime:v26 queryResponseTimeMSec:v81 learnedRoutes:@"ODPair" type:v65];
+          handlerCopy[2](handlerCopy, array, 0, v52);
+          [(RTTripClusterManager *)self outputLearnedRouteSPICallDebuggingData:clustersCopy options:rangeCopy queryStartTime:timeCopy queryResponseTimeMSec:array learnedRoutes:@"ODPair" type:v65];
 
           goto LABEL_52;
         }
       }
 
 LABEL_22:
-      v35 = [v25 objectAtIndexedSubscript:a10];
-      v36 = [v35 clusterOrder];
+      v35 = [clustersCopy objectAtIndexedSubscript:included];
+      clusterOrder = [v35 clusterOrder];
 
-      v37 = [v25 objectAtIndexedSubscript:a10];
+      v37 = [clustersCopy objectAtIndexedSubscript:included];
       v38 = v37;
-      if (v36)
+      if (clusterOrder)
       {
-        v39 = [v37 clusterOrder];
+        clusterOrder2 = [v37 clusterOrder];
 
-        if (v39 != 3)
+        if (clusterOrder2 != 3)
         {
           goto LABEL_35;
         }
 
-        v38 = [v25 objectAtIndexedSubscript:a10];
+        v38 = [clustersCopy objectAtIndexedSubscript:included];
         v40 = [(RTTripClusterManager *)self _learnedRouteForNoDriveCluster:v38 routeStartLocation:v84 routeEndLocation:v83 metricsCollector:v82];
       }
 
       else
       {
-        LOBYTE(v75) = a13;
-        v40 = -[RTTripClusterManager _learnedRouteForDriveCluster:tripClusters:routeStartLocation:routeEndLocation:fetchAllRouteLocations:metricsCollector:excludeRouteLocations:](self, "_learnedRouteForDriveCluster:tripClusters:routeStartLocation:routeEndLocation:fetchAllRouteLocations:metricsCollector:excludeRouteLocations:", v37, v25, v84, v83, [v23 fetchAllRouteLocations], v82, v75);
+        LOBYTE(v75) = locations;
+        v40 = -[RTTripClusterManager _learnedRouteForDriveCluster:tripClusters:routeStartLocation:routeEndLocation:fetchAllRouteLocations:metricsCollector:excludeRouteLocations:](self, "_learnedRouteForDriveCluster:tripClusters:routeStartLocation:routeEndLocation:fetchAllRouteLocations:metricsCollector:excludeRouteLocations:", v37, clustersCopy, v84, v83, [rangeCopy fetchAllRouteLocations], v82, v75);
       }
 
       v41 = v40;
 
-      v42 = [v25 objectAtIndexedSubscript:a10];
+      v42 = [clustersCopy objectAtIndexedSubscript:included];
       [v42 likelihood];
       [v41 setLikelihood:?];
 
       if (v41)
       {
-        [v81 addObject:v41];
+        [array addObject:v41];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_36:
@@ -9032,12 +9032,12 @@ LABEL_36:
           v91 = 2112;
           v92 = v46;
           v93 = 2112;
-          v94 = v41;
+          includedCopy = v41;
           v95 = 2112;
-          v96 = v23;
+          v96 = rangeCopy;
           _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@:%@,Found learned route,%@,options,%@", buf, 0x2Au);
 
-          a11 = v78;
+          excluded = excludedCopy;
 LABEL_33:
 
           goto LABEL_34;
@@ -9054,24 +9054,24 @@ LABEL_33:
           v47 = objc_opt_class();
           v45 = NSStringFromClass(v47);
           NSStringFromSelector(a2);
-          v49 = v48 = v23;
-          v50 = [v25 objectAtIndexedSubscript:a10];
-          v51 = [v50 clusterID];
+          v49 = v48 = rangeCopy;
+          v50 = [clustersCopy objectAtIndexedSubscript:included];
+          clusterID = [v50 clusterID];
           *buf = 138413058;
           v90 = v45;
           v91 = 2112;
           v92 = v49;
           v93 = 2112;
-          v94 = v48;
+          includedCopy = v48;
           v95 = 2112;
-          v96 = v51;
+          v96 = clusterID;
           _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@:%@,Learned route nil,options,%@,clusterId,%@", buf, 0x2Au);
 
-          a11 = v78;
-          v24 = v76;
+          excluded = excludedCopy;
+          handlerCopy = v76;
 
-          v23 = v48;
-          v26 = v77;
+          rangeCopy = v48;
+          timeCopy = v77;
           goto LABEL_33;
         }
 
@@ -9099,33 +9099,33 @@ LABEL_35:
     v71 = objc_opt_class();
     v72 = NSStringFromClass(v71);
     v73 = NSStringFromSelector(a2);
-    v74 = [v25 count];
+    v74 = [clustersCopy count];
     *buf = 138413826;
     v90 = v72;
     v91 = 2112;
     v92 = v73;
     v93 = 2048;
-    v94 = a10;
+    includedCopy = included;
     v95 = 2048;
-    v96 = v78;
+    v96 = excludedCopy;
     v97 = 2048;
     v98 = v74;
     v99 = 2112;
     v100 = *&v52;
     v101 = 2112;
-    v102 = v23;
+    v102 = rangeCopy;
     _os_log_error_impl(&dword_2304B3000, v56, OS_LOG_TYPE_ERROR, "%@:%@,startIndex,%lu,endIndex,%lu,cluster count,%lu,error,%@,options,%@", buf, 0x48u);
   }
 
-  v24[2](v24, 0, 0, v52);
+  handlerCopy[2](handlerCopy, 0, 0, v52);
 LABEL_52:
 }
 
-- (id)_removeEmptyWaypointClusters:(id)a3
+- (id)_removeEmptyWaypointClusters:(id)clusters
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  clustersCopy = clusters;
+  v5 = [clustersCopy count];
   if (v5 - 1 >= 0)
   {
     v6 = v5;
@@ -9133,10 +9133,10 @@ LABEL_52:
     do
     {
       --v6;
-      v8 = [(RTTripClusterManager *)self tripClusterWaypointStore];
-      v9 = [v4 objectAtIndexedSubscript:v6];
-      v10 = [v9 clusterID];
-      v11 = [v8 getTripClusterWaypointDataCountForClusterID:v10];
+      tripClusterWaypointStore = [(RTTripClusterManager *)self tripClusterWaypointStore];
+      v9 = [clustersCopy objectAtIndexedSubscript:v6];
+      clusterID = [v9 clusterID];
+      v11 = [tripClusterWaypointStore getTripClusterWaypointDataCountForClusterID:clusterID];
 
       if (v11)
       {
@@ -9145,13 +9145,13 @@ LABEL_52:
 
       else
       {
-        v13 = [v4 objectAtIndexedSubscript:v6];
-        v14 = [v13 clusterID];
-        v15 = [RTTripClusterProcessor getWaypointIDFromClusterID:v14];
+        v13 = [clustersCopy objectAtIndexedSubscript:v6];
+        clusterID2 = [v13 clusterID];
+        v15 = [RTTripClusterProcessor getWaypointIDFromClusterID:clusterID2];
 
         v12 = [objc_alloc(MEMORY[0x277D013A8]) initWithClusterID:v15];
-        v16 = [(RTTripClusterManager *)self tripClusterRouteStore];
-        v17 = [v16 getTripClusterRouteWithOptions:v12];
+        tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
+        v17 = [tripClusterRouteStore getTripClusterRouteWithOptions:v12];
 
         if (![v17 count])
         {
@@ -9163,22 +9163,22 @@ LABEL_52:
               v25 = objc_opt_class();
               v30 = NSStringFromClass(v25);
               v26 = NSStringFromSelector(a2);
-              v31 = [v4 objectAtIndexedSubscript:v6];
-              v29 = [v31 clusterID];
-              v27 = [v29 UUIDString];
+              v31 = [clustersCopy objectAtIndexedSubscript:v6];
+              clusterID3 = [v31 clusterID];
+              uUIDString = [clusterID3 UUIDString];
               *buf = 138412802;
               v34 = v30;
               v35 = 2112;
               v36 = v26;
               v37 = 2112;
-              v38 = v27;
+              v38 = uUIDString;
               _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_INFO, "%@,%@,Removing empty waypoints cluster from SPI fetch clusterID,%@", buf, 0x20u);
 
               v7 = MEMORY[0x277D86220];
             }
           }
 
-          [v4 removeObjectAtIndex:v6];
+          [clustersCopy removeObjectAtIndex:v6];
 
           goto LABEL_15;
         }
@@ -9192,15 +9192,15 @@ LABEL_52:
           v18 = objc_opt_class();
           v19 = NSStringFromClass(v18);
           v20 = NSStringFromSelector(a2);
-          v21 = [v4 objectAtIndexedSubscript:v6];
-          v22 = [v21 clusterID];
-          v23 = [v22 UUIDString];
+          v21 = [clustersCopy objectAtIndexedSubscript:v6];
+          clusterID4 = [v21 clusterID];
+          uUIDString2 = [clusterID4 UUIDString];
           *buf = 138412802;
           v34 = v19;
           v35 = 2112;
           v36 = v20;
           v37 = 2112;
-          v38 = v23;
+          v38 = uUIDString2;
           _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@,%@,Possible SPI fetch clusterID,%@", buf, 0x20u);
 
           v7 = MEMORY[0x277D86220];
@@ -9213,15 +9213,15 @@ LABEL_15:
     while (v6 > 0);
   }
 
-  return v4;
+  return clustersCopy;
 }
 
-- (int64_t)_fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4
+- (int64_t)_fetchLearnedRoutesWithOptions:(id)options handler:(id)handler
 {
   v166[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -9234,7 +9234,7 @@ LABEL_15:
     }
   }
 
-  if (!v6)
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -9248,24 +9248,24 @@ LABEL_15:
   }
 
   v119 = [MEMORY[0x277CBEAA8] now];
-  v9 = [v5 originVisit];
-  if (v9)
+  originVisit = [optionsCopy originVisit];
+  if (originVisit)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [v5 destinationVisit];
-  v11 = v10 == 0;
+  destinationVisit = [optionsCopy destinationVisit];
+  v11 = destinationVisit == 0;
 
   if (!v11)
   {
 LABEL_12:
-    v12 = [v5 originVisit];
-    if (v12)
+    originVisit2 = [optionsCopy originVisit];
+    if (originVisit2)
     {
-      v13 = [v5 originVisit];
-      [v13 coordinate];
+      originVisit3 = [optionsCopy originVisit];
+      [originVisit3 coordinate];
       v15 = v14;
     }
 
@@ -9274,11 +9274,11 @@ LABEL_12:
       v15 = 0.0;
     }
 
-    v16 = [v5 originVisit];
-    if (v16)
+    originVisit4 = [optionsCopy originVisit];
+    if (originVisit4)
     {
-      v17 = [v5 originVisit];
-      [v17 coordinate];
+      originVisit5 = [optionsCopy originVisit];
+      [originVisit5 coordinate];
       v19 = v18;
     }
 
@@ -9287,11 +9287,11 @@ LABEL_12:
       v19 = 0.0;
     }
 
-    v20 = [v5 destinationVisit];
-    if (v20)
+    destinationVisit2 = [optionsCopy destinationVisit];
+    if (destinationVisit2)
     {
-      v21 = [v5 destinationVisit];
-      [v21 coordinate];
+      destinationVisit3 = [optionsCopy destinationVisit];
+      [destinationVisit3 coordinate];
       v23 = v22;
     }
 
@@ -9300,11 +9300,11 @@ LABEL_12:
       v23 = 0.0;
     }
 
-    v24 = [v5 destinationVisit];
-    if (v24)
+    destinationVisit4 = [optionsCopy destinationVisit];
+    if (destinationVisit4)
     {
-      v25 = [v5 destinationVisit];
-      [v25 coordinate];
+      destinationVisit5 = [optionsCopy destinationVisit];
+      [destinationVisit5 coordinate];
       v27 = v26;
     }
 
@@ -9314,7 +9314,7 @@ LABEL_12:
     }
 
     v123 = [objc_alloc(MEMORY[0x277D01368]) initWithStartAndEndVisitLatitude:v15 startLongitude:v19 endLatitude:v23 endLongitude:v27];
-    v28 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v140 = 0;
     v141 = &v140;
     v142 = 0x3032000000;
@@ -9322,17 +9322,17 @@ LABEL_12:
     v144 = __Block_byref_object_dispose__72;
     v145 = 0;
     v29 = dispatch_semaphore_create(0);
-    v30 = [(RTTripClusterManager *)self tripClusterStore];
+    tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
     v136[0] = MEMORY[0x277D85DD0];
     v136[1] = 3221225472;
     v136[2] = __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_invoke;
     v136[3] = &unk_2788C9568;
     v139 = &v140;
-    v122 = v28;
+    v122 = array;
     v137 = v122;
     v31 = v29;
     v138 = v31;
-    [v30 fetchTripClustersWithOptions:v123 handler:v136];
+    [tripClusterStore fetchTripClustersWithOptions:v123 handler:v136];
 
     v32 = v31;
     v33 = [MEMORY[0x277CBEAA8] now];
@@ -9344,11 +9344,11 @@ LABEL_12:
       v37 = v36;
       v38 = objc_opt_new();
       v39 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-      v40 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v41 = [v40 filteredArrayUsingPredicate:v39];
-      v42 = [v41 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v41 = [callStackSymbols filteredArrayUsingPredicate:v39];
+      firstObject = [v41 firstObject];
 
-      [v38 submitToCoreAnalytics:v42 type:1 duration:v37];
+      [v38 submitToCoreAnalytics:firstObject type:1 duration:v37];
       v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
       {
@@ -9389,7 +9389,7 @@ LABEL_12:
     v50 = v141[5];
     if (v50 || (v50 = v120) != 0)
     {
-      v51 = v50;
+      array2 = v50;
       v52 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
@@ -9406,7 +9406,7 @@ LABEL_12:
         v160 = 2112;
         v161 = v120;
         v162 = 2112;
-        v163 = v5;
+        v163 = optionsCopy;
         _os_log_error_impl(&dword_2304B3000, v52, OS_LOG_TYPE_ERROR, "%@:%@,Error in fetching tripClusters,fetchErr,%@,semaErr,%@,options,%@", buf, 0x34u);
       }
 
@@ -9416,7 +9416,7 @@ LABEL_12:
       v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v154 forKeys:&v153 count:1];
       v55 = [v53 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v54];
 
-      (*(v6 + 2))(v6, 0, 0, v55);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v55);
 LABEL_39:
       v56 = 2;
       goto LABEL_40;
@@ -9449,22 +9449,22 @@ LABEL_39:
             v156 = 2112;
             v157 = v68;
             v158 = 2112;
-            v159 = v5;
+            v159 = optionsCopy;
             _os_log_impl(&dword_2304B3000, v65, OS_LOG_TYPE_INFO, "%@:%@,Zero TripClusters fetched,options,%@,trying with only destination", buf, 0x20u);
           }
         }
 
         v57 = [objc_alloc(MEMORY[0x277D01368]) initWithStartAndEndVisitLatitude:0.0 startLongitude:0.0 endLatitude:v23 endLongitude:v27];
 
-        v69 = [(RTTripClusterManager *)self tripClusterStore];
-        v70 = [v69 getTripClustersWithOptions:v57];
+        tripClusterStore2 = [(RTTripClusterManager *)self tripClusterStore];
+        v70 = [tripClusterStore2 getTripClustersWithOptions:v57];
         [v122 addObjectsFromArray:v70];
 
         if ([v122 count])
         {
           v58 = [(RTTripClusterManager *)self _removeEmptyWaypointClusters:v122];
 
-          [(RTTripClusterManager *)self _findRouteFromCurrentLocation:v58 options:v5 queryStartTime:v119 handler:v6];
+          [(RTTripClusterManager *)self _findRouteFromCurrentLocation:v58 options:optionsCopy queryStartTime:v119 handler:handlerCopy];
           v56 = 1;
           goto LABEL_41;
         }
@@ -9482,7 +9482,7 @@ LABEL_39:
             v156 = 2112;
             v157 = v110;
             v158 = 2112;
-            v159 = v5;
+            v159 = optionsCopy;
             _os_log_impl(&dword_2304B3000, v107, OS_LOG_TYPE_INFO, "%@:%@,Zero TripClusters available for current location SPI,options,%@", buf, 0x20u);
           }
         }
@@ -9491,9 +9491,9 @@ LABEL_39:
         v151 = *MEMORY[0x277CCA450];
         v152 = @"Did not find any route clusters.";
         v112 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v152 forKeys:&v151 count:1];
-        v51 = [v111 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v112];
+        array2 = [v111 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v112];
 
-        (*(v6 + 2))(v6, 0, 0, v51);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, array2);
         v56 = 2;
         v123 = v57;
 LABEL_40:
@@ -9526,7 +9526,7 @@ LABEL_70:
           v156 = 2112;
           v157 = v83;
           v158 = 2112;
-          v159 = v5;
+          v159 = optionsCopy;
           _os_log_impl(&dword_2304B3000, v80, OS_LOG_TYPE_INFO, "%@:%@,Zero TripClusters fetched,options,%@", buf, 0x20u);
         }
       }
@@ -9535,9 +9535,9 @@ LABEL_70:
       v149 = *MEMORY[0x277CCA450];
       v150 = @"Did not find any route clusters.";
       v85 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-      v51 = [v84 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v85];
+      array2 = [v84 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v85];
 
-      (*(v6 + 2))(v6, 0, 0, v51);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, array2);
       goto LABEL_39;
     }
 
@@ -9576,22 +9576,22 @@ LABEL_58:
       }
     }
 
-    v51 = [MEMORY[0x277CBEB18] array];
-    v79 = [v5 routeDate];
-    if (v79)
+    array2 = [MEMORY[0x277CBEB18] array];
+    routeDate = [optionsCopy routeDate];
+    if (routeDate)
     {
-      if ([v5 routeFetchType] == 1)
+      if ([optionsCopy routeFetchType] == 1)
       {
 
 LABEL_76:
-        v87 = [v5 routeDate];
-        v88 = [(RTTripClusterManager *)self _getClusterLikelihoods:v122 routeDate:v87];
+        routeDate2 = [optionsCopy routeDate];
+        v88 = [(RTTripClusterManager *)self _getClusterLikelihoods:v122 routeDate:routeDate2];
 
-        v51 = v88;
+        array2 = v88;
         goto LABEL_84;
       }
 
-      v86 = [v5 routeFetchType] == 3;
+      v86 = [optionsCopy routeFetchType] == 3;
 
       if (v86)
       {
@@ -9603,8 +9603,8 @@ LABEL_76:
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v87 = v122;
-    v89 = [v87 countByEnumeratingWithState:&v132 objects:v148 count:16];
+    routeDate2 = v122;
+    v89 = [routeDate2 countByEnumeratingWithState:&v132 objects:v148 count:16];
     if (v89)
     {
       v90 = *v133;
@@ -9614,14 +9614,14 @@ LABEL_76:
         {
           if (*v133 != v90)
           {
-            objc_enumerationMutation(v87);
+            objc_enumerationMutation(routeDate2);
           }
 
           v92 = [[RTTripClusterWithLikelihood alloc] initWithCluster:*(*(&v132 + 1) + 8 * i) likelihood:1.0];
-          [v51 addObject:v92];
+          [array2 addObject:v92];
         }
 
-        v89 = [v87 countByEnumeratingWithState:&v132 objects:v148 count:16];
+        v89 = [routeDate2 countByEnumeratingWithState:&v132 objects:v148 count:16];
       }
 
       while (v89);
@@ -9629,47 +9629,47 @@ LABEL_76:
 
 LABEL_84:
 
-    v93 = [v5 routeFetchType];
-    if (v93 == 1)
+    routeFetchType = [optionsCopy routeFetchType];
+    if (routeFetchType == 1)
     {
-      v98 = [v5 routeDate];
-      v97 = [(RTTripClusterManager *)self _bestScheduleRoute:v51 routeDate:v98];
+      routeDate3 = [optionsCopy routeDate];
+      v97 = [(RTTripClusterManager *)self _bestScheduleRoute:array2 routeDate:routeDate3];
     }
 
     else
     {
-      if (v93 != 2)
+      if (routeFetchType != 2)
       {
-        if (v93 != 3)
+        if (routeFetchType != 3)
         {
           v99 = [v122 count];
           v97 = 0;
 LABEL_97:
           LOBYTE(v117) = 0;
-          [(RTTripClusterManager *)self _processAllFetchedRouteClustersForIndexRange:v5 handler:v6 tripClusters:v51 originLatitude:v97 originLongitude:v99 destLatitude:v119 destLongitude:v15 startIndexIncluded:v19 endIndexExcluded:v23 queryStartTime:v27 excludeRouteLocations:v117];
+          [(RTTripClusterManager *)self _processAllFetchedRouteClustersForIndexRange:optionsCopy handler:handlerCopy tripClusters:array2 originLatitude:v97 originLongitude:v99 destLatitude:v119 destLongitude:v15 startIndexIncluded:v19 endIndexExcluded:v23 queryStartTime:v27 excludeRouteLocations:v117];
 
           goto LABEL_98;
         }
 
-        v94 = [v5 routeDate];
-        v95 = v94 == 0;
+        routeDate4 = [optionsCopy routeDate];
+        v95 = routeDate4 == 0;
 
         if (!v95)
         {
-          v96 = [v5 routeDate];
+          routeDate5 = [optionsCopy routeDate];
           v124[0] = MEMORY[0x277D85DD0];
           v124[1] = 3221225472;
           v124[2] = __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_invoke_430;
           v124[3] = &unk_2788CAA98;
           v124[4] = self;
-          v125 = v5;
-          v127 = v6;
+          v125 = optionsCopy;
+          v127 = handlerCopy;
           v128 = v15;
           v129 = v19;
           v130 = v23;
           v131 = v27;
           v126 = v119;
-          [(RTTripClusterManager *)self _topListRoutes:v51 routeDate:v96 handler:v124];
+          [(RTTripClusterManager *)self _topListRoutes:array2 routeDate:routeDate5 handler:v124];
 
 LABEL_98:
           v122 = 0;
@@ -9678,7 +9678,7 @@ LABEL_98:
         }
       }
 
-      v97 = [(RTTripClusterManager *)self _mostTravelledRoute:v51];
+      v97 = [(RTTripClusterManager *)self _mostTravelledRoute:array2];
     }
 
     if (v97 >= [v122 count])
@@ -9695,7 +9695,7 @@ LABEL_98:
         v156 = 2112;
         v157 = v115;
         v158 = 2112;
-        v159 = v5;
+        v159 = optionsCopy;
         v160 = 2048;
         v161 = v97;
         v162 = 2048;
@@ -9709,7 +9709,7 @@ LABEL_98:
       v102 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v147 forKeys:&v146 count:1];
       v103 = [v101 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v102];
 
-      (*(v6 + 2))(v6, 0, 0, v103);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v103);
       goto LABEL_39;
     }
 
@@ -9736,7 +9736,7 @@ LABEL_98:
   v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v165 forKeys:&v164 count:1];
   v57 = [v61 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v62];
 
-  (*(v6 + 2))(v6, 0, 0, v57);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v57);
   v56 = 2;
 LABEL_42:
 
@@ -9773,20 +9773,20 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
   [v3 _processAllFetchedRouteClustersForIndexRange:v4 handler:v5 tripClusters:v11 originLatitude:0 originLongitude:objc_msgSend(v11 destLatitude:"count") destLongitude:*(a1 + 6) startIndexIncluded:v6 endIndexExcluded:v7 queryStartTime:v8 excludeRouteLocations:{v9, v10}];
 }
 
-- (BOOL)areTwoPointsTooClose:(id)a3 location2:(id)a4
+- (BOOL)areTwoPointsTooClose:(id)close location2:(id)location2
 {
-  v5 = a4;
-  v6 = a3;
+  location2Copy = location2;
+  closeCopy = close;
   v7 = objc_alloc_init(RTDistanceCalculator);
-  [v6 coordinate];
+  [closeCopy coordinate];
   v9 = v8;
-  [v6 coordinate];
+  [closeCopy coordinate];
   v11 = v10;
 
   v22 = CLLocationCoordinate2DMake(v9, v11);
-  [v5 coordinate];
+  [location2Copy coordinate];
   v13 = v12;
-  [v5 coordinate];
+  [location2Copy coordinate];
   v15 = v14;
 
   v21 = CLLocationCoordinate2DMake(v13, v15);
@@ -9797,40 +9797,40 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
   return v18;
 }
 
-- (void)_updateSPIMetricReasonCodeAndSubmit:(int64_t)a3
+- (void)_updateSPIMetricReasonCodeAndSubmit:(int64_t)submit
 {
-  v4 = [(RTTripClusterManager *)self defaultsManager];
-  v7 = [RTClusterLearnedRouteMetrics sharedInstance:v4];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v7 = [RTClusterLearnedRouteMetrics sharedInstance:defaultsManager];
 
   if (v7)
   {
-    v5 = [v7 spiStatMetrics];
+    spiStatMetrics = [v7 spiStatMetrics];
 
-    if (v5)
+    if (spiStatMetrics)
     {
-      v6 = [v7 spiStatMetrics];
-      [v6 setFetchReasonCode:a3];
+      spiStatMetrics2 = [v7 spiStatMetrics];
+      [spiStatMetrics2 setFetchReasonCode:submit];
 
       [v7 submitToCoreAnalytics:5];
     }
   }
 }
 
-- (void)_computeSPIStatisticMetrics:(id)a3 learnedRoutes:(id)a4 error:(id)a5 spiStatisticReasonCode:(int64_t)a6 fetchRequestTime:(id)a7
+- (void)_computeSPIStatisticMetrics:(id)metrics learnedRoutes:(id)routes error:(id)error spiStatisticReasonCode:(int64_t)code fetchRequestTime:(id)time
 {
   v81 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  metricsCopy = metrics;
+  routesCopy = routes;
+  timeCopy = time;
   v14 = objc_alloc_init(RTLearnedRouteSPIStatisticsMetrics);
   if (v14)
   {
-    -[RTLearnedRouteSPIStatisticsMetrics setSpiQueryType:](v14, "setSpiQueryType:", [v11 routeFetchType]);
-    [(RTLearnedRouteSPIStatisticsMetrics *)v14 setIsSPISuccess:a5 == 0];
-    if (v12)
+    -[RTLearnedRouteSPIStatisticsMetrics setSpiQueryType:](v14, "setSpiQueryType:", [metricsCopy routeFetchType]);
+    [(RTLearnedRouteSPIStatisticsMetrics *)v14 setIsSPISuccess:error == 0];
+    if (routesCopy)
     {
-      -[RTLearnedRouteSPIStatisticsMetrics setDidSPIReturned2Routes:](v14, "setDidSPIReturned2Routes:", [v12 count] == 2);
-      v15 = [v12 count] == 3;
+      -[RTLearnedRouteSPIStatisticsMetrics setDidSPIReturned2Routes:](v14, "setDidSPIReturned2Routes:", [routesCopy count] == 2);
+      v15 = [routesCopy count] == 3;
     }
 
     else
@@ -9841,8 +9841,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
     [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturned3Routes:v15];
     v16 = [MEMORY[0x277CBEAA8] now];
-    v64 = v13;
-    [v16 timeIntervalSinceDate:v13];
+    v64 = timeCopy;
+    [v16 timeIntervalSinceDate:timeCopy];
     *&v17 = v17;
     [(RTLearnedRouteSPIStatisticsMetrics *)v14 setSpiResponseTime:v17];
 
@@ -9850,14 +9850,14 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v65 = v12;
-    v18 = v12;
+    v65 = routesCopy;
+    v18 = routesCopy;
     v70 = [v18 countByEnumeratingWithState:&v75 objects:v80 count:16];
     if (v70)
     {
       v67 = *v76;
-      v68 = self;
-      v69 = v11;
+      selfCopy = self;
+      v69 = metricsCopy;
       obj = v18;
       do
       {
@@ -9870,19 +9870,19 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
           v20 = *(*(&v75 + 1) + 8 * i);
           v21 = objc_alloc(MEMORY[0x277CE41F8]);
-          v22 = [v20 learnedRouteStartLocationWithReferenceFrame];
-          [v22 latitude];
+          learnedRouteStartLocationWithReferenceFrame = [v20 learnedRouteStartLocationWithReferenceFrame];
+          [learnedRouteStartLocationWithReferenceFrame latitude];
           v24 = v23;
-          v25 = [v20 learnedRouteStartLocationWithReferenceFrame];
-          [v25 longitude];
+          learnedRouteStartLocationWithReferenceFrame2 = [v20 learnedRouteStartLocationWithReferenceFrame];
+          [learnedRouteStartLocationWithReferenceFrame2 longitude];
           v27 = [v21 initWithLatitude:v24 longitude:v26];
 
           v28 = objc_alloc(MEMORY[0x277CE41F8]);
-          v29 = [v20 learnedRouteEndLocationWithReferenceFrame];
-          [v29 latitude];
+          learnedRouteEndLocationWithReferenceFrame = [v20 learnedRouteEndLocationWithReferenceFrame];
+          [learnedRouteEndLocationWithReferenceFrame latitude];
           v31 = v30;
-          v32 = [v20 learnedRouteEndLocationWithReferenceFrame];
-          [v32 longitude];
+          learnedRouteEndLocationWithReferenceFrame2 = [v20 learnedRouteEndLocationWithReferenceFrame];
+          [learnedRouteEndLocationWithReferenceFrame2 longitude];
           v34 = [v28 initWithLatitude:v31 longitude:v33];
 
           if ([(RTLearnedRouteSPIStatisticsMetrics *)v14 didSPIReturnOriginVisit])
@@ -9892,8 +9892,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
           else
           {
-            v35 = [v11 originVisit];
-            [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnOriginVisit:[(RTTripClusterManager *)self areTwoPointsTooClose:v27 location2:v35]];
+            originVisit = [metricsCopy originVisit];
+            [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnOriginVisit:[(RTTripClusterManager *)self areTwoPointsTooClose:v27 location2:originVisit]];
           }
 
           if ([(RTLearnedRouteSPIStatisticsMetrics *)v14 didSPIReturnDestinationVisit])
@@ -9903,8 +9903,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
           else
           {
-            v36 = [v11 destinationVisit];
-            [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnDestinationVisit:[(RTTripClusterManager *)self areTwoPointsTooClose:v34 location2:v36]];
+            destinationVisit = [metricsCopy destinationVisit];
+            [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnDestinationVisit:[(RTTripClusterManager *)self areTwoPointsTooClose:v34 location2:destinationVisit]];
           }
 
           if ([(RTLearnedRouteSPIStatisticsMetrics *)v14 didSPIReturnODPair])
@@ -9914,11 +9914,11 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
           else
           {
-            v37 = [v11 originVisit];
-            if ([(RTTripClusterManager *)self areTwoPointsTooClose:v27 location2:v37])
+            originVisit2 = [metricsCopy originVisit];
+            if ([(RTTripClusterManager *)self areTwoPointsTooClose:v27 location2:originVisit2])
             {
-              v38 = [v11 destinationVisit];
-              [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnODPair:[(RTTripClusterManager *)self areTwoPointsTooClose:v34 location2:v38]];
+              destinationVisit2 = [metricsCopy destinationVisit];
+              [(RTLearnedRouteSPIStatisticsMetrics *)v14 setDidSPIReturnODPair:[(RTTripClusterManager *)self areTwoPointsTooClose:v34 location2:destinationVisit2]];
             }
 
             else
@@ -9942,8 +9942,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
           v74 = 0u;
           v71 = 0u;
           v72 = 0u;
-          v40 = [v20 travelModeRoutes];
-          v41 = [v40 countByEnumeratingWithState:&v71 objects:v79 count:16];
+          travelModeRoutes = [v20 travelModeRoutes];
+          v41 = [travelModeRoutes countByEnumeratingWithState:&v71 objects:v79 count:16];
           if (v41)
           {
             v42 = v41;
@@ -9954,14 +9954,14 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
               {
                 if (*v72 != v43)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(travelModeRoutes);
                 }
 
-                v45 = [*(*(&v71 + 1) + 8 * j) learnedRouteLocations];
-                -[RTLearnedRouteSPIStatisticsMetrics setNumSPIReturnWaypointsAvg:](v14, "setNumSPIReturnWaypointsAvg:", -[RTLearnedRouteSPIStatisticsMetrics numSPIReturnWaypointsAvg](v14, "numSPIReturnWaypointsAvg") + [v45 count]);
+                learnedRouteLocations = [*(*(&v71 + 1) + 8 * j) learnedRouteLocations];
+                -[RTLearnedRouteSPIStatisticsMetrics setNumSPIReturnWaypointsAvg:](v14, "setNumSPIReturnWaypointsAvg:", -[RTLearnedRouteSPIStatisticsMetrics numSPIReturnWaypointsAvg](v14, "numSPIReturnWaypointsAvg") + [learnedRouteLocations count]);
               }
 
-              v42 = [v40 countByEnumeratingWithState:&v71 objects:v79 count:16];
+              v42 = [travelModeRoutes countByEnumeratingWithState:&v71 objects:v79 count:16];
             }
 
             while (v42);
@@ -9979,8 +9979,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
           [v20 likelihood];
           [(RTLearnedRouteSPIStatisticsMetrics *)v14 setIsSPIBestRouteLikelihood:v52 > 0.5];
 
-          v11 = v69;
-          self = v68;
+          metricsCopy = v69;
+          self = selfCopy;
         }
 
         v18 = obj;
@@ -9992,8 +9992,8 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
     if ([v18 count])
     {
-      v53 = [(RTLearnedRouteSPIStatisticsMetrics *)v14 numSPIReturnWaypointsAvg];
-      v54 = v53 / [v18 count];
+      numSPIReturnWaypointsAvg = [(RTLearnedRouteSPIStatisticsMetrics *)v14 numSPIReturnWaypointsAvg];
+      v54 = numSPIReturnWaypointsAvg / [v18 count];
     }
 
     else
@@ -10001,7 +10001,7 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
       v54 = 0;
     }
 
-    v12 = v65;
+    routesCopy = v65;
     [(RTLearnedRouteSPIStatisticsMetrics *)v14 setNumSPIReturnWaypointsAvg:v54];
     if ([v18 count])
     {
@@ -10014,19 +10014,19 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
       v56 = 0.0;
     }
 
-    v13 = v64;
+    timeCopy = v64;
     [(RTLearnedRouteSPIStatisticsMetrics *)v14 setSpiReturnRouteLengthAvg:v56];
-    v57 = [(RTTripClusterManager *)self defaultsManager];
-    v58 = [RTClusterLearnedRouteMetrics sharedInstance:v57];
+    defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+    v58 = [RTClusterLearnedRouteMetrics sharedInstance:defaultsManager];
 
     if (v58)
     {
-      v59 = [v58 timeOfLastSPIQuery];
-      if (v59)
+      timeOfLastSPIQuery = [v58 timeOfLastSPIQuery];
+      if (timeOfLastSPIQuery)
       {
         v60 = [MEMORY[0x277CBEAA8] now];
-        v61 = [v58 timeOfLastSPIQuery];
-        [v60 timeIntervalSinceDate:v61];
+        timeOfLastSPIQuery2 = [v58 timeOfLastSPIQuery];
+        [v60 timeIntervalSinceDate:timeOfLastSPIQuery2];
         *&v62 = v62;
         [(RTLearnedRouteSPIStatisticsMetrics *)v14 setTimeBetweenSPIQueries:v62];
       }
@@ -10044,12 +10044,12 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
   }
 }
 
-- (void)fetchLearnedRoutesWithOptions:(id)a3 handler:(id)a4
+- (void)fetchLearnedRoutesWithOptions:(id)options handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -10064,7 +10064,7 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
   if ([(RTTripClusterManager *)self _shouldMockLearnedRoutesSPI])
   {
-    [(RTTripClusterManager *)self _fetchLearnedRoutesWithOptionsMock:v6 handler:v7];
+    [(RTTripClusterManager *)self _fetchLearnedRoutesWithOptionsMock:optionsCopy handler:handlerCopy];
   }
 
   else
@@ -10074,9 +10074,9 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v28 = 0;
-    if ([v6 routeFetchType] == 4 || objc_msgSend(v6, "routeFetchType") == 5 || objc_msgSend(v6, "routeFetchType") == 6)
+    if ([optionsCopy routeFetchType] == 4 || objc_msgSend(optionsCopy, "routeFetchType") == 5 || objc_msgSend(optionsCopy, "routeFetchType") == 6)
     {
-      v10 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __62__RTTripClusterManager_fetchLearnedRoutesWithOptions_handler___block_invoke_3;
@@ -10084,9 +10084,9 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
       v22[1] = buf;
       v19[4] = self;
       v11 = &v20;
-      v20 = v6;
+      v20 = optionsCopy;
       v12 = v22;
-      v13 = v7;
+      v13 = handlerCopy;
       v14 = &v21;
       v21 = v9;
       v22[0] = v13;
@@ -10096,7 +10096,7 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
 
     else
     {
-      v10 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __62__RTTripClusterManager_fetchLearnedRoutesWithOptions_handler___block_invoke;
@@ -10104,9 +10104,9 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
       v26[1] = buf;
       v23[4] = self;
       v11 = &v24;
-      v24 = v6;
+      v24 = optionsCopy;
       v12 = v26;
-      v17 = v7;
+      v17 = handlerCopy;
       v14 = &v25;
       v25 = v9;
       v26[0] = v17;
@@ -10114,7 +10114,7 @@ void __63__RTTripClusterManager__fetchLearnedRoutesWithOptions_handler___block_i
       v16 = v23;
     }
 
-    dispatch_async(v10, v16);
+    dispatch_async(queue, v16);
 
     _Block_object_dispose(buf, 8);
   }
@@ -10189,13 +10189,13 @@ void __62__RTTripClusterManager_fetchLearnedRoutesWithOptions_handler___block_in
   [*(a1 + 40) _computeSPIStatisticMetrics:*(a1 + 32) learnedRoutes:v7 error:v6 spiStatisticReasonCode:*(*(*(a1 + 64) + 8) + 24) fetchRequestTime:*(a1 + 48)];
 }
 
-- (int64_t)_fetchLearnedRoutesForFetchTypeAny:(id)a3 handler:(id)a4
+- (int64_t)_fetchLearnedRoutesForFetchTypeAny:(id)any handler:(id)handler
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  anyCopy = any;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!anyCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -10215,7 +10215,7 @@ void __62__RTTripClusterManager_fetchLearnedRoutesWithOptions_handler___block_in
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
 LABEL_7:
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -10232,8 +10232,8 @@ LABEL_7:
 LABEL_10:
   v11 = [MEMORY[0x277CBEAA8] now];
   v12 = [objc_alloc(MEMORY[0x277D01368]) initWithMinCountOfTraversal:-[RTTripClusterManager minimumTraversalCountForLearnedRoutes](self startLatitude:"minimumTraversalCountForLearnedRoutes") startLongitude:0.0 endLatitude:0.0 endLongitude:{0.0, 0.0}];
-  v13 = [(RTTripClusterManager *)self tripClusterStore];
-  v14 = [v13 getTripClustersWithOptions:v12];
+  tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
+  v14 = [tripClusterStore getTripClustersWithOptions:v12];
 
   if (!v14 || ![v14 count])
   {
@@ -10271,20 +10271,20 @@ LABEL_10:
 
   v62 = v11;
   v63 = v8;
-  v64 = v6;
+  v64 = anyCopy;
   v15 = 0;
   v16 = 0;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
-  v66 = self;
+  selfCopy = self;
   while (1)
   {
     v18 = [v14 objectAtIndexedSubscript:v16];
     v19 = objc_alloc(MEMORY[0x277D013A8]);
-    v20 = [v18 clusterID];
-    v21 = [v19 initWithClusterID:v20];
+    clusterID = [v18 clusterID];
+    v21 = [v19 initWithClusterID:clusterID];
 
-    v22 = [(RTTripClusterManager *)self tripClusterRouteStore];
-    v23 = [v22 getTripClusterRouteWithOptions:v21];
+    tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
+    v23 = [tripClusterRouteStore getTripClusterRouteWithOptions:v21];
 
     if ([v23 count])
     {
@@ -10307,12 +10307,12 @@ LABEL_22:
     v17 = v16;
   }
 
-  v25 = [v18 countOfTraversal];
-  if (v25 >= [v15 countOfTraversal])
+  countOfTraversal = [v18 countOfTraversal];
+  if (countOfTraversal >= [v15 countOfTraversal])
   {
-    v26 = [v18 lastTimeTaken];
-    v27 = [v15 lastTimeTaken];
-    v28 = [v26 compare:v27];
+    lastTimeTaken = [v18 lastTimeTaken];
+    lastTimeTaken2 = [v15 lastTimeTaken];
+    v28 = [lastTimeTaken compare:lastTimeTaken2];
 
     if (v28 == 1)
     {
@@ -10322,22 +10322,22 @@ LABEL_22:
       v17 = v16;
     }
 
-    self = v66;
+    self = selfCopy;
     goto LABEL_22;
   }
 
 LABEL_31:
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v64;
+    anyCopy = v64;
   }
 
   else
   {
-    v6 = v64;
+    anyCopy = v64;
     if (v15)
     {
-      v37 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
@@ -10358,7 +10358,7 @@ LABEL_31:
             }
 
             v43 = [[RTTripClusterWithLikelihood alloc] initWithCluster:*(*(&v67 + 1) + 8 * i) likelihood:1.0];
-            [v37 addObject:v43];
+            [array addObject:v43];
           }
 
           v40 = [v38 countByEnumeratingWithState:&v67 objects:v71 count:16];
@@ -10380,7 +10380,7 @@ LABEL_31:
       v8 = v63;
       v52 = v17;
       v11 = v62;
-      [(RTTripClusterManager *)v66 _processAllFetchedRouteClustersForIndexRange:v64 handler:v63 tripClusters:v37 originLatitude:v52 originLongitude:v51 destLatitude:v62 destLongitude:v46 startIndexIncluded:v48 endIndexExcluded:v50 queryStartTime:v53 excludeRouteLocations:v61];
+      [(RTTripClusterManager *)selfCopy _processAllFetchedRouteClustersForIndexRange:v64 handler:v63 tripClusters:array originLatitude:v52 originLongitude:v51 destLatitude:v62 destLongitude:v46 startIndexIncluded:v48 endIndexExcluded:v50 queryStartTime:v53 excludeRouteLocations:v61];
 
       v14 = 0;
       v36 = 1;
@@ -10409,9 +10409,9 @@ LABEL_43:
   v72 = *MEMORY[0x277CCA450];
   v73 = @"No valid learned route found.";
   v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-  v37 = [v57 errorWithDomain:v58 code:7 userInfo:v59];
+  array = [v57 errorWithDomain:v58 code:7 userInfo:v59];
 
-  (v8)[2](v8, 0, 0, v37);
+  (v8)[2](v8, 0, 0, array);
   v36 = 4;
 LABEL_48:
 
@@ -10421,16 +10421,16 @@ LABEL_49:
   return v36;
 }
 
-- (void)_fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler
 {
   v156[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v130 = v5;
-  v99 = v6;
-  if (v5)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v130 = optionsCopy;
+  v99 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -10464,13 +10464,13 @@ LABEL_7:
 
 LABEL_10:
   v9 = objc_alloc(MEMORY[0x277D01368]);
-  [v5 originVisitLatitude];
+  [optionsCopy originVisitLatitude];
   v11 = v10;
-  [v5 originVisitLongitude];
+  [optionsCopy originVisitLongitude];
   v13 = v12;
-  [v5 destinationVisitLatitude];
+  [optionsCopy destinationVisitLatitude];
   v15 = v14;
-  [v5 destinationVisitLongitude];
+  [optionsCopy destinationVisitLongitude];
   v98 = [v9 initWithStartAndEndVisitLatitude:v11 startLongitude:v13 endLatitude:v15 endLongitude:v16];
   *v152 = 0;
   *&v152[8] = v152;
@@ -10485,7 +10485,7 @@ LABEL_10:
   v139 = __Block_byref_object_dispose__72;
   v140 = 0;
   v17 = dispatch_semaphore_create(0);
-  v18 = [(RTTripClusterManager *)self tripClusterStore];
+  tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
   v131[0] = MEMORY[0x277D85DD0];
   v131[1] = 3221225472;
   v131[2] = __69__RTTripClusterManager__fetchTripClusterMetadataWithOptions_handler___block_invoke;
@@ -10494,7 +10494,7 @@ LABEL_10:
   v134 = v152;
   v19 = v17;
   v132 = v19;
-  [v18 fetchTripClustersWithOptions:v98 handler:v131];
+  [tripClusterStore fetchTripClustersWithOptions:v98 handler:v131];
 
   dsema = v19;
   v20 = [MEMORY[0x277CBEAA8] now];
@@ -10508,11 +10508,11 @@ LABEL_10:
     v26 = v25;
     v27 = objc_opt_new();
     v28 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-    v29 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v30 = [v29 filteredArrayUsingPredicate:v28];
-    v31 = [v30 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v30 = [callStackSymbols filteredArrayUsingPredicate:v28];
+    firstObject = [v30 firstObject];
 
-    [v27 submitToCoreAnalytics:v31 type:1 duration:v26];
+    [v27 submitToCoreAnalytics:firstObject type:1 duration:v26];
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
     {
@@ -10603,18 +10603,18 @@ LABEL_21:
   }
 
   context = objc_autoreleasePoolPush();
-  v95 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i < [*(*&v152[8] + 40) count]; ++i)
   {
     v109 = objc_alloc(MEMORY[0x277D01370]);
     v128 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v112 = [v128 clusterID];
+    clusterID = [v128 clusterID];
     v127 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v111 = [v127 lastTimeTaken];
+    lastTimeTaken = [v127 lastTimeTaken];
     v126 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v108 = [v126 modeOfTransport];
+    modeOfTransport = [v126 modeOfTransport];
     v125 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v107 = [v125 countOfTraversal];
+    countOfTraversal = [v125 countOfTraversal];
     v124 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
     [v124 startLatitude];
     v106 = v46;
@@ -10646,9 +10646,9 @@ LABEL_21:
     [v115 maxTripDistance];
     v59 = v58;
     v114 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v110 = [v114 commuteID];
+    commuteID = [v114 commuteID];
     v113 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v100 = [v113 isLocked];
+    isLocked = [v113 isLocked];
     v60 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
     [v60 avgBikeDistance];
     v62 = v61;
@@ -10662,12 +10662,12 @@ LABEL_21:
     [v69 avgWalkTime];
     v71 = v70;
     v72 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v73 = [v72 countOfBikeTraversal];
+    countOfBikeTraversal = [v72 countOfBikeTraversal];
     v74 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
-    v75 = [v74 countOfWalkTraversal];
+    countOfWalkTraversal = [v74 countOfWalkTraversal];
     v76 = [*(*&v152[8] + 40) objectAtIndexedSubscript:i];
     LOWORD(v92) = [v76 clusterOrder];
-    v77 = [v109 initWithTripClusterId:v112 dateOfMostRecentTrip:v111 modeOfTransport:v108 countOfTraversal:v107 originLatitude:v110 originLongitude:v100 destinationLatitude:v106 destinationLongitude:v105 averageTripTime:v104 averageTripDistance:v103 minimumTripTime:v102 maximumTripTime:v101 minimumTripDistance:v53 maximumTripDistance:v55 commuteID:v57 isLocked:v59 avgBikeDistance:v62 avgBikeTime:v65 avgWalkDistance:v68 avgWalkTime:v71 bikeTraversalCount:__PAIR64__(v75 walkTraversalCount:v73) clusterOrder:v92];
+    v77 = [v109 initWithTripClusterId:clusterID dateOfMostRecentTrip:lastTimeTaken modeOfTransport:modeOfTransport countOfTraversal:countOfTraversal originLatitude:commuteID originLongitude:isLocked destinationLatitude:v106 destinationLongitude:v105 averageTripTime:v104 averageTripDistance:v103 minimumTripTime:v102 maximumTripTime:v101 minimumTripDistance:v53 maximumTripDistance:v55 commuteID:v57 isLocked:v59 avgBikeDistance:v62 avgBikeTime:v65 avgWalkDistance:v68 avgWalkTime:v71 bikeTraversalCount:__PAIR64__(countOfWalkTraversal walkTraversalCount:countOfBikeTraversal) clusterOrder:v92];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -10687,10 +10687,10 @@ LABEL_21:
       }
     }
 
-    [v95 addObject:v77];
+    [array addObject:v77];
   }
 
-  (v99)[2](v99, v95, 0);
+  (v99)[2](v99, array, 0);
 
   objc_autoreleasePoolPop(context);
 LABEL_22:
@@ -10723,14 +10723,14 @@ void __69__RTTripClusterManager__fetchTripClusterMetadataWithOptions_handler___b
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripClusterMetadataWithOptions:(id)options handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_10;
     }
@@ -10748,7 +10748,7 @@ void __69__RTTripClusterManager__fetchTripClusterMetadataWithOptions_handler___b
     _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
 LABEL_7:
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -10763,24 +10763,24 @@ LABEL_7:
   }
 
 LABEL_10:
-  v10 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTTripClusterManager_fetchTripClusterMetadataWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v14 = optionsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)purgeTripClusterTable:(int)a3 handler:(id)a4
+- (void)purgeTripClusterTable:(int)table handler:(id)handler
 {
   v214[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -10794,13 +10794,13 @@ LABEL_10:
   }
 
   v8 = dispatch_semaphore_create(0);
-  if (a3 < 6)
+  if (table < 6)
   {
-    if (a3 > 2)
+    if (table > 2)
     {
-      if (a3 == 3)
+      if (table == 3)
       {
-        v33 = [(RTTripClusterManager *)self tripClusterScheduleStore];
+        tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterScheduleStore];
         v202[0] = MEMORY[0x277D85DD0];
         v202[1] = 3221225472;
         v202[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_449;
@@ -10809,12 +10809,12 @@ LABEL_10:
         v14 = &v203;
         v34 = v8;
         v203 = v34;
-        [v33 purgeTripClusterScheduleWithHandler:v202];
+        [tripClusterScheduleStore purgeTripClusterScheduleWithHandler:v202];
       }
 
-      else if (a3 == 4)
+      else if (table == 4)
       {
-        v33 = [(RTTripClusterManager *)self tripClusterRouteStore];
+        tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterRouteStore];
         v200[0] = MEMORY[0x277D85DD0];
         v200[1] = 3221225472;
         v200[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_450;
@@ -10823,12 +10823,12 @@ LABEL_10:
         v14 = &v201;
         v34 = v8;
         v201 = v34;
-        [v33 purgeTripClusterRouteWithHandler:v200];
+        [tripClusterScheduleStore purgeTripClusterRouteWithHandler:v200];
       }
 
       else
       {
-        v33 = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
+        tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
         v198[0] = MEMORY[0x277D85DD0];
         v198[1] = 3221225472;
         v198[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_451;
@@ -10837,25 +10837,25 @@ LABEL_10:
         v14 = &v199;
         v34 = v8;
         v199 = v34;
-        [v33 purgeTripClusterRoadTransitionsWithHandler:v198];
+        [tripClusterScheduleStore purgeTripClusterRoadTransitionsWithHandler:v198];
       }
     }
 
     else
     {
-      if (!a3)
+      if (!table)
       {
-        v35 = [(RTTripClusterManager *)self tripClusterStore];
+        tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
         v195[0] = MEMORY[0x277D85DD0];
         v195[1] = 3221225472;
         v195[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_452;
         v195[3] = &unk_2788C6508;
         v195[4] = self;
-        v197 = v6;
+        v197 = handlerCopy;
         v183 = v8;
         v36 = v8;
         v196 = v36;
-        [v35 purgeTripClustersWithHandler:v195];
+        [tripClusterStore purgeTripClustersWithHandler:v195];
 
         v37 = v36;
         v38 = 0x277CBE000uLL;
@@ -10868,11 +10868,11 @@ LABEL_10:
           v42 = v41;
           v43 = objc_opt_new();
           v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v46 = [v45 filteredArrayUsingPredicate:v44];
-          v47 = [v46 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v46 = [callStackSymbols filteredArrayUsingPredicate:v44];
+          firstObject = [v46 firstObject];
 
-          [v43 submitToCoreAnalytics:v47 type:1 duration:v42];
+          [v43 submitToCoreAnalytics:firstObject type:1 duration:v42];
           v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
           {
@@ -10901,7 +10901,7 @@ LABEL_10:
         }
 
         v71 = v52;
-        v72 = [(RTTripClusterManager *)self tripClusterRecencyStore];
+        tripClusterRecencyStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
         v193[0] = MEMORY[0x277D85DD0];
         v193[1] = 3221225472;
         v193[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_453;
@@ -10909,7 +10909,7 @@ LABEL_10:
         v193[4] = self;
         v73 = v37;
         v194 = v73;
-        [v72 purgeTripClusterRecencyWithHandler:v193];
+        [tripClusterRecencyStore purgeTripClusterRecencyWithHandler:v193];
 
         v74 = v73;
         v75 = [*(v38 + 2728) now];
@@ -10922,12 +10922,12 @@ LABEL_10:
           v79 = v78;
           v80 = objc_opt_new();
           v81 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v82 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v83 = [v82 filteredArrayUsingPredicate:v81];
-          v84 = [v83 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v83 = [callStackSymbols2 filteredArrayUsingPredicate:v81];
+          firstObject2 = [v83 firstObject];
 
           v171 = v80;
-          [v80 submitToCoreAnalytics:v84 type:1 duration:v79];
+          [v80 submitToCoreAnalytics:firstObject2 type:1 duration:v79];
           v85 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v85, OS_LOG_TYPE_FAULT))
           {
@@ -10953,7 +10953,7 @@ LABEL_10:
         }
 
         v91 = v77;
-        v92 = [(RTTripClusterManager *)self tripClusterScheduleStore];
+        tripClusterScheduleStore2 = [(RTTripClusterManager *)self tripClusterScheduleStore];
         v191[0] = MEMORY[0x277D85DD0];
         v191[1] = 3221225472;
         v191[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_454;
@@ -10961,7 +10961,7 @@ LABEL_10:
         v191[4] = self;
         v93 = v74;
         v192 = v93;
-        [v92 purgeTripClusterScheduleWithHandler:v191];
+        [tripClusterScheduleStore2 purgeTripClusterScheduleWithHandler:v191];
 
         v94 = v93;
         v95 = [*(v38 + 2728) now];
@@ -10974,12 +10974,12 @@ LABEL_10:
           v99 = v98;
           v100 = objc_opt_new();
           v101 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v102 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v103 = [v102 filteredArrayUsingPredicate:v101];
-          v104 = [v103 firstObject];
+          callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v103 = [callStackSymbols3 filteredArrayUsingPredicate:v101];
+          firstObject3 = [v103 firstObject];
 
           v172 = v100;
-          [v100 submitToCoreAnalytics:v104 type:1 duration:v99];
+          [v100 submitToCoreAnalytics:firstObject3 type:1 duration:v99];
           v105 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v105, OS_LOG_TYPE_FAULT))
           {
@@ -11005,7 +11005,7 @@ LABEL_10:
         }
 
         v111 = v97;
-        v112 = [(RTTripClusterManager *)self tripClusterRouteStore];
+        tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
         v189[0] = MEMORY[0x277D85DD0];
         v189[1] = 3221225472;
         v189[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_455;
@@ -11013,7 +11013,7 @@ LABEL_10:
         v189[4] = self;
         v113 = v94;
         v190 = v113;
-        [v112 purgeTripClusterRouteWithHandler:v189];
+        [tripClusterRouteStore purgeTripClusterRouteWithHandler:v189];
 
         v114 = v113;
         v115 = [*(v38 + 2728) now];
@@ -11026,12 +11026,12 @@ LABEL_10:
           v119 = v118;
           v120 = objc_opt_new();
           v121 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v122 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v123 = [v122 filteredArrayUsingPredicate:v121];
-          v124 = [v123 firstObject];
+          callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v123 = [callStackSymbols4 filteredArrayUsingPredicate:v121];
+          firstObject4 = [v123 firstObject];
 
           v173 = v120;
-          [v120 submitToCoreAnalytics:v124 type:1 duration:v119];
+          [v120 submitToCoreAnalytics:firstObject4 type:1 duration:v119];
           v125 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v125, OS_LOG_TYPE_FAULT))
           {
@@ -11057,7 +11057,7 @@ LABEL_10:
         }
 
         v131 = v117;
-        v132 = [(RTTripClusterManager *)self tripClusterWaypointStore];
+        tripClusterWaypointStore = [(RTTripClusterManager *)self tripClusterWaypointStore];
         v187[0] = MEMORY[0x277D85DD0];
         v187[1] = 3221225472;
         v187[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_456;
@@ -11065,7 +11065,7 @@ LABEL_10:
         v187[4] = self;
         v133 = v114;
         v188 = v133;
-        [v132 purgeTripClusterWaypointWithHandler:v187];
+        [tripClusterWaypointStore purgeTripClusterWaypointWithHandler:v187];
 
         v134 = v133;
         v135 = [*(v38 + 2728) now];
@@ -11079,11 +11079,11 @@ LABEL_10:
           v139 = v138;
           v140 = objc_opt_new();
           v141 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v142 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v143 = [v142 filteredArrayUsingPredicate:v141];
-          v144 = [v143 firstObject];
+          callStackSymbols5 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v143 = [callStackSymbols5 filteredArrayUsingPredicate:v141];
+          firstObject5 = [v143 firstObject];
 
-          [v140 submitToCoreAnalytics:v144 type:1 duration:v139];
+          [v140 submitToCoreAnalytics:firstObject5 type:1 duration:v139];
           v145 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v145, OS_LOG_TYPE_FAULT))
           {
@@ -11112,7 +11112,7 @@ LABEL_10:
         v14 = &v197;
 
         v151 = v137;
-        v152 = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
+        tripClusterRouteRoadTransitionsStore = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
         v185[0] = MEMORY[0x277D85DD0];
         v185[1] = 3221225472;
         v185[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_457;
@@ -11120,7 +11120,7 @@ LABEL_10:
         v185[4] = self;
         v153 = v134;
         v186 = v153;
-        [v152 purgeTripClusterRoadTransitionsWithHandler:v185];
+        [tripClusterRouteRoadTransitionsStore purgeTripClusterRoadTransitionsWithHandler:v185];
 
         v154 = v153;
         v155 = [*(v38 + 2728) now];
@@ -11133,11 +11133,11 @@ LABEL_10:
           v159 = v158;
           v160 = objc_opt_new();
           v161 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v162 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v163 = [v162 filteredArrayUsingPredicate:v161];
-          v164 = [v163 firstObject];
+          callStackSymbols6 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v163 = [callStackSymbols6 filteredArrayUsingPredicate:v161];
+          firstObject6 = [v163 firstObject];
 
-          [v160 submitToCoreAnalytics:v164 type:1 duration:v159];
+          [v160 submitToCoreAnalytics:firstObject6 type:1 duration:v159];
           v165 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v165, OS_LOG_TYPE_FAULT))
           {
@@ -11167,19 +11167,19 @@ LABEL_10:
         goto LABEL_36;
       }
 
-      if (a3 == 1)
+      if (table == 1)
       {
-        v13 = [(RTTripClusterManager *)self tripClusterStore];
+        tripClusterStore2 = [(RTTripClusterManager *)self tripClusterStore];
         v206[0] = MEMORY[0x277D85DD0];
         v206[1] = 3221225472;
         v206[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke;
         v206[3] = &unk_2788C6508;
         v206[4] = self;
         v14 = &v208;
-        v208 = v6;
+        v208 = handlerCopy;
         v15 = v8;
         v207 = v15;
-        [v13 purgeTripClustersWithHandler:v206];
+        [tripClusterStore2 purgeTripClustersWithHandler:v206];
 
         v16 = v15;
         v17 = [MEMORY[0x277CBEAA8] now];
@@ -11192,11 +11192,11 @@ LABEL_10:
           v21 = v20;
           v22 = objc_opt_new();
           v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-          v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v25 = [v24 filteredArrayUsingPredicate:v23];
-          v26 = [v25 firstObject];
+          callStackSymbols7 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v25 = [callStackSymbols7 filteredArrayUsingPredicate:v23];
+          firstObject7 = [v25 firstObject];
 
-          [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+          [v22 submitToCoreAnalytics:firstObject7 type:1 duration:v21];
           v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
           {
@@ -11231,7 +11231,7 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v33 = [(RTTripClusterManager *)self tripClusterRecencyStore];
+      tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
       v204[0] = MEMORY[0x277D85DD0];
       v204[1] = 3221225472;
       v204[2] = __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke_448;
@@ -11240,7 +11240,7 @@ LABEL_36:
       v14 = &v205;
       v34 = v8;
       v205 = v34;
-      [v33 purgeTripClusterRecencyWithHandler:v204];
+      [tripClusterScheduleStore purgeTripClusterRecencyWithHandler:v204];
     }
 
     v54 = v34;
@@ -11255,11 +11255,11 @@ LABEL_36:
       v59 = v58;
       v60 = objc_opt_new();
       v61 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-      v62 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v63 = [v62 filteredArrayUsingPredicate:v61];
-      v64 = [v63 firstObject];
+      callStackSymbols8 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v63 = [callStackSymbols8 filteredArrayUsingPredicate:v61];
+      firstObject8 = [v63 firstObject];
 
-      [v60 submitToCoreAnalytics:v64 type:1 duration:v59];
+      [v60 submitToCoreAnalytics:firstObject8 type:1 duration:v59];
       v65 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v65, OS_LOG_TYPE_FAULT))
       {
@@ -11300,7 +11300,7 @@ LABEL_36:
   v12 = [v9 errorWithDomain:v10 code:7 userInfo:v11];
 
 LABEL_37:
-  (*(v6 + 2))(v6, v12);
+  (*(handlerCopy + 2))(handlerCopy, v12);
 }
 
 void __54__RTTripClusterManager_purgeTripClusterTable_handler___block_invoke(uint64_t a1, void *a2)
@@ -11802,12 +11802,12 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)purgeClustersDatabaseWithTripClusterStore:(id)a3 tripClusterRouteStore:(id)a4 tripClusterRoadTransitionStore:(id)a5
+- (void)purgeClustersDatabaseWithTripClusterStore:(id)store tripClusterRouteStore:(id)routeStore tripClusterRoadTransitionStore:(id)transitionStore
 {
   v83 = *MEMORY[0x277D85DE8];
-  v73 = a5;
-  v8 = a4;
-  v9 = a3;
+  transitionStoreCopy = transitionStore;
+  routeStoreCopy = routeStore;
+  storeCopy = store;
   v10 = dispatch_semaphore_create(0);
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
@@ -11816,7 +11816,7 @@ LABEL_4:
   v79[4] = self;
   v11 = v10;
   v80 = v11;
-  [v9 purgeTripClustersWithHandler:v79];
+  [storeCopy purgeTripClustersWithHandler:v79];
 
   v12 = v11;
   v13 = 0x277CBE000uLL;
@@ -11824,7 +11824,7 @@ LABEL_4:
   v15 = dispatch_time(0, 3600000000000);
   v16 = 0x277CCA000uLL;
   v17 = 0x277CCA000uLL;
-  v74 = self;
+  selfCopy = self;
   if (dispatch_semaphore_wait(v12, v15))
   {
     v18 = [MEMORY[0x277CBEAA8] now];
@@ -11832,11 +11832,11 @@ LABEL_4:
     v20 = v19;
     v21 = objc_opt_new();
     v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_739_0];
-    v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v24 = [v23 filteredArrayUsingPredicate:v22];
-    v25 = [v24 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+    firstObject = [v24 firstObject];
 
-    [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+    [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
@@ -11856,7 +11856,7 @@ LABEL_4:
       v31 = v30;
     }
 
-    self = v74;
+    self = selfCopy;
     v17 = 0x277CCA000;
     v13 = 0x277CBE000;
     v16 = 0x277CCA000;
@@ -11875,7 +11875,7 @@ LABEL_4:
   v77[4] = self;
   v33 = v12;
   v78 = v33;
-  [v8 purgeTripClusterRouteWithHandler:v77];
+  [routeStoreCopy purgeTripClusterRouteWithHandler:v77];
 
   v34 = v33;
   v35 = [*(v13 + 2728) now];
@@ -11888,11 +11888,11 @@ LABEL_4:
     v40 = v39;
     v41 = objc_opt_new();
     v42 = [*(v16 + 3120) predicateWithBlock:&__block_literal_global_739_0];
-    v43 = [*(v17 + 3272) callStackSymbols];
-    v44 = [v43 filteredArrayUsingPredicate:v42];
-    v45 = [v44 firstObject];
+    callStackSymbols2 = [*(v17 + 3272) callStackSymbols];
+    v44 = [callStackSymbols2 filteredArrayUsingPredicate:v42];
+    firstObject2 = [v44 firstObject];
 
-    [v41 submitToCoreAnalytics:v45 type:1 duration:v40];
+    [v41 submitToCoreAnalytics:firstObject2 type:1 duration:v40];
     v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_FAULT))
     {
@@ -11908,7 +11908,7 @@ LABEL_4:
     v50 = [v47 errorWithDomain:v48 code:15 userInfo:v49];
 
     v37 = v32;
-    self = v74;
+    self = selfCopy;
     v17 = 0x277CCA000uLL;
     v13 = 0x277CBE000uLL;
     v16 = 0x277CCA000uLL;
@@ -11928,7 +11928,7 @@ LABEL_4:
   v75[4] = self;
   v53 = v34;
   v76 = v53;
-  [v73 purgeTripClusterRoadTransitionsWithHandler:v75];
+  [transitionStoreCopy purgeTripClusterRoadTransitionsWithHandler:v75];
 
   v54 = v53;
   v55 = [*(v13 + 2728) now];
@@ -11941,11 +11941,11 @@ LABEL_4:
     v60 = v59;
     v61 = objc_opt_new();
     v62 = [*(v16 + 3120) predicateWithBlock:&__block_literal_global_739_0];
-    v63 = [*(v17 + 3272) callStackSymbols];
-    v64 = [v63 filteredArrayUsingPredicate:v62];
-    v65 = [v64 firstObject];
+    callStackSymbols3 = [*(v17 + 3272) callStackSymbols];
+    v64 = [callStackSymbols3 filteredArrayUsingPredicate:v62];
+    firstObject3 = [v64 firstObject];
 
-    [v61 submitToCoreAnalytics:v65 type:1 duration:v60];
+    [v61 submitToCoreAnalytics:firstObject3 type:1 duration:v60];
     v66 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v66, OS_LOG_TYPE_FAULT))
     {
@@ -12113,12 +12113,12 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)purgeTripClusterWithClusterID:(id)a3 handler:(id)a4
+- (void)purgeTripClusterWithClusterID:(id)d handler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -12127,32 +12127,32 @@ LABEL_4:
       {
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v6 UUIDString];
+        uUIDString = [dCopy UUIDString];
         v21 = 138412546;
         v22 = v10;
         v23 = 2112;
-        v24 = v11;
+        v24 = uUIDString;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@,purgeTripClusterWithClusterID,%@", &v21, 0x16u);
       }
     }
 
-    v12 = [(RTTripClusterManager *)self tripClusterRouteStore];
-    [v12 deleteTripClusterRouteWithClusterID:v6];
+    tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
+    [tripClusterRouteStore deleteTripClusterRouteWithClusterID:dCopy];
 
-    v13 = [(RTTripClusterManager *)self tripClusterWaypointStore];
-    [v13 deleteTripClusterWaypointWithClusterID:v6];
+    tripClusterWaypointStore = [(RTTripClusterManager *)self tripClusterWaypointStore];
+    [tripClusterWaypointStore deleteTripClusterWaypointWithClusterID:dCopy];
 
-    v14 = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
-    [v14 deleteTripClusterRoadTransitionsWithUUID:v6];
+    tripClusterRouteRoadTransitionsStore = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
+    [tripClusterRouteRoadTransitionsStore deleteTripClusterRoadTransitionsWithUUID:dCopy];
 
-    v15 = [(RTTripClusterManager *)self tripClusterRecencyStore];
-    [v15 deleteTripClusterRecencyWithClusterID:v6];
+    tripClusterRecencyStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
+    [tripClusterRecencyStore deleteTripClusterRecencyWithClusterID:dCopy];
 
-    v16 = [(RTTripClusterManager *)self tripClusterScheduleStore];
-    [v16 deleteTripClusterScheduleWithClusterID:v6];
+    tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterScheduleStore];
+    [tripClusterScheduleStore deleteTripClusterScheduleWithClusterID:dCopy];
 
-    v17 = [(RTTripClusterManager *)self tripClusterStore];
-    [v17 deleteTripClusterWithUUID:v6];
+    tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
+    [tripClusterStore deleteTripClusterWithUUID:dCopy];
   }
 
   else
@@ -12162,93 +12162,93 @@ LABEL_4:
     v25 = *MEMORY[0x277CCA450];
     v26[0] = @"Need a valid clusterID to delete";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    v17 = [v18 initWithDomain:v19 code:7 userInfo:v20];
+    tripClusterStore = [v18 initWithDomain:v19 code:7 userInfo:v20];
 
-    v7[2](v7, v17);
+    handlerCopy[2](handlerCopy, tripClusterStore);
   }
 }
 
-- (void)_deleteAllTripClusterDataForClusterID:(id)a3
+- (void)_deleteAllTripClusterDataForClusterID:(id)d
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clusterID];
-  v6 = [RTTripClusterProcessor getWaypointIDFromClusterID:v5];
+  dCopy = d;
+  clusterID = [dCopy clusterID];
+  v6 = [RTTripClusterProcessor getWaypointIDFromClusterID:clusterID];
 
-  v7 = [(RTTripClusterManager *)self tripClusterRouteStore];
-  [v7 deleteTripClusterRouteWithClusterID:v6];
+  tripClusterRouteStore = [(RTTripClusterManager *)self tripClusterRouteStore];
+  [tripClusterRouteStore deleteTripClusterRouteWithClusterID:v6];
 
-  v8 = [(RTTripClusterManager *)self tripClusterRouteStore];
-  v9 = [v4 clusterID];
-  [v8 deleteTripClusterRouteWithClusterID:v9];
+  tripClusterRouteStore2 = [(RTTripClusterManager *)self tripClusterRouteStore];
+  clusterID2 = [dCopy clusterID];
+  [tripClusterRouteStore2 deleteTripClusterRouteWithClusterID:clusterID2];
 
-  v10 = [(RTTripClusterManager *)self tripSegmentRoadTransitionsStore];
-  v11 = [v4 clusterID];
-  [v10 deleteTripClusterRoadTransitionsWithUUID:v11];
+  tripSegmentRoadTransitionsStore = [(RTTripClusterManager *)self tripSegmentRoadTransitionsStore];
+  clusterID3 = [dCopy clusterID];
+  [tripSegmentRoadTransitionsStore deleteTripClusterRoadTransitionsWithUUID:clusterID3];
 
-  v12 = [(RTTripClusterManager *)self tripClusterWaypointStore];
-  v13 = [v4 clusterID];
-  [v12 deleteTripClusterWaypointWithClusterID:v13];
+  tripClusterWaypointStore = [(RTTripClusterManager *)self tripClusterWaypointStore];
+  clusterID4 = [dCopy clusterID];
+  [tripClusterWaypointStore deleteTripClusterWaypointWithClusterID:clusterID4];
 
-  v14 = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
-  v15 = [v4 clusterID];
-  [v14 deleteTripClusterRoadTransitionsWithUUID:v15];
+  tripClusterRouteRoadTransitionsStore = [(RTTripClusterManager *)self tripClusterRouteRoadTransitionsStore];
+  clusterID5 = [dCopy clusterID];
+  [tripClusterRouteRoadTransitionsStore deleteTripClusterRoadTransitionsWithUUID:clusterID5];
 
-  v16 = [(RTTripClusterManager *)self tripClusterRecencyStore];
-  v17 = [v4 clusterID];
-  [v16 deleteTripClusterRecencyWithClusterID:v17];
+  tripClusterRecencyStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
+  clusterID6 = [dCopy clusterID];
+  [tripClusterRecencyStore deleteTripClusterRecencyWithClusterID:clusterID6];
 
-  v18 = [(RTTripClusterManager *)self tripClusterScheduleStore];
-  v19 = [v4 clusterID];
-  [v18 deleteTripClusterScheduleWithClusterID:v19];
+  tripClusterScheduleStore = [(RTTripClusterManager *)self tripClusterScheduleStore];
+  clusterID7 = [dCopy clusterID];
+  [tripClusterScheduleStore deleteTripClusterScheduleWithClusterID:clusterID7];
 
-  v20 = [(RTTripClusterManager *)self tripClusterStore];
-  v21 = [v4 commuteID];
-  [v20 deleteTripClusterWithCommuteID:v21];
+  tripClusterStore = [(RTTripClusterManager *)self tripClusterStore];
+  commuteID = [dCopy commuteID];
+  [tripClusterStore deleteTripClusterWithCommuteID:commuteID];
 
   if ([(RTTripClusterProcessorOptions *)self->_options recordDebuggingDataInFile])
   {
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v23 = objc_alloc(MEMORY[0x277CBFC00]);
-    [v4 startLatitude];
+    [dCopy startLatitude];
     v25 = v24;
-    [v4 startLongitude];
+    [dCopy startLongitude];
     v27 = [v23 initWithLatitude:v25 longitude:v26];
     v28 = objc_alloc(MEMORY[0x277CBFC00]);
-    [v4 endLatitude];
+    [dCopy endLatitude];
     v30 = v29;
-    [v4 endLongitude];
+    [dCopy endLongitude];
     v32 = [v28 initWithLatitude:v30 longitude:v31];
-    v33 = [v4 clusterID];
-    [v22 setValue:v33 forKey:@"RTTCM_PurgeCluster_UUID"];
+    clusterID8 = [dCopy clusterID];
+    [dictionary setValue:clusterID8 forKey:@"RTTCM_PurgeCluster_UUID"];
 
     v40[0] = v27;
     v40[1] = v32;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
-    [v22 setValue:v34 forKey:@"RTTCM_PurgeCluster_StartAndStopCoord"];
+    [dictionary setValue:v34 forKey:@"RTTCM_PurgeCluster_StartAndStopCoord"];
 
-    v35 = [v4 lastTimeTaken];
-    [v22 setValue:v35 forKey:@"RTTCM_PurgeCluster_LastTimeTaken"];
+    lastTimeTaken = [dCopy lastTimeTaken];
+    [dictionary setValue:lastTimeTaken forKey:@"RTTCM_PurgeCluster_LastTimeTaken"];
 
-    v36 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "countOfTraversal")}];
-    [v22 setValue:v36 forKey:@"RTTCM_PurgeCluster_TraversalCount"];
+    v36 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(dCopy, "countOfTraversal")}];
+    [dictionary setValue:v36 forKey:@"RTTCM_PurgeCluster_TraversalCount"];
 
-    v37 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "modeOfTransport")}];
-    [v22 setValue:v37 forKey:@"RTTCM_PurgeCluster_ModeOfTransport"];
+    v37 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(dCopy, "modeOfTransport")}];
+    [dictionary setValue:v37 forKey:@"RTTCM_PurgeCluster_ModeOfTransport"];
 
     v38 = [MEMORY[0x277CBEAA8] now];
-    [v22 setValue:v38 forKey:@"RTTCM_PurgeCluster_PurgeTime"];
+    [dictionary setValue:v38 forKey:@"RTTCM_PurgeCluster_PurgeTime"];
 
     v39 = objc_alloc_init(MEMORY[0x277CBFCA8]);
-    [v39 outputRouteLearningDebuggingDataInCLTSPFile:v22];
+    [v39 outputRouteLearningDebuggingDataInCLTSPFile:dictionary];
   }
 }
 
-- (id)_getPurgePolicyOverrideDaysToPersistTripClusterData:(id)a3
+- (id)_getPurgePolicyOverrideDaysToPersistTripClusterData:(id)data
 {
-  v4 = a3;
-  v5 = [(RTTripClusterManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsTripSegmentClusterDataPurgeAge"];
+  dataCopy = data;
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsTripSegmentClusterDataPurgeAge"];
 
   if (v6)
   {
@@ -12258,7 +12258,7 @@ LABEL_4:
 
   else
   {
-    v8 = v4;
+    v8 = dataCopy;
   }
 
   v9 = v8;
@@ -12266,11 +12266,11 @@ LABEL_4:
   return v9;
 }
 
-- (id)_getPurgePolicyOverrideDaysToPersistTripClusterDataShort:(id)a3
+- (id)_getPurgePolicyOverrideDaysToPersistTripClusterDataShort:(id)short
 {
-  v4 = [a3 dateByAddingTimeInterval:2419200.0];
-  v5 = [(RTTripClusterManager *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsTripSegmentClusterDataPurgeAge"];
+  v4 = [short dateByAddingTimeInterval:2419200.0];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsTripSegmentClusterDataPurgeAge"];
 
   if (v6)
   {
@@ -12280,21 +12280,21 @@ LABEL_4:
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v4 earlierDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [v4 earlierDate:date];
   }
 
   return v8;
 }
 
-- (void)purgeClusterDatabasesPredating:(id)a3 handler:(id)a4
+- (void)purgeClusterDatabasesPredating:(id)predating handler:(id)handler
 {
   v95 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v61 = v5;
-  if (!v5)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v61 = predatingCopy;
+  if (!predatingCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -12314,7 +12314,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!handlerCopy)
   {
 LABEL_7:
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -12329,10 +12329,10 @@ LABEL_7:
   }
 
 LABEL_10:
-  v10 = [(RTTripClusterManager *)self _getPurgePolicyOverrideDaysToPersistTripClusterData:v5];
-  v11 = [(RTTripClusterManager *)self _getPurgePolicyOverrideDaysToPersistTripClusterDataShort:v5];
-  v12 = [(RTTripClusterManager *)self tripClusterRecencyStore];
-  [v12 deleteTripClusterRecencyPredating:v11];
+  v10 = [(RTTripClusterManager *)self _getPurgePolicyOverrideDaysToPersistTripClusterData:predatingCopy];
+  v11 = [(RTTripClusterManager *)self _getPurgePolicyOverrideDaysToPersistTripClusterDataShort:predatingCopy];
+  tripClusterRecencyStore = [(RTTripClusterManager *)self tripClusterRecencyStore];
+  [tripClusterRecencyStore deleteTripClusterRecencyPredating:v11];
 
   v13 = [objc_alloc(MEMORY[0x277D01368]) initWithbatchSize:3000];
   v14 = [(RTTripClusterStore *)self->_tripClusterStore getTripClustersWithOptions:v13];
@@ -12380,31 +12380,31 @@ LABEL_10:
         {
           v20 = objc_opt_class();
           v62 = NSStringFromClass(v20);
-          v21 = [v61 getFormattedDateString];
+          getFormattedDateString = [v61 getFormattedDateString];
           v22 = v11;
-          v23 = v21;
-          v24 = [v22 getFormattedDateString];
-          v25 = [v10 getFormattedDateString];
-          v63 = [v18 lastTimeTaken];
-          v26 = [v63 getFormattedDateString];
+          v23 = getFormattedDateString;
+          getFormattedDateString2 = [v22 getFormattedDateString];
+          getFormattedDateString3 = [v10 getFormattedDateString];
+          lastTimeTaken = [v18 lastTimeTaken];
+          getFormattedDateString4 = [lastTimeTaken getFormattedDateString];
           [v18 clusterID];
           v27 = v64 = v15;
-          v28 = [v27 UUIDString];
-          v29 = [v18 countOfTraversal];
+          uUIDString = [v27 UUIDString];
+          countOfTraversal = [v18 countOfTraversal];
           *buf = 138413826;
           v81 = v62;
           v82 = 2112;
           v83 = v23;
           v84 = 2112;
-          v85 = v24;
+          v85 = getFormattedDateString2;
           v86 = 2112;
-          v87 = v25;
+          v87 = getFormattedDateString3;
           v88 = 2112;
-          v89 = v26;
+          v89 = getFormattedDateString4;
           v90 = 2112;
-          v91 = v28;
+          v91 = uUIDString;
           v92 = 1024;
-          v93 = v29;
+          v93 = countOfTraversal;
           _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@,checking,inputDate,%@,purgeDateShort,%@,purgeDate,%@,lastTimeTaken,%@,clusterID,%@,countOfTraversal,%d", buf, 0x44u);
 
           v15 = v64;
@@ -12416,18 +12416,18 @@ LABEL_10:
         v16 = v66;
       }
 
-      v30 = [v18 countOfTraversal];
-      if (v30 == 1 && ([v18 lastTimeTaken], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "compare:", v15) == 1))
+      countOfTraversal2 = [v18 countOfTraversal];
+      if (countOfTraversal2 == 1 && ([v18 lastTimeTaken], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "compare:", v15) == 1))
       {
       }
 
       else
       {
         v31 = v15;
-        v32 = [v18 lastTimeTaken];
-        v33 = [v10 compare:v32];
+        lastTimeTaken2 = [v18 lastTimeTaken];
+        v33 = [v10 compare:lastTimeTaken2];
 
-        if (v30 == 1)
+        if (countOfTraversal2 == 1)
         {
           v15 = v31;
 
@@ -12453,12 +12453,12 @@ LABEL_10:
         v35 = objc_opt_class();
         NSStringFromClass(v35);
         v37 = v36 = v15;
-        v38 = [v18 clusterID];
-        v39 = [v38 UUIDString];
+        clusterID = [v18 clusterID];
+        uUIDString2 = [clusterID UUIDString];
         *buf = 138412546;
         v81 = v37;
         v82 = 2112;
-        v83 = v39;
+        v83 = uUIDString2;
         _os_log_impl(&dword_2304B3000, v34, OS_LOG_TYPE_DEFAULT, "%@,deleteTripCluster,clusterID,%@", buf, 0x16u);
 
         v15 = v36;
@@ -12476,16 +12476,16 @@ LABEL_31:
   while (v68);
 LABEL_33:
 
-  v40 = [(RTTripClusterManager *)self defaultsManager];
-  v41 = [v40 objectForKey:@"RTDefaultsTripClusterManagerMaxClusterCountOnDevice"];
+  defaultsManager = [(RTTripClusterManager *)self defaultsManager];
+  v41 = [defaultsManager objectForKey:@"RTDefaultsTripClusterManagerMaxClusterCountOnDevice"];
 
   v42 = 500;
   if (v41)
   {
-    v43 = [v41 intValue];
-    if (v43 >= 0)
+    intValue = [v41 intValue];
+    if (intValue >= 0)
     {
-      v44 = v43;
+      v44 = intValue;
     }
 
     else

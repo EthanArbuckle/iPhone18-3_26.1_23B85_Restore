@@ -1,25 +1,25 @@
 @interface PKMultiKeyValueCellKeyValueSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSCopying)identifier;
-- (PKMultiKeyValueCellKeyValueSource)initWithTitle:(id)a3 subtitle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKMultiKeyValueCellKeyValueSource)initWithTitle:(id)title subtitle:(id)subtitle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKMultiKeyValueCellKeyValueSource
 
-- (PKMultiKeyValueCellKeyValueSource)initWithTitle:(id)a3 subtitle:(id)a4
+- (PKMultiKeyValueCellKeyValueSource)initWithTitle:(id)title subtitle:(id)subtitle
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v12.receiver = self;
   v12.super_class = PKMultiKeyValueCellKeyValueSource;
   v9 = [(PKMultiKeyValueCellKeyValueSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_subtitle, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_subtitle, subtitle);
   }
 
   return v10;
@@ -58,18 +58,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -140,14 +140,14 @@ LABEL_22:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKMultiKeyValueCellKeyValueSource allocWithZone:?];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v8;
 

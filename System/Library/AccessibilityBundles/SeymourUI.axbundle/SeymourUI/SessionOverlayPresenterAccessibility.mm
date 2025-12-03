@@ -1,38 +1,38 @@
 @interface SessionOverlayPresenterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-+ (void)accessibilityAnnounceEvent:(id)a3;
-+ (void)accessibilityAnnounceTimer:(double)a3 start:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
++ (void)accessibilityAnnounceEvent:(id)event;
++ (void)accessibilityAnnounceTimer:(double)timer start:(BOOL)start;
 @end
 
 @implementation SessionOverlayPresenterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionOverlayPresenter" hasClassMethod:@"accessibilityAnnounceEvent:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionOverlayPresenter" hasClassMethod:@"accessibilityAnnounceTimer:start:" withFullSignature:{"v", "d", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionOverlayPresenter" hasClassMethod:@"accessibilityAnnounceEvent:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionOverlayPresenter" hasClassMethod:@"accessibilityAnnounceTimer:start:" withFullSignature:{"v", "d", "B", 0}];
 }
 
-+ (void)accessibilityAnnounceEvent:(id)a3
++ (void)accessibilityAnnounceEvent:(id)event
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SessionOverlayPresenterAccessibility;
-  v3 = a3;
-  objc_msgSendSuper2(&v4, sel_accessibilityAnnounceEvent_, v3);
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v3);
+  eventCopy = event;
+  objc_msgSendSuper2(&v4, sel_accessibilityAnnounceEvent_, eventCopy);
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], eventCopy);
 }
 
-+ (void)accessibilityAnnounceTimer:(double)a3 start:(BOOL)a4
++ (void)accessibilityAnnounceTimer:(double)timer start:(BOOL)start
 {
-  v4 = a4;
-  v13.receiver = a1;
+  startCopy = start;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___SessionOverlayPresenterAccessibility;
   objc_msgSendSuper2(&v13, sel_accessibilityAnnounceTimer_start_);
-  if (v4)
+  if (startCopy)
   {
-    v6 = (a3 % 60);
+    v6 = (timer % 60);
     v7 = MEMORY[0x29EDBA0F8];
-    if (a3 < 60)
+    if (timer < 60)
     {
       v8 = accessibilityLocalizedString(@"timer.start.short.format");
       [v7 stringWithFormat:v8, v6, v12];
@@ -41,7 +41,7 @@
     else
     {
       v8 = accessibilityLocalizedString(@"timer.start.long.format");
-      [v7 stringWithFormat:v8, a3 / 0x3CuLL, v6];
+      [v7 stringWithFormat:v8, timer / 0x3CuLL, v6];
     }
     v10 = ;
 

@@ -1,7 +1,7 @@
 @interface GQDRGradient
 - (CGPoint)end;
 - (CGPoint)start;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -38,15 +38,15 @@
   return result;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_42888(a3, qword_A35E8, "opacity", &self->mOpacity);
+  sub_42888(reader, qword_A35E8, "opacity", &self->mOpacity);
   if (!v5)
   {
     return 3;
   }
 
-  v6 = sub_42FBC(a3, qword_A35E8, "type", &dword_A4088, &self->mType);
+  v6 = sub_42FBC(reader, qword_A35E8, "type", &dword_A4088, &self->mType);
   mType = self->mType;
   if (mType || !v6)
   {
@@ -58,7 +58,7 @@
 
   else
   {
-    sub_42888(a3, qword_A35E8, "angle", &self->mAngle);
+    sub_42888(reader, qword_A35E8, "angle", &self->mAngle);
     if ((v8 & 1) == 0)
     {
       return 3;

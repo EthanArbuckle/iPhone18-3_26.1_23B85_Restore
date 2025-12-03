@@ -1,9 +1,9 @@
 @interface FHInsightsFetcher
 + (id)sharedInstance;
 - (id)_init;
-- (id)retrieveInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6;
-- (id)retrieveSpendInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 sourceId:(id)a7 accountType:(int64_t)a8;
-- (id)totalSpendAmountBetweenDates:(id)a3 endDate:(id)a4 sourceId:(id)a5 accountType:(int64_t)a6;
+- (id)retrieveInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window;
+- (id)retrieveSpendInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window sourceId:(id)id accountType:(int64_t)type;
+- (id)totalSpendAmountBetweenDates:(id)dates endDate:(id)date sourceId:(id)id accountType:(int64_t)type;
 @end
 
 @implementation FHInsightsFetcher
@@ -42,11 +42,11 @@ uint64_t __35__FHInsightsFetcher_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)totalSpendAmountBetweenDates:(id)a3 endDate:(id)a4 sourceId:(id)a5 accountType:(int64_t)a6
+- (id)totalSpendAmountBetweenDates:(id)dates endDate:(id)date sourceId:(id)id accountType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  datesCopy = dates;
+  dateCopy = date;
+  idCopy = id;
   v12 = objc_opt_new();
   v39 = 0;
   v40 = &v39;
@@ -60,19 +60,19 @@ uint64_t __35__FHInsightsFetcher_sharedInstance__block_invoke()
   v38 = 0;
   v13 = objc_alloc(MEMORY[0x277D087E8]);
   v14 = [v13 initWithEntity:*MEMORY[0x277D087B0]];
-  v15 = [v14 fieldsInOrder];
+  fieldsInOrder = [v14 fieldsInOrder];
   v16 = MEMORY[0x277D087E0];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __79__FHInsightsFetcher_totalSpendAmountBetweenDates_endDate_sourceId_accountType___block_invoke;
   v30[3] = &unk_278FFC0F0;
-  v17 = v9;
+  v17 = datesCopy;
   v31 = v17;
-  v18 = v10;
+  v18 = dateCopy;
   v32 = v18;
-  v19 = v11;
+  v19 = idCopy;
   v33 = v19;
-  v34 = a6;
+  typeCopy = type;
   v20 = [v16 initWithBuilder:v30];
   v21 = *MEMORY[0x277D08750];
   v29[0] = MEMORY[0x277D85DD0];
@@ -81,7 +81,7 @@ uint64_t __35__FHInsightsFetcher_sharedInstance__block_invoke()
   v29[3] = &unk_278FFC118;
   v29[4] = &v35;
   v29[5] = &v39;
-  [v14 queryDataWithBlock:v20 logicalOperator:v21 selectFields:v15 usingBlock:v29];
+  [v14 queryDataWithBlock:v20 logicalOperator:v21 selectFields:fieldsInOrder usingBlock:v29];
   v22 = MEMORY[0x277CCA980];
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:v36[3]];
   v24 = v23;
@@ -170,12 +170,12 @@ void __79__FHInsightsFetcher_totalSpendAmountBetweenDates_endDate_sourceId_accou
   }
 }
 
-- (id)retrieveSpendInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6 sourceId:(id)a7 accountType:(int64_t)a8
+- (id)retrieveSpendInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window sourceId:(id)id accountType:(int64_t)type
 {
   v110 = *MEMORY[0x277D85DE8];
-  v99 = a3;
-  v13 = a4;
-  v14 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  idCopy = id;
   v15 = *MEMORY[0x277D087C0];
   v16 = FinHealthLogObject();
   v17 = FinHealthLogObject();
@@ -198,7 +198,7 @@ void __79__FHInsightsFetcher_totalSpendAmountBetweenDates_endDate_sourceId_accou
   v93 = objc_alloc_init(FHOverallSpendInsight);
   v97 = objc_opt_new();
   v20 = +[FHInsightsFetcher sharedInstance];
-  v21 = [v20 totalSpendAmountBetweenDates:v99 endDate:v13 sourceId:v14 accountType:a8];
+  v21 = [v20 totalSpendAmountBetweenDates:dateCopy endDate:endDateCopy sourceId:idCopy accountType:type];
 
   v22 = [v21 objectForKey:@"overallSpending"];
   [v22 doubleValue];
@@ -221,8 +221,8 @@ void __79__FHInsightsFetcher_totalSpendAmountBetweenDates_endDate_sourceId_accou
     v29 = FHNumberOfDaysBetweenDates();
   }
 
-  v92 = v14;
-  switch(a6)
+  v92 = idCopy;
+  switch(window)
   {
     case 3:
       v30 = FHStartOfLastYear();
@@ -249,7 +249,7 @@ void __79__FHInsightsFetcher_totalSpendAmountBetweenDates_endDate_sourceId_accou
 LABEL_19:
   v32 = FHDateFromNumberOfDays();
   v33 = +[FHInsightsFetcher sharedInstance];
-  v34 = [v33 totalSpendAmountBetweenDates:v31 endDate:v32 sourceId:v14 accountType:a8];
+  v34 = [v33 totalSpendAmountBetweenDates:v31 endDate:v32 sourceId:idCopy accountType:type];
 
   v35 = [v34 objectForKey:@"overallSpending"];
   [v35 doubleValue];
@@ -305,10 +305,10 @@ LABEL_24:
   v51 = [v50 decimalNumberByRoundingAccordingToBehavior:self->_roundingBehavior];
   [(FHFeatureInsight *)v93 setSpendingInsightPercentageValue:v51];
 
-  [(FHFeatureInsight *)v93 setStartDate:v99];
-  [(FHFeatureInsight *)v93 setEndDate:v13];
-  v96 = a6;
-  [(FHFeatureInsight *)v93 setWindow:a6];
+  [(FHFeatureInsight *)v93 setStartDate:dateCopy];
+  [(FHFeatureInsight *)v93 setEndDate:endDateCopy];
+  windowCopy = window;
+  [(FHFeatureInsight *)v93 setWindow:window];
   [(FHFeatureInsight *)v93 setCurrencyCode:@"USD"];
   [v97 addObject:v93];
   v106 = 0u;
@@ -320,7 +320,7 @@ LABEL_24:
   if (v100)
   {
     v94 = *v105;
-    v95 = v13;
+    v95 = endDateCopy;
     do
     {
       for (i = 0; i != v100; ++i)
@@ -333,8 +333,8 @@ LABEL_24:
 
         v54 = *(*(&v104 + 1) + 8 * i);
         v55 = objc_alloc_init(FHCategorySpendInsight);
-        v56 = [MEMORY[0x277CCA980] zero];
-        v57 = [MEMORY[0x277CCA980] zero];
+        zero = [MEMORY[0x277CCA980] zero];
+        zero2 = [MEMORY[0x277CCA980] zero];
         v103 = [obj objectForKeyedSubscript:v54];
         v58 = [v98 objectForKey:v54];
 
@@ -342,42 +342,42 @@ LABEL_24:
         {
           v59 = [v98 objectForKeyedSubscript:v54];
 
-          v56 = v59;
+          zero = v59;
         }
 
-        v60 = [v103 decimalNumberBySubtracting:v56];
+        v60 = [v103 decimalNumberBySubtracting:zero];
         v61 = [v60 decimalNumberByRoundingAccordingToBehavior:ptr->_roundingBehavior];
 
-        v62 = [MEMORY[0x277CCA980] zero];
-        v63 = [v56 compare:v62];
+        zero3 = [MEMORY[0x277CCA980] zero];
+        v63 = [zero compare:zero3];
 
         if (!v63)
         {
           [(FHFeatureInsight *)v55 setDirection:1];
-          v72 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:3.40282347e38];
+          zero5 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:3.40282347e38];
 LABEL_42:
-          v68 = v72;
-          [(FHFeatureInsight *)v55 setSpendingInsightPercentageValue:v72];
+          v68 = zero5;
+          [(FHFeatureInsight *)v55 setSpendingInsightPercentageValue:zero5];
           goto LABEL_44;
         }
 
-        v64 = [MEMORY[0x277CCA980] zero];
-        v65 = [v61 compare:v64];
+        zero4 = [MEMORY[0x277CCA980] zero];
+        v65 = [v61 compare:zero4];
 
         if (!v65)
         {
           [(FHFeatureInsight *)v55 setDirection:0];
-          v72 = [MEMORY[0x277CCA980] zero];
+          zero5 = [MEMORY[0x277CCA980] zero];
           goto LABEL_42;
         }
 
-        v66 = [MEMORY[0x277CCA980] zero];
-        v67 = [v61 compare:v66];
+        zero6 = [MEMORY[0x277CCA980] zero];
+        v67 = [v61 compare:zero6];
 
         if (v67 == 1)
         {
           [(FHFeatureInsight *)v55 setDirection:1];
-          v68 = [v61 decimalNumberByDividingBy:v56];
+          v68 = [v61 decimalNumberByDividingBy:zero];
           v69 = [MEMORY[0x277CCA980] decimalNumberWithString:@"100"];
           v70 = [v68 decimalNumberByMultiplyingBy:v69];
           v71 = [v70 decimalNumberByRoundingAccordingToBehavior:ptr->_roundingBehavior];
@@ -389,8 +389,8 @@ LABEL_42:
         else
         {
           [(FHFeatureInsight *)v55 setDirection:2];
-          v68 = [v56 decimalNumberBySubtracting:v103];
-          v73 = [v68 decimalNumberByDividingBy:v56];
+          v68 = [zero decimalNumberBySubtracting:v103];
+          v73 = [v68 decimalNumberByDividingBy:zero];
           v74 = [MEMORY[0x277CCA980] decimalNumberWithString:@"100"];
           v75 = [v73 decimalNumberByMultiplyingBy:v74];
           v76 = [v75 decimalNumberByRoundingAccordingToBehavior:ptr->_roundingBehavior];
@@ -402,23 +402,23 @@ LABEL_42:
 LABEL_44:
 
         [(FHFeatureInsight *)v55 setType:@"FHInsightTypeCategorySpend"];
-        v77 = [*(v53 + 2432) defaultDatabaseAmountMultiplier];
-        [v103 decimalNumberByDividingBy:v77];
+        defaultDatabaseAmountMultiplier = [*(v53 + 2432) defaultDatabaseAmountMultiplier];
+        [v103 decimalNumberByDividingBy:defaultDatabaseAmountMultiplier];
         v79 = v78 = v53;
         [(FHFeatureInsight *)v55 setSpendAmount:v79];
 
-        v80 = [*(v78 + 2432) defaultDatabaseAmountMultiplier];
-        v81 = [v56 decimalNumberByDividingBy:v80];
+        defaultDatabaseAmountMultiplier2 = [*(v78 + 2432) defaultDatabaseAmountMultiplier];
+        v81 = [zero decimalNumberByDividingBy:defaultDatabaseAmountMultiplier2];
         [(FHFeatureInsight *)v55 setAverageAmount:v81];
 
-        v82 = [*(v78 + 2432) defaultDatabaseAmountMultiplier];
-        v83 = [v61 decimalNumberByDividingBy:v82];
+        defaultDatabaseAmountMultiplier3 = [*(v78 + 2432) defaultDatabaseAmountMultiplier];
+        v83 = [v61 decimalNumberByDividingBy:defaultDatabaseAmountMultiplier3];
         [(FHFeatureInsight *)v55 setSpendingInsightAmount:v83];
 
-        [(FHFeatureInsight *)v55 setStartDate:v99];
-        v13 = v95;
+        [(FHFeatureInsight *)v55 setStartDate:dateCopy];
+        endDateCopy = v95;
         [(FHFeatureInsight *)v55 setEndDate:v95];
-        [(FHFeatureInsight *)v55 setWindow:v96];
+        [(FHFeatureInsight *)v55 setWindow:windowCopy];
         [(FHFeatureInsight *)v55 setCurrencyCode:@"USD"];
         -[FHCategorySpendInsight setMerchantCategory:](v55, "setMerchantCategory:", [v54 intValue]);
         [v97 addObject:v55];
@@ -453,24 +453,24 @@ LABEL_44:
   return v88;
 }
 
-- (id)retrieveInsightsWithStartDate:(id)a3 endDate:(id)a4 insightTypeItems:(id)a5 trendWindow:(int64_t)a6
+- (id)retrieveInsightsWithStartDate:(id)date endDate:(id)endDate insightTypeItems:(id)items trendWindow:(int64_t)window
 {
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  itemsCopy = items;
   v13 = objc_alloc(MEMORY[0x277D087E8]);
   v14 = [v13 initWithEntity:*MEMORY[0x277D086F0]];
-  v15 = [v14 fieldsInOrder];
-  v16 = [v15 subarrayWithRange:{1, objc_msgSend(v15, "count") - 1}];
+  fieldsInOrder = [v14 fieldsInOrder];
+  v16 = [fieldsInOrder subarrayWithRange:{1, objc_msgSend(fieldsInOrder, "count") - 1}];
   v17 = MEMORY[0x277D087E0];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __88__FHInsightsFetcher_retrieveInsightsWithStartDate_endDate_insightTypeItems_trendWindow___block_invoke;
   v40[3] = &unk_278FFC140;
-  v18 = v10;
+  v18 = dateCopy;
   v41 = v18;
-  v19 = v11;
+  v19 = endDateCopy;
   v42 = v19;
   v20 = [v17 initWithBuilder:v40];
   v21 = *MEMORY[0x277D087C0];
@@ -495,8 +495,8 @@ LABEL_44:
   v35[3] = &unk_278FFC168;
   objc_copyWeak(v38, &location);
   v23 = *MEMORY[0x277D08750];
-  v38[1] = a6;
-  v24 = v12;
+  v38[1] = window;
+  v24 = itemsCopy;
   v36 = v24;
   p_buf = &buf;
   [v14 queryDataWithBlock:v20 logicalOperator:v23 selectFields:v16 usingBlock:v35];

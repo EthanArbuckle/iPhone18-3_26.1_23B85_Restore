@@ -1,5 +1,5 @@
 @interface SBHProxiedApplicationPlaceholderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,18 +7,18 @@
 
 @implementation SBHProxiedApplicationPlaceholderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"icon:statusDescriptionForLocation:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"FBSApplicationPlaceholder" hasInstanceMethod:@"progress" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"FBSApplicationPlaceholderProgress" hasRequiredInstanceMethod:@"percentComplete"];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"placeholderProxy" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isFailed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isPausable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isPaused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isDownloading" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"applicationDisplayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"icon:statusDescriptionForLocation:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"FBSApplicationPlaceholder" hasInstanceMethod:@"progress" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"FBSApplicationPlaceholderProgress" hasRequiredInstanceMethod:@"percentComplete"];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"placeholderProxy" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isFailed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isPausable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isPaused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"isDownloading" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHProxiedApplicationPlaceholder" hasInstanceMethod:@"applicationDisplayName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

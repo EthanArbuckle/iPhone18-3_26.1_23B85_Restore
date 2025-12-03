@@ -1,8 +1,8 @@
 @interface WBSPrivateRelayFailClosedExceptionManager
 + (WBSPrivateRelayFailClosedExceptionManager)sharedManager;
 - (WBSPrivateRelayFailClosedExceptionManager)init;
-- (void)clearPrivateRelayFailClosedExceptionIfNecessaryForURL:(id)a3;
-- (void)rememberPrivateRelayFailClosedExceptionForURL:(id)a3;
+- (void)clearPrivateRelayFailClosedExceptionIfNecessaryForURL:(id)l;
+- (void)rememberPrivateRelayFailClosedExceptionForURL:(id)l;
 @end
 
 @implementation WBSPrivateRelayFailClosedExceptionManager
@@ -47,23 +47,23 @@ void __58__WBSPrivateRelayFailClosedExceptionManager_sharedManager__block_invoke
   return v2;
 }
 
-- (void)rememberPrivateRelayFailClosedExceptionForURL:(id)a3
+- (void)rememberPrivateRelayFailClosedExceptionForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    [(NSMutableSet *)self->_clearedExceptionsForBrowsingSession removeObject:v4];
-    [(NSMutableSet *)self->_privateRelayFailClosedExceptions addObject:v4];
+    [(NSMutableSet *)self->_clearedExceptionsForBrowsingSession removeObject:lCopy];
+    [(NSMutableSet *)self->_privateRelayFailClosedExceptions addObject:lCopy];
   }
 }
 
-- (void)clearPrivateRelayFailClosedExceptionIfNecessaryForURL:(id)a3
+- (void)clearPrivateRelayFailClosedExceptionIfNecessaryForURL:(id)l
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableSet *)self->_privateRelayFailClosedExceptions containsObject:v4]& 1) != 0)
+  lCopy = l;
+  if (lCopy && ([(NSMutableSet *)self->_privateRelayFailClosedExceptions containsObject:lCopy]& 1) != 0)
   {
-    [(NSMutableSet *)self->_privateRelayFailClosedExceptions removeObject:v4];
-    [(NSMutableSet *)self->_clearedExceptionsForBrowsingSession addObject:v4];
+    [(NSMutableSet *)self->_privateRelayFailClosedExceptions removeObject:lCopy];
+    [(NSMutableSet *)self->_clearedExceptionsForBrowsingSession addObject:lCopy];
   }
 }
 

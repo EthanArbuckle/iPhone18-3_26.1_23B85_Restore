@@ -1,18 +1,18 @@
 @interface IRReplayEventDO
-+ (id)replayEventDOWithDate:(id)a3 contextChangeReason:(id)a4 candidatesContainer:(id)a5 miloLslPrediction:(id)a6 systemState:(id)a7 nearbyDeviceContainerDO:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReplayEventDO:(id)a3;
-- (IRReplayEventDO)initWithCoder:(id)a3;
-- (IRReplayEventDO)initWithDate:(id)a3 contextChangeReason:(id)a4 candidatesContainer:(id)a5 miloLslPrediction:(id)a6 systemState:(id)a7 nearbyDeviceContainerDO:(id)a8;
-- (id)copyWithReplacementCandidatesContainer:(id)a3;
-- (id)copyWithReplacementContextChangeReason:(id)a3;
-- (id)copyWithReplacementDate:(id)a3;
-- (id)copyWithReplacementMiloLslPrediction:(id)a3;
-- (id)copyWithReplacementNearbyDeviceContainerDO:(id)a3;
-- (id)copyWithReplacementSystemState:(id)a3;
++ (id)replayEventDOWithDate:(id)date contextChangeReason:(id)reason candidatesContainer:(id)container miloLslPrediction:(id)prediction systemState:(id)state nearbyDeviceContainerDO:(id)o;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReplayEventDO:(id)o;
+- (IRReplayEventDO)initWithCoder:(id)coder;
+- (IRReplayEventDO)initWithDate:(id)date contextChangeReason:(id)reason candidatesContainer:(id)container miloLslPrediction:(id)prediction systemState:(id)state nearbyDeviceContainerDO:(id)o;
+- (id)copyWithReplacementCandidatesContainer:(id)container;
+- (id)copyWithReplacementContextChangeReason:(id)reason;
+- (id)copyWithReplacementDate:(id)date;
+- (id)copyWithReplacementMiloLslPrediction:(id)prediction;
+- (id)copyWithReplacementNearbyDeviceContainerDO:(id)o;
+- (id)copyWithReplacementSystemState:(id)state;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRReplayEventDO
@@ -27,104 +27,104 @@
   return [(IRNearbyDeviceContainerDO *)self->_nearbyDeviceContainerDO hash]- v7 + 32 * v7;
 }
 
-- (IRReplayEventDO)initWithDate:(id)a3 contextChangeReason:(id)a4 candidatesContainer:(id)a5 miloLslPrediction:(id)a6 systemState:(id)a7 nearbyDeviceContainerDO:(id)a8
+- (IRReplayEventDO)initWithDate:(id)date contextChangeReason:(id)reason candidatesContainer:(id)container miloLslPrediction:(id)prediction systemState:(id)state nearbyDeviceContainerDO:(id)o
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dateCopy = date;
+  reasonCopy = reason;
+  containerCopy = container;
+  predictionCopy = prediction;
+  stateCopy = state;
+  oCopy = o;
   v24.receiver = self;
   v24.super_class = IRReplayEventDO;
   v18 = [(IRReplayEventDO *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_date, a3);
-    objc_storeStrong(&v19->_contextChangeReason, a4);
-    objc_storeStrong(&v19->_candidatesContainer, a5);
-    objc_storeStrong(&v19->_miloLslPrediction, a6);
-    objc_storeStrong(&v19->_systemState, a7);
-    objc_storeStrong(&v19->_nearbyDeviceContainerDO, a8);
+    objc_storeStrong(&v18->_date, date);
+    objc_storeStrong(&v19->_contextChangeReason, reason);
+    objc_storeStrong(&v19->_candidatesContainer, container);
+    objc_storeStrong(&v19->_miloLslPrediction, prediction);
+    objc_storeStrong(&v19->_systemState, state);
+    objc_storeStrong(&v19->_nearbyDeviceContainerDO, o);
   }
 
   return v19;
 }
 
-+ (id)replayEventDOWithDate:(id)a3 contextChangeReason:(id)a4 candidatesContainer:(id)a5 miloLslPrediction:(id)a6 systemState:(id)a7 nearbyDeviceContainerDO:(id)a8
++ (id)replayEventDOWithDate:(id)date contextChangeReason:(id)reason candidatesContainer:(id)container miloLslPrediction:(id)prediction systemState:(id)state nearbyDeviceContainerDO:(id)o
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithDate:v19 contextChangeReason:v18 candidatesContainer:v17 miloLslPrediction:v16 systemState:v15 nearbyDeviceContainerDO:v14];
+  oCopy = o;
+  stateCopy = state;
+  predictionCopy = prediction;
+  containerCopy = container;
+  reasonCopy = reason;
+  dateCopy = date;
+  v20 = [[self alloc] initWithDate:dateCopy contextChangeReason:reasonCopy candidatesContainer:containerCopy miloLslPrediction:predictionCopy systemState:stateCopy nearbyDeviceContainerDO:oCopy];
 
   return v20;
 }
 
-- (id)copyWithReplacementDate:(id)a3
+- (id)copyWithReplacementDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:v4 contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:dateCopy contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
 
   return v5;
 }
 
-- (id)copyWithReplacementContextChangeReason:(id)a3
+- (id)copyWithReplacementContextChangeReason:(id)reason
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:v4 candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
+  reasonCopy = reason;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:reasonCopy candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
 
   return v5;
 }
 
-- (id)copyWithReplacementCandidatesContainer:(id)a3
+- (id)copyWithReplacementCandidatesContainer:(id)container
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:v4 miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
+  containerCopy = container;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:containerCopy miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
 
   return v5;
 }
 
-- (id)copyWithReplacementMiloLslPrediction:(id)a3
+- (id)copyWithReplacementMiloLslPrediction:(id)prediction
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:v4 systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
+  predictionCopy = prediction;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:predictionCopy systemState:self->_systemState nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
 
   return v5;
 }
 
-- (id)copyWithReplacementSystemState:(id)a3
+- (id)copyWithReplacementSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:v4 nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
+  stateCopy = state;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:stateCopy nearbyDeviceContainerDO:self->_nearbyDeviceContainerDO];
 
   return v5;
 }
 
-- (id)copyWithReplacementNearbyDeviceContainerDO:(id)a3
+- (id)copyWithReplacementNearbyDeviceContainerDO:(id)o
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:v4];
+  oCopy = o;
+  v5 = [objc_alloc(objc_opt_class()) initWithDate:self->_date contextChangeReason:self->_contextChangeReason candidatesContainer:self->_candidatesContainer miloLslPrediction:self->_miloLslPrediction systemState:self->_systemState nearbyDeviceContainerDO:oCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToReplayEventDO:(id)a3
+- (BOOL)isEqualToReplayEventDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_20;
   }
 
   v6 = self->_date == 0;
-  v7 = [v4 date];
-  v8 = v7 != 0;
+  date = [oCopy date];
+  v8 = date != 0;
 
   if (v6 == v8)
   {
@@ -134,8 +134,8 @@
   date = self->_date;
   if (date)
   {
-    v10 = [v5 date];
-    v11 = [(NSDate *)date isEqual:v10];
+    date2 = [v5 date];
+    v11 = [(NSDate *)date isEqual:date2];
 
     if (!v11)
     {
@@ -144,8 +144,8 @@
   }
 
   v12 = self->_contextChangeReason == 0;
-  v13 = [v5 contextChangeReason];
-  v14 = v13 != 0;
+  contextChangeReason = [v5 contextChangeReason];
+  v14 = contextChangeReason != 0;
 
   if (v12 == v14)
   {
@@ -155,8 +155,8 @@
   contextChangeReason = self->_contextChangeReason;
   if (contextChangeReason)
   {
-    v16 = [v5 contextChangeReason];
-    v17 = [(NSString *)contextChangeReason isEqual:v16];
+    contextChangeReason2 = [v5 contextChangeReason];
+    v17 = [(NSString *)contextChangeReason isEqual:contextChangeReason2];
 
     if (!v17)
     {
@@ -165,8 +165,8 @@
   }
 
   v18 = self->_candidatesContainer == 0;
-  v19 = [v5 candidatesContainer];
-  v20 = v19 != 0;
+  candidatesContainer = [v5 candidatesContainer];
+  v20 = candidatesContainer != 0;
 
   if (v18 == v20)
   {
@@ -176,8 +176,8 @@
   candidatesContainer = self->_candidatesContainer;
   if (candidatesContainer)
   {
-    v22 = [v5 candidatesContainer];
-    v23 = [(IRCandidatesContainerDO *)candidatesContainer isEqual:v22];
+    candidatesContainer2 = [v5 candidatesContainer];
+    v23 = [(IRCandidatesContainerDO *)candidatesContainer isEqual:candidatesContainer2];
 
     if (!v23)
     {
@@ -186,8 +186,8 @@
   }
 
   v24 = self->_miloLslPrediction == 0;
-  v25 = [v5 miloLslPrediction];
-  v26 = v25 != 0;
+  miloLslPrediction = [v5 miloLslPrediction];
+  v26 = miloLslPrediction != 0;
 
   if (v24 == v26)
   {
@@ -197,8 +197,8 @@
   miloLslPrediction = self->_miloLslPrediction;
   if (miloLslPrediction)
   {
-    v28 = [v5 miloLslPrediction];
-    v29 = [(IRMiloLslPredictionDO *)miloLslPrediction isEqual:v28];
+    miloLslPrediction2 = [v5 miloLslPrediction];
+    v29 = [(IRMiloLslPredictionDO *)miloLslPrediction isEqual:miloLslPrediction2];
 
     if (!v29)
     {
@@ -207,8 +207,8 @@
   }
 
   v30 = self->_systemState == 0;
-  v31 = [v5 systemState];
-  v32 = v31 != 0;
+  systemState = [v5 systemState];
+  v32 = systemState != 0;
 
   if (v30 == v32)
   {
@@ -218,8 +218,8 @@
   systemState = self->_systemState;
   if (systemState)
   {
-    v34 = [v5 systemState];
-    v35 = [(IRSystemStateDO *)systemState isEqual:v34];
+    systemState2 = [v5 systemState];
+    v35 = [(IRSystemStateDO *)systemState isEqual:systemState2];
 
     if (!v35)
     {
@@ -228,8 +228,8 @@
   }
 
   v36 = self->_nearbyDeviceContainerDO == 0;
-  v37 = [v5 nearbyDeviceContainerDO];
-  v38 = v37 != 0;
+  nearbyDeviceContainerDO = [v5 nearbyDeviceContainerDO];
+  v38 = nearbyDeviceContainerDO != 0;
 
   if (v36 == v38)
   {
@@ -242,8 +242,8 @@ LABEL_20:
     nearbyDeviceContainerDO = self->_nearbyDeviceContainerDO;
     if (nearbyDeviceContainerDO)
     {
-      v40 = [v5 nearbyDeviceContainerDO];
-      v41 = [(IRNearbyDeviceContainerDO *)nearbyDeviceContainerDO isEqual:v40];
+      nearbyDeviceContainerDO2 = [v5 nearbyDeviceContainerDO];
+      v41 = [(IRNearbyDeviceContainerDO *)nearbyDeviceContainerDO isEqual:nearbyDeviceContainerDO2];
     }
 
     else
@@ -255,28 +255,28 @@ LABEL_20:
   return v41 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRReplayEventDO *)self isEqualToReplayEventDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRReplayEventDO *)self isEqualToReplayEventDO:v5];
   }
 
   return v6;
 }
 
-- (IRReplayEventDO)initWithCoder:(id)a3
+- (IRReplayEventDO)initWithCoder:(id)coder
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
   if (v5)
   {
     objc_opt_class();
@@ -291,18 +291,18 @@ LABEL_20:
       v32[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRReplayEventDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_9:
 
 LABEL_10:
-      v14 = 0;
+      selfCopy = 0;
 LABEL_29:
 
       goto LABEL_30;
     }
 
 LABEL_6:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextChangeReason"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextChangeReason"];
     if (v7)
     {
       objc_opt_class();
@@ -317,7 +317,7 @@ LABEL_6:
         v30 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRReplayEventDOOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v17];
+        [coderCopy failWithError:v17];
 
         goto LABEL_9;
       }
@@ -325,114 +325,114 @@ LABEL_6:
 
     else
     {
-      v18 = [v4 error];
+      error = [coderCopy error];
 
-      if (v18)
+      if (error)
       {
         goto LABEL_10;
       }
     }
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidatesContainer"];
-    if (v19 || ([v4 error], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidatesContainer"];
+    if (v19 || ([coderCopy error], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"miloLslPrediction"];
-      if (v20 || ([v4 error], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"miloLslPrediction"];
+      if (v20 || ([coderCopy error], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
       {
-        v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemState"];
-        if (v21 || ([v4 error], v25 = objc_claimAutoreleasedReturnValue(), v25, !v25))
+        v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemState"];
+        if (v21 || ([coderCopy error], v25 = objc_claimAutoreleasedReturnValue(), v25, !v25))
         {
-          v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nearbyDeviceContainerDO"];
-          if (v22 || ([v4 error], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
+          v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nearbyDeviceContainerDO"];
+          if (v22 || ([coderCopy error], v26 = objc_claimAutoreleasedReturnValue(), v26, !v26))
           {
             self = [(IRReplayEventDO *)self initWithDate:v5 contextChangeReason:v7 candidatesContainer:v19 miloLslPrediction:v20 systemState:v21 nearbyDeviceContainerDO:v22];
-            v14 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v14 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v14 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_29;
   }
 
-  v13 = [v4 error];
+  error2 = [coderCopy error];
 
-  if (!v13)
+  if (!error2)
   {
     goto LABEL_6;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_30:
 
   v27 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   date = self->_date;
-  v11 = v4;
+  v11 = coderCopy;
   if (date)
   {
-    [v4 encodeObject:date forKey:@"date"];
-    v4 = v11;
+    [coderCopy encodeObject:date forKey:@"date"];
+    coderCopy = v11;
   }
 
   contextChangeReason = self->_contextChangeReason;
   if (contextChangeReason)
   {
     [v11 encodeObject:contextChangeReason forKey:@"contextChangeReason"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   candidatesContainer = self->_candidatesContainer;
   if (candidatesContainer)
   {
     [v11 encodeObject:candidatesContainer forKey:@"candidatesContainer"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   miloLslPrediction = self->_miloLslPrediction;
   if (miloLslPrediction)
   {
     [v11 encodeObject:miloLslPrediction forKey:@"miloLslPrediction"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   systemState = self->_systemState;
   if (systemState)
   {
     [v11 encodeObject:systemState forKey:@"systemState"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   nearbyDeviceContainerDO = self->_nearbyDeviceContainerDO;
   if (nearbyDeviceContainerDO)
   {
     [v11 encodeObject:nearbyDeviceContainerDO forKey:@"nearbyDeviceContainerDO"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 

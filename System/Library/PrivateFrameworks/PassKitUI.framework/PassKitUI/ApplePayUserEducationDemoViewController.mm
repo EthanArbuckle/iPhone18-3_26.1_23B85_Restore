@@ -1,8 +1,8 @@
 @interface ApplePayUserEducationDemoViewController
-- (_TtC9PassKitUI39ApplePayUserEducationDemoViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PassKitUI39ApplePayUserEducationDemoViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -10,35 +10,35 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD563D58();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD5644AC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ApplePayUserEducationDemoViewController();
   v4 = v6.receiver;
-  [(ApplePayUserEducationDemoViewController *)&v6 viewDidAppear:v3];
+  [(ApplePayUserEducationDemoViewController *)&v6 viewDidAppear:appearCopy];
   v5 = v4[OBJC_IVAR____TtC9PassKitUI39ApplePayUserEducationDemoViewController_stage];
   v4[OBJC_IVAR____TtC9PassKitUI39ApplePayUserEducationDemoViewController_stage] = 1;
   sub_1BD564A24(v5);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1BD564780(a3);
+  selfCopy = self;
+  sub_1BD564780(disappear);
 }
 
-- (_TtC9PassKitUI39ApplePayUserEducationDemoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI39ApplePayUserEducationDemoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

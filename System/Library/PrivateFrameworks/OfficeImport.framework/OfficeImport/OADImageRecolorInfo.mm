@@ -1,34 +1,34 @@
 @interface OADImageRecolorInfo
-- (BOOL)isEqual:(id)a3;
-- (OADImageRecolorInfo)initWithColors:(id)a3 fills:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (OADImageRecolorInfo)initWithColors:(id)colors fills:(id)fills;
 - (id)description;
 @end
 
 @implementation OADImageRecolorInfo
 
-- (OADImageRecolorInfo)initWithColors:(id)a3 fills:(id)a4
+- (OADImageRecolorInfo)initWithColors:(id)colors fills:(id)fills
 {
-  v7 = a3;
-  v8 = a4;
+  colorsCopy = colors;
+  fillsCopy = fills;
   v12.receiver = self;
   v12.super_class = OADImageRecolorInfo;
   v9 = [(OADImageRecolorInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mColors, a3);
-    objc_storeStrong(&v10->mFills, a4);
+    objc_storeStrong(&v9->mColors, colors);
+    objc_storeStrong(&v10->mFills, fills);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     mColors = self->mColors;
     if (mColors == v5[1] || [(NSDictionary *)mColors isEqualToDictionary:?])
     {

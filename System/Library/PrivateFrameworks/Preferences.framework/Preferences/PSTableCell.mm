@@ -1,28 +1,28 @@
 @interface PSTableCell
 + (BOOL)isFromPreferencesFramework;
 + (Class)alternativeCellClass;
-+ (Class)cellClassForSpecifier:(id)a3;
-+ (id)reuseIdentifierForBasicCellTypes:(int64_t)a3;
-+ (id)reuseIdentifierForClassAndType:(int64_t)a3;
-+ (id)reuseIdentifierForSpecifier:(id)a3;
-+ (id)stringFromCellType:(int64_t)a3;
++ (Class)cellClassForSpecifier:(id)specifier;
++ (id)reuseIdentifierForBasicCellTypes:(int64_t)types;
++ (id)reuseIdentifierForClassAndType:(int64_t)type;
++ (id)reuseIdentifierForSpecifier:(id)specifier;
++ (id)stringFromCellType:(int64_t)type;
 + (id)traitsThatImpactImageRendering;
-+ (int64_t)cellTypeFromString:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (int64_t)cellTypeFromString:(id)string;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canReload;
 - (BOOL)modernLayoutEnabled;
 - (BOOL)shouldUseModernLayout;
-- (CGSize)iconSizeForShape:(unint64_t)a3 scale:(double)a4;
+- (CGSize)iconSizeForShape:(unint64_t)shape scale:(double)scale;
 - (PSSpecifier)specifier;
-- (PSTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SEL)action;
 - (SEL)cellAction;
 - (double)textFieldOffset;
 - (id)_automationID;
-- (id)_checkmarkImage:(BOOL)a3;
+- (id)_checkmarkImage:(BOOL)image;
 - (id)_contentString;
 - (id)_copyableText;
-- (id)_disclosureChevronImage:(BOOL)a3;
+- (id)_disclosureChevronImage:(BOOL)image;
 - (id)_urlSession;
 - (id)blankIcon;
 - (id)cellTarget;
@@ -30,37 +30,37 @@
 - (id)getLazyIcon;
 - (id)getLazyIconID;
 - (id)imageDescriptor;
-- (id)lazyIconQueue:(id)a3;
+- (id)lazyIconQueue:(id)queue;
 - (id)scriptingInfoWithChildren;
 - (id)target;
 - (id)title;
 - (id)titleTextLabel;
 - (unint64_t)iconShape;
 - (void)_invalidateHighlightContext;
-- (void)_updateAccessoryTypeForSpecifier:(id)a3;
+- (void)_updateAccessoryTypeForSpecifier:(id)specifier;
 - (void)cellRemovedFromView;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)handleTraitCollectionChange:(id)a3;
-- (void)highlightCellForDuration:(double)a3 animateUnighlight:(BOOL)a4;
+- (void)handleTraitCollectionChange:(id)change;
+- (void)highlightCellForDuration:(double)duration animateUnighlight:(BOOL)unighlight;
 - (void)layoutSubviews;
-- (void)loadISIconFromSpecifier:(id)a3;
-- (void)longPressed:(id)a3;
+- (void)loadISIconFromSpecifier:(id)specifier;
+- (void)longPressed:(id)pressed;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)setAction:(SEL)a3;
-- (void)setAlignment:(int)a3;
-- (void)setCellAction:(SEL)a3;
-- (void)setCellEnabled:(BOOL)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setForceHideDisclosureIndicator:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)setTarget:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setValueChangedTarget:(id)a3 action:(SEL)a4 specifier:(id)a5;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)setAction:(SEL)action;
+- (void)setAlignment:(int)alignment;
+- (void)setCellAction:(SEL)action;
+- (void)setCellEnabled:(BOOL)enabled;
+- (void)setChecked:(BOOL)checked;
+- (void)setForceHideDisclosureIndicator:(BOOL)indicator;
+- (void)setIcon:(id)icon;
+- (void)setSpecifier:(id)specifier;
+- (void)setTarget:(id)target;
+- (void)setTitle:(id)title;
+- (void)setValue:(id)value;
+- (void)setValueChangedTarget:(id)target action:(SEL)action specifier:(id)specifier;
 - (void)setupModernLayoutConstraints;
 @end
 
@@ -105,13 +105,13 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
 
 - (id)imageDescriptor
 {
-  v3 = [(PSTableCell *)self cachedTraitCollection];
-  [v3 displayScale];
+  cachedTraitCollection = [(PSTableCell *)self cachedTraitCollection];
+  [cachedTraitCollection displayScale];
   v5 = v4;
 
-  v6 = [(PSTableCell *)self iconShape];
-  [(PSTableCell *)self iconSizeForShape:v6 scale:v5];
-  if (v6 == 4)
+  iconShape = [(PSTableCell *)self iconShape];
+  [(PSTableCell *)self iconSizeForShape:iconShape scale:v5];
+  if (iconShape == 4)
   {
     v9 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:*MEMORY[0x1E69A8A88]];
     [v9 setScale:v5];
@@ -123,11 +123,11 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
     v9 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v7 scale:{v8, v5}];
   }
 
-  v10 = [(PSTableCell *)self cachedTraitCollection];
+  cachedTraitCollection2 = [(PSTableCell *)self cachedTraitCollection];
   [v9 setDrawBorder:1];
   objc_opt_class();
   gotLoadHelper_x8__OBJC_CLASS___SBSUITraitHomeScreenIconStyle(v11);
-  v12 = [v10 objectForTrait:objc_opt_class()];
+  v12 = [cachedTraitCollection2 objectForTrait:objc_opt_class()];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -140,22 +140,22 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
 
   v14 = v13;
 
-  v15 = [v14 tintColor];
-  v16 = [v15 UIColor];
+  tintColor = [v14 tintColor];
+  uIColor = [tintColor UIColor];
 
-  v17 = [v10 userInterfaceStyle] == 2;
+  v17 = [cachedTraitCollection2 userInterfaceStyle] == 2;
   [v9 setAppearance:{objc_msgSend(v14, "iconServicesAppearanceUsingDarkInterfaceStyle:", v17)}];
   v18 = [v14 iconServicesAppearanceVariantUsingDarkInterfaceStyle:v17];
 
   [v9 setAppearanceVariant:v18];
-  if (v16)
+  if (uIColor)
   {
-    v19 = [objc_alloc(MEMORY[0x1E69A8968]) initWithCGColor:{objc_msgSend(v16, "CGColor")}];
+    v19 = [objc_alloc(MEMORY[0x1E69A8968]) initWithCGColor:{objc_msgSend(uIColor, "CGColor")}];
     [v9 setTintColor:v19];
   }
 
-  v20 = [(PSTableCell *)self cachedTraitCollection];
-  if ([v20 layoutDirection])
+  cachedTraitCollection3 = [(PSTableCell *)self cachedTraitCollection];
+  if ([cachedTraitCollection3 layoutDirection])
   {
     v21 = 2;
   }
@@ -167,10 +167,10 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
 
   [v9 setLanguageDirection:v21];
 
-  v22 = [(PSTableCell *)self cachedTraitCollection];
-  [v9 setContrast:{objc_msgSend(v22, "accessibilityContrast") == 1}];
+  cachedTraitCollection4 = [(PSTableCell *)self cachedTraitCollection];
+  [v9 setContrast:{objc_msgSend(cachedTraitCollection4, "accessibilityContrast") == 1}];
 
-  [v9 setShape:v6];
+  [v9 setShape:iconShape];
 
   return v9;
 }
@@ -178,10 +178,10 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
 - (unint64_t)iconShape
 {
   objc_opt_class();
-  v3 = [(PSTableCell *)self lazyIconShapeOverride];
+  lazyIconShapeOverride = [(PSTableCell *)self lazyIconShapeOverride];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = lazyIconShapeOverride;
   }
 
   else
@@ -196,10 +196,10 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
     return 0;
   }
 
-  v6 = [(PSTableCell *)self lazyIconShapeOverride];
-  v7 = [v6 unsignedIntegerValue];
+  lazyIconShapeOverride2 = [(PSTableCell *)self lazyIconShapeOverride];
+  unsignedIntegerValue = [lazyIconShapeOverride2 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (id)blankIcon
@@ -227,24 +227,24 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
 
 - (BOOL)modernLayoutEnabled
 {
-  v3 = [(PSTableCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(PSTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     return 0;
   }
 
-  v7 = [(PSTableCell *)self specifier];
-  v8 = [v7 objectForKeyedSubscript:@"useModernLayout"];
+  specifier = [(PSTableCell *)self specifier];
+  v8 = [specifier objectForKeyedSubscript:@"useModernLayout"];
   if (([v8 BOOLValue] & 1) == 0)
   {
     if (_os_feature_enabled_impl())
     {
-      v9 = [(PSTableCell *)self shouldUseModernLayout];
+      shouldUseModernLayout = [(PSTableCell *)self shouldUseModernLayout];
 
-      if (v9)
+      if (shouldUseModernLayout)
       {
         return 1;
       }
@@ -270,14 +270,14 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
     return;
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  if (([v3 sf_isInternalInstall] & 1) == 0)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if (([currentDevice sf_isInternalInstall] & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
 
   if (!v5)
   {
@@ -299,18 +299,18 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
   }
 
   v11 = [(PSTableCell *)self isMemberOfClass:objc_opt_class()];
-  v12 = [(PSTableCell *)self classNameLayer];
+  classNameLayer = [(PSTableCell *)self classNameLayer];
 
-  if (!v12)
+  if (!classNameLayer)
   {
     v13 = objc_alloc_init(_PSViewMarkerLayer);
     [(PSTableCell *)self setClassNameLayer:v13];
 
-    v14 = [(PSTableCell *)self layer];
-    v15 = v14;
-    if (v14)
+    layer = [(PSTableCell *)self layer];
+    v15 = layer;
+    if (layer)
     {
-      [v14 cornerRadii];
+      [layer cornerRadii];
     }
 
     else
@@ -321,70 +321,70 @@ void __45__PSTableCell_traitsThatImpactImageRendering__block_invoke()
       v185 = 0u;
     }
 
-    v16 = [(PSTableCell *)self classNameLayer];
+    classNameLayer2 = [(PSTableCell *)self classNameLayer];
     v183[0] = v184;
     v183[1] = v185;
     v183[2] = v186;
     v183[3] = v187;
-    [v16 setCustomCornerRadii:v183];
+    [classNameLayer2 setCustomCornerRadii:v183];
   }
 
-  v17 = [(PSTableCell *)self classNameLayer];
-  v18 = [v17 superlayer];
+  classNameLayer3 = [(PSTableCell *)self classNameLayer];
+  superlayer = [classNameLayer3 superlayer];
 
-  if (!v18)
+  if (!superlayer)
   {
-    v19 = [(PSTableCell *)self layer];
-    v20 = [(PSTableCell *)self classNameLayer];
-    [v19 addSublayer:v20];
+    layer2 = [(PSTableCell *)self layer];
+    classNameLayer4 = [(PSTableCell *)self classNameLayer];
+    [layer2 addSublayer:classNameLayer4];
   }
 
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
-  v23 = [(PSTableCell *)self classNameLayer];
-  [v23 setLabel:v22];
+  classNameLayer5 = [(PSTableCell *)self classNameLayer];
+  [classNameLayer5 setLabel:v22];
 
   if (!v8)
   {
-    v24 = [MEMORY[0x1E69DC888] systemDarkRedColor];
+    systemDarkRedColor = [MEMORY[0x1E69DC888] systemDarkRedColor];
 LABEL_20:
-    v3 = v24;
+    currentDevice = systemDarkRedColor;
     goto LABEL_21;
   }
 
   if ((v11 & 1) == 0)
   {
-    v24 = [MEMORY[0x1E69DC888] systemMintColor];
+    systemDarkRedColor = [MEMORY[0x1E69DC888] systemMintColor];
     goto LABEL_20;
   }
 
-  v3 = 0;
+  currentDevice = 0;
 LABEL_21:
-  v25 = [(PSTableCell *)self classNameLayer];
-  [v25 setAlternateColor:v3];
+  classNameLayer6 = [(PSTableCell *)self classNameLayer];
+  [classNameLayer6 setAlternateColor:currentDevice];
 
 LABEL_22:
 LABEL_23:
   if ([(PSTableCell *)self modernLayoutEnabled])
   {
     [(PSTableCell *)self setupModernLayoutConstraints];
-    v26 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v27 = [v26 BOOLForKey:@"PSTableCellVisualLabelDebugging"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v27 = [standardUserDefaults2 BOOLForKey:@"PSTableCellVisualLabelDebugging"];
 
     if (!v27)
     {
       return;
     }
 
-    v28 = [MEMORY[0x1E69DC888] greenColor];
-    v29 = [v28 colorWithAlphaComponent:0.3];
-    v30 = [(PSTableCell *)self textLabel];
-    [v30 setBackgroundColor:v29];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    v29 = [greenColor colorWithAlphaComponent:0.3];
+    textLabel = [(PSTableCell *)self textLabel];
+    [textLabel setBackgroundColor:v29];
 
-    v31 = [MEMORY[0x1E69DC888] greenColor];
-    v32 = [v31 colorWithAlphaComponent:0.2];
-    v33 = [(PSTableCell *)self detailTextLabel];
-    [v33 setBackgroundColor:v32];
+    greenColor2 = [MEMORY[0x1E69DC888] greenColor];
+    v32 = [greenColor2 colorWithAlphaComponent:0.2];
+    detailTextLabel = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel setBackgroundColor:v32];
 
     goto LABEL_80;
   }
@@ -392,54 +392,54 @@ LABEL_23:
   v182.receiver = self;
   v182.super_class = PSTableCell;
   [(PSTableCell *)&v182 layoutSubviews];
-  v34 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v35 = [v34 BOOLForKey:@"PSTableCellVisualLabelDebugging"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v35 = [standardUserDefaults3 BOOLForKey:@"PSTableCellVisualLabelDebugging"];
 
   if (v35)
   {
-    v36 = [MEMORY[0x1E69DC888] redColor];
-    v37 = [v36 colorWithAlphaComponent:0.3];
-    v38 = [(PSTableCell *)self textLabel];
-    [v38 setBackgroundColor:v37];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    v37 = [redColor colorWithAlphaComponent:0.3];
+    textLabel2 = [(PSTableCell *)self textLabel];
+    [textLabel2 setBackgroundColor:v37];
 
-    v39 = [MEMORY[0x1E69DC888] redColor];
-    v40 = [v39 colorWithAlphaComponent:0.2];
-    v41 = [(PSTableCell *)self detailTextLabel];
-    [v41 setBackgroundColor:v40];
+    redColor2 = [MEMORY[0x1E69DC888] redColor];
+    v40 = [redColor2 colorWithAlphaComponent:0.2];
+    detailTextLabel2 = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel2 setBackgroundColor:v40];
   }
 
-  v42 = [(PSTableCell *)self _shouldReverseLayoutDirection];
-  v43 = [(PSTableCell *)self contentView];
-  [v43 bounds];
+  _shouldReverseLayoutDirection = [(PSTableCell *)self _shouldReverseLayoutDirection];
+  contentView = [(PSTableCell *)self contentView];
+  [contentView bounds];
   v179 = v45;
   v180 = v44;
   v181 = v46;
   v48 = v47;
 
-  v49 = [(PSTableCell *)self contentView];
-  [v49 bounds];
+  contentView2 = [(PSTableCell *)self contentView];
+  [contentView2 bounds];
   v51 = v50;
   v53 = v52;
 
-  v54 = [(PSTableCell *)self traitCollection];
-  v55 = [v54 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v55);
+  traitCollection = [(PSTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v57 = [(PSTableCell *)self textLabel];
+    textLabel3 = [(PSTableCell *)self textLabel];
     LODWORD(v58) = 1045220557;
-    [v57 _setHyphenationFactor:v58];
+    [textLabel3 _setHyphenationFactor:v58];
 
-    v59 = [(PSTableCell *)self detailTextLabel];
+    detailTextLabel3 = [(PSTableCell *)self detailTextLabel];
     LODWORD(v60) = 1055286886;
-    [v59 _setHyphenationFactor:v60];
+    [detailTextLabel3 _setHyphenationFactor:v60];
   }
 
   if ((self->_alignment & 0xFFFFFFFE) == 2)
   {
-    v61 = [(PSTableCell *)self textLabel];
-    [v61 frame];
+    textLabel4 = [(PSTableCell *)self textLabel];
+    [textLabel4 frame];
     if (self->_alignment == 2)
     {
       v63 = v51 * 0.5 - v62 * 0.5;
@@ -451,18 +451,18 @@ LABEL_23:
       v64 = v51 - v62 + -10.0;
     }
 
-    [v61 setFrame:v64];
-    v65 = [(PSTableCell *)self detailTextLabel];
+    [textLabel4 setFrame:v64];
+    detailTextLabel4 = [(PSTableCell *)self detailTextLabel];
 
-    v87 = [v65 text];
-    v88 = [v87 length];
+    text = [detailTextLabel4 text];
+    v88 = [text length];
 
     if (!v88)
     {
       goto LABEL_49;
     }
 
-    [v65 frame];
+    [detailTextLabel4 frame];
     v71 = v89;
     v75 = v90;
     v85 = v51 - v86 + -10.0;
@@ -476,33 +476,33 @@ LABEL_23:
     goto LABEL_48;
   }
 
-  v65 = [(PSTableCell *)self specifier];
-  v66 = [v65 propertyForKey:@"LeftAlignLinkListDetailText"];
+  detailTextLabel4 = [(PSTableCell *)self specifier];
+  v66 = [detailTextLabel4 propertyForKey:@"LeftAlignLinkListDetailText"];
   if (v66)
   {
     v67 = v66;
-    v68 = [(PSTableCell *)self type];
+    type = [(PSTableCell *)self type];
 
-    if (v68 != 2)
+    if (type != 2)
     {
       goto LABEL_50;
     }
 
-    v65 = [(PSTableCell *)self detailTextLabel];
-    [v65 setTextAlignment:0];
-    [v65 frame];
+    detailTextLabel4 = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel4 setTextAlignment:0];
+    [detailTextLabel4 frame];
     v177 = v69;
     v71 = v70;
     v73 = v72;
     v75 = v74;
     [(PSTableCell *)self textFieldOffset];
     v77 = v76;
-    v78 = [(PSTableCell *)self textLabel];
-    [v78 frame];
+    textLabel5 = [(PSTableCell *)self textLabel];
+    [textLabel5 frame];
     v79 = v48;
     v81 = v80;
-    v82 = [(PSTableCell *)self _tableView];
-    [v82 layoutMargins];
+    _tableView = [(PSTableCell *)self _tableView];
+    [_tableView layoutMargins];
     v84 = v81 + v83 + 6.0;
 
     if (v84 <= v77)
@@ -516,7 +516,7 @@ LABEL_23:
     }
 
     v48 = v79;
-    if (v42)
+    if (_shouldReverseLayoutDirection)
     {
       v86 = v73;
     }
@@ -526,13 +526,13 @@ LABEL_23:
       v86 = v73 - (v85 - v177);
     }
 
-    if (v42)
+    if (_shouldReverseLayoutDirection)
     {
       v85 = v181 - v85 - v73;
     }
 
 LABEL_48:
-    [v65 setFrame:{v85, v71, v86, v75}];
+    [detailTextLabel4 setFrame:{v85, v71, v86, v75}];
   }
 
 LABEL_49:
@@ -553,7 +553,7 @@ LABEL_50:
   v97 = (v53 - v95) * 0.5;
   v98 = floorf(v97);
   v99 = v51 + -8.0 - v93;
-  if (v42)
+  if (_shouldReverseLayoutDirection)
   {
     v100 = 8.0;
   }
@@ -564,19 +564,19 @@ LABEL_50:
   }
 
   [(UIImageView *)self->_checkedImageView setFrame:v100, v98];
-  v101 = [(PSTableCell *)self valueLabel];
-  v102 = v101;
-  if (v101)
+  valueLabel = [(PSTableCell *)self valueLabel];
+  v102 = valueLabel;
+  if (valueLabel)
   {
-    [v101 frame];
+    [valueLabel frame];
     v107 = v103;
     v108 = v104;
     v109 = v106;
-    if (v42)
+    if (_shouldReverseLayoutDirection)
     {
       v174 = v105;
-      v110 = [(PSTableCell *)self detailTextLabel];
-      [v110 frame];
+      detailTextLabel5 = [(PSTableCell *)self detailTextLabel];
+      [detailTextLabel5 frame];
       v112 = v111;
       v189.origin.x = v100;
       v189.origin.y = v98;
@@ -591,8 +591,8 @@ LABEL_50:
       v190.size.width = v174;
       v190.size.height = v109;
       MaxX = CGRectGetMaxX(v190);
-      v115 = [(PSTableCell *)self textLabel];
-      [v115 frame];
+      textLabel6 = [(PSTableCell *)self textLabel];
+      [textLabel6 frame];
       v116 = MaxX - (CGRectGetMinX(v191) + -6.0);
 
       if (v116 > 0.0)
@@ -611,8 +611,8 @@ LABEL_50:
       {
         v117 = v108;
         v118 = v119;
-        v120 = [(PSTableCell *)self textLabel];
-        [v120 frame];
+        textLabel7 = [(PSTableCell *)self textLabel];
+        [textLabel7 frame];
         v121 = v107 - (CGRectGetMaxX(v192) + 6.0);
 
         if (v121 > 0.0)
@@ -652,18 +652,18 @@ LABEL_67:
   v51 = v178;
   v48 = v175;
 LABEL_69:
-  v123 = [(PSTableCell *)self type];
-  if (v123 == 10)
+  type2 = [(PSTableCell *)self type];
+  if (type2 == 10)
   {
-    v137 = [(PSTableCell *)self iconImageView];
-    v125 = v137;
-    if (v137)
+    iconImageView = [(PSTableCell *)self iconImageView];
+    v125 = iconImageView;
+    if (iconImageView)
     {
-      [v137 frame];
+      [iconImageView frame];
       v139 = v138;
       v141 = v140;
-      v142 = [(PSTableCell *)self contentView];
-      [v142 bounds];
+      contentView3 = [(PSTableCell *)self contentView];
+      [contentView3 bounds];
       v144 = v143;
       v146 = v145;
       v148 = v147;
@@ -675,10 +675,10 @@ LABEL_69:
     goto LABEL_76;
   }
 
-  if (v123 == 14)
+  if (type2 == 14)
   {
-    v124 = [(PSTableCell *)self specifier];
-    v125 = [v124 propertyForKey:@"height"];
+    specifier = [(PSTableCell *)self specifier];
+    v125 = [specifier propertyForKey:@"height"];
 
     if (v125)
     {
@@ -691,27 +691,27 @@ LABEL_69:
     v130 = v179 + v127;
     v132 = v181 - (v128 + v131);
     v134 = v48 - (v127 + v133);
-    v135 = [(PSTableCell *)self textView];
-    [v135 setFrame:{v129, v130, v132, v134}];
+    textView = [(PSTableCell *)self textView];
+    [textView setFrame:{v129, v130, v132, v134}];
 
-    v136 = [(PSTableCell *)self textLabel];
-    [v136 setHidden:1];
+    textLabel8 = [(PSTableCell *)self textLabel];
+    [textLabel8 setHidden:1];
 
 LABEL_76:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_specifier);
   v152 = [WeakRetained propertyForKey:@"prioritizeValueTextDisplay"];
-  v153 = [v152 BOOLValue];
+  bOOLValue = [v152 BOOLValue];
 
-  if (!v153)
+  if (!bOOLValue)
   {
     return;
   }
 
-  v31 = [(PSTableCell *)self valueLabel];
-  [v31 sizeThatFits:{v51, v53}];
-  [v31 frame];
+  greenColor2 = [(PSTableCell *)self valueLabel];
+  [greenColor2 sizeThatFits:{v51, v53}];
+  [greenColor2 frame];
   v155 = v154;
   v157 = v156;
   v159 = v158;
@@ -720,16 +720,16 @@ LABEL_76:
   v163 = v162 - v159;
   if (v162 - v159 > 0.0)
   {
-    [v31 setFrame:{v155 - v163, v157, v159 + v163, v161}];
-    v164 = [(PSTableCell *)self titleLabel];
-    [v164 frame];
+    [greenColor2 setFrame:{v155 - v163, v157, v159 + v163, v161}];
+    titleLabel = [(PSTableCell *)self titleLabel];
+    [titleLabel frame];
     v166 = v165;
     v168 = v167;
     v170 = v169;
     v172 = v171;
 
-    v173 = [(PSTableCell *)self titleLabel];
-    [v173 setFrame:{v166, v168, v170 - v163, v172}];
+    titleLabel2 = [(PSTableCell *)self titleLabel];
+    [titleLabel2 setFrame:{v166, v168, v170 - v163, v172}];
   }
 
 LABEL_80:
@@ -737,7 +737,7 @@ LABEL_80:
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }
@@ -754,23 +754,23 @@ LABEL_80:
 {
   if ([(PSTableCell *)self skipsPreferencesTableCellPrepareForReuse])
   {
-    v23 = self;
-    v3 = &v23;
+    selfCopy = self;
+    v3 = &selfCopy;
   }
 
   else
   {
     [(PSTableCell *)self _invalidateHighlightContext];
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 sf_isInternalInstall])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice sf_isInternalInstall])
     {
-      v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v5 BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
 
       if (v6)
       {
-        v7 = [(PSTableCell *)self classNameLayer];
-        [v7 removeFromSuperlayer];
+        classNameLayer = [(PSTableCell *)self classNameLayer];
+        [classNameLayer removeFromSuperlayer];
 
         [(PSTableCell *)self setClassNameLayer:0];
       }
@@ -780,34 +780,34 @@ LABEL_80:
     {
     }
 
-    v8 = [(PSTableCell *)self detailTextLabel];
-    v9 = [v8 text];
+    detailTextLabel = [(PSTableCell *)self detailTextLabel];
+    text = [detailTextLabel text];
 
-    if (v9)
+    if (text)
     {
-      v10 = [(PSTableCell *)self detailTextLabel];
-      [v10 setText:0];
+      detailTextLabel2 = [(PSTableCell *)self detailTextLabel];
+      [detailTextLabel2 setText:0];
     }
 
-    v11 = [(PSTableCell *)self textLabel];
-    v12 = [v11 text];
+    textLabel = [(PSTableCell *)self textLabel];
+    text2 = [textLabel text];
 
-    if (v12)
+    if (text2)
     {
-      v13 = [(PSTableCell *)self textLabel];
-      [v13 setText:0];
+      textLabel2 = [(PSTableCell *)self textLabel];
+      [textLabel2 setText:0];
     }
 
     [(PSTableCell *)self setValueChangedTarget:0 action:0 specifier:0];
     [(PSTableCell *)self setCellEnabled:1];
-    v14 = [(PSTableCell *)self imageView];
-    v15 = [v14 image];
+    imageView = [(PSTableCell *)self imageView];
+    image = [imageView image];
 
-    if (v15)
+    if (image)
     {
       [(PSTableCell *)self setIcon:0];
-      v16 = [(PSTableCell *)self imageView];
-      [v16 setHighlightedImage:0];
+      imageView2 = [(PSTableCell *)self imageView];
+      [imageView2 setHighlightedImage:0];
     }
 
     value = self->_value;
@@ -816,28 +816,28 @@ LABEL_80:
     self->_checked = 0;
     self->_alignment = 1;
     self->_forceHideDisclosureIndicator = 0;
-    v18 = [(PSTableCell *)self specifier];
-    [v18 removePropertyForKey:@"cellObject"];
+    specifier = [(PSTableCell *)self specifier];
+    [specifier removePropertyForKey:@"cellObject"];
 
-    v19 = [(PSTableCell *)self specifier];
-    [v19 removePropertyForKey:@"control"];
+    specifier2 = [(PSTableCell *)self specifier];
+    [specifier2 removePropertyForKey:@"control"];
 
     [(PSTableCell *)self cellRemovedFromView];
     [(PSTableCell *)self setSelectedBackgroundView:0];
-    v20 = [(PSTableCell *)self textLabel];
-    [v20 setHighlightedTextColor:0];
+    textLabel3 = [(PSTableCell *)self textLabel];
+    [textLabel3 setHighlightedTextColor:0];
 
-    v21 = [(PSTableCell *)self detailTextLabel];
-    [v21 setHighlightedTextColor:0];
+    detailTextLabel3 = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel3 setHighlightedTextColor:0];
 
     [(PSTableCell *)self setAccessoryType:0];
     [(PSTableCell *)self setAccessoryView:0];
-    v22 = self;
-    v3 = &v22;
+    selfCopy2 = self;
+    v3 = &selfCopy2;
   }
 
   v3[1] = PSTableCell;
-  objc_msgSendSuper2(v3, sel_prepareForReuse, v22);
+  objc_msgSendSuper2(v3, sel_prepareForReuse, selfCopy2);
 }
 
 - (void)_invalidateHighlightContext
@@ -857,27 +857,27 @@ LABEL_80:
   }
 }
 
-+ (int64_t)cellTypeFromString:(id)a3
++ (int64_t)cellTypeFromString:(id)string
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length] < 3)
+  stringCopy = string;
+  if ([stringCopy length] < 3)
   {
     goto LABEL_2;
   }
 
-  v6 = [v3 characterAtIndex:2];
+  v6 = [stringCopy characterAtIndex:2];
   if (v6 <= 75)
   {
     if (v6 == 69)
     {
-      if ([v3 isEqualToString:@"PSEditTextCell"])
+      if ([stringCopy isEqualToString:@"PSEditTextCell"])
       {
         v4 = 8;
         goto LABEL_3;
       }
 
-      if ([v3 isEqualToString:@"PSEditTextViewCell"])
+      if ([stringCopy isEqualToString:@"PSEditTextViewCell"])
       {
         v4 = 14;
         goto LABEL_3;
@@ -888,19 +888,19 @@ LABEL_80:
 
     if (v6 == 71)
     {
-      if ([v3 isEqualToString:@"PSGroupCell"])
+      if ([stringCopy isEqualToString:@"PSGroupCell"])
       {
         v4 = 0;
         goto LABEL_3;
       }
 
-      if ([v3 isEqualToString:@"PSGiantIconCell"])
+      if ([stringCopy isEqualToString:@"PSGiantIconCell"])
       {
         v4 = 10;
         goto LABEL_3;
       }
 
-      if ([v3 isEqualToString:@"PSGiantCell"])
+      if ([stringCopy isEqualToString:@"PSGiantCell"])
       {
         v4 = 11;
         goto LABEL_3;
@@ -914,19 +914,19 @@ LABEL_80:
 
   if (v6 == 76)
   {
-    if ([v3 isEqualToString:@"PSLinkCell"])
+    if ([stringCopy isEqualToString:@"PSLinkCell"])
     {
       v4 = 1;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSLinkListCell"])
+    if ([stringCopy isEqualToString:@"PSLinkListCell"])
     {
       v4 = 2;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSListItemCell"])
+    if ([stringCopy isEqualToString:@"PSListItemCell"])
     {
       v4 = 3;
       goto LABEL_3;
@@ -937,31 +937,31 @@ LABEL_80:
 
   if (v6 == 83)
   {
-    if ([v3 isEqualToString:@"PSSwitchCell"])
+    if ([stringCopy isEqualToString:@"PSSwitchCell"])
     {
       v4 = 6;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSSliderCell"])
+    if ([stringCopy isEqualToString:@"PSSliderCell"])
     {
       v4 = 5;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSSegmentCell"])
+    if ([stringCopy isEqualToString:@"PSSegmentCell"])
     {
       v4 = 9;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSSecureEditTextCell"])
+    if ([stringCopy isEqualToString:@"PSSecureEditTextCell"])
     {
       v4 = 12;
       goto LABEL_3;
     }
 
-    if ([v3 isEqualToString:@"PSSpinnerCell"])
+    if ([stringCopy isEqualToString:@"PSSpinnerCell"])
     {
       v4 = 15;
       goto LABEL_3;
@@ -973,7 +973,7 @@ LABEL_80:
   if (v6 != 84)
   {
 LABEL_21:
-    if ([v3 isEqualToString:@"PSButtonCell"])
+    if ([stringCopy isEqualToString:@"PSButtonCell"])
     {
       v4 = 13;
       goto LABEL_3;
@@ -983,14 +983,14 @@ LABEL_21:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = stringCopy;
       _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_DEFAULT, "CellType String (%@) Fell Back to PSDefaultCell", &v8, 0xCu);
     }
 
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:@"PSTableCell"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"PSTitleValueCell"))
+  if ([stringCopy isEqualToString:@"PSTableCell"] & 1) == 0 && (objc_msgSend(stringCopy, "isEqualToString:", @"PSTitleValueCell"))
   {
     v4 = 4;
     goto LABEL_3;
@@ -1003,61 +1003,61 @@ LABEL_3:
   return v4;
 }
 
-+ (id)stringFromCellType:(int64_t)a3
++ (id)stringFromCellType:(int64_t)type
 {
-  if ((a3 + 1) > 0x11)
+  if ((type + 1) > 0x11)
   {
     return &stru_1EFE45030;
   }
 
   else
   {
-    return off_1E71DCBD8[a3 + 1];
+    return off_1E71DCBD8[type + 1];
   }
 }
 
-+ (id)reuseIdentifierForBasicCellTypes:(int64_t)a3
++ (id)reuseIdentifierForBasicCellTypes:(int64_t)types
 {
-  if ((a3 - 1) > 0xE)
+  if ((types - 1) > 0xE)
   {
     return @"PSTableCell";
   }
 
   else
   {
-    return off_1E71DCC68[a3 - 1];
+    return off_1E71DCC68[types - 1];
   }
 }
 
-+ (id)reuseIdentifierForClassAndType:(int64_t)a3
++ (id)reuseIdentifierForClassAndType:(int64_t)type
 {
-  v4 = NSStringFromClass(a1);
-  v5 = [PSTableCell stringFromCellType:a3];
+  v4 = NSStringFromClass(self);
+  v5 = [PSTableCell stringFromCellType:type];
   v6 = [v4 stringByAppendingString:v5];
 
   return v6;
 }
 
-+ (id)reuseIdentifierForSpecifier:(id)a3
++ (id)reuseIdentifierForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"cellClass"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"cellClass"];
   if (!v4)
   {
-    v5 = [PSTableCell reuseIdentifierForBasicCellTypes:v3[7]];
+    v5 = [PSTableCell reuseIdentifierForBasicCellTypes:specifierCopy[7]];
     goto LABEL_5;
   }
 
   if ([v4 isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [v4 reuseIdentifierForClassAndType:v3[7]];
+    v5 = [v4 reuseIdentifierForClassAndType:specifierCopy[7]];
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
   }
 
-  v7 = NSStringFromClass([PSTableCell cellClassForSpecifier:v3]);
-  v8 = [PSTableCell stringFromCellType:v3[7]];
+  v7 = NSStringFromClass([PSTableCell cellClassForSpecifier:specifierCopy]);
+  v8 = [PSTableCell stringFromCellType:specifierCopy[7]];
   v6 = [v7 stringByAppendingString:v8];
 
 LABEL_7:
@@ -1065,9 +1065,9 @@ LABEL_7:
   return v6;
 }
 
-+ (Class)cellClassForSpecifier:(id)a3
++ (Class)cellClassForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"cellClass"];
+  v3 = [specifier propertyForKey:@"cellClass"];
   if (v3)
   {
     v4 = v3;
@@ -1081,9 +1081,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  obj = a3;
+  obj = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_specifier);
   v5 = [WeakRetained isEqualToSpecifier:obj];
 
@@ -1103,8 +1103,8 @@ LABEL_7:
     [(PSTableCell *)self setLazyIconShapeOverride:v11];
 
     v12 = +[PSTableCell stringFromCellType:](PSTableCell, "stringFromCellType:", [obj cellType]);
-    v13 = [(PSTableCell *)self classNameLayer];
-    [v13 setSubLabel:v12];
+    classNameLayer = [(PSTableCell *)self classNameLayer];
+    [classNameLayer setSubLabel:v12];
 
     if (obj)
     {
@@ -1113,31 +1113,31 @@ LABEL_7:
   }
 }
 
-- (PSTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [objc_opt_class() cellStyle];
+  identifierCopy = identifier;
+  cellStyle = [objc_opt_class() cellStyle];
   v18.receiver = self;
   v18.super_class = PSTableCell;
-  v7 = [(PSTableCell *)&v18 initWithStyle:v6 reuseIdentifier:v5];
+  v7 = [(PSTableCell *)&v18 initWithStyle:cellStyle reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
     v7->_alignment = 1;
     v7->_cellEnabled = 1;
-    v9 = [(PSTableCell *)v7 traitCollection];
+    traitCollection = [(PSTableCell *)v7 traitCollection];
     cachedTraitCollection = v8->_cachedTraitCollection;
-    v8->_cachedTraitCollection = v9;
+    v8->_cachedTraitCollection = traitCollection;
 
     objc_initWeak(&location, v8);
     v11 = +[PSTableCell traitsThatImpactImageRendering];
-    v12 = [v11 bs_array];
+    bs_array = [v11 bs_array];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __45__PSTableCell_initWithStyle_reuseIdentifier___block_invoke;
     v15[3] = &unk_1E71DCB68;
     objc_copyWeak(&v16, &location);
-    v13 = [(PSTableCell *)v8 registerForTraitChanges:v12 withHandler:v15];
+    v13 = [(PSTableCell *)v8 registerForTraitChanges:bs_array withHandler:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -1161,62 +1161,62 @@ void __45__PSTableCell_initWithStyle_reuseIdentifier___block_invoke(uint64_t a1,
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)longPressed:(id)a3
+- (void)longPressed:(id)pressed
 {
-  if ([a3 state] == 1)
+  if ([pressed state] == 1)
   {
     [(PSTableCell *)self becomeFirstResponder];
-    v13 = [MEMORY[0x1E69DCC68] sharedMenuController];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
     [(PSTableCell *)self frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PSTableCell *)self superview];
-    [v13 setTargetRect:v12 inView:{v5, v7, v9, v11}];
+    superview = [(PSTableCell *)self superview];
+    [mEMORY[0x1E69DCC68] setTargetRect:superview inView:{v5, v7, v9, v11}];
 
-    [v13 setMenuVisible:1 animated:1];
+    [mEMORY[0x1E69DCC68] setMenuVisible:1 animated:1];
   }
 }
 
 - (id)_copyableText
 {
-  v3 = [(PSTableCell *)self detailTextLabel];
-  v4 = [v3 text];
+  detailTextLabel = [(PSTableCell *)self detailTextLabel];
+  text = [detailTextLabel text];
 
-  if (!v4)
+  if (!text)
   {
-    v5 = [(PSTableCell *)self titleLabel];
-    v4 = [v5 text];
+    titleLabel = [(PSTableCell *)self titleLabel];
+    text = [titleLabel text];
 
-    if (!v4)
+    if (!text)
     {
       WeakRetained = objc_loadWeakRetained(&self->_specifier);
 
       if (!WeakRetained)
       {
-        v4 = 0;
+        text = 0;
         goto LABEL_25;
       }
 
       v7 = objc_loadWeakRetained(&self->_specifier);
-      v8 = [v7 hasValidGetter];
+      hasValidGetter = [v7 hasValidGetter];
 
-      if (v8)
+      if (hasValidGetter)
       {
         v9 = objc_loadWeakRetained(&self->_specifier);
-        v10 = [v9 performGetter];
+        performGetter = [v9 performGetter];
 
         type = self->_type;
         if (type == 2 || type == 4)
         {
           objc_opt_class();
           v12 = objc_loadWeakRetained(&self->_specifier);
-          v13 = [v12 shortTitleDictionary];
-          v4 = [v13 objectForKeyedSubscript:v10];
+          shortTitleDictionary = [v12 shortTitleDictionary];
+          text = [shortTitleDictionary objectForKeyedSubscript:performGetter];
           if (objc_opt_isKindOfClass())
           {
-            v14 = v4;
+            v14 = text;
           }
 
           else
@@ -1226,7 +1226,7 @@ void __45__PSTableCell_initWithStyle_reuseIdentifier___block_invoke(uint64_t a1,
 
           v15 = v14;
 
-          if (v15 || ((objc_opt_class(), v16 = objc_loadWeakRetained(&self->_specifier), [v16 titleDictionary], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectForKeyedSubscript:", v10), v4 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v18 = 0) : (v18 = v4), v19 = v18, v4, v17, v16, v19))
+          if (v15 || ((objc_opt_class(), v16 = objc_loadWeakRetained(&self->_specifier), [v16 titleDictionary], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectForKeyedSubscript:", performGetter), text = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v18 = 0) : (v18 = text), v19 = v18, text, v17, v16, v19))
           {
 LABEL_24:
 
@@ -1234,10 +1234,10 @@ LABEL_24:
           }
 
           objc_opt_class();
-          v4 = v10;
+          text = performGetter;
           if (objc_opt_isKindOfClass())
           {
-            v20 = v4;
+            v20 = text;
           }
 
           else
@@ -1259,66 +1259,66 @@ LABEL_24:
       }
 
       v22 = objc_loadWeakRetained(&self->_specifier);
-      v4 = [v22 name];
+      text = [v22 name];
 
-      if (!v4)
+      if (!text)
       {
         goto LABEL_25;
       }
 
-      v10 = objc_loadWeakRetained(&self->_specifier);
-      v4 = [v10 name];
+      performGetter = objc_loadWeakRetained(&self->_specifier);
+      text = [performGetter name];
       goto LABEL_24;
     }
   }
 
 LABEL_25:
 
-  return v4;
+  return text;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v4 = [(PSTableCell *)self _copyableText];
-  [v5 setString:v4];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  _copyableText = [(PSTableCell *)self _copyableText];
+  [generalPasteboard setString:_copyableText];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_copy_ != a3)
+  if (sel_copy_ != action)
   {
     return 0;
   }
 
-  v5 = [(PSTableCell *)self _copyableText];
-  v4 = v5 != 0;
+  _copyableText = [(PSTableCell *)self _copyableText];
+  v4 = _copyableText != 0;
 
   return v4;
 }
 
-- (void)setForceHideDisclosureIndicator:(BOOL)a3
+- (void)setForceHideDisclosureIndicator:(BOOL)indicator
 {
-  if (self->_forceHideDisclosureIndicator != a3)
+  if (self->_forceHideDisclosureIndicator != indicator)
   {
-    self->_forceHideDisclosureIndicator = a3;
+    self->_forceHideDisclosureIndicator = indicator;
     WeakRetained = objc_loadWeakRetained(&self->_specifier);
     [(PSTableCell *)self _updateAccessoryTypeForSpecifier:WeakRetained];
   }
 }
 
-- (void)_updateAccessoryTypeForSpecifier:(id)a3
+- (void)_updateAccessoryTypeForSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v5 = v4[7];
-    v13 = v4;
-    v6 = [v4 propertyForKey:@"accessory"];
+    v5 = specifierCopy[7];
+    v13 = specifierCopy;
+    v6 = [specifierCopy propertyForKey:@"accessory"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 intValue];
+      intValue = [v6 intValue];
     }
 
     else
@@ -1345,8 +1345,8 @@ LABEL_25:
           }
         }
 
-        v9 = self;
-        v8 = v10;
+        selfCopy2 = self;
+        intValue = v10;
         goto LABEL_17;
       }
 
@@ -1354,39 +1354,39 @@ LABEL_25:
       {
 LABEL_18:
 
-        v4 = v13;
+        specifierCopy = v13;
         goto LABEL_19;
       }
 
       if ([(PSTableCell *)self isChecked])
       {
-        v8 = 3;
+        intValue = 3;
       }
 
       else
       {
-        v8 = 0;
+        intValue = 0;
       }
     }
 
-    v9 = self;
+    selfCopy2 = self;
 LABEL_17:
-    [(PSTableCell *)v9 setAccessoryType:v8];
+    [(PSTableCell *)selfCopy2 setAccessoryType:intValue];
     goto LABEL_18;
   }
 
 LABEL_19:
 }
 
-- (void)loadISIconFromSpecifier:(id)a3
+- (void)loadISIconFromSpecifier:(id)specifier
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  specifierCopy = specifier;
   objc_opt_class();
-  v5 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+  lazyIconUTTypeIdentifier = [(PSTableCell *)self lazyIconUTTypeIdentifier];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = lazyIconUTTypeIdentifier;
   }
 
   else
@@ -1399,57 +1399,57 @@ LABEL_19:
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v9 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
-    v7 = [v8 initWithType:v9];
+    lazyIconUTTypeIdentifier2 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+    v7 = [v8 initWithType:lazyIconUTTypeIdentifier2];
   }
 
-  v10 = [(PSTableCell *)self imageDescriptor];
-  v11 = [v7 imageForDescriptor:v10];
+  imageDescriptor = [(PSTableCell *)self imageDescriptor];
+  v11 = [v7 imageForDescriptor:imageDescriptor];
 
   if (v7 && ([v11 placeholder] & 1) == 0)
   {
     v22 = _PSLoggingFacility();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(PSTableCell *)self specifier];
-      v24 = [v23 identifier];
+      specifier = [(PSTableCell *)self specifier];
+      identifier = [specifier identifier];
       *buf = 136315394;
       v44 = "[PSTableCell loadISIconFromSpecifier:]";
       v45 = 2112;
-      v46 = v24;
+      v46 = identifier;
       _os_log_impl(&dword_18B008000, v22, OS_LOG_TYPE_DEFAULT, "%s: found fast icon for %@", buf, 0x16u);
     }
 
-    v13 = [(PSTableCell *)self getLazyIconID];
-    v25 = [(PSTableCell *)self getLazyIconID];
-    if (v25 == v13)
+    getLazyIconID = [(PSTableCell *)self getLazyIconID];
+    getLazyIconID2 = [(PSTableCell *)self getLazyIconID];
+    if (getLazyIconID2 == getLazyIconID)
     {
-      v26 = [(PSTableCell *)self specifier];
+      specifier2 = [(PSTableCell *)self specifier];
 
-      if (!v26)
+      if (!specifier2)
       {
         goto LABEL_14;
       }
 
       v27 = MEMORY[0x1E69DCAB8];
-      v28 = [v11 CGImage];
+      cGImage = [v11 CGImage];
       [v11 scale];
-      v25 = [v27 imageWithCGImage:v28 scale:0 orientation:?];
-      v29 = [(PSTableCell *)self getLazyIconID];
-      v30 = v29;
-      if (v29 == v13)
+      getLazyIconID2 = [v27 imageWithCGImage:cGImage scale:0 orientation:?];
+      getLazyIconID3 = [(PSTableCell *)self getLazyIconID];
+      v30 = getLazyIconID3;
+      if (getLazyIconID3 == getLazyIconID)
       {
-        v31 = [(PSTableCell *)self specifier];
+        specifier3 = [(PSTableCell *)self specifier];
 
-        if (v31)
+        if (specifier3)
         {
           if (self->_lazyIconDontUnload)
           {
-            v32 = [(PSTableCell *)self specifier];
-            [v32 setProperty:v25 forKey:@"iconImage"];
+            specifier4 = [(PSTableCell *)self specifier];
+            [specifier4 setProperty:getLazyIconID2 forKey:@"iconImage"];
           }
 
-          [(PSTableCell *)self setIcon:v25];
+          [(PSTableCell *)self setIcon:getLazyIconID2];
         }
       }
 
@@ -1461,19 +1461,19 @@ LABEL_19:
 
   else
   {
-    v12 = [(PSTableCell *)self blankIcon];
-    [(PSTableCell *)self setIcon:v12];
+    blankIcon = [(PSTableCell *)self blankIcon];
+    [(PSTableCell *)self setIcon:blankIcon];
 
-    v13 = [(PSTableCell *)self getLazyIconID];
-    if (v13)
+    getLazyIconID = [(PSTableCell *)self getLazyIconID];
+    if (getLazyIconID)
     {
-      v14 = [(PSTableCell *)self lazyIconQueue:v4];
+      v14 = [(PSTableCell *)self lazyIconQueue:specifierCopy];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __39__PSTableCell_loadISIconFromSpecifier___block_invoke;
       aBlock[3] = &unk_1E71DC570;
       aBlock[4] = self;
-      v15 = v13;
+      v15 = getLazyIconID;
       v42 = v15;
       v16 = _Block_copy(aBlock);
       v17 = MEMORY[0x1E696AAE0];
@@ -1481,15 +1481,15 @@ LABEL_19:
       v34 = 3221225472;
       v35 = __39__PSTableCell_loadISIconFromSpecifier___block_invoke_3;
       v36 = &unk_1E71DCB90;
-      v37 = self;
-      v13 = v15;
-      v38 = v13;
+      selfCopy = self;
+      getLazyIconID = v15;
+      v38 = getLazyIconID;
       v40 = v16;
-      v18 = v4;
+      v18 = specifierCopy;
       v39 = v18;
       v19 = v16;
       v20 = [v17 blockOperationWithBlock:&v33];
-      [v20 setQualityOfService:{25, v33, v34, v35, v36, v37}];
+      [v20 setQualityOfService:{25, v33, v34, v35, v36, selfCopy}];
       v21 = [(PSTableCell *)self lazyIconQueue:v18];
       [v21 addOperation:v20];
     }
@@ -1574,28 +1574,28 @@ LABEL_3:
   v6();
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v137 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 identifier];
-  [(PSTableCell *)self setAccessibilityIdentifier:v6];
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  [(PSTableCell *)self setAccessibilityIdentifier:identifier];
 
-  v7 = [v5 identifier];
-  v8 = [(PSTableCell *)self textLabel];
-  [v8 setAccessibilityIdentifier:v7];
+  identifier2 = [specifierCopy identifier];
+  textLabel = [(PSTableCell *)self textLabel];
+  [textLabel setAccessibilityIdentifier:identifier2];
 
-  v9 = [v5 propertyForKey:@"useLazyIcons"];
+  v9 = [specifierCopy propertyForKey:@"useLazyIcons"];
   self->_lazyIcon = [v9 BOOLValue];
 
-  v10 = [v5 propertyForKey:@"appIDForLazyIcon"];
+  v10 = [specifierCopy propertyForKey:@"appIDForLazyIcon"];
   lazyIconAppID = self->_lazyIconAppID;
   self->_lazyIconAppID = v10;
 
-  v12 = [v5 propertyForKey:@"dontUnloadLazyIcon"];
+  v12 = [specifierCopy propertyForKey:@"dontUnloadLazyIcon"];
   self->_lazyIconDontUnload = [v12 BOOLValue];
 
-  v13 = [v5 propertyForKey:@"urlForLazyIcon"];
+  v13 = [specifierCopy propertyForKey:@"urlForLazyIcon"];
   objc_opt_class();
   v129 = v13;
   if (objc_opt_isKindOfClass())
@@ -1622,16 +1622,16 @@ LABEL_3:
     }
   }
 
-  v17 = *(v5 + 7);
-  v18 = [v5 name];
-  v19 = [v5 propertyForKey:@"isCopyable"];
+  v17 = *(specifierCopy + 7);
+  name = [specifierCopy name];
+  v19 = [specifierCopy propertyForKey:@"isCopyable"];
   -[PSTableCell(CustomizationExtensions) setIsCopyable:](self, "setIsCopyable:", [v19 BOOLValue]);
 
-  v20 = [v5 propertyForKey:@"gestureRecognizers"];
+  v20 = [specifierCopy propertyForKey:@"gestureRecognizers"];
   v128 = v20;
   if (v20 && (v21 = v20, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v125 = v18;
+    v125 = name;
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
@@ -1652,8 +1652,8 @@ LABEL_3:
           }
 
           v27 = *(*(&v130 + 1) + 8 * i);
-          v3 = [(PSTableCell *)self gestureRecognizers];
-          v28 = [v3 containsObject:v27];
+          gestureRecognizers = [(PSTableCell *)self gestureRecognizers];
+          v28 = [gestureRecognizers containsObject:v27];
 
           if ((v28 & 1) == 0)
           {
@@ -1667,7 +1667,7 @@ LABEL_3:
       while (v24);
     }
 
-    v18 = v125;
+    name = v125;
   }
 
   else
@@ -1685,8 +1685,8 @@ LABEL_3:
       self->_longTapRecognizer = v30;
     }
 
-    v32 = [(PSTableCell *)self gestureRecognizers];
-    v33 = [v32 containsObject:self->_longTapRecognizer];
+    gestureRecognizers2 = [(PSTableCell *)self gestureRecognizers];
+    v33 = [gestureRecognizers2 containsObject:self->_longTapRecognizer];
 
     if ((v33 & 1) == 0)
     {
@@ -1712,25 +1712,25 @@ LABEL_3:
       v36 = [MEMORY[0x1E69DB878] systemFontOfSize:18.0];
       v37 = [v35 scaledFontForFont:v36];
 
-      v38 = [(PSTableCell *)self titleLabel];
-      [v38 setFont:v37];
+      titleLabel = [(PSTableCell *)self titleLabel];
+      [titleLabel setFont:v37];
 
-      v39 = [(PSTableCell *)self titleLabel];
-      v40 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v39 setTextColor:v40];
+      titleLabel2 = [(PSTableCell *)self titleLabel];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [titleLabel2 setTextColor:systemBlueColor];
     }
 
     v127 = 0;
     v41 = 0;
 LABEL_31:
-    v42 = [v5 propertyForKey:@"adjustFontSizeToFitWidth"];
-    v43 = [v42 BOOLValue];
+    v42 = [specifierCopy propertyForKey:@"adjustFontSizeToFitWidth"];
+    bOOLValue = [v42 BOOLValue];
 
-    v44 = [(PSTableCell *)self titleLabel];
-    [v44 setAdjustsFontSizeToFitWidth:v43];
+    titleLabel3 = [(PSTableCell *)self titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:bOOLValue];
 
     objc_opt_class();
-    v45 = [v5 objectForKeyedSubscript:@"overrideCellSelectionStyleKey"];
+    v45 = [specifierCopy objectForKeyedSubscript:@"overrideCellSelectionStyleKey"];
     if (objc_opt_isKindOfClass())
     {
       v46 = v45;
@@ -1745,17 +1745,17 @@ LABEL_31:
 
     if (v47)
     {
-      v48 = [v47 integerValue];
+      integerValue = [v47 integerValue];
     }
 
     else
     {
-      v48 = 3;
+      integerValue = 3;
     }
 
-    [(PSTableCell *)self setSelectionStyle:v48];
+    [(PSTableCell *)self setSelectionStyle:integerValue];
 
-    [(PSTableCell *)self _updateAccessoryTypeForSpecifier:v5];
+    [(PSTableCell *)self _updateAccessoryTypeForSpecifier:specifierCopy];
     if (!v41)
     {
       goto LABEL_45;
@@ -1772,7 +1772,7 @@ LABEL_31:
   }
 
   [(PSTableCell *)self setSelectionStyle:0];
-  [(PSTableCell *)self _updateAccessoryTypeForSpecifier:v5];
+  [(PSTableCell *)self _updateAccessoryTypeForSpecifier:specifierCopy];
   if (v17 != 13)
   {
     goto LABEL_45;
@@ -1781,55 +1781,55 @@ LABEL_31:
 LABEL_38:
   if (![(PSTableCell *)self accessoryType])
   {
-    v49 = v18;
-    v50 = [(PSTableCell *)self titleLabel];
+    v49 = name;
+    titleLabel4 = [(PSTableCell *)self titleLabel];
     v51 = +[PSListController appearance];
-    v3 = [v51 buttonTextColor];
-    v52 = v3;
-    if (!v3)
+    gestureRecognizers = [v51 buttonTextColor];
+    tableCellBlueTextColor = gestureRecognizers;
+    if (!gestureRecognizers)
     {
-      v52 = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
+      tableCellBlueTextColor = [MEMORY[0x1E69DC888] tableCellBlueTextColor];
     }
 
-    v53 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v52];
-    [v50 setTextColor:v53];
+    v53 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:tableCellBlueTextColor];
+    [titleLabel4 setTextColor:v53];
 
-    if (!v3)
+    if (!gestureRecognizers)
     {
     }
 
-    v18 = v49;
+    name = v49;
   }
 
 LABEL_45:
   v54 = +[PSListController appearance];
-  v55 = [v54 foregroundColor];
+  foregroundColor = [v54 foregroundColor];
 
-  if (v55)
+  if (foregroundColor)
   {
     v56 = +[PSListController appearance];
-    v57 = [v56 foregroundColor];
-    [(PSTableCell *)self setBackgroundColor:v57];
+    foregroundColor2 = [v56 foregroundColor];
+    [(PSTableCell *)self setBackgroundColor:foregroundColor2];
   }
 
   if ([(PSTableCell *)self type]== 13)
   {
     v58 = +[PSListController appearance];
-    v59 = [v58 buttonTextColor];
+    buttonTextColor = [v58 buttonTextColor];
 
-    if (v59)
+    if (buttonTextColor)
     {
-      v60 = [(PSTableCell *)self textLabel];
+      textLabel2 = [(PSTableCell *)self textLabel];
       v61 = +[PSListController appearance];
-      v62 = [v61 buttonTextColor];
-      v63 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v62];
-      [v60 setTextColor:v63];
+      buttonTextColor2 = [v61 buttonTextColor];
+      v63 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:buttonTextColor2];
+      [textLabel2 setTextColor:v63];
 
-      v64 = [(PSTableCell *)self textLabel];
+      textLabel3 = [(PSTableCell *)self textLabel];
       v65 = +[PSListController appearance];
-      v3 = [v65 buttonTextColor];
-      v66 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v3];
-      [v64 setHighlightedTextColor:v66];
+      gestureRecognizers = [v65 buttonTextColor];
+      v66 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:gestureRecognizers];
+      [textLabel3 setHighlightedTextColor:v66];
 LABEL_53:
 
       goto LABEL_54;
@@ -1837,29 +1837,29 @@ LABEL_53:
   }
 
   v67 = +[PSListController appearance];
-  v68 = [v67 textColor];
+  textColor = [v67 textColor];
 
-  if (v68 && v17 != 11)
+  if (textColor && v17 != 11)
   {
-    v64 = [(PSTableCell *)self textLabel];
+    textLabel3 = [(PSTableCell *)self textLabel];
     v65 = +[PSListController appearance];
-    v3 = [v65 textColor];
-    v66 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v3];
-    [v64 setTextColor:v66];
+    gestureRecognizers = [v65 textColor];
+    v66 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:gestureRecognizers];
+    [textLabel3 setTextColor:v66];
     goto LABEL_53;
   }
 
 LABEL_54:
   v69 = +[PSListController appearance];
-  v70 = [v69 altTextColor];
+  altTextColor = [v69 altTextColor];
 
-  if (v70)
+  if (altTextColor)
   {
-    v71 = [(PSTableCell *)self detailTextLabel];
+    detailTextLabel = [(PSTableCell *)self detailTextLabel];
     v72 = +[PSListController appearance];
-    v73 = [v72 altTextColor];
-    v3 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v73];
-    [v71 setTextColor:v3];
+    altTextColor2 = [v72 altTextColor];
+    gestureRecognizers = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:altTextColor2];
+    [detailTextLabel setTextColor:gestureRecognizers];
   }
 
   if (v17 == 10)
@@ -1867,52 +1867,52 @@ LABEL_54:
     [(PSTableCell *)self setShouldHideTitle:1];
   }
 
-  if (v18)
+  if (name)
   {
-    [(PSTableCell *)self setTitle:v18];
+    [(PSTableCell *)self setTitle:name];
   }
 
   v74 = +[PSListController appearance];
-  v75 = [v74 cellHighlightColor];
-  if (v75)
+  cellHighlightColor = [v74 cellHighlightColor];
+  if (cellHighlightColor)
   {
-    v76 = v75;
-    v77 = [(PSTableCell *)self selectedBackgroundView];
-    v3 = [v77 backgroundColor];
+    v76 = cellHighlightColor;
+    selectedBackgroundView = [(PSTableCell *)self selectedBackgroundView];
+    gestureRecognizers = [selectedBackgroundView backgroundColor];
 
-    if (v3)
+    if (gestureRecognizers)
     {
       goto LABEL_64;
     }
 
     v74 = objc_alloc_init(MEMORY[0x1E69DD250]);
     v78 = +[PSListController appearance];
-    v79 = [v78 cellHighlightColor];
-    [v74 setBackgroundColor:v79];
+    cellHighlightColor2 = [v78 cellHighlightColor];
+    [v74 setBackgroundColor:cellHighlightColor2];
 
     [(PSTableCell *)self setSelectedBackgroundView:v74];
   }
 
 LABEL_64:
-  v80 = [v5 propertyForKey:@"iconImage"];
+  v80 = [specifierCopy propertyForKey:@"iconImage"];
   if (v80)
   {
-    v81 = self;
+    selfCopy2 = self;
     v82 = v80;
 LABEL_66:
-    [(PSTableCell *)v81 setIcon:v82];
+    [(PSTableCell *)selfCopy2 setIcon:v82];
     goto LABEL_67;
   }
 
-  v90 = [(PSTableCell *)self imageView];
-  v91 = [v90 image];
-  if (v91)
+  imageView = [(PSTableCell *)self imageView];
+  image = [imageView image];
+  if (image)
   {
     lazyIcon = self->_lazyIcon;
 
     if (!lazyIcon)
     {
-      v81 = self;
+      selfCopy2 = self;
       v82 = 0;
       goto LABEL_66;
     }
@@ -1924,18 +1924,18 @@ LABEL_66:
 
   if (self->_lazyIcon)
   {
-    v3 = [(PSTableCell *)self imageView];
-    v93 = [v3 image];
-    if (v93)
+    gestureRecognizers = [(PSTableCell *)self imageView];
+    image2 = [gestureRecognizers image];
+    if (image2)
     {
-      v94 = v93;
+      v94 = image2;
       [(PSTableCell *)self imageView];
-      v95 = v126 = v18;
-      v96 = [v95 image];
-      v97 = [(PSTableCell *)self blankIcon];
+      v95 = v126 = name;
+      image3 = [v95 image];
+      blankIcon = [(PSTableCell *)self blankIcon];
 
-      v18 = v126;
-      if (v96 != v97)
+      name = v126;
+      if (image3 != blankIcon)
       {
         goto LABEL_67;
       }
@@ -1948,68 +1948,68 @@ LABEL_66:
     if (self->_lazyIconForceSynchronous)
     {
       self->_lazyIconForceSynchronous = 0;
-      v119 = [(PSTableCell *)self getLazyIcon];
-      if (v119)
+      getLazyIcon = [(PSTableCell *)self getLazyIcon];
+      if (getLazyIcon)
       {
-        [(PSTableCell *)self setIcon:v119];
+        [(PSTableCell *)self setIcon:getLazyIcon];
         if (self->_lazyIconDontUnload)
         {
-          v120 = [(PSTableCell *)self specifier];
-          [v120 setProperty:v119 forKey:@"iconImage"];
+          specifier = [(PSTableCell *)self specifier];
+          [specifier setProperty:getLazyIcon forKey:@"iconImage"];
         }
       }
     }
 
     else
     {
-      [(PSTableCell *)self loadISIconFromSpecifier:v5];
+      [(PSTableCell *)self loadISIconFromSpecifier:specifierCopy];
     }
   }
 
 LABEL_67:
-  v83 = [v5 propertyForKey:@"alignment"];
+  v83 = [specifierCopy propertyForKey:@"alignment"];
   v84 = v83;
   if (v83)
   {
     -[PSTableCell setAlignment:](self, "setAlignment:", [v83 intValue]);
   }
 
-  v85 = [v5 propertyForKey:@"useHighLegibilityAlternate"];
-  v86 = [v85 BOOLValue];
+  v85 = [specifierCopy propertyForKey:@"useHighLegibilityAlternate"];
+  bOOLValue2 = [v85 BOOLValue];
 
-  if (v86)
+  if (bOOLValue2)
   {
-    v87 = [v5 cellType];
-    if (v87 == 4 && ([v5 name], v3 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v3, "length")))
+    cellType = [specifierCopy cellType];
+    if (cellType == 4 && ([specifierCopy name], gestureRecognizers = objc_claimAutoreleasedReturnValue(), !objc_msgSend(gestureRecognizers, "length")))
     {
-      v88 = v18;
-      v89 = [(PSTableCell *)self titleLabel];
+      v88 = name;
+      titleLabel5 = [(PSTableCell *)self titleLabel];
     }
 
     else
     {
-      v88 = v18;
-      v89 = [(PSTableCell *)self valueLabel];
+      v88 = name;
+      titleLabel5 = [(PSTableCell *)self valueLabel];
 
-      if (v87 != 4)
+      if (cellType != 4)
       {
         goto LABEL_84;
       }
     }
 
 LABEL_84:
-    v98 = [v89 font];
-    v99 = PSHighLegibilityAlternateFont(v98);
+    font = [titleLabel5 font];
+    v99 = PSHighLegibilityAlternateFont(font);
 
     if (v99)
     {
-      [v89 setFont:v99];
+      [titleLabel5 setFont:v99];
     }
 
-    v18 = v88;
+    name = v88;
   }
 
-  if (![v5 controllerLoadAction] && (CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) || !objc_msgSend(v5, "legacyAction")) && !*(v5 + 3) && !*(v5 + 8) && !v80 && !*(v5 + 6) && (v17 & 0xFFFFFFFFFFFFFFFDLL) != 0xD && v17 - 5 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (![specifierCopy controllerLoadAction] && (CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) || !objc_msgSend(specifierCopy, "legacyAction")) && !*(specifierCopy + 3) && !*(specifierCopy + 8) && !v80 && !*(specifierCopy + 6) && (v17 & 0xFFFFFFFFFFFFFFFDLL) != 0xD && v17 - 5 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     [(PSTableCell *)self setCellEnabled:0];
     v100 = _PSLoggingFacility();
@@ -2022,44 +2022,44 @@ LABEL_84:
     }
   }
 
-  v102 = [v5 values];
+  values = [specifierCopy values];
 
-  if (!v102)
+  if (!values)
   {
-    [v5 loadValuesAndTitlesFromDataSource];
+    [specifierCopy loadValuesAndTitlesFromDataSource];
   }
 
-  if (v17 <= 0xD && ((1 << v17) & 0x200A) != 0 || !*(v5 + 2))
+  if (v17 <= 0xD && ((1 << v17) & 0x200A) != 0 || !*(specifierCopy + 2))
   {
     v103 = 0;
   }
 
   else
   {
-    v115 = objc_loadWeakRetained(v5 + 1);
+    v115 = objc_loadWeakRetained(specifierCopy + 1);
     v116 = objc_opt_respondsToSelector();
 
     if (v116)
     {
-      v117 = objc_loadWeakRetained(v5 + 1);
+      v117 = objc_loadWeakRetained(specifierCopy + 1);
       v103 = SFPerformSelector();
 
       if (v103 && v17 != 9)
       {
         if (v17 == 4 || v17 == 2)
         {
-          v118 = [v5 shortTitleDictionary];
+          shortTitleDictionary = [specifierCopy shortTitleDictionary];
         }
 
         else
         {
-          v118 = [v5 titleDictionary];
+          shortTitleDictionary = [specifierCopy titleDictionary];
         }
 
-        v121 = v118;
-        if (v118)
+        v121 = shortTitleDictionary;
+        if (shortTitleDictionary)
         {
-          v122 = [v118 objectForKey:v103];
+          v122 = [shortTitleDictionary objectForKey:v103];
 
           v103 = v122;
         }
@@ -2067,7 +2067,7 @@ LABEL_84:
 
       if (v103)
       {
-        if (v17 == 4 && ([v5 name], v123 = objc_claimAutoreleasedReturnValue(), v124 = objc_msgSend(v123, "length"), v123, !v124))
+        if (v17 == 4 && ([specifierCopy name], v123 = objc_claimAutoreleasedReturnValue(), v124 = objc_msgSend(v123, "length"), v123, !v124))
         {
           [(PSTableCell *)self setTitle:v103];
         }
@@ -2085,47 +2085,47 @@ LABEL_84:
     }
   }
 
-  v104 = [v5 propertyForKey:@"enabled"];
+  v104 = [specifierCopy propertyForKey:@"enabled"];
   v105 = v104;
   if (v104)
   {
     -[PSTableCell setCellEnabled:](self, "setCellEnabled:", [v104 BOOLValue]);
   }
 
-  if (*(v5 + 3) && (*(v5 + 2) != 0 || v127) || ([v5 propertyForKey:@"cellClass"], v106 = objc_claimAutoreleasedReturnValue(), v106, v106))
+  if (*(specifierCopy + 3) && (*(specifierCopy + 2) != 0 || v127) || ([specifierCopy propertyForKey:@"cellClass"], v106 = objc_claimAutoreleasedReturnValue(), v106, v106))
   {
-    v107 = objc_loadWeakRetained(v5 + 1);
-    [(PSTableCell *)self setValueChangedTarget:v107 action:*(v5 + 3) specifier:v5];
+    v107 = objc_loadWeakRetained(specifierCopy + 1);
+    [(PSTableCell *)self setValueChangedTarget:v107 action:*(specifierCopy + 3) specifier:specifierCopy];
   }
 
-  v108 = [v5 objectForKeyedSubscript:@"allowMultilineTitleKey"];
-  v109 = [v108 BOOLValue];
+  v108 = [specifierCopy objectForKeyedSubscript:@"allowMultilineTitleKey"];
+  bOOLValue3 = [v108 BOOLValue];
 
-  if (v109)
+  if (bOOLValue3)
   {
-    v110 = [(PSTableCell *)self textLabel];
-    [v110 setNumberOfLines:0];
+    textLabel4 = [(PSTableCell *)self textLabel];
+    [textLabel4 setNumberOfLines:0];
   }
 
   if ([(PSTableCell *)self modernLayoutEnabled])
   {
-    v111 = [(PSTableCell *)self textLabel];
-    [v111 setNumberOfLines:0];
+    textLabel5 = [(PSTableCell *)self textLabel];
+    [textLabel5 setNumberOfLines:0];
 
-    v112 = [(PSTableCell *)self detailTextLabel];
-    [v112 setNumberOfLines:0];
+    detailTextLabel2 = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel2 setNumberOfLines:0];
 
     [(PSTableCell *)self setupModernLayoutConstraints];
   }
 
-  v113 = +[PSTableCell stringFromCellType:](PSTableCell, "stringFromCellType:", [v5 cellType]);
-  v114 = [(PSTableCell *)self classNameLayer];
-  [v114 setSubLabel:v113];
+  v113 = +[PSTableCell stringFromCellType:](PSTableCell, "stringFromCellType:", [specifierCopy cellType]);
+  classNameLayer = [(PSTableCell *)self classNameLayer];
+  [classNameLayer setSubLabel:v113];
 }
 
-- (id)lazyIconQueue:(id)a3
+- (id)lazyIconQueue:(id)queue
 {
-  v3 = [a3 propertyForKey:@"customIconQueue"];
+  v3 = [queue propertyForKey:@"customIconQueue"];
   if (!v3)
   {
     v4 = lazyIconQueue____lazyIconQueue;
@@ -2154,125 +2154,125 @@ LABEL_84:
 
 - (void)setupModernLayoutConstraints
 {
-  v3 = [(PSTableCell *)self contentView];
-  v114 = [v3 layoutMarginsGuide];
+  contentView = [(PSTableCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-  v4 = [(PSTableCell *)self contentView];
-  v5 = [MEMORY[0x1E695DF70] array];
+  contentView2 = [(PSTableCell *)self contentView];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [(PSTableCell *)self _separatorView:1];
   v7 = v6;
   if (v6)
   {
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v7 bottomAnchor];
-    v9 = [v4 bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
-    [v5 addObject:v10];
+    bottomAnchor = [v7 bottomAnchor];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v10];
 
-    v11 = [v7 leadingAnchor];
-    v12 = [(PSTableCell *)self textLabel];
-    v13 = [v12 leadingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
-    [v5 addObject:v14];
+    leadingAnchor = [v7 leadingAnchor];
+    textLabel = [(PSTableCell *)self textLabel];
+    leadingAnchor2 = [textLabel leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v14];
 
-    v15 = [v7 trailingAnchor];
-    v16 = [(PSTableCell *)self trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
-    [v5 addObject:v17];
+    trailingAnchor = [v7 trailingAnchor];
+    trailingAnchor2 = [(PSTableCell *)self trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v17];
 
-    v18 = [v7 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:0.5];
-    [v5 addObject:v19];
+    heightAnchor = [v7 heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:0.5];
+    [array addObject:v19];
   }
 
-  v20 = [(PSTableCell *)self selectedBackgroundView];
-  v21 = [(PSTableCell *)self subviews];
-  v22 = [v21 containsObject:v20];
+  selectedBackgroundView = [(PSTableCell *)self selectedBackgroundView];
+  subviews = [(PSTableCell *)self subviews];
+  v22 = [subviews containsObject:selectedBackgroundView];
 
   if (v22)
   {
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [v20 topAnchor];
-    v24 = [(PSTableCell *)self topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
-    [v5 addObject:v25];
+    [selectedBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
+    topAnchor = [selectedBackgroundView topAnchor];
+    topAnchor2 = [(PSTableCell *)self topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v25];
 
-    v26 = [v20 leadingAnchor];
-    v27 = [(PSTableCell *)self leadingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
-    [v5 addObject:v28];
+    leadingAnchor3 = [selectedBackgroundView leadingAnchor];
+    leadingAnchor4 = [(PSTableCell *)self leadingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array addObject:v28];
 
-    v29 = [v20 trailingAnchor];
-    v30 = [(PSTableCell *)self trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
-    [v5 addObject:v31];
+    trailingAnchor3 = [selectedBackgroundView trailingAnchor];
+    trailingAnchor4 = [(PSTableCell *)self trailingAnchor];
+    v31 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array addObject:v31];
 
-    v32 = [v20 bottomAnchor];
-    v33 = [(PSTableCell *)self bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
-    [v5 addObject:v34];
+    bottomAnchor3 = [selectedBackgroundView bottomAnchor];
+    bottomAnchor4 = [(PSTableCell *)self bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array addObject:v34];
   }
 
-  v35 = [(PSTableCell *)self imageView];
-  [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(PSTableCell *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v36 = [(PSTableCell *)self imageView];
-  v37 = [v36 topAnchor];
-  v38 = [v4 topAnchor];
-  v39 = [v37 constraintGreaterThanOrEqualToAnchor:v38 constant:8.0];
-  [v5 addObject:v39];
+  imageView2 = [(PSTableCell *)self imageView];
+  topAnchor3 = [imageView2 topAnchor];
+  topAnchor4 = [contentView2 topAnchor];
+  v39 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:8.0];
+  [array addObject:v39];
 
-  v40 = [(PSTableCell *)self imageView];
-  v41 = [v40 leadingAnchor];
-  v42 = [v114 leadingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
-  [v5 addObject:v43];
+  imageView3 = [(PSTableCell *)self imageView];
+  leadingAnchor5 = [imageView3 leadingAnchor];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v43 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v43];
 
-  v44 = [(PSTableCell *)self imageView];
-  v45 = [v44 bottomAnchor];
-  v46 = [v4 bottomAnchor];
-  v47 = [v45 constraintLessThanOrEqualToAnchor:v46 constant:-8.0];
-  [v5 addObject:v47];
+  imageView4 = [(PSTableCell *)self imageView];
+  bottomAnchor5 = [imageView4 bottomAnchor];
+  bottomAnchor6 = [contentView2 bottomAnchor];
+  v47 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6 constant:-8.0];
+  [array addObject:v47];
 
-  v48 = [(PSTableCell *)self imageView];
-  v49 = [v48 centerYAnchor];
-  v50 = [v4 centerYAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
-  [v5 addObject:v51];
+  imageView5 = [(PSTableCell *)self imageView];
+  centerYAnchor = [imageView5 centerYAnchor];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v51];
 
-  v52 = [(PSTableCell *)self imageView];
+  imageView6 = [(PSTableCell *)self imageView];
   LODWORD(v53) = 1148846080;
-  [v52 setContentCompressionResistancePriority:0 forAxis:v53];
+  [imageView6 setContentCompressionResistancePriority:0 forAxis:v53];
 
-  v54 = [(PSTableCell *)self imageView];
+  imageView7 = [(PSTableCell *)self imageView];
   LODWORD(v55) = 1148846080;
-  [v54 setContentCompressionResistancePriority:1 forAxis:v55];
+  [imageView7 setContentCompressionResistancePriority:1 forAxis:v55];
 
-  v56 = [(PSTableCell *)self textLabel];
-  [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel2 = [(PSTableCell *)self textLabel];
+  [textLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v57 = [(PSTableCell *)self textLabel];
-  v58 = [v57 topAnchor];
-  v59 = [v4 topAnchor];
-  v60 = [v58 constraintGreaterThanOrEqualToAnchor:v59 constant:13.0];
-  [v5 addObject:v60];
+  textLabel3 = [(PSTableCell *)self textLabel];
+  topAnchor5 = [textLabel3 topAnchor];
+  topAnchor6 = [contentView2 topAnchor];
+  v60 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:13.0];
+  [array addObject:v60];
 
-  v61 = [(PSTableCell *)self imageView];
-  v62 = [v61 image];
-  if (v62)
+  imageView8 = [(PSTableCell *)self imageView];
+  image = [imageView8 image];
+  if (image)
   {
-    v63 = v62;
-    v64 = [(PSTableCell *)self imageView];
-    v65 = [v64 isHidden];
+    v63 = image;
+    imageView9 = [(PSTableCell *)self imageView];
+    isHidden = [imageView9 isHidden];
 
-    if ((v65 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v66 = [(PSTableCell *)self textLabel];
-      v67 = [v66 leadingAnchor];
-      v68 = [(PSTableCell *)self imageView];
-      v69 = [v68 trailingAnchor];
-      v70 = [v67 constraintEqualToAnchor:v69 constant:15.0];
-      [v5 addObject:v70];
+      textLabel4 = [(PSTableCell *)self textLabel];
+      leadingAnchor7 = [textLabel4 leadingAnchor];
+      imageView10 = [(PSTableCell *)self imageView];
+      trailingAnchor5 = [imageView10 trailingAnchor];
+      v70 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:15.0];
+      [array addObject:v70];
 
       goto LABEL_10;
     }
@@ -2282,105 +2282,105 @@ LABEL_84:
   {
   }
 
-  v66 = [(PSTableCell *)self textLabel];
-  v67 = [v66 leadingAnchor];
-  v68 = [v114 leadingAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
-  [v5 addObject:v69];
+  textLabel4 = [(PSTableCell *)self textLabel];
+  leadingAnchor7 = [textLabel4 leadingAnchor];
+  imageView10 = [layoutMarginsGuide leadingAnchor];
+  trailingAnchor5 = [leadingAnchor7 constraintEqualToAnchor:imageView10];
+  [array addObject:trailingAnchor5];
 LABEL_10:
   v112 = v7;
 
-  v71 = [(PSTableCell *)self textLabel];
-  v72 = [v71 bottomAnchor];
-  v73 = [v4 bottomAnchor];
-  v74 = [v72 constraintLessThanOrEqualToAnchor:v73 constant:-13.0];
-  [v5 addObject:v74];
+  textLabel5 = [(PSTableCell *)self textLabel];
+  bottomAnchor7 = [textLabel5 bottomAnchor];
+  bottomAnchor8 = [contentView2 bottomAnchor];
+  v74 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8 constant:-13.0];
+  [array addObject:v74];
 
-  v75 = [(PSTableCell *)self textLabel];
-  v76 = [v75 centerYAnchor];
-  v77 = [v4 centerYAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77];
-  [v5 addObject:v78];
+  textLabel6 = [(PSTableCell *)self textLabel];
+  centerYAnchor3 = [textLabel6 centerYAnchor];
+  centerYAnchor4 = [contentView2 centerYAnchor];
+  v78 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [array addObject:v78];
 
-  v79 = [(PSTableCell *)self detailTextLabel];
-  [v79 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel = [(PSTableCell *)self detailTextLabel];
+  [detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v80 = [(PSTableCell *)self detailTextLabel];
-  v81 = [v80 topAnchor];
-  v82 = [v4 topAnchor];
-  v83 = [v81 constraintGreaterThanOrEqualToAnchor:v82 constant:13.0];
-  [v5 addObject:v83];
+  detailTextLabel2 = [(PSTableCell *)self detailTextLabel];
+  topAnchor7 = [detailTextLabel2 topAnchor];
+  topAnchor8 = [contentView2 topAnchor];
+  v83 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8 constant:13.0];
+  [array addObject:v83];
 
-  v84 = [(PSTableCell *)self detailTextLabel];
-  v85 = [v84 leadingAnchor];
-  v86 = [(PSTableCell *)self textLabel];
-  v87 = [v86 trailingAnchor];
-  v88 = [v85 constraintGreaterThanOrEqualToAnchor:v87 constant:6.0];
-  [v5 addObject:v88];
+  detailTextLabel3 = [(PSTableCell *)self detailTextLabel];
+  leadingAnchor8 = [detailTextLabel3 leadingAnchor];
+  textLabel7 = [(PSTableCell *)self textLabel];
+  trailingAnchor6 = [textLabel7 trailingAnchor];
+  v88 = [leadingAnchor8 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:6.0];
+  [array addObject:v88];
 
-  v89 = v4;
+  v89 = contentView2;
   if (![(PSTableCell *)self accessoryType])
   {
-    v90 = [(PSTableCell *)self accessoryView];
+    accessoryView = [(PSTableCell *)self accessoryView];
 
-    if (v90)
+    if (accessoryView)
     {
-      v89 = v4;
+      v89 = contentView2;
     }
 
     else
     {
-      v89 = v114;
+      v89 = layoutMarginsGuide;
     }
   }
 
-  v91 = [(PSTableCell *)self detailTextLabel];
-  v92 = [v91 trailingAnchor];
-  v93 = [v89 trailingAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93];
+  detailTextLabel4 = [(PSTableCell *)self detailTextLabel];
+  trailingAnchor7 = [detailTextLabel4 trailingAnchor];
+  trailingAnchor8 = [v89 trailingAnchor];
+  v94 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
 
-  v95 = [(PSTableCell *)self detailTextLabel];
-  v96 = [v95 trailingAnchor];
-  v97 = [v4 trailingAnchor];
-  v98 = [v96 constraintLessThanOrEqualToAnchor:v97];
+  detailTextLabel5 = [(PSTableCell *)self detailTextLabel];
+  trailingAnchor9 = [detailTextLabel5 trailingAnchor];
+  trailingAnchor10 = [contentView2 trailingAnchor];
+  v98 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10];
 
   LODWORD(v99) = 1132068864;
   [v94 setPriority:v99];
-  [v5 addObject:v94];
-  [v5 addObject:v98];
-  v100 = [(PSTableCell *)self detailTextLabel];
-  v101 = [v100 bottomAnchor];
-  v102 = [v4 bottomAnchor];
-  v103 = [v101 constraintLessThanOrEqualToAnchor:v102 constant:-13.0];
-  [v5 addObject:v103];
+  [array addObject:v94];
+  [array addObject:v98];
+  detailTextLabel6 = [(PSTableCell *)self detailTextLabel];
+  bottomAnchor9 = [detailTextLabel6 bottomAnchor];
+  bottomAnchor10 = [contentView2 bottomAnchor];
+  v103 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10 constant:-13.0];
+  [array addObject:v103];
 
-  v104 = [(PSTableCell *)self detailTextLabel];
-  v105 = [v104 centerYAnchor];
-  v106 = [v4 centerYAnchor];
-  v107 = [v105 constraintEqualToAnchor:v106];
-  [v5 addObject:v107];
+  detailTextLabel7 = [(PSTableCell *)self detailTextLabel];
+  centerYAnchor5 = [detailTextLabel7 centerYAnchor];
+  centerYAnchor6 = [contentView2 centerYAnchor];
+  v107 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+  [array addObject:v107];
 
   v108 = MEMORY[0x1E696ACD8];
-  v109 = [(PSTableCell *)self constraints];
-  [v108 deactivateConstraints:v109];
+  constraints = [(PSTableCell *)self constraints];
+  [v108 deactivateConstraints:constraints];
 
-  [(PSTableCell *)self setConstraints:v5];
+  [(PSTableCell *)self setConstraints:array];
   v110 = MEMORY[0x1E696ACD8];
-  v111 = [(PSTableCell *)self constraints];
-  [v110 activateConstraints:v111];
+  constraints2 = [(PSTableCell *)self constraints];
+  [v110 activateConstraints:constraints2];
 }
 
-- (void)handleTraitCollectionChange:(id)a3
+- (void)handleTraitCollectionChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PSTableCell *)self traitCollection];
-  [(PSTableCell *)self setCachedTraitCollection:v5];
+  changeCopy = change;
+  traitCollection = [(PSTableCell *)self traitCollection];
+  [(PSTableCell *)self setCachedTraitCollection:traitCollection];
 
   objc_opt_class();
-  v6 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+  lazyIconUTTypeIdentifier = [(PSTableCell *)self lazyIconUTTypeIdentifier];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = lazyIconUTTypeIdentifier;
   }
 
   else
@@ -2390,39 +2390,39 @@ LABEL_10:
 
   v12 = v7;
 
-  v8 = [(PSTableCell *)self specifier];
-  v9 = [(PSTableCell *)self cachedTraitCollection];
-  v10 = [v9 changedTraitsFromTraitCollection:v4];
+  specifier = [(PSTableCell *)self specifier];
+  cachedTraitCollection = [(PSTableCell *)self cachedTraitCollection];
+  v10 = [cachedTraitCollection changedTraitsFromTraitCollection:changeCopy];
 
   v11 = +[PSTableCell traitsThatImpactImageRendering];
-  LODWORD(v9) = [v10 intersectsSet:v11];
+  LODWORD(cachedTraitCollection) = [v10 intersectsSet:v11];
 
-  if (v9 && (v12 || self->_lazyIconAppID) && v8)
+  if (cachedTraitCollection && (v12 || self->_lazyIconAppID) && specifier)
   {
-    [(PSTableCell *)self loadISIconFromSpecifier:v8];
+    [(PSTableCell *)self loadISIconFromSpecifier:specifier];
   }
 }
 
-- (void)setValueChangedTarget:(id)a3 action:(SEL)a4 specifier:(id)a5
+- (void)setValueChangedTarget:(id)target action:(SEL)action specifier:(id)specifier
 {
-  [(PSTableCell *)self setCellTarget:a3, a4, a5];
+  [(PSTableCell *)self setCellTarget:target, action, specifier];
 
-  [(PSTableCell *)self setCellAction:a4];
+  [(PSTableCell *)self setCellAction:action];
 }
 
 - (id)titleTextLabel
 {
   if ([(PSTableCell *)self tag]== 10)
   {
-    v3 = 0;
+    titleLabel = 0;
   }
 
   else
   {
-    v3 = [(PSTableCell *)self titleLabel];
+    titleLabel = [(PSTableCell *)self titleLabel];
   }
 
-  return v3;
+  return titleLabel;
 }
 
 - (BOOL)canReload
@@ -2434,10 +2434,10 @@ LABEL_10:
 
 - (id)_contentString
 {
-  v2 = [(PSTableCell *)self textLabel];
-  v3 = [v2 text];
+  textLabel = [(PSTableCell *)self textLabel];
+  text = [textLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)_urlSession
@@ -2445,9 +2445,9 @@ LABEL_10:
   urlSession = self->_urlSession;
   if (!urlSession)
   {
-    v4 = [MEMORY[0x1E696AF78] sharedSession];
+    mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
     v5 = self->_urlSession;
-    self->_urlSession = v4;
+    self->_urlSession = mEMORY[0x1E696AF78];
 
     urlSession = self->_urlSession;
   }
@@ -2457,11 +2457,11 @@ LABEL_10:
 
 - (id)getLazyIcon
 {
-  v3 = [(PSTableCell *)self getIconFromIconServices];
-  v4 = v3;
-  if (v3)
+  getIconFromIconServices = [(PSTableCell *)self getIconFromIconServices];
+  v4 = getIconFromIconServices;
+  if (getIconFromIconServices)
   {
-    v5 = v3;
+    v5 = getIconFromIconServices;
     goto LABEL_8;
   }
 
@@ -2476,7 +2476,7 @@ LABEL_10:
     v23 = __Block_byref_object_copy__3;
     v24 = __Block_byref_object_dispose__3;
     v25 = 0;
-    v9 = [(PSTableCell *)self _urlSession];
+    _urlSession = [(PSTableCell *)self _urlSession];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __26__PSTableCell_getLazyIcon__block_invoke;
@@ -2484,7 +2484,7 @@ LABEL_10:
     v19 = &v20;
     v10 = v8;
     v18 = v10;
-    v11 = [v9 dataTaskWithRequest:v7 completionHandler:&v14];
+    v11 = [_urlSession dataTaskWithRequest:v7 completionHandler:&v14];
 
     [v11 resume];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
@@ -2521,9 +2521,9 @@ intptr_t __26__PSTableCell_getLazyIcon__block_invoke(uint64_t a1, uint64_t a2, u
   return dispatch_semaphore_signal(v8);
 }
 
-- (CGSize)iconSizeForShape:(unint64_t)a3 scale:(double)a4
+- (CGSize)iconSizeForShape:(unint64_t)shape scale:(double)scale
 {
-  if (a3 == 4)
+  if (shape == 4)
   {
 
     v5 = PSSizeForMessagesIcon();
@@ -2549,10 +2549,10 @@ intptr_t __26__PSTableCell_getLazyIcon__block_invoke(uint64_t a1, uint64_t a2, u
 {
   if (self->_lazyIconAppID || ([(PSTableCell *)self lazyIconUTTypeIdentifier], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(PSTableCell *)self imageDescriptor];
-    v5 = [v4 shape];
-    v6 = [(PSTableCell *)self cachedTraitCollection];
-    [v6 displayScale];
+    imageDescriptor = [(PSTableCell *)self imageDescriptor];
+    shape = [imageDescriptor shape];
+    cachedTraitCollection = [(PSTableCell *)self cachedTraitCollection];
+    [cachedTraitCollection displayScale];
     v8 = v7;
 
     if (self->_lazyIconAppID)
@@ -2571,10 +2571,10 @@ LABEL_19:
     else
     {
       objc_opt_class();
-      v10 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+      lazyIconUTTypeIdentifier = [(PSTableCell *)self lazyIconUTTypeIdentifier];
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = lazyIconUTTypeIdentifier;
       }
 
       else
@@ -2589,8 +2589,8 @@ LABEL_19:
         goto LABEL_14;
       }
 
-      v13 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
-      v9 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithType:v13];
+      lazyIconUTTypeIdentifier2 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+      v9 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithType:lazyIconUTTypeIdentifier2];
 
       if (!v9)
       {
@@ -2598,16 +2598,16 @@ LABEL_19:
       }
     }
 
-    v14 = [v9 prepareImageForDescriptor:v4];
+    v14 = [v9 prepareImageForDescriptor:imageDescriptor];
     if (v14)
     {
       v15 = v14;
       v16 = MEMORY[0x1E69DCAB8];
-      v17 = [v14 CGImage];
+      cGImage = [v14 CGImage];
       [v15 scale];
-      v18 = [v16 imageWithCGImage:v17 scale:0 orientation:?];
+      v18 = [v16 imageWithCGImage:cGImage scale:0 orientation:?];
       v19 = v18;
-      if (v5 == 4)
+      if (shape == 4)
       {
         [(PSTableCell *)self iconSizeForShape:4 scale:v8];
         v20 = [v19 imageByPreparingThumbnailOfSize:?];
@@ -2640,16 +2640,16 @@ LABEL_20:
   lazyIconAppID = self->_lazyIconAppID;
   if (lazyIconAppID || (lazyIconAppID = self->_lazyIconURL) != 0)
   {
-    v4 = lazyIconAppID;
+    lazyIconUTTypeIdentifier2 = lazyIconAppID;
   }
 
   else
   {
     objc_opt_class();
-    v6 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+    lazyIconUTTypeIdentifier = [(PSTableCell *)self lazyIconUTTypeIdentifier];
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = lazyIconUTTypeIdentifier;
     }
 
     else
@@ -2661,42 +2661,42 @@ LABEL_20:
 
     if (v8)
     {
-      v4 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
+      lazyIconUTTypeIdentifier2 = [(PSTableCell *)self lazyIconUTTypeIdentifier];
     }
 
     else
     {
-      v4 = 0;
+      lazyIconUTTypeIdentifier2 = 0;
     }
   }
 
-  return v4;
+  return lazyIconUTTypeIdentifier2;
 }
 
 - (id)title
 {
   if (self->_shouldHideTitle)
   {
-    v2 = self->_hiddenTitle;
+    text = self->_hiddenTitle;
   }
 
   else
   {
-    v3 = [(PSTableCell *)self textLabel];
-    v2 = [v3 text];
+    textLabel = [(PSTableCell *)self textLabel];
+    text = [textLabel text];
   }
 
-  return v2;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   shouldHideTitle = self->_shouldHideTitle;
-  v5 = a3;
-  v6 = v5;
+  titleCopy = title;
+  v6 = titleCopy;
   if (shouldHideTitle)
   {
-    v7 = [v5 copy];
+    v7 = [titleCopy copy];
 
     hiddenTitle = self->_hiddenTitle;
     self->_hiddenTitle = v7;
@@ -2704,25 +2704,25 @@ LABEL_20:
 
   else
   {
-    v9 = [(PSTableCell *)self textLabel];
-    [v9 setText:v6];
+    textLabel = [(PSTableCell *)self textLabel];
+    [textLabel setText:v6];
 
-    hiddenTitle = v9;
+    hiddenTitle = textLabel;
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
-  if (![(PSTableCell *)self canBeChecked]|| self->_checked == v3)
+  checkedCopy = checked;
+  if (![(PSTableCell *)self canBeChecked]|| self->_checked == checkedCopy)
   {
     return;
   }
 
-  self->_checked = v3;
+  self->_checked = checkedCopy;
   if ([(PSTableCell *)self accessoryType]== 1 || [(PSTableCell *)self accessoryType]== 2)
   {
-    if (v3)
+    if (checkedCopy)
     {
       v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v6 = [(PSTableCell *)self _checkmarkImage:0];
@@ -2731,8 +2731,8 @@ LABEL_20:
       checkedImageView = self->_checkedImageView;
       self->_checkedImageView = v8;
 
-      v10 = [(PSTableCell *)self contentView];
-      [v10 addSubview:self->_checkedImageView];
+      contentView = [(PSTableCell *)self contentView];
+      [contentView addSubview:self->_checkedImageView];
 
       [(PSTableCell *)self setNeedsLayout];
       return;
@@ -2751,16 +2751,16 @@ LABEL_20:
   }
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3 == 0;
-  v5 = a3;
-  v6 = [(PSTableCell *)self imageView];
-  v7 = [v6 image];
-  v8 = v7 == 0;
+  v4 = icon == 0;
+  iconCopy = icon;
+  imageView = [(PSTableCell *)self imageView];
+  image = [imageView image];
+  v8 = image == 0;
 
-  v9 = [(PSTableCell *)self imageView];
-  [v9 setImage:v5];
+  imageView2 = [(PSTableCell *)self imageView];
+  [imageView2 setImage:iconCopy];
 
   if (v4 != v8)
   {
@@ -2769,34 +2769,34 @@ LABEL_20:
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->_value != v5)
+  valueCopy = value;
+  if (self->_value != valueCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_value, a3);
+    v12 = valueCopy;
+    objc_storeStrong(&self->_value, value);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v5 = v12;
+    valueCopy = v12;
     v7 = v12;
     if (isKindOfClass)
     {
 LABEL_3:
-      v8 = [(PSTableCell *)self detailTextLabel];
-      [v8 setText:v7];
+      detailTextLabel = [(PSTableCell *)self detailTextLabel];
+      [detailTextLabel setText:v7];
 
-      v5 = v12;
+      valueCopy = v12;
       goto LABEL_5;
     }
 
     if (!self->_value)
     {
-      v9 = [(PSTableCell *)self detailTextLabel];
-      v10 = [v9 text];
-      v11 = [v10 length];
+      detailTextLabel2 = [(PSTableCell *)self detailTextLabel];
+      text = [detailTextLabel2 text];
+      v11 = [text length];
 
-      v5 = v12;
+      valueCopy = v12;
       if (v11)
       {
         v7 = 0;
@@ -2808,45 +2808,45 @@ LABEL_3:
 LABEL_5:
 }
 
-- (void)setAlignment:(int)a3
+- (void)setAlignment:(int)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    self->_alignment = a3;
+    self->_alignment = alignment;
     [(PSTableCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   v4 = MEMORY[0x1E696AF00];
-  v6 = a3;
-  v5 = [v4 callStackSymbols];
-  NSLog(&cfstr_ImportantSetta.isa, v5);
+  targetCopy = target;
+  callStackSymbols = [v4 callStackSymbols];
+  NSLog(&cfstr_ImportantSetta.isa, callStackSymbols);
 
-  [(PSTableCell *)self setCellTarget:v6];
+  [(PSTableCell *)self setCellTarget:targetCopy];
 }
 
 - (id)target
 {
-  v3 = [MEMORY[0x1E696AF00] callStackSymbols];
-  NSLog(&cfstr_ImportantTarge.isa, v3);
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  NSLog(&cfstr_ImportantTarge.isa, callStackSymbols);
 
   return [(PSTableCell *)self cellTarget];
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  v5 = [MEMORY[0x1E696AF00] callStackSymbols];
-  NSLog(&cfstr_ImportantSetac.isa, v5);
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  NSLog(&cfstr_ImportantSetac.isa, callStackSymbols);
 
-  [(PSTableCell *)self setCellAction:a3];
+  [(PSTableCell *)self setCellAction:action];
 }
 
 - (SEL)action
 {
-  v3 = [MEMORY[0x1E696AF00] callStackSymbols];
-  NSLog(&cfstr_ImportantActio.isa, v3);
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  NSLog(&cfstr_ImportantActio.isa, callStackSymbols);
 
   return [(PSTableCell *)self cellAction];
 }
@@ -2858,19 +2858,19 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)setCellAction:(SEL)a3
+- (void)setCellAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_pAction = v3;
+  self->_pAction = actionCopy;
 }
 
 - (SEL)cellAction
@@ -2886,43 +2886,43 @@ LABEL_5:
   }
 }
 
-- (void)setCellEnabled:(BOOL)a3
+- (void)setCellEnabled:(BOOL)enabled
 {
-  if (self->_cellEnabled != a3)
+  if (self->_cellEnabled != enabled)
   {
-    v4 = a3;
-    self->_cellEnabled = a3;
+    enabledCopy = enabled;
+    self->_cellEnabled = enabled;
     [(PSTableCell *)self setUserInteractionEnabled:?];
-    v6 = [(PSTableCell *)self titleLabel];
-    [v6 setEnabled:v4];
+    titleLabel = [(PSTableCell *)self titleLabel];
+    [titleLabel setEnabled:enabledCopy];
 
-    v7 = [(PSTableCell *)self detailTextLabel];
-    [v7 setEnabled:v4];
+    detailTextLabel = [(PSTableCell *)self detailTextLabel];
+    [detailTextLabel setEnabled:enabledCopy];
 
-    v8 = [(PSTableCell *)self imageView];
-    v10 = v8;
+    imageView = [(PSTableCell *)self imageView];
+    v10 = imageView;
     v9 = 0.5;
-    if (v4)
+    if (enabledCopy)
     {
       v9 = 1.0;
     }
 
-    [v8 setAlpha:v9];
+    [imageView setAlpha:v9];
   }
 }
 
-- (void)reloadWithSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadWithSpecifier:(id)specifier animated:(BOOL)animated
 {
-  [(PSTableCell *)self refreshCellContentsWithSpecifier:a3, a4];
+  [(PSTableCell *)self refreshCellContentsWithSpecifier:specifier, animated];
 
   [(PSTableCell *)self setNeedsLayout];
 }
 
 - (double)textFieldOffset
 {
-  v3 = [(PSTableCell *)self textLabel];
-  v4 = [v3 text];
-  if ([v4 length])
+  textLabel = [(PSTableCell *)self textLabel];
+  text = [textLabel text];
+  if ([text length])
   {
     v5 = 115.0;
   }
@@ -2938,9 +2938,9 @@ LABEL_5:
   return v5;
 }
 
-- (void)highlightCellForDuration:(double)a3 animateUnighlight:(BOOL)a4
+- (void)highlightCellForDuration:(double)duration animateUnighlight:(BOOL)unighlight
 {
-  v4 = a4;
+  unighlightCopy = unighlight;
   [(PSTableCell *)self _invalidateHighlightContext];
   v7 = [PSTableCellHighlightContext contextWithCell:self];
   customHighlightContext = self->_customHighlightContext;
@@ -2948,21 +2948,21 @@ LABEL_5:
 
   v9 = self->_customHighlightContext;
 
-  [(PSTableCellHighlightContext *)v9 performHighlightForDuration:v4 animateUnhighlight:a3];
+  [(PSTableCellHighlightContext *)v9 performHighlightForDuration:unighlightCopy animateUnhighlight:duration];
 }
 
-- (id)_checkmarkImage:(BOOL)a3
+- (id)_checkmarkImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v5 = +[PSListController appearance];
-  v6 = [v5 buttonTextColor];
+  buttonTextColor = [v5 buttonTextColor];
 
-  if (v6)
+  if (buttonTextColor)
   {
     v12.receiver = self;
     v12.super_class = PSTableCell;
-    v7 = [(PSTableCell *)&v12 _checkmarkImage:v3];
-    v8 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v6];
+    v7 = [(PSTableCell *)&v12 _checkmarkImage:imageCopy];
+    v8 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:buttonTextColor];
     v9 = [v7 imageWithTintColor:v8 renderingMode:0];
   }
 
@@ -2970,56 +2970,56 @@ LABEL_5:
   {
     v11.receiver = self;
     v11.super_class = PSTableCell;
-    v9 = [(PSTableCell *)&v11 _checkmarkImage:v3];
+    v9 = [(PSTableCell *)&v11 _checkmarkImage:imageCopy];
   }
 
   return v9;
 }
 
-- (id)_disclosureChevronImage:(BOOL)a3
+- (id)_disclosureChevronImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v5 = +[PSListController appearance];
-  v6 = [v5 cellAccessoryColor];
+  cellAccessoryColor = [v5 cellAccessoryColor];
 
-  if (v6)
+  if (cellAccessoryColor)
   {
     v13.receiver = self;
     v13.super_class = PSTableCell;
-    v7 = [(PSTableCell *)&v13 _disclosureChevronImage:v3];
-    v8 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:v6];
+    v7 = [(PSTableCell *)&v13 _disclosureChevronImage:imageCopy];
+    v8 = [(PSTableCell *)self _accessibilityHigherContrastTintColorForColor:cellAccessoryColor];
     v9 = [v7 _flatImageWithColor:v8];
-    v10 = [v9 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v9 imageFlippedForRightToLeftLayoutDirection];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PSTableCell;
-    v7 = [(PSTableCell *)&v12 _disclosureChevronImage:v3];
-    v10 = [v7 imageFlippedForRightToLeftLayoutDirection];
+    v7 = [(PSTableCell *)&v12 _disclosureChevronImage:imageCopy];
+    imageFlippedForRightToLeftLayoutDirection = [v7 imageFlippedForRightToLeftLayoutDirection];
   }
 
-  return v10;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (id)_automationID
 {
-  v3 = [(PSTableCell *)self title];
-  if (!v3)
+  title = [(PSTableCell *)self title];
+  if (!title)
   {
-    v3 = [(PSTableCell *)self description];
+    title = [(PSTableCell *)self description];
   }
 
   v4 = [(PSTableCell *)self tag];
   if (v4 <= 0xD && ((1 << v4) & 0x2C06) != 0)
   {
-    v5 = [@"BTN " stringByAppendingString:v3];
+    v5 = [@"BTN " stringByAppendingString:title];
   }
 
   else
   {
-    v5 = v3;
+    v5 = title;
   }
 
   v6 = v5;
@@ -3029,10 +3029,10 @@ LABEL_5:
 
 - (id)scriptingInfoWithChildren
 {
-  v3 = [(PSTableCell *)self title];
-  if (!v3)
+  title = [(PSTableCell *)self title];
+  if (!title)
   {
-    v3 = [(PSTableCell *)self description];
+    title = [(PSTableCell *)self description];
   }
 
   v34 = 0u;
@@ -3046,18 +3046,18 @@ LABEL_5:
     }
 
 LABEL_10:
-    v14 = [(PSTableCell *)self superview];
+    superview = [(PSTableCell *)self superview];
     [(PSTableCell *)self frame];
-    [v14 convertRect:0 toView:?];
+    [superview convertRect:0 toView:?];
     *&v34 = v15;
     *(&v34 + 1) = v16;
     *&v35 = v17;
     *(&v35 + 1) = v18;
 
-    v10 = [@"DAT " stringByAppendingString:v3];
+    v10 = [@"DAT " stringByAppendingString:title];
 
-    v5 = [(PSTableCell *)self valueLabel];
-    v13 = [v5 text];
+    valueLabel = [(PSTableCell *)self valueLabel];
+    text = [valueLabel text];
     goto LABEL_14;
   }
 
@@ -3068,23 +3068,23 @@ LABEL_10:
 
   if (v4 == 6)
   {
-    v5 = [(PSTableCell *)self control];
-    [v5 frame];
+    valueLabel = [(PSTableCell *)self control];
+    [valueLabel frame];
     [(PSTableCell *)self convertRect:0 toView:?];
     *&v34 = v19;
     *(&v34 + 1) = v20;
     *&v35 = v21;
     *(&v35 + 1) = v22;
-    v10 = [@"BTN " stringByAppendingString:v3];
+    v10 = [@"BTN " stringByAppendingString:title];
 
-    v23 = [v5 isOn];
+    isOn = [valueLabel isOn];
     v24 = @"OFF";
-    if (v23)
+    if (isOn)
     {
       v24 = @"ON";
     }
 
-    v13 = v24;
+    text = v24;
     goto LABEL_14;
   }
 
@@ -3093,47 +3093,47 @@ LABEL_10:
 LABEL_20:
     v33.receiver = self;
     v33.super_class = PSTableCell;
-    v28 = [(PSTableCell *)&v33 scriptingInfoWithChildren];
+    scriptingInfoWithChildren = [(PSTableCell *)&v33 scriptingInfoWithChildren];
     goto LABEL_17;
   }
 
-  v5 = [(PSTableCell *)self control];
-  [v5 frame];
+  valueLabel = [(PSTableCell *)self control];
+  [valueLabel frame];
   [(PSTableCell *)self convertRect:0 toView:?];
   *&v34 = v6;
   *(&v34 + 1) = v7;
   *&v35 = v8;
   *(&v35 + 1) = v9;
-  v10 = [@"SLD " stringByAppendingString:v3];
+  v10 = [@"SLD " stringByAppendingString:title];
 
   v11 = MEMORY[0x1E696AEC0];
-  [v5 value];
-  v13 = [v11 stringWithFormat:@"%f", v12];
+  [valueLabel value];
+  text = [v11 stringWithFormat:@"%f", v12];
 LABEL_14:
-  v25 = v13;
-  v3 = v10;
+  v25 = text;
+  title = v10;
 
   v26 = MEMORY[0x1E695DF70];
   v32.receiver = self;
   v32.super_class = PSTableCell;
-  v27 = [(PSTableCell *)&v32 scriptingInfoWithChildren];
-  v28 = [v26 arrayWithArray:v27];
+  scriptingInfoWithChildren2 = [(PSTableCell *)&v32 scriptingInfoWithChildren];
+  scriptingInfoWithChildren = [v26 arrayWithArray:scriptingInfoWithChildren2];
 
   v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
   v30 = [MEMORY[0x1E695DEF0] dataWithBytes:&v34 length:32];
   [v29 setObject:v30 forKey:@"CGRect"];
 
-  [v29 setObject:v3 forKey:@"ID"];
+  [v29 setObject:title forKey:@"ID"];
   if (v25)
   {
     [v29 setObject:v25 forKey:@"Value"];
   }
 
-  [v28 addObject:v29];
+  [scriptingInfoWithChildren addObject:v29];
 
 LABEL_17:
 
-  return v28;
+  return scriptingInfoWithChildren;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface AXInvertColors_MarkupUI
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_MarkupUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUImageContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MUImageContentViewController" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUImageContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MUImageContentViewController" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 @end

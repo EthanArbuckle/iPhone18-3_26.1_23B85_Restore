@@ -1,37 +1,37 @@
 @interface LUILogFilterViewController
-- (BOOL)textFieldShouldClear:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (LUILogFilterViewControllerDelegate)delegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)predicateComparisonCandidates;
 - (id)predicateKeyCandidates;
 - (id)predicateValueCandidates;
 - (id)predicateValueCandidatesSize;
-- (id)sizeArrayWithStrings:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)sizeArrayWithStrings:(id)strings;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_clearCellsSelection;
 - (void)_clearPredicateInput;
 - (void)_setupButtons;
 - (void)_setupCollectionView;
 - (void)_setupTableView;
-- (void)_shakeInputView:(id)a3;
+- (void)_shakeInputView:(id)view;
 - (void)_updatePredicateText;
-- (void)addButtonTapped:(id)a3;
-- (void)applyButtonTapped:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)addButtonTapped:(id)tapped;
+- (void)applyButtonTapped:(id)tapped;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
 - (void)predicateDataUpdated;
-- (void)predicateTableViewCellDeleteButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)predicateTableViewCellDeleteButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -52,36 +52,36 @@
   [(LUILogFilterViewController *)self _setupTableView];
   [(LUILogFilterViewController *)self _setupCollectionView];
   [(LUILogFilterViewController *)self _setupButtons];
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 predicateTextField];
-  [v4 setDelegate:self];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicateTextField = [filterView predicateTextField];
+  [predicateTextField setDelegate:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = LUILogFilterViewController;
-  [(LUILogFilterViewController *)&v10 viewDidAppear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  [(LUILogFilterViewController *)&v10 viewDidAppear:appear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
-  v6 = [(LUILogFilterViewController *)self delegate];
-  v7 = [v6 logFilterViewControllerShouldAllowTextEditing:self];
-  v8 = [(LUILogFilterViewController *)self filterView];
-  v9 = [v8 predicateTextField];
-  [v9 setEnabled:v7];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v7 = [delegate logFilterViewControllerShouldAllowTextEditing:self];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicateTextField = [filterView predicateTextField];
+  [predicateTextField setEnabled:v7];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = LUILogFilterViewController;
-  [(LUILogFilterViewController *)&v5 viewDidDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  [(LUILogFilterViewController *)&v5 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -89,103 +89,103 @@
   v9.receiver = self;
   v9.super_class = LUILogFilterViewController;
   [(LUILogFilterViewController *)&v9 viewWillLayoutSubviews];
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 predicatesKeyCandidateCollectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 invalidateLayout];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
+  collectionViewLayout = [predicatesKeyCandidateCollectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v6 = [(LUILogFilterViewController *)self filterView];
-  v7 = [v6 predicatesComparisonCandidateCollectionView];
-  v8 = [v7 collectionViewLayout];
-  [v8 invalidateLayout];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView = [filterView2 predicatesComparisonCandidateCollectionView];
+  collectionViewLayout2 = [predicatesComparisonCandidateCollectionView collectionViewLayout];
+  [collectionViewLayout2 invalidateLayout];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = LUILogFilterViewController;
-  [(LUILogFilterViewController *)&v9 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  v5 = [(LUILogFilterViewController *)self delegate];
-  v6 = [v5 logFilterViewControllerShouldAllowTextEditing:self];
-  v7 = [(LUILogFilterViewController *)self filterView];
-  v8 = [v7 predicateTextField];
-  [v8 setUserInteractionEnabled:v6];
+  [(LUILogFilterViewController *)&v9 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v6 = [delegate logFilterViewControllerShouldAllowTextEditing:self];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicateTextField = [filterView predicateTextField];
+  [predicateTextField setUserInteractionEnabled:v6];
 }
 
 - (void)_setupTableView
 {
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 existingPredicatesTableView];
-  [v4 setDelegate:self];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  existingPredicatesTableView = [filterView existingPredicatesTableView];
+  [existingPredicatesTableView setDelegate:self];
 
-  v5 = [(LUILogFilterViewController *)self filterView];
-  v6 = [v5 existingPredicatesTableView];
-  [v6 setDataSource:self];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  existingPredicatesTableView2 = [filterView2 existingPredicatesTableView];
+  [existingPredicatesTableView2 setDataSource:self];
 
-  v8 = [(LUILogFilterViewController *)self filterView];
-  v7 = [v8 existingPredicatesTableView];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"currentPredicateCell"];
+  filterView3 = [(LUILogFilterViewController *)self filterView];
+  existingPredicatesTableView3 = [filterView3 existingPredicatesTableView];
+  [existingPredicatesTableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"currentPredicateCell"];
 }
 
 - (void)_setupCollectionView
 {
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 predicatesKeyCandidateCollectionView];
-  [v4 setDelegate:self];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
+  [predicatesKeyCandidateCollectionView setDelegate:self];
 
-  v5 = [(LUILogFilterViewController *)self filterView];
-  v6 = [v5 predicatesKeyCandidateCollectionView];
-  [v6 setDataSource:self];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView2 = [filterView2 predicatesKeyCandidateCollectionView];
+  [predicatesKeyCandidateCollectionView2 setDataSource:self];
 
-  v7 = [(LUILogFilterViewController *)self filterView];
-  v8 = [v7 predicatesComparisonCandidateCollectionView];
-  [v8 setDelegate:self];
+  filterView3 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView = [filterView3 predicatesComparisonCandidateCollectionView];
+  [predicatesComparisonCandidateCollectionView setDelegate:self];
 
-  v9 = [(LUILogFilterViewController *)self filterView];
-  v10 = [v9 predicatesComparisonCandidateCollectionView];
-  [v10 setDataSource:self];
+  filterView4 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView2 = [filterView4 predicatesComparisonCandidateCollectionView];
+  [predicatesComparisonCandidateCollectionView2 setDataSource:self];
 
-  v11 = [(LUILogFilterViewController *)self filterView];
-  v12 = [v11 predicatesValueCandidateCollectionView];
-  [v12 setDelegate:self];
+  filterView5 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView = [filterView5 predicatesValueCandidateCollectionView];
+  [predicatesValueCandidateCollectionView setDelegate:self];
 
-  v13 = [(LUILogFilterViewController *)self filterView];
-  v14 = [v13 predicatesValueCandidateCollectionView];
-  [v14 setDataSource:self];
+  filterView6 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView2 = [filterView6 predicatesValueCandidateCollectionView];
+  [predicatesValueCandidateCollectionView2 setDataSource:self];
 
-  v15 = [(LUILogFilterViewController *)self filterView];
-  v16 = [v15 predicatesKeyCandidateCollectionView];
-  [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
+  filterView7 = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView3 = [filterView7 predicatesKeyCandidateCollectionView];
+  [predicatesKeyCandidateCollectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
 
-  v17 = [(LUILogFilterViewController *)self filterView];
-  v18 = [v17 predicatesComparisonCandidateCollectionView];
-  [v18 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
+  filterView8 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView3 = [filterView8 predicatesComparisonCandidateCollectionView];
+  [predicatesComparisonCandidateCollectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
 
-  v19 = [(LUILogFilterViewController *)self filterView];
-  v20 = [v19 predicatesValueCandidateCollectionView];
-  [v20 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
+  filterView9 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView3 = [filterView9 predicatesValueCandidateCollectionView];
+  [predicatesValueCandidateCollectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"candidateCell"];
 
-  v22 = [(LUILogFilterViewController *)self filterView];
-  v21 = [v22 predicatesValueCandidateCollectionView];
-  [v21 setAllowsMultipleSelection:1];
+  filterView10 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView4 = [filterView10 predicatesValueCandidateCollectionView];
+  [predicatesValueCandidateCollectionView4 setAllowsMultipleSelection:1];
 }
 
 - (void)_setupButtons
 {
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 addButton];
-  [v4 addTarget:self action:sel_addButtonTapped_ forControlEvents:64];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  addButton = [filterView addButton];
+  [addButton addTarget:self action:sel_addButtonTapped_ forControlEvents:64];
 
-  v6 = [(LUILogFilterViewController *)self filterView];
-  v5 = [v6 applyButton];
-  [v5 addTarget:self action:sel_applyButtonTapped_ forControlEvents:64];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  applyButton = [filterView2 applyButton];
+  [applyButton addTarget:self action:sel_applyButtonTapped_ forControlEvents:64];
 }
 
 - (void)predicateDataUpdated
 {
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v2 = [v3 existingPredicatesTableView];
-  [v2 reloadData];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  existingPredicatesTableView = [filterView existingPredicatesTableView];
+  [existingPredicatesTableView reloadData];
 }
 
 - (id)predicateKeyCandidates
@@ -266,16 +266,16 @@ void __58__LUILogFilterViewController_predicateValueCandidatesSize__block_invoke
   predicateValueCandidatesSize_candidatesSize = v2;
 }
 
-- (id)sizeArrayWithStrings:(id)a3
+- (id)sizeArrayWithStrings:(id)strings
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringsCopy = strings;
   v4 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = stringsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v5)
   {
@@ -325,33 +325,33 @@ void __58__LUILogFilterViewController_predicateValueCandidatesSize__block_invoke
 - (void)_updatePredicateText
 {
   v3 = objc_opt_new();
-  v4 = [(LUILogFilterViewController *)self filterView];
-  v5 = [v4 predicatesKeyCandidateCollectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
+  indexPathsForSelectedItems = [predicatesKeyCandidateCollectionView indexPathsForSelectedItems];
 
-  v7 = [(LUILogFilterViewController *)self filterView];
-  v8 = [v7 predicatesComparisonCandidateCollectionView];
-  v9 = [v8 indexPathsForSelectedItems];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView = [filterView2 predicatesComparisonCandidateCollectionView];
+  indexPathsForSelectedItems2 = [predicatesComparisonCandidateCollectionView indexPathsForSelectedItems];
 
-  v10 = [(LUILogFilterViewController *)self filterView];
-  v11 = [v10 predicatesValueCandidateCollectionView];
-  v12 = [v11 indexPathsForSelectedItems];
+  filterView3 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView = [filterView3 predicatesValueCandidateCollectionView];
+  indexPathsForSelectedItems3 = [predicatesValueCandidateCollectionView indexPathsForSelectedItems];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __50__LUILogFilterViewController__updatePredicateText__block_invoke;
   v28[3] = &unk_279828788;
-  v13 = v6;
+  v13 = indexPathsForSelectedItems;
   v29 = v13;
-  v30 = self;
+  selfCopy = self;
   v14 = v3;
   v31 = v14;
-  v15 = v9;
+  v15 = indexPathsForSelectedItems2;
   v32 = v15;
   v16 = MEMORY[0x259C5D960](v28);
-  v17 = [v12 firstObject];
+  firstObject = [indexPathsForSelectedItems3 firstObject];
 
-  if (v17)
+  if (firstObject)
   {
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
@@ -359,8 +359,8 @@ void __58__LUILogFilterViewController_predicateValueCandidatesSize__block_invoke
     v23 = &unk_2798287B0;
     v27 = v16;
     v24 = v14;
-    v25 = self;
-    v26 = v12;
+    selfCopy2 = self;
+    v26 = indexPathsForSelectedItems3;
     [v26 enumerateObjectsUsingBlock:&v20];
   }
 
@@ -370,8 +370,8 @@ void __58__LUILogFilterViewController_predicateValueCandidatesSize__block_invoke
   }
 
   v18 = [(LUILogFilterViewController *)self filterView:v20];
-  v19 = [v18 predicateTextField];
-  [v19 setText:v14];
+  predicateTextField = [v18 predicateTextField];
+  [predicateTextField setText:v14];
 }
 
 void __50__LUILogFilterViewController__updatePredicateText__block_invoke(id *a1)
@@ -436,15 +436,15 @@ void __50__LUILogFilterViewController__updatePredicateText__block_invoke_2(uint6
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 predicatesKeyCandidateCollectionView];
-  v29[0] = v4;
-  v5 = [(LUILogFilterViewController *)self filterView];
-  v6 = [v5 predicatesComparisonCandidateCollectionView];
-  v29[1] = v6;
-  v7 = [(LUILogFilterViewController *)self filterView];
-  v8 = [v7 predicatesValueCandidateCollectionView];
-  v29[2] = v8;
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
+  v29[0] = predicatesKeyCandidateCollectionView;
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView = [filterView2 predicatesComparisonCandidateCollectionView];
+  v29[1] = predicatesComparisonCandidateCollectionView;
+  filterView3 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView = [filterView3 predicatesValueCandidateCollectionView];
+  v29[2] = predicatesValueCandidateCollectionView;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
 
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
@@ -467,8 +467,8 @@ void __50__LUILogFilterViewController__updatePredicateText__block_invoke_2(uint6
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v15 = [v14 indexPathsForSelectedItems];
-        v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        indexPathsForSelectedItems = [v14 indexPathsForSelectedItems];
+        v16 = [indexPathsForSelectedItems countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v16)
         {
           v17 = v16;
@@ -480,14 +480,14 @@ void __50__LUILogFilterViewController__updatePredicateText__block_invoke_2(uint6
             {
               if (*v21 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(indexPathsForSelectedItems);
               }
 
               [v14 deselectItemAtIndexPath:*(*(&v20 + 1) + 8 * v19++) animated:0];
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v17 = [indexPathsForSelectedItems countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v17);
@@ -506,73 +506,73 @@ void __50__LUILogFilterViewController__updatePredicateText__block_invoke_2(uint6
 
 - (void)_clearPredicateInput
 {
-  v3 = [(LUILogFilterViewController *)self filterView];
-  v4 = [v3 predicateTextField];
-  [v4 setText:0];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicateTextField = [filterView predicateTextField];
+  [predicateTextField setText:0];
 
   [(LUILogFilterViewController *)self _clearCellsSelection];
 }
 
-- (void)_shakeInputView:(id)a3
+- (void)_shakeInputView:(id)view
 {
   v3 = MEMORY[0x277CD9E10];
-  v4 = a3;
+  viewCopy = view;
   v15 = [v3 animationWithKeyPath:@"position"];
   [v15 setDuration:0.05];
   LODWORD(v5) = 2.0;
   [v15 setRepeatCount:v5];
   [v15 setAutoreverses:1];
   v6 = MEMORY[0x277CCAE60];
-  [v4 center];
+  [viewCopy center];
   v8 = v7 + -15.0;
-  [v4 center];
+  [viewCopy center];
   v9 = [v6 valueWithCGPoint:v8];
   [v15 setFromValue:v9];
 
   v10 = MEMORY[0x277CCAE60];
-  [v4 center];
+  [viewCopy center];
   v12 = v11 + 15.0;
-  [v4 center];
+  [viewCopy center];
   v13 = [v10 valueWithCGPoint:v12];
   [v15 setToValue:v13];
 
-  v14 = [v4 layer];
+  layer = [viewCopy layer];
 
-  [v14 addAnimation:v15 forKey:@"position"];
+  [layer addAnimation:v15 forKey:@"position"];
 }
 
-- (void)addButtonTapped:(id)a3
+- (void)addButtonTapped:(id)tapped
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v4 = [(LUILogFilterViewController *)self filterView];
-  v5 = [v4 predicateTextField];
-  v39 = [v5 text];
+  tappedCopy = tapped;
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicateTextField = [filterView predicateTextField];
+  text = [predicateTextField text];
 
-  LODWORD(v5) = [v39 length] == 0;
-  v6 = [(LUILogFilterViewController *)self filterView];
-  v7 = v6;
-  if (v5)
+  LODWORD(predicateTextField) = [text length] == 0;
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  v7 = filterView2;
+  if (predicateTextField)
   {
-    v16 = [v6 predicateTextField];
-    [(LUILogFilterViewController *)self _shakeInputView:v16];
+    predicateTextField2 = [filterView2 predicateTextField];
+    [(LUILogFilterViewController *)self _shakeInputView:predicateTextField2];
   }
 
   else
   {
-    v8 = [v6 predicatesValueCandidateCollectionView];
-    v9 = [v8 indexPathsForSelectedItems];
-    if ([v9 count])
+    predicatesValueCandidateCollectionView = [filterView2 predicatesValueCandidateCollectionView];
+    indexPathsForSelectedItems = [predicatesValueCandidateCollectionView indexPathsForSelectedItems];
+    if ([indexPathsForSelectedItems count])
     {
-      v10 = [(LUILogFilterViewController *)self filterView];
-      v11 = [v10 predicatesKeyCandidateCollectionView];
-      v12 = [v11 indexPathsForSelectedItems];
-      if ([v12 count])
+      filterView3 = [(LUILogFilterViewController *)self filterView];
+      predicatesKeyCandidateCollectionView = [filterView3 predicatesKeyCandidateCollectionView];
+      indexPathsForSelectedItems2 = [predicatesKeyCandidateCollectionView indexPathsForSelectedItems];
+      if ([indexPathsForSelectedItems2 count])
       {
-        v13 = [(LUILogFilterViewController *)self filterView];
-        v14 = [v13 predicatesComparisonCandidateCollectionView];
-        v15 = [v14 indexPathsForSelectedItems];
-        v37 = [v15 count] != 0;
+        filterView4 = [(LUILogFilterViewController *)self filterView];
+        predicatesComparisonCandidateCollectionView = [filterView4 predicatesComparisonCandidateCollectionView];
+        indexPathsForSelectedItems3 = [predicatesComparisonCandidateCollectionView indexPathsForSelectedItems];
+        v37 = [indexPathsForSelectedItems3 count] != 0;
       }
 
       else
@@ -586,153 +586,153 @@ void __50__LUILogFilterViewController__updatePredicateText__block_invoke_2(uint6
       v37 = 0;
     }
 
-    v17 = [(LUILogFilterViewController *)self filterView];
-    v18 = [v17 predicatesValueCandidateCollectionView];
-    v19 = [v18 indexPathsForSelectedItems];
-    if ([v19 count])
+    filterView5 = [(LUILogFilterViewController *)self filterView];
+    predicatesValueCandidateCollectionView2 = [filterView5 predicatesValueCandidateCollectionView];
+    indexPathsForSelectedItems4 = [predicatesValueCandidateCollectionView2 indexPathsForSelectedItems];
+    if ([indexPathsForSelectedItems4 count])
     {
       v20 = 0;
     }
 
     else
     {
-      v21 = [(LUILogFilterViewController *)self filterView];
-      v22 = [v21 predicatesKeyCandidateCollectionView];
-      v23 = [v22 indexPathsForSelectedItems];
-      if ([v23 count])
+      filterView6 = [(LUILogFilterViewController *)self filterView];
+      predicatesKeyCandidateCollectionView2 = [filterView6 predicatesKeyCandidateCollectionView];
+      indexPathsForSelectedItems5 = [predicatesKeyCandidateCollectionView2 indexPathsForSelectedItems];
+      if ([indexPathsForSelectedItems5 count])
       {
         v20 = 0;
       }
 
       else
       {
-        v24 = [(LUILogFilterViewController *)self filterView];
-        v25 = [v24 predicatesComparisonCandidateCollectionView];
-        v26 = [v25 indexPathsForSelectedItems];
-        v36 = v24;
-        v20 = [v26 count] == 0;
+        filterView7 = [(LUILogFilterViewController *)self filterView];
+        predicatesComparisonCandidateCollectionView2 = [filterView7 predicatesComparisonCandidateCollectionView];
+        indexPathsForSelectedItems6 = [predicatesComparisonCandidateCollectionView2 indexPathsForSelectedItems];
+        v36 = filterView7;
+        v20 = [indexPathsForSelectedItems6 count] == 0;
       }
     }
 
     if (v37 || v20)
     {
       v27 = MEMORY[0x277CCAC30];
-      v28 = [(LUILogFilterViewController *)self filterView];
-      v29 = [v28 predicateTextField];
-      v30 = [v29 text];
-      v31 = [v27 predicateWithFormat:v30];
+      filterView8 = [(LUILogFilterViewController *)self filterView];
+      predicateTextField3 = [filterView8 predicateTextField];
+      text2 = [predicateTextField3 text];
+      v31 = [v27 predicateWithFormat:text2];
 
-      v32 = [(LUILogFilterViewController *)self delegate];
+      delegate = [(LUILogFilterViewController *)self delegate];
       v40[0] = v31;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-      [v32 logFilterViewController:self didAddPredicates:v33];
+      [delegate logFilterViewController:self didAddPredicates:v33];
 
       [(LUILogFilterViewController *)self _clearPredicateInput];
     }
 
     else
     {
-      v34 = [(LUILogFilterViewController *)self filterView];
-      v35 = [v34 predicateTextField];
-      [(LUILogFilterViewController *)self _shakeInputView:v35];
+      filterView9 = [(LUILogFilterViewController *)self filterView];
+      predicateTextField4 = [filterView9 predicateTextField];
+      [(LUILogFilterViewController *)self _shakeInputView:predicateTextField4];
     }
   }
 }
 
-- (void)applyButtonTapped:(id)a3
+- (void)applyButtonTapped:(id)tapped
 {
-  v4 = [(LUILogFilterViewController *)self delegate];
-  [v4 logFilterViewControllerApplyButtonTapped:self];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  [delegate logFilterViewControllerApplyButtonTapped:self];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"candidateCell" forIndexPath:v7];
-  v9 = [(LUILogFilterViewController *)self filterView];
-  v10 = [v9 predicatesKeyCandidateCollectionView];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"candidateCell" forIndexPath:pathCopy];
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
 
-  if (v10 == v6)
+  if (predicatesKeyCandidateCollectionView == viewCopy)
   {
-    v15 = [(LUILogFilterViewController *)self predicateKeyCandidates];
+    predicateKeyCandidates = [(LUILogFilterViewController *)self predicateKeyCandidates];
   }
 
   else
   {
-    v11 = [(LUILogFilterViewController *)self filterView];
-    v12 = [v11 predicatesComparisonCandidateCollectionView];
+    filterView2 = [(LUILogFilterViewController *)self filterView];
+    predicatesComparisonCandidateCollectionView = [filterView2 predicatesComparisonCandidateCollectionView];
 
-    if (v12 == v6)
+    if (predicatesComparisonCandidateCollectionView == viewCopy)
     {
-      v15 = [(LUILogFilterViewController *)self predicateComparisonCandidates];
+      predicateKeyCandidates = [(LUILogFilterViewController *)self predicateComparisonCandidates];
     }
 
     else
     {
-      v13 = [(LUILogFilterViewController *)self filterView];
-      v14 = [v13 predicatesValueCandidateCollectionView];
+      filterView3 = [(LUILogFilterViewController *)self filterView];
+      predicatesValueCandidateCollectionView = [filterView3 predicatesValueCandidateCollectionView];
 
-      if (v14 != v6)
+      if (predicatesValueCandidateCollectionView != viewCopy)
       {
         goto LABEL_8;
       }
 
-      v15 = [(LUILogFilterViewController *)self predicateValueCandidates];
+      predicateKeyCandidates = [(LUILogFilterViewController *)self predicateValueCandidates];
     }
   }
 
-  v16 = v15;
-  v17 = [v15 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-  v18 = [v8 titleLabel];
-  [v18 setText:v17];
+  v16 = predicateKeyCandidates;
+  v17 = [predicateKeyCandidates objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  titleLabel = [v8 titleLabel];
+  [titleLabel setText:v17];
 
 LABEL_8:
-  v19 = [MEMORY[0x277D75348] whiteColor];
-  v20 = [v19 CGColor];
-  v21 = [v8 layer];
-  [v21 setBorderColor:v20];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  cGColor = [whiteColor CGColor];
+  layer = [v8 layer];
+  [layer setBorderColor:cGColor];
 
-  v22 = [v8 layer];
-  [v22 setBorderWidth:1.5];
+  layer2 = [v8 layer];
+  [layer2 setBorderWidth:1.5];
 
-  v23 = [v8 layer];
-  [v23 setCornerRadius:5.0];
+  layer3 = [v8 layer];
+  [layer3 setCornerRadius:5.0];
 
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [(LUILogFilterViewController *)self filterView];
-  v7 = [v6 predicatesKeyCandidateCollectionView];
+  viewCopy = view;
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesKeyCandidateCollectionView = [filterView predicatesKeyCandidateCollectionView];
 
-  if (v7 == v5)
+  if (predicatesKeyCandidateCollectionView == viewCopy)
   {
-    v13 = [(LUILogFilterViewController *)self predicateKeyCandidates];
+    predicateKeyCandidates = [(LUILogFilterViewController *)self predicateKeyCandidates];
 LABEL_8:
-    v14 = v13;
-    v12 = [v13 count];
+    v14 = predicateKeyCandidates;
+    v12 = [predicateKeyCandidates count];
 
     goto LABEL_9;
   }
 
-  v8 = [(LUILogFilterViewController *)self filterView];
-  v9 = [v8 predicatesComparisonCandidateCollectionView];
+  filterView2 = [(LUILogFilterViewController *)self filterView];
+  predicatesComparisonCandidateCollectionView = [filterView2 predicatesComparisonCandidateCollectionView];
 
-  if (v9 == v5)
+  if (predicatesComparisonCandidateCollectionView == viewCopy)
   {
-    v13 = [(LUILogFilterViewController *)self predicateComparisonCandidates];
+    predicateKeyCandidates = [(LUILogFilterViewController *)self predicateComparisonCandidates];
     goto LABEL_8;
   }
 
-  v10 = [(LUILogFilterViewController *)self filterView];
-  v11 = [v10 predicatesValueCandidateCollectionView];
+  filterView3 = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView = [filterView3 predicatesValueCandidateCollectionView];
 
-  if (v11 == v5)
+  if (predicatesValueCandidateCollectionView == viewCopy)
   {
-    v13 = [(LUILogFilterViewController *)self predicateValueCandidates];
+    predicateKeyCandidates = [(LUILogFilterViewController *)self predicateValueCandidates];
     goto LABEL_8;
   }
 
@@ -742,24 +742,24 @@ LABEL_9:
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(LUILogFilterViewController *)self filterView];
-  v10 = [v9 predicatesValueCandidateCollectionView];
+  viewCopy = view;
+  pathCopy = path;
+  filterView = [(LUILogFilterViewController *)self filterView];
+  predicatesValueCandidateCollectionView = [filterView predicatesValueCandidateCollectionView];
 
-  if (v10 == v7)
+  if (predicatesValueCandidateCollectionView == viewCopy)
   {
-    v12 = [(LUILogFilterViewController *)self predicateValueCandidatesSize];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+    predicateValueCandidatesSize = [(LUILogFilterViewController *)self predicateValueCandidatesSize];
+    v13 = [predicateValueCandidatesSize objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     [v13 CGRectValue];
     v11 = v14;
   }
 
   else
   {
-    [v7 frame];
+    [viewCopy frame];
     v11 = CGRectGetWidth(v18) + -20.0;
   }
 
@@ -770,7 +770,7 @@ LABEL_9:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 0.0;
   v6 = 10.0;
@@ -783,28 +783,28 @@ LABEL_9:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"currentPredicateCell"];
-  v8 = [(LUILogFilterViewController *)self delegate];
-  v9 = [v8 currentPredicates:self];
-  v10 = [v6 section];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"currentPredicateCell"];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v9 = [delegate currentPredicates:self];
+  section = [pathCopy section];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
-  v12 = [v11 predicateFormat];
-  v13 = [v7 titleLabel];
-  [v13 setText:v12];
+  v11 = [v9 objectAtIndexedSubscript:section];
+  predicateFormat = [v11 predicateFormat];
+  titleLabel = [v7 titleLabel];
+  [titleLabel setText:predicateFormat];
 
   [v7 setDelegate:self];
 
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(LUILogFilterViewController *)self delegate];
-  v5 = [v4 currentPredicates:self];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v5 = [delegate currentPredicates:self];
   v6 = [v5 count];
 
   if (v6 <= 1)
@@ -818,76 +818,76 @@ LABEL_9:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(LUILogFilterViewController *)self delegate:a3];
+  v5 = [(LUILogFilterViewController *)self delegate:view];
   v6 = [v5 currentPredicates:self];
   v7 = [v6 count] != 0;
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   return v4;
 }
 
-- (void)predicateTableViewCellDeleteButtonTapped:(id)a3
+- (void)predicateTableViewCellDeleteButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(LUILogFilterViewController *)self filterView];
-  v6 = [v5 existingPredicatesTableView];
-  v11 = [v6 indexPathForCell:v4];
+  tappedCopy = tapped;
+  filterView = [(LUILogFilterViewController *)self filterView];
+  existingPredicatesTableView = [filterView existingPredicatesTableView];
+  v11 = [existingPredicatesTableView indexPathForCell:tappedCopy];
 
-  v7 = [(LUILogFilterViewController *)self delegate];
-  v8 = [(LUILogFilterViewController *)self delegate];
-  v9 = [v8 currentPredicates:self];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  delegate2 = [(LUILogFilterViewController *)self delegate];
+  v9 = [delegate2 currentPredicates:self];
   v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v11, "section")}];
-  [v7 logFilterViewController:self didDeletePredicate:v10];
+  [delegate logFilterViewController:self didDeletePredicate:v10];
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
+  clearCopy = clear;
   [(LUILogFilterViewController *)self _clearPredicateInput];
-  v5 = [v4 isFirstResponder];
-  if ((v5 & 1) == 0)
+  isFirstResponder = [clearCopy isFirstResponder];
+  if ((isFirstResponder & 1) == 0)
   {
-    [v4 setText:0];
+    [clearCopy setText:0];
   }
 
-  return v5;
+  return isFirstResponder;
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [(LUILogFilterViewController *)self delegate];
-  v5 = [v4 logFilterViewControllerShouldAllowTextEditing:self];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v5 = [delegate logFilterViewControllerShouldAllowTextEditing:self];
 
   if (v5)
   {
     CGAffineTransformMakeTranslation(&v8, 0.0, -200.0);
-    v6 = [(LUILogFilterViewController *)self filterView];
+    filterView = [(LUILogFilterViewController *)self filterView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [filterView setTransform:&v7];
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [(LUILogFilterViewController *)self delegate];
-  v5 = [v4 logFilterViewControllerShouldAllowTextEditing:self];
+  delegate = [(LUILogFilterViewController *)self delegate];
+  v5 = [delegate logFilterViewControllerShouldAllowTextEditing:self];
 
   if (v5)
   {
     CGAffineTransformMakeTranslation(&v8, 0.0, 0.0);
-    v6 = [(LUILogFilterViewController *)self filterView];
+    filterView = [(LUILogFilterViewController *)self filterView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [filterView setTransform:&v7];
   }
 }
 

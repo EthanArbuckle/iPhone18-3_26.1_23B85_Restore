@@ -1,19 +1,19 @@
 @interface FPExtensionDataSource
 - (BOOL)hasMoreIncoming;
 - (FPCollectionDataSourceDelegate)delegate;
-- (FPExtensionDataSource)initWithEnumerationSettings:(id)a3;
+- (FPExtensionDataSource)initWithEnumerationSettings:(id)settings;
 - (NSString)description;
-- (id)_initialPageFromSortDescriptors:(id)a3;
+- (id)_initialPageFromSortDescriptors:(id)descriptors;
 - (void)_gatherInitialItems;
-- (void)_gatherMoreItemsAfterPage:(id)a3 section:(unint64_t)a4;
+- (void)_gatherMoreItemsAfterPage:(id)page section:(unint64_t)section;
 - (void)_invalidate;
-- (void)_invalidateWithError:(id)a3;
+- (void)_invalidateWithError:(id)error;
 - (void)_updateItems;
-- (void)_updateItemsWithUpdatesCount:(unint64_t)a3 section:(unint64_t)a4;
-- (void)didUpdateItem:(id)a3;
+- (void)_updateItemsWithUpdatesCount:(unint64_t)count section:(unint64_t)section;
+- (void)didUpdateItem:(id)item;
 - (void)enumerationResultsDidChange;
 - (void)invalidate;
-- (void)invalidateWithError:(id)a3;
+- (void)invalidateWithError:(id)error;
 - (void)start;
 @end
 
@@ -23,19 +23,19 @@
 {
   if (self->_started)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:95 description:@"can't start twice"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:95 description:@"can't start twice"];
   }
 
   if (self->_invalidated)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:96 description:@"can't restart"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:96 description:@"can't restart"];
   }
 
   v6 = self->_enumerationSettings;
-  v7 = [(FPExtensionEnumerationSettings *)v6 enumeratedItemID];
-  v8 = [v7 providerDomainID];
+  enumeratedItemID = [(FPExtensionEnumerationSettings *)v6 enumeratedItemID];
+  providerDomainID = [enumeratedItemID providerDomainID];
 
   self->_hasMoreIncoming = 1;
   v9 = objc_opt_new();
@@ -60,21 +60,21 @@
   [v12 fetchAndStartEnumeratingWithSettings:enumerationSettings observer:self completionHandler:v15];
 }
 
-- (FPExtensionDataSource)initWithEnumerationSettings:(id)a3
+- (FPExtensionDataSource)initWithEnumerationSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v15.receiver = self;
   v15.super_class = FPExtensionDataSource;
   v6 = [(FPExtensionDataSource *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_enumerationSettings, a3);
+    objc_storeStrong(&v6->_enumerationSettings, settings);
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.FileProvider.ExtensionDataSource.queue (%p)", v7];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = FPDataSourceBaseQueue();
-    v12 = dispatch_queue_create_with_target_V2(v9, v10, v11);
+    v12 = dispatch_queue_create_with_target_V2(uTF8String, v10, v11);
     queue = v7->_queue;
     v7->_queue = v12;
   }
@@ -86,8 +86,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPExtensionEnumerationSettings *)self->_enumerationSettings enumeratedItemID];
-  v6 = [v3 stringWithFormat:@"<%@:%p id:%@>", v4, self, v5];
+  enumeratedItemID = [(FPExtensionEnumerationSettings *)self->_enumerationSettings enumeratedItemID];
+  v6 = [v3 stringWithFormat:@"<%@:%p id:%@>", v4, self, enumeratedItemID];
 
   return v6;
 }
@@ -184,29 +184,29 @@ void __30__FPExtensionDataSource_start__block_invoke_4(uint64_t a1)
   [v1 invalidateWithError:v2];
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__FPExtensionDataSource_invalidateWithError___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
   queue = self->_queue;
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
   self->_hasMoreIncoming = 0;
   self->_enumeratingExtensionResults = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dataSource:self wasInvalidatedWithError:v5];
+  [WeakRetained dataSource:self wasInvalidatedWithError:errorCopy];
 
   [(FPExtensionDataSource *)self _invalidate];
 }
@@ -321,11 +321,11 @@ LABEL_15:
   }
 }
 
-- (void)didUpdateItem:(id)a3
+- (void)didUpdateItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -333,7 +333,7 @@ LABEL_15:
     v7[2] = __39__FPExtensionDataSource_didUpdateItem___block_invoke;
     v7[3] = &unk_1E79390B8;
     v7[4] = self;
-    v8 = v4;
+    v8 = itemCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -353,7 +353,7 @@ void __39__FPExtensionDataSource_didUpdateItem___block_invoke(uint64_t a1)
 - (void)_updateItems
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 40);
+  v3 = *(self + 40);
   v5 = 134218242;
   v6 = a2;
   v7 = 2112;
@@ -362,15 +362,15 @@ void __39__FPExtensionDataSource_didUpdateItem___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initialPageFromSortDescriptors:(id)a3
+- (id)_initialPageFromSortDescriptors:(id)descriptors
 {
-  v3 = a3;
-  if (![v3 count])
+  descriptorsCopy = descriptors;
+  if (![descriptorsCopy count])
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 objectAtIndexedSubscript:0];
+  v4 = [descriptorsCopy objectAtIndexedSubscript:0];
   v5 = [v4 key];
   v6 = NSStringFromSelector(sel_displayName);
   if (([v5 isEqualToString:v6] & 1) == 0)
@@ -379,10 +379,10 @@ void __39__FPExtensionDataSource_didUpdateItem___block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  v7 = [v3 objectAtIndexedSubscript:0];
-  v8 = [v7 ascending];
+  v7 = [descriptorsCopy objectAtIndexedSubscript:0];
+  ascending = [v7 ascending];
 
-  if ((v8 & 1) == 0)
+  if ((ascending & 1) == 0)
   {
 LABEL_6:
     v9 = &NSFileProviderInitialPageSortedByDate;
@@ -424,13 +424,13 @@ LABEL_7:
   return v3;
 }
 
-- (void)_updateItemsWithUpdatesCount:(unint64_t)a3 section:(unint64_t)a4
+- (void)_updateItemsWithUpdatesCount:(unint64_t)count section:(unint64_t)section
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_enumeratingExtensionResults)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:295 description:@"update: already enumerating changes or items"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:295 description:@"update: already enumerating changes or items"];
   }
 
   if (+[FPItemCollection isEnumerationSuspended])
@@ -448,8 +448,8 @@ LABEL_7:
   {
     *&self->_shouldUpdate = 256;
     v9 = self->_enumerator;
-    v10 = [(FPExtensionDataSource *)self delegate];
-    v11 = [v10 lastForcedUpdate];
+    delegate = [(FPExtensionDataSource *)self delegate];
+    lastForcedUpdate = [delegate lastForcedUpdate];
 
     changeToken = self->_changeToken;
     v13 = _FPExtensionDataSourceBatchSize;
@@ -459,8 +459,8 @@ LABEL_7:
     v15[3] = &unk_1E793D560;
     v15[4] = self;
     v16 = v9;
-    v17 = a4;
-    v18 = v11;
+    sectionCopy = section;
+    v18 = lastForcedUpdate;
     v14 = v9;
     [(FPXEnumerator *)v14 enumerateChangesFromToken:changeToken suggestedBatchSize:v13 reply:v15];
   }
@@ -759,26 +759,26 @@ LABEL_61:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_gatherMoreItemsAfterPage:(id)a3 section:(unint64_t)a4
+- (void)_gatherMoreItemsAfterPage:(id)page section:(unint64_t)section
 {
-  v7 = a3;
+  pageCopy = page;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_started)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:416 description:@"not started yet"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:416 description:@"not started yet"];
   }
 
   if (self->_invalidated)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:417 description:@"was invalidated"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:417 description:@"was invalidated"];
   }
 
   if (self->_enumeratingExtensionResults)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:418 description:@"gather: already enumerating changes or items"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"FPExtensionDataSource.m" lineNumber:418 description:@"gather: already enumerating changes or items"];
   }
 
   self->_enumeratingExtensionResults = 1;
@@ -790,9 +790,9 @@ LABEL_61:
   v15[3] = &unk_1E793D5B0;
   v15[4] = self;
   v16 = v11;
-  v17 = v7;
-  v18 = a4;
-  v13 = v7;
+  v17 = pageCopy;
+  sectionCopy = section;
+  v13 = pageCopy;
   v14 = v11;
   [(FPXEnumerator *)v14 enumerateItemsFromPage:v13 suggestedPageSize:v12 reply:v15];
 }

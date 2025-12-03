@@ -1,16 +1,16 @@
 @interface ATXActionCriteria
-+ (id)atx_criteriaWithDictionary:(id)a3;
++ (id)atx_criteriaWithDictionary:(id)dictionary;
 @end
 
 @implementation ATXActionCriteria
 
-+ (id)atx_criteriaWithDictionary:(id)a3
++ (id)atx_criteriaWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"startDate"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
   v5 = sub_1000173CC(v4);
 
-  v6 = [v3 objectForKeyedSubscript:@"endDate"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
   v7 = sub_1000173CC(v6);
 
   if (v5 && v7 && [v5 compare:v7] == 1)
@@ -33,10 +33,10 @@
 
   else
   {
-    v13 = [v3 objectForKeyedSubscript:@"lockScreenEligible"];
-    v14 = [v13 BOOLValue];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"lockScreenEligible"];
+    bOOLValue = [v13 BOOLValue];
 
-    v12 = [[ATXActionCriteria alloc] initWithStartDate:v5 endDate:v7 lockScreenEligible:v14 predicate:0];
+    v12 = [[ATXActionCriteria alloc] initWithStartDate:v5 endDate:v7 lockScreenEligible:bOOLValue predicate:0];
   }
 
   return v12;

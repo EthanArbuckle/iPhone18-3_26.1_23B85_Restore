@@ -1,14 +1,14 @@
 @interface _NUStyleEngineConfiguration
-+ (CGSize)coefficientTextureSizeForConfigurationDictionary:(id)a3;
-+ (CGSize)coefficientTextureSizeForStyleEngineConfiguration:(id)a3;
++ (CGSize)coefficientTextureSizeForConfigurationDictionary:(id)dictionary;
++ (CGSize)coefficientTextureSizeForStyleEngineConfiguration:(id)configuration;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)coefficientPixelBufferSize;
-- (BOOL)matchesConfiguration:(id)a3;
+- (BOOL)matchesConfiguration:(id)configuration;
 - (CGSize)coefficientTextureSize;
 - (CGSize)thumbnailSize;
 - (NSDictionary)configurationDictionary;
 - (_NUStyleEngineConfiguration)init;
-- (_NUStyleEngineConfiguration)initWithConfigurationDictionary:(id)a3;
-- (_NUStyleEngineConfiguration)initWithStyleEngineConfiguration:(id)a3;
+- (_NUStyleEngineConfiguration)initWithConfigurationDictionary:(id)dictionary;
+- (_NUStyleEngineConfiguration)initWithStyleEngineConfiguration:(id)configuration;
 - (unint64_t)coefficientBufferSize;
 @end
 
@@ -27,9 +27,9 @@
 - (unint64_t)coefficientBufferSize
 {
   v3 = [MEMORY[0x1E6991738] coefficientCountForConfiguration:self->_styleEngineConfiguration];
-  v4 = [(_NUStyleEngineConfiguration *)self usesFloat16];
+  usesFloat16 = [(_NUStyleEngineConfiguration *)self usesFloat16];
   v5 = 1;
-  if (!v4)
+  if (!usesFloat16)
   {
     v5 = 2;
   }
@@ -49,69 +49,69 @@
 {
   v2 = MEMORY[0x1E6991738];
   styleEngineConfiguration = self->_styleEngineConfiguration;
-  v4 = [(CMIStyleEngineConfiguration *)styleEngineConfiguration outputCoefficientsF16];
+  outputCoefficientsF16 = [(CMIStyleEngineConfiguration *)styleEngineConfiguration outputCoefficientsF16];
 
-  [v2 coefficientPixelBufferSizeForConfiguration:styleEngineConfiguration float16:v4];
+  [v2 coefficientPixelBufferSizeForConfiguration:styleEngineConfiguration float16:outputCoefficientsF16];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (BOOL)matchesConfiguration:(id)a3
+- (BOOL)matchesConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-  v6 = [v5 linearSystemType];
-  v7 = [v4 styleEngineConfiguration];
-  v8 = [v7 linearSystemType];
+  configurationCopy = configuration;
+  styleEngineConfiguration = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+  linearSystemType = [styleEngineConfiguration linearSystemType];
+  styleEngineConfiguration2 = [configurationCopy styleEngineConfiguration];
+  linearSystemType2 = [styleEngineConfiguration2 linearSystemType];
 
-  if (v6 != v8 || (-[_NUStyleEngineConfiguration styleEngineConfiguration](self, "styleEngineConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 linearSystemOrder], objc_msgSend(v4, "styleEngineConfiguration"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "linearSystemOrder"), v11, v9, v10 != v12) || (-[_NUStyleEngineConfiguration styleEngineConfiguration](self, "styleEngineConfiguration"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "linearSystemSolver"), objc_msgSend(v4, "styleEngineConfiguration"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "linearSystemSolver"), v15, v13, v14 != v16))
+  if (linearSystemType != linearSystemType2 || (-[_NUStyleEngineConfiguration styleEngineConfiguration](self, "styleEngineConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 linearSystemOrder], objc_msgSend(configurationCopy, "styleEngineConfiguration"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "linearSystemOrder"), v11, v9, v10 != v12) || (-[_NUStyleEngineConfiguration styleEngineConfiguration](self, "styleEngineConfiguration"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "linearSystemSolver"), objc_msgSend(configurationCopy, "styleEngineConfiguration"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "linearSystemSolver"), v15, v13, v14 != v16))
   {
 LABEL_9:
     v27 = 0;
     goto LABEL_10;
   }
 
-  v17 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-  [v17 thumbnailSize];
+  styleEngineConfiguration3 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+  [styleEngineConfiguration3 thumbnailSize];
   v19 = v18;
   v21 = v20;
-  v22 = [v4 styleEngineConfiguration];
-  [v22 thumbnailSize];
+  styleEngineConfiguration4 = [configurationCopy styleEngineConfiguration];
+  [styleEngineConfiguration4 thumbnailSize];
   v24 = v23;
   v26 = v25;
 
   v27 = 0;
   if (v19 == v24 && v21 == v26)
   {
-    v28 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-    v29 = [v28 weightPlaneCount];
-    v30 = [v4 styleEngineConfiguration];
-    v31 = [v30 weightPlaneCount];
+    styleEngineConfiguration5 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+    weightPlaneCount = [styleEngineConfiguration5 weightPlaneCount];
+    styleEngineConfiguration6 = [configurationCopy styleEngineConfiguration];
+    weightPlaneCount2 = [styleEngineConfiguration6 weightPlaneCount];
 
-    if (v29 == v31)
+    if (weightPlaneCount == weightPlaneCount2)
     {
-      v32 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-      [v32 spotlightCount];
+      styleEngineConfiguration7 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+      [styleEngineConfiguration7 spotlightCount];
       v34 = v33;
-      v35 = [v4 styleEngineConfiguration];
-      [v35 spotlightCount];
+      styleEngineConfiguration8 = [configurationCopy styleEngineConfiguration];
+      [styleEngineConfiguration8 spotlightCount];
       v37 = vmvn_s8(vceq_s32(v34, v36));
       v38 = vpmax_u32(v37, v37).u32[0];
 
       if ((v38 & 0x80000000) == 0)
       {
-        v39 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-        v40 = [v39 inputCoefficientsF16];
-        v41 = [v4 styleEngineConfiguration];
-        v42 = [v41 inputCoefficientsF16];
+        styleEngineConfiguration9 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+        inputCoefficientsF16 = [styleEngineConfiguration9 inputCoefficientsF16];
+        styleEngineConfiguration10 = [configurationCopy styleEngineConfiguration];
+        inputCoefficientsF162 = [styleEngineConfiguration10 inputCoefficientsF16];
 
-        if (v40 == v42)
+        if (inputCoefficientsF16 == inputCoefficientsF162)
         {
-          v44 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
-          v45 = [v44 outputCoefficientsF16];
-          v46 = [v4 styleEngineConfiguration];
-          v47 = v45 ^ [v46 outputCoefficientsF16];
+          styleEngineConfiguration11 = [(_NUStyleEngineConfiguration *)self styleEngineConfiguration];
+          outputCoefficientsF16 = [styleEngineConfiguration11 outputCoefficientsF16];
+          styleEngineConfiguration12 = [configurationCopy styleEngineConfiguration];
+          v47 = outputCoefficientsF16 ^ [styleEngineConfiguration12 outputCoefficientsF16];
 
           v27 = v47 ^ 1;
           goto LABEL_10;
@@ -191,11 +191,11 @@ LABEL_10:
   return v3;
 }
 
-- (_NUStyleEngineConfiguration)initWithConfigurationDictionary:(id)a3
+- (_NUStyleEngineConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v31 = NUAssertLogger_30110();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -216,8 +216,8 @@ LABEL_10:
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v46 callStackSymbols];
+        v49 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v45;
         v67 = 2114;
@@ -228,8 +228,8 @@ LABEL_10:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -238,7 +238,7 @@ LABEL_10:
     _NUAssertFailHandler("[_NUStyleEngineConfiguration initWithConfigurationDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2451, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, "config != nil");
   }
 
-  v5 = v4;
+  v5 = dictionaryCopy;
   v64.receiver = self;
   v64.super_class = _NUStyleEngineConfiguration;
   v6 = [(_NUStyleEngineConfiguration *)&v64 init];
@@ -247,12 +247,12 @@ LABEL_10:
   v6->_styleEngineConfiguration = v7;
 
   v9 = [v5 objectForKeyedSubscript:@"thumbnailWidth"];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v11 = [v5 objectForKeyedSubscript:@"thumbnailHeight"];
-  v12 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
-  if (!v10 || !v12)
+  if (!unsignedIntegerValue || !unsignedIntegerValue2)
   {
     v38 = NUAssertLogger_30110();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -273,8 +273,8 @@ LABEL_10:
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v55 callStackSymbols];
+        v58 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v54;
         v67 = 2114;
@@ -285,8 +285,8 @@ LABEL_10:
 
     else if (v42)
     {
-      v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v44 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v44;
       _os_log_error_impl(&dword_1C0184000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -295,7 +295,7 @@ LABEL_10:
     _NUAssertFailHandler("[_NUStyleEngineConfiguration initWithConfigurationDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2456, @"Missing thumbnail size", v59, v60, v61, v62, v63);
   }
 
-  [(CMIStyleEngineConfiguration *)v6->_styleEngineConfiguration setThumbnailSize:v10, v12];
+  [(CMIStyleEngineConfiguration *)v6->_styleEngineConfiguration setThumbnailSize:unsignedIntegerValue, unsignedIntegerValue2];
   v13 = [v5 objectForKeyedSubscript:@"linearSystemType"];
   -[CMIStyleEngineConfiguration setLinearSystemType:](v6->_styleEngineConfiguration, "setLinearSystemType:", [v13 unsignedIntegerValue]);
 
@@ -309,9 +309,9 @@ LABEL_10:
   -[CMIStyleEngineConfiguration setWeightPlaneCount:](v6->_styleEngineConfiguration, "setWeightPlaneCount:", [v16 unsignedIntValue]);
 
   v17 = [v5 objectForKeyedSubscript:@"spotlightCountX"];
-  v18 = [v17 unsignedIntValue];
+  unsignedIntValue = [v17 unsignedIntValue];
   v19 = [v5 objectForKeyedSubscript:@"spotlightCountY"];
-  -[CMIStyleEngineConfiguration setSpotlightCount:](v6->_styleEngineConfiguration, "setSpotlightCount:", COERCE_DOUBLE(__PAIR64__([v19 unsignedIntValue], v18)));
+  -[CMIStyleEngineConfiguration setSpotlightCount:](v6->_styleEngineConfiguration, "setSpotlightCount:", COERCE_DOUBLE(__PAIR64__([v19 unsignedIntValue], unsignedIntValue)));
 
   v20 = [v5 objectForKeyedSubscript:@"useFloat16"];
   -[CMIStyleEngineConfiguration setInputCoefficientsF16:](v6->_styleEngineConfiguration, "setInputCoefficientsF16:", [v20 BOOLValue]);
@@ -323,8 +323,8 @@ LABEL_10:
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 bytes];
-    [(CMIStyleEngineConfiguration *)v6->_styleEngineConfiguration setLinearSystemPriorMatrix:*v24, v24[2], v24[4]];
+    bytes = [v22 bytes];
+    [(CMIStyleEngineConfiguration *)v6->_styleEngineConfiguration setLinearSystemPriorMatrix:*bytes, bytes[2], bytes[4]];
   }
 
   v25 = [v5 objectForKeyedSubscript:@"createAndSolveGlobalLinearSystem"];
@@ -346,11 +346,11 @@ LABEL_10:
   return v6;
 }
 
-- (_NUStyleEngineConfiguration)initWithStyleEngineConfiguration:(id)a3
+- (_NUStyleEngineConfiguration)initWithStyleEngineConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v9 = NUAssertLogger_30110();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -371,8 +371,8 @@ LABEL_10:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -383,8 +383,8 @@ LABEL_10:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -393,7 +393,7 @@ LABEL_10:
     _NUAssertFailHandler("[_NUStyleEngineConfiguration initWithStyleEngineConfiguration:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2444, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "configuration != nil");
   }
 
-  v5 = v4;
+  v5 = configurationCopy;
   v25.receiver = self;
   v25.super_class = _NUStyleEngineConfiguration;
   v6 = [(_NUStyleEngineConfiguration *)&v25 init];
@@ -415,10 +415,10 @@ LABEL_10:
   return v2;
 }
 
-+ (CGSize)coefficientTextureSizeForStyleEngineConfiguration:(id)a3
++ (CGSize)coefficientTextureSizeForStyleEngineConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStyleEngineConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithStyleEngineConfiguration:configurationCopy];
 
   [v5 coefficientTextureSize];
   v7 = v6;
@@ -431,10 +431,10 @@ LABEL_10:
   return result;
 }
 
-+ (CGSize)coefficientTextureSizeForConfigurationDictionary:(id)a3
++ (CGSize)coefficientTextureSizeForConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConfigurationDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithConfigurationDictionary:dictionaryCopy];
 
   [v5 coefficientTextureSize];
   v7 = v6;

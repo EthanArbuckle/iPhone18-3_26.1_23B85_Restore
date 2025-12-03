@@ -1,40 +1,40 @@
 @interface CKKTDetailsViewUtilities
-+ (BOOL)shouldHighlightCell:(id)a3 forConversation:(id)a4;
-+ (id)_commaSeparatedNamesForHandles:(id)a3;
++ (BOOL)shouldHighlightCell:(id)cell forConversation:(id)conversation;
++ (id)_commaSeparatedNamesForHandles:(id)handles;
 + (id)enableKTCellText;
-+ (id)ktSecuritySectionFooterTextViewForKTStatus:(unint64_t)a3 withHandles:(id)a4;
-+ (id)namesFromHandles:(id)a3 shouldUseShortFormat:(BOOL)a4;
-+ (id)securityDescriptionWithPlaceholder:(id)a3 handles:(id)a4;
-+ (id)securityFooterStringForKTChatState:(unint64_t)a3 handles:(id)a4;
++ (id)ktSecuritySectionFooterTextViewForKTStatus:(unint64_t)status withHandles:(id)handles;
++ (id)namesFromHandles:(id)handles shouldUseShortFormat:(BOOL)format;
++ (id)securityDescriptionWithPlaceholder:(id)placeholder handles:(id)handles;
++ (id)securityFooterStringForKTChatState:(unint64_t)state handles:(id)handles;
 + (id)securityHeaderString;
-+ (id)verifiedHandlesInChat:(id)a3;
-+ (int64_t)numberOfRowsInKTSectionForStatus:(unint64_t)a3 isGroupChat:(BOOL)a4;
++ (id)verifiedHandlesInChat:(id)chat;
++ (int64_t)numberOfRowsInKTSectionForStatus:(unint64_t)status isGroupChat:(BOOL)chat;
 @end
 
 @implementation CKKTDetailsViewUtilities
 
-+ (id)ktSecuritySectionFooterTextViewForKTStatus:(unint64_t)a3 withHandles:(id)a4
++ (id)ktSecuritySectionFooterTextViewForKTStatus:(unint64_t)status withHandles:(id)handles
 {
   v5 = MEMORY[0x1E69DD168];
-  v6 = a4;
+  handlesCopy = handles;
   v7 = [v5 alloc];
   v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v8 setEditable:0];
   [v8 _setInteractiveTextSelectionDisabled:1];
-  v9 = [v8 textContainer];
-  [v9 setLineFragmentPadding:0.0];
+  textContainer = [v8 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v8 setBackgroundColor:0];
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v8 setTextColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v8 setTextColor:secondaryLabelColor];
 
   [v8 setScrollEnabled:0];
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 headerFont];
-  [v8 setFont:v12];
+  headerFont = [v11 headerFont];
+  [v8 setFont:headerFont];
 
   [v8 setAdjustsFontForContentSizeCategory:1];
-  v13 = [CKKTDetailsViewUtilities securityFooterStringForKTChatState:a3 handles:v6];
+  v13 = [CKKTDetailsViewUtilities securityFooterStringForKTChatState:status handles:handlesCopy];
 
   if (v13)
   {
@@ -44,15 +44,15 @@
   return v8;
 }
 
-+ (BOOL)shouldHighlightCell:(id)a3 forConversation:(id)a4
++ (BOOL)shouldHighlightCell:(id)cell forConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  conversationCopy = conversation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 chat];
-    v8 = [v7 hasKnownParticipants];
+    chat = [conversationCopy chat];
+    hasKnownParticipants = [chat hasKnownParticipants];
   }
 
   else
@@ -60,42 +60,42 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = 1;
+      hasKnownParticipants = 1;
     }
 
     else
     {
       objc_opt_class();
-      v8 = objc_opt_isKindOfClass() ^ 1;
+      hasKnownParticipants = objc_opt_isKindOfClass() ^ 1;
     }
   }
 
-  return v8 & 1;
+  return hasKnownParticipants & 1;
 }
 
-+ (int64_t)numberOfRowsInKTSectionForStatus:(unint64_t)a3 isGroupChat:(BOOL)a4
++ (int64_t)numberOfRowsInKTSectionForStatus:(unint64_t)status isGroupChat:(BOOL)chat
 {
-  if (a4 || a3 - 4 > 0xE)
+  if (chat || status - 4 > 0xE)
   {
     return 1;
   }
 
   else
   {
-    return qword_190DD11D0[a3 - 4];
+    return qword_190DD11D0[status - 4];
   }
 }
 
-+ (id)verifiedHandlesInChat:(id)a3
++ (id)verifiedHandlesInChat:(id)chat
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 participants];
+  participants = [chat participants];
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = participants;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -128,15 +128,15 @@
   return v11;
 }
 
-+ (id)namesFromHandles:(id)a3 shouldUseShortFormat:(BOOL)a4
++ (id)namesFromHandles:(id)handles shouldUseShortFormat:(BOOL)format
 {
-  v4 = a4;
+  formatCopy = format;
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlesCopy = handles;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_opt_new();
   v8 = v7;
-  if (v4)
+  if (formatCopy)
   {
     v9 = 1;
   }
@@ -151,7 +151,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v5;
+  v10 = handlesCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -168,35 +168,35 @@
 
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = objc_opt_new();
-        v17 = [v15 firstName];
+        firstName = [v15 firstName];
 
-        if (v17)
+        if (firstName)
         {
-          v18 = [v15 firstName];
+          firstName2 = [v15 firstName];
         }
 
         else
         {
-          v19 = [v15 displayID];
+          displayID = [v15 displayID];
 
-          if (!v19)
+          if (!displayID)
           {
             goto LABEL_14;
           }
 
-          v18 = [v15 displayID];
+          firstName2 = [v15 displayID];
         }
 
-        v20 = v18;
-        [v16 setGivenName:v18];
+        v20 = firstName2;
+        [v16 setGivenName:firstName2];
 
 LABEL_14:
-        v21 = [v15 lastName];
+        lastName = [v15 lastName];
 
-        if (v21)
+        if (lastName)
         {
-          v22 = [v15 lastName];
-          [v16 setFamilyName:v22];
+          lastName2 = [v15 lastName];
+          [v16 setFamilyName:lastName2];
         }
 
         v23 = [v8 stringFromPersonNameComponents:v16];
@@ -214,9 +214,9 @@ LABEL_14:
   return v24;
 }
 
-+ (id)_commaSeparatedNamesForHandles:(id)a3
++ (id)_commaSeparatedNamesForHandles:(id)handles
 {
-  v3 = [CKKTDetailsViewUtilities namesFromHandles:a3 shouldUseShortFormat:1];
+  v3 = [CKKTDetailsViewUtilities namesFromHandles:handles shouldUseShortFormat:1];
   if ([v3 count])
   {
     v4 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v3];
@@ -230,13 +230,13 @@ LABEL_14:
   return v4;
 }
 
-+ (id)securityDescriptionWithPlaceholder:(id)a3 handles:(id)a4
++ (id)securityDescriptionWithPlaceholder:(id)placeholder handles:(id)handles
 {
-  v5 = a3;
-  v6 = [CKKTDetailsViewUtilities _commaSeparatedNamesForHandles:a4];
+  placeholderCopy = placeholder;
+  v6 = [CKKTDetailsViewUtilities _commaSeparatedNamesForHandles:handles];
   v7 = MEMORY[0x1E696AEC0];
   v8 = CKFrameworkBundle();
-  v9 = [v8 localizedStringForKey:v5 value:&stru_1F04268F8 table:@"ChatKit-Key-Transparency"];
+  v9 = [v8 localizedStringForKey:placeholderCopy value:&stru_1F04268F8 table:@"ChatKit-Key-Transparency"];
 
   v10 = CKFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"KT_LEARN_MORE_FOOTER_BUTTON_TEXT" value:&stru_1F04268F8 table:@"ChatKit-Key-Transparency"];
@@ -245,12 +245,12 @@ LABEL_14:
   return v12;
 }
 
-+ (id)securityFooterStringForKTChatState:(unint64_t)a3 handles:(id)a4
++ (id)securityFooterStringForKTChatState:(unint64_t)state handles:(id)handles
 {
-  v5 = a4;
-  v6 = v5;
+  handlesCopy = handles;
+  v6 = handlesCopy;
   v7 = 0;
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
       v22 = CKFrameworkBundle();
@@ -305,7 +305,7 @@ LABEL_14:
       goto LABEL_22;
     case 3uLL:
     case 0x11uLL:
-      if ([v5 count] == 1)
+      if ([handlesCopy count] == 1)
       {
         v21 = @"KT_FOOTER_TEXT_NOT_VERIFIED";
       }
@@ -318,7 +318,7 @@ LABEL_14:
       goto LABEL_10;
     case 4uLL:
     case 0x12uLL:
-      if ([v5 count] == 1)
+      if ([handlesCopy count] == 1)
       {
         v21 = @"KT_FOOTER_TEXT_VERIFIED";
 LABEL_10:
@@ -362,13 +362,13 @@ LABEL_23:
 
       [v7 addAttribute:*MEMORY[0x1E69DB648] value:v33 range:{0, v30}];
       v34 = *MEMORY[0x1E69DB650];
-      v35 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v7 addAttribute:v34 value:v35 range:{0, v30}];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v7 addAttribute:v34 value:secondaryLabelColor range:{0, v30}];
 
       v36 = +[CKUIBehavior sharedBehaviors];
-      v37 = [v36 theme];
-      v38 = [v37 appTintColor];
-      [v7 addAttribute:v34 value:v38 range:{v27, v29}];
+      theme = [v36 theme];
+      appTintColor = [theme appTintColor];
+      [v7 addAttribute:v34 value:appTintColor range:{v27, v29}];
 
       v39 = *MEMORY[0x1E69DB670];
       v40 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1F04268F8];
@@ -387,7 +387,7 @@ LABEL_25:
       v21 = @"KT_FOOTER_VIEW_TEXT_VERIFICATION_FAILURE";
       goto LABEL_10;
     case 9uLL:
-      if ([v5 count] == 1)
+      if ([handlesCopy count] == 1)
       {
         v21 = @"KT_FOOTER_VIEW_TEXT_TURNED_OFF";
       }

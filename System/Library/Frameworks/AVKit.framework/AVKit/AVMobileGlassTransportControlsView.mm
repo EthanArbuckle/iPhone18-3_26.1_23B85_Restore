@@ -2,21 +2,21 @@
 - (AVMobileGlassControlsLayoutConfiguration)layoutConfiguration;
 - (AVMobileGlassTransportControlsView)init;
 - (AVMobileGlassTransportControlsViewDelegate)delegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_setTransportControlView:(uint64_t)a3 frame:(double)a4 layoutDirection:(double)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_setTransportControlView:(uint64_t)view frame:(double)frame layoutDirection:(double)direction;
 - (void)_setUpInlineTransportControlsBackgroundView;
-- (void)_updateViewHiddenStatesWithCanFitState:(id *)a1;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)_updateViewHiddenStatesWithCanFitState:(id *)state;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAuxiliaryControlsView:(id)a3;
-- (void)setLayoutAllowed:(BOOL)a3;
-- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)a3;
-- (void)setLiveEdgeContentTagView:(id)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)setTimelineBackgroundMaterialMode:(int64_t)a3;
-- (void)setTimelineView:(id)a3;
-- (void)setTitlebarView:(id)a3;
+- (void)setAuxiliaryControlsView:(id)view;
+- (void)setLayoutAllowed:(BOOL)allowed;
+- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)configuration;
+- (void)setLiveEdgeContentTagView:(id)view;
+- (void)setStyleSheet:(id)sheet;
+- (void)setTimelineBackgroundMaterialMode:(int64_t)mode;
+- (void)setTimelineView:(id)view;
+- (void)setTitlebarView:(id)view;
 - (void)updateBackgroundMaterial;
 @end
 
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  if (self->_auxiliaryControlsView == a3 || self->_titlebarView == a3)
+  if (self->_auxiliaryControlsView == invalidated || self->_titlebarView == invalidated)
   {
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
 
@@ -77,12 +77,12 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self)
   {
-    height = a3.height;
-    width = a3.width;
+    height = fits.height;
+    width = fits.width;
     v6 = self->_auxiliaryControlsView;
     v7 = self->_timelineView;
     v8 = self->_titlebarView;
@@ -207,9 +207,9 @@ LABEL_70:
     v94 = self->_liveEdgeContentTagView;
     v12 = self->_timelineView;
     v13 = self->_titlebarView;
-    v14 = [(AVMobileGlassTransportControlsView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(AVMobileGlassTransportControlsView *)self effectiveUserInterfaceLayoutDirection];
     v93 = v102;
-    v15 = [(AVMobileGlassTimelineView *)v12 isEmphasized];
+    isEmphasized = [(AVMobileGlassTimelineView *)v12 isEmphasized];
     if (v101 == 1)
     {
       [(AVMobileGlassControlsStyleSheet *)self->_styleSheet controlsPlatterInlineHeight];
@@ -229,20 +229,20 @@ LABEL_70:
     [(AVMobileGlassAuxiliaryControlsView *)v11 sizeFittingControls:v93];
     v96 = v22;
     v97 = v21;
-    v23 = [(AVGlassBackedView *)v12 backgroundMaterialStyle];
+    backgroundMaterialStyle = [(AVGlassBackedView *)v12 backgroundMaterialStyle];
     [(AVMobileGlassTransportControlsView *)self safeAreaInsets];
     v26 = v24;
     v27 = v25;
-    if (v23)
+    if (backgroundMaterialStyle)
     {
       v28 = 1.0;
-      if (v14 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v24 = 1.0;
       }
 
       v81 = v24;
-      if (v14 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v28 = v25;
       }
@@ -267,7 +267,7 @@ LABEL_70:
       v31 = v30;
     }
 
-    if (v14 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v32 = v27;
     }
@@ -278,13 +278,13 @@ LABEL_70:
     }
 
     v33 = v4 + v32;
-    if (v23)
+    if (backgroundMaterialStyle)
     {
       v33 = v4;
     }
 
     v92 = v33;
-    if (v23)
+    if (backgroundMaterialStyle)
     {
       v34 = v8;
     }
@@ -348,11 +348,11 @@ LABEL_37:
         v45 = v85;
 LABEL_61:
         [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setFrame:v53, v51, v46, v52];
-        [(AVMobileGlassTransportControlsView *)self _setTransportControlView:v11 frame:v14 layoutDirection:v35, v40, v97, v96];
-        [(AVMobileGlassTransportControlsView *)self _setTransportControlView:v12 frame:v14 layoutDirection:v49, v38, v54, v17];
+        [(AVMobileGlassTransportControlsView *)self _setTransportControlView:v11 frame:effectiveUserInterfaceLayoutDirection layoutDirection:v35, v40, v97, v96];
+        [(AVMobileGlassTransportControlsView *)self _setTransportControlView:v12 frame:effectiveUserInterfaceLayoutDirection layoutDirection:v49, v38, v54, v17];
         if (!v41)
         {
-          [(UIView *)v13 avkit_setFrame:v14 inLayoutDirection:v92 + v81 + v45, v79, v77 - (v83 + v81) - v84, v91];
+          [(UIView *)v13 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v92 + v81 + v45, v79, v77 - (v83 + v81) - v84, v91];
         }
 
         v57 = 0x1000000;
@@ -497,7 +497,7 @@ LABEL_57:
       goto LABEL_61;
     }
 
-    v61 = !v15;
+    v61 = !isEmphasized;
     HIDWORD(v62) = HIDWORD(v97);
     v78 = *(MEMORY[0x1E695F060] + 8);
     v80 = *MEMORY[0x1E695F060];
@@ -553,20 +553,20 @@ LABEL_57:
   }
 }
 
-- (void)_updateViewHiddenStatesWithCanFitState:(id *)a1
+- (void)_updateViewHiddenStatesWithCanFitState:(id *)state
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (state)
   {
-    v25[0] = a1[67];
-    v25[1] = a1[68];
-    v25[2] = a1[69];
-    v25[3] = a1[70];
+    v25[0] = state[67];
+    v25[1] = state[68];
+    v25[2] = state[69];
+    v25[3] = state[70];
     v22 = a2 & 0x101;
     v23 = BYTE2(a2) & 1;
     v24 = HIBYTE(a2) & 1;
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     for (i = 0; i != 4; ++i)
     {
       v7 = v25[i];
@@ -579,12 +579,12 @@ LABEL_57:
           [v8 setHidden:v9 ^ 1u];
           if (v9)
           {
-            v10 = v5;
+            v10 = array2;
           }
 
           else
           {
-            v10 = v4;
+            v10 = array;
           }
 
           [v10 addObject:v8];
@@ -592,41 +592,41 @@ LABEL_57:
       }
     }
 
-    if ([v4 count])
+    if ([array count])
     {
-      v11 = v4;
+      v11 = array;
       v12 = v11;
       if (v11)
       {
         if ([v11 count])
         {
-          v13 = [a1 delegate];
+          delegate = [state delegate];
           v14 = objc_opt_respondsToSelector();
 
           if (v14)
           {
-            v15 = [a1 delegate];
-            [v15 glassTransportControlsView:a1 didDetachControlsViews:v12];
+            delegate2 = [state delegate];
+            [delegate2 glassTransportControlsView:state didDetachControlsViews:v12];
           }
         }
       }
     }
 
-    if ([v5 count])
+    if ([array2 count])
     {
-      v16 = v5;
+      v16 = array2;
       v17 = v16;
       if (v16)
       {
         if ([v16 count])
         {
-          v18 = [a1 delegate];
+          delegate3 = [state delegate];
           v19 = objc_opt_respondsToSelector();
 
           if (v19)
           {
-            v20 = [a1 delegate];
-            [v20 glassTransportControlsView:a1 didAttachControlsViews:v17];
+            delegate4 = [state delegate];
+            [delegate4 glassTransportControlsView:state didAttachControlsViews:v17];
           }
         }
       }
@@ -638,20 +638,20 @@ LABEL_57:
   }
 }
 
-- (void)_setTransportControlView:(uint64_t)a3 frame:(double)a4 layoutDirection:(double)a5
+- (void)_setTransportControlView:(uint64_t)view frame:(double)frame layoutDirection:(double)direction
 {
   v18 = a2;
-  v13 = [v18 superview];
-  if (v13 != a1)
+  superview = [v18 superview];
+  if (superview != self)
   {
-    [a1 convertRect:v13 toView:{a4, a5, a6, a7}];
-    a4 = v14;
-    a5 = v15;
+    [self convertRect:superview toView:{frame, direction, a6, a7}];
+    frame = v14;
+    direction = v15;
     a6 = v16;
     a7 = v17;
   }
 
-  [v18 avkit_setFrame:a3 inLayoutDirection:{a4, a5, a6, a7}];
+  [v18 avkit_setFrame:view inLayoutDirection:{frame, direction, a6, a7}];
 }
 
 - (void)didMoveToWindow
@@ -667,17 +667,17 @@ LABEL_57:
 {
   auxiliaryControlsPlacement = self->_layoutConfiguration.auxiliaryControlsPlacement;
   v9 = self->_layoutConfiguration.pinnedAuxiliaryControls;
-  v4 = [(AVGlassBackedView *)self backgroundMaterialStyle];
+  backgroundMaterialStyle = [(AVGlassBackedView *)self backgroundMaterialStyle];
   if (self->_timelineBackgroundMaterialMode == 1)
   {
-    v5 = [(AVGlassBackedView *)self backgroundMaterialStyle];
+    backgroundMaterialStyle2 = [(AVGlassBackedView *)self backgroundMaterialStyle];
     if (!auxiliaryControlsPlacement)
     {
 LABEL_3:
       [(AVMobileGlassTransportControlsView *)self addSubview:self->_timelineView];
       [(AVMobileGlassTransportControlsView *)self addSubview:self->_auxiliaryControlsView];
-      [(AVMobileGlassTimelineView *)self->_timelineView setBackgroundMaterialStyle:v5];
-      [(AVGlassBackedView *)self->_auxiliaryControlsView setBackgroundMaterialStyle:v4];
+      [(AVMobileGlassTimelineView *)self->_timelineView setBackgroundMaterialStyle:backgroundMaterialStyle2];
+      [(AVGlassBackedView *)self->_auxiliaryControlsView setBackgroundMaterialStyle:backgroundMaterialStyle];
       [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setBackgroundMaterialStyle:0];
       [(AVView *)self->_inlineTransportControlsBackgroundView setHidden:1];
       goto LABEL_6;
@@ -686,7 +686,7 @@ LABEL_3:
 
   else
   {
-    v5 = 0;
+    backgroundMaterialStyle2 = 0;
     if (!auxiliaryControlsPlacement)
     {
       goto LABEL_3;
@@ -697,34 +697,34 @@ LABEL_3:
   [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView addSubview:self->_auxiliaryControlsView];
   [(AVMobileGlassTimelineView *)self->_timelineView setBackgroundMaterialStyle:0];
   [(AVGlassBackedView *)self->_auxiliaryControlsView setBackgroundMaterialStyle:0];
-  [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setBackgroundMaterialStyle:v4];
+  [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setBackgroundMaterialStyle:backgroundMaterialStyle];
   [(AVView *)self->_inlineTransportControlsBackgroundView setHidden:0];
 LABEL_6:
-  v6 = [(AVGlassBackedView *)self backgroundMaterialized];
-  if (v6)
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
+  if (backgroundMaterialized)
   {
-    v7 = [(AVGlassBackedView *)self->_timelineView backgroundMaterialized];
-    v8 = [(AVGlassBackedView *)self->_auxiliaryControlsView backgroundMaterialized];
+    backgroundMaterialized2 = [(AVGlassBackedView *)self->_timelineView backgroundMaterialized];
+    backgroundMaterialized3 = [(AVGlassBackedView *)self->_auxiliaryControlsView backgroundMaterialized];
   }
 
   else
   {
-    v7 = 0;
-    v8 = 0;
+    backgroundMaterialized2 = 0;
+    backgroundMaterialized3 = 0;
   }
 
-  [(AVGlassBackedView *)self->_timelineView setBackgroundMaterialized:v7];
-  [(AVGlassBackedView *)self->_auxiliaryControlsView setBackgroundMaterialized:v8];
-  [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setBackgroundMaterialized:v6];
+  [(AVGlassBackedView *)self->_timelineView setBackgroundMaterialized:backgroundMaterialized2];
+  [(AVGlassBackedView *)self->_auxiliaryControlsView setBackgroundMaterialized:backgroundMaterialized3];
+  [(AVGlassBackedView *)self->_inlineTransportControlsBackgroundView setBackgroundMaterialized:backgroundMaterialized];
   [(AVMobileGlassTransportControlsView *)self setClipsToBounds:0];
 }
 
-- (void)setTitlebarView:(id)a3
+- (void)setTitlebarView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileTitlebarView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileTitlebarView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -751,22 +751,22 @@ LABEL_6:
     titlebarView = 0;
   }
 
-  if (titlebarView != v5)
+  if (titlebarView != viewCopy)
   {
     [(AVMobileTitlebarView *)titlebarView removeFromSuperview];
-    objc_storeStrong(&self->_titlebarView, a3);
+    objc_storeStrong(&self->_titlebarView, view);
     [(AVView *)self->_titlebarView setHidden:1];
     [(AVMobileGlassTransportControlsView *)self addSubview:self->_titlebarView];
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimelineView:(id)a3
+- (void)setTimelineView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassTimelineView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassTimelineView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -793,22 +793,22 @@ LABEL_6:
     timelineView = 0;
   }
 
-  if (timelineView != v5)
+  if (timelineView != viewCopy)
   {
     [(AVMobileGlassTimelineView *)timelineView removeFromSuperview];
-    objc_storeStrong(&self->_timelineView, a3);
+    objc_storeStrong(&self->_timelineView, view);
     [(AVView *)self->_timelineView setHidden:1];
     [(AVMobileGlassTransportControlsView *)self addSubview:self->_timelineView];
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setLiveEdgeContentTagView:(id)a3
+- (void)setLiveEdgeContentTagView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassContentTagView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassContentTagView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -835,22 +835,22 @@ LABEL_6:
     liveEdgeContentTagView = 0;
   }
 
-  if (liveEdgeContentTagView != v5)
+  if (liveEdgeContentTagView != viewCopy)
   {
     [(AVMobileGlassContentTagView *)liveEdgeContentTagView removeFromSuperview];
-    objc_storeStrong(&self->_liveEdgeContentTagView, a3);
+    objc_storeStrong(&self->_liveEdgeContentTagView, view);
     [(AVView *)self->_liveEdgeContentTagView setHidden:1];
     [(AVMobileGlassTransportControlsView *)self addSubview:self->_liveEdgeContentTagView];
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryControlsView:(id)a3
+- (void)setAuxiliaryControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassAuxiliaryControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassAuxiliaryControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -877,38 +877,38 @@ LABEL_6:
     auxiliaryControlsView = 0;
   }
 
-  if (auxiliaryControlsView != v5)
+  if (auxiliaryControlsView != viewCopy)
   {
     [(AVMobileGlassAuxiliaryControlsView *)auxiliaryControlsView removeFromSuperview];
-    objc_storeStrong(&self->_auxiliaryControlsView, a3);
+    objc_storeStrong(&self->_auxiliaryControlsView, view);
     [(AVView *)self->_auxiliaryControlsView setHidden:1];
     [(AVMobileGlassTransportControlsView *)self addSubview:self->_auxiliaryControlsView];
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimelineBackgroundMaterialMode:(int64_t)a3
+- (void)setTimelineBackgroundMaterialMode:(int64_t)mode
 {
-  if (self->_timelineBackgroundMaterialMode != a3)
+  if (self->_timelineBackgroundMaterialMode != mode)
   {
-    self->_timelineBackgroundMaterialMode = a3;
+    self->_timelineBackgroundMaterialMode = mode;
     [(AVMobileGlassTransportControlsView *)self updateBackgroundMaterial];
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v6 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
-    v5 = v6;
+    sheetCopy = v6;
   }
 }
 
-- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)a3
+- (void)setLayoutConfiguration:(AVMobileGlassControlsLayoutConfiguration *)configuration
 {
   p_layoutConfiguration = &self->_layoutConfiguration;
   v6 = *&self->_layoutConfiguration.expanded;
@@ -917,8 +917,8 @@ LABEL_6:
   auxiliaryControlsPlacement = self->_layoutConfiguration.auxiliaryControlsPlacement;
   p_pinnedAuxiliaryControls = &self->_layoutConfiguration.pinnedAuxiliaryControls;
   v35 = self->_layoutConfiguration.pinnedAuxiliaryControls;
-  pinnedAuxiliaryControls = a3->pinnedAuxiliaryControls;
-  v25 = a3->auxiliaryControlsPlacement;
+  pinnedAuxiliaryControls = configuration->pinnedAuxiliaryControls;
+  v25 = configuration->auxiliaryControlsPlacement;
   v9 = *&p_layoutConfiguration->volumeSliderInsets.left;
   v38 = *&p_layoutConfiguration->timelineSliderInsets.right;
   v39 = v9;
@@ -928,34 +928,34 @@ LABEL_6:
   v11 = *&p_layoutConfiguration->timelineSliderInsets.left;
   v36 = *&p_layoutConfiguration->contentTabPresented;
   v37 = v11;
-  v12 = *&a3->expanded;
-  v23 = *&a3->includedControls;
+  v12 = *&configuration->expanded;
+  v23 = *&configuration->includedControls;
   v24 = v12;
   v26 = pinnedAuxiliaryControls;
-  v13 = *&a3->volumeSliderInsets.left;
-  v29 = *&a3->timelineSliderInsets.right;
+  v13 = *&configuration->volumeSliderInsets.left;
+  v29 = *&configuration->timelineSliderInsets.right;
   v30 = v13;
-  v14 = *&a3->contentTabsLayout;
-  v31 = *&a3->volumeSliderInsets.right;
+  v14 = *&configuration->contentTabsLayout;
+  v31 = *&configuration->volumeSliderInsets.right;
   v32 = v14;
-  v15 = *&a3->timelineSliderInsets.left;
-  v27 = *&a3->contentTabPresented;
+  v15 = *&configuration->timelineSliderInsets.left;
+  v27 = *&configuration->contentTabPresented;
   v28 = v15;
   if (!AVMobileGlassControlsLayoutConfigurationsEqual(v33, &v23))
   {
-    v16 = *&a3->includedControls;
-    v17 = *&a3->expanded;
-    p_layoutConfiguration->auxiliaryControlsPlacement = a3->auxiliaryControlsPlacement;
+    v16 = *&configuration->includedControls;
+    v17 = *&configuration->expanded;
+    p_layoutConfiguration->auxiliaryControlsPlacement = configuration->auxiliaryControlsPlacement;
     *&p_layoutConfiguration->includedControls = v16;
     *&p_layoutConfiguration->expanded = v17;
-    objc_storeStrong(p_pinnedAuxiliaryControls, a3->pinnedAuxiliaryControls);
-    v18 = *&a3->timelineSliderInsets.left;
-    *&p_layoutConfiguration->contentTabPresented = *&a3->contentTabPresented;
+    objc_storeStrong(p_pinnedAuxiliaryControls, configuration->pinnedAuxiliaryControls);
+    v18 = *&configuration->timelineSliderInsets.left;
+    *&p_layoutConfiguration->contentTabPresented = *&configuration->contentTabPresented;
     *&p_layoutConfiguration->timelineSliderInsets.left = v18;
-    v19 = *&a3->timelineSliderInsets.right;
-    v20 = *&a3->volumeSliderInsets.left;
-    v21 = *&a3->contentTabsLayout;
-    *&p_layoutConfiguration->volumeSliderInsets.right = *&a3->volumeSliderInsets.right;
+    v19 = *&configuration->timelineSliderInsets.right;
+    v20 = *&configuration->volumeSliderInsets.left;
+    v21 = *&configuration->contentTabsLayout;
+    *&p_layoutConfiguration->volumeSliderInsets.right = *&configuration->volumeSliderInsets.right;
     *&p_layoutConfiguration->contentTabsLayout = v21;
     *&p_layoutConfiguration->timelineSliderInsets.right = v19;
     *&p_layoutConfiguration->volumeSliderInsets.left = v20;
@@ -963,15 +963,15 @@ LABEL_6:
     [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
   }
 
-  v22 = a3->pinnedAuxiliaryControls;
+  v22 = configuration->pinnedAuxiliaryControls;
 }
 
-- (void)setLayoutAllowed:(BOOL)a3
+- (void)setLayoutAllowed:(BOOL)allowed
 {
-  if (self->_layoutAllowed != a3)
+  if (self->_layoutAllowed != allowed)
   {
-    self->_layoutAllowed = a3;
-    if (a3)
+    self->_layoutAllowed = allowed;
+    if (allowed)
     {
       [(AVMobileGlassTransportControlsView *)self setNeedsLayout];
     }

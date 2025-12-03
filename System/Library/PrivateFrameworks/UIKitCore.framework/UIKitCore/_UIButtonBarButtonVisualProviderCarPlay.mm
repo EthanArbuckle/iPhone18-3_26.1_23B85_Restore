@@ -1,26 +1,26 @@
 @interface _UIButtonBarButtonVisualProviderCarPlay
 - (_UIButtonBarAppearanceDelegate)appearanceDelegate;
 - (double)_effectiveEdgeSpacing;
-- (id)_titleAlternativeForTitle:(id)a3;
+- (id)_titleAlternativeForTitle:(id)title;
 - (id)contentView;
-- (void)_setupAlternateTitlesFromBarButtonItem:(id)a3;
-- (void)_updateLabelColorsForStateEnabled:(BOOL)a3 focused:(BOOL)a4 pressed:(BOOL)a5;
-- (void)buttonLayoutSubviews:(id)a3 baseImplementation:(id)a4;
-- (void)configureButton:(id)a3 fromBarButtonItem:(id)a4;
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5;
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4;
-- (void)updateButton:(id)a3 forFocusedState:(BOOL)a4;
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4;
+- (void)_setupAlternateTitlesFromBarButtonItem:(id)item;
+- (void)_updateLabelColorsForStateEnabled:(BOOL)enabled focused:(BOOL)focused pressed:(BOOL)pressed;
+- (void)buttonLayoutSubviews:(id)subviews baseImplementation:(id)implementation;
+- (void)configureButton:(id)button fromBarButtonItem:(id)item;
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item;
+- (void)updateButton:(id)button forEnabledState:(BOOL)state;
+- (void)updateButton:(id)button forFocusedState:(BOOL)state;
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state;
 @end
 
 @implementation _UIButtonBarButtonVisualProviderCarPlay
 
 - (id)contentView
 {
-  v3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-  v4 = [v3 superview];
+  imageView = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+  superview = [imageView superview];
 
-  if (v4)
+  if (superview)
   {
     [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
   }
@@ -34,150 +34,150 @@
   return v5;
 }
 
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item
 {
-  v9 = a3;
-  v8 = a5;
-  [(_UIButtonBarButtonVisualProviderCarPlay *)self setAppearanceDelegate:a4];
+  buttonCopy = button;
+  itemCopy = item;
+  [(_UIButtonBarButtonVisualProviderCarPlay *)self setAppearanceDelegate:delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_UIButtonBarButtonVisualProviderCarPlay *)self configureButton:v9 fromBarButtonItem:v8];
+    [(_UIButtonBarButtonVisualProviderCarPlay *)self configureButton:buttonCopy fromBarButtonItem:itemCopy];
   }
 }
 
-- (void)configureButton:(id)a3 fromBarButtonItem:(id)a4
+- (void)configureButton:(id)button fromBarButtonItem:(id)item
 {
   v175[5] = *MEMORY[0x1E69E9840];
-  v160 = a3;
-  v159 = a4;
+  buttonCopy = button;
+  itemCopy = item;
   v6 = MEMORY[0x1E69977A0];
-  v7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
-  [v6 deactivateConstraints:v7];
+  buttonConstraints = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
+  [v6 deactivateConstraints:buttonConstraints];
 
-  v8 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-  [v8 removeFromSuperview];
+  backView = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+  [backView removeFromSuperview];
 
-  v9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-  [v9 removeFromSuperview];
+  imageView = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+  [imageView removeFromSuperview];
 
-  v10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-  [v10 removeFromSuperview];
+  titleView = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+  [titleView removeFromSuperview];
 
-  v11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-  [v11 removeFromSuperview];
+  focusedView = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+  [focusedView removeFromSuperview];
 
   [(_UIButtonBarButtonVisualProviderCarPlay *)self setBackViewToContentConstraint:0];
   if (_UISMCBarsEnabled())
   {
-    [v160 setClipsToBounds:1];
+    [buttonCopy setClipsToBounds:1];
   }
 
-  v12 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+  focusedView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
 
-  if (!v12)
+  if (!focusedView2)
   {
     v13 = [UIView alloc];
     v14 = [(UIView *)v13 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(_UIButtonBarButtonVisualProviderCarPlay *)self setFocusedView:v14];
 
-    v15 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    focusedView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    [focusedView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v17 = [v16 layer];
-    [v17 setCornerRadius:4.5];
+    focusedView4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    layer = [focusedView4 layer];
+    [layer setCornerRadius:4.5];
 
-    v18 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v19 = [v18 layer];
-    [v19 setCornerCurve:*MEMORY[0x1E69796E8]];
+    focusedView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    layer2 = [focusedView5 layer];
+    [layer2 setCornerCurve:*MEMORY[0x1E69796E8]];
 
-    v20 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    [v20 setUserInteractionEnabled:0];
+    focusedView6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    [focusedView6 setUserInteractionEnabled:0];
   }
 
-  v21 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-  [v160 addSubview:v21];
+  focusedView7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+  [buttonCopy addSubview:focusedView7];
 
-  v158 = [v159 _imageForState:0 compact:0 type:0];
+  v158 = [itemCopy _imageForState:0 compact:0 type:0];
   if (v158)
   {
-    v22 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+    imageView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
 
-    if (!v22)
+    if (!imageView2)
     {
       v23 = [UIImageView alloc];
       v24 = [(UIImageView *)v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setImageView:v24];
 
-      v25 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-      [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+      imageView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+      [imageView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v26 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-      [v26 setUserInteractionEnabled:0];
+      imageView4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+      [imageView4 setUserInteractionEnabled:0];
 
-      v27 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-      [v27 setContentMode:4];
+      imageView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+      [imageView5 setContentMode:4];
     }
 
-    v28 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-    [v28 setImage:v158];
+    imageView6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+    [imageView6 setImage:v158];
 
-    v29 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+    imageView7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
   }
 
   else
   {
-    v30 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    titleView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
 
-    if (!v30)
+    if (!titleView2)
     {
       v31 = [UILabel alloc];
       v32 = [(UILabel *)v31 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setTitleView:v32];
 
-      v33 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-      [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+      titleView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      [titleView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
       if (_UISMCBarsEnabled())
       {
         v34 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCallout" weight:*off_1E70ECD20];
-        v35 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-        [v35 setFont:v34];
+        titleView4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+        [titleView4 setFont:v34];
 
-        v36 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-        [v36 setPreferredVibrancy:1];
+        titleView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+        [titleView5 setPreferredVibrancy:1];
       }
 
       else
       {
-        v36 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCallout"];
-        v37 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-        [v37 setFont:v36];
+        titleView5 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCallout"];
+        titleView6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+        [titleView6 setFont:titleView5];
       }
 
-      v38 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-      [v38 setAdjustsFontForContentSizeCategory:1];
+      titleView7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      [titleView7 setAdjustsFontForContentSizeCategory:1];
 
-      v39 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-      [v39 setUserInteractionEnabled:0];
+      titleView8 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      [titleView8 setUserInteractionEnabled:0];
     }
 
-    v40 = [v159 resolvedTitle];
-    v41 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-    [v41 setText:v40];
+    resolvedTitle = [itemCopy resolvedTitle];
+    titleView9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    [titleView9 setText:resolvedTitle];
 
-    v29 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    imageView7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
   }
 
-  v42 = v29;
-  [v160 addSubview:v29];
+  v42 = imageView7;
+  [buttonCopy addSubview:imageView7];
 
-  if (([v160 isBackButton] & 1) != 0 || objc_msgSend(v159, "_showsChevron"))
+  if (([buttonCopy isBackButton] & 1) != 0 || objc_msgSend(itemCopy, "_showsChevron"))
   {
-    v43 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+    backView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
 
-    if (!v43)
+    if (!backView2)
     {
       if (_UISMCBarsEnabled())
       {
@@ -197,26 +197,26 @@
       v52 = [(UIImageView *)v50 initWithImage:v51];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setBackView:v52];
 
-      v53 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-      [v53 setTranslatesAutoresizingMaskIntoConstraints:0];
+      backView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      [backView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v54 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-      [v54 setUserInteractionEnabled:0];
+      backView4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      [backView4 setUserInteractionEnabled:0];
 
-      v55 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      backView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
       LODWORD(v56) = 1148846080;
-      [v55 setContentCompressionResistancePriority:0 forAxis:v56];
+      [backView5 setContentCompressionResistancePriority:0 forAxis:v56];
     }
 
-    v57 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-    [v160 addSubview:v57];
+    backView6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+    [buttonCopy addSubview:backView6];
 
     if (_UISMCBarsEnabled())
     {
-      [v160 _setWantsGlassAppearance:1];
+      [buttonCopy _setWantsGlassAppearance:1];
     }
 
-    [(_UIButtonBarButtonVisualProviderCarPlay *)self _setupAlternateTitlesFromBarButtonItem:v159];
+    [(_UIButtonBarButtonVisualProviderCarPlay *)self _setupAlternateTitlesFromBarButtonItem:itemCopy];
     if (_UISMCBarsEnabled())
     {
       v58 = 36.0;
@@ -227,8 +227,8 @@
       v58 = 44.0;
     }
 
-    v59 = [v160 widthAnchor];
-    v157 = [v59 constraintGreaterThanOrEqualToConstant:v58];
+    widthAnchor = [buttonCopy widthAnchor];
+    v157 = [widthAnchor constraintGreaterThanOrEqualToConstant:v58];
 
     LODWORD(v60) = 1148846080;
     [v157 setPriority:v60];
@@ -242,78 +242,78 @@
       v61 = 5.0;
     }
 
-    v62 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-    v63 = [v62 leadingAnchor];
-    v64 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-    v65 = [v64 trailingAnchor];
-    v147 = [v63 constraintEqualToAnchor:v65 constant:3.0];
+    contentView = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+    leadingAnchor = [contentView leadingAnchor];
+    backView7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+    trailingAnchor = [backView7 trailingAnchor];
+    contentView6 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:3.0];
 
     v175[0] = v157;
-    v154 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v150 = [v154 topAnchor];
-    v148 = [v160 topAnchor];
-    v145 = [v150 constraintEqualToAnchor:v148 constant:v61];
+    focusedView8 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    topAnchor = [focusedView8 topAnchor];
+    topAnchor2 = [buttonCopy topAnchor];
+    v145 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v61];
     v175[1] = v145;
-    v143 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v141 = [v143 leadingAnchor];
-    v139 = [v160 leadingAnchor];
-    v66 = [v141 constraintEqualToAnchor:v139 constant:v61];
+    focusedView9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    leadingAnchor2 = [focusedView9 leadingAnchor];
+    leadingAnchor3 = [buttonCopy leadingAnchor];
+    v66 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:v61];
     v175[2] = v66;
-    v67 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v68 = [v67 trailingAnchor];
-    v69 = [v160 trailingAnchor];
+    focusedView10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    trailingAnchor2 = [focusedView10 trailingAnchor];
+    trailingAnchor3 = [buttonCopy trailingAnchor];
     v70 = -v61;
-    v71 = [v68 constraintEqualToAnchor:v69 constant:v70];
+    v71 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v70];
     v175[3] = v71;
-    v72 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v73 = [v72 bottomAnchor];
-    v74 = [v160 bottomAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74 constant:v70];
+    focusedView11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    bottomAnchor = [focusedView11 bottomAnchor];
+    bottomAnchor2 = [buttonCopy bottomAnchor];
+    v75 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v70];
     v175[4] = v75;
-    v153 = [MEMORY[0x1E695DEC8] arrayWithObjects:v175 count:5];
+    leadingAnchor6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v175 count:5];
 
     if (_UISMCBarsEnabled())
     {
-      v155 = [v160 widthMinimizingConstraint];
-      v174[0] = v155;
-      v151 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-      v76 = [v151 centerYAnchor];
-      v77 = [v160 centerYAnchor];
-      v78 = [v76 constraintEqualToAnchor:v77];
+      widthMinimizingConstraint = [buttonCopy widthMinimizingConstraint];
+      v174[0] = widthMinimizingConstraint;
+      backView8 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      centerYAnchor = [backView8 centerYAnchor];
+      centerYAnchor2 = [buttonCopy centerYAnchor];
+      v78 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v174[1] = v78;
-      v79 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-      v80 = [v79 centerYAnchor];
-      v81 = [v160 centerYAnchor];
-      v82 = [v80 constraintEqualToAnchor:v81];
+      contentView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+      centerYAnchor3 = [contentView2 centerYAnchor];
+      centerYAnchor4 = [buttonCopy centerYAnchor];
+      v82 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v174[2] = v82;
       v83 = [MEMORY[0x1E695DEC8] arrayWithObjects:v174 count:3];
-      v84 = [v153 arrayByAddingObjectsFromArray:v83];
+      v84 = [leadingAnchor6 arrayByAddingObjectsFromArray:v83];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:v84];
 
-      v85 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-      v86 = [v85 text];
-      if (v86)
+      titleView10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      text = [titleView10 text];
+      if (text)
       {
-        v87 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-        v88 = [v87 text];
-        v89 = [v88 length] == 0;
+        titleView11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+        text2 = [titleView11 text];
+        v89 = [text2 length] == 0;
 
         if (!v89)
         {
-          v156 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
-          v173[0] = v147;
-          v152 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-          v149 = [v152 leadingAnchor];
-          v90 = [v160 leadingAnchor];
-          v91 = [v149 constraintEqualToAnchor:v90 constant:12.0];
+          buttonConstraints2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
+          v173[0] = contentView6;
+          backView9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+          leadingAnchor4 = [backView9 leadingAnchor];
+          leadingAnchor5 = [buttonCopy leadingAnchor];
+          v91 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:12.0];
           v173[1] = v91;
-          v92 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-          v93 = [v92 trailingAnchor];
-          v94 = [v160 trailingAnchor];
-          v95 = [v93 constraintEqualToAnchor:v94 constant:-12.0];
+          contentView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+          trailingAnchor4 = [contentView3 trailingAnchor];
+          trailingAnchor5 = [buttonCopy trailingAnchor];
+          v95 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-12.0];
           v173[2] = v95;
           v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:v173 count:3];
-          v97 = [v156 arrayByAddingObjectsFromArray:v96];
+          v97 = [buttonConstraints2 arrayByAddingObjectsFromArray:v96];
           [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:v97];
 
           goto LABEL_48;
@@ -324,33 +324,33 @@
       {
       }
 
-      v105 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-      v106 = [v105 centerXAnchor];
-      v107 = [v160 centerXAnchor];
-      v156 = [v106 constraintEqualToAnchor:v107];
+      backView10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      centerXAnchor = [backView10 centerXAnchor];
+      centerXAnchor2 = [buttonCopy centerXAnchor];
+      buttonConstraints2 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
       LODWORD(v108) = 1148846080;
-      [v156 setPriority:v108];
-      v152 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
-      v149 = [v152 arrayByAddingObject:v156];
-      [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:v149];
+      [buttonConstraints2 setPriority:v108];
+      backView9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
+      leadingAnchor4 = [backView9 arrayByAddingObject:buttonConstraints2];
+      [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:leadingAnchor4];
     }
 
     else
     {
-      v156 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-      v152 = [v156 firstBaselineAnchor];
-      v149 = [v160 topAnchor];
-      v98 = [v152 constraintEqualToAnchor:v149 constant:28.0];
+      buttonConstraints2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+      backView9 = [buttonConstraints2 firstBaselineAnchor];
+      leadingAnchor4 = [buttonCopy topAnchor];
+      v98 = [backView9 constraintEqualToAnchor:leadingAnchor4 constant:28.0];
       v172[0] = v98;
-      v99 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-      v100 = [v99 firstBaselineAnchor];
-      v101 = [v160 topAnchor];
-      v102 = [v100 constraintEqualToAnchor:v101 constant:28.0];
+      contentView4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+      firstBaselineAnchor = [contentView4 firstBaselineAnchor];
+      topAnchor3 = [buttonCopy topAnchor];
+      v102 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:28.0];
       v172[1] = v102;
-      v172[2] = v147;
+      v172[2] = contentView6;
       v103 = [MEMORY[0x1E695DEC8] arrayWithObjects:v172 count:3];
-      v104 = [v153 arrayByAddingObjectsFromArray:v103];
+      v104 = [leadingAnchor6 arrayByAddingObjectsFromArray:v103];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:v104];
     }
   }
@@ -359,18 +359,18 @@
   {
     if (v158 && ![v158 hasBaseline] || _UISMCBarsEnabled())
     {
-      v46 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-      v47 = [v46 centerYAnchor];
-      v48 = [v160 centerYAnchor];
-      v157 = [v47 constraintEqualToAnchor:v48];
+      contentView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+      centerYAnchor5 = [contentView5 centerYAnchor];
+      centerYAnchor6 = [buttonCopy centerYAnchor];
+      v157 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     }
 
     else
     {
-      v46 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-      v47 = [v46 firstBaselineAnchor];
-      v48 = [v160 topAnchor];
-      v157 = [v47 constraintEqualToAnchor:v48 constant:28.0];
+      contentView5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+      centerYAnchor5 = [contentView5 firstBaselineAnchor];
+      centerYAnchor6 = [buttonCopy topAnchor];
+      v157 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6 constant:28.0];
     }
 
     if (_UISMCBarsEnabled())
@@ -390,37 +390,37 @@
       v110 = v111;
     }
 
-    v147 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-    v153 = [v147 leadingAnchor];
-    v156 = [v160 leadingAnchor];
-    v152 = [v153 constraintEqualToAnchor:v156 constant:v110];
-    v171[0] = v152;
-    v149 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-    v146 = [v149 trailingAnchor];
-    v144 = [v160 trailingAnchor];
-    v142 = [v146 constraintEqualToAnchor:v144 constant:-v110];
+    contentView6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+    leadingAnchor6 = [contentView6 leadingAnchor];
+    buttonConstraints2 = [buttonCopy leadingAnchor];
+    backView9 = [leadingAnchor6 constraintEqualToAnchor:buttonConstraints2 constant:v110];
+    v171[0] = backView9;
+    leadingAnchor4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+    trailingAnchor6 = [leadingAnchor4 trailingAnchor];
+    trailingAnchor7 = [buttonCopy trailingAnchor];
+    v142 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-v110];
     v171[1] = v142;
     v171[2] = v157;
-    v140 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v138 = [v140 topAnchor];
-    v137 = [v160 topAnchor];
-    v136 = [v138 constraintEqualToAnchor:v137 constant:v109];
+    focusedView12 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    topAnchor4 = [focusedView12 topAnchor];
+    topAnchor5 = [buttonCopy topAnchor];
+    v136 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:v109];
     v171[3] = v136;
-    v135 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v134 = [v135 leadingAnchor];
-    v133 = [v160 leadingAnchor];
-    v132 = [v134 constraintEqualToAnchor:v133 constant:v109];
+    focusedView13 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    leadingAnchor7 = [focusedView13 leadingAnchor];
+    leadingAnchor8 = [buttonCopy leadingAnchor];
+    v132 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:v109];
     v171[4] = v132;
-    v112 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v113 = [v112 trailingAnchor];
-    v114 = [v160 trailingAnchor];
+    focusedView14 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    trailingAnchor8 = [focusedView14 trailingAnchor];
+    trailingAnchor9 = [buttonCopy trailingAnchor];
     v115 = -v109;
-    v116 = [v113 constraintEqualToAnchor:v114 constant:v115];
+    v116 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:v115];
     v171[5] = v116;
-    v117 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    v118 = [v117 bottomAnchor];
-    v119 = [v160 bottomAnchor];
-    v120 = [v118 constraintEqualToAnchor:v119 constant:v115];
+    focusedView15 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    bottomAnchor3 = [focusedView15 bottomAnchor];
+    bottomAnchor4 = [buttonCopy bottomAnchor];
+    v120 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v115];
     v171[6] = v120;
     v121 = [MEMORY[0x1E695DEC8] arrayWithObjects:v171 count:7];
     [(_UIButtonBarButtonVisualProviderCarPlay *)self setButtonConstraints:v121];
@@ -428,7 +428,7 @@
 
 LABEL_48:
 
-  -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [v159 isEnabled], objc_msgSend(v160, "isFocused"), 0);
+  -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [itemCopy isEnabled], objc_msgSend(buttonCopy, "isFocused"), 0);
   objc_initWeak(&location, self);
   v122 = objc_opt_self();
   v170 = v122;
@@ -438,20 +438,20 @@ LABEL_48:
   v165[2] = __77___UIButtonBarButtonVisualProviderCarPlay_configureButton_fromBarButtonItem___block_invoke;
   v165[3] = &unk_1E7109048;
   objc_copyWeak(&v167, &location);
-  v124 = v160;
+  v124 = buttonCopy;
   v166 = v124;
   v125 = [v124 registerForTraitChanges:v123 withHandler:v165];
 
   v126 = MEMORY[0x1E69977A0];
-  v127 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
-  [v126 activateConstraints:v127];
+  buttonConstraints3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self buttonConstraints];
+  [v126 activateConstraints:buttonConstraints3];
 
   v163 = 0u;
   v164 = 0u;
   v161 = 0u;
   v162 = 0u;
-  v128 = [v159 _gestureRecognizers];
-  v129 = [v128 countByEnumeratingWithState:&v161 objects:v169 count:16];
+  _gestureRecognizers = [itemCopy _gestureRecognizers];
+  v129 = [_gestureRecognizers countByEnumeratingWithState:&v161 objects:v169 count:16];
   if (v129)
   {
     v130 = *v162;
@@ -461,13 +461,13 @@ LABEL_48:
       {
         if (*v162 != v130)
         {
-          objc_enumerationMutation(v128);
+          objc_enumerationMutation(_gestureRecognizers);
         }
 
         [v124 addGestureRecognizer:*(*(&v161 + 1) + 8 * i)];
       }
 
-      v129 = [v128 countByEnumeratingWithState:&v161 objects:v169 count:16];
+      v129 = [_gestureRecognizers countByEnumeratingWithState:&v161 objects:v169 count:16];
     }
 
     while (v129);
@@ -477,17 +477,17 @@ LABEL_48:
   objc_destroyWeak(&location);
 }
 
-- (void)buttonLayoutSubviews:(id)a3 baseImplementation:(id)a4
+- (void)buttonLayoutSubviews:(id)subviews baseImplementation:(id)implementation
 {
-  v34 = a3;
-  v6 = a4;
-  v7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-  v8 = [v7 count];
+  subviewsCopy = subviews;
+  implementationCopy = implementation;
+  titleAlternatives = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+  v8 = [titleAlternatives count];
 
   if (v8)
   {
-    v9 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-    [v9 _nsis_bounds];
+    titleView = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    [titleView _nsis_bounds];
     v11 = v10;
 
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
@@ -509,8 +509,8 @@ LABEL_48:
       v11 = v15;
     }
 
-    v16 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-    v17 = [v16 count];
+    titleAlternatives2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+    v17 = [titleAlternatives2 count];
 
     if (!v17)
     {
@@ -518,14 +518,14 @@ LABEL_48:
     }
 
     v18 = 0;
-    v19 = &stru_1EFB14550;
+    title = &stru_1EFB14550;
     do
     {
-      v20 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-      v21 = [v20 objectAtIndexedSubscript:v18];
+      titleAlternatives3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+      v21 = [titleAlternatives3 objectAtIndexedSubscript:v18];
 
-      v22 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-      [v21 updateWithLabel:v22];
+      titleView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      [v21 updateWithLabel:titleView2];
 
       [v21 width];
       if (v23 <= v11)
@@ -534,71 +534,71 @@ LABEL_48:
       }
 
       ++v18;
-      v24 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-      v25 = [v24 count];
+      titleAlternatives4 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+      v25 = [titleAlternatives4 count];
     }
 
     while (v18 < v25);
     if (v21)
     {
-      v19 = [v21 title];
+      title = [v21 title];
     }
 
     else
     {
 LABEL_14:
-      v19 = &stru_1EFB14550;
+      title = &stru_1EFB14550;
     }
 
-    v26 = [(__CFString *)v19 length];
-    v27 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backViewToContentConstraint];
-    v28 = v27;
+    v26 = [(__CFString *)title length];
+    backViewToContentConstraint = [(_UIButtonBarButtonVisualProviderCarPlay *)self backViewToContentConstraint];
+    v28 = backViewToContentConstraint;
     v29 = 3.0;
     if (!v26)
     {
       v29 = 0.0;
     }
 
-    [v27 setConstant:v29];
+    [backViewToContentConstraint setConstant:v29];
 
-    v30 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-    [v30 setText:v19];
+    titleView3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    [titleView3 setText:title];
   }
 
-  v6[2](v6);
+  implementationCopy[2](implementationCopy);
   if (_UISMCBarsEnabled())
   {
-    if (([v34 isBackButton] & 1) == 0)
+    if (([subviewsCopy isBackButton] & 1) == 0)
     {
-      [v34 frame];
-      [v34 _setContinuousCornerRadius:CGRectGetHeight(v36) * 0.5];
+      [subviewsCopy frame];
+      [subviewsCopy _setContinuousCornerRadius:CGRectGetHeight(v36) * 0.5];
     }
 
-    v31 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    [v31 frame];
+    focusedView = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    [focusedView frame];
     v32 = CGRectGetHeight(v37) * 0.5;
-    v33 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-    [v33 _setContinuousCornerRadius:v32];
+    focusedView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+    [focusedView2 _setContinuousCornerRadius:v32];
   }
 }
 
-- (void)updateButton:(id)a3 forFocusedState:(BOOL)a4
+- (void)updateButton:(id)button forFocusedState:(BOOL)state
 {
-  v4 = a4;
-  v15 = a3;
+  stateCopy = state;
+  buttonCopy = button;
   if (_UISMCBarsEnabled())
   {
-    if (v4)
+    if (stateCopy)
     {
-      v6 = [v15 traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection = [buttonCopy traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
       v8 = 1;
-      if (v7 != 2)
+      if (userInterfaceStyle != 2)
       {
-        v8 = v7;
+        v8 = userInterfaceStyle;
       }
 
-      if (v7 == 1)
+      if (userInterfaceStyle == 1)
       {
         v9 = 2;
       }
@@ -614,18 +614,18 @@ LABEL_14:
       v9 = 0;
     }
 
-    v10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-    [v10 setOverrideUserInterfaceStyle:v9];
+    titleView = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    [titleView setOverrideUserInterfaceStyle:v9];
 
-    v11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-    [v11 setOverrideUserInterfaceStyle:v9];
+    imageView = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+    [imageView setOverrideUserInterfaceStyle:v9];
 
-    v12 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-    [v12 setOverrideUserInterfaceStyle:v9];
+    backView = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+    [backView setOverrideUserInterfaceStyle:v9];
   }
 
-  -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [v15 isEnabled], v4, 0);
-  if (v4)
+  -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [buttonCopy isEnabled], stateCopy, 0);
+  if (stateCopy)
   {
     v13 = +[UIColor _carSystemFocusColor];
   }
@@ -635,26 +635,26 @@ LABEL_14:
     v13 = 0;
   }
 
-  v14 = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
-  [v14 setBackgroundColor:v13];
+  focusedView = [(_UIButtonBarButtonVisualProviderCarPlay *)self focusedView];
+  [focusedView setBackgroundColor:v13];
 
-  if (v4)
+  if (stateCopy)
   {
   }
 }
 
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state
 {
-  v4 = a4;
-  v7 = a3;
+  stateCopy = state;
+  buttonCopy = button;
   if (_UISMCBarsEnabled())
   {
-    -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [v7 isEnabled], objc_msgSend(v7, "isFocused"), v4);
+    -[_UIButtonBarButtonVisualProviderCarPlay _updateLabelColorsForStateEnabled:focused:pressed:](self, "_updateLabelColorsForStateEnabled:focused:pressed:", [buttonCopy isEnabled], objc_msgSend(buttonCopy, "isFocused"), stateCopy);
   }
 
   else
   {
-    if (v4)
+    if (stateCopy)
     {
       v6 = 0.2;
     }
@@ -664,24 +664,24 @@ LABEL_14:
       v6 = 1.0;
     }
 
-    [v7 setAlpha:v6];
+    [buttonCopy setAlpha:v6];
   }
 }
 
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4
+- (void)updateButton:(id)button forEnabledState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [a3 isFocused];
+  stateCopy = state;
+  isFocused = [button isFocused];
 
-  [(_UIButtonBarButtonVisualProviderCarPlay *)self _updateLabelColorsForStateEnabled:v4 focused:v6 pressed:0];
+  [(_UIButtonBarButtonVisualProviderCarPlay *)self _updateLabelColorsForStateEnabled:stateCopy focused:isFocused pressed:0];
 }
 
-- (void)_updateLabelColorsForStateEnabled:(BOOL)a3 focused:(BOOL)a4 pressed:(BOOL)a5
+- (void)_updateLabelColorsForStateEnabled:(BOOL)enabled focused:(BOOL)focused pressed:(BOOL)pressed
 {
-  v7 = a3;
+  enabledCopy = enabled;
   if (_UISMCBarsEnabled())
   {
-    if (!v7 || a5)
+    if (!enabledCopy || pressed)
     {
       v9 = +[UIColor tertiaryLabelColor];
     }
@@ -694,7 +694,7 @@ LABEL_14:
 
   else
   {
-    if (a4)
+    if (focused)
     {
       +[UIColor _carSystemFocusLabelColor];
     }
@@ -707,14 +707,14 @@ LABEL_14:
   }
 
   v13 = v9;
-  v10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-  [v10 setTextColor:v13];
+  titleView = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+  [titleView setTextColor:v13];
 
-  v11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
-  [v11 setTintColor:v13];
+  imageView = [(_UIButtonBarButtonVisualProviderCarPlay *)self imageView];
+  [imageView setTintColor:v13];
 
-  v12 = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
-  [v12 setTintColor:v13];
+  backView = [(_UIButtonBarButtonVisualProviderCarPlay *)self backView];
+  [backView setTintColor:v13];
 }
 
 - (double)_effectiveEdgeSpacing
@@ -740,40 +740,40 @@ LABEL_14:
   return v6;
 }
 
-- (id)_titleAlternativeForTitle:(id)a3
+- (id)_titleAlternativeForTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  titleCopy = title;
+  titleAlterntativeLookup = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
+  v6 = [titleAlterntativeLookup objectForKeyedSubscript:titleCopy];
 
   [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
   if (v6)
-    v7 = {;
-    [v6 updateWithLabel:v7];
+    titleAlterntativeLookup2 = {;
+    [v6 updateWithLabel:titleAlterntativeLookup2];
   }
 
   else
     v8 = {;
-    v6 = [_CarTitleAlternative alternativeWithTitle:v4 label:v8];
+    v6 = [_CarTitleAlternative alternativeWithTitle:titleCopy label:v8];
 
-    v7 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    titleAlterntativeLookup2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
+    [titleAlterntativeLookup2 setObject:v6 forKeyedSubscript:titleCopy];
   }
 
   return v6;
 }
 
-- (void)_setupAlternateTitlesFromBarButtonItem:(id)a3
+- (void)_setupAlternateTitlesFromBarButtonItem:(id)item
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
-  v6 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+  itemCopy = item;
+  contentView = [(_UIButtonBarButtonVisualProviderCarPlay *)self contentView];
+  titleView = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
 
-  if (v5 == v6)
+  if (contentView == titleView)
   {
-    v7 = [v4 _backButtonAlternateTitles];
-    if (![v7 count])
+    _backButtonAlternateTitles = [itemCopy _backButtonAlternateTitles];
+    if (![_backButtonAlternateTitles count])
     {
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setTitleAlternatives:0];
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setTitleAlterntativeLookup:0];
@@ -781,15 +781,15 @@ LABEL_14:
     }
 
     v8 = objc_opt_new();
-    v9 = [v4 title];
-    v10 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
+    title = [itemCopy title];
+    titleAlterntativeLookup = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlterntativeLookup];
 
-    if (v10)
+    if (titleAlterntativeLookup)
     {
-      if (v9)
+      if (title)
       {
 LABEL_6:
-        v11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self _titleAlternativeForTitle:v9];
+        v11 = [(_UIButtonBarButtonVisualProviderCarPlay *)self _titleAlternativeForTitle:title];
         [v8 addObject:v11];
         [v11 width];
         v13 = v12;
@@ -803,7 +803,7 @@ LABEL_6:
       v14 = objc_opt_new();
       [(_UIButtonBarButtonVisualProviderCarPlay *)self setTitleAlterntativeLookup:v14];
 
-      if (v9)
+      if (title)
       {
         goto LABEL_6;
       }
@@ -815,8 +815,8 @@ LABEL_10:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v39 = v7;
-    v15 = v7;
+    v39 = _backButtonAlternateTitles;
+    v15 = _backButtonAlternateTitles;
     v16 = [v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v16)
     {
@@ -834,7 +834,7 @@ LABEL_10:
           v20 = *(*(&v40 + 1) + 8 * i);
           v21 = [(_UIButtonBarButtonVisualProviderCarPlay *)self _titleAlternativeForTitle:v20];
           [v21 width];
-          if (v22 < v13 && ([v20 isEqualToString:v9] & 1) == 0)
+          if (v22 < v13 && ([v20 isEqualToString:title] & 1) == 0)
           {
             [v8 addObject:v21];
           }
@@ -849,34 +849,34 @@ LABEL_10:
     v23 = [v8 copy];
     [(_UIButtonBarButtonVisualProviderCarPlay *)self setTitleAlternatives:v23];
 
-    v24 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-    v25 = [v24 count];
+    titleAlternatives = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+    v25 = [titleAlternatives count];
 
-    v7 = v39;
-    if (v25 > (v9 != 0))
+    _backButtonAlternateTitles = v39;
+    if (v25 > (title != 0))
     {
-      v26 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+      titleView2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
       LODWORD(v27) = 1132068864;
-      [v26 setContentCompressionResistancePriority:0 forAxis:v27];
+      [titleView2 setContentCompressionResistancePriority:0 forAxis:v27];
 
-      v28 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
-      v29 = [v28 firstObject];
-      [v29 width];
+      titleAlternatives2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleAlternatives];
+      firstObject = [titleAlternatives2 firstObject];
+      [firstObject width];
       v31 = v30;
 
-      v32 = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
+      maxTitleViewWidthConstraint = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
 
-      if (v32)
+      if (maxTitleViewWidthConstraint)
       {
-        v33 = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
-        [v33 setConstant:v31];
+        maxTitleViewWidthConstraint2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
+        [maxTitleViewWidthConstraint2 setConstant:v31];
       }
 
       else
       {
-        v33 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
-        v36 = [v33 widthAnchor];
-        v37 = [v36 constraintLessThanOrEqualToConstant:v31];
+        maxTitleViewWidthConstraint2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+        widthAnchor = [maxTitleViewWidthConstraint2 widthAnchor];
+        v37 = [widthAnchor constraintLessThanOrEqualToConstant:v31];
         [(_UIButtonBarButtonVisualProviderCarPlay *)self setMaxTitleViewWidthConstraint:v37];
       }
 
@@ -885,14 +885,14 @@ LABEL_10:
     }
 
 LABEL_23:
-    v33 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
+    maxTitleViewWidthConstraint2 = [(_UIButtonBarButtonVisualProviderCarPlay *)self titleView];
     LODWORD(v34) = 1144913920;
-    [v33 setContentCompressionResistancePriority:0 forAxis:v34];
+    [maxTitleViewWidthConstraint2 setContentCompressionResistancePriority:0 forAxis:v34];
     v35 = 0;
 LABEL_26:
 
-    v38 = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
-    [v38 setActive:v35];
+    maxTitleViewWidthConstraint3 = [(_UIButtonBarButtonVisualProviderCarPlay *)self maxTitleViewWidthConstraint];
+    [maxTitleViewWidthConstraint3 setActive:v35];
 
     goto LABEL_27;
   }

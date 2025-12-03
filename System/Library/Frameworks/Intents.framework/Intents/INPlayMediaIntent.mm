@@ -20,50 +20,50 @@
 - (id)_dictionaryRepresentation;
 - (id)_keyCodableAttributes;
 - (id)_metadata;
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l;
 - (id)_typedBackingStore;
-- (id)_validParameterCombinationsWithSchema:(id)a3;
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4;
+- (id)_validParameterCombinationsWithSchema:(id)schema;
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two;
 - (int64_t)parsecCategory;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAlternativeResults:(id)a3;
-- (void)setAudioSearchResults:(id)a3;
-- (void)setBuckets:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setHashedRouteUIDs:(id)a3;
-- (void)setMediaContainer:(id)a3;
-- (void)setMediaItems:(id)a3;
-- (void)setMediaSearch:(id)a3;
-- (void)setParsecCategory:(int64_t)a3;
-- (void)setPlayShuffled:(id)a3;
-- (void)setPlaybackQueueLocation:(int64_t)a3;
-- (void)setPlaybackRepeatMode:(int64_t)a3;
-- (void)setPlaybackSpeed:(id)a3;
-- (void)setPrivatePlayMediaIntentData:(id)a3;
-- (void)setProxiedBundleIdentifier:(id)a3;
-- (void)setRecoID:(id)a3;
-- (void)setResumePlayback:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAlternativeResults:(id)results;
+- (void)setAudioSearchResults:(id)results;
+- (void)setBuckets:(id)buckets;
+- (void)setExpirationDate:(id)date;
+- (void)setHashedRouteUIDs:(id)ds;
+- (void)setMediaContainer:(id)container;
+- (void)setMediaItems:(id)items;
+- (void)setMediaSearch:(id)search;
+- (void)setParsecCategory:(int64_t)category;
+- (void)setPlayShuffled:(id)shuffled;
+- (void)setPlaybackQueueLocation:(int64_t)location;
+- (void)setPlaybackRepeatMode:(int64_t)mode;
+- (void)setPlaybackSpeed:(id)speed;
+- (void)setPrivatePlayMediaIntentData:(id)data;
+- (void)setProxiedBundleIdentifier:(id)identifier;
+- (void)setRecoID:(id)d;
+- (void)setResumePlayback:(id)playback;
 @end
 
 @implementation INPlayMediaIntent
 
 - (INPrivatePlayMediaIntentData)privatePlayMediaIntentData
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 privatePlayMediaIntentData];
-  v4 = INIntentSlotValueTransformFromPrivatePlayMediaIntentData(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  privatePlayMediaIntentData = [_typedBackingStore privatePlayMediaIntentData];
+  v4 = INIntentSlotValueTransformFromPrivatePlayMediaIntentData(privatePlayMediaIntentData);
 
   return v4;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -78,29 +78,29 @@
 
 - (id)_metadata
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (NSArray)hashedRouteUIDs
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 hashedRouteUIDs];
-  v4 = INIntentSlotValueTransformFromStrings(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  hashedRouteUIDs = [_typedBackingStore hashedRouteUIDs];
+  v4 = INIntentSlotValueTransformFromStrings(hashedRouteUIDs);
 
   return v4;
 }
 
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _keyImage];
-  v8 = [v6 _keyImage];
+  oneCopy = one;
+  twoCopy = two;
+  _keyImage = [oneCopy _keyImage];
+  _keyImage2 = [twoCopy _keyImage];
 
-  if (v7 && v8)
+  if (_keyImage && _keyImage2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
 
   else
   {
-    if (v8)
+    if (_keyImage2)
     {
       v10 = -1;
     }
@@ -126,7 +126,7 @@
       v10 = 0;
     }
 
-    if (v7)
+    if (_keyImage)
     {
       v9 = 1;
     }
@@ -140,33 +140,33 @@
   return v9;
 }
 
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v6 = a3;
+  localizerCopy = localizer;
   v24.receiver = self;
   v24.super_class = INPlayMediaIntent;
-  v7 = [(INIntent *)&v24 _titleWithLocalizer:v6 fromBundleURL:a4];
-  v8 = [(INIntent *)self _intents_launchIdForCurrentPlatform];
+  v7 = [(INIntent *)&v24 _titleWithLocalizer:localizerCopy fromBundleURL:l];
+  _intents_launchIdForCurrentPlatform = [(INIntent *)self _intents_launchIdForCurrentPlatform];
   v23 = 0;
-  INExtractAppInfoFromSiriLaunchId(v8, &v23, 0);
+  INExtractAppInfoFromSiriLaunchId(_intents_launchIdForCurrentPlatform, &v23, 0);
   v9 = v23;
 
   if ([v9 hasPrefix:@"com.apple."])
   {
-    v10 = [(INPlayMediaIntent *)self mediaContainer];
-    if (v10)
+    mediaContainer = [(INPlayMediaIntent *)self mediaContainer];
+    if (mediaContainer)
     {
-      v11 = v10;
-      v12 = [(INPlayMediaIntent *)self mediaContainer];
-      v13 = [v12 type];
+      v11 = mediaContainer;
+      mediaContainer2 = [(INPlayMediaIntent *)self mediaContainer];
+      type = [mediaContainer2 type];
 
-      if (v13 == 9)
+      if (type == 9)
       {
-        v14 = [(INPlayMediaIntent *)self resumePlayback];
-        v15 = [v14 BOOLValue];
+        resumePlayback = [(INPlayMediaIntent *)self resumePlayback];
+        bOOLValue = [resumePlayback BOOLValue];
 
         v16 = MEMORY[0x1E696AEC0];
-        if (v15)
+        if (bOOLValue)
         {
           v17 = @"Resume %@ radio station";
         }
@@ -176,10 +176,10 @@
           v17 = @"Play %@ radio station";
         }
 
-        v18 = INLocalizedStringWithLocalizer(v17, 0, v6);
-        v19 = [(INPlayMediaIntent *)self mediaContainer];
-        v20 = [v19 title];
-        v21 = [v16 stringWithFormat:v18, v20];
+        v18 = INLocalizedStringWithLocalizer(v17, 0, localizerCopy);
+        mediaContainer3 = [(INPlayMediaIntent *)self mediaContainer];
+        title = [mediaContainer3 title];
+        v21 = [v16 stringWithFormat:v18, title];
 
         v7 = v21;
       }
@@ -189,15 +189,15 @@
   return v7;
 }
 
-- (id)_validParameterCombinationsWithSchema:(id)a3
+- (id)_validParameterCombinationsWithSchema:(id)schema
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = INPlayMediaIntent;
-  v4 = [(INIntent *)&v24 _validParameterCombinationsWithSchema:a3];
-  v5 = [(INPlayMediaIntent *)self mediaContainer];
+  v4 = [(INIntent *)&v24 _validParameterCombinationsWithSchema:schema];
+  mediaContainer = [(INPlayMediaIntent *)self mediaContainer];
 
-  if (v5)
+  if (mediaContainer)
   {
     v6 = INDictionaryWithObjectsForKeysPassingTest(v4, &__block_literal_global_105620);
 
@@ -205,9 +205,9 @@
   }
 
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [(INPlayMediaIntent *)self proxiedBundleIdentifier];
+  proxiedBundleIdentifier = [(INPlayMediaIntent *)self proxiedBundleIdentifier];
 
-  if (v8)
+  if (proxiedBundleIdentifier)
   {
     [v7 addObject:@"proxiedBundleIdentifier"];
   }
@@ -219,8 +219,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v4 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allKeys = [v4 allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -231,7 +231,7 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
@@ -240,7 +240,7 @@
           [v9 setObject:v16 forKey:v17];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v12);
@@ -275,18 +275,18 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
 
 - (id)_keyCodableAttributes
 {
-  v2 = [(INIntent *)self _codableDescription];
+  _codableDescription = [(INIntent *)self _codableDescription];
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [v2 keyAttribute];
-  v5 = [v2 attributeByName:@"mediaContainer"];
-  v6 = [v3 arrayWithObjects:{v4, v5, 0}];
+  keyAttribute = [_codableDescription keyAttribute];
+  v5 = [_codableDescription attributeByName:@"mediaContainer"];
+  v6 = [v3 arrayWithObjects:{keyAttribute, v5, 0}];
 
   return v6;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore:a3];
+  v6 = [(INPlayMediaIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -295,86 +295,86 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
 {
   v26[7] = *MEMORY[0x1E69E9840];
   v25[0] = @"mediaItems";
-  v3 = [(INPlayMediaIntent *)self mediaItems];
-  v4 = v3;
-  if (!v3)
+  mediaItems = [(INPlayMediaIntent *)self mediaItems];
+  v4 = mediaItems;
+  if (!mediaItems)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    mediaItems = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v26[0] = v3;
+  v24 = mediaItems;
+  v26[0] = mediaItems;
   v25[1] = @"mediaContainer";
-  v5 = [(INPlayMediaIntent *)self mediaContainer];
-  v6 = v5;
-  if (!v5)
+  mediaContainer = [(INPlayMediaIntent *)self mediaContainer];
+  v6 = mediaContainer;
+  if (!mediaContainer)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    mediaContainer = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v5;
-  v26[1] = v5;
+  v23 = mediaContainer;
+  v26[1] = mediaContainer;
   v25[2] = @"playShuffled";
-  v7 = [(INPlayMediaIntent *)self playShuffled];
-  v8 = v7;
-  if (!v7)
+  playShuffled = [(INPlayMediaIntent *)self playShuffled];
+  v8 = playShuffled;
+  if (!playShuffled)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    playShuffled = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v7;
+  v26[2] = playShuffled;
   v25[3] = @"playbackRepeatMode";
-  v9 = [(INPlayMediaIntent *)self playbackRepeatMode];
-  if ((v9 - 1) > 2)
+  playbackRepeatMode = [(INPlayMediaIntent *)self playbackRepeatMode];
+  if ((playbackRepeatMode - 1) > 2)
   {
     v10 = @"unknown";
   }
 
   else
   {
-    v10 = *(&off_1E7285EE8 + v9 - 1);
+    v10 = *(&off_1E7285EE8 + playbackRepeatMode - 1);
   }
 
   v11 = v10;
   v26[3] = v11;
   v25[4] = @"resumePlayback";
-  v12 = [(INPlayMediaIntent *)self resumePlayback];
-  v13 = v12;
-  if (!v12)
+  resumePlayback = [(INPlayMediaIntent *)self resumePlayback];
+  null = resumePlayback;
+  if (!resumePlayback)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v13;
+  v26[4] = null;
   v25[5] = @"playbackQueueLocation";
-  v14 = [(INPlayMediaIntent *)self playbackQueueLocation];
-  if ((v14 - 1) > 2)
+  playbackQueueLocation = [(INPlayMediaIntent *)self playbackQueueLocation];
+  if ((playbackQueueLocation - 1) > 2)
   {
     v15 = @"unknown";
   }
 
   else
   {
-    v15 = off_1E7286878[v14 - 1];
+    v15 = off_1E7286878[playbackQueueLocation - 1];
   }
 
   v16 = v15;
   v26[5] = v16;
   v25[6] = @"playbackSpeed";
-  v17 = [(INPlayMediaIntent *)self playbackSpeed];
-  v18 = v17;
-  if (!v17)
+  playbackSpeed = [(INPlayMediaIntent *)self playbackSpeed];
+  null2 = playbackSpeed;
+  if (!playbackSpeed)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v18;
+  v26[6] = null2;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (!v17)
+  if (!playbackSpeed)
   {
   }
 
-  if (!v12)
+  if (!resumePlayback)
   {
   }
 
@@ -395,55 +395,55 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v19;
 }
 
-- (void)setPrivatePlayMediaIntentData:(id)a3
+- (void)setPrivatePlayMediaIntentData:(id)data
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToPrivatePlayMediaIntentData(v4);
+  dataCopy = data;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToPrivatePlayMediaIntentData(dataCopy);
 
-  [v6 setPrivatePlayMediaIntentData:v5];
+  [_typedBackingStore setPrivatePlayMediaIntentData:v5];
 }
 
-- (void)setProxiedBundleIdentifier:(id)a3
+- (void)setProxiedBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  [v5 setProxiedBundleIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  [_typedBackingStore setProxiedBundleIdentifier:identifierCopy];
 }
 
 - (NSString)proxiedBundleIdentifier
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 proxiedBundleIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  proxiedBundleIdentifier = [_typedBackingStore proxiedBundleIdentifier];
+  v4 = [proxiedBundleIdentifier copy];
 
   return v4;
 }
 
-- (void)setParsecCategory:(int64_t)a3
+- (void)setParsecCategory:(int64_t)category
 {
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 8)
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (category > 8)
   {
-    [v4 setHasParsecCategory:0];
+    [_typedBackingStore setHasParsecCategory:0];
   }
 
   else
   {
-    [v4 setParsecCategory:a3];
+    [_typedBackingStore setParsecCategory:category];
   }
 }
 
 - (int64_t)parsecCategory
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v4 = [v3 hasParsecCategory];
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v6 = [v5 parsecCategory];
-  if (((v6 - 1 < 8) & v4) != 0)
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  hasParsecCategory = [_typedBackingStore hasParsecCategory];
+  _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+  parsecCategory = [_typedBackingStore2 parsecCategory];
+  if (((parsecCategory - 1 < 8) & hasParsecCategory) != 0)
   {
-    v7 = v6;
+    v7 = parsecCategory;
   }
 
   else
@@ -454,93 +454,93 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v7;
 }
 
-- (void)setAlternativeResults:(id)a3
+- (void)setAlternativeResults:(id)results
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaItemGroups(v4);
+  resultsCopy = results;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaItemGroups(resultsCopy);
 
-  [v6 setAlternativeResults:v5];
+  [_typedBackingStore setAlternativeResults:v5];
 }
 
 - (NSArray)alternativeResults
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 alternativeResults];
-  v4 = INIntentSlotValueTransformFromMediaItemGroups(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  alternativeResults = [_typedBackingStore alternativeResults];
+  v4 = INIntentSlotValueTransformFromMediaItemGroups(alternativeResults);
 
   return v4;
 }
 
-- (void)setAudioSearchResults:(id)a3
+- (void)setAudioSearchResults:(id)results
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaItemGroups(v4);
+  resultsCopy = results;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaItemGroups(resultsCopy);
 
-  [v6 setAudioSearchResults:v5];
+  [_typedBackingStore setAudioSearchResults:v5];
 }
 
 - (NSArray)audioSearchResults
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 audioSearchResults];
-  v4 = INIntentSlotValueTransformFromMediaItemGroups(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  audioSearchResults = [_typedBackingStore audioSearchResults];
+  v4 = INIntentSlotValueTransformFromMediaItemGroups(audioSearchResults);
 
   return v4;
 }
 
-- (void)setHashedRouteUIDs:(id)a3
+- (void)setHashedRouteUIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToStrings(v4);
+  dsCopy = ds;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToStrings(dsCopy);
 
-  [v6 setHashedRouteUIDs:v5];
+  [_typedBackingStore setHashedRouteUIDs:v5];
 }
 
-- (void)setMediaSearch:(id)a3
+- (void)setMediaSearch:(id)search
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaSearch(v4);
+  searchCopy = search;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaSearch(searchCopy);
 
-  [v6 setMediaSearch:v5];
+  [_typedBackingStore setMediaSearch:v5];
 }
 
 - (INMediaSearch)mediaSearch
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 mediaSearch];
-  v4 = INIntentSlotValueTransformFromMediaSearch(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  mediaSearch = [_typedBackingStore mediaSearch];
+  v4 = INIntentSlotValueTransformFromMediaSearch(mediaSearch);
 
   return v4;
 }
 
-- (void)setPlaybackSpeed:(id)a3
+- (void)setPlaybackSpeed:(id)speed
 {
-  v5 = a3;
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if (v5)
+  speedCopy = speed;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if (speedCopy)
   {
-    [v5 doubleValue];
-    [v4 setPlaybackSpeed:?];
+    [speedCopy doubleValue];
+    [_typedBackingStore setPlaybackSpeed:?];
   }
 
   else
   {
-    [v4 setHasPlaybackSpeed:0];
+    [_typedBackingStore setHasPlaybackSpeed:0];
   }
 }
 
 - (NSNumber)playbackSpeed
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if ([v3 hasPlaybackSpeed])
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasPlaybackSpeed])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-    [v5 playbackSpeed];
+    _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+    [_typedBackingStore2 playbackSpeed];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -552,30 +552,30 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v6;
 }
 
-- (void)setPlaybackQueueLocation:(int64_t)a3
+- (void)setPlaybackQueueLocation:(int64_t)location
 {
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 3)
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (location > 3)
   {
-    [v4 setHasPlaybackQueueLocation:0];
+    [_typedBackingStore setHasPlaybackQueueLocation:0];
   }
 
   else
   {
-    [v4 setPlaybackQueueLocation:a3];
+    [_typedBackingStore setPlaybackQueueLocation:location];
   }
 }
 
 - (INPlaybackQueueLocation)playbackQueueLocation
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v4 = [v3 hasPlaybackQueueLocation];
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v6 = [v5 playbackQueueLocation];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  hasPlaybackQueueLocation = [_typedBackingStore hasPlaybackQueueLocation];
+  _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+  playbackQueueLocation = [_typedBackingStore2 playbackQueueLocation];
+  if (((playbackQueueLocation - 1 < 3) & hasPlaybackQueueLocation) != 0)
   {
-    v7 = v6;
+    v7 = playbackQueueLocation;
   }
 
   else
@@ -586,81 +586,81 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v7;
 }
 
-- (void)setRecoID:(id)a3
+- (void)setRecoID:(id)d
 {
-  v4 = a3;
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  [v5 setRecoID:v4];
+  dCopy = d;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  [_typedBackingStore setRecoID:dCopy];
 }
 
 - (NSString)recoID
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 recoID];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  recoID = [_typedBackingStore recoID];
+  v4 = [recoID copy];
 
   return v4;
 }
 
-- (void)setBuckets:(id)a3
+- (void)setBuckets:(id)buckets
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataStrings(v4);
+  bucketsCopy = buckets;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataStrings(bucketsCopy);
 
-  [v6 setBuckets:v5];
+  [_typedBackingStore setBuckets:v5];
 }
 
 - (NSArray)buckets
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 buckets];
-  v4 = INIntentSlotValueTransformFromDataStrings(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  buckets = [_typedBackingStore buckets];
+  v4 = INIntentSlotValueTransformFromDataStrings(buckets);
 
   return v4;
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTimestamp(v4);
+  dateCopy = date;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTimestamp(dateCopy);
 
-  [v6 setExpirationDate:v5];
+  [_typedBackingStore setExpirationDate:v5];
 }
 
 - (NSDate)expirationDate
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 expirationDate];
-  v4 = INIntentSlotValueTransformFromTimestamp(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  expirationDate = [_typedBackingStore expirationDate];
+  v4 = INIntentSlotValueTransformFromTimestamp(expirationDate);
 
   return v4;
 }
 
-- (void)setResumePlayback:(id)a3
+- (void)setResumePlayback:(id)playback
 {
-  v5 = a3;
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if (v5)
+  playbackCopy = playback;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if (playbackCopy)
   {
-    [v4 setResumePlayback:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setResumePlayback:{objc_msgSend(playbackCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasResumePlayback:0];
+    [_typedBackingStore setHasResumePlayback:0];
   }
 }
 
 - (NSNumber)resumePlayback
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if ([v3 hasResumePlayback])
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasResumePlayback])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "resumePlayback")}];
+    _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "resumePlayback")}];
   }
 
   else
@@ -671,31 +671,31 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v6;
 }
 
-- (void)setPlaybackRepeatMode:(int64_t)a3
+- (void)setPlaybackRepeatMode:(int64_t)mode
 {
-  v3 = a3 - 1;
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = mode - 1;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 2)
   {
-    [v4 setHasPlaybackRepeatMode:0];
+    [_typedBackingStore setHasPlaybackRepeatMode:0];
   }
 
   else
   {
-    [v4 setPlaybackRepeatMode:v3];
+    [_typedBackingStore setPlaybackRepeatMode:v3];
   }
 }
 
 - (INPlaybackRepeatMode)playbackRepeatMode
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v4 = [v3 hasPlaybackRepeatMode];
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v6 = [v5 playbackRepeatMode];
-  if (((v6 < 3) & v4) != 0)
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  hasPlaybackRepeatMode = [_typedBackingStore hasPlaybackRepeatMode];
+  _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+  playbackRepeatMode = [_typedBackingStore2 playbackRepeatMode];
+  if (((playbackRepeatMode < 3) & hasPlaybackRepeatMode) != 0)
   {
-    v7 = v6 + 1;
+    v7 = playbackRepeatMode + 1;
   }
 
   else
@@ -706,29 +706,29 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v7;
 }
 
-- (void)setPlayShuffled:(id)a3
+- (void)setPlayShuffled:(id)shuffled
 {
-  v5 = a3;
-  v4 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if (v5)
+  shuffledCopy = shuffled;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if (shuffledCopy)
   {
-    [v4 setPlayShuffled:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setPlayShuffled:{objc_msgSend(shuffledCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasPlayShuffled:0];
+    [_typedBackingStore setHasPlayShuffled:0];
   }
 }
 
 - (NSNumber)playShuffled
 {
-  v3 = [(INPlayMediaIntent *)self _typedBackingStore];
-  if ([v3 hasPlayShuffled])
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasPlayShuffled])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "playShuffled")}];
+    _typedBackingStore2 = [(INPlayMediaIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "playShuffled")}];
   }
 
   else
@@ -739,38 +739,38 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v6;
 }
 
-- (void)setMediaContainer:(id)a3
+- (void)setMediaContainer:(id)container
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaItemValue(v4);
+  containerCopy = container;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaItemValue(containerCopy);
 
-  [v6 setMediaContainer:v5];
+  [_typedBackingStore setMediaContainer:v5];
 }
 
 - (INMediaItem)mediaContainer
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 mediaContainer];
-  v4 = INIntentSlotValueTransformFromMediaItemValue(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  mediaContainer = [_typedBackingStore mediaContainer];
+  v4 = INIntentSlotValueTransformFromMediaItemValue(mediaContainer);
 
   return v4;
 }
 
-- (void)setMediaItems:(id)a3
+- (void)setMediaItems:(id)items
 {
-  v4 = a3;
-  v6 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaItemValues(v4);
+  itemsCopy = items;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaItemValues(itemsCopy);
 
-  [v6 setMediaItems:v5];
+  [_typedBackingStore setMediaItems:v5];
 }
 
 - (NSArray)mediaItems
 {
-  v2 = [(INPlayMediaIntent *)self _typedBackingStore];
-  v3 = [v2 mediaItems];
-  v4 = INIntentSlotValueTransformFromMediaItemValues(v3);
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  mediaItems = [_typedBackingStore mediaItems];
+  v4 = INIntentSlotValueTransformFromMediaItemValues(mediaItems);
 
   return v4;
 }
@@ -802,11 +802,11 @@ uint64_t __59__INPlayMediaIntent__validParameterCombinationsWithSchema___block_i
   return v23;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INPlayMediaIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INPlayMediaIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_intents_preferredScaledImageSize

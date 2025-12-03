@@ -1,6 +1,6 @@
 @interface VOTUISonificationPlayheadView
 - (BOOL)largeCursorEnabled;
-- (VOTUISonificationPlayheadView)initWithFrame:(CGRect)a3;
+- (VOTUISonificationPlayheadView)initWithFrame:(CGRect)frame;
 - (double)lineWidth;
 - (void)layoutSubviews;
 - (void)updateStyling;
@@ -8,11 +8,11 @@
 
 @implementation VOTUISonificationPlayheadView
 
-- (VOTUISonificationPlayheadView)initWithFrame:(CGRect)a3
+- (VOTUISonificationPlayheadView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = VOTUISonificationPlayheadView;
-  v3 = [(VOTUISonificationPlayheadView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VOTUISonificationPlayheadView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,9 +52,9 @@
 
 - (double)lineWidth
 {
-  v2 = [(VOTUISonificationPlayheadView *)self largeCursorEnabled];
+  largeCursorEnabled = [(VOTUISonificationPlayheadView *)self largeCursorEnabled];
   result = 4.0;
-  if (v2)
+  if (largeCursorEnabled)
   {
     return 8.0;
   }
@@ -72,10 +72,10 @@
 
 - (void)updateStyling
 {
-  v3 = [(VOTUISonificationPlayheadView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(VOTUISonificationPlayheadView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceStyle == &dword_0 + 1)
   {
     v23 = +[UIColor blackColor];
     +[UIColor whiteColor];
@@ -87,33 +87,33 @@
     +[UIColor blackColor];
   }
   v5 = ;
-  v6 = [(VOTUISonificationPlayheadView *)self layer];
-  v7 = [v6 sublayers];
-  v8 = [v7 count];
+  layer = [(VOTUISonificationPlayheadView *)self layer];
+  sublayers = [layer sublayers];
+  v8 = [sublayers count];
 
   if (v8 <= 1)
   {
     do
     {
       v9 = objc_alloc_init(CAShapeLayer);
-      v10 = [(VOTUISonificationPlayheadView *)self layer];
-      [v10 addSublayer:v9];
+      layer2 = [(VOTUISonificationPlayheadView *)self layer];
+      [layer2 addSublayer:v9];
 
-      v11 = [(VOTUISonificationPlayheadView *)self layer];
-      v12 = [v11 sublayers];
-      v13 = [v12 count];
+      layer3 = [(VOTUISonificationPlayheadView *)self layer];
+      sublayers2 = [layer3 sublayers];
+      v13 = [sublayers2 count];
     }
 
     while (v13 < 2);
   }
 
-  v14 = [(VOTUISonificationPlayheadView *)self layer];
-  v15 = [v14 sublayers];
-  v16 = [v15 objectAtIndexedSubscript:1];
+  layer4 = [(VOTUISonificationPlayheadView *)self layer];
+  sublayers3 = [layer4 sublayers];
+  v16 = [sublayers3 objectAtIndexedSubscript:1];
 
-  v17 = [(VOTUISonificationPlayheadView *)self layer];
-  v18 = [v17 sublayers];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  layer5 = [(VOTUISonificationPlayheadView *)self layer];
+  sublayers4 = [layer5 sublayers];
+  v19 = [sublayers4 objectAtIndexedSubscript:0];
 
   [(VOTUISonificationPlayheadView *)self lineWidth];
   [v16 setCornerRadius:v20 * 0.5];
@@ -129,13 +129,13 @@
   v11.receiver = self;
   v11.super_class = VOTUISonificationPlayheadView;
   [(VOTUISonificationPlayheadView *)&v11 layoutSubviews];
-  v3 = [(VOTUISonificationPlayheadView *)self layer];
-  v4 = [v3 sublayers];
-  v5 = [v4 objectAtIndexedSubscript:1];
+  layer = [(VOTUISonificationPlayheadView *)self layer];
+  sublayers = [layer sublayers];
+  v5 = [sublayers objectAtIndexedSubscript:1];
 
-  v6 = [(VOTUISonificationPlayheadView *)self layer];
-  v7 = [v6 sublayers];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  layer2 = [(VOTUISonificationPlayheadView *)self layer];
+  sublayers2 = [layer2 sublayers];
+  v8 = [sublayers2 objectAtIndexedSubscript:0];
 
   [(VOTUISonificationPlayheadView *)self lineWidth];
   v10 = v9 * 0.25;

@@ -9,10 +9,10 @@
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:3];
   v4 = [NSString alloc];
-  v5 = [(MBCKSaveInfo *)self record];
-  v6 = [v5 recordID];
-  v7 = [v6 recordName];
-  v8 = [v4 initWithFormat:@"recordName=%@", v7];
+  record = [(MBCKSaveInfo *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v8 = [v4 initWithFormat:@"recordName=%@", recordName];
   [v3 addObject:v8];
 
   v9 = [[NSString alloc] initWithFormat:@"state=%lu", -[MBCKSaveInfo state](self, "state")];

@@ -1,20 +1,20 @@
 @interface APAgePolicyProcessor
-+ (id)processContentData:(id)a3;
++ (id)processContentData:(id)data;
 @end
 
 @implementation APAgePolicyProcessor
 
-+ (id)processContentData:(id)a3
++ (id)processContentData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 representations];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
+  dataCopy = data;
+  representations = [dataCopy representations];
+  allObjects = [representations allObjects];
+  firstObject = [allObjects firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v19 = [v6 targetingDimensions];
-    [v19 exclusionCriteria];
+    targetingDimensions = [firstObject targetingDimensions];
+    [targetingDimensions exclusionCriteria];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -34,20 +34,20 @@
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:@"contentMinimumAge"];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqualToString:@"contentMinimumAge"];
 
           if (v14)
           {
-            v15 = [v12 values];
-            if ([v15 count])
+            values = [v12 values];
+            if ([values count])
             {
-              v16 = [v15 objectAtIndexedSubscript:0];
-              v17 = [v16 intValue];
+              v16 = [values objectAtIndexedSubscript:0];
+              intValue = [v16 intValue];
 
-              if (v17 <= 30 && +[APIDAccountProvider effectiveAge]< v17)
+              if (intValue <= 30 && +[APIDAccountProvider effectiveAge]< intValue)
               {
-                [v3 setServerUnfilledReason:1030];
+                [dataCopy setServerUnfilledReason:1030];
               }
 
               goto LABEL_17;
@@ -68,7 +68,7 @@
 LABEL_17:
   }
 
-  return v3;
+  return dataCopy;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SignedClinicalDataMultiRecordViewController
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithStyle:(int64_t)a3;
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithUsingInsetStyling:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithStyle:(int64_t)style;
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithUsingInsetStyling:(BOOL)styling;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation SignedClinicalDataMultiRecordViewController
 
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithCoder:(id)coder
 {
   result = sub_1D13913BC();
   __break(1u);
@@ -20,11 +20,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1086F48();
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = OBJC_IVAR____TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController_displayGroups;
   swift_beginAccess();
@@ -40,50 +40,50 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v6 = OBJC_IVAR____TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController_displayGroups;
   result = swift_beginAccess();
   v8 = *(&self->super.super.super.super.super.isa + v6);
   if ((v8 & 0xC000000000000001) != 0)
   {
-    v13 = self;
+    selfCopy = self;
 
-    v11 = MEMORY[0x1D3886B70](a4, v8);
+    v11 = MEMORY[0x1D3886B70](section, v8);
 
     goto LABEL_5;
   }
 
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
   }
 
-  else if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) > a4)
+  else if (*((v8 & 0xFFFFFFFFFFFFFF8) + 0x10) > section)
   {
-    v9 = *(v8 + 8 * a4 + 32);
-    v10 = self;
+    v9 = *(v8 + 8 * section + 32);
+    selfCopy2 = self;
     v11 = v9;
 LABEL_5:
-    v12 = [v11 numberOfDisplayItems];
+    numberOfDisplayItems = [v11 numberOfDisplayItems];
 
-    return v12;
+    return numberOfDisplayItems;
   }
 
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D138D82C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D138D7EC();
-  v10 = a3;
-  v11 = self;
-  sub_1D1087C78(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D1087C78(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);
@@ -91,21 +91,21 @@ LABEL_5:
   return v13;
 }
 
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithStyle:(int64_t)a3
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15HealthRecordsUI43SignedClinicalDataMultiRecordViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

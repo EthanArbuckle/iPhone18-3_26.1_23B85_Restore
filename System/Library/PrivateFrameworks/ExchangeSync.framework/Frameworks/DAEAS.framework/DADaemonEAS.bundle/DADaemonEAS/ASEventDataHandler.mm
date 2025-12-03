@@ -2,19 +2,19 @@
 - (BOOL)saveContainer;
 - (BOOL)wipeServerIds;
 - (id)copyOfAllLocalObjectsInContainer;
-- (id)getTombstoneEndTimeForEvent:(id)a3;
-- (void)copyLocalObjectFromId:(int)a3;
+- (id)getTombstoneEndTimeForEvent:(id)event;
+- (void)copyLocalObjectFromId:(int)id;
 - (void)drainContainer;
 - (void)openDB;
 @end
 
 @implementation ASEventDataHandler
 
-- (void)copyLocalObjectFromId:(int)a3
+- (void)copyLocalObjectFromId:(int)id
 {
   v4 = +[ASLocalDBHelper sharedInstance];
-  v5 = [(ASEventDataHandler *)self accountID];
-  [v4 calDatabaseForAccountID:v5];
+  accountID = [(ASEventDataHandler *)self accountID];
+  [v4 calDatabaseForAccountID:accountID];
   v6 = CalDatabaseCopyCalendarItemWithRowID();
 
   return v6;
@@ -23,8 +23,8 @@
 - (BOOL)saveContainer
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [(ASEventDataHandler *)self accountID];
-  v5 = [v3 calSaveDatabaseForAccountID:v4];
+  accountID = [(ASEventDataHandler *)self accountID];
+  v5 = [v3 calSaveDatabaseForAccountID:accountID];
 
   return v5;
 }
@@ -103,8 +103,8 @@
 - (void)drainContainer
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [(ASEventDataHandler *)self accountID];
-  [v3 calDatabaseForAccountID:v4];
+  accountID = [(ASEventDataHandler *)self accountID];
+  [v3 calDatabaseForAccountID:accountID];
 
   if ([(ASEventDataHandler *)self _containerHasItems])
   {
@@ -187,18 +187,18 @@
     CFRelease(CalendarForEntityType);
     CFRelease(v23);
     cfa = +[ASLocalDBHelper sharedInstance];
-    v26 = [(ASEventDataHandler *)self accountID];
-    [cfa calSaveDatabaseForAccountID:v26];
+    accountID2 = [(ASEventDataHandler *)self accountID];
+    [cfa calSaveDatabaseForAccountID:accountID2];
   }
 }
 
-- (id)getTombstoneEndTimeForEvent:(id)a3
+- (id)getTombstoneEndTimeForEvent:(id)event
 {
-  [a3 calEvent];
+  [event calEvent];
   CalCalendarItemGetRowID();
   v4 = +[ASLocalDBHelper sharedInstance];
-  v5 = [(ASEventDataHandler *)self accountID];
-  [v4 calDatabaseForAccountID:v5];
+  accountID = [(ASEventDataHandler *)self accountID];
+  [v4 calDatabaseForAccountID:accountID];
 
   v6 = *&self->super.ESDataHandler_opaque[OBJC_IVAR___ESDataHandler__container];
   CalDatabaseCopyRecurrenceChangesInCalendar();
@@ -209,9 +209,9 @@
 - (void)openDB
 {
   v5 = +[ASLocalDBHelper sharedInstance];
-  v3 = [(ASEventDataHandler *)self accountID];
-  v4 = [(ASEventDataHandler *)self changeTrackingID];
-  [v5 calOpenDatabaseForAccountID:v3 clientID:v4];
+  accountID = [(ASEventDataHandler *)self accountID];
+  changeTrackingID = [(ASEventDataHandler *)self changeTrackingID];
+  [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 }
 
 @end

@@ -1,53 +1,53 @@
 @interface D2DSetupStartViewController
-- (_TtC18SharingViewService27D2DSetupStartViewController)initWithContentView:(id)a3;
-- (void)didReceiveDeviceSetupNotification:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC18SharingViewService27D2DSetupStartViewController)initWithContentView:(id)view;
+- (void)didReceiveDeviceSetupNotification:(id)notification;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation D2DSetupStartViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100069228();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100069CB8(a3);
+  selfCopy = self;
+  sub_100069CB8(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for D2DSetupStartViewController();
   v4 = v7.receiver;
-  [(D2DSetupBaseViewController *)&v7 viewDidDisappear:v3];
-  v5 = [objc_opt_self() defaultCenter];
+  [(D2DSetupBaseViewController *)&v7 viewDidDisappear:disappearCopy];
+  defaultCenter = [objc_opt_self() defaultCenter];
   v6 = String._bridgeToObjectiveC()();
-  [v5 removeObserver:v4 name:v6 object:0];
+  [defaultCenter removeObserver:v4 name:v6 object:0];
 }
 
-- (void)didReceiveDeviceSetupNotification:(id)a3
+- (void)didReceiveDeviceSetupNotification:(id)notification
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = a3;
-    v6 = self;
-    sub_1000AE248(v5);
+    notificationCopy = notification;
+    selfCopy = self;
+    sub_1000AE248(notificationCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC18SharingViewService27D2DSetupStartViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService27D2DSetupStartViewController)initWithContentView:(id)view
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for D2DSetupStartViewController();
-  return [(D2DSetupBaseViewController *)&v5 initWithContentView:a3];
+  return [(D2DSetupBaseViewController *)&v5 initWithContentView:view];
 }
 
 @end

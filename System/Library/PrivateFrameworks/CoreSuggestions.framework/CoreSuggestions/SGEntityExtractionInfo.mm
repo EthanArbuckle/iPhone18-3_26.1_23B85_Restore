@@ -1,36 +1,36 @@
 @interface SGEntityExtractionInfo
-- (SGEntityExtractionInfo)initWithCoder:(id)a3;
-- (SGEntityExtractionInfo)initWithSpotlightIdentifier:(id)a3 source:(id)a4 entityType:(int64_t)a5 creationTimestamp:(SGUnixTimestamp_)a6 extractionType:(int64_t)a7 contactIdentifier:(id)a8;
+- (SGEntityExtractionInfo)initWithCoder:(id)coder;
+- (SGEntityExtractionInfo)initWithSpotlightIdentifier:(id)identifier source:(id)source entityType:(int64_t)type creationTimestamp:(SGUnixTimestamp_)timestamp extractionType:(int64_t)extractionType contactIdentifier:(id)contactIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGEntityExtractionInfo
 
-- (SGEntityExtractionInfo)initWithCoder:(id)a3
+- (SGEntityExtractionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SGEntityExtractionInfo;
   v5 = [(SGEntityExtractionInfo *)&v17 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"spotlightIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"spotlightIdentifier"];
     spotlightIdentifier = v5->_spotlightIdentifier;
     v5->_spotlightIdentifier = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"source"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"source"];
     source = v5->_source;
     v5->_source = v10;
 
-    v5->_entityType = [v4 decodeInt64ForKey:@"entityType"];
-    [v4 decodeDoubleForKey:@"creationTimestamp"];
+    v5->_entityType = [coderCopy decodeInt64ForKey:@"entityType"];
+    [coderCopy decodeDoubleForKey:@"creationTimestamp"];
     v5->_creationTimestamp.secondsFromUnixEpoch = v12;
-    v5->_extractionType = [v4 decodeInt64ForKey:@"extractionType"];
+    v5->_extractionType = [coderCopy decodeInt64ForKey:@"extractionType"];
     v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"contactIdentifier"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v14;
   }
@@ -38,73 +38,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   spotlightIdentifier = self->_spotlightIdentifier;
-  v5 = a3;
-  [v5 encodeObject:spotlightIdentifier forKey:@"spotlightIdentifier"];
-  [v5 encodeObject:self->_source forKey:@"source"];
-  [v5 encodeInt64:self->_entityType forKey:@"entityType"];
-  [v5 encodeDouble:@"creationTimestamp" forKey:self->_creationTimestamp.secondsFromUnixEpoch];
-  [v5 encodeInt64:self->_extractionType forKey:@"extractionType"];
-  [v5 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:spotlightIdentifier forKey:@"spotlightIdentifier"];
+  [coderCopy encodeObject:self->_source forKey:@"source"];
+  [coderCopy encodeInt64:self->_entityType forKey:@"entityType"];
+  [coderCopy encodeDouble:@"creationTimestamp" forKey:self->_creationTimestamp.secondsFromUnixEpoch];
+  [coderCopy encodeInt64:self->_extractionType forKey:@"extractionType"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGEntityExtractionInfo *)self spotlightIdentifier];
-  v5 = [(SGEntityExtractionInfo *)self source];
-  v6 = [(SGEntityExtractionInfo *)self entityType];
-  if (v6 > 0x1B)
+  spotlightIdentifier = [(SGEntityExtractionInfo *)self spotlightIdentifier];
+  source = [(SGEntityExtractionInfo *)self source];
+  entityType = [(SGEntityExtractionInfo *)self entityType];
+  if (entityType > 0x1B)
   {
     v7 = @"SGEntityTypePseudoEvent";
   }
 
   else
   {
-    v7 = off_1E7EFC868[v6];
+    v7 = off_1E7EFC868[entityType];
   }
 
   v8 = v7;
   [(SGEntityExtractionInfo *)self creationTimestamp];
   v10 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:v9];
-  v11 = [(SGEntityExtractionInfo *)self extractionType];
+  extractionType = [(SGEntityExtractionInfo *)self extractionType];
   v12 = @"ExtractionTypeUnknown";
-  if (v11 == 2)
+  if (extractionType == 2)
   {
     v12 = @"ExtractionTypeCongratulations";
   }
 
-  if (v11 == 1)
+  if (extractionType == 1)
   {
     v12 = @"ExtractionTypeBirthday";
   }
 
   v13 = v12;
-  v14 = [(SGEntityExtractionInfo *)self contactIdentifier];
-  v15 = [v3 initWithFormat:@"<SGEntityExtractionInfo: spotlightIdentifier:%@ source:%@ entityType:%@ creationTimestamp:%@ extractionType:%@ contactIdentifier:%@>", v4, v5, v8, v10, v13, v14];
+  contactIdentifier = [(SGEntityExtractionInfo *)self contactIdentifier];
+  v15 = [v3 initWithFormat:@"<SGEntityExtractionInfo: spotlightIdentifier:%@ source:%@ entityType:%@ creationTimestamp:%@ extractionType:%@ contactIdentifier:%@>", spotlightIdentifier, source, v8, v10, v13, contactIdentifier];
 
   return v15;
 }
 
-- (SGEntityExtractionInfo)initWithSpotlightIdentifier:(id)a3 source:(id)a4 entityType:(int64_t)a5 creationTimestamp:(SGUnixTimestamp_)a6 extractionType:(int64_t)a7 contactIdentifier:(id)a8
+- (SGEntityExtractionInfo)initWithSpotlightIdentifier:(id)identifier source:(id)source entityType:(int64_t)type creationTimestamp:(SGUnixTimestamp_)timestamp extractionType:(int64_t)extractionType contactIdentifier:(id)contactIdentifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  contactIdentifierCopy = contactIdentifier;
   v21.receiver = self;
   v21.super_class = SGEntityExtractionInfo;
   v18 = [(SGEntityExtractionInfo *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_spotlightIdentifier, a3);
-    objc_storeStrong(&v19->_source, a4);
-    v19->_entityType = a5;
-    v19->_creationTimestamp = a6;
-    v19->_extractionType = a7;
-    objc_storeStrong(&v19->_contactIdentifier, a8);
+    objc_storeStrong(&v18->_spotlightIdentifier, identifier);
+    objc_storeStrong(&v19->_source, source);
+    v19->_entityType = type;
+    v19->_creationTimestamp = timestamp;
+    v19->_extractionType = extractionType;
+    objc_storeStrong(&v19->_contactIdentifier, contactIdentifier);
   }
 
   return v19;

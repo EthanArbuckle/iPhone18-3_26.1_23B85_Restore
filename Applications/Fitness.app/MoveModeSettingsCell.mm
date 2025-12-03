@@ -1,16 +1,16 @@
 @interface MoveModeSettingsCell
-- (_TtC10FitnessApp20MoveModeSettingsCell)initWithCoder:(id)a3;
-- (_TtC10FitnessApp20MoveModeSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp20MoveModeSettingsCell)initWithCoder:(id)coder;
+- (_TtC10FitnessApp20MoveModeSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation MoveModeSettingsCell
 
-- (_TtC10FitnessApp20MoveModeSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp20MoveModeSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,7 +19,7 @@
     v6 = 0;
   }
 
-  return sub_100387144(a3, a4, v6);
+  return sub_100387144(style, identifier, v6);
 }
 
 - (void)prepareForReuse
@@ -32,7 +32,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (_TtC10FitnessApp20MoveModeSettingsCell)initWithCoder:(id)a3
+- (_TtC10FitnessApp20MoveModeSettingsCell)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC10FitnessApp20MoveModeSettingsCell_delegate] = 0;
   swift_unknownObjectWeakInit();

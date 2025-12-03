@@ -1,16 +1,16 @@
 @interface LAUIPhysicalButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_updateOnScreen;
 @end
 
 @implementation LAUIPhysicalButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LAUIPhysicalButtonView" hasInstanceMethod:@"_updateOnScreen" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"LAUIPhysicalButtonView" hasInstanceVariable:@"_instruction" withType:"NSString"];
-  [v3 validateClass:@"LAUIPhysicalButtonView" hasInstanceVariable:@"_onScreen" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LAUIPhysicalButtonView" hasInstanceMethod:@"_updateOnScreen" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"LAUIPhysicalButtonView" hasInstanceVariable:@"_instruction" withType:"NSString"];
+  [validationsCopy validateClass:@"LAUIPhysicalButtonView" hasInstanceVariable:@"_onScreen" withType:"B"];
 }
 
 - (void)_updateOnScreen

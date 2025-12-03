@@ -2,39 +2,39 @@
 + (id)_cachedInstallStateByAppID;
 + (id)_cachedInstalledProgressByAppID;
 + (id)_iconCache;
-+ (id)reuseIdentifierForClassAndType:(int64_t)a3;
-- (HPRFApplicationLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (id)reuseIdentifierForClassAndType:(int64_t)type;
+- (HPRFApplicationLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)activePairedDevice;
 - (id)blankIcon;
 - (id)getLazyIcon;
-- (int64_t)appInstallStateForAppBundleID:(id)a3;
+- (int64_t)appInstallStateForAppBundleID:(id)d;
 - (void)dealloc;
 - (void)installApp;
-- (void)installNanoBundle:(id)a3 forDevice:(id)a4;
+- (void)installNanoBundle:(id)bundle forDevice:(id)device;
 - (void)layoutSubviews;
 - (void)performInstall;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setUpWatchAppAvailabilityForAppBundleID:(id)a3 device:(id)a4;
-- (void)updateProgressUIForBundleID:(id)a3;
-- (void)updateUIWithInstallState:(int64_t)a3 forBundleID:(id)a4;
-- (void)watchAppAvailability:(id)a3 appInstallProgressDidUpdate:(id)a4;
-- (void)watchAppAvailability:(id)a3 appInstallStateDidChange:(int64_t)a4;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setUpWatchAppAvailabilityForAppBundleID:(id)d device:(id)device;
+- (void)updateProgressUIForBundleID:(id)d;
+- (void)updateUIWithInstallState:(int64_t)state forBundleID:(id)d;
+- (void)watchAppAvailability:(id)availability appInstallProgressDidUpdate:(id)update;
+- (void)watchAppAvailability:(id)availability appInstallStateDidChange:(int64_t)change;
 @end
 
 @implementation HPRFApplicationLinkCell
 
-- (HPRFApplicationLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (HPRFApplicationLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v9 = a5;
+  specifierCopy = specifier;
   v48.receiver = self;
   v48.super_class = HPRFApplicationLinkCell;
-  v10 = [(HPRFApplicationLinkCell *)&v48 initWithStyle:a3 reuseIdentifier:a4 specifier:v9];
+  v10 = [(HPRFApplicationLinkCell *)&v48 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v11 = v10;
   if (v10)
   {
     [(HPRFApplicationLinkCell *)v10 setSelectionStyle:0];
-    v12 = [(HPRFApplicationLinkCell *)v11 titleLabel];
-    [v12 setNumberOfLines:0];
+    titleLabel = [(HPRFApplicationLinkCell *)v11 titleLabel];
+    [titleLabel setNumberOfLines:0];
 
     v13 = +[UIColor systemOrangeColor];
     enabledColor = v11->_enabledColor;
@@ -58,11 +58,11 @@
     installButton = v11->_installButton;
     v11->_installButton = v22;
 
-    v24 = [(UIButton *)v11->_installButton layer];
-    [v24 setBorderWidth:1.0];
+    layer = [(UIButton *)v11->_installButton layer];
+    [layer setBorderWidth:1.0];
 
-    v25 = [(UIButton *)v11->_installButton layer];
-    [v25 setCornerRadius:3.0];
+    layer2 = [(UIButton *)v11->_installButton layer];
+    [layer2 setCornerRadius:3.0];
 
     v26 = v11->_installButton;
     v27 = HKHeartRateLocalizedString();
@@ -82,9 +82,9 @@
 
     [(UIButton *)v11->_installButton setContentEdgeInsets:5.0, 5.0, 5.0, 5.0];
     [(UIButton *)v11->_installButton setAlpha:1.0];
-    v34 = [(UIButton *)v11->_installButton titleLabel];
+    titleLabel2 = [(UIButton *)v11->_installButton titleLabel];
     v35 = [UIFont systemFontOfSize:14.0];
-    [v34 setFont:v35];
+    [titleLabel2 setFont:v35];
 
     [(UIButton *)v11->_installButton setEnabled:1];
     [(UIButton *)v11->_installButton addTarget:v11 action:"performInstall" forControlEvents:64];
@@ -92,12 +92,12 @@
     installSpinnerButton = v11->_installSpinnerButton;
     v11->_installSpinnerButton = v36;
 
-    v38 = [v9 propertyForKey:@"HPRFAppBundleID"];
-    v39 = [(HPRFApplicationLinkCell *)v11 activePairedDevice];
-    v40 = v39;
-    if (v38 && v39)
+    v38 = [specifierCopy propertyForKey:@"HPRFAppBundleID"];
+    activePairedDevice = [(HPRFApplicationLinkCell *)v11 activePairedDevice];
+    v40 = activePairedDevice;
+    if (v38 && activePairedDevice)
     {
-      [(HPRFApplicationLinkCell *)v11 setUpWatchAppAvailabilityForAppBundleID:v38 device:v39];
+      [(HPRFApplicationLinkCell *)v11 setUpWatchAppAvailabilityForAppBundleID:v38 device:activePairedDevice];
     }
 
     else
@@ -132,15 +132,15 @@
   [(HPRFApplicationLinkCell *)&v3 dealloc];
 }
 
-- (void)setUpWatchAppAvailabilityForAppBundleID:(id)a3 device:(id)a4
+- (void)setUpWatchAppAvailabilityForAppBundleID:(id)d device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  deviceCopy = device;
   watchAppAvailability = self->_watchAppAvailability;
   if (watchAppAvailability)
   {
-    v10 = [(HKWatchAppAvailability *)watchAppAvailability bundleID];
-    v11 = [v10 isEqualToString:v7];
+    bundleID = [(HKWatchAppAvailability *)watchAppAvailability bundleID];
+    v11 = [bundleID isEqualToString:dCopy];
 
     if (v11)
     {
@@ -157,17 +157,17 @@
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544130;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v14;
     v25 = 2112;
-    v26 = v7;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = deviceCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> Setting up watch app availability for app bundle identifier(%@) on watch(%@)", buf, 0x2Au);
   }
 
-  v15 = [[HKWatchAppAvailability alloc] initWithBundleID:v7];
+  v15 = [[HKWatchAppAvailability alloc] initWithBundleID:dCopy];
   v16 = self->_watchAppAvailability;
   self->_watchAppAvailability = v15;
 
@@ -179,8 +179,8 @@
   v18[2] = sub_9DC0;
   v18[3] = &unk_188C0;
   objc_copyWeak(&v20, buf);
-  v19 = v7;
-  [(HKWatchAppAvailability *)v17 appInstallStateOnWatch:v8 completion:v18];
+  v19 = dCopy;
+  [(HKWatchAppAvailability *)v17 appInstallStateOnWatch:deviceCopy completion:v18];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -190,29 +190,29 @@ LABEL_7:
 - (id)activePairedDevice
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
-  return v3;
+  return getActivePairedDevice;
 }
 
-- (void)installNanoBundle:(id)a3 forDevice:(id)a4
+- (void)installNanoBundle:(id)bundle forDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _cachedInstallStateByAppID];
-  [v9 setObject:&off_19498 forKey:v7];
+  bundleCopy = bundle;
+  deviceCopy = device;
+  _cachedInstallStateByAppID = [objc_opt_class() _cachedInstallStateByAppID];
+  [_cachedInstallStateByAppID setObject:&off_19498 forKey:bundleCopy];
 
-  v10 = [[ASDSystemAppMetadata alloc] initWithBundleID:v7];
+  v10 = [[ASDSystemAppMetadata alloc] initWithBundleID:bundleCopy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_A07C;
   v13[3] = &unk_18910;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = bundleCopy;
+  v15 = deviceCopy;
   v16 = a2;
-  v11 = v8;
-  v12 = v7;
+  v11 = deviceCopy;
+  v12 = bundleCopy;
   [ASDInstallApps installApp:v10 onPairedDevice:v11 withCompletionHandler:v13];
 }
 
@@ -225,21 +225,21 @@ LABEL_7:
   if (aSelectorName)
   {
     v5 = objc_loadWeakRetained(&self->PSTableCell_opaque[v3]);
-    v6 = [v5 target];
+    target = [v5 target];
 
-    if (v6)
+    if (target)
     {
       v7 = NSSelectorFromString(aSelectorName);
       v8 = objc_loadWeakRetained(&self->PSTableCell_opaque[v3]);
-      v9 = [v8 target];
+      target2 = [v8 target];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
         v11 = objc_loadWeakRetained(&self->PSTableCell_opaque[v3]);
-        v12 = [v11 target];
+        target3 = [v11 target];
         v13 = objc_loadWeakRetained(&self->PSTableCell_opaque[v3]);
-        [v12 performSelectorOnMainThread:v7 withObject:v13 waitUntilDone:1];
+        [target3 performSelectorOnMainThread:v7 withObject:v13 waitUntilDone:1];
       }
     }
   }
@@ -254,10 +254,10 @@ LABEL_7:
 
   if (v5)
   {
-    v6 = [(HPRFApplicationLinkCell *)self activePairedDevice];
-    if (v6)
+    activePairedDevice = [(HPRFApplicationLinkCell *)self activePairedDevice];
+    if (activePairedDevice)
     {
-      [(HPRFApplicationLinkCell *)self installNanoBundle:v5 forDevice:v6];
+      [(HPRFApplicationLinkCell *)self installNanoBundle:v5 forDevice:activePairedDevice];
     }
 
     else
@@ -269,7 +269,7 @@ LABEL_7:
         v9 = v8;
         v10 = NSStringFromSelector(a2);
         v11 = 138543874;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
         v14 = v10;
         v15 = 2112;
@@ -293,11 +293,11 @@ LABEL_7:
   }
 }
 
-- (int64_t)appInstallStateForAppBundleID:(id)a3
+- (int64_t)appInstallStateForAppBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _cachedInstallStateByAppID];
-  v5 = [v4 objectForKey:v3];
+  dCopy = d;
+  _cachedInstallStateByAppID = [objc_opt_class() _cachedInstallStateByAppID];
+  v5 = [_cachedInstallStateByAppID objectForKey:dCopy];
 
   if (v5)
   {
@@ -309,9 +309,9 @@ LABEL_7:
     v6 = &off_194C8;
   }
 
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (void)layoutSubviews
@@ -324,14 +324,14 @@ LABEL_7:
   v65 = v5;
   v7 = v6;
   v9 = v8;
-  v10 = [(HPRFApplicationLinkCell *)self textLabel];
-  v11 = [(HPRFApplicationLinkCell *)self detailTextLabel];
-  [v10 frame];
+  textLabel = [(HPRFApplicationLinkCell *)self textLabel];
+  detailTextLabel = [(HPRFApplicationLinkCell *)self detailTextLabel];
+  [textLabel frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   rect = v18;
-  v19 = [(HPRFApplicationLinkCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(HPRFApplicationLinkCell *)self _shouldReverseLayoutDirection];
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v21 = [WeakRetained propertyForKey:@"HPRFAppBundleID"];
   v22 = [(HPRFApplicationLinkCell *)self appInstallStateForAppBundleID:v21];
@@ -342,24 +342,24 @@ LABEL_7:
   [(UIButton *)self->_installButton sizeThatFits:v7, v9];
   v25 = v24;
   v27 = v26;
-  v28 = [(HPRFApplicationLinkCell *)self accessoryView];
-  [v28 frame];
+  accessoryView = [(HPRFApplicationLinkCell *)self accessoryView];
+  [accessoryView frame];
   MinY = CGRectGetMinY(v69);
 
-  v30 = [(HPRFApplicationLinkCell *)self accessoryView];
-  [v30 frame];
+  accessoryView2 = [(HPRFApplicationLinkCell *)self accessoryView];
+  [accessoryView2 frame];
   v31 = CGRectGetMaxX(v70) - v25;
 
   [(UIButton *)self->_installButton setFrame:v31, MinY, v25, v27];
-  v32 = [(HPRFApplicationLinkCell *)self iconImageView];
-  [v32 bounds];
+  iconImageView = [(HPRFApplicationLinkCell *)self iconImageView];
+  [iconImageView bounds];
   v34 = v33;
-  v35 = [(HPRFApplicationLinkCell *)self iconImageView];
-  [v35 bounds];
+  iconImageView2 = [(HPRFApplicationLinkCell *)self iconImageView];
+  [iconImageView2 bounds];
   [(HPRFInstallSpinnerButton *)self->_installSpinnerButton setBounds:0.0, 0.0, v34];
 
-  v36 = [(HPRFApplicationLinkCell *)self accessoryView];
-  [v36 center];
+  accessoryView3 = [(HPRFApplicationLinkCell *)self accessoryView];
+  [accessoryView3 center];
   [(HPRFInstallSpinnerButton *)self->_installSpinnerButton setCenter:?];
 
   v66 = v4;
@@ -380,7 +380,7 @@ LABEL_7:
 
   else
   {
-    v38 = v11;
+    v38 = detailTextLabel;
     [v38 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
     v40 = v42;
     v41 = 35.0;
@@ -392,9 +392,9 @@ LABEL_7:
   v46 = v45;
   v48 = v47;
   v50 = v49;
-  v51 = [(HPRFApplicationLinkCell *)self traitCollection];
-  v52 = [v51 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v52);
+  traitCollection = [(HPRFApplicationLinkCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!v38)
   {
@@ -410,7 +410,7 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  if (!v19)
+  if (!_shouldReverseLayoutDirection)
   {
     v74.origin.x = v44;
     v74.origin.y = v46;
@@ -461,22 +461,22 @@ LABEL_14:
 
 LABEL_15:
   [v38 setFrame:{v44, v46, v48, v50}];
-  [v10 setFrame:{v54, v15, v37, rect}];
+  [textLabel setFrame:{v54, v15, v37, rect}];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = HPRFApplicationLinkCell;
-  v5 = a3;
-  [(HPRFApplicationLinkCell *)&v12 refreshCellContentsWithSpecifier:v5];
-  v6 = [v5 propertyForKey:{@"HPRFAppBundleID", v12.receiver, v12.super_class}];
+  specifierCopy = specifier;
+  [(HPRFApplicationLinkCell *)&v12 refreshCellContentsWithSpecifier:specifierCopy];
+  v6 = [specifierCopy propertyForKey:{@"HPRFAppBundleID", v12.receiver, v12.super_class}];
 
-  v7 = [(HPRFApplicationLinkCell *)self activePairedDevice];
-  v8 = v7;
-  if (v6 && v7)
+  activePairedDevice = [(HPRFApplicationLinkCell *)self activePairedDevice];
+  v8 = activePairedDevice;
+  if (v6 && activePairedDevice)
   {
-    [(HPRFApplicationLinkCell *)self setUpWatchAppAvailabilityForAppBundleID:v6 device:v7];
+    [(HPRFApplicationLinkCell *)self setUpWatchAppAvailabilityForAppBundleID:v6 device:activePairedDevice];
   }
 
   else
@@ -488,7 +488,7 @@ LABEL_15:
       v10 = v9;
       v11 = NSStringFromSelector(a2);
       *buf = 138544130;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v11;
       v17 = 2112;
@@ -503,15 +503,15 @@ LABEL_15:
   [(HPRFApplicationLinkCell *)self setNeedsLayout];
 }
 
-- (void)updateProgressUIForBundleID:(id)a3
+- (void)updateProgressUIForBundleID:(id)d
 {
   installButton = self->_installButton;
-  v5 = a3;
+  dCopy = d;
   [(UIButton *)installButton setHidden:1];
   [(HPRFInstallSpinnerButton *)self->_installSpinnerButton setHidden:0];
   [(HPRFInstallSpinnerButton *)self->_installSpinnerButton showProgressAnimation];
-  v6 = [objc_opt_class() _cachedInstalledProgressByAppID];
-  v7 = [v6 objectForKey:v5];
+  _cachedInstalledProgressByAppID = [objc_opt_class() _cachedInstalledProgressByAppID];
+  v7 = [_cachedInstalledProgressByAppID objectForKey:dCopy];
 
   [v7 floatValue];
   v9 = v8;
@@ -521,25 +521,25 @@ LABEL_15:
   [(HPRFInstallSpinnerButton *)installSpinnerButton setProgress:0 animated:v9];
 }
 
-- (void)updateUIWithInstallState:(int64_t)a3 forBundleID:(id)a4
+- (void)updateUIWithInstallState:(int64_t)state forBundleID:(id)d
 {
-  v6 = a4;
-  v12 = v6;
-  if (a3 == 2)
+  dCopy = d;
+  v12 = dCopy;
+  if (state == 2)
   {
     [(UIButton *)self->_installButton setHidden:0];
     [(UIButton *)self->_installButton setEnabled:0];
     [(HPRFInstallSpinnerButton *)self->_installSpinnerButton setHidden:1];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    [(HPRFApplicationLinkCell *)self updateProgressUIForBundleID:v6];
+    [(HPRFApplicationLinkCell *)self updateProgressUIForBundleID:dCopy];
   }
 
   else
   {
-    if (a3)
+    if (state)
     {
       [(UIButton *)self->_installButton setEnabled:0];
     }
@@ -550,17 +550,17 @@ LABEL_15:
     [(HPRFInstallSpinnerButton *)self->_installSpinnerButton stopProgressAnimation];
   }
 
-  v7 = [(UIButton *)self->_installButton isEnabled];
+  isEnabled = [(UIButton *)self->_installButton isEnabled];
   v8 = &OBJC_IVAR___HPRFApplicationLinkCell__disabledColor;
-  if (v7)
+  if (isEnabled)
   {
     v8 = &OBJC_IVAR___HPRFApplicationLinkCell__enabledColor;
   }
 
   v9 = [(HPRFApplicationLinkCell *)self _accessibilityHigherContrastTintColorForColor:*&self->PSTableCell_opaque[*v8]];
-  v10 = [v9 CGColor];
-  v11 = [(UIButton *)self->_installButton layer];
-  [v11 setBorderColor:v10];
+  cGColor = [v9 CGColor];
+  layer = [(UIButton *)self->_installButton layer];
+  [layer setBorderColor:cGColor];
 }
 
 + (id)_cachedInstalledProgressByAppID
@@ -599,103 +599,103 @@ LABEL_15:
   return v3;
 }
 
-- (void)watchAppAvailability:(id)a3 appInstallStateDidChange:(int64_t)a4
+- (void)watchAppAvailability:(id)availability appInstallStateDidChange:(int64_t)change
 {
-  v7 = a3;
+  availabilityCopy = availability;
   _HKInitializeLogging();
   v8 = HKLogDefault;
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v10 = NSStringFromSelector(a2);
-    v11 = [NSNumber numberWithInteger:a4];
-    v12 = [v7 bundleID];
+    v11 = [NSNumber numberWithInteger:change];
+    bundleID = [availabilityCopy bundleID];
     v19 = 138544130;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v10;
     v23 = 2112;
     v24 = v11;
     v25 = 2112;
-    v26 = v12;
+    v26 = bundleID;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> App install state did change(%@) for app with bundle identifier(%@)", &v19, 0x2Au);
   }
 
-  v13 = [objc_opt_class() _cachedInstallStateByAppID];
-  v14 = [NSNumber numberWithInteger:a4];
-  v15 = [v7 bundleID];
-  [v13 setObject:v14 forKey:v15];
+  _cachedInstallStateByAppID = [objc_opt_class() _cachedInstallStateByAppID];
+  v14 = [NSNumber numberWithInteger:change];
+  bundleID2 = [availabilityCopy bundleID];
+  [_cachedInstallStateByAppID setObject:v14 forKey:bundleID2];
 
-  if (a4 != 1)
+  if (change != 1)
   {
-    v16 = [objc_opt_class() _cachedInstalledProgressByAppID];
-    v17 = [v7 bundleID];
-    [v16 removeObjectForKey:v17];
+    _cachedInstalledProgressByAppID = [objc_opt_class() _cachedInstalledProgressByAppID];
+    bundleID3 = [availabilityCopy bundleID];
+    [_cachedInstalledProgressByAppID removeObjectForKey:bundleID3];
   }
 
-  v18 = [v7 bundleID];
-  [(HPRFApplicationLinkCell *)self updateUIWithInstallState:a4 forBundleID:v18];
+  bundleID4 = [availabilityCopy bundleID];
+  [(HPRFApplicationLinkCell *)self updateUIWithInstallState:change forBundleID:bundleID4];
 
   [(HPRFApplicationLinkCell *)self setNeedsLayout];
 }
 
-- (void)watchAppAvailability:(id)a3 appInstallProgressDidUpdate:(id)a4
+- (void)watchAppAvailability:(id)availability appInstallProgressDidUpdate:(id)update
 {
-  v7 = a3;
-  v8 = a4;
+  availabilityCopy = availability;
+  updateCopy = update;
   _HKInitializeLogging();
   v9 = HKLogDefault;
   if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
     v11 = NSStringFromSelector(a2);
-    v12 = [v7 bundleID];
+    bundleID = [availabilityCopy bundleID];
     v16 = 138544130;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v11;
     v20 = 2112;
-    v21 = v8;
+    v21 = updateCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = bundleID;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}@] -> App install progress did change(%@) for app with bundle identifier(%@)", &v16, 0x2Au);
   }
 
-  v13 = [objc_opt_class() _cachedInstalledProgressByAppID];
-  v14 = [v7 bundleID];
-  [v13 setObject:v8 forKey:v14];
+  _cachedInstalledProgressByAppID = [objc_opt_class() _cachedInstalledProgressByAppID];
+  bundleID2 = [availabilityCopy bundleID];
+  [_cachedInstalledProgressByAppID setObject:updateCopy forKey:bundleID2];
 
-  v15 = [v7 bundleID];
-  [(HPRFApplicationLinkCell *)self updateProgressUIForBundleID:v15];
+  bundleID3 = [availabilityCopy bundleID];
+  [(HPRFApplicationLinkCell *)self updateProgressUIForBundleID:bundleID3];
 
   [(HPRFApplicationLinkCell *)self setNeedsLayout];
 }
 
 - (id)blankIcon
 {
-  v3 = [(HPRFApplicationLinkCell *)self getLazyIconID];
-  v4 = [objc_opt_class() _iconCache];
-  v5 = [v4 objectForKey:v3];
+  getLazyIconID = [(HPRFApplicationLinkCell *)self getLazyIconID];
+  _iconCache = [objc_opt_class() _iconCache];
+  blankIcon = [_iconCache objectForKey:getLazyIconID];
 
-  if (!v5)
+  if (!blankIcon)
   {
     v11.receiver = self;
     v11.super_class = HPRFApplicationLinkCell;
-    v5 = [(HPRFApplicationLinkCell *)&v11 blankIcon];
+    blankIcon = [(HPRFApplicationLinkCell *)&v11 blankIcon];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v7 = [WeakRetained propertyForKey:PSIconImageShouldFlipForRightToLeftKey];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = [v5 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [blankIcon imageFlippedForRightToLeftLayoutDirection];
 
-    v5 = v9;
+    blankIcon = imageFlippedForRightToLeftLayoutDirection;
   }
 
-  return v5;
+  return blankIcon;
 }
 
 - (id)getLazyIcon
@@ -706,11 +706,11 @@ LABEL_15:
   v26 = sub_B684;
   v27 = sub_B694;
   v28 = 0;
-  v2 = [(HPRFApplicationLinkCell *)self getLazyIconID];
-  if (v2)
+  getLazyIconID = [(HPRFApplicationLinkCell *)self getLazyIconID];
+  if (getLazyIconID)
   {
-    v3 = [objc_opt_class() _iconCache];
-    v4 = [v3 objectForKey:v2];
+    _iconCache = [objc_opt_class() _iconCache];
+    v4 = [_iconCache objectForKey:getLazyIconID];
     v5 = v24[5];
     v24[5] = v4;
 
@@ -720,8 +720,8 @@ LABEL_15:
       v7 = dispatch_semaphore_create(0);
       v8 = +[NanoResourceGrabber sharedInstance];
       v9 = +[UIScreen mainScreen];
-      v10 = [v9 traitCollection];
-      [v10 displayScale];
+      traitCollection = [v9 traitCollection];
+      [traitCollection displayScale];
       if (v11 <= 2.0)
       {
         v12 = 47;
@@ -739,13 +739,13 @@ LABEL_15:
       v22 = &v23;
       v13 = v7;
       v21 = v13;
-      [v8 getIconForBundleID:v2 iconVariant:v12 block:&v17 timeout:60.0];
+      [v8 getIconForBundleID:getLazyIconID iconVariant:v12 block:&v17 timeout:60.0];
 
       dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
       if (v24[5])
       {
-        v14 = [objc_opt_class() _iconCache];
-        [v14 setObject:v24[5] forKey:v2];
+        _iconCache2 = [objc_opt_class() _iconCache];
+        [_iconCache2 setObject:v24[5] forKey:getLazyIconID];
       }
 
       v6 = v24[5];
@@ -764,7 +764,7 @@ LABEL_15:
   return v15;
 }
 
-+ (id)reuseIdentifierForClassAndType:(int64_t)a3
++ (id)reuseIdentifierForClassAndType:(int64_t)type
 {
   v3 = objc_opt_class();
 

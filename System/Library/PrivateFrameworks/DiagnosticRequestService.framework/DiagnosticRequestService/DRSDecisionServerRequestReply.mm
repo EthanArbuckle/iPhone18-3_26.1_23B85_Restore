@@ -1,31 +1,31 @@
 @interface DRSDecisionServerRequestReply
-- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)a3 errorString:(id)a4;
-- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)a3 reply:(id)a4;
+- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)request errorString:(id)string;
+- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)request reply:(id)reply;
 @end
 
 @implementation DRSDecisionServerRequestReply
 
-- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)a3 reply:(id)a4
+- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
-    if ([v7 hasAccepted])
+    if ([replyCopy hasAccepted])
     {
-      v9 = [v8 accepted];
-      v10 = [v8 rejectionReason];
-      v11 = [(DRSDecisionServerRequestReply *)self initWithOriginalRequest:v6 requestAccepted:v9 rejectionReason:v10];
+      accepted = [v8 accepted];
+      rejectionReason = [v8 rejectionReason];
+      v11 = [(DRSDecisionServerRequestReply *)self initWithOriginalRequest:requestCopy requestAccepted:accepted rejectionReason:rejectionReason];
     }
 
     else
     {
-      v13 = [v8 rejectionReason];
-      v10 = v13;
-      if (v13)
+      rejectionReason2 = [v8 rejectionReason];
+      rejectionReason = rejectionReason2;
+      if (rejectionReason2)
       {
-        v14 = v13;
+        v14 = rejectionReason2;
       }
 
       else
@@ -33,27 +33,27 @@
         v14 = @"Unknown";
       }
 
-      v11 = [(DRSDecisionServerRequestReply *)self initWithOriginalRequest:v6 errorString:v14];
+      v11 = [(DRSDecisionServerRequestReply *)self initWithOriginalRequest:requestCopy errorString:v14];
     }
 
     self = v11;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)a3 errorString:(id)a4
+- (DRSDecisionServerRequestReply)initWithOriginalRequest:(id)request errorString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  requestCopy = request;
+  stringCopy = string;
+  if (requestCopy)
   {
     v13.receiver = self;
     v13.super_class = DRSDecisionServerRequestReply;
@@ -61,20 +61,20 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_request, a3);
-      objc_storeStrong(p_isa + 4, a4);
+      objc_storeStrong(&v9->_request, request);
+      objc_storeStrong(p_isa + 4, string);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

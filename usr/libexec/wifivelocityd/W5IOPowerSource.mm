@@ -5,8 +5,8 @@
 - (int)batteryWarningLevel;
 - (int64_t)powerSourceType;
 - (void)dealloc;
-- (void)setLowBatteryCallback:(id)a3;
-- (void)setUpdatedPowerSourceCallback:(id)a3;
+- (void)setLowBatteryCallback:(id)callback;
+- (void)setUpdatedPowerSourceCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
@@ -32,12 +32,12 @@
   return v2;
 }
 
-- (void)setUpdatedPowerSourceCallback:(id)a3
+- (void)setUpdatedPowerSourceCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedPowerSourceCallback = [a3 copy];
+    self->_updatedPowerSourceCallback = [callback copy];
   }
 
   else
@@ -48,17 +48,17 @@
     v6[2] = sub_100037C90;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
 
-- (void)setLowBatteryCallback:(id)a3
+- (void)setLowBatteryCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_lowBatteryCallback = [a3 copy];
+    self->_lowBatteryCallback = [callback copy];
   }
 
   else
@@ -69,7 +69,7 @@
     v6[2] = sub_100037D8C;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }

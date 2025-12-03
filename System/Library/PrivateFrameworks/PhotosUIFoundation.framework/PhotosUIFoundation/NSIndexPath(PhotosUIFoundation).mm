@@ -19,15 +19,15 @@
 - (id)px_indexPathAfterDeletingItemAtIndexPath:()PhotosUIFoundation
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   if (![v4 length])
   {
-    v14 = v5;
+    v14 = selfCopy;
     v15 = 0;
     goto LABEL_11;
   }
 
-  v6 = [v5 length];
+  v6 = [selfCopy length];
   if (v6 < [v4 length])
   {
     goto LABEL_13;
@@ -38,7 +38,7 @@
   if (v7 == 1)
   {
 LABEL_7:
-    v11 = [v5 indexAtPosition:v8];
+    v11 = [selfCopy indexAtPosition:v8];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_13;
@@ -54,16 +54,16 @@ LABEL_7:
       }
 
       v16 = v12 - 1;
-      v14 = v5;
+      v14 = selfCopy;
       v15 = v8;
 LABEL_12:
       v17 = [v14 px_indexPathByChangingIndexAtPosition:v15 toIndex:v16];
 
-      v5 = v17;
+      selfCopy = v17;
       goto LABEL_13;
     }
 
-    v14 = v5;
+    v14 = selfCopy;
     v15 = v8;
 LABEL_11:
     v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -73,7 +73,7 @@ LABEL_11:
   v9 = 0;
   while (1)
   {
-    v10 = [v5 indexAtPosition:v9];
+    v10 = [selfCopy indexAtPosition:v9];
     if (v10 != [v4 indexAtPosition:v9])
     {
       break;
@@ -87,21 +87,21 @@ LABEL_11:
 
 LABEL_13:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)px_indexPathAfterInsertingItemAtIndexPath:()PhotosUIFoundation
 {
   v5 = a3;
-  v6 = a1;
+  selfCopy = self;
   if (![v5 length])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:v6 file:@"NSIndexPath+PhotosUIFoundation.m" lineNumber:109 description:@"can't insert zero-length index path"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"NSIndexPath+PhotosUIFoundation.m" lineNumber:109 description:@"can't insert zero-length index path"];
     goto LABEL_11;
   }
 
-  v7 = [v6 length];
+  v7 = [selfCopy length];
   if (v7 < [v5 length])
   {
     goto LABEL_12;
@@ -112,7 +112,7 @@ LABEL_13:
   if (v8 == 1)
   {
 LABEL_7:
-    v12 = [v6 indexAtPosition:v9];
+    v12 = [selfCopy indexAtPosition:v9];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_12;
@@ -124,8 +124,8 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    [v6 px_indexPathByChangingIndexAtPosition:v9 toIndex:v13 + 1];
-    v6 = v14 = v6;
+    [selfCopy px_indexPathByChangingIndexAtPosition:v9 toIndex:v13 + 1];
+    selfCopy = currentHandler = selfCopy;
 LABEL_11:
 
     goto LABEL_12;
@@ -134,7 +134,7 @@ LABEL_11:
   v10 = 0;
   while (1)
   {
-    v11 = [v6 indexAtPosition:v10];
+    v11 = [selfCopy indexAtPosition:v10];
     if (v11 != [v5 indexAtPosition:v10])
     {
       break;
@@ -148,45 +148,45 @@ LABEL_11:
 
 LABEL_12:
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)px_alteredIndexPathAfterMovingItemAtIndexPath:()PhotosUIFoundation toIndexPath:
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
+  selfCopy = self;
   if (v6 && ([v6 isEqual:v7] & 1) == 0)
   {
-    if ([v8 isEqual:v6])
+    if ([selfCopy isEqual:v6])
     {
       v9 = v7;
     }
 
     else
     {
-      v10 = [v8 px_alteredIndexPathAfterDeletingItemAtIndexPath:v6];
+      v10 = [selfCopy px_alteredIndexPathAfterDeletingItemAtIndexPath:v6];
 
       v9 = [v10 px_alteredIndexPathAfterInsertingItemAtIndexPath:v7];
-      v8 = v10;
+      selfCopy = v10;
     }
 
-    v8 = v9;
+    selfCopy = v9;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)px_alteredIndexPathAfterDeletingItemsAtIndexPaths:()PhotosUIFoundation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a1;
+  selfCopy = self;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [a3 reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -194,76 +194,76 @@ LABEL_12:
     do
     {
       v9 = 0;
-      v10 = v4;
+      v10 = selfCopy;
       do
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v4 = [v10 px_alteredIndexPathAfterDeletingItemAtIndexPath:*(*(&v12 + 1) + 8 * v9)];
+        selfCopy = [v10 px_alteredIndexPathAfterDeletingItemAtIndexPath:*(*(&v12 + 1) + 8 * v9)];
 
         ++v9;
-        v10 = v4;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)px_alteredIndexPathAfterDeletingItemAtIndexPath:()PhotosUIFoundation
 {
   v4 = a3;
-  v5 = a1;
-  v6 = [v4 px_section];
-  if (v6 == [v5 px_section])
+  selfCopy = self;
+  px_section = [v4 px_section];
+  if (px_section == [selfCopy px_section])
   {
-    v7 = [v4 px_item];
-    if (v7 == [v5 px_item])
+    px_item = [v4 px_item];
+    if (px_item == [selfCopy px_item])
     {
       v8 = MEMORY[0x1E696AC88];
-      v9 = [v5 px_section];
+      px_section2 = [selfCopy px_section];
       v10 = v8;
       v11 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v12 = [v4 px_item];
-      if (v12 >= [v5 px_item])
+      px_item2 = [v4 px_item];
+      if (px_item2 >= [selfCopy px_item])
       {
         goto LABEL_7;
       }
 
       v13 = MEMORY[0x1E696AC88];
-      v14 = [v5 px_item] - 1;
-      v9 = [v5 px_section];
+      v14 = [selfCopy px_item] - 1;
+      px_section2 = [selfCopy px_section];
       v10 = v13;
       v11 = v14;
     }
 
-    v15 = [v10 px_indexPathForItem:v11 inSection:v9];
+    v15 = [v10 px_indexPathForItem:v11 inSection:px_section2];
 
-    v5 = v15;
+    selfCopy = v15;
   }
 
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)px_alteredIndexPathAfterInsertingItemsAtIndexPaths:()PhotosUIFoundation
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -276,7 +276,7 @@ LABEL_7:
     do
     {
       v9 = 0;
-      v10 = v5;
+      v10 = selfCopy;
       do
       {
         if (*v13 != v8)
@@ -284,10 +284,10 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v5 = [v10 px_alteredIndexPathAfterInsertingItemAtIndexPath:*(*(&v12 + 1) + 8 * v9)];
+        selfCopy = [v10 px_alteredIndexPathAfterInsertingItemAtIndexPath:*(*(&v12 + 1) + 8 * v9)];
 
         ++v9;
-        v10 = v5;
+        v10 = selfCopy;
       }
 
       while (v7 != v9);
@@ -297,34 +297,34 @@ LABEL_7:
     while (v7);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)px_alteredIndexPathAfterInsertingItemAtIndexPath:()PhotosUIFoundation
 {
   v4 = a3;
-  v5 = a1;
-  v6 = [v4 px_section];
-  if (v6 == [v5 px_section])
+  selfCopy = self;
+  px_section = [v4 px_section];
+  if (px_section == [selfCopy px_section])
   {
-    v7 = [v4 px_item];
-    if (v7 <= [v5 px_item])
+    px_item = [v4 px_item];
+    if (px_item <= [selfCopy px_item])
     {
-      v8 = [MEMORY[0x1E696AC88] px_indexPathForItem:objc_msgSend(v5 inSection:{"px_item") + 1, objc_msgSend(v5, "px_section")}];
+      v8 = [MEMORY[0x1E696AC88] px_indexPathForItem:objc_msgSend(selfCopy inSection:{"px_item") + 1, objc_msgSend(selfCopy, "px_section")}];
 
-      v5 = v8;
+      selfCopy = v8;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)px_indexPathByChangingIndexAtPosition:()PhotosUIFoundation toIndex:
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v7 = [a1 length];
+  v7 = [self length];
   v8 = v11 - ((8 * v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  [a1 getIndexes:v8];
+  [self getIndexes:v8];
   *&v8[8 * a3] = a4;
   v9 = [MEMORY[0x1E696AC88] indexPathWithIndexes:v8 length:v7];
 
@@ -333,22 +333,22 @@ LABEL_7:
 
 - (uint64_t)px_kind
 {
-  if ([a1 length] < 3)
+  if ([self length] < 3)
   {
     return 0;
   }
 
-  return [a1 indexAtPosition:2];
+  return [self indexAtPosition:2];
 }
 
 - (uint64_t)px_item
 {
-  if ([a1 length] < 2)
+  if ([self length] < 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [a1 indexAtPosition:1];
+  return [self indexAtPosition:1];
 }
 
 + (id)px_indexPathForItem:()PhotosUIFoundation inSection:withKind:

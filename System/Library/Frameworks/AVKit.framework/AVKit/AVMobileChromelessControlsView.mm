@@ -4,21 +4,21 @@
 - (AVMobileChromelessControlsViewDelegate)delegate;
 - (CGRect)contentIntersection;
 - (double)_controlsExpansionYOffset;
-- (double)_layoutContentTabsInFrame:(uint64_t)a3 withConfiguration:(double)a4 canFitState:(double)a5;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (double)_layoutContentTabsInFrame:(uint64_t)frame withConfiguration:(double)configuration canFitState:(double)state;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)layoutSubviews;
-- (void)setAuxiliaryControlsView:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setContentIntersection:(CGRect)a3;
-- (void)setContentTabsView:(id)a3;
-- (void)setDisplayModeControlsView:(id)a3;
-- (void)setLayoutAllowed:(BOOL)a3;
-- (void)setLayoutConfiguration:(AVMobileChromelessControlsLayoutConfiguration *)a3;
-- (void)setLiveEdgeContentTagView:(id)a3;
-- (void)setPlaybackControlsView:(id)a3;
-- (void)setTimelineView:(id)a3;
-- (void)setTitlebarView:(id)a3;
-- (void)setVolumeControlsView:(id)a3;
+- (void)setAuxiliaryControlsView:(id)view;
+- (void)setBackgroundView:(id)view;
+- (void)setContentIntersection:(CGRect)intersection;
+- (void)setContentTabsView:(id)view;
+- (void)setDisplayModeControlsView:(id)view;
+- (void)setLayoutAllowed:(BOOL)allowed;
+- (void)setLayoutConfiguration:(AVMobileChromelessControlsLayoutConfiguration *)configuration;
+- (void)setLiveEdgeContentTagView:(id)view;
+- (void)setPlaybackControlsView:(id)view;
+- (void)setTimelineView:(id)view;
+- (void)setTitlebarView:(id)view;
+- (void)setVolumeControlsView:(id)view;
 @end
 
 @implementation AVMobileChromelessControlsView
@@ -58,23 +58,23 @@
   return result;
 }
 
-- (void)setContentIntersection:(CGRect)a3
+- (void)setContentIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
   p_contentIntersection = &self->_contentIntersection;
-  if (!CGRectEqualToRect(self->_contentIntersection, a3))
+  if (!CGRectEqualToRect(self->_contentIntersection, intersection))
   {
     p_contentIntersection->origin.x = x;
     p_contentIntersection->origin.y = y;
     p_contentIntersection->size.width = width;
     p_contentIntersection->size.height = height;
-    v9 = [(AVMobileChromelessControlsView *)self traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection = [(AVMobileChromelessControlsView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v10 == 1)
+    if (userInterfaceStyle == 1)
     {
 
       [(AVMobileChromelessControlsView *)self setNeedsLayout];
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  if (self->_displayModeControlsView == a3 || self->_volumeControlsView == a3)
+  if (self->_displayModeControlsView == invalidated || self->_volumeControlsView == invalidated)
   {
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
@@ -98,8 +98,8 @@
     goto LABEL_140;
   }
 
-  v3 = [(AVMobileChromelessControlsView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 1 && !CGRectIsNull(self->_contentIntersection))
+  traitCollection = [(AVMobileChromelessControlsView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1 && !CGRectIsNull(self->_contentIntersection))
   {
     y = self->_contentIntersection.origin.y;
     x = self->_contentIntersection.origin.x;
@@ -116,8 +116,8 @@
     width = v6;
   }
 
-  v8 = [(AVMobileChromelessControlsView *)self layoutMarginsGuide];
-  [v8 layoutFrame];
+  layoutMarginsGuide = [(AVMobileChromelessControlsView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   rect.origin.x = v9;
   v11 = v10;
   v13 = v12;
@@ -154,7 +154,7 @@
   v177 = v17;
   *&rect.origin.y = v23;
   v25 = self->_playbackControlsView;
-  v26 = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
   [(AVMobileChromelessPlaybackControlsView *)v25 intrinsicContentSize];
   if ((includedControls & 8) != 0)
   {
@@ -166,7 +166,7 @@
     {
       v33 = v11 + (v24 - v28) * 0.5;
       v179 = v13;
-      [(UIView *)v25 avkit_setFrame:v26 inLayoutDirection:rect.origin.x, v33, v13, v28];
+      [(UIView *)v25 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:rect.origin.x, v33, v13, v28];
       BYTE4(v199) = 1;
 
       v216.origin.x = rect.origin.x;
@@ -200,7 +200,7 @@
       v170 = *&rect.origin.y;
       v37 = self->_displayModeControlsView;
       v38 = self->_volumeControlsView;
-      v39 = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
+      effectiveUserInterfaceLayoutDirection2 = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
       [(AVMobileChromelessDisplayModeControlsView *)v37 intrinsicContentSize];
       v41 = v40;
       v172 = MinY;
@@ -219,7 +219,7 @@
       v45 = v44;
       v169 = auxiliaryControlsPlacement;
       v171 = v13;
-      v165 = [(AVMobileChromelessControlsView *)self _controlsExpansionYOffset];
+      _controlsExpansionYOffset = [(AVMobileChromelessControlsView *)self _controlsExpansionYOffset];
       v46 = *MEMORY[0x1E695F058];
       v175 = *(MEMORY[0x1E695F058] + 8);
       v48 = *(MEMORY[0x1E695F058] + 16);
@@ -229,13 +229,13 @@
       if (v50 == 1)
       {
         r1a = *(MEMORY[0x1E695F058] + 24);
-        [(UIView *)v37 avkit_setFrame:v39 inLayoutDirection:rect.origin.x, v172 - v165, v45, v43];
+        [(UIView *)v37 avkit_setFrame:effectiveUserInterfaceLayoutDirection2 inLayoutDirection:rect.origin.x, v172 - _controlsExpansionYOffset, v45, v43];
         v221.origin.x = v46;
         v221.origin.y = v175;
         v221.size.width = v48;
         v221.size.height = r1a;
         v233.origin.x = rect.origin.x;
-        v233.origin.y = v172 - v165;
+        v233.origin.y = v172 - _controlsExpansionYOffset;
         v233.size.width = v45;
         v233.size.height = v43;
         v222 = CGRectUnion(v221, v233);
@@ -260,13 +260,13 @@
           v54 = v53;
         }
 
-        [(UIView *)v38 avkit_setFrame:v39 inLayoutDirection:rect.origin.x + v171 - v54, v172 - v165, v54, v43];
+        [(UIView *)v38 avkit_setFrame:effectiveUserInterfaceLayoutDirection2 inLayoutDirection:rect.origin.x + v171 - v54, v172 - _controlsExpansionYOffset, v54, v43];
         v223.origin.x = v52;
         v223.origin.y = v175;
         v223.size.width = v48;
         v223.size.height = v47;
         v234.origin.x = rect.origin.x + v171 - v54;
-        v234.origin.y = v172 - v165;
+        v234.origin.y = v172 - _controlsExpansionYOffset;
         v234.size.width = v54;
         v234.size.height = v43;
         v224 = CGRectUnion(v223, v234);
@@ -465,7 +465,7 @@
       v96 = self->_liveEdgeContentTagView;
       v97 = self->_timelineView;
       v98 = self->_titlebarView;
-      v99 = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
+      effectiveUserInterfaceLayoutDirection3 = [(AVMobileChromelessControlsView *)self effectiveUserInterfaceLayoutDirection];
       v100 = v94;
       [(AVMobileChromelessTimelineView *)v97 intrinsicContentSize];
       if (v174 >= v101)
@@ -482,7 +482,7 @@
       v104 = v103;
       [(AVMobileContentTagView *)v96 intrinsicContentSize];
       v106 = v105;
-      v181 = [(AVMobileChromelessControlsView *)self _controlsExpansionYOffset];
+      _controlsExpansionYOffset2 = [(AVMobileChromelessControlsView *)self _controlsExpansionYOffset];
       v178 = v106;
       [(AVMobileAuxiliaryControlsView *)v95 sizeFittingControls:v100];
       v109 = v107;
@@ -531,17 +531,17 @@ LABEL_104:
 
         if (v111)
         {
-          [(UIView *)v97 avkit_setFrame:v99 inLayoutDirection:rect.origin.x, v181 + v113, v118, v102];
+          [(UIView *)v97 avkit_setFrame:effectiveUserInterfaceLayoutDirection3 inLayoutDirection:rect.origin.x, _controlsExpansionYOffset2 + v113, v118, v102];
         }
 
         if (v116)
         {
-          [(UIView *)v95 avkit_setFrame:v99 inLayoutDirection:rect.origin.x + v171 - v109, v181 + v115, v109, v110];
+          [(UIView *)v95 avkit_setFrame:effectiveUserInterfaceLayoutDirection3 inLayoutDirection:rect.origin.x + v171 - v109, _controlsExpansionYOffset2 + v115, v109, v110];
         }
 
         if (v139)
         {
-          [(UIView *)v98 avkit_setFrame:v99 inLayoutDirection:rect.origin.x, v181 + v113 - controlsPadding - v104, v179, v104];
+          [(UIView *)v98 avkit_setFrame:effectiveUserInterfaceLayoutDirection3 inLayoutDirection:rect.origin.x, _controlsExpansionYOffset2 + v113 - controlsPadding - v104, v179, v104];
         }
 
         LOBYTE(v199) = v116;
@@ -672,8 +672,8 @@ LABEL_117:
   v204 = BYTE5(v141) & 1;
   v205 = BYTE6(v141) & 1;
   v206 = HIBYTE(v141) & 1;
-  v143 = [MEMORY[0x1E695DF70] array];
-  v144 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 8; ++i)
   {
     v146 = *&buf[8 * i];
@@ -686,12 +686,12 @@ LABEL_117:
         [v147 setHidden:v148 ^ 1u];
         if (v148)
         {
-          v149 = v144;
+          v149 = array2;
         }
 
         else
         {
-          v149 = v143;
+          v149 = array;
         }
 
         [v149 addObject:v147];
@@ -699,41 +699,41 @@ LABEL_117:
     }
   }
 
-  if ([v143 count])
+  if ([array count])
   {
-    v150 = v143;
+    v150 = array;
     v151 = v150;
     if (v150)
     {
       if ([v150 count])
       {
-        v152 = [(AVMobileChromelessControlsView *)self delegate];
+        delegate = [(AVMobileChromelessControlsView *)self delegate];
         v153 = objc_opt_respondsToSelector();
 
         if (v153)
         {
-          v154 = [(AVMobileChromelessControlsView *)self delegate];
-          [v154 chromelessControlsView:self didDetachControlsViews:v151];
+          delegate2 = [(AVMobileChromelessControlsView *)self delegate];
+          [delegate2 chromelessControlsView:self didDetachControlsViews:v151];
         }
       }
     }
   }
 
-  if ([v144 count])
+  if ([array2 count])
   {
-    v155 = v144;
+    v155 = array2;
     v156 = v155;
     if (v155)
     {
       if ([v155 count])
       {
-        v157 = [(AVMobileChromelessControlsView *)self delegate];
+        delegate3 = [(AVMobileChromelessControlsView *)self delegate];
         v158 = objc_opt_respondsToSelector();
 
         if (v158)
         {
-          v159 = [(AVMobileChromelessControlsView *)self delegate];
-          [v159 chromelessControlsView:self didAttachControlsViews:v156];
+          delegate4 = [(AVMobileChromelessControlsView *)self delegate];
+          [delegate4 chromelessControlsView:self didAttachControlsViews:v156];
         }
       }
     }
@@ -750,18 +750,18 @@ LABEL_140:
   [(CGSize *)&rect.size layoutSubviews];
 }
 
-- (double)_layoutContentTabsInFrame:(uint64_t)a3 withConfiguration:(double)a4 canFitState:(double)a5
+- (double)_layoutContentTabsInFrame:(uint64_t)frame withConfiguration:(double)configuration canFitState:(double)state
 {
-  v14 = a1[63];
+  v14 = self[63];
   v15 = a2[2];
-  [a1 layoutMargins];
+  [self layoutMargins];
   v47 = v16;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [a1 effectiveUserInterfaceLayoutDirection];
-  v46 = [(AVMobileChromelessControlsView *)a1 _controlsExpansionYOffset];
-  v44 = a4;
+  effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
+  _controlsExpansionYOffset = [(AVMobileChromelessControlsView *)self _controlsExpansionYOffset];
+  configurationCopy = configuration;
   v45 = v22;
   v43 = a6;
   v49.origin.y = a7;
@@ -778,8 +778,8 @@ LABEL_140:
   }
 
   r1 = *(MEMORY[0x1E695F050] + 24);
-  v29 = a5 + v49.origin.y;
-  v30 = a5 + v49.origin.y - v24;
+  v29 = state + v49.origin.y;
+  v30 = state + v49.origin.y - v24;
   if ((LOBYTE(v28) & 0x40) != 0)
   {
     v29 = v29 - v24;
@@ -804,7 +804,7 @@ LABEL_140:
       v32 = 50.0;
     }
 
-    [a1 layoutMargins];
+    [self layoutMargins];
     if (*(a2 + 41))
     {
       if ((a2[5] & 1) == 0)
@@ -837,22 +837,22 @@ LABEL_15:
   }
 
 LABEL_19:
-  [a1[63] setLayoutMargins:{v47, v18, v20, v45, r1}];
-  [a1[63] avkit_setFrame:v23 inLayoutDirection:{v44 - v18, v46 + v42, v45 + v43 + v18, v32}];
+  [self[63] setLayoutMargins:{v47, v18, v20, v45, r1}];
+  [self[63] avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{configurationCopy - v18, _controlsExpansionYOffset + v42, v45 + v43 + v18, v32}];
   v51.origin.x = v49.origin.x;
   v51.origin.y = v26;
   v51.size.width = v27;
   v51.size.height = r1a;
-  v53.origin.x = v44 - v18;
-  v53.origin.y = v46 + v42;
+  v53.origin.x = configurationCopy - v18;
+  v53.origin.y = _controlsExpansionYOffset + v42;
   v53.size.width = v45 + v43 + v18;
   v53.size.height = v32;
   *&v34 = CGRectUnion(v51, v53);
   if (*(a2 + 40) == 1)
   {
-    [a1 bounds];
+    [self bounds];
     MaxY = CGRectGetMaxY(v52);
-    if (*(a2 + 40) == 1 && MaxY - (v46 + v42) != a2[11])
+    if (*(a2 + 40) == 1 && MaxY - (_controlsExpansionYOffset + v42) != a2[11])
     {
       v36 = _AVLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -864,7 +864,7 @@ LABEL_19:
   }
 
 LABEL_25:
-  if (a3)
+  if (frame)
   {
     v37 = (LODWORD(v28) >> 6) & 1;
     if (v49.origin.y < v48)
@@ -872,7 +872,7 @@ LABEL_25:
       LOBYTE(v37) = 0;
     }
 
-    *(a3 + 1) = v37;
+    *(frame + 1) = v37;
   }
 
   else
@@ -890,17 +890,17 @@ LABEL_25:
 
 - (double)_controlsExpansionYOffset
 {
-  [a1 layoutConfiguration];
+  [self layoutConfiguration];
 
   return 0.0;
 }
 
-- (void)setVolumeControlsView:(id)a3
+- (void)setVolumeControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessVolumeControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessVolumeControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -927,22 +927,22 @@ LABEL_25:
     volumeControlsView = 0;
   }
 
-  if (volumeControlsView != v5)
+  if (volumeControlsView != viewCopy)
   {
     [(AVMobileChromelessVolumeControlsView *)volumeControlsView removeFromSuperview];
-    objc_storeStrong(&self->_volumeControlsView, a3);
+    objc_storeStrong(&self->_volumeControlsView, view);
     [(AVView *)self->_volumeControlsView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_volumeControlsView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitlebarView:(id)a3
+- (void)setTitlebarView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileTitlebarView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileTitlebarView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -969,22 +969,22 @@ LABEL_25:
     titlebarView = 0;
   }
 
-  if (titlebarView != v5)
+  if (titlebarView != viewCopy)
   {
     [(AVMobileTitlebarView *)titlebarView removeFromSuperview];
-    objc_storeStrong(&self->_titlebarView, a3);
+    objc_storeStrong(&self->_titlebarView, view);
     [(AVView *)self->_titlebarView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_titlebarView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimelineView:(id)a3
+- (void)setTimelineView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessTimelineView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessTimelineView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1011,22 +1011,22 @@ LABEL_25:
     timelineView = 0;
   }
 
-  if (timelineView != v5)
+  if (timelineView != viewCopy)
   {
     [(AVMobileChromelessTimelineView *)timelineView removeFromSuperview];
-    objc_storeStrong(&self->_timelineView, a3);
+    objc_storeStrong(&self->_timelineView, view);
     [(AVView *)self->_timelineView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_timelineView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlaybackControlsView:(id)a3
+- (void)setPlaybackControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessPlaybackControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessPlaybackControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1053,22 +1053,22 @@ LABEL_25:
     playbackControlsView = 0;
   }
 
-  if (playbackControlsView != v5)
+  if (playbackControlsView != viewCopy)
   {
     [(AVMobileChromelessPlaybackControlsView *)playbackControlsView removeFromSuperview];
-    objc_storeStrong(&self->_playbackControlsView, a3);
+    objc_storeStrong(&self->_playbackControlsView, view);
     [(AVView *)self->_playbackControlsView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_playbackControlsView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setLiveEdgeContentTagView:(id)a3
+- (void)setLiveEdgeContentTagView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileContentTagView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileContentTagView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1095,22 +1095,22 @@ LABEL_25:
     liveEdgeContentTagView = 0;
   }
 
-  if (liveEdgeContentTagView != v5)
+  if (liveEdgeContentTagView != viewCopy)
   {
     [(AVMobileContentTagView *)liveEdgeContentTagView removeFromSuperview];
-    objc_storeStrong(&self->_liveEdgeContentTagView, a3);
+    objc_storeStrong(&self->_liveEdgeContentTagView, view);
     [(AVMobileContentTagView *)self->_liveEdgeContentTagView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_liveEdgeContentTagView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setDisplayModeControlsView:(id)a3
+- (void)setDisplayModeControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessDisplayModeControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessDisplayModeControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1137,22 +1137,22 @@ LABEL_25:
     displayModeControlsView = 0;
   }
 
-  if (displayModeControlsView != v5)
+  if (displayModeControlsView != viewCopy)
   {
     [(AVMobileChromelessDisplayModeControlsView *)displayModeControlsView removeFromSuperview];
-    objc_storeStrong(&self->_displayModeControlsView, a3);
+    objc_storeStrong(&self->_displayModeControlsView, view);
     [(AVView *)self->_displayModeControlsView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_displayModeControlsView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentTabsView:(id)a3
+- (void)setContentTabsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessContentTabsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessContentTabsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1163,21 +1163,21 @@ LABEL_25:
   }
 
   contentTabsView = self->_contentTabsView;
-  if (contentTabsView != v5)
+  if (contentTabsView != viewCopy)
   {
     [(AVMobileChromelessContentTabsView *)contentTabsView removeFromSuperview];
-    objc_storeStrong(&self->_contentTabsView, a3);
+    objc_storeStrong(&self->_contentTabsView, view);
     [(AVMobileChromelessControlsView *)self addSubview:self->_contentTabsView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileChromelessBackgroundGradientView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileChromelessBackgroundGradientView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1204,21 +1204,21 @@ LABEL_25:
     backgroundView = 0;
   }
 
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
     [(AVMobileChromelessBackgroundGradientView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(AVMobileChromelessControlsView *)self addSubview:self->_backgroundView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryControlsView:(id)a3
+- (void)setAuxiliaryControlsView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileAuxiliaryControlsView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileAuxiliaryControlsView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1245,17 +1245,17 @@ LABEL_25:
     auxiliaryControlsView = 0;
   }
 
-  if (auxiliaryControlsView != v5)
+  if (auxiliaryControlsView != viewCopy)
   {
     [(AVMobileAuxiliaryControlsView *)auxiliaryControlsView removeFromSuperview];
-    objc_storeStrong(&self->_auxiliaryControlsView, a3);
+    objc_storeStrong(&self->_auxiliaryControlsView, view);
     [(AVView *)self->_auxiliaryControlsView setHidden:1];
     [(AVMobileChromelessControlsView *)self addSubview:self->_auxiliaryControlsView];
     [(AVMobileChromelessControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setLayoutConfiguration:(AVMobileChromelessControlsLayoutConfiguration *)a3
+- (void)setLayoutConfiguration:(AVMobileChromelessControlsLayoutConfiguration *)configuration
 {
   includedControls = self->_layoutConfiguration.includedControls;
   expanded = self->_layoutConfiguration.expanded;
@@ -1265,15 +1265,15 @@ LABEL_25:
   p_pinnedAuxiliaryControls = &self->_layoutConfiguration.pinnedAuxiliaryControls;
   v10 = pinnedAuxiliaryControls;
   p_contentTabPresented = &p_layoutConfiguration->contentTabPresented;
-  v13 = a3->pinnedAuxiliaryControls;
-  v14 = &a3->contentTabPresented;
-  v19 = expanded == a3->expanded && includedControls == a3->includedControls && p_layoutConfiguration->auxiliaryControlsPlacement == a3->auxiliaryControlsPlacement && controlsPadding == a3->controlsPadding && v10 == v13 && p_layoutConfiguration->contentTabPresented == a3->contentTabPresented;
-  if (!v19 || p_layoutConfiguration->contentTabPresentationHeight != a3->contentTabPresentationHeight)
+  v13 = configuration->pinnedAuxiliaryControls;
+  v14 = &configuration->contentTabPresented;
+  v19 = expanded == configuration->expanded && includedControls == configuration->includedControls && p_layoutConfiguration->auxiliaryControlsPlacement == configuration->auxiliaryControlsPlacement && controlsPadding == configuration->controlsPadding && v10 == v13 && p_layoutConfiguration->contentTabPresented == configuration->contentTabPresented;
+  if (!v19 || p_layoutConfiguration->contentTabPresentationHeight != configuration->contentTabPresentationHeight)
   {
-    v20 = *&a3->controlsPadding;
-    *&p_layoutConfiguration->includedControls = *&a3->includedControls;
+    v20 = *&configuration->controlsPadding;
+    *&p_layoutConfiguration->includedControls = *&configuration->includedControls;
     *&p_layoutConfiguration->controlsPadding = v20;
-    objc_storeStrong(p_pinnedAuxiliaryControls, a3->pinnedAuxiliaryControls);
+    objc_storeStrong(p_pinnedAuxiliaryControls, configuration->pinnedAuxiliaryControls);
     v21 = *v14;
     v22 = *(v14 + 1);
     v23 = *(v14 + 2);
@@ -1282,18 +1282,18 @@ LABEL_25:
     *(p_contentTabPresented + 2) = v23;
     *p_contentTabPresented = v21;
     p_pinnedAuxiliaryControls = [(AVMobileChromelessControlsView *)self setNeedsLayout];
-    v13 = a3->pinnedAuxiliaryControls;
+    v13 = configuration->pinnedAuxiliaryControls;
   }
 
   MEMORY[0x1EEE66BB8](p_pinnedAuxiliaryControls, v13);
 }
 
-- (void)setLayoutAllowed:(BOOL)a3
+- (void)setLayoutAllowed:(BOOL)allowed
 {
-  if (self->_layoutAllowed != a3)
+  if (self->_layoutAllowed != allowed)
   {
-    self->_layoutAllowed = a3;
-    if (a3)
+    self->_layoutAllowed = allowed;
+    if (allowed)
     {
       [(AVMobileChromelessControlsView *)self setNeedsLayout];
     }

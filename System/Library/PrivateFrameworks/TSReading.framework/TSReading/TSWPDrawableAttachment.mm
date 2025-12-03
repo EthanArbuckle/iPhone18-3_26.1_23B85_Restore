@@ -1,41 +1,41 @@
 @interface TSWPDrawableAttachment
-+ (void)setPositionerClass:(Class)a3;
++ (void)setPositionerClass:(Class)class;
 - (BOOL)isAnchored;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHTMLWrap;
 - (BOOL)isPartitioned;
 - (BOOL)specifiesEnabledKnobMask;
 - (Class)positionerClass;
-- (TSWPDrawableAttachment)initWithContext:(id)a3 drawable:(id)a4;
-- (id)copyWithContext:(id)a3;
+- (TSWPDrawableAttachment)initWithContext:(id)context drawable:(id)drawable;
+- (id)copyWithContext:(id)context;
 - (id)detachDrawable;
 - (id)textRepresentationForCopy;
 - (id)textStorages;
 - (unint64_t)enabledKnobMask;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)attachDrawable:(id)a3;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)attachDrawable:(id)drawable;
 - (void)dealloc;
 - (void)infoChanged;
 - (void)invalidate;
-- (void)setParentStorage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)setParentStorage:(id)storage;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPDrawableAttachment
 
-+ (void)setPositionerClass:(Class)a3
++ (void)setPositionerClass:(Class)class
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_287E95EE0]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:&unk_287E95EE0]& 1) == 0)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPDrawableAttachment setPositionerClass:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 92, @"Invalid positioner class"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 92, @"Invalid positioner class"}];
   }
 
-  _tswpDrawableAttachmentPositionerClass = a3;
+  _tswpDrawableAttachmentPositionerClass = class;
 }
 
 - (void)dealloc
@@ -47,16 +47,16 @@
   [(TSWPDrawableAttachment *)&v3 dealloc];
 }
 
-- (TSWPDrawableAttachment)initWithContext:(id)a3 drawable:(id)a4
+- (TSWPDrawableAttachment)initWithContext:(id)context drawable:(id)drawable
 {
   v8.receiver = self;
   v8.super_class = TSWPDrawableAttachment;
-  v5 = [(TSWPAttachment *)&v8 initWithContext:a3];
+  v5 = [(TSWPAttachment *)&v8 initWithContext:context];
   if (v5)
   {
-    v6 = a4;
-    v5->_drawableInfo = v6;
-    [(TSDDrawableInfo *)v6 setOwningAttachment:v5];
+    drawableCopy = drawable;
+    v5->_drawableInfo = drawableCopy;
+    [(TSDDrawableInfo *)drawableCopy setOwningAttachment:v5];
     v5->_hOffsetType = 0;
     v5->_hOffset = NAN;
     v5->_vOffsetType = 0;
@@ -67,14 +67,14 @@
   return v5;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = TSWPDrawableAttachment;
   v5 = [(TSWPAttachment *)&v8 copyWithContext:?];
   if (v5)
   {
-    v6 = [(TSDDrawableInfo *)self->_drawableInfo copyWithContext:a3];
+    v6 = [(TSDDrawableInfo *)self->_drawableInfo copyWithContext:context];
     v5[7] = v6;
     [v6 setOwningAttachment:v5];
     *(v5 + 16) = self->_hOffsetType;
@@ -87,7 +87,7 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = TSWPDrawableAttachment;
@@ -99,8 +99,8 @@
     if (v5)
     {
       v6 = v5;
-      v7 = [(TSWPDrawableAttachment *)self isAnchored];
-      if (v7 == [v6 isAnchored])
+      isAnchored = [(TSWPDrawableAttachment *)self isAnchored];
+      if (isAnchored == [v6 isAnchored])
       {
         LOBYTE(v4) = -[TSDDrawableInfo isEqual:](self->_drawableInfo, "isEqual:", [v6 drawable]);
       }
@@ -122,10 +122,10 @@
 
 - (void)invalidate
 {
-  v3 = [(TSWPAttachment *)self parentStorage];
-  v4 = [(TSWPAttachment *)self findCharIndex];
+  parentStorage = [(TSWPAttachment *)self parentStorage];
+  findCharIndex = [(TSWPAttachment *)self findCharIndex];
 
-  [(TSWPStorage *)v3 p_didChangeRange:v4 delta:1 broadcastKind:0, 1];
+  [(TSWPStorage *)parentStorage p_didChangeRange:findCharIndex delta:1 broadcastKind:0, 1];
 }
 
 - (id)detachDrawable
@@ -138,31 +138,31 @@
   return v3;
 }
 
-- (void)attachDrawable:(id)a3
+- (void)attachDrawable:(id)drawable
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
-  self->_drawableInfo = v5;
-  [(TSDDrawableInfo *)v5 setOwningAttachment:self];
-  v6 = [(TSWPAttachment *)self parentStorage];
+  drawableCopy = drawable;
+  self->_drawableInfo = drawableCopy;
+  [(TSDDrawableInfo *)drawableCopy setOwningAttachment:self];
+  parentStorage = [(TSWPAttachment *)self parentStorage];
   drawableInfo = self->_drawableInfo;
 
-  [(TSDDrawableInfo *)drawableInfo setParentInfo:v6];
+  [(TSDDrawableInfo *)drawableInfo setParentInfo:parentStorage];
 }
 
-- (void)setParentStorage:(id)a3
+- (void)setParentStorage:(id)storage
 {
   v5.receiver = self;
   v5.super_class = TSWPDrawableAttachment;
   [(TSWPAttachment *)&v5 setParentStorage:?];
-  [(TSDDrawableInfo *)self->_drawableInfo setParentInfo:a3];
+  [(TSDDrawableInfo *)self->_drawableInfo setParentInfo:storage];
 }
 
 - (BOOL)isHTMLWrap
 {
-  v2 = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
+  exteriorTextWrap = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
 
-  return [(TSDExteriorTextWrap *)v2 isHTMLWrap];
+  return [(TSDExteriorTextWrap *)exteriorTextWrap isHTMLWrap];
 }
 
 - (BOOL)isPartitioned
@@ -179,13 +179,13 @@
 
 - (BOOL)isAnchored
 {
-  v2 = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
-  if (v2)
+  exteriorTextWrap = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
+  if (exteriorTextWrap)
   {
-    LOBYTE(v2) = [(TSDExteriorTextWrap *)v2 type]!= 0;
+    LOBYTE(exteriorTextWrap) = [(TSDExteriorTextWrap *)exteriorTextWrap type]!= 0;
   }
 
-  return v2;
+  return exteriorTextWrap;
 }
 
 - (Class)positionerClass
@@ -207,21 +207,21 @@
 {
   if ([(TSDDrawableInfo *)self->_drawableInfo isInlineWithText])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isAnchoredToText) = 1;
   }
 
   else
   {
-    v3 = [(TSDDrawableInfo *)self->_drawableInfo isAnchoredToText];
-    if (v3)
+    isAnchoredToText = [(TSDDrawableInfo *)self->_drawableInfo isAnchoredToText];
+    if (isAnchoredToText)
     {
-      v4 = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
+      exteriorTextWrap = [(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap];
 
-      LOBYTE(v3) = [(TSDExteriorTextWrap *)v4 isHTMLWrap];
+      LOBYTE(isAnchoredToText) = [(TSDExteriorTextWrap *)exteriorTextWrap isHTMLWrap];
     }
   }
 
-  return v3;
+  return isAnchoredToText;
 }
 
 - (unint64_t)enabledKnobMask
@@ -230,22 +230,22 @@
   {
     if ([(TSDExteriorTextWrap *)[(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap] type]- 1 > 1)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPDrawableAttachment enabledKnobMask]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 436, @"Unexpected text wrap type (%d).", -[TSDExteriorTextWrap type](-[TSDDrawableInfo exteriorTextWrap](self->_drawableInfo, "exteriorTextWrap"), "type")}];
+      [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 436, @"Unexpected text wrap type (%d).", -[TSDExteriorTextWrap type](-[TSDDrawableInfo exteriorTextWrap](self->_drawableInfo, "exteriorTextWrap"), "type")}];
     }
 
     else
     {
-      v9 = [(TSDExteriorTextWrap *)[(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap] direction];
-      if (v9 < 3)
+      direction = [(TSDExteriorTextWrap *)[(TSDDrawableInfo *)self->_drawableInfo exteriorTextWrap] direction];
+      if (direction < 3)
       {
-        return qword_26CA669C8[v9];
+        return qword_26CA669C8[direction];
       }
 
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPDrawableAttachment enabledKnobMask]"];
-      [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 429, @"Unexpected text wrap direction (%d).", -[TSDExteriorTextWrap direction](-[TSDDrawableInfo exteriorTextWrap](self->_drawableInfo, "exteriorTextWrap"), "direction")}];
+      [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 429, @"Unexpected text wrap direction (%d).", -[TSDExteriorTextWrap direction](-[TSDDrawableInfo exteriorTextWrap](self->_drawableInfo, "exteriorTextWrap"), "direction")}];
     }
 
     return 0;
@@ -258,14 +258,14 @@
   }
 
   v4 = result;
-  v5 = [(TSWPAttachment *)self findCharIndex];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  findCharIndex = [(TSWPAttachment *)self findCharIndex];
+  if (findCharIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v6 = v5;
-  result = [v4 paragraphStyleAtCharIndex:v5 effectiveRange:0];
+  v6 = findCharIndex;
+  result = [v4 paragraphStyleAtCharIndex:findCharIndex effectiveRange:0];
   if (!result)
   {
     return result;
@@ -275,9 +275,9 @@
   v8 = v7;
   if (v7 >= 5)
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPDrawableAttachment enabledKnobMask]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 403, @"Invalid paragraph alignment value (%d).", v8}];
+    [currentHandler3 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPDrawableAttachment.mm"), 403, @"Invalid paragraph alignment value (%d).", v8}];
     return 0;
   }
 
@@ -292,68 +292,68 @@
 - (void)infoChanged
 {
   parentStorage = self->super._parentStorage;
-  v3 = [(TSWPAttachment *)self findCharIndex];
+  findCharIndex = [(TSWPAttachment *)self findCharIndex];
 
-  [(TSWPStorage *)parentStorage p_didChangeRange:v3 delta:1 broadcastKind:0, 0];
+  [(TSWPStorage *)parentStorage p_didChangeRange:findCharIndex delta:1 broadcastKind:0, 0];
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  [a4 pushMappingContext:self];
+  [mapper pushMappingContext:self];
   v7.receiver = self;
   v7.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v7 adoptStylesheet:a3 withMapper:a4];
-  [(TSDDrawableInfo *)self->_drawableInfo adoptStylesheet:a3 withMapper:a4];
-  [a4 popMappingContext:self];
+  [(TSWPAttachment *)&v7 adoptStylesheet:stylesheet withMapper:mapper];
+  [(TSDDrawableInfo *)self->_drawableInfo adoptStylesheet:stylesheet withMapper:mapper];
+  [mapper popMappingContext:self];
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 performSelector:sel_willAddDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
+    [root performSelector:sel_willAddDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
   }
 
   v7.receiver = self;
   v7.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v7 willBeAddedToDocumentRoot:a3 context:a4];
-  [(TSDDrawableInfo *)self->_drawableInfo willBeAddedToDocumentRoot:a3 context:a4];
+  [(TSWPAttachment *)&v7 willBeAddedToDocumentRoot:root context:context];
+  [(TSDDrawableInfo *)self->_drawableInfo willBeAddedToDocumentRoot:root context:context];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
   v7.receiver = self;
   v7.super_class = TSWPDrawableAttachment;
   [TSWPAttachment wasAddedToDocumentRoot:sel_wasAddedToDocumentRoot_context_ context:?];
-  [(TSDDrawableInfo *)self->_drawableInfo wasAddedToDocumentRoot:a3 context:a4];
+  [(TSDDrawableInfo *)self->_drawableInfo wasAddedToDocumentRoot:root context:context];
   if (objc_opt_respondsToSelector())
   {
-    [a3 performSelector:sel_didAddDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
+    [root performSelector:sel_didAddDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 performSelector:sel_willRemoveDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
+    [root performSelector:sel_willRemoveDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
   }
 
-  [(TSDDrawableInfo *)self->_drawableInfo willBeRemovedFromDocumentRoot:a3];
+  [(TSDDrawableInfo *)self->_drawableInfo willBeRemovedFromDocumentRoot:root];
   v5.receiver = self;
   v5.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v5 willBeRemovedFromDocumentRoot:a3];
+  [(TSWPAttachment *)&v5 willBeRemovedFromDocumentRoot:root];
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   [(TSDDrawableInfo *)self->_drawableInfo wasRemovedFromDocumentRoot:?];
   v5.receiver = self;
   v5.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v5 wasRemovedFromDocumentRoot:a3];
+  [(TSWPAttachment *)&v5 wasRemovedFromDocumentRoot:root];
   if (objc_opt_respondsToSelector())
   {
-    [a3 performSelector:sel_didRemoveDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
+    [root performSelector:sel_didRemoveDrawable_ withObject:{-[TSWPDrawableAttachment drawable](self, "drawable")}];
   }
 }
 

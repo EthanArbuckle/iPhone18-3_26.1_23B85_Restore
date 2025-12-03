@@ -2,13 +2,13 @@
 - (BOOL)isInvalidated;
 - (NSArray)preferredLocalizations;
 - (STStatusDomain)init;
-- (STStatusDomain)initWithServerHandle:(id)a3 wantsUntransformedData:(BOOL)a4;
+- (STStatusDomain)initWithServerHandle:(id)handle wantsUntransformedData:(BOOL)data;
 - (STStatusDomainData)data;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeData:(id)a3;
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5;
-- (void)observeDataWithBlock:(id)a3;
+- (void)observeData:(id)data;
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context;
+- (void)observeDataWithBlock:(id)block;
 @end
 
 @implementation STStatusDomain
@@ -30,8 +30,8 @@
 
   else
   {
-    v4 = [(STStatusDomain *)self serverHandle];
-    v3 = [v4 dataForDomain:objc_msgSend(objc_opt_class() client:{"statusDomainName"), self}];
+    serverHandle = [(STStatusDomain *)self serverHandle];
+    v3 = [serverHandle dataForDomain:objc_msgSend(objc_opt_class() client:{"statusDomainName"), self}];
   }
 
   return v3;
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (STStatusDomain)initWithServerHandle:(id)a3 wantsUntransformedData:(BOOL)a4
+- (STStatusDomain)initWithServerHandle:(id)handle wantsUntransformedData:(BOOL)data
 {
-  v7 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = STStatusDomain;
   v8 = [(STStatusDomain *)&v11 init];
@@ -55,9 +55,9 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_wantsUntransformedData = a4;
-    objc_storeStrong(&v8->_serverHandle, a3);
-    [v7 registerClient:v9 forDomain:{objc_msgSend(objc_opt_class(), "statusDomainName")}];
+    v8->_wantsUntransformedData = data;
+    objc_storeStrong(&v8->_serverHandle, handle);
+    [handleCopy registerClient:v9 forDomain:{objc_msgSend(objc_opt_class(), "statusDomainName")}];
   }
 
   return v9;
@@ -71,8 +71,8 @@
     v3 = STSystemStatusLogObservation();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
-      v5 = [objc_opt_class() statusDomainName];
-      v6 = STSystemStatusDescriptionForDomain(v5);
+      statusDomainName = [objc_opt_class() statusDomainName];
+      v6 = STSystemStatusDescriptionForDomain(statusDomainName);
       *buf = 138543362;
       v9 = v6;
       _os_log_fault_impl(&dword_1DA9C2000, v3, OS_LOG_TYPE_FAULT, "SYSTEMSTATUS CLIENT ERROR: %{public}@ domain was deallocated without being invalidated", buf, 0xCu);
@@ -97,8 +97,8 @@
     v4 = STSystemStatusLogObservation();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
     {
-      v7 = [objc_opt_class() statusDomainName];
-      v8 = STSystemStatusDescriptionForDomain(v7);
+      statusDomainName = [objc_opt_class() statusDomainName];
+      v8 = STSystemStatusDescriptionForDomain(statusDomainName);
       *buf = 138543362;
       v11 = v8;
       _os_log_fault_impl(&dword_1DA9C2000, v4, OS_LOG_TYPE_FAULT, "Attempted to invalidate %{public}@ domain which was already invalidated", buf, 0xCu);
@@ -109,19 +109,19 @@
 
   else
   {
-    v9 = [(STStatusDomain *)self serverHandle];
-    [v9 removeClient:self forDomain:{objc_msgSend(objc_opt_class(), "statusDomainName")}];
+    serverHandle = [(STStatusDomain *)self serverHandle];
+    [serverHandle removeClient:self forDomain:{objc_msgSend(objc_opt_class(), "statusDomainName")}];
     v6 = *MEMORY[0x1E69E9840];
   }
 }
 
-- (void)observeDataWithBlock:(id)a3
+- (void)observeDataWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_dataChangedBlock != v6)
+  if (self->_lock_dataChangedBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     lock_dataChangedBlock = self->_lock_dataChangedBlock;
     self->_lock_dataChangedBlock = v4;
   }
@@ -129,13 +129,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)observeData:(id)a3
+- (void)observeData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_dataChangedWithContextBlock != v6)
+  if (self->_lock_dataChangedWithContextBlock != dataCopy)
   {
-    v4 = [v6 copy];
+    v4 = [dataCopy copy];
     lock_dataChangedWithContextBlock = self->_lock_dataChangedWithContextBlock;
     self->_lock_dataChangedWithContextBlock = v4;
   }
@@ -145,17 +145,17 @@
 
 - (NSArray)preferredLocalizations
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 preferredLocalizations];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
 
-  return v3;
+  return preferredLocalizations;
 }
 
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context
 {
-  v11 = a3;
-  v8 = a5;
-  if ([objc_opt_class() statusDomainName] == a4)
+  dataCopy = data;
+  contextCopy = context;
+  if ([objc_opt_class() statusDomainName] == domain)
   {
     os_unfair_lock_lock(&self->_lock);
     if (self->_lock_invalidated)
@@ -171,12 +171,12 @@
       os_unfair_lock_unlock(&self->_lock);
       if (v9)
       {
-        (v9)[2](v9, v11);
+        (v9)[2](v9, dataCopy);
       }
 
       if (v10)
       {
-        (v10)[2](v10, v11, v8);
+        (v10)[2](v10, dataCopy, contextCopy);
       }
     }
   }

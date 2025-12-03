@@ -1,8 +1,8 @@
 @interface RTLocationShifter
 - (RTLocationShifter)init;
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5;
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5;
-- (void)shiftLocation:(id)a3 handler:(id)a4;
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error;
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler;
+- (void)shiftLocation:(id)location handler:(id)handler;
 @end
 
 @implementation RTLocationShifter
@@ -22,31 +22,31 @@
   return v2;
 }
 
-- (void)shiftLocation:(id)a3 handler:(id)a4
+- (void)shiftLocation:(id)location handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 referenceFrame] == 2)
+    if ([locationCopy referenceFrame] == 2)
     {
-      v7[2](v7, v6, 0);
+      handlerCopy[2](handlerCopy, locationCopy, 0);
     }
 
     else
     {
-      [v6 latitude];
+      [locationCopy latitude];
       v10 = v9;
-      [v6 longitude];
+      [locationCopy longitude];
       v12 = CLLocationCoordinate2DMake(v10, v11);
-      [v6 horizontalUncertainty];
+      [locationCopy horizontalUncertainty];
       v14 = v13;
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_11794;
       v15[3] = &unk_1DD28;
-      v16 = v6;
-      v17 = v7;
+      v16 = locationCopy;
+      v17 = handlerCopy;
       [(RTLocationShifter *)self shiftCoordinate:v15 accuracy:v12.latitude handler:v12.longitude, v14];
     }
   }
@@ -65,19 +65,19 @@
   }
 }
 
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error
 {
-  v8 = a3;
-  if ([v8 referenceFrame] == 2)
+  locationCopy = location;
+  if ([locationCopy referenceFrame] == 2)
   {
-    v9 = v8;
+    v9 = locationCopy;
   }
 
-  else if (a4)
+  else if (network)
   {
-    [v8 latitude];
+    [locationCopy latitude];
     v11 = v10;
-    [v8 longitude];
+    [locationCopy longitude];
     v13 = CLLocationCoordinate2DMake(v11, v12);
     v57 = 0.0;
     *&v58 = COERCE_DOUBLE(&v57);
@@ -96,7 +96,7 @@
     v70 = sub_11E00;
     v71 = 0;
     v14 = dispatch_semaphore_create(0);
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v16 = v15;
     v45 = _NSConcreteStackBlock;
     v46 = 3221225472;
@@ -119,31 +119,31 @@
       v21 = sub_10DB8(&qword_21AA0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v44 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         *buf = 138412290;
-        v64 = v44;
+        v64 = localizedDescription;
         _os_log_error_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v22 = v20;
-        *a5 = v20;
+        *error = v20;
       }
 
-      v9 = v8;
+      v9 = locationCopy;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = *(*(&v67 + 1) + 40);
+        *error = *(*(&v67 + 1) + 40);
       }
 
       if (*(*(&v67 + 1) + 40))
       {
-        v9 = v8;
+        v9 = locationCopy;
       }
 
       else
@@ -152,8 +152,8 @@
         v39 = v58[4];
         v40 = v58[5];
         v41 = v54[3];
-        v42 = [v8 date];
-        v9 = [v38 initWithLatitude:v42 longitude:2 horizontalUncertainty:v39 date:v40 referenceFrame:v41];
+        date = [locationCopy date];
+        v9 = [v38 initWithLatitude:date longitude:2 horizontalUncertainty:v39 date:v40 referenceFrame:v41];
       }
     }
 
@@ -167,20 +167,20 @@
     v57 = 0.0;
     *&v58 = 0.0;
     v53 = 0.0;
-    [v8 latitude];
+    [locationCopy latitude];
     v24 = v23;
-    [v8 longitude];
+    [locationCopy longitude];
     v26 = v25;
     geoLocationShifter = self->_geoLocationShifter;
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     if (([(GEOLocationShifter *)geoLocationShifter shiftCoordinate:&v57 accuracy:&v53 shiftedCoordinate:v24 shiftedAccuracy:v26, v28]& 1) != 0)
     {
       v29 = [RTLocation alloc];
       v30 = v57;
       v31 = *&v58;
       v32 = v53;
-      v33 = [v8 date];
-      v34 = [v29 initWithLatitude:v33 longitude:2 horizontalUncertainty:v30 date:v31 referenceFrame:v32];
+      date2 = [locationCopy date];
+      v34 = [v29 initWithLatitude:date2 longitude:2 horizontalUncertainty:v30 date:v31 referenceFrame:v32];
     }
 
     else
@@ -188,23 +188,23 @@
       v72 = NSLocalizedDescriptionKey;
       v73 = @"Unable to shift without network allowed";
       v35 = [NSDictionary dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-      v33 = [NSError errorWithDomain:RTErrorDomain code:0 userInfo:v35];
+      date2 = [NSError errorWithDomain:RTErrorDomain code:0 userInfo:v35];
 
       v36 = sub_10DB8(&qword_21AA0);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v67) = 138412290;
-        *(&v67 + 4) = v33;
+        *(&v67 + 4) = date2;
         _os_log_error_impl(&dword_0, v36, OS_LOG_TYPE_ERROR, "%@", &v67, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
-        v37 = v33;
-        *a5 = v33;
+        v37 = date2;
+        *error = date2;
       }
 
-      v34 = v8;
+      v34 = locationCopy;
     }
 
     v9 = v34;
@@ -213,12 +213,12 @@
   return v9;
 }
 
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a5;
-  if (v9)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (([GEOLocationShifter isLocationShiftRequiredForCoordinate:latitude, longitude]& 1) != 0)
     {
@@ -226,7 +226,7 @@
       v21[1] = 3221225472;
       v21[2] = sub_120D0;
       v21[3] = &unk_1DD78;
-      v10 = v9;
+      v10 = handlerCopy;
       v22 = v10;
       v11 = objc_retainBlock(v21);
       v16[0] = _NSConcreteStackBlock;
@@ -236,16 +236,16 @@
       v17 = v10;
       v18 = latitude;
       v19 = longitude;
-      v20 = a4;
+      accuracyCopy = accuracy;
       v12 = objc_retainBlock(v16);
       geoLocationShifter = self->_geoLocationShifter;
       v14 = dispatch_get_global_queue(0, 0);
-      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, a4];
+      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, accuracy];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, latitude, longitude, a4);
+      (*(handlerCopy + 2))(handlerCopy, 0, latitude, longitude, accuracy);
     }
   }
 

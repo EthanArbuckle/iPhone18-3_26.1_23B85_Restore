@@ -1,193 +1,193 @@
 @interface VCVideoStream
-+ (BOOL)shouldUseRandomRTPTimestampWithType:(int64_t)a3;
++ (BOOL)shouldUseRandomRTPTimestampWithType:(int64_t)type;
 + (id)capabilities;
-+ (id)newFeatureListStringsWithConfiguration:(id)a3;
-- (BOOL)addRemoteEndpoint:(id)a3 error:(id *)a4;
-- (BOOL)configureStreamInputCaptureSourceWithStreamInputID:(int64_t)a3 frameRate:(unsigned int)a4;
++ (id)newFeatureListStringsWithConfiguration:(id)configuration;
+- (BOOL)addRemoteEndpoint:(id)endpoint error:(id *)error;
+- (BOOL)configureStreamInputCaptureSourceWithStreamInputID:(int64_t)d frameRate:(unsigned int)rate;
 - (BOOL)didReceiveFirstFrame;
-- (BOOL)enableRateControlFeebackInConfig:(id)a3;
-- (BOOL)isScreenConfig:(id)a3;
+- (BOOL)enableRateControlFeebackInConfig:(id)config;
+- (BOOL)isScreenConfig:(id)config;
 - (BOOL)isTransportIPv6;
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5;
-- (BOOL)registerForCameraCaptureWithConfig:(id)a3;
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute;
+- (BOOL)registerForCameraCaptureWithConfig:(id)config;
 - (BOOL)registerForVideoCapture;
-- (BOOL)removeRemoteEndpoint:(id)a3 error:(id *)a4;
-- (BOOL)setEncodingMode:(int)a3;
-- (BOOL)setRTPPayloads:(int *)a3 numPayloads:(int)a4 withError:(id *)a5;
-- (BOOL)useUEPForVideoConfig:(int)a3;
-- (BOOL)validateStreamConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)validateVideoStreamConfigurations:(id)a3;
+- (BOOL)removeRemoteEndpoint:(id)endpoint error:(id *)error;
+- (BOOL)setEncodingMode:(int)mode;
+- (BOOL)setRTPPayloads:(int *)payloads numPayloads:(int)numPayloads withError:(id *)error;
+- (BOOL)useUEPForVideoConfig:(int)config;
+- (BOOL)validateStreamConfiguration:(id)configuration error:(id *)error;
+- (BOOL)validateVideoStreamConfigurations:(id)configurations;
 - (VCVideoStream)init;
-- (VCVideoStream)initWithTransportSessionID:(unsigned int)a3 idsParticipantID:(unint64_t)a4 ssrc:(unsigned int)a5 streamToken:(int64_t)a6 logPrefix:(id)a7;
+- (VCVideoStream)initWithTransportSessionID:(unsigned int)d idsParticipantID:(unint64_t)iD ssrc:(unsigned int)ssrc streamToken:(int64_t)token logPrefix:(id)prefix;
 - (__CFDictionary)getClientSpecificUserInfo;
 - (__CFString)getReportingClientName;
 - (__CFString)getReportingServiceName;
 - (double)activeVideoStallDuration;
 - (double)videoRxFrameRate;
 - (id)copyOnVideoFrameBlock;
-- (id)getReceiveStatsCollectorWithStreamConfig:(id)a3;
-- (id)getTransmitMediaControllerWithStreamConfig:(id)a3;
-- (id)getTransmitStatsCollectorWithStreamConfig:(id)a3;
-- (id)newScreenCaptureConfigForVideoConfig:(id)a3;
-- (id)newSensitiveContentAnalyzerForParticipant:(id)a3;
-- (id)newVideoTransmitterConfigWithVideoStreamConfig:(id)a3;
-- (id)setLocalParticipantInfo:(id)a3 networkSockets:(id)a4 withError:(id *)a5;
-- (int)operatingModeForVideoStreamType:(int64_t)a3;
+- (id)getReceiveStatsCollectorWithStreamConfig:(id)config;
+- (id)getTransmitMediaControllerWithStreamConfig:(id)config;
+- (id)getTransmitStatsCollectorWithStreamConfig:(id)config;
+- (id)newScreenCaptureConfigForVideoConfig:(id)config;
+- (id)newSensitiveContentAnalyzerForParticipant:(id)participant;
+- (id)newVideoTransmitterConfigWithVideoStreamConfig:(id)config;
+- (id)setLocalParticipantInfo:(id)info networkSockets:(id)sockets withError:(id *)error;
+- (int)operatingModeForVideoStreamType:(int64_t)type;
 - (int)pickScreenDisplayMode;
 - (int)remoteCameraReportingClientType;
 - (int)reportVideoStreamType;
 - (int)screenSharingReportingClientType;
 - (int)secondDisplayReportingClientType;
-- (tagVCNACKGeneratorStoreBagsConfig)readServerPacketRetransmissionsForVideoStoreBagConfig:(SEL)a3;
-- (tagVCVideoReceiverConfig)videoReceiverConfigWithVideoStreamConfig:(SEL)a3;
+- (tagVCNACKGeneratorStoreBagsConfig)readServerPacketRetransmissionsForVideoStoreBagConfig:(SEL)config;
+- (tagVCVideoReceiverConfig)videoReceiverConfigWithVideoStreamConfig:(SEL)config;
 - (tagVCVideoReceiverDelegateRealtimeInstanceVTable)videoReceiverDelegateFunctions;
-- (tagVCVideoStreamReceiverConfig)videoStreamReceiverConfigWithDumpID:(SEL)a3 reportingAgent:(unsigned int)a4;
+- (tagVCVideoStreamReceiverConfig)videoStreamReceiverConfigWithDumpID:(SEL)d reportingAgent:(unsigned int)agent;
 - (unsigned)dumpIDFromCallID;
-- (unsigned)getMaxTemporalBitrateForStreamIDs:(id)a3;
+- (unsigned)getMaxTemporalBitrateForStreamIDs:(id)ds;
 - (unsigned)lastDisplayedFrameRTPTimestamp;
-- (unsigned)maxFramerateFromStreamConfigs:(id)a3;
+- (unsigned)maxFramerateFromStreamConfigs:(id)configs;
 - (unsigned)networkMTU;
-- (unsigned)vcVideoReceiver:(id)a3 receivedTMMBR:(unsigned int)a4;
-- (void)addReceiverStreamConfigsToReceiverConfig:(tagVCVideoReceiverConfig *)a3 streamConfig:(id)a4;
-- (void)avConferencePreviewError:(id)a3;
-- (void)avConferenceScreenCaptureError:(id)a3;
-- (void)cameraAvailabilityDidChange:(BOOL)a3;
-- (void)cleanupBeforeReconfigure:(id)a3;
-- (void)cleaunpReceiverConfig:(tagVCVideoReceiverConfig *)a3;
-- (void)collectImageQueuePerformanceMetrics:(__CFDictionary *)a3;
-- (void)configureMediaStallSettingsWithConfig:(id)a3;
-- (void)configureReceiveBuffer:(id)a3;
+- (unsigned)vcVideoReceiver:(id)receiver receivedTMMBR:(unsigned int)r;
+- (void)addReceiverStreamConfigsToReceiverConfig:(tagVCVideoReceiverConfig *)config streamConfig:(id)streamConfig;
+- (void)avConferencePreviewError:(id)error;
+- (void)avConferenceScreenCaptureError:(id)error;
+- (void)cameraAvailabilityDidChange:(BOOL)change;
+- (void)cleanupBeforeReconfigure:(id)reconfigure;
+- (void)cleaunpReceiverConfig:(tagVCVideoReceiverConfig *)config;
+- (void)collectImageQueuePerformanceMetrics:(__CFDictionary *)metrics;
+- (void)configureMediaStallSettingsWithConfig:(id)config;
+- (void)configureReceiveBuffer:(id)buffer;
 - (void)dealloc;
 - (void)deregisterCurrentStreamInputCaptureSource;
 - (void)deregisterForVideoCapture;
 - (void)destroyVideoModules;
 - (void)destroyVideoReceiver;
 - (void)destroyVideoTransmitter;
-- (void)didChangeThermalLevel:(int)a3;
-- (void)enableRedundancyController:(id)a3;
+- (void)didChangeThermalLevel:(int)level;
+- (void)enableRedundancyController:(id)controller;
 - (void)endSensitiveContentAnalyzerInterruption;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
-- (void)generateKeyFrameWithFIRType:(int)a3;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleNWConnectionNotification:(tagVCNWConnectionNotification *)a3;
-- (void)handleNWConnectionPacketEvent:(packet_id *)a3 eventType:(int)a4;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
+- (void)generateKeyFrameWithFIRType:(int)type;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleNWConnectionNotification:(tagVCNWConnectionNotification *)notification;
+- (void)handleNWConnectionPacketEvent:(packet_id *)event eventType:(int)type;
 - (void)handleTransportSessionConnectionEvent;
-- (void)handleVTPSendFailedWithData:(void *)a3;
+- (void)handleVTPSendFailedWithData:(void *)data;
 - (void)initVideoTransmitter;
-- (void)onPauseWithCompletionHandler:(id)a3;
-- (void)onResumeWithCompletionHandler:(id)a3;
+- (void)onPauseWithCompletionHandler:(id)handler;
+- (void)onResumeWithCompletionHandler:(id)handler;
 - (void)onSendRTCPPacket;
-- (void)onStartWithCompletionHandler:(id)a3;
-- (void)onStopWithCompletionHandler:(id)a3;
-- (void)overrideConfigWithDefaults:(id)a3;
-- (void)rateAdaptation:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5;
-- (void)redundancyController:(id)a3 redundancyPercentageDidChange:(unsigned int)a4;
-- (void)redundancyController:(id)a3 redundancyVectorDidChange:(id *)a4;
-- (void)reportFailedToRegisterVideoFramesFromSource:(int)a3 width:(int)a4 height:(int)a5 frameRate:(int)a6;
+- (void)onStartWithCompletionHandler:(id)handler;
+- (void)onStopWithCompletionHandler:(id)handler;
+- (void)overrideConfigWithDefaults:(id)defaults;
+- (void)rateAdaptation:(id)adaptation targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter;
+- (void)redundancyController:(id)controller redundancyPercentageDidChange:(unsigned int)change;
+- (void)redundancyController:(id)controller redundancyVectorDidChange:(id *)change;
+- (void)reportFailedToRegisterVideoFramesFromSource:(int)source width:(int)width height:(int)height frameRate:(int)rate;
 - (void)reportStreamPerfTimings;
 - (void)requestLastDecodedFrame;
 - (void)resetRemoteMediaStalled;
-- (void)sendLastRemoteVideoFrame:(__CVBuffer *)a3;
-- (void)setDidReceiveFirstFrame:(BOOL)a3;
-- (void)setForceRTCPForLTRPACK:(BOOL)a3;
-- (void)setPeerSubscribedStreamIDs:(id)a3;
-- (void)setShouldEnableFaceZoom:(BOOL)a3;
-- (void)setStreamIDs:(id)a3 repairStreamIDs:(id)a4;
-- (void)setTargetStreamID:(id)a3;
-- (void)setTransmitterStreamIDs:(id)a3 repairStreamIDs:(id)a4;
-- (void)setUpVideoTransmitterStreamConfig:(tagVCVideoTransmitterStreamConfig *)a3 streamIndex:(int)a4 transport:(id)a5 streamConfig:(id)a6;
-- (void)setUplinkRetransmissionEnabled:(BOOL)a3;
-- (void)setVideoStreamDelegate:(id)a3 delegateFunctions:(const tagVCVideoStreamDelegateRealtimeInstanceVTable *)a4;
-- (void)setupColorInfo:(id)a3;
-- (void)setupCompoundStreamIDsWithStreamIDs:(id)a3;
-- (void)setupInternalRedundancyControllerWithStreamConfig:(id)a3;
-- (void)setupMultiwayVideoReceiverConfig:(tagVCVideoReceiverConfig *)a3 forTransportStream:(id)a4;
-- (void)setupMultiwayVideoReceiverStreamSwitchInfo:(tagVCVideoReceiverStreamConfig *)a3 forTransportStream:(id)a4;
-- (void)setupMultiwayVideoReceiverTemporalScalingConfig:(tagVCVideoReceiverStreamConfig *)a3 forTransportStream:(id)a4;
+- (void)sendLastRemoteVideoFrame:(__CVBuffer *)frame;
+- (void)setDidReceiveFirstFrame:(BOOL)frame;
+- (void)setForceRTCPForLTRPACK:(BOOL)k;
+- (void)setPeerSubscribedStreamIDs:(id)ds;
+- (void)setShouldEnableFaceZoom:(BOOL)zoom;
+- (void)setStreamIDs:(id)ds repairStreamIDs:(id)iDs;
+- (void)setTargetStreamID:(id)d;
+- (void)setTransmitterStreamIDs:(id)ds repairStreamIDs:(id)iDs;
+- (void)setUpVideoTransmitterStreamConfig:(tagVCVideoTransmitterStreamConfig *)config streamIndex:(int)index transport:(id)transport streamConfig:(id)streamConfig;
+- (void)setUplinkRetransmissionEnabled:(BOOL)enabled;
+- (void)setVideoStreamDelegate:(id)delegate delegateFunctions:(const tagVCVideoStreamDelegateRealtimeInstanceVTable *)functions;
+- (void)setupColorInfo:(id)info;
+- (void)setupCompoundStreamIDsWithStreamIDs:(id)ds;
+- (void)setupInternalRedundancyControllerWithStreamConfig:(id)config;
+- (void)setupMultiwayVideoReceiverConfig:(tagVCVideoReceiverConfig *)config forTransportStream:(id)stream;
+- (void)setupMultiwayVideoReceiverStreamSwitchInfo:(tagVCVideoReceiverStreamConfig *)info forTransportStream:(id)stream;
+- (void)setupMultiwayVideoReceiverTemporalScalingConfig:(tagVCVideoReceiverStreamConfig *)config forTransportStream:(id)stream;
 - (void)setupReportingAgent;
-- (void)setupVideoReceiver:(id)a3 withTransmitterHandle:(tagHANDLE *)a4;
+- (void)setupVideoReceiver:(id)receiver withTransmitterHandle:(tagHANDLE *)handle;
 - (void)setupVideoStream;
-- (void)setupVideoTransmitterConfigColorInfo:(id)a3;
-- (void)startRateAdaptationWithStreamConfig:(id)a3;
+- (void)setupVideoTransmitterConfigColorInfo:(id)info;
+- (void)startRateAdaptationWithStreamConfig:(id)config;
 - (void)stopRateAdaptation;
-- (void)thermalLevelDidChange:(int)a3;
+- (void)thermalLevelDidChange:(int)change;
 - (void)updateShouldCacheRemoteVideoFrame;
-- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)a3;
-- (void)updateVideoConfig:(id)a3;
-- (void)updateVideoReceiver:(id)a3;
+- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)time;
+- (void)updateVideoConfig:(id)config;
+- (void)updateVideoReceiver:(id)receiver;
 - (void)updateVideoTransmitterStreamConfiguration;
-- (void)vcVideoReceiver:(id)a3 didSwitchFromStreamID:(unsigned __int16)a4 toStreamID:(unsigned __int16)a5;
-- (void)vcVideoReceiver:(id)a3 downlinkQualityDidChange:(id)a4;
-- (void)vcVideoReceiver:(id)a3 requestKeyFrameGenerationWithStreamID:(unsigned __int16)a4 firType:(int)a5;
-- (void)vcVideoReceiverRequestKeyFrame:(id)a3 rtcpPSFBType:(unsigned int)a4;
+- (void)vcVideoReceiver:(id)receiver didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD;
+- (void)vcVideoReceiver:(id)receiver downlinkQualityDidChange:(id)change;
+- (void)vcVideoReceiver:(id)receiver requestKeyFrameGenerationWithStreamID:(unsigned __int16)d firType:(int)type;
+- (void)vcVideoReceiverRequestKeyFrame:(id)frame rtcpPSFBType:(unsigned int)type;
 @end
 
 @implementation VCVideoStream
 
-- (void)overrideConfigWithDefaults:(id)a3
+- (void)overrideConfigWithDefaults:(id)defaults
 {
-  v4 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamResolution];
-  if (v4 <= 0xD)
+  forceVideoStreamResolution = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamResolution];
+  if (forceVideoStreamResolution <= 0xD)
   {
-    [a3 setVideoResolution:v4];
+    [defaults setVideoResolution:forceVideoStreamResolution];
   }
 
-  v5 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamTxMaxBitrate];
-  if (v5 >= 1)
+  forceVideoStreamTxMaxBitrate = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamTxMaxBitrate];
+  if (forceVideoStreamTxMaxBitrate >= 1)
   {
-    [a3 setTxMaxBitrate:v5];
+    [defaults setTxMaxBitrate:forceVideoStreamTxMaxBitrate];
   }
 
-  v6 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamTxMinBitrate];
-  if (v6 >= 1)
+  forceVideoStreamTxMinBitrate = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamTxMinBitrate];
+  if (forceVideoStreamTxMinBitrate >= 1)
   {
-    [a3 setTxMinBitrate:v6];
+    [defaults setTxMinBitrate:forceVideoStreamTxMinBitrate];
   }
 
-  v7 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamFramerate];
-  if (v7 >= 1)
+  forceVideoStreamFramerate = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamFramerate];
+  if (forceVideoStreamFramerate >= 1)
   {
-    [a3 setFramerate:v7];
+    [defaults setFramerate:forceVideoStreamFramerate];
   }
 
-  v8 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamKeyFrameInterval];
-  if (v8 >= 1)
+  forceVideoStreamKeyFrameInterval = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamKeyFrameInterval];
+  if (forceVideoStreamKeyFrameInterval >= 1)
   {
-    [a3 setKeyFrameInterval:v8];
+    [defaults setKeyFrameInterval:forceVideoStreamKeyFrameInterval];
   }
 
-  v9 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamRxMaxBitrate];
-  if (v9 >= 1)
+  forceVideoStreamRxMaxBitrate = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamRxMaxBitrate];
+  if (forceVideoStreamRxMaxBitrate >= 1)
   {
-    [a3 setRxMaxBitrate:v9];
+    [defaults setRxMaxBitrate:forceVideoStreamRxMaxBitrate];
   }
 
-  v10 = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamRxMinBitrate];
-  if (v10 >= 1)
+  forceVideoStreamRxMinBitrate = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamRxMinBitrate];
+  if (forceVideoStreamRxMinBitrate >= 1)
   {
 
-    [a3 setRxMinBitrate:v10];
+    [defaults setRxMinBitrate:forceVideoStreamRxMinBitrate];
   }
 }
 
-- (void)setUpVideoTransmitterStreamConfig:(tagVCVideoTransmitterStreamConfig *)a3 streamIndex:(int)a4 transport:(id)a5 streamConfig:(id)a6
+- (void)setUpVideoTransmitterStreamConfig:(tagVCVideoTransmitterStreamConfig *)config streamIndex:(int)index transport:(id)transport streamConfig:(id)streamConfig
 {
   v41 = *MEMORY[0x1E69E9840];
-  a3->var0 = [a5 rtpHandle];
-  a3->var3 = [a6 txMaxBitrate];
-  a3->var1 = [a5 idsStreamId];
-  a3->var4 = [a5 transmitterSframeCryptor];
-  v25 = a6;
-  if ([objc_msgSend(a6 "remoteSSRCs")])
+  config->var0 = [transport rtpHandle];
+  config->var3 = [streamConfig txMaxBitrate];
+  config->var1 = [transport idsStreamId];
+  config->var4 = [transport transmitterSframeCryptor];
+  streamConfigCopy = streamConfig;
+  if ([objc_msgSend(streamConfig "remoteSSRCs")])
   {
     v12 = 0;
     *&v11 = 136316418;
     v24 = v11;
     do
     {
-      v13 = [objc_msgSend(objc_msgSend(objc_msgSend(a5 streamConfig] + a4;
-      a3->var5[v12] = v13;
+      v13 = [objc_msgSend(objc_msgSend(objc_msgSend(transport streamConfig] + index;
+      config->var5[v12] = v13;
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -202,7 +202,7 @@
           goto LABEL_13;
         }
 
-        v23 = [objc_msgSend(a5 "streamConfig")];
+        v23 = [objc_msgSend(transport "streamConfig")];
         *buf = v24;
         v27 = v21;
         v28 = 2080;
@@ -212,9 +212,9 @@
         v32 = 1024;
         *v33 = v13;
         *&v33[4] = 1024;
-        *&v33[6] = a4;
-        LOWORD(v34) = 1024;
-        *(&v34 + 2) = v23;
+        *&v33[6] = index;
+        LOWORD(selfCopy) = 1024;
+        *(&selfCopy + 2) = v23;
         v18 = v22;
         v19 = "VCVideoStream [%s] %s:%d Updating remoteSSRC=%u to streamIndex=%d for defaultRemoteSSRC=%u";
         v20 = 46;
@@ -240,7 +240,7 @@
           goto LABEL_13;
         }
 
-        v17 = [objc_msgSend(a5 "streamConfig")];
+        v17 = [objc_msgSend(transport "streamConfig")];
         *buf = 136316930;
         v27 = v15;
         v28 = 2080;
@@ -250,11 +250,11 @@
         v32 = 2112;
         *v33 = v14;
         *&v33[8] = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 1024;
         v36 = v13;
         v37 = 1024;
-        v38 = a4;
+        indexCopy = index;
         v39 = 1024;
         v40 = v17;
         v18 = v16;
@@ -267,11 +267,11 @@ LABEL_13:
       ++v12;
     }
 
-    while (v12 < [objc_msgSend(v25 "remoteSSRCs")]);
+    while (v12 < [objc_msgSend(streamConfigCopy "remoteSSRCs")]);
   }
 }
 
-- (id)newVideoTransmitterConfigWithVideoStreamConfig:(id)a3
+- (id)newVideoTransmitterConfigWithVideoStreamConfig:(id)config
 {
   v87 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(VCVideoTransmitterConfig);
@@ -280,42 +280,42 @@ LABEL_13:
     [(VCVideoTransmitterConfig *)v5 setQualityIndex:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig] qualityIndex]];
   }
 
-  -[VCVideoTransmitterConfig setVideoResolution:](v5, "setVideoResolution:", [a3 videoResolution]);
+  -[VCVideoTransmitterConfig setVideoResolution:](v5, "setVideoResolution:", [config videoResolution]);
   [(VCVideoTransmitterConfig *)v5 setVideoSource:3];
-  -[VCVideoTransmitterConfig setFramerate:](v5, "setFramerate:", [a3 framerate]);
-  -[VCVideoTransmitterConfig setCodecType:](v5, "setCodecType:", [a3 primaryTxCodecType]);
-  -[VCVideoTransmitterConfig setTxMaxBitrate:](v5, "setTxMaxBitrate:", [a3 txMaxBitrate]);
-  -[VCVideoTransmitterConfig setTxMinBitrate:](v5, "setTxMinBitrate:", [a3 txMinBitrate]);
-  -[VCVideoTransmitterConfig setKeyFrameInterval:](v5, "setKeyFrameInterval:", [a3 keyFrameInterval]);
-  -[VCVideoTransmitterConfig setEnableCVO:](v5, "setEnableCVO:", [a3 enableCVO]);
-  -[VCVideoTransmitterConfig setCvoExtensionID:](v5, "setCvoExtensionID:", [a3 cvoExtensionID]);
-  -[VCVideoTransmitterConfig setRecommendedMTU:](v5, "setRecommendedMTU:", [a3 recommendedMTU]);
+  -[VCVideoTransmitterConfig setFramerate:](v5, "setFramerate:", [config framerate]);
+  -[VCVideoTransmitterConfig setCodecType:](v5, "setCodecType:", [config primaryTxCodecType]);
+  -[VCVideoTransmitterConfig setTxMaxBitrate:](v5, "setTxMaxBitrate:", [config txMaxBitrate]);
+  -[VCVideoTransmitterConfig setTxMinBitrate:](v5, "setTxMinBitrate:", [config txMinBitrate]);
+  -[VCVideoTransmitterConfig setKeyFrameInterval:](v5, "setKeyFrameInterval:", [config keyFrameInterval]);
+  -[VCVideoTransmitterConfig setEnableCVO:](v5, "setEnableCVO:", [config enableCVO]);
+  -[VCVideoTransmitterConfig setCvoExtensionID:](v5, "setCvoExtensionID:", [config cvoExtensionID]);
+  -[VCVideoTransmitterConfig setRecommendedMTU:](v5, "setRecommendedMTU:", [config recommendedMTU]);
   [(VCVideoTransmitterConfig *)v5 setReportingAgent:[(VCObject *)self reportingAgent]];
   [(VCVideoTransmitterConfig *)v5 setReportingParentID:self->_reportingModuleID];
-  [(VCVideoTransmitterConfig *)v5 setStatisticsCollector:[(VCVideoStream *)self getTransmitStatsCollectorWithStreamConfig:a3]];
-  -[VCVideoTransmitterConfig setVideoPayload:](v5, "setVideoPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [a3 primaryTxCodecType]));
-  -[VCVideoTransmitterConfig setEncodingMode:](v5, "setEncodingMode:", [a3 encodingMode]);
-  -[VCVideoTransmitterConfig setEncoderUsage:](v5, "setEncoderUsage:", [a3 encoderUsage]);
-  -[VCVideoTransmitterConfig setVideoPriorityPointer:](v5, "setVideoPriorityPointer:", [a3 videoPriorityPointer]);
-  -[VCVideoTransmitterConfig setTilesPerFrame:](v5, "setTilesPerFrame:", [a3 tilesPerFrame]);
-  -[VCVideoTransmitterConfig setPixelFormat:](v5, "setPixelFormat:", [a3 pixelFormat]);
-  -[VCVideoTransmitterConfig setRemoteIDSParticipantID:](v5, "setRemoteIDSParticipantID:", [objc_msgSend(a3 "multiwayConfig")]);
-  [(VCVideoTransmitterConfig *)v5 setMediaController:[(VCVideoStream *)self getTransmitMediaControllerWithStreamConfig:a3]];
+  [(VCVideoTransmitterConfig *)v5 setStatisticsCollector:[(VCVideoStream *)self getTransmitStatsCollectorWithStreamConfig:config]];
+  -[VCVideoTransmitterConfig setVideoPayload:](v5, "setVideoPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [config primaryTxCodecType]));
+  -[VCVideoTransmitterConfig setEncodingMode:](v5, "setEncodingMode:", [config encodingMode]);
+  -[VCVideoTransmitterConfig setEncoderUsage:](v5, "setEncoderUsage:", [config encoderUsage]);
+  -[VCVideoTransmitterConfig setVideoPriorityPointer:](v5, "setVideoPriorityPointer:", [config videoPriorityPointer]);
+  -[VCVideoTransmitterConfig setTilesPerFrame:](v5, "setTilesPerFrame:", [config tilesPerFrame]);
+  -[VCVideoTransmitterConfig setPixelFormat:](v5, "setPixelFormat:", [config pixelFormat]);
+  -[VCVideoTransmitterConfig setRemoteIDSParticipantID:](v5, "setRemoteIDSParticipantID:", [objc_msgSend(config "multiwayConfig")]);
+  [(VCVideoTransmitterConfig *)v5 setMediaController:[(VCVideoStream *)self getTransmitMediaControllerWithStreamConfig:config]];
   [(VCVideoTransmitterConfig *)v5 setMediaControlInfoGenerator:[(VCMediaStream *)self mediaControlInfoGenerator]];
   [(VCVideoTransmitterConfig *)v5 setRtpTimestampRate:self->_rtpTimestampRate];
-  -[VCVideoTransmitterConfig setProfileLevel:](v5, "setProfileLevel:", [a3 profileLevel]);
-  -[VCVideoTransmitterConfig setParameterSets:](v5, "setParameterSets:", [a3 parameterSets]);
-  -[VCVideoTransmitterConfig setForceL4SHighDataRate:](v5, "setForceL4SHighDataRate:", [a3 forceL4SHighDataRate]);
-  -[VCVideoTransmitterConfig setTemporalScalingEnabled:](v5, "setTemporalScalingEnabled:", [a3 temporalScalingEnabled]);
-  -[VCVideoTransmitterConfig setIsLowBandwidthSinglePacketDuplicationEnabled:](v5, "setIsLowBandwidthSinglePacketDuplicationEnabled:", [a3 isLowBandwidthSinglePacketDuplicationEnabled]);
-  -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [a3 maxEncoderPixels]);
-  -[VCVideoTransmitterConfig setRtxEnabled:](v5, "setRtxEnabled:", [a3 isUplinkRetransmissionEnabled]);
+  -[VCVideoTransmitterConfig setProfileLevel:](v5, "setProfileLevel:", [config profileLevel]);
+  -[VCVideoTransmitterConfig setParameterSets:](v5, "setParameterSets:", [config parameterSets]);
+  -[VCVideoTransmitterConfig setForceL4SHighDataRate:](v5, "setForceL4SHighDataRate:", [config forceL4SHighDataRate]);
+  -[VCVideoTransmitterConfig setTemporalScalingEnabled:](v5, "setTemporalScalingEnabled:", [config temporalScalingEnabled]);
+  -[VCVideoTransmitterConfig setIsLowBandwidthSinglePacketDuplicationEnabled:](v5, "setIsLowBandwidthSinglePacketDuplicationEnabled:", [config isLowBandwidthSinglePacketDuplicationEnabled]);
+  -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [config maxEncoderPixels]);
+  -[VCVideoTransmitterConfig setRtxEnabled:](v5, "setRtxEnabled:", [config isUplinkRetransmissionEnabled]);
   [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:0.25];
-  -[VCVideoTransmitterConfig setFoveationEnabled:](v5, "setFoveationEnabled:", [a3 foveationEnabled]);
-  -[VCVideoTransmitterConfig setStereoVideoPackingType:](v5, "setStereoVideoPackingType:", +[VideoUtil stereoVideoPackingTypeFromVideoBufferDescription:](VideoUtil, "stereoVideoPackingTypeFromVideoBufferDescription:", [a3 videoBufferDescription]));
-  -[VCVideoTransmitterConfig setUseMultiImageEncoding:](v5, "setUseMultiImageEncoding:", +[VideoUtil isBufferDescriptionForMultiImageStream:](VideoUtil, "isBufferDescriptionForMultiImageStream:", [a3 videoBufferDescription]));
-  -[VCVideoTransmitterConfig setEnableInterleavedEncoding:](v5, "setEnableInterleavedEncoding:", [a3 enableInterleavedEncoding]);
-  if ([a3 enableInterleavedEncoding])
+  -[VCVideoTransmitterConfig setFoveationEnabled:](v5, "setFoveationEnabled:", [config foveationEnabled]);
+  -[VCVideoTransmitterConfig setStereoVideoPackingType:](v5, "setStereoVideoPackingType:", +[VideoUtil stereoVideoPackingTypeFromVideoBufferDescription:](VideoUtil, "stereoVideoPackingTypeFromVideoBufferDescription:", [config videoBufferDescription]));
+  -[VCVideoTransmitterConfig setUseMultiImageEncoding:](v5, "setUseMultiImageEncoding:", +[VideoUtil isBufferDescriptionForMultiImageStream:](VideoUtil, "isBufferDescriptionForMultiImageStream:", [config videoBufferDescription]));
+  -[VCVideoTransmitterConfig setEnableInterleavedEncoding:](v5, "setEnableInterleavedEncoding:", [config enableInterleavedEncoding]);
+  if ([config enableInterleavedEncoding])
   {
     v6 = 4;
   }
@@ -326,9 +326,9 @@ LABEL_13:
   }
 
   [(VCVideoTransmitterConfig *)v5 setNumberOfInterleavedEncoders:v6];
-  -[VCVideoTransmitterConfig setSessionId:](v5, "setSessionId:", [objc_msgSend(a3 "multiwayConfig")]);
-  -[VCVideoTransmitterConfig setParticipantId:](v5, "setParticipantId:", [objc_msgSend(a3 "multiwayConfig")]);
-  -[VCVideoTransmitterConfig setStreamGroupId:](v5, "setStreamGroupId:", [objc_msgSend(a3 "multiwayConfig")]);
+  -[VCVideoTransmitterConfig setSessionId:](v5, "setSessionId:", [objc_msgSend(config "multiwayConfig")]);
+  -[VCVideoTransmitterConfig setParticipantId:](v5, "setParticipantId:", [objc_msgSend(config "multiwayConfig")]);
+  -[VCVideoTransmitterConfig setStreamGroupId:](v5, "setStreamGroupId:", [objc_msgSend(config "multiwayConfig")]);
   [(VCVideoTransmitterConfig *)v5 setStreamToken:self->super._streamToken];
   [(VCVideoTransmitterConfig *)v5 setExperimentManager:self->super._experimentManager];
   -[VCVideoTransmitterConfig setLogPrefix:](v5, "setLogPrefix:", [MEMORY[0x1E696AEC0] stringWithFormat:@"parent=%p", self]);
@@ -339,27 +339,27 @@ LABEL_13:
     [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:?];
   }
 
-  if ([a3 videoResolution] == 27)
+  if ([config videoResolution] == 27)
   {
-    -[VCVideoTransmitterConfig setCustomWidth:](v5, "setCustomWidth:", [a3 customWidth]);
-    -[VCVideoTransmitterConfig setCustomHeight:](v5, "setCustomHeight:", [a3 customHeight]);
+    -[VCVideoTransmitterConfig setCustomWidth:](v5, "setCustomWidth:", [config customWidth]);
+    -[VCVideoTransmitterConfig setCustomHeight:](v5, "setCustomHeight:", [config customHeight]);
   }
 
-  if ([a3 temporalScalingEnabled])
+  if ([config temporalScalingEnabled])
   {
     -[VCVideoTransmitterConfig setTxMaxBitrate:](v5, "setTxMaxBitrate:", [objc_msgSend(-[NSMutableArray lastObject](self->super._transportArray "lastObject")]);
     -[VCVideoTransmitterConfig setTxMinBitrate:](v5, "setTxMinBitrate:", [objc_msgSend(-[NSMutableArray firstObject](self->super._transportArray "firstObject")]);
     [(VCVideoTransmitterConfig *)v5 setMaxSupportedTemporalLayers:+[VCHardwareSettings maxVCPSupportedTemporalLayers]];
   }
 
-  v64 = a3;
-  if (-[NSMutableArray count](self->super._transportArray, "count") == 1 && [a3 temporalScalingEnabled] && objc_msgSend(objc_msgSend(a3, "txBitrateTiers"), "count"))
+  configCopy = config;
+  if (-[NSMutableArray count](self->super._transportArray, "count") == 1 && [config temporalScalingEnabled] && objc_msgSend(objc_msgSend(config, "txBitrateTiers"), "count"))
   {
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    obj = [a3 txBitrateTiers];
+    obj = [config txBitrateTiers];
     v7 = [obj countByEnumeratingWithState:&v83 objects:v82 count:16];
     if (v7)
     {
@@ -376,17 +376,17 @@ LABEL_13:
 
           v11 = *(*(&v83 + 1) + 8 * i);
           v12 = [-[NSMutableArray firstObject](self->super._transportArray "firstObject")];
-          v13 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
-          *(v13 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6)) = v12;
+          streamConfigs = [(VCVideoTransmitterConfig *)v5 streamConfigs];
+          *(streamConfigs + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6)) = v12;
           LODWORD(v11) = [v11 unsignedIntValue];
-          v14 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
-          *(v14 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 16) = v11;
+          streamConfigs2 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
+          *(streamConfigs2 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 16) = v11;
           LOWORD(v11) = [-[NSMutableArray firstObject](self->super._transportArray "firstObject")];
-          v15 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
-          *(v15 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 8) = v11;
+          streamConfigs3 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
+          *(streamConfigs3 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 8) = v11;
           v16 = [-[NSMutableArray firstObject](self->super._transportArray "firstObject")];
-          v17 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
-          *(v17 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 24) = v16;
+          streamConfigs4 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
+          *(streamConfigs4 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6) + 24) = v16;
           [(VCVideoTransmitterConfig *)v5 setStreamCount:[(VCVideoTransmitterConfig *)v5 streamCount]+ 1];
         }
 
@@ -419,12 +419,12 @@ LABEL_13:
           }
 
           v23 = *(*(&v78 + 1) + 8 * j);
-          v24 = [v23 streamConfig];
+          streamConfig = [v23 streamConfig];
           v76 = 0u;
           memset(buf, 0, sizeof(buf));
-          [(VCVideoStream *)self setUpVideoTransmitterStreamConfig:buf streamIndex:[(VCVideoTransmitterConfig *)v5 streamCount] transport:v23 streamConfig:v24];
-          v25 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
-          v26 = (v25 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6));
+          [(VCVideoStream *)self setUpVideoTransmitterStreamConfig:buf streamIndex:[(VCVideoTransmitterConfig *)v5 streamCount] transport:v23 streamConfig:streamConfig];
+          streamConfigs5 = [(VCVideoTransmitterConfig *)v5 streamConfigs];
+          v26 = (streamConfigs5 + ([(VCVideoTransmitterConfig *)v5 streamCount]<< 6));
           v27 = v76;
           v29 = *buf;
           v28 = *&buf[16];
@@ -442,15 +442,15 @@ LABEL_13:
     }
   }
 
-  v30 = [v64 type];
-  if (v30 > 3)
+  type = [configCopy type];
+  if (type > 3)
   {
-    if (v30 <= 5)
+    if (type <= 5)
     {
-      if (v30 != 4)
+      if (type != 4)
       {
         [(VCVideoTransmitterConfig *)v5 setMode:5];
-        if ([v64 tilesPerFrame] == 1)
+        if ([configCopy tilesPerFrame] == 1)
         {
           v31 = 5;
         }
@@ -461,9 +461,9 @@ LABEL_13:
         }
 
         [(VCVideoTransmitterConfig *)v5 setEncoderUsage:v31];
-        v32 = [v64 tilesPerFrame];
+        tilesPerFrame = [configCopy tilesPerFrame];
         v33 = 0.01;
-        if (v32 == 1)
+        if (tilesPerFrame == 1)
         {
           v33 = 1.0;
         }
@@ -471,20 +471,20 @@ LABEL_13:
         [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:v33];
         [(VCVideoTransmitterConfig *)v5 setIsFecGeneratorEnabled:0];
         [(VCVideoTransmitterConfig *)v5 setFecHeaderV1Enabled:0];
-        -[VCVideoTransmitterConfig setFecEnabled:](v5, "setFecEnabled:", [v64 fecEnabled]);
-        -[VCVideoTransmitterConfig setRtxEnabled:](v5, "setRtxEnabled:", [v64 rtxEnabled]);
-        -[VCVideoTransmitterConfig setAccessNetworkType:](v5, "setAccessNetworkType:", [v64 accessNetworkType]);
+        -[VCVideoTransmitterConfig setFecEnabled:](v5, "setFecEnabled:", [configCopy fecEnabled]);
+        -[VCVideoTransmitterConfig setRtxEnabled:](v5, "setRtxEnabled:", [configCopy rtxEnabled]);
+        -[VCVideoTransmitterConfig setAccessNetworkType:](v5, "setAccessNetworkType:", [configCopy accessNetworkType]);
         [(VCVideoTransmitterConfig *)v5 setUseRateControl:1];
         [(VCVideoTransmitterConfig *)v5 setMediaControlInfoGenerator:[(VCMediaStream *)self mediaControlInfoGenerator]];
-        -[VCVideoTransmitterConfig setUseInBandFec:](v5, "setUseInBandFec:", [v64 useInBandFEC]);
-        -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [v64 captureSource]);
-        if ([v64 tilesPerFrame] == 1)
+        -[VCVideoTransmitterConfig setUseInBandFec:](v5, "setUseInBandFec:", [configCopy useInBandFEC]);
+        -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [configCopy captureSource]);
+        if ([configCopy tilesPerFrame] == 1)
         {
-          -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [v64 customHeight] * objc_msgSend(v64, "customWidth"));
+          -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [configCopy customHeight] * objc_msgSend(configCopy, "customWidth"));
           [(VCVideoTransmitterConfig *)v5 setReinitEncoderOnFrameSizeChangeEnabled:1];
         }
 
-        v34 = [v64 txCodecFeatureListStrings];
+        txCodecFeatureListStrings = [configCopy txCodecFeatureListStrings];
         v67[0] = MEMORY[0x1E69E9820];
         v67[1] = 3221225472;
         v67[2] = __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___block_invoke_4;
@@ -498,23 +498,23 @@ LABEL_13:
       goto LABEL_68;
     }
 
-    if (v30 == 6)
+    if (type == 6)
     {
 LABEL_68:
-      -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [v64 captureSource]);
+      -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [configCopy captureSource]);
       goto LABEL_69;
     }
 
-    if (v30 == 7)
+    if (type == 7)
     {
       [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:0.01];
-      -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [v64 captureSource]);
+      -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [configCopy captureSource]);
       [(VCVideoTransmitterConfig *)v5 setIsIPv6:[(VCVideoStream *)self isTransportIPv6]];
       [(VCVideoTransmitterConfig *)v5 setMode:3];
       [(VCVideoTransmitterConfig *)v5 setEncoderUsage:1];
       [(VCVideoTransmitterConfig *)v5 setUseRateControl:1];
-      -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [v64 customHeight] * objc_msgSend(v64, "customWidth"));
-      v34 = [v64 txCodecFeatureListStrings];
+      -[VCVideoTransmitterConfig setMaxEncoderPixels:](v5, "setMaxEncoderPixels:", [configCopy customHeight] * objc_msgSend(configCopy, "customWidth"));
+      txCodecFeatureListStrings = [configCopy txCodecFeatureListStrings];
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___block_invoke_2;
@@ -522,14 +522,14 @@ LABEL_68:
       v69[4] = v5;
       v35 = v69;
 LABEL_97:
-      [v34 enumerateKeysAndObjectsUsingBlock:v35];
+      [txCodecFeatureListStrings enumerateKeysAndObjectsUsingBlock:v35];
       return v5;
     }
 
     goto LABEL_64;
   }
 
-  switch(v30)
+  switch(type)
   {
     case 1:
 LABEL_69:
@@ -538,7 +538,7 @@ LABEL_69:
       [(VCVideoTransmitterConfig *)v5 setEncoderUsage:1];
       [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:0.01];
       [(VCVideoTransmitterConfig *)v5 setUseRateControl:1];
-      v34 = [v64 txCodecFeatureListStrings];
+      txCodecFeatureListStrings = [configCopy txCodecFeatureListStrings];
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___block_invoke_3;
@@ -554,15 +554,15 @@ LABEL_69:
       [(VCVideoTransmitterConfig *)v5 setUseRateControl:1];
       [(VCVideoTransmitterConfig *)v5 setReinitEncoderOnFrameSizeChangeEnabled:1];
       [(VCVideoTransmitterConfig *)v5 setCaptureSource:2];
-      -[VCVideoTransmitterConfig setPdEncryptionContext:](v5, "setPdEncryptionContext:", [v64 pdEncryptionContext]);
-      v40 = [v64 txCodecFeatureListStrings];
+      -[VCVideoTransmitterConfig setPdEncryptionContext:](v5, "setPdEncryptionContext:", [configCopy pdEncryptionContext]);
+      txCodecFeatureListStrings2 = [configCopy txCodecFeatureListStrings];
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
       v70[2] = __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___block_invoke;
       v70[3] = &unk_1E85F9638;
       v70[4] = v5;
-      [v40 enumerateKeysAndObjectsUsingBlock:v70];
-      if ([v64 hdrMode] == 1)
+      [txCodecFeatureListStrings2 enumerateKeysAndObjectsUsingBlock:v70];
+      if ([configCopy hdrMode] == 1)
       {
         v41 = *MEMORY[0x1E6965DB0];
         v42 = *MEMORY[0x1E6983878];
@@ -581,7 +581,7 @@ LABEL_69:
 
       else
       {
-        if ([v64 hdrMode] != 2)
+        if ([configCopy hdrMode] != 2)
         {
           return v5;
         }
@@ -602,7 +602,7 @@ LABEL_69:
       -[VCVideoTransmitterConfig setColorInfo:](v5, "setColorInfo:", [v44 dictionaryWithObjects:v45 forKeys:v46 count:v47]);
       return v5;
     case 3:
-      if ([objc_msgSend(v64 "multiwayConfig")])
+      if ([objc_msgSend(configCopy "multiwayConfig")])
       {
         v36 = 1;
       }
@@ -613,9 +613,9 @@ LABEL_69:
       }
 
       [(VCVideoTransmitterConfig *)v5 setMode:v36];
-      if ([objc_msgSend(v64 "multiwayConfig")])
+      if ([objc_msgSend(configCopy "multiwayConfig")])
       {
-        -[VCVideoTransmitterConfig setVideoFrameMetadataSupportedVersion:](v5, "setVideoFrameMetadataSupportedVersion:", [v64 videoFrameMetadataSupportedVersion]);
+        -[VCVideoTransmitterConfig setVideoFrameMetadataSupportedVersion:](v5, "setVideoFrameMetadataSupportedVersion:", [configCopy videoFrameMetadataSupportedVersion]);
       }
 
       if (![(VCVideoTransmitterConfig *)v5 encoderUsage])
@@ -628,26 +628,26 @@ LABEL_69:
         [(VCVideoTransmitterConfig *)v5 setMinKeyFrameGenerationIntervalInSeconds:1.0];
       }
 
-      -[VCVideoTransmitterConfig setIsFecGeneratorEnabled:](v5, "setIsFecGeneratorEnabled:", [v64 fecGeneratorEnabled]);
-      -[VCVideoTransmitterConfig setFecHeaderVersion:](v5, "setFecHeaderVersion:", [v64 fecHeaderVersion]);
-      -[VCVideoTransmitterConfig setFecHeaderV1Enabled:](v5, "setFecHeaderV1Enabled:", [v64 fecHeaderVersion] == 1);
-      -[VCVideoTransmitterConfig setUseRateControl:](v5, "setUseRateControl:", [objc_msgSend(v64 "multiwayConfig")]);
-      v37 = [objc_msgSend(v64 "multiwayConfig")];
-      v38 = self;
+      -[VCVideoTransmitterConfig setIsFecGeneratorEnabled:](v5, "setIsFecGeneratorEnabled:", [configCopy fecGeneratorEnabled]);
+      -[VCVideoTransmitterConfig setFecHeaderVersion:](v5, "setFecHeaderVersion:", [configCopy fecHeaderVersion]);
+      -[VCVideoTransmitterConfig setFecHeaderV1Enabled:](v5, "setFecHeaderV1Enabled:", [configCopy fecHeaderVersion] == 1);
+      -[VCVideoTransmitterConfig setUseRateControl:](v5, "setUseRateControl:", [objc_msgSend(configCopy "multiwayConfig")]);
+      v37 = [objc_msgSend(configCopy "multiwayConfig")];
+      selfCopy = self;
       if (v37)
       {
-        v38 = [v64 rateControlConfig];
+        selfCopy = [configCopy rateControlConfig];
       }
 
-      [(VCVideoTransmitterConfig *)v5 setMediaControlInfoGenerator:[(VCMediaStream *)v38 mediaControlInfoGenerator]];
-      -[VCVideoTransmitterConfig setUseInBandFec:](v5, "setUseInBandFec:", [v64 useInBandFEC]);
+      [(VCVideoTransmitterConfig *)v5 setMediaControlInfoGenerator:[(VCMediaStream *)selfCopy mediaControlInfoGenerator]];
+      -[VCVideoTransmitterConfig setUseInBandFec:](v5, "setUseInBandFec:", [configCopy useInBandFEC]);
       [(VCVideoTransmitterConfig *)v5 setSetupBWEstimationOptionWithFeatureString:0];
       if (HIDWORD(self->_colorInfo))
       {
         [(VCVideoTransmitterConfig *)v5 setRecommendedMTU:?];
       }
 
-      if (![(VCVideoStream *)self isScreenConfig:v64])
+      if (![(VCVideoStream *)self isScreenConfig:configCopy])
       {
         if (![(VCVideoTransmitterConfig *)v5 pixelFormat])
         {
@@ -671,7 +671,7 @@ LABEL_69:
           goto LABEL_89;
         }
 
-        v53 = [objc_msgSend(v64 "multiwayConfig")];
+        v53 = [objc_msgSend(configCopy "multiwayConfig")];
         v54 = "No";
         *&buf[4] = v51;
         *buf = 136315906;
@@ -706,17 +706,17 @@ LABEL_69:
         if (VRTraceGetErrorLogLevelForModule() < 7 || (v58 = VRTraceErrorLogLevelToCSTR(), v59 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
         {
 LABEL_89:
-          -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [v64 captureSource]);
+          -[VCVideoTransmitterConfig setCaptureSource:](v5, "setCaptureSource:", [configCopy captureSource]);
           [(VCVideoTransmitterConfig *)v5 setEncoderUsage:5];
           [(VCVideoTransmitterConfig *)v5 setSetupBWEstimationOptionWithFeatureString:0];
           [(VCVideoTransmitterConfig *)v5 setReinitEncoderOnFrameSizeChangeEnabled:0];
-          if ((+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass") == 8 || !+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass")) && [v64 captureSource] == 1)
+          if ((+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass") == 8 || !+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass")) && [configCopy captureSource] == 1)
           {
             [(VCVideoTransmitterConfig *)v5 setReinitEncoderOnFrameSizeChangeEnabled:1];
           }
 
 LABEL_93:
-          if ([v64 rtcpPSFB_LTRAckEnabled])
+          if ([configCopy rtcpPSFB_LTRAckEnabled])
           {
             v62 = 2;
           }
@@ -727,7 +727,7 @@ LABEL_93:
           }
 
           [(VCVideoTransmitterConfig *)v5 setLtrAckFeedbackType:v62];
-          v34 = [v64 txCodecFeatureListStrings];
+          txCodecFeatureListStrings = [configCopy txCodecFeatureListStrings];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___block_invoke_18;
@@ -737,7 +737,7 @@ LABEL_93:
           goto LABEL_97;
         }
 
-        v60 = [objc_msgSend(v64 "multiwayConfig")];
+        v60 = [objc_msgSend(configCopy "multiwayConfig")];
         *buf = 136316418;
         v61 = "No";
         *&buf[4] = v58;
@@ -819,7 +819,7 @@ uint64_t __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___bl
 - (void)initVideoTransmitter
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(VCMediaStream *)self defaultStreamConfig];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -838,12 +838,12 @@ uint64_t __64__VCVideoStream_newVideoTransmitterConfigWithVideoStreamConfig___bl
     }
   }
 
-  v6 = [(VCVideoStream *)self newVideoTransmitterConfigWithVideoStreamConfig:v3];
-  v7 = [(VCMediaStreamConfig *)v3 type];
+  v6 = [(VCVideoStream *)self newVideoTransmitterConfigWithVideoStreamConfig:defaultStreamConfig];
+  type = [(VCMediaStreamConfig *)defaultStreamConfig type];
   v8 = &OBJC_IVAR___CannedRawVideoCapture__width;
-  if (v7 <= 7)
+  if (type <= 7)
   {
-    if (((1 << v7) & 0xF6) != 0)
+    if (((1 << type) & 0xF6) != 0)
     {
       v9 = VCVideoTransmitterDefault;
 LABEL_7:
@@ -851,20 +851,20 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    if (!v7)
+    if (!type)
     {
       v9 = VCVideoStreamTransmitter;
       goto LABEL_7;
     }
 
     self->_videoTransmitter = [[VCVideoTransmitterDefault alloc] initWithConfig:v6];
-    v22 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig];
+    multiwayConfig = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v23 = [(VCMediaStreamMultiwayConfig *)v22 subStreamConfigs];
-    v24 = [v23 countByEnumeratingWithState:&v35 objects:v34 count:16];
+    subStreamConfigs = [(VCMediaStreamMultiwayConfig *)multiwayConfig subStreamConfigs];
+    v24 = [subStreamConfigs countByEnumeratingWithState:&v35 objects:v34 count:16];
     if (v24)
     {
       v25 = v24;
@@ -875,18 +875,18 @@ LABEL_7:
         {
           if (*v36 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(subStreamConfigs);
           }
 
           v28 = *(*(&v35 + 1) + 8 * i);
-          v29 = [v28 keyFrameInterval];
-          if (v29 == [v28 framerate])
+          keyFrameInterval = [v28 keyFrameInterval];
+          if (keyFrameInterval == [v28 framerate])
           {
             -[VCVideoTransmitterBase setKeyFrameOnlyStreamID:](self->_videoTransmitter, "setKeyFrameOnlyStreamID:", [v28 idsStreamID]);
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v35 objects:v34 count:16];
+        v25 = [subStreamConfigs countByEnumeratingWithState:&v35 objects:v34 count:16];
       }
 
       while (v25);
@@ -935,7 +935,7 @@ LABEL_8:
     WORD2(v31) = 2112;
     *(&v31 + 6) = v10;
     HIWORD(v31) = 2048;
-    v32 = self;
+    selfCopy = self;
     LOWORD(v33) = 2048;
     *(&v33 + 2) = v19;
     v14 = "VCVideoStream [%s] %s:%d %@(%p) videoTransmitter=%p";
@@ -969,17 +969,17 @@ LABEL_18:
 
 LABEL_19:
 
-  [(VCVideoCaptureConverter *)self->_captureConverter setDestinationFramerate:[(VCMediaStreamConfig *)v3 framerate]];
+  [(VCVideoCaptureConverter *)self->_captureConverter setDestinationFramerate:[(VCMediaStreamConfig *)defaultStreamConfig framerate]];
   -[VCVideoCaptureConverter setSourceFramerate:](self->_captureConverter, "setSourceFramerate:", [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")]);
   v20 = v8[298];
   [*(&self->super.super.super.isa + v20) setIsServerBasedBandwidthProbingEnabled:self->_isServerBasedBandwidthProbingEnabled];
   initialTargetBitrate = self->_initialTargetBitrate;
   if (!initialTargetBitrate)
   {
-    initialTargetBitrate = [(VCMediaStreamConfig *)v3 txMinBitrate];
+    initialTargetBitrate = [(VCMediaStreamConfig *)defaultStreamConfig txMinBitrate];
   }
 
-  [*(&self->super.super.super.isa + v20) setTargetBitrate:{initialTargetBitrate, *v30, *&v30[16], v31, v32, v33}];
+  [*(&self->super.super.super.isa + v20) setTargetBitrate:{initialTargetBitrate, *v30, *&v30[16], v31, selfCopy, v33}];
 }
 
 - (void)destroyVideoTransmitter
@@ -998,7 +998,7 @@ LABEL_19:
       v10 = 1024;
       v11 = 530;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]", &v6, 0x26u);
     }
   }
@@ -1015,16 +1015,16 @@ LABEL_19:
   self->_videoTransmitter = 0;
 }
 
-+ (id)newFeatureListStringsWithConfiguration:(id)a3
++ (id)newFeatureListStringsWithConfiguration:(id)configuration
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [objc_msgSend(a3 "rxCodecFeatureListStrings")];
+  v5 = [objc_msgSend(configuration "rxCodecFeatureListStrings")];
   if (v5)
   {
     [v4 setObject:v5 forKeyedSubscript:&unk_1F579B8F8];
   }
 
-  v6 = [objc_msgSend(a3 "rxCodecFeatureListStrings")];
+  v6 = [objc_msgSend(configuration "rxCodecFeatureListStrings")];
   if (v6)
   {
     [v4 setObject:v6 forKeyedSubscript:&unk_1F579B928];
@@ -1033,22 +1033,22 @@ LABEL_19:
   return v4;
 }
 
-- (id)newScreenCaptureConfigForVideoConfig:(id)a3
+- (id)newScreenCaptureConfigForVideoConfig:(id)config
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setObject:self forKeyedSubscript:@"Client"];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->_captureSourceID), @"CaptureSourceID"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_customWidth), @"VideoWidth"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_customHeight), @"VideoHeight"}];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(a3, "framerate")), @"FrameRate"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInteger:", objc_msgSend(config, "framerate")), @"FrameRate"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._clientPID), @"ClientPid"}];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", -[VCVideoStream pickScreenDisplayMode](self, "pickScreenDisplayMode")), @"ScreenCaptureConfigurationDisplayMode"}];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a3, "shouldSendBlackFramesOnClearScreen")), @"ShouldSendBlackFramesOnClearScreen"}];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a3, "foveationEnabled")), @"FoveationEnabled"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(config, "shouldSendBlackFramesOnClearScreen")), @"ShouldSendBlackFramesOnClearScreen"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(config, "foveationEnabled")), @"FoveationEnabled"}];
   [v5 setObject:&unk_1F579B940 forKeyedSubscript:@"ResolutionScaling"];
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_screenDisplayID), @"ScreenDisplayID"}];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(a3, "pixelFormat")), @"PixelFormat"}];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(a3, "hdrMode")), @"HDRMode"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(config, "pixelFormat")), @"PixelFormat"}];
+  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(config, "hdrMode")), @"HDRMode"}];
   type = self->_type;
   v8 = type == 2 || type == 5;
   [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v8), @"EnableIdleFrameAdjustments"}];
@@ -1061,13 +1061,13 @@ LABEL_19:
   v14 = 1;
   if (v13 != 1 && v13 != 6)
   {
-    v14 = v13 == 5 && [a3 tilesPerFrame] > 1;
+    v14 = v13 == 5 && [config tilesPerFrame] > 1;
   }
 
   [v5 setObject:objc_msgSend(v12 forKeyedSubscript:{"numberWithInt:", v14), @"ShouldOptimizeForLowLatency"}];
-  if ([a3 remoteDeviceName])
+  if ([config remoteDeviceName])
   {
-    [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"remoteDeviceName"), @"RemoteDeviceName"}];
+    [v5 setObject:objc_msgSend(config forKeyedSubscript:{"remoteDeviceName"), @"RemoteDeviceName"}];
   }
 
   remoteScreenAttributesDidChange = self->_videoStreamDelegateFunctions.remoteScreenAttributesDidChange;
@@ -1113,22 +1113,22 @@ LABEL_19:
   return 2;
 }
 
-- (BOOL)isScreenConfig:(id)a3
+- (BOOL)isScreenConfig:(id)config
 {
-  v4 = [a3 type];
+  type = [config type];
   result = 0;
-  if (v4 <= 6)
+  if (type <= 6)
   {
-    if (((1 << v4) & 0x66) != 0)
+    if (((1 << type) & 0x66) != 0)
     {
       return 1;
     }
 
-    if (v4 == 3)
+    if (type == 3)
     {
-      if ([a3 captureSource] != 2)
+      if ([config captureSource] != 2)
       {
-        return [a3 captureSource] == 1;
+        return [config captureSource] == 1;
       }
 
       return 1;
@@ -1138,9 +1138,9 @@ LABEL_19:
   return result;
 }
 
-- (void)setupMultiwayVideoReceiverTemporalScalingConfig:(tagVCVideoReceiverStreamConfig *)a3 forTransportStream:(id)a4
+- (void)setupMultiwayVideoReceiverTemporalScalingConfig:(tagVCVideoReceiverStreamConfig *)config forTransportStream:(id)stream
 {
-  v7 = [objc_msgSend(a4 "streamConfig")];
+  v7 = [objc_msgSend(stream "streamConfig")];
   if ([v7 isTemporalStream])
   {
     if ([v7 parentStreamID])
@@ -1150,45 +1150,45 @@ LABEL_19:
 
     else
     {
-      temporalScalingBaseLayerStreamID = [a4 idsStreamId];
+      temporalScalingBaseLayerStreamID = [stream idsStreamId];
       self->_temporalScalingBaseLayerStreamID = temporalScalingBaseLayerStreamID;
     }
 
-    a3->streamInfo.baseStreamID = temporalScalingBaseLayerStreamID;
-    a3->isTemporalScalingEnabled = 1;
+    config->streamInfo.baseStreamID = temporalScalingBaseLayerStreamID;
+    config->isTemporalScalingEnabled = 1;
   }
 
   else
   {
-    a3->streamInfo.baseStreamID = [a4 idsStreamId];
-    a3->isTemporalScalingEnabled = 0;
+    config->streamInfo.baseStreamID = [stream idsStreamId];
+    config->isTemporalScalingEnabled = 0;
     self->_temporalScalingBaseLayerStreamID = 0;
   }
 }
 
-- (void)setupMultiwayVideoReceiverStreamSwitchInfo:(tagVCVideoReceiverStreamConfig *)a3 forTransportStream:(id)a4
+- (void)setupMultiwayVideoReceiverStreamSwitchInfo:(tagVCVideoReceiverStreamConfig *)info forTransportStream:(id)stream
 {
-  v7 = [objc_msgSend(a4 "streamConfig")];
-  a3->streamInfo.streamID = [a4 idsStreamId];
-  [(VCVideoStream *)self setupMultiwayVideoReceiverTemporalScalingConfig:a3 forTransportStream:a4];
-  a3->streamInfo.repairStreamID = [v7 repairedStreamID];
+  v7 = [objc_msgSend(stream "streamConfig")];
+  info->streamInfo.streamID = [stream idsStreamId];
+  [(VCVideoStream *)self setupMultiwayVideoReceiverTemporalScalingConfig:info forTransportStream:stream];
+  info->streamInfo.repairStreamID = [v7 repairedStreamID];
   v8 = [objc_msgSend(v7 "subStreamConfigs")];
-  a3->streamInfo.subStreamCount = v8;
+  info->streamInfo.subStreamCount = v8;
   if (v8 >= 1)
   {
     v9 = 0;
-    subStreamRepairIDs = a3->streamInfo.subStreamRepairIDs;
+    subStreamRepairIDs = info->streamInfo.subStreamRepairIDs;
     do
     {
       *(subStreamRepairIDs - 9) = [objc_msgSend(objc_msgSend(v7 "subStreamConfigs")];
       *subStreamRepairIDs++ = [objc_msgSend(objc_msgSend(v7 "subStreamConfigs")];
     }
 
-    while (v9 < a3->streamInfo.subStreamCount);
+    while (v9 < info->streamInfo.subStreamCount);
   }
 }
 
-- (void)setupMultiwayVideoReceiverConfig:(tagVCVideoReceiverConfig *)a3 forTransportStream:(id)a4
+- (void)setupMultiwayVideoReceiverConfig:(tagVCVideoReceiverConfig *)config forTransportStream:(id)stream
 {
   v28 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -1197,18 +1197,18 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [a4 streamConfig];
-  v8 = [v7 multiwayConfig];
-  *&v23 = [a4 rtpHandle];
-  *&v24 = [v7 keyFrameInterval] == 0;
-  WORD1(v24) = [v7 framerate];
-  *(&v24 + 1) = [a4 receiverSframeCryptor];
+  streamConfig = [stream streamConfig];
+  multiwayConfig = [streamConfig multiwayConfig];
+  *&v23 = [stream rtpHandle];
+  *&v24 = [streamConfig keyFrameInterval] == 0;
+  WORD1(v24) = [streamConfig framerate];
+  *(&v24 + 1) = [stream receiverSframeCryptor];
   *&v25 = [(VCMediaStream *)self mediaControlInfoGenerator];
-  *(&v25 + 1) = [objc_msgSend(v7 "rateControlConfig")];
+  *(&v25 + 1) = [objc_msgSend(streamConfig "rateControlConfig")];
   LODWORD(v26) = 1;
-  BYTE5(v26) = [v7 isRTCPForLossFeedbackEnabled];
-  BYTE6(v26) = [v7 rtcpPSFB_LTRAckEnabled];
-  if ([v7 rtcpPSFB_LTRAckEnabled])
+  BYTE5(v26) = [streamConfig isRTCPForLossFeedbackEnabled];
+  BYTE6(v26) = [streamConfig rtcpPSFB_LTRAckEnabled];
+  if ([streamConfig rtcpPSFB_LTRAckEnabled])
   {
     v9 = 2;
   }
@@ -1219,43 +1219,43 @@ LABEL_19:
   }
 
   DWORD2(v26) = v9;
-  BYTE12(v26) = [v7 shouldEnableMLEnhance];
-  LODWORD(v27) = [v7 supportedMLEnhanceTypes];
-  BYTE12(v27) = [v7 fecHeaderVersion];
-  HIWORD(v27) = [v7 fecLossFeedbackBitfieldLength];
-  if (v8)
+  BYTE12(v26) = [streamConfig shouldEnableMLEnhance];
+  LODWORD(v27) = [streamConfig supportedMLEnhanceTypes];
+  BYTE12(v27) = [streamConfig fecHeaderVersion];
+  HIWORD(v27) = [streamConfig fecLossFeedbackBitfieldLength];
+  if (multiwayConfig)
   {
-    BYTE5(v24) = [v8 isOneToOne];
-    BYTE4(v26) = [v8 isOneToOne];
-    BYTE4(v27) = [v8 isOneToOne];
-    if ([v8 isOneToOne])
+    BYTE5(v24) = [multiwayConfig isOneToOne];
+    BYTE4(v26) = [multiwayConfig isOneToOne];
+    BYTE4(v27) = [multiwayConfig isOneToOne];
+    if ([multiwayConfig isOneToOne])
     {
-      *&v25 = [objc_msgSend(v7 "rateControlConfig")];
+      *&v25 = [objc_msgSend(streamConfig "rateControlConfig")];
       LODWORD(v26) = 0;
-      BYTE5(v27) = [v7 afbRxFrontCameraEnabled];
-      BYTE6(v27) = [v7 afbRxBackCameraEnabled];
-      DWORD2(v27) = [v7 videoFrameMetadataSupportedVersion];
+      BYTE5(v27) = [streamConfig afbRxFrontCameraEnabled];
+      BYTE6(v27) = [streamConfig afbRxBackCameraEnabled];
+      DWORD2(v27) = [streamConfig videoFrameMetadataSupportedVersion];
     }
 
-    if (a3->streamSwitchEnabled)
+    if (config->streamSwitchEnabled)
     {
-      [(VCVideoStream *)self setupMultiwayVideoReceiverStreamSwitchInfo:&v20 forTransportStream:a4];
+      [(VCVideoStream *)self setupMultiwayVideoReceiverStreamSwitchInfo:&v20 forTransportStream:stream];
     }
 
-    v10 = [a4 streamConfig];
-    v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(objc_msgSend(v10, "rxCodecFeatureListStrings"), "count")}];
-    v12 = [v10 rxCodecFeatureListStrings];
+    streamConfig2 = [stream streamConfig];
+    v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(objc_msgSend(streamConfig2, "rxCodecFeatureListStrings"), "count")}];
+    rxCodecFeatureListStrings = [streamConfig2 rxCodecFeatureListStrings];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream___block_invoke;
     v19[3] = &unk_1E85F9638;
     v19[4] = v11;
-    [v12 enumerateKeysAndObjectsUsingBlock:v19];
+    [rxCodecFeatureListStrings enumerateKeysAndObjectsUsingBlock:v19];
     *(&v23 + 1) = v11;
   }
 
-  streamCount = a3->streamCount;
-  v14 = a3 + 128 * streamCount;
+  streamCount = config->streamCount;
+  v14 = config + 128 * streamCount;
   v15 = v25;
   *(v14 + 72) = v24;
   *(v14 + 88) = v15;
@@ -1267,7 +1267,7 @@ LABEL_19:
   *(v14 + 24) = v17;
   v18 = v23;
   *(v14 + 40) = v22;
-  a3->streamCount = streamCount + 1;
+  config->streamCount = streamCount + 1;
   *(v14 + 56) = v18;
 }
 
@@ -1280,10 +1280,10 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   return [v6 setObject:a3 forKeyedSubscript:v7];
 }
 
-- (void)addReceiverStreamConfigsToReceiverConfig:(tagVCVideoReceiverConfig *)a3 streamConfig:(id)a4
+- (void)addReceiverStreamConfigsToReceiverConfig:(tagVCVideoReceiverConfig *)config streamConfig:(id)streamConfig
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [VCVideoStream newFeatureListStringsWithConfiguration:a4];
+  v7 = [VCVideoStream newFeatureListStringsWithConfiguration:streamConfig];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1303,8 +1303,8 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * i) rtpHandle];
-        v13 = [a4 ltrpEnabled];
+        rtpHandle = [*(*(&v19 + 1) + 8 * i) rtpHandle];
+        ltrpEnabled = [streamConfig ltrpEnabled];
         if (v7)
         {
           v14 = CFRetain(v7);
@@ -1315,18 +1315,18 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
           v14 = 0;
         }
 
-        streamCount = a3->streamCount;
-        a3->streamCount = streamCount + 1;
-        v16 = &a3->streamConfigs[streamCount];
+        streamCount = config->streamCount;
+        config->streamCount = streamCount + 1;
+        v16 = &config->streamConfigs[streamCount];
         *&v16->streamInfo.streamID = 0u;
         *&v16->streamInfo.subStreamIDs[2] = 0u;
         *&v16->streamInfo.subStreamRepairIDs[1] = 0u;
-        v16->rtpHandle = v12;
+        v16->rtpHandle = rtpHandle;
         v16->featureListStrings = v14;
         *&v16->onDemandIDR = 0u;
         *&v16->mediaControlInfoGenerator = 0u;
         *(&v16->statisticsCollector + 6) = 0;
-        v16->isRTCPForLTRPAckEnabled = v13;
+        v16->isRTCPForLTRPAckEnabled = ltrpEnabled;
         *(&v16->isRTCPForLTRPAckEnabled + 1) = 0;
         v16->ltrAckRTCPPacketType = 1;
         *&v16->shouldEnableLossStats = 0;
@@ -1341,21 +1341,21 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   }
 }
 
-- (void)cleaunpReceiverConfig:(tagVCVideoReceiverConfig *)a3
+- (void)cleaunpReceiverConfig:(tagVCVideoReceiverConfig *)config
 {
-  streamCount = a3->streamCount;
+  streamCount = config->streamCount;
   if (streamCount)
   {
     v5 = 0;
     v6 = 64;
     do
     {
-      v7 = *(&a3->streamCount + v6);
+      v7 = *(&config->streamCount + v6);
       if (v7)
       {
         CFRelease(v7);
-        *(&a3->streamCount + v6) = 0;
-        streamCount = a3->streamCount;
+        *(&config->streamCount + v6) = 0;
+        streamCount = config->streamCount;
       }
 
       ++v5;
@@ -1366,7 +1366,7 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   }
 }
 
-- (tagVCVideoStreamReceiverConfig)videoStreamReceiverConfigWithDumpID:(SEL)a3 reportingAgent:(unsigned int)a4
+- (tagVCVideoStreamReceiverConfig)videoStreamReceiverConfigWithDumpID:(SEL)d reportingAgent:(unsigned int)agent
 {
   *&retstr->var11[16] = 0u;
   *&retstr->var9 = 0u;
@@ -1379,7 +1379,7 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   retstr->var2.didReceiveRemoteFrame = v10;
   retstr->var3 = a5;
   reportingModuleID = self->_reportingModuleID;
-  retstr->var4 = a4;
+  retstr->var4 = agent;
   retstr->var5 = reportingModuleID;
   retstr->var6 = self->_statisticsCollector;
   retstr->var7 = self->super._transportSetupInfo.setupType == 5;
@@ -1390,7 +1390,7 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   return snprintf(var11, 0x1EuLL, "parent=%p", self);
 }
 
-- (tagVCVideoReceiverConfig)videoReceiverConfigWithVideoStreamConfig:(SEL)a3
+- (tagVCVideoReceiverConfig)videoReceiverConfigWithVideoStreamConfig:(SEL)config
 {
   v64 = *MEMORY[0x1E69E9840];
   bzero(retstr, 0x658uLL);
@@ -1417,7 +1417,7 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   retstr->decoderNumOfTiles = [a4 tilesPerFrame];
   retstr->reportingParentID = self->_reportingModuleID;
   retstr->mediaControlInfoGenerator = [(VCMediaStream *)self mediaControlInfoGenerator];
-  v9 = 1;
+  rtxEnabled = 1;
   retstr->useRTCPForFIR = 1;
   retstr->isLTRPEnabled = [a4 ltrpEnabled];
   retstr->isVariableSliceModeEnabled = [a4 isVariableSliceModeEnabled];
@@ -1439,10 +1439,10 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   retstr->externalPresentationClockType = 1;
   if (([a4 isServerPacketRetransmissionEnabled] & 1) == 0)
   {
-    v9 = [a4 rtxEnabled];
+    rtxEnabled = [a4 rtxEnabled];
   }
 
-  retstr->isServerPacketRetransmissionEnabled = v9;
+  retstr->isServerPacketRetransmissionEnabled = rtxEnabled;
   retstr->isLateFrameRecoveryEnabled = 1;
   retstr->isLateKeyFrameDetectionEnabled = [a4 isLateKeyFrameDetectionEnabled];
   retstr->experimentManager = self->super._experimentManager;
@@ -1482,12 +1482,12 @@ uint64_t __69__VCVideoStream_setupMultiwayVideoReceiverConfig_forTransportStream
   BoolValueForKey = VCDefaults_GetBoolValueForKey(@"videoJBUseErasureSensitiveMode", [a4 jitterBufferMode] == 0);
   [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-video-receiver-deferred-assembly-offset" userDefaultKey:@"videoReceiverDeferredAssemblyOffset" defaultValue:&unk_1F579E500 isDoubleType:{1), "doubleValue"}];
   v18 = v17;
-  v19 = [a4 type];
-  if (v19 > 3)
+  type = [a4 type];
+  if (type > 3)
   {
-    if (v19 <= 5)
+    if (type <= 5)
     {
-      if (v19 != 4)
+      if (type != 4)
       {
         [(VCVideoStream *)self addReceiverStreamConfigsToReceiverConfig:retstr streamConfig:a4];
         retstr->mode = 3;
@@ -1544,9 +1544,9 @@ LABEL_74:
       goto LABEL_98;
     }
 
-    if (v19 != 6)
+    if (type != 6)
     {
-      if (v19 == 7)
+      if (type == 7)
       {
         [(VCVideoStream *)self addReceiverStreamConfigsToReceiverConfig:retstr streamConfig:a4];
         retstr->mode = 3;
@@ -1557,11 +1557,11 @@ LABEL_74:
         retstr->enableDeferredAssembly = 0;
         retstr->useAssemblyThread = 1;
         v21 = VCDefaults_GetBoolValueForKey(@"enableVideoJitterBufferWithExternalSourceSync", 1);
-        v22 = [a4 syncSource];
+        syncSource = [a4 syncSource];
         retstr->isAsyncDecodingEnabled = 1;
         v23 = v15 && v21;
         retstr->useDisplayLink = v15 && v21;
-        v24 = v22 != 0;
+        v24 = syncSource != 0;
         retstr->enableJitterBufferInReceiver = 1;
         retstr->enableJitterBufferInPlayer = v21;
         retstr->jitterBufferMode = 2;
@@ -1604,9 +1604,9 @@ LABEL_34:
     goto LABEL_74;
   }
 
-  if (v19 > 1)
+  if (type > 1)
   {
-    if (v19 == 2)
+    if (type == 2)
     {
       [(VCVideoStream *)self addReceiverStreamConfigsToReceiverConfig:retstr streamConfig:a4];
       retstr->mode = 3;
@@ -1831,13 +1831,13 @@ LABEL_95:
     goto LABEL_98;
   }
 
-  if (!v19)
+  if (!type)
   {
     retstr->triggerSoundAlarmOnRTPReceive = 1;
     goto LABEL_98;
   }
 
-  if (v19 == 1)
+  if (type == 1)
   {
     goto LABEL_34;
   }
@@ -1853,7 +1853,7 @@ LABEL_98:
   return result;
 }
 
-- (tagVCNACKGeneratorStoreBagsConfig)readServerPacketRetransmissionsForVideoStoreBagConfig:(SEL)a3
+- (tagVCNACKGeneratorStoreBagsConfig)readServerPacketRetransmissionsForVideoStoreBagConfig:(SEL)config
 {
   v62 = *MEMORY[0x1E69E9840];
   retstr->rtxIncompleteFrameBufferDurationMultiplier = 0.0;
@@ -1977,14 +1977,14 @@ LABEL_98:
   return result;
 }
 
-- (void)setupVideoReceiver:(id)a3 withTransmitterHandle:(tagHANDLE *)a4
+- (void)setupVideoReceiver:(id)receiver withTransmitterHandle:(tagHANDLE *)handle
 {
   __dst[203] = *MEMORY[0x1E69E9840];
-  v7 = [a3 direction] == 2 || objc_msgSend(a3, "direction") == 3;
+  v7 = [receiver direction] == 2 || objc_msgSend(receiver, "direction") == 3;
   memcpy(__dst, &unk_1DBD50670, 0x658uLL);
   if (self)
   {
-    [(VCVideoStream *)self videoReceiverConfigWithVideoStreamConfig:a3];
+    [(VCVideoStream *)self videoReceiverConfigWithVideoStreamConfig:receiver];
   }
 
   else
@@ -2002,21 +2002,21 @@ LABEL_98:
   v58 = v8;
   v59 = v8;
   v57 = v8;
-  v9 = [(VCVideoStream *)self dumpIDFromCallID];
+  dumpIDFromCallID = [(VCVideoStream *)self dumpIDFromCallID];
   if (v7)
   {
-    v10 = [(VCObject *)self reportingAgent];
+    reportingAgent = [(VCObject *)self reportingAgent];
     if (self)
     {
 LABEL_9:
-      [(VCVideoStream *)self videoStreamReceiverConfigWithDumpID:v9 reportingAgent:v10];
+      [(VCVideoStream *)self videoStreamReceiverConfigWithDumpID:dumpIDFromCallID reportingAgent:reportingAgent];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v10 = 0;
+    reportingAgent = 0;
     if (self)
     {
       goto LABEL_9;
@@ -2032,64 +2032,64 @@ LABEL_9:
   v59 = 0u;
   v57 = 0u;
 LABEL_12:
-  if ([a3 type] != 4)
+  if ([receiver type] != 4)
   {
-    if ([a3 overlayToken])
+    if ([receiver overlayToken])
     {
-      v11 = [a3 overlayToken];
+      overlayToken = [receiver overlayToken];
     }
 
     else
     {
-      v11 = __dst[146];
+      overlayToken = __dst[146];
     }
 
-    __dst[187] = v11;
+    __dst[187] = overlayToken;
   }
 
   v44[0] = [(VCVideoStream *)self videoReceiverDelegateFunctions];
   v44[1] = v12;
-  v13 = [a3 type];
-  if (v13 <= 7)
+  type = [receiver type];
+  if (type <= 7)
   {
-    if (((1 << v13) & 0xF6) != 0)
+    if (((1 << type) & 0xF6) != 0)
     {
       v14 = [VCVideoReceiverDefault alloc];
       if (v7)
       {
-        v15 = [(VCObject *)self reportingAgent];
+        reportingAgent2 = [(VCObject *)self reportingAgent];
       }
 
       else
       {
-        v15 = 0;
+        reportingAgent2 = 0;
       }
 
-      videoReceiver = [(VCVideoReceiverDefault *)v14 initWithConfig:__dst delegate:self delegateFunctions:v44 reportingAgent:v15 statisticsCollector:self->_statisticsCollector transmitterHandle:a4 sensitiveContentAnalyzer:0];
+      videoReceiver = [(VCVideoReceiverDefault *)v14 initWithConfig:__dst delegate:self delegateFunctions:v44 reportingAgent:reportingAgent2 statisticsCollector:self->_statisticsCollector transmitterHandle:handle sensitiveContentAnalyzer:0];
       self->_videoReceiver = videoReceiver;
       goto LABEL_23;
     }
 
-    if (!v13)
+    if (!type)
     {
       self->_videoReceiver = [[VCVideoStreamReceiver alloc] initWithConfig:&v57];
       goto LABEL_24;
     }
 
-    if ([a3 direction] != 1 || objc_msgSend(a3, "isRTCPEnabled"))
+    if ([receiver direction] != 1 || objc_msgSend(receiver, "isRTCPEnabled"))
     {
       v27 = [VCVideoReceiverDefault alloc];
       if (v7)
       {
-        v28 = [(VCObject *)self reportingAgent];
+        reportingAgent3 = [(VCObject *)self reportingAgent];
       }
 
       else
       {
-        v28 = 0;
+        reportingAgent3 = 0;
       }
 
-      v29 = -[VCVideoReceiverDefault initWithConfig:delegate:delegateFunctions:reportingAgent:statisticsCollector:transmitterHandle:sensitiveContentAnalyzer:](v27, "initWithConfig:delegate:delegateFunctions:reportingAgent:statisticsCollector:transmitterHandle:sensitiveContentAnalyzer:", __dst, self, v44, v28, [objc_msgSend(a3 "rateControlConfig")], a4, self->_cachedRemoteScreenAttributes);
+      v29 = -[VCVideoReceiverDefault initWithConfig:delegate:delegateFunctions:reportingAgent:statisticsCollector:transmitterHandle:sensitiveContentAnalyzer:](v27, "initWithConfig:delegate:delegateFunctions:reportingAgent:statisticsCollector:transmitterHandle:sensitiveContentAnalyzer:", __dst, self, v44, reportingAgent3, [objc_msgSend(receiver "rateControlConfig")], handle, self->_cachedRemoteScreenAttributes);
       self->_videoReceiver = v29;
       targetStreamID = self->_targetStreamID;
       if (targetStreamID)
@@ -2159,7 +2159,7 @@ LABEL_12:
         v51 = 2112;
         v52 = v31;
         v53 = 2048;
-        v54 = self;
+        selfCopy2 = self;
         v55 = 2048;
         v56 = v43;
         v35 = "VCVideoStream [%s] %s:%d %@(%p) externalOutputVideoLatency=%f";
@@ -2251,7 +2251,7 @@ LABEL_34:
         v51 = 2112;
         v52 = v17;
         v53 = 2048;
-        v54 = self;
+        selfCopy2 = self;
         v55 = 2048;
         v56 = v26;
         v21 = "VCVideoStream [%s] %s:%d %@(%p) videoReceiver=%p";
@@ -2267,9 +2267,9 @@ LABEL_34:
   [(VCVideoStream *)self cleaunpReceiverConfig:__dst];
 }
 
-- (BOOL)useUEPForVideoConfig:(int)a3
+- (BOOL)useUEPForVideoConfig:(int)config
 {
-  v3 = *&a3;
+  v3 = *&config;
   v8 = *MEMORY[0x1E69E9840];
   v4 = [VCVideoFeatureListStringHelper newLocalFeaturesStringWithType:2];
   v5 = [v4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v3)}];
@@ -2282,7 +2282,7 @@ LABEL_34:
   return v7 != 0;
 }
 
-- (void)updateVideoReceiver:(id)a3
+- (void)updateVideoReceiver:(id)receiver
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2298,19 +2298,19 @@ LABEL_34:
       v15 = 1024;
       v16 = 1137;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]", &v11, 0x26u);
     }
   }
 
-  -[VCVideoReceiverBase setRemoteVideoOrientation:](self->_videoReceiver, "setRemoteVideoOrientation:", [a3 remoteVideoInitialOrientation]);
-  -[VCVideoReceiverBase setEnableCVO:cvoExtensionID:](self->_videoReceiver, "setEnableCVO:cvoExtensionID:", [a3 enableCVO], objc_msgSend(a3, "cvoExtensionID"));
+  -[VCVideoReceiverBase setRemoteVideoOrientation:](self->_videoReceiver, "setRemoteVideoOrientation:", [receiver remoteVideoInitialOrientation]);
+  -[VCVideoReceiverBase setEnableCVO:cvoExtensionID:](self->_videoReceiver, "setEnableCVO:cvoExtensionID:", [receiver enableCVO], objc_msgSend(receiver, "cvoExtensionID"));
   videoReceiver = self->_videoReceiver;
-  v8 = [a3 isRateAdaptationEnabled];
-  v9 = [a3 rxMaxBitrate];
-  v10 = [a3 rxMinBitrate];
-  [a3 rtcpSendInterval];
-  [(VCVideoReceiverBase *)videoReceiver setEnableRateAdaptation:v8 maxBitrate:v9 minBitrate:v10 adaptationInterval:?];
+  isRateAdaptationEnabled = [receiver isRateAdaptationEnabled];
+  rxMaxBitrate = [receiver rxMaxBitrate];
+  rxMinBitrate = [receiver rxMinBitrate];
+  [receiver rtcpSendInterval];
+  [(VCVideoReceiverBase *)videoReceiver setEnableRateAdaptation:isRateAdaptationEnabled maxBitrate:rxMaxBitrate minBitrate:rxMinBitrate adaptationInterval:?];
 }
 
 - (void)destroyVideoReceiver
@@ -2329,7 +2329,7 @@ LABEL_34:
       v9 = 1024;
       v10 = 1147;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]", &v5, 0x26u);
     }
   }
@@ -2356,7 +2356,7 @@ LABEL_34:
       v9 = 1024;
       v10 = 1155;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]", &v5, 0x26u);
     }
   }
@@ -2365,21 +2365,21 @@ LABEL_34:
   [(VCVideoStream *)self destroyVideoReceiver];
 }
 
-- (void)setupCompoundStreamIDsWithStreamIDs:(id)a3
+- (void)setupCompoundStreamIDsWithStreamIDs:(id)ds
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaStream *)self compoundStreamIDs];
-  if (v5)
+  compoundStreamIDs = [(VCMediaStream *)self compoundStreamIDs];
+  if (compoundStreamIDs)
   {
-    v6 = v5;
-    v7 = [MEMORY[0x1E695DFA8] setWithArray:a3];
+    v6 = compoundStreamIDs;
+    v7 = [MEMORY[0x1E695DFA8] setWithArray:ds];
     [v7 minusSet:{objc_msgSend(MEMORY[0x1E695DFA8], "setWithArray:", v6)}];
     self->_isCompoundStreamIDsIncreased = [v7 count] != 0;
   }
 
-  [(VCMediaStream *)self setCompoundStreamIDs:a3];
+  [(VCMediaStream *)self setCompoundStreamIDs:ds];
 
-  self->_sendingStreamID = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "copy"}];
+  self->_sendingStreamID = [objc_msgSend(ds objectAtIndexedSubscript:{0), "copy"}];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2409,7 +2409,7 @@ LABEL_34:
               v38 = 2080;
               v39 = "compoundStreamIDs=";
               v40 = 2080;
-              v41 = v16;
+              selfCopy = v16;
               _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d %s %s", buf, 0x30u);
             }
           }
@@ -2438,9 +2438,9 @@ LABEL_34:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v10 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       v11 = [(VCMediaStream *)self compoundStreamIDs]? [(NSString *)[(NSArray *)[(VCMediaStream *)self compoundStreamIDs] description] UTF8String]: "<nil>";
-      asprintf(&__str, "%s(%p) %s", v10, self, v11);
+      asprintf(&__str, "%s(%p) %s", uTF8String, self, v11);
       if (__str)
       {
         __lasts = 0;
@@ -2463,7 +2463,7 @@ LABEL_34:
               v38 = 2080;
               v39 = "compoundStreamIDs=";
               v40 = 2080;
-              v41 = v12;
+              selfCopy = v12;
               _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d %s %s", buf, 0x30u);
             }
           }
@@ -2532,7 +2532,7 @@ LABEL_39:
         v38 = 2112;
         v39 = v20;
         v40 = 2048;
-        v41 = self;
+        selfCopy = self;
         v42 = 2112;
         v43 = v29;
         v24 = "VCVideoStream [%s] %s:%d %@(%p) sendingStreamID=%@";
@@ -2566,7 +2566,7 @@ LABEL_39:
   }
 }
 
-- (void)enableRedundancyController:(id)a3
+- (void)enableRedundancyController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_redundancyController)
@@ -2574,11 +2574,11 @@ LABEL_39:
     [VCVideoStream enableRedundancyController:];
   }
 
-  else if ([a3 type] == 5 && objc_msgSend(a3, "fecEnabled"))
+  else if ([controller type] == 5 && objc_msgSend(controller, "fecEnabled"))
   {
     statisticsCollector = self->_statisticsCollector;
-    [a3 setRedundancyControllerMode:5];
-    v6 = -[VCRedundancyControllerVideo initWithDelegate:mode:parameters:]([VCRedundancyControllerVideo alloc], "initWithDelegate:mode:parameters:", self, [a3 redundancyControllerMode], statisticsCollector, 0xAA00000000000064);
+    [controller setRedundancyControllerMode:5];
+    v6 = -[VCRedundancyControllerVideo initWithDelegate:mode:parameters:]([VCRedundancyControllerVideo alloc], "initWithDelegate:mode:parameters:", self, [controller redundancyControllerMode], statisticsCollector, 0xAA00000000000064);
     self->_redundancyController = v6;
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v6)
@@ -2604,7 +2604,7 @@ LABEL_39:
 
       if ([(VCRedundancyControllerVideo *)self->_redundancyController statisticsCollector])
       {
-        [objc_msgSend(a3 "rateControlConfig")];
+        [objc_msgSend(controller "rateControlConfig")];
       }
     }
 
@@ -2615,11 +2615,11 @@ LABEL_39:
   }
 }
 
-- (void)startRateAdaptationWithStreamConfig:(id)a3
+- (void)startRateAdaptationWithStreamConfig:(id)config
 {
   v55 = *MEMORY[0x1E69E9840];
-  [a3 setTxInitialBitrate:self->_initialTargetBitrate];
-  v5 = [a3 direction] == 2 || objc_msgSend(a3, "direction") == 3;
+  [config setTxInitialBitrate:self->_initialTargetBitrate];
+  v5 = [config direction] == 2 || objc_msgSend(config, "direction") == 3;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -2627,28 +2627,28 @@ LABEL_39:
   v33 = 0u;
   v34 = 0u;
   callID = self->super._callID;
-  v6 = [(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle];
+  rtpHandle = [(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle];
   connection = self->super._connection;
-  *(&v36 + 1) = v6;
+  *(&v36 + 1) = rtpHandle;
   *&v38 = connection;
   type = self->_type;
   if (type <= 7)
   {
     if (((1 << type) & 0xF6) != 0)
     {
-      v9 = [a3 rxMaxBitrate];
-      v10 = [a3 rxMinBitrate];
-      v11 = [a3 txInitialBitrate];
-      v12 = [a3 accessNetworkType];
-      v13 = [a3 foveationEnabled];
-      BYTE8(v38) = +[VideoUtil isBufferDescriptionForMultiImageStream:](VideoUtil, "isBufferDescriptionForMultiImageStream:", [a3 videoBufferDescription]);
+      rxMaxBitrate = [config rxMaxBitrate];
+      rxMinBitrate = [config rxMinBitrate];
+      txInitialBitrate = [config txInitialBitrate];
+      accessNetworkType = [config accessNetworkType];
+      foveationEnabled = [config foveationEnabled];
+      BYTE8(v38) = +[VideoUtil isBufferDescriptionForMultiImageStream:](VideoUtil, "isBufferDescriptionForMultiImageStream:", [config videoBufferDescription]);
       LODWORD(v34) = 3;
       BYTE4(v37) = 1;
       *(&v37 + 1) = self;
       *(&v34 + 1) = 2;
-      *&v35 = __PAIR64__(v10, v9);
-      *(&v35 + 1) = __PAIR64__(v12, v11);
-      LOBYTE(v36) = v13;
+      *&v35 = __PAIR64__(rxMinBitrate, rxMaxBitrate);
+      *(&v35 + 1) = __PAIR64__(accessNetworkType, txInitialBitrate);
+      LOBYTE(v36) = foveationEnabled;
       *(&v36 + 1) = -1431655766;
       DWORD1(v36) = -1431655766;
       *(&v33 + 1) = [(VCObject *)self reportingAgent];
@@ -2664,15 +2664,15 @@ LABEL_7:
       LODWORD(v34) = 2;
       if (v5)
       {
-        v16 = [(VCObject *)self reportingAgent];
+        reportingAgent = [(VCObject *)self reportingAgent];
       }
 
       else
       {
-        v16 = 0;
+        reportingAgent = 0;
       }
 
-      *(&v33 + 1) = v16;
+      *(&v33 + 1) = reportingAgent;
       LODWORD(v37) = self->_reportingModuleID;
       LODWORD(v33) = [(VCVideoStream *)self dumpIDFromCallID];
       v14 = off_1E85F1FB8;
@@ -2698,9 +2698,9 @@ LABEL_8:
       }
 
       v19 = self->_type;
-      v20 = [a3 txMaxBitrate];
-      v21 = [a3 txMinBitrate];
-      v22 = [a3 txInitialBitrate];
+      txMaxBitrate = [config txMaxBitrate];
+      txMinBitrate = [config txMinBitrate];
+      txInitialBitrate2 = [config txInitialBitrate];
       *buf = 136316674;
       v40 = v17;
       v41 = 2080;
@@ -2710,11 +2710,11 @@ LABEL_8:
       v45 = 1024;
       *v46 = v19;
       *&v46[4] = 1024;
-      *&v46[6] = v20;
-      LOWORD(v47) = 1024;
-      *(&v47 + 2) = v21;
-      HIWORD(v47) = 1024;
-      *v48 = v22;
+      *&v46[6] = txMaxBitrate;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = txMinBitrate;
+      HIWORD(selfCopy) = 1024;
+      *v48 = txInitialBitrate2;
       v23 = "VCVideoStream [%s] %s:%d Start VCRC in VideoStream with type=%d and maxBitrate=%d, minBitrate=%d, initialBitrate=%d";
       v24 = v18;
       v25 = 52;
@@ -2745,9 +2745,9 @@ LABEL_8:
       }
 
       v28 = self->_type;
-      v29 = [a3 txMaxBitrate];
-      v30 = [a3 txMinBitrate];
-      v31 = [a3 txInitialBitrate];
+      txMaxBitrate2 = [config txMaxBitrate];
+      txMinBitrate2 = [config txMinBitrate];
+      txInitialBitrate3 = [config txInitialBitrate];
       *buf = 136317186;
       v40 = v26;
       v41 = 2080;
@@ -2757,15 +2757,15 @@ LABEL_8:
       v45 = 2112;
       *v46 = v15;
       *&v46[8] = 2048;
-      v47 = self;
+      selfCopy = self;
       *v48 = 1024;
       *&v48[2] = v28;
       v49 = 1024;
-      v50 = v29;
+      v50 = txMaxBitrate2;
       v51 = 1024;
-      v52 = v30;
+      v52 = txMinBitrate2;
       v53 = 1024;
-      v54 = v31;
+      v54 = txInitialBitrate3;
       v23 = "VCVideoStream [%s] %s:%d %@(%p) Start VCRC in VideoStream with type=%d and maxBitrate=%d, minBitrate=%d, initialBitrate=%d";
       v24 = v27;
       v25 = 72;
@@ -2779,7 +2779,7 @@ LABEL_23:
     self->_statisticsCollector = [(AVCRateController *)[(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController] statisticsCollector];
   }
 
-  [(VCVideoStream *)self enableRedundancyController:a3];
+  [(VCVideoStream *)self enableRedundancyController:config];
 }
 
 - (void)stopRateAdaptation
@@ -2804,53 +2804,53 @@ LABEL_23:
   return result;
 }
 
-- (void)handleNWConnectionNotification:(tagVCNWConnectionNotification *)a3
+- (void)handleNWConnectionNotification:(tagVCNWConnectionNotification *)notification
 {
-  v4 = [(AVCRateController *)[(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController] nwConnectionCongestionDetector];
+  nwConnectionCongestionDetector = [(AVCRateController *)[(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController] nwConnectionCongestionDetector];
 
-  [(VCNWConnectionCongestionDetector *)v4 processNWConnectionNotification:a3];
+  [(VCNWConnectionCongestionDetector *)nwConnectionCongestionDetector processNWConnectionNotification:notification];
 }
 
 - (void)handleTransportSessionConnectionEvent
 {
   if ([(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] type]== 7)
   {
-    v3 = [(VCMediaStream *)self defaultStreamConfig];
-    v4 = [(VCVideoStream *)self networkMTU];
-    if (v4 >= 0x5AA)
+    defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+    networkMTU = [(VCVideoStream *)self networkMTU];
+    if (networkMTU >= 0x5AA)
     {
       v5 = 1450;
     }
 
     else
     {
-      v5 = v4;
+      v5 = networkMTU;
     }
 
-    [(VCMediaStreamConfig *)v3 setRecommendedMTU:v5];
+    [(VCMediaStreamConfig *)defaultStreamConfig setRecommendedMTU:v5];
     videoTransmitter = self->_videoTransmitter;
-    v7 = [(VCVideoStream *)self isTransportIPv6];
+    isTransportIPv6 = [(VCVideoStream *)self isTransportIPv6];
 
-    [(VCVideoTransmitterBase *)videoTransmitter updateNetworkMTU:v5 isIPv6:v7];
+    [(VCVideoTransmitterBase *)videoTransmitter updateNetworkMTU:v5 isIPv6:isTransportIPv6];
   }
 }
 
-- (void)handleNWConnectionPacketEvent:(packet_id *)a3 eventType:(int)a4
+- (void)handleNWConnectionPacketEvent:(packet_id *)event eventType:(int)type
 {
-  v4 = *&a4;
-  v6 = [(AVCRateController *)[(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController] nwConnectionCongestionDetector];
+  v4 = *&type;
+  nwConnectionCongestionDetector = [(AVCRateController *)[(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController] nwConnectionCongestionDetector];
 
-  [(VCNWConnectionCongestionDetector *)v6 processNWConnectionPacketEvent:a3 eventType:v4];
+  [(VCNWConnectionCongestionDetector *)nwConnectionCongestionDetector processNWConnectionPacketEvent:event eventType:v4];
 }
 
-+ (BOOL)shouldUseRandomRTPTimestampWithType:(int64_t)a3
++ (BOOL)shouldUseRandomRTPTimestampWithType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 1;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return VCDefaults_GetBoolValueForKey(@"simulateWebRTCOnlyClient", 0);
   }
@@ -2858,12 +2858,12 @@ LABEL_23:
   return 0;
 }
 
-- (void)setupColorInfo:(id)a3
+- (void)setupColorInfo:(id)info
 {
   v46 = *MEMORY[0x1E69E9840];
-  if ([a3 pixelFormat] == 2019963956)
+  if ([info pixelFormat] == 2019963956)
   {
-    if (!+[VCDefaults BOOLeanValueForKey:defaultValue:](VCDefaults, "BOOLeanValueForKey:defaultValue:", @"forceHDR10ColorInfo", 0) && ([a3 type] != 2 || objc_msgSend(a3, "hdrMode") != 1))
+    if (!+[VCDefaults BOOLeanValueForKey:defaultValue:](VCDefaults, "BOOLeanValueForKey:defaultValue:", @"forceHDR10ColorInfo", 0) && ([info type] != 2 || objc_msgSend(info, "hdrMode") != 1))
     {
       v5 = *MEMORY[0x1E6965DD0];
       v6 = *MEMORY[0x1E6965F70];
@@ -2901,7 +2901,7 @@ LABEL_23:
         v42 = 2112;
         v43 = v10;
         v44 = 2048;
-        v45 = self;
+        selfCopy6 = self;
         v13 = "VCVideoStream [%s] %s:%d %@(%p) P3D65-PQ color settings used to configure capture and encoder";
         goto LABEL_49;
       }
@@ -3006,12 +3006,12 @@ LABEL_51:
     v42 = 2112;
     v43 = v8;
     v44 = 2048;
-    v45 = self;
+    selfCopy6 = self;
     v13 = "VCVideoStream [%s] %s:%d %@(%p) ITU_R_2020 color settings used to configure capture and encoder (except when in Airplay)";
     goto LABEL_49;
   }
 
-  if ([a3 type] == 1 || objc_msgSend(a3, "type") == 6 || objc_msgSend(a3, "type") == 5 && !+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass"))
+  if ([info type] == 1 || objc_msgSend(info, "type") == 6 || objc_msgSend(info, "type") == 5 && !+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass"))
   {
     v5 = *MEMORY[0x1E6965DD0];
     v6 = *MEMORY[0x1E6965F88];
@@ -3071,12 +3071,12 @@ LABEL_51:
     v42 = 2112;
     v43 = v9;
     v44 = 2048;
-    v45 = self;
+    selfCopy6 = self;
     v13 = "VCVideoStream [%s] %s:%d %@(%p) P3D65-sRGB color settings used to configure capture and encoder";
     goto LABEL_49;
   }
 
-  if (([a3 type] == 4 || objc_msgSend(a3, "type") == 7) && objc_msgSend(a3, "hdrMode") == 1)
+  if (([info type] == 4 || objc_msgSend(info, "type") == 7) && objc_msgSend(info, "hdrMode") == 1)
   {
     v5 = *MEMORY[0x1E6965DB0];
     v6 = *MEMORY[0x1E6965F48];
@@ -3136,7 +3136,7 @@ LABEL_51:
     v42 = 2112;
     v43 = v14;
     v44 = 2048;
-    v45 = self;
+    selfCopy6 = self;
     v13 = "VCVideoStream [%s] %s:%d %@(%p) ITU_R_2100_HLG color settings used to configure encoder";
 LABEL_49:
     v20 = v16;
@@ -3212,7 +3212,7 @@ LABEL_49:
         v42 = 2112;
         v43 = v22;
         v44 = 2048;
-        v45 = self;
+        selfCopy6 = self;
         v28 = "VCVideoStream [%s] %s:%d %@(%p) No color settings applied";
         v29 = v32;
         v30 = 48;
@@ -3232,14 +3232,14 @@ LABEL_63:
         v42 = 2112;
         v43 = v22;
         v44 = 2048;
-        v45 = self;
+        selfCopy6 = self;
         _os_log_debug_impl(&dword_1DB56E000, v32, OS_LOG_TYPE_DEBUG, "VCVideoStream [%s] %s:%d %@(%p) No color settings applied", &v36, 0x30u);
       }
     }
   }
 }
 
-- (void)setupVideoTransmitterConfigColorInfo:(id)a3
+- (void)setupVideoTransmitterConfigColorInfo:(id)info
 {
   v13[3] = *MEMORY[0x1E69E9840];
   remoteScreenAttributesDidChange = self->_videoStreamDelegateFunctions.remoteScreenAttributesDidChange;
@@ -3267,7 +3267,7 @@ LABEL_63:
       v13[1] = v7;
       v12[2] = *MEMORY[0x1E69838B8];
       v13[2] = v8;
-      [a3 setColorInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v13, v12, 3)}];
+      [info setColorInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v13, v12, 3)}];
     }
   }
 }
@@ -3281,24 +3281,24 @@ LABEL_63:
   }
 }
 
-- (id)setLocalParticipantInfo:(id)a3 networkSockets:(id)a4 withError:(id *)a5
+- (id)setLocalParticipantInfo:(id)info networkSockets:(id)sockets withError:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (!a4 && self->super._operatingMode == 5)
+  if (!sockets && self->super._operatingMode == 5)
   {
     self->super._connectionType = 1;
   }
 
   v6.receiver = self;
   v6.super_class = VCVideoStream;
-  return [VCMediaStream setLocalParticipantInfo:sel_setLocalParticipantInfo_networkSockets_withError_ networkSockets:a3 withError:?];
+  return [VCMediaStream setLocalParticipantInfo:sel_setLocalParticipantInfo_networkSockets_withError_ networkSockets:info withError:?];
 }
 
-- (BOOL)setRTPPayloads:(int *)a3 numPayloads:(int)a4 withError:(id *)a5
+- (BOOL)setRTPPayloads:(int *)payloads numPayloads:(int)numPayloads withError:(id *)error
 {
-  v7 = a4;
-  v8 = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
-  v9 = malloc_type_calloc(v7, 4uLL, 0x100004052888210uLL);
+  numPayloadsCopy = numPayloads;
+  v8 = malloc_type_calloc(numPayloads, 4uLL, 0x100004052888210uLL);
+  v9 = malloc_type_calloc(numPayloadsCopy, 4uLL, 0x100004052888210uLL);
   v10 = v9;
   if (v8)
   {
@@ -3311,18 +3311,18 @@ LABEL_63:
   }
 
   v12 = !v11;
-  if (v12 && a4 >= 1)
+  if (v12 && numPayloads >= 1)
   {
-    v14 = a4;
+    numPayloadsCopy2 = numPayloads;
     v15 = v9;
     do
     {
-      v16 = *a3++;
+      v16 = *payloads++;
       *v15++ = v16;
-      --v14;
+      --numPayloadsCopy2;
     }
 
-    while (v14);
+    while (numPayloadsCopy2);
   }
 
   if (v8)
@@ -3338,11 +3338,11 @@ LABEL_63:
   return v12;
 }
 
-- (id)newSensitiveContentAnalyzerForParticipant:(id)a3
+- (id)newSensitiveContentAnalyzerForParticipant:(id)participant
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E697B680]) initWithParticipantUUID:a3 options:2 error:&v21];
+  v5 = [objc_alloc(MEMORY[0x1E697B680]) initWithParticipantUUID:participant options:2 error:&v21];
   if (v5)
   {
     v6 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
@@ -3377,11 +3377,11 @@ LABEL_63:
           v26 = 1024;
           v27 = 1490;
           v28 = 2112;
-          v29 = v7;
+          participantCopy2 = v7;
           v30 = 2048;
-          v31 = self;
+          selfCopy2 = self;
           v32 = 2112;
-          v33 = a3;
+          participantCopy = participant;
           v11 = "VCVideoStream [%s] %s:%d %@(%p) SCVideoStreamAnalyzer created for participant=%@";
           v14 = v13;
 LABEL_23:
@@ -3412,7 +3412,7 @@ LABEL_23:
     v26 = 1024;
     v27 = 1490;
     v28 = 2112;
-    v29 = a3;
+    participantCopy2 = participant;
     v11 = "VCVideoStream [%s] %s:%d SCVideoStreamAnalyzer created for participant=%@";
 LABEL_18:
     v14 = v10;
@@ -3443,7 +3443,7 @@ LABEL_24:
     v26 = 1024;
     v27 = 1492;
     v28 = 2112;
-    v29 = v21;
+    participantCopy2 = v21;
     v11 = "VCVideoStream [%s] %s:%d SCVideoStreamAnalyzer is not enabled=%@";
     goto LABEL_18;
   }
@@ -3471,11 +3471,11 @@ LABEL_24:
       v26 = 1024;
       v27 = 1492;
       v28 = 2112;
-      v29 = v8;
+      participantCopy2 = v8;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
-      v33 = v21;
+      participantCopy = v21;
       v11 = "VCVideoStream [%s] %s:%d %@(%p) SCVideoStreamAnalyzer is not enabled=%@";
       v14 = v18;
       goto LABEL_23;
@@ -3562,7 +3562,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
         v9 = 1024;
         v10 = 1502;
         v11 = 2048;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p] requests SCVideoStreamAnalyzer continue stream", &v5, 0x26u);
       }
     }
@@ -3588,12 +3588,12 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
   return v3;
 }
 
-- (VCVideoStream)initWithTransportSessionID:(unsigned int)a3 idsParticipantID:(unint64_t)a4 ssrc:(unsigned int)a5 streamToken:(int64_t)a6 logPrefix:(id)a7
+- (VCVideoStream)initWithTransportSessionID:(unsigned int)d idsParticipantID:(unint64_t)iD ssrc:(unsigned int)ssrc streamToken:(int64_t)token logPrefix:(id)prefix
 {
   v39 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = VCVideoStream;
-  v8 = [(VCMediaStream *)&v20 initWithTransportSessionID:*&a3 localSSRC:*&a5 streamToken:a6 logPrefix:a7];
+  v8 = [(VCMediaStream *)&v20 initWithTransportSessionID:*&d localSSRC:*&ssrc streamToken:token logPrefix:prefix];
   v9 = v8;
   if (v8)
   {
@@ -3639,7 +3639,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(VCObject *)v9 logPrefix];
+        logPrefix = [(VCObject *)v9 logPrefix];
         remoteQueue = v9->_remoteQueue;
         streamToken = v9->super._streamToken;
         transportSessionID = v9->super._transportSessionID;
@@ -3652,11 +3652,11 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
         v27 = 2048;
         v28 = v9;
         v29 = 2112;
-        v30 = v15;
+        v30 = logPrefix;
         v31 = 2048;
         v32 = remoteQueue;
         v33 = 2048;
-        v34 = a4;
+        iDCopy = iD;
         v35 = 1024;
         v36 = streamToken;
         v37 = 1024;
@@ -3690,7 +3690,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
       v12 = 1024;
       v13 = 1566;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
       v17 = streamToken;
       v18 = 1024;
@@ -3726,7 +3726,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
       v15 = 1024;
       v16 = 1580;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 1024;
       v20 = streamToken;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p] remoteVideo release queue for streamToken=%u", buf, 0x2Cu);
@@ -3777,14 +3777,14 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
   [(VCMediaStream *)&v10 dealloc];
 }
 
-- (BOOL)removeRemoteEndpoint:(id)a3 error:(id *)a4
+- (BOOL)removeRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VCVideoStream;
-  [(VCMediaStream *)&v18 removeRemoteEndpoint:a3 error:a4];
-  v6 = [(VCMediaStreamConfig *)[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] streamConfig] remoteSSRCs];
-  -[NSMutableArray removeObject:](v6, "removeObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "rtpSSRC")}]);
+  [(VCMediaStream *)&v18 removeRemoteEndpoint:endpoint error:error];
+  remoteSSRCs = [(VCMediaStreamConfig *)[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] streamConfig] remoteSSRCs];
+  -[NSMutableArray removeObject:](remoteSSRCs, "removeObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(endpoint, "rtpSSRC")}]);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3793,7 +3793,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [a3 rtpSSRC];
+        rtpSSRC = [endpoint rtpSSRC];
         *buf = 136315906;
         v20 = v8;
         v21 = 2080;
@@ -3801,7 +3801,7 @@ void __59__VCVideoStream_newSensitiveContentAnalyzerForParticipant___block_invok
         v23 = 1024;
         v24 = 1638;
         v25 = 1024;
-        LODWORD(v26) = v10;
+        LODWORD(v26) = rtpSSRC;
         v11 = "VCVideoStream [%s] %s:%d Removing endpoint's remoteSSRC=%u from remote SSRC array";
         v12 = v9;
         v13 = 34;
@@ -3829,7 +3829,7 @@ LABEL_11:
       v15 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [a3 rtpSSRC];
+        rtpSSRC2 = [endpoint rtpSSRC];
         *buf = 136316418;
         v20 = v14;
         v21 = 2080;
@@ -3839,9 +3839,9 @@ LABEL_11:
         v25 = 2112;
         v26 = v7;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v29 = 1024;
-        v30 = v16;
+        v30 = rtpSSRC2;
         v11 = "VCVideoStream [%s] %s:%d %@(%p) Removing endpoint's remoteSSRC=%u from remote SSRC array";
         v12 = v15;
         v13 = 54;
@@ -3854,14 +3854,14 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)addRemoteEndpoint:(id)a3 error:(id *)a4
+- (BOOL)addRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VCVideoStream;
-  [(VCMediaStream *)&v18 addRemoteEndpoint:a3 error:a4];
-  v6 = [(VCMediaStreamConfig *)[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] streamConfig] remoteSSRCs];
-  -[NSMutableArray addObject:](v6, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "rtpSSRC")}]);
+  [(VCMediaStream *)&v18 addRemoteEndpoint:endpoint error:error];
+  remoteSSRCs = [(VCMediaStreamConfig *)[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] streamConfig] remoteSSRCs];
+  -[NSMutableArray addObject:](remoteSSRCs, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(endpoint, "rtpSSRC")}]);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3870,7 +3870,7 @@ LABEL_11:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [a3 rtpSSRC];
+        rtpSSRC = [endpoint rtpSSRC];
         *buf = 136315906;
         v20 = v8;
         v21 = 2080;
@@ -3878,7 +3878,7 @@ LABEL_11:
         v23 = 1024;
         v24 = 1652;
         v25 = 1024;
-        LODWORD(v26) = v10;
+        LODWORD(v26) = rtpSSRC;
         v11 = "VCVideoStream [%s] %s:%d Adding endpoint's remoteSSRC=%u to remote SSRC array";
         v12 = v9;
         v13 = 34;
@@ -3906,7 +3906,7 @@ LABEL_11:
       v15 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [a3 rtpSSRC];
+        rtpSSRC2 = [endpoint rtpSSRC];
         *buf = 136316418;
         v20 = v14;
         v21 = 2080;
@@ -3916,9 +3916,9 @@ LABEL_11:
         v25 = 2112;
         v26 = v7;
         v27 = 2048;
-        v28 = self;
+        selfCopy = self;
         v29 = 1024;
-        v30 = v16;
+        v30 = rtpSSRC2;
         v11 = "VCVideoStream [%s] %s:%d %@(%p) Adding endpoint's remoteSSRC=%u to remote SSRC array";
         v12 = v15;
         v13 = 54;
@@ -3934,7 +3934,7 @@ LABEL_11:
 - (void)updateVideoTransmitterStreamConfiguration
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -3959,7 +3959,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_logPrefix];
+    v2 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -3980,7 +3980,7 @@ LABEL_12:
       v14 = 2112;
       v15 = v2;
       v16 = 2048;
-      v17 = a1;
+      selfCopy = self;
       v3 = &dword_1DB56E000;
       v6 = "VCVideoStream [%s] %s:%d %@(%p) Failed to allocate streamConfigs";
       v7 = &v11;
@@ -4069,7 +4069,7 @@ LABEL_12:
   return v12;
 }
 
-- (void)updateVideoConfig:(id)a3
+- (void)updateVideoConfig:(id)config
 {
   v39 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
@@ -4082,9 +4082,9 @@ LABEL_12:
       v6 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (config)
         {
-          v7 = [objc_msgSend(a3 "description")];
+          v7 = [objc_msgSend(config "description")];
         }
 
         else
@@ -4099,15 +4099,15 @@ LABEL_12:
         *&buf[22] = 1024;
         v32 = 1761;
         v33 = 2048;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2080;
-        v36 = v7;
+        selfCopy4 = v7;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p] videoConfigDict=%s", buf, 0x30u);
       }
     }
 
-    v13 = [(VCMediaStream *)self defaultStreamConfig];
-    v14 = [(VCMediaStreamConfig *)v13 updateWithClientDictionary:a3];
+    defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+    v14 = [(VCMediaStreamConfig *)defaultStreamConfig updateWithClientDictionary:config];
     v15 = v14;
     if (v14)
     {
@@ -4127,7 +4127,7 @@ LABEL_12:
           memset(buf, 0, sizeof(buf));
         }
 
-        v21 = [(VCVideoTransmitterBase *)videoTransmitter lastRTPTimestamp];
+        lastRTPTimestamp = [(VCVideoTransmitterBase *)videoTransmitter lastRTPTimestamp];
         [(VCVideoStream *)self deregisterForVideoCapture];
         [(VCVideoStream *)self destroyVideoTransmitter];
         [(VCVideoStream *)self registerForVideoCapture];
@@ -4135,12 +4135,12 @@ LABEL_12:
         v26 = *buf;
         v27 = *&buf[16];
         [(VCVideoTransmitterBase *)self->_videoTransmitter setLastFrameTime:&v26];
-        [(VCVideoTransmitterBase *)self->_videoTransmitter setLastRTPTimestamp:v21];
+        [(VCVideoTransmitterBase *)self->_videoTransmitter setLastRTPTimestamp:lastRTPTimestamp];
         [(VCVideoTransmitterBase *)self->_videoTransmitter startVideo];
       }
 
-      [(VCImageQueue *)self->_remoteQueue setFrameRate:[(VCMediaStreamConfig *)v13 framerate]];
-      [(VCVideoStream *)self updateVideoReceiver:v13];
+      [(VCImageQueue *)self->_remoteQueue setFrameRate:[(VCMediaStreamConfig *)defaultStreamConfig framerate]];
+      [(VCVideoStream *)self updateVideoReceiver:defaultStreamConfig];
       [(VCMediaStream *)self startRTCPSendHeartbeat];
       _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 205, 0, 0);
     }
@@ -4174,9 +4174,9 @@ LABEL_12:
             *&buf[22] = 1024;
             v32 = 1802;
             v33 = 2048;
-            v34 = self;
+            selfCopy3 = self;
             v35 = 2080;
-            v36 = v20;
+            selfCopy4 = v20;
             _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d VCVideoStream[%p] error[%s]", buf, 0x30u);
           }
         }
@@ -4200,14 +4200,14 @@ LABEL_12:
           *&buf[22] = 1024;
           v32 = 1802;
           v33 = 2048;
-          v34 = self;
+          selfCopy3 = self;
           v35 = 2080;
-          v36 = v23;
+          selfCopy4 = v23;
           _os_log_fault_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_FAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p] error[%s]", buf, 0x30u);
         }
       }
 
-      a3 = 0;
+      config = 0;
     }
 
     delegateNotificationQueue = self->super._delegateNotificationQueue;
@@ -4218,7 +4218,7 @@ LABEL_12:
     v25 = v15;
     block[4] = self;
     block[5] = v30;
-    block[6] = a3;
+    block[6] = config;
     v12 = block;
   }
 
@@ -4272,9 +4272,9 @@ LABEL_12:
           *&buf[22] = 1024;
           v32 = 1751;
           v33 = 2112;
-          v34 = v8;
+          selfCopy3 = v8;
           v35 = 2048;
-          v36 = self;
+          selfCopy4 = self;
           v37 = 2080;
           v38 = v22;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) error[%s]", buf, 0x3Au);
@@ -4400,7 +4400,7 @@ uint64_t __35__VCVideoStream_updateVideoConfig___block_invoke_192(uint64_t a1)
       WORD2(v12) = 2112;
       *(&v12 + 6) = v3;
       HIWORD(v12) = 2048;
-      v13 = self;
+      selfCopy = self;
       v6 = "VCVideoStream [%s] %s:%d %@(%p) ";
       v7 = v10;
       v8 = 48;
@@ -4419,13 +4419,13 @@ LABEL_12:
   }
 }
 
-- (void)generateKeyFrameWithFIRType:(int)a3
+- (void)generateKeyFrameWithFIRType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] keyFrameInterval];
+  keyFrameInterval = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] keyFrameInterval];
   v6 = objc_opt_class();
-  if (!v5)
+  if (!keyFrameInterval)
   {
     if (v6 == self)
     {
@@ -4451,7 +4451,7 @@ LABEL_12:
       WORD2(v26) = 2112;
       *(&v26 + 6) = sendingStreamID;
       HIWORD(v26) = 2112;
-      v27 = [(VCMediaStream *)self compoundStreamIDs];
+      selfCopy2 = [(VCMediaStream *)self compoundStreamIDs];
       v19 = "VCVideoStream [%s] %s:%d Sending stream ID is %@, compound stream ID is %@";
       v20 = v17;
       v21 = 48;
@@ -4491,7 +4491,7 @@ LABEL_12:
       WORD2(v26) = 2112;
       *(&v26 + 6) = v8;
       HIWORD(v26) = 2048;
-      v27 = self;
+      selfCopy2 = self;
       *v28 = 2112;
       *&v28[2] = v24;
       *&v28[10] = 2112;
@@ -4503,7 +4503,7 @@ LABEL_12:
 
     _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, v19, v25, v21);
 LABEL_24:
-    [(VCVideoTransmitterBase *)self->_videoTransmitter generateKeyFrameWithFIRType:v3, *v25, *&v25[16], v26, v27, *v28, *&v28[16]];
+    [(VCVideoTransmitterBase *)self->_videoTransmitter generateKeyFrameWithFIRType:v3, *v25, *&v25[16], v26, selfCopy2, *v28, *&v28[16]];
     return;
   }
 
@@ -4557,7 +4557,7 @@ LABEL_15:
         WORD2(v26) = 2112;
         *(&v26 + 6) = v7;
         HIWORD(v26) = 2048;
-        v27 = self;
+        selfCopy2 = self;
         v11 = "VCVideoStream [%s] %s:%d %@(%p) Returning, No need to request a key frame generation with periodic IDR";
         v12 = v15;
         v13 = 48;
@@ -4567,15 +4567,15 @@ LABEL_15:
   }
 }
 
-- (void)sendLastRemoteVideoFrame:(__CVBuffer *)a3
+- (void)sendLastRemoteVideoFrame:(__CVBuffer *)frame
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!frame)
   {
     return;
   }
 
-  v4 = [VideoUtil convertPixelBuffer:a3 toImageType:0 withAssetIdentifier:0 cameraStatusBits:0 allowTimeMetaData:1];
+  v4 = [VideoUtil convertPixelBuffer:frame toImageType:0 withAssetIdentifier:0 cameraStatusBits:0 allowTimeMetaData:1];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v4, @"vcMediaStreamLastDecodedFrame", 0}];
@@ -4627,7 +4627,7 @@ LABEL_15:
       v21 = 2112;
       v22 = v9;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v12 = "VCVideoStream [%s] %s:%d %@(%p) Failed to create last frame XPC args";
 LABEL_26:
       _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, v12, buf, 0x30u);
@@ -4683,7 +4683,7 @@ LABEL_26:
         v21 = 2112;
         v22 = v8;
         v23 = 2048;
-        v24 = self;
+        selfCopy2 = self;
         v12 = "VCVideoStream [%s] %s:%d %@(%p) Failed to create frame data";
         goto LABEL_26;
       }
@@ -4700,20 +4700,20 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
   return [v2 sendMessageAsync:"vcMediaStreamDidGetLastDecodedFrame" arguments:v3 context:v4];
 }
 
-- (BOOL)validateVideoStreamConfigurations:(id)a3
+- (BOOL)validateVideoStreamConfigurations:(id)configurations
 {
-  if (![a3 count])
+  if (![configurations count])
   {
     return 0;
   }
 
-  v4 = [a3 objectAtIndexedSubscript:0];
-  if ([a3 count] >= 2 && objc_msgSend(v4, "direction") != 2 && !objc_msgSend(v4, "temporalScalingEnabled"))
+  v4 = [configurations objectAtIndexedSubscript:0];
+  if ([configurations count] >= 2 && objc_msgSend(v4, "direction") != 2 && !objc_msgSend(v4, "temporalScalingEnabled"))
   {
     return 0;
   }
 
-  if ([a3 count] < 2)
+  if ([configurations count] < 2)
   {
     return 1;
   }
@@ -4722,7 +4722,7 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
   v7 = 1;
   do
   {
-    v8 = [objc_msgSend(a3 objectAtIndexedSubscript:{v7), "direction"}];
+    v8 = [objc_msgSend(configurations objectAtIndexedSubscript:{v7), "direction"}];
     v5 = v8 == [v4 direction];
     if (!v5)
     {
@@ -4732,11 +4732,11 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
     v7 = v6;
   }
 
-  while ([a3 count] > v6++);
+  while ([configurations count] > v6++);
   return v5;
 }
 
-- (void)cleanupBeforeReconfigure:(id)a3
+- (void)cleanupBeforeReconfigure:(id)reconfigure
 {
   v32 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->super._transportArray count])
@@ -4749,9 +4749,9 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
     v5 = 0;
   }
 
-  if ([a3 count])
+  if ([reconfigure count])
   {
-    v6 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "localSSRC"}];
+    v6 = [objc_msgSend(reconfigure objectAtIndexedSubscript:{0), "localSSRC"}];
   }
 
   else
@@ -4763,7 +4763,7 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  v7 = [reconfigure countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4775,13 +4775,13 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(reconfigure);
         }
 
         v9 += [*(*(&v28 + 1) + 8 * i) tilesPerFrame];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v8 = [reconfigure countByEnumeratingWithState:&v28 objects:v27 count:16];
     }
 
     while (v8);
@@ -4835,7 +4835,7 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
           v23 = 2112;
           v24 = v14;
           v25 = 2048;
-          v26 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) Reconfiguring VCVideoStream with a different number of transports.", &v17, 0x30u);
         }
       }
@@ -4845,10 +4845,10 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
   }
 }
 
-- (void)setTargetStreamID:(id)a3
+- (void)setTargetStreamID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!-[NSNumber isEqualToNumber:](self->_targetStreamID, "isEqualToNumber:") || [a3 unsignedIntValue] != self->_currentStreamID)
+  if (!-[NSNumber isEqualToNumber:](self->_targetStreamID, "isEqualToNumber:") || [d unsignedIntValue] != self->_currentStreamID)
   {
     if (objc_opt_class() == self)
     {
@@ -4871,7 +4871,7 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
       v27 = 1024;
       v28 = 1974;
       v29 = 2112;
-      v30 = a3;
+      dCopy3 = d;
       v9 = "VCVideoStream [%s] %s:%d Setting target stream id: %@";
       v10 = v8;
       v11 = 38;
@@ -4908,11 +4908,11 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
       v27 = 1024;
       v28 = 1974;
       v29 = 2112;
-      v30 = v6;
+      dCopy3 = v6;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2112;
-      v34 = a3;
+      dCopy5 = d;
       v9 = "VCVideoStream [%s] %s:%d %@(%p) Setting target stream id: %@";
       v10 = v13;
       v11 = 58;
@@ -4921,8 +4921,8 @@ uint64_t __42__VCVideoStream_sendLastRemoteVideoFrame___block_invoke(uint64_t a1
     _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v9, &v23, v11);
 LABEL_17:
 
-    self->_targetStreamID = a3;
-    -[VCVideoReceiverBase setTargetStreamID:](self->_videoReceiver, "setTargetStreamID:", [a3 unsignedShortValue]);
+    self->_targetStreamID = d;
+    -[VCVideoReceiverBase setTargetStreamID:](self->_videoReceiver, "setTargetStreamID:", [d unsignedShortValue]);
     return;
   }
 
@@ -4944,7 +4944,7 @@ LABEL_17:
           v27 = 1024;
           v28 = 1971;
           v29 = 2112;
-          v30 = a3;
+          dCopy3 = d;
           v17 = "VCVideoStream [%s] %s:%d TargetStreamID didn't change %@";
           v18 = v15;
           v19 = 38;
@@ -4988,11 +4988,11 @@ LABEL_28:
           v27 = 1024;
           v28 = 1971;
           v29 = 2112;
-          v30 = v5;
+          dCopy3 = v5;
           v31 = 2048;
-          v32 = self;
+          selfCopy3 = self;
           v33 = 2112;
-          v34 = a3;
+          dCopy5 = d;
           v17 = "VCVideoStream [%s] %s:%d %@(%p) TargetStreamID didn't change %@";
           v18 = v21;
           v19 = 58;
@@ -5009,24 +5009,24 @@ LABEL_28:
         v27 = 1024;
         v28 = 1971;
         v29 = 2112;
-        v30 = v5;
+        dCopy3 = v5;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2112;
-        v34 = a3;
+        dCopy5 = d;
         _os_log_debug_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEBUG, "VCVideoStream [%s] %s:%d %@(%p) TargetStreamID didn't change %@", &v23, 0x3Au);
       }
     }
   }
 }
 
-- (void)setShouldEnableFaceZoom:(BOOL)a3
+- (void)setShouldEnableFaceZoom:(BOOL)zoom
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_shouldEnableFaceZoom != a3)
+  if (self->_shouldEnableFaceZoom != zoom)
   {
-    v3 = a3;
-    self->_shouldEnableFaceZoom = a3;
+    zoomCopy = zoom;
+    self->_shouldEnableFaceZoom = zoom;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -5048,7 +5048,7 @@ LABEL_28:
       *&v13[22] = 1024;
       LODWORD(v14) = 1983;
       WORD2(v14) = 1024;
-      *(&v14 + 6) = v3;
+      *(&v14 + 6) = zoomCopy;
       v8 = "VCVideoStream [%s] %s:%d Setting shouldEnableFaceZoom in receiver=%d";
       v9 = v7;
       v10 = 34;
@@ -5087,9 +5087,9 @@ LABEL_28:
       WORD2(v14) = 2112;
       *(&v14 + 6) = v5;
       HIWORD(v14) = 2048;
-      v15 = self;
+      selfCopy = self;
       LOWORD(v16) = 1024;
-      *(&v16 + 2) = v3;
+      *(&v16 + 2) = zoomCopy;
       v8 = "VCVideoStream [%s] %s:%d %@(%p) Setting shouldEnableFaceZoom in receiver=%d";
       v9 = v12;
       v10 = 54;
@@ -5097,7 +5097,7 @@ LABEL_28:
 
     _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, v8, v13, v10);
 LABEL_13:
-    [(VCVideoReceiverBase *)self->_videoReceiver setShouldEnableFaceZoom:v3, *v13, *&v13[16], v14, v15, v16, v17];
+    [(VCVideoReceiverBase *)self->_videoReceiver setShouldEnableFaceZoom:zoomCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
   }
 }
 
@@ -5118,11 +5118,11 @@ LABEL_13:
       v11 = 1024;
       v12 = 1995;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
       v16 = videoReceiver;
       v17 = 1024;
-      v18 = [(VCVideoReceiverBase *)videoReceiver lastDisplayedFrameRTPTimestamp];
+      lastDisplayedFrameRTPTimestamp = [(VCVideoReceiverBase *)videoReceiver lastDisplayedFrameRTPTimestamp];
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d From VCVideoStream[%p], _videoReceiver[%p], RTPTimestamp[%u]", &v7, 0x36u);
     }
   }
@@ -5130,17 +5130,17 @@ LABEL_13:
   return [(VCVideoReceiverBase *)self->_videoReceiver lastDisplayedFrameRTPTimestamp];
 }
 
-- (BOOL)validateStreamConfiguration:(id)a3 error:(id *)a4
+- (BOOL)validateStreamConfiguration:(id)configuration error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!+[VCVideoStream isFeatureListStringExpectedForStreamType:](VCVideoStream, "isFeatureListStringExpectedForStreamType:", [a3 type]) || objc_msgSend(objc_msgSend(a3, "rxCodecFeatureListStrings"), "count") && objc_msgSend(objc_msgSend(a3, "txCodecFeatureListStrings"), "count"))
+  if (!+[VCVideoStream isFeatureListStringExpectedForStreamType:](VCVideoStream, "isFeatureListStringExpectedForStreamType:", [configuration type]) || objc_msgSend(objc_msgSend(configuration, "rxCodecFeatureListStrings"), "count") && objc_msgSend(objc_msgSend(configuration, "txCodecFeatureListStrings"), "count"))
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2081], @"Invalid configuration", @"Feature string is nil");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2081], @"Invalid configuration", @"Feature string is nil");
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -5195,9 +5195,9 @@ LABEL_13:
             return v7;
           }
 
-          if (*a4)
+          if (*error)
           {
-            v12 = [objc_msgSend(*a4 "description")];
+            v12 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -5214,7 +5214,7 @@ LABEL_13:
           v21 = 2112;
           v22 = v8;
           v23 = 2048;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 2080;
           v26 = v12;
           _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) error[%s]", buf, 0x3Au);
@@ -5228,9 +5228,9 @@ LABEL_13:
             return v7;
           }
 
-          if (*a4)
+          if (*error)
           {
-            v13 = [objc_msgSend(*a4 "description")];
+            v13 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -5247,7 +5247,7 @@ LABEL_13:
           v21 = 2112;
           v22 = v8;
           v23 = 2048;
-          v24 = self;
+          selfCopy2 = self;
           v25 = 2080;
           v26 = v13;
           _os_log_fault_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_FAULT, "VCVideoStream [%s] %s:%d %@(%p) error[%s]", buf, 0x3Au);
@@ -5261,9 +5261,9 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)setEncodingMode:(int)a3
+- (BOOL)setEncodingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -5278,7 +5278,7 @@ LABEL_13:
       v13 = 1024;
       v14 = 2092;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
       v18 = v3;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]: encodingMode=%d", &v9, 0x2Cu);
@@ -5291,12 +5291,12 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)enableRateControlFeebackInConfig:(id)a3
+- (BOOL)enableRateControlFeebackInConfig:(id)config
 {
   v10 = *MEMORY[0x1E69E9840];
-  [a3 setRtcpEnabled:1];
-  [a3 setRtcpReceiveCallbackEnabled:0];
-  if ([a3 rateControlConfig])
+  [config setRtcpEnabled:1];
+  [config setRtcpReceiveCallbackEnabled:0];
+  if ([config rateControlConfig])
   {
     v4 = 0;
   }
@@ -5313,21 +5313,21 @@ LABEL_13:
     }
 
     v4 = v5;
-    [a3 setRateControlConfig:v5];
+    [config setRateControlConfig:v5];
   }
 
   v6 = 1;
-  [objc_msgSend(a3 "rateControlConfig")];
-  [objc_msgSend(a3 "rateControlConfig")];
-  [objc_msgSend(a3 "rateControlConfig")];
+  [objc_msgSend(config "rateControlConfig")];
+  [objc_msgSend(config "rateControlConfig")];
+  [objc_msgSend(config "rateControlConfig")];
 LABEL_6:
 
   return v6;
 }
 
-- (void)setForceRTCPForLTRPACK:(BOOL)a3
+- (void)setForceRTCPForLTRPACK:(BOOL)k
 {
-  v3 = a3;
+  kCopy = k;
   v19 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   if (objc_opt_class() == self)
@@ -5346,7 +5346,7 @@ LABEL_6:
         *&v15[22] = 1024;
         *v16 = 2135;
         *&v16[4] = 1024;
-        *&v16[6] = v3;
+        *&v16[6] = kCopy;
         *&v16[10] = 2048;
         *&v16[12] = videoReceiver;
         v9 = "VCVideoStream [%s] %s:%d forceRTCPForLTRPACK=%d, _videoReceiver=%p";
@@ -5388,7 +5388,7 @@ LABEL_11:
         *&v16[14] = 2048;
         *&v16[16] = self;
         LOWORD(v17) = 1024;
-        *(&v17 + 2) = v3;
+        *(&v17 + 2) = kCopy;
         HIWORD(v17) = 2048;
         v18 = v14;
         v9 = "VCVideoStream [%s] %s:%d %@(%p) forceRTCPForLTRPACK=%d, _videoReceiver=%p";
@@ -5399,21 +5399,21 @@ LABEL_11:
     }
   }
 
-  [(VCVideoReceiverBase *)self->_videoReceiver setForceRTCPForLTRPACK:v3, *v15, *&v15[16], *v16, *&v16[16], v17, v18];
+  [(VCVideoReceiverBase *)self->_videoReceiver setForceRTCPForLTRPACK:kCopy, *v15, *&v15[16], *v16, *&v16[16], v17, v18];
   VCMediaStream_Unlock(self);
 }
 
-- (void)setUplinkRetransmissionEnabled:(BOOL)a3
+- (void)setUplinkRetransmissionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   VCMediaStream_Lock(self);
-  if (self->super._isUplinkRetransmissionEnabled != v3)
+  if (self->super._isUplinkRetransmissionEnabled != enabledCopy)
   {
-    [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] setIsUplinkRetransmissionEnabled:v3];
-    self->super._isUplinkRetransmissionEnabled = v3;
+    [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] setIsUplinkRetransmissionEnabled:enabledCopy];
+    self->super._isUplinkRetransmissionEnabled = enabledCopy;
     if ([(VCMediaStream *)self state]== 2)
     {
-      [(VCVideoTransmitterBase *)self->_videoTransmitter setRtxEnabled:v3];
+      [(VCVideoTransmitterBase *)self->_videoTransmitter setRtxEnabled:enabledCopy];
     }
   }
 
@@ -5448,40 +5448,40 @@ LABEL_11:
   return v3;
 }
 
-- (id)getTransmitMediaControllerWithStreamConfig:(id)a3
+- (id)getTransmitMediaControllerWithStreamConfig:(id)config
 {
-  if ([a3 type] != 3)
+  if ([config type] != 3)
   {
     return 0;
   }
 
-  v4 = [a3 rateControlConfig];
+  rateControlConfig = [config rateControlConfig];
 
-  return [v4 mediaController];
+  return [rateControlConfig mediaController];
 }
 
-- (id)getTransmitStatsCollectorWithStreamConfig:(id)a3
+- (id)getTransmitStatsCollectorWithStreamConfig:(id)config
 {
-  v5 = [a3 type];
-  if (v5 <= 7 && ((1 << v5) & 0xF6) != 0)
+  type = [config type];
+  if (type <= 7 && ((1 << type) & 0xF6) != 0)
   {
     return self->_statisticsCollector;
   }
 
-  v7 = [a3 rateControlConfig];
+  rateControlConfig = [config rateControlConfig];
 
-  return [v7 statisticsCollector];
+  return [rateControlConfig statisticsCollector];
 }
 
-- (id)getReceiveStatsCollectorWithStreamConfig:(id)a3
+- (id)getReceiveStatsCollectorWithStreamConfig:(id)config
 {
-  v5 = [a3 type];
+  type = [config type];
   result = 0;
-  if (v5 <= 7)
+  if (type <= 7)
   {
-    if (((1 << v5) & 0xF6) != 0)
+    if (((1 << type) & 0xF6) != 0)
     {
-      if ([a3 direction] == 2)
+      if ([config direction] == 2)
       {
         return self->_statisticsCollector;
       }
@@ -5492,11 +5492,11 @@ LABEL_11:
       }
     }
 
-    else if (v5 == 3)
+    else if (type == 3)
     {
-      v7 = [a3 rateControlConfig];
+      rateControlConfig = [config rateControlConfig];
 
-      return [v7 statisticsCollector];
+      return [rateControlConfig statisticsCollector];
     }
   }
 
@@ -5515,9 +5515,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)configureStreamInputCaptureSourceWithStreamInputID:(int64_t)a3 frameRate:(unsigned int)a4
+- (BOOL)configureStreamInputCaptureSourceWithStreamInputID:(int64_t)d frameRate:(unsigned int)rate
 {
-  v4 = *&a4;
+  v4 = *&rate;
   [(VCVideoStream *)self deregisterCurrentStreamInputCaptureSource];
   v7 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
   self->_streamInputCaptureSource = v7;
@@ -5533,18 +5533,18 @@ LABEL_11:
   return v7 != 0;
 }
 
-- (unsigned)maxFramerateFromStreamConfigs:(id)a3
+- (unsigned)maxFramerateFromStreamConfigs:(id)configs
 {
   v41 = *MEMORY[0x1E69E9840];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+  v4 = [configs countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v4)
   {
     v6 = v4;
-    v7 = 0;
+    framerate3 = 0;
     v8 = *v38;
     *&v5 = 136316162;
     v22 = v5;
@@ -5554,11 +5554,11 @@ LABEL_11:
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configs);
         }
 
         v10 = *(*(&v37 + 1) + 8 * i);
-        if ([v10 framerate] > v7)
+        if ([v10 framerate] > framerate3)
         {
           if (objc_opt_class() == self)
           {
@@ -5568,7 +5568,7 @@ LABEL_11:
               v19 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v10 framerate];
+                framerate = [v10 framerate];
                 *buf = v22;
                 v25 = v18;
                 v26 = 2080;
@@ -5576,9 +5576,9 @@ LABEL_11:
                 v28 = 1024;
                 v29 = 2261;
                 v30 = 1024;
-                *v31 = v7;
+                *v31 = framerate3;
                 *&v31[4] = 2048;
-                *&v31[6] = v20;
+                *&v31[6] = framerate;
                 v15 = v19;
                 v16 = "VCVideoStream [%s] %s:%d Updating maxFramerate from old=%u to new=%lu";
                 v17 = 44;
@@ -5602,7 +5602,7 @@ LABEL_16:
               v13 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v14 = [v10 framerate];
+                framerate2 = [v10 framerate];
                 *buf = 136316674;
                 v25 = v12;
                 v26 = 2080;
@@ -5614,9 +5614,9 @@ LABEL_16:
                 *&v31[8] = 2048;
                 *&v31[10] = self;
                 v32 = 1024;
-                v33 = v7;
+                v33 = framerate3;
                 v34 = 2048;
-                v35 = v14;
+                v35 = framerate2;
                 v15 = v13;
                 v16 = "VCVideoStream [%s] %s:%d %@(%p) Updating maxFramerate from old=%u to new=%lu";
                 v17 = 64;
@@ -5625,33 +5625,33 @@ LABEL_16:
             }
           }
 
-          v7 = [v10 framerate];
+          framerate3 = [v10 framerate];
           continue;
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+      v6 = [configs countByEnumeratingWithState:&v37 objects:v36 count:16];
       if (!v6)
       {
-        return v7;
+        return framerate3;
       }
     }
   }
 
-  LODWORD(v7) = 0;
-  return v7;
+  LODWORD(framerate3) = 0;
+  return framerate3;
 }
 
-- (void)configureMediaStallSettingsWithConfig:(id)a3
+- (void)configureMediaStallSettingsWithConfig:(id)config
 {
-  self->_sendContinuousStallMessages = [a3 type] == 3;
-  if (a3)
+  self->_sendContinuousStallMessages = [config type] == 3;
+  if (config)
   {
-    [a3 mediaStallTimeout];
-    [a3 mediaStallTimeout];
+    [config mediaStallTimeout];
+    [config mediaStallTimeout];
     self->_mediaStallTimeout = VCDefaults_GetDoubleValueForKey(@"mediaStallTimeout", v5);
-    [a3 mediaStallReportRepeatInterval];
-    [a3 mediaStallReportRepeatInterval];
+    [config mediaStallReportRepeatInterval];
+    [config mediaStallReportRepeatInterval];
     v7 = v6;
     self->_sendContinuousStallMessages = 1;
   }
@@ -5665,10 +5665,10 @@ LABEL_16:
   self->_mediaStallReportRepeatInterval = VCDefaults_GetDoubleValueForKey(@"mediaStallReportRepeatInterval", v7);
 }
 
-- (void)configureReceiveBuffer:(id)a3
+- (void)configureReceiveBuffer:(id)buffer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [a3 direction] != 2 && objc_msgSend(a3, "direction") != 3;
+  v5 = [buffer direction] != 2 && objc_msgSend(buffer, "direction") != 3;
   if ([(VCVideoStream *)self isLowLatencyStreamType]&& self->super._transportSetupInfo.setupType == 1 && !v5)
   {
     v13 = 1500000;
@@ -5705,10 +5705,10 @@ LABEL_16:
     }
   }
 
-  v10 = [a3 type];
+  type = [buffer type];
   if (self->super._transportSetupInfo.setupType == 5)
   {
-    v11 = v10;
+    v11 = type;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (self->super._transportSetupInfo.setupType == 5)
@@ -5724,12 +5724,12 @@ LABEL_16:
   }
 }
 
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error
 {
   v87 = *MEMORY[0x1E69E9840];
   if (![(VCVideoStream *)self validateVideoStreamConfigurations:?])
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2314], @"Invalid Parameter", @"Called with an invalid parameter");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2314], @"Invalid Parameter", @"Called with an invalid parameter");
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -5784,9 +5784,9 @@ LABEL_16:
             return v10;
           }
 
-          if (*a4)
+          if (*error)
           {
-            v14 = [objc_msgSend(*a4 "description")];
+            v14 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -5803,7 +5803,7 @@ LABEL_16:
           v82 = 2112;
           *v83 = v9;
           *&v83[8] = 2048;
-          v84 = self;
+          selfCopy9 = self;
           v85 = 2080;
           v86 = v14;
           v50 = "VCVideoStream [%s] %s:%d %@(%p) error[%s]";
@@ -5822,9 +5822,9 @@ LABEL_156:
             return v10;
           }
 
-          if (*a4)
+          if (*error)
           {
-            v22 = [objc_msgSend(*a4 "description")];
+            v22 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -5841,7 +5841,7 @@ LABEL_156:
           v82 = 2112;
           *v83 = v9;
           *&v83[8] = 2048;
-          v84 = self;
+          selfCopy9 = self;
           v85 = 2080;
           v86 = v22;
           v58 = "VCVideoStream [%s] %s:%d %@(%p) error[%s]";
@@ -5857,8 +5857,8 @@ LABEL_160:
     goto LABEL_161;
   }
 
-  v7 = [a3 objectAtIndexedSubscript:0];
-  [(VCVideoStream *)self cleanupBeforeReconfigure:a3];
+  v7 = [configuration objectAtIndexedSubscript:0];
+  [(VCVideoStream *)self cleanupBeforeReconfigure:configuration];
   [(VCVideoStream *)self overrideConfigWithDefaults:v7];
   self->_type = [v7 type];
   [(VCVideoStream *)self updateShouldCacheRemoteVideoFrame];
@@ -5892,9 +5892,9 @@ LABEL_20:
   }
 
   [(VCVideoStream *)self setupColorInfo:v7];
-  v15 = [v7 captureSourceID];
-  self->_captureSourceID = v15;
-  if (v15)
+  captureSourceID = [v7 captureSourceID];
+  self->_captureSourceID = captureSourceID;
+  if (captureSourceID)
   {
     if ([(VCMediaStream *)self defaultStreamConfig])
     {
@@ -5916,14 +5916,14 @@ LABEL_20:
     [(VCVideoStream *)self setupInternalRedundancyControllerWithStreamConfig:v7];
   }
 
-  v18 = [(VCVideoStream *)self maxFramerateFromStreamConfigs:a3];
+  v18 = [(VCVideoStream *)self maxFramerateFromStreamConfigs:configuration];
   if (self->_captureSource == 6 && !-[VCVideoStream configureStreamInputCaptureSourceWithStreamInputID:frameRate:](self, "configureStreamInputCaptureSourceWithStreamInputID:frameRate:", [v7 streamInputID], v18))
   {
-    if (a4)
+    if (error)
     {
       v21 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:{@"Can not register capture source streamInput, streamInputID could be wrong"}];
       LOBYTE(v10) = 0;
-      *a4 = v21;
+      *error = v21;
       return v10;
     }
 
@@ -5946,40 +5946,40 @@ LABEL_161:
   {
     if ([v7 rtpTimestampRate])
     {
-      v20 = [v7 rtpTimestampRate];
+      rtpTimestampRate = [v7 rtpTimestampRate];
     }
 
     else
     {
-      v20 = 24000;
+      rtpTimestampRate = 24000;
     }
 
-    self->_rtpTimestampRate = v20;
+    self->_rtpTimestampRate = rtpTimestampRate;
     v19 = self->_type;
   }
 
   else
   {
-    v20 = 90000;
+    rtpTimestampRate = 90000;
     self->_rtpTimestampRate = 90000;
   }
 
-  self->super._transportSetupInfo.sourceRate = v20;
+  self->super._transportSetupInfo.sourceRate = rtpTimestampRate;
   self->super._useRandomTS = [VCVideoStream shouldUseRandomRTPTimestampWithType:v19];
   v70 = [(NSMutableArray *)self->super._transportArray count];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v23 = [a3 countByEnumeratingWithState:&v72 objects:v71 count:16];
+  v23 = [configuration countByEnumeratingWithState:&v72 objects:v71 count:16];
   if (v23)
   {
     v24 = v23;
     v25 = 0;
     v26 = *v73;
-    v69 = a4;
+    errorCopy = error;
     v63 = *v73;
-    v64 = a3;
+    configurationCopy = configuration;
     while (2)
     {
       v27 = 0;
@@ -5988,20 +5988,20 @@ LABEL_161:
       {
         if (*v73 != v26)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configuration);
         }
 
         v28 = *(*(&v72 + 1) + 8 * v27);
-        v68 = [v28 defaultRemoteSSRC];
+        defaultRemoteSSRC = [v28 defaultRemoteSSRC];
         v67 = v27;
         if ([v28 enableInterleavedEncoding])
         {
-          if (![(VCVideoStream *)self validateStreamConfiguration:v28 error:a4])
+          if (![(VCVideoStream *)self validateStreamConfiguration:v28 error:error])
           {
             goto LABEL_161;
           }
 
-          v29 = 4;
+          tilesPerFrame = 4;
 LABEL_59:
           v30 = 0;
           while (1)
@@ -6010,9 +6010,9 @@ LABEL_59:
             if ([(VCVideoStream *)self isLowLatencyStreamType])
             {
               localSSRC = v30 + localSSRC;
-              if (v68)
+              if (defaultRemoteSSRC)
               {
-                [v28 setDefaultRemoteSSRC:v68 + v30];
+                [v28 setDefaultRemoteSSRC:defaultRemoteSSRC + v30];
                 if (VRTraceGetErrorLogLevelForModule() >= 7)
                 {
                   v32 = VRTraceErrorLogLevelToCSTR();
@@ -6028,7 +6028,7 @@ LABEL_59:
                     v82 = 1024;
                     *v83 = v30;
                     *&v83[4] = 1024;
-                    *&v83[6] = v68 + v30;
+                    *&v83[6] = defaultRemoteSSRC + v30;
                     _os_log_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d Overriding transport index=%d with defaultSSRC=%u", buf, 0x28u);
                   }
                 }
@@ -6057,7 +6057,7 @@ LABEL_59:
 LABEL_93:
                 if (objc_opt_class() == self)
                 {
-                  v37 = v69;
+                  v37 = errorCopy;
                   if (VRTraceGetErrorLogLevelForModule() >= 3)
                   {
                     VRTraceErrorLogLevelToCSTR();
@@ -6070,7 +6070,7 @@ LABEL_93:
 
                 else
                 {
-                  v37 = v69;
+                  v37 = errorCopy;
                   if (objc_opt_respondsToSelector())
                   {
                     v38 = [(VCVideoStream *)self performSelector:sel_logPrefix];
@@ -6096,7 +6096,7 @@ LABEL_93:
                       v82 = 2112;
                       *v83 = v38;
                       *&v83[8] = 2048;
-                      v84 = self;
+                      selfCopy9 = self;
                       _os_log_error_impl(&dword_1DB56E000, v42, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) Failed to create transport", buf, 0x30u);
                     }
                   }
@@ -6181,7 +6181,7 @@ LABEL_93:
                   v82 = 2112;
                   *v83 = v43;
                   *&v83[8] = 2048;
-                  v84 = self;
+                  selfCopy9 = self;
                   v85 = 2080;
                   v86 = v46;
                   v50 = "VCVideoStream [%s] %s:%d %@(%p) error[%s]";
@@ -6213,7 +6213,7 @@ LABEL_93:
                 v82 = 2112;
                 *v83 = v43;
                 *&v83[8] = 2048;
-                v84 = self;
+                selfCopy9 = self;
                 v85 = 2080;
                 v86 = v53;
                 v58 = "VCVideoStream [%s] %s:%d %@(%p) error[%s]";
@@ -6234,7 +6234,7 @@ LABEL_93:
             self->_statisticsCollector = [(VCVideoStream *)self getReceiveStatsCollectorWithStreamConfig:v28];
             self->super._transportSetupInfo.var0.ipInfo.srcIPPORT.IP.dwIPv4 = v30;
             v35 = [v28 type] == 3 || objc_msgSend(v28, "type") == 5;
-            if (([v34 configureWithStreamConfig:v28 setupInfo:&self->super._transportSetupInfo reducedSizeRTCPPackets:v35 hopByHopEncryptRTCPPackets:objc_msgSend(v28 statisticsCollector:"type") == 3 basebandCongestionDetector:self->_statisticsCollector error:{objc_msgSend(objc_msgSend(v28, "rateControlConfig"), "basebandCongestionDetector"), v69}] & 1) == 0)
+            if (([v34 configureWithStreamConfig:v28 setupInfo:&self->super._transportSetupInfo reducedSizeRTCPPackets:v35 hopByHopEncryptRTCPPackets:objc_msgSend(v28 statisticsCollector:"type") == 3 basebandCongestionDetector:self->_statisticsCollector error:{objc_msgSend(objc_msgSend(v28, "rateControlConfig"), "basebandCongestionDetector"), errorCopy}] & 1) == 0)
             {
               if (objc_opt_class() == self)
               {
@@ -6304,7 +6304,7 @@ LABEL_93:
                 v82 = 2112;
                 *v83 = v39;
                 *&v83[8] = 2048;
-                v84 = self;
+                selfCopy9 = self;
                 v50 = "VCVideoStream [%s] %s:%d %@(%p) Failed to configure transport";
                 v51 = v49;
                 v52 = 48;
@@ -6326,7 +6326,7 @@ LABEL_93:
               v82 = 2112;
               *v83 = v39;
               *&v83[8] = 2048;
-              v84 = self;
+              selfCopy9 = self;
               v58 = "VCVideoStream [%s] %s:%d %@(%p) Failed to configure transport";
               v59 = v49;
               v60 = 48;
@@ -6334,7 +6334,7 @@ LABEL_93:
             }
 
             RTPSetTimestampRateScale([v34 rtpHandle], 0);
-            if (v29 == ++v30)
+            if (tilesPerFrame == ++v30)
             {
               goto LABEL_82;
             }
@@ -6409,7 +6409,7 @@ LABEL_93:
             v82 = 2112;
             *v83 = v40;
             *&v83[8] = 2048;
-            v84 = self;
+            selfCopy9 = self;
             v85 = 1024;
             LODWORD(v86) = v57;
             v50 = "VCVideoStream [%s] %s:%d %@(%p) Failed to update stream config for VCVideoStreamType=%d";
@@ -6434,7 +6434,7 @@ LABEL_93:
           v82 = 2112;
           *v83 = v40;
           *&v83[8] = 2048;
-          v84 = self;
+          selfCopy9 = self;
           v85 = 1024;
           LODWORD(v86) = v61;
           v58 = "VCVideoStream [%s] %s:%d %@(%p) Failed to update stream config for VCVideoStreamType=%d";
@@ -6443,31 +6443,31 @@ LABEL_93:
           goto LABEL_160;
         }
 
-        v29 = [v28 tilesPerFrame];
-        if (![(VCVideoStream *)self validateStreamConfiguration:v28 error:a4])
+        tilesPerFrame = [v28 tilesPerFrame];
+        if (![(VCVideoStream *)self validateStreamConfiguration:v28 error:error])
         {
           goto LABEL_161;
         }
 
-        if (v29 >= 1)
+        if (tilesPerFrame >= 1)
         {
           goto LABEL_59;
         }
 
 LABEL_82:
-        if (v68)
+        if (defaultRemoteSSRC)
         {
           [v28 setDefaultRemoteSSRC:?];
         }
 
         v27 = v67 + 1;
-        a3 = v64;
-        a4 = v69;
+        configuration = configurationCopy;
+        error = errorCopy;
         v26 = v63;
       }
 
       while (v67 + 1 != v65);
-      v24 = [v64 countByEnumeratingWithState:&v72 objects:v71 count:16];
+      v24 = [configurationCopy countByEnumeratingWithState:&v72 objects:v71 count:16];
       if (v24)
       {
         continue;
@@ -6477,7 +6477,7 @@ LABEL_82:
     }
   }
 
-  [(VCMediaStream *)self registerMediaControlInfoGeneratorWithConfigs:a3];
+  [(VCMediaStream *)self registerMediaControlInfoGeneratorWithConfigs:configuration];
   [(VCVideoStream *)self overrideConfigWithDefaults:[(VCMediaStream *)self defaultStreamConfig]];
   if (self->_baseQualityIndex && self->super._operatingMode == 6)
   {
@@ -6498,16 +6498,16 @@ LABEL_82:
   return v10;
 }
 
-- (int)operatingModeForVideoStreamType:(int64_t)a3
+- (int)operatingModeForVideoStreamType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     return 5;
   }
 
   else
   {
-    return dword_1DBD50CC8[a3 - 1];
+    return dword_1DBD50CC8[type - 1];
   }
 }
 
@@ -6537,12 +6537,12 @@ LABEL_82:
   atomic_store(0, &self->_isVideoCaptureRegistered);
 }
 
-- (void)reportFailedToRegisterVideoFramesFromSource:(int)a3 width:(int)a4 height:(int)a5 frameRate:(int)a6
+- (void)reportFailedToRegisterVideoFramesFromSource:(int)source width:(int)width height:(int)height frameRate:(int)rate
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = *&a3;
+  v6 = *&rate;
+  v7 = *&height;
+  v8 = *&width;
+  v9 = *&source;
   v11[4] = *MEMORY[0x1E69E9840];
   [(VCObject *)self reportingAgent];
   v10[0] = @"SymptomReporterOptionalKeyCaptureSource";
@@ -6557,10 +6557,10 @@ LABEL_82:
   reportingSymptom();
 }
 
-- (BOOL)registerForCameraCaptureWithConfig:(id)a3
+- (BOOL)registerForCameraCaptureWithConfig:(id)config
 {
   v41 = *MEMORY[0x1E69E9840];
-  +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [a3 videoResolution]);
+  +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [config videoResolution]);
   v6 = v5;
   v8 = v7;
   [VideoUtil getBestCaptureSizeForEncodingSize:?];
@@ -6599,7 +6599,7 @@ LABEL_82:
     v31 = 2112;
     *v32 = v13;
     *&v32[8] = 2048;
-    v33 = self;
+    selfCopy = self;
     *v34 = 1024;
     *&v34[2] = v10;
     v35 = 1024;
@@ -6630,9 +6630,9 @@ LABEL_82:
       *v32 = v10;
       *&v32[4] = 1024;
       *&v32[6] = v12;
-      LOWORD(v33) = 1024;
-      *(&v33 + 2) = v6;
-      HIWORD(v33) = 1024;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = v6;
+      HIWORD(selfCopy) = 1024;
       *v34 = v8;
       v16 = "VCVideoStream [%s] %s:%d capture=%dx%d, encode=%dx%d";
       v17 = v15;
@@ -6645,12 +6645,12 @@ LABEL_11:
 LABEL_12:
 
   v21 = [VCVideoRule alloc];
-  *&v22 = [a3 framerate];
+  *&v22 = [config framerate];
   self->_videoRule = [(VCVideoRule *)v21 initWithFrameWidth:v6 frameHeight:v8 frameRate:v22];
   v23 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
   if ((v23 & 1) == 0)
   {
-    -[VCVideoStream reportFailedToRegisterVideoFramesFromSource:width:height:frameRate:](self, "reportFailedToRegisterVideoFramesFromSource:width:height:frameRate:", self->_captureSource, v10, v12, [a3 framerate]);
+    -[VCVideoStream reportFailedToRegisterVideoFramesFromSource:width:height:frameRate:](self, "reportFailedToRegisterVideoFramesFromSource:width:height:frameRate:", self->_captureSource, v10, v12, [config framerate]);
   }
 
   return v23;
@@ -6658,7 +6658,7 @@ LABEL_12:
 
 - (BOOL)registerForVideoCapture
 {
-  v3 = [(VCMediaStream *)self defaultStreamConfig];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   type = self->_type;
   result = 1;
   if (type <= 7)
@@ -6674,12 +6674,12 @@ LABEL_12:
 
         else
         {
-          v6 = [(VCVideoStream *)self newScreenCaptureConfigForVideoConfig:v3];
+          v6 = [(VCVideoStream *)self newScreenCaptureConfigForVideoConfig:defaultStreamConfig];
           v7 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
 
           if ((v7 & 1) == 0)
           {
-            [(VCVideoStream *)self reportFailedToRegisterVideoFramesFromSource:self->_captureSource width:self->_customWidth height:self->_customHeight frameRate:[(VCMediaStreamConfig *)v3 framerate]];
+            [(VCVideoStream *)self reportFailedToRegisterVideoFramesFromSource:self->_captureSource width:self->_customWidth height:self->_customHeight frameRate:[(VCMediaStreamConfig *)defaultStreamConfig framerate]];
             result = 0;
             goto LABEL_16;
           }
@@ -6714,7 +6714,7 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    result = [(VCVideoStream *)self registerForCameraCaptureWithConfig:v3];
+    result = [(VCVideoStream *)self registerForCameraCaptureWithConfig:defaultStreamConfig];
   }
 
 LABEL_16:
@@ -6722,7 +6722,7 @@ LABEL_16:
   return result;
 }
 
-- (void)collectImageQueuePerformanceMetrics:(__CFDictionary *)a3
+- (void)collectImageQueuePerformanceMetrics:(__CFDictionary *)metrics
 {
   v44 = *MEMORY[0x1E69E9840];
   theDict = 0;
@@ -6735,7 +6735,7 @@ LABEL_16:
     v7 = v20 - self->_lastDisplayedFromImageQueueCount;
     valuePtr = v7;
     v8 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"VIQDCnt", v8);
+    CFDictionaryAddValue(metrics, @"VIQDCnt", v8);
     CFRelease(v8);
     self->_lastDisplayedFromImageQueueCount = v20;
   }
@@ -6751,7 +6751,7 @@ LABEL_16:
     v9 = v19 - self->_lastDroppedFromImageQueueCount;
     valuePtr = v9;
     v10 = CFNumberCreate(*v6, kCFNumberIntType, &valuePtr);
-    CFDictionaryAddValue(a3, @"VIQLCnt", v10);
+    CFDictionaryAddValue(metrics, @"VIQLCnt", v10);
     CFRelease(v10);
     self->_lastDroppedFromImageQueueCount = v19;
   }
@@ -6769,7 +6769,7 @@ LABEL_16:
     {
       valuePtr = (0.0 * 1000.0);
       v11 = CFNumberCreate(*v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"VIQMinHEL", v11);
+      CFDictionaryAddValue(metrics, @"VIQMinHEL", v11);
       CFRelease(v11);
     }
 
@@ -6777,7 +6777,7 @@ LABEL_16:
     {
       valuePtr = (0.0 * 1000.0);
       v12 = CFNumberCreate(*v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"VIQMaxHEL", v12);
+      CFDictionaryAddValue(metrics, @"VIQMaxHEL", v12);
       CFRelease(v12);
     }
 
@@ -6785,7 +6785,7 @@ LABEL_16:
     {
       valuePtr = (0.0 * 1000.0);
       v13 = CFNumberCreate(*v6, kCFNumberIntType, &valuePtr);
-      CFDictionaryAddValue(a3, @"VIQAHEL", v13);
+      CFDictionaryAddValue(metrics, @"VIQAHEL", v13);
       CFRelease(v13);
     }
 
@@ -6941,9 +6941,9 @@ uint64_t __36__VCVideoStream_setupReportingAgent__block_invoke_261(uint64_t a1, 
   return VCMediaStream_Unlock(a2);
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
-  if (a3)
+  if (stats)
   {
     [(VCObject *)self reportingAgent];
     v5 = selectDestinationForRTMetrics();
@@ -6953,7 +6953,7 @@ uint64_t __36__VCVideoStream_setupReportingAgent__block_invoke_261(uint64_t a1, 
     if (v6)
     {
       v7 = v6;
-      VCUtil_AppendFromDictionary(a3, v6);
+      VCUtil_AppendFromDictionary(stats, v6);
 
       CFRelease(v7);
     }
@@ -7026,7 +7026,7 @@ uint64_t __36__VCVideoStream_setupReportingAgent__block_invoke_261(uint64_t a1, 
   }
 }
 
-- (void)setupInternalRedundancyControllerWithStreamConfig:(id)a3
+- (void)setupInternalRedundancyControllerWithStreamConfig:(id)config
 {
   v25 = *MEMORY[0x1E69E9840];
   redundancyController = self->_redundancyController;
@@ -7035,21 +7035,21 @@ uint64_t __36__VCVideoStream_setupReportingAgent__block_invoke_261(uint64_t a1, 
     goto LABEL_9;
   }
 
-  v6 = [a3 maxRedundancyPercentage];
-  v7 = [a3 redundancyControllerFECVersion];
-  v8 = [a3 isFECFrameBasedEnabled];
+  maxRedundancyPercentage = [config maxRedundancyPercentage];
+  redundancyControllerFECVersion = [config redundancyControllerFECVersion];
+  isFECFrameBasedEnabled = [config isFECFrameBasedEnabled];
   v9 = [VCRedundancyControllerVideo alloc];
-  v10 = [a3 redundancyControllerMode];
+  redundancyControllerMode = [config redundancyControllerMode];
   v11 = 0xAA00000000000000;
-  if (v8)
+  if (isFECFrameBasedEnabled)
   {
     v11 = 0xAA01000000000000;
   }
 
-  v12 = [(VCRedundancyControllerVideo *)v9 initWithDelegate:self mode:v10 parameters:0, v11 | (v7 << 40) | v6 | 0x100000000];
-  self->_redundancyController = v12;
+  0x100000000 = [(VCRedundancyControllerVideo *)v9 initWithDelegate:self mode:redundancyControllerMode parameters:0, v11 | (redundancyControllerFECVersion << 40) | maxRedundancyPercentage | 0x100000000];
+  self->_redundancyController = 0x100000000;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (v12)
+  if (0x100000000)
   {
     if (ErrorLogLevelForModule >= 7)
     {
@@ -7080,11 +7080,11 @@ uint64_t __36__VCVideoStream_setupReportingAgent__block_invoke_261(uint64_t a1, 
   if (redundancyController)
   {
 LABEL_9:
-    [(VCVideoStream *)redundancyController setupInternalRedundancyControllerWithStreamConfig:a3];
+    [(VCVideoStream *)redundancyController setupInternalRedundancyControllerWithStreamConfig:config];
   }
 }
 
-- (void)onStartWithCompletionHandler:(id)a3
+- (void)onStartWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -7110,32 +7110,32 @@ LABEL_9:
   }
 
   self->_reportingDefaultRealtimePeriod = reportingDefaultRealtimePeriod();
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   if ([(VCVideoStream *)self isLowLatencyStreamType])
   {
-    [(VCMediaStreamConfig *)v5 setRecommendedMTU:[(VCVideoStream *)self networkMTU]];
+    [(VCMediaStreamConfig *)defaultStreamConfig setRecommendedMTU:[(VCVideoStream *)self networkMTU]];
   }
 
-  v6 = [(VCMediaStreamConfig *)v5 recommendedMTU];
-  if (v6 >= 0x5AA)
+  recommendedMTU = [(VCMediaStreamConfig *)defaultStreamConfig recommendedMTU];
+  if (recommendedMTU >= 0x5AA)
   {
     v7 = 1450;
   }
 
   else
   {
-    v7 = v6;
+    v7 = recommendedMTU;
   }
 
-  [(VCMediaStreamConfig *)v5 setRecommendedMTU:v7];
-  [(VCVideoStream *)self startRateAdaptationWithStreamConfig:v5];
+  [(VCMediaStreamConfig *)defaultStreamConfig setRecommendedMTU:v7];
+  [(VCVideoStream *)self startRateAdaptationWithStreamConfig:defaultStreamConfig];
   if (![(VCMediaStream *)self isSendingMedia])
   {
     goto LABEL_14;
   }
 
   [(VCVideoStream *)self initVideoTransmitter];
-  if (![(VCMediaStreamConfig *)v5 resetSendRTPTimestampOnStop])
+  if (![(VCMediaStreamConfig *)defaultStreamConfig resetSendRTPTimestampOnStop])
   {
     *buf = *(&self->_isTemporalScalingEnabled + 2);
     *&buf[16] = *&self->_lastSentFrameHostTimeBeforeStop.flags;
@@ -7158,17 +7158,17 @@ LABEL_14:
 
   if (self->_type && (videoTransmitter = self->_videoTransmitter) != 0)
   {
-    v10 = [(VCVideoTransmitterBase *)videoTransmitter videoTransmitterHandle];
+    videoTransmitterHandle = [(VCVideoTransmitterBase *)videoTransmitter videoTransmitterHandle];
   }
 
   else
   {
-    v10 = 0xFFFFFFFFLL;
+    videoTransmitterHandle = 0xFFFFFFFFLL;
   }
 
-  [(VCVideoStream *)self setupVideoReceiver:v5 withTransmitterHandle:v10];
-  [(VCVideoStream *)self updateVideoReceiver:v5];
-  if ([(VCMediaStreamConfig *)v5 syncSource])
+  [(VCVideoStream *)self setupVideoReceiver:defaultStreamConfig withTransmitterHandle:videoTransmitterHandle];
+  [(VCVideoStream *)self updateVideoReceiver:defaultStreamConfig];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig syncSource])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -7176,7 +7176,7 @@ LABEL_14:
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(VCMediaStreamConfig *)v5 syncSource];
+        syncSource = [(VCMediaStreamConfig *)defaultStreamConfig syncSource];
         *buf = 136316162;
         *&buf[4] = v11;
         *&buf[12] = 2080;
@@ -7184,21 +7184,21 @@ LABEL_14:
         *&buf[22] = 1024;
         v27 = 2833;
         v28 = 2048;
-        v29 = self;
+        selfCopy = self;
         v30 = 2048;
-        v31 = v13;
+        selfCopy2 = syncSource;
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]: Starting synchronization using syncSource=%p", buf, 0x30u);
       }
     }
 
-    [(VCVideoStream *)self startSynchronization:[(VCMediaStreamConfig *)v5 syncSource]];
+    [(VCVideoStream *)self startSynchronization:[(VCMediaStreamConfig *)defaultStreamConfig syncSource]];
   }
 
-  v14 = [(VCVideoReceiverBase *)self->_videoReceiver startVideo];
-  if (v14 < 0)
+  startVideo = [(VCVideoReceiverBase *)self->_videoReceiver startVideo];
+  if (startVideo < 0)
   {
-    v20 = v14;
-    v25 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32017 detailedCode:1302 returnCode:v14 filePath:objc_msgSend(MEMORY[0x1E696AEC0] description:"stringWithFormat:" reason:{@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2842), @"VCVideoSteam start failed", @"VideoReceiver startVideo failed"}];
+    v20 = startVideo;
+    v25 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32017 detailedCode:1302 returnCode:startVideo filePath:objc_msgSend(MEMORY[0x1E696AEC0] description:"stringWithFormat:" reason:{@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCVideoStream.m", 2842), @"VCVideoSteam start failed", @"VideoReceiver startVideo failed"}];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -7236,9 +7236,9 @@ LABEL_14:
           *&buf[22] = 1024;
           v27 = 2845;
           v28 = 2112;
-          v29 = v21;
+          selfCopy = v21;
           v30 = 2048;
-          v31 = self;
+          selfCopy2 = self;
           v32 = 1024;
           v33 = v20;
           _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) [_videoReceiver startVideo] failed, result=%x", buf, 0x36u);
@@ -7251,7 +7251,7 @@ LABEL_14:
 
   else
   {
-    if ([(VCVideoStream *)self isScreenConfig:v5])
+    if ([(VCVideoStream *)self isScreenConfig:defaultStreamConfig])
     {
       [(VCImageQueue *)self->_remoteQueue stop];
     }
@@ -7264,22 +7264,22 @@ LABEL_14:
     }
 
     _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 201, 0, 0);
-    v15 = [(VCMediaStream *)self defaultStreamConfig];
-    if ([(VCMediaStreamConfig *)v15 type]== 5 && (([(VCMediaStreamConfig *)v15 fecEnabled]& 1) != 0 || [(VCMediaStreamConfig *)v15 rtxEnabled]))
+    defaultStreamConfig2 = [(VCMediaStream *)self defaultStreamConfig];
+    if ([(VCMediaStreamConfig *)defaultStreamConfig2 type]== 5 && (([(VCMediaStreamConfig *)defaultStreamConfig2 fecEnabled]& 1) != 0 || [(VCMediaStreamConfig *)defaultStreamConfig2 rtxEnabled]))
     {
       v16 = *MEMORY[0x1E695E480];
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      if ([(VCMediaStreamConfig *)v15 fecEnabled])
+      if ([(VCMediaStreamConfig *)defaultStreamConfig2 fecEnabled])
       {
-        *buf = [(VCMediaStreamConfig *)v15 fecEnabled];
+        *buf = [(VCMediaStreamConfig *)defaultStreamConfig2 fecEnabled];
         v18 = CFNumberCreate(v16, kCFNumberIntType, buf);
         CFDictionaryAddValue(Mutable, @"FecRDKScreenSharing", v18);
         CFRelease(v18);
       }
 
-      if ([(VCMediaStreamConfig *)v15 rtxEnabled])
+      if ([(VCMediaStreamConfig *)defaultStreamConfig2 rtxEnabled])
       {
-        *buf = [(VCMediaStreamConfig *)v15 rtxEnabled];
+        *buf = [(VCMediaStreamConfig *)defaultStreamConfig2 rtxEnabled];
         v19 = CFNumberCreate(v16, kCFNumberIntType, buf);
         CFDictionaryAddValue(Mutable, @"RtxRDKScreenSharing", v19);
         CFRelease(v19);
@@ -7313,14 +7313,14 @@ LABEL_14:
     v24 = 0;
   }
 
-  (*(a3 + 2))(a3, v8, v24);
+  (*(handler + 2))(handler, v8, v24);
 }
 
-- (void)onStopWithCompletionHandler:(id)a3
+- (void)onStopWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
-  if ([(VCMediaStreamConfig *)v5 syncSource])
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig syncSource])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -7335,9 +7335,9 @@ LABEL_14:
         *&v11[22] = 1024;
         v12 = 2883;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         v15 = 2048;
-        v16 = [(VCMediaStreamConfig *)v5 syncSource];
+        syncSource = [(VCMediaStreamConfig *)defaultStreamConfig syncSource];
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]: Stopping synchronization using syncSource=%p", v11, 0x30u);
       }
     }
@@ -7365,7 +7365,7 @@ LABEL_14:
 
   _VCVideoStream_ReportingAlgosVideoStreamEvent(self);
   _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 202, 0, 0);
-  if (([(VCMediaStreamConfig *)v5 resetSendRTPTimestampOnStop]& 1) == 0)
+  if (([(VCMediaStreamConfig *)defaultStreamConfig resetSendRTPTimestampOnStop]& 1) == 0)
   {
     videoTransmitter = self->_videoTransmitter;
     if (videoTransmitter)
@@ -7395,10 +7395,10 @@ LABEL_14:
 
   [(VCImageQueue *)self->_remoteQueue pause];
   [(VCVideoStream *)self stopRateAdaptation];
-  (*(a3 + 2))(a3, 1, 0);
+  (*(handler + 2))(handler, 1, 0);
 }
 
-- (void)onPauseWithCompletionHandler:(id)a3
+- (void)onPauseWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->_type == 2)
@@ -7408,8 +7408,8 @@ LABEL_14:
 
   else
   {
-    v5 = [(VCMediaStream *)self defaultStreamConfig];
-    if ([(VCMediaStreamConfig *)v5 syncSource])
+    defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+    if ([(VCMediaStreamConfig *)defaultStreamConfig syncSource])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -7424,9 +7424,9 @@ LABEL_14:
           v12 = 1024;
           v13 = 2941;
           v14 = 2048;
-          v15 = self;
+          selfCopy = self;
           v16 = 2048;
-          v17 = [(VCMediaStreamConfig *)v5 syncSource];
+          syncSource = [(VCMediaStreamConfig *)defaultStreamConfig syncSource];
           _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]: Stopping synchronization using syncSource=%p", &v8, 0x30u);
         }
       }
@@ -7446,10 +7446,10 @@ LABEL_14:
 
   _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 3, 0, 0);
   _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 203, 0, 0);
-  (*(a3 + 2))(a3, 1, 0);
+  (*(handler + 2))(handler, 1, 0);
 }
 
-- (void)onResumeWithCompletionHandler:(id)a3
+- (void)onResumeWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   self->_lastDecodedVideoFrameTime = 0.0;
@@ -7460,8 +7460,8 @@ LABEL_14:
 
   else
   {
-    v5 = [(VCMediaStream *)self defaultStreamConfig];
-    if ([(VCMediaStreamConfig *)v5 syncSource])
+    defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+    if ([(VCMediaStreamConfig *)defaultStreamConfig syncSource])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -7476,17 +7476,17 @@ LABEL_14:
           v12 = 1024;
           v13 = 2972;
           v14 = 2048;
-          v15 = self;
+          selfCopy = self;
           v16 = 2048;
-          v17 = [(VCMediaStreamConfig *)v5 syncSource];
+          syncSource = [(VCMediaStreamConfig *)defaultStreamConfig syncSource];
           _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d VCVideoStream[%p]: Starting synchronization using syncSource=%p", &v8, 0x30u);
         }
       }
 
-      [(VCVideoStream *)self startSynchronization:[(VCMediaStreamConfig *)v5 syncSource]];
+      [(VCVideoStream *)self startSynchronization:[(VCMediaStreamConfig *)defaultStreamConfig syncSource]];
     }
 
-    [(VCVideoStream *)self startRateAdaptationWithStreamConfig:v5];
+    [(VCVideoStream *)self startRateAdaptationWithStreamConfig:defaultStreamConfig];
     [(VCVideoTransmitterBase *)self->_videoTransmitter startVideo];
     [(VCImageQueue *)self->_remoteQueue start];
     if ([(VCImageQueue *)self->_remoteQueue usingRemoteQueue])
@@ -7498,28 +7498,28 @@ LABEL_14:
     _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 204, 0, 0);
   }
 
-  (*(a3 + 2))(a3, 1, 0);
+  (*(handler + 2))(handler, 1, 0);
 }
 
 - (void)onSendRTCPPacket
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(VCMediaStream *)self defaultTransport];
-  v4 = [(VCMediaStreamTransport *)v3 streamDirection];
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) == 1 && [(VCMediaStreamTransport *)v3 isRTCPEnabled])
+  defaultTransport = [(VCMediaStream *)self defaultTransport];
+  streamDirection = [(VCMediaStreamTransport *)defaultTransport streamDirection];
+  if ((streamDirection & 0xFFFFFFFFFFFFFFFDLL) == 1 && [(VCMediaStreamTransport *)defaultTransport isRTCPEnabled])
   {
     v6 = 0;
     memset(v5, 0, sizeof(v5));
     [(VCMediaStream *)self sendControlPacketWithParameters:v5];
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((streamDirection & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(VCVideoReceiverBase *)self->_videoReceiver rtcpSendIntervalElapsed];
   }
 }
 
-- (unsigned)getMaxTemporalBitrateForStreamIDs:(id)a3
+- (unsigned)getMaxTemporalBitrateForStreamIDs:(id)ds
 {
   v39 = *MEMORY[0x1E69E9840];
   v35 = 0u;
@@ -7543,8 +7543,8 @@ LABEL_14:
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        v12 = [v11 idsStreamId];
-        if ([objc_msgSend(a3 "firstObject")] == v12)
+        idsStreamId = [v11 idsStreamId];
+        if ([objc_msgSend(ds "firstObject")] == idsStreamId)
         {
           v8 = [objc_msgSend(v11 "streamConfig")];
         }
@@ -7613,7 +7613,7 @@ LABEL_22:
         v28 = 2112;
         v29 = v13;
         v30 = 2048;
-        v31 = self;
+        selfCopy = self;
         v32 = 1024;
         v33 = v8;
         v16 = "VCVideoStream [%s] %s:%d %@(%p) Max temporal bitrate=%d";
@@ -7627,11 +7627,11 @@ LABEL_22:
   return v8;
 }
 
-- (void)setTransmitterStreamIDs:(id)a3 repairStreamIDs:(id)a4
+- (void)setTransmitterStreamIDs:(id)ds repairStreamIDs:(id)iDs
 {
   v58 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [a3 count];
+  v8 = [ds count];
   v9 = (2 * v8 + 15) & 0xFFFFFFFFFFFFFFF0;
   v10 = &v34 - v9;
   if (v8)
@@ -7640,15 +7640,15 @@ LABEL_22:
   }
 
   v38 = v10;
-  v40 = self;
-  v41 = [(VCMediaStream *)self defaultStreamConfig];
-  if ([(VCMediaStreamConfig *)v41 temporalScalingEnabled])
+  selfCopy = self;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig temporalScalingEnabled])
   {
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    transportArray = v40->super._transportArray;
+    transportArray = selfCopy->super._transportArray;
     v12 = [(NSMutableArray *)transportArray countByEnumeratingWithState:&v54 objects:v53 count:16];
     if (v12)
     {
@@ -7673,7 +7673,7 @@ LABEL_22:
     }
   }
 
-  if ([a3 count] >= 1)
+  if ([ds count] >= 1)
   {
     v17 = 0;
     v18 = 0;
@@ -7683,12 +7683,12 @@ LABEL_22:
     v34 = v16;
     *&v16 = 136316674;
     v35 = v16;
-    v20 = v40;
+    v20 = selfCopy;
     v21 = v38;
     while (1)
     {
-      v22 = [objc_msgSend(a3 objectAtIndexedSubscript:{v17, v34, *(&v34 + 1)), "unsignedIntegerValue"}];
-      if (!-[VCMediaStreamConfig temporalScalingEnabled](v41, "temporalScalingEnabled") || ![v7 containsObject:{objc_msgSend(a3, "objectAtIndexedSubscript:", v17)}])
+      v22 = [objc_msgSend(ds objectAtIndexedSubscript:{v17, v34, *(&v34 + 1)), "unsignedIntegerValue"}];
+      if (!-[VCMediaStreamConfig temporalScalingEnabled](defaultStreamConfig, "temporalScalingEnabled") || ![v7 containsObject:{objc_msgSend(ds, "objectAtIndexedSubscript:", v17)}])
       {
         goto LABEL_28;
       }
@@ -7700,7 +7700,7 @@ LABEL_22:
 
       v18 = 1;
 LABEL_29:
-      if (++v17 >= [a3 count])
+      if (++v17 >= [ds count])
       {
         goto LABEL_32;
       }
@@ -7790,7 +7790,7 @@ LABEL_28:
   v19 = 0;
   v21 = v38;
 LABEL_32:
-  v30 = [a4 count];
+  v30 = [iDs count];
   v31 = v30;
   v32 = &v34 - ((2 * v30 + 15) & 0x3F0);
   if (v30)
@@ -7798,36 +7798,36 @@ LABEL_32:
     memset(&v34 - ((2 * v30 + 15) & 0x3F0), 170, 2 * v30);
   }
 
-  if ([a4 count] >= 1)
+  if ([iDs count] >= 1)
   {
     v33 = 0;
     do
     {
-      *&v32[2 * v33] = [objc_msgSend(a4 objectAtIndexedSubscript:{v33), "unsignedIntegerValue"}];
+      *&v32[2 * v33] = [objc_msgSend(iDs objectAtIndexedSubscript:{v33), "unsignedIntegerValue"}];
       ++v33;
     }
 
-    while (v33 < [a4 count]);
+    while (v33 < [iDs count]);
   }
 
-  [(VCVideoTransmitterBase *)v40->_videoTransmitter setStreamIDs:v21 numOfStreamIDs:v19 repairedStreamIDs:v32 numOfRepairedStreamIDs:v31];
+  [(VCVideoTransmitterBase *)selfCopy->_videoTransmitter setStreamIDs:v21 numOfStreamIDs:v19 repairedStreamIDs:v32 numOfRepairedStreamIDs:v31];
 }
 
-- (void)setStreamIDs:(id)a3 repairStreamIDs:(id)a4
+- (void)setStreamIDs:(id)ds repairStreamIDs:(id)iDs
 {
   v63 = *MEMORY[0x1E69E9840];
-  v45 = [(VCMediaStream *)self defaultStreamConfig];
-  v44 = a4;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  iDsCopy = iDs;
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v8 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+      v8 = ds ? [objc_msgSend(ds "description")] : "<nil>";
       asprintf(&__str, "%s", v8);
       if (__str)
       {
-        v42 = a3;
+        dsCopy2 = ds;
         __lasts = 0;
         v15 = strtok_r(__str, "\n", &__lasts);
         v16 = MEMORY[0x1E6986650];
@@ -7877,12 +7877,12 @@ LABEL_32:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v9 = [(__CFString *)v7 UTF8String];
-      v10 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-      asprintf(&__str, "%s(%p) %s", v9, self, v10);
+      uTF8String = [(__CFString *)v7 UTF8String];
+      v10 = ds ? [objc_msgSend(ds "description")] : "<nil>";
+      asprintf(&__str, "%s(%p) %s", uTF8String, self, v10);
       if (__str)
       {
-        v42 = a3;
+        dsCopy2 = ds;
         __lasts = 0;
         v11 = strtok_r(__str, "\n", &__lasts);
         v12 = MEMORY[0x1E6986650];
@@ -7914,7 +7914,7 @@ LABEL_32:
         while (v11);
 LABEL_26:
         free(__str);
-        a3 = v42;
+        ds = dsCopy2;
       }
     }
   }
@@ -7924,10 +7924,10 @@ LABEL_26:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v43 = a3;
-      if (a4)
+      dsCopy4 = ds;
+      if (iDs)
       {
-        v20 = [objc_msgSend(a4 "description")];
+        v20 = [objc_msgSend(iDs "description")];
       }
 
       else
@@ -7989,11 +7989,11 @@ LABEL_26:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v21 = [(__CFString *)v19 UTF8String];
-      v43 = a3;
-      if (a4)
+      uTF8String2 = [(__CFString *)v19 UTF8String];
+      dsCopy4 = ds;
+      if (iDs)
       {
-        v22 = [objc_msgSend(a4 "description")];
+        v22 = [objc_msgSend(iDs "description")];
       }
 
       else
@@ -8001,7 +8001,7 @@ LABEL_26:
         v22 = "<nil>";
       }
 
-      asprintf(&__str, "%s(%p) %s", v21, self, v22);
+      asprintf(&__str, "%s(%p) %s", uTF8String2, self, v22);
       if (!__str)
       {
         goto LABEL_53;
@@ -8039,15 +8039,15 @@ LABEL_26:
 LABEL_52:
       free(__str);
 LABEL_53:
-      a3 = v43;
+      ds = dsCopy4;
     }
   }
 
   v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v32 = a3;
-  [v31 addObjectsFromArray:a3];
-  [v31 addObjectsFromArray:a4];
-  if ([(VCMediaStreamConfig *)v45 temporalScalingEnabled])
+  dsCopy5 = ds;
+  [v31 addObjectsFromArray:ds];
+  [v31 addObjectsFromArray:iDs];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig temporalScalingEnabled])
   {
     v51 = 0u;
     v52 = 0u;
@@ -8084,13 +8084,13 @@ LABEL_53:
 
   [(VCVideoStream *)self setupCompoundStreamIDsWithStreamIDs:v31];
 
-  if ([(VCMediaStreamConfig *)v45 temporalScalingEnabled])
+  if ([(VCMediaStreamConfig *)defaultStreamConfig temporalScalingEnabled])
   {
-    v39 = [(VCVideoStream *)self getMaxTemporalBitrateForStreamIDs:v32];
-    v40 = [(VCVideoTransmitterBase *)self->_videoTransmitter targetBitrate];
-    if (v39 >= v40)
+    v39 = [(VCVideoStream *)self getMaxTemporalBitrateForStreamIDs:dsCopy5];
+    targetBitrate = [(VCVideoTransmitterBase *)self->_videoTransmitter targetBitrate];
+    if (v39 >= targetBitrate)
     {
-      v41 = v40;
+      v41 = targetBitrate;
     }
 
     else
@@ -8101,20 +8101,20 @@ LABEL_53:
     [(VCVideoTransmitterBase *)self->_videoTransmitter setTargetBitrate:v41];
   }
 
-  [(VCVideoStream *)self setTransmitterStreamIDs:v32 repairStreamIDs:v44];
+  [(VCVideoStream *)self setTransmitterStreamIDs:dsCopy5 repairStreamIDs:iDsCopy];
 }
 
-- (void)setPeerSubscribedStreamIDs:(id)a3
+- (void)setPeerSubscribedStreamIDs:(id)ds
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
-  v37 = self;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  selfCopy = self;
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(VCMediaStreamConfig *)v5 temporalScalingEnabled]&& (v57 = 0u, v58 = 0u, v55 = 0u, v56 = 0u, transportArray = self->super._transportArray, (v7 = [(NSMutableArray *)transportArray countByEnumeratingWithState:&v55 objects:v54 count:16]) != 0))
+  if ([(VCMediaStreamConfig *)defaultStreamConfig temporalScalingEnabled]&& (v57 = 0u, v58 = 0u, v55 = 0u, v56 = 0u, transportArray = self->super._transportArray, (v7 = [(NSMutableArray *)transportArray countByEnumeratingWithState:&v55 objects:v54 count:16]) != 0))
   {
     v8 = v7;
     v9 = 0;
-    v10 = 0;
+    txMaxBitrate = 0;
     v11 = *v56;
     do
     {
@@ -8126,12 +8126,12 @@ LABEL_53:
         }
 
         v13 = *(*(&v55 + 1) + 8 * i);
-        if ([a3 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(v13, "idsStreamId", v37))}])
+        if ([ds containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", objc_msgSend(v13, "idsStreamId", selfCopy))}])
         {
-          v14 = [v13 streamConfig];
-          [v39 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", objc_msgSend(v14, "txMaxBitrate"))}];
-          v10 = [v14 txMaxBitrate];
-          v9 = [objc_msgSend(v14 "multiwayConfig")];
+          streamConfig = [v13 streamConfig];
+          [v39 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", objc_msgSend(streamConfig, "txMaxBitrate"))}];
+          txMaxBitrate = [streamConfig txMaxBitrate];
+          v9 = [objc_msgSend(streamConfig "multiwayConfig")];
         }
       }
 
@@ -8144,12 +8144,12 @@ LABEL_53:
   else
   {
     v9 = 0;
-    v10 = 0;
+    txMaxBitrate = 0;
   }
 
   for (j = [v39 count]; j < objc_msgSend(v38[69], "count"); ++j)
   {
-    [v39 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
+    [v39 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", txMaxBitrate)}];
   }
 
   v16 = [v39 count];
@@ -8300,9 +8300,9 @@ LABEL_38:
   }
 }
 
-- (void)handleVTPSendFailedWithData:(void *)a3
+- (void)handleVTPSendFailedWithData:(void *)data
 {
-  if (a3)
+  if (data)
   {
 
     [VCVideoStream handleNWConnectionPacketEvent:"handleNWConnectionPacketEvent:eventType:" eventType:?];
@@ -8318,19 +8318,19 @@ LABEL_38:
   }
 }
 
-- (void)setVideoStreamDelegate:(id)a3 delegateFunctions:(const tagVCVideoStreamDelegateRealtimeInstanceVTable *)a4
+- (void)setVideoStreamDelegate:(id)delegate delegateFunctions:(const tagVCVideoStreamDelegateRealtimeInstanceVTable *)functions
 {
   v6[7] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (functions)
   {
     delegateNotificationQueue = self->super._delegateNotificationQueue;
-    remoteScreenAttributesDidChange = a4->remoteScreenAttributesDidChange;
+    remoteScreenAttributesDidChange = functions->remoteScreenAttributesDidChange;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invoke;
     v6[3] = &unk_1E85F50D8;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = delegate;
     v6[6] = remoteScreenAttributesDidChange;
     dispatch_async(delegateNotificationQueue, v6);
   }
@@ -8352,15 +8352,15 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
   return result;
 }
 
-- (void)setDidReceiveFirstFrame:(BOOL)a3
+- (void)setDidReceiveFirstFrame:(BOOL)frame
 {
   VCMediaStream_Lock(self);
-  if (!a3)
+  if (!frame)
   {
     [VCRemoteVideoManager_DefaultManager() resetDidReceiveFirstFrameForStreamToken:self->super._streamToken];
   }
 
-  self->_didReceiveFirstFrame = a3;
+  self->_didReceiveFirstFrame = frame;
 
   VCMediaStream_Unlock(self);
 }
@@ -8434,20 +8434,20 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
 
 - (__CFString)getReportingClientName
 {
-  v3 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] type];
+  type = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] type];
   v4 = &stru_1F570E008;
-  if (v3 > 3)
+  if (type > 3)
   {
-    if (v3 > 5)
+    if (type > 5)
     {
-      if (v3 == 6)
+      if (type == 6)
       {
         v5 = MEMORY[0x1E6986738];
       }
 
       else
       {
-        if (v3 != 7)
+        if (type != 7)
         {
           return v4;
         }
@@ -8456,7 +8456,7 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
       }
     }
 
-    else if (v3 == 4)
+    else if (type == 4)
     {
       v6 = MEMORY[0x1E6986740];
       if ([(NSString *)self->super._clientName isEqualToString:*MEMORY[0x1E6986740]])
@@ -8498,9 +8498,9 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
     return *v5;
   }
 
-  if (v3 > 1)
+  if (type > 1)
   {
-    if (v3 == 2)
+    if (type == 2)
     {
       v5 = MEMORY[0x1E69866D0];
     }
@@ -8513,13 +8513,13 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
     return *v5;
   }
 
-  if (!v3)
+  if (!type)
   {
     v5 = MEMORY[0x1E6986718];
     return *v5;
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
     if ([(NSString *)self->super._clientName isEqualToString:@"CompositorServices"])
     {
@@ -8539,29 +8539,29 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
 
 - (int)reportVideoStreamType
 {
-  v2 = [(VCMediaStream *)self defaultStreamConfig];
-  v3 = [(VCMediaStreamConfig *)v2 type];
-  if (v3 > 7)
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  type = [(VCMediaStreamConfig *)defaultStreamConfig type];
+  if (type > 7)
   {
     return -1;
   }
 
-  if (((1 << v3) & 0x66) != 0)
+  if (((1 << type) & 0x66) != 0)
   {
     return 1;
   }
 
-  if (((1 << v3) & 0x91) != 0)
+  if (((1 << type) & 0x91) != 0)
   {
     return 0;
   }
 
-  if ([(VCMediaStreamConfig *)v2 captureSource]== 2)
+  if ([(VCMediaStreamConfig *)defaultStreamConfig captureSource]== 2)
   {
     return 1;
   }
 
-  return [(VCMediaStreamConfig *)v2 captureSource]== 1;
+  return [(VCMediaStreamConfig *)defaultStreamConfig captureSource]== 1;
 }
 
 - (__CFDictionary)getClientSpecificUserInfo
@@ -8573,11 +8573,11 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
     return 0;
   }
 
-  v4 = [(VCVideoStream *)self reportVideoStreamType];
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
+  reportVideoStreamType = [(VCVideoStream *)self reportVideoStreamType];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   if (ReportingClientType == 6)
   {
-    v21 = v4;
+    v21 = reportVideoStreamType;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
@@ -8600,15 +8600,15 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [(VCMediaStreamConfig *)v5 temporalScalingEnabled];
-          if (v14 & v10)
+          temporalScalingEnabled = [(VCMediaStreamConfig *)defaultStreamConfig temporalScalingEnabled];
+          if (temporalScalingEnabled & v10)
           {
             v10 = 1;
           }
 
           else
           {
-            v15 = v14;
+            v15 = temporalScalingEnabled;
             if ([v13 idsStreamId])
             {
               v16 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v13, "idsStreamId")}];
@@ -8616,7 +8616,7 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
 
             else
             {
-              v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCMediaStreamMultiwayConfig streamGroupID](-[VCMediaStreamConfig multiwayConfig](v5, "multiwayConfig"), "streamGroupID")}];
+              v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCMediaStreamMultiwayConfig streamGroupID](-[VCMediaStreamConfig multiwayConfig](defaultStreamConfig, "multiwayConfig"), "streamGroupID")}];
             }
 
             v10 |= v15;
@@ -8630,39 +8630,39 @@ void *__58__VCVideoStream_setVideoStreamDelegate_delegateFunctions___block_invok
       while (v9);
     }
 
-    [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v5 multiwayConfig] streamGroupID];
+    [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] streamGroupID];
     v17 = reportingStreamGroupFromStreamGroupID();
     v22[0] = @"VCMediaStreamType";
     v23[0] = [MEMORY[0x1E696AD98] numberWithInt:v21];
     v22[1] = @"VCSUUID";
-    v23[1] = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v5 multiwayConfig] sessionId];
+    v23[1] = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] sessionId];
     v22[2] = @"VCSPUUID";
-    v23[2] = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v5 multiwayConfig] participantId];
+    v23[2] = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] participantId];
     v22[3] = @"VCVSStreamIDs";
     v23[3] = [v6 componentsJoinedByString:{@", "}];
     v22[4] = @"VCMSDirection";
-    v23[4] = [MEMORY[0x1E696AD98] numberWithInteger:{-[VCMediaStreamConfig direction](v5, "direction")}];
+    v23[4] = [MEMORY[0x1E696AD98] numberWithInteger:{-[VCMediaStreamConfig direction](defaultStreamConfig, "direction")}];
     v22[5] = @"VCMSStreamGroup";
     v23[5] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v17];
-    v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:6];
+    dictionary = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:6];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v18 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v4), @"VCMediaStreamType"}];
-    [v18 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->super._streamToken), @"VCVSStreamToken"}];
-    [v18 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", -[VCMediaStreamConfig direction](v5, "direction")), @"VCMSDirection"}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", reportVideoStreamType), @"VCMediaStreamType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->super._streamToken), @"VCVSStreamToken"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", -[VCMediaStreamConfig direction](defaultStreamConfig, "direction")), @"VCMSDirection"}];
     callID = self->super._callID;
     if (callID)
     {
-      [v18 setObject:callID forKeyedSubscript:@"CallID"];
+      [dictionary setObject:callID forKeyedSubscript:@"CallID"];
     }
 
-    [(VCMediaStream *)self applyClientSessionID:_VCVideoStream_GetReportingClientType(self) clientUserInfo:v18];
+    [(VCMediaStream *)self applyClientSessionID:_VCVideoStream_GetReportingClientType(self) clientUserInfo:dictionary];
   }
 
-  return v18;
+  return dictionary;
 }
 
 uint64_t __VCVideoStream_DidReceiveSampleBuffer_block_invoke(uint64_t a1)
@@ -8682,9 +8682,9 @@ uint64_t __VCVideoStream_DidReceiveSampleBuffer_block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)vcVideoReceiver:(id)a3 requestKeyFrameGenerationWithStreamID:(unsigned __int16)a4 firType:(int)a5
+- (void)vcVideoReceiver:(id)receiver requestKeyFrameGenerationWithStreamID:(unsigned __int16)d firType:(int)type
 {
-  v6 = a4;
+  dCopy = d;
   v34 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -8707,9 +8707,9 @@ uint64_t __VCVideoStream_DidReceiveSampleBuffer_block_invoke(uint64_t a1)
     v25 = 1024;
     v26 = 3855;
     v27 = 1024;
-    *v28 = v6;
+    *v28 = dCopy;
     *&v28[4] = 1024;
-    *&v28[6] = a5;
+    *&v28[6] = type;
     v11 = "VCVideoStream [%s] %s:%d Requesting streamID:%hu to generate a key frame for FIRType:%d";
     v12 = v10;
     v13 = 40;
@@ -8741,11 +8741,11 @@ uint64_t __VCVideoStream_DidReceiveSampleBuffer_block_invoke(uint64_t a1)
       v27 = 2112;
       *v28 = v8;
       *&v28[8] = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 1024;
-      v31 = v6;
+      v31 = dCopy;
       v32 = 1024;
-      v33 = a5;
+      typeCopy = type;
       v11 = "VCVideoStream [%s] %s:%d %@(%p) Requesting streamID:%hu to generate a key frame for FIRType:%d";
       v12 = v15;
       v13 = 60;
@@ -8758,12 +8758,12 @@ LABEL_12:
   delegateNotificationQueue = self->super._delegateNotificationQueue;
   if (self->_lastDecodedVideoFrameTime == 0.0)
   {
-    v17 = 4;
+    typeCopy2 = 4;
   }
 
   else
   {
-    v17 = a5;
+    typeCopy2 = type;
   }
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -8771,8 +8771,8 @@ LABEL_12:
   v18[2] = __79__VCVideoStream_vcVideoReceiver_requestKeyFrameGenerationWithStreamID_firType___block_invoke;
   v18[3] = &unk_1E85F7440;
   v18[4] = self;
-  v20 = v6;
-  v19 = v17;
+  v20 = dCopy;
+  v19 = typeCopy2;
   dispatch_async(delegateNotificationQueue, v18);
 }
 
@@ -8786,23 +8786,23 @@ uint64_t __79__VCVideoStream_vcVideoReceiver_requestKeyFrameGenerationWithStream
   return [v2 vcMediaStream:v3 requestKeyFrameGenerationWithStreamID:v4 firType:v5];
 }
 
-- (void)vcVideoReceiverRequestKeyFrame:(id)a3 rtcpPSFBType:(unsigned int)a4
+- (void)vcVideoReceiverRequestKeyFrame:(id)frame rtcpPSFBType:(unsigned int)type
 {
   v36 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
-  if (a4 == 1)
+  if (type == 1)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 224;
     goto LABEL_5;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 222;
 LABEL_5:
-    _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(v6, v7, 0, 0);
+    _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(selfCopy2, v7, 0, 0);
     goto LABEL_6;
   }
 
@@ -8819,9 +8819,9 @@ LABEL_5:
       v26 = 1024;
       v27 = 3873;
       v28 = 2048;
-      v29 = self;
+      selfCopy5 = self;
       v30 = 1024;
-      LODWORD(v31) = a4;
+      LODWORD(v31) = type;
       _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d VCVideoStream[%p] requesting Key frame for unknown RTCP FB:%d", &v22, 0x2Cu);
     }
   }
@@ -8829,15 +8829,15 @@ LABEL_5:
 LABEL_6:
   if (self->_videoTransmitter)
   {
-    v8 = [(VCMediaStream *)self defaultStreamConfig];
+    defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
     [(VCVideoReceiverBase *)self->_videoReceiver roundTripTime];
     v10 = v9;
     v11 = micro();
     [(VCVideoTransmitterBase *)self->_videoTransmitter lastKeyFrameSentTime];
     v13 = v11 - v12;
-    v14 = [(VCMediaStreamConfig *)v8 keyFrameInterval]- v13;
-    v15 = [(VCMediaStreamConfig *)v8 framerate];
-    if (v13 <= v10 + v10 || v14 <= 2.0 / v15)
+    v14 = [(VCMediaStreamConfig *)defaultStreamConfig keyFrameInterval]- v13;
+    framerate = [(VCMediaStreamConfig *)defaultStreamConfig framerate];
+    if (v13 <= v10 + v10 || v14 <= 2.0 / framerate)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -8852,7 +8852,7 @@ LABEL_6:
           v26 = 1024;
           v27 = 3892;
           v28 = 2048;
-          v29 = self;
+          selfCopy5 = self;
           v30 = 2048;
           v31 = v10;
           v32 = 2048;
@@ -8879,7 +8879,7 @@ LABEL_6:
           v26 = 1024;
           v27 = 3889;
           v28 = 2048;
-          v29 = self;
+          selfCopy5 = self;
           v30 = 2048;
           v31 = v10;
           v32 = 2048;
@@ -8906,7 +8906,7 @@ LABEL_6:
   VCMediaStream_Unlock(self);
 }
 
-- (void)vcVideoReceiver:(id)a3 downlinkQualityDidChange:(id)a4
+- (void)vcVideoReceiver:(id)receiver downlinkQualityDidChange:(id)change
 {
   block[6] = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
@@ -8916,7 +8916,7 @@ LABEL_6:
   block[2] = __58__VCVideoStream_vcVideoReceiver_downlinkQualityDidChange___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = change;
   dispatch_async(delegateNotificationQueue, block);
   VCMediaStream_Unlock(self);
 }
@@ -8937,9 +8937,9 @@ uint64_t __58__VCVideoStream_vcVideoReceiver_downlinkQualityDidChange___block_in
   return result;
 }
 
-- (unsigned)vcVideoReceiver:(id)a3 receivedTMMBR:(unsigned int)a4
+- (unsigned)vcVideoReceiver:(id)receiver receivedTMMBR:(unsigned int)r
 {
-  v4 = *&a4;
+  v4 = *&r;
   v13[1] = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   v6 = [(VCVideoTransmitterBase *)self->_videoTransmitter setTemporaryMaximumBitrate:v4];
@@ -8981,9 +8981,9 @@ uint64_t __47__VCVideoStream_vcVideoReceiver_receivedTMMBR___block_invoke(uint64
   return result;
 }
 
-- (void)vcVideoReceiver:(id)a3 didSwitchFromStreamID:(unsigned __int16)a4 toStreamID:(unsigned __int16)a5
+- (void)vcVideoReceiver:(id)receiver didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD
 {
-  v5 = a5;
+  iDCopy = iD;
   v11 = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->super._delegateNotificationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -8991,11 +8991,11 @@ uint64_t __47__VCVideoStream_vcVideoReceiver_receivedTMMBR___block_invoke(uint64
   block[2] = __66__VCVideoStream_vcVideoReceiver_didSwitchFromStreamID_toStreamID___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy2 = iD;
   dispatch_async(delegateNotificationQueue, block);
-  self->_currentStreamID = v5;
-  _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 230, 0, [MEMORY[0x1E696AD98] numberWithUnsignedShort:v5]);
+  self->_currentStreamID = iDCopy;
+  _VCVideoStream_ReportingVideoStreamEventWithVideoAttributesAndStreamID(self, 230, 0, [MEMORY[0x1E696AD98] numberWithUnsignedShort:iDCopy]);
 }
 
 uint64_t __66__VCVideoStream_vcVideoReceiver_didSwitchFromStreamID_toStreamID___block_invoke(uint64_t a1)
@@ -9015,11 +9015,11 @@ uint64_t __66__VCVideoStream_vcVideoReceiver_didSwitchFromStreamID_toStreamID___
   return result;
 }
 
-- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)a3 frameTime:(id *)a4 attribute:(id *)a5
+- (BOOL)onVideoFrame:(opaqueCMSampleBuffer *)frame frameTime:(id *)time attribute:(id *)attribute
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = *a4;
-  VCVideoStream_OnVideoFrame(self, a3, &v6, a5);
+  v6 = *time;
+  VCVideoStream_OnVideoFrame(self, frame, &v6, attribute);
   return 1;
 }
 
@@ -9044,7 +9044,7 @@ uint64_t __38__VCVideoStream_copyOnVideoFrameBlock__block_invoke(uint64_t a1, ui
   return 1;
 }
 
-- (void)avConferencePreviewError:(id)a3
+- (void)avConferencePreviewError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -9086,16 +9086,16 @@ uint64_t __38__VCVideoStream_copyOnVideoFrameBlock__block_invoke(uint64_t a1, ui
         v14 = 2112;
         v15 = v5;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2080;
-        v19 = [a3 UTF8String];
+        uTF8String = [error UTF8String];
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) received an error=%s", &v8, 0x3Au);
       }
     }
   }
 }
 
-- (void)avConferenceScreenCaptureError:(id)a3
+- (void)avConferenceScreenCaptureError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -9137,18 +9137,18 @@ uint64_t __38__VCVideoStream_copyOnVideoFrameBlock__block_invoke(uint64_t a1, ui
         v14 = 2112;
         v15 = v5;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2080;
-        v19 = [a3 UTF8String];
+        uTF8String = [error UTF8String];
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) received a capture error=%s", &v8, 0x3Au);
       }
     }
   }
 }
 
-- (void)thermalLevelDidChange:(int)a3
+- (void)thermalLevelDidChange:(int)change
 {
-  v3 = *&a3;
+  v3 = *&change;
   v25 = *MEMORY[0x1E69E9840];
   if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig] isOneToOne])
   {
@@ -9212,7 +9212,7 @@ uint64_t __38__VCVideoStream_copyOnVideoFrameBlock__block_invoke(uint64_t a1, ui
       v19 = 2112;
       v20 = v5;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 1024;
       v24 = v3;
       v8 = "VCVideoStream [%s] %s:%d %@(%p) thermalLevelDidChange thermalLevel=%u";
@@ -9228,7 +9228,7 @@ LABEL_13:
   }
 }
 
-- (void)cameraAvailabilityDidChange:(BOOL)a3
+- (void)cameraAvailabilityDidChange:(BOOL)change
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -9248,33 +9248,33 @@ LABEL_13:
   }
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   VCMediaStream_Lock(self);
-  HIDWORD(self->_colorInfo) = [a3 maxConnectionMTU];
-  self->_baseQualityIndex = VCConnection_PerPacketConnectionOverhead(a3);
+  HIDWORD(self->_colorInfo) = [change maxConnectionMTU];
+  self->_baseQualityIndex = VCConnection_PerPacketConnectionOverhead(change);
   if (self->super._operatingMode == 6)
   {
     [(VCMediaStream *)self updateTransportsWithConstantConnectionOverhead:?];
   }
 
-  [(VCVideoTransmitterBase *)self->_videoTransmitter handleActiveConnectionChange:a3];
+  [(VCVideoTransmitterBase *)self->_videoTransmitter handleActiveConnectionChange:change];
   [(VCObject *)self reportingAgent];
   [(VCVideoTransmitterBase *)self->_videoTransmitter encodingWidth];
   [(VCVideoTransmitterBase *)self->_videoTransmitter encodingHeight];
   [(VCVideoTransmitterBase *)self->_videoTransmitter targetFramerate];
   reportingVideoProp();
-  [(VCVideoReceiverBase *)self->_videoReceiver handleActiveConnectionChange:a3];
+  [(VCVideoReceiverBase *)self->_videoReceiver handleActiveConnectionChange:change];
 
   VCMediaStream_Unlock(self);
 }
 
-- (void)rateAdaptation:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5
+- (void)rateAdaptation:(id)adaptation targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&counter;
+  v6 = *&change;
   v24 = *MEMORY[0x1E69E9840];
-  if (![VCVideoStream shouldEnableRateControlForStreamType:self->_type]|| self->super._rateAdaptation != a3)
+  if (![VCVideoStream shouldEnableRateControlForStreamType:self->_type]|| self->super._rateAdaptation != adaptation)
   {
     return;
   }
@@ -9293,7 +9293,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v12 = [(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController];
+    vcrcRateController = [(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController];
     *v20 = 136316418;
     *&v20[4] = v10;
     *&v20[12] = 2080;
@@ -9301,7 +9301,7 @@ LABEL_13:
     *&v20[22] = 1024;
     LODWORD(v21) = 4040;
     WORD2(v21) = 2048;
-    *(&v21 + 6) = v12;
+    *(&v21 + 6) = vcrcRateController;
     HIWORD(v21) = 1024;
     *v22 = v6;
     *&v22[4] = 1024;
@@ -9335,7 +9335,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v18 = [(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController];
+    vcrcRateController2 = [(VCMediaStreamRateAdaptation *)self->super._rateAdaptation vcrcRateController];
     *v20 = 136316930;
     *&v20[4] = v16;
     *&v20[12] = 2080;
@@ -9347,7 +9347,7 @@ LABEL_13:
     HIWORD(v21) = 2048;
     *v22 = self;
     *&v22[8] = 2048;
-    *&v22[10] = v18;
+    *&v22[10] = vcrcRateController2;
     *&v22[18] = 1024;
     *&v22[20] = v6;
     LOWORD(v23) = 1024;
@@ -9371,20 +9371,20 @@ LABEL_14:
     rateSharingGroup = self->super._rateSharingGroup;
     if (rateSharingGroup)
     {
-      -[VCRateSharingGroup setTargetBitrate:fromRateSharingClient:](rateSharingGroup, "setTargetBitrate:fromRateSharingClient:", v6, [a3 vcrcRateController]);
+      -[VCRateSharingGroup setTargetBitrate:fromRateSharingClient:](rateSharingGroup, "setTargetBitrate:fromRateSharingClient:", v6, [adaptation vcrcRateController]);
     }
   }
 }
 
-- (void)redundancyController:(id)a3 redundancyVectorDidChange:(id *)a4
+- (void)redundancyController:(id)controller redundancyVectorDidChange:(id *)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_redundancyController != a3)
+  if (self->_redundancyController != controller)
   {
     return;
   }
 
-  [(VCVideoStream *)self setFECRedundancyVector:a4];
+  [(VCVideoStream *)self setFECRedundancyVector:change];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
@@ -9399,7 +9399,7 @@ LABEL_14:
       return;
     }
 
-    var0 = a4->var0;
+    var0 = change->var0;
     v17 = 136316162;
     v18 = v8;
     v19 = 2080;
@@ -9407,9 +9407,9 @@ LABEL_14:
     v21 = 1024;
     v22 = 4083;
     v23 = 2112;
-    v24 = a3;
+    controllerCopy = controller;
     v25 = 1024;
-    LODWORD(v26) = var0;
+    LODWORD(selfCopy) = var0;
     v11 = "VCVideoStream [%s] %s:%d VCVideoStream received redundancyController update redundancyControler=%@ redundancyArrayCount=%u";
     v12 = v9;
     v13 = 44;
@@ -9434,7 +9434,7 @@ LABEL_13:
     v15 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v16 = a4->var0;
+      v16 = change->var0;
       v17 = 136316674;
       v18 = v14;
       v19 = 2080;
@@ -9442,11 +9442,11 @@ LABEL_13:
       v21 = 1024;
       v22 = 4083;
       v23 = 2112;
-      v24 = v7;
+      controllerCopy = v7;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
-      v28 = a3;
+      controllerCopy2 = controller;
       v29 = 1024;
       v30 = v16;
       v11 = "VCVideoStream [%s] %s:%d %@(%p) VCVideoStream received redundancyController update redundancyControler=%@ redundancyArrayCount=%u";
@@ -9457,7 +9457,7 @@ LABEL_13:
   }
 }
 
-- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)a3
+- (void)updateSourcePlayoutTime:(const tagVCMediaTime *)time
 {
   v35 = *MEMORY[0x1E69E9840];
   if (VCMediaStream_State(self) != 2)
@@ -9470,7 +9470,7 @@ LABEL_13:
   {
     if (type == 3)
     {
-      [(VCVideoReceiverBase *)self->_videoReceiver updateSourcePlayoutTime:a3];
+      [(VCVideoReceiverBase *)self->_videoReceiver updateSourcePlayoutTime:time];
     }
 
     else if (objc_opt_class() == self)
@@ -9512,7 +9512,7 @@ LABEL_13:
           v31 = 2112;
           v32 = *&v6;
           v33 = 2048;
-          v34 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, "VCVideoStream [%s] %s:%d %@(%p) This should not be called for IP camera or display", &v25, 0x30u);
         }
       }
@@ -9576,7 +9576,7 @@ LABEL_25:
         v31 = 2048;
         v32 = v13;
         v33 = 2048;
-        v34 = *&v9;
+        selfCopy = *&v9;
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "VCVideoStream [%s] %s:%d remote media stall lastDecodedVideoFrameTime=%f currentTime=%f", &v25, 0x30u);
       }
     }
@@ -9587,8 +9587,8 @@ LABEL_25:
   }
 
 LABEL_30:
-  v14 = [(VCMediaStream *)self defaultStreamConfig];
-  if (VCVideoStreamConfig_StreamType(v14) == 3 && VCMediaStreamConfig_Direction(v14) == 2)
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  if (VCVideoStreamConfig_StreamType(defaultStreamConfig) == 3 && VCMediaStreamConfig_Direction(defaultStreamConfig) == 2)
   {
     v15 = v9 - self->_lastDecodedVideoFrameTime;
     lastStatisticsCollectorVideoStallTotalUpdateTime = self->_lastStatisticsCollectorVideoStallTotalUpdateTime;
@@ -9596,7 +9596,7 @@ LABEL_30:
     {
       if (v9 - lastStatisticsCollectorVideoStallTotalUpdateTime >= 1.0)
       {
-        v21 = VCMediaStreamConfig_MultiwayConfig(v14);
+        v21 = VCMediaStreamConfig_MultiwayConfig(defaultStreamConfig);
         v22 = VCMediaStreamMultiwayConfig_RemoteIDSParticipantID(v21);
         _VCMediaStream_SubmitStatisticsCollectorVideoStallUpdate(self, v22, v9, v15);
         self->_lastStatisticsCollectorVideoStallTotalUpdateTime = v9;
@@ -9622,7 +9622,7 @@ LABEL_30:
 
     else if (lastStatisticsCollectorVideoStallTotalUpdateTime > 0.0)
     {
-      v17 = VCMediaStreamConfig_MultiwayConfig(v14);
+      v17 = VCMediaStreamConfig_MultiwayConfig(defaultStreamConfig);
       v18 = VCMediaStreamMultiwayConfig_RemoteIDSParticipantID(v17);
       _VCMediaStream_SubmitStatisticsCollectorVideoStallUpdate(self, v18, v9, v15);
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -9681,9 +9681,9 @@ void __40__VCVideoStream_reportStreamPerfTimings__block_invoke(uint64_t a1)
   }
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
-  v3 = *&a3;
+  v3 = *&level;
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -9737,7 +9737,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 1024;
         v26 = v3;
         v8 = "VCVideoStream [%s] %s:%d %@(%p) Received thermal notification at level=%d";
@@ -9854,13 +9854,13 @@ void ___VCVideoStream_NotifyVideoStreamDelegate_block_invoke(uint64_t a1)
   }
 }
 
-- (void)redundancyController:(id)a3 redundancyPercentageDidChange:(unsigned int)a4
+- (void)redundancyController:(id)controller redundancyPercentageDidChange:(unsigned int)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_redundancyController == a3)
+  if (self->_redundancyController == controller)
   {
-    [(VCVideoStream *)self setFecRatio:VCRedundancyControllerVideo_ConvertRedundancyPercentageToRatio(a4)];
-    v6 = [(VCMediaStream *)self delegate];
+    [(VCVideoStream *)self setFecRatio:VCRedundancyControllerVideo_ConvertRedundancyPercentageToRatio(change)];
+    delegate = [(VCMediaStream *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       delegateNotificationQueue = self->super._delegateNotificationQueue;
@@ -9868,9 +9868,9 @@ void ___VCVideoStream_NotifyVideoStreamDelegate_block_invoke(uint64_t a1)
       v8[1] = 3221225472;
       v8[2] = __68__VCVideoStream_redundancyController_redundancyPercentageDidChange___block_invoke;
       v8[3] = &unk_1E85F3890;
-      v8[4] = v6;
+      v8[4] = delegate;
       v8[5] = self;
-      v9 = a4;
+      changeCopy = change;
       dispatch_async(delegateNotificationQueue, v8);
     }
   }

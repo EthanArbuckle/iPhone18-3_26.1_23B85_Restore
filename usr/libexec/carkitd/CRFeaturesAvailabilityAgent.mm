@@ -1,31 +1,31 @@
 @interface CRFeaturesAvailabilityAgent
-- (BOOL)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4;
-- (BOOL)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5;
-- (CRFeaturesAvailabilityAgent)initWithPreferencesManager:(id)a3 vehicleStore:(id)a4;
+- (BOOL)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier;
+- (BOOL)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier;
+- (CRFeaturesAvailabilityAgent)initWithPreferencesManager:(id)manager vehicleStore:(id)store;
 - (CRThemeAssetDisabling)assetDisabler;
-- (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)a3;
+- (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)key;
 - (unint64_t)_deviceFeatures;
-- (unint64_t)_disabledCarPlayFeaturesForVehicle:(id)a3;
-- (unint64_t)_supportedCarPlayFeaturesForVehicle:(id)a3;
+- (unint64_t)_disabledCarPlayFeaturesForVehicle:(id)vehicle;
+- (unint64_t)_supportedCarPlayFeaturesForVehicle:(id)vehicle;
 - (unint64_t)deviceSupportedCarPlayFeatures;
-- (unint64_t)supportedCarPlayFeaturesForCertificateSerial:(id)a3;
-- (unint64_t)supportedCarPlayFeaturesForVehicleIdentifier:(id)a3;
+- (unint64_t)supportedCarPlayFeaturesForCertificateSerial:(id)serial;
+- (unint64_t)supportedCarPlayFeaturesForVehicleIdentifier:(id)identifier;
 @end
 
 @implementation CRFeaturesAvailabilityAgent
 
-- (CRFeaturesAvailabilityAgent)initWithPreferencesManager:(id)a3 vehicleStore:(id)a4
+- (CRFeaturesAvailabilityAgent)initWithPreferencesManager:(id)manager vehicleStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = CRFeaturesAvailabilityAgent;
   v9 = [(CRFeaturesAvailabilityAgent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preferencesManager, a3);
-    objc_storeStrong(&v10->_vehicleStore, a4);
+    objc_storeStrong(&v9->_preferencesManager, manager);
+    objc_storeStrong(&v10->_vehicleStore, store);
   }
 
   return v10;
@@ -83,20 +83,20 @@
     v8 = 1;
   }
 
-  v14 = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
-  v15 = [v14 isCarPlayThemeSupportEnabled];
+  preferencesManager = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
+  isCarPlayThemeSupportEnabled = [preferencesManager isCarPlayThemeSupportEnabled];
 
-  if ([v15 BOOLValue])
+  if ([isCarPlayThemeSupportEnabled BOOLValue])
   {
-    v16 = [(CRFeaturesAvailabilityAgent *)self assetDisabler];
-    v17 = v16;
-    if (v16 && [v16 ferriteDisabled])
+    assetDisabler = [(CRFeaturesAvailabilityAgent *)self assetDisabler];
+    v17 = assetDisabler;
+    if (assetDisabler && [assetDisabler ferriteDisabled])
     {
-      v18 = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
-      v19 = [v18 forceCarPlayThemeSupportEnablement];
+      preferencesManager2 = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
+      forceCarPlayThemeSupportEnablement = [preferencesManager2 forceCarPlayThemeSupportEnablement];
 
-      v20 = [v19 BOOLValue];
-      if ((v20 & 1) == 0)
+      bOOLValue = [forceCarPlayThemeSupportEnablement BOOLValue];
+      if ((bOOLValue & 1) == 0)
       {
         v21 = CarGeneralLogging();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -106,7 +106,7 @@
         }
       }
 
-      v22 = v20 ^ 1;
+      v22 = bOOLValue ^ 1;
     }
 
     else
@@ -165,9 +165,9 @@
   return v24 | v25;
 }
 
-- (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)a3
+- (id)_BOOLValueInCarPlayDomainForKey:(__CFString *)key
 {
-  v3 = CFPreferencesCopyValue(a3, CRPreferencesNotMigratedDomain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(key, CRPreferencesNotMigratedDomain, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v3)
   {
     v4 = v3;
@@ -193,48 +193,48 @@
   return v6;
 }
 
-- (unint64_t)_disabledCarPlayFeaturesForVehicle:(id)a3
+- (unint64_t)_disabledCarPlayFeaturesForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 disabledFeaturesPreference];
-  v6 = v5;
-  if (v5)
+  vehicleCopy = vehicle;
+  disabledFeaturesPreference = [vehicleCopy disabledFeaturesPreference];
+  v6 = disabledFeaturesPreference;
+  if (disabledFeaturesPreference)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [disabledFeaturesPreference unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v8 = [(CRFeaturesAvailabilityAgent *)self assetDisabler];
-  if (v8)
+  assetDisabler = [(CRFeaturesAvailabilityAgent *)self assetDisabler];
+  if (assetDisabler)
   {
-    v9 = [v4 clusterAssetIdentifier];
-    v10 = [v4 clusterAssetiOSContentVersion];
-    v11 = [v4 clusterAssetVersion];
-    v12 = v11;
-    if (v9 && v10 && v11 && [v8 shouldDisableAssetWithIdentifier:v9 iOSContentVersion:v10 accessoryContentVersion:v11])
+    clusterAssetIdentifier = [vehicleCopy clusterAssetIdentifier];
+    clusterAssetiOSContentVersion = [vehicleCopy clusterAssetiOSContentVersion];
+    clusterAssetVersion = [vehicleCopy clusterAssetVersion];
+    v12 = clusterAssetVersion;
+    if (clusterAssetIdentifier && clusterAssetiOSContentVersion && clusterAssetVersion && [assetDisabler shouldDisableAssetWithIdentifier:clusterAssetIdentifier iOSContentVersion:clusterAssetiOSContentVersion accessoryContentVersion:clusterAssetVersion])
     {
-      v7 |= CRCarPlayFeaturesAllFerriteFeatures();
+      unsignedIntegerValue |= CRCarPlayFeaturesAllFerriteFeatures();
     }
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_supportedCarPlayFeaturesForVehicle:(id)a3
+- (unint64_t)_supportedCarPlayFeaturesForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [(CRFeaturesAvailabilityAgent *)self deviceSupportedCarPlayFeatures];
-  if (!v4)
+  vehicleCopy = vehicle;
+  deviceSupportedCarPlayFeatures = [(CRFeaturesAvailabilityAgent *)self deviceSupportedCarPlayFeatures];
+  if (!vehicleCopy)
   {
-    v8 = CRCarPlayFeaturesAllFerriteFeatures() & v5;
+    v8 = CRCarPlayFeaturesAllFerriteFeatures() & deviceSupportedCarPlayFeatures;
     goto LABEL_14;
   }
 
-  v6 = [(CRFeaturesAvailabilityAgent *)self _disabledCarPlayFeaturesForVehicle:v4]& v5;
+  v6 = [(CRFeaturesAvailabilityAgent *)self _disabledCarPlayFeaturesForVehicle:vehicleCopy]& deviceSupportedCarPlayFeatures;
   if (v6)
   {
     v7 = CarGeneralLogging();
@@ -245,41 +245,41 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "supportedCarPlayFeatures: features disabled by preference: %{public}lu", &v20, 0xCu);
     }
 
-    v5 ^= v6;
+    deviceSupportedCarPlayFeatures ^= v6;
   }
 
-  v8 = CRCarPlayFeaturesAllFerriteFeatures() & v5;
-  v9 = [v4 supportsThemeAssets];
-  if (!v9)
+  v8 = CRCarPlayFeaturesAllFerriteFeatures() & deviceSupportedCarPlayFeatures;
+  supportsThemeAssets = [vehicleCopy supportsThemeAssets];
+  if (!supportsThemeAssets)
   {
     goto LABEL_14;
   }
 
-  v10 = v9;
-  v11 = [v4 supportsThemeAssets];
-  v12 = [v11 BOOLValue];
+  v10 = supportsThemeAssets;
+  supportsThemeAssets2 = [vehicleCopy supportsThemeAssets];
+  bOOLValue = [supportsThemeAssets2 BOOLValue];
 
-  if (!v8 || !v12)
+  if (!v8 || !bOOLValue)
   {
-    if (v12)
+    if (bOOLValue)
     {
 LABEL_24:
-      v5 &= ~v8;
+      deviceSupportedCarPlayFeatures &= ~v8;
       goto LABEL_25;
     }
 
 LABEL_14:
-    v14 = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
-    v15 = [v14 isCarPlayRouteSharingEnabled];
+    preferencesManager = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
+    isCarPlayRouteSharingEnabled = [preferencesManager isCarPlayRouteSharingEnabled];
 
     v16 = CarGeneralLogging();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      if (v15)
+      if (isCarPlayRouteSharingEnabled)
       {
-        v17 = [v15 BOOLValue];
+        bOOLValue2 = [isCarPlayRouteSharingEnabled BOOLValue];
         v18 = @"NO";
-        if (v17)
+        if (bOOLValue2)
         {
           v18 = @"YES";
         }
@@ -297,9 +297,9 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "supportedCarPlayFeatures: vehicle doesn't support features requiring asset: %{public}lu routeSharingEnabled=%{public}@", &v20, 0x16u);
     }
 
-    if (![v15 BOOLValue])
+    if (![isCarPlayRouteSharingEnabled BOOLValue])
     {
-      v5 &= ~0x10uLL;
+      deviceSupportedCarPlayFeatures &= ~0x10uLL;
     }
 
     goto LABEL_24;
@@ -314,15 +314,15 @@ LABEL_14:
   }
 
 LABEL_25:
-  return v5;
+  return deviceSupportedCarPlayFeatures;
 }
 
 - (unint64_t)deviceSupportedCarPlayFeatures
 {
-  v3 = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
-  v4 = [v3 isCarPlayAllowed];
+  preferencesManager = [(CRFeaturesAvailabilityAgent *)self preferencesManager];
+  isCarPlayAllowed = [preferencesManager isCarPlayAllowed];
 
-  if (!v4)
+  if (!isCarPlayAllowed)
   {
     return 0;
   }
@@ -330,15 +330,15 @@ LABEL_25:
   return [(CRFeaturesAvailabilityAgent *)self _deviceFeatures];
 }
 
-- (BOOL)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4
+- (BOOL)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
-  v8 = [v7 vehicleForIdentifier:v6];
+  identifierCopy = identifier;
+  vehicleStore = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
+  v8 = [vehicleStore vehicleForIdentifier:identifierCopy];
 
   if (v8)
   {
-    v9 = [(CRFeaturesAvailabilityAgent *)self _disabledCarPlayFeaturesForVehicle:v8]& a3;
+    v9 = [(CRFeaturesAvailabilityAgent *)self _disabledCarPlayFeaturesForVehicle:v8]& features;
     v10 = v9 != 0;
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -350,7 +350,7 @@ LABEL_25:
       }
 
       v14 = 134349314;
-      v15 = a3;
+      featuresCopy = features;
       v16 = 2114;
       v17 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "disables CarPlay features %{public}lu: %{public}@", &v14, 0x16u);
@@ -362,7 +362,7 @@ LABEL_25:
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_100081F24(v6);
+      sub_100081F24(identifierCopy);
     }
 
     v10 = 0;
@@ -371,46 +371,46 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5
+- (BOOL)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
-  v10 = [v9 vehicleForIdentifier:v8];
+  disabledCopy = disabled;
+  identifierCopy = identifier;
+  vehicleStore = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
+  v10 = [vehicleStore vehicleForIdentifier:identifierCopy];
 
   if (v10)
   {
-    v11 = [v10 disabledFeaturesPreference];
-    v12 = v11;
-    if (v11)
+    disabledFeaturesPreference = [v10 disabledFeaturesPreference];
+    v12 = disabledFeaturesPreference;
+    if (disabledFeaturesPreference)
     {
-      v11 = [v11 unsignedIntegerValue];
+      disabledFeaturesPreference = [disabledFeaturesPreference unsignedIntegerValue];
     }
 
-    if (v5)
+    if (disabledCopy)
     {
-      v13 = v11 | a3;
+      v13 = disabledFeaturesPreference | features;
     }
 
     else
     {
-      v13 = v11 & ~a3;
+      v13 = disabledFeaturesPreference & ~features;
     }
 
     v14 = [NSNumber numberWithUnsignedInteger:v13];
     [v10 setDisabledFeaturesPreference:v14];
 
-    v15 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
-    v16 = [v15 saveVehicle:v10];
+    vehicleStore2 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
+    v16 = [vehicleStore2 saveVehicle:v10];
 
     v17 = CarGeneralLogging();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 UUIDString];
+      uUIDString = [identifierCopy UUIDString];
       v20 = 134349314;
       v21 = v13;
       v22 = 2112;
-      v23 = v18;
+      v23 = uUIDString;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "set disabled CarPlay features to %{public}lu for vehicleID: %@", &v20, 0x16u);
     }
   }
@@ -420,28 +420,28 @@ LABEL_25:
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_100081F24(v8);
+      sub_100081F24(identifierCopy);
     }
   }
 
   return v10 != 0;
 }
 
-- (unint64_t)supportedCarPlayFeaturesForCertificateSerial:(id)a3
+- (unint64_t)supportedCarPlayFeaturesForCertificateSerial:(id)serial
 {
-  v4 = a3;
-  v5 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
-  v6 = [v5 vehicleForCertificateSerial:v4];
+  serialCopy = serial;
+  vehicleStore = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
+  v6 = [vehicleStore vehicleForCertificateSerial:serialCopy];
 
   v7 = [(CRFeaturesAvailabilityAgent *)self _supportedCarPlayFeaturesForVehicle:v6];
   return v7;
 }
 
-- (unint64_t)supportedCarPlayFeaturesForVehicleIdentifier:(id)a3
+- (unint64_t)supportedCarPlayFeaturesForVehicleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
-  v6 = [v5 vehicleForIdentifier:v4];
+  identifierCopy = identifier;
+  vehicleStore = [(CRFeaturesAvailabilityAgent *)self vehicleStore];
+  v6 = [vehicleStore vehicleForIdentifier:identifierCopy];
 
   v7 = [(CRFeaturesAvailabilityAgent *)self _supportedCarPlayFeaturesForVehicle:v6];
   return v7;

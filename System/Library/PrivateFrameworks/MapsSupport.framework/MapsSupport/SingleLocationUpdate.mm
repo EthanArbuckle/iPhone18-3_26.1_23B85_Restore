@@ -1,19 +1,19 @@
 @interface SingleLocationUpdate
-- (BOOL)_isLocationGoodEnough:(id)a3;
+- (BOOL)_isLocationGoodEnough:(id)enough;
 - (double)acceptableAccuracy;
 - (double)desiredAccuracy;
 - (void)_cleanup;
-- (void)_completeWithLocation:(id)a3 error:(id)a4;
+- (void)_completeWithLocation:(id)location error:(id)error;
 - (void)_firstTimeout;
-- (void)_timeoutWithForcedCompletion:(BOOL)a3 rescheduleInterval:(double)a4 selector:(SEL)a5;
+- (void)_timeoutWithForcedCompletion:(BOOL)completion rescheduleInterval:(double)interval selector:(SEL)selector;
 - (void)cancel;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)requestSingleLocationUpdateWithCompletionHandler:(id)a3;
-- (void)setAcceptableAccuracy:(double)a3;
-- (void)setDesiredAccuracy:(double)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)requestSingleLocationUpdateWithCompletionHandler:(id)handler;
+- (void)setAcceptableAccuracy:(double)accuracy;
+- (void)setDesiredAccuracy:(double)accuracy;
 @end
 
 @implementation SingleLocationUpdate
@@ -26,15 +26,15 @@
   [(SingleLocationUpdate *)&v3 dealloc];
 }
 
-- (void)requestSingleLocationUpdateWithCompletionHandler:(id)a3
+- (void)requestSingleLocationUpdateWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004B700;
   v4[3] = &unk_100085C10;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -59,11 +59,11 @@
   return result;
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
   if (!self->_active)
   {
-    self->_desiredAccuracy = a3;
+    self->_desiredAccuracy = accuracy;
   }
 }
 
@@ -78,11 +78,11 @@
   return result;
 }
 
-- (void)setAcceptableAccuracy:(double)a3
+- (void)setAcceptableAccuracy:(double)accuracy
 {
   if (!self->_active)
   {
-    self->_acceptableAccuracy = a3;
+    self->_acceptableAccuracy = accuracy;
   }
 }
 
@@ -94,9 +94,9 @@
   [(SingleLocationUpdate *)self _timeoutWithForcedCompletion:0 rescheduleInterval:"_finalTimeout" selector:v4];
 }
 
-- (void)_timeoutWithForcedCompletion:(BOOL)a3 rescheduleInterval:(double)a4 selector:(SEL)a5
+- (void)_timeoutWithForcedCompletion:(BOOL)completion rescheduleInterval:(double)interval selector:(SEL)selector
 {
-  v7 = a3;
+  completionCopy = completion;
   [(NSTimer *)self->_timeout invalidate];
   if ([(SingleLocationUpdate *)self _isLocationGoodEnough:self->_lastLocation])
   {
@@ -110,7 +110,7 @@
 
   v10 = lastLocation;
   v11 = v10;
-  if (v10 || v7)
+  if (v10 || completionCopy)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -123,9 +123,9 @@
     goto LABEL_10;
   }
 
-  if (a4 >= 0.0 && a5)
+  if (interval >= 0.0 && selector)
   {
-    v12 = [NSTimer scheduledTimerWithTimeInterval:self target:a5 selector:0 userInfo:0 repeats:a4];
+    v12 = [NSTimer scheduledTimerWithTimeInterval:self target:selector selector:0 userInfo:0 repeats:interval];
     timeout = self->_timeout;
     self->_timeout = v12;
 LABEL_10:
@@ -159,36 +159,36 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, v10);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v6 = a3;
-  v4 = [v6 authorizationStatus] - 3;
+  authorizationCopy = authorization;
+  v4 = [authorizationCopy authorizationStatus] - 3;
   if (self->_active && v4 <= 1)
   {
-    [v6 startUpdatingLocation];
+    [authorizationCopy startUpdatingLocation];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 lastObject];
-  objc_storeStrong(&self->_lastLocation, v5);
-  if ([(SingleLocationUpdate *)self _isLocationGoodEnough:v5])
+  lastObject = [locations lastObject];
+  objc_storeStrong(&self->_lastLocation, lastObject);
+  if ([(SingleLocationUpdate *)self _isLocationGoodEnough:lastObject])
   {
-    [(SingleLocationUpdate *)self _completeWithLocation:v5 error:0];
+    [(SingleLocationUpdate *)self _completeWithLocation:lastObject error:0];
   }
 }
 
-- (BOOL)_isLocationGoodEnough:(id)a3
+- (BOOL)_isLocationGoodEnough:(id)enough
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  enoughCopy = enough;
+  v5 = enoughCopy;
+  if (!enoughCopy)
   {
     goto LABEL_7;
   }
 
-  [v4 horizontalAccuracy];
+  [enoughCopy horizontalAccuracy];
   v7 = v6;
   [(SingleLocationUpdate *)self desiredAccuracy];
   if (v7 <= v8)
@@ -216,34 +216,34 @@ LABEL_9:
   return v12;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v7 = a4;
-  if ([v7 code] || (objc_msgSend(v7, "domain"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", kCLErrorDomain), v5, (v6 & 1) == 0))
+  errorCopy = error;
+  if ([errorCopy code] || (objc_msgSend(errorCopy, "domain"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", kCLErrorDomain), v5, (v6 & 1) == 0))
   {
-    [(SingleLocationUpdate *)self _completeWithLocation:0 error:v7];
+    [(SingleLocationUpdate *)self _completeWithLocation:0 error:errorCopy];
   }
 }
 
-- (void)_completeWithLocation:(id)a3 error:(id)a4
+- (void)_completeWithLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   [(NSTimer *)self->_timeout invalidate];
-  if (v6)
+  if (locationCopy)
   {
     v8 = sub_10004B920();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       [(SingleLocationUpdate *)self _timeSinceStart];
       v10 = v9;
-      [v6 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       v12 = v11;
       [(SingleLocationUpdate *)self desiredAccuracy];
       v14 = v13;
       [(SingleLocationUpdate *)self acceptableAccuracy];
       v30 = 134219008;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2048;
       v33 = v10;
       v34 = 2048;
@@ -266,17 +266,17 @@ LABEL_7:
 
   v8 = sub_10004B920();
   v20 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
-  if (v7)
+  if (errorCopy)
   {
     if (v20)
     {
       [(SingleLocationUpdate *)self _timeSinceStart];
       v30 = 134218498;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2048;
       v33 = v21;
       v34 = 2112;
-      v35 = v7;
+      v35 = errorCopy;
       v16 = "Single location update %p failed after %#.3lfs with error: %@";
       v17 = v8;
       v18 = OS_LOG_TYPE_ERROR;
@@ -299,7 +299,7 @@ LABEL_8:
     v28 = v27;
     [(SingleLocationUpdate *)self acceptableAccuracy];
     v30 = 134219008;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2048;
     v33 = v24;
     v34 = 2048;
@@ -311,13 +311,13 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Single location update %p never got a good-enough location after %#.3lfs (best received: ±%#.2lfm, desired: ±%#.2lfm, acceptable: ±%#.2lfm)", &v30, 0x34u);
   }
 
-  v7 = [NSError errorWithDomain:kCLErrorDomain code:0 userInfo:0];
+  errorCopy = [NSError errorWithDomain:kCLErrorDomain code:0 userInfo:0];
 LABEL_9:
   v22 = objc_retainBlock(self->_completionHandler);
   [(SingleLocationUpdate *)self _cleanup];
   if (v22)
   {
-    v22[2](v22, v6, v7);
+    v22[2](v22, locationCopy, errorCopy);
   }
 }
 

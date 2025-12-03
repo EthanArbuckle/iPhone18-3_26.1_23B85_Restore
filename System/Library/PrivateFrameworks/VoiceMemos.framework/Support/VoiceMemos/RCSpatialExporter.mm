@@ -1,15 +1,15 @@
 @interface RCSpatialExporter
 - (_TtC10voicememod17RCSpatialExporter)init;
-- (_TtC10voicememod17RCSpatialExporter)initWithComposition:(id)a3 metadata:(id)a4;
+- (_TtC10voicememod17RCSpatialExporter)initWithComposition:(id)composition metadata:(id)metadata;
 - (float)progress;
-- (void)writeCompositionWithCompletionBlock:(id)a3;
+- (void)writeCompositionWithCompletionBlock:(id)block;
 @end
 
 @implementation RCSpatialExporter
 
-- (_TtC10voicememod17RCSpatialExporter)initWithComposition:(id)a3 metadata:(id)a4
+- (_TtC10voicememod17RCSpatialExporter)initWithComposition:(id)composition metadata:(id)metadata
 {
-  if (a4)
+  if (metadata)
   {
     sub_100029134(0, &qword_10005CC78, AVMetadataItem_ptr);
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -24,21 +24,21 @@
   *v7 = 0u;
   v7[1] = 0u;
   v7[2] = 0u;
-  *(&self->super.isa + OBJC_IVAR____TtC10voicememod17RCSpatialExporter_composition) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10voicememod17RCSpatialExporter_composition) = composition;
   *(&self->super.isa + OBJC_IVAR____TtC10voicememod17RCSpatialExporter_metadata) = v6;
   v10.receiver = self;
   v10.super_class = type metadata accessor for RCSpatialExporter();
-  v8 = a3;
+  compositionCopy = composition;
   return [(RCSpatialExporter *)&v10 init];
 }
 
-- (void)writeCompositionWithCompletionBlock:(id)a3
+- (void)writeCompositionWithCompletionBlock:(id)block
 {
   v5 = sub_100024720(&qword_10005CB50, &qword_10003F510);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(block);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = type metadata accessor for TaskPriority();
@@ -49,13 +49,13 @@
   v12[4] = self;
   v12[5] = sub_10002C78C;
   v12[6] = v10;
-  v13 = self;
+  selfCopy = self;
   sub_10002C968(0, 0, v8, &unk_10003FAB8, v12);
 }
 
 - (float)progress
 {
-  v2 = self;
+  selfCopy = self;
   sub_100030AE0();
   v4 = v3;
 

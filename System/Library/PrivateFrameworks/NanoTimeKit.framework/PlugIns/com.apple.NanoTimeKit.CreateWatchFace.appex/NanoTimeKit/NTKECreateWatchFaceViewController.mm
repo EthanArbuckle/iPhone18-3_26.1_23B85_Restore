@@ -1,20 +1,20 @@
 @interface NTKECreateWatchFaceViewController
-- (NTKECreateWatchFaceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NTKECreateWatchFaceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_deviceDidBecomeActive;
 - (void)_displayChooser;
-- (void)_faceAdded:(id)a3;
+- (void)_faceAdded:(id)added;
 - (void)_finishedLoadingAssets;
 - (void)_loadImages;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKECreateWatchFaceViewController
 
-- (NTKECreateWatchFaceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKECreateWatchFaceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v9 = sub_100004914();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -76,14 +76,14 @@
 
       v19 = v18;
       _Block_object_dispose(&v31, 8);
-      v20 = [v18 sharedAppLibrary];
+      sharedAppLibrary = [v18 sharedAppLibrary];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100004A28;
       v28[3] = &unk_10000C3A8;
       v21 = v17;
       v29 = v21;
-      [v20 prewarmCompanionDaemonWithCompletion:v28];
+      [sharedAppLibrary prewarmCompanionDaemonWithCompletion:v28];
 
       dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
       v31 = 0;
@@ -185,24 +185,24 @@ LABEL_15:
   v8 = objc_opt_new();
   v9 = [v7 initWithRootViewController:v8];
 
-  v10 = [(NTKECreateWatchFaceViewController *)self view];
-  [v10 bounds];
+  view = [(NTKECreateWatchFaceViewController *)self view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v9 view];
-  [v19 setBounds:{v12, v14, v16, v18}];
+  view2 = [v9 view];
+  [view2 setBounds:{v12, v14, v16, v18}];
 
   [(NTKECreateWatchFaceViewController *)self addChildViewController:v9];
-  v20 = [(NTKECreateWatchFaceViewController *)self view];
-  v21 = [v9 view];
-  [v20 addSubview:v21];
+  view3 = [(NTKECreateWatchFaceViewController *)self view];
+  view4 = [v9 view];
+  [view3 addSubview:view4];
 
   [v9 didMoveToParentViewController:self];
   v22 = +[UIColor systemBackgroundColor];
-  v23 = [v9 view];
-  [v23 setBackgroundColor:v22];
+  view5 = [v9 view];
+  [view5 setBackgroundColor:v22];
 
   [(NTKECreateWatchFaceViewController *)self setNtkNavController:v9];
   if (self->_assetsLoaded)
@@ -211,20 +211,20 @@ LABEL_15:
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = NTKECreateWatchFaceViewController;
-  [(NTKECreateWatchFaceViewController *)&v4 beginRequestWithExtensionContext:a3];
+  [(NTKECreateWatchFaceViewController *)&v4 beginRequestWithExtensionContext:context];
   [(NTKECreateWatchFaceViewController *)self _loadImages];
 }
 
-- (void)_faceAdded:(id)a3
+- (void)_faceAdded:(id)added
 {
-  v6 = [(NTKECreateWatchFaceViewController *)self extensionContext];
-  v4 = [(NTKECreateWatchFaceViewController *)self extensionContext];
-  v5 = [v4 inputItems];
-  [v6 completeRequestReturningItems:v5 completionHandler:0];
+  extensionContext = [(NTKECreateWatchFaceViewController *)self extensionContext];
+  extensionContext2 = [(NTKECreateWatchFaceViewController *)self extensionContext];
+  inputItems = [extensionContext2 inputItems];
+  [extensionContext completeRequestReturningItems:inputItems completionHandler:0];
 }
 
 - (void)_loadImages
@@ -274,9 +274,9 @@ LABEL_15:
   v12[3] = &unk_10000C3A8;
   v12[4] = self;
   v3 = objc_retainBlock(v12);
-  v4 = [(NTKECreateWatchFaceViewController *)self ntkNavController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  ntkNavController = [(NTKECreateWatchFaceViewController *)self ntkNavController];
+  viewControllers = [ntkNavController viewControllers];
+  v6 = [viewControllers objectAtIndexedSubscript:0];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -291,8 +291,8 @@ LABEL_15:
     v10[3] = &unk_10000C4B0;
     v11 = v3;
     v8 = [CLKRenderingContext sharedRenderingContext:_NSConcreteStackBlock];
-    v9 = [v8 device];
-    sub_100005E6C(v10, v9);
+    device = [v8 device];
+    sub_100005E6C(v10, device);
   }
 }
 

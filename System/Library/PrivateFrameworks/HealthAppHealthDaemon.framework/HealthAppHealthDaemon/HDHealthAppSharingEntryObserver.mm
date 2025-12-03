@@ -1,20 +1,20 @@
 @interface HDHealthAppSharingEntryObserver
-- (HDHealthAppSharingEntryObserver)initWithProfile:(id)a3;
+- (HDHealthAppSharingEntryObserver)initWithProfile:(id)profile;
 @end
 
 @implementation HDHealthAppSharingEntryObserver
 
-- (HDHealthAppSharingEntryObserver)initWithProfile:(id)a3
+- (HDHealthAppSharingEntryObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDHealthAppSharingEntryObserver;
   v5 = [(HDHealthAppSharingEntryObserver *)&v11 init];
   if (v5)
   {
-    v6 = [v4 sharingEntryManager];
+    sharingEntryManager = [profileCopy sharingEntryManager];
     sharingEntryManager = v5->_sharingEntryManager;
-    v5->_sharingEntryManager = v6;
+    v5->_sharingEntryManager = sharingEntryManager;
 
     [(HDSummarySharingEntryManager *)v5->_sharingEntryManager setDelegate:v5];
     v8 = objc_alloc_init(HDHAHealthPluginHostFeedGenerator);

@@ -1,15 +1,15 @@
 @interface MCMAMFI
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (Class)lwcrClass;
-- (MCMAMFI)initWithAuditToken:(id *)a3;
-- (id)_encodeRequirement:(id)a3 name:(id)a4 reason:(unint64_t)a5;
-- (id)_encodedQueriesWithContainerConfig:(id)a3 teamID:(id)a4;
+- (MCMAMFI)initWithAuditToken:(id *)token;
+- (id)_encodeRequirement:(id)requirement name:(id)name reason:(unint64_t)reason;
+- (id)_encodedQueriesWithContainerConfig:(id)config teamID:(id)d;
 - (id)_requirementForProfileValidatedEntitlements;
-- (id)_requirementForTeamID:(id)a3;
-- (id)_requirementForValidationCategory:(id)a3;
+- (id)_requirementForTeamID:(id)d;
+- (id)_requirementForValidationCategory:(id)category;
 - (id)_requirementForiOSPlatform;
-- (unint64_t)signaturePassesStrictScrutinyForAppGroupEntitlementWithContainerConfig:(id)a3 teamID:(id)a4;
-- (void)setLWCRClass:(Class)a3;
+- (unint64_t)signaturePassesStrictScrutinyForAppGroupEntitlementWithContainerConfig:(id)config teamID:(id)d;
+- (void)setLWCRClass:(Class)class;
 @end
 
 @implementation MCMAMFI
@@ -23,10 +23,10 @@
   return self;
 }
 
-- (void)setLWCRClass:(Class)a3
+- (void)setLWCRClass:(Class)class
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_lwcrClass = a3;
+  self->_lwcrClass = class;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -39,94 +39,94 @@
   return lwcrClass;
 }
 
-- (id)_encodedQueriesWithContainerConfig:(id)a3 teamID:(id)a4
+- (id)_encodedQueriesWithContainerConfig:(id)config teamID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  if ([v6 honorGroupContainerEntitlementForPlatformBinary])
+  configCopy = config;
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([configCopy honorGroupContainerEntitlementForPlatformBinary])
   {
-    v9 = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75B20];
-    v10 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"platform binary" reason:10];
+    _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75B20];
+    v10 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"platform binary" reason:10];
     if (!v10)
     {
       goto LABEL_23;
     }
 
     v11 = v10;
-    [v8 addObject:v10];
+    [array addObject:v10];
   }
 
-  if ([v6 honorGroupContainerEntitlementForAppStoreSigned])
+  if ([configCopy honorGroupContainerEntitlementForAppStoreSigned])
   {
-    v9 = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75B38];
-    v12 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"MAS" reason:6];
+    _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75B38];
+    v12 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"MAS" reason:6];
     if (!v12)
     {
       goto LABEL_23;
     }
 
     v13 = v12;
-    [v8 addObject:v12];
+    [array addObject:v12];
   }
 
-  if ([v6 honorGroupContainerEntitlementForProfileValidatedEntitlements])
+  if ([configCopy honorGroupContainerEntitlementForProfileValidatedEntitlements])
   {
-    v9 = [(MCMAMFI *)self _requirementForProfileValidatedEntitlements];
-    v14 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"profile validated entitlements" reason:4];
+    _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForProfileValidatedEntitlements];
+    v14 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"profile validated entitlements" reason:4];
     if (!v14)
     {
       goto LABEL_23;
     }
 
     v15 = v14;
-    [v8 addObject:v14];
+    [array addObject:v14];
   }
 
-  if ([v6 honorGroupContainerEntitlementForMatchingTeamIDPrefix])
+  if ([configCopy honorGroupContainerEntitlementForMatchingTeamIDPrefix])
   {
-    v9 = [(MCMAMFI *)self _requirementForTeamID:v7];
-    if (v9)
+    _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForTeamID:dCopy];
+    if (_requirementForProfileValidatedEntitlements)
     {
-      v16 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"team ID prefix" reason:8];
+      v16 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"team ID prefix" reason:8];
       if (!v16)
       {
         goto LABEL_23;
       }
 
       v17 = v16;
-      [v8 addObject:v16];
+      [array addObject:v16];
     }
   }
 
-  if ([v6 honorGroupContainerEntitlementForiPadAppsOnMac])
+  if ([configCopy honorGroupContainerEntitlementForiPadAppsOnMac])
   {
-    v9 = [(MCMAMFI *)self _requirementForiOSPlatform];
-    v18 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"iPad app" reason:11];
+    _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForiOSPlatform];
+    v18 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"iPad app" reason:11];
     if (!v18)
     {
       goto LABEL_23;
     }
 
     v19 = v18;
-    [v8 addObject:v18];
+    [array addObject:v18];
   }
 
-  if (![v6 honorGroupContainerEntitlementForTestFlight])
+  if (![configCopy honorGroupContainerEntitlementForTestFlight])
   {
     goto LABEL_21;
   }
 
-  v9 = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75AF0];
-  v20 = [(MCMAMFI *)self _encodeRequirement:v9 name:@"TestFlight" reason:7];
+  _requirementForProfileValidatedEntitlements = [(MCMAMFI *)self _requirementForValidationCategory:&unk_1F5A75AF0];
+  v20 = [(MCMAMFI *)self _encodeRequirement:_requirementForProfileValidatedEntitlements name:@"TestFlight" reason:7];
   if (v20)
   {
     v21 = v20;
-    [v8 addObject:v20];
+    [array addObject:v20];
 
 LABEL_21:
-    if ([v8 count])
+    if ([array count])
     {
       goto LABEL_25;
     }
@@ -136,29 +136,29 @@ LABEL_21:
 
 LABEL_23:
 
-  v8 = v9;
+  array = _requirementForProfileValidatedEntitlements;
 LABEL_24:
 
-  v8 = 0;
+  array = 0;
 LABEL_25:
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
-- (id)_encodeRequirement:(id)a3 name:(id)a4 reason:(unint64_t)a5
+- (id)_encodeRequirement:(id)requirement name:(id)name reason:(unint64_t)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  requirementCopy = requirement;
+  nameCopy = name;
   v18 = 0;
-  v10 = [(objc_class *)[(MCMAMFI *)self lwcrClass] withVersion:1 withConstraintCategory:0 withRequirements:v8 withError:&v18];
+  v10 = [(objc_class *)[(MCMAMFI *)self lwcrClass] withVersion:1 withConstraintCategory:0 withRequirements:requirementCopy withError:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = [v10 externalRepresentation];
-    v13 = [[MCMAMFIEncodedQuery alloc] initWithLoggingName:v9 reason:a5 encodedQuery:v12];
+    externalRepresentation = [v10 externalRepresentation];
+    v13 = [[MCMAMFIEncodedQuery alloc] initWithLoggingName:nameCopy reason:reason encodedQuery:externalRepresentation];
   }
 
   else
@@ -167,13 +167,13 @@ LABEL_25:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v8;
+      v20 = requirementCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_error_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_ERROR, "Could not construct LWCR for requirement %@; error = %@", buf, 0x16u);
     }
 
-    v12 = 0;
+    externalRepresentation = 0;
     v13 = 0;
   }
 
@@ -197,13 +197,13 @@ LABEL_25:
   return &unk_1F5A759D8;
 }
 
-- (id)_requirementForValidationCategory:(id)a3
+- (id)_requirementForValidationCategory:(id)category
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"validation-category";
-  v9[0] = a3;
+  v9[0] = category;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  categoryCopy = category;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -211,17 +211,17 @@ LABEL_25:
   return v5;
 }
 
-- (id)_requirementForTeamID:(id)a3
+- (id)_requirementForTeamID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v10 = a3;
+    dCopy = d;
     v11 = @"$optional";
     v9 = @"team-identifier";
     v3 = MEMORY[0x1E695DF20];
-    v4 = a3;
-    v5 = [v3 dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    dCopy2 = d;
+    v5 = [v3 dictionaryWithObjects:&dCopy forKeys:&v9 count:1];
     v12[0] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
@@ -236,15 +236,15 @@ LABEL_25:
   return v6;
 }
 
-- (unint64_t)signaturePassesStrictScrutinyForAppGroupEntitlementWithContainerConfig:(id)a3 teamID:(id)a4
+- (unint64_t)signaturePassesStrictScrutinyForAppGroupEntitlementWithContainerConfig:(id)config teamID:(id)d
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  dCopy = d;
   [(MCMAMFI *)self auditToken];
   pid = container_audit_token_get_pid();
   v8 = objc_autoreleasePoolPush();
-  if (![(MCMAMFI *)self lwcrClass]|| ([(MCMAMFI *)self _encodedQueriesWithContainerConfig:v6 teamID:v7], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![(MCMAMFI *)self lwcrClass]|| ([(MCMAMFI *)self _encodedQueriesWithContainerConfig:configCopy teamID:dCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     objc_autoreleasePoolPop(v8);
 LABEL_21:
@@ -256,7 +256,7 @@ LABEL_21:
       _os_log_impl(&dword_1DF2C3000, v23, OS_LOG_TYPE_DEFAULT, "Requestor's signature did not pass strict scrutiny; pid = %d", v40, 8u);
     }
 
-    v22 = 1;
+    reason = 1;
     goto LABEL_24;
   }
 
@@ -270,8 +270,8 @@ LABEL_21:
   {
     v12 = v11;
     v26 = v8;
-    v27 = v7;
-    v28 = v6;
+    v27 = dCopy;
+    v28 = configCopy;
     v13 = *v44;
     while (2)
     {
@@ -285,10 +285,10 @@ LABEL_21:
         v15 = *(*(&v43 + 1) + 8 * i);
         bzero(v40, 0x404uLL);
         [(MCMAMFI *)self auditToken];
-        v16 = [v15 encodedQuery];
-        [v16 bytes];
-        v17 = [v15 encodedQuery];
-        [v17 length];
+        encodedQuery = [v15 encodedQuery];
+        [encodedQuery bytes];
+        encodedQuery2 = [v15 encodedQuery];
+        [encodedQuery2 length];
         v18 = amfi_launch_constraint_matches_process();
 
         v19 = container_log_handle_for_category();
@@ -304,11 +304,11 @@ LABEL_21:
             v20 = "insufficient for";
           }
 
-          v21 = [v15 loggingName];
+          loggingName = [v15 loggingName];
           *buf = 136316162;
           v31 = v20;
           v32 = 2112;
-          v33 = v21;
+          v33 = loggingName;
           v34 = 1024;
           v35 = pid;
           v36 = 1024;
@@ -320,9 +320,9 @@ LABEL_21:
 
         if (v18)
         {
-          v22 = [v15 reason];
-          v7 = v27;
-          v6 = v28;
+          reason = [v15 reason];
+          dCopy = v27;
+          configCopy = v28;
           v8 = v26;
           goto LABEL_20;
         }
@@ -337,16 +337,16 @@ LABEL_21:
       break;
     }
 
-    v7 = v27;
-    v6 = v28;
+    dCopy = v27;
+    configCopy = v28;
     v8 = v26;
   }
 
-  v22 = 1;
+  reason = 1;
 LABEL_20:
 
   objc_autoreleasePoolPop(v8);
-  if (v22 == 1)
+  if (reason == 1)
   {
     goto LABEL_21;
   }
@@ -354,10 +354,10 @@ LABEL_20:
 LABEL_24:
 
   v24 = *MEMORY[0x1E69E9840];
-  return v22;
+  return reason;
 }
 
-- (MCMAMFI)initWithAuditToken:(id *)a3
+- (MCMAMFI)initWithAuditToken:(id *)token
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -366,8 +366,8 @@ LABEL_24:
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0[4];
-    *v4->_auditToken.val = *a3->var0;
+    v6 = *&token->var0[4];
+    *v4->_auditToken.val = *token->var0;
     *&v4->_auditToken.val[4] = v6;
     v4->_lwcrClass = objc_opt_class();
   }

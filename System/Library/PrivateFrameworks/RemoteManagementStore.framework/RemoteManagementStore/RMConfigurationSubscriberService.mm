@@ -1,100 +1,100 @@
 @interface RMConfigurationSubscriberService
-+ (id)newConfigurationSubscriberServiceWithXPCConnection:(id)a3;
-- (RMConfigurationSubscriberService)initWithXPCConnection:(id)a3;
-- (void)fetchThenApplyConfigurationsWithScope:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchThenUpdateConfigurationUIsWithScope:(int64_t)a3 completionHandler:(id)a4;
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
++ (id)newConfigurationSubscriberServiceWithXPCConnection:(id)connection;
+- (RMConfigurationSubscriberService)initWithXPCConnection:(id)connection;
+- (void)fetchThenApplyConfigurationsWithScope:(int64_t)scope completionHandler:(id)handler;
+- (void)fetchThenUpdateConfigurationUIsWithScope:(int64_t)scope completionHandler:(id)handler;
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation RMConfigurationSubscriberService
 
-+ (id)newConfigurationSubscriberServiceWithXPCConnection:(id)a3
++ (id)newConfigurationSubscriberServiceWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[RMConfigurationSubscriberService alloc] initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [[RMConfigurationSubscriberService alloc] initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (RMConfigurationSubscriberService)initWithXPCConnection:(id)a3
+- (RMConfigurationSubscriberService)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = RMConfigurationSubscriberService;
   v5 = [(RMConfigurationSubscriberService *)&v21 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 infoDictionary];
-    v8 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:v7];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v8 = [RMConfigurationSubscriberDescription descriptionWithServiceDictionary:infoDictionary];
 
-    v9 = [v8 types];
-    v10 = [v9 copy];
+    types = [v8 types];
+    v10 = [types copy];
     configurationTypes = v5->_configurationTypes;
     v5->_configurationTypes = v10;
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 infoDictionary];
-    v14 = [RMStatusPublisherDescription descriptionWithServiceDictionary:v13];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    infoDictionary2 = [mainBundle2 infoDictionary];
+    v14 = [RMStatusPublisherDescription descriptionWithServiceDictionary:infoDictionary2];
 
-    v15 = [v14 statusKeys];
-    v16 = [v15 allObjects];
+    statusKeys = [v14 statusKeys];
+    allObjects = [statusKeys allObjects];
     statusKeys = v5->_statusKeys;
-    v5->_statusKeys = v16;
+    v5->_statusKeys = allObjects;
 
-    v18 = [v4 valueForEntitlement:@"com.apple.private.remotemanagement.configuration-subscriber-service"];
+    v18 = [connectionCopy valueForEntitlement:@"com.apple.private.remotemanagement.configuration-subscriber-service"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
     }
 
     else
     {
-      v19 = 0;
+      bOOLValue = 0;
     }
 
-    v5->_hasServiceEntitlement = v19;
+    v5->_hasServiceEntitlement = bOOLValue;
   }
 
   return v5;
 }
 
-- (void)fetchThenApplyConfigurationsWithScope:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchThenApplyConfigurationsWithScope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
-  v8 = [MEMORY[0x277D45F58] configurationSubscriberService];
-  v9 = v8;
-  if (v7)
+  handlerCopy = handler;
+  hasServiceEntitlement = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
+  configurationSubscriberService = [MEMORY[0x277D45F58] configurationSubscriberService];
+  v9 = configurationSubscriberService;
+  if (hasServiceEntitlement)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_DEBUG))
     {
-      [RMConfigurationSubscriberService fetchThenApplyConfigurationsWithScope:a3 completionHandler:self];
+      [RMConfigurationSubscriberService fetchThenApplyConfigurationsWithScope:scope completionHandler:self];
     }
 
     v10 = MEMORY[0x277CBEB98];
-    v11 = [(RMConfigurationSubscriberService *)self configurationTypes];
-    v12 = [v10 setWithArray:v11];
+    configurationTypes = [(RMConfigurationSubscriberService *)self configurationTypes];
+    v12 = [v10 setWithArray:configurationTypes];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __92__RMConfigurationSubscriberService_fetchThenApplyConfigurationsWithScope_completionHandler___block_invoke;
     v21[3] = &unk_279B05B60;
-    v23 = a3;
+    scopeCopy = scope;
     v21[4] = self;
-    v22 = v6;
-    [(RMConfigurationSubscriberClient *)self fetchConfigurationsWithTypes:v12 scope:a3 completionHandler:v21];
+    v22 = handlerCopy;
+    [(RMConfigurationSubscriberClient *)self fetchConfigurationsWithTypes:v12 scope:scope completionHandler:v21];
   }
 
   else
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_ERROR))
     {
       [(RMConfigurationSubscriberService *)v9 fetchThenApplyConfigurationsWithScope:v13 completionHandler:v14, v15, v16, v17, v18, v19];
     }
 
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:1 userInfo:0];
-    (*(v6 + 2))(v6, v20);
+    (*(handlerCopy + 2))(handlerCopy, v20);
   }
 }
 
@@ -122,42 +122,42 @@ void __92__RMConfigurationSubscriberService_fetchThenApplyConfigurationsWithScop
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchThenUpdateConfigurationUIsWithScope:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchThenUpdateConfigurationUIsWithScope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
-  v8 = [MEMORY[0x277D45F58] configurationSubscriberService];
-  v9 = v8;
-  if (v7)
+  handlerCopy = handler;
+  hasServiceEntitlement = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
+  configurationSubscriberService = [MEMORY[0x277D45F58] configurationSubscriberService];
+  v9 = configurationSubscriberService;
+  if (hasServiceEntitlement)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_DEBUG))
     {
-      [RMConfigurationSubscriberService fetchThenUpdateConfigurationUIsWithScope:a3 completionHandler:?];
+      [RMConfigurationSubscriberService fetchThenUpdateConfigurationUIsWithScope:scope completionHandler:?];
     }
 
     v10 = MEMORY[0x277CBEB98];
-    v11 = [(RMConfigurationSubscriberService *)self configurationTypes];
-    v12 = [v10 setWithArray:v11];
+    configurationTypes = [(RMConfigurationSubscriberService *)self configurationTypes];
+    v12 = [v10 setWithArray:configurationTypes];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __95__RMConfigurationSubscriberService_fetchThenUpdateConfigurationUIsWithScope_completionHandler___block_invoke;
     v21[3] = &unk_279B05B88;
-    v23 = a3;
-    v22 = v6;
-    [(RMConfigurationSubscriberClient *)self fetchConfigurationUIsWithTypes:v12 scope:a3 completionHandler:v21];
+    scopeCopy = scope;
+    v22 = handlerCopy;
+    [(RMConfigurationSubscriberClient *)self fetchConfigurationUIsWithTypes:v12 scope:scope completionHandler:v21];
 
     v13 = v22;
   }
 
   else
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_ERROR))
     {
       [(RMConfigurationSubscriberService *)v9 fetchThenApplyConfigurationsWithScope:v14 completionHandler:v15, v16, v17, v18, v19, v20];
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:1 userInfo:0];
-    (*(v6 + 2))(v6, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 
@@ -185,41 +185,41 @@ void __95__RMConfigurationSubscriberService_fetchThenUpdateConfigurationUIsWithS
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)publishStatusKeys:(id)a3 storeIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)publishStatusKeys:(id)keys storeIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
-  v14 = [MEMORY[0x277D45F58] configurationSubscriberService];
-  v15 = v14;
-  if (v13)
+  keysCopy = keys;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  hasServiceEntitlement = [(RMConfigurationSubscriberService *)self hasServiceEntitlement];
+  configurationSubscriberService = [MEMORY[0x277D45F58] configurationSubscriberService];
+  v15 = configurationSubscriberService;
+  if (hasServiceEntitlement)
   {
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_DEBUG))
     {
-      [RMConfigurationSubscriberService publishStatusKeys:v10 storeIdentifier:v15 scope:? completionHandler:?];
+      [RMConfigurationSubscriberService publishStatusKeys:keysCopy storeIdentifier:v15 scope:? completionHandler:?];
     }
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __94__RMConfigurationSubscriberService_publishStatusKeys_storeIdentifier_scope_completionHandler___block_invoke;
     v24[3] = &unk_279B05808;
-    v25 = v10;
-    v26 = v12;
-    [(RMConfigurationSubscriberClient *)self sendStatusKeys:v25 storeIdentifier:v11 scope:a5 completionHandler:v24];
+    v25 = keysCopy;
+    v26 = handlerCopy;
+    [(RMConfigurationSubscriberClient *)self sendStatusKeys:v25 storeIdentifier:identifierCopy scope:scope completionHandler:v24];
 
     v16 = v25;
   }
 
   else
   {
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(configurationSubscriberService, OS_LOG_TYPE_ERROR))
     {
       [(RMConfigurationSubscriberService *)v15 fetchThenApplyConfigurationsWithScope:v17 completionHandler:v18, v19, v20, v21, v22, v23];
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:1 userInfo:0];
-    (*(v12 + 2))(v12, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 }
 

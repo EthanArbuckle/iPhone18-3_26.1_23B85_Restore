@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer_$1
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer_$1)initWithJavaLangIterable:(id)a3 withJavaLangIterable:(id)a4 withJavaUtilMap:(id)a5;
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer_$1)initWithJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable withJavaUtilMap:(id)map;
 - (id)iterator;
 - (void)dealloc;
 @end
@@ -14,19 +14,19 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaLangIterable *)v5 iterator];
+  iterator = [(JavaLangIterable *)v5 iterator];
   v7 = new_OrgApacheLuceneUtilLongsRef_initWithInt_(256);
   v8 = [OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer__1__1 alloc];
-  sub_1000B0CF4(&v8->super.isa, self, v4, v7, v6);
+  sub_1000B0CF4(&v8->super.isa, self, v4, v7, iterator);
 
   return v8;
 }
 
-- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer_$1)initWithJavaLangIterable:(id)a3 withJavaLangIterable:(id)a4 withJavaUtilMap:(id)a5
+- (OrgApacheLuceneCodecsLucene50Lucene50DocValuesConsumer_$1)initWithJavaLangIterable:(id)iterable withJavaLangIterable:(id)langIterable withJavaUtilMap:(id)map
 {
-  JreStrongAssign(&self->val$docToValueCount_, a3);
-  JreStrongAssign(&self->val$values_, a4);
-  JreStrongAssign(&self->val$setIds_, a5);
+  JreStrongAssign(&self->val$docToValueCount_, iterable);
+  JreStrongAssign(&self->val$values_, langIterable);
+  JreStrongAssign(&self->val$setIds_, map);
   return self;
 }
 

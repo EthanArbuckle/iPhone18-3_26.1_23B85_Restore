@@ -1,32 +1,32 @@
 @interface TSCH3DChartMeshSharedChildResource
-+ (id)resourceWithParent:(id)a3;
++ (id)resourceWithParent:(id)parent;
 - (DataBufferInfo)bufferInfo;
-- (TSCH3DChartMeshSharedChildResource)initWithParent:(id)a3;
+- (TSCH3DChartMeshSharedChildResource)initWithParent:(id)parent;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
 
 @implementation TSCH3DChartMeshSharedChildResource
 
-+ (id)resourceWithParent:(id)a3
++ (id)resourceWithParent:(id)parent
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithParent_(v5, v6, v7, v8, v9, v4);
+  parentCopy = parent;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithParent_(v5, v6, v7, v8, v9, parentCopy);
 
   return v10;
 }
 
-- (TSCH3DChartMeshSharedChildResource)initWithParent:(id)a3
+- (TSCH3DChartMeshSharedChildResource)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = TSCH3DChartMeshSharedChildResource;
   v5 = [(TSCH3DChartMeshSharedChildResource *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
     v6->_resourceIdentifier = objc_msgSend_allocateResourceUniqueIdentifier(TSCH3DResourceUniqueIdentifierAllocator, v7, v8, v9, v10);
   }
 

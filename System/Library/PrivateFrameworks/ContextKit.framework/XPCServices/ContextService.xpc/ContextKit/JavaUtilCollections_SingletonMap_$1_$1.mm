@@ -1,5 +1,5 @@
 @interface JavaUtilCollections_SingletonMap_$1_$1
-- (JavaUtilCollections_SingletonMap_$1_$1)initWithJavaUtilCollections_SingletonMap_$1:(id)a3;
+- (JavaUtilCollections_SingletonMap_$1_$1)initWithJavaUtilCollections_SingletonMap_$1:(id)1;
 - (id)next;
 - (void)dealloc;
 @end
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (JavaUtilCollections_SingletonMap_$1_$1)initWithJavaUtilCollections_SingletonMap_$1:(id)a3
+- (JavaUtilCollections_SingletonMap_$1_$1)initWithJavaUtilCollections_SingletonMap_$1:(id)1
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, 1);
   self->hasNext_ = 1;
   return self;
 }

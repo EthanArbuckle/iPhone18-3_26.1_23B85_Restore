@@ -1,14 +1,14 @@
 @interface ASPurchaseBatch
-- (id)_copyItemsByStorefrontFromItems:(id)a3;
-- (id)_tooBigForNetworkErrorForError:(id)a3 withCount:(int64_t)a4;
-- (id)copyFilteredItemsFromItems:(id)a3;
-- (id)everythingFailedErrorForError:(id)a3;
-- (id)mergedErrorForError:(id)a3 withCount:(int64_t)a4;
+- (id)_copyItemsByStorefrontFromItems:(id)items;
+- (id)_tooBigForNetworkErrorForError:(id)error withCount:(int64_t)count;
+- (id)copyFilteredItemsFromItems:(id)items;
+- (id)everythingFailedErrorForError:(id)error;
+- (id)mergedErrorForError:(id)error withCount:(int64_t)count;
 @end
 
 @implementation ASPurchaseBatch
 
-- (id)copyFilteredItemsFromItems:(id)a3
+- (id)copyFilteredItemsFromItems:(id)items
 {
   v40 = *MEMORY[0x277D85DE8];
   v4 = [(ASPurchaseBatch *)self _copyItemsByStorefrontFromItems:?];
@@ -61,19 +61,19 @@ LABEL_14:
   if (v8)
   {
     v12 = [v4 objectForKey:v8];
-    v13 = [MEMORY[0x277D69B38] sharedConfig];
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v15 &= 2u;
     }
@@ -83,7 +83,7 @@ LABEL_14:
       v16 = objc_opt_class();
       v17 = [v4 count];
       v18 = [v12 count];
-      v19 = [a3 count];
+      v19 = [items count];
       v29 = 138413314;
       v30 = v16;
       v31 = 2112;
@@ -116,31 +116,31 @@ LABEL_23:
   return v12;
 }
 
-- (id)everythingFailedErrorForError:(id)a3
+- (id)everythingFailedErrorForError:(id)error
 {
-  v4 = [a3 domain];
+  domain = [error domain];
   v5 = *MEMORY[0x277D6A110];
-  if (![v4 isEqualToString:*MEMORY[0x277D6A110]])
+  if (![domain isEqualToString:*MEMORY[0x277D6A110]])
   {
-    return a3;
+    return error;
   }
 
-  v6 = [a3 code];
-  if (v6 == 105)
+  code = [error code];
+  if (code == 105)
   {
-    v12 = [MEMORY[0x277D7FCE0] sharedInstance];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"INCOMPATIBLE_DEVICE_ERROR_BODY_ALL", &stru_285213C30, 0), objc_msgSend(v12, "systemName")];
-    v14 = [a3 code];
+    mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"INCOMPATIBLE_DEVICE_ERROR_BODY_ALL", &stru_285213C30, 0), objc_msgSend(mEMORY[0x277D7FCE0], "systemName")];
+    code2 = [error code];
     v7 = [ASAppStoreUIBundle() localizedStringForKey:@"INCOMPATIBLE_UPDATE_ERROR_TITLE_ALL" value:&stru_285213C30 table:0];
-    v8 = v4;
-    v9 = v14;
+    v8 = domain;
+    v9 = code2;
     v10 = v13;
     goto LABEL_7;
   }
 
-  if (v6 != 103)
+  if (code != 103)
   {
-    return a3;
+    return error;
   }
 
   v7 = [ASAppStoreUIBundle() localizedStringForKey:@"NOT_ENOUGH_SPACE_FOR_ALL_APPS" value:&stru_285213C30 table:0];
@@ -152,36 +152,36 @@ LABEL_7:
   return MEMORY[0x2821CF670](v8, v9, v7, v10);
 }
 
-- (id)mergedErrorForError:(id)a3 withCount:(int64_t)a4
+- (id)mergedErrorForError:(id)error withCount:(int64_t)count
 {
-  if (a4 < 2)
+  if (count < 2)
   {
-    return a3;
+    return error;
   }
 
-  v7 = [a3 domain];
+  domain = [error domain];
   v8 = *MEMORY[0x277D6A110];
-  if (![v7 isEqualToString:*MEMORY[0x277D6A110]])
+  if (![domain isEqualToString:*MEMORY[0x277D6A110]])
   {
-    return a3;
+    return error;
   }
 
-  v9 = [a3 code];
-  if (v9 != 102)
+  code = [error code];
+  if (code != 102)
   {
-    if (v9 == 105)
+    if (code == 105)
     {
-      v15 = [MEMORY[0x277D7FCE0] sharedInstance];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"INCOMPATIBLE_DEVICE_ERROR_BODY_SOME", &stru_285213C30, 0), objc_msgSend(v15, "systemName")];
-      v17 = [a3 code];
+      mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"INCOMPATIBLE_DEVICE_ERROR_BODY_SOME", &stru_285213C30, 0), objc_msgSend(mEMORY[0x277D7FCE0], "systemName")];
+      code2 = [error code];
       v10 = [ASAppStoreUIBundle() localizedStringForKey:@"INCOMPATIBLE_UPDATE_ERROR_TITLE_SOME" value:&stru_285213C30 table:0];
-      v11 = v7;
-      v12 = v17;
+      v11 = domain;
+      v12 = code2;
       v13 = v16;
       goto LABEL_9;
     }
 
-    if (v9 == 103)
+    if (code == 103)
     {
       v10 = [ASAppStoreUIBundle() localizedStringForKey:@"NOT_ENOUGH_SPACE_FOR_SOME_APPS" value:&stru_285213C30 table:0];
       v11 = v8;
@@ -192,22 +192,22 @@ LABEL_9:
       return MEMORY[0x2821CF670](v11, v12, v10, v13);
     }
 
-    return a3;
+    return error;
   }
 
-  return [(ASPurchaseBatch *)self _tooBigForNetworkErrorForError:a3 withCount:a4];
+  return [(ASPurchaseBatch *)self _tooBigForNetworkErrorForError:error withCount:count];
 }
 
-- (id)_copyItemsByStorefrontFromItems:(id)a3
+- (id)_copyItemsByStorefrontFromItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [MEMORY[0x277D7FD40] loadedMap];
+  loadedMap = [MEMORY[0x277D7FD40] loadedMap];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -218,33 +218,33 @@ LABEL_9:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 itemIdentifier];
-        if (v11)
+        itemIdentifier = [v10 itemIdentifier];
+        if (itemIdentifier)
         {
-          v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithItemIdentifier:v11];
-          v11 = [objc_msgSend(objc_msgSend(v5 applicationForItemIdentifier:{v12), "storeFrontIdentifier"), "stringValue"}];
+          v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithItemIdentifier:itemIdentifier];
+          itemIdentifier = [objc_msgSend(objc_msgSend(loadedMap applicationForItemIdentifier:{v12), "storeFrontIdentifier"), "stringValue"}];
         }
 
-        if (!v11)
+        if (!itemIdentifier)
         {
-          v11 = &stru_285213C30;
+          itemIdentifier = &stru_285213C30;
         }
 
-        v13 = [v4 objectForKey:v11];
+        v13 = [v4 objectForKey:itemIdentifier];
         if (!v13)
         {
           v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v4 setObject:v13 forKey:v11];
+          [v4 setObject:v13 forKey:itemIdentifier];
         }
 
         [v13 addObject:v10];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -254,7 +254,7 @@ LABEL_9:
   return v4;
 }
 
-- (id)_tooBigForNetworkErrorForError:(id)a3 withCount:(int64_t)a4
+- (id)_tooBigForNetworkErrorForError:(id)error withCount:(int64_t)count
 {
   if (MGGetBoolAnswer())
   {
@@ -278,11 +278,11 @@ LABEL_9:
   }
 
   v9 = [v6 localizedStringForKey:v7 value:&stru_285213C30 table:0];
-  v10 = [a3 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x277D6A120]];
+  userInfo = [error userInfo];
+  v11 = [userInfo objectForKey:*MEMORY[0x277D6A120]];
   if (v11)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"TOO_BIG_FOR_NETWORK_TITLE_FOR_APPS", &stru_285213C30, 0), a4, v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(ASAppStoreUIBundle(), "localizedStringForKey:value:table:", @"TOO_BIG_FOR_NETWORK_TITLE_FOR_APPS", &stru_285213C30, 0), count, v11];
   }
 
   else
@@ -290,10 +290,10 @@ LABEL_9:
     v12 = 0;
   }
 
-  v13 = [a3 domain];
-  v14 = [a3 code];
+  domain = [error domain];
+  code = [error code];
 
-  return MEMORY[0x2821CF670](v13, v14, v12, v9);
+  return MEMORY[0x2821CF670](domain, code, v12, v9);
 }
 
 @end

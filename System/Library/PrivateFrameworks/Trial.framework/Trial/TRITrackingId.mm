@@ -1,55 +1,55 @@
 @interface TRITrackingId
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TRISubject)subject;
-- (TRITrackingId)initWithCoder:(id)a3;
-- (TRITrackingId)initWithUUID:(id)a3 time:(id)a4 treatments:(id)a5 subject:(id)a6;
-- (TRITrackingId)initWithUUID:(id)a3 time:(id)a4 treatments:(id)a5 subjectProvider:(id)a6 projectId:(int)a7;
+- (TRITrackingId)initWithCoder:(id)coder;
+- (TRITrackingId)initWithUUID:(id)d time:(id)time treatments:(id)treatments subject:(id)subject;
+- (TRITrackingId)initWithUUID:(id)d time:(id)time treatments:(id)treatments subjectProvider:(id)provider projectId:(int)id;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRITrackingId
 
-- (TRITrackingId)initWithUUID:(id)a3 time:(id)a4 treatments:(id)a5 subject:(id)a6
+- (TRITrackingId)initWithUUID:(id)d time:(id)time treatments:(id)treatments subject:(id)subject
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  timeCopy = time;
+  treatmentsCopy = treatments;
+  subjectCopy = subject;
   v18.receiver = self;
   v18.super_class = TRITrackingId;
   v15 = [(TRITrackingId *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uuid, a3);
-    objc_storeStrong(&v16->_time, a4);
-    objc_storeStrong(&v16->_treatments, a5);
-    objc_storeStrong(&v16->_subject, a6);
+    objc_storeStrong(&v15->_uuid, d);
+    objc_storeStrong(&v16->_time, time);
+    objc_storeStrong(&v16->_treatments, treatments);
+    objc_storeStrong(&v16->_subject, subject);
   }
 
   return v16;
 }
 
-- (TRITrackingId)initWithUUID:(id)a3 time:(id)a4 treatments:(id)a5 subjectProvider:(id)a6 projectId:(int)a7
+- (TRITrackingId)initWithUUID:(id)d time:(id)time treatments:(id)treatments subjectProvider:(id)provider projectId:(int)id
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  timeCopy = time;
+  treatmentsCopy = treatments;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = TRITrackingId;
   v17 = [(TRITrackingId *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_uuid, a3);
-    objc_storeStrong(&v18->_time, a4);
-    objc_storeStrong(&v18->_treatments, a5);
-    objc_storeStrong(&v18->_subjectProvider, a6);
-    v18->_projectId = a7;
-    v19 = [(TRISubjectProvider *)v18->_subjectProvider subject];
+    objc_storeStrong(&v17->_uuid, d);
+    objc_storeStrong(&v18->_time, time);
+    objc_storeStrong(&v18->_treatments, treatments);
+    objc_storeStrong(&v18->_subjectProvider, provider);
+    v18->_projectId = id;
+    subject = [(TRISubjectProvider *)v18->_subjectProvider subject];
   }
 
   return v18;
@@ -71,16 +71,16 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TRITrackingId *)self uuid];
-    v7 = [v5 uuid];
-    if (![v6 isEqual:v7])
+    v5 = equalCopy;
+    uuid = [(TRITrackingId *)self uuid];
+    uuid2 = [v5 uuid];
+    if (![uuid isEqual:uuid2])
     {
       v19 = 0;
 LABEL_23:
@@ -88,11 +88,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v8 = [(TRITrackingId *)self time];
-    [v8 timeIntervalSince1970];
+    time = [(TRITrackingId *)self time];
+    [time timeIntervalSince1970];
     v10 = v9;
-    v11 = [v5 time];
-    [v11 timeIntervalSince1970];
+    time2 = [v5 time];
+    [time2 timeIntervalSince1970];
     if (vabdd_f64(v10, v12) >= 0.001)
     {
       v19 = 0;
@@ -101,9 +101,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v13 = [(TRITrackingId *)self subject];
-    v14 = [v5 subject];
-    if (![v13 isEqual:v14])
+    subject = [(TRITrackingId *)self subject];
+    subject2 = [v5 subject];
+    if (![subject isEqual:subject2])
     {
       v19 = 0;
 LABEL_21:
@@ -111,30 +111,30 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v15 = [(TRITrackingId *)self treatments];
-    if (!v15)
+    treatments = [(TRITrackingId *)self treatments];
+    if (!treatments)
     {
-      v24 = [v5 treatments];
-      if (!v24)
+      treatments2 = [v5 treatments];
+      if (!treatments2)
       {
-        v24 = 0;
+        treatments2 = 0;
         v19 = 1;
         goto LABEL_19;
       }
     }
 
-    v25 = v15;
-    v16 = [(TRITrackingId *)self treatments];
-    if (v16)
+    v25 = treatments;
+    treatments3 = [(TRITrackingId *)self treatments];
+    if (treatments3)
     {
-      v17 = v16;
-      v18 = [v5 treatments];
-      if (v18)
+      v17 = treatments3;
+      treatments4 = [v5 treatments];
+      if (treatments4)
       {
-        v23 = v18;
-        v22 = [(TRITrackingId *)self treatments];
-        v21 = [v5 treatments];
-        v19 = [v22 isEqualToArray:v21];
+        v23 = treatments4;
+        treatments5 = [(TRITrackingId *)self treatments];
+        treatments6 = [v5 treatments];
+        v19 = [treatments5 isEqualToArray:treatments6];
 
         goto LABEL_16;
       }
@@ -142,7 +142,7 @@ LABEL_21:
 
     v19 = 0;
 LABEL_16:
-    v15 = v25;
+    treatments = v25;
     if (v25)
     {
 LABEL_20:
@@ -163,46 +163,46 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v2 = [(TRITrackingId *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(TRITrackingId *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(TRITrackingId *)self uuid];
-  [v12 encodeObject:v4 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(TRITrackingId *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v5 = [(TRITrackingId *)self time];
-  [v12 encodeObject:v5 forKey:@"time"];
+  time = [(TRITrackingId *)self time];
+  [coderCopy encodeObject:time forKey:@"time"];
 
-  v6 = [(TRITrackingId *)self subject];
-  [v12 encodeObject:v6 forKey:@"subject"];
+  subject = [(TRITrackingId *)self subject];
+  [coderCopy encodeObject:subject forKey:@"subject"];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(TRITrackingId *)self treatments];
-  v9 = [v7 numberWithInt:v8 != 0];
-  [v12 encodeObject:v9 forKey:@"hasTreatments"];
+  treatments = [(TRITrackingId *)self treatments];
+  v9 = [v7 numberWithInt:treatments != 0];
+  [coderCopy encodeObject:v9 forKey:@"hasTreatments"];
 
-  v10 = [(TRITrackingId *)self treatments];
+  treatments2 = [(TRITrackingId *)self treatments];
 
-  if (v10)
+  if (treatments2)
   {
-    v11 = [(TRITrackingId *)self treatments];
-    [v12 encodeObject:v11 forKey:@"treatments"];
+    treatments3 = [(TRITrackingId *)self treatments];
+    [coderCopy encodeObject:treatments3 forKey:@"treatments"];
   }
 }
 
-- (TRITrackingId)initWithCoder:(id)a3
+- (TRITrackingId)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasTreatments"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasTreatments"];
   v9 = v8;
   if (v8)
   {
@@ -213,7 +213,7 @@ LABEL_24:
       v19[1] = objc_opt_class();
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
       v12 = [v10 setWithArray:v11];
-      v13 = [v4 decodeObjectOfClasses:v12 forKey:@"treatments"];
+      v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"treatments"];
 
       if (!v5)
       {
@@ -260,8 +260,8 @@ LABEL_14:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(TRITrackingId *)self uuid];
-  v4 = [v2 stringWithFormat:@"Trial tracking id %@", v3];
+  uuid = [(TRITrackingId *)self uuid];
+  v4 = [v2 stringWithFormat:@"Trial tracking id %@", uuid];
 
   return v4;
 }

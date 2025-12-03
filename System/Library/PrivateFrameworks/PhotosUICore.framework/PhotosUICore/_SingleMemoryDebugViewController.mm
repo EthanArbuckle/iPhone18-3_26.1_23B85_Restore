@@ -20,22 +20,22 @@
   v21.receiver = self;
   v21.super_class = _SingleMemoryDebugViewController;
   [(_SingleMemoryDebugViewController *)&v21 viewDidLoad];
-  v3 = [(_SingleMemoryDebugViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(_SingleMemoryDebugViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(_SingleMemoryDebugViewController *)self px_enableExtendedTraitCollection];
-  v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v6 = [(PXMemoriesFeedDataSourceManagerBase *)[PXMemoriesFeedWidgetDataSourceManager alloc] initWithPhotoLibrary:v5];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v6 = [(PXMemoriesFeedDataSourceManagerBase *)[PXMemoriesFeedWidgetDataSourceManager alloc] initWithPhotoLibrary:px_deprecated_appPhotoLibrary];
   [(PXMemoriesFeedWidgetDataSourceManager *)v6 setMaxCount:1];
   [(PXMemoriesFeedWidgetDataSourceManager *)v6 startGeneratingMemories];
-  v7 = [(PXSectionedDataSourceManager *)v6 dataSource];
-  v8 = v7;
+  dataSource = [(PXSectionedDataSourceManager *)v6 dataSource];
+  v8 = dataSource;
   v19 = 0u;
   v20 = 0u;
-  if (v7)
+  if (dataSource)
   {
-    [v7 firstItemIndexPath];
+    [dataSource firstItemIndexPath];
     v9 = v19;
   }
 
@@ -65,7 +65,7 @@
       self->_memoryView = v14;
 
       [(PXMemoryView *)self->_memoryView setViewModel:v12];
-      [v3 addSubview:self->_memoryView];
+      [view addSubview:self->_memoryView];
     }
   }
 }

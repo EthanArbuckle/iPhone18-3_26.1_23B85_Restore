@@ -1,9 +1,9 @@
 @interface NTKAnalogTimeComplicationBundleDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (id)localizedComplicationName;
-- (id)_graphicTemplateWithOverrideDate:(id)a3;
+- (id)_graphicTemplateWithOverrideDate:(id)date;
 - (id)sampleTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation NTKAnalogTimeComplicationBundleDataSource
@@ -16,10 +16,10 @@
   return v3;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = [a4 supportsPDRCapability:2031260689];
-  v7 = a3 == 10 || a3 == 12;
+  v5 = [device supportsPDRCapability:2031260689];
+  v7 = family == 10 || family == 12;
   return v5 && v7;
 }
 
@@ -31,9 +31,9 @@
   return v4;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = CLKForcedTime();
 
   if (v5)
@@ -51,15 +51,15 @@
   v8 = +[NSDate date];
   v9 = [CLKComplicationTimelineEntry entryWithDate:v8 complicationTemplate:v7];
 
-  v4[2](v4, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (id)_graphicTemplateWithOverrideDate:(id)a3
+- (id)_graphicTemplateWithOverrideDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NTKAnalogTimeComplicationBundleDataSource *)self family];
+  dateCopy = date;
+  family = [(NTKAnalogTimeComplicationBundleDataSource *)self family];
   v6 = off_10230;
-  if (v5 == &dword_C)
+  if (family == &dword_C)
   {
     v6 = off_10238;
   }
@@ -70,13 +70,13 @@
   if (objc_opt_isKindOfClass())
   {
     v13 = NTKWorldClockGraphicCircularViewOverrideDateKey;
-    v14 = v4;
+    v14 = dateCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     [v8 setMetadata:v9];
   }
 
   v10 = CLKComplicationTemplateGraphicExtraLargeCircularImage_ptr;
-  if (v5 != &dword_C)
+  if (family != &dword_C)
   {
     v10 = CLKComplicationTemplateGraphicCircularImage_ptr;
   }

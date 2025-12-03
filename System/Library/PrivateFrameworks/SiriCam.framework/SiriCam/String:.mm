@@ -13,8 +13,8 @@
 - (uint64_t)Int
 {
   v2 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s7SiriCam13AutoSendInputV04autodE0_SDySSSiG10crrSignalstMd, &_s7SiriCam13AutoSendInputV04autodE0_SDySSSiG10crrSignalstMR);
-  (*(*(v2 - 8) + 8))(a1, v2);
-  return a1;
+  (*(*(v2 - 8) + 8))(self, v2);
+  return self;
 }
 
 - (unint64_t)AnyEncodable

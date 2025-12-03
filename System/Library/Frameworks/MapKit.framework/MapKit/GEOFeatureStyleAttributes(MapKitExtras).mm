@@ -24,7 +24,7 @@
 
 - (id)styleAttributesWithElevatedGround:()MapKitExtras
 {
-  v4 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithStyleAttributes:{objc_msgSend(a1, "featureStyleAttributes")}];
+  v4 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithStyleAttributes:{objc_msgSend(self, "featureStyleAttributes")}];
   v6[0] = 65617;
   v6[1] = a3;
   [v4 replaceAttributes:v6 count:1];

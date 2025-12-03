@@ -1,65 +1,65 @@
 @interface SUProductPageViewController
 + (id)_defaultClientIdentifier;
 + (id)_defaultClientInterface;
-+ (void)_validateURL:(id)a3 withURLBag:(id)a4 completionBlock:(id)a5;
-+ (void)getCanLoadWithURL:(id)a3 completionBlock:(id)a4;
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenItem:(id)a4;
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenURL:(id)a4;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
++ (void)_validateURL:(id)l withURLBag:(id)bag completionBlock:(id)block;
++ (void)getCanLoadWithURL:(id)l completionBlock:(id)block;
+- (BOOL)iPhoneProductPage:(id)page shouldOpenItem:(id)item;
+- (BOOL)iPhoneProductPage:(id)page shouldOpenURL:(id)l;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (NSDictionary)scriptContextDictionary;
-- (SUProductPageViewController)initWithTabBarItem:(id)a3;
+- (SUProductPageViewController)initWithTabBarItem:(id)item;
 - (SUProductPageViewControllerDelegate)delegate;
 - (id)_initSUProductPageViewController;
-- (id)_newRequestPropertiesWithRequest:(id)a3;
+- (id)_newRequestPropertiesWithRequest:(id)request;
 - (id)_previewOverlay;
-- (id)scriptInterfaceForClientInterface:(id)a3;
+- (id)scriptInterfaceForClientInterface:(id)interface;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_applicationWillEnterForeground;
-- (void)_failWithError:(id)a3;
-- (void)_gotoStoreButtonAction:(id)a3;
-- (void)_loadClientContextWithCompletionBlock:(id)a3;
-- (void)_loadProductWithRequest:(id)a3;
+- (void)_failWithError:(id)error;
+- (void)_gotoStoreButtonAction:(id)action;
+- (void)_loadClientContextWithCompletionBlock:(id)block;
+- (void)_loadProductWithRequest:(id)request;
 - (void)_loadRequestForProductParameters;
-- (void)_purchaseFailedNotification:(id)a3;
-- (void)_purchaseFinishedNotification:(id)a3;
+- (void)_purchaseFailedNotification:(id)notification;
+- (void)_purchaseFinishedNotification:(id)notification;
 - (void)_reloadGotoStoreButton;
 - (void)_reloadViews;
-- (void)_sendDidFailLoadWithError:(id)a3;
-- (void)_sendDidFinishWithResult:(int64_t)a3;
-- (void)_setClientContext:(id)a3;
-- (void)_setResponse:(id)a3 forProperties:(id)a4 error:(id)a5;
-- (void)_showPageWithRequest:(id)a3 animated:(BOOL)a4;
-- (void)_showPreviewOverlayAnimated:(BOOL)a3;
-- (void)_showProductPage:(id)a3 pageEvent:(id)a4;
-- (void)clientInterface:(id)a3 exitStoreWithReason:(int64_t)a4;
-- (void)clientInterface:(id)a3 hidePreviewOverlayAnimated:(BOOL)a4;
-- (void)clientInterface:(id)a3 presentDialog:(id)a4;
-- (void)clientInterface:(id)a3 setStatusBarHidden:(BOOL)a4 withAnimation:(int64_t)a5;
-- (void)clientInterface:(id)a3 setStatusBarStyle:(int64_t)a4 animated:(BOOL)a5;
-- (void)clientInterface:(id)a3 showPreviewOverlayAnimated:(BOOL)a4;
-- (void)clientInterface:(id)a3 willDismissViewController:(id)a4;
-- (void)clientInterface:(id)a3 willPresentViewController:(id)a4;
+- (void)_sendDidFailLoadWithError:(id)error;
+- (void)_sendDidFinishWithResult:(int64_t)result;
+- (void)_setClientContext:(id)context;
+- (void)_setResponse:(id)response forProperties:(id)properties error:(id)error;
+- (void)_showPageWithRequest:(id)request animated:(BOOL)animated;
+- (void)_showPreviewOverlayAnimated:(BOOL)animated;
+- (void)_showProductPage:(id)page pageEvent:(id)event;
+- (void)clientInterface:(id)interface exitStoreWithReason:(int64_t)reason;
+- (void)clientInterface:(id)interface hidePreviewOverlayAnimated:(BOOL)animated;
+- (void)clientInterface:(id)interface presentDialog:(id)dialog;
+- (void)clientInterface:(id)interface setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation;
+- (void)clientInterface:(id)interface setStatusBarStyle:(int64_t)style animated:(BOOL)animated;
+- (void)clientInterface:(id)interface showPreviewOverlayAnimated:(BOOL)animated;
+- (void)clientInterface:(id)interface willDismissViewController:(id)controller;
+- (void)clientInterface:(id)interface willPresentViewController:(id)controller;
 - (void)dealloc;
-- (void)iPadProductPage:(id)a3 openItem:(id)a4;
-- (void)iPadProductPage:(id)a3 openURL:(id)a4 viewControllerBlock:(id)a5;
-- (void)itemStateCenter:(id)a3 didFinishPurchases:(id)a4;
-- (void)itemStateCenter:(id)a3 didFinishSoftwarePurchases:(id)a4;
-- (void)loadProductWithParameters:(id)a3;
-- (void)loadProductWithRequest:(id)a3;
+- (void)iPadProductPage:(id)page openItem:(id)item;
+- (void)iPadProductPage:(id)page openURL:(id)l viewControllerBlock:(id)block;
+- (void)itemStateCenter:(id)center didFinishPurchases:(id)purchases;
+- (void)itemStateCenter:(id)center didFinishSoftwarePurchases:(id)purchases;
+- (void)loadProductWithParameters:(id)parameters;
+- (void)loadProductWithRequest:(id)request;
 - (void)loadView;
-- (void)loadWithProductPage:(id)a3;
-- (void)loadWithStorePageRequest:(id)a3;
-- (void)purchaseManager:(id)a3 didFinishPurchaseRequest:(id)a4 withError:(id)a5;
-- (void)purchaseManager:(id)a3 willAddPurchases:(id)a4;
-- (void)setAdditionalPurchaseParameters:(id)a3;
-- (void)setAffiliateIdentifier:(id)a3;
-- (void)setAskToBuy:(BOOL)a3;
-- (void)setClientInterface:(id)a3;
-- (void)setProductPageStyle:(int64_t)a3;
-- (void)setPromptString:(id)a3;
-- (void)setScriptContextDictionary:(id)a3;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)loadWithProductPage:(id)page;
+- (void)loadWithStorePageRequest:(id)request;
+- (void)purchaseManager:(id)manager didFinishPurchaseRequest:(id)request withError:(id)error;
+- (void)purchaseManager:(id)manager willAddPurchases:(id)purchases;
+- (void)setAdditionalPurchaseParameters:(id)parameters;
+- (void)setAffiliateIdentifier:(id)identifier;
+- (void)setAskToBuy:(BOOL)buy;
+- (void)setClientInterface:(id)interface;
+- (void)setProductPageStyle:(int64_t)style;
+- (void)setPromptString:(id)string;
+- (void)setScriptContextDictionary:(id)dictionary;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SUProductPageViewController
@@ -84,7 +84,7 @@
 
     else
     {
-      v6 = [objc_opt_class() _defaultClientInterface];
+      _defaultClientInterface = [objc_opt_class() _defaultClientInterface];
       v7 = objc_alloc_init(MEMORY[0x277D7FE30]);
       [v7 setLeftItemsSupplementBackButton:1];
       [(SUViewController *)v3 _setExistingNavigationItem:v7];
@@ -94,7 +94,7 @@
       storePageViewController = v3->_storePageViewController;
       v3->_storePageViewController = v8;
 
-      v10 = [(SUStorePageViewController *)v3->_storePageViewController copyScriptProperties];
+      copyScriptProperties = [(SUStorePageViewController *)v3->_storePageViewController copyScriptProperties];
       if (v3->_style == 1)
       {
         [MEMORY[0x277D75348] clearColor];
@@ -105,19 +105,19 @@
         [MEMORY[0x277D75348] colorWithWhite:0.921568627 alpha:1.0];
       }
       v11 = ;
-      [v10 setBackgroundColor:v11];
+      [copyScriptProperties setBackgroundColor:v11];
 
-      [(SUStorePageViewController *)v3->_storePageViewController setScriptProperties:v10];
+      [(SUStorePageViewController *)v3->_storePageViewController setScriptProperties:copyScriptProperties];
       [(SUStorePageViewController *)v3->_storePageViewController setCanMoveToOverlay:0];
       [(SUViewController *)v3->_storePageViewController _setExistingNavigationItem:v7];
       [(SUStorePageViewController *)v3->_storePageViewController setLoadsWhenHidden:1];
       [(SUStorePageViewController *)v3->_storePageViewController _setReloadsWhenCacheExpired:0];
       [(SUUIITunesStoreUIPageViewController *)v3->_storePageViewController setProductPageViewController:v3];
       [(SUProductPageViewController *)v3 addChildViewController:v3->_storePageViewController];
-      [(SUProductPageViewController *)v3 setClientInterface:v6];
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v3 selector:sel__purchaseFailedNotification_ name:*MEMORY[0x277D7FF30] object:0];
-      [v12 addObserver:v3 selector:sel__purchaseFinishedNotification_ name:*MEMORY[0x277D7FF38] object:0];
+      [(SUProductPageViewController *)v3 setClientInterface:_defaultClientInterface];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v3 selector:sel__purchaseFailedNotification_ name:*MEMORY[0x277D7FF30] object:0];
+      [defaultCenter addObserver:v3 selector:sel__purchaseFinishedNotification_ name:*MEMORY[0x277D7FF38] object:0];
       v13 = +[SUUIItemStateCenter defaultCenter];
       itemStateCenter = v3->_itemStateCenter;
       v3->_itemStateCenter = v13;
@@ -135,8 +135,8 @@
 
       else
       {
-        v17 = [MEMORY[0x277D75418] currentDevice];
-        if ([v17 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
           v16 = 0;
         }
@@ -154,13 +154,13 @@
   return v3;
 }
 
-- (SUProductPageViewController)initWithTabBarItem:(id)a3
+- (SUProductPageViewController)initWithTabBarItem:(id)item
 {
-  v3 = [(SUProductPageViewController *)self _initSUProductPageViewController];
-  v4 = v3;
-  if (v3)
+  _initSUProductPageViewController = [(SUProductPageViewController *)self _initSUProductPageViewController];
+  v4 = _initSUProductPageViewController;
+  if (_initSUProductPageViewController)
   {
-    [(SUProductPageViewController *)v3 _setShowsCancelButton:1];
+    [(SUProductPageViewController *)_initSUProductPageViewController _setShowsCancelButton:1];
   }
 
   return v4;
@@ -168,30 +168,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF30] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF38] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF30] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF38] object:0];
   [(SUUIItemStateCenter *)self->_itemStateCenter removeObserver:self];
   [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController setProductPageViewController:0];
   [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController removeFromParentViewController];
-  v4 = [(SUViewController *)self clientInterface];
-  [v4 setDelegate:0];
+  clientInterface = [(SUViewController *)self clientInterface];
+  [clientInterface setDelegate:0];
 
   [(SUUIBannerViewController *)self->_bannerViewController setDelegate:0];
   [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setDelegate:0];
   [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setDelegate:0];
   [(SUPurchaseManager *)self->_purchaseManager setDelegate:0];
   [(SUPreviewOverlayViewController *)self->_previewOverlay removeFromParentViewController];
-  v5 = [(SUBarButtonItem *)self->_gotoStoreButtonItem target];
+  target = [(SUBarButtonItem *)self->_gotoStoreButtonItem target];
 
-  if (v5 == self)
+  if (target == self)
   {
     [(SUBarButtonItem *)self->_gotoStoreButtonItem setTarget:0];
   }
 
-  v6 = [(SUBarButtonItem *)self->_rightBarButtonItem target];
+  target2 = [(SUBarButtonItem *)self->_rightBarButtonItem target];
 
-  if (v6 == self)
+  if (target2 == self)
   {
     [(SUBarButtonItem *)self->_rightBarButtonItem setTarget:0];
   }
@@ -201,22 +201,22 @@
   [(SUViewController *)&v7 dealloc];
 }
 
-+ (void)getCanLoadWithURL:(id)a3 completionBlock:(id)a4
++ (void)getCanLoadWithURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v9 = [v8 isOnDeviceAppInstallationAllowed];
+  lCopy = l;
+  blockCopy = block;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isOnDeviceAppInstallationAllowed = [mEMORY[0x277D262A0] isOnDeviceAppInstallationAllowed];
 
-  if (v9)
+  if (isOnDeviceAppInstallationAllowed)
   {
     v10 = [MEMORY[0x277D69C90] contextWithBagType:0];
-    v11 = [MEMORY[0x277D7FD50] sharedCache];
-    v12 = [v11 URLBagForContext:v10];
+    mEMORY[0x277D7FD50] = [MEMORY[0x277D7FD50] sharedCache];
+    v12 = [mEMORY[0x277D7FD50] URLBagForContext:v10];
 
     if (v12)
     {
-      [a1 _validateURL:v6 withURLBag:v12 completionBlock:v7];
+      [self _validateURL:lCopy withURLBag:v12 completionBlock:blockCopy];
     }
 
     else
@@ -228,13 +228,13 @@
       v17 = __65__SUProductPageViewController_getCanLoadWithURL_completionBlock___block_invoke;
       v18 = &unk_2798F7BB0;
       objc_copyWeak(v22, &location);
-      v22[1] = a1;
-      v19 = v6;
+      v22[1] = self;
+      v19 = lCopy;
       v20 = v10;
-      v21 = v7;
+      v21 = blockCopy;
       [v13 setCompletionBlock:&v15];
-      v14 = [MEMORY[0x277D7FD20] mainQueue];
-      [v14 addOperation:v13];
+      mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+      [mainQueue addOperation:v13];
 
       objc_destroyWeak(v22);
       objc_destroyWeak(&location);
@@ -243,7 +243,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -271,11 +271,11 @@ void __65__SUProductPageViewController_getCanLoadWithURL_completionBlock___block
   }
 }
 
-- (void)loadProductWithParameters:(id)a3
+- (void)loadProductWithParameters:(id)parameters
 {
-  if (self->_productParameters != a3)
+  if (self->_productParameters != parameters)
   {
-    v4 = [a3 copy];
+    v4 = [parameters copy];
     productParameters = self->_productParameters;
     self->_productParameters = v4;
 
@@ -283,16 +283,16 @@ void __65__SUProductPageViewController_getCanLoadWithURL_completionBlock___block
   }
 }
 
-- (void)loadProductWithRequest:(id)a3
+- (void)loadProductWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [MEMORY[0x277D69C90] contextWithBagType:0];
-  v6 = [MEMORY[0x277D7FD50] sharedCache];
-  v7 = [v6 URLBagForContext:v5];
+  mEMORY[0x277D7FD50] = [MEMORY[0x277D7FD50] sharedCache];
+  v7 = [mEMORY[0x277D7FD50] URLBagForContext:v5];
 
   if (v7)
   {
-    [(SUProductPageViewController *)self _loadProductWithRequest:v4];
+    [(SUProductPageViewController *)self _loadProductWithRequest:requestCopy];
   }
 
   else
@@ -304,11 +304,11 @@ void __65__SUProductPageViewController_getCanLoadWithURL_completionBlock___block
     v14 = __54__SUProductPageViewController_loadProductWithRequest___block_invoke;
     v15 = &unk_2798F5AF8;
     v16 = v9;
-    v17 = v4;
+    v17 = requestCopy;
     v10 = v9;
     [v8 setCompletionBlock:&v12];
-    v11 = [MEMORY[0x277D7FD20] mainQueue];
-    [v11 addOperation:v8];
+    mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+    [mainQueue addOperation:v8];
   }
 }
 
@@ -331,17 +331,17 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
 - (NSDictionary)scriptContextDictionary
 {
-  v2 = [(SUStorePageViewController *)self->_storePageViewController copyScriptProperties];
-  v3 = [v2 contextDictionary];
+  copyScriptProperties = [(SUStorePageViewController *)self->_storePageViewController copyScriptProperties];
+  contextDictionary = [copyScriptProperties contextDictionary];
 
-  return v3;
+  return contextDictionary;
 }
 
-- (void)setAdditionalPurchaseParameters:(id)a3
+- (void)setAdditionalPurchaseParameters:(id)parameters
 {
-  if (self->_additionalPurchaseParameters != a3)
+  if (self->_additionalPurchaseParameters != parameters)
   {
-    v4 = [a3 copy];
+    v4 = [parameters copy];
     additionalPurchaseParameters = self->_additionalPurchaseParameters;
     self->_additionalPurchaseParameters = v4;
 
@@ -352,11 +352,11 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
   }
 }
 
-- (void)setAffiliateIdentifier:(id)a3
+- (void)setAffiliateIdentifier:(id)identifier
 {
-  if (self->_affiliateIdentifier != a3)
+  if (self->_affiliateIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     affiliateIdentifier = self->_affiliateIdentifier;
     self->_affiliateIdentifier = v4;
 
@@ -367,42 +367,42 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
   }
 }
 
-- (void)setAskToBuy:(BOOL)a3
+- (void)setAskToBuy:(BOOL)buy
 {
-  if (self->_askToBuy != a3)
+  if (self->_askToBuy != buy)
   {
-    self->_askToBuy = a3;
+    self->_askToBuy = buy;
     [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setAskPermission:?];
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setAskPermission:self->_askToBuy];
-    v4 = [(SUViewController *)self clientInterface];
-    [v4 setInAskToBuyApprovalFlow:self->_askToBuy];
+    clientInterface = [(SUViewController *)self clientInterface];
+    [clientInterface setInAskToBuyApprovalFlow:self->_askToBuy];
   }
 }
 
-- (void)setPromptString:(id)a3
+- (void)setPromptString:(id)string
 {
-  v5 = a3;
-  if (self->_promptString != v5)
+  stringCopy = string;
+  if (self->_promptString != stringCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_promptString, a3);
+    v7 = stringCopy;
+    objc_storeStrong(&self->_promptString, string);
     [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setBannerText:self->_promptString];
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setBannerText:self->_promptString];
-    v6 = [(SUViewController *)self clientInterface];
-    [v6 setAskToBuyApprovalPrompt:self->_promptString];
+    clientInterface = [(SUViewController *)self clientInterface];
+    [clientInterface setAskToBuyApprovalPrompt:self->_promptString];
 
-    v5 = v7;
+    stringCopy = v7;
   }
 }
 
-- (void)setProductPageStyle:(int64_t)a3
+- (void)setProductPageStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3)
+    self->_style = style;
+    if (style)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
         v5 = 0;
       }
@@ -415,8 +415,8 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
     else
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      if ([v6 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v5 = 0;
       }
@@ -431,20 +431,20 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
   }
 }
 
-- (void)setScriptContextDictionary:(id)a3
+- (void)setScriptContextDictionary:(id)dictionary
 {
   storePageViewController = self->_storePageViewController;
-  v5 = a3;
-  v6 = [(SUStorePageViewController *)storePageViewController copyScriptProperties];
-  [v6 setContextDictionary:v5];
-  [(SUUIBannerViewController *)self->_bannerViewController setScriptContextDictionary:v5];
+  dictionaryCopy = dictionary;
+  copyScriptProperties = [(SUStorePageViewController *)storePageViewController copyScriptProperties];
+  [copyScriptProperties setContextDictionary:dictionaryCopy];
+  [(SUUIBannerViewController *)self->_bannerViewController setScriptContextDictionary:dictionaryCopy];
 
-  [(SUStorePageViewController *)self->_storePageViewController setScriptProperties:v6];
+  [(SUStorePageViewController *)self->_storePageViewController setScriptProperties:copyScriptProperties];
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  if (a4)
+  if (success)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
@@ -477,10 +477,10 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -493,30 +493,30 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
   return 2;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return a3 == 1 || v5 != 0;
+  return orientation == 1 || userInterfaceIdiom != 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SUProductPageViewController;
-  [(SUViewController *)&v4 viewDidAppear:a3];
+  [(SUViewController *)&v4 viewDidAppear:appear];
   [(SUStorePageViewController *)self->_storePageViewController _setReloadsWhenCacheExpired:1];
 }
 
-- (void)setClientInterface:(id)a3
+- (void)setClientInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(SUViewController *)self clientInterface];
-  v6 = v5;
-  if (v5 != v4)
+  interfaceCopy = interface;
+  clientInterface = [(SUViewController *)self clientInterface];
+  v6 = clientInterface;
+  if (clientInterface != interfaceCopy)
   {
-    [v5 setDelegate:0];
+    [clientInterface setDelegate:0];
     if (!self->_purchaseManager)
     {
       v7 = objc_alloc_init(MEMORY[0x277D7FE58]);
@@ -526,26 +526,26 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
       [(SUPurchaseManager *)self->_purchaseManager setDelegate:self];
     }
 
-    [v4 setDelegate:self];
-    [v4 setPurchaseManager:self->_purchaseManager];
-    [v4 setInAskToBuyApprovalFlow:self->_askToBuy];
-    [v4 setAskToBuyApprovalPrompt:self->_promptString];
-    [(SUViewController *)self->_storePageViewController setClientInterface:v4];
+    [interfaceCopy setDelegate:self];
+    [interfaceCopy setPurchaseManager:self->_purchaseManager];
+    [interfaceCopy setInAskToBuyApprovalFlow:self->_askToBuy];
+    [interfaceCopy setAskToBuyApprovalPrompt:self->_promptString];
+    [(SUViewController *)self->_storePageViewController setClientInterface:interfaceCopy];
   }
 
   v9.receiver = self;
   v9.super_class = SUProductPageViewController;
-  [(SUViewController *)&v9 setClientInterface:v4];
+  [(SUViewController *)&v9 setClientInterface:interfaceCopy];
 }
 
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenItem:(id)a4
+- (BOOL)iPhoneProductPage:(id)page shouldOpenItem:(id)item
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a4;
+  itemCopy = item;
   v6 = [v4 alloc];
-  v7 = [v5 productPageURLString];
+  productPageURLString = [itemCopy productPageURLString];
 
-  v8 = [v6 initWithString:v7];
+  v8 = [v6 initWithString:productPageURLString];
   v9 = UIITunesStoreResolvedURLForHTTPURL();
   v10 = v9;
   if (v9)
@@ -560,15 +560,15 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
   v12 = v11;
 
-  v13 = [MEMORY[0x277D75128] sharedApplication];
-  [v13 openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
 
   return 0;
 }
 
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenURL:(id)a4
+- (BOOL)iPhoneProductPage:(id)page shouldOpenURL:(id)l
 {
-  v4 = a4;
+  lCopy = l;
   v5 = UIITunesStoreResolvedURLForHTTPURL();
   v6 = v5;
   if (v5)
@@ -578,25 +578,25 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
   else
   {
-    v7 = v4;
+    v7 = lCopy;
   }
 
   v8 = v7;
 
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  [v9 openURL:v8 options:MEMORY[0x277CBEC10] completionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v8 options:MEMORY[0x277CBEC10] completionHandler:0];
 
   return 0;
 }
 
-- (void)iPadProductPage:(id)a3 openItem:(id)a4
+- (void)iPadProductPage:(id)page openItem:(id)item
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a4;
+  itemCopy = item;
   v6 = [v4 alloc];
-  v7 = [v5 productPageURLString];
+  productPageURLString = [itemCopy productPageURLString];
 
-  v8 = [v6 initWithString:v7];
+  v8 = [v6 initWithString:productPageURLString];
   v9 = UIITunesStoreResolvedURLForHTTPURL();
   v10 = v9;
   if (v9)
@@ -611,16 +611,16 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
   v12 = v11;
 
-  v13 = [MEMORY[0x277D75128] sharedApplication];
-  [v13 openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (void)iPadProductPage:(id)a3 openURL:(id)a4 viewControllerBlock:(id)a5
+- (void)iPadProductPage:(id)page openURL:(id)l viewControllerBlock:(id)block
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7 || ([v16 item], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "productPageURLString"), v15 = objc_claimAutoreleasedReturnValue(), v14, v15) && (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15), v7 = objc_claimAutoreleasedReturnValue(), v15, v7))
+  pageCopy = page;
+  lCopy = l;
+  blockCopy = block;
+  if (lCopy || ([pageCopy item], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "productPageURLString"), v15 = objc_claimAutoreleasedReturnValue(), v14, v15) && (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15), lCopy = objc_claimAutoreleasedReturnValue(), v15, lCopy))
   {
     v9 = UIITunesStoreResolvedURLForHTTPURL();
     v10 = v9;
@@ -631,44 +631,44 @@ void __54__SUProductPageViewController_loadProductWithRequest___block_invoke_2(u
 
     else
     {
-      v11 = v7;
+      v11 = lCopy;
     }
 
     v12 = v11;
 
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    [v13 openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 }
 
-- (void)clientInterface:(id)a3 exitStoreWithReason:(int64_t)a4
+- (void)clientInterface:(id)interface exitStoreWithReason:(int64_t)reason
 {
-  if ((a4 - 3) >= 3)
+  if ((reason - 3) >= 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = a4 - 2;
+    v4 = reason - 2;
   }
 
   [(SUProductPageViewController *)self _sendDidFinishWithResult:v4];
 }
 
-- (void)clientInterface:(id)a3 hidePreviewOverlayAnimated:(BOOL)a4
+- (void)clientInterface:(id)interface hidePreviewOverlayAnimated:(BOOL)animated
 {
   if (self->_previewOverlay)
   {
-    v4 = a4;
-    v6 = [(SUViewController *)self navigationController];
+    animatedCopy = animated;
+    navigationController = [(SUViewController *)self navigationController];
     previewOverlay = self->_previewOverlay;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __74__SUProductPageViewController_clientInterface_hidePreviewOverlayAnimated___block_invoke;
     v8[3] = &unk_2798F5BE8;
     v8[4] = self;
-    [(SUPreviewOverlayViewController *)previewOverlay hideInNavigationController:v6 animated:v4 completionBlock:v8];
+    [(SUPreviewOverlayViewController *)previewOverlay hideInNavigationController:navigationController animated:animatedCopy completionBlock:v8];
   }
 }
 
@@ -682,16 +682,16 @@ void __74__SUProductPageViewController_clientInterface_hidePreviewOverlayAnimate
   [v3 postNotificationName:*MEMORY[0x277D7FF28] object:*(*(a1 + 32) + 1248)];
 }
 
-- (void)clientInterface:(id)a3 presentDialog:(id)a4
+- (void)clientInterface:(id)interface presentDialog:(id)dialog
 {
-  v5 = a4;
+  dialogCopy = dialog;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 productPage:self presentAlertForDialog:v5];
+    [v8 productPage:self presentAlertForDialog:dialogCopy];
   }
 
   else
@@ -710,8 +710,8 @@ void __74__SUProductPageViewController_clientInterface_hidePreviewOverlayAnimate
     v12[1] = 3221225472;
     v12[2] = __61__SUProductPageViewController_clientInterface_presentDialog___block_invoke;
     v12[3] = &unk_2798F7BD8;
-    v13 = v5;
-    v14 = self;
+    v13 = dialogCopy;
+    selfCopy = self;
     [(SUDialogManager *)dialogManager presentDialog:v13 withCompletionBlock:v12];
   }
 }
@@ -737,63 +737,63 @@ void __61__SUProductPageViewController_clientInterface_presentDialog___block_inv
   }
 }
 
-- (void)clientInterface:(id)a3 setStatusBarHidden:(BOOL)a4 withAnimation:(int64_t)a5
+- (void)clientInterface:(id)interface setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation
 {
-  v6 = a4;
+  hiddenCopy = hidden;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 productPage:self setStatusBarHidden:v6 withAnimation:a5];
+    mEMORY[0x277D75128] = objc_loadWeakRetained(&self->_delegate);
+    [mEMORY[0x277D75128] productPage:self setStatusBarHidden:hiddenCopy withAnimation:animation];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75128] sharedApplication];
-    [v10 setStatusBarHidden:v6 withAnimation:a5];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setStatusBarHidden:hiddenCopy withAnimation:animation];
   }
 }
 
-- (void)clientInterface:(id)a3 setStatusBarStyle:(int64_t)a4 animated:(BOOL)a5
+- (void)clientInterface:(id)interface setStatusBarStyle:(int64_t)style animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 productPage:self setStatusBarStyle:a4 animated:v5];
+    mEMORY[0x277D75128] = objc_loadWeakRetained(&self->_delegate);
+    [mEMORY[0x277D75128] productPage:self setStatusBarStyle:style animated:animatedCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75128] sharedApplication];
-    [v10 setStatusBarStyle:a4 animated:v5];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setStatusBarStyle:style animated:animatedCopy];
   }
 }
 
-- (void)clientInterface:(id)a3 showPreviewOverlayAnimated:(BOOL)a4
+- (void)clientInterface:(id)interface showPreviewOverlayAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUProductPageViewController *)self _previewOverlay];
-  if ([v6 isContentLoaded])
+  animatedCopy = animated;
+  _previewOverlay = [(SUProductPageViewController *)self _previewOverlay];
+  if ([_previewOverlay isContentLoaded])
   {
-    [(SUProductPageViewController *)self _showPreviewOverlayAnimated:v4];
+    [(SUProductPageViewController *)self _showPreviewOverlayAnimated:animatedCopy];
   }
 
   else
   {
-    v7 = [objc_opt_class() defaultRequestProperties];
+    defaultRequestProperties = [objc_opt_class() defaultRequestProperties];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __74__SUProductPageViewController_clientInterface_showPreviewOverlayAnimated___block_invoke;
     v8[3] = &unk_2798F7C00;
     v8[4] = self;
-    v9 = v4;
-    [v6 loadWithRequestProperties:v7 completionBlock:v8];
+    v9 = animatedCopy;
+    [_previewOverlay loadWithRequestProperties:defaultRequestProperties completionBlock:v8];
   }
 }
 
@@ -807,33 +807,33 @@ uint64_t __74__SUProductPageViewController_clientInterface_showPreviewOverlayAni
   return result;
 }
 
-- (void)clientInterface:(id)a3 willDismissViewController:(id)a4
+- (void)clientInterface:(id)interface willDismissViewController:(id)controller
 {
-  v8 = a4;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 productPage:self willDismissViewController:v8];
+    [v7 productPage:self willDismissViewController:controllerCopy];
   }
 }
 
-- (void)clientInterface:(id)a3 willPresentViewController:(id)a4
+- (void)clientInterface:(id)interface willPresentViewController:(id)controller
 {
-  v8 = a4;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 productPage:self willPresentViewController:v8];
+    [v7 productPage:self willPresentViewController:controllerCopy];
   }
 }
 
-- (id)scriptInterfaceForClientInterface:(id)a3
+- (id)scriptInterfaceForClientInterface:(id)interface
 {
   v4 = objc_alloc_init(StoreScriptInterface);
   [(StoreScriptInterface *)v4 setParentProductPageViewController:self];
@@ -841,29 +841,29 @@ uint64_t __74__SUProductPageViewController_clientInterface_showPreviewOverlayAni
   return v4;
 }
 
-- (void)purchaseManager:(id)a3 didFinishPurchaseRequest:(id)a4 withError:(id)a5
+- (void)purchaseManager:(id)manager didFinishPurchaseRequest:(id)request withError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D69B38] sharedConfig];
-  v12 = [v11 shouldLog];
-  if ([v11 shouldLogToDisk])
+  managerCopy = manager;
+  requestCopy = request;
+  errorCopy = error;
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog;
   }
 
-  v14 = [v11 OSLogObject];
-  v15 = v14;
-  if (!v10)
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  v15 = oSLogObject;
+  if (!errorCopy)
   {
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v13 &= 2u;
     }
@@ -892,7 +892,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 &= 2u;
   }
@@ -902,7 +902,7 @@ LABEL_19:
     *v24 = 138412546;
     *&v24[4] = objc_opt_class();
     *&v24[12] = 2112;
-    *&v24[14] = v10;
+    *&v24[14] = errorCopy;
     v16 = *&v24[4];
     LODWORD(v23) = 22;
     v17 = _os_log_send_and_compose_impl();
@@ -924,22 +924,22 @@ LABEL_11:
   if (v19)
   {
     v20 = objc_loadWeakRetained(&self->_delegate);
-    [v20 productPage:self purchaseBatchFailedWithError:v10];
+    [v20 productPage:self purchaseBatchFailedWithError:errorCopy];
   }
 
 LABEL_20:
 }
 
-- (void)purchaseManager:(id)a3 willAddPurchases:(id)a4
+- (void)purchaseManager:(id)manager willAddPurchases:(id)purchases
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  purchasesCopy = purchases;
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v5;
+  v6 = purchasesCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
@@ -960,10 +960,10 @@ LABEL_20:
         {
           if ([(NSString *)self->_additionalPurchaseParameters length])
           {
-            v12 = [v11 buyParameters];
-            if (v12)
+            buyParameters = [v11 buyParameters];
+            if (buyParameters)
             {
-              v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", v12, self->_additionalPurchaseParameters];
+              v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@&%@", buyParameters, self->_additionalPurchaseParameters];
               [v11 setBuyParameters:v13];
             }
           }
@@ -975,8 +975,8 @@ LABEL_20:
 
           if (self->_urlBagType)
           {
-            v14 = [v11 requestProperties];
-            v15 = [v14 mutableCopy];
+            requestProperties = [v11 requestProperties];
+            v15 = [requestProperties mutableCopy];
 
             if (!v15)
             {
@@ -997,20 +997,20 @@ LABEL_20:
     while (v8);
   }
 
-  v16 = [MEMORY[0x277D69B38] sharedConfig];
-  v17 = [v16 shouldLog];
-  if ([v16 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog;
   }
 
-  v19 = [v16 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v20 = v18;
   }
@@ -1036,7 +1036,7 @@ LABEL_20:
       goto LABEL_30;
     }
 
-    v19 = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v33, v27}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v33, v27}];
     free(v23);
     SSFileLog();
   }
@@ -1052,15 +1052,15 @@ LABEL_30:
   }
 }
 
-- (void)itemStateCenter:(id)a3 didFinishPurchases:(id)a4
+- (void)itemStateCenter:(id)center didFinishPurchases:(id)purchases
 {
   v40 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  purchasesCopy = purchases;
+  v6 = [purchasesCopy countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1071,20 +1071,20 @@ LABEL_3:
     {
       if (*v32 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(purchasesCopy);
       }
 
       v10 = *(*(&v31 + 1) + 8 * v9);
-      v11 = [v10 error];
+      error = [v10 error];
 
-      if (v11)
+      if (error)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v7 = [purchasesCopy countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1094,27 +1094,27 @@ LABEL_3:
       }
     }
 
-    v12 = [v10 error];
+    error2 = [v10 error];
 
-    if (!v12)
+    if (!error2)
     {
       goto LABEL_22;
     }
 
-    v13 = [MEMORY[0x277D69B38] sharedConfig];
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -1125,7 +1125,7 @@ LABEL_3:
       v35 = 138412546;
       v36 = v17;
       v37 = 2112;
-      v38 = v12;
+      v38 = error2;
       v18 = v17;
       LODWORD(v30) = 22;
       v19 = _os_log_send_and_compose_impl();
@@ -1135,7 +1135,7 @@ LABEL_3:
         goto LABEL_20;
       }
 
-      v16 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v35, v30, v31}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v35, v30, v31}];
       free(v19);
       SSFileLog();
     }
@@ -1147,7 +1147,7 @@ LABEL_20:
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 productPage:self purchaseBatchFailedWithError:v12];
+      [v22 productPage:self purchaseBatchFailedWithError:error2];
     }
 
     goto LABEL_32;
@@ -1156,20 +1156,20 @@ LABEL_20:
 LABEL_9:
 
 LABEL_22:
-  v23 = [MEMORY[0x277D69B38] sharedConfig];
-  v24 = [v23 shouldLog];
-  if ([v23 shouldLogToDisk])
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v25 = v24 | 2;
+    v25 = shouldLog2 | 2;
   }
 
   else
   {
-    v25 = v24;
+    v25 = shouldLog2;
   }
 
-  v26 = [v23 OSLogObject];
-  if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v25 &= 2u;
   }
@@ -1188,26 +1188,26 @@ LABEL_22:
 
   if (v29)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v35, v30, v31}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v35, v30, v31}];
     free(v29);
     SSFileLog();
 LABEL_30:
   }
 
   [(SUProductPageViewController *)self _sendDidFinishWithResult:4];
-  v12 = 0;
+  error2 = 0;
 LABEL_32:
 }
 
-- (void)itemStateCenter:(id)a3 didFinishSoftwarePurchases:(id)a4
+- (void)itemStateCenter:(id)center didFinishSoftwarePurchases:(id)purchases
 {
   v40 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  purchasesCopy = purchases;
+  v6 = [purchasesCopy countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1218,20 +1218,20 @@ LABEL_3:
     {
       if (*v32 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(purchasesCopy);
       }
 
       v10 = *(*(&v31 + 1) + 8 * v9);
-      v11 = [v10 error];
+      error = [v10 error];
 
-      if (v11)
+      if (error)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v7 = [purchasesCopy countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1241,27 +1241,27 @@ LABEL_3:
       }
     }
 
-    v12 = [v10 error];
+    error2 = [v10 error];
 
-    if (!v12)
+    if (!error2)
     {
       goto LABEL_22;
     }
 
-    v13 = [MEMORY[0x277D69B38] sharedConfig];
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -1272,7 +1272,7 @@ LABEL_3:
       v35 = 138412546;
       v36 = v17;
       v37 = 2112;
-      v38 = v12;
+      v38 = error2;
       v18 = v17;
       LODWORD(v30) = 22;
       v19 = _os_log_send_and_compose_impl();
@@ -1282,7 +1282,7 @@ LABEL_3:
         goto LABEL_20;
       }
 
-      v16 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v35, v30, v31}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v35, v30, v31}];
       free(v19);
       SSFileLog();
     }
@@ -1294,7 +1294,7 @@ LABEL_20:
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 productPage:self purchaseBatchFailedWithError:v12];
+      [v22 productPage:self purchaseBatchFailedWithError:error2];
     }
 
     goto LABEL_32;
@@ -1303,20 +1303,20 @@ LABEL_20:
 LABEL_9:
 
 LABEL_22:
-  v23 = [MEMORY[0x277D69B38] sharedConfig];
-  v24 = [v23 shouldLog];
-  if ([v23 shouldLogToDisk])
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v25 = v24 | 2;
+    v25 = shouldLog2 | 2;
   }
 
   else
   {
-    v25 = v24;
+    v25 = shouldLog2;
   }
 
-  v26 = [v23 OSLogObject];
-  if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v25 &= 2u;
   }
@@ -1335,66 +1335,66 @@ LABEL_22:
 
   if (v29)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v35, v30, v31}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v35, v30, v31}];
     free(v29);
     SSFileLog();
 LABEL_30:
   }
 
   [(SUProductPageViewController *)self _sendDidFinishWithResult:4];
-  v12 = 0;
+  error2 = 0;
 LABEL_32:
 }
 
-- (void)_gotoStoreButtonAction:(id)a3
+- (void)_gotoStoreButtonAction:(id)action
 {
-  v8 = a3;
+  actionCopy = action;
   nativeURL = self->_nativeURL;
   if (nativeURL)
   {
-    v5 = nativeURL;
+    displayedURL = nativeURL;
   }
 
   else
   {
-    v5 = [(SUStorePageViewController *)self->_storePageViewController displayedURL];
-    if (!v5)
+    displayedURL = [(SUStorePageViewController *)self->_storePageViewController displayedURL];
+    if (!displayedURL)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v7 = UIITunesStoreResolvedURLForHTTPURL();
-  [v6 openURL:v7];
+  [mEMORY[0x277D75128] openURL:v7];
 
 LABEL_5:
   [(SUProductPageViewController *)self _sendDidFinishWithResult:3];
 }
 
-- (void)_purchaseFailedNotification:(id)a3
+- (void)_purchaseFailedNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:*MEMORY[0x277D7FF40]];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D7FF40]];
 
-  v8 = [MEMORY[0x277D69B38] sharedConfig];
-  v9 = [v8 shouldLog];
-  if ([v8 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 &= 2u;
   }
@@ -1404,7 +1404,7 @@ LABEL_5:
     *v18 = 138412802;
     *&v18[4] = objc_opt_class();
     *&v18[12] = 2112;
-    *&v18[14] = v5;
+    *&v18[14] = object;
     *&v18[22] = 2112;
     v19 = v7;
     v12 = *&v18[4];
@@ -1416,7 +1416,7 @@ LABEL_5:
       goto LABEL_10;
     }
 
-    v11 = [MEMORY[0x277CCACA8] stringWithCString:v13 encoding:{4, v18, v17, *v18, *&v18[16], v19}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v13 encoding:{4, v18, v17, *v18, *&v18[16], v19}];
     free(v13);
     SSFileLog();
   }
@@ -1428,28 +1428,28 @@ LABEL_10:
   if (v15)
   {
     v16 = objc_loadWeakRetained(&self->_delegate);
-    [v16 productPage:self didFinishPurchase:v5 withError:v7];
+    [v16 productPage:self didFinishPurchase:object withError:v7];
   }
 }
 
-- (void)_purchaseFinishedNotification:(id)a3
+- (void)_purchaseFinishedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [MEMORY[0x277D69B38] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  object = [notification object];
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 &= 2u;
   }
@@ -1459,7 +1459,7 @@ LABEL_10:
     *v15 = 138412546;
     *&v15[4] = objc_opt_class();
     *&v15[12] = 2112;
-    *&v15[14] = v4;
+    *&v15[14] = object;
     v9 = *&v15[4];
     LODWORD(v14) = 22;
     v10 = _os_log_send_and_compose_impl();
@@ -1469,7 +1469,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, v15, v14, *v15, *&v15[16]}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, v15, v14, *v15, *&v15[16]}];
     free(v10);
     SSFileLog();
   }
@@ -1481,7 +1481,7 @@ LABEL_10:
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    [v13 productPage:self didFinishPurchase:v4 withError:0];
+    [v13 productPage:self didFinishPurchase:object withError:0];
   }
 }
 
@@ -1490,8 +1490,8 @@ LABEL_10:
   lastPageEvent = self->_lastPageEvent;
   if (lastPageEvent)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(SSMetricsPageEvent *)lastPageEvent setOriginalTimeUsingDate:date];
 
     style = self->_style;
     if (style == 3 || !style && ([MEMORY[0x277D75418] currentDevice], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, v7 == 1))
@@ -1511,16 +1511,16 @@ LABEL_10:
   }
 }
 
-- (void)loadWithProductPage:(id)a3
+- (void)loadWithProductPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SUProductPageViewController_loadWithProductPage___block_invoke;
   v6[3] = &unk_2798F6170;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = pageCopy;
   v7 = v5;
   [(SUProductPageViewController *)self _loadClientContextWithCompletionBlock:v6];
 
@@ -1544,28 +1544,28 @@ void __51__SUProductPageViewController_loadWithProductPage___block_invoke(uint64
   }
 }
 
-- (void)loadWithStorePageRequest:(id)a3
+- (void)loadWithStorePageRequest:(id)request
 {
-  v8 = a3;
-  -[SUProductPageViewController setProductPageStyle:](self, "setProductPageStyle:", [v8 productPageStyle]);
-  v4 = [v8 productURL];
-  if (v4)
+  requestCopy = request;
+  -[SUProductPageViewController setProductPageStyle:](self, "setProductPageStyle:", [requestCopy productPageStyle]);
+  productURL = [requestCopy productURL];
+  if (productURL)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CBABA0] requestWithURL:v4];
+    v5 = productURL;
+    v6 = [MEMORY[0x277CBABA0] requestWithURL:productURL];
     [(SUProductPageViewController *)self loadProductWithRequest:v6];
   }
 
   else
   {
-    v7 = [v8 productParameters];
-    if (!v7)
+    productParameters = [requestCopy productParameters];
+    if (!productParameters)
     {
       goto LABEL_6;
     }
 
-    v5 = v7;
-    [(SUProductPageViewController *)self loadProductWithParameters:v7];
+    v5 = productParameters;
+    [(SUProductPageViewController *)self loadProductWithParameters:productParameters];
   }
 
 LABEL_6:
@@ -1574,8 +1574,8 @@ LABEL_6:
 + (id)_defaultClientInterface
 {
   v3 = objc_alloc_init(MEMORY[0x277D7FDC0]);
-  v4 = [a1 _defaultClientIdentifier];
-  [v3 setClientIdentifier:v4];
+  _defaultClientIdentifier = [self _defaultClientIdentifier];
+  [v3 setClientIdentifier:_defaultClientIdentifier];
 
   v5 = objc_alloc_init(SUUIViewControllerFactory);
   [v3 setViewControllerFactory:v5];
@@ -1583,7 +1583,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)_sendDidFinishWithResult:(int64_t)a3
+- (void)_sendDidFinishWithResult:(int64_t)result
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -1591,26 +1591,26 @@ LABEL_6:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 productPage:self didFinishWithResult:a3];
+    [v7 productPage:self didFinishWithResult:result];
   }
 }
 
-- (void)_setClientContext:(id)a3
+- (void)_setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     [(SUUIClientContext *)self->_clientContext setMetricsPageContext:@"Sheet" forViewController:self];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
-- (void)_showPageWithRequest:(id)a3 animated:(BOOL)a4
+- (void)_showPageWithRequest:(id)request animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -1618,7 +1618,7 @@ LABEL_6:
   v9 = v8;
   if (v7)
   {
-    [(SUProductPageViewController *)v8 productPage:self presentProductPageWithRequest:v13 animated:v4];
+    [(SUProductPageViewController *)v8 productPage:self presentProductPageWithRequest:requestCopy animated:animatedCopy];
   }
 
   else
@@ -1631,12 +1631,12 @@ LABEL_6:
     }
 
     v9 = objc_alloc_init(SUProductPageViewController);
-    v11 = [(SUViewController *)self clientInterface];
-    [(SUProductPageViewController *)v9 setClientInterface:v11];
+    clientInterface = [(SUViewController *)self clientInterface];
+    [(SUProductPageViewController *)v9 setClientInterface:clientInterface];
 
-    [(SUProductPageViewController *)v9 loadWithStorePageRequest:v13];
+    [(SUProductPageViewController *)v9 loadWithStorePageRequest:requestCopy];
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 productPage:self presentProductPage:v9 animated:v4];
+    [v12 productPage:self presentProductPage:v9 animated:animatedCopy];
   }
 
 LABEL_6:
@@ -1644,17 +1644,17 @@ LABEL_6:
 
 + (id)_defaultClientIdentifier
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.ios.StoreKitUIService"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.ios.StoreKitUIService"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = bundleIdentifier;
   }
 
   if (v4)
@@ -1672,12 +1672,12 @@ LABEL_6:
   return v5;
 }
 
-+ (void)_validateURL:(id)a3 withURLBag:(id)a4 completionBlock:(id)a5
++ (void)_validateURL:(id)l withURLBag:(id)bag completionBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 valueForKey:@"ix-store-sheet"];
+  lCopy = l;
+  blockCopy = block;
+  v9 = [bag valueForKey:@"ix-store-sheet"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1693,19 +1693,19 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v11 = [v7 host];
+      host = [lCopy host];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v12 = v10;
-      v13 = [v12 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      path = v10;
+      v13 = [path countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v13)
       {
         v14 = v13;
         v30 = v10;
         v32 = v9;
-        v29 = v7;
+        v29 = lCopy;
         v15 = *v39;
         while (2)
         {
@@ -1713,23 +1713,23 @@ LABEL_35:
           {
             if (*v39 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(path);
             }
 
             v17 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:*(*(&v38 + 1) + 8 * i) options:1 error:0];
-            v18 = [v17 rangeOfFirstMatchInString:v11 options:0 range:{0, objc_msgSend(v11, "length")}];
+            v18 = [v17 rangeOfFirstMatchInString:host options:0 range:{0, objc_msgSend(host, "length")}];
 
             if (v18 != 0x7FFFFFFFFFFFFFFFLL)
             {
 
-              v7 = v29;
+              lCopy = v29;
               v10 = v30;
               v9 = v32;
               goto LABEL_16;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v38 objects:v43 count:16];
+          v14 = [path countByEnumeratingWithState:&v38 objects:v43 count:16];
           if (v14)
           {
             continue;
@@ -1740,7 +1740,7 @@ LABEL_35:
 
         v19 = 0;
         v20 = 0;
-        v7 = v29;
+        lCopy = v29;
         v10 = v30;
         v9 = v32;
       }
@@ -1755,25 +1755,25 @@ LABEL_35:
     }
 
 LABEL_16:
-    v11 = [v9 objectForKey:@"path-patterns"];
-    if (v11)
+    host = [v9 objectForKey:@"path-patterns"];
+    if (host)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v7 path];
+        path = [lCopy path];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v11 = v11;
-        v22 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        host = host;
+        v22 = [host countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v22)
         {
           v23 = v22;
           v31 = v10;
           v33 = v9;
-          v24 = v7;
+          v24 = lCopy;
           v25 = *v35;
 LABEL_20:
           v26 = 0;
@@ -1781,12 +1781,12 @@ LABEL_20:
           {
             if (*v35 != v25)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(host);
             }
 
             v20 = 1;
             v27 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:*(*(&v34 + 1) + 8 * v26) options:1 error:0];
-            v28 = [v27 rangeOfFirstMatchInString:v12 options:0 range:{0, objc_msgSend(v12, "length")}];
+            v28 = [v27 rangeOfFirstMatchInString:path options:0 range:{0, objc_msgSend(path, "length")}];
 
             if (v28 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -1795,7 +1795,7 @@ LABEL_20:
 
             if (v23 == ++v26)
             {
-              v23 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
+              v23 = [host countByEnumeratingWithState:&v34 objects:v42 count:16];
               if (v23)
               {
                 goto LABEL_20;
@@ -1806,7 +1806,7 @@ LABEL_20:
             }
           }
 
-          v7 = v24;
+          lCopy = v24;
           v10 = v31;
           v9 = v33;
         }
@@ -1840,14 +1840,14 @@ LABEL_34:
 
   v21 = 0;
 LABEL_36:
-  v8[2](v8, v21);
+  blockCopy[2](blockCopy, v21);
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = MEMORY[0x277CCA9B8];
     v6 = *MEMORY[0x277CDD438];
@@ -1856,23 +1856,23 @@ LABEL_36:
     v8 = [v7 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_286AECDE0 table:0];
     v11[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v4 = [v5 errorWithDomain:v6 code:5 userInfo:v9];
+    errorCopy = [v5 errorWithDomain:v6 code:5 userInfo:v9];
   }
 
   [(SUStorePageViewController *)self->_storePageViewController setSkLoading:0];
-  [(SUProductPageViewController *)self _sendDidFailLoadWithError:v4];
+  [(SUProductPageViewController *)self _sendDidFailLoadWithError:errorCopy];
 }
 
-- (void)_loadClientContextWithCompletionBlock:(id)a3
+- (void)_loadClientContextWithCompletionBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUViewController *)self clientInterface];
-  v6 = [v5 clientIdentifier];
+  blockCopy = block;
+  clientInterface = [(SUViewController *)self clientInterface];
+  clientIdentifier = [clientInterface clientIdentifier];
 
-  if (!v6)
+  if (!clientIdentifier)
   {
-    v6 = [objc_opt_class() _defaultClientIdentifier];
+    clientIdentifier = [objc_opt_class() _defaultClientIdentifier];
   }
 
   if (!self->_clientContext)
@@ -1881,8 +1881,8 @@ LABEL_36:
     clientContext = self->_clientContext;
     self->_clientContext = v7;
 
-    v9 = [(SUUIClientContext *)self->_clientContext clientInterface];
-    [v9 setClientIdentifier:v6];
+    clientInterface2 = [(SUUIClientContext *)self->_clientContext clientInterface];
+    [clientInterface2 setClientIdentifier:clientIdentifier];
 
     [(SUUIClientContext *)self->_clientContext setMetricsPageContext:@"Sheet" forViewController:self];
     [(SUUIClientContext *)self->_clientContext _setAdditionalPurchaseParameters:self->_additionalPurchaseParameters];
@@ -1897,26 +1897,26 @@ LABEL_36:
       v21[2] = __69__SUProductPageViewController__loadClientContextWithCompletionBlock___block_invoke;
       v21[3] = &unk_2798F7C50;
       objc_copyWeak(&v25, &location);
-      v22 = v6;
-      v23 = self;
-      v24 = v4;
+      v22 = clientIdentifier;
+      selfCopy = self;
+      v24 = blockCopy;
       [(SUUIReloadConfigurationOperation *)v10 setOutputBlock:v21];
-      v11 = [MEMORY[0x277D69B38] sharedConfig];
-      v12 = [v11 shouldLog];
-      v13 = [v11 shouldLogToDisk];
-      v14 = [v11 OSLogObject];
-      v15 = v14;
-      if (v13)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      v15 = oSLogObject;
+      if (shouldLogToDisk)
       {
-        v12 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
-        v12 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v12)
+      if (shouldLog)
       {
         v16 = objc_opt_class();
         v27 = 138412290;
@@ -1947,7 +1947,7 @@ LABEL_15:
     }
   }
 
-  (*(v4 + 2))(v4, 1, 0);
+  (*(blockCopy + 2))(blockCopy, 1, 0);
 LABEL_6:
 }
 
@@ -1995,16 +1995,16 @@ void __69__SUProductPageViewController__loadClientContextWithCompletionBlock___b
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_loadProductWithRequest:(id)a3
+- (void)_loadProductWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__SUProductPageViewController__loadProductWithRequest___block_invoke;
   v6[3] = &unk_2798F6170;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = requestCopy;
   v7 = v5;
   [(SUProductPageViewController *)self _loadClientContextWithCompletionBlock:v6];
 
@@ -2135,8 +2135,8 @@ void __55__SUProductPageViewController__loadProductWithRequest___block_invoke_2(
     else
     {
       v3 = [MEMORY[0x277D69C90] contextWithBagType:0];
-      v4 = [MEMORY[0x277D7FD50] sharedCache];
-      v5 = [v4 URLBagForContext:v3];
+      mEMORY[0x277D7FD50] = [MEMORY[0x277D7FD50] sharedCache];
+      v5 = [mEMORY[0x277D7FD50] URLBagForContext:v3];
 
       if (v5)
       {
@@ -2144,20 +2144,20 @@ void __55__SUProductPageViewController__loadProductWithRequest___block_invoke_2(
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && (-[SUProductPageViewController productPageStyle](self, "productPageStyle") == 1 && ([v6 objectForKey:@"banner-lookup-url"], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v6, "objectForKey:", @"lookup-url"), (v7 = objc_claimAutoreleasedReturnValue()) != 0)) && (v8 = objc_msgSend(objc_alloc(MEMORY[0x277CBEBC0]), "initWithString:", v7), v7, v8))
         {
-          v9 = [MEMORY[0x277D69B38] sharedConfig];
-          v10 = [v9 shouldLog];
-          if ([v9 shouldLogToDisk])
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+          shouldLog = [mEMORY[0x277D69B38] shouldLog];
+          if ([mEMORY[0x277D69B38] shouldLogToDisk])
           {
-            v11 = v10 | 2;
+            v11 = shouldLog | 2;
           }
 
           else
           {
-            v11 = v10;
+            v11 = shouldLog;
           }
 
-          v12 = [v9 OSLogObject];
-          if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+          oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+          if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
           {
             v11 &= 2u;
           }
@@ -2190,20 +2190,20 @@ void __55__SUProductPageViewController__loadProductWithRequest___block_invoke_2(
 
         else
         {
-          v16 = [MEMORY[0x277D69B38] sharedConfig];
-          v17 = [v16 shouldLog];
-          if ([v16 shouldLogToDisk])
+          mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+          shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+          if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
           {
-            v18 = v17 | 2;
+            v18 = shouldLog2 | 2;
           }
 
           else
           {
-            v18 = v17;
+            v18 = shouldLog2;
           }
 
-          v19 = [v16 OSLogObject];
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
             v18 &= 2u;
           }
@@ -2252,8 +2252,8 @@ void __55__SUProductPageViewController__loadProductWithRequest___block_invoke_2(
         objc_copyWeak(&v31, &from);
         [v6 setCompletionBlock:v29];
         [(SUStorePageViewController *)self->_storePageViewController setSkLoading:1];
-        v23 = [MEMORY[0x277D7FD20] mainQueue];
-        [v23 addOperation:v6];
+        mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+        [mainQueue addOperation:v6];
 
         objc_destroyWeak(&v31);
         objc_destroyWeak(&v30);
@@ -2367,11 +2367,11 @@ LABEL_14:
   [v19 _loadRequestForProductParameters];
 }
 
-- (id)_newRequestPropertiesWithRequest:(id)a3
+- (id)_newRequestPropertiesWithRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v16 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURLRequest:v17];
+  requestCopy = request;
+  v16 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURLRequest:requestCopy];
   [v16 setITunesStoreRequest:1];
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v20 = 0u;
@@ -2398,9 +2398,9 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 stringValue];
+          stringValue = [v9 stringValue];
 
-          v9 = v10;
+          v9 = stringValue;
         }
 
         objc_opt_class();
@@ -2420,10 +2420,10 @@ LABEL_14:
   v11 = self->_style - 1;
   if (v11 >= 3)
   {
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v14 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v12 = @"iPad";
     }
@@ -2454,8 +2454,8 @@ LABEL_14:
     self->_previewOverlay = v4;
 
     v6 = self->_previewOverlay;
-    v7 = [(SUViewController *)self clientInterface];
-    [(SUPreviewOverlayViewController *)v6 setClientInterface:v7];
+    clientInterface = [(SUViewController *)self clientInterface];
+    [(SUPreviewOverlayViewController *)v6 setClientInterface:clientInterface];
 
     previewOverlay = self->_previewOverlay;
   }
@@ -2468,13 +2468,13 @@ LABEL_14:
   nativeURL = self->_nativeURL;
   if (nativeURL)
   {
-    v4 = nativeURL;
+    displayedURL = nativeURL;
   }
 
   else
   {
-    v4 = [(SUStorePageViewController *)self->_storePageViewController displayedURL];
-    if (!v4)
+    displayedURL = [(SUStorePageViewController *)self->_storePageViewController displayedURL];
+    if (!displayedURL)
     {
       v30 = 0;
       v7 = 0;
@@ -2482,18 +2482,18 @@ LABEL_14:
     }
   }
 
-  v30 = v4;
+  v30 = displayedURL;
   v5 = UIITunesStoreResolvedURLForHTTPURL();
-  v6 = [v5 scheme];
-  if ([v6 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"https"))
+  scheme = [v5 scheme];
+  if ([scheme isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"https"))
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v7 = [v8 canOpenURL:v5];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v7 = [mEMORY[0x277D75128] canOpenURL:v5];
   }
 
 LABEL_9:
@@ -2528,9 +2528,9 @@ LABEL_9:
 
   else
   {
-    v18 = [(SUBarButtonItem *)self->_gotoStoreButtonItem target];
+    target = [(SUBarButtonItem *)self->_gotoStoreButtonItem target];
 
-    if (v18 == self)
+    if (target == self)
     {
       [(SUBarButtonItem *)self->_gotoStoreButtonItem setTarget:0];
     }
@@ -2563,9 +2563,9 @@ LABEL_9:
 
   else
   {
-    v25 = [(SUBarButtonItem *)v20 target];
+    target2 = [(SUBarButtonItem *)v20 target];
 
-    if (v25 == self)
+    if (target2 == self)
     {
       [(SUBarButtonItem *)self->_rightBarButtonItem setTarget:0];
     }
@@ -2574,9 +2574,9 @@ LABEL_9:
     self->_rightBarButtonItem = 0;
   }
 
-  v26 = [(SUViewController *)self navigationItem];
-  v27 = [v26 rightBarButtonItems];
-  v28 = [v27 mutableCopy];
+  navigationItem = [(SUViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  v28 = [rightBarButtonItems mutableCopy];
 
   if (v10 != v17 || ([v28 containsObject:v17] & 1) == 0)
   {
@@ -2603,8 +2603,8 @@ LABEL_9:
       [v28 addObject:v17];
     }
 
-    [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController resetNavigationItem:v26];
-    [v26 setRightBarButtonItems:v28];
+    [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController resetNavigationItem:navigationItem];
+    [navigationItem setRightBarButtonItems:v28];
   }
 }
 
@@ -2620,11 +2620,11 @@ LABEL_9:
   {
     if (self->_ipadProductPageViewController)
     {
-      v4 = [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController view];
-      [v4 removeFromSuperview];
+      view = [(SUUIITunesStoreUIPageViewController *)self->_storePageViewController view];
+      [view removeFromSuperview];
 
-      v5 = [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController view];
-      [v5 removeFromSuperview];
+      view2 = [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController view];
+      [view2 removeFromSuperview];
 
       bannerViewController = self->_ipadProductPageViewController;
     }
@@ -2634,18 +2634,18 @@ LABEL_9:
       storePageViewController = self->_storePageViewController;
       if (self->_iphoneProductPageViewController)
       {
-        v10 = [(SUUIITunesStoreUIPageViewController *)storePageViewController view];
-        [v10 removeFromSuperview];
+        view3 = [(SUUIITunesStoreUIPageViewController *)storePageViewController view];
+        [view3 removeFromSuperview];
 
-        v11 = [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController view];
-        [v11 removeFromSuperview];
+        view4 = [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController view];
+        [view4 removeFromSuperview];
 
-        v15 = [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController view];
+        view5 = [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController view];
         [(SUUIViewController *)self->_iphoneProductPageViewController _setWishlistButtonHidden:1];
         [(SUUIViewController *)self->_iphoneProductPageViewController showDefaultNavigationItems];
         [(SUProductPageViewController *)self _reloadGotoStoreButton];
-        v6 = v15;
-        if (!v15)
+        view8 = view5;
+        if (!view5)
         {
           return;
         }
@@ -2658,121 +2658,121 @@ LABEL_9:
         return;
       }
 
-      v12 = [0 view];
-      [v12 removeFromSuperview];
+      view6 = [0 view];
+      [view6 removeFromSuperview];
 
-      v13 = [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController view];
-      [v13 removeFromSuperview];
+      view7 = [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController view];
+      [view7 removeFromSuperview];
 
       bannerViewController = self->_storePageViewController;
     }
   }
 
-  v6 = [bannerViewController view];
-  if (!v6)
+  view8 = [bannerViewController view];
+  if (!view8)
   {
     return;
   }
 
 LABEL_6:
-  v14 = v6;
-  [v6 setAutoresizingMask:18];
-  v7 = [(SUProductPageViewController *)self view];
-  [v7 bounds];
+  v14 = view8;
+  [view8 setAutoresizingMask:18];
+  view9 = [(SUProductPageViewController *)self view];
+  [view9 bounds];
   [v14 setFrame:?];
 
-  v8 = [(SUProductPageViewController *)self view];
-  [v8 addSubview:v14];
+  view10 = [(SUProductPageViewController *)self view];
+  [view10 addSubview:v14];
 }
 
-- (void)_setResponse:(id)a3 forProperties:(id)a4 error:(id)a5
+- (void)_setResponse:(id)response forProperties:(id)properties error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  propertiesCopy = properties;
+  errorCopy = error;
   nativeURL = self->_nativeURL;
   self->_nativeURL = 0;
 
   lastPageEvent = self->_lastPageEvent;
   self->_lastPageEvent = 0;
 
-  v13 = [v8 bodyData];
-  if (v13)
+  bodyData = [responseCopy bodyData];
+  if (bodyData)
   {
     v14 = +[(SSVURLDataConsumer *)SUUIProductPageDataConsumer];
-    v26 = v10;
-    v15 = [v14 objectForData:v13 response:0 error:&v26];
+    v26 = errorCopy;
+    v15 = [v14 objectForData:bodyData response:0 error:&v26];
     v16 = v26;
 
     if (v15)
     {
-      v17 = [v8 URL];
+      v17 = [responseCopy URL];
       [v15 setPageURL:v17];
 
-      v18 = [v8 metricsPageEvent];
-      [(SUProductPageViewController *)self _showProductPage:v15 pageEvent:v18];
+      metricsPageEvent = [responseCopy metricsPageEvent];
+      [(SUProductPageViewController *)self _showProductPage:v15 pageEvent:metricsPageEvent];
 
-      v19 = [v8 metricsPageEvent];
+      metricsPageEvent2 = [responseCopy metricsPageEvent];
       v20 = self->_lastPageEvent;
-      self->_lastPageEvent = v19;
+      self->_lastPageEvent = metricsPageEvent2;
     }
 
     else
     {
-      v21 = [(SUProductPageViewController *)self view];
-      v22 = [v8 MIMEType];
-      v23 = [v22 isEqualToString:@"text/html"];
+      view = [(SUProductPageViewController *)self view];
+      mIMEType = [responseCopy MIMEType];
+      v23 = [mIMEType isEqualToString:@"text/html"];
 
       storePageViewController = self->_storePageViewController;
       if (v23)
       {
-        v25 = [v9 URL];
-        [(SUStorePageViewController *)storePageViewController reloadWithStorePage:v13 ofType:1 forURL:v25];
+        v25 = [propertiesCopy URL];
+        [(SUStorePageViewController *)storePageViewController reloadWithStorePage:bodyData ofType:1 forURL:v25];
       }
 
       else
       {
-        [(SUStorePageViewController *)self->_storePageViewController reloadWithURLRequestProperties:v9];
+        [(SUStorePageViewController *)self->_storePageViewController reloadWithURLRequestProperties:propertiesCopy];
       }
 
       [(SUProductPageViewController *)self _reloadGotoStoreButton];
     }
 
-    v10 = v16;
+    errorCopy = v16;
   }
 
   else
   {
-    [(SUProductPageViewController *)self _sendDidFailLoadWithError:v10];
+    [(SUProductPageViewController *)self _sendDidFailLoadWithError:errorCopy];
   }
 }
 
-- (void)_sendDidFailLoadWithError:(id)a3
+- (void)_sendDidFailLoadWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 productPage:self didFailLoadWithError:v7];
+    [v6 productPage:self didFailLoadWithError:errorCopy];
   }
 }
 
-- (void)_showPreviewOverlayAnimated:(BOOL)a3
+- (void)_showPreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SUProductPageViewController *)self _previewOverlay];
-  v6 = [(SUViewController *)self navigationController];
-  [v6 addChildViewController:v5];
+  animatedCopy = animated;
+  _previewOverlay = [(SUProductPageViewController *)self _previewOverlay];
+  navigationController = [(SUViewController *)self navigationController];
+  [navigationController addChildViewController:_previewOverlay];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__SUProductPageViewController__showPreviewOverlayAnimated___block_invoke;
   v8[3] = &unk_2798F5BE8;
-  v9 = v5;
-  v7 = v5;
-  [v7 showInNavigationController:v6 animated:v3 completionBlock:v8];
+  v9 = _previewOverlay;
+  v7 = _previewOverlay;
+  [v7 showInNavigationController:navigationController animated:animatedCopy completionBlock:v8];
 }
 
 void __59__SUProductPageViewController__showPreviewOverlayAnimated___block_invoke(uint64_t a1)
@@ -2781,15 +2781,15 @@ void __59__SUProductPageViewController__showPreviewOverlayAnimated___block_invok
   [v2 postNotificationName:*MEMORY[0x277D7FF28] object:*(a1 + 32)];
 }
 
-- (void)_showProductPage:(id)a3 pageEvent:(id)a4
+- (void)_showProductPage:(id)page pageEvent:(id)event
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pageCopy = page;
+  eventCopy = event;
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [v6 item];
-  v10 = [v9 productPageURLString];
-  v11 = [v8 URLWithString:v10];
+  item = [pageCopy item];
+  productPageURLString = [item productPageURLString];
+  v11 = [v8 URLWithString:productPageURLString];
   nativeURL = self->_nativeURL;
   self->_nativeURL = v11;
 
@@ -2799,17 +2799,17 @@ void __59__SUProductPageViewController__showPreviewOverlayAnimated___block_invok
     [(SUUIClientContext *)self->_clientContext setUserInterfaceIdiomOverride:1];
     v16 = 1208;
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController removeFromParentViewController];
-    v17 = [[SUUIIPadProductPageViewController alloc] initWithProductPage:v6];
+    v17 = [[SUUIIPadProductPageViewController alloc] initWithProductPage:pageCopy];
     ipadProductPageViewController = self->_ipadProductPageViewController;
     self->_ipadProductPageViewController = v17;
 
     v19 = self->_ipadProductPageViewController;
-    v20 = [(SUViewController *)self navigationItem];
-    [(SUUIIPadProductPageViewController *)v19 _setExistingNavigationItem:v20];
+    navigationItem = [(SUViewController *)self navigationItem];
+    [(SUUIIPadProductPageViewController *)v19 _setExistingNavigationItem:navigationItem];
 
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setClientContext:self->_clientContext];
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setDelegate:self];
-    [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController configureMetricsWithPageEvent:v7];
+    [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController configureMetricsWithPageEvent:eventCopy];
     [(SUUIIPadProductPageViewController *)self->_ipadProductPageViewController setAskPermission:self->_askToBuy];
     v21 = self->_ipadProductPageViewController;
     if (!self->_askToBuy)
@@ -2824,17 +2824,17 @@ void __59__SUProductPageViewController__showPreviewOverlayAnimated___block_invok
     [(SUUIClientContext *)self->_clientContext setUserInterfaceIdiomOverride:0];
     v16 = 1216;
     [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController removeFromParentViewController];
-    v23 = [[SUUIIPhoneProductPageViewController alloc] initWithProductPage:v6];
+    v23 = [[SUUIIPhoneProductPageViewController alloc] initWithProductPage:pageCopy];
     iphoneProductPageViewController = self->_iphoneProductPageViewController;
     self->_iphoneProductPageViewController = v23;
 
     v25 = self->_iphoneProductPageViewController;
-    v26 = [(SUViewController *)self navigationItem];
-    [(SUUIIPhoneProductPageViewController *)v25 _setExistingNavigationItem:v26];
+    navigationItem2 = [(SUViewController *)self navigationItem];
+    [(SUUIIPhoneProductPageViewController *)v25 _setExistingNavigationItem:navigationItem2];
 
     [(SUUIViewController *)self->_iphoneProductPageViewController setClientContext:self->_clientContext];
     [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setDelegate:self];
-    [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController configureMetricsWithPageEvent:v7];
+    [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController configureMetricsWithPageEvent:eventCopy];
     [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setAskPermission:self->_askToBuy];
     promptString = 0;
     v21 = self->_iphoneProductPageViewController;

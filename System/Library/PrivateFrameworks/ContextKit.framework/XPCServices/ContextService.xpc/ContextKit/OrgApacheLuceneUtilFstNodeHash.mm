@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilFstNodeHash
-- (int64_t)addWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4;
+- (int64_t)addWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node;
 - (uint64_t)rehash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstNodeHash
 
-- (int64_t)addWithOrgApacheLuceneUtilFstBuilder:(id)a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)a4
+- (int64_t)addWithOrgApacheLuceneUtilFstBuilder:(id)builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:(id)node
 {
-  v7 = sub_10010B93C(a4);
+  v7 = sub_10010B93C(node);
   table = self->table_;
   if (!table)
   {
@@ -26,7 +26,7 @@
     }
 
     v12 = v11;
-    if (sub_10010B6D0(self, a4, v11))
+    if (sub_10010B6D0(self, node, v11))
     {
       return v12;
     }
@@ -47,7 +47,7 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  v12 = [(OrgApacheLuceneUtilFstFST *)fst addNodeWithOrgApacheLuceneUtilFstBuilder:a3 withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:a4];
+  v12 = [(OrgApacheLuceneUtilFstFST *)fst addNodeWithOrgApacheLuceneUtilFstBuilder:builder withOrgApacheLuceneUtilFstBuilder_UnCompiledNode:node];
   v14 = self->table_;
   ++self->count_;
   [(OrgApacheLuceneUtilPackedAbstractPagedMutable *)v14 setWithLong:v9 withLong:v12];
@@ -62,18 +62,18 @@ LABEL_6:
 
 - (uint64_t)rehash
 {
-  v2 = (a1 + 8);
-  v1 = *(a1 + 8);
+  v2 = (self + 8);
+  v1 = *(self + 8);
   if (!v1)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = 2 * [*(a1 + 8) size];
-  v12 = OrgApacheLuceneUtilPackedPackedInts_bitsRequiredWithLong_(*(a1 + 16), v5, v6, v7, v8, v9, v10, v11);
+  v4 = 2 * [*(self + 8) size];
+  v12 = OrgApacheLuceneUtilPackedPackedInts_bitsRequiredWithLong_(*(self + 16), v5, v6, v7, v8, v9, v10, v11);
   v13 = new_OrgApacheLuceneUtilPackedPagedGrowableWriter_initWithLong_withInt_withInt_withFloat_(v4, 0x40000000, v12, 0.0);
   JreStrongAssignAndConsume(v2, v13);
-  *(a1 + 24) = [*(a1 + 8) size] - 1;
+  *(self + 24) = [*(self + 8) size] - 1;
   result = [v1 size];
   if (result >= 1)
   {
@@ -82,7 +82,7 @@ LABEL_6:
       v16 = [v1 getWithLong:i];
       if (v16)
       {
-        sub_10010BDE0(a1, v16);
+        sub_10010BDE0(self, v16);
       }
 
       result = [v1 size];

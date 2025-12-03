@@ -1,6 +1,6 @@
 @interface CalendarLeafIcon
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
 - (void)localeChanged;
 @end
 
@@ -9,23 +9,23 @@
 - (void)localeChanged
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  [(CalendarLeafIcon *)v4 reloadIconImage];
-  v5.receiver = v4;
+  selfCopy = self;
+  [(CalendarLeafIcon *)selfCopy reloadIconImage];
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(CalendarLeafIcon *)&v5 localeChanged];
 }
 
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
-  v6 = [*(&self->super + OBJC_IVAR____TtC15CarPlaySettings16CalendarLeafIcon_imageProvider) iconImageWithInfo:a3 traitCollection:a5 options:?];
+  v6 = [*(&self->super + OBJC_IVAR____TtC15CarPlaySettings16CalendarLeafIcon_imageProvider) iconImageWithInfo:info traitCollection:context options:?];
 
   return v6;
 }
 
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
-  v6 = [*(&self->super + OBJC_IVAR____TtC15CarPlaySettings16CalendarLeafIcon_imageProvider) iconLayerWithInfo:a3 traitCollection:a5 options:?];
+  v6 = [*(&self->super + OBJC_IVAR____TtC15CarPlaySettings16CalendarLeafIcon_imageProvider) iconLayerWithInfo:info traitCollection:context options:?];
 
   return v6;
 }

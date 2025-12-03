@@ -1,23 +1,23 @@
 @interface AKArrowAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
 - (AKArrowAnnotation)init;
-- (AKArrowAnnotation)initWithCoder:(id)a3;
+- (AKArrowAnnotation)initWithCoder:(id)coder;
 - (CGPoint)endPoint;
 - (CGPoint)midPoint;
 - (CGPoint)startPoint;
 - (CGRect)hitTestBounds;
 - (id)displayName;
-- (id)foregroundColorForOptions:(id)a3;
+- (id)foregroundColorForOptions:(id)options;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)setForegroundColor:(id)a3;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)setForegroundColor:(id)color;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKArrowAnnotation
@@ -25,7 +25,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKArrowAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -38,7 +38,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKArrowAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -48,34 +48,34 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"startPoint"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"startPoint"])
   {
     v5 = @"Start Point";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"endPoint"])
+  if ([keyCopy isEqualToString:@"endPoint"])
   {
     v5 = @"End Point";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"midPoint"])
+  if ([keyCopy isEqualToString:@"midPoint"])
   {
     v5 = @"Mid Point";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"arrowHeadStyle"])
+  if ([keyCopy isEqualToString:@"arrowHeadStyle"])
   {
     v5 = @"Line Style";
     goto LABEL_12;
   }
 
-  if (([v4 isEqualToString:@"annotationText"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"typingAttributes"))
+  if (([keyCopy isEqualToString:@"annotationText"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"typingAttributes"))
   {
     v5 = @"Text";
 LABEL_12:
@@ -88,9 +88,9 @@ LABEL_12:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKArrowAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_14:
 
   return v7;
@@ -103,75 +103,75 @@ LABEL_14:
   v2 = [(AKAnnotation *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAC0] dictionary];
-    [(AKArrowAnnotation *)v2 setTypingAttributes:v3];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    [(AKArrowAnnotation *)v2 setTypingAttributes:dictionary];
   }
 
   return v2;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  if (v5 && [v5 akIsEDR])
+  colorCopy = color;
+  if (colorCopy && [colorCopy akIsEDR])
   {
-    [(AKArrowAnnotation *)self setForegroundColorHDR:v5];
-    v4 = [v5 akToSDR];
-    [(AKArrowAnnotation *)self setForegroundColorSDR:v4];
+    [(AKArrowAnnotation *)self setForegroundColorHDR:colorCopy];
+    akToSDR = [colorCopy akToSDR];
+    [(AKArrowAnnotation *)self setForegroundColorSDR:akToSDR];
   }
 
   else
   {
     [(AKArrowAnnotation *)self setForegroundColorHDR:0];
-    [(AKArrowAnnotation *)self setForegroundColorSDR:v5];
+    [(AKArrowAnnotation *)self setForegroundColorSDR:colorCopy];
   }
 }
 
-- (id)foregroundColorForOptions:(id)a3
+- (id)foregroundColorForOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = +[AKAnnotationRendererOptions defaultOptions];
+    optionsCopy = +[AKAnnotationRendererOptions defaultOptions];
   }
 
-  [v4 scaleFactor];
+  [optionsCopy scaleFactor];
   v6 = v5;
-  v7 = [(AKArrowAnnotation *)self foregroundColorHDR];
-  v8 = v7;
+  foregroundColorHDR = [(AKArrowAnnotation *)self foregroundColorHDR];
+  v8 = foregroundColorHDR;
   if (v6 == 0.0)
   {
-    if (v7 && ([v4 allowHDR] & 1) != 0)
+    if (foregroundColorHDR && ([optionsCopy allowHDR] & 1) != 0)
     {
-      v13 = [(AKArrowAnnotation *)self foregroundColorHDR];
+      foregroundColorHDR2 = [(AKArrowAnnotation *)self foregroundColorHDR];
     }
 
     else
     {
-      v13 = [(AKArrowAnnotation *)self foregroundColorSDR];
+      foregroundColorHDR2 = [(AKArrowAnnotation *)self foregroundColorSDR];
     }
 
-    v12 = v13;
+    v12 = foregroundColorHDR2;
   }
 
   else
   {
-    if (v7 && [v4 allowHDR])
+    if (foregroundColorHDR && [optionsCopy allowHDR])
     {
-      v9 = [(AKArrowAnnotation *)self foregroundColorHDR];
+      foregroundColorHDR3 = [(AKArrowAnnotation *)self foregroundColorHDR];
       v10 = 0;
       v11 = 1;
     }
 
     else
     {
-      v9 = [(AKArrowAnnotation *)self foregroundColorSDR];
+      foregroundColorHDR3 = [(AKArrowAnnotation *)self foregroundColorSDR];
       v11 = 0;
       v10 = 1;
     }
 
-    [v4 scaleFactor];
-    v12 = [v9 akScale:?];
+    [optionsCopy scaleFactor];
+    v12 = [foregroundColorHDR3 akScale:?];
     if (v10)
     {
     }
@@ -186,10 +186,10 @@ LABEL_14:
 
 - (id)displayName
 {
-  v2 = [(AKArrowAnnotation *)self arrowHeadStyle];
+  arrowHeadStyle = [(AKArrowAnnotation *)self arrowHeadStyle];
   v3 = +[AKController akBundle];
   v4 = v3;
-  if (v2)
+  if (arrowHeadStyle)
   {
     v5 = @"Arrow Line";
   }
@@ -209,8 +209,8 @@ LABEL_14:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowAnnotation;
-  v3 = [(AKShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAA58];
 
@@ -222,8 +222,8 @@ LABEL_14:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowAnnotation;
-  v3 = [(AKShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAA70];
 
@@ -235,8 +235,8 @@ LABEL_14:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKArrowAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BAA88];
 
@@ -271,12 +271,12 @@ LABEL_14:
   y = v38.origin.y;
   width = v38.size.width;
   height = v38.size.height;
-  v23 = [(AKArrowAnnotation *)self annotationText];
-  if (v23)
+  annotationText = [(AKArrowAnnotation *)self annotationText];
+  if (annotationText)
   {
-    v24 = v23;
-    v25 = [(AKArrowAnnotation *)self annotationText];
-    v26 = [v25 length];
+    v24 = annotationText;
+    annotationText2 = [(AKArrowAnnotation *)self annotationText];
+    v26 = [annotationText2 length];
 
     if (v26)
     {
@@ -339,12 +339,12 @@ LABEL_14:
   [(AKArrowAnnotation *)self setMidPoint:v27, v29];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   [(AKArrowAnnotation *)self startPoint];
   v9 = v8;
   v11 = v10;
@@ -360,13 +360,13 @@ LABEL_14:
   [(AKArrowAnnotation *)self setMidPoint:v20, v20];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKArrowAnnotation *)self startPoint];
     v9 = v8;
@@ -385,58 +385,58 @@ LABEL_14:
     [(AKArrowAnnotation *)self setEndPoint:v18, v19];
     [(AKArrowAnnotation *)self setMidPoint:v21, v23];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = AKArrowAnnotation;
-  v4 = a3;
-  [(AKShapeAnnotation *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKShapeAnnotation *)&v8 encodeWithCoder:coderCopy];
   [(AKArrowAnnotation *)self startPoint:v8.receiver];
   DictionaryRepresentation = CGPointCreateDictionaryRepresentation(v9);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"startPoint"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"startPoint"];
   [(AKArrowAnnotation *)self endPoint];
   v6 = CGPointCreateDictionaryRepresentation(v10);
 
-  [v4 encodeObject:v6 forKey:@"endPoint"];
+  [coderCopy encodeObject:v6 forKey:@"endPoint"];
   [(AKArrowAnnotation *)self midPoint];
   v7 = CGPointCreateDictionaryRepresentation(v11);
 
-  [v4 encodeObject:v7 forKey:@"midPoint"];
-  [v4 encodeInteger:-[AKArrowAnnotation arrowHeadStyle](self forKey:{"arrowHeadStyle"), @"arrowHeadStyle"}];
-  [AKSecureSerializationHelper encodeTextPropertiesOfAnnotation:self withCoder:v4];
+  [coderCopy encodeObject:v7 forKey:@"midPoint"];
+  [coderCopy encodeInteger:-[AKArrowAnnotation arrowHeadStyle](self forKey:{"arrowHeadStyle"), @"arrowHeadStyle"}];
+  [AKSecureSerializationHelper encodeTextPropertiesOfAnnotation:self withCoder:coderCopy];
 }
 
-- (AKArrowAnnotation)initWithCoder:(id)a3
+- (AKArrowAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = AKArrowAnnotation;
-  v5 = [(AKShapeAnnotation *)&v27 initWithCoder:v4];
+  v5 = [(AKShapeAnnotation *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"startPoint"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"startPoint"];
 
     CGPointMakeWithDictionaryRepresentation(v10, &v5->_startPoint);
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"endPoint"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"endPoint"];
 
     CGPointMakeWithDictionaryRepresentation(v15, &v5->_endPoint);
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v16 setWithObjects:{v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"midPoint"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"midPoint"];
 
     if (v20)
     {
@@ -450,8 +450,8 @@ LABEL_14:
       v5->_midPoint = vmulq_f64(vaddq_f64(v5->_startPoint, v5->_endPoint), _Q1);
     }
 
-    -[AKArrowAnnotation setArrowHeadStyle:](v5, "setArrowHeadStyle:", [v4 decodeIntegerForKey:@"arrowHeadStyle"]);
-    [AKSecureSerializationHelper decodeTextPropertiesOfAnnotation:v5 withSecureCoder:v4];
+    -[AKArrowAnnotation setArrowHeadStyle:](v5, "setArrowHeadStyle:", [coderCopy decodeIntegerForKey:@"arrowHeadStyle"]);
+    [AKSecureSerializationHelper decodeTextPropertiesOfAnnotation:v5 withSecureCoder:coderCopy];
   }
 
   return v5;

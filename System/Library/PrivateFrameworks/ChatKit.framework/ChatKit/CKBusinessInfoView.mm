@@ -1,18 +1,18 @@
 @interface CKBusinessInfoView
 - (BOOL)hasValidGreeting;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKBusinessInfoView)initWithLayoutType:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKBusinessInfoView)initWithLayoutType:(int64_t)type;
 - (CKBusinessInfoViewDelegate)delegate;
-- (void)infoButtonTapped:(id)a3;
+- (void)infoButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setDescriptionText:(id)a3;
-- (void)setGreetingText:(id)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setGreetingText:(id)text;
 - (void)setup;
 @end
 
 @implementation CKBusinessInfoView
 
-- (CKBusinessInfoView)initWithLayoutType:(int64_t)a3
+- (CKBusinessInfoView)initWithLayoutType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = CKBusinessInfoView;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_layoutType = a3;
+    v4->_layoutType = type;
     [(CKBusinessInfoView *)v4 setup];
   }
 
@@ -46,29 +46,29 @@
   [(CKBusinessInfoView *)self addSubview:self->_infoButton];
   [(CKStandardButton *)self->_infoButton addTarget:self action:sel_infoButtonTapped_ forControlEvents:64];
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 theme];
-  v11 = [v10 businessInfoViewGreetingTextColor];
-  [(UILabel *)self->_greetingTextLabel setTextColor:v11];
+  theme = [v9 theme];
+  businessInfoViewGreetingTextColor = [theme businessInfoViewGreetingTextColor];
+  [(UILabel *)self->_greetingTextLabel setTextColor:businessInfoViewGreetingTextColor];
 
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [v13 businessInfoViewDescriptionTextColor];
-  [(UILabel *)self->_descriptionTextLabel setTextColor:v14];
+  theme2 = [v12 theme];
+  businessInfoViewDescriptionTextColor = [theme2 businessInfoViewDescriptionTextColor];
+  [(UILabel *)self->_descriptionTextLabel setTextColor:businessInfoViewDescriptionTextColor];
 
   v15 = self->_greetingTextLabel;
   v16 = +[CKUIBehavior sharedBehaviors];
-  v17 = [v16 businessInfoViewGreetingTextFont];
-  [(UILabel *)v15 setFont:v17];
+  businessInfoViewGreetingTextFont = [v16 businessInfoViewGreetingTextFont];
+  [(UILabel *)v15 setFont:businessInfoViewGreetingTextFont];
 
   v18 = self->_descriptionTextLabel;
   v19 = +[CKUIBehavior sharedBehaviors];
-  v20 = [v19 businessInfoViewDescriptionTextFont];
-  [(UILabel *)v18 setFont:v20];
+  businessInfoViewDescriptionTextFont = [v19 businessInfoViewDescriptionTextFont];
+  [(UILabel *)v18 setFont:businessInfoViewDescriptionTextFont];
 
-  v21 = [(CKStandardButton *)self->_infoButton titleLabel];
+  titleLabel = [(CKStandardButton *)self->_infoButton titleLabel];
   v22 = +[CKUIBehavior sharedBehaviors];
-  v23 = [v22 businessInfoViewTitleLabelFont];
-  [v21 setFont:v23];
+  businessInfoViewTitleLabelFont = [v22 businessInfoViewTitleLabelFont];
+  [titleLabel setFont:businessInfoViewTitleLabelFont];
 
   [(UILabel *)self->_greetingTextLabel setNumberOfLines:0];
   [(UILabel *)self->_descriptionTextLabel setNumberOfLines:0];
@@ -77,8 +77,8 @@
   v29 = [v24 flowWithBundle:v25];
 
   v26 = self->_infoButton;
-  v27 = [v29 localizedButtonTitle];
-  [(CKStandardButton *)v26 setTitle:v27 forState:0];
+  localizedButtonTitle = [v29 localizedButtonTitle];
+  [(CKStandardButton *)v26 setTitle:localizedButtonTitle forState:0];
 
   [(CKStandardButton *)self->_infoButton setContentEdgeInsets:-1.0, 0.0, -1.0, 0.0];
   if ([(CKBusinessInfoView *)self layoutType])
@@ -129,20 +129,20 @@ LABEL_5:
     v6 = v13;
   }
 
-  v14 = [(CKBusinessInfoView *)self greetingTextLabel];
-  [v14 sizeThatFits:{v4, v6}];
+  greetingTextLabel = [(CKBusinessInfoView *)self greetingTextLabel];
+  [greetingTextLabel sizeThatFits:{v4, v6}];
   v16 = v15;
 
-  v17 = [(CKBusinessInfoView *)self descriptionTextLabel];
-  [v17 sizeThatFits:{v4, v6}];
+  descriptionTextLabel = [(CKBusinessInfoView *)self descriptionTextLabel];
+  [descriptionTextLabel sizeThatFits:{v4, v6}];
   v19 = v18;
 
-  v20 = [(CKBusinessInfoView *)self infoButton];
-  [v20 sizeThatFits:{v4, v6}];
+  infoButton = [(CKBusinessInfoView *)self infoButton];
+  [infoButton sizeThatFits:{v4, v6}];
   v22 = v21;
 
-  v23 = [(CKBusinessInfoView *)self layoutType];
-  if (v23 == 1)
+  layoutType = [(CKBusinessInfoView *)self layoutType];
+  if (layoutType == 1)
   {
     [(CKBusinessInfoView *)self layoutMargins];
     v59 = v58 + 15.0;
@@ -152,8 +152,8 @@ LABEL_5:
     v63 = v62;
     [(CKBusinessInfoView *)self layoutMargins];
     v65 = v61 - (v63 + v64) + -30.0;
-    v66 = [(CKBusinessInfoView *)self descriptionTextLabel];
-    [v66 setFrame:{v59, 10.0, v65, v19}];
+    descriptionTextLabel2 = [(CKBusinessInfoView *)self descriptionTextLabel];
+    [descriptionTextLabel2 setFrame:{v59, 10.0, v65, v19}];
 
     [(CKBusinessInfoView *)self frame];
     v68 = v67;
@@ -161,8 +161,8 @@ LABEL_5:
     v70 = v69;
     [(CKBusinessInfoView *)self layoutMargins];
     v51 = v68 - (v70 + v71) + -30.0;
-    v72 = [(CKBusinessInfoView *)self infoButton];
-    [v72 sizeThatFits:{v51, 1.79769313e308}];
+    infoButton2 = [(CKBusinessInfoView *)self infoButton];
+    [infoButton2 sizeThatFits:{v51, 1.79769313e308}];
     v74 = v73;
 
     if (v51 >= v74)
@@ -189,7 +189,7 @@ LABEL_5:
 
   else
   {
-    if (v23)
+    if (layoutType)
     {
       return;
     }
@@ -201,10 +201,10 @@ LABEL_5:
     v28 = 15.0;
     if ([(CKBusinessInfoView *)self hasValidGreeting])
     {
-      v29 = [(CKBusinessInfoView *)self traitCollection];
-      v30 = [v29 verticalSizeClass];
+      traitCollection = [(CKBusinessInfoView *)self traitCollection];
+      verticalSizeClass = [traitCollection verticalSizeClass];
 
-      if (v30 != 1)
+      if (verticalSizeClass != 1)
       {
         [(CKBusinessInfoView *)self layoutMargins];
         v24 = v31 + 30.0;
@@ -220,8 +220,8 @@ LABEL_5:
       }
     }
 
-    v37 = [(CKBusinessInfoView *)self greetingTextLabel];
-    [v37 setFrame:{v24, v25, v26, v27}];
+    greetingTextLabel2 = [(CKBusinessInfoView *)self greetingTextLabel];
+    [greetingTextLabel2 setFrame:{v24, v25, v26, v27}];
 
     [(CKBusinessInfoView *)self layoutMargins];
     v39 = v38 + 30.0;
@@ -231,31 +231,31 @@ LABEL_5:
     v43 = v42;
     [(CKBusinessInfoView *)self layoutMargins];
     v45 = v41 - (v43 + v44) + -60.0;
-    v46 = [(CKBusinessInfoView *)self descriptionTextLabel];
-    [v46 setFrame:{v39, v28, v45, v19}];
+    descriptionTextLabel3 = [(CKBusinessInfoView *)self descriptionTextLabel];
+    [descriptionTextLabel3 setFrame:{v39, v28, v45, v19}];
 
     v47 = v19 + 0.0 + v28;
-    v48 = [(CKBusinessInfoView *)self infoButton];
+    infoButton3 = [(CKBusinessInfoView *)self infoButton];
     [(CKBusinessInfoView *)self frame];
-    [v48 sizeThatFits:{v49, 1.79769313e308}];
+    [infoButton3 sizeThatFits:{v49, 1.79769313e308}];
     v51 = v50;
 
     [(CKBusinessInfoView *)self bounds];
     v53 = (v52 - v51) * 0.5;
-    v54 = [(CKBusinessInfoView *)self traitCollection];
-    [v54 displayScale];
+    traitCollection2 = [(CKBusinessInfoView *)self traitCollection];
+    [traitCollection2 displayScale];
     v56 = round(v55 * v53) / v55;
     v57 = round(v47 * v55) / v55;
   }
 
-  v79 = [(CKBusinessInfoView *)self infoButton];
-  [v79 setFrame:{v56, v57, v51, v22}];
+  infoButton4 = [(CKBusinessInfoView *)self infoButton];
+  [infoButton4 setFrame:{v56, v57, v51, v22}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  if (![(CKBusinessInfoView *)self layoutType:a3.width])
+  width = fits.width;
+  if (![(CKBusinessInfoView *)self layoutType:fits.width])
   {
     v6 = -60.0;
     goto LABEL_5;
@@ -272,27 +272,27 @@ LABEL_5:
     v5 = width - (v8 + v9) + v6;
   }
 
-  v10 = [(CKBusinessInfoView *)self greetingTextLabel];
-  [v10 sizeThatFits:{v5, 1.79769313e308}];
+  greetingTextLabel = [(CKBusinessInfoView *)self greetingTextLabel];
+  [greetingTextLabel sizeThatFits:{v5, 1.79769313e308}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CKBusinessInfoView *)self descriptionTextLabel];
-  [v15 sizeThatFits:{v5, 1.79769313e308}];
+  descriptionTextLabel = [(CKBusinessInfoView *)self descriptionTextLabel];
+  [descriptionTextLabel sizeThatFits:{v5, 1.79769313e308}];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(CKBusinessInfoView *)self infoButton];
-  [v20 sizeThatFits:{v5, 1.79769313e308}];
+  infoButton = [(CKBusinessInfoView *)self infoButton];
+  [infoButton sizeThatFits:{v5, 1.79769313e308}];
   v22 = v21;
 
-  v23 = [(CKBusinessInfoView *)self layoutType];
-  if (v23 == 1)
+  layoutType = [(CKBusinessInfoView *)self layoutType];
+  if (layoutType == 1)
   {
     v25 = v19 + v22 + 10.0 + 10.0;
   }
 
-  else if (v23)
+  else if (layoutType)
   {
     v17 = *MEMORY[0x1E695F060];
     v25 = *(MEMORY[0x1E695F060] + 8);
@@ -323,51 +323,51 @@ LABEL_5:
   return result;
 }
 
-- (void)setGreetingText:(id)a3
+- (void)setGreetingText:(id)text
 {
-  objc_storeStrong(&self->_greetingText, a3);
-  v5 = a3;
-  v6 = [(CKBusinessInfoView *)self greetingTextLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_greetingText, text);
+  textCopy = text;
+  greetingTextLabel = [(CKBusinessInfoView *)self greetingTextLabel];
+  [greetingTextLabel setText:textCopy];
 
   [(CKBusinessInfoView *)self setNeedsLayout];
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  objc_storeStrong(&self->_descriptionText, a3);
-  v5 = a3;
-  v6 = [(CKBusinessInfoView *)self descriptionTextLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_descriptionText, text);
+  textCopy = text;
+  descriptionTextLabel = [(CKBusinessInfoView *)self descriptionTextLabel];
+  [descriptionTextLabel setText:textCopy];
 
   [(CKBusinessInfoView *)self setNeedsLayout];
 }
 
-- (void)infoButtonTapped:(id)a3
+- (void)infoButtonTapped:(id)tapped
 {
-  v8 = a3;
-  v4 = [(CKBusinessInfoView *)self delegate];
+  tappedCopy = tapped;
+  delegate = [(CKBusinessInfoView *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CKBusinessInfoView *)self delegate];
+    delegate2 = [(CKBusinessInfoView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CKBusinessInfoView *)self delegate];
-      [v7 businessInfoView:self infoButtonTapped:v8];
+      delegate3 = [(CKBusinessInfoView *)self delegate];
+      [delegate3 businessInfoView:self infoButtonTapped:tappedCopy];
     }
   }
 }
 
 - (BOOL)hasValidGreeting
 {
-  v3 = [(CKBusinessInfoView *)self greetingText];
-  if ([v3 length])
+  greetingText = [(CKBusinessInfoView *)self greetingText];
+  if ([greetingText length])
   {
-    v4 = [(CKBusinessInfoView *)self greetingText];
-    v5 = [v4 isEqualToString:@"$EMPTY$"] ^ 1;
+    greetingText2 = [(CKBusinessInfoView *)self greetingText];
+    v5 = [greetingText2 isEqualToString:@"$EMPTY$"] ^ 1;
   }
 
   else

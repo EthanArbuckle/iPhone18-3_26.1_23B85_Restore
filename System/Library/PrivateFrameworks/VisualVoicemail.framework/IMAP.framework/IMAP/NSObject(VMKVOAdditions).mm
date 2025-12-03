@@ -8,7 +8,7 @@
 {
   v10 = a6;
   v11 = a3;
-  v12 = [[_VFKeyValueObserverHandler alloc] initWithObject:a1 keyPath:v11 usingBlock:v10];
+  v12 = [[_VFKeyValueObserverHandler alloc] initWithObject:self keyPath:v11 usingBlock:v10];
 
   [(_VFKeyValueObserverHandler *)v12 startObservingWithOptions:a4];
   if (a5)

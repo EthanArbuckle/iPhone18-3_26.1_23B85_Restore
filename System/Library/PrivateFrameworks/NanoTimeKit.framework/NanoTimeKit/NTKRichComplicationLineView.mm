@@ -1,30 +1,30 @@
 @interface NTKRichComplicationLineView
 - (CGPath)_generatePath;
-- (CGPoint)_pointAtProgress:(float)a3;
-- (void)_setupGradientLayer:(id)a3;
+- (CGPoint)_pointAtProgress:(float)progress;
+- (void)_setupGradientLayer:(id)layer;
 @end
 
 @implementation NTKRichComplicationLineView
 
-- (void)_setupGradientLayer:(id)a3
+- (void)_setupGradientLayer:(id)layer
 {
   v3 = *MEMORY[0x277CDA690];
-  v4 = a3;
-  [v4 setType:v3];
+  layerCopy = layer;
+  [layerCopy setType:v3];
   CGAffineTransformMakeRotation(&v6, -1.57079633);
   v5 = v6;
-  [v4 setAffineTransform:&v5];
+  [layerCopy setAffineTransform:&v5];
 }
 
-- (CGPoint)_pointAtProgress:(float)a3
+- (CGPoint)_pointAtProgress:(float)progress
 {
   [(NTKRichComplicationLineView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(CDRichComplicationShapeView *)self device];
-  v10 = ___LayoutConstants_block_invoke_57(v9, v9);
+  device = [(CDRichComplicationShapeView *)self device];
+  v10 = ___LayoutConstants_block_invoke_57(device, device);
 
-  v11 = v10 + (v6 + v10 * -2.0) * a3;
+  v11 = v10 + (v6 + v10 * -2.0) * progress;
   v12 = v8 * 0.5;
   result.y = v12;
   result.x = v11;
@@ -36,16 +36,16 @@
   [(NTKRichComplicationLineView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(CDRichComplicationShapeView *)self device];
-  v8 = ___LayoutConstants_block_invoke_57(v7, v7);
+  device = [(CDRichComplicationShapeView *)self device];
+  v8 = ___LayoutConstants_block_invoke_57(device, device);
 
-  v9 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   v10 = v6 * 0.5;
-  [v9 moveToPoint:{v8, v10}];
-  [v9 addLineToPoint:{v4 - v8, v10}];
-  v11 = [v9 CGPath];
+  [bezierPath moveToPoint:{v8, v10}];
+  [bezierPath addLineToPoint:{v4 - v8, v10}];
+  cGPath = [bezierPath CGPath];
 
-  return v11;
+  return cGPath;
 }
 
 @end

@@ -89,7 +89,7 @@
     v8 = [CIVector vectorWithX:"vectorWithX:Y:Z:W:" Y:1.0 / fmax(v7 Z:0.001) W:?];
     if (v6 >= 0.0)
     {
-      v9 = [(CIVignetteEffect *)self _poskernel];
+      _poskernel = [(CIVignetteEffect *)self _poskernel];
       [(CIImage *)self->inputImage extent];
       v11 = v21;
       v13 = v22;
@@ -105,7 +105,7 @@
 
     else
     {
-      v9 = [(CIVignetteEffect *)self _negkernel];
+      _poskernel = [(CIVignetteEffect *)self _negkernel];
       [(CIImage *)self->inputImage extent];
       v11 = v10;
       v13 = v12;
@@ -119,7 +119,7 @@
       v20 = v26;
     }
 
-    return [v9 applyWithExtent:objc_msgSend(v19 arguments:{"arrayWithObjects:count:", v20, 3), v11, v13, v15, v17}];
+    return [_poskernel applyWithExtent:objc_msgSend(v19 arguments:{"arrayWithObjects:count:", v20, 3), v11, v13, v15, v17}];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface MCSDeleteMailboxOperation
 - (BOOL)commit;
-- (MCSDeleteMailboxOperation)initWithMailboxToDelete:(id)a3;
+- (MCSDeleteMailboxOperation)initWithMailboxToDelete:(id)delete;
 - (id)localizedErrorDescription;
 - (id)localizedErrorTitle;
 @end
 
 @implementation MCSDeleteMailboxOperation
 
-- (MCSDeleteMailboxOperation)initWithMailboxToDelete:(id)a3
+- (MCSDeleteMailboxOperation)initWithMailboxToDelete:(id)delete
 {
-  v5 = a3;
+  deleteCopy = delete;
   v9.receiver = self;
   v9.super_class = MCSDeleteMailboxOperation;
   v6 = [(MCSDeleteMailboxOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailboxToDelete, a3);
+    objc_storeStrong(&v6->_mailboxToDelete, delete);
     *(&v7->super.super + 8) |= 1u;
   }
 
@@ -25,28 +25,28 @@
 
 - (BOOL)commit
 {
-  v3 = [(MFMailboxUid *)self->_mailboxToDelete account];
-  if ([v3 canMailboxBeDeleted:self->_mailboxToDelete])
+  account = [(MFMailboxUid *)self->_mailboxToDelete account];
+  if ([account canMailboxBeDeleted:self->_mailboxToDelete])
   {
     v4 = [EMDeleteMailboxChangeAction alloc];
-    v5 = [(MFMailboxUid *)self->_mailboxToDelete objectID];
-    v6 = [v4 initWithMailboxObjectID:v5];
+    objectID = [(MFMailboxUid *)self->_mailboxToDelete objectID];
+    v6 = [v4 initWithMailboxObjectID:objectID];
 
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 daemonInterface];
-    v9 = [v8 mailboxRepository];
-    v10 = [v9 performMailboxChangeAction:v6];
+    daemonInterface = [v7 daemonInterface];
+    mailboxRepository = [daemonInterface mailboxRepository];
+    v10 = [mailboxRepository performMailboxChangeAction:v6];
 
     v11 = [v10 result:0];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v12 = 0;
+    bOOLValue = 0;
   }
 
-  return v12;
+  return bOOLValue;
 }
 
 - (id)localizedErrorDescription

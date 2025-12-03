@@ -1,18 +1,18 @@
 @interface CIColorKernel
 + (CIColorKernel)kernelWithString:(NSString *)string;
-+ (id)SDOFV2MetalKernelNamed:(id)a3;
-+ (id)SDOFV3MetalKernelNamed:(id)a3;
++ (id)SDOFV2MetalKernelNamed:(id)named;
++ (id)SDOFV3MetalKernelNamed:(id)named;
 - (BOOL)canReduceOutputChannels;
 - (BOOL)perservesAlpha;
 - (BOOL)preservesOpacity;
 - (BOOL)preservesRange;
-- (CIColorKernel)initWithString:(id)a3;
-- (id)applyWithExtent:(CGRect)a3 arguments:(id)a4 options:(id)a5;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6;
-- (void)setCanReduceOutputChannels:(BOOL)a3;
-- (void)setPerservesAlpha:(BOOL)a3;
-- (void)setPreservesRange:(BOOL)a3;
+- (CIColorKernel)initWithString:(id)string;
+- (id)applyWithExtent:(CGRect)extent arguments:(id)arguments options:(id)options;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options;
+- (void)setCanReduceOutputChannels:(BOOL)channels;
+- (void)setPerservesAlpha:(BOOL)alpha;
+- (void)setPreservesRange:(BOOL)range;
 @end
 
 @implementation CIColorKernel
@@ -24,7 +24,7 @@
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v14 = [a1 description];
+    v14 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -32,10 +32,10 @@
   v9[1] = 3221225472;
   v10 = __34__CIColorKernel_kernelWithString___block_invoke;
   v11 = &unk_1E75C2AA0;
-  v12 = a1;
+  selfCopy = self;
   if (check_cikl_string(string, "+[CIColorKernel kernelWithString:]"))
   {
-    v6 = [[a1 alloc] initWithString:string];
+    v6 = [[self alloc] initWithString:string];
     if (v6)
     {
       v7 = [objc_opt_class() description];
@@ -65,12 +65,12 @@ void __34__CIColorKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-- (CIColorKernel)initWithString:(id)a3
+- (CIColorKernel)initWithString:(id)string
 {
-  if (check_cikl_string(a3, "[CIColorKernel initWithString:]"))
+  if (check_cikl_string(string, "[CIColorKernel initWithString:]"))
   {
 
-    return [(CIKernel *)self _initWithString:a3 andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:0];
+    return [(CIKernel *)self _initWithString:string andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:0];
   }
 
   else
@@ -112,7 +112,7 @@ void __34__CIColorKernel_kernelWithString___block_invoke(uint64_t a1)
   return v3 & 1;
 }
 
-- (void)setPerservesAlpha:(BOOL)a3
+- (void)setPerservesAlpha:(BOOL)alpha
 {
   v11 = *MEMORY[0x1E69E9840];
   priv = self->super._priv;
@@ -141,7 +141,7 @@ LABEL_6:
 
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
-    CI::Kernel::set_preserves_alpha(priv, a3);
+    CI::Kernel::set_preserves_alpha(priv, alpha);
   }
 }
 
@@ -161,13 +161,13 @@ LABEL_6:
   return v3 & 1;
 }
 
-- (void)setPreservesRange:(BOOL)a3
+- (void)setPreservesRange:(BOOL)range
 {
   priv = self->super._priv;
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
 
-    CI::Kernel::set_preserves_range(priv, a3);
+    CI::Kernel::set_preserves_range(priv, range);
   }
 }
 
@@ -187,26 +187,26 @@ LABEL_6:
   return v3 & 1;
 }
 
-- (void)setCanReduceOutputChannels:(BOOL)a3
+- (void)setCanReduceOutputChannels:(BOOL)channels
 {
   priv = self->super._priv;
   if (CI::Kernel::num_image_arguments(priv) > 0 || (*(*priv + 72))(priv))
   {
 
-    CI::Kernel::set_can_reduce_output_channels(priv, a3);
+    CI::Kernel::set_can_reduce_output_channels(priv, channels);
   }
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (callback)
   {
-    v18.origin.x = (*(a4 + 2))(a4, 0, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+    v18.origin.x = (*(callback + 2))(callback, 0, extent.origin, *&extent.origin.y, extent.size, *&extent.size.height);
     v19.origin.x = x;
     v19.origin.y = y;
     v19.size.width = width;
@@ -223,19 +223,19 @@ LABEL_6:
     }
   }
 
-  return [(CIColorKernel *)self applyWithExtent:a5 arguments:a6 options:x, y, width, height];
+  return [(CIColorKernel *)self applyWithExtent:arguments arguments:options options:x, y, width, height];
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v15 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (callback)
   {
-    v16.origin.x = (*(a4 + 2))(a4, 0, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+    v16.origin.x = (*(callback + 2))(callback, 0, extent.origin, *&extent.origin.y, extent.size, *&extent.size.height);
     v17.origin.x = x;
     v17.origin.y = y;
     v17.size.width = width;
@@ -252,13 +252,13 @@ LABEL_6:
     }
   }
 
-  return [(CIColorKernel *)self applyWithExtent:a5 arguments:x, y, width, height];
+  return [(CIColorKernel *)self applyWithExtent:arguments arguments:x, y, width, height];
 }
 
-- (id)applyWithExtent:(CGRect)a3 arguments:(id)a4 options:(id)a5
+- (id)applyWithExtent:(CGRect)extent arguments:(id)arguments options:(id)options
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3))
+  if (CGRectIsEmpty(extent))
   {
 
     return +[CIImage emptyImage];
@@ -269,7 +269,7 @@ LABEL_6:
     priv = self->super._priv;
     if ((*(*priv + 16))(priv) == 70)
     {
-      v9 = [a4 count];
+      v9 = [arguments count];
       if (CI::Kernel::num_apply_arguments(priv) == v9)
       {
         if (v9 < 1)
@@ -296,20 +296,20 @@ LABEL_28:
             type = *(priv[8] + 4 * v10);
           }
 
-          if (*(*priv + 72))(priv) && !priv[4] && (type == 15 || type == 8) && (([a4 objectAtIndexedSubscript:v10], objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_msgSend(a4, "objectAtIndexedSubscript:", v10), objc_opt_class(), (objc_opt_isKindOfClass())))
+          if (*(*priv + 72))(priv) && !priv[4] && (type == 15 || type == 8) && (([arguments objectAtIndexedSubscript:v10], objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_msgSend(arguments, "objectAtIndexedSubscript:", v10), objc_opt_class(), (objc_opt_isKindOfClass())))
           {
             CI::Kernel::set_argument_type(priv, v10, 1);
             CI::Kernel::set_half_color_inputs(priv, type == 15);
           }
 
-          else if ((verify_argument_type([a4 objectAtIndexedSubscript:v10], type, 1) & 1) == 0)
+          else if ((verify_argument_type([arguments objectAtIndexedSubscript:v10], type, 1) & 1) == 0)
           {
             v14 = ci_logger_api();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
               v15 = priv[3];
               v16 = expected_argument_type(type);
-              [a4 objectAtIndexedSubscript:v10];
+              [arguments objectAtIndexedSubscript:v10];
               v17 = 136447234;
               v18 = "[CIColorKernel applyWithExtent:arguments:options:]";
               v19 = 2082;
@@ -353,7 +353,7 @@ LABEL_28:
   }
 }
 
-+ (id)SDOFV2MetalKernelNamed:(id)a3
++ (id)SDOFV2MetalKernelNamed:(id)named
 {
   if (SDOFV2MetalLibURL::onceToken != -1)
   {
@@ -365,10 +365,10 @@ LABEL_28:
     return 0;
   }
 
-  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:a3 error:?];
+  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:named error:?];
 }
 
-+ (id)SDOFV3MetalKernelNamed:(id)a3
++ (id)SDOFV3MetalKernelNamed:(id)named
 {
   if (SDOFV3MetalLibURL::onceToken != -1)
   {
@@ -380,7 +380,7 @@ LABEL_28:
     return 0;
   }
 
-  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:a3 error:?];
+  return [CIKernel cachedKernelWithFunctionName:"cachedKernelWithFunctionName:fromMetalLibrary:error:" fromMetalLibrary:named error:?];
 }
 
 - (void)applyWithExtent:arguments:options:.cold.1()

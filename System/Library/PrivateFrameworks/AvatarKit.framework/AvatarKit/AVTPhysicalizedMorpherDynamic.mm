@@ -1,8 +1,8 @@
 @interface AVTPhysicalizedMorpherDynamic
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 ignoredUpperNodes:(void *)a5 usingBlock:;
-- (BOOL)affectsNode:(id)a3;
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar ignoredUpperNodes:(void *)nodes usingBlock:;
+- (BOOL)affectsNode:(id)node;
 - (NSString)description;
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4;
+- (void)evaluateAtTime:(double)time physicsController:(id)controller;
 - (void)resetTarget;
 @end
 
@@ -13,40 +13,40 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   writeMorpher = self->_writeMorpher;
-  v6 = [(VFXNode *)self->_drivingNode name];
-  v7 = [v3 stringWithFormat:@"<%@ %p | Morpher %p driven by %@>", v4, self, writeMorpher, v6];
+  name = [(VFXNode *)self->_drivingNode name];
+  v7 = [v3 stringWithFormat:@"<%@ %p | Morpher %p driven by %@>", v4, self, writeMorpher, name];
 
   return v7;
 }
 
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 ignoredUpperNodes:(void *)a5 usingBlock:
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar ignoredUpperNodes:(void *)nodes usingBlock:
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hierarchyCopy = hierarchy;
+  avatarCopy = avatar;
+  nodesCopy = nodes;
   v11 = a2;
   objc_opt_self();
-  v12 = [v8 avatarNode];
-  v13 = [v12 childNodeWithName:@"head_JNT" recursively:1];
-  v14 = [v8 specializationSettings];
-  v15 = [v14 objectForKeyedSubscript:@"dynamics"];
+  avatarNode = [hierarchyCopy avatarNode];
+  v13 = [avatarNode childNodeWithName:@"head_JNT" recursively:1];
+  specializationSettings = [hierarchyCopy specializationSettings];
+  v15 = [specializationSettings objectForKeyedSubscript:@"dynamics"];
   v16 = [v15 objectForKeyedSubscript:@"dynamic nodes"];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __101__AVTPhysicalizedMorpherDynamic_enumerateDynamicsInHierarchy_forAvatar_ignoredUpperNodes_usingBlock___block_invoke;
   v23[3] = &unk_1E7F47D90;
-  v24 = v9;
-  v25 = v12;
+  v24 = avatarCopy;
+  v25 = avatarNode;
   v26 = v16;
   v27 = v13;
-  v28 = v8;
-  v29 = v10;
-  v17 = v10;
-  v18 = v8;
+  v28 = hierarchyCopy;
+  v29 = nodesCopy;
+  v17 = nodesCopy;
+  v18 = hierarchyCopy;
   v19 = v13;
   v20 = v16;
-  v21 = v12;
-  v22 = v9;
+  v21 = avatarNode;
+  v22 = avatarCopy;
   [v11 enumerateHierarchyUsingBlock:v23];
 }
 
@@ -263,23 +263,23 @@ void __101__AVTPhysicalizedMorpherDynamic_enumerateDynamicsInHierarchy_forAvatar
   }
 }
 
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4
+- (void)evaluateAtTime:(double)time physicsController:(id)controller
 {
-  v22 = a4;
+  controllerCopy = controller;
   simulationFactor = self->_simulationFactor;
   v5 = self->_extraSimulationFactorReadMorpherNode;
   v6 = v5;
   if (v5)
   {
-    v7 = [(VFXNode *)v5 presentationNode];
-    v8 = [v7 morpher];
-    [v8 weightForTargetAtIndex:self->_extraSimulationFactorTargetIndex];
+    presentationNode = [(VFXNode *)v5 presentationNode];
+    morpher = [presentationNode morpher];
+    [morpher weightForTargetAtIndex:self->_extraSimulationFactorTargetIndex];
     v10 = v9;
 
     simulationFactor = simulationFactor * v10;
   }
 
-  [v22 offsetFromRestingPositionForNode:self->_drivingNode inCoordinateSpaceOfNode:self->_referenceNode];
+  [controllerCopy offsetFromRestingPositionForNode:self->_drivingNode inCoordinateSpaceOfNode:self->_referenceNode];
   v12 = vmulq_n_f32(v11, simulationFactor);
   v13 = vnegq_f32(v12);
   v12.i32[3] = 0;
@@ -363,10 +363,10 @@ void __101__AVTPhysicalizedMorpherDynamic_enumerateDynamicsInHierarchy_forAvatar
   }
 }
 
-- (BOOL)affectsNode:(id)a3
+- (BOOL)affectsNode:(id)node
 {
-  v4 = [a3 morpher];
-  LOBYTE(self) = v4 == self->_writeMorpher;
+  morpher = [node morpher];
+  LOBYTE(self) = morpher == self->_writeMorpher;
 
   return self;
 }

@@ -1,8 +1,8 @@
 @interface PaperDocumentInlineView
-- (_TtC8PaperKit23PaperDocumentInlineView)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit23PaperDocumentInlineView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)toolPickerWillShow:(id)a3;
+- (void)toolPickerWillShow:(id)show;
 @end
 
 @implementation PaperDocumentInlineView
@@ -26,24 +26,24 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   PaperDocumentInlineView.didMoveToWindow()();
 }
 
-- (void)toolPickerWillShow:(id)a3
+- (void)toolPickerWillShow:(id)show
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PaperDocumentInlineView.toolPickerWillShow(_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC8PaperKit23PaperDocumentInlineView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit23PaperDocumentInlineView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

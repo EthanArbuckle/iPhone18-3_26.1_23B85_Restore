@@ -1,30 +1,30 @@
 @interface _HKGraphTileBackgroundRenderingContext
-- (BOOL)sameForRendering:(id)a3;
+- (BOOL)sameForRendering:(id)rendering;
 - (CGSize)tileSize;
-- (_HKGraphTileBackgroundRenderingContext)initWithGraphTile:(id)a3 graphViewRenderer:(id)a4 tileSize:(CGSize)a5 configurationChangedCounter:(int64_t)a6;
+- (_HKGraphTileBackgroundRenderingContext)initWithGraphTile:(id)tile graphViewRenderer:(id)renderer tileSize:(CGSize)size configurationChangedCounter:(int64_t)counter;
 - (id)debugDescription;
 - (void)renderTileContent;
 @end
 
 @implementation _HKGraphTileBackgroundRenderingContext
 
-- (_HKGraphTileBackgroundRenderingContext)initWithGraphTile:(id)a3 graphViewRenderer:(id)a4 tileSize:(CGSize)a5 configurationChangedCounter:(int64_t)a6
+- (_HKGraphTileBackgroundRenderingContext)initWithGraphTile:(id)tile graphViewRenderer:(id)renderer tileSize:(CGSize)size configurationChangedCounter:(int64_t)counter
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
+  height = size.height;
+  width = size.width;
+  tileCopy = tile;
+  rendererCopy = renderer;
   v17.receiver = self;
   v17.super_class = _HKGraphTileBackgroundRenderingContext;
   v14 = [(_HKGraphTileBackgroundRenderingContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_graphTile, a3);
-    objc_storeStrong(&v15->_graphViewRenderer, a4);
+    objc_storeStrong(&v14->_graphTile, tile);
+    objc_storeStrong(&v15->_graphViewRenderer, renderer);
     v15->_tileSize.width = width;
     v15->_tileSize.height = height;
-    v15->_configurationChangedCounter = a6;
+    v15->_configurationChangedCounter = counter;
   }
 
   return v15;
@@ -33,29 +33,29 @@
 - (id)debugDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
-  v4 = [v2 stringWithFormat:@"Tile %ld", objc_msgSend(v3, "currentColumn")];
+  graphTile = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
+  v4 = [v2 stringWithFormat:@"Tile %ld", objc_msgSend(graphTile, "currentColumn")];
 
   return v4;
 }
 
 - (void)renderTileContent
 {
-  v6 = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
-  v3 = [(_HKGraphTileBackgroundRenderingContext *)self graphViewRenderer];
+  graphTile = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
+  graphViewRenderer = [(_HKGraphTileBackgroundRenderingContext *)self graphViewRenderer];
   [(_HKGraphTileBackgroundRenderingContext *)self tileSize];
-  [v6 renderTileInBackgroundWithRenderer:v3 tileSize:-[_HKGraphTileBackgroundRenderingContext configurationChangedCounter](self configurationChangedCounter:{"configurationChangedCounter"), v4, v5}];
+  [graphTile renderTileInBackgroundWithRenderer:graphViewRenderer tileSize:-[_HKGraphTileBackgroundRenderingContext configurationChangedCounter](self configurationChangedCounter:{"configurationChangedCounter"), v4, v5}];
 }
 
-- (BOOL)sameForRendering:(id)a3
+- (BOOL)sameForRendering:(id)rendering
 {
-  v4 = a3;
-  v5 = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
-  v6 = [v5 currentColumn];
-  v7 = [v4 graphTile];
+  renderingCopy = rendering;
+  graphTile = [(_HKGraphTileBackgroundRenderingContext *)self graphTile];
+  currentColumn = [graphTile currentColumn];
+  graphTile2 = [renderingCopy graphTile];
 
-  LOBYTE(v4) = v6 == [v7 currentColumn];
-  return v4;
+  LOBYTE(renderingCopy) = currentColumn == [graphTile2 currentColumn];
+  return renderingCopy;
 }
 
 - (CGSize)tileSize

@@ -1,8 +1,8 @@
 @interface _ECParsedHTMLTag
-- (BOOL)needsPriceFormatting:(id)a3 tagName:(id)a4;
-- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)a3;
+- (BOOL)needsPriceFormatting:(id)formatting tagName:(id)name;
+- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)accumulator;
 - (void)dealloc;
-- (void)setTagName:(id)a3;
+- (void)setTagName:(id)name;
 @end
 
 @implementation _ECParsedHTMLTag
@@ -14,52 +14,52 @@
   [(_ECParsedHTMLNode *)&v3 dealloc];
 }
 
-- (void)setTagName:(id)a3
+- (void)setTagName:(id)name
 {
   tagName = self->_tagName;
-  if (tagName != a3)
+  if (tagName != name)
   {
 
-    self->_tagName = a3;
+    self->_tagName = name;
   }
 }
 
-- (BOOL)needsPriceFormatting:(id)a3 tagName:(id)a4
+- (BOOL)needsPriceFormatting:(id)formatting tagName:(id)name
 {
-  if (![a3 ec_isPotentialPriceBeginning] || objc_msgSend(a4, "compare:options:", @"sup", 3) || !-[_ECParsedHTMLNode hasChildNodes](self, "hasChildNodes"))
+  if (![formatting ec_isPotentialPriceBeginning] || objc_msgSend(name, "compare:options:", @"sup", 3) || !-[_ECParsedHTMLNode hasChildNodes](self, "hasChildNodes"))
   {
     return 0;
   }
 
-  v6 = [(_ECParsedHTMLNode *)self htmlString];
-  v7 = [(_ECParsedHTMLNode *)self range];
-  v9 = [(NSString *)v6 substringWithRange:v7, v8];
+  htmlString = [(_ECParsedHTMLNode *)self htmlString];
+  range = [(_ECParsedHTMLNode *)self range];
+  v9 = [(NSString *)htmlString substringWithRange:range, v8];
 
   return [(NSString *)v9 ec_isPotentialPriceEnd];
 }
 
-- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)a3
+- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)accumulator
 {
-  v5 = [(_ECParsedHTMLTag *)self tagName];
-  if ([a3 isFull])
+  tagName = [(_ECParsedHTMLTag *)self tagName];
+  if ([accumulator isFull])
   {
     return 0;
   }
 
-  if ([ECMessageBodyParser isLinebreakImpliedBeforeTagName:v5])
+  if ([ECMessageBodyParser isLinebreakImpliedBeforeTagName:tagName])
   {
-    [a3 appendNewline];
+    [accumulator appendNewline];
   }
 
-  if ([objc_msgSend(a3 "currencyFormatter")] && -[_ECParsedHTMLTag needsPriceFormatting:tagName:](self, "needsPriceFormatting:tagName:", objc_msgSend(a3, "accumulatedString"), -[_ECParsedHTMLTag tagName](self, "tagName")))
+  if ([objc_msgSend(accumulator "currencyFormatter")] && -[_ECParsedHTMLTag needsPriceFormatting:tagName:](self, "needsPriceFormatting:tagName:", objc_msgSend(accumulator, "accumulatedString"), -[_ECParsedHTMLTag tagName](self, "tagName")))
   {
-    [a3 appendCurrencyDecimalSeparator];
+    [accumulator appendCurrencyDecimalSeparator];
   }
 
   v10.receiver = self;
   v10.super_class = _ECParsedHTMLTag;
-  v7 = [(_ECParsedHTMLNode *)&v10 copyMutableConsumableNodesAndAppendInnerTextToStringAccumulator:a3];
-  if ([ECMessageBodyParser isLinebreakImpliedAfterTagName:v5])
+  v7 = [(_ECParsedHTMLNode *)&v10 copyMutableConsumableNodesAndAppendInnerTextToStringAccumulator:accumulator];
+  if ([ECMessageBodyParser isLinebreakImpliedAfterTagName:tagName])
   {
     v8 = objc_alloc_init(_ECMessageBodyConsumableNewline);
     if (v7)

@@ -1,21 +1,21 @@
 @interface BCSNFCReaderURLRecord
-- (BCSNFCReaderURLRecord)initWithURL:(id)a3 message:(id)a4;
+- (BCSNFCReaderURLRecord)initWithURL:(id)l message:(id)message;
 @end
 
 @implementation BCSNFCReaderURLRecord
 
-- (BCSNFCReaderURLRecord)initWithURL:(id)a3 message:(id)a4
+- (BCSNFCReaderURLRecord)initWithURL:(id)l message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = BCSNFCReaderURLRecord;
   v9 = [(BCSNFCReaderURLRecord *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_message, message);
     v11 = v10;
   }
 

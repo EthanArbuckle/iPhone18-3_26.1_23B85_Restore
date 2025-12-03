@@ -1,38 +1,38 @@
 @interface _CDInteractionRecorder
 + (id)interactionRecorder;
-- (BOOL)recordInteraction:(id)a3;
-- (BOOL)recordInteractions:(id)a3;
-- (BOOL)recordInteractions:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
-- (_CDInteractionRecorder)initWithServiceName:(id)a3;
-- (id)queryContactsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-- (id)queryInteractionsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-- (unint64_t)countContactsUsingPredicate:(id)a3 error:(id *)a4;
-- (unint64_t)countInteractionsUsingPredicate:(id)a3 error:(id *)a4;
-- (unint64_t)deleteInteractionsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 debuggingReason:(id)a6 error:(id *)a7;
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 account:(id)a4 error:(id *)a5;
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 domainIdentifier:(id)a4 error:(id *)a5;
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 domainIdentifiers:(id)a4 error:(id *)a5;
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 error:(id *)a4;
-- (void)countContactsUsingPredicate:(id)a3 completionHandler:(id)a4;
-- (void)countContactsUsingPredicate:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
-- (void)countInteractionsUsingPredicate:(id)a3 completionHandler:(id)a4;
-- (void)countInteractionsUsingPredicate:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
+- (BOOL)recordInteraction:(id)interaction;
+- (BOOL)recordInteractions:(id)interactions;
+- (BOOL)recordInteractions:(id)interactions synchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (_CDInteractionRecorder)initWithServiceName:(id)name;
+- (id)queryContactsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit error:(id *)error;
+- (id)queryInteractionsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit error:(id *)error;
+- (unint64_t)countContactsUsingPredicate:(id)predicate error:(id *)error;
+- (unint64_t)countInteractionsUsingPredicate:(id)predicate error:(id *)error;
+- (unint64_t)deleteInteractionsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason error:(id *)error;
+- (unint64_t)deleteInteractionsWithBundleId:(id)id account:(id)account error:(id *)error;
+- (unint64_t)deleteInteractionsWithBundleId:(id)id domainIdentifier:(id)identifier error:(id *)error;
+- (unint64_t)deleteInteractionsWithBundleId:(id)id domainIdentifiers:(id)identifiers error:(id *)error;
+- (unint64_t)deleteInteractionsWithBundleId:(id)id error:(id *)error;
+- (void)countContactsUsingPredicate:(id)predicate completionHandler:(id)handler;
+- (void)countContactsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (void)countInteractionsUsingPredicate:(id)predicate completionHandler:(id)handler;
+- (void)countInteractionsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteInteractionsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 debuggingReason:(id)a6 completionHandler:(id)a7;
-- (void)deleteInteractionsMatchingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 debuggingReason:(id)a7 completionHandler:(id)a8;
-- (void)deleteInteractionsWithBundleId:(id)a3 account:(id)a4 completionHandler:(id)a5;
-- (void)deleteInteractionsWithBundleId:(id)a3 completionHandler:(id)a4;
-- (void)deleteInteractionsWithBundleId:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)deleteInteractionsWithBundleId:(id)a3 domainIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 account:(id)a5 completionHandler:(id)a6;
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 domainIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 domainIdentifiers:(id)a5 completionHandler:(id)a6;
-- (void)queryContactsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)queryContactsUsingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7;
-- (void)queryInteractionsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)queryInteractionsUsingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7;
-- (void)recordInteractions:(id)a3 completionHandler:(id)a4;
+- (void)deleteInteractionsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason completionHandler:(id)handler;
+- (void)deleteInteractionsMatchingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id account:(id)account completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id domainIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id domainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous account:(id)account completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous domainIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous domainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)queryContactsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)queryContactsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)queryInteractionsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)queryInteractionsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)recordInteractions:(id)interactions completionHandler:(id)handler;
 @end
 
 @implementation _CDInteractionRecorder
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (_CDInteractionRecorder)initWithServiceName:(id)a3
+- (_CDInteractionRecorder)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _CDInteractionRecorder;
   v5 = [(_CDInteractionRecorder *)&v13 init];
@@ -63,7 +63,7 @@
     policies = v6->_policies;
     v6->_policies = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v4 options:4096];
+    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:4096];
     connection = v6->_connection;
     v6->_connection = v9;
 
@@ -84,20 +84,20 @@
   [(_CDInteractionRecorder *)&v3 dealloc];
 }
 
-- (BOOL)recordInteractions:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)recordInteractions:(id)interactions synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v6 = a4;
+  synchronousCopy = synchronous;
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v24 = a5;
-  v25 = v8;
-  v23 = [(_CDInteractionPolicies *)self->_policies filterAndModifyInteractionsWithPolicies:v8 enforceDataLimits:[(_CDInteractionRecorder *)self enforceDataLimits] enforcePrivacy:[(_CDInteractionRecorder *)self enforcePrivacy]];
+  interactionsCopy = interactions;
+  handlerCopy = handler;
+  v25 = interactionsCopy;
+  v23 = [(_CDInteractionPolicies *)self->_policies filterAndModifyInteractionsWithPolicies:interactionsCopy enforceDataLimits:[(_CDInteractionRecorder *)self enforceDataLimits] enforcePrivacy:[(_CDInteractionRecorder *)self enforcePrivacy]];
   if (recordInteractions_synchronous_completionHandler___pasOnceToken5 != -1)
   {
     [_CDInteractionRecorder recordInteractions:synchronous:completionHandler:];
   }
 
-  if (v6)
+  if (synchronousCopy)
   {
     while ((atomic_exchange(recordInteractions_synchronous_completionHandler__flag, 1u) & 1) != 0)
     {
@@ -116,7 +116,7 @@
     v10 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 count];
+      v11 = [interactionsCopy count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v11;
       _os_log_impl(&dword_191750000, v10, OS_LOG_TYPE_DEFAULT, "[sync path] beginning recordInteractions (%tu interactions)", &buf, 0xCu);
@@ -147,7 +147,7 @@
       v13 = +[_CDLogging interactionChannel];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v8 count];
+        v14 = [interactionsCopy count];
         *v41 = 134217984;
         v42 = v14;
         _os_log_impl(&dword_191750000, v13, OS_LOG_TYPE_DEFAULT, "[sync path] successfully sent %tu interactions to coreduet daemon", v41, 0xCu);
@@ -159,15 +159,15 @@
       v13 = +[_CDLogging interactionChannel];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        -[_CDInteractionRecorder recordInteractions:synchronous:completionHandler:].cold.2(&buf + 8, v41, [v8 count], v13);
+        -[_CDInteractionRecorder recordInteractions:synchronous:completionHandler:].cold.2(&buf + 8, v41, [interactionsCopy count], v13);
       }
     }
 
-    if (v24)
+    if (handlerCopy)
     {
       v19 = *(v38 + 24);
       v20 = *(*(&buf + 1) + 40);
-      v24[2]();
+      handlerCopy[2]();
     }
 
     v18 = *(v38 + 24);
@@ -182,7 +182,7 @@
     v31[1] = 3221225472;
     v31[2] = __75___CDInteractionRecorder_recordInteractions_synchronous_completionHandler___block_invoke_24;
     v31[3] = &unk_1E736A5A0;
-    v32 = v24;
+    v32 = handlerCopy;
     v15 = [v31 copy];
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -193,9 +193,9 @@
     v26[2] = __75___CDInteractionRecorder_recordInteractions_synchronous_completionHandler___block_invoke_2_26;
     v26[3] = &unk_1E736A5C8;
     v30 = &buf;
-    v27 = v8;
+    v27 = interactionsCopy;
     v16 = v15;
-    v28 = self;
+    selfCopy = self;
     v29 = v16;
     v17 = [v26 copy];
     *(*(&buf + 1) + 24) = v17;
@@ -209,60 +209,60 @@
   return v18 & 1;
 }
 
-- (BOOL)recordInteraction:(id)a3
+- (BOOL)recordInteraction:(id)interaction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  interactionCopy = interaction;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  interactionCopy2 = interaction;
+  v6 = [v4 arrayWithObjects:&interactionCopy count:1];
 
-  LOBYTE(self) = [(_CDInteractionRecorder *)self recordInteractions:v6, v9, v10];
+  LOBYTE(self) = [(_CDInteractionRecorder *)self recordInteractions:v6, interactionCopy, v10];
   v7 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (BOOL)recordInteractions:(id)a3
+- (BOOL)recordInteractions:(id)interactions
 {
-  v4 = a3;
+  interactionsCopy = interactions;
   v5 = _os_activity_create(&dword_191750000, "CoreDuet: recordInteractions sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   os_activity_scope_enter(v5, &v7);
   os_activity_scope_leave(&v7);
 
-  LOBYTE(self) = [(_CDInteractionRecorder *)self recordInteractions:v4 synchronous:1 completionHandler:0];
+  LOBYTE(self) = [(_CDInteractionRecorder *)self recordInteractions:interactionsCopy synchronous:1 completionHandler:0];
   return self;
 }
 
-- (void)recordInteractions:(id)a3 completionHandler:(id)a4
+- (void)recordInteractions:(id)interactions completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  interactionsCopy = interactions;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: recordInteractions async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v8, &v9);
   os_activity_scope_leave(&v9);
 
-  [(_CDInteractionRecorder *)self recordInteractions:v7 synchronous:0 completionHandler:v6];
+  [(_CDInteractionRecorder *)self recordInteractions:interactionsCopy synchronous:0 completionHandler:handlerCopy];
 }
 
-- (void)queryInteractionsUsingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7
+- (void)queryInteractionsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v9 = a4;
-  v12 = a7;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __110___CDInteractionRecorder_queryInteractionsUsingPredicate_synchronous_sortDescriptors_limit_completionHandler___block_invoke;
   v19[3] = &unk_1E7367508;
-  v13 = v12;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = a5;
-  v15 = a3;
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
   v16 = MEMORY[0x193B00C50](v19);
   connection = self->_connection;
-  if (v9)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v16];
   }
@@ -272,13 +272,13 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
   }
   v18 = ;
-  [v18 queryInteractionsUsingPredicate:v15 sortDescriptors:v14 limit:a6 reply:v13];
+  [v18 queryInteractionsUsingPredicate:predicateCopy sortDescriptors:descriptorsCopy limit:limit reply:v13];
 }
 
-- (id)queryInteractionsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 error:(id *)a6
+- (id)queryInteractionsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v12 = _os_activity_create(&dword_191750000, "CoreDuet: queryInteractionsUsingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -303,10 +303,10 @@
   v15[3] = &unk_1E736A5F0;
   v15[4] = &state;
   v15[5] = &v16;
-  [(_CDInteractionRecorder *)self queryInteractionsUsingPredicate:v10 synchronous:1 sortDescriptors:v11 limit:a5 completionHandler:v15];
-  if (a6)
+  [(_CDInteractionRecorder *)self queryInteractionsUsingPredicate:predicateCopy synchronous:1 sortDescriptors:descriptorsCopy limit:limit completionHandler:v15];
+  if (error)
   {
-    *a6 = v17[5];
+    *error = v17[5];
   }
 
   v13 = *(state.opaque[1] + 40);
@@ -317,37 +317,37 @@
   return v13;
 }
 
-- (void)queryInteractionsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)queryInteractionsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v13 = _os_activity_create(&dword_191750000, "CoreDuet: queryInteractionsUsingPredicate async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v13, &v14);
   os_activity_scope_leave(&v14);
 
-  if (v12)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self queryInteractionsUsingPredicate:v10 synchronous:0 sortDescriptors:v11 limit:a5 completionHandler:v12];
+    [(_CDInteractionRecorder *)self queryInteractionsUsingPredicate:predicateCopy synchronous:0 sortDescriptors:descriptorsCopy limit:limit completionHandler:handlerCopy];
   }
 }
 
-- (void)countInteractionsUsingPredicate:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
+- (void)countInteractionsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88___CDInteractionRecorder_countInteractionsUsingPredicate_synchronous_completionHandler___block_invoke;
   v14[3] = &unk_1E7367508;
-  v9 = v8;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = a3;
+  predicateCopy = predicate;
   v11 = MEMORY[0x193B00C50](v14);
   connection = self->_connection;
-  if (v5)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
   }
@@ -357,12 +357,12 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   }
   v13 = ;
-  [v13 countInteractionsUsingPredicate:v10 reply:v9];
+  [v13 countInteractionsUsingPredicate:predicateCopy reply:v9];
 }
 
-- (unint64_t)countInteractionsUsingPredicate:(id)a3 error:(id *)a4
+- (unint64_t)countInteractionsUsingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = _os_activity_create(&dword_191750000, "CoreDuet: countInteractionsUsingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -385,10 +385,10 @@
   v10[3] = &unk_1E736A618;
   v10[4] = &v16;
   v10[5] = &state;
-  [(_CDInteractionRecorder *)self countInteractionsUsingPredicate:v6 synchronous:1 completionHandler:v10];
-  if (a4)
+  [(_CDInteractionRecorder *)self countInteractionsUsingPredicate:predicateCopy synchronous:1 completionHandler:v10];
+  if (error)
   {
-    *a4 = *(state.opaque[1] + 40);
+    *error = *(state.opaque[1] + 40);
   }
 
   v8 = v17[3];
@@ -398,36 +398,36 @@
   return v8;
 }
 
-- (void)countInteractionsUsingPredicate:(id)a3 completionHandler:(id)a4
+- (void)countInteractionsUsingPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = _os_activity_create(&dword_191750000, "CoreDuet: countInteractionsUsingPredicate async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v7, &v8);
   os_activity_scope_leave(&v8);
 
-  if (a4)
+  if (handler)
   {
-    [(_CDInteractionRecorder *)self countInteractionsUsingPredicate:v6 synchronous:0 completionHandler:0];
+    [(_CDInteractionRecorder *)self countInteractionsUsingPredicate:predicateCopy synchronous:0 completionHandler:0];
   }
 }
 
-- (void)queryContactsUsingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 completionHandler:(id)a7
+- (void)queryContactsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v9 = a4;
-  v12 = a7;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __106___CDInteractionRecorder_queryContactsUsingPredicate_synchronous_sortDescriptors_limit_completionHandler___block_invoke;
   v19[3] = &unk_1E7367508;
-  v13 = v12;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = a5;
-  v15 = a3;
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
   v16 = MEMORY[0x193B00C50](v19);
   connection = self->_connection;
-  if (v9)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v16];
   }
@@ -437,13 +437,13 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
   }
   v18 = ;
-  [v18 queryContactsUsingPredicate:v15 sortDescriptors:v14 limit:a6 reply:v13];
+  [v18 queryContactsUsingPredicate:predicateCopy sortDescriptors:descriptorsCopy limit:limit reply:v13];
 }
 
-- (id)queryContactsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 error:(id *)a6
+- (id)queryContactsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v12 = _os_activity_create(&dword_191750000, "CoreDuet: queryContactsUsingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -468,10 +468,10 @@
   v15[3] = &unk_1E736A5F0;
   v15[4] = &state;
   v15[5] = &v16;
-  [(_CDInteractionRecorder *)self queryContactsUsingPredicate:v10 synchronous:1 sortDescriptors:v11 limit:a5 completionHandler:v15];
-  if (a6)
+  [(_CDInteractionRecorder *)self queryContactsUsingPredicate:predicateCopy synchronous:1 sortDescriptors:descriptorsCopy limit:limit completionHandler:v15];
+  if (error)
   {
-    *a6 = v17[5];
+    *error = v17[5];
   }
 
   v13 = *(state.opaque[1] + 40);
@@ -482,37 +482,37 @@
   return v13;
 }
 
-- (void)queryContactsUsingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)queryContactsUsingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v13 = _os_activity_create(&dword_191750000, "CoreDuet: queryContactsUsingPredicate async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v13, &v14);
   os_activity_scope_leave(&v14);
 
-  if (v12)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self queryContactsUsingPredicate:v10 synchronous:0 sortDescriptors:v11 limit:a5 completionHandler:v12];
+    [(_CDInteractionRecorder *)self queryContactsUsingPredicate:predicateCopy synchronous:0 sortDescriptors:descriptorsCopy limit:limit completionHandler:handlerCopy];
   }
 }
 
-- (void)countContactsUsingPredicate:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
+- (void)countContactsUsingPredicate:(id)predicate synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84___CDInteractionRecorder_countContactsUsingPredicate_synchronous_completionHandler___block_invoke;
   v14[3] = &unk_1E7367508;
-  v9 = v8;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = a3;
+  predicateCopy = predicate;
   v11 = MEMORY[0x193B00C50](v14);
   connection = self->_connection;
-  if (v5)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
   }
@@ -522,12 +522,12 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   }
   v13 = ;
-  [v13 countContactsUsingPredicate:v10 reply:v9];
+  [v13 countContactsUsingPredicate:predicateCopy reply:v9];
 }
 
-- (unint64_t)countContactsUsingPredicate:(id)a3 error:(id *)a4
+- (unint64_t)countContactsUsingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = _os_activity_create(&dword_191750000, "CoreDuet: countContactsUsingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -550,10 +550,10 @@
   v10[3] = &unk_1E736A618;
   v10[4] = &v16;
   v10[5] = &state;
-  [(_CDInteractionRecorder *)self countContactsUsingPredicate:v6 synchronous:1 completionHandler:v10];
-  if (a4)
+  [(_CDInteractionRecorder *)self countContactsUsingPredicate:predicateCopy synchronous:1 completionHandler:v10];
+  if (error)
   {
-    *a4 = *(state.opaque[1] + 40);
+    *error = *(state.opaque[1] + 40);
   }
 
   v8 = v17[3];
@@ -563,37 +563,37 @@
   return v8;
 }
 
-- (void)countContactsUsingPredicate:(id)a3 completionHandler:(id)a4
+- (void)countContactsUsingPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: countContactsUsingPredicate async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v8, &v9);
   os_activity_scope_leave(&v9);
 
-  if (v7)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self countContactsUsingPredicate:v6 synchronous:0 completionHandler:v7];
+    [(_CDInteractionRecorder *)self countContactsUsingPredicate:predicateCopy synchronous:0 completionHandler:handlerCopy];
   }
 }
 
-- (void)deleteInteractionsMatchingPredicate:(id)a3 synchronous:(BOOL)a4 sortDescriptors:(id)a5 limit:(unint64_t)a6 debuggingReason:(id)a7 completionHandler:(id)a8
+- (void)deleteInteractionsMatchingPredicate:(id)predicate synchronous:(BOOL)synchronous sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason completionHandler:(id)handler
 {
-  v10 = a4;
-  v13 = a8;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __130___CDInteractionRecorder_deleteInteractionsMatchingPredicate_synchronous_sortDescriptors_limit_debuggingReason_completionHandler___block_invoke;
   v20[3] = &unk_1E7367508;
-  v14 = v13;
+  v14 = handlerCopy;
   v21 = v14;
-  v15 = a5;
-  v16 = a3;
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
   v17 = MEMORY[0x193B00C50](v20);
   connection = self->_connection;
-  if (v10)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v17];
   }
@@ -603,32 +603,32 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v17];
   }
   v19 = ;
-  [v19 deleteInteractionsMatchingPredicate:v16 sortDescriptors:v15 limit:a6 reply:v14];
+  [v19 deleteInteractionsMatchingPredicate:predicateCopy sortDescriptors:descriptorsCopy limit:limit reply:v14];
 }
 
-- (void)deleteInteractionsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 debuggingReason:(id)a6 completionHandler:(id)a7
+- (void)deleteInteractionsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v16 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsMatchingPredicate async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v17.opaque[0] = 0;
   v17.opaque[1] = 0;
   os_activity_scope_enter(v16, &v17);
   os_activity_scope_leave(&v17);
 
-  if (v15)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self deleteInteractionsMatchingPredicate:v12 synchronous:0 sortDescriptors:v13 limit:a5 debuggingReason:v14 completionHandler:v15];
+    [(_CDInteractionRecorder *)self deleteInteractionsMatchingPredicate:predicateCopy synchronous:0 sortDescriptors:descriptorsCopy limit:limit debuggingReason:reasonCopy completionHandler:handlerCopy];
   }
 }
 
-- (unint64_t)deleteInteractionsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(unint64_t)a5 debuggingReason:(id)a6 error:(id *)a7
+- (unint64_t)deleteInteractionsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(unint64_t)limit debuggingReason:(id)reason error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  reasonCopy = reason;
   v15 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsMatchingPredicate sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -651,10 +651,10 @@
   v18[3] = &unk_1E736A618;
   v18[4] = &v24;
   v18[5] = &state;
-  [(_CDInteractionRecorder *)self deleteInteractionsMatchingPredicate:v12 synchronous:1 sortDescriptors:v13 limit:a5 debuggingReason:v14 completionHandler:v18];
-  if (a7)
+  [(_CDInteractionRecorder *)self deleteInteractionsMatchingPredicate:predicateCopy synchronous:1 sortDescriptors:descriptorsCopy limit:limit debuggingReason:reasonCopy completionHandler:v18];
+  if (error)
   {
-    *a7 = *(state.opaque[1] + 40);
+    *error = *(state.opaque[1] + 40);
   }
 
   v16 = v25[3];
@@ -664,20 +664,20 @@
   return v16;
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87___CDInteractionRecorder_deleteInteractionsWithBundleId_synchronous_completionHandler___block_invoke;
   v14[3] = &unk_1E7367508;
-  v9 = v8;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = a3;
+  idCopy = id;
   v11 = MEMORY[0x193B00C50](v14);
   connection = self->_connection;
-  if (v5)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
   }
@@ -687,28 +687,28 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   }
   v13 = ;
-  [v13 deleteInteractionsWithBundleId:v10 reply:v9];
+  [v13 deleteInteractionsWithBundleId:idCopy reply:v9];
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 completionHandler:(id)a4
+- (void)deleteInteractionsWithBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v8, &v9);
   os_activity_scope_leave(&v9);
 
-  if (v7)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v6 synchronous:0 completionHandler:v7];
+    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:0 completionHandler:handlerCopy];
   }
 }
 
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 error:(id *)a4
+- (unint64_t)deleteInteractionsWithBundleId:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v7 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -731,10 +731,10 @@
   v10[3] = &unk_1E736A618;
   v10[4] = &v16;
   v10[5] = &state;
-  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v6 synchronous:1 completionHandler:v10];
-  if (a4)
+  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:1 completionHandler:v10];
+  if (error)
   {
-    *a4 = *(state.opaque[1] + 40);
+    *error = *(state.opaque[1] + 40);
   }
 
   v8 = v17[3];
@@ -744,12 +744,12 @@
   return v8;
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 account:(id)a5 completionHandler:(id)a6
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous account:(id)account completionHandler:(id)handler
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  accountCopy = account;
+  idCopy = id;
   v13 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId account async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -760,11 +760,11 @@
   v18[1] = 3221225472;
   v18[2] = __95___CDInteractionRecorder_deleteInteractionsWithBundleId_synchronous_account_completionHandler___block_invoke;
   v18[3] = &unk_1E7367508;
-  v14 = v10;
+  v14 = handlerCopy;
   v19 = v14;
   v15 = MEMORY[0x193B00C50](v18);
   connection = self->_connection;
-  if (v7)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
   }
@@ -774,30 +774,30 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
   }
   v17 = ;
-  [v17 deleteInteractionsWithBundleId:v12 account:v11 reply:v14];
+  [v17 deleteInteractionsWithBundleId:idCopy account:accountCopy reply:v14];
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 account:(id)a4 completionHandler:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id account:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  accountCopy = account;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId account async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v11, &v12);
   os_activity_scope_leave(&v12);
 
-  if (v10)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:0 account:v9 completionHandler:v10];
+    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:0 account:accountCopy completionHandler:handlerCopy];
   }
 }
 
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 account:(id)a4 error:(id *)a5
+- (unint64_t)deleteInteractionsWithBundleId:(id)id account:(id)account error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  accountCopy = account;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -814,10 +814,10 @@
   v12[3] = &unk_1E736A618;
   v12[4] = &v19;
   v12[5] = &v13;
-  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:1 account:v9 completionHandler:v12];
-  if (a5)
+  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:1 account:accountCopy completionHandler:v12];
+  if (error)
   {
-    *a5 = v14[5];
+    *error = v14[5];
   }
 
   v10 = v20[3];
@@ -827,12 +827,12 @@
   return v10;
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 domainIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous domainIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  idCopy = id;
   v13 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId domainIdentifier async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -843,11 +843,11 @@
   v18[1] = 3221225472;
   v18[2] = __104___CDInteractionRecorder_deleteInteractionsWithBundleId_synchronous_domainIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7367508;
-  v14 = v10;
+  v14 = handlerCopy;
   v19 = v14;
   v15 = MEMORY[0x193B00C50](v18);
   connection = self->_connection;
-  if (v7)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
   }
@@ -857,30 +857,30 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
   }
   v17 = ;
-  [v17 deleteInteractionsWithBundleId:v12 domainIdentifier:v11 reply:v14];
+  [v17 deleteInteractionsWithBundleId:idCopy domainIdentifier:identifierCopy reply:v14];
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 domainIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id domainIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId domainIdentifier async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v11, &v12);
   os_activity_scope_leave(&v12);
 
-  if (v10)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:0 domainIdentifier:v9 completionHandler:v10];
+    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:0 domainIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 domainIdentifier:(id)a4 error:(id *)a5
+- (unint64_t)deleteInteractionsWithBundleId:(id)id domainIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -897,10 +897,10 @@
   v12[3] = &unk_1E736A618;
   v12[4] = &v19;
   v12[5] = &v13;
-  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:1 domainIdentifier:v9 completionHandler:v12];
-  if (a5)
+  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:1 domainIdentifier:identifierCopy completionHandler:v12];
+  if (error)
   {
-    *a5 = v14[5];
+    *error = v14[5];
   }
 
   v10 = v20[3];
@@ -910,12 +910,12 @@
   return v10;
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 synchronous:(BOOL)a4 domainIdentifiers:(id)a5 completionHandler:(id)a6
+- (void)deleteInteractionsWithBundleId:(id)id synchronous:(BOOL)synchronous domainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  idCopy = id;
   v13 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId domainIdentifiers dispatch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -926,11 +926,11 @@
   v18[1] = 3221225472;
   v18[2] = __105___CDInteractionRecorder_deleteInteractionsWithBundleId_synchronous_domainIdentifiers_completionHandler___block_invoke;
   v18[3] = &unk_1E7367508;
-  v14 = v10;
+  v14 = handlerCopy;
   v19 = v14;
   v15 = MEMORY[0x193B00C50](v18);
   connection = self->_connection;
-  if (v7)
+  if (synchronousCopy)
   {
     [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
   }
@@ -940,30 +940,30 @@
     [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
   }
   v17 = ;
-  [v17 deleteInteractionsWithBundleId:v12 domainIdentifiers:v11 reply:v14];
+  [v17 deleteInteractionsWithBundleId:idCopy domainIdentifiers:identifiersCopy reply:v14];
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 domainIdentifiers:(id)a4 completionHandler:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id domainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_191750000, "CoreDuet: deleteInteractionsWithBundleId domainIdentifiers async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   os_activity_scope_enter(v11, &v12);
   os_activity_scope_leave(&v12);
 
-  if (v10)
+  if (handlerCopy)
   {
-    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:0 domainIdentifiers:v9 completionHandler:v10];
+    [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:0 domainIdentifiers:identifiersCopy completionHandler:handlerCopy];
   }
 }
 
-- (unint64_t)deleteInteractionsWithBundleId:(id)a3 domainIdentifiers:(id)a4 error:(id *)a5
+- (unint64_t)deleteInteractionsWithBundleId:(id)id domainIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  identifiersCopy = identifiers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -980,10 +980,10 @@
   v12[3] = &unk_1E736A618;
   v12[4] = &v19;
   v12[5] = &v13;
-  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:v8 synchronous:1 domainIdentifiers:v9 completionHandler:v12];
-  if (a5)
+  [(_CDInteractionRecorder *)self deleteInteractionsWithBundleId:idCopy synchronous:1 domainIdentifiers:identifiersCopy completionHandler:v12];
+  if (error)
   {
-    *a5 = v14[5];
+    *error = v14[5];
   }
 
   v10 = v20[3];

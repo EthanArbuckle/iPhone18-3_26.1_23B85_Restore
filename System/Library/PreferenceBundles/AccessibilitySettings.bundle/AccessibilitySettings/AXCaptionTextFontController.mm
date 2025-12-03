@@ -1,39 +1,39 @@
 @interface AXCaptionTextFontController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (id)_videoOverridesStyle:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (id)_videoOverridesStyle:(id)style;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (int64_t)textCategory;
 - (void)_donePressed;
-- (void)_editPressed:(id)a3;
+- (void)_editPressed:(id)pressed;
 - (void)_manageEditButton;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXCaptionTextFontController
 
 - (int64_t)textCategory
 {
-  v2 = [(AXCaptionTextFontController *)self specifier];
-  v3 = [v2 propertyForKey:@"category"];
+  specifier = [(AXCaptionTextFontController *)self specifier];
+  v3 = [specifier propertyForKey:@"category"];
 
-  v4 = [v3 intValue];
-  return v4;
+  intValue = [v3 intValue];
+  return intValue;
 }
 
-- (void)_editPressed:(id)a3
+- (void)_editPressed:(id)pressed
 {
   [(AXCaptionTextFontController *)self setEditing:1 animated:1];
   v5 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:0 target:self action:"_donePressed"];
-  v4 = [(AXCaptionTextFontController *)self navigationItem];
-  [v4 setRightBarButtonItem:v5];
+  navigationItem = [(AXCaptionTextFontController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
 - (void)_donePressed
@@ -50,36 +50,36 @@
 
   if (v4)
   {
-    v6 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:2 target:self action:"_editPressed:"];
-    v5 = [(AXCaptionTextFontController *)self navigationItem];
-    [v5 setRightBarButtonItem:v6];
+    navigationItem2 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:2 target:self action:"_editPressed:"];
+    navigationItem = [(AXCaptionTextFontController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v6 = [(AXCaptionTextFontController *)self navigationItem];
-    [v6 setRightBarButtonItem:0];
+    navigationItem2 = [(AXCaptionTextFontController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AXCaptionTextFontController *)self table];
-  [v7 beginUpdates];
+  animatedCopy = animated;
+  editingCopy = editing;
+  table = [(AXCaptionTextFontController *)self table];
+  [table beginUpdates];
 
   v11.receiver = self;
   v11.super_class = AXCaptionTextFontController;
-  [(AXCaptionTextFontController *)&v11 setEditing:v5 animated:v4];
-  v8 = [(AXCaptionTextFontController *)self table];
-  [v8 endUpdates];
+  [(AXCaptionTextFontController *)&v11 setEditing:editingCopy animated:animatedCopy];
+  table2 = [(AXCaptionTextFontController *)self table];
+  [table2 endUpdates];
 
-  v9 = [(AXCaptionTextFontController *)self table];
-  [v9 setEditing:v5 animated:v4];
+  table3 = [(AXCaptionTextFontController *)self table];
+  [table3 setEditing:editingCopy animated:animatedCopy];
 
-  v10 = [(AXCaptionTextFontController *)self table];
-  [v10 reloadData];
+  table4 = [(AXCaptionTextFontController *)self table];
+  [table4 reloadData];
 }
 
 - (void)viewDidLoad
@@ -87,17 +87,17 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTextFontController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTextFontController *)self table];
+  table = [(AXCaptionTextFontController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionFontCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AXCaptionTextFontController;
-  [(AXCaptionTextFontController *)&v5 viewWillAppear:a3];
+  [(AXCaptionTextFontController *)&v5 viewWillAppear:appear];
   [(AXCaptionStyleChooserController *)self profileId];
   [(AXCaptionTextFontController *)self textCategory];
   v4 = MACaptionAppearancePrefCopyFontForStyle();
@@ -121,14 +121,14 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
     v25 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(AXCaptionStyleChooserController *)v2 captionPreviewSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)selfCopy captionPreviewSpecifiers];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v34 = 0u;
     v35 = 0u;
@@ -161,8 +161,8 @@
           v9 = [v7 objectForKeyedSubscript:@"name"];
           if (v9)
           {
-            [PSSpecifier preferenceSpecifierNamed:v8 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
-            v11 = v10 = v2;
+            [PSSpecifier preferenceSpecifierNamed:v8 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
+            v11 = v10 = selfCopy;
             [v11 setProperty:objc_opt_class() forKey:v29];
             [v11 setProperty:v9 forKey:v28];
             [v7 objectForKeyedSubscript:@"isBold"];
@@ -178,7 +178,7 @@
             [v11 setCellType:3];
             [v12 addObject:v11];
 
-            v2 = v10;
+            selfCopy = v10;
           }
         }
 
@@ -188,20 +188,20 @@
       while (v31);
     }
 
-    v15 = [(AXCaptionStyleChooserController *)v2 videoOverrideSpecifiers];
-    [v4 addObjectsFromArray:v15];
+    videoOverrideSpecifiers = [(AXCaptionStyleChooserController *)selfCopy videoOverrideSpecifiers];
+    [v4 addObjectsFromArray:videoOverrideSpecifiers];
 
     v16 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
     [v4 addObject:v16];
     v17 = settingsLocString(@"ADD_FONT", @"CaptioningStyle");
     v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-    v19 = [NSNumber numberWithLong:[(AXCaptionTextFontController *)v2 textCategory]];
+    v19 = [NSNumber numberWithLong:[(AXCaptionTextFontController *)selfCopy textCategory]];
     [v18 setProperty:v19 forKey:@"TextCategory"];
 
-    [v18 setProperty:-[AXCaptionStyleChooserController profileId](v2 forKey:{"profileId"), @"ProfileId"}];
+    [v18 setProperty:-[AXCaptionStyleChooserController profileId](selfCopy forKey:{"profileId"), @"ProfileId"}];
     [v4 addObject:v18];
-    if (![(AXCaptionTextFontController *)v2 textCategory])
+    if (![(AXCaptionTextFontController *)selfCopy textCategory])
     {
       v20 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
@@ -213,42 +213,42 @@
       v16 = v20;
     }
 
-    v23 = *&v2->super.AXUISettingsBaseListController_opaque[v25];
-    *&v2->super.AXUISettingsBaseListController_opaque[v25] = v4;
+    v23 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v25];
+    *&selfCopy->super.AXUISettingsBaseListController_opaque[v25] = v4;
 
-    v3 = *&v2->super.AXUISettingsBaseListController_opaque[v25];
+    v3 = *&selfCopy->super.AXUISettingsBaseListController_opaque[v25];
   }
 
   return v3;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:a4]];
+  v4 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"isFont"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:a4]];
+  v4 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"isUserAddedFont"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"isFont"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = 1;
   }
@@ -257,23 +257,23 @@
   {
     v13.receiver = self;
     v13.super_class = AXCaptionTextFontController;
-    v11 = [(AXCaptionTextFontController *)&v13 tableView:v6 shouldIndentWhileEditingRowAtIndexPath:v7];
+    v11 = [(AXCaptionTextFontController *)&v13 tableView:viewCopy shouldIndentWhileEditingRowAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   [(AXCaptionTextFontController *)self beginUpdates];
-  v7 = [(AXCaptionTextFontController *)self indexForIndexPath:v6];
+  v7 = [(AXCaptionTextFontController *)self indexForIndexPath:pathCopy];
 
   v8 = [(AXCaptionTextFontController *)self specifierAtIndex:v7];
   v9 = [v8 propertyForKey:@"isUserAddedFont"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = [v8 propertyForKey:PSIDKey];
     AXCaptionRemoveUserAddedFont(v11);
@@ -291,14 +291,14 @@
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v19.receiver = self;
   v19.super_class = AXCaptionTextFontController;
-  [(AXCaptionStyleChooserController *)&v19 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
-  v9 = [(AXCaptionTextFontController *)self systemFontType];
-  switch(v9)
+  [(AXCaptionStyleChooserController *)&v19 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
+  systemFontType = [(AXCaptionTextFontController *)self systemFontType];
+  switch(systemFontType)
   {
     case 2:
       v10 = &MACaptionAppearanceMonoSystemFontIdentifier;
@@ -315,10 +315,10 @@ LABEL_8:
       goto LABEL_9;
   }
 
-  v17 = [(AXCaptionTextFontController *)self selectedFont];
-  if (v17)
+  selectedFont = [(AXCaptionTextFontController *)self selectedFont];
+  if (selectedFont)
   {
-    v11 = CGFontCopyPostScriptName(v17);
+    v11 = CGFontCopyPostScriptName(selectedFont);
     goto LABEL_8;
   }
 
@@ -326,29 +326,29 @@ LABEL_8:
   v12 = [v18 objectForKeyedSubscript:@"name"];
 
 LABEL_9:
-  v13 = v8;
+  v13 = cellCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 specifier];
-    v15 = [v14 propertyForKey:PSIDKey];
+    specifier = [v13 specifier];
+    v15 = [specifier propertyForKey:PSIDKey];
     v16 = [v15 isEqualToString:v12];
 
     [v13 setChecked:v16];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = AXCaptionTextFontController;
-  [(AXCaptionTextFontController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:v6]];
+  [(AXCaptionTextFontController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXCaptionTextFontController *)self specifierAtIndex:[(AXCaptionTextFontController *)self indexForIndexPath:pathCopy]];
   v8 = [v7 propertyForKey:@"isFont"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [v7 propertyForKey:PSIDKey];
     v11 = [v7 propertyForKey:@"isBold"];
@@ -398,7 +398,7 @@ LABEL_9:
       AXPerformBlockOnMainThreadAfterDelay();
     }
 
-    [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:v6];
+    [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:pathCopy];
   }
 }
 
@@ -421,7 +421,7 @@ void __65__AXCaptionTextFontController_tableView_didSelectRowAtIndexPath___block
   CFRelease(v2);
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
   [(AXCaptionStyleChooserController *)self profileId];
   [(AXCaptionTextFontController *)self textCategory];
@@ -430,12 +430,12 @@ void __65__AXCaptionTextFontController_tableView_didSelectRowAtIndexPath___block
   return v4;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
-  v5 = a3;
+  styleCopy = style;
   [(AXCaptionStyleChooserController *)self profileId];
   [(AXCaptionTextFontController *)self textCategory];
-  [v5 BOOLValue];
+  [styleCopy BOOLValue];
 
   MACaptionAppearancePrefSetVideoOverrideFontForStyle();
 }

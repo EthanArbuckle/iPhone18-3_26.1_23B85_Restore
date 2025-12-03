@@ -1,53 +1,53 @@
 @interface PSSegmentTableCell
 - (BOOL)canReload;
-- (PSSegmentTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSSegmentTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)controlValue;
 - (id)newControl;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setValues:(id)a3 titleDictionary:(id)a4;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
+- (void)setValues:(id)values titleDictionary:(id)dictionary;
 @end
 
 @implementation PSSegmentTableCell
 
-- (PSSegmentTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSSegmentTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = PSSegmentTableCell;
-  v4 = [(PSControlTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSControlTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PSControlTableCell *)v4 control];
-    [v6 _setAutosizeText:1];
+    control = [(PSControlTableCell *)v4 control];
+    [control _setAutosizeText:1];
 
-    v7 = [(PSSegmentTableCell *)v5 textLabel];
-    [v7 setHidden:1];
+    textLabel = [(PSSegmentTableCell *)v5 textLabel];
+    [textLabel setHidden:1];
   }
 
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSControlTableCell *)self control];
-  v6 = [(PSControlTableCell *)self control];
-  v18 = [v6 selectedSegmentIndex];
+  specifierCopy = specifier;
+  control = [(PSControlTableCell *)self control];
+  control2 = [(PSControlTableCell *)self control];
+  selectedSegmentIndex = [control2 selectedSegmentIndex];
 
-  [v5 removeAllSegments];
-  v7 = [v4 values];
-  v8 = [v4 titleDictionary];
-  v9 = [v7 count];
+  [control removeAllSegments];
+  values = [specifierCopy values];
+  titleDictionary = [specifierCopy titleDictionary];
+  v9 = [values count];
   if (v9)
   {
     v10 = v9;
     for (i = 0; i != v10; ++i)
     {
-      v12 = [v7 objectAtIndex:i];
-      v13 = [v8 objectForKey:v12];
+      v12 = [values objectAtIndex:i];
+      v13 = [titleDictionary objectForKey:v12];
       v14 = v13;
       if (v13)
       {
@@ -59,18 +59,18 @@
         v15 = v12;
       }
 
-      [v5 insertSegmentWithTitle:v15 atIndex:objc_msgSend(v5 animated:{"numberOfSegments"), 0}];
+      [control insertSegmentWithTitle:v15 atIndex:objc_msgSend(control animated:{"numberOfSegments"), 0}];
     }
   }
 
-  v16 = [v4 values];
-  v17 = [v4 titleDictionary];
-  [(PSSegmentTableCell *)self setValues:v16 titleDictionary:v17];
+  values2 = [specifierCopy values];
+  titleDictionary2 = [specifierCopy titleDictionary];
+  [(PSSegmentTableCell *)self setValues:values2 titleDictionary:titleDictionary2];
 
-  [v5 setSelectedSegmentIndex:v18];
+  [control setSelectedSegmentIndex:selectedSegmentIndex];
   v19.receiver = self;
   v19.super_class = PSSegmentTableCell;
-  [(PSControlTableCell *)&v19 refreshCellContentsWithSpecifier:v4];
+  [(PSControlTableCell *)&v19 refreshCellContentsWithSpecifier:specifierCopy];
 }
 
 - (void)prepareForReuse
@@ -100,16 +100,16 @@
   return v3;
 }
 
-- (void)setValues:(id)a3 titleDictionary:(id)a4
+- (void)setValues:(id)values titleDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  dictionaryCopy = dictionary;
   values = self->_values;
-  self->_values = v6;
-  v10 = v6;
+  self->_values = valuesCopy;
+  v10 = valuesCopy;
 
   titleDict = self->_titleDict;
-  self->_titleDict = v7;
+  self->_titleDict = dictionaryCopy;
 }
 
 - (void)layoutSubviews
@@ -117,24 +117,24 @@
   v20.receiver = self;
   v20.super_class = PSSegmentTableCell;
   [(PSTableCell *)&v20 layoutSubviews];
-  v3 = [(PSTableCell *)self specifier];
-  v4 = [v3 propertyForKey:@"alwaysShowSeparator"];
+  specifier = [(PSTableCell *)self specifier];
+  v4 = [specifier propertyForKey:@"alwaysShowSeparator"];
 
   if (!v4)
   {
     [(PSSegmentTableCell *)self setSeparatorStyle:0];
   }
 
-  v5 = [(PSSegmentTableCell *)self contentView];
-  [v5 bounds];
+  contentView = [(PSSegmentTableCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PSControlTableCell *)self control];
+  control = [(PSControlTableCell *)self control];
   v11 = *MEMORY[0x1E695F058];
   v12 = *(MEMORY[0x1E695F058] + 8);
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   if (v14 == 2.0)
   {
     v15 = 7.5;
@@ -155,13 +155,13 @@
   width = v22.size.width;
   height = v22.size.height;
 
-  [v10 setFrame:{x, y, width, height}];
+  [control setFrame:{x, y, width, height}];
 }
 
 - (id)controlValue
 {
-  v3 = [(UIControl *)self->super._control selectedSegmentIndex];
-  if ((v3 & 0x8000000000000000) != 0 || (v4 = v3, v3 >= [(NSArray *)self->_values count]))
+  selectedSegmentIndex = [(UIControl *)self->super._control selectedSegmentIndex];
+  if ((selectedSegmentIndex & 0x8000000000000000) != 0 || (v4 = selectedSegmentIndex, selectedSegmentIndex >= [(NSArray *)self->_values count]))
   {
     v5 = 0;
   }
@@ -174,13 +174,13 @@
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->super.super._value != v5)
+  valueCopy = value;
+  if (self->super.super._value != valueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->super.super._value, a3);
+    v8 = valueCopy;
+    objc_storeStrong(&self->super.super._value, value);
     v6 = [(NSArray *)self->_values indexOfObject:v8];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -193,7 +193,7 @@
     }
 
     [(UIControl *)self->super._control setSelectedSegmentIndex:v7];
-    v5 = v8;
+    valueCopy = v8;
   }
 }
 

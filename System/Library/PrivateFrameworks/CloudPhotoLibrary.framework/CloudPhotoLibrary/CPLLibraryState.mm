@@ -1,9 +1,9 @@
 @interface CPLLibraryState
-- (BOOL)isEqual:(id)a3;
-- (CPLLibraryState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CPLLibraryState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLLibraryState
@@ -52,24 +52,24 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_disabled != v4->_disabled)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_disabled != equalCopy->_disabled)
   {
     goto LABEL_7;
   }
 
   v5 = self->_disabledDate;
   v6 = v5;
-  disabledDate = v4->_disabledDate;
+  disabledDate = equalCopy->_disabledDate;
   if (v5 && disabledDate)
   {
     v8 = [v5 isEqual:?];
@@ -93,7 +93,7 @@ LABEL_7:
   }
 
   v12 = self->_deleteDate;
-  v13 = v4->_deleteDate;
+  v13 = equalCopy->_deleteDate;
   v14 = v13;
   v9 = v12 && v13 && ([v12 isEqual:v13] & 1) != 0 || (v12 | v14) == 0;
 
@@ -101,7 +101,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CPLLibraryState);
   v4->_disabled = self->_disabled;
@@ -116,29 +116,29 @@ LABEL_9:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   disabled = self->_disabled;
-  v5 = a3;
-  [v5 encodeBool:disabled forKey:@"dis"];
-  [v5 encodeObject:self->_disabledDate forKey:@"disDate"];
-  [v5 encodeObject:self->_deleteDate forKey:@"delDate"];
+  coderCopy = coder;
+  [coderCopy encodeBool:disabled forKey:@"dis"];
+  [coderCopy encodeObject:self->_disabledDate forKey:@"disDate"];
+  [coderCopy encodeObject:self->_deleteDate forKey:@"delDate"];
 }
 
-- (CPLLibraryState)initWithCoder:(id)a3
+- (CPLLibraryState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPLLibraryState;
   v5 = [(CPLLibraryState *)&v11 init];
   if (v5)
   {
-    v5->_disabled = [v4 decodeBoolForKey:@"dis"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disDate"];
+    v5->_disabled = [coderCopy decodeBoolForKey:@"dis"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disDate"];
     disabledDate = v5->_disabledDate;
     v5->_disabledDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delDate"];
     deleteDate = v5->_deleteDate;
     v5->_deleteDate = v8;
   }

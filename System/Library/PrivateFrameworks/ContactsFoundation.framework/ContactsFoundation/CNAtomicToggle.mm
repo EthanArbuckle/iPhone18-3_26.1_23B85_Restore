@@ -1,13 +1,13 @@
 @interface CNAtomicToggle
-- (BOOL)isEqual:(id)a3;
-- (BOOL)trySetState:(BOOL)a3;
-- (CNAtomicToggle)initWithState:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)trySetState:(BOOL)state;
+- (CNAtomicToggle)initWithState:(BOOL)state;
 - (id)description;
 @end
 
 @implementation CNAtomicToggle
 
-- (CNAtomicToggle)initWithState:(BOOL)a3
+- (CNAtomicToggle)initWithState:(BOOL)state
 {
   v8.receiver = self;
   v8.super_class = CNAtomicToggle;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    atomic_store(a3, &v4->_state);
+    atomic_store(state, &v4->_state);
     v6 = v4;
   }
 
@@ -27,15 +27,15 @@
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = atomic_load(&self->_state);
   v5 = [v3 appendName:@"state" BOOLValue:v4 & 1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -46,7 +46,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = atomic_load(&self->_state);
-      v6 = atomic_load(&v4->_state);
+      v6 = atomic_load(&equalCopy->_state);
       v7 = v6 ^ v5 ^ 1;
     }
 
@@ -59,11 +59,11 @@
   return v7 & 1;
 }
 
-- (BOOL)trySetState:(BOOL)a3
+- (BOOL)trySetState:(BOOL)state
 {
-  v3 = !a3;
-  atomic_compare_exchange_strong(&self->_state, &v3, a3);
-  return v3 == !a3;
+  v3 = !state;
+  atomic_compare_exchange_strong(&self->_state, &v3, state);
+  return v3 == !state;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface CFXEffectBrowserViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)didSelectAppWithBundleIdentifier:(id)a3;
+- (void)didSelectAppWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation CFXEffectBrowserViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CFXEffectBrowserViewController" hasInstanceMethod:@"didSelectAppWithBundleIdentifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CFXEffectBrowserViewController" hasInstanceMethod:@"selectedAppIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXCameraViewController" hasInstanceMethod:@"cameraControlsViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXPreviewViewController" hasInstanceMethod:@"bottomControlsDrawer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CFXEffectBrowserViewController" hasInstanceMethod:@"didSelectAppWithBundleIdentifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CFXEffectBrowserViewController" hasInstanceMethod:@"selectedAppIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXCameraViewController" hasInstanceMethod:@"cameraControlsViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXPreviewViewController" hasInstanceMethod:@"bottomControlsDrawer" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,12 +26,12 @@
   [(CFXEffectBrowserViewControllerAccessibility *)self _axHideAppropriateElements:v4];
 }
 
-- (void)didSelectAppWithBundleIdentifier:(id)a3
+- (void)didSelectAppWithBundleIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = CFXEffectBrowserViewControllerAccessibility;
   [(CFXEffectBrowserViewControllerAccessibility *)&v5 didSelectAppWithBundleIdentifier:?];
-  [(CFXEffectBrowserViewControllerAccessibility *)self _axHideAppropriateElements:a3 != 0];
+  [(CFXEffectBrowserViewControllerAccessibility *)self _axHideAppropriateElements:identifier != 0];
 }
 
 uint64_t __74__CFXEffectBrowserViewControllerAccessibility__axHideAppropriateElements___block_invoke(uint64_t a1)

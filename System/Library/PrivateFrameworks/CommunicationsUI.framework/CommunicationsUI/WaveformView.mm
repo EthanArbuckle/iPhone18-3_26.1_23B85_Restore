@@ -1,5 +1,5 @@
 @interface WaveformView
-- (_TtC16CommunicationsUI12WaveformView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI12WaveformView)initWithFrame:(CGRect)frame;
 - (void)setNeedsLayout;
 @end
 
@@ -12,7 +12,7 @@
   [(WaveformView *)&v2 setNeedsLayout];
 }
 
-- (_TtC16CommunicationsUI12WaveformView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI12WaveformView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

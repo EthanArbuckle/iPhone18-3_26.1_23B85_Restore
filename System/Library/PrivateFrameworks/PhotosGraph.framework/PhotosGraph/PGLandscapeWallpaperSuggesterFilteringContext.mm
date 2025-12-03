@@ -1,18 +1,18 @@
 @interface PGLandscapeWallpaperSuggesterFilteringContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initForAmbient;
-- (id)initForLandscapesInOrientation:(int64_t)a3;
-- (id)initForTopLandscapes:(BOOL)a3 withDictionary:(id)a4 orientation:(int64_t)a5;
-- (id)initForTopLandscapesInOrientation:(int64_t)a3;
-- (void)_commonInitInOrientation:(int64_t)a3;
-- (void)updateFilteringContextWithDictionary:(id)a3;
+- (id)initForLandscapesInOrientation:(int64_t)orientation;
+- (id)initForTopLandscapes:(BOOL)landscapes withDictionary:(id)dictionary orientation:(int64_t)orientation;
+- (id)initForTopLandscapesInOrientation:(int64_t)orientation;
+- (void)_commonInitInOrientation:(int64_t)orientation;
+- (void)updateFilteringContextWithDictionary:(id)dictionary;
 @end
 
 @implementation PGLandscapeWallpaperSuggesterFilteringContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [PGLandscapeWallpaperSuggesterFilteringContext allocWithZone:a3];
+  result = [PGLandscapeWallpaperSuggesterFilteringContext allocWithZone:zone];
   *(result + 3) = *&self->_minimumWallpaperScore;
   *(result + 4) = *&self->_wallpaperScorePenaltyCutOff;
   *(result + 5) = *&self->_minimumAestheticsScore;
@@ -26,115 +26,115 @@
   return result;
 }
 
-- (id)initForTopLandscapes:(BOOL)a3 withDictionary:(id)a4 orientation:(int64_t)a5
+- (id)initForTopLandscapes:(BOOL)landscapes withDictionary:(id)dictionary orientation:(int64_t)orientation
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  landscapesCopy = landscapes;
+  dictionaryCopy = dictionary;
+  if (landscapesCopy)
   {
-    v9 = [(PGLandscapeWallpaperSuggesterFilteringContext *)self initForTopLandscapesInOrientation:a5];
+    v9 = [(PGLandscapeWallpaperSuggesterFilteringContext *)self initForTopLandscapesInOrientation:orientation];
   }
 
   else
   {
-    v9 = [(PGLandscapeWallpaperSuggesterFilteringContext *)self initForLandscapesInOrientation:a5];
+    v9 = [(PGLandscapeWallpaperSuggesterFilteringContext *)self initForLandscapesInOrientation:orientation];
   }
 
   v10 = v9;
   if (v9)
   {
-    [v9 updateFilteringContextWithDictionary:v8];
+    [v9 updateFilteringContextWithDictionary:dictionaryCopy];
   }
 
   return v10;
 }
 
-- (void)updateFilteringContextWithDictionary:(id)a3
+- (void)updateFilteringContextWithDictionary:(id)dictionary
 {
-  v33 = a3;
-  v4 = [v33 objectForKeyedSubscript:@"minimumWallpaperScore"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"minimumWallpaperScore"];
   if (v4)
   {
-    v5 = [v33 objectForKeyedSubscript:@"minimumWallpaperScore"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"minimumWallpaperScore"];
     [v5 doubleValue];
     self->_minimumWallpaperScore = v6;
   }
 
-  v7 = [v33 objectForKeyedSubscript:@"wallpaperScorePenaltyCutOff"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"wallpaperScorePenaltyCutOff"];
   if (v7)
   {
-    v8 = [v33 objectForKeyedSubscript:@"wallpaperScorePenaltyCutOff"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"wallpaperScorePenaltyCutOff"];
     [v8 doubleValue];
     self->_wallpaperScorePenaltyCutOff = v9;
   }
 
-  v10 = [v33 objectForKeyedSubscript:@"minimumAestheticsScore"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"minimumAestheticsScore"];
   if (v10)
   {
-    v11 = [v33 objectForKeyedSubscript:@"minimumAestheticsScore"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"minimumAestheticsScore"];
     [v11 doubleValue];
     self->_minimumAestheticsScore = v12;
   }
 
-  v13 = [v33 objectForKeyedSubscript:@"aestheticsScorePenaltyCutOff"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"aestheticsScorePenaltyCutOff"];
   if (v13)
   {
-    v14 = [v33 objectForKeyedSubscript:@"aestheticsScorePenaltyCutOff"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"aestheticsScorePenaltyCutOff"];
     [v14 doubleValue];
     self->_aestheticsScorePenaltyCutOff = v15;
   }
 
-  v16 = [v33 objectForKeyedSubscript:@"minimumCropScore"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"minimumCropScore"];
   if (v16)
   {
-    v17 = [v33 objectForKeyedSubscript:@"minimumCropScore"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"minimumCropScore"];
     [v17 doubleValue];
     self->_minimumCropScore = v18;
   }
 
-  v19 = [v33 objectForKeyedSubscript:@"cropScorePenaltyCutOff"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"cropScorePenaltyCutOff"];
   if (v19)
   {
-    v20 = [v33 objectForKeyedSubscript:@"cropScorePenaltyCutOff"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"cropScorePenaltyCutOff"];
     [v20 doubleValue];
     self->_cropScorePenaltyCutOff = v21;
   }
 
-  v22 = [v33 objectForKeyedSubscript:@"ignoreClockOverlap"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"ignoreClockOverlap"];
   if (v22)
   {
-    v23 = [v33 objectForKeyedSubscript:@"ignoreClockOverlap"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"ignoreClockOverlap"];
     self->_ignoreClockOverlap = [v23 BOOLValue];
   }
 
-  v24 = [v33 objectForKeyedSubscript:@"timeIntervalForCandidateDeduping"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"timeIntervalForCandidateDeduping"];
   if (v24)
   {
-    v25 = [v33 objectForKeyedSubscript:@"timeIntervalForCandidateDeduping"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"timeIntervalForCandidateDeduping"];
     [v25 doubleValue];
     self->_timeIntervalForCandidateDeduping = v26;
   }
 
-  v27 = [v33 objectForKeyedSubscript:@"maximumLowLightScore"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"maximumLowLightScore"];
   if (v27)
   {
-    v28 = [v33 objectForKeyedSubscript:@"maximumLowLightScore"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"maximumLowLightScore"];
     [v28 doubleValue];
     self->_maximumLowLightScore = v29;
   }
 
-  v30 = [v33 objectForKeyedSubscript:@"maximumCropZoomRatio"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"maximumCropZoomRatio"];
   if (v30)
   {
-    v31 = [v33 objectForKeyedSubscript:@"maximumCropZoomRatio"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"maximumCropZoomRatio"];
     [v31 doubleValue];
     self->_maximumCropZoomRatio = v32;
   }
 }
 
-- (void)_commonInitInOrientation:(int64_t)a3
+- (void)_commonInitInOrientation:(int64_t)orientation
 {
-  self->_orientation = a3;
+  self->_orientation = orientation;
   __asm { FMOV            V0.2D, #-1.0 }
 
   *&self->_minimumWallpaperScore = _Q0;
@@ -160,7 +160,7 @@
   return v3;
 }
 
-- (id)initForLandscapesInOrientation:(int64_t)a3
+- (id)initForLandscapesInOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PGLandscapeWallpaperSuggesterFilteringContext;
@@ -168,14 +168,14 @@
   v5 = v4;
   if (v4)
   {
-    [(PGLandscapeWallpaperSuggesterFilteringContext *)v4 _commonInitInOrientation:a3];
+    [(PGLandscapeWallpaperSuggesterFilteringContext *)v4 _commonInitInOrientation:orientation];
     v5->_ignoreClockOverlap = 1;
   }
 
   return v5;
 }
 
-- (id)initForTopLandscapesInOrientation:(int64_t)a3
+- (id)initForTopLandscapesInOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PGLandscapeWallpaperSuggesterFilteringContext;
@@ -183,7 +183,7 @@
   v5 = v4;
   if (v4)
   {
-    [(PGLandscapeWallpaperSuggesterFilteringContext *)v4 _commonInitInOrientation:a3];
+    [(PGLandscapeWallpaperSuggesterFilteringContext *)v4 _commonInitInOrientation:orientation];
     v5->_bypassCropScoreCheck = 1;
   }
 

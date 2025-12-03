@@ -1,6 +1,6 @@
 @interface _UICalendarWeekdayView
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (_UICalendarWeekdayView)initWithDataModel:(id)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (_UICalendarWeekdayView)initWithDataModel:(id)model;
 - (void)_rebuildLabels;
 - (void)_updateFont;
 - (void)layoutSubviews;
@@ -8,17 +8,17 @@
 
 @implementation _UICalendarWeekdayView
 
-- (_UICalendarWeekdayView)initWithDataModel:(id)a3
+- (_UICalendarWeekdayView)initWithDataModel:(id)model
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = _UICalendarWeekdayView;
   v6 = [(UIView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataModel, a3);
+    objc_storeStrong(&v6->_dataModel, model);
     [(_UICalendarWeekdayView *)v7 _rebuildLabels];
     [(UIView *)v7 setPreservesSuperviewLayoutMargins:1];
     v12[0] = objc_opt_class();
@@ -33,10 +33,10 @@
 - (void)_updateFont
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   v4 = *off_1E70ECD30;
-  v5 = [(_UICalendarDataModel *)self->_dataModel fontDesign];
-  v6 = _UICalendarFontWithWeight(@"UICTFontTextStyleFootnote", v3, v5, v4);
+  fontDesign = [(_UICalendarDataModel *)self->_dataModel fontDesign];
+  v6 = _UICalendarFontWithWeight(@"UICTFontTextStyleFootnote", traitCollection, fontDesign, v4);
 
   [(_UIDatePickerLinkedLabel *)self->_sizingLabel setFont:v6];
   [(UIView *)self->_sizingLabel invalidateIntrinsicContentSize];
@@ -111,24 +111,24 @@
   aBlock[3] = &unk_1E7123430;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v10 = [v9 shortStandaloneWeekdaySymbols];
-  v11 = _UICalendarMap(v10, v8);
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  shortStandaloneWeekdaySymbols = [effectiveCalendar shortStandaloneWeekdaySymbols];
+  v11 = _UICalendarMap(shortStandaloneWeekdaySymbols, v8);
 
-  v12 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [v12 veryShortStandaloneWeekdaySymbols];
+  effectiveCalendar2 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [effectiveCalendar2 veryShortStandaloneWeekdaySymbols];
   v13 = v54 = self;
   v50 = v8;
   v14 = _UICalendarMap(v13, v8);
 
   v15 = v54;
-  v16 = [(UIView *)v54 traitCollection];
-  v17 = _UICalendarViewGetPlatformMetrics([v16 userInterfaceIdiom]);
+  traitCollection = [(UIView *)v54 traitCollection];
+  v17 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v18 = [(UIView *)v54 traitCollection];
+  traitCollection2 = [(UIView *)v54 traitCollection];
   v19 = *off_1E70ECD30;
-  v20 = [(_UICalendarDataModel *)v54->_dataModel fontDesign];
-  v21 = _UICalendarFontWithWeight(@"UICTFontTextStyleFootnote", v18, v20, v19);
+  fontDesign = [(_UICalendarDataModel *)v54->_dataModel fontDesign];
+  v21 = _UICalendarFontWithWeight(@"UICTFontTextStyleFootnote", traitCollection2, fontDesign, v19);
 
   sizingLabel = v54->_sizingLabel;
   v53 = v17;
@@ -156,8 +156,8 @@
   [(_UIDatePickerLinkedLabel *)v25 setFont:v23];
   objc_storeStrong(&v54->_sizingLabel, v25);
   v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v28, "count")}];
-  v31 = [(_UICalendarDataModel *)v54->_dataModel effectiveCalendar];
-  v32 = [v31 firstWeekday];
+  effectiveCalendar3 = [(_UICalendarDataModel *)v54->_dataModel effectiveCalendar];
+  firstWeekday = [effectiveCalendar3 firstWeekday];
 
   v51 = [v28 count];
   v33 = v14;
@@ -166,7 +166,7 @@
   v36 = v25;
   if (v51 >= 1)
   {
-    v37 = v32 - 1;
+    v37 = firstWeekday - 1;
     v38 = v51;
     do
     {
@@ -190,8 +190,8 @@
       v36 = v41;
       v30 = v40;
       v35 = v53;
-      v48 = [v53 weekdayLabelTextColor];
-      [v39 setTextColor:v48];
+      weekdayLabelTextColor = [v53 weekdayLabelTextColor];
+      [v39 setTextColor:weekdayLabelTextColor];
 
       v34 = v45;
       v33 = v44;
@@ -226,15 +226,15 @@
   [(UIView *)self bounds];
   if (v3 != 0.0)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = _UICalendarViewGetPlatformMetrics([v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     v6 = [(NSArray *)self->_labels count];
     [(UIView *)self bounds];
     v8 = v7;
     [(UIView *)self layoutMargins];
     v11 = v8 - (v9 + v10);
-    v12 = [(UIView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
     v13 = v6;
     UIRoundToViewScale(self);
     v15 = v14;
@@ -272,7 +272,7 @@
       v39 = v36 + v37 * 0.5;
       do
       {
-        if (v12)
+        if (_shouldReverseLayoutDirection)
         {
           v40 = v32;
         }
@@ -296,16 +296,16 @@
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [(NSArray *)self->_labels count];
   [(_UIDatePickerLinkedLabel *)self->_sizingLabel sizeThatFits:width / v6, height];
   v8 = v7;
   v10 = v9 * v6;
-  v11 = [(UIView *)self traitCollection];
-  v12 = _UICalendarViewGetPlatformMetrics([v11 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v12 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [v12 weekdayViewMinimumHeight];
   v14 = fmax(v8, v13);

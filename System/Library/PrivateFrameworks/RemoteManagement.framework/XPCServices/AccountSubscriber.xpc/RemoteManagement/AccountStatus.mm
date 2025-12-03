@@ -1,8 +1,8 @@
 @interface AccountStatus
 + (id)supportedStatusKeys;
 - (AccountStatus)init;
-- (AccountStatus)initWithAdapter:(id)a3;
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5;
+- (AccountStatus)initWithAdapter:(id)adapter;
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler;
 @end
 
 @implementation AccountStatus
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (AccountStatus)initWithAdapter:(id)a3
+- (AccountStatus)initWithAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v9.receiver = self;
   v9.super_class = AccountStatus;
   v6 = [(AccountStatus *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_adapter, a3);
+    objc_storeStrong(&v6->_adapter, adapter);
   }
 
   return v7;
@@ -46,27 +46,27 @@
   return v3;
 }
 
-- (void)queryForStatusWithKeyPaths:(id)a3 store:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(id)paths store:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  pathsCopy = paths;
+  storeCopy = store;
+  handlerCopy = handler;
   v10 = +[RMLog accountStatus];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_100013090(v8, v10);
+    sub_100013090(pathsCopy, v10);
   }
 
-  v11 = [(AccountStatus *)self adapter];
-  v34 = v9;
-  v12 = [v11 getRemotelyManagedAccountsForStore:v9];
+  adapter = [(AccountStatus *)self adapter];
+  v34 = storeCopy;
+  v12 = [adapter getRemotelyManagedAccountsForStore:storeCopy];
 
   v13 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = v8;
+  v14 = pathsCopy;
   v15 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v15)
   {
@@ -119,14 +119,14 @@
         }
 
         v26 = *(*(&v35 + 1) + 8 * v25);
-        v27 = [(AccountStatus *)self adapter];
-        v28 = [v27 getStatusKeyPathFromAccount:v26];
+        adapter2 = [(AccountStatus *)self adapter];
+        v28 = [adapter2 getStatusKeyPathFromAccount:v26];
 
         v29 = [v13 objectForKeyedSubscript:v28];
         if (v29)
         {
-          v30 = [(AccountStatus *)self adapter];
-          v31 = [v30 getStatusInfoFromAccount:v26];
+          adapter3 = [(AccountStatus *)self adapter];
+          v31 = [adapter3 getStatusInfoFromAccount:v26];
 
           [v29 addObject:v31];
         }
@@ -141,7 +141,7 @@
     while (v23);
   }
 
-  v33[2](v33, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
 }
 
 @end

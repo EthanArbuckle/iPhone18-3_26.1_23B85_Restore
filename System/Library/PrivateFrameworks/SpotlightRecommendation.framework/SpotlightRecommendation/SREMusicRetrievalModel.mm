@@ -1,17 +1,17 @@
 @interface SREMusicRetrievalModel
 + (id)sharedInstance;
 + (void)sharedInstance;
-- (BOOL)_loadModelWithError:(id *)a3;
-- (SREMusicRetrievalModel)initWithError:(id *)a3;
-- (id)inferenceWithSequence:(id)a3 query:(id)a4 error:(id *)a5;
+- (BOOL)_loadModelWithError:(id *)error;
+- (SREMusicRetrievalModel)initWithError:(id *)error;
+- (id)inferenceWithSequence:(id)sequence query:(id)query error:(id *)error;
 @end
 
 @implementation SREMusicRetrievalModel
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sharedInstance_sharedInstance;
   if (!sharedInstance_sharedInstance)
   {
@@ -44,12 +44,12 @@
   }
 
   v8 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (SREMusicRetrievalModel)initWithError:(id *)a3
+- (SREMusicRetrievalModel)initWithError:(id *)error
 {
   v10.receiver = self;
   v10.super_class = SREMusicRetrievalModel;
@@ -58,24 +58,24 @@
   if (v3)
   {
     [(SREMusicRetrievalModel *)v3 setModelMMap:0];
-    v5 = [MEMORY[0x277D657E8] sharedResourcesManager];
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v5 loadAllParametersForClient:@"Spotlight" locale:v6];
+    mEMORY[0x277D657E8] = [MEMORY[0x277D657E8] sharedResourcesManager];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [mEMORY[0x277D657E8] loadAllParametersForClient:@"Spotlight" locale:currentLocale];
 
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = [v5 resourcesForClient:@"Spotlight" locale:v7 options:&unk_287C44DC8];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v8 = [mEMORY[0x277D657E8] resourcesForClient:@"Spotlight" locale:currentLocale2 options:&unk_287C44DC8];
     [(SREMusicRetrievalModel *)v4 setResources:v8];
   }
 
   return v4;
 }
 
-- (id)inferenceWithSequence:(id)a3 query:(id)a4 error:(id *)a5
+- (id)inferenceWithSequence:(id)sequence query:(id)query error:(id *)error
 {
   v56[100] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (![(SREMusicRetrievalModel *)self _loadModelWithError:a5])
+  sequenceCopy = sequence;
+  queryCopy = query;
+  if (![(SREMusicRetrievalModel *)self _loadModelWithError:error])
   {
     v18 = 0;
     goto LABEL_32;
@@ -86,13 +86,13 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v8;
+  v10 = sequenceCopy;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v55 count:16];
   if (v11)
   {
     v12 = v11;
-    v35 = v9;
-    v36 = v8;
+    v35 = queryCopy;
+    v36 = sequenceCopy;
     v13 = 0;
     v14 = *v43;
     while (2)
@@ -138,8 +138,8 @@
 
 LABEL_16:
 
-    v9 = v35;
-    v8 = v36;
+    queryCopy = v35;
+    sequenceCopy = v36;
     if (v13 > 0x63)
     {
       goto LABEL_20;
@@ -159,12 +159,12 @@ LABEL_20:
   v39 = 0;
   DWORD1(v38) = 15;
   v37 = 0x2000000019;
-  v19 = [v9 genreID];
-  v20 = [v19 UTF8String];
-  v40 = v20;
+  genreID = [queryCopy genreID];
+  uTF8String = [genreID UTF8String];
+  v40 = uTF8String;
 
-  v21 = [v9 genreID];
-  v41 = strlen([v21 UTF8String]);
+  genreID2 = [queryCopy genreID];
+  v41 = strlen([genreID2 UTF8String]);
 
   v22 = logForCSLogCategoryRecs();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -172,14 +172,14 @@ LABEL_20:
     *buf = 134218242;
     *&buf[4] = v13;
     *&buf[12] = 2080;
-    *&buf[14] = v20;
+    *&buf[14] = uTF8String;
     _os_log_impl(&dword_26B806000, v22, OS_LOG_TYPE_DEFAULT, "Calling music retrieval model. input_len=%zu preferred_genre_name=%s", buf, 0x16u);
   }
 
   memset(buf, 0, sizeof(buf));
   v53 = 0;
-  v23 = [(SREMusicRetrievalModel *)self modelMMap];
-  v24 = retrieval_flatbuffer(v56, v13, 100, v54, [v23 buffer], &v37, buf);
+  modelMMap = [(SREMusicRetrievalModel *)self modelMMap];
+  v24 = retrieval_flatbuffer(v56, v13, 100, v54, [modelMMap buffer], &v37, buf);
 
   if (v24)
   {
@@ -190,7 +190,7 @@ LABEL_20:
     }
 
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SREMusicRetrievalModel" code:v24 userInfo:0];
-    *a5 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -208,8 +208,8 @@ LABEL_20:
       [v18 addObject:v28];
 
       v29 = [MEMORY[0x277CCABB0] numberWithLongLong:v54[i]];
-      v30 = [v29 stringValue];
-      [v26 addObject:v30];
+      stringValue = [v29 stringValue];
+      [v26 addObject:stringValue];
     }
 
     v31 = [v26 componentsJoinedByString:{@", ", v35, v36}];
@@ -233,27 +233,27 @@ LABEL_32:
   return v18;
 }
 
-- (BOOL)_loadModelWithError:(id *)a3
+- (BOOL)_loadModelWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(SREMusicRetrievalModel *)self resources];
-  if ([v5 hasUpdates])
+  resources = [(SREMusicRetrievalModel *)self resources];
+  if ([resources hasUpdates])
   {
   }
 
   else
   {
-    v6 = [(SREMusicRetrievalModel *)self modelMMap];
+    modelMMap = [(SREMusicRetrievalModel *)self modelMMap];
 
-    if (v6)
+    if (modelMMap)
     {
       v7 = 1;
       goto LABEL_17;
     }
   }
 
-  v8 = [(SREMusicRetrievalModel *)self resources];
-  v9 = [v8 filePathArrayForKey:@"MusicRetrieval" didFailWithError:a3];
+  resources2 = [(SREMusicRetrievalModel *)self resources];
+  v9 = [resources2 filePathArrayForKey:@"MusicRetrieval" didFailWithError:error];
 
   if (v9 && [v9 count])
   {
@@ -269,16 +269,16 @@ LABEL_32:
     v12 = [MMapStruct mMapStructWithFilepath:v10];
     [(SREMusicRetrievalModel *)self setModelMMap:v12];
 
-    v13 = [(SREMusicRetrievalModel *)self modelMMap];
+    modelMMap2 = [(SREMusicRetrievalModel *)self modelMMap];
 
     v14 = logForCSLogCategoryRecs();
     v15 = v14;
-    if (v13)
+    if (modelMMap2)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(SREMusicRetrievalModel *)self modelMMap];
-        v17 = [v16 size];
+        modelMMap3 = [(SREMusicRetrievalModel *)self modelMMap];
+        v17 = [modelMMap3 size];
         v20 = 134217984;
         v21 = v17;
         _os_log_impl(&dword_26B806000, v15, OS_LOG_TYPE_DEFAULT, "Music Retrieval LSH model mmap done. mmap size: %ld", &v20, 0xCu);
@@ -295,7 +295,7 @@ LABEL_32:
       }
 
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.SREMusicRetrievalModel" code:-3001 userInfo:0];
-      *a3 = v7 = 0;
+      *error = v7 = 0;
     }
   }
 
@@ -304,7 +304,7 @@ LABEL_32:
     v10 = logForCSLogCategoryRecs();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SREMusicRetrievalModel _loadModelWithError:a3];
+      [SREMusicRetrievalModel _loadModelWithError:error];
     }
 
     v7 = 0;

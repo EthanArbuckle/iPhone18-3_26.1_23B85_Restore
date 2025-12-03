@@ -1,26 +1,26 @@
 @interface CRLContentDescriptionTranslator
-+ (BOOL)hasAnyFreehandDrawingBoardItemsInContentDescription:(id)a3;
-+ (BOOL)hasNativeBoardItemsContainingTextInContentDescription:(id)a3;
-+ (BOOL)hasNativeBoardItemsInContentDescription:(id)a3;
-+ (BOOL)hasNativeTextInContentDescription:(id)a3;
-+ (BOOL)hasNativeTypesInContentDescription:(id)a3;
-+ (BOOL)hasOnlyFreehandDrawingBoardItemsInContentDescription:(id)a3;
-+ (BOOL)hasOnlyNativeTextBoxBoardItemsInContentDescription:(id)a3;
-+ (BOOL)hasSingleNativeImageBoardItemInContentDescription:(id)a3;
-+ (BOOL)hasSingleNativeMovieBoardItemInContentDescription:(id)a3;
-+ (BOOL)hasTextStoragesInContentDescription:(id)a3;
-+ (BOOL)p_hasNativeBoardItemsContainingTextInBoardItemDescription:(id)a3;
-+ (id)stringToPrefixForStyleCopyingTypeFromDescription:(id)a3;
-+ (unint64_t)countOfObjectsInContentDescription:(id)a3;
-+ (unint64_t)numberOfBoardItemsInContentDescription:(id)a3;
-+ (unint64_t)numberOfTopLevelBoardItemsInContentDescription:(id)a3;
-+ (unsigned)elementKindFromBoardItemDescription:(id)a3;
++ (BOOL)hasAnyFreehandDrawingBoardItemsInContentDescription:(id)description;
++ (BOOL)hasNativeBoardItemsContainingTextInContentDescription:(id)description;
++ (BOOL)hasNativeBoardItemsInContentDescription:(id)description;
++ (BOOL)hasNativeTextInContentDescription:(id)description;
++ (BOOL)hasNativeTypesInContentDescription:(id)description;
++ (BOOL)hasOnlyFreehandDrawingBoardItemsInContentDescription:(id)description;
++ (BOOL)hasOnlyNativeTextBoxBoardItemsInContentDescription:(id)description;
++ (BOOL)hasSingleNativeImageBoardItemInContentDescription:(id)description;
++ (BOOL)hasSingleNativeMovieBoardItemInContentDescription:(id)description;
++ (BOOL)hasTextStoragesInContentDescription:(id)description;
++ (BOOL)p_hasNativeBoardItemsContainingTextInBoardItemDescription:(id)description;
++ (id)stringToPrefixForStyleCopyingTypeFromDescription:(id)description;
++ (unint64_t)countOfObjectsInContentDescription:(id)description;
++ (unint64_t)numberOfBoardItemsInContentDescription:(id)description;
++ (unint64_t)numberOfTopLevelBoardItemsInContentDescription:(id)description;
++ (unsigned)elementKindFromBoardItemDescription:(id)description;
 - (CRLContentDescriptionTranslator)init;
-- (id)contentDescriptionForBoardItems:(id)a3;
-- (id)contentDescriptionForTextStorage:(id)a3 range:(_NSRange)a4 boardItems:(id)a5;
-- (id)descriptionForBoardItem:(id)a3;
-- (id)descriptionForTextStorage:(id)a3 range:(_NSRange)a4;
-- (id)descriptionsForBoardItems:(id)a3;
+- (id)contentDescriptionForBoardItems:(id)items;
+- (id)contentDescriptionForTextStorage:(id)storage range:(_NSRange)range boardItems:(id)items;
+- (id)descriptionForBoardItem:(id)item;
+- (id)descriptionForTextStorage:(id)storage range:(_NSRange)range;
+- (id)descriptionsForBoardItems:(id)items;
 @end
 
 @implementation CRLContentDescriptionTranslator
@@ -36,29 +36,29 @@
   return v2;
 }
 
-- (id)descriptionForBoardItem:(id)a3
+- (id)descriptionForBoardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [NSMutableDictionary dictionaryWithCapacity:5];
-  if (v4)
+  if (itemCopy)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     [v5 setObject:v7 forKeyedSubscript:@"class"];
 
     v8 = objc_opt_class();
-    v9 = sub_100014370(v8, v4);
-    v10 = [v9 isAutogrowingTextBox];
+    v9 = sub_100014370(v8, itemCopy);
+    isAutogrowingTextBox = [v9 isAutogrowingTextBox];
 
-    if (v10)
+    if (isAutogrowingTextBox)
     {
       [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:@"textbox"];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v4 text];
-      v12 = -[CRLContentDescriptionTranslator descriptionForTextStorage:range:](self, "descriptionForTextStorage:range:", v11, 0, [v11 length]);
+      text = [itemCopy text];
+      v12 = -[CRLContentDescriptionTranslator descriptionForTextStorage:range:](self, "descriptionForTextStorage:range:", text, 0, [text length]);
       v13 = v12;
       if (v12)
       {
@@ -74,33 +74,33 @@
   return v15;
 }
 
-+ (unint64_t)countOfObjectsInContentDescription:(id)a3
++ (unint64_t)countOfObjectsInContentDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 count];
-  v5 = [v3 objectForKeyedSubscript:@"appData"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy count];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"appData"];
 
   return v4 - (v5 != 0);
 }
 
-+ (BOOL)hasNativeTypesInContentDescription:(id)a3
++ (BOOL)hasNativeTypesInContentDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 count];
-  v5 = [v3 objectForKeyedSubscript:@"appData"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy count];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"appData"];
 
   return v4 > (v5 != 0);
 }
 
-- (id)contentDescriptionForBoardItems:(id)a3
+- (id)contentDescriptionForBoardItems:(id)items
 {
-  v4 = [(CRLContentDescriptionTranslator *)self descriptionsForBoardItems:a3];
+  v4 = [(CRLContentDescriptionTranslator *)self descriptionsForBoardItems:items];
   if (v4)
   {
     v8[0] = @"appData";
-    v5 = [(CRLContentDescriptionTranslator *)self appDescriptionData];
+    appDescriptionData = [(CRLContentDescriptionTranslator *)self appDescriptionData];
     v8[1] = @"boardItems";
-    v9[0] = v5;
+    v9[0] = appDescriptionData;
     v9[1] = v4;
     v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
   }
@@ -113,17 +113,17 @@
   return v6;
 }
 
-- (id)descriptionsForBoardItems:(id)a3
+- (id)descriptionsForBoardItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableArray array];
-  if ([v4 count])
+  if ([itemsCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -155,17 +155,17 @@
   return v5;
 }
 
-+ (BOOL)hasNativeBoardItemsInContentDescription:(id)a3
++ (BOOL)hasNativeBoardItemsInContentDescription:(id)description
 {
-  v3 = [a1 p_boardItemsDescriptionsFromContentDescription:a3];
+  v3 = [self p_boardItemsDescriptionsFromContentDescription:description];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (BOOL)p_hasNativeBoardItemsContainingTextInBoardItemDescription:(id)a3
++ (BOOL)p_hasNativeBoardItemsContainingTextInBoardItemDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -175,29 +175,29 @@
   v6[2] = sub_1002323EC;
   v6[3] = &unk_10184B578;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [descriptionCopy enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-+ (BOOL)hasNativeBoardItemsContainingTextInContentDescription:(id)a3
++ (BOOL)hasNativeBoardItemsContainingTextInContentDescription:(id)description
 {
-  v4 = [a3 objectForKeyedSubscript:@"boardItems"];
-  LOBYTE(a1) = [a1 p_hasNativeBoardItemsContainingTextInBoardItemDescription:v4];
+  v4 = [description objectForKeyedSubscript:@"boardItems"];
+  LOBYTE(self) = [self p_hasNativeBoardItemsContainingTextInBoardItemDescription:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)hasSingleNativeImageBoardItemInContentDescription:(id)a3
++ (BOOL)hasSingleNativeImageBoardItemInContentDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"boardItems"];
+  v3 = [description objectForKeyedSubscript:@"boardItems"];
   if ([v3 count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
     v5 = objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"class"];
+    v6 = [firstObject objectForKeyedSubscript:@"class"];
     v7 = sub_100013F00(v5, v6);
 
     if (v7)
@@ -223,14 +223,14 @@
   return v8;
 }
 
-+ (BOOL)hasSingleNativeMovieBoardItemInContentDescription:(id)a3
++ (BOOL)hasSingleNativeMovieBoardItemInContentDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"boardItems"];
+  v3 = [description objectForKeyedSubscript:@"boardItems"];
   if ([v3 count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
     v5 = objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"class"];
+    v6 = [firstObject objectForKeyedSubscript:@"class"];
     v7 = sub_100013F00(v5, v6);
 
     if (v7)
@@ -256,9 +256,9 @@
   return v8;
 }
 
-+ (BOOL)hasOnlyNativeTextBoxBoardItemsInContentDescription:(id)a3
++ (BOOL)hasOnlyNativeTextBoxBoardItemsInContentDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"boardItems"];
+  v3 = [description objectForKeyedSubscript:@"boardItems"];
   if ([v3 count])
   {
     v18 = 0u;
@@ -284,9 +284,9 @@
           v10 = objc_opt_class();
           v11 = [v9 objectForKeyedSubscript:{@"textbox", v16}];
           v12 = sub_100013F00(v10, v11);
-          v13 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
 
-          if (!v13)
+          if (!bOOLValue)
           {
             v14 = 0;
             goto LABEL_12;
@@ -315,10 +315,10 @@ LABEL_12:
   return v14;
 }
 
-+ (BOOL)hasOnlyFreehandDrawingBoardItemsInContentDescription:(id)a3
++ (BOOL)hasOnlyFreehandDrawingBoardItemsInContentDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"boardItems"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:@"boardItems"];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -335,10 +335,10 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)hasAnyFreehandDrawingBoardItemsInContentDescription:(id)a3
++ (BOOL)hasAnyFreehandDrawingBoardItemsInContentDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"boardItems"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:@"boardItems"];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -355,28 +355,28 @@ LABEL_12:
   return v5;
 }
 
-+ (unint64_t)numberOfBoardItemsInContentDescription:(id)a3
++ (unint64_t)numberOfBoardItemsInContentDescription:(id)description
 {
-  v3 = [a1 p_boardItemsDescriptionsFromContentDescription:a3];
+  v3 = [self p_boardItemsDescriptionsFromContentDescription:description];
   v4 = [v3 count];
 
   return v4;
 }
 
-+ (unint64_t)numberOfTopLevelBoardItemsInContentDescription:(id)a3
++ (unint64_t)numberOfTopLevelBoardItemsInContentDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"boardItems"];
+  v3 = [description objectForKeyedSubscript:@"boardItems"];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)descriptionForTextStorage:(id)a3 range:(_NSRange)a4
+- (id)descriptionForTextStorage:(id)storage range:(_NSRange)range
 {
-  length = a4.length;
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  length = range.length;
+  storageCopy = storage;
+  v6 = storageCopy;
+  if (!storageCopy)
   {
     goto LABEL_14;
   }
@@ -388,7 +388,7 @@ LABEL_12:
   if (length)
   {
     v7 = 1;
-    if (![v5 hasVisibleContent])
+    if (![storageCopy hasVisibleContent])
     {
       goto LABEL_8;
     }
@@ -396,7 +396,7 @@ LABEL_12:
 
   else
   {
-    if (([v5 hasVisibleContent] & 1) == 0)
+    if (([storageCopy hasVisibleContent] & 1) == 0)
     {
       v13 = 0;
       goto LABEL_9;
@@ -435,16 +435,16 @@ LABEL_14:
   return v13;
 }
 
-- (id)contentDescriptionForTextStorage:(id)a3 range:(_NSRange)a4 boardItems:(id)a5
+- (id)contentDescriptionForTextStorage:(id)storage range:(_NSRange)range boardItems:(id)items
 {
-  v6 = [(CRLContentDescriptionTranslator *)self descriptionForTextStorage:a3 range:a4.location, a4.length, a5];
-  if ([v6 count])
+  items = [(CRLContentDescriptionTranslator *)self descriptionForTextStorage:storage range:range.location, range.length, items];
+  if ([items count])
   {
     v10[0] = @"appData";
-    v7 = [(CRLContentDescriptionTranslator *)self appDescriptionData];
+    appDescriptionData = [(CRLContentDescriptionTranslator *)self appDescriptionData];
     v10[1] = @"text";
-    v11[0] = v7;
-    v11[1] = v6;
+    v11[0] = appDescriptionData;
+    v11[1] = items;
     v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
   }
 
@@ -456,33 +456,33 @@ LABEL_14:
   return v8;
 }
 
-+ (unsigned)elementKindFromBoardItemDescription:(id)a3
++ (unsigned)elementKindFromBoardItemDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_opt_class();
-  v5 = [v3 objectForKeyedSubscript:@"elementKind"];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"elementKind"];
 
   v6 = sub_100013F00(v4, v5);
 
-  LODWORD(v3) = [v6 unsignedIntegerValue];
-  return v3;
+  LODWORD(descriptionCopy) = [v6 unsignedIntegerValue];
+  return descriptionCopy;
 }
 
-+ (BOOL)hasNativeTextInContentDescription:(id)a3
++ (BOOL)hasNativeTextInContentDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"text"];
+  v3 = [description objectForKeyedSubscript:@"text"];
   v4 = objc_opt_class();
   v5 = [v3 objectForKeyedSubscript:@"hasText"];
   v6 = sub_100013F00(v4, v5);
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (BOOL)hasTextStoragesInContentDescription:(id)a3
++ (BOOL)hasTextStoragesInContentDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"text"];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKeyedSubscript:@"text"];
   if (v5 && (v6 = objc_opt_class(), [v5 objectForKeyedSubscript:@"hasText"], v7 = objc_claimAutoreleasedReturnValue(), sub_100013F00(v6, v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, v7, (v9 & 1) != 0))
   {
     v10 = 1;
@@ -490,14 +490,14 @@ LABEL_14:
 
   else
   {
-    v11 = [v4 objectForKeyedSubscript:@"boardItems"];
-    v10 = [a1 p_hasTextStoragesInBoardItemDescriptions:v11 topLevelBoardItems:v11];
+    v11 = [descriptionCopy objectForKeyedSubscript:@"boardItems"];
+    v10 = [self p_hasTextStoragesInBoardItemDescriptions:v11 topLevelBoardItems:v11];
   }
 
   return v10;
 }
 
-+ (id)stringToPrefixForStyleCopyingTypeFromDescription:(id)a3
++ (id)stringToPrefixForStyleCopyingTypeFromDescription:(id)description
 {
   v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100B3F43C(v3);

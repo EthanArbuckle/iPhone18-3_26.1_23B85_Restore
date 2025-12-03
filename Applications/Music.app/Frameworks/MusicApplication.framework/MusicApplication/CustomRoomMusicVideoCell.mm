@@ -1,20 +1,20 @@
 @interface CustomRoomMusicVideoCell
 + (UIEdgeInsets)visualContentInsets;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CustomRoomMusicVideoCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomRoomMusicVideoCell();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(VerticalLockupCollectionViewCell *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
-  if ([v6 horizontalSizeClass])
+  [(VerticalLockupCollectionViewCell *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
+  if ([traitCollection horizontalSizeClass])
   {
     sub_14EEC8();
   }
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_14E7D4();
 }
 

@@ -1,5 +1,5 @@
 @interface SUScriptNativeObject
-+ (SUScriptNativeObject)objectWithNativeObject:(id)a3 weak:(BOOL)a4;
++ (SUScriptNativeObject)objectWithNativeObject:(id)object weak:(BOOL)weak;
 - (SUScriptNativeObject)init;
 - (SUScriptObject)scriptObject;
 - (id)object;
@@ -7,10 +7,10 @@
 - (id)weakObject;
 - (void)destroyNativeObject;
 - (void)lock;
-- (void)setObject:(id)a3;
-- (void)setScriptObject:(id)a3;
-- (void)setStrongObject:(id)a3;
-- (void)setWeakObject:(id)a3;
+- (void)setObject:(id)object;
+- (void)setScriptObject:(id)object;
+- (void)setStrongObject:(id)object;
+- (void)setWeakObject:(id)object;
 - (void)unlock;
 @end
 
@@ -33,19 +33,19 @@
 
 - (id)object
 {
-  v3 = [(SUScriptNativeObject *)self weakObject];
-  v4 = v3;
-  if (v3)
+  weakObject = [(SUScriptNativeObject *)self weakObject];
+  v4 = weakObject;
+  if (weakObject)
   {
-    v5 = v3;
+    strongObject = weakObject;
   }
 
   else
   {
-    v5 = [(SUScriptNativeObject *)self strongObject];
+    strongObject = [(SUScriptNativeObject *)self strongObject];
   }
 
-  v6 = v5;
+  v6 = strongObject;
 
   return v6;
 }
@@ -59,28 +59,28 @@
   return WeakRetained;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v8 = a3;
-  v4 = [(SUScriptNativeObject *)self object];
+  objectCopy = object;
+  object = [(SUScriptNativeObject *)self object];
 
-  if (v4)
+  if (object)
   {
     [(SUScriptNativeObject *)self destroyNativeObject];
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v8 clearsWeakScriptReferences])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([objectCopy clearsWeakScriptReferences])
   {
     [(SUScriptNativeObject *)self lock];
     strongObject = self->_strongObject;
     self->_strongObject = 0;
-    v6 = v8;
+    v6 = objectCopy;
   }
 
   else
   {
     [(SUScriptNativeObject *)self lock];
-    v7 = v8;
+    v7 = objectCopy;
     v6 = 0;
     strongObject = self->_strongObject;
     self->_strongObject = v7;
@@ -91,36 +91,36 @@
   [(SUScriptNativeObject *)self setupNativeObject];
 }
 
-- (void)setScriptObject:(id)a3
+- (void)setScriptObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(SUScriptNativeObject *)self lock];
   WeakRetained = objc_loadWeakRetained(&self->_scriptObject);
 
-  objc_storeWeak(&self->_scriptObject, v4);
+  objc_storeWeak(&self->_scriptObject, objectCopy);
   [(SUScriptNativeObject *)self unlock];
-  if (!v4 && WeakRetained)
+  if (!objectCopy && WeakRetained)
   {
-    v6 = [(SUScriptNativeObject *)self mainThreadProxy];
-    [v6 destroyNativeObject];
+    mainThreadProxy = [(SUScriptNativeObject *)self mainThreadProxy];
+    [mainThreadProxy destroyNativeObject];
   }
 }
 
-- (void)setStrongObject:(id)a3
+- (void)setStrongObject:(id)object
 {
-  v4 = a3;
-  v5 = [(SUScriptNativeObject *)self object];
+  objectCopy = object;
+  object = [(SUScriptNativeObject *)self object];
 
-  if (v5)
+  if (object)
   {
     [(SUScriptNativeObject *)self destroyNativeObject];
   }
 
   [(SUScriptNativeObject *)self lock];
   strongObject = self->_strongObject;
-  self->_strongObject = v4;
+  self->_strongObject = objectCopy;
 
-  if (v4)
+  if (objectCopy)
   {
     objc_storeWeak(&self->_weakObject, 0);
   }
@@ -130,20 +130,20 @@
   [(SUScriptNativeObject *)self setupNativeObject];
 }
 
-- (void)setWeakObject:(id)a3
+- (void)setWeakObject:(id)object
 {
-  v4 = a3;
-  v5 = [(SUScriptNativeObject *)self object];
+  objectCopy = object;
+  object = [(SUScriptNativeObject *)self object];
 
-  if (v5)
+  if (object)
   {
     [(SUScriptNativeObject *)self destroyNativeObject];
   }
 
   [(SUScriptNativeObject *)self lock];
-  objc_storeWeak(&self->_weakObject, v4);
+  objc_storeWeak(&self->_weakObject, objectCopy);
 
-  if (v4)
+  if (objectCopy)
   {
     strongObject = self->_strongObject;
     self->_strongObject = 0;
@@ -184,24 +184,24 @@
 
 - (void)lock
 {
-  v2 = [(SUScriptNativeObject *)self internalLock];
-  [v2 lock];
+  internalLock = [(SUScriptNativeObject *)self internalLock];
+  [internalLock lock];
 }
 
-+ (SUScriptNativeObject)objectWithNativeObject:(id)a3 weak:(BOOL)a4
++ (SUScriptNativeObject)objectWithNativeObject:(id)object weak:(BOOL)weak
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  weakCopy = weak;
+  objectCopy = object;
+  v7 = objc_alloc_init(self);
   v8 = v7;
-  if (v4)
+  if (weakCopy)
   {
-    [v7 setWeakObject:v6];
+    [v7 setWeakObject:objectCopy];
   }
 
   else
   {
-    [v7 setStrongObject:v6];
+    [v7 setStrongObject:objectCopy];
   }
 
   return v8;
@@ -209,8 +209,8 @@
 
 - (void)unlock
 {
-  v2 = [(SUScriptNativeObject *)self internalLock];
-  [v2 unlock];
+  internalLock = [(SUScriptNativeObject *)self internalLock];
+  [internalLock unlock];
 }
 
 @end

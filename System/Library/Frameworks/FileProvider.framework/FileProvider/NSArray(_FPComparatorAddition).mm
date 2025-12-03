@@ -11,7 +11,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __47__NSArray__FPComparatorAddition__fp_comparator__block_invoke;
   aBlock[3] = &unk_1E793CC10;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v1 = _Block_copy(aBlock);
 
   return v1;
@@ -21,8 +21,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 fp_comparator];
-  v9 = (v8)[2](v8, v7, v6);
+  fp_comparator = [self fp_comparator];
+  v9 = (fp_comparator)[2](fp_comparator, v7, v6);
 
   return v9;
 }

@@ -1,19 +1,19 @@
 @interface _LTCombinedTranslationResult
-+ (id)_translatedTextWithAttributesForResult:(id)a3;
++ (id)_translatedTextWithAttributesForResult:(id)result;
 - (NSAttributedString)translatedText;
 - (NSString)romanization;
-- (_LTCombinedTranslationResult)initWithCoder:(id)a3;
-- (_LTCombinedTranslationResult)initWithParagraphResults:(id)a3 localePair:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_LTCombinedTranslationResult)initWithCoder:(id)coder;
+- (_LTCombinedTranslationResult)initWithParagraphResults:(id)results localePair:(id)pair;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTCombinedTranslationResult
 
-- (_LTCombinedTranslationResult)initWithParagraphResults:(id)a3 localePair:(id)a4
+- (_LTCombinedTranslationResult)initWithParagraphResults:(id)results localePair:(id)pair
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  pairCopy = pair;
   v46.receiver = self;
   v46.super_class = _LTCombinedTranslationResult;
   v8 = [(_LTCombinedTranslationResult *)&v46 init];
@@ -24,7 +24,7 @@ LABEL_19:
     goto LABEL_31;
   }
 
-  v9 = [v6 copy];
+  v9 = [resultsCopy copy];
   paragraphResults = v8->_paragraphResults;
   v8->_paragraphResults = v9;
 
@@ -39,13 +39,13 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v40 = v7;
-  v41 = [v7 targetLocale];
-  v11 = [(NSArray *)v8->_paragraphResults firstObject];
-  v12 = [v11 route];
+  v40 = pairCopy;
+  targetLocale = [pairCopy targetLocale];
+  firstObject = [(NSArray *)v8->_paragraphResults firstObject];
+  route = [firstObject route];
 
-  v13 = [(NSArray *)v8->_paragraphResults firstObject];
-  v14 = [v13 isFinal];
+  firstObject2 = [(NSArray *)v8->_paragraphResults firstObject];
+  isFinal = [firstObject2 isFinal];
 
   v44 = 0u;
   v45 = 0u;
@@ -57,7 +57,7 @@ LABEL_19:
   {
     v17 = v16;
     v18 = *v43;
-    v39 = v6;
+    v39 = resultsCopy;
 LABEL_5:
     v19 = 0;
     while (1)
@@ -68,8 +68,8 @@ LABEL_5:
       }
 
       v20 = *(*(&v42 + 1) + 8 * v19);
-      v21 = [v20 locale];
-      v22 = [v21 isEqual:v41];
+      locale = [v20 locale];
+      v22 = [locale isEqual:targetLocale];
 
       if ((v22 & 1) == 0)
       {
@@ -82,30 +82,30 @@ LABEL_5:
         goto LABEL_26;
       }
 
-      if ([v20 route] != v12)
+      if ([v20 route] != route)
       {
         break;
       }
 
-      if (v14 != [v20 isFinal])
+      if (isFinal != [v20 isFinal])
       {
         v36 = _LTOSLogTranslationEngine();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          [(_LTCombinedTranslationResult *)v14 initWithParagraphResults:v36 localePair:v20];
+          [(_LTCombinedTranslationResult *)isFinal initWithParagraphResults:v36 localePair:v20];
         }
 
 LABEL_26:
         v33 = 0;
-        v6 = v39;
-        v7 = v40;
+        resultsCopy = v39;
+        pairCopy = v40;
         goto LABEL_30;
       }
 
       if (v17 == ++v19)
       {
         v17 = [(NSArray *)v15 countByEnumeratingWithState:&v42 objects:v49 count:16];
-        v6 = v39;
+        resultsCopy = v39;
         if (v17)
         {
           goto LABEL_5;
@@ -126,19 +126,19 @@ LABEL_26:
 
 LABEL_13:
 
-  v7 = v40;
+  pairCopy = v40;
   v23 = [v40 copy];
   localePair = v8->_localePair;
   v8->_localePair = v23;
 
-  v8->_route = v12;
-  v8->_isFinal = v14;
+  v8->_route = route;
+  v8->_isFinal = isFinal;
   v15 = [(NSArray *)v8->_paragraphResults _ltCompactMap:&__block_literal_global_0];
   v25 = [_LTDisambiguableResult combineResults:v15 joinedWithString:@"\n\n"];
-  v26 = [v25 hasDisambiguations];
+  hasDisambiguations = [v25 hasDisambiguations];
   v27 = _LTOSLogDisambiguation();
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
-  if (v26)
+  if (hasDisambiguations)
   {
     if (v28)
     {
@@ -170,13 +170,13 @@ LABEL_31:
 
 - (NSAttributedString)translatedText
 {
-  v3 = [(_LTCombinedTranslationResult *)self disambiguableResult];
-  if (v3 && (v4 = v3, v5 = +[_LTDisambiguableResult isGenderDisambiguationEnabled], v4, v5))
+  disambiguableResult = [(_LTCombinedTranslationResult *)self disambiguableResult];
+  if (disambiguableResult && (v4 = disambiguableResult, v5 = +[_LTDisambiguableResult isGenderDisambiguationEnabled], v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CCA898]);
-    v7 = [(_LTCombinedTranslationResult *)self disambiguableResult];
-    v8 = [v7 targetText];
-    v9 = [v6 initWithString:v8];
+    disambiguableResult2 = [(_LTCombinedTranslationResult *)self disambiguableResult];
+    targetText = [disambiguableResult2 targetText];
+    v9 = [v6 initWithString:targetText];
   }
 
   else
@@ -196,22 +196,22 @@ LABEL_31:
 
 - (NSString)romanization
 {
-  v3 = [(_LTCombinedTranslationResult *)self disambiguableResult];
+  disambiguableResult = [(_LTCombinedTranslationResult *)self disambiguableResult];
 
-  if (v3)
+  if (disambiguableResult)
   {
-    v4 = [(_LTCombinedTranslationResult *)self disambiguableResult];
-    v5 = [v4 romanization];
+    disambiguableResult2 = [(_LTCombinedTranslationResult *)self disambiguableResult];
+    romanization = [disambiguableResult2 romanization];
 LABEL_5:
-    v7 = v5;
+    v7 = romanization;
     goto LABEL_6;
   }
 
-  v4 = [(NSArray *)self->_paragraphResults _ltCompactMap:&__block_literal_global_6];
+  disambiguableResult2 = [(NSArray *)self->_paragraphResults _ltCompactMap:&__block_literal_global_6];
   v6 = [(NSArray *)self->_paragraphResults count];
-  if (v6 == [v4 count])
+  if (v6 == [disambiguableResult2 count])
   {
-    v5 = [v4 componentsJoinedByString:@"\n\n"];
+    romanization = [disambiguableResult2 componentsJoinedByString:@"\n\n"];
     goto LABEL_5;
   }
 
@@ -221,43 +221,43 @@ LABEL_6:
   return v7;
 }
 
-+ (id)_translatedTextWithAttributesForResult:(id)a3
++ (id)_translatedTextWithAttributesForResult:(id)result
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 alignments];
-  v5 = [v4 count];
+  resultCopy = result;
+  alignments = [resultCopy alignments];
+  v5 = [alignments count];
 
-  v6 = [v3 translations];
-  v7 = [v6 count];
+  translations = [resultCopy translations];
+  v7 = [translations count];
 
   v10 = v5 == 1 && v7 == 1 || v5 == 0;
-  v11 = [v3 translations];
-  v12 = [v11 firstObject];
+  translations2 = [resultCopy translations];
+  firstObject = [translations2 firstObject];
 
-  v13 = [v12 sanitizedFormattedString];
-  v14 = v13;
-  if (v13)
+  sanitizedFormattedString = [firstObject sanitizedFormattedString];
+  v14 = sanitizedFormattedString;
+  if (sanitizedFormattedString)
   {
-    v15 = v13;
+    v15 = sanitizedFormattedString;
   }
 
   else
   {
-    v16 = [v12 formattedString];
-    v17 = v16;
+    formattedString = [firstObject formattedString];
+    v17 = formattedString;
     v18 = &stru_284DBB9B8;
-    if (v16)
+    if (formattedString)
     {
-      v18 = v16;
+      v18 = formattedString;
     }
 
     v15 = v18;
   }
 
   v19 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v15];
-  v55 = v12;
-  v56 = v3;
+  v55 = firstObject;
+  v56 = resultCopy;
   v54 = v15;
   if (!v10)
   {
@@ -265,8 +265,8 @@ LABEL_6:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v20 = [v3 alignments];
-    v21 = [v20 countByEnumeratingWithState:&v62 objects:v71 count:16];
+    alignments2 = [resultCopy alignments];
+    v21 = [alignments2 countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v21)
     {
       v22 = v21;
@@ -277,12 +277,12 @@ LABEL_6:
         {
           if (*v63 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(alignments2);
           }
 
           v25 = *(*(&v62 + 1) + 8 * i);
-          v26 = [v25 sourceAttributes];
-          v27 = [v26 objectForKeyedSubscript:@"CTAdaptiveImageProvider"];
+          sourceAttributes = [v25 sourceAttributes];
+          v27 = [sourceAttributes objectForKeyedSubscript:@"CTAdaptiveImageProvider"];
 
           if (!v27)
           {
@@ -290,51 +290,51 @@ LABEL_6:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
             {
               v32 = v28;
-              v33 = [v25 targetRange];
+              targetRange = [v25 targetRange];
               [v25 targetRange];
               *buf = 134218240;
-              v68 = v33;
+              v68 = targetRange;
               v69 = 2048;
               v70 = v34;
               _os_log_debug_impl(&dword_23AAF5000, v32, OS_LOG_TYPE_DEBUG, "Adding attributes for range (%zu, %zu)", buf, 0x16u);
             }
 
-            v29 = [v25 sourceAttributes];
-            v30 = [v25 targetRange];
-            [v19 addAttributes:v29 range:{v30, v31}];
+            sourceAttributes2 = [v25 sourceAttributes];
+            targetRange2 = [v25 targetRange];
+            [v19 addAttributes:sourceAttributes2 range:{targetRange2, v31}];
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        v22 = [alignments2 countByEnumeratingWithState:&v62 objects:v71 count:16];
       }
 
       while (v22);
     }
 
     v35 = _LTOSLogTranslationEngine();
-    v12 = v55;
-    v3 = v56;
+    firstObject = v55;
+    resultCopy = v56;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
       +[_LTCombinedTranslationResult _translatedTextWithAttributesForResult:];
     }
   }
 
-  v36 = [v3 replacementInfos];
-  if ([v36 count])
+  replacementInfos = [resultCopy replacementInfos];
+  if ([replacementInfos count])
   {
     v37 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      [(_LTCombinedTranslationResult *)v37 _translatedTextWithAttributesForResult:v36];
+      [(_LTCombinedTranslationResult *)v37 _translatedTextWithAttributesForResult:replacementInfos];
     }
 
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v53 = v36;
-    obj = v36;
+    v53 = replacementInfos;
+    obj = replacementInfos;
     v38 = [obj countByEnumeratingWithState:&v58 objects:v66 count:16];
     if (v38)
     {
@@ -350,9 +350,9 @@ LABEL_6:
           }
 
           v42 = *(*(&v58 + 1) + 8 * j);
-          v43 = [v42 placeholderString];
-          v44 = [v19 string];
-          v45 = [v44 rangeOfString:v43];
+          placeholderString = [v42 placeholderString];
+          string = [v19 string];
+          v45 = [string rangeOfString:placeholderString];
           v47 = v46;
 
           if (v45 == 0x7FFFFFFFFFFFFFFFLL)
@@ -366,11 +366,11 @@ LABEL_6:
 
           else
           {
-            v49 = [v42 sourceAttributes];
-            [v19 addAttributes:v49 range:{v45, v47}];
+            sourceAttributes3 = [v42 sourceAttributes];
+            [v19 addAttributes:sourceAttributes3 range:{v45, v47}];
 
-            v50 = [v42 originalSubstring];
-            [v19 replaceCharactersInRange:v45 withString:{v47, v50}];
+            originalSubstring = [v42 originalSubstring];
+            [v19 replaceCharactersInRange:v45 withString:{v47, originalSubstring}];
           }
         }
 
@@ -380,9 +380,9 @@ LABEL_6:
       while (v39);
     }
 
-    v12 = v55;
-    v3 = v56;
-    v36 = v53;
+    firstObject = v55;
+    resultCopy = v56;
+    replacementInfos = v53;
     v15 = v54;
   }
 
@@ -391,22 +391,22 @@ LABEL_6:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paragraphResults = self->_paragraphResults;
-  v5 = a3;
-  [v5 encodeObject:paragraphResults forKey:@"paragraphResults"];
-  [v5 encodeObject:self->_disambiguableResult forKey:@"disambiguableResult"];
-  [v5 encodeObject:self->_localePair forKey:@"localePair"];
-  [v5 encodeInteger:self->_route forKey:@"route"];
-  [v5 encodeBool:self->_isFinal forKey:@"isFinal"];
-  [v5 encodeBool:self->_endOfUtterance forKey:@"endOfUtterance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:paragraphResults forKey:@"paragraphResults"];
+  [coderCopy encodeObject:self->_disambiguableResult forKey:@"disambiguableResult"];
+  [coderCopy encodeObject:self->_localePair forKey:@"localePair"];
+  [coderCopy encodeInteger:self->_route forKey:@"route"];
+  [coderCopy encodeBool:self->_isFinal forKey:@"isFinal"];
+  [coderCopy encodeBool:self->_endOfUtterance forKey:@"endOfUtterance"];
 }
 
-- (_LTCombinedTranslationResult)initWithCoder:(id)a3
+- (_LTCombinedTranslationResult)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _LTCombinedTranslationResult;
   v5 = [(_LTCombinedTranslationResult *)&v21 init];
@@ -418,7 +418,7 @@ LABEL_6:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"paragraphResults"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"paragraphResults"];
     paragraphResults = v5->_paragraphResults;
     v5->_paragraphResults = v9;
 
@@ -428,17 +428,17 @@ LABEL_6:
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v13 = [v11 setWithArray:v12];
 
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"disambiguableResult"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"disambiguableResult"];
     disambiguableResult = v5->_disambiguableResult;
     v5->_disambiguableResult = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localePair"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localePair"];
     localePair = v5->_localePair;
     v5->_localePair = v16;
 
-    v5->_route = [v4 decodeIntegerForKey:@"route"];
-    v5->_isFinal = [v4 decodeBoolForKey:@"isFinal"];
-    v5->_endOfUtterance = [v4 decodeBoolForKey:@"endOfUtterance"];
+    v5->_route = [coderCopy decodeIntegerForKey:@"route"];
+    v5->_isFinal = [coderCopy decodeBoolForKey:@"isFinal"];
+    v5->_endOfUtterance = [coderCopy decodeBoolForKey:@"endOfUtterance"];
     v18 = v5;
   }
 

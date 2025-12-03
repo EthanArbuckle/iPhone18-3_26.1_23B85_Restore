@@ -1,7 +1,7 @@
 @interface FCLocalArticleHeadline
 - (BOOL)hasThumbnail;
 - (CGSize)thumbnailSize;
-- (FCLocalArticleHeadline)initWithDictionary:(id)a3 path:(id)a4 channel:(id)a5 recipeIDs:(id)a6;
+- (FCLocalArticleHeadline)initWithDictionary:(id)dictionary path:(id)path channel:(id)channel recipeIDs:(id)ds;
 - (id)articleID;
 - (id)identifier;
 - (id)shortExcerpt;
@@ -12,30 +12,30 @@
 
 @implementation FCLocalArticleHeadline
 
-- (FCLocalArticleHeadline)initWithDictionary:(id)a3 path:(id)a4 channel:(id)a5 recipeIDs:(id)a6
+- (FCLocalArticleHeadline)initWithDictionary:(id)dictionary path:(id)path channel:(id)channel recipeIDs:(id)ds
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  channelCopy = channel;
+  dsCopy = ds;
   v24.receiver = self;
   v24.super_class = FCLocalArticleHeadline;
   v14 = [(FCHeadline *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dictionaryCopy copy];
     dictionary = v14->_dictionary;
     v14->_dictionary = v15;
 
-    v17 = [v11 copy];
+    v17 = [pathCopy copy];
     path = v14->_path;
     v14->_path = v17;
 
-    v19 = [v12 copy];
+    v19 = [channelCopy copy];
     channel = v14->_channel;
     v14->_channel = v19;
 
-    v21 = [v13 copy];
+    v21 = [dsCopy copy];
     recipeIDs = v14->_recipeIDs;
     v14->_recipeIDs = v21;
 
@@ -47,32 +47,32 @@
 
 - (id)identifier
 {
-  v2 = [(FCLocalArticleHeadline *)self path];
-  v3 = [v2 lastPathComponent];
+  path = [(FCLocalArticleHeadline *)self path];
+  lastPathComponent = [path lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (id)articleID
 {
-  v2 = [(FCLocalArticleHeadline *)self path];
-  v3 = [v2 lastPathComponent];
+  path = [(FCLocalArticleHeadline *)self path];
+  lastPathComponent = [path lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (id)title
 {
-  v2 = [(FCLocalArticleHeadline *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"title"];
+  dictionary = [(FCLocalArticleHeadline *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"title"];
 
   return v3;
 }
 
 - (BOOL)hasThumbnail
 {
-  v2 = [(FCLocalArticleHeadline *)self thumbnailAssetHandle];
-  v3 = v2 != 0;
+  thumbnailAssetHandle = [(FCLocalArticleHeadline *)self thumbnailAssetHandle];
+  v3 = thumbnailAssetHandle != 0;
 
   return v3;
 }
@@ -82,8 +82,8 @@
   thumbnail = self->_thumbnail;
   if (!thumbnail)
   {
-    v4 = [(FCLocalArticleHeadline *)self thumbnailAssetHandle];
-    v5 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:v4 thumbnailSize:1.79769313e308, 1.79769313e308];
+    thumbnailAssetHandle = [(FCLocalArticleHeadline *)self thumbnailAssetHandle];
+    v5 = [FCHeadlineThumbnail headlineThumbnailWithAssetHandle:thumbnailAssetHandle thumbnailSize:1.79769313e308, 1.79769313e308];
     v6 = self->_thumbnail;
     self->_thumbnail = v5;
 
@@ -95,14 +95,14 @@
 
 - (id)thumbnailAssetHandle
 {
-  v3 = [(FCLocalArticleHeadline *)self dictionary];
-  v4 = [v3 valueForKeyPath:@"metadata.thumbnailImageIdentifier"];
+  dictionary = [(FCLocalArticleHeadline *)self dictionary];
+  v4 = [dictionary valueForKeyPath:@"metadata.thumbnailImageIdentifier"];
 
   if (v4)
   {
     objc_opt_class();
-    v5 = [(FCLocalArticleHeadline *)self dictionary];
-    v6 = [v5 objectForKeyedSubscript:@"resources"];
+    dictionary2 = [(FCLocalArticleHeadline *)self dictionary];
+    v6 = [dictionary2 objectForKeyedSubscript:@"resources"];
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -230,8 +230,8 @@ void __46__FCLocalArticleHeadline_thumbnailAssetHandle__block_invoke(uint64_t a1
 
 - (id)shortExcerpt
 {
-  v2 = [(FCLocalArticleHeadline *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"subtitle"];
+  dictionary = [(FCLocalArticleHeadline *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"subtitle"];
 
   return v3;
 }

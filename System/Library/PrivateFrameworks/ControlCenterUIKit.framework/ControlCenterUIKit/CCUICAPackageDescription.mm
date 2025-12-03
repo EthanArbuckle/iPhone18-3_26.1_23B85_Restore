@@ -1,23 +1,23 @@
 @interface CCUICAPackageDescription
-+ (id)descriptionForPackageNamed:(id)a3 inBundle:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CCUICAPackageDescription)initWithPackageName:(id)a3 inBundle:(id)a4;
++ (id)descriptionForPackageNamed:(id)named inBundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
+- (CCUICAPackageDescription)initWithPackageName:(id)name inBundle:(id)bundle;
 - (NSString)description;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation CCUICAPackageDescription
 
-- (CCUICAPackageDescription)initWithPackageName:(id)a3 inBundle:(id)a4
+- (CCUICAPackageDescription)initWithPackageName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = CCUICAPackageDescription;
   v8 = [(CCUICAPackageDescription *)&v12 init];
   if (v8)
   {
-    v9 = [v7 URLForResource:v6 withExtension:@"ca"];
+    v9 = [bundleCopy URLForResource:nameCopy withExtension:@"ca"];
     packageURL = v8->_packageURL;
     v8->_packageURL = v9;
 
@@ -27,30 +27,30 @@
   return v8;
 }
 
-+ (id)descriptionForPackageNamed:(id)a3 inBundle:(id)a4
++ (id)descriptionForPackageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPackageName:v7 inBundle:v6];
+  bundleCopy = bundle;
+  namedCopy = named;
+  v8 = [[self alloc] initWithPackageName:namedCopy inBundle:bundleCopy];
 
   return v8;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  v4 = [(NSURL *)self->_packageURL lastPathComponent];
-  [v8 appendString:v4 withName:@"packageName"];
+  formatterCopy = formatter;
+  lastPathComponent = [(NSURL *)self->_packageURL lastPathComponent];
+  [formatterCopy appendString:lastPathComponent withName:@"packageName"];
 
-  v5 = [v8 appendBool:self->_flipsForRightToLeftLayoutDirection withName:@"flipsForRightToLeftLayoutDirection" ifEqualTo:1];
-  v6 = [v8 appendBool:self->_honorsUIViewAnimationState withName:@"honorsUIViewAnimationState" ifEqualTo:0];
-  v7 = [v8 appendBool:-[NSDictionary count](self->_stateUpdateHandlers withName:"count") != 0 ifEqualTo:{@"hasStateUpdateHandlers", 1}];
+  v5 = [formatterCopy appendBool:self->_flipsForRightToLeftLayoutDirection withName:@"flipsForRightToLeftLayoutDirection" ifEqualTo:1];
+  v6 = [formatterCopy appendBool:self->_honorsUIViewAnimationState withName:@"honorsUIViewAnimationState" ifEqualTo:0];
+  v7 = [formatterCopy appendBool:-[NSDictionary count](self->_stateUpdateHandlers withName:"count") != 0 ifEqualTo:{@"hasStateUpdateHandlers", 1}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualObjects() && BSEqualBools() && BSEqualBools())
       {
         v6 = BSEqualDictionaries();
@@ -89,7 +89,7 @@
   v9 = __39__CCUICAPackageDescription_description__block_invoke;
   v10 = &unk_1E83EA450;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
   v5 = [v4 description];

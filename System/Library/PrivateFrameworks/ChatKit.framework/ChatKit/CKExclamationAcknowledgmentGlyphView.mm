@@ -1,28 +1,28 @@
 @interface CKExclamationAcknowledgmentGlyphView
 - (CGPoint)glyphOffset;
-- (CKExclamationAcknowledgmentGlyphView)initWithFrame:(CGRect)a3 color:(char)a4;
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5;
+- (CKExclamationAcknowledgmentGlyphView)initWithFrame:(CGRect)frame color:(char)color;
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion;
 - (void)layoutSubviews;
-- (void)setGlyphColor:(id)a3;
+- (void)setGlyphColor:(id)color;
 @end
 
 @implementation CKExclamationAcknowledgmentGlyphView
 
-- (CKExclamationAcknowledgmentGlyphView)initWithFrame:(CGRect)a3 color:(char)a4
+- (CKExclamationAcknowledgmentGlyphView)initWithFrame:(CGRect)frame color:(char)color
 {
-  v4 = a4;
+  colorCopy = color;
   v17.receiver = self;
   v17.super_class = CKExclamationAcknowledgmentGlyphView;
-  v5 = [(CKExclamationAcknowledgmentGlyphView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CKExclamationAcknowledgmentGlyphView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(CKExclamationAcknowledgmentGlyphView *)v5 setBackgroundColor:0];
     v7 = +[CKUIBehavior sharedBehaviors];
     v8 = v7;
-    if (v4 == -1)
+    if (colorCopy == -1)
     {
-      v9 = [v7 grayExclamationLeftAckImage];
+      grayExclamationLeftAckImage = [v7 grayExclamationLeftAckImage];
 
       v10 = +[CKUIBehavior sharedBehaviors];
       [v10 grayExclamationRightAckImage];
@@ -30,24 +30,24 @@
 
     else
     {
-      v9 = [v7 whiteExclamationLeftAckImage];
+      grayExclamationLeftAckImage = [v7 whiteExclamationLeftAckImage];
 
       v10 = +[CKUIBehavior sharedBehaviors];
       [v10 whiteExclamationRightAckImage];
     }
     v11 = ;
 
-    v12 = [[CKAcknowledgmentGlyphImageView alloc] initWithImage:v9];
+    v12 = [[CKAcknowledgmentGlyphImageView alloc] initWithImage:grayExclamationLeftAckImage];
     v13 = [[CKAcknowledgmentGlyphImageView alloc] initWithImage:v11];
     [(CKExclamationAcknowledgmentGlyphView *)v6 addSubview:v12];
     [(CKExclamationAcknowledgmentGlyphView *)v6 setLeftExclamationGlyph:v12];
     [(CKExclamationAcknowledgmentGlyphView *)v6 addSubview:v13];
     [(CKExclamationAcknowledgmentGlyphView *)v6 setRightExclamationGlyph:v13];
-    v14 = [(CKAcknowledgmentGlyphImageView *)v12 layer];
-    [v14 setAnchorPoint:{1.0, 0.5}];
+    layer = [(CKAcknowledgmentGlyphImageView *)v12 layer];
+    [layer setAnchorPoint:{1.0, 0.5}];
 
-    v15 = [(CKAcknowledgmentGlyphImageView *)v13 layer];
-    [v15 setAnchorPoint:{0.0, 0.5}];
+    layer2 = [(CKAcknowledgmentGlyphImageView *)v13 layer];
+    [layer2 setAnchorPoint:{0.0, 0.5}];
 
     [(CKExclamationAcknowledgmentGlyphView *)v6 setClipsToBounds:1];
   }
@@ -65,14 +65,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  [v11 sizeToFit];
+  leftExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  [leftExclamationGlyph sizeToFit];
 
-  v12 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  [v12 sizeToFit];
+  rightExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  [rightExclamationGlyph sizeToFit];
 
-  v13 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  [v13 bounds];
+  leftExclamationGlyph2 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  [leftExclamationGlyph2 bounds];
   rect_16 = v14;
   v16 = v15;
 
@@ -81,8 +81,8 @@
   v40.size.width = v8;
   v40.size.height = v10;
   rect = CGRectGetHeight(v40);
-  v17 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  [v17 bounds];
+  rightExclamationGlyph2 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  [rightExclamationGlyph2 bounds];
   v19 = v18;
   v21 = v20;
 
@@ -131,28 +131,28 @@
   v44.size.width = v25;
   v44.size.height = v24;
   v30 = MidX - CGRectGetWidth(v44);
-  v31 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  [v31 setFrame:{v30, v27, v25, v24}];
+  leftExclamationGlyph3 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  [leftExclamationGlyph3 setFrame:{v30, v27, v25, v24}];
 
-  v32 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  [v32 setFrame:{MidX, rect_16a, rect_24, rect_8}];
+  rightExclamationGlyph3 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  [rightExclamationGlyph3 setFrame:{MidX, rect_16a, rect_24, rect_8}];
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
   v15.receiver = self;
   v15.super_class = CKExclamationAcknowledgmentGlyphView;
-  v4 = a3;
-  [(CKAcknowledgmentGlyphView *)&v15 setGlyphColor:v4];
+  colorCopy = color;
+  [(CKAcknowledgmentGlyphView *)&v15 setGlyphColor:colorCopy];
   v5 = [CKUIBehavior sharedBehaviors:v15.receiver];
-  v6 = [v5 theme];
-  v7 = [v6 ckAcknowledgementColorTypeForColor:v4];
+  theme = [v5 theme];
+  v7 = [theme ckAcknowledgementColorTypeForColor:colorCopy];
 
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
   if (v7 == -1)
   {
-    v10 = [v8 grayExclamationLeftAckImage];
+    grayExclamationLeftAckImage = [v8 grayExclamationLeftAckImage];
 
     v11 = +[CKUIBehavior sharedBehaviors];
     [v11 grayExclamationRightAckImage];
@@ -160,18 +160,18 @@
 
   else
   {
-    v10 = [v8 whiteExclamationLeftAckImage];
+    grayExclamationLeftAckImage = [v8 whiteExclamationLeftAckImage];
 
     v11 = +[CKUIBehavior sharedBehaviors];
     [v11 whiteExclamationRightAckImage];
   }
   v12 = ;
 
-  v13 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  [v13 setImage:v10];
+  leftExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  [leftExclamationGlyph setImage:grayExclamationLeftAckImage];
 
-  v14 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  [v14 setImage:v12];
+  rightExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  [rightExclamationGlyph setImage:v12];
 }
 
 - (CGPoint)glyphOffset
@@ -188,21 +188,21 @@
   return result;
 }
 
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   [MEMORY[0x1E6979518] begin];
   v9 = MEMORY[0x1E6979518];
   [(CKExclamationAcknowledgmentGlyphView *)self animationDuration];
   [v9 setAnimationDuration:?];
-  if (v8)
+  if (completionCopy)
   {
-    v10 = dispatch_time(0, (a4 * 1000000000.0));
+    v10 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __88__CKExclamationAcknowledgmentGlyphView_animateWithBeginTime_completionDelay_completion___block_invoke;
     block[3] = &unk_1E72EBDB8;
-    v32 = v8;
+    v32 = completionCopy;
     dispatch_after(v10, MEMORY[0x1E69E96A0], block);
   }
 
@@ -221,10 +221,10 @@
   [v11 setSpeed:v15];
   v16 = *MEMORY[0x1E69797E0];
   [v11 setFillMode:*MEMORY[0x1E69797E0]];
-  [v11 setBeginTime:a3];
-  v17 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  v18 = [v17 layer];
-  [v18 addAnimation:v11 forKey:@"position.y"];
+  [v11 setBeginTime:time];
+  leftExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  layer = [leftExclamationGlyph layer];
+  [layer addAnimation:v11 forKey:@"position.y"];
 
   v19 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
   LODWORD(v20) = 0.5;
@@ -237,22 +237,22 @@
   LODWORD(v22) = 1.0;
   [v19 setSpeed:v22];
   [v19 setDuration:1.0];
-  [v19 setBeginTime:a3 + 0.150000006];
+  [v19 setBeginTime:time + 0.150000006];
   [v19 setFillMode:v16];
-  v23 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
-  v24 = [v23 layer];
-  [v24 addAnimation:v19 forKey:@"transform.scale.xy"];
+  leftExclamationGlyph2 = [(CKExclamationAcknowledgmentGlyphView *)self leftExclamationGlyph];
+  layer2 = [leftExclamationGlyph2 layer];
+  [layer2 addAnimation:v19 forKey:@"transform.scale.xy"];
 
   v25 = [v11 copy];
-  [v25 setBeginTime:a3 + 0.100000001];
-  v26 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  v27 = [v26 layer];
-  [v27 addAnimation:v25 forKey:@"position.y"];
+  [v25 setBeginTime:time + 0.100000001];
+  rightExclamationGlyph = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  layer3 = [rightExclamationGlyph layer];
+  [layer3 addAnimation:v25 forKey:@"position.y"];
 
   v28 = [v19 copy];
-  v29 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
-  v30 = [v29 layer];
-  [v30 addAnimation:v28 forKey:@"transform.scale.xy"];
+  rightExclamationGlyph2 = [(CKExclamationAcknowledgmentGlyphView *)self rightExclamationGlyph];
+  layer4 = [rightExclamationGlyph2 layer];
+  [layer4 addAnimation:v28 forKey:@"transform.scale.xy"];
 
   [MEMORY[0x1E6979518] commit];
 }

@@ -1,6 +1,6 @@
 @interface BCSIconController
 - (BCSIconController)init;
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
+- (void)fetchSquareIconDataForBusinessItem:(id)item forClientBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation BCSIconController
@@ -21,31 +21,31 @@
   return v2;
 }
 
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchSquareIconDataForBusinessItem:(id)item forClientBundleID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  itemCopy = item;
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = +[BCSBusinessItemMemoryCache sharedCache];
-    v12 = [(BCSBusinessItemMemoryCache *)v11 lastFetchedBusinessItemIconDataForBizItem:v8];
+    v12 = [(BCSBusinessItemMemoryCache *)v11 lastFetchedBusinessItemIconDataForBizItem:itemCopy];
 
     if (v12)
     {
-      v10[2](v10, v12, 0);
+      completionCopy[2](completionCopy, v12, 0);
     }
 
     else
     {
-      v13 = [(BCSIconController *)self iconRemoteFetch];
+      iconRemoteFetch = [(BCSIconController *)self iconRemoteFetch];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __85__BCSIconController_fetchSquareIconDataForBusinessItem_forClientBundleID_completion___block_invoke;
       v14[3] = &unk_278D3A398;
-      v15 = v8;
-      v16 = v10;
-      [(BCSIconRemoteFetch *)v13 fetchSquareIconDataForBusinessItem:v15 forClientBundleID:v9 completion:v14];
+      v15 = itemCopy;
+      v16 = completionCopy;
+      [(BCSIconRemoteFetch *)iconRemoteFetch fetchSquareIconDataForBusinessItem:v15 forClientBundleID:dCopy completion:v14];
     }
   }
 }

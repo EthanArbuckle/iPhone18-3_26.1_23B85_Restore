@@ -1,40 +1,40 @@
 @interface CRLImage
-+ (CRLImage)allocWithZone:(_NSZone *)a3;
-+ (CRLImage)imageWithCGImage:(CGImage *)a3;
-+ (CRLImage)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (CRLImage)imageWithContentsOfFile:(id)a3;
-+ (CRLImage)imageWithData:(id)a3;
-+ (CRLImage)imageWithPrivateSystemImageNamed:(id)a3;
-+ (CRLImage)imageWithPrivateSystemImageNamed:(id)a3 pointSize:(double)a4;
-+ (CRLImage)imageWithSystemImageNamed:(id)a3;
-+ (CRLImage)imageWithSystemImageNamed:(id)a3 pointSize:(double)a4;
-+ (CRLImage)imageWithUIImage:(id)a3;
-+ (id)crl_quickInspectorImageNamed:(id)a3 isPrivateImage:(BOOL)a4 isBundledImage:(BOOL)a5;
++ (CRLImage)allocWithZone:(_NSZone *)zone;
++ (CRLImage)imageWithCGImage:(CGImage *)image;
++ (CRLImage)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (CRLImage)imageWithContentsOfFile:(id)file;
++ (CRLImage)imageWithData:(id)data;
++ (CRLImage)imageWithPrivateSystemImageNamed:(id)named;
++ (CRLImage)imageWithPrivateSystemImageNamed:(id)named pointSize:(double)size;
++ (CRLImage)imageWithSystemImageNamed:(id)named;
++ (CRLImage)imageWithSystemImageNamed:(id)named pointSize:(double)size;
++ (CRLImage)imageWithUIImage:(id)image;
++ (id)crl_quickInspectorImageNamed:(id)named isPrivateImage:(BOOL)image isBundledImage:(BOOL)bundledImage;
 - (BOOL)isEmpty;
 - (CGImage)CGImage;
-- (CGImage)CGImageForSize:(CGSize)a3;
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5;
+- (CGImage)CGImageForSize:(CGSize)size;
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider;
 - (CGSize)size;
 - (CRLImage)init;
-- (CRLImage)initWithCGImage:(CGImage *)a3;
-- (CRLImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (CRLImage)initWithContentsOfFile:(id)a3;
-- (CRLImage)initWithData:(id)a3;
-- (CRLImage)initWithImageSourceRef:(CGImageSource *)a3;
-- (CRLImage)initWithPrivateSystemImageNamed:(id)a3;
-- (CRLImage)initWithPrivateSystemImageNamed:(id)a3 pointSize:(double)a4;
-- (CRLImage)initWithSystemImageNamed:(id)a3;
-- (CRLImage)initWithSystemImageNamed:(id)a3 pointSize:(double)a4;
-- (CRLImage)initWithUIImage:(id)a3;
+- (CRLImage)initWithCGImage:(CGImage *)image;
+- (CRLImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
+- (CRLImage)initWithContentsOfFile:(id)file;
+- (CRLImage)initWithData:(id)data;
+- (CRLImage)initWithImageSourceRef:(CGImageSource *)ref;
+- (CRLImage)initWithPrivateSystemImageNamed:(id)named;
+- (CRLImage)initWithPrivateSystemImageNamed:(id)named pointSize:(double)size;
+- (CRLImage)initWithSystemImageNamed:(id)named;
+- (CRLImage)initWithSystemImageNamed:(id)named pointSize:(double)size;
+- (CRLImage)initWithUIImage:(id)image;
 - (UIImage)UIImage;
 - (double)scale;
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3;
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality;
 - (id)PNGRepresentation;
 - (id)TIFFRepresentation;
-- (id)compositeImageWithOverlayImage:(id)a3 overlayTintColor:(id)a4;
-- (id)compositedImageWithColor:(id)a3 alpha:(double)a4 blendMode:(int)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7;
+- (id)compositeImageWithOverlayImage:(id)image overlayTintColor:(id)color;
+- (id)compositedImageWithColor:(id)color alpha:(double)alpha blendMode:(int)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight;
 - (int64_t)imageOrientation;
 - (void)dealloc;
 @end
@@ -83,89 +83,89 @@
   [(CRLImage *)&v7 dealloc];
 }
 
-+ (CRLImage)allocWithZone:(_NSZone *)a3
++ (CRLImage)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_CRLImageM allocWithZone:a3];
+    return [_CRLImageM allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___CRLImage;
-    return objc_msgSendSuper2(&v6, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v6, "allocWithZone:", zone);
   }
 }
 
-+ (CRLImage)imageWithContentsOfFile:(id)a3
++ (CRLImage)imageWithContentsOfFile:(id)file
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContentsOfFile:v4];
+  fileCopy = file;
+  v5 = [[self alloc] initWithContentsOfFile:fileCopy];
 
   return v5;
 }
 
-+ (CRLImage)imageWithData:(id)a3
++ (CRLImage)imageWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-+ (CRLImage)imageWithCGImage:(CGImage *)a3
++ (CRLImage)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[a1 alloc] initWithCGImage:a3];
+  v3 = [[self alloc] initWithCGImage:image];
 
   return v3;
 }
 
-+ (CRLImage)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (CRLImage)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] initWithCGImage:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] initWithCGImage:image scale:orientation orientation:scale];
 
   return v5;
 }
 
-+ (CRLImage)imageWithSystemImageNamed:(id)a3 pointSize:(double)a4
++ (CRLImage)imageWithSystemImageNamed:(id)named pointSize:(double)size
 {
-  v5 = a3;
-  v6 = [[CRLUIImage alloc] initWithSystemImageNamed:v5 pointSize:a4];
+  namedCopy = named;
+  v6 = [[CRLUIImage alloc] initWithSystemImageNamed:namedCopy pointSize:size];
 
   return v6;
 }
 
-+ (CRLImage)imageWithSystemImageNamed:(id)a3
++ (CRLImage)imageWithSystemImageNamed:(id)named
 {
-  v3 = a3;
-  v4 = [[CRLUIImage alloc] initWithSystemImageNamed:v3];
+  namedCopy = named;
+  v4 = [[CRLUIImage alloc] initWithSystemImageNamed:namedCopy];
 
   return v4;
 }
 
-+ (CRLImage)imageWithPrivateSystemImageNamed:(id)a3 pointSize:(double)a4
++ (CRLImage)imageWithPrivateSystemImageNamed:(id)named pointSize:(double)size
 {
-  v5 = a3;
-  v6 = [[CRLUIImage alloc] initWithPrivateSystemImageNamed:v5 pointSize:a4];
+  namedCopy = named;
+  v6 = [[CRLUIImage alloc] initWithPrivateSystemImageNamed:namedCopy pointSize:size];
 
   return v6;
 }
 
-+ (CRLImage)imageWithPrivateSystemImageNamed:(id)a3
++ (CRLImage)imageWithPrivateSystemImageNamed:(id)named
 {
-  v3 = a3;
-  v4 = [[CRLUIImage alloc] initWithPrivateSystemImageNamed:v3];
+  namedCopy = named;
+  v4 = [[CRLUIImage alloc] initWithPrivateSystemImageNamed:namedCopy];
 
   return v4;
 }
 
-+ (id)crl_quickInspectorImageNamed:(id)a3 isPrivateImage:(BOOL)a4 isBundledImage:(BOOL)a5
++ (id)crl_quickInspectorImageNamed:(id)named isPrivateImage:(BOOL)image isBundledImage:(BOOL)bundledImage
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  bundledImageCopy = bundledImage;
+  imageCopy = image;
+  namedCopy = named;
   if (!+[NSThread isMainThread])
   {
     v9 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -201,36 +201,36 @@
     sub_101387340();
   }
 
-  v14 = [qword_101A352A0 objectForKeyedSubscript:v8];
+  v14 = [qword_101A352A0 objectForKeyedSubscript:namedCopy];
   if (!v14)
   {
-    if (v5)
+    if (bundledImageCopy)
     {
-      v15 = [a1 imageNamed:v8];
+      v15 = [self imageNamed:namedCopy];
     }
 
     else
     {
-      if (v6)
+      if (imageCopy)
       {
-        [a1 imageWithPrivateSystemImageNamed:v8];
+        [self imageWithPrivateSystemImageNamed:namedCopy];
       }
 
       else
       {
-        [a1 imageWithSystemImageNamed:v8];
+        [self imageWithSystemImageNamed:namedCopy];
       }
       v15 = ;
     }
 
     v14 = v15;
-    [qword_101A352A0 setObject:v15 forKeyedSubscript:v8];
+    [qword_101A352A0 setObject:v15 forKeyedSubscript:namedCopy];
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -289,9 +289,9 @@
   objc_exception_throw(v18);
 }
 
-- (CRLImage)initWithContentsOfFile:(id)a3
+- (CRLImage)initWithContentsOfFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -349,9 +349,9 @@
   objc_exception_throw(v19);
 }
 
-- (CRLImage)initWithData:(id)a3
+- (CRLImage)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -409,7 +409,7 @@
   objc_exception_throw(v19);
 }
 
-- (CRLImage)initWithCGImage:(CGImage *)a3
+- (CRLImage)initWithCGImage:(CGImage *)image
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -468,9 +468,9 @@
   objc_exception_throw(v18);
 }
 
-- (CRLImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (CRLImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  v5 = [CRLAssertionHandler _atomicIncrementAssertCount:image];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_10186A430);
@@ -527,7 +527,7 @@
   objc_exception_throw(v20);
 }
 
-- (CRLImage)initWithImageSourceRef:(CGImageSource *)a3
+- (CRLImage)initWithImageSourceRef:(CGImageSource *)ref
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -586,9 +586,9 @@
   objc_exception_throw(v18);
 }
 
-- (CRLImage)initWithSystemImageNamed:(id)a3
+- (CRLImage)initWithSystemImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -646,9 +646,9 @@
   objc_exception_throw(v19);
 }
 
-- (CRLImage)initWithSystemImageNamed:(id)a3 pointSize:(double)a4
+- (CRLImage)initWithSystemImageNamed:(id)named pointSize:(double)size
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -706,9 +706,9 @@
   objc_exception_throw(v20);
 }
 
-- (CRLImage)initWithPrivateSystemImageNamed:(id)a3
+- (CRLImage)initWithPrivateSystemImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -766,9 +766,9 @@
   objc_exception_throw(v19);
 }
 
-- (CRLImage)initWithPrivateSystemImageNamed:(id)a3 pointSize:(double)a4
+- (CRLImage)initWithPrivateSystemImageNamed:(id)named pointSize:(double)size
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -944,9 +944,9 @@
   objc_exception_throw(v17);
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3
+- (CGImage)CGImageForSize:(CGSize)size
 {
-  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:a3.width];
+  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:size.width];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_10186A630);
@@ -1123,46 +1123,46 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(CRLImage *)self CGImage];
+  cGImage = [(CRLImage *)self CGImage];
 
-  return sub_1004F7FF0(v2);
+  return sub_1004F7FF0(cGImage);
 }
 
 - (id)TIFFRepresentation
 {
-  v2 = [(CRLImage *)self CGImage];
+  cGImage = [(CRLImage *)self CGImage];
 
-  return sub_10053583C(v2);
+  return sub_10053583C(cGImage);
 }
 
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality
 {
-  v4 = [(CRLImage *)self CGImage];
+  cGImage = [(CRLImage *)self CGImage];
 
-  return sub_1005357C4(v4, a3);
+  return sub_1005357C4(cGImage, quality);
 }
 
 - (id)PNGRepresentation
 {
-  v2 = [(CRLImage *)self CGImage];
+  cGImage = [(CRLImage *)self CGImage];
 
-  return sub_1005357BC(v2);
+  return sub_1005357BC(cGImage);
 }
 
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1004F826C;
   v16[3] = &unk_10186A6F8;
-  v17 = a3;
+  sizeCopy = size;
   v16[4] = self;
-  v18 = a6;
-  v19 = a7;
-  v20 = a4;
-  v21 = a5;
+  heightCopy = height;
+  capHeightCopy = capHeight;
+  widthCopy = width;
+  capWidthCopy = capWidth;
   v10 = objc_retainBlock(v16);
   v11 = (v10[2])(v10, [(CRLImage *)self CGImageForSize:width, height], 1.0);
   if (v11)
@@ -1181,17 +1181,17 @@
   return v14;
 }
 
-+ (CRLImage)imageWithUIImage:(id)a3
++ (CRLImage)imageWithUIImage:(id)image
 {
-  v3 = a3;
-  v4 = [[CRLUIImage alloc] initWithUIImage:v3];
+  imageCopy = image;
+  v4 = [[CRLUIImage alloc] initWithUIImage:imageCopy];
 
   return v4;
 }
 
-- (CRLImage)initWithUIImage:(id)a3
+- (CRLImage)initWithUIImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -1261,17 +1261,17 @@
   return self->mCachedSystemImage;
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5
+- (CGImage)CGImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = v9;
-  if (!a4)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (!context)
   {
-    if (v9)
+    if (providerCopy)
     {
-      [v9 contentsScale];
+      [providerCopy contentsScale];
       width = width * v23;
       [v10 contentsScale];
       height = height * v24;
@@ -1280,7 +1280,7 @@
     goto LABEL_17;
   }
 
-  if (v9)
+  if (providerCopy)
   {
     v11 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1311,12 +1311,12 @@
   }
 
   v16 = 2.0;
-  if ((sub_10051058C(a4) & 1) == 0 && (sub_100510804(a4) & 1) == 0)
+  if ((sub_10051058C(context) & 1) == 0 && (sub_100510804(context) & 1) == 0)
   {
-    v17 = sub_100510A7C(a4);
+    v17 = sub_100510A7C(context);
     v18 = sub_10011F340(width, height, v17);
     v20 = v19;
-    CGContextGetCTM(&v29, a4);
+    CGContextGetCTM(&v29, context);
     v21 = sub_100139A00(&v29.a);
     width = sub_10011F340(v18, v20, v21);
     height = v22;
@@ -1343,9 +1343,9 @@ LABEL_17:
   return v27;
 }
 
-- (id)compositedImageWithColor:(id)a3 alpha:(double)a4 blendMode:(int)a5
+- (id)compositedImageWithColor:(id)color alpha:(double)alpha blendMode:(int)mode
 {
-  v8 = a3;
+  colorCopy = color;
   [(CRLImage *)self scale];
   v10 = v9;
   [(CRLImage *)self size];
@@ -1361,11 +1361,11 @@ LABEL_17:
   v29.size.width = v20;
   v29.size.height = v22;
   CGContextDrawImage(v15, v29, v23);
-  v24 = [v8 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(v15, v24);
-  CGContextSetAlpha(v15, a4);
-  CGContextSetBlendMode(v15, a5);
+  CGContextSetFillColorWithColor(v15, cGColor);
+  CGContextSetAlpha(v15, alpha);
+  CGContextSetBlendMode(v15, mode);
   v30.origin.x = v16;
   v30.origin.y = v18;
   v30.size.width = v20;
@@ -1379,10 +1379,10 @@ LABEL_17:
   return v26;
 }
 
-- (id)compositeImageWithOverlayImage:(id)a3 overlayTintColor:(id)a4
+- (id)compositeImageWithOverlayImage:(id)image overlayTintColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  imageCopy = image;
   [(CRLImage *)self scale];
   v9 = v8;
   [(CRLImage *)self size];
@@ -1398,8 +1398,8 @@ LABEL_17:
   v29.size.width = v19;
   v29.size.height = v21;
   CGContextDrawImage(v14, v29, v22);
-  [v6 alphaComponent];
-  v23 = [v7 compositedImageWithColor:v6 alpha:20 blendMode:?];
+  [colorCopy alphaComponent];
+  v23 = [imageCopy compositedImageWithColor:colorCopy alpha:20 blendMode:?];
 
   v24 = [v23 CGImageForContentsScale:v9];
   v30.origin.x = v15;

@@ -1,29 +1,29 @@
 @interface CNChangesNotifierProxy
-- (id)initWithSchedulerProvider:(void *)a3 loggerProvider:;
-- (id)postNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(char)a5 isFromExternalProcess:;
-- (id)postNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(char)a6 shouldForwardExternally:(int)a7 calledFromNotifierQueue:(char)a8 isFromExternalProcess:;
-- (id)receiveNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(int)a6 calledFromNotifierQueue:(char)a7 isFromExternalProcess:;
-- (id)receiveNotificationNames:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(int)a6 calledFromNotifierQueue:(char)a7 isFromExternalProcess:;
-- (void)addListenerForNotificationName:(void *)a3 registration:(void *)a4 removal:;
-- (void)coalesceNotificationName:(uint64_t)a1;
-- (void)forwardNotificationName:(void *)a3 asNotificationName:;
-- (void)receiveExternalNotificationName:(id)a3;
+- (id)initWithSchedulerProvider:(void *)provider loggerProvider:;
+- (id)postNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(char)identifier isFromExternalProcess:;
+- (id)postNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(char)info shouldForwardExternally:(int)externally calledFromNotifierQueue:(char)queue isFromExternalProcess:;
+- (id)receiveNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(int)info calledFromNotifierQueue:(char)queue isFromExternalProcess:;
+- (id)receiveNotificationNames:(void *)names fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(int)info calledFromNotifierQueue:(char)queue isFromExternalProcess:;
+- (void)addListenerForNotificationName:(void *)name registration:(void *)registration removal:;
+- (void)coalesceNotificationName:(uint64_t)name;
+- (void)forwardNotificationName:(void *)name asNotificationName:;
+- (void)receiveExternalNotificationName:(id)name;
 - (void)removeAllRegisteredNotificationSources;
-- (void)setCoalescingTimer:(uint64_t)a1;
-- (void)setRemovalBlocks:(uint64_t)a1;
-- (void)stopSupressionOfNotificationName:(uint64_t)a1;
-- (void)supressNotificationName:(uint64_t)a1;
+- (void)setCoalescingTimer:(uint64_t)timer;
+- (void)setRemovalBlocks:(uint64_t)blocks;
+- (void)stopSupressionOfNotificationName:(uint64_t)name;
+- (void)supressNotificationName:(uint64_t)name;
 @end
 
 @implementation CNChangesNotifierProxy
 
-- (id)postNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(char)a6 shouldForwardExternally:(int)a7 calledFromNotifierQueue:(char)a8 isFromExternalProcess:
+- (id)postNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(char)info shouldForwardExternally:(int)externally calledFromNotifierQueue:(char)queue isFromExternalProcess:
 {
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  if (a1)
+  nameCopy = name;
+  senderCopy = sender;
+  identifierCopy = identifier;
+  if (self)
   {
     v32 = 0;
     v33 = &v32;
@@ -35,17 +35,17 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __152__CNChangesNotifierProxy_postNotificationName_fromSender_saveIdentifier_userInfo_shouldForwardExternally_calledFromNotifierQueue_isFromExternalProcess___block_invoke;
     aBlock[3] = &unk_1E7415B00;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v25 = v15;
-    v26 = v16;
-    v30 = a8;
-    v31 = a6;
-    v27 = v17;
+    v26 = nameCopy;
+    queueCopy = queue;
+    infoCopy = info;
+    v27 = senderCopy;
     v29 = &v32;
-    v28 = v18;
+    v28 = identifierCopy;
     v19 = _Block_copy(aBlock);
     v20 = v19;
-    if (a7)
+    if (externally)
     {
       v19[2](v19);
       v21 = _Block_copy(v33[5]);
@@ -53,7 +53,7 @@
 
     else
     {
-      dispatch_sync(*(a1 + 80), v19);
+      dispatch_sync(*(self + 80), v19);
       v22 = v33[5];
       if (v22)
       {
@@ -74,11 +74,11 @@
   return v21;
 }
 
-- (void)stopSupressionOfNotificationName:(uint64_t)a1
+- (void)stopSupressionOfNotificationName:(uint64_t)name
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (name)
   {
     v10 = 0;
     v11 = &v10;
@@ -86,12 +86,12 @@
     v13 = __Block_byref_object_copy__22;
     v14 = __Block_byref_object_dispose__22;
     v15 = 0;
-    v5 = *(a1 + 80);
+    v5 = *(name + 80);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__CNChangesNotifierProxy_stopSupressionOfNotificationName___block_invoke;
     block[3] = &unk_1E7413108;
-    block[4] = a1;
+    block[4] = name;
     v8 = v3;
     v9 = &v10;
     dispatch_sync(v5, block);
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)receiveExternalNotificationName:(id)a3
+- (void)receiveExternalNotificationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (!self)
   {
     goto LABEL_10;
@@ -121,10 +121,10 @@
 
   v6 = v5;
   v7 = self->_coalescingNotificationName;
-  if (v4 | v7)
+  if (nameCopy | v7)
   {
     v8 = v7;
-    v9 = [(NSString *)self->_coalescingNotificationName isEqual:v4];
+    v9 = [(NSString *)self->_coalescingNotificationName isEqual:nameCopy];
 
     if (v9)
     {
@@ -149,9 +149,9 @@ LABEL_6:
     v16[2] = __58__CNChangesNotifierProxy_receiveExternalNotificationName___block_invoke;
     v16[3] = &unk_1E7415B28;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
-    v14 = [(CNSchedulerProvider *)v10 mainThreadScheduler];
-    v15 = [v11 initWithDelay:1 options:v16 block:v10 schedulerProvider:v14 downstreamScheduler:v13];
+    v17 = nameCopy;
+    mainThreadScheduler = [(CNSchedulerProvider *)v10 mainThreadScheduler];
+    v15 = [v11 initWithDelay:1 options:v16 block:v10 schedulerProvider:mainThreadScheduler downstreamScheduler:v13];
     [(CNChangesNotifierProxy *)self setCoalescingTimer:v15];
 
     objc_destroyWeak(&v18);
@@ -162,13 +162,13 @@ LABEL_6:
 LABEL_9:
 }
 
-- (id)receiveNotificationNames:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(int)a6 calledFromNotifierQueue:(char)a7 isFromExternalProcess:
+- (id)receiveNotificationNames:(void *)names fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(int)info calledFromNotifierQueue:(char)queue isFromExternalProcess:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (a1)
+  namesCopy = names;
+  senderCopy = sender;
+  identifierCopy = identifier;
+  if (self)
   {
     v41 = 0;
     v42 = &v41;
@@ -176,25 +176,25 @@ LABEL_9:
     v44 = __Block_byref_object_copy__22;
     v45 = __Block_byref_object_dispose__22;
     v46 = 0;
-    v17 = *(a1 + 48);
-    v18 = [v17 contactsLogger];
+    v17 = *(self + 48);
+    contactsLogger = [v17 contactsLogger];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __132__CNChangesNotifierProxy_receiveNotificationNames_fromSender_saveIdentifier_userInfo_calledFromNotifierQueue_isFromExternalProcess___block_invoke;
     v32[3] = &unk_1E7415BA0;
     v33 = v13;
-    v34 = a1;
+    selfCopy = self;
     v39 = &v41;
-    v35 = v14;
-    v36 = v15;
-    v37 = v16;
-    v40 = a7;
-    v19 = v18;
+    v35 = namesCopy;
+    v36 = senderCopy;
+    v37 = identifierCopy;
+    queueCopy = queue;
+    v19 = contactsLogger;
     v38 = v19;
     v20 = _Block_copy(v32);
     v21 = v20;
-    if (a6)
+    if (info)
     {
       v20[2](v20);
       v22 = _Block_copy(v42[5]);
@@ -202,7 +202,7 @@ LABEL_9:
 
     else
     {
-      dispatch_sync(*(a1 + 80), v20);
+      dispatch_sync(*(self + 80), v20);
       v30 = v42[5];
       if (v30)
       {
@@ -278,66 +278,66 @@ void __132__CNChangesNotifierProxy_receiveNotificationNames_fromSender_saveIdent
   }
 }
 
-- (id)initWithSchedulerProvider:(void *)a3 loggerProvider:
+- (id)initWithSchedulerProvider:(void *)provider loggerProvider:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  providerCopy = provider;
+  if (self)
   {
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = CNChangesNotifierProxy;
-    a1 = objc_msgSendSuper2(&v21, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v21, sel_init);
+    if (self)
     {
-      v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-      v9 = a1[3];
-      a1[3] = v8;
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      v9 = self[3];
+      self[3] = strongToStrongObjectsMapTable;
 
-      v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-      v11 = a1[4];
-      a1[4] = v10;
+      strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      v11 = self[4];
+      self[4] = strongToStrongObjectsMapTable2;
 
-      v12 = [MEMORY[0x1E695DF90] dictionary];
-      v13 = a1[7];
-      a1[7] = v12;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v13 = self[7];
+      self[7] = dictionary;
 
       v14 = objc_alloc_init(MEMORY[0x1E696AB50]);
-      v15 = a1[8];
-      a1[8] = v14;
+      v15 = self[8];
+      self[8] = v14;
 
       v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v17 = a1[9];
-      a1[9] = v16;
+      v17 = self[9];
+      self[9] = v16;
 
       v18 = dispatch_queue_create("com.apple.Contacts.CNChangesNotifierProxy", 0);
-      v19 = a1[10];
-      a1[10] = v18;
+      v19 = self[10];
+      self[10] = v18;
 
-      objc_storeStrong(a1 + 5, a2);
-      objc_storeStrong(a1 + 6, a3);
-      a1[2] = 0x3FF0000000000000;
+      objc_storeStrong(self + 5, a2);
+      objc_storeStrong(self + 6, provider);
+      self[2] = 0x3FF0000000000000;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)addListenerForNotificationName:(void *)a3 registration:(void *)a4 removal:
+- (void)addListenerForNotificationName:(void *)name registration:(void *)registration removal:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  nameCopy = name;
+  registrationCopy = registration;
+  if (self)
   {
-    v10 = *(a1 + 80);
+    v10 = *(self + 80);
     OUTLINED_FUNCTION_2();
     v11[1] = 3221225472;
     v11[2] = __78__CNChangesNotifierProxy_addListenerForNotificationName_registration_removal___block_invoke;
     v11[3] = &unk_1E7415AD8;
-    v14 = v8;
+    v14 = nameCopy;
     v12 = v7;
-    v13 = a1;
-    v15 = v9;
+    selfCopy = self;
+    v15 = registrationCopy;
     dispatch_async(v10, v11);
   }
 }
@@ -380,11 +380,11 @@ void __78__CNChangesNotifierProxy_addListenerForNotificationName_registration_re
   [v9 addObject:v8];
 }
 
-- (id)postNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(char)a5 isFromExternalProcess:
+- (id)postNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(char)identifier isFromExternalProcess:
 {
   if (result)
   {
-    return [(CNChangesNotifierProxy *)result postNotificationName:a2 fromSender:a3 saveIdentifier:a4 userInfo:0 shouldForwardExternally:1 calledFromNotifierQueue:0 isFromExternalProcess:a5];
+    return [(CNChangesNotifierProxy *)result postNotificationName:a2 fromSender:name saveIdentifier:sender userInfo:0 shouldForwardExternally:1 calledFromNotifierQueue:0 isFromExternalProcess:identifier];
   }
 
   return result;
@@ -510,20 +510,20 @@ void __152__CNChangesNotifierProxy_postNotificationName_fromSender_saveIdentifie
   }
 }
 
-- (id)receiveNotificationName:(void *)a3 fromSender:(void *)a4 saveIdentifier:(void *)a5 userInfo:(int)a6 calledFromNotifierQueue:(char)a7 isFromExternalProcess:
+- (id)receiveNotificationName:(void *)name fromSender:(void *)sender saveIdentifier:(void *)identifier userInfo:(int)info calledFromNotifierQueue:(char)queue isFromExternalProcess:
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (a1)
+  nameCopy = name;
+  senderCopy = sender;
+  identifierCopy = identifier;
+  if (self)
   {
     if (v13)
     {
       v20[0] = v13;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-      v18 = [(CNChangesNotifierProxy *)a1 receiveNotificationNames:v17 fromSender:v14 saveIdentifier:v15 userInfo:v16 calledFromNotifierQueue:a6 isFromExternalProcess:a7];
+      v18 = [(CNChangesNotifierProxy *)self receiveNotificationNames:v17 fromSender:nameCopy saveIdentifier:senderCopy userInfo:identifierCopy calledFromNotifierQueue:info isFromExternalProcess:queue];
     }
 
     else
@@ -540,20 +540,20 @@ void __152__CNChangesNotifierProxy_postNotificationName_fromSender_saveIdentifie
   return v18;
 }
 
-- (void)forwardNotificationName:(void *)a3 asNotificationName:
+- (void)forwardNotificationName:(void *)name asNotificationName:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v7 = *(a1 + 80);
+    v7 = *(self + 80);
     OUTLINED_FUNCTION_0();
     v9 = 3221225472;
     v10 = __69__CNChangesNotifierProxy_forwardNotificationName_asNotificationName___block_invoke;
     v11 = &unk_1E7412A60;
-    v12 = a1;
+    selfCopy = self;
     v13 = v5;
-    v14 = v6;
+    v14 = nameCopy;
     dispatch_async(v7, block);
   }
 }
@@ -577,14 +577,14 @@ void __69__CNChangesNotifierProxy_forwardNotificationName_asNotificationName___b
 
 - (void)removeAllRegisteredNotificationSources
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 80);
+    v1 = *(self + 80);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__CNChangesNotifierProxy_removeAllRegisteredNotificationSources__block_invoke;
     block[3] = &unk_1E7412A88;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -683,25 +683,25 @@ void __64__CNChangesNotifierProxy_removeAllRegisteredNotificationSources__block_
   [(CNChangesNotifierProxy *)*(a1 + 32) setRemovalBlocks:v19];
 }
 
-- (void)setRemovalBlocks:(uint64_t)a1
+- (void)setRemovalBlocks:(uint64_t)blocks
 {
-  if (a1)
+  if (blocks)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((blocks + 24), a2);
   }
 }
 
-- (void)supressNotificationName:(uint64_t)a1
+- (void)supressNotificationName:(uint64_t)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    v4 = *(a1 + 80);
+    v4 = *(name + 80);
     OUTLINED_FUNCTION_2();
     v5[1] = 3221225472;
     v5[2] = __50__CNChangesNotifierProxy_supressNotificationName___block_invoke;
     v5[3] = &unk_1E74121B8;
-    v5[4] = a1;
+    v5[4] = name;
     v6 = v3;
     dispatch_sync(v4, v5);
   }
@@ -854,12 +854,12 @@ void __59__CNChangesNotifierProxy_stopSupressionOfNotificationName___block_invok
   }
 }
 
-- (void)coalesceNotificationName:(uint64_t)a1
+- (void)coalesceNotificationName:(uint64_t)name
 {
   v4 = a2;
-  if (a1)
+  if (name)
   {
-    objc_storeStrong((a1 + 96), a2);
+    objc_storeStrong((name + 96), a2);
   }
 }
 
@@ -870,11 +870,11 @@ void __58__CNChangesNotifierProxy_receiveExternalNotificationName___block_invoke
   v8 = [(CNChangesNotifierProxy *)v1 receiveNotificationName:v2 fromSender:v3 saveIdentifier:v4 userInfo:v5 calledFromNotifierQueue:v6 isFromExternalProcess:v7];
 }
 
-- (void)setCoalescingTimer:(uint64_t)a1
+- (void)setCoalescingTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((timer + 88), a2);
   }
 }
 

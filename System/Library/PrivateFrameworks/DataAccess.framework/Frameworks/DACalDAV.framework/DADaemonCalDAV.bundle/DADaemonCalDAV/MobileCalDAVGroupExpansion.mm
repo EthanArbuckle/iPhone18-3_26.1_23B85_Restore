@@ -1,31 +1,31 @@
 @interface MobileCalDAVGroupExpansion
-- (MobileCalDAVGroupExpansion)initWithPrincipalPath:(id)a3 consumer:(id)a4 account:(id)a5;
-- (id)resultFromCalDAVPrincipalResult:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_handleResponseForSearchTask:(id)a3;
-- (void)_handleResponseForTask:(id)a3;
+- (MobileCalDAVGroupExpansion)initWithPrincipalPath:(id)path consumer:(id)consumer account:(id)account;
+- (id)resultFromCalDAVPrincipalResult:(id)result;
+- (void)_finishWithError:(id)error;
+- (void)_handleResponseForSearchTask:(id)task;
+- (void)_handleResponseForTask:(id)task;
 - (void)cancel;
 - (void)dealloc;
-- (void)expandCDGroup:(id)a3;
+- (void)expandCDGroup:(id)group;
 - (void)perform;
 @end
 
 @implementation MobileCalDAVGroupExpansion
 
-- (MobileCalDAVGroupExpansion)initWithPrincipalPath:(id)a3 consumer:(id)a4 account:(id)a5
+- (MobileCalDAVGroupExpansion)initWithPrincipalPath:(id)path consumer:(id)consumer account:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  consumerCopy = consumer;
+  accountCopy = account;
   v17.receiver = self;
   v17.super_class = MobileCalDAVGroupExpansion;
   v12 = [(MobileCalDAVGroupExpansion *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_principalPath, a3);
-    objc_storeWeak(&v13->_consumer, v10);
-    objc_storeStrong(&v13->_account, a5);
+    objc_storeStrong(&v12->_principalPath, path);
+    objc_storeWeak(&v13->_consumer, consumerCopy);
+    objc_storeStrong(&v13->_account, account);
     v14 = [[DACoreDAVTaskManager alloc] initWithAccount:v13->_account];
     taskManager = v13->_taskManager;
     v13->_taskManager = v14;
@@ -54,9 +54,9 @@
   v5 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [v3 transactionId];
+    transactionId = [v3 transactionId];
     v7 = 138543362;
-    v8 = v6;
+    v8 = transactionId;
     _os_log_impl(&dword_0, v4, v5, "DATransaction starting, ID: %{public}@", &v7, 0xCu);
   }
 
@@ -78,26 +78,26 @@
   [(MobileCalDAVGroupExpansion *)self _finishWithError:v3];
 }
 
-- (void)expandCDGroup:(id)a3
+- (void)expandCDGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
-  v6 = [v5 mainPrincipal];
+  groupCopy = group;
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self->_account mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-  if ([v4 length])
+  if ([groupCopy length])
   {
-    if ([v4 hasPrefix:@"/"])
+    if ([groupCopy hasPrefix:@"/"])
     {
       v30 = [CalDAVPrincipalSearchSupport parserMappingsWithServerSupportSet:0 includeEmail:0];
-      v32 = [v6 scheme];
-      v7 = [v6 host];
-      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 port]);
-      v9 = [NSURL CDVURLWithScheme:v32 host:v7 port:v8 path:v4];
+      scheme = [mainPrincipal scheme];
+      host = [mainPrincipal host];
+      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [mainPrincipal port]);
+      v9 = [NSURL CDVURLWithScheme:scheme host:host port:v8 path:groupCopy];
       v10 = [CoreDAVExpandPropertiesTask alloc];
-      v11 = [v9 absoluteURL];
-      v12 = [v10 initWithPropertiesToFind:v30 atURL:v11 expandedName:cdXMLExpandedGroupMemberSet expandedNameSpace:cdXMLCalendarServerURI];
+      absoluteURL = [v9 absoluteURL];
+      v12 = [v10 initWithPropertiesToFind:v30 atURL:absoluteURL expandedName:cdXMLExpandedGroupMemberSet expandedNameSpace:cdXMLCalendarServerURI];
 
-      [v12 setAccountInfoProvider:v6];
+      [v12 setAccountInfoProvider:mainPrincipal];
       objc_initWeak(&location, v12);
       objc_initWeak(&from, self);
       v34[0] = _NSConcreteStackBlock;
@@ -125,17 +125,17 @@
 
     else
     {
-      v16 = [v6 scheme];
-      v31 = [v6 host];
-      v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 port]);
-      v17 = [(MobileCalDAVDADaemonAccount *)self->_account backingAccountInfo];
-      v28 = [v17 calCollectionSetName];
+      scheme2 = [mainPrincipal scheme];
+      host2 = [mainPrincipal host];
+      v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [mainPrincipal port]);
+      backingAccountInfo = [(MobileCalDAVDADaemonAccount *)self->_account backingAccountInfo];
+      calCollectionSetName = [backingAccountInfo calCollectionSetName];
 
-      v26 = [NSURL CDVURLWithScheme:v16 host:v31 port:v29 path:v28];
+      v26 = [NSURL CDVURLWithScheme:scheme2 host:host2 port:v29 path:calCollectionSetName];
       v33 = +[NSMutableSet set];
       v18 = [CalDAVPrincipalSearchSupport propertySearchItemForWellKnownType:6];
       [v18 setMatchTypeAttribute:@"equals"];
-      [v18 setMatch:v4];
+      [v18 setMatch:groupCopy];
       [v33 addObject:v18];
       v19 = [CoreDAVItemParserMapping alloc];
       v27 = [v19 initWithNameSpace:cdXMLDAVURI name:cdXMLPrincipalURL parseClass:objc_opt_class()];
@@ -177,22 +177,22 @@
   }
 }
 
-- (void)_handleResponseForSearchTask:(id)a3
+- (void)_handleResponseForSearchTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = [NSMutableArray alloc];
-  v6 = [v4 multiStatus];
-  v7 = [v6 responses];
-  v8 = [v5 initWithCapacity:{objc_msgSend(v7, "count")}];
+  multiStatus = [taskCopy multiStatus];
+  responses = [multiStatus responses];
+  v8 = [v5 initWithCapacity:{objc_msgSend(responses, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v4 multiStatus];
-  v10 = [v9 responses];
+  multiStatus2 = [taskCopy multiStatus];
+  responses2 = [multiStatus2 responses];
 
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v11 = [responses2 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -203,15 +203,15 @@
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(responses2);
         }
 
         v15 = [CalDAVPrincipalResult resultFromResponse:*(*(&v23 + 1) + 8 * i)];
-        v16 = [v15 principalPath];
-        [v8 addObject:v16];
+        principalPath = [v15 principalPath];
+        [v8 addObject:principalPath];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v12 = [responses2 countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v12);
@@ -219,73 +219,73 @@
 
   if ([v8 count])
   {
-    v17 = [v8 lastObject];
-    v18 = [v17 hasPrefix:@"/"];
+    lastObject = [v8 lastObject];
+    v18 = [lastObject hasPrefix:@"/"];
 
     if (v18)
     {
-      v19 = [v8 lastObject];
+      lastObject2 = [v8 lastObject];
       v20 = DALoggingwithCategory();
       v21 = _CPLog_to_os_log_type[7];
       if (os_log_type_enabled(v20, v21))
       {
         principalPath = self->_principalPath;
         *buf = 138412546;
-        v28 = v19;
+        v28 = lastObject2;
         v29 = 2112;
         v30 = principalPath;
         _os_log_impl(&dword_0, v20, v21, "Discovered principal path %@ from address %@", buf, 0x16u);
       }
 
-      [(MobileCalDAVGroupExpansion *)self expandCDGroup:v19];
+      [(MobileCalDAVGroupExpansion *)self expandCDGroup:lastObject2];
     }
   }
 }
 
-- (id)resultFromCalDAVPrincipalResult:(id)a3
+- (id)resultFromCalDAVPrincipalResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(DAECalendarDirectorySearchResult);
-  v5 = [v3 displayName];
-  [v4 setDisplayName:v5];
+  displayName = [resultCopy displayName];
+  [v4 setDisplayName:displayName];
 
-  v6 = [v3 firstName];
-  [v4 setFirstName:v6];
+  firstName = [resultCopy firstName];
+  [v4 setFirstName:firstName];
 
-  v7 = [v3 lastName];
-  [v4 setLastName:v7];
+  lastName = [resultCopy lastName];
+  [v4 setLastName:lastName];
 
-  v8 = [v3 emailAddress];
-  [v4 setPreferredAddress:v8];
+  emailAddress = [resultCopy emailAddress];
+  [v4 setPreferredAddress:emailAddress];
 
-  v9 = [v3 principalPath];
+  principalPath = [resultCopy principalPath];
 
-  [v4 setPrincipalPath:v9];
+  [v4 setPrincipalPath:principalPath];
 
   return v4;
 }
 
-- (void)_handleResponseForTask:(id)a3
+- (void)_handleResponseForTask:(id)task
 {
-  v3 = a3;
-  v4 = [v3 error];
+  taskCopy = task;
+  error = [taskCopy error];
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412546;
-    v35 = v3;
+    v35 = taskCopy;
     v36 = 2112;
-    v37 = v4;
+    v37 = error;
     _os_log_impl(&dword_0, v5, v6, "Calendar group expansion complete: [%@].  Error: [%@]", buf, 0x16u);
   }
 
-  v7 = [v3 error];
+  error2 = [taskCopy error];
 
-  if (!v7)
+  if (!error2)
   {
-    v25 = v4;
-    v8 = [v3 successfulValueForNameSpace:cdXMLCalendarServerURI elementName:cdXMLExpandedGroupMemberSet];
+    v25 = error;
+    v8 = [taskCopy successfulValueForNameSpace:cdXMLCalendarServerURI elementName:cdXMLExpandedGroupMemberSet];
     v9 = objc_alloc_init(NSMutableDictionary);
     results = self->_results;
     self->_results = v9;
@@ -297,8 +297,8 @@
     v31 = 0u;
     v32 = 0u;
     v24 = v8;
-    v11 = [v8 orderedResponses];
-    v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    orderedResponses = [v8 orderedResponses];
+    v12 = [orderedResponses countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
       v13 = v12;
@@ -309,15 +309,15 @@
         {
           if (*v30 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(orderedResponses);
           }
 
           v16 = [CalDAVPrincipalResult resultFromResponse:*(*(&v29 + 1) + 8 * i)];
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 resultType];
-            v19 = [v18 isEqualToString:CalDAVPrincipalResultType_Person];
+            resultType = [v16 resultType];
+            v19 = [resultType isEqualToString:CalDAVPrincipalResultType_Person];
 
             if (v19)
             {
@@ -325,8 +325,8 @@
               [v26 addObject:v20];
             }
 
-            v21 = [v17 resultType];
-            v22 = [v21 isEqualToString:CalDAVPrincipalResultType_Resource];
+            resultType2 = [v17 resultType];
+            v22 = [resultType2 isEqualToString:CalDAVPrincipalResultType_Resource];
 
             if (v22)
             {
@@ -336,7 +336,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v13 = [orderedResponses countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v13);
@@ -347,19 +347,19 @@
       [(NSMutableDictionary *)self->_results setObject:v26 forKey:DADCalendarDirectorySearchRecordType_Users];
     }
 
-    v4 = v25;
+    error = v25;
     if ([v27 count])
     {
       [(NSMutableDictionary *)self->_results setObject:v27 forKey:DADCalendarDirectorySearchRecordType_Resources];
     }
   }
 
-  [(MobileCalDAVGroupExpansion *)self _finishWithError:v4];
+  [(MobileCalDAVGroupExpansion *)self _finishWithError:error];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!self->_finished)
   {
     v5 = DALoggingwithCategory();
@@ -367,15 +367,15 @@
     if (os_log_type_enabled(v5, v6))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
-      v11 = v4;
+      v11 = errorCopy;
       _os_log_impl(&dword_0, v5, v6, "[%@] finished with error %@", &v8, 0x16u);
     }
 
     self->_finished = 1;
     WeakRetained = objc_loadWeakRetained(&self->_consumer);
-    [WeakRetained groupExpansionFinishedWithResults:self->_results error:v4];
+    [WeakRetained groupExpansionFinishedWithResults:self->_results error:errorCopy];
   }
 }
 

@@ -9,8 +9,8 @@
 
 - (uint64_t)sg_isAppleBundleIdentifier
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 hasPrefix:@"com.apple."];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier hasPrefix:@"com.apple."];
 
   return v2;
 }
@@ -20,8 +20,8 @@
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"http://"];
   if (!v4)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"LSApplicationRecord+Suggestions.m" lineNumber:112 description:@"HTTP URL should always construct"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSApplicationRecord+Suggestions.m" lineNumber:112 description:@"HTTP URL should always construct"];
   }
 
   v10 = 0;
@@ -29,7 +29,7 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 bundleRecord];
+    bundleRecord = [v5 bundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,10 +37,10 @@
     }
   }
 
-  v7 = 0;
+  bundleRecord = 0;
 LABEL_7:
 
-  return v7;
+  return bundleRecord;
 }
 
 + (id)sg_preferredApplicationRecordForURL:()Suggestions
@@ -51,33 +51,33 @@ LABEL_7:
   v5 = v11;
   if ([v4 count])
   {
-    v6 = [v4 firstObject];
-    v7 = [v6 targetApplicationRecord];
+    firstObject = [v4 firstObject];
+    targetApplicationRecord = [firstObject targetApplicationRecord];
     goto LABEL_8;
   }
 
   v10 = v5;
-  v6 = [objc_alloc(MEMORY[0x277CC1E98]) initWithURL:v3 error:&v10];
+  firstObject = [objc_alloc(MEMORY[0x277CC1E98]) initWithURL:v3 error:&v10];
   v8 = v10;
 
-  if (!v6)
+  if (!firstObject)
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 bundleRecord];
+  targetApplicationRecord = [firstObject bundleRecord];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_6:
-    v7 = 0;
+    targetApplicationRecord = 0;
   }
 
   v5 = v8;
 LABEL_8:
 
-  return v7;
+  return targetApplicationRecord;
 }
 
 + (id)sg_preferredApplicationRecordForUserActivityType:()Suggestions withTeamIdentifier:preferredBundleIdentifier:
@@ -88,7 +88,7 @@ LABEL_8:
   v9 = a5;
   if ([v9 hasPrefix:@"com.apple."])
   {
-    v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v9 allowPlaceholder:0 error:0];
+    firstObject = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v9 allowPlaceholder:0 error:0];
   }
 
   else if (v8)
@@ -128,7 +128,7 @@ LABEL_8:
 
       if ([v16 count] == 1 && (objc_msgSend(v16, "firstObject"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "applicationState"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isInstalled"), v21, v20, v22))
       {
-        v10 = [v16 firstObject];
+        firstObject = [v16 firstObject];
       }
 
       else if ([v16 count])
@@ -159,15 +159,15 @@ LABEL_8:
                 }
 
                 v28 = *(*(&v51 + 1) + 8 * i);
-                v29 = [v28 applicationState];
-                if ([v29 isInstalled])
+                applicationState = [v28 applicationState];
+                if ([applicationState isInstalled])
                 {
-                  v30 = [v28 bundleIdentifier];
-                  v31 = [v30 isEqualToString:v9];
+                  bundleIdentifier = [v28 bundleIdentifier];
+                  v31 = [bundleIdentifier isEqualToString:v9];
 
                   if (v31)
                   {
-                    v10 = v28;
+                    firstObject = v28;
 
                     goto LABEL_36;
                   }
@@ -184,7 +184,7 @@ LABEL_8:
             while (v25);
           }
 
-          v10 = 0;
+          firstObject = 0;
 LABEL_36:
           v7 = v42;
 LABEL_38:
@@ -217,12 +217,12 @@ LABEL_38:
                 }
 
                 v37 = *(*(&v47 + 1) + 8 * j);
-                v38 = [v37 applicationState];
-                v39 = [v38 isInstalled];
+                applicationState2 = [v37 applicationState];
+                isInstalled = [applicationState2 isInstalled];
 
-                if (v39)
+                if (isInstalled)
                 {
-                  v10 = v37;
+                  firstObject = v37;
 
                   goto LABEL_38;
                 }
@@ -241,7 +241,7 @@ LABEL_38:
             }
           }
 
-          v10 = 0;
+          firstObject = 0;
         }
 
         v16 = v45;
@@ -249,24 +249,24 @@ LABEL_38:
 
       else
       {
-        v10 = 0;
+        firstObject = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return firstObject;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface SBStatusBarWindow
 + (CGRect)_defaultStatusBarSceneReferenceBounds;
-- (CGRect)_statusBarWindowBoundsForOrientation:(int64_t)a3;
+- (CGRect)_statusBarWindowBoundsForOrientation:(int64_t)orientation;
 - (CGRect)_statusBarWindowFrame;
-- (SBStatusBarWindow)initWithFrame:(CGRect)a3;
+- (SBStatusBarWindow)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)_initWithOrientation:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_initWithOrientation:(int64_t)orientation;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_rotate;
-- (void)setOrientation:(int64_t)a3 animationParameters:(id)a4;
-- (void)setStatusBar:(id)a3;
-- (void)windowSceneDidConnect:(id)a3;
+- (void)setOrientation:(int64_t)orientation animationParameters:(id)parameters;
+- (void)setStatusBar:(id)bar;
+- (void)windowSceneDidConnect:(id)connect;
 @end
 
 @implementation SBStatusBarWindow
 
-- (id)_initWithOrientation:(int64_t)a3
+- (id)_initWithOrientation:(int64_t)orientation
 {
-  if (a3 <= 1)
+  if (orientation <= 1)
   {
-    v3 = 1;
+    orientationCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    orientationCopy = orientation;
   }
 
   v5.receiver = self;
   v5.super_class = SBStatusBarWindow;
-  result = [(SBStatusBarWindow *)&v5 _initWithOrientation:v3];
+  result = [(SBStatusBarWindow *)&v5 _initWithOrientation:orientationCopy];
   if (result)
   {
-    *(result + 117) = v3;
+    *(result + 117) = orientationCopy;
   }
 
   return result;
 }
 
-- (SBStatusBarWindow)initWithFrame:(CGRect)a3
+- (SBStatusBarWindow)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBStatusBarWindow;
@@ -56,8 +56,8 @@
 
 + (CGRect)_defaultStatusBarSceneReferenceBounds
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -74,22 +74,22 @@
   return result;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v8 = a3;
+  connectCopy = connect;
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleStatusBar"))
   {
-    v5 = [(UIWindow *)self _sbWindowScene];
+    _sbWindowScene = [(UIWindow *)self _sbWindowScene];
 
-    if (v5 != v8)
+    if (_sbWindowScene != connectCopy)
     {
       [(SBStatusBarWindow *)a2 windowSceneDidConnect:?];
     }
 
-    v6 = [(UIWindow *)self _sbWindowScene];
-    v7 = [v6 traitsArbiter];
+    _sbWindowScene2 = [(UIWindow *)self _sbWindowScene];
+    traitsArbiter = [_sbWindowScene2 traitsArbiter];
 
-    if (!v7)
+    if (!traitsArbiter)
     {
       [(SBStatusBarWindow *)a2 windowSceneDidConnect:?];
     }
@@ -98,30 +98,30 @@
   }
 }
 
-- (void)setStatusBar:(id)a3
+- (void)setStatusBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   statusBar = self->_statusBar;
-  v13 = v5;
-  if (statusBar != v5)
+  v13 = barCopy;
+  if (statusBar != barCopy)
   {
     [(STUIStatusBar_Wrapper *)statusBar removeFromSuperview];
-    objc_storeStrong(&self->_statusBar, a3);
+    objc_storeStrong(&self->_statusBar, bar);
     [(STUIStatusBar_Wrapper *)self->_statusBar frame];
     [(SBStatusBarWindow *)self bounds];
     [(STUIStatusBar_Wrapper *)self->_statusBar setFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     [(STUIStatusBar_Wrapper *)self->_statusBar setAutoresizingMask:34];
     [(STUIStatusBar_Wrapper *)self->_statusBar setOrientation:self->_orientation];
     [(SBStatusBarWindow *)self addSubview:self->_statusBar];
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v9 = [(UIWindow *)self _sbWindowScene];
-      v10 = [v9 isExtendedDisplayWindowScene];
+      _sbWindowScene = [(UIWindow *)self _sbWindowScene];
+      isExtendedDisplayWindowScene = [_sbWindowScene isExtendedDisplayWindowScene];
 
-      if ((v10 & 1) == 0)
+      if ((isExtendedDisplayWindowScene & 1) == 0)
       {
         v11 = [[_SBStatusBarWindowRootViewController alloc] initWithWindow:self];
         statusBarWindowRootViewController = self->_statusBarWindowRootViewController;
@@ -133,16 +133,16 @@
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animationParameters:(id)a4
+- (void)setOrientation:(int64_t)orientation animationParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleStatusBar") & 1) == 0)
   {
-    if (v6 && (v7 = [v6 orientationAnimation]) != 0)
+    if (parametersCopy && (v7 = [parametersCopy orientationAnimation]) != 0)
     {
-      if (self->_orientation != a3)
+      if (self->_orientation != orientation)
       {
-        self->_orientation = a3;
+        self->_orientation = orientation;
         if (v7 == 2)
         {
           v15[0] = MEMORY[0x277D85DD0];
@@ -155,15 +155,15 @@
           v14[2] = __56__SBStatusBarWindow_setOrientation_animationParameters___block_invoke_2;
           v14[3] = &unk_2783A9398;
           v14[4] = self;
-          [MEMORY[0x277D75A80] animateWithParameters:v6 fromCurrentState:1 animations:v15 completion:v14];
+          [MEMORY[0x277D75A80] animateWithParameters:parametersCopy fromCurrentState:1 animations:v15 completion:v14];
         }
 
         else
         {
-          [v6 duration];
+          [parametersCopy duration];
           v9 = v8 * 0.5;
           v10 = MEMORY[0x277D75D18];
-          [v6 delay];
+          [parametersCopy delay];
           v13[0] = MEMORY[0x277D85DD0];
           v13[1] = 3221225472;
           v13[2] = __56__SBStatusBarWindow_setOrientation_animationParameters___block_invoke_3;
@@ -182,7 +182,7 @@
 
     else
     {
-      self->_orientation = a3;
+      self->_orientation = orientation;
       [(SBStatusBarWindow *)self _rotate];
     }
   }
@@ -248,15 +248,15 @@ uint64_t __56__SBStatusBarWindow_setOrientation_animationParameters___block_invo
   return result;
 }
 
-- (CGRect)_statusBarWindowBoundsForOrientation:(int64_t)a3
+- (CGRect)_statusBarWindowBoundsForOrientation:(int64_t)orientation
 {
-  v3 = [(SBStatusBarWindow *)self windowScene];
-  v4 = v3;
-  if (v3)
+  windowScene = [(SBStatusBarWindow *)self windowScene];
+  v4 = windowScene;
+  if (windowScene)
   {
-    v5 = [v3 _FBSScene];
-    v6 = [v5 settings];
-    [v6 frame];
+    _FBSScene = [windowScene _FBSScene];
+    settings = [_FBSScene settings];
+    [settings frame];
   }
 
   else
@@ -281,11 +281,11 @@ uint64_t __56__SBStatusBarWindow_setOrientation_animationParameters___block_invo
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBStatusBarWindow;
-  v5 = [(SBStatusBarWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBStatusBarWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

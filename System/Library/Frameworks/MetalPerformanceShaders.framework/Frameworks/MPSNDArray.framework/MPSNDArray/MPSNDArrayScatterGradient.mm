@@ -1,26 +1,26 @@
 @interface MPSNDArrayScatterGradient
-- (MPSNDArrayScatterGradient)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayScatterGradient)initWithDevice:(id)a3 operation:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSNDArrayScatterGradient)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayScatterGradient)initWithDevice:(id)device operation:(int)operation;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayScatterGradient
 
-- (MPSNDArrayScatterGradient)initWithDevice:(id)a3 operation:(int)a4
+- (MPSNDArrayScatterGradient)initWithDevice:(id)device operation:(int)operation
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayScatterGradient;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v6 initWithDevice:a3 sourceCount:3 sourceGradientIndex:1];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v6 initWithDevice:device sourceCount:3 sourceGradientIndex:1];
   result->super.super._encodeGradient = EncodeScatterGradient;
   result->super.super._encodeData = result;
-  result->_operation = a4;
+  result->_operation = operation;
   result->_batchDimensions = 0;
   return result;
 }
 
-- (MPSNDArrayScatterGradient)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayScatterGradient)initWithCoder:(id)coder device:(id)device
 {
   v9.receiver = self;
   v9.super_class = MPSNDArrayScatterGradient;
@@ -30,9 +30,9 @@
     result->super.super._encodeGradient = EncodeScatterGradient;
     result->super.super._encodeData = result;
     v7 = result;
-    result->_operation = [a3 decodeInt64ForKey:@"MPSNDArrayScatter.operation"];
-    v7->_batchDimensions = [a3 decodeInt64ForKey:@"MPSNDArrayScatter.batchDimensions"];
-    v8 = [[MPSNDArrayIdentity alloc] initWithDevice:a4];
+    result->_operation = [coder decodeInt64ForKey:@"MPSNDArrayScatter.operation"];
+    v7->_batchDimensions = [coder decodeInt64ForKey:@"MPSNDArrayScatter.batchDimensions"];
+    v8 = [[MPSNDArrayIdentity alloc] initWithDevice:device];
     result = v7;
     v7->_identity = v8;
   }
@@ -40,16 +40,16 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayScatterGradient;
   [(MPSNDArrayMultiaryGradientKernel *)&v5 encodeWithCoder:?];
-  [a3 encodeInt64:self->_operation forKey:@"MPSNDArrayScatter.operation"];
-  [a3 encodeInt64:self->_batchDimensions forKey:@"MPSNDArrayScatter.batchDimensions"];
+  [coder encodeInt64:self->_operation forKey:@"MPSNDArrayScatter.operation"];
+  [coder encodeInt64:self->_batchDimensions forKey:@"MPSNDArrayScatter.batchDimensions"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayScatterGradient;
@@ -62,7 +62,7 @@
     *(result + 19) = self->_batchDimensions;
     identity = self->_identity;
     v9 = result;
-    v10 = [(MPSNDArrayIdentity *)identity copyWithZone:a3 device:a4];
+    v10 = [(MPSNDArrayIdentity *)identity copyWithZone:zone device:device];
     result = v9;
     v9[20] = v10;
   }

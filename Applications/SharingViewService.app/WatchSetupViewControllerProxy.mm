@@ -1,23 +1,23 @@
 @interface WatchSetupViewControllerProxy
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WatchSetupViewControllerProxy
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -28,7 +28,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -42,45 +42,45 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
-    v7 = [(WatchSetupViewControllerProxy *)self _remoteViewControllerProxy];
-    v8 = [(WatchSetupViewControllerProxy *)self proxCardNavigationController];
+    _remoteViewControllerProxy = [(WatchSetupViewControllerProxy *)self _remoteViewControllerProxy];
+    proxCardNavigationController = [(WatchSetupViewControllerProxy *)self proxCardNavigationController];
 
-    if (v8)
+    if (proxCardNavigationController)
     {
-      v9 = [(WatchSetupViewControllerProxy *)self proxCardNavigationController];
+      proxCardNavigationController2 = [(WatchSetupViewControllerProxy *)self proxCardNavigationController];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_10012BECC;
       v10[3] = &unk_1001959D0;
-      v12 = v6;
-      v11 = v7;
-      [v9 dismissViewControllerAnimated:v4 completion:v10];
+      v12 = completionCopy;
+      v11 = _remoteViewControllerProxy;
+      [proxCardNavigationController2 dismissViewControllerAnimated:animatedCopy completion:v10];
     }
 
     else
     {
-      [v7 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF328 <= 30 && (dword_1001BF328 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -98,12 +98,12 @@
 
   v5.receiver = self;
   v5.super_class = WatchSetupViewControllerProxy;
-  [(SVSBaseMainController *)&v5 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (_os_feature_enabled_impl())
   {
     v5 = [(NSDictionary *)self->super._userInfo objectForKeyedSubscript:@"watchData"];
@@ -135,7 +135,7 @@
 
     v24.receiver = self;
     v24.super_class = WatchSetupViewControllerProxy;
-    [(WatchSetupViewControllerProxy *)&v24 viewDidAppear:v3];
+    [(WatchSetupViewControllerProxy *)&v24 viewDidAppear:appearCopy];
     v11 = _os_feature_enabled_impl();
     v5 = [(NSDictionary *)self->super._userInfo objectForKeyedSubscript:@"pairingVersion"];
     if (v5 && (-[objc_class systemVersions](off_1001BF398(), "systemVersions"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 maxPairingCompatibilityVersion], v12, ((objc_msgSend(v5, "integerValue") <= v13) & v11) == 0))
@@ -180,29 +180,29 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   if (_os_feature_enabled_impl())
   {
-    v4 = [(WatchSetupViewControllerProxy *)self _remoteViewControllerProxy];
-    [v4 setStatusBarHidden:1 withDuration:0.0];
+    _remoteViewControllerProxy = [(WatchSetupViewControllerProxy *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(WatchSetupViewControllerProxy *)self view];
-  v3 = [v2 window];
+  view = [(WatchSetupViewControllerProxy *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -213,23 +213,23 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BF328 <= 30 && (dword_1001BF328 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 

@@ -1,22 +1,22 @@
 @interface PKMockPeerPaymentController
 + (BOOL)useMock;
-+ (void)_adjustBalanceForAmount:(id)a3 subtract:(BOOL)a4 webService:(id)a5;
-+ (void)_adjustBalanceForAuthorizedTransferQuote:(id)a3 webService:(id)a4;
-+ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)a3;
-+ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)a3 peerPaymentType:(int64_t)a4 mode:(unint64_t)a5 counterpartHandle:(id)a6 transactionIdentifier:(id)a7 amount:(id)a8;
-+ (void)performNearbyAuthorizedQuote:(id)a3 completion:(id)a4;
-+ (void)processNearbyPeerPaymentTransactionSuccessWithIdentifier:(id)a3 peerPaymentType:(int64_t)a4 amount:(id)a5 counterpartDisplayName:(id)a6;
-- (PKMockPeerPaymentController)initWithPeerPaymentWebService:(id)a3;
-- (id)_quoteItemDictionaryWithType:(unint64_t)a3 amount:(id)a4 alternateFundingSource:(id)a5 featureDescriptor:(id)a6;
-- (id)_recipientForAddress:(id)a3 status:(unint64_t)a4;
-- (void)_insertPaymentTransactionForSecondaryFundingSourceIfNecessary:(id)a3;
-- (void)formalRequestTokenForAmount:(id)a3 source:(unint64_t)a4 completion:(id)a5;
-- (void)identifyRecipientWithAddress:(id)a3 senderAddress:(id)a4 completion:(id)a5;
-- (void)identifyRecipientsWithAddresses:(id)a3 senderAddress:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id *)a3 didAuthorizePeerPaymentQuote:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id *)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5;
-- (void)performAction:(id)a3 withPaymentIdentifier:(id)a4 completion:(id)a5;
-- (void)quoteWithAmount:(id)a3 source:(unint64_t)a4 requestToken:(id)a5 alternateFundingSource:(id)a6 preserveCurrentBalance:(unint64_t)a7 recurringPaymentIdentifier:(id)a8 frequency:(unint64_t)a9 startDate:(id)a10 threshold:(id)a11 completion:(id)a12;
++ (void)_adjustBalanceForAmount:(id)amount subtract:(BOOL)subtract webService:(id)service;
++ (void)_adjustBalanceForAuthorizedTransferQuote:(id)quote webService:(id)service;
++ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)quote;
++ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)quote peerPaymentType:(int64_t)type mode:(unint64_t)mode counterpartHandle:(id)handle transactionIdentifier:(id)identifier amount:(id)amount;
++ (void)performNearbyAuthorizedQuote:(id)quote completion:(id)completion;
++ (void)processNearbyPeerPaymentTransactionSuccessWithIdentifier:(id)identifier peerPaymentType:(int64_t)type amount:(id)amount counterpartDisplayName:(id)name;
+- (PKMockPeerPaymentController)initWithPeerPaymentWebService:(id)service;
+- (id)_quoteItemDictionaryWithType:(unint64_t)type amount:(id)amount alternateFundingSource:(id)source featureDescriptor:(id)descriptor;
+- (id)_recipientForAddress:(id)address status:(unint64_t)status;
+- (void)_insertPaymentTransactionForSecondaryFundingSourceIfNecessary:(id)necessary;
+- (void)formalRequestTokenForAmount:(id)amount source:(unint64_t)source completion:(id)completion;
+- (void)identifyRecipientWithAddress:(id)address senderAddress:(id)senderAddress completion:(id)completion;
+- (void)identifyRecipientsWithAddresses:(id)addresses senderAddress:(id)address completion:(id)completion;
+- (void)paymentAuthorizationCoordinator:(id *)coordinator didAuthorizePeerPaymentQuote:(id)quote handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id *)coordinator didSelectPaymentMethod:(id)method handler:(id)handler;
+- (void)performAction:(id)action withPaymentIdentifier:(id)identifier completion:(id)completion;
+- (void)quoteWithAmount:(id)amount source:(unint64_t)source requestToken:(id)token alternateFundingSource:(id)fundingSource preserveCurrentBalance:(unint64_t)balance recurringPaymentIdentifier:(id)identifier frequency:(unint64_t)frequency startDate:(id)self0 threshold:(id)self1 completion:(id)self2;
 @end
 
 @implementation PKMockPeerPaymentController
@@ -31,13 +31,13 @@
   return PKStoreDemoModeEnabled();
 }
 
-- (PKMockPeerPaymentController)initWithPeerPaymentWebService:(id)a3
+- (PKMockPeerPaymentController)initWithPeerPaymentWebService:(id)service
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = PKMockPeerPaymentController;
-  v5 = [(PKPeerPaymentController *)&v8 initWithPeerPaymentWebService:v4];
+  v5 = [(PKPeerPaymentController *)&v8 initWithPeerPaymentWebService:serviceCopy];
   if (v5)
   {
     v6 = PKLogFacilityTypeGetObject(0xCuLL);
@@ -46,7 +46,7 @@
       *buf = 134218242;
       v10 = v5;
       v11 = 2112;
-      v12 = v4;
+      v12 = serviceCopy;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "PKMockPeerPaymentController: %p initWithPeerPaymentWebService: %@", buf, 0x16u);
     }
 
@@ -56,15 +56,15 @@
   return v5;
 }
 
-- (id)_recipientForAddress:(id)a3 status:(unint64_t)a4
+- (id)_recipientForAddress:(id)address status:(unint64_t)status
 {
-  v6 = a3;
+  addressCopy = address;
   v7 = objc_alloc_init(PKPeerPaymentRecipient);
-  [(PKPeerPaymentRecipient *)v7 setStatus:a4];
-  [(PKPeerPaymentRecipient *)v7 setIdentifier:v6];
+  [(PKPeerPaymentRecipient *)v7 setStatus:status];
+  [(PKPeerPaymentRecipient *)v7 setIdentifier:addressCopy];
   [(PKPeerPaymentRecipient *)v7 setReceiveCurrency:@"USD"];
-  [(PKPeerPaymentRecipient *)v7 setAddress:v6];
-  v8 = [(PKPeerPaymentController *)self displayNameForRecipientAddress:v6];
+  [(PKPeerPaymentRecipient *)v7 setAddress:addressCopy];
+  v8 = [(PKPeerPaymentController *)self displayNameForRecipientAddress:addressCopy];
 
   [(PKPeerPaymentRecipient *)v7 setDisplayName:v8];
   [(PKPeerPaymentRecipient *)v7 setAllowsFormalPaymentRequests:1];
@@ -72,23 +72,23 @@
   return v7;
 }
 
-- (void)identifyRecipientWithAddress:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)identifyRecipientWithAddress:(id)address senderAddress:(id)senderAddress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  senderAddressCopy = senderAddress;
+  completionCopy = completion;
   v11 = dispatch_time(0, 1000000000);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__PKMockPeerPaymentController_identifyRecipientWithAddress_senderAddress_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = addressCopy;
+  v17 = senderAddressCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = senderAddressCopy;
+  v14 = addressCopy;
   dispatch_after(v11, MEMORY[0x1E69E96A0], v15);
 }
 
@@ -113,23 +113,23 @@ void __85__PKMockPeerPaymentController_identifyRecipientWithAddress_senderAddres
   }
 }
 
-- (void)identifyRecipientsWithAddresses:(id)a3 senderAddress:(id)a4 completion:(id)a5
+- (void)identifyRecipientsWithAddresses:(id)addresses senderAddress:(id)address completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressesCopy = addresses;
+  addressCopy = address;
+  completionCopy = completion;
   v11 = dispatch_time(0, 1000000000);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAddress_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = addressesCopy;
+  selfCopy = self;
+  v18 = addressCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = addressCopy;
+  v14 = addressesCopy;
   dispatch_after(v11, MEMORY[0x1E69E96A0], v15);
 }
 
@@ -195,61 +195,61 @@ void __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAdd
   }
 }
 
-- (id)_quoteItemDictionaryWithType:(unint64_t)a3 amount:(id)a4 alternateFundingSource:(id)a5 featureDescriptor:(id)a6
+- (id)_quoteItemDictionaryWithType:(unint64_t)type amount:(id)amount alternateFundingSource:(id)source featureDescriptor:(id)descriptor
 {
   v42[16] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = [a5 devicePrimaryPaymentApplication];
-  v12 = [v9 amount];
-  v13 = [MEMORY[0x1E696AB90] zero];
-  if (a5 && [v11 paymentType] != 1)
+  amountCopy = amount;
+  descriptorCopy = descriptor;
+  devicePrimaryPaymentApplication = [source devicePrimaryPaymentApplication];
+  amount = [amountCopy amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  if (source && [devicePrimaryPaymentApplication paymentType] != 1)
   {
-    v14 = [v9 currency];
-    v15 = PKMaximumFractionDigitsForCurrencyCode(v14);
+    currency = [amountCopy currency];
+    v15 = PKMaximumFractionDigitsForCurrencyCode(currency);
 
     v16 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:v15 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
     v17 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"0.03"];
-    v18 = [v9 amount];
-    v19 = [v18 decimalNumberByMultiplyingBy:v17 withBehavior:v16];
+    amount2 = [amountCopy amount];
+    v19 = [amount2 decimalNumberByMultiplyingBy:v17 withBehavior:v16];
 
-    v13 = v19;
+    zero = v19;
   }
 
-  v20 = [v9 amount];
-  v21 = [v20 decimalNumberByAdding:v13];
+  amount3 = [amountCopy amount];
+  v21 = [amount3 decimalNumberByAdding:zero];
 
   v41[0] = @"type";
-  v38 = PKPeerPaymentQuoteItemTypeToString(a3);
+  v38 = PKPeerPaymentQuoteItemTypeToString(type);
   v42[0] = v38;
   v42[1] = @"1";
   v41[1] = @"exchangeRate";
   v41[2] = @"sendAmount";
-  v37 = [v12 stringValue];
-  v42[2] = v37;
+  stringValue = [amount stringValue];
+  v42[2] = stringValue;
   v41[3] = @"sendAmountCurrency";
-  v36 = [v9 currency];
-  v42[3] = v36;
+  currency2 = [amountCopy currency];
+  v42[3] = currency2;
   v41[4] = @"receiveAmount";
-  v35 = [v9 amount];
-  v34 = [v35 stringValue];
-  v42[4] = v34;
+  amount4 = [amountCopy amount];
+  stringValue2 = [amount4 stringValue];
+  v42[4] = stringValue2;
   v41[5] = @"receiveAmountCurrency";
-  v22 = [v9 currency];
-  v42[5] = v22;
+  currency3 = [amountCopy currency];
+  v42[5] = currency3;
   v41[6] = @"totalAmount";
   v39 = v21;
-  v23 = [v21 stringValue];
-  v42[6] = v23;
+  stringValue3 = [v21 stringValue];
+  v42[6] = stringValue3;
   v41[7] = @"totalAmountCurrency";
-  v24 = [v9 currency];
-  v42[7] = v24;
+  currency4 = [amountCopy currency];
+  v42[7] = currency4;
   v41[8] = @"dpanIdentifier";
-  v40 = v12;
-  v33 = v11;
-  if (v11)
+  v40 = amount;
+  v33 = devicePrimaryPaymentApplication;
+  if (devicePrimaryPaymentApplication)
   {
-    [v11 dpanIdentifier];
+    [devicePrimaryPaymentApplication dpanIdentifier];
   }
 
   else
@@ -259,21 +259,21 @@ void __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAdd
   v25 = ;
   v42[8] = v25;
   v41[9] = @"fees";
-  v26 = [v13 stringValue];
-  v42[9] = v26;
+  stringValue4 = [zero stringValue];
+  v42[9] = stringValue4;
   v41[10] = @"feesCurrency";
-  v27 = [v9 currency];
-  v42[10] = v27;
+  currency5 = [amountCopy currency];
+  v42[10] = currency5;
   v41[11] = @"supportedNetworks";
-  [v10 supportedNetworks];
-  v28 = v32 = v13;
+  [descriptorCopy supportedNetworks];
+  v28 = v32 = zero;
   v42[11] = v28;
   v42[12] = &unk_1F23B3C80;
   v41[12] = @"merchantCapabilities";
   v41[13] = @"merchantIdentifier";
-  v29 = [v10 merchantIdentifier];
+  merchantIdentifier = [descriptorCopy merchantIdentifier];
 
-  v42[13] = v29;
+  v42[13] = merchantIdentifier;
   v42[14] = @"342f5544";
   v41[14] = @"nonce";
   v41[15] = @"countryCode";
@@ -283,35 +283,35 @@ void __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAdd
   return v30;
 }
 
-- (void)quoteWithAmount:(id)a3 source:(unint64_t)a4 requestToken:(id)a5 alternateFundingSource:(id)a6 preserveCurrentBalance:(unint64_t)a7 recurringPaymentIdentifier:(id)a8 frequency:(unint64_t)a9 startDate:(id)a10 threshold:(id)a11 completion:(id)a12
+- (void)quoteWithAmount:(id)amount source:(unint64_t)source requestToken:(id)token alternateFundingSource:(id)fundingSource preserveCurrentBalance:(unint64_t)balance recurringPaymentIdentifier:(id)identifier frequency:(unint64_t)frequency startDate:(id)self0 threshold:(id)self1 completion:(id)self2
 {
   v54 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v45 = a5;
-  v17 = a6;
-  v18 = a8;
-  v44 = a10;
-  v19 = a11;
-  v20 = a12;
-  if (!v17)
+  amountCopy = amount;
+  tokenCopy = token;
+  fundingSourceCopy = fundingSource;
+  identifierCopy = identifier;
+  dateCopy = date;
+  thresholdCopy = threshold;
+  completionCopy = completion;
+  if (!fundingSourceCopy)
   {
-    v17 = [(PKPeerPaymentController *)self _defaultAlternateFundingSourceForMode:[(PKPeerPaymentController *)self mode]];
+    fundingSourceCopy = [(PKPeerPaymentController *)self _defaultAlternateFundingSourceForMode:[(PKPeerPaymentController *)self mode]];
   }
 
-  v21 = [(PKPeerPaymentController *)self account];
-  v22 = v21;
+  account = [(PKPeerPaymentController *)self account];
+  v22 = account;
   mockBalance = self->_mockBalance;
   if (mockBalance)
   {
-    v24 = mockBalance;
+    currentBalance = mockBalance;
   }
 
   else
   {
-    v24 = [v21 currentBalance];
+    currentBalance = [account currentBalance];
   }
 
-  v25 = v24;
+  v25 = currentBalance;
   if ([(PKPeerPaymentController *)self mode]== 5)
   {
     v26 = 0;
@@ -324,21 +324,21 @@ void __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAdd
       goto LABEL_17;
     }
 
-    [v16 amount];
+    [amountCopy amount];
     v42 = v22;
-    v27 = v16;
-    v28 = v19;
-    v30 = v29 = v18;
-    v31 = [(PKCurrencyAmount *)v25 amount];
-    v32 = [v31 compare:v30];
+    v27 = amountCopy;
+    v28 = thresholdCopy;
+    v30 = v29 = identifierCopy;
+    amount = [(PKCurrencyAmount *)v25 amount];
+    v32 = [amount compare:v30];
 
     v33 = v32 == -1;
     v34 = v32 != -1;
     v26 = v33 ? 40301 : 0;
 
-    v18 = v29;
-    v19 = v28;
-    v16 = v27;
+    identifierCopy = v29;
+    thresholdCopy = v28;
+    amountCopy = v27;
     v22 = v42;
     if (v34)
     {
@@ -346,7 +346,7 @@ void __88__PKMockPeerPaymentController_identifyRecipientsWithAddresses_senderAdd
     }
   }
 
-  if (v17)
+  if (fundingSourceCopy)
   {
 LABEL_17:
     v41 = dispatch_time(0, 300000000);
@@ -355,23 +355,23 @@ LABEL_17:
     block[2] = __181__PKMockPeerPaymentController_quoteWithAmount_source_requestToken_alternateFundingSource_preserveCurrentBalance_recurringPaymentIdentifier_frequency_startDate_threshold_completion___block_invoke;
     block[3] = &unk_1E79C4F40;
     block[4] = self;
-    v47 = v16;
-    v48 = v17;
+    v47 = amountCopy;
+    v48 = fundingSourceCopy;
     v49 = v22;
     v50 = v25;
-    v51 = v20;
+    v51 = completionCopy;
     dispatch_after(v41, MEMORY[0x1E69E96A0], block);
 
     goto LABEL_18;
   }
 
-  v43 = v19;
-  v35 = v18;
+  v43 = thresholdCopy;
+  v35 = identifierCopy;
   v36 = PKLogFacilityTypeGetObject(0xCuLL);
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v53 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v36, OS_LOG_TYPE_DEFAULT, "PKMockPeerPaymentController %p: Failed to quote requiring alternative funding source as no suitable payment cards were found.", buf, 0xCu);
   }
 
@@ -380,9 +380,9 @@ LABEL_17:
   v39 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentNoC_0.isa, 0);
   v40 = PKDisplayableErrorCustomWithType(-1, v38, v39, v37, 0);
 
-  (*(v20 + 2))(v20, 0, 0, v40);
-  v18 = v35;
-  v19 = v43;
+  (*(completionCopy + 2))(completionCopy, 0, 0, v40);
+  identifierCopy = v35;
+  thresholdCopy = v43;
 LABEL_18:
 }
 
@@ -621,9 +621,9 @@ LABEL_14:
   }
 }
 
-- (void)formalRequestTokenForAmount:(id)a3 source:(unint64_t)a4 completion:(id)a5
+- (void)formalRequestTokenForAmount:(id)amount source:(unint64_t)source completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   if ([(PKPeerPaymentController *)self _ensureState:7])
   {
     v7 = dispatch_time(0, 300000000);
@@ -632,7 +632,7 @@ LABEL_14:
     v8[2] = __77__PKMockPeerPaymentController_formalRequestTokenForAmount_source_completion___block_invoke;
     v8[3] = &unk_1E79C44A0;
     v8[4] = self;
-    v9 = v6;
+    v9 = completionCopy;
     dispatch_after(v7, MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -653,15 +653,15 @@ void __77__PKMockPeerPaymentController_formalRequestTokenForAmount_source_comple
   [*(a1 + 32) _setState:8 notify:1];
 }
 
-- (void)paymentAuthorizationCoordinator:(id *)a3 didAuthorizePeerPaymentQuote:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id *)coordinator didAuthorizePeerPaymentQuote:(id)quote handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  quoteCopy = quote;
+  handlerCopy = handler;
   if ([(PKPeerPaymentController *)self mode]== 2)
   {
     v14.receiver = self;
     v14.super_class = PKMockPeerPaymentController;
-    [(PKPeerPaymentController *)&v14 paymentAuthorizationCoordinator:a3 didAuthorizePeerPaymentQuote:v8 handler:v9];
+    [(PKPeerPaymentController *)&v14 paymentAuthorizationCoordinator:coordinator didAuthorizePeerPaymentQuote:quoteCopy handler:handlerCopy];
   }
 
   else
@@ -672,8 +672,8 @@ void __77__PKMockPeerPaymentController_formalRequestTokenForAmount_source_comple
     block[2] = __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAuthorizePeerPaymentQuote_handler___block_invoke;
     block[3] = &unk_1E79C4D60;
     block[4] = self;
-    v12 = v8;
-    v13 = v9;
+    v12 = quoteCopy;
+    v13 = handlerCopy;
     dispatch_after(v10, MEMORY[0x1E69E96A0], block);
   }
 }
@@ -712,81 +712,81 @@ void __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAutho
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)_adjustBalanceForAuthorizedTransferQuote:(id)a3 webService:(id)a4
++ (void)_adjustBalanceForAuthorizedTransferQuote:(id)quote webService:(id)service
 {
-  v10 = a4;
-  v6 = [a3 peerPaymentQuote];
-  v7 = [v6 firstQuoteItemOfType:2];
+  serviceCopy = service;
+  peerPaymentQuote = [quote peerPaymentQuote];
+  v7 = [peerPaymentQuote firstQuoteItemOfType:2];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 totalAmount];
-    [a1 _adjustBalanceForAmount:v9 subtract:1 webService:v10];
+    totalAmount = [v7 totalAmount];
+    [self _adjustBalanceForAmount:totalAmount subtract:1 webService:serviceCopy];
   }
 }
 
-+ (void)_adjustBalanceForAmount:(id)a3 subtract:(BOOL)a4 webService:(id)a5
++ (void)_adjustBalanceForAmount:(id)amount subtract:(BOOL)subtract webService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v12 = v7;
+  subtractCopy = subtract;
+  amountCopy = amount;
+  serviceCopy = service;
+  v12 = amountCopy;
   v9 = v12;
-  if (v6)
+  if (subtractCopy)
   {
     v10 = [objc_alloc(MEMORY[0x1E696AB90]) initWithMantissa:1 exponent:0 isNegative:1];
     v9 = [v12 decimalNumberByMultiplyingBy:v10];
   }
 
-  v11 = [v8 peerPaymentService];
-  [v11 updateMockAccountBalanceByAddingAmount:v9 completion:0];
+  peerPaymentService = [serviceCopy peerPaymentService];
+  [peerPaymentService updateMockAccountBalanceByAddingAmount:v9 completion:0];
 }
 
-+ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)a3
++ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)quote
 {
-  v4 = a3;
-  v7 = [v4 peerPaymentQuote];
-  v5 = [v7 recipient];
-  v6 = [v5 address];
-  [a1 _insertPeerPaymentTransactionForAuthorizedTransferQuote:v4 peerPaymentType:1 mode:1 counterpartHandle:v6 transactionIdentifier:0 amount:0];
+  quoteCopy = quote;
+  peerPaymentQuote = [quoteCopy peerPaymentQuote];
+  recipient = [peerPaymentQuote recipient];
+  address = [recipient address];
+  [self _insertPeerPaymentTransactionForAuthorizedTransferQuote:quoteCopy peerPaymentType:1 mode:1 counterpartHandle:address transactionIdentifier:0 amount:0];
 }
 
-+ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)a3 peerPaymentType:(int64_t)a4 mode:(unint64_t)a5 counterpartHandle:(id)a6 transactionIdentifier:(id)a7 amount:(id)a8
++ (void)_insertPeerPaymentTransactionForAuthorizedTransferQuote:(id)quote peerPaymentType:(int64_t)type mode:(unint64_t)mode counterpartHandle:(id)handle transactionIdentifier:(id)identifier amount:(id)amount
 {
-  v50 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  quoteCopy = quote;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  amountCopy = amount;
   v16 = +[PKPassLibrary sharedInstance];
-  v17 = [v16 peerPaymentPassUniqueID];
-  v18 = [v16 passWithUniqueID:v17];
-  v19 = [v18 paymentPass];
+  peerPaymentPassUniqueID = [v16 peerPaymentPassUniqueID];
+  v18 = [v16 passWithUniqueID:peerPaymentPassUniqueID];
+  paymentPass = [v18 paymentPass];
 
-  if (v19)
+  if (paymentPass)
   {
     v20 = objc_alloc_init(PKPaymentTransaction);
     [(PKPaymentTransaction *)v20 setTransactionType:3];
-    [(PKPaymentTransaction *)v20 setPeerPaymentType:a4];
-    [(PKPaymentTransaction *)v20 setPeerPaymentCounterpartHandle:v13];
-    [(PKPaymentTransaction *)v20 setPeerPaymentPaymentMode:a5];
-    v21 = [MEMORY[0x1E695DF00] date];
-    [(PKPaymentTransaction *)v20 setTransactionDate:v21];
+    [(PKPaymentTransaction *)v20 setPeerPaymentType:type];
+    [(PKPaymentTransaction *)v20 setPeerPaymentCounterpartHandle:handleCopy];
+    [(PKPaymentTransaction *)v20 setPeerPaymentPaymentMode:mode];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PKPaymentTransaction *)v20 setTransactionDate:date];
 
     [(PKPaymentTransaction *)v20 setTransactionSource:0];
-    v49 = v17;
-    if (v50)
+    v49 = peerPaymentPassUniqueID;
+    if (quoteCopy)
     {
-      v45 = a5;
-      v46 = v15;
-      v47 = v14;
-      v48 = v13;
-      v22 = [v50 peerPaymentQuote];
-      v23 = [v22 firstQuoteItemOfType:2];
-      v24 = [v22 firstQuoteItemOfType:1];
-      v25 = [v24 dpanIdentifier];
-      if (v25)
+      modeCopy = mode;
+      v46 = amountCopy;
+      v47 = identifierCopy;
+      v48 = handleCopy;
+      peerPaymentQuote = [quoteCopy peerPaymentQuote];
+      v23 = [peerPaymentQuote firstQuoteItemOfType:2];
+      v24 = [peerPaymentQuote firstQuoteItemOfType:1];
+      dpanIdentifier = [v24 dpanIdentifier];
+      if (dpanIdentifier)
       {
-        v26 = [v16 passWithDPANIdentifier:v25];
+        v26 = [v16 passWithDPANIdentifier:dpanIdentifier];
       }
 
       else
@@ -794,105 +794,105 @@ void __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAutho
         v26 = 0;
       }
 
-      v31 = [v26 devicePrimaryInAppPaymentApplication];
-      v32 = [v22 totalReceiveAmount];
-      [(PKPaymentTransaction *)v20 setAmount:v32];
+      devicePrimaryInAppPaymentApplication = [v26 devicePrimaryInAppPaymentApplication];
+      totalReceiveAmount = [peerPaymentQuote totalReceiveAmount];
+      [(PKPaymentTransaction *)v20 setAmount:totalReceiveAmount];
 
-      v33 = [v22 totalReceiveAmountCurrency];
-      [(PKPaymentTransaction *)v20 setCurrencyCode:v33];
+      totalReceiveAmountCurrency = [peerPaymentQuote totalReceiveAmountCurrency];
+      [(PKPaymentTransaction *)v20 setCurrencyCode:totalReceiveAmountCurrency];
 
       if (v23)
       {
-        v34 = [v23 totalAmount];
-        [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:v34];
+        totalAmount = [v23 totalAmount];
+        [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:totalAmount];
 
         [v23 totalAmountCurrency];
       }
 
       else
       {
-        v35 = [MEMORY[0x1E696AB90] zero];
-        [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:v35];
+        zero = [MEMORY[0x1E696AB90] zero];
+        [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:zero];
 
-        [v22 totalReceiveAmountCurrency];
+        [peerPaymentQuote totalReceiveAmountCurrency];
       }
       v36 = ;
       [(PKPaymentTransaction *)v20 setPrimaryFundingSourceCurrencyCode:v36];
 
-      v37 = [v24 totalAmount];
-      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceAmount:v37];
+      totalAmount2 = [v24 totalAmount];
+      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceAmount:totalAmount2];
 
-      v38 = [v24 totalAmountCurrency];
-      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceCurrencyCode:v38];
+      totalAmountCurrency = [v24 totalAmountCurrency];
+      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceCurrencyCode:totalAmountCurrency];
 
-      -[PKPaymentTransaction setSecondaryFundingSourceNetwork:](v20, "setSecondaryFundingSourceNetwork:", [v31 paymentNetworkIdentifier]);
-      v39 = [v26 deviceAccountNumberSuffix];
-      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceDPANSuffix:v39];
+      -[PKPaymentTransaction setSecondaryFundingSourceNetwork:](v20, "setSecondaryFundingSourceNetwork:", [devicePrimaryInAppPaymentApplication paymentNetworkIdentifier]);
+      deviceAccountNumberSuffix = [v26 deviceAccountNumberSuffix];
+      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceDPANSuffix:deviceAccountNumberSuffix];
 
-      v40 = [v26 localizedDescription];
-      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceDescription:v40];
+      localizedDescription = [v26 localizedDescription];
+      [(PKPaymentTransaction *)v20 setSecondaryFundingSourceDescription:localizedDescription];
 
-      v41 = [v22 transactionIdentifier];
-      [(PKPaymentTransaction *)v20 setServiceIdentifier:v41];
+      transactionIdentifier = [peerPaymentQuote transactionIdentifier];
+      [(PKPaymentTransaction *)v20 setServiceIdentifier:transactionIdentifier];
 
-      v14 = v47;
-      v13 = v48;
-      a5 = v45;
-      v15 = v46;
+      identifierCopy = v47;
+      handleCopy = v48;
+      mode = modeCopy;
+      amountCopy = v46;
     }
 
     else
     {
-      v27 = [v15 amount];
-      [(PKPaymentTransaction *)v20 setAmount:v27];
+      amount = [amountCopy amount];
+      [(PKPaymentTransaction *)v20 setAmount:amount];
 
-      v28 = [v15 currency];
-      [(PKPaymentTransaction *)v20 setCurrencyCode:v28];
+      currency = [amountCopy currency];
+      [(PKPaymentTransaction *)v20 setCurrencyCode:currency];
 
-      v29 = [MEMORY[0x1E696AB90] zero];
-      [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:v29];
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      [(PKPaymentTransaction *)v20 setPrimaryFundingSourceAmount:zero2];
 
-      v30 = [v15 currency];
-      [(PKPaymentTransaction *)v20 setPrimaryFundingSourceCurrencyCode:v30];
+      currency2 = [amountCopy currency];
+      [(PKPaymentTransaction *)v20 setPrimaryFundingSourceCurrencyCode:currency2];
 
-      [(PKPaymentTransaction *)v20 setServiceIdentifier:v14];
+      [(PKPaymentTransaction *)v20 setServiceIdentifier:identifierCopy];
     }
 
     [(PKPaymentTransaction *)v20 setHasNotificationServiceData:1];
     [(PKPaymentTransaction *)v20 setProcessedForMerchantCleanup:1];
     [(PKPaymentTransaction *)v20 setPeerPaymentStatus:1];
-    if (a5 != 2)
+    if (mode != 2)
     {
       [(PKPaymentTransaction *)v20 setProcessedForLocation:1];
     }
 
     v42 = +[PKPaymentService paymentService];
-    v43 = [v19 uniqueID];
-    v44 = [v19 devicePrimaryInAppPaymentApplication];
-    [v42 insertOrUpdatePaymentTransaction:v20 forPassUniqueIdentifier:v43 paymentApplication:v44 completion:0];
+    uniqueID = [paymentPass uniqueID];
+    devicePrimaryInAppPaymentApplication2 = [paymentPass devicePrimaryInAppPaymentApplication];
+    [v42 insertOrUpdatePaymentTransaction:v20 forPassUniqueIdentifier:uniqueID paymentApplication:devicePrimaryInAppPaymentApplication2 completion:0];
 
-    v17 = v49;
+    peerPaymentPassUniqueID = v49;
   }
 }
 
-- (void)_insertPaymentTransactionForSecondaryFundingSourceIfNecessary:(id)a3
+- (void)_insertPaymentTransactionForSecondaryFundingSourceIfNecessary:(id)necessary
 {
-  v19 = [a3 peerPaymentQuote];
-  v3 = [v19 firstQuoteItemOfType:1];
+  peerPaymentQuote = [necessary peerPaymentQuote];
+  v3 = [peerPaymentQuote firstQuoteItemOfType:1];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 totalAmount];
-    v6 = [MEMORY[0x1E696AB90] zero];
-    v7 = [v5 compare:v6];
+    totalAmount = [v3 totalAmount];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v7 = [totalAmount compare:zero];
 
     if (v7 == 1)
     {
-      v8 = [v4 dpanIdentifier];
-      if (v8)
+      dpanIdentifier = [v4 dpanIdentifier];
+      if (dpanIdentifier)
       {
         v9 = +[PKPassLibrary sharedInstance];
-        v10 = [v9 passWithDPANIdentifier:v8];
+        v10 = [v9 passWithDPANIdentifier:dpanIdentifier];
       }
 
       else
@@ -901,19 +901,19 @@ void __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAutho
       }
 
       v11 = objc_alloc_init(PKPaymentTransaction);
-      v12 = [v4 totalAmount];
-      [(PKPaymentTransaction *)v11 setAmount:v12];
+      totalAmount2 = [v4 totalAmount];
+      [(PKPaymentTransaction *)v11 setAmount:totalAmount2];
 
-      v13 = [v4 totalAmountCurrency];
-      [(PKPaymentTransaction *)v11 setCurrencyCode:v13];
+      totalAmountCurrency = [v4 totalAmountCurrency];
+      [(PKPaymentTransaction *)v11 setCurrencyCode:totalAmountCurrency];
 
       [(PKPaymentTransaction *)v11 setTransactionType:0];
       v14 = objc_alloc_init(PKMerchant);
       [(PKMerchant *)v14 setRawName:@"Apple, Inc."];
       [(PKMerchant *)v14 setName:@"Apple, Inc."];
       [(PKPaymentTransaction *)v11 setMerchant:v14];
-      v15 = [MEMORY[0x1E695DF00] date];
-      [(PKPaymentTransaction *)v11 setTransactionDate:v15];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PKPaymentTransaction *)v11 setTransactionDate:date];
 
       [(PKPaymentTransaction *)v11 setTransactionSource:2];
       [(PKPaymentTransaction *)v11 setHasNotificationServiceData:1];
@@ -921,53 +921,53 @@ void __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAutho
       [(PKPaymentTransaction *)v11 setProcessedForMerchantCleanup:1];
       [(PKPaymentTransaction *)v11 setPeerPaymentStatus:1];
       v16 = +[PKPaymentService paymentService];
-      v17 = [v10 uniqueID];
-      v18 = [v10 devicePrimaryInAppPaymentApplication];
-      [v16 insertOrUpdatePaymentTransaction:v11 forPassUniqueIdentifier:v17 paymentApplication:v18 completion:0];
+      uniqueID = [v10 uniqueID];
+      devicePrimaryInAppPaymentApplication = [v10 devicePrimaryInAppPaymentApplication];
+      [v16 insertOrUpdatePaymentTransaction:v11 forPassUniqueIdentifier:uniqueID paymentApplication:devicePrimaryInAppPaymentApplication completion:0];
     }
   }
 }
 
-+ (void)processNearbyPeerPaymentTransactionSuccessWithIdentifier:(id)a3 peerPaymentType:(int64_t)a4 amount:(id)a5 counterpartDisplayName:(id)a6
++ (void)processNearbyPeerPaymentTransactionSuccessWithIdentifier:(id)identifier peerPaymentType:(int64_t)type amount:(id)amount counterpartDisplayName:(id)name
 {
-  v10 = a4 == 1;
-  v11 = a6;
-  v12 = a5;
-  v15 = a3;
-  v13 = [v12 amount];
+  v10 = type == 1;
+  nameCopy = name;
+  amountCopy = amount;
+  identifierCopy = identifier;
+  amount = [amountCopy amount];
   v14 = +[PKPeerPaymentWebService sharedService];
-  [a1 _adjustBalanceForAmount:v13 subtract:v10 webService:v14];
+  [self _adjustBalanceForAmount:amount subtract:v10 webService:v14];
 
-  [a1 _insertPeerPaymentTransactionForAuthorizedTransferQuote:0 peerPaymentType:a4 mode:2 counterpartHandle:v11 transactionIdentifier:v15 amount:v12];
+  [self _insertPeerPaymentTransactionForAuthorizedTransferQuote:0 peerPaymentType:type mode:2 counterpartHandle:nameCopy transactionIdentifier:identifierCopy amount:amountCopy];
 }
 
-- (void)paymentAuthorizationCoordinator:(id *)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id *)coordinator didSelectPaymentMethod:(id)method handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a4 paymentPass];
-  v9 = [v8 devicePrimaryInAppPaymentApplication];
-  v10 = [v9 dpanIdentifier];
+  handlerCopy = handler;
+  paymentPass = [method paymentPass];
+  devicePrimaryInAppPaymentApplication = [paymentPass devicePrimaryInAppPaymentApplication];
+  dpanIdentifier = [devicePrimaryInAppPaymentApplication dpanIdentifier];
 
-  v11 = [(PKPeerPaymentController *)self quote];
-  v12 = [v11 firstQuoteItemOfType:1];
-  v13 = [v12 dpanIdentifier];
-  v14 = v13;
-  if (v10 && ([v13 isEqualToString:v10] & 1) == 0)
+  quote = [(PKPeerPaymentController *)self quote];
+  v12 = [quote firstQuoteItemOfType:1];
+  dpanIdentifier2 = [v12 dpanIdentifier];
+  v14 = dpanIdentifier2;
+  if (dpanIdentifier && ([dpanIdentifier2 isEqualToString:dpanIdentifier] & 1) == 0)
   {
-    v16 = [v11 totalReceiveAmount];
-    v20 = [v11 totalReceiveAmountCurrency];
-    v19 = [[PKCurrencyAmount alloc] initWithAmount:v16 currency:v20 exponent:0];
-    v17 = [(PKPeerPaymentController *)self internalState];
-    v18 = v17[6];
+    totalReceiveAmount = [quote totalReceiveAmount];
+    totalReceiveAmountCurrency = [quote totalReceiveAmountCurrency];
+    v19 = [[PKCurrencyAmount alloc] initWithAmount:totalReceiveAmount currency:totalReceiveAmountCurrency exponent:0];
+    internalState = [(PKPeerPaymentController *)self internalState];
+    v18 = internalState[6];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __94__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didSelectPaymentMethod_handler___block_invoke;
     v21[3] = &unk_1E79CD9D8;
     v21[4] = self;
-    v22 = v7;
-    [(PKPeerPaymentController *)self quoteWithAmount:v19 requestToken:v18 alternateFundingSource:v8 completion:v21];
+    v22 = handlerCopy;
+    [(PKPeerPaymentController *)self quoteWithAmount:v19 requestToken:v18 alternateFundingSource:paymentPass completion:v21];
   }
 
   else
@@ -976,13 +976,13 @@ void __100__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didAutho
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKMockPeerPaymentController %p: New quote request is not required. Returning: PKPaymentAuthorizationStatusSuccess to the authorization controller.", buf, 0xCu);
     }
 
-    v16 = objc_alloc_init(PKPaymentRequestPaymentMethodUpdate);
-    [(PKPaymentRequestUpdate *)v16 setStatus:0];
-    (*(v7 + 2))(v7, v16);
+    totalReceiveAmount = objc_alloc_init(PKPaymentRequestPaymentMethodUpdate);
+    [(PKPaymentRequestUpdate *)totalReceiveAmount setStatus:0];
+    (*(handlerCopy + 2))(handlerCopy, totalReceiveAmount);
   }
 }
 
@@ -1005,16 +1005,16 @@ void __94__PKMockPeerPaymentController_paymentAuthorizationCoordinator_didSelect
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performAction:(id)a3 withPaymentIdentifier:(id)a4 completion:(id)a5
+- (void)performAction:(id)action withPaymentIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = dispatch_time(0, 800000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__PKMockPeerPaymentController_performAction_withPaymentIdentifier_completion___block_invoke;
   block[3] = &unk_1E79C4428;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
@@ -1029,16 +1029,16 @@ uint64_t __78__PKMockPeerPaymentController_performAction_withPaymentIdentifier_c
   return result;
 }
 
-+ (void)performNearbyAuthorizedQuote:(id)a3 completion:(id)a4
++ (void)performNearbyAuthorizedQuote:(id)quote completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = dispatch_time(0, 800000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PKMockPeerPaymentController_performNearbyAuthorizedQuote_completion___block_invoke;
   block[3] = &unk_1E79C4428;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], block);
 }
 

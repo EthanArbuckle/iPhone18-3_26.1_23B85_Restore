@@ -3,45 +3,45 @@
 - (BOOL)requireMonth;
 - (BOOL)requireYear;
 - (DIAttributeDate)init;
-- (DIAttributeDate)initWithCoder:(id)a3;
+- (DIAttributeDate)initWithCoder:(id)coder;
 - (NSDate)defaultValue;
 - (NSDate)getCurrentValue;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setRequireDay:(BOOL)a3;
-- (void)setRequireMonth:(BOOL)a3;
-- (void)setRequireYear:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setDefaultValue:(id)value;
+- (void)setRequireDay:(BOOL)day;
+- (void)setRequireMonth:(BOOL)month;
+- (void)setRequireYear:(BOOL)year;
 @end
 
 @implementation DIAttributeDate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributeDate;
-  v4 = a3;
-  [(DIAttribute *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttribute *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeBool:self->_requireDay forKey:{@"requireDay", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_requireMonth forKey:@"requireMonth"];
-  [v4 encodeBool:self->_requireYear forKey:@"requireYear"];
+  [coderCopy encodeBool:self->_requireDay forKey:{@"requireDay", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_requireMonth forKey:@"requireMonth"];
+  [coderCopy encodeBool:self->_requireYear forKey:@"requireYear"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributeDate)initWithCoder:(id)a3
+- (DIAttributeDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = DIAttributeDate;
-  v5 = [(DIAttribute *)&v7 initWithCoder:v4];
+  v5 = [(DIAttribute *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_requireDay = [v4 decodeBoolForKey:@"requireDay"];
-    v5->_requireMonth = [v4 decodeBoolForKey:@"requireMonth"];
-    v5->_requireYear = [v4 decodeBoolForKey:@"requireYear"];
+    v5->_requireDay = [coderCopy decodeBoolForKey:@"requireDay"];
+    v5->_requireMonth = [coderCopy decodeBoolForKey:@"requireMonth"];
+    v5->_requireYear = [coderCopy decodeBoolForKey:@"requireYear"];
   }
 
   return v5;
@@ -64,40 +64,40 @@
   return v3;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeDate;
-  [(DIAttribute *)&v3 setCurrentValue:a3];
+  [(DIAttribute *)&v3 setCurrentValue:value];
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeDate;
-  [(DIAttribute *)&v3 setDefaultValue:a3];
+  [(DIAttribute *)&v3 setDefaultValue:value];
 }
 
-- (void)setRequireDay:(BOOL)a3
+- (void)setRequireDay:(BOOL)day
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_requireDay = a3;
+  self->_requireDay = day;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setRequireMonth:(BOOL)a3
+- (void)setRequireMonth:(BOOL)month
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_requireMonth = a3;
+  self->_requireMonth = month;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setRequireYear:(BOOL)a3
+- (void)setRequireYear:(BOOL)year
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_requireYear = a3;
+  self->_requireYear = year;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -106,18 +106,18 @@
 {
   v4.receiver = self;
   v4.super_class = DIAttributeDate;
-  v2 = [(DIAttribute *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttribute *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (NSDate)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeDate;
-  v2 = [(DIAttribute *)&v4 defaultValue];
+  defaultValue = [(DIAttribute *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (BOOL)requireDay
@@ -187,11 +187,11 @@
 
   [v3 appendFormat:@"requireYear: '%@'; ", v7];
   os_unfair_lock_unlock(&self->super._lock);
-  v8 = [(DIAttributeDate *)self defaultValue];
-  [v3 appendFormat:@"defaultValue: '%@'; ", v8];
+  defaultValue = [(DIAttributeDate *)self defaultValue];
+  [v3 appendFormat:@"defaultValue: '%@'; ", defaultValue];
 
-  v9 = [(DIAttributeDate *)self getCurrentValue];
-  [v3 appendFormat:@"currentValue: '%@'; ", v9];
+  getCurrentValue = [(DIAttributeDate *)self getCurrentValue];
+  [v3 appendFormat:@"currentValue: '%@'; ", getCurrentValue];
 
   [v3 appendFormat:@">"];
 

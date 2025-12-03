@@ -1,12 +1,12 @@
 @interface AddedShortcutsCache
-- (void)databaseResultDidChange:(id)a3;
+- (void)databaseResultDidChange:(id)change;
 @end
 
 @implementation AddedShortcutsCache
 
-- (void)databaseResultDidChange:(id)a3
+- (void)databaseResultDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_2748E35EC();
 }

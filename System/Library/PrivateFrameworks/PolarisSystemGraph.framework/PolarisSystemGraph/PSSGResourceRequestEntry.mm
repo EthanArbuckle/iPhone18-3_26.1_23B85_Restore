@@ -1,64 +1,64 @@
 @interface PSSGResourceRequestEntry
-+ (id)entryWithKey:(id)a3 stride:(id)a4;
-+ (id)entryWithKey:(id)a3 stride:(id)a4 graphName:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (PSSGResourceRequestEntry)initWithKey:(id)a3 stride:(id)a4 graphName:(id)a5;
++ (id)entryWithKey:(id)key stride:(id)stride;
++ (id)entryWithKey:(id)key stride:(id)stride graphName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (PSSGResourceRequestEntry)initWithKey:(id)key stride:(id)stride graphName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PSSGResourceRequestEntry
 
-- (PSSGResourceRequestEntry)initWithKey:(id)a3 stride:(id)a4 graphName:(id)a5
+- (PSSGResourceRequestEntry)initWithKey:(id)key stride:(id)stride graphName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  strideCopy = stride;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = PSSGResourceRequestEntry;
   v12 = [(PSSGResourceRequestEntry *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_resourceKey, a3);
-    objc_storeStrong(&v13->_stride, a4);
-    objc_storeStrong(&v13->_graphName, a5);
+    objc_storeStrong(&v12->_resourceKey, key);
+    objc_storeStrong(&v13->_stride, stride);
+    objc_storeStrong(&v13->_graphName, name);
     v14 = v13;
   }
 
   return v13;
 }
 
-+ (id)entryWithKey:(id)a3 stride:(id)a4
++ (id)entryWithKey:(id)key stride:(id)stride
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PSSGResourceRequestEntry alloc] initWithKey:v6 stride:v5 graphName:0];
+  strideCopy = stride;
+  keyCopy = key;
+  v7 = [[PSSGResourceRequestEntry alloc] initWithKey:keyCopy stride:strideCopy graphName:0];
 
   return v7;
 }
 
-+ (id)entryWithKey:(id)a3 stride:(id)a4 graphName:(id)a5
++ (id)entryWithKey:(id)key stride:(id)stride graphName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PSSGResourceRequestEntry alloc] initWithKey:v9 stride:v8 graphName:v7];
+  nameCopy = name;
+  strideCopy = stride;
+  keyCopy = key;
+  v10 = [[PSSGResourceRequestEntry alloc] initWithKey:keyCopy stride:strideCopy graphName:nameCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSSGResourceRequestEntry *)self resourceKey];
-  v6 = [v4 resourceKey];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  resourceKey = [(PSSGResourceRequestEntry *)self resourceKey];
+  resourceKey2 = [equalCopy resourceKey];
+  if ([resourceKey isEqual:resourceKey2])
   {
-    v7 = [(PSSGResourceRequestEntry *)self stride];
-    v8 = [v7 unsignedIntValue];
-    v9 = [v4 stride];
-    v10 = v8 == [v9 unsignedIntValue];
+    stride = [(PSSGResourceRequestEntry *)self stride];
+    unsignedIntValue = [stride unsignedIntValue];
+    stride2 = [equalCopy stride];
+    v10 = unsignedIntValue == [stride2 unsignedIntValue];
   }
 
   else
@@ -71,10 +71,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PSSGResourceRequestEntry *)self resourceKey];
-  v4 = [v3 hash];
-  v5 = [(PSSGResourceRequestEntry *)self stride];
-  v6 = [v5 hash];
+  resourceKey = [(PSSGResourceRequestEntry *)self resourceKey];
+  v4 = [resourceKey hash];
+  stride = [(PSSGResourceRequestEntry *)self stride];
+  v6 = [stride hash];
 
   return v6 ^ v4;
 }
@@ -84,9 +84,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PSSGResourceRequestEntry *)self resourceKey];
-  v7 = [(PSSGResourceRequestEntry *)self stride];
-  v8 = [v3 stringWithFormat:@"<%@: %p, key %@, stride %@>", v5, self, v6, v7];
+  resourceKey = [(PSSGResourceRequestEntry *)self resourceKey];
+  stride = [(PSSGResourceRequestEntry *)self stride];
+  v8 = [v3 stringWithFormat:@"<%@: %p, key %@, stride %@>", v5, self, resourceKey, stride];
 
   return v8;
 }

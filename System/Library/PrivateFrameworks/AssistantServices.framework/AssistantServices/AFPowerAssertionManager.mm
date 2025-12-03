@@ -1,15 +1,15 @@
 @interface AFPowerAssertionManager
-- (AFPowerAssertionManager)initWithIdentifier:(id)a3;
+- (AFPowerAssertionManager)initWithIdentifier:(id)identifier;
 - (void)_createPowerAssertion;
 - (void)_releasePowerAssertion;
 - (void)_reportLeakedPowerAssertion;
 - (void)_watchdogTimedOut;
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5;
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5;
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion;
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion;
 - (void)dealloc;
 - (void)releaseAllPowerAssertions;
-- (void)releasePowerAssertionWithName:(id)a3;
-- (void)takePowerAssertionWithName:(id)a3;
+- (void)releasePowerAssertionWithName:(id)name;
+- (void)takePowerAssertionWithName:(id)name;
 @end
 
 @implementation AFPowerAssertionManager
@@ -24,7 +24,7 @@
     v9 = 136315650;
     v10 = "[AFPowerAssertionManager _reportLeakedPowerAssertion]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = identifier;
     _os_log_error_impl(&dword_1912FE000, v3, OS_LOG_TYPE_ERROR, "%s %p (%@)", &v9, 0x20u);
@@ -77,7 +77,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
     v9 = 136315906;
     v10 = "[AFPowerAssertionManager _watchdogTimedOut]";
     v11 = 2048;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
     v14 = identifier;
     v15 = 2048;
@@ -95,7 +95,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
       v9 = 136315906;
       v10 = "[AFPowerAssertionManager _watchdogTimedOut]";
       v11 = 2048;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v8;
       v15 = 1024;
@@ -119,7 +119,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
     v11 = 136315650;
     v12 = "[AFPowerAssertionManager _releasePowerAssertion]";
     v13 = 2048;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
     v16 = identifier;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", &v11, 0x20u);
@@ -135,7 +135,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
       v11 = 136315906;
       v12 = "[AFPowerAssertionManager _releasePowerAssertion]";
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
       v16 = v7;
       v17 = 1024;
@@ -169,7 +169,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
     *buf = 136315650;
     v23 = "[AFPowerAssertionManager _createPowerAssertion]";
     v24 = 2048;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2112;
     v27 = identifier;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", buf, 0x20u);
@@ -187,7 +187,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
         *buf = 136315650;
         v23 = "[AFPowerAssertionManager _createPowerAssertion]";
         v24 = 2048;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
         v27 = v6;
         _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %p (%@) Failed to create power assertion.", buf, 0x20u);
@@ -205,7 +205,7 @@ void __54__AFPowerAssertionManager__reportLeakedPowerAssertion__block_invoke(uin
         *buf = 136315906;
         v23 = "[AFPowerAssertionManager _createPowerAssertion]";
         v24 = 2048;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
         v27 = v9;
         v28 = 1024;
@@ -244,16 +244,16 @@ void __48__AFPowerAssertionManager__createPowerAssertion__block_invoke(uint64_t 
   [WeakRetained _watchdogTimedOut];
 }
 
-- (void)assertionCoordinator:(id)a3 didDeactivateAssertion:(id)a4 isLastAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didDeactivateAssertion:(id)assertion isLastAssertion:(BOOL)lastAssertion
 {
-  v5 = a5;
+  lastAssertionCopy = lastAssertion;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(self->_queue);
   assertionCoordinator = self->_assertionCoordinator;
   v11 = AFSiriLogContextConnection;
-  if (assertionCoordinator == v8)
+  if (assertionCoordinator == coordinatorCopy)
   {
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
@@ -261,21 +261,21 @@ void __48__AFPowerAssertionManager__createPowerAssertion__block_invoke(uint64_t 
       v15 = 136316162;
       v16 = "[AFPowerAssertionManager assertionCoordinator:didDeactivateAssertion:isLastAssertion:]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = identifier;
       v21 = 2112;
-      v22 = v9;
+      v22 = assertionCopy;
       v23 = 1024;
-      LODWORD(v24) = v5;
+      LODWORD(v24) = lastAssertionCopy;
       _os_log_debug_impl(&dword_1912FE000, v11, OS_LOG_TYPE_DEBUG, "%s %p (%@) assertion = %@, isLastAssertion = %d", &v15, 0x30u);
-      if (!v5)
+      if (!lastAssertionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v5)
+    else if (!lastAssertionCopy)
     {
       goto LABEL_7;
     }
@@ -290,13 +290,13 @@ void __48__AFPowerAssertionManager__createPowerAssertion__block_invoke(uint64_t 
     v15 = 136316162;
     v16 = "[AFPowerAssertionManager assertionCoordinator:didDeactivateAssertion:isLastAssertion:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
     v22 = assertionCoordinator;
     v23 = 2112;
-    v24 = v8;
+    v24 = coordinatorCopy;
     _os_log_error_impl(&dword_1912FE000, v11, OS_LOG_TYPE_ERROR, "%s %p (%@) Expected assertion coordinator is %@, actual assertion coordinator is %@.", &v15, 0x34u);
   }
 
@@ -305,16 +305,16 @@ LABEL_7:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertionCoordinator:(id)a3 didActivateAssertion:(id)a4 isFirstAssertion:(BOOL)a5
+- (void)assertionCoordinator:(id)coordinator didActivateAssertion:(id)assertion isFirstAssertion:(BOOL)firstAssertion
 {
-  v5 = a5;
+  firstAssertionCopy = firstAssertion;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(self->_queue);
   assertionCoordinator = self->_assertionCoordinator;
   v11 = AFSiriLogContextConnection;
-  if (assertionCoordinator == v8)
+  if (assertionCoordinator == coordinatorCopy)
   {
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
@@ -322,21 +322,21 @@ LABEL_7:
       v15 = 136316162;
       v16 = "[AFPowerAssertionManager assertionCoordinator:didActivateAssertion:isFirstAssertion:]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = identifier;
       v21 = 2112;
-      v22 = v9;
+      v22 = assertionCopy;
       v23 = 1024;
-      LODWORD(v24) = v5;
+      LODWORD(v24) = firstAssertionCopy;
       _os_log_debug_impl(&dword_1912FE000, v11, OS_LOG_TYPE_DEBUG, "%s %p (%@) assertion = %@, isFirstAssertion = %d", &v15, 0x30u);
-      if (!v5)
+      if (!firstAssertionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v5)
+    else if (!firstAssertionCopy)
     {
       goto LABEL_7;
     }
@@ -351,13 +351,13 @@ LABEL_7:
     v15 = 136316162;
     v16 = "[AFPowerAssertionManager assertionCoordinator:didActivateAssertion:isFirstAssertion:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
     v22 = assertionCoordinator;
     v23 = 2112;
-    v24 = v8;
+    v24 = coordinatorCopy;
     _os_log_error_impl(&dword_1912FE000, v11, OS_LOG_TYPE_ERROR, "%s %p (%@) Expected assertion coordinator is %@, actual assertion coordinator is %@.", &v15, 0x34u);
   }
 
@@ -376,7 +376,7 @@ LABEL_7:
     *buf = 136315650;
     v8 = "[AFPowerAssertionManager dealloc]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = identifier;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", buf, 0x20u);
@@ -399,7 +399,7 @@ LABEL_7:
     *buf = 136315650;
     v9 = "[AFPowerAssertionManager releaseAllPowerAssertions]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = identifier;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p (%@)", buf, 0x20u);
@@ -460,10 +460,10 @@ void __52__AFPowerAssertionManager_releaseAllPowerAssertions__block_invoke_2(uin
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releasePowerAssertionWithName:(id)a3
+- (void)releasePowerAssertionWithName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -471,18 +471,18 @@ void __52__AFPowerAssertionManager_releaseAllPowerAssertions__block_invoke_2(uin
     *buf = 136315906;
     v15 = "[AFPowerAssertionManager releasePowerAssertionWithName:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = identifier;
     v20 = 2112;
-    v21 = v4;
+    v21 = nameCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p (%@) name = %@", buf, 0x2Au);
   }
 
   v7 = @"default";
-  if (v4)
+  if (nameCopy)
   {
-    v7 = v4;
+    v7 = nameCopy;
   }
 
   v8 = v7;
@@ -534,10 +534,10 @@ void __57__AFPowerAssertionManager_releasePowerAssertionWithName___block_invoke(
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)takePowerAssertionWithName:(id)a3
+- (void)takePowerAssertionWithName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -545,18 +545,18 @@ void __57__AFPowerAssertionManager_releasePowerAssertionWithName___block_invoke(
     *buf = 136315906;
     v23 = "[AFPowerAssertionManager takePowerAssertionWithName:]";
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = identifier;
     v28 = 2112;
-    v29 = v4;
+    v29 = nameCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p (%@) name = %@", buf, 0x2Au);
   }
 
   v7 = @"default";
-  if (v4)
+  if (nameCopy)
   {
-    v7 = v4;
+    v7 = nameCopy;
   }
 
   v8 = v7;
@@ -635,18 +635,18 @@ uint64_t __54__AFPowerAssertionManager_takePowerAssertionWithName___block_invoke
   return result;
 }
 
-- (AFPowerAssertionManager)initWithIdentifier:(id)a3
+- (AFPowerAssertionManager)initWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = AFPowerAssertionManager;
   v5 = [(AFPowerAssertionManager *)&v19 init];
   if (v5)
   {
-    if ([v4 length])
+    if ([identifierCopy length])
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
     }
 
     else
@@ -657,11 +657,11 @@ uint64_t __54__AFPowerAssertionManager_takePowerAssertionWithName___block_invoke
     identifier = v5->_identifier;
     v5->_identifier = &v6->isa;
 
-    v8 = [@"com.apple.assistant.power-assertion-manager" UTF8String];
+    uTF8String = [@"com.apple.assistant.power-assertion-manager" UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_DEFAULT, 0);
 
-    v11 = dispatch_queue_create(v8, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     queue = v5->_queue;
     v5->_queue = v11;
 

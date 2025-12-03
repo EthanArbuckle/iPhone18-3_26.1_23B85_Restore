@@ -1,21 +1,21 @@
 @interface PHASEDirectionalMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)planeWaves;
 - (PHASEDirectionalMetadata)init;
-- (PHASEDirectionalMetadata)initWithSubbandFrequencies:(id)a3;
-- (PHASEDirectionalMetadata)initWithSubbandFrequencyLayout:(int64_t)a3;
+- (PHASEDirectionalMetadata)initWithSubbandFrequencies:(id)frequencies;
+- (PHASEDirectionalMetadata)initWithSubbandFrequencyLayout:(int64_t)layout;
 - (PHASESphericalPositionMetadata)position;
 - (int64_t)category;
 - (int64_t)synthesisPreference;
 - (unint64_t)hash;
-- (void)addPlaneWave:(id)a3;
-- (void)removePlaneWave:(id)a3;
-- (void)replacePlaneWave:(id)a3 withPlaneWave:(id)a4;
-- (void)setCategory:(int64_t)a3;
-- (void)setPlaneWaves:(id)a3;
-- (void)setPosition:(id)a3;
-- (void)setSynthesisPreference:(int64_t)a3;
-- (void)validateSubbandFrequencies:(id)a3;
+- (void)addPlaneWave:(id)wave;
+- (void)removePlaneWave:(id)wave;
+- (void)replacePlaneWave:(id)wave withPlaneWave:(id)planeWave;
+- (void)setCategory:(int64_t)category;
+- (void)setPlaneWaves:(id)waves;
+- (void)setPosition:(id)position;
+- (void)setSynthesisPreference:(int64_t)preference;
+- (void)validateSubbandFrequencies:(id)frequencies;
 @end
 
 @implementation PHASEDirectionalMetadata
@@ -27,15 +27,15 @@
   return 0;
 }
 
-- (PHASEDirectionalMetadata)initWithSubbandFrequencies:(id)a3
+- (PHASEDirectionalMetadata)initWithSubbandFrequencies:(id)frequencies
 {
-  v5 = a3;
-  if (!v5)
+  frequenciesCopy = frequencies;
+  if (!frequenciesCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"subbandFrequencies is nil."];
   }
 
-  if (![v5 count])
+  if (![frequenciesCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"subbandFrequencies is empty."];
   }
@@ -57,24 +57,24 @@
     internalPositionLock = v6->_internalPositionLock;
     v6->_internalPositionLock = v11;
 
-    [(PHASEDirectionalMetadata *)v6 validateSubbandFrequencies:v5];
-    objc_storeStrong(&v6->_internalSubbandFrequencies, a3);
+    [(PHASEDirectionalMetadata *)v6 validateSubbandFrequencies:frequenciesCopy];
+    objc_storeStrong(&v6->_internalSubbandFrequencies, frequencies);
     [(PHASEDirectionalMetadata *)v6 setCategory:+[PHASEDirectionalMetadata defaultCategory]];
     [(PHASEDirectionalMetadata *)v6 setSynthesisPreference:+[PHASEDirectionalMetadata defaultSynthesisPreference]];
     v13 = objc_alloc_init(PHASESphericalPositionMetadata);
     [(PHASEDirectionalMetadata *)v6 setPosition:v13];
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     internalPlaneWaves = v6->_internalPlaneWaves;
-    v6->_internalPlaneWaves = v14;
+    v6->_internalPlaneWaves = array;
   }
 
   return v6;
 }
 
-- (PHASEDirectionalMetadata)initWithSubbandFrequencyLayout:(int64_t)a3
+- (PHASEDirectionalMetadata)initWithSubbandFrequencyLayout:(int64_t)layout
 {
-  switch(a3)
+  switch(layout)
   {
     case 1718366512:
       v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
@@ -123,108 +123,108 @@ LABEL_14:
   return v15;
 }
 
-- (void)addPlaneWave:(id)a3
+- (void)addPlaneWave:(id)wave
 {
-  v12 = a3;
-  if (!v12)
+  waveCopy = wave;
+  if (!waveCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"planeWave is nil."];
   }
 
-  v4 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-  v5 = [v4 count];
+  subbandFrequencies = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+  v5 = [subbandFrequencies count];
 
-  v6 = [v12 subbandGains];
-  v7 = [v6 count];
+  subbandGains = [waveCopy subbandGains];
+  v7 = [subbandGains count];
 
   if (v7 != v5)
   {
     v8 = MEMORY[0x277CBEAD8];
-    v9 = [v12 subbandGains];
-    v10 = [v9 count];
+    subbandGains2 = [waveCopy subbandGains];
+    v10 = [subbandGains2 count];
     [v8 raise:*MEMORY[0x277CBE660] format:{@"planeWave subbandGains count: %lu does not match subbandFrequencies count: %lu.", v10, v5}];
   }
 
   v11 = self->_internalPlaneWaves;
   objc_sync_enter(v11);
-  if ([(NSMutableArray *)self->_internalPlaneWaves containsObject:v12])
+  if ([(NSMutableArray *)self->_internalPlaneWaves containsObject:waveCopy])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"planeWave already exists in planeWaves."];
   }
 
-  [(NSMutableArray *)self->_internalPlaneWaves addObject:v12];
+  [(NSMutableArray *)self->_internalPlaneWaves addObject:waveCopy];
   objc_sync_exit(v11);
 }
 
-- (void)removePlaneWave:(id)a3
+- (void)removePlaneWave:(id)wave
 {
-  v5 = a3;
-  if (!v5)
+  waveCopy = wave;
+  if (!waveCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"planeWave is nil."];
   }
 
   v4 = self->_internalPlaneWaves;
   objc_sync_enter(v4);
-  if (([(NSMutableArray *)self->_internalPlaneWaves containsObject:v5]& 1) == 0)
+  if (([(NSMutableArray *)self->_internalPlaneWaves containsObject:waveCopy]& 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"planeWave does not exist in planeWaves."];
   }
 
-  [(NSMutableArray *)self->_internalPlaneWaves removeObject:v5];
+  [(NSMutableArray *)self->_internalPlaneWaves removeObject:waveCopy];
   objc_sync_exit(v4);
 }
 
-- (void)replacePlaneWave:(id)a3 withPlaneWave:(id)a4
+- (void)replacePlaneWave:(id)wave withPlaneWave:(id)planeWave
 {
-  v16 = a3;
-  v6 = a4;
-  if (!v16)
+  waveCopy = wave;
+  planeWaveCopy = planeWave;
+  if (!waveCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"oldPlaneWave is nil."];
   }
 
-  if (!v6)
+  if (!planeWaveCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"newPlaneWave is nil."];
   }
 
-  v7 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-  v8 = [v7 count];
+  subbandFrequencies = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+  v8 = [subbandFrequencies count];
 
-  v9 = [v6 subbandGains];
-  v10 = [v9 count];
+  subbandGains = [planeWaveCopy subbandGains];
+  v10 = [subbandGains count];
 
   if (v10 != v8)
   {
     v11 = MEMORY[0x277CBEAD8];
-    v12 = [v6 subbandGains];
-    v13 = [v12 count];
+    subbandGains2 = [planeWaveCopy subbandGains];
+    v13 = [subbandGains2 count];
     [v11 raise:*MEMORY[0x277CBE660] format:{@"newPlaneWave subbandGains count: %lu does not match subbandFrequencies count: %lu.", v13, v8}];
   }
 
   v14 = self->_internalPlaneWaves;
   objc_sync_enter(v14);
-  v15 = [(NSMutableArray *)self->_internalPlaneWaves indexOfObject:v16];
+  v15 = [(NSMutableArray *)self->_internalPlaneWaves indexOfObject:waveCopy];
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"oldPlaneWave does not exist in planeWaves."];
   }
 
-  if ([(NSMutableArray *)self->_internalPlaneWaves containsObject:v6])
+  if ([(NSMutableArray *)self->_internalPlaneWaves containsObject:planeWaveCopy])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"newPlaneWave already exists in planeWaves."];
   }
 
-  [(NSMutableArray *)self->_internalPlaneWaves replaceObjectAtIndex:v15 withObject:v6];
+  [(NSMutableArray *)self->_internalPlaneWaves replaceObjectAtIndex:v15 withObject:planeWaveCopy];
   objc_sync_exit(v14);
 }
 
-- (void)setCategory:(int64_t)a3
+- (void)setCategory:(int64_t)category
 {
   obj = self->_internalCategoryLock;
   objc_sync_enter(obj);
-  self->_internalCategory = a3;
+  self->_internalCategory = category;
   objc_sync_exit(obj);
 }
 
@@ -238,11 +238,11 @@ LABEL_14:
   return internalCategory;
 }
 
-- (void)setSynthesisPreference:(int64_t)a3
+- (void)setSynthesisPreference:(int64_t)preference
 {
   obj = self->_internalSynthesisPreferenceLock;
   objc_sync_enter(obj);
-  self->_internalSynthesisPreference = a3;
+  self->_internalSynthesisPreference = preference;
   objc_sync_exit(obj);
 }
 
@@ -256,10 +256,10 @@ LABEL_14:
   return internalSynthesisPreference;
 }
 
-- (void)setPosition:(id)a3
+- (void)setPosition:(id)position
 {
-  v4 = a3;
-  if (!v4)
+  positionCopy = position;
+  if (!positionCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The position is nil."];
   }
@@ -267,8 +267,8 @@ LABEL_14:
   v5 = self->_internalPositionLock;
   objc_sync_enter(v5);
   internalPosition = self->_internalPosition;
-  self->_internalPosition = v4;
-  v7 = v4;
+  self->_internalPosition = positionCopy;
+  v7 = positionCopy;
 
   objc_sync_exit(v5);
 }
@@ -283,19 +283,19 @@ LABEL_14:
   return v4;
 }
 
-- (void)setPlaneWaves:(id)a3
+- (void)setPlaneWaves:(id)waves
 {
-  v4 = a3;
+  wavesCopy = waves;
   v5 = MEMORY[0x277CBE660];
-  v18 = v4;
-  if (!v4)
+  v18 = wavesCopy;
+  if (!wavesCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"planeWaves is nil."];
   }
 
-  v17 = self;
-  v6 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-  v7 = [v6 count];
+  selfCopy = self;
+  subbandFrequencies = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+  v7 = [subbandFrequencies count];
 
   v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v18, "count")}];
   v9 = 0;
@@ -308,14 +308,14 @@ LABEL_14:
       [MEMORY[0x277CBEAD8] raise:v10 format:{@"planeWaves[%lu] is nil.", v9}];
     }
 
-    v12 = [v11 subbandGains];
-    v13 = [v12 count];
+    subbandGains = [v11 subbandGains];
+    v13 = [subbandGains count];
 
     if (v13 != v7)
     {
       v14 = MEMORY[0x277CBEAD8];
-      v15 = [v11 subbandGains];
-      [v14 raise:v10 format:{@"planeWaves[%lu] subbandGains count: %lu does not match subbandFrequencies count: %lu.", v9, objc_msgSend(v15, "count"), v7}];
+      subbandGains2 = [v11 subbandGains];
+      [v14 raise:v10 format:{@"planeWaves[%lu] subbandGains count: %lu does not match subbandFrequencies count: %lu.", v9, objc_msgSend(subbandGains2, "count"), v7}];
     }
 
     if ([v8 containsObject:v11])
@@ -328,9 +328,9 @@ LABEL_14:
     ++v9;
   }
 
-  v16 = v17->_internalPlaneWaves;
+  v16 = selfCopy->_internalPlaneWaves;
   objc_sync_enter(v16);
-  [(NSMutableArray *)v17->_internalPlaneWaves setArray:v18];
+  [(NSMutableArray *)selfCopy->_internalPlaneWaves setArray:v18];
   objc_sync_exit(v16);
 }
 
@@ -344,10 +344,10 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -357,27 +357,27 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(PHASEDirectionalMetadata *)self category];
-      if (v7 != [(PHASEDirectionalMetadata *)v6 category])
+      v6 = equalCopy;
+      category = [(PHASEDirectionalMetadata *)self category];
+      if (category != [(PHASEDirectionalMetadata *)v6 category])
       {
         goto LABEL_22;
       }
 
-      v8 = [(PHASEDirectionalMetadata *)self synthesisPreference];
-      if (v8 != [(PHASEDirectionalMetadata *)v6 synthesisPreference])
+      synthesisPreference = [(PHASEDirectionalMetadata *)self synthesisPreference];
+      if (synthesisPreference != [(PHASEDirectionalMetadata *)v6 synthesisPreference])
       {
         goto LABEL_22;
       }
 
-      v9 = [(PHASEDirectionalMetadata *)self position];
-      if (v9 || ([(PHASEDirectionalMetadata *)v6 position], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      position = [(PHASEDirectionalMetadata *)self position];
+      if (position || ([(PHASEDirectionalMetadata *)v6 position], (subbandFrequencies2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v10 = [(PHASEDirectionalMetadata *)self position];
-        v11 = [(PHASEDirectionalMetadata *)v6 position];
-        v12 = [v10 isEqual:v11];
+        position2 = [(PHASEDirectionalMetadata *)self position];
+        position3 = [(PHASEDirectionalMetadata *)v6 position];
+        v12 = [position2 isEqual:position3];
 
-        if (v9)
+        if (position)
         {
 
           if ((v12 & 1) == 0)
@@ -396,21 +396,21 @@ LABEL_14:
         }
       }
 
-      v14 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-      if (!v14)
+      subbandFrequencies = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+      if (!subbandFrequencies)
       {
-        v3 = [(PHASEDirectionalMetadata *)v6 subbandFrequencies];
-        if (!v3)
+        subbandFrequencies2 = [(PHASEDirectionalMetadata *)v6 subbandFrequencies];
+        if (!subbandFrequencies2)
         {
 LABEL_17:
-          v18 = [(PHASEDirectionalMetadata *)self planeWaves];
-          if (v18 || ([(PHASEDirectionalMetadata *)v6 planeWaves], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          planeWaves = [(PHASEDirectionalMetadata *)self planeWaves];
+          if (planeWaves || ([(PHASEDirectionalMetadata *)v6 planeWaves], (subbandFrequencies2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v19 = [(PHASEDirectionalMetadata *)self planeWaves];
-            v20 = [(PHASEDirectionalMetadata *)v6 planeWaves];
-            v13 = [v19 isEqualToArray:v20];
+            planeWaves2 = [(PHASEDirectionalMetadata *)self planeWaves];
+            planeWaves3 = [(PHASEDirectionalMetadata *)v6 planeWaves];
+            v13 = [planeWaves2 isEqualToArray:planeWaves3];
 
-            if (v18)
+            if (planeWaves)
             {
 LABEL_27:
 
@@ -427,11 +427,11 @@ LABEL_27:
         }
       }
 
-      v15 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-      v16 = [(PHASEDirectionalMetadata *)v6 subbandFrequencies];
-      v17 = [v15 isEqualToArray:v16];
+      subbandFrequencies3 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+      subbandFrequencies4 = [(PHASEDirectionalMetadata *)v6 subbandFrequencies];
+      v17 = [subbandFrequencies3 isEqualToArray:subbandFrequencies4];
 
-      if (v14)
+      if (subbandFrequencies)
       {
 
         if (v17)
@@ -472,27 +472,27 @@ LABEL_24:
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PHASEDirectionalMetadata synthesisPreference](self, "synthesisPreference")}];
   v6 = [v5 hash];
 
-  v7 = [(PHASEDirectionalMetadata *)self position];
-  v8 = [v7 hash];
+  position = [(PHASEDirectionalMetadata *)self position];
+  v8 = [position hash];
 
-  v9 = [(PHASEDirectionalMetadata *)self subbandFrequencies];
-  v10 = [v9 hash];
+  subbandFrequencies = [(PHASEDirectionalMetadata *)self subbandFrequencies];
+  v10 = [subbandFrequencies hash];
 
-  v11 = [(PHASEDirectionalMetadata *)self planeWaves];
-  v12 = [v11 hash];
+  planeWaves = [(PHASEDirectionalMetadata *)self planeWaves];
+  v12 = [planeWaves hash];
 
   return v6 ^ v4 ^ v8 ^ v10 ^ v12;
 }
 
-- (void)validateSubbandFrequencies:(id)a3
+- (void)validateSubbandFrequencies:(id)frequencies
 {
-  v18 = a3;
+  frequenciesCopy = frequencies;
   v3 = 0;
   v4 = 0;
   v5 = *MEMORY[0x277CBE660];
-  while (v3 < [v18 count])
+  while (v3 < [frequenciesCopy count])
   {
-    v6 = [v18 objectAtIndexedSubscript:v3];
+    v6 = [frequenciesCopy objectAtIndexedSubscript:v3];
     if (!v6)
     {
       [MEMORY[0x277CBEAD8] raise:v5 format:{@"subbandFrequency[%lu] is nil.", v3}];

@@ -1,22 +1,22 @@
 @interface SecMessageLegacyFullIdentity
 + (id)identity;
-+ (id)identityFromV2Bytes:(const char *)a3 size:(unint64_t *)a4 error:(id *)a5;
-+ (id)identityWithDataRepresentation:(id)a3 error:(id *)a4;
-+ (id)populateIdentity:(id)a3 withEncryptionKeyFromPersistentRef:(const char *)a4 size:(unint64_t *)a5;
-+ (id)populateIdentity:(id)a3 withSigningKeyFromPersistentRef:(const char *)a4 size:(unint64_t *)a5;
-- (SecMessageLegacyFullIdentity)initWithEncryptionKey:(id)a3 signingKey:(id)a4;
-- (SecMessageLegacyFullIdentity)initWithEncryptionKeyData:(id)a3 signingKeyData:(id)a4;
-- (SecMessageLegacyFullIdentity)initWithEncryptionSecKey:(__SecKey *)a3 signingSecKey:(__SecKey *)a4;
-- (SecMessageLegacyFullIdentity)initWithProtobufData:(id)a3;
++ (id)identityFromV2Bytes:(const char *)bytes size:(unint64_t *)size error:(id *)error;
++ (id)identityWithDataRepresentation:(id)representation error:(id *)error;
++ (id)populateIdentity:(id)identity withEncryptionKeyFromPersistentRef:(const char *)ref size:(unint64_t *)size;
++ (id)populateIdentity:(id)identity withSigningKeyFromPersistentRef:(const char *)ref size:(unint64_t *)size;
+- (SecMessageLegacyFullIdentity)initWithEncryptionKey:(id)key signingKey:(id)signingKey;
+- (SecMessageLegacyFullIdentity)initWithEncryptionKeyData:(id)data signingKeyData:(id)keyData;
+- (SecMessageLegacyFullIdentity)initWithEncryptionSecKey:(__SecKey *)key signingSecKey:(__SecKey *)secKey;
+- (SecMessageLegacyFullIdentity)initWithProtobufData:(id)data;
 - (_SecMPFullIdentity)asRef;
 - (__SecKey)privateSigningKeyForTerminusMigration;
-- (id)dataRepresentationWithError:(id *)a3;
-- (id)decryptMessage:(id)a3 error:(id *)a4;
+- (id)dataRepresentationWithError:(id *)error;
+- (id)decryptMessage:(id)message error:(id *)error;
 - (id)publicIdentity;
-- (id)signData:(id)a3 error:(id *)a4;
-- (id)unsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5;
+- (id)signData:(id)data error:(id *)error;
+- (id)unsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error;
 - (unint64_t)encryptionSize;
-- (void)deleteItemWithPersistentRef:(id)a3;
+- (void)deleteItemWithPersistentRef:(id)ref;
 - (void)deleteMigratedKeys;
 @end
 
@@ -25,20 +25,20 @@
 - (id)publicIdentity
 {
   v3 = [SecMessageLegacyPublicIdentity alloc];
-  v4 = [(SecMessageLegacyFullIdentity *)self encryptionKey];
-  v5 = [v4 publicKey];
-  v6 = [(SecMessageLegacyFullIdentity *)self signingKey];
-  v7 = [v6 publicKey];
-  v8 = [(SecMessageLegacyPublicIdentity *)v3 initWithEncryptionKey:v5 signingKey:v7];
+  encryptionKey = [(SecMessageLegacyFullIdentity *)self encryptionKey];
+  publicKey = [encryptionKey publicKey];
+  signingKey = [(SecMessageLegacyFullIdentity *)self signingKey];
+  publicKey2 = [signingKey publicKey];
+  v8 = [(SecMessageLegacyPublicIdentity *)v3 initWithEncryptionKey:publicKey signingKey:publicKey2];
 
   return v8;
 }
 
-+ (id)populateIdentity:(id)a3 withSigningKeyFromPersistentRef:(const char *)a4 size:(unint64_t *)a5
++ (id)populateIdentity:(id)identity withSigningKeyFromPersistentRef:(const char *)ref size:(unint64_t *)size
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     v8 = 0;
     goto LABEL_3;
@@ -47,7 +47,7 @@
   error = 0;
   key = 0;
   v18 = 0;
-  v11 = SecMPFICreatePrivateAndPublicKeyReadPersistentRef(&v18, a4, a5, &key, &error);
+  v11 = SecMPFICreatePrivateAndPublicKeyReadPersistentRef(&v18, ref, size, &key, &error);
   v12 = v18;
   if (v11)
   {
@@ -62,19 +62,19 @@
 
   else
   {
-    [v7 setSigningKeyPersistentRef:v12];
+    [identityCopy setSigningKeyPersistentRef:v12];
     v13 = SecKeyCopyExternalRepresentation(key, &error);
     if (v13)
     {
       v17 = 0;
       v14 = [[LegacySigningKeyPrivate alloc] initWithData:v13 error:&v17];
-      [v7 setSigningKey:v14];
+      [identityCopy setSigningKey:v14];
 
       memset_s([v13 mutableBytes], [v13 length], 0, [v13 length]);
-      v15 = [v7 signingKey];
-      if (v15)
+      signingKey = [identityCopy signingKey];
+      if (signingKey)
       {
-        v16 = v7;
+        v16 = identityCopy;
       }
 
       else
@@ -97,11 +97,11 @@ LABEL_3:
   return v8;
 }
 
-+ (id)populateIdentity:(id)a3 withEncryptionKeyFromPersistentRef:(const char *)a4 size:(unint64_t *)a5
++ (id)populateIdentity:(id)identity withEncryptionKeyFromPersistentRef:(const char *)ref size:(unint64_t *)size
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     v8 = 0;
     goto LABEL_3;
@@ -110,7 +110,7 @@ LABEL_3:
   error = 0;
   key = 0;
   v18 = 0;
-  v11 = SecMPFICreatePrivateAndPublicKeyReadPersistentRef(&v18, a4, a5, &key, &error);
+  v11 = SecMPFICreatePrivateAndPublicKeyReadPersistentRef(&v18, ref, size, &key, &error);
   v12 = v18;
   if (v11)
   {
@@ -125,19 +125,19 @@ LABEL_3:
 
   else
   {
-    [v7 setEncryptionKeyPersistentRef:v12];
+    [identityCopy setEncryptionKeyPersistentRef:v12];
     v13 = SecKeyCopyExternalRepresentation(key, &error);
     if (v13)
     {
       v17 = 0;
       v14 = [[SecKeyRSAPrivate alloc] initWithData:v13 error:&v17];
-      [v7 setEncryptionKey:v14];
+      [identityCopy setEncryptionKey:v14];
 
       memset_s([v13 mutableBytes], [v13 length], 0, [v13 length]);
-      v15 = [v7 encryptionKey];
-      if (v15)
+      encryptionKey = [identityCopy encryptionKey];
+      if (encryptionKey)
       {
-        v16 = v7;
+        v16 = identityCopy;
       }
 
       else
@@ -160,32 +160,32 @@ LABEL_3:
   return v8;
 }
 
-+ (id)identityFromV2Bytes:(const char *)a3 size:(unint64_t *)a4 error:(id *)a5
++ (id)identityFromV2Bytes:(const char *)bytes size:(unint64_t *)size error:(id *)error
 {
   v9 = [[SecMessageLegacyFullIdentity alloc] initWithEncryptionKey:0 signingKey:0];
   [(SecMessageLegacyFullIdentity *)v9 setIsMigratedV2Key:1];
-  v10 = [a1 populateIdentity:v9 withSigningKeyFromPersistentRef:a3 size:a4];
+  v10 = [self populateIdentity:v9 withSigningKeyFromPersistentRef:bytes size:size];
 
-  v11 = [a1 populateIdentity:v10 withEncryptionKeyFromPersistentRef:a3 size:a4];
+  v11 = [self populateIdentity:v10 withEncryptionKeyFromPersistentRef:bytes size:size];
 
   if (!v11)
   {
-    MPLogAndAssignError(-101, a5, @"Looking up the persistent reference failed.");
+    MPLogAndAssignError(-101, error, @"Looking up the persistent reference failed.");
   }
 
   return v11;
 }
 
-- (void)deleteItemWithPersistentRef:(id)a3
+- (void)deleteItemWithPersistentRef:(id)ref
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CDC5F0];
   v11[0] = *MEMORY[0x277CDC228];
   v11[1] = v3;
   v12[0] = *MEMORY[0x277CDC250];
-  v12[1] = a3;
+  v12[1] = ref;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  refCopy = ref;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   v7 = SecItemDelete(v6);
@@ -204,11 +204,11 @@ LABEL_3:
 
 - (void)deleteMigratedKeys
 {
-  v3 = [(SecMessageLegacyFullIdentity *)self encryptionKeyPersistentRef];
-  [(SecMessageLegacyFullIdentity *)self deleteItemWithPersistentRef:v3];
+  encryptionKeyPersistentRef = [(SecMessageLegacyFullIdentity *)self encryptionKeyPersistentRef];
+  [(SecMessageLegacyFullIdentity *)self deleteItemWithPersistentRef:encryptionKeyPersistentRef];
 
-  v4 = [(SecMessageLegacyFullIdentity *)self signingKeyPersistentRef];
-  [(SecMessageLegacyFullIdentity *)self deleteItemWithPersistentRef:v4];
+  signingKeyPersistentRef = [(SecMessageLegacyFullIdentity *)self signingKeyPersistentRef];
+  [(SecMessageLegacyFullIdentity *)self deleteItemWithPersistentRef:signingKeyPersistentRef];
 
   [(SecMessageLegacyFullIdentity *)self setEncryptionKeyPersistentRef:0];
   [(SecMessageLegacyFullIdentity *)self setSigningKeyPersistentRef:0];
@@ -221,29 +221,29 @@ LABEL_3:
   }
 }
 
-- (SecMessageLegacyFullIdentity)initWithEncryptionSecKey:(__SecKey *)a3 signingSecKey:(__SecKey *)a4
+- (SecMessageLegacyFullIdentity)initWithEncryptionSecKey:(__SecKey *)key signingSecKey:(__SecKey *)secKey
 {
-  v6 = SecKeyCopyExternalRepresentation(a3, 0);
+  v6 = SecKeyCopyExternalRepresentation(key, 0);
   v7 = [[SecKeyRSAPrivate alloc] initWithData:v6 error:0];
-  v8 = SecKeyCopyExternalRepresentation(a4, 0);
+  v8 = SecKeyCopyExternalRepresentation(secKey, 0);
   v9 = [[LegacySigningKeyPrivate alloc] initWithData:v8 error:0];
   v10 = [(SecMessageLegacyFullIdentity *)self initWithEncryptionKey:v7 signingKey:v9];
 
   return v10;
 }
 
-- (SecMessageLegacyFullIdentity)initWithProtobufData:(id)a3
+- (SecMessageLegacyFullIdentity)initWithProtobufData:(id)data
 {
-  v4 = a3;
-  v5 = [[NGMPBLegacyKey alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[NGMPBLegacyKey alloc] initWithData:dataCopy];
 
   if (v5)
   {
-    v6 = [(NGMPBLegacyKey *)v5 encryptionKey];
-    v7 = [(NGMPBLegacyKey *)v5 signingKey];
-    self = [(SecMessageLegacyFullIdentity *)self initWithEncryptionKeyData:v6 signingKeyData:v7];
+    encryptionKey = [(NGMPBLegacyKey *)v5 encryptionKey];
+    signingKey = [(NGMPBLegacyKey *)v5 signingKey];
+    self = [(SecMessageLegacyFullIdentity *)self initWithEncryptionKeyData:encryptionKey signingKeyData:signingKey];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -254,45 +254,45 @@ LABEL_3:
       [(SecMessageLegacyFullIdentity *)v9 initWithProtobufData:v10, v11, v12, v13, v14, v15, v16];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (SecMessageLegacyFullIdentity)initWithEncryptionKey:(id)a3 signingKey:(id)a4
+- (SecMessageLegacyFullIdentity)initWithEncryptionKey:(id)key signingKey:(id)signingKey
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  signingKeyCopy = signingKey;
   v12.receiver = self;
   v12.super_class = SecMessageLegacyFullIdentity;
   v9 = [(SecMessageLegacyFullIdentity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_encryptionKey, a3);
-    objc_storeStrong(&v10->_signingKey, a4);
+    objc_storeStrong(&v9->_encryptionKey, key);
+    objc_storeStrong(&v10->_signingKey, signingKey);
     v10->_isMigratedV2Key = 0;
   }
 
   return v10;
 }
 
-- (SecMessageLegacyFullIdentity)initWithEncryptionKeyData:(id)a3 signingKeyData:(id)a4
+- (SecMessageLegacyFullIdentity)initWithEncryptionKeyData:(id)data signingKeyData:(id)keyData
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[LegacySigningKeyPrivate alloc] initWithData:v7 error:0];
+  dataCopy = data;
+  keyDataCopy = keyData;
+  v8 = [[LegacySigningKeyPrivate alloc] initWithData:keyDataCopy error:0];
 
   if (v8)
   {
     v14 = 0;
-    v9 = [[SecKeyRSAPrivate alloc] initWithData:v6 error:&v14];
+    v9 = [[SecKeyRSAPrivate alloc] initWithData:dataCopy error:&v14];
     v10 = v14;
     if (v9)
     {
       self = [(SecMessageLegacyFullIdentity *)self initWithEncryptionKey:v9 signingKey:v8];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -303,7 +303,7 @@ LABEL_3:
         [SecMessageLegacyFullIdentity initWithEncryptionKeyData:v10 signingKeyData:?];
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -315,10 +315,10 @@ LABEL_3:
       [SecMessageLegacyFullIdentity initWithEncryptionKeyData:signingKeyData:];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 + (id)identity
@@ -327,16 +327,16 @@ LABEL_3:
   v3 = objc_alloc_init(LegacySigningKeyPrivate);
   [(SecMessageLegacyFullIdentity *)v2 setSigningKey:v3];
 
-  v4 = [(SecMessageLegacyFullIdentity *)v2 signingKey];
+  signingKey = [(SecMessageLegacyFullIdentity *)v2 signingKey];
 
-  if (v4)
+  if (signingKey)
   {
     v5 = objc_alloc_init(SecKeyRSAPrivate);
     [(SecMessageLegacyFullIdentity *)v2 setEncryptionKey:v5];
 
-    v6 = [(SecMessageLegacyFullIdentity *)v2 encryptionKey];
+    encryptionKey = [(SecMessageLegacyFullIdentity *)v2 encryptionKey];
 
-    if (v6)
+    if (encryptionKey)
     {
       v7 = v2;
       goto LABEL_9;
@@ -364,21 +364,21 @@ LABEL_9:
   return v7;
 }
 
-+ (id)identityWithDataRepresentation:(id)a3 error:(id *)a4
++ (id)identityWithDataRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
-  if (![v5 length])
+  representationCopy = representation;
+  if (![representationCopy length])
   {
-    MPLogAndAssignError(-100, a4, @"The passed legacy key representation is of incorrect size.");
+    MPLogAndAssignError(-100, error, @"The passed legacy key representation is of incorrect size.");
     v11 = 0;
     goto LABEL_14;
   }
 
-  v6 = [v5 bytes];
-  v7 = [v5 subdataWithRange:{1, objc_msgSend(v5, "length") - 1}];
+  bytes = [representationCopy bytes];
+  v7 = [representationCopy subdataWithRange:{1, objc_msgSend(representationCopy, "length") - 1}];
   v16 = [v7 length];
-  v15 = [v7 bytes];
-  v8 = *v6;
+  bytes2 = [v7 bytes];
+  v8 = *bytes;
   if (v8 == 2)
   {
     v12 = MessageProtectionLog();
@@ -388,14 +388,14 @@ LABEL_9:
       _os_log_impl(&dword_22B404000, v12, OS_LOG_TYPE_INFO, "Parsing a legacy key of version 2.", v14, 2u);
     }
 
-    v10 = [SecMessageLegacyFullIdentity identityFromV2Bytes:&v15 size:&v16 error:a4];
+    v10 = [SecMessageLegacyFullIdentity identityFromV2Bytes:&bytes2 size:&v16 error:error];
   }
 
   else
   {
     if (v8 != 3)
     {
-      MPLogAndAssignError(-100, a4, @"Failed to parse legacy key format.");
+      MPLogAndAssignError(-100, error, @"Failed to parse legacy key format.");
       v11 = 0;
       goto LABEL_13;
     }
@@ -418,39 +418,39 @@ LABEL_14:
   return v11;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SecMessageLegacyFullIdentity *)self signingKey];
-  v8 = [v7 signData:v6 error:a4];
+  dataCopy = data;
+  signingKey = [(SecMessageLegacyFullIdentity *)self signingKey];
+  v8 = [signingKey signData:dataCopy error:error];
 
   return v8;
 }
 
-- (id)decryptMessage:(id)a3 error:(id *)a4
+- (id)decryptMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SecMessageLegacyFullIdentity *)self encryptionKey];
-  v8 = [v7 decryptData:v6 error:a4];
+  messageCopy = message;
+  encryptionKey = [(SecMessageLegacyFullIdentity *)self encryptionKey];
+  v8 = [encryptionKey decryptData:messageCopy error:error];
 
   return v8;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
   v4 = objc_alloc_init(NGMPBLegacyKey);
-  v5 = [(SecMessageLegacyFullIdentity *)self encryptionKey];
-  v6 = [v5 dataRepresentation];
-  [(NGMPBLegacyKey *)v4 setEncryptionKey:v6];
+  encryptionKey = [(SecMessageLegacyFullIdentity *)self encryptionKey];
+  dataRepresentation = [encryptionKey dataRepresentation];
+  [(NGMPBLegacyKey *)v4 setEncryptionKey:dataRepresentation];
 
-  v7 = [(SecMessageLegacyFullIdentity *)self signingKey];
-  v8 = [v7 dataRepresentation];
-  [(NGMPBLegacyKey *)v4 setSigningKey:v8];
+  signingKey = [(SecMessageLegacyFullIdentity *)self signingKey];
+  dataRepresentation2 = [signingKey dataRepresentation];
+  [(NGMPBLegacyKey *)v4 setSigningKey:dataRepresentation2];
 
   v12 = 3;
   v9 = [MEMORY[0x277CBEB28] dataWithBytes:&v12 length:1];
-  v10 = [(NGMPBLegacyKey *)v4 data];
-  [v9 appendData:v10];
+  data = [(NGMPBLegacyKey *)v4 data];
+  [v9 appendData:data];
 
   if ([(SecMessageLegacyFullIdentity *)self isMigratedV2Key])
   {
@@ -462,45 +462,45 @@ LABEL_14:
 
 - (unint64_t)encryptionSize
 {
-  v2 = [(SecMessageLegacyFullIdentity *)self publicIdentity];
-  v3 = [v2 encryptionSize];
+  publicIdentity = [(SecMessageLegacyFullIdentity *)self publicIdentity];
+  encryptionSize = [publicIdentity encryptionSize];
 
-  return v3;
+  return encryptionSize;
 }
 
-- (id)unsealMessage:(id)a3 signedByPublicIdentity:(id)a4 error:(id *)a5
+- (id)unsealMessage:(id)message signedByPublicIdentity:(id)identity error:(id *)error
 {
   v17 = 0;
   v8 = MEMORY[0x277CBEB28];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 data];
-  v12 = [v9 asRef];
+  identityCopy = identity;
+  messageCopy = message;
+  data = [v8 data];
+  asRef = [identityCopy asRef];
 
-  v13 = [(SecMessageLegacyFullIdentity *)self asRef];
-  v14 = SecMPVerifyAndExposeMessage(v10, v12, v13, v11, &v17);
+  asRef2 = [(SecMessageLegacyFullIdentity *)self asRef];
+  v14 = SecMPVerifyAndExposeMessage(messageCopy, asRef, asRef2, data, &v17);
 
-  if (v12)
+  if (asRef)
   {
-    CFRelease(v12);
+    CFRelease(asRef);
   }
 
-  if (v13)
+  if (asRef2)
   {
-    CFRelease(v13);
+    CFRelease(asRef2);
   }
 
   if (v14)
   {
-    v15 = v11;
+    v15 = data;
   }
 
   else
   {
     v15 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -509,10 +509,10 @@ LABEL_14:
 
 - (__SecKey)privateSigningKeyForTerminusMigration
 {
-  v2 = [(SecMessageLegacyFullIdentity *)self signingKey];
-  v3 = [v2 secKeyRef];
+  signingKey = [(SecMessageLegacyFullIdentity *)self signingKey];
+  secKeyRef = [signingKey secKeyRef];
 
-  return v3;
+  return secKeyRef;
 }
 
 - (_SecMPFullIdentity)asRef
@@ -521,13 +521,13 @@ LABEL_14:
   SecMPFullIdentityGetTypeID();
   Instance = _CFRuntimeCreateInstance();
   Instance->var5 = CFRetain(self);
-  v5 = [(SecMessageLegacyFullIdentity *)self signingKey];
-  v6 = [v5 secKeyRef];
-  Instance->var2 = v6;
+  signingKey = [(SecMessageLegacyFullIdentity *)self signingKey];
+  secKeyRef = [signingKey secKeyRef];
+  Instance->var2 = secKeyRef;
 
-  v7 = [(SecMessageLegacyFullIdentity *)self encryptionKey];
-  v8 = [v7 secKeyRef];
-  Instance->var4 = v8;
+  encryptionKey = [(SecMessageLegacyFullIdentity *)self encryptionKey];
+  secKeyRef2 = [encryptionKey secKeyRef];
+  Instance->var4 = secKeyRef2;
 
   Instance->var1 = 0;
   Instance->var3 = 0;

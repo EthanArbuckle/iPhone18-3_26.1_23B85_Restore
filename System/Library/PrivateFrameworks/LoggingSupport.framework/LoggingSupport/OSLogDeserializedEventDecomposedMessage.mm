@@ -1,151 +1,151 @@
 @interface OSLogDeserializedEventDecomposedMessage
-- (OSLogDeserializedEventDecomposedMessage)initWithDict:(id)a3 metadata:(id)a4;
-- (id)argumentAtIndex:(unint64_t)a3;
-- (id)literalPrefixAtIndex:(unint64_t)a3;
-- (id)placeholderAtIndex:(unint64_t)a3;
+- (OSLogDeserializedEventDecomposedMessage)initWithDict:(id)dict metadata:(id)metadata;
+- (id)argumentAtIndex:(unint64_t)index;
+- (id)literalPrefixAtIndex:(unint64_t)index;
+- (id)placeholderAtIndex:(unint64_t)index;
 - (unint64_t)placeholderCount;
 - (unint64_t)state;
 @end
 
 @implementation OSLogDeserializedEventDecomposedMessage
 
-- (id)argumentAtIndex:(unint64_t)a3
+- (id)argumentAtIndex:(unint64_t)index
 {
-  v5 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-  v6 = [v5 count];
+  segments = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+  v6 = [segments count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = 0;
+    argument = 0;
   }
 
   else
   {
-    v7 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 argument];
+    segments2 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+    v8 = [segments2 objectAtIndexedSubscript:index];
+    argument = [v8 argument];
   }
 
-  return v9;
+  return argument;
 }
 
-- (id)placeholderAtIndex:(unint64_t)a3
+- (id)placeholderAtIndex:(unint64_t)index
 {
-  v5 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-  v6 = [v5 count];
+  segments = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+  v6 = [segments count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = 0;
+    placeholder = 0;
   }
 
   else
   {
-    v7 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 placeholder];
+    segments2 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+    v8 = [segments2 objectAtIndexedSubscript:index];
+    placeholder = [v8 placeholder];
   }
 
-  return v9;
+  return placeholder;
 }
 
-- (id)literalPrefixAtIndex:(unint64_t)a3
+- (id)literalPrefixAtIndex:(unint64_t)index
 {
-  v5 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-  v6 = [v5 count];
+  segments = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+  v6 = [segments count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = 0;
+    literalPrefix = 0;
   }
 
   else
   {
-    v7 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 literalPrefix];
+    segments2 = [(OSLogDeserializedEventDecomposedMessage *)self segments];
+    v8 = [segments2 objectAtIndexedSubscript:index];
+    literalPrefix = [v8 literalPrefix];
   }
 
-  return v9;
+  return literalPrefix;
 }
 
 - (unint64_t)state
 {
-  v4 = [(OSLogDeserializedEventDecomposedMessage *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"s"];
+  backingDict = [(OSLogDeserializedEventDecomposedMessage *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"s"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1423 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1423 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)placeholderCount
 {
-  v4 = [(OSLogDeserializedEventDecomposedMessage *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"pc"];
+  backingDict = [(OSLogDeserializedEventDecomposedMessage *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"pc"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1422 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1422 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
-- (OSLogDeserializedEventDecomposedMessage)initWithDict:(id)a3 metadata:(id)a4
+- (OSLogDeserializedEventDecomposedMessage)initWithDict:(id)dict metadata:(id)metadata
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dictCopy = dict;
+  metadataCopy = metadata;
   v34.receiver = self;
   v34.super_class = OSLogDeserializedEventDecomposedMessage;
   v10 = [(OSLogDeserializedEventDecomposedMessage *)&v34 init];
   if (v10)
   {
-    v11 = [v8 objectForKeyedSubscript:@"seg"];
+    v11 = [dictCopy objectForKeyedSubscript:@"seg"];
     if (v11)
     {
-      v28 = v8;
+      v28 = dictCopy;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v24 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v25 = objc_opt_class();
-        [v24 handleFailureInMethod:a2 object:v10 file:@"EventSerializer.m" lineNumber:1407 description:{@"Unexpected class: %@. Expected: %@", v25, objc_opt_class()}];
+        [currentHandler handleFailureInMethod:a2 object:v10 file:@"EventSerializer.m" lineNumber:1407 description:{@"Unexpected class: %@. Expected: %@", v25, objc_opt_class()}];
       }
 
       v27 = a2;
       v29 = v10;
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
@@ -170,13 +170,13 @@
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v20 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
               v26 = objc_opt_class();
-              [v20 handleFailureInMethod:v27 object:v29 file:@"EventSerializer.m" lineNumber:1410 description:{@"Unexpected class: %@. Expected: %@", v26, objc_opt_class()}];
+              [currentHandler2 handleFailureInMethod:v27 object:v29 file:@"EventSerializer.m" lineNumber:1410 description:{@"Unexpected class: %@. Expected: %@", v26, objc_opt_class()}];
             }
 
-            v19 = [[OSLogDecomposedMessageSegment alloc] initWithDict:v18 metadata:v9];
-            [(NSArray *)v12 addObject:v19];
+            v19 = [[OSLogDecomposedMessageSegment alloc] initWithDict:v18 metadata:metadataCopy];
+            [(NSArray *)array addObject:v19];
 
             ++v17;
           }
@@ -190,12 +190,12 @@
 
       v10 = v29;
       segments = v29->_segments;
-      v29->_segments = v12;
+      v29->_segments = array;
 
-      v8 = v28;
+      dictCopy = v28;
     }
 
-    objc_storeStrong(&v10->_backingDict, a3);
+    objc_storeStrong(&v10->_backingDict, dict);
   }
 
   v22 = *MEMORY[0x277D85DE8];

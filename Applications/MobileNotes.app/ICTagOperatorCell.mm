@@ -1,9 +1,9 @@
 @interface ICTagOperatorCell
-- (ICTagOperatorCell)initWithFrame:(CGRect)a3;
+- (ICTagOperatorCell)initWithFrame:(CGRect)frame;
 - (id)selectionChangeHandler;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setSelectionChangeHandler:(id)a3;
-- (void)setTagSelection:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setSelectionChangeHandler:(id)handler;
+- (void)setTagSelection:(id)selection;
 @end
 
 @implementation ICTagOperatorCell
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setSelectionChangeHandler:(id)a3
+- (void)setSelectionChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -50,39 +50,39 @@
   v8 = *(self + OBJC_IVAR___ICTagOperatorCell_selectionChangeHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1002B5F48(v8);
 }
 
-- (void)setTagSelection:(id)a3
+- (void)setTagSelection:(id)selection
 {
   v4 = *(self + OBJC_IVAR___ICTagOperatorCell_tagSelection);
-  *(self + OBJC_IVAR___ICTagOperatorCell_tagSelection) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___ICTagOperatorCell_tagSelection) = selection;
+  selectionCopy = selection;
+  selfCopy = self;
 
   sub_100397F48();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10039813C(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (ICTagOperatorCell)initWithFrame:(CGRect)a3
+- (ICTagOperatorCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (self + OBJC_IVAR___ICTagOperatorCell_selectionChangeHandler);
   *v9 = 0;

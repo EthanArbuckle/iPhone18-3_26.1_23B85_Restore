@@ -1,13 +1,13 @@
 @interface USKObjectPath
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SdfPath)path;
 - (USKObjectPath)init;
-- (USKObjectPath)initWithSdfPath:(SdfPath)a3;
-- (USKObjectPath)initWithString:(id)a3;
-- (USKObjectPath)initWithToken:(id)a3;
+- (USKObjectPath)initWithSdfPath:(SdfPath)path;
+- (USKObjectPath)initWithString:(id)string;
+- (USKObjectPath)initWithToken:(id)token;
 - (id).cxx_construct;
 - (id)nodePath;
-- (id)pathByAppendingPropertyComponent:(id)a3;
+- (id)pathByAppendingPropertyComponent:(id)component;
 - (id)propertyName;
 - (id)stringValue;
 - (id)tokenValue;
@@ -46,9 +46,9 @@
   return v3;
 }
 
-- (USKObjectPath)initWithSdfPath:(SdfPath)a3
+- (USKObjectPath)initWithSdfPath:(SdfPath)path
 {
-  poolHandle = a3._primPart._poolHandle;
+  poolHandle = path._primPart._poolHandle;
   sub_27035CAC4();
   v9.receiver = self;
   v9.super_class = USKObjectPath;
@@ -64,16 +64,16 @@
   return v6;
 }
 
-- (USKObjectPath)initWithString:(id)a3
+- (USKObjectPath)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   sub_27035CAC4();
   v19.receiver = self;
   v19.super_class = USKObjectPath;
   v5 = [(USKObjectPath *)&v19 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = stringCopy;
     v10 = objc_msgSend_UTF8String(v6, v7, v8, v9);
     v11 = strlen(v10);
     if (v11 >= 0x7FFFFFFFFFFFFFF8)
@@ -110,9 +110,9 @@
   return v5;
 }
 
-- (USKObjectPath)initWithToken:(id)a3
+- (USKObjectPath)initWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = USKObjectPath;
   v5 = [(USKObjectPath *)&v16 init];
@@ -122,13 +122,13 @@
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!tokenCopy)
   {
     v13 = 0;
     goto LABEL_6;
   }
 
-  v5 = objc_msgSend_token(v4, v6, v7, v8);
+  v5 = objc_msgSend_token(tokenCopy, v6, v7, v8);
   if ((v13 & 0xFFFFFFFFFFFFFFF8) == 0)
   {
 LABEL_6:
@@ -180,11 +180,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)pathByAppendingPropertyComponent:(id)a3
+- (id)pathByAppendingPropertyComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v18 = 0;
-  v5 = v4;
+  v5 = componentCopy;
   v9 = objc_msgSend_UTF8String(v5, v6, v7, v8);
   MEMORY[0x27439E610](&v17, v9);
   pxrInternal__aapl__pxrReserved__::SdfPath::AppendProperty(&v18, &self->_path, &v17);
@@ -260,16 +260,16 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_path(v5, v6, v7, v8);
     poolHandle = self->_path._primPart._poolHandle;

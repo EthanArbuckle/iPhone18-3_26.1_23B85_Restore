@@ -1,18 +1,18 @@
 @interface CSFAvailability
-+ (id)_availabilityGivenUnavailabilityReasons:(int64_t)a3;
-+ (id)_descriptionForUnavailabilityReasons:(int64_t)a3;
++ (id)_availabilityGivenUnavailabilityReasons:(int64_t)reasons;
++ (id)_descriptionForUnavailabilityReasons:(int64_t)reasons;
 + (id)currentAvailability;
 + (id)dispatchQueue;
 + (id)generateRequestID;
-+ (int64_t)_syncUnavailabilityReasonsWithRequestID:(id)a3;
-+ (void)_currentAvailabilityWithFeatureObject:(id)a3 completionHandler:(id)a4;
-+ (void)_handleFeatureResponseWithFeatureObject:(id)a3 error:(id)a4 reasons:(int64_t)a5 shouldBypassEligibility:(BOOL)a6 requestID:(id)a7 completionHandler:(id)a8;
++ (int64_t)_syncUnavailabilityReasonsWithRequestID:(id)d;
++ (void)_currentAvailabilityWithFeatureObject:(id)object completionHandler:(id)handler;
++ (void)_handleFeatureResponseWithFeatureObject:(id)object error:(id)error reasons:(int64_t)reasons shouldBypassEligibility:(BOOL)eligibility requestID:(id)d completionHandler:(id)handler;
 + (void)currentAvailability;
-+ (void)currentAvailabilityWithCompletionHandler:(id)a3;
-- (CSFAvailability)initWithCoder:(id)a3;
-- (CSFAvailability)initWithStatus:(int64_t)a3 withUnavailabilityReasons:(int64_t)a4;
++ (void)currentAvailabilityWithCompletionHandler:(id)handler;
+- (CSFAvailability)initWithCoder:(id)coder;
+- (CSFAvailability)initWithStatus:(int64_t)status withUnavailabilityReasons:(int64_t)reasons;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSFAvailability
@@ -39,8 +39,8 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
 + (id)generateRequestID
 {
   v2 = objc_opt_new();
-  v3 = [v2 UUIDString];
-  v4 = [v3 substringToIndex:8];
+  uUIDString = [v2 UUIDString];
+  v4 = [uUIDString substringToIndex:8];
 
   return v4;
 }
@@ -48,8 +48,8 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
 + (id)currentAvailability
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [a1 generateRequestID];
-  v4 = [a1 _syncUnavailabilityReasonsWithRequestID:v3];
+  generateRequestID = [self generateRequestID];
+  v4 = [self _syncUnavailabilityReasonsWithRequestID:generateRequestID];
   v5 = dispatch_group_create();
   v6 = +[_TtC25CloudSubscriptionFeatures8GMBypass gmEligibilityBypass];
   v7 = _CSFGetLogSystem();
@@ -59,7 +59,7 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
     if (v8)
     {
       v21 = 138412546;
-      v22 = v3;
+      v22 = generateRequestID;
       v23 = 2080;
       v24 = "+[CSFAvailability currentAvailability]";
       _os_log_impl(&dword_1DF47C000, v7, OS_LOG_TYPE_DEFAULT, "[%@] %s Eligibility bypass is set to YES. Skipping ramp eligibility checks.", &v21, 0x16u);
@@ -71,7 +71,7 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
     if (v8)
     {
       v21 = 138412546;
-      v22 = v3;
+      v22 = generateRequestID;
       v23 = 2080;
       v24 = "+[CSFAvailability currentAvailability]";
       _os_log_impl(&dword_1DF47C000, v7, OS_LOG_TYPE_DEFAULT, "[%@] %s Checking for device eligibility from feature cache.", &v21, 0x16u);
@@ -85,21 +85,21 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
       if (v10)
       {
         v21 = 138412546;
-        v22 = v3;
+        v22 = generateRequestID;
         v23 = 2080;
         v24 = "+[CSFAvailability currentAvailability]";
         _os_log_impl(&dword_1DF47C000, v9, OS_LOG_TYPE_DEFAULT, "[%@] %s Found feature in cache. Checking if user has been granted access.", &v21, 0x16u);
       }
 
-      v11 = [v7 canUse];
+      canUse = [v7 canUse];
       v12 = _CSFGetLogSystem();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (canUse)
       {
         if (v13)
         {
           v21 = 138412546;
-          v22 = v3;
+          v22 = generateRequestID;
           v23 = 2080;
           v24 = "+[CSFAvailability currentAvailability]";
           _os_log_impl(&dword_1DF47C000, v12, OS_LOG_TYPE_DEFAULT, "[%@] %s User has been granted access.", &v21, 0x16u);
@@ -111,7 +111,7 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
         if (v13)
         {
           v21 = 138412546;
-          v22 = v3;
+          v22 = generateRequestID;
           v23 = 2080;
           v24 = "+[CSFAvailability currentAvailability]";
           _os_log_impl(&dword_1DF47C000, v12, OS_LOG_TYPE_DEFAULT, "[%@] %s User has not been granted access.", &v21, 0x16u);
@@ -126,7 +126,7 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
       if (v10)
       {
         v21 = 138412546;
-        v22 = v3;
+        v22 = generateRequestID;
         v23 = 2080;
         v24 = "+[CSFAvailability currentAvailability]";
         _os_log_impl(&dword_1DF47C000, v9, OS_LOG_TYPE_DEFAULT, "[%@] %s Unable to fetch device availability as no cached feature object was found.", &v21, 0x16u);
@@ -140,7 +140,7 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = v3;
+      v22 = generateRequestID;
       v23 = 2080;
       v24 = "+[CSFAvailability currentAvailability]";
       _os_log_impl(&dword_1DF47C000, v14, OS_LOG_TYPE_DEFAULT, "[%@] %s Skipping getting device asset status.", &v21, 0x16u);
@@ -159,12 +159,12 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
     v4 |= 0x20uLL;
   }
 
-  v17 = [a1 _availabilityGivenUnavailabilityReasons:v4];
+  v17 = [self _availabilityGivenUnavailabilityReasons:v4];
   v18 = _CSFGetLogSystem();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412802;
-    v22 = v3;
+    v22 = generateRequestID;
     v23 = 2080;
     v24 = "+[CSFAvailability currentAvailability]";
     v25 = 2114;
@@ -177,17 +177,17 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
   return v17;
 }
 
-+ (void)_currentAvailabilityWithFeatureObject:(id)a3 completionHandler:(id)a4
++ (void)_currentAvailabilityWithFeatureObject:(id)object completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 generateRequestID];
+  objectCopy = object;
+  handlerCopy = handler;
+  generateRequestID = [self generateRequestID];
   v9 = _CSFGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = generateRequestID;
     v22 = 2080;
     v23 = "+[CSFAvailability _currentAvailabilityWithFeatureObject:completionHandler:]";
     _os_log_impl(&dword_1DF47C000, v9, OS_LOG_TYPE_DEFAULT, "[%@] %s request received.", buf, 0x16u);
@@ -198,13 +198,13 @@ uint64_t __32__CSFAvailability_dispatchQueue__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __75__CSFAvailability__currentAvailabilityWithFeatureObject_completionHandler___block_invoke;
   v15[3] = &unk_1E86BB240;
-  v16 = v8;
-  v17 = v6;
-  v18 = v7;
-  v19 = a1;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
+  v16 = generateRequestID;
+  v17 = objectCopy;
+  v18 = handlerCopy;
+  selfCopy = self;
+  v11 = handlerCopy;
+  v12 = objectCopy;
+  v13 = generateRequestID;
   dispatch_async(v10, v15);
 
   v14 = *MEMORY[0x1E69E9840];
@@ -230,16 +230,16 @@ uint64_t __75__CSFAvailability__currentAvailabilityWithFeatureObject_completionH
   return result;
 }
 
-+ (void)currentAvailabilityWithCompletionHandler:(id)a3
++ (void)currentAvailabilityWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 generateRequestID];
+  handlerCopy = handler;
+  generateRequestID = [self generateRequestID];
   v6 = _CSFGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v5;
+    v16 = generateRequestID;
     v17 = 2080;
     v18 = "+[CSFAvailability currentAvailabilityWithCompletionHandler:]";
     _os_log_impl(&dword_1DF47C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] %s request received.", buf, 0x16u);
@@ -250,11 +250,11 @@ uint64_t __75__CSFAvailability__currentAvailabilityWithFeatureObject_completionH
   block[1] = 3221225472;
   block[2] = __60__CSFAvailability_currentAvailabilityWithCompletionHandler___block_invoke;
   block[3] = &unk_1E86BB290;
-  v13 = v4;
-  v14 = a1;
-  v12 = v5;
-  v8 = v4;
-  v9 = v5;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = generateRequestID;
+  v8 = handlerCopy;
+  v9 = generateRequestID;
   dispatch_async(v7, block);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -323,32 +323,32 @@ void __60__CSFAvailability_currentAvailabilityWithCompletionHandler___block_invo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_handleFeatureResponseWithFeatureObject:(id)a3 error:(id)a4 reasons:(int64_t)a5 shouldBypassEligibility:(BOOL)a6 requestID:(id)a7 completionHandler:(id)a8
++ (void)_handleFeatureResponseWithFeatureObject:(id)object error:(id)error reasons:(int64_t)reasons shouldBypassEligibility:(BOOL)eligibility requestID:(id)d completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  if (!a6)
+  objectCopy = object;
+  errorCopy = error;
+  dCopy = d;
+  handlerCopy = handler;
+  if (!eligibility)
   {
-    if (v15)
+    if (errorCopy)
     {
       v18 = _CSFGetLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [CSFAvailability _handleFeatureResponseWithFeatureObject:v16 error:v15 reasons:v18 shouldBypassEligibility:? requestID:? completionHandler:?];
+        [CSFAvailability _handleFeatureResponseWithFeatureObject:dCopy error:errorCopy reasons:v18 shouldBypassEligibility:? requestID:? completionHandler:?];
       }
 
 LABEL_5:
       v19 = 256;
 LABEL_6:
 
-      a5 |= v19;
+      reasons |= v19;
       goto LABEL_7;
     }
 
-    if (!v14)
+    if (!objectCopy)
     {
       v18 = _CSFGetLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ LABEL_6:
       goto LABEL_5;
     }
 
-    if (([v14 canUse] & 1) == 0)
+    if (([objectCopy canUse] & 1) == 0)
     {
       v18 = _CSFGetLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -373,12 +373,12 @@ LABEL_6:
   }
 
 LABEL_7:
-  v20 = [a1 _availabilityGivenUnavailabilityReasons:a5];
+  v20 = [self _availabilityGivenUnavailabilityReasons:reasons];
   v21 = _CSFGetLogSystem();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412802;
-    v24 = v16;
+    v24 = dCopy;
     v25 = 2080;
     v26 = "+[CSFAvailability _handleFeatureResponseWithFeatureObject:error:reasons:shouldBypassEligibility:requestID:completionHandler:]";
     v27 = 2114;
@@ -386,13 +386,13 @@ LABEL_7:
     _os_log_impl(&dword_1DF47C000, v21, OS_LOG_TYPE_DEFAULT, "[%@] %s Returning result: %{public}@", &v23, 0x20u);
   }
 
-  v17[2](v17, v20);
+  handlerCopy[2](handlerCopy, v20);
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)_syncUnavailabilityReasonsWithRequestID:(id)a3
++ (int64_t)_syncUnavailabilityReasonsWithRequestID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[CSFEligibilityFetcher current];
   if ([v4 deviceEligibile])
   {
@@ -433,9 +433,9 @@ LABEL_7:
   }
 
   v9 = +[_TtC25CloudSubscriptionFeatures7GMOptIn shared];
-  v10 = [v9 isOptedIn];
+  isOptedIn = [v9 isOptedIn];
 
-  if ((v10 & 1) == 0)
+  if ((isOptedIn & 1) == 0)
   {
     v11 = _CSFGetLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -449,38 +449,38 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_availabilityGivenUnavailabilityReasons:(int64_t)a3
++ (id)_availabilityGivenUnavailabilityReasons:(int64_t)reasons
 {
   v4 = [CSFAvailability alloc];
-  if (a3)
+  if (reasons)
   {
     v5 = 2;
-    v6 = a3;
+    reasonsCopy = reasons;
   }
 
   else
   {
     v5 = 0;
-    v6 = 0;
+    reasonsCopy = 0;
   }
 
-  v7 = [(CSFAvailability *)v4 initWithStatus:v5 withUnavailabilityReasons:v6];
+  v7 = [(CSFAvailability *)v4 initWithStatus:v5 withUnavailabilityReasons:reasonsCopy];
 
   return v7;
 }
 
-+ (id)_descriptionForUnavailabilityReasons:(int64_t)a3
++ (id)_descriptionForUnavailabilityReasons:(int64_t)reasons
 {
-  v3 = a3;
+  reasonsCopy = reasons;
   v4 = [MEMORY[0x1E695E0F0] mutableCopy];
   v5 = v4;
-  if (v3)
+  if (reasonsCopy)
   {
     [v4 addObject:@"deviceNotCapable"];
-    if ((v3 & 2) == 0)
+    if ((reasonsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((reasonsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -489,16 +489,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((reasonsCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"selectedLanguageIneligible"];
-  if ((v3 & 4) == 0)
+  if ((reasonsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 0x10) == 0)
+    if ((reasonsCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -508,10 +508,10 @@ LABEL_4:
 
 LABEL_16:
   [v5 addObject:@"regionIneligible"];
-  if ((v3 & 0x10) == 0)
+  if ((reasonsCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x20) == 0)
+    if ((reasonsCopy & 0x20) == 0)
     {
       goto LABEL_6;
     }
@@ -521,10 +521,10 @@ LABEL_5:
 
 LABEL_17:
   [v5 addObject:@"accessNotGranted"];
-  if ((v3 & 0x20) == 0)
+  if ((reasonsCopy & 0x20) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x40) == 0)
+    if ((reasonsCopy & 0x40) == 0)
     {
       goto LABEL_7;
     }
@@ -534,10 +534,10 @@ LABEL_6:
 
 LABEL_18:
   [v5 addObject:@"assetIsNotReady"];
-  if ((v3 & 0x40) == 0)
+  if ((reasonsCopy & 0x40) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x80) == 0)
+    if ((reasonsCopy & 0x80) == 0)
     {
       goto LABEL_8;
     }
@@ -547,10 +547,10 @@ LABEL_7:
 
 LABEL_19:
   [v5 addObject:@"shortOfStorage"];
-  if ((v3 & 0x80) == 0)
+  if ((reasonsCopy & 0x80) == 0)
   {
 LABEL_8:
-    if ((v3 & 0x100) == 0)
+    if ((reasonsCopy & 0x100) == 0)
     {
       goto LABEL_9;
     }
@@ -560,10 +560,10 @@ LABEL_8:
 
 LABEL_20:
   [v5 addObject:@"notOptedIn"];
-  if ((v3 & 0x100) == 0)
+  if ((reasonsCopy & 0x100) == 0)
   {
 LABEL_9:
-    if ((v3 & 0x200) == 0)
+    if ((reasonsCopy & 0x200) == 0)
     {
       goto LABEL_11;
     }
@@ -573,7 +573,7 @@ LABEL_9:
 
 LABEL_21:
   [v5 addObject:@"unableToFetchAvailability"];
-  if ((v3 & 0x200) != 0)
+  if ((reasonsCopy & 0x200) != 0)
   {
 LABEL_10:
     [v5 addObject:@"unknown"];
@@ -587,43 +587,43 @@ LABEL_11:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[CSFAvailability status](self, "status")}];
-  [v5 encodeObject:v6 forKey:@"status"];
+  [coderCopy encodeObject:v6 forKey:@"status"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CSFAvailability unavailabiltyReasons](self, "unavailabiltyReasons")}];
-  [v5 encodeObject:v7 forKey:@"unavailabilityReasons"];
+  [coderCopy encodeObject:v7 forKey:@"unavailabilityReasons"];
 }
 
-- (CSFAvailability)initWithCoder:(id)a3
+- (CSFAvailability)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CSFAvailability;
   v5 = [(CSFAvailability *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     -[CSFAvailability setStatus:](v5, "setStatus:", [v6 integerValue]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailabilityReasons"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailabilityReasons"];
     -[CSFAvailability setUnavailabiltyReasons:](v5, "setUnavailabiltyReasons:", [v7 integerValue]);
   }
 
   return v5;
 }
 
-- (CSFAvailability)initWithStatus:(int64_t)a3 withUnavailabilityReasons:(int64_t)a4
+- (CSFAvailability)initWithStatus:(int64_t)status withUnavailabilityReasons:(int64_t)reasons
 {
   v7.receiver = self;
   v7.super_class = CSFAvailability;
   result = [(CSFAvailability *)&v7 init];
   if (result)
   {
-    result->_status = a3;
-    result->_unavailabiltyReasons = a4;
+    result->_status = status;
+    result->_unavailabiltyReasons = reasons;
   }
 
   return result;

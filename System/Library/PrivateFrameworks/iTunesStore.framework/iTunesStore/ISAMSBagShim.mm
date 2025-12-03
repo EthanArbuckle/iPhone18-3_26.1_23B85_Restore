@@ -1,23 +1,23 @@
 @interface ISAMSBagShim
-- (ISAMSBagShim)initWithBag:(id)a3;
-- (ISAMSBagShim)initWithURLBag:(id)a3;
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (ISAMSBagShim)initWithBag:(id)bag;
+- (ISAMSBagShim)initWithURLBag:(id)bag;
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation ISAMSBagShim
 
-- (ISAMSBagShim)initWithBag:(id)a3
+- (ISAMSBagShim)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = ISAMSBagShim;
   v6 = [(ISAMSBagShim *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
-    if (v5)
+    objc_storeStrong(&v6->_bag, bag);
+    if (bagCopy)
     {
       v7->_type = 1;
     }
@@ -26,17 +26,17 @@
   return v7;
 }
 
-- (ISAMSBagShim)initWithURLBag:(id)a3
+- (ISAMSBagShim)initWithURLBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = ISAMSBagShim;
   v6 = [(ISAMSBagShim *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URLBag, a3);
-    if (v5)
+    objc_storeStrong(&v6->_URLBag, bag);
+    if (bagCopy)
     {
       v7->_type = 2;
     }
@@ -45,45 +45,45 @@
   return v7;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AMSError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(completion + 2))(completionCopy, 0, v5);
 }
 
-- (id)_bagValueForKey:(id)a3 valueType:(unint64_t)a4
+- (id)_bagValueForKey:(id)key valueType:(unint64_t)type
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = [(ISAMSBagShim *)self bag];
 
   if (v7)
   {
-    v8 = 0;
+    uRLBag = 0;
     v9 = 0;
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      if (a4)
+      if (type)
       {
-        if (a4 == 1)
+        if (type == 1)
         {
           v10 = [(ISAMSBagShim *)self bag];
           v24 = 0;
-          v8 = [v10 BOOLForKey:v6 error:&v24];
+          uRLBag = [v10 BOOLForKey:keyCopy error:&v24];
           v11 = v24;
         }
 
         else
         {
           v14 = 0;
-          if (a4 != 2)
+          if (type != 2)
           {
             goto LABEL_27;
           }
 
           v10 = [(ISAMSBagShim *)self bag];
           v23 = 0;
-          v8 = [v10 doubleForKey:v6 error:&v23];
+          uRLBag = [v10 doubleForKey:keyCopy error:&v23];
           v11 = v23;
         }
       }
@@ -92,32 +92,32 @@
       {
         v10 = [(ISAMSBagShim *)self bag];
         v25 = 0;
-        v8 = [v10 arrayForKey:v6 error:&v25];
+        uRLBag = [v10 arrayForKey:keyCopy error:&v25];
         v11 = v25;
       }
     }
 
-    else if (a4 > 4)
+    else if (type > 4)
     {
-      if (a4 == 5)
+      if (type == 5)
       {
         v10 = [(ISAMSBagShim *)self bag];
         v20 = 0;
-        v8 = [v10 URLForKey:v6 error:&v20];
+        uRLBag = [v10 URLForKey:keyCopy error:&v20];
         v11 = v20;
       }
 
       else
       {
         v14 = 0;
-        if (a4 != 6)
+        if (type != 6)
         {
           goto LABEL_27;
         }
 
         v10 = [(ISAMSBagShim *)self bag];
         v19 = 0;
-        v8 = [v10 dictionaryForKey:v6 error:&v19];
+        uRLBag = [v10 dictionaryForKey:keyCopy error:&v19];
         v11 = v19;
       }
     }
@@ -125,17 +125,17 @@
     else
     {
       v10 = [(ISAMSBagShim *)self bag];
-      if (a4 == 3)
+      if (type == 3)
       {
         v22 = 0;
-        v8 = [v10 integerForKey:v6 error:&v22];
+        uRLBag = [v10 integerForKey:keyCopy error:&v22];
         v11 = v22;
       }
 
       else
       {
         v21 = 0;
-        v8 = [v10 stringForKey:v6 error:&v21];
+        uRLBag = [v10 stringForKey:keyCopy error:&v21];
         v11 = v21;
       }
     }
@@ -145,35 +145,35 @@
 
   else
   {
-    v8 = [(ISAMSBagShim *)self URLBag];
+    uRLBag = [(ISAMSBagShim *)self URLBag];
 
-    if (!v8)
+    if (!uRLBag)
     {
       v9 = 0;
       v14 = 0;
       goto LABEL_27;
     }
 
-    v12 = [(ISAMSBagShim *)self URLBag];
-    v13 = v12;
-    if (a4 == 5)
+    uRLBag2 = [(ISAMSBagShim *)self URLBag];
+    v13 = uRLBag2;
+    if (type == 5)
     {
-      [v12 urlForKey:v6];
+      [uRLBag2 urlForKey:keyCopy];
     }
 
     else
     {
-      [v12 valueForKey:v6];
+      [uRLBag2 valueForKey:keyCopy];
     }
-    v8 = ;
+    uRLBag = ;
 
     v14 = 0;
   }
 
-  v9 = v8 != 0;
-  if (!v14 && v8)
+  v9 = uRLBag != 0;
+  if (!v14 && uRLBag)
   {
-    v15 = [MEMORY[0x277CEE418] frozenBagValueWithKey:v6 value:v8 valueType:a4];
+    v15 = [MEMORY[0x277CEE418] frozenBagValueWithKey:keyCopy value:uRLBag valueType:type];
     v14 = 0;
     goto LABEL_31;
   }
@@ -181,12 +181,12 @@
 LABEL_27:
   if (!v14 && !v9)
   {
-    v17 = v6;
-    v18 = [(ISAMSBagShim *)self type];
+    v17 = keyCopy;
+    type = [(ISAMSBagShim *)self type];
     v14 = AMSErrorWithFormat();
   }
 
-  v15 = [MEMORY[0x277CEE418] failingBagValueWithKey:v6 valueType:a4 error:{v14, v17, v18}];
+  v15 = [MEMORY[0x277CEE418] failingBagValueWithKey:keyCopy valueType:type error:{v14, v17, type}];
 LABEL_31:
 
   return v15;

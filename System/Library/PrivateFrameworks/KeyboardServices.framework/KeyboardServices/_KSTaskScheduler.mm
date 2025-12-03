@@ -1,8 +1,8 @@
 @interface _KSTaskScheduler
 + (id)sharedInstance;
 - (_KSTaskScheduler)init;
-- (void)registerTask:(id)a3;
-- (void)unregisterTask:(id)a3;
+- (void)registerTask:(id)task;
+- (void)unregisterTask:(id)task;
 @end
 
 @implementation _KSTaskScheduler
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __34___KSTaskScheduler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -39,31 +39,31 @@
   return v2;
 }
 
-- (void)registerTask:(id)a3
+- (void)registerTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   allTasks = self->_allTasks;
-  v6 = [v4 name];
-  [(NSMutableDictionary *)allTasks setObject:v4 forKey:v6];
+  name = [taskCopy name];
+  [(NSMutableDictionary *)allTasks setObject:taskCopy forKey:name];
 
-  v7 = [v4 name];
-  v8 = [v7 UTF8String];
+  name2 = [taskCopy name];
+  uTF8String = [name2 UTF8String];
   v9 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __33___KSTaskScheduler_registerTask___block_invoke;
   handler[3] = &unk_2797F6360;
-  v12 = v4;
-  v10 = v4;
-  xpc_activity_register(v8, v9, handler);
+  v12 = taskCopy;
+  v10 = taskCopy;
+  xpc_activity_register(uTF8String, v9, handler);
 }
 
-- (void)unregisterTask:(id)a3
+- (void)unregisterTask:(id)task
 {
-  v5 = [a3 name];
-  [(NSMutableDictionary *)self->_allTasks removeObjectForKey:v5];
-  v4 = v5;
-  xpc_activity_unregister([v5 UTF8String]);
+  name = [task name];
+  [(NSMutableDictionary *)self->_allTasks removeObjectForKey:name];
+  v4 = name;
+  xpc_activity_unregister([name UTF8String]);
 }
 
 @end

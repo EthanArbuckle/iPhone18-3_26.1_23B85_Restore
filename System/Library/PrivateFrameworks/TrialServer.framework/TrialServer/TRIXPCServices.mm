@@ -1,21 +1,21 @@
 @interface TRIXPCServices
 + (void)registerAgentToSystemService;
-+ (void)registerTrialServicesWithPromise:(id)a3;
-+ (void)registerTrialSystemServicesWithPromise:(id)a3;
++ (void)registerTrialServicesWithPromise:(id)promise;
++ (void)registerTrialSystemServicesWithPromise:(id)promise;
 @end
 
 @implementation TRIXPCServices
 
-+ (void)registerTrialServicesWithPromise:(id)a3
++ (void)registerTrialServicesWithPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__TRIXPCServices_registerTrialServicesWithPromise___block_invoke;
   block[3] = &unk_279DDEEE0;
-  v7 = v3;
+  v7 = promiseCopy;
   v4 = registerTrialServicesWithPromise___pasOnceToken2;
-  v5 = v3;
+  v5 = promiseCopy;
   if (v4 != -1)
   {
     dispatch_once(&registerTrialServicesWithPromise___pasOnceToken2, block);
@@ -40,16 +40,16 @@ void __51__TRIXPCServices_registerTrialServicesWithPromise___block_invoke(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)registerTrialSystemServicesWithPromise:(id)a3
++ (void)registerTrialSystemServicesWithPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__TRIXPCServices_registerTrialSystemServicesWithPromise___block_invoke;
   block[3] = &unk_279DDEEE0;
-  v7 = v3;
+  v7 = promiseCopy;
   v4 = registerTrialSystemServicesWithPromise___pasOnceToken3;
-  v5 = v3;
+  v5 = promiseCopy;
   if (v4 != -1)
   {
     dispatch_once(&registerTrialSystemServicesWithPromise___pasOnceToken3, block);

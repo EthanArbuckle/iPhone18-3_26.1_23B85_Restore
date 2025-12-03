@@ -1,6 +1,6 @@
 @interface FCIdentityAssetTransformer
 + (id)sharedInstance;
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5;
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error;
 @end
 
 @implementation FCIdentityAssetTransformer
@@ -26,18 +26,18 @@ uint64_t __44__FCIdentityAssetTransformer_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error
 {
   v7 = MEMORY[0x1E696AC08];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 defaultManager];
-  v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
+  filePathCopy = filePath;
+  pathCopy = path;
+  defaultManager = [v7 defaultManager];
+  v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
 
-  v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+  v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:filePathCopy];
 
-  LOBYTE(a5) = [v10 copyItemAtURL:v11 toURL:v12 error:a5];
-  return a5;
+  LOBYTE(error) = [defaultManager copyItemAtURL:v11 toURL:v12 error:error];
+  return error;
 }
 
 @end

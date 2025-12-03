@@ -3,8 +3,8 @@
 - (BOOL)isConnectedSynchronous;
 - (MNCarPlayConnectionMonitor)init;
 - (void)dealloc;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation MNCarPlayConnectionMonitor
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v4 = MNGetMNCarPlayConnectionMonitorLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -33,7 +33,7 @@
   self->_isConnected = 0;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v4 = MNGetMNCarPlayConnectionMonitorLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

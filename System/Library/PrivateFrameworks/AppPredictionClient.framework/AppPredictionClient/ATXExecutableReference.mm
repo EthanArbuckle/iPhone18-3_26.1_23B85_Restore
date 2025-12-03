@@ -1,56 +1,56 @@
 @interface ATXExecutableReference
-- (ATXExecutableReference)initWithClientModelId:(id)a3 date:(id)a4 shouldClearOnEngagement:(BOOL)a5 shouldPurge:(BOOL)a6 suggestionIsHidden:(BOOL)a7;
-- (ATXExecutableReference)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXExecutableReference)initWithClientModelId:(id)id date:(id)date shouldClearOnEngagement:(BOOL)engagement shouldPurge:(BOOL)purge suggestionIsHidden:(BOOL)hidden;
+- (ATXExecutableReference)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonDict;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateDateTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateDateTo:(id)to;
 @end
 
 @implementation ATXExecutableReference
 
-- (ATXExecutableReference)initWithCoder:(id)a3
+- (ATXExecutableReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientModelId"];
-  v7 = [v4 decodeBoolForKey:@"shouldClearOnEngagement"];
-  v8 = [v4 decodeBoolForKey:@"shouldPurge"];
-  v9 = [v4 decodeBoolForKey:@"suggestionIsHidden"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientModelId"];
+  v7 = [coderCopy decodeBoolForKey:@"shouldClearOnEngagement"];
+  v8 = [coderCopy decodeBoolForKey:@"shouldPurge"];
+  v9 = [coderCopy decodeBoolForKey:@"suggestionIsHidden"];
 
   v10 = [(ATXExecutableReference *)self initWithClientModelId:v6 date:v5 shouldClearOnEngagement:v7 shouldPurge:v8 suggestionIsHidden:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_clientModelId forKey:@"clientModelId"];
-  [v5 encodeBool:self->_shouldClearOnEngagement forKey:@"shouldClearOnEngagement"];
-  [v5 encodeBool:self->_shouldPurge forKey:@"shouldPurge"];
-  [v5 encodeBool:self->_suggestionIsHidden forKey:@"suggestionIsHidden"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_clientModelId forKey:@"clientModelId"];
+  [coderCopy encodeBool:self->_shouldClearOnEngagement forKey:@"shouldClearOnEngagement"];
+  [coderCopy encodeBool:self->_shouldPurge forKey:@"shouldPurge"];
+  [coderCopy encodeBool:self->_suggestionIsHidden forKey:@"suggestionIsHidden"];
 }
 
-- (ATXExecutableReference)initWithClientModelId:(id)a3 date:(id)a4 shouldClearOnEngagement:(BOOL)a5 shouldPurge:(BOOL)a6 suggestionIsHidden:(BOOL)a7
+- (ATXExecutableReference)initWithClientModelId:(id)id date:(id)date shouldClearOnEngagement:(BOOL)engagement shouldPurge:(BOOL)purge suggestionIsHidden:(BOOL)hidden
 {
-  v12 = a3;
-  v13 = a4;
+  idCopy = id;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = ATXExecutableReference;
   v14 = [(ATXExecutableReference *)&v19 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [idCopy copy];
     clientModelId = v14->_clientModelId;
     v14->_clientModelId = v15;
 
-    objc_storeStrong(&v14->_date, a4);
-    v14->_shouldClearOnEngagement = a5;
-    v14->_shouldPurge = a6;
-    v14->_suggestionIsHidden = a7;
+    objc_storeStrong(&v14->_date, date);
+    v14->_shouldClearOnEngagement = engagement;
+    v14->_shouldPurge = purge;
+    v14->_suggestionIsHidden = hidden;
     v17 = v14;
   }
 
@@ -81,10 +81,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -96,7 +96,7 @@
     {
       v5 = self->_clientModelId;
       v6 = v5;
-      if (v5 == v4->_clientModelId)
+      if (v5 == equalCopy->_clientModelId)
       {
         v7 = 1;
       }
@@ -116,7 +116,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ATXExecutableReference alloc];
   clientModelId = self->_clientModelId;
@@ -128,18 +128,18 @@
   return [(ATXExecutableReference *)v4 initWithClientModelId:clientModelId date:date shouldClearOnEngagement:shouldClearOnEngagement shouldPurge:shouldPurge suggestionIsHidden:suggestionIsHidden];
 }
 
-- (void)updateDateTo:(id)a3
+- (void)updateDateTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   date = self->_date;
   p_date = &self->_date;
-  v10 = v5;
-  v8 = [v5 earlierDate:date];
+  v10 = toCopy;
+  v8 = [toCopy earlierDate:date];
   v9 = *p_date;
 
   if (v8 == v9)
   {
-    objc_storeStrong(p_date, a3);
+    objc_storeStrong(p_date, to);
   }
 }
 

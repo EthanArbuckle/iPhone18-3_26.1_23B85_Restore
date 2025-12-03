@@ -1,18 +1,18 @@
 @interface NLLMTokenIDConverter
-- (NLLMTokenIDConverter)initWithLanguageModel:(id)a3;
+- (NLLMTokenIDConverter)initWithLanguageModel:(id)model;
 - (NLLanguageModel)languageModel;
-- (id)stringForTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4;
-- (unsigned)tokenIDForString:(id)a3;
-- (void)enumerateTokenIDsForString:(id)a3 range:(_NSRange)a4 withBlock:(id)a5;
+- (id)stringForTokenIDs:(const unsigned int *)ds length:(unint64_t)length;
+- (unsigned)tokenIDForString:(id)string;
+- (void)enumerateTokenIDsForString:(id)string range:(_NSRange)range withBlock:(id)block;
 @end
 
 @implementation NLLMTokenIDConverter
 
-- (NLLMTokenIDConverter)initWithLanguageModel:(id)a3
+- (NLLMTokenIDConverter)initWithLanguageModel:(id)model
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v14.receiver = self;
     v14.super_class = NLLMTokenIDConverter;
@@ -20,7 +20,7 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_languageModel, v4);
+      objc_storeWeak(&v5->_languageModel, modelCopy);
       v7 = [NLTagger alloc];
       v15[0] = @"TokenType";
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -30,44 +30,44 @@
     }
 
     self = v6;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (unsigned)tokenIDForString:(id)a3
+- (unsigned)tokenIDForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_languageModel);
-  v6 = [WeakRetained lexicon];
-  v7 = [v6 entryForString:v4];
+  lexicon = [WeakRetained lexicon];
+  v7 = [lexicon entryForString:stringCopy];
 
   if (v7)
   {
-    v8 = [v7 tokenID];
+    tokenID = [v7 tokenID];
   }
 
   else
   {
     v9 = objc_loadWeakRetained(&self->_languageModel);
-    v8 = [v9 tokenIDForString:v4];
+    tokenID = [v9 tokenIDForString:stringCopy];
   }
 
-  return v8;
+  return tokenID;
 }
 
-- (id)stringForTokenIDs:(const unsigned int *)a3 length:(unint64_t)a4
+- (id)stringForTokenIDs:(const unsigned int *)ds length:(unint64_t)length
 {
   for (i = [MEMORY[0x1E696AD60] string];
   {
-    v8 = *a3++;
+    v8 = *ds++;
     if (v8 >= 6)
     {
       v9 = [(NLLMTokenIDConverter *)self stringForTokenID:?];
@@ -76,8 +76,8 @@
         v10 = v9;
         if ([i length])
         {
-          v11 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-          [v10 rangeOfCharacterFromSet:v11];
+          alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+          [v10 rangeOfCharacterFromSet:alphanumericCharacterSet];
           v13 = v12;
 
           if (v13)
@@ -94,22 +94,22 @@
   return i;
 }
 
-- (void)enumerateTokenIDsForString:(id)a3 range:(_NSRange)a4 withBlock:(id)a5
+- (void)enumerateTokenIDsForString:(id)string range:(_NSRange)range withBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  [(NLTagger *)self->_tagger setString:v9];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
+  [(NLTagger *)self->_tagger setString:stringCopy];
   WeakRetained = objc_loadWeakRetained(&self->_languageModel);
-  v12 = [WeakRetained language];
+  language = [WeakRetained language];
 
-  if (v12)
+  if (language)
   {
     tagger = self->_tagger;
     v14 = objc_loadWeakRetained(&self->_languageModel);
-    v15 = [v14 language];
-    -[NLTagger setLanguage:range:](tagger, "setLanguage:range:", v15, 0, [v9 length]);
+    language2 = [v14 language];
+    -[NLTagger setLanguage:range:](tagger, "setLanguage:range:", language2, 0, [stringCopy length]);
   }
 
   v16 = self->_tagger;
@@ -118,10 +118,10 @@
   v19[2] = __67__NLLMTokenIDConverter_enumerateTokenIDsForString_range_withBlock___block_invoke;
   v19[3] = &unk_1E7629860;
   v19[4] = self;
-  v20 = v9;
-  v21 = v10;
-  v17 = v10;
-  v18 = v9;
+  v20 = stringCopy;
+  v21 = blockCopy;
+  v17 = blockCopy;
+  v18 = stringCopy;
   [(NLTagger *)v16 enumerateTagsInRange:location unit:length scheme:0 options:@"TokenType" usingBlock:36, v19];
 }
 

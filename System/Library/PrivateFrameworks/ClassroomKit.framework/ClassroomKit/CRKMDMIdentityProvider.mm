@@ -24,8 +24,8 @@
         if (v7)
         {
           v8 = +[CRKKeychainProvider sharedProvider];
-          v9 = [v8 keychain];
-          v10 = [v9 identityWithPersistentID:v7];
+          keychain = [v8 keychain];
+          v10 = [keychain identityWithPersistentID:v7];
         }
 
         else
@@ -59,18 +59,18 @@ LABEL_13:
 
 - (CRKMDMIdentityProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKMDMIdentityProvider.m" lineNumber:83 description:{@"%@ is unavailable for %@", v5, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKMDMIdentityProvider.m" lineNumber:83 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKMDMIdentityProvider.m" lineNumber:88 description:{@"%@ is unavailable for %@", v5, a1}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKMDMIdentityProvider.m" lineNumber:88 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }
@@ -79,7 +79,7 @@ LABEL_13:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_243550000, a2, OS_LOG_TYPE_ERROR, "Failed to fetch the MDM identity %{public}@", &v2, 0xCu);
 }
 

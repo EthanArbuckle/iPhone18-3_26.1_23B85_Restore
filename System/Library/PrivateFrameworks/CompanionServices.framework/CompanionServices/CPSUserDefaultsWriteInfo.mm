@@ -1,7 +1,7 @@
 @interface CPSUserDefaultsWriteInfo
-- (CPSUserDefaultsWriteInfo)initWithCoder:(id)a3;
+- (CPSUserDefaultsWriteInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSUserDefaultsWriteInfo
@@ -12,24 +12,24 @@
   v4 = [v3 appendObject:self->_suiteName withName:@"suiteName"];
   v5 = [v3 appendObject:self->_key withName:@"key"];
   v6 = [v3 appendObject:self->_value withName:@"value"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (CPSUserDefaultsWriteInfo)initWithCoder:(id)a3
+- (CPSUserDefaultsWriteInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CPSUserDefaultsWriteInfo;
   v5 = [(CPSUserDefaultsWriteInfo *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suiteName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suiteName"];
     suiteName = v5->_suiteName;
     v5->_suiteName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     key = v5->_key;
     v5->_key = v8;
 
@@ -41,14 +41,14 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v10 setWithObjects:{v11, v12, v13, v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"value"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"value"];
     value = v5->_value;
     v5->_value = v18;
 
     v20 = v5->_value;
-    v21 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v20 == v21)
+    if (v20 == null)
     {
       v22 = v5->_value;
       v5->_value = 0;
@@ -58,22 +58,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CPSUserDefaultsWriteInfo *)self suiteName];
-  [v7 encodeObject:v4 forKey:@"suiteName"];
+  coderCopy = coder;
+  suiteName = [(CPSUserDefaultsWriteInfo *)self suiteName];
+  [coderCopy encodeObject:suiteName forKey:@"suiteName"];
 
   v5 = [(CPSUserDefaultsWriteInfo *)self key];
-  [v7 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  v6 = [(CPSUserDefaultsWriteInfo *)self value];
-  if (!v6)
+  value = [(CPSUserDefaultsWriteInfo *)self value];
+  if (!value)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    value = [MEMORY[0x277CBEB68] null];
   }
 
-  [v7 encodeObject:v6 forKey:@"value"];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
 @end

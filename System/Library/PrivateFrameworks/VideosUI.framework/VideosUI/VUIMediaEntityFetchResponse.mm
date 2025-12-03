@@ -1,8 +1,8 @@
 @interface VUIMediaEntityFetchResponse
-- (BOOL)_updateWithResponse:(id)a3 changes:(id)a4 replaceContentsOnNilChanges:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_updateWithResponse:(id)response changes:(id)changes replaceContentsOnNilChanges:(BOOL)nilChanges;
+- (BOOL)isEqual:(id)equal;
 - (VUIMediaEntityFetchResponse)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -24,42 +24,42 @@
   return v3;
 }
 
-- (BOOL)_updateWithResponse:(id)a3 changes:(id)a4 replaceContentsOnNilChanges:(BOOL)a5
+- (BOOL)_updateWithResponse:(id)response changes:(id)changes replaceContentsOnNilChanges:(BOOL)nilChanges
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VUIMediaEntityFetchResponse *)self mediaEntities];
-  v11 = [v10 mutableCopy];
+  nilChangesCopy = nilChanges;
+  responseCopy = response;
+  changesCopy = changes;
+  mediaEntities = [(VUIMediaEntityFetchResponse *)self mediaEntities];
+  v11 = [mediaEntities mutableCopy];
 
-  v12 = [v9 mediaEntitiesChangeSet];
-  v13 = [v8 mediaEntities];
-  v14 = [v11 vui_applyChangeSetIfAvailable:v12 destinationObjects:v13 replaceContentsOnNilChanges:v5];
+  mediaEntitiesChangeSet = [changesCopy mediaEntitiesChangeSet];
+  mediaEntities2 = [responseCopy mediaEntities];
+  v14 = [v11 vui_applyChangeSetIfAvailable:mediaEntitiesChangeSet destinationObjects:mediaEntities2 replaceContentsOnNilChanges:nilChangesCopy];
 
   if (v14)
   {
     [(VUIMediaEntityFetchResponse *)self setMediaEntities:v11];
-    v15 = [v8 sortIndexes];
-    [(VUIMediaEntityFetchResponse *)self setSortIndexes:v15];
+    sortIndexes = [responseCopy sortIndexes];
+    [(VUIMediaEntityFetchResponse *)self setSortIndexes:sortIndexes];
   }
 
-  v16 = [(VUIMediaEntityFetchResponse *)self grouping];
-  v17 = [v16 mutableCopy];
+  grouping = [(VUIMediaEntityFetchResponse *)self grouping];
+  v17 = [grouping mutableCopy];
 
-  v18 = [v8 grouping];
-  v19 = v18;
+  grouping2 = [responseCopy grouping];
+  v19 = grouping2;
   if (v17)
   {
-    if (v18)
+    if (grouping2)
     {
-      v20 = [v9 groupingChangeSet];
-      v21 = [v17 vui_applyChangeSetIfAvailable:v20 destinationObjects:v19 replaceContentsOnNilChanges:v5];
+      groupingChangeSet = [changesCopy groupingChangeSet];
+      v21 = [v17 vui_applyChangeSetIfAvailable:groupingChangeSet destinationObjects:v19 replaceContentsOnNilChanges:nilChangesCopy];
 
       if (v21)
       {
         [(VUIMediaEntityFetchResponse *)self setGrouping:v17];
-        v22 = [v8 groupingSortIndexes];
-        [(VUIMediaEntityFetchResponse *)self setGroupingSortIndexes:v22];
+        groupingSortIndexes = [responseCopy groupingSortIndexes];
+        [(VUIMediaEntityFetchResponse *)self setGroupingSortIndexes:groupingSortIndexes];
 
         LOBYTE(v14) = 1;
       }
@@ -69,7 +69,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIMediaEntityFetchResponse);
   v5 = [(NSArray *)self->_mediaEntities copy];
@@ -93,42 +93,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaEntityFetchResponse *)self mediaEntities];
-  v4 = [v3 hash];
+  mediaEntities = [(VUIMediaEntityFetchResponse *)self mediaEntities];
+  v4 = [mediaEntities hash];
 
-  v5 = [(VUIMediaEntityFetchResponse *)self sortIndexes];
-  v6 = [v5 hash] ^ v4;
+  sortIndexes = [(VUIMediaEntityFetchResponse *)self sortIndexes];
+  v6 = [sortIndexes hash] ^ v4;
 
-  v7 = [(VUIMediaEntityFetchResponse *)self grouping];
-  v8 = [v7 hash];
+  grouping = [(VUIMediaEntityFetchResponse *)self grouping];
+  v8 = [grouping hash];
 
-  v9 = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
-  v10 = v8 ^ [v9 hash];
+  groupingSortIndexes = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
+  v10 = v8 ^ [groupingSortIndexes hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUIMediaEntityFetchResponse *)self mediaEntities];
-        v8 = [(VUIMediaEntityFetchResponse *)v6 mediaEntities];
-        v9 = v7;
-        v10 = v8;
+        mediaEntities = [(VUIMediaEntityFetchResponse *)self mediaEntities];
+        mediaEntities2 = [(VUIMediaEntityFetchResponse *)v6 mediaEntities];
+        v9 = mediaEntities;
+        v10 = mediaEntities2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -150,10 +150,10 @@
           }
         }
 
-        v14 = [(VUIMediaEntityFetchResponse *)self sortIndexes];
-        v15 = [(VUIMediaEntityFetchResponse *)v6 sortIndexes];
-        v9 = v14;
-        v16 = v15;
+        sortIndexes = [(VUIMediaEntityFetchResponse *)self sortIndexes];
+        sortIndexes2 = [(VUIMediaEntityFetchResponse *)v6 sortIndexes];
+        v9 = sortIndexes;
+        v16 = sortIndexes2;
         v11 = v16;
         if (v9 == v16)
         {
@@ -175,19 +175,19 @@
           }
         }
 
-        v18 = [(VUIMediaEntityFetchResponse *)self grouping];
-        v19 = [(VUIMediaEntityFetchResponse *)v6 grouping];
-        v9 = v18;
-        v20 = v19;
+        grouping = [(VUIMediaEntityFetchResponse *)self grouping];
+        grouping2 = [(VUIMediaEntityFetchResponse *)v6 grouping];
+        v9 = grouping;
+        v20 = grouping2;
         v11 = v20;
         if (v9 == v20)
         {
 
 LABEL_24:
-          v22 = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
-          v23 = [(VUIMediaEntityFetchResponse *)v6 groupingSortIndexes];
-          v9 = v22;
-          v24 = v23;
+          groupingSortIndexes = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
+          groupingSortIndexes2 = [(VUIMediaEntityFetchResponse *)v6 groupingSortIndexes];
+          v9 = groupingSortIndexes;
+          v24 = groupingSortIndexes2;
           v11 = v24;
           if (v9 == v24)
           {
@@ -246,23 +246,23 @@ LABEL_31:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntityFetchResponse *)self mediaEntities];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaEntities", v6];
+  mediaEntities = [(VUIMediaEntityFetchResponse *)self mediaEntities];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaEntities", mediaEntities];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntityFetchResponse *)self sortIndexes];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"sortIndexes", v9];
+  sortIndexes = [(VUIMediaEntityFetchResponse *)self sortIndexes];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"sortIndexes", sortIndexes];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIMediaEntityFetchResponse *)self grouping];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"grouping", v12];
+  grouping = [(VUIMediaEntityFetchResponse *)self grouping];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"grouping", grouping];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
-  v16 = [v14 stringWithFormat:@"%@=%@", @"groupingSortIndexes", v15];
+  groupingSortIndexes = [(VUIMediaEntityFetchResponse *)self groupingSortIndexes];
+  v16 = [v14 stringWithFormat:@"%@=%@", @"groupingSortIndexes", groupingSortIndexes];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];

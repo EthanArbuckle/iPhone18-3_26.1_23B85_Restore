@@ -1,21 +1,21 @@
 @interface SKGLink
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKGLink
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGLink *)self link];
-    v7 = [v5 link];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    link = [(SKGLink *)self link];
+    link2 = [v5 link];
+    if ([link isEqualToString:link2])
     {
       v10.receiver = self;
       v10.super_class = SKGLink;
@@ -38,9 +38,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKGLink *)self link];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hash];
+  link = [(SKGLink *)self link];
+  lowercaseString = [link lowercaseString];
+  v4 = [lowercaseString hash];
 
   return v4;
 }
@@ -49,9 +49,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGLink *)self link];
+  link = [(SKGLink *)self link];
   [(SKGEntity *)self score];
-  v7 = [v3 stringWithFormat:@"<%@: %@ %f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %@ %f", v4, link, v6];
 
   return v7;
 }

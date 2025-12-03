@@ -1,35 +1,35 @@
 @interface MFDAMailAccountSyncConsumer
-- (BOOL)refreshFolderHierarchyAndWait:(unint64_t)a3;
-- (BOOL)shouldBeginStreamingForMailMessage:(id)a3 format:(int)a4;
-- (MFDAMailAccountSyncConsumer)initWithCurrentTag:(id)a3 accountID:(id)a4 requests:(id)a5;
+- (BOOL)refreshFolderHierarchyAndWait:(unint64_t)wait;
+- (BOOL)shouldBeginStreamingForMailMessage:(id)message format:(int)format;
+- (MFDAMailAccountSyncConsumer)initWithCurrentTag:(id)tag accountID:(id)d requests:(id)requests;
 - (id)actionsConsumer;
-- (void)accountHierarchyChanged:(id)a3;
-- (void)didEndStreamingForMailMessage:(id)a3;
-- (void)handleSyncResponses:(id)a3;
-- (void)partialResultsForMailbox:(id)a3 actions:(id)a4 responses:(id)a5 percentComplete:(double)a6 moreAvailable:(BOOL)a7;
+- (void)accountHierarchyChanged:(id)changed;
+- (void)didEndStreamingForMailMessage:(id)message;
+- (void)handleSyncResponses:(id)responses;
+- (void)partialResultsForMailbox:(id)mailbox actions:(id)actions responses:(id)responses percentComplete:(double)complete moreAvailable:(BOOL)available;
 - (void)reset;
-- (void)resultsForMailbox:(id)a3 newTag:(id)a4 actions:(id)a5 responses:(id)a6 percentComplete:(double)a7 moreAvailable:(BOOL)a8 sentBytesCount:(unint64_t)a9 receivedBytesCount:(unint64_t)a10;
-- (void)taskFailed:(id)a3 statusCode:(int64_t)a4 error:(id)a5;
+- (void)resultsForMailbox:(id)mailbox newTag:(id)tag actions:(id)actions responses:(id)responses percentComplete:(double)complete moreAvailable:(BOOL)available sentBytesCount:(unint64_t)count receivedBytesCount:(unint64_t)self0;
+- (void)taskFailed:(id)failed statusCode:(int64_t)code error:(id)error;
 @end
 
 @implementation MFDAMailAccountSyncConsumer
 
-- (MFDAMailAccountSyncConsumer)initWithCurrentTag:(id)a3 accountID:(id)a4 requests:(id)a5
+- (MFDAMailAccountSyncConsumer)initWithCurrentTag:(id)tag accountID:(id)d requests:(id)requests
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tagCopy = tag;
+  dCopy = d;
+  requestsCopy = requests;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  objc_storeStrong(&self->_requestPairs, a5);
+  objc_storeStrong(&self->_requestPairs, requests);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __69__MFDAMailAccountSyncConsumer_initWithCurrentTag_accountID_requests___block_invoke;
   v22[3] = &unk_1E7AA5348;
   v22[4] = &v23;
-  [v10 enumerateObjectsUsingBlock:v22];
+  [requestsCopy enumerateObjectsUsingBlock:v22];
   v11 = *(v24 + 24);
   v21.receiver = self;
   v21.super_class = MFDAMailAccountSyncConsumer;
@@ -37,16 +37,16 @@
   v13 = v12;
   if (v12)
   {
-    [(MFDAMailAccountSyncConsumer *)v12 setTag:v8];
+    [(MFDAMailAccountSyncConsumer *)v12 setTag:tagCopy];
     v13->_firstSyncBatch = 1;
-    objc_storeStrong(&v13->_accountID, a4);
+    objc_storeStrong(&v13->_accountID, d);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__MFDAMailAccountSyncConsumer_initWithCurrentTag_accountID_requests___block_invoke_2;
     v18[3] = &unk_1E7AA5370;
     v14 = v13;
     v19 = v14;
-    v20 = v10;
+    v20 = requestsCopy;
     [v20 enumerateObjectsUsingBlock:v18];
     v15 = +[MFActivityMonitor currentMonitor];
     monitor = v14->_monitor;
@@ -123,8 +123,8 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v6 = [*(*(&v9 + 1) + 8 * v5) second];
-      if ([v6 conformsToProtocol:&unk_1F2796CD0])
+      second = [*(*(&v9 + 1) + 8 * v5) second];
+      if ([second conformsToProtocol:&unk_1F2796CD0])
       {
         break;
       }
@@ -145,27 +145,27 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v6 = 0;
+    second = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return second;
 }
 
-- (void)handleSyncResponses:(id)a3
+- (void)handleSyncResponses:(id)responses
 {
   v35 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v23 = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
-  if (v23)
+  responsesCopy = responses;
+  actionsConsumer = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
+  if (actionsConsumer)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = v24;
+    v5 = responsesCopy;
     v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v6)
     {
@@ -182,12 +182,12 @@ LABEL_9:
           v9 = *(*(&v29 + 1) + 8 * i);
           if ([v9 status] == 12)
           {
-            v10 = [v9 message];
+            message = [v9 message];
             v11 = objc_alloc(MEMORY[0x1E6999838]);
-            v12 = [v10 remoteID];
-            v13 = [v11 initWithItemChangeType:2 changedItem:v10 serverId:v12];
+            remoteID = [message remoteID];
+            v13 = [v11 initWithItemChangeType:2 changedItem:message serverId:remoteID];
 
-            [v4 addObject:v13];
+            [array addObject:v13];
           }
         }
 
@@ -197,9 +197,9 @@ LABEL_9:
       while (v6);
     }
 
-    if ([v4 count])
+    if ([array count])
     {
-      [v23 receiveSyncActions:v4];
+      [actionsConsumer receiveSyncActions:array];
     }
   }
 
@@ -207,7 +207,7 @@ LABEL_9:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v24;
+  v14 = responsesCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v15)
   {
@@ -222,24 +222,24 @@ LABEL_9:
         }
 
         v18 = *(*(&v25 + 1) + 8 * j);
-        v19 = [v18 serverId];
-        if (!v19 || ([(NSMutableDictionary *)self->_syncResponseConsumersByMessageId objectForKeyedSubscript:v19], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+        serverId = [v18 serverId];
+        if (!serverId || ([(NSMutableDictionary *)self->_syncResponseConsumersByMessageId objectForKeyedSubscript:serverId], (second = objc_claimAutoreleasedReturnValue()) == 0))
         {
           if ([(NSArray *)self->_requestPairs count]== 1)
           {
             v21 = [(NSArray *)self->_requestPairs objectAtIndexedSubscript:0];
-            v20 = [v21 second];
+            second = [v21 second];
           }
 
           else
           {
-            v20 = 0;
+            second = 0;
           }
         }
 
-        if ([v20 conformsToProtocol:&unk_1F2796E98])
+        if ([second conformsToProtocol:&unk_1F2796E98])
         {
-          [v20 handleResponse:v18 error:0];
+          [second handleResponse:v18 error:0];
         }
       }
 
@@ -252,96 +252,96 @@ LABEL_9:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)partialResultsForMailbox:(id)a3 actions:(id)a4 responses:(id)a5 percentComplete:(double)a6 moreAvailable:(BOOL)a7
+- (void)partialResultsForMailbox:(id)mailbox actions:(id)actions responses:(id)responses percentComplete:(double)complete moreAvailable:(BOOL)available
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (self->_firstSyncBatch && !a7)
+  mailboxCopy = mailbox;
+  actionsCopy = actions;
+  responsesCopy = responses;
+  if (self->_firstSyncBatch && !available)
   {
-    v15 = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
-    [v15 setPercentDone:a6];
+    originalThreadMonitor = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
+    [originalThreadMonitor setPercentDone:complete];
   }
 
-  if ([v13 count])
+  if ([actionsCopy count])
   {
-    v16 = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
-    if (!v16)
+    actionsConsumer = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
+    if (!actionsConsumer)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"MFDAMailAccountSyncConsumer.m" lineNumber:163 description:{@"we failed to find a sync actions consumer! requests: %@", self->_requestPairs}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAMailAccountSyncConsumer.m" lineNumber:163 description:{@"we failed to find a sync actions consumer! requests: %@", self->_requestPairs}];
     }
 
     if (!self->_receivedFirstItem)
     {
       if (!self->_tag)
       {
-        [v16 drainMailbox];
+        [actionsConsumer drainMailbox];
       }
 
-      v17 = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
+      originalThreadMonitor2 = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
       v18 = MFLookupLocalizedString(@"DOWNLOADING_STATUS", @"Downloading", @"Delayed");
-      [v17 setDisplayName:v18];
+      [originalThreadMonitor2 setDisplayName:v18];
 
       self->_receivedFirstItem = 1;
     }
 
-    [v16 receiveSyncActions:v13];
+    [actionsConsumer receiveSyncActions:actionsCopy];
   }
 
-  if ([v14 count])
+  if ([responsesCopy count])
   {
-    [(MFDAMailAccountSyncConsumer *)self handleSyncResponses:v14];
+    [(MFDAMailAccountSyncConsumer *)self handleSyncResponses:responsesCopy];
   }
 }
 
-- (void)resultsForMailbox:(id)a3 newTag:(id)a4 actions:(id)a5 responses:(id)a6 percentComplete:(double)a7 moreAvailable:(BOOL)a8 sentBytesCount:(unint64_t)a9 receivedBytesCount:(unint64_t)a10
+- (void)resultsForMailbox:(id)mailbox newTag:(id)tag actions:(id)actions responses:(id)responses percentComplete:(double)complete moreAvailable:(BOOL)available sentBytesCount:(unint64_t)count receivedBytesCount:(unint64_t)self0
 {
-  v22 = a4;
-  v16 = a5;
-  v17 = a6;
-  [(MFActivityMonitor *)self->_monitor recordBytesWritten:a9];
-  [(MFActivityMonitor *)self->_monitor recordBytesRead:a10];
-  v18 = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
-  if ([v16 count])
+  tagCopy = tag;
+  actionsCopy = actions;
+  responsesCopy = responses;
+  [(MFActivityMonitor *)self->_monitor recordBytesWritten:count];
+  [(MFActivityMonitor *)self->_monitor recordBytesRead:bytesCount];
+  actionsConsumer = [(MFDAMailAccountSyncConsumer *)self actionsConsumer];
+  if ([actionsCopy count])
   {
-    if (!v18)
+    if (!actionsConsumer)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"MFDAMailAccountSyncConsumer.m" lineNumber:198 description:{@"we failed to find a sync actions consumer! requests: %@", self->_requestPairs}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAMailAccountSyncConsumer.m" lineNumber:198 description:{@"we failed to find a sync actions consumer! requests: %@", self->_requestPairs}];
     }
 
     if (!self->_receivedFirstItem)
     {
       if (!self->_tag)
       {
-        [v18 drainMailbox];
+        [actionsConsumer drainMailbox];
       }
 
-      v19 = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
+      originalThreadMonitor = [(MFDAMailAccountSyncConsumer *)self originalThreadMonitor];
       v20 = MFLookupLocalizedString(@"DOWNLOADING_STATUS", @"Downloading", @"Delayed");
-      [v19 setDisplayName:v20];
+      [originalThreadMonitor setDisplayName:v20];
 
       self->_receivedFirstItem = 1;
     }
 
-    [v18 receiveSyncActions:v16];
+    [actionsConsumer receiveSyncActions:actionsCopy];
   }
 
-  if ([v17 count])
+  if ([responsesCopy count])
   {
-    [(MFDAMailAccountSyncConsumer *)self handleSyncResponses:v17];
+    [(MFDAMailAccountSyncConsumer *)self handleSyncResponses:responsesCopy];
   }
 
-  [v18 commitSyncActions];
-  self->_moreAvailable = a8;
-  [(MFDAMailAccountSyncConsumer *)self setTag:v22];
+  [actionsConsumer commitSyncActions];
+  self->_moreAvailable = available;
+  [(MFDAMailAccountSyncConsumer *)self setTag:tagCopy];
   [(MFDAMailAccountConsumer *)self setDone:1];
 }
 
-- (BOOL)shouldBeginStreamingForMailMessage:(id)a3 format:(int)a4
+- (BOOL)shouldBeginStreamingForMailMessage:(id)message format:(int)format
 {
-  v6 = a3;
+  messageCopy = message;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -352,16 +352,16 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format___block_invoke;
   v10[3] = &unk_1E7AA5398;
-  v8 = v6;
+  v8 = messageCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
-  v14 = a4;
+  formatCopy = format;
   [(NSArray *)requestPairs enumerateObjectsUsingBlock:v10];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(messageCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return messageCopy;
 }
 
 void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -391,40 +391,40 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
   }
 }
 
-- (void)didEndStreamingForMailMessage:(id)a3
+- (void)didEndStreamingForMailMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(MFDAMailAccountSyncConsumer *)self streamConsumer];
-  [v4 didEndStreamingForMailMessage:v5];
+  messageCopy = message;
+  streamConsumer = [(MFDAMailAccountSyncConsumer *)self streamConsumer];
+  [streamConsumer didEndStreamingForMailMessage:messageCopy];
 }
 
-- (void)taskFailed:(id)a3 statusCode:(int64_t)a4 error:(id)a5
+- (void)taskFailed:(id)failed statusCode:(int64_t)code error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a5 userInfo];
-  v10 = [v9 objectForKey:*MEMORY[0x1E696AA08]];
+  failedCopy = failed;
+  userInfo = [error userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   v11 = MFMessageErrorDomain;
   v12 = 1033;
-  if (a4 <= 8)
+  if (code <= 8)
   {
-    if (a4 <= 4)
+    if (code <= 4)
     {
-      if (a4 == -1)
+      if (code == -1)
       {
         v12 = 1028;
         goto LABEL_36;
       }
 
-      if (!a4)
+      if (!code)
       {
-        v16 = [v10 domain];
-        if ([v16 isEqualToString:*MEMORY[0x1E696A978]])
+        domain = [v10 domain];
+        if ([domain isEqualToString:*MEMORY[0x1E696A978]])
         {
-          v17 = [v10 code];
+          code = [v10 code];
 
-          if (v17 == -1001)
+          if (code == -1001)
           {
             v11 = MEMORY[0x1E696A798];
             v12 = 60;
@@ -442,7 +442,7 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
 
     else
     {
-      switch(a4)
+      switch(code)
       {
         case 5:
           serverErrors = self->_serverErrors;
@@ -461,7 +461,7 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
               *buf = 67109378;
               *v31 = v21;
               *&v31[4] = 2112;
-              *&v31[6] = v8;
+              *&v31[6] = failedCopy;
               _os_log_impl(&dword_1B0389000, v20, OS_LOG_TYPE_DEFAULT, "encounter server error %d times for task %@, giving up.", buf, 0x12u);
             }
 
@@ -474,7 +474,7 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v31 = v8;
+            *v31 = failedCopy;
             _os_log_impl(&dword_1B0389000, v27, OS_LOG_TYPE_DEFAULT, "encounter server error for task %@.", buf, 0xCu);
           }
 
@@ -495,7 +495,7 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
               *buf = 67109378;
               *v31 = v15;
               *&v31[4] = 2112;
-              *&v31[6] = v8;
+              *&v31[6] = failedCopy;
               _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "server has reset the sync state %d times for task %@ in the same sync attempt, giving up.", buf, 0x12u);
             }
 
@@ -506,7 +506,7 @@ void __73__MFDAMailAccountSyncConsumer_shouldBeginStreamingForMailMessage_format
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            *v31 = v8;
+            *v31 = failedCopy;
             *&v31[8] = 2048;
             *&v31[10] = 8;
             _os_log_impl(&dword_1B0389000, v27, OS_LOG_TYPE_DEFAULT, "server indicated invalid sync state for task %@ (code %ld).  resetting mailbox sync key.", buf, 0x16u);
@@ -538,32 +538,32 @@ LABEL_36:
     goto LABEL_38;
   }
 
-  if (a4 <= 62)
+  if (code <= 62)
   {
-    if (a4 == 9)
+    if (code == 9)
     {
       goto LABEL_36;
     }
 
-    if (a4 != 12)
+    if (code != 12)
     {
       goto LABEL_35;
     }
 
-    v18 = [MEMORY[0x1E69998A8] sharedConnection];
-    [v18 updateFolderListForAccountID:self->_accountID andDataclasses:1 requireChangedFolders:1 isUserRequested:1];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    [mEMORY[0x1E69998A8] updateFolderListForAccountID:self->_accountID andDataclasses:1 requireChangedFolders:1 isUserRequested:1];
 
     goto LABEL_32;
   }
 
-  if (a4 == 63)
+  if (code == 63)
   {
     goto LABEL_14;
   }
 
-  if (a4 != 67)
+  if (code != 67)
   {
-    if (a4 != 79)
+    if (code != 79)
     {
       goto LABEL_35;
     }
@@ -599,11 +599,11 @@ void __59__MFDAMailAccountSyncConsumer_taskFailed_statusCode_error___block_invok
   [v3 handleResponse:0 error:*(a1 + 32)];
 }
 
-- (void)accountHierarchyChanged:(id)a3
+- (void)accountHierarchyChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [v6 object];
-  v5 = [v4 isEqualToString:self->_accountID];
+  changedCopy = changed;
+  object = [changedCopy object];
+  v5 = [object isEqualToString:self->_accountID];
 
   if (v5)
   {
@@ -612,22 +612,22 @@ void __59__MFDAMailAccountSyncConsumer_taskFailed_statusCode_error___block_invok
   }
 }
 
-- (BOOL)refreshFolderHierarchyAndWait:(unint64_t)a3
+- (BOOL)refreshFolderHierarchyAndWait:(unint64_t)wait
 {
   v5 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
   accountHierarchyLock = self->_accountHierarchyLock;
   self->_accountHierarchyLock = v5;
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_accountHierarchyChanged_ name:*MEMORY[0x1E6999818] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_accountHierarchyChanged_ name:*MEMORY[0x1E6999818] object:0];
 
-  v8 = [MEMORY[0x1E69998A8] sharedConnection];
-  [v8 updateFolderListForAccountID:self->_accountID andDataclasses:1 requireChangedFolders:1 isUserRequested:1];
+  mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+  [mEMORY[0x1E69998A8] updateFolderListForAccountID:self->_accountID andDataclasses:1 requireChangedFolders:1 isUserRequested:1];
 
-  if (a3)
+  if (wait)
   {
     v9 = 1;
-    v10 = a3;
+    waitCopy = wait;
     v11 = 1;
     do
     {
@@ -641,15 +641,15 @@ void __59__MFDAMailAccountSyncConsumer_taskFailed_statusCode_error___block_invok
         break;
       }
 
-      v14 = [MEMORY[0x1E695DFD0] currentRunLoop];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
       v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:0.01];
-      [v14 runUntilDate:v15];
+      [currentRunLoop runUntilDate:v15];
 
-      v11 = v9++ < a3;
-      --v10;
+      v11 = v9++ < wait;
+      --waitCopy;
     }
 
-    while (v10);
+    while (waitCopy);
   }
 
   else

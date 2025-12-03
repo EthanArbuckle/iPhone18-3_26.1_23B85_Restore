@@ -1,20 +1,20 @@
 @interface ICASSessionDetailData
-- (ICASSessionDetailData)initWithSessionDetailArray:(id)a3;
+- (ICASSessionDetailData)initWithSessionDetailArray:(id)array;
 - (id)toDict;
 @end
 
 @implementation ICASSessionDetailData
 
-- (ICASSessionDetailData)initWithSessionDetailArray:(id)a3
+- (ICASSessionDetailData)initWithSessionDetailArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = ICASSessionDetailData;
   v6 = [(ICASSessionDetailData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionDetailArray, a3);
+    objc_storeStrong(&v6->_sessionDetailArray, array);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"sessionDetailArray";
-  v3 = [(ICASSessionDetailData *)self sessionDetailArray];
-  if (v3)
+  sessionDetailArray = [(ICASSessionDetailData *)self sessionDetailArray];
+  if (sessionDetailArray)
   {
-    v4 = [(ICASSessionDetailData *)self sessionDetailArray];
+    sessionDetailArray2 = [(ICASSessionDetailData *)self sessionDetailArray];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    sessionDetailArray2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = sessionDetailArray2;
+  v10[0] = sessionDetailArray2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

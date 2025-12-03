@@ -1,14 +1,14 @@
 @interface RWIProtocolDOMViewportSize
-- (RWIProtocolDOMViewportSize)initWithWidth:(double)a3 height:(double)a4;
+- (RWIProtocolDOMViewportSize)initWithWidth:(double)width height:(double)height;
 - (double)height;
 - (double)width;
-- (void)setHeight:(double)a3;
-- (void)setWidth:(double)a3;
+- (void)setHeight:(double)height;
+- (void)setWidth:(double)width;
 @end
 
 @implementation RWIProtocolDOMViewportSize
 
-- (RWIProtocolDOMViewportSize)initWithWidth:(double)a3 height:(double)a4
+- (RWIProtocolDOMViewportSize)initWithWidth:(double)width height:(double)height
 {
   v10.receiver = self;
   v10.super_class = RWIProtocolDOMViewportSize;
@@ -16,19 +16,19 @@
   v7 = v6;
   if (v6)
   {
-    [(RWIProtocolDOMViewportSize *)v6 setWidth:a3];
-    [(RWIProtocolDOMViewportSize *)v7 setHeight:a4];
+    [(RWIProtocolDOMViewportSize *)v6 setWidth:width];
+    [(RWIProtocolDOMViewportSize *)v7 setHeight:height];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMViewportSize;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"width" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"width" forKey:width];
 }
 
 - (double)width
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMViewportSize;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"height" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"height" forKey:height];
 }
 
 - (double)height

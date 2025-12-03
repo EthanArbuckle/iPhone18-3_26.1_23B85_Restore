@@ -1,29 +1,29 @@
 @interface NEAgentAppProxyExtension
 - (id)driverInterface;
 - (id)managerInterface;
-- (void)connectWithParameters:(id)a3;
-- (void)extension:(id)a3 didRequestFlowDivertControlSocketWithCompletionHandler:(id)a4;
+- (void)connectWithParameters:(id)parameters;
+- (void)extension:(id)extension didRequestFlowDivertControlSocketWithCompletionHandler:(id)handler;
 @end
 
 @implementation NEAgentAppProxyExtension
 
-- (void)extension:(id)a3 didRequestFlowDivertControlSocketWithCompletionHandler:(id)a4
+- (void)extension:(id)extension didRequestFlowDivertControlSocketWithCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(NEAgentExtension *)self managerObjectFactory];
+  handlerCopy = handler;
+  managerObjectFactory = [(NEAgentExtension *)self managerObjectFactory];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__NEAgentAppProxyExtension_extension_didRequestFlowDivertControlSocketWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7F0B4A8;
   v11[4] = self;
-  v7 = [v6 managerObjectWithErrorHandler:v11];
+  v7 = [managerObjectFactory managerObjectWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __93__NEAgentAppProxyExtension_extension_didRequestFlowDivertControlSocketWithCompletionHandler___block_invoke_38;
   v9[3] = &unk_1E7F0A800;
-  v10 = v5;
-  v8 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v7 createFlowDivertControlSocketWithCompletionHandler:v9];
 }
 
@@ -43,24 +43,24 @@ void __93__NEAgentAppProxyExtension_extension_didRequestFlowDivertControlSocketW
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectWithParameters:(id)a3
+- (void)connectWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self managerObjectFactory];
+  parametersCopy = parameters;
+  managerObjectFactory = [(NEAgentExtension *)self managerObjectFactory];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__NEAgentAppProxyExtension_connectWithParameters___block_invoke;
   v10[3] = &unk_1E7F0B4A8;
   v10[4] = self;
-  v6 = [v5 managerObjectWithErrorHandler:v10];
+  v6 = [managerObjectFactory managerObjectWithErrorHandler:v10];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__NEAgentAppProxyExtension_connectWithParameters___block_invoke_36;
   v8[3] = &unk_1E7F0A7D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = parametersCopy;
+  v7 = parametersCopy;
   [v6 createFlowDivertControlSocketWithCompletionHandler:v8];
 }
 

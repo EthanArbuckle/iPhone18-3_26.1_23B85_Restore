@@ -2,7 +2,7 @@
 - (id)makeMapSampler;
 - (id)outputImage;
 - (void)setDefaults;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation RAWGainMap
@@ -25,11 +25,11 @@
   MEMORY[0x2821F96F8](v6, inputColorSpace);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_hasPrefix_(v7, v8, @"inputGainMapData", v9, v10))
+  valueCopy = value;
+  keyCopy = key;
+  if (objc_msgSend_hasPrefix_(keyCopy, v8, @"inputGainMapData", v9, v10))
   {
     gainMapImg = self->_gainMapImg;
     self->_gainMapImg = 0;
@@ -37,7 +37,7 @@
 
   v12.receiver = self;
   v12.super_class = RAWGainMap;
-  [(RAWGainMap *)&v12 setValue:v6 forKey:v7];
+  [(RAWGainMap *)&v12 setValue:valueCopy forKey:keyCopy];
 }
 
 - (id)makeMapSampler

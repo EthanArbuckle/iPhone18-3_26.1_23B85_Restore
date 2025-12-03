@@ -1,55 +1,55 @@
 @interface WFOpenUserActivityAction
-+ (id)userActivityActionWithShortcut:(id)a3 launchOrigin:(id)a4 error:(id *)a5;
-+ (void)createActionWithIntent:(id)a3 completionHandler:(id)a4;
-+ (void)createActionWithUserActivity:(id)a3 appBundleIdentifier:(id)a4 launchOrigin:(id)a5 completionHandler:(id)a6;
++ (id)userActivityActionWithShortcut:(id)shortcut launchOrigin:(id)origin error:(id *)error;
++ (void)createActionWithIntent:(id)intent completionHandler:(id)handler;
++ (void)createActionWithUserActivity:(id)activity appBundleIdentifier:(id)identifier launchOrigin:(id)origin completionHandler:(id)handler;
 - (NSString)associatedAppBundleIdentifier;
-- (WFOpenUserActivityAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
+- (WFOpenUserActivityAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
 - (id)appDescriptor;
-- (id)contentDestinationWithError:(id *)a3;
-- (id)disabledPlatformsForUserActivityWithType:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)contentDestinationWithError:(id *)error;
+- (id)disabledPlatformsForUserActivityWithType:(id)type;
+- (id)localizedNameWithContext:(id)context;
 - (id)metricsIdentifier;
 - (id)serializedParameters;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)generateShortcutRepresentation:(id)a3;
-- (void)generateStandaloneShortcutRepresentation:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)setDescriptor:(id)a3;
-- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)a3;
-- (void)updateAppDescriptorWithSelectedApp:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)generateShortcutRepresentation:(id)representation;
+- (void)generateStandaloneShortcutRepresentation:(id)representation;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)setDescriptor:(id)descriptor;
+- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)app;
+- (void)updateAppDescriptorWithSelectedApp:(id)app;
 @end
 
 @implementation WFOpenUserActivityAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
+  descriptionCopy = description;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
-  v10 = a4;
-  if (v7)
+  nameCopy = name;
+  destinationCopy = destination;
+  if (descriptionCopy)
   {
     v11 = WFLocalizedString(@"Allow “%@” to share %@ with “%@”?");
-    [v8 localizedStringWithFormat:v11, v9, v7, v10];
+    [v8 localizedStringWithFormat:v11, nameCopy, descriptionCopy, destinationCopy];
   }
 
   else
   {
     v11 = WFLocalizedString(@"Allow “%@” to run actions from “%@”?");
-    [v8 localizedStringWithFormat:v11, v9, v10, v14];
+    [v8 localizedStringWithFormat:v11, nameCopy, destinationCopy, v14];
   }
   v12 = ;
 
   return v12;
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(WFOpenUserActivityAction *)self appDescriptor];
-  if (v4)
+  appDescriptor = [(WFOpenUserActivityAction *)self appDescriptor];
+  if (appDescriptor)
   {
-    v5 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:v4];
+    v5 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:appDescriptor];
   }
 
   else
@@ -60,7 +60,7 @@
       v9 = 136315394;
       v10 = "[WFOpenUserActivityAction contentDestinationWithError:]";
       v11 = 2114;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_FAULT, "%s Could not get appDescriptor for user activity action: %{public}@", &v9, 0x16u);
     }
 
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (id)disabledPlatformsForUserActivityWithType:(id)a3
+- (id)disabledPlatformsForUserActivityWithType:(id)type
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (typeCopy)
   {
-    v7 = v5;
+    v7 = typeCopy;
     if (v7 == @"com.apple.Safari.UserActivity.Bookmarks")
     {
       goto LABEL_20;
@@ -96,8 +96,8 @@
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFOpenUserActivityAction.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOpenUserActivityAction.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
   v10 = *MEMORY[0x1E696AA68];
@@ -196,78 +196,78 @@ LABEL_21:
 - (id)metricsIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFAction *)self identifier];
-  v5 = [(WFOpenUserActivityAction *)self userActivity];
-  v6 = [v5 _teamIdentifier];
-  v7 = [(WFOpenUserActivityAction *)self userActivity];
-  v8 = [v7 activityType];
-  v9 = [v3 stringWithFormat:@"%@.%@.%@", v4, v6, v8];
+  identifier = [(WFAction *)self identifier];
+  userActivity = [(WFOpenUserActivityAction *)self userActivity];
+  _teamIdentifier = [userActivity _teamIdentifier];
+  userActivity2 = [(WFOpenUserActivityAction *)self userActivity];
+  activityType = [userActivity2 activityType];
+  v9 = [v3 stringWithFormat:@"%@.%@.%@", identifier, _teamIdentifier, activityType];
 
   return v9;
 }
 
-- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)a3
+- (void)updateAppDescriptorInDatabaseWithSelectedApp:(id)app
 {
-  v4 = a3;
-  v5 = [(WFAction *)self workflow];
-  v15 = [v5 actions];
+  appCopy = app;
+  workflow = [(WFAction *)self workflow];
+  actions = [workflow actions];
 
-  v6 = [v15 indexOfObject:self];
-  v7 = [(WFOpenUserActivityAction *)self descriptor];
-  v8 = [v7 descriptorWithAppDescriptor:v4];
+  v6 = [actions indexOfObject:self];
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  v8 = [descriptor descriptorWithAppDescriptor:appCopy];
 
   v9 = +[WFDatabaseProxy defaultDatabase];
-  v10 = [(WFAction *)self UUID];
+  uUID = [(WFAction *)self UUID];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-  v12 = [(WFAction *)self identifier];
-  v13 = [(WFAction *)self workflow];
-  v14 = [v13 workflowID];
-  [v9 updateAppDescriptor:v8 atKey:@"UserActivityDescriptor" actionUUID:v10 actionIndex:v11 actionIdentifier:v12 workflowID:v14 error:0];
+  identifier = [(WFAction *)self identifier];
+  workflow2 = [(WFAction *)self workflow];
+  workflowID = [workflow2 workflowID];
+  [v9 updateAppDescriptor:v8 atKey:@"UserActivityDescriptor" actionUUID:uUID actionIndex:v11 actionIdentifier:identifier workflowID:workflowID error:0];
 }
 
-- (void)updateAppDescriptorWithSelectedApp:(id)a3
+- (void)updateAppDescriptorWithSelectedApp:(id)app
 {
-  v4 = a3;
-  v5 = [(WFOpenUserActivityAction *)self descriptor];
-  v6 = [v5 descriptorWithAppDescriptor:v4];
+  appCopy = app;
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  v6 = [descriptor descriptorWithAppDescriptor:appCopy];
   [(WFOpenUserActivityAction *)self setDescriptor:v6];
 
   v7.receiver = self;
   v7.super_class = WFOpenUserActivityAction;
-  [(WFAction *)&v7 updateAppDescriptorWithSelectedApp:v4];
+  [(WFAction *)&v7 updateAppDescriptorWithSelectedApp:appCopy];
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  objc_storeStrong(&self->_descriptor, a3);
-  v5 = a3;
-  v6 = [v5 serializedRepresentation];
+  objc_storeStrong(&self->_descriptor, descriptor);
+  descriptorCopy = descriptor;
+  serializedRepresentation = [descriptorCopy serializedRepresentation];
 
-  [(WFAction *)self setSupplementalParameterValue:v6 forKey:@"UserActivityDescriptor"];
+  [(WFAction *)self setSupplementalParameterValue:serializedRepresentation forKey:@"UserActivityDescriptor"];
 }
 
 - (id)appDescriptor
 {
-  v2 = [(WFOpenUserActivityAction *)self descriptor];
-  v3 = [v2 appDescriptor];
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  appDescriptor = [descriptor appDescriptor];
 
-  return v3;
+  return appDescriptor;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = [(WFOpenUserActivityAction *)self activityData];
-  if ([v4 length] && (-[WFOpenUserActivityAction descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  activityData = [(WFOpenUserActivityAction *)self activityData];
+  if ([activityData length] && (-[WFOpenUserActivityAction descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:activityData];
     [v6 _setExecutionContext:7];
-    v7 = [(WFAction *)self userInterface];
-    if ([v7 isRunningWithSiriUI])
+    userInterface = [(WFAction *)self userInterface];
+    if ([userInterface isRunningWithSiriUI])
     {
-      v8 = [(WFAction *)self userInterface];
-      v9 = [v8 executionContext];
+      userInterface2 = [(WFAction *)self userInterface];
+      executionContext = [userInterface2 executionContext];
 
-      if (v9 <= 9 && ((1 << v9) & 0x206) != 0)
+      if (executionContext <= 9 && ((1 << executionContext) & 0x206) != 0)
       {
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
@@ -283,9 +283,9 @@ LABEL_21:
     }
 
     v10 = objc_alloc(MEMORY[0x1E6996CA0]);
-    v11 = [(WFOpenUserActivityAction *)self descriptor];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v10 initWithBundleIdentifier:v12 options:0 URL:0 userActivity:v6];
+    descriptor = [(WFOpenUserActivityAction *)self descriptor];
+    bundleIdentifier = [descriptor bundleIdentifier];
+    v13 = [v10 initWithBundleIdentifier:bundleIdentifier options:0 URL:0 userActivity:v6];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -368,22 +368,22 @@ void __55__WFOpenUserActivityAction_runAsynchronouslyWithInput___block_invoke_2(
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFOpenUserActivityAction *)self userActivity];
-  v6 = [v5 title];
-  v7 = v6;
-  if (v6)
+  contextCopy = context;
+  userActivity = [(WFOpenUserActivityAction *)self userActivity];
+  title = [userActivity title];
+  v7 = title;
+  if (title)
   {
-    v8 = v6;
+    v8 = title;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFOpenUserActivityAction;
-    v8 = [(WFAction *)&v11 localizedNameWithContext:v4];
+    v8 = [(WFAction *)&v11 localizedNameWithContext:contextCopy];
   }
 
   v9 = v8;
@@ -391,15 +391,15 @@ void __55__WFOpenUserActivityAction_runAsynchronouslyWithInput___block_invoke_2(
   return v9;
 }
 
-- (void)generateStandaloneShortcutRepresentation:(id)a3
+- (void)generateStandaloneShortcutRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___block_invoke;
   v6[3] = &unk_1E8375498;
-  v7 = v4;
-  v5 = v4;
+  v7 = representationCopy;
+  v5 = representationCopy;
   [(WFOpenUserActivityAction *)self generateShortcutRepresentation:v6];
 }
 
@@ -411,15 +411,15 @@ void __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateShortcutRepresentation:(id)a3
+- (void)generateShortcutRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(WFOpenUserActivityAction *)self activityImageData];
-  if ([v5 length])
+  representationCopy = representation;
+  activityImageData = [(WFOpenUserActivityAction *)self activityImageData];
+  if ([activityImageData length])
   {
     v6 = MEMORY[0x1E696E868];
-    v7 = [(WFOpenUserActivityAction *)self activityImageData];
-    v14 = [v6 imageWithImageData:v7];
+    activityImageData2 = [(WFOpenUserActivityAction *)self activityImageData];
+    v14 = [v6 imageWithImageData:activityImageData2];
   }
 
   else
@@ -428,18 +428,18 @@ void __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___b
   }
 
   v8 = objc_alloc(MEMORY[0x1E696EA38]);
-  v9 = [(WFOpenUserActivityAction *)self activityData];
-  v10 = [(WFOpenUserActivityAction *)self activitySubtitle];
-  v11 = [(WFOpenUserActivityAction *)self descriptor];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v8 initWithActivityData:v9 activityImage:v14 activitySubtitle:v10 activityBundleIdentifier:v12];
-  v4[2](v4, v13, 0);
+  activityData = [(WFOpenUserActivityAction *)self activityData];
+  activitySubtitle = [(WFOpenUserActivityAction *)self activitySubtitle];
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
+  v13 = [v8 initWithActivityData:activityData activityImage:v14 activitySubtitle:activitySubtitle activityBundleIdentifier:bundleIdentifier];
+  representationCopy[2](representationCopy, v13, 0);
 }
 
 - (NSString)associatedAppBundleIdentifier
 {
-  v2 = [(WFOpenUserActivityAction *)self descriptor];
-  v3 = [v2 bundleIdentifier];
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
   v4 = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity();
 
   return v4;
@@ -450,36 +450,36 @@ void __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___b
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v14.receiver = self;
   v14.super_class = WFOpenUserActivityAction;
-  v4 = [(WFAction *)&v14 serializedParameters];
-  v5 = [v3 initWithDictionary:v4];
+  serializedParameters = [(WFAction *)&v14 serializedParameters];
+  v5 = [v3 initWithDictionary:serializedParameters];
 
-  v6 = [(WFOpenUserActivityAction *)self activityData];
-  [v5 setValue:v6 forKey:@"UserActivityData"];
+  activityData = [(WFOpenUserActivityAction *)self activityData];
+  [v5 setValue:activityData forKey:@"UserActivityData"];
 
-  v7 = [(WFOpenUserActivityAction *)self activityImageData];
-  [v5 setValue:v7 forKey:@"UserActivityImageData"];
+  activityImageData = [(WFOpenUserActivityAction *)self activityImageData];
+  [v5 setValue:activityImageData forKey:@"UserActivityImageData"];
 
-  v8 = [(WFOpenUserActivityAction *)self activitySubtitle];
-  [v5 setValue:v8 forKey:@"UserActivitySubtitle"];
+  activitySubtitle = [(WFOpenUserActivityAction *)self activitySubtitle];
+  [v5 setValue:activitySubtitle forKey:@"UserActivitySubtitle"];
 
-  v9 = [(WFOpenUserActivityAction *)self bundleIdentifier];
-  [v5 setValue:v9 forKey:@"AppBundleIdentifier"];
+  bundleIdentifier = [(WFOpenUserActivityAction *)self bundleIdentifier];
+  [v5 setValue:bundleIdentifier forKey:@"AppBundleIdentifier"];
 
-  v10 = [(WFOpenUserActivityAction *)self launchOrigin];
-  [v5 setValue:v10 forKey:@"LaunchOrigin"];
+  launchOrigin = [(WFOpenUserActivityAction *)self launchOrigin];
+  [v5 setValue:launchOrigin forKey:@"LaunchOrigin"];
 
-  v11 = [(WFOpenUserActivityAction *)self descriptor];
-  v12 = [v11 serializedRepresentation];
-  [v5 setValue:v12 forKey:@"UserActivityDescriptor"];
+  descriptor = [(WFOpenUserActivityAction *)self descriptor];
+  serializedRepresentation = [descriptor serializedRepresentation];
+  [v5 setValue:serializedRepresentation forKey:@"UserActivityDescriptor"];
 
   return v5;
 }
 
-- (WFOpenUserActivityAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFOpenUserActivityAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
-  v67 = a3;
-  v8 = a4;
-  v9 = [a5 mutableCopy];
+  identifierCopy = identifier;
+  definitionCopy = definition;
+  v9 = [parameters mutableCopy];
   v10 = [v9 wf_popObjectForKey:@"UserActivityData"];
   v11 = objc_opt_class();
   v12 = WFEnforceClass_9663(v10, v11);
@@ -518,8 +518,8 @@ void __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___b
   {
     v62 = v15;
     v29 = [objc_alloc(MEMORY[0x1E696EAD8]) initWithSerializedRepresentation:v26];
-    v30 = [MEMORY[0x1E696E748] sharedResolver];
-    v65 = [v30 resolvedUserActivityMatchingDescriptor:v29];
+    mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+    v65 = [mEMORY[0x1E696E748] resolvedUserActivityMatchingDescriptor:v29];
     goto LABEL_11;
   }
 
@@ -534,18 +534,18 @@ void __69__WFOpenUserActivityAction_generateStandaloneShortcutRepresentation___b
     }
 
     v62 = v15;
-    v30 = [objc_alloc(MEMORY[0x1E696E720]) initWithApplicationRecord:v29];
+    mEMORY[0x1E696E748] = [objc_alloc(MEMORY[0x1E696E720]) initWithApplicationRecord:v29];
     v66 = objc_alloc(MEMORY[0x1E696EAD8]);
-    v61 = [v28 activityType];
-    v60 = [v30 localizedName];
-    v59 = [v30 bundleIdentifier];
-    v58 = [v30 extensionBundleIdentifier];
-    v57 = [v30 counterpartIdentifiers];
-    v56 = [v30 teamIdentifier];
-    v31 = [v30 supportedIntents];
-    [v30 bundleURL];
+    activityType = [v28 activityType];
+    localizedName = [mEMORY[0x1E696E748] localizedName];
+    bundleIdentifier = [mEMORY[0x1E696E748] bundleIdentifier];
+    extensionBundleIdentifier = [mEMORY[0x1E696E748] extensionBundleIdentifier];
+    counterpartIdentifiers = [mEMORY[0x1E696E748] counterpartIdentifiers];
+    teamIdentifier = [mEMORY[0x1E696E748] teamIdentifier];
+    supportedIntents = [mEMORY[0x1E696E748] supportedIntents];
+    [mEMORY[0x1E696E748] bundleURL];
     v32 = v55 = v18;
-    v65 = [v66 initWithUserActivityType:v61 localizedName:v60 bundleIdentifier:v59 extensionBundleIdentifier:v58 counterpartIdentifiers:v57 teamIdentifier:v56 supportedIntents:v31 bundleURL:v32];
+    v65 = [v66 initWithUserActivityType:activityType localizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:v32];
 
     v18 = v55;
 LABEL_11:
@@ -555,31 +555,31 @@ LABEL_12:
   }
 
 LABEL_13:
-  v33 = [v28 activityType];
+  activityType2 = [v28 activityType];
 
-  if (v33)
+  if (activityType2)
   {
-    v34 = [v28 activityType];
-    [(WFOpenUserActivityAction *)self disabledPlatformsForUserActivityWithType:v34];
-    v35 = self;
+    activityType3 = [v28 activityType];
+    [(WFOpenUserActivityAction *)self disabledPlatformsForUserActivityWithType:activityType3];
+    selfCopy = self;
     v36 = v12;
     v37 = v21;
     v38 = v18;
     v40 = v39 = v15;
 
-    v41 = WFInjectDisabledPlatformsInActionDefinition(v40, v8);
+    v41 = WFInjectDisabledPlatformsInActionDefinition(v40, definitionCopy);
 
     v15 = v39;
     v18 = v38;
     v21 = v37;
     v12 = v36;
-    self = v35;
-    v8 = v41;
+    self = selfCopy;
+    definitionCopy = v41;
   }
 
   v68.receiver = self;
   v68.super_class = WFOpenUserActivityAction;
-  v42 = [(WFAction *)&v68 initWithIdentifier:v67 definition:v8 serializedParameters:v9];
+  v42 = [(WFAction *)&v68 initWithIdentifier:identifierCopy definition:definitionCopy serializedParameters:v9];
   if (v42)
   {
     v43 = [v12 copy];
@@ -610,15 +610,15 @@ LABEL_13:
   return v42;
 }
 
-+ (id)userActivityActionWithShortcut:(id)a3 launchOrigin:(id)a4 error:(id *)a5
++ (id)userActivityActionWithShortcut:(id)shortcut launchOrigin:(id)origin error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 activityData];
-  if (![v9 length])
+  shortcutCopy = shortcut;
+  originCopy = origin;
+  activityData = [shortcutCopy activityData];
+  if (![activityData length])
   {
-    if (a5)
+    if (error)
     {
       v52 = *MEMORY[0x1E696A588];
       v53[0] = @"Could not create action because the user activity data was empty";
@@ -627,7 +627,7 @@ LABEL_13:
       v14 = &v52;
 LABEL_6:
       v15 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:1];
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v15];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v15];
     }
 
 LABEL_7:
@@ -635,19 +635,19 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v10 = [v7 userActivity];
-  v11 = [v10 title];
-  if (![v11 length])
+  userActivity = [shortcutCopy userActivity];
+  title = [userActivity title];
+  if (![title length])
   {
-    v17 = [v7 userActivity];
-    v18 = [v17 interaction];
+    userActivity2 = [shortcutCopy userActivity];
+    interaction = [userActivity2 interaction];
 
-    if (v18)
+    if (interaction)
     {
       goto LABEL_9;
     }
 
-    if (a5)
+    if (error)
     {
       v50 = *MEMORY[0x1E696A588];
       v51 = @"Could not create action because the user activity title was empty";
@@ -662,30 +662,30 @@ LABEL_7:
 
 LABEL_9:
   v19 = objc_opt_new();
-  [v19 setValue:v9 forKey:@"UserActivityData"];
-  v20 = [v7 activityImage];
-  v21 = [v20 _imageData];
-  [v19 setValue:v21 forKey:@"UserActivityImageData"];
+  [v19 setValue:activityData forKey:@"UserActivityData"];
+  activityImage = [shortcutCopy activityImage];
+  _imageData = [activityImage _imageData];
+  [v19 setValue:_imageData forKey:@"UserActivityImageData"];
 
-  v22 = [v7 activitySubtitle];
-  [v19 setValue:v22 forKey:@"UserActivitySubtitle"];
+  activitySubtitle = [shortcutCopy activitySubtitle];
+  [v19 setValue:activitySubtitle forKey:@"UserActivitySubtitle"];
 
-  v23 = [v7 activityBundleIdentifier];
-  [v19 setValue:v23 forKey:@"AppBundleIdentifier"];
+  activityBundleIdentifier = [shortcutCopy activityBundleIdentifier];
+  [v19 setValue:activityBundleIdentifier forKey:@"AppBundleIdentifier"];
 
-  [v19 setValue:v8 forKey:@"LaunchOrigin"];
+  [v19 setValue:originCopy forKey:@"LaunchOrigin"];
   v24 = objc_alloc(MEMORY[0x1E69635F8]);
-  v25 = [v7 activityBundleIdentifier];
-  v26 = [v24 initWithBundleIdentifier:v25 allowPlaceholder:1 error:0];
+  activityBundleIdentifier2 = [shortcutCopy activityBundleIdentifier];
+  v26 = [v24 initWithBundleIdentifier:activityBundleIdentifier2 allowPlaceholder:1 error:0];
 
   if (v26)
   {
-    v48 = v9;
-    v49 = v8;
-    v45 = v7;
-    if (v9)
+    v48 = activityData;
+    v49 = originCopy;
+    v45 = shortcutCopy;
+    if (activityData)
     {
-      v27 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:v9];
+      v27 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:activityData];
     }
 
     else
@@ -696,24 +696,24 @@ LABEL_9:
     v46 = v27;
     v28 = [objc_alloc(MEMORY[0x1E696E720]) initWithApplicationRecord:v26];
     v44 = objc_alloc(MEMORY[0x1E696EAD8]);
-    v43 = [v27 activityType];
-    v29 = [v28 localizedName];
-    v30 = [v28 bundleIdentifier];
-    v31 = [v28 extensionBundleIdentifier];
-    v32 = [v28 counterpartIdentifiers];
+    activityType = [v27 activityType];
+    localizedName = [v28 localizedName];
+    bundleIdentifier = [v28 bundleIdentifier];
+    extensionBundleIdentifier = [v28 extensionBundleIdentifier];
+    counterpartIdentifiers = [v28 counterpartIdentifiers];
     [v28 teamIdentifier];
     v33 = v47 = v26;
-    v34 = [v28 supportedIntents];
-    v35 = [v28 bundleURL];
-    v36 = [v44 initWithUserActivityType:v43 localizedName:v29 bundleIdentifier:v30 extensionBundleIdentifier:v31 counterpartIdentifiers:v32 teamIdentifier:v33 supportedIntents:v34 bundleURL:v35];
+    supportedIntents = [v28 supportedIntents];
+    bundleURL = [v28 bundleURL];
+    v36 = [v44 initWithUserActivityType:activityType localizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:v33 supportedIntents:supportedIntents bundleURL:bundleURL];
 
     v26 = v47;
-    v37 = [v36 serializedRepresentation];
-    [v19 setValue:v37 forKey:@"UserActivityDescriptor"];
+    serializedRepresentation = [v36 serializedRepresentation];
+    [v19 setValue:serializedRepresentation forKey:@"UserActivityDescriptor"];
 
-    v9 = v48;
-    v8 = v49;
-    v7 = v45;
+    activityData = v48;
+    originCopy = v49;
+    shortcutCopy = v45;
   }
 
   v38 = +[WFActionRegistry sharedRegistry];
@@ -728,15 +728,15 @@ LABEL_15:
   return v16;
 }
 
-+ (void)createActionWithIntent:(id)a3 completionHandler:(id)a4
++ (void)createActionWithIntent:(id)intent completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  intentCopy = intent;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!intentCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"WFLOpenUserActivityAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLOpenUserActivityAction.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
 
     if (v9)
     {
@@ -744,44 +744,44 @@ LABEL_15:
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"WFLOpenUserActivityAction.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFLOpenUserActivityAction.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithIntent:v7];
-  v11 = [v7 launchId];
+  v10 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithIntent:intentCopy];
+  launchId = [intentCopy launchId];
   INExtractAppInfoFromSiriLaunchId();
   v12 = 0;
 
-  [a1 createActionWithUserActivity:v10 appBundleIdentifier:v12 launchOrigin:0 completionHandler:v9];
+  [self createActionWithUserActivity:v10 appBundleIdentifier:v12 launchOrigin:0 completionHandler:v9];
 }
 
-+ (void)createActionWithUserActivity:(id)a3 appBundleIdentifier:(id)a4 launchOrigin:(id)a5 completionHandler:(id)a6
++ (void)createActionWithUserActivity:(id)activity appBundleIdentifier:(id)identifier launchOrigin:(id)origin completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 length])
+  activityCopy = activity;
+  identifierCopy = identifier;
+  originCopy = origin;
+  handlerCopy = handler;
+  if ([identifierCopy length])
   {
-    v13 = [objc_alloc(MEMORY[0x1E696EA38]) initWithUserActivity:v9 bundleIdentifier:v10];
+    v13 = [objc_alloc(MEMORY[0x1E696EA38]) initWithUserActivity:activityCopy bundleIdentifier:identifierCopy];
     v16 = 0;
-    v14 = [WFOpenUserActivityAction userActivityActionWithShortcut:v13 launchOrigin:v11 error:&v16];
+    v14 = [WFOpenUserActivityAction userActivityActionWithShortcut:v13 launchOrigin:originCopy error:&v16];
     v15 = v16;
-    v12[2](v12, v14, v15);
+    handlerCopy[2](handlerCopy, v14, v15);
   }
 
   else
   {
-    v12[2](v12, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 

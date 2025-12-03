@@ -1,28 +1,28 @@
 @interface PHLivePhotoExportSession
-+ (BOOL)_canCreateLivePhotoWithURLs:(id)a3 outError:(id *)a4;
-+ (BOOL)_identifyResourceURLs:(id)a3 outImageURL:(id *)a4 outVideoURL:(id *)a5 error:(id *)a6;
-- (BOOL)_isOutputURLValid:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (PHLivePhotoExportSession)initWithResourceFileURLs:(id)a3;
-- (id)writeToFileURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
++ (BOOL)_canCreateLivePhotoWithURLs:(id)ls outError:(id *)error;
++ (BOOL)_identifyResourceURLs:(id)ls outImageURL:(id *)l outVideoURL:(id *)rL error:(id *)error;
+- (BOOL)_isOutputURLValid:(id)valid withOptions:(id)options error:(id *)error;
+- (PHLivePhotoExportSession)initWithResourceFileURLs:(id)ls;
+- (id)writeToFileURL:(id)l options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation PHLivePhotoExportSession
 
-- (BOOL)_isOutputURLValid:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)_isOutputURLValid:(id)valid withOptions:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isFileURL])
+  validCopy = valid;
+  optionsCopy = options;
+  if ([validCopy isFileURL])
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v7 path];
-    if ([v9 fileExistsAtPath:v10])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [validCopy path];
+    if ([defaultManager fileExistsAtPath:path])
     {
-      v11 = [v8 format];
+      format = [optionsCopy format];
 
-      if (v11 != 1)
+      if (format != 1)
       {
-        [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"destination already exists: '%@'", v7}];
+        [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"destination already exists: '%@'", validCopy}];
         goto LABEL_7;
       }
     }
@@ -31,23 +31,23 @@
     {
     }
 
-    v16 = [v8 format];
-    if (v16 != 1)
+    format2 = [optionsCopy format];
+    if (format2 != 1)
     {
-      if (!v16)
+      if (!format2)
       {
-        v17 = [v7 pathExtension];
+        pathExtension = [validCopy pathExtension];
         v18 = *MEMORY[0x1E69C09D0];
-        v19 = [v17 isEqualToString:*MEMORY[0x1E69C09D0]];
+        v19 = [pathExtension isEqualToString:*MEMORY[0x1E69C09D0]];
 
         if ((v19 & 1) == 0)
         {
           v20 = MEMORY[0x1E696ABC0];
-          v21 = [v7 pathExtension];
-          v22 = [v20 ph_genericErrorWithLocalizedDescription:{@"destination has extension '%@' but requires '%@'", v21, v18}];
-          if (a5)
+          pathExtension2 = [validCopy pathExtension];
+          v22 = [v20 ph_genericErrorWithLocalizedDescription:{@"destination has extension '%@' but requires '%@'", pathExtension2, v18}];
+          if (error)
           {
-            *a5 = v22;
+            *error = v22;
           }
 
           goto LABEL_16;
@@ -59,7 +59,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if ([v7 hasDirectoryPath])
+    if ([validCopy hasDirectoryPath])
     {
       goto LABEL_18;
     }
@@ -71,13 +71,13 @@ LABEL_18:
   else
   {
     v12 = MEMORY[0x1E696ABC0];
-    v24 = v7;
+    v24 = validCopy;
     v13 = @"destination is not a file url: '%@'";
   }
 
   [v12 ph_genericErrorWithLocalizedDescription:{v13, v24}];
   v14 = LABEL_7:;
-  if (!a5)
+  if (!error)
   {
 LABEL_16:
     v15 = 0;
@@ -85,26 +85,26 @@ LABEL_16:
   }
 
   v15 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_19:
 
   return v15;
 }
 
-- (id)writeToFileURL:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (id)writeToFileURL:(id)l options:(id)options completionHandler:(id)handler
 {
   v76[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (!v9)
+  if (!optionsCopy)
   {
-    v9 = objc_alloc_init(PHLivePhotoExportSessionOptions);
+    optionsCopy = objc_alloc_init(PHLivePhotoExportSessionOptions);
   }
 
   v75 = 0;
-  v12 = [(PHLivePhotoExportSession *)self _isOutputURLValid:v8 withOptions:v9 error:&v75];
+  v12 = [(PHLivePhotoExportSession *)self _isOutputURLValid:lCopy withOptions:optionsCopy error:&v75];
   v13 = v75;
   if (v12)
   {
@@ -122,44 +122,44 @@ LABEL_19:
 LABEL_19:
       if (*p_imageURL && *p_videoURL && !v13)
       {
-        v29 = [(PHLivePhotoExportSessionOptions *)v9 format];
-        if (v29 == 1)
+        format = [(PHLivePhotoExportSessionOptions *)optionsCopy format];
+        if (format == 1)
         {
           v63 = v11;
           v65 = v20;
           v58 = v19;
           v35 = MEMORY[0x1E695DFF8];
           v36 = MEMORY[0x1E696AEC0];
-          v37 = [MEMORY[0x1E696AFB0] UUID];
-          [v37 UUIDString];
-          v39 = v38 = v8;
-          v40 = [(NSURL *)*p_imageURL pathExtension];
-          v41 = [v36 stringWithFormat:@"%@.%@", v39, v40];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          [uUID UUIDString];
+          v39 = v38 = lCopy;
+          pathExtension = [(NSURL *)*p_imageURL pathExtension];
+          v41 = [v36 stringWithFormat:@"%@.%@", v39, pathExtension];
           v42 = [v35 fileURLWithPath:v41 relativeToURL:v38];
 
           v60 = MEMORY[0x1E695DFF8];
           v43 = MEMORY[0x1E696AEC0];
-          v44 = [MEMORY[0x1E696AFB0] UUID];
-          v45 = [v44 UUIDString];
-          v46 = [(NSURL *)*p_videoURL pathExtension];
-          v47 = [v43 stringWithFormat:@"%@.%@", v45, v46];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID2 UUIDString];
+          pathExtension2 = [(NSURL *)*p_videoURL pathExtension];
+          v47 = [v43 stringWithFormat:@"%@.%@", uUIDString, pathExtension2];
           v48 = v60;
           v61 = v38;
           v49 = [v48 fileURLWithPath:v47 relativeToURL:v38];
 
-          v50 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v51 = *p_imageURL;
           v34 = v42;
           v69 = 0;
-          [v50 copyItemAtURL:v51 toURL:v42 error:&v69];
+          [defaultManager copyItemAtURL:v51 toURL:v42 error:&v69];
           v13 = v69;
 
           if (!v13)
           {
-            v52 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v53 = *p_videoURL;
             v68 = 0;
-            [v52 copyItemAtURL:v53 toURL:v49 error:&v68];
+            [defaultManager2 copyItemAtURL:v53 toURL:v49 error:&v68];
             v13 = v68;
 
             if (!v13)
@@ -170,7 +170,7 @@ LABEL_19:
           }
 
           v19 = v58;
-          v8 = v61;
+          lCopy = v61;
 
           v11 = v63;
           v20 = v65;
@@ -178,15 +178,15 @@ LABEL_19:
 
         else
         {
-          if (v29)
+          if (format)
           {
-            if (v10)
+            if (handlerCopy)
             {
               v21 = v66;
               [v66 setCompletedUnitCount:100];
               v13 = 0;
 LABEL_33:
-              v10[2](v10, v11);
+              handlerCopy[2](handlerCopy, v11);
 LABEL_40:
 
               goto LABEL_41;
@@ -201,18 +201,18 @@ LABEL_39:
           v30 = objc_alloc(MEMORY[0x1E69C0918]);
           [(NSURL *)*p_videoURL path];
           v32 = v31 = v20;
-          v33 = [(NSURL *)*p_imageURL path];
-          v34 = [v30 initWithPathToVideo:v32 pathToImage:v33];
+          path = [(NSURL *)*p_imageURL path];
+          v34 = [v30 initWithPathToVideo:v32 pathToImage:path];
 
           v20 = v31;
           v70 = 0;
-          [v34 writeToBundleAtURL:v8 error:&v70];
+          [v34 writeToBundleAtURL:lCopy error:&v70];
           v13 = v70;
-          [v11 setObject:v8 forKeyedSubscript:@"PHLivePhotoExportSessionInfoBundleURLKey"];
+          [v11 setObject:lCopy forKeyedSubscript:@"PHLivePhotoExportSessionInfoBundleURLKey"];
         }
       }
 
-      if (v10)
+      if (handlerCopy)
       {
         v21 = v66;
         [v66 setCompletedUnitCount:100];
@@ -227,7 +227,7 @@ LABEL_39:
       goto LABEL_39;
     }
 
-    v59 = v8;
+    v59 = lCopy;
     v62 = v11;
     v73 = v17;
     v74 = v15;
@@ -251,7 +251,7 @@ LABEL_39:
         {
           v13 = v25;
           v19 = v23;
-          v8 = v59;
+          lCopy = v59;
           v11 = v62;
           goto LABEL_19;
         }
@@ -272,19 +272,19 @@ LABEL_39:
         }
 
         v19 = v57;
-        v8 = v59;
+        lCopy = v59;
         goto LABEL_18;
       }
 
       v13 = v25;
       v19 = 0;
-      v8 = v59;
+      lCopy = v59;
     }
 
     else
     {
       v13 = v25;
-      v8 = v59;
+      lCopy = v59;
       v19 = v23;
     }
 
@@ -295,9 +295,9 @@ LABEL_18:
   }
 
   [v11 setObject:v13 forKeyedSubscript:@"PHLivePhotoExportSessionInfoErrorKey"];
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   v21 = 0;
@@ -306,43 +306,43 @@ LABEL_41:
   return v21;
 }
 
-- (PHLivePhotoExportSession)initWithResourceFileURLs:(id)a3
+- (PHLivePhotoExportSession)initWithResourceFileURLs:(id)ls
 {
-  v5 = a3;
+  lsCopy = ls;
   v9.receiver = self;
   v9.super_class = PHLivePhotoExportSession;
   v6 = [(PHLivePhotoExportSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURLs, a3);
+    objc_storeStrong(&v6->_fileURLs, ls);
   }
 
   return v7;
 }
 
-+ (BOOL)_canCreateLivePhotoWithURLs:(id)a3 outError:(id *)a4
++ (BOOL)_canCreateLivePhotoWithURLs:(id)ls outError:(id *)error
 {
-  v5 = a3;
+  lsCopy = ls;
   v6 = objc_alloc_init(PHValidator);
   v12 = 0;
-  v7 = [(PHValidator *)v6 validateURLs:v5 withOptions:66 videoComplementMetadata:0 error:&v12];
+  v7 = [(PHValidator *)v6 validateURLs:lsCopy withOptions:66 videoComplementMetadata:0 error:&v12];
 
   v8 = v12;
   v9 = v8;
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v10 = v8;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v7;
 }
 
-+ (BOOL)_identifyResourceURLs:(id)a3 outImageURL:(id *)a4 outVideoURL:(id *)a5 error:(id *)a6
++ (BOOL)_identifyResourceURLs:(id)ls outImageURL:(id *)l outVideoURL:(id *)rL error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lsCopy = ls;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -359,7 +359,7 @@ LABEL_41:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = lsCopy;
   v8 = [obj countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (!v8)
   {
@@ -385,8 +385,8 @@ LABEL_41:
       }
 
       v14 = *(*(&v43 + 1) + 8 * v13);
-      v15 = [v14 pathExtension];
-      v16 = [v15 isEqualToString:v12];
+      pathExtension = [v14 pathExtension];
+      v16 = [pathExtension isEqualToString:v12];
 
       if (v16)
       {
@@ -395,12 +395,12 @@ LABEL_41:
         if (v17)
         {
           v19 = MEMORY[0x1E695DFF8];
-          v20 = [v17 imagePath];
-          v21 = [v19 fileURLWithPath:v20];
+          imagePath = [v17 imagePath];
+          v21 = [v19 fileURLWithPath:imagePath];
 
           v22 = MEMORY[0x1E695DFF8];
-          v23 = [v18 videoPath];
-          v24 = [v22 fileURLWithPath:v23];
+          videoPath = [v18 videoPath];
+          v24 = [v22 fileURLWithPath:videoPath];
 
           v9 = v24;
           v10 = v21;
@@ -408,16 +408,16 @@ LABEL_41:
 
         else
         {
-          v23 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:{@"Bundle at url %@ is corrupted", v14}];
-          v7[2](v7, v23);
+          videoPath = [MEMORY[0x1E696ABC0] ph_errorWithCode:3302 localizedDescription:{@"Bundle at url %@ is corrupted", v14}];
+          v7[2](v7, videoPath);
         }
       }
 
       else
       {
         v25 = MEMORY[0x1E6982C40];
-        v26 = [v14 pathExtension];
-        v18 = [v25 typeWithFilenameExtension:v26];
+        pathExtension2 = [v14 pathExtension];
+        v18 = [v25 typeWithFilenameExtension:pathExtension2];
 
         if (v18)
         {
@@ -496,8 +496,8 @@ LABEL_30:
   if (v33)
   {
     v34 = v49[5];
-    a5 = a6;
-    if (!a6)
+    rL = error;
+    if (!error)
     {
       goto LABEL_37;
     }
@@ -505,17 +505,17 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  if (a4)
+  if (l)
   {
     v35 = v10;
-    *a4 = v10;
+    *l = v10;
   }
 
   v34 = v9;
-  if (a5)
+  if (rL)
   {
 LABEL_36:
-    *a5 = v34;
+    *rL = v34;
   }
 
 LABEL_37:

@@ -1,5 +1,5 @@
 @interface _UIIntelligenceButton.FillView
-- (_TtCC5UIKit21_UIIntelligenceButton8FillView)initWithFrame:(CGRect)a3;
+- (_TtCC5UIKit21_UIIntelligenceButton8FillView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -19,7 +19,7 @@
   [v4 setFrame_];
 }
 
-- (_TtCC5UIKit21_UIIntelligenceButton8FillView)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit21_UIIntelligenceButton8FillView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

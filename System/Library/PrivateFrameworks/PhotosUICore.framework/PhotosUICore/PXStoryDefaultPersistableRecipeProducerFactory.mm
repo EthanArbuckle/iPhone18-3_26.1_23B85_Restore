@@ -1,26 +1,26 @@
 @interface PXStoryDefaultPersistableRecipeProducerFactory
-- (id)persistableRecipeProducerForConfiguration:(id)a3;
+- (id)persistableRecipeProducerForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultPersistableRecipeProducerFactory
 
-- (id)persistableRecipeProducerForConfiguration:(id)a3
+- (id)persistableRecipeProducerForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 persistableRecipe];
-  v5 = [v3 assetCollection];
-  if ([v3 isAppleMusicPreview])
+  configurationCopy = configuration;
+  persistableRecipe = [configurationCopy persistableRecipe];
+  assetCollection = [configurationCopy assetCollection];
+  if ([configurationCopy isAppleMusicPreview])
   {
     goto LABEL_2;
   }
 
-  if (v4)
+  if (persistableRecipe)
   {
-    v6 = [[PXStoryPassthroughPersistableRecipeProducer alloc] initWithPersistableRecipe:v4];
+    v6 = [[PXStoryPassthroughPersistableRecipeProducer alloc] initWithPersistableRecipe:persistableRecipe];
     goto LABEL_5;
   }
 
-  if (([v3 options] & 2) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (([configurationCopy options] & 2) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_2:
     v6 = objc_alloc_init(PXStoryPassthroughPersistableRecipeProducer);
@@ -30,9 +30,9 @@ LABEL_5:
   }
 
   v9 = [PXStoryPHMemoryPersistableRecipeProducer alloc];
-  v10 = [v3 keyAsset];
-  v11 = [v10 firstObject];
-  v7 = [(PXStoryPHMemoryPersistableRecipeProducer *)v9 initWithMemory:v5 keyAsset:v11];
+  keyAsset = [configurationCopy keyAsset];
+  firstObject = [keyAsset firstObject];
+  v7 = [(PXStoryPHMemoryPersistableRecipeProducer *)v9 initWithMemory:assetCollection keyAsset:firstObject];
 
 LABEL_6:
 

@@ -3,13 +3,13 @@
 + (id)_defaultCenterWithoutCreating;
 - (NSNotificationCenter)init;
 - (id)_getActorQueueManager;
-- (id)_initWithCFNotificationCenter:(__CFNotificationCenter *)a3;
+- (id)_initWithCFNotificationCenter:(__CFNotificationCenter *)center;
 - (id)addObserverForName:(NSNotificationName)name object:(id)obj queue:(NSOperationQueue *)queue usingBlock:(void *)block;
 - (id)debugDescription;
 - (id)description;
-- (unint64_t)_addObserver:(id)a3 object:(id)a4 usingBlock:(id)a5;
-- (unint64_t)_addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6 options:(unint64_t)a7;
-- (void)_removeObserver:(unint64_t)a3 performSubclassCheck:(BOOL)a4;
+- (unint64_t)_addObserver:(id)observer object:(id)object usingBlock:(id)block;
+- (unint64_t)_addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object options:(unint64_t)options;
+- (void)_removeObserver:(unint64_t)observer performSubclassCheck:(BOOL)check;
 - (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSNotificationName)aName object:(id)anObject;
 - (void)dealloc;
 - (void)postNotification:(NSNotification *)notification;
@@ -21,7 +21,7 @@
 
 + (NSNotificationCenter)defaultCenter
 {
-  if (NSNotificationCenter == a1)
+  if (NSNotificationCenter == self)
   {
     if (qword_1ED43F2F0 != -1)
     {
@@ -41,11 +41,11 @@
       qword_1ED43F2D8 = Mutable;
     }
 
-    Value = CFDictionaryGetValue(Mutable, a1);
+    Value = CFDictionaryGetValue(Mutable, self);
     if (!Value)
     {
-      Value = objc_alloc_init(a1);
-      CFDictionarySetValue(qword_1ED43F2D8, a1, Value);
+      Value = objc_alloc_init(self);
+      CFDictionarySetValue(qword_1ED43F2D8, self, Value);
     }
 
     os_unfair_lock_unlock(&stru_1ED43F2C4);
@@ -91,13 +91,13 @@
   [(NSNotificationCenter *)&v4 dealloc];
 }
 
-- (id)_initWithCFNotificationCenter:(__CFNotificationCenter *)a3
+- (id)_initWithCFNotificationCenter:(__CFNotificationCenter *)center
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSNotificationCenter;
   v4 = [(NSNotificationCenter *)&v6 init];
-  v4->_impl = CFRetain(a3);
+  v4->_impl = CFRetain(center);
   v4->actorQueueManagerLock._os_unfair_lock_opaque = 0;
   v4->_actorQueueManager = 0;
   return v4;
@@ -110,21 +110,21 @@
   return v2;
 }
 
-- (unint64_t)_addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6 options:(unint64_t)a7
+- (unint64_t)_addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object options:(unint64_t)options
 {
-  Class = object_getClass(a3);
+  Class = object_getClass(observer);
   class_isMetaClass(Class);
 
   return _CFXNotificationRegisterObserver();
 }
 
-- (void)_removeObserver:(unint64_t)a3 performSubclassCheck:(BOOL)a4
+- (void)_removeObserver:(unint64_t)observer performSubclassCheck:(BOOL)check
 {
-  if (a4 && (Class = object_getClass(self), Class != objc_opt_class()) && (Uid = sel_getUid("_removeObserver:performSubclassCheck:"), InstanceMethod = class_getInstanceMethod(Class, Uid), Implementation = method_getImplementation(InstanceMethod), v10 = objc_opt_class(), v11 = class_getInstanceMethod(v10, Uid), Implementation == method_getImplementation(v11)))
+  if (check && (Class = object_getClass(self), Class != objc_opt_class()) && (Uid = sel_getUid("_removeObserver:performSubclassCheck:"), InstanceMethod = class_getInstanceMethod(Class, Uid), Implementation = method_getImplementation(InstanceMethod), v10 = objc_opt_class(), v11 = class_getInstanceMethod(v10, Uid), Implementation == method_getImplementation(v11)))
   {
     objc_opt_self();
     v13 = [__NSObserver observerWithCenter:?];
-    v13[2] = a3;
+    v13[2] = observer;
 
     [(NSNotificationCenter *)self removeObserver:v13];
   }
@@ -133,7 +133,7 @@
   {
     impl = self->_impl;
 
-    MEMORY[0x1EEDB8828](impl, a3);
+    MEMORY[0x1EEDB8828](impl, observer);
   }
 }
 
@@ -185,11 +185,11 @@
         CFSetRemoveValue(qword_1ED43F2D0, observer);
         v14 = *(observer + 1);
         *(observer + 1) = 0;
-        v10 = [observer token];
+        token = [observer token];
         os_unfair_lock_unlock(&_MergedGlobals_9);
         if (v14)
         {
-          [v14 _removeObserver:v10 performSubclassCheck:0];
+          [v14 _removeObserver:token performSubclassCheck:0];
         }
       }
 
@@ -293,33 +293,33 @@
   return v5;
 }
 
-- (unint64_t)_addObserver:(id)a3 object:(id)a4 usingBlock:(id)a5
+- (unint64_t)_addObserver:(id)observer object:(id)object usingBlock:(id)block
 {
   Class = object_getClass(self);
   if (Class != objc_opt_class() && (Uid = sel_getUid("_addObserver:object:usingBlock:"), InstanceMethod = class_getInstanceMethod(Class, Uid), Implementation = method_getImplementation(InstanceMethod), v13 = objc_opt_class(), v14 = class_getInstanceMethod(v13, Uid), Implementation == method_getImplementation(v14)))
   {
-    v16 = [(NSNotificationCenter *)self addObserverForName:a3 object:a4 queue:0 usingBlock:a5];
-    if (v16)
+    token = [(NSNotificationCenter *)self addObserverForName:observer object:object queue:0 usingBlock:block];
+    if (token)
     {
       os_unfair_lock_lock(&_MergedGlobals_9);
-      if (qword_1ED43F2D0 && CFSetContainsValue(qword_1ED43F2D0, v16))
+      if (qword_1ED43F2D0 && CFSetContainsValue(qword_1ED43F2D0, token))
       {
-        CFSetRemoveValue(qword_1ED43F2D0, v16);
-        v17 = v16[1];
-        v16[1] = 0;
-        v16 = [v16 token];
+        CFSetRemoveValue(qword_1ED43F2D0, token);
+        v17 = token[1];
+        token[1] = 0;
+        token = [token token];
       }
 
       else
       {
         v17 = 0;
-        v16 = 0;
+        token = 0;
       }
 
       os_unfair_lock_unlock(&_MergedGlobals_9);
     }
 
-    return v16;
+    return token;
   }
 
   else

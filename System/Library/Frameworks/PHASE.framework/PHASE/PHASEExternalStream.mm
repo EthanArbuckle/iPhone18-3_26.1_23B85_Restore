@@ -1,12 +1,12 @@
 @interface PHASEExternalStream
 - (PHASEExternalStream)init;
-- (PHASEExternalStream)initWithEngine:(id)a3 streamGroupUUID:(id)a4 streamUUID:(id)a5 startsPaused:(BOOL)a6 delegate:(id)a7;
+- (PHASEExternalStream)initWithEngine:(id)engine streamGroupUUID:(id)d streamUUID:(id)iD startsPaused:(BOOL)paused delegate:(id)delegate;
 - (PHASEExternalStreamDelegate)delegate;
 - (id)engine;
 - (void)dealloc;
 - (void)pause;
 - (void)resume;
-- (void)setPause:(BOOL)a3 completion:(id)a4;
+- (void)setPause:(BOOL)pause completion:(id)completion;
 - (void)stopAndInvalidate;
 @end
 
@@ -19,27 +19,27 @@
   return 0;
 }
 
-- (PHASEExternalStream)initWithEngine:(id)a3 streamGroupUUID:(id)a4 streamUUID:(id)a5 startsPaused:(BOOL)a6 delegate:(id)a7
+- (PHASEExternalStream)initWithEngine:(id)engine streamGroupUUID:(id)d streamUUID:(id)iD startsPaused:(BOOL)paused delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  engineCopy = engine;
+  dCopy = d;
+  iDCopy = iD;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PHASEExternalStream;
   v15 = [(PHASEExternalStream *)&v21 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     streamGroupUUID = v15->_streamGroupUUID;
     v15->_streamGroupUUID = v16;
 
-    v18 = [v13 copy];
+    v18 = [iDCopy copy];
     streamUUID = v15->_streamUUID;
     v15->_streamUUID = v18;
 
-    objc_storeWeak(&v15->_delegate, v14);
-    objc_storeWeak(&v15->_engine, v11);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeWeak(&v15->_engine, engineCopy);
     atomic_store(0, &v15->_invalidated);
   }
 
@@ -54,17 +54,17 @@
   [(PHASEExternalStream *)&v3 dealloc];
 }
 
-- (void)setPause:(BOOL)a3 completion:(id)a4
+- (void)setPause:(BOOL)pause completion:(id)completion
 {
-  v4 = a3;
+  pauseCopy = pause;
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    v9 = [WeakRetained implementation];
-    (*(**(v9 + 416) + 56))(*(v9 + 416), self->_streamGroupUUID, self->_streamUUID, v4, v6);
+    implementation = [WeakRetained implementation];
+    (*(**(implementation + 416) + 56))(*(implementation + 416), self->_streamGroupUUID, self->_streamUUID, pauseCopy, completionCopy);
   }
 
   else
@@ -75,7 +75,7 @@
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346922849 userInfo:v11];
-    v6[2](v6, v12);
+    completionCopy[2](completionCopy, v12);
   }
 }
 
@@ -162,12 +162,12 @@ void __29__PHASEExternalStream_resume__block_invoke(uint64_t a1, void *a2)
 {
   if ((atomic_exchange(&self->_invalidated.__a_.__a_value, 1u) & 1) == 0)
   {
-    v3 = [(PHASEExternalStream *)self engine];
-    if (v3)
+    engine = [(PHASEExternalStream *)self engine];
+    if (engine)
     {
       v4 = self->_streamGroupUUID;
       v5 = self->_streamUUID;
-      v6 = *([v3 implementation] + 416);
+      v6 = *([engine implementation] + 416);
       (*(*v6 + 56))(v6, v4, v5, 1, &__block_literal_global_4);
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;

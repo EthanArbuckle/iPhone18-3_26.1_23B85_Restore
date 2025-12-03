@@ -1,25 +1,25 @@
 @interface PRBTLocalizer
 + (BOOL)isInternalBuild;
 - (BOOL)configure;
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (PRBTLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 isUT:(BOOL)a6 productUUID:(id)a7 withAnalytics:(BOOL)a8;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (PRBTLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id isUT:(BOOL)t productUUID:(id)d withAnalytics:(BOOL)analytics;
 - (PRBTLocalizerDelegate)delegate;
 - (void)checkForMeasurementTimeout;
 - (void)dealloc;
-- (void)didConnectDevice:(id)a3 error:(id)a4;
-- (void)didFailWithError:(id)a3;
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5;
-- (void)didReceiveNewBTRSSI:(id)a3;
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4;
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4;
-- (void)logEstimatorOutput:(RSSIFilterResult *)a3;
-- (void)notifyDelegateOfFilterOutput:(RSSIFilterResult *)a3;
-- (void)notifyDelegateOfRawMeasurement:(id)a3;
-- (void)processRssiMeasurement:(id)a3;
+- (void)didConnectDevice:(id)device error:(id)error;
+- (void)didFailWithError:(id)error;
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error;
+- (void)didReceiveNewBTRSSI:(id)i;
+- (void)didStartRangingOnDevice:(id)device withError:(id)error;
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error;
+- (void)logEstimatorOutput:(RSSIFilterResult *)output;
+- (void)notifyDelegateOfFilterOutput:(RSSIFilterResult *)output;
+- (void)notifyDelegateOfRawMeasurement:(id)measurement;
+- (void)processRssiMeasurement:(id)measurement;
 - (void)resetBtTrend;
-- (void)sendBTLocalizerChangedState:(unint64_t)a3;
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4;
+- (void)sendBTLocalizerChangedState:(unint64_t)state;
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object;
 @end
 
 @implementation PRBTLocalizer
@@ -41,31 +41,31 @@ uint64_t __32__PRBTLocalizer_isInternalBuild__block_invoke()
   return result;
 }
 
-- (PRBTLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 isUT:(BOOL)a6 productUUID:(id)a7 withAnalytics:(BOOL)a8
+- (PRBTLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id isUT:(BOOL)t productUUID:(id)d withAnalytics:(BOOL)analytics
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (!v15)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  idCopy = id;
+  dCopy = d;
+  if (!delegateCopy)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PRBTLocalizer.mm" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRBTLocalizer.mm" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
-    if (v16)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PRBTLocalizer.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRBTLocalizer.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
     goto LABEL_3;
   }
 
-  if (!v16)
+  if (!queueCopy)
   {
     goto LABEL_10;
   }
@@ -77,28 +77,28 @@ LABEL_3:
   v20 = v19;
   if (v19)
   {
-    [(PRBTLocalizer *)v19 setDelegate:v15];
-    [(PRBTLocalizer *)v20 setDelegateQueue:v16];
+    [(PRBTLocalizer *)v19 setDelegate:delegateCopy];
+    [(PRBTLocalizer *)v20 setDelegateQueue:queueCopy];
     v21 = dispatch_queue_create("com.apple.findmy.btranging", 0);
     [(PRBTLocalizer *)v20 setProximityQueue:v21];
 
     v22 = dispatch_queue_create("com.apple.findmy.btlocalizer", 0);
     [(PRBTLocalizer *)v20 setEstimatorQueue:v22];
 
-    v23 = [objc_alloc(MEMORY[0x277D433A0]) initWithCompanionUUID:v17];
+    v23 = [objc_alloc(MEMORY[0x277D433A0]) initWithCompanionUUID:idCopy];
     [(PRBTLocalizer *)v20 setRemoteDevice:v23];
 
-    [(PRBTLocalizer *)v20 setProductUUID:v18];
+    [(PRBTLocalizer *)v20 setProductUUID:dCopy];
     v24 = objc_alloc(MEMORY[0x277D43388]);
-    v25 = [(PRBTLocalizer *)v20 proximityQueue];
-    v26 = [v24 initWithDelegate:v20 queue:v25];
+    proximityQueue = [(PRBTLocalizer *)v20 proximityQueue];
+    v26 = [v24 initWithDelegate:v20 queue:proximityQueue];
     [(PRBTLocalizer *)v20 setSession:v26];
 
     v20->_localizerState = 0;
     v20->_clientState = 0;
-    v20->_isUT = a6;
+    v20->_isUT = t;
     v20->_didFetchTxPower = 0;
-    v20->_shouldLogAnalytics = a8;
+    v20->_shouldLogAnalytics = analytics;
     v20->_lastMeasurementTime = PRCommonGetMachContinuousTimeSeconds();
     v27 = os_log_create("com.apple.proximity", "btlocalizer");
     logger = v20->_logger;
@@ -109,14 +109,14 @@ LABEL_3:
       v29 = objc_alloc_init(PRBTCoreAnalytics);
       [(PRBTLocalizer *)v20 setAnalytics:v29];
 
-      v30 = [v17 UUIDString];
+      uUIDString = [idCopy UUIDString];
       if ([objc_opt_class() isInternalBuild])
       {
         v38 = @"deviceId";
-        v39[0] = v30;
+        v39[0] = uUIDString;
         v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-        v32 = [(PRBTLocalizer *)v20 analytics];
-        [v32 setCustomData:v31];
+        analytics = [(PRBTLocalizer *)v20 analytics];
+        [analytics setCustomData:v31];
       }
     }
   }
@@ -131,26 +131,26 @@ LABEL_3:
   v3 = self->_logger;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PRBTLocalizer *)self remoteDevice];
-    v5 = [v4 UUID];
-    v6 = [v5 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     v24 = 138412290;
-    v25 = v6;
+    v25 = uUIDString;
     _os_log_impl(&dword_2613DF000, v3, OS_LOG_TYPE_DEFAULT, "BTLocalizer configuring for item %@", &v24, 0xCu);
   }
 
   clientState = self->_clientState;
   if (clientState)
   {
-    v8 = self->_logger;
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    analytics = self->_logger;
+    if (os_log_type_enabled(analytics, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PRBTLocalizer *)self remoteDevice];
-      v10 = [v9 UUID];
-      v11 = [v10 UUIDString];
+      remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+      uUID2 = [remoteDevice2 UUID];
+      uUIDString2 = [uUID2 UUIDString];
       v24 = 138412290;
-      v25 = v11;
-      _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Unexpected call to configure", &v24, 0xCu);
+      v25 = uUIDString2;
+      _os_log_impl(&dword_2613DF000, analytics, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Unexpected call to configure", &v24, 0xCu);
     }
 
     goto LABEL_10;
@@ -160,26 +160,26 @@ LABEL_3:
   v12 = self->_logger;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(PRBTLocalizer *)self remoteDevice];
-    v14 = [v13 UUID];
-    v15 = [v14 UUIDString];
+    remoteDevice3 = [(PRBTLocalizer *)self remoteDevice];
+    uUID3 = [remoteDevice3 UUID];
+    uUIDString3 = [uUID3 UUIDString];
     v24 = 138412290;
-    v25 = v15;
+    v25 = uUIDString3;
     _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Setting _clientState to LOCALIZER_CLIENT_CONFIGURING configure", &v24, 0xCu);
   }
 
-  v16 = [(PRBTLocalizer *)self session];
-  v17 = [(PRBTLocalizer *)self remoteDevice];
-  v18 = [v17 UUID];
+  session = [(PRBTLocalizer *)self session];
+  remoteDevice4 = [(PRBTLocalizer *)self remoteDevice];
+  uUID4 = [remoteDevice4 UUID];
   v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUT];
-  [v16 fetchTxPower:v18 isUT:v19];
+  [session fetchTxPower:uUID4 isUT:v19];
 
   if (self->_shouldLogAnalytics)
   {
-    v8 = [(PRBTLocalizer *)self analytics];
+    analytics = [(PRBTLocalizer *)self analytics];
     isUT = self->_isUT;
-    v21 = [(PRBTLocalizer *)self productUUID];
-    [(OS_os_log *)v8 configureSession:!isUT withProductUUID:v21];
+    productUUID = [(PRBTLocalizer *)self productUUID];
+    [(OS_os_log *)analytics configureSession:!isUT withProductUUID:productUUID];
 
 LABEL_10:
   }
@@ -189,32 +189,32 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = self->_logger;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PRBTLocalizer *)self remoteDevice];
-    v6 = [v5 UUID];
-    v7 = [v6 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     v19 = 138412290;
-    v20 = v7;
+    v20 = uUIDString;
     _os_log_impl(&dword_2613DF000, v4, OS_LOG_TYPE_DEFAULT, "BTLocalizer start for item %@", &v19, 0xCu);
   }
 
   clientState = self->_clientState;
   if (clientState != 2)
   {
-    v13 = self->_logger;
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    analytics = self->_logger;
+    if (os_log_type_enabled(analytics, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PRBTLocalizer *)self remoteDevice];
-      v15 = [v14 UUID];
-      v16 = [v15 UUIDString];
+      remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+      uUID2 = [remoteDevice2 UUID];
+      uUIDString2 = [uUID2 UUIDString];
       v19 = 138412290;
-      v20 = v16;
-      _os_log_impl(&dword_2613DF000, v13, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Unexpected call to start", &v19, 0xCu);
+      v20 = uUIDString2;
+      _os_log_impl(&dword_2613DF000, analytics, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Unexpected call to start", &v19, 0xCu);
     }
 
     goto LABEL_11;
@@ -224,24 +224,24 @@ LABEL_10:
   self->_localizerState = 2;
   [(PRBTLocalizer *)self sendBTLocalizerChangedState:2];
   isUT = self->_isUT;
-  v10 = [(PRBTLocalizer *)self session];
+  session = [(PRBTLocalizer *)self session];
   [(PRBTLocalizer *)self remoteDevice];
   if (isUT)
     v11 = {;
-    v12 = [v11 UUID];
-    [v10 startUTRanging:v12];
+    uUID3 = [v11 UUID];
+    [session startUTRanging:uUID3];
   }
 
   else
     v11 = {;
-    v12 = [v11 UUID];
-    [v10 startOwnerRanging:v12];
+    uUID3 = [v11 UUID];
+    [session startOwnerRanging:uUID3];
   }
 
   if (self->_shouldLogAnalytics)
   {
-    v13 = [(PRBTLocalizer *)self analytics];
-    [(OS_os_log *)v13 start];
+    analytics = [(PRBTLocalizer *)self analytics];
+    [(OS_os_log *)analytics start];
 LABEL_11:
   }
 
@@ -250,17 +250,17 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v43 = *MEMORY[0x277D85DE8];
   v4 = self->_logger;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PRBTLocalizer *)self remoteDevice];
-    v6 = [v5 UUID];
-    v7 = [v6 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     *buf = 138412290;
-    v42 = v7;
+    v42 = uUIDString;
     _os_log_impl(&dword_2613DF000, v4, OS_LOG_TYPE_DEFAULT, "BTLocalizer stop for item %@", buf, 0xCu);
   }
 
@@ -288,18 +288,18 @@ LABEL_11:
       v10 = self->_logger;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PRBTLocalizer *)self remoteDevice];
-        v12 = [v11 UUID];
-        v13 = [v12 UUIDString];
+        remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+        uUID2 = [remoteDevice2 UUID];
+        uUIDString2 = [uUID2 UUIDString];
         *buf = 138412290;
-        v42 = v13;
+        v42 = uUIDString2;
         _os_log_impl(&dword_2613DF000, v10, OS_LOG_TYPE_DEFAULT, "BTlocalizer sending stop UT ranging command for item %@", buf, 0xCu);
       }
 
-      v14 = [(PRBTLocalizer *)self session];
-      v15 = [(PRBTLocalizer *)self remoteDevice];
-      v16 = [v15 UUID];
-      [v14 stopUTRanging:v16];
+      session = [(PRBTLocalizer *)self session];
+      remoteDevice3 = [(PRBTLocalizer *)self remoteDevice];
+      uUID3 = [remoteDevice3 UUID];
+      [session stopUTRanging:uUID3];
 
       self->_localizerState = 1;
       [(PRBTLocalizer *)self sendBTLocalizerChangedState:1];
@@ -314,11 +314,11 @@ LABEL_11:
         v29 = self->_logger;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(PRBTLocalizer *)self remoteDevice];
-          v31 = [v30 UUID];
-          v32 = [v31 UUIDString];
+          remoteDevice4 = [(PRBTLocalizer *)self remoteDevice];
+          uUID4 = [remoteDevice4 UUID];
+          uUIDString3 = [uUID4 UUIDString];
           *buf = 138412290;
-          v42 = v32;
+          v42 = uUIDString3;
           _os_log_impl(&dword_2613DF000, v29, OS_LOG_TYPE_DEFAULT, "BTlocalizer has requested ranging for %@ and will send stop later", buf, 0xCu);
         }
       }
@@ -328,18 +328,18 @@ LABEL_11:
         v22 = self->_logger;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(PRBTLocalizer *)self remoteDevice];
-          v24 = [v23 UUID];
-          v25 = [v24 UUIDString];
+          remoteDevice5 = [(PRBTLocalizer *)self remoteDevice];
+          uUID5 = [remoteDevice5 UUID];
+          uUIDString4 = [uUID5 UUIDString];
           *buf = 138412290;
-          v42 = v25;
+          v42 = uUIDString4;
           _os_log_impl(&dword_2613DF000, v22, OS_LOG_TYPE_DEFAULT, "BTlocalizer sending stop owner ranging command for item %@", buf, 0xCu);
         }
 
-        v26 = [(PRBTLocalizer *)self session];
-        v27 = [(PRBTLocalizer *)self remoteDevice];
-        v28 = [v27 UUID];
-        [v26 stopOwnerRanging:v28];
+        session2 = [(PRBTLocalizer *)self session];
+        remoteDevice6 = [(PRBTLocalizer *)self remoteDevice];
+        uUID6 = [remoteDevice6 UUID];
+        [session2 stopOwnerRanging:uUID6];
 
         self->_localizerState = 4;
         [(PRBTLocalizer *)self sendBTLocalizerChangedState:4];
@@ -348,8 +348,8 @@ LABEL_11:
 
     if (self->_shouldLogAnalytics)
     {
-      v33 = [(PRBTLocalizer *)self analytics];
-      [v33 stop];
+      analytics = [(PRBTLocalizer *)self analytics];
+      [analytics stop];
     }
 
     objc_destroyWeak(&v39);
@@ -361,11 +361,11 @@ LABEL_11:
     v17 = self->_logger;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(PRBTLocalizer *)self remoteDevice];
-      v19 = [v18 UUID];
-      v20 = [v19 UUIDString];
+      remoteDevice7 = [(PRBTLocalizer *)self remoteDevice];
+      uUID7 = [remoteDevice7 UUID];
+      uUIDString5 = [uUID7 UUIDString];
       *buf = 138412290;
-      v42 = v20;
+      v42 = uUIDString5;
       _os_log_impl(&dword_2613DF000, v17, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: Unexpected call to stop", buf, 0xCu);
     }
   }
@@ -403,67 +403,67 @@ void __22__PRBTLocalizer_stop___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  powerCopy = power;
+  deviceCopy = device;
+  errorCopy = error;
   v12 = self->_logger;
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (!v11)
+  if (!errorCopy)
   {
     if (v13)
     {
-      v19 = [v10 UUIDString];
+      uUIDString = [deviceCopy UUIDString];
       v21[0] = 136315394;
-      *&v21[1] = [v19 UTF8String];
+      *&v21[1] = [uUIDString UTF8String];
       v22 = 1024;
-      LODWORD(v23) = [v9 intValue];
+      LODWORD(v23) = [powerCopy intValue];
       _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer didFetchTxPower from device:%s txPower:%d", v21, 0x12u);
     }
 
     self->_didFetchTxPower = 1;
-    objc_storeStrong(&self->_txPower, a3);
+    objc_storeStrong(&self->_txPower, power);
     [(NSNumber *)self->_txPower intValue];
     operator new();
   }
 
   if (v13)
   {
-    v14 = [v10 UUIDString];
+    uUIDString2 = [deviceCopy UUIDString];
     v21[0] = 136315394;
-    *&v21[1] = [v14 UTF8String];
+    *&v21[1] = [uUIDString2 UTF8String];
     v22 = 2112;
-    v23 = v11;
+    v23 = errorCopy;
     _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer could not fetch TX power from device:%s #error:%@", v21, 0x16u);
   }
 
-  v15 = [(PRBTLocalizer *)self session];
-  v16 = [(PRBTLocalizer *)self remoteDevice];
-  v17 = [v16 UUID];
+  session = [(PRBTLocalizer *)self session];
+  remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+  uUID = [remoteDevice UUID];
   v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUT];
-  [v15 fetchTxPower:v17 isUT:v18];
+  [session fetchTxPower:uUID isUT:v18];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStartRangingOnDevice:(id)device withError:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   v8 = self->_logger;
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (errorCopy)
   {
     if (v9)
     {
-      v10 = [v6 UUIDString];
+      uUIDString = [deviceCopy UUIDString];
       *buf = 136315394;
-      v35 = [v10 UTF8String];
+      uTF8String = [uUIDString UTF8String];
       v36 = 2112;
-      v37 = v7;
+      v37 = errorCopy;
       _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "BTlocalizer could not start ranging on device:%s #error:%@", buf, 0x16u);
     }
   }
@@ -472,9 +472,9 @@ void __22__PRBTLocalizer_stop___block_invoke_2(uint64_t a1)
   {
     if (v9)
     {
-      v12 = [v6 UUIDString];
+      uUIDString2 = [deviceCopy UUIDString];
       *buf = 136315138;
-      v35 = [v12 UTF8String];
+      uTF8String = [uUIDString2 UTF8String];
       _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "BTlocalizer didStartRangingOnDevice:%s", buf, 0xCu);
     }
 
@@ -505,11 +505,11 @@ void __22__PRBTLocalizer_stop___block_invoke_2(uint64_t a1)
       v13 = self->_logger;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(PRBTLocalizer *)self remoteDevice];
-        v15 = [v14 UUID];
-        v16 = [v15 UUIDString];
+        remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+        uUID = [remoteDevice UUID];
+        uUIDString3 = [uUID UUIDString];
         *buf = 138412290;
-        v35 = v16;
+        uTF8String = uUIDString3;
         _os_log_impl(&dword_2613DF000, v13, OS_LOG_TYPE_DEFAULT, "BTlocalizer received didStartRangingOnDevice despite client not ranging for item %@", buf, 0xCu);
       }
 
@@ -520,36 +520,36 @@ void __22__PRBTLocalizer_stop___block_invoke_2(uint64_t a1)
       {
         if (v19)
         {
-          v20 = [(PRBTLocalizer *)self remoteDevice];
-          v21 = [v20 UUID];
-          v22 = [v21 UUIDString];
+          remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+          uUID2 = [remoteDevice2 UUID];
+          uUIDString4 = [uUID2 UUIDString];
           *buf = 138412290;
-          v35 = v22;
+          uTF8String = uUIDString4;
           _os_log_impl(&dword_2613DF000, v18, OS_LOG_TYPE_DEFAULT, "BTlocalizer sending stop UT ranging command for item %@", buf, 0xCu);
         }
 
-        v23 = [(PRBTLocalizer *)self session];
-        v24 = [(PRBTLocalizer *)self remoteDevice];
-        v25 = [v24 UUID];
-        [v23 stopUTRanging:v25];
+        session = [(PRBTLocalizer *)self session];
+        remoteDevice3 = [(PRBTLocalizer *)self remoteDevice];
+        uUID3 = [remoteDevice3 UUID];
+        [session stopUTRanging:uUID3];
       }
 
       else
       {
         if (v19)
         {
-          v26 = [(PRBTLocalizer *)self remoteDevice];
-          v27 = [v26 UUID];
-          v28 = [v27 UUIDString];
+          remoteDevice4 = [(PRBTLocalizer *)self remoteDevice];
+          uUID4 = [remoteDevice4 UUID];
+          uUIDString5 = [uUID4 UUIDString];
           *buf = 138412290;
-          v35 = v28;
+          uTF8String = uUIDString5;
           _os_log_impl(&dword_2613DF000, v18, OS_LOG_TYPE_DEFAULT, "BTlocalizer sending stop owner ranging command for item %@", buf, 0xCu);
         }
 
-        v29 = [(PRBTLocalizer *)self session];
-        v30 = [(PRBTLocalizer *)self remoteDevice];
-        v31 = [v30 UUID];
-        [v29 stopOwnerRanging:v31];
+        session2 = [(PRBTLocalizer *)self session];
+        remoteDevice5 = [(PRBTLocalizer *)self remoteDevice];
+        uUID5 = [remoteDevice5 UUID];
+        [session2 stopOwnerRanging:uUID5];
       }
     }
   }
@@ -600,24 +600,24 @@ void __51__PRBTLocalizer_didStartRangingOnDevice_withError___block_invoke_2(uint
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   if (!self->_isUT)
   {
     v8 = self->_logger;
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (errorCopy)
     {
       if (v9)
       {
-        v10 = [v6 UUIDString];
+        uUIDString = [deviceCopy UUIDString];
         v13 = 136315394;
-        v14 = [v10 UTF8String];
+        uTF8String = [uUIDString UTF8String];
         v15 = 2112;
-        v16 = v7;
+        v16 = errorCopy;
         _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "BTlocalizer could not stop owner ranging on device:%s #error:%@", &v13, 0x16u);
       }
     }
@@ -626,9 +626,9 @@ void __51__PRBTLocalizer_didStartRangingOnDevice_withError___block_invoke_2(uint
     {
       if (v9)
       {
-        v11 = [v6 UUIDString];
+        uUIDString2 = [deviceCopy UUIDString];
         v13 = 136315394;
-        v14 = [v11 UTF8String];
+        uTF8String = [uUIDString2 UTF8String];
         v15 = 2112;
         v16 = 0;
         _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "BTlocalizer stopped owner ranging on device:%s #error:%@", &v13, 0x16u);
@@ -642,31 +642,31 @@ void __51__PRBTLocalizer_didStartRangingOnDevice_withError___block_invoke_2(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendBTLocalizerChangedState:(unint64_t)a3
+- (void)sendBTLocalizerChangedState:(unint64_t)state
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PRBTLocalizer *)self remoteDevice];
-    v7 = [v6 UUID];
-    v8 = [v7 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     *buf = 138412546;
-    v21 = v8;
+    v21 = uUIDString;
     v22 = 2048;
-    v23 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: ItemLocalizer changed state: %ld", buf, 0x16u);
   }
 
-  v9 = [(PRBTLocalizer *)self delegateQueue];
-  if (v9)
+  delegateQueue = [(PRBTLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v10 = [(PRBTLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRBTLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v10 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v11 = MEMORY[0x277D85CD0];
   }
 
@@ -680,8 +680,8 @@ void __51__PRBTLocalizer_didStartRangingOnDevice_withError___block_invoke_2(uint
     block[3] = &unk_279AD6100;
     objc_copyWeak(v19, buf);
     v18 = WeakRetained;
-    v19[1] = a3;
-    dispatch_async(v10, block);
+    v19[1] = state;
+    dispatch_async(delegateQueue2, block);
 
     objc_destroyWeak(v19);
     objc_destroyWeak(buf);
@@ -696,8 +696,8 @@ void __51__PRBTLocalizer_didStartRangingOnDevice_withError___block_invoke_2(uint
     v14[3] = &unk_279AD6100;
     objc_copyWeak(v16, buf);
     v15 = WeakRetained;
-    v16[1] = a3;
-    dispatch_async(v10, v14);
+    v16[1] = state;
+    dispatch_async(delegateQueue2, v14);
 
     objc_destroyWeak(v16);
     objc_destroyWeak(buf);
@@ -731,78 +731,78 @@ void __45__PRBTLocalizer_sendBTLocalizerChangedState___block_invoke_2(uint64_t a
   }
 }
 
-- (void)didConnectDevice:(id)a3 error:(id)a4
+- (void)didConnectDevice:(id)device error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = self->_logger;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PRBTLocalizer *)self remoteDevice];
-    v8 = [v7 UUID];
-    v9 = [v8 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     v11 = 138412546;
-    v12 = v9;
+    v12 = uUIDString;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&dword_2613DF000, v6, OS_LOG_TYPE_DEFAULT, "BTlocalizer didConnectDevice %@ error: %@", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object
 {
-  v6 = a4;
-  v7 = [(PRBTLocalizer *)self delegate];
+  objectCopy = object;
+  delegate = [(PRBTLocalizer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PRBTLocalizer *)self delegateQueue];
+    delegateQueue = [(PRBTLocalizer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__PRBTLocalizer_updateDelegateWithSelector_object___block_invoke;
     block[3] = &unk_279AD6128;
-    v10 = v7;
-    v12 = a3;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v10 = delegate;
+    selectorCopy = selector;
+    v11 = objectCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)didReceiveNewBTRSSI:(id)a3
+- (void)didReceiveNewBTRSSI:(id)i
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iCopy = i;
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PRBTLocalizer *)self remoteDevice];
-    v7 = [v6 UUID];
-    v8 = [v7 UUIDString];
-    [v4 timestamp];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
+    [iCopy timestamp];
     *buf = 138413058;
-    v18 = v8;
+    v18 = uUIDString;
     v19 = 2048;
     v20 = v9;
     v21 = 1024;
-    v22 = [v4 rssi_dbm];
+    rssi_dbm = [iCopy rssi_dbm];
     v23 = 1024;
-    v24 = [v4 channel];
+    channel = [iCopy channel];
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "BTlocalizer received new measurement from %@ with timestamp %f, RSSI %d, channel %d", buf, 0x22u);
   }
 
   if (self->_localizerState == 3)
   {
-    [(PRBTLocalizer *)self notifyDelegateOfRawMeasurement:v4];
+    [(PRBTLocalizer *)self notifyDelegateOfRawMeasurement:iCopy];
     objc_initWeak(buf, self);
-    v10 = [(PRBTLocalizer *)self estimatorQueue];
+    estimatorQueue = [(PRBTLocalizer *)self estimatorQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__PRBTLocalizer_didReceiveNewBTRSSI___block_invoke;
     block[3] = &unk_279AD6150;
     objc_copyWeak(&v16, buf);
-    v15 = v4;
-    dispatch_async(v10, block);
+    v15 = iCopy;
+    dispatch_async(estimatorQueue, block);
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -853,13 +853,13 @@ void __37__PRBTLocalizer_didReceiveNewBTRSSI___block_invoke_2(uint64_t a1)
 - (void)checkForMeasurementTimeout
 {
   objc_initWeak(&location, self);
-  v3 = [(PRBTLocalizer *)self estimatorQueue];
+  estimatorQueue = [(PRBTLocalizer *)self estimatorQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__PRBTLocalizer_checkForMeasurementTimeout__block_invoke;
   v4[3] = &unk_279AD60B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(estimatorQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -921,14 +921,14 @@ void __43__PRBTLocalizer_checkForMeasurementTimeout__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateOfRawMeasurement:(id)a3
+- (void)notifyDelegateOfRawMeasurement:(id)measurement
 {
-  v14 = a3;
+  measurementCopy = measurement;
   v4 = [PRBTRssiMeasurement alloc];
-  [v14 timestamp];
+  [measurementCopy timestamp];
   v6 = v5;
-  v7 = [v14 rssi_dbm];
-  v8 = [v14 channel] - 37;
+  rssi_dbm = [measurementCopy rssi_dbm];
+  v8 = [measurementCopy channel] - 37;
   if (v8 >= 3)
   {
     v9 = 3;
@@ -939,43 +939,43 @@ void __43__PRBTLocalizer_checkForMeasurementTimeout__block_invoke(uint64_t a1)
     v9 = v8;
   }
 
-  v10 = [(PRBTLocalizer *)self remoteDevice];
-  v11 = [v10 UUID];
-  v12 = [(PRBTRssiMeasurement *)v4 initWithTime:v7 rssi:v9 channel:v11 uuid:v6];
+  remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+  uUID = [remoteDevice UUID];
+  v12 = [(PRBTRssiMeasurement *)v4 initWithTime:rssi_dbm rssi:v9 channel:uUID uuid:v6];
 
   [(PRBTLocalizer *)self updateDelegateWithSelector:sel_willIntegrateBTRSSI_ object:v12];
   if (self->_shouldLogAnalytics)
   {
-    v13 = [(PRBTLocalizer *)self analytics];
-    [v13 updateWithRssiMeasurement:v12];
+    analytics = [(PRBTLocalizer *)self analytics];
+    [analytics updateWithRssiMeasurement:v12];
   }
 }
 
-- (void)processRssiMeasurement:(id)a3
+- (void)processRssiMeasurement:(id)measurement
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 channel] == 37)
+  measurementCopy = measurement;
+  if ([measurementCopy channel] == 37)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
-  if ([v4 channel] == 38)
+  if ([measurementCopy channel] == 38)
   {
     v5 = 1;
     goto LABEL_7;
   }
 
-  if ([v4 channel] == 39)
+  if ([measurementCopy channel] == 39)
   {
     v5 = 2;
 LABEL_7:
-    v18 = [v4 rssi_dbm];
-    [v4 timestamp];
+    rssi_dbm = [measurementCopy rssi_dbm];
+    [measurementCopy timestamp];
     v19 = v6;
     v20 = v5;
-    BTFinding::PRRSSIFilter::addRSSImeasurement(self->_rssiFilter.__ptr_, &v18, v23);
+    BTFinding::PRRSSIFilter::addRSSImeasurement(self->_rssiFilter.__ptr_, &rssi_dbm, v23);
     if (v24 == 1)
     {
       *buf = *v23;
@@ -993,11 +993,11 @@ LABEL_7:
       v7 = self->_logger;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PRBTLocalizer *)self remoteDevice];
-        v9 = [v8 UUID];
-        v10 = [v9 UUIDString];
+        remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+        uUID = [remoteDevice UUID];
+        uUIDString = [uUID UUIDString];
         *buf = 138412290;
-        *&buf[4] = v10;
+        *&buf[4] = uUIDString;
         _os_log_impl(&dword_2613DF000, v7, OS_LOG_TYPE_DEFAULT, "BTlocalizer for %@ no output produced for estimator input", buf, 0xCu);
       }
     }
@@ -1008,13 +1008,13 @@ LABEL_7:
   v11 = self->_logger;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    v13 = [(PRBTLocalizer *)self remoteDevice];
-    v14 = [v13 UUID];
-    v15 = [v14 UUIDString];
+    remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+    uUID2 = [remoteDevice2 UUID];
+    uUIDString2 = [uUID2 UUIDString];
     *v23 = 138412546;
-    *&v23[4] = v15;
+    *&v23[4] = uUIDString2;
     *&v23[12] = 1024;
-    *&v23[14] = [v4 channel];
+    *&v23[14] = [measurementCopy channel];
     _os_log_error_impl(&dword_2613DF000, v11, OS_LOG_TYPE_ERROR, "BTlocalizer for %@ received a measurement with an unusable channel %d, discarding measurement", v23, 0x12u);
   }
 
@@ -1022,24 +1022,24 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEstimatorOutput:(RSSIFilterResult *)a3
+- (void)logEstimatorOutput:(RSSIFilterResult *)output
 {
   v34 = *MEMORY[0x277D85DE8];
-  var2 = a3->var2;
+  var2 = output->var2;
   switch(var2)
   {
     case 2:
       v6 = self->_logger;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PRBTLocalizer *)self remoteDevice];
-        v20 = [v19 UUID];
-        v21 = [v20 UUIDString];
-        var3 = a3->var3;
-        var0 = a3->var0;
-        var1 = a3->var1;
+        remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+        uUID = [remoteDevice UUID];
+        uUIDString = [uUID UUIDString];
+        var3 = output->var3;
+        var0 = output->var0;
+        var1 = output->var1;
         v26 = 138413058;
-        v27 = v21;
+        v27 = uUIDString;
         v28 = 2048;
         v29 = var0;
         v30 = 2048;
@@ -1054,14 +1054,14 @@ LABEL_15:
       v6 = self->_logger;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(PRBTLocalizer *)self remoteDevice];
-        v14 = [v13 UUID];
-        v15 = [v14 UUIDString];
-        v16 = a3->var3;
-        v17 = a3->var0;
-        v18 = a3->var1;
+        remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+        uUID2 = [remoteDevice2 UUID];
+        uUIDString2 = [uUID2 UUIDString];
+        v16 = output->var3;
+        v17 = output->var0;
+        v18 = output->var1;
         v26 = 138413058;
-        v27 = v15;
+        v27 = uUIDString2;
         v28 = 2048;
         v29 = v17;
         v30 = 2048;
@@ -1076,14 +1076,14 @@ LABEL_15:
       v6 = self->_logger;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(PRBTLocalizer *)self remoteDevice];
-        v8 = [v7 UUID];
-        v9 = [v8 UUIDString];
-        v10 = a3->var3;
-        v11 = a3->var0;
-        v12 = a3->var1;
+        remoteDevice3 = [(PRBTLocalizer *)self remoteDevice];
+        uUID3 = [remoteDevice3 UUID];
+        uUIDString3 = [uUID3 UUIDString];
+        v10 = output->var3;
+        v11 = output->var0;
+        v12 = output->var1;
         v26 = 138413058;
-        v27 = v9;
+        v27 = uUIDString3;
         v28 = 2048;
         v29 = v11;
         v30 = 2048;
@@ -1101,10 +1101,10 @@ LABEL_10:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateOfFilterOutput:(RSSIFilterResult *)a3
+- (void)notifyDelegateOfFilterOutput:(RSSIFilterResult *)output
 {
   v47 = *MEMORY[0x277D85DE8];
-  var2 = a3->var2;
+  var2 = output->var2;
   if (var2 > 2)
   {
     v6 = 0;
@@ -1121,23 +1121,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [(PRBTProximityMeasurement *)latestProximityMeasurement proximityLevel];
-  if (!v8)
+  proximityLevel = [(PRBTProximityMeasurement *)latestProximityMeasurement proximityLevel];
+  if (!proximityLevel)
   {
     goto LABEL_11;
   }
 
-  v9 = v8;
-  if (v6 != v8)
+  v9 = proximityLevel;
+  if (v6 != proximityLevel)
   {
     v26 = self->_logger;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(PRBTLocalizer *)self remoteDevice];
-      v28 = [v27 UUID];
-      v29 = [v28 UUIDString];
+      remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+      uUID = [remoteDevice UUID];
+      uUIDString = [uUID UUIDString];
       *buf = 138412802;
-      v42 = v29;
+      v42 = uUIDString;
       v43 = 2048;
       v44 = v9;
       v45 = 2048;
@@ -1163,11 +1163,11 @@ LABEL_26:
     v12 = self->_logger;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [(PRBTLocalizer *)self remoteDevice];
-      v34 = [v33 UUID];
-      v35 = [v34 UUIDString];
+      remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+      uUID2 = [remoteDevice2 UUID];
+      uUIDString2 = [uUID2 UUIDString];
       *buf = 138412290;
-      v42 = v35;
+      v42 = uUIDString2;
       _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer current bt rssi trend for %@ : INCREASING", buf, 0xCu);
     }
 
@@ -1175,20 +1175,20 @@ LABEL_26:
     goto LABEL_14;
   }
 
-  v10 = [(PRBTProximityMeasurement *)self->_latestProximityMeasurement proximityTrend];
-  v11 = v10;
-  if (v10 > 1)
+  proximityTrend = [(PRBTProximityMeasurement *)self->_latestProximityMeasurement proximityTrend];
+  v11 = proximityTrend;
+  if (proximityTrend > 1)
   {
-    if (v10 == 2)
+    if (proximityTrend == 2)
     {
       v12 = self->_logger;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(PRBTLocalizer *)self remoteDevice];
-        v37 = [v36 UUID];
-        v38 = [v37 UUIDString];
+        remoteDevice3 = [(PRBTLocalizer *)self remoteDevice];
+        uUID3 = [remoteDevice3 UUID];
+        uUIDString3 = [uUID3 UUIDString];
         *buf = 138412290;
-        v42 = v38;
+        v42 = uUIDString3;
         _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer current bt rssi trend for %@ : STABLE", buf, 0xCu);
       }
 
@@ -1196,7 +1196,7 @@ LABEL_26:
       goto LABEL_14;
     }
 
-    if (v10 != 3)
+    if (proximityTrend != 3)
     {
       goto LABEL_15;
     }
@@ -1204,17 +1204,17 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v10)
+  if (!proximityTrend)
   {
 LABEL_11:
     v12 = self->_logger;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PRBTLocalizer *)self remoteDevice];
-      v14 = [v13 UUID];
-      v15 = [v14 UUIDString];
+      remoteDevice4 = [(PRBTLocalizer *)self remoteDevice];
+      uUID4 = [remoteDevice4 UUID];
+      uUIDString4 = [uUID4 UUIDString];
       *buf = 138412290;
-      v42 = v15;
+      v42 = uUIDString4;
       _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer current bt rssi trend for %@ : UNKNOWN", buf, 0xCu);
     }
 
@@ -1222,17 +1222,17 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (v10 == 1)
+  if (proximityTrend == 1)
   {
 LABEL_21:
     v12 = self->_logger;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(PRBTLocalizer *)self remoteDevice];
-      v31 = [v30 UUID];
-      v32 = [v31 UUIDString];
+      remoteDevice5 = [(PRBTLocalizer *)self remoteDevice];
+      uUID5 = [remoteDevice5 UUID];
+      uUIDString5 = [uUID5 UUIDString];
       *buf = 138412290;
-      v42 = v32;
+      v42 = uUIDString5;
       _os_log_impl(&dword_2613DF000, v12, OS_LOG_TYPE_DEFAULT, "BTlocalizer current bt rssi trend for %@ : DECREASING", buf, 0xCu);
     }
 
@@ -1242,20 +1242,20 @@ LABEL_14:
 
 LABEL_15:
   v16 = [PRBTProximityMeasurement alloc];
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v19 = [MEMORY[0x277CCABB0] numberWithDouble:a3->var3];
-  v20 = [(PRBTLocalizer *)self remoteDevice];
-  v21 = [v20 UUID];
-  v22 = [(PRBTProximityMeasurement *)v16 initWithTime:v6 proximityLevel:v19 rssi:v21 continuousProximityLevel:v11 uuid:var1 proximityTrend:var0];
+  var0 = output->var0;
+  var1 = output->var1;
+  v19 = [MEMORY[0x277CCABB0] numberWithDouble:output->var3];
+  remoteDevice6 = [(PRBTLocalizer *)self remoteDevice];
+  uUID6 = [remoteDevice6 UUID];
+  v22 = [(PRBTProximityMeasurement *)v16 initWithTime:v6 proximityLevel:v19 rssi:uUID6 continuousProximityLevel:v11 uuid:var1 proximityTrend:var0];
   v23 = self->_latestProximityMeasurement;
   self->_latestProximityMeasurement = v22;
 
   [(PRBTLocalizer *)self updateDelegateWithSelector:sel_didUpdateBTProximity_ object:self->_latestProximityMeasurement];
   if (self->_shouldLogAnalytics)
   {
-    v24 = [(PRBTLocalizer *)self analytics];
-    [v24 updateWithProximityLevel:self->_latestProximityMeasurement];
+    analytics = [(PRBTLocalizer *)self analytics];
+    [analytics updateWithProximityLevel:self->_latestProximityMeasurement];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1284,13 +1284,13 @@ void __46__PRBTLocalizer_notifyDelegateOfFilterOutput___block_invoke(uint64_t a1
 - (void)resetBtTrend
 {
   objc_initWeak(&location, self);
-  v3 = [(PRBTLocalizer *)self estimatorQueue];
+  estimatorQueue = [(PRBTLocalizer *)self estimatorQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__PRBTLocalizer_resetBtTrend__block_invoke;
   v4[3] = &unk_279AD60B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(estimatorQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1335,40 +1335,40 @@ void __29__PRBTLocalizer_resetBtTrend__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PRBTLocalizer *)self remoteDevice];
-    v7 = [v6 UUID];
-    v8 = [v7 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     *buf = 138412546;
-    v36 = v8;
+    v36 = uUIDString;
     v37 = 2112;
-    v38 = v4;
+    v38 = errorCopy;
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "BTlocalizer for %@ didFailWithError: %@", buf, 0x16u);
   }
 
   if (self->_shouldLogAnalytics)
   {
-    v9 = [(PRBTLocalizer *)self analytics];
-    [v9 rangingFailedWithError:v4];
+    analytics = [(PRBTLocalizer *)self analytics];
+    [analytics rangingFailedWithError:errorCopy];
   }
 
-  if ([v4 code] == 303 || objc_msgSend(v4, "code") == 304)
+  if ([errorCopy code] == 303 || objc_msgSend(errorCopy, "code") == 304)
   {
-    [(PRBTLocalizer *)self updateDelegateWithSelector:sel_didFailWithError_ object:v4];
+    [(PRBTLocalizer *)self updateDelegateWithSelector:sel_didFailWithError_ object:errorCopy];
     objc_initWeak(buf, self);
-    v10 = [(PRBTLocalizer *)self estimatorQueue];
+    estimatorQueue = [(PRBTLocalizer *)self estimatorQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__PRBTLocalizer_didFailWithError___block_invoke_40;
     block[3] = &unk_279AD60B0;
     objc_copyWeak(&v30, buf);
-    dispatch_async(v10, block);
+    dispatch_async(estimatorQueue, block);
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -1376,15 +1376,15 @@ void __29__PRBTLocalizer_resetBtTrend__block_invoke(uint64_t a1)
     v27[3] = &unk_279AD60B0;
     objc_copyWeak(&v28, buf);
     dispatch_async(MEMORY[0x277D85CD0], v27);
-    v11 = [(PRBTLocalizer *)self delegateQueue];
-    if (v11)
+    delegateQueue = [(PRBTLocalizer *)self delegateQueue];
+    if (delegateQueue)
     {
-      v12 = [(PRBTLocalizer *)self delegateQueue];
+      delegateQueue2 = [(PRBTLocalizer *)self delegateQueue];
     }
 
     else
     {
-      v12 = MEMORY[0x277D85CD0];
+      delegateQueue2 = MEMORY[0x277D85CD0];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1396,8 +1396,8 @@ void __29__PRBTLocalizer_resetBtTrend__block_invoke(uint64_t a1)
       v23[3] = &unk_279AD6178;
       objc_copyWeak(&v26, buf);
       v24 = WeakRetained;
-      v25 = v4;
-      dispatch_async(v12, v23);
+      v25 = errorCopy;
+      dispatch_async(delegateQueue2, v23);
 
       objc_destroyWeak(&v26);
     }
@@ -1412,14 +1412,14 @@ void __29__PRBTLocalizer_resetBtTrend__block_invoke(uint64_t a1)
     v14 = self->_logger;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PRBTLocalizer *)self remoteDevice];
-      v16 = [v15 UUID];
-      v17 = [v16 UUIDString];
-      v18 = [v4 code];
+      remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+      uUID2 = [remoteDevice2 UUID];
+      uUIDString2 = [uUID2 UUIDString];
+      code = [errorCopy code];
       *buf = 138412546;
-      v36 = v17;
+      v36 = uUIDString2;
       v37 = 2048;
-      v38 = v18;
+      v38 = code;
       _os_log_impl(&dword_2613DF000, v14, OS_LOG_TYPE_DEFAULT, "#btranging-retry %@: BTLocalizer received error code %lld", buf, 0x16u);
     }
 
@@ -1436,19 +1436,19 @@ void __29__PRBTLocalizer_resetBtTrend__block_invoke(uint64_t a1)
       objc_destroyWeak(buf);
     }
 
-    v19 = [(PRBTLocalizer *)self session];
-    [v19 invalidate];
+    session = [(PRBTLocalizer *)self session];
+    [session invalidate];
 
     [(PRBTLocalizer *)self setSession:0];
     objc_initWeak(buf, self);
     v20 = dispatch_time(0, 100000000);
-    v21 = [(PRBTLocalizer *)self proximityQueue];
+    proximityQueue = [(PRBTLocalizer *)self proximityQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __34__PRBTLocalizer_didFailWithError___block_invoke_2;
     v31[3] = &unk_279AD60B0;
     objc_copyWeak(&v32, buf);
-    dispatch_after(v20, v21, v31);
+    dispatch_after(v20, proximityQueue, v31);
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(buf);
@@ -1668,39 +1668,39 @@ void __34__PRBTLocalizer_didFailWithError___block_invoke_3(uint64_t a1)
   v3 = self->_logger;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PRBTLocalizer *)self remoteDevice];
-    v5 = [v4 UUID];
-    v6 = [v5 UUIDString];
+    remoteDevice = [(PRBTLocalizer *)self remoteDevice];
+    uUID = [remoteDevice UUID];
+    uUIDString = [uUID UUIDString];
     *buf = 138412290;
-    v18 = v6;
+    v18 = uUIDString;
     _os_log_impl(&dword_2613DF000, v3, OS_LOG_TYPE_DEFAULT, "%@: Destructing PRBTLocalizer and invalidating nearbyd XCP connection.", buf, 0xCu);
   }
 
   if (!self->_isUT && self->_localizerState == 3)
   {
-    v7 = [(PRBTLocalizer *)self session];
-    v8 = [(PRBTLocalizer *)self remoteDevice];
-    v9 = [v8 UUID];
-    [v7 stopOwnerRanging:v9];
+    session = [(PRBTLocalizer *)self session];
+    remoteDevice2 = [(PRBTLocalizer *)self remoteDevice];
+    uUID2 = [remoteDevice2 UUID];
+    [session stopOwnerRanging:uUID2];
   }
 
   if (self->_shouldLogAnalytics)
   {
-    v10 = [(PRBTLocalizer *)self analytics];
-    [v10 deinit];
+    analytics = [(PRBTLocalizer *)self analytics];
+    [analytics deinit];
   }
 
-  v11 = [(PRBTLocalizer *)self measurementTimer];
-  [v11 invalidate];
+  measurementTimer = [(PRBTLocalizer *)self measurementTimer];
+  [measurementTimer invalidate];
 
-  v12 = [(PRBTLocalizer *)self utRetryTimer];
-  [v12 invalidate];
+  utRetryTimer = [(PRBTLocalizer *)self utRetryTimer];
+  [utRetryTimer invalidate];
 
-  v13 = [(PRBTLocalizer *)self btTrendTimer];
-  [v13 invalidate];
+  btTrendTimer = [(PRBTLocalizer *)self btTrendTimer];
+  [btTrendTimer invalidate];
 
-  v14 = [(PRBTLocalizer *)self session];
-  [v14 invalidate];
+  session2 = [(PRBTLocalizer *)self session];
+  [session2 invalidate];
 
   [(PRBTLocalizer *)self setSession:0];
   v16.receiver = self;

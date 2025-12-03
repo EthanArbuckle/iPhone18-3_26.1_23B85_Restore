@@ -1,13 +1,13 @@
 @interface SCATBluetoothDevice
-+ (id)scatBluetoothDeviceWithDevice:(BTDeviceImpl *)a3 accessoryManager:(BTAccessoryManagerImpl *)a4;
-- (BOOL)_setPropertiesFromDevice:(BTDeviceImpl *)a3 error:(id *)a4;
-- (SCATBluetoothDevice)initWithDevice:(BTDeviceImpl *)a3;
++ (id)scatBluetoothDeviceWithDevice:(BTDeviceImpl *)device accessoryManager:(BTAccessoryManagerImpl *)manager;
+- (BOOL)_setPropertiesFromDevice:(BTDeviceImpl *)device error:(id *)error;
+- (SCATBluetoothDevice)initWithDevice:(BTDeviceImpl *)device;
 - (id)description;
 @end
 
 @implementation SCATBluetoothDevice
 
-+ (id)scatBluetoothDeviceWithDevice:(BTDeviceImpl *)a3 accessoryManager:(BTAccessoryManagerImpl *)a4
++ (id)scatBluetoothDeviceWithDevice:(BTDeviceImpl *)device accessoryManager:(BTAccessoryManagerImpl *)manager
 {
   memset(v27, 0, sizeof(v27));
   AddressString = BTDeviceGetAddressString();
@@ -70,7 +70,7 @@ LABEL_8:
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Creating SCATBluetooth device for device with address %s source %x vendor %x pid %x version %x services %x switchsupport %d", buf, 0x30u);
   }
 
-  v8 = [objc_alloc(objc_opt_class()) initWithDevice:a3];
+  v8 = [objc_alloc(objc_opt_class()) initWithDevice:device];
 LABEL_9:
 
   return v8;
@@ -92,19 +92,19 @@ LABEL_9:
   return [NSString stringWithFormat:@"<%@@%p: %@ (%@, %@)>", v3, self, self->_name, self->_addressString, v4];
 }
 
-- (BOOL)_setPropertiesFromDevice:(BTDeviceImpl *)a3 error:(id *)a4
+- (BOOL)_setPropertiesFromDevice:(BTDeviceImpl *)device error:(id *)error
 {
   memset(v15, 0, sizeof(v15));
   AddressString = BTDeviceGetAddressString();
   if (AddressString)
   {
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v7 = [NSError errorWithDomain:off_100216830 code:AddressString userInfo:0];
       v8 = 0;
 LABEL_4:
-      *a4 = v7;
+      *error = v7;
       return v8;
     }
 
@@ -118,7 +118,7 @@ LABEL_4:
   AddressString = BTDeviceGetName();
   if (AddressString)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -138,7 +138,7 @@ LABEL_4:
     return v8;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = [NSError errorWithDomain:off_100216830 code:ConnectedServices userInfo:0];
     goto LABEL_4;
@@ -147,13 +147,13 @@ LABEL_4:
   return v8;
 }
 
-- (SCATBluetoothDevice)initWithDevice:(BTDeviceImpl *)a3
+- (SCATBluetoothDevice)initWithDevice:(BTDeviceImpl *)device
 {
   v9.receiver = self;
   v9.super_class = SCATBluetoothDevice;
   v4 = [(SCATBluetoothDevice *)&v9 init];
   v5 = v4;
-  if (!v4 || (v6 = [(SCATBluetoothDevice *)v4 _setPropertiesFromDevice:a3 error:0], v7 = 0, v6))
+  if (!v4 || (v6 = [(SCATBluetoothDevice *)v4 _setPropertiesFromDevice:device error:0], v7 = 0, v6))
   {
     v7 = v5;
   }

@@ -1,68 +1,68 @@
 @interface CNXPCDataMapper
-+ (id)contactBuffersDecoderForFetchRequest:(id)a3 posterDataStore:(id)a4;
++ (id)contactBuffersDecoderForFetchRequest:(id)request posterDataStore:(id)store;
 + (id)cursorProtocolInterface;
 + (id)os_log;
 + (id)serviceProtocolInterface;
-- (BOOL)analyzeDatabaseWithError:(id *)a3;
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4;
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6;
-- (BOOL)setMeContact:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5;
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3;
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)writeFavoritesPropertyListData:(id)a3 toPath:(id)a4 error:(id *)a5;
+- (BOOL)analyzeDatabaseWithError:(id *)error;
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error;
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error;
+- (BOOL)setMeContact:(id)contact error:(id *)error;
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error;
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error;
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
+- (BOOL)writeFavoritesPropertyListData:(id)data toPath:(id)path error:(id *)error;
 - (CNXPCDataMapper)init;
-- (CNXPCDataMapper)initWithConfiguration:(id)a3;
-- (CNXPCDataMapper)initWithConfiguration:(id)a3 connection:(id)a4;
-- (id)_sharedPhotoPreferenceChange:(uint64_t)a1;
-- (id)_zeroedPhoneAndEmailCountsForUpdatedContact:(void *)a1;
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4;
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactObservableForFetchRequest:(id)a3;
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4;
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4;
+- (CNXPCDataMapper)initWithConfiguration:(id)configuration;
+- (CNXPCDataMapper)initWithConfiguration:(id)configuration connection:(id)connection;
+- (id)_sharedPhotoPreferenceChange:(uint64_t)change;
+- (id)_zeroedPhoneAndEmailCountsForUpdatedContact:(void *)contact;
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error;
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error;
+- (id)contactCountForFetchRequest:(id)request error:(id *)error;
+- (id)contactObservableForFetchRequest:(id)request;
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch;
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error;
 - (id)currentHistoryAnchor;
 - (id)currentHistoryToken;
 - (id)defaultContainerIdentifier;
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5;
-- (id)favoritesEntryDictionariesAtPath:(id)a3 error:(id *)a4;
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3;
-- (id)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 error:(id *)a5;
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3;
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)a3;
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)identifierWithError:(id *)a3;
-- (id)meContactIdentifiers:(id *)a3;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
-- (id)policyWithDescription:(id)a3 error:(id *)a4;
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3;
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4;
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4;
-- (id)unifiedContactCountWithError:(id *)a3;
-- (id)unitTestPathFromEnvironment:(uint64_t)a1;
-- (id)userActivityUserInfoForContact:(id)a3;
-- (uint64_t)fetchAndDecodeEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:;
-- (uint64_t)fetchContactsForFetchRequest:(void *)a3 error:(void *)a4 batchHandler:;
-- (uint64_t)fetchEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:;
-- (void)_logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:(uint64_t)a1;
-- (void)_logUpdatesChangingSharedPhotoPrefForSaveRequest:(uint64_t)a1;
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4;
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4;
-- (void)applyLimitedAccessSyncEvents:(id)a3;
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion;
+- (id)favoritesEntryDictionariesAtPath:(id)path error:(id *)error;
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle;
+- (id)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format error:(id *)error;
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number;
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)number;
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)identifierWithError:(id *)error;
+- (id)meContactIdentifiers:(id *)identifiers;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
+- (id)policyWithDescription:(id)description error:(id *)error;
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number;
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error;
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error;
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error;
+- (id)unifiedContactCountWithError:(id *)error;
+- (id)unitTestPathFromEnvironment:(uint64_t)environment;
+- (id)userActivityUserInfoForContact:(id)contact;
+- (uint64_t)fetchAndDecodeEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:;
+- (uint64_t)fetchContactsForFetchRequest:(void *)request error:(void *)error batchHandler:;
+- (uint64_t)fetchEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:;
+- (void)_logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:(uint64_t)request;
+- (void)_logUpdatesChangingSharedPhotoPrefForSaveRequest:(uint64_t)request;
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier;
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers;
+- (void)applyLimitedAccessSyncEvents:(id)events;
 - (void)dropAllLimitedAccessRows;
 - (void)dropAllLimitedAccessRowsAndSyncNotify;
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3;
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4;
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4;
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4;
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3;
-- (void)updateLimitedAccessTable:(id)a3;
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle;
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier;
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers;
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler;
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number;
+- (void)updateLimitedAccessTable:(id)table;
 @end
 
 @implementation CNXPCDataMapper
@@ -620,11 +620,11 @@
   return v15;
 }
 
-+ (id)contactBuffersDecoderForFetchRequest:(id)a3 posterDataStore:(id)a4
++ (id)contactBuffersDecoderForFetchRequest:(id)request posterDataStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNiOSABContactBuffersDecoder alloc] initWithFetchRequest:v6 posterDataStore:v5];
+  storeCopy = store;
+  requestCopy = request;
+  v7 = [[CNiOSABContactBuffersDecoder alloc] initWithFetchRequest:requestCopy posterDataStore:storeCopy];
 
   return v7;
 }
@@ -661,11 +661,11 @@ uint64_t __25__CNXPCDataMapper_os_log__block_invoke()
   return v5;
 }
 
-- (CNXPCDataMapper)initWithConfiguration:(id)a3
+- (CNXPCDataMapper)initWithConfiguration:(id)configuration
 {
   v5 = @"com.apple.contactsd";
-  v6 = a3;
-  if ([v6 isContactProvider])
+  configurationCopy = configuration;
+  if ([configurationCopy isContactProvider])
   {
     v7 = @"com.apple.contactsd.contact-provider";
 
@@ -673,58 +673,58 @@ uint64_t __25__CNXPCDataMapper_os_log__block_invoke()
   }
 
   v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v5 options:0];
-  v9 = [(CNXPCDataMapper *)self initWithConfiguration:v6 connection:v8];
+  v9 = [(CNXPCDataMapper *)self initWithConfiguration:configurationCopy connection:v8];
 
   return v9;
 }
 
-- (CNXPCDataMapper)initWithConfiguration:(id)a3 connection:(id)a4
+- (CNXPCDataMapper)initWithConfiguration:(id)configuration connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  connectionCopy = connection;
   v38.receiver = self;
   v38.super_class = CNXPCDataMapper;
   v8 = [(CNXPCDataMapper *)&v38 init];
   if (v8)
   {
-    v9 = [v6 environment];
-    v10 = [v9 loggerProvider];
-    v11 = [v10 contactsLogger];
+    environment = [configurationCopy environment];
+    loggerProvider = [environment loggerProvider];
+    contactsLogger = [loggerProvider contactsLogger];
 
-    objc_storeStrong(&v8->_logger, v11);
+    objc_storeStrong(&v8->_logger, contactsLogger);
     v12 = +[CNXPCDataMapper serviceProtocolInterface];
-    v13 = [[CNXPCConnection alloc] initWithConnection:v7 interface:v12 logger:v11];
+    v13 = [[CNXPCConnection alloc] initWithConnection:connectionCopy interface:v12 logger:contactsLogger];
     serviceConnection = v8->_serviceConnection;
     v8->_serviceConnection = v13;
 
-    v15 = [(CNXPCConnection *)v8->_serviceConnection serviceProxy];
+    serviceProxy = [(CNXPCConnection *)v8->_serviceConnection serviceProxy];
     serviceProxy = v8->_serviceProxy;
-    v8->_serviceProxy = v15;
+    v8->_serviceProxy = serviceProxy;
 
     v17 = [CNAuthorization alloc];
-    v18 = [v6 assumedIdentity];
-    v19 = [(CNAuthorization *)v17 initWithAssumedIdentity:v18];
+    assumedIdentity = [configurationCopy assumedIdentity];
+    v19 = [(CNAuthorization *)v17 initWithAssumedIdentity:assumedIdentity];
     authorization = v8->_authorization;
     v8->_authorization = v19;
 
-    v21 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v22 = [v21 keyboardStateMonitor];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    keyboardStateMonitor = [currentEnvironment keyboardStateMonitor];
     keyboardStateMonitor = v8->_keyboardStateMonitor;
-    v8->_keyboardStateMonitor = v22;
+    v8->_keyboardStateMonitor = keyboardStateMonitor;
 
     v24 = objc_opt_new();
-    v25 = [v6 environment];
-    v26 = [v25 useInMemoryStores];
+    environment2 = [configurationCopy environment];
+    useInMemoryStores = [environment2 useInMemoryStores];
 
-    if (v26)
+    if (useInMemoryStores)
     {
       [v24 setObject:MEMORY[0x1E695E118] forKey:@"CNiOSAddressBookDataMapperUnitTestInMemoryStoreKey"];
     }
 
     else
     {
-      v36 = [v6 environment];
-      v37 = [(CNXPCDataMapper *)v8 unitTestPathFromEnvironment:v36];
+      environment3 = [configurationCopy environment];
+      v37 = [(CNXPCDataMapper *)v8 unitTestPathFromEnvironment:environment3];
 
       if (v37 && [v37 length])
       {
@@ -732,13 +732,13 @@ uint64_t __25__CNXPCDataMapper_os_log__block_invoke()
       }
     }
 
-    v27 = [v6 assumedIdentity];
+    assumedIdentity2 = [configurationCopy assumedIdentity];
 
-    if (v27)
+    if (assumedIdentity2)
     {
       v28 = objc_alloc(getPABridgedTCCIdentityClass[0]());
-      v29 = [v6 assumedIdentity];
-      v30 = [v28 initWithTCCIdentity:v29];
+      assumedIdentity3 = [configurationCopy assumedIdentity];
+      v30 = [v28 initWithTCCIdentity:assumedIdentity3];
 
       if (v30)
       {
@@ -751,10 +751,10 @@ uint64_t __25__CNXPCDataMapper_os_log__block_invoke()
       [(CNXPCDataMapperService *)v8->_serviceProxy configureServiceWithOptions:v24];
     }
 
-    v31 = [v6 environment];
-    v32 = [v31 posterDataStore];
+    environment4 = [configurationCopy environment];
+    posterDataStore = [environment4 posterDataStore];
     posterDataStore = v8->_posterDataStore;
-    v8->_posterDataStore = v32;
+    v8->_posterDataStore = posterDataStore;
 
     v34 = v8;
   }
@@ -762,21 +762,21 @@ uint64_t __25__CNXPCDataMapper_os_log__block_invoke()
   return v8;
 }
 
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4
+- (id)contactCountForFetchRequest:(id)request error:(id *)error
 {
   if (self)
   {
-    ensureFetchRequestHasKeyboardState(a3, self->_keyboardStateMonitor);
+    ensureFetchRequestHasKeyboardState(request, self->_keyboardStateMonitor);
     serviceConnection = self->_serviceConnection;
   }
 
   else
   {
-    [CNXPCDataMapper contactCountForFetchRequest:a3 error:?];
+    [CNXPCDataMapper contactCountForFetchRequest:request error:?];
     serviceConnection = 0;
   }
 
-  v8 = [(CNXPCConnection *)serviceConnection remoteResultForSelector:sel_contactCountForFetchRequest_withReply_ param1:a3 error:a4];
+  v8 = [(CNXPCConnection *)serviceConnection remoteResultForSelector:sel_contactCountForFetchRequest_withReply_ param1:request error:error];
 
   return v8;
 }
@@ -876,18 +876,18 @@ id __52__CNXPCDataMapper_contactObservableForFetchRequest___block_invoke_3(uint6
   return v7;
 }
 
-- (uint64_t)fetchAndDecodeEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:
+- (uint64_t)fetchAndDecodeEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (!a1)
+  errorCopy = error;
+  tokenCopy = token;
+  if (!self)
   {
     v18 = 0;
     goto LABEL_12;
   }
 
-  v12 = [CNXPCDataMapper contactBuffersDecoderForFetchRequest:v9 posterDataStore:*(a1 + 48)];
+  v12 = [CNXPCDataMapper contactBuffersDecoderForFetchRequest:v9 posterDataStore:*(self + 48)];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -898,8 +898,8 @@ id __52__CNXPCDataMapper_contactObservableForFetchRequest___block_invoke_3(uint6
   v31 = __Block_byref_object_copy__6;
   v32 = __Block_byref_object_dispose__6;
   v33 = 0;
-  v13 = *(a1 + 24);
-  v14 = *(a1 + 40);
+  v13 = *(self + 24);
+  v14 = *(self + 40);
   ensureFetchRequestHasKeyboardState(v9, v14);
 
   v27 = 0;
@@ -910,21 +910,21 @@ id __52__CNXPCDataMapper_contactObservableForFetchRequest___block_invoke_3(uint6
   v25 = &v34;
   v15 = v12;
   v22 = v15;
-  v24 = v11;
+  v24 = tokenCopy;
   v16 = v13;
   v23 = v16;
   v26 = &v28;
-  LOBYTE(v14) = [(CNXPCDataMapper *)a1 fetchEncodedContactsForFetchRequest:v9 error:&v27 cancelationToken:v10 batchHandler:v21];
+  LOBYTE(v14) = [(CNXPCDataMapper *)self fetchEncodedContactsForFetchRequest:v9 error:&v27 cancelationToken:errorCopy batchHandler:v21];
   v17 = v27;
   if ((v14 & 1) == 0)
   {
     [v16 didFetchContacts:0 error:v17];
     v19 = v17;
-    if (a3)
+    if (request)
     {
 LABEL_9:
       v18 = 0;
-      *a3 = v19;
+      *request = v19;
       goto LABEL_11;
     }
 
@@ -936,7 +936,7 @@ LABEL_10:
   if ((v35[3] & 1) == 0)
   {
     [v16 didFetchContacts:0 error:v29[5]];
-    if (a3)
+    if (request)
     {
       v19 = v29[5];
       goto LABEL_9;
@@ -955,11 +955,11 @@ LABEL_12:
   return v18;
 }
 
-- (uint64_t)fetchContactsForFetchRequest:(void *)a3 error:(void *)a4 batchHandler:
+- (uint64_t)fetchContactsForFetchRequest:(void *)request error:(void *)error batchHandler:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  errorCopy = error;
+  if (self)
   {
     v23 = 0;
     v24 = &v23;
@@ -971,17 +971,17 @@ LABEL_12:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v9 = *(a1 + 40);
+    v9 = *(self + 40);
     ensureFetchRequestHasKeyboardState(v7, v9);
 
-    v10 = *(a1 + 16);
+    v10 = *(self + 16);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__CNXPCDataMapper_fetchContactsForFetchRequest_error_batchHandler___block_invoke;
     v15[3] = &unk_1E7412F28;
     v17 = &v19;
     v18 = &v23;
-    v16 = v8;
+    v16 = errorCopy;
     [v10 contactsForFetchRequest:v7 withMatchInfoReply:v15];
 
     if ((v20[3] & 1) == 0)
@@ -992,17 +992,17 @@ LABEL_12:
     }
 
     v13 = v24[5];
-    a1 = v13 == 0;
-    if (a3 && v13)
+    self = v13 == 0;
+    if (request && v13)
     {
-      *a3 = v13;
+      *request = v13;
     }
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v23, 8);
   }
 
-  return a1;
+  return self;
 }
 
 void __67__CNXPCDataMapper_fetchContactsForFetchRequest_error_batchHandler___block_invoke(void *a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1055,12 +1055,12 @@ void __100__CNXPCDataMapper_fetchAndDecodeEncodedContactsForFetchRequest_error_c
   }
 }
 
-- (uint64_t)fetchEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:
+- (uint64_t)fetchEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:
 {
   v8 = a2;
-  v9 = a4;
-  v20 = a5;
-  if (a1)
+  errorCopy = error;
+  tokenCopy = token;
+  if (self)
   {
     v54 = 0;
     v55 = &v54;
@@ -1086,10 +1086,10 @@ void __100__CNXPCDataMapper_fetchAndDecodeEncodedContactsForFetchRequest_error_c
     v35 = &v34;
     v36 = 0x2020000000;
     v37 = 0;
-    v10 = *(a1 + 40);
+    v10 = *(self + 40);
     ensureFetchRequestHasKeyboardState(v8, v10);
 
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __91__CNXPCDataMapper_fetchEncodedContactsForFetchRequest_error_cancelationToken_batchHandler___block_invoke;
@@ -1097,9 +1097,9 @@ void __100__CNXPCDataMapper_fetchAndDecodeEncodedContactsForFetchRequest_error_c
     v30 = &v54;
     v31 = &v48;
     v29 = &v44;
-    v27[4] = a1;
+    v27[4] = self;
     v32 = &v38;
-    v12 = v20;
+    v12 = tokenCopy;
     v28 = v12;
     v33 = &v34;
     [v11 encodedContactsAndCursorForFetchRequest:v8 withReply:v27];
@@ -1108,7 +1108,7 @@ void __100__CNXPCDataMapper_fetchAndDecodeEncodedContactsForFetchRequest_error_c
     {
       do
       {
-        if (v49[5] || ([v9 isCanceled] & 1) != 0)
+        if (v49[5] || ([errorCopy isCanceled] & 1) != 0)
         {
           break;
         }
@@ -1143,12 +1143,12 @@ void __100__CNXPCDataMapper_fetchAndDecodeEncodedContactsForFetchRequest_error_c
       *(v55 + 24) = 0;
     }
 
-    if (a3)
+    if (request)
     {
       v16 = v49[5];
       if (v16)
       {
-        *a3 = v16;
+        *request = v16;
       }
     }
 
@@ -1246,44 +1246,44 @@ void __74__CNXPCDataMapper_executeSaveRequest_response_authorizationContext_erro
   *(v8 + 40) = v7;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(CNPolicyDescription);
-  [(CNPolicyDescription *)v7 setContainerIdentifier:v6];
+  [(CNPolicyDescription *)v7 setContainerIdentifier:identifierCopy];
 
-  v8 = [(CNXPCDataMapper *)self policyWithDescription:v7 error:a4];
+  v8 = [(CNXPCDataMapper *)self policyWithDescription:v7 error:error];
 
   return v8;
 }
 
-- (id)unitTestPathFromEnvironment:(uint64_t)a1
+- (id)unitTestPathFromEnvironment:(uint64_t)environment
 {
-  if (a1)
+  if (environment)
   {
-    v2 = [a2 baseURL];
-    v3 = [v2 path];
+    baseURL = [a2 baseURL];
+    path = [baseURL path];
   }
 
   else
   {
-    v3 = 0;
+    path = 0;
   }
 
-  return v3;
+  return path;
 }
 
-- (id)unifiedContactCountWithError:(id *)a3
+- (id)unifiedContactCountWithError:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_unifiedContactCountWithReply_ error:a3];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_unifiedContactCountWithReply_ error:error];
 }
 
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -1313,12 +1313,12 @@ void __74__CNXPCDataMapper_executeSaveRequest_response_authorizationContext_erro
   v18[3] = &unk_1E7412E88;
   v18[4] = &v23;
   v18[5] = &v19;
-  [v9 sectionListOffsetsForSortOrder:a3 reply:v18];
+  [v9 sectionListOffsetsForSortOrder:order reply:v18];
 
   v10 = v24[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v10 = v24[5];
   }
 
@@ -1327,25 +1327,25 @@ void __74__CNXPCDataMapper_executeSaveRequest_response_authorizationContext_erro
 
   _Block_object_dispose(&v23, 8);
 
-  return a4;
+  return error;
 }
 
-- (id)contactObservableForFetchRequest:(id)a3
+- (id)contactObservableForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (self && self->_serviceConnection)
   {
     if (self->_serviceProxy)
     {
-      ensureFetchRequestHasKeyboardState(v4, self->_keyboardStateMonitor);
+      ensureFetchRequestHasKeyboardState(requestCopy, self->_keyboardStateMonitor);
       v6 = MEMORY[0x1E6996798];
       OUTLINED_FUNCTION_2();
       v12[1] = 3221225472;
       v12[2] = __52__CNXPCDataMapper_contactObservableForFetchRequest___block_invoke;
       v12[3] = &unk_1E7412F00;
       v13 = v5;
-      v14 = self;
+      selfCopy = self;
       v7 = [v6 observableWithBlock:v12];
 
       goto LABEL_8;
@@ -1369,30 +1369,30 @@ LABEL_8:
   return v7;
 }
 
-- (id)identifierWithError:(id *)a3
+- (id)identifierWithError:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_identifierWithReply_ error:a3];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_identifierWithReply_ error:error];
 }
 
-- (id)meContactIdentifiers:(id *)a3
+- (id)meContactIdentifiers:(id *)identifiers
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_meContactIdentifiersWithReply_ error:a3];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_meContactIdentifiersWithReply_ error:identifiers];
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  requestCopy = request;
+  contextCopy = context;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -1428,16 +1428,16 @@ LABEL_8:
     v23[6] = &v30;
     v23[7] = &v24;
     v16 = _Block_copy(v23);
-    [(CNXPCDataMapper *)self _logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:v9];
-    [(CNXPCDataMapper *)self _logUpdatesChangingSharedPhotoPrefForSaveRequest:v9];
+    [(CNXPCDataMapper *)self _logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:requestCopy];
+    [(CNXPCDataMapper *)self _logUpdatesChangingSharedPhotoPrefForSaveRequest:requestCopy];
     v17 = self->_serviceProxy;
-    [(CNXPCDataMapperService *)v17 executeSaveRequest:v9 withReply:v16];
+    [(CNXPCDataMapperService *)v17 executeSaveRequest:requestCopy withReply:v16];
 
     if (v37[3])
     {
       if (v41[3])
       {
-        [v25[5] applySnapshotsToSaveRequest:v9];
+        [v25[5] applySnapshotsToSaveRequest:requestCopy];
       }
     }
 
@@ -1459,9 +1459,9 @@ LABEL_8:
   }
 
   v21 = *(v41 + 24);
-  if (a6 && (v41[3] & 1) == 0)
+  if (error && (v41[3] & 1) == 0)
   {
-    *a6 = v31[5];
+    *error = v31[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1473,11 +1473,11 @@ LABEL_8:
   return v21;
 }
 
-- (void)_logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:(uint64_t)a1
+- (void)_logAnyUpdatesZeroingPhoneAndEmailForSaveRequest:(uint64_t)request
 {
-  if (a1)
+  if (request)
   {
-    v3 = [OUTLINED_FUNCTION_12_0(a1 a2)];
+    v3 = [OUTLINED_FUNCTION_12_0(request a2)];
     OUTLINED_FUNCTION_16();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)
@@ -1513,11 +1513,11 @@ LABEL_8:
   }
 }
 
-- (void)_logUpdatesChangingSharedPhotoPrefForSaveRequest:(uint64_t)a1
+- (void)_logUpdatesChangingSharedPhotoPrefForSaveRequest:(uint64_t)request
 {
-  if (a1)
+  if (request)
   {
-    v3 = [OUTLINED_FUNCTION_12_0(a1 a2)];
+    v3 = [OUTLINED_FUNCTION_12_0(request a2)];
     OUTLINED_FUNCTION_16();
     v5 = [v4 countByEnumeratingWithState:? objects:? count:?];
     if (v5)
@@ -1538,9 +1538,9 @@ LABEL_8:
           if (v9)
           {
             v10 = *(v2 + 24);
-            v11 = [v9 first];
-            v12 = [v9 second];
-            [v10 saveUpdatedSharedPhotoDisplayPreferenceFrom:v11 to:v12];
+            first = [v9 first];
+            second = [v9 second];
+            [v10 saveUpdatedSharedPhotoDisplayPreferenceFrom:first to:second];
           }
 
           ++v8;
@@ -1556,11 +1556,11 @@ LABEL_8:
   }
 }
 
-- (id)_zeroedPhoneAndEmailCountsForUpdatedContact:(void *)a1
+- (id)_zeroedPhoneAndEmailCountsForUpdatedContact:(void *)contact
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (contact)
   {
     v22 = 0u;
     v23 = 0u;
@@ -1595,16 +1595,16 @@ LABEL_8:
             if ([v12 count])
             {
 
-              a1 = 0;
+              contact = 0;
               goto LABEL_28;
             }
 
-            v13 = [v3 snapshot];
-            if (v13 && !(*(v9 + 16))(v9, v13))
+            snapshot = [v3 snapshot];
+            if (snapshot && !(*(v9 + 16))(v9, snapshot))
             {
-              if ([v13 isKeyAvailable:v11])
+              if ([snapshot isKeyAvailable:v11])
               {
-                v14 = [v13 valueForKey:v11];
+                v14 = [snapshot valueForKey:v11];
                 if ([v14 count])
                 {
                   if (!v7)
@@ -1650,25 +1650,25 @@ LABEL_8:
     }
 
     v7 = v7;
-    a1 = v7;
+    contact = v7;
 LABEL_28:
   }
 
-  return a1;
+  return contact;
 }
 
-- (id)_sharedPhotoPreferenceChange:(uint64_t)a1
+- (id)_sharedPhotoPreferenceChange:(uint64_t)change
 {
   v3 = a2;
   v4 = v3;
-  if (!a1 || ![v3 isKeyAvailable:@"sharedPhotoDisplayPreference"])
+  if (!change || ![v3 isKeyAvailable:@"sharedPhotoDisplayPreference"])
   {
     v8 = 0;
     goto LABEL_12;
   }
 
-  v5 = [v4 snapshot];
-  if (!v5 || ((*(*MEMORY[0x1E6996558] + 16))() & 1) != 0 || ([v5 isKeyAvailable:@"sharedPhotoDisplayPreference"] & 1) == 0)
+  snapshot = [v4 snapshot];
+  if (!snapshot || ((*(*MEMORY[0x1E6996558] + 16))() & 1) != 0 || ([snapshot isKeyAvailable:@"sharedPhotoDisplayPreference"] & 1) == 0)
   {
     v9 = MEMORY[0x1E69967A8];
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "sharedPhotoDisplayPreference")}];
@@ -1678,13 +1678,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [v5 sharedPhotoDisplayPreference];
-  v7 = [v4 sharedPhotoDisplayPreference];
-  if (v6 != v7)
+  sharedPhotoDisplayPreference = [snapshot sharedPhotoDisplayPreference];
+  sharedPhotoDisplayPreference2 = [v4 sharedPhotoDisplayPreference];
+  if (sharedPhotoDisplayPreference != sharedPhotoDisplayPreference2)
   {
-    v12 = v7;
+    v12 = sharedPhotoDisplayPreference2;
     v13 = MEMORY[0x1E69967A8];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:sharedPhotoDisplayPreference];
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
     v8 = [v13 pairWithFirst:v10 second:v14];
 
@@ -1699,11 +1699,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  resultsCopy = results;
+  completionCopy = completion;
   if (self)
   {
     serviceConnection = self->_serviceConnection;
@@ -1717,7 +1717,7 @@ LABEL_12:
   if (!serviceConnection)
   {
     v12 = [CNErrorFactory errorWithCode:100 userInfo:0];
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   if (self)
@@ -1730,8 +1730,8 @@ LABEL_12:
     keyboardStateMonitor = 0;
   }
 
-  ensureFetchRequestHasKeyboardState(v8, keyboardStateMonitor);
-  v14 = [[CNXPCDataMapperProgressiveHandler alloc] initWithProgressBlock:v9 completionBlock:v10];
+  ensureFetchRequestHasKeyboardState(requestCopy, keyboardStateMonitor);
+  v14 = [[CNXPCDataMapperProgressiveHandler alloc] initWithProgressBlock:resultsCopy completionBlock:completionCopy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1754,7 +1754,7 @@ LABEL_12:
   v22[2] = __69__CNXPCDataMapper_executeFetchRequest_progressiveResults_completion___block_invoke;
   v22[3] = &unk_1E7413040;
   v22[4] = &v23;
-  [(CNXPCDataMapperService *)v16 progressiveContactsForFetchRequest:v8 progressHandler:v14 reply:v22];
+  [(CNXPCDataMapperService *)v16 progressiveContactsForFetchRequest:requestCopy progressHandler:v14 reply:v22];
 
   if (v24[5])
   {
@@ -1769,10 +1769,10 @@ LABEL_12:
 
   else
   {
-    if (v10)
+    if (completionCopy)
     {
       v18 = [CNErrorFactory errorWithCode:1 userInfo:0];
-      v10[2](v10, v18);
+      completionCopy[2](completionCopy, v18);
     }
 
     v17 = objc_alloc_init(MEMORY[0x1E6996668]);
@@ -1783,27 +1783,27 @@ LABEL_12:
   return v17;
 }
 
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_containersMatchingPredicate_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_containersMatchingPredicate_withReply_ param1:predicate error:error];
 }
 
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_serverSearchContainersMatchingPredicate_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_serverSearchContainersMatchingPredicate_withReply_ param1:predicate error:error];
 }
 
-- (id)policyWithDescription:(id)a3 error:(id *)a4
+- (id)policyWithDescription:(id)description error:(id *)error
 {
   if (self)
   {
@@ -1816,40 +1816,40 @@ LABEL_12:
   }
 
   v7 = serviceConnection;
-  v8 = [a3 containerIdentifier];
-  v9 = [(CNXPCConnection *)v7 remoteResultForSelector:sel_policyForContainerWithIdentifier_withReply_ param1:v8 error:a4];
+  containerIdentifier = [description containerIdentifier];
+  v9 = [(CNXPCConnection *)v7 remoteResultForSelector:sel_policyForContainerWithIdentifier_withReply_ param1:containerIdentifier error:error];
 
   return v9;
 }
 
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_accountsMatchingPredicate_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_accountsMatchingPredicate_withReply_ param1:predicate error:error];
 }
 
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_groupsMatchingPredicate_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_groupsMatchingPredicate_withReply_ param1:predicate error:error];
 }
 
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_subgroupsOfGroupWithIdentifier_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_subgroupsOfGroupWithIdentifier_withReply_ param1:identifier error:error];
 }
 
 - (id)defaultContainerIdentifier
@@ -1862,43 +1862,43 @@ LABEL_12:
   return [(CNXPCDataMapper *)self remoteResultForSelector:sel_defaultContainerIdentifierWithReply_ error:0];
 }
 
-- (BOOL)setMeContact:(id)a3 error:(id *)a4
+- (BOOL)setMeContact:(id)contact error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v4 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_setMeContact_withReply_ param1:a3 error:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_setMeContact_withReply_ param1:contact error:error];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_setMeContact_forContainer_withReply_ param1:a3 param2:a4 error:a5];
-  v6 = [v5 BOOLValue];
+  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_setMeContact_forContainer_withReply_ param1:contact param2:container error:error];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error
 {
   v10 = MEMORY[0x1E696AE08];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 weakObjectsPointerArray];
-  [v14 addPointer:v13];
+  emailCopy = email;
+  familyNameCopy = familyName;
+  nameCopy = name;
+  weakObjectsPointerArray = [v10 weakObjectsPointerArray];
+  [weakObjectsPointerArray addPointer:nameCopy];
 
-  [v14 addPointer:v12];
-  [v14 addPointer:v11];
+  [weakObjectsPointerArray addPointer:familyNameCopy];
+  [weakObjectsPointerArray addPointer:emailCopy];
 
   if (self)
   {
@@ -1910,16 +1910,16 @@ LABEL_12:
     serviceConnection = 0;
   }
 
-  v16 = [(CNXPCConnection *)serviceConnection remoteResultForSelector:sel_setBestMeIfNeededForGivenName_familyName_email_withReply_ parameters:v14 error:a6];
-  v17 = [v16 BOOLValue];
+  v16 = [(CNXPCConnection *)serviceConnection remoteResultForSelector:sel_setBestMeIfNeededForGivenName_familyName_email_withReply_ parameters:weakObjectsPointerArray error:error];
+  bOOLValue = [v16 BOOLValue];
 
-  return v17;
+  return bOOLValue;
 }
 
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  fetchCopy = fetch;
   if (self && self->_serviceConnection)
   {
     v16 = 0;
@@ -1933,7 +1933,7 @@ LABEL_12:
     v13 = __63__CNXPCDataMapper_contactWithUserActivityUserInfo_keysToFetch___block_invoke;
     v14 = &unk_1E7413068;
     v15 = &v16;
-    [v9 contactWithUserActivityUserInfo:v6 keysToFetch:v7 withReply:v12];
+    [v9 contactWithUserActivityUserInfo:infoCopy keysToFetch:fetchCopy withReply:v12];
 
     v10 = v17[5];
     _Block_object_dispose(&v16, 8);
@@ -1947,9 +1947,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)userActivityUserInfoForContact:(id)a3
+- (id)userActivityUserInfoForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   if (self && self->_serviceConnection)
   {
     v13 = 0;
@@ -1963,7 +1963,7 @@ LABEL_12:
     v10 = __50__CNXPCDataMapper_userActivityUserInfoForContact___block_invoke;
     v11 = &unk_1E7413090;
     v12 = &v13;
-    [v6 userActivityForContact:v4 withReply:v9];
+    [v6 userActivityForContact:contactCopy withReply:v9];
 
     v7 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -1977,53 +1977,53 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_registerChangeHistoryClientIdentifier_forContainerIdentifier_withReply_ param1:a3 param2:a4 error:a5];
-  v6 = [v5 BOOLValue];
+  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_registerChangeHistoryClientIdentifier_forContainerIdentifier_withReply_ param1:identifier param2:containerIdentifier error:error];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_unregisterChangeHistoryClientIdentifier_forContainerIdentifier_withReply_ param1:a3 param2:a4 error:a5];
-  v6 = [v5 BOOLValue];
+  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_unregisterChangeHistoryClientIdentifier_forContainerIdentifier_withReply_ param1:identifier param2:containerIdentifier error:error];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_changeHistoryWithFetchRequest_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_changeHistoryWithFetchRequest_withReply_ param1:request error:error];
 }
 
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v4 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_executeChangeHistoryClearRequest_withReply_ param1:a3 error:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_executeChangeHistoryClearRequest_withReply_ param1:request error:error];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)currentHistoryAnchor
@@ -2048,32 +2048,32 @@ LABEL_12:
   return v15;
 }
 
-- (id)favoritesEntryDictionariesAtPath:(id)a3 error:(id *)a4
+- (id)favoritesEntryDictionariesAtPath:(id)path error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_favoritesEntryDictionariesAtPath_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_favoritesEntryDictionariesAtPath_withReply_ param1:path error:error];
 }
 
-- (BOOL)writeFavoritesPropertyListData:(id)a3 toPath:(id)a4 error:(id *)a5
+- (BOOL)writeFavoritesPropertyListData:(id)data toPath:(id)path error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_writeFavoritesPropertyListData_toPath_withReply_ param1:a3 param2:a4 error:a5];
-  v6 = [v5 BOOLValue];
+  v5 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_writeFavoritesPropertyListData_toPath_withReply_ param1:data param2:path error:error];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (self)
   {
     self = self->_authorization;
@@ -2085,40 +2085,40 @@ LABEL_12:
   v11 = &unk_1E74130B8;
   v12 = v7;
   v8 = v7;
-  [(CNXPCDataMapper *)self requestAccessForEntityType:a3 completionHandler:v9];
+  [(CNXPCDataMapper *)self requestAccessForEntityType:type completionHandler:v9];
 }
 
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error
 {
   if (self)
   {
     self = self->_authorization;
   }
 
-  return [(CNXPCDataMapper *)self requestAccessForEntityType:0 error:a4];
+  return [(CNXPCDataMapper *)self requestAccessForEntityType:0 error:error];
 }
 
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_authorizedKeysForContactKeys_withReply_ param1:a3 error:a4];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_authorizedKeysForContactKeys_withReply_ param1:keys error:error];
 }
 
-- (id)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 error:(id *)a5
+- (id)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format error:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_getBackgroundColorOnImageData_bitmapFormat_withReply_ param1:a3 param2:a4 error:a5];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_getBackgroundColorOnImageData_bitmapFormat_withReply_ param1:data param2:format error:error];
 }
 
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle
 {
   if (self)
   {
@@ -2135,10 +2135,10 @@ LABEL_12:
   v8 = [v7 remoteResultForSelector:? param1:? error:?];
   v16 = OUTLINED_FUNCTION_14_0(v8, v9, v10, v11, v12, v13, v14, v15, v18, 0);
 
-  return a3;
+  return bundle;
 }
 
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier
 {
   OUTLINED_FUNCTION_9_1();
   if (v6)
@@ -2168,7 +2168,7 @@ LABEL_12:
   }
 }
 
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers
 {
   OUTLINED_FUNCTION_9_1();
   if (v6)
@@ -2198,7 +2198,7 @@ LABEL_12:
   }
 }
 
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier
 {
   OUTLINED_FUNCTION_9_1();
   if (v6)
@@ -2228,7 +2228,7 @@ LABEL_12:
   }
 }
 
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers
 {
   OUTLINED_FUNCTION_9_1();
   if (v6)
@@ -2258,7 +2258,7 @@ LABEL_12:
   }
 }
 
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self)
@@ -2273,7 +2273,7 @@ LABEL_12:
 
   v17 = 0;
   v6 = serviceConnection;
-  v7 = [(CNXPCConnection *)v6 remoteResultForSelector:sel_purgeLimitedAccessRecordsForBundle_withReply_ param1:a3 error:&v17];
+  v7 = [(CNXPCConnection *)v6 remoteResultForSelector:sel_purgeLimitedAccessRecordsForBundle_withReply_ param1:bundle error:&v17];
   v8 = v17;
 
   if (v8)
@@ -2288,7 +2288,7 @@ LABEL_12:
   }
 }
 
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number
 {
   if (self)
   {
@@ -2305,10 +2305,10 @@ LABEL_12:
   v8 = [v7 remoteResultForSelector:? param1:? error:?];
   v16 = OUTLINED_FUNCTION_14_0(v8, v9, v10, v11, v12, v13, v14, v15, v18, 0);
 
-  return a3;
+  return number;
 }
 
-- (void)updateLimitedAccessTable:(id)a3
+- (void)updateLimitedAccessTable:(id)table
 {
   if (self)
   {
@@ -2326,17 +2326,17 @@ LABEL_12:
   v8 = 0;
 }
 
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_getLimitedAccessLastSyncSequenceNumber_ error:a3];
+  return [(CNXPCDataMapper *)self remoteResultForSelector:sel_getLimitedAccessLastSyncSequenceNumber_ error:number];
 }
 
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)a3
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)number
 {
   if (self)
   {
@@ -2353,10 +2353,10 @@ LABEL_12:
   v8 = [v7 remoteResultForSelector:? param1:? error:?];
   v16 = OUTLINED_FUNCTION_14_0(v8, v9, v10, v11, v12, v13, v14, v15, v18, 0);
 
-  return a3;
+  return number;
 }
 
-- (void)applyLimitedAccessSyncEvents:(id)a3
+- (void)applyLimitedAccessSyncEvents:(id)events
 {
   if (self)
   {
@@ -2410,7 +2410,7 @@ LABEL_12:
   v7 = 0;
 }
 
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number
 {
   if (self)
   {
@@ -2428,30 +2428,30 @@ LABEL_12:
   v8 = 0;
 }
 
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v3 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_shouldAnalyzeDatabaseWithReply_ error:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_shouldAnalyzeDatabaseWithReply_ error:error];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)analyzeDatabaseWithError:(id *)a3
+- (BOOL)analyzeDatabaseWithError:(id *)error
 {
   if (self)
   {
     self = self->_serviceConnection;
   }
 
-  v3 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_analyzeDatabaseWithReply_ error:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(CNXPCDataMapper *)self remoteResultForSelector:sel_analyzeDatabaseWithReply_ error:error];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)contactCountForFetchRequest:(void *)a1 error:.cold.1(void *a1)

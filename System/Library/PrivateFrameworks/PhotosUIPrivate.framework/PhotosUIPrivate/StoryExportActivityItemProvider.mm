@@ -1,13 +1,13 @@
 @interface StoryExportActivityItemProvider
-- (_TtC15PhotosUIPrivate31StoryExportActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
+- (_TtC15PhotosUIPrivate31StoryExportActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
 - (id)item;
 - (void)cancel;
 @end
 
 @implementation StoryExportActivityItemProvider
 
-- (_TtC15PhotosUIPrivate31StoryExportActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC15PhotosUIPrivate31StoryExportActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1B3C9D1E8();
@@ -17,7 +17,7 @@
 
 - (id)item
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B373D054(v5);
 
   __swift_project_boxed_opaque_existential_0Tm(v5, v5[3]);
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   sub_1B373D5B4();
 
   v9 = sub_1B3C9C5A8();
@@ -41,7 +41,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B373E978();
 }
 

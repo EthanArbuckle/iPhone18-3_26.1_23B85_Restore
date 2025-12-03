@@ -1,20 +1,20 @@
 @interface CalAggregateMigrationController
 - (BOOL)shouldPerformMigration;
-- (CalAggregateMigrationController)initWithControllers:(id)a3;
-- (void)migrationDidFinishWithResult:(unint64_t)a3;
+- (CalAggregateMigrationController)initWithControllers:(id)controllers;
+- (void)migrationDidFinishWithResult:(unint64_t)result;
 @end
 
 @implementation CalAggregateMigrationController
 
-- (CalAggregateMigrationController)initWithControllers:(id)a3
+- (CalAggregateMigrationController)initWithControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v9.receiver = self;
   v9.super_class = CalAggregateMigrationController;
   v5 = [(CalAggregateMigrationController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [controllersCopy copy];
     controllers = v5->_controllers;
     v5->_controllers = v6;
   }
@@ -29,8 +29,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CalAggregateMigrationController *)self controllers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  controllers = [(CalAggregateMigrationController *)self controllers];
+  v3 = [controllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -40,7 +40,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(controllers);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) shouldPerformMigration])
@@ -50,7 +50,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [controllers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -66,15 +66,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)migrationDidFinishWithResult:(unint64_t)a3
+- (void)migrationDidFinishWithResult:(unint64_t)result
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CalAggregateMigrationController *)self controllers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  controllers = [(CalAggregateMigrationController *)self controllers];
+  v5 = [controllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -86,14 +86,14 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(controllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) migrationDidFinishWithResult:a3];
+        [*(*(&v10 + 1) + 8 * v8++) migrationDidFinishWithResult:result];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [controllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

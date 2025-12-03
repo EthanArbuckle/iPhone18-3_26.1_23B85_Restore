@@ -1,81 +1,81 @@
 @interface PDAppletSubcredentialManager
-- (BOOL)createdSharedSubcredentialWithIdentifier:(id)a3 fromSharingInvitationIdentifier:(id)a4;
-- (BOOL)removeSharingInvitationReceiptWithIdentifiers:(id)a3 onCredential:(id)a4;
-- (BOOL)sharingInvitationReceiptWasInvalidated:(id)a3 withCredentialIdentifier:(id)a4 error:(id)a5;
-- (PDAppletSubcredentialManager)initWithDatabaseManager:(id)a3 cardFileManager:(id)a4 paymentWebServiceCoordinator:(id)a5 daManager:(id)a6 carKeyRequirementsChecker:(id)a7 secureElement:(id)a8 assertionManager:(id)a9 notificationManager:(id)a10;
-- (id)sharedCredentialManifestForPass:(id)a3;
-- (void)_downloadPassAtURL:(id)a3 credentialIdentifier:(id)a4 share:(id)a5;
-- (void)_inflateSubcredentialsInDatabaseWithDeviceProperties:(id)a3 withCompletion:(id)a4;
-- (void)_ingestSEBlobsForPass:(id)a3;
-- (void)_ingestSubcredentialConfigurationsForPass:(id)a3;
-- (void)_removeBackgroundRegistrationRequestForCredentials:(id)a3 withPaymentWebService:(id)a4;
-- (void)_updateSubcredentialsForBTEnabled:(BOOL)a3;
-- (void)_updateSubcredentialsWithRangingSuspensionReason:(id)a3;
-- (void)assertionManager:(id)a3 didInvalidateAssertion:(id)a4;
-- (void)bluetoothMonitorerRecievedUpdatedBluetoothState:(int64_t)a3;
-- (void)createRegistrationRequestForCredentialWithIdentifier:(id)a3 completion:(id)a4;
-- (void)credentialsOnDeviceWithCompletion:(id)a3;
+- (BOOL)createdSharedSubcredentialWithIdentifier:(id)identifier fromSharingInvitationIdentifier:(id)invitationIdentifier;
+- (BOOL)removeSharingInvitationReceiptWithIdentifiers:(id)identifiers onCredential:(id)credential;
+- (BOOL)sharingInvitationReceiptWasInvalidated:(id)invalidated withCredentialIdentifier:(id)identifier error:(id)error;
+- (PDAppletSubcredentialManager)initWithDatabaseManager:(id)manager cardFileManager:(id)fileManager paymentWebServiceCoordinator:(id)coordinator daManager:(id)daManager carKeyRequirementsChecker:(id)checker secureElement:(id)element assertionManager:(id)assertionManager notificationManager:(id)self0;
+- (id)sharedCredentialManifestForPass:(id)pass;
+- (void)_downloadPassAtURL:(id)l credentialIdentifier:(id)identifier share:(id)share;
+- (void)_inflateSubcredentialsInDatabaseWithDeviceProperties:(id)properties withCompletion:(id)completion;
+- (void)_ingestSEBlobsForPass:(id)pass;
+- (void)_ingestSubcredentialConfigurationsForPass:(id)pass;
+- (void)_removeBackgroundRegistrationRequestForCredentials:(id)credentials withPaymentWebService:(id)service;
+- (void)_updateSubcredentialsForBTEnabled:(BOOL)enabled;
+- (void)_updateSubcredentialsWithRangingSuspensionReason:(id)reason;
+- (void)assertionManager:(id)manager didInvalidateAssertion:(id)assertion;
+- (void)bluetoothMonitorerRecievedUpdatedBluetoothState:(int64_t)state;
+- (void)createRegistrationRequestForCredentialWithIdentifier:(id)identifier completion:(id)completion;
+- (void)credentialsOnDeviceWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didUpdateCredential:(id)a3 onPassWithIdentifier:(id)a4 oldShares:(id)a5;
-- (void)handlePaymentApplicationsAddedOrUpdatedOnPass:(id)a3 oldShares:(id)a4;
-- (void)invalidateVehicleConnectionSessionForIdentifier:(id)a3;
-- (void)passAddedOrUpdated:(id)a3 oldPass:(id)a4 oldShares:(id)a5;
-- (void)passWillBeRemoved:(id)a3;
-- (void)paymentWebServiceCoordinator:(id)a3 didRegisterCredentialWithIdentifier:(id)a4 response:(id)a5 error:(id)a6;
+- (void)didUpdateCredential:(id)credential onPassWithIdentifier:(id)identifier oldShares:(id)shares;
+- (void)handlePaymentApplicationsAddedOrUpdatedOnPass:(id)pass oldShares:(id)shares;
+- (void)invalidateVehicleConnectionSessionForIdentifier:(id)identifier;
+- (void)passAddedOrUpdated:(id)updated oldPass:(id)pass oldShares:(id)shares;
+- (void)passWillBeRemoved:(id)removed;
+- (void)paymentWebServiceCoordinator:(id)coordinator didRegisterCredentialWithIdentifier:(id)identifier response:(id)response error:(id)error;
 - (void)rangingDidResume;
-- (void)rangingDidSuspendWithReasons:(unint64_t)a3;
-- (void)registerObserver:(id)a3;
-- (void)requestBackgroundRegistrationForCredentialWithIdentifier:(id)a3;
-- (void)requestRegistrationForCredentialWithIdentifier:(id)a3 completion:(id)a4;
-- (void)restoreSubcredentialsInDatabase:(id)a3 withCompletion:(id)a4;
-- (void)revokeSubcredentialForIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)revokeSubcredentials:(id)a3 withCompletion:(id)a4;
-- (void)revokeSubcredentialsForIdentifiers:(id)a3 withCompletion:(id)a4;
-- (void)revokeSubcredentialsForReaderIdentifiers:(id)a3 withCompletion:(id)a4;
-- (void)sendRKEPassThroughData:(id)a3 forSessionIdentifier:(id)a4 withCompletion:(id)a5;
-- (void)sessionDidChangeConnectionStatus:(int64_t)a3;
-- (void)sessionDidReceiveData:(id)a3;
-- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
-- (void)updateMetadataOnPassWithIdentifier:(id)a3 credential:(id)a4 completion:(id)a5;
+- (void)rangingDidSuspendWithReasons:(unint64_t)reasons;
+- (void)registerObserver:(id)observer;
+- (void)requestBackgroundRegistrationForCredentialWithIdentifier:(id)identifier;
+- (void)requestRegistrationForCredentialWithIdentifier:(id)identifier completion:(id)completion;
+- (void)restoreSubcredentialsInDatabase:(id)database withCompletion:(id)completion;
+- (void)revokeSubcredentialForIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)revokeSubcredentials:(id)subcredentials withCompletion:(id)completion;
+- (void)revokeSubcredentialsForIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)revokeSubcredentialsForReaderIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)sendRKEPassThroughData:(id)data forSessionIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)sessionDidChangeConnectionStatus:(int64_t)status;
+- (void)sessionDidReceiveData:(id)data;
+- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
+- (void)updateMetadataOnPassWithIdentifier:(id)identifier credential:(id)credential completion:(id)completion;
 - (void)updateSubcredentialsForBluetoothPowerChange;
 @end
 
 @implementation PDAppletSubcredentialManager
 
-- (PDAppletSubcredentialManager)initWithDatabaseManager:(id)a3 cardFileManager:(id)a4 paymentWebServiceCoordinator:(id)a5 daManager:(id)a6 carKeyRequirementsChecker:(id)a7 secureElement:(id)a8 assertionManager:(id)a9 notificationManager:(id)a10
+- (PDAppletSubcredentialManager)initWithDatabaseManager:(id)manager cardFileManager:(id)fileManager paymentWebServiceCoordinator:(id)coordinator daManager:(id)daManager carKeyRequirementsChecker:(id)checker secureElement:(id)element assertionManager:(id)assertionManager notificationManager:(id)self0
 {
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
-  v27 = a9;
-  v17 = a10;
+  managerCopy = manager;
+  fileManagerCopy = fileManager;
+  coordinatorCopy = coordinator;
+  daManagerCopy = daManager;
+  checkerCopy = checker;
+  elementCopy = element;
+  assertionManagerCopy = assertionManager;
+  notificationManagerCopy = notificationManager;
   v36.receiver = self;
   v36.super_class = PDAppletSubcredentialManager;
   v18 = [(PDAppletSubcredentialManager *)&v36 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_daManager, a6);
-    objc_storeStrong(&v19->_carKeyRequirementsChecker, a7);
+    objc_storeStrong(&v18->_daManager, daManager);
+    objc_storeStrong(&v19->_carKeyRequirementsChecker, checker);
     v20 = dispatch_queue_create("com.apple.passkit.credentialmanager", 0);
     queue = v19->_queue;
     v19->_queue = v20;
 
-    v22 = [NSHashTable pk_weakObjectsHashTableUsingPointerPersonality:v27];
+    v22 = [NSHashTable pk_weakObjectsHashTableUsingPointerPersonality:assertionManagerCopy];
     observers = v19->_observers;
     v19->_observers = v22;
 
     v19->_observersLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v19->_databaseManager, a3);
-    objc_storeStrong(&v19->_cardFileManager, a4);
-    objc_storeStrong(&v19->_webServiceCoordinator, a5);
-    objc_storeStrong(&v19->_secureElement, a8);
-    objc_storeStrong(&v19->_assertionManager, a9);
-    objc_storeStrong(&v19->_notificationManager, a10);
+    objc_storeStrong(&v19->_databaseManager, manager);
+    objc_storeStrong(&v19->_cardFileManager, fileManager);
+    objc_storeStrong(&v19->_webServiceCoordinator, coordinator);
+    objc_storeStrong(&v19->_secureElement, element);
+    objc_storeStrong(&v19->_assertionManager, assertionManager);
+    objc_storeStrong(&v19->_notificationManager, notificationManager);
     [(PDPaymentWebServiceCoordinator *)v19->_webServiceCoordinator registerObserver:v19];
     [(PDAssertionManager *)v19->_assertionManager registerObserver:v19];
     PDNFSecureXPCRegisterAccessDeviceEventObserver(v19);
@@ -102,15 +102,15 @@
   [(PDAppletSubcredentialManager *)&v3 dealloc];
 }
 
-- (id)sharedCredentialManifestForPass:(id)a3
+- (id)sharedCredentialManifestForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [v4 devicePaymentApplications];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  devicePaymentApplications = [passCopy devicePaymentApplications];
+  v6 = [devicePaymentApplications countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
     v7 = *v30;
@@ -120,29 +120,29 @@
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v9 = [*(*(&v29 + 1) + 8 * i) subcredentials];
-        v10 = [v9 count];
+        subcredentials = [*(*(&v29 + 1) + 8 * i) subcredentials];
+        v10 = [subcredentials count];
 
         if (v10)
         {
 
-          v11 = [v4 dataAccessor];
-          v12 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-          v5 = [v11 remoteAssetManagerForSEIDs:v12];
+          dataAccessor = [passCopy dataAccessor];
+          secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+          devicePaymentApplications = [dataAccessor remoteAssetManagerForSEIDs:secureElementIdentifiers];
 
           v27 = 0u;
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v13 = [v5 deviceSpecificItems];
-          v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          deviceSpecificItems = [devicePaymentApplications deviceSpecificItems];
+          v14 = [deviceSpecificItems countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v14)
           {
             v15 = v14;
-            v24 = v4;
+            v24 = passCopy;
             v16 = *v26;
             v17 = PKSharedCredentialsAssetName;
             while (2)
@@ -151,13 +151,13 @@
               {
                 if (*v26 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(deviceSpecificItems);
                 }
 
                 v19 = *(*(&v25 + 1) + 8 * j);
-                v20 = [v19 localURL];
-                v21 = [v20 lastPathComponent];
-                v22 = [v21 hasPrefix:v17];
+                localURL = [v19 localURL];
+                lastPathComponent = [localURL lastPathComponent];
+                v22 = [lastPathComponent hasPrefix:v17];
 
                 if (v22)
                 {
@@ -167,7 +167,7 @@
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v15 = [deviceSpecificItems countByEnumeratingWithState:&v25 objects:v33 count:16];
               if (v15)
               {
                 continue;
@@ -178,7 +178,7 @@
 
             v6 = 0;
 LABEL_20:
-            v4 = v24;
+            passCopy = v24;
           }
 
           else
@@ -190,7 +190,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [devicePaymentApplications countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v6)
       {
         continue;
@@ -205,36 +205,36 @@ LABEL_23:
   return v6;
 }
 
-- (void)updateMetadataOnPassWithIdentifier:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)updateMetadataOnPassWithIdentifier:(id)identifier credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  credentialCopy = credential;
+  completionCopy = completion;
   v11 = PKLogFacilityTypeGetObject();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v8 && v9)
+  if (identifierCopy && credentialCopy)
   {
     if (v12)
     {
       v16 = 138412546;
-      v17 = v8;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = credentialCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating credential metadata for pass (%@): %@", &v16, 0x16u);
     }
 
     databaseManager = self->_databaseManager;
-    v14 = [NSSet setWithObject:v9];
+    v14 = [NSSet setWithObject:credentialCopy];
     v15 = [(PDDatabaseManager *)databaseManager updateAppletSubcredentials:v14];
 
-    [(PDAppletSubcredentialManager *)self didUpdateCredential:v9 onPassWithIdentifier:v8];
-    if (!v10)
+    [(PDAppletSubcredentialManager *)self didUpdateCredential:credentialCopy onPassWithIdentifier:identifierCopy];
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    v10[2](v10, v15);
+    completionCopy[2](completionCopy, v15);
     goto LABEL_12;
   }
 
@@ -244,7 +244,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Invalid parameters to update credential metadata", &v16, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v15 = 0;
     goto LABEL_11;
@@ -253,17 +253,17 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)handlePaymentApplicationsAddedOrUpdatedOnPass:(id)a3 oldShares:(id)a4
+- (void)handlePaymentApplicationsAddedOrUpdatedOnPass:(id)pass oldShares:(id)shares
 {
-  v6 = a3;
-  v7 = a4;
-  [(PDAppletSubcredentialManager *)self _ingestSEBlobsForPass:v6];
-  [(PDAppletSubcredentialManager *)self _ingestSubcredentialConfigurationsForPass:v6];
-  if ([v6 isCarKeyPass])
+  passCopy = pass;
+  sharesCopy = shares;
+  [(PDAppletSubcredentialManager *)self _ingestSEBlobsForPass:passCopy];
+  [(PDAppletSubcredentialManager *)self _ingestSubcredentialConfigurationsForPass:passCopy];
+  if ([passCopy isCarKeyPass])
   {
-    v41 = v6;
-    v42 = v7;
-    [v6 uniqueID];
+    v41 = passCopy;
+    v42 = sharesCopy;
+    [passCopy uniqueID];
     v40 = v39 = self;
     v8 = [(PDDatabaseManager *)self->_databaseManager passSharesForPassUniqueIdentifier:?];
     v9 = objc_alloc_init(NSMutableDictionary);
@@ -291,8 +291,8 @@ LABEL_12:
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v15 = [v14 credentialShares];
-          v16 = [v15 countByEnumeratingWithState:&v54 objects:v68 count:16];
+          credentialShares = [v14 credentialShares];
+          v16 = [credentialShares countByEnumeratingWithState:&v54 objects:v68 count:16];
           if (v16)
           {
             v17 = v16;
@@ -303,15 +303,15 @@ LABEL_12:
               {
                 if (*v55 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(credentialShares);
                 }
 
                 v20 = *(*(&v54 + 1) + 8 * j);
-                v21 = [v20 identifier];
-                [v9 setObject:v20 forKeyedSubscript:v21];
+                identifier = [v20 identifier];
+                [v9 setObject:v20 forKeyedSubscript:identifier];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v54 objects:v68 count:16];
+              v17 = [credentialShares countByEnumeratingWithState:&v54 objects:v68 count:16];
             }
 
             while (v17);
@@ -349,8 +349,8 @@ LABEL_12:
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v27 = [v26 credentialShares];
-          v28 = [v27 countByEnumeratingWithState:&v46 objects:v66 count:16];
+          credentialShares2 = [v26 credentialShares];
+          v28 = [credentialShares2 countByEnumeratingWithState:&v46 objects:v66 count:16];
           if (v28)
           {
             v29 = v28;
@@ -361,24 +361,24 @@ LABEL_12:
               {
                 if (*v47 != v30)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(credentialShares2);
                 }
 
                 v32 = *(*(&v46 + 1) + 8 * m);
                 [v32 status];
                 if ((PKShareStatusIsPendingVerification() & 1) == 0)
                 {
-                  v33 = [v32 identifier];
-                  v34 = [v9 objectForKeyedSubscript:v33];
+                  identifier2 = [v32 identifier];
+                  v34 = [v9 objectForKeyedSubscript:identifier2];
 
                   if (!v34)
                   {
-                    [v22 addObject:v33];
+                    [v22 addObject:identifier2];
                   }
                 }
               }
 
-              v29 = [v27 countByEnumeratingWithState:&v46 objects:v66 count:16];
+              v29 = [credentialShares2 countByEnumeratingWithState:&v46 objects:v66 count:16];
             }
 
             while (v29);
@@ -391,12 +391,12 @@ LABEL_12:
       while (v24);
     }
 
-    v6 = v41;
-    v35 = [v41 devicePrimaryPaymentApplication];
-    v36 = [v35 subcredentials];
-    v37 = [v36 anyObject];
+    passCopy = v41;
+    devicePrimaryPaymentApplication = [v41 devicePrimaryPaymentApplication];
+    subcredentials = [devicePrimaryPaymentApplication subcredentials];
+    anyObject = [subcredentials anyObject];
 
-    if (v37 && [v22 count])
+    if (anyObject && [v22 count])
     {
       v38 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -408,29 +408,29 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Removing %@ credential shares for pass %@", buf, 0x16u);
       }
 
-      [(PKDAManager *)v39->_daManager removeSharedCredentialsWithIdentifiers:v22 credential:v37 completion:0];
+      [(PKDAManager *)v39->_daManager removeSharedCredentialsWithIdentifiers:v22 credential:anyObject completion:0];
     }
 
-    v7 = v42;
+    sharesCopy = v42;
   }
 }
 
-- (void)passAddedOrUpdated:(id)a3 oldPass:(id)a4 oldShares:(id)a5
+- (void)passAddedOrUpdated:(id)updated oldPass:(id)pass oldShares:(id)shares
 {
-  v8 = a3;
-  v9 = a4;
-  [(PDAppletSubcredentialManager *)self handlePaymentApplicationsAddedOrUpdatedOnPass:v8 oldShares:a5];
-  if ([v8 areCredentialsStoredInKML])
+  updatedCopy = updated;
+  passCopy = pass;
+  [(PDAppletSubcredentialManager *)self handlePaymentApplicationsAddedOrUpdatedOnPass:updatedCopy oldShares:shares];
+  if ([updatedCopy areCredentialsStoredInKML])
   {
-    v38 = self;
-    v40 = v8;
+    selfCopy = self;
+    v40 = updatedCopy;
     v10 = objc_alloc_init(NSMutableSet);
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v39 = v9;
-    obj = [v9 devicePaymentApplications];
+    v39 = passCopy;
+    obj = [passCopy devicePaymentApplications];
     v11 = [obj countByEnumeratingWithState:&v61 objects:v68 count:16];
     if (v11)
     {
@@ -450,8 +450,8 @@ LABEL_12:
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v16 = [v15 subcredentials];
-          v17 = [v16 countByEnumeratingWithState:&v57 objects:v67 count:16];
+          subcredentials = [v15 subcredentials];
+          v17 = [subcredentials countByEnumeratingWithState:&v57 objects:v67 count:16];
           if (v17)
           {
             v18 = v17;
@@ -462,18 +462,18 @@ LABEL_12:
               {
                 if (*v58 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(subcredentials);
                 }
 
                 v21 = *(*(&v57 + 1) + 8 * j);
                 if ([v21 state] == 1)
                 {
-                  v22 = [v21 identifier];
-                  [v10 addObject:v22];
+                  identifier = [v21 identifier];
+                  [v10 addObject:identifier];
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v57 objects:v67 count:16];
+              v18 = [subcredentials countByEnumeratingWithState:&v57 objects:v67 count:16];
             }
 
             while (v18);
@@ -492,8 +492,8 @@ LABEL_12:
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v24 = [v40 devicePaymentApplications];
-    v25 = [v24 countByEnumeratingWithState:&v53 objects:v66 count:16];
+    devicePaymentApplications = [v40 devicePaymentApplications];
+    v25 = [devicePaymentApplications countByEnumeratingWithState:&v53 objects:v66 count:16];
     if (v25)
     {
       v26 = v25;
@@ -504,7 +504,7 @@ LABEL_12:
         {
           if (*v54 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v29 = *(*(&v53 + 1) + 8 * k);
@@ -512,8 +512,8 @@ LABEL_12:
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v30 = [v29 subcredentials];
-          v31 = [v30 countByEnumeratingWithState:&v49 objects:v65 count:16];
+          subcredentials2 = [v29 subcredentials];
+          v31 = [subcredentials2 countByEnumeratingWithState:&v49 objects:v65 count:16];
           if (v31)
           {
             v32 = v31;
@@ -524,20 +524,20 @@ LABEL_12:
               {
                 if (*v50 != v33)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(subcredentials2);
                 }
 
                 [v23 addObject:*(*(&v49 + 1) + 8 * m)];
               }
 
-              v32 = [v30 countByEnumeratingWithState:&v49 objects:v65 count:16];
+              v32 = [subcredentials2 countByEnumeratingWithState:&v49 objects:v65 count:16];
             }
 
             while (v32);
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v53 objects:v66 count:16];
+        v26 = [devicePaymentApplications countByEnumeratingWithState:&v53 objects:v66 count:16];
       }
 
       while (v26);
@@ -548,25 +548,25 @@ LABEL_12:
     v43[2] = sub_100193294;
     v43[3] = &unk_10084A9C0;
     v44 = v23;
-    v8 = v40;
+    updatedCopy = v40;
     v45 = v40;
     v46 = v10;
-    v47 = v38;
+    v47 = selfCopy;
     v48 = obja;
     v35 = obja;
     v36 = v10;
     v37 = v23;
-    [(PDAppletSubcredentialManager *)v38 _inflateSubcredentialsInDatabaseWithDeviceProperties:v37 withCompletion:v43];
+    [(PDAppletSubcredentialManager *)selfCopy _inflateSubcredentialsInDatabaseWithDeviceProperties:v37 withCompletion:v43];
 
-    v9 = v39;
+    passCopy = v39;
   }
 }
 
-- (void)_ingestSEBlobsForPass:(id)a3
+- (void)_ingestSEBlobsForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-  v6 = [v4 seBlobsForSecureElementIdentifiers:v5];
+  passCopy = pass;
+  secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+  v6 = [passCopy seBlobsForSecureElementIdentifiers:secureElementIdentifiers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -588,8 +588,8 @@ LABEL_12:
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v6 objectForKey:v11];
         daManager = self->_daManager;
-        v14 = [v11 identifier];
-        v15 = [(PKDAManager *)daManager storeSEBlobForSubcredentialIdentifier:v14 seBlob:v12];
+        identifier = [v11 identifier];
+        v15 = [(PKDAManager *)daManager storeSEBlobForSubcredentialIdentifier:identifier seBlob:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -599,23 +599,23 @@ LABEL_12:
   }
 }
 
-- (void)_ingestSubcredentialConfigurationsForPass:(id)a3
+- (void)_ingestSubcredentialConfigurationsForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-  v6 = [v4 subcredentialConfigurationForSecureElementIdentifiers:v5];
+  passCopy = pass;
+  secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+  v6 = [passCopy subcredentialConfigurationForSecureElementIdentifiers:secureElementIdentifiers];
   if ([v6 count])
   {
     v37 = 0uLL;
     v38 = 0uLL;
     v35 = 0uLL;
     v36 = 0uLL;
-    v7 = v6;
-    v8 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    devicePaymentApplications = v6;
+    v8 = [devicePaymentApplications countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v8)
     {
       v9 = v8;
-      v26 = v5;
+      v26 = secureElementIdentifiers;
       v10 = *v36;
       do
       {
@@ -623,21 +623,21 @@ LABEL_12:
         {
           if (*v36 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v12 = *(*(&v35 + 1) + 8 * i);
           daManager = self->_daManager;
-          v14 = [v7 objectForKey:v12];
+          v14 = [devicePaymentApplications objectForKey:v12];
           [(PKDAManager *)daManager updateCredentialConfigurationForCredential:v12 configuration:v14 completion:0];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v9 = [devicePaymentApplications countByEnumeratingWithState:&v35 objects:v41 count:16];
       }
 
       while (v9);
 LABEL_25:
-      v5 = v26;
+      secureElementIdentifiers = v26;
     }
   }
 
@@ -647,13 +647,13 @@ LABEL_25:
     v34 = 0uLL;
     v31 = 0uLL;
     v32 = 0uLL;
-    v7 = [v4 devicePaymentApplications];
-    v15 = [v7 countByEnumeratingWithState:&v31 objects:v40 count:16];
+    devicePaymentApplications = [passCopy devicePaymentApplications];
+    v15 = [devicePaymentApplications countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v15)
     {
       v16 = v15;
-      v25 = v4;
-      v26 = v5;
+      v25 = passCopy;
+      v26 = secureElementIdentifiers;
       v17 = *v32;
       do
       {
@@ -661,7 +661,7 @@ LABEL_25:
         {
           if (*v32 != v17)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v19 = *(*(&v31 + 1) + 8 * j);
@@ -669,8 +669,8 @@ LABEL_25:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v20 = [v19 subcredentials];
-          v21 = [v20 countByEnumeratingWithState:&v27 objects:v39 count:16];
+          subcredentials = [v19 subcredentials];
+          v21 = [subcredentials countByEnumeratingWithState:&v27 objects:v39 count:16];
           if (v21)
           {
             v22 = v21;
@@ -681,47 +681,47 @@ LABEL_25:
               {
                 if (*v28 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(subcredentials);
                 }
 
                 [(PKDAManager *)self->_daManager updateCredentialConfigurationForCredential:*(*(&v27 + 1) + 8 * k) configuration:0 completion:0];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v27 objects:v39 count:16];
+              v22 = [subcredentials countByEnumeratingWithState:&v27 objects:v39 count:16];
             }
 
             while (v22);
           }
         }
 
-        v16 = [v7 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v16 = [devicePaymentApplications countByEnumeratingWithState:&v31 objects:v40 count:16];
       }
 
       while (v16);
-      v4 = v25;
+      passCopy = v25;
       goto LABEL_25;
     }
   }
 }
 
-- (void)revokeSubcredentials:(id)a3 withCompletion:(id)a4
+- (void)revokeSubcredentials:(id)subcredentials withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  subcredentialsCopy = subcredentials;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_daManager)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = subcredentialsCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Revoking credentials %@", buf, 0xCu);
     }
 
     v10 = PDOSTransactionCreate("PDAppletSubcredentialManager.revoke");
     daManager = self->_daManager;
-    v12 = [v6 allObjects];
+    allObjects = [subcredentialsCopy allObjects];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100193998;
@@ -729,20 +729,20 @@ LABEL_25:
     v15 = v10;
     v16 = v8;
     v13 = v10;
-    [(PKDAManager *)daManager deleteCredentials:v12 completion:v14];
+    [(PKDAManager *)daManager deleteCredentials:allObjects completion:v14];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)revokeSubcredentialsForIdentifiers:(id)a3 withCompletion:(id)a4
+- (void)revokeSubcredentialsForIdentifiers:(id)identifiers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v8 = completionCopy;
   daManager = self->_daManager;
   if (daManager)
   {
@@ -750,21 +750,21 @@ LABEL_25:
     v10[1] = 3221225472;
     v10[2] = sub_100193A8C;
     v10[3] = &unk_100844A90;
-    v11 = v7;
-    [(PKDAManager *)daManager deleteCredentialsForIdentifiers:v6 completion:v10];
+    v11 = completionCopy;
+    [(PKDAManager *)daManager deleteCredentialsForIdentifiers:identifiersCopy completion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)revokeSubcredentialsForReaderIdentifiers:(id)a3 withCompletion:(id)a4
+- (void)revokeSubcredentialsForReaderIdentifiers:(id)identifiers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v8 = completionCopy;
   daManager = self->_daManager;
   if (daManager)
   {
@@ -772,21 +772,21 @@ LABEL_25:
     v10[1] = 3221225472;
     v10[2] = sub_100193B80;
     v10[3] = &unk_100844A90;
-    v11 = v7;
-    [(PKDAManager *)daManager deleteCredentialsForReaderIdentifiers:v6 completion:v10];
+    v11 = completionCopy;
+    [(PKDAManager *)daManager deleteCredentialsForReaderIdentifiers:identifiersCopy completion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)revokeSubcredentialForIdentifier:(id)a3 withCompletion:(id)a4
+- (void)revokeSubcredentialForIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
   daManager = self->_daManager;
   if (daManager)
   {
@@ -794,51 +794,51 @@ LABEL_25:
     v10[1] = 3221225472;
     v10[2] = sub_100193C74;
     v10[3] = &unk_100845A78;
-    v11 = v7;
-    [(PKDAManager *)daManager deleteCredential:v6 completion:v10];
+    v11 = completionCopy;
+    [(PKDAManager *)daManager deleteCredential:identifierCopy completion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)credentialsOnDeviceWithCompletion:(id)a3
+- (void)credentialsOnDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   daManager = self->_daManager;
   if (daManager)
   {
-    v6 = v4;
+    v6 = completionCopy;
     [(PKDAManager *)daManager listCredentialsWithCompletion:?];
   }
 
   else
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v6 = v4;
-    v4[2](v4, 0);
+    v6 = completionCopy;
+    completionCopy[2](completionCopy, 0);
   }
 
-  v4 = v6;
+  completionCopy = v6;
 LABEL_6:
 }
 
-- (void)requestRegistrationForCredentialWithIdentifier:(id)a3 completion:(id)a4
+- (void)requestRegistrationForCredentialWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Attempting to register credential: %@", buf, 0xCu);
   }
 
@@ -847,7 +847,7 @@ LABEL_6:
   v31[1] = 3221225472;
   v31[2] = sub_100194004;
   v31[3] = &unk_10084A9E8;
-  v10 = v7;
+  v10 = completionCopy;
   v32 = v10;
   v11 = objc_retainBlock(v31);
   v26[0] = _NSConcreteStackBlock;
@@ -859,7 +859,7 @@ LABEL_6:
   objc_copyWeak(&v30, &location);
   v13 = v11;
   v29 = v13;
-  v14 = v6;
+  v14 = identifierCopy;
   v28 = v14;
   v15 = objc_retainBlock(v26);
   v20[0] = _NSConcreteStackBlock;
@@ -883,29 +883,29 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)requestBackgroundRegistrationForCredentialWithIdentifier:(id)a3
+- (void)requestBackgroundRegistrationForCredentialWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100194C54;
   v5[3] = &unk_10084AB50;
   objc_copyWeak(&v6, &location);
-  [(PDAppletSubcredentialManager *)self createRegistrationRequestForCredentialWithIdentifier:v4 completion:v5];
+  [(PDAppletSubcredentialManager *)self createRegistrationRequestForCredentialWithIdentifier:identifierCopy completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)passWillBeRemoved:(id)a3
+- (void)passWillBeRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 devicePaymentApplications];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  devicePaymentApplications = [removedCopy devicePaymentApplications];
+  v6 = [devicePaymentApplications countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -917,25 +917,25 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) subcredentials];
-        if ([v11 count])
+        subcredentials = [*(*(&v15 + 1) + 8 * i) subcredentials];
+        if ([subcredentials count])
         {
           if (v8)
           {
-            [v8 unionSet:v11];
+            [v8 unionSet:subcredentials];
           }
 
           else
           {
-            v8 = [v11 mutableCopy];
+            v8 = [subcredentials mutableCopy];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [devicePaymentApplications countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -959,14 +959,14 @@ LABEL_6:
   }
 }
 
-- (void)restoreSubcredentialsInDatabase:(id)a3 withCompletion:(id)a4
+- (void)restoreSubcredentialsInDatabase:(id)database withCompletion:(id)completion
 {
-  v5 = a3;
+  databaseCopy = database;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = databaseCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Restoring credentials in database: %@", buf, 0xCu);
   }
 
@@ -974,62 +974,62 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = sub_100194FAC;
   v8[3] = &unk_10083C780;
-  v9 = v5;
-  v7 = v5;
+  v9 = databaseCopy;
+  v7 = databaseCopy;
   [(PDAppletSubcredentialManager *)self _inflateSubcredentialsInDatabaseWithDeviceProperties:v7 withCompletion:v8];
 }
 
-- (void)_inflateSubcredentialsInDatabaseWithDeviceProperties:(id)a3 withCompletion:(id)a4
+- (void)_inflateSubcredentialsInDatabaseWithDeviceProperties:(id)properties withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  propertiesCopy = properties;
+  completionCopy = completion;
+  if ([propertiesCopy count])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100195170;
     v8[3] = &unk_100844A68;
-    v9 = v6;
-    v10 = self;
-    v11 = v7;
+    v9 = propertiesCopy;
+    selfCopy = self;
+    v11 = completionCopy;
     [(PDAppletSubcredentialManager *)self credentialsOnDeviceWithCompletion:v8];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (BOOL)sharingInvitationReceiptWasInvalidated:(id)a3 withCredentialIdentifier:(id)a4 error:(id)a5
+- (BOOL)sharingInvitationReceiptWasInvalidated:(id)invalidated withCredentialIdentifier:(id)identifier error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  invalidatedCopy = invalidated;
+  identifierCopy = identifier;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (invalidatedCopy)
   {
-    if (v9 | v10)
+    if (identifierCopy | errorCopy)
     {
-      if (!v9 || v10)
+      if (!identifierCopy || errorCopy)
       {
         v15 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412546;
-          v19 = v8;
+          v19 = invalidatedCopy;
           v20 = 2112;
           v21 = v11;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Sharing invite (%@) failed or was declined: %@", &v18, 0x16u);
         }
 
-        v16 = [NSSet setWithObject:v8];
-        v12 = [(PDAppletSubcredentialManager *)self removeSharingInvitationReceiptWithIdentifiers:v16 onCredential:v9];
+        v16 = [NSSet setWithObject:invalidatedCopy];
+        v12 = [(PDAppletSubcredentialManager *)self removeSharingInvitationReceiptWithIdentifiers:v16 onCredential:identifierCopy];
       }
 
       else
       {
-        v12 = [(PDAppletSubcredentialManager *)self createdSharedSubcredentialWithIdentifier:v9 fromSharingInvitationIdentifier:v8];
+        v12 = [(PDAppletSubcredentialManager *)self createdSharedSubcredentialWithIdentifier:identifierCopy fromSharingInvitationIdentifier:invalidatedCopy];
       }
     }
 
@@ -1060,13 +1060,13 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)removeSharingInvitationReceiptWithIdentifiers:(id)a3 onCredential:(id)a4
+- (BOOL)removeSharingInvitationReceiptWithIdentifiers:(id)identifiers onCredential:(id)credential
 {
-  v6 = a3;
-  v21 = a4;
+  identifiersCopy = identifiers;
+  credentialCopy = credential;
   v7 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialForSharedCredentialWithIdentifier:?];
-  v8 = [v7 identifier];
-  v9 = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierWithCredentialIdentifier:v8];
+  identifier = [v7 identifier];
+  v9 = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierWithCredentialIdentifier:identifier];
   v10 = [(PDDatabaseManager *)self->_databaseManager passSharesForPassUniqueIdentifier:v9];
   v26 = 0;
   v27 = &v26;
@@ -1077,9 +1077,9 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = sub_1001958DC;
   v22[3] = &unk_100848590;
-  v12 = v6;
+  v12 = identifiersCopy;
   v23 = v12;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   [(PDDatabaseManager *)databaseManager performTransactionWithBlock:v22];
   v13 = [v12 count];
@@ -1090,13 +1090,13 @@ LABEL_6:
   {
     if (v16)
     {
-      v17 = [v7 identifier];
+      identifier2 = [v7 identifier];
       *buf = 134218754;
       v31 = v14;
       v32 = 2048;
       v33 = v13;
       v34 = 2112;
-      v35 = v17;
+      v35 = identifier2;
       v36 = 2112;
       v37 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Removed %ld/%ld sharing invitation receipts from credential (%@): %@", buf, 0x2Au);
@@ -1109,9 +1109,9 @@ LABEL_6:
   {
     if (v16)
     {
-      v18 = [v7 identifier];
+      identifier3 = [v7 identifier];
       *buf = 138412546;
-      v31 = v18;
+      v31 = identifier3;
       v32 = 2112;
       v33 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failed to remove sharing invitation receipts from credential (%@): %@", buf, 0x16u);
@@ -1124,14 +1124,14 @@ LABEL_6:
   return v19;
 }
 
-- (BOOL)createdSharedSubcredentialWithIdentifier:(id)a3 fromSharingInvitationIdentifier:(id)a4
+- (BOOL)createdSharedSubcredentialWithIdentifier:(id)identifier fromSharingInvitationIdentifier:(id)invitationIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialForSharedCredentialWithIdentifier:v7];
+  identifierCopy = identifier;
+  invitationIdentifierCopy = invitationIdentifier;
+  v8 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialForSharedCredentialWithIdentifier:invitationIdentifierCopy];
   databaseManager = self->_databaseManager;
-  v10 = [v8 identifier];
-  v11 = [(PDDatabaseManager *)databaseManager passUniqueIdentifierWithCredentialIdentifier:v10];
+  identifier = [v8 identifier];
+  v11 = [(PDDatabaseManager *)databaseManager passUniqueIdentifierWithCredentialIdentifier:identifier];
 
   v12 = [(PDDatabaseManager *)self->_databaseManager passSharesForPassUniqueIdentifier:v11];
   v32 = 0;
@@ -1153,9 +1153,9 @@ LABEL_6:
   v21[3] = &unk_10084AB78;
   v24 = &v26;
   v21[4] = self;
-  v14 = v7;
+  v14 = invitationIdentifierCopy;
   v22 = v14;
-  v15 = v6;
+  v15 = identifierCopy;
   v23 = v15;
   v25 = &v32;
   [(PDDatabaseManager *)v13 performTransactionWithBlock:v21];
@@ -1196,10 +1196,10 @@ LABEL_6:
   return v19;
 }
 
-- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (self->_activeVehicleConnectionSession)
   {
     v8 = PKLogFacilityTypeGetObject();
@@ -1215,14 +1215,14 @@ LABEL_6:
   if (![(PDAssertionManager *)self->_assertionManager hasAssertionsOfType:8])
   {
 LABEL_7:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_8;
   }
 
-  v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v6];
-  v10 = [v9 secureElementPass];
+  v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:identifierCopy];
+  secureElementPass = [v9 secureElementPass];
 
-  v11 = [[PDVehicleConnectionSession alloc] initForSecureElementPass:v10 delegate:self];
+  v11 = [[PDVehicleConnectionSession alloc] initForSecureElementPass:secureElementPass delegate:self];
   activeVehicleConnectionSession = self->_activeVehicleConnectionSession;
   self->_activeVehicleConnectionSession = v11;
   v13 = v11;
@@ -1231,18 +1231,18 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = sub_10019600C;
   v14[3] = &unk_100840258;
-  v15 = v7;
+  v15 = completionCopy;
   [(PDVehicleConnectionSession *)v13 startSessionWithCompletion:v14];
 
 LABEL_8:
 }
 
-- (void)invalidateVehicleConnectionSessionForIdentifier:(id)a3
+- (void)invalidateVehicleConnectionSessionForIdentifier:(id)identifier
 {
   activeVehicleConnectionSession = self->_activeVehicleConnectionSession;
-  v5 = a3;
-  v6 = [(PDVehicleConnectionSession *)activeVehicleConnectionSession sessionIdentifier];
-  v7 = [v6 isEqualToString:v5];
+  identifierCopy = identifier;
+  sessionIdentifier = [(PDVehicleConnectionSession *)activeVehicleConnectionSession sessionIdentifier];
+  v7 = [sessionIdentifier isEqualToString:identifierCopy];
 
   if (v7)
   {
@@ -1252,20 +1252,20 @@ LABEL_8:
   }
 }
 
-- (void)sendRKEPassThroughData:(id)a3 forSessionIdentifier:(id)a4 withCompletion:(id)a5
+- (void)sendRKEPassThroughData:(id)data forSessionIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   activeVehicleConnectionSession = self->_activeVehicleConnectionSession;
-  v11 = a4;
-  v12 = [(PDVehicleConnectionSession *)activeVehicleConnectionSession sessionIdentifier];
-  v13 = [v12 isEqualToString:v11];
+  identifierCopy = identifier;
+  sessionIdentifier = [(PDVehicleConnectionSession *)activeVehicleConnectionSession sessionIdentifier];
+  v13 = [sessionIdentifier isEqualToString:identifierCopy];
 
   if (v13)
   {
     v14 = self->_activeVehicleConnectionSession;
     v20 = 0;
-    v15 = [(PDVehicleConnectionSession *)v14 sendData:v8 error:&v20];
+    v15 = [(PDVehicleConnectionSession *)v14 sendData:dataCopy error:&v20];
     v16 = v20;
     v17 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1278,76 +1278,76 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Passthrough message finished, %d, %@", buf, 0x12u);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, v15, v16);
+      completionCopy[2](completionCopy, v15, v16);
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     v19 = [NSError errorWithDomain:PKPassKitErrorDomain code:2 userInfo:0];
-    v9[2](v9, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
   }
 }
 
-- (void)sessionDidChangeConnectionStatus:(int64_t)a3
+- (void)sessionDidChangeConnectionStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001963C8;
   v6[3] = &unk_10084AB98;
-  v6[4] = a3;
-  [v5 enumerateObjectsUsingBlock:v6];
+  v6[4] = status;
+  [allObjects enumerateObjectsUsingBlock:v6];
 }
 
-- (void)sessionDidReceiveData:(id)a3
+- (void)sessionDidReceiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001964EC;
   v7[3] = &unk_10084ABC0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = dataCopy;
+  v6 = dataCopy;
+  [allObjects enumerateObjectsUsingBlock:v7];
 }
 
-- (void)createRegistrationRequestForCredentialWithIdentifier:(id)a3 completion:(id)a4
+- (void)createRegistrationRequestForCredentialWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialWithIdentifier:v6];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialWithIdentifier:identifierCopy];
   v9 = PKLogFacilityTypeGetObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -1355,7 +1355,7 @@ LABEL_8:
     if (v10)
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Creating background request to register credential: %@", buf, 0xCu);
     }
 
@@ -1363,10 +1363,10 @@ LABEL_8:
     v11[1] = 3221225472;
     v11[2] = sub_1001966F8;
     v11[3] = &unk_100845300;
-    v12 = v6;
-    v13 = self;
+    v12 = identifierCopy;
+    selfCopy = self;
     v14 = v8;
-    v15 = v7;
+    v15 = completionCopy;
     [(PDAppletSubcredentialManager *)self credentialsOnDeviceWithCompletion:v11];
 
     v9 = v12;
@@ -1375,22 +1375,22 @@ LABEL_8:
   else if (v10)
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed to register unknown credential: %@", buf, 0xCu);
   }
 }
 
-- (void)_removeBackgroundRegistrationRequestForCredentials:(id)a3 withPaymentWebService:(id)a4
+- (void)_removeBackgroundRegistrationRequestForCredentials:(id)credentials withPaymentWebService:(id)service
 {
-  v21 = a3;
-  v5 = a4;
-  v6 = [v5 backgroundContext];
+  credentialsCopy = credentials;
+  serviceCopy = service;
+  backgroundContext = [serviceCopy backgroundContext];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v6 remainingTasks];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  remainingTasks = [backgroundContext remainingTasks];
+  v8 = [remainingTasks countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (!v8)
   {
     goto LABEL_22;
@@ -1399,29 +1399,29 @@ LABEL_8:
   v9 = v8;
   v20 = 0;
   v10 = *v24;
-  v22 = v7;
+  v22 = remainingTasks;
   do
   {
     for (i = 0; i != v9; i = i + 1)
     {
       if (*v24 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(remainingTasks);
       }
 
       v12 = *(*(&v23 + 1) + 8 * i);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v12 unsignedIntegerValue];
-        v14 = [v6 backgroundDownloadRecordForTaskIdentifier:v13];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
+        v14 = [backgroundContext backgroundDownloadRecordForTaskIdentifier:unsignedIntegerValue];
         if ([v14 taskType] == 5)
         {
-          v15 = [v14 credentialIdentifier];
-          if (v15)
+          credentialIdentifier = [v14 credentialIdentifier];
+          if (credentialIdentifier)
           {
-            v16 = [[PKAppletSubcredential alloc] initWithIdentifier:v15];
-            v17 = [v21 member:v16];
+            v16 = [[PKAppletSubcredential alloc] initWithIdentifier:credentialIdentifier];
+            v17 = [credentialsCopy member:v16];
 
             if (v17)
             {
@@ -1429,11 +1429,11 @@ LABEL_8:
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v28 = v15;
+                v28 = credentialIdentifier;
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Removing background registration request for credential with identifier: %@", buf, 0xCu);
               }
 
-              [v6 removeBackgroundDownloadRecordForTaskIdentifier:v13];
+              [backgroundContext removeBackgroundDownloadRecordForTaskIdentifier:unsignedIntegerValue];
               v20 = 1;
             }
           }
@@ -1448,76 +1448,76 @@ LABEL_8:
             }
           }
 
-          v7 = v22;
+          remainingTasks = v22;
         }
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    v9 = [remainingTasks countByEnumeratingWithState:&v23 objects:v29 count:16];
   }
 
   while (v9);
 
   if (v20)
   {
-    v7 = [v5 archiver];
-    [v7 archiveBackgroundContext:v6];
+    remainingTasks = [serviceCopy archiver];
+    [remainingTasks archiveBackgroundContext:backgroundContext];
 LABEL_22:
   }
 }
 
-- (void)didUpdateCredential:(id)a3 onPassWithIdentifier:(id)a4 oldShares:(id)a5
+- (void)didUpdateCredential:(id)credential onPassWithIdentifier:(id)identifier oldShares:(id)shares
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  credentialCopy = credential;
+  identifierCopy = identifier;
+  sharesCopy = shares;
+  if (credentialCopy && identifierCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v11 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observersLock);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100196F3C;
     v12[3] = &unk_10084AC10;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    [v11 enumerateObjectsUsingBlock:v12];
+    v13 = credentialCopy;
+    v14 = identifierCopy;
+    v15 = sharesCopy;
+    [allObjects enumerateObjectsUsingBlock:v12];
   }
 }
 
-- (void)_downloadPassAtURL:(id)a3 credentialIdentifier:(id)a4 share:(id)a5
+- (void)_downloadPassAtURL:(id)l credentialIdentifier:(id)identifier share:(id)share
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  shareCopy = share;
   v28 = PDOSTransactionCreate("PDAppletSubcredentialManager.pass.download");
-  v11 = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierWithCredentialIdentifier:v9];
+  v11 = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierWithCredentialIdentifier:identifierCopy];
   v12 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v11];
-  v13 = [v12 secureElementPass];
+  secureElementPass = [v12 secureElementPass];
 
   v14 = [(PDAssertionManager *)self->_assertionManager hasAssertionsOfType:1];
-  if (v10)
+  if (shareCopy)
   {
-    v15 = [v10 activationOptions];
-    v16 = [v15 containsPinCode];
+    activationOptions = [shareCopy activationOptions];
+    containsPinCode = [activationOptions containsPinCode];
   }
 
   else
   {
-    v16 = 0;
+    containsPinCode = 0;
   }
 
-  if (v13)
+  if (secureElementPass)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = v16;
+    v17 = containsPinCode;
   }
 
   if (v14)
@@ -1545,8 +1545,8 @@ LABEL_22:
     }
 
     *buf = 138413058;
-    *&buf[4] = v9;
-    if (v16)
+    *&buf[4] = identifierCopy;
+    if (containsPinCode)
     {
       v22 = @"Yes";
     }
@@ -1602,7 +1602,7 @@ LABEL_22:
   v41[2] = sub_100197748;
   v41[3] = &unk_10083E620;
   v41[4] = self;
-  v24 = v8;
+  v24 = lCopy;
   v42 = v24;
   v43 = v44;
   [v23 addOperation:v41];
@@ -1649,7 +1649,7 @@ LABEL_22:
   v29[3] = &unk_10084AD50;
   v26 = v28;
   v30 = v26;
-  v31 = self;
+  selfCopy = self;
   v32 = v48;
   v33 = buf;
   v27 = [v23 evaluateWithInput:v25 completion:v29];
@@ -1661,20 +1661,20 @@ LABEL_22:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)paymentWebServiceCoordinator:(id)a3 didRegisterCredentialWithIdentifier:(id)a4 response:(id)a5 error:(id)a6
+- (void)paymentWebServiceCoordinator:(id)coordinator didRegisterCredentialWithIdentifier:(id)identifier response:(id)response error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v12 || v13)
+  coordinatorCopy = coordinator;
+  identifierCopy = identifier;
+  responseCopy = response;
+  errorCopy = error;
+  v14 = errorCopy;
+  if (!responseCopy || errorCopy)
   {
     v15 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v38 = v11;
+      *v38 = identifierCopy;
       *&v38[8] = 2112;
       *&v38[10] = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failed to register credential (%@) with error: %@", buf, 0x16u);
@@ -1683,60 +1683,60 @@ LABEL_22:
 
   else
   {
-    v15 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialWithIdentifier:v11];
-    v16 = [(PDDatabaseManager *)self->_databaseManager passSharesForSubcredentialIdentifier:v11];
-    v17 = [v16 firstObject];
+    v15 = [(PDDatabaseManager *)self->_databaseManager appletSubcredentialWithIdentifier:identifierCopy];
+    v16 = [(PDDatabaseManager *)self->_databaseManager passSharesForSubcredentialIdentifier:identifierCopy];
+    firstObject = [v16 firstObject];
 
-    if (v17 && !v15)
+    if (firstObject && !v15)
     {
-      v15 = [[PKAppletSubcredential alloc] initWithIdentifier:v11];
+      v15 = [[PKAppletSubcredential alloc] initWithIdentifier:identifierCopy];
     }
 
-    v18 = [v12 passURL];
+    passURL = [responseCopy passURL];
     v19 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v17 identifier];
-      v21 = v18;
-      v22 = v20;
+      identifier = [firstObject identifier];
+      v21 = passURL;
+      v22 = identifier;
       v23 = @"Yes";
       *buf = 138412802;
-      *v38 = v11;
+      *v38 = identifierCopy;
       *&v38[8] = 2112;
       if (!v21)
       {
         v23 = @"No";
       }
 
-      *&v38[10] = v20;
+      *&v38[10] = identifier;
       v39 = 2112;
       v40 = v23;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Received credential (%@) registration response. Share: %@ hasPassURL: %@", buf, 0x20u);
 
-      v18 = v21;
+      passURL = v21;
     }
 
     if (v15)
     {
-      v33 = v18;
-      v24 = [v12 credentialAttestation];
-      if (v24)
+      v33 = passURL;
+      credentialAttestation = [responseCopy credentialAttestation];
+      if (credentialAttestation)
       {
-        v31 = v17;
-        v32 = v10;
+        v31 = firstObject;
+        v32 = coordinatorCopy;
         v25 = PDOSTransactionCreate("PDAppletSubcredentialManager.register");
-        v26 = [v12 vehicleMobilizationEncryptedContainer];
+        vehicleMobilizationEncryptedContainer = [responseCopy vehicleMobilizationEncryptedContainer];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v15 isOnlineImmobilizerToken];
+          isOnlineImmobilizerToken = [v15 isOnlineImmobilizerToken];
           v28 = @"Yes";
-          if (!v26)
+          if (!vehicleMobilizationEncryptedContainer)
           {
             v28 = @"No";
           }
 
           *buf = 67109378;
-          *v38 = v27;
+          *v38 = isOnlineImmobilizerToken;
           *&v38[4] = 2112;
           *&v38[6] = v28;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Credential isOnlineImmobilizerToken (%d). Has encryptedContainer: %@", buf, 0x12u);
@@ -1748,30 +1748,30 @@ LABEL_22:
         v34[2] = sub_100198760;
         v34[3] = &unk_100845C80;
         v35 = v25;
-        v36 = v11;
+        v36 = identifierCopy;
         v30 = v25;
-        [(PKDAManager *)daManager updateTrackingAttestation:v24 forCredential:v15 encryptedContainer:v26 completion:v34];
+        [(PKDAManager *)daManager updateTrackingAttestation:credentialAttestation forCredential:v15 encryptedContainer:vehicleMobilizationEncryptedContainer completion:v34];
 
-        v17 = v31;
-        v10 = v32;
+        firstObject = v31;
+        coordinatorCopy = v32;
       }
 
       else
       {
-        v26 = v19;
+        vehicleMobilizationEncryptedContainer = v19;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v38 = v11;
+          *v38 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Credential (%@) registration response missing attestation", buf, 0xCu);
-          v26 = v19;
+          vehicleMobilizationEncryptedContainer = v19;
         }
       }
 
-      v18 = v33;
+      passURL = v33;
       if (v33)
       {
-        [(PDAppletSubcredentialManager *)self _downloadPassAtURL:v33 credentialIdentifier:v11 share:v17];
+        [(PDAppletSubcredentialManager *)self _downloadPassAtURL:v33 credentialIdentifier:identifierCopy share:firstObject];
       }
 
       else
@@ -1779,7 +1779,7 @@ LABEL_22:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v38 = v11;
+          *v38 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "No pass to download after credential (%@) registration!", buf, 0xCu);
         }
       }
@@ -1790,11 +1790,11 @@ LABEL_22:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v38 = v11;
+        *v38 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Unable to register credential (%@): credential no longer exists", buf, 0xCu);
       }
 
-      v24 = v19;
+      credentialAttestation = v19;
     }
   }
 }
@@ -1806,39 +1806,39 @@ LABEL_22:
   [(PDAppletSubcredentialManager *)self _updateSubcredentialsForBTEnabled:v3];
 }
 
-- (void)_updateSubcredentialsForBTEnabled:(BOOL)a3
+- (void)_updateSubcredentialsForBTEnabled:(BOOL)enabled
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100198904;
   v3[3] = &unk_10084AD70;
-  v4 = a3;
+  enabledCopy = enabled;
   [(PDAppletSubcredentialManager *)self _updateSubcredentialsWithRangingSuspensionReason:v3];
 }
 
-- (void)_updateSubcredentialsWithRangingSuspensionReason:(id)a3
+- (void)_updateSubcredentialsWithRangingSuspensionReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   databaseManager = self->_databaseManager;
-  v7 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+  secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100198A0C;
   v9[3] = &unk_10084ADC0;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
-  [(PDDatabaseManager *)databaseManager updateRangingSuspensionReasonForCredentialsWithSecureElementIdentifiers:v7 usingUpdater:v4 withHandler:v9];
+  v10 = allObjects;
+  selfCopy = self;
+  v8 = allObjects;
+  [(PDDatabaseManager *)databaseManager updateRangingSuspensionReasonForCredentialsWithSecureElementIdentifiers:secureElementIdentifiers usingUpdater:reasonCopy withHandler:v9];
 }
 
-- (void)bluetoothMonitorerRecievedUpdatedBluetoothState:(int64_t)a3
+- (void)bluetoothMonitorerRecievedUpdatedBluetoothState:(int64_t)state
 {
-  if ((a3 - 2) <= 3)
+  if ((state - 2) <= 3)
   {
-    [(PDAppletSubcredentialManager *)self _updateSubcredentialsForBTEnabled:(8u >> ((a3 - 2) & 0xF)) & 1];
+    [(PDAppletSubcredentialManager *)self _updateSubcredentialsForBTEnabled:(8u >> ((state - 2) & 0xF)) & 1];
   }
 }
 
@@ -1854,13 +1854,13 @@ LABEL_22:
   [(PDAppletSubcredentialManager *)self _updateSubcredentialsWithRangingSuspensionReason:&stru_10084AE00];
 }
 
-- (void)rangingDidSuspendWithReasons:(unint64_t)a3
+- (void)rangingDidSuspendWithReasons:(unint64_t)reasons
 {
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = a3;
+    reasonsCopy = reasons;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PDAppletSubcredentialManager: Ranging suspended for reasons (%lu)", buf, 0xCu);
   }
 
@@ -1868,13 +1868,13 @@ LABEL_22:
   v6[1] = 3221225472;
   v6[2] = sub_100198CEC;
   v6[3] = &unk_10084AE20;
-  v6[4] = a3;
+  v6[4] = reasons;
   [(PDAppletSubcredentialManager *)self _updateSubcredentialsWithRangingSuspensionReason:v6];
 }
 
-- (void)assertionManager:(id)a3 didInvalidateAssertion:(id)a4
+- (void)assertionManager:(id)manager didInvalidateAssertion:(id)assertion
 {
-  if ([a4 type] == 8)
+  if ([assertion type] == 8)
   {
     [(PDVehicleConnectionSession *)self->_activeVehicleConnectionSession endSession];
     activeVehicleConnectionSession = self->_activeVehicleConnectionSession;

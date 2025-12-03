@@ -18,17 +18,17 @@
 
 - (uint64_t)_scrcRangeOfVanillaFormatSpecifier
 {
-  v1 = [a1 string];
-  v2 = [v1 rangeOfString:@"%@"];
+  string = [self string];
+  v2 = [string rangeOfString:@"%@"];
 
   return v2;
 }
 
 - (uint64_t)_scrcRangeOfFormatSpecifierWithIndex:()SCRCMathExpression
 {
-  v4 = [a1 string];
+  string = [self string];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%%%lu$@", a3];
-  v6 = [v4 rangeOfString:v5];
+  v6 = [string rangeOfString:v5];
 
   return v6;
 }
@@ -38,10 +38,10 @@
   v6 = a3;
   v25 = a4;
   v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6];
-  v8 = [v7 _scrcRangeOfVanillaFormatSpecifier];
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  _scrcRangeOfVanillaFormatSpecifier = [v7 _scrcRangeOfVanillaFormatSpecifier];
+  if (_scrcRangeOfVanillaFormatSpecifier != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = v8;
+    _scrcRangeOfVanillaFormatSpecifier2 = _scrcRangeOfVanillaFormatSpecifier;
     v11 = v9;
     do
     {
@@ -52,12 +52,12 @@
         v13 = [MEMORY[0x277CCA898] scrcStringWithString:@"(null)"];
       }
 
-      [v7 replaceCharactersInRange:v10 withAttributedString:{v11, v13}];
-      v10 = [v7 _scrcRangeOfVanillaFormatSpecifier];
+      [v7 replaceCharactersInRange:_scrcRangeOfVanillaFormatSpecifier2 withAttributedString:{v11, v13}];
+      _scrcRangeOfVanillaFormatSpecifier2 = [v7 _scrcRangeOfVanillaFormatSpecifier];
       v11 = v14;
     }
 
-    while (v10 != 0x7FFFFFFFFFFFFFFFLL);
+    while (_scrcRangeOfVanillaFormatSpecifier2 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
   v15 = [v7 _scrcRangeOfFormatSpecifierWithIndex:1];
@@ -85,14 +85,14 @@
     while (v17 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  v23 = [[a1 alloc] initWithAttributedString:v7];
+  v23 = [[self alloc] initWithAttributedString:v7];
 
   return v23;
 }
 
 + (id)scrcStringWithFormat:()SCRCMathExpression
 {
-  v9 = [a1 _scrcStringWithFormat:a3 args:&a9];
+  v9 = [self _scrcStringWithFormat:a3 args:&a9];
 
   return v9;
 }
@@ -110,7 +110,7 @@
     a4 = [v7 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
-  v9 = [[a1 alloc] initWithString:v6 attributes:a4];
+  v9 = [[self alloc] initWithString:v6 attributes:a4];
 
   return v9;
 }
@@ -148,7 +148,7 @@
 
   v15 = [v11 dictionaryWithObjects:v9 forKeys:v10 count:v12];
 
-  v16 = [[a1 alloc] initWithString:a3 attributes:v15];
+  v16 = [[self alloc] initWithString:a3 attributes:v15];
 
   return v16;
 }
@@ -159,7 +159,7 @@
   v7 = [MEMORY[0x277CCACA8] stringWithDollarCode:a3];
   if ([v7 length])
   {
-    v8 = [a1 scrcStringWithString:v7 treePosition:v6];
+    v8 = [self scrcStringWithString:v7 treePosition:v6];
   }
 
   else
@@ -172,7 +172,7 @@
 
 + (id)scrcString
 {
-  v1 = objc_alloc_init(a1);
+  v1 = objc_alloc_init(self);
 
   return v1;
 }
@@ -181,8 +181,8 @@
 {
   v4 = MEMORY[0x277CCAB48];
   v5 = a3;
-  v6 = [[v4 alloc] initWithAttributedString:a1];
-  [v6 replaceCharactersInRange:objc_msgSend(a1 withAttributedString:{"length"), 0, v5}];
+  v6 = [[v4 alloc] initWithAttributedString:self];
+  [v6 replaceCharactersInRange:objc_msgSend(self withAttributedString:{"length"), 0, v5}];
 
   v7 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v6];
 
@@ -193,16 +193,16 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:a1];
-  v9 = [v8 string];
-  v10 = [v9 rangeOfString:v6];
+  v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:self];
+  string = [v8 string];
+  v10 = [string rangeOfString:v6];
   v12 = v11;
 
   while (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v8 replaceCharactersInRange:v10 withString:{v12, v7}];
-    v13 = [v8 string];
-    v10 = [v13 rangeOfString:v6];
+    string2 = [v8 string];
+    v10 = [string2 rangeOfString:v6];
     v12 = v14;
   }
 
@@ -215,23 +215,23 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mutableCopy];
-  [v8 addAttribute:v7 value:v6 range:{0, objc_msgSend(a1, "length")}];
+  v8 = [self mutableCopy];
+  [v8 addAttribute:v7 value:v6 range:{0, objc_msgSend(self, "length")}];
 
   return v8;
 }
 
 - (uint64_t)_scrcHasPauseCommaAtIndex:()SCRCMathExpression
 {
-  v5 = [a1 string];
-  v6 = [v5 characterAtIndex:a3];
+  string = [self string];
+  v6 = [string characterAtIndex:a3];
 
   if (v6 != 44)
   {
     return 0;
   }
 
-  v7 = [a1 attribute:@"kSCRCMathStringAttributeSpeakLiteralCharacters" atIndex:a3 effectiveRange:0];
+  v7 = [self attribute:@"kSCRCMathStringAttributeSpeakLiteralCharacters" atIndex:a3 effectiveRange:0];
   v8 = [v7 BOOLValue] ^ 1;
 
   return v8;
@@ -239,11 +239,11 @@
 
 - (uint64_t)scrcContainsPause
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v3 = result;
-    if ([a1 _scrcHasPauseCommaAtIndex:0])
+    if ([self _scrcHasPauseCommaAtIndex:0])
     {
       return 1;
     }
@@ -259,7 +259,7 @@
           break;
         }
 
-        v6 = [a1 _scrcHasPauseCommaAtIndex:v4];
+        v6 = [self _scrcHasPauseCommaAtIndex:v4];
         v4 = v5 + 1;
       }
 

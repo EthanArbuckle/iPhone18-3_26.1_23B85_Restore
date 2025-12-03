@@ -1,8 +1,8 @@
 @interface HFCharacteristicValueDisplayError
-+ (id)errorWithCategory:(unint64_t)a3;
-+ (id)errorWithUnderlyingError:(id)a3 readTraits:(id)a4 contextProvider:(id)a5;
-+ (id)errorWithUnderlyingSymptom:(id)a3 isFixingCurrently:(BOOL)a4 contextProvider:(id)a5;
-+ (id)mostEgregiousError:(id)a3;
++ (id)errorWithCategory:(unint64_t)category;
++ (id)errorWithUnderlyingError:(id)error readTraits:(id)traits contextProvider:(id)provider;
++ (id)errorWithUnderlyingSymptom:(id)symptom isFixingCurrently:(BOOL)currently contextProvider:(id)provider;
++ (id)mostEgregiousError:(id)error;
 - (BOOL)isControllableError;
 - (BOOL)isHomePodNetworkDiagnosticsError;
 - (BOOL)isPersistentError;
@@ -11,41 +11,41 @@
 
 @implementation HFCharacteristicValueDisplayError
 
-+ (id)errorWithUnderlyingError:(id)a3 readTraits:(id)a4 contextProvider:(id)a5
++ (id)errorWithUnderlyingError:(id)error readTraits:(id)traits contextProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 domain];
+  errorCopy = error;
+  traitsCopy = traits;
+  providerCopy = provider;
+  domain = [errorCopy domain];
   v11 = *MEMORY[0x277CCFD28];
-  v12 = [v10 isEqualToString:*MEMORY[0x277CCFD28]];
+  v12 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
   if (v12)
   {
-    v13 = [v7 userInfo];
-    v14 = [v13 valueForKey:*MEMORY[0x277CCA7E8]];
+    userInfo = [errorCopy userInfo];
+    v14 = [userInfo valueForKey:*MEMORY[0x277CCA7E8]];
 
-    v15 = [v7 code];
-    if (v15 > 77)
+    code = [errorCopy code];
+    if (code > 77)
     {
-      if (v15 > 87)
+      if (code > 87)
       {
-        if (v15 == 88)
+        if (code == 88)
         {
           v16 = 2;
           goto LABEL_6;
         }
 
         v16 = 0;
-        if (v15 != 103)
+        if (code != 103)
         {
 LABEL_6:
 
 LABEL_39:
           v24 = objc_alloc_init(HFCharacteristicValueDisplayError);
           [(HFCharacteristicValueDisplayError *)v24 setCategory:v16];
-          [(HFCharacteristicValueDisplayError *)v24 setContextProvider:v9];
-          v14 = [v7 copy];
+          [(HFCharacteristicValueDisplayError *)v24 setContextProvider:providerCopy];
+          v14 = [errorCopy copy];
           [(HFCharacteristicValueDisplayError *)v24 setUnderlyingError:v14];
           goto LABEL_40;
         }
@@ -57,9 +57,9 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      if (v15 != 78)
+      if (code != 78)
       {
-        if (v15 == 87)
+        if (code == 87)
         {
           v16 = 7;
         }
@@ -75,25 +75,25 @@ LABEL_40:
 
     else
     {
-      if (v15 > 0x3B)
+      if (code > 0x3B)
       {
         v16 = 0;
         goto LABEL_6;
       }
 
-      if (((1 << v15) & 0x840000000004300) != 0)
+      if (((1 << code) & 0x840000000004300) != 0)
       {
         goto LABEL_5;
       }
 
       v16 = 0;
-      if (v15 != 4)
+      if (code != 4)
       {
         goto LABEL_6;
       }
 
-      v25 = [v14 domain];
-      if ([v25 isEqualToString:v11])
+      domain2 = [v14 domain];
+      if ([domain2 isEqualToString:v11])
       {
         if ([v14 code] == 2400)
         {
@@ -101,9 +101,9 @@ LABEL_40:
           goto LABEL_33;
         }
 
-        v27 = [v14 code];
+        code2 = [v14 code];
 
-        if (v27 == 2401)
+        if (code2 == 2401)
         {
           goto LABEL_33;
         }
@@ -119,8 +119,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v17 = [v7 domain];
-  v18 = [v17 isEqualToString:@"HFErrorDomain"];
+  domain3 = [errorCopy domain];
+  v18 = [domain3 isEqualToString:@"HFErrorDomain"];
 
   if (!v18)
   {
@@ -128,34 +128,34 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  v19 = [v7 code];
-  if (v19 > 57)
+  code3 = [errorCopy code];
+  if (code3 > 57)
   {
     v20 = 12;
     v21 = 13;
-    if (v19 != 72)
+    if (code3 != 72)
     {
       v21 = 0;
     }
 
-    if (v19 != 71)
+    if (code3 != 71)
     {
       v20 = v21;
     }
 
     v22 = 10;
     v23 = 11;
-    if (v19 != 70)
+    if (code3 != 70)
     {
       v23 = 0;
     }
 
-    if (v19 != 58)
+    if (code3 != 58)
     {
       v22 = v23;
     }
 
-    if (v19 <= 70)
+    if (code3 <= 70)
     {
       v16 = v22;
     }
@@ -168,15 +168,15 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  if ((v19 - 34) < 2)
+  if ((code3 - 34) < 2)
   {
     v16 = 1;
     goto LABEL_39;
   }
 
-  if (v19 != 4)
+  if (code3 != 4)
   {
-    if (v19 == 56)
+    if (code3 == 56)
     {
       v16 = 9;
     }
@@ -189,13 +189,13 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  if ([v8 containsObject:@"DoesNotSupportNotifications"])
+  if ([traitsCopy containsObject:@"DoesNotSupportNotifications"])
   {
     v16 = 6;
     goto LABEL_39;
   }
 
-  if (([v8 containsObject:@"InvalidOrMissingAuthorizationData"] & 1) != 0 || objc_msgSend(v8, "containsObject:", @"AdditionalSetupRequired"))
+  if (([traitsCopy containsObject:@"InvalidOrMissingAuthorizationData"] & 1) != 0 || objc_msgSend(traitsCopy, "containsObject:", @"AdditionalSetupRequired"))
   {
     v16 = 7;
     goto LABEL_39;
@@ -207,31 +207,31 @@ LABEL_41:
   return v24;
 }
 
-+ (id)errorWithUnderlyingSymptom:(id)a3 isFixingCurrently:(BOOL)a4 contextProvider:(id)a5
++ (id)errorWithUnderlyingSymptom:(id)symptom isFixingCurrently:(BOOL)currently contextProvider:(id)provider
 {
-  v6 = a5;
-  v7 = a3;
+  providerCopy = provider;
+  symptomCopy = symptom;
   v8 = objc_alloc_init(HFCharacteristicValueDisplayError);
   [(HFCharacteristicValueDisplayError *)v8 setCategory:8];
-  [(HFCharacteristicValueDisplayError *)v8 setContextProvider:v6];
+  [(HFCharacteristicValueDisplayError *)v8 setContextProvider:providerCopy];
 
-  [(HFCharacteristicValueDisplayError *)v8 setUnderlyingSymptom:v7];
+  [(HFCharacteristicValueDisplayError *)v8 setUnderlyingSymptom:symptomCopy];
 
   return v8;
 }
 
-+ (id)mostEgregiousError:(id)a3
++ (id)mostEgregiousError:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] > 1)
+  errorCopy = error;
+  if ([errorCopy count] > 1)
   {
-    v5 = [v3 na_firstObjectPassingTest:&__block_literal_global_23_1];
-    v6 = [v3 na_filter:&__block_literal_global_25_2];
+    v5 = [errorCopy na_firstObjectPassingTest:&__block_literal_global_23_1];
+    v6 = [errorCopy na_filter:&__block_literal_global_25_2];
     v7 = v6;
     if (v5)
     {
-      v8 = [v3 na_firstObjectPassingTest:&__block_literal_global_27_3];
+      v8 = [errorCopy na_firstObjectPassingTest:&__block_literal_global_27_3];
       v9 = v8;
       if (v8)
       {
@@ -243,18 +243,18 @@ LABEL_41:
         v10 = v5;
       }
 
-      v4 = v10;
+      anyObject = v10;
     }
 
     else if ([v6 count] == 1)
     {
-      v4 = [v7 anyObject];
+      anyObject = [v7 anyObject];
     }
 
     else if ([v7 count] < 2)
     {
       v30 = v7;
-      v13 = [v3 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_34_2];
+      v13 = [errorCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_34_2];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
@@ -279,8 +279,8 @@ LABEL_41:
 
             v20 = v13;
             v21 = [v13 objectForKeyedSubscript:*(*(&v31 + 1) + 8 * i)];
-            v22 = [v21 allObjects];
-            v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_40_0];
+            allObjects = [v21 allObjects];
+            v23 = [allObjects sortedArrayUsingComparator:&__block_literal_global_40_0];
 
             if ([v23 count])
             {
@@ -301,37 +301,37 @@ LABEL_41:
         }
       }
 
-      v24 = [v13 allKeys];
-      v15 = [v24 sortedArrayUsingSelector:sel_compare_];
+      allKeys = [v13 allKeys];
+      v15 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-      v25 = [v15 firstObject];
-      v26 = [v13 objectForKey:v25];
-      v27 = [v26 allObjects];
-      v23 = [v27 sortedArrayUsingComparator:&__block_literal_global_40_0];
+      firstObject = [v15 firstObject];
+      v26 = [v13 objectForKey:firstObject];
+      allObjects2 = [v26 allObjects];
+      v23 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_40_0];
 
 LABEL_22:
-      v4 = [v23 firstObject];
+      anyObject = [v23 firstObject];
 
       v7 = v30;
     }
 
     else
     {
-      v11 = [v7 allObjects];
-      v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_30_4];
+      allObjects3 = [v7 allObjects];
+      v12 = [allObjects3 sortedArrayUsingComparator:&__block_literal_global_30_4];
 
-      v4 = [v12 firstObject];
+      anyObject = [v12 firstObject];
     }
   }
 
   else
   {
-    v4 = [v3 anyObject];
+    anyObject = [errorCopy anyObject];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return anyObject;
 }
 
 uint64_t __56__HFCharacteristicValueDisplayError_mostEgregiousError___block_invoke(uint64_t a1, void *a2)
@@ -453,56 +453,56 @@ uint64_t __56__HFCharacteristicValueDisplayError_mostEgregiousError___block_invo
 
 - (BOOL)isHomePodNetworkDiagnosticsError
 {
-  v3 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-  if ([v3 type] == 112)
+  underlyingSymptom = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+  if ([underlyingSymptom type] == 112)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-    if ([v5 type] == 115)
+    underlyingSymptom2 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+    if ([underlyingSymptom2 type] == 115)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-      if ([v6 type] == 113)
+      underlyingSymptom3 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+      if ([underlyingSymptom3 type] == 113)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-        if ([v7 type] == 102)
+        underlyingSymptom4 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+        if ([underlyingSymptom4 type] == 102)
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-          if ([v8 type] == 101)
+          underlyingSymptom5 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+          if ([underlyingSymptom5 type] == 101)
           {
             v4 = 1;
           }
 
           else
           {
-            v9 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-            if ([v9 type] == 103)
+            underlyingSymptom6 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+            if ([underlyingSymptom6 type] == 103)
             {
               v4 = 1;
             }
 
             else
             {
-              v10 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-              v4 = [v10 type] == 100;
+              underlyingSymptom7 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+              v4 = [underlyingSymptom7 type] == 100;
             }
           }
         }
@@ -513,20 +513,20 @@ uint64_t __56__HFCharacteristicValueDisplayError_mostEgregiousError___block_invo
   return v4;
 }
 
-+ (id)errorWithCategory:(unint64_t)a3
++ (id)errorWithCategory:(unint64_t)category
 {
   v4 = objc_alloc_init(HFCharacteristicValueDisplayError);
-  [(HFCharacteristicValueDisplayError *)v4 setCategory:a3];
+  [(HFCharacteristicValueDisplayError *)v4 setCategory:category];
 
   return v4;
 }
 
 - (BOOL)isPersistentError
 {
-  v3 = [(HFCharacteristicValueDisplayError *)self contextProvider];
-  v4 = [v3 hf_remoteAccessState];
+  contextProvider = [(HFCharacteristicValueDisplayError *)self contextProvider];
+  hf_remoteAccessState = [contextProvider hf_remoteAccessState];
 
-  return [(HFCharacteristicValueDisplayError *)self category]- 6 < 8 || (v4 - 1) < 2;
+  return [(HFCharacteristicValueDisplayError *)self category]- 6 < 8 || (hf_remoteAccessState - 1) < 2;
 }
 
 - (id)description
@@ -535,15 +535,15 @@ uint64_t __56__HFCharacteristicValueDisplayError_mostEgregiousError___block_invo
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFCharacteristicValueDisplayError category](self, "category")}];
   v5 = [v3 appendObject:v4 withName:@"category"];
 
-  v6 = [(HFCharacteristicValueDisplayError *)self underlyingError];
-  v7 = [v3 appendObject:v6 withName:@"error" skipIfNil:1];
+  underlyingError = [(HFCharacteristicValueDisplayError *)self underlyingError];
+  v7 = [v3 appendObject:underlyingError withName:@"error" skipIfNil:1];
 
-  v8 = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
-  v9 = [v3 appendObject:v8 withName:@"symptom" skipIfNil:1];
+  underlyingSymptom = [(HFCharacteristicValueDisplayError *)self underlyingSymptom];
+  v9 = [v3 appendObject:underlyingSymptom withName:@"symptom" skipIfNil:1];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface NSArray
-- (id)subarraysOfSize:(unint64_t)a3;
+- (id)subarraysOfSize:(unint64_t)size;
 @end
 
 @implementation NSArray
 
-- (id)subarraysOfSize:(unint64_t)a3
+- (id)subarraysOfSize:(unint64_t)size
 {
   v5 = [(NSArray *)self count];
-  v6 = [[NSMutableArray alloc] initWithCapacity:v5 / a3 + 1];
+  v6 = [[NSMutableArray alloc] initWithCapacity:v5 / size + 1];
   if (v5)
   {
-    for (i = 0; i < v5; i += v8)
+    for (i = 0; i < v5; i += sizeCopy)
     {
-      if (v5 - i >= a3)
+      if (v5 - i >= size)
       {
-        v8 = a3;
+        sizeCopy = size;
       }
 
       else
       {
-        v8 = v5 - i;
+        sizeCopy = v5 - i;
       }
 
-      v9 = [(NSArray *)self subarrayWithRange:i, v8];
-      [v6 addObject:v9];
+      sizeCopy = [(NSArray *)self subarrayWithRange:i, sizeCopy];
+      [v6 addObject:sizeCopy];
     }
   }
 

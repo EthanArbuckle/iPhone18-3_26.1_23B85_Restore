@@ -1,26 +1,26 @@
 @interface ICPlayActivityTable
-+ (BOOL)_setupDatabase:(id)a3;
++ (BOOL)_setupDatabase:(id)database;
 + (id)_defaultDatabasePath;
 + (void)_migrateDatabaseFiles;
-- (BOOL)_removeDatabaseReturningError:(id *)a3;
-- (BOOL)_setValue:(id)a3 forDatabasePropertyKey:(id)a4;
-- (BOOL)getPlayActivityEvents:(id *)a3 storeAccountID:(int64_t)a4 limit:(unint64_t)a5 returningError:(id *)a6;
-- (BOOL)getStoreAccounts:(id *)a3 returningError:(id *)a4;
-- (BOOL)hasPendingPlayActivityEvents:(BOOL *)a3 returningError:(id *)a4;
-- (BOOL)insertPlayActivityEvent:(id)a3 returningError:(id *)a4;
-- (BOOL)removePlayActivityEvents:(id)a3 returningError:(id *)a4;
-- (ICPlayActivityTable)initWithDatabasePath:(id)a3;
-- (id)_valueForDatabasePropertyKey:(id)a3;
+- (BOOL)_removeDatabaseReturningError:(id *)error;
+- (BOOL)_setValue:(id)value forDatabasePropertyKey:(id)key;
+- (BOOL)getPlayActivityEvents:(id *)events storeAccountID:(int64_t)d limit:(unint64_t)limit returningError:(id *)error;
+- (BOOL)getStoreAccounts:(id *)accounts returningError:(id *)error;
+- (BOOL)hasPendingPlayActivityEvents:(BOOL *)events returningError:(id *)error;
+- (BOOL)insertPlayActivityEvent:(id)event returningError:(id *)error;
+- (BOOL)removePlayActivityEvents:(id)events returningError:(id *)error;
+- (ICPlayActivityTable)initWithDatabasePath:(id)path;
+- (id)_valueForDatabasePropertyKey:(id)key;
 - (id)eventsRevisionVersionToken;
-- (void)performTransactionWithBlock:(id)a3;
+- (void)performTransactionWithBlock:(id)block;
 @end
 
 @implementation ICPlayActivityTable
 
-- (BOOL)hasPendingPlayActivityEvents:(BOOL *)a3 returningError:(id *)a4
+- (BOOL)hasPendingPlayActivityEvents:(BOOL *)events returningError:(id *)error
 {
   dispatch_assert_queue_V2(self->_serialAccessQueue);
-  if (!a3)
+  if (!events)
   {
     return 1;
   }
@@ -31,8 +31,8 @@
   v20 = __Block_byref_object_copy__16388;
   v21 = __Block_byref_object_dispose__16389;
   v22 = 0;
-  v7 = [objc_opt_class() _eventsDatabaseTableName];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT EXISTS (SELECT 1 FROM %@)", v7];;
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT EXISTS (SELECT 1 FROM %@)", _eventsDatabaseTableName];;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -45,12 +45,12 @@
   v12[4] = &v13;
   v12[5] = &v17;
   [(ICSQLiteConnection *)databaseConnection executeQuery:v8 withResults:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
-  *a3 = *(v14 + 24);
+  *events = *(v14 + 24);
   v10 = v18[5] == 0;
   _Block_object_dispose(&v13, 8);
 
@@ -73,10 +73,10 @@ void __67__ICPlayActivityTable_hasPendingPlayActivityEvents_returningError___blo
   }
 }
 
-- (BOOL)getStoreAccounts:(id *)a3 returningError:(id *)a4
+- (BOOL)getStoreAccounts:(id *)accounts returningError:(id *)error
 {
   dispatch_assert_queue_V2(self->_serialAccessQueue);
-  if (!a3)
+  if (!accounts)
   {
     return 1;
   }
@@ -87,8 +87,8 @@ void __67__ICPlayActivityTable_hasPendingPlayActivityEvents_returningError___blo
   v28 = __Block_byref_object_copy__16388;
   v29 = __Block_byref_object_dispose__16389;
   v30 = 0;
-  v7 = [objc_opt_class() _eventsDatabaseTableName];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT DISTINCT %@ FROM %@", @"store_account_id", v7];;
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT DISTINCT %@ FROM %@", @"store_account_id", _eventsDatabaseTableName];;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -115,12 +115,12 @@ void __67__ICPlayActivityTable_hasPendingPlayActivityEvents_returningError___blo
     v26[5] = v10;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v26[5];
+    *error = v26[5];
   }
 
-  *a3 = v16[5];
+  *accounts = v16[5];
   v12 = v26[5] == 0;
   _Block_object_dispose(&v15, 8);
 
@@ -183,14 +183,14 @@ void __55__ICPlayActivityTable_getStoreAccounts_returningError___block_invoke_2(
   }
 }
 
-- (id)_valueForDatabasePropertyKey:(id)a3
+- (id)_valueForDatabasePropertyKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_serialAccessQueue);
-  if (!v5)
+  if (!keyCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ICPlayActivityTable.m" lineNumber:508 description:@"key cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICPlayActivityTable.m" lineNumber:508 description:@"key cannot be nil"];
   }
 
   v16 = 0;
@@ -199,17 +199,17 @@ void __55__ICPlayActivityTable_getStoreAccounts_returningError___block_invoke_2(
   v19 = __Block_byref_object_copy__16388;
   v20 = __Block_byref_object_dispose__16389;
   v21 = 0;
-  v6 = [objc_opt_class() _propertiesDatabaseTableName];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = '%@'", @"value", v6, @"key", v5];;
+  _propertiesDatabaseTableName = [objc_opt_class() _propertiesDatabaseTableName];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = '%@'", @"value", _propertiesDatabaseTableName, @"key", keyCopy];;
   databaseConnection = self->_databaseConnection;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__ICPlayActivityTable__valueForDatabasePropertyKey___block_invoke;
   v13[3] = &unk_1E7BF5C30;
-  v9 = v5;
+  v9 = keyCopy;
   v14 = v9;
   v15 = &v16;
-  [(ICSQLiteConnection *)databaseConnection executeQuery:v7 withResults:v13];
+  [(ICSQLiteConnection *)databaseConnection executeQuery:keyCopy withResults:v13];
   v10 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -244,25 +244,25 @@ void __52__ICPlayActivityTable__valueForDatabasePropertyKey___block_invoke(uint6
   }
 }
 
-- (BOOL)_setValue:(id)a3 forDatabasePropertyKey:(id)a4
+- (BOOL)_setValue:(id)value forDatabasePropertyKey:(id)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_serialAccessQueue);
-  if (!v8)
+  if (!keyCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"ICPlayActivityTable.m" lineNumber:485 description:@"key cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICPlayActivityTable.m" lineNumber:485 description:@"key cannot be nil"];
   }
 
-  v9 = [objc_opt_class() _propertiesDatabaseTableName];
-  if (v7)
+  _propertiesDatabaseTableName = [objc_opt_class() _propertiesDatabaseTableName];
+  if (valueCopy)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES ('%@', '%@')", v9, @"key", @"value", v8, v7];;
+    valueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES ('%@', '%@')", _propertiesDatabaseTableName, @"key", @"value", keyCopy, valueCopy];;
     databaseConnection = self->_databaseConnection;
     v24 = 0;
-    v12 = [(ICSQLiteConnection *)databaseConnection executeStatement:v10 error:&v24];
+    v12 = [(ICSQLiteConnection *)databaseConnection executeStatement:valueCopy error:&v24];
     v13 = v24;
     if (!v12)
     {
@@ -270,9 +270,9 @@ void __52__ICPlayActivityTable__valueForDatabasePropertyKey___block_invoke(uint6
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v26 = v8;
+        v26 = keyCopy;
         v27 = 2114;
-        v28 = v7;
+        v28 = valueCopy;
         v29 = 2114;
         v30 = v13;
         v15 = "Failed to set database property ('%{public}@' = '%{public}@'). err=%{public}@";
@@ -289,10 +289,10 @@ LABEL_11:
 
   else
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", v9, @"key", v8];;
+    valueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", _propertiesDatabaseTableName, @"key", keyCopy];;
     v18 = self->_databaseConnection;
     v23 = 0;
-    v19 = [(ICSQLiteConnection *)v18 executeStatement:v10 error:&v23];
+    v19 = [(ICSQLiteConnection *)v18 executeStatement:valueCopy error:&v23];
     v13 = v23;
     if (!v19)
     {
@@ -300,7 +300,7 @@ LABEL_11:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v26 = v8;
+        v26 = keyCopy;
         v27 = 2114;
         v28 = v13;
         v15 = "Failed to delete database property '%{public}@'. err=%{public}@";
@@ -322,18 +322,18 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)removePlayActivityEvents:(id)a3 returningError:(id *)a4
+- (BOOL)removePlayActivityEvents:(id)events returningError:(id *)error
 {
-  v6 = a3;
+  eventsCopy = events;
   dispatch_assert_queue_V2(self->_serialAccessQueue);
-  v7 = [objc_opt_class() _eventsDatabaseTableName];
-  v8 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"DELETE FROM %@ WHERE %@ IN ("), v7, CFSTR("pid");
-  if ([v6 count])
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+  v8 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithFormat:", @"DELETE FROM %@ WHERE %@ IN ("), _eventsDatabaseTableName, CFSTR("pid");
+  if ([eventsCopy count])
   {
     v9 = 0;
     do
     {
-      if ([v6 count] - 1 <= v9)
+      if ([eventsCopy count] - 1 <= v9)
       {
         v10 = &stru_1F2C4A680;
       }
@@ -347,7 +347,7 @@ LABEL_13:
       ++v9;
     }
 
-    while ([v6 count] > v9);
+    while ([eventsCopy count] > v9);
   }
 
   [v8 appendString:@";"]);
@@ -357,7 +357,7 @@ LABEL_13:
   v18[1] = 3221225472;
   v18[2] = __63__ICPlayActivityTable_removePlayActivityEvents_returningError___block_invoke;
   v18[3] = &unk_1E7BF8CD8;
-  v12 = v6;
+  v12 = eventsCopy;
   v19 = v12;
   v13 = [(ICSQLiteConnection *)databaseConnection executeStatement:v8 error:&v20 bindings:v18];
   v14 = v20;
@@ -368,10 +368,10 @@ LABEL_13:
     v14 = v15;
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v13;
@@ -393,9 +393,9 @@ void __63__ICPlayActivityTable_removePlayActivityEvents_returningError___block_i
   }
 }
 
-- (BOOL)getPlayActivityEvents:(id *)a3 storeAccountID:(int64_t)a4 limit:(unint64_t)a5 returningError:(id *)a6
+- (BOOL)getPlayActivityEvents:(id *)events storeAccountID:(int64_t)d limit:(unint64_t)limit returningError:(id *)error
 {
-  if (!a3)
+  if (!events)
   {
     return 1;
   }
@@ -422,15 +422,15 @@ void __63__ICPlayActivityTable_removePlayActivityEvents_returningError___block_i
     [v10 appendFormat:@"%@%@", off_1E7BF5C78[i], v12];
   }
 
-  v13 = [objc_opt_class() _eventsDatabaseTableName];
-  [v10 appendFormat:@" FROM %@", v13];
-  if (a4)
+  _eventsDatabaseTableName = [objc_opt_class() _eventsDatabaseTableName];
+  [v10 appendFormat:@" FROM %@", _eventsDatabaseTableName];
+  if (d)
   {
-    [v10 appendFormat:@" WHERE (%@ == %llu)", @"store_account_id", a4];
+    [v10 appendFormat:@" WHERE (%@ == %llu)", @"store_account_id", d];
   }
 
   [v10 appendString:@" ORDER BY "];
-  if (a4)
+  if (d)
   {
     [v10 appendFormat:@"%@, %@ ASC", @"store_account_id", @"timestamp"];
   }
@@ -440,9 +440,9 @@ void __63__ICPlayActivityTable_removePlayActivityEvents_returningError___block_i
     [v10 appendFormat:@"%@ ASC", @"timestamp"];
   }
 
-  if (a5)
+  if (limit)
   {
-    [v10 appendFormat:@" LIMIT %lu;", a5];
+    [v10 appendFormat:@" LIMIT %lu;", limit];
   }
 
   else
@@ -476,12 +476,12 @@ void __63__ICPlayActivityTable_removePlayActivityEvents_returningError___block_i
     v32[5] = v16;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v32[5];
+    *error = v32[5];
   }
 
-  *a3 = v22[5];
+  *events = v22[5];
   v14 = v32[5] == 0;
   _Block_object_dispose(&v21, 8);
 
@@ -547,11 +547,11 @@ void __81__ICPlayActivityTable_getPlayActivityEvents_storeAccountID_limit_return
   }
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     serialAccessQueue = self->_serialAccessQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -559,7 +559,7 @@ void __81__ICPlayActivityTable_getPlayActivityEvents_storeAccountID_limit_return
     v7[2] = __51__ICPlayActivityTable_performTransactionWithBlock___block_invoke;
     v7[3] = &unk_1E7BF9EC8;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(serialAccessQueue, v7);
   }
 }
@@ -575,9 +575,9 @@ void __51__ICPlayActivityTable_performTransactionWithBlock___block_invoke(uint64
   [v1 performTransaction:v2];
 }
 
-- (BOOL)insertPlayActivityEvent:(id)a3 returningError:(id *)a4
+- (BOOL)insertPlayActivityEvent:(id)event returningError:(id *)error
 {
-  v6 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_serialAccessQueue);
   databaseConnection = self->_databaseConnection;
   v19 = 0;
@@ -585,7 +585,7 @@ void __51__ICPlayActivityTable_performTransactionWithBlock___block_invoke(uint64
   v15 = 3221225472;
   v16 = __62__ICPlayActivityTable_insertPlayActivityEvent_returningError___block_invoke;
   v17 = &unk_1E7BF8CD8;
-  v8 = v6;
+  v8 = eventCopy;
   v18 = v8;
   v9 = [(ICSQLiteConnection *)databaseConnection executeStatement:@"INSERT OR REPLACE INTO events (pid error:timestamp bindings:store_account_id, event_data) VALUES (?, ?, ?, ?)", &v19, &v14];
   v10 = v19;
@@ -595,10 +595,10 @@ void __51__ICPlayActivityTable_performTransactionWithBlock___block_invoke(uint64
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:{0, v14, v15, v16, v17}];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
@@ -637,16 +637,16 @@ void __62__ICPlayActivityTable_insertPlayActivityEvent_returningError___block_in
   return v4;
 }
 
-- (BOOL)_removeDatabaseReturningError:(id *)a3
+- (BOOL)_removeDatabaseReturningError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = [(NSString *)self->_databasePath copy];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [v3 stringByDeletingLastPathComponent];
   v20 = v3;
-  v6 = [v3 lastPathComponent];
-  v21 = v4;
-  [v4 contentsOfDirectoryAtPath:v5 error:0];
+  lastPathComponent = [v3 lastPathComponent];
+  v21 = defaultManager;
+  [defaultManager contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -668,9 +668,9 @@ void __62__ICPlayActivityTable_insertPlayActivityEvent_returningError___block_in
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        if ([v14 hasPrefix:v6])
+        if ([v14 hasPrefix:lastPathComponent])
         {
-          v15 = [v5 stringByAppendingPathComponent:v14];
+          v15 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v14];
           v22 = v11;
           v10 = [v21 removeItemAtPath:v15 error:&v22];
           v16 = v22;
@@ -704,26 +704,26 @@ void __62__ICPlayActivityTable_insertPlayActivityEvent_returningError___block_in
 
 LABEL_14:
 
-  if (a3)
+  if (error)
   {
     v17 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   return v10 & 1;
 }
 
-- (ICPlayActivityTable)initWithDatabasePath:(id)a3
+- (ICPlayActivityTable)initWithDatabasePath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
-    v35 = v4;
+    v35 = pathCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ -- Opening database at path %{public}@", buf, 0x16u);
   }
 
@@ -732,25 +732,25 @@ LABEL_14:
   serialAccessQueue = self->_serialAccessQueue;
   self->_serialAccessQueue = v6;
 
-  if (v4)
+  if (pathCopy)
   {
-    v8 = [v4 copy];
+    _defaultDatabasePath = [pathCopy copy];
   }
 
   else
   {
-    v8 = [objc_opt_class() _defaultDatabasePath];
+    _defaultDatabasePath = [objc_opt_class() _defaultDatabasePath];
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v8 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [_defaultDatabasePath stringByDeletingLastPathComponent];
   v31 = 0;
-  v11 = [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v31];
+  v11 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v31];
   v12 = v31;
 
   if (v11)
   {
-    v13 = [[ICSQLiteConnectionOptions alloc] initWithDatabasePath:v8];
+    v13 = [[ICSQLiteConnectionOptions alloc] initWithDatabasePath:_defaultDatabasePath];
     v14 = [[ICSQLiteConnection alloc] initWithOptions:v13];
     v15 = objc_opt_class();
     if (([(ICPlayActivityTable *)v15 _setupDatabase:v14]& 1) != 0)
@@ -765,9 +765,9 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v33 = v15;
+        selfCopy = v15;
         v34 = 2112;
-        v35 = v8;
+        v35 = _defaultDatabasePath;
         v36 = 2112;
         v37 = v12;
         _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_ERROR, "%{public}@ -- Error creating database, removing if possible...: %@ -- %@", buf, 0x20u);
@@ -785,15 +785,15 @@ LABEL_14:
         if (v26)
         {
           *buf = 138543874;
-          v33 = v15;
+          selfCopy = v15;
           v34 = 2112;
-          v35 = v8;
+          v35 = _defaultDatabasePath;
           v36 = 2112;
           v37 = v17;
           _os_log_impl(&dword_1B4491000, v25, OS_LOG_TYPE_ERROR, "%{public}@ -- Error removing database: %@ -- %@", buf, 0x20u);
         }
 
-        v20 = 0;
+        selfCopy2 = 0;
         v16 = v14;
         goto LABEL_28;
       }
@@ -801,9 +801,9 @@ LABEL_14:
       if (v26)
       {
         *buf = 138543874;
-        v33 = v15;
+        selfCopy = v15;
         v34 = 2112;
-        v35 = v8;
+        v35 = _defaultDatabasePath;
         v36 = 2112;
         v37 = v17;
         _os_log_impl(&dword_1B4491000, v25, OS_LOG_TYPE_ERROR, "%{public}@ -- Removing database successful, attempting to recreate...: %@ -- %@", buf, 0x20u);
@@ -812,7 +812,7 @@ LABEL_14:
       v16 = [[ICSQLiteConnection alloc] initWithOptions:v13];
       if (!v16)
       {
-        v20 = 0;
+        selfCopy2 = 0;
         goto LABEL_29;
       }
 
@@ -822,13 +822,13 @@ LABEL_14:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v33 = v15;
+          selfCopy = v15;
           v34 = 2112;
-          v35 = v8;
+          v35 = _defaultDatabasePath;
           _os_log_impl(&dword_1B4491000, v27, OS_LOG_TYPE_ERROR, "%{public}@ -- Error creating database for a second time, bailing out: %@", buf, 0x16u);
         }
 
-        v20 = 0;
+        selfCopy2 = 0;
         goto LABEL_28;
       }
     }
@@ -840,11 +840,11 @@ LABEL_14:
     if (v18)
     {
       objc_storeStrong(&v18->_databaseConnection, v16);
-      objc_storeStrong(p_isa + 2, v8);
+      objc_storeStrong(p_isa + 2, _defaultDatabasePath);
     }
 
     self = p_isa;
-    v20 = self;
+    selfCopy2 = self;
 LABEL_28:
 
     goto LABEL_29;
@@ -855,40 +855,40 @@ LABEL_28:
   {
     v21 = objc_opt_class();
     *buf = 138543874;
-    v33 = v21;
+    selfCopy = v21;
     v34 = 2112;
-    v35 = v8;
+    v35 = _defaultDatabasePath;
     v36 = 2112;
     v37 = v12;
     v22 = v21;
     _os_log_impl(&dword_1B4491000, &v13->super, OS_LOG_TYPE_ERROR, "%{public}@ -- Error creating directory: %@ -- %@", buf, 0x20u);
   }
 
-  v20 = 0;
+  selfCopy2 = 0;
   v17 = v12;
 LABEL_29:
 
-  return v20;
+  return selfCopy2;
 }
 
-+ (BOOL)_setupDatabase:(id)a3
++ (BOOL)_setupDatabase:(id)database
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  databaseCopy = database;
+  if (databaseCopy)
   {
-    v5 = [a1 _eventsDatabaseTableName];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ INTEGER PRIMARY KEY, %@ REAL, %@ INTEGER, %@ BLOB)", v5, @"pid", @"timestamp", @"store_account_id", @"event_data"];;
-    v7 = [a1 _propertiesDatabaseTableName];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT)", v7, @"key", @"value"];;
+    _eventsDatabaseTableName = [self _eventsDatabaseTableName];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ INTEGER PRIMARY KEY, %@ REAL, %@ INTEGER, %@ BLOB)", _eventsDatabaseTableName, @"pid", @"timestamp", @"store_account_id", @"event_data"];;
+    _propertiesDatabaseTableName = [self _propertiesDatabaseTableName];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT)", _propertiesDatabaseTableName, @"key", @"value"];;
     v57 = 0;
-    v9 = [v4 executeStatement:@"PRAGMA legacy_file_format = 0;" error:&v57];
+    v9 = [databaseCopy executeStatement:@"PRAGMA legacy_file_format = 0;" error:&v57];
     v10 = v57;
     v11 = v10;
     if (v9)
     {
       v56 = v10;
-      v12 = [v4 executeStatement:@"PRAGMA journal_mode=WAL;" error:&v56];
+      v12 = [databaseCopy executeStatement:@"PRAGMA journal_mode=WAL;" error:&v56];
       v13 = v56;
 
       if ((v12 & 1) == 0)
@@ -911,60 +911,60 @@ LABEL_26:
       }
 
       v55 = v13;
-      v14 = [v4 executeStatement:v6 error:&v55];
+      v14 = [databaseCopy executeStatement:v6 error:&v55];
       v11 = v55;
 
       if (v14)
       {
         v54 = v11;
-        v15 = [v4 executeStatement:v8 error:&v54];
+        v15 = [databaseCopy executeStatement:v8 error:&v54];
         v13 = v54;
 
         if (v15)
         {
-          v16 = [v4 userVersion];
-          v17 = [v16 integerValue];
+          userVersion = [databaseCopy userVersion];
+          integerValue = [userVersion integerValue];
 
-          if (!v17)
+          if (!integerValue)
           {
-            v17 = 2006;
+            integerValue = 2006;
             goto LABEL_34;
           }
 
-          if (v17 > 0x7D5)
+          if (integerValue > 0x7D5)
           {
             v46 = v6;
             goto LABEL_39;
           }
 
-          v47 = v5;
+          v47 = _eventsDatabaseTableName;
           v18 = v8;
           v19 = v6;
-          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", v7];;
+          v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", _propertiesDatabaseTableName];;
           v53 = v13;
-          v21 = [v4 executeStatement:v20 error:&v53];
+          v21 = [databaseCopy executeStatement:v20 error:&v53];
           v22 = v53;
 
           if (v21)
           {
             v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TABLE IF EXISTS %@", v47];;
             v52 = v22;
-            v24 = [v4 executeStatement:v23 error:&v52];
+            v24 = [databaseCopy executeStatement:v23 error:&v52];
             v13 = v52;
 
             if (v24)
             {
               v6 = v19;
-              if ([v4 executeStatement:v19 error:0])
+              if ([databaseCopy executeStatement:v19 error:0])
               {
                 v8 = v18;
-                v25 = [v4 executeStatement:v18 error:0];
+                v25 = [databaseCopy executeStatement:v18 error:0];
                 if (v25)
                 {
-                  v17 = 2006;
+                  integerValue = 2006;
                 }
 
-                v5 = v47;
+                _eventsDatabaseTableName = v47;
                 if ((v25 & 1) == 0)
                 {
                   goto LABEL_55;
@@ -972,43 +972,43 @@ LABEL_26:
 
 LABEL_34:
                 v46 = v6;
-                v35 = [MEMORY[0x1E696AFB0] UUID];
-                v36 = [v35 UUIDString];
-                v37 = v36;
+                uUID = [MEMORY[0x1E696AFB0] UUID];
+                uUIDString = [uUID UUIDString];
+                v37 = uUIDString;
                 v38 = &stru_1F2C4A680;
-                if (v36)
+                if (uUIDString)
                 {
-                  v38 = v36;
+                  v38 = uUIDString;
                 }
 
                 v48 = v38;
 
-                v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR IGNORE INTO %@ (%@, %@) VALUES ('%@', '%@')", v7, @"key", @"value", @"events_revision_version_token", v48];;
+                v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INSERT OR IGNORE INTO %@ (%@, %@) VALUES ('%@', '%@')", _propertiesDatabaseTableName, @"key", @"value", @"events_revision_version_token", v48];;
                 v51 = v13;
-                v40 = [v4 executeStatement:v39 error:&v51];
+                v40 = [databaseCopy executeStatement:v39 error:&v51];
                 v11 = v51;
 
                 if (v40)
                 {
                   v13 = v11;
 LABEL_39:
-                  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS StoreAccountID ON %@ (%@ ASC)", v5, @"store_account_id"];;
+                  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS StoreAccountID ON %@ (%@ ASC)", _eventsDatabaseTableName, @"store_account_id"];;
                   v50 = v13;
-                  v41 = [v4 executeStatement:v27 error:&v50];
+                  v41 = [databaseCopy executeStatement:v27 error:&v50];
                   v11 = v50;
 
                   if (v41)
                   {
-                    v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS Timestamp ON %@ (%@ ASC)", v5, @"timestamp"];;
+                    v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE INDEX IF NOT EXISTS Timestamp ON %@ (%@ ASC)", _eventsDatabaseTableName, @"timestamp"];;
 
                     v49 = v11;
-                    v43 = [v4 executeStatement:v42 error:&v49];
+                    v43 = [databaseCopy executeStatement:v42 error:&v49];
                     v44 = v49;
 
                     if (v43)
                     {
-                      v45 = [MEMORY[0x1E696AD98] numberWithInteger:v17];
-                      [v4 setUserVersion:v45];
+                      v45 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+                      [databaseCopy setUserVersion:v45];
                       v26 = 1;
                     }
 
@@ -1072,7 +1072,7 @@ LABEL_27:
 
 LABEL_54:
               v8 = v18;
-              v5 = v47;
+              _eventsDatabaseTableName = v47;
 LABEL_55:
               v27 = _ICLogCategoryDefault();
               if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1170,21 +1170,21 @@ LABEL_28:
 {
   v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CPSharedResourcesDirectory(), @"Library", @"com.apple.itunesstored", @"play_activity.sqlitedb", 0}];
   v3 = [MEMORY[0x1E696AEC0] pathWithComponents:?];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v3])
   {
-    v5 = [a1 _defaultDatabasePath];
-    v6 = [v5 stringByDeletingLastPathComponent];
-    [v4 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    _defaultDatabasePath = [self _defaultDatabasePath];
+    stringByDeletingLastPathComponent = [_defaultDatabasePath stringByDeletingLastPathComponent];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-    [v4 moveItemAtPath:v3 toPath:v5 error:0];
+    [defaultManager moveItemAtPath:v3 toPath:_defaultDatabasePath error:0];
     v7 = [v3 stringByAppendingString:@"-wal"];
-    v8 = [v5 stringByAppendingString:@"-wal"];
-    [v4 moveItemAtPath:v7 toPath:v8 error:0];
+    v8 = [_defaultDatabasePath stringByAppendingString:@"-wal"];
+    [defaultManager moveItemAtPath:v7 toPath:v8 error:0];
 
     v9 = [v3 stringByAppendingString:@"-shm"];
-    v10 = [v5 stringByAppendingString:@"-shm"];
-    [v4 moveItemAtPath:v9 toPath:v10 error:0];
+    v10 = [_defaultDatabasePath stringByAppendingString:@"-shm"];
+    [defaultManager moveItemAtPath:v9 toPath:v10 error:0];
   }
 }
 

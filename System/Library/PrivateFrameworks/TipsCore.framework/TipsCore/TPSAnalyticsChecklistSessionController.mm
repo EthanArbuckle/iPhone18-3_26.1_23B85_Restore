@@ -5,10 +5,10 @@
 - (int64_t)sessionEndSuggestedTipsCount;
 - (int64_t)sessionTipsCompleted;
 - (void)continueSession;
-- (void)setHasActiveSession:(BOOL)a3;
-- (void)setIsFirstLaunch:(BOOL)a3;
-- (void)setSessionEndSuggestedTipsCount:(int64_t)a3;
-- (void)setSessionTipsCompleted:(int64_t)a3;
+- (void)setHasActiveSession:(BOOL)session;
+- (void)setIsFirstLaunch:(BOOL)launch;
+- (void)setSessionEndSuggestedTipsCount:(int64_t)count;
+- (void)setSessionTipsCompleted:(int64_t)completed;
 - (void)startSession;
 - (void)stopSession;
 @end
@@ -34,11 +34,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsFirstLaunch:(BOOL)a3
+- (void)setIsFirstLaunch:(BOOL)launch
 {
   v5 = OBJC_IVAR___TPSAnalyticsChecklistSessionController_isFirstLaunch;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = launch;
 }
 
 - (BOOL)hasActiveSession
@@ -48,11 +48,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHasActiveSession:(BOOL)a3
+- (void)setHasActiveSession:(BOOL)session
 {
   v5 = OBJC_IVAR___TPSAnalyticsChecklistSessionController_hasActiveSession;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = session;
 }
 
 - (int64_t)sessionEndSuggestedTipsCount
@@ -62,11 +62,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSessionEndSuggestedTipsCount:(int64_t)a3
+- (void)setSessionEndSuggestedTipsCount:(int64_t)count
 {
   v5 = OBJC_IVAR___TPSAnalyticsChecklistSessionController_sessionEndSuggestedTipsCount;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = count;
 }
 
 - (int64_t)sessionTipsCompleted
@@ -76,28 +76,28 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSessionTipsCompleted:(int64_t)a3
+- (void)setSessionTipsCompleted:(int64_t)completed
 {
   v5 = OBJC_IVAR___TPSAnalyticsChecklistSessionController_sessionTipsCompleted;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = completed;
 }
 
 - (void)startSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C010113C();
 }
 
 - (void)continueSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C0101628();
 }
 
 - (void)stopSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C0101A1C();
 }
 

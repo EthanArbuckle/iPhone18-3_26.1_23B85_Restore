@@ -3,8 +3,8 @@
 - (CSVoiceTriggerAssetDownloadMonitor)init;
 - (const)_notificationKey;
 - (void)_didInstalledNewVoiceTriggerAsset;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -83,13 +83,13 @@
   }
 }
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSEventMonitor *)self notifyObserver:v4];
+  observerCopy = observer;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 CSVoiceTriggerAssetDownloadMonitor:self didInstallNewAsset:1];
+    [observerCopy CSVoiceTriggerAssetDownloadMonitor:self didInstallNewAsset:1];
   }
 }
 
@@ -167,19 +167,19 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
-    v5 = [(CSVoiceTriggerAssetDownloadMonitor *)self _notificationKey];
+    _notificationKey = [(CSVoiceTriggerAssetDownloadMonitor *)self _notificationKey];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __64__CSVoiceTriggerAssetDownloadMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_1E865C9F0;
     handler[4] = self;
-    notify_register_dispatch(v5, &self->_notifyToken, v4, handler);
+    notify_register_dispatch(_notificationKey, &self->_notifyToken, queueCopy, handler);
     v6 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -200,7 +200,7 @@
         v11[2] = __64__CSVoiceTriggerAssetDownloadMonitor__startMonitoringWithQueue___block_invoke_3;
         v11[3] = &unk_1E865C9F0;
         v11[4] = self;
-        notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsMac.ma.new-asset-installed", &self->_gibraltarMacNotifyToken, v4, v11);
+        notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsMac.ma.new-asset-installed", &self->_gibraltarMacNotifyToken, queueCopy, v11);
         v7 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
         {
@@ -219,7 +219,7 @@
     v10[2] = __64__CSVoiceTriggerAssetDownloadMonitor__startMonitoringWithQueue___block_invoke_4;
     v10[3] = &unk_1E865C9F0;
     v10[4] = self;
-    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsStudioDisplay.ma.new-asset-installed", &self->_darwinNotifyToken, v4, v10);
+    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsStudioDisplay.ma.new-asset-installed", &self->_darwinNotifyToken, queueCopy, v10);
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

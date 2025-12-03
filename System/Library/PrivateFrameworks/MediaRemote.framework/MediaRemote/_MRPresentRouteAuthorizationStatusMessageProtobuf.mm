@@ -1,14 +1,14 @@
 @interface _MRPresentRouteAuthorizationStatusMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPresentRouteAuthorizationStatusMessageProtobuf
@@ -26,60 +26,60 @@
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"OK"])
+  else if ([statusCopy isEqualToString:@"OK"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AuthenticationRequired"])
+  else if ([statusCopy isEqualToString:@"AuthenticationRequired"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AuthenticationFailed"])
+  else if ([statusCopy isEqualToString:@"AuthenticationFailed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Busy"])
+  else if ([statusCopy isEqualToString:@"Busy"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"OutOfRange"])
+  else if ([statusCopy isEqualToString:@"OutOfRange"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UnknownError"])
+  else if ([statusCopy isEqualToString:@"UnknownError"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NotConnected"])
+  else if ([statusCopy isEqualToString:@"NotConnected"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IPAliasingNotSupported"])
+  else if ([statusCopy isEqualToString:@"IPAliasingNotSupported"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RelayFailed2GHzNetwork"])
+  else if ([statusCopy isEqualToString:@"RelayFailed2GHzNetwork"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RelayFailedMultiDFSNetwork"])
+  else if ([statusCopy isEqualToString:@"RelayFailedMultiDFSNetwork"])
   {
     v4 = 9;
   }
@@ -98,20 +98,20 @@
   v8.receiver = self;
   v8.super_class = _MRPresentRouteAuthorizationStatusMessageProtobuf;
   v4 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)&v8 description];
-  v5 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   route = self->_route;
   if (route)
   {
-    v5 = [(_MRAVOutputDeviceDescriptorProtobuf *)route dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"route"];
+    dictionaryRepresentation = [(_MRAVOutputDeviceDescriptorProtobuf *)route dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"route"];
   }
 
   if (*&self->_has)
@@ -127,51 +127,51 @@
       v7 = off_1E76A06F0[v6];
     }
 
-    [v3 setObject:v7 forKey:@"status"];
+    [dictionary setObject:v7 forKey:@"status"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_route)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_route)
   {
-    v5 = v4;
-    [v4 setRoute:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setRoute:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_status;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_status;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_route copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_route copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -184,16 +184,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   route = self->_route;
-  if (route | *(v4 + 1))
+  if (route | *(equalCopy + 1))
   {
     if (![(_MRAVOutputDeviceDescriptorProtobuf *)route isEqual:?])
     {
@@ -201,10 +201,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_status == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_status == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -235,11 +235,11 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   route = self->_route;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (route)
   {
     if (!v6)
@@ -247,7 +247,7 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRAVOutputDeviceDescriptorProtobuf *)route mergeFrom:?];
   }
 
@@ -258,15 +258,15 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)self setRoute:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_status = *(v4 + 4);
+    self->_status = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

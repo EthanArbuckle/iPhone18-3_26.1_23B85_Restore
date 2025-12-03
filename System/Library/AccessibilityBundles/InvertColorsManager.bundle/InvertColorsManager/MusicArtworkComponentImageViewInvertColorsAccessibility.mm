@@ -1,6 +1,6 @@
 @interface MusicArtworkComponentImageViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
@@ -15,11 +15,11 @@
   [(MusicArtworkComponentImageViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = MusicArtworkComponentImageViewInvertColorsAccessibility;
-  [(MusicArtworkComponentImageViewInvertColorsAccessibility *)&v4 addSubview:a3];
+  [(MusicArtworkComponentImageViewInvertColorsAccessibility *)&v4 addSubview:subview];
   [(MusicArtworkComponentImageViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
@@ -33,22 +33,22 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v2 = [(MusicArtworkComponentImageViewInvertColorsAccessibility *)self subviews];
-  v3 = [v2 axFilterObjectsUsingBlock:&stru_449A8];
-  v4 = [v3 firstObject];
+  subviews = [(MusicArtworkComponentImageViewInvertColorsAccessibility *)self subviews];
+  v3 = [subviews axFilterObjectsUsingBlock:&stru_449A8];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 subviews];
-  v6 = [v5 indexOfObjectPassingTest:&stru_449E8];
+  subviews2 = [firstObject subviews];
+  v6 = [subviews2 indexOfObjectPassingTest:&stru_449E8];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 layer];
-    [AXInvertColorsAppHelper toggleInvertColors:v7];
+    layer = [firstObject layer];
+    [AXInvertColorsAppHelper toggleInvertColors:layer];
 
     v8 = +[AXSubsystemInvertColors sharedInstance];
-    LOBYTE(v7) = [v8 ignoreLogging];
+    LOBYTE(layer) = [v8 ignoreLogging];
 
-    if ((v7 & 1) == 0)
+    if ((layer & 1) == 0)
     {
       v9 = +[AXSubsystemInvertColors identifier];
       v10 = AXLoggerForFacility();

@@ -1,12 +1,12 @@
 @interface AddSpeakerIntentResponse
-- (AddSpeakerIntentResponse)initWithPropertiesByName:(id)a3;
+- (AddSpeakerIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation AddSpeakerIntentResponse
 
-- (AddSpeakerIntentResponse)initWithPropertiesByName:(id)a3
+- (AddSpeakerIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

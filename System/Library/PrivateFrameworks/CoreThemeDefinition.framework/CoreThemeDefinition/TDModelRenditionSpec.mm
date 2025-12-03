@@ -1,7 +1,7 @@
 @interface TDModelRenditionSpec
 + (id)fetchRequest;
-- (void)processMesh:(id)a3 withAssetMeshIndex:(unsigned int *)a4 assetKeySpec:(id)a5 inDocument:(id)a6;
-- (void)processModelObjectsInDocument:(id)a3;
+- (void)processMesh:(id)mesh withAssetMeshIndex:(unsigned int *)index assetKeySpec:(id)spec inDocument:(id)document;
+- (void)processModelObjectsInDocument:(id)document;
 @end
 
 @implementation TDModelRenditionSpec
@@ -13,15 +13,15 @@
   return v2;
 }
 
-- (void)processMesh:(id)a3 withAssetMeshIndex:(unsigned int *)a4 assetKeySpec:(id)a5 inDocument:(id)a6
+- (void)processMesh:(id)mesh withAssetMeshIndex:(unsigned int *)index assetKeySpec:(id)spec inDocument:(id)document
 {
   v26 = *MEMORY[0x277D85DE8];
-  v11 = [a6 newObjectForEntity:@"ModelIOMeshRenditionSpec"];
-  v12 = [a6 newObjectForEntity:@"RenditionKeySpec"];
-  [a5 copyAttributesInto:v12];
-  [v12 setElement:{objc_msgSend(a6, "elementWithIdentifier:", 164)}];
-  [v12 setPart:{objc_msgSend(a6, "partWithIdentifier:", 232)}];
-  [v12 setDimension1:a4];
+  v11 = [document newObjectForEntity:@"ModelIOMeshRenditionSpec"];
+  v12 = [document newObjectForEntity:@"RenditionKeySpec"];
+  [spec copyAttributesInto:v12];
+  [v12 setElement:{objc_msgSend(document, "elementWithIdentifier:", 164)}];
+  [v12 setPart:{objc_msgSend(document, "partWithIdentifier:", 232)}];
+  [v12 setDimension1:index];
   [v11 setParentRendition:self];
   [(TDModelRenditionSpec *)self addChildRenditionsObject:v11];
   [v11 setKeySpec:v12];
@@ -30,8 +30,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [a3 submeshes];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  submeshes = [mesh submeshes];
+  v14 = [submeshes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = v14;
@@ -45,15 +45,15 @@
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(submeshes);
         }
 
         v16 = v19 + 1;
-        [v11 processSubMesh:*(*(&v21 + 1) + 8 * v18++) withAssetSubmeshIndex:v19++ assetKeySpec:objc_msgSend(v11 inDocument:{"keySpec"), a6}];
+        [v11 processSubMesh:*(*(&v21 + 1) + 8 * v18++) withAssetSubmeshIndex:v19++ assetKeySpec:objc_msgSend(v11 inDocument:{"keySpec"), document}];
       }
 
       while (v15 != v18);
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v15 = [submeshes countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v15);
@@ -62,17 +62,17 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processModelObjectsInDocument:(id)a3
+- (void)processModelObjectsInDocument:(id)document
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [a3 _cachedModelAssets];
+  _cachedModelAssets = [document _cachedModelAssets];
   v6 = [-[TDModelRenditionSpec asset](self "asset")];
   v7 = [objc_alloc(MEMORY[0x277CD7AD0]) initWithURL:v6];
   if (v7)
   {
     v8 = v7;
-    [v5 addObject:v7];
-    -[TDModelRenditionSpec setModelAssetIndex:](self, "setModelAssetIndex:", [v5 count] - 1);
+    [_cachedModelAssets addObject:v7];
+    -[TDModelRenditionSpec setModelAssetIndex:](self, "setModelAssetIndex:", [_cachedModelAssets count] - 1);
     v9 = [v8 childObjectsOfClass:objc_opt_class()];
     v17 = 0u;
     v18 = 0u;
@@ -96,7 +96,7 @@
           }
 
           v12 = v15 + 1;
-          [(TDModelRenditionSpec *)self processMesh:*(*(&v17 + 1) + 8 * v14++) withAssetMeshIndex:v15++ assetKeySpec:[(TDModelRenditionSpec *)self keySpec] inDocument:a3];
+          [(TDModelRenditionSpec *)self processMesh:*(*(&v17 + 1) + 8 * v14++) withAssetMeshIndex:v15++ assetKeySpec:[(TDModelRenditionSpec *)self keySpec] inDocument:document];
         }
 
         while (v11 != v14);

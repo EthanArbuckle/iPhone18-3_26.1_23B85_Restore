@@ -1,28 +1,28 @@
 @interface SBShelfLiveContentOverlayCoordinator
-- (SBShelfLiveContentOverlayCoordinator)initWithShelfDelegate:(id)a3;
+- (SBShelfLiveContentOverlayCoordinator)initWithShelfDelegate:(id)delegate;
 - (SBShelfLiveContentOverlayCoordinatorDelegate)shelfDelegate;
 - (SBSwitcherLiveContentOverlayCoordinatorDelegate)delegate;
-- (void)_addOverlaysIfNeededForTransitionContext:(id)a3;
+- (void)_addOverlaysIfNeededForTransitionContext:(id)context;
 - (void)dealloc;
-- (void)didUpdateCacheEntry:(id)a3;
+- (void)didUpdateCacheEntry:(id)entry;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context;
 @end
 
 @implementation SBShelfLiveContentOverlayCoordinator
 
-- (SBShelfLiveContentOverlayCoordinator)initWithShelfDelegate:(id)a3
+- (SBShelfLiveContentOverlayCoordinator)initWithShelfDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SBShelfLiveContentOverlayCoordinator;
   v5 = [(SBShelfLiveContentOverlayCoordinator *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shelfDelegate, v4);
+    objc_storeWeak(&v5->_shelfDelegate, delegateCopy);
     v7 = objc_opt_new();
     leafAppLayoutsToOverlays = v6->_leafAppLayoutsToOverlays;
     v6->_leafAppLayoutsToOverlays = v7;
@@ -52,25 +52,25 @@
   [(SBShelfLiveContentOverlayCoordinator *)&v6 dealloc];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 fromLayoutState];
-  v7 = [v5 toLayoutState];
-  v8 = [v6 appLayout];
-  v9 = [v8 leafAppLayouts];
-  v47 = v6;
-  v10 = [v6 floatingAppLayout];
-  v11 = [v10 leafAppLayouts];
-  v12 = [v9 arrayByAddingObjectsFromArray:v11];
+  contextCopy = context;
+  fromLayoutState = [contextCopy fromLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
+  appLayout = [fromLayoutState appLayout];
+  leafAppLayouts = [appLayout leafAppLayouts];
+  v47 = fromLayoutState;
+  floatingAppLayout = [fromLayoutState floatingAppLayout];
+  leafAppLayouts2 = [floatingAppLayout leafAppLayouts];
+  v12 = [leafAppLayouts arrayByAddingObjectsFromArray:leafAppLayouts2];
 
-  v13 = [v7 appLayout];
-  v14 = [v13 leafAppLayouts];
-  v46 = v7;
-  v15 = [v7 floatingAppLayout];
-  v16 = [v15 leafAppLayouts];
-  v17 = [v14 arrayByAddingObjectsFromArray:v16];
+  appLayout2 = [toLayoutState appLayout];
+  leafAppLayouts3 = [appLayout2 leafAppLayouts];
+  v46 = toLayoutState;
+  floatingAppLayout2 = [toLayoutState floatingAppLayout];
+  leafAppLayouts4 = [floatingAppLayout2 leafAppLayouts];
+  v17 = [leafAppLayouts3 arrayByAddingObjectsFromArray:leafAppLayouts4];
 
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -87,8 +87,8 @@
   v45 = v18;
   v58 = v44;
   v19 = [v18 bs_filter:v57];
-  v48 = v5;
-  [(SBShelfLiveContentOverlayCoordinator *)self _addOverlaysIfNeededForTransitionContext:v5];
+  v48 = contextCopy;
+  [(SBShelfLiveContentOverlayCoordinator *)self _addOverlaysIfNeededForTransitionContext:contextCopy];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -119,9 +119,9 @@
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             v29 = [v25 itemForLayoutRole:1];
-            v30 = [v29 uniqueIdentifier];
+            uniqueIdentifier = [v29 uniqueIdentifier];
             *buf = 138412290;
-            v63 = v30;
+            v63 = uniqueIdentifier;
             _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "Set displayMode to Snapshot and pendingSnapshotCacheUpdate to NO for %@ because it's going live", buf, 0xCu);
           }
         }
@@ -164,9 +164,9 @@
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             v40 = [v36 itemForLayoutRole:1];
-            v41 = [v40 uniqueIdentifier];
+            uniqueIdentifier2 = [v40 uniqueIdentifier];
             *buf = 138412290;
-            v63 = v41;
+            v63 = uniqueIdentifier2;
             _os_log_impl(&dword_21ED4E000, v39, OS_LOG_TYPE_DEFAULT, "Set displayMode to LivePortal for %@ because it's going background", buf, 0xCu);
           }
         }
@@ -179,27 +179,27 @@
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_shelfDelegate);
-  v6 = [v5 fromLayoutState];
-  v33 = v5;
-  v7 = [v5 toLayoutState];
-  v8 = [v6 appLayout];
-  v9 = [v8 leafAppLayouts];
-  v32 = v6;
-  v10 = [v6 floatingAppLayout];
-  v11 = [v10 leafAppLayouts];
-  v12 = [v9 arrayByAddingObjectsFromArray:v11];
+  fromLayoutState = [contextCopy fromLayoutState];
+  v33 = contextCopy;
+  toLayoutState = [contextCopy toLayoutState];
+  appLayout = [fromLayoutState appLayout];
+  leafAppLayouts = [appLayout leafAppLayouts];
+  v32 = fromLayoutState;
+  floatingAppLayout = [fromLayoutState floatingAppLayout];
+  leafAppLayouts2 = [floatingAppLayout leafAppLayouts];
+  v12 = [leafAppLayouts arrayByAddingObjectsFromArray:leafAppLayouts2];
 
-  v13 = [v7 appLayout];
-  v14 = [v13 leafAppLayouts];
-  v31 = v7;
-  v15 = [v7 floatingAppLayout];
-  v16 = [v15 leafAppLayouts];
-  v17 = [v14 arrayByAddingObjectsFromArray:v16];
+  appLayout2 = [toLayoutState appLayout];
+  leafAppLayouts3 = [appLayout2 leafAppLayouts];
+  v31 = toLayoutState;
+  floatingAppLayout2 = [toLayoutState floatingAppLayout];
+  leafAppLayouts4 = [floatingAppLayout2 leafAppLayouts];
+  v17 = [leafAppLayouts3 arrayByAddingObjectsFromArray:leafAppLayouts4];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -241,9 +241,9 @@
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             v27 = [v22 itemForLayoutRole:1];
-            v28 = [v27 uniqueIdentifier];
+            uniqueIdentifier = [v27 uniqueIdentifier];
             *buf = 138412290;
-            v43 = v28;
+            v43 = uniqueIdentifier;
             _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, "Set pendingSnapshotCacheUpdate for %@ because it is about to be backgrounded", buf, 0xCu);
           }
         }
@@ -256,25 +256,25 @@
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 fromLayoutState];
-  v7 = [v5 toLayoutState];
-  v8 = [v6 appLayout];
-  v9 = [v8 leafAppLayouts];
-  v45 = v6;
-  v10 = [v6 floatingAppLayout];
-  v11 = [v10 leafAppLayouts];
-  v12 = [v9 arrayByAddingObjectsFromArray:v11];
+  contextCopy = context;
+  fromLayoutState = [contextCopy fromLayoutState];
+  toLayoutState = [contextCopy toLayoutState];
+  appLayout = [fromLayoutState appLayout];
+  leafAppLayouts = [appLayout leafAppLayouts];
+  v45 = fromLayoutState;
+  floatingAppLayout = [fromLayoutState floatingAppLayout];
+  leafAppLayouts2 = [floatingAppLayout leafAppLayouts];
+  v12 = [leafAppLayouts arrayByAddingObjectsFromArray:leafAppLayouts2];
 
-  v13 = [v7 appLayout];
-  v14 = [v13 leafAppLayouts];
-  v44 = v7;
-  v15 = [v7 floatingAppLayout];
-  v16 = [v15 leafAppLayouts];
-  v17 = [v14 arrayByAddingObjectsFromArray:v16];
+  appLayout2 = [toLayoutState appLayout];
+  leafAppLayouts3 = [appLayout2 leafAppLayouts];
+  v44 = toLayoutState;
+  floatingAppLayout2 = [toLayoutState floatingAppLayout];
+  leafAppLayouts4 = [floatingAppLayout2 leafAppLayouts];
+  v17 = [leafAppLayouts3 arrayByAddingObjectsFromArray:leafAppLayouts4];
 
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
@@ -291,8 +291,8 @@
   v43 = v18;
   v57 = v42;
   v19 = [v18 bs_filter:v56];
-  v46 = v5;
-  [(SBShelfLiveContentOverlayCoordinator *)self _addOverlaysIfNeededForTransitionContext:v5];
+  v46 = contextCopy;
+  [(SBShelfLiveContentOverlayCoordinator *)self _addOverlaysIfNeededForTransitionContext:contextCopy];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
@@ -322,9 +322,9 @@
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             v28 = [v24 itemForLayoutRole:1];
-            v29 = [v28 uniqueIdentifier];
+            uniqueIdentifier = [v28 uniqueIdentifier];
             *buf = 138412290;
-            v62 = v29;
+            v62 = uniqueIdentifier;
             _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "Set displayMode to LivePortal for %@ because it is live", buf, 0xCu);
           }
         }
@@ -365,9 +365,9 @@
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             v39 = [v35 itemForLayoutRole:1];
-            v40 = [v39 uniqueIdentifier];
+            uniqueIdentifier2 = [v39 uniqueIdentifier];
             *buf = 138412290;
-            v62 = v40;
+            v62 = uniqueIdentifier2;
             _os_log_impl(&dword_21ED4E000, v38, OS_LOG_TYPE_DEFAULT, "Set displayMode to Snapshot for %@ because it is backgrounded", buf, 0xCu);
           }
         }
@@ -380,31 +380,31 @@
   }
 }
 
-- (void)_addOverlaysIfNeededForTransitionContext:(id)a3
+- (void)_addOverlaysIfNeededForTransitionContext:(id)context
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v64 = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
+  contextCopy = context;
+  delegate = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
   WeakRetained = objc_loadWeakRetained(&self->_shelfDelegate);
-  v6 = [v4 toLayoutState];
-  v61 = v4;
-  v59 = [v4 applicationTransitionContext];
+  toLayoutState = [contextCopy toLayoutState];
+  v61 = contextCopy;
+  applicationTransitionContext = [contextCopy applicationTransitionContext];
   v60 = WeakRetained;
   v7 = [WeakRetained shelfLiveContentOverlayCoordinatorAppLayouts:self];
   v8 = MEMORY[0x277CBEB98];
   v58 = v7;
   v9 = [v7 bs_map:&__block_literal_global_445];
-  v10 = [v9 bs_flatten];
-  v11 = [v8 setWithArray:v10];
+  bs_flatten = [v9 bs_flatten];
+  v11 = [v8 setWithArray:bs_flatten];
 
-  v12 = [v6 appLayout];
-  v13 = [v12 leafAppLayouts];
-  v65 = v6;
-  v14 = [v6 floatingAppLayout];
-  v15 = [v14 leafAppLayouts];
-  v16 = [v13 arrayByAddingObjectsFromArray:v15];
+  appLayout = [toLayoutState appLayout];
+  leafAppLayouts = [appLayout leafAppLayouts];
+  v65 = toLayoutState;
+  floatingAppLayout = [toLayoutState floatingAppLayout];
+  leafAppLayouts2 = [floatingAppLayout leafAppLayouts];
+  v16 = [leafAppLayouts arrayByAddingObjectsFromArray:leafAppLayouts2];
 
-  v17 = self;
+  selfCopy = self;
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
@@ -418,7 +418,7 @@
     v55 = *MEMORY[0x277CDA278];
     *&v19 = 138412290;
     v54 = v19;
-    v63 = v17;
+    v63 = selfCopy;
     v56 = *v73;
     v57 = v11;
     do
@@ -435,7 +435,7 @@
         v23 = *(*(&v72 + 1) + 8 * v22);
         if ([v23 containsAnyItemFromSet:{v11, v54}])
         {
-          v24 = [(NSMutableDictionary *)v17->_leafAppLayoutsToOverlays objectForKey:v23];
+          v24 = [(NSMutableDictionary *)selfCopy->_leafAppLayoutsToOverlays objectForKey:v23];
           if (!v24)
           {
             goto LABEL_12;
@@ -444,30 +444,30 @@
           v25 = v24;
           if ([v24 isPendingSwitcherSnapshotCacheUpdate])
           {
-            [(NSMutableDictionary *)v17->_leafAppLayoutsToOverlays removeObjectForKey:v23];
-            [v64 removeLiveContentOverlayForAppLayout:v23 animated:1];
+            [(NSMutableDictionary *)selfCopy->_leafAppLayoutsToOverlays removeObjectForKey:v23];
+            [delegate removeLiveContentOverlayForAppLayout:v23 animated:1];
             v26 = SBLogShelfLiveContent();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               v27 = [v23 itemForLayoutRole:1];
-              v28 = [v27 uniqueIdentifier];
+              uniqueIdentifier = [v27 uniqueIdentifier];
               *buf = v54;
-              v77 = v28;
+              v77 = uniqueIdentifier;
               _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, "Removing live content overlay for %@ because it's waiting for a snapshot and we're going to re-add it with live content", buf, 0xCu);
 
-              v17 = v63;
+              selfCopy = v63;
             }
 
 LABEL_12:
             v29 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
             v30 = [v23 itemForLayoutRole:1];
             v31 = +[SBApplicationController sharedInstance];
-            v32 = [v30 bundleIdentifier];
-            v33 = [v31 applicationWithBundleIdentifier:v32];
+            bundleIdentifier = [v30 bundleIdentifier];
+            v33 = [v31 applicationWithBundleIdentifier:bundleIdentifier];
 
-            v34 = [v30 uniqueIdentifier];
+            uniqueIdentifier2 = [v30 uniqueIdentifier];
             v69 = v33;
-            v35 = [v29 sceneIdentityForApplication:v33 uniqueIdentifier:v34];
+            v35 = [v29 sceneIdentityForApplication:v33 uniqueIdentifier:uniqueIdentifier2];
 
             v70 = v29;
             v68 = v35;
@@ -481,35 +481,35 @@ LABEL_12:
             v37 = 3;
             if ([v67 environment] != 2)
             {
-              v38 = [v65 appLayout];
+              appLayout2 = [v65 appLayout];
               v39 = [v23 itemForLayoutRole:1];
-              v37 = [v38 layoutRoleForItem:v39];
+              v37 = [appLayout2 layoutRoleForItem:v39];
             }
 
-            v40 = [v59 entityForLayoutRole:v37];
-            [v59 frameForApplicationSceneEntity:v40];
+            v40 = [applicationTransitionContext entityForLayoutRole:v37];
+            [applicationTransitionContext frameForApplicationSceneEntity:v40];
             v42 = v41;
             v44 = v43;
-            v45 = [v36 sceneIdentifier];
-            v46 = [v65 interfaceOrientationForElementIdentifier:v45];
+            sceneIdentifier = [v36 sceneIdentifier];
+            v46 = [v65 interfaceOrientationForElementIdentifier:sceneIdentifier];
 
-            v47 = [v65 interfaceOrientation];
-            v48 = [v60 shelfLiveContentOverlayCoordinator:v17 liveViewForAppLayout:v23];
-            v49 = [v48 layer];
-            [v49 setShouldRasterize:1];
-            [v64 displayScaleForContentOverlay];
-            [v49 setRasterizationScale:v50 * 0.5];
-            [v49 setMinificationFilter:v55];
-            v51 = [[SBShelfLiveContentOverlay alloc] initWithSceneHandle:v36 referenceSize:v46 contentOrientation:v47 containerOrientation:v48 livePortalView:v42, v44];
-            v17 = v63;
-            [v64 addLiveContentOverlay:v51 forAppLayout:v23 animated:{objc_msgSend(v61, "animationsDisabled") ^ 1}];
+            interfaceOrientation = [v65 interfaceOrientation];
+            v48 = [v60 shelfLiveContentOverlayCoordinator:selfCopy liveViewForAppLayout:v23];
+            layer = [v48 layer];
+            [layer setShouldRasterize:1];
+            [delegate displayScaleForContentOverlay];
+            [layer setRasterizationScale:v50 * 0.5];
+            [layer setMinificationFilter:v55];
+            v51 = [[SBShelfLiveContentOverlay alloc] initWithSceneHandle:v36 referenceSize:v46 contentOrientation:interfaceOrientation containerOrientation:v48 livePortalView:v42, v44];
+            selfCopy = v63;
+            [delegate addLiveContentOverlay:v51 forAppLayout:v23 animated:{objc_msgSend(v61, "animationsDisabled") ^ 1}];
             [(NSMutableDictionary *)v63->_leafAppLayoutsToOverlays setObject:v51 forKey:v23];
             v52 = SBLogShelfLiveContent();
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
             {
-              v53 = [v30 uniqueIdentifier];
+              uniqueIdentifier3 = [v30 uniqueIdentifier];
               *buf = v54;
-              v77 = v53;
+              v77 = uniqueIdentifier3;
               _os_log_impl(&dword_21ED4E000, v52, OS_LOG_TYPE_DEFAULT, "Creating and adding live content overlay for %@", buf, 0xCu);
             }
 
@@ -531,25 +531,25 @@ LABEL_12:
   }
 }
 
-- (void)didUpdateCacheEntry:(id)a3
+- (void)didUpdateCacheEntry:(id)entry
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 appLayout];
-  v5 = [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays objectForKey:v4];
+  appLayout = [entry appLayout];
+  v5 = [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays objectForKey:appLayout];
   v6 = v5;
   if (v5 && [v5 isPendingSwitcherSnapshotCacheUpdate])
   {
-    v7 = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
-    [v7 removeLiveContentOverlayForAppLayout:v4 animated:1];
+    delegate = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
+    [delegate removeLiveContentOverlayForAppLayout:appLayout animated:1];
 
-    [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays removeObjectForKey:appLayout];
     v8 = SBLogShelfLiveContent();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 itemForLayoutRole:1];
-      v10 = [v9 uniqueIdentifier];
+      v9 = [appLayout itemForLayoutRole:1];
+      uniqueIdentifier = [v9 uniqueIdentifier];
       v11 = 138412290;
-      v12 = v10;
+      v12 = uniqueIdentifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Removing live content overlay for %@ because its cached snapshot is ready", &v11, 0xCu);
     }
   }
@@ -558,13 +558,13 @@ LABEL_12:
 - (void)invalidate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
-  v4 = [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays allKeys];
+  delegate = [(SBShelfLiveContentOverlayCoordinator *)self delegate];
+  allKeys = [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays allKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -575,15 +575,15 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
-        [v3 removeLiveContentOverlayForAppLayout:v9 animated:1];
+        [delegate removeLiveContentOverlayForAppLayout:v9 animated:1];
         [(NSMutableDictionary *)self->_leafAppLayoutsToOverlays removeObjectForKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

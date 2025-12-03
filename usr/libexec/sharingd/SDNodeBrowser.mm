@@ -1,29 +1,29 @@
 @interface SDNodeBrowser
-- (BOOL)onlySupportsADisk:(id)a3;
-- (SDNodeBrowser)initWithNode:(__SFNode *)a3 protocol:(id)a4 flags:(unint64_t)a5 kind:(id)a6;
+- (BOOL)onlySupportsADisk:(id)disk;
+- (SDNodeBrowser)initWithNode:(__SFNode *)node protocol:(id)protocol flags:(unint64_t)flags kind:(id)kind;
 - (SDNodeBrowserDelegate)delegate;
 - (SDXPCHelperConnection)helperConnection;
 - (id)airDropNodes;
 - (id)neighborhoodNodes;
-- (id)nodesInternal:(BOOL)a3;
+- (id)nodesInternal:(BOOL)internal;
 - (id)odiskNodes;
 - (id)sharePointNodes;
-- (id)sidebarNodesFromServerNodes:(id)a3 nonServerCount:(unint64_t)a4 addAllNode:(BOOL *)a5;
+- (id)sidebarNodesFromServerNodes:(id)nodes nonServerCount:(unint64_t)count addAllNode:(BOOL *)node;
 - (id)workgroupChildren;
-- (int)addNode:(__SFNode *)a3;
-- (int)removeNode:(__SFNode *)a3;
-- (void)addBonjourChildrenFromCache:(id)a3;
-- (void)addClassroomChildrenFromCache:(id)a3;
-- (void)addConnectedChildrenFromCache:(id)a3;
-- (void)addFakeRangingMeasurementIfAppropriateToNodesInCache:(id)a3;
-- (void)addManagedChildrenFromCache:(id)a3;
-- (void)addRapportChildrenFromCache:(id)a3;
-- (void)addWindowsChildrenFromCache:(id)a3;
-- (void)appendAllNode:(id)a3;
-- (void)connectedChanged:(id)a3;
-- (void)copyOverBonjourInfo:(__SFNode *)a3 source:(__SFNode *)a4;
+- (int)addNode:(__SFNode *)node;
+- (int)removeNode:(__SFNode *)node;
+- (void)addBonjourChildrenFromCache:(id)cache;
+- (void)addClassroomChildrenFromCache:(id)cache;
+- (void)addConnectedChildrenFromCache:(id)cache;
+- (void)addFakeRangingMeasurementIfAppropriateToNodesInCache:(id)cache;
+- (void)addManagedChildrenFromCache:(id)cache;
+- (void)addRapportChildrenFromCache:(id)cache;
+- (void)addWindowsChildrenFromCache:(id)cache;
+- (void)appendAllNode:(id)node;
+- (void)connectedChanged:(id)changed;
+- (void)copyOverBonjourInfo:(__SFNode *)info source:(__SFNode *)source;
 - (void)dealloc;
-- (void)domainsChanged:(id)a3;
+- (void)domainsChanged:(id)changed;
 - (void)loadAirDrop;
 - (void)loadBonjour;
 - (void)loadClassroom;
@@ -35,15 +35,15 @@
 - (void)loadSidebarPrefsMonitor;
 - (void)loadWindows;
 - (void)loadWorkgroups;
-- (void)managedChanged:(id)a3;
+- (void)managedChanged:(id)changed;
 - (void)notifyClientAboutWorkgroups;
-- (void)serversChanged:(id)a3;
-- (void)setMode:(int64_t)a3;
-- (void)sharePointBrowser:(id)a3 nodesDidChangeWithError:(int)a4;
-- (void)sidebarPrefsChanged:(id)a3;
+- (void)serversChanged:(id)changed;
+- (void)setMode:(int64_t)mode;
+- (void)sharePointBrowser:(id)browser nodesDidChangeWithError:(int)error;
+- (void)sidebarPrefsChanged:(id)changed;
 - (void)start;
 - (void)stop;
-- (void)takeActionOnServerChanged:(id)a3 neighborhood:(id)a4;
+- (void)takeActionOnServerChanged:(id)changed neighborhood:(id)neighborhood;
 - (void)unloadAirDrop;
 - (void)unloadBonjour;
 - (void)unloadClassroom;
@@ -56,16 +56,16 @@
 - (void)unloadSidebarPrefsMonitor;
 - (void)unloadWindows;
 - (void)unloadWorkgroups;
-- (void)updateSelectionReasonInNodes:(id)a3;
-- (void)workgroupsChanged:(id)a3;
+- (void)updateSelectionReasonInNodes:(id)nodes;
+- (void)workgroupsChanged:(id)changed;
 @end
 
 @implementation SDNodeBrowser
 
-- (SDNodeBrowser)initWithNode:(__SFNode *)a3 protocol:(id)a4 flags:(unint64_t)a5 kind:(id)a6
+- (SDNodeBrowser)initWithNode:(__SFNode *)node protocol:(id)protocol flags:(unint64_t)flags kind:(id)kind
 {
-  v10 = a4;
-  v11 = a6;
+  protocolCopy = protocol;
+  kindCopy = kind;
   v40.receiver = self;
   v40.super_class = SDNodeBrowser;
   v12 = [(SDNodeBrowser *)&v40 init];
@@ -73,7 +73,7 @@
   if (v12)
   {
     v12->_mode = 0;
-    objc_storeStrong(&v12->_kind, a6);
+    objc_storeStrong(&v12->_kind, kind);
     v14 = objc_alloc_init(SDNodeCoalescer);
     nodeCoalescer = v13->_nodeCoalescer;
     v13->_nodeCoalescer = v14;
@@ -89,7 +89,7 @@
     connection = v13->_connection;
     v13->_connection = 0;
 
-    objc_storeStrong(&v13->_protocol, a4);
+    objc_storeStrong(&v13->_protocol, protocol);
     odiskDomains = v13->_odiskDomains;
     v13->_odiskDomains = 0;
 
@@ -132,7 +132,7 @@
 
     v13->_error = 0;
     objc_storeStrong(&v13->_queue, &_dispatch_main_q);
-    v13->_parent = CFRetain(a3);
+    v13->_parent = CFRetain(node);
     v32 = +[SDStatusMonitor sharedMonitor];
     monitor = v13->_monitor;
     v13->_monitor = v32;
@@ -181,8 +181,8 @@
 
   parent = self->_parent;
   v4 = SFNodeCopyWorkgroups();
-  v5 = [(SDWorkgroupBrowser *)self->_workgroupBrowser workgroups];
-  v6 = v5;
+  workgroups = [(SDWorkgroupBrowser *)self->_workgroupBrowser workgroups];
+  v6 = workgroups;
   if (v4)
   {
     Count = CFSetGetCount(v4);
@@ -226,9 +226,9 @@
 
   else
   {
-    if (v5)
+    if (workgroups)
     {
-      v9 = CFSetGetCount(v5);
+      v9 = CFSetGetCount(workgroups);
       Count = 0;
       Mutable = 0;
       p_combineWorkgroups = &self->_combineWorkgroups;
@@ -357,13 +357,13 @@ LABEL_41:
   }
 }
 
-- (void)takeActionOnServerChanged:(id)a3 neighborhood:(id)a4
+- (void)takeActionOnServerChanged:(id)changed neighborhood:(id)neighborhood
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 isEqualToString:@"com.apple.sharingd.BonjourChanged"] && (bonjourDomains = self->_bonjourDomains) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.sharingd.WindowsChanged") && (bonjourDomains = self->_windowsWorkgroups) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.sharingd.ODisksChanged") && (bonjourDomains = self->_odiskDomains) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.sharingd.AirDropChanged") && (bonjourDomains = self->_airDropDomains) != 0)
+  changedCopy = changed;
+  neighborhoodCopy = neighborhood;
+  if ([changedCopy isEqualToString:@"com.apple.sharingd.BonjourChanged"] && (bonjourDomains = self->_bonjourDomains) != 0 || objc_msgSend(changedCopy, "isEqualToString:", @"com.apple.sharingd.WindowsChanged") && (bonjourDomains = self->_windowsWorkgroups) != 0 || objc_msgSend(changedCopy, "isEqualToString:", @"com.apple.sharingd.ODisksChanged") && (bonjourDomains = self->_odiskDomains) != 0 || objc_msgSend(changedCopy, "isEqualToString:", @"com.apple.sharingd.AirDropChanged") && (bonjourDomains = self->_airDropDomains) != 0)
   {
-    if (([(NSMutableSet *)bonjourDomains containsObject:v6]& 1) == 0)
+    if (([(NSMutableSet *)bonjourDomains containsObject:neighborhoodCopy]& 1) == 0)
     {
       goto LABEL_11;
     }
@@ -371,7 +371,7 @@ LABEL_41:
     goto LABEL_10;
   }
 
-  if ([v8 isEqualToString:@"com.apple.sharingd.RapportChanged"])
+  if ([changedCopy isEqualToString:@"com.apple.sharingd.RapportChanged"])
   {
 LABEL_10:
     [(SDNodeBrowser *)self setError:0];
@@ -381,70 +381,70 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)serversChanged:(id)a3
+- (void)serversChanged:(id)changed
 {
-  v4 = a3;
-  v7 = [v4 name];
-  v5 = [v4 userInfo];
+  changedCopy = changed;
+  name = [changedCopy name];
+  userInfo = [changedCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"NeighborhoodName"];
-  [(SDNodeBrowser *)self takeActionOnServerChanged:v7 neighborhood:v6];
+  v6 = [userInfo objectForKeyedSubscript:@"NeighborhoodName"];
+  [(SDNodeBrowser *)self takeActionOnServerChanged:name neighborhood:v6];
 }
 
-- (void)domainsChanged:(id)a3
+- (void)domainsChanged:(id)changed
 {
   [(SDNodeBrowser *)self setError:0];
 
   [(SDNodeBrowser *)self notifyClient];
 }
 
-- (void)workgroupsChanged:(id)a3
+- (void)workgroupsChanged:(id)changed
 {
   [(SDNodeBrowser *)self setError:0];
 
   [(SDNodeBrowser *)self notifyClientAboutWorkgroups];
 }
 
-- (void)sharePointBrowser:(id)a3 nodesDidChangeWithError:(int)a4
+- (void)sharePointBrowser:(id)browser nodesDidChangeWithError:(int)error
 {
-  v5 = a3;
-  v6 = [v5 userName];
-  [(SDNodeBrowser *)self setUserName:v6];
+  browserCopy = browser;
+  userName = [browserCopy userName];
+  [(SDNodeBrowser *)self setUserName:userName];
 
-  v7 = [v5 connectionState];
-  [(SDNodeBrowser *)self setConnectionState:v7];
+  connectionState = [browserCopy connectionState];
+  [(SDNodeBrowser *)self setConnectionState:connectionState];
 
   [(SDNodeBrowser *)self notifyClient];
 }
 
-- (void)connectedChanged:(id)a3
+- (void)connectedChanged:(id)changed
 {
   [(SDNodeBrowser *)self setError:0];
 
   [(SDNodeBrowser *)self notifyClient];
 }
 
-- (void)managedChanged:(id)a3
+- (void)managedChanged:(id)changed
 {
   [(SDNodeBrowser *)self setError:0];
 
   [(SDNodeBrowser *)self notifyClient];
 }
 
-- (void)sidebarPrefsChanged:(id)a3
+- (void)sidebarPrefsChanged:(id)changed
 {
   [(SDNodeBrowser *)self setError:0];
 
   [(SDNodeBrowser *)self notifyClient];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3 && [(NSString *)self->_kind isEqual:kSFBrowserKindNetwork])
+  if (self->_mode != mode && [(NSString *)self->_kind isEqual:kSFBrowserKindNetwork])
   {
-    self->_mode = a3;
+    self->_mode = mode;
     v5 = +[SDServerBrowser sharedBrowser];
-    [v5 setBonjourBrowserMode:a3];
+    [v5 setBonjourBrowserMode:mode];
   }
 }
 
@@ -459,7 +459,7 @@ LABEL_11:
     if ([v6 count])
     {
       v21 = v6;
-      v7 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       if (!self->_bonjourDomains)
       {
         v8 = objc_opt_new();
@@ -474,7 +474,7 @@ LABEL_11:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = v7;
+      v11 = allObjects;
       v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v12)
       {
@@ -532,7 +532,7 @@ LABEL_11:
     v6 = SFNodeCopyWorkgroups();
     if ([v6 count])
     {
-      v7 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       if (!self->_windowsWorkgroups)
       {
         v8 = objc_opt_new();
@@ -547,7 +547,7 @@ LABEL_11:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = v7;
+      v11 = allObjects;
       v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
@@ -619,21 +619,21 @@ LABEL_11:
     self->_workgroupBrowser = v4;
 
     [(SDWorkgroupBrowser *)self->_workgroupBrowser start];
-    v6 = [(SDWorkgroupBrowser *)self->_workgroupBrowser nodes];
-    if ([v6 count])
+    nodes = [(SDWorkgroupBrowser *)self->_workgroupBrowser nodes];
+    if ([nodes count])
     {
       [(SDNodeBrowser *)self notifyClientAboutWorkgroups];
     }
   }
 }
 
-- (BOOL)onlySupportsADisk:(id)a3
+- (BOOL)onlySupportsADisk:(id)disk
 {
   v3 = kSFNodeProtocolAFP;
-  v4 = a3;
-  LOBYTE(v3) = [v4 containsObject:v3];
-  v5 = [v4 containsObject:kSFNodeProtocolSMB];
-  v6 = [v4 containsObject:kSFNodeProtocolADisk];
+  diskCopy = disk;
+  LOBYTE(v3) = [diskCopy containsObject:v3];
+  v5 = [diskCopy containsObject:kSFNodeProtocolSMB];
+  v6 = [diskCopy containsObject:kSFNodeProtocolADisk];
 
   return v6 & ((v3 | v5) ^ 1);
 }
@@ -683,8 +683,8 @@ LABEL_11:
     self->_managedBrowser = v4;
 
     [(SDManagedBrowser *)self->_managedBrowser start];
-    v6 = [(SDManagedBrowser *)self->_managedBrowser nodes];
-    if ([v6 count])
+    nodes = [(SDManagedBrowser *)self->_managedBrowser nodes];
+    if ([nodes count])
     {
       [(SDNodeBrowser *)self notifyClient];
     }
@@ -701,7 +701,7 @@ LABEL_11:
     v6 = SFNodeCopyDomains();
     if ([v6 count])
     {
-      v7 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       if (!self->_odiskDomains)
       {
         v8 = objc_opt_new();
@@ -716,7 +716,7 @@ LABEL_11:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = v7;
+      v11 = allObjects;
       v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
@@ -759,9 +759,9 @@ LABEL_11:
 - (void)loadClassroom
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isClassroomEnabled];
+  isClassroomEnabled = [v3 isClassroomEnabled];
 
-  if (v4)
+  if (isClassroomEnabled)
   {
     parent = self->_parent;
     v6 = SFNodeCopyKinds();
@@ -782,8 +782,8 @@ LABEL_11:
       }
 
       [(SDClassroomBrowser *)self->_classroomBrowser start];
-      v12 = [(SDClassroomBrowser *)self->_classroomBrowser nodes];
-      if ([v12 count])
+      nodes = [(SDClassroomBrowser *)self->_classroomBrowser nodes];
+      if ([nodes count])
       {
         [(SDNodeBrowser *)self notifyClient];
       }
@@ -800,9 +800,9 @@ LABEL_11:
 - (void)loadAirDrop
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isAirDropAllowed];
+  isAirDropAllowed = [v3 isAirDropAllowed];
 
-  if (v4)
+  if (isAirDropAllowed)
   {
     parent = self->_parent;
     v6 = SFNodeCopyKinds();
@@ -814,7 +814,7 @@ LABEL_11:
       {
         v25 = v8;
         v26 = v6;
-        v9 = [v8 allObjects];
+        allObjects = [v8 allObjects];
         if (!self->_airDropDomains)
         {
           v10 = objc_opt_new();
@@ -829,7 +829,7 @@ LABEL_11:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        obj = v9;
+        obj = allObjects;
         v13 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v13)
         {
@@ -848,14 +848,14 @@ LABEL_11:
               [(NSMutableSet *)self->_airDropDomains addObject:v16];
               if (self->_bundleID)
               {
-                v17 = [(SDNodeBrowser *)self options];
+                options = [(SDNodeBrowser *)self options];
                 v18 = CFDictionaryGetInt64() != 0;
 
                 v19 = +[SDServerBrowser sharedBrowser];
                 bundleID = self->_bundleID;
                 protocol = self->_protocol;
-                v22 = [(SDNodeBrowser *)self helperConnection];
-                [v19 startAirDropBrowsing:v16 bundleID:bundleID sessionID:protocol helperConnection:v22 delayBonjour:v18];
+                helperConnection = [(SDNodeBrowser *)self helperConnection];
+                [v19 startAirDropBrowsing:v16 bundleID:bundleID sessionID:protocol helperConnection:helperConnection delayBonjour:v18];
               }
 
               else
@@ -910,12 +910,12 @@ LABEL_11:
     rapportBrowser = self->_rapportBrowser;
     self->_rapportBrowser = v6;
 
-    v8 = [(SDNodeBrowser *)self helperConnection];
-    [(SDRapportBrowser *)self->_rapportBrowser setHelperConnection:v8];
+    helperConnection = [(SDNodeBrowser *)self helperConnection];
+    [(SDRapportBrowser *)self->_rapportBrowser setHelperConnection:helperConnection];
 
     [(SDRapportBrowser *)self->_rapportBrowser start];
-    v9 = [(SDRapportBrowser *)self->_rapportBrowser nodes];
-    if ([v9 count])
+    nodes = [(SDRapportBrowser *)self->_rapportBrowser nodes];
+    if ([nodes count])
     {
       [(SDNodeBrowser *)self notifyClient];
     }
@@ -954,7 +954,7 @@ LABEL_7:
   return workgroupBrowser;
 }
 
-- (void)copyOverBonjourInfo:(__SFNode *)a3 source:(__SFNode *)a4
+- (void)copyOverBonjourInfo:(__SFNode *)info source:(__SFNode *)source
 {
   v4 = SFNodeCopyModel();
   SFNodeSetModel();
@@ -993,9 +993,9 @@ LABEL_7:
   SFNodeSetSupportedMedia();
 }
 
-- (void)addBonjourChildrenFromCache:(id)a3
+- (void)addBonjourChildrenFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v39 = kSFBrowserKindRemoteDisc;
   if (([(NSString *)self->_kind isEqual:?]& 1) != 0)
   {
@@ -1037,7 +1037,7 @@ LABEL_7:
     {
       v37 = *v47;
       v35 = kSFBrowserKindAirDrop;
-      v38 = self;
+      selfCopy = self;
       do
       {
         v13 = 0;
@@ -1096,13 +1096,13 @@ LABEL_7:
 
                 v25 = *(*(&v42 + 1) + 8 * i);
                 v26 = SFNodeCopyRealName();
-                v27 = [v26 lowercaseString];
-                v28 = [v4 objectForKeyedSubscript:v27];
+                lowercaseString = [v26 lowercaseString];
+                v28 = [cacheCopy objectForKeyedSubscript:lowercaseString];
 
                 if (!v28)
                 {
                   Copy = SFNodeCreateCopy();
-                  [v4 setObject:Copy forKeyedSubscript:v27];
+                  [cacheCopy setObject:Copy forKeyedSubscript:lowercaseString];
                   CFRelease(Copy);
                 }
 
@@ -1121,7 +1121,7 @@ LABEL_7:
           }
 
           v13 = v41 + 1;
-          self = v38;
+          self = selfCopy;
         }
 
         while ((v41 + 1) != v40);
@@ -1136,27 +1136,27 @@ LABEL_7:
     v7 = v34;
   }
 
-  if (self->_commentHashTable && ![v4 count])
+  if (self->_commentHashTable && ![cacheCopy count])
   {
     [(NSMutableDictionary *)self->_commentHashTable removeAllObjects];
   }
 }
 
-- (void)addWindowsChildrenFromCache:(id)a3
+- (void)addWindowsChildrenFromCache:(id)cache
 {
-  v4 = a3;
-  v5 = v4;
+  cacheCopy = cache;
+  v5 = cacheCopy;
   if (self->_windowsWorkgroups && (!self->_workgroupBrowser || self->_combineWorkgroups))
   {
-    v38 = v4;
+    v38 = cacheCopy;
     v6 = objc_opt_new();
-    v40 = self;
-    v7 = [(NSMutableSet *)self->_windowsWorkgroups allObjects];
+    selfCopy = self;
+    allObjects = [(NSMutableSet *)self->_windowsWorkgroups allObjects];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1168,7 +1168,7 @@ LABEL_7:
         {
           if (*v46 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v45 + 1) + 8 * v11);
@@ -1184,13 +1184,13 @@ LABEL_7:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v9);
     }
 
-    v34 = v7;
+    v34 = allObjects;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -1225,7 +1225,7 @@ LABEL_7:
             v24 = SFNodeCopyWorkgroup();
             v25 = SFNodeCopySecondaryName();
             v26 = v25;
-            if (v40->_commentHashTable && v25 && CFStringGetLength(v25) && (v27 = CFDictionaryGetValue(v40->_commentHashTable, v26)) != 0 && ([v5 objectForKeyedSubscript:v27], v28 = objc_claimAutoreleasedReturnValue(), v28, v28) || (objc_msgSend(v5, "objectForKeyedSubscript:", v23), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+            if (selfCopy->_commentHashTable && v25 && CFStringGetLength(v25) && (v27 = CFDictionaryGetValue(selfCopy->_commentHashTable, v26)) != 0 && ([v5 objectForKeyedSubscript:v27], v28 = objc_claimAutoreleasedReturnValue(), v28, v28) || (objc_msgSend(v5, "objectForKeyedSubscript:", v23), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
             {
               v30 = SFNodeCopyKinds();
               v31 = SFNodeCopyProtocols();
@@ -1285,21 +1285,21 @@ LABEL_7:
   }
 }
 
-- (void)addClassroomChildrenFromCache:(id)a3
+- (void)addClassroomChildrenFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   classroomBrowser = self->_classroomBrowser;
   if (classroomBrowser)
   {
-    v6 = [(SDClassroomBrowser *)classroomBrowser nodes];
-    v7 = v6;
-    if (v6)
+    nodes = [(SDClassroomBrowser *)classroomBrowser nodes];
+    v7 = nodes;
+    if (nodes)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [nodes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1316,8 +1316,8 @@ LABEL_7:
 
             v12 = *(*(&v15 + 1) + 8 * v11);
             v13 = SFNodeCopyRealName();
-            v14 = [v13 lowercaseString];
-            [v4 setObject:v12 forKeyedSubscript:v14];
+            lowercaseString = [v13 lowercaseString];
+            [cacheCopy setObject:v12 forKeyedSubscript:lowercaseString];
 
             v11 = v11 + 1;
           }
@@ -1332,14 +1332,14 @@ LABEL_7:
   }
 }
 
-- (void)addManagedChildrenFromCache:(id)a3
+- (void)addManagedChildrenFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   managedBrowser = self->_managedBrowser;
   if (managedBrowser)
   {
-    v6 = [(SDManagedBrowser *)managedBrowser nodes];
-    if (v6)
+    nodes = [(SDManagedBrowser *)managedBrowser nodes];
+    if (nodes)
     {
       managedURLTable = self->_managedURLTable;
       if (managedURLTable)
@@ -1358,8 +1358,8 @@ LABEL_7:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v23 = v6;
-      v10 = v6;
+      v23 = nodes;
+      v10 = nodes;
       v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v11)
       {
@@ -1377,17 +1377,17 @@ LABEL_7:
 
             v15 = *(*(&v24 + 1) + 8 * v14);
             v16 = SFNodeCopyRealName();
-            v17 = [v16 lowercaseString];
-            if (v17)
+            lowercaseString = [v16 lowercaseString];
+            if (lowercaseString)
             {
-              v18 = [v4 objectForKeyedSubscript:v17];
+              v18 = [cacheCopy objectForKeyedSubscript:lowercaseString];
 
               if (v18)
               {
                 v19 = SFNodeCopyURL();
                 SFNodeAddKind();
                 SFNodeSetURL();
-                [v4 setObject:v18 forKeyedSubscript:v17];
+                [cacheCopy setObject:v18 forKeyedSubscript:lowercaseString];
                 if (v19)
                 {
                   v20 = v19;
@@ -1398,14 +1398,14 @@ LABEL_7:
               else
               {
                 Copy = SFNodeCreateCopy();
-                [v4 setObject:Copy forKeyedSubscript:v17];
+                [cacheCopy setObject:Copy forKeyedSubscript:lowercaseString];
                 v20 = Copy;
 LABEL_16:
                 CFRelease(v20);
               }
 
               v22 = SFNodeCopyURL();
-              [(NSMutableDictionary *)self->_managedURLTable setObject:v17 forKeyedSubscript:v22];
+              [(NSMutableDictionary *)self->_managedURLTable setObject:lowercaseString forKeyedSubscript:v22];
             }
 
             v14 = v14 + 1;
@@ -1418,20 +1418,20 @@ LABEL_16:
         while (v12);
       }
 
-      v6 = v23;
+      nodes = v23;
     }
   }
 }
 
-- (void)addConnectedChildrenFromCache:(id)a3
+- (void)addConnectedChildrenFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   if (self->_connectedBrowser)
   {
     if ([(NSString *)self->_kind isEqual:kSFBrowserKindRemoteDisc])
     {
-      v5 = [(SDConnectedBrowser *)self->_connectedBrowser odiskNodes];
-      if (!v5)
+      odiskNodes = [(SDConnectedBrowser *)self->_connectedBrowser odiskNodes];
+      if (!odiskNodes)
       {
 LABEL_46:
 
@@ -1445,8 +1445,8 @@ LABEL_46:
       connectedBrowser = self->_connectedBrowser;
       if (v6)
       {
-        v5 = [(SDConnectedBrowser *)connectedBrowser airDropNodes];
-        if (!v5)
+        odiskNodes = [(SDConnectedBrowser *)connectedBrowser airDropNodes];
+        if (!odiskNodes)
         {
           goto LABEL_46;
         }
@@ -1454,8 +1454,8 @@ LABEL_46:
 
       else
       {
-        v5 = [(SDConnectedBrowser *)connectedBrowser nodes];
-        if (!v5)
+        odiskNodes = [(SDConnectedBrowser *)connectedBrowser nodes];
+        if (!odiskNodes)
         {
           goto LABEL_46;
         }
@@ -1466,8 +1466,8 @@ LABEL_46:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v25 = v5;
-    obj = v5;
+    v25 = odiskNodes;
+    obj = odiskNodes;
     v34 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (!v34)
     {
@@ -1478,8 +1478,8 @@ LABEL_46:
     value = kSFNodeKindRecent;
     v35 = kSFNodeKindConnected;
     v26 = kSFNodeKindBonjour;
-    v27 = v4;
-    v32 = self;
+    v27 = cacheCopy;
+    selfCopy = self;
 LABEL_11:
     v8 = 0;
     while (1)
@@ -1505,8 +1505,8 @@ LABEL_11:
         }
       }
 
-      v17 = [v14 lowercaseString];
-      if (v17)
+      lowercaseString = [v14 lowercaseString];
+      if (lowercaseString)
       {
         goto LABEL_18;
       }
@@ -1523,7 +1523,7 @@ LABEL_41:
         {
 LABEL_45:
 
-          v5 = v25;
+          odiskNodes = v25;
           goto LABEL_46;
         }
 
@@ -1531,9 +1531,9 @@ LABEL_45:
       }
     }
 
-    v17 = v16;
+    lowercaseString = v16;
 LABEL_18:
-    v18 = [v4 objectForKeyedSubscript:v17];
+    v18 = [cacheCopy objectForKeyedSubscript:lowercaseString];
 
     if (v12)
     {
@@ -1554,9 +1554,9 @@ LABEL_18:
               CFRelease(v20);
               CFRelease(v22);
               CFRelease(theSet);
-              v4 = v27;
+              cacheCopy = v27;
 LABEL_40:
-              self = v32;
+              self = selfCopy;
               goto LABEL_41;
             }
 
@@ -1566,7 +1566,7 @@ LABEL_40:
             CFRelease(v20);
             CFRelease(v22);
             CFRelease(theSet);
-            v4 = v27;
+            cacheCopy = v27;
             if (!rangea)
             {
               goto LABEL_40;
@@ -1577,7 +1577,7 @@ LABEL_40:
           {
             CFRelease(v21);
             CFRelease(theSet);
-            v4 = v27;
+            cacheCopy = v27;
           }
         }
 
@@ -1604,7 +1604,7 @@ LABEL_33:
           SFNodeRemoveKind();
         }
 
-        [v4 setObject:v18 forKeyedSubscript:v17];
+        [cacheCopy setObject:v18 forKeyedSubscript:lowercaseString];
         goto LABEL_40;
       }
     }
@@ -1627,7 +1627,7 @@ LABEL_33:
     if (v13 || (v19 & 1) == 0)
     {
       Copy = SFNodeCreateCopy();
-      [v4 setObject:Copy forKeyedSubscript:v17];
+      [cacheCopy setObject:Copy forKeyedSubscript:lowercaseString];
       CFRelease(Copy);
     }
 
@@ -1637,18 +1637,18 @@ LABEL_33:
 LABEL_47:
 }
 
-- (void)addRapportChildrenFromCache:(id)a3
+- (void)addRapportChildrenFromCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(SDRapportBrowser *)self->_rapportBrowser nodes];
-  v6 = v5;
-  if (v5)
+  cacheCopy = cache;
+  nodes = [(SDRapportBrowser *)self->_rapportBrowser nodes];
+  v6 = nodes;
+  if (nodes)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [nodes countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1665,8 +1665,8 @@ LABEL_47:
 
           v11 = *(*(&v14 + 1) + 8 * v10);
           v12 = SFNodeCopyRealName();
-          v13 = [v12 lowercaseString];
-          [v4 setObject:v11 forKeyedSubscript:v13];
+          lowercaseString = [v12 lowercaseString];
+          [cacheCopy setObject:v11 forKeyedSubscript:lowercaseString];
 
           v10 = v10 + 1;
         }
@@ -1680,7 +1680,7 @@ LABEL_47:
   }
 }
 
-- (void)addFakeRangingMeasurementIfAppropriateToNodesInCache:(id)a3
+- (void)addFakeRangingMeasurementIfAppropriateToNodesInCache:(id)cache
 {
   if (self->_showAllKnownPeopleInMagicHead)
   {
@@ -1691,18 +1691,18 @@ LABEL_47:
     v5[2] = sub_1001D9D20;
     v5[3] = &unk_1008D3658;
     v5[4] = self;
-    [a3 enumerateKeysAndObjectsUsingBlock:v5];
+    [cache enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
 
-- (void)updateSelectionReasonInNodes:(id)a3
+- (void)updateSelectionReasonInNodes:(id)nodes
 {
-  v3 = a3;
+  nodesCopy = nodes;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  v4 = [nodesCopy countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1715,7 +1715,7 @@ LABEL_47:
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nodesCopy);
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
@@ -1747,7 +1747,7 @@ LABEL_47:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v5 = [nodesCopy countByEnumeratingWithState:&v33 objects:v42 count:16];
     }
 
     while (v5);
@@ -1762,7 +1762,7 @@ LABEL_47:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v3;
+  v19 = nodesCopy;
   v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v20)
   {
@@ -1808,25 +1808,25 @@ LABEL_47:
   }
 }
 
-- (id)sidebarNodesFromServerNodes:(id)a3 nonServerCount:(unint64_t)a4 addAllNode:(BOOL *)a5
+- (id)sidebarNodesFromServerNodes:(id)nodes nonServerCount:(unint64_t)count addAllNode:(BOOL *)node
 {
-  v8 = a3;
+  nodesCopy = nodes;
   v9 = objc_opt_new();
-  v10 = [(SDStatusMonitor *)self->_monitor connectedEnabled];
-  v40 = [(SDStatusMonitor *)self->_monitor bonjourEnabled];
-  v11 = [v8 count];
+  connectedEnabled = [(SDStatusMonitor *)self->_monitor connectedEnabled];
+  bonjourEnabled = [(SDStatusMonitor *)self->_monitor bonjourEnabled];
+  v11 = [nodesCopy count];
   if (v11)
   {
-    v32 = self;
+    selfCopy = self;
     v34 = v9;
-    v35 = a4;
-    v37 = a5;
+    countCopy = count;
+    nodeCopy = node;
     v12 = objc_opt_new();
     v39 = objc_opt_new();
     v33 = objc_opt_new();
     v13 = objc_opt_new();
-    v36 = v8;
-    v14 = [v8 mutableCopy];
+    v36 = nodesCopy;
+    v14 = [nodesCopy mutableCopy];
     [v14 sortUsingComparator:&stru_1008D3698];
     v15 = 0;
     v16 = kSFNodeKindConnected;
@@ -1838,7 +1838,7 @@ LABEL_47:
 
       v19 = SFNodeCopyKinds();
       v20 = v19;
-      if (v10 && (v21 = CFSetContainsValue(v19, v16), v22 = v13, v21) || (v23 = CFSetContainsValue(v20, v17), v22 = v12, v23) || v40 && (v24 = CFSetContainsValue(v20, value), v22 = v39, v24))
+      if (connectedEnabled && (v21 = CFSetContainsValue(v19, v16), v22 = v13, v21) || (v23 = CFSetContainsValue(v20, v17), v22 = v12, v23) || bonjourEnabled && (v24 = CFSetContainsValue(v20, value), v22 = v39, v24))
       {
         [v22 addObject:v18];
       }
@@ -1851,10 +1851,10 @@ LABEL_47:
     v25 = [v12 count];
     v26 = [v13 count];
     v27 = [v39 count];
-    v28 = [(SDStatusMonitor *)v32->_monitor sidebarMaxCount];
-    if (v27 >= v28 - (v25 + v26))
+    sidebarMaxCount = [(SDStatusMonitor *)selfCopy->_monitor sidebarMaxCount];
+    if (v27 >= sidebarMaxCount - (v25 + v26))
     {
-      v29 = v28 - (v25 + v26);
+      v29 = sidebarMaxCount - (v25 + v26);
     }
 
     else
@@ -1874,12 +1874,12 @@ LABEL_47:
     [v34 addObjectsFromArray:v12];
     [v34 addObjectsFromArray:v33];
 
-    v8 = v36;
-    a5 = v37;
-    a4 = v35;
+    nodesCopy = v36;
+    node = nodeCopy;
+    count = countCopy;
   }
 
-  *a5 = ((v11 | a4) != 0) & (v10 | v40);
+  *node = ((v11 | count) != 0) & (connectedEnabled | bonjourEnabled);
 
   return v9;
 }
@@ -1887,11 +1887,11 @@ LABEL_47:
 - (id)neighborhoodNodes
 {
   v3 = objc_opt_new();
-  v4 = [(SDNodeBrowser *)self domainChildren];
-  [v3 addObjectsFromArray:v4];
+  domainChildren = [(SDNodeBrowser *)self domainChildren];
+  [v3 addObjectsFromArray:domainChildren];
 
-  v5 = [(SDNodeBrowser *)self workgroupChildren];
-  [v3 addObjectsFromArray:v5];
+  workgroupChildren = [(SDNodeBrowser *)self workgroupChildren];
+  [v3 addObjectsFromArray:workgroupChildren];
 
   return v3;
 }
@@ -1919,9 +1919,9 @@ LABEL_47:
   v3 = objc_opt_new();
   [(SDNodeBrowser *)self addBonjourChildrenFromCache:v3];
   [(SDNodeBrowser *)self addConnectedChildrenFromCache:v3];
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
-  return v4;
+  return allValues;
 }
 
 - (id)airDropNodes
@@ -1933,8 +1933,8 @@ LABEL_47:
   [(SDNodeBrowser *)self addRapportChildrenFromCache:v3];
   [(SDNodeBrowser *)self addFakeRangingMeasurementIfAppropriateToNodesInCache:v3];
   nodeCoalescer = self->_nodeCoalescer;
-  v5 = [v3 allValues];
-  v6 = [(SDNodeCoalescer *)nodeCoalescer coalescedNodesForNewAvailableNodes:v5];
+  allValues = [v3 allValues];
+  v6 = [(SDNodeCoalescer *)nodeCoalescer coalescedNodesForNewAvailableNodes:allValues];
 
   [(SDAirDropDiscoveryLogger *)self->_airDropDiscoveryLogger updateWithAirDropNodes:v6];
   [(SDNodeBrowser *)self updateSelectionReasonInNodes:v6];
@@ -1947,12 +1947,12 @@ LABEL_47:
   bonjourDomains = self->_bonjourDomains;
   if (bonjourDomains)
   {
-    v4 = [(NSMutableSet *)bonjourDomains allObjects];
+    allObjects = [(NSMutableSet *)bonjourDomains allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1964,7 +1964,7 @@ LABEL_47:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
@@ -1975,7 +1975,7 @@ LABEL_47:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -1994,12 +1994,12 @@ LABEL_47:
   windowsWorkgroups = self->_windowsWorkgroups;
   if (windowsWorkgroups)
   {
-    v4 = [(NSMutableSet *)windowsWorkgroups allObjects];
+    allObjects = [(NSMutableSet *)windowsWorkgroups allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2011,7 +2011,7 @@ LABEL_47:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
@@ -2022,7 +2022,7 @@ LABEL_47:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -2118,12 +2118,12 @@ LABEL_47:
   odiskDomains = self->_odiskDomains;
   if (odiskDomains)
   {
-    v4 = [(NSMutableSet *)odiskDomains allObjects];
+    allObjects = [(NSMutableSet *)odiskDomains allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2135,7 +2135,7 @@ LABEL_47:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
@@ -2146,7 +2146,7 @@ LABEL_47:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -2165,12 +2165,12 @@ LABEL_47:
   airDropDomains = self->_airDropDomains;
   if (airDropDomains)
   {
-    v4 = [(NSMutableSet *)airDropDomains allObjects];
+    allObjects = [(NSMutableSet *)airDropDomains allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2182,7 +2182,7 @@ LABEL_47:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
@@ -2193,7 +2193,7 @@ LABEL_47:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -2289,9 +2289,9 @@ LABEL_47:
     self->_airDropDiscoveryLogger = v8;
 
     v10 = [(NSDictionary *)self->_options objectForKeyedSubscript:kSFBrowserOptionsShouldDisableDiscoveryMetricsKey];
-    v11 = [v10 BOOLValueSafe];
+    bOOLValueSafe = [v10 BOOLValueSafe];
 
-    if (v11)
+    if (bOOLValueSafe)
     {
       self->_shouldCollectNodeCoalescerMetrics = 0;
     }
@@ -2343,9 +2343,9 @@ LABEL_47:
   }
 }
 
-- (void)appendAllNode:(id)a3
+- (void)appendAllNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if (!qword_10098A178)
   {
     v3 = sub_1001171C4(@"All...");
@@ -2357,20 +2357,20 @@ LABEL_47:
     }
   }
 
-  [v4 addObject:qword_10098A178];
+  [nodeCopy addObject:qword_10098A178];
 }
 
-- (id)nodesInternal:(BOOL)a3
+- (id)nodesInternal:(BOOL)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   v16 = 0;
-  v5 = [(SDNodeBrowser *)self neighborhoodNodes];
-  v6 = [v5 count];
+  neighborhoodNodes = [(SDNodeBrowser *)self neighborhoodNodes];
+  v6 = [neighborhoodNodes count];
   v7 = objc_opt_new();
   parent = self->_parent;
   if (SFNodeIsRoot())
   {
-    v9 = v3;
+    v9 = internalCopy;
   }
 
   else
@@ -2380,16 +2380,16 @@ LABEL_47:
 
   if ([(NSString *)self->_kind isEqual:kSFBrowserKindRemoteDisc])
   {
-    v10 = [(SDNodeBrowser *)self odiskNodes];
+    odiskNodes = [(SDNodeBrowser *)self odiskNodes];
 LABEL_8:
-    v11 = v10;
-    [v7 addObjectsFromArray:v10];
+    v11 = odiskNodes;
+    [v7 addObjectsFromArray:odiskNodes];
     goto LABEL_12;
   }
 
   if ([(NSString *)self->_kind isEqual:kSFBrowserKindAirDrop])
   {
-    v10 = [(SDNodeBrowser *)self airDropNodes];
+    odiskNodes = [(SDNodeBrowser *)self airDropNodes];
     goto LABEL_8;
   }
 
@@ -2398,21 +2398,21 @@ LABEL_8:
   [(SDNodeBrowser *)self addWindowsChildrenFromCache:v11];
   [(SDNodeBrowser *)self addManagedChildrenFromCache:v11];
   [(SDNodeBrowser *)self addConnectedChildrenFromCache:v11];
-  v12 = [v11 allValues];
+  allValues = [v11 allValues];
   if (v9)
   {
-    v13 = [(SDNodeBrowser *)self sidebarNodesFromServerNodes:v12 nonServerCount:v6 addAllNode:&v16];
+    v13 = [(SDNodeBrowser *)self sidebarNodesFromServerNodes:allValues nonServerCount:v6 addAllNode:&v16];
 
-    v12 = v13;
+    allValues = v13;
   }
 
-  [v7 addObjectsFromArray:v12];
+  [v7 addObjectsFromArray:allValues];
 
 LABEL_12:
   if (self->_sharePointBrowser)
   {
-    v14 = [(SDNodeBrowser *)self sharePointNodes];
-    [v7 addObjectsFromArray:v14];
+    sharePointNodes = [(SDNodeBrowser *)self sharePointNodes];
+    [v7 addObjectsFromArray:sharePointNodes];
   }
 
   if (v9)
@@ -2425,18 +2425,18 @@ LABEL_12:
 
   else if (v6)
   {
-    [v7 addObjectsFromArray:v5];
+    [v7 addObjectsFromArray:neighborhoodNodes];
   }
 
   return v7;
 }
 
-- (int)addNode:(__SFNode *)a3
+- (int)addNode:(__SFNode *)node
 {
   connectedBrowser = self->_connectedBrowser;
   if (connectedBrowser)
   {
-    return [(SDConnectedBrowser *)connectedBrowser addNode:a3];
+    return [(SDConnectedBrowser *)connectedBrowser addNode:node];
   }
 
   else
@@ -2445,7 +2445,7 @@ LABEL_12:
   }
 }
 
-- (int)removeNode:(__SFNode *)a3
+- (int)removeNode:(__SFNode *)node
 {
   v5 = SFNodeCopyKinds();
   if (!v5)
@@ -2461,7 +2461,7 @@ LABEL_12:
 
   else
   {
-    v7 = [(SDConnectedBrowser *)connectedBrowser removeNode:a3];
+    v7 = [(SDConnectedBrowser *)connectedBrowser removeNode:node];
   }
 
   CFRelease(v6);

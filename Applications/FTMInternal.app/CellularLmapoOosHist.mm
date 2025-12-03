@@ -1,19 +1,19 @@
 @interface CellularLmapoOosHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)oosStateCountAtIndex:(unint64_t)a3;
-- (unsigned)oosStateDurationMsAtIndex:(unint64_t)a3;
-- (unsigned)oosToOosCountAtIndex:(unint64_t)a3;
-- (void)addRecoverHist:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)oosStateCountAtIndex:(unint64_t)index;
+- (unsigned)oosStateDurationMsAtIndex:(unint64_t)index;
+- (unsigned)oosToOosCountAtIndex:(unint64_t)index;
+- (void)addRecoverHist:(id)hist;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationSeconds:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationSeconds:(BOOL)seconds;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLmapoOosHist
@@ -28,9 +28,9 @@
   [(CellularLmapoOosHist *)&v3 dealloc];
 }
 
-- (void)setHasDurationSeconds:(BOOL)a3
+- (void)setHasDurationSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -43,69 +43,69 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)oosStateCountAtIndex:(unint64_t)a3
+- (unsigned)oosStateCountAtIndex:(unint64_t)index
 {
   p_oosStateCounts = &self->_oosStateCounts;
   count = self->_oosStateCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_oosStateCounts->list[a3];
+  return p_oosStateCounts->list[index];
 }
 
-- (unsigned)oosStateDurationMsAtIndex:(unint64_t)a3
+- (unsigned)oosStateDurationMsAtIndex:(unint64_t)index
 {
   p_oosStateDurationMs = &self->_oosStateDurationMs;
   count = self->_oosStateDurationMs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_oosStateDurationMs->list[a3];
+  return p_oosStateDurationMs->list[index];
 }
 
-- (void)addRecoverHist:(id)a3
+- (void)addRecoverHist:(id)hist
 {
-  v4 = a3;
+  histCopy = hist;
   recoverHists = self->_recoverHists;
-  v8 = v4;
+  v8 = histCopy;
   if (!recoverHists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_recoverHists;
     self->_recoverHists = v6;
 
-    v4 = v8;
+    histCopy = v8;
     recoverHists = self->_recoverHists;
   }
 
-  [(NSMutableArray *)recoverHists addObject:v4];
+  [(NSMutableArray *)recoverHists addObject:histCopy];
 }
 
-- (unsigned)oosToOosCountAtIndex:(unint64_t)a3
+- (unsigned)oosToOosCountAtIndex:(unint64_t)index
 {
   p_oosToOosCounts = &self->_oosToOosCounts;
   count = self->_oosToOosCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_oosToOosCounts->list[a3];
+  return p_oosToOosCounts->list[index];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -123,8 +123,8 @@
   v7.receiver = self;
   v7.super_class = CellularLmapoOosHist;
   v3 = [(CellularLmapoOosHist *)&v7 description];
-  v4 = [(CellularLmapoOosHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLmapoOosHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -175,8 +175,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -200,9 +200,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -298,31 +298,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[10] = self->_timestamp;
-    *(v4 + 108) |= 1u;
+    toCopy[10] = self->_timestamp;
+    *(toCopy + 108) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 22) = self->_durationSeconds;
-    *(v4 + 108) |= 2u;
+    *(toCopy + 22) = self->_durationSeconds;
+    *(toCopy + 108) |= 2u;
   }
 
-  v19 = v4;
+  v19 = toCopy;
   if ([(CellularLmapoOosHist *)self oosStateCountsCount])
   {
     [v19 clearOosStateCounts];
-    v6 = [(CellularLmapoOosHist *)self oosStateCountsCount];
-    if (v6)
+    oosStateCountsCount = [(CellularLmapoOosHist *)self oosStateCountsCount];
+    if (oosStateCountsCount)
     {
-      v7 = v6;
+      v7 = oosStateCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [v19 addOosStateCount:{-[CellularLmapoOosHist oosStateCountAtIndex:](self, "oosStateCountAtIndex:", i)}];
@@ -333,10 +333,10 @@
   if ([(CellularLmapoOosHist *)self oosStateDurationMsCount])
   {
     [v19 clearOosStateDurationMs];
-    v9 = [(CellularLmapoOosHist *)self oosStateDurationMsCount];
-    if (v9)
+    oosStateDurationMsCount = [(CellularLmapoOosHist *)self oosStateDurationMsCount];
+    if (oosStateDurationMsCount)
     {
-      v10 = v9;
+      v10 = oosStateDurationMsCount;
       for (j = 0; j != v10; ++j)
       {
         [v19 addOosStateDurationMs:{-[CellularLmapoOosHist oosStateDurationMsAtIndex:](self, "oosStateDurationMsAtIndex:", j)}];
@@ -347,10 +347,10 @@
   if ([(CellularLmapoOosHist *)self recoverHistsCount])
   {
     [v19 clearRecoverHists];
-    v12 = [(CellularLmapoOosHist *)self recoverHistsCount];
-    if (v12)
+    recoverHistsCount = [(CellularLmapoOosHist *)self recoverHistsCount];
+    if (recoverHistsCount)
     {
-      v13 = v12;
+      v13 = recoverHistsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(CellularLmapoOosHist *)self recoverHistAtIndex:k];
@@ -362,10 +362,10 @@
   if ([(CellularLmapoOosHist *)self oosToOosCountsCount])
   {
     [v19 clearOosToOosCounts];
-    v16 = [(CellularLmapoOosHist *)self oosToOosCountsCount];
-    if (v16)
+    oosToOosCountsCount = [(CellularLmapoOosHist *)self oosToOosCountsCount];
+    if (oosToOosCountsCount)
     {
-      v17 = v16;
+      v17 = oosToOosCountsCount;
       for (m = 0; m != v17; ++m)
       {
         [v19 addOosToOosCount:{-[CellularLmapoOosHist oosToOosCountAtIndex:](self, "oosToOosCountAtIndex:", m)}];
@@ -380,9 +380,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -419,7 +419,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addRecoverHist:v13];
       }
 
@@ -439,24 +439,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 108);
+  v5 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_timestamp != *(v4 + 10))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_timestamp != *(equalCopy + 10))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
 LABEL_21:
     v7 = 0;
@@ -465,13 +465,13 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_durationSeconds != *(v4 + 22))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_durationSeconds != *(equalCopy + 22))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_21;
   }
@@ -487,7 +487,7 @@ LABEL_21:
   }
 
   recoverHists = self->_recoverHists;
-  if (recoverHists | *(v4 + 12))
+  if (recoverHists | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)recoverHists isEqual:?])
     {
@@ -500,10 +500,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v7 = (*(v4 + 108) & 4) == 0;
+  v7 = (*(equalCopy + 108) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_version != *(v4 + 26))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_version != *(equalCopy + 26))
     {
       goto LABEL_21;
     }
@@ -557,38 +557,38 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 108);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 108);
   if (v6)
   {
-    self->_timestamp = *(v4 + 10);
+    self->_timestamp = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v6 = *(v4 + 108);
+    v6 = *(fromCopy + 108);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_durationSeconds = *(v4 + 22);
+    self->_durationSeconds = *(fromCopy + 22);
     *&self->_has |= 2u;
   }
 
-  v7 = [v4 oosStateCountsCount];
-  if (v7)
+  oosStateCountsCount = [fromCopy oosStateCountsCount];
+  if (oosStateCountsCount)
   {
-    v8 = v7;
+    v8 = oosStateCountsCount;
     for (i = 0; i != v8; ++i)
     {
       -[CellularLmapoOosHist addOosStateCount:](self, "addOosStateCount:", [v5 oosStateCountAtIndex:i]);
     }
   }
 
-  v10 = [v5 oosStateDurationMsCount];
-  if (v10)
+  oosStateDurationMsCount = [v5 oosStateDurationMsCount];
+  if (oosStateDurationMsCount)
   {
-    v11 = v10;
+    v11 = oosStateDurationMsCount;
     for (j = 0; j != v11; ++j)
     {
       -[CellularLmapoOosHist addOosStateDurationMs:](self, "addOosStateDurationMs:", [v5 oosStateDurationMsAtIndex:j]);
@@ -623,10 +623,10 @@ LABEL_6:
     while (v15);
   }
 
-  v18 = [v5 oosToOosCountsCount];
-  if (v18)
+  oosToOosCountsCount = [v5 oosToOosCountsCount];
+  if (oosToOosCountsCount)
   {
-    v19 = v18;
+    v19 = oosToOosCountsCount;
     for (m = 0; m != v19; ++m)
     {
       -[CellularLmapoOosHist addOosToOosCount:](self, "addOosToOosCount:", [v5 oosToOosCountAtIndex:{m, v21}]);

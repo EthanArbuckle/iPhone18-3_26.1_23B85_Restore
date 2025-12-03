@@ -1,20 +1,20 @@
 @interface HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation
-- (HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation)initWithConfiguration:(id)a3 participants:(id)a4;
-- (void)_deleteLocalProfileIfNecessaryForParticipant:(id)a3 completion:(id)a4;
+- (HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation)initWithConfiguration:(id)configuration participants:(id)participants;
+- (void)_deleteLocalProfileIfNecessaryForParticipant:(id)participant completion:(id)completion;
 - (void)main;
 @end
 
 @implementation HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation
 
-- (HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation)initWithConfiguration:(id)a3 participants:(id)a4
+- (HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation)initWithConfiguration:(id)configuration participants:(id)participants
 {
-  v6 = a4;
+  participantsCopy = participants;
   v13.receiver = self;
   v13.super_class = HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation;
-  v7 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:0];
+  v7 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [participantsCopy copy];
     participantRecords = v7->_participantRecords;
     v7->_participantRecords = v8;
 
@@ -30,7 +30,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
   v3 = 112;
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
@@ -38,13 +38,13 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = v2->_participantRecords;
+  v4 = selfCopy->_participantRecords;
   v23 = [(NSArray *)v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v23)
   {
     v5 = *v27;
     v6 = v25;
-    v22 = v2;
+    v22 = selfCopy;
     do
     {
       v7 = 0;
@@ -56,26 +56,26 @@
         }
 
         v8 = *(*(&v26 + 1) + 8 * v7);
-        v9 = [v8 relationshipDirection];
-        if ([v9 longValue] == 1)
+        relationshipDirection = [v8 relationshipDirection];
+        if ([relationshipDirection longValue] == 1)
         {
-          v10 = [v8 relationshipType];
-          if (![v10 longValue])
+          relationshipType = [v8 relationshipType];
+          if (![relationshipType longValue])
           {
             [v8 relationshipStatus];
             v13 = v5;
             v15 = v14 = v3;
             v16 = v6;
             v17 = v4;
-            v18 = [v15 longValue];
+            longValue = [v15 longValue];
 
             v3 = v14;
             v5 = v13;
 
-            v19 = v18 == 1;
+            v19 = longValue == 1;
             v4 = v17;
             v6 = v16;
-            v2 = v22;
+            selfCopy = v22;
             if (v19)
             {
               goto LABEL_12;
@@ -86,18 +86,18 @@
         }
 
 LABEL_10:
-        v11 = [v8 relationshipStatus];
-        v12 = [v11 longValue];
+        relationshipStatus = [v8 relationshipStatus];
+        longValue2 = [relationshipStatus longValue];
 
-        if (v12)
+        if (longValue2)
         {
-          [*(&v2->super.super.isa + v3) beginTask];
+          [*(&selfCopy->super.super.isa + v3) beginTask];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v25[0] = __75__HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation_main__block_invoke;
           v25[1] = &unk_2786130B0;
-          v25[2] = v2;
-          [(HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation *)v2 _deleteLocalProfileIfNecessaryForParticipant:v8 completion:v24];
+          v25[2] = selfCopy;
+          [(HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation *)selfCopy _deleteLocalProfileIfNecessaryForParticipant:v8 completion:v24];
         }
 
 LABEL_12:
@@ -112,7 +112,7 @@ LABEL_12:
     while (v20);
   }
 
-  [*(&v2->super.super.isa + v3) finishTask];
+  [*(&selfCopy->super.super.isa + v3) finishTask];
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -128,41 +128,41 @@ uint64_t __75__HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperati
   return [v4 finishTask];
 }
 
-- (void)_deleteLocalProfileIfNecessaryForParticipant:(id)a3 completion:(id)a4
+- (void)_deleteLocalProfileIfNecessaryForParticipant:(id)participant completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCD7C8];
-  v8 = [a3 UUID];
-  v9 = [v7 _profileWithUUID:v8 type:2];
+  uUID = [participant UUID];
+  v9 = [v7 _profileWithUUID:uUID type:2];
 
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [v10 repository];
-  v12 = [v11 profileIdentifier];
-  v13 = [v9 isEqual:v12];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profileIdentifier = [repository profileIdentifier];
+  v13 = [v9 isEqual:profileIdentifier];
 
   if (v13)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v14 = [(HDCloudSyncOperation *)self configuration];
-    v15 = [v14 repository];
-    v16 = [v15 cloudSyncShimProvider];
-    v17 = [v16 profileManagementShim];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration2 repository];
+    cloudSyncShimProvider = [repository2 cloudSyncShimProvider];
+    profileManagementShim = [cloudSyncShimProvider profileManagementShim];
 
-    v18 = [(HDCloudSyncOperation *)self configuration];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __127__HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation__deleteLocalProfileIfNecessaryForParticipant_completion___block_invoke;
     v20[3] = &unk_278615320;
-    v24 = v6;
-    v21 = v17;
+    v24 = completionCopy;
+    v21 = profileManagementShim;
     v22 = v9;
-    v23 = self;
-    v19 = v17;
-    [v19 profileExistsForProfileIdentifier:v22 configuration:v18 completion:v20];
+    selfCopy = self;
+    v19 = profileManagementShim;
+    [v19 profileExistsForProfileIdentifier:v22 configuration:configuration3 completion:v20];
   }
 }
 

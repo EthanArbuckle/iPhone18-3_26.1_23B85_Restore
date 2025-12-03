@@ -1,20 +1,20 @@
 @interface SKProgress
-+ (SKProgress)progressWithTotalUnitCount:(int64_t)a3;
++ (SKProgress)progressWithTotalUnitCount:(int64_t)count;
 - (SKProgress)init;
-- (void)chainChildProgress:(id)a3 withPendingUnitCount:(int64_t)a4;
+- (void)chainChildProgress:(id)progress withPendingUnitCount:(int64_t)count;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setLocalizedAdditionalDescription:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setLocalizedAdditionalDescription:(id)description;
 @end
 
 @implementation SKProgress
 
-- (void)setLocalizedAdditionalDescription:(id)a3
+- (void)setLocalizedAdditionalDescription:(id)description
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 newlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  descriptionCopy = description;
+  newlineCharacterSet = [v4 newlineCharacterSet];
+  v7 = [descriptionCopy stringByTrimmingCharactersInSet:newlineCharacterSet];
 
   [(SKProgress *)self setUserInfoObject:v7 forKey:*MEMORY[0x277CCAED0]];
   v8.receiver = self;
@@ -22,10 +22,10 @@
   [(SKProgress *)&v8 setLocalizedAdditionalDescription:v7];
 }
 
-+ (SKProgress)progressWithTotalUnitCount:(int64_t)a3
++ (SKProgress)progressWithTotalUnitCount:(int64_t)count
 {
   v4 = objc_opt_new();
-  [v4 setTotalUnitCount:a3];
+  [v4 setTotalUnitCount:count];
 
   return v4;
 }
@@ -48,38 +48,38 @@
   return v3;
 }
 
-- (void)chainChildProgress:(id)a3 withPendingUnitCount:(int64_t)a4
+- (void)chainChildProgress:(id)progress withPendingUnitCount:(int64_t)count
 {
-  v6 = a3;
-  [(SKProgress *)self addChild:v6 withPendingUnitCount:a4];
-  v7 = [(SKProgress *)self children];
-  [v7 addObject:v6];
+  progressCopy = progress;
+  [(SKProgress *)self addChild:progressCopy withPendingUnitCount:count];
+  children = [(SKProgress *)self children];
+  [children addObject:progressCopy];
 
-  v8 = [v6 userInfo];
+  userInfo = [progressCopy userInfo];
 
-  [v8 addObserver:self forKeyPath:*MEMORY[0x277CCAED0] options:0 context:0];
+  [userInfo addObserver:self forKeyPath:*MEMORY[0x277CCAED0] options:0 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = *MEMORY[0x277CCAED0];
-  if ([a3 isEqualToString:{*MEMORY[0x277CCAED0], a4, a5, a6}])
+  if ([path isEqualToString:{*MEMORY[0x277CCAED0], object, change, context}])
   {
-    v9 = [(SKProgress *)self userInfo];
-    v8 = [v9 objectForKeyedSubscript:v7];
+    userInfo = [(SKProgress *)self userInfo];
+    v8 = [userInfo objectForKeyedSubscript:v7];
     [(SKProgress *)self setLocalizedAdditionalDescription:v8];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(SKProgress *)self children];
+  children = [(SKProgress *)self children];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __21__SKProgress_dealloc__block_invoke;
   v5[3] = &unk_279D1F548;
   v5[4] = self;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 
   v4.receiver = self;
   v4.super_class = SKProgress;

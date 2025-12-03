@@ -1,65 +1,65 @@
 @interface MWFeedInfo
-- (MWFeedInfo)initWithCoder:(id)a3;
+- (MWFeedInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MWFeedInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   title = self->title;
-  v9 = v4;
+  v9 = coderCopy;
   if (title)
   {
-    [v4 encodeObject:title forKey:@"title"];
-    v4 = v9;
+    [coderCopy encodeObject:title forKey:@"title"];
+    coderCopy = v9;
   }
 
   link = self->link;
   if (link)
   {
     [v9 encodeObject:link forKey:@"link"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   summary = self->summary;
   if (summary)
   {
     [v9 encodeObject:summary forKey:@"summary"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   url = self->url;
   if (url)
   {
     [v9 encodeObject:url forKey:@"url"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (MWFeedInfo)initWithCoder:(id)a3
+- (MWFeedInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MWFeedInfo;
   v5 = [(MWFeedInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"title"];
+    v6 = [coderCopy decodeObjectForKey:@"title"];
     title = v5->title;
     v5->title = v6;
 
-    v8 = [v4 decodeObjectForKey:@"link"];
+    v8 = [coderCopy decodeObjectForKey:@"link"];
     link = v5->link;
     v5->link = v8;
 
-    v10 = [v4 decodeObjectForKey:@"summary"];
+    v10 = [coderCopy decodeObjectForKey:@"summary"];
     summary = v5->summary;
     v5->summary = v10;
 
-    v12 = [v4 decodeObjectForKey:@"url"];
+    v12 = [coderCopy decodeObjectForKey:@"url"];
     url = v5->url;
     v5->url = v12;
   }

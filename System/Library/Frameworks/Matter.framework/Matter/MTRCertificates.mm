@@ -76,10 +76,10 @@
   v12 = fabricID;
   v13 = objc_alloc(MEMORY[0x277CCA970]);
   v14 = [MEMORY[0x277CBEAA8] now];
-  v15 = [MEMORY[0x277CBEAA8] distantFuture];
-  v16 = [v13 initWithStartDate:v14 endDate:v15];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v16 = [v13 initWithStartDate:v14 endDate:distantFuture];
 
-  v17 = [a1 createRootCertificate:v10 issuerID:v11 fabricID:v12 validityPeriod:v16 error:error];
+  v17 = [self createRootCertificate:v10 issuerID:v11 fabricID:v12 validityPeriod:v16 error:error];
 
   return v17;
 }
@@ -143,10 +143,10 @@
   v17 = fabricID;
   v18 = objc_alloc(MEMORY[0x277CCA970]);
   v19 = [MEMORY[0x277CBEAA8] now];
-  v20 = [MEMORY[0x277CBEAA8] distantFuture];
-  v21 = [v18 initWithStartDate:v19 endDate:v20];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v21 = [v18 initWithStartDate:v19 endDate:distantFuture];
 
-  v22 = [a1 createIntermediateCertificate:v14 rootCertificate:v15 intermediatePublicKey:intermediatePublicKey issuerID:v16 fabricID:v17 validityPeriod:v21 error:error];
+  v22 = [self createIntermediateCertificate:v14 rootCertificate:v15 intermediatePublicKey:intermediatePublicKey issuerID:v16 fabricID:v17 validityPeriod:v21 error:error];
 
   return v22;
 }
@@ -212,10 +212,10 @@
   v18 = caseAuthenticatedTags;
   v19 = objc_alloc(MEMORY[0x277CCA970]);
   v20 = [MEMORY[0x277CBEAA8] now];
-  v21 = [MEMORY[0x277CBEAA8] distantFuture];
-  v22 = [v19 initWithStartDate:v20 endDate:v21];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v22 = [v19 initWithStartDate:v20 endDate:distantFuture];
 
-  v23 = [a1 createOperationalCertificate:v25 signingCertificate:v15 operationalPublicKey:operationalPublicKey fabricID:v16 nodeID:v17 caseAuthenticatedTags:v18 validityPeriod:v22 error:error];
+  v23 = [self createOperationalCertificate:v25 signingCertificate:v15 operationalPublicKey:operationalPublicKey fabricID:v16 nodeID:v17 caseAuthenticatedTags:v18 validityPeriod:v22 error:error];
 
   return v23;
 }

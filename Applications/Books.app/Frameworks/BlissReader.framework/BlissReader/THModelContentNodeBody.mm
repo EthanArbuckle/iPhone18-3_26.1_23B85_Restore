@@ -1,32 +1,32 @@
 @interface THModelContentNodeBody
-- (THModelContentNodeBody)initWithContext:(id)a3;
+- (THModelContentNodeBody)initWithContext:(id)context;
 - (id)childEnumerator;
-- (id)expandableInfoForWidgetInfo:(id)a3;
+- (id)expandableInfoForWidgetInfo:(id)info;
 - (id)gutterDrawables;
-- (id)infoForNodeUniqueID:(id)a3;
+- (id)infoForNodeUniqueID:(id)d;
 - (id)infos;
-- (id)nodeUniqueIDForInfo:(id)a3;
-- (unint64_t)bodyCharIndexOfGutterDrawable:(id)a3;
-- (unint64_t)relativeIndexOfPageInfo:(id)a3;
-- (unint64_t)relativePageIndexForInfo:(id)a3;
-- (void)addGutterDrawable:(id)a3 positioning:(id)a4 insertContext:(id)a5;
-- (void)addPageInfo:(id)a3;
-- (void)clearNodeUniqueIDForInfo:(id)a3;
+- (id)nodeUniqueIDForInfo:(id)info;
+- (unint64_t)bodyCharIndexOfGutterDrawable:(id)drawable;
+- (unint64_t)relativeIndexOfPageInfo:(id)info;
+- (unint64_t)relativePageIndexForInfo:(id)info;
+- (void)addGutterDrawable:(id)drawable positioning:(id)positioning insertContext:(id)context;
+- (void)addPageInfo:(id)info;
+- (void)clearNodeUniqueIDForInfo:(id)info;
 - (void)dealloc;
 - (void)p_clearFlushableMembers;
-- (void)setExpandedDrawable:(id)a3 forWidgetInfo:(id)a4;
-- (void)setNodeUniqueID:(id)a3 forInfo:(id)a4;
-- (void)setRelativePageIndex:(unint64_t)a3 forInfo:(id)a4;
+- (void)setExpandedDrawable:(id)drawable forWidgetInfo:(id)info;
+- (void)setNodeUniqueID:(id)d forInfo:(id)info;
+- (void)setRelativePageIndex:(unint64_t)index forInfo:(id)info;
 - (void)unload;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation THModelContentNodeBody
 
-- (THModelContentNodeBody)initWithContext:(id)a3
+- (THModelContentNodeBody)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = THModelContentNodeBody;
@@ -34,7 +34,7 @@
   if (v4)
   {
     [(THModelContentNodeBody *)v4 setPages:+[NSMutableArray array]];
-    [(THModelContentNodeBody *)v4 setGutterDrawableStorage:[[THWGutterDrawableStorage alloc] initWithContext:a3]];
+    [(THModelContentNodeBody *)v4 setGutterDrawableStorage:[[THWGutterDrawableStorage alloc] initWithContext:context]];
     [(THModelContentNodeBody *)v4 setInfosForIDs:+[NSMutableDictionary dictionary]];
     [(THModelContentNodeBody *)v4 setIDsForInfos:+[TSUPointerKeyDictionary dictionary]];
     [(THModelContentNodeBody *)v4 setPageIndexesForInfos:+[TSUNoCopyDictionary dictionary]];
@@ -103,92 +103,92 @@
   [(THModelContentNode *)mParent i_flushingBody:self];
 }
 
-- (void)setNodeUniqueID:(id)a3 forInfo:(id)a4
+- (void)setNodeUniqueID:(id)d forInfo:(id)info
 {
-  v7 = [(NSMutableDictionary *)[(THModelContentNodeBody *)self infosForIDs] objectForKey:a3];
+  v7 = [(NSMutableDictionary *)[(THModelContentNodeBody *)self infosForIDs] objectForKey:d];
   if (v7)
   {
     [(TSUPointerKeyDictionary *)[(THModelContentNodeBody *)self IDsForInfos] removeObjectForKey:v7];
   }
 
-  [(TSUPointerKeyDictionary *)[(THModelContentNodeBody *)self IDsForInfos] setObject:a3 forUncopiedKey:a4];
-  v8 = [(THModelContentNodeBody *)self infosForIDs];
+  [(TSUPointerKeyDictionary *)[(THModelContentNodeBody *)self IDsForInfos] setObject:d forUncopiedKey:info];
+  infosForIDs = [(THModelContentNodeBody *)self infosForIDs];
 
-  [(NSMutableDictionary *)v8 setObject:a4 forKey:a3];
+  [(NSMutableDictionary *)infosForIDs setObject:info forKey:d];
 }
 
-- (void)clearNodeUniqueIDForInfo:(id)a3
+- (void)clearNodeUniqueIDForInfo:(id)info
 {
-  v5 = [(TSUPointerKeyDictionary *)[(THModelContentNodeBody *)self IDsForInfos] objectForKey:a3];
+  v5 = [(TSUPointerKeyDictionary *)[(THModelContentNodeBody *)self IDsForInfos] objectForKey:info];
   if (v5)
   {
     [(NSMutableDictionary *)[(THModelContentNodeBody *)self infosForIDs] removeObjectForKey:v5];
-    v6 = [(THModelContentNodeBody *)self IDsForInfos];
+    iDsForInfos = [(THModelContentNodeBody *)self IDsForInfos];
 
-    [(TSUPointerKeyDictionary *)v6 removeObjectForKey:a3];
+    [(TSUPointerKeyDictionary *)iDsForInfos removeObjectForKey:info];
   }
 }
 
-- (id)nodeUniqueIDForInfo:(id)a3
+- (id)nodeUniqueIDForInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     return 0;
   }
 
-  v4 = [(THModelContentNodeBody *)self IDsForInfos];
+  iDsForInfos = [(THModelContentNodeBody *)self IDsForInfos];
 
-  return [(TSUPointerKeyDictionary *)v4 objectForKey:a3];
+  return [(TSUPointerKeyDictionary *)iDsForInfos objectForKey:info];
 }
 
-- (id)infoForNodeUniqueID:(id)a3
+- (id)infoForNodeUniqueID:(id)d
 {
-  v4 = [(THModelContentNodeBody *)self infosForIDs];
+  infosForIDs = [(THModelContentNodeBody *)self infosForIDs];
 
-  return [(NSMutableDictionary *)v4 objectForKey:a3];
+  return [(NSMutableDictionary *)infosForIDs objectForKey:d];
 }
 
 - (id)infos
 {
-  v2 = [(THModelContentNodeBody *)self IDsForInfos];
+  iDsForInfos = [(THModelContentNodeBody *)self IDsForInfos];
 
-  return [(TSUPointerKeyDictionary *)v2 allKeys];
+  return [(TSUPointerKeyDictionary *)iDsForInfos allKeys];
 }
 
-- (void)addPageInfo:(id)a3
+- (void)addPageInfo:(id)info
 {
   [(NSMutableArray *)self->mPages addObject:?];
 
-  [a3 setParentContentNodeBody:self];
+  [info setParentContentNodeBody:self];
 }
 
-- (unint64_t)relativeIndexOfPageInfo:(id)a3
+- (unint64_t)relativeIndexOfPageInfo:(id)info
 {
-  v4 = [(THModelContentNodeBody *)self pages];
+  pages = [(THModelContentNodeBody *)self pages];
 
-  return [(NSArray *)v4 indexOfObject:a3];
+  return [(NSArray *)pages indexOfObject:info];
 }
 
-- (unint64_t)relativePageIndexForInfo:(id)a3
+- (unint64_t)relativePageIndexForInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = a3;
+  infoCopy = info;
   while (1)
   {
     objc_opt_class();
-    [(TSUPointerKeyDictionary *)self->mPageIndexesForInfos objectForKey:v3];
+    [(TSUPointerKeyDictionary *)self->mPageIndexesForInfos objectForKey:infoCopy];
     v5 = TSUDynamicCast();
     if (v5)
     {
       break;
     }
 
-    v3 = [v3 parentInfo];
-    if (!v3)
+    infoCopy = [infoCopy parentInfo];
+    if (!infoCopy)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -197,38 +197,38 @@
   return [v5 unsignedIntValue];
 }
 
-- (void)setRelativePageIndex:(unint64_t)a3 forInfo:(id)a4
+- (void)setRelativePageIndex:(unint64_t)index forInfo:(id)info
 {
   mPageIndexesForInfos = self->mPageIndexesForInfos;
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:index];
 
-  [(TSUPointerKeyDictionary *)mPageIndexesForInfos setObject:v6 forUncopiedKey:a4];
+  [(TSUPointerKeyDictionary *)mPageIndexesForInfos setObject:v6 forUncopiedKey:info];
 }
 
-- (void)addGutterDrawable:(id)a3 positioning:(id)a4 insertContext:(id)a5
+- (void)addGutterDrawable:(id)drawable positioning:(id)positioning insertContext:(id)context
 {
-  v8 = [(THModelContentNodeBody *)self gutterDrawableStorage];
+  gutterDrawableStorage = [(THModelContentNodeBody *)self gutterDrawableStorage];
 
-  [(THWGutterDrawableStorage *)v8 addDrawable:a3 positioning:a4 insertContext:a5];
+  [(THWGutterDrawableStorage *)gutterDrawableStorage addDrawable:drawable positioning:positioning insertContext:context];
 }
 
-- (unint64_t)bodyCharIndexOfGutterDrawable:(id)a3
+- (unint64_t)bodyCharIndexOfGutterDrawable:(id)drawable
 {
-  v3 = [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] positioningOfDrawable:a3];
+  v3 = [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] positioningOfDrawable:drawable];
 
   return [v3 bodyCharIndex];
 }
 
 - (id)gutterDrawables
 {
-  v2 = [(THModelContentNodeBody *)self gutterDrawableStorage];
+  gutterDrawableStorage = [(THModelContentNodeBody *)self gutterDrawableStorage];
 
-  return [(THWGutterDrawableStorage *)v2 drawables];
+  return [(THWGutterDrawableStorage *)gutterDrawableStorage drawables];
 }
 
-- (id)expandableInfoForWidgetInfo:(id)a3
+- (id)expandableInfoForWidgetInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     return [(TSUPointerKeyDictionary *)self->mDrawablesForWidgetInfos objectForKey:?];
   }
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)setExpandedDrawable:(id)a3 forWidgetInfo:(id)a4
+- (void)setExpandedDrawable:(id)drawable forWidgetInfo:(id)info
 {
-  if (a3 && a4)
+  if (drawable && info)
   {
     mDrawablesForWidgetInfos = self->mDrawablesForWidgetInfos;
 
@@ -254,53 +254,53 @@
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
-  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] willBeAddedToDocumentRoot:a3 dolcContext:a4];
-  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] willBeAddedToDocumentRoot:a3 context:a4];
+  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] willBeAddedToDocumentRoot:root dolcContext:context];
+  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] willBeAddedToDocumentRoot:root context:context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_510AC;
   v7[3] = &unk_45B930;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = root;
+  v7[5] = context;
   [(NSArray *)[(THModelContentNodeBody *)self pages] enumerateObjectsUsingBlock:v7];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
-  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] wasAddedToDocumentRoot:a3 dolcContext:a4];
-  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] wasAddedToDocumentRoot:a3 context:a4];
+  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] wasAddedToDocumentRoot:root dolcContext:context];
+  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] wasAddedToDocumentRoot:root context:context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5116C;
   v7[3] = &unk_45B930;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = root;
+  v7[5] = context;
   [(NSArray *)[(THModelContentNodeBody *)self pages] enumerateObjectsUsingBlock:v7];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] willBeRemovedFromDocumentRoot:a3];
-  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] willBeRemovedFromDocumentRoot:a3];
+  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] willBeRemovedFromDocumentRoot:root];
+  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] willBeRemovedFromDocumentRoot:root];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_51218;
   v5[3] = &unk_45B958;
-  v5[4] = a3;
+  v5[4] = root;
   [(NSArray *)[(THModelContentNodeBody *)self pages] enumerateObjectsUsingBlock:v5];
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] wasRemovedFromDocumentRoot:a3];
-  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] wasRemovedFromDocumentRoot:a3];
+  [(THWPStorage *)[(THModelContentNodeBody *)self bodyStorage] wasRemovedFromDocumentRoot:root];
+  [(THWGutterDrawableStorage *)[(THModelContentNodeBody *)self gutterDrawableStorage] wasRemovedFromDocumentRoot:root];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_512C4;
   v5[3] = &unk_45B958;
-  v5[4] = a3;
+  v5[4] = root;
   [(NSArray *)[(THModelContentNodeBody *)self pages] enumerateObjectsUsingBlock:v5];
 }
 

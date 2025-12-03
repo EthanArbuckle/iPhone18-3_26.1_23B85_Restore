@@ -1,6 +1,6 @@
 @interface HeartbeatEventServiceURLSessionDelegate
 - (_TtC12AppAnalyticsP33_883BEF9FB9BC10A2D6AB6388C0003C3E39HeartbeatEventServiceURLSessionDelegate)init;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation HeartbeatEventServiceURLSessionDelegate
@@ -12,13 +12,13 @@
   return [(HeartbeatEventServiceURLSessionDelegate *)&v3 init];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1B6A6FD04(v9, a5);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1B6A6FD04(taskCopy, error);
 }
 
 @end

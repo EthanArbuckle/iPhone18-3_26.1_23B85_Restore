@@ -1,17 +1,17 @@
 @interface BSUIFeedNavigationItem
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation BSUIFeedNavigationItem
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([(BSUIFeedNavigationItem *)self allowsTitle])
   {
     v5.receiver = self;
     v5.super_class = BSUIFeedNavigationItem;
-    [(BSUIFeedNavigationItem *)&v5 setTitle:v4];
+    [(BSUIFeedNavigationItem *)&v5 setTitle:titleCopy];
   }
 }
 

@@ -3,20 +3,20 @@
 + (CMIOExtensionStream)streamWithLocalizedName:(NSString *)localizedName streamID:(NSUUID *)streamID direction:(CMIOExtensionStreamDirection)direction customClockConfiguration:(CMIOExtensionStreamCustomClockConfiguration *)customClockConfiguration source:(id)source;
 + (id)internalProperties;
 - (NSArray)streamingClients;
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3;
-- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)a3 propertyValues:(id)a4 error:(id *)a5;
-- (id)_initWithLocalizedName:(id)a3 streamID:(id)a4 direction:(int64_t)a5 clockType:(int64_t)a6 customClockConfiguration:(id)a7 source:(id)a8;
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties;
+- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)client propertyValues:(id)values error:(id *)error;
+- (id)_initWithLocalizedName:(id)name streamID:(id)d direction:(int64_t)direction clockType:(int64_t)type customClockConfiguration:(id)configuration source:(id)source;
 - (id)description;
-- (void)_clientQueue_addStreamingClient:(id)a3;
-- (void)_clientQueue_removeStreamingClient:(id)a3;
+- (void)_clientQueue_addStreamingClient:(id)client;
+- (void)_clientQueue_removeStreamingClient:(id)client;
 - (void)clientQueue_updateMutableStreamPropertiesByPolicy;
 - (void)consumeSampleBufferFromClient:(CMIOExtensionClient *)client completionHandler:(void *)completionHandler;
 - (void)dealloc;
-- (void)enqueueReactionEffect:(id)a3 completionHandler:(id)a4;
+- (void)enqueueReactionEffect:(id)effect completionHandler:(id)handler;
 - (void)notifyPropertiesChanged:(NSDictionary *)propertyStates;
 - (void)notifyScheduledOutputChanged:(CMIOExtensionScheduledOutput *)scheduledOutput;
 - (void)sendSampleBuffer:(CMSampleBufferRef)sampleBuffer discontinuity:(CMIOExtensionStreamDiscontinuityFlags)discontinuity hostTimeInNanoseconds:(uint64_t)hostTimeInNanoseconds;
-- (void)setStreamingClients:(id)a3;
+- (void)setStreamingClients:(id)clients;
 @end
 
 @implementation CMIOExtensionStream
@@ -52,21 +52,21 @@ uint64_t __41__CMIOExtensionStream_internalProperties__block_invoke()
   return [v12 initWithLocalizedName:localizedName streamID:streamID direction:direction customClockConfiguration:customClockConfiguration source:source];
 }
 
-- (id)_initWithLocalizedName:(id)a3 streamID:(id)a4 direction:(int64_t)a5 clockType:(int64_t)a6 customClockConfiguration:(id)a7 source:(id)a8
+- (id)_initWithLocalizedName:(id)name streamID:(id)d direction:(int64_t)direction clockType:(int64_t)type customClockConfiguration:(id)configuration source:(id)source
 {
-  if (a3 && a4 && a8 && (a6 != 2 || a7))
+  if (name && d && source && (type != 2 || configuration))
   {
     v24.receiver = self;
     v24.super_class = CMIOExtensionStream;
     v14 = [(CMIOExtensionStream *)&v24 init];
     if (v14)
     {
-      *(v14 + 22) = [a3 copy];
-      *(v14 + 23) = [a4 copy];
-      *(v14 + 24) = a5;
-      *(v14 + 25) = a6;
-      *(v14 + 26) = [a7 copy];
-      objc_storeWeak(v14 + 20, a8);
+      *(v14 + 22) = [name copy];
+      *(v14 + 23) = [d copy];
+      *(v14 + 24) = direction;
+      *(v14 + 25) = type;
+      *(v14 + 26) = [configuration copy];
+      objc_storeWeak(v14 + 20, source);
       *(v14 + 2) = 0;
       *(v14 + 2) = objc_opt_new();
       *(v14 + 3) = -1;
@@ -228,11 +228,11 @@ void __107__CMIOExtensionStream__initWithLocalizedName_streamID_direction_clockT
   return v3;
 }
 
-- (void)setStreamingClients:(id)a3
+- (void)setStreamingClients:(id)clients
 {
   os_unfair_lock_lock(&self->_streamingClientsLock);
   streamingClients = self->_streamingClients;
-  self->_streamingClients = a3;
+  self->_streamingClients = clients;
   os_unfair_lock_unlock(&self->_streamingClientsLock);
   [(CMIOExtensionStream *)self clientQueue_updateMutableStreamPropertiesByPolicy];
 }
@@ -246,21 +246,21 @@ void __107__CMIOExtensionStream__initWithLocalizedName_streamID_direction_clockT
   OUTLINED_FUNCTION_10(&dword_22EA08000, "%s:%d:%s exception %@", v9, v10);
 }
 
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (properties)
   {
-    if ([a3 containsObject:0x284358E78])
+    if ([properties containsObject:0x284358E78])
     {
       v6 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_localizedName attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-      [v5 setObject:v6 forKey:0x284358E78];
+      [dictionary setObject:v6 forKey:0x284358E78];
     }
 
-    if (([a3 containsObject:0x284358E98] & 1) == 0)
+    if (([properties containsObject:0x284358E98] & 1) == 0)
     {
 LABEL_8:
-      if (![a3 containsObject:0x284358EB8])
+      if (![properties containsObject:0x284358EB8])
       {
         goto LABEL_10;
       }
@@ -272,13 +272,13 @@ LABEL_8:
   else
   {
     v7 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_localizedName attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-    [v5 setObject:v7 forKey:0x284358E78];
+    [dictionary setObject:v7 forKey:0x284358E78];
   }
 
   v8 = [[CMIOExtensionPropertyState alloc] initWithValue:[(NSUUID *)self->_streamID UUIDString] attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-  [v5 setObject:v8 forKey:0x284358E98];
+  [dictionary setObject:v8 forKey:0x284358E98];
 
-  if (a3)
+  if (properties)
   {
     goto LABEL_8;
   }
@@ -286,28 +286,28 @@ LABEL_8:
 LABEL_9:
   v9 = [CMIOExtensionPropertyState alloc];
   v10 = -[CMIOExtensionPropertyState initWithValue:attributes:](v9, "initWithValue:attributes:", [MEMORY[0x277CCABB0] numberWithInteger:self->_direction], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-  [v5 setObject:v10 forKey:0x284358EB8];
+  [dictionary setObject:v10 forKey:0x284358EB8];
 
-  if (!a3)
+  if (!properties)
   {
     goto LABEL_11;
   }
 
 LABEL_10:
-  if ([a3 containsObject:0x284358ED8])
+  if ([properties containsObject:0x284358ED8])
   {
 LABEL_11:
     v11 = [CMIOExtensionPropertyState alloc];
     v12 = -[CMIOExtensionPropertyState initWithValue:attributes:](v11, "initWithValue:attributes:", [MEMORY[0x277CCABB0] numberWithInteger:self->_clockType], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-    [v5 setObject:v12 forKey:0x284358ED8];
+    [dictionary setObject:v12 forKey:0x284358ED8];
 
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_13;
     }
   }
 
-  if (![a3 containsObject:0x284358EF8])
+  if (![properties containsObject:0x284358EF8])
   {
     goto LABEL_17;
   }
@@ -316,13 +316,13 @@ LABEL_13:
   if (self->_clockType == 2 && self->_customClockConfiguration)
   {
     v13 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_customClockConfiguration attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-    [v5 setObject:v13 forKey:0x284358EF8];
+    [dictionary setObject:v13 forKey:0x284358EF8];
   }
 
-  if (a3)
+  if (properties)
   {
 LABEL_17:
-    if (![a3 containsObject:0x284358F18])
+    if (![properties containsObject:0x284358F18])
     {
       goto LABEL_22;
     }
@@ -341,11 +341,11 @@ LABEL_17:
 
   v16 = [[CMIOExtensionPropertyState alloc] initWithValue:v15 attributes:v14];
 
-  [v5 setObject:v16 forKey:0x284358F18];
+  [dictionary setObject:v16 forKey:0x284358F18];
 LABEL_22:
-  if ([v5 count])
+  if ([dictionary count])
   {
-    return v5;
+    return dictionary;
   }
 
   else
@@ -354,30 +354,30 @@ LABEL_22:
   }
 }
 
-- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)a3 propertyValues:(id)a4 error:(id *)a5
+- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)client propertyValues:(id)values error:(id *)error
 {
-  v5 = a4;
+  valuesCopy = values;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 1;
-  v7 = [CMIOExtensionStream internalWritableProperties:a3];
+  v7 = [CMIOExtensionStream internalWritableProperties:client];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __101__CMIOExtensionStream__clientQueue_setAndRemoveInternalPropertyValuesForClient_propertyValues_error___block_invoke;
   v10[3] = &unk_27885B8C0;
   v10[4] = v7;
   v10[5] = &v11;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v10];
   if ((v12[3] & 1) == 0)
   {
-    v5 = [v5 mutableCopy];
+    valuesCopy = [valuesCopy mutableCopy];
     v8 = objc_opt_new();
     [(CMIOExtensionStream *)self notifyPropertiesChanged:v8];
   }
 
   _Block_object_dispose(&v11, 8);
-  return v5;
+  return valuesCopy;
 }
 
 uint64_t __101__CMIOExtensionStream__clientQueue_setAndRemoveInternalPropertyValuesForClient_propertyValues_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -680,7 +680,7 @@ LABEL_7:
   [v5 notifyScheduledOutputChangedForStream:self scheduledOutput:scheduledOutput];
 }
 
-- (void)enqueueReactionEffect:(id)a3 completionHandler:(id)a4
+- (void)enqueueReactionEffect:(id)effect completionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = CMIOLog();
@@ -691,18 +691,18 @@ LABEL_7:
 
   v6 = *MEMORY[0x277CBECE8];
   FigCopyBacktrace();
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 4294967293);
+    (*(handler + 2))(handler, 4294967293);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_addStreamingClient:(id)a3
+- (void)_clientQueue_addStreamingClient:(id)client
 {
   v18 = *MEMORY[0x277D85DE8];
-  -[NSMutableDictionary setObject:forKey:](self->_streamingClientsMap, "setObject:forKey:", a3, [a3 clientID]);
+  -[NSMutableDictionary setObject:forKey:](self->_streamingClientsMap, "setObject:forKey:", client, [client clientID]);
   v5 = CMIOLog();
   if (v5)
   {
@@ -716,9 +716,9 @@ LABEL_7:
       v12 = 2080;
       v13 = "[CMIOExtensionStream _clientQueue_addStreamingClient:]";
       v14 = 2114;
-      v15 = self;
+      selfCopy = self;
       v16 = 1025;
-      v17 = [a3 pid];
+      v17 = [client pid];
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, adding streaming client with %{private}d pid", &v8, 0x2Cu);
     }
   }
@@ -727,10 +727,10 @@ LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_removeStreamingClient:(id)a3
+- (void)_clientQueue_removeStreamingClient:(id)client
 {
   v21 = *MEMORY[0x277D85DE8];
-  -[NSMutableDictionary removeObjectForKey:](self->_streamingClientsMap, "removeObjectForKey:", [a3 clientID]);
+  -[NSMutableDictionary removeObjectForKey:](self->_streamingClientsMap, "removeObjectForKey:", [client clientID]);
   v5 = CMIOLog();
   if (v5)
   {
@@ -744,9 +744,9 @@ LABEL_7:
       v15 = 2080;
       v16 = "[CMIOExtensionStream _clientQueue_removeStreamingClient:]";
       v17 = 2114;
-      v18 = self;
+      selfCopy = self;
       v19 = 1025;
-      v20 = [a3 pid];
+      v20 = [client pid];
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, removing streaming client with %{private}d pid", &v11, 0x2Cu);
     }
   }

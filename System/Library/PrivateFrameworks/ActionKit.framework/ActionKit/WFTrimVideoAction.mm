@@ -1,20 +1,20 @@
 @interface WFTrimVideoAction
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4;
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input;
 @end
 
 @implementation WFTrimVideoAction
 
-- (void)runWithRemoteUserInterface:(id)a3 input:(id)a4
+- (void)runWithRemoteUserInterface:(id)interface input:(id)input
 {
-  v6 = a3;
+  interfaceCopy = interface;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__WFTrimVideoAction_runWithRemoteUserInterface_input___block_invoke;
   v8[3] = &unk_278C20998;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a4 getFileRepresentation:v8 forType:0];
+  v9 = interfaceCopy;
+  v7 = interfaceCopy;
+  [input getFileRepresentation:v8 forType:0];
 }
 
 void __54__WFTrimVideoAction_runWithRemoteUserInterface_input___block_invoke(uint64_t a1, void *a2, void *a3)

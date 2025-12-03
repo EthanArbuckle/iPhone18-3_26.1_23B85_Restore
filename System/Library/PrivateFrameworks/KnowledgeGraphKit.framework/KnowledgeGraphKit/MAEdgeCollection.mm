@@ -1,120 +1,120 @@
 @interface MAEdgeCollection
-+ (id)edgesMatchingFilter:(id)a3 inGraph:(id)a4;
-+ (id)edgesOfType:(unint64_t)a3 betweenNodes:(id)a4 andNodes:(id)a5 matchingFilter:(id)a6;
-+ (id)edgesOfType:(unint64_t)a3 onNodes:(id)a4 matchingFilter:(id)a5;
-- (BOOL)containsEdge:(id)a3;
-- (MAEdgeCollection)initWithEdge:(id)a3;
-- (id)edgesMatchingFilter:(id)a3;
++ (id)edgesMatchingFilter:(id)filter inGraph:(id)graph;
++ (id)edgesOfType:(unint64_t)type betweenNodes:(id)nodes andNodes:(id)andNodes matchingFilter:(id)filter;
++ (id)edgesOfType:(unint64_t)type onNodes:(id)nodes matchingFilter:(id)filter;
+- (BOOL)containsEdge:(id)edge;
+- (MAEdgeCollection)initWithEdge:(id)edge;
+- (id)edgesMatchingFilter:(id)filter;
 - (id)firstEdge;
 - (id)labels;
 - (id)randomEdge;
-- (void)_enumerateUsingBlock:(id)a3;
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 withBlock:(id)a4;
-- (void)enumerateEdgesUsingBlock:(id)a3;
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 withBlock:(id)a4;
-- (void)enumerateStringPropertyValuesForKey:(id)a3 withBlock:(id)a4;
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 withBlock:(id)a4;
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 withBlock:(id)a4;
+- (void)_enumerateUsingBlock:(id)block;
+- (void)enumerateDoublePropertyValuesForKey:(id)key withBlock:(id)block;
+- (void)enumerateEdgesUsingBlock:(id)block;
+- (void)enumerateIntegerPropertyValuesForKey:(id)key withBlock:(id)block;
+- (void)enumerateStringPropertyValuesForKey:(id)key withBlock:(id)block;
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key withBlock:(id)block;
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key withBlock:(id)block;
 @end
 
 @implementation MAEdgeCollection
 
-+ (id)edgesMatchingFilter:(id)a3 inGraph:(id)a4
++ (id)edgesMatchingFilter:(id)filter inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = [a4 graphReference];
-  v8 = [v7 concreteGraph];
-  v9 = [v8 edgeIdentifiersMatchingFilter:v6];
+  filterCopy = filter;
+  graphReference = [graph graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  v9 = [concreteGraph edgeIdentifiersMatchingFilter:filterCopy];
 
-  v10 = [[a1 alloc] initWithGraphReference:v7 elementIdentifiers:v9];
+  v10 = [[self alloc] initWithGraphReference:graphReference elementIdentifiers:v9];
 
   return v10;
 }
 
-+ (id)edgesOfType:(unint64_t)a3 betweenNodes:(id)a4 andNodes:(id)a5 matchingFilter:(id)a6
++ (id)edgesOfType:(unint64_t)type betweenNodes:(id)nodes andNodes:(id)andNodes matchingFilter:(id)filter
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v12 graphReference];
-  v14 = [v13 concreteGraph];
-  v15 = [v12 elementIdentifiers];
+  filterCopy = filter;
+  andNodesCopy = andNodes;
+  nodesCopy = nodes;
+  graphReference = [nodesCopy graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [nodesCopy elementIdentifiers];
 
-  v16 = [v11 elementIdentifiers];
+  elementIdentifiers2 = [andNodesCopy elementIdentifiers];
 
-  v17 = [v14 edgeIdentifiersOfType:a3 betweenNodesForIdentifiers:v15 andNodesForIdentifiers:v16 matchingFilter:v10];
+  v17 = [concreteGraph edgeIdentifiersOfType:type betweenNodesForIdentifiers:elementIdentifiers andNodesForIdentifiers:elementIdentifiers2 matchingFilter:filterCopy];
 
-  v18 = [[a1 alloc] initWithGraphReference:v13 elementIdentifiers:v17];
+  v18 = [[self alloc] initWithGraphReference:graphReference elementIdentifiers:v17];
 
   return v18;
 }
 
-+ (id)edgesOfType:(unint64_t)a3 onNodes:(id)a4 matchingFilter:(id)a5
++ (id)edgesOfType:(unint64_t)type onNodes:(id)nodes matchingFilter:(id)filter
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 graphReference];
-  v11 = [v10 concreteGraph];
-  v12 = [v9 elementIdentifiers];
+  filterCopy = filter;
+  nodesCopy = nodes;
+  graphReference = [nodesCopy graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [nodesCopy elementIdentifiers];
 
-  v13 = [v11 edgeIdentifiersOfType:a3 onNodesForIdentifiers:v12 matchingFilter:v8];
+  v13 = [concreteGraph edgeIdentifiersOfType:type onNodesForIdentifiers:elementIdentifiers matchingFilter:filterCopy];
 
-  v14 = [[a1 alloc] initWithGraphReference:v10 elementIdentifiers:v13];
+  v14 = [[self alloc] initWithGraphReference:graphReference elementIdentifiers:v13];
 
   return v14;
 }
 
-- (id)edgesMatchingFilter:(id)a3
+- (id)edgesMatchingFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(MAElementCollection *)self graphReference];
-  v6 = [v5 concreteGraph];
-  v7 = [(MAElementCollection *)self elementIdentifiers];
-  v8 = [v6 edgeIdentifiersMatchingFilter:v4 intersectingIdentifiers:v7];
+  filterCopy = filter;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  v8 = [concreteGraph edgeIdentifiersMatchingFilter:filterCopy intersectingIdentifiers:elementIdentifiers];
 
-  v9 = [objc_alloc(objc_opt_class()) initWithGraphReference:v5 elementIdentifiers:v8];
+  v9 = [objc_alloc(objc_opt_class()) initWithGraphReference:graphReference elementIdentifiers:v8];
 
   return v9;
 }
 
 - (id)labels
 {
-  v3 = [(MAElementCollection *)self graphReference];
-  v4 = [v3 concreteGraph];
-  v5 = [(MAElementCollection *)self elementIdentifiers];
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
   v9 = 0;
-  [v4 labelsAndDomainsOfEdgesForIdentifiers:v5 labels:&v9 domains:0];
+  [concreteGraph labelsAndDomainsOfEdgesForIdentifiers:elementIdentifiers labels:&v9 domains:0];
   v6 = v9;
   v7 = v9;
 
   return v6;
 }
 
-- (BOOL)containsEdge:(id)a3
+- (BOOL)containsEdge:(id)edge
 {
-  v4 = a3;
-  v5 = [(MAElementCollection *)self elementIdentifiers];
-  v6 = [v4 identifier];
+  edgeCopy = edge;
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  identifier = [edgeCopy identifier];
 
-  LOBYTE(v4) = [v5 containsIdentifier:v6];
-  return v4;
+  LOBYTE(edgeCopy) = [elementIdentifiers containsIdentifier:identifier];
+  return edgeCopy;
 }
 
 - (id)randomEdge
 {
-  v3 = [(MAElementCollection *)self elementIdentifiers];
-  v4 = [v3 randomElement];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  randomElement = [elementIdentifiers randomElement];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (randomElement == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(MAElementCollection *)self graphReference];
-    v7 = [v6 concreteGraph];
-    v5 = [v7 edgeForIdentifier:v4];
+    graphReference = [(MAElementCollection *)self graphReference];
+    concreteGraph = [graphReference concreteGraph];
+    v5 = [concreteGraph edgeForIdentifier:randomElement];
   }
 
   return v5;
@@ -128,17 +128,17 @@
   v13 = __Block_byref_object_copy__888;
   v14 = __Block_byref_object_dispose__889;
   v15 = 0;
-  v3 = [(MAElementCollection *)self elementIdentifiers];
-  v4 = [v3 prefix:1];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  v4 = [elementIdentifiers prefix:1];
 
-  v5 = [(MAElementCollection *)self graphReference];
-  v6 = [v5 concreteGraph];
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __29__MAEdgeCollection_firstEdge__block_invoke;
   v9[3] = &unk_2797FFB10;
   v9[4] = &v10;
-  [v6 enumerateEdgesWithIdentifiers:v4 usingBlock:v9];
+  [concreteGraph enumerateEdgesWithIdentifiers:v4 usingBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -146,85 +146,85 @@
   return v7;
 }
 
-- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumerateUnsignedLongLongPropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(MAElementCollection *)self graphReference];
-  v8 = [v10 concreteGraph];
-  v9 = [(MAElementCollection *)self elementIdentifiers];
-  [v8 enumerateUnsignedLongLongPropertyValuesForKey:v7 ofEdgesWithIdentifiers:v9 usingBlock:v6];
+  blockCopy = block;
+  keyCopy = key;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateUnsignedLongLongPropertyValuesForKey:keyCopy ofEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumerateUnsignedIntegerPropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(MAElementCollection *)self graphReference];
-  v8 = [v10 concreteGraph];
-  v9 = [(MAElementCollection *)self elementIdentifiers];
-  [v8 enumerateUnsignedIntegerPropertyValuesForKey:v7 ofEdgesWithIdentifiers:v9 usingBlock:v6];
+  blockCopy = block;
+  keyCopy = key;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateUnsignedIntegerPropertyValuesForKey:keyCopy ofEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (void)enumerateDoublePropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumerateDoublePropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(MAElementCollection *)self graphReference];
-  v8 = [v10 concreteGraph];
-  v9 = [(MAElementCollection *)self elementIdentifiers];
-  [v8 enumerateDoublePropertyValuesForKey:v7 ofEdgesWithIdentifiers:v9 usingBlock:v6];
+  blockCopy = block;
+  keyCopy = key;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateDoublePropertyValuesForKey:keyCopy ofEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (void)enumerateStringPropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumerateStringPropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(MAElementCollection *)self graphReference];
-  v8 = [v10 concreteGraph];
-  v9 = [(MAElementCollection *)self elementIdentifiers];
-  [v8 enumerateStringPropertyValuesForKey:v7 ofEdgesWithIdentifiers:v9 usingBlock:v6];
+  blockCopy = block;
+  keyCopy = key;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateStringPropertyValuesForKey:keyCopy ofEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (void)enumerateIntegerPropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumerateIntegerPropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(MAElementCollection *)self graphReference];
-  v8 = [v10 concreteGraph];
-  v9 = [(MAElementCollection *)self elementIdentifiers];
-  [v8 enumerateIntegerPropertyValuesForKey:v7 ofEdgesWithIdentifiers:v9 usingBlock:v6];
+  blockCopy = block;
+  keyCopy = key;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateIntegerPropertyValuesForKey:keyCopy ofEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (void)enumerateEdgesUsingBlock:(id)a3
+- (void)enumerateEdgesUsingBlock:(id)block
 {
-  v4 = a3;
-  v7 = [(MAElementCollection *)self graphReference];
-  v5 = [v7 concreteGraph];
-  v6 = [(MAElementCollection *)self elementIdentifiers];
-  [v5 enumerateEdgesWithIdentifiers:v6 usingBlock:v4];
+  blockCopy = block;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
-- (MAEdgeCollection)initWithEdge:(id)a3
+- (MAEdgeCollection)initWithEdge:(id)edge
 {
-  v4 = a3;
-  v5 = [v4 graphReference];
+  edgeCopy = edge;
+  graphReference = [edgeCopy graphReference];
   v6 = [KGElementIdentifierSet alloc];
-  v7 = [v4 identifier];
+  identifier = [edgeCopy identifier];
 
-  v8 = [(KGElementIdentifierSet *)v6 initWithElementIdentifier:v7];
-  v9 = [(MAElementCollection *)self initWithGraphReference:v5 elementIdentifiers:v8];
+  v8 = [(KGElementIdentifierSet *)v6 initWithElementIdentifier:identifier];
+  v9 = [(MAElementCollection *)self initWithGraphReference:graphReference elementIdentifiers:v8];
 
   return v9;
 }
 
-- (void)_enumerateUsingBlock:(id)a3
+- (void)_enumerateUsingBlock:(id)block
 {
-  v4 = a3;
-  v7 = [(MAElementCollection *)self graphReference];
-  v5 = [v7 concreteGraph];
-  v6 = [(MAElementCollection *)self elementIdentifiers];
-  [v5 enumerateEdgesWithIdentifiers:v6 usingBlock:v4];
+  blockCopy = block;
+  graphReference = [(MAElementCollection *)self graphReference];
+  concreteGraph = [graphReference concreteGraph];
+  elementIdentifiers = [(MAElementCollection *)self elementIdentifiers];
+  [concreteGraph enumerateEdgesWithIdentifiers:elementIdentifiers usingBlock:blockCopy];
 }
 
 @end

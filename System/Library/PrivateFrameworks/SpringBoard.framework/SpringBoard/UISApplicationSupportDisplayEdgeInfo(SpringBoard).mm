@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __81__UISApplicationSupportDisplayEdgeInfo_SpringBoard__sb_thisDeviceDisplayEdgeInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sb_thisDeviceDisplayEdgeInfo_onceToken != -1)
   {
     dispatch_once(&sb_thisDeviceDisplayEdgeInfo_onceToken, block);
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __90__UISApplicationSupportDisplayEdgeInfo_SpringBoard__sb_floatingApplicationDisplayEdgeInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sb_floatingApplicationDisplayEdgeInfo_onceToken != -1)
   {
     dispatch_once(&sb_floatingApplicationDisplayEdgeInfo_onceToken, block);
@@ -46,15 +46,15 @@
 + (id)sb_displayEdgeInfoForApplication:()SpringBoard
 {
   v4 = a3;
-  v5 = [v4 _classicMode];
-  if (SBApplicationClassicModeWantsSafeAreaInsets(v5))
+  _classicMode = [v4 _classicMode];
+  if (SBApplicationClassicModeWantsSafeAreaInsets(_classicMode))
   {
-    [a1 sb_displayEdgeInfoForScreenTypeConsideringCurrentDevice:{-[SBApplication _screenTypeForClassicMode:](v4, v5)}];
+    [self sb_displayEdgeInfoForScreenTypeConsideringCurrentDevice:{-[SBApplication _screenTypeForClassicMode:](v4, _classicMode)}];
   }
 
   else
   {
-    [a1 sb_legacy_homeButtonDeviceDisplayEdgeInfo];
+    [self sb_legacy_homeButtonDeviceDisplayEdgeInfo];
   }
   v6 = ;
 
@@ -63,7 +63,7 @@
 
 + (id)sb_displayEdgeInfoForScreenTypeConsideringCurrentDevice:()SpringBoard
 {
-  v5 = [a1 sbh_displayEdgeInfoForScreenType:?];
+  v5 = [self sbh_displayEdgeInfoForScreenType:?];
   v6 = SBHScreenTypeForCurrentDevice();
   if (v6 != a3)
   {
@@ -76,18 +76,18 @@
         v9 = [SBApplication _unobscuredScreenTypeForScreenType:v7];
         SBHGetScreenSpecification();
         SBHGetScreenSpecification();
-        v10 = [a1 sbh_displayEdgeInfoForScreenType:v9];
-        v11 = [v10 safeAreaInsetsPortrait];
-        [v11 topInset];
+        v10 = [self sbh_displayEdgeInfoForScreenType:v9];
+        safeAreaInsetsPortrait = [v10 safeAreaInsetsPortrait];
+        [safeAreaInsetsPortrait topInset];
         v13 = round(0.0 / 0.0 * v12);
 
-        v14 = [v5 safeAreaInsetsPortrait];
+        safeAreaInsetsPortrait2 = [v5 safeAreaInsetsPortrait];
         v15 = objc_alloc(MEMORY[0x277D77758]);
-        [v14 leftInset];
+        [safeAreaInsetsPortrait2 leftInset];
         v17 = v16;
-        [v14 bottomInset];
+        [safeAreaInsetsPortrait2 bottomInset];
         v19 = v18;
-        [v14 rightInset];
+        [safeAreaInsetsPortrait2 rightInset];
         v21 = [v15 initWithTop:v13 left:v17 bottom:v19 right:v20];
         [v5 setSafeAreaInsetsPortrait:v21];
       }
@@ -99,36 +99,36 @@
 
 - (id)sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:()SpringBoard
 {
-  v4 = [a1 safeAreaInsetsPortrait];
-  [v4 topInset];
+  safeAreaInsetsPortrait = [self safeAreaInsetsPortrait];
+  [safeAreaInsetsPortrait topInset];
   v6 = v5;
 
   if (v6 >= a2)
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 copy];
-    v8 = [v7 safeAreaInsetsPortrait];
+    selfCopy = [self copy];
+    safeAreaInsetsPortrait2 = [selfCopy safeAreaInsetsPortrait];
     v9 = objc_alloc(MEMORY[0x277D77758]);
-    [v8 leftInset];
+    [safeAreaInsetsPortrait2 leftInset];
     v11 = v10;
-    [v8 bottomInset];
+    [safeAreaInsetsPortrait2 bottomInset];
     v13 = v12;
-    [v8 rightInset];
+    [safeAreaInsetsPortrait2 rightInset];
     v15 = [v9 initWithTop:a2 left:v11 bottom:v13 right:v14];
-    [v7 setSafeAreaInsetsPortrait:v15];
+    [selfCopy setSafeAreaInsetsPortrait:v15];
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (__n128)sb_orientedEdgeInsetsForInterfaceOrientation:()SpringBoard traitCollection:
 {
   v5 = a4;
-  v6 = [a1 safeAreaInsetsPortrait];
+  safeAreaInsetsPortrait = [self safeAreaInsetsPortrait];
   UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper();
   v24 = v7;
   v25 = v8;
@@ -147,9 +147,9 @@
       v14 = v13;
       v24 = v15;
       v17 = v16;
-      v18 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [v5 userInterfaceIdiom];
       v19 = fmax(v14, v17);
-      if (v18 == 3)
+      if (userInterfaceIdiom == 3)
       {
         v19 = v14;
       }
@@ -157,8 +157,8 @@
       v22 = v19;
     }
 
-    v20 = [a1 homeAffordanceOverlayAllowance];
-    [v20 doubleValue];
+    homeAffordanceOverlayAllowance = [self homeAffordanceOverlayAllowance];
+    [homeAffordanceOverlayAllowance doubleValue];
   }
 
   return v24;

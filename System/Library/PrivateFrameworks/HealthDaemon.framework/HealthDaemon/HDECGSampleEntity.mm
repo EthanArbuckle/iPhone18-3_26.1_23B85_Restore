@@ -1,9 +1,9 @@
 @interface HDECGSampleEntity
-+ (BOOL)_insertECGWithCodableBinarySample:(id)a3 syncStore:(id)a4 profile:(id)a5 provenance:(id)a6 error:(id *)a7;
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)_insertECGWithCodableBinarySample:(id)sample syncStore:(id)store profile:(id)profile provenance:(id)provenance error:(id *)error;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
 @end
 
 @implementation HDECGSampleEntity
@@ -21,32 +21,32 @@
   return v3;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDECGSampleEntity.m" lineNumber:70 description:{@"Subclasses must override %s", "+[HDECGSampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDECGSampleEntity.m" lineNumber:70 description:{@"Subclasses must override %s", "+[HDECGSampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v25[4] = a1;
+  v25[4] = self;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke_2;
   v22[3] = &unk_278613038;
-  v23 = v14;
-  v24 = v12;
-  v16 = v12;
-  v17 = v14;
-  if ([v13 executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_6 error:a7 SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
+  v23 = dCopy;
+  v24 = objectCopy;
+  v16 = objectCopy;
+  v17 = dCopy;
+  if ([databaseCopy executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_6 error:error SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
   {
     v18 = v17;
   }
@@ -97,29 +97,29 @@ uint64_t __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_pers
   return sqlite3_bind_int64(a2, 5, v10);
 }
 
-+ (BOOL)_insertECGWithCodableBinarySample:(id)a3 syncStore:(id)a4 profile:(id)a5 provenance:(id)a6 error:(id *)a7
++ (BOOL)_insertECGWithCodableBinarySample:(id)sample syncStore:(id)store profile:(id)profile provenance:(id)provenance error:(id *)error
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v48 = a6;
-  v47 = a5;
-  v9 = a3;
+  provenanceCopy = provenance;
+  profileCopy = profile;
+  sampleCopy = sample;
   objc_opt_self();
-  v10 = [MEMORY[0x277CCD8A8] createWithCodable:v9];
+  v10 = [MEMORY[0x277CCD8A8] createWithCodable:sampleCopy];
 
-  v11 = [v10 metadata];
+  metadata = [v10 metadata];
   v12 = *MEMORY[0x277CCDFD8];
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCDFD8]];
+  v13 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCDFD8]];
   [v10 _setPrivateClassification:{objc_msgSend(v13, "integerValue")}];
 
-  v14 = [v10 metadata];
+  metadata2 = [v10 metadata];
   v15 = *MEMORY[0x277CCDFE8];
-  v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277CCDFE8]];
+  v16 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CCDFE8]];
   [v16 integerValue];
 
   [v10 _setSymptomsStatus:HKElectrocardiogramSymptomsStatusFromPrivateElectrocardiogramSymptoms()];
-  v17 = [v10 metadata];
+  metadata3 = [v10 metadata];
   v18 = *MEMORY[0x277CCDFE0];
-  v19 = [v17 objectForKeyedSubscript:*MEMORY[0x277CCDFE0]];
+  v19 = [metadata3 objectForKeyedSubscript:*MEMORY[0x277CCDFE0]];
 
   if (v19)
   {
@@ -128,28 +128,28 @@ uint64_t __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_pers
 
   v20 = v10;
   objc_opt_self();
-  v21 = [v20 metadata];
-  v22 = [v21 objectForKeyedSubscript:v15];
+  metadata4 = [v20 metadata];
+  v22 = [metadata4 objectForKeyedSubscript:v15];
   if (v22)
   {
     v23 = v22;
-    v24 = [v20 metadata];
-    v25 = [v24 objectForKeyedSubscript:v15];
-    v26 = [v25 integerValue];
+    metadata5 = [v20 metadata];
+    v25 = [metadata5 objectForKeyedSubscript:v15];
+    integerValue = [v25 integerValue];
 
-    if (!v26)
+    if (!integerValue)
     {
       v32 = 0;
       goto LABEL_9;
     }
 
-    v27 = [v20 metadata];
-    v28 = [v27 objectForKeyedSubscript:v15];
+    metadata6 = [v20 metadata];
+    v28 = [metadata6 objectForKeyedSubscript:v15];
     [v28 integerValue];
 
     v29 = _HKCategoryTypesForSymptomsBitmask();
     v30 = v20;
-    v21 = v29;
+    metadata4 = v29;
     objc_opt_self();
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
@@ -158,7 +158,7 @@ uint64_t __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_pers
     v52 = v30;
     v53 = 0;
     v31 = v30;
-    v32 = [v21 hk_map:v51];
+    v32 = [metadata4 hk_map:v51];
   }
 
   else
@@ -168,8 +168,8 @@ uint64_t __83__HDECGSampleEntity_insertDataObject_withProvenance_inDatabase_pers
 
 LABEL_9:
   v33 = objc_alloc(MEMORY[0x277CBEB38]);
-  v34 = [v20 metadata];
-  v35 = [v33 initWithDictionary:v34];
+  metadata7 = [v20 metadata];
+  v35 = [v33 initWithDictionary:metadata7];
 
   v55[0] = v12;
   v55[1] = v18;
@@ -178,20 +178,20 @@ LABEL_9:
 
   [v20 _setMetadata:v35];
   v46 = [v32 hk_map:&__block_literal_global_241];
-  v37 = [v20 UUID];
+  uUID = [v20 UUID];
   v50 = 0;
-  v45 = [HDAssociationEntity associateSampleUUIDs:v46 withSampleUUID:v37 type:0 behavior:0 destinationSubObjectReference:0 lastInsertedEntityID:&v50 profile:v47 error:a7];
+  v45 = [HDAssociationEntity associateSampleUUIDs:v46 withSampleUUID:uUID type:0 behavior:0 destinationSubObjectReference:0 lastInsertedEntityID:&v50 profile:profileCopy error:error];
   v38 = v50;
 
-  v39 = [v47 dataManager];
+  dataManager = [profileCopy dataManager];
 
   v54 = v20;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
   v41 = [v40 arrayByAddingObjectsFromArray:v32];
-  v42 = [v20 _creationDate];
+  _creationDate = [v20 _creationDate];
 
-  [v42 timeIntervalSinceReferenceDate];
-  LOBYTE(v38) = [v39 insertDataObjects:v41 withProvenance:v48 creationDate:a7 error:?];
+  [_creationDate timeIntervalSinceReferenceDate];
+  LOBYTE(v38) = [dataManager insertDataObjects:v41 withProvenance:provenanceCopy creationDate:error error:?];
 
   v43 = *MEMORY[0x277D85DE8];
   return v45 & v38;
@@ -234,23 +234,23 @@ id __66__HDECGSampleEntity__symptomSamplesForSymptomTypes_withValue_ecg___block_
   return v11;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addEcgSamples:a3];
+    [collection addEcgSamples:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDECGSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDECGSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

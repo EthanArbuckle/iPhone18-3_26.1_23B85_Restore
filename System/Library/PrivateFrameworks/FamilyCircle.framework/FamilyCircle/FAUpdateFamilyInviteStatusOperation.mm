@@ -1,39 +1,39 @@
 @interface FAUpdateFamilyInviteStatusOperation
-- (FAUpdateFamilyInviteStatusOperation)initWithNetworkService:(id)a3 inviteCode:(id)a4 inviteStatus:(int64_t)a5 responseFormat:(int64_t)a6 additionalRequestParameters:(id)a7;
-- (id)_userActionWithInviteStatus:(int64_t)a3;
+- (FAUpdateFamilyInviteStatusOperation)initWithNetworkService:(id)service inviteCode:(id)code inviteStatus:(int64_t)status responseFormat:(int64_t)format additionalRequestParameters:(id)parameters;
+- (id)_userActionWithInviteStatus:(int64_t)status;
 - (id)updateInviteStatus;
 @end
 
 @implementation FAUpdateFamilyInviteStatusOperation
 
-- (FAUpdateFamilyInviteStatusOperation)initWithNetworkService:(id)a3 inviteCode:(id)a4 inviteStatus:(int64_t)a5 responseFormat:(int64_t)a6 additionalRequestParameters:(id)a7
+- (FAUpdateFamilyInviteStatusOperation)initWithNetworkService:(id)service inviteCode:(id)code inviteStatus:(int64_t)status responseFormat:(int64_t)format additionalRequestParameters:(id)parameters
 {
-  v13 = a4;
-  v14 = a7;
+  codeCopy = code;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = FAUpdateFamilyInviteStatusOperation;
-  v15 = [(FANetworkClient *)&v18 initWithNetworkService:a3];
+  v15 = [(FANetworkClient *)&v18 initWithNetworkService:service];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_inviteCode, a4);
-    v16->_inviteStatus = a5;
-    objc_storeStrong(&v16->_additionalRequestParameters, a7);
-    v16->_responseFormat = a6;
+    objc_storeStrong(&v15->_inviteCode, code);
+    v16->_inviteStatus = status;
+    objc_storeStrong(&v16->_additionalRequestParameters, parameters);
+    v16->_responseFormat = format;
   }
 
   return v16;
 }
 
-- (id)_userActionWithInviteStatus:(int64_t)a3
+- (id)_userActionWithInviteStatus:(int64_t)status
 {
   v3 = @"decline";
-  if (a3 != 2)
+  if (status != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     return @"accept";
   }
@@ -48,15 +48,15 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(FAUpdateFamilyInviteStatusOperation *)self inviteCode];
-  [v4 setObject:v5 forKeyedSubscript:@"inviteUrl"];
+  inviteCode = [(FAUpdateFamilyInviteStatusOperation *)self inviteCode];
+  [v4 setObject:inviteCode forKeyedSubscript:@"inviteUrl"];
 
   v6 = [NSURLComponents alloc];
-  v7 = [(FAUpdateFamilyInviteStatusOperation *)self inviteCode];
-  v8 = [v6 initWithString:v7];
+  inviteCode2 = [(FAUpdateFamilyInviteStatusOperation *)self inviteCode];
+  v8 = [v6 initWithString:inviteCode2];
 
-  v9 = [v8 fa_queryItemsDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"inviteCode"];
+  fa_queryItemsDictionary = [v8 fa_queryItemsDictionary];
+  v10 = [fa_queryItemsDictionary objectForKeyedSubscript:@"inviteCode"];
   [v4 setObject:v10 forKeyedSubscript:@"inviteCode"];
 
   [v3 setObject:v4 forKeyedSubscript:@"requestParameters"];
@@ -66,18 +66,18 @@
   [v3 addEntriesFromDictionary:self->_additionalRequestParameters];
   v12 = objc_alloc_init(FAURLConfiguration);
   v13 = [v12 URLForEndpoint:FAURLEndpointPendingInviteActionFromMessagesV1];
-  v14 = [v13 then];
+  then = [v13 then];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_100008D44;
   v24 = &unk_1000A6228;
-  v25 = self;
+  selfCopy = self;
   v26 = v3;
-  v15 = v14[2];
+  v15 = then[2];
   v16 = v3;
-  v17 = v15(v14, &v21);
-  v18 = [v17 then];
-  v19 = (v18)[2](v18, &stru_1000A6268);
+  v17 = v15(then, &v21);
+  then2 = [v17 then];
+  v19 = (then2)[2](then2, &stru_1000A6268);
 
   return v19;
 }

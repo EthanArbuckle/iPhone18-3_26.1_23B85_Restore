@@ -1,12 +1,12 @@
 @interface SAWSUpdateDataStore
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (SAWSUpdateDataStore)init;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)printFrameRateReportWithStartSampleIndex:(uint64_t)a3 endSampleIndex:(uint64_t)a4 startDisplayIndex:(void *)a5 sampleDataStore:(void *)a6 toStream:;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)printFrameRateReportWithStartSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex startDisplayIndex:(void *)displayIndex sampleDataStore:(void *)store toStream:;
 @end
 
 @implementation SAWSUpdateDataStore
@@ -41,11 +41,11 @@ void __48__SAWSUpdateDataStore__getWSUpdateArraySnapshot__block_invoke(uint64_t 
   return v3;
 }
 
-- (void)printFrameRateReportWithStartSampleIndex:(uint64_t)a3 endSampleIndex:(uint64_t)a4 startDisplayIndex:(void *)a5 sampleDataStore:(void *)a6 toStream:
+- (void)printFrameRateReportWithStartSampleIndex:(uint64_t)index endSampleIndex:(uint64_t)sampleIndex startDisplayIndex:(void *)displayIndex sampleDataStore:(void *)store toStream:
 {
-  if (a1)
+  if (self)
   {
-    if (!a6)
+    if (!store)
     {
       v12 = *__error();
       v13 = _sa_logt();
@@ -58,18 +58,18 @@ void __48__SAWSUpdateDataStore__getWSUpdateArraySnapshot__block_invoke(uint64_t 
       *__error() = v12;
     }
 
-    [a6 appendString:@"\n\n"];
-    if (a3)
+    [store appendString:@"\n\n"];
+    if (index)
     {
-      v14 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v14 = -1;
+      indexCopy = -1;
     }
 
-    if (v14 < a2)
+    if (indexCopy < a2)
     {
       v15 = *__error();
       v16 = _sa_logt();
@@ -84,52 +84,52 @@ void __48__SAWSUpdateDataStore__getWSUpdateArraySnapshot__block_invoke(uint64_t 
       goto LABEL_69;
     }
 
-    v18 = [a5 sampleTimestamps];
-    v19 = [v18 count];
+    sampleTimestamps = [displayIndex sampleTimestamps];
+    v19 = [sampleTimestamps count];
 
     if (v19 <= a2)
     {
       v17 = @"No WS Updates\n";
 LABEL_69:
-      [a6 appendString:v17];
+      [store appendString:v17];
       return;
     }
 
-    v20 = [a5 sampleTimestamps];
-    v21 = [v20 count];
+    sampleTimestamps2 = [displayIndex sampleTimestamps];
+    v21 = [sampleTimestamps2 count];
 
-    if (v14 >= v21)
+    if (indexCopy >= v21)
     {
-      v22 = [a5 sampleTimestamps];
-      a3 = [v22 count] - 1;
+      sampleTimestamps3 = [displayIndex sampleTimestamps];
+      index = [sampleTimestamps3 count] - 1;
     }
 
-    v23 = [a5 sampleTimestamps];
-    v24 = [v23 objectAtIndexedSubscript:a2];
+    sampleTimestamps4 = [displayIndex sampleTimestamps];
+    v24 = [sampleTimestamps4 objectAtIndexedSubscript:a2];
     [v24 machAbsTimeSeconds];
     v26 = v25;
 
-    v27 = [a5 sampleTimestamps];
-    v28 = [v27 objectAtIndexedSubscript:a3];
+    sampleTimestamps5 = [displayIndex sampleTimestamps];
+    v28 = [sampleTimestamps5 objectAtIndexedSubscript:index];
     [v28 machAbsTimeSeconds];
     v67 = v29;
 
     v30 = objc_autoreleasePoolPush();
     objc_opt_self();
-    [a6 appendString:@"----FPS Report Legend:-----\nRaw Instantaneous FPS:\n    30FPS delimiter:    '|'\n    10FPS delimiter:    '+'\n    1FPS delimiter:     '-'\n\nDefer+Work Instantaneous FPS:                'X'\nWork Instantaneous FPS:                      '^'\nEqual Work and Defer+Work Instantaneous FPS: '*'\n"];
-    [a6 appendString:@"\n====Frame Rate Report:====\n\n"];
+    [store appendString:@"----FPS Report Legend:-----\nRaw Instantaneous FPS:\n    30FPS delimiter:    '|'\n    10FPS delimiter:    '+'\n    1FPS delimiter:     '-'\n\nDefer+Work Instantaneous FPS:                'X'\nWork Instantaneous FPS:                      '^'\nEqual Work and Defer+Work Instantaneous FPS: '*'\n"];
+    [store appendString:@"\n====Frame Rate Report:====\n\n"];
     *buf = 0;
     v71 = buf;
     v72 = 0x3032000000;
     v73 = __Block_byref_object_copy__10;
     v74 = __Block_byref_object_dispose__10;
     v75 = 0;
-    v31 = *(a1 + 16);
+    v31 = *(self + 16);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__SAWSUpdateDataStore__getWSUpdateArraySnapshot__block_invoke;
     block[3] = &unk_1E86F8BB0;
-    block[4] = a1;
+    block[4] = self;
     block[5] = buf;
     dispatch_sync(v31, block);
     v32 = *(v71 + 5);
@@ -138,21 +138,21 @@ LABEL_69:
     if (v32 && [v32 count])
     {
       v64 = v30;
-      v68 = [SAWSUpdateTimeToIndexMapping arrayOfMappingsFromWSUpdataDataArray:v32 andSampleDataStore:a5];
+      v68 = [SAWSUpdateTimeToIndexMapping arrayOfMappingsFromWSUpdataDataArray:v32 andSampleDataStore:displayIndex];
       if (v68)
       {
-        [a6 printWithFormat:@"%29s", "Frame Length [SampleRange]"];
-        [a6 printWithFormat:@"%29s", "WS Wait Length [SampleRange]"];
-        [a6 printWithFormat:@"%29s", "Defer Length [SampleRange]"];
-        [a6 printWithFormat:@"%29s", "WS Work Length [SampleRange]"];
-        [a6 printWithFormat:@"%16s\n", "Frame Rate"];
+        [store printWithFormat:@"%29s", "Frame Length [SampleRange]"];
+        [store printWithFormat:@"%29s", "WS Wait Length [SampleRange]"];
+        [store printWithFormat:@"%29s", "Defer Length [SampleRange]"];
+        [store printWithFormat:@"%29s", "WS Work Length [SampleRange]"];
+        [store printWithFormat:@"%16s\n", "Frame Rate"];
         if (![v32 count])
         {
           goto LABEL_75;
         }
 
         v33 = 0;
-        v65 = a4 - a2;
+        v65 = sampleIndex - a2;
         v66 = v32;
         while (1)
         {
@@ -176,19 +176,19 @@ LABEL_69:
             v39 = v34[2] - v38;
             if (v39 > 0.0333333333)
             {
-              [a6 printWithFormat:@"|\nWS Idle: %.2fms\n|\n", v39 * 1000.0];
+              [store printWithFormat:@"|\nWS Idle: %.2fms\n|\n", v39 * 1000.0];
               v38 = v34[1];
               v37 = v34[4];
             }
 
-            [a6 printWithFormat:@"%13.2f ms", (v37 - v38) * 1000.0];
-            [v36 printFrameIndexRangeToStream:a6 withTranslationDelta:v65];
-            [a6 printWithFormat:@"%13.2f ms", (v34[2] - v34[1]) * 1000.0];
-            [v36 printWaitIndexRangeToStream:a6 withTranslationDelta:v65];
-            [a6 printWithFormat:@"%13.2f ms", (v34[3] - v34[2]) * 1000.0];
-            [v36 printDeferIndexRangeToStream:a6 withTranslationDelta:v65];
-            [a6 printWithFormat:@"%13.2f ms", (v34[4] - v34[3]) * 1000.0];
-            [v36 printWorkIndexRangeToStream:a6 withTranslationDelta:v65];
+            [store printWithFormat:@"%13.2f ms", (v37 - v38) * 1000.0];
+            [v36 printFrameIndexRangeToStream:store withTranslationDelta:v65];
+            [store printWithFormat:@"%13.2f ms", (v34[2] - v34[1]) * 1000.0];
+            [v36 printWaitIndexRangeToStream:store withTranslationDelta:v65];
+            [store printWithFormat:@"%13.2f ms", (v34[3] - v34[2]) * 1000.0];
+            [v36 printDeferIndexRangeToStream:store withTranslationDelta:v65];
+            [store printWithFormat:@"%13.2f ms", (v34[4] - v34[3]) * 1000.0];
+            [v36 printWorkIndexRangeToStream:store withTranslationDelta:v65];
             v40 = v34[3];
             v41 = (v34[4] - v34[1]) * 1000.0;
             if (v41 == 0.0)
@@ -224,7 +224,7 @@ LABEL_69:
               v47 = 60.0;
             }
 
-            [a6 printWithFormat:@"%12.2f FPS", *&v42];
+            [store printWithFormat:@"%12.2f FPS", *&v42];
             v48 = 0;
             v49 = rint(v45);
             v50 = rint(v47);
@@ -289,13 +289,13 @@ LABEL_69:
                 }
               }
 
-              [a6 appendString:v55];
+              [store appendString:v55];
               v52 = v52 + 1.0;
               ++v48;
             }
 
             while (v48 != 61);
-            [a6 appendString:@"\n"];
+            [store appendString:@"\n"];
 LABEL_60:
             v32 = v66;
           }
@@ -348,7 +348,7 @@ LABEL_75:
 
     else
     {
-      [a6 appendString:@"No WS Updates\n"];
+      [store appendString:@"No WS Updates\n"];
     }
 
     objc_autoreleasePoolPop(v30);
@@ -376,11 +376,11 @@ LABEL_75:
   }
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = +[SAWSUpdateDataStore classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, v5);
 
   if (v6)
   {
@@ -407,7 +407,7 @@ LABEL_75:
               objc_enumerationMutation(v8);
             }
 
-            [*(*(&v14 + 1) + 8 * v12++) addSelfToSerializationDictionary:{a3, v14}];
+            [*(*(&v14 + 1) + 8 * v12++) addSelfToSerializationDictionary:{dictionary, v14}];
           }
 
           while (v10 != v12);
@@ -422,10 +422,10 @@ LABEL_75:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  if ([(SAWSUpdateDataStore *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SAWSUpdateDataStore *)self sizeInBytesForSerializedVersion]!= length)
   {
     v15 = *__error();
     v16 = _sa_logt();
@@ -433,33 +433,33 @@ LABEL_75:
     {
       v17 = [(SAWSUpdateDataStore *)self debugDescription];
       *buf = 136315650;
-      v29 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
       v30 = 2048;
-      v31 = [(SAWSUpdateDataStore *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SAWSUpdateDataStore *)self sizeInBytesForSerializedVersion];
       v32 = 2048;
-      v33 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v16, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v15;
     v18 = [(SAWSUpdateDataStore *)self debugDescription];
-    v19 = [v18 UTF8String];
+    uTF8String2 = [v18 UTF8String];
     [(SAWSUpdateDataStore *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(900, "%s: size %lu != buffer length %lu", v20, v21, v22, v23, v24, v25, v19);
+    _SASetCrashLogMessage(900, "%s: size %lu != buffer length %lu", v20, v21, v22, v23, v24, v25, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!buffer)
   {
 LABEL_13:
     v26 = @"Trying to serialize to a NULL location";
     goto LABEL_15;
   }
 
-  if (!a5)
+  if (!dictionary)
   {
     v26 = @"No serialization dictionary provided";
 LABEL_15:
@@ -467,16 +467,16 @@ LABEL_15:
     objc_exception_throw(v27);
   }
 
-  *a3 = 840627559;
-  *(a3 + 1) = [(NSMutableArray *)self->_wsUpdateArray count];
+  *buffer = 840627559;
+  *(buffer + 1) = [(NSMutableArray *)self->_wsUpdateArray count];
   wsUpdateArray = self->_wsUpdateArray;
   if (wsUpdateArray && [(NSMutableArray *)wsUpdateArray count])
   {
-    v10 = *(a3 + 1);
+    v10 = *(buffer + 1);
     v11 = self->_wsUpdateArray;
     v12 = *MEMORY[0x1E69E9840];
 
-    return SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(a3 + 16, v10, v11, a5);
+    return SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(buffer + 16, v10, v11, dictionary);
   }
 
   else
@@ -486,15 +486,15 @@ LABEL_15:
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v5 = @"NULL buffer";
     goto LABEL_8;
   }
 
-  if (*a3 != 840627559)
+  if (*buffer != 840627559)
   {
     v5 = @"Bad SASerializedWSUpdateDataStore magic";
 LABEL_8:
@@ -505,27 +505,27 @@ LABEL_8:
   return objc_alloc_init(SAWSUpdateDataStore);
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
-  if (!a3)
+  if (!buffer)
   {
     v14 = @"NULL buffer";
     goto LABEL_10;
   }
 
-  if (*a3 != 840627559)
+  if (*buffer != 840627559)
   {
     v14 = @"Bad SASerializedWSUpdateDataStore magic";
 LABEL_10:
-    v15 = [SAException exceptionWithName:@"Decoding failure" reason:v14 userInfo:0, a6];
-    objc_exception_throw(v15);
+    bufferDictionary = [SAException exceptionWithName:@"Decoding failure" reason:v14 userInfo:0, bufferDictionary];
+    objc_exception_throw(bufferDictionary);
   }
 
-  v7 = *(a3 + 1);
+  v7 = *(buffer + 1);
   if (v7)
   {
     v11 = objc_opt_class();
-    v12 = SASerializableNewMutableArrayFromIndexList(a3 + 16, v7, a5, a6, v11);
+    v12 = SASerializableNewMutableArrayFromIndexList(buffer + 16, v7, dictionary, bufferDictionary, v11);
     wsUpdateArray = self->_wsUpdateArray;
     self->_wsUpdateArray = v12;
   }

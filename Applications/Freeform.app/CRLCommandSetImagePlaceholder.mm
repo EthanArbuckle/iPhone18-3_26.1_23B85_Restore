@@ -1,7 +1,7 @@
 @interface CRLCommandSetImagePlaceholder
 - (NSString)actionString;
 - (_TtC8Freeform29CRLCommandSetImagePlaceholder)init;
-- (void)setActionString:(id)a3;
+- (void)setActionString:(id)string;
 @end
 
 @implementation CRLCommandSetImagePlaceholder
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC8Freeform29CRLCommandSetImagePlaceholder_actionString);

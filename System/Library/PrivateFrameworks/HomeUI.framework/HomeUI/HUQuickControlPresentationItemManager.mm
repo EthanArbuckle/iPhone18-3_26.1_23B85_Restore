@@ -1,105 +1,105 @@
 @interface HUQuickControlPresentationItemManager
-- (HUQuickControlPresentationItemManager)initWithHomeKitObjectUUID:(id)a3 type:(unint64_t)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3;
+- (HUQuickControlPresentationItemManager)initWithHomeKitObjectUUID:(id)d type:(unint64_t)type;
+- (id)_buildItemProvidersForHome:(id)home;
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items;
 @end
 
 @implementation HUQuickControlPresentationItemManager
 
-- (HUQuickControlPresentationItemManager)initWithHomeKitObjectUUID:(id)a3 type:(unint64_t)a4
+- (HUQuickControlPresentationItemManager)initWithHomeKitObjectUUID:(id)d type:(unint64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HUQuickControlPresentationItemManager;
   v8 = [(HFItemManager *)&v11 initWithDelegate:0 sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_homeKitObjectUUID, a3);
-    v9->_presentationItemType = a4;
+    objc_storeStrong(&v8->_homeKitObjectUUID, d);
+    v9->_presentationItemType = type;
   }
 
   return v9;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HUQuickControlPresentationItemManager *)self homeKitObjectUUID];
+  homeCopy = home;
+  homeKitObjectUUID = [(HUQuickControlPresentationItemManager *)self homeKitObjectUUID];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__HUQuickControlPresentationItemManager__buildItemProvidersForHome___block_invoke;
   aBlock[3] = &unk_277DB83E8;
-  v6 = v5;
+  v6 = homeKitObjectUUID;
   v30 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(HUQuickControlPresentationItemManager *)self presentationItemType];
-  switch(v8)
+  presentationItemType = [(HUQuickControlPresentationItemManager *)self presentationItemType];
+  switch(presentationItemType)
   {
     case 3uLL:
-      v18 = [objc_alloc(MEMORY[0x277D144A8]) initWithHome:v4];
+      v18 = [objc_alloc(MEMORY[0x277D144A8]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setCameraItemProvider:v18];
 
-      v16 = [(HUQuickControlPresentationItemManager *)self cameraItemProvider];
+      cameraItemProvider = [(HUQuickControlPresentationItemManager *)self cameraItemProvider];
       break;
     case 2uLL:
-      v17 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:v4];
+      v17 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setServiceItemProvider:v17];
 
-      v16 = [(HUQuickControlPresentationItemManager *)self serviceItemProvider];
+      cameraItemProvider = [(HUQuickControlPresentationItemManager *)self serviceItemProvider];
       break;
     case 1uLL:
-      v9 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:v4];
+      v9 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setAccessoryItemProvider:v9];
 
-      v10 = [(HUQuickControlPresentationItemManager *)self accessoryItemProvider];
-      [v10 setFilter:v7];
+      accessoryItemProvider = [(HUQuickControlPresentationItemManager *)self accessoryItemProvider];
+      [accessoryItemProvider setFilter:v7];
 
-      v11 = [objc_alloc(MEMORY[0x277D146B0]) initWithHome:v4];
+      v11 = [objc_alloc(MEMORY[0x277D146B0]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setGenericItemProvider:v11];
 
-      v12 = [(HUQuickControlPresentationItemManager *)self genericItemProvider];
-      [v12 setFilter:v7];
+      genericItemProvider = [(HUQuickControlPresentationItemManager *)self genericItemProvider];
+      [genericItemProvider setFilter:v7];
 
-      v13 = [objc_alloc(MEMORY[0x277D14BA8]) initWithHome:v4];
+      v13 = [objc_alloc(MEMORY[0x277D14BA8]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setTargetControlItemProvider:v13];
 
-      v14 = [(HUQuickControlPresentationItemManager *)self targetControlItemProvider];
-      [v14 setFilter:v7];
+      targetControlItemProvider = [(HUQuickControlPresentationItemManager *)self targetControlItemProvider];
+      [targetControlItemProvider setFilter:v7];
 
-      v15 = [objc_alloc(MEMORY[0x277D147F0]) initWithHome:v4];
+      v15 = [objc_alloc(MEMORY[0x277D147F0]) initWithHome:homeCopy];
       [(HUQuickControlPresentationItemManager *)self setMediaAccessoryItemProvider:v15];
 
-      v16 = [(HUQuickControlPresentationItemManager *)self mediaAccessoryItemProvider];
+      cameraItemProvider = [(HUQuickControlPresentationItemManager *)self mediaAccessoryItemProvider];
       break;
     default:
       goto LABEL_8;
   }
 
-  v19 = v16;
-  [v16 setFilter:v7];
+  v19 = cameraItemProvider;
+  [cameraItemProvider setFilter:v7];
 
 LABEL_8:
-  v20 = [MEMORY[0x277CBEB18] array];
-  v21 = [(HUQuickControlPresentationItemManager *)self accessoryItemProvider];
-  [v20 na_safeAddObject:v21];
+  array = [MEMORY[0x277CBEB18] array];
+  accessoryItemProvider2 = [(HUQuickControlPresentationItemManager *)self accessoryItemProvider];
+  [array na_safeAddObject:accessoryItemProvider2];
 
-  v22 = [(HUQuickControlPresentationItemManager *)self genericItemProvider];
-  [v20 na_safeAddObject:v22];
+  genericItemProvider2 = [(HUQuickControlPresentationItemManager *)self genericItemProvider];
+  [array na_safeAddObject:genericItemProvider2];
 
-  v23 = [(HUQuickControlPresentationItemManager *)self targetControlItemProvider];
-  [v20 na_safeAddObject:v23];
+  targetControlItemProvider2 = [(HUQuickControlPresentationItemManager *)self targetControlItemProvider];
+  [array na_safeAddObject:targetControlItemProvider2];
 
-  v24 = [(HUQuickControlPresentationItemManager *)self mediaAccessoryItemProvider];
-  [v20 na_safeAddObject:v24];
+  mediaAccessoryItemProvider = [(HUQuickControlPresentationItemManager *)self mediaAccessoryItemProvider];
+  [array na_safeAddObject:mediaAccessoryItemProvider];
 
-  v25 = [(HUQuickControlPresentationItemManager *)self serviceItemProvider];
-  [v20 na_safeAddObject:v25];
+  serviceItemProvider = [(HUQuickControlPresentationItemManager *)self serviceItemProvider];
+  [array na_safeAddObject:serviceItemProvider];
 
-  v26 = [(HUQuickControlPresentationItemManager *)self cameraItemProvider];
-  [v20 na_safeAddObject:v26];
+  cameraItemProvider2 = [(HUQuickControlPresentationItemManager *)self cameraItemProvider];
+  [array na_safeAddObject:cameraItemProvider2];
 
-  v27 = [v20 copy];
+  v27 = [array copy];
 
   return v27;
 }
@@ -112,33 +112,33 @@ uint64_t __68__HUQuickControlPresentationItemManager__buildItemProvidersForHome_
   return v4;
 }
 
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   if ([(HUQuickControlPresentationItemManager *)self presentationItemType]== 1)
   {
-    v5 = [v4 allObjects];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_271];
-    v7 = [v6 firstObject];
+    allObjects = [itemsCopy allObjects];
+    v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_271];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = [v4 anyObject];
+    firstObject = [itemsCopy anyObject];
   }
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v4;
+    v10 = itemsCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = firstObject;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "_didFinishUpdateTransactionWithAffectedItems: %@, picked item %@", &v9, 0x16u);
   }
 
-  [(HFItemManager *)self setSourceItem:v7];
+  [(HFItemManager *)self setSourceItem:firstObject];
 }
 
 uint64_t __86__HUQuickControlPresentationItemManager__didFinishUpdateTransactionWithAffectedItems___block_invoke(uint64_t a1, void *a2, void *a3)

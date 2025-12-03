@@ -1,42 +1,42 @@
 @interface AFSpeechTestRequestOptions
-+ (id)newWithBuilder:(id)a3;
-- (AFSpeechTestRequestOptions)initWithBuilder:(id)a3;
-- (AFSpeechTestRequestOptions)initWithCoder:(id)a3;
-- (AFSpeechTestRequestOptions)initWithJitContext:(id)a3 overrideModelPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSpeechTestRequestOptions)initWithBuilder:(id)builder;
+- (AFSpeechTestRequestOptions)initWithCoder:(id)coder;
+- (AFSpeechTestRequestOptions)initWithJitContext:(id)context overrideModelPath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechTestRequestOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   jitContext = self->_jitContext;
-  v5 = a3;
-  [v5 encodeObject:jitContext forKey:@"AFSpeechTestRequestOptions::jitContext"];
-  [v5 encodeObject:self->_overrideModelPath forKey:@"AFSpeechTestRequestOptions::overrideModelPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:jitContext forKey:@"AFSpeechTestRequestOptions::jitContext"];
+  [coderCopy encodeObject:self->_overrideModelPath forKey:@"AFSpeechTestRequestOptions::overrideModelPath"];
 }
 
-- (AFSpeechTestRequestOptions)initWithCoder:(id)a3
+- (AFSpeechTestRequestOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"AFSpeechTestRequestOptions::jitContext"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AFSpeechTestRequestOptions::jitContext"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechTestRequestOptions::overrideModelPath"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechTestRequestOptions::overrideModelPath"];
 
   v10 = [(AFSpeechTestRequestOptions *)self initWithJitContext:v8 overrideModelPath:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -46,14 +46,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFSpeechTestRequestOptions *)v5 jitContext];
+      v5 = equalCopy;
+      jitContext = [(AFSpeechTestRequestOptions *)v5 jitContext];
       jitContext = self->_jitContext;
-      if (jitContext == v6 || [(NSArray *)jitContext isEqual:v6])
+      if (jitContext == jitContext || [(NSArray *)jitContext isEqual:jitContext])
       {
-        v8 = [(AFSpeechTestRequestOptions *)v5 overrideModelPath];
+        overrideModelPath = [(AFSpeechTestRequestOptions *)v5 overrideModelPath];
         overrideModelPath = self->_overrideModelPath;
-        v10 = overrideModelPath == v8 || [(NSString *)overrideModelPath isEqual:v8];
+        v10 = overrideModelPath == overrideModelPath || [(NSString *)overrideModelPath isEqual:overrideModelPath];
       }
 
       else
@@ -71,7 +71,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -82,18 +82,18 @@
   return v6;
 }
 
-- (AFSpeechTestRequestOptions)initWithJitContext:(id)a3 overrideModelPath:(id)a4
+- (AFSpeechTestRequestOptions)initWithJitContext:(id)context overrideModelPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  pathCopy = path;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__AFSpeechTestRequestOptions_initWithJitContext_overrideModelPath___block_invoke;
   v12[3] = &unk_1E7342DC0;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = contextCopy;
+  v14 = pathCopy;
+  v8 = pathCopy;
+  v9 = contextCopy;
   v10 = [(AFSpeechTestRequestOptions *)self initWithBuilder:v12];
 
   return v10;
@@ -107,26 +107,26 @@ void __67__AFSpeechTestRequestOptions_initWithJitContext_overrideModelPath___blo
   [v4 setOverrideModelPath:*(a1 + 40)];
 }
 
-- (AFSpeechTestRequestOptions)initWithBuilder:(id)a3
+- (AFSpeechTestRequestOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFSpeechTestRequestOptions;
   v5 = [(AFSpeechTestRequestOptions *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSpeechTestRequestOptionsMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSpeechTestRequestOptionsMutation *)v7 isDirty])
     {
-      v8 = [(_AFSpeechTestRequestOptionsMutation *)v7 getJitContext];
-      v9 = [v8 copy];
+      getJitContext = [(_AFSpeechTestRequestOptionsMutation *)v7 getJitContext];
+      v9 = [getJitContext copy];
       jitContext = v6->_jitContext;
       v6->_jitContext = v9;
 
-      v11 = [(_AFSpeechTestRequestOptionsMutation *)v7 getOverrideModelPath];
-      v12 = [v11 copy];
+      getOverrideModelPath = [(_AFSpeechTestRequestOptionsMutation *)v7 getOverrideModelPath];
+      v12 = [getOverrideModelPath copy];
       overrideModelPath = v6->_overrideModelPath;
       v6->_overrideModelPath = v12;
     }
@@ -135,31 +135,31 @@ void __67__AFSpeechTestRequestOptions_initWithJitContext_overrideModelPath___blo
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSpeechTestRequestOptionsMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSpeechTestRequestOptionsMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSpeechTestRequestOptions);
-      v7 = [(_AFSpeechTestRequestOptionsMutation *)v5 getJitContext];
-      v8 = [v7 copy];
+      getJitContext = [(_AFSpeechTestRequestOptionsMutation *)v5 getJitContext];
+      v8 = [getJitContext copy];
       jitContext = v6->_jitContext;
       v6->_jitContext = v8;
 
-      v10 = [(_AFSpeechTestRequestOptionsMutation *)v5 getOverrideModelPath];
-      v11 = [v10 copy];
+      getOverrideModelPath = [(_AFSpeechTestRequestOptionsMutation *)v5 getOverrideModelPath];
+      v11 = [getOverrideModelPath copy];
       overrideModelPath = v6->_overrideModelPath;
       v6->_overrideModelPath = v11;
     }

@@ -1,44 +1,44 @@
 @interface HUStatusAndNotificationsViewController
 - (BOOL)_isAutoClimateCapableThermostat;
 - (BOOL)_isClimateService;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
 - (BOOL)showStatusSection;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUStatusAndNotificationsViewController)initWithServiceItem:(id)a3 inHome:(id)a4 displayingDetails:(BOOL)a5;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUStatusAndNotificationsViewController)initWithServiceItem:(id)item inHome:(id)home displayingDetails:(BOOL)details;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
 - (id)itemModuleControllers;
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3;
-- (void)_toggleSmartActivityNotificationWithAlertNotificationForCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)conditionEditorModuleController:(id)a3 didUpdateConditionCollection:(id)a4;
-- (void)setShowStatusSection:(BOOL)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)smartNotificationSettingsModuleController:(id)a3 didUpdateConditionCollection:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (unint64_t)automaticDisablingReasonsForItem:(id)item;
+- (void)_toggleSmartActivityNotificationWithAlertNotificationForCell:(id)cell didTurnOn:(BOOL)on;
+- (void)conditionEditorModuleController:(id)controller didUpdateConditionCollection:(id)collection;
+- (void)setShowStatusSection:(BOOL)section;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)smartNotificationSettingsModuleController:(id)controller didUpdateConditionCollection:(id)collection;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUStatusAndNotificationsViewController
 
-- (HUStatusAndNotificationsViewController)initWithServiceItem:(id)a3 inHome:(id)a4 displayingDetails:(BOOL)a5
+- (HUStatusAndNotificationsViewController)initWithServiceItem:(id)item inHome:(id)home displayingDetails:(BOOL)details
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [[HUStatusAndNotificationsItemManager alloc] initWithServiceItem:v8 delegate:self home:v9];
+  detailsCopy = details;
+  itemCopy = item;
+  homeCopy = home;
+  v10 = [[HUStatusAndNotificationsItemManager alloc] initWithServiceItem:itemCopy delegate:self home:homeCopy];
   v32.receiver = self;
   v32.super_class = HUStatusAndNotificationsViewController;
   v11 = [(HUItemTableViewController *)&v32 initWithItemManager:v10 tableViewStyle:1];
   v12 = v11;
   if (v11)
   {
-    [(HUStatusAndNotificationsViewController *)v11 setItem:v8];
-    if (v5)
+    [(HUStatusAndNotificationsViewController *)v11 setItem:itemCopy];
+    if (detailsCopy)
     {
       [(HUStatusAndNotificationsViewController *)v12 setUseServiceNameAsTitle:0];
-      v13 = [(HUItemTableViewController *)v12 itemManager];
-      [v13 setShowsForServiceDetails:1];
+      itemManager = [(HUItemTableViewController *)v12 itemManager];
+      [itemManager setShowsForServiceDetails:1];
     }
 
     else
@@ -47,31 +47,31 @@
       [(HUStatusAndNotificationsViewController *)v12 setUseServiceNameAsTitle:1];
     }
 
-    if (([v9 hf_currentUserIsAdministrator] & 1) == 0)
+    if (([homeCopy hf_currentUserIsAdministrator] & 1) == 0)
     {
       [(HUStatusAndNotificationsViewController *)v12 setShowStatusSection:0];
     }
 
-    v14 = [MEMORY[0x277D144A0] cameraContainsMotionServiceItem:v8];
-    v15 = [(HUStatusAndNotificationsItemManager *)v10 conditionModule];
-    v16 = (v15 == 0) | v14;
+    v14 = [MEMORY[0x277D144A0] cameraContainsMotionServiceItem:itemCopy];
+    conditionModule = [(HUStatusAndNotificationsItemManager *)v10 conditionModule];
+    v16 = (conditionModule == 0) | v14;
 
     if ((v16 & 1) == 0)
     {
       v17 = [HUTriggerConditionEditorItemModuleController alloc];
-      v18 = [(HUStatusAndNotificationsItemManager *)v10 conditionModule];
-      v19 = [(HUTriggerConditionEditorItemModuleController *)v17 initWithModule:v18 delegate:v12];
+      conditionModule2 = [(HUStatusAndNotificationsItemManager *)v10 conditionModule];
+      v19 = [(HUTriggerConditionEditorItemModuleController *)v17 initWithModule:conditionModule2 delegate:v12];
       conditionModuleController = v12->_conditionModuleController;
       v12->_conditionModuleController = v19;
     }
 
-    v21 = [(HUStatusAndNotificationsItemManager *)v10 cameraSmartDetectionSettingsModule];
+    cameraSmartDetectionSettingsModule = [(HUStatusAndNotificationsItemManager *)v10 cameraSmartDetectionSettingsModule];
 
-    if (v21)
+    if (cameraSmartDetectionSettingsModule)
     {
       v22 = [HUCameraSmartNotificationSettingsModuleController alloc];
-      v23 = [(HUStatusAndNotificationsItemManager *)v10 cameraSmartDetectionSettingsModule];
-      v24 = [(HUCameraSmartNotificationSettingsModuleController *)v22 initWithModule:v23];
+      cameraSmartDetectionSettingsModule2 = [(HUStatusAndNotificationsItemManager *)v10 cameraSmartDetectionSettingsModule];
+      v24 = [(HUCameraSmartNotificationSettingsModuleController *)v22 initWithModule:cameraSmartDetectionSettingsModule2];
       cameraSmartSettingsModuleController = v12->_cameraSmartSettingsModuleController;
       v12->_cameraSmartSettingsModuleController = v24;
 
@@ -79,9 +79,9 @@
       [(HUItemModuleController *)v12->_cameraSmartSettingsModuleController setHost:v12];
     }
 
-    v26 = [(HUStatusAndNotificationsViewController *)v12 showStatusSection];
+    showStatusSection = [(HUStatusAndNotificationsViewController *)v12 showStatusSection];
     v27 = @"HUNotificationsTitle";
-    if (v26)
+    if (showStatusSection)
     {
       v27 = @"HUStatusAndNotificationsTitle";
     }
@@ -114,55 +114,55 @@
 
 - (BOOL)showStatusSection
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 showStatusSection];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  showStatusSection = [itemManager showStatusSection];
 
-  return v3;
+  return showStatusSection;
 }
 
-- (void)setShowStatusSection:(BOOL)a3
+- (void)setShowStatusSection:(BOOL)section
 {
-  v3 = a3;
-  v4 = [(HUItemTableViewController *)self itemManager];
-  [v4 setShowStatusSection:v3];
+  sectionCopy = section;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager setShowStatusSection:sectionCopy];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 chimeOnAccessoriesListItem];
-  [v5 isEqual:v7];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  chimeOnAccessoriesListItem = [itemManager chimeOnAccessoriesListItem];
+  [itemCopy isEqual:chimeOnAccessoriesListItem];
 
   v8 = objc_opt_class();
 
   return v8;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v21.receiver = self;
   v21.super_class = HUStatusAndNotificationsViewController;
-  [(HUItemTableViewController *)&v21 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v21 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v10;
+    v12 = cellCopy;
     [v12 setDelegate:self];
-    v13 = [(HUItemTableViewController *)self itemManager];
-    v14 = [v13 includeInStatusItem];
-    v15 = [v11 isEqual:v14];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    includeInStatusItem = [itemManager includeInStatusItem];
+    v15 = [itemCopy isEqual:includeInStatusItem];
 
     if (v15)
     {
-      v16 = [(HUStatusAndNotificationsViewController *)self item];
-      v17 = [v16 homeKitObject];
-      if ([v17 conformsToProtocol:&unk_28259DE80])
+      item = [(HUStatusAndNotificationsViewController *)self item];
+      homeKitObject = [item homeKitObject];
+      if ([homeKitObject conformsToProtocol:&unk_28259DE80])
       {
-        v18 = v17;
+        v18 = homeKitObject;
       }
 
       else
@@ -172,24 +172,24 @@
 
       v19 = v18;
 
-      v20 = [v19 hf_isForcedVisibleInHomeStatus];
-      [v12 setDisabled:v20];
+      hf_isForcedVisibleInHomeStatus = [v19 hf_isForcedVisibleInHomeStatus];
+      [v12 setDisabled:hf_isForcedVisibleInHomeStatus];
     }
   }
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 chimeOnAccessoriesListItem];
-  v10 = [v7 isEqual:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  chimeOnAccessoriesListItem = [itemManager chimeOnAccessoriesListItem];
+  v10 = [itemCopy isEqual:chimeOnAccessoriesListItem];
 
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = v17;
+    v12 = cellCopy;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -208,9 +208,9 @@
         goto LABEL_9;
       }
 
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v15 handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
     }
 
     v14 = 0;
@@ -221,24 +221,24 @@ LABEL_9:
   }
 }
 
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3
+- (unint64_t)automaticDisablingReasonsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = HUStatusAndNotificationsViewController;
-  v5 = [(HUItemTableViewController *)&v13 automaticDisablingReasonsForItem:v4];
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 allowNotificationsItem];
-  v8 = v7;
-  if (v7 == v4)
+  v5 = [(HUItemTableViewController *)&v13 automaticDisablingReasonsForItem:itemCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  allowNotificationsItem = [itemManager allowNotificationsItem];
+  v8 = allowNotificationsItem;
+  if (allowNotificationsItem == itemCopy)
   {
   }
 
   else
   {
-    v9 = [(HUItemTableViewController *)self itemManager];
-    v10 = [v9 conditionModule];
-    v11 = [v10 containsItem:v4];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    conditionModule = [itemManager2 conditionModule];
+    v11 = [conditionModule containsItem:itemCopy];
 
     if (!v11)
     {
@@ -255,31 +255,31 @@ LABEL_6:
 - (id)itemModuleControllers
 {
   v3 = objc_opt_new();
-  v4 = [(HUStatusAndNotificationsViewController *)self conditionModuleController];
-  [v3 na_safeAddObject:v4];
+  conditionModuleController = [(HUStatusAndNotificationsViewController *)self conditionModuleController];
+  [v3 na_safeAddObject:conditionModuleController];
 
-  v5 = [(HUStatusAndNotificationsViewController *)self cameraSmartSettingsModuleController];
-  [v3 na_safeAddObject:v5];
+  cameraSmartSettingsModuleController = [(HUStatusAndNotificationsViewController *)self cameraSmartSettingsModuleController];
+  [v3 na_safeAddObject:cameraSmartSettingsModuleController];
 
   return v3;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 displayedSectionIdentifierForSectionIndex:a4];
+  viewCopy = view;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v9 = [v8 isEqualToString:@"HUStatusAndNotificationsConditionSectionIdentifier"];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  if ([v10 numberOfSections] - 1 <= a4)
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  if ([itemManager2 numberOfSections] - 1 <= section)
   {
   }
 
   else
   {
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 displayedSectionIdentifierForSectionIndex:a4 + 1];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    v12 = [itemManager3 displayedSectionIdentifierForSectionIndex:section + 1];
     v13 = [v12 isEqualToString:@"HUCameraSmartDetectionSettingsOnOffSectionIdentifier"];
 
     v14 = 10.0;
@@ -291,21 +291,21 @@ LABEL_6:
 
   v17.receiver = self;
   v17.super_class = HUStatusAndNotificationsViewController;
-  [(HUItemTableViewController *)&v17 tableView:v6 heightForFooterInSection:a4];
+  [(HUItemTableViewController *)&v17 tableView:viewCopy heightForFooterInSection:section];
   v14 = v15;
 LABEL_6:
 
   return v14;
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v6 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v7 = [v6 isEqualToString:@"HUCameraSmartDetectionSettingsOnOffSectionIdentifier"];
 
-  v8 = a3 < 1;
-  v9 = a3 - 1;
+  v8 = section < 1;
+  v9 = section - 1;
   if (v8)
   {
     v12 = 0;
@@ -313,19 +313,19 @@ LABEL_6:
 
   else
   {
-    v10 = [(HUItemTableViewController *)self itemManager];
-    v11 = [v10 displayedSectionIdentifierForSectionIndex:v9];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    v11 = [itemManager2 displayedSectionIdentifierForSectionIndex:v9];
     v12 = [v11 isEqualToString:@"HUStatusAndNotificationsConditionSectionIdentifier"];
   }
 
   return v7 & v12;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -338,46 +338,46 @@ LABEL_6:
   {
     v12.receiver = self;
     v12.super_class = HUStatusAndNotificationsViewController;
-    v10 = [(HUItemTableViewController *)&v12 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v10 = [(HUItemTableViewController *)&v12 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = HUStatusAndNotificationsViewController;
-  v6 = a4;
-  [(HUItemTableViewController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [(HUItemTableViewController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(HUItemTableViewController *)self itemManager:v15.receiver];
-  v8 = [v7 displayedItemAtIndexPath:v6];
+  v8 = [v7 displayedItemAtIndexPath:pathCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 chimeOnAccessoriesListItem];
-  v11 = [v8 isEqual:v10];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  chimeOnAccessoriesListItem = [itemManager chimeOnAccessoriesListItem];
+  v11 = [v8 isEqual:chimeOnAccessoriesListItem];
 
   if (v11)
   {
     v12 = objc_alloc_init(HUDoorbellChimeDevicesViewController);
-    v13 = [(HUStatusAndNotificationsViewController *)self navigationController];
-    v14 = [v13 hu_pushPreloadableViewController:v12 animated:1];
+    navigationController = [(HUStatusAndNotificationsViewController *)self navigationController];
+    v14 = [navigationController hu_pushPreloadableViewController:v12 animated:1];
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUStatusAndNotificationsViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUStatusAndNotificationsViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v8];
 
-  v11 = [(HUItemTableViewController *)self itemManager];
-  v12 = [v11 includeInStatusItem];
-  v13 = [v10 isEqual:v12];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  includeInStatusItem = [itemManager2 includeInStatusItem];
+  v13 = [v10 isEqual:includeInStatusItem];
 
   if (v13)
   {
@@ -386,29 +386,29 @@ LABEL_6:
     aBlock[2] = __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_invoke;
     aBlock[3] = &unk_277DBA338;
     aBlock[4] = self;
-    v14 = _Block_copy(aBlock);
+    itemManager13 = _Block_copy(aBlock);
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_invoke_3;
     v59[3] = &unk_277DB8A10;
     v59[4] = self;
-    v60 = v4;
+    v60 = onCopy;
     v15 = __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_invoke_3(v59);
-    v16 = [v15 addSuccessBlock:v14];
+    v16 = [v15 addSuccessBlock:itemManager13];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v17 = [(HUItemTableViewController *)self itemManager];
-  v18 = [v17 allowNotificationsItem];
-  v19 = [v10 isEqual:v18];
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  allowNotificationsItem = [itemManager3 allowNotificationsItem];
+  v19 = [v10 isEqual:allowNotificationsItem];
 
-  v20 = [(HUItemTableViewController *)self itemManager];
-  v14 = v20;
+  itemManager4 = [(HUItemTableViewController *)self itemManager];
+  itemManager13 = itemManager4;
   if (v19)
   {
-    v21 = [v20 updateAllowNotifications:v4];
+    v21 = [itemManager4 updateAllowNotifications:onCopy];
     v15 = v21;
     v22 = &__block_literal_global_187;
 LABEL_7:
@@ -416,115 +416,115 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v23 = [v20 allowAudioNotificationsItem];
-  v24 = [v10 isEqual:v23];
+  allowAudioNotificationsItem = [itemManager4 allowAudioNotificationsItem];
+  v24 = [v10 isEqual:allowAudioNotificationsItem];
 
-  v25 = [(HUItemTableViewController *)self itemManager];
-  v14 = v25;
+  itemManager5 = [(HUItemTableViewController *)self itemManager];
+  itemManager13 = itemManager5;
   if (v24)
   {
-    v21 = [v25 updateAllowAudioNotifications:v4];
+    v21 = [itemManager5 updateAllowAudioNotifications:onCopy];
     v15 = v21;
     v22 = &__block_literal_global_91_0;
     goto LABEL_7;
   }
 
-  v36 = [v25 allowActivityNotificationsItem];
-  v37 = [v10 isEqual:v36];
+  allowActivityNotificationsItem = [itemManager5 allowActivityNotificationsItem];
+  v37 = [v10 isEqual:allowActivityNotificationsItem];
 
   if (v37)
   {
-    [(HUStatusAndNotificationsViewController *)self _toggleSmartActivityNotificationWithAlertNotificationForCell:v6 didTurnOn:v4];
+    [(HUStatusAndNotificationsViewController *)self _toggleSmartActivityNotificationWithAlertNotificationForCell:cellCopy didTurnOn:onCopy];
   }
 
   else
   {
-    v38 = [(HUItemTableViewController *)self itemManager];
-    v39 = [v38 allowDoorbellNotificationsItem];
-    v40 = [v10 isEqual:v39];
+    itemManager6 = [(HUItemTableViewController *)self itemManager];
+    allowDoorbellNotificationsItem = [itemManager6 allowDoorbellNotificationsItem];
+    v40 = [v10 isEqual:allowDoorbellNotificationsItem];
 
-    v41 = [(HUItemTableViewController *)self itemManager];
-    v14 = v41;
+    itemManager7 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager7;
     if (v40)
     {
-      v21 = [v41 updateAllowDoorbellNotifications:v4];
+      v21 = [itemManager7 updateAllowDoorbellNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_93;
       goto LABEL_7;
     }
 
-    v42 = [v41 allowAnalogChimeNotificationItem];
-    v43 = [v10 isEqual:v42];
+    allowAnalogChimeNotificationItem = [itemManager7 allowAnalogChimeNotificationItem];
+    v43 = [v10 isEqual:allowAnalogChimeNotificationItem];
 
-    v44 = [(HUItemTableViewController *)self itemManager];
-    v14 = v44;
+    itemManager8 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager8;
     if (v43)
     {
-      v21 = [v44 updateAllowChimeAnalogNotifications:v4];
+      v21 = [itemManager8 updateAllowChimeAnalogNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_95_0;
       goto LABEL_7;
     }
 
-    v45 = [v44 allowMotionNotificationsItem];
-    v46 = [v10 isEqual:v45];
+    allowMotionNotificationsItem = [itemManager8 allowMotionNotificationsItem];
+    v46 = [v10 isEqual:allowMotionNotificationsItem];
 
-    v47 = [(HUItemTableViewController *)self itemManager];
-    v14 = v47;
+    itemManager9 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager9;
     if (v46)
     {
-      v21 = [v47 updateAllowMotionNotifications:v4];
+      v21 = [itemManager9 updateAllowMotionNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_97_0;
       goto LABEL_7;
     }
 
-    v48 = [v47 chimeOnHomePodSingleItem];
-    v49 = [v10 isEqual:v48];
+    chimeOnHomePodSingleItem = [itemManager9 chimeOnHomePodSingleItem];
+    v49 = [v10 isEqual:chimeOnHomePodSingleItem];
 
-    v50 = [(HUItemTableViewController *)self itemManager];
-    v14 = v50;
+    itemManager10 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager10;
     if (v49)
     {
-      v21 = [v50 updateChimeOnAccessory:v4];
+      v21 = [itemManager10 updateChimeOnAccessory:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_99_3;
       goto LABEL_7;
     }
 
-    v51 = [v50 allowCameraSnapshotsItem];
-    v52 = [v10 isEqual:v51];
+    allowCameraSnapshotsItem = [itemManager10 allowCameraSnapshotsItem];
+    v52 = [v10 isEqual:allowCameraSnapshotsItem];
 
-    v53 = [(HUItemTableViewController *)self itemManager];
-    v14 = v53;
+    itemManager11 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager11;
     if (v52)
     {
-      v21 = [v53 updateAllowSnapshotsInNotifications:v4];
+      v21 = [itemManager11 updateAllowSnapshotsInNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_101_0;
       goto LABEL_7;
     }
 
-    v54 = [v53 allowCameraStatusChangesItem];
-    v55 = [v10 isEqual:v54];
+    allowCameraStatusChangesItem = [itemManager11 allowCameraStatusChangesItem];
+    v55 = [v10 isEqual:allowCameraStatusChangesItem];
 
-    v56 = [(HUItemTableViewController *)self itemManager];
-    v14 = v56;
+    itemManager12 = [(HUItemTableViewController *)self itemManager];
+    itemManager13 = itemManager12;
     if (v55)
     {
-      v21 = [v56 updateAllowCameraStatusChangeNotifications:v4];
+      v21 = [itemManager12 updateAllowCameraStatusChangeNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_103;
       goto LABEL_7;
     }
 
-    v57 = [v56 allowCameraReachabilityChangeNotificationsItem];
-    v58 = [v10 isEqual:v57];
+    allowCameraReachabilityChangeNotificationsItem = [itemManager12 allowCameraReachabilityChangeNotificationsItem];
+    v58 = [v10 isEqual:allowCameraReachabilityChangeNotificationsItem];
 
     if (v58)
     {
-      v14 = [(HUItemTableViewController *)self itemManager];
-      v21 = [v14 updateAllowCameraReachabilityStatusChangeNotifications:v4];
+      itemManager13 = [(HUItemTableViewController *)self itemManager];
+      v21 = [itemManager13 updateAllowCameraReachabilityStatusChangeNotifications:onCopy];
       v15 = v21;
       v22 = &__block_literal_global_105_1;
       goto LABEL_7;
@@ -532,14 +532,14 @@ LABEL_7:
   }
 
 LABEL_9:
-  v27 = [v10 latestResults];
+  latestResults = [v10 latestResults];
   v28 = *MEMORY[0x277D13F68];
-  v29 = [v27 objectForKey:*MEMORY[0x277D13F68]];
+  v29 = [latestResults objectForKey:*MEMORY[0x277D13F68]];
 
   if (v29)
   {
-    v30 = [v10 latestResults];
-    v31 = [v30 objectForKeyedSubscript:v28];
+    latestResults2 = [v10 latestResults];
+    v31 = [latestResults2 objectForKeyedSubscript:v28];
   }
 
   else
@@ -562,12 +562,12 @@ LABEL_9:
 
   if (![v31 length] && v34)
   {
-    v35 = [v34 itemTitleLocalizationKey];
+    itemTitleLocalizationKey = [v34 itemTitleLocalizationKey];
 
-    v31 = v35;
+    v31 = itemTitleLocalizationKey;
   }
 
-  [MEMORY[0x277D143D8] sendSwitchCellToggleEventForItem:v32 isOn:v4 title:v31 fromSourceViewController:self];
+  [MEMORY[0x277D143D8] sendSwitchCellToggleEventForItem:v32 isOn:onCopy title:v31 fromSourceViewController:self];
 }
 
 void __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_invoke(uint64_t a1)
@@ -731,12 +731,12 @@ void __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_i
   [v4 handleError:v3];
 }
 
-- (void)conditionEditorModuleController:(id)a3 didUpdateConditionCollection:(id)a4
+- (void)conditionEditorModuleController:(id)controller didUpdateConditionCollection:(id)collection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 conditions];
-  v7 = [v6 na_any:&__block_literal_global_120_0];
+  collectionCopy = collection;
+  conditions = [collectionCopy conditions];
+  v7 = [conditions na_any:&__block_literal_global_120_0];
 
   if (v7)
   {
@@ -745,8 +745,8 @@ void __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_i
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [v5 conditions];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    conditions2 = [collectionCopy conditions];
+    v9 = [conditions2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -758,20 +758,20 @@ void __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_i
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(conditions2);
           }
 
           v13 = *(*(&v29 + 1) + 8 * v12);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [(HUItemTableViewController *)self itemManager];
-            [v5 predicate];
-            v16 = v15 = v5;
-            v17 = [v14 updateCameraSmartNotificationCondition:v16];
+            itemManager = [(HUItemTableViewController *)self itemManager];
+            [collectionCopy predicate];
+            v16 = v15 = collectionCopy;
+            v17 = [itemManager updateCameraSmartNotificationCondition:v16];
             v18 = [v17 addFailureBlock:&__block_literal_global_126_2];
 
-            v5 = v15;
+            collectionCopy = v15;
           }
 
           else
@@ -783,24 +783,24 @@ void __63__HUStatusAndNotificationsViewController_switchCell_didTurnOn___block_i
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v10 = [conditions2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v10);
     }
 
     v19 = [objc_alloc(MEMORY[0x277D14598]) initWithConditions:v28];
-    v20 = [(HUItemTableViewController *)self itemManager];
-    v21 = [v19 predicate];
-    v22 = [v20 updateNotificationCondition:v21];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    predicate = [v19 predicate];
+    v22 = [itemManager2 updateNotificationCondition:predicate];
     v23 = [v22 addFailureBlock:&__block_literal_global_129];
   }
 
   else
   {
-    v24 = [(HUItemTableViewController *)self itemManager];
-    v25 = [v5 predicate];
-    v26 = [v24 updateNotificationCondition:v25];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    predicate2 = [collectionCopy predicate];
+    v26 = [itemManager3 updateNotificationCondition:predicate2];
     v27 = [v26 addFailureBlock:&__block_literal_global_123_2];
   }
 }
@@ -838,13 +838,13 @@ void __103__HUStatusAndNotificationsViewController_conditionEditorModuleControll
   [v4 handleError:v3 operationType:*MEMORY[0x277D13C18] options:0 retryBlock:0 cancelBlock:0];
 }
 
-- (void)smartNotificationSettingsModuleController:(id)a3 didUpdateConditionCollection:(id)a4
+- (void)smartNotificationSettingsModuleController:(id)controller didUpdateConditionCollection:(id)collection
 {
-  v5 = a4;
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 predicate];
+  collectionCopy = collection;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  predicate = [collectionCopy predicate];
 
-  v7 = [v9 updateCameraSmartNotificationCondition:v6];
+  v7 = [itemManager updateCameraSmartNotificationCondition:predicate];
   v8 = [v7 addFailureBlock:&__block_literal_global_131_3];
 }
 
@@ -856,15 +856,15 @@ void __113__HUStatusAndNotificationsViewController_smartNotificationSettingsModu
   [v4 handleError:v3 operationType:*MEMORY[0x277D13C18] options:0 retryBlock:0 cancelBlock:0];
 }
 
-- (void)_toggleSmartActivityNotificationWithAlertNotificationForCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)_toggleSmartActivityNotificationWithAlertNotificationForCell:(id)cell didTurnOn:(BOOL)on
 {
   v52 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v6 = [(HUStatusAndNotificationsViewController *)self item];
-  v7 = [v6 services];
-  v8 = [v7 allObjects];
-  v9 = [v8 firstObject];
-  v10 = [v9 accessory];
+  cellCopy = cell;
+  item = [(HUStatusAndNotificationsViewController *)self item];
+  services = [item services];
+  allObjects = [services allObjects];
+  firstObject = [allObjects firstObject];
+  accessory = [firstObject accessory];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -872,36 +872,36 @@ void __113__HUStatusAndNotificationsViewController_smartNotificationSettingsModu
   aBlock[2] = __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotificationWithAlertNotificationForCell_didTurnOn___block_invoke;
   aBlock[3] = &unk_277DBBCF0;
   objc_copyWeak(&v33, &location);
-  v34 = a4;
+  onCopy = on;
   v26 = _Block_copy(aBlock);
-  v11 = [(HUItemTableViewController *)self itemManager];
-  v12 = [v11 home];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
 
-  v13 = [v12 restrictedGuests];
+  restrictedGuests = [home restrictedGuests];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotificationWithAlertNotificationForCell_didTurnOn___block_invoke_3;
   v29[3] = &unk_277DC0C10;
-  v14 = v12;
+  v14 = home;
   v30 = v14;
-  v15 = v10;
+  v15 = accessory;
   v31 = v15;
-  v16 = [v13 na_firstObjectPassingTest:v29];
+  v16 = [restrictedGuests na_firstObjectPassingTest:v29];
 
-  v17 = 0;
-  if (!a4 && v16)
+  hf_currentUserIsAdministrator = 0;
+  if (!on && v16)
   {
-    v17 = [v14 hf_currentUserIsAdministrator];
+    hf_currentUserIsAdministrator = [v14 hf_currentUserIsAdministrator];
   }
 
   v18 = HFLogForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = self;
+    selfCopy = self;
     v19 = NSStringFromBooleanValue();
     v20 = NSStringFromBooleanValue();
     v21 = NSStringFromBooleanValue();
-    v22 = [v16 hf_prettyDescription];
+    hf_prettyDescription = [v16 hf_prettyDescription];
     [v14 hf_currentUserIsAdministrator];
     v23 = NSStringFromBooleanValue();
     *buf = 136316930;
@@ -913,7 +913,7 @@ void __113__HUStatusAndNotificationsViewController_smartNotificationSettingsModu
     v42 = 2112;
     v43 = v21;
     v44 = 2112;
-    v45 = v22;
+    v45 = hf_prettyDescription;
     v46 = 2112;
     v47 = v23;
     v48 = 2112;
@@ -922,16 +922,16 @@ void __113__HUStatusAndNotificationsViewController_smartNotificationSettingsModu
     v51 = v14;
     _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "(%s) shouldShowNotificationAlert = %@ because isOn = %@, isAccessoryAllowedForRG is '%@' for rg %@, isAdmin = %@, accessory = %@, home = %@", buf, 0x52u);
 
-    self = v24;
+    self = selfCopy;
   }
 
-  if (v17)
+  if (hf_currentUserIsAdministrator)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotificationWithAlertNotificationForCell_didTurnOn___block_invoke_136;
     v27[3] = &unk_277DB8488;
-    v28 = v25;
+    v28 = cellCopy;
     [(UIViewController *)self hu_presentNotificationAlertForNotificationCapableObjects:MEMORY[0x277CBEBF8] notificationsEnabled:0 mainActionBlock:v26 notNowActionBlock:v27];
   }
 
@@ -973,11 +973,11 @@ uint64_t __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotif
 - (BOOL)_isClimateService
 {
   objc_opt_class();
-  v3 = [(HUItemTableViewController *)self itemManager];
-  v4 = [v3 serviceItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  serviceItem = [itemManager serviceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = serviceItem;
   }
 
   else
@@ -994,11 +994,11 @@ uint64_t __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotif
   else
   {
     objc_opt_class();
-    v8 = [(HUItemTableViewController *)self itemManager];
-    v9 = [v8 serviceItem];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    serviceItem2 = [itemManager2 serviceItem];
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = serviceItem2;
     }
 
     else
@@ -1020,40 +1020,40 @@ uint64_t __113__HUStatusAndNotificationsViewController__toggleSmartActivityNotif
     return 0;
   }
 
-  v3 = [(HUItemTableViewController *)self itemManager];
-  v4 = [v3 serviceItem];
-  v5 = [v4 accessories];
-  v6 = [v5 na_firstObjectPassingTest:&__block_literal_global_143];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  serviceItem = [itemManager serviceItem];
+  accessories = [serviceItem accessories];
+  v6 = [accessories na_firstObjectPassingTest:&__block_literal_global_143];
 
   if (v6)
   {
-    v7 = [v6 home];
-    v8 = v7;
-    if (v7 && [v7 hf_hasResidentCapableOfSupportingHomeActivityState])
+    home = [v6 home];
+    v8 = home;
+    if (home && [home hf_hasResidentCapableOfSupportingHomeActivityState])
     {
       if ([v6 supportsAdaptiveTemperatureAutomations])
       {
-        v9 = 1;
+        supportsCleanEnergyAutomation = 1;
       }
 
       else
       {
-        v9 = [v6 supportsCleanEnergyAutomation];
+        supportsCleanEnergyAutomation = [v6 supportsCleanEnergyAutomation];
       }
     }
 
     else
     {
-      v9 = 0;
+      supportsCleanEnergyAutomation = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    supportsCleanEnergyAutomation = 0;
   }
 
-  return v9;
+  return supportsCleanEnergyAutomation;
 }
 
 uint64_t __73__HUStatusAndNotificationsViewController__isAutoClimateCapableThermostat__block_invoke(uint64_t a1, void *a2)

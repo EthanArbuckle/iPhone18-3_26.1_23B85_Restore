@@ -1,15 +1,15 @@
 @interface CLIntersiloProxy
-+ (id)proxyForRecipientObject:(id)a3 inSilo:(id)a4 recipientName:(id)a5;
-- (BOOL)respondsToSelector:(SEL)a3;
++ (id)proxyForRecipientObject:(id)object inSilo:(id)silo recipientName:(id)name;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CLIntersiloProxy)init;
-- (CLIntersiloProxy)initWithDelegateObject:(id)a3 delegateSilo:(id)a4;
+- (CLIntersiloProxy)initWithDelegateObject:(id)object delegateSilo:(id)silo;
 - (CLIntersiloProxyDelegateProtocol)delegate;
 - (CLSilo)delegateSilo;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)peer;
-- (void)forwardInvocation:(id)a3;
-- (void)registerDelegate:(id)a3 inSilo:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)registerDelegate:(id)delegate inSilo:(id)silo;
 @end
 
 @implementation CLIntersiloProxy
@@ -30,8 +30,8 @@
 
 - (CLIntersiloProxy)init
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  objc_storeWeak(&self->_delegate, v3);
+  null = [MEMORY[0x1E695DFB0] null];
+  objc_storeWeak(&self->_delegate, null);
 
   return self;
 }
@@ -41,24 +41,24 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CLIntersiloProxy *)self peer];
-  v7 = [v6 delegateSilo];
-  v8 = [v7 identifier];
-  v9 = [v3 stringWithFormat:@"<%@: peer silo:%@>", v5, v8];
+  peer = [(CLIntersiloProxy *)self peer];
+  delegateSilo = [peer delegateSilo];
+  identifier = [delegateSilo identifier];
+  v9 = [v3 stringWithFormat:@"<%@: peer silo:%@>", v5, identifier];
 
   return v9;
 }
 
-+ (id)proxyForRecipientObject:(id)a3 inSilo:(id)a4 recipientName:(id)a5
++ (id)proxyForRecipientObject:(id)object inSilo:(id)silo recipientName:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_alloc([a1 initiatorRepresentingClass]);
-  v12 = objc_alloc([a1 recipientRepresentingClass]);
+  objectCopy = object;
+  siloCopy = silo;
+  nameCopy = name;
+  v11 = objc_alloc([self initiatorRepresentingClass]);
+  v12 = objc_alloc([self recipientRepresentingClass]);
   v13 = v11;
-  v14 = [v13 initWithDelegateObject:v8 delegateSilo:v9 uninitializedPeer:v12];
+  v14 = [v13 initWithDelegateObject:objectCopy delegateSilo:siloCopy uninitializedPeer:v12];
   if (v14 != v13)
   {
     v19 = sub_1DF81C298();
@@ -159,50 +159,50 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v13 setDelegateEntityName:{objc_msgSend(v10, "UTF8String")}];
+  [v13 setDelegateEntityName:{objc_msgSend(nameCopy, "UTF8String")}];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (CLIntersiloProxy)initWithDelegateObject:(id)a3 delegateSilo:(id)a4
+- (CLIntersiloProxy)initWithDelegateObject:(id)object delegateSilo:(id)silo
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegate, a3);
-  objc_storeWeak(&self->_delegateSilo, v6);
+  siloCopy = silo;
+  objc_storeWeak(&self->_delegate, object);
+  objc_storeWeak(&self->_delegateSilo, siloCopy);
 
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v4 = +[CLIntersiloInterface sharedInterface];
-  LOBYTE(a3) = [v4 hasInfoForSelector:a3];
+  LOBYTE(selector) = [v4 hasInfoForSelector:selector];
 
-  return a3;
+  return selector;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v4 = +[CLIntersiloInterface sharedInterface];
-  v5 = [v4 getInfoForSelector:a3];
+  v5 = [v4 getInfoForSelector:selector];
   v6 = [v5 sig];
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 selector];
+  invocationCopy = invocation;
+  selector = [invocationCopy selector];
   v6 = +[CLIntersiloInterface sharedInterface];
-  v57 = [v6 getInfoForSelector:v5];
+  v57 = [v6 getInfoForSelector:selector];
 
-  v7 = [(CLIntersiloProxy *)self peer];
-  v56 = v7;
-  if ([v4 argumentsRetained])
+  peer = [(CLIntersiloProxy *)self peer];
+  v56 = peer;
+  if ([invocationCopy argumentsRetained])
   {
     v44 = sub_1DF81C298();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
@@ -251,19 +251,19 @@ LABEL_74:
   v65 = 0;
   if ([v57 lastArgBlockIndex])
   {
-    v8 = [v57 lastArgBlockIndex];
-    if (v8 >= 0)
+    lastArgBlockIndex = [v57 lastArgBlockIndex];
+    if (lastArgBlockIndex >= 0)
     {
-      v9 = v8;
+      v9 = lastArgBlockIndex;
     }
 
     else
     {
-      v9 = -v8;
+      v9 = -lastArgBlockIndex;
     }
 
     v64 = 0;
-    [v4 getArgument:&v64 atIndex:v9];
+    [invocationCopy getArgument:&v64 atIndex:v9];
     cf = [v64 copy];
     v10 = *_Block_signature(cf);
     if ((v10 == 118) != [v57 lastArgBlockIndex] < 1)
@@ -325,7 +325,7 @@ LABEL_19:
           {
             objc_loadWeakRetained(&self->_delegate);
             objc_loadWeakRetained(&self->_delegateSilo);
-            [v7 delegateSilo];
+            [peer delegateSilo];
             objc_claimAutoreleasedReturnValue();
             operator new();
           }
@@ -427,12 +427,12 @@ LABEL_73:
     }
   }
 
-  v22 = [v57 returnAddressIndex];
-  if (v22)
+  returnAddressIndex = [v57 returnAddressIndex];
+  if (returnAddressIndex)
   {
     v64 = 0;
-    v23 = v22;
-    [v4 getArgument:&v64 atIndex:v22];
+    v23 = returnAddressIndex;
+    [invocationCopy getArgument:&v64 atIndex:returnAddressIndex];
     v24 = objc_loadWeakRetained(&self->_delegate);
     v25 = v24;
     if (!v24 || (v26 = v64, v64 == CLISP_ME_TOKEN))
@@ -446,9 +446,9 @@ LABEL_73:
 
       if (!v28)
       {
-        v29 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v30 = objc_loadWeakRetained(&self->_delegate);
-        v31 = v29 == v30;
+        v31 = null == v30;
 
         v32 = sub_1DF81C298();
         v33 = os_log_type_enabled(v32, OS_LOG_TYPE_FAULT);
@@ -538,12 +538,12 @@ LABEL_73:
       }
     }
 
-    v7 = v56;
+    peer = v56;
     v64 = v56;
-    [v4 setArgument:&v64 atIndex:v23];
+    [invocationCopy setArgument:&v64 atIndex:v23];
   }
 
-  if ([v4 argumentsRetained])
+  if ([invocationCopy argumentsRetained])
   {
     v47 = sub_1DF81C298();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
@@ -588,26 +588,26 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  [v4 retainArguments];
+  [invocationCopy retainArguments];
   if (v65)
   {
 
     v65 = 0;
-    v7 = v56;
+    peer = v56;
   }
 
-  v36 = [v7 delegateSilo];
-  if (v36)
+  delegateSilo = [peer delegateSilo];
+  if (delegateSilo)
   {
-    v37 = [v56 delegate];
+    delegate = [v56 delegate];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1DF81D8D4;
     aBlock[3] = &unk_1E86C85C0;
-    v38 = v37;
+    v38 = delegate;
     v59 = v38;
-    v60 = self;
-    v61 = v4;
+    selfCopy = self;
+    v61 = invocationCopy;
     v39 = v57;
     v62 = v39;
     v63 = v56;
@@ -617,27 +617,27 @@ LABEL_73:
 
     if (v42)
     {
-      [v36 async:v40];
+      [delegateSilo async:v40];
     }
 
     else
     {
-      [objc_opt_class() performSyncOnSilo:v36 invoker:v40];
+      [objc_opt_class() performSyncOnSilo:delegateSilo invoker:v40];
     }
   }
 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerDelegate:(id)a3 inSilo:(id)a4
+- (void)registerDelegate:(id)delegate inSilo:(id)silo
 {
   v24 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v6 = a4;
+  obj = delegate;
+  siloCopy = silo;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = v8;
-  if (WeakRetained != v8)
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = null;
+  if (WeakRetained != null)
   {
 
 LABEL_7:
@@ -695,7 +695,7 @@ LABEL_7:
   }
 
   objc_storeWeak(&self->_delegate, obj);
-  objc_storeWeak(&self->_delegateSilo, v6);
+  objc_storeWeak(&self->_delegateSilo, siloCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }

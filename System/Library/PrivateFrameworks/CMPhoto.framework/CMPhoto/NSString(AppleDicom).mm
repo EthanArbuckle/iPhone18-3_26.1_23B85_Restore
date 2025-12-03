@@ -6,17 +6,17 @@
 
 - (id)unpaddedString
 {
-  if (([a1 length] & 1) != 0 || objc_msgSend(a1, "length") < 2 || objc_msgSend(a1, "characterAtIndex:", objc_msgSend(a1, "length") - 1) != 32)
+  if (([self length] & 1) != 0 || objc_msgSend(self, "length") < 2 || objc_msgSend(self, "characterAtIndex:", objc_msgSend(self, "length") - 1) != 32)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

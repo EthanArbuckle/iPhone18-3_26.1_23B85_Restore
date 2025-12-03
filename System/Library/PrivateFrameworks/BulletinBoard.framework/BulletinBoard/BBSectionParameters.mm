@@ -1,12 +1,12 @@
 @interface BBSectionParameters
 - (BBSectionParameters)init;
-- (BBSectionParameters)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BBSectionParameters)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)allSubtypes;
-- (id)parametersForSubtype:(int64_t)a3;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)parametersForSubtype:(int64_t)subtype;
+- (id)replacementObjectForCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBSectionParameters
@@ -18,8 +18,8 @@
   v2 = [(BBSectionParameters *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    [(BBSectionParameters *)v2 setUUID:v3];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(BBSectionParameters *)v2 setUUID:uUID];
 
     v4 = [[BBSectionSubtypeParameters alloc] initWithFallbackParameters:0];
     defaultSubtypeParameters = v2->_defaultSubtypeParameters;
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (id)parametersForSubtype:(int64_t)a3
+- (id)parametersForSubtype:(int64_t)subtype
 {
   v5 = self->_allSubtypeParameters;
   objc_sync_enter(v5);
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:subtype];
   v7 = [(NSMutableDictionary *)self->_allSubtypeParameters objectForKey:v6];
   if (!v7)
   {
@@ -59,16 +59,16 @@
 {
   v3 = self->_allSubtypeParameters;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_allSubtypeParameters allKeys];
+  allKeys = [(NSMutableDictionary *)self->_allSubtypeParameters allKeys];
   objc_sync_exit(v3);
 
-  return v4;
+  return allKeys;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -78,9 +78,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBSectionParameters *)self UUID];
-      v7 = [(BBSectionParameters *)v5 UUID];
+      v5 = equalCopy;
+      uUID = [(BBSectionParameters *)self UUID];
+      uUID2 = [(BBSectionParameters *)v5 UUID];
 
       v8 = BSEqualObjects();
     }
@@ -96,36 +96,36 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BBSectionParameters *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(BBSectionParameters *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (BBSectionParameters)initWithCoder:(id)a3
+- (BBSectionParameters)initWithCoder:(id)coder
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = BBSectionParameters;
   v5 = [(BBSectionParameters *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     [(BBSectionParameters *)v5 setUUID:v6];
 
     v7 = v5;
-    v8 = [v7 bb_objectCache];
-    v5 = [v8 cacheObject:v7];
+    bb_objectCache = [v7 bb_objectCache];
+    v5 = [bb_objectCache cacheObject:v7];
 
     if (v5 == v7)
     {
-      -[BBSectionParameters setShowsSubtitle:](v5, "setShowsSubtitle:", [v4 decodeBoolForKey:@"showsSubtitle"]);
-      -[BBSectionParameters setMessageNumberOfLines:](v5, "setMessageNumberOfLines:", [v4 decodeIntegerForKey:@"messageNumberOfLines"]);
-      -[BBSectionParameters setUsesVariableLayout:](v5, "setUsesVariableLayout:", [v4 decodeBoolForKey:@"usesVariableLayout"]);
-      -[BBSectionParameters setOrderSectionUsingRecencyDate:](v5, "setOrderSectionUsingRecencyDate:", [v4 decodeBoolForKey:@"orderSectionUsingRecencyDate"]);
-      -[BBSectionParameters setShowsDateInFloatingLockScreenAlert:](v5, "setShowsDateInFloatingLockScreenAlert:", [v4 decodeBoolForKey:@"showsDateInFloatingLockScreenAlert"]);
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultSubtypeParameters"];
+      -[BBSectionParameters setShowsSubtitle:](v5, "setShowsSubtitle:", [coderCopy decodeBoolForKey:@"showsSubtitle"]);
+      -[BBSectionParameters setMessageNumberOfLines:](v5, "setMessageNumberOfLines:", [coderCopy decodeIntegerForKey:@"messageNumberOfLines"]);
+      -[BBSectionParameters setUsesVariableLayout:](v5, "setUsesVariableLayout:", [coderCopy decodeBoolForKey:@"usesVariableLayout"]);
+      -[BBSectionParameters setOrderSectionUsingRecencyDate:](v5, "setOrderSectionUsingRecencyDate:", [coderCopy decodeBoolForKey:@"orderSectionUsingRecencyDate"]);
+      -[BBSectionParameters setShowsDateInFloatingLockScreenAlert:](v5, "setShowsDateInFloatingLockScreenAlert:", [coderCopy decodeBoolForKey:@"showsDateInFloatingLockScreenAlert"]);
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultSubtypeParameters"];
       [(BBSectionParameters *)v5 setDefaultSubtypeParameters:v9];
 
       v10 = MEMORY[0x277CBEB98];
@@ -134,13 +134,13 @@
       v30[2] = objc_opt_class();
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
       v12 = [v10 setWithArray:v11];
-      v13 = [v4 decodeObjectOfClasses:v12 forKey:@"allSubtypeParameters"];
+      v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"allSubtypeParameters"];
       [(BBSectionParameters *)v5 setAllSubtypeParameters:v13];
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
       [(BBSectionParameters *)v5 setDisplayName:v14];
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
       [(BBSectionParameters *)v5 setIcon:v15];
 
       v26 = 0u;
@@ -182,38 +182,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   v4 = self->_allSubtypeParameters;
   objc_sync_enter(v4);
-  v5 = [(BBSectionParameters *)self UUID];
-  [v10 encodeObject:v5 forKey:@"UUID"];
+  uUID = [(BBSectionParameters *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
-  v6 = [(BBSectionParameters *)self defaultSubtypeParameters];
-  [v10 encodeObject:v6 forKey:@"defaultSubtypeParameters"];
+  defaultSubtypeParameters = [(BBSectionParameters *)self defaultSubtypeParameters];
+  [coderCopy encodeObject:defaultSubtypeParameters forKey:@"defaultSubtypeParameters"];
 
-  v7 = [(BBSectionParameters *)self allSubtypeParameters];
-  [v10 encodeObject:v7 forKey:@"allSubtypeParameters"];
+  allSubtypeParameters = [(BBSectionParameters *)self allSubtypeParameters];
+  [coderCopy encodeObject:allSubtypeParameters forKey:@"allSubtypeParameters"];
 
-  v8 = [(BBSectionParameters *)self displayName];
-  [v10 encodeObject:v8 forKey:@"displayName"];
+  displayName = [(BBSectionParameters *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v9 = [(BBSectionParameters *)self icon];
-  [v10 encodeObject:v9 forKey:@"icon"];
+  icon = [(BBSectionParameters *)self icon];
+  [coderCopy encodeObject:icon forKey:@"icon"];
 
-  [v10 encodeBool:-[BBSectionParameters showsSubtitle](self forKey:{"showsSubtitle"), @"showsSubtitle"}];
-  [v10 encodeInteger:-[BBSectionParameters messageNumberOfLines](self forKey:{"messageNumberOfLines"), @"messageNumberOfLines"}];
-  [v10 encodeBool:-[BBSectionParameters usesVariableLayout](self forKey:{"usesVariableLayout"), @"usesVariableLayout"}];
-  [v10 encodeBool:-[BBSectionParameters orderSectionUsingRecencyDate](self forKey:{"orderSectionUsingRecencyDate"), @"orderSectionUsingRecencyDate"}];
-  [v10 encodeBool:-[BBSectionParameters showsDateInFloatingLockScreenAlert](self forKey:{"showsDateInFloatingLockScreenAlert"), @"showsDateInFloatingLockScreenAlert"}];
+  [coderCopy encodeBool:-[BBSectionParameters showsSubtitle](self forKey:{"showsSubtitle"), @"showsSubtitle"}];
+  [coderCopy encodeInteger:-[BBSectionParameters messageNumberOfLines](self forKey:{"messageNumberOfLines"), @"messageNumberOfLines"}];
+  [coderCopy encodeBool:-[BBSectionParameters usesVariableLayout](self forKey:{"usesVariableLayout"), @"usesVariableLayout"}];
+  [coderCopy encodeBool:-[BBSectionParameters orderSectionUsingRecencyDate](self forKey:{"orderSectionUsingRecencyDate"), @"orderSectionUsingRecencyDate"}];
+  [coderCopy encodeBool:-[BBSectionParameters showsDateInFloatingLockScreenAlert](self forKey:{"showsDateInFloatingLockScreenAlert"), @"showsDateInFloatingLockScreenAlert"}];
   objc_sync_exit(v4);
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }

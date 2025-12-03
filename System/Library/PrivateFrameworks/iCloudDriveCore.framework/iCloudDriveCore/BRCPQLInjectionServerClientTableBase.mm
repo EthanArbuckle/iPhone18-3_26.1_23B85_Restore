@@ -1,5 +1,5 @@
 @interface BRCPQLInjectionServerClientTableBase
-+ (id)_createInjectionWithServerTruth:(BOOL)a3;
++ (id)_createInjectionWithServerTruth:(BOOL)truth;
 + (id)clientTable;
 + (id)serverTable;
 + (void)serverTable;
@@ -7,17 +7,17 @@
 
 @implementation BRCPQLInjectionServerClientTableBase
 
-+ (id)_createInjectionWithServerTruth:(BOOL)a3
++ (id)_createInjectionWithServerTruth:(BOOL)truth
 {
   v3 = MEMORY[0x277D82C10];
-  if (a3)
+  if (truth)
   {
-    [a1 serverTable];
+    [self serverTable];
   }
 
   else
   {
-    [a1 clientTable];
+    [self clientTable];
   }
   v4 = ;
   v5 = [v3 nameWithString:v4];

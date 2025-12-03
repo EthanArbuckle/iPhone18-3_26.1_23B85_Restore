@@ -1,6 +1,6 @@
 @interface AVPresentationContainerViewAppearanceProxy
 - (UIView)actualView;
-- (void)setActualView:(id)a3;
+- (void)setActualView:(id)view;
 @end
 
 @implementation AVPresentationContainerViewAppearanceProxy
@@ -12,27 +12,27 @@
   return WeakRetained;
 }
 
-- (void)setActualView:(id)a3
+- (void)setActualView:(id)view
 {
-  v12 = a3;
-  objc_storeWeak(&self->_actualView, v12);
-  v4 = [(AVPresentationContainerViewAppearanceProxy *)self maskedCorners];
-  v5 = [v12 layer];
-  [v5 setMaskedCorners:v4];
+  viewCopy = view;
+  objc_storeWeak(&self->_actualView, viewCopy);
+  maskedCorners = [(AVPresentationContainerViewAppearanceProxy *)self maskedCorners];
+  layer = [viewCopy layer];
+  [layer setMaskedCorners:maskedCorners];
 
-  v6 = [(AVPresentationContainerViewAppearanceProxy *)self cornerCurve];
-  v7 = [v12 layer];
-  [v7 setCornerCurve:v6];
+  cornerCurve = [(AVPresentationContainerViewAppearanceProxy *)self cornerCurve];
+  layer2 = [viewCopy layer];
+  [layer2 setCornerCurve:cornerCurve];
 
   [(AVPresentationContainerViewAppearanceProxy *)self cornerRadius];
   v9 = v8;
-  v10 = [v12 layer];
-  [v10 setCornerRadius:v9];
+  layer3 = [viewCopy layer];
+  [layer3 setCornerRadius:v9];
 
-  v11 = [(AVPresentationContainerViewAppearanceProxy *)self backgroundColor];
-  [v12 setBackgroundColor:v11];
+  backgroundColor = [(AVPresentationContainerViewAppearanceProxy *)self backgroundColor];
+  [viewCopy setBackgroundColor:backgroundColor];
 
-  [v12 setClipsToBounds:{-[AVPresentationContainerViewAppearanceProxy clipsToBounds](self, "clipsToBounds")}];
+  [viewCopy setClipsToBounds:{-[AVPresentationContainerViewAppearanceProxy clipsToBounds](self, "clipsToBounds")}];
 }
 
 @end

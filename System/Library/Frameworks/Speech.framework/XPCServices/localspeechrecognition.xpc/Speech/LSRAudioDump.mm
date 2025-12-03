@@ -1,10 +1,10 @@
 @interface LSRAudioDump
 + (id)dumpDirectory;
-+ (id)filenameForTaskIdentifier:(id)a3;
-+ (id)urlForTaskIdentifier:(id)a3;
++ (id)filenameForTaskIdentifier:(id)identifier;
++ (id)urlForTaskIdentifier:(id)identifier;
 + (void)initialize;
-- (LSRAudioDump)initWithTaskIdentifier:(id)a3;
-- (void)appendBytes:(id)a3;
+- (LSRAudioDump)initWithTaskIdentifier:(id)identifier;
+- (void)appendBytes:(id)bytes;
 - (void)close;
 - (void)dealloc;
 - (void)discard;
@@ -45,18 +45,18 @@
   }
 }
 
-- (void)appendBytes:(id)a3
+- (void)appendBytes:(id)bytes
 {
   if (self->_extendedFile)
   {
-    v4 = a3;
-    v5 = [v4 length];
-    v6 = [v4 bytes];
+    bytesCopy = bytes;
+    v5 = [bytesCopy length];
+    bytes = [bytesCopy bytes];
 
     *&ioData.mNumberBuffers = 1;
     ioData.mBuffers[0].mNumberChannels = 1;
     ioData.mBuffers[0].mDataByteSize = v5;
-    ioData.mBuffers[0].mData = v6;
+    ioData.mBuffers[0].mData = bytes;
     v7 = ExtAudioFileWriteAsync(self->_extendedFile, v5 / SupportedASBD[6], &ioData);
     if (v7)
     {
@@ -87,9 +87,9 @@
   [(LSRAudioDump *)&v3 dealloc];
 }
 
-- (LSRAudioDump)initWithTaskIdentifier:(id)a3
+- (LSRAudioDump)initWithTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v30.receiver = self;
   v30.super_class = LSRAudioDump;
   v5 = [(LSRAudioDump *)&v30 init];
@@ -100,7 +100,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = [LSRAudioDump urlForTaskIdentifier:v4];
+  v6 = [LSRAudioDump urlForTaskIdentifier:identifierCopy];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
@@ -196,15 +196,15 @@ LABEL_15:
   return v19;
 }
 
-+ (id)filenameForTaskIdentifier:(id)a3
++ (id)filenameForTaskIdentifier:(id)identifier
 {
   memset(&v7, 0, sizeof(v7));
   v6.tv_sec = 0;
   *&v6.tv_usec = 0;
-  v3 = a3;
+  identifierCopy = identifier;
   gettimeofday(&v6, 0);
   localtime_r(&v6.tv_sec, &v7);
-  v4 = [NSString stringWithFormat:@"%@-%04d%02d%02d-%02d%02d%02d.%d.wav", v3, (v7.tm_year + 1900), (v7.tm_mon + 1), v7.tm_mday, v7.tm_hour, v7.tm_min, v7.tm_sec, getpid(), v6.tv_sec, *&v6.tv_usec];
+  v4 = [NSString stringWithFormat:@"%@-%04d%02d%02d-%02d%02d%02d.%d.wav", identifierCopy, (v7.tm_year + 1900), (v7.tm_mon + 1), v7.tm_mday, v7.tm_hour, v7.tm_min, v7.tm_sec, getpid(), v6.tv_sec, *&v6.tv_usec];
 
   return v4;
 }
@@ -219,11 +219,11 @@ LABEL_15:
   return v4;
 }
 
-+ (id)urlForTaskIdentifier:(id)a3
++ (id)urlForTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[LSRAudioDump dumpDirectory];
-  v6 = [a1 filenameForTaskIdentifier:v4];
+  v6 = [self filenameForTaskIdentifier:identifierCopy];
 
   v7 = [v5 URLByAppendingPathComponent:v6];
 
@@ -232,7 +232,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SFLogInitIfNeeded();

@@ -1,23 +1,23 @@
 @interface VCScreenCaptureFigCaptureController
-- (VCScreenCaptureFigCaptureController)initWithDelegate:(id)a3 screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)a4;
-- (int)pauseScreenCapture:(BOOL)a3;
-- (int)startScreenCaptureWithConfig:(id)a3;
+- (VCScreenCaptureFigCaptureController)initWithDelegate:(id)delegate screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)context;
+- (int)pauseScreenCapture:(BOOL)capture;
+- (int)startScreenCaptureWithConfig:(id)config;
 - (int)stopScreenCapture;
-- (void)callbackWithEventString:(id)a3;
+- (void)callbackWithEventString:(id)string;
 - (void)dealloc;
 - (void)finalize;
-- (void)screenCaptureController:(id)a3 didFailWithStatus:(int)a4;
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5;
-- (void)screenCaptureControllerDidReceiveClearScreen:(id)a3;
-- (void)screenCaptureControllerMediaServicesWereReset:(id)a3;
-- (void)screenCaptureControllerWasPreempted:(id)a3;
-- (void)setIsRunning:(BOOL)a3;
-- (void)shouldClearScreen:(BOOL)a3;
+- (void)screenCaptureController:(id)controller didFailWithStatus:(int)status;
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags;
+- (void)screenCaptureControllerDidReceiveClearScreen:(id)screen;
+- (void)screenCaptureControllerMediaServicesWereReset:(id)reset;
+- (void)screenCaptureControllerWasPreempted:(id)preempted;
+- (void)setIsRunning:(BOOL)running;
+- (void)shouldClearScreen:(BOOL)screen;
 @end
 
 @implementation VCScreenCaptureFigCaptureController
 
-- (VCScreenCaptureFigCaptureController)initWithDelegate:(id)a3 screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)a4
+- (VCScreenCaptureFigCaptureController)initWithDelegate:(id)delegate screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)context
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -33,7 +33,7 @@
       v18 = 1024;
       v19 = 42;
       v20 = 2112;
-      v21 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d inDelegate=%@", buf, 0x26u);
     }
   }
@@ -43,13 +43,13 @@
   v9 = [(VCObject *)&v13 init];
   if (v9)
   {
-    *(v9 + 21) = a3;
-    cannedScreenCaptureSource = a4->cannedScreenCaptureSource;
-    *(v9 + 264) = *&a4->sinkContext;
+    *(v9 + 21) = delegate;
+    cannedScreenCaptureSource = context->cannedScreenCaptureSource;
+    *(v9 + 264) = *&context->sinkContext;
     *(v9 + 35) = cannedScreenCaptureSource;
     pthread_mutex_init(v9 + 3, 0);
     v9[256] = 0;
-    v11 = a4->cannedScreenCaptureSource;
+    v11 = context->cannedScreenCaptureSource;
     if (v11)
     {
       [(VCCannedVideoCaptureSource *)v11 setContext:v9 frameCallback:_VCScreenCaptureFigCaptureController_OnVideoFrame];
@@ -68,7 +68,7 @@
   [(VCObject *)&v3 dealloc];
 }
 
-- (int)startScreenCaptureWithConfig:(id)a3
+- (int)startScreenCaptureWithConfig:(id)config
 {
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -84,7 +84,7 @@
       v14 = 1024;
       v15 = 62;
       v16 = 2112;
-      v17 = a3;
+      configCopy = config;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Starting with config=%@", &v10, 0x26u);
     }
   }
@@ -92,7 +92,7 @@
   if (self->_frameCallback.cannedScreenCaptureSource)
   {
     [(VCScreenCaptureSourceDelegate *)self->_delegate screenCaptureSourceConfigCannedCapture];
-    v7 = [(VCCannedVideoCaptureSource *)self->_frameCallback.cannedScreenCaptureSource start];
+    start = [(VCCannedVideoCaptureSource *)self->_frameCallback.cannedScreenCaptureSource start];
   }
 
   else
@@ -100,17 +100,17 @@
     captureControllerSession = self->_captureControllerSession;
     if (!captureControllerSession)
     {
-      captureControllerSession = [MEMORY[0x1E6970AD0] screenCaptureControllerWithFigVirtualDisplayOptions:a3];
+      captureControllerSession = [MEMORY[0x1E6970AD0] screenCaptureControllerWithFigVirtualDisplayOptions:config];
       self->_captureControllerSession = captureControllerSession;
     }
 
     [(FigScreenCaptureController *)captureControllerSession setDelegate:self];
     [(FigScreenCaptureController *)self->_captureControllerSession startCapture];
-    v7 = 0;
+    start = 0;
   }
 
   [(VCScreenCaptureFigCaptureController *)self setIsRunning:1];
-  return v7;
+  return start;
 }
 
 - (int)stopScreenCapture
@@ -156,9 +156,9 @@
   return result;
 }
 
-- (int)pauseScreenCapture:(BOOL)a3
+- (int)pauseScreenCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -171,7 +171,7 @@
       v9 = 136315906;
       v12 = "[VCScreenCaptureFigCaptureController pauseScreenCapture:]";
       v11 = 2080;
-      if (v3)
+      if (captureCopy)
       {
         v7 = "Pausing";
       }
@@ -184,7 +184,7 @@
     }
   }
 
-  if (v3)
+  if (captureCopy)
   {
     [(VCScreenCaptureFigCaptureController *)self setIsRunning:0];
     [(FigScreenCaptureController *)self->_captureControllerSession suspendCapture];
@@ -225,20 +225,20 @@
   self->_frameCallback.sinkCallback = 0;
 }
 
-- (void)setIsRunning:(BOOL)a3
+- (void)setIsRunning:(BOOL)running
 {
   pthread_mutex_lock(&self->_stateMutex);
-  self->_isRunning = a3;
+  self->_isRunning = running;
 
   pthread_mutex_unlock(&self->_stateMutex);
 }
 
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags
 {
   v23 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_stateMutex);
   isRunning = self->_isRunning;
-  if (!a4 || ((sinkCallback = self->_frameCallback.sinkCallback) != 0 ? (v10 = !isRunning) : (v10 = 1), v10))
+  if (!buffer || ((sinkCallback = self->_frameCallback.sinkCallback) != 0 ? (v10 = !isRunning) : (v10 = 1), v10))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -261,7 +261,7 @@
 
   else
   {
-    sinkCallback(self->_frameCallback.sinkContext, a4, a5);
+    sinkCallback(self->_frameCallback.sinkContext, buffer, flags);
     if (self->_shouldClearScreen)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -288,7 +288,7 @@
   pthread_mutex_unlock(&self->_stateMutex);
 }
 
-- (void)screenCaptureController:(id)a3 didFailWithStatus:(int)a4
+- (void)screenCaptureController:(id)controller didFailWithStatus:(int)status
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -304,19 +304,19 @@
       v12 = 1024;
       v13 = 141;
       v14 = 1024;
-      v15 = a4;
+      statusCopy = status;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d didStart with status=%d", &v8, 0x22u);
     }
   }
 
-  if (a4)
+  if (status)
   {
     [(VCScreenCaptureFigCaptureController *)self setIsRunning:0];
     [(VCScreenCaptureFigCaptureController *)self callbackWithEventString:@"vcScreenCaptureFailStart"];
   }
 }
 
-- (void)screenCaptureControllerWasPreempted:(id)a3
+- (void)screenCaptureControllerWasPreempted:(id)preempted
 {
   v12 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -338,7 +338,7 @@
   [(VCScreenCaptureFigCaptureController *)self callbackWithEventString:@"vcScreenCaptureFailPreempt"];
 }
 
-- (void)screenCaptureControllerMediaServicesWereReset:(id)a3
+- (void)screenCaptureControllerMediaServicesWereReset:(id)reset
 {
   v12 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_stateMutex);
@@ -375,7 +375,7 @@
   pthread_mutex_unlock(&self->_stateMutex);
 }
 
-- (void)screenCaptureControllerDidReceiveClearScreen:(id)a3
+- (void)screenCaptureControllerDidReceiveClearScreen:(id)screen
 {
   v12 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -398,21 +398,21 @@
   [(VCScreenCaptureFigCaptureController *)self shouldClearScreen:1];
 }
 
-- (void)shouldClearScreen:(BOOL)a3
+- (void)shouldClearScreen:(BOOL)screen
 {
   delegate = self->_delegate;
   if (delegate)
   {
-    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceShouldClearScreen:a3];
+    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceShouldClearScreen:screen];
   }
 }
 
-- (void)callbackWithEventString:(id)a3
+- (void)callbackWithEventString:(id)string
 {
   delegate = self->_delegate;
   if (delegate)
   {
-    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceProcessEventString:a3];
+    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceProcessEventString:string];
   }
 }
 

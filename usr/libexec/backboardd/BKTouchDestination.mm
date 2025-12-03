@@ -1,23 +1,23 @@
 @interface BKTouchDestination
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)appendSuccinctDescriptionToFormatter:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)appendSuccinctDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKTouchDestination
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100096BEC;
   v3[3] = &unk_1000FD128;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 appendProem:self block:v3];
+  v3[5] = formatter;
+  [formatter appendProem:self block:v3];
 }
 
-- (void)appendSuccinctDescriptionToFormatter:(id)a3
+- (void)appendSuccinctDescriptionToFormatter:(id)formatter
 {
   predicate = self->_predicate;
   v6 = objc_alloc_init(NSMutableArray);
@@ -56,17 +56,17 @@ LABEL_5:
   v8 = [v7 componentsJoinedByString:@"|"];
   v9 = [NSString stringWithFormat:@"(%@)", v8];
 
-  [a3 appendString:v9 withName:0];
+  [formatter appendString:v9 withName:0];
   v10.receiver = self;
   v10.super_class = BKTouchDestination;
-  [(BKCAContextDestination *)&v10 appendSuccinctDescriptionToFormatter:a3];
+  [(BKCAContextDestination *)&v10 appendSuccinctDescriptionToFormatter:formatter];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = BKTouchDestination;
-  v4 = [(BKCAContextDestination *)&v7 copyWithZone:a3];
+  v4 = [(BKCAContextDestination *)&v7 copyWithZone:zone];
   *(v4 + 4) = self->_predicate;
   WeakRetained = objc_loadWeakRetained(&self->_touchStream);
   objc_storeWeak(v4 + 5, WeakRetained);

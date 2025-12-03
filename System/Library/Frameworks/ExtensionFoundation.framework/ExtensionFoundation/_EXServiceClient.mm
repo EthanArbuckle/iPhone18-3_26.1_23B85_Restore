@@ -1,6 +1,6 @@
 @interface _EXServiceClient
 + (_EXServiceClient)sharedInstance;
-- (BOOL)photoServiceAuthorizationStatusForExtensionUUID:(id)a3 error:(id *)a4;
+- (BOOL)photoServiceAuthorizationStatusForExtensionUUID:(id)d error:(id *)error;
 @end
 
 @implementation _EXServiceClient
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (BOOL)photoServiceAuthorizationStatusForExtensionUUID:(id)a3 error:(id *)a4
+- (BOOL)photoServiceAuthorizationStatusForExtensionUUID:(id)d error:(id *)error
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -25,7 +25,7 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   _EXServiceClient.photoServiceAuthorizationStatus(for:)();
   (*(v6 + 8))(v9, v5);
 

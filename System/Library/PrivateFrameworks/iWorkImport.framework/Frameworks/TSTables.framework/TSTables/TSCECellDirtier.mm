@@ -1,8 +1,8 @@
 @interface TSCECellDirtier
-- (BOOL)_dirtyCellsWithNoLockForSeconds:(double)a3 fromStartTime:(id)a4;
-- (BOOL)dirtyCellsForSeconds:(double)a3 fromStartTime:(id)a4;
-- (BOOL)dirtyNewCellRef:(const TSCEInternalCellReference *)a3 forSeconds:(double)a4 fromStartTime:(id)a5;
-- (TSCECellDirtier)initWithDependencyTracker:(id)a3;
+- (BOOL)_dirtyCellsWithNoLockForSeconds:(double)seconds fromStartTime:(id)time;
+- (BOOL)dirtyCellsForSeconds:(double)seconds fromStartTime:(id)time;
+- (BOOL)dirtyNewCellRef:(const TSCEInternalCellReference *)ref forSeconds:(double)seconds fromStartTime:(id)time;
+- (TSCECellDirtier)initWithDependencyTracker:(id)tracker;
 - (TSCEInternalCellReference)startCellRef;
 - (id).cxx_construct;
 - (void)startDirtyingCellRef;
@@ -11,16 +11,16 @@
 
 @implementation TSCECellDirtier
 
-- (TSCECellDirtier)initWithDependencyTracker:(id)a3
+- (TSCECellDirtier)initWithDependencyTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = TSCECellDirtier;
   v6 = [(TSCECellDirtier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dependTracker, a3);
+    objc_storeStrong(&v6->_dependTracker, tracker);
     v7->_startCellRef.coordinate = 0x7FFF7FFFFFFFLL;
     *&v7->_startCellRef.tableID = 0xFFFF;
     v7->_dirtyingLock._os_unfair_lock_opaque = 0;
@@ -62,30 +62,30 @@
   sub_221087B24(&self->_dependentsToDirtyByFromRef);
 }
 
-- (BOOL)_dirtyCellsWithNoLockForSeconds:(double)a3 fromStartTime:(id)a4
+- (BOOL)_dirtyCellsWithNoLockForSeconds:(double)seconds fromStartTime:(id)time
 {
-  v7 = a4;
-  objc_storeStrong(&self->_startTime, a4);
-  self->_timeout = a3;
+  timeCopy = time;
+  objc_storeStrong(&self->_startTime, time);
+  self->_timeout = seconds;
   objc_msgSend_incrementalMarkCellRefDirty_(self->_dependTracker, v8, self, v9, v10);
   LOBYTE(self) = objc_msgSend_isDoneDirtying(self, v11, v12, v13, v14);
 
   return self;
 }
 
-- (BOOL)dirtyCellsForSeconds:(double)a3 fromStartTime:(id)a4
+- (BOOL)dirtyCellsForSeconds:(double)seconds fromStartTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   os_unfair_lock_lock(&self->_dirtyingLock);
-  started = objc_msgSend__dirtyCellsWithNoLockForSeconds_fromStartTime_(self, v7, v6, v8, v9, a3);
+  started = objc_msgSend__dirtyCellsWithNoLockForSeconds_fromStartTime_(self, v7, timeCopy, v8, v9, seconds);
 
   os_unfair_lock_unlock(&self->_dirtyingLock);
   return started;
 }
 
-- (BOOL)dirtyNewCellRef:(const TSCEInternalCellReference *)a3 forSeconds:(double)a4 fromStartTime:(id)a5
+- (BOOL)dirtyNewCellRef:(const TSCEInternalCellReference *)ref forSeconds:(double)seconds fromStartTime:(id)time
 {
-  v8 = a5;
+  timeCopy = time;
   os_unfair_lock_lock(&self->_dirtyingLock);
   if (self->_dirtyingInProgress)
   {
@@ -94,12 +94,12 @@
 
   else
   {
-    coordinate = a3->coordinate;
-    *&self->_startCellRef.tableID = *&a3->tableID;
+    coordinate = ref->coordinate;
+    *&self->_startCellRef.tableID = *&ref->tableID;
     self->_startCellRef.coordinate = coordinate;
     self->_dirtyingInProgress = 0;
     sub_221087B24(&self->_dependentsToDirtyByFromRef);
-    started = objc_msgSend__dirtyCellsWithNoLockForSeconds_fromStartTime_(self, v11, v8, v12, v13, a4);
+    started = objc_msgSend__dirtyCellsWithNoLockForSeconds_fromStartTime_(self, v11, timeCopy, v12, v13, seconds);
   }
 
   os_unfair_lock_unlock(&self->_dirtyingLock);

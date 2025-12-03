@@ -1,6 +1,6 @@
 @interface MTPerfBaseEventDataProvider
 - (id)knownFields;
-- (id)xpSamplingForced:(id)a3;
+- (id)xpSamplingForced:(id)forced;
 @end
 
 @implementation MTPerfBaseEventDataProvider
@@ -8,24 +8,24 @@
 - (id)knownFields
 {
   v14[11] = *MEMORY[0x277D85DE8];
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = MTPerfBaseEventDataProvider;
-    v7 = [(MTBaseEventDataProvider *)&v13 knownFields];
-    v8 = v7;
-    if (v7)
+    knownFields2 = [(MTBaseEventDataProvider *)&v13 knownFields];
+    v8 = knownFields2;
+    if (knownFields2)
     {
-      v9 = v7;
+      v9 = knownFields2;
     }
 
     else
@@ -44,49 +44,49 @@
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:11];
     }
 
-    v5 = v9;
+    delegate2 = v9;
 
-    v6 = [v5 arrayByAddingObject:@"xpSamplingForced"];
+    knownFields = [delegate2 arrayByAddingObject:@"xpSamplingForced"];
   }
 
-  v10 = v6;
+  v10 = knownFields;
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)xpSamplingForced:(id)a3
+- (id)xpSamplingForced:(id)forced
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  forcedCopy = forced;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpSamplingForced:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpSamplingForced:forcedCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"xpSamplingForced"];
-  v7 = v9;
+  v9 = [forcedCopy objectForKeyedSubscript:@"xpSamplingForced"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__MTPerfBaseEventDataProvider_xpSamplingForced___block_invoke;
   v14[3] = &unk_2798CD4D0;
   v14[4] = self;
-  v10 = [v13 computeWithConfigSources:v14];
+  v10 = [config computeWithConfigSources:v14];
 
 LABEL_6:
 

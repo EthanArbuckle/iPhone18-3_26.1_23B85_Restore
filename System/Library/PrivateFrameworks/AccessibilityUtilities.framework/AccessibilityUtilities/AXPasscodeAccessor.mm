@@ -1,28 +1,28 @@
 @interface AXPasscodeAccessor
-- (AXPasscodeAccessor)initWithServiceName:(id)a3 accountName:(id)a4 groupName:(id)a5 logFacility:(id)a6;
-- (BOOL)attemptToSetPasscode:(id)a3;
+- (AXPasscodeAccessor)initWithServiceName:(id)name accountName:(id)accountName groupName:(id)groupName logFacility:(id)facility;
+- (BOOL)attemptToSetPasscode:(id)passcode;
 - (NSString)passcode;
 - (__CFDictionary)_newQuery;
 @end
 
 @implementation AXPasscodeAccessor
 
-- (AXPasscodeAccessor)initWithServiceName:(id)a3 accountName:(id)a4 groupName:(id)a5 logFacility:(id)a6
+- (AXPasscodeAccessor)initWithServiceName:(id)name accountName:(id)accountName groupName:(id)groupName logFacility:(id)facility
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  accountNameCopy = accountName;
+  groupNameCopy = groupName;
+  facilityCopy = facility;
   v18.receiver = self;
   v18.super_class = AXPasscodeAccessor;
   v15 = [(AXPasscodeAccessor *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_serviceName, a3);
-    objc_storeStrong(&v16->_accountName, a4);
-    objc_storeStrong(&v16->_groupName, a5);
-    objc_storeStrong(&v16->_logFacility, a6);
+    objc_storeStrong(&v15->_serviceName, name);
+    objc_storeStrong(&v16->_accountName, accountName);
+    objc_storeStrong(&v16->_groupName, groupName);
+    objc_storeStrong(&v16->_logFacility, facility);
   }
 
   return v16;
@@ -30,11 +30,11 @@
 
 - (NSString)passcode
 {
-  v2 = [(AXPasscodeAccessor *)self _newQuery];
-  if (v2)
+  _newQuery = [(AXPasscodeAccessor *)self _newQuery];
+  if (_newQuery)
   {
-    v3 = v2;
-    CFDictionaryAddValue(v2, *MEMORY[0x1E697B318], *MEMORY[0x1E695E4D0]);
+    v3 = _newQuery;
+    CFDictionaryAddValue(_newQuery, *MEMORY[0x1E697B318], *MEMORY[0x1E695E4D0]);
     result = 0;
     v4 = &stru_1EFE6D570;
     if (!SecItemCopyMatching(v3, &result) && result)
@@ -55,19 +55,19 @@
   return v4;
 }
 
-- (BOOL)attemptToSetPasscode:(id)a3
+- (BOOL)attemptToSetPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(AXPasscodeAccessor *)self _newQuery];
-  if (v5)
+  passcodeCopy = passcode;
+  _newQuery = [(AXPasscodeAccessor *)self _newQuery];
+  if (_newQuery)
   {
-    if ([v4 length] && (objc_msgSend(v4, "dataUsingEncoding:", 4), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([passcodeCopy length] && (objc_msgSend(passcodeCopy, "dataUsingEncoding:", 4), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
-      v8 = [(AXPasscodeAccessor *)self passcode];
-      if ([v8 length])
+      passcode = [(AXPasscodeAccessor *)self passcode];
+      if ([passcode length])
       {
-        if (([v8 isEqualToString:v4] & 1) != 0 || (Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0)) == 0)
+        if (([passcode isEqualToString:passcodeCopy] & 1) != 0 || (Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0)) == 0)
         {
           v11 = 0;
         }
@@ -76,15 +76,15 @@
         {
           v10 = Mutable;
           CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B3C0], v7);
-          v11 = SecItemUpdate(v5, v10);
+          v11 = SecItemUpdate(_newQuery, v10);
           CFRelease(v10);
         }
       }
 
       else
       {
-        CFDictionaryAddValue(v5, *MEMORY[0x1E697B3C0], v7);
-        v11 = SecItemAdd(v5, 0);
+        CFDictionaryAddValue(_newQuery, *MEMORY[0x1E697B3C0], v7);
+        v11 = SecItemAdd(_newQuery, 0);
       }
 
       v12 = 0;
@@ -92,11 +92,11 @@
 
     else
     {
-      v11 = SecItemDelete(v5);
+      v11 = SecItemDelete(_newQuery);
       v12 = 1;
     }
 
-    CFRelease(v5);
+    CFRelease(_newQuery);
     if (v11 == -25300)
     {
       v13 = v12;
@@ -109,27 +109,27 @@
 
     if (v11)
     {
-      LOBYTE(v5) = v13;
+      LOBYTE(_newQuery) = v13;
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(_newQuery) = 1;
     }
 
-    if ((v5 & 1) == 0)
+    if ((_newQuery & 1) == 0)
     {
-      v14 = [(AXPasscodeAccessor *)self logFacility];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+      logFacility = [(AXPasscodeAccessor *)self logFacility];
+      if (os_log_type_enabled(logFacility, OS_LOG_TYPE_FAULT))
       {
-        [(AXPasscodeAccessor *)v12 attemptToSetPasscode:v11, v14];
+        [(AXPasscodeAccessor *)v12 attemptToSetPasscode:v11, logFacility];
       }
 
-      LOBYTE(v5) = 0;
+      LOBYTE(_newQuery) = 0;
     }
   }
 
-  return v5;
+  return _newQuery;
 }
 
 - (__CFDictionary)_newQuery
@@ -141,16 +141,16 @@
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
     CFDictionaryAddValue(v4, *MEMORY[0x1E697ABD8], *MEMORY[0x1E697ABF0]);
     v5 = *MEMORY[0x1E697AE88];
-    v6 = [(AXPasscodeAccessor *)self serviceName];
-    CFDictionaryAddValue(v4, v5, v6);
+    serviceName = [(AXPasscodeAccessor *)self serviceName];
+    CFDictionaryAddValue(v4, v5, serviceName);
 
     v7 = *MEMORY[0x1E697AC30];
-    v8 = [(AXPasscodeAccessor *)self accountName];
-    CFDictionaryAddValue(v4, v7, v8);
+    accountName = [(AXPasscodeAccessor *)self accountName];
+    CFDictionaryAddValue(v4, v7, accountName);
 
     v9 = *MEMORY[0x1E697ABD0];
-    v10 = [(AXPasscodeAccessor *)self groupName];
-    CFDictionaryAddValue(v4, v9, v10);
+    groupName = [(AXPasscodeAccessor *)self groupName];
+    CFDictionaryAddValue(v4, v9, groupName);
   }
 
   return v4;

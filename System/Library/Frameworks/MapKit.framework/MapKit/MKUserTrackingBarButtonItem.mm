@@ -2,31 +2,31 @@
 - (BOOL)_isInMiniBar;
 - (MKMapView)mapView;
 - (MKUserTrackingBarButtonItem)initWithMapView:(MKMapView *)mapView;
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4;
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState;
 - (id)_trackingEmptyImage;
 - (id)_trackingFollowImage;
 - (id)_trackingFollowWithHeadingImage;
 - (id)_trackingNoneImage;
-- (id)createViewForNavigationItem:(id)a3;
-- (id)createViewForToolbar:(id)a3;
+- (id)createViewForNavigationItem:(id)item;
+- (id)createViewForToolbar:(id)toolbar;
 - (int64_t)_activityIndicatorStyle;
-- (void)_setInternallyEnabled:(BOOL)a3;
-- (void)_setUserTrackingView:(id)a3;
+- (void)_setInternallyEnabled:(BOOL)enabled;
+- (void)_setUserTrackingView:(id)view;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEnabled:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setMapView:(MKMapView *)mapView;
-- (void)set_associatedView:(id)a3;
+- (void)set_associatedView:(id)view;
 @end
 
 @implementation MKUserTrackingBarButtonItem
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"controlSize"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"controlSize"])
   {
     [(MKUserTrackingBarButtonItem *)self _repositionViews];
   }
@@ -35,74 +35,74 @@
   {
     v13.receiver = self;
     v13.super_class = MKUserTrackingBarButtonItem;
-    [(MKUserTrackingBarButtonItem *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MKUserTrackingBarButtonItem *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)createViewForNavigationItem:(id)a3
+- (id)createViewForNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (self->_hasCustomAssociatedView)
   {
-    v5 = [(MKUserTrackingBarButtonItem *)self _associatedView];
+    _associatedView = [(MKUserTrackingBarButtonItem *)self _associatedView];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MKUserTrackingBarButtonItem;
-    v6 = [(MKUserTrackingBarButtonItem *)&v10 createViewForNavigationItem:v4];
+    v6 = [(MKUserTrackingBarButtonItem *)&v10 createViewForNavigationItem:itemCopy];
     [(MKUserTrackingBarButtonItem *)self set_associatedView:v6];
 
-    v7 = [v4 navigationBar];
-    [(MKUserTrackingBarButtonItem *)self set_navigationBar:v7];
+    navigationBar = [itemCopy navigationBar];
+    [(MKUserTrackingBarButtonItem *)self set_navigationBar:navigationBar];
 
-    v8 = [(_MKUserTrackingButtonController *)self->_controller imageView];
-    [v8 removeFromSuperview];
-    [(UIView *)self->_associatedView addSubview:v8];
+    imageView = [(_MKUserTrackingButtonController *)self->_controller imageView];
+    [imageView removeFromSuperview];
+    [(UIView *)self->_associatedView addSubview:imageView];
     [(MKUserTrackingBarButtonItem *)self _repositionViews];
-    v5 = self->_associatedView;
+    _associatedView = self->_associatedView;
   }
 
-  return v5;
+  return _associatedView;
 }
 
-- (id)createViewForToolbar:(id)a3
+- (id)createViewForToolbar:(id)toolbar
 {
-  v4 = a3;
+  toolbarCopy = toolbar;
   if (self->_hasCustomAssociatedView)
   {
-    v5 = [(MKUserTrackingBarButtonItem *)self _associatedView];
+    _associatedView = [(MKUserTrackingBarButtonItem *)self _associatedView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MKUserTrackingBarButtonItem;
-    v6 = [(MKUserTrackingBarButtonItem *)&v9 createViewForToolbar:v4];
+    v6 = [(MKUserTrackingBarButtonItem *)&v9 createViewForToolbar:toolbarCopy];
     [(MKUserTrackingBarButtonItem *)self set_associatedView:v6];
 
-    [(MKUserTrackingBarButtonItem *)self set_toolbar:v4];
-    v7 = [(_MKUserTrackingButtonController *)self->_controller imageView];
-    [v7 removeFromSuperview];
-    [(UIView *)self->_associatedView addSubview:v7];
+    [(MKUserTrackingBarButtonItem *)self set_toolbar:toolbarCopy];
+    imageView = [(_MKUserTrackingButtonController *)self->_controller imageView];
+    [imageView removeFromSuperview];
+    [(UIView *)self->_associatedView addSubview:imageView];
     [(MKUserTrackingBarButtonItem *)self _repositionViews];
-    v5 = self->_associatedView;
+    _associatedView = self->_associatedView;
   }
 
-  return v5;
+  return _associatedView;
 }
 
-- (void)set_associatedView:(id)a3
+- (void)set_associatedView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   associatedView = self->_associatedView;
   if (associatedView)
   {
     [(UIView *)associatedView removeObserver:self forKeyPath:@"controlSize"];
   }
 
-  objc_storeStrong(&self->_associatedView, a3);
+  objc_storeStrong(&self->_associatedView, view);
   v6 = self->_associatedView;
   if (v6)
   {
@@ -110,21 +110,21 @@
   }
 }
 
-- (void)_setInternallyEnabled:(BOOL)a3
+- (void)_setInternallyEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_internallyEnabled = a3;
+  enabledCopy = enabled;
+  self->_internallyEnabled = enabled;
   explicitlyEnabled = self->_explicitlyEnabled;
   v6.receiver = self;
   v6.super_class = MKUserTrackingBarButtonItem;
-  [(MKUserTrackingBarButtonItem *)&v6 setEnabled:explicitlyEnabled & a3];
-  [(UIButton *)self->_customButton setEnabled:explicitlyEnabled & v3];
+  [(MKUserTrackingBarButtonItem *)&v6 setEnabled:explicitlyEnabled & enabled];
+  [(UIButton *)self->_customButton setEnabled:explicitlyEnabled & enabledCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_explicitlyEnabled = a3;
-  v4 = a3 && self->_internallyEnabled;
+  self->_explicitlyEnabled = enabled;
+  v4 = enabled && self->_internallyEnabled;
   v5.receiver = self;
   v5.super_class = MKUserTrackingBarButtonItem;
   [(MKUserTrackingBarButtonItem *)&v5 setEnabled:v4];
@@ -140,9 +140,9 @@
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = self;
+    selfCopy = self;
     v11 = NSStringFromSelector(a2);
-    v12 = [v9 stringWithFormat:@"%@ %@", v10, v11];
+    v12 = [v9 stringWithFormat:@"%@ %@", selfCopy, v11];
 
     [v7 raise:v8 format:{@"%@: mapView must be an MKMapView instance", v12}];
   }
@@ -155,30 +155,30 @@
 
 - (MKMapView)mapView
 {
-  v3 = [(MKUserTrackingBarButtonItem *)self _userTrackingView];
+  _userTrackingView = [(MKUserTrackingBarButtonItem *)self _userTrackingView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MKUserTrackingBarButtonItem *)self _userTrackingView];
+    _userTrackingView2 = [(MKUserTrackingBarButtonItem *)self _userTrackingView];
   }
 
   else
   {
-    v5 = 0;
+    _userTrackingView2 = 0;
   }
 
-  return v5;
+  return _userTrackingView2;
 }
 
-- (void)_setUserTrackingView:(id)a3
+- (void)_setUserTrackingView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    v4 = viewCopy;
   }
 
   else
@@ -189,7 +189,7 @@
   mapView = self->_mapView;
   self->_mapView = v4;
 
-  [(_MKUserTrackingButtonController *)self->_controller setUserTrackingView:v6];
+  [(_MKUserTrackingButtonController *)self->_controller setUserTrackingView:viewCopy];
 }
 
 - (BOOL)_isInMiniBar
@@ -303,20 +303,20 @@
   return trackingEmptyImage;
 }
 
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState
 {
   userTrackingButton = self->_userTrackingButton;
   if (userTrackingButton)
   {
-    userTrackingButton = [userTrackingButton _imageForState:a3 controlState:a4];
+    userTrackingButton = [userTrackingButton _imageForState:state controlState:controlState];
     goto LABEL_3;
   }
 
-  if (a3 <= 0)
+  if (state <= 0)
   {
-    if (a3 != -1)
+    if (state != -1)
     {
-      if (!a3)
+      if (!state)
       {
         userTrackingButton = [(MKUserTrackingBarButtonItem *)self _trackingNoneImage:0];
       }
@@ -329,7 +329,7 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 3:
       userTrackingButton = [(MKUserTrackingBarButtonItem *)self _trackingFollowWithHeadingImage:3];
@@ -348,8 +348,8 @@ LABEL_3:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   associatedView = self->_associatedView;
   if (associatedView)
@@ -370,9 +370,9 @@ LABEL_3:
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = MEMORY[0x1E696AEC0];
-    v15 = self;
+    selfCopy = self;
     v20 = NSStringFromSelector(a2);
-    v21 = [v19 stringWithFormat:@"%@ %@", v15, v20];
+    v21 = [v19 stringWithFormat:@"%@ %@", selfCopy, v20];
 
     [v17 raise:v18 format:{@"%@: mapView must be an MKMapView instance", v21}];
     v16 = 0;
@@ -394,9 +394,9 @@ LABEL_3:
       userTrackingButton = v7->_userTrackingButton;
       v7->_userTrackingButton = v8;
 
-      v10 = [(_MKUserTrackingButton *)v7->_userTrackingButton controller];
+      controller = [(_MKUserTrackingButton *)v7->_userTrackingButton controller];
       controller = v7->_controller;
-      v7->_controller = v10;
+      v7->_controller = controller;
 
       objc_storeStrong(&v7->_customButton, v7->_userTrackingButton);
       [(MKUserTrackingBarButtonItem *)v7 setCustomView:v7->_customButton];
@@ -410,8 +410,8 @@ LABEL_3:
       [v14 count:5];
     }
 
-    v15 = v7;
-    v16 = v15;
+    selfCopy = v7;
+    v16 = selfCopy;
   }
 
   return v16;

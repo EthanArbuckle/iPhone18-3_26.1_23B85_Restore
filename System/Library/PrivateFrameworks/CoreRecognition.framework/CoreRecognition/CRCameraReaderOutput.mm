@@ -1,6 +1,6 @@
 @interface CRCameraReaderOutput
 - (CRCameraReaderOutput)init;
-- (CRCameraReaderOutput)initWithImageReaderOutput:(id)a3;
+- (CRCameraReaderOutput)initWithImageReaderOutput:(id)output;
 - (NSString)formattedStringValue;
 - (NSString)stringValue;
 - (NSString)type;
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (CRCameraReaderOutput)initWithImageReaderOutput:(id)a3
+- (CRCameraReaderOutput)initWithImageReaderOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   v22.receiver = self;
   v22.super_class = CRCameraReaderOutput;
   v5 = [(CRCameraReaderOutput *)&v22 init];
@@ -34,23 +34,23 @@
     v6 = objc_alloc_init(CRCameraReaderOutputInternal);
     [(CRCameraReaderOutput *)v5 setObjectInternal:v6];
 
-    v7 = [v4 stringValue];
-    v8 = [(CRCameraReaderOutput *)v5 objectInternal];
-    [v8 setStringValue:v7];
+    stringValue = [outputCopy stringValue];
+    objectInternal = [(CRCameraReaderOutput *)v5 objectInternal];
+    [objectInternal setStringValue:stringValue];
 
-    [v4 boundingBox];
+    [outputCopy boundingBox];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CRCameraReaderOutput *)v5 objectInternal];
-    [v17 setBoundingBox:{v10, v12, v14, v16}];
+    objectInternal2 = [(CRCameraReaderOutput *)v5 objectInternal];
+    [objectInternal2 setBoundingBox:{v10, v12, v14, v16}];
 
-    [v4 baselineAngle];
+    [outputCopy baselineAngle];
     LODWORD(v10) = v18;
-    v19 = [(CRCameraReaderOutput *)v5 objectInternal];
+    objectInternal3 = [(CRCameraReaderOutput *)v5 objectInternal];
     LODWORD(v20) = LODWORD(v10);
-    [v19 setRotation:v20];
+    [objectInternal3 setRotation:v20];
   }
 
   return v5;
@@ -66,26 +66,26 @@
 
 - (NSString)type
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 type];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  type = [objectInternal type];
 
-  return v3;
+  return type;
 }
 
 - (NSString)stringValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 stringValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  stringValue = [objectInternal stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)formattedStringValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 formattedStringValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  formattedStringValue = [objectInternal formattedStringValue];
 
-  return v3;
+  return formattedStringValue;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface MTVisualStyleSet
-+ (id)recipeNameForRecipeFromStyle:(id)a3 fromStyleSetWithName:(id)a4;
-- (MTVisualStyleSet)initWithName:(id)a3 visualStyleSetDescription:(id)a4 andDescendantDescriptions:(id)a5;
++ (id)recipeNameForRecipeFromStyle:(id)style fromStyleSetWithName:(id)name;
+- (MTVisualStyleSet)initWithName:(id)name visualStyleSetDescription:(id)description andDescendantDescriptions:(id)descriptions;
 - (NSString)description;
-- (id)_materialDescriptionForStyle:(id)a3 withProvidedStyles:(id)a4;
-- (id)_newMaterialSettingsForStyle:(id)a3 withProvidedStyles:(id)a4;
-- (id)visualStylingForStyle:(id)a3;
+- (id)_materialDescriptionForStyle:(id)style withProvidedStyles:(id)styles;
+- (id)_newMaterialSettingsForStyle:(id)style withProvidedStyles:(id)styles;
+- (id)visualStylingForStyle:(id)style;
 @end
 
 @implementation MTVisualStyleSet
 
-+ (id)recipeNameForRecipeFromStyle:(id)a3 fromStyleSetWithName:(id)a4
++ (id)recipeNameForRecipeFromStyle:(id)style fromStyleSetWithName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  styleCopy = style;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (styleCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -24,37 +24,37 @@
 
   else
   {
-    [MTVisualStyleSet recipeNameForRecipeFromStyle:a2 fromStyleSetWithName:a1];
+    [MTVisualStyleSet recipeNameForRecipeFromStyle:a2 fromStyleSetWithName:self];
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  [MTVisualStyleSet recipeNameForRecipeFromStyle:a2 fromStyleSetWithName:a1];
+  [MTVisualStyleSet recipeNameForRecipeFromStyle:a2 fromStyleSetWithName:self];
 LABEL_3:
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.generatedRecipe", v9, v7];
+  styleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.generatedRecipe", v9, styleCopy];
 
-  return v10;
+  return styleCopy;
 }
 
-- (MTVisualStyleSet)initWithName:(id)a3 visualStyleSetDescription:(id)a4 andDescendantDescriptions:(id)a5
+- (MTVisualStyleSet)initWithName:(id)name visualStyleSetDescription:(id)description andDescendantDescriptions:(id)descriptions
 {
   v85 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  descriptionCopy = description;
+  descriptionsCopy = descriptions;
   v79.receiver = self;
   v79.super_class = MTVisualStyleSet;
   v11 = [(MTVisualStyleSet *)&v79 init];
   if (v11)
   {
-    v55 = v8;
-    v12 = [v8 copy];
+    v55 = nameCopy;
+    v12 = [nameCopy copy];
     visualStyleSetName = v11->_visualStyleSetName;
     v11->_visualStyleSetName = v12;
 
-    v14 = [v9 objectForKey:@"visualStyleSetVersion"];
+    v14 = [descriptionCopy objectForKey:@"visualStyleSetVersion"];
     v11->_visualStyleSetVersion = [v14 integerValue];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -65,15 +65,15 @@ LABEL_3:
     styleNamesToVisualStylings = v11->_styleNamesToVisualStylings;
     v11->_styleNamesToVisualStylings = v17;
 
-    v61 = v9;
-    v19 = [v9 objectForKey:@"styles"];
+    v61 = descriptionCopy;
+    v19 = [descriptionCopy objectForKey:@"styles"];
     v20 = objc_alloc(MEMORY[0x1E695DFA8]);
     v56 = v19;
-    v21 = [v19 allKeys];
-    v22 = [v20 initWithArray:v21];
+    allKeys = [v19 allKeys];
+    v22 = [v20 initWithArray:allKeys];
 
-    v60 = v10;
-    [v10 valueForKey:@"styles"];
+    v60 = descriptionsCopy;
+    [descriptionsCopy valueForKey:@"styles"];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -92,8 +92,8 @@ LABEL_3:
             objc_enumerationMutation(obj);
           }
 
-          v27 = [*(*(&v75 + 1) + 8 * i) allKeys];
-          [v22 addObjectsFromArray:v27];
+          allKeys2 = [*(*(&v75 + 1) + 8 * i) allKeys];
+          [v22 addObjectsFromArray:allKeys2];
         }
 
         v24 = [obj countByEnumeratingWithState:&v75 objects:v84 count:16];
@@ -152,8 +152,8 @@ LABEL_3:
 
     v57 = v40;
     v41 = [v40 countByEnumeratingWithState:&v67 objects:v82 count:16];
-    v10 = v60;
-    v9 = v61;
+    descriptionsCopy = v60;
+    descriptionCopy = v61;
     if (v41)
     {
       v42 = v41;
@@ -172,9 +172,9 @@ LABEL_3:
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v80 = v9;
+          v80 = descriptionCopy;
           v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
-          v46 = [v45 arrayByAddingObjectsFromArray:v10];
+          v46 = [v45 arrayByAddingObjectsFromArray:descriptionsCopy];
 
           v47 = [v46 countByEnumeratingWithState:&v63 objects:v81 count:16];
           if (v47)
@@ -208,8 +208,8 @@ LABEL_3:
             while (v48);
           }
 
-          v10 = v60;
-          v9 = v61;
+          descriptionsCopy = v60;
+          descriptionCopy = v61;
         }
 
         v42 = [v57 countByEnumeratingWithState:&v67 objects:v82 count:16];
@@ -218,18 +218,18 @@ LABEL_3:
       while (v42);
     }
 
-    v8 = v55;
+    nameCopy = v55;
   }
 
   v53 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)visualStylingForStyle:(id)a3
+- (id)visualStylingForStyle:(id)style
 {
   visualStylesToStyleNames = self->_visualStylesToStyleNames;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)visualStylesToStyleNames objectForKey:v5];
+  styleCopy = style;
+  v6 = [(NSMutableDictionary *)visualStylesToStyleNames objectForKey:styleCopy];
   v7 = v6;
   if (v6)
   {
@@ -238,7 +238,7 @@ LABEL_3:
 
   else
   {
-    v8 = v5;
+    v8 = styleCopy;
   }
 
   v9 = v8;
@@ -248,43 +248,43 @@ LABEL_3:
   return v10;
 }
 
-- (id)_materialDescriptionForStyle:(id)a3 withProvidedStyles:(id)a4
+- (id)_materialDescriptionForStyle:(id)style withProvidedStyles:(id)styles
 {
-  v6 = a4;
-  v7 = [(MTVisualStyleSet *)self visualStylingForStyle:a3];
+  stylesCopy = styles;
+  v7 = [(MTVisualStyleSet *)self visualStylingForStyle:style];
   v8 = v7;
   if (v7 && (([v7 tintColorDescription], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || _CanGenerateMaterialDescriptionForFilteringFromVisualStyling(v8)))
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v10 setObject:v11 forKey:@"baseMaterial"];
-    v12 = [v8 tintColorDescription];
+    tintColorDescription = [v8 tintColorDescription];
 
-    if (v12)
+    if (tintColorDescription)
     {
-      v13 = [v8 tintColorDescription];
-      [v11 setObject:v13 forKey:@"tinting"];
+      tintColorDescription2 = [v8 tintColorDescription];
+      [v11 setObject:tintColorDescription2 forKey:@"tinting"];
     }
 
     if (_CanGenerateMaterialDescriptionForFilteringFromVisualStyling(v8))
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v11 setObject:v14 forKey:@"materialFiltering"];
-      v15 = [v8 filterType];
-      v16 = [v15 isEqualToString:*MEMORY[0x1E6979D78]];
+      filterType = [v8 filterType];
+      v16 = [filterType isEqualToString:*MEMORY[0x1E6979D78]];
 
       if (v16)
       {
-        v17 = [v8 filterProperties];
-        v18 = [v17 objectForKey:@"inputColorMatrix"];
+        filterProperties = [v8 filterProperties];
+        v18 = [filterProperties objectForKey:@"inputColorMatrix"];
         [v14 setObject:v18 forKey:@"colorMatrix"];
       }
     }
 
     [v10 setObject:&unk_1F3E017B8 forKey:@"materialSettingsVersion"];
-    if (v6)
+    if (stylesCopy)
     {
-      [v10 setObject:v6 forKey:@"styles"];
+      [v10 setObject:stylesCopy forKey:@"styles"];
     }
   }
 
@@ -296,16 +296,16 @@ LABEL_3:
   return v10;
 }
 
-- (id)_newMaterialSettingsForStyle:(id)a3 withProvidedStyles:(id)a4
+- (id)_newMaterialSettingsForStyle:(id)style withProvidedStyles:(id)styles
 {
-  v6 = a3;
-  v7 = [(MTVisualStyleSet *)self _materialDescriptionForStyle:v6 withProvidedStyles:a4];
+  styleCopy = style;
+  v7 = [(MTVisualStyleSet *)self _materialDescriptionForStyle:styleCopy withProvidedStyles:styles];
   if (v7)
   {
     v8 = [MTRecipeMaterialSettings alloc];
     v9 = objc_opt_class();
-    v10 = [(MTVisualStyleSet *)self visualStyleSetName];
-    v11 = [v9 recipeNameForRecipeFromStyle:v6 fromStyleSetWithName:v10];
+    visualStyleSetName = [(MTVisualStyleSet *)self visualStyleSetName];
+    v11 = [v9 recipeNameForRecipeFromStyle:styleCopy fromStyleSetWithName:visualStyleSetName];
     v12 = [(MTRecipeMaterialSettings *)v8 initWithRecipeName:v11 andDescription:v7 descendantDescriptions:0 bundle:0];
   }
 

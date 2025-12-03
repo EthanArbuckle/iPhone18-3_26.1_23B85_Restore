@@ -1,95 +1,95 @@
 @interface CNContactAddToExistingContactAction
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)performActionWithSender:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactAddToExistingContactAction
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v17 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  contactCopy = contact;
+  if (contactCopy)
   {
-    [(CNContactAddToExistingContactAction *)self setChosenContact:v6];
-    v7 = [(CNContactAction *)self delegate];
-    v8 = [(CNContactAddToExistingContactAction *)self contactPicker];
-    [v7 action:self dismissViewController:v8 sender:0];
+    [(CNContactAddToExistingContactAction *)self setChosenContact:contactCopy];
+    delegate = [(CNContactAction *)self delegate];
+    contactPicker = [(CNContactAddToExistingContactAction *)self contactPicker];
+    [delegate action:self dismissViewController:contactPicker sender:0];
 
-    v9 = [(CNContactAction *)self delegate];
-    [v9 actionDidFinish:self];
+    delegate2 = [(CNContactAction *)self delegate];
+    [delegate2 actionDidFinish:self];
 
-    v10 = [(CNContactAction *)self contact];
-    LODWORD(v8) = [v10 isSuggested];
+    contact = [(CNContactAction *)self contact];
+    LODWORD(contactPicker) = [contact isSuggested];
 
-    if (!v8)
+    if (!contactPicker)
     {
       goto LABEL_6;
     }
 
-    v11 = [(CNContactAction *)self delegate];
-    v12 = [v11 contactViewCache];
-    v13 = [v12 contactStore];
+    delegate3 = [(CNContactAction *)self delegate];
+    contactViewCache = [delegate3 contactViewCache];
+    contactStore = [contactViewCache contactStore];
 
-    v14 = [MEMORY[0x1E695CD50] sharedNotifier];
-    [v14 didSaveChangesSuccessfully:1 fromContactStore:v13 requestIdentifier:0];
+    mEMORY[0x1E695CD50] = [MEMORY[0x1E695CD50] sharedNotifier];
+    [mEMORY[0x1E695CD50] didSaveChangesSuccessfully:1 fromContactStore:contactStore requestIdentifier:0];
   }
 
   else
   {
-    v15 = [(CNContactAction *)self delegate];
-    v16 = [(CNContactAddToExistingContactAction *)self contactPicker];
-    [v15 action:self dismissViewController:v16 sender:0];
+    delegate4 = [(CNContactAction *)self delegate];
+    contactPicker2 = [(CNContactAddToExistingContactAction *)self contactPicker];
+    [delegate4 action:self dismissViewController:contactPicker2 sender:0];
 
-    v13 = [(CNContactAction *)self delegate];
-    [v13 actionWasCanceled:self];
+    contactStore = [(CNContactAction *)self delegate];
+    [contactStore actionWasCanceled:self];
   }
 
 LABEL_6:
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v12 = [a4 mutableCopy];
-  v5 = [(CNContactAction *)self contact];
-  v6 = [CNContactViewController viewControllerForUpdatingContact:v12 withPropertiesFromContact:v5];
-  v7 = [(CNContactAction *)self delegate];
-  v8 = [v7 contactViewCache];
-  v9 = [v8 contactStore];
-  [v6 setContactStore:v9];
+  v12 = [contact mutableCopy];
+  contact = [(CNContactAction *)self contact];
+  v6 = [CNContactViewController viewControllerForUpdatingContact:v12 withPropertiesFromContact:contact];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
+  [v6 setContactStore:contactStore];
 
   [v6 setDelegate:self];
-  v10 = [(CNContactAddToExistingContactAction *)self contactPicker];
-  v11 = [v10 navigationController];
-  [v11 pushViewController:v6 animated:1];
+  contactPicker = [(CNContactAddToExistingContactAction *)self contactPicker];
+  navigationController = [contactPicker navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(CNContactAction *)self delegate];
-  [v5 action:self dismissViewController:v4 sender:0];
+  cancelCopy = cancel;
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self dismissViewController:cancelCopy sender:0];
 
-  v6 = [(CNContactAction *)self delegate];
-  [v6 actionWasCanceled:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 actionWasCanceled:self];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v7 = objc_alloc_init(CNContactPickerViewController);
   [(CNContactPickerViewController *)v7 setDelegate:self];
   [(CNContactPickerViewController *)v7 setMode:2];
   [(CNContactPickerViewController *)v7 setAutocloses:0];
   [(CNContactPickerViewController *)v7 setOnlyRealContacts:1];
-  v5 = [(CNContactAction *)self contact];
-  [(CNContactPickerViewController *)v7 scrollToClosestContactMatching:v5];
+  contact = [(CNContactAction *)self contact];
+  [(CNContactPickerViewController *)v7 scrollToClosestContactMatching:contact];
 
   [(CNContactAddToExistingContactAction *)self setChosenContact:0];
-  v6 = [(CNContactAction *)self delegate];
-  [v6 action:self presentViewController:v7 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v7 sender:senderCopy];
 
   [(CNContactAddToExistingContactAction *)self setContactPicker:v7];
 }

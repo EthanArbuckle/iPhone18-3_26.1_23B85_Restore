@@ -1,8 +1,8 @@
 @interface CHSToolSupportService
 - (CHSToolSupportService)init;
-- (CHSToolSupportService)initWithConnection:(id)a3;
-- (void)cacheDescriptorsForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)reloadDescriptorsForExtensionBundleIdentifier:(id)a3 completion:(id)a4;
+- (CHSToolSupportService)initWithConnection:(id)connection;
+- (void)cacheDescriptorsForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)reloadDescriptorsForExtensionBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CHSToolSupportService
@@ -15,31 +15,31 @@
   return v4;
 }
 
-- (CHSToolSupportService)initWithConnection:(id)a3
+- (CHSToolSupportService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CHSToolSupportService;
   v6 = [(CHSToolSupportService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)cacheDescriptorsForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)cacheDescriptorsForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__CHSToolSupportService_cacheDescriptorsForBundleIdentifier_completion___block_invoke;
   v8[3] = &unk_1E7454548;
-  v9 = v6;
-  v7 = v6;
-  [(CHSToolSupportService *)self reloadDescriptorsForExtensionBundleIdentifier:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(CHSToolSupportService *)self reloadDescriptorsForExtensionBundleIdentifier:identifier completion:v8];
 }
 
 void __72__CHSToolSupportService_cacheDescriptorsForBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -57,17 +57,17 @@ void __72__CHSToolSupportService_cacheDescriptorsForBundleIdentifier_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)reloadDescriptorsForExtensionBundleIdentifier:(id)a3 completion:(id)a4
+- (void)reloadDescriptorsForExtensionBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   connection = self->_connection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__CHSToolSupportService_reloadDescriptorsForExtensionBundleIdentifier_completion___block_invoke;
   v9[3] = &unk_1E7454548;
-  v10 = v6;
-  v8 = v6;
-  [(CHSToolServiceConnection *)connection refreshDescriptorsForExtensionBundleIdentifier:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CHSToolServiceConnection *)connection refreshDescriptorsForExtensionBundleIdentifier:identifier completion:v9];
 }
 
 @end

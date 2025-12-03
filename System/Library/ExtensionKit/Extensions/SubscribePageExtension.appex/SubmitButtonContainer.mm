@@ -1,24 +1,24 @@
 @interface SubmitButtonContainer
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SubmitButtonContainer
 
-- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer_submitButton) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SubmitButtonContainer();
-  v7 = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
+  height = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
   sub_100016C60(0, &qword_100923500);
-  v8 = v7;
+  v8 = height;
   v9 = sub_100753E84();
   [(SubmitButtonContainer *)v8 setBackgroundColor:v9];
 
@@ -26,7 +26,7 @@
   return v8;
 }
 
-- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtensionP33_091EBE25195B1220BBDC30ECB0E4A36A21SubmitButtonContainer_submitButton) = 0;
   result = sub_100754644();
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1001E8898();
   v8 = v7;
   v10 = v9;
@@ -57,7 +57,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E5C98();
 }
 

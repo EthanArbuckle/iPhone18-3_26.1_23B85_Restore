@@ -1,28 +1,28 @@
 @interface AVButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 @end
 
 @implementation AVButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVButton" hasInstanceMethod:@"hasAlternateAppearance" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVButton" hasInstanceMethod:@"hasAlternateAppearance" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(AVButtonAccessibility *)self safeUIViewForKey:@"imageView"];
-  v4 = [(AVButtonAccessibility *)self accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"Right Secondary Control"];
+  accessibilityIdentifier = [(AVButtonAccessibility *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"Right Secondary Control"];
 
   if (v5)
   {
-    v6 = [v3 accessibilityLabel];
-    if (!v6)
+    accessibilityLabel = [v3 accessibilityLabel];
+    if (!accessibilityLabel)
     {
       v7 = @"next.track";
 LABEL_12:
@@ -31,20 +31,20 @@ LABEL_12:
     }
 
 LABEL_6:
-    v10 = v6;
+    v10 = accessibilityLabel;
 LABEL_13:
-    v14 = v10;
+    accessibilityLabel2 = v10;
 
     goto LABEL_14;
   }
 
-  v8 = [(AVButtonAccessibility *)self accessibilityIdentifier];
-  v9 = [v8 isEqualToString:@"Left Secondary Control"];
+  accessibilityIdentifier2 = [(AVButtonAccessibility *)self accessibilityIdentifier];
+  v9 = [accessibilityIdentifier2 isEqualToString:@"Left Secondary Control"];
 
   if (v9)
   {
-    v6 = [v3 accessibilityLabel];
-    if (!v6)
+    accessibilityLabel = [v3 accessibilityLabel];
+    if (!accessibilityLabel)
     {
       v7 = @"previous.track";
       goto LABEL_12;
@@ -56,17 +56,17 @@ LABEL_13:
   v17 = 0;
   objc_opt_class();
   v11 = __UIAccessibilityCastAsClass();
-  v12 = [v11 image];
-  v13 = [v12 imageAsset];
-  v6 = [v13 safeStringForKey:@"assetName"];
+  image = [v11 image];
+  imageAsset = [image imageAsset];
+  accessibilityLabel = [imageAsset safeStringForKey:@"assetName"];
 
-  if ([v6 isEqualToString:@"rectangle.split.2x2"])
+  if ([accessibilityLabel isEqualToString:@"rectangle.split.2x2"])
   {
     v7 = @"multiview.button";
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"fitness.edit.video.metrics"])
+  if ([accessibilityLabel isEqualToString:@"fitness.edit.video.metrics"])
   {
     v7 = @"metrics.button";
     goto LABEL_12;
@@ -74,10 +74,10 @@ LABEL_13:
 
   v16.receiver = self;
   v16.super_class = AVButtonAccessibility;
-  v14 = [(AVButtonAccessibility *)&v16 accessibilityLabel];
+  accessibilityLabel2 = [(AVButtonAccessibility *)&v16 accessibilityLabel];
 LABEL_14:
 
-  return v14;
+  return accessibilityLabel2;
 }
 
 - (CGRect)accessibilityFrame
@@ -91,7 +91,7 @@ LABEL_14:
   height = v8;
   objc_opt_class();
   v10 = __UIAccessibilityCastAsClass();
-  v11 = [v10 superview];
+  superview = [v10 superview];
   MEMORY[0x29C2C6300](@"AVMobileChromelessDisplayModeControlsView");
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,6 +1,6 @@
 @interface PLDistributedNotificationHandler
-- (PLDistributedNotificationHandler)initWithLibraryBundleController:(id)a3;
-- (void)_handleNotification:(id)a3;
+- (PLDistributedNotificationHandler)initWithLibraryBundleController:(id)controller;
+- (void)_handleNotification:(id)notification;
 - (void)_openSystemPhotoLibrary;
 - (void)registerForNotifications;
 @end
@@ -41,10 +41,10 @@ LABEL_6:
   }
 }
 
-- (void)_handleNotification:(id)a3
+- (void)_handleNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -54,7 +54,7 @@ LABEL_6:
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "Got distributed notification: %@", &v15, 0xCu);
   }
 
-  v7 = MEMORY[0x19EAF0BF0](v4);
+  v7 = MEMORY[0x19EAF0BF0](notificationCopy);
   v8 = MEMORY[0x1E69E9E80];
   if (v7 != MEMORY[0x1E69E9E80])
   {
@@ -72,7 +72,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E40]);
+  string = xpc_dictionary_get_string(notificationCopy, *MEMORY[0x1E69E9E40]);
   if (!strcmp(string, "com.apple.assetsd.cloudphoto"))
   {
     [(PLDistributedNotificationHandler *)self _handleCloudPhotoNotification];
@@ -92,7 +92,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = xpc_dictionary_get_value(v4, "UserInfo");
+  v12 = xpc_dictionary_get_value(notificationCopy, "UserInfo");
   if (MEMORY[0x19EAF0BF0]() == v8)
   {
     v13 = _CFXPCCreateCFObjectFromXPCObject();
@@ -136,9 +136,9 @@ void __60__PLDistributedNotificationHandler_registerForNotifications__block_invo
   [WeakRetained _handleNotification:v3];
 }
 
-- (PLDistributedNotificationHandler)initWithLibraryBundleController:(id)a3
+- (PLDistributedNotificationHandler)initWithLibraryBundleController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PLDistributedNotificationHandler;
   v6 = [(PLDistributedNotificationHandler *)&v15 init];
@@ -151,8 +151,8 @@ void __60__PLDistributedNotificationHandler_registerForNotifications__block_invo
     notificationQueue = v6->_notificationQueue;
     v6->_notificationQueue = v9;
 
-    objc_storeStrong(&v6->_libraryBundleController, a3);
-    v11 = [[PLAppLibraryUninstallSupport alloc] initWithLibraryBundleController:v5];
+    objc_storeStrong(&v6->_libraryBundleController, controller);
+    v11 = [[PLAppLibraryUninstallSupport alloc] initWithLibraryBundleController:controllerCopy];
     appLibraryUninstallSupport = v6->_appLibraryUninstallSupport;
     v6->_appLibraryUninstallSupport = v11;
 

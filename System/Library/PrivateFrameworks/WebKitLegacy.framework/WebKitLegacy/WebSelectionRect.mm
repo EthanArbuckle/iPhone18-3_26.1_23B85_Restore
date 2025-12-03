@@ -1,10 +1,10 @@
 @interface WebSelectionRect
-+ (CGRect)endEdge:(id)a3;
-+ (CGRect)startEdge:(id)a3;
++ (CGRect)endEdge:(id)edge;
++ (CGRect)startEdge:(id)edge;
 + (id)selectionRect;
 - (CGRect)rect;
 - (WebSelectionRect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,21 +12,21 @@
 
 + (id)selectionRect
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (CGRect)startEdge:(id)a3
++ (CGRect)startEdge:(id)edge
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([edge count])
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v4 = [edge countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v4)
     {
       v5 = v4;
@@ -37,7 +37,7 @@ LABEL_4:
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(edge);
         }
 
         v8 = *(*(&v24 + 1) + 8 * v7);
@@ -48,7 +48,7 @@ LABEL_4:
 
         if (v5 == ++v7)
         {
-          v5 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v5 = [edge countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -65,17 +65,17 @@ LABEL_4:
     }
 
 LABEL_12:
-    v8 = [a3 objectAtIndex:0];
+    v8 = [edge objectAtIndex:0];
 LABEL_13:
     [v8 rect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v8 isHorizontal];
-    v18 = [v8 writingDirection];
-    v19 = v18 + 1;
-    if (v17)
+    isHorizontal = [v8 isHorizontal];
+    writingDirection = [v8 writingDirection];
+    v19 = writingDirection + 1;
+    if (isHorizontal)
     {
       if (v19 < 2)
       {
@@ -86,7 +86,7 @@ LABEL_24:
       }
 
       v21 = v16;
-      if (v18 == 1)
+      if (writingDirection == 1)
       {
         v10 = v10 + v14 + -1.0;
         v20 = 1.0;
@@ -105,7 +105,7 @@ LABEL_21:
     }
 
     v20 = v14;
-    if (v18 != 1)
+    if (writingDirection != 1)
     {
       goto LABEL_24;
     }
@@ -132,16 +132,16 @@ LABEL_25:
   return result;
 }
 
-+ (CGRect)endEdge:(id)a3
++ (CGRect)endEdge:(id)edge
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([edge count])
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v4 = [edge countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v4)
     {
       v5 = v4;
@@ -152,18 +152,18 @@ LABEL_4:
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(edge);
         }
 
-        v8 = *(*(&v24 + 1) + 8 * v7);
-        if ([v8 containsEnd])
+        lastObject = *(*(&v24 + 1) + 8 * v7);
+        if ([lastObject containsEnd])
         {
           break;
         }
 
         if (v5 == ++v7)
         {
-          v5 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v5 = [edge countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -173,28 +173,28 @@ LABEL_4:
         }
       }
 
-      if (v8)
+      if (lastObject)
       {
         goto LABEL_13;
       }
     }
 
 LABEL_12:
-    v8 = [a3 lastObject];
+    lastObject = [edge lastObject];
 LABEL_13:
-    [v8 rect];
+    [lastObject rect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v8 isHorizontal];
-    v18 = [v8 writingDirection];
-    v19 = v18 + 1;
-    if (v17)
+    isHorizontal = [lastObject isHorizontal];
+    writingDirection = [lastObject writingDirection];
+    v19 = writingDirection + 1;
+    if (isHorizontal)
     {
       if (v19 >= 2)
       {
-        if (v18 == 1)
+        if (writingDirection == 1)
         {
           v14 = 1.0;
         }
@@ -209,7 +209,7 @@ LABEL_13:
 
     else if (v19 >= 2)
     {
-      if (v18 == 1)
+      if (writingDirection == 1)
       {
         v16 = 1.0;
       }
@@ -263,7 +263,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = +[WebSelectionRect selectionRect];
   [(WebSelectionRect *)self rect];
@@ -360,9 +360,9 @@ LABEL_13:
     v18 = &stru_1F472E7E8;
   }
 
-  v19 = [(WebSelectionRect *)self isHorizontal];
+  isHorizontal = [(WebSelectionRect *)self isHorizontal];
   v20 = @" [VERTICAL]";
-  if (v19)
+  if (isHorizontal)
   {
     v20 = &stru_1F472E7E8;
   }

@@ -1,5 +1,5 @@
 @interface PISliderNetAdjustmentsRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -13,11 +13,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PISliderNetAdjustmentsRequest;
-  v4 = [(PISliderNetBaseRequest *)&v7 copyWithZone:a3];
+  v4 = [(PISliderNetBaseRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

@@ -1,77 +1,77 @@
 @interface CSMartyDetectionService
-- (BOOL)coinflip:(double)a3;
-- (BOOL)getForceDecision:(id)a3;
+- (BOOL)coinflip:(double)coinflip;
+- (BOOL)getForceDecision:(id)decision;
 - (BOOL)shouldKeepCrashTTR;
 - (BOOL)shouldKeepTriggerTTR;
-- (CSMartyDetectionService)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5 sosStateMachine:(id)a6;
-- (float)querySamplingRate:(id)a3 withDefault:(float)a4;
+- (CSMartyDetectionService)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service sosStateMachine:(id)machine;
+- (float)querySamplingRate:(id)rate withDefault:(float)default;
 - (id).cxx_construct;
 - (id)userInfoUploader;
 - (int)curationSampling;
 - (int)getDeescalationPath;
 - (int)performanceSampling;
-- (int64_t)daysSinceTimestamp:(double)a3;
+- (int64_t)daysSinceTimestamp:(double)timestamp;
 - (void)_updateArmingTimes;
 - (void)abortSession;
 - (void)cacheUserInfo;
 - (void)clearCAStats;
 - (void)decideToShowTTR;
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4;
-- (void)didReceiveSOSStatusUpdate:(id)a3 forMode:(unsigned __int8)a4;
-- (void)dumpSample:(id)a3;
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode;
+- (void)didReceiveSOSStatusUpdate:(id)update forMode:(unsigned __int8)mode;
+- (void)dumpSample:(id)sample;
 - (void)escalateUI;
-- (void)feedAccel800:(id)a3;
-- (void)feedAccel:(id)a3;
-- (void)feedCompanionStatus:(id)a3;
-- (void)feedDeviceMotion:(id)a3;
-- (void)feedGPS:(id)a3;
-- (void)feedHertzSample:(id)a3;
-- (void)feedHgAccel:(id)a3;
-- (void)feedKappaTrigger:(id)a3;
-- (void)feedLocationManagerResults:(id)a3;
-- (void)feedMag:(id)a3;
-- (void)feedPressure:(id)a3;
-- (void)feedRemoteSample:(id)a3;
-- (void)feedRoads:(id)a3;
-- (void)feedSortedSamples:(id)a3;
-- (void)feedSoundPressureLevel:(id)a3;
-- (void)feedSteps:(id)a3;
-- (void)feedTrustedAudioResult:(id)a3;
+- (void)feedAccel800:(id)accel800;
+- (void)feedAccel:(id)accel;
+- (void)feedCompanionStatus:(id)status;
+- (void)feedDeviceMotion:(id)motion;
+- (void)feedGPS:(id)s;
+- (void)feedHertzSample:(id)sample;
+- (void)feedHgAccel:(id)accel;
+- (void)feedKappaTrigger:(id)trigger;
+- (void)feedLocationManagerResults:(id)results;
+- (void)feedMag:(id)mag;
+- (void)feedPressure:(id)pressure;
+- (void)feedRemoteSample:(id)sample;
+- (void)feedRoads:(id)roads;
+- (void)feedSortedSamples:(id)samples;
+- (void)feedSoundPressureLevel:(id)level;
+- (void)feedSteps:(id)steps;
+- (void)feedTrustedAudioResult:(id)result;
 - (void)finishAnomalyEvent;
 - (void)initStateMachine;
-- (void)onCloseEpoch:(unint64_t)a3 epochNumber:(int)a4;
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5;
+- (void)onCloseEpoch:(unint64_t)epoch epochNumber:(int)number;
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp;
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp;
 - (void)printSamplingDefaults;
-- (void)receiveCompanionTrigger:(id)a3;
-- (void)receiveDeviceInfo:(id)a3;
-- (void)requestCompanionUpload:(int)a3;
+- (void)receiveCompanionTrigger:(id)trigger;
+- (void)receiveDeviceInfo:(id)info;
+- (void)requestCompanionUpload:(int)upload;
 - (void)requestDeviceInfo;
 - (void)resetSession;
-- (void)sendCompanionTrigger:(id)a3;
-- (void)sendCompanionUUID:(id)a3;
+- (void)sendCompanionTrigger:(id)trigger;
+- (void)sendCompanionUUID:(id)d;
 - (void)sendDeviceInfo;
-- (void)sendRemoteSampleToCompanion:(unint64_t)a3 epochTs:(unint64_t)a4 epochNumber:(int)a5;
+- (void)sendRemoteSampleToCompanion:(unint64_t)companion epochTs:(unint64_t)ts epochNumber:(int)number;
 - (void)sendSessionInfoToCoreAnalytics;
-- (void)setRecording:(id)a3 withUUID:(id)a4;
+- (void)setRecording:(id)recording withUUID:(id)d;
 - (void)sosActivated;
 - (void)start;
-- (void)stop:(unint64_t)a3;
-- (void)stopSession:(unint64_t)a3;
-- (void)triggered:(id)a3;
-- (void)updateMartyUserInfoWithInfo:(id)a3;
-- (void)uploadUserInfoToCoreAnalyticsWithHandler:(id)a3;
+- (void)stop:(unint64_t)stop;
+- (void)stopSession:(unint64_t)session;
+- (void)triggered:(id)triggered;
+- (void)updateMartyUserInfoWithInfo:(id)info;
+- (void)uploadUserInfoToCoreAnalyticsWithHandler:(id)handler;
 @end
 
 @implementation CSMartyDetectionService
 
-- (float)querySamplingRate:(id)a3 withDefault:(float)a4
+- (float)querySamplingRate:(id)rate withDefault:(float)default
 {
-  v5 = [(CSPersistentConfiguration *)self->_persist getFloatDefault:a3];
+  v5 = [(CSPersistentConfiguration *)self->_persist getFloatDefault:rate];
   result = v5.var0.var1;
   if ((*&v5 & &_mh_execute_header) == 0)
   {
-    return a4;
+    return default;
   }
 
   return result;
@@ -178,9 +178,9 @@
   hsm = self->_hsm;
   self->_hsm = v12;
 
-  v14 = [(CLSilo *)self->_silo newTimer];
+  newTimer = [(CLSilo *)self->_silo newTimer];
   triggerTimer = self->_triggerTimer;
-  self->_triggerTimer = v14;
+  self->_triggerTimer = newTimer;
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -212,13 +212,13 @@
   [(CSHSMObjc *)self->_hsm signal:6 data:0];
 }
 
-- (void)triggered:(id)a3
+- (void)triggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   v5 = [(CSPersistentConfiguration *)self->_persist getBooleanDefault:@"MartyForceTriggersAreCycling"];
   if ((v5 & 0x100) != 0)
   {
-    *([v4 c_struct] + 94) = v5;
+    *([triggeredCopy c_struct] + 94) = v5;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -227,7 +227,7 @@
     v6 = qword_100456830;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = *([v4 c_struct] + 94);
+      v7 = *([triggeredCopy c_struct] + 94);
       *buf = 67109120;
       *&buf[4] = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "forcing marty cycling mode %d", buf, 8u);
@@ -258,8 +258,8 @@ LABEL_9:
   v8 = qword_100456830;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = *([v4 c_struct] + 46);
-    v10 = *([v4 c_struct] + 94);
+    v9 = *([triggeredCopy c_struct] + 46);
+    v10 = *([triggeredCopy c_struct] + 94);
     *buf = 67109376;
     *&buf[4] = v9;
     v24 = 1024;
@@ -271,7 +271,7 @@ LABEL_9:
   v11 = *self->_details.__ptr_;
   if (v11 == 0.0)
   {
-    if (*([v4 c_struct] + 94) == 1)
+    if (*([triggeredCopy c_struct] + 94) == 1)
     {
       *(self->_details.__ptr_ + 8) = 1;
       v12 = 24;
@@ -288,15 +288,15 @@ LABEL_9:
     [(CSMartyDetectionService *)self sendCompanionUUID:self->_uuid];
   }
 
-  if ((*([v4 c_struct] + 46) & 4) == 0 && (*(objc_msgSend(v4, "c_struct") + 46) & 0x10) == 0)
+  if ((*([triggeredCopy c_struct] + 46) & 4) == 0 && (*(objc_msgSend(triggeredCopy, "c_struct") + 46) & 0x10) == 0)
   {
     *self->_sessionInfoStats.__ptr_ = 1;
   }
 
-  -[CSSafetySOSStateMachine feedPotentialEventWithTimestamp:forMode:martyIsBicycle:](self->_sosSM, "feedPotentialEventWithTimestamp:forMode:martyIsBicycle:", *([v4 c_struct] + 1), 2, *(self->_details.__ptr_ + 8));
-  if ((*([v4 c_struct] + 46) & 9) != 0)
+  -[CSSafetySOSStateMachine feedPotentialEventWithTimestamp:forMode:martyIsBicycle:](self->_sosSM, "feedPotentialEventWithTimestamp:forMode:martyIsBicycle:", *([triggeredCopy c_struct] + 1), 2, *(self->_details.__ptr_ + 8));
+  if ((*([triggeredCopy c_struct] + 46) & 9) != 0)
   {
-    [(CSMartyDetectionService *)self sendCompanionTrigger:v4];
+    [(CSMartyDetectionService *)self sendCompanionTrigger:triggeredCopy];
   }
 
   if (qword_100456828 != -1)
@@ -311,18 +311,18 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(re)start the flow controller", buf, 2u);
   }
 
-  CLKappaAlgFlowController::start(self->fFlowControl.__ptr_, *([v4 c_struct] + 1));
-  if (*([v4 c_struct] + 46) & 8) != 0 || (*(objc_msgSend(v4, "c_struct") + 46))
+  CLKappaAlgFlowController::start(self->fFlowControl.__ptr_, *([triggeredCopy c_struct] + 1));
+  if (*([triggeredCopy c_struct] + 46) & 8) != 0 || (*(objc_msgSend(triggeredCopy, "c_struct") + 46))
   {
-    v14 = [v4 c_struct];
+    c_struct = [triggeredCopy c_struct];
     v15 = 56;
-    if (v14[94])
+    if (c_struct[94])
     {
       v15 = 52;
     }
 
     v16 = 48;
-    if (v14[94])
+    if (c_struct[94])
     {
       v16 = 40;
     }
@@ -331,11 +331,11 @@ LABEL_9:
     ++*(self->_userInfoStats.__ptr_ + v16);
   }
 
-  if ((*([v4 c_struct] + 46) & 4) != 0)
+  if ((*([triggeredCopy c_struct] + 46) & 4) != 0)
   {
-    v17 = [v4 c_struct];
+    c_struct2 = [triggeredCopy c_struct];
     ptr = self->_sessionInfoStats.__ptr_;
-    if (v17[94] == 1)
+    if (c_struct2[94] == 1)
     {
       *(ptr + 14) = 1;
       v19 = 44;
@@ -350,8 +350,8 @@ LABEL_9:
     ++*(self->_userInfoStats.__ptr_ + v19);
   }
 
-  *(self->_sessionInfoStats.__ptr_ + 8) |= *([v4 c_struct] + 92);
-  *(self->_sessionInfoStats.__ptr_ + 15) |= *([v4 c_struct] + 93);
+  *(self->_sessionInfoStats.__ptr_ + 8) |= *([triggeredCopy c_struct] + 92);
+  *(self->_sessionInfoStats.__ptr_ + 15) |= *([triggeredCopy c_struct] + 93);
 }
 
 - (void)sosActivated
@@ -423,7 +423,7 @@ LABEL_9:
   }
 }
 
-- (void)onCloseEpoch:(unint64_t)a3 epochNumber:(int)a4
+- (void)onCloseEpoch:(unint64_t)epoch epochNumber:(int)number
 {
   v5 = +[CSTimeManager SPU_estimate_current_timestamp];
   if (qword_100456828 != -1)
@@ -435,9 +435,9 @@ LABEL_9:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240704;
-    v56 = a4;
+    numberCopy = number;
     v57 = 2050;
-    *v58 = a3;
+    *v58 = epoch;
     *&v58[8] = 2050;
     v59 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "close epoch %{public}d aop timestamp %{public}llu, %{public}llu", buf, 0x1Cu);
@@ -589,7 +589,7 @@ LABEL_29:
     {
       v24 = *(self->_details.__ptr_ + 42);
       *buf = 67109120;
-      v56 = v24;
+      numberCopy = v24;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "_details->severeCrashDetected %d", buf, 8u);
     }
 
@@ -654,7 +654,7 @@ LABEL_29:
     v34 = *(v51 + 48);
     v35 = *(v51 + 52);
     *buf = 67110144;
-    v56 = v31;
+    numberCopy = v31;
     v57 = 1024;
     *v58 = v32;
     *&v58[4] = 1024;
@@ -717,7 +717,7 @@ LABEL_29:
   v46 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:5];
   [(CSMSLDataRecording *)mslRecording updateMetadata:v46];
 
-  [(CSMartyDetectionService *)self sendRemoteSampleToCompanion:v5 epochTs:a3 epochNumber:a4];
+  [(CSMartyDetectionService *)self sendRemoteSampleToCompanion:v5 epochTs:epoch epochNumber:number];
   if (v52)
   {
     sub_100009A48(v52);
@@ -729,7 +729,7 @@ LABEL_29:
   }
 }
 
-- (void)sendRemoteSampleToCompanion:(unint64_t)a3 epochTs:(unint64_t)a4 epochNumber:(int)a5
+- (void)sendRemoteSampleToCompanion:(unint64_t)companion epochTs:(unint64_t)ts epochNumber:(int)number
 {
   ptr = self->fFlowControl.__ptr_;
   if (ptr)
@@ -737,9 +737,9 @@ LABEL_29:
     CLKappaAlgFlowController::createRemoteSample(ptr, &v11);
     if (v14 == 1)
     {
-      v11.i32[2] = a5;
-      v12 = a3;
-      v13 = a4;
+      v11.i32[2] = number;
+      companionCopy = companion;
+      tsCopy = ts;
       v10 = sub_1000193B4(&v11);
       [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v10 type:401];
     }
@@ -902,7 +902,7 @@ LABEL_29:
   return v5;
 }
 
-- (void)stopSession:(unint64_t)a3
+- (void)stopSession:(unint64_t)session
 {
   if (self->_detectionEvent >= 2)
   {
@@ -921,19 +921,19 @@ LABEL_29:
     return;
   }
 
-  v6 = [(CSMartyDetectionService *)self shouldUploadRecording];
+  shouldUploadRecording = [(CSMartyDetectionService *)self shouldUploadRecording];
   mslRecording = self->_mslRecording;
   v80[0] = @"algsEndTimestamp";
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
+  v8 = [NSNumber numberWithUnsignedLongLong:session];
   v81[0] = v8;
   v80[1] = @"curationAlgBitmap";
   v9 = [NSNumber numberWithUnsignedChar:*(self->_details.__ptr_ + 9)];
   v81[1] = v9;
   v80[2] = @"samplingBitmap";
-  v10 = [NSNumber numberWithUnsignedChar:v6];
+  v10 = [NSNumber numberWithUnsignedChar:shouldUploadRecording];
   v81[2] = v10;
   v80[3] = @"shouldUploadIndependentlyOfSOS";
-  v11 = [NSNumber numberWithBool:v6 != 0];
+  v11 = [NSNumber numberWithBool:shouldUploadRecording != 0];
   v81[3] = v11;
   v80[4] = @"deescalationPath";
   v12 = [NSNumber numberWithInt:[(CSMartyDetectionService *)self getDeescalationPath]];
@@ -941,7 +941,7 @@ LABEL_29:
   v13 = [NSDictionary dictionaryWithObjects:v81 forKeys:v80 count:5];
   [(CSMSLDataRecording *)mslRecording updateMetadata:v13];
 
-  if (v6 && self->_mslRecording && self->_companionUUID.__ptr_)
+  if (shouldUploadRecording && self->_mslRecording && self->_companionUUID.__ptr_)
   {
     if (qword_100456828 != -1)
     {
@@ -993,8 +993,8 @@ LABEL_29:
     v22 = *(ptr + 47);
   }
 
-  v23 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
-  v24 = v23;
+  ttrManagedMsl = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
+  v24 = ttrManagedMsl;
   if (((MartyPunchThruToken > 0) & v22) == 1)
   {
     if (qword_100456828 != -1)
@@ -1070,7 +1070,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (v23)
+  if (ttrManagedMsl)
   {
     v30 = 0;
     v29 = 0;
@@ -1189,9 +1189,9 @@ LABEL_51:
   *(v34 + 7) = v35;
 LABEL_52:
   v36 = +[CSPermissions sharedInstance];
-  v37 = [v36 isAuthorizedToCollectData];
+  isAuthorizedToCollectData = [v36 isAuthorizedToCollectData];
 
-  if (v29 & 1 | ((v37 & 1) == 0) || ((v30 ^ 1) & 1) != 0)
+  if (v29 & 1 | ((isAuthorizedToCollectData & 1) == 0) || ((v30 ^ 1) & 1) != 0)
   {
     [(CSMSLDataRecording *)self->_mslRecording setShouldUpload:0];
     if ((v29 & 1) == 0)
@@ -1216,8 +1216,8 @@ LABEL_62:
     goto LABEL_67;
   }
 
-  v38 = [(NSUUID *)self->_uuid UUIDString];
-  v39 = [CSAnomalyEventService generateMslUrl:v38 andSessionType:2 ttrManagedMsl:0];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v39 = [CSAnomalyEventService generateMslUrl:uUIDString andSessionType:2 ttrManagedMsl:0];
   [(CSMSLDataRecording *)self->_mslRecording setUrlToCopyToOnStop:v39];
 
 LABEL_67:
@@ -1272,11 +1272,11 @@ LABEL_67:
       v52 = *v52;
     }
 
-    v54 = [NSString stringWithUTF8String:v52];
+    uUIDString3 = [NSString stringWithUTF8String:v52];
     v72[1] = @"collectionUUID";
-    v73[0] = v54;
-    v55 = [(NSUUID *)self->_uuid UUIDString];
-    v73[1] = v55;
+    v73[0] = uUIDString3;
+    uUIDString2 = [(NSUUID *)self->_uuid UUIDString];
+    v73[1] = uUIDString2;
     v56 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:2];
     [(CSMSLDataRecording *)v53 updateMetadata:v56];
   }
@@ -1297,27 +1297,27 @@ LABEL_67:
 
     v58 = self->_mslRecording;
     v74 = @"collectionUUID";
-    v54 = [(NSUUID *)self->_uuid UUIDString];
-    v75 = v54;
-    v55 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
-    [(CSMSLDataRecording *)v58 updateMetadata:v55];
+    uUIDString3 = [(NSUUID *)self->_uuid UUIDString];
+    v75 = uUIDString3;
+    uUIDString2 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
+    [(CSMSLDataRecording *)v58 updateMetadata:uUIDString2];
   }
 
   companionTriggerTime = self->_companionTriggerTime;
   if (companionTriggerTime != 0.0)
   {
-    v60 = [NSNumber numberWithDouble:*self->_details.__ptr_ - companionTriggerTime];
-    v61 = [v60 stringValue];
+    companionTriggerTime = [NSNumber numberWithDouble:*self->_details.__ptr_ - companionTriggerTime];
+    stringValue = [companionTriggerTime stringValue];
 
     v62 = self->_mslRecording;
     v70 = @"deltaTrigger";
-    v71 = v61;
+    v71 = stringValue;
     v63 = [NSDictionary dictionaryWithObjects:&v71 forKeys:&v70 count:1];
     [(CSMSLDataRecording *)v62 updateMetadata:v63];
   }
 }
 
-- (void)stop:(unint64_t)a3
+- (void)stop:(unint64_t)stop
 {
   if (qword_100456828 != -1)
   {
@@ -1333,16 +1333,16 @@ LABEL_67:
 
   CSAOPSvc::suppressTriggers(self->_aop, 1);
   CSAOPSvc::stopDetection(self->_aop);
-  [(CSMartyDetectionService *)self stopSession:a3];
+  [(CSMartyDetectionService *)self stopSession:stop];
   if (!self->fFlowControl.__ptr_)
   {
     sub_1002E6970();
   }
 
   v6 = objc_initWeak(buf, self);
-  v7 = [(CLSilo *)self->_silo newTimer];
+  newTimer = [(CLSilo *)self->_silo newTimer];
   sosTimer = self->_sosTimer;
-  self->_sosTimer = v7;
+  self->_sosTimer = newTimer;
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1364,9 +1364,9 @@ LABEL_67:
   operator new();
 }
 
-- (int64_t)daysSinceTimestamp:(double)a3
+- (int64_t)daysSinceTimestamp:(double)timestamp
 {
-  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:timestamp];
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate now];
   v6 = [v4 components:16 fromDate:v3 toDate:v5 options:0];
@@ -1398,8 +1398,8 @@ LABEL_67:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[TTR] show TTR %d", buf, 8u);
     }
 
-    v6 = [(NSUUID *)self->_uuid UUIDString];
-    v7 = [CSAnomalyEventService generateMslUrl:v6 andSessionType:2 ttrManagedMsl:1];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    v7 = [CSAnomalyEventService generateMslUrl:uUIDString andSessionType:2 ttrManagedMsl:1];
 
     v8 = *(self->_details.__ptr_ + 7);
     if ((v8 - 2) >= 2)
@@ -1437,20 +1437,20 @@ LABEL_20:
     uuid = self->_uuid;
     if (*(self->_details.__ptr_ + 7) != 4)
     {
-      v16 = [(NSUUID *)uuid UUIDString];
-      [(CSMartyTap2Radar *)martyTTR showTTRWithTriggerUUID:v16 ttrManagedFiles:[(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl] withEventType:*(self->_details.__ptr_ + 7)];
+      uUIDString2 = [(NSUUID *)uuid UUIDString];
+      [(CSMartyTap2Radar *)martyTTR showTTRWithTriggerUUID:uUIDString2 ttrManagedFiles:[(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl] withEventType:*(self->_details.__ptr_ + 7)];
 LABEL_31:
 
       return;
     }
 
-    v14 = [(NSUUID *)uuid UUIDString];
-    v15 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
+    uUIDString3 = [(NSUUID *)uuid UUIDString];
+    ttrManagedMsl = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
     v27 = 0;
-    [(CSMartyTap2Radar *)martyTTR enqueueTTRWithTriggerUUID:v14 ttrManagedFiles:v15 error:&v27];
-    v16 = v27;
+    [(CSMartyTap2Radar *)martyTTR enqueueTTRWithTriggerUUID:uUIDString3 ttrManagedFiles:ttrManagedMsl error:&v27];
+    uUIDString2 = v27;
 
-    if (v16)
+    if (uUIDString2)
     {
       if (qword_100456828 != -1)
       {
@@ -1463,11 +1463,11 @@ LABEL_31:
         goto LABEL_30;
       }
 
-      v18 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
+      ttrManagedMsl2 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
       *buf = 138412546;
-      *&buf[4] = v16;
+      *&buf[4] = uUIDString2;
       v29 = 1024;
-      v30 = v18;
+      v30 = ttrManagedMsl2;
       v19 = "[TTR] Error enqueuing TTR: %@, ttrManaged,%d";
       v20 = v17;
       v21 = OS_LOG_TYPE_DEBUG;
@@ -1484,11 +1484,11 @@ LABEL_30:
       }
 
       v22 = self->_uuid;
-      v23 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
+      ttrManagedMsl3 = [(CSMSLDataRecording *)self->_mslRecording ttrManagedMsl];
       *buf = 138412546;
       *&buf[4] = v22;
       v29 = 1024;
-      v30 = v23;
+      v30 = ttrManagedMsl3;
       v19 = "[TTR] Enqueued TTR with UUID %@, ttrManaged,%d";
       v20 = v17;
       v21 = OS_LOG_TYPE_INFO;
@@ -1511,10 +1511,10 @@ LABEL_30:
   }
 }
 
-- (void)setRecording:(id)a3 withUUID:(id)a4
+- (void)setRecording:(id)recording withUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
+  recordingCopy = recording;
+  dCopy = d;
   if (self->_hsm)
   {
     p_vtable = GPBRootObject.vtable;
@@ -1548,8 +1548,8 @@ LABEL_3:
 
   if ([(CSHSMObjc *)self->_hsm isIn:self->_idleState])
   {
-    objc_storeStrong(&self->_mslRecording, a3);
-    objc_storeStrong(&self->_uuid, a4);
+    objc_storeStrong(&self->_mslRecording, recording);
+    objc_storeStrong(&self->_uuid, d);
   }
 
   else
@@ -1568,23 +1568,23 @@ LABEL_3:
   }
 }
 
-- (CSMartyDetectionService)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5 sosStateMachine:(id)a6
+- (CSMartyDetectionService)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service sosStateMachine:(id)machine
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  objc_storeStrong(&self->_silo, a3);
-  self->_aop = a5;
+  siloCopy = silo;
+  vendorCopy = vendor;
+  machineCopy = machine;
+  objc_storeStrong(&self->_silo, silo);
+  self->_aop = service;
   mslRecording = self->_mslRecording;
   self->_mslRecording = 0;
 
   self->_detectionEvent = 0;
-  objc_storeStrong(&self->_sosSM, a6);
+  objc_storeStrong(&self->_sosSM, machine);
   v15 = +[CSPersistentConfiguration sharedConfiguration];
   persist = self->_persist;
   self->_persist = v15;
 
-  v17 = [v12 proxyForService:@"CSCompanionService"];
+  v17 = [vendorCopy proxyForService:@"CSCompanionService"];
   companionProxy = self->_companionProxy;
   self->_companionProxy = v17;
 
@@ -1595,13 +1595,13 @@ LABEL_3:
   operator new();
 }
 
-- (void)dumpSample:(id)a3
+- (void)dumpSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sampleCopy;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -1632,7 +1632,7 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v3;
+    v11 = sampleCopy;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -1663,7 +1663,7 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v3;
+    v16 = sampleCopy;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -1699,7 +1699,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v3;
+    v23 = sampleCopy;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -1723,7 +1723,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v3;
+    v25 = sampleCopy;
     if (qword_100456828 != -1)
     {
       sub_1002E66F4();
@@ -1768,7 +1768,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = v3;
+    v34 = sampleCopy;
     v5 = sub_1002DCCF8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1802,7 +1802,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = v3;
+    v41 = sampleCopy;
     v5 = sub_1002DCCF8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1833,7 +1833,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v47 = v3;
+    v47 = sampleCopy;
     v5 = sub_1002DCCF8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1853,7 +1853,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v50 = v3;
+    v50 = sampleCopy;
     v5 = sub_1002DCCF8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1876,7 +1876,7 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v53 = v3;
+  v53 = sampleCopy;
   v5 = sub_1002DCCF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1898,13 +1898,13 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)feedAccel800:(id)a3
+- (void)feedAccel800:(id)accel800
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accel800Copy = accel800;
+  v5 = accel800Copy;
+  if (accel800Copy)
   {
-    CLKappaAlgFlowController::feedFastAccel(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedFastAccel(self->fFlowControl.__ptr_, accel800Copy);
   }
 
   else
@@ -1916,13 +1916,13 @@ LABEL_19:
   }
 }
 
-- (void)feedHgAccel:(id)a3
+- (void)feedHgAccel:(id)accel
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accelCopy = accel;
+  v5 = accelCopy;
+  if (accelCopy)
   {
-    CLKappaAlgFlowController::feedHgAccel(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedHgAccel(self->fFlowControl.__ptr_, accelCopy);
   }
 
   else
@@ -1934,22 +1934,22 @@ LABEL_19:
   }
 }
 
-- (void)feedAccel:(id)a3
+- (void)feedAccel:(id)accel
 {
-  v3 = a3;
-  if (!v3)
+  accelCopy = accel;
+  if (!accelCopy)
   {
     sub_1002E6EEC();
   }
 }
 
-- (void)feedDeviceMotion:(id)a3
+- (void)feedDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  motionCopy = motion;
+  v5 = motionCopy;
+  if (motionCopy)
   {
-    CLKappaAlgFlowController::feedDM(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedDM(self->fFlowControl.__ptr_, motionCopy);
   }
 
   else
@@ -1961,11 +1961,11 @@ LABEL_19:
   }
 }
 
-- (void)feedGPS:(id)a3
+- (void)feedGPS:(id)s
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  sCopy = s;
+  v5 = sCopy;
+  if (!sCopy)
   {
     sub_1002E712C(buf);
 
@@ -1983,7 +1983,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  *(self->_sessionInfoStats.__ptr_ + 16) = *([(CSSPUGps *)v4 c_struct]+ 32);
+  *(self->_sessionInfoStats.__ptr_ + 16) = *([(CSSPUGps *)sCopy c_struct]+ 32);
   if (qword_100456828 != -1)
   {
     goto LABEL_9;
@@ -2006,13 +2006,13 @@ LABEL_7:
   CLKappaAlgFlowController::feedGPS(self->fFlowControl.__ptr_, v5);
 }
 
-- (void)feedSteps:(id)a3
+- (void)feedSteps:(id)steps
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stepsCopy = steps;
+  v5 = stepsCopy;
+  if (stepsCopy)
   {
-    CLKappaAlgFlowController::feedSteps(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedSteps(self->fFlowControl.__ptr_, stepsCopy);
   }
 
   else
@@ -2024,13 +2024,13 @@ LABEL_7:
   }
 }
 
-- (void)feedKappaTrigger:(id)a3
+- (void)feedKappaTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
-    CLKappaAlgFlowController::feedTrigger(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedTrigger(self->fFlowControl.__ptr_, triggerCopy);
   }
 
   else
@@ -2042,22 +2042,22 @@ LABEL_7:
   }
 }
 
-- (void)feedMag:(id)a3
+- (void)feedMag:(id)mag
 {
-  v3 = a3;
-  if (!v3)
+  magCopy = mag;
+  if (!magCopy)
   {
     sub_1002E7468();
   }
 }
 
-- (void)feedPressure:(id)a3
+- (void)feedPressure:(id)pressure
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pressureCopy = pressure;
+  v5 = pressureCopy;
+  if (pressureCopy)
   {
-    CLKappaAlgFlowController::feedPressure(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedPressure(self->fFlowControl.__ptr_, pressureCopy);
   }
 
   else
@@ -2069,13 +2069,13 @@ LABEL_7:
   }
 }
 
-- (void)feedSoundPressureLevel:(id)a3
+- (void)feedSoundPressureLevel:(id)level
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  levelCopy = level;
+  v5 = levelCopy;
+  if (levelCopy)
   {
-    CLKappaAlgFlowController::feedAudioRms(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedAudioRms(self->fFlowControl.__ptr_, levelCopy);
   }
 
   else
@@ -2087,13 +2087,13 @@ LABEL_7:
   }
 }
 
-- (void)feedTrustedAudioResult:(id)a3
+- (void)feedTrustedAudioResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy)
   {
-    CLKappaAlgFlowController::feedTrustedAudioResult(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedTrustedAudioResult(self->fFlowControl.__ptr_, resultCopy);
   }
 
   else
@@ -2105,13 +2105,13 @@ LABEL_7:
   }
 }
 
-- (void)feedRoads:(id)a3
+- (void)feedRoads:(id)roads
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  roadsCopy = roads;
+  v5 = roadsCopy;
+  if (roadsCopy)
   {
-    CLKappaAlgFlowController::feedRoads(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedRoads(self->fFlowControl.__ptr_, roadsCopy);
   }
 
   else
@@ -2123,13 +2123,13 @@ LABEL_7:
   }
 }
 
-- (void)feedHertzSample:(id)a3
+- (void)feedHertzSample:(id)sample
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sampleCopy = sample;
+  v5 = sampleCopy;
+  if (sampleCopy)
   {
-    CLKappaAlgFlowController::feedHertzSample(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedHertzSample(self->fFlowControl.__ptr_, sampleCopy);
   }
 
   else
@@ -2141,13 +2141,13 @@ LABEL_7:
   }
 }
 
-- (void)feedCompanionStatus:(id)a3
+- (void)feedCompanionStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (statusCopy)
   {
-    CLKappaAlgFlowController::feedCompanionStatus(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedCompanionStatus(self->fFlowControl.__ptr_, statusCopy);
   }
 
   else
@@ -2159,13 +2159,13 @@ LABEL_7:
   }
 }
 
-- (void)feedRemoteSample:(id)a3
+- (void)feedRemoteSample:(id)sample
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sampleCopy = sample;
+  v5 = sampleCopy;
+  if (sampleCopy)
   {
-    CLKappaAlgFlowController::feedRemoteSample(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedRemoteSample(self->fFlowControl.__ptr_, sampleCopy);
   }
 
   else
@@ -2177,10 +2177,10 @@ LABEL_7:
   }
 }
 
-- (void)feedSortedSamples:(id)a3
+- (void)feedSortedSamples:(id)samples
 {
-  v4 = a3;
-  for (i = 0; [v4 count] > i; ++i)
+  samplesCopy = samples;
+  for (i = 0; [samplesCopy count] > i; ++i)
   {
     ptr = self->fFlowControl.__ptr_;
     if (!ptr)
@@ -2212,7 +2212,7 @@ LABEL_45:
       goto LABEL_49;
     }
 
-    v7 = [v4 objectAtIndexedSubscript:i];
+    v7 = [samplesCopy objectAtIndexedSubscript:i];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2253,9 +2253,9 @@ LABEL_39:
         v9 = qword_100456830;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 timestamp];
+          timestamp = [v8 timestamp];
           *buf = 134217984;
-          *&buf[4] = v10;
+          *&buf[4] = timestamp;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "ignoring stop trigger from aop %llu", buf, 0xCu);
         }
       }
@@ -2366,18 +2366,18 @@ LABEL_40:
   }
 }
 
-- (void)feedLocationManagerResults:(id)a3
+- (void)feedLocationManagerResults:(id)results
 {
-  v4 = a3;
-  v5 = v4;
+  resultsCopy = results;
+  v5 = resultsCopy;
   if (self->_mslRecording)
   {
-    v6 = [v4 firstObject];
-    [v6 coordinate];
+    firstObject = [resultsCopy firstObject];
+    [firstObject coordinate];
     v8 = v7;
 
-    v9 = [v5 firstObject];
-    [v9 coordinate];
+    firstObject2 = [v5 firstObject];
+    [firstObject2 coordinate];
     v11 = v10 * 1000.0;
 
     ptr = self->_sessionInfoStats.__ptr_;
@@ -2402,9 +2402,9 @@ LABEL_40:
   }
 }
 
-- (BOOL)coinflip:(double)a3
+- (BOOL)coinflip:(double)coinflip
 {
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (coinflip >= 0.0 && coinflip <= 1.0)
   {
     v7 = drand48();
     if (qword_100456828 != -1)
@@ -2413,7 +2413,7 @@ LABEL_40:
     }
 
     v8 = v7 * 100.0;
-    v9 = a3 * 100.0;
+    v9 = coinflip * 100.0;
     v10 = qword_100456830;
     if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_INFO))
     {
@@ -2529,10 +2529,10 @@ LABEL_40:
   }
 }
 
-- (BOOL)getForceDecision:(id)a3
+- (BOOL)getForceDecision:(id)decision
 {
-  v4 = a3;
-  v5 = [(CSPersistentConfiguration *)self->_persist getBooleanDefault:v4];
+  decisionCopy = decision;
+  v5 = [(CSPersistentConfiguration *)self->_persist getBooleanDefault:decisionCopy];
   v6 = v5;
   if ((v5 & 0x100) != 0)
   {
@@ -2545,7 +2545,7 @@ LABEL_40:
     if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = decisionCopy;
       v11 = 1024;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "forcing %@ decision to %d", &v9, 0x12u);
@@ -2570,7 +2570,7 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  v2 = self;
+  selfCopy = self;
   ptr = self->_companionDeviceInfo.__ptr_;
   if (ptr && *(ptr + 8))
   {
@@ -2620,15 +2620,15 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "curation standalone rate %f", v18, 0xCu);
   }
 
-  if ([(CSMartyDetectionService *)v2 coinflip:v14])
+  if ([(CSMartyDetectionService *)selfCopy coinflip:v14])
   {
     return 1;
   }
 
-  if (*(v2->_details.__ptr_ + 42) == 1)
+  if (*(selfCopy->_details.__ptr_ + 42) == 1)
   {
     LODWORD(v15) = 1.0;
-    [(CSMartyDetectionService *)v2 querySamplingRate:@"MartyCurCrashDetectedAcceptanceRateStandalone" withDefault:v15];
+    [(CSMartyDetectionService *)selfCopy querySamplingRate:@"MartyCurCrashDetectedAcceptanceRateStandalone" withDefault:v15];
     v8 = v16;
     if (p_vtable[261] != -1)
     {
@@ -2648,7 +2648,7 @@ LABEL_10:
 LABEL_19:
     v10 = v8;
 LABEL_20:
-    if ([(CSMartyDetectionService *)v2 coinflip:v10, *v18])
+    if ([(CSMartyDetectionService *)selfCopy coinflip:v10, *v18])
     {
       return 1;
     }
@@ -2724,7 +2724,7 @@ LABEL_13:
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v3 type:303];
 }
 
-- (void)requestCompanionUpload:(int)a3
+- (void)requestCompanionUpload:(int)upload
 {
   ptr = self->_companionUUID.__ptr_;
   if (ptr)
@@ -2735,7 +2735,7 @@ LABEL_13:
     }
 
     sub_10029F5A0(&__p, ptr);
-    v8 = a3;
+    uploadCopy = upload;
     v6 = MartyCompanion::serializeRequestUpload(&__p);
     [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v6 type:304];
 
@@ -2749,9 +2749,9 @@ LABEL_13:
 - (void)sendDeviceInfo
 {
   v3 = +[CSPlatformInfo sharedInstance];
-  v4 = [v3 getSystemHardware];
-  v5 = [v3 getSystemModel];
-  v6 = [v5 UTF8String];
+  getSystemHardware = [v3 getSystemHardware];
+  getSystemModel = [v3 getSystemModel];
+  uTF8String = [getSystemModel UTF8String];
 
   if ([v3 isKappaLoggingDevice])
   {
@@ -2796,15 +2796,15 @@ LABEL_13:
     }
   }
 
-  v13 = v4;
-  sub_10029F5A0(&__p, v6);
+  v13 = getSystemHardware;
+  sub_10029F5A0(&__p, uTF8String);
   v16 = v7;
   v17 = 0;
   KappaToken = getKappaToken(0);
   MartyToken = getMartyToken(0);
-  v20 = [(CSArmedClients *)v9 kappaArmedSeconds];
-  v21 = [(CSArmedClients *)v9 martyArmedSecondsLocal];
-  v22 = [(CSArmedClients *)v9 enableMode];
+  kappaArmedSeconds = [(CSArmedClients *)v9 kappaArmedSeconds];
+  martyArmedSecondsLocal = [(CSArmedClients *)v9 martyArmedSecondsLocal];
+  enableMode = [(CSArmedClients *)v9 enableMode];
   v12 = MartyCompanion::serializeDeviceInfo(&v13, v11);
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v12 type:300];
 
@@ -2814,10 +2814,10 @@ LABEL_13:
   }
 }
 
-- (void)sendCompanionUUID:(id)a3
+- (void)sendCompanionUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  sub_10029F5A0(&__p, [v4 UTF8String]);
+  uUIDString = [d UUIDString];
+  sub_10029F5A0(&__p, [uUIDString UTF8String]);
 
   v6 = MartyCompanion::serializeCompanionUUID(&__p, v5);
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v6 type:302];
@@ -2828,9 +2828,9 @@ LABEL_13:
   }
 }
 
-- (void)receiveCompanionTrigger:(id)a3
+- (void)receiveCompanionTrigger:(id)trigger
 {
-  MartyCompanion::deserializeTrigger(a3, a2);
+  MartyCompanion::deserializeTrigger(trigger, a2);
   v4 = v7[0];
   v7[0] = 0;
   ptr = self->_companionTrigger.__ptr_;
@@ -2853,10 +2853,10 @@ LABEL_13:
   [(CSMartyDetectionService *)self cacheUserInfo];
 }
 
-- (void)sendCompanionTrigger:(id)a3
+- (void)sendCompanionTrigger:(id)trigger
 {
-  v4 = a3;
-  if (!v4)
+  triggerCopy = trigger;
+  if (!triggerCopy)
   {
     sub_1002E7F6C(&Current);
 
@@ -2865,16 +2865,16 @@ LABEL_13:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = [v4 c_struct];
-  v6 = *v5;
-  v7 = v5[1];
-  v16 = v5[2];
+  c_struct = [triggerCopy c_struct];
+  v6 = *c_struct;
+  v7 = c_struct[1];
+  v16 = c_struct[2];
   v15 = v7;
   v14 = v6;
-  v8 = v5[3];
-  v9 = v5[4];
-  v10 = v5[5];
-  v20 = v5[6];
+  v8 = c_struct[3];
+  v9 = c_struct[4];
+  v10 = c_struct[5];
+  v20 = c_struct[6];
   v19 = v10;
   v18 = v9;
   v17 = v8;
@@ -2882,9 +2882,9 @@ LABEL_13:
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v12 type:301];
 }
 
-- (void)receiveDeviceInfo:(id)a3
+- (void)receiveDeviceInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (qword_100456828 != -1)
   {
     sub_1002E66F4();
@@ -2897,13 +2897,13 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "setting companion device info", buf, 2u);
   }
 
-  MartyCompanion::deserializeDeviceInfo(v3, v5);
+  MartyCompanion::deserializeDeviceInfo(infoCopy, v5);
 }
 
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp
 {
-  v8 = a4;
-  v9 = [[NSString alloc] initWithData:v8 encoding:4];
+  dataCopy = data;
+  v9 = [[NSString alloc] initWithData:dataCopy encoding:4];
   if (qword_100456828 != -1)
   {
     sub_1002E66F4();
@@ -2913,35 +2913,35 @@ LABEL_13:
   if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_INFO))
   {
     v13[0] = 67109890;
-    v13[1] = a3;
+    v13[1] = message;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v8;
+    v17 = dataCopy;
     v18 = 2048;
-    v19 = a5;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "onCompanionMessage: type: %d, msg: %@ data: %@, receivedTimestamp: %f", v13, 0x26u);
   }
 
-  if (a3 <= 302)
+  if (message <= 302)
   {
-    switch(a3)
+    switch(message)
     {
       case 300:
-        [(CSMartyDetectionService *)self receiveDeviceInfo:v8];
+        [(CSMartyDetectionService *)self receiveDeviceInfo:dataCopy];
         break;
       case 301:
-        [(CSMartyDetectionService *)self receiveCompanionTrigger:v8];
+        [(CSMartyDetectionService *)self receiveCompanionTrigger:dataCopy];
         break;
       case 302:
-        [(CSMartyDetectionService *)self receiveUUID:v8];
+        [(CSMartyDetectionService *)self receiveUUID:dataCopy];
         break;
     }
   }
 
-  else if (a3 > 304)
+  else if (message > 304)
   {
-    if (a3 == 305)
+    if (message == 305)
     {
       ptr = self->_sessionInfoStats.__ptr_;
       if (ptr)
@@ -2950,7 +2950,7 @@ LABEL_13:
       }
     }
 
-    else if (a3 == 306)
+    else if (message == 306)
     {
       v11 = self->_sessionInfoStats.__ptr_;
       if (v11)
@@ -2960,21 +2960,21 @@ LABEL_13:
     }
   }
 
-  else if (a3 == 303)
+  else if (message == 303)
   {
     [(CSMartyDetectionService *)self sendDeviceInfo];
   }
 
   else
   {
-    [(CSMartyDetectionService *)self companionDecidedToUpload:v8];
+    [(CSMartyDetectionService *)self companionDecidedToUpload:dataCopy];
   }
 }
 
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  deviceCopy = device;
   if (qword_100456828 != -1)
   {
     sub_1002E66F4();
@@ -2984,9 +2984,9 @@ LABEL_13:
   if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_DEBUG))
   {
     v16 = 67109376;
-    *v17 = v6;
+    *v17 = updateCopy;
     *&v17[4] = 2048;
-    *&v17[6] = a5;
+    *&v17[6] = timestamp;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "onCompanionStatusUpdate: isConnected: %d, updatedTimestamp: %f", &v16, 0x12u);
   }
 
@@ -2998,27 +2998,27 @@ LABEL_13:
   v9 = qword_100456830;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 name];
-    v11 = v10;
-    v12 = [v10 UTF8String];
-    v13 = [v7 isNearby];
-    v14 = [v7 isDefaultPairedDevice];
-    v15 = [v7 isConnected];
+    name = [deviceCopy name];
+    v11 = name;
+    uTF8String = [name UTF8String];
+    isNearby = [deviceCopy isNearby];
+    isDefaultPairedDevice = [deviceCopy isDefaultPairedDevice];
+    isConnected = [deviceCopy isConnected];
     v16 = 136315906;
-    *v17 = v12;
+    *v17 = uTF8String;
     *&v17[8] = 1024;
-    *&v17[10] = v13;
+    *&v17[10] = isNearby;
     v18 = 1024;
-    v19 = v14;
+    v19 = isDefaultPairedDevice;
     v20 = 1024;
-    v21 = v15;
+    v21 = isConnected;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Paired device info: name %s, isNearby %d, isDefaultPairedDevice %d, isConnected %d", &v16, 0x1Eu);
   }
 }
 
-- (void)uploadUserInfoToCoreAnalyticsWithHandler:(id)a3
+- (void)uploadUserInfoToCoreAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (qword_1004568A8 != -1)
   {
     sub_1002E8080();
@@ -3034,7 +3034,7 @@ LABEL_13:
   if ([CSCoreAnalyticsUtils shouldAttemptCoreAnalyticsUploadWithInterval:@"CSMartyCoreAnalyticsLastSuccessfulUpload" persistentKey:self->_userInfoUploadCadence])
   {
     v6 = +[CSPermissions sharedInstance];
-    v46 = [v6 isAuthorizedForIS];
+    isAuthorizedForIS = [v6 isAuthorizedForIS];
 
     +[CSCoreAnalyticsUtils getSecondsSinceReboot];
     v8 = v7;
@@ -3090,7 +3090,7 @@ LABEL_13:
     }
 
     ptr = self->_userInfoStats.__ptr_;
-    if (v46)
+    if (isAuthorizedForIS)
     {
       if (ptr)
       {
@@ -3210,7 +3210,7 @@ LABEL_28:
       *buf = 138412546;
       v49 = v26;
       v50 = 1024;
-      v51 = v46;
+      v51 = isAuthorizedForIS;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Marty UserInfo:%@, ImproveSafety:%d", buf, 0x12u);
     }
 
@@ -3219,18 +3219,18 @@ LABEL_28:
     operator new();
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
 - (void)_updateArmingTimes
 {
   v3 = +[CSPlatformInfo sharedInstance];
-  v4 = [v3 isKappaLoggingDevice];
+  isKappaLoggingDevice = [v3 isKappaLoggingDevice];
 
-  if (v4)
+  if (isKappaLoggingDevice)
   {
     if (qword_1004568A8 != -1)
     {
@@ -3338,7 +3338,7 @@ LABEL_31:
       if (*ptr)
       {
         v7 = +[CSPermissions sharedInstance];
-        v8 = [v7 isAuthorizedForIS];
+        isAuthorizedForIS = [v7 isAuthorizedForIS];
 
         if (qword_1004568A8 != -1)
         {
@@ -3349,11 +3349,11 @@ LABEL_31:
         if (os_log_type_enabled(qword_1004568B0, OS_LOG_TYPE_DEBUG))
         {
           *buf = 67109120;
-          LODWORD(v74) = v8;
+          LODWORD(v74) = isAuthorizedForIS;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "ImproveSafety:%d", buf, 8u);
         }
 
-        if (v8)
+        if (isAuthorizedForIS)
         {
           v11 = self->_sessionInfoStats.__ptr_;
           if (v11)
@@ -3592,13 +3592,13 @@ LABEL_31:
   }
 }
 
-- (void)updateMartyUserInfoWithInfo:(id)a3
+- (void)updateMartyUserInfoWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_userInfoStats.__ptr_)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy && self->_userInfoStats.__ptr_)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isImproveSafetyEnabled"];
+    v6 = [infoCopy objectForKeyedSubscript:@"isImproveSafetyEnabled"];
 
     if (v6)
     {
@@ -3723,9 +3723,9 @@ LABEL_31:
   return v3;
 }
 
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
     if (qword_100456828 != -1)
     {
@@ -3736,13 +3736,13 @@ LABEL_31:
     if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_DEBUG))
     {
       v16 = 134217984;
-      v17 = a3;
+      ackCopy = ack;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "didReceiveSOSAck response:%ld", &v16, 0xCu);
     }
 
-    if (a3 <= 6)
+    if (ack <= 6)
     {
-      if (((1 << a3) & 0x65) != 0)
+      if (((1 << ack) & 0x65) != 0)
       {
         self->_SOSInProgress = 1;
         if (qword_100456828 != -1)
@@ -3755,7 +3755,7 @@ LABEL_31:
         {
           SOSInProgress = self->_SOSInProgress;
           v16 = 67109120;
-          LODWORD(v17) = SOSInProgress;
+          LODWORD(ackCopy) = SOSInProgress;
           v9 = "didReceiveSOSAck setting _SOSInProgress to %d";
           v10 = v7;
           v11 = OS_LOG_TYPE_INFO;
@@ -3778,7 +3778,7 @@ LABEL_16:
         {
           v15 = self->_SOSInProgress;
           v16 = 67109120;
-          LODWORD(v17) = v15;
+          LODWORD(ackCopy) = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "didReceiveSOSAck setting _SOSInProgress to %d", &v16, 8u);
         }
 
@@ -3808,11 +3808,11 @@ LABEL_16:
   }
 }
 
-- (void)didReceiveSOSStatusUpdate:(id)a3 forMode:(unsigned __int8)a4
+- (void)didReceiveSOSStatusUpdate:(id)update forMode:(unsigned __int8)mode
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 2)
+  modeCopy = mode;
+  updateCopy = update;
+  if (modeCopy == 2)
   {
     if (qword_100456828 != -1)
     {
@@ -3822,23 +3822,23 @@ LABEL_16:
     v7 = qword_100456830;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v6 sosStatus];
-      v9 = [v8 flowState];
-      v10 = [v6 isKappaFlow];
-      v11 = [v6 isKappaFlowActive];
-      v12 = [v6 sosStatus];
+      sosStatus = [updateCopy sosStatus];
+      flowState = [sosStatus flowState];
+      isKappaFlow = [updateCopy isKappaFlow];
+      isKappaFlowActive = [updateCopy isKappaFlowActive];
+      sosStatus2 = [updateCopy sosStatus];
       *buf = 134218752;
-      *v42 = v9;
+      *v42 = flowState;
       *&v42[8] = 1024;
-      v43 = v10;
+      v43 = isKappaFlow;
       v44 = 1024;
-      v45 = v11;
+      v45 = isKappaFlowActive;
       v46 = 1024;
-      v47 = [v12 isPairedDeviceStatus];
+      isPairedDeviceStatus = [sosStatus2 isPairedDeviceStatus];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "didReceiveSOSStatusUpdate state:%ld, isKappaFlow:%d, isKappaFlowActive:%d isFromPaired:%d", buf, 0x1Eu);
     }
 
-    if (([v6 isKappaFlow] & 1) == 0)
+    if (([updateCopy isKappaFlow] & 1) == 0)
     {
       if (qword_100456828 != -1)
       {
@@ -3853,17 +3853,17 @@ LABEL_16:
       }
     }
 
-    v14 = [v6 sosStatus];
-    v15 = [v14 isPairedDeviceStatus];
+    sosStatus3 = [updateCopy sosStatus];
+    isPairedDeviceStatus2 = [sosStatus3 isPairedDeviceStatus];
 
-    v16 = [v6 sosKappaState];
-    if (v16 > 3)
+    sosKappaState = [updateCopy sosKappaState];
+    if (sosKappaState > 3)
     {
-      if (v16 == 4)
+      if (sosKappaState == 4)
       {
         mslRecording = self->_mslRecording;
         v37 = @"userResponse";
-        v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+        v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
         v38 = v29;
         v30 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         [(CSMSLDataRecording *)mslRecording updateMetadata:v30];
@@ -3882,19 +3882,19 @@ LABEL_16:
         }
       }
 
-      else if (v16 == 6)
+      else if (sosKappaState == 6)
       {
         v22 = self->_mslRecording;
-        v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+        v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
         v36 = v23;
         v24 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
         [(CSMSLDataRecording *)v22 updateMetadata:v24];
       }
     }
 
-    else if (v16 == 1)
+    else if (sosKappaState == 1)
     {
-      if (v15)
+      if (isPairedDeviceStatus2)
       {
         v25 = &off_10043F2C8;
       }
@@ -3914,14 +3914,14 @@ LABEL_16:
       if (os_log_type_enabled(qword_100456830, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109120;
-        *v42 = v15 ^ 1;
+        *v42 = isPairedDeviceStatus2 ^ 1;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "didReceiveSOSStatusUpdate SOSKappaStateUserCheckIn isLocal %d", buf, 8u);
       }
 
       v27 = self->_sessionInfoStats.__ptr_;
       if (*(self->_details.__ptr_ + 8) == 1)
       {
-        if (v15)
+        if (isPairedDeviceStatus2)
         {
           *(v27 + 19) = 1;
         }
@@ -3932,7 +3932,7 @@ LABEL_16:
         }
       }
 
-      else if (v15)
+      else if (isPairedDeviceStatus2)
       {
         *(v27 + 21) = 1;
       }
@@ -3943,11 +3943,11 @@ LABEL_16:
       }
     }
 
-    else if (v16 == 3)
+    else if (sosKappaState == 3)
     {
       v17 = self->_mslRecording;
       v39 = @"userResponse";
-      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
       v40 = v18;
       v19 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       [(CSMSLDataRecording *)v17 updateMetadata:v19];
@@ -3967,11 +3967,11 @@ LABEL_16:
     }
 
     SOSInProgress = self->_SOSInProgress;
-    v33 = SOSInProgress;
+    isKappaFlowActive2 = SOSInProgress;
     if (!SOSInProgress)
     {
-      v33 = [v6 isKappaFlowActive];
-      self->_SOSInProgress = v33;
+      isKappaFlowActive2 = [updateCopy isKappaFlowActive];
+      self->_SOSInProgress = isKappaFlowActive2;
     }
 
     if (qword_100456828 != -1)
@@ -3985,11 +3985,11 @@ LABEL_16:
       *buf = 67109376;
       *v42 = SOSInProgress;
       *&v42[4] = 1024;
-      *&v42[6] = v33;
+      *&v42[6] = isKappaFlowActive2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "prev %d, current %d", buf, 0xEu);
     }
 
-    if ((v33 & 1) == 0 && SOSInProgress)
+    if ((isKappaFlowActive2 & 1) == 0 && SOSInProgress)
     {
       [(CSHSMObjc *)self->_hsm signal:5 data:0];
     }

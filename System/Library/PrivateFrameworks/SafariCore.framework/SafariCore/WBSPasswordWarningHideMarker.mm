@@ -1,13 +1,13 @@
 @interface WBSPasswordWarningHideMarker
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordWarningHideMarker)initWithDictionaryRepresentation:(id)a3;
-- (WBSPasswordWarningHideMarker)initWithIssueTypes:(unint64_t)a3;
+- (WBSPasswordWarningHideMarker)initWithDictionaryRepresentation:(id)representation;
+- (WBSPasswordWarningHideMarker)initWithIssueTypes:(unint64_t)types;
 @end
 
 @implementation WBSPasswordWarningHideMarker
 
-- (WBSPasswordWarningHideMarker)initWithIssueTypes:(unint64_t)a3
+- (WBSPasswordWarningHideMarker)initWithIssueTypes:(unint64_t)types
 {
   v8.receiver = self;
   v8.super_class = WBSPasswordWarningHideMarker;
@@ -15,16 +15,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_issueTypes = a3;
+    v4->_issueTypes = types;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (WBSPasswordWarningHideMarker)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordWarningHideMarker)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"issueTypes"];
+  v4 = [representation objectForKeyedSubscript:@"issueTypes"];
   if (v4)
   {
     v5 = -[WBSPasswordWarningHideMarker initWithIssueTypes:]([WBSPasswordWarningHideMarker alloc], "initWithIssueTypes:", [v4 unsignedIntegerValue]);
@@ -44,10 +44,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -58,7 +58,7 @@
     if (objc_opt_isKindOfClass())
     {
       issueTypes = self->_issueTypes;
-      v6 = issueTypes == [(WBSPasswordWarningHideMarker *)v4 issueTypes];
+      v6 = issueTypes == [(WBSPasswordWarningHideMarker *)equalCopy issueTypes];
     }
 
     else

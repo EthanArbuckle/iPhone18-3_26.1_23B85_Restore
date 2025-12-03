@@ -1,8 +1,8 @@
 @interface CircularProgressView
-- (_TtC23ShelfKitCollectionViews20CircularProgressView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews20CircularProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateRotationAnimation;
 @end
 
@@ -10,17 +10,17 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   _s23ShelfKitCollectionViews20CircularProgressViewC18tintColorDidChangeyyF_0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(CircularProgressView *)&v6 traitCollectionDidChange:v4];
+  [(CircularProgressView *)&v6 traitCollectionDidChange:changeCopy];
   _s23ShelfKitCollectionViews20CircularProgressViewC18tintColorDidChangeyyF_0();
   sub_198894();
 }
@@ -34,7 +34,7 @@
   sub_198894();
 }
 
-- (_TtC23ShelfKitCollectionViews20CircularProgressView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews20CircularProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -43,7 +43,7 @@
 
 - (void)updateRotationAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_199348();
 }
 

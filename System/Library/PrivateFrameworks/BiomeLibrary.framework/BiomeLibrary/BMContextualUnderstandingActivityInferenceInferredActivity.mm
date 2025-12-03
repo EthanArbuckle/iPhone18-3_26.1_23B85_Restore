@@ -1,28 +1,28 @@
 @interface BMContextualUnderstandingActivityInferenceInferredActivity
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithActivityType:(int)a3 confidence:(id)a4;
-- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithActivityType:(int)type confidence:(id)confidence;
+- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingActivityInferenceInferredActivity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingActivityInferenceInferredActivity *)self activityType];
-    if (v6 != [v5 activityType])
+    v5 = equalCopy;
+    activityType = [(BMContextualUnderstandingActivityInferenceInferredActivity *)self activityType];
+    if (activityType != [v5 activityType])
     {
       goto LABEL_9;
     }
@@ -76,21 +76,21 @@ LABEL_11:
   }
 
   v12[0] = @"activityType";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v12[1] = @"confidence";
-  v13[0] = v7;
-  v8 = v6;
+  v13[0] = null;
+  null2 = v6;
   if (!v6)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   if (v6)
   {
@@ -115,11 +115,11 @@ LABEL_11:
   return v9;
 }
 
-- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"activityType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"activityType"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -133,10 +133,10 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
-          v12 = 0;
+          selfCopy = 0;
           goto LABEL_14;
         }
 
@@ -148,8 +148,8 @@ LABEL_11:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
         v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
         v8 = 0;
-        v12 = 0;
-        *a4 = v21;
+        selfCopy = 0;
+        *error = v21;
         goto LABEL_13;
       }
 
@@ -164,13 +164,13 @@ LABEL_11:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"confidence"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v15 = objc_alloc(MEMORY[0x1E696ABC0]);
         v16 = *MEMORY[0x1E698F240];
@@ -178,11 +178,11 @@ LABEL_11:
         v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"confidence"];
         v23 = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-        *a4 = [v15 initWithDomain:v16 code:2 userInfo:v18];
+        *error = [v15 initWithDomain:v16 code:2 userInfo:v18];
       }
 
       v11 = 0;
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -195,28 +195,28 @@ LABEL_11:
   }
 
   self = -[BMContextualUnderstandingActivityInferenceInferredActivity initWithActivityType:confidence:](self, "initWithActivityType:confidence:", [v8 intValue], v11);
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
 LABEL_14:
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingActivityInferenceInferredActivity *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   activityType = self->_activityType;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasConfidence)
   {
@@ -225,9 +225,9 @@ LABEL_14:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMContextualUnderstandingActivityInferenceInferredActivity;
   v5 = [(BMEventBase *)&v28 init];
@@ -236,12 +236,12 @@ LABEL_14:
     goto LABEL_43;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -252,18 +252,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v29) & 0x7F) << v7;
@@ -280,9 +280,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -291,18 +291,18 @@ LABEL_16:
       {
         v5->_hasConfidence = 1;
         v29 = 0.0;
-        v22 = [v4 position] + 4;
-        if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 4, v23 <= objc_msgSend(v4, "length")))
+        v22 = [fromCopy position] + 4;
+        if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 4, v23 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:&v29 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_confidence = v29;
@@ -316,18 +316,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v29) = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (LOBYTE(v29) & 0x7F) << v15;
@@ -343,7 +343,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v17 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v17 > 3)
         {
 LABEL_36:
           LODWORD(v17) = 0;
@@ -357,13 +357,13 @@ LABEL_36:
         goto LABEL_42;
       }
 
-      v25 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v25 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_42:
     v26 = 0;
@@ -390,20 +390,20 @@ LABEL_43:
   return v7;
 }
 
-- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithActivityType:(int)a3 confidence:(id)a4
+- (BMContextualUnderstandingActivityInferenceInferredActivity)initWithActivityType:(int)type confidence:(id)confidence
 {
-  v6 = a4;
+  confidenceCopy = confidence;
   v11.receiver = self;
   v11.super_class = BMContextualUnderstandingActivityInferenceInferredActivity;
   v7 = [(BMEventBase *)&v11 init];
   if (v7)
   {
     v7->_dataVersion = [objc_opt_class() latestDataVersion];
-    v7->_activityType = a3;
-    if (v6)
+    v7->_activityType = type;
+    if (confidenceCopy)
     {
       v7->_hasConfidence = 1;
-      [v6 floatValue];
+      [confidenceCopy floatValue];
       v9 = v8;
     }
 
@@ -447,9 +447,9 @@ LABEL_43:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -457,8 +457,8 @@ LABEL_43:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingActivityInferenceInferredActivity alloc] initByReadFrom:v7];
     v4 = v8;

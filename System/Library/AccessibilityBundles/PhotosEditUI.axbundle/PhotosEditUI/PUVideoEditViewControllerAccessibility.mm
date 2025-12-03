@@ -1,16 +1,16 @@
 @interface PUVideoEditViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_updateButtonsIfNeeded;
 @end
 
 @implementation PUVideoEditViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUVideoEditViewController" hasInstanceVariable:@"_playButton" withType:"UIButton"];
-  [v3 validateClass:@"PUVideoEditViewController" hasInstanceMethod:@"_updateButtonsIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUVideoEditViewController" hasInstanceMethod:@"_playerIsPlaying" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUVideoEditViewController" hasInstanceVariable:@"_playButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PUVideoEditViewController" hasInstanceMethod:@"_updateButtonsIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUVideoEditViewController" hasInstanceMethod:@"_playerIsPlaying" withFullSignature:{"B", 0}];
 }
 
 - (void)_updateButtonsIfNeeded

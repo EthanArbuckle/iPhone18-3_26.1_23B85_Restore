@@ -7,8 +7,8 @@
 - (id)accessibilityLabel
 {
   v2 = [(MKPlaceHeaderButtonAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
+  accessibilityLabel = [v2 accessibilityLabel];
+  v4 = [accessibilityLabel stringByReplacingOccurrencesOfString:@"\n" withString:{@", "}];
 
   return v4;
 }

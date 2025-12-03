@@ -1,27 +1,27 @@
 @interface AAAccessoryUsageSummary
-- (BOOL)updateWithPayload:(id)a3;
-- (void)_updateInEarState:(BOOL)a3;
-- (void)_updateListeningMode:(BOOL)a3;
-- (void)_updateVolumeChange:(int)a3;
-- (void)_updateWithHfpPayload:(id)a3;
-- (void)addA2DPDuration:(unint64_t)a3 audioCategory:(unint64_t)a4;
-- (void)addA2DPPacketFlushRetx:(unsigned int)a3;
-- (void)addA2DPRetx:(unsigned int)a3;
-- (void)addDisconnectionErrors:(unint64_t)a3;
-- (void)adda2DPSnr:(unsigned int)a3;
-- (void)setAaDevice:(id)a3;
-- (void)updateConnectionErrorReason:(id)a3;
+- (BOOL)updateWithPayload:(id)payload;
+- (void)_updateInEarState:(BOOL)state;
+- (void)_updateListeningMode:(BOOL)mode;
+- (void)_updateVolumeChange:(int)change;
+- (void)_updateWithHfpPayload:(id)payload;
+- (void)addA2DPDuration:(unint64_t)duration audioCategory:(unint64_t)category;
+- (void)addA2DPPacketFlushRetx:(unsigned int)retx;
+- (void)addA2DPRetx:(unsigned int)retx;
+- (void)addDisconnectionErrors:(unint64_t)errors;
+- (void)adda2DPSnr:(unsigned int)snr;
+- (void)setAaDevice:(id)device;
+- (void)updateConnectionErrorReason:(id)reason;
 @end
 
 @implementation AAAccessoryUsageSummary
 
-- (void)setAaDevice:(id)a3
+- (void)setAaDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   aaDevice = self->_aaDevice;
   p_aaDevice = &self->_aaDevice;
   v7 = aaDevice;
-  v8 = v4;
+  v8 = deviceCopy;
   v11 = v8;
   if (v7 == v8)
   {
@@ -55,50 +55,50 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)_updateWithHfpPayload:(id)a3
+- (void)_updateWithHfpPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(AAAccessoryUsageSummary *)self avgHfpRetx];
-  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 retx]);
-  [v5 addObject:v6];
+  payloadCopy = payload;
+  avgHfpRetx = [(AAAccessoryUsageSummary *)self avgHfpRetx];
+  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [payloadCopy retx]);
+  [avgHfpRetx addObject:v6];
 
-  v7 = [(AAAccessoryUsageSummary *)self avgHfpRssi];
-  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 rssiAvg]);
-  [v7 addObject:v8];
+  avgHfpRssi = [(AAAccessoryUsageSummary *)self avgHfpRssi];
+  v8 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [payloadCopy rssiAvg]);
+  [avgHfpRssi addObject:v8];
 
-  v9 = [(AAAccessoryUsageSummary *)self hfpDuration];
-  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 durationInSec]);
-  [v9 addObject:v10];
+  hfpDuration = [(AAAccessoryUsageSummary *)self hfpDuration];
+  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [payloadCopy durationInSec]);
+  [hfpDuration addObject:v10];
 
-  v11 = [(AAAccessoryUsageSummary *)self hfpIsTipiConnected];
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 tipiConnected]);
-  [v11 addObject:v12];
+  hfpIsTipiConnected = [(AAAccessoryUsageSummary *)self hfpIsTipiConnected];
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy tipiConnected]);
+  [hfpIsTipiConnected addObject:v12];
 
-  v13 = [(AAAccessoryUsageSummary *)self hfpNumberOfDevices];
-  v14 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v4 numDevicesConnected]);
-  [v13 addObject:v14];
+  hfpNumberOfDevices = [(AAAccessoryUsageSummary *)self hfpNumberOfDevices];
+  v14 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [payloadCopy numDevicesConnected]);
+  [hfpNumberOfDevices addObject:v14];
 
-  v15 = [(AAAccessoryUsageSummary *)self hfpSnr];
-  v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 snrAvg]);
-  [v15 addObject:v16];
+  hfpSnr = [(AAAccessoryUsageSummary *)self hfpSnr];
+  v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [payloadCopy snrAvg]);
+  [hfpSnr addObject:v16];
 
-  v17 = [(AAAccessoryUsageSummary *)self hfpPlc];
-  v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 plcCount]);
-  [v17 addObject:v18];
+  hfpPlc = [(AAAccessoryUsageSummary *)self hfpPlc];
+  v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [payloadCopy plcCount]);
+  [hfpPlc addObject:v18];
 
-  v19 = [v4 durationInSec];
-  [(AAAccessoryUsageSummary *)self setTotalDurationHfp:&v19[[(AAAccessoryUsageSummary *)self totalDurationHfp]]];
+  durationInSec = [payloadCopy durationInSec];
+  [(AAAccessoryUsageSummary *)self setTotalDurationHfp:&durationInSec[[(AAAccessoryUsageSummary *)self totalDurationHfp]]];
   if (dword_1002F6998 <= 50 && (dword_1002F6998 != -1 || _LogCategory_Initialize()))
   {
     sub_1001EDEB0();
   }
 }
 
-- (BOOL)updateWithPayload:(id)a3
+- (BOOL)updateWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 infoType];
-  if (!v5)
+  payloadCopy = payload;
+  infoType = [payloadCopy infoType];
+  if (!infoType)
   {
     if (dword_1002F6998 <= 30 && (dword_1002F6998 != -1 || _LogCategory_Initialize()))
     {
@@ -108,27 +108,27 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v5 != 2)
+  if (infoType != 2)
   {
 LABEL_7:
     v6 = 0;
     goto LABEL_8;
   }
 
-  [(AAAccessoryUsageSummary *)self _updateWithHfpPayload:v4];
+  [(AAAccessoryUsageSummary *)self _updateWithHfpPayload:payloadCopy];
   v6 = 1;
 LABEL_8:
 
   return v6;
 }
 
-- (void)updateConnectionErrorReason:(id)a3
+- (void)updateConnectionErrorReason:(id)reason
 {
-  v4 = a3;
-  v16 = v4;
-  if (v4)
+  reasonCopy = reason;
+  v16 = reasonCopy;
+  if (reasonCopy)
   {
-    if (([v4 isEqualToString:@"NA"] & 1) == 0)
+    if (([reasonCopy isEqualToString:@"NA"] & 1) == 0)
     {
       connectionErroReasonrMap = self->_connectionErroReasonrMap;
       if (!connectionErroReasonrMap)
@@ -182,9 +182,9 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)addDisconnectionErrors:(unint64_t)a3
+- (void)addDisconnectionErrors:(unint64_t)errors
 {
-  if (a3)
+  if (errors)
   {
     disconnectionErrorMap = self->_disconnectionErrorMap;
     if (!disconnectionErrorMap)
@@ -196,52 +196,52 @@ LABEL_14:
       disconnectionErrorMap = self->_disconnectionErrorMap;
     }
 
-    v8 = [NSNumber numberWithUnsignedLongLong:a3];
+    v8 = [NSNumber numberWithUnsignedLongLong:errors];
     v9 = [(NSMutableDictionary *)disconnectionErrorMap objectForKeyedSubscript:v8];
     v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v9 intValue] + 1);
     v11 = self->_disconnectionErrorMap;
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
+    v12 = [NSNumber numberWithUnsignedLongLong:errors];
     [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
 
-    if (a3 != 10720 && a3 != 11818)
+    if (errors != 10720 && errors != 11818)
     {
       ++self->_disconnectionErrorGeneralCount;
     }
   }
 }
 
-- (void)addA2DPDuration:(unint64_t)a3 audioCategory:(unint64_t)a4
+- (void)addA2DPDuration:(unint64_t)duration audioCategory:(unint64_t)category
 {
-  v4 = a4;
+  categoryCopy = category;
   a2dpDuration = self->_a2dpDuration;
   v8 = [NSNumber numberWithUnsignedLongLong:?];
   [(NSMutableArray *)a2dpDuration addObject:v8];
 
-  self->_totalDurationA2dp += a3;
-  if (v4)
+  self->_totalDurationA2dp += duration;
+  if (categoryCopy)
   {
-    self->_a2dpTotalGameDuration += a3;
+    self->_a2dpTotalGameDuration += duration;
   }
 
-  if ((v4 & 2) != 0)
+  if ((categoryCopy & 2) != 0)
   {
-    self->_a2dpTotalSpatialDuration += a3;
+    self->_a2dpTotalSpatialDuration += duration;
   }
 }
 
-- (void)addA2DPRetx:(unsigned int)a3
+- (void)addA2DPRetx:(unsigned int)retx
 {
   avgA2dpRetx = self->_avgA2dpRetx;
   v6 = [NSNumber numberWithUnsignedInt:?];
   [(NSMutableArray *)avgA2dpRetx addObject:v6];
 
   v7 = 32;
-  if (a3 > 0x27)
+  if (retx > 0x27)
   {
     v7 = 28;
   }
 
-  if (a3 < 0x1E)
+  if (retx < 0x1E)
   {
     v7 = 36;
   }
@@ -249,14 +249,14 @@ LABEL_14:
   ++*(&self->super.isa + v7);
 }
 
-- (void)adda2DPSnr:(unsigned int)a3
+- (void)adda2DPSnr:(unsigned int)snr
 {
   a2dpSnr = self->_a2dpSnr;
   v6 = [NSNumber numberWithUnsignedInt:?];
   [(NSMutableArray *)a2dpSnr addObject:v6];
 
   v7 = 40;
-  if (a3 > 0x13)
+  if (snr > 0x13)
   {
     v7 = 44;
   }
@@ -264,19 +264,19 @@ LABEL_14:
   ++*(&self->super.isa + v7);
 }
 
-- (void)addA2DPPacketFlushRetx:(unsigned int)a3
+- (void)addA2DPPacketFlushRetx:(unsigned int)retx
 {
   avgA2dpFlushRetx = self->_avgA2dpFlushRetx;
   v6 = [NSNumber numberWithUnsignedInt:?];
   [(NSMutableArray *)avgA2dpFlushRetx addObject:v6];
 
   v7 = 68;
-  if (a3 > 0x27)
+  if (retx > 0x27)
   {
     v7 = 64;
   }
 
-  if (a3 < 0x1E)
+  if (retx < 0x1E)
   {
     v7 = 72;
   }
@@ -284,16 +284,16 @@ LABEL_14:
   ++*(&self->super.isa + v7);
 }
 
-- (void)_updateVolumeChange:(int)a3
+- (void)_updateVolumeChange:(int)change
 {
-  if (a3)
+  if (change)
   {
-    if (a3 == 1)
+    if (change == 1)
     {
       ++self->_volumeChnagePhoneCallCount;
     }
 
-    else if (a3 == -1 && dword_1002F6998 <= 90 && (dword_1002F6998 != -1 || _LogCategory_Initialize()))
+    else if (change == -1 && dword_1002F6998 <= 90 && (dword_1002F6998 != -1 || _LogCategory_Initialize()))
     {
       sub_1001EE00C();
     }
@@ -305,7 +305,7 @@ LABEL_14:
   }
 }
 
-- (void)_updateInEarState:(BOOL)a3
+- (void)_updateInEarState:(BOOL)state
 {
   aaDevice = self->_aaDevice;
   if (!aaDevice)
@@ -314,7 +314,7 @@ LABEL_14:
     return;
   }
 
-  v5 = a3;
+  stateCopy = state;
   budState = self->_budState;
   if ([(AudioAccessoryDevice *)aaDevice primaryPlacement]== 1 && [(AudioAccessoryDevice *)self->_aaDevice secondaryPlacement]== 1)
   {
@@ -326,7 +326,7 @@ LABEL_14:
     v7 = [(AudioAccessoryDevice *)self->_aaDevice primaryPlacement]== 1 && [(AudioAccessoryDevice *)self->_aaDevice secondaryPlacement]!= 1 || [(AudioAccessoryDevice *)self->_aaDevice primaryPlacement]!= 1 && [(AudioAccessoryDevice *)self->_aaDevice secondaryPlacement]== 1;
   }
 
-  if (budState != v7 || v5)
+  if (budState != v7 || stateCopy)
   {
     mach_absolute_time();
     budStateChangeTick = self->_budStateChangeTick;
@@ -367,29 +367,29 @@ LABEL_18:
   }
 }
 
-- (void)_updateListeningMode:(BOOL)a3
+- (void)_updateListeningMode:(BOOL)mode
 {
   aaDevice = self->_aaDevice;
   if (aaDevice)
   {
-    v5 = a3;
+    modeCopy = mode;
     listeningMode = self->_listeningMode;
-    v7 = [(AudioAccessoryDevice *)aaDevice listeningMode];
+    listeningMode = [(AudioAccessoryDevice *)aaDevice listeningMode];
     mach_absolute_time();
     listeningModeStartTick = self->_listeningModeStartTick;
     v9 = UpTicksToSeconds();
-    if (listeningMode != v7 || v5)
+    if (listeningMode != listeningMode || modeCopy)
     {
       if (listeningMode - 2 <= 2)
       {
         *(&self->_bothBudDuration + listeningMode) += v9 / 0x3C;
       }
 
-      self->_listeningMode = v7;
+      self->_listeningMode = listeningMode;
       self->_listeningModeStartTick = mach_absolute_time();
       if (dword_1002F6998 <= 30 && (dword_1002F6998 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001EE088(listeningMode, v7, self);
+        sub_1001EE088(listeningMode, listeningMode, self);
       }
     }
   }

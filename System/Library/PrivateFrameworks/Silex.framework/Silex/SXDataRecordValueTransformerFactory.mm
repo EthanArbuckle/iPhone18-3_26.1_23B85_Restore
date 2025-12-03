@@ -1,34 +1,34 @@
 @interface SXDataRecordValueTransformerFactory
-- (SXDataRecordValueTransformerFactory)initWithDOMObjectProvider:(id)a3;
-- (id)recordValueTransformerForDataDescriptor:(id)a3;
+- (SXDataRecordValueTransformerFactory)initWithDOMObjectProvider:(id)provider;
+- (id)recordValueTransformerForDataDescriptor:(id)descriptor;
 @end
 
 @implementation SXDataRecordValueTransformerFactory
 
-- (SXDataRecordValueTransformerFactory)initWithDOMObjectProvider:(id)a3
+- (SXDataRecordValueTransformerFactory)initWithDOMObjectProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXDataRecordValueTransformerFactory;
   v6 = [(SXDataRecordValueTransformerFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_DOMObjectProvider, a3);
+    objc_storeStrong(&v6->_DOMObjectProvider, provider);
   }
 
   return v7;
 }
 
-- (id)recordValueTransformerForDataDescriptor:(id)a3
+- (id)recordValueTransformerForDataDescriptor:(id)descriptor
 {
-  v4 = [a3 dataType];
+  dataType = [descriptor dataType];
   v5 = 0;
-  if (v4 <= 3)
+  if (dataType <= 3)
   {
-    if ((v4 - 1) >= 2)
+    if ((dataType - 1) >= 2)
     {
-      if (v4 != 3)
+      if (dataType != 3)
       {
         goto LABEL_13;
       }
@@ -44,7 +44,7 @@
     goto LABEL_12;
   }
 
-  switch(v4)
+  switch(dataType)
   {
     case 4:
       v6 = SXIntegerRecordValueTransformer;
@@ -56,8 +56,8 @@ LABEL_12:
       goto LABEL_12;
     case 6:
       v7 = [SXImageRecordValueTransformer alloc];
-      v8 = [(SXDataRecordValueTransformerFactory *)self DOMObjectProvider];
-      v5 = [(SXImageRecordValueTransformer *)v7 initWithDOMObjectProvider:v8];
+      dOMObjectProvider = [(SXDataRecordValueTransformerFactory *)self DOMObjectProvider];
+      v5 = [(SXImageRecordValueTransformer *)v7 initWithDOMObjectProvider:dOMObjectProvider];
 
       break;
   }

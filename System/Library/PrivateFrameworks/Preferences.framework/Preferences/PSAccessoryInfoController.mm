@@ -1,13 +1,13 @@
 @interface PSAccessoryInfoController
 - (CGSize)preferredContentSize;
 - (PSAccessoryInfoController)init;
-- (PSAccessoryInfoController)initWithDevice:(id)a3 session:(id)a4;
-- (id)isAppAllowed:(id)a3;
+- (PSAccessoryInfoController)initWithDevice:(id)device session:(id)session;
+- (id)isAppAllowed:(id)allowed;
 - (id)specifiers;
-- (id)specifiersForApps:(id)a3;
+- (id)specifiersForApps:(id)apps;
 - (id)specifiersForHeader;
-- (void)forgetDevice:(id)a3;
-- (void)setAppAllowed:(id)a3 specifier:(id)a4;
+- (void)forgetDevice:(id)device;
+- (void)setAppAllowed:(id)allowed specifier:(id)specifier;
 @end
 
 @implementation PSAccessoryInfoController
@@ -25,33 +25,33 @@
   return result;
 }
 
-- (PSAccessoryInfoController)initWithDevice:(id)a3 session:(id)a4
+- (PSAccessoryInfoController)initWithDevice:(id)device session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  deviceCopy = device;
+  sessionCopy = session;
+  v9 = sessionCopy;
+  selfCopy = 0;
+  if (deviceCopy && sessionCopy)
   {
     v13.receiver = self;
     v13.super_class = PSAccessoryInfoController;
     v11 = [(PSListController *)&v13 init];
-    objc_storeStrong(&v11->_session, a4);
-    objc_storeStrong(&v11->_device, a3);
+    objc_storeStrong(&v11->_session, session);
+    objc_storeStrong(&v11->_device, device);
     v11->_useAsHeader = 1;
     self = v11;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (CGSize)preferredContentSize
 {
   +[PSAccessoryInfoHeaderCell headerHeight];
   v4 = v3 + 0.0 + 44.0 + 20.0;
-  v5 = [(DADevice *)self->_device appAccessInfoMap];
-  v6 = v4 + (44 * [v5 count]);
+  appAccessInfoMap = [(DADevice *)self->_device appAccessInfoMap];
+  v6 = v4 + (44 * [appAccessInfoMap count]);
 
   if (self->_useAsHeader)
   {
@@ -63,8 +63,8 @@
     v7 = v6 + 150.0 + 20.0 + 44.0;
   }
 
-  v8 = [(PSAccessoryInfoController *)self view];
-  [v8 bounds];
+  view = [(PSAccessoryInfoController *)self view];
+  [view bounds];
   v10 = v9;
 
   v11 = v10;
@@ -85,9 +85,9 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(PSAccessoryInfoController *)self specifiersForHeader];
-    [v5 addObjectsFromArray:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    specifiersForHeader = [(PSAccessoryInfoController *)self specifiersForHeader];
+    [array addObjectsFromArray:specifiersForHeader];
 
     v7 = PS_LocalizedStringForAccessories(@"ACCESSORY_APP_ACCESS_HEADER");
     v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:0 edit:0];
@@ -96,10 +96,10 @@
     v9 = PS_LocalizedStringForAccessories(@"ACCESSORY_APP_ACCESS_FOOTER");
     [v8 setObject:v9 forKeyedSubscript:@"footerText"];
 
-    [v5 addObject:v8];
-    v10 = [(DADevice *)self->_device appAccessInfoMap];
-    v11 = [(PSAccessoryInfoController *)self specifiersForApps:v10];
-    [v5 addObjectsFromArray:v11];
+    [array addObject:v8];
+    appAccessInfoMap = [(DADevice *)self->_device appAccessInfoMap];
+    v11 = [(PSAccessoryInfoController *)self specifiersForApps:appAccessInfoMap];
+    [array addObjectsFromArray:v11];
 
     if (!self->_useAsHeader)
     {
@@ -112,10 +112,10 @@
       v19[0] = v12;
       v19[1] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-      [v5 addObjectsFromArray:v15];
+      [array addObjectsFromArray:v15];
     }
 
-    v16 = [v5 copy];
+    v16 = [array copy];
     v17 = self->super._specifiers;
     self->super._specifiers = v16;
 
@@ -142,9 +142,9 @@
     device = self->_device;
   }
 
-  v8 = [(DADevice *)device discoveryConfiguration];
-  v9 = [v8 displayName];
-  [(PSListController *)self setTitle:v9];
+  discoveryConfiguration = [(DADevice *)device discoveryConfiguration];
+  displayName = [discoveryConfiguration displayName];
+  [(PSListController *)self setTitle:displayName];
 
   v10 = [PSSpecifier preferenceSpecifierNamed:&stru_1EFE45030 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v10 setUserInfo:self->_device];
@@ -156,17 +156,17 @@
   return v11;
 }
 
-- (id)specifiersForApps:(id)a3
+- (id)specifiersForApps:(id)apps
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v17 = [MEMORY[0x1E695DF70] array];
+  appsCopy = apps;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = v3;
-  obj = [v3 allKeys];
+  v13 = appsCopy;
+  obj = [appsCopy allKeys];
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -183,14 +183,14 @@
 
         v7 = *(*(&v18 + 1) + 8 * i);
         v8 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v7 allowPlaceholder:1 error:0];
-        v9 = [v8 localizedName];
-        v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:sel_setAppAllowed_specifier_ get:sel_isAppAllowed_ detail:0 cell:6 edit:0];
+        localizedName = [v8 localizedName];
+        v10 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:sel_setAppAllowed_specifier_ get:sel_isAppAllowed_ detail:0 cell:6 edit:0];
         v11 = [MEMORY[0x1E696AD98] numberWithBool:1];
         [v10 setProperty:v11 forKey:@"useLazyIcons"];
 
         [v10 setProperty:v7 forKey:@"appIDForLazyIcon"];
         [v10 setProperty:v7 forKey:@"PSAccessoryAccessApplicationKey"];
-        [v17 addObject:v10];
+        [array addObject:v10];
       }
 
       v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -199,18 +199,18 @@
     while (v5);
   }
 
-  return v17;
+  return array;
 }
 
-- (void)setAppAllowed:(id)a3 specifier:(id)a4
+- (void)setAppAllowed:(id)allowed specifier:(id)specifier
 {
-  v6 = a3;
-  v10 = [a4 propertyForKey:@"PSAccessoryAccessApplicationKey"];
-  v7 = [(DADevice *)self->_device appAccessInfoMap];
-  v8 = [v7 objectForKeyedSubscript:v10];
+  allowedCopy = allowed;
+  v10 = [specifier propertyForKey:@"PSAccessoryAccessApplicationKey"];
+  appAccessInfoMap = [(DADevice *)self->_device appAccessInfoMap];
+  v8 = [appAccessInfoMap objectForKeyedSubscript:v10];
 
-  LODWORD(v7) = [v6 BOOLValue];
-  if (v7)
+  LODWORD(appAccessInfoMap) = [allowedCopy BOOLValue];
+  if (appAccessInfoMap)
   {
     v9 = 25;
   }
@@ -224,11 +224,11 @@
   [(DASession *)self->_session setDeviceAppAccessInfo:v8 device:self->_device completionHandler:&__block_literal_global_9];
 }
 
-- (id)isAppAllowed:(id)a3
+- (id)isAppAllowed:(id)allowed
 {
-  v4 = [a3 propertyForKey:@"PSAccessoryAccessApplicationKey"];
-  v5 = [(DADevice *)self->_device appAccessInfoMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v4 = [allowed propertyForKey:@"PSAccessoryAccessApplicationKey"];
+  appAccessInfoMap = [(DADevice *)self->_device appAccessInfoMap];
+  v6 = [appAccessInfoMap objectForKeyedSubscript:v4];
 
   v7 = MEMORY[0x1E696AD98];
   v8 = [v6 state] == 20 || objc_msgSend(v6, "state") == 25;
@@ -237,7 +237,7 @@
   return v9;
 }
 
-- (void)forgetDevice:(id)a3
+- (void)forgetDevice:(id)device
 {
   v4 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v5 = MEMORY[0x1E69DC648];

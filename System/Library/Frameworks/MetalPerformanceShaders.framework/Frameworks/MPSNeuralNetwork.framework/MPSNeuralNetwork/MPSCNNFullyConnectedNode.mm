@@ -7,7 +7,7 @@
 
 + (MPSCNNFullyConnectedNode)nodeWithSource:(MPSNNImageNode *)sourceNode weights:(id)weights
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithSource_weights_(v6, v7, sourceNode, weights, v8, v9, v10, v11);
 
   return v12;

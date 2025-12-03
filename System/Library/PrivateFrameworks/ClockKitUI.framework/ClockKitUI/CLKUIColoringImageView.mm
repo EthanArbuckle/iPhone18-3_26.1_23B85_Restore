@@ -1,22 +1,22 @@
 @interface CLKUIColoringImageView
 - (CGSize)maxSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CLKUIColoringImageView)initWithFrame:(CGRect)a3;
-- (CLKUIColoringImageView)initWithImage:(id)a3;
-- (CLKUIColoringImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CLKUIColoringImageView)initWithFrame:(CGRect)frame;
+- (CLKUIColoringImageView)initWithImage:(id)image;
+- (CLKUIColoringImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (UIColor)overrideColor;
-- (void)setImage:(id)a3;
-- (void)setImageProvider:(id)a3;
+- (void)setImage:(id)image;
+- (void)setImageProvider:(id)provider;
 - (void)sizeToFit;
 @end
 
 @implementation CLKUIColoringImageView
 
-- (CLKUIColoringImageView)initWithFrame:(CGRect)a3
+- (CLKUIColoringImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CLKUIColoringImageView;
-  v3 = [(CLKUIColoringImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKUIColoringImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (CLKUIColoringImageView)initWithImage:(id)a3
+- (CLKUIColoringImageView)initWithImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = CLKUIColoringImageView;
-  v3 = [(CLKUIColoringImageView *)&v6 initWithImage:a3];
+  v3 = [(CLKUIColoringImageView *)&v6 initWithImage:image];
   v4 = v3;
   if (v3)
   {
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (CLKUIColoringImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (CLKUIColoringImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   v7.receiver = self;
   v7.super_class = CLKUIColoringImageView;
-  v4 = [(CLKUIColoringImageView *)&v7 initWithImage:a3 highlightedImage:a4];
+  v4 = [(CLKUIColoringImageView *)&v7 initWithImage:image highlightedImage:highlightedImage];
   v5 = v4;
   if (v4)
   {
@@ -54,24 +54,24 @@
   return v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  if ([v4 renderingMode] != 2)
+  imageCopy = image;
+  if ([imageCopy renderingMode] != 2)
   {
-    v5 = [v4 imageWithRenderingMode:2];
+    v5 = [imageCopy imageWithRenderingMode:2];
 
-    v4 = v5;
+    imageCopy = v5;
   }
 
   v6.receiver = self;
   v6.super_class = CLKUIColoringImageView;
-  [(CLKUIColoringImageView *)&v6 setImage:v4];
+  [(CLKUIColoringImageView *)&v6 setImage:imageCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(CLKUIColoringImageView *)self image:a3.width];
+  v4 = [(CLKUIColoringImageView *)self image:fits.width];
   [v4 size];
   v6 = v5;
   v8 = v7;
@@ -96,13 +96,13 @@
     goto LABEL_8;
   }
 
-  v14 = [(CLKImageProvider *)self->_imageProvider pointSize];
-  if (v14)
+  pointSize = [(CLKImageProvider *)self->_imageProvider pointSize];
+  if (pointSize)
   {
 
 LABEL_8:
-    v16 = [MEMORY[0x1E695B530] sharedRenderingContext];
-    v17 = [v16 device];
+    mEMORY[0x1E695B530] = [MEMORY[0x1E695B530] sharedRenderingContext];
+    device = [mEMORY[0x1E695B530] device];
 
     CLKFloorForDevice();
     v6 = v18;
@@ -112,9 +112,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [(CLKImageProvider *)self->_imageProvider overridePointSize];
+  overridePointSize = [(CLKImageProvider *)self->_imageProvider overridePointSize];
 
-  if (v15)
+  if (overridePointSize)
   {
     goto LABEL_8;
   }
@@ -144,8 +144,8 @@ LABEL_9:
 
 - (void)sizeToFit
 {
-  v3 = [MEMORY[0x1E695B530] sharedRenderingContext];
-  v4 = [v3 device];
+  mEMORY[0x1E695B530] = [MEMORY[0x1E695B530] sharedRenderingContext];
+  device = [mEMORY[0x1E695B530] device];
 
   [(CLKUIColoringImageView *)self transform];
   if (CGAffineTransformIsIdentity(&v9))
@@ -170,48 +170,48 @@ LABEL_9:
   overrideColor = self->_overrideColor;
   if (overrideColor)
   {
-    v3 = overrideColor;
+    tintColor = overrideColor;
   }
 
   else
   {
-    v3 = [(CLKImageProvider *)self->_imageProvider tintColor];
+    tintColor = [(CLKImageProvider *)self->_imageProvider tintColor];
   }
 
-  return v3;
+  return tintColor;
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v11 = a3;
+  providerCopy = provider;
   if (([(CLKImageProvider *)self->_imageProvider isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_imageProvider, a3);
+    objc_storeStrong(&self->_imageProvider, provider);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     imageProvider = self->_imageProvider;
     if (isKindOfClass)
     {
       symbolImageType = self->_symbolImageType;
-      v8 = [(CLKUIColoringImageView *)self color];
-      v9 = v8;
-      if (!v8)
+      color = [(CLKUIColoringImageView *)self color];
+      overrideColor = color;
+      if (!color)
       {
-        v9 = [(CLKUIColoringImageView *)self overrideColor];
+        overrideColor = [(CLKUIColoringImageView *)self overrideColor];
       }
 
-      v10 = [(CLKImageProvider *)imageProvider createSymbolImageForType:symbolImageType color:v9];
+      v10 = [(CLKImageProvider *)imageProvider createSymbolImageForType:symbolImageType color:overrideColor];
       [(CLKUIColoringImageView *)self setImage:v10];
 
-      if (!v8)
+      if (!color)
       {
       }
     }
 
     else
     {
-      v8 = [(CLKImageProvider *)imageProvider onePieceImage];
-      [(CLKUIColoringImageView *)self setImage:v8];
+      color = [(CLKImageProvider *)imageProvider onePieceImage];
+      [(CLKUIColoringImageView *)self setImage:color];
     }
   }
 }

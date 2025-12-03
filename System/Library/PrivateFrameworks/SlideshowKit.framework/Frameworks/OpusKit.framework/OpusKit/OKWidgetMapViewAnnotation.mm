@@ -1,7 +1,7 @@
 @interface OKWidgetMapViewAnnotation
 + (id)supportedSettings;
 - (OKWidgetMapViewAnnotation)init;
-- (OKWidgetMapViewAnnotation)initWithSettings:(id)a3;
+- (OKWidgetMapViewAnnotation)initWithSettings:(id)settings;
 - (void)dealloc;
 @end
 
@@ -14,37 +14,37 @@
   return [(MKPointAnnotation *)&v3 init];
 }
 
-- (OKWidgetMapViewAnnotation)initWithSettings:(id)a3
+- (OKWidgetMapViewAnnotation)initWithSettings:(id)settings
 {
   v4 = [(OKWidgetMapViewAnnotation *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"identifier"];
+    v5 = [settings objectForKey:@"identifier"];
     if (v5)
     {
       v4->_identifier = [v5 copy];
     }
 
-    v6 = [a3 objectForKey:@"actionScript"];
+    v6 = [settings objectForKey:@"actionScript"];
     if (v6)
     {
       v4->_actionScript = [v6 copy];
     }
 
-    v7 = [a3 objectForKey:@"coordinate"];
+    v7 = [settings objectForKey:@"coordinate"];
     if (v7)
     {
       [v7 CLLocationCoordinate2DValue];
       [(MKPointAnnotation *)v4 setCoordinate:?];
     }
 
-    v8 = [a3 objectForKey:@"title"];
+    v8 = [settings objectForKey:@"title"];
     if (v8)
     {
       [(MKShape *)v4 setTitle:v8];
     }
 
-    v9 = [a3 objectForKey:@"subtitle"];
+    v9 = [settings objectForKey:@"subtitle"];
     if (v9)
     {
       [(MKShape *)v4 setSubtitle:v9];
@@ -78,7 +78,7 @@
 + (id)supportedSettings
 {
   v15[5] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14[0] = @"identifier";
   v12[0] = @"type";
   v12[1] = @"default";
@@ -107,8 +107,8 @@
   v4[0] = @"type";
   v5[1] = [MEMORY[0x277CBEB68] null];
   v15[4] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:2];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, v14, 5)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v15, v14, 5)}];
+  return dictionary;
 }
 
 @end

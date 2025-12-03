@@ -1,46 +1,46 @@
 @interface NavdNetworkRequester
-- (BOOL)requestEtaForWaypoint:(id)a3 at:(id)a4 transportType:(int)a5 attributes:(id)a6 completion:(id)a7;
-- (BOOL)requestRouteForWaypoints:(id)a3 at:(id)a4 attributes:(id)a5 completion:(id)a6;
-- (BOOL)requestWaypointForCurrentLocation:(id)a3 completion:(id)a4;
-- (BOOL)requestWaypointForEntry:(id)a3 completion:(id)a4;
-- (BOOL)requestWaypointForLocation:(id)a3 completion:(id)a4;
-- (BOOL)requestWaypointForLocation:(id)a3 mapItem:(id)a4 completion:(id)a5;
-- (NavdNetworkRequester)initWithNetworkRequester:(id)a3 purpose:(int)a4 source:(int)a5;
+- (BOOL)requestEtaForWaypoint:(id)waypoint at:(id)at transportType:(int)type attributes:(id)attributes completion:(id)completion;
+- (BOOL)requestRouteForWaypoints:(id)waypoints at:(id)at attributes:(id)attributes completion:(id)completion;
+- (BOOL)requestWaypointForCurrentLocation:(id)location completion:(id)completion;
+- (BOOL)requestWaypointForEntry:(id)entry completion:(id)completion;
+- (BOOL)requestWaypointForLocation:(id)location completion:(id)completion;
+- (BOOL)requestWaypointForLocation:(id)location mapItem:(id)item completion:(id)completion;
+- (NavdNetworkRequester)initWithNetworkRequester:(id)requester purpose:(int)purpose source:(int)source;
 @end
 
 @implementation NavdNetworkRequester
 
-- (NavdNetworkRequester)initWithNetworkRequester:(id)a3 purpose:(int)a4 source:(int)a5
+- (NavdNetworkRequester)initWithNetworkRequester:(id)requester purpose:(int)purpose source:(int)source
 {
-  v9 = a3;
+  requesterCopy = requester;
   v13.receiver = self;
   v13.super_class = NavdNetworkRequester;
   v10 = [(NavdNetworkRequester *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_networkRequester, a3);
-    v11->_purpose = a4;
-    v11->_source = a5;
+    objc_storeStrong(&v10->_networkRequester, requester);
+    v11->_purpose = purpose;
+    v11->_source = source;
   }
 
   return v11;
 }
 
-- (BOOL)requestWaypointForEntry:(id)a3 completion:(id)a4
+- (BOOL)requestWaypointForEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  entryCopy = entry;
+  completionCopy = completion;
+  if (entryCopy)
   {
     v8 = MapsSuggestionsLocationForEntry();
     if (v8)
     {
-      v9 = [v6 geoMapItem];
+      geoMapItem = [entryCopy geoMapItem];
 
       v10 = GEOFindOrCreateLog();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-      if (v9)
+      if (geoMapItem)
       {
         if (v11)
         {
@@ -48,8 +48,8 @@
           v13 = v12;
           [v8 coordinate];
           v15 = v14;
-          v16 = [v6 geoMapItem];
-          v17 = [v16 description];
+          geoMapItem2 = [entryCopy geoMapItem];
+          v17 = [geoMapItem2 description];
           v24 = 134218498;
           v25 = v13;
           v26 = 2048;
@@ -59,8 +59,8 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Requesting Waypoint for location <%.6f,%.6f> with mapitem:%@", &v24, 0x20u);
         }
 
-        v18 = [v6 geoMapItem];
-        v19 = [(NavdNetworkRequester *)self requestWaypointForMapItem:v18 completion:v7];
+        geoMapItem3 = [entryCopy geoMapItem];
+        v19 = [(NavdNetworkRequester *)self requestWaypointForMapItem:geoMapItem3 completion:completionCopy];
       }
 
       else
@@ -77,7 +77,7 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Requesting Waypoint for location <%.6f,%.6f> without mapitem", &v24, 0x16u);
         }
 
-        v19 = [(NavdNetworkRequester *)self requestWaypointForLocation:v8 completion:v7];
+        v19 = [(NavdNetworkRequester *)self requestWaypointForLocation:v8 completion:completionCopy];
       }
     }
 
@@ -95,15 +95,15 @@
   return v19;
 }
 
-- (BOOL)requestWaypointForCurrentLocation:(id)a3 completion:(id)a4
+- (BOOL)requestWaypointForCurrentLocation:(id)location completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[GEOLocation alloc] initWithCLLocation:v7];
+  completionCopy = completion;
+  locationCopy = location;
+  v8 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
   if (v8)
   {
-    v9 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForCurrentLocation:v8 completion:v6];
+    v9 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForCurrentLocation:v8 completion:completionCopy];
   }
 
   else
@@ -114,15 +114,15 @@
   return v9;
 }
 
-- (BOOL)requestWaypointForLocation:(id)a3 completion:(id)a4
+- (BOOL)requestWaypointForLocation:(id)location completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[GEOLocation alloc] initWithCLLocation:v7];
+  completionCopy = completion;
+  locationCopy = location;
+  v8 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
   if (v8)
   {
-    v9 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForLocation:v8 completion:v6];
+    v9 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForLocation:v8 completion:completionCopy];
   }
 
   else
@@ -133,16 +133,16 @@
   return v9;
 }
 
-- (BOOL)requestWaypointForLocation:(id)a3 mapItem:(id)a4 completion:(id)a5
+- (BOOL)requestWaypointForLocation:(id)location mapItem:(id)item completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[GEOLocation alloc] initWithCLLocation:v10];
+  itemCopy = item;
+  completionCopy = completion;
+  locationCopy = location;
+  v11 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
   if (v11)
   {
-    v12 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForLocation:v11 mapItem:v8 completion:v9];
+    v12 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester composedWaypointForLocation:v11 mapItem:itemCopy completion:completionCopy];
   }
 
   else
@@ -153,18 +153,18 @@
   return v12;
 }
 
-- (BOOL)requestRouteForWaypoints:(id)a3 at:(id)a4 attributes:(id)a5 completion:(id)a6
+- (BOOL)requestRouteForWaypoints:(id)waypoints at:(id)at attributes:(id)attributes completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  waypointsCopy = waypoints;
+  atCopy = at;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v14 = objc_alloc_init(GEODirectionsRequestFeedback);
   [v14 setPurpose:self->_purpose];
   [v14 setSource:self->_source];
-  if (v11)
+  if (atCopy)
   {
-    v15 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester routeForWaypoints:v10 currentLocation:v11 routeAttributes:v12 feedback:v14 completion:v13];
+    v15 = [(MapsSuggestionsNetworkRequester *)self->_networkRequester routeForWaypoints:waypointsCopy currentLocation:atCopy routeAttributes:attributesCopy feedback:v14 completion:completionCopy];
   }
 
   else
@@ -175,25 +175,25 @@
   return v15;
 }
 
-- (BOOL)requestEtaForWaypoint:(id)a3 at:(id)a4 transportType:(int)a5 attributes:(id)a6 completion:(id)a7
+- (BOOL)requestEtaForWaypoint:(id)waypoint at:(id)at transportType:(int)type attributes:(id)attributes completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  waypointCopy = waypoint;
+  atCopy = at;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if (waypointCopy)
   {
     objc_initWeak(location, self);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100033628;
     v22[3] = &unk_100067910;
-    v23 = v13;
-    v26 = v15;
+    v23 = atCopy;
+    v26 = completionCopy;
     objc_copyWeak(&v27, location);
-    v24 = v12;
-    v28 = a5;
-    v25 = v14;
+    v24 = waypointCopy;
+    typeCopy = type;
+    v25 = attributesCopy;
     v16 = [(NavdNetworkRequester *)self requestWaypointForLocation:v23 completion:v22];
 
     objc_destroyWeak(&v27);
@@ -205,9 +205,9 @@
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [v13 coordinate];
+      [atCopy coordinate];
       v19 = v18;
-      [v13 coordinate];
+      [atCopy coordinate];
       *location = 134218240;
       *&location[4] = v19;
       v30 = 2048;

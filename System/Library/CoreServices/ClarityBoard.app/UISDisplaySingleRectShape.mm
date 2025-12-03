@@ -1,5 +1,5 @@
 @interface UISDisplaySingleRectShape
-+ (id)clb_displayShapeForScreenType:(unint64_t)a3;
++ (id)clb_displayShapeForScreenType:(unint64_t)type;
 + (id)clb_thisDeviceDisplayShape;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100020FD0;
   block[3] = &unk_1002FC8C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100331140 != -1)
   {
     dispatch_once(&qword_100331140, block);
@@ -22,10 +22,10 @@
   return v2;
 }
 
-+ (id)clb_displayShapeForScreenType:(unint64_t)a3
++ (id)clb_displayShapeForScreenType:(unint64_t)type
 {
-  v4 = sub_100021020(a3);
-  if (a3 <= 0x10 && ((1 << a3) & 0x18600) != 0)
+  v4 = sub_100021020(type);
+  if (type <= 0x10 && ((1 << type) & 0x18600) != 0)
   {
     v4 = v4 * 1.04166667;
   }
@@ -34,7 +34,7 @@
   v6 = 90.0;
   v7 = 627.0;
   v8 = 249.0;
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
     case 4uLL:
@@ -143,12 +143,12 @@ LABEL_18:
       v12 = [[UISDisplaySingleRectShape alloc] initWithRect:{v9, v10, v11, CGRectGetHeight(v19) / v4}];
       break;
     default:
-      if (sub_100027FB0(a3) && !sub_100027F78(a3))
+      if (sub_100027FB0(type) && !sub_100027F78(type))
       {
         v14 = +[CLFLog commonLog];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_1002853B4(a3, v14);
+          sub_1002853B4(type, v14);
         }
       }
 

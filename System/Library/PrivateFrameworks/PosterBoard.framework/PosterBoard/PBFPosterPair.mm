@@ -3,17 +3,17 @@
 - (NSString)localizedTitle;
 - (NSUUID)configurationUUID;
 - (PBFPosterPair)init;
-- (PBFPosterPair)initWithConfiguration:(id)a3 associatedConfiguration:(id)a4;
-- (void)setLocalizedTitle:(id)a3;
+- (PBFPosterPair)initWithConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration;
+- (void)setLocalizedTitle:(id)title;
 @end
 
 @implementation PBFPosterPair
 
-- (PBFPosterPair)initWithConfiguration:(id)a3 associatedConfiguration:(id)a4
+- (PBFPosterPair)initWithConfiguration:(id)configuration associatedConfiguration:(id)associatedConfiguration
 {
-  v5 = a3;
-  v6 = a4;
-  sub_21B6A3A58(v5, a4);
+  configurationCopy = configuration;
+  associatedConfigurationCopy = associatedConfiguration;
+  sub_21B6A3A58(configurationCopy, associatedConfiguration);
   v8 = v7;
 
   return v8;
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_21B6C8DA4();
   }
@@ -58,7 +58,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD92EE8);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   PosterPair.configurationUUID.getter(v5);
 
   v7 = sub_21B6C88C4();
@@ -77,7 +77,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PosterPair.description.getter();
 
   v3 = sub_21B6C8D74();

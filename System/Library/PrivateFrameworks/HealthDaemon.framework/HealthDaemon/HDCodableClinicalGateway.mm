@@ -1,12 +1,12 @@
 @interface HDCodableClinicalGateway
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableClinicalGateway
@@ -17,110 +17,110 @@
   v8.receiver = self;
   v8.super_class = HDCodableClinicalGateway;
   v4 = [(HDCodableClinicalGateway *)&v8 description];
-  v5 = [(HDCodableClinicalGateway *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableClinicalGateway *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   rawContent = self->_rawContent;
   if (rawContent)
   {
-    [v3 setObject:rawContent forKey:@"rawContent"];
+    [dictionary setObject:rawContent forKey:@"rawContent"];
   }
 
   messageVersion = self->_messageVersion;
   if (messageVersion)
   {
-    v7 = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"messageVersion"];
+    dictionaryRepresentation = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"messageVersion"];
   }
 
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v9 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_rawContent)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_messageVersion)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_rawContent)
   {
-    [v4 setRawContent:?];
-    v4 = v5;
+    [toCopy setRawContent:?];
+    toCopy = v5;
   }
 
   if (self->_messageVersion)
   {
     [v5 setMessageVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     [v5 setSyncIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_rawContent copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_rawContent copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:a3];
+  v8 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((rawContent = self->_rawContent, !(rawContent | v4[2])) || -[NSData isEqual:](rawContent, "isEqual:")) && ((messageVersion = self->_messageVersion, !(messageVersion | v4[1])) || -[HDCodableMessageVersion isEqual:](messageVersion, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((rawContent = self->_rawContent, !(rawContent | equalCopy[2])) || -[NSData isEqual:](rawContent, "isEqual:")) && ((messageVersion = self->_messageVersion, !(messageVersion | equalCopy[1])) || -[HDCodableMessageVersion isEqual:](messageVersion, "isEqual:")))
   {
     syncIdentity = self->_syncIdentity;
-    if (syncIdentity | v4[3])
+    if (syncIdentity | equalCopy[3])
     {
       v8 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
     }
@@ -146,18 +146,18 @@
   return v4 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v9 = fromCopy;
+  if (fromCopy[2])
   {
     [(HDCodableClinicalGateway *)self setRawContent:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   messageVersion = self->_messageVersion;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (messageVersion)
   {
     if (!v6)
@@ -178,10 +178,10 @@
     [(HDCodableClinicalGateway *)self setMessageVersion:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_9:
   syncIdentity = self->_syncIdentity;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (syncIdentity)
   {
     if (!v8)
@@ -202,10 +202,10 @@ LABEL_9:
     syncIdentity = [(HDCodableClinicalGateway *)self setSyncIdentity:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

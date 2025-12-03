@@ -1,8 +1,8 @@
 @interface UITableViewCell
 + (double)safari_defaultHeightOfTrivialInstance;
-- (void)safari_setCompletionIcon:(void *)a1;
-- (void)safari_setLinkedPageTitle:(uint64_t)a3 URL:;
-- (void)safari_setLinkedPageTitle:(uint64_t)a3 description:;
+- (void)safari_setCompletionIcon:(void *)icon;
+- (void)safari_setLinkedPageTitle:(uint64_t)title URL:;
+- (void)safari_setLinkedPageTitle:(uint64_t)title description:;
 @end
 
 @implementation UITableViewCell
@@ -24,41 +24,41 @@
   return v4;
 }
 
-- (void)safari_setLinkedPageTitle:(uint64_t)a3 description:
+- (void)safari_setLinkedPageTitle:(uint64_t)title description:
 {
-  if (a1)
+  if (self)
   {
-    return [a1 _safari_setLinkedPageTitle:a2 description:a3];
+    return [self _safari_setLinkedPageTitle:a2 description:title];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)safari_setLinkedPageTitle:(uint64_t)a3 URL:
+- (void)safari_setLinkedPageTitle:(uint64_t)title URL:
 {
-  if (a1)
+  if (self)
   {
-    return [a1 _safari_setLinkedPageTitle:a2 URL:a3];
+    return [self _safari_setLinkedPageTitle:a2 URL:title];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)safari_setCompletionIcon:(void *)a1
+- (void)safari_setCompletionIcon:(void *)icon
 {
-  if (a1)
+  if (icon)
   {
-    v8 = [a1 imageView];
+    imageView = [icon imageView];
     v3 = MEMORY[0x277D755B8];
     v4 = systemImageNameForCompletionIcon(a2);
     v5 = [v3 systemImageNamed:v4];
-    [v8 setImage:v5];
+    [imageView setImage:v5];
 
-    v6 = [MEMORY[0x277D75348] labelColor];
-    [v8 setTintColor:v6];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [imageView setTintColor:labelColor];
 
     v7 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:2];
-    [v8 setPreferredSymbolConfiguration:v7];
+    [imageView setPreferredSymbolConfiguration:v7];
   }
 }
 

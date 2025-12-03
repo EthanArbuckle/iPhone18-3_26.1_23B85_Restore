@@ -1,12 +1,12 @@
 @interface BadgeCollectionViewCell
-- (_TtC8AppStore23BadgeCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore23BadgeCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BadgeCollectionViewCell
 
-- (_TtC8AppStore23BadgeCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore23BadgeCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore23BadgeCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100740BD8();
 }
 

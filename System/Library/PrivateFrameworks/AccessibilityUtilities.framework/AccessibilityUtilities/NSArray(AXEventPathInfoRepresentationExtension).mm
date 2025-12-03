@@ -7,16 +7,16 @@
 
 - (id)firstPath
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v3 = [a1 objectAtIndex:0];
+    v3 = [self objectAtIndex:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v2 = [a1 objectAtIndex:0];
+      v2 = [self objectAtIndex:0];
     }
 
     else
@@ -30,9 +30,9 @@
 
 - (id)secondPath
 {
-  if ([a1 count] >= 2 && (objc_msgSend(a1, "objectAtIndex:", 1), v2 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v2, (isKindOfClass & 1) != 0))
+  if ([self count] >= 2 && (objc_msgSend(self, "objectAtIndex:", 1), v2 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v2, (isKindOfClass & 1) != 0))
   {
-    v4 = [a1 objectAtIndex:1];
+    v4 = [self objectAtIndex:1];
   }
 
   else

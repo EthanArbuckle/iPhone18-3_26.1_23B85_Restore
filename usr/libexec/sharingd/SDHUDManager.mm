@@ -1,10 +1,10 @@
 @interface SDHUDManager
 + (SDHUDManager)shared;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)bannerDidDismissWithType:(int64_t)a3;
-- (void)currentBannerRequestWithCompletion:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)bannerDidDismissWithType:(int64_t)type;
+- (void)currentBannerRequestWithCompletion:(id)completion;
 - (void)dismissPairedUnlockBanner;
-- (void)postPairedUnlockBannerFor:(id)a3 needsLockButton:(BOOL)a4 needsUpdate:(BOOL)a5;
+- (void)postPairedUnlockBannerFor:(id)for needsLockButton:(BOOL)button needsUpdate:(BOOL)update;
 - (void)start;
 - (void)updatePairedUnlockBannerToUnlocked;
 @end
@@ -25,53 +25,53 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004517C4(&unk_1008E25C0, sub_100454A40, &unk_1008E25D8);
 }
 
-- (void)postPairedUnlockBannerFor:(id)a3 needsLockButton:(BOOL)a4 needsUpdate:(BOOL)a5
+- (void)postPairedUnlockBannerFor:(id)for needsLockButton:(BOOL)button needsUpdate:(BOOL)update
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
-  sub_1004507F8(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_1004507F8(v8, v10, button, update);
 }
 
 - (void)updatePairedUnlockBannerToUnlocked
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004517C4(&unk_1008E2520, sub_100454A24, &unk_1008E2538);
 }
 
 - (void)dismissPairedUnlockBanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004517C4(&unk_1008E24D0, sub_100454A1C, &unk_1008E24E8);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100454068(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100454068(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)currentBannerRequestWithCompletion:(id)a3
+- (void)currentBannerRequestWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100452FA8(sub_1003CCB40, v5);
 }
 
-- (void)bannerDidDismissWithType:(int64_t)a3
+- (void)bannerDidDismissWithType:(int64_t)type
 {
-  v4 = self;
-  sub_1004538B8(a3);
+  selfCopy = self;
+  sub_1004538B8(type);
 }
 
 @end

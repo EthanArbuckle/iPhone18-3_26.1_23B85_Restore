@@ -1,39 +1,39 @@
 @interface MTCoreDataResultsController
-- (MTCoreDataResultsController)initWithEntityName:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 propertyKeys:(id)a6;
-- (MTCoreDataResultsController)initWithFetchRequest:(id)a3 propertyKeys:(id)a4;
+- (MTCoreDataResultsController)initWithEntityName:(id)name predicate:(id)predicate sortDescriptors:(id)descriptors propertyKeys:(id)keys;
+- (MTCoreDataResultsController)initWithFetchRequest:(id)request propertyKeys:(id)keys;
 - (NSArray)sortDescriptors;
 - (NSPredicate)predicate;
 - (id)allObjects;
-- (id)indexPathForObject:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
+- (id)indexPathForObject:(id)object;
+- (id)objectAtIndexPath:(id)path;
 - (void)_initializeFrc;
-- (void)_setFrc:(id)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
+- (void)_setFrc:(id)frc;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
 - (void)dealloc;
 - (void)reloadData;
-- (void)setPredicate:(id)a3;
-- (void)setSortDescriptors:(id)a3;
+- (void)setPredicate:(id)predicate;
+- (void)setSortDescriptors:(id)descriptors;
 @end
 
 @implementation MTCoreDataResultsController
 
-- (MTCoreDataResultsController)initWithEntityName:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 propertyKeys:(id)a6
+- (MTCoreDataResultsController)initWithEntityName:(id)name predicate:(id)predicate sortDescriptors:(id)descriptors propertyKeys:(id)keys
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[NSFetchRequest alloc] initWithEntityName:v10];
-  if (kMTPodcastEntityName == v10)
+  nameCopy = name;
+  predicateCopy = predicate;
+  keysCopy = keys;
+  descriptorsCopy = descriptors;
+  v14 = [[NSFetchRequest alloc] initWithEntityName:nameCopy];
+  if (kMTPodcastEntityName == nameCopy)
   {
     v15 = [MTPodcast predicateForSyncablePodcastsForSyncType:0];
   }
 
   else
   {
-    if (kMTEpisodeEntityName != v10)
+    if (kMTEpisodeEntityName != nameCopy)
     {
       goto LABEL_6;
     }
@@ -42,14 +42,14 @@
   }
 
   v16 = v15;
-  v17 = [v15 AND:v11];
+  v17 = [v15 AND:predicateCopy];
 
-  v11 = v17;
+  predicateCopy = v17;
 LABEL_6:
-  [v14 setPredicate:v11];
-  if (v13)
+  [v14 setPredicate:predicateCopy];
+  if (descriptorsCopy)
   {
-    v18 = v13;
+    v18 = descriptorsCopy;
   }
 
   else
@@ -59,22 +59,22 @@ LABEL_6:
 
   [v14 setSortDescriptors:v18];
 
-  v19 = [(MTCoreDataResultsController *)self initWithFetchRequest:v14 propertyKeys:v12];
+  v19 = [(MTCoreDataResultsController *)self initWithFetchRequest:v14 propertyKeys:keysCopy];
   return v19;
 }
 
-- (MTCoreDataResultsController)initWithFetchRequest:(id)a3 propertyKeys:(id)a4
+- (MTCoreDataResultsController)initWithFetchRequest:(id)request propertyKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  keysCopy = keys;
   v11.receiver = self;
   v11.super_class = MTCoreDataResultsController;
   v8 = [(MTCoreDataResultsController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MTCoreDataResultsController *)v8 setFetchRequest:v6];
-    [(MTCoreDataResultsController *)v9 setPropertyKeys:v7];
+    [(MTCoreDataResultsController *)v8 setFetchRequest:requestCopy];
+    [(MTCoreDataResultsController *)v9 setPropertyKeys:keysCopy];
     [(MTCoreDataResultsController *)v9 _initializeFrc];
   }
 
@@ -89,40 +89,40 @@ LABEL_6:
   [(MTCoreDataResultsController *)&v3 dealloc];
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(MTCoreDataResultsController *)self fetchRequest];
-  [v5 setPredicate:v4];
+  predicateCopy = predicate;
+  fetchRequest = [(MTCoreDataResultsController *)self fetchRequest];
+  [fetchRequest setPredicate:predicateCopy];
 }
 
 - (NSPredicate)predicate
 {
-  v2 = [(MTCoreDataResultsController *)self fetchRequest];
-  v3 = [v2 predicate];
+  fetchRequest = [(MTCoreDataResultsController *)self fetchRequest];
+  predicate = [fetchRequest predicate];
 
-  return v3;
+  return predicate;
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v4 = &__NSArray0__struct;
-  if (a3)
+  descriptorsCopy = &__NSArray0__struct;
+  if (descriptors)
   {
-    v4 = a3;
+    descriptorsCopy = descriptors;
   }
 
-  v5 = v4;
-  v6 = [(MTCoreDataResultsController *)self fetchRequest];
-  [v6 setSortDescriptors:v5];
+  v5 = descriptorsCopy;
+  fetchRequest = [(MTCoreDataResultsController *)self fetchRequest];
+  [fetchRequest setSortDescriptors:v5];
 }
 
 - (NSArray)sortDescriptors
 {
-  v2 = [(MTCoreDataResultsController *)self fetchRequest];
-  v3 = [v2 sortDescriptors];
+  fetchRequest = [(MTCoreDataResultsController *)self fetchRequest];
+  sortDescriptors = [fetchRequest sortDescriptors];
 
-  return v3;
+  return sortDescriptors;
 }
 
 - (void)reloadData
@@ -132,26 +132,26 @@ LABEL_6:
   [(MTCoreDataResultsController *)self _initializeFrc];
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     v5 = [(MTCoreDataResultsController *)self frc];
-    v6 = [v5 fetchedObjects];
-    v7 = [v6 count];
+    fetchedObjects = [v5 fetchedObjects];
+    v7 = [fetchedObjects count];
 
-    if ([v4 section] || objc_msgSend(v4, "row") >= v7)
+    if ([pathCopy section] || objc_msgSend(pathCopy, "row") >= v7)
     {
       v8 = +[IMLogger sharedLogger];
-      [v8 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/FRC/MTCoreDataResultsController.m" lineNumber:111 format:{@"Unable to retrieve object for index path %@ with total number of objects %ld", v4, v7}];
+      [v8 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/FRC/MTCoreDataResultsController.m" lineNumber:111 format:{@"Unable to retrieve object for index path %@ with total number of objects %ld", pathCopy, v7}];
       v9 = 0;
     }
 
     else
     {
       v8 = [(MTCoreDataResultsController *)self frc];
-      v9 = [v8 objectAtIndexPath:v4];
+      v9 = [v8 objectAtIndexPath:pathCopy];
     }
   }
 
@@ -163,11 +163,11 @@ LABEL_6:
   return v9;
 }
 
-- (id)indexPathForObject:(id)a3
+- (id)indexPathForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [(MTCoreDataResultsController *)self frc];
-  v6 = [v5 indexPathForObject:v4];
+  v6 = [v5 indexPathForObject:objectCopy];
 
   return v6;
 }
@@ -175,9 +175,9 @@ LABEL_6:
 - (id)allObjects
 {
   v2 = [(MTCoreDataResultsController *)self frc];
-  v3 = [v2 fetchedObjects];
+  fetchedObjects = [v2 fetchedObjects];
 
-  return v3;
+  return fetchedObjects;
 }
 
 - (void)_initializeFrc
@@ -187,26 +187,26 @@ LABEL_6:
     v17[7] = v2;
     v17[8] = v3;
     v5 = +[MTDB sharedInstance];
-    v6 = [v5 mainQueueContext];
+    mainQueueContext = [v5 mainQueueContext];
 
-    v7 = [(MTCoreDataResultsController *)self propertyKeys];
-    v8 = [v7 count];
+    propertyKeys = [(MTCoreDataResultsController *)self propertyKeys];
+    v8 = [propertyKeys count];
 
     if (v8)
     {
       v9 = [MTFetchedResultsController alloc];
-      v10 = [(MTCoreDataResultsController *)self fetchRequest];
-      v11 = [v9 initWithFetchRequest:v10 managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
+      fetchRequest = [(MTCoreDataResultsController *)self fetchRequest];
+      v11 = [v9 initWithFetchRequest:fetchRequest managedObjectContext:mainQueueContext sectionNameKeyPath:0 cacheName:0];
 
-      v12 = [(MTCoreDataResultsController *)self propertyKeys];
-      [v11 setPropertyKeys:v12];
+      propertyKeys2 = [(MTCoreDataResultsController *)self propertyKeys];
+      [v11 setPropertyKeys:propertyKeys2];
     }
 
     else
     {
       v13 = [NSFetchedResultsController alloc];
-      v12 = [(MTCoreDataResultsController *)self fetchRequest];
-      v11 = [v13 initWithFetchRequest:v12 managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
+      propertyKeys2 = [(MTCoreDataResultsController *)self fetchRequest];
+      v11 = [v13 initWithFetchRequest:propertyKeys2 managedObjectContext:mainQueueContext sectionNameKeyPath:0 cacheName:0];
     }
 
     [v11 setDelegate:self];
@@ -226,39 +226,39 @@ LABEL_6:
   }
 }
 
-- (void)_setFrc:(id)a3
+- (void)_setFrc:(id)frc
 {
-  v5 = a3;
+  frcCopy = frc;
   frc = self->_frc;
-  if (frc != v5)
+  if (frc != frcCopy)
   {
-    v7 = v5;
+    v7 = frcCopy;
     [(MTFetchedResultsControllerProtocol *)frc setDelegate:0];
     [(MTFetchedResultsControllerProtocol *)v7 setDelegate:self];
-    objc_storeStrong(&self->_frc, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_frc, frc);
+    frcCopy = v7;
   }
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(MTResultsController *)self delegate];
-  [v14 controller:self didChangeObject:v13 atIndexPath:v12 forChangeType:a6 newIndexPath:v11];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  objectCopy = object;
+  delegate = [(MTResultsController *)self delegate];
+  [delegate controller:self didChangeObject:objectCopy atIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
-  v4 = [(MTResultsController *)self delegate];
-  [v4 controllerWillChangeContent:self];
+  delegate = [(MTResultsController *)self delegate];
+  [delegate controllerWillChangeContent:self];
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = [(MTResultsController *)self delegate];
-  [v4 controllerDidChangeContent:self];
+  delegate = [(MTResultsController *)self delegate];
+  [delegate controllerDidChangeContent:self];
 }
 
 @end

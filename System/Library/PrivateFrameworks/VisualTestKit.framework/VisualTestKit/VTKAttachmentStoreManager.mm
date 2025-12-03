@@ -1,8 +1,8 @@
 @interface VTKAttachmentStoreManager
 - (NSString)itemsDirectory;
 - (VTKAttachmentStoreManager)init;
-- (id)saveItems:(id)a3 withID:(id)a4 testCase:(id)a5;
-- (void)setItemsDirectory:(id)a3;
+- (id)saveItems:(id)items withID:(id)d testCase:(id)case;
+- (void)setItemsDirectory:(id)directory;
 @end
 
 @implementation VTKAttachmentStoreManager
@@ -22,30 +22,30 @@
   return v2;
 }
 
-- (id)saveItems:(id)a3 withID:(id)a4 testCase:(id)a5
+- (id)saveItems:(id)items withID:(id)d testCase:(id)case
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VTKAttachmentStoreManager *)self fileStoreManager];
-  v12 = [v11 saveItems:v8 withID:v9 testCase:v10];
+  itemsCopy = items;
+  dCopy = d;
+  caseCopy = case;
+  fileStoreManager = [(VTKAttachmentStoreManager *)self fileStoreManager];
+  v12 = [fileStoreManager saveItems:itemsCopy withID:dCopy testCase:caseCopy];
 
-  v13 = [v10 invocation];
+  invocation = [caseCopy invocation];
 
-  v14 = NSStringFromSelector([v13 selector]);
-  v15 = [v14 stringByAppendingFormat:@"-%@", v9];
+  v14 = NSStringFromSelector([invocation selector]);
+  dCopy = [v14 stringByAppendingFormat:@"-%@", dCopy];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __55__VTKAttachmentStoreManager_saveItems_withID_testCase___block_invoke;
   v20[3] = &unk_C100;
-  v21 = v8;
-  v22 = v9;
+  v21 = itemsCopy;
+  v22 = dCopy;
   v23 = v12;
   v16 = v12;
-  v17 = v9;
-  v18 = v8;
-  [XCTContext runActivityNamed:v15 block:v20];
+  v17 = dCopy;
+  v18 = itemsCopy;
+  [XCTContext runActivityNamed:dCopy block:v20];
 
   return 0;
 }
@@ -82,19 +82,19 @@ void __55__VTKAttachmentStoreManager_saveItems_withID_testCase___block_invoke_2(
   }
 }
 
-- (void)setItemsDirectory:(id)a3
+- (void)setItemsDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(VTKAttachmentStoreManager *)self fileStoreManager];
-  [v5 setItemsDirectory:v4];
+  directoryCopy = directory;
+  fileStoreManager = [(VTKAttachmentStoreManager *)self fileStoreManager];
+  [fileStoreManager setItemsDirectory:directoryCopy];
 }
 
 - (NSString)itemsDirectory
 {
-  v2 = [(VTKAttachmentStoreManager *)self fileStoreManager];
-  v3 = [v2 itemsDirectory];
+  fileStoreManager = [(VTKAttachmentStoreManager *)self fileStoreManager];
+  itemsDirectory = [fileStoreManager itemsDirectory];
 
-  return v3;
+  return itemsDirectory;
 }
 
 @end

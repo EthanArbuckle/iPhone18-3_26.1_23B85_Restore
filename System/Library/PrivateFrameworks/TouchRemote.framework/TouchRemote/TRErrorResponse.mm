@@ -1,33 +1,33 @@
 @interface TRErrorResponse
-- (TRErrorResponse)initWithCoder:(id)a3;
+- (TRErrorResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRErrorResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TRErrorResponse;
-  [(TRMessage *)&v6 encodeWithCoder:v4];
+  [(TRMessage *)&v6 encodeWithCoder:coderCopy];
   error = self->_error;
   if (error)
   {
-    [v4 encodeObject:error forKey:@"TRConnectionMessages_e"];
+    [coderCopy encodeObject:error forKey:@"TRConnectionMessages_e"];
   }
 }
 
-- (TRErrorResponse)initWithCoder:(id)a3
+- (TRErrorResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRErrorResponse;
-  v5 = [(TRMessage *)&v9 initWithCoder:v4];
+  v5 = [(TRMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRConnectionMessages_e"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRConnectionMessages_e"];
     error = v5->_error;
     v5->_error = v6;
   }

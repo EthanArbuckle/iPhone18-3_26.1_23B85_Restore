@@ -1,27 +1,27 @@
 @interface WKPasswordView
-- (WKPasswordView)initWithFrame:(CGRect)a3 documentName:(id)a4;
+- (WKPasswordView)initWithFrame:(CGRect)frame documentName:(id)name;
 - (id).cxx_construct;
-- (void)_keyboardDidShow:(id)a3;
+- (void)_keyboardDidShow:(id)show;
 - (void)dealloc;
-- (void)didBeginEditingPassword:(id)a3 inView:(id)a4;
-- (void)didEndEditingPassword:(id)a3 inView:(id)a4;
+- (void)didBeginEditingPassword:(id)password inView:(id)view;
+- (void)didEndEditingPassword:(id)password inView:(id)view;
 - (void)hide;
 - (void)layoutSubviews;
-- (void)showInScrollView:(id)a3;
+- (void)showInScrollView:(id)view;
 - (void)showPasswordFailureAlert;
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4;
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view;
 @end
 
 @implementation WKPasswordView
 
-- (WKPasswordView)initWithFrame:(CGRect)a3 documentName:(id)a4
+- (WKPasswordView)initWithFrame:(CGRect)frame documentName:(id)name
 {
   v12.receiver = self;
   v12.super_class = WKPasswordView;
-  v5 = [(WKPasswordView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WKPasswordView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    v6 = [a4 copy];
+    v6 = [name copy];
     m_ptr = v5->_documentName.m_ptr;
     v5->_documentName.m_ptr = v6;
     if (m_ptr)
@@ -71,23 +71,23 @@
   }
 }
 
-- (void)showInScrollView:(id)a3
+- (void)showInScrollView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v5 = a3;
+    viewCopy = view;
   }
 
   m_ptr = self->_scrollView.m_ptr;
-  self->_scrollView.m_ptr = a3;
-  v7 = a3;
+  self->_scrollView.m_ptr = view;
+  viewCopy2 = view;
   if (m_ptr)
   {
 
-    v7 = self->_scrollView.m_ptr;
+    viewCopy2 = self->_scrollView.m_ptr;
   }
 
-  [v7 minimumZoomScale];
+  [viewCopy2 minimumZoomScale];
   self->_savedMinimumZoomScale = v8;
   [(UIScrollView *)self->_scrollView.m_ptr maximumZoomScale];
   self->_savedMaximumZoomScale = v9;
@@ -96,11 +96,11 @@
   [(UIScrollView *)self->_scrollView.m_ptr contentSize];
   self->_savedContentSize.width = v11;
   self->_savedContentSize.height = v12;
-  v13 = [(UIScrollView *)self->_scrollView.m_ptr backgroundColor];
-  v14 = v13;
-  if (v13)
+  backgroundColor = [(UIScrollView *)self->_scrollView.m_ptr backgroundColor];
+  v14 = backgroundColor;
+  if (backgroundColor)
   {
-    v15 = v13;
+    v15 = backgroundColor;
   }
 
   v16 = self->_savedBackgroundColor.m_ptr;
@@ -117,7 +117,7 @@
   [(UIScrollView *)v17 setContentSize:v18, v19];
   -[UIScrollView setBackgroundColor:](self->_scrollView.m_ptr, "setBackgroundColor:", [MEMORY[0x1E69DC888] systemGroupedBackgroundColor]);
 
-  [a3 addSubview:self];
+  [view addSubview:self];
 }
 
 - (void)hide
@@ -224,10 +224,10 @@
   }
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
-  v4 = [(UIDocumentPasswordView *)self->_passwordView.m_ptr passwordField];
-  if ([v4 isEditing])
+  passwordField = [(UIDocumentPasswordView *)self->_passwordView.m_ptr passwordField];
+  if ([passwordField isEditing])
   {
     [MEMORY[0x1E69DCD68] visiblePeripheralFrame];
     x = v32.origin.x;
@@ -236,15 +236,15 @@
     height = v32.size.height;
     if (!CGRectIsEmpty(v32))
     {
-      v9 = [(UIScrollView *)self->_scrollView.m_ptr window];
-      [v9 convertRect:0 fromWindow:{x, y, width, height}];
-      [(UIScrollView *)self->_scrollView.m_ptr convertRect:v9 fromView:?];
+      window = [(UIScrollView *)self->_scrollView.m_ptr window];
+      [window convertRect:0 fromWindow:{x, y, width, height}];
+      [(UIScrollView *)self->_scrollView.m_ptr convertRect:window fromView:?];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      [v4 bounds];
-      [v4 convertRect:self->_scrollView.m_ptr toView:?];
+      [passwordField bounds];
+      [passwordField convertRect:self->_scrollView.m_ptr toView:?];
       v29 = v19;
       v30 = v18;
       v21 = v20;
@@ -286,41 +286,41 @@
   }
 }
 
-- (void)userDidEnterPassword:(id)a3 forPasswordView:(id)a4
+- (void)userDidEnterPassword:(id)password forPasswordView:(id)view
 {
-  v7 = self;
+  selfCopy = self;
   if (self)
   {
-    v5 = self;
-    self = v7;
+    selfCopy2 = self;
+    self = selfCopy;
   }
 
   userDidEnterPassword = self->_userDidEnterPassword;
   if (userDidEnterPassword)
   {
-    userDidEnterPassword[2](userDidEnterPassword, a3, a3, a4);
+    userDidEnterPassword[2](userDidEnterPassword, password, password, view);
   }
 }
 
-- (void)didBeginEditingPassword:(id)a3 inView:(id)a4
+- (void)didBeginEditingPassword:(id)password inView:(id)view
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69DDF78];
 
-  [v5 addObserver:self selector:sel__keyboardDidShow_ name:v6 object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardDidShow_ name:v6 object:0];
 }
 
-- (void)didEndEditingPassword:(id)a3 inView:(id)a4
+- (void)didEndEditingPassword:(id)password inView:(id)view
 {
   m_ptr = self->_scrollView.m_ptr;
-  [(UIDocumentPasswordView *)self->_passwordView.m_ptr frame:a3];
+  [(UIDocumentPasswordView *)self->_passwordView.m_ptr frame:password];
   [(UIScrollView *)m_ptr setContentSize:v6, v7];
   [(UIScrollView *)self->_scrollView.m_ptr contentInset];
   [(UIScrollView *)self->_scrollView.m_ptr setContentOffset:1 animated:-v8, -v9];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = *MEMORY[0x1E69DDF78];
 
-  [v10 removeObserver:self name:v11 object:0];
+  [defaultCenter removeObserver:self name:v11 object:0];
 }
 
 - (id).cxx_construct

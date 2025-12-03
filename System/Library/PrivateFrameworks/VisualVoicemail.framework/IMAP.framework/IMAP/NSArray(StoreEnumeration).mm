@@ -8,13 +8,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 mf_dictionaryWithMessagesSortedByStore];
+  mf_dictionaryWithMessagesSortedByStore = [self mf_dictionaryWithMessagesSortedByStore];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [mf_dictionaryWithMessagesSortedByStore allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -25,15 +25,15 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
+        v12 = [mf_dictionaryWithMessagesSortedByStore objectForKeyedSubscript:v11];
         v4[2](v4, v11, v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

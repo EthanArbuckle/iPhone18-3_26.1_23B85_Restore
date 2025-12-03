@@ -1,24 +1,24 @@
 @interface NETSchemaNETSessionConnectionHttpHeaderCreated
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithDictionary:(id)a3;
-- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithDictionary:(id)dictionary;
+- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETSessionConnectionHttpHeaderCreated
 
-- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithDictionary:(id)a3
+- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NETSchemaNETSessionConnectionHttpHeaderCreated;
   v5 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userAgent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userAgent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(NETSchemaNETSessionConnectionHttpHeaderCreated *)v5 setUserAgent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aceHost"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aceHost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithJSON:(id)a3
+- (NETSchemaNETSessionConnectionHttpHeaderCreated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceHost)
   {
-    v4 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceHost"];
+    aceHost = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
+    v5 = [aceHost copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceHost"];
   }
 
   if (self->_userAgent)
   {
-    v6 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"userAgent"];
+    userAgent = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
+    v7 = [userAgent copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"userAgent"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
-  v6 = [v4 userAgent];
-  if ((v5 != 0) == (v6 == 0))
+  userAgent = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
+  userAgent2 = [equalCopy userAgent];
+  if ((userAgent != 0) == (userAgent2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
-  if (v7)
+  userAgent3 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
+  if (userAgent3)
   {
-    v8 = v7;
-    v9 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
-    v10 = [v4 userAgent];
-    v11 = [v9 isEqual:v10];
+    v8 = userAgent3;
+    userAgent4 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
+    userAgent5 = [equalCopy userAgent];
+    v11 = [userAgent4 isEqual:userAgent5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
-  v6 = [v4 aceHost];
-  if ((v5 != 0) != (v6 == 0))
+  userAgent = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
+  userAgent2 = [equalCopy aceHost];
+  if ((userAgent != 0) != (userAgent2 == 0))
   {
-    v12 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
-    if (!v12)
+    aceHost = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
+    if (!aceHost)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
-    v15 = [v4 aceHost];
-    v16 = [v14 isEqual:v15];
+    v13 = aceHost;
+    aceHost2 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
+    aceHost3 = [equalCopy aceHost];
+    v16 = [aceHost2 isEqual:aceHost3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
+  toCopy = to;
+  userAgent = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self userAgent];
 
-  if (v4)
+  if (userAgent)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
+  aceHost = [(NETSchemaNETSessionConnectionHttpHeaderCreated *)self aceHost];
 
-  if (v5)
+  if (aceHost)
   {
     PBDataWriterWriteStringField();
   }

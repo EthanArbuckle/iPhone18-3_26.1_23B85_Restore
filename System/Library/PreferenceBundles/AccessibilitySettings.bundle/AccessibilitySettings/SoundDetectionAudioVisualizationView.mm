@@ -1,15 +1,15 @@
 @interface SoundDetectionAudioVisualizationView
-- (SoundDetectionAudioVisualizationView)initWithPipCount:(int)a3;
-- (void)setTintColor:(id)a3;
-- (void)updateWithMagnitudes:(id)a3;
+- (SoundDetectionAudioVisualizationView)initWithPipCount:(int)count;
+- (void)setTintColor:(id)color;
+- (void)updateWithMagnitudes:(id)magnitudes;
 - (void)zeroOut;
 @end
 
 @implementation SoundDetectionAudioVisualizationView
 
-- (SoundDetectionAudioVisualizationView)initWithPipCount:(int)a3
+- (SoundDetectionAudioVisualizationView)initWithPipCount:(int)count
 {
-  v3 = *&a3;
+  v3 = *&count;
   v16.receiver = self;
   v16.super_class = SoundDetectionAudioVisualizationView;
   v4 = [(SoundDetectionAudioVisualizationView *)&v16 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -26,8 +26,8 @@
         v8 = +[UIColor systemBlueColor];
         [v7 setFillColor:{objc_msgSend(v8, "CGColor")}];
 
-        v9 = [(SoundDetectionAudioVisualizationView *)v5 layer];
-        [v9 addSublayer:v7];
+        layer = [(SoundDetectionAudioVisualizationView *)v5 layer];
+        [layer addSublayer:v7];
 
         [v6 addObject:v7];
         LODWORD(v3) = v3 - 1;
@@ -45,27 +45,27 @@
     v13 = +[UIColor systemLightGrayColor];
     -[CAShapeLayer setFillColor:](v12, "setFillColor:", [v13 CGColor]);
 
-    v14 = [(SoundDetectionAudioVisualizationView *)v5 layer];
-    [v14 addSublayer:v5->_baseLine];
+    layer2 = [(SoundDetectionAudioVisualizationView *)v5 layer];
+    [layer2 addSublayer:v5->_baseLine];
   }
 
   return v5;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v19.receiver = self;
   v19.super_class = SoundDetectionAudioVisualizationView;
-  [(SoundDetectionAudioVisualizationView *)&v19 setTintColor:v4];
+  [(SoundDetectionAudioVisualizationView *)&v19 setTintColor:colorCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SoundDetectionAudioVisualizationView *)self layer];
-  v6 = [v5 sublayers];
+  layer = [(SoundDetectionAudioVisualizationView *)self layer];
+  sublayers = [layer sublayers];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v7 = [sublayers countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -77,31 +77,31 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v15 + 1) + 8 * v10) setFillColor:{objc_msgSend(v4, "CGColor")}];
+        [*(*(&v15 + 1) + 8 * v10) setFillColor:{objc_msgSend(colorCopy, "CGColor")}];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [sublayers countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(SoundDetectionAudioVisualizationView *)self layer];
-  v12 = [v11 sublayers];
-  v13 = [v12 lastObject];
+  layer2 = [(SoundDetectionAudioVisualizationView *)self layer];
+  sublayers2 = [layer2 sublayers];
+  lastObject = [sublayers2 lastObject];
   v14 = +[UIColor systemLightGrayColor];
-  [v13 setFillColor:{objc_msgSend(v14, "CGColor")}];
+  [lastObject setFillColor:{objc_msgSend(v14, "CGColor")}];
 }
 
-- (void)updateWithMagnitudes:(id)a3
+- (void)updateWithMagnitudes:(id)magnitudes
 {
-  v4 = a3;
-  v3 = v4;
+  magnitudesCopy = magnitudes;
+  v3 = magnitudesCopy;
   AXPerformBlockOnMainThread();
 }
 

@@ -1,20 +1,20 @@
 @interface TKPickerRowItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKPickerRowItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
@@ -24,7 +24,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
+        v7 = equalCopy;
         v10.receiver = self;
         v10.super_class = TKPickerRowItem;
         v8 = [(TKPickerItem *)&v10 isEqual:v7]&& self->_row == v7->_row && self->_wantsIndentedLayout == v7->_wantsIndentedLayout;
@@ -41,7 +41,7 @@
   {
     v11.receiver = self;
     v11.super_class = TKPickerRowItem;
-    v8 = [(TKPickerItem *)&v11 isEqual:v4];
+    v8 = [(TKPickerItem *)&v11 isEqual:equalCopy];
   }
 
   return v8;
@@ -49,10 +49,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     v6.receiver = self;
     v6.super_class = TKPickerRowItem;
@@ -67,16 +67,16 @@
   }
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5.receiver = self;
   v5.super_class = TKPickerRowItem;
-  [(TKPickerItem *)&v5 _appendDescriptionOfAttributesToString:v4];
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"row" withIntegerValue:self->_row toString:v4];
+  [(TKPickerItem *)&v5 _appendDescriptionOfAttributesToString:stringCopy];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"row" withIntegerValue:self->_row toString:stringCopy];
   if (self->_wantsIndentedLayout)
   {
-    [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"wantsIndentedLayout" withBoolValue:1 toString:v4];
+    [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"wantsIndentedLayout" withBoolValue:1 toString:stringCopy];
   }
 }
 

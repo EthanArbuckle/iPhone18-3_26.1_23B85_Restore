@@ -1,33 +1,33 @@
 @interface NLXSchemaCDMToken
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMToken)initWithDictionary:(id)a3;
-- (NLXSchemaCDMToken)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMToken)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMToken)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNormalizedValues:(id)a3;
-- (void)setHasEnd:(BOOL)a3;
-- (void)setHasIsSignificant:(BOOL)a3;
-- (void)setHasIsWhitespace:(BOOL)a3;
-- (void)setHasNonWhitespaceTokenIndex:(BOOL)a3;
-- (void)setHasTokenIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNormalizedValues:(id)values;
+- (void)setHasEnd:(BOOL)end;
+- (void)setHasIsSignificant:(BOOL)significant;
+- (void)setHasIsWhitespace:(BOOL)whitespace;
+- (void)setHasNonWhitespaceTokenIndex:(BOOL)index;
+- (void)setHasTokenIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMToken
 
-- (NLXSchemaCDMToken)initWithDictionary:(id)a3
+- (NLXSchemaCDMToken)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = NLXSchemaCDMToken;
   v5 = [(NLXSchemaCDMToken *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,35 +35,35 @@
       [(NLXSchemaCDMToken *)v5 setValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"begin"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"begin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMToken setBegin:](v5, "setBegin:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"end"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"end"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMToken setEnd:](v5, "setEnd:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSignificant"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSignificant"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMToken setIsSignificant:](v5, "setIsSignificant:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isWhitespace"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isWhitespace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMToken setIsWhitespace:](v5, "setIsWhitespace:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"tokenIndex"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tokenIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
     }
 
     v32 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"nonWhitespaceTokenIndex"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"nonWhitespaceTokenIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
     }
 
     v31 = v13;
-    v14 = [v4 objectForKeyedSubscript:@"cleanValue"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cleanValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(NLXSchemaCDMToken *)v5 setCleanValue:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"normalizedValues"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"normalizedValues"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,30 +147,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMToken)initWithJSON:(id)a3
+- (NLXSchemaCDMToken)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMToken *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMToken *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMToken *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -183,25 +183,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMToken begin](self, "begin")}];
-    [v3 setObject:v4 forKeyedSubscript:@"begin"];
+    [dictionary setObject:v4 forKeyedSubscript:@"begin"];
   }
 
   if (self->_cleanValue)
   {
-    v5 = [(NLXSchemaCDMToken *)self cleanValue];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"cleanValue"];
+    cleanValue = [(NLXSchemaCDMToken *)self cleanValue];
+    v6 = [cleanValue copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"cleanValue"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMToken end](self, "end")}];
-    [v3 setObject:v15 forKeyedSubscript:@"end"];
+    [dictionary setObject:v15 forKeyedSubscript:@"end"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -222,7 +222,7 @@ LABEL_7:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLXSchemaCDMToken isSignificant](self, "isSignificant")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isSignificant"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isSignificant"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -238,39 +238,39 @@ LABEL_8:
 
 LABEL_21:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLXSchemaCDMToken isWhitespace](self, "isWhitespace")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isWhitespace"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isWhitespace"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_9:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMToken nonWhitespaceTokenIndex](self, "nonWhitespaceTokenIndex")}];
-    [v3 setObject:v8 forKeyedSubscript:@"nonWhitespaceTokenIndex"];
+    [dictionary setObject:v8 forKeyedSubscript:@"nonWhitespaceTokenIndex"];
   }
 
 LABEL_10:
   if (self->_normalizedValues)
   {
-    v9 = [(NLXSchemaCDMToken *)self normalizedValues];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"normalizedValues"];
+    normalizedValues = [(NLXSchemaCDMToken *)self normalizedValues];
+    v10 = [normalizedValues copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"normalizedValues"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMToken tokenIndex](self, "tokenIndex")}];
-    [v3 setObject:v11 forKeyedSubscript:@"tokenIndex"];
+    [dictionary setObject:v11 forKeyedSubscript:@"tokenIndex"];
   }
 
   if (self->_value)
   {
-    v12 = [(NLXSchemaCDMToken *)self value];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"value"];
+    value = [(NLXSchemaCDMToken *)self value];
+    v13 = [value copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -358,28 +358,28 @@ LABEL_14:
   return v10 ^ [(NSArray *)self->_normalizedValues hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
-  v5 = [(NLXSchemaCDMToken *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) == (v6 == 0))
+  value = [(NLXSchemaCDMToken *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_39;
   }
 
-  v7 = [(NLXSchemaCDMToken *)self value];
-  if (v7)
+  value3 = [(NLXSchemaCDMToken *)self value];
+  if (value3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMToken *)self value];
-    v10 = [v4 value];
-    v11 = [v9 isEqual:v10];
+    v8 = value3;
+    value4 = [(NLXSchemaCDMToken *)self value];
+    value5 = [equalCopy value];
+    v11 = [value4 isEqual:value5];
 
     if (!v11)
     {
@@ -392,7 +392,7 @@ LABEL_14:
   }
 
   has = self->_has;
-  v13 = v4[56];
+  v13 = equalCopy[56];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_40;
@@ -401,13 +401,13 @@ LABEL_14:
   if (*&has)
   {
     begin = self->_begin;
-    if (begin != [v4 begin])
+    if (begin != [equalCopy begin])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v13 = v4[56];
+    v13 = equalCopy[56];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -419,13 +419,13 @@ LABEL_14:
   if (v15)
   {
     end = self->_end;
-    if (end != [v4 end])
+    if (end != [equalCopy end])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v13 = v4[56];
+    v13 = equalCopy[56];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -437,13 +437,13 @@ LABEL_14:
   if (v17)
   {
     isSignificant = self->_isSignificant;
-    if (isSignificant != [v4 isSignificant])
+    if (isSignificant != [equalCopy isSignificant])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v13 = v4[56];
+    v13 = equalCopy[56];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -455,13 +455,13 @@ LABEL_14:
   if (v19)
   {
     isWhitespace = self->_isWhitespace;
-    if (isWhitespace != [v4 isWhitespace])
+    if (isWhitespace != [equalCopy isWhitespace])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v13 = v4[56];
+    v13 = equalCopy[56];
   }
 
   v21 = (*&has >> 4) & 1;
@@ -473,13 +473,13 @@ LABEL_14:
   if (v21)
   {
     tokenIndex = self->_tokenIndex;
-    if (tokenIndex != [v4 tokenIndex])
+    if (tokenIndex != [equalCopy tokenIndex])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v13 = v4[56];
+    v13 = equalCopy[56];
   }
 
   v23 = (*&has >> 5) & 1;
@@ -491,26 +491,26 @@ LABEL_14:
   if (v23)
   {
     nonWhitespaceTokenIndex = self->_nonWhitespaceTokenIndex;
-    if (nonWhitespaceTokenIndex != [v4 nonWhitespaceTokenIndex])
+    if (nonWhitespaceTokenIndex != [equalCopy nonWhitespaceTokenIndex])
     {
       goto LABEL_40;
     }
   }
 
-  v5 = [(NLXSchemaCDMToken *)self cleanValue];
-  v6 = [v4 cleanValue];
-  if ((v5 != 0) == (v6 == 0))
+  value = [(NLXSchemaCDMToken *)self cleanValue];
+  value2 = [equalCopy cleanValue];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_39;
   }
 
-  v25 = [(NLXSchemaCDMToken *)self cleanValue];
-  if (v25)
+  cleanValue = [(NLXSchemaCDMToken *)self cleanValue];
+  if (cleanValue)
   {
-    v26 = v25;
-    v27 = [(NLXSchemaCDMToken *)self cleanValue];
-    v28 = [v4 cleanValue];
-    v29 = [v27 isEqual:v28];
+    v26 = cleanValue;
+    cleanValue2 = [(NLXSchemaCDMToken *)self cleanValue];
+    cleanValue3 = [equalCopy cleanValue];
+    v29 = [cleanValue2 isEqual:cleanValue3];
 
     if (!v29)
     {
@@ -522,17 +522,17 @@ LABEL_14:
   {
   }
 
-  v5 = [(NLXSchemaCDMToken *)self normalizedValues];
-  v6 = [v4 normalizedValues];
-  if ((v5 != 0) == (v6 == 0))
+  value = [(NLXSchemaCDMToken *)self normalizedValues];
+  value2 = [equalCopy normalizedValues];
+  if ((value != 0) == (value2 == 0))
   {
 LABEL_39:
 
     goto LABEL_40;
   }
 
-  v30 = [(NLXSchemaCDMToken *)self normalizedValues];
-  if (!v30)
+  normalizedValues = [(NLXSchemaCDMToken *)self normalizedValues];
+  if (!normalizedValues)
   {
 
 LABEL_43:
@@ -540,10 +540,10 @@ LABEL_43:
     goto LABEL_41;
   }
 
-  v31 = v30;
-  v32 = [(NLXSchemaCDMToken *)self normalizedValues];
-  v33 = [v4 normalizedValues];
-  v34 = [v32 isEqual:v33];
+  v31 = normalizedValues;
+  normalizedValues2 = [(NLXSchemaCDMToken *)self normalizedValues];
+  normalizedValues3 = [equalCopy normalizedValues];
+  v34 = [normalizedValues2 isEqual:normalizedValues3];
 
   if (v34)
   {
@@ -557,13 +557,13 @@ LABEL_41:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NLXSchemaCDMToken *)self value];
+  toCopy = to;
+  value = [(NLXSchemaCDMToken *)self value];
 
-  if (v5)
+  if (value)
   {
     PBDataWriterWriteStringField();
   }
@@ -640,9 +640,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  v7 = [(NLXSchemaCDMToken *)self cleanValue];
+  cleanValue = [(NLXSchemaCDMToken *)self cleanValue];
 
-  if (v7)
+  if (cleanValue)
   {
     PBDataWriterWriteStringField();
   }
@@ -676,27 +676,27 @@ LABEL_10:
   }
 }
 
-- (void)addNormalizedValues:(id)a3
+- (void)addNormalizedValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   normalizedValues = self->_normalizedValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!normalizedValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_normalizedValues;
-    self->_normalizedValues = v6;
+    self->_normalizedValues = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     normalizedValues = self->_normalizedValues;
   }
 
-  [(NSArray *)normalizedValues addObject:v4];
+  [(NSArray *)normalizedValues addObject:valuesCopy];
 }
 
-- (void)setHasNonWhitespaceTokenIndex:(BOOL)a3
+- (void)setHasNonWhitespaceTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 32;
   }
@@ -709,9 +709,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTokenIndex:(BOOL)a3
+- (void)setHasTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 16;
   }
@@ -724,9 +724,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsWhitespace:(BOOL)a3
+- (void)setHasIsWhitespace:(BOOL)whitespace
 {
-  if (a3)
+  if (whitespace)
   {
     v3 = 8;
   }
@@ -739,9 +739,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsSignificant:(BOOL)a3
+- (void)setHasIsSignificant:(BOOL)significant
 {
-  if (a3)
+  if (significant)
   {
     v3 = 4;
   }
@@ -754,9 +754,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEnd:(BOOL)a3
+- (void)setHasEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 2;
   }
@@ -769,41 +769,41 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = NLXSchemaCDMToken;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(NLXSchemaCDMToken *)self deleteValue];
     [(NLXSchemaCDMToken *)self deleteCleanValue];
     [(NLXSchemaCDMToken *)self deleteNormalizedValues];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(NLXSchemaCDMToken *)self deleteValue];
     [(NLXSchemaCDMToken *)self deleteCleanValue];
     [(NLXSchemaCDMToken *)self deleteNormalizedValues];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(NLXSchemaCDMToken *)self deleteValue];
     [(NLXSchemaCDMToken *)self deleteCleanValue];
     [(NLXSchemaCDMToken *)self deleteNormalizedValues];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(NLXSchemaCDMToken *)self deleteValue];
     [(NLXSchemaCDMToken *)self deleteCleanValue];
     [(NLXSchemaCDMToken *)self deleteNormalizedValues];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(NLXSchemaCDMToken *)self deleteValue];
     [(NLXSchemaCDMToken *)self deleteCleanValue];

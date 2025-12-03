@@ -1,34 +1,34 @@
 @interface QLThumbnailCreationOperation
 - (BOOL)_finishIfCancelled;
 - (CGRect)contentRect;
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)main;
-- (void)retrieveThumbnailForTaggedLogicalURL:(id)a3;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)retrieveThumbnailForTaggedLogicalURL:(id)l;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
-- (void)updateLastHitDateOfAddition:(id)a3 onPhysicalURL:(id)a4;
+- (void)updateLastHitDateOfAddition:(id)addition onPhysicalURL:(id)l;
 @end
 
 @implementation QLThumbnailCreationOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(QLThumbnailCreationOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(QLThumbnailCreationOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
     [(QLThumbnailCreationOperation *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = a3;
+    self->_executing = executing;
 
     [(QLThumbnailCreationOperation *)self didChangeValueForKey:@"isExecuting"];
   }
@@ -41,9 +41,9 @@
   [(QLThumbnailCreationOperation *)self main];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  [(QLThumbnailCreationOperation *)self setError:a3];
+  [(QLThumbnailCreationOperation *)self setError:error];
   [(QLThumbnailCreationOperation *)self setExecuting:0];
 
   [(QLThumbnailCreationOperation *)self setFinished:1];
@@ -51,24 +51,24 @@
 
 - (BOOL)_finishIfCancelled
 {
-  v3 = [(QLThumbnailCreationOperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(QLThumbnailCreationOperation *)self isCancelled];
+  if (isCancelled)
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
     [(QLThumbnailCreationOperation *)self _finishWithError:v4];
   }
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)main
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(QLThumbnailCreationOperation *)v2 _finishIfCancelled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(QLThumbnailCreationOperation *)selfCopy _finishIfCancelled])
   {
-    v3 = [(QLThumbnailCreationOperation *)v2 documentURL];
+    documentURL = [(QLThumbnailCreationOperation *)selfCopy documentURL];
     v4 = _CFURLPromiseCopyPhysicalURL();
 
     v5 = MEMORY[0x277D43EF8];
@@ -88,8 +88,8 @@
         _os_log_impl(&dword_23A714000, v6, OS_LOG_TYPE_DEFAULT, "_CFURLPromiseCopyPhysicalURL returned %@ #Thumbnail", buf, 0xCu);
       }
 
-      v7 = [(QLThumbnailCreationOperation *)v2 documentURL];
-      [(QLThumbnailCreationOperation *)v2 retrieveThumbnailForTaggedLogicalURL:v7];
+      documentURL2 = [(QLThumbnailCreationOperation *)selfCopy documentURL];
+      [(QLThumbnailCreationOperation *)selfCopy retrieveThumbnailForTaggedLogicalURL:documentURL2];
     }
 
     else
@@ -106,31 +106,31 @@
         _os_log_impl(&dword_23A714000, v6, OS_LOG_TYPE_DEFAULT, "Untagged logical URL, coordinating to get the physical URL #Thumbnail", buf, 2u);
       }
 
-      v7 = objc_alloc_init(MEMORY[0x277CCA9E8]);
+      documentURL2 = objc_alloc_init(MEMORY[0x277CCA9E8]);
       v8 = MEMORY[0x277CCA9E0];
-      v9 = [(QLThumbnailCreationOperation *)v2 documentURL];
-      v10 = [v8 readingIntentWithURL:v9 options:4];
+      documentURL3 = [(QLThumbnailCreationOperation *)selfCopy documentURL];
+      v10 = [v8 readingIntentWithURL:documentURL3 options:4];
 
       v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
-      operationQueue = v2->_operationQueue;
-      v2->_operationQueue = v11;
+      operationQueue = selfCopy->_operationQueue;
+      selfCopy->_operationQueue = v11;
 
-      [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:1];
+      [(NSOperationQueue *)selfCopy->_operationQueue setMaxConcurrentOperationCount:1];
       v19 = v10;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-      v14 = v2->_operationQueue;
+      v14 = selfCopy->_operationQueue;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __36__QLThumbnailCreationOperation_main__block_invoke;
       v17[3] = &unk_278B58120;
-      v17[4] = v2;
+      v17[4] = selfCopy;
       v15 = v10;
       v18 = v15;
-      [v7 coordinateAccessWithIntents:v13 queue:v14 byAccessor:v17];
+      [documentURL2 coordinateAccessWithIntents:v13 queue:v14 byAccessor:v17];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -142,10 +142,10 @@ void __36__QLThumbnailCreationOperation_main__block_invoke(uint64_t a1)
   [v1 retrieveThumbnailForTaggedLogicalURL:v2];
 }
 
-- (void)updateLastHitDateOfAddition:(id)a3 onPhysicalURL:(id)a4
+- (void)updateLastHitDateOfAddition:(id)addition onPhysicalURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  additionCopy = addition;
+  lCopy = l;
   if (updateLastHitDateOfAddition_onPhysicalURL__once != -1)
   {
     [QLThumbnailCreationOperation updateLastHitDateOfAddition:onPhysicalURL:];
@@ -156,10 +156,10 @@ void __36__QLThumbnailCreationOperation_main__block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalURL___block_invoke_2;
   v10[3] = &unk_278B56E50;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = additionCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = additionCopy;
   dispatch_async(v7, v10);
 }
 
@@ -177,13 +177,13 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
   [v2 updateLastHitDateOfAddition:*(a1 + 32) onPhysicalURL:*(a1 + 40)];
 }
 
-- (void)retrieveThumbnailForTaggedLogicalURL:(id)a3
+- (void)retrieveThumbnailForTaggedLogicalURL:(id)l
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(QLThumbnailCreationOperation *)v5 _finishIfCancelled])
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(QLThumbnailCreationOperation *)selfCopy _finishIfCancelled])
   {
     v6 = _CFURLPromiseCopyPhysicalURL();
     v7 = v6;
@@ -194,7 +194,7 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
 
     else
     {
-      v8 = v4;
+      v8 = lCopy;
     }
 
     v9 = v8;
@@ -210,7 +210,7 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v4;
+      *&buf[4] = lCopy;
       *&buf[12] = 2112;
       *&buf[14] = v9;
       _os_log_impl(&dword_23A714000, v11, OS_LOG_TYPE_DEFAULT, "Got logical URL %@, physicalURL %@ #Thumbnail", buf, 0x16u);
@@ -222,7 +222,7 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
     v14 = v13;
     if (v12)
     {
-      [(QLThumbnailCreationOperation *)v5 updateLastHitDateOfAddition:v12 onPhysicalURL:v9];
+      [(QLThumbnailCreationOperation *)selfCopy updateLastHitDateOfAddition:v12 onPhysicalURL:v9];
     }
 
     else
@@ -258,7 +258,7 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
         _os_log_impl(&dword_23A714000, v16, OS_LOG_TYPE_DEFAULT, "No thumbnail found for %@, trying to download/generate one #Thumbnail", buf, 0xCu);
       }
 
-      if (v5->_generateIfNeeded)
+      if (selfCopy->_generateIfNeeded)
       {
         v17 = _CFURLIsItemPromiseAtURL();
         v18 = MEMORY[0x277CDAAC0];
@@ -268,68 +268,68 @@ void __74__QLThumbnailCreationOperation_updateLastHitDateOfAddition_onPhysicalUR
           v29[1] = 3221225472;
           v29[2] = __69__QLThumbnailCreationOperation_retrieveThumbnailForTaggedLogicalURL___block_invoke;
           v29[3] = &unk_278B58120;
-          v29[4] = v5;
-          v30 = v4;
+          v29[4] = selfCopy;
+          v30 = lCopy;
           [v18 generateThumbnailIfPossibleAtLogicalURL:v30 completionHandler:v29];
 
 LABEL_25:
-          objc_sync_exit(v5);
+          objc_sync_exit(selfCopy);
 
           goto LABEL_35;
         }
 
-        [MEMORY[0x277CDAAC0] downloadOrGenerateThumbnailAtURL:v4];
+        [MEMORY[0x277CDAAC0] downloadOrGenerateThumbnailAtURL:lCopy];
       }
     }
 
-    if (![(QLThumbnailCreationOperation *)v5 _finishIfCancelled])
+    if (![(QLThumbnailCreationOperation *)selfCopy _finishIfCancelled])
     {
       v19 = *(MEMORY[0x277CBF3A0] + 16);
       *buf = *MEMORY[0x277CBF3A0];
       *&buf[16] = v19;
-      [(QLThumbnailCreationOperation *)v5 maximumDimension];
+      [(QLThumbnailCreationOperation *)selfCopy maximumDimension];
       v21 = v20;
-      [(QLThumbnailCreationOperation *)v5 scaleFactor];
+      [(QLThumbnailCreationOperation *)selfCopy scaleFactor];
       v23 = [v12 thumbnailWithMaximumDimension:buf contentRect:0 properties:v21 * v22];
-      if (![(QLThumbnailCreationOperation *)v5 _finishIfCancelled])
+      if (![(QLThumbnailCreationOperation *)selfCopy _finishIfCancelled])
       {
         if (v23)
         {
           v24 = MEMORY[0x277D755B8];
-          [(QLThumbnailCreationOperation *)v5 scaleFactor];
+          [(QLThumbnailCreationOperation *)selfCopy scaleFactor];
           v25 = [v24 imageWithCGImage:v23 scale:0 orientation:?];
-          [(QLThumbnailCreationOperation *)v5 setImage:v25];
+          [(QLThumbnailCreationOperation *)selfCopy setImage:v25];
 
-          [(QLThumbnailCreationOperation *)v5 setContentRect:*buf, *&buf[8], *&buf[16]];
-          objc_sync_exit(v5);
+          [(QLThumbnailCreationOperation *)selfCopy setContentRect:*buf, *&buf[8], *&buf[16]];
+          objc_sync_exit(selfCopy);
 
-          [(QLThumbnailCreationOperation *)v5 _finish];
+          [(QLThumbnailCreationOperation *)selfCopy _finish];
           goto LABEL_35;
         }
 
         if (v14)
         {
-          [(QLThumbnailCreationOperation *)v5 setError:v14];
+          [(QLThumbnailCreationOperation *)selfCopy setError:v14];
         }
 
         else
         {
           v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CDAB58] code:102 userInfo:0];
-          [(QLThumbnailCreationOperation *)v5 setError:v26];
+          [(QLThumbnailCreationOperation *)selfCopy setError:v26];
         }
 
-        v27 = [(QLThumbnailCreationOperation *)v5 error];
-        [(QLThumbnailCreationOperation *)v5 _finishWithError:v27];
+        error = [(QLThumbnailCreationOperation *)selfCopy error];
+        [(QLThumbnailCreationOperation *)selfCopy _finishWithError:error];
       }
 
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
       goto LABEL_35;
     }
 
     goto LABEL_25;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
 LABEL_35:
   v28 = *MEMORY[0x277D85DE8];

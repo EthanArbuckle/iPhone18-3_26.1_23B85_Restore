@@ -1,5 +1,5 @@
 @interface AEAnnotationAirDropTextActivityItemProvider
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 - (id)supportedActivityTypes;
 @end
 
@@ -13,14 +13,14 @@
   return v2;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([(AEAssetActivityItemProviderSource *)self supportsActivityType:v5])
+  typeCopy = type;
+  if ([(AEAssetActivityItemProviderSource *)self supportsActivityType:typeCopy])
   {
     v17.receiver = self;
     v17.super_class = AEAnnotationAirDropTextActivityItemProvider;
-    v6 = [(AEAnnotationTextActivityItemProvider *)&v17 textForActivityType:v5];
+    v6 = [(AEAnnotationTextActivityItemProvider *)&v17 textForActivityType:typeCopy];
     v7 = NSTemporaryDirectory();
     v8 = IMCommonCoreBundle();
     v9 = [v8 localizedStringForKey:@"AirDrop" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
@@ -46,7 +46,7 @@
       *buf = 138412546;
       v19 = v14;
       v20 = 2112;
-      v21 = v5;
+      v21 = typeCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "%@ returning nil for activity:%@", buf, 0x16u);
     }
 

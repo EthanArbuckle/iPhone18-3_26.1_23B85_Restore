@@ -1,12 +1,12 @@
 @interface NEProxyServer
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)needToUpdateKeychain;
-- (NEProxyServer)initWithCoder:(id)a3;
-- (NEProxyServer)initWithType:(int64_t)a3 address:(id)a4 port:(int64_t)a5;
+- (NEProxyServer)initWithCoder:(id)coder;
+- (NEProxyServer)initWithType:(int64_t)type address:(id)address port:(int64_t)port;
 - (id)copyPassword;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)copyProtectionSpace;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeFromKeychain;
 - (void)syncWithKeychain;
 @end
@@ -15,54 +15,54 @@
 
 - (id)copyPassword
 {
-  v2 = [(NEProxyServer *)self copyProtectionSpace];
-  if (v2)
+  copyProtectionSpace = [(NEProxyServer *)self copyProtectionSpace];
+  if (copyProtectionSpace)
   {
-    v3 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-    v4 = [v3 defaultCredentialForProtectionSpace:v2];
+    mEMORY[0x1E696AF38] = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+    v4 = [mEMORY[0x1E696AF38] defaultCredentialForProtectionSpace:copyProtectionSpace];
 
     if (v4)
     {
-      v5 = [v4 password];
+      password = [v4 password];
     }
 
     else
     {
-      v5 = 0;
+      password = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    password = 0;
   }
 
-  return v5;
+  return password;
 }
 
 - (void)copyProtectionSpace
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 type] - 1;
+    v2 = [self type] - 1;
     if (v2 <= 4 && ((0x17u >> v2) & 1) != 0)
     {
       v3 = **(&unk_1E7F0AA00 + v2);
       if (v3)
       {
-        v4 = [v1 address];
-        v5 = [v4 length];
+        address = [selfCopy address];
+        v5 = [address length];
 
         if (v5)
         {
           v6 = objc_alloc(MEMORY[0x1E696AF50]);
-          v7 = [v1 address];
-          v8 = [v1 port];
-          v1 = [v6 initWithProxyHost:v7 port:v8 type:v3 realm:0 authenticationMethod:*MEMORY[0x1E696A948]];
+          address2 = [selfCopy address];
+          port = [selfCopy port];
+          selfCopy = [v6 initWithProxyHost:address2 port:port type:v3 realm:0 authenticationMethod:*MEMORY[0x1E696A948]];
 
 LABEL_9:
-          return v1;
+          return selfCopy;
         }
       }
     }
@@ -72,79 +72,79 @@ LABEL_9:
       v3 = 0;
     }
 
-    v1 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEProxyServer *)self address];
+  errorsCopy = errors;
+  address = [(NEProxyServer *)self address];
 
-  if (!v5)
+  if (!address)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  return v5 != 0;
+  return address != 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEProxyServer allocWithZone:a3];
-  v5 = [(NEProxyServer *)self type];
-  v6 = [(NEProxyServer *)self address];
-  v7 = [(NEProxyServer *)v4 initWithType:v5 address:v6 port:[(NEProxyServer *)self port]];
+  v4 = [NEProxyServer allocWithZone:zone];
+  type = [(NEProxyServer *)self type];
+  address = [(NEProxyServer *)self address];
+  v7 = [(NEProxyServer *)v4 initWithType:type address:address port:[(NEProxyServer *)self port]];
 
   [(NEProxyServer *)v7 setAuthenticationRequired:[(NEProxyServer *)self authenticationRequired]];
-  v8 = [(NEProxyServer *)self username];
-  [(NEProxyServer *)v7 setUsername:v8];
+  username = [(NEProxyServer *)self username];
+  [(NEProxyServer *)v7 setUsername:username];
 
-  v9 = [(NEProxyServer *)self password];
-  [(NEProxyServer *)v7 setPassword:v9];
+  password = [(NEProxyServer *)self password];
+  [(NEProxyServer *)v7 setPassword:password];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[NEProxyServer type](self forKey:{"type"), @"Type"}];
-  v5 = [(NEProxyServer *)self address];
-  [v4 encodeObject:v5 forKey:@"Address"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[NEProxyServer type](self forKey:{"type"), @"Type"}];
+  address = [(NEProxyServer *)self address];
+  [coderCopy encodeObject:address forKey:@"Address"];
 
-  [v4 encodeInt32:-[NEProxyServer port](self forKey:{"port"), @"Port"}];
-  [v4 encodeBool:-[NEProxyServer authenticationRequired](self forKey:{"authenticationRequired"), @"AuthenticationRequired"}];
-  v6 = [(NEProxyServer *)self username];
-  [v4 encodeObject:v6 forKey:@"Username"];
+  [coderCopy encodeInt32:-[NEProxyServer port](self forKey:{"port"), @"Port"}];
+  [coderCopy encodeBool:-[NEProxyServer authenticationRequired](self forKey:{"authenticationRequired"), @"AuthenticationRequired"}];
+  username = [(NEProxyServer *)self username];
+  [coderCopy encodeObject:username forKey:@"Username"];
 
-  v7 = [(NEProxyServer *)self password];
-  [v4 encodeObject:v7 forKey:@"Password"];
+  password = [(NEProxyServer *)self password];
+  [coderCopy encodeObject:password forKey:@"Password"];
 }
 
-- (NEProxyServer)initWithCoder:(id)a3
+- (NEProxyServer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NEProxyServer;
   v5 = [(NEProxyServer *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt32ForKey:@"Type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"Type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
     address = v5->_address;
     v5->_address = v6;
 
-    v5->_port = [v4 decodeInt32ForKey:@"Port"];
-    v5->_authenticationRequired = [v4 decodeBoolForKey:@"AuthenticationRequired"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
+    v5->_port = [coderCopy decodeInt32ForKey:@"Port"];
+    v5->_authenticationRequired = [coderCopy decodeBoolForKey:@"AuthenticationRequired"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Username"];
     username = v5->_username;
     v5->_username = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
     password = v5->_password;
     v5->_password = v10;
   }
@@ -152,21 +152,21 @@ LABEL_9:
   return v5;
 }
 
-- (NEProxyServer)initWithType:(int64_t)a3 address:(id)a4 port:(int64_t)a5
+- (NEProxyServer)initWithType:(int64_t)type address:(id)address port:(int64_t)port
 {
-  v8 = a4;
+  addressCopy = address;
   v14.receiver = self;
   v14.super_class = NEProxyServer;
   v9 = [(NEProxyServer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v11 = [v8 copy];
+    v9->_type = type;
+    v11 = [addressCopy copy];
     address = v10->_address;
     v10->_address = v11;
 
-    v10->_port = a5;
+    v10->_port = port;
   }
 
   return v10;
@@ -174,36 +174,36 @@ LABEL_9:
 
 - (void)syncWithKeychain
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v11 = [(NEProxyServer *)a1 copyProtectionSpace];
-  if (!v11)
+  copyProtectionSpace = [(NEProxyServer *)self copyProtectionSpace];
+  if (!copyProtectionSpace)
   {
     goto LABEL_13;
   }
 
-  if ([a1 authenticationRequired])
+  if ([self authenticationRequired])
   {
-    v2 = [a1 password];
-    if ([v2 length])
+    password = [self password];
+    if ([password length])
     {
-      v3 = [a1 username];
-      v4 = [v3 length];
+      username = [self username];
+      v4 = [username length];
 
       if (v4)
       {
         v5 = objc_alloc(MEMORY[0x1E696AF30]);
-        v6 = [a1 username];
-        v7 = [a1 password];
-        v8 = [v5 initWithUser:v6 password:v7 persistence:2];
+        username2 = [self username];
+        password2 = [self password];
+        v8 = [v5 initWithUser:username2 password:password2 persistence:2];
 
         if (v8)
         {
-          v9 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-          [v9 setDefaultCredential:v8 forProtectionSpace:v11];
+          mEMORY[0x1E696AF38] = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+          [mEMORY[0x1E696AF38] setDefaultCredential:v8 forProtectionSpace:copyProtectionSpace];
 LABEL_12:
 
           goto LABEL_13;
@@ -218,62 +218,62 @@ LABEL_12:
     }
   }
 
-  if (([a1 authenticationRequired] & 1) == 0)
+  if (([self authenticationRequired] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-    v8 = [v10 defaultCredentialForProtectionSpace:v11];
+    mEMORY[0x1E696AF38]2 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+    v8 = [mEMORY[0x1E696AF38]2 defaultCredentialForProtectionSpace:copyProtectionSpace];
 
     if (v8)
     {
-      v9 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-      [v9 removeCredential:v8 forProtectionSpace:v11];
+      mEMORY[0x1E696AF38] = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+      [mEMORY[0x1E696AF38] removeCredential:v8 forProtectionSpace:copyProtectionSpace];
       goto LABEL_12;
     }
   }
 
 LABEL_13:
-  [a1 setPassword:0];
+  [self setPassword:0];
 }
 
 - (BOOL)needToUpdateKeychain
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 password];
-    if (v2)
+    password = [self password];
+    if (password)
     {
-      v3 = [v1 password];
-      v1 = [v3 length] != 0;
+      password2 = [selfCopy password];
+      selfCopy = [password2 length] != 0;
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)removeFromKeychain
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(NEProxyServer *)a1 copyProtectionSpace];
-    if (v1)
+    copyProtectionSpace = [(NEProxyServer *)self copyProtectionSpace];
+    if (copyProtectionSpace)
     {
-      v5 = v1;
-      v2 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-      v3 = [v2 defaultCredentialForProtectionSpace:v5];
+      v5 = copyProtectionSpace;
+      mEMORY[0x1E696AF38] = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+      v3 = [mEMORY[0x1E696AF38] defaultCredentialForProtectionSpace:v5];
 
       if (v3)
       {
-        v4 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
-        [v4 removeCredential:v3 forProtectionSpace:v5];
+        mEMORY[0x1E696AF38]2 = [MEMORY[0x1E696AF38] sharedCredentialStorage];
+        [mEMORY[0x1E696AF38]2 removeCredential:v3 forProtectionSpace:v5];
       }
 
-      v1 = v5;
+      copyProtectionSpace = v5;
     }
   }
 }

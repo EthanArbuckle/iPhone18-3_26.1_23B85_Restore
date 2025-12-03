@@ -1,57 +1,57 @@
 @interface PEGASUSSchemaPEGASUSAudioQueueStateInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAudioEntitySource:(BOOL)a3;
-- (void)setHasAudioNowPlayingQueueCount:(BOOL)a3;
-- (void)setHasAudioNowPlayingQueueIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAudioEntitySource:(BOOL)source;
+- (void)setHasAudioNowPlayingQueueCount:(BOOL)count;
+- (void)setHasAudioNowPlayingQueueIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAudioQueueStateInfo
 
-- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PEGASUSSchemaPEGASUSAudioQueueStateInfo;
   v5 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"audioState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"audioState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioQueueStateInfo setAudioState:](v5, "setAudioState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioEntitySource"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioEntitySource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioQueueStateInfo setAudioEntitySource:](v5, "setAudioEntitySource:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioNowPlayingQueueIndex"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioNowPlayingQueueIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioQueueStateInfo setAudioNowPlayingQueueIndex:](v5, "setAudioNowPlayingQueueIndex:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"audioNowPlayingQueueCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"audioNowPlayingQueueCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAudioQueueStateInfo setAudioNowPlayingQueueCount:](v5, "setAudioNowPlayingQueueCount:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"audioQueueStateItem"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"audioQueueStateItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAudioQueueStateInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,18 +101,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v5 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioEntitySource];
+    audioEntitySource = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioEntitySource];
     v6 = @"PEGASUSAUDIOENTITYSOURCE_UNKNOWN";
-    if (v5 == 1)
+    if (audioEntitySource == 1)
     {
       v6 = @"PEGASUSAUDIOENTITYSOURCE_RADIO";
     }
 
-    if (v5 == 2)
+    if (audioEntitySource == 2)
     {
       v7 = @"PEGASUSAUDIOENTITYSOURCE_LOCAL";
     }
@@ -122,14 +122,14 @@
       v7 = v6;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"audioEntitySource"];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioEntitySource"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[PEGASUSSchemaPEGASUSAudioQueueStateInfo audioNowPlayingQueueCount](self, "audioNowPlayingQueueCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"audioNowPlayingQueueCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioNowPlayingQueueCount"];
 
     has = self->_has;
   }
@@ -137,22 +137,22 @@
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[PEGASUSSchemaPEGASUSAudioQueueStateInfo audioNowPlayingQueueIndex](self, "audioNowPlayingQueueIndex")}];
-    [v3 setObject:v9 forKeyedSubscript:@"audioNowPlayingQueueIndex"];
+    [dictionary setObject:v9 forKeyedSubscript:@"audioNowPlayingQueueIndex"];
   }
 
   if (self->_audioQueueStateItem)
   {
-    v10 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    audioQueueStateItem = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+    dictionaryRepresentation = [audioQueueStateItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"audioQueueStateItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioQueueStateItem"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"audioQueueStateItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioQueueStateItem"];
     }
   }
 
@@ -169,12 +169,12 @@
       v14 = off_1E78DF6A8[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"audioState"];
+    [dictionary setObject:v14 forKeyedSubscript:@"audioState"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -231,16 +231,16 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(PEGASUSSchemaPEGASUSAudioQueueStateItem *)self->_audioQueueStateItem hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -249,13 +249,13 @@ LABEL_5:
   if (*&has)
   {
     audioState = self->_audioState;
-    if (audioState != [v4 audioState])
+    if (audioState != [equalCopy audioState])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -264,13 +264,13 @@ LABEL_5:
     if (v8)
     {
       audioEntitySource = self->_audioEntitySource;
-      if (audioEntitySource != [v4 audioEntitySource])
+      if (audioEntitySource != [equalCopy audioEntitySource])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -279,27 +279,27 @@ LABEL_5:
       if (v10)
       {
         audioNowPlayingQueueIndex = self->_audioNowPlayingQueueIndex;
-        if (audioNowPlayingQueueIndex != [v4 audioNowPlayingQueueIndex])
+        if (audioNowPlayingQueueIndex != [equalCopy audioNowPlayingQueueIndex])
         {
           goto LABEL_22;
         }
 
         has = self->_has;
-        v6 = v4[32];
+        v6 = equalCopy[32];
       }
 
       v12 = (*&has >> 3) & 1;
       if (v12 == ((v6 >> 3) & 1))
       {
-        if (!v12 || (audioNowPlayingQueueCount = self->_audioNowPlayingQueueCount, audioNowPlayingQueueCount == [v4 audioNowPlayingQueueCount]))
+        if (!v12 || (audioNowPlayingQueueCount = self->_audioNowPlayingQueueCount, audioNowPlayingQueueCount == [equalCopy audioNowPlayingQueueCount]))
         {
-          v14 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
-          v15 = [v4 audioQueueStateItem];
-          v16 = v15;
-          if ((v14 != 0) != (v15 == 0))
+          audioQueueStateItem = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+          audioQueueStateItem2 = [equalCopy audioQueueStateItem];
+          v16 = audioQueueStateItem2;
+          if ((audioQueueStateItem != 0) != (audioQueueStateItem2 == 0))
           {
-            v17 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
-            if (!v17)
+            audioQueueStateItem3 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+            if (!audioQueueStateItem3)
             {
 
 LABEL_25:
@@ -307,10 +307,10 @@ LABEL_25:
               goto LABEL_23;
             }
 
-            v18 = v17;
-            v19 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
-            v20 = [v4 audioQueueStateItem];
-            v21 = [v19 isEqual:v20];
+            v18 = audioQueueStateItem3;
+            audioQueueStateItem4 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+            audioQueueStateItem5 = [equalCopy audioQueueStateItem];
+            v21 = [audioQueueStateItem4 isEqual:audioQueueStateItem5];
 
             if (v21)
             {
@@ -333,9 +333,9 @@ LABEL_23:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -380,21 +380,21 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+  audioQueueStateItem = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (audioQueueStateItem)
   {
-    v7 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
+    audioQueueStateItem2 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasAudioNowPlayingQueueCount:(BOOL)a3
+- (void)setHasAudioNowPlayingQueueCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -407,9 +407,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAudioNowPlayingQueueIndex:(BOOL)a3
+- (void)setHasAudioNowPlayingQueueIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -422,9 +422,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioEntitySource:(BOOL)a3
+- (void)setHasAudioEntitySource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -437,17 +437,17 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PEGASUSSchemaPEGASUSAudioQueueStateInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self audioQueueStateItem:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PEGASUSSchemaPEGASUSAudioQueueStateInfo *)self deleteAudioQueueStateItem];
   }

@@ -1,30 +1,30 @@
 @interface PKProtobufPaymentDeviceResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)nearbyAsString:(int)a3;
-- (int)StringAsNearby:(id)a3;
+- (id)nearbyAsString:(int)string;
+- (int)StringAsNearby:(id)nearby;
 - (int)nearby;
 - (unint64_t)hash;
-- (void)addPaymentInstruments:(id)a3;
-- (void)addSupportedSetupFeatures:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeviceDisabled:(BOOL)a3;
-- (void)setHasLocked:(BOOL)a3;
-- (void)setHasNearby:(BOOL)a3;
-- (void)setHasProtocolVersion:(BOOL)a3;
-- (void)setHasSupportsFaceID:(BOOL)a3;
-- (void)setHasUserDisabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPaymentInstruments:(id)instruments;
+- (void)addSupportedSetupFeatures:(id)features;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeviceDisabled:(BOOL)disabled;
+- (void)setHasLocked:(BOOL)locked;
+- (void)setHasNearby:(BOOL)nearby;
+- (void)setHasProtocolVersion:(BOOL)version;
+- (void)setHasSupportsFaceID:(BOOL)d;
+- (void)setHasUserDisabled:(BOOL)disabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentDeviceResponse
 
-- (void)setHasLocked:(BOOL)a3
+- (void)setHasLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 16;
   }
@@ -37,27 +37,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addPaymentInstruments:(id)a3
+- (void)addPaymentInstruments:(id)instruments
 {
-  v4 = a3;
+  instrumentsCopy = instruments;
   paymentInstruments = self->_paymentInstruments;
-  v8 = v4;
+  v8 = instrumentsCopy;
   if (!paymentInstruments)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_paymentInstruments;
     self->_paymentInstruments = v6;
 
-    v4 = v8;
+    instrumentsCopy = v8;
     paymentInstruments = self->_paymentInstruments;
   }
 
-  [(NSMutableArray *)paymentInstruments addObject:v4];
+  [(NSMutableArray *)paymentInstruments addObject:instrumentsCopy];
 }
 
-- (void)setHasUserDisabled:(BOOL)a3
+- (void)setHasUserDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 64;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasDeviceDisabled:(BOOL)a3
+- (void)setHasDeviceDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 8;
   }
@@ -98,9 +98,9 @@
   }
 }
 
-- (void)setHasNearby:(BOOL)a3
+- (void)setHasNearby:(BOOL)nearby
 {
-  if (a3)
+  if (nearby)
   {
     v3 = 2;
   }
@@ -113,35 +113,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)nearbyAsString:(int)a3
+- (id)nearbyAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E79CFB80[a3];
+    v4 = off_1E79CFB80[string];
   }
 
   return v4;
 }
 
-- (int)StringAsNearby:(id)a3
+- (int)StringAsNearby:(id)nearby
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  nearbyCopy = nearby;
+  if ([nearbyCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NEARBY"])
+  else if ([nearbyCopy isEqualToString:@"NEARBY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DISTANT"])
+  else if ([nearbyCopy isEqualToString:@"DISTANT"])
   {
     v4 = 2;
   }
@@ -154,9 +154,9 @@
   return v4;
 }
 
-- (void)setHasProtocolVersion:(BOOL)a3
+- (void)setHasProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportsFaceID:(BOOL)a3
+- (void)setHasSupportsFaceID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 32;
   }
@@ -184,22 +184,22 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)addSupportedSetupFeatures:(id)a3
+- (void)addSupportedSetupFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   supportedSetupFeatures = self->_supportedSetupFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!supportedSetupFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedSetupFeatures;
     self->_supportedSetupFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     supportedSetupFeatures = self->_supportedSetupFeatures;
   }
 
-  [(NSMutableArray *)supportedSetupFeatures addObject:v4];
+  [(NSMutableArray *)supportedSetupFeatures addObject:featuresCopy];
 }
 
 - (id)description
@@ -208,8 +208,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentDeviceResponse;
   v4 = [(PKProtobufPaymentDeviceResponse *)&v8 description];
-  v5 = [(PKProtobufPaymentDeviceResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentDeviceResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -217,11 +217,11 @@
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_locked];
-    [v3 setObject:v4 forKey:@"locked"];
+    [dictionary setObject:v4 forKey:@"locked"];
   }
 
   if ([(NSMutableArray *)self->_paymentInstruments count])
@@ -246,8 +246,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -256,14 +256,14 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"paymentInstruments"];
+    [dictionary setObject:v5 forKey:@"paymentInstruments"];
   }
 
   has = self->_has;
   if (has)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_defaultPaymentInstrumentIndex];
-    [v3 setObject:v22 forKey:@"defaultPaymentInstrumentIndex"];
+    [dictionary setObject:v22 forKey:@"defaultPaymentInstrumentIndex"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -284,7 +284,7 @@ LABEL_14:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:self->_userDisabled];
-  [v3 setObject:v23 forKey:@"userDisabled"];
+  [dictionary setObject:v23 forKey:@"userDisabled"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -300,7 +300,7 @@ LABEL_15:
 
 LABEL_33:
   v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_deviceDisabled];
-  [v3 setObject:v24 forKey:@"deviceDisabled"];
+  [dictionary setObject:v24 forKey:@"deviceDisabled"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -326,7 +326,7 @@ LABEL_34:
     v26 = off_1E79CFB80[nearby];
   }
 
-  [v3 setObject:v26 forKey:@"nearby"];
+  [dictionary setObject:v26 forKey:@"nearby"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -342,13 +342,13 @@ LABEL_17:
 
 LABEL_38:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_protocolVersion];
-  [v3 setObject:v27 forKey:@"protocolVersion"];
+  [dictionary setObject:v27 forKey:@"protocolVersion"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_18:
     v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsFaceID];
-    [v3 setObject:v13 forKey:@"supportsFaceID"];
+    [dictionary setObject:v13 forKey:@"supportsFaceID"];
   }
 
 LABEL_19:
@@ -374,8 +374,8 @@ LABEL_19:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -384,16 +384,16 @@ LABEL_19:
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"supportedSetupFeatures"];
+    [dictionary setObject:v14 forKey:@"supportedSetupFeatures"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     PBDataWriterWriteBOOLField();
@@ -528,23 +528,23 @@ LABEL_17:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[41] = self->_locked;
-    v4[44] |= 0x10u;
+    toCopy[41] = self->_locked;
+    toCopy[44] |= 0x10u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if ([(PKProtobufPaymentDeviceResponse *)self paymentInstrumentsCount])
   {
     [v14 clearPaymentInstruments];
-    v5 = [(PKProtobufPaymentDeviceResponse *)self paymentInstrumentsCount];
-    if (v5)
+    paymentInstrumentsCount = [(PKProtobufPaymentDeviceResponse *)self paymentInstrumentsCount];
+    if (paymentInstrumentsCount)
     {
-      v6 = v5;
+      v6 = paymentInstrumentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PKProtobufPaymentDeviceResponse *)self paymentInstrumentsAtIndex:i];
@@ -634,10 +634,10 @@ LABEL_14:
   if ([(PKProtobufPaymentDeviceResponse *)self supportedSetupFeaturesCount])
   {
     [v14 clearSupportedSetupFeatures];
-    v10 = [(PKProtobufPaymentDeviceResponse *)self supportedSetupFeaturesCount];
-    if (v10)
+    supportedSetupFeaturesCount = [(PKProtobufPaymentDeviceResponse *)self supportedSetupFeaturesCount];
+    if (supportedSetupFeaturesCount)
     {
-      v11 = v10;
+      v11 = supportedSetupFeaturesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PKProtobufPaymentDeviceResponse *)self supportedSetupFeaturesAtIndex:j];
@@ -647,10 +647,10 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -677,7 +677,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPaymentInstruments:v12];
       }
 
@@ -784,7 +784,7 @@ LABEL_17:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{zone, v21}];
         [v6 addSupportedSetupFeatures:v19];
       }
 
@@ -797,44 +797,44 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0)
+    if ((*(equalCopy + 44) & 0x10) == 0)
     {
       goto LABEL_49;
     }
 
     if (self->_locked)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) != 0)
+  else if ((*(equalCopy + 44) & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
   paymentInstruments = self->_paymentInstruments;
-  if (paymentInstruments | *(v4 + 2))
+  if (paymentInstruments | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)paymentInstruments isEqual:?])
     {
@@ -842,12 +842,12 @@ LABEL_17:
     }
 
     has = self->_has;
-    v6 = *(v4 + 44);
+    v6 = *(equalCopy + 44);
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_defaultPaymentInstrumentIndex != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_defaultPaymentInstrumentIndex != *(equalCopy + 2))
     {
       goto LABEL_49;
     }
@@ -867,13 +867,13 @@ LABEL_17:
 
     if (self->_userDisabled)
     {
-      if ((*(v4 + 43) & 1) == 0)
+      if ((*(equalCopy + 43) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 43))
+    else if (*(equalCopy + 43))
     {
       goto LABEL_49;
     }
@@ -893,13 +893,13 @@ LABEL_17:
 
     if (self->_deviceDisabled)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_49;
     }
@@ -912,7 +912,7 @@ LABEL_17:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_nearby != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_nearby != *(equalCopy + 3))
     {
       goto LABEL_49;
     }
@@ -925,7 +925,7 @@ LABEL_17:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_protocolVersion != *(v4 + 6))
+    if ((v6 & 4) == 0 || self->_protocolVersion != *(equalCopy + 6))
     {
       goto LABEL_49;
     }
@@ -955,20 +955,20 @@ LABEL_49:
 
   if (self->_supportsFaceID)
   {
-    if ((*(v4 + 42) & 1) == 0)
+    if ((*(equalCopy + 42) & 1) == 0)
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 42))
+  else if (*(equalCopy + 42))
   {
     goto LABEL_49;
   }
 
 LABEL_46:
   supportedSetupFeatures = self->_supportedSetupFeatures;
-  if (supportedSetupFeatures | *(v4 + 4))
+  if (supportedSetupFeatures | *(equalCopy + 4))
   {
     v9 = [(NSMutableArray *)supportedSetupFeatures isEqual:?];
   }
@@ -1076,14 +1076,14 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(NSMutableArray *)self->_supportedSetupFeatures hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 44) & 0x10) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 44) & 0x10) != 0)
   {
-    self->_locked = *(v4 + 41);
+    self->_locked = *(fromCopy + 41);
     *&self->_has |= 0x10u;
   }
 
@@ -1091,7 +1091,7 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

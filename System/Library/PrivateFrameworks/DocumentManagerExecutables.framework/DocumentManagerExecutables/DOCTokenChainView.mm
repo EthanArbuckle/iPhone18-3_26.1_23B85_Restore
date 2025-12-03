@@ -2,13 +2,13 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
 - (BOOL)resignFirstResponder;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
 - (id)endOfDocument;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 - (void)deleteBackward;
-- (void)directionKeyCommand:(id)a3;
-- (void)insertText:(id)a3;
+- (void)directionKeyCommand:(id)command;
+- (void)insertText:(id)text;
 @end
 
 @implementation DOCTokenChainView
@@ -22,7 +22,7 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   DOCTokenChainView.becomeFirstResponder()();
   v4 = v3;
 
@@ -31,7 +31,7 @@
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   DOCTokenChainView.resignFirstResponder()();
   v4 = v3;
 
@@ -45,28 +45,28 @@
   return (*(&self->super.super.super.super.isa + v3))[2] != 0;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   DOCTokenChainView.insertText(_:)(v4, v6);
 }
 
 - (void)deleteBackward
 {
-  v2 = self;
+  selfCopy = self;
   DOCTokenChainView.deleteSelectedTokens()();
 }
 
-- (void)directionKeyCommand:(id)a3
+- (void)directionKeyCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
+  commandCopy = command;
+  selfCopy = self;
   specialized DOCTokenChainView.directionKeyCommand(_:)();
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -79,7 +79,7 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -92,7 +92,7 @@
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UITextSelectionRect);
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;

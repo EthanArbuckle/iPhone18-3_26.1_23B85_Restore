@@ -2,8 +2,8 @@
 + (BOOL)isInternalInstall;
 + (id)currentBuildVersion;
 - (BOOL)availableForCurrentPlatformVersion;
-- (LNAvailabilityChecker)initWithAvailabilityAnnotations:(id)a3;
-- (id)availabilityWithPlatform:(id)a3 platformVersion:(id)a4;
+- (LNAvailabilityChecker)initWithAvailabilityAnnotations:(id)annotations;
+- (id)availabilityWithPlatform:(id)platform platformVersion:(id)version;
 - (id)currentSystemVersion;
 @end
 
@@ -48,10 +48,10 @@ uint64_t __42__LNAvailabilityChecker_isInternalInstall__block_invoke()
 
 - (BOOL)availableForCurrentPlatformVersion
 {
-  v3 = [(LNAvailabilityChecker *)self currentPlatformName];
-  v4 = [(LNAvailabilityChecker *)self currentSystemVersion];
-  v5 = [(LNAvailabilityChecker *)self availabilityWithPlatform:v3 platformVersion:v4];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  currentPlatformName = [(LNAvailabilityChecker *)self currentPlatformName];
+  currentSystemVersion = [(LNAvailabilityChecker *)self currentSystemVersion];
+  v5 = [(LNAvailabilityChecker *)self availabilityWithPlatform:currentPlatformName platformVersion:currentSystemVersion];
+  v6 = [v5 objectForKeyedSubscript:currentPlatformName];
   if (v6)
   {
     v7 = v6 == @"LNAvailabilityResultUnavailable";
@@ -95,19 +95,19 @@ void __45__LNAvailabilityChecker_currentSystemVersion__block_invoke()
   currentSystemVersion_systemVersion = v1;
 }
 
-- (id)availabilityWithPlatform:(id)a3 platformVersion:(id)a4
+- (id)availabilityWithPlatform:(id)platform platformVersion:(id)version
 {
   v34[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LNAvailabilityChecker *)self availabilityAnnotations];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69AC258]];
-  v10 = [v9 _availabilityResultWithoutSystemVersion];
-  v11 = v10;
+  platformCopy = platform;
+  versionCopy = version;
+  availabilityAnnotations = [(LNAvailabilityChecker *)self availabilityAnnotations];
+  v9 = [availabilityAnnotations objectForKeyedSubscript:*MEMORY[0x1E69AC258]];
+  _availabilityResultWithoutSystemVersion = [v9 _availabilityResultWithoutSystemVersion];
+  v11 = _availabilityResultWithoutSystemVersion;
   v12 = @"LNAvailabilityResultAvailable";
-  if (v10)
+  if (_availabilityResultWithoutSystemVersion)
   {
-    v12 = v10;
+    v12 = _availabilityResultWithoutSystemVersion;
   }
 
   v13 = v12;
@@ -128,20 +128,20 @@ void __45__LNAvailabilityChecker_currentSystemVersion__block_invoke()
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:5];
   v18 = [v14 initWithDictionary:v17];
 
-  v19 = [(LNAvailabilityChecker *)self availabilityAnnotations];
+  availabilityAnnotations2 = [(LNAvailabilityChecker *)self availabilityAnnotations];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __66__LNAvailabilityChecker_availabilityWithPlatform_platformVersion___block_invoke;
   v28[3] = &unk_1E74B1070;
-  v29 = v6;
+  v29 = platformCopy;
   v20 = v18;
   v30 = v20;
   v31 = v13;
-  v32 = v7;
-  v21 = v7;
+  v32 = versionCopy;
+  v21 = versionCopy;
   v22 = v13;
-  v23 = v6;
-  [v19 enumerateKeysAndObjectsUsingBlock:v28];
+  v23 = platformCopy;
+  [availabilityAnnotations2 enumerateKeysAndObjectsUsingBlock:v28];
 
   v24 = v32;
   v25 = v20;
@@ -189,15 +189,15 @@ void __66__LNAvailabilityChecker_availabilityWithPlatform_platformVersion___bloc
   }
 }
 
-- (LNAvailabilityChecker)initWithAvailabilityAnnotations:(id)a3
+- (LNAvailabilityChecker)initWithAvailabilityAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   v10.receiver = self;
   v10.super_class = LNAvailabilityChecker;
   v5 = [(LNAvailabilityChecker *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [annotationsCopy copy];
     availabilityAnnotations = v5->_availabilityAnnotations;
     v5->_availabilityAnnotations = v6;
 

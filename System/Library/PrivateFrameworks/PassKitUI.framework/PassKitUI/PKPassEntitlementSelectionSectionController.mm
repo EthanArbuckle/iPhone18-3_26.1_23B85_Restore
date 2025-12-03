@@ -1,33 +1,33 @@
 @interface PKPassEntitlementSelectionSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
-- (PKPassEntitlementSelectionSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5;
+- (BOOL)shouldHighlightItem:(id)item;
+- (PKPassEntitlementSelectionSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate;
 - (PKPassEntitlementSelectionSectionControllerDelegate)delegate;
-- (id)decorateListCell:(id)a3 forEntitlementEntry:(id)a4;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_clearEntitlementSelectionAnimated:(BOOL)a3;
-- (void)_clearEntitlementSelectionInGroup:(id)a3 animated:(BOOL)a4;
+- (id)decorateListCell:(id)cell forEntitlementEntry:(id)entry;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_clearEntitlementSelectionAnimated:(BOOL)animated;
+- (void)_clearEntitlementSelectionInGroup:(id)group animated:(BOOL)animated;
 - (void)_updateEntitlementGroups;
-- (void)didSelectItem:(id)a3;
-- (void)toggleValueChanged:(id)a3;
+- (void)didSelectItem:(id)item;
+- (void)toggleValueChanged:(id)changed;
 @end
 
 @implementation PKPassEntitlementSelectionSectionController
 
-- (PKPassEntitlementSelectionSectionController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 delegate:(id)a5
+- (PKPassEntitlementSelectionSectionController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  composerCopy = composer;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKPassEntitlementSelectionSectionController;
   v11 = [(PKPassShareSectionController *)&v25 initWithIdentifiers:&unk_1F3CC8720];
   v12 = v11;
   if (v11)
   {
-    v11->_mode = a3;
-    objc_storeStrong(&v11->_entitlementComposer, a4);
+    v11->_mode = mode;
+    objc_storeStrong(&v11->_entitlementComposer, composer);
     [(PKPassEntitlementSelectionSectionController *)v12 _updateEntitlementGroups];
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     toggleTags = v12->_toggleTags;
     v12->_toggleTags = v13;
@@ -66,18 +66,18 @@ void __89__PKPassEntitlementSelectionSectionController_initWithMode_entitlementC
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKPassEntitlementsComposer *)self->_entitlementComposer entitlementEntries];
-  v5 = [v4 pk_groupDictionaryByApplyingBlock:&__block_literal_global_230];
+  entitlementEntries = [(PKPassEntitlementsComposer *)self->_entitlementComposer entitlementEntries];
+  v5 = [entitlementEntries pk_groupDictionaryByApplyingBlock:&__block_literal_global_230];
   v6 = [v5 mutableCopy];
 
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __71__PKPassEntitlementSelectionSectionController__updateEntitlementGroups__block_invoke_2;
   v24[3] = &unk_1E8022FE8;
   v8 = v6;
   v25 = v8;
-  v9 = [v7 sortedArrayUsingComparator:v24];
+  v9 = [allKeys sortedArrayUsingComparator:v24];
 
   v22 = 0u;
   v23 = 0u;
@@ -250,47 +250,47 @@ uint64_t __71__PKPassEntitlementSelectionSectionController__updateEntitlementGro
   return v7;
 }
 
-- (id)decorateListCell:(id)a3 forEntitlementEntry:(id)a4
+- (id)decorateListCell:(id)cell forEntitlementEntry:(id)entry
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 displayableEntitlement];
-  v9 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:v7];
-  v10 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  v11 = [v8 localizedTitle];
-  [v10 setText:v11];
+  cellCopy = cell;
+  entryCopy = entry;
+  displayableEntitlement = [entryCopy displayableEntitlement];
+  v9 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:entryCopy];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  localizedTitle = [displayableEntitlement localizedTitle];
+  [subtitleCellConfiguration setText:localizedTitle];
 
-  v12 = [v8 localizedSubtitle];
-  [v10 setSecondaryText:v12];
+  localizedSubtitle = [displayableEntitlement localizedSubtitle];
+  [subtitleCellConfiguration setSecondaryText:localizedSubtitle];
 
-  v13 = [v10 secondaryTextProperties];
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 setColor:v14];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v10 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  v15 = [v8 iconName];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  iconName = [displayableEntitlement iconName];
 
-  if (v15)
+  if (iconName)
   {
     v16 = MEMORY[0x1E69DCAB8];
-    v17 = [v8 iconName];
-    v18 = [v16 systemImageNamed:v17];
-    [v10 setImage:v18];
+    iconName2 = [displayableEntitlement iconName];
+    v18 = [v16 systemImageNamed:iconName2];
+    [subtitleCellConfiguration setImage:v18];
   }
 
-  [v6 setContentConfiguration:v10];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __84__PKPassEntitlementSelectionSectionController_decorateListCell_forEntitlementEntry___block_invoke;
   v36[3] = &unk_1E8012AC8;
   v36[4] = self;
-  [v6 setConfigurationUpdateHandler:v36];
+  [cellCopy setConfigurationUpdateHandler:v36];
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v20 = [v9 enabled];
+  enabled = [v9 enabled];
   if (([v9 isManagingTimeConfiguration] & 1) != 0 || objc_msgSend(v9, "isManagingEntitlementConfiguration"))
   {
-    if (v20)
+    if (enabled)
     {
       v21 = @"SHARED_ENTITLEMENT_ENABLED";
     }
@@ -315,14 +315,14 @@ LABEL_9:
 
   if ([(PKPassEntitlementsComposer *)self->_entitlementComposer editable])
   {
-    v27 = [v8 displayStyle];
-    if (v27)
+    displayStyle = [displayableEntitlement displayStyle];
+    if (displayStyle)
     {
-      if (v27 == 2)
+      if (displayStyle == 2)
       {
         v22 = objc_alloc_init(MEMORY[0x1E69DC788]);
         [v22 setReservedLayoutWidth:*MEMORY[0x1E69DDBF8]];
-        if ((v20 & 1) == 0)
+        if ((enabled & 1) == 0)
         {
           [v22 setHidden:1];
         }
@@ -331,17 +331,17 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      if (v27 == 1)
+      if (displayStyle == 1)
       {
         v28 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-        [v28 setOn:v20];
-        v29 = [v8 entitlementIdentifier];
-        v30 = [v29 hash];
+        [v28 setOn:enabled];
+        entitlementIdentifier = [displayableEntitlement entitlementIdentifier];
+        v30 = [entitlementIdentifier hash];
 
         [v28 setTag:v30];
         toggleTags = self->_toggleTags;
         v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v30];
-        [(NSMutableDictionary *)toggleTags setObject:v7 forKey:v32];
+        [(NSMutableDictionary *)toggleTags setObject:entryCopy forKey:v32];
 
         [v28 addTarget:self action:sel_toggleValueChanged_ forControlEvents:4096];
         v33 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v28 placement:1];
@@ -355,20 +355,20 @@ LABEL_9:
       v34 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v8 entitlementIdentifier];
+        entitlementIdentifier2 = [displayableEntitlement entitlementIdentifier];
         *buf = 138412290;
-        v38 = v35;
+        v38 = entitlementIdentifier2;
         _os_log_impl(&dword_1BD026000, v34, OS_LOG_TYPE_DEFAULT, "Disabling entitlement %@ due to unknown display style", buf, 0xCu);
       }
 
-      [v6 setUserInteractionEnabled:0];
+      [cellCopy setUserInteractionEnabled:0];
     }
   }
 
 LABEL_10:
-  [v6 setAccessories:v19];
+  [cellCopy setAccessories:v19];
 
-  return v10;
+  return subtitleCellConfiguration;
 }
 
 void __84__PKPassEntitlementSelectionSectionController_decorateListCell_forEntitlementEntry___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -401,10 +401,10 @@ void __84__PKPassEntitlementSelectionSectionController_decorateListCell_forEntit
   [v6 setBackgroundConfiguration:v7];
 }
 
-- (void)toggleValueChanged:(id)a3
+- (void)toggleValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "tag")}];
+  changedCopy = changed;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(changedCopy, "tag")}];
   v6 = [(NSMutableDictionary *)self->_toggleTags objectForKeyedSubscript:v5];
   if (v6)
   {
@@ -420,19 +420,19 @@ void __84__PKPassEntitlementSelectionSectionController_decorateListCell_forEntit
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Error: Did not find matching entitlement for toggle", v8, 2u);
     }
 
-    [v4 setOn:{objc_msgSend(v4, "isOn") ^ 1}];
+    [changedCopy setOn:{objc_msgSend(changedCopy, "isOn") ^ 1}];
   }
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v11 = a3;
-  v4 = [v11 displayableEntitlement];
-  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:v11];
+  itemCopy = item;
+  displayableEntitlement = [itemCopy displayableEntitlement];
+  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:itemCopy];
   if (([v5 isManagingTimeConfiguration] & 1) != 0 || objc_msgSend(v5, "isManagingEntitlementConfiguration"))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained showAdvancedScheduleSelectionFlowForEntitlementEntry:v11];
+    [WeakRetained showAdvancedScheduleSelectionFlowForEntitlementEntry:itemCopy];
 LABEL_4:
 
     goto LABEL_5;
@@ -440,24 +440,24 @@ LABEL_4:
 
   if ([(PKPassEntitlementsComposer *)self->_entitlementComposer editable])
   {
-    v7 = [v5 enabled];
-    if ((v7 & 1) == 0)
+    enabled = [v5 enabled];
+    if ((enabled & 1) == 0)
     {
       if ([v5 maxSelectionCount] == 1)
       {
         [(PKPassEntitlementSelectionSectionController *)self _clearEntitlementSelectionAnimated:1];
       }
 
-      if ([v4 clearGroupWhenSelected])
+      if ([displayableEntitlement clearGroupWhenSelected])
       {
-        v8 = [v4 localizedGroup];
-        [(PKPassEntitlementSelectionSectionController *)self _clearEntitlementSelectionInGroup:v8 animated:1];
+        localizedGroup = [displayableEntitlement localizedGroup];
+        [(PKPassEntitlementSelectionSectionController *)self _clearEntitlementSelectionInGroup:localizedGroup animated:1];
       }
     }
 
-    [v5 setEnabled:v7 ^ 1u];
+    [v5 setEnabled:enabled ^ 1u];
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 reloadItem:v11 animated:1];
+    [v9 reloadItem:itemCopy animated:1];
 
     v10 = objc_loadWeakRetained(&self->_delegate);
     [v10 deselectCells];
@@ -470,11 +470,11 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)_clearEntitlementSelectionInGroup:(id)a3 animated:(BOOL)a4
+- (void)_clearEntitlementSelectionInGroup:(id)group animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:a3];
+  v6 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:group];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -497,7 +497,7 @@ LABEL_5:
         v12 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:v11];
         [v12 setEnabled:0];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained reloadItem:v11 animated:v4];
+        [WeakRetained reloadItem:v11 animated:animatedCopy];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -507,19 +507,19 @@ LABEL_5:
   }
 }
 
-- (void)_clearEntitlementSelectionAnimated:(BOOL)a3
+- (void)_clearEntitlementSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-  [v5 setEnabled:0];
+  globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+  [globalView setEnabled:0];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(PKPassEntitlementsComposer *)self->_entitlementComposer entitlementEntries];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entitlementEntries = [(PKPassEntitlementsComposer *)self->_entitlementComposer entitlementEntries];
+  v7 = [entitlementEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -531,29 +531,29 @@ LABEL_5:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entitlementEntries);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained reloadItem:v11 animated:v3];
+        [WeakRetained reloadItem:v11 animated:animatedCopy];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [entitlementEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 length] || (v4 = v3, v4 == @"Default") || (v5 = v4) != 0 && (v6 = -[__CFString isEqualToString:](v4, "isEqualToString:", @"Default"), v5, (v6 & 1) != 0))
+  identifierCopy = identifier;
+  if (![identifierCopy length] || (v4 = identifierCopy, v4 == @"Default") || (v5 = v4) != 0 && (v6 = -[__CFString isEqualToString:](v4, "isEqualToString:", @"Default"), v5, (v6 & 1) != 0))
   {
     v7 = 0;
   }
@@ -565,8 +565,8 @@ LABEL_5:
     v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC58], 2, 0);
     v14[0] = v9;
     v13[1] = *MEMORY[0x1E69DB650];
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v14[1] = v10;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v14[1] = secondaryLabelColor;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
     v7 = [v8 initWithString:v5 attributes:v11];
   }
@@ -574,10 +574,10 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:v4];
+  itemCopy = item;
+  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:itemCopy];
   if ([v5 isManagingTimeConfiguration] & 1) != 0 || (objc_msgSend(v5, "isManagingEntitlementConfiguration"))
   {
     v6 = 1;
@@ -585,8 +585,8 @@ LABEL_5:
 
   else if ([(PKPassEntitlementsComposer *)self->_entitlementComposer editable])
   {
-    v8 = [v4 displayableEntitlement];
-    v6 = [v8 displayStyle] == 2;
+    displayableEntitlement = [itemCopy displayableEntitlement];
+    v6 = [displayableEntitlement displayStyle] == 2;
   }
 
   else
@@ -597,15 +597,15 @@ LABEL_5:
   return v6;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:v5];
+  v7 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
-    v8 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:v5];
+    v8 = [(NSDictionary *)self->_groupedEntitlements objectForKeyedSubscript:identifierCopy];
     [v6 appendItems:v8];
   }
 

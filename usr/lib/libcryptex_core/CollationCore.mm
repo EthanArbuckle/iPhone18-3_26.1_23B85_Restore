@@ -1,42 +1,42 @@
 @interface CollationCore
-- (BOOL)appendCollationElement:(id)a3;
+- (BOOL)appendCollationElement:(id)element;
 - (BOOL)isEmpty;
-- (BOOL)removeCollationElementWithPath:(id)a3;
-- (CollationCore)initWithXPC:(id)a3 queue:(id)a4;
+- (BOOL)removeCollationElementWithPath:(id)path;
+- (CollationCore)initWithXPC:(id)c queue:(id)queue;
 - (id)createEndpoint;
 - (id)description;
-- (id)getValidPaths:(id)a3 forBundleID:(id)a4;
-- (id)mountPointOfBundleID:(id)a3;
+- (id)getValidPaths:(id)paths forBundleID:(id)d;
+- (id)mountPointOfBundleID:(id)d;
 - (id)packToXPC;
-- (void)enumerateCollationElements:(id)a3;
-- (void)enumerateElements:(id)a3;
-- (void)parseMessage:(id)a3;
+- (void)enumerateCollationElements:(id)elements;
+- (void)enumerateElements:(id)elements;
+- (void)parseMessage:(id)message;
 - (void)setupHandler;
 @end
 
 @implementation CollationCore
 
-- (CollationCore)initWithXPC:(id)a3 queue:(id)a4
+- (CollationCore)initWithXPC:(id)c queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CollationCore *)self initWithID:xpc_dictionary_get_uint64(v6 queue:"uid"), v7];
+  cCopy = c;
+  queueCopy = queue;
+  queueCopy = [(CollationCore *)self initWithID:xpc_dictionary_get_uint64(cCopy queue:"uid"), queueCopy];
 
-  if (v8)
+  if (queueCopy)
   {
-    v9 = xpc_dictionary_get_array(v6, "collation_cryptexes");
+    v9 = xpc_dictionary_get_array(cCopy, "collation_cryptexes");
     if (v9)
     {
       applier[0] = MEMORY[0x29EDCA5F8];
       applier[1] = 3221225472;
       applier[2] = __35__CollationCore_initWithXPC_queue___block_invoke;
       applier[3] = &unk_29EEA8640;
-      v12 = v8;
+      v12 = queueCopy;
       xpc_array_apply(v9, applier);
     }
   }
 
-  return v8;
+  return queueCopy;
 }
 
 uint64_t __35__CollationCore_initWithXPC_queue___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -60,8 +60,8 @@ uint64_t __35__CollationCore_initWithXPC_queue___block_invoke(uint64_t a1, uint6
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CollationCore *)self coll_elems];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  coll_elems = [(CollationCore *)self coll_elems];
+  v6 = [coll_elems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -72,14 +72,14 @@ uint64_t __35__CollationCore_initWithXPC_queue___block_invoke(uint64_t a1, uint6
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(coll_elems);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) package];
-        xpc_array_append_value(v4, v10);
+        package = [*(*(&v13 + 1) + 8 * i) package];
+        xpc_array_append_value(v4, package);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [coll_elems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -91,28 +91,28 @@ uint64_t __35__CollationCore_initWithXPC_queue___block_invoke(uint64_t a1, uint6
   return empty;
 }
 
-- (void)parseMessage:(id)a3
+- (void)parseMessage:(id)message
 {
-  v4 = a3;
-  reply = xpc_dictionary_create_reply(v4);
+  messageCopy = message;
+  reply = xpc_dictionary_create_reply(messageCopy);
   if (reply)
   {
-    string = xpc_dictionary_get_string(v4, "command");
+    string = xpc_dictionary_get_string(messageCopy, "command");
     if (string)
     {
       v7 = string;
       if (!strcmp(string, "package"))
       {
-        v8 = [(CollationCore *)self packToXPC];
-        xpc_dictionary_set_value(reply, "package", v8);
+        packToXPC = [(CollationCore *)self packToXPC];
+        xpc_dictionary_set_value(reply, "package", packToXPC);
       }
 
       else
       {
-        v8 = [(CollationCore *)self log];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        packToXPC = [(CollationCore *)self log];
+        if (os_log_type_enabled(packToXPC, OS_LOG_TYPE_ERROR))
         {
-          [(CollationCore *)v7 parseMessage:v8];
+          [(CollationCore *)v7 parseMessage:packToXPC];
         }
       }
     }
@@ -128,16 +128,16 @@ uint64_t __35__CollationCore_initWithXPC_queue___block_invoke(uint64_t a1, uint6
 
 - (void)setupHandler
 {
-  v3 = [(CollationCore *)self listener];
+  listener = [(CollationCore *)self listener];
   handler[0] = MEMORY[0x29EDCA5F8];
   handler[1] = 3221225472;
   handler[2] = __29__CollationCore_setupHandler__block_invoke;
   handler[3] = &unk_29EEA8690;
   handler[4] = self;
-  xpc_connection_set_event_handler(v3, handler);
+  xpc_connection_set_event_handler(listener, handler);
 
-  v4 = [(CollationCore *)self listener];
-  xpc_connection_activate(v4);
+  listener2 = [(CollationCore *)self listener];
+  xpc_connection_activate(listener2);
 }
 
 void __29__CollationCore_setupHandler__block_invoke(uint64_t a1, void *a2)
@@ -216,17 +216,17 @@ void __29__CollationCore_setupHandler__block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)mountPointOfBundleID:(id)a3
+- (id)mountPointOfBundleID:(id)d
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(CollationCore *)self coll_elems];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
-  if (!v6)
+  coll_elems = [(CollationCore *)self coll_elems];
+  cle_mnt_path = [coll_elems countByEnumeratingWithState:&v16 objects:v20 count:16];
+  if (!cle_mnt_path)
   {
     goto LABEL_12;
   }
@@ -235,16 +235,16 @@ void __29__CollationCore_setupHandler__block_invoke_2(uint64_t a1, void *a2)
   v8 = *v17;
   do
   {
-    for (i = 0; i != v6; i = i + 1)
+    for (i = 0; i != cle_mnt_path; i = i + 1)
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(coll_elems);
       }
 
       v10 = *(*(&v16 + 1) + 8 * i);
-      v11 = [v10 cle_bundle_id];
-      v12 = [v11 isEqualToString:v4];
+      cle_bundle_id = [v10 cle_bundle_id];
+      v12 = [cle_bundle_id isEqualToString:dCopy];
 
       if (v12)
       {
@@ -254,42 +254,42 @@ void __29__CollationCore_setupHandler__block_invoke_2(uint64_t a1, void *a2)
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    cle_mnt_path = [coll_elems countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
-  while (v6);
+  while (cle_mnt_path);
 
   if (v7)
   {
-    v6 = [v7 cle_mnt_path];
-    v5 = v7;
+    cle_mnt_path = [v7 cle_mnt_path];
+    coll_elems = v7;
 LABEL_12:
 
     goto LABEL_14;
   }
 
-  v6 = 0;
+  cle_mnt_path = 0;
 LABEL_14:
 
   v14 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return cle_mnt_path;
 }
 
-- (id)getValidPaths:(id)a3 forBundleID:(id)a4
+- (id)getValidPaths:(id)paths forBundleID:(id)d
 {
   v41 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  pathsCopy = paths;
+  dCopy = d;
   v29 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v30 = [MEMORY[0x29EDB9FB8] defaultManager];
-  [v5 componentsSeparatedByString:@":"];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  [pathsCopy componentsSeparatedByString:@":"];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   obj = v38 = 0u;
   v27 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
-  v22 = v5;
+  v22 = pathsCopy;
   v7 = 0;
   if (v27)
   {
@@ -310,8 +310,8 @@ LABEL_14:
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v10 = [(CollationCore *)self coll_elems];
-        v11 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        coll_elems = [(CollationCore *)self coll_elems];
+        v11 = [coll_elems countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v11)
         {
           v12 = v11;
@@ -322,14 +322,14 @@ LABEL_14:
             {
               if (*v32 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(coll_elems);
               }
 
               v15 = *(*(&v31 + 1) + 8 * i);
-              if (v6)
+              if (dCopy)
               {
-                v16 = [*(*(&v31 + 1) + 8 * i) cle_bundle_id];
-                v17 = [v6 isEqualToString:v16];
+                cle_bundle_id = [*(*(&v31 + 1) + 8 * i) cle_bundle_id];
+                v17 = [dCopy isEqualToString:cle_bundle_id];
 
                 if (!v17)
                 {
@@ -339,7 +339,7 @@ LABEL_14:
 
               v18 = [v15 copyAbsolutePath:v9];
 
-              if ([v30 fileExistsAtPath:v18])
+              if ([defaultManager fileExistsAtPath:v18])
               {
                 [v29 addObject:v18];
               }
@@ -347,7 +347,7 @@ LABEL_14:
               v7 = v18;
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v12 = [coll_elems countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v12);
@@ -370,25 +370,25 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)appendCollationElement:(id)a3
+- (BOOL)appendCollationElement:(id)element
 {
-  v4 = a3;
-  v5 = [(CollationCore *)self coll_elems];
-  [v5 addObject:v4];
+  elementCopy = element;
+  coll_elems = [(CollationCore *)self coll_elems];
+  [coll_elems addObject:elementCopy];
 
   return 1;
 }
 
-- (BOOL)removeCollationElementWithPath:(id)a3
+- (BOOL)removeCollationElementWithPath:(id)path
 {
   v25 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  pathCopy = path;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(CollationCore *)self coll_elems];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  coll_elems = [(CollationCore *)self coll_elems];
+  v6 = [coll_elems countByEnumeratingWithState:&v20 objects:v24 count:16];
   v7 = v6 != 0;
   if (v6)
   {
@@ -402,12 +402,12 @@ LABEL_14:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(coll_elems);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 cle_mnt_path];
-        v14 = [v13 isEqualToString:v4];
+        cle_mnt_path = [v12 cle_mnt_path];
+        v14 = [cle_mnt_path isEqualToString:pathCopy];
 
         if (v14)
         {
@@ -417,7 +417,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [coll_elems countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -428,15 +428,15 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v16 = [(CollationCore *)self coll_elems];
-    [v16 removeObject:v9];
+    coll_elems2 = [(CollationCore *)self coll_elems];
+    [coll_elems2 removeObject:v9];
 
     v7 = v19;
   }
 
   else
   {
-    v9 = v5;
+    v9 = coll_elems;
   }
 
 LABEL_15:
@@ -444,21 +444,21 @@ LABEL_15:
   return v7;
 }
 
-- (void)enumerateCollationElements:(id)a3
+- (void)enumerateCollationElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(CollationCore *)self coll_elems];
-  v6 = [v5 count];
+  elementsCopy = elements;
+  coll_elems = [(CollationCore *)self coll_elems];
+  v6 = [coll_elems count];
 
   if (v6)
   {
-    v7 = [(CollationCore *)self coll_elems];
+    coll_elems2 = [(CollationCore *)self coll_elems];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __44__CollationCore_enumerateCollationElements___block_invoke;
     v8[3] = &unk_29EEA86B8;
-    v9 = v4;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = elementsCopy;
+    [coll_elems2 enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -469,21 +469,21 @@ uint64_t __44__CollationCore_enumerateCollationElements___block_invoke(uint64_t 
   return result;
 }
 
-- (void)enumerateElements:(id)a3
+- (void)enumerateElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(CollationCore *)self coll_elems];
-  v6 = [v5 count];
+  elementsCopy = elements;
+  coll_elems = [(CollationCore *)self coll_elems];
+  v6 = [coll_elems count];
 
   if (v6)
   {
-    v7 = [(CollationCore *)self coll_elems];
+    coll_elems2 = [(CollationCore *)self coll_elems];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __35__CollationCore_enumerateElements___block_invoke;
     v8[3] = &unk_29EEA86B8;
-    v9 = v4;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = elementsCopy;
+    [coll_elems2 enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -504,16 +504,16 @@ void __35__CollationCore_enumerateElements___block_invoke(uint64_t a1, void *a2,
 
 - (id)createEndpoint
 {
-  v2 = [(CollationCore *)self listener];
-  v3 = xpc_endpoint_create(v2);
+  listener = [(CollationCore *)self listener];
+  v3 = xpc_endpoint_create(listener);
 
   return v3;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(CollationCore *)self coll_elems];
-  v3 = [v2 count] == 0;
+  coll_elems = [(CollationCore *)self coll_elems];
+  v3 = [coll_elems count] == 0;
 
   return v3;
 }

@@ -1,15 +1,15 @@
 @interface NEIKEv2EncryptedPayload
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2EncryptedPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 40);
+    objc_setProperty_atomic(self, a2, data, 40);
   }
 
   return [(NEIKEv2EncryptedPayload *)self hasRequiredFields];

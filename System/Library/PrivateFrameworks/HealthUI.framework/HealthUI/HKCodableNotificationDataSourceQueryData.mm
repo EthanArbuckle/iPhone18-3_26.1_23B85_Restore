@@ -1,23 +1,23 @@
 @interface HKCodableNotificationDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSamples:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataType:(BOOL)a3;
-- (void)setHasLatestSupportedVersion:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSamples:(id)samples;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataType:(BOOL)type;
+- (void)setHasLatestSupportedVersion:(BOOL)version;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableNotificationDataSourceQueryData
 
-- (void)setHasDataType:(BOOL)a3
+- (void)setHasDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -30,27 +30,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSamples:(id)a3
+- (void)addSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   samples = self->_samples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!samples)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_samples;
     self->_samples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     samples = self->_samples;
   }
 
-  [(NSMutableArray *)samples addObject:v4];
+  [(NSMutableArray *)samples addObject:samplesCopy];
 }
 
-- (void)setHasLatestSupportedVersion:(BOOL)a3
+- (void)setHasLatestSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -84,8 +84,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableNotificationDataSourceQueryData;
   v4 = [(HKCodableNotificationDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableNotificationDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableNotificationDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -93,12 +93,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataType];
-    [v3 setObject:v5 forKey:@"dataType"];
+    [dictionary setObject:v5 forKey:@"dataType"];
 
     has = self->_has;
   }
@@ -106,7 +106,7 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_count];
-    [v3 setObject:v6 forKey:@"count"];
+    [dictionary setObject:v6 forKey:@"count"];
   }
 
   if ([(NSMutableArray *)self->_samples count])
@@ -131,8 +131,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -141,14 +141,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"samples"];
+    [dictionary setObject:v7 forKey:@"samples"];
   }
 
   v14 = self->_has;
   if ((v14 & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-    [v3 setObject:v15 forKey:@"latestSupportedVersion"];
+    [dictionary setObject:v15 forKey:@"latestSupportedVersion"];
 
     v14 = self->_has;
   }
@@ -156,16 +156,16 @@
   if ((v14 & 8) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v16 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v16 forKey:@"minimumSupportedVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -219,31 +219,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_dataType;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = self->_dataType;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = self->_count;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_count;
+    *(toCopy + 48) |= 1u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if ([(HKCodableNotificationDataSourceQueryData *)self samplesCount])
   {
     [v11 clearSamples];
-    v6 = [(HKCodableNotificationDataSourceQueryData *)self samplesCount];
-    if (v6)
+    samplesCount = [(HKCodableNotificationDataSourceQueryData *)self samplesCount];
+    if (samplesCount)
     {
-      v7 = v6;
+      v7 = samplesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HKCodableNotificationDataSourceQueryData *)self samplesAtIndex:i];
@@ -267,10 +267,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -305,7 +305,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addSamples:v13];
       }
 
@@ -332,10 +332,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
@@ -343,32 +343,32 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_dataType != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_dataType != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_count != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_count != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_24;
   }
 
   samples = self->_samples;
-  if (samples | *(v4 + 5))
+  if (samples | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)samples isEqual:?])
     {
@@ -382,21 +382,21 @@ LABEL_24:
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_latestSupportedVersion != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_latestSupportedVersion != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_24;
   }
 
-  v7 = (*(v4 + 48) & 8) == 0;
+  v7 = (*(equalCopy + 48) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_minimumSupportedVersion != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_minimumSupportedVersion != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
@@ -458,22 +458,22 @@ LABEL_8:
   return v4 ^ v3 ^ v6 ^ v7 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if ((v6 & 2) != 0)
   {
-    self->_dataType = *(v4 + 2);
+    self->_dataType = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if (v6)
   {
-    self->_count = *(v4 + 1);
+    self->_count = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -481,7 +481,7 @@ LABEL_8:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

@@ -1,13 +1,13 @@
 @interface AVTCircularButton
-- (AVTCircularButton)initWithCoder:(id)a3;
-- (AVTCircularButton)initWithFrame:(CGRect)a3;
+- (AVTCircularButton)initWithCoder:(id)coder;
+- (AVTCircularButton)initWithFrame:(CGRect)frame;
 - (double)circleLayerAlpha;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSymbolImageWithName:(id)a3;
-- (void)setSymbolImageWithName:(id)a3 configuration:(id)a4;
-- (void)setSymbolTintColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSymbolImageWithName:(id)name;
+- (void)setSymbolImageWithName:(id)name configuration:(id)configuration;
+- (void)setSymbolTintColor:(id)color;
 - (void)setupView;
 - (void)tintColorDidChange;
 - (void)updateBackgroundColorIfNeeded;
@@ -16,11 +16,11 @@
 
 @implementation AVTCircularButton
 
-- (AVTCircularButton)initWithFrame:(CGRect)a3
+- (AVTCircularButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVTCircularButton;
-  v3 = [(AVTCircularButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTCircularButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (AVTCircularButton)initWithCoder:(id)a3
+- (AVTCircularButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AVTCircularButton;
-  v3 = [(AVTCircularButton *)&v6 initWithCoder:a3];
+  v3 = [(AVTCircularButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -53,12 +53,12 @@
   self->_clippingLayer = v3;
 
   v5 = self->_clippingLayer;
-  v6 = [(AVTCircularButton *)self layer];
-  [v6 setMask:v5];
+  layer = [(AVTCircularButton *)self layer];
+  [layer setMask:v5];
 
   [(AVTCircularButton *)self updateDynamicBackgroundColor];
-  v7 = [(AVTCircularButton *)self dynamicBackgroundColor];
-  [(AVTCircularButton *)self setBackgroundColor:v7];
+  dynamicBackgroundColor = [(AVTCircularButton *)self dynamicBackgroundColor];
+  [(AVTCircularButton *)self setBackgroundColor:dynamicBackgroundColor];
 }
 
 - (void)updateBackgroundColorIfNeeded
@@ -66,29 +66,29 @@
   if ([(AVTCircularButton *)self isUsingDynamicBackground])
   {
     [(AVTCircularButton *)self updateDynamicBackgroundColor];
-    v3 = [(AVTCircularButton *)self dynamicBackgroundColor];
-    [(AVTCircularButton *)self setBackgroundColor:v3];
+    dynamicBackgroundColor = [(AVTCircularButton *)self dynamicBackgroundColor];
+    [(AVTCircularButton *)self setBackgroundColor:dynamicBackgroundColor];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = AVTCircularButton;
-  v4 = a3;
-  [(AVTCircularButton *)&v6 setBackgroundColor:v4];
+  colorCopy = color;
+  [(AVTCircularButton *)&v6 setBackgroundColor:colorCopy];
   v5 = [(AVTCircularButton *)self dynamicBackgroundColor:v6.receiver];
 
-  [(AVTCircularButton *)self setIsUsingDynamicBackground:v5 == v4];
+  [(AVTCircularButton *)self setIsUsingDynamicBackground:v5 == colorCopy];
 }
 
 - (void)updateDynamicBackgroundColor
 {
-  v3 = [(AVTCircularButton *)self tintColor];
-  v7 = [v3 colorWithAlphaComponent:0.15];
+  tintColor = [(AVTCircularButton *)self tintColor];
+  v7 = [tintColor colorWithAlphaComponent:0.15];
 
-  v4 = [(AVTCircularButton *)self tintColor];
-  v5 = [v4 colorWithAlphaComponent:0.3];
+  tintColor2 = [(AVTCircularButton *)self tintColor];
+  v5 = [tintColor2 colorWithAlphaComponent:0.3];
 
   v6 = [AVTUIColorRepository dynamicColorWithLightColor:v7 darkColor:v5];
   [(AVTCircularButton *)self setDynamicBackgroundColor:v6];
@@ -104,8 +104,8 @@
 
 - (double)circleLayerAlpha
 {
-  v2 = [(AVTCircularButton *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(AVTCircularButton *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return dbl_1BB416410[v3];
 }
@@ -118,23 +118,23 @@
   v3 = MEMORY[0x1E69DC728];
   [(AVTCircularButton *)self bounds];
   v4 = [v3 bezierPathWithOvalInRect:?];
-  v5 = [v4 CGPath];
-  v6 = [(AVTCircularButton *)self clippingLayer];
-  [v6 setPath:v5];
+  cGPath = [v4 CGPath];
+  clippingLayer = [(AVTCircularButton *)self clippingLayer];
+  [clippingLayer setPath:cGPath];
 }
 
-- (void)setSymbolImageWithName:(id)a3
+- (void)setSymbolImageWithName:(id)name
 {
   v4 = MEMORY[0x1E69DCAD8];
   v5 = *MEMORY[0x1E69DDCF8];
-  v6 = a3;
+  nameCopy = name;
   v7 = [v4 configurationWithTextStyle:v5 scale:2];
-  [(AVTCircularButton *)self setSymbolImageWithName:v6 configuration:v7];
+  [(AVTCircularButton *)self setSymbolImageWithName:nameCopy configuration:v7];
 }
 
-- (void)setSymbolImageWithName:(id)a3 configuration:(id)a4
+- (void)setSymbolImageWithName:(id)name configuration:(id)configuration
 {
-  v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:a3 withConfiguration:a4];
+  v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:name withConfiguration:configuration];
   symbolImage = self->_symbolImage;
   self->_symbolImage = v5;
   v7 = v5;
@@ -142,13 +142,13 @@
   [(AVTCircularButton *)self setImage:self->_symbolImage forState:0];
 }
 
-- (void)setSymbolTintColor:(id)a3
+- (void)setSymbolTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_symbolTintColor != v5)
+  colorCopy = color;
+  if (self->_symbolTintColor != colorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_symbolTintColor, a3);
+    v9 = colorCopy;
+    objc_storeStrong(&self->_symbolTintColor, color);
     v6 = [(UIImage *)self->_symbolImage imageWithTintColor:v9];
     v7 = [v6 imageWithRenderingMode:1];
     symbolImage = self->_symbolImage;
@@ -156,13 +156,13 @@
 
     [(AVTCircularButton *)self setImage:self->_symbolImage forState:0];
     [(AVTCircularButton *)self setAdjustsImageWhenHighlighted:1];
-    v5 = v9;
+    colorCopy = v9;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = AVTCircularButton;
   [(AVTCircularButton *)&v11 setHighlighted:?];
@@ -171,24 +171,24 @@
     symbolTintColor = self->_symbolTintColor;
     if (symbolTintColor)
     {
-      v6 = symbolTintColor;
+      tintColor = symbolTintColor;
     }
 
     else
     {
-      v6 = [(AVTCircularButton *)self tintColor];
+      tintColor = [(AVTCircularButton *)self tintColor];
     }
 
-    v7 = v6;
+    v7 = tintColor;
     v8 = 0.3;
-    if (!v3)
+    if (!highlightedCopy)
     {
       v8 = 1.0;
     }
 
-    v9 = [(UIColor *)v6 colorWithAlphaComponent:v8];
-    v10 = [(AVTCircularButton *)self imageView];
-    [v10 setTintColor:v9];
+    v9 = [(UIColor *)tintColor colorWithAlphaComponent:v8];
+    imageView = [(AVTCircularButton *)self imageView];
+    [imageView setTintColor:v9];
   }
 }
 

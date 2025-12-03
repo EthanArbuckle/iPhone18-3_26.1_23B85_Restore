@@ -1,13 +1,13 @@
 @interface CKKSControlServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation CKKSControlServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.ckks"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.ckks"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 BOOLValue] & 1) == 0)
   {
@@ -15,7 +15,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 67109378;
-      v14 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v15 = 2112;
       v16 = @"com.apple.private.ckks";
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Client pid: %d doesn't have entitlement: %@", &v13, 0x12u);
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 67109120;
-      v14 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Client pid: %d attempted to use CKKS, but CKKS is not enabled.", &v13, 8u);
     }
 
@@ -41,12 +41,12 @@ LABEL_8:
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CKKSControlProtocol];
   v7 = CKKSSetupControlProtocol();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v8 = +[CKKSViewManager manager];
-  [v4 setExportedObject:v8];
+  [connectionCopy setExportedObject:v8];
 
-  [v4 resume];
+  [connectionCopy resume];
   v9 = 1;
 LABEL_9:
 

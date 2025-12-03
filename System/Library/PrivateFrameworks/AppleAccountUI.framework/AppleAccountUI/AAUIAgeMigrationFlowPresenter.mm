@@ -1,55 +1,55 @@
 @interface AAUIAgeMigrationFlowPresenter
 - (AAFollowUpProtocol)followupController;
-- (AAUIAgeMigrationFlowPresenter)initWithPendingDOB:(id)a3 viewController:(id)a4;
+- (AAUIAgeMigrationFlowPresenter)initWithPendingDOB:(id)b viewController:(id)controller;
 - (AKAppleIDAuthenticationController)authenticationController;
 - (UIViewController)presentingViewController;
 - (void)_dismissAgeMigrationCFU;
-- (void)presentAgeMigrationFlowWithCompletion:(id)a3;
+- (void)presentAgeMigrationFlowWithCompletion:(id)completion;
 @end
 
 @implementation AAUIAgeMigrationFlowPresenter
 
-- (AAUIAgeMigrationFlowPresenter)initWithPendingDOB:(id)a3 viewController:(id)a4
+- (AAUIAgeMigrationFlowPresenter)initWithPendingDOB:(id)b viewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  bCopy = b;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = AAUIAgeMigrationFlowPresenter;
   v9 = [(AAUIAgeMigrationFlowPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pendingDOB, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_pendingDOB, b);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
   }
 
   return v10;
 }
 
-- (void)presentAgeMigrationFlowWithCompletion:(id)a3
+- (void)presentAgeMigrationFlowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AAUIAgeMigrationFlowPresenter *)self pendingDOB];
+  completionCopy = completion;
+  pendingDOB = [(AAUIAgeMigrationFlowPresenter *)self pendingDOB];
 
-  if (v5)
+  if (pendingDOB)
   {
     v6 = objc_alloc_init(MEMORY[0x1E698DE80]);
     v7 = objc_alloc(MEMORY[0x1E698DC88]);
-    v8 = [(AAUIAgeMigrationFlowPresenter *)self pendingDOB];
-    v9 = [v7 initWithPendingDOB:v8];
+    pendingDOB2 = [(AAUIAgeMigrationFlowPresenter *)self pendingDOB];
+    v9 = [v7 initWithPendingDOB:pendingDOB2];
 
     [v6 setAccountMigrationContext:v9];
-    v10 = [(AAUIAgeMigrationFlowPresenter *)self presentingViewController];
-    [v6 setPresentingViewController:v10];
+    presentingViewController = [(AAUIAgeMigrationFlowPresenter *)self presentingViewController];
+    [v6 setPresentingViewController:presentingViewController];
 
     [v6 setAuthenticationType:2];
-    v11 = [(AAUIAgeMigrationFlowPresenter *)self authenticationController];
+    authenticationController = [(AAUIAgeMigrationFlowPresenter *)self authenticationController];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __71__AAUIAgeMigrationFlowPresenter_presentAgeMigrationFlowWithCompletion___block_invoke;
     v13[3] = &unk_1E820D630;
-    v14 = v4;
-    [v11 authenticateWithContext:v6 completion:v13];
+    v14 = completionCopy;
+    [authenticationController authenticateWithContext:v6 completion:v13];
   }
 
   else
@@ -62,7 +62,7 @@
 
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AAUIAgeMigrationErrors" code:-11002 userInfo:0];
     [(AAUIAgeMigrationFlowPresenter *)self _dismissAgeMigrationCFU];
-    (*(v4 + 2))(v4, v6);
+    (*(completionCopy + 2))(completionCopy, v6);
   }
 }
 
@@ -97,8 +97,8 @@ void __71__AAUIAgeMigrationFlowPresenter_presentAgeMigrationFlowWithCompletion__
 
 - (void)_dismissAgeMigrationCFU
 {
-  v2 = [(AAUIAgeMigrationFlowPresenter *)self followupController];
-  [v2 dismissFollowUpWithIdentifier:@"com.apple.AAFollowUpIdentifier.ageMigration" completion:&__block_literal_global_19];
+  followupController = [(AAUIAgeMigrationFlowPresenter *)self followupController];
+  [followupController dismissFollowUpWithIdentifier:@"com.apple.AAFollowUpIdentifier.ageMigration" completion:&__block_literal_global_19];
 }
 
 void __56__AAUIAgeMigrationFlowPresenter__dismissAgeMigrationCFU__block_invoke(uint64_t a1, uint64_t a2, void *a3)

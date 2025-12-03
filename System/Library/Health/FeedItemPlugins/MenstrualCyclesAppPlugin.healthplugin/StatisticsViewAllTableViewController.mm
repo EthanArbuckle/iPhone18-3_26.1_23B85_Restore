@@ -1,16 +1,16 @@
 @interface StatisticsViewAllTableViewController
-- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,70 +18,70 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E0C47A0();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = (&v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_29E0C53D4(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_29E0C53D4(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E0C702C(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E0C702C(viewCopy, section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E0C7A20(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E0C7A20(viewCopy, section);
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   v6 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController_sections;
   swift_beginAccess();
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_9;
   }
 
   v8 = *(&self->super.super.super.super.isa + v6);
-  if (*(v8 + 16) <= a4)
+  if (*(v8 + 16) <= section)
   {
 LABEL_9:
     __break(1u);
     return result;
   }
 
-  if (*(v8 + a4 + 32))
+  if (*(v8 + section + 32))
   {
     return *MEMORY[0x29EDC8230];
   }
 
-  v9 = self;
+  selfCopy = self;
   if (_UISolariumEnabled())
   {
     v10 = *MEMORY[0x29EDC8230];
@@ -96,11 +96,11 @@ LABEL_9:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E0C8C5C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E0C8C5C(section);
   v9 = v8;
 
   if (v9)
@@ -116,9 +116,9 @@ LABEL_9:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = self;
+  selfCopy = self;
   if (!_UISolariumEnabled())
   {
     goto LABEL_5;
@@ -126,21 +126,21 @@ LABEL_9:
 
   v6 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController_sections;
   result = swift_beginAccess();
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_13;
   }
 
-  v8 = *(&v5->super.super.super.super.isa + v6);
-  if (*(v8 + 16) <= a4)
+  v8 = *(&selfCopy->super.super.super.super.isa + v6);
+  if (*(v8 + 16) <= section)
   {
 LABEL_13:
     __break(1u);
     return result;
   }
 
-  if (*(v8 + a4 + 32))
+  if (*(v8 + section + 32))
   {
 LABEL_5:
 
@@ -165,58 +165,58 @@ LABEL_7:
   return v9;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController_sections;
   swift_beginAccess();
   return (*(&self->super.super.super.super.isa + v4))[2];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a4;
-  [v10 _setShouldHaveFullLengthBottomSeparator_];
-  [v10 _setShouldHaveFullLengthTopSeparator_];
+  cellCopy = cell;
+  [cellCopy _setShouldHaveFullLengthBottomSeparator_];
+  [cellCopy _setShouldHaveFullLengthTopSeparator_];
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithStyle:(int64_t)a3
+- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin36StatisticsViewAllTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  selfCopy = self;
   v12 = sub_29E0C8F50();
 
   return v12;
 }
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E0C90DC(v7);
+  providerCopy = provider;
+  analysisCopy = analysis;
+  selfCopy = self;
+  sub_29E0C90DC(analysisCopy);
 }
 
 @end

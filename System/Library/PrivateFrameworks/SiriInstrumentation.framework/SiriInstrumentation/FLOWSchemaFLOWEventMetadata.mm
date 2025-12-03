@@ -1,26 +1,26 @@
 @interface FLOWSchemaFLOWEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWEventMetadata)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWEventMetadata)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWEventMetadata
 
-- (FLOWSchemaFLOWEventMetadata)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = FLOWSchemaFLOWEventMetadata;
   v5 = [(FLOWSchemaFLOWEventMetadata *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setTaskId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"version"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setVersion:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"flowId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"flowId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setFlowId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"requestId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setRequestId:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"trpId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(FLOWSchemaFLOWEventMetadata *)v5 setTrpId:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWEventMetadata)initWithJSON:(id)a3
+- (FLOWSchemaFLOWEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,113 +118,113 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_flowId)
   {
-    v4 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    flowId = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+    dictionaryRepresentation = [flowId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"flowId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"flowId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"flowId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"flowId"];
     }
   }
 
   if (self->_requestId)
   {
-    v7 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestId = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v10 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
+    v11 = [resultCandidateId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_subRequestId)
   {
-    v12 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    subRequestId = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_taskId)
   {
-    v15 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    taskId = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+    dictionaryRepresentation4 = [taskId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"taskId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"taskId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"taskId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"taskId"];
     }
   }
 
   if (self->_trpId)
   {
-    v18 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    trpId = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+    dictionaryRepresentation5 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"trpId"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"trpId"];
     }
   }
 
   if (self->_version)
   {
-    v21 = [(FLOWSchemaFLOWEventMetadata *)self version];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    version = [(FLOWSchemaFLOWEventMetadata *)self version];
+    dictionaryRepresentation6 = [version dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"version"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"version"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"version"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"version"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -238,28 +238,28 @@
   return v6 ^ v8 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
-  v6 = [v4 taskId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+  taskId2 = [equalCopy taskId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
-  if (v7)
+  taskId3 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+  if (taskId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
-    v10 = [v4 taskId];
-    v11 = [v9 isEqual:v10];
+    v8 = taskId3;
+    taskId4 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+    taskId5 = [equalCopy taskId];
+    v11 = [taskId4 isEqual:taskId5];
 
     if (!v11)
     {
@@ -271,20 +271,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
+  taskId2 = [equalCopy resultCandidateId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -296,20 +296,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self version];
-  v6 = [v4 version];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self version];
+  taskId2 = [equalCopy version];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(FLOWSchemaFLOWEventMetadata *)self version];
-  if (v17)
+  version = [(FLOWSchemaFLOWEventMetadata *)self version];
+  if (version)
   {
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWEventMetadata *)self version];
-    v20 = [v4 version];
-    v21 = [v19 isEqual:v20];
+    v18 = version;
+    version2 = [(FLOWSchemaFLOWEventMetadata *)self version];
+    version3 = [equalCopy version];
+    v21 = [version2 isEqual:version3];
 
     if (!v21)
     {
@@ -321,20 +321,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
-  v6 = [v4 flowId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+  taskId2 = [equalCopy flowId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
-  if (v22)
+  flowId = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+  if (flowId)
   {
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
-    v25 = [v4 flowId];
-    v26 = [v24 isEqual:v25];
+    v23 = flowId;
+    flowId2 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+    flowId3 = [equalCopy flowId];
+    v26 = [flowId2 isEqual:flowId3];
 
     if (!v26)
     {
@@ -346,20 +346,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+  taskId2 = [equalCopy requestId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
-  if (v27)
+  requestId = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+  if (requestId)
   {
-    v28 = v27;
-    v29 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
-    v30 = [v4 requestId];
-    v31 = [v29 isEqual:v30];
+    v28 = requestId;
+    requestId2 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v31 = [requestId2 isEqual:requestId3];
 
     if (!v31)
     {
@@ -371,20 +371,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+  taskId2 = [equalCopy trpId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
-  if (v32)
+  trpId = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+  if (trpId)
   {
-    v33 = v32;
-    v34 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
-    v35 = [v4 trpId];
-    v36 = [v34 isEqual:v35];
+    v33 = trpId;
+    trpId2 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v36 = [trpId2 isEqual:trpId3];
 
     if (!v36)
     {
@@ -396,12 +396,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) != (v6 == 0))
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+  taskId2 = [equalCopy subRequestId];
+  if ((taskId != 0) != (taskId2 == 0))
   {
-    v37 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
-    if (!v37)
+    subRequestId = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+    if (!subRequestId)
     {
 
 LABEL_40:
@@ -409,10 +409,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
-    v40 = [v4 subRequestId];
-    v41 = [v39 isEqual:v40];
+    v38 = subRequestId;
+    subRequestId2 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v41 = [subRequestId2 isEqual:subRequestId3];
 
     if (v41)
     {
@@ -432,124 +432,124 @@ LABEL_38:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
-  v4 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+  toCopy = to;
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self taskId];
 
-  if (v4)
+  if (taskId)
   {
-    v5 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+    taskId2 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(FLOWSchemaFLOWEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(FLOWSchemaFLOWEventMetadata *)self version];
+  version = [(FLOWSchemaFLOWEventMetadata *)self version];
 
-  if (v7)
+  if (version)
   {
-    v8 = [(FLOWSchemaFLOWEventMetadata *)self version];
+    version2 = [(FLOWSchemaFLOWEventMetadata *)self version];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+  flowId = [(FLOWSchemaFLOWEventMetadata *)self flowId];
 
-  if (v9)
+  if (flowId)
   {
-    v10 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+    flowId2 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+  requestId = [(FLOWSchemaFLOWEventMetadata *)self requestId];
 
-  if (v11)
+  if (requestId)
   {
-    v12 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+    requestId2 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+  trpId = [(FLOWSchemaFLOWEventMetadata *)self trpId];
 
-  if (v13)
+  if (trpId)
   {
-    v14 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+    trpId2 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+  subRequestId = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
 
-  v16 = v18;
-  if (v15)
+  v16 = toCopy;
+  if (subRequestId)
   {
-    v17 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+    subRequestId2 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v16 = v18;
+    v16 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v25.receiver = self;
   v25.super_class = FLOWSchemaFLOWEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWEventMetadata *)self taskId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:policyCopy];
+  taskId = [(FLOWSchemaFLOWEventMetadata *)self taskId];
+  v7 = [taskId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteTaskId];
   }
 
-  v9 = [(FLOWSchemaFLOWEventMetadata *)self version];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  version = [(FLOWSchemaFLOWEventMetadata *)self version];
+  v10 = [version applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteVersion];
   }
 
-  v12 = [(FLOWSchemaFLOWEventMetadata *)self flowId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  flowId = [(FLOWSchemaFLOWEventMetadata *)self flowId];
+  v13 = [flowId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteFlowId];
   }
 
-  v15 = [(FLOWSchemaFLOWEventMetadata *)self requestId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  requestId = [(FLOWSchemaFLOWEventMetadata *)self requestId];
+  v16 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteRequestId];
   }
 
-  v18 = [(FLOWSchemaFLOWEventMetadata *)self trpId];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  trpId = [(FLOWSchemaFLOWEventMetadata *)self trpId];
+  v19 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteTrpId];
   }
 
-  v21 = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  subRequestId = [(FLOWSchemaFLOWEventMetadata *)self subRequestId];
+  v22 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWSchemaFLOWEventMetadata *)self deleteSubRequestId];
   }

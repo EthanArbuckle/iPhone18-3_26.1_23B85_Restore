@@ -1,32 +1,32 @@
 @interface IMMessagePartChatItem
-+ (BOOL)_isAllowlistedRichLinkSender:(id)a3 isBusiness:(BOOL)a4;
-+ (BOOL)_isAllowlistedURL:(id)a3;
-+ (BOOL)_isPathExceptionToAllowlistedURL:(id)a3;
-+ (BOOL)_shouldAggregateForTransferType:(id)a3;
-+ (BOOL)_supportsRichLinkURL:(id)a3 forSender:(id)a4 isAllowlistedRichLinkSender:(BOOL)a5;
-+ (BOOL)isChatBotContentOnly:(id)a3;
++ (BOOL)_isAllowlistedRichLinkSender:(id)sender isBusiness:(BOOL)business;
++ (BOOL)_isAllowlistedURL:(id)l;
++ (BOOL)_isPathExceptionToAllowlistedURL:(id)l;
++ (BOOL)_shouldAggregateForTransferType:(id)type;
++ (BOOL)_supportsRichLinkURL:(id)l forSender:(id)sender isAllowlistedRichLinkSender:(BOOL)linkSender;
++ (BOOL)isChatBotContentOnly:(id)only;
 + (BOOL)isSiriEnabled;
 + (id)_defaultRichLinkAllowListExceptions;
 + (id)_defaultRichLinkAllowlist;
-+ (id)_guidForMessage:(id)a3 url:(id)a4;
-+ (id)_messageItemWithPartsDeleted:(id)a3 fromMessageItem:(id)a4 indexesOfItemsDeleted:(id *)a5 indexToRangeMapping:(id *)a6;
-+ (id)_newAudioMessagePartsForMessageItem:(id)a3 text:(id)a4 chatContext:(id)a5 retractedPartIndexes:(id)a6 singlePart:(id)a7;
-+ (id)_newDetonatedMessagePartsForMessageItem:(id)a3 chatContext:(id)a4 photosPluginPayload:(id)a5;
-+ (id)_newMessagePartArrayForMessageItem:(id)a3;
-+ (id)_newMessagePartsForMessageItem:(id)a3 chatContext:(id)a4 photosPluginPayload:(id)a5;
-+ (id)_processChatItemsForRichActions:(id)a3;
-+ (id)_retractedMessagePartsForMessage:(id)a3 parts:(id)a4 retractedPartIndexes:(id)a5;
-+ (id)_richLinkRangesForMessageText:(id)a3 sender:(id)a4 isAllowlistedRichLinkSender:(BOOL)a5;
-+ (id)_singleChatItemForDeviceActionMessage:(id)a3 context:(id)a4 pluginPayload:(id)a5;
-+ (id)aggregatePartsForParts:(id)a3 forMessage:(id)a4 context:(id)a5 text:(id)a6;
-+ (id)chatItemGUIDForMessageGUID:(id)a3 partIndex:(int64_t)a4;
-+ (id)expandRichCardsFor:(id)a3 richCards:(id)a4;
-+ (id)messageBodyStringForAttachmentGUIDs:(id)a3;
-+ (id)messageBodyStringForCMMMessage:(id)a3;
-+ (id)richCardsChatItemsForMessageItem:(id)a3 text:(id)a4;
-+ (id)standaloneChipListChatItemForMessageItem:(id)a3 text:(id)a4;
-+ (id)suggestedActionsMessagePartChatItemForMessageItem:(id)a3 attributes:(id)a4;
-+ (id)suggestedRepliesMessagePartChatItemForMessageItem:(id)a3 attributes:(id)a4;
++ (id)_guidForMessage:(id)message url:(id)url;
++ (id)_messageItemWithPartsDeleted:(id)deleted fromMessageItem:(id)item indexesOfItemsDeleted:(id *)itemsDeleted indexToRangeMapping:(id *)mapping;
++ (id)_newAudioMessagePartsForMessageItem:(id)item text:(id)text chatContext:(id)context retractedPartIndexes:(id)indexes singlePart:(id)part;
++ (id)_newDetonatedMessagePartsForMessageItem:(id)item chatContext:(id)context photosPluginPayload:(id)payload;
++ (id)_newMessagePartArrayForMessageItem:(id)item;
++ (id)_newMessagePartsForMessageItem:(id)item chatContext:(id)context photosPluginPayload:(id)payload;
++ (id)_processChatItemsForRichActions:(id)actions;
++ (id)_retractedMessagePartsForMessage:(id)message parts:(id)parts retractedPartIndexes:(id)indexes;
++ (id)_richLinkRangesForMessageText:(id)text sender:(id)sender isAllowlistedRichLinkSender:(BOOL)linkSender;
++ (id)_singleChatItemForDeviceActionMessage:(id)message context:(id)context pluginPayload:(id)payload;
++ (id)aggregatePartsForParts:(id)parts forMessage:(id)message context:(id)context text:(id)text;
++ (id)chatItemGUIDForMessageGUID:(id)d partIndex:(int64_t)index;
++ (id)expandRichCardsFor:(id)for richCards:(id)cards;
++ (id)messageBodyStringForAttachmentGUIDs:(id)ds;
++ (id)messageBodyStringForCMMMessage:(id)message;
++ (id)richCardsChatItemsForMessageItem:(id)item text:(id)text;
++ (id)standaloneChipListChatItemForMessageItem:(id)item text:(id)text;
++ (id)suggestedActionsMessagePartChatItemForMessageItem:(id)item attributes:(id)attributes;
++ (id)suggestedRepliesMessagePartChatItemForMessageItem:(id)item attributes:(id)attributes;
 + (int64_t)_attachmentStackAggregationThreshold;
 - (BOOL)canDelete;
 - (BOOL)canRetract;
@@ -46,18 +46,18 @@
 - (NSString)threadIdentifierForTapback;
 - (_NSRange)messagePartRange;
 - (_NSRange)originalMessagePartRange;
-- (id)_initWithItem:(id)a3 index:(int64_t)a4 messagePartRange:(_NSRange)a5 syndicationBehavior:(int64_t)a6;
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 visibleAssociatedMessageChatItems:(id)a8;
+- (id)_initWithItem:(id)item index:(int64_t)index messagePartRange:(_NSRange)range syndicationBehavior:(int64_t)behavior;
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range visibleAssociatedMessageChatItems:(id)items;
 - (id)_visibleAssociatedChatItemsByFlatteningAggregateChatItems;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)extractAndSetChipListFrom:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)extractAndSetChipListFrom:(id)from;
 - (id)messageSummaryInfo;
 - (int64_t)messagePartAttributeName;
 - (int64_t)stewieConversationID;
 - (unint64_t)scheduleState;
 - (unint64_t)scheduleType;
 - (unsigned)contentType;
-- (void)_setVisibleAssociatedMessageChatItems:(id)a3;
+- (void)_setVisibleAssociatedMessageChatItems:(id)items;
 @end
 
 @implementation IMMessagePartChatItem
@@ -87,7 +87,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -272,25 +272,25 @@ LABEL_7:
   return isCorrupt;
 }
 
-+ (id)_guidForMessage:(id)a3 url:(id)a4
++ (id)_guidForMessage:(id)message url:(id)url
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v9 = objc_msgSend_guid(a3, v7, v8);
-  v12 = objc_msgSend_absoluteString(v6, v10, v11);
+  urlCopy = url;
+  v9 = objc_msgSend_guid(message, v7, v8);
+  v12 = objc_msgSend_absoluteString(urlCopy, v10, v11);
 
   v14 = objc_msgSend_stringWithFormat_(v5, v13, @"%@:%@", v9, v12);
 
   return v14;
 }
 
-+ (id)_newMessagePartArrayForMessageItem:(id)a3
++ (id)_newMessagePartArrayForMessageItem:(id)item
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
-  v28 = v4;
-  v7 = objc_msgSend__newMessagePartsForMessageItem_(a1, v6, v4);
+  v28 = itemCopy;
+  v7 = objc_msgSend__newMessagePartsForMessageItem_(self, v6, itemCopy);
   objc_opt_class();
   v29 = v7;
   if (objc_opt_isKindOfClass())
@@ -397,10 +397,10 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)_isPathExceptionToAllowlistedURL:(id)a3
++ (BOOL)_isPathExceptionToAllowlistedURL:(id)l
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v6 = objc_msgSend_sharedInstanceForBagType_(MEMORY[0x1E69A53F0], v5, 1);
   v8 = objc_msgSend_objectForKey_(v6, v7, @"richLink-whitelist-exceptions");
 
@@ -452,7 +452,7 @@ LABEL_7:
 
   else
   {
-    v13 = objc_msgSend__defaultRichLinkAllowListExceptions(a1, v11, v12);
+    v13 = objc_msgSend__defaultRichLinkAllowListExceptions(self, v11, v12);
   }
 
   v70 = 0u;
@@ -479,15 +479,15 @@ LABEL_7:
         v45 = objc_msgSend_first(v42, v43, v44);
         v48 = objc_msgSend_first(v41, v46, v47);
         v51 = objc_msgSend_second(v48, v49, v50);
-        if (objc_msgSend___im_conformsToDomain_domainExtension_(v4, v52, v45, v51))
+        if (objc_msgSend___im_conformsToDomain_domainExtension_(lCopy, v52, v45, v51))
         {
-          objc_msgSend_pathComponents(v4, v53, v54);
+          objc_msgSend_pathComponents(lCopy, v53, v54);
           v55 = v39;
-          v57 = v56 = v4;
+          v57 = v56 = lCopy;
           v60 = objc_msgSend_second(v41, v58, v59);
           isEqualToArray = objc_msgSend_isEqualToArray_(v57, v61, v60);
 
-          v4 = v56;
+          lCopy = v56;
           v39 = v55;
 
           if (isEqualToArray)
@@ -520,16 +520,16 @@ LABEL_25:
   return v62;
 }
 
-+ (BOOL)_isAllowlistedURL:(id)a3
++ (BOOL)_isAllowlistedURL:(id)l
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v6 = objc_msgSend_sharedInstanceForBagType_(MEMORY[0x1E69A53F0], v5, 1);
   v8 = objc_msgSend_objectForKey_(v6, v7, @"richLink-whitelist");
 
   if (objc_msgSend_count(v8, v9, v10))
   {
-    v49 = a1;
+    selfCopy = self;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v55 = 0u;
     v56 = 0u;
@@ -552,7 +552,7 @@ LABEL_25:
           }
 
           v22 = *(*(&v55 + 1) + 8 * i);
-          if (objc_msgSend_count(v22, v17, v18, v49) == 2)
+          if (objc_msgSend_count(v22, v17, v18, selfCopy) == 2)
           {
             v23 = objc_msgSend_firstObject(v22, v17, v18);
             v26 = objc_msgSend_lastObject(v22, v24, v25);
@@ -567,13 +567,13 @@ LABEL_25:
       while (v19);
     }
 
-    a1 = v49;
+    self = selfCopy;
     v8 = v50;
   }
 
   else
   {
-    v13 = objc_msgSend__defaultRichLinkAllowlist(a1, v11, v12);
+    v13 = objc_msgSend__defaultRichLinkAllowlist(self, v11, v12);
   }
 
   v53 = 0u;
@@ -596,11 +596,11 @@ LABEL_25:
         }
 
         v38 = *(*(&v51 + 1) + 8 * j);
-        v39 = objc_msgSend_first(v38, v33, v34, v49);
+        v39 = objc_msgSend_first(v38, v33, v34, selfCopy);
         v42 = objc_msgSend_second(v38, v40, v41);
-        if (objc_msgSend___im_conformsToDomain_domainExtension_(v4, v43, v39, v42))
+        if (objc_msgSend___im_conformsToDomain_domainExtension_(lCopy, v43, v39, v42))
         {
-          isPathExceptionToAllowlistedURL = objc_msgSend__isPathExceptionToAllowlistedURL_(a1, v44, v4);
+          isPathExceptionToAllowlistedURL = objc_msgSend__isPathExceptionToAllowlistedURL_(self, v44, lCopy);
 
           if ((isPathExceptionToAllowlistedURL & 1) == 0)
           {
@@ -627,34 +627,34 @@ LABEL_25:
   return v46;
 }
 
-+ (BOOL)_isAllowlistedRichLinkSender:(id)a3 isBusiness:(BOOL)a4
++ (BOOL)_isAllowlistedRichLinkSender:(id)sender isBusiness:(BOOL)business
 {
-  v4 = a4;
-  v5 = a3;
-  if ((objc_msgSend_hasPrefix_(v5, v6, @"urn:biz:") & 1) != 0 || v4)
+  businessCopy = business;
+  senderCopy = sender;
+  if ((objc_msgSend_hasPrefix_(senderCopy, v6, @"urn:biz:") & 1) != 0 || businessCopy)
   {
-    if (objc_msgSend_length(v5, v7, v8))
+    if (objc_msgSend_length(senderCopy, v7, v8))
     {
       v9 = IMSharedHelperBusinessAllowlist();
-      LOBYTE(v4) = objc_msgSend_containsObject_(v9, v10, v5);
+      LOBYTE(businessCopy) = objc_msgSend_containsObject_(v9, v10, senderCopy);
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(businessCopy) = 0;
     }
   }
 
-  return v4;
+  return businessCopy;
 }
 
-+ (id)_richLinkRangesForMessageText:(id)a3 sender:(id)a4 isAllowlistedRichLinkSender:(BOOL)a5
++ (id)_richLinkRangesForMessageText:(id)text sender:(id)sender isAllowlistedRichLinkSender:(BOOL)linkSender
 {
-  v5 = a5;
-  v9 = a3;
-  if (v5)
+  linkSenderCopy = linkSender;
+  textCopy = text;
+  if (linkSenderCopy)
   {
-    v10 = objc_msgSend__additionalSupportedRichLinkSchemesForAllowlistedSender_(a1, v8, a4);
+    v10 = objc_msgSend__additionalSupportedRichLinkSchemesForAllowlistedSender_(self, v8, sender);
   }
 
   else
@@ -662,19 +662,19 @@ LABEL_25:
     v10 = 0;
   }
 
-  v11 = IMRichLinkUtilitiesDetermineRichLinksInMessage(v9, v10);
+  v11 = IMRichLinkUtilitiesDetermineRichLinksInMessage(textCopy, v10);
 
   return v11;
 }
 
-+ (BOOL)_supportsRichLinkURL:(id)a3 forSender:(id)a4 isAllowlistedRichLinkSender:(BOOL)a5
++ (BOOL)_supportsRichLinkURL:(id)l forSender:(id)sender isAllowlistedRichLinkSender:(BOOL)linkSender
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7 != 0;
-  if (v7 && !a5)
+  lCopy = l;
+  senderCopy = sender;
+  v9 = lCopy != 0;
+  if (lCopy && !linkSender)
   {
-    if (IMIsRunningInUnitTesting() && (objc_msgSend_absoluteString(v7, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_containsString_(v12, v13, @"split"), v12, (v14 & 1) != 0))
+    if (IMIsRunningInUnitTesting() && (objc_msgSend_absoluteString(lCopy, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend_containsString_(v12, v13, @"split"), v12, (v14 & 1) != 0))
     {
       v9 = 1;
     }
@@ -684,21 +684,21 @@ LABEL_25:
       v15 = objc_msgSend_sharedInstance(IMBalloonPluginManager, v10, v11);
       v17 = objc_msgSend_dataSourceClassForBundleID_(v15, v16, *MEMORY[0x1E69A6A18]);
 
-      v9 = objc_msgSend_supportsURL_(v17, v18, v7);
+      v9 = objc_msgSend_supportsURL_(v17, v18, lCopy);
     }
   }
 
   return v9;
 }
 
-+ (id)messageBodyStringForCMMMessage:(id)a3
++ (id)messageBodyStringForCMMMessage:(id)message
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v7 = objc_msgSend_fileTransferGUIDs(v3, v5, v6);
+  v7 = objc_msgSend_fileTransferGUIDs(messageCopy, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
-  CMMAssetOffset = objc_msgSend_getCMMAssetOffset(v3, v11, v12);
+  CMMAssetOffset = objc_msgSend_getCMMAssetOffset(messageCopy, v11, v12);
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
@@ -744,12 +744,12 @@ LABEL_25:
   return v29;
 }
 
-+ (id)_newDetonatedMessagePartsForMessageItem:(id)a3 chatContext:(id)a4 photosPluginPayload:(id)a5
++ (id)_newDetonatedMessagePartsForMessageItem:(id)item chatContext:(id)context photosPluginPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (objc_msgSend_isCorrupt(v7, v10, v11))
+  itemCopy = item;
+  contextCopy = context;
+  payloadCopy = payload;
+  if (objc_msgSend_isCorrupt(itemCopy, v10, v11))
   {
     v14 = objc_alloc(MEMORY[0x1E696AD40]);
     v15 = IMCoreLocalizedString(@"CORRUPT_MESSAGE_FALLBACK_TEXT", @"Tap to show message");
@@ -757,14 +757,14 @@ LABEL_25:
 
     v18 = [IMTextMessagePartChatItem alloc];
     v21 = objc_msgSend_length(v17, v19, v20);
-    BYTE2(v61) = objc_msgSend_showTranslationAlternateText(v8, v22, v23);
+    BYTE2(v61) = objc_msgSend_showTranslationAlternateText(contextCopy, v22, v23);
     LOWORD(v61) = 0;
-    isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_shouldDisplayLink_isShowingEditHistory_showTranslationAlternateText_(v18, v24, v7, v17, 0, 0, 0, v21, 0, v61);
+    isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_shouldDisplayLink_isShowingEditHistory_showTranslationAlternateText_(v18, v24, itemCopy, v17, 0, 0, 0, v21, 0, v61);
   }
 
   else
   {
-    v26 = objc_msgSend_body(v7, v12, v13);
+    v26 = objc_msgSend_body(itemCopy, v12, v13);
     v17 = objc_msgSend_mutableCopy(v26, v27, v28);
 
     v31 = objc_msgSend_mutableString(v17, v29, v30);
@@ -785,11 +785,11 @@ LABEL_25:
     v76 = sub_1A825AECC;
     v77 = 0;
     v39 = objc_msgSend_length(v17, v37, v38);
-    v42 = objc_msgSend_subject(v7, v40, v41);
+    v42 = objc_msgSend_subject(itemCopy, v40, v41);
     if (v42)
     {
       v43 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v46 = objc_msgSend_subject(v7, v44, v45);
+      v46 = objc_msgSend_subject(itemCopy, v44, v45);
       v48 = objc_msgSend_initWithString_(v43, v47, v46);
     }
 
@@ -808,9 +808,9 @@ LABEL_25:
       v70 = 0;
       v71 = v39;
       v64 = v17;
-      v65 = v7;
+      v65 = itemCopy;
       v66 = v48;
-      v67 = v8;
+      v67 = contextCopy;
       v68 = &v78;
       v69 = &v72;
       objc_msgSend_enumerateAttribute_inRange_options_usingBlock_(v64, v52, v51, 0, v39, 0, v63);
@@ -821,9 +821,9 @@ LABEL_25:
     else
     {
       v54 = [IMDetonatedMessagePartChatItem alloc];
-      HIBYTE(v62) = objc_msgSend_showTranslationAlternateText(v8, v55, v56);
+      HIBYTE(v62) = objc_msgSend_showTranslationAlternateText(contextCopy, v55, v56);
       LOBYTE(v62) = 0;
-      v58 = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_isShowingEditHistory_showTranslationAlternateText_(v54, v57, v7, 0, 0, 0, 0, 0, v48, v62);
+      v58 = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_isShowingEditHistory_showTranslationAlternateText_(v54, v57, itemCopy, 0, 0, 0, 0, 0, v48, v62);
       v53 = v79[5];
       v79[5] = v58;
     }
@@ -843,41 +843,41 @@ LABEL_25:
   return isShowingEditHistory_showTranslationAlternateText;
 }
 
-+ (id)_singleChatItemForDeviceActionMessage:(id)a3 context:(id)a4 pluginPayload:(id)a5
++ (id)_singleChatItemForDeviceActionMessage:(id)message context:(id)context pluginPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v12 = objc_msgSend_serviceVariant(v9, v10, v11);
-  v15 = objc_msgSend_areSendersUnknown(v9, v13, v14);
+  messageCopy = message;
+  payloadCopy = payload;
+  contextCopy = context;
+  v12 = objc_msgSend_serviceVariant(contextCopy, v10, v11);
+  v15 = objc_msgSend_areSendersUnknown(contextCopy, v13, v14);
 
   v18 = [IMTranscriptPluginChatItem alloc];
   v19 = 1;
   if (v15 && v12 != 1)
   {
-    v19 = objc_msgSend_isFromMe(v7, v16, v17);
+    v19 = objc_msgSend_isFromMe(messageCopy, v16, v17);
   }
 
-  HasKnownParticipants = objc_msgSend__initWithItem_initialPayload_index_messagePartRange_parentChatHasKnownParticipants_(v18, v16, v7, v8, 0, 0, 0x7FFFFFFFFFFFFFFFLL, v19);
+  HasKnownParticipants = objc_msgSend__initWithItem_initialPayload_index_messagePartRange_parentChatHasKnownParticipants_(v18, v16, messageCopy, payloadCopy, 0, 0, 0x7FFFFFFFFFFFFFFFLL, v19);
 
   return HasKnownParticipants;
 }
 
-+ (id)_newMessagePartsForMessageItem:(id)a3 chatContext:(id)a4 photosPluginPayload:(id)a5
++ (id)_newMessagePartsForMessageItem:(id)item chatContext:(id)context photosPluginPayload:(id)payload
 {
   v358 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!objc_msgSend_wasDetonated(v8, v11, v12))
+  itemCopy = item;
+  contextCopy = context;
+  payloadCopy = payload;
+  if (!objc_msgSend_wasDetonated(itemCopy, v11, v12))
   {
-    v295 = v10;
-    v16 = objc_msgSend_service(v8, v13, v14);
+    v295 = payloadCopy;
+    v16 = objc_msgSend_service(itemCopy, v13, v14);
     v296 = objc_msgSend_serviceWithName_(IMService, v17, v16);
 
-    v294 = objc_msgSend_serviceVariant(v9, v18, v19);
-    v288 = objc_msgSend_areSendersUnknown(v9, v20, v21);
-    if (!v9)
+    v294 = objc_msgSend_serviceVariant(contextCopy, v18, v19);
+    v288 = objc_msgSend_areSendersUnknown(contextCopy, v20, v21);
+    if (!contextCopy)
     {
       goto LABEL_9;
     }
@@ -885,13 +885,13 @@ LABEL_25:
     v24 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v22, v23);
     isIntroductionsEnabled = objc_msgSend_isIntroductionsEnabled(v24, v25, v26);
 
-    v30 = isIntroductionsEnabled && objc_msgSend_filterCategory(v9, v28, v29) == 2;
+    v30 = isIntroductionsEnabled && objc_msgSend_filterCategory(contextCopy, v28, v29) == 2;
     if (objc_msgSend_supportsCapability_(v296, v28, *MEMORY[0x1E69A7948]) && !v30)
     {
       goto LABEL_9;
     }
 
-    if (objc_msgSend_serviceVariant(v9, v22, v23) == 3)
+    if (objc_msgSend_serviceVariant(contextCopy, v22, v23) == 3)
     {
       v85 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v83, v84);
       isTranscriptSharingEnabled = objc_msgSend_isTranscriptSharingEnabled(v85, v86, v87);
@@ -899,7 +899,7 @@ LABEL_25:
 
     else
     {
-      if ((objc_msgSend_hasResponded(v9, v83, v84) & 1) != 0 || !objc_msgSend_filterCategory(v9, v22, v23) || !objc_msgSend__isSenderUnknown(v8, v22, v23))
+      if ((objc_msgSend_hasResponded(contextCopy, v83, v84) & 1) != 0 || !objc_msgSend_filterCategory(contextCopy, v22, v23) || !objc_msgSend__isSenderUnknown(itemCopy, v22, v23))
       {
 LABEL_9:
         isTranscriptSharingEnabled = 1;
@@ -932,7 +932,7 @@ LABEL_10:
     v342 = sub_1A8259B40;
     v343 = sub_1A825AECC;
     v344 = 0;
-    if (objc_msgSend_isCorrupt(v8, v22, v23))
+    if (objc_msgSend_isCorrupt(itemCopy, v22, v23))
     {
       v34 = objc_alloc(MEMORY[0x1E696AD40]);
       v35 = IMCoreLocalizedString(@"CORRUPT_MESSAGE_FALLBACK_TEXT", @"Tap to show message");
@@ -940,9 +940,9 @@ LABEL_10:
 
       v38 = [IMTextMessagePartChatItem alloc];
       v41 = objc_msgSend_length(v37, v39, v40);
-      BYTE2(v268) = objc_msgSend_showTranslationAlternateText(v9, v42, v43);
+      BYTE2(v268) = objc_msgSend_showTranslationAlternateText(contextCopy, v42, v43);
       LOWORD(v268) = 0;
-      isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_shouldDisplayLink_isShowingEditHistory_showTranslationAlternateText_(v38, v44, v8, v37, 0, 0, 0, v41, 0, v268);
+      isShowingEditHistory_showTranslationAlternateText = objc_msgSend__initWithItem_text_translationSecondaryText_index_messagePartRange_subject_shouldDisplayLink_isShowingEditHistory_showTranslationAlternateText_(v38, v44, itemCopy, v37, 0, 0, 0, v41, 0, v268);
       v46 = *(v346 + 5);
       *(v346 + 5) = isShowingEditHistory_showTranslationAlternateText;
 
@@ -952,11 +952,11 @@ LABEL_145:
       _Block_object_dispose(&v339, 8);
       _Block_object_dispose(v345, 8);
 
-      v10 = v295;
+      payloadCopy = v295;
       goto LABEL_146;
     }
 
-    v47 = objc_msgSend_service(v8, v32, v33);
+    v47 = objc_msgSend_service(itemCopy, v32, v33);
     v50 = objc_msgSend_iMessageService(IMServiceImpl, v48, v49);
     v53 = objc_msgSend_internalName(v50, v51, v52);
     isEqualToIgnoringCase = objc_msgSend_isEqualToIgnoringCase_(v47, v54, v53);
@@ -968,13 +968,13 @@ LABEL_145:
     }
 
     obj = v58;
-    CMMState = objc_msgSend_getCMMState(v8, v56, v57);
+    CMMState = objc_msgSend_getCMMState(itemCopy, v56, v57);
     if (CMMState)
     {
       goto LABEL_16;
     }
 
-    v62 = objc_msgSend_balloonBundleID(v8, v59, v60);
+    v62 = objc_msgSend_balloonBundleID(itemCopy, v59, v60);
     v63 = *MEMORY[0x1E69A6A08];
     v64 = IMBalloonExtensionIDWithSuffix();
     isEqualToString = objc_msgSend_isEqualToString_(v62, v65, v64);
@@ -982,7 +982,7 @@ LABEL_145:
     if (isEqualToString)
     {
 LABEL_16:
-      isSenderUnknown = objc_msgSend__isSenderUnknown(v8, v59, v60);
+      isSenderUnknown = objc_msgSend__isSenderUnknown(itemCopy, v59, v60);
       v69 = objc_msgSend_sharedInstance(IMCoreAccountsMonitor, v67, v68);
       isSignedIntoiCloud = objc_msgSend_isSignedIntoiCloud(v69, v70, v71);
 
@@ -1000,13 +1000,13 @@ LABEL_16:
       v275 = v74;
       if (CMMState)
       {
-        v37 = objc_msgSend_messageBodyStringForCMMMessage_(a1, v73, v8);
+        v37 = objc_msgSend_messageBodyStringForCMMMessage_(self, v73, itemCopy);
         if (IMOSLoggingEnabled())
         {
           v77 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
           {
-            v80 = objc_msgSend_guid(v8, v78, v79);
+            v80 = objc_msgSend_guid(itemCopy, v78, v79);
             *buf = 138412802;
             *&buf[4] = v80;
             *&buf[12] = 2048;
@@ -1059,7 +1059,7 @@ LABEL_16:
 
 LABEL_43:
     v90 = objc_alloc(MEMORY[0x1E696AD40]);
-    v91 = v8;
+    v91 = itemCopy;
     if (objc_msgSend_hasDataDetectorResults(v91, v92, v93) && (objc_msgSend_body(v91, v94, v95), v96 = objc_claimAutoreleasedReturnValue(), v99 = objc_msgSend_length(v96, v97, v98) < obj, v96, v99))
     {
       v100 = objc_msgSend_body(v91, v94, v95);
@@ -1083,18 +1083,18 @@ LABEL_48:
       IMRemoveTrackingInformationFromMutableAttributedString(v37);
     }
 
-    v109 = objc_msgSend_sender(v8, v107, v108);
-    isBusiness = objc_msgSend__isAllowlistedRichLinkSender_isBusiness_(a1, v110, v109, v294 == 1);
+    v109 = objc_msgSend_sender(itemCopy, v107, v108);
+    isBusiness = objc_msgSend__isAllowlistedRichLinkSender_isBusiness_(self, v110, v109, v294 == 1);
 
-    if ((v82 & 1) != 0 || !objc_msgSend_hasDataDetectorResults(v8, v112, v113))
+    if ((v82 & 1) != 0 || !objc_msgSend_hasDataDetectorResults(itemCopy, v112, v113))
     {
       v293 = 0;
     }
 
     else
     {
-      v114 = objc_msgSend_sender(v8, v112, v113);
-      v293 = objc_msgSend__richLinkRangesForMessageText_sender_isAllowlistedRichLinkSender_(a1, v115, v37, v114, isBusiness);
+      v114 = objc_msgSend_sender(itemCopy, v112, v113);
+      v293 = objc_msgSend__richLinkRangesForMessageText_sender_isAllowlistedRichLinkSender_(self, v115, v37, v114, isBusiness);
     }
 
     if (isTranscriptSharingEnabled)
@@ -1114,7 +1114,7 @@ LABEL_48:
       v335[2] = sub_1A82D3954;
       v335[3] = &unk_1E7811800;
       v118 = v117;
-      v338 = a1;
+      selfCopy = self;
       v336 = v118;
       v337 = buf;
       objc_msgSend_enumerateObjectsUsingBlock_(v293, v119, v335);
@@ -1140,8 +1140,8 @@ LABEL_48:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v357) = 0;
-    v285 = objc_msgSend_retractedPartIndexes(v8, v125, v126);
-    v128 = objc_msgSend_richCardsChatItemsForMessageItem_text_(a1, v127, v8, v37);
+    v285 = objc_msgSend_retractedPartIndexes(itemCopy, v125, v126);
+    v128 = objc_msgSend_richCardsChatItemsForMessageItem_text_(self, v127, itemCopy, v37);
     v130 = v128;
     if (v128)
     {
@@ -1152,7 +1152,7 @@ LABEL_144:
       goto LABEL_145;
     }
 
-    v131 = objc_msgSend_standaloneChipListChatItemForMessageItem_text_(a1, v129, v8, v37);
+    v131 = objc_msgSend_standaloneChipListChatItemForMessageItem_text_(self, v129, itemCopy, v37);
     v132 = v131;
     if (v131)
     {
@@ -1172,9 +1172,9 @@ LABEL_143:
     v322 = 0;
     v323 = v281;
     v314 = v37;
-    v133 = v8;
+    v133 = itemCopy;
     v315 = v133;
-    v324 = a1;
+    selfCopy2 = self;
     v327 = v275;
     v328 = v277;
     v329 = isSenderUnknown;
@@ -1182,7 +1182,7 @@ LABEL_143:
     v316 = v276;
     v319 = buf;
     v330 = v286;
-    v287 = v9;
+    v287 = contextCopy;
     v317 = v287;
     v320 = v345;
     v321 = &v339;
@@ -1262,7 +1262,7 @@ LABEL_92:
               v188 = objc_msgSend_transferForGUID_(v186, v187, v183);
 
               v191 = objc_msgSend_type(v188, v189, v190);
-              LODWORD(v186) = objc_msgSend__shouldAggregateForTransferType_(a1, v192, v191);
+              LODWORD(v186) = objc_msgSend__shouldAggregateForTransferType_(self, v192, v191);
 
               if (!v186)
               {
@@ -1402,7 +1402,7 @@ LABEL_86:
         }
       }
 
-      v221 = objc_msgSend_aggregatePartsForParts_forMessage_context_text_(a1, v213, v340[5], v292, v287, v278);
+      v221 = objc_msgSend_aggregatePartsForParts_forMessage_context_text_(self, v213, v340[5], v292, v287, v278);
       v222 = v340[5];
       v340[5] = v221;
 
@@ -1428,7 +1428,7 @@ LABEL_86:
           v228 = v340;
         }
 
-        v233 = objc_msgSend__retractedMessagePartsForMessage_parts_retractedPartIndexes_(a1, v227, v292, v228[5], v276);
+        v233 = objc_msgSend__retractedMessagePartsForMessage_parts_retractedPartIndexes_(self, v227, v292, v228[5], v276);
         v234 = v340[5];
         v340[5] = v233;
       }
@@ -1440,7 +1440,7 @@ LABEL_86:
       }
 
       v236 = v235;
-      v238 = objc_msgSend__processChatItemsForRichActions_(a1, v237, v236);
+      v238 = objc_msgSend__processChatItemsForRichActions_(self, v237, v236);
 
       v15 = v238;
       v132 = 0;
@@ -1549,21 +1549,21 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  v15 = objc_msgSend__newDetonatedMessagePartsForMessageItem_chatContext_photosPluginPayload_(a1, v13, v8, v9, v10);
+  v15 = objc_msgSend__newDetonatedMessagePartsForMessageItem_chatContext_photosPluginPayload_(self, v13, itemCopy, contextCopy, payloadCopy);
 LABEL_146:
 
   v239 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-+ (id)_processChatItemsForRichActions:(id)a3
++ (id)_processChatItemsForRichActions:(id)actions
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  actionsCopy = actions;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = actionsCopy;
 LABEL_5:
     v9 = v4;
 LABEL_6:
@@ -1596,13 +1596,13 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = objc_msgSend_mutableCopy(v3, v7, v8);
+    v4 = objc_msgSend_mutableCopy(actionsCopy, v7, v8);
     goto LABEL_5;
   }
 
-  if (v3)
+  if (actionsCopy)
   {
-    v33[0] = v3;
+    v33[0] = actionsCopy;
     v21 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v33, 1);
     v9 = objc_msgSend_mutableCopy(v21, v22, v23);
 
@@ -1617,13 +1617,13 @@ LABEL_7:
   return v18;
 }
 
-+ (id)richCardsChatItemsForMessageItem:(id)a3 text:(id)a4
++ (id)richCardsChatItemsForMessageItem:(id)item text:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_length(v6, v7, v8) == 1 && (objc_msgSend_string(v6, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_substringToIndex_(v11, v12, 1), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, *MEMORY[0x1E69A78B0]), v13, v11, isEqualToString))
+  itemCopy = item;
+  textCopy = text;
+  if (objc_msgSend_length(textCopy, v7, v8) == 1 && (objc_msgSend_string(textCopy, v9, v10), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_substringToIndex_(v11, v12, 1), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, *MEMORY[0x1E69A78B0]), v13, v11, isEqualToString))
   {
-    v17 = objc_msgSend_attributesAtIndex_effectiveRange_(v6, v16, 0, 0);
+    v17 = objc_msgSend_attributesAtIndex_effectiveRange_(textCopy, v16, 0, 0);
     v19 = objc_msgSend__arrayForKey_(v17, v18, *MEMORY[0x1E69A78A8]);
     v20 = objc_alloc(MEMORY[0x1E69A8200]);
     if (v19)
@@ -1655,11 +1655,11 @@ LABEL_7:
       v96 = v17;
       v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v32 = [IMRichLinkCardMessagePartChatItem alloc];
-      v35 = objc_msgSend_selectedRichCardIndex(v5, v33, v34);
-      v37 = objc_msgSend_initWithItem_richCards_selectedIndex_(v32, v36, v5, v24, v35);
+      v35 = objc_msgSend_selectedRichCardIndex(itemCopy, v33, v34);
+      v37 = objc_msgSend_initWithItem_richCards_selectedIndex_(v32, v36, itemCopy, v24, v35);
       v94 = objc_msgSend_suggestedRepliesList(v24, v38, v39);
       v40 = [IMRichActionFooterChatItem alloc];
-      v97 = objc_msgSend__initWithItem_(v40, v41, v5);
+      v97 = objc_msgSend__initWithItem_(v40, v41, itemCopy);
       v44 = objc_msgSend_richCards(v37, v42, v43);
       v47 = objc_msgSend_cards(v44, v45, v46);
       v50 = objc_msgSend_count(v47, v48, v49);
@@ -1667,11 +1667,11 @@ LABEL_7:
       if (v50 >= 2)
       {
         v53 = [IMRichActionCarouselCountChatItem alloc];
-        v56 = objc_msgSend_selectedRichCardIndex(v5, v54, v55);
+        v56 = objc_msgSend_selectedRichCardIndex(itemCopy, v54, v55);
         v59 = objc_msgSend_richCards(v37, v57, v58);
         v62 = objc_msgSend_cards(v59, v60, v61);
         v65 = objc_msgSend_count(v62, v63, v64);
-        v67 = objc_msgSend__initWithItem_selectedIndex_totalCount_(v53, v66, v5, v56, v65);
+        v67 = objc_msgSend__initWithItem_selectedIndex_totalCount_(v53, v66, itemCopy, v56, v65);
 
         objc_msgSend_addObject_(v31, v68, v67);
       }
@@ -1680,8 +1680,8 @@ LABEL_7:
       if (objc_msgSend_count(v94, v51, v52, v94))
       {
         v72 = [IMSuggestedRepliesMessagePartChatItem alloc];
-        v75 = objc_msgSend_selectedRichCardIndex(v5, v73, v74);
-        v77 = objc_msgSend_initWithItem_suggestedRepliesList_selectedIndex_(v72, v76, v5, v69, v75);
+        v75 = objc_msgSend_selectedRichCardIndex(itemCopy, v73, v74);
+        v77 = objc_msgSend_initWithItem_suggestedRepliesList_selectedIndex_(v72, v76, itemCopy, v69, v75);
         v80 = objc_msgSend_suggestedActionsList(v24, v78, v79);
         v83 = objc_msgSend_count(v80, v81, v82);
 
@@ -1723,21 +1723,21 @@ LABEL_7:
   return v31;
 }
 
-+ (id)expandRichCardsFor:(id)a3 richCards:(id)a4
++ (id)expandRichCardsFor:(id)for richCards:(id)cards
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  cardsCopy = cards;
   v7 = objc_opt_new();
-  v10 = objc_msgSend_expandToIndividualCard(v6, v8, v9);
+  v10 = objc_msgSend_expandToIndividualCard(cardsCopy, v8, v9);
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_1A82D5BA0;
   v17[3] = &unk_1E78118A0;
-  v18 = v5;
+  v18 = forCopy;
   v11 = v7;
   v19 = v11;
-  v12 = v5;
+  v12 = forCopy;
   objc_msgSend_enumerateObjectsUsingBlock_(v10, v13, v17);
   v14 = v19;
   v15 = v11;
@@ -1745,14 +1745,14 @@ LABEL_7:
   return v11;
 }
 
-+ (id)standaloneChipListChatItemForMessageItem:(id)a3 text:(id)a4
++ (id)standaloneChipListChatItemForMessageItem:(id)item text:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_length(v7, v8, v9) == 1 && (objc_msgSend_string(v7, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend_substringToIndex_(v12, v13, 1), v14 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v14, v15, *MEMORY[0x1E69A6CF0]), v14, v12, isEqualToString))
+  itemCopy = item;
+  textCopy = text;
+  if (objc_msgSend_length(textCopy, v8, v9) == 1 && (objc_msgSend_string(textCopy, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend_substringToIndex_(v12, v13, 1), v14 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v14, v15, *MEMORY[0x1E69A6CF0]), v14, v12, isEqualToString))
   {
-    v18 = objc_msgSend_attributesAtIndex_effectiveRange_(v7, v17, 0, 0);
-    if (objc_msgSend_isFromMe(v6, v19, v20))
+    v18 = objc_msgSend_attributesAtIndex_effectiveRange_(textCopy, v17, 0, 0);
+    if (objc_msgSend_isFromMe(itemCopy, v19, v20))
     {
       v22 = objc_msgSend__dictionaryForKey_(v18, v21, *MEMORY[0x1E69A7CE0]);
       v23 = objc_alloc(MEMORY[0x1E69A7FA8]);
@@ -1761,7 +1761,7 @@ LABEL_7:
       {
         v26 = v25;
         v27 = [IMSuggestedReplyMessagePartChatItem alloc];
-        v29 = objc_msgSend_initWithItem_suggestedReply_(v27, v28, v6, v26);
+        v29 = objc_msgSend_initWithItem_suggestedReply_(v27, v28, itemCopy, v26);
       }
 
       else
@@ -1772,7 +1772,7 @@ LABEL_7:
 
     else
     {
-      v30 = objc_msgSend_suggestedRepliesMessagePartChatItemForMessageItem_attributes_(a1, v21, v6, v18);
+      v30 = objc_msgSend_suggestedRepliesMessagePartChatItemForMessageItem_attributes_(self, v21, itemCopy, v18);
       v22 = v30;
       if (v30)
       {
@@ -1782,7 +1782,7 @@ LABEL_7:
 
       else
       {
-        v32 = objc_msgSend_suggestedActionsMessagePartChatItemForMessageItem_attributes_(a1, v31, v6, v18);
+        v32 = objc_msgSend_suggestedActionsMessagePartChatItemForMessageItem_attributes_(self, v31, itemCopy, v18);
       }
 
       v29 = v32;
@@ -1797,16 +1797,16 @@ LABEL_7:
   return v29;
 }
 
-+ (BOOL)isChatBotContentOnly:(id)a3
++ (BOOL)isChatBotContentOnly:(id)only
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5) == 1)
+  onlyCopy = only;
+  if (objc_msgSend_length(onlyCopy, v4, v5) == 1)
   {
-    v8 = objc_msgSend_string(v3, v6, v7);
+    v8 = objc_msgSend_string(onlyCopy, v6, v7);
     v10 = objc_msgSend_substringToIndex_(v8, v9, 1);
     isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x1E69A6CF0]);
 
-    v15 = objc_msgSend_string(v3, v13, v14);
+    v15 = objc_msgSend_string(onlyCopy, v13, v14);
     v17 = objc_msgSend_substringToIndex_(v15, v16, 1);
     v19 = objc_msgSend_isEqualToString_(v17, v18, *MEMORY[0x1E69A78B0]);
 
@@ -1821,12 +1821,12 @@ LABEL_7:
   return v20 & 1;
 }
 
-+ (id)suggestedRepliesMessagePartChatItemForMessageItem:(id)a3 attributes:(id)a4
++ (id)suggestedRepliesMessagePartChatItemForMessageItem:(id)item attributes:(id)attributes
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend__numberForKey_(v6, v7, *MEMORY[0x1E69A6CF8]);
+  itemCopy = item;
+  attributesCopy = attributes;
+  v8 = objc_msgSend__numberForKey_(attributesCopy, v7, *MEMORY[0x1E69A6CF8]);
   if (objc_msgSend_BOOLValue(v8, v9, v10))
   {
     v12 = 0;
@@ -1834,7 +1834,7 @@ LABEL_7:
 
   else
   {
-    v13 = objc_msgSend__arrayForKey_(v6, v11, *MEMORY[0x1E69A6CE8]);
+    v13 = objc_msgSend__arrayForKey_(attributesCopy, v11, *MEMORY[0x1E69A6CE8]);
     v14 = objc_alloc(MEMORY[0x1E69A7FA0]);
     v16 = objc_msgSend_initWithChipArray_(v14, v15, v13);
     v19 = objc_msgSend_suggestedReplies(v16, v17, v18);
@@ -1845,8 +1845,8 @@ LABEL_7:
       v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v25, v34, 1);
 
       v27 = [IMSuggestedRepliesMessagePartChatItem alloc];
-      v30 = objc_msgSend_selectedRichCardIndex(v5, v28, v29);
-      v12 = objc_msgSend_initWithItem_suggestedRepliesList_selectedIndex_(v27, v31, v5, v26, v30);
+      v30 = objc_msgSend_selectedRichCardIndex(itemCopy, v28, v29);
+      v12 = objc_msgSend_initWithItem_suggestedRepliesList_selectedIndex_(v27, v31, itemCopy, v26, v30);
     }
 
     else
@@ -1860,17 +1860,17 @@ LABEL_7:
   return v12;
 }
 
-+ (id)suggestedActionsMessagePartChatItemForMessageItem:(id)a3 attributes:(id)a4
++ (id)suggestedActionsMessagePartChatItemForMessageItem:(id)item attributes:(id)attributes
 {
-  v5 = a3;
-  v7 = objc_msgSend__arrayForKey_(a4, v6, *MEMORY[0x1E69A6CE8]);
+  itemCopy = item;
+  v7 = objc_msgSend__arrayForKey_(attributes, v6, *MEMORY[0x1E69A6CE8]);
   v8 = objc_alloc(MEMORY[0x1E69A7FA0]);
   v10 = objc_msgSend_initWithChipArray_(v8, v9, v7);
   v13 = objc_msgSend_suggestedActions(v10, v11, v12);
   if (objc_msgSend_count(v13, v14, v15))
   {
     v16 = [IMSuggestedActionsMessagePartChatItem alloc];
-    v18 = objc_msgSend_initWithItem_suggestedActionsList_(v16, v17, v5, v13);
+    v18 = objc_msgSend_initWithItem_suggestedActionsList_(v16, v17, itemCopy, v13);
   }
 
   else
@@ -1881,22 +1881,22 @@ LABEL_7:
   return v18;
 }
 
-+ (id)_newAudioMessagePartsForMessageItem:(id)a3 text:(id)a4 chatContext:(id)a5 retractedPartIndexes:(id)a6 singlePart:(id)a7
++ (id)_newAudioMessagePartsForMessageItem:(id)item text:(id)text chatContext:(id)context retractedPartIndexes:(id)indexes singlePart:(id)part
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v19 = objc_msgSend_length(v13, v17, v18);
-  v22 = objc_msgSend_fileTransferGUIDs(v12, v20, v21);
+  itemCopy = item;
+  textCopy = text;
+  contextCopy = context;
+  indexesCopy = indexes;
+  partCopy = part;
+  v19 = objc_msgSend_length(textCopy, v17, v18);
+  v22 = objc_msgSend_fileTransferGUIDs(itemCopy, v20, v21);
   v25 = objc_msgSend_firstObject(v22, v23, v24);
 
-  if (v25 && !objc_msgSend_count(v15, v26, v27))
+  if (v25 && !objc_msgSend_count(indexesCopy, v26, v27))
   {
     v33 = [IMAudioMessageChatItem alloc];
-    v30 = objc_msgSend__initWithItem_text_index_messagePartRange_transferGUID_chatContext_(v33, v34, v12, v13, 0, 0, v19, v25, v14);
-    v37 = objc_msgSend_serviceVariant(v14, v35, v36) == 1;
+    v30 = objc_msgSend__initWithItem_text_index_messagePartRange_transferGUID_chatContext_(v33, v34, itemCopy, textCopy, 0, 0, v19, v25, contextCopy);
+    v37 = objc_msgSend_serviceVariant(contextCopy, v35, v36) == 1;
     objc_msgSend_setIsBusiness_(v30, v38, v37);
     v31 = objc_msgSend_arrayWithObject_(MEMORY[0x1E695DEC8], v39, v30);
 LABEL_9:
@@ -1905,16 +1905,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (objc_msgSend_count(v15, v26, v27))
+  if (objc_msgSend_count(indexesCopy, v26, v27))
   {
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v30 = v28;
-    if (v16)
+    if (partCopy)
     {
-      objc_msgSend_addObject_(v28, v29, v16);
+      objc_msgSend_addObject_(v28, v29, partCopy);
     }
 
-    v31 = objc_msgSend__retractedMessagePartsForMessage_parts_retractedPartIndexes_(a1, v29, v12, v30, v15);
+    v31 = objc_msgSend__retractedMessagePartsForMessage_parts_retractedPartIndexes_(self, v29, itemCopy, v30, indexesCopy);
     goto LABEL_9;
   }
 
@@ -1924,18 +1924,18 @@ LABEL_10:
   return v32;
 }
 
-+ (id)_retractedMessagePartsForMessage:(id)a3 parts:(id)a4 retractedPartIndexes:(id)a5
++ (id)_retractedMessagePartsForMessage:(id)message parts:(id)parts retractedPartIndexes:(id)indexes
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_mutableCopy(v8, v10, v11);
-  if (objc_msgSend_count(v9, v13, v14))
+  messageCopy = message;
+  partsCopy = parts;
+  indexesCopy = indexes;
+  v12 = objc_msgSend_mutableCopy(partsCopy, v10, v11);
+  if (objc_msgSend_count(indexesCopy, v13, v14))
   {
     v36 = v12;
-    v17 = objc_msgSend_failedRetractPartIndexes(v7, v15, v16);
-    v20 = objc_msgSend_editUnsupportedByHandleIDs(v7, v18, v19);
+    v17 = objc_msgSend_failedRetractPartIndexes(messageCopy, v15, v16);
+    v20 = objc_msgSend_editUnsupportedByHandleIDs(messageCopy, v18, v19);
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = 0u;
     v44 = 0u;
@@ -1956,7 +1956,7 @@ LABEL_10:
             objc_enumerationMutation(v22);
           }
 
-          v30 = objc_msgSend__imHandleWithID_(v7, v25, *(*(&v43 + 1) + 8 * i));
+          v30 = objc_msgSend__imHandleWithID_(messageCopy, v25, *(*(&v43 + 1) + 8 * i));
           if (v30)
           {
             objc_msgSend_addObject_(v21, v29, v30);
@@ -1973,15 +1973,15 @@ LABEL_10:
     v37[1] = 3221225472;
     v37[2] = sub_1A82D64B8;
     v37[3] = &unk_1E78118F0;
-    v38 = v7;
+    v38 = messageCopy;
     v39 = v17;
     v40 = v21;
-    v41 = v8;
+    v41 = partsCopy;
     v12 = v36;
     v42 = v36;
     v31 = v21;
     v32 = v17;
-    objc_msgSend_enumerateIndexesUsingBlock_(v9, v33, v37);
+    objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v33, v37);
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -2005,13 +2005,13 @@ LABEL_10:
   }
 }
 
-+ (id)aggregatePartsForParts:(id)a3 forMessage:(id)a4 context:(id)a5 text:(id)a6
++ (id)aggregatePartsForParts:(id)parts forMessage:(id)message context:(id)context text:(id)text
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v15 = objc_msgSend_mutableCopy(v9, v13, v14);
+  partsCopy = parts;
+  messageCopy = message;
+  contextCopy = context;
+  textCopy = text;
+  v15 = objc_msgSend_mutableCopy(partsCopy, v13, v14);
   if (objc_msgSend_count(v15, v16, v17))
   {
     v18 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -2027,9 +2027,9 @@ LABEL_10:
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1A82D69E4;
     aBlock[3] = &unk_1E7811918;
-    v49 = v10;
-    v50 = v11;
-    v24 = v12;
+    v49 = messageCopy;
+    v50 = contextCopy;
+    v24 = textCopy;
     v51 = v24;
     v25 = _Block_copy(aBlock);
     v43[0] = MEMORY[0x1E69E9820];
@@ -2063,17 +2063,17 @@ LABEL_10:
   return v15;
 }
 
-+ (id)messageBodyStringForAttachmentGUIDs:(id)a3
++ (id)messageBodyStringForAttachmentGUIDs:(id)ds
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v27, v31, 16);
   if (v7)
   {
@@ -2123,9 +2123,9 @@ LABEL_10:
   return v4;
 }
 
-+ (BOOL)_shouldAggregateForTransferType:(id)a3
++ (BOOL)_shouldAggregateForTransferType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (qword_1EB2EA208 != -1)
   {
     sub_1A84DFD40();
@@ -2136,25 +2136,25 @@ LABEL_10:
     sub_1A84DFD54();
   }
 
-  v4 = off_1EB2EA200(v3, qword_1EB2EA218) != 0;
+  v4 = off_1EB2EA200(typeCopy, qword_1EB2EA218) != 0;
 
   return v4;
 }
 
-+ (id)_messageItemWithPartsDeleted:(id)a3 fromMessageItem:(id)a4 indexesOfItemsDeleted:(id *)a5 indexToRangeMapping:(id *)a6
++ (id)_messageItemWithPartsDeleted:(id)deleted fromMessageItem:(id)item indexesOfItemsDeleted:(id *)itemsDeleted indexToRangeMapping:(id *)mapping
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v44 = a4;
+  deletedCopy = deleted;
+  itemCopy = item;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v53 = v7;
+      v53 = deletedCopy;
       v54 = 2112;
-      v55 = v44;
+      v55 = itemCopy;
       _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "Message with parts deleted: %@ from message: %@", buf, 0x16u);
     }
   }
@@ -2165,7 +2165,7 @@ LABEL_10:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v7;
+  obj = deletedCopy;
   v11 = 0;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v47, v51, 16);
   if (v14)
@@ -2226,53 +2226,53 @@ LABEL_10:
     while (v14);
   }
 
-  if (a5)
+  if (itemsDeleted)
   {
     v36 = v9;
-    *a5 = v9;
+    *itemsDeleted = v9;
   }
 
   v37 = v45;
-  if (a6)
+  if (mapping)
   {
     v38 = v45;
     v37 = v45;
-    *a6 = v45;
+    *mapping = v45;
   }
 
-  v39 = objc_msgSend__messageItemWithIndexesDeleted_subRangesToDeleteMapping_deleteSubject_deleteTransferCallback_createItemCallback_fromMessageItem_(MEMORY[0x1E69A8138], v35, v9, v37, v11, &unk_1F1B6E400, &unk_1F1B6E420, v44);
+  v39 = objc_msgSend__messageItemWithIndexesDeleted_subRangesToDeleteMapping_deleteSubject_deleteTransferCallback_createItemCallback_fromMessageItem_(MEMORY[0x1E69A8138], v35, v9, v37, v11, &unk_1F1B6E400, &unk_1F1B6E420, itemCopy);
 
   v40 = *MEMORY[0x1E69E9840];
 
   return v39;
 }
 
-+ (id)chatItemGUIDForMessageGUID:(id)a3 partIndex:(int64_t)a4
++ (id)chatItemGUIDForMessageGUID:(id)d partIndex:(int64_t)index
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
+  dCopy = d;
   v7 = [v5 alloc];
-  v9 = objc_msgSend_initWithFormat_(v7, v8, @"p:%ld/%@", a4, v6);
+  v9 = objc_msgSend_initWithFormat_(v7, v8, @"p:%ld/%@", index, dCopy);
 
   return v9;
 }
 
-- (id)_initWithItem:(id)a3 index:(int64_t)a4 messagePartRange:(_NSRange)a5 syndicationBehavior:(int64_t)a6
+- (id)_initWithItem:(id)item index:(int64_t)index messagePartRange:(_NSRange)range syndicationBehavior:(int64_t)behavior
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
-  v13 = objc_msgSend__initWithItem_(self, v12, v11);
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  v13 = objc_msgSend__initWithItem_(self, v12, itemCopy);
   v15 = v13;
   if (v13)
   {
-    v13[10] = a4;
+    v13[10] = index;
     v16 = v13 + 21;
     v13[21] = location;
     v13[22] = length;
-    v13[20] = objc_msgSend_replyCountForPartIndex_(v11, v14, a4);
-    v15[16] = a6;
-    v20 = objc_msgSend_syndicationRanges(v11, v17, v18);
+    v13[20] = objc_msgSend_replyCountForPartIndex_(itemCopy, v14, index);
+    v15[16] = behavior;
+    v20 = objc_msgSend_syndicationRanges(itemCopy, v17, v18);
     if (v20)
     {
       v21 = objc_msgSend_messagePartSyndicationRangeForRange_inRangesArray_(MEMORY[0x1E69A8158], v19, *v16, v15[22], v20);
@@ -2286,8 +2286,8 @@ LABEL_10:
           if (v15[16] == 1)
           {
             v29 = [IMMessagePartHighlightChatItem alloc];
-            v32 = objc_msgSend_guid(v11, v30, v31);
-            v34 = objc_msgSend__initWithItem_highlightedMessagePartGUID_highlightedMessagePartIndex_highlightedMessagePartRange_(v29, v33, v11, v32, a4, location, length);
+            v32 = objc_msgSend_guid(itemCopy, v30, v31);
+            v34 = objc_msgSend__initWithItem_highlightedMessagePartGUID_highlightedMessagePartIndex_highlightedMessagePartRange_(v29, v33, itemCopy, v32, index, location, length);
             v35 = v15[15];
             v15[15] = v34;
           }
@@ -2299,66 +2299,66 @@ LABEL_10:
   return v15;
 }
 
-- (id)_initWithItem:(id)a3 text:(id)a4 translationSecondaryText:(id)a5 index:(int64_t)a6 messagePartRange:(_NSRange)a7 visibleAssociatedMessageChatItems:(id)a8
+- (id)_initWithItem:(id)item text:(id)text translationSecondaryText:(id)secondaryText index:(int64_t)index messagePartRange:(_NSRange)range visibleAssociatedMessageChatItems:(id)items
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  textCopy = text;
+  secondaryTextCopy = secondaryText;
+  itemsCopy = items;
   v20 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v18, v19);
   isSWYAttachmentsEnabled = objc_msgSend_isSWYAttachmentsEnabled(v20, v21, v22);
 
   if (isSWYAttachmentsEnabled)
   {
-    isFileAttachment = objc_msgSend_isFileAttachment(v14, v24, v25);
-    v28 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v27, v14, a6, location, length, isFileAttachment);
+    isFileAttachment = objc_msgSend_isFileAttachment(itemCopy, v24, v25);
+    v28 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v27, itemCopy, index, location, length, isFileAttachment);
   }
 
   else
   {
-    v28 = objc_msgSend__initWithItem_index_messagePartRange_(self, v24, v14, a6, location, length);
+    v28 = objc_msgSend__initWithItem_index_messagePartRange_(self, v24, itemCopy, index, location, length);
   }
 
   v31 = v28;
   if (v28)
   {
-    v32 = objc_msgSend_guid(v14, v29, v30);
-    v34 = objc_msgSend_chatItemGUIDForMessageGUID_partIndex_(IMMessagePartChatItem, v33, v32, a6);
+    v32 = objc_msgSend_guid(itemCopy, v29, v30);
+    v34 = objc_msgSend_chatItemGUIDForMessageGUID_partIndex_(IMMessagePartChatItem, v33, v32, index);
     objc_msgSend__setGUID_(v31, v35, v34);
-    v37 = objc_msgSend_extractAndSetChipListFrom_(v31, v36, v15);
+    v37 = objc_msgSend_extractAndSetChipListFrom_(v31, v36, textCopy);
     v38 = *(v31 + 64);
     *(v31 + 64) = v37;
 
-    v41 = objc_msgSend_copy(v16, v39, v40);
+    v41 = objc_msgSend_copy(secondaryTextCopy, v39, v40);
     v42 = *(v31 + 72);
     *(v31 + 72) = v41;
 
-    if (objc_msgSend_isCorrupt(v14, v43, v44))
+    if (objc_msgSend_isCorrupt(itemCopy, v43, v44))
     {
-      v47 = objc_msgSend_body(v14, v45, v46);
+      v47 = objc_msgSend_body(itemCopy, v45, v46);
       v50 = objc_msgSend_copy(v47, v48, v49);
       v51 = *(v31 + 88);
       *(v31 + 88) = v50;
     }
 
-    v52 = objc_msgSend_copy(v17, v45, v46);
+    v52 = objc_msgSend_copy(itemsCopy, v45, v46);
     objc_msgSend__setVisibleAssociatedMessageChatItems_(v31, v53, v52);
 
-    *(v31 + 59) = objc_msgSend_isPendingSatelliteSend(v14, v54, v55);
+    *(v31 + 59) = objc_msgSend_isPendingSatelliteSend(itemCopy, v54, v55);
   }
 
   return v31;
 }
 
-- (id)extractAndSetChipListFrom:(id)a3
+- (id)extractAndSetChipListFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy)
   {
-    v8 = objc_msgSend_string(v4, v5, v6);
+    v8 = objc_msgSend_string(fromCopy, v5, v6);
     v10 = objc_msgSend_rangeOfString_(v8, v9, *MEMORY[0x1E69A6CF0]);
     v12 = v11;
 
@@ -2389,14 +2389,14 @@ LABEL_10:
   return v16;
 }
 
-- (void)_setVisibleAssociatedMessageChatItems:(id)a3
+- (void)_setVisibleAssociatedMessageChatItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   visibleAssociatedMessageChatItems = self->_visibleAssociatedMessageChatItems;
-  if (visibleAssociatedMessageChatItems != v6 && (objc_msgSend_isEqualToArray_(visibleAssociatedMessageChatItems, v5, v6) & 1) == 0)
+  if (visibleAssociatedMessageChatItems != itemsCopy && (objc_msgSend_isEqualToArray_(visibleAssociatedMessageChatItems, v5, itemsCopy) & 1) == 0)
   {
-    objc_storeStrong(&self->_visibleAssociatedMessageChatItems, a3);
+    objc_storeStrong(&self->_visibleAssociatedMessageChatItems, items);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;

@@ -1,28 +1,28 @@
 @interface CKNavBarConversationIdentityView
-- (BOOL)avatarWantsTapAtPoint:(CGPoint)a3 fromView:(id)a4;
+- (BOOL)avatarWantsTapAtPoint:(CGPoint)point fromView:(id)view;
 - (BOOL)chevronHidden;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)subtitleHidden;
 - (CGSize)intrinsicContentSize;
-- (CKNavBarConversationIdentityView)initWithConversation:(id)a3;
-- (CKNavBarConversationIdentityView)initWithFrame:(CGRect)a3;
+- (CKNavBarConversationIdentityView)initWithConversation:(id)conversation;
+- (CKNavBarConversationIdentityView)initWithFrame:(CGRect)frame;
 - (CKNavBarConversationIdentityViewDelegate)delegate;
 - (NSString)subtitle;
 - (int64_t)style;
-- (void)chatIsFilteredChangedWithNotification:(id)a3;
-- (void)chatItemsChangedWithNotification:(id)a3;
+- (void)chatIsFilteredChangedWithNotification:(id)notification;
+- (void)chatItemsChangedWithNotification:(id)notification;
 - (void)didMoveToWindow;
-- (void)handleTapWithRecognizer:(id)a3;
+- (void)handleTapWithRecognizer:(id)recognizer;
 - (void)layoutSubviews;
-- (void)nicknameStoreChangedWithNotification:(id)a3;
+- (void)nicknameStoreChangedWithNotification:(id)notification;
 - (void)performAnimationForPhotoUpdate;
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4;
-- (void)setChevronHidden:(BOOL)a3;
-- (void)setConversation:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleHidden:(BOOL)a3;
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection;
+- (void)setChevronHidden:(BOOL)hidden;
+- (void)setConversation:(id)conversation;
+- (void)setDelegate:(id)delegate;
+- (void)setStyle:(int64_t)style;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleHidden:(BOOL)hidden;
 - (void)updateAvatarViewVisualIdentity;
 @end
 
@@ -36,23 +36,23 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_190CBC7D8();
   swift_unknownObjectRelease();
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
   v5 = *(self + OBJC_IVAR___CKNavBarConversationIdentityView_conversation);
-  *(self + OBJC_IVAR___CKNavBarConversationIdentityView_conversation) = a3;
+  *(self + OBJC_IVAR___CKNavBarConversationIdentityView_conversation) = conversation;
   sub_1902188FC(0, &qword_1EAD466B0);
-  v6 = a3;
-  v7 = self;
+  conversationCopy = conversation;
+  selfCopy = self;
   if ((sub_190D57D90() & 1) == 0)
   {
     sub_190CBCB70();
@@ -69,11 +69,11 @@
   return v2;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v4 = sub_190D56F10();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   CKNavBarConversationIdentityView.subtitle.setter(v4, v6);
 }
 
@@ -84,10 +84,10 @@
   return *(self + v3);
 }
 
-- (void)setSubtitleHidden:(BOOL)a3
+- (void)setSubtitleHidden:(BOOL)hidden
 {
-  v4 = self;
-  CKNavBarConversationIdentityView.subtitleHidden.setter(a3);
+  selfCopy = self;
+  CKNavBarConversationIdentityView.subtitleHidden.setter(hidden);
 }
 
 - (BOOL)chevronHidden
@@ -97,10 +97,10 @@
   return *(self + v3);
 }
 
-- (void)setChevronHidden:(BOOL)a3
+- (void)setChevronHidden:(BOOL)hidden
 {
-  v4 = self;
-  CKNavBarConversationIdentityView.chevronHidden.setter(a3);
+  selfCopy = self;
+  CKNavBarConversationIdentityView.chevronHidden.setter(hidden);
 }
 
 - (int64_t)style
@@ -110,35 +110,35 @@
   return *(self + v3);
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  v4 = self;
-  CKNavBarConversationIdentityView.style.setter(a3);
+  selfCopy = self;
+  CKNavBarConversationIdentityView.style.setter(style);
 }
 
-- (CKNavBarConversationIdentityView)initWithConversation:(id)a3
+- (CKNavBarConversationIdentityView)initWithConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = sub_190CC1444(v3);
+  conversationCopy = conversation;
+  v4 = sub_190CC1444(conversationCopy);
 
   return v4;
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CKNavBarConversationIdentityView.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CKNavBarConversationIdentityView.layoutSubviews()();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKNavBarConversationIdentityView.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -149,93 +149,93 @@
   return result;
 }
 
-- (void)handleTapWithRecognizer:(id)a3
+- (void)handleTapWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_190CBE3CC(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_190CBE3CC(recognizerCopy);
 }
 
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection
 {
   sub_1902188FC(0, &qword_1EAD46500);
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   if (sub_190D57D90())
   {
-    [(CKNavBarConversationIdentityView *)v7 invalidateIntrinsicContentSize];
-    [(CKNavBarConversationIdentityView *)v7 setNeedsLayout];
+    [(CKNavBarConversationIdentityView *)selfCopy invalidateIntrinsicContentSize];
+    [(CKNavBarConversationIdentityView *)selfCopy setNeedsLayout];
   }
 }
 
 - (void)updateAvatarViewVisualIdentity
 {
-  v2 = self;
+  selfCopy = self;
   CKNavBarConversationIdentityView.updateAvatarViewVisualIdentity()();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = CKNavBarConversationIdentityView.gestureRecognizer(_:shouldReceive:)(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = CKNavBarConversationIdentityView.gestureRecognizer(_:shouldReceive:)(recognizerCopy, touchCopy);
 
   return v9;
 }
 
-- (BOOL)avatarWantsTapAtPoint:(CGPoint)a3 fromView:(id)a4
+- (BOOL)avatarWantsTapAtPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(self) = CKNavBarConversationIdentityView.avatarWantsTap(at:from:)(__PAIR128__(*&y, *&x), v7);
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = CKNavBarConversationIdentityView.avatarWantsTap(at:from:)(__PAIR128__(*&y, *&x), viewCopy);
 
   return self & 1;
 }
 
 - (void)performAnimationForPhotoUpdate
 {
-  v2 = self;
+  selfCopy = self;
   CKNavBarConversationIdentityView.performAnimationForPhotoUpdate()();
 }
 
-- (CKNavBarConversationIdentityView)initWithFrame:(CGRect)a3
+- (CKNavBarConversationIdentityView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)chatIsFilteredChangedWithNotification:(id)a3
+- (void)chatIsFilteredChangedWithNotification:(id)notification
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D50F60();
-  v8 = self;
+  selfCopy = self;
   sub_190CBC7D8();
   sub_190CBCF68();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)chatItemsChangedWithNotification:(id)a3
+- (void)chatItemsChangedWithNotification:(id)notification
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D50F60();
-  v8 = self;
+  selfCopy = self;
   sub_190CC03FC();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)nicknameStoreChangedWithNotification:(id)a3
+- (void)nicknameStoreChangedWithNotification:(id)notification
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);

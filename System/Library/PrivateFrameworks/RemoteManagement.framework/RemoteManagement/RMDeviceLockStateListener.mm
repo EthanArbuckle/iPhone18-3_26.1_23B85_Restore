@@ -1,8 +1,8 @@
 @interface RMDeviceLockStateListener
-+ (id)newListenerWithDelegate:(id)a3;
-- (RMDeviceLockStateListener)initWithDelegate:(id)a3;
++ (id)newListenerWithDelegate:(id)delegate;
+- (RMDeviceLockStateListener)initWithDelegate:(id)delegate;
 - (RMDeviceLockStateListenerDelegate)delegate;
-- (void)didReceiveNotificationForStream:(id)a3 notificationName:(id)a4;
+- (void)didReceiveNotificationForStream:(id)stream notificationName:(id)name;
 - (void)startListening;
 - (void)stopListening;
 - (void)triggerAggregatingTimerAction;
@@ -10,24 +10,24 @@
 
 @implementation RMDeviceLockStateListener
 
-+ (id)newListenerWithDelegate:(id)a3
++ (id)newListenerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[RMDeviceLockStateListener alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[RMDeviceLockStateListener alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-- (RMDeviceLockStateListener)initWithDelegate:(id)a3
+- (RMDeviceLockStateListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = RMDeviceLockStateListener;
   v5 = [(RMDeviceLockStateListener *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [RMDebounceTimer debounceTimerWithMinimumInterval:v6 maximumInterval:@"RMDeviceLockStateListener" delegate:1.0 identifier:5.0];
     debouncer = v6->_debouncer;
     v6->_debouncer = v7;
@@ -100,17 +100,17 @@
   }
 }
 
-- (void)didReceiveNotificationForStream:(id)a3 notificationName:(id)a4
+- (void)didReceiveNotificationForStream:(id)stream notificationName:(id)name
 {
-  v5 = [RMLog deviceLockState:a3];
+  v5 = [RMLog deviceLockState:stream];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *v7 = 0;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Device lock state notification", v7, 2u);
   }
 
-  v6 = [(RMDeviceLockStateListener *)self debouncer];
-  [v6 trigger];
+  debouncer = [(RMDeviceLockStateListener *)self debouncer];
+  [debouncer trigger];
 }
 
 - (void)triggerAggregatingTimerAction
@@ -118,22 +118,22 @@
   v3 = self->_syncLock;
   objc_sync_enter(v3);
   v4 = +[RMDevice currentDevice];
-  v5 = [v4 locked];
+  locked = [v4 locked];
 
-  if (self->_previousLockState != v5)
+  if (self->_previousLockState != locked)
   {
-    self->_previousLockState = v5;
+    self->_previousLockState = locked;
     v6 = +[RMLog deviceLockState];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [NSNumber numberWithBool:v5];
+      v7 = [NSNumber numberWithBool:locked];
       v9 = 138543362;
       v10 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Device lock state changed to: %{public}@", &v9, 0xCu);
     }
 
-    v8 = [(RMDeviceLockStateListener *)self delegate];
-    [v8 lockStateDidChange:v5];
+    delegate = [(RMDeviceLockStateListener *)self delegate];
+    [delegate lockStateDidChange:locked];
   }
 
   objc_sync_exit(v3);

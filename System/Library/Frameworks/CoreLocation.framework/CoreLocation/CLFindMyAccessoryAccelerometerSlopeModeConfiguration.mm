@@ -1,22 +1,22 @@
 @interface CLFindMyAccessoryAccelerometerSlopeModeConfiguration
-- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithCoder:(id)a3;
-- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithThreshold:(float)a3 sampleCount:(unsigned __int8)a4 sampleRate:(unsigned __int8)a5;
-- (void)encodeWithCoder:(id)a3;
+- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithCoder:(id)coder;
+- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithThreshold:(float)threshold sampleCount:(unsigned __int8)count sampleRate:(unsigned __int8)rate;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLFindMyAccessoryAccelerometerSlopeModeConfiguration
 
-- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithThreshold:(float)a3 sampleCount:(unsigned __int8)a4 sampleRate:(unsigned __int8)a5
+- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithThreshold:(float)threshold sampleCount:(unsigned __int8)count sampleRate:(unsigned __int8)rate
 {
-  v6 = a4;
+  countCopy = count;
   [objc_opt_class() minimumThreshold];
-  if (v9 > a3)
+  if (v9 > threshold)
   {
     return 0;
   }
 
   [objc_opt_class() maximumThreshold];
-  if (v10 < a3 || [objc_opt_class() minimumSampleCount] > v6 || objc_msgSend(objc_opt_class(), "maximumSampleCount") < v6)
+  if (v10 < threshold || [objc_opt_class() minimumSampleCount] > countCopy || objc_msgSend(objc_opt_class(), "maximumSampleCount") < countCopy)
   {
     return 0;
   }
@@ -26,38 +26,38 @@
   result = [(CLFindMyAccessoryAccelerometerSlopeModeConfiguration *)&v12 init];
   if (result)
   {
-    result->_threshold = a3;
-    result->_sampleCount = v6;
-    result->_sampleRate = a5;
+    result->_threshold = threshold;
+    result->_sampleCount = countCopy;
+    result->_sampleRate = rate;
   }
 
   return result;
 }
 
-- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithCoder:(id)a3
+- (CLFindMyAccessoryAccelerometerSlopeModeConfiguration)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CLFindMyAccessoryAccelerometerSlopeModeConfiguration;
   v4 = [(CLFindMyAccessoryAccelerometerSlopeModeConfiguration *)&v7 init];
   if (v4)
   {
-    v4->_sampleCount = [a3 decodeIntForKey:@"sampleCount"];
-    [a3 decodeFloatForKey:@"threshold"];
+    v4->_sampleCount = [coder decodeIntForKey:@"sampleCount"];
+    [coder decodeFloatForKey:@"threshold"];
     v4->_threshold = v5;
-    v4->_sampleRate = [a3 decodeIntForKey:@"sampleRate"];
+    v4->_sampleRate = [coder decodeIntForKey:@"sampleRate"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:self->_sampleCount forKey:@"sampleCount"];
+  [coder encodeInt:self->_sampleCount forKey:@"sampleCount"];
   *&v5 = self->_threshold;
-  [a3 encodeFloat:@"threshold" forKey:v5];
+  [coder encodeFloat:@"threshold" forKey:v5];
   sampleRate = self->_sampleRate;
 
-  [a3 encodeInt:sampleRate forKey:@"sampleRate"];
+  [coder encodeInt:sampleRate forKey:@"sampleRate"];
 }
 
 @end

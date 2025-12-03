@@ -19,8 +19,8 @@
     v4 = 13.0;
     if (!_UIDeviceNativeUserInterfaceIdiom() && MGGetBoolAnswer())
     {
-      v5 = [objc_opt_self() mainScreen];
-      [v5 _referenceBounds];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen _referenceBounds];
       v7 = v6;
 
       v8 = MGGetBoolAnswer();

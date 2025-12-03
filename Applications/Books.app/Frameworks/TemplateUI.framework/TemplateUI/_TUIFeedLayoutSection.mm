@@ -1,44 +1,44 @@
 @interface _TUIFeedLayoutSection
-- (BOOL)lq_updateAuxiliaryLayoutWithTransactionGroup:(id)a3;
-- (BOOL)lq_updateLayerLayoutWithTransactionGroup:(id)a3;
-- (BOOL)lq_updateLayoutWithTransactionGroup:(id)a3;
+- (BOOL)lq_updateAuxiliaryLayoutWithTransactionGroup:(id)group;
+- (BOOL)lq_updateLayerLayoutWithTransactionGroup:(id)group;
+- (BOOL)lq_updateLayoutWithTransactionGroup:(id)group;
 - (TUIFeedLayoutController)feedLayoutController;
-- (_TUIFeedLayoutSection)initWithFeedId:(id)a3 section:(unint64_t)a4 controller:(id)a5 entry:(id)a6;
+- (_TUIFeedLayoutSection)initWithFeedId:(id)id section:(unint64_t)section controller:(id)controller entry:(id)entry;
 - (id)UUID;
-- (id)loadingRenderModelWithSize:(CGSize)a3 center:(CGPoint)a4 environment:(id)a5;
-- (void)_instantiateTemplateWithTransactionGroup:(id)a3;
+- (id)loadingRenderModelWithSize:(CGSize)size center:(CGPoint)center environment:(id)environment;
+- (void)_instantiateTemplateWithTransactionGroup:(id)group;
 - (void)_setupController;
 - (void)_teardownController;
 - (void)debugDumpEnvironmentContainerStructure;
-- (void)lq_appendAnchorsToSet:(id)a3;
-- (void)lq_createEmptyRenderModelWithSize:(CGSize)a3;
-- (void)lq_instantiateWithController:(id)a3 transactionGroup:(id)a4;
-- (void)lq_loadOrUpdateEntry:(id)a3 data:(id)a4 controller:(id)a5 transactionGroup:(id)a6;
-- (void)lq_updateEnvironment:(id)a3 withTransactionGroup:(id)a4;
-- (void)setStatsMode:(unint64_t)a3;
-- (void)suspendAndTeardownWithTransactionGroup:(id)a3;
+- (void)lq_appendAnchorsToSet:(id)set;
+- (void)lq_createEmptyRenderModelWithSize:(CGSize)size;
+- (void)lq_instantiateWithController:(id)controller transactionGroup:(id)group;
+- (void)lq_loadOrUpdateEntry:(id)entry data:(id)data controller:(id)controller transactionGroup:(id)group;
+- (void)lq_updateEnvironment:(id)environment withTransactionGroup:(id)group;
+- (void)setStatsMode:(unint64_t)mode;
+- (void)suspendAndTeardownWithTransactionGroup:(id)group;
 @end
 
 @implementation _TUIFeedLayoutSection
 
-- (_TUIFeedLayoutSection)initWithFeedId:(id)a3 section:(unint64_t)a4 controller:(id)a5 entry:(id)a6
+- (_TUIFeedLayoutSection)initWithFeedId:(id)id section:(unint64_t)section controller:(id)controller entry:(id)entry
 {
-  v10 = a5;
-  v11 = a6;
+  controllerCopy = controller;
+  entryCopy = entry;
   v17.receiver = self;
   v17.super_class = _TUIFeedLayoutSection;
   v12 = [(_TUIFeedLayoutSection *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_feedId.uniqueIdentifier = a3.var0;
-    v12->_section = a4;
-    v14 = [v10 queueContext];
+    v12->_feedId.uniqueIdentifier = id.var0;
+    v12->_section = section;
+    queueContext = [controllerCopy queueContext];
     queueContext = v13->_queueContext;
-    v13->_queueContext = v14;
+    v13->_queueContext = queueContext;
 
-    objc_storeStrong(&v13->_entry, a6);
-    objc_storeWeak(&v13->_feedLayoutController, v10);
+    objc_storeStrong(&v13->_entry, entry);
+    objc_storeWeak(&v13->_feedLayoutController, controllerCopy);
     [(_TUIFeedLayoutSection *)v13 _setupController];
   }
 
@@ -51,31 +51,31 @@
   if (self->_template)
   {
     v21 = [TUILayoutController alloc];
-    v3 = [(TUITemplate *)self->_template package];
-    v20 = [WeakRetained manager];
-    v4 = [WeakRetained transactionCoordinator];
+    package = [(TUITemplate *)self->_template package];
+    manager = [WeakRetained manager];
+    transactionCoordinator = [WeakRetained transactionCoordinator];
     instantiateState = self->_instantiateState;
-    v5 = [(TUIFeedEntry *)self->_entry identifierMap];
+    identifierMap = [(TUIFeedEntry *)self->_entry identifierMap];
     entry = self->_entry;
-    v7 = [WeakRetained environment];
-    v8 = [WeakRetained actionHandlerDelegate];
-    v9 = [WeakRetained queueContext];
-    v10 = [v9 workQueue];
+    environment = [WeakRetained environment];
+    actionHandlerDelegate = [WeakRetained actionHandlerDelegate];
+    queueContext = [WeakRetained queueContext];
+    workQueue = [queueContext workQueue];
     v11 = objc_loadWeakRetained(&self->_feedLayoutController);
-    v12 = -[TUILayoutController initWithPackage:feedId:manager:transactionCoordinator:state:identifierMap:entry:environment:instantiateDelegate:actionDelegate:queue:renderMode:](v21, "initWithPackage:feedId:manager:transactionCoordinator:state:identifierMap:entry:environment:instantiateDelegate:actionDelegate:queue:renderMode:", v3, self->_feedId.uniqueIdentifier, v20, v4, instantiateState, v5, entry, v7, WeakRetained, v8, v10, [v11 renderModelMode]);
+    v12 = -[TUILayoutController initWithPackage:feedId:manager:transactionCoordinator:state:identifierMap:entry:environment:instantiateDelegate:actionDelegate:queue:renderMode:](v21, "initWithPackage:feedId:manager:transactionCoordinator:state:identifierMap:entry:environment:instantiateDelegate:actionDelegate:queue:renderMode:", package, self->_feedId.uniqueIdentifier, manager, transactionCoordinator, instantiateState, identifierMap, entry, environment, WeakRetained, actionHandlerDelegate, workQueue, [v11 renderModelMode]);
     layoutController = self->_layoutController;
     self->_layoutController = v12;
 
     v14 = [(TUIFeedEntry *)self->_entry uid];
     [(TUILayoutController *)self->_layoutController setUid:v14];
 
-    v15 = [(TUIFeedEntry *)self->_entry uuid];
-    [(TUILayoutController *)self->_layoutController setUUID:v15];
+    uuid = [(TUIFeedEntry *)self->_entry uuid];
+    [(TUILayoutController *)self->_layoutController setUUID:uuid];
 
     [(TUILayoutController *)self->_layoutController setStatsCollector:self->_eventCollector];
     eventCollector = self->_eventCollector;
-    v17 = [(TUILayoutController *)self->_layoutController instantiateContext];
-    [v17 setStatsCollector:eventCollector];
+    instantiateContext = [(TUILayoutController *)self->_layoutController instantiateContext];
+    [instantiateContext setStatsCollector:eventCollector];
   }
 
   v18 = self->_instantiateState;
@@ -84,16 +84,16 @@
 
 - (void)_teardownController
 {
-  v3 = [(TUILayoutController *)self->_layoutController instantiateContext];
-  v4 = [v3 saveState];
+  instantiateContext = [(TUILayoutController *)self->_layoutController instantiateContext];
+  saveState = [instantiateContext saveState];
   instantiateState = self->_instantiateState;
-  self->_instantiateState = v4;
+  self->_instantiateState = saveState;
 
   layoutController = self->_layoutController;
   self->_layoutController = 0;
 }
 
-- (void)suspendAndTeardownWithTransactionGroup:(id)a3
+- (void)suspendAndTeardownWithTransactionGroup:(id)group
 {
   [(_TUIFeedLayoutSection *)self _teardownController];
   renderModel = self->_renderModel;
@@ -106,11 +106,11 @@
   self->_layerRenderModel = 0;
 }
 
-- (void)setStatsMode:(unint64_t)a3
+- (void)setStatsMode:(unint64_t)mode
 {
-  if (self->_statsMode != a3)
+  if (self->_statsMode != mode)
   {
-    self->_statsMode = a3;
+    self->_statsMode = mode;
     eventCollector = self->_eventCollector;
     self->_eventCollector = 0;
 
@@ -136,33 +136,33 @@
 
     [(TUILayoutController *)self->_layoutController setStatsCollector:self->_eventCollector];
     v12 = self->_eventCollector;
-    v13 = [(TUILayoutController *)self->_layoutController instantiateContext];
-    [v13 setStatsCollector:v12];
+    instantiateContext = [(TUILayoutController *)self->_layoutController instantiateContext];
+    [instantiateContext setStatsCollector:v12];
   }
 }
 
-- (void)lq_loadOrUpdateEntry:(id)a3 data:(id)a4 controller:(id)a5 transactionGroup:(id)a6
+- (void)lq_loadOrUpdateEntry:(id)entry data:(id)data controller:(id)controller transactionGroup:(id)group
 {
-  v8 = a3;
-  v9 = [a4 dictionary];
-  v12 = v9;
-  if (v9)
+  entryCopy = entry;
+  dictionary = [data dictionary];
+  v12 = dictionary;
+  if (dictionary)
   {
-    v9 = [[TUIBindings alloc] initWithData:v9];
+    dictionary = [[TUIBindings alloc] initWithData:dictionary];
   }
 
   bindings = self->_bindings;
-  self->_bindings = v9;
+  self->_bindings = dictionary;
 
   self->_needsInstantiation = 1;
   entry = self->_entry;
-  self->_entry = v8;
+  self->_entry = entryCopy;
 }
 
-- (void)lq_instantiateWithController:(id)a3 transactionGroup:(id)a4
+- (void)lq_instantiateWithController:(id)controller transactionGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  groupCopy = group;
   self->_needsInstantiation = 0;
   if (self->_updated)
   {
@@ -177,31 +177,31 @@
   [(TUIStatsTimingCollector *)self->_timingCollector recordReason:v8];
   [(TUIStatsTimingCollector *)self->_timingCollector startPhase:0];
   v9 = [(TUITemplate *)self->_template url];
-  v10 = [(TUIFeedEntry *)self->_entry templateURL];
-  v11 = [v9 isEqual:v10];
+  templateURL = [(TUIFeedEntry *)self->_entry templateURL];
+  v11 = [v9 isEqual:templateURL];
 
   if ((v11 & 1) == 0)
   {
     [(TUIStatsTimingCollector *)self->_timingCollector startPhase:1];
-    v12 = [v6 templateFactory];
-    v13 = [(TUIFeedEntry *)self->_entry templateURL];
-    v14 = [v12 templateFromURL:v13];
+    templateFactory = [controllerCopy templateFactory];
+    templateURL2 = [(TUIFeedEntry *)self->_entry templateURL];
+    v14 = [templateFactory templateFromURL:templateURL2];
     v15 = self->_template;
     self->_template = v14;
 
     [(TUIStatsTimingCollector *)self->_timingCollector endPhase:1];
-    v16 = [(TUILayoutController *)self->_layoutController package];
-    v17 = [(TUITemplate *)self->_template package];
+    package = [(TUILayoutController *)self->_layoutController package];
+    package2 = [(TUITemplate *)self->_template package];
 
-    if (v16 != v17)
+    if (package != package2)
     {
       [(_TUIFeedLayoutSection *)self _setupController];
     }
   }
 
   layoutController = self->_layoutController;
-  v19 = [v6 environment];
-  [(TUILayoutController *)layoutController updateEnvironment:v19];
+  environment = [controllerCopy environment];
+  [(TUILayoutController *)layoutController updateEnvironment:environment];
 
   updated = self->_updated;
   v21 = TUILayoutLog();
@@ -269,22 +269,22 @@ LABEL_13:
   {
     [(TUIFeedCaptureController *)captureController captureSectionWithEntry:self->_entry bindings:self->_bindings template:self->_template];
     v35 = [(TUIFeedCaptureController *)self->_captureController instantiateCaptureForEntry:self->_entry];
-    v36 = [(TUILayoutController *)self->_layoutController instantiateContext];
-    [v36 setCapture:v35];
+    instantiateContext = [(TUILayoutController *)self->_layoutController instantiateContext];
+    [instantiateContext setCapture:v35];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_feedLayoutController);
-  v38 = [WeakRetained suspended];
+  suspended = [WeakRetained suspended];
 
-  if ((v38 & 1) == 0)
+  if ((suspended & 1) == 0)
   {
-    [(_TUIFeedLayoutSection *)self _instantiateTemplateWithTransactionGroup:v7];
+    [(_TUIFeedLayoutSection *)self _instantiateTemplateWithTransactionGroup:groupCopy];
   }
 
   if (self->_captureController)
   {
-    v39 = [(TUILayoutController *)self->_layoutController instantiateContext];
-    [v39 setCapture:0];
+    instantiateContext2 = [(TUILayoutController *)self->_layoutController instantiateContext];
+    [instantiateContext2 setCapture:0];
 
     v40 = self->_captureController;
     self->_captureController = 0;
@@ -293,9 +293,9 @@ LABEL_13:
   [(TUIStatsTimingCollector *)self->_timingCollector endPhase:0, *v41, *&v41[16], *&v41[24]];
 }
 
-- (void)_instantiateTemplateWithTransactionGroup:(id)a3
+- (void)_instantiateTemplateWithTransactionGroup:(id)group
 {
-  v22 = a3;
+  groupCopy = group;
   if (!self->_layoutController)
   {
     [(_TUIFeedLayoutSection *)self lq_createEmptyRenderModelWithSize:CGSizeZero.width, CGSizeZero.height];
@@ -304,13 +304,13 @@ LABEL_13:
 
   [(TUIStatsTimingCollector *)self->_timingCollector startPhase:2];
   v4 = objc_autoreleasePoolPush();
-  v5 = [(TUILayoutController *)self->_layoutController instantiateContext];
-  v6 = [v5 instantiateTemplate:self->_template bindings:self->_bindings actionObject:self->_entry];
+  instantiateContext = [(TUILayoutController *)self->_layoutController instantiateContext];
+  v6 = [instantiateContext instantiateTemplate:self->_template bindings:self->_bindings actionObject:self->_entry];
 
   layoutController = self->_layoutController;
-  v8 = [(TUILayoutController *)layoutController instantiateContext];
-  v9 = [v8 evaluationErrors];
-  [(TUILayoutController *)layoutController addErrors:v9];
+  instantiateContext2 = [(TUILayoutController *)layoutController instantiateContext];
+  evaluationErrors = [instantiateContext2 evaluationErrors];
+  [(TUILayoutController *)layoutController addErrors:evaluationErrors];
 
   objc_autoreleasePoolPop(v4);
   [(TUIStatsTimingCollector *)self->_timingCollector endPhase:2];
@@ -322,27 +322,27 @@ LABEL_13:
   [(TUIStatsTimingCollector *)self->_timingCollector endPhase:3];
   [(TUIStatsTimingCollector *)self->_timingCollector startPhase:4];
   v11 = objc_autoreleasePoolPush();
-  v12 = [(_TUIFeedLayoutSection *)self feedLayoutController];
-  v13 = [v12 renderModelMode];
+  feedLayoutController = [(_TUIFeedLayoutSection *)self feedLayoutController];
+  renderModelMode = [feedLayoutController renderModelMode];
 
-  if (v13 == &dword_0 + 1)
+  if (renderModelMode == &dword_0 + 1)
   {
-    v21 = [(TUILayoutController *)self->_layoutController renderModelLayer:v22];
+    v21 = [(TUILayoutController *)self->_layoutController renderModelLayer:groupCopy];
     layerRenderModel = self->_layerRenderModel;
     self->_layerRenderModel = v21;
     goto LABEL_7;
   }
 
-  if (!v13)
+  if (!renderModelMode)
   {
-    v14 = [(TUILayoutController *)self->_layoutController renderModelAuxiliary:v22];
+    v14 = [(TUILayoutController *)self->_layoutController renderModelAuxiliary:groupCopy];
     auxRenderModel = self->_auxRenderModel;
     self->_auxRenderModel = v14;
 
     v16 = self->_layoutController;
     section = self->_section;
     layerRenderModel = [(_TUIFeedLayoutSection *)self UUID];
-    v19 = [(TUILayoutController *)v16 renderModelSection:section offset:layerRenderModel uuid:v22 transactionGroup:CGPointZero.x, CGPointZero.y];
+    v19 = [(TUILayoutController *)v16 renderModelSection:section offset:layerRenderModel uuid:groupCopy transactionGroup:CGPointZero.x, CGPointZero.y];
     renderModel = self->_renderModel;
     self->_renderModel = v19;
 
@@ -357,51 +357,51 @@ LABEL_9:
 
 - (id)UUID
 {
-  v2 = [(TUIFeedEntry *)self->_entry identifierMap];
-  v3 = [v2 UUID];
+  identifierMap = [(TUIFeedEntry *)self->_entry identifierMap];
+  uUID = [identifierMap UUID];
 
-  return v3;
+  return uUID;
 }
 
-- (void)lq_updateEnvironment:(id)a3 withTransactionGroup:(id)a4
+- (void)lq_updateEnvironment:(id)environment withTransactionGroup:(id)group
 {
   layoutController = self->_layoutController;
   if (layoutController)
   {
-    [(TUILayoutController *)layoutController updateEnvironment:a3, a4];
+    [(TUILayoutController *)layoutController updateEnvironment:environment, group];
   }
 
   self->_environmentNeedsUpdate = 0;
 }
 
-- (BOOL)lq_updateLayoutWithTransactionGroup:(id)a3
+- (BOOL)lq_updateLayoutWithTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (self->_layoutController)
   {
     [(TUIStatsTimingCollector *)self->_timingCollector recordReason:1];
     [(TUIStatsTimingCollector *)self->_timingCollector startPhase:0];
-    v5 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
-    dispatch_assert_queue_V2(v5);
+    workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     [(TUIStatsTimingCollector *)self->_timingCollector startPhase:2];
-    [(TUILayoutController *)self->_layoutController validateInstantiationWithTransactionGroup:v4];
+    [(TUILayoutController *)self->_layoutController validateInstantiationWithTransactionGroup:groupCopy];
     [(TUIStatsTimingCollector *)self->_timingCollector endPhase:2];
     [(TUIStatsTimingCollector *)self->_timingCollector startPhase:3];
     [(TUILayoutController *)self->_layoutController validateLayouts];
     [(TUIStatsTimingCollector *)self->_timingCollector endPhase:3];
     [(TUIStatsTimingCollector *)self->_timingCollector startPhase:4];
-    [(TUILayoutController *)self->_layoutController validateRenderModelsWithTransactionGroup:v4];
-    v6 = [(_TUIFeedLayoutSection *)self feedLayoutController];
-    v7 = [v6 renderModelMode];
+    [(TUILayoutController *)self->_layoutController validateRenderModelsWithTransactionGroup:groupCopy];
+    feedLayoutController = [(_TUIFeedLayoutSection *)self feedLayoutController];
+    renderModelMode = [feedLayoutController renderModelMode];
 
     v8 = 0;
-    if (!v7)
+    if (!renderModelMode)
     {
       layoutController = self->_layoutController;
       section = self->_section;
-      v11 = [(_TUIFeedLayoutSection *)self UUID];
-      v8 = [(TUILayoutController *)layoutController renderModelSection:section offset:v11 uuid:v4 transactionGroup:CGPointZero.x, CGPointZero.y];
+      uUID = [(_TUIFeedLayoutSection *)self UUID];
+      v8 = [(TUILayoutController *)layoutController renderModelSection:section offset:uUID uuid:groupCopy transactionGroup:CGPointZero.x, CGPointZero.y];
     }
 
     [(TUIStatsTimingCollector *)self->_timingCollector endPhase:4];
@@ -423,25 +423,25 @@ LABEL_9:
   return v13;
 }
 
-- (void)lq_createEmptyRenderModelWithSize:(CGSize)a3
+- (void)lq_createEmptyRenderModelWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_TUIFeedLayoutSection *)self feedLayoutController];
-  v7 = [v6 renderModelMode];
+  height = size.height;
+  width = size.width;
+  feedLayoutController = [(_TUIFeedLayoutSection *)self feedLayoutController];
+  renderModelMode = [feedLayoutController renderModelMode];
 
-  if (!v7)
+  if (!renderModelMode)
   {
     v8 = [TUIRenderModelSection alloc];
     entry = self->_entry;
-    v10 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+    workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
     memset(v16, 0, sizeof(v16));
     v17 = 0;
     v18 = 0;
-    v11 = [(TUIRenderModelSection *)v8 initWithEntry:entry submodels:0 config:v16 impressions:0 linkEntities:0 hoverRegions:0 identifierMap:0 layoutQueue:v10];
+    v11 = [(TUIRenderModelSection *)v8 initWithEntry:entry submodels:0 config:v16 impressions:0 linkEntities:0 hoverRegions:0 identifierMap:0 layoutQueue:workQueue];
     section = self->_section;
-    v13 = [(_TUIFeedLayoutSection *)self UUID];
-    v14 = [(TUIRenderModelSection *)v11 copyWithSection:section offset:v13 uuid:CGPointZero.x, CGPointZero.y];
+    uUID = [(_TUIFeedLayoutSection *)self UUID];
+    v14 = [(TUIRenderModelSection *)v11 copyWithSection:section offset:uUID uuid:CGPointZero.x, CGPointZero.y];
     renderModel = self->_renderModel;
     self->_renderModel = v14;
 
@@ -449,12 +449,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)lq_updateAuxiliaryLayoutWithTransactionGroup:(id)a3
+- (BOOL)lq_updateAuxiliaryLayoutWithTransactionGroup:(id)group
 {
   timingCollector = self->_timingCollector;
-  v5 = a3;
+  groupCopy = group;
   [(TUIStatsTimingCollector *)timingCollector startPhase:4];
-  v6 = [(TUILayoutController *)self->_layoutController renderModelAuxiliary:v5];
+  v6 = [(TUILayoutController *)self->_layoutController renderModelAuxiliary:groupCopy];
 
   [(TUIStatsTimingCollector *)self->_timingCollector endPhase:4];
   auxRenderModel = self->_auxRenderModel;
@@ -468,12 +468,12 @@ LABEL_9:
   return v6 != v8;
 }
 
-- (BOOL)lq_updateLayerLayoutWithTransactionGroup:(id)a3
+- (BOOL)lq_updateLayerLayoutWithTransactionGroup:(id)group
 {
   timingCollector = self->_timingCollector;
-  v5 = a3;
+  groupCopy = group;
   [(TUIStatsTimingCollector *)timingCollector startPhase:4];
-  v6 = [(TUILayoutController *)self->_layoutController renderModelLayer:v5];
+  v6 = [(TUILayoutController *)self->_layoutController renderModelLayer:groupCopy];
 
   [(TUIStatsTimingCollector *)self->_timingCollector endPhase:4];
   layerRenderModel = self->_layerRenderModel;
@@ -487,68 +487,68 @@ LABEL_9:
   return v6 != v8;
 }
 
-- (void)lq_appendAnchorsToSet:(id)a3
+- (void)lq_appendAnchorsToSet:(id)set
 {
-  v8 = a3;
-  v4 = [(TUILayoutController *)self->_layoutController rootBox];
+  setCopy = set;
+  rootBox = [(TUILayoutController *)self->_layoutController rootBox];
 
-  if (v4)
+  if (rootBox)
   {
     layoutController = self->_layoutController;
-    v6 = [(TUILayoutController *)layoutController rootBox];
-    v7 = [(TUILayoutController *)layoutController layoutForModel:v6];
+    rootBox2 = [(TUILayoutController *)layoutController rootBox];
+    v7 = [(TUILayoutController *)layoutController layoutForModel:rootBox2];
 
-    [v7 appendAnchorsToSet:v8 inRoot:v7];
+    [v7 appendAnchorsToSet:setCopy inRoot:v7];
   }
 }
 
-- (id)loadingRenderModelWithSize:(CGSize)a3 center:(CGPoint)a4 environment:(id)a5
+- (id)loadingRenderModelWithSize:(CGSize)size center:(CGPoint)center environment:(id)environment
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
   entry = self->_entry;
-  v11 = a5;
-  v12 = [(TUIFeedEntry *)entry identifierMap];
-  v13 = [v12 loadingIdentifier];
-  v31 = [TUISpinnerView renderModelWithIdentifier:v13];
+  environmentCopy = environment;
+  identifierMap = [(TUIFeedEntry *)entry identifierMap];
+  loadingIdentifier = [identifierMap loadingIdentifier];
+  v31 = [TUISpinnerView renderModelWithIdentifier:loadingIdentifier];
 
   v14 = [[TUIRenderModelTransform alloc] initWithSubmodel:v31];
   [(TUIRenderModelTransform *)v14 setSize:width, height];
   [(TUIRenderModelTransform *)v14 setCenter:x, y];
-  v15 = [v11 layoutDirection] == &dword_0 + 2;
-  [v11 viewSize];
+  v15 = [environmentCopy layoutDirection] == &dword_0 + 2;
+  [environmentCopy viewSize];
   v17 = v16;
   v18 = [TUIRenderModelSection alloc];
   v19 = self->_entry;
   v35 = v14;
   v20 = [NSArray arrayWithObjects:&v35 count:1];
-  v21 = [(TUIFeedEntry *)self->_entry identifierMap];
-  v22 = [v21 renderModelIdentifierMap];
-  v23 = [(TUIWorkQueueContext *)self->_queueContext workQueue];
+  identifierMap2 = [(TUIFeedEntry *)self->_entry identifierMap];
+  renderModelIdentifierMap = [identifierMap2 renderModelIdentifierMap];
+  workQueue = [(TUIWorkQueueContext *)self->_queueContext workQueue];
   v32[0] = v15;
   memset(&v32[1], 0, 7);
   v33 = v17;
   v34 = 0;
-  v24 = [(TUIRenderModelSection *)v18 initWithEntry:v19 submodels:v20 config:v32 impressions:0 linkEntities:0 hoverRegions:0 identifierMap:v22 layoutQueue:v23];
+  v24 = [(TUIRenderModelSection *)v18 initWithEntry:v19 submodels:v20 config:v32 impressions:0 linkEntities:0 hoverRegions:0 identifierMap:renderModelIdentifierMap layoutQueue:workQueue];
 
-  [v11 viewSize];
+  [environmentCopy viewSize];
   v26 = v25;
 
   [(TUIRenderModelSection *)v24 setSize:v26, height];
   section = self->_section;
-  v28 = [(_TUIFeedLayoutSection *)self UUID];
-  v29 = [(TUIRenderModelSection *)v24 copyWithSection:section offset:v28 uuid:CGPointZero.x, CGPointZero.y];
+  uUID = [(_TUIFeedLayoutSection *)self UUID];
+  v29 = [(TUIRenderModelSection *)v24 copyWithSection:section offset:uUID uuid:CGPointZero.x, CGPointZero.y];
 
   return v29;
 }
 
 - (void)debugDumpEnvironmentContainerStructure
 {
-  v4 = [(TUIFeedEntry *)self->_entry templateURL];
-  v3 = [(TUILayoutController *)self->_layoutController debugDumpEnvironmentContainerStructure];
-  NSLog(@"\nEntry: %@\n\n%@", v4, v3);
+  templateURL = [(TUIFeedEntry *)self->_entry templateURL];
+  debugDumpEnvironmentContainerStructure = [(TUILayoutController *)self->_layoutController debugDumpEnvironmentContainerStructure];
+  NSLog(@"\nEntry: %@\n\n%@", templateURL, debugDumpEnvironmentContainerStructure);
 }
 
 - (TUIFeedLayoutController)feedLayoutController

@@ -1,24 +1,24 @@
 @interface SKUIShelfCollectionViewCell
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3;
++ (double)maximumPerspectiveHeightForSize:(CGSize)size;
 - (UIEdgeInsets)contentInset;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setRendersWithParallax:(BOOL)a3;
-- (void)setRendersWithPerspective:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setVanishingPoint:(CGPoint)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCollectionView:(id)view;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setRendersWithParallax:(BOOL)parallax;
+- (void)setRendersWithPerspective:(BOOL)perspective;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setVanishingPoint:(CGPoint)point;
 - (void)updateForChangedDistanceFromVanishingPoint;
 @end
 
 @implementation SKUIShelfCollectionViewCell
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,14 +32,14 @@
   }
 
   collectionView = self->_collectionView;
-  if (collectionView != v5)
+  if (collectionView != viewCopy)
   {
     if ([(UICollectionView *)collectionView isDescendantOfView:self])
     {
       [(UICollectionView *)self->_collectionView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     [(UICollectionView *)self->_collectionView setSemanticContentAttribute:[(SKUIShelfCollectionViewCell *)self semanticContentAttribute]];
     [(SKUIShelfCollectionViewCell *)self setNeedsLayout];
     collectionView = self->_collectionView;
@@ -47,17 +47,17 @@
 
   if (collectionView && ([(UICollectionView *)collectionView isDescendantOfView:self]& 1) == 0)
   {
-    v15 = [(SKUIShelfCollectionViewCell *)self contentView];
+    contentView = [(SKUIShelfCollectionViewCell *)self contentView];
     v16 = self->_collectionView;
-    v17 = [(SKUIShelfCollectionViewCell *)self backgroundColor];
-    [(UICollectionView *)v16 setBackgroundColor:v17];
+    backgroundColor = [(SKUIShelfCollectionViewCell *)self backgroundColor];
+    [(UICollectionView *)v16 setBackgroundColor:backgroundColor];
 
-    [v15 addSubview:self->_collectionView];
+    [contentView addSubview:self->_collectionView];
     [(SKUIShelfCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   if (os_variant_has_internal_content())
   {
@@ -73,16 +73,16 @@
 
   v13.receiver = self;
   v13.super_class = SKUIShelfCollectionViewCell;
-  [(SKUIShelfCollectionViewCell *)&v13 setSemanticContentAttribute:a3];
-  [(UICollectionView *)self->_collectionView setSemanticContentAttribute:a3];
+  [(SKUIShelfCollectionViewCell *)&v13 setSemanticContentAttribute:attribute];
+  [(UICollectionView *)self->_collectionView setSemanticContentAttribute:attribute];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = inset.right;
+  left = inset.left;
+  bottom = inset.bottom;
+  top = inset.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)setRendersWithPerspective:(BOOL)a3
+- (void)setRendersWithPerspective:(BOOL)perspective
 {
-  v3 = a3;
+  perspectiveCopy = perspective;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -124,16 +124,16 @@
     }
   }
 
-  if (self->_rendersWithPerspective != v3)
+  if (self->_rendersWithPerspective != perspectiveCopy)
   {
-    self->_rendersWithPerspective = v3;
+    self->_rendersWithPerspective = perspectiveCopy;
     [(SKUIShelfCollectionViewCell *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)setRendersWithParallax:(BOOL)a3
+- (void)setRendersWithParallax:(BOOL)parallax
 {
-  v3 = a3;
+  parallaxCopy = parallax;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -146,16 +146,16 @@
     }
   }
 
-  if (self->_rendersWithParallax != v3)
+  if (self->_rendersWithParallax != parallaxCopy)
   {
-    self->_rendersWithParallax = v3;
+    self->_rendersWithParallax = parallaxCopy;
     [(SKUIShelfCollectionViewCell *)self updateForChangedDistanceFromVanishingPoint];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -168,12 +168,12 @@
     }
   }
 
-  v13 = [v4 backgroundColor];
-  [(SKUIShelfCollectionViewCell *)self setBackgroundColor:v13];
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIShelfCollectionViewCell *)self setBackgroundColor:backgroundColor];
 
   v14.receiver = self;
   v14.super_class = SKUIShelfCollectionViewCell;
-  [(SKUICollectionViewCell *)&v14 applyLayoutAttributes:v4];
+  [(SKUICollectionViewCell *)&v14 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -193,8 +193,8 @@
   v31.receiver = self;
   v31.super_class = SKUIShelfCollectionViewCell;
   [(SKUICollectionViewCell *)&v31 layoutSubviews];
-  v11 = [(SKUIShelfCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUIShelfCollectionViewCell *)self contentView];
+  [contentView bounds];
   top = self->_contentInset.top;
   left = self->_contentInset.left;
   v15 = v14 + left;
@@ -225,9 +225,9 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -240,13 +240,13 @@
     }
   }
 
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v4];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIShelfCollectionViewCell;
-  [(SKUICollectionViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUICollectionViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3
++ (double)maximumPerspectiveHeightForSize:(CGSize)size
 {
   if (os_variant_has_internal_content())
   {
@@ -263,7 +263,7 @@
   return 0.0;
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -275,7 +275,7 @@
   }
 }
 
-- (void)setVanishingPoint:(CGPoint)a3
+- (void)setVanishingPoint:(CGPoint)point
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

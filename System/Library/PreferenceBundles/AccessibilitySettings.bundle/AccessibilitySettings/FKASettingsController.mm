@@ -1,27 +1,27 @@
 @interface FKASettingsController
 - (FKASettingsController)init;
-- (id)_instructionWithFormat:(id)a3 forStandardCommandIdentifier:(id)a4;
+- (id)_instructionWithFormat:(id)format forStandardCommandIdentifier:(id)identifier;
 - (id)activateItemInstruction;
 - (id)appSwitcherInstruction;
 - (id)controlCenterInstruction;
-- (id)focusRingColor:(id)a3;
-- (id)focusRingHighContrastEnabled:(id)a3;
-- (id)focusRingTimeoutDescription:(id)a3;
-- (id)fullKeyboardAccessEnabled:(id)a3;
+- (id)focusRingColor:(id)color;
+- (id)focusRingHighContrastEnabled:(id)enabled;
+- (id)focusRingTimeoutDescription:(id)description;
+- (id)fullKeyboardAccessEnabled:(id)enabled;
 - (id)helpInstruction;
 - (id)homeInstruction;
-- (id)largeFocusRingEnabled:(id)a3;
+- (id)largeFocusRingEnabled:(id)enabled;
 - (id)moveBackwardInstruction;
 - (id)moveForwardInstruction;
 - (id)notificationCenterInstruction;
-- (id)selectSpecifier:(id)a3;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (int64_t)selectedColorForSelectionController:(id)a3;
-- (void)cursorColorSelectionController:(id)a3 selectedCursorColor:(int64_t)a4;
+- (int64_t)selectedColorForSelectionController:(id)controller;
+- (void)cursorColorSelectionController:(id)controller selectedCursorColor:(int64_t)color;
 - (void)dealloc;
-- (void)setFocusRingHighContrastEnabled:(id)a3 specifier:(id)a4;
-- (void)setFullKeyboardAccessEnabled:(id)a3 specifier:(id)a4;
-- (void)setLargeFocusRingEnabled:(id)a3 specifier:(id)a4;
+- (void)setFocusRingHighContrastEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFullKeyboardAccessEnabled:(id)enabled specifier:(id)specifier;
+- (void)setLargeFocusRingEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation FKASettingsController
@@ -59,9 +59,9 @@
 
     objc_destroyWeak(&v17);
     v7 = +[FKAAvailableCommands sharedInstance];
-    v8 = [v7 commandMap];
+    commandMap = [v7 commandMap];
     cachedCommandMap = v2->_cachedCommandMap;
-    v2->_cachedCommandMap = v8;
+    v2->_cachedCommandMap = commandMap;
 
     v10 = +[FKAAvailableCommands sharedInstance];
     v14[0] = _NSConcreteStackBlock;
@@ -136,12 +136,12 @@ void __29__FKASettingsController_init__block_invoke_3(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)setFullKeyboardAccessEnabled:(id)a3 specifier:(id)a4
+- (void)setFullKeyboardAccessEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  if (v8)
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue)
   {
     _AXSFullKeyboardAccessSetEnabled();
   }
@@ -157,7 +157,7 @@ void __29__FKASettingsController_init__block_invoke_3(uint64_t a1, void *a2)
     v19[1] = 3221225472;
     v19[2] = __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_invoke;
     v19[3] = &__block_descriptor_33_e23_v16__0__UIAlertAction_8l;
-    v20 = v8;
+    v20 = bOOLValue;
     v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:v19];
 
     objc_initWeak(&location, self);
@@ -184,18 +184,18 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)fullKeyboardAccessEnabled:(id)a3
+- (id)fullKeyboardAccessEnabled:(id)enabled
 {
   v3 = _AXSFullKeyboardAccessEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = FKASettingsController;
-  v4 = [(FKASettingsController *)&v6 selectSpecifier:a3];
+  v4 = [(FKASettingsController *)&v6 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -205,7 +205,7 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (id)focusRingTimeoutDescription:(id)a3
+- (id)focusRingTimeoutDescription:(id)description
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 fullKeyboardAccessFocusRingTimeoutEnabled])
@@ -223,14 +223,14 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (void)setLargeFocusRingEnabled:(id)a3 specifier:(id)a4
+- (void)setLargeFocusRingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setFullKeyboardAccessLargeFocusRingEnabled:v4];
+  [v5 setFullKeyboardAccessLargeFocusRingEnabled:bOOLValue];
 }
 
-- (id)largeFocusRingEnabled:(id)a3
+- (id)largeFocusRingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 fullKeyboardAccessLargeFocusRingEnabled]);
@@ -238,14 +238,14 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (void)setFocusRingHighContrastEnabled:(id)a3 specifier:(id)a4
+- (void)setFocusRingHighContrastEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setFullKeyboardAccessFocusRingHighContrastEnabled:v4];
+  [v5 setFullKeyboardAccessFocusRingHighContrastEnabled:bOOLValue];
 }
 
-- (id)focusRingHighContrastEnabled:(id)a3
+- (id)focusRingHighContrastEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 fullKeyboardAccessFocusRingHighContrastEnabled]);
@@ -253,7 +253,7 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (id)focusRingColor:(id)a3
+- (id)focusRingColor:(id)color
 {
   v3 = +[AXSettings sharedInstance];
   [v3 fullKeyboardAccessFocusRingColor];
@@ -262,19 +262,19 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (id)_instructionWithFormat:(id)a3 forStandardCommandIdentifier:(id)a4
+- (id)_instructionWithFormat:(id)format forStandardCommandIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FKASettingsController *)self cachedCommandMap];
-  v9 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:v7];
+  formatCopy = format;
+  identifierCopy = identifier;
+  cachedCommandMap = [(FKASettingsController *)self cachedCommandMap];
+  v9 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:identifierCopy];
 
-  v10 = [v8 keyChordForCommand:v9];
-  v11 = [v10 fkaSpeakableDisplayValue];
+  v10 = [cachedCommandMap keyChordForCommand:v9];
+  fkaSpeakableDisplayValue = [v10 fkaSpeakableDisplayValue];
 
-  if ([v11 length])
+  if ([fkaSpeakableDisplayValue length])
   {
-    v12 = [NSString localizedStringWithFormat:v6, v11];
+    v12 = [NSString localizedStringWithFormat:formatCopy, fkaSpeakableDisplayValue];
   }
 
   else
@@ -349,20 +349,20 @@ void __64__FKASettingsController_setFullKeyboardAccessEnabled_specifier___block_
   return v4;
 }
 
-- (void)cursorColorSelectionController:(id)a3 selectedCursorColor:(int64_t)a4
+- (void)cursorColorSelectionController:(id)controller selectedCursorColor:(int64_t)color
 {
   v6 = +[AXSettings sharedInstance];
-  [v6 setFullKeyboardAccessFocusRingColor:a4];
+  [v6 setFullKeyboardAccessFocusRingColor:color];
 
   [(FKASettingsController *)self reloadSpecifierID:@"FKAFocusRingColor"];
 }
 
-- (int64_t)selectedColorForSelectionController:(id)a3
+- (int64_t)selectedColorForSelectionController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 fullKeyboardAccessFocusRingColor];
+  fullKeyboardAccessFocusRingColor = [v3 fullKeyboardAccessFocusRingColor];
 
-  return v4;
+  return fullKeyboardAccessFocusRingColor;
 }
 
 @end

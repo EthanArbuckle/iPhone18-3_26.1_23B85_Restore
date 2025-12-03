@@ -1,12 +1,12 @@
 @interface MTAStopwatchPagingViewController
 - (MTAStopwatchPagingViewControllerDelegate)delegate;
 - (void)loadView;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCurrentPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setPages:(id)a3;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCurrentPage:(unint64_t)page animated:(BOOL)animated;
+- (void)setPages:(id)pages;
 - (void)viewDidLayoutSubviews;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAStopwatchPagingViewController
@@ -19,38 +19,38 @@
   v3 = objc_opt_new();
   [(MTAStopwatchPagingViewController *)self setScrollView:v3];
 
-  v4 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v4 setPagingEnabled:1];
+  scrollView = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView setPagingEnabled:1];
 
-  v5 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v5 setShowsHorizontalScrollIndicator:0];
+  scrollView2 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView2 setShowsHorizontalScrollIndicator:0];
 
-  v6 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v6 setAutoresizesSubviews:0];
+  scrollView3 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView3 setAutoresizesSubviews:0];
 
-  v7 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v7 setDelegate:self];
+  scrollView4 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView4 setDelegate:self];
 
-  v8 = [(MTAStopwatchPagingViewController *)self view];
-  [v8 setAutoresizesSubviews:0];
+  view = [(MTAStopwatchPagingViewController *)self view];
+  [view setAutoresizesSubviews:0];
 
-  v9 = [(MTAStopwatchPagingViewController *)self view];
-  v10 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v9 addSubview:v10];
+  view2 = [(MTAStopwatchPagingViewController *)self view];
+  scrollView5 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [view2 addSubview:scrollView5];
 }
 
-- (void)setPages:(id)a3
+- (void)setPages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   pages = self->_pages;
-  if (pages != v5)
+  if (pages != pagesCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = pages;
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    pagesCopy2 = pages;
+    v8 = [(NSArray *)pagesCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -61,19 +61,19 @@
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pagesCopy2);
           }
 
           [*(*(&v24 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v9 = [(NSArray *)pagesCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v9);
     }
 
-    objc_storeStrong(&self->_pages, a3);
+    objc_storeStrong(&self->_pages, pages);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -96,8 +96,8 @@
           v17 = *(*(&v20 + 1) + 8 * j);
           [v17 setAutoresizesSubviews:{0, v20}];
           [v17 setAutoresizingMask:0];
-          v18 = [(MTAStopwatchPagingViewController *)self scrollView];
-          [v18 addSubview:v17];
+          scrollView = [(MTAStopwatchPagingViewController *)self scrollView];
+          [scrollView addSubview:v17];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -106,22 +106,22 @@
       while (v14);
     }
 
-    v19 = [(MTAStopwatchPagingViewController *)self view];
-    [v19 setNeedsLayout];
+    view = [(MTAStopwatchPagingViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setCurrentPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)setCurrentPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_currentPage = a3;
-  v6 = a3;
-  v7 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v7 bounds];
-  v9 = v8 * v6;
+  animatedCopy = animated;
+  self->_currentPage = page;
+  pageCopy = page;
+  scrollView = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView bounds];
+  v9 = v8 * pageCopy;
 
-  v10 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v10 setContentOffset:v4 animated:{v9, 0.0}];
+  scrollView2 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView2 setContentOffset:animatedCopy animated:{v9, 0.0}];
 }
 
 - (void)viewWillLayoutSubviews
@@ -129,14 +129,14 @@
   v13.receiver = self;
   v13.super_class = MTAStopwatchPagingViewController;
   [(MTAStopwatchPagingViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(MTAStopwatchPagingViewController *)self view];
-  [v3 bounds];
+  view = [(MTAStopwatchPagingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  scrollView = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -144,24 +144,24 @@
   v31.receiver = self;
   v31.super_class = MTAStopwatchPagingViewController;
   [(MTAStopwatchPagingViewController *)&v31 viewDidLayoutSubviews];
-  v3 = [(MTAStopwatchPagingViewController *)self view];
-  v4 = [v3 mtui_isRTL];
+  view = [(MTAStopwatchPagingViewController *)self view];
+  mtui_isRTL = [view mtui_isRTL];
 
-  v5 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v5 bounds];
+  scrollView = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(MTAStopwatchPagingViewController *)self pages];
-  v11 = v10;
-  if (v4)
+  pages = [(MTAStopwatchPagingViewController *)self pages];
+  v11 = pages;
+  if (mtui_isRTL)
   {
-    [v10 reverseObjectEnumerator];
+    [pages reverseObjectEnumerator];
   }
 
   else
   {
-    [v10 objectEnumerator];
+    [pages objectEnumerator];
   }
   v12 = ;
 
@@ -196,65 +196,65 @@
     while (v15);
   }
 
-  v20 = [(MTAStopwatchPagingViewController *)self pages];
-  v21 = v7 * [v20 count];
-  v22 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v22 setContentSize:{v21, v9}];
+  pages2 = [(MTAStopwatchPagingViewController *)self pages];
+  v21 = v7 * [pages2 count];
+  scrollView2 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView2 setContentSize:{v21, v9}];
 
-  if (v4)
+  if (mtui_isRTL)
   {
-    v23 = [(MTAStopwatchPagingViewController *)self pages];
-    v24 = [v23 count];
-    v25 = v24 + ~[(MTAStopwatchPagingViewController *)self currentPage];
+    pages3 = [(MTAStopwatchPagingViewController *)self pages];
+    v24 = [pages3 count];
+    currentPage = v24 + ~[(MTAStopwatchPagingViewController *)self currentPage];
   }
 
   else
   {
-    v25 = [(MTAStopwatchPagingViewController *)self currentPage];
+    currentPage = [(MTAStopwatchPagingViewController *)self currentPage];
   }
 
-  v26 = [(MTAStopwatchPagingViewController *)self scrollView];
-  [v26 setContentOffset:{v7 * v25, 0.0}];
+  scrollView3 = [(MTAStopwatchPagingViewController *)self scrollView];
+  [scrollView3 setContentOffset:{v7 * currentPage, 0.0}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MTAStopwatchPagingViewController;
-  v7 = a4;
-  [(MTAStopwatchPagingViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MTAStopwatchPagingViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100048A5C;
   v8[3] = &unk_1000AD9C8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = [(MTAStopwatchPagingViewController *)self view];
-  v9 = [v8 mtui_isRTL];
+  draggingCopy = dragging;
+  view = [(MTAStopwatchPagingViewController *)self view];
+  mtui_isRTL = [view mtui_isRTL];
 
-  x = a5->x;
-  [v7 bounds];
+  x = offset->x;
+  [draggingCopy bounds];
   v12 = v11;
 
   v13 = vcvtad_u64_f64(x / v12);
-  if (v9)
+  if (mtui_isRTL)
   {
-    v14 = [(MTAStopwatchPagingViewController *)self pages];
-    v13 = [v14 count] + ~v13;
+    pages = [(MTAStopwatchPagingViewController *)self pages];
+    v13 = [pages count] + ~v13;
   }
 
   if (v13 != self->_currentPage)
   {
     self->_currentPage = v13;
-    v15 = [(MTAStopwatchPagingViewController *)self delegate];
-    [v15 stopwatchPagingViewController:self didPage:self->_currentPage];
+    delegate = [(MTAStopwatchPagingViewController *)self delegate];
+    [delegate stopwatchPagingViewController:self didPage:self->_currentPage];
   }
 }
 

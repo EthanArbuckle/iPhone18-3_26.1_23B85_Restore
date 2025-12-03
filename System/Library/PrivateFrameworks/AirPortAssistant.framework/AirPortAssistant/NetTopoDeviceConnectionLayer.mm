@@ -1,30 +1,30 @@
 @interface NetTopoDeviceConnectionLayer
-- (CGPath)newConnectionPathWithOffset:(double)a3;
+- (CGPath)newConnectionPathWithOffset:(double)offset;
 - (CGPoint)downstreamConnectionPoint;
 - (CGPoint)siblingMergePoint;
 - (CGPoint)upstreamConnectionPoint;
 - (CGRect)getUserInteractionBounds;
 - (NSString)debugDescription;
-- (NetTopoDeviceConnectionLayer)initWithUIStyle:(int)a3 andOwningView:(id)a4;
-- (id)describeOne:(id)a3 uiLayer:(id)a4 indent:(unint64_t)a5;
+- (NetTopoDeviceConnectionLayer)initWithUIStyle:(int)style andOwningView:(id)view;
+- (id)describeOne:(id)one uiLayer:(id)layer indent:(unint64_t)indent;
 - (unint64_t)connectionMedium;
-- (void)addBottomWindingConnectionToPath:(CGPath *)a3 withOffset:(double)a4;
-- (void)addCurvedArrowConnectionToPath:(CGPath *)a3 withOffset:(double)a4;
-- (void)addSideWindingConnectionToPath:(CGPath *)a3 withOffset:(double)a4;
+- (void)addBottomWindingConnectionToPath:(CGPath *)path withOffset:(double)offset;
+- (void)addCurvedArrowConnectionToPath:(CGPath *)path withOffset:(double)offset;
+- (void)addSideWindingConnectionToPath:(CGPath *)path withOffset:(double)offset;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)initNetTopoDeviceConnectionLayerCommonWithStyle:(int)a3 andOwningView:(id)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)initNetTopoDeviceConnectionLayerCommonWithStyle:(int)style andOwningView:(id)view;
 - (void)layoutSublayers;
-- (void)setDownstreamConnectionPoint:(CGPoint)a3;
+- (void)setDownstreamConnectionPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
-- (void)setSelected:(BOOL)a3;
-- (void)setSiblingMergePoint:(CGPoint)a3;
-- (void)setUpstreamConnectionPoint:(CGPoint)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setSiblingMergePoint:(CGPoint)point;
+- (void)setUpstreamConnectionPoint:(CGPoint)point;
 @end
 
 @implementation NetTopoDeviceConnectionLayer
 
-- (void)initNetTopoDeviceConnectionLayerCommonWithStyle:(int)a3 andOwningView:(id)a4
+- (void)initNetTopoDeviceConnectionLayerCommonWithStyle:(int)style andOwningView:(id)view
 {
   if (dword_27E383138 <= 800 && (dword_27E383138 != -1 || sub_23EB74AC8(&dword_27E383138, 0x320u)))
   {
@@ -32,7 +32,7 @@
   }
 
   self->super._selectable = 0;
-  objc_msgSend_setOwningView_(self, a2, a4);
+  objc_msgSend_setOwningView_(self, a2, view);
   v10 = objc_alloc_init(MEMORY[0x277CD9F90]);
   self->_connectionLineLayer = v10;
   objc_msgSend_setDelegate_(v10, v11, self);
@@ -78,16 +78,16 @@
   objc_msgSend_addSublayer_(self, v24, connectionLineLayer);
 }
 
-- (NetTopoDeviceConnectionLayer)initWithUIStyle:(int)a3 andOwningView:(id)a4
+- (NetTopoDeviceConnectionLayer)initWithUIStyle:(int)style andOwningView:(id)view
 {
-  v5 = *&a3;
+  v5 = *&style;
   v10.receiver = self;
   v10.super_class = NetTopoDeviceConnectionLayer;
   v6 = [NetTopoObjectLayer initWithUIStyle:sel_initWithUIStyle_andOwningView_ andOwningView:?];
   v8 = v6;
   if (v6)
   {
-    objc_msgSend_initNetTopoDeviceConnectionLayerCommonWithStyle_andOwningView_(v6, v7, v5, a4);
+    objc_msgSend_initNetTopoDeviceConnectionLayerCommonWithStyle_andOwningView_(v6, v7, v5, view);
   }
 
   return v8;
@@ -191,10 +191,10 @@
   return result;
 }
 
-- (void)setDownstreamConnectionPoint:(CGPoint)a3
+- (void)setDownstreamConnectionPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_downstreamConnectionPoint = &self->_downstreamConnectionPoint;
   v8 = objc_msgSend_superlayer(self, a2, v3);
   objc_msgSend_convertPoint_fromLayer_(self, v9, v8, x, y);
@@ -227,10 +227,10 @@
   return result;
 }
 
-- (void)setUpstreamConnectionPoint:(CGPoint)a3
+- (void)setUpstreamConnectionPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_upstreamConnectionPoint = &self->_upstreamConnectionPoint;
   v8 = objc_msgSend_superlayer(self, a2, v3);
   objc_msgSend_convertPoint_fromLayer_(self, v9, v8, x, y);
@@ -276,10 +276,10 @@
   return result;
 }
 
-- (void)setSiblingMergePoint:(CGPoint)a3
+- (void)setSiblingMergePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_siblingMergePoint = &self->_siblingMergePoint;
   v8 = objc_msgSend_superlayer(self, a2, v3);
   objc_msgSend_convertPoint_fromLayer_(self, v9, v8, x, y);
@@ -299,21 +299,21 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   if (self->super._selectable)
   {
     v13 = v3;
     v14 = v4;
-    v5 = a3;
-    if (objc_msgSend_isSelected(self, a2, a3) != a3)
+    selectedCopy = selected;
+    if (objc_msgSend_isSelected(self, a2, selected) != selected)
     {
       v12.receiver = self;
       v12.super_class = NetTopoDeviceConnectionLayer;
-      [(NetTopoObjectLayer *)&v12 setSelected:v5];
+      [(NetTopoObjectLayer *)&v12 setSelected:selectedCopy];
       objc_msgSend_setNeedsDisplay(self->_connectionLineLayer, v7, v8);
       v11 = 100.0;
-      if (!v5)
+      if (!selectedCopy)
       {
         v11 = 0.0;
       }
@@ -346,9 +346,9 @@
   objc_msgSend_setNeedsDisplay(connectionLineLayer, v6, v7);
 }
 
-- (void)addSideWindingConnectionToPath:(CGPath *)a3 withOffset:(double)a4
+- (void)addSideWindingConnectionToPath:(CGPath *)path withOffset:(double)offset
 {
-  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, a3) == 4)
+  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, path) == 4)
   {
     v9 = objc_msgSend_connectionMedium(self, v7, v8) == 1;
     v12 = 1.0;
@@ -382,31 +382,31 @@
     v15 = 10.0;
   }
 
-  CGPathMoveToPoint(a3, 0, self->_upstreamConnectionPoint.x + v15, self->_upstreamConnectionPoint.y);
-  if (a4 != 0.0)
+  CGPathMoveToPoint(path, 0, self->_upstreamConnectionPoint.x + v15, self->_upstreamConnectionPoint.y);
+  if (offset != 0.0)
   {
-    CGPathAddLineToPoint(a3, 0, v15 + self->_upstreamConnectionPoint.x, self->_upstreamConnectionPoint.y + a4);
+    CGPathAddLineToPoint(path, 0, v15 + self->_upstreamConnectionPoint.x, self->_upstreamConnectionPoint.y + offset);
   }
 
   p_siblingMergePoint = &self->_siblingMergePoint;
-  CGPathAddArcToPoint(a3, 0, self->_siblingMergePoint.x - a4, self->_upstreamConnectionPoint.y + a4, self->_siblingMergePoint.x - a4, self->_upstreamConnectionPoint.y + 12.0 + a4, 12.0);
-  CGPathAddArcToPoint(a3, 0, p_siblingMergePoint->x - a4, self->_siblingMergePoint.y - a4, p_siblingMergePoint->x + v14 * 12.0 - a4, self->_siblingMergePoint.y - a4, 12.0);
+  CGPathAddArcToPoint(path, 0, self->_siblingMergePoint.x - offset, self->_upstreamConnectionPoint.y + offset, self->_siblingMergePoint.x - offset, self->_upstreamConnectionPoint.y + 12.0 + offset, 12.0);
+  CGPathAddArcToPoint(path, 0, p_siblingMergePoint->x - offset, self->_siblingMergePoint.y - offset, p_siblingMergePoint->x + v14 * 12.0 - offset, self->_siblingMergePoint.y - offset, 12.0);
   p_downstreamConnectionPoint = &self->_downstreamConnectionPoint;
-  CGPathAddArcToPoint(a3, 0, p_downstreamConnectionPoint->x - a4, p_siblingMergePoint->y - a4, p_downstreamConnectionPoint->x - a4, p_siblingMergePoint->y + 12.0 - a4, 12.0);
-  CGPathAddLineToPoint(a3, 0, p_downstreamConnectionPoint->x - a4, p_downstreamConnectionPoint->y + -10.0);
-  if (a4 != 0.0)
+  CGPathAddArcToPoint(path, 0, p_downstreamConnectionPoint->x - offset, p_siblingMergePoint->y - offset, p_downstreamConnectionPoint->x - offset, p_siblingMergePoint->y + 12.0 - offset, 12.0);
+  CGPathAddLineToPoint(path, 0, p_downstreamConnectionPoint->x - offset, p_downstreamConnectionPoint->y + -10.0);
+  if (offset != 0.0)
   {
     x = p_downstreamConnectionPoint->x;
     v19 = p_downstreamConnectionPoint->y + -10.0;
 
-    CGPathAddLineToPoint(a3, 0, x, v19);
+    CGPathAddLineToPoint(path, 0, x, v19);
   }
 }
 
-- (void)addBottomWindingConnectionToPath:(CGPath *)a3 withOffset:(double)a4
+- (void)addBottomWindingConnectionToPath:(CGPath *)path withOffset:(double)offset
 {
   v13 = 1.0;
-  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, a3) == 3 || (v13 = -1.0, objc_msgSend_upstreamDeviceSpatialRelationship(self, v7, v8) == 5))
+  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, path) == 3 || (v13 = -1.0, objc_msgSend_upstreamDeviceSpatialRelationship(self, v7, v8) == 5))
   {
     if (dword_27E383138 <= 800)
     {
@@ -429,23 +429,23 @@
       }
     }
 
-    CGPathMoveToPoint(a3, 0, self->_upstreamConnectionPoint.x - a4, self->_upstreamConnectionPoint.y + 4.0);
-    if (a4 != 0.0)
+    CGPathMoveToPoint(path, 0, self->_upstreamConnectionPoint.x - offset, self->_upstreamConnectionPoint.y + 4.0);
+    if (offset != 0.0)
     {
-      CGPathAddLineToPoint(a3, 0, self->_upstreamConnectionPoint.x - a4, self->_upstreamConnectionPoint.y);
+      CGPathAddLineToPoint(path, 0, self->_upstreamConnectionPoint.x - offset, self->_upstreamConnectionPoint.y);
     }
 
     p_siblingMergePoint = &self->_siblingMergePoint;
-    CGPathAddArcToPoint(a3, 0, self->_siblingMergePoint.x - a4, self->_siblingMergePoint.y - a4, self->_siblingMergePoint.x + v13 * 12.0 - a4, self->_siblingMergePoint.y - a4, 12.0);
+    CGPathAddArcToPoint(path, 0, self->_siblingMergePoint.x - offset, self->_siblingMergePoint.y - offset, self->_siblingMergePoint.x + v13 * 12.0 - offset, self->_siblingMergePoint.y - offset, 12.0);
     p_downstreamConnectionPoint = &self->_downstreamConnectionPoint;
-    CGPathAddArcToPoint(a3, 0, p_downstreamConnectionPoint->x - a4, p_siblingMergePoint->y - a4, p_downstreamConnectionPoint->x - a4, p_siblingMergePoint->y + 12.0 - a4, 12.0);
-    CGPathAddLineToPoint(a3, 0, p_downstreamConnectionPoint->x - a4, p_downstreamConnectionPoint->y);
-    if (a4 != 0.0)
+    CGPathAddArcToPoint(path, 0, p_downstreamConnectionPoint->x - offset, p_siblingMergePoint->y - offset, p_downstreamConnectionPoint->x - offset, p_siblingMergePoint->y + 12.0 - offset, 12.0);
+    CGPathAddLineToPoint(path, 0, p_downstreamConnectionPoint->x - offset, p_downstreamConnectionPoint->y);
+    if (offset != 0.0)
     {
       x = p_downstreamConnectionPoint->x;
       y = p_downstreamConnectionPoint->y;
 
-      CGPathAddLineToPoint(a3, 0, x, y);
+      CGPathAddLineToPoint(path, 0, x, y);
     }
   }
 
@@ -456,9 +456,9 @@
   }
 }
 
-- (void)addCurvedArrowConnectionToPath:(CGPath *)a3 withOffset:(double)a4
+- (void)addCurvedArrowConnectionToPath:(CGPath *)path withOffset:(double)offset
 {
-  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, a3) == 1)
+  if (objc_msgSend_upstreamDeviceSpatialRelationship(self, a2, path) == 1)
   {
     if (dword_27E383138 <= 800)
     {
@@ -476,17 +476,17 @@
 
         if (dword_27E383138 <= 800 && (dword_27E383138 != -1 || sub_23EB74AC8(&dword_27E383138, 0x320u)))
         {
-          sub_23EB75374(&dword_27E383138, "[NetTopoDeviceConnectionLayer addCurvedArrowConnectionToPath:withOffset:]", 800, "offset = %.2f\n", v7, v8, v9, v10, *&a4);
+          sub_23EB75374(&dword_27E383138, "[NetTopoDeviceConnectionLayer addCurvedArrowConnectionToPath:withOffset:]", 800, "offset = %.2f\n", v7, v8, v9, v10, *&offset);
         }
       }
     }
 
     y = self->_downstreamConnectionPoint.y;
-    v12 = self->_downstreamConnectionPoint.x - a4;
-    v13 = self->_upstreamConnectionPoint.x + a4 + 3.0;
+    v12 = self->_downstreamConnectionPoint.x - offset;
+    v13 = self->_upstreamConnectionPoint.x + offset + 3.0;
     v14 = self->_upstreamConnectionPoint.y + 1.0;
-    CGPathMoveToPoint(a3, 0, v12, y);
-    CGPathAddCurveToPoint(a3, 0, v12 + -25.0, y + -26.0, v13 + 25.0, v14 + -26.0, v13 + 3.0, v14 + -1.0);
+    CGPathMoveToPoint(path, 0, v12, y);
+    CGPathAddCurveToPoint(path, 0, v12 + -25.0, y + -26.0, v13 + 25.0, v14 + -26.0, v13 + 3.0, v14 + -1.0);
     Mutable = CGPathCreateMutable();
     CGPathMoveToPoint(Mutable, 0, v13, v14 + -1.0);
     CGPathAddLineToPoint(Mutable, 0, v13 + 15.0, v14 + -1.0);
@@ -494,7 +494,7 @@
     CGPathCloseSubpath(Mutable);
     self->_arrowhead = Mutable;
 
-    CGPathAddPath(a3, 0, Mutable);
+    CGPathAddPath(path, 0, Mutable);
   }
 
   else if (dword_27E383138 <= 800 && (dword_27E383138 != -1 || sub_23EB74AC8(&dword_27E383138, 0x320u)))
@@ -504,11 +504,11 @@
   }
 }
 
-- (CGPath)newConnectionPathWithOffset:(double)a3
+- (CGPath)newConnectionPathWithOffset:(double)offset
 {
   if (dword_27E383138 <= 800 && (dword_27E383138 != -1 || sub_23EB74AC8(&dword_27E383138, 0x320u)))
   {
-    sub_23EB75374(&dword_27E383138, "[NetTopoDeviceConnectionLayer newConnectionPathWithOffset:]", 800, "entered with offset %f\n", v3, v4, v5, v6, *&a3);
+    sub_23EB75374(&dword_27E383138, "[NetTopoDeviceConnectionLayer newConnectionPathWithOffset:]", 800, "entered with offset %f\n", v3, v4, v5, v6, *&offset);
   }
 
   Mutable = CGPathCreateMutable();
@@ -544,14 +544,14 @@
       }
 
       CGPathMoveToPoint(Mutable, 0, self->_upstreamConnectionPoint.x, self->_upstreamConnectionPoint.y + 4.0);
-      if (a3 != 0.0)
+      if (offset != 0.0)
       {
-        CGPathAddLineToPoint(Mutable, 0, self->_upstreamConnectionPoint.x - a3, self->_upstreamConnectionPoint.y + 4.0);
+        CGPathAddLineToPoint(Mutable, 0, self->_upstreamConnectionPoint.x - offset, self->_upstreamConnectionPoint.y + 4.0);
       }
 
       p_downstreamConnectionPoint = &self->_downstreamConnectionPoint;
-      CGPathAddLineToPoint(Mutable, 0, p_downstreamConnectionPoint->x - a3, p_downstreamConnectionPoint->y);
-      if (a3 == 0.0)
+      CGPathAddLineToPoint(Mutable, 0, p_downstreamConnectionPoint->x - offset, p_downstreamConnectionPoint->y);
+      if (offset == 0.0)
       {
         goto LABEL_63;
       }
@@ -569,7 +569,7 @@ LABEL_62:
     }
 
 LABEL_16:
-    objc_msgSend_addBottomWindingConnectionToPath_withOffset_(self, v13, Mutable, a3);
+    objc_msgSend_addBottomWindingConnectionToPath_withOffset_(self, v13, Mutable, offset);
     goto LABEL_63;
   }
 
@@ -594,14 +594,14 @@ LABEL_16:
       }
 
       CGPathMoveToPoint(Mutable, 0, self->_upstreamConnectionPoint.x + 10.0, self->_upstreamConnectionPoint.y);
-      if (a3 != 0.0)
+      if (offset != 0.0)
       {
-        CGPathAddLineToPoint(Mutable, 0, self->_upstreamConnectionPoint.x + 10.0, self->_upstreamConnectionPoint.y - a3);
+        CGPathAddLineToPoint(Mutable, 0, self->_upstreamConnectionPoint.x + 10.0, self->_upstreamConnectionPoint.y - offset);
       }
 
       v29 = &self->_downstreamConnectionPoint;
-      CGPathAddLineToPoint(Mutable, 0, v29->x + -10.0, v29->y - a3);
-      if (a3 == 0.0)
+      CGPathAddLineToPoint(Mutable, 0, v29->x + -10.0, v29->y - offset);
+      if (offset == 0.0)
       {
         goto LABEL_63;
       }
@@ -634,15 +634,15 @@ LABEL_16:
 
       p_upstreamConnectionPoint = &self->_upstreamConnectionPoint;
       CGPathMoveToPoint(Mutable, 0, self->_upstreamConnectionPoint.x + v26 * 10.0, self->_upstreamConnectionPoint.y);
-      if (a3 != 0.0)
+      if (offset != 0.0)
       {
-        CGPathAddLineToPoint(Mutable, 0, p_upstreamConnectionPoint->x + v26 * 10.0, self->_upstreamConnectionPoint.y - a3);
+        CGPathAddLineToPoint(Mutable, 0, p_upstreamConnectionPoint->x + v26 * 10.0, self->_upstreamConnectionPoint.y - offset);
       }
 
       v28 = &self->_downstreamConnectionPoint;
-      CGPathAddArcToPoint(Mutable, 0, v28->x + a3 * v26, p_upstreamConnectionPoint->y - a3, v28->x + a3 * v26, v28->y + -10.0, 12.0);
-      CGPathAddLineToPoint(Mutable, 0, v28->x + a3 * v26, v28->y + -10.0);
-      if (a3 == 0.0)
+      CGPathAddArcToPoint(Mutable, 0, v28->x + offset * v26, p_upstreamConnectionPoint->y - offset, v28->x + offset * v26, v28->y + -10.0, 12.0);
+      CGPathAddLineToPoint(Mutable, 0, v28->x + offset * v26, v28->y + -10.0);
+      if (offset == 0.0)
       {
         goto LABEL_63;
       }
@@ -660,7 +660,7 @@ LABEL_16:
     {
       if (v19 == 5)
       {
-        objc_msgSend_addCurvedArrowConnectionToPath_withOffset_(self, v20, Mutable, a3 + 6.0);
+        objc_msgSend_addCurvedArrowConnectionToPath_withOffset_(self, v20, Mutable, offset + 6.0);
       }
 
       goto LABEL_63;
@@ -672,7 +672,7 @@ LABEL_49:
       sub_23EB75374(&dword_27E383138, "[NetTopoDeviceConnectionLayer newConnectionPathWithOffset:]", 800, "kConnectionStyleSideWinding\n", v15, v16, v17, v18, v31);
     }
 
-    objc_msgSend_addSideWindingConnectionToPath_withOffset_(self, v20, Mutable, a3);
+    objc_msgSend_addSideWindingConnectionToPath_withOffset_(self, v20, Mutable, offset);
     goto LABEL_63;
   }
 
@@ -696,9 +696,9 @@ LABEL_63:
   return Mutable;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = objc_msgSend_newConnectionPathWithOffset_(self, a2, a3, 0.0);
+  v6 = objc_msgSend_newConnectionPathWithOffset_(self, a2, layer, 0.0);
   isGhosted = objc_msgSend_isGhosted(self, v7, v8);
   topoStyle = self->super._topoStyle;
   connectionLineLayer = self->_connectionLineLayer;
@@ -780,7 +780,7 @@ LABEL_18:
   objc_msgSend_setPath_(self->_connectionLineLayer, v39, v6);
   if (self->_arrowhead)
   {
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     if (self->super._topoStyle)
     {
       v40 = &OBJC_IVAR___NetTopoDeviceConnectionLayer__lineColorWiFi;
@@ -791,10 +791,10 @@ LABEL_18:
       v40 = &OBJC_IVAR___NetTopoDeviceConnectionLayer__lineColorActive;
     }
 
-    CGContextSetFillColorWithColor(a4, *(&self->super.super.super.isa + *v40));
-    CGContextAddPath(a4, self->_arrowhead);
-    CGContextFillPath(a4);
-    CGContextRestoreGState(a4);
+    CGContextSetFillColorWithColor(context, *(&self->super.super.super.isa + *v40));
+    CGContextAddPath(context, self->_arrowhead);
+    CGContextFillPath(context);
+    CGContextRestoreGState(context);
     objc_msgSend_setLineJoin_(self->_connectionLineLayer, v41, *MEMORY[0x277CDA798]);
     self->_arrowhead = 0;
   }
@@ -821,12 +821,12 @@ LABEL_18:
   objc_msgSend_setNeedsDisplay(self->_connectionLineLayer, v3, v4);
 }
 
-- (id)describeOne:(id)a3 uiLayer:(id)a4 indent:(unint64_t)a5
+- (id)describeOne:(id)one uiLayer:(id)layer indent:(unint64_t)indent
 {
   v8 = objc_opt_class();
   Name = class_getName(v8);
-  v12 = objc_msgSend_retainCount(a4, v10, v11);
-  objc_msgSend_appendFormat_(a3, v13, @"<%s: %p retains %d> ("), Name, a4, v12;
+  v12 = objc_msgSend_retainCount(layer, v10, v11);
+  objc_msgSend_appendFormat_(one, v13, @"<%s: %p retains %d> ("), Name, layer, v12;
   v16 = objc_msgSend_connectionMedium(self, v14, v15);
   v18 = @"unknown medium";
   if (v16 == 2)
@@ -836,16 +836,16 @@ LABEL_18:
 
   if (v16 == 1)
   {
-    objc_msgSend_appendString_(a3, v17, @"WiFi");
+    objc_msgSend_appendString_(one, v17, @"WiFi");
   }
 
   else
   {
-    objc_msgSend_appendString_(a3, v17, v18);
+    objc_msgSend_appendString_(one, v17, v18);
   }
 
-  objc_msgSend_appendString_(a3, v19, @""));
-  return a3;
+  objc_msgSend_appendString_(one, v19, @""));
+  return one;
 }
 
 - (NSString)debugDescription

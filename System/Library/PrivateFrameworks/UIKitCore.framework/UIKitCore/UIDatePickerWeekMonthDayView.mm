@@ -1,15 +1,15 @@
 @interface UIDatePickerWeekMonthDayView
-- (UIDatePickerWeekMonthDayView)initWithFrame:(CGRect)a3;
+- (UIDatePickerWeekMonthDayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation UIDatePickerWeekMonthDayView
 
-- (UIDatePickerWeekMonthDayView)initWithFrame:(CGRect)a3
+- (UIDatePickerWeekMonthDayView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = UIDatePickerWeekMonthDayView;
-  v3 = [(UIView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -61,11 +61,11 @@
     [(UILabel *)v3->_weekdayLabel setShadowOffset:0.0, 1.0];
     if (!qword_1ED49C070)
     {
-      v24 = [(UIView *)v3 traitCollection];
-      v25 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v24 userInterfaceIdiom]);
+      traitCollection = [(UIView *)v3 traitCollection];
+      v25 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
-      v26 = [(UIView *)v3 traitCollection];
-      v27 = [v25 centerCellFontWithTraitCollection:v26];
+      traitCollection2 = [(UIView *)v3 traitCollection];
+      v27 = [v25 centerCellFontWithTraitCollection:traitCollection2];
       v28 = qword_1ED49C070;
       qword_1ED49C070 = v27;
     }
@@ -121,8 +121,8 @@
     }
   }
 
-  v21 = [(UILabel *)self->_dateLabel font];
-  [v21 capHeight];
+  font = [(UILabel *)self->_dateLabel font];
+  [font capHeight];
   v23 = v22;
 
   v62.origin.x = v5;
@@ -134,9 +134,9 @@
   v55 = v24 + v25 - v15;
   [(UILabel *)self->_weekdayLabel _baselineOffsetFromBottom];
   v54 = v24 + v26 - v58;
-  v27 = [(UILabel *)self->_weekdayLabel text];
+  text = [(UILabel *)self->_weekdayLabel text];
 
-  if (!v27)
+  if (!text)
   {
     if ((v3 & 0x400000) != 0)
     {
@@ -148,8 +148,8 @@
     {
       formattedDateString = self->_formattedDateString;
       v59.origin.y = *off_1E70EC918;
-      v32 = [(UILabel *)self->_dateLabel font];
-      *&v59.size.width = v32;
+      font2 = [(UILabel *)self->_dateLabel font];
+      *&v59.size.width = font2;
       v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59.size forKeys:&v59.origin.y count:1];
       [(NSString *)formattedDateString sizeWithAttributes:v33];
       v35 = v34;
@@ -253,7 +253,7 @@ LABEL_18:
     }
 
     v52 = v59.origin.x;
-    if (v27)
+    if (text)
     {
       v52 = v59.origin.x - v51;
     }
@@ -262,7 +262,7 @@ LABEL_18:
     v18 = v18 - v51;
   }
 
-  if (v27)
+  if (text)
   {
     [(UILabel *)self->_weekdayLabel setFrame:v59.origin.x, v54, v56, v58];
   }

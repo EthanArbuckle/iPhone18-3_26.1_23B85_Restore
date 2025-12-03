@@ -1,49 +1,49 @@
 @interface IUISessionChangeAssistant
-+ (id)_responseForCompletedChangeContext:(id)a3;
++ (id)_responseForCompletedChangeContext:(id)context;
 - (BOOL)_changeHasNonUIKeyInputInputSource;
-- (IUISessionChangeAssistant)initWithController:(id)a3 sessionChangeContext:(id)a4 outgoingInputSource:(id)a5 incomingInputSource:(id)a6;
+- (IUISessionChangeAssistant)initWithController:(id)controller sessionChangeContext:(id)context outgoingInputSource:(id)source incomingInputSource:(id)inputSource;
 - (void)finalizeSessionChange;
-- (void)handleSetupNewDelegate:(id)a3;
-- (void)handleTeardownExistingDelegate:(id)a3;
+- (void)handleSetupNewDelegate:(id)delegate;
+- (void)handleTeardownExistingDelegate:(id)delegate;
 @end
 
 @implementation IUISessionChangeAssistant
 
-- (IUISessionChangeAssistant)initWithController:(id)a3 sessionChangeContext:(id)a4 outgoingInputSource:(id)a5 incomingInputSource:(id)a6
+- (IUISessionChangeAssistant)initWithController:(id)controller sessionChangeContext:(id)context outgoingInputSource:(id)source incomingInputSource:(id)inputSource
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  contextCopy = context;
+  sourceCopy = source;
+  inputSourceCopy = inputSource;
   v18.receiver = self;
   v18.super_class = IUISessionChangeAssistant;
   v15 = [(IUISessionChangeAssistant *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_controller, a3);
-    objc_storeStrong(&v16->_sessionChangeContext, a4);
-    objc_storeStrong(&v16->_outgoingInputSource, a5);
-    objc_storeStrong(&v16->_incomingInputSource, a6);
+    objc_storeStrong(&v15->_controller, controller);
+    objc_storeStrong(&v16->_sessionChangeContext, context);
+    objc_storeStrong(&v16->_outgoingInputSource, source);
+    objc_storeStrong(&v16->_incomingInputSource, inputSource);
   }
 
   return v16;
 }
 
-+ (id)_responseForCompletedChangeContext:(id)a3
++ (id)_responseForCompletedChangeContext:(id)context
 {
   v3 = [[IUISessionChangeResponse alloc] initWithResponseState:2];
 
   return v3;
 }
 
-- (void)handleTeardownExistingDelegate:(id)a3
+- (void)handleTeardownExistingDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
+  delegateCopy = delegate;
+  v5 = delegateCopy;
   if (self->_handledOutgoingInputSource)
   {
-    if (v4)
+    if (delegateCopy)
     {
       v6 = sub_10000235C();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -57,14 +57,14 @@ LABEL_23:
 
   else
   {
-    v7 = [(IUISessionChangeAssistant *)self outgoingInputSource];
+    outgoingInputSource = [(IUISessionChangeAssistant *)self outgoingInputSource];
 
-    if (v7 == v5)
+    if (outgoingInputSource == v5)
     {
       self->_handledOutgoingInputSource = 1;
       v6 = v5;
-      v8 = [(IUISessionChangeAssistant *)self sessionChangeContext];
-      v9 = [v8 sessionChange];
+      sessionChangeContext = [(IUISessionChangeAssistant *)self sessionChangeContext];
+      sessionChange = [sessionChangeContext sessionChange];
       v10 = sub_10000235C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -74,21 +74,21 @@ LABEL_23:
         v25 = 2112;
         v26 = v11;
         v27 = 2112;
-        v28 = v9;
+        v28 = sessionChange;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s  outgoingInputSource: %@, sessionChange: %@", &v23, 0x20u);
       }
 
-      v12 = [(IUISessionChangeAssistant *)self controller];
-      [v12 setCurrentSession:0];
+      controller = [(IUISessionChangeAssistant *)self controller];
+      [controller setCurrentSession:0];
 
       if (v6)
       {
-        if ([v9 isEndingSession])
+        if ([sessionChange isEndingSession])
         {
-          v13 = [v9 endSessionID];
-          v14 = [v6 sourceSession];
-          v15 = [v14 uuid];
-          v16 = [v13 isEqual:v15];
+          endSessionID = [sessionChange endSessionID];
+          sourceSession = [v6 sourceSession];
+          uuid = [sourceSession uuid];
+          v16 = [endSessionID isEqual:uuid];
 
           if ((v16 & 1) == 0)
           {
@@ -114,11 +114,11 @@ LABEL_23:
       }
 
       v19 = objc_opt_class();
-      v20 = [(IUISessionChangeAssistant *)self sessionChangeContext];
-      v21 = [v19 _responseForCompletedChangeContext:v20];
+      sessionChangeContext2 = [(IUISessionChangeAssistant *)self sessionChangeContext];
+      v21 = [v19 _responseForCompletedChangeContext:sessionChangeContext2];
 
-      v22 = [v8 completion];
-      (v22)[2](v22, v21);
+      completion = [sessionChangeContext completion];
+      (completion)[2](completion, v21);
 
       goto LABEL_23;
     }
@@ -136,9 +136,9 @@ LABEL_23:
   }
 }
 
-- (void)handleSetupNewDelegate:(id)a3
+- (void)handleSetupNewDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_handledIncomingInputSource)
   {
@@ -161,18 +161,18 @@ LABEL_30:
       sub_10000C69C();
     }
 
-    v7 = [(IUISessionChangeAssistant *)self outgoingInputSource];
-    [(IUISessionChangeAssistant *)self handleTeardownExistingDelegate:v7];
+    outgoingInputSource = [(IUISessionChangeAssistant *)self outgoingInputSource];
+    [(IUISessionChangeAssistant *)self handleTeardownExistingDelegate:outgoingInputSource];
   }
 
-  v8 = [(IUISessionChangeAssistant *)self incomingInputSource];
+  incomingInputSource = [(IUISessionChangeAssistant *)self incomingInputSource];
 
-  if (v8 == v4)
+  if (incomingInputSource == delegateCopy)
   {
     self->_handledIncomingInputSource = 1;
-    v5 = v4;
-    v9 = [(IUISessionChangeAssistant *)self sessionChangeContext];
-    v10 = [v9 sessionChange];
+    v5 = delegateCopy;
+    sessionChangeContext = [(IUISessionChangeAssistant *)self sessionChangeContext];
+    sessionChange = [sessionChangeContext sessionChange];
     v11 = sub_10000235C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -182,18 +182,18 @@ LABEL_30:
       v26 = 2112;
       v27 = v12;
       v28 = 2112;
-      v29 = v10;
+      v29 = sessionChange;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s  incomingInputSource: %@, sessionChange: %@", &v24, 0x20u);
     }
 
     if (v5)
     {
-      if ([v10 isBeginningSession])
+      if ([sessionChange isBeginningSession])
       {
-        v13 = [v10 beginSessionID];
-        v14 = [v5 sourceSession];
-        v15 = [v14 uuid];
-        v16 = [v13 isEqual:v15];
+        beginSessionID = [sessionChange beginSessionID];
+        sourceSession = [v5 sourceSession];
+        uuid = [sourceSession uuid];
+        v16 = [beginSessionID isEqual:uuid];
 
         if ((v16 & 1) == 0)
         {
@@ -214,39 +214,39 @@ LABEL_30:
         }
       }
 
-      v19 = [(IUISessionChangeAssistant *)self controller];
-      [v5 setDataTransportDelegate:v19];
+      controller = [(IUISessionChangeAssistant *)self controller];
+      [v5 setDataTransportDelegate:controller];
 
-      v20 = [(IUISessionChangeAssistant *)self controller];
-      [v20 setTextInputSource:v5];
+      controller2 = [(IUISessionChangeAssistant *)self controller];
+      [controller2 setTextInputSource:v5];
 
-      if ([v10 isBeginningSession])
+      if ([sessionChange isBeginningSession])
       {
-        v21 = [v9 session];
+        session = [sessionChangeContext session];
       }
 
       else
       {
-        v21 = 0;
+        session = 0;
       }
 
-      v23 = [(IUISessionChangeAssistant *)self controller];
-      [v23 setCurrentSession:v21];
+      controller3 = [(IUISessionChangeAssistant *)self controller];
+      [controller3 setCurrentSession:session];
     }
 
     else
     {
-      v22 = [(IUISessionChangeAssistant *)self controller];
-      [v22 setTextInputSource:0];
+      controller4 = [(IUISessionChangeAssistant *)self controller];
+      [controller4 setTextInputSource:0];
 
-      v21 = [(IUISessionChangeAssistant *)self controller];
-      [v21 setCurrentSession:0];
+      session = [(IUISessionChangeAssistant *)self controller];
+      [session setCurrentSession:0];
     }
 
     goto LABEL_30;
   }
 
-  if (v4)
+  if (delegateCopy)
   {
     v5 = sub_10000235C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -262,19 +262,19 @@ LABEL_31:
 
 - (BOOL)_changeHasNonUIKeyInputInputSource
 {
-  v3 = [(IUISessionChangeAssistant *)self outgoingInputSource];
-  if (v3 && (v4 = v3, -[IUISessionChangeAssistant outgoingInputSource](self, "outgoingInputSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput], v5, v4, !v6))
+  outgoingInputSource = [(IUISessionChangeAssistant *)self outgoingInputSource];
+  if (outgoingInputSource && (v4 = outgoingInputSource, -[IUISessionChangeAssistant outgoingInputSource](self, "outgoingInputSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput], v5, v4, !v6))
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v7 = [(IUISessionChangeAssistant *)self incomingInputSource];
-    if (v7)
+    incomingInputSource = [(IUISessionChangeAssistant *)self incomingInputSource];
+    if (incomingInputSource)
     {
-      v8 = [(IUISessionChangeAssistant *)self incomingInputSource];
-      v9 = [v8 conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput] ^ 1;
+      incomingInputSource2 = [(IUISessionChangeAssistant *)self incomingInputSource];
+      v9 = [incomingInputSource2 conformsToProtocol:&OBJC_PROTOCOL___UIKeyInput] ^ 1;
     }
 
     else
@@ -290,23 +290,23 @@ LABEL_31:
 {
   if (!self->_handledOutgoingInputSource || !self->_handledIncomingInputSource)
   {
-    v3 = [(IUISessionChangeAssistant *)self _changeHasNonUIKeyInputInputSource];
+    _changeHasNonUIKeyInputInputSource = [(IUISessionChangeAssistant *)self _changeHasNonUIKeyInputInputSource];
     v4 = sub_10000235C();
     v5 = v4;
-    if (v3)
+    if (_changeHasNonUIKeyInputInputSource)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(IUISessionChangeAssistant *)self sessionChangeContext];
-        v7 = [v6 sessionChange];
-        v8 = [(IUISessionChangeAssistant *)self outgoingInputSource];
-        v9 = sub_1000038A4(v8);
-        v10 = [(IUISessionChangeAssistant *)self incomingInputSource];
-        v11 = sub_1000038A4(v10);
+        sessionChangeContext = [(IUISessionChangeAssistant *)self sessionChangeContext];
+        sessionChange = [sessionChangeContext sessionChange];
+        outgoingInputSource = [(IUISessionChangeAssistant *)self outgoingInputSource];
+        v9 = sub_1000038A4(outgoingInputSource);
+        incomingInputSource = [(IUISessionChangeAssistant *)self incomingInputSource];
+        v11 = sub_1000038A4(incomingInputSource);
         v14 = 136315906;
         v15 = "[IUISessionChangeAssistant finalizeSessionChange]";
         v16 = 2112;
-        v17 = v7;
+        v17 = sessionChange;
         v18 = 2112;
         v19 = v9;
         v20 = 2112;
@@ -323,14 +323,14 @@ LABEL_31:
 
   if (!self->_handledOutgoingInputSource)
   {
-    v12 = [(IUISessionChangeAssistant *)self outgoingInputSource];
-    [(IUISessionChangeAssistant *)self handleTeardownExistingDelegate:v12];
+    outgoingInputSource2 = [(IUISessionChangeAssistant *)self outgoingInputSource];
+    [(IUISessionChangeAssistant *)self handleTeardownExistingDelegate:outgoingInputSource2];
   }
 
   if (!self->_handledIncomingInputSource)
   {
-    v13 = [(IUISessionChangeAssistant *)self incomingInputSource];
-    [(IUISessionChangeAssistant *)self handleSetupNewDelegate:v13];
+    incomingInputSource2 = [(IUISessionChangeAssistant *)self incomingInputSource];
+    [(IUISessionChangeAssistant *)self handleSetupNewDelegate:incomingInputSource2];
   }
 }
 

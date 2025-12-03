@@ -1,28 +1,28 @@
 @interface CompatibilityBridge
-+ (BOOL)WriteJetsamMemoryReportWithVisibilityEndowmentSet:(id)a3 audioAssertionSet:(id)a4;
++ (BOOL)WriteJetsamMemoryReportWithVisibilityEndowmentSet:(id)set audioAssertionSet:(id)assertionSet;
 - (_TtC15CoreDiagnostics19CompatibilityBridge)init;
 @end
 
 @implementation CompatibilityBridge
 
-+ (BOOL)WriteJetsamMemoryReportWithVisibilityEndowmentSet:(id)a3 audioAssertionSet:(id)a4
++ (BOOL)WriteJetsamMemoryReportWithVisibilityEndowmentSet:(id)set audioAssertionSet:(id)assertionSet
 {
-  v5 = a3;
-  if (a3)
+  setCopy = set;
+  if (set)
   {
     sub_1D97FBFCC();
     sub_1D97FC078();
-    v5 = sub_1D984A0A4();
+    setCopy = sub_1D984A0A4();
   }
 
-  if (a4)
+  if (assertionSet)
   {
     sub_1D97FBFCC();
     sub_1D97FC078();
-    a4 = sub_1D984A0A4();
+    assertionSet = sub_1D984A0A4();
   }
 
-  v6 = _s15CoreDiagnostics19CompatibilityBridgeC23WriteJetsamMemoryReport22visibilityEndowmentSet014audioAssertionK0SbShySo8NSNumberCGSg_AJtFZ_0(v5, a4);
+  v6 = _s15CoreDiagnostics19CompatibilityBridgeC23WriteJetsamMemoryReport22visibilityEndowmentSet014audioAssertionK0SbShySo8NSNumberCGSg_AJtFZ_0(setCopy, assertionSet);
 
   return v6 & 1;
 }

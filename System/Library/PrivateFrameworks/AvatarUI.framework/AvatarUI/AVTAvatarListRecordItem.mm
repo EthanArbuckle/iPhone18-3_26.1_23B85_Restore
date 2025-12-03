@@ -1,51 +1,51 @@
 @interface AVTAvatarListRecordItem
-- (AVTAvatarListRecordItem)initWithAvatar:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVTAvatarListRecordItem)initWithAvatar:(id)avatar;
+- (BOOL)isEqual:(id)equal;
 - (UIImage)cachedImage;
 - (unint64_t)hash;
-- (void)downcastWithRecordHandler:(id)a3 imageHandler:(id)a4 viewHandler:(id)a5;
+- (void)downcastWithRecordHandler:(id)handler imageHandler:(id)imageHandler viewHandler:(id)viewHandler;
 @end
 
 @implementation AVTAvatarListRecordItem
 
-- (AVTAvatarListRecordItem)initWithAvatar:(id)a3
+- (AVTAvatarListRecordItem)initWithAvatar:(id)avatar
 {
-  v5 = a3;
+  avatarCopy = avatar;
   v9.receiver = self;
   v9.super_class = AVTAvatarListRecordItem;
   v6 = [(AVTAvatarListRecordItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avatar, a3);
+    objc_storeStrong(&v6->_avatar, avatar);
   }
 
   return v7;
 }
 
-- (void)downcastWithRecordHandler:(id)a3 imageHandler:(id)a4 viewHandler:(id)a5
+- (void)downcastWithRecordHandler:(id)handler imageHandler:(id)imageHandler viewHandler:(id)viewHandler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, self);
+    (*(handler + 2))(handler, self);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v4}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", equalCopy}];
     }
 
-    v5 = [v4 avatar];
-    v6 = [(AVTAvatarListRecordItem *)self avatar];
-    v7 = [v5 isEqual:v6];
+    avatar = [equalCopy avatar];
+    avatar2 = [(AVTAvatarListRecordItem *)self avatar];
+    v7 = [avatar isEqual:avatar2];
   }
 
   else
@@ -58,8 +58,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AVTAvatarListRecordItem *)self avatar];
-  v3 = [v2 hash];
+  avatar = [(AVTAvatarListRecordItem *)self avatar];
+  v3 = [avatar hash];
 
   return v3;
 }

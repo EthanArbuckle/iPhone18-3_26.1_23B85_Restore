@@ -1,24 +1,24 @@
 @interface FBAOnDemandPinParingNavigationController
-- (FBAOnDemandPinParingNavigationController)initWithDevice:(id)a3 completion:(id)a4;
+- (FBAOnDemandPinParingNavigationController)initWithDevice:(id)device completion:(id)completion;
 - (void)dealloc;
-- (void)didCancelPairing:(id)a3;
-- (void)didPinPair:(id)a3;
-- (void)didPinPairWithDevice:(id)a3;
+- (void)didCancelPairing:(id)pairing;
+- (void)didPinPair:(id)pair;
+- (void)didPinPairWithDevice:(id)device;
 - (void)viewDidLoad;
 @end
 
 @implementation FBAOnDemandPinParingNavigationController
 
-- (FBAOnDemandPinParingNavigationController)initWithDevice:(id)a3 completion:(id)a4
+- (FBAOnDemandPinParingNavigationController)initWithDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = +[UIStoryboard fbaMainStoryboard];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = [v8 instantiateViewControllerWithIdentifier:v10];
 
-  [v11 setDevice:v6];
+  [v11 setDevice:deviceCopy];
   [v11 setContext:1];
   v15.receiver = self;
   v15.super_class = FBAOnDemandPinParingNavigationController;
@@ -26,8 +26,8 @@
   v13 = v12;
   if (v12)
   {
-    [(FBAOnDemandPinParingNavigationController *)v12 setCompletion:v7];
-    [(FBAOnDemandPinParingNavigationController *)v13 setPairingDevice:v6];
+    [(FBAOnDemandPinParingNavigationController *)v12 setCompletion:completionCopy];
+    [(FBAOnDemandPinParingNavigationController *)v13 setPairingDevice:deviceCopy];
   }
 
   return v13;
@@ -55,28 +55,28 @@
   [(FBAOnDemandPinParingNavigationController *)&v4 dealloc];
 }
 
-- (void)didCancelPairing:(id)a3
+- (void)didCancelPairing:(id)pairing
 {
   v4 = +[FBALog ded];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FBAOnDemandPinParingNavigationController *)self pairingDevice];
+    pairingDevice = [(FBAOnDemandPinParingNavigationController *)self pairingDevice];
     v6 = 138543362;
-    v7 = v5;
+    v7 = pairingDevice;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "did cancel pairing with device [%{public}@]", &v6, 0xCu);
   }
 
   [(FBAOnDemandPinParingNavigationController *)self didPinPairWithDevice:0];
 }
 
-- (void)didPinPair:(id)a3
+- (void)didPinPair:(id)pair
 {
-  v4 = [a3 object];
+  object = [pair object];
   v5 = +[FBALog ffu];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "pairing navigation controller got pairing success for device [%{public}@]", buf, 0xCu);
   }
 
@@ -86,24 +86,24 @@
   v8[2] = sub_100006EEC;
   v8[3] = &unk_1000DE4D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = object;
+  v7 = object;
   dispatch_after(v6, &_dispatch_main_q, v8);
 }
 
-- (void)didPinPairWithDevice:(id)a3
+- (void)didPinPairWithDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
     v4 = +[FBKDeviceManager sharedInstance];
-    v5 = [v4 configuredDevices];
+    configuredDevices = [v4 configuredDevices];
 
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    obj = configuredDevices;
+    v6 = [configuredDevices countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v6)
     {
       v8 = v6;
@@ -120,12 +120,12 @@
           }
 
           v10 = *(*(&v24 + 1) + 8 * i);
-          v11 = [v10 dedSharingDevice];
-          v12 = [v11 address];
-          v13 = [(FBAOnDemandPinParingNavigationController *)self pairingDevice];
-          v14 = [v13 dedSharingDevice];
-          v15 = [v14 address];
-          v16 = [v12 isEqualToString:v15];
+          dedSharingDevice = [v10 dedSharingDevice];
+          address = [dedSharingDevice address];
+          pairingDevice = [(FBAOnDemandPinParingNavigationController *)self pairingDevice];
+          dedSharingDevice2 = [pairingDevice dedSharingDevice];
+          address2 = [dedSharingDevice2 address];
+          v16 = [address isEqualToString:address2];
 
           if (v16)
           {
@@ -137,8 +137,8 @@
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "On demand pairing found paired sharing device [%{public}@]", buf, 0xCu);
             }
 
-            v18 = [(FBAOnDemandPinParingNavigationController *)self completion];
-            (v18)[2](v18, v10);
+            completion = [(FBAOnDemandPinParingNavigationController *)self completion];
+            (completion)[2](completion, v10);
           }
         }
 
@@ -151,12 +151,12 @@
 
   else
   {
-    v19 = [(FBAOnDemandPinParingNavigationController *)self completion];
-    v19[2](v19, 0);
+    completion2 = [(FBAOnDemandPinParingNavigationController *)self completion];
+    completion2[2](completion2, 0);
   }
 
-  v20 = [(FBAOnDemandPinParingNavigationController *)self presentingViewController];
-  [v20 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(FBAOnDemandPinParingNavigationController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

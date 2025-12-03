@@ -1,41 +1,41 @@
 @interface CSDiscoveryItemExplorePostersViewController
-- (CSDiscoveryItemExplorePostersViewController)initWithPlatter:(id)a3 firstDidAppearCompletion:(id)a4;
+- (CSDiscoveryItemExplorePostersViewController)initWithPlatter:(id)platter firstDidAppearCompletion:(id)completion;
 - (void)_updateAnimationState;
-- (void)setScreenOn:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setScreenOn:(BOOL)on;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CSDiscoveryItemExplorePostersViewController
 
-- (CSDiscoveryItemExplorePostersViewController)initWithPlatter:(id)a3 firstDidAppearCompletion:(id)a4
+- (CSDiscoveryItemExplorePostersViewController)initWithPlatter:(id)platter firstDidAppearCompletion:(id)completion
 {
-  v7 = a3;
+  platterCopy = platter;
   v11.receiver = self;
   v11.super_class = CSDiscoveryItemExplorePostersViewController;
-  v8 = [(CSDiscoveryItemViewController *)&v11 initWithPlatterDiscoveryView:v7 firstDidAppearCompletion:a4];
+  v8 = [(CSDiscoveryItemViewController *)&v11 initWithPlatterDiscoveryView:platterCopy firstDidAppearCompletion:completion];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_platter, a3);
+    objc_storeStrong(&v8->_platter, platter);
   }
 
   return v9;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSDiscoveryItemExplorePostersViewController;
-  [(CSDiscoveryItemViewController *)&v4 viewDidAppear:a3];
+  [(CSDiscoveryItemViewController *)&v4 viewDidAppear:appear];
   [(CSDiscoveryItemExplorePostersViewController *)self _updateAnimationState];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSDiscoveryItemExplorePostersViewController;
-  [(CSDiscoveryItemViewController *)&v4 viewDidDisappear:a3];
+  [(CSDiscoveryItemViewController *)&v4 viewDidDisappear:disappear];
   [(CSDiscoveryItemExplorePostersViewController *)self _updateAnimationState];
 }
 
@@ -43,22 +43,22 @@
 {
   if ([(CSDiscoveryItemExplorePostersViewController *)self bs_isAppearingOrAppeared]&& [(CSDiscoveryItemViewController *)self isScreenOn])
   {
-    v3 = [(CSDiscoveryItemExplorePostersViewController *)self platter];
-    [v3 resumeAnimations];
+    platter = [(CSDiscoveryItemExplorePostersViewController *)self platter];
+    [platter resumeAnimations];
   }
 
   else
   {
-    v3 = [(CSDiscoveryItemExplorePostersViewController *)self platter];
-    [v3 pauseAnimations];
+    platter = [(CSDiscoveryItemExplorePostersViewController *)self platter];
+    [platter pauseAnimations];
   }
 }
 
-- (void)setScreenOn:(BOOL)a3
+- (void)setScreenOn:(BOOL)on
 {
   v4.receiver = self;
   v4.super_class = CSDiscoveryItemExplorePostersViewController;
-  [(CSDiscoveryItemViewController *)&v4 setScreenOn:a3];
+  [(CSDiscoveryItemViewController *)&v4 setScreenOn:on];
   [(CSDiscoveryItemExplorePostersViewController *)self _updateAnimationState];
 }
 

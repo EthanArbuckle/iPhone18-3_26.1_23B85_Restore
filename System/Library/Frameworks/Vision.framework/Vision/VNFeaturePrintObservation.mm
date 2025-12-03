@@ -1,15 +1,15 @@
 @interface VNFeaturePrintObservation
 - (BOOL)computeDistance:(float *)outDistance toFeaturePrintObservation:(VNFeaturePrintObservation *)featurePrint error:(NSError *)error;
 - (NSData)data;
-- (float)computeDistanceToFeaturePrintObservation:(id)a3 error:(id *)a4;
+- (float)computeDistanceToFeaturePrintObservation:(id)observation error:(id *)error;
 @end
 
 @implementation VNFeaturePrintObservation
 
-- (float)computeDistanceToFeaturePrintObservation:(id)a3 error:(id *)a4
+- (float)computeDistanceToFeaturePrintObservation:(id)observation error:(id *)error
 {
   v5 = NAN;
-  [(VNFeaturePrintObservation *)self computeDistance:&v5 toFeaturePrintObservation:a3 error:a4];
+  [(VNFeaturePrintObservation *)self computeDistance:&v5 toFeaturePrintObservation:observation error:error];
   return v5;
 }
 
@@ -17,22 +17,22 @@
 {
   v8 = featurePrint;
   __C = NAN;
-  v9 = [(VNObservation *)self requestRevision];
-  if (v9 == [(VNObservation *)v8 requestRevision])
+  requestRevision = [(VNObservation *)self requestRevision];
+  if (requestRevision == [(VNObservation *)v8 requestRevision])
   {
-    v10 = [(VNFeaturePrintObservation *)self data];
-    v11 = [v10 length];
-    v12 = [(VNFeaturePrintObservation *)self elementCount];
-    v13 = [(VNFeaturePrintObservation *)v8 data];
-    v14 = [v13 length];
-    v15 = [(VNFeaturePrintObservation *)self elementType];
-    if (v15 == [(VNFeaturePrintObservation *)v8 elementType]&& [(VNFeaturePrintObservation *)self elementType]== VNElementTypeFloat && v12 == [(VNFeaturePrintObservation *)v8 elementCount]&& v11 == v14)
+    data = [(VNFeaturePrintObservation *)self data];
+    v11 = [data length];
+    elementCount = [(VNFeaturePrintObservation *)self elementCount];
+    data2 = [(VNFeaturePrintObservation *)v8 data];
+    v14 = [data2 length];
+    elementType = [(VNFeaturePrintObservation *)self elementType];
+    if (elementType == [(VNFeaturePrintObservation *)v8 elementType]&& [(VNFeaturePrintObservation *)self elementType]== VNElementTypeFloat && elementCount == [(VNFeaturePrintObservation *)v8 elementCount]&& v11 == v14)
     {
-      v16 = [v10 bytes];
-      v17 = [v13 bytes];
-      if (v16 && v17)
+      bytes = [data bytes];
+      bytes2 = [data2 bytes];
+      if (bytes && bytes2)
       {
-        vDSP_distancesq(v16, 1, v17, 1, &__C, v12);
+        vDSP_distancesq(bytes, 1, bytes2, 1, &__C, elementCount);
         v18 = sqrtf(__C);
         __C = v18;
         if (outDistance)

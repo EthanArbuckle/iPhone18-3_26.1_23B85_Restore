@@ -1,14 +1,14 @@
 @interface CKKSPowerCollection
-+ (void)CKKSPowerEvent:(id)a3 count:(unint64_t)a4;
-+ (void)CKKSPowerEvent:(id)a3 zone:(id)a4;
-+ (void)CKKSPowerEvent:(id)a3 zone:(id)a4 count:(unint64_t)a5;
-+ (void)OTPowerEvent:(id)a3;
++ (void)CKKSPowerEvent:(id)event count:(unint64_t)count;
++ (void)CKKSPowerEvent:(id)event zone:(id)zone;
++ (void)CKKSPowerEvent:(id)event zone:(id)zone count:(unint64_t)count;
++ (void)OTPowerEvent:(id)event;
 - (CKKSPowerCollection)init;
-- (void)addToStatsDictionary:(id)a3 key:(id)a4;
+- (void)addToStatsDictionary:(id)dictionary key:(id)key;
 - (void)commit;
-- (void)deletedOQE:(id)a3;
-- (void)storedOQE:(id)a3;
-- (void)summary:(id)a3 stats:(id)a4;
+- (void)deletedOQE:(id)e;
+- (void)storedOQE:(id)e;
+- (void)summary:(id)summary stats:(id)stats;
 @end
 
 @implementation CKKSPowerCollection
@@ -21,15 +21,15 @@
   [(CKKSPowerCollection *)self summary:@"delete" stats:delete];
 }
 
-- (void)summary:(id)a3 stats:(id)a4
+- (void)summary:(id)summary stats:(id)stats
 {
-  v5 = a3;
-  v6 = a4;
+  summaryCopy = summary;
+  statsCopy = stats;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v7 = [statsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -41,16 +41,16 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(statsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
         v18[0] = @"operation";
         v18[1] = @"accessgroup";
-        v19[0] = v5;
+        v19[0] = summaryCopy;
         v19[1] = v11;
         v18[2] = @"items";
-        v12 = [v6 objectForKeyedSubscript:?];
+        v12 = [statsCopy objectForKeyedSubscript:?];
         v19[2] = v12;
         v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
         sub_100011140(@"CKKSSyncing", v13);
@@ -59,40 +59,40 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v8 = [statsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)deletedOQE:(id)a3
+- (void)deletedOQE:(id)e
 {
   delete = self->_delete;
-  v5 = [a3 accessgroup];
-  [(CKKSPowerCollection *)self addToStatsDictionary:delete key:v5];
+  accessgroup = [e accessgroup];
+  [(CKKSPowerCollection *)self addToStatsDictionary:delete key:accessgroup];
 }
 
-- (void)storedOQE:(id)a3
+- (void)storedOQE:(id)e
 {
   store = self->_store;
-  v5 = [a3 accessgroup];
-  [(CKKSPowerCollection *)self addToStatsDictionary:store key:v5];
+  accessgroup = [e accessgroup];
+  [(CKKSPowerCollection *)self addToStatsDictionary:store key:accessgroup];
 }
 
-- (void)addToStatsDictionary:(id)a3 key:(id)a4
+- (void)addToStatsDictionary:(id)dictionary key:(id)key
 {
-  v5 = a4;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v5 = @"access-group-missing";
+    keyCopy = @"access-group-missing";
   }
 
-  v9 = v5;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:v9];
+  v9 = keyCopy;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:v9];
   v8 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v7 longValue] + 1);
-  [v6 setObject:v8 forKeyedSubscript:v9];
+  [dictionaryCopy setObject:v8 forKeyedSubscript:v9];
 }
 
 - (CKKSPowerCollection)init
@@ -114,53 +114,53 @@
   return v2;
 }
 
-+ (void)OTPowerEvent:(id)a3
++ (void)OTPowerEvent:(id)event
 {
   v5 = @"operation";
-  v6 = a3;
-  v3 = a3;
-  v4 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
+  eventCopy = event;
+  eventCopy2 = event;
+  v4 = [NSDictionary dictionaryWithObjects:&eventCopy forKeys:&v5 count:1];
 
   sub_100011140(@"OctagonTrust", v4);
 }
 
-+ (void)CKKSPowerEvent:(id)a3 count:(unint64_t)a4
++ (void)CKKSPowerEvent:(id)event count:(unint64_t)count
 {
   v8[0] = @"operation";
   v8[1] = @"count";
-  v9[0] = a3;
-  v5 = a3;
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
+  v9[0] = event;
+  eventCopy = event;
+  v6 = [NSNumber numberWithUnsignedInteger:count];
   v9[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   sub_100011140(@"CKKSSyncing", v7);
 }
 
-+ (void)CKKSPowerEvent:(id)a3 zone:(id)a4 count:(unint64_t)a5
++ (void)CKKSPowerEvent:(id)event zone:(id)zone count:(unint64_t)count
 {
   v11[0] = @"operation";
   v11[1] = @"zone";
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = event;
+  v12[1] = zone;
   v11[2] = @"count";
-  v7 = a4;
-  v8 = a3;
-  v9 = [NSNumber numberWithUnsignedInteger:a5];
+  zoneCopy = zone;
+  eventCopy = event;
+  v9 = [NSNumber numberWithUnsignedInteger:count];
   v12[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   sub_100011140(@"CKKSSyncing", v10);
 }
 
-+ (void)CKKSPowerEvent:(id)a3 zone:(id)a4
++ (void)CKKSPowerEvent:(id)event zone:(id)zone
 {
   v8[0] = @"operation";
   v8[1] = @"zone";
-  v9[0] = a3;
-  v9[1] = a4;
-  v5 = a4;
-  v6 = a3;
+  v9[0] = event;
+  v9[1] = zone;
+  zoneCopy = zone;
+  eventCopy = event;
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   sub_100011140(@"CKKSSyncing", v7);

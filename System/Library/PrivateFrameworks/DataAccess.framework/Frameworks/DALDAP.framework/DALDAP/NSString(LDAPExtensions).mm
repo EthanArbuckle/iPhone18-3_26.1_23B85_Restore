@@ -8,7 +8,7 @@
 - (id)ldapHumanReadableStringFromSearchBase
 {
   v22 = *MEMORY[0x277D85DE8];
-  v1 = [a1 componentsSeparatedByString:{@", "}];
+  v1 = [self componentsSeparatedByString:{@", "}];
   v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v1, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -39,8 +39,8 @@
         else
         {
           v11 = [v8 substringFromIndex:v10];
-          v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v13 = [v11 stringByTrimmingCharactersInSet:v12];
+          whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v13 = [v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           if ([v13 length])
           {
@@ -64,8 +64,8 @@
 
 - (id)ldapSanitizedAddress
 {
-  v2 = [a1 mutableCopy];
-  v3 = [a1 length];
+  v2 = [self mutableCopy];
+  v3 = [self length];
   [v2 replaceOccurrencesOfString:@"$" withString:@"\n" options:0 range:{0, v3}];
   [v2 replaceOccurrencesOfString:@"\\24" withString:@"$" options:0 range:{0, v3}];
   [v2 replaceOccurrencesOfString:@"\\5C" withString:@"\\"" options:0 range:{0, v3}];

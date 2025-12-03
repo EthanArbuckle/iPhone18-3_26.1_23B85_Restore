@@ -1,52 +1,52 @@
 @interface StatisticsParser
-- (BOOL)feedJSONLine:(id)a3 error:(id *)a4;
-- (StatisticsParser)initWithUnixTimeBoundAndMinQuarantineTime:(int64_t)a3 to:(int64_t)a4 min_quarantine_time_covered_sec:(unsigned int)a5;
-- (void)_handleEmitter:(id)a3 inBook:(unsigned __int8)a4;
-- (void)_handleQuarantineRecord:(id)a3;
-- (void)_handleSnapshotRecord:(id)a3;
-- (void)_handleStatisticsRecord:(id)a3;
+- (BOOL)feedJSONLine:(id)line error:(id *)error;
+- (StatisticsParser)initWithUnixTimeBoundAndMinQuarantineTime:(int64_t)time to:(int64_t)to min_quarantine_time_covered_sec:(unsigned int)min_quarantine_time_covered_sec;
+- (void)_handleEmitter:(id)emitter inBook:(unsigned __int8)book;
+- (void)_handleQuarantineRecord:(id)record;
+- (void)_handleSnapshotRecord:(id)record;
+- (void)_handleStatisticsRecord:(id)record;
 @end
 
 @implementation StatisticsParser
 
-- (void)_handleQuarantineRecord:(id)a3
+- (void)_handleQuarantineRecord:(id)record
 {
-  v4 = a3;
-  v5 = sub_100001B5C(v4, @"client");
+  recordCopy = record;
+  v5 = sub_100001B5C(recordCopy, @"client");
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 lastPathComponent];
-    v8 = sub_100001B5C(v4, @"file");
+    lastPathComponent = [v5 lastPathComponent];
+    v8 = sub_100001B5C(recordCopy, @"file");
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 pathComponents];
-      v11 = [v10 objectAtIndexedSubscript:0];
+      pathComponents = [v8 pathComponents];
+      v11 = [pathComponents objectAtIndexedSubscript:0];
 
       v12 = sub_100001BDC([v11 UTF8String]);
       if (v12 != 5)
       {
         v13 = v12;
-        v14 = sub_100001C64(v4, @"timeCovered");
+        v14 = sub_100001C64(recordCopy, @"timeCovered");
         v15 = v14;
         if (v14 && [v14 unsignedLongValue] >= self->_min_quarantine_time_covered_sec)
         {
-          v16 = sub_100001C64(v4, @"sizeBytes");
+          v16 = sub_100001C64(recordCopy, @"sizeBytes");
           if (v16)
           {
-            v17 = sub_100001C64(v4, @"totalBytes");
+            v17 = sub_100001C64(recordCopy, @"totalBytes");
             if (v17)
             {
               v39 = v17;
-              v18 = sub_100001C64(v4, @"simulated");
+              v18 = sub_100001C64(recordCopy, @"simulated");
               v37 = v18;
               if (v18 && [v18 BOOLValue])
               {
                 simulatedQuarantines = self->_simulatedQuarantines;
                 v42[0] = @"processName";
                 v42[1] = @"bytes";
-                v43[0] = v7;
+                v43[0] = lastPathComponent;
                 v43[1] = v16;
                 v42[2] = @"totalBytes";
                 v42[3] = @"timeCovered";
@@ -62,36 +62,36 @@
               else
               {
                 v36 = v16;
-                v21 = [v4 objectForKeyedSubscript:@"superQuarantine"];
-                v22 = [v21 BOOLValue];
+                v21 = [recordCopy objectForKeyedSubscript:@"superQuarantine"];
+                bOOLValue = [v21 BOOLValue];
 
-                if (v22)
+                if (bOOLValue)
                 {
-                  v35 = 1;
+                  bOOLValue2 = 1;
                 }
 
                 else
                 {
-                  v23 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                  v23 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
 
                   if (v23)
                   {
-                    v24 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                    v24 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
                     v25 = [v24 objectForKeyedSubscript:@"superQuarantine"];
-                    v35 = [v25 BOOLValue];
+                    bOOLValue2 = [v25 BOOLValue];
                   }
 
                   else
                   {
-                    v35 = 0;
+                    bOOLValue2 = 0;
                   }
                 }
 
-                v26 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                v26 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
 
                 if (v26)
                 {
-                  v27 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                  v27 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
                   v28 = [v27 objectForKeyedSubscript:@"quarantineCount"];
                   v34 = [v28 intValue] + 1;
                 }
@@ -101,12 +101,12 @@
                   v34 = 1;
                 }
 
-                v20 = sub_100001C64(v4, @"unixTime");
-                v29 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                v20 = sub_100001C64(recordCopy, @"unixTime");
+                v29 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
 
                 if (v29)
                 {
-                  v30 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:v7];
+                  v30 = [(NSMutableDictionary *)self->_quarantinedClients objectForKeyedSubscript:lastPathComponent];
                   v38 = [v30 objectForKeyedSubscript:@"unixTime"];
                 }
 
@@ -128,12 +128,12 @@
                 v40[4] = @"timeCovered";
                 v41[4] = v15;
                 v40[5] = @"superQuarantine";
-                v31 = [NSNumber numberWithBool:v35];
+                v31 = [NSNumber numberWithBool:bOOLValue2];
                 v40[6] = @"unixTime";
                 v41[5] = v31;
                 v41[6] = v38;
                 v32 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:7];
-                [(NSMutableDictionary *)self->_quarantinedClients setObject:v32 forKeyedSubscript:v7];
+                [(NSMutableDictionary *)self->_quarantinedClients setObject:v32 forKeyedSubscript:lastPathComponent];
 
                 v16 = v36;
               }
@@ -147,85 +147,85 @@
   }
 }
 
-- (void)_handleEmitter:(id)a3 inBook:(unsigned __int8)a4
+- (void)_handleEmitter:(id)emitter inBook:(unsigned __int8)book
 {
-  v4 = a4;
-  v25 = a3;
-  v6 = sub_100001B5C(v25, @"process");
+  bookCopy = book;
+  emitterCopy = emitter;
+  v6 = sub_100001B5C(emitterCopy, @"process");
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 lastPathComponent];
-    v9 = sub_100001C64(v25, @"sizeBytes");
+    lastPathComponent = [v6 lastPathComponent];
+    v9 = sub_100001C64(emitterCopy, @"sizeBytes");
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedLongValue];
-      v12 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:v4];
-      v13 = [v12 objectForKeyedSubscript:v8];
+      unsignedLongValue = [v9 unsignedLongValue];
+      v12 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:bookCopy];
+      v13 = [v12 objectForKeyedSubscript:lastPathComponent];
 
-      v14 = v11;
+      v14 = unsignedLongValue;
       if (v13)
       {
-        v15 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:v4];
-        v16 = [v15 objectForKeyedSubscript:v8];
-        v14 = &v11[[v16 unsignedLongLongValue]];
+        v15 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:bookCopy];
+        v16 = [v15 objectForKeyedSubscript:lastPathComponent];
+        v14 = &unsignedLongValue[[v16 unsignedLongLongValue]];
       }
 
       v17 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:4];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      v18 = [v17 objectForKeyedSubscript:lastPathComponent];
 
       if (v18)
       {
         v19 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:4];
-        v20 = [v19 objectForKeyedSubscript:v8];
-        v11 = &v11[[v20 unsignedLongLongValue]];
+        v20 = [v19 objectForKeyedSubscript:lastPathComponent];
+        unsignedLongValue = &unsignedLongValue[[v20 unsignedLongLongValue]];
       }
 
       v21 = [NSNumber numberWithUnsignedLong:v14];
-      v22 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:v4];
-      [v22 setObject:v21 forKeyedSubscript:v8];
+      v22 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:bookCopy];
+      [v22 setObject:v21 forKeyedSubscript:lastPathComponent];
 
-      v23 = [NSNumber numberWithUnsignedLong:v11];
+      v23 = [NSNumber numberWithUnsignedLong:unsignedLongValue];
       v24 = [(NSMutableArray *)self->_topEmitters objectAtIndexedSubscript:4];
-      [v24 setObject:v23 forKeyedSubscript:v8];
+      [v24 setObject:v23 forKeyedSubscript:lastPathComponent];
     }
   }
 }
 
-- (void)_handleStatisticsRecord:(id)a3
+- (void)_handleStatisticsRecord:(id)record
 {
-  v4 = a3;
-  v5 = sub_100001B5C(v4, @"type");
+  recordCopy = record;
+  v5 = sub_100001B5C(recordCopy, @"type");
   v6 = v5;
   if (v5 && [v5 isEqualToString:@"File Rotate"])
   {
-    v7 = sub_100001B5C(v4, @"file");
+    v7 = sub_100001B5C(recordCopy, @"file");
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 pathComponents];
-      v10 = [v9 objectAtIndexedSubscript:0];
+      pathComponents = [v7 pathComponents];
+      v10 = [pathComponents objectAtIndexedSubscript:0];
 
       v11 = sub_100001BDC([v10 UTF8String]);
       if (v11 != 5)
       {
         v12 = v11;
-        v13 = sub_100001C64(v4, @"totalBytes");
+        v13 = sub_100001C64(recordCopy, @"totalBytes");
         if (v13)
         {
           v29 = v13;
           v30 = v10;
-          v14 = [v13 unsignedLongLongValue];
+          unsignedLongLongValue = [v13 unsignedLongLongValue];
           v15 = [(NSMutableArray *)self->_totalBytes objectAtIndexedSubscript:v12];
-          v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", &v14[[v15 unsignedLongLongValue]]);
+          v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", &unsignedLongLongValue[[v15 unsignedLongLongValue]]);
           [(NSMutableArray *)self->_totalBytes setObject:v16 atIndexedSubscript:v12];
 
           v17 = [(NSMutableArray *)self->_totalBytes objectAtIndexedSubscript:4];
-          v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", &v14[[v17 unsignedLongLongValue]]);
+          v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", &unsignedLongLongValue[[v17 unsignedLongLongValue]]);
           [(NSMutableArray *)self->_totalBytes setObject:v18 atIndexedSubscript:4];
 
-          v19 = [v4 objectForKeyedSubscript:@"processList"];
+          v19 = [recordCopy objectForKeyedSubscript:@"processList"];
           if (v19 && (objc_opt_class(), sub_100001CE4(v19), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
           {
             v28 = v8;
@@ -279,9 +279,9 @@
   }
 }
 
-- (void)_handleSnapshotRecord:(id)a3
+- (void)_handleSnapshotRecord:(id)record
 {
-  v4 = sub_100001B5C(a3, @"client");
+  v4 = sub_100001B5C(record, @"client");
   if (v4)
   {
     v9 = v4;
@@ -305,10 +305,10 @@
   _objc_release_x1();
 }
 
-- (BOOL)feedJSONLine:(id)a3 error:(id *)a4
+- (BOOL)feedJSONLine:(id)line error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:a4];
+  v6 = [line dataUsingEncoding:4];
+  v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:error];
   v8 = v7;
   if (v7)
   {
@@ -373,7 +373,7 @@ LABEL_21:
   return v8 != 0;
 }
 
-- (StatisticsParser)initWithUnixTimeBoundAndMinQuarantineTime:(int64_t)a3 to:(int64_t)a4 min_quarantine_time_covered_sec:(unsigned int)a5
+- (StatisticsParser)initWithUnixTimeBoundAndMinQuarantineTime:(int64_t)time to:(int64_t)to min_quarantine_time_covered_sec:(unsigned int)min_quarantine_time_covered_sec
 {
   v28.receiver = self;
   v28.super_class = StatisticsParser;
@@ -381,8 +381,8 @@ LABEL_21:
   v9 = v8;
   if (v8)
   {
-    v8->_lowerBound = a3;
-    v8->_upperBound = a4;
+    v8->_lowerBound = time;
+    v8->_upperBound = to;
     v10 = objc_opt_new();
     snapshotClients = v9->_snapshotClients;
     v9->_snapshotClients = v10;
@@ -417,7 +417,7 @@ LABEL_21:
     v9->_validLineCount = 0;
     v9->_oldestEntryUnixTime = 0;
     v9->_newestEntryUnixTime = 0;
-    v9->_min_quarantine_time_covered_sec = a5;
+    v9->_min_quarantine_time_covered_sec = min_quarantine_time_covered_sec;
     v26 = v9;
   }
 

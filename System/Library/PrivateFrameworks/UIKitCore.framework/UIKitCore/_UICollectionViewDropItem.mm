@@ -1,27 +1,27 @@
 @interface _UICollectionViewDropItem
 - (CGSize)previewSize;
 - (NSString)description;
-- (_UICollectionViewDropItem)initWithDragItem:(id)a3 previewSize:(CGSize)a4 sourceIndexPath:(id)a5;
+- (_UICollectionViewDropItem)initWithDragItem:(id)item previewSize:(CGSize)size sourceIndexPath:(id)path;
 @end
 
 @implementation _UICollectionViewDropItem
 
-- (_UICollectionViewDropItem)initWithDragItem:(id)a3 previewSize:(CGSize)a4 sourceIndexPath:(id)a5
+- (_UICollectionViewDropItem)initWithDragItem:(id)item previewSize:(CGSize)size sourceIndexPath:(id)path
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = _UICollectionViewDropItem;
   v12 = [(_UICollectionViewDropItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dragItem, a3);
+    objc_storeStrong(&v12->_dragItem, item);
     v13->_previewSize.width = width;
     v13->_previewSize.height = height;
-    objc_storeStrong(&v13->_sourceIndexPath, a5);
+    objc_storeStrong(&v13->_sourceIndexPath, path);
   }
 
   return v13;

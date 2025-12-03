@@ -1,41 +1,41 @@
 @interface AMSNotificationSettingsItem
-- (AMSNotificationSettingsItem)initWithDictionaryRepresentation:(id)a3;
-- (AMSNotificationSettingsItem)initWithTitle:(id)a3 description:(id)a4 identifier:(id)a5 enabled:(BOOL)a6;
+- (AMSNotificationSettingsItem)initWithDictionaryRepresentation:(id)representation;
+- (AMSNotificationSettingsItem)initWithTitle:(id)title description:(id)description identifier:(id)identifier enabled:(BOOL)enabled;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation AMSNotificationSettingsItem
 
-- (AMSNotificationSettingsItem)initWithTitle:(id)a3 description:(id)a4 identifier:(id)a5 enabled:(BOOL)a6
+- (AMSNotificationSettingsItem)initWithTitle:(id)title description:(id)description identifier:(id)identifier enabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  descriptionCopy = description;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = AMSNotificationSettingsItem;
   v14 = [(AMSNotificationSettingsItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_desc, a4);
-    v15->_enabled = a6;
-    objc_storeStrong(&v15->_identifier, a5);
-    objc_storeStrong(&v15->_title, a3);
+    objc_storeStrong(&v14->_desc, description);
+    v15->_enabled = enabled;
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v15->_title, title);
   }
 
   return v15;
 }
 
-- (AMSNotificationSettingsItem)initWithDictionaryRepresentation:(id)a3
+- (AMSNotificationSettingsItem)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v20.receiver = self;
   v20.super_class = AMSNotificationSettingsItem;
   v5 = [(AMSNotificationSettingsItem *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"settingId"];
+    v6 = [representationCopy objectForKeyedSubscript:@"settingId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"title"];
+    v9 = [representationCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"description"];
+    v12 = [representationCopy objectForKeyedSubscript:@"description"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,10 +80,10 @@
     desc = v5->_desc;
     v5->_desc = v13;
 
-    v15 = [v4 valueForKeyPath:@"value.data"];
+    v15 = [representationCopy valueForKeyPath:@"value.data"];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v4 valueForKeyPath:@"value.data"];
+      v16 = [representationCopy valueForKeyPath:@"value.data"];
       v5->_enabled = [v16 BOOLValue];
     }
 
@@ -92,10 +92,10 @@
       v5->_enabled = 0;
     }
 
-    v17 = [v4 valueForKeyPath:@"value.dataUpdated"];
+    v17 = [representationCopy valueForKeyPath:@"value.dataUpdated"];
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v4 valueForKeyPath:@"value.dataUpdated"];
+      v18 = [representationCopy valueForKeyPath:@"value.dataUpdated"];
       v5->_userChanged = [v18 BOOLValue];
     }
 
@@ -112,14 +112,14 @@
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v11[0] = @"itemId";
-  v3 = [(AMSNotificationSettingsItem *)self identifier];
-  v12[0] = v3;
+  identifier = [(AMSNotificationSettingsItem *)self identifier];
+  v12[0] = identifier;
   v11[1] = @"title";
-  v4 = [(AMSNotificationSettingsItem *)self title];
-  v12[1] = v4;
+  title = [(AMSNotificationSettingsItem *)self title];
+  v12[1] = title;
   v11[2] = @"desc";
-  v5 = [(AMSNotificationSettingsItem *)self desc];
-  v12[2] = v5;
+  desc = [(AMSNotificationSettingsItem *)self desc];
+  v12[2] = desc;
   v11[3] = @"value";
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSNotificationSettingsItem isEnabled](self, "isEnabled")}];
   v12[3] = v6;
@@ -136,9 +136,9 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = @"settingId";
-  v3 = [(AMSNotificationSettingsItem *)self identifier];
+  identifier = [(AMSNotificationSettingsItem *)self identifier];
   v7[1] = @"data";
-  v8[0] = v3;
+  v8[0] = identifier;
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSNotificationSettingsItem isEnabled](self, "isEnabled")}];
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];

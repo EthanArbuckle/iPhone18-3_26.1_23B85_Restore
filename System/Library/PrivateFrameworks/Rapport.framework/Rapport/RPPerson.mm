@@ -1,17 +1,17 @@
 @interface RPPerson
-- (RPPerson)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (RPPerson)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
 - (unsigned)_updateDeviceDerivedInfo;
-- (unsigned)removeRPDevice:(id)a3;
-- (unsigned)updateWithRPDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unsigned)removeRPDevice:(id)device;
+- (unsigned)updateWithRPDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPPerson
 
-- (RPPerson)initWithCoder:(id)a3
+- (RPPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = RPPerson;
   v5 = [(RPPerson *)&v12 init];
@@ -26,7 +26,7 @@
     v5->_activityLevel = v13;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   objc_opt_class();
   NSDecodeObjectIfPresent();
 
@@ -70,71 +70,71 @@ LABEL_12:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   activityLevel = self->_activityLevel;
-  v13 = v4;
+  v13 = coderCopy;
   if (activityLevel)
   {
-    [v4 encodeInteger:activityLevel forKey:@"al"];
-    v4 = v13;
+    [coderCopy encodeInteger:activityLevel forKey:@"al"];
+    coderCopy = v13;
   }
 
   contactID = self->_contactID;
   if (contactID)
   {
     [v13 encodeObject:contactID forKey:@"cnid"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   devices = self->_devices;
   if (devices)
   {
     [v13 encodeObject:devices forKey:@"dv"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v13 encodeInt64:flags forKey:@"fl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v13 encodeObject:identifier forKey:@"id"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   name = self->_name;
   if (name)
   {
     [v13 encodeObject:name forKey:@"nm"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   proximity = self->_proximity;
   if (proximity)
   {
     [v13 encodeInteger:proximity forKey:@"px"];
-    v4 = v13;
+    coderCopy = v13;
   }
 
   relativeLocation = self->_relativeLocation;
   if (relativeLocation)
   {
     [v13 encodeObject:relativeLocation forKey:@"rl"];
-    v4 = v13;
+    coderCopy = v13;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (a3 <= 49)
+  if (level <= 49)
   {
     v5 = 100;
   }
@@ -248,7 +248,7 @@ LABEL_12:
   if (v22)
   {
     v24 = [(NSArray *)v22 count];
-    if (a3 > 49)
+    if (level > 49)
     {
       NSAppendPrintF();
       v39 = v7;
@@ -294,9 +294,9 @@ LABEL_44:
             v7 = v34;
           }
 
-          v35 = [v33 name];
-          v36 = v35;
-          if (v35)
+          name = [v33 name];
+          v36 = name;
+          if (name)
           {
             v37 = ", ";
             if (!v28)
@@ -305,7 +305,7 @@ LABEL_44:
             }
 
             v43 = v37;
-            v44 = v35;
+            v44 = name;
             NSAppendPrintF();
             v38 = v7;
 
@@ -339,17 +339,17 @@ LABEL_45:
   return v7;
 }
 
-- (unsigned)removeRPDevice:(id)a3
+- (unsigned)removeRPDevice:(id)device
 {
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)self->_deviceDict objectForKeyedSubscript:v4];
+  identifier = [device identifier];
+  v5 = [(NSMutableDictionary *)self->_deviceDict objectForKeyedSubscript:identifier];
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_deviceDict setObject:0 forKeyedSubscript:v4];
-    v6 = [(NSMutableDictionary *)self->_deviceDict allValues];
+    [(NSMutableDictionary *)self->_deviceDict setObject:0 forKeyedSubscript:identifier];
+    allValues = [(NSMutableDictionary *)self->_deviceDict allValues];
     devices = self->_devices;
-    self->_devices = v6;
+    self->_devices = allValues;
 
     v8 = [(RPPerson *)self _updateDeviceDerivedInfo]| 2;
   }
@@ -362,11 +362,11 @@ LABEL_45:
   return v8;
 }
 
-- (unsigned)updateWithRPDevice:(id)a3
+- (unsigned)updateWithRPDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_deviceDict objectForKeyedSubscript:v5];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_deviceDict objectForKeyedSubscript:identifier];
   deviceDict = self->_deviceDict;
   if (!deviceDict)
   {
@@ -377,10 +377,10 @@ LABEL_45:
     deviceDict = self->_deviceDict;
   }
 
-  [(NSMutableDictionary *)deviceDict setObject:v4 forKeyedSubscript:v5];
-  v10 = [(NSMutableDictionary *)self->_deviceDict allValues];
+  [(NSMutableDictionary *)deviceDict setObject:deviceCopy forKeyedSubscript:identifier];
+  allValues = [(NSMutableDictionary *)self->_deviceDict allValues];
   devices = self->_devices;
-  self->_devices = v10;
+  self->_devices = allValues;
 
   v12 = [(RPPerson *)self _updateDeviceDerivedInfo]| (2 * (v6 == 0));
   return v12;

@@ -1,49 +1,49 @@
 @interface _TUIViewVisibilityObserver
-- (BOOL)updateVisible:(BOOL)a3 time:(double)a4;
-- (_TUIViewVisibilityObserver)initWithView:(id)a3 options:(id)a4 kind:(unint64_t)a5 block:(id)a6;
-- (void)updateTime:(double)a3;
+- (BOOL)updateVisible:(BOOL)visible time:(double)time;
+- (_TUIViewVisibilityObserver)initWithView:(id)view options:(id)options kind:(unint64_t)kind block:(id)block;
+- (void)updateTime:(double)time;
 @end
 
 @implementation _TUIViewVisibilityObserver
 
-- (_TUIViewVisibilityObserver)initWithView:(id)a3 options:(id)a4 kind:(unint64_t)a5 block:(id)a6
+- (_TUIViewVisibilityObserver)initWithView:(id)view options:(id)options kind:(unint64_t)kind block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  viewCopy = view;
+  optionsCopy = options;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = _TUIViewVisibilityObserver;
   v13 = [(_TUIViewVisibilityObserver *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_view = v10;
-    objc_storeStrong(&v13->_options, a4);
-    v15 = [v12 copy];
+    v13->_view = viewCopy;
+    objc_storeStrong(&v13->_options, options);
+    v15 = [blockCopy copy];
     block = v14->_block;
     v14->_block = v15;
 
-    v14->_kind = a5;
+    v14->_kind = kind;
   }
 
   return v14;
 }
 
-- (BOOL)updateVisible:(BOOL)a3 time:(double)a4
+- (BOOL)updateVisible:(BOOL)visible time:(double)time
 {
-  v4 = a3;
+  visibleCopy = visible;
   visible = self->_visible;
-  if (visible == a3)
+  if (visible == visible)
   {
-    [(_TUIViewVisibilityObserver *)self updateTime:a4];
+    [(_TUIViewVisibilityObserver *)self updateTime:time];
   }
 
   else
   {
-    self->_visible = a3;
-    if (a3)
+    self->_visible = visible;
+    if (visible)
     {
-      self->_time = a4;
+      self->_time = time;
       [(TUIVisibilityOptions *)self->_options duration];
       if (v7 == 0.0 && !self->_computedVisible)
       {
@@ -60,16 +60,16 @@ LABEL_9:
     }
   }
 
-  return visible != v4;
+  return visible != visibleCopy;
 }
 
-- (void)updateTime:(double)a3
+- (void)updateTime:(double)time
 {
   if (self->_visible && !self->_computedVisible)
   {
     time = self->_time;
     [(TUIVisibilityOptions *)self->_options duration];
-    if (time + v6 <= a3)
+    if (time + v6 <= time)
     {
       self->_computedVisible = 1;
 

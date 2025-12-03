@@ -1,46 +1,46 @@
 @interface BaseViewController
-- (_TtC12GameCenterUI18BaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12GameCenterUI18BaseViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BaseViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1704B4(&selRef_viewDidLoad);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E16FDC4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E17012C(a3);
+  selfCopy = self;
+  sub_24E17012C(appear);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_24E16F8A4();
 }
 
-- (_TtC12GameCenterUI18BaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameCenterUI18BaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_24E347CF8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   BaseViewController.init(nibName:bundle:)();
 }
 

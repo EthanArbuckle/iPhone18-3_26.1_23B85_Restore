@@ -1,16 +1,16 @@
 @interface STCloudSyncDataGroupSpecifierProvider
 - (STCloudSyncDataGroupSpecifierProvider)init;
-- (id)cloudSyncData:(id)a3;
+- (id)cloudSyncData:(id)data;
 - (void)_updateEnabledValue;
-- (void)changeCloudSyncData:(BOOL)a3;
+- (void)changeCloudSyncData:(BOOL)data;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performHSA2RepairIfNeeded:(id)a3;
-- (void)presentHSA2RepairUI:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCloudSyncData:(id)a3 specifier:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)setScreenTimeSyncing:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performHSA2RepairIfNeeded:(id)needed;
+- (void)presentHSA2RepairUI:(id)i;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCloudSyncData:(id)data specifier:(id)specifier;
+- (void)setCoordinator:(id)coordinator;
+- (void)setScreenTimeSyncing:(BOOL)syncing;
 @end
 
 @implementation STCloudSyncDataGroupSpecifierProvider
@@ -26,8 +26,8 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = +[STScreenTimeSettingsUIBundle bundle];
     v5 = [v4 localizedStringForKey:@"CloudSyncDataFooterText" value:&stru_28766E5A8 table:0];
-    v6 = [(STGroupSpecifierProvider *)v3 groupSpecifier];
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    groupSpecifier = [(STGroupSpecifierProvider *)v3 groupSpecifier];
+    [groupSpecifier setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     v7 = [v4 localizedStringForKey:@"CloudSyncDataSpecifierName" value:&stru_28766E5A8 table:0];
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:v3 set:sel_setCloudSyncData_specifier_ get:sel_cloudSyncData_ detail:0 cell:6 edit:0];
@@ -49,11 +49,11 @@
     v3->_toggleCloudSyncDataSpecifier = v8;
     v13 = v8;
 
-    v14 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    [v14 addObject:v13];
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    [mutableSpecifiers addObject:v13];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
 
-    [v15 registerObserver:v3];
+    [mEMORY[0x277D262A0] registerObserver:v3];
     [(STCloudSyncDataGroupSpecifierProvider *)v3 _updateEnabledValue];
   }
 
@@ -62,42 +62,42 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STCloudSyncDataGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canToggleCloudSyncData" context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isCloudSyncEnabled" context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canToggleCloudSyncData" context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isCloudSyncEnabled" context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STCloudSyncDataGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.canToggleCloudSyncData" options:4 context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.isCloudSyncEnabled" options:4 context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canToggleCloudSyncData" options:4 context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isCloudSyncEnabled" options:4 context:"STCloudSyncDataGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == "STCloudSyncDataGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  if (context == "STCloudSyncDataGroupSpecifierProviderObservationContext")
   {
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"viewModel.canToggleCloudSyncData"])
+    if ([pathCopy isEqualToString:@"viewModel.canToggleCloudSyncData"])
     {
-      v11 = [MEMORY[0x277D262A0] sharedConnection];
-      v12 = [v11 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      v12 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-      v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-      v14 = [v13 viewModel];
-      v15 = [v14 canToggleCloudSyncData] ^ 1;
+      coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+      viewModel = [coordinator viewModel];
+      v15 = [viewModel canToggleCloudSyncData] ^ 1;
       if (v12 == 2)
       {
         v16 = 1;
@@ -115,13 +115,13 @@
     {
       [(STRootGroupSpecifierProvider *)self coordinator];
 
-      if (![v10 isEqualToString:@"viewModel.isCloudSyncEnabled"])
+      if (![pathCopy isEqualToString:@"viewModel.isCloudSyncEnabled"])
       {
         goto LABEL_11;
       }
 
-      v13 = [(STGroupSpecifierProvider *)self groupSpecifier];
-      [(STGroupSpecifierProvider *)self reloadSpecifier:v13 animated:1];
+      coordinator = [(STGroupSpecifierProvider *)self groupSpecifier];
+      [(STGroupSpecifierProvider *)self reloadSpecifier:coordinator animated:1];
     }
 
     goto LABEL_11;
@@ -129,29 +129,29 @@
 
   v17.receiver = self;
   v17.super_class = STCloudSyncDataGroupSpecifierProvider;
-  [(STCloudSyncDataGroupSpecifierProvider *)&v17 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(STCloudSyncDataGroupSpecifierProvider *)&v17 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_11:
 }
 
-- (void)setCloudSyncData:(id)a3 specifier:(id)a4
+- (void)setCloudSyncData:(id)data specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STRootGroupSpecifierProvider *)self coordinator];
-  if ([v8 isPasscodeEnabled] && (objc_msgSend(v8, "hasAlreadyEnteredPINForSession") & 1) == 0)
+  dataCopy = data;
+  specifierCopy = specifier;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  if ([coordinator isPasscodeEnabled] && (objc_msgSend(coordinator, "hasAlreadyEnteredPINForSession") & 1) == 0)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__STCloudSyncDataGroupSpecifierProvider_setCloudSyncData_specifier___block_invoke;
     v9[3] = &unk_279B7CA40;
     v9[4] = self;
-    v10 = v6;
-    [(STGroupSpecifierProvider *)self showPINSheet:v7 completion:v9];
+    v10 = dataCopy;
+    [(STGroupSpecifierProvider *)self showPINSheet:specifierCopy completion:v9];
   }
 
   else
   {
-    -[STCloudSyncDataGroupSpecifierProvider changeCloudSyncData:](self, "changeCloudSyncData:", [v6 BOOLValue]);
+    -[STCloudSyncDataGroupSpecifierProvider changeCloudSyncData:](self, "changeCloudSyncData:", [dataCopy BOOLValue]);
   }
 }
 
@@ -172,9 +172,9 @@ void __68__STCloudSyncDataGroupSpecifierProvider_setCloudSyncData_specifier___bl
   }
 }
 
-- (void)changeCloudSyncData:(BOOL)a3
+- (void)changeCloudSyncData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -210,11 +210,11 @@ void __61__STCloudSyncDataGroupSpecifierProvider_changeCloudSyncData___block_inv
   }
 }
 
-- (void)setScreenTimeSyncing:(BOOL)a3
+- (void)setScreenTimeSyncing:(BOOL)syncing
 {
-  v3 = a3;
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v4 setScreenTimeSyncingEnabled:v3 completionHandler:&__block_literal_global_3];
+  syncingCopy = syncing;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator setScreenTimeSyncingEnabled:syncingCopy completionHandler:&__block_literal_global_3];
 }
 
 void __62__STCloudSyncDataGroupSpecifierProvider_setScreenTimeSyncing___block_invoke(uint64_t a1, void *a2)
@@ -230,20 +230,20 @@ void __62__STCloudSyncDataGroupSpecifierProvider_setScreenTimeSyncing___block_in
   }
 }
 
-- (void)performHSA2RepairIfNeeded:(id)a3
+- (void)performHSA2RepairIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = MEMORY[0x277CBC218];
-  v6 = [MEMORY[0x277CBC218] remotemanagement_mirroringContainerIdentifier];
-  v7 = [v5 containerWithIdentifier:v6];
+  remotemanagement_mirroringContainerIdentifier = [MEMORY[0x277CBC218] remotemanagement_mirroringContainerIdentifier];
+  v7 = [v5 containerWithIdentifier:remotemanagement_mirroringContainerIdentifier];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__STCloudSyncDataGroupSpecifierProvider_performHSA2RepairIfNeeded___block_invoke;
   v9[3] = &unk_279B7D0B8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = neededCopy;
+  v8 = neededCopy;
   [v7 accountInfoWithCompletionHandler:v9];
 }
 
@@ -298,14 +298,14 @@ void __67__STCloudSyncDataGroupSpecifierProvider_performHSA2RepairIfNeeded___blo
   }
 }
 
-- (void)presentHSA2RepairUI:(id)a3
+- (void)presentHSA2RepairUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = objc_opt_new();
-  v6 = [v5 aida_accountForPrimaryiCloudAccount];
-  v7 = [v6 aa_altDSID];
+  aida_accountForPrimaryiCloudAccount = [v5 aida_accountForPrimaryiCloudAccount];
+  aa_altDSID = [aida_accountForPrimaryiCloudAccount aa_altDSID];
 
-  v8 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:v7];
+  v8 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:aa_altDSID];
   v9 = +[STScreenTimeSettingsUIBundle bundle];
   v10 = [v9 localizedStringForKey:@"CloudSyncDataFeatureName" value:&stru_28766E5A8 table:0];
   [v8 setFeatureName:v10];
@@ -324,9 +324,9 @@ void __67__STCloudSyncDataGroupSpecifierProvider_performHSA2RepairIfNeeded___blo
   v16[3] = &unk_279B7D108;
   v17 = v8;
   v18 = v11;
-  v19 = self;
-  v20 = v4;
-  v13 = v4;
+  selfCopy = self;
+  v20 = iCopy;
+  v13 = iCopy;
   v14 = v11;
   v15 = v8;
   [(STGroupSpecifierProvider *)self presentViewController:v14 animated:1 completion:v16];
@@ -363,38 +363,38 @@ void __61__STCloudSyncDataGroupSpecifierProvider_presentHSA2RepairUI___block_inv
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)cloudSyncData:(id)a3
+- (id)cloudSyncData:(id)data
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "isCloudSyncEnabled")}];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v6 = [v3 numberWithBool:{objc_msgSend(viewModel, "isCloudSyncEnabled")}];
 
   return v6;
 }
 
 - (void)_updateEnabledValue
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  v5 = [(STCloudSyncDataGroupSpecifierProvider *)self toggleCloudSyncDataSpecifier];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
+  toggleCloudSyncDataSpecifier = [(STCloudSyncDataGroupSpecifierProvider *)self toggleCloudSyncDataSpecifier];
+  [toggleCloudSyncDataSpecifier setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  [(STCloudSyncDataGroupSpecifierProvider *)self _updateEnabledValue:a3];
-  v5 = [(STCloudSyncDataGroupSpecifierProvider *)self toggleCloudSyncDataSpecifier];
-  [(STGroupSpecifierProvider *)self reloadSpecifier:v5 animated:1];
+  [(STCloudSyncDataGroupSpecifierProvider *)self _updateEnabledValue:notification];
+  toggleCloudSyncDataSpecifier = [(STCloudSyncDataGroupSpecifierProvider *)self toggleCloudSyncDataSpecifier];
+  [(STGroupSpecifierProvider *)self reloadSpecifier:toggleCloudSyncDataSpecifier animated:1];
 
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  v7 = [v6 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v7 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  v11 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v8 = [v11 viewModel];
-  v9 = [v8 canToggleCloudSyncData] ^ 1;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v9 = [viewModel canToggleCloudSyncData] ^ 1;
   if (v7 == 2)
   {
     v10 = 1;

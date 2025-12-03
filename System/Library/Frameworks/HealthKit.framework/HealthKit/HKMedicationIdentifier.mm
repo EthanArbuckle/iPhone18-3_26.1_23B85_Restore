@@ -1,10 +1,10 @@
 @interface HKMedicationIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationIdentifier)init;
-- (HKMedicationIdentifier)initWithCoder:(id)a3;
-- (HKMedicationIdentifier)initWithRawIdentifier:(id)a3;
-- (HKMedicationIdentifier)initWithSemanticIdentifierString:(id)a3;
-- (int64_t)compare:(id)a3;
+- (HKMedicationIdentifier)initWithCoder:(id)coder;
+- (HKMedicationIdentifier)initWithRawIdentifier:(id)identifier;
+- (HKMedicationIdentifier)initWithSemanticIdentifierString:(id)string;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation HKMedicationIdentifier
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (HKMedicationIdentifier)initWithRawIdentifier:(id)a3
+- (HKMedicationIdentifier)initWithRawIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(HKMedicationIdentifier *)a2 initWithRawIdentifier:?];
   }
@@ -32,7 +32,7 @@
   v6 = [(HKMedicationIdentifier *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     underlyingIdentifier = v6->_underlyingIdentifier;
     v6->_underlyingIdentifier = v7;
   }
@@ -40,24 +40,24 @@
   return v6;
 }
 
-- (HKMedicationIdentifier)initWithSemanticIdentifierString:(id)a3
+- (HKMedicationIdentifier)initWithSemanticIdentifierString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
     [(HKMedicationIdentifier *)a2 initWithSemanticIdentifierString:?];
   }
 
-  v6 = [v5 hk_SHA256Hash];
-  v7 = [(HKMedicationIdentifier *)self initWithRawIdentifier:v6];
+  hk_SHA256Hash = [stringCopy hk_SHA256Hash];
+  v7 = [(HKMedicationIdentifier *)self initWithRawIdentifier:hk_SHA256Hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -67,22 +67,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationIdentifier *)v5 underlyingIdentifier];
-      v7 = [(HKMedicationIdentifier *)self underlyingIdentifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      underlyingIdentifier = [(HKMedicationIdentifier *)v5 underlyingIdentifier];
+      underlyingIdentifier2 = [(HKMedicationIdentifier *)self underlyingIdentifier];
+      if (underlyingIdentifier == underlyingIdentifier2)
       {
         v11 = 1;
       }
 
       else
       {
-        v8 = [(HKMedicationIdentifier *)self underlyingIdentifier];
-        if (v8)
+        underlyingIdentifier3 = [(HKMedicationIdentifier *)self underlyingIdentifier];
+        if (underlyingIdentifier3)
         {
-          v9 = [(HKMedicationIdentifier *)v5 underlyingIdentifier];
-          v10 = [(HKMedicationIdentifier *)self underlyingIdentifier];
-          v11 = [v9 isEqualToString:v10];
+          underlyingIdentifier4 = [(HKMedicationIdentifier *)v5 underlyingIdentifier];
+          underlyingIdentifier5 = [(HKMedicationIdentifier *)self underlyingIdentifier];
+          v11 = [underlyingIdentifier4 isEqualToString:underlyingIdentifier5];
         }
 
         else
@@ -101,13 +101,13 @@
   return v11;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = compareCopy;
   }
 
   else
@@ -120,8 +120,8 @@
   if (v6 && ([v6 underlyingIdentifier], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [(HKMedicationIdentifier *)self underlyingIdentifier];
-    v11 = [v10 compare:v9];
+    underlyingIdentifier = [(HKMedicationIdentifier *)self underlyingIdentifier];
+    v11 = [underlyingIdentifier compare:v9];
   }
 
   else
@@ -132,15 +132,15 @@
   return v11;
 }
 
-- (HKMedicationIdentifier)initWithCoder:(id)a3
+- (HKMedicationIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKMedicationIdentifier;
   v5 = [(HKMedicationIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnderlyingIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnderlyingIdentifier"];
     underlyingIdentifier = v5->_underlyingIdentifier;
     v5->_underlyingIdentifier = v6;
   }

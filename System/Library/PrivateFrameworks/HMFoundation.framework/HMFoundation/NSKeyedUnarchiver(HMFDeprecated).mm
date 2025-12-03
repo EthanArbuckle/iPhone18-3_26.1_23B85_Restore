@@ -27,11 +27,11 @@
   if (!v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = HMFGetLogIdentifier(v13);
+      v15 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v20 = v15;
       v21 = 2112;
@@ -58,11 +58,11 @@
   if (!v10)
   {
     v21 = objc_autoreleasePoolPush();
-    v25 = a1;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v26 = HMFGetLogIdentifier(v25);
+      v26 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       v37 = v26;
       v38 = 2112;
@@ -121,11 +121,11 @@
   if (!v20)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = a1;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = HMFGetLogIdentifier(v22);
+      v24 = HMFGetLogIdentifier(selfCopy2);
       *buf = 138543618;
       v37 = v24;
       v38 = 2112;

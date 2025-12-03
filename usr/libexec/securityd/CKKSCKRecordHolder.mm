@@ -1,15 +1,15 @@
 @interface CKKSCKRecordHolder
-- (BOOL)matchesCKRecord:(id)a3;
-- (CKKSCKRecordHolder)initWithCKRecord:(id)a3 contextID:(id)a4;
-- (CKKSCKRecordHolder)initWithCKRecordType:(id)a3 encodedCKRecord:(id)a4 contextID:(id)a5 zoneID:(id)a6;
+- (BOOL)matchesCKRecord:(id)record;
+- (CKKSCKRecordHolder)initWithCKRecord:(id)record contextID:(id)d;
+- (CKKSCKRecordHolder)initWithCKRecordType:(id)type encodedCKRecord:(id)record contextID:(id)d zoneID:(id)iD;
 - (CKRecord)storedCKRecord;
 - (id)CKRecordName;
-- (id)CKRecordWithZoneID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4;
-- (void)setEncodedCKRecord:(id)a3;
-- (void)setFromCKRecord:(id)a3;
-- (void)setStoredCKRecord:(id)a3;
+- (id)CKRecordWithZoneID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)updateCKRecord:(id)record zoneID:(id)d;
+- (void)setEncodedCKRecord:(id)record;
+- (void)setFromCKRecord:(id)record;
+- (void)setStoredCKRecord:(id)record;
 @end
 
 @implementation CKKSCKRecordHolder
@@ -30,26 +30,26 @@
     [v6 finishDecoding];
     if (v7)
     {
-      v8 = [(CKRecord *)v7 recordID];
-      v9 = [v8 zoneID];
-      v10 = [(CKKSCKRecordHolder *)self zoneID];
-      v11 = [v9 isEqual:v10];
+      recordID = [(CKRecord *)v7 recordID];
+      zoneID = [recordID zoneID];
+      zoneID2 = [(CKKSCKRecordHolder *)self zoneID];
+      v11 = [zoneID isEqual:zoneID2];
 
       if ((v11 & 1) == 0)
       {
-        v12 = [(CKKSCKRecordHolder *)self zoneID];
-        v13 = [v12 zoneName];
-        v14 = sub_100019104(@"ckks", v13);
+        zoneID3 = [(CKKSCKRecordHolder *)self zoneID];
+        zoneName = [zoneID3 zoneName];
+        v14 = sub_100019104(@"ckks", zoneName);
 
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [(CKKSCKRecordHolder *)self zoneID];
-          v16 = [(CKRecord *)v7 recordID];
-          v17 = [v16 zoneID];
+          zoneID4 = [(CKKSCKRecordHolder *)self zoneID];
+          recordID2 = [(CKRecord *)v7 recordID];
+          zoneID5 = [recordID2 zoneID];
           v21 = 138412546;
-          v22 = v15;
+          v22 = zoneID4;
           v23 = 2112;
-          v24 = v17;
+          v24 = zoneID5;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "mismatching zone ids in a single record: %@ and %@", &v21, 0x16u);
         }
       }
@@ -71,11 +71,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CKKSCKRecordHolder;
-  v4 = [(CKKSSQLDatabaseObject *)&v10 copyWithZone:a3];
+  v4 = [(CKKSSQLDatabaseObject *)&v10 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_contextID);
   objc_storeStrong(v4 + 5, self->_zoneID);
   objc_storeStrong(v4 + 6, self->_ckRecordType);
@@ -90,9 +90,9 @@
   return v4;
 }
 
-- (BOOL)matchesCKRecord:(id)a3
+- (BOOL)matchesCKRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
@@ -103,9 +103,9 @@
   objc_exception_throw(v9);
 }
 
-- (void)setFromCKRecord:(id)a3
+- (void)setFromCKRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
@@ -116,10 +116,10 @@
   objc_exception_throw(v9);
 }
 
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4
+- (id)updateCKRecord:(id)record zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v10 = NSStringFromSelector(a2);
@@ -142,64 +142,64 @@
   objc_exception_throw(v7);
 }
 
-- (id)CKRecordWithZoneID:(id)a3
+- (id)CKRecordWithZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [CKRecordID alloc];
-  v6 = [(CKKSCKRecordHolder *)self CKRecordName];
-  v7 = [v5 initWithRecordName:v6 zoneID:v4];
+  cKRecordName = [(CKKSCKRecordHolder *)self CKRecordName];
+  v7 = [v5 initWithRecordName:cKRecordName zoneID:dCopy];
 
-  v8 = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
 
-  if (v8)
+  if (encodedCKRecord)
   {
-    v9 = [(CKKSCKRecordHolder *)self storedCKRecord];
+    storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
   }
 
   else
   {
     v10 = [CKRecord alloc];
-    v11 = [(CKKSCKRecordHolder *)self ckRecordType];
-    v9 = [v10 initWithRecordType:v11 recordID:v7];
+    ckRecordType = [(CKKSCKRecordHolder *)self ckRecordType];
+    storedCKRecord = [v10 initWithRecordType:ckRecordType recordID:v7];
   }
 
-  v12 = [v9 copy];
-  v13 = [(CKKSCKRecordHolder *)self updateCKRecord:v9 zoneID:v4];
-  if (([v9 isEqual:v12] & 1) == 0)
+  v12 = [storedCKRecord copy];
+  v13 = [(CKKSCKRecordHolder *)self updateCKRecord:storedCKRecord zoneID:dCopy];
+  if (([storedCKRecord isEqual:v12] & 1) == 0)
   {
-    [(CKKSCKRecordHolder *)self setStoredCKRecord:v9];
+    [(CKKSCKRecordHolder *)self setStoredCKRecord:storedCKRecord];
   }
 
-  return v9;
+  return storedCKRecord;
 }
 
-- (void)setEncodedCKRecord:(id)a3
+- (void)setEncodedCKRecord:(id)record
 {
-  objc_storeStrong(&self->_encodedCKRecord, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_encodedCKRecord, record);
+  recordCopy = record;
   storedCKRecord = self->_storedCKRecord;
   self->_storedCKRecord = 0;
 }
 
-- (void)setStoredCKRecord:(id)a3
+- (void)setStoredCKRecord:(id)record
 {
-  v4 = a3;
-  v16 = v4;
-  if (v4)
+  recordCopy = record;
+  v16 = recordCopy;
+  if (recordCopy)
   {
-    v5 = [v4 recordID];
-    v6 = [v5 zoneID];
-    [(CKKSCKRecordHolder *)self setZoneID:v6];
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
+    [(CKKSCKRecordHolder *)self setZoneID:zoneID];
 
-    v7 = [v16 recordType];
-    [(CKKSCKRecordHolder *)self setCkRecordType:v7];
+    recordType = [v16 recordType];
+    [(CKKSCKRecordHolder *)self setCkRecordType:recordType];
 
     v8 = objc_autoreleasePoolPush();
     v9 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
     [v16 encodeWithCoder:v9];
-    v10 = [v9 encodedData];
+    encodedData = [v9 encodedData];
     encodedCKRecord = self->_encodedCKRecord;
-    self->_encodedCKRecord = v10;
+    self->_encodedCKRecord = encodedData;
 
     v12 = [v16 copy];
     storedCKRecord = self->_storedCKRecord;
@@ -218,22 +218,22 @@
   }
 }
 
-- (CKKSCKRecordHolder)initWithCKRecordType:(id)a3 encodedCKRecord:(id)a4 contextID:(id)a5 zoneID:(id)a6
+- (CKKSCKRecordHolder)initWithCKRecordType:(id)type encodedCKRecord:(id)record contextID:(id)d zoneID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  recordCopy = record;
+  dCopy = d;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = CKKSCKRecordHolder;
   v15 = [(CKKSCKRecordHolder *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contextID, a5);
-    objc_storeStrong(&v16->_zoneID, a6);
-    objc_storeStrong(&v16->_ckRecordType, a3);
-    objc_storeStrong(&v16->_encodedCKRecord, a4);
+    objc_storeStrong(&v15->_contextID, d);
+    objc_storeStrong(&v16->_zoneID, iD);
+    objc_storeStrong(&v16->_ckRecordType, type);
+    objc_storeStrong(&v16->_encodedCKRecord, record);
     storedCKRecord = v16->_storedCKRecord;
     v16->_storedCKRecord = 0;
   }
@@ -241,22 +241,22 @@
   return v16;
 }
 
-- (CKKSCKRecordHolder)initWithCKRecord:(id)a3 contextID:(id)a4
+- (CKKSCKRecordHolder)initWithCKRecord:(id)record contextID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = CKKSCKRecordHolder;
   v8 = [(CKKSCKRecordHolder *)&v13 init];
   if (v8)
   {
-    v9 = [v6 recordID];
-    v10 = [v9 zoneID];
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
     zoneID = v8->_zoneID;
-    v8->_zoneID = v10;
+    v8->_zoneID = zoneID;
 
-    objc_storeStrong(&v8->_contextID, a4);
-    [(CKKSCKRecordHolder *)v8 setFromCKRecord:v6];
+    objc_storeStrong(&v8->_contextID, d);
+    [(CKKSCKRecordHolder *)v8 setFromCKRecord:recordCopy];
   }
 
   return v8;

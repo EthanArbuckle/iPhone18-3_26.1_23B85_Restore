@@ -1,58 +1,58 @@
 @interface PFPosterLayout
-+ (id)layoutWithDictionaryRepresentation:(id)a3;
++ (id)layoutWithDictionaryRepresentation:(id)representation;
 - (BOOL)isUsingHeadroom;
 - (CGSize)imageSize;
-- (PFPosterLayout)initWithPortraitLayout:(id)a3 landscapeLayout:(id)a4;
+- (PFPosterLayout)initWithPortraitLayout:(id)layout landscapeLayout:(id)landscapeLayout;
 - (id)dictionaryRepresentation;
-- (id)layoutByUpdatingConfiguration:(id)a3;
-- (id)layoutByUpdatingConfigurationWithSaliency:(id)a3 normalizedTopEdgeInset:(double)a4;
-- (id)layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:(CGRect)a3 landscapeAdaptiveTimeFrame:(CGRect)a4;
-- (id)layoutByUpdatingNormalizedPortraitAdaptiveVisibleFrame:(CGRect)a3 landscapeAdaptiveVisibleFrame:(CGRect)a4;
-- (id)layoutByUpdatingNormalizedPortraitVisibleFrame:(CGRect)a3 landscapeVisibleFrame:(CGRect)a4;
-- (id)layoutByUpgradingToConfiguration:(id)a3;
+- (id)layoutByUpdatingConfiguration:(id)configuration;
+- (id)layoutByUpdatingConfigurationWithSaliency:(id)saliency normalizedTopEdgeInset:(double)inset;
+- (id)layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:(CGRect)frame landscapeAdaptiveTimeFrame:(CGRect)timeFrame;
+- (id)layoutByUpdatingNormalizedPortraitAdaptiveVisibleFrame:(CGRect)frame landscapeAdaptiveVisibleFrame:(CGRect)visibleFrame;
+- (id)layoutByUpdatingNormalizedPortraitVisibleFrame:(CGRect)frame landscapeVisibleFrame:(CGRect)visibleFrame;
+- (id)layoutByUpgradingToConfiguration:(id)configuration;
 @end
 
 @implementation PFPosterLayout
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(PFPosterOrientedLayout *)self->_portraitLayout dictionaryRepresentation];
-  v4 = [(PFPosterOrientedLayout *)self->_landscapeLayout dictionaryRepresentation];
+  dictionaryRepresentation = [(PFPosterOrientedLayout *)self->_portraitLayout dictionaryRepresentation];
+  dictionaryRepresentation2 = [(PFPosterOrientedLayout *)self->_landscapeLayout dictionaryRepresentation];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setObject:&unk_1F2AAB5C0 forKeyedSubscript:@"version"];
-  [v5 setObject:v3 forKeyedSubscript:@"portrait"];
-  [v5 setObject:v4 forKeyedSubscript:@"landscape"];
+  [v5 setObject:dictionaryRepresentation forKeyedSubscript:@"portrait"];
+  [v5 setObject:dictionaryRepresentation2 forKeyedSubscript:@"landscape"];
 
   return v5;
 }
 
-- (id)layoutByUpgradingToConfiguration:(id)a3
+- (id)layoutByUpgradingToConfiguration:(id)configuration
 {
   portraitLayout = self->_portraitLayout;
-  v5 = a3;
-  v6 = [v5 portraitConfiguration];
-  v7 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpgradingToConfiguration:v6];
+  configurationCopy = configuration;
+  portraitConfiguration = [configurationCopy portraitConfiguration];
+  v7 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpgradingToConfiguration:portraitConfiguration];
 
   landscapeLayout = self->_landscapeLayout;
-  v9 = [v5 landscapeConfiguration];
+  landscapeConfiguration = [configurationCopy landscapeConfiguration];
 
-  v10 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpgradingToConfiguration:v9];
+  v10 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpgradingToConfiguration:landscapeConfiguration];
 
   v11 = [[PFPosterLayout alloc] initWithPortraitLayout:v7 landscapeLayout:v10];
 
   return v11;
 }
 
-- (id)layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:(CGRect)a3 landscapeAdaptiveTimeFrame:(CGRect)a4
+- (id)layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:(CGRect)frame landscapeAdaptiveTimeFrame:(CGRect)timeFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = timeFrame.size.height;
+  width = timeFrame.size.width;
+  y = timeFrame.origin.y;
+  x = timeFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13 = self->_portraitLayout;
   v14 = self->_landscapeLayout;
   v20.origin.x = v11;
@@ -85,9 +85,9 @@
     v23.size.height = height;
     if (!CGRectIsInfinite(v23))
     {
-      v16 = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedAdaptiveTimeFrame:x, y, width, height];
+      height = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedAdaptiveTimeFrame:x, y, width, height];
 
-      v14 = v16;
+      v14 = height;
     }
   }
 
@@ -96,16 +96,16 @@
   return v17;
 }
 
-- (id)layoutByUpdatingNormalizedPortraitAdaptiveVisibleFrame:(CGRect)a3 landscapeAdaptiveVisibleFrame:(CGRect)a4
+- (id)layoutByUpdatingNormalizedPortraitAdaptiveVisibleFrame:(CGRect)frame landscapeAdaptiveVisibleFrame:(CGRect)visibleFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = visibleFrame.size.height;
+  width = visibleFrame.size.width;
+  y = visibleFrame.origin.y;
+  x = visibleFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13 = self->_portraitLayout;
   v14 = self->_landscapeLayout;
   v20.origin.x = v11;
@@ -138,9 +138,9 @@
     v23.size.height = height;
     if (!CGRectIsInfinite(v23))
     {
-      v16 = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedAdaptiveVisibleFrame:x, y, width, height];
+      height = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedAdaptiveVisibleFrame:x, y, width, height];
 
-      v14 = v16;
+      v14 = height;
     }
   }
 
@@ -149,16 +149,16 @@
   return v17;
 }
 
-- (id)layoutByUpdatingNormalizedPortraitVisibleFrame:(CGRect)a3 landscapeVisibleFrame:(CGRect)a4
+- (id)layoutByUpdatingNormalizedPortraitVisibleFrame:(CGRect)frame landscapeVisibleFrame:(CGRect)visibleFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = visibleFrame.size.height;
+  width = visibleFrame.size.width;
+  y = visibleFrame.origin.y;
+  x = visibleFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13 = self->_portraitLayout;
   v14 = self->_landscapeLayout;
   v20.origin.x = v11;
@@ -191,9 +191,9 @@
     v23.size.height = height;
     if (!CGRectIsInfinite(v23))
     {
-      v16 = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedVisibleFrame:x, y, width, height];
+      height = [(PFPosterOrientedLayout *)self->_landscapeLayout layoutByUpdatingNormalizedVisibleFrame:x, y, width, height];
 
-      v14 = v16;
+      v14 = height;
     }
   }
 
@@ -202,53 +202,53 @@
   return v17;
 }
 
-- (id)layoutByUpdatingConfigurationWithSaliency:(id)a3 normalizedTopEdgeInset:(double)a4
+- (id)layoutByUpdatingConfigurationWithSaliency:(id)saliency normalizedTopEdgeInset:(double)inset
 {
   portraitLayout = self->_portraitLayout;
-  v7 = a3;
-  v8 = [v7 portraitConfiguration];
-  v9 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpdatingConfigurationWithSaliency:v8 normalizedTopEdgeInset:a4];
+  saliencyCopy = saliency;
+  portraitConfiguration = [saliencyCopy portraitConfiguration];
+  v9 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpdatingConfigurationWithSaliency:portraitConfiguration normalizedTopEdgeInset:inset];
 
   landscapeLayout = self->_landscapeLayout;
-  v11 = [v7 landscapeConfiguration];
+  landscapeConfiguration = [saliencyCopy landscapeConfiguration];
 
-  v12 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpdatingConfigurationWithSaliency:v11 normalizedTopEdgeInset:a4];
+  v12 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpdatingConfigurationWithSaliency:landscapeConfiguration normalizedTopEdgeInset:inset];
 
   v13 = [[PFPosterLayout alloc] initWithPortraitLayout:v9 landscapeLayout:v12];
 
   return v13;
 }
 
-- (id)layoutByUpdatingConfiguration:(id)a3
+- (id)layoutByUpdatingConfiguration:(id)configuration
 {
   portraitLayout = self->_portraitLayout;
-  v5 = a3;
-  v6 = [v5 portraitConfiguration];
-  v7 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpdatingConfiguration:v6];
+  configurationCopy = configuration;
+  portraitConfiguration = [configurationCopy portraitConfiguration];
+  v7 = [(PFPosterOrientedLayout *)portraitLayout layoutByUpdatingConfiguration:portraitConfiguration];
 
   landscapeLayout = self->_landscapeLayout;
-  v9 = [v5 landscapeConfiguration];
+  landscapeConfiguration = [configurationCopy landscapeConfiguration];
 
-  v10 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpdatingConfiguration:v9];
+  v10 = [(PFPosterOrientedLayout *)landscapeLayout layoutByUpdatingConfiguration:landscapeConfiguration];
 
   v11 = [[PFPosterLayout alloc] initWithPortraitLayout:v7 landscapeLayout:v10];
 
   return v11;
 }
 
-- (PFPosterLayout)initWithPortraitLayout:(id)a3 landscapeLayout:(id)a4
+- (PFPosterLayout)initWithPortraitLayout:(id)layout landscapeLayout:(id)landscapeLayout
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  landscapeLayoutCopy = landscapeLayout;
   v13.receiver = self;
   v13.super_class = PFPosterLayout;
   v8 = [(PFPosterLayout *)&v13 init];
   portraitLayout = v8->_portraitLayout;
-  v8->_portraitLayout = v6;
-  v10 = v6;
+  v8->_portraitLayout = layoutCopy;
+  v10 = layoutCopy;
 
   landscapeLayout = v8->_landscapeLayout;
-  v8->_landscapeLayout = v7;
+  v8->_landscapeLayout = landscapeLayoutCopy;
 
   return v8;
 }
@@ -273,17 +273,17 @@
   return [(PFPosterOrientedLayout *)landscapeLayout isUsingHeadroom];
 }
 
-+ (id)layoutWithDictionaryRepresentation:(id)a3
++ (id)layoutWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"version"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKeyedSubscript:@"portrait"];
+    v5 = [representationCopy objectForKeyedSubscript:@"portrait"];
     v6 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:v5];
 
-    v7 = [v3 objectForKeyedSubscript:@"landscape"];
+    v7 = [representationCopy objectForKeyedSubscript:@"landscape"];
     v8 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:v7];
 
     v9 = [[PFPosterLayout alloc] initWithPortraitLayout:v6 landscapeLayout:v8];
@@ -291,7 +291,7 @@
 
   else
   {
-    v6 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:v3];
+    v6 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:representationCopy];
     v9 = [[PFPosterLayout alloc] initWithPortraitLayout:v6 landscapeLayout:0];
   }
 

@@ -1,29 +1,29 @@
 @interface IMDiMessageIDSTrustedData
-- (IMDiMessageIDSTrustedData)initWithBatchedMessage:(id)a3 batchContext:(id)a4;
-- (IMDiMessageIDSTrustedData)initWithTopLevelMessage:(id)a3 fromPushID:(id)a4 messageContext:(id)a5;
+- (IMDiMessageIDSTrustedData)initWithBatchedMessage:(id)message batchContext:(id)context;
+- (IMDiMessageIDSTrustedData)initWithTopLevelMessage:(id)message fromPushID:(id)d messageContext:(id)context;
 - (id)description;
 @end
 
 @implementation IMDiMessageIDSTrustedData
 
-- (IMDiMessageIDSTrustedData)initWithTopLevelMessage:(id)a3 fromPushID:(id)a4 messageContext:(id)a5
+- (IMDiMessageIDSTrustedData)initWithTopLevelMessage:(id)message fromPushID:(id)d messageContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = IMDiMessageIDSTrustedData;
   v11 = [(IMDiMessageIDSTrustedData *)&v29 init];
   if (v11)
   {
-    v12 = [v8 objectForKey:@"IDSIncomingMessagePushPayload"];
+    v12 = [messageCopy objectForKey:@"IDSIncomingMessagePushPayload"];
     v13 = [v12 objectForKey:*MEMORY[0x277D18848]];
     if (!v13)
     {
       v13 = [v12 objectForKey:@"c"];
     }
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     fromPushID = v11->_fromPushID;
     v11->_fromPushID = v14;
 
@@ -43,11 +43,11 @@
     v11->_toIdentifier = v23;
 
     v11->_command = [v13 integerValue];
-    v11->_fromTrustedSender = [v10 isFromTrustedSender];
+    v11->_fromTrustedSender = [contextCopy isFromTrustedSender];
     v11->_fromSnapTrustedSender = [v12 BOOLValueForKey:@"stu" withDefault:1];
-    v25 = [v10 senderCorrelationIdentifier];
+    senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
     senderCorrelationIdentifier = v11->_senderCorrelationIdentifier;
-    v11->_senderCorrelationIdentifier = v25;
+    v11->_senderCorrelationIdentifier = senderCorrelationIdentifier;
 
     batchContext = v11->_batchContext;
     v11->_batchContext = 0;
@@ -56,10 +56,10 @@
   return v11;
 }
 
-- (IMDiMessageIDSTrustedData)initWithBatchedMessage:(id)a3 batchContext:(id)a4
+- (IMDiMessageIDSTrustedData)initWithBatchedMessage:(id)message batchContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = IMDiMessageIDSTrustedData;
   v8 = [(IMDiMessageIDSTrustedData *)&v31 init];
@@ -71,43 +71,43 @@
       goto LABEL_6;
     }
 
-    v9 = [v6 messageContext];
-    v10 = [v9 originalCommand];
+    messageContext = [messageCopy messageContext];
+    originalCommand = [messageContext originalCommand];
 
-    v11 = [v6 messageContext];
-    v12 = [v11 fromID];
+    messageContext2 = [messageCopy messageContext];
+    fromID = [messageContext2 fromID];
     fromPushID = v8->_fromPushID;
-    v8->_fromPushID = v12;
+    v8->_fromPushID = fromID;
 
-    v14 = [v6 messageContext];
-    v15 = [v14 senderPushToken];
+    messageContext3 = [messageCopy messageContext];
+    senderPushToken = [messageContext3 senderPushToken];
     fromToken = v8->_fromToken;
-    v8->_fromToken = v15;
+    v8->_fromToken = senderPushToken;
 
-    v17 = [v6 messageContext];
-    v18 = [v17 fromID];
+    messageContext4 = [messageCopy messageContext];
+    fromID2 = [messageContext4 fromID];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v18;
+    v8->_fromIdentifier = fromID2;
 
-    v20 = [v6 messageContext];
-    v21 = [v20 toID];
+    messageContext5 = [messageCopy messageContext];
+    toID = [messageContext5 toID];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v21;
+    v8->_toIdentifier = toID;
 
-    v8->_command = [v10 integerValue];
-    v23 = [v6 messageContext];
-    v8->_fromTrustedSender = [v23 isFromTrustedSender];
+    v8->_command = [originalCommand integerValue];
+    messageContext6 = [messageCopy messageContext];
+    v8->_fromTrustedSender = [messageContext6 isFromTrustedSender];
 
-    v24 = [v6 messageContext];
-    v25 = [v24 snapTrustedUser];
-    v8->_fromSnapTrustedSender = [v25 BOOLValue];
+    messageContext7 = [messageCopy messageContext];
+    snapTrustedUser = [messageContext7 snapTrustedUser];
+    v8->_fromSnapTrustedSender = [snapTrustedUser BOOLValue];
 
-    v26 = [v6 messageContext];
-    v27 = [v26 senderCorrelationIdentifier];
+    messageContext8 = [messageCopy messageContext];
+    senderCorrelationIdentifier = [messageContext8 senderCorrelationIdentifier];
     senderCorrelationIdentifier = v8->_senderCorrelationIdentifier;
-    v8->_senderCorrelationIdentifier = v27;
+    v8->_senderCorrelationIdentifier = senderCorrelationIdentifier;
 
-    objc_storeStrong(&v8->_batchContext, a4);
+    objc_storeStrong(&v8->_batchContext, context);
   }
 
   v29 = v8;
@@ -119,10 +119,10 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMDiMessageIDSTrustedData *)self fromPushID];
-  v5 = [(IMDiMessageIDSTrustedData *)self fromToken];
-  v6 = [(IMDiMessageIDSTrustedData *)self fromIdentifier];
-  v7 = [(IMDiMessageIDSTrustedData *)self toIdentifier];
+  fromPushID = [(IMDiMessageIDSTrustedData *)self fromPushID];
+  fromToken = [(IMDiMessageIDSTrustedData *)self fromToken];
+  fromIdentifier = [(IMDiMessageIDSTrustedData *)self fromIdentifier];
+  toIdentifier = [(IMDiMessageIDSTrustedData *)self toIdentifier];
   if ([(IMDiMessageIDSTrustedData *)self isFromMe])
   {
     v8 = @"YES";
@@ -133,7 +133,7 @@ LABEL_6:
     v8 = @"NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<IMDiMessageIDSTrustedData: %p fromPushID = %@; fromToken = %@; fromIdentifier = %@; toIdentifier = %@; isFromMe = %@; command = %ld>", self, v4, v5, v6, v7, v8, -[IMDiMessageIDSTrustedData command](self, "command")];;
+  v9 = [v3 stringWithFormat:@"<IMDiMessageIDSTrustedData: %p fromPushID = %@; fromToken = %@; fromIdentifier = %@; toIdentifier = %@; isFromMe = %@; command = %ld>", self, fromPushID, fromToken, fromIdentifier, toIdentifier, v8, -[IMDiMessageIDSTrustedData command](self, "command")];;
 
   return v9;
 }

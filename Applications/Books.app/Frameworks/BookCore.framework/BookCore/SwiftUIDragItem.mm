@@ -1,21 +1,21 @@
 @interface SwiftUIDragItem
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (_TtC8BookCore15SwiftUIDragItem)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SwiftUIDragItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = sub_1EEED4();
   v6 = sub_1EEED4();
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 - (_TtC8BookCore15SwiftUIDragItem)init
@@ -32,14 +32,14 @@
   return v2.super.isa;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1EEF04();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  v10 = sub_1C05AC(v6, v8, v9, v5);
+  selfCopy = self;
+  v10 = sub_1C05AC(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 
@@ -53,10 +53,10 @@
   return v2.super.isa;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v8 = sub_1EDE14();
   v10 = v9;
 

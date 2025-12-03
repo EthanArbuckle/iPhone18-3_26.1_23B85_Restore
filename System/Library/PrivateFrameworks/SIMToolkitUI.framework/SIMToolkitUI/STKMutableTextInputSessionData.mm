@@ -1,12 +1,12 @@
 @interface STKMutableTextInputSessionData
-- (void)setDefaultText:(id)a3;
+- (void)setDefaultText:(id)text;
 @end
 
 @implementation STKMutableTextInputSessionData
 
-- (void)setDefaultText:(id)a3
+- (void)setDefaultText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   defaultText = self->super._defaultText;
   self->super._defaultText = v4;
 

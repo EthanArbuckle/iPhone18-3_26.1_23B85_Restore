@@ -1,26 +1,26 @@
 @interface PasscodeContentViewControllerFullScreen
 - (BOOL)resignFirstResponder;
-- (PasscodeContentViewControllerFullScreen)initWithPasscode:(id)a3 options:(id)a4;
+- (PasscodeContentViewControllerFullScreen)initWithPasscode:(id)passcode options:(id)options;
 - (PasscodeViewDelegate)delegate;
-- (void)_embedSubview:(id)a3;
-- (void)_setContentView:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
+- (void)_embedSubview:(id)subview;
+- (void)_setContentView:(id)view animated:(BOOL)animated withCompletion:(id)completion;
 - (void)_showBackOffView;
 - (void)_showPasscodeView;
-- (void)animateToFailureStateWithCompletion:(id)a3;
-- (void)animateToSucessStateWithCompletion:(id)a3;
+- (void)animateToFailureStateWithCompletion:(id)completion;
+- (void)animateToSucessStateWithCompletion:(id)completion;
 - (void)loadView;
-- (void)passcodeBackOffViewCanceled:(id)a3;
-- (void)passcodeLockViewCancelButtonPressed:(id)a3;
-- (void)passcodeLockViewPasscodeDidChange:(id)a3;
-- (void)passcodeLockViewPasscodeEntered:(id)a3;
-- (void)setState:(id)a3;
+- (void)passcodeBackOffViewCanceled:(id)canceled;
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed;
+- (void)passcodeLockViewPasscodeDidChange:(id)change;
+- (void)passcodeLockViewPasscodeEntered:(id)entered;
+- (void)setState:(id)state;
 @end
 
 @implementation PasscodeContentViewControllerFullScreen
 
-- (PasscodeContentViewControllerFullScreen)initWithPasscode:(id)a3 options:(id)a4
+- (PasscodeContentViewControllerFullScreen)initWithPasscode:(id)passcode options:(id)options
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   v11.receiver = self;
   v11.super_class = PasscodeContentViewControllerFullScreen;
   v7 = [(PasscodeContentViewControllerFullScreen *)&v11 init];
@@ -30,7 +30,7 @@
     background = v7->_background;
     v7->_background = v8;
 
-    objc_storeStrong(&v7->_passcode, a3);
+    objc_storeStrong(&v7->_passcode, passcode);
   }
 
   return v7;
@@ -42,8 +42,8 @@
   [(PasscodeContentViewControllerFullScreen *)self setView:v3];
 
   v5 = +[UIColor clearColor];
-  v4 = [(PasscodeContentViewControllerFullScreen *)self view];
-  [v4 setBackgroundColor:v5];
+  view = [(PasscodeContentViewControllerFullScreen *)self view];
+  [view setBackgroundColor:v5];
 }
 
 - (BOOL)resignFirstResponder
@@ -54,18 +54,18 @@
   return [(SBUIPasscodeLockView *)self->_passcodeView resignFirstResponder];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    objc_storeStrong(&self->_state, a3);
-    v5 = [(PasscodeViewState *)self->_state rawValue];
-    if (v5 == 1)
+    objc_storeStrong(&self->_state, state);
+    rawValue = [(PasscodeViewState *)self->_state rawValue];
+    if (rawValue == 1)
     {
       [(PasscodeContentViewControllerFullScreen *)self _showBackOffView];
     }
 
-    else if (!v5)
+    else if (!rawValue)
     {
       [(PasscodeContentViewControllerFullScreen *)self _showPasscodeView];
     }
@@ -74,47 +74,47 @@
   _objc_release_x1();
 }
 
-- (void)animateToSucessStateWithCompletion:(id)a3
+- (void)animateToSucessStateWithCompletion:(id)completion
 {
   passcodeView = self->_passcodeView;
   if (passcodeView)
   {
-    [(SBUIPasscodeLockView *)passcodeView autofillForSuccessfulMesaAttemptWithCompletion:a3];
+    [(SBUIPasscodeLockView *)passcodeView autofillForSuccessfulMesaAttemptWithCompletion:completion];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)animateToFailureStateWithCompletion:(id)a3
+- (void)animateToFailureStateWithCompletion:(id)completion
 {
   passcodeView = self->_passcodeView;
-  v4 = a3;
+  completionCopy = completion;
   [(SBUIPasscodeLockView *)passcodeView resetForFailedPasscode];
-  v4[2]();
+  completionCopy[2]();
 }
 
-- (void)passcodeLockViewPasscodeDidChange:(id)a3
+- (void)passcodeLockViewPasscodeDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passcodeViewPasscodeDidChange:self];
 }
 
-- (void)passcodeLockViewPasscodeEntered:(id)a3
+- (void)passcodeLockViewPasscodeEntered:(id)entered
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passcodeViewPasscodeEntered:self];
 }
 
-- (void)passcodeLockViewCancelButtonPressed:(id)a3
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passcodeViewCancelButtonPressed:self];
 }
 
-- (void)passcodeBackOffViewCanceled:(id)a3
+- (void)passcodeBackOffViewCanceled:(id)canceled
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passcodeViewCancelButtonPressed:self];
@@ -127,37 +127,37 @@
 
   v5 = objc_alloc_init(PasscodeActiveViewFactory);
   passcode = self->_passcode;
-  v7 = [(PasscodeViewState *)self->_state style];
-  v8 = [(PasscodeActiveViewFactory *)v5 passcodeViewForPasscode:passcode style:v7];
+  style = [(PasscodeViewState *)self->_state style];
+  v8 = [(PasscodeActiveViewFactory *)v5 passcodeViewForPasscode:passcode style:style];
   v9 = self->_passcodeView;
   self->_passcodeView = v8;
 
   [(SBUIPasscodeLockView *)self->_passcodeView setDelegate:self];
   [(PasscodeContentViewControllerFullScreen *)self _embedSubview:self->_passcodeView];
   v10 = self->_passcodeView;
-  v11 = [(PasscodeViewState *)self->_state title];
-  v12 = [(PasscodeViewState *)self->_state subtitle];
-  [(SBUIPasscodeLockView *)v10 updateStatusText:v11 subtitle:v12 animated:0];
+  title = [(PasscodeViewState *)self->_state title];
+  subtitle = [(PasscodeViewState *)self->_state subtitle];
+  [(SBUIPasscodeLockView *)v10 updateStatusText:title subtitle:subtitle animated:0];
 
-  v13 = [(PasscodeViewState *)self->_state accessoryView];
+  accessoryView = [(PasscodeViewState *)self->_state accessoryView];
 
-  if (v13)
+  if (accessoryView)
   {
-    v14 = [(PasscodeViewState *)self->_state accessoryView];
-    [v14 removeFromSuperview];
+    accessoryView2 = [(PasscodeViewState *)self->_state accessoryView];
+    [accessoryView2 removeFromSuperview];
 
     v15 = self->_passcodeView;
-    v16 = [(PasscodeViewState *)self->_state accessoryView];
-    [(SBUIPasscodeLockView *)v15 addSubview:v16];
+    accessoryView3 = [(PasscodeViewState *)self->_state accessoryView];
+    [(SBUIPasscodeLockView *)v15 addSubview:accessoryView3];
 
     v17 = self->_passcodeView;
-    v18 = [(PasscodeViewState *)self->_state accessoryView];
-    [(SBUIPasscodeLockView *)v17 bringSubviewToFront:v18];
+    accessoryView4 = [(PasscodeViewState *)self->_state accessoryView];
+    [(SBUIPasscodeLockView *)v17 bringSubviewToFront:accessoryView4];
   }
 
   background = self->_background;
-  v20 = [(PasscodeViewState *)self->_state style];
-  [(PasscodeContentViewBackground *)background applyBackgroundForStyle:v20 toView:self->_passcodeView];
+  style2 = [(PasscodeViewState *)self->_state style];
+  [(PasscodeContentViewBackground *)background applyBackgroundForStyle:style2 toView:self->_passcodeView];
 
   v21 = self->_passcodeView;
 
@@ -186,34 +186,34 @@
   v8 = WeakRetained != backOffView;
   [(PasscodeBackOffView *)self->_backOffView setDelegate:self];
   [(PasscodeContentViewControllerFullScreen *)self _embedSubview:self->_backOffView];
-  v9 = [(PasscodeViewState *)self->_state style];
-  -[PasscodeBackOffView setHasWhiteBackground:](self->_backOffView, "setHasWhiteBackground:", [v9 rawValue] == 1);
+  style = [(PasscodeViewState *)self->_state style];
+  -[PasscodeBackOffView setHasWhiteBackground:](self->_backOffView, "setHasWhiteBackground:", [style rawValue] == 1);
 
-  v10 = [(PasscodeViewState *)self->_state title];
-  [(PasscodeBackOffView *)self->_backOffView setTitle:v10];
+  title = [(PasscodeViewState *)self->_state title];
+  [(PasscodeBackOffView *)self->_backOffView setTitle:title];
 
-  v11 = [(PasscodeViewState *)self->_state subtitle];
-  [(PasscodeBackOffView *)self->_backOffView setSubtitle:v11];
+  subtitle = [(PasscodeViewState *)self->_state subtitle];
+  [(PasscodeBackOffView *)self->_backOffView setSubtitle:subtitle];
 
   background = self->_background;
-  v13 = [(PasscodeViewState *)self->_state style];
-  [(PasscodeContentViewBackground *)background applyBackgroundForStyle:v13 toView:self->_backOffView];
+  style2 = [(PasscodeViewState *)self->_state style];
+  [(PasscodeContentViewBackground *)background applyBackgroundForStyle:style2 toView:self->_backOffView];
 
   v14 = self->_backOffView;
 
   [(PasscodeContentViewControllerFullScreen *)self _setContentView:v14 animated:v8 withCompletion:&__block_literal_global_8];
 }
 
-- (void)_setContentView:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)_setContentView:(id)view animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  viewCopy = view;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_contentView);
 
-  if (WeakRetained == v8)
+  if (WeakRetained == viewCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -224,11 +224,11 @@
     v21 = __Block_byref_object_copy_;
     v22 = __Block_byref_object_dispose_;
     v23 = objc_loadWeakRetained(&self->_contentView);
-    objc_storeWeak(&self->_contentView, v8);
-    [v8 setAlpha:0.0];
-    [(PasscodeContentViewControllerFullScreen *)self _embedSubview:v8];
+    objc_storeWeak(&self->_contentView, viewCopy);
+    [viewCopy setAlpha:0.0];
+    [(PasscodeContentViewControllerFullScreen *)self _embedSubview:viewCopy];
     v11 = 0.0;
-    if (v6)
+    if (animatedCopy)
     {
       if (v19[5])
       {
@@ -245,14 +245,14 @@
     v16[1] = 3221225472;
     v16[2] = __83__PasscodeContentViewControllerFullScreen__setContentView_animated_withCompletion___block_invoke;
     v16[3] = &unk_1000AA3C0;
-    v12 = v8;
+    v12 = viewCopy;
     v17 = v12;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __83__PasscodeContentViewControllerFullScreen__setContentView_animated_withCompletion___block_invoke_2;
     v13[3] = &unk_1000AB0B0;
     v15 = &v18;
-    v14 = v9;
+    v14 = completionCopy;
     [UIView animateWithDuration:196608 delay:v16 options:v13 animations:v11 completion:0.0];
     [v12 becomeFirstResponder];
 
@@ -268,39 +268,39 @@ uint64_t __83__PasscodeContentViewControllerFullScreen__setContentView_animated_
   return v2();
 }
 
-- (void)_embedSubview:(id)a3
+- (void)_embedSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   [UIView setAnimationsEnabled:0];
-  v5 = [(PasscodeContentViewControllerFullScreen *)self view];
-  [v5 addSubview:v4];
+  view = [(PasscodeContentViewControllerFullScreen *)self view];
+  [view addSubview:subviewCopy];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v4 topAnchor];
-  v7 = [(PasscodeContentViewControllerFullScreen *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [subviewCopy topAnchor];
+  view2 = [(PasscodeContentViewControllerFullScreen *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v4 bottomAnchor];
-  v11 = [(PasscodeContentViewControllerFullScreen *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [subviewCopy bottomAnchor];
+  view3 = [(PasscodeContentViewControllerFullScreen *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v13 setActive:1];
 
-  v14 = [v4 leadingAnchor];
-  v15 = [(PasscodeContentViewControllerFullScreen *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  leadingAnchor = [subviewCopy leadingAnchor];
+  view4 = [(PasscodeContentViewControllerFullScreen *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v4 trailingAnchor];
-  v19 = [(PasscodeContentViewControllerFullScreen *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [subviewCopy trailingAnchor];
+  view5 = [(PasscodeContentViewControllerFullScreen *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v21 setActive:1];
 
-  [v4 layoutIfNeeded];
+  [subviewCopy layoutIfNeeded];
 
   [UIView setAnimationsEnabled:1];
 }

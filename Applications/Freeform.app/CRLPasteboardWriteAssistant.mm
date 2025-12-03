@@ -1,31 +1,31 @@
 @interface CRLPasteboardWriteAssistant
-- (CRLPasteboardWriteAssistant)initWithContext:(id)a3;
+- (CRLPasteboardWriteAssistant)initWithContext:(id)context;
 - (CRLPasteboardWriteAssistantDelegate)delegate;
 - (_TtC8Freeform19CRLPasteboardObject)pasteboardObject;
-- (id)crlPasteboardWithPasteboard:(id)a3;
-- (id)pasteboardPropertyListForType:(id)a3;
-- (id)writableTypesForPasteboard:(id)a3;
+- (id)crlPasteboardWithPasteboard:(id)pasteboard;
+- (id)pasteboardPropertyListForType:(id)type;
+- (id)writableTypesForPasteboard:(id)pasteboard;
 - (void)loadData;
-- (void)serializeNativeDataForPasteboard:(id)a3;
-- (void)setContentDescription:(id)a3;
-- (void)setDataProvider:(id)a3 forTypes:(id)a4;
+- (void)serializeNativeDataForPasteboard:(id)pasteboard;
+- (void)setContentDescription:(id)description;
+- (void)setDataProvider:(id)provider forTypes:(id)types;
 @end
 
 @implementation CRLPasteboardWriteAssistant
 
-- (CRLPasteboardWriteAssistant)initWithContext:(id)a3
+- (CRLPasteboardWriteAssistant)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = CRLPasteboardWriteAssistant;
   v6 = [(CRLPasteboardWriteAssistant *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceContext, a3);
+    objc_storeStrong(&v6->_sourceContext, context);
     v8 = [_TtC8Freeform19CRLPasteboardObject alloc];
-    v9 = [v5 sourceContext];
-    v10 = [(CRLPasteboardObject *)v8 initWithContext:v9];
+    sourceContext = [contextCopy sourceContext];
+    v10 = [(CRLPasteboardObject *)v8 initWithContext:sourceContext];
     pasteboardObject = v7->_pasteboardObject;
     v7->_pasteboardObject = v10;
 
@@ -37,10 +37,10 @@
   return v7;
 }
 
-- (void)setDataProvider:(id)a3 forTypes:(id)a4
+- (void)setDataProvider:(id)provider forTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  typesCopy = types;
   if (self->_shouldRefuseAdditionalDataProviders)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -90,7 +90,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = v7;
+  v15 = typesCopy;
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v16)
   {
@@ -105,7 +105,7 @@
         }
 
         v19 = *(*(&v20 + 1) + 8 * i);
-        [(NSMutableDictionary *)self->_dataProviderMap setObject:v6 forKeyedSubscript:v19, v20];
+        [(NSMutableDictionary *)self->_dataProviderMap setObject:providerCopy forKeyedSubscript:v19, v20];
         [(NSMutableOrderedSet *)self->_dataProviderTypes addObject:v19];
       }
 
@@ -158,30 +158,30 @@
   return pasteboardObject;
 }
 
-- (void)setContentDescription:(id)a3
+- (void)setContentDescription:(id)description
 {
-  v5 = a3;
-  if (self->_contentDescription != v5)
+  descriptionCopy = description;
+  if (self->_contentDescription != descriptionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_contentDescription, a3);
-    v6 = [(CRLPasteboardWriteAssistant *)self delegate];
-    [v6 distillPasteboardContentDescription:v7 intoPasteboardStateTypes:self->_pasteboardStateTypes];
+    v7 = descriptionCopy;
+    objc_storeStrong(&self->_contentDescription, description);
+    delegate = [(CRLPasteboardWriteAssistant *)self delegate];
+    [delegate distillPasteboardContentDescription:v7 intoPasteboardStateTypes:self->_pasteboardStateTypes];
 
-    v5 = v7;
+    descriptionCopy = v7;
   }
 }
 
-- (id)crlPasteboardWithPasteboard:(id)a3
+- (id)crlPasteboardWithPasteboard:(id)pasteboard
 {
-  v3 = [CRLPasteboard pasteboardWithPasteboard:a3];
+  v3 = [CRLPasteboard pasteboardWithPasteboard:pasteboard];
 
   return v3;
 }
 
-- (void)serializeNativeDataForPasteboard:(id)a3
+- (void)serializeNativeDataForPasteboard:(id)pasteboard
 {
-  v5 = a3;
+  pasteboardCopy = pasteboard;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -219,11 +219,11 @@
 
   if (!self->_didWriteNativeDataToPasteboard)
   {
-    v11 = [(CRLPasteboardWriteAssistant *)self crlPasteboardWithPasteboard:v5];
+    v11 = [(CRLPasteboardWriteAssistant *)self crlPasteboardWithPasteboard:pasteboardCopy];
     v12 = [_TtC8Freeform33CRLPasteboardObjectWriteAssistant alloc];
-    v13 = [(CRLPasteboardSourceContext *)self->_sourceContext sourceStore];
-    v14 = [(CRLPasteboardSourceContext *)self->_sourceContext sourceContext];
-    v15 = [(CRLPasteboardObjectWriteAssistant *)v12 initWithPasteboard:v11 store:v13 context:v14];
+    sourceStore = [(CRLPasteboardSourceContext *)self->_sourceContext sourceStore];
+    sourceContext = [(CRLPasteboardSourceContext *)self->_sourceContext sourceContext];
+    v15 = [(CRLPasteboardObjectWriteAssistant *)v12 initWithPasteboard:v11 store:sourceStore context:sourceContext];
 
     v16 = dispatch_semaphore_create(0);
     pasteboardObject = self->_pasteboardObject;
@@ -302,18 +302,18 @@
   }
 }
 
-- (id)writableTypesForPasteboard:(id)a3
+- (id)writableTypesForPasteboard:(id)pasteboard
 {
   self->_shouldRefuseAdditionalDataProviders = 1;
   self->_shouldRefuseAdditionalPasteboardStateTypes = 1;
-  [(CRLPasteboardWriteAssistant *)self serializeNativeDataForPasteboard:a3];
+  [(CRLPasteboardWriteAssistant *)self serializeNativeDataForPasteboard:pasteboard];
   v4 = [NSMutableOrderedSet orderedSetWithCapacity:[(NSMutableOrderedSet *)self->_dataProviderTypes count]+ 3];
   if (![(CRLPasteboardWriteAssistant *)self excludeNativeData])
   {
-    v5 = [(CRLPasteboardNativeDataProvider *)self->_nativeDataProvider promisedDataTypes];
-    if (v5)
+    promisedDataTypes = [(CRLPasteboardNativeDataProvider *)self->_nativeDataProvider promisedDataTypes];
+    if (promisedDataTypes)
     {
-      [v4 addObjectsFromArray:v5];
+      [v4 addObjectsFromArray:promisedDataTypes];
     }
 
     if (self->_contentDescription)
@@ -321,8 +321,8 @@
       [v4 addObject:@"com.apple.freeform.CRLDescription"];
     }
 
-    v6 = [(NSMutableSet *)self->_pasteboardStateTypes allObjects];
-    [v4 addObjectsFromArray:v6];
+    allObjects = [(NSMutableSet *)self->_pasteboardStateTypes allObjects];
+    [v4 addObjectsFromArray:allObjects];
   }
 
   v15 = 0u;
@@ -352,19 +352,19 @@
     while (v8);
   }
 
-  v11 = [v4 array];
+  array = [v4 array];
 
-  return v11;
+  return array;
 }
 
-- (id)pasteboardPropertyListForType:(id)a3
+- (id)pasteboardPropertyListForType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_dataProviderMap objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSMutableDictionary *)self->_dataProviderMap objectForKeyedSubscript:typeCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 pasteboardPromise:self propertyListForType:v4];
+    v7 = [v5 pasteboardPromise:self propertyListForType:typeCopy];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -374,7 +374,7 @@ LABEL_18:
     }
 
     v8 = v7;
-    v9 = v4;
+    v9 = typeCopy;
     if ([v8 length] > 0x1200000)
     {
       v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -411,7 +411,7 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"com.apple.freeform.CRLDescription"])
+  if ([typeCopy isEqualToString:@"com.apple.freeform.CRLDescription"])
   {
     contentDescription = self->_contentDescription;
     v24 = 0;
@@ -432,14 +432,14 @@ LABEL_18:
     {
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
-      v22 = [v8 domain];
-      v23 = [v8 code];
+      domain = [v8 domain];
+      code = [v8 code];
       *buf = 138544130;
       v26 = v21;
       v27 = 2114;
-      v28 = v22;
+      v28 = domain;
       v29 = 2048;
-      v30 = v23;
+      v30 = code;
       v31 = 2112;
       v32 = v8;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to serialize content description - Error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x2Au);
@@ -451,7 +451,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (([(NSMutableSet *)self->_pasteboardStateTypes containsObject:v4]& 1) != 0)
+  if (([(NSMutableSet *)self->_pasteboardStateTypes containsObject:typeCopy]& 1) != 0)
   {
     v7 = 0;
   }
@@ -489,7 +489,7 @@ LABEL_17:
       [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:233 isFatal:0 description:"No attempt was made to serialize native data"];
     }
 
-    v7 = [(CRLPasteboardNativeDataProvider *)self->_nativeDataProvider fulfillPromisesForPasteboardType:v4];
+    v7 = [(CRLPasteboardNativeDataProvider *)self->_nativeDataProvider fulfillPromisesForPasteboardType:typeCopy];
   }
 
 LABEL_19:

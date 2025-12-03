@@ -1,18 +1,18 @@
 @interface DTActivityTraceTapMemoHandlerDelegate
-- (id)peekAtMemo:(id)a3;
-- (void)sendDataMemo:(id)a3 toBulkReceiver:(id)a4;
-- (void)sendDataMemo:(id)a3 toClientUsingConfig:(id)a4;
-- (void)sendHeartbeatMemo:(id)a3 toClientUsingConfig:(id)a4;
+- (id)peekAtMemo:(id)memo;
+- (void)sendDataMemo:(id)memo toBulkReceiver:(id)receiver;
+- (void)sendDataMemo:(id)memo toClientUsingConfig:(id)config;
+- (void)sendHeartbeatMemo:(id)memo toClientUsingConfig:(id)config;
 @end
 
 @implementation DTActivityTraceTapMemoHandlerDelegate
 
-- (void)sendDataMemo:(id)a3 toBulkReceiver:(id)a4
+- (void)sendDataMemo:(id)memo toBulkReceiver:(id)receiver
 {
-  v5 = a3;
-  v6 = a4;
+  memoCopy = memo;
+  receiverCopy = receiver;
   v12 = 0;
-  v7 = [v5 getBufferWithLength:&v12];
+  v7 = [memoCopy getBufferWithLength:&v12];
   if (v12)
   {
     v8 = v7;
@@ -21,37 +21,37 @@
     v10[2] = 0x3032000000;
     v10[3] = sub_247FB9C90;
     v10[4] = sub_247FB9CA0;
-    v11 = v5;
+    v11 = memoCopy;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = sub_247FB9CA8;
     v9[3] = &unk_278EF1D40;
     v9[4] = v10;
-    [v6 handleBulkData:v8 size:v12 destructor:v9];
+    [receiverCopy handleBulkData:v8 size:v12 destructor:v9];
     _Block_object_dispose(v10, 8);
   }
 
-  if ([v5 finalMemo])
+  if ([memoCopy finalMemo])
   {
-    [v6 sendHeartbeatTime:{objc_msgSend(v5, "lastMachContinuousTimeSeen")}];
+    [receiverCopy sendHeartbeatTime:{objc_msgSend(memoCopy, "lastMachContinuousTimeSeen")}];
   }
 }
 
-- (void)sendDataMemo:(id)a3 toClientUsingConfig:(id)a4
+- (void)sendDataMemo:(id)memo toClientUsingConfig:(id)config
 {
-  v5 = a3;
-  v6 = [a4 memoHandler];
-  v6[2](v6, v5);
+  memoCopy = memo;
+  memoHandler = [config memoHandler];
+  memoHandler[2](memoHandler, memoCopy);
 }
 
-- (void)sendHeartbeatMemo:(id)a3 toClientUsingConfig:(id)a4
+- (void)sendHeartbeatMemo:(id)memo toClientUsingConfig:(id)config
 {
-  v5 = a3;
-  v6 = [a4 memoHandler];
-  v6[2](v6, v5);
+  memoCopy = memo;
+  memoHandler = [config memoHandler];
+  memoHandler[2](memoHandler, memoCopy);
 }
 
-- (id)peekAtMemo:(id)a3
+- (id)peekAtMemo:(id)memo
 {
   v3 = objc_opt_new();
 

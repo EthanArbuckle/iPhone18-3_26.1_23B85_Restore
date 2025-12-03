@@ -1,5 +1,5 @@
 @interface MPModelLibraryPlaylistEditPlaylistEntryDataSource
-- (MPModelLibraryPlaylistEditPlaylistEntryDataSource)initWithPlaylistEntries:(id)a3;
+- (MPModelLibraryPlaylistEditPlaylistEntryDataSource)initWithPlaylistEntries:(id)entries;
 - (id)description;
 @end
 
@@ -9,41 +9,41 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPModelLibraryPlaylistEditDataSource *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p : %@>{\n", v4, self, v5];
+  identifier = [(MPModelLibraryPlaylistEditDataSource *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p : %@>{\n", v4, self, identifier];
 
   return v6;
 }
 
-- (MPModelLibraryPlaylistEditPlaylistEntryDataSource)initWithPlaylistEntries:(id)a3
+- (MPModelLibraryPlaylistEditPlaylistEntryDataSource)initWithPlaylistEntries:(id)entries
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 firstObject];
-  v7 = [v6 anyObject];
+  entriesCopy = entries;
+  firstObject = [entriesCopy firstObject];
+  anyObject = [firstObject anyObject];
 
-  v8 = [v7 identifiers];
-  v9 = [v8 library];
-  v10 = [v9 persistentID];
+  identifiers = [anyObject identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v10)
+  if (persistentID)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v8 library];
-    [v11 stringWithFormat:@"l.%lld", objc_msgSend(v12, "persistentID")];
+    library2 = [identifiers library];
+    [v11 stringWithFormat:@"l.%lld", objc_msgSend(library2, "persistentID")];
     v16 = LABEL_5:;
 
     goto LABEL_6;
   }
 
-  v13 = [v8 universalStore];
-  v14 = [v13 subscriptionAdamID];
+  universalStore = [identifiers universalStore];
+  subscriptionAdamID = [universalStore subscriptionAdamID];
 
-  if (v14)
+  if (subscriptionAdamID)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v12 = [v8 universalStore];
-    [v15 stringWithFormat:@"s.%lld", objc_msgSend(v12, "subscriptionAdamID")];
+    library2 = [identifiers universalStore];
+    [v15 stringWithFormat:@"s.%lld", objc_msgSend(library2, "subscriptionAdamID")];
     goto LABEL_5;
   }
 
@@ -63,13 +63,13 @@ LABEL_6:
     v36 = v16;
     v38 = v20;
     v34 = a2;
-    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entriesCopy, "count")}];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v37 = v5;
-    obj = v5;
+    v37 = entriesCopy;
+    obj = entriesCopy;
     v23 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v23)
     {
@@ -89,17 +89,17 @@ LABEL_6:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v30 handleFailureInMethod:v34 object:v38 file:@"MPModelLibraryPlaylistEditPlaylistEntryDataSource.m" lineNumber:35 description:{@"Object is not a playlist entry: %@", objc_opt_class()}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v34 object:v38 file:@"MPModelLibraryPlaylistEditPlaylistEntryDataSource.m" lineNumber:35 description:{@"Object is not a playlist entry: %@", objc_opt_class()}];
           }
 
-          v28 = [v27 identifiers];
+          identifiers2 = [v27 identifiers];
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __77__MPModelLibraryPlaylistEditPlaylistEntryDataSource_initWithPlaylistEntries___block_invoke;
           v40[3] = &unk_1E767C0A8;
           v40[4] = v27;
-          v29 = [v27 copyWithIdentifiers:v28 block:v40];
+          v29 = [v27 copyWithIdentifiers:identifiers2 block:v40];
 
           [v22 addObject:v29];
           ++v26;
@@ -117,7 +117,7 @@ LABEL_6:
     playlistEntries = v38->_playlistEntries;
     v38->_playlistEntries = v31;
 
-    v5 = v37;
+    entriesCopy = v37;
     v16 = v36;
     v19 = v35;
   }

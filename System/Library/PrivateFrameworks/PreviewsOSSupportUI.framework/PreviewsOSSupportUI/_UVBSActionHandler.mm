@@ -1,19 +1,19 @@
 @interface _UVBSActionHandler
-- (_UVBSActionHandler)initWithHandler:(id)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (_UVBSActionHandler)initWithHandler:(id)handler;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UVBSActionHandler
 
-- (_UVBSActionHandler)initWithHandler:(id)a3
+- (_UVBSActionHandler)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = _UVBSActionHandler;
   v5 = [(_UVBSActionHandler *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }
@@ -21,16 +21,16 @@
   return v5;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 mutableCopy];
+  actionsCopy = actions;
+  v8 = [actionsCopy mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {

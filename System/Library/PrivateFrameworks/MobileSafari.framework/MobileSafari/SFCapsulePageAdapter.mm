@@ -1,54 +1,54 @@
 @interface SFCapsulePageAdapter
-- (CGSize)preferredCapsuleSizeForState:(int64_t)a3;
-- (CGSize)preferredSizeForSupplementaryWithIdentifier:(id)a3 fittingSize:(CGSize)a4 horizontalFittingPriority:(float)a5 verticalFittingPriority:(float)a6;
+- (CGSize)preferredCapsuleSizeForState:(int64_t)state;
+- (CGSize)preferredSizeForSupplementaryWithIdentifier:(id)identifier fittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (SFCapsuleContentView)contentView;
-- (SFCapsulePageAdapter)initWithItem:(id)a3 atIndex:(unint64_t)a4 selectedItemIndex:(unint64_t)a5;
-- (double)capsuleHeightForWidth:(double)a3 defaultHeight:(double)a4 state:(int64_t)a5;
+- (SFCapsulePageAdapter)initWithItem:(id)item atIndex:(unint64_t)index selectedItemIndex:(unint64_t)itemIndex;
+- (double)capsuleHeightForWidth:(double)width defaultHeight:(double)height state:(int64_t)state;
 @end
 
 @implementation SFCapsulePageAdapter
 
-- (SFCapsulePageAdapter)initWithItem:(id)a3 atIndex:(unint64_t)a4 selectedItemIndex:(unint64_t)a5
+- (SFCapsulePageAdapter)initWithItem:(id)item atIndex:(unint64_t)index selectedItemIndex:(unint64_t)itemIndex
 {
-  v9 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = SFCapsulePageAdapter;
   v10 = [(SFCapsulePageAdapter *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_item, a3);
-    v11->_itemIndex = a4;
-    v11->_selectedItemIndex = a5;
+    objc_storeStrong(&v10->_item, item);
+    v11->_itemIndex = index;
+    v11->_selectedItemIndex = itemIndex;
     v12 = v11;
   }
 
   return v11;
 }
 
-- (double)capsuleHeightForWidth:(double)a3 defaultHeight:(double)a4 state:(int64_t)a5
+- (double)capsuleHeightForWidth:(double)width defaultHeight:(double)height state:(int64_t)state
 {
   if (self->_itemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a4;
+    return height;
   }
 
   item = self->_item;
   if (!item)
   {
-    return a4;
+    return height;
   }
 
-  [(SFCapsuleCollectionViewItem *)item capsuleHeightForWidth:a5 defaultHeight:a3 state:a4 index:?];
+  [(SFCapsuleCollectionViewItem *)item capsuleHeightForWidth:state defaultHeight:width state:height index:?];
   return result;
 }
 
-- (CGSize)preferredCapsuleSizeForState:(int64_t)a3
+- (CGSize)preferredCapsuleSizeForState:(int64_t)state
 {
-  v5 = [(SFCapsuleCollectionViewItem *)self->_item collectionView];
-  v6 = v5;
+  collectionView = [(SFCapsuleCollectionViewItem *)self->_item collectionView];
+  v6 = collectionView;
   itemIndex = self->_itemIndex;
-  if (itemIndex == 0x7FFFFFFFFFFFFFFFLL || !self->_item || itemIndex >= [v5 numberOfItems])
+  if (itemIndex == 0x7FFFFFFFFFFFFFFFLL || !self->_item || itemIndex >= [collectionView numberOfItems])
   {
     v9 = *MEMORY[0x1E69DE788];
     v11 = *MEMORY[0x1E69DE788];
@@ -56,7 +56,7 @@
 
   else
   {
-    [(SFCapsuleCollectionViewItem *)self->_item preferredCapsuleSizeForState:a3];
+    [(SFCapsuleCollectionViewItem *)self->_item preferredCapsuleSizeForState:state];
     v9 = v8;
     v11 = v10;
   }
@@ -68,17 +68,17 @@
   return result;
 }
 
-- (CGSize)preferredSizeForSupplementaryWithIdentifier:(id)a3 fittingSize:(CGSize)a4 horizontalFittingPriority:(float)a5 verticalFittingPriority:(float)a6
+- (CGSize)preferredSizeForSupplementaryWithIdentifier:(id)identifier fittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   item = self->_item;
-  v11 = a3;
-  v12 = [(SFCapsuleCollectionViewItem *)item collectionView];
-  v13 = [v12 viewForSupplementaryWithIdentifier:v11];
+  identifierCopy = identifier;
+  collectionView = [(SFCapsuleCollectionViewItem *)item collectionView];
+  v13 = [collectionView viewForSupplementaryWithIdentifier:identifierCopy];
 
-  *&v14 = a5;
-  *&v15 = a6;
+  *&v14 = priority;
+  *&v15 = fittingPriority;
   [v13 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
   v17 = v16;
   v19 = v18;
@@ -92,10 +92,10 @@
 
 - (SFCapsuleContentView)contentView
 {
-  v2 = [(SFCapsuleCollectionViewItem *)self->_item capsuleView];
-  v3 = [v2 contentView];
+  capsuleView = [(SFCapsuleCollectionViewItem *)self->_item capsuleView];
+  contentView = [capsuleView contentView];
 
-  return v3;
+  return contentView;
 }
 
 @end

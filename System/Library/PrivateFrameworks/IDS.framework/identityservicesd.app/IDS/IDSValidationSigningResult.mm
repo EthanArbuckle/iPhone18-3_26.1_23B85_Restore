@@ -1,34 +1,34 @@
 @interface IDSValidationSigningResult
-- (IDSValidationSigningResult)initWithAbsintheResultData:(id)a3 absintheServerKey:(id)a4 absintheError:(id)a5 baaResult:(id)a6;
-- (IDSValidationSigningResult)initWithBaaResult:(id)a3;
+- (IDSValidationSigningResult)initWithAbsintheResultData:(id)data absintheServerKey:(id)key absintheError:(id)error baaResult:(id)result;
+- (IDSValidationSigningResult)initWithBaaResult:(id)result;
 @end
 
 @implementation IDSValidationSigningResult
 
-- (IDSValidationSigningResult)initWithAbsintheResultData:(id)a3 absintheServerKey:(id)a4 absintheError:(id)a5 baaResult:(id)a6
+- (IDSValidationSigningResult)initWithAbsintheResultData:(id)data absintheServerKey:(id)key absintheError:(id)error baaResult:(id)result
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  keyCopy = key;
+  errorCopy = error;
+  resultCopy = result;
   v18.receiver = self;
   v18.super_class = IDSValidationSigningResult;
   v15 = [(IDSValidationSigningResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_absintheResultData, a3);
-    objc_storeStrong(&v16->_absintheServerKey, a4);
-    objc_storeStrong(&v16->_absintheError, a5);
-    objc_storeStrong(&v16->_baaResult, a6);
+    objc_storeStrong(&v15->_absintheResultData, data);
+    objc_storeStrong(&v16->_absintheServerKey, key);
+    objc_storeStrong(&v16->_absintheError, error);
+    objc_storeStrong(&v16->_baaResult, result);
   }
 
   return v16;
 }
 
-- (IDSValidationSigningResult)initWithBaaResult:(id)a3
+- (IDSValidationSigningResult)initWithBaaResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = IDSValidationSigningResult;
   v6 = [(IDSValidationSigningResult *)&v12 init];
@@ -44,7 +44,7 @@
     absintheError = v7->_absintheError;
     v7->_absintheError = 0;
 
-    objc_storeStrong(&v7->_baaResult, a3);
+    objc_storeStrong(&v7->_baaResult, result);
   }
 
   return v7;

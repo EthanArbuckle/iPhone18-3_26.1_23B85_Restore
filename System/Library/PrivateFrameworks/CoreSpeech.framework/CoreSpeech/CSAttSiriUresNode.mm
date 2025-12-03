@@ -1,11 +1,11 @@
 @interface CSAttSiriUresNode
-+ (float)_extractLrnnScoreForResultCandidate:(id)a3;
-- (BOOL)_isSpeechRecognizerTaskSupported:(id)a3;
-- (BOOL)_shouldApplyAllowListOverride:(id)a3 withInputOrigin:(id)a4;
-- (BOOL)_shouldRunMitigationForContext:(id)a3;
-- (BOOL)_shouldRunMitigationForRequestContext:(id)a3 forTask:(id)a4;
-- (BOOL)getLastMitigationResultForRequestId:(id)a3;
-- (BOOL)getMitigationDecisionForRCId:(unint64_t)a3 forRequestId:(id)a4;
++ (float)_extractLrnnScoreForResultCandidate:(id)candidate;
+- (BOOL)_isSpeechRecognizerTaskSupported:(id)supported;
+- (BOOL)_shouldApplyAllowListOverride:(id)override withInputOrigin:(id)origin;
+- (BOOL)_shouldRunMitigationForContext:(id)context;
+- (BOOL)_shouldRunMitigationForRequestContext:(id)context forTask:(id)task;
+- (BOOL)getLastMitigationResultForRequestId:(id)id;
+- (BOOL)getMitigationDecisionForRCId:(unint64_t)id forRequestId:(id)requestId;
 - (CSAttSiriController)attSiriController;
 - (CSAttSiriMitigatorDeletgate)mitigatorDelegate;
 - (CSAttSiriNLDAClassifierNode)nldaClassifierNode;
@@ -14,47 +14,47 @@
 - (CSAttSiriSignalDataAggregatorProtocol)gazeNode;
 - (CSAttSiriTCUGenerator)tcuGenerator;
 - (CSAttSiriUresNode)init;
-- (CSAttSiriUresNode)initWithAttSiriController:(id)a3;
-- (CSAttSiriUresNode)initWithSupportsUOD:(BOOL)a3 supportsHybridUOD:(BOOL)a4 isMedocFeatureEnabled:(BOOL)a5;
-- (id)_decodeJsonFromFile:(id)a3;
-- (id)_getRequestCtxForRequestId:(id)a3;
-- (id)constructTCUIntendedInfoForRequestId:(id)a3 withResultCandidate:(id)a4;
-- (id)getUresInputFeaturesForRequestId:(id)a3;
-- (id)getUresInvocationTypeForRequestId:(id)a3;
-- (void)_createMitigatorModelWithConfig:(id)a3;
-- (void)_createModelAndRunInferenceForRcId:(unint64_t)a3 withRequestContext:(id)a4 withCompletion:(id)a5;
-- (void)_fetchMitigationConfigForRecordCtx:(id)a3;
+- (CSAttSiriUresNode)initWithAttSiriController:(id)controller;
+- (CSAttSiriUresNode)initWithSupportsUOD:(BOOL)d supportsHybridUOD:(BOOL)oD isMedocFeatureEnabled:(BOOL)enabled;
+- (id)_decodeJsonFromFile:(id)file;
+- (id)_getRequestCtxForRequestId:(id)id;
+- (id)constructTCUIntendedInfoForRequestId:(id)id withResultCandidate:(id)candidate;
+- (id)getUresInputFeaturesForRequestId:(id)id;
+- (id)getUresInvocationTypeForRequestId:(id)id;
+- (void)_createMitigatorModelWithConfig:(id)config;
+- (void)_createModelAndRunInferenceForRcId:(unint64_t)id withRequestContext:(id)context withCompletion:(id)completion;
+- (void)_fetchMitigationConfigForRecordCtx:(id)ctx;
 - (void)_holdTransactionForUresProcessing;
-- (void)_logLRNNFailMsgForMhId:(id)a3;
-- (void)_logLatticeRNNResults:(id)a3 forMhId:(id)a4;
-- (void)_logURESEndMessageWithScore:(float)a3 threshold:(float)a4 spkrIDThreshold:(float)a5 assetVersion:(id)a6 withMhId:(id)a7;
-- (void)_logURESFailureMsgInput:(unint64_t)a3 forMhId:(id)a4;
-- (void)_logURESResultsForInput:(id)a3 withOutput:(id)a4 forMhId:(id)a5;
-- (void)_readAllowListVocabFromFile:(id)a3;
+- (void)_logLRNNFailMsgForMhId:(id)id;
+- (void)_logLatticeRNNResults:(id)results forMhId:(id)id;
+- (void)_logURESEndMessageWithScore:(float)score threshold:(float)threshold spkrIDThreshold:(float)dThreshold assetVersion:(id)version withMhId:(id)id;
+- (void)_logURESFailureMsgInput:(unint64_t)input forMhId:(id)id;
+- (void)_logURESResultsForInput:(id)input withOutput:(id)output forMhId:(id)id;
+- (void)_readAllowListVocabFromFile:(id)file;
 - (void)_releaseUresProcessingTransaction;
-- (void)_runLRNNOnlyMitigationForRCId:(unint64_t)a3 speechPackage:(id)a4 requestId:(id)a5 completion:(id)a6;
-- (void)_updateInputFeats:(id)a3 forSignalsFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (void)_runLRNNOnlyMitigationForRCId:(unint64_t)id speechPackage:(id)package requestId:(id)requestId completion:(id)completion;
+- (void)_updateInputFeats:(id)feats forSignalsFrom:(unint64_t)from to:(unint64_t)to;
 - (void)_updateSupportedInputOrigins;
-- (void)addReceiver:(id)a3;
-- (void)asrStartedForRequestId:(id)a3 isRecognitionModeClassic:(BOOL)a4;
-- (void)attSiriNode:(id)a3 didMitigate:(BOOL)a4 withScore:(float)a5 forRequestId:(id)a6 taskType:(id)a7;
-- (void)attSiriNode:(id)a3 didUpdateAttentionState:(unint64_t)a4;
-- (void)attSiriNode:(id)a3 didUpdateOSDFeatures:(id)a4 withFrameDurationMs:(double)a5 withMHID:(id)a6;
-- (void)attSiriNode:(id)a3 didUpdateWithSpeakerInfo:(id)a4 forReqId:(id)a5;
-- (void)didReceiveTCUUpdateForTCUId:(id)a3 withTCUAccepted:(BOOL)a4 forRequestId:(id)a5 isFinal:(BOOL)a6;
-- (void)getUresInvocationTypeForRequestId:(id)a3 withCompletion:(id)a4;
-- (void)processResultCandidate:(id)a3 forRCId:(unint64_t)a4 forTask:(id)a5 forRequestId:(id)a6 completion:(id)a7;
-- (void)registerGazeNode:(id)a3;
-- (void)registerNLDAClassifierNode:(id)a3;
-- (void)registerOSDNode:(id)a3;
-- (void)registerSSRNode:(id)a3;
-- (void)registerTCUGenerator:(id)a3;
-- (void)setASRModelRootDirectory:(id)a3;
-- (void)setEndpointerFeatureEoS:(float)a3;
-- (void)setPrefetchedAsset:(id)a3;
-- (void)startUresRequestWithAudioRecordContext:(id)a3 forRequestId:(id)a4 mhId:(id)a5 voiceTriggerInfo:(id)a6;
+- (void)addReceiver:(id)receiver;
+- (void)asrStartedForRequestId:(id)id isRecognitionModeClassic:(BOOL)classic;
+- (void)attSiriNode:(id)node didMitigate:(BOOL)mitigate withScore:(float)score forRequestId:(id)id taskType:(id)type;
+- (void)attSiriNode:(id)node didUpdateAttentionState:(unint64_t)state;
+- (void)attSiriNode:(id)node didUpdateOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d;
+- (void)attSiriNode:(id)node didUpdateWithSpeakerInfo:(id)info forReqId:(id)id;
+- (void)didReceiveTCUUpdateForTCUId:(id)id withTCUAccepted:(BOOL)accepted forRequestId:(id)requestId isFinal:(BOOL)final;
+- (void)getUresInvocationTypeForRequestId:(id)id withCompletion:(id)completion;
+- (void)processResultCandidate:(id)candidate forRCId:(unint64_t)id forTask:(id)task forRequestId:(id)requestId completion:(id)completion;
+- (void)registerGazeNode:(id)node;
+- (void)registerNLDAClassifierNode:(id)node;
+- (void)registerOSDNode:(id)node;
+- (void)registerSSRNode:(id)node;
+- (void)registerTCUGenerator:(id)generator;
+- (void)setASRModelRootDirectory:(id)directory;
+- (void)setEndpointerFeatureEoS:(float)s;
+- (void)setPrefetchedAsset:(id)asset;
+- (void)startUresRequestWithAudioRecordContext:(id)context forRequestId:(id)id mhId:(id)mhId voiceTriggerInfo:(id)info;
 - (void)stop;
-- (void)stopUresProcessingForRequest:(id)a3;
+- (void)stopUresProcessingForRequest:(id)request;
 @end
 
 @implementation CSAttSiriUresNode
@@ -108,9 +108,9 @@
   return WeakRetained;
 }
 
-- (id)getUresInputFeaturesForRequestId:(id)a3
+- (id)getUresInputFeaturesForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -122,10 +122,10 @@
   block[1] = 3221225472;
   block[2] = sub_1001246B4;
   block[3] = &unk_100252228;
-  v10 = v4;
+  v10 = idCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -134,32 +134,32 @@
   return v7;
 }
 
-- (BOOL)_isSpeechRecognizerTaskSupported:(id)a3
+- (BOOL)_isSpeechRecognizerTaskSupported:(id)supported
 {
-  v3 = a3;
-  if ([v3 isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging])
+  supportedCopy = supported;
+  if ([supportedCopy isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:CoreEmbeddedSpeechRecognizerTaskBeto];
+    v4 = [supportedCopy isEqualToString:CoreEmbeddedSpeechRecognizerTaskBeto];
   }
 
   return v4;
 }
 
-- (void)_readAllowListVocabFromFile:(id)a3
+- (void)_readAllowListVocabFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v17 = 0;
-  v5 = [NSString stringWithContentsOfFile:v4 encoding:4 error:&v17];
+  v5 = [NSString stringWithContentsOfFile:fileCopy encoding:4 error:&v17];
   v6 = v17;
-  v7 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
   v8 = +[NSCharacterSet newlineCharacterSet];
-  v9 = [v7 componentsSeparatedByCharactersInSet:v8];
+  v9 = [lowercaseString componentsSeparatedByCharactersInSet:v8];
 
   if (v9)
   {
@@ -178,7 +178,7 @@
       *buf = 136315650;
       v19 = "[CSAttSiriUresNode _readAllowListVocabFromFile:]";
       v20 = 2114;
-      v21 = v4;
+      v21 = fileCopy;
       v22 = 2048;
       v23 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s Read SDSD override list from %{public}@ with %lu entries", buf, 0x20u);
@@ -186,20 +186,20 @@
   }
 }
 
-- (BOOL)_shouldApplyAllowListOverride:(id)a3 withInputOrigin:(id)a4
+- (BOOL)_shouldApplyAllowListOverride:(id)override withInputOrigin:(id)origin
 {
-  v6 = a3;
-  if ([a4 isEqualToNumber:&off_10025E7B0])
+  overrideCopy = override;
+  if ([origin isEqualToNumber:&off_10025E7B0])
   {
     if (self->_allowVocabList)
     {
-      v7 = [v6 oneBestTranscript];
-      v8 = [v7 lowercaseString];
+      oneBestTranscript = [overrideCopy oneBestTranscript];
+      lowercaseString = [oneBestTranscript lowercaseString];
 
-      v9 = [v6 oneBestTokenList];
-      if ([v9 count] <= self->_allowListWordCountThreshold)
+      oneBestTokenList = [overrideCopy oneBestTokenList];
+      if ([oneBestTokenList count] <= self->_allowListWordCountThreshold)
       {
-        if ([(NSArray *)self->_allowVocabList containsObject:v8])
+        if ([(NSArray *)self->_allowVocabList containsObject:lowercaseString])
         {
           v14 = CSLogCategorySDSD;
           if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
@@ -207,7 +207,7 @@
             v16 = 136315394;
             v17 = "[CSAttSiriUresNode _shouldApplyAllowListOverride:withInputOrigin:]";
             v18 = 2112;
-            v19 = v8;
+            v19 = lowercaseString;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Found transcript (%@) match in override list, don't mitigate", &v16, 0x16u);
           }
 
@@ -262,9 +262,9 @@ LABEL_18:
   return v13;
 }
 
-- (id)_decodeJsonFromFile:(id)a3
+- (id)_decodeJsonFromFile:(id)file
 {
-  v3 = [NSData dataWithContentsOfFile:a3];
+  v3 = [NSData dataWithContentsOfFile:file];
   if (v3)
   {
     v10 = 0;
@@ -335,9 +335,9 @@ LABEL_18:
   }
 }
 
-- (void)_updateInputFeats:(id)a3 forSignalsFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)_updateInputFeats:(id)feats forSignalsFrom:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
+  featsCopy = feats;
   WeakRetained = objc_loadWeakRetained(&self->_gazeNode);
   if (WeakRetained)
   {
@@ -347,13 +347,13 @@ LABEL_18:
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_gazeNode);
-      v13 = [v12 hadSignalsFrom:a4 to:a5];
+      v13 = [v12 hadSignalsFrom:from to:to];
 
-      [v8 setDidDetectGazeAtOrb:v13];
+      [featsCopy setDidDetectGazeAtOrb:v13];
       v14 = objc_loadWeakRetained(&self->_osdNode);
-      v15 = [v14 hadSignalsFrom:a4 to:a5];
+      v15 = [v14 hadSignalsFrom:from to:to];
 
-      [v8 setDidDetectVisualActivity:v13];
+      [featsCopy setDidDetectVisualActivity:v13];
       v16 = CSLogCategorySDSD;
       if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
       {
@@ -369,10 +369,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)_shouldRunMitigationForContext:(id)a3
+- (BOOL)_shouldRunMitigationForContext:(id)context
 {
-  v3 = a3;
-  v4 = (CSIsCommunalDevice() & 1) == 0 && !CSIsWatch() || ([v3 isUIButtonPress] & 1) == 0 && (objc_msgSend(v3, "isHomePressed") & 1) == 0 && (objc_msgSend(v3, "isRemoraButtonPress") & 1) == 0 && (objc_msgSend(v3, "isHearstDoubleTapTriggered") & 1) == 0;
+  contextCopy = context;
+  v4 = (CSIsCommunalDevice() & 1) == 0 && !CSIsWatch() || ([contextCopy isUIButtonPress] & 1) == 0 && (objc_msgSend(contextCopy, "isHomePressed") & 1) == 0 && (objc_msgSend(contextCopy, "isRemoraButtonPress") & 1) == 0 && (objc_msgSend(contextCopy, "isHearstDoubleTapTriggered") & 1) == 0;
 
   return v4;
 }
@@ -422,26 +422,26 @@ LABEL_18:
   }
 }
 
-- (void)didReceiveTCUUpdateForTCUId:(id)a3 withTCUAccepted:(BOOL)a4 forRequestId:(id)a5 isFinal:(BOOL)a6
+- (void)didReceiveTCUUpdateForTCUId:(id)id withTCUAccepted:(BOOL)accepted forRequestId:(id)requestId isFinal:(BOOL)final
 {
-  v9 = a5;
+  requestIdCopy = requestId;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012528C;
   block[3] = &unk_1002520F0;
-  v15 = a4;
-  v16 = a6;
-  v13 = v9;
-  v14 = self;
-  v11 = v9;
+  acceptedCopy = accepted;
+  finalCopy = final;
+  v13 = requestIdCopy;
+  selfCopy = self;
+  v11 = requestIdCopy;
   dispatch_async(queue, block);
 }
 
-- (id)constructTCUIntendedInfoForRequestId:(id)a3 withResultCandidate:(id)a4
+- (id)constructTCUIntendedInfoForRequestId:(id)id withResultCandidate:(id)candidate
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  candidateCopy = candidate;
   if (+[CSUtils isTCUSupported])
   {
     v30 = 0;
@@ -465,10 +465,10 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_100125718;
     block[3] = &unk_1002520A0;
-    v9 = v6;
+    v9 = idCopy;
     v21 = v9;
-    v22 = self;
-    v10 = v7;
+    selfCopy = self;
+    v10 = candidateCopy;
     v23 = v10;
     v24 = v28;
     v25 = v27;
@@ -481,7 +481,7 @@ LABEL_18:
     v14[3] = &unk_1002520C8;
     v18 = v28;
     v15 = v9;
-    v16 = self;
+    selfCopy2 = self;
     v19 = v27;
     v17 = v10;
     dispatch_async(v11, v14);
@@ -501,57 +501,57 @@ LABEL_18:
   return v12;
 }
 
-- (void)attSiriNode:(id)a3 didUpdateWithSpeakerInfo:(id)a4 forReqId:(id)a5
+- (void)attSiriNode:(id)node didUpdateWithSpeakerInfo:(id)info forReqId:(id)id
 {
-  v7 = a4;
-  v8 = a5;
+  infoCopy = info;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001264BC;
   block[3] = &unk_100253680;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = idCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 didUpdateOSDFeatures:(id)a4 withFrameDurationMs:(double)a5 withMHID:(id)a6
+- (void)attSiriNode:(id)node didUpdateOSDFeatures:(id)features withFrameDurationMs:(double)ms withMHID:(id)d
 {
-  v8 = a4;
+  featuresCopy = features;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100126B24;
   block[3] = &unk_1002533C8;
   block[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v10 = v8;
+  v12 = featuresCopy;
+  msCopy = ms;
+  v10 = featuresCopy;
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 didMitigate:(BOOL)a4 withScore:(float)a5 forRequestId:(id)a6 taskType:(id)a7
+- (void)attSiriNode:(id)node didMitigate:(BOOL)mitigate withScore:(float)score forRequestId:(id)id taskType:(id)type
 {
-  v10 = a6;
-  v11 = a7;
+  idCopy = id;
+  typeCopy = type;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100126E58;
   v15[3] = &unk_100252078;
-  v19 = a5;
-  v16 = v10;
-  v17 = v11;
-  v18 = self;
-  v13 = v11;
-  v14 = v10;
+  scoreCopy = score;
+  v16 = idCopy;
+  v17 = typeCopy;
+  selfCopy = self;
+  v13 = typeCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)attSiriNode:(id)a3 didUpdateAttentionState:(unint64_t)a4
+- (void)attSiriNode:(id)node didUpdateAttentionState:(unint64_t)state
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -559,13 +559,13 @@ LABEL_18:
   v5[2] = sub_100127398;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_async(queue, v5);
 }
 
-- (void)_createMitigatorModelWithConfig:(id)a3
+- (void)_createMitigatorModelWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   if (self->_mitigator)
   {
     v5 = CSLogCategorySDSD;
@@ -584,7 +584,7 @@ LABEL_8:
   }
 
   v14 = 0;
-  v8 = [[SLUresMitigator alloc] initWithConfig:v4 error:&v14];
+  v8 = [[SLUresMitigator alloc] initWithConfig:configCopy error:&v14];
   v9 = v14;
   mitigator = self->_mitigator;
   self->_mitigator = v8;
@@ -609,18 +609,18 @@ LABEL_9:
   if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_ERROR))
   {
     v12 = v11;
-    v13 = [v9 localizedDescription];
+    localizedDescription = [v9 localizedDescription];
     *buf = 136315394;
     v16 = "[CSAttSiriUresNode _createMitigatorModelWithConfig:]";
     v17 = 2114;
-    v18 = v13;
+    v18 = localizedDescription;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Unable to create Ures mitigator with err: %{public}@", buf, 0x16u);
   }
 
 LABEL_10:
 }
 
-- (void)setEndpointerFeatureEoS:(float)a3
+- (void)setEndpointerFeatureEoS:(float)s
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -628,24 +628,24 @@ LABEL_10:
   v4[2] = sub_100127810;
   v4[3] = &unk_1002534E8;
   v4[4] = self;
-  v5 = a3;
+  sCopy = s;
   dispatch_async(queue, v4);
 }
 
-- (void)_runLRNNOnlyMitigationForRCId:(unint64_t)a3 speechPackage:(id)a4 requestId:(id)a5 completion:(id)a6
+- (void)_runLRNNOnlyMitigationForRCId:(unint64_t)id speechPackage:(id)package requestId:(id)requestId completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   requestIdToFeatsMapping = self->_requestIdToFeatsMapping;
-  v12 = a4;
-  v13 = [(NSMutableDictionary *)requestIdToFeatsMapping objectForKeyedSubscript:a5];
-  v14 = [v12 latticeMitigatorResult];
-  [v14 score];
+  packageCopy = package;
+  v13 = [(NSMutableDictionary *)requestIdToFeatsMapping objectForKeyedSubscript:requestId];
+  latticeMitigatorResult = [packageCopy latticeMitigatorResult];
+  [latticeMitigatorResult score];
   v16 = v15;
   v17 = v15;
 
-  v18 = [v12 latticeMitigatorResult];
+  latticeMitigatorResult2 = [packageCopy latticeMitigatorResult];
 
-  [v18 threshold];
+  [latticeMitigatorResult2 threshold];
   v20 = v19;
   v21 = v19;
 
@@ -669,12 +669,12 @@ LABEL_10:
     v23 = @"requestMitigated";
   }
 
-  [(CSAttSiriUresNode *)self _storeMitigationDecision:v16 < v20 forRCId:a3 requestContext:v13];
-  v24 = [v13 mhId];
+  [(CSAttSiriUresNode *)self _storeMitigationDecision:v16 < v20 forRCId:id requestContext:v13];
+  mhId = [v13 mhId];
   LODWORD(v25) = -1.0;
   *&v26 = v16;
   *&v27 = v20;
-  [(CSAttSiriUresNode *)self _logURESEndMessageWithScore:@"16.1.1" threshold:v24 spkrIDThreshold:v26 assetVersion:v27 withMhId:v25];
+  [(CSAttSiriUresNode *)self _logURESEndMessageWithScore:@"16.1.1" threshold:mhId spkrIDThreshold:v26 assetVersion:v27 withMhId:v25];
 
   v28 = v23;
   v40[0] = @"score";
@@ -700,22 +700,22 @@ LABEL_10:
     v36 = 2114;
     v37 = v32;
     v38 = 2050;
-    v39 = a3;
+    idCopy = id;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%s Final mitigation result: %{public}@ for RCId: %{public}lu", &v34, 0x20u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v16 < v20);
+    completionCopy[2](completionCopy, v16 < v20);
   }
 }
 
-- (void)processResultCandidate:(id)a3 forRCId:(unint64_t)a4 forTask:(id)a5 forRequestId:(id)a6 completion:(id)a7
+- (void)processResultCandidate:(id)candidate forRCId:(unint64_t)id forTask:(id)task forRequestId:(id)requestId completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  candidateCopy = candidate;
+  taskCopy = task;
+  requestIdCopy = requestId;
+  completionCopy = completion;
   v16 = AFSiriLogContextSpeech;
   v17 = os_signpost_id_generate(AFSiriLogContextSpeech);
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -734,30 +734,30 @@ LABEL_10:
   v24[2] = sub_100127F1C;
   v24[3] = &unk_100252050;
   v24[4] = self;
-  v25 = v14;
-  v28 = v15;
-  v29 = a4;
-  v26 = v13;
-  v27 = v12;
-  v20 = v12;
-  v21 = v13;
-  v22 = v15;
-  v23 = v14;
+  v25 = requestIdCopy;
+  v28 = completionCopy;
+  idCopy = id;
+  v26 = taskCopy;
+  v27 = candidateCopy;
+  v20 = candidateCopy;
+  v21 = taskCopy;
+  v22 = completionCopy;
+  v23 = requestIdCopy;
   dispatch_async(queue, v24);
 }
 
-- (BOOL)_shouldRunMitigationForRequestContext:(id)a3 forTask:(id)a4
+- (BOOL)_shouldRunMitigationForRequestContext:(id)context forTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordCtx];
-  v9 = [(CSAttSiriUresNode *)self _shouldRunMitigationForContext:v8];
+  contextCopy = context;
+  taskCopy = task;
+  recordCtx = [contextCopy recordCtx];
+  v9 = [(CSAttSiriUresNode *)self _shouldRunMitigationForContext:recordCtx];
 
   if (v9)
   {
-    v10 = [v6 inputFeats];
-    v11 = v10;
-    if (v10 && ([v10 inputOrigin], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    inputFeats = [contextCopy inputFeats];
+    v11 = inputFeats;
+    if (inputFeats && ([inputFeats inputOrigin], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
       supportedInputOrigins = self->_supportedInputOrigins;
       if (supportedInputOrigins && ([v11 inputOrigin], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[NSArray containsObject:](supportedInputOrigins, "containsObject:", v14), v14, (v15 & 1) == 0))
@@ -766,22 +766,22 @@ LABEL_10:
         if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_ERROR))
         {
           v29 = v26;
-          v30 = [v11 inputOrigin];
+          inputOrigin = [v11 inputOrigin];
           v31 = 136315394;
           v32 = "[CSAttSiriUresNode _shouldRunMitigationForRequestContext:forTask:]";
           v33 = 2114;
-          v34 = v30;
+          v34 = inputOrigin;
           _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%s UReS not supported for inputOrigin: %{public}@, abort", &v31, 0x16u);
         }
 
-        v21 = [v6 mhId];
-        v22 = self;
+        mhId = [contextCopy mhId];
+        selfCopy3 = self;
         v23 = 1906;
       }
 
       else
       {
-        if ([(CSAttSiriUresNode *)self _isSpeechRecognizerTaskSupported:v7])
+        if ([(CSAttSiriUresNode *)self _isSpeechRecognizerTaskSupported:taskCopy])
         {
           v16 = 1;
 LABEL_14:
@@ -795,12 +795,12 @@ LABEL_14:
           v31 = 136315394;
           v32 = "[CSAttSiriUresNode _shouldRunMitigationForRequestContext:forTask:]";
           v33 = 2114;
-          v34 = v7;
+          v34 = taskCopy;
           _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Recognizer task: %{public}@ isn't support, don't run URES mitigator", &v31, 0x16u);
         }
 
-        v21 = [v6 mhId];
-        v22 = self;
+        mhId = [contextCopy mhId];
+        selfCopy3 = self;
         v23 = 1905;
       }
     }
@@ -811,20 +811,20 @@ LABEL_14:
       if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_ERROR))
       {
         v27 = v20;
-        v28 = [v11 inputOrigin];
+        inputOrigin2 = [v11 inputOrigin];
         v31 = 136315394;
         v32 = "[CSAttSiriUresNode _shouldRunMitigationForRequestContext:forTask:]";
         v33 = 2114;
-        v34 = v28;
+        v34 = inputOrigin2;
         _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%s Unable to get all required inputs for decision - (inputOrigin: %{public}@), abort", &v31, 0x16u);
       }
 
-      v21 = [v6 mhId];
-      v22 = self;
+      mhId = [contextCopy mhId];
+      selfCopy3 = self;
       v23 = 1901;
     }
 
-    [(CSAttSiriUresNode *)v22 _logURESFailureMsgInput:v23 forMhId:v21];
+    [(CSAttSiriUresNode *)selfCopy3 _logURESFailureMsgInput:v23 forMhId:mhId];
 
     v16 = 0;
     goto LABEL_14;
@@ -835,11 +835,11 @@ LABEL_14:
   if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v6 recordCtx];
+    recordCtx2 = [contextCopy recordCtx];
     v31 = 136315394;
     v32 = "[CSAttSiriUresNode _shouldRunMitigationForRequestContext:forTask:]";
     v33 = 2114;
-    v34 = v19;
+    v34 = recordCtx2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Mitigation not supported for ctx: %{public}@", &v31, 0x16u);
 
     v16 = 0;
@@ -850,10 +850,10 @@ LABEL_15:
   return v16;
 }
 
-- (void)_createModelAndRunInferenceForRcId:(unint64_t)a3 withRequestContext:(id)a4 withCompletion:(id)a5
+- (void)_createModelAndRunInferenceForRcId:(unint64_t)id withRequestContext:(id)context withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   [(CSAttSiriUresNode *)self _createMitigatorModelWithConfig:self->_configFile];
   v19[0] = 0;
   v19[1] = v19;
@@ -866,51 +866,51 @@ LABEL_15:
     v10 = CSLogCategorySDSD;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 mhId];
+      mhId = [contextCopy mhId];
       *buf = 136315650;
       v22 = "[CSAttSiriUresNode _createModelAndRunInferenceForRcId:withRequestContext:withCompletion:]";
       v23 = 2112;
-      v24 = v11;
+      v24 = mhId;
       v25 = 2112;
-      v26 = v8;
+      v26 = contextCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s request-MHID:%@ requestCtx:%@", buf, 0x20u);
     }
 
     mitigator = self->_mitigator;
-    v13 = [v8 inputFeats];
+    inputFeats = [contextCopy inputFeats];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100128BD8;
     v14[3] = &unk_100252028;
     v17 = v19;
-    v16 = v9;
+    v16 = completionCopy;
     v14[4] = self;
-    v18 = a3;
-    v15 = v8;
-    [(SLUresMitigator *)mitigator processInputFeats:v13 completion:v14];
+    idCopy = id;
+    v15 = contextCopy;
+    [(SLUresMitigator *)mitigator processInputFeats:inputFeats completion:v14];
   }
 
   else
   {
-    [(CSAttSiriUresNode *)self _storeMitigationDecision:0 forRCId:a3 requestContext:v8];
-    if (v9)
+    [(CSAttSiriUresNode *)self _storeMitigationDecision:0 forRCId:id requestContext:contextCopy];
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   _Block_object_dispose(v19, 8);
 }
 
-- (void)_logURESFailureMsgInput:(unint64_t)a3 forMhId:(id)a4
+- (void)_logURESFailureMsgInput:(unint64_t)input forMhId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   v6 = [SISchemaUUID alloc];
-  v7 = [[NSUUID alloc] initWithUUIDString:v5];
+  v7 = [[NSUUID alloc] initWithUUIDString:idCopy];
 
   v13 = [v6 initWithNSUUID:v7];
   v8 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionFailed);
-  [v8 setErrorCode:a3];
+  [v8 setErrorCode:input];
   v9 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionEvaluationContext);
   [v9 setFailed:v8];
   v10 = objc_alloc_init(MHSchemaMHClientEventMetadata);
@@ -923,55 +923,55 @@ LABEL_15:
   [v12 emitMessage:v11];
 }
 
-- (void)_logURESResultsForInput:(id)a3 withOutput:(id)a4 forMhId:(id)a5
+- (void)_logURESResultsForInput:(id)input withOutput:(id)output forMhId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  inputCopy = input;
+  outputCopy = output;
+  idCopy = id;
+  if (idCopy)
   {
-    v45 = self;
+    selfCopy = self;
     v11 = [SISchemaUUID alloc];
-    v12 = [[NSUUID alloc] initWithUUIDString:v10];
+    v12 = [[NSUUID alloc] initWithUUIDString:idCopy];
     v13 = [v11 initWithNSUUID:v12];
 
     v14 = objc_alloc_init(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated);
-    v15 = [v8 acousticFTMScores];
-    [v15 floatValue];
+    acousticFTMScores = [inputCopy acousticFTMScores];
+    [acousticFTMScores floatValue];
     [v14 setScore:?];
 
-    v16 = [v8 speechPackage];
-    v17 = [v16 latticeMitigatorResult];
+    speechPackage = [inputCopy speechPackage];
+    latticeMitigatorResult = [speechPackage latticeMitigatorResult];
 
-    v44 = v8;
-    if (v17)
+    v44 = inputCopy;
+    if (latticeMitigatorResult)
     {
-      v17 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationEnded);
-      v18 = [v8 speechPackage];
-      v19 = [v18 latticeMitigatorResult];
-      [v19 score];
-      [v17 setScore:?];
+      latticeMitigatorResult = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationEnded);
+      speechPackage2 = [inputCopy speechPackage];
+      latticeMitigatorResult2 = [speechPackage2 latticeMitigatorResult];
+      [latticeMitigatorResult2 score];
+      [latticeMitigatorResult setScore:?];
     }
 
     v20 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionStarted);
-    v21 = [v9 extractedFeats];
-    v22 = [v21 objectForKeyedSubscript:@"numAsrRecords"];
+    extractedFeats = [outputCopy extractedFeats];
+    v22 = [extractedFeats objectForKeyedSubscript:@"numAsrRecords"];
     [v20 setNumAsrRecords:{objc_msgSend(v22, "unsignedIntValue")}];
 
-    v23 = [v9 extractedFeats];
-    v24 = [v23 objectForKeyedSubscript:@"numTokensTopPath"];
+    extractedFeats2 = [outputCopy extractedFeats];
+    v24 = [extractedFeats2 objectForKeyedSubscript:@"numTokensTopPath"];
     [v20 setNumTokensTopPath:{objc_msgSend(v24, "unsignedIntValue")}];
 
-    v25 = [v9 extractedFeats];
-    v26 = [v25 objectForKeyedSubscript:@"trailingSilenceDuration"];
+    extractedFeats3 = [outputCopy extractedFeats];
+    v26 = [extractedFeats3 objectForKeyedSubscript:@"trailingSilenceDuration"];
     [v26 floatValue];
     [v20 setTrailingSilenceDurationInNs:{+[CSFTimeUtils secondsToNs:](CSFTimeUtils, "secondsToNs:")}];
 
     v27 = v14;
     [v20 setAftmScore:v14];
-    if (v17)
+    if (latticeMitigatorResult)
     {
-      [v20 setLrnnScore:v17];
+      [v20 setLrnnScore:latticeMitigatorResult];
     }
 
     v28 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionEvaluationContext);
@@ -986,19 +986,19 @@ LABEL_15:
     v32 = v31 = v13;
     [v32 emitMessage:v30];
 
-    [v9 score];
+    [outputCopy score];
     v34 = v33;
-    [v9 threshold];
+    [outputCopy threshold];
     v36 = v35;
-    [v9 speakerIDThreshold];
+    [outputCopy speakerIDThreshold];
     v38 = v37;
-    v39 = [v9 assetVersion];
+    assetVersion = [outputCopy assetVersion];
     LODWORD(v40) = v34;
     LODWORD(v41) = v36;
     LODWORD(v42) = v38;
-    [(CSAttSiriUresNode *)v45 _logURESEndMessageWithScore:v39 threshold:v10 spkrIDThreshold:v40 assetVersion:v41 withMhId:v42];
+    [(CSAttSiriUresNode *)selfCopy _logURESEndMessageWithScore:assetVersion threshold:idCopy spkrIDThreshold:v40 assetVersion:v41 withMhId:v42];
 
-    v8 = v44;
+    inputCopy = v44;
   }
 
   else
@@ -1013,23 +1013,23 @@ LABEL_15:
   }
 }
 
-- (void)_logURESEndMessageWithScore:(float)a3 threshold:(float)a4 spkrIDThreshold:(float)a5 assetVersion:(id)a6 withMhId:(id)a7
+- (void)_logURESEndMessageWithScore:(float)score threshold:(float)threshold spkrIDThreshold:(float)dThreshold assetVersion:(id)version withMhId:(id)id
 {
-  v11 = a6;
-  v12 = a7;
-  if (v12)
+  versionCopy = version;
+  idCopy = id;
+  if (idCopy)
   {
     v13 = [SISchemaUUID alloc];
-    v14 = [[NSUUID alloc] initWithUUIDString:v12];
+    v14 = [[NSUUID alloc] initWithUUIDString:idCopy];
     v15 = [v13 initWithNSUUID:v14];
 
     v16 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionEnded);
-    [v16 setModelVersion:v11];
-    *&v17 = a3;
+    [v16 setModelVersion:versionCopy];
+    *&v17 = score;
     [v16 setScore:v17];
-    *&v18 = a4;
+    *&v18 = threshold;
     [v16 setThreshold:v18];
-    *&v19 = a5;
+    *&v19 = dThreshold;
     [v16 setSpeakerIDThreshold:v19];
     v20 = objc_alloc_init(MHSchemaMHUnintendedResponseSuppressionEvaluationContext);
     [v20 setEnded:v16];
@@ -1048,7 +1048,7 @@ LABEL_15:
       v26 = 136315394;
       v27 = "[CSAttSiriUresNode _logURESEndMessageWithScore:threshold:spkrIDThreshold:assetVersion:withMhId:]";
       v28 = 2112;
-      v29 = v12;
+      v29 = idCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s Submit URES SELF metrics for MH ID: %@", &v26, 0x16u);
     }
   }
@@ -1065,11 +1065,11 @@ LABEL_15:
   }
 }
 
-- (void)_logLRNNFailMsgForMhId:(id)a3
+- (void)_logLRNNFailMsgForMhId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = [SISchemaUUID alloc];
-  v5 = [[NSUUID alloc] initWithUUIDString:v3];
+  v5 = [[NSUUID alloc] initWithUUIDString:idCopy];
 
   v11 = [v4 initWithNSUUID:v5];
   v6 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationFailed);
@@ -1086,19 +1086,19 @@ LABEL_15:
   [v10 emitMessage:v9];
 }
 
-- (void)_logLatticeRNNResults:(id)a3 forMhId:(id)a4
+- (void)_logLatticeRNNResults:(id)results forMhId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  resultsCopy = results;
+  idCopy = id;
+  if (idCopy)
   {
     v7 = [SISchemaUUID alloc];
-    v8 = [[NSUUID alloc] initWithUUIDString:v6];
+    v8 = [[NSUUID alloc] initWithUUIDString:idCopy];
     v9 = [v7 initWithNSUUID:v8];
 
     v10 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationStarted);
-    v11 = [v5 version];
-    [v10 setModelVersion:v11];
+    version = [resultsCopy version];
+    [v10 setModelVersion:version];
 
     v12 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationEvaluationContext);
     [v12 setStartedOrChanged:v10];
@@ -1112,9 +1112,9 @@ LABEL_15:
     [v15 emitMessage:v14];
 
     v16 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationEnded);
-    [v5 score];
+    [resultsCopy score];
     [v16 setScore:?];
-    [v5 threshold];
+    [resultsCopy threshold];
     [v16 setThreshold:?];
     v17 = objc_alloc_init(MHSchemaMHLatticeFalseTriggerMitigationEvaluationContext);
 
@@ -1136,7 +1136,7 @@ LABEL_15:
       v23 = 136315394;
       v24 = "[CSAttSiriUresNode _logLatticeRNNResults:forMhId:]";
       v25 = 2112;
-      v26 = v6;
+      v26 = idCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s Submit LRNN SELF metrics for MH ID: %@", &v23, 0x16u);
     }
   }
@@ -1153,9 +1153,9 @@ LABEL_15:
   }
 }
 
-- (BOOL)getMitigationDecisionForRCId:(unint64_t)a3 forRequestId:(id)a4
+- (BOOL)getMitigationDecisionForRCId:(unint64_t)id forRequestId:(id)requestId
 {
-  v6 = a4;
+  requestIdCopy = requestId;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1166,7 +1166,7 @@ LABEL_15:
     *buf = 136315394;
     v31 = "[CSAttSiriUresNode getMitigationDecisionForRCId:forRequestId:]";
     v32 = 2112;
-    v33 = v6;
+    v33 = requestIdCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s requestId: %@", buf, 0x16u);
   }
 
@@ -1176,9 +1176,9 @@ LABEL_15:
   block[2] = sub_10012A124;
   block[3] = &unk_100252000;
   block[4] = self;
-  v9 = v6;
+  v9 = requestIdCopy;
   v24 = &v26;
-  v25 = a3;
+  idCopy = id;
   v23 = v9;
   dispatch_sync(queue, block);
   v10 = self->_queue;
@@ -1186,22 +1186,22 @@ LABEL_15:
   v15 = 3221225472;
   v16 = sub_10012A384;
   v17 = &unk_100252000;
-  v18 = self;
+  selfCopy = self;
   v11 = v9;
   v20 = &v26;
-  v21 = a3;
+  idCopy2 = id;
   v19 = v11;
   dispatch_async(v10, &v14);
-  [(CSAttSiriUresNode *)self stopUresProcessingForRequest:v11, v14, v15, v16, v17, v18];
+  [(CSAttSiriUresNode *)self stopUresProcessingForRequest:v11, v14, v15, v16, v17, selfCopy];
   v12 = *(v27 + 24);
 
   _Block_object_dispose(&v26, 8);
   return v12 & 1;
 }
 
-- (BOOL)getLastMitigationResultForRequestId:(id)a3
+- (BOOL)getLastMitigationResultForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1212,9 +1212,9 @@ LABEL_15:
   block[2] = sub_10012A740;
   block[3] = &unk_100252228;
   block[4] = self;
-  v9 = v4;
+  v9 = idCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1222,56 +1222,56 @@ LABEL_15:
   return queue;
 }
 
-- (void)setASRModelRootDirectory:(id)a3
+- (void)setASRModelRootDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012AA9C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = directoryCopy;
+  v6 = directoryCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)stopUresProcessingForRequest:(id)a3
+- (void)stopUresProcessingForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012AC90;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_fetchMitigationConfigForRecordCtx:(id)a3
+- (void)_fetchMitigationConfigForRecordCtx:(id)ctx
 {
-  v4 = a3;
+  ctxCopy = ctx;
   prefetchedAsset = self->_prefetchedAsset;
   if (prefetchedAsset)
   {
-    v6 = [(CSAsset *)prefetchedAsset allowKeywordsFile];
-    [(CSAttSiriUresNode *)self _readAllowListVocabFromFile:v6];
+    allowKeywordsFile = [(CSAsset *)prefetchedAsset allowKeywordsFile];
+    [(CSAttSiriUresNode *)self _readAllowListVocabFromFile:allowKeywordsFile];
 
-    v7 = [(CSAsset *)self->_prefetchedAsset allowListWordCountThreshold];
-    self->_allowListWordCountThreshold = v7;
+    allowListWordCountThreshold = [(CSAsset *)self->_prefetchedAsset allowListWordCountThreshold];
+    self->_allowListWordCountThreshold = allowListWordCountThreshold;
     v8 = CSLogCategorySDSD;
     if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_INFO))
     {
       v17 = 136315394;
       v18 = "[CSAttSiriUresNode _fetchMitigationConfigForRecordCtx:]";
       v19 = 2048;
-      v20 = v7;
+      v20 = allowListWordCountThreshold;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s _allowListWordCountThreshold:%lu", &v17, 0x16u);
     }
 
-    v9 = [(CSAsset *)self->_prefetchedAsset getCategoryKeyWithRecordCtx:v4];
+    v9 = [(CSAsset *)self->_prefetchedAsset getCategoryKeyWithRecordCtx:ctxCopy];
     v10 = [(CSAsset *)self->_prefetchedAsset mitigationConfigFileForCategory:v9];
     v11 = +[NSFileManager defaultManager];
     v12 = [v11 fileExistsAtPath:v10];
@@ -1319,64 +1319,64 @@ LABEL_15:
   }
 }
 
-- (void)asrStartedForRequestId:(id)a3 isRecognitionModeClassic:(BOOL)a4
+- (void)asrStartedForRequestId:(id)id isRecognitionModeClassic:(BOOL)classic
 {
-  v6 = a3;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012B0E4;
   block[3] = &unk_100253900;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  classicCopy = classic;
+  v10 = idCopy;
+  selfCopy = self;
+  v8 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)startUresRequestWithAudioRecordContext:(id)a3 forRequestId:(id)a4 mhId:(id)a5 voiceTriggerInfo:(id)a6
+- (void)startUresRequestWithAudioRecordContext:(id)context forRequestId:(id)id mhId:(id)mhId voiceTriggerInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  idCopy = id;
+  mhIdCopy = mhId;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012B450;
   block[3] = &unk_100252D58;
-  v20 = v11;
-  v21 = v12;
-  v22 = v10;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v10;
-  v17 = v12;
-  v18 = v11;
+  v20 = idCopy;
+  v21 = mhIdCopy;
+  v22 = contextCopy;
+  v23 = infoCopy;
+  selfCopy = self;
+  v15 = infoCopy;
+  v16 = contextCopy;
+  v17 = mhIdCopy;
+  v18 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getUresInvocationTypeForRequestId:(id)a3 withCompletion:(id)a4
+- (void)getUresInvocationTypeForRequestId:(id)id withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012BB94;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (id)getUresInvocationTypeForRequestId:(id)a3
+- (id)getUresInvocationTypeForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1389,9 +1389,9 @@ LABEL_15:
   block[2] = sub_10012BDCC;
   block[3] = &unk_100252228;
   block[4] = self;
-  v10 = v4;
+  v10 = idCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1400,45 +1400,45 @@ LABEL_15:
   return v7;
 }
 
-- (id)_getRequestCtxForRequestId:(id)a3
+- (id)_getRequestCtxForRequestId:(id)id
 {
   requestIdToFeatsMapping = self->_requestIdToFeatsMapping;
-  if (a3)
+  if (id)
   {
-    v4 = [(NSMutableDictionary *)requestIdToFeatsMapping objectForKeyedSubscript:?];
+    firstObject = [(NSMutableDictionary *)requestIdToFeatsMapping objectForKeyedSubscript:?];
   }
 
   else
   {
-    v5 = [(NSMutableDictionary *)requestIdToFeatsMapping allValues];
-    v4 = [v5 firstObject];
+    allValues = [(NSMutableDictionary *)requestIdToFeatsMapping allValues];
+    firstObject = [allValues firstObject];
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (void)setPrefetchedAsset:(id)a3
+- (void)setPrefetchedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012BFE0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
-  if (![(NSHashTable *)self->_receivers containsObject:v4])
+  receiverCopy = receiver;
+  if (![(NSHashTable *)self->_receivers containsObject:receiverCopy])
   {
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriUresNodeDelegate])
+    if ([receiverCopy conformsToProtocol:&OBJC_PROTOCOL___CSAttSiriUresNodeDelegate])
     {
-      [(NSHashTable *)self->_receivers addObject:v4];
+      [(NSHashTable *)self->_receivers addObject:receiverCopy];
     }
 
     else
@@ -1449,80 +1449,80 @@ LABEL_15:
         v6 = 136315394;
         v7 = "[CSAttSiriUresNode addReceiver:]";
         v8 = 2112;
-        v9 = v4;
+        v9 = receiverCopy;
         _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s Unsupported receiver: %@", &v6, 0x16u);
       }
     }
   }
 }
 
-- (void)registerTCUGenerator:(id)a3
+- (void)registerTCUGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012C260;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = generatorCopy;
+  v6 = generatorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerSSRNode:(id)a3
+- (void)registerSSRNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012C304;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerNLDAClassifierNode:(id)a3
+- (void)registerNLDAClassifierNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012C3A8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerGazeNode:(id)a3
+- (void)registerGazeNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012C44C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerOSDNode:(id)a3
+- (void)registerOSDNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012C4F0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nodeCopy;
+  v6 = nodeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1537,10 +1537,10 @@ LABEL_15:
   dispatch_async(queue, block);
 }
 
-- (CSAttSiriUresNode)initWithSupportsUOD:(BOOL)a3 supportsHybridUOD:(BOOL)a4 isMedocFeatureEnabled:(BOOL)a5
+- (CSAttSiriUresNode)initWithSupportsUOD:(BOOL)d supportsHybridUOD:(BOOL)oD isMedocFeatureEnabled:(BOOL)enabled
 {
-  v6 = a4;
-  v7 = a3;
+  oDCopy = oD;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = CSAttSiriUresNode;
   v8 = [(CSAttSiriUresNode *)&v21 init];
@@ -1548,13 +1548,13 @@ LABEL_15:
   if (v8)
   {
     v8->_type = 8;
-    v8->_supportsUnderstandingOnDevice = v7;
-    v8->_supportsHybridUnderstandingOnDevice = v6;
-    v8->_isMedocFeatureEnabled = a5;
-    if (v7 || v6)
+    v8->_supportsUnderstandingOnDevice = dCopy;
+    v8->_supportsHybridUnderstandingOnDevice = oDCopy;
+    v8->_isMedocFeatureEnabled = enabled;
+    if (dCopy || oDCopy)
     {
       v10 = &off_10025EDB0;
-      if (v7)
+      if (dCopy)
       {
         v10 = &off_10025ED98;
       }
@@ -1589,14 +1589,14 @@ LABEL_15:
   return v9;
 }
 
-- (CSAttSiriUresNode)initWithAttSiriController:(id)a3
+- (CSAttSiriUresNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriUresNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;
@@ -1611,19 +1611,19 @@ LABEL_15:
   return [(CSAttSiriUresNode *)self initWithSupportsUOD:v3 supportsHybridUOD:v4 isMedocFeatureEnabled:v5];
 }
 
-+ (float)_extractLrnnScoreForResultCandidate:(id)a3
++ (float)_extractLrnnScoreForResultCandidate:(id)candidate
 {
-  v3 = a3;
-  v4 = v3;
+  candidateCopy = candidate;
+  v4 = candidateCopy;
   v5 = -1.0;
-  if (v3)
+  if (candidateCopy)
   {
-    v6 = [v3 latticeMitigatorResult];
+    latticeMitigatorResult = [candidateCopy latticeMitigatorResult];
 
-    if (v6)
+    if (latticeMitigatorResult)
     {
-      v7 = [v4 latticeMitigatorResult];
-      [v7 score];
+      latticeMitigatorResult2 = [v4 latticeMitigatorResult];
+      [latticeMitigatorResult2 score];
       v5 = v8;
     }
   }

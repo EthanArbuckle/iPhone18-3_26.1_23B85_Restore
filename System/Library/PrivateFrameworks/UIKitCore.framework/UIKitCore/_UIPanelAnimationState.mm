@@ -1,7 +1,7 @@
 @interface _UIPanelAnimationState
 + (double)defaultDuration;
 + (id)timingCurveProvider;
-+ (id)timingCurveProviderWithVelocity:(double)a3;
++ (id)timingCurveProviderWithVelocity:(double)velocity;
 - (UISlidingBarStateRequest)stateRequest;
 - (id)description;
 @end
@@ -10,22 +10,22 @@
 
 - (UISlidingBarStateRequest)stateRequest
 {
-  v4 = [(_UIPanelAnimationState *)self fromRequest];
-  v5 = [(_UIPanelAnimationState *)self toRequest];
+  fromRequest = [(_UIPanelAnimationState *)self fromRequest];
+  toRequest = [(_UIPanelAnimationState *)self toRequest];
   [(_UIPanelAnimationState *)self progress];
   v7 = v6;
   v8 = objc_alloc_init(UISlidingBarStateRequest);
-  [v5 leadingWidth];
+  [toRequest leadingWidth];
   v10 = v9;
-  [v4 leadingWidth];
+  [fromRequest leadingWidth];
   v12 = v11;
-  [v5 trailingWidth];
+  [toRequest trailingWidth];
   v14 = v13;
-  [v4 trailingWidth];
+  [fromRequest trailingWidth];
   v16 = v15;
-  [v5 supplementaryWidth];
+  [toRequest supplementaryWidth];
   v18 = v17;
-  [v4 supplementaryWidth];
+  [fromRequest supplementaryWidth];
   v20 = v19;
   v32 = v10;
   v33 = v14;
@@ -39,8 +39,8 @@
   {
     if (v7 != 0.0 && v7 != 1.0)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"UIPanelController.m" lineNumber:284 description:@"Unsupported progress value for animated stateRequest"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIPanelController.m" lineNumber:284 description:@"Unsupported progress value for animated stateRequest"];
     }
 
     v24 = v20 > 0.0 && v18 > 0.0;
@@ -84,21 +84,21 @@
 
     if (v7 <= 0.0)
     {
-      v29 = v4;
+      v29 = fromRequest;
     }
 
     else
     {
-      v29 = v5;
+      v29 = toRequest;
     }
 
     [v29 rubberBandInset];
     [(UISlidingBarStateRequest *)v8 setRubberBandInset:?];
   }
 
-  [v5 mainWidth];
+  [toRequest mainWidth];
   [(UISlidingBarStateRequest *)v8 setMainWidth:?];
-  -[UISlidingBarStateRequest setUserInitiated:](v8, "setUserInitiated:", [v5 userInitiated]);
+  -[UISlidingBarStateRequest setUserInitiated:](v8, "setUserInitiated:", [toRequest userInitiated]);
 
   return v8;
 }
@@ -125,17 +125,17 @@
   return v2;
 }
 
-+ (id)timingCurveProviderWithVelocity:(double)a3
++ (id)timingCurveProviderWithVelocity:(double)velocity
 {
-  v3 = [[UISpringTimingParameters alloc] initWithVelocity:a3, a3];
+  velocity = [[UISpringTimingParameters alloc] initWithVelocity:velocity, velocity];
 
-  return v3;
+  return velocity;
 }
 
 + (double)defaultDuration
 {
-  v2 = [a1 timingCurveProvider];
-  [v2 settlingDuration];
+  timingCurveProvider = [self timingCurveProvider];
+  [timingCurveProvider settlingDuration];
   v4 = v3;
 
   return v4;

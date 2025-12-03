@@ -1,18 +1,18 @@
 @interface _GCDeviceConfigurationEvaluator
-- (unint64_t)viableConfigurations:(id *)a3 deviceOwners:(id *)a4;
+- (unint64_t)viableConfigurations:(id *)configurations deviceOwners:(id *)owners;
 - (void)evaluate;
 @end
 
 @implementation _GCDeviceConfigurationEvaluator
 
-- (unint64_t)viableConfigurations:(id *)a3 deviceOwners:(id *)a4
+- (unint64_t)viableConfigurations:(id *)configurations deviceOwners:(id *)owners
 {
   v108 = *MEMORY[0x1E69E9840];
-  v5 = [(_GCDeviceConfigurationEvaluator *)self configurationsIN];
-  v6 = [v5 allObjects];
+  configurationsIN = [(_GCDeviceConfigurationEvaluator *)self configurationsIN];
+  allObjects = [configurationsIN allObjects];
 
-  v78 = self;
-  v81 = [(_GCDeviceConfigurationEvaluator *)self physicalDevicesIN];
+  selfCopy = self;
+  physicalDevicesIN = [(_GCDeviceConfigurationEvaluator *)self physicalDevicesIN];
   v7 = _gc_log_device_configuration();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -22,10 +22,10 @@
   v8 = _gc_log_device_configuration();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [_GCDeviceConfigurationEvaluator viableConfigurations:v81 deviceOwners:?];
+    [_GCDeviceConfigurationEvaluator viableConfigurations:physicalDevicesIN deviceOwners:?];
   }
 
-  v77 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v77 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allObjects, "count")}];
   v9 = _gc_log_device_configuration();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -36,7 +36,7 @@
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v6;
+  obj = allObjects;
   v10 = [obj countByEnumeratingWithState:&v96 objects:v107 count:16];
   if (v10)
   {
@@ -52,19 +52,19 @@
         }
 
         v13 = *(*(&v96 + 1) + 8 * i);
-        v14 = [(_GCDeviceConfigurationEvaluator *)v78 deviceManagersIN];
-        v15 = [v13 deviceBuilderIdentifier];
-        v16 = [v14 objectForKey:v15];
+        deviceManagersIN = [(_GCDeviceConfigurationEvaluator *)selfCopy deviceManagersIN];
+        deviceBuilderIdentifier = [v13 deviceBuilderIdentifier];
+        v16 = [deviceManagersIN objectForKey:deviceBuilderIdentifier];
 
         if (v16)
         {
-          v17 = [v13 deviceDependencies];
-          v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v17, "count")}];
+          deviceDependencies = [v13 deviceDependencies];
+          v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(deviceDependencies, "count")}];
           v92 = 0u;
           v93 = 0u;
           v94 = 0u;
           v95 = 0u;
-          v19 = v17;
+          v19 = deviceDependencies;
           v20 = [v19 countByEnumeratingWithState:&v92 objects:v106 count:16];
           if (v20)
           {
@@ -79,7 +79,7 @@ LABEL_15:
                 objc_enumerationMutation(v19);
               }
 
-              v24 = [v81 objectForKey:*(*(&v92 + 1) + 8 * v23)];
+              v24 = [physicalDevicesIN objectForKey:*(*(&v92 + 1) + 8 * v23)];
               if (!v24)
               {
                 break;
@@ -167,8 +167,8 @@ LABEL_15:
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v33 = [v81 allKeys];
-    v34 = [v33 countByEnumeratingWithState:&v88 objects:v105 count:16];
+    allKeys = [physicalDevicesIN allKeys];
+    v34 = [allKeys countByEnumeratingWithState:&v88 objects:v105 count:16];
     if (v34)
     {
       v35 = v34;
@@ -179,15 +179,15 @@ LABEL_15:
         {
           if (*v89 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(allKeys);
           }
 
           v38 = *(*(&v88 + 1) + 8 * j);
-          v39 = [MEMORY[0x1E695DFB0] null];
-          [v29 setObject:v39 forKey:v38];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v29 setObject:null forKey:v38];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v88 objects:v105 count:16];
+        v35 = [allKeys countByEnumeratingWithState:&v88 objects:v105 count:16];
       }
 
       while (v35);
@@ -208,8 +208,8 @@ LABEL_15:
       v86 = 0u;
       v87 = 0u;
       v80 = v42;
-      v43 = [v42 deviceDependencies];
-      v44 = [v43 countByEnumeratingWithState:&v84 objects:v104 count:16];
+      deviceDependencies2 = [v42 deviceDependencies];
+      v44 = [deviceDependencies2 countByEnumeratingWithState:&v84 objects:v104 count:16];
       if (v44)
       {
         v45 = v44;
@@ -221,13 +221,13 @@ LABEL_15:
           {
             if (*v85 != v46)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(deviceDependencies2);
             }
 
             v48 = *(*(&v84 + 1) + 8 * k);
             v49 = [v29 objectForKey:v48];
-            v50 = [MEMORY[0x1E695DFB0] null];
-            v51 = [v49 isEqual:v50];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            v51 = [v49 isEqual:null2];
 
             if ((v51 & 1) == 0)
             {
@@ -248,7 +248,7 @@ LABEL_15:
             [v29 setObject:v80 forKey:v48];
           }
 
-          v45 = [v43 countByEnumeratingWithState:&v84 objects:v104 count:16];
+          v45 = [deviceDependencies2 countByEnumeratingWithState:&v84 objects:v104 count:16];
           if (v45)
           {
             continue;
@@ -267,9 +267,9 @@ LABEL_58:
         v52 = 1;
       }
 
-      v54 = [(_GCDeviceConfigurationEvaluator *)v78 deviceManagersIN];
-      v55 = [v80 deviceBuilderIdentifier];
-      v56 = [v54 objectForKey:v55];
+      deviceManagersIN2 = [(_GCDeviceConfigurationEvaluator *)selfCopy deviceManagersIN];
+      deviceBuilderIdentifier2 = [v80 deviceBuilderIdentifier];
+      v56 = [deviceManagersIN2 objectForKey:deviceBuilderIdentifier2];
 
       if (v56)
       {
@@ -281,7 +281,7 @@ LABEL_58:
 
       else
       {
-        [_GCDeviceConfigurationEvaluator viableConfigurations:a2 deviceOwners:v78];
+        [_GCDeviceConfigurationEvaluator viableConfigurations:a2 deviceOwners:selfCopy];
         if (!v52)
         {
           goto LABEL_72;
@@ -302,14 +302,14 @@ LABEL_65:
       }
     }
 
-    v57 = [v80 deviceDependencies];
-    v58 = [MEMORY[0x1E695DFB0] null];
-    v59 = [v81 objectsForKeys:v57 notFoundMarker:v58];
+    deviceDependencies3 = [v80 deviceDependencies];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v59 = [physicalDevicesIN objectsForKeys:deviceDependencies3 notFoundMarker:null3];
 
     v60 = [MEMORY[0x1E695DFD8] setWithArray:v59];
-    LODWORD(v58) = [v56 canMakeDeviceWithConfiguration:v80 dependencies:v60];
+    LODWORD(null3) = [v56 canMakeDeviceWithConfiguration:v80 dependencies:v60];
 
-    if (v58)
+    if (null3)
     {
 
       goto LABEL_65;
@@ -355,18 +355,18 @@ LABEL_74:
   v82[1] = 3221225472;
   v82[2] = __69___GCDeviceConfigurationEvaluator_viableConfigurations_deviceOwners___block_invoke_14;
   v82[3] = &unk_1E8413CC0;
-  v83 = v81;
-  v65 = v81;
+  v83 = physicalDevicesIN;
+  v65 = physicalDevicesIN;
   [v29 enumerateKeysAndObjectsUsingBlock:v82];
-  if (a3)
+  if (configurations)
   {
-    *a3 = v77;
+    *configurations = v77;
   }
 
-  if (a4)
+  if (owners)
   {
     v66 = v29;
-    *a4 = v29;
+    *owners = v29;
   }
 
   v67 = [v77 count];

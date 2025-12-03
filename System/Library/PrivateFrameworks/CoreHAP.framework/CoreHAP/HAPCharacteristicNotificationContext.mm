@@ -1,12 +1,12 @@
 @interface HAPCharacteristicNotificationContext
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicNotificationContext)init;
-- (HAPCharacteristicNotificationContext)initWithContextIdentifier:(id)a3 source:(id)a4 clockTickCounter:(id)a5;
+- (HAPCharacteristicNotificationContext)initWithContextIdentifier:(id)identifier source:(id)source clockTickCounter:(id)counter;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicNotificationContext
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
-  v5 = [(HAPCharacteristicNotificationContext *)self source];
-  v6 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
-  v7 = [v3 stringWithFormat:@"<HAPCharacteristicNotificationContext contextIdentifier=%@, source=%@, clockTickCounter=%@>", v4, v5, v6];
+  contextIdentifier = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+  source = [(HAPCharacteristicNotificationContext *)self source];
+  clockTickCounter = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
+  v7 = [v3 stringWithFormat:@"<HAPCharacteristicNotificationContext contextIdentifier=%@, source=%@, clockTickCounter=%@>", contextIdentifier, source, clockTickCounter];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
-      v9 = [(HAPCharacteristicNotificationContext *)v7 contextIdentifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      contextIdentifier = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+      contextIdentifier2 = [(HAPCharacteristicNotificationContext *)v7 contextIdentifier];
+      if (contextIdentifier != contextIdentifier2)
       {
-        v3 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
-        v4 = [(HAPCharacteristicNotificationContext *)v7 contextIdentifier];
-        if (![v3 isEqual:v4])
+        contextIdentifier3 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+        contextIdentifier4 = [(HAPCharacteristicNotificationContext *)v7 contextIdentifier];
+        if (![contextIdentifier3 isEqual:contextIdentifier4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPCharacteristicNotificationContext *)self source];
-      v12 = [(HAPCharacteristicNotificationContext *)v7 source];
-      v13 = v12;
-      if (v11 == v12)
+      source = [(HAPCharacteristicNotificationContext *)self source];
+      source2 = [(HAPCharacteristicNotificationContext *)v7 source];
+      v13 = source2;
+      if (source == source2)
       {
-        v28 = v12;
+        v28 = source2;
       }
 
       else
       {
-        v14 = [(HAPCharacteristicNotificationContext *)self source];
-        v27 = [(HAPCharacteristicNotificationContext *)v7 source];
-        if (![v14 isEqual:?])
+        source3 = [(HAPCharacteristicNotificationContext *)self source];
+        source4 = [(HAPCharacteristicNotificationContext *)v7 source];
+        if (![source3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = source3;
         v28 = v13;
       }
 
-      v15 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
-      v16 = [(HAPCharacteristicNotificationContext *)v7 clockTickCounter];
-      v17 = v16;
-      if (v15 == v16)
+      clockTickCounter = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
+      clockTickCounter2 = [(HAPCharacteristicNotificationContext *)v7 clockTickCounter];
+      v17 = clockTickCounter2;
+      if (clockTickCounter == clockTickCounter2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAPCharacteristicNotificationContext *)self clockTickCounter];
-        v18 = v25 = v3;
+        v18 = v25 = contextIdentifier3;
         [(HAPCharacteristicNotificationContext *)v7 clockTickCounter];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = source;
+        v19 = contextIdentifier4;
+        v20 = contextIdentifier2;
+        v22 = v21 = contextIdentifier;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        contextIdentifier = v21;
+        contextIdentifier2 = v20;
+        contextIdentifier4 = v19;
+        source = v24;
 
-        v3 = v25;
+        contextIdentifier3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      source3 = v26;
+      if (source == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (contextIdentifier == contextIdentifier2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicNotificationContext allocWithZone:a3];
-  v5 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
-  v6 = [(HAPCharacteristicNotificationContext *)self source];
-  v7 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
-  v8 = [(HAPCharacteristicNotificationContext *)v4 initWithContextIdentifier:v5 source:v6 clockTickCounter:v7];
+  v4 = [HAPCharacteristicNotificationContext allocWithZone:zone];
+  contextIdentifier = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+  source = [(HAPCharacteristicNotificationContext *)self source];
+  clockTickCounter = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
+  v8 = [(HAPCharacteristicNotificationContext *)v4 initWithContextIdentifier:contextIdentifier source:source clockTickCounter:clockTickCounter];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v41 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v24 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+  contextIdentifier = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
 
-  if (v5)
+  if (contextIdentifier)
   {
-    v6 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
+    contextIdentifier2 = [(HAPCharacteristicNotificationContext *)self contextIdentifier];
     v21 = 0;
-    v7 = [v6 serializeWithError:&v21];
+    v7 = [contextIdentifier2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
@@ -189,11 +189,11 @@ LABEL_8:
       v12 = v9;
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v12);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_20;
       }
 
@@ -204,13 +204,13 @@ LABEL_17:
     }
   }
 
-  v10 = [(HAPCharacteristicNotificationContext *)self source];
+  source = [(HAPCharacteristicNotificationContext *)self source];
 
-  if (v10)
+  if (source)
   {
-    v11 = [(HAPCharacteristicNotificationContext *)self source];
+    source2 = [(HAPCharacteristicNotificationContext *)self source];
     v20 = 0;
-    v7 = [v11 serializeWithError:&v20];
+    v7 = [source2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
@@ -227,24 +227,24 @@ LABEL_17:
     }
   }
 
-  v14 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
+  clockTickCounter = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
 
-  if (v14)
+  if (clockTickCounter)
   {
-    v15 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
+    clockTickCounter2 = [(HAPCharacteristicNotificationContext *)self clockTickCounter];
     v19 = 0;
-    v7 = [v15 serializeWithError:&v19];
+    v7 = [clockTickCounter2 serializeWithError:&v19];
     v8 = v19;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_20;
       }
 
@@ -271,11 +271,11 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -290,13 +290,13 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v23 = self;
-  v24 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v31 = 0;
@@ -356,11 +356,11 @@ LABEL_11:
       if (v9)
       {
 LABEL_14:
-        if (v24)
+        if (errorCopy)
         {
           v19 = v9;
           v20 = 0;
-          *v24 = v9;
+          *errorCopy = v9;
           goto LABEL_23;
         }
 
@@ -368,15 +368,15 @@ LABEL_14:
       }
 
 LABEL_20:
-      self = v23;
+      self = selfCopy;
       goto LABEL_21;
     }
   }
 
-  if (v24)
+  if (errorCopy)
   {
     HMErrorFromOSStatus(Next);
-    *v24 = v20 = 0;
+    *errorCopy = v20 = 0;
     goto LABEL_23;
   }
 
@@ -387,20 +387,20 @@ LABEL_23:
   return v20;
 }
 
-- (HAPCharacteristicNotificationContext)initWithContextIdentifier:(id)a3 source:(id)a4 clockTickCounter:(id)a5
+- (HAPCharacteristicNotificationContext)initWithContextIdentifier:(id)identifier source:(id)source clockTickCounter:(id)counter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  counterCopy = counter;
   v15.receiver = self;
   v15.super_class = HAPCharacteristicNotificationContext;
   v12 = [(HAPCharacteristicNotificationContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contextIdentifier, a3);
-    objc_storeStrong(&v13->_source, a4);
-    objc_storeStrong(&v13->_clockTickCounter, a5);
+    objc_storeStrong(&v12->_contextIdentifier, identifier);
+    objc_storeStrong(&v13->_source, source);
+    objc_storeStrong(&v13->_clockTickCounter, counter);
   }
 
   return v13;
@@ -413,24 +413,24 @@ LABEL_23:
   return [(HAPCharacteristicNotificationContext *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicNotificationContext);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicNotificationContext *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicNotificationContext *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

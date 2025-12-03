@@ -1,8 +1,8 @@
 @interface ASToastPresentationWindow
 - (ASToastPresentationWindow)init;
 - (id)_presentationViewController;
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation ASToastPresentationWindow
@@ -29,47 +29,47 @@
   return v3;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ASToastPresentationWindow *)self _presentationViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  _presentationViewController = [(ASToastPresentationWindow *)self _presentationViewController];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100005370;
   v12[3] = &unk_100861178;
-  v13 = v8;
-  v11 = v8;
-  [v10 presentViewController:v9 animated:v5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [_presentationViewController presentViewController:controllerCopy animated:animatedCopy completion:v12];
 }
 
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(ASToastPresentationWindow *)self _presentationViewController];
-  v10 = [v9 presentedViewController];
-  if (v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  _presentationViewController = [(ASToastPresentationWindow *)self _presentationViewController];
+  presentedViewController = [_presentationViewController presentedViewController];
+  if (presentedViewController)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, v10 == v11);
+      completionCopy[2](completionCopy, presentedViewController == controllerCopy);
     }
   }
 
   else
   {
-    [(ASToastPresentationWindow *)self presentViewController:v11 animated:v6 completion:v8];
+    [(ASToastPresentationWindow *)self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (id)_presentationViewController
 {
-  v3 = [(ASToastPresentationWindow *)self rootViewController];
+  rootViewController = [(ASToastPresentationWindow *)self rootViewController];
 
-  if (!v3)
+  if (!rootViewController)
   {
     v4 = objc_alloc_init(UIApplicationRotationFollowingController);
     [v4 setSizesWindowToScene:1];

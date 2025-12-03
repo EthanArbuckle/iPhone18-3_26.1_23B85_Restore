@@ -1,24 +1,24 @@
 @interface PXDuplicatesStorageTipViewController
-- (id)photosViewConfigurationWithShouldExpunge:(BOOL)a3;
+- (id)photosViewConfigurationWithShouldExpunge:(BOOL)expunge;
 @end
 
 @implementation PXDuplicatesStorageTipViewController
 
-- (id)photosViewConfigurationWithShouldExpunge:(BOOL)a3
+- (id)photosViewConfigurationWithShouldExpunge:(BOOL)expunge
 {
-  v5 = [(PXStorageManagementBaseController *)self photoLibrary];
-  v6 = [v5 px_assetCollectionForSmartAlbumWithSubtype:1000000212];
+  photoLibrary = [(PXStorageManagementBaseController *)self photoLibrary];
+  v6 = [photoLibrary px_assetCollectionForSmartAlbumWithSubtype:1000000212];
 
   v7 = PXDeduplicationPhotosViewConfiguration(v6, 0, 0);
-  StorageTipPXPhotosViewConfigurationForConfiguration(v7, a3);
+  StorageTipPXPhotosViewConfigurationForConfiguration(v7, expunge);
   objc_claimAutoreleasedReturnValue();
 
-  v8 = [(PXDuplicatesStorageTipViewController *)self title];
-  [v7 setTitle:v8];
+  title = [(PXDuplicatesStorageTipViewController *)self title];
+  [v7 setTitle:title];
 
   [v7 setIgnoreFilterPredicateAssert:1];
-  v9 = [v7 dataSourceManager];
-  [v9 performChanges:&__block_literal_global_158589];
+  dataSourceManager = [v7 dataSourceManager];
+  [dataSourceManager performChanges:&__block_literal_global_158589];
 
   return v7;
 }

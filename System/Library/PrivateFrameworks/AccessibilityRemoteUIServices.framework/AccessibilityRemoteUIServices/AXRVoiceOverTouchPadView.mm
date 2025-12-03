@@ -1,22 +1,22 @@
 @interface AXRVoiceOverTouchPadView
 - (AXRVoiceOverTouchPadViewDelegate)delegate;
-- (void)_accessibilitySetCurrentGesture:(id)a3;
+- (void)_accessibilitySetCurrentGesture:(id)gesture;
 @end
 
 @implementation AXRVoiceOverTouchPadView
 
-- (void)_accessibilitySetCurrentGesture:(id)a3
+- (void)_accessibilitySetCurrentGesture:(id)gesture
 {
-  v6 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] >= 3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [gestureCopy count] >= 3)
   {
-    v4 = [v6 objectAtIndex:2];
+    v4 = [gestureCopy objectAtIndex:2];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 length])
     {
-      v5 = [(AXRVoiceOverTouchPadView *)self delegate];
-      [v5 voiceOverTouchPadView:self didReceiveCommand:v4];
+      delegate = [(AXRVoiceOverTouchPadView *)self delegate];
+      [delegate voiceOverTouchPadView:self didReceiveCommand:v4];
     }
   }
 }

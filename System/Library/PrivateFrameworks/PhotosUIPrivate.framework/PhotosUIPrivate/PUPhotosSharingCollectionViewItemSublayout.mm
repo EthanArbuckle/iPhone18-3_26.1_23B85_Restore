@@ -5,10 +5,10 @@
 - (CGRect)visibleItemFrame;
 - (CGSize)optionBadgeSize;
 - (CGSize)selectionBadgeSize;
-- (PUPhotosSharingCollectionViewItemSublayout)initWithIndexPath:(id)a3 itemFrame:(CGRect)a4;
+- (PUPhotosSharingCollectionViewItemSublayout)initWithIndexPath:(id)path itemFrame:(CGRect)frame;
 - (UIOffset)badgesOffset;
 - (void)prepareSublayout;
-- (void)setFloatingOffset:(UIOffset)a3;
+- (void)setFloatingOffset:(UIOffset)offset;
 @end
 
 @implementation PUPhotosSharingCollectionViewItemSublayout
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (void)setFloatingOffset:(UIOffset)a3
+- (void)setFloatingOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  [(UICollectionViewLayoutAttributes *)self->_selectionBadgeLayoutAttributes setCenter:a3.horizontal + self->_selectionBadgeCenter.x, a3.vertical + self->_selectionBadgeCenter.y];
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
+  [(UICollectionViewLayoutAttributes *)self->_selectionBadgeLayoutAttributes setCenter:offset.horizontal + self->_selectionBadgeCenter.x, offset.vertical + self->_selectionBadgeCenter.y];
   self->_floatingBadgesContainerFrame = CGRectOffset(self->_badgesContainerFrame, horizontal, vertical);
 }
 
@@ -262,20 +262,20 @@
   return result;
 }
 
-- (PUPhotosSharingCollectionViewItemSublayout)initWithIndexPath:(id)a3 itemFrame:(CGRect)a4
+- (PUPhotosSharingCollectionViewItemSublayout)initWithIndexPath:(id)path itemFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = PUPhotosSharingCollectionViewItemSublayout;
   v11 = [(PUPhotosSharingCollectionViewItemSublayout *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_indexPath, a3);
+    objc_storeStrong(&v11->_indexPath, path);
     v12->_itemFrame.origin.x = x;
     v12->_itemFrame.origin.y = y;
     v12->_itemFrame.size.width = width;
@@ -285,11 +285,11 @@
     v12->_visibleItemFrame.size.width = width;
     v12->_visibleItemFrame.size.height = height;
     v12->_badgesCorner = 8;
-    v13 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withIndexPath:v10];
+    v13 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withIndexPath:pathCopy];
     selectionBadgeLayoutAttributes = v12->_selectionBadgeLayoutAttributes;
     v12->_selectionBadgeLayoutAttributes = v13;
 
-    v15 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withIndexPath:v10];
+    v15 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withIndexPath:pathCopy];
     optionBadgeLayoutAttributes = v12->_optionBadgeLayoutAttributes;
     v12->_optionBadgeLayoutAttributes = v15;
   }

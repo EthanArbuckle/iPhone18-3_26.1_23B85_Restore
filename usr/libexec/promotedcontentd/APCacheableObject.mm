@@ -1,25 +1,25 @@
 @interface APCacheableObject
-+ (id)fileNameForIdentifier:(id)a3;
-+ (id)findCacheableObjectForId:(id)a3 inPersistentStore:(id)a4;
-- (APCacheableObject)initWithIdentifier:(id)a3 inPersistentStore:(id)a4;
++ (id)fileNameForIdentifier:(id)identifier;
++ (id)findCacheableObjectForId:(id)id inPersistentStore:(id)store;
+- (APCacheableObject)initWithIdentifier:(id)identifier inPersistentStore:(id)store;
 - (APPersistentCachedStoreProtocol)persistentStore;
 - (id)fileName;
-- (id)initInPersistentStore:(id)a3;
+- (id)initInPersistentStore:(id)store;
 @end
 
 @implementation APCacheableObject
 
-+ (id)fileNameForIdentifier:(id)a3
++ (id)fileNameForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([a1 isMasterObject])
+  identifierCopy = identifier;
+  if ([self isMasterObject])
   {
-    [a1 masterObjectFileNameForIdentifier:v4];
+    [self masterObjectFileNameForIdentifier:identifierCopy];
   }
 
   else
   {
-    [a1 associatedObjectFileNameForIdentifier:v4];
+    [self associatedObjectFileNameForIdentifier:identifierCopy];
   }
   v5 = ;
 
@@ -29,35 +29,35 @@
 - (id)fileName
 {
   v3 = objc_opt_class();
-  v4 = [(APCacheableBaseObject *)self identifier];
-  v5 = [v3 fileNameForIdentifier:v4];
+  identifier = [(APCacheableBaseObject *)self identifier];
+  v5 = [v3 fileNameForIdentifier:identifier];
 
   return v5;
 }
 
-- (id)initInPersistentStore:(id)a3
+- (id)initInPersistentStore:(id)store
 {
-  v4 = a3;
-  if (!v4)
+  storeCopy = store;
+  if (!storeCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ persistentStore cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(APCacheableObject *)self initWithIdentifier:v7 inPersistentStore:v4];
+  uUIDString = [v6 UUIDString];
+  v8 = [(APCacheableObject *)self initWithIdentifier:uUIDString inPersistentStore:storeCopy];
 
   return v8;
 }
 
-- (APCacheableObject)initWithIdentifier:(id)a3 inPersistentStore:(id)a4
+- (APCacheableObject)initWithIdentifier:(id)identifier inPersistentStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  storeCopy = store;
+  if ([identifierCopy length])
   {
-    if (v7)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -68,7 +68,7 @@
     v15 = [NSString stringWithFormat:@"%@ identifier cannot be nil", objc_opt_class()];
     APSimulateCrash();
 
-    if (v7)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -78,8 +78,8 @@
   APSimulateCrash();
 
 LABEL_3:
-  v8 = [objc_opt_class() fileNameForIdentifier:v6];
-  v9 = [v7 hasObjectForKey:v8];
+  v8 = [objc_opt_class() fileNameForIdentifier:identifierCopy];
+  v9 = [storeCopy hasObjectForKey:v8];
 
   if (v9)
   {
@@ -87,48 +87,48 @@ LABEL_3:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v19 = v6;
+      v19 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Item %{public}@ already exists.", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = APCacheableObject;
-    v12 = [(APCacheableSynchronizedObject *)&v17 initWithIdentifier:v6];
+    v12 = [(APCacheableSynchronizedObject *)&v17 initWithIdentifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      objc_storeWeak(&v12->_persistentStore, v7);
+      objc_storeWeak(&v12->_persistentStore, storeCopy);
     }
 
     self = v13;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)findCacheableObjectForId:(id)a3 inPersistentStore:(id)a4
++ (id)findCacheableObjectForId:(id)id inPersistentStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  idCopy = id;
+  storeCopy = store;
+  if (!storeCopy)
   {
     v7 = [NSString stringWithFormat:@"%@ persistentStore cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  if ([v5 length])
+  if ([idCopy length])
   {
-    v8 = [objc_opt_class() fileNameForIdentifier:v5];
-    v9 = [v6 objectForKey:v8];
+    v8 = [objc_opt_class() fileNameForIdentifier:idCopy];
+    v9 = [storeCopy objectForKey:v8];
 
     v10 = v9;
-    [v10 setPersistentStore:v6];
+    [v10 setPersistentStore:storeCopy];
   }
 
   else

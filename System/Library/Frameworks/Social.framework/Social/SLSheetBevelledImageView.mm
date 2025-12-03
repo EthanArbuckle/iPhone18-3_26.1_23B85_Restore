@@ -4,7 +4,7 @@
 - (SLSheetBevelledImageView)init;
 - (void)ensurePlaceholderPreviewImage;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation SLSheetBevelledImageView
@@ -21,37 +21,37 @@
     v5 = *(MEMORY[0x1E695EFF8] + 8);
     [(SLSheetBevelledImageView *)v2 intrinsicContentSize];
     [(SLSheetBevelledImageView *)v3 setBounds:v4, v5, v6, v7];
-    v8 = [(SLSheetBevelledImageView *)v3 layer];
-    [v8 setShouldRasterize:1];
+    layer = [(SLSheetBevelledImageView *)v3 layer];
+    [layer setShouldRasterize:1];
 
-    v9 = [(SLSheetBevelledImageView *)v3 layer];
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
-    [v9 setRasterizationScale:?];
+    layer2 = [(SLSheetBevelledImageView *)v3 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setRasterizationScale:?];
 
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(SLSheetBevelledImageView *)v3 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SLSheetBevelledImageView *)v3 setBackgroundColor:clearColor];
 
     v12 = objc_alloc(MEMORY[0x1E69DCAE0]);
     [(SLSheetBevelledImageView *)v3 bounds];
     v13 = [v12 initWithFrame:?];
     [(SLSheetImagePreviewView *)v3 setImageView:v13];
 
-    v14 = [(SLSheetImagePreviewView *)v3 imageView];
-    [v14 setContentMode:2];
+    imageView = [(SLSheetImagePreviewView *)v3 imageView];
+    [imageView setContentMode:2];
 
-    v15 = [(SLSheetImagePreviewView *)v3 imageView];
-    [v15 setClipsToBounds:1];
+    imageView2 = [(SLSheetImagePreviewView *)v3 imageView];
+    [imageView2 setClipsToBounds:1];
 
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    v17 = [(SLSheetImagePreviewView *)v3 imageView];
-    [v17 setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    imageView3 = [(SLSheetImagePreviewView *)v3 imageView];
+    [imageView3 setBackgroundColor:clearColor2];
 
-    v18 = [(SLSheetImagePreviewView *)v3 imageView];
-    [v18 setAutoresizingMask:18];
+    imageView4 = [(SLSheetImagePreviewView *)v3 imageView];
+    [imageView4 setAutoresizingMask:18];
 
-    v19 = [(SLSheetImagePreviewView *)v3 imageView];
-    [(SLSheetBevelledImageView *)v3 addSubview:v19];
+    imageView5 = [(SLSheetImagePreviewView *)v3 imageView];
+    [(SLSheetBevelledImageView *)v3 addSubview:imageView5];
 
     [(SLSheetBevelledImageView *)v3 setNeedsLayout];
   }
@@ -66,15 +66,15 @@
   [(SLSheetImagePreviewView *)&v16 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(SLSheetImagePreviewView *)self image];
+  image = [(SLSheetImagePreviewView *)self image];
 
-  if (v7)
+  if (image)
   {
-    v8 = [(SLSheetImagePreviewView *)self image];
-    [v8 size];
+    image2 = [(SLSheetImagePreviewView *)self image];
+    [image2 size];
     v10 = v9;
-    v11 = [(SLSheetImagePreviewView *)self image];
-    [v11 size];
+    image3 = [(SLSheetImagePreviewView *)self image];
+    [image3 size];
     v13 = v10 / v12;
 
     if (v13 < 0.8)
@@ -96,8 +96,8 @@
   {
     _SLLog(v2, 7, @"SLSheetBevelledImageView ensurePlaceholderPreviewImage building placeholder");
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
-    v5 = [(SLSheetImagePreviewView *)self imageView];
-    [v5 frame];
+    imageView = [(SLSheetImagePreviewView *)self imageView];
+    [imageView frame];
     v6 = [v4 initWithFrame:?];
     placeholderPreviewView = self->_placeholderPreviewView;
     self->_placeholderPreviewView = v6;
@@ -116,26 +116,26 @@
 
     [(UIImageView *)self->_placeholderGlyphView setContentMode:2];
     [(UIImageView *)self->_placeholderGlyphView setClipsToBounds:1];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)self->_placeholderGlyphView setTintColor:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)self->_placeholderGlyphView setTintColor:whiteColor];
 
     v14 = [MEMORY[0x1E69DCAB8] socialFrameworkImageNamed:@"URLPlaceholderPreviewGlyph"];
     v15 = [v14 imageWithRenderingMode:2];
     [(UIImageView *)self->_placeholderGlyphView setImage:v15];
 
-    v17 = [(UIImageView *)self->_placeholderGlyphView image];
+    image = [(UIImageView *)self->_placeholderGlyphView image];
     _SLLog(v2, 7, @"SLSheetBevelledImageView ensurePlaceholderPreviewImage loaded placeholder glyph %@");
 
-    [(UIView *)self->_placeholderPreviewView addSubview:self->_placeholderGlyphView, v17];
+    [(UIView *)self->_placeholderPreviewView addSubview:self->_placeholderGlyphView, image];
     v16 = self->_placeholderPreviewView;
 
     [(SLSheetBevelledImageView *)self addSubview:v16];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (self->_placeholderPreviewView)
   {
     _SLLog(v3, 7, @"SLSheetBevelledImageView setImage: removing placeholder");
@@ -146,7 +146,7 @@
 
   v7.receiver = self;
   v7.super_class = SLSheetBevelledImageView;
-  [(SLSheetImagePreviewView *)&v7 setImage:v5];
+  [(SLSheetImagePreviewView *)&v7 setImage:imageCopy];
   [(SLSheetBevelledImageView *)self invalidateIntrinsicContentSize];
 }
 

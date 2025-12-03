@@ -1,12 +1,12 @@
 @interface BlurredView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC9DropletUI11BlurredView)initWithCoder:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC9DropletUI11BlurredView)initWithCoder:(id)coder;
 - (void)dealloc;
 @end
 
 @implementation BlurredView
 
-- (_TtC9DropletUI11BlurredView)initWithCoder:(id)a3
+- (_TtC9DropletUI11BlurredView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9DropletUI11BlurredView_disableBlurFilterOverride) = 0;
   v4 = OBJC_IVAR____TtC9DropletUI11BlurredView_blurEnabledAnimatableProperty;
@@ -20,16 +20,16 @@
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9DropletUI11BlurredView_blurEnabledAnimatableProperty);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for BlurredView();
   [(BlurredView *)&v4 dealloc];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_249ED6C70();
     v6 = v5;
@@ -41,7 +41,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_249EA1894(v4, v6);
 
   return v8 & 1;

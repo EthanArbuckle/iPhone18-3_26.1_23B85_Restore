@@ -1,47 +1,47 @@
 @interface APKRemoteInspectorDOMAgent
-- (APKRemoteInspectorDOMAgent)initWithDispatcher:(id)a3;
+- (APKRemoteInspectorDOMAgent)initWithDispatcher:(id)dispatcher;
 - (APKRemoteInspectorDOMAgentDelegate)delegate;
-- (void)getDocumentWithErrorCallback:(id)a3 successCallback:(id)a4;
+- (void)getDocumentWithErrorCallback:(id)callback successCallback:(id)successCallback;
 @end
 
 @implementation APKRemoteInspectorDOMAgent
 
-- (APKRemoteInspectorDOMAgent)initWithDispatcher:(id)a3
+- (APKRemoteInspectorDOMAgent)initWithDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v9.receiver = self;
   v9.super_class = APKRemoteInspectorDOMAgent;
   v6 = [(APKRemoteInspectorDOMAgent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatcher, a3);
+    objc_storeStrong(&v6->_dispatcher, dispatcher);
   }
 
   return v7;
 }
 
-- (void)getDocumentWithErrorCallback:(id)a3 successCallback:(id)a4
+- (void)getDocumentWithErrorCallback:(id)callback successCallback:(id)successCallback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APKRemoteInspectorDOMAgent *)self delegate];
+  callbackCopy = callback;
+  successCallbackCopy = successCallback;
+  delegate = [(APKRemoteInspectorDOMAgent *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(APKRemoteInspectorDOMAgent *)self delegate];
+    delegate2 = [(APKRemoteInspectorDOMAgent *)self delegate];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __75__APKRemoteInspectorDOMAgent_getDocumentWithErrorCallback_successCallback___block_invoke;
     v10[3] = &unk_278C5DD90;
-    v11 = v7;
-    v12 = v6;
-    [v9 DOMAgent:self onDocumentWithCompletion:v10];
+    v11 = successCallbackCopy;
+    v12 = callbackCopy;
+    [delegate2 DOMAgent:self onDocumentWithCompletion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, @"Not supported");
+    (*(callbackCopy + 2))(callbackCopy, @"Not supported");
   }
 }
 

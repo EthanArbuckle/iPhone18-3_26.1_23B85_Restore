@@ -1,34 +1,34 @@
 @interface CRLProgressGroup
 - (BOOL)isIndeterminate;
-- (CRLProgressGroup)initWithChildren:(id)a3;
+- (CRLProgressGroup)initWithChildren:(id)children;
 - (double)maxValue;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (id)initForSubclass;
 - (void)p_updateChildrenProgressObservers;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation CRLProgressGroup
 
-- (CRLProgressGroup)initWithChildren:(id)a3
+- (CRLProgressGroup)initWithChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v11.receiver = self;
   v11.super_class = CRLProgressGroup;
-  v5 = [(CRLProgress *)&v11 initForSubclass];
-  if (v5)
+  initForSubclass = [(CRLProgress *)&v11 initForSubclass];
+  if (initForSubclass)
   {
-    v6 = [v4 copy];
-    children = v5->_children;
-    v5->_children = v6;
+    v6 = [childrenCopy copy];
+    children = initForSubclass->_children;
+    initForSubclass->_children = v6;
 
     v8 = dispatch_queue_create("com.apple.freeform.CRLProgressGroup", 0);
-    childrenProgressObserversQueue = v5->_childrenProgressObserversQueue;
-    v5->_childrenProgressObserversQueue = v8;
+    childrenProgressObserversQueue = initForSubclass->_childrenProgressObserversQueue;
+    initForSubclass->_childrenProgressObserversQueue = v8;
   }
 
-  return v5;
+  return initForSubclass;
 }
 
 - (id)initForSubclass
@@ -211,21 +211,21 @@ LABEL_12:
   return v4;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = CRLProgressGroup;
-  v6 = [(CRLProgress *)&v8 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(CRLProgress *)&v8 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   [(CRLProgressGroup *)self p_updateChildrenProgressObservers];
 
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v4.receiver = self;
   v4.super_class = CRLProgressGroup;
-  [(CRLProgress *)&v4 removeProgressObserver:a3];
+  [(CRLProgress *)&v4 removeProgressObserver:observer];
   [(CRLProgressGroup *)self p_updateChildrenProgressObservers];
 }
 

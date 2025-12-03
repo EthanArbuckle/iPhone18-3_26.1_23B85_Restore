@@ -1,54 +1,54 @@
 @interface PKSelectedItemActionItem
-- (PKSelectedItemActionItem)initWithCoder:(id)a3;
-- (PKSelectedItemActionItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_processLocalizableStrings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)serviceProviderDataWithPass:(id)a3 currentLocalBalance:(id)a4 completion:(id)a5;
+- (PKSelectedItemActionItem)initWithCoder:(id)coder;
+- (PKSelectedItemActionItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_processLocalizableStrings:(id)strings;
+- (void)encodeWithCoder:(id)coder;
+- (void)serviceProviderDataWithPass:(id)pass currentLocalBalance:(id)balance completion:(id)completion;
 @end
 
 @implementation PKSelectedItemActionItem
 
-- (PKSelectedItemActionItem)initWithDictionary:(id)a3
+- (PKSelectedItemActionItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PKSelectedItemActionItem;
   v5 = [(PKSelectedItemActionItem *)&v27 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 PKStringForKey:@"title"];
+    v9 = [dictionaryCopy PKStringForKey:@"title"];
     v10 = [v9 copy];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 PKDecimalNumberForKey:@"amount"];
+    v12 = [dictionaryCopy PKDecimalNumberForKey:@"amount"];
     v13 = [v12 copy];
     amount = v5->_amount;
     v5->_amount = v13;
 
-    v15 = [v4 PKStringForKey:@"currency"];
+    v15 = [dictionaryCopy PKStringForKey:@"currency"];
     v16 = [v15 copy];
     currency = v5->_currency;
     v5->_currency = v16;
 
-    v18 = [v4 PKDateForKey:@"newExpirationDate"];
+    v18 = [dictionaryCopy PKDateForKey:@"newExpirationDate"];
     v19 = [v18 copy];
     newExpirationDate = v5->_newExpirationDate;
     v5->_newExpirationDate = v19;
 
-    v21 = [v4 PKDictionaryForKey:@"serviceProviderData"];
+    v21 = [dictionaryCopy PKDictionaryForKey:@"serviceProviderData"];
     v22 = [v21 copy];
     serviceProviderData = v5->_serviceProviderData;
     v5->_serviceProviderData = v22;
 
-    v5->_serviceProviderDataRequiresLocalBalance = [v4 PKBoolForKey:@"serviceProviderDataRequiresLocalBalance"];
-    v5->_serviceProviderDataRequiresAppletData = [v4 PKBoolForKey:@"serviceProviderDataRequiresAppletData"];
+    v5->_serviceProviderDataRequiresLocalBalance = [dictionaryCopy PKBoolForKey:@"serviceProviderDataRequiresLocalBalance"];
+    v5->_serviceProviderDataRequiresAppletData = [dictionaryCopy PKBoolForKey:@"serviceProviderDataRequiresAppletData"];
     v24 = +[PKPassLibrary sharedInstance];
     sharedLibrary = v5->_sharedLibrary;
     v5->_sharedLibrary = v24;
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (void)_processLocalizableStrings:(id)a3
+- (void)_processLocalizableStrings:(id)strings
 {
-  v4 = a3;
-  if (v4 && self->_title)
+  stringsCopy = strings;
+  if (stringsCopy && self->_title)
   {
-    v7 = v4;
-    v5 = v4[2]();
+    v7 = stringsCopy;
+    v5 = stringsCopy[2]();
     title = self->_title;
     self->_title = v5;
 
-    v4 = v7;
+    stringsCopy = v7;
   }
 }
 
-- (void)serviceProviderDataWithPass:(id)a3 currentLocalBalance:(id)a4 completion:(id)a5
+- (void)serviceProviderDataWithPass:(id)pass currentLocalBalance:(id)balance completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  balanceCopy = balance;
+  completionCopy = completion;
   v11 = [(NSDictionary *)self->_serviceProviderData mutableCopy];
   v12 = v11;
-  if (v9 && self->_serviceProviderDataRequiresLocalBalance)
+  if (balanceCopy && self->_serviceProviderDataRequiresLocalBalance)
   {
-    [v11 setObject:v9 forKeyedSubscript:@"localBalance"];
+    [v11 setObject:balanceCopy forKeyedSubscript:@"localBalance"];
   }
 
   if (self->_serviceProviderDataRequiresAppletData)
@@ -91,14 +91,14 @@
     v15[2] = __87__PKSelectedItemActionItem_serviceProviderDataWithPass_currentLocalBalance_completion___block_invoke;
     v15[3] = &unk_1E79C4518;
     v16 = v12;
-    v17 = v10;
-    [(PKPassLibrary *)sharedLibrary encryptedServiceProviderDataForSecureElementPass:v8 completion:v15];
+    v17 = completionCopy;
+    [(PKPassLibrary *)sharedLibrary encryptedServiceProviderDataForSecureElementPass:passCopy completion:v15];
   }
 
   else
   {
     v14 = [v12 copy];
-    (*(v10 + 2))(v10, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
@@ -114,35 +114,35 @@ void __87__PKSelectedItemActionItem_serviceProviderDataWithPass_currentLocalBala
   (*(v3 + 16))(v3, v4);
 }
 
-- (PKSelectedItemActionItem)initWithCoder:(id)a3
+- (PKSelectedItemActionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = PKSelectedItemActionItem;
   v5 = [(PKSelectedItemActionItem *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     v10 = [v9 copy];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     v13 = [v12 copy];
     amount = v5->_amount;
     v5->_amount = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     v16 = [v15 copy];
     currency = v5->_currency;
     v5->_currency = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"newExpirationDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"newExpirationDate"];
     newExpirationDate = v5->_newExpirationDate;
     v5->_newExpirationDate = v18;
 
@@ -152,56 +152,56 @@ void __87__PKSelectedItemActionItem_serviceProviderDataWithPass_currentLocalBala
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v20 setWithObjects:{v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"serviceProviderData"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"serviceProviderData"];
     v27 = [v26 copy];
     serviceProviderData = v5->_serviceProviderData;
     v5->_serviceProviderData = v27;
 
-    v5->_serviceProviderDataRequiresLocalBalance = [v4 decodeBoolForKey:@"serviceProviderDataRequiresLocalBalance"];
-    v5->_serviceProviderDataRequiresAppletData = [v4 decodeBoolForKey:@"serviceProviderDataRequiresAppletData"];
+    v5->_serviceProviderDataRequiresLocalBalance = [coderCopy decodeBoolForKey:@"serviceProviderDataRequiresLocalBalance"];
+    v5->_serviceProviderDataRequiresAppletData = [coderCopy decodeBoolForKey:@"serviceProviderDataRequiresAppletData"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
-  [v5 encodeObject:self->_newExpirationDate forKey:@"newExpirationDate"];
-  [v5 encodeObject:self->_serviceProviderData forKey:@"serviceProviderData"];
-  [v5 encodeBool:self->_serviceProviderDataRequiresLocalBalance forKey:@"serviceProviderDataRequiresLocalBalance"];
-  [v5 encodeBool:self->_serviceProviderDataRequiresAppletData forKey:@"serviceProviderDataRequiresAppletData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
+  [coderCopy encodeObject:self->_newExpirationDate forKey:@"newExpirationDate"];
+  [coderCopy encodeObject:self->_serviceProviderData forKey:@"serviceProviderData"];
+  [coderCopy encodeBool:self->_serviceProviderDataRequiresLocalBalance forKey:@"serviceProviderDataRequiresLocalBalance"];
+  [coderCopy encodeBool:self->_serviceProviderDataRequiresAppletData forKey:@"serviceProviderDataRequiresAppletData"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_currency copyWithZone:a3];
+  v12 = [(NSString *)self->_currency copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSDate *)self->_newExpirationDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_newExpirationDate copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
-  v16 = [(NSDictionary *)self->_serviceProviderData copyWithZone:a3];
+  v16 = [(NSDictionary *)self->_serviceProviderData copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 

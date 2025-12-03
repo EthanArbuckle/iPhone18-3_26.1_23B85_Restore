@@ -1,10 +1,10 @@
 @interface PDController
 + (id)knownPDControllers;
-+ (id)pdControllerForVID:(unsigned int)a3 DID:(unsigned int)a4 address:(unsigned int)a5 userClient:(id)a6;
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7;
-- (int)registerRead:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6;
-- (int)registerWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5;
++ (id)pdControllerForVID:(unsigned int)d DID:(unsigned int)iD address:(unsigned int)address userClient:(id)client;
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength;
+- (int)registerRead:(void *)read ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength;
+- (int)registerWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address;
 @end
 
 @implementation PDController
@@ -16,8 +16,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 userClientSet];
-    v5 = [v4 copy];
+    userClientSet = [v2 userClientSet];
+    v5 = [userClientSet copy];
 
     if (v5)
     {
@@ -105,51 +105,51 @@
   return v20;
 }
 
-+ (id)pdControllerForVID:(unsigned int)a3 DID:(unsigned int)a4 address:(unsigned int)a5 userClient:(id)a6
++ (id)pdControllerForVID:(unsigned int)d DID:(unsigned int)iD address:(unsigned int)address userClient:(id)client
 {
   v6 = off_1000242E0;
-  if (a3 != 40)
+  if (d != 40)
   {
     v6 = off_1000242E8;
   }
 
-  v7 = [(__objc2_class *)*v6 createWithDeviceAddress:a5 userClient:a6];
+  v7 = [(__objc2_class *)*v6 createWithDeviceAddress:address userClient:client];
 
   return v7;
 }
 
-- (int)registerRead:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5 andOutReadLength:(unint64_t *)a6
+- (int)registerRead:(void *)read ofLength:(unint64_t)length atAddress:(unsigned int)address andOutReadLength:(unint64_t *)readLength
 {
-  v7 = a5;
-  v11 = [(PDController *)self userClient];
-  LODWORD(a6) = [v11 iecsReadCommandForDevice:-[PDController address](self withAddress:"address") buffer:v7 length:a3 flags:a4 andOutReadLength:{0, a6}];
+  addressCopy = address;
+  userClient = [(PDController *)self userClient];
+  LODWORD(readLength) = [userClient iecsReadCommandForDevice:-[PDController address](self withAddress:"address") buffer:addressCopy length:read flags:length andOutReadLength:{0, readLength}];
 
-  return a6;
+  return readLength;
 }
 
-- (int)registerWrite:(void *)a3 ofLength:(unint64_t)a4 atAddress:(unsigned int)a5
+- (int)registerWrite:(void *)write ofLength:(unint64_t)length atAddress:(unsigned int)address
 {
-  v5 = a5;
-  v9 = [(PDController *)self userClient];
-  v10 = [v9 iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:v5 length:a3 flags:{a4, 0}];
+  addressCopy = address;
+  userClient = [(PDController *)self userClient];
+  v10 = [userClient iecsWriteCommandForDevice:-[PDController address](self withAddress:"address") buffer:addressCopy length:write flags:{length, 0}];
 
   return v10;
 }
 
-- (int)receiveVDM:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDM:(void *)m length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMForDevice:-[PDController address](self buffer:"address") length:m flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
-- (int)receiveVDMAttention:(void *)a3 length:(unint64_t)a4 outSop:(int *)a5 outSequence:(char *)a6 outLength:(unint64_t *)a7
+- (int)receiveVDMAttention:(void *)attention length:(unint64_t)length outSop:(int *)sop outSequence:(char *)sequence outLength:(unint64_t *)outLength
 {
-  v13 = [(PDController *)self userClient];
-  LODWORD(a7) = [v13 receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:a3 flags:a4 outSOP:0 outSequence:a5 outLength:{a6, a7}];
+  userClient = [(PDController *)self userClient];
+  LODWORD(outLength) = [userClient receiveVDMAttentionForDevice:-[PDController address](self buffer:"address") length:attention flags:length outSOP:0 outSequence:sop outLength:{sequence, outLength}];
 
-  return a7;
+  return outLength;
 }
 
 @end

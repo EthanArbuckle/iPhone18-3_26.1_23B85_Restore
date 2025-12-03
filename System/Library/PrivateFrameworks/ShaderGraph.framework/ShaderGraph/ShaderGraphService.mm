@@ -1,12 +1,12 @@
 @interface ShaderGraphService
 + (NSArray)builtInGeometryPropertyNames;
-+ (id)archiveMaterial:(id)a3 error:(id *)a4;
-+ (id)archiveSource:(id)a3 error:(id *)a4;
-+ (id)materialFromGraph:(id)a3 configuration:(id)a4 error:(id *)a5;
-+ (id)materialFromGraph:(id)a3 error:(id *)a4;
-+ (id)metalLibraryFromMaterial:(id)a3 forDevice:(id)a4 error:(id *)a5;
-+ (id)metalLibraryFromMaterial:(id)a3 forDevice:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)sourceFromArchiveData:(id)a3 error:(id *)a4;
++ (id)archiveMaterial:(id)material error:(id *)error;
++ (id)archiveSource:(id)source error:(id *)error;
++ (id)materialFromGraph:(id)graph configuration:(id)configuration error:(id *)error;
++ (id)materialFromGraph:(id)graph error:(id *)error;
++ (id)metalLibraryFromMaterial:(id)material forDevice:(id)device error:(id *)error;
++ (id)metalLibraryFromMaterial:(id)material forDevice:(id)device options:(id)options error:(id *)error;
++ (id)sourceFromArchiveData:(id)data error:(id *)error;
 - (ShaderGraphService)init;
 @end
 
@@ -34,10 +34,10 @@
   return v4.super.isa;
 }
 
-+ (id)archiveSource:(id)a3 error:(id *)a4
++ (id)archiveSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  specialized static ShaderGraphService.archiveSource(_:)(a3);
+  sourceCopy = source;
+  specialized static ShaderGraphService.archiveSource(_:)(source);
   v7 = v6;
   v9 = v8;
 
@@ -47,11 +47,11 @@
   return v10.super.isa;
 }
 
-+ (id)sourceFromArchiveData:(id)a3 error:(id *)a4
++ (id)sourceFromArchiveData:(id)data error:(id *)error
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
   }
@@ -68,40 +68,40 @@
   return v8;
 }
 
-+ (id)metalLibraryFromMaterial:(id)a3 forDevice:(id)a4 options:(id)a5 error:(id *)a6
++ (id)metalLibraryFromMaterial:(id)material forDevice:(id)device options:(id)options error:(id *)error
 {
-  v9 = a3;
+  materialCopy = material;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = specialized static ShaderGraphService.createLibrary(from:device:options:)(a3, a4, v10);
+  optionsCopy = options;
+  v11 = specialized static ShaderGraphService.createLibrary(from:device:options:)(material, device, optionsCopy);
 
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-+ (id)materialFromGraph:(id)a3 configuration:(id)a4 error:(id *)a5
++ (id)materialFromGraph:(id)graph configuration:(id)configuration error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = specialized static ShaderGraphService.createMaterial(from:config:)(a3, a4);
+  graphCopy = graph;
+  configurationCopy = configuration;
+  v9 = specialized static ShaderGraphService.createMaterial(from:config:)(graph, configuration);
 
   return v9;
 }
 
-+ (id)materialFromGraph:(id)a3 error:(id *)a4
++ (id)materialFromGraph:(id)graph error:(id *)error
 {
-  v5 = a3;
-  specialized static ShaderGraphService.createMaterial(from:)(a3);
+  graphCopy = graph;
+  specialized static ShaderGraphService.createMaterial(from:)(graph);
   v7 = v6;
 
   return v7;
 }
 
-+ (id)archiveMaterial:(id)a3 error:(id *)a4
++ (id)archiveMaterial:(id)material error:(id *)error
 {
-  v5 = a3;
-  v6 = specialized static ShaderGraphService.archiveMaterial(_:)(a3);
+  materialCopy = material;
+  v6 = specialized static ShaderGraphService.archiveMaterial(_:)(material);
   v8 = v7;
 
   v9.super.isa = Data._bridgeToObjectiveC()().super.isa;
@@ -110,7 +110,7 @@
   return v9.super.isa;
 }
 
-+ (id)metalLibraryFromMaterial:(id)a3 forDevice:(id)a4 error:(id *)a5
++ (id)metalLibraryFromMaterial:(id)material forDevice:(id)device error:(id *)error
 {
   v7 = type metadata accessor for SGREMaterialCompilationOptions();
   v8 = objc_allocWithZone(v7);
@@ -119,10 +119,10 @@
   *&v8[OBJC_IVAR___SGREMaterialCompilationOptions_workingColorSpace] = 0;
   v13.receiver = v8;
   v13.super_class = v7;
-  v9 = a3;
+  materialCopy = material;
   swift_unknownObjectRetain();
   v10 = objc_msgSendSuper2(&v13, sel_init);
-  v11 = specialized static ShaderGraphService.createLibrary(from:device:options:)(a3, a4, v10);
+  v11 = specialized static ShaderGraphService.createLibrary(from:device:options:)(material, device, v10);
   swift_unknownObjectRelease();
 
   return v11;

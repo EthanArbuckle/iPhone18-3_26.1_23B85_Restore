@@ -1,25 +1,25 @@
 @interface PrefsUILinkLabel
-- (PrefsUILinkLabel)initWithFrame:(CGRect)a3;
+- (PrefsUILinkLabel)initWithFrame:(CGRect)frame;
 - (SEL)action;
-- (id)color:(id)a3 byMultiplyingSubComponentsBy:(float)a4;
+- (id)color:(id)color byMultiplyingSubComponentsBy:(float)by;
 - (id)target;
-- (void)openURL:(id)a3;
-- (void)setAction:(SEL)a3;
-- (void)setTarget:(id)a3;
-- (void)tappedLink:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)openURL:(id)l;
+- (void)setAction:(SEL)action;
+- (void)setTarget:(id)target;
+- (void)tappedLink:(id)link;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PrefsUILinkLabel
 
-- (PrefsUILinkLabel)initWithFrame:(CGRect)a3
+- (PrefsUILinkLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PrefsUILinkLabel;
-  v3 = [(PrefsUILinkLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PrefsUILinkLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v3 action:sel_tappedLink_];
@@ -32,14 +32,14 @@
   return v3;
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
   p_action = &self->_action;
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    if (a3)
+    if (action)
     {
-      *p_action = a3;
+      *p_action = action;
       WeakRetained = objc_loadWeakRetained(&self->_target);
       [(PrefsUILinkLabel *)self setUserInteractionEnabled:WeakRetained != 0];
     }
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  obj = a3;
+  obj = target;
   WeakRetained = objc_loadWeakRetained(&self->_target);
 
   v5 = obj;
@@ -77,16 +77,16 @@
   }
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v4 = [(PrefsUILinkLabel *)self URL];
-  [v5 openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v4 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([(PrefsUILinkLabel *)self action:a3])
+  if ([(PrefsUILinkLabel *)self action:began])
   {
     self->_touchingURL = 1;
     [(PrefsUILinkLabel *)self setHighlighted:1];
@@ -95,12 +95,12 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  if (v5)
+  anyObject = [moved anyObject];
+  if (anyObject)
   {
-    v17 = v5;
+    v17 = anyObject;
     [(PrefsUILinkLabel *)self bounds];
     v7 = v6;
     v9 = v8;
@@ -114,13 +114,13 @@
     v20.size.width = v11;
     v20.size.height = v13;
     v16 = CGRectContainsPoint(v20, v19);
-    v5 = v17;
+    anyObject = v17;
     if (!v16)
     {
       if (self->_touchingURL)
       {
         [(PrefsUILinkLabel *)self setNeedsDisplay];
-        v5 = v17;
+        anyObject = v17;
       }
 
       self->_touchingURL = 0;
@@ -128,23 +128,23 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(PrefsUILinkLabel *)self setHighlighted:0, a4];
+  [(PrefsUILinkLabel *)self setHighlighted:0, event];
   self->_touchingURL = 0;
 
   [(PrefsUILinkLabel *)self setNeedsDisplay];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(PrefsUILinkLabel *)self setHighlighted:0, a4];
+  [(PrefsUILinkLabel *)self setHighlighted:0, event];
   self->_touchingURL = 0;
 
   [(PrefsUILinkLabel *)self setNeedsDisplay];
 }
 
-- (void)tappedLink:(id)a3
+- (void)tappedLink:(id)link
 {
   if ([(PrefsUILinkLabel *)self action])
   {
@@ -152,22 +152,22 @@
     [(PrefsUILinkLabel *)self setHighlighted:0];
     [(PrefsUILinkLabel *)self setNeedsDisplay];
     [(PrefsUILinkLabel *)self action];
-    v5 = [(PrefsUILinkLabel *)self target];
+    target = [(PrefsUILinkLabel *)self target];
     v4 = SFPerformSelector();
   }
 }
 
-- (id)color:(id)a3 byMultiplyingSubComponentsBy:(float)a4
+- (id)color:(id)color byMultiplyingSubComponentsBy:(float)by
 {
-  v5 = a3;
+  colorCopy = color;
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  v6 = v5;
-  if ([v5 getRed:&v11 green:&v10 blue:&v9 alpha:&v8])
+  v6 = colorCopy;
+  if ([colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:&v8])
   {
-    v6 = [MEMORY[0x1E69DC888] colorWithRed:v11 * a4 green:v10 * a4 blue:v9 * a4 alpha:v8];
+    v6 = [MEMORY[0x1E69DC888] colorWithRed:v11 * by green:v10 * by blue:v9 * by alpha:v8];
   }
 
   return v6;

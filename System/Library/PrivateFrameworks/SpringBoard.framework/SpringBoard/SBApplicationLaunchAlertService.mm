@@ -1,43 +1,43 @@
 @interface SBApplicationLaunchAlertService
 - (SBApplicationLaunchAlertService)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initObservingSceneManagers:(id)a3 launchAlertEvaluators:(id)a4 applicationController:(id)a5 alertItemsController:(id)a6;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initObservingSceneManagers:(id)managers launchAlertEvaluators:(id)evaluators applicationController:(id)controller alertItemsController:(id)itemsController;
 - (id)succinctDescription;
-- (void)_invalidateAndDismissLaunchAlertsForLaunchAlertInfo:(id)a3;
-- (void)_reallyShowLaunchAlertOfType:(unint64_t)a3 withLaunchAlertInfo:(id)a4 application:(id)a5;
-- (void)_sceneDidBecomeForeground:(id)a3;
-- (void)_sceneDidResignForeground:(id)a3;
-- (void)_sceneWillBecomeForeground:(id)a3;
-- (void)_tryShowLaunchAlertsForLaunchAlertInfo:(id)a3;
+- (void)_invalidateAndDismissLaunchAlertsForLaunchAlertInfo:(id)info;
+- (void)_reallyShowLaunchAlertOfType:(unint64_t)type withLaunchAlertInfo:(id)info application:(id)application;
+- (void)_sceneDidBecomeForeground:(id)foreground;
+- (void)_sceneDidResignForeground:(id)foreground;
+- (void)_sceneWillBecomeForeground:(id)foreground;
+- (void)_tryShowLaunchAlertsForLaunchAlertInfo:(id)info;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)showLaunchAlertOfType:(unint64_t)a3 forApplication:(id)a4;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)showLaunchAlertOfType:(unint64_t)type forApplication:(id)application;
 @end
 
 @implementation SBApplicationLaunchAlertService
 
 - (SBApplicationLaunchAlertService)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBApplicationLaunchAlertService.m" lineNumber:77 description:@"Init is unavailable."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationLaunchAlertService.m" lineNumber:77 description:@"Init is unavailable."];
 
   return 0;
 }
 
-- (id)initObservingSceneManagers:(id)a3 launchAlertEvaluators:(id)a4 applicationController:(id)a5 alertItemsController:(id)a6
+- (id)initObservingSceneManagers:(id)managers launchAlertEvaluators:(id)evaluators applicationController:(id)controller alertItemsController:(id)itemsController
 {
   v49 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  managersCopy = managers;
+  evaluatorsCopy = evaluators;
+  controllerCopy = controller;
+  itemsControllerCopy = itemsController;
+  if (managersCopy)
   {
-    if (v12)
+    if (evaluatorsCopy)
     {
       goto LABEL_3;
     }
@@ -46,17 +46,17 @@
   else
   {
     [SBApplicationLaunchAlertService initObservingSceneManagers:launchAlertEvaluators:applicationController:alertItemsController:];
-    if (v12)
+    if (evaluatorsCopy)
     {
 LABEL_3:
-      if (v13)
+      if (controllerCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_24:
       [SBApplicationLaunchAlertService initObservingSceneManagers:launchAlertEvaluators:applicationController:alertItemsController:];
-      if (v14)
+      if (itemsControllerCopy)
       {
         goto LABEL_5;
       }
@@ -66,13 +66,13 @@ LABEL_24:
   }
 
   [SBApplicationLaunchAlertService initObservingSceneManagers:launchAlertEvaluators:applicationController:alertItemsController:];
-  if (!v13)
+  if (!controllerCopy)
   {
     goto LABEL_24;
   }
 
 LABEL_4:
-  if (v14)
+  if (itemsControllerCopy)
   {
     goto LABEL_5;
   }
@@ -86,12 +86,12 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    v33 = v14;
-    v34 = v13;
-    v35 = v12;
-    objc_storeStrong(&v15->_applicationController, a5);
-    objc_storeStrong(&v16->_alertItemsController, a6);
-    objc_storeStrong(&v16->_launchAlertEvaluators, a4);
+    v33 = itemsControllerCopy;
+    v34 = controllerCopy;
+    v35 = evaluatorsCopy;
+    objc_storeStrong(&v15->_applicationController, controller);
+    objc_storeStrong(&v16->_alertItemsController, itemsController);
+    objc_storeStrong(&v16->_launchAlertEvaluators, evaluators);
     v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
     foregroundingScenes = v16->_foregroundingScenes;
     v16->_foregroundingScenes = v17;
@@ -100,13 +100,13 @@ LABEL_5:
     mapBundleIDToLaunchAlertInfo = v16->_mapBundleIDToLaunchAlertInfo;
     v16->_mapBundleIDToLaunchAlertInfo = v19;
 
-    objc_storeStrong(&v16->_sceneManagers, a3);
+    objc_storeStrong(&v16->_sceneManagers, managers);
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v36 = v11;
-    obj = v11;
+    v36 = managersCopy;
+    obj = managersCopy;
     v21 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v21)
     {
@@ -127,8 +127,8 @@ LABEL_5:
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v26 = [v25 externalForegroundApplicationSceneHandles];
-          v27 = [v26 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          externalForegroundApplicationSceneHandles = [v25 externalForegroundApplicationSceneHandles];
+          v27 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (v27)
           {
             v28 = v27;
@@ -140,17 +140,17 @@ LABEL_5:
               {
                 if (*v39 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(externalForegroundApplicationSceneHandles);
                 }
 
-                v31 = [*(*(&v38 + 1) + 8 * v30) scene];
-                [(SBApplicationLaunchAlertService *)v16 _sceneWillBecomeForeground:v31];
+                scene = [*(*(&v38 + 1) + 8 * v30) scene];
+                [(SBApplicationLaunchAlertService *)v16 _sceneWillBecomeForeground:scene];
 
                 ++v30;
               }
 
               while (v28 != v30);
-              v28 = [v26 countByEnumeratingWithState:&v38 objects:v47 count:16];
+              v28 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v38 objects:v47 count:16];
             }
 
             while (v28);
@@ -167,10 +167,10 @@ LABEL_5:
       while (v22);
     }
 
-    v12 = v35;
-    v11 = v36;
-    v14 = v33;
-    v13 = v34;
+    evaluatorsCopy = v35;
+    managersCopy = v36;
+    itemsControllerCopy = v33;
+    controllerCopy = v34;
   }
 
   return v16;
@@ -179,29 +179,29 @@ LABEL_5:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)showLaunchAlertOfType:(unint64_t)a3 forApplication:(id)a4
+- (void)showLaunchAlertOfType:(unint64_t)type forApplication:(id)application
 {
-  v10 = a4;
+  applicationCopy = application;
   BSDispatchQueueAssertMain();
-  v6 = v10;
-  if (!v10)
+  v6 = applicationCopy;
+  if (!applicationCopy)
   {
     [SBApplicationLaunchAlertService showLaunchAlertOfType:forApplication:];
     v6 = 0;
   }
 
   mapBundleIDToLaunchAlertInfo = self->_mapBundleIDToLaunchAlertInfo;
-  v8 = [v6 bundleIdentifier];
-  v9 = [(NSMutableDictionary *)mapBundleIDToLaunchAlertInfo objectForKey:v8];
+  bundleIdentifier = [v6 bundleIdentifier];
+  v9 = [(NSMutableDictionary *)mapBundleIDToLaunchAlertInfo objectForKey:bundleIdentifier];
 
-  if (a3 && !self->_invalidated && v9)
+  if (type && !self->_invalidated && v9)
   {
-    [(SBApplicationLaunchAlertService *)self _reallyShowLaunchAlertOfType:a3 withLaunchAlertInfo:v9 application:v10];
+    [(SBApplicationLaunchAlertService *)self _reallyShowLaunchAlertOfType:type withLaunchAlertInfo:v9 application:applicationCopy];
   }
 }
 
@@ -214,9 +214,9 @@ LABEL_5:
   v29 = 0u;
   v30 = 0u;
   v3 = [(NSMutableDictionary *)self->_mapBundleIDToLaunchAlertInfo copy];
-  v4 = [v3 objectEnumerator];
+  objectEnumerator = [v3 objectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -228,14 +228,14 @@ LABEL_5:
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [(SBApplicationLaunchAlertService *)self _invalidateAndDismissLaunchAlertsForLaunchAlertInfo:*(*(&v29 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v35 count:16];
     }
 
     while (v6);
@@ -310,56 +310,56 @@ LABEL_5:
   self->_invalidated = 1;
 }
 
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle
 {
-  v5 = [a4 scene];
-  [(SBApplicationLaunchAlertService *)self _sceneWillBecomeForeground:v5];
+  scene = [handle scene];
+  [(SBApplicationLaunchAlertService *)self _sceneWillBecomeForeground:scene];
 }
 
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle
 {
-  v5 = [a4 scene];
-  [(SBApplicationLaunchAlertService *)self _sceneDidResignForeground:v5];
+  scene = [handle scene];
+  [(SBApplicationLaunchAlertService *)self _sceneDidResignForeground:scene];
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  if (-[NSMutableSet containsObject:](self->_foregroundingScenes, "containsObject:") && [v4 contentState] == 2)
+  changeCopy = change;
+  if (-[NSMutableSet containsObject:](self->_foregroundingScenes, "containsObject:") && [changeCopy contentState] == 2)
   {
-    [(SBApplicationLaunchAlertService *)self _sceneDidBecomeForeground:v4];
+    [(SBApplicationLaunchAlertService *)self _sceneDidBecomeForeground:changeCopy];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBApplicationLaunchAlertService *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBApplicationLaunchAlertService *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBApplicationLaunchAlertService *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBApplicationLaunchAlertService *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBApplicationLaunchAlertService *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_mapBundleIDToLaunchAlertInfo withName:@"bundleIDsToLaunchAlertInfo" skipIfNil:1];
-  v6 = [v4 appendObject:self->_foregroundingScenes withName:@"foregroundingScenes" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBApplicationLaunchAlertService *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_mapBundleIDToLaunchAlertInfo withName:@"bundleIDsToLaunchAlertInfo" skipIfNil:1];
+  v6 = [succinctDescriptionBuilder appendObject:self->_foregroundingScenes withName:@"foregroundingScenes" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)_sceneWillBecomeForeground:(id)a3
+- (void)_sceneWillBecomeForeground:(id)foreground
 {
-  v4 = a3;
-  if (!v4)
+  foregroundCopy = foreground;
+  if (!foregroundCopy)
   {
     [SBApplicationLaunchAlertService _sceneWillBecomeForeground:];
   }
@@ -367,37 +367,37 @@ LABEL_5:
   BSDispatchQueueAssertMain();
   if (!self->_invalidated)
   {
-    if ([v4 contentState] == 2)
+    if ([foregroundCopy contentState] == 2)
     {
-      [(SBApplicationLaunchAlertService *)self _sceneDidBecomeForeground:v4];
+      [(SBApplicationLaunchAlertService *)self _sceneDidBecomeForeground:foregroundCopy];
     }
 
     else
     {
-      [v4 addObserver:self];
-      [(NSMutableSet *)self->_foregroundingScenes addObject:v4];
+      [foregroundCopy addObserver:self];
+      [(NSMutableSet *)self->_foregroundingScenes addObject:foregroundCopy];
     }
   }
 }
 
-- (void)_sceneDidBecomeForeground:(id)a3
+- (void)_sceneDidBecomeForeground:(id)foreground
 {
-  v11 = a3;
-  [v11 removeObserver:self];
-  [(NSMutableSet *)self->_foregroundingScenes removeObject:v11];
-  v4 = [v11 definition];
-  v5 = [v4 clientIdentity];
-  v6 = [v5 bundleIdentifier];
+  foregroundCopy = foreground;
+  [foregroundCopy removeObserver:self];
+  [(NSMutableSet *)self->_foregroundingScenes removeObject:foregroundCopy];
+  definition = [foregroundCopy definition];
+  clientIdentity = [definition clientIdentity];
+  bundleIdentifier = [clientIdentity bundleIdentifier];
 
-  if (!v6)
+  if (!bundleIdentifier)
   {
     goto LABEL_7;
   }
 
-  v7 = [(NSMutableDictionary *)self->_mapBundleIDToLaunchAlertInfo objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_mapBundleIDToLaunchAlertInfo objectForKey:bundleIdentifier];
   if (!v7)
   {
-    if ([(SBApplicationLaunchAlertService *)v6 _sceneDidBecomeForeground:&v12])
+    if ([(SBApplicationLaunchAlertService *)bundleIdentifier _sceneDidBecomeForeground:&v12])
     {
       v7 = 0;
       v8 = 0;
@@ -411,7 +411,7 @@ LABEL_5:
 LABEL_4:
   v9 = v8;
   v10 = [v9 count];
-  [v9 addObject:v11];
+  [v9 addObject:foregroundCopy];
   if (!v10)
   {
     [(SBApplicationLaunchAlertService *)self _tryShowLaunchAlertsForLaunchAlertInfo:v7];
@@ -420,10 +420,10 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)_sceneDidResignForeground:(id)a3
+- (void)_sceneDidResignForeground:(id)foreground
 {
-  v11 = a3;
-  if (!v11)
+  foregroundCopy = foreground;
+  if (!foregroundCopy)
   {
     [SBApplicationLaunchAlertService _sceneDidResignForeground:];
   }
@@ -431,20 +431,20 @@ LABEL_7:
   BSDispatchQueueAssertMain();
   if (!self->_invalidated)
   {
-    [v11 removeObserver:self];
-    [(NSMutableSet *)self->_foregroundingScenes removeObject:v11];
-    v4 = [v11 definition];
-    v5 = [v4 clientIdentity];
-    v6 = [v5 bundleIdentifier];
+    [foregroundCopy removeObserver:self];
+    [(NSMutableSet *)self->_foregroundingScenes removeObject:foregroundCopy];
+    definition = [foregroundCopy definition];
+    clientIdentity = [definition clientIdentity];
+    bundleIdentifier = [clientIdentity bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = [(NSMutableDictionary *)self->_mapBundleIDToLaunchAlertInfo objectForKey:v6];
+      v7 = [(NSMutableDictionary *)self->_mapBundleIDToLaunchAlertInfo objectForKey:bundleIdentifier];
       v8 = v7;
       if (v7)
       {
         v9 = *(v7 + 16);
-        [v9 removeObject:v11];
+        [v9 removeObject:foregroundCopy];
         v10 = [v9 count];
 
         if (!v10)
@@ -456,11 +456,11 @@ LABEL_7:
   }
 }
 
-- (void)_reallyShowLaunchAlertOfType:(unint64_t)a3 withLaunchAlertInfo:(id)a4 application:(id)a5
+- (void)_reallyShowLaunchAlertOfType:(unint64_t)type withLaunchAlertInfo:(id)info application:(id)application
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  applicationCopy = application;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -477,21 +477,21 @@ LABEL_7:
   v27[1] = 3221225472;
   v28 = __96__SBApplicationLaunchAlertService__reallyShowLaunchAlertOfType_withLaunchAlertInfo_application___block_invoke;
   v29 = &unk_2783B3778;
-  v30 = self;
+  selfCopy = self;
   v31 = &v34;
   v32 = &v40;
   v33 = a2;
   v11 = v27;
-  if (a3)
+  if (type)
   {
     v12 = 0;
     v46 = 0;
-    v13 = vcnt_s8(a3);
+    v13 = vcnt_s8(type);
     v13.i16[0] = vaddlv_u8(v13);
     v14 = v13.i32[0];
     do
     {
-      if (((1 << v12) & a3) != 0)
+      if (((1 << v12) & type) != 0)
       {
         v28(v11);
         if (v46)
@@ -532,9 +532,9 @@ LABEL_7:
           objc_enumerationMutation(v15);
         }
 
-        if (v9)
+        if (infoCopy)
         {
-          v19 = v9[3];
+          v19 = infoCopy[3];
         }
 
         else
@@ -547,7 +547,7 @@ LABEL_7:
         [v21 addObject:{v20, v23}];
 
         [(SBAlertItemsController *)self->_alertItemsController activateAlertItem:v35[5]];
-        [v10 setHasDisplayedLaunchAlert:1 forType:a3];
+        [applicationCopy setHasDisplayedLaunchAlert:1 forType:type];
         ++v18;
       }
 
@@ -629,13 +629,13 @@ LABEL_12:
   }
 }
 
-- (void)_tryShowLaunchAlertsForLaunchAlertInfo:(id)a3
+- (void)_tryShowLaunchAlertsForLaunchAlertInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = v4[1];
+    v5 = infoCopy[1];
   }
 
   else
@@ -676,7 +676,7 @@ LABEL_12:
 
       if (v10)
       {
-        [(SBApplicationLaunchAlertService *)self _reallyShowLaunchAlertOfType:v10 withLaunchAlertInfo:v4 application:v6];
+        [(SBApplicationLaunchAlertService *)self _reallyShowLaunchAlertOfType:v10 withLaunchAlertInfo:infoCopy application:v6];
       }
     }
 
@@ -686,24 +686,24 @@ LABEL_12:
   }
 }
 
-- (void)_invalidateAndDismissLaunchAlertsForLaunchAlertInfo:(id)a3
+- (void)_invalidateAndDismissLaunchAlertsForLaunchAlertInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v5[3];
+    v7 = infoCopy[3];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SBApplicationLaunchAlertService.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"launchAlertInfo"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationLaunchAlertService.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"launchAlertInfo"}];
 
     v7 = 0;
     v17 = 0u;

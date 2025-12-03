@@ -1,7 +1,7 @@
 @interface MSDEnrollRequest
 - (BOOL)isValid;
 - (id)getPostData;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDEnrollRequest
@@ -12,7 +12,7 @@
   v6.super_class = MSDEnrollRequest;
   if ([(MSDCommandServerRequest *)&v6 isValid])
   {
-    v3 = [(MSDEnrollRequest *)self registrationInfo];
+    registrationInfo = [(MSDEnrollRequest *)self registrationInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -29,27 +29,27 @@
 {
   if ([(MSDEnrollRequest *)self isValid])
   {
-    v3 = [(MSDEnrollRequest *)self registrationInfo];
-    v4 = [v3 mutableCopy];
+    registrationInfo = [(MSDEnrollRequest *)self registrationInfo];
+    v4 = [registrationInfo mutableCopy];
 
     v5 = +[NSTimeZone defaultTimeZone];
-    v6 = [v5 name];
-    [v4 setObject:v6 forKey:@"MSDTimeZone"];
+    name = [v5 name];
+    [v4 setObject:name forKey:@"MSDTimeZone"];
 
-    v7 = [(MSDEnrollRequest *)self deviceName];
+    deviceName = [(MSDEnrollRequest *)self deviceName];
 
-    if (v7)
+    if (deviceName)
     {
-      v8 = [(MSDEnrollRequest *)self deviceName];
-      [v4 setObject:v8 forKey:@"DeviceName"];
+      deviceName2 = [(MSDEnrollRequest *)self deviceName];
+      [v4 setObject:deviceName2 forKey:@"DeviceName"];
     }
 
-    v9 = [(MSDEnrollRequest *)self pairingCredentials];
+    pairingCredentials = [(MSDEnrollRequest *)self pairingCredentials];
 
-    if (v9)
+    if (pairingCredentials)
     {
-      v10 = [(MSDEnrollRequest *)self pairingCredentials];
-      [v4 setObject:v10 forKey:@"PairingCredential"];
+      pairingCredentials2 = [(MSDEnrollRequest *)self pairingCredentials];
+      [v4 setObject:pairingCredentials2 forKey:@"PairingCredential"];
     }
 
     v11 = sub_100063A54();
@@ -58,53 +58,53 @@
       sub_1000E58C0(v4, v11);
     }
 
-    v12 = [v4 convertToNSData];
+    convertToNSData = [v4 convertToNSData];
   }
 
   else
   {
-    v12 = 0;
+    convertToNSData = 0;
   }
 
-  return v12;
+  return convertToNSData;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v25.receiver = self;
   v25.super_class = MSDEnrollRequest;
-  v8 = [(MSDServerRequest *)&v25 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v25 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v10 = 0;
     v12 = 0;
     goto LABEL_27;
   }
 
-  v24 = v6;
-  v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v24];
+  v24 = errorCopy;
+  v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v24];
   v11 = v24;
 
   if (!v10)
   {
     v12 = 0;
 LABEL_26:
-    v6 = v11;
+    errorCopy = v11;
 LABEL_27:
-    v21 = [v8 error];
+    error2 = [v8 error];
 
-    if (v21)
+    if (error2)
     {
-      v11 = v6;
+      v11 = errorCopy;
     }
 
     else
     {
-      v22 = v6;
+      v22 = errorCopy;
       sub_1000C1390(&v22, 3727744512, @"Unexpected server response.");
       v11 = v22;
 
@@ -153,7 +153,7 @@ LABEL_27:
     }
   }
 
-  v14 = [v7 objectForKey:@"protocolVersion"];
+  v14 = [payloadCopy objectForKey:@"protocolVersion"];
   if (v14)
   {
     objc_opt_class();

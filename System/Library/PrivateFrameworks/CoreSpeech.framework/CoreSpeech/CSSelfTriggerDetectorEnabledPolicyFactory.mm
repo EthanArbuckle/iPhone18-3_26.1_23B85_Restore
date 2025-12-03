@@ -1,16 +1,16 @@
 @interface CSSelfTriggerDetectorEnabledPolicyFactory
 + (id)selfTriggerDetectorEnabledPolicy;
-+ (id)selfTriggerDetectorEnabledPolicyWithAudioSourceType:(unint64_t)a3;
++ (id)selfTriggerDetectorEnabledPolicyWithAudioSourceType:(unint64_t)type;
 + (id)studioDisplaySelfTriggerEnabledPolicy;
 @end
 
 @implementation CSSelfTriggerDetectorEnabledPolicyFactory
 
-+ (id)selfTriggerDetectorEnabledPolicyWithAudioSourceType:(unint64_t)a3
++ (id)selfTriggerDetectorEnabledPolicyWithAudioSourceType:(unint64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (!a3)
+    if (!type)
     {
       v3 = +[CSSelfTriggerDetectorEnabledPolicyFactory selfTriggerDetectorEnabledPolicy];
       goto LABEL_10;

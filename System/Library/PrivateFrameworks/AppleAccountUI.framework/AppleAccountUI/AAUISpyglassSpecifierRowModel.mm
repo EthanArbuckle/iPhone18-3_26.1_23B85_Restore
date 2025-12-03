@@ -1,18 +1,18 @@
 @interface AAUISpyglassSpecifierRowModel
-- (id)initForSpecifierType:(int64_t)a3;
+- (id)initForSpecifierType:(int64_t)type;
 @end
 
 @implementation AAUISpyglassSpecifierRowModel
 
-- (id)initForSpecifierType:(int64_t)a3
+- (id)initForSpecifierType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = AAUISpyglassSpecifierRowModel;
   v4 = [(AAUISpyglassSpecifierRowModel *)&v13 init];
   if (v4)
   {
-    v5 = a3 - 1;
-    if ((a3 - 1) <= 3)
+    v5 = type - 1;
+    if ((type - 1) <= 3)
     {
       v6 = off_1E820C790[v5];
       v7 = off_1E820C7B0[v5];

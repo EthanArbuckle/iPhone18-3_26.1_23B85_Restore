@@ -1,44 +1,44 @@
 @interface HUServiceActionControlsItemManager
-- (HUServiceActionControlsItemManager)initWithServiceActionItem:(id)a3 mode:(unint64_t)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)_itemsToHideInSet:(id)a3;
+- (HUServiceActionControlsItemManager)initWithServiceActionItem:(id)item mode:(unint64_t)mode delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_sectionIdentifiers;
-- (id)_titleForSectionWithIdentifier:(id)a3;
+- (id)_titleForSectionWithIdentifier:(id)identifier;
 - (unint64_t)_numberOfSections;
 @end
 
 @implementation HUServiceActionControlsItemManager
 
-- (HUServiceActionControlsItemManager)initWithServiceActionItem:(id)a3 mode:(unint64_t)a4 delegate:(id)a5
+- (HUServiceActionControlsItemManager)initWithServiceActionItem:(id)item mode:(unint64_t)mode delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 containingItem];
-  v11 = [v10 copy];
+  itemCopy = item;
+  delegateCopy = delegate;
+  containingItem = [itemCopy containingItem];
+  v11 = [containingItem copy];
   v14.receiver = self;
   v14.super_class = HUServiceActionControlsItemManager;
-  v12 = [(HFItemManager *)&v14 initWithDelegate:v9 sourceItem:v11];
+  v12 = [(HFItemManager *)&v14 initWithDelegate:delegateCopy sourceItem:v11];
 
   if (v12)
   {
-    [(HUServiceActionControlsItemManager *)v12 setServiceActionItem:v8];
-    v12->_mode = a4;
+    [(HUServiceActionControlsItemManager *)v12 setServiceActionItem:itemCopy];
+    v12->_mode = mode;
   }
 
   return v12;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D145D8]);
-  v6 = [(HUServiceActionControlsItemManager *)self serviceActionItem];
-  v7 = [(HUServiceActionControlsItemManager *)self serviceActionItem];
-  v8 = [v7 valueSource];
-  v9 = [v5 initWithItem:v6 valueSource:v8];
+  serviceActionItem = [(HUServiceActionControlsItemManager *)self serviceActionItem];
+  serviceActionItem2 = [(HUServiceActionControlsItemManager *)self serviceActionItem];
+  valueSource = [serviceActionItem2 valueSource];
+  v9 = [v5 initWithItem:serviceActionItem valueSource:valueSource];
   [(HUServiceActionControlsItemManager *)self setControlPanelItemProvider:v9];
 
   v14 = MEMORY[0x277D85DD0];
@@ -46,8 +46,8 @@
   v10 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider:v14];
   [v10 setFilter:&v14];
 
-  v11 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
-  v17[0] = v11;
+  controlPanelItemProvider = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
+  v17[0] = controlPanelItemProvider;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
   objc_destroyWeak(&v15);
@@ -76,11 +76,11 @@ uint64_t __65__HUServiceActionControlsItemManager__buildItemProvidersForHome___b
   return v8;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v6.receiver = self;
   v6.super_class = HUServiceActionControlsItemManager;
-  v3 = [(HFItemManager *)&v6 _itemsToHideInSet:a3];
+  v3 = [(HFItemManager *)&v6 _itemsToHideInSet:set];
   v4 = [v3 mutableCopy];
 
   return v4;
@@ -88,59 +88,59 @@ uint64_t __65__HUServiceActionControlsItemManager__buildItemProvidersForHome___b
 
 - (unint64_t)_numberOfSections
 {
-  v2 = [(HUServiceActionControlsItemManager *)self _sectionIdentifiers];
-  v3 = [v2 count];
+  _sectionIdentifiers = [(HUServiceActionControlsItemManager *)self _sectionIdentifiers];
+  v3 = [_sectionIdentifiers count];
 
   return v3;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  v4 = [(HUServiceActionControlsItemManager *)self _sectionIdentifiers];
-  if ([v4 count] <= a3)
+  _sectionIdentifiers = [(HUServiceActionControlsItemManager *)self _sectionIdentifiers];
+  if ([_sectionIdentifiers count] <= section)
   {
-    NSLog(&cfstr_ReceivedIdenti.isa, a3, [v4 count]);
+    NSLog(&cfstr_ReceivedIdenti.isa, section, [_sectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([_sectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_sectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)_titleForSectionWithIdentifier:(id)a3
+- (id)_titleForSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"HUServiceActionControlsRemoveFromTriggerSectionIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"HUServiceActionControlsRemoveFromTriggerSectionIdentifier"])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
-    v7 = [v6 items];
+    controlPanelItemProvider = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
+    items = [controlPanelItemProvider items];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__HUServiceActionControlsItemManager__titleForSectionWithIdentifier___block_invoke;
     v13[3] = &unk_277DB85D8;
-    v14 = v4;
-    v8 = [v7 na_firstObjectPassingTest:v13];
+    v14 = identifierCopy;
+    v8 = [items na_firstObjectPassingTest:v13];
 
-    v9 = [(HUServiceActionControlsItemManager *)self _actionControlsDelegate];
-    v10 = [v9 itemManager:self shouldShowSectionTitleForControlPanelItem:v8];
+    _actionControlsDelegate = [(HUServiceActionControlsItemManager *)self _actionControlsDelegate];
+    v10 = [_actionControlsDelegate itemManager:self shouldShowSectionTitleForControlPanelItem:v8];
 
     if (v10)
     {
-      v11 = [v8 latestResults];
-      v5 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      latestResults = [v8 latestResults];
+      v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     }
 
     else
@@ -173,14 +173,14 @@ uint64_t __69__HUServiceActionControlsItemManager__titleForSectionWithIdentifier
 - (id)_sectionIdentifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
-  v5 = [v4 items];
-  v6 = [v5 allObjects];
+  array = [MEMORY[0x277CBEB18] array];
+  controlPanelItemProvider = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
+  items = [controlPanelItemProvider items];
+  allObjects = [items allObjects];
 
-  v7 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
-  v8 = [v7 controlPanelItemComparator];
-  v9 = [v6 sortedArrayUsingComparator:v8];
+  controlPanelItemProvider2 = [(HUServiceActionControlsItemManager *)self controlPanelItemProvider];
+  controlPanelItemComparator = [controlPanelItemProvider2 controlPanelItemComparator];
+  v9 = [allObjects sortedArrayUsingComparator:controlPanelItemComparator];
 
   v21 = 0u;
   v22 = 0u;
@@ -202,12 +202,12 @@ uint64_t __69__HUServiceActionControlsItemManager__titleForSectionWithIdentifier
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 latestResults];
+        latestResults = [v15 latestResults];
 
-        if (v16)
+        if (latestResults)
         {
           v17 = [(HUServiceActionControlsItemManager *)self _sectionIdentifierForControlPanelItem:v15];
-          [v3 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -217,9 +217,9 @@ uint64_t __69__HUServiceActionControlsItemManager__titleForSectionWithIdentifier
     while (v12);
   }
 
-  [v3 addObject:@"HUServiceActionControlsRemoveFromTriggerSectionIdentifier"];
+  [array addObject:@"HUServiceActionControlsRemoveFromTriggerSectionIdentifier"];
 
-  return v3;
+  return array;
 }
 
 @end

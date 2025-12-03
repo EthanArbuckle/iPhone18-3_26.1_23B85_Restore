@@ -1,52 +1,52 @@
 @interface HMPBHomeReference
-+ (HMPBHomeReference)homeReferenceWithData:(id)a3;
-+ (HMPBHomeReference)homeReferenceWithHome:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (HMPBHomeReference)homeReferenceWithData:(id)data;
++ (HMPBHomeReference)homeReferenceWithHome:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBHomeReference
 
-+ (HMPBHomeReference)homeReferenceWithHome:(id)a3
++ (HMPBHomeReference)homeReferenceWithHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = objc_alloc_init(HMPBHomeReference);
-  v5 = [v3 uniqueIdentifier];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  v6 = [v5 hm_convertToData];
-  [(HMPBHomeReference *)v4 setUniqueIdentifier:v6];
-
-  return v4;
-}
-
-+ (HMPBHomeReference)homeReferenceWithData:(id)a3
-{
-  v3 = a3;
-  v4 = [[HMPBHomeReference alloc] initWithData:v3];
+  hm_convertToData = [uniqueIdentifier hm_convertToData];
+  [(HMPBHomeReference *)v4 setUniqueIdentifier:hm_convertToData];
 
   return v4;
 }
 
-- (void)mergeFrom:(id)a3
++ (HMPBHomeReference)homeReferenceWithData:(id)data
 {
-  if (*(a3 + 1))
+  dataCopy = data;
+  v4 = [[HMPBHomeReference alloc] initWithData:dataCopy];
+
+  return v4;
+}
+
+- (void)mergeFrom:(id)from
+{
+  if (*(from + 1))
   {
     [(HMPBHomeReference *)self setUniqueIdentifier:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     uniqueIdentifier = self->_uniqueIdentifier;
-    if (uniqueIdentifier | v4[1])
+    if (uniqueIdentifier | equalCopy[1])
     {
       v6 = [(NSData *)uniqueIdentifier isEqual:?];
     }
@@ -65,26 +65,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uniqueIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uniqueIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [a3 setUniqueIdentifier:uniqueIdentifier];
+    [to setUniqueIdentifier:uniqueIdentifier];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_uniqueIdentifier)
   {
@@ -94,12 +94,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [v3 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [dictionary setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   }
 
   return v4;
@@ -111,8 +111,8 @@
   v8.receiver = self;
   v8.super_class = HMPBHomeReference;
   v4 = [(HMPBHomeReference *)&v8 description];
-  v5 = [(HMPBHomeReference *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBHomeReference *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

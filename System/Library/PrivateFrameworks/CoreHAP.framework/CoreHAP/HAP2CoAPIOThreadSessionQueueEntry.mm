@@ -1,17 +1,17 @@
 @interface HAP2CoAPIOThreadSessionQueueEntry
-- (BOOL)reapSession:(id)a3;
-- (HAP2CoAPIOThreadSessionQueueEntry)initWithSession:(coap_session_t *)a3 startTime:(id)a4;
+- (BOOL)reapSession:(id)session;
+- (HAP2CoAPIOThreadSessionQueueEntry)initWithSession:(coap_session_t *)session startTime:(id)time;
 @end
 
 @implementation HAP2CoAPIOThreadSessionQueueEntry
 
-- (BOOL)reapSession:(id)a3
+- (BOOL)reapSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (self->_session)
   {
-    v5 = [(HAP2CoAPIOThreadSessionQueueEntry *)self startTime];
-    [v4 timeIntervalSinceDate:v5];
+    startTime = [(HAP2CoAPIOThreadSessionQueueEntry *)self startTime];
+    [sessionCopy timeIntervalSinceDate:startTime];
     v7 = v6;
 
     session = self->_session;
@@ -33,17 +33,17 @@
   return v9;
 }
 
-- (HAP2CoAPIOThreadSessionQueueEntry)initWithSession:(coap_session_t *)a3 startTime:(id)a4
+- (HAP2CoAPIOThreadSessionQueueEntry)initWithSession:(coap_session_t *)session startTime:(id)time
 {
-  v7 = a4;
+  timeCopy = time;
   v11.receiver = self;
   v11.super_class = HAP2CoAPIOThreadSessionQueueEntry;
   v8 = [(HAP2CoAPIOThreadSessionQueueEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_startTime, a4);
-    v9->_session = a3;
+    objc_storeStrong(&v8->_startTime, time);
+    v9->_session = session;
   }
 
   return v9;

@@ -1,7 +1,7 @@
 @interface RiverTodayCardCollectionViewCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation RiverTodayCardCollectionViewCell
@@ -21,17 +21,17 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10069C87C();
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(RiverTodayCardCollectionViewCell *)&v8 willMoveToWindow:v5];
+  windowCopy = window;
+  [(RiverTodayCardCollectionViewCell *)&v8 willMoveToWindow:windowCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {

@@ -1,7 +1,7 @@
 @interface DTL4SSettings
 - (id)specifiers;
-- (void)setL4SSettingForSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setL4SSettingForSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -169,21 +169,21 @@ LABEL_25:
   return v3;
 }
 
-- (void)setL4SSettingForSpecifier:(id)a3
+- (void)setL4SSettingForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"l4sValue"];
-  v4 = [v3 intValue];
+  v3 = [specifier propertyForKey:@"l4sValue"];
+  intValue = [v3 intValue];
 
-  _network_config_set_l4s_enabled(v4);
+  _network_config_set_l4s_enabled(intValue);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = DTL4SSettings;
-  [(DTL4SSettings *)&v21 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(DTL4SSettings *)self specifierAtIndex:[(DTL4SSettings *)self indexForIndexPath:v6]];
+  [(DTL4SSettings *)&v21 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(DTL4SSettings *)self specifierAtIndex:[(DTL4SSettings *)self indexForIndexPath:pathCopy]];
   if ([v7 cellType] == &dword_0 + 3)
   {
     v8 = PSTableCellKey;
@@ -193,8 +193,8 @@ LABEL_25:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(DTL4SSettings *)self specifiers];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    specifiers = [(DTL4SSettings *)self specifiers];
+    v11 = [specifiers countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -206,7 +206,7 @@ LABEL_25:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(specifiers);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
@@ -220,7 +220,7 @@ LABEL_25:
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [specifiers countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);

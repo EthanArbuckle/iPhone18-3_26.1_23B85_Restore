@@ -1,27 +1,27 @@
 @interface PPDocumentTopicInfo
 - (PPDocumentTopicInfo)init;
-- (double)countForAlgorithm:(unint64_t)a3;
-- (void)addToCountForAlgorithm:(unint64_t)a3 value:(double)a4;
+- (double)countForAlgorithm:(unint64_t)algorithm;
+- (void)addToCountForAlgorithm:(unint64_t)algorithm value:(double)value;
 @end
 
 @implementation PPDocumentTopicInfo
 
-- (double)countForAlgorithm:(unint64_t)a3
+- (double)countForAlgorithm:(unint64_t)algorithm
 {
-  v3 = [(NSMutableArray *)self->_topicAlgorithmCounts objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_topicAlgorithmCounts objectAtIndexedSubscript:algorithm];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addToCountForAlgorithm:(unint64_t)a3 value:(double)a4
+- (void)addToCountForAlgorithm:(unint64_t)algorithm value:(double)value
 {
   v7 = MEMORY[0x277CCABB0];
   v10 = [(NSMutableArray *)self->_topicAlgorithmCounts objectAtIndexedSubscript:?];
   [v10 doubleValue];
-  v9 = [v7 numberWithDouble:v8 + a4];
-  [(NSMutableArray *)self->_topicAlgorithmCounts setObject:v9 atIndexedSubscript:a3];
+  value = [v7 numberWithDouble:v8 + value];
+  [(NSMutableArray *)self->_topicAlgorithmCounts setObject:value atIndexedSubscript:algorithm];
 }
 
 - (PPDocumentTopicInfo)init

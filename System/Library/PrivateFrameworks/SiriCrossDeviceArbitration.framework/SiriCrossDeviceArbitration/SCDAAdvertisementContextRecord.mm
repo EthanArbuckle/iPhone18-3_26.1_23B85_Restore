@@ -1,19 +1,19 @@
 @interface SCDAAdvertisementContextRecord
-- (BOOL)compareAdvertisementPayload:(id)a3;
-- (BOOL)isSaneForVoiceTriggerEndTime:(double)a3 endtimeDistanceThreshold:(double)a4;
-- (SCDAAdvertisementContextRecord)initWithAdvertisementRecordType:(int64_t)a3 voiceTriggerEndTime:(double)a4 advertisementPayload:(id)a5 deviceID:(id)a6 electionParticipantId:(id)a7;
-- (SCDAAdvertisementContextRecord)initWithMyriadAdvertisementContextRecordData:(id)a3;
-- (char)_getAdvertisementRecordTypeForVersion:(unsigned __int8)a3 data:(id)a4;
-- (double)_getVoiceTriggerEndTimeForVersion:(unsigned __int8)a3 data:(id)a4;
+- (BOOL)compareAdvertisementPayload:(id)payload;
+- (BOOL)isSaneForVoiceTriggerEndTime:(double)time endtimeDistanceThreshold:(double)threshold;
+- (SCDAAdvertisementContextRecord)initWithAdvertisementRecordType:(int64_t)type voiceTriggerEndTime:(double)time advertisementPayload:(id)payload deviceID:(id)d electionParticipantId:(id)id;
+- (SCDAAdvertisementContextRecord)initWithMyriadAdvertisementContextRecordData:(id)data;
+- (char)_getAdvertisementRecordTypeForVersion:(unsigned __int8)version data:(id)data;
+- (double)_getVoiceTriggerEndTimeForVersion:(unsigned __int8)version data:(id)data;
 - (id)_UUIDFromBytes:(const unsigned __int8 *)(a3;
-- (id)_getDeviceIdForVersion:(unsigned __int8)a3 data:(id)a4;
-- (id)_getElectionParticipantIdForVersion:(unsigned __int8)a3 data:(id)a4;
-- (id)_getMyriadAdvertisementDataForVersion:(unsigned __int8)a3 data:(id)a4;
+- (id)_getDeviceIdForVersion:(unsigned __int8)version data:(id)data;
+- (id)_getElectionParticipantIdForVersion:(unsigned __int8)version data:(id)data;
+- (id)_getMyriadAdvertisementDataForVersion:(unsigned __int8)version data:(id)data;
 - (id)description;
 - (id)myriadAdvertisementContextAsData;
-- (id)recordForDeviceId:(id)a3;
-- (unint64_t)_advertisementPayloadSizeForVersion:(unsigned __int8)a3;
-- (void)_initializeMyriadAdvertisementContextRecordFromData:(id)a3;
+- (id)recordForDeviceId:(id)id;
+- (unint64_t)_advertisementPayloadSizeForVersion:(unsigned __int8)version;
+- (void)_initializeMyriadAdvertisementContextRecordFromData:(id)data;
 @end
 
 @implementation SCDAAdvertisementContextRecord
@@ -45,11 +45,11 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)compareAdvertisementPayload:(id)a3
+- (BOOL)compareAdvertisementPayload:(id)payload
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_advertisementPayload && (v6 = [v4 length], v6 == -[NSData length](self->_advertisementPayload, "length")))
+  payloadCopy = payload;
+  v5 = payloadCopy;
+  if (payloadCopy && self->_advertisementPayload && (v6 = [payloadCopy length], v6 == -[NSData length](self->_advertisementPayload, "length")))
   {
     v7 = [v5 isEqual:self->_advertisementPayload];
   }
@@ -62,12 +62,12 @@ LABEL_5:
   return v7;
 }
 
-- (id)recordForDeviceId:(id)a3
+- (id)recordForDeviceId:(id)id
 {
-  v4 = a3;
-  if (v4 && self->_advertisementPayload)
+  idCopy = id;
+  if (idCopy && self->_advertisementPayload)
   {
-    v5 = [[SCDARecord alloc] initWithDeviceID:v4 data:self->_advertisementPayload electionParticipantId:self->_electionParticipantId];
+    v5 = [[SCDARecord alloc] initWithDeviceID:idCopy data:self->_advertisementPayload electionParticipantId:self->_electionParticipantId];
     [(SCDARecord *)v5 setIsCollectedFromContextCollector:1];
   }
 
@@ -79,14 +79,14 @@ LABEL_5:
   return v5;
 }
 
-- (void)_initializeMyriadAdvertisementContextRecordFromData:(id)a3
+- (void)_initializeMyriadAdvertisementContextRecordFromData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 length];
-  if (v4 && v5)
+  dataCopy = data;
+  v5 = [dataCopy length];
+  if (dataCopy && v5)
   {
-    [v4 getBytes:&self->_advertisementContextVersion range:{0, 1}];
+    [dataCopy getBytes:&self->_advertisementContextVersion range:{0, 1}];
     v6 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
     {
@@ -98,18 +98,18 @@ LABEL_5:
       _os_log_impl(&dword_1DA758000, v6, OS_LOG_TYPE_INFO, "%s Initializing Myriad advertisement context (version: %d)", &v17, 0x12u);
     }
 
-    self->_advertisementRecordType = [(SCDAAdvertisementContextRecord *)self _getAdvertisementRecordTypeForVersion:self->_advertisementContextVersion data:v4];
-    [(SCDAAdvertisementContextRecord *)self _getVoiceTriggerEndTimeForVersion:self->_advertisementContextVersion data:v4];
+    self->_advertisementRecordType = [(SCDAAdvertisementContextRecord *)self _getAdvertisementRecordTypeForVersion:self->_advertisementContextVersion data:dataCopy];
+    [(SCDAAdvertisementContextRecord *)self _getVoiceTriggerEndTimeForVersion:self->_advertisementContextVersion data:dataCopy];
     self->_voiceTriggerEndTime = v8;
-    v9 = [(SCDAAdvertisementContextRecord *)self _getMyriadAdvertisementDataForVersion:self->_advertisementContextVersion data:v4];
+    v9 = [(SCDAAdvertisementContextRecord *)self _getMyriadAdvertisementDataForVersion:self->_advertisementContextVersion data:dataCopy];
     advertisementPayload = self->_advertisementPayload;
     self->_advertisementPayload = v9;
 
-    v11 = [(SCDAAdvertisementContextRecord *)self _getDeviceIdForVersion:self->_advertisementContextVersion data:v4];
+    v11 = [(SCDAAdvertisementContextRecord *)self _getDeviceIdForVersion:self->_advertisementContextVersion data:dataCopy];
     deviceID = self->_deviceID;
     self->_deviceID = v11;
 
-    v13 = [(SCDAAdvertisementContextRecord *)self _getElectionParticipantIdForVersion:self->_advertisementContextVersion data:v4];
+    v13 = [(SCDAAdvertisementContextRecord *)self _getElectionParticipantIdForVersion:self->_advertisementContextVersion data:dataCopy];
     electionParticipantId = self->_electionParticipantId;
     self->_electionParticipantId = v13;
   }
@@ -122,7 +122,7 @@ LABEL_5:
       v17 = 136315394;
       v18 = "[SCDAAdvertisementContextRecord _initializeMyriadAdvertisementContextRecordFromData:]";
       v19 = 2112;
-      v20 = v4;
+      v20 = dataCopy;
       _os_log_error_impl(&dword_1DA758000, v15, OS_LOG_TYPE_ERROR, "%s #scda-advertisementcontext: Received wedged Myriad advertisement context record %@", &v17, 0x16u);
     }
   }
@@ -130,15 +130,15 @@ LABEL_5:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getElectionParticipantIdForVersion:(unsigned __int8)a3 data:(id)a4
+- (id)_getElectionParticipantIdForVersion:(unsigned __int8)version data:(id)data
 {
-  v4 = a3;
+  versionCopy = version;
   v12[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   v12[0] = 0;
   v12[1] = 0;
-  if ((v4 - 1) < 3 || [v6 length] < 0x32)
+  if ((versionCopy - 1) < 3 || [dataCopy length] < 0x32)
   {
     v8 = 0;
   }
@@ -156,15 +156,15 @@ LABEL_5:
   return v9;
 }
 
-- (id)_getDeviceIdForVersion:(unsigned __int8)a3 data:(id)a4
+- (id)_getDeviceIdForVersion:(unsigned __int8)version data:(id)data
 {
-  v4 = a3;
+  versionCopy = version;
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dataCopy = data;
   v13[0] = 0;
   v13[1] = 0;
-  v7 = [v6 length];
-  if ((v4 - 1) > 1)
+  v7 = [dataCopy length];
+  if ((versionCopy - 1) > 1)
   {
     if (v7 >= 0x22)
     {
@@ -177,7 +177,7 @@ LABEL_5:
   {
     v8 = 17;
 LABEL_6:
-    [v6 getBytes:v13 range:{v8, 16}];
+    [dataCopy getBytes:v13 range:{v8, 16}];
     v9 = [(SCDAAdvertisementContextRecord *)self _UUIDFromBytes:v13];
     goto LABEL_8;
   }
@@ -191,17 +191,17 @@ LABEL_8:
   return v10;
 }
 
-- (id)_getMyriadAdvertisementDataForVersion:(unsigned __int8)a3 data:(id)a4
+- (id)_getMyriadAdvertisementDataForVersion:(unsigned __int8)version data:(id)data
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  dataCopy = data;
   v6 = [(SCDAAdvertisementContextRecord *)self _advertisementPayloadSizeForVersion:self->_advertisementContextVersion];
   MEMORY[0x1EEE9AC00]();
   v8 = v12 - v7;
   bzero(v12 - v7, v6);
-  if ([v5 length] >= v6 + 10)
+  if ([dataCopy length] >= v6 + 10)
   {
-    [v5 getBytes:v8 range:{10, v6}];
+    [dataCopy getBytes:v8 range:{10, v6}];
   }
 
   v9 = [MEMORY[0x1E695DEF0] dataWithBytes:v8 length:v6];
@@ -211,37 +211,37 @@ LABEL_8:
   return v9;
 }
 
-- (double)_getVoiceTriggerEndTimeForVersion:(unsigned __int8)a3 data:(id)a4
+- (double)_getVoiceTriggerEndTimeForVersion:(unsigned __int8)version data:(id)data
 {
-  v4 = a4;
+  dataCopy = data;
   v7 = 0.0;
   v5 = 0.0;
-  if ([v4 length] >= 0xA)
+  if ([dataCopy length] >= 0xA)
   {
-    [v4 getBytes:&v7 range:{2, 8}];
+    [dataCopy getBytes:&v7 range:{2, 8}];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (char)_getAdvertisementRecordTypeForVersion:(unsigned __int8)a3 data:(id)a4
+- (char)_getAdvertisementRecordTypeForVersion:(unsigned __int8)version data:(id)data
 {
-  v4 = a4;
+  dataCopy = data;
   v5 = 10;
   v7 = 10;
-  if ([v4 length] >= 2)
+  if ([dataCopy length] >= 2)
   {
-    [v4 getBytes:&v7 range:{1, 1}];
+    [dataCopy getBytes:&v7 range:{1, 1}];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (unint64_t)_advertisementPayloadSizeForVersion:(unsigned __int8)a3
+- (unint64_t)_advertisementPayloadSizeForVersion:(unsigned __int8)version
 {
-  if ((a3 - 1) < 2)
+  if ((version - 1) < 2)
   {
     return 7;
   }
@@ -252,10 +252,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)isSaneForVoiceTriggerEndTime:(double)a3 endtimeDistanceThreshold:(double)a4
+- (BOOL)isSaneForVoiceTriggerEndTime:(double)time endtimeDistanceThreshold:(double)threshold
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (time <= 0.0)
   {
     v12 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -263,7 +263,7 @@ LABEL_8:
       v15 = 136315394;
       v16 = "[SCDAAdvertisementContextRecord isSaneForVoiceTriggerEndTime:endtimeDistanceThreshold:]";
       v17 = 2048;
-      *v18 = a3;
+      *v18 = time;
       _os_log_impl(&dword_1DA758000, v12, OS_LOG_TYPE_INFO, "%s Invalid Voicetrigger endtime: %f", &v15, 0x16u);
     }
 
@@ -272,16 +272,16 @@ LABEL_8:
 
   else
   {
-    v6 = fmin(a4, 0.5);
+    v6 = fmin(threshold, 0.5);
     voiceTriggerEndTime = self->_voiceTriggerEndTime;
-    if (voiceTriggerEndTime - a3 >= 0.0)
+    if (voiceTriggerEndTime - time >= 0.0)
     {
-      v8 = voiceTriggerEndTime - a3;
+      v8 = voiceTriggerEndTime - time;
     }
 
     else
     {
-      v8 = -(voiceTriggerEndTime - a3);
+      v8 = -(voiceTriggerEndTime - time);
     }
 
     v9 = v8 <= v6;
@@ -296,7 +296,7 @@ LABEL_8:
       *&v18[4] = 2048;
       *&v18[6] = v6;
       v19 = 2048;
-      v20 = a3;
+      timeCopy = time;
       v21 = 2048;
       v22 = voiceTriggerEndTime;
       v23 = 2048;
@@ -314,7 +314,7 @@ LABEL_8:
 - (id)myriadAdvertisementContextAsData
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v4 = [(SCDAAdvertisementContextRecord *)self _advertisementPayloadSizeForVersion:self->_advertisementContextVersion];
   v5 = &buf[-((v4 + 15) & 0xFFFFFFFFFFFFFFF0)];
   bzero(v5, v4);
@@ -335,17 +335,17 @@ LABEL_8:
   v17[0] = 0;
   v17[1] = 0;
   [(NSUUID *)self->_electionParticipantId getUUIDBytes:v17];
-  [v3 appendBytes:&self->_advertisementContextVersion length:1];
-  [v3 appendBytes:&self->_advertisementRecordType length:1];
-  [v3 appendBytes:&self->_voiceTriggerEndTime length:8];
-  [v3 appendBytes:v5 length:v4];
-  [v3 appendBytes:v18 length:16];
-  [v3 appendBytes:v17 length:16];
+  [data appendBytes:&self->_advertisementContextVersion length:1];
+  [data appendBytes:&self->_advertisementRecordType length:1];
+  [data appendBytes:&self->_voiceTriggerEndTime length:8];
+  [data appendBytes:v5 length:v4];
+  [data appendBytes:v18 length:16];
+  [data appendBytes:v17 length:16];
   v8 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v3 length];
+    v10 = [data length];
     *buf = 136315394;
     v14 = "[SCDAAdvertisementContextRecord myriadAdvertisementContextAsData]";
     v15 = 2048;
@@ -355,7 +355,7 @@ LABEL_8:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return data;
 }
 
 - (id)description
@@ -363,13 +363,13 @@ LABEL_8:
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if ([(NSData *)self->_advertisementPayload length])
   {
-    v4 = [(NSData *)self->_advertisementPayload bytes];
+    bytes = [(NSData *)self->_advertisementPayload bytes];
     if ([(NSData *)self->_advertisementPayload length])
     {
       v5 = 0;
       do
       {
-        [v3 appendFormat:@"%02x", v4[v5++]];
+        [v3 appendFormat:@"%02x", bytes[v5++]];
       }
 
       while (v5 < [(NSData *)self->_advertisementPayload length]);
@@ -381,32 +381,32 @@ LABEL_8:
   voiceTriggerEndTime = self->_voiceTriggerEndTime;
   advertisementRecordType = self->_advertisementRecordType;
   deviceID = self->_deviceID;
-  v11 = [(NSUUID *)self->_electionParticipantId UUIDString];
-  v12 = [v6 stringWithFormat:@"SCDAAdvertisementContextRecord: contextVersion=%ld vtEndTime=%f advRecordType=%ld advPayload=0x%@ deviceID=%@ electionParticipantId=%@", advertisementContextVersion, *&voiceTriggerEndTime, advertisementRecordType, v3, deviceID, v11];
+  uUIDString = [(NSUUID *)self->_electionParticipantId UUIDString];
+  v12 = [v6 stringWithFormat:@"SCDAAdvertisementContextRecord: contextVersion=%ld vtEndTime=%f advRecordType=%ld advPayload=0x%@ deviceID=%@ electionParticipantId=%@", advertisementContextVersion, *&voiceTriggerEndTime, advertisementRecordType, v3, deviceID, uUIDString];
 
   return v12;
 }
 
-- (SCDAAdvertisementContextRecord)initWithMyriadAdvertisementContextRecordData:(id)a3
+- (SCDAAdvertisementContextRecord)initWithMyriadAdvertisementContextRecordData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = SCDAAdvertisementContextRecord;
   v5 = [(SCDAAdvertisementContextRecord *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SCDAAdvertisementContextRecord *)v5 _initializeMyriadAdvertisementContextRecordFromData:v4];
+    [(SCDAAdvertisementContextRecord *)v5 _initializeMyriadAdvertisementContextRecordFromData:dataCopy];
   }
 
   return v6;
 }
 
-- (SCDAAdvertisementContextRecord)initWithAdvertisementRecordType:(int64_t)a3 voiceTriggerEndTime:(double)a4 advertisementPayload:(id)a5 deviceID:(id)a6 electionParticipantId:(id)a7
+- (SCDAAdvertisementContextRecord)initWithAdvertisementRecordType:(int64_t)type voiceTriggerEndTime:(double)time advertisementPayload:(id)payload deviceID:(id)d electionParticipantId:(id)id
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  payloadCopy = payload;
+  dCopy = d;
+  idCopy = id;
   v24.receiver = self;
   v24.super_class = SCDAAdvertisementContextRecord;
   v15 = [(SCDAAdvertisementContextRecord *)&v24 init];
@@ -414,17 +414,17 @@ LABEL_8:
   if (v15)
   {
     v15->_advertisementContextVersion = kSCDAAdvertisementContextRecordVersion;
-    v15->_advertisementRecordType = a3;
-    v15->_voiceTriggerEndTime = a4;
-    v17 = [v12 copy];
+    v15->_advertisementRecordType = type;
+    v15->_voiceTriggerEndTime = time;
+    v17 = [payloadCopy copy];
     advertisementPayload = v16->_advertisementPayload;
     v16->_advertisementPayload = v17;
 
-    v19 = [v13 copy];
+    v19 = [dCopy copy];
     deviceID = v16->_deviceID;
     v16->_deviceID = v19;
 
-    v21 = [v14 copy];
+    v21 = [idCopy copy];
     electionParticipantId = v16->_electionParticipantId;
     v16->_electionParticipantId = v21;
   }

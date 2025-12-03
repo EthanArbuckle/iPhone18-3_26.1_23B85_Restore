@@ -1,20 +1,20 @@
 @interface DNCPoolEntry
-- (DNCPoolEntry)initWithDNC:(id)a3 cacheKey:(unsigned int)a4;
+- (DNCPoolEntry)initWithDNC:(id)c cacheKey:(unsigned int)key;
 @end
 
 @implementation DNCPoolEntry
 
-- (DNCPoolEntry)initWithDNC:(id)a3 cacheKey:(unsigned int)a4
+- (DNCPoolEntry)initWithDNC:(id)c cacheKey:(unsigned int)key
 {
-  v7 = a3;
+  cCopy = c;
   v11.receiver = self;
   v11.super_class = DNCPoolEntry;
   v8 = [(DNCPoolEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dnc, a3);
-    v9->_cacheKey = a4;
+    objc_storeStrong(&v8->_dnc, c);
+    v9->_cacheKey = key;
   }
 
   return v9;

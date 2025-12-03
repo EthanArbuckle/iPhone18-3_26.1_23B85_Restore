@@ -2,16 +2,16 @@
 - (BOOL)_shouldHideBarsInCurrentLayout;
 - (BOOL)containsTransferStackViewController;
 - (MailDetailNavigationController)init;
-- (MailDetailNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (MailDetailNavigationController)initWithRootViewController:(id)a3;
+- (MailDetailNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (MailDetailNavigationController)initWithRootViewController:(id)controller;
 - (id)conversationViewController;
 - (int64_t)ancestorSplitViewControllerDisplayMode;
 - (void)_commonInit;
 - (void)_updateBarHidingEnabled;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MailDetailNavigationController
@@ -20,11 +20,11 @@
 {
   [(MailDetailNavigationController *)self setDelegate:self];
   v3 = +[UIColor clearColor];
-  v4 = [(MailDetailNavigationController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MailDetailNavigationController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(MailDetailNavigationController *)self view];
-  [v5 setOpaque:0];
+  view2 = [(MailDetailNavigationController *)self view];
+  [view2 setOpaque:0];
 
   self->_ancestorSplitViewControllerDisplayMode = 0;
 }
@@ -50,12 +50,12 @@
   return v3;
 }
 
-- (MailDetailNavigationController)initWithRootViewController:(id)a3
+- (MailDetailNavigationController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = MailDetailNavigationController;
-  v5 = [(MailDetailNavigationController *)&v8 initWithRootViewController:v4];
+  v5 = [(MailDetailNavigationController *)&v8 initWithRootViewController:controllerCopy];
   v6 = v5;
   if (v5)
   {
@@ -65,11 +65,11 @@
   return v6;
 }
 
-- (MailDetailNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (MailDetailNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = MailDetailNavigationController;
-  v4 = [(MailDetailNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v4 = [(MailDetailNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v5 = v4;
   if (v4)
   {
@@ -79,44 +79,44 @@
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MailDetailNavigationController;
-  [(MailDetailNavigationController *)&v5 traitCollectionDidChange:v4];
+  [(MailDetailNavigationController *)&v5 traitCollectionDidChange:changeCopy];
   [(MailDetailNavigationController *)self _updateBarHidingEnabled];
 }
 
 - (void)_updateBarHidingEnabled
 {
-  v3 = [(MailDetailNavigationController *)self topViewController];
-  -[MailDetailNavigationController setHidesBarsOnSwipe:](self, "setHidesBarsOnSwipe:", [v3 wantsBarHidingWhenVerticallyCompact] & -[MailDetailNavigationController _shouldHideBarsInCurrentLayout](self, "_shouldHideBarsInCurrentLayout"));
+  topViewController = [(MailDetailNavigationController *)self topViewController];
+  -[MailDetailNavigationController setHidesBarsOnSwipe:](self, "setHidesBarsOnSwipe:", [topViewController wantsBarHidingWhenVerticallyCompact] & -[MailDetailNavigationController _shouldHideBarsInCurrentLayout](self, "_shouldHideBarsInCurrentLayout"));
 }
 
 - (BOOL)_shouldHideBarsInCurrentLayout
 {
-  v2 = [(MailDetailNavigationController *)self traitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  traitCollection = [(MailDetailNavigationController *)self traitCollection];
+  v3 = [traitCollection verticalSizeClass] == 1;
 
   return v3;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = MailDetailNavigationController;
-  [(MailDetailNavigationController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(MailDetailNavigationController *)self splitViewController];
-  self->_ancestorSplitViewControllerDisplayMode = [v8 displayMode];
+  [(MailDetailNavigationController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  splitViewController = [(MailDetailNavigationController *)self splitViewController];
+  self->_ancestorSplitViewControllerDisplayMode = [splitViewController displayMode];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     self->_ancestorSplitViewControllerDisplayMode = 0;
   }
@@ -127,8 +127,8 @@
   ancestorSplitViewControllerDisplayMode = self->_ancestorSplitViewControllerDisplayMode;
   if (!ancestorSplitViewControllerDisplayMode)
   {
-    v3 = [(MailDetailNavigationController *)self splitViewController];
-    ancestorSplitViewControllerDisplayMode = [v3 displayMode];
+    splitViewController = [(MailDetailNavigationController *)self splitViewController];
+    ancestorSplitViewControllerDisplayMode = [splitViewController displayMode];
   }
 
   return ancestorSplitViewControllerDisplayMode;
@@ -142,13 +142,13 @@
   return v3;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  if ([v6 isNavigationBarHidden])
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if ([controllerCopy isNavigationBarHidden])
   {
-    [v6 setNavigationBarHidden:0 animated:v5];
+    [controllerCopy setNavigationBarHidden:0 animated:animatedCopy];
   }
 }
 

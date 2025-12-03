@@ -9,7 +9,7 @@
 - (id)deviceName;
 - (id)lastActiveDate;
 - (id)lastOnWristTime;
-- (id)substituteStandardURLPlaceholders:(id)a3;
+- (id)substituteStandardURLPlaceholders:(id)placeholders;
 - (id)wristStatusString;
 - (void)logState;
 @end
@@ -19,9 +19,9 @@
 + (BOOL)isSimulationActive
 {
   v2 = +[FMSystemInfo sharedInstance];
-  v3 = [v2 isInternalBuild];
+  isInternalBuild = [v2 isInternalBuild];
 
-  if (!v3)
+  if (!isInternalBuild)
   {
     return 0;
   }
@@ -46,8 +46,8 @@
 - (id)deviceName
 {
   v2 = +[SystemConfig sharedInstance];
-  v3 = [v2 deviceName];
-  v4 = [v3 stringByAppendingString:@"_gainsborough"];
+  deviceName = [v2 deviceName];
+  v4 = [deviceName stringByAppendingString:@"_gainsborough"];
 
   return v4;
 }
@@ -96,8 +96,8 @@ LABEL_6:
 - (id)lastOnWristTime
 {
   v3 = +[NSDate date];
-  v4 = [(FMFGainsboroughServiceProvider *)self wristStatusString];
-  v5 = [v4 isEqualToString:@"on"];
+  wristStatusString = [(FMFGainsboroughServiceProvider *)self wristStatusString];
+  v5 = [wristStatusString isEqualToString:@"on"];
 
   if (v5)
   {
@@ -106,17 +106,17 @@ LABEL_6:
 
   else
   {
-    v6 = [(FMFGainsboroughServiceProvider *)self lastOnWristDate];
+    lastOnWristDate = [(FMFGainsboroughServiceProvider *)self lastOnWristDate];
 
-    if (!v6)
+    if (!lastOnWristDate)
     {
       v7 = [v3 dateByAddingTimeInterval:-300.0];
       [(FMFGainsboroughServiceProvider *)self setLastOnWristDate:v7];
     }
 
-    v8 = [(FMFGainsboroughServiceProvider *)self lastOnWristDate];
+    lastOnWristDate2 = [(FMFGainsboroughServiceProvider *)self lastOnWristDate];
 
-    v3 = v8;
+    v3 = lastOnWristDate2;
   }
 
   return v3;
@@ -150,162 +150,162 @@ LABEL_6:
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMFGainsboroughServiceProvider *)self udid];
+    udid = [(FMFGainsboroughServiceProvider *)self udid];
     v18 = 138412290;
-    v19 = v5;
+    v19 = udid;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider udid %@", &v18, 0xCu);
   }
 
   v6 = sub_100002830();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FMFGainsboroughServiceProvider *)self deviceName];
+    deviceName = [(FMFGainsboroughServiceProvider *)self deviceName];
     v18 = 138412290;
-    v19 = v7;
+    v19 = deviceName;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider deviceName %@", &v18, 0xCu);
   }
 
   v8 = sub_100002830();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(FMFGainsboroughServiceProvider *)self connectionStatusString];
+    connectionStatusString = [(FMFGainsboroughServiceProvider *)self connectionStatusString];
     v18 = 138412290;
-    v19 = v9;
+    v19 = connectionStatusString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider connectionStatusString %@", &v18, 0xCu);
   }
 
   v10 = sub_100002830();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FMFGainsboroughServiceProvider *)self wristStatusString];
+    wristStatusString = [(FMFGainsboroughServiceProvider *)self wristStatusString];
     v18 = 138412290;
-    v19 = v11;
+    v19 = wristStatusString;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider wristStatusString %@", &v18, 0xCu);
   }
 
   v12 = sub_100002830();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(FMFGainsboroughServiceProvider *)self lastActiveDate];
+    lastActiveDate = [(FMFGainsboroughServiceProvider *)self lastActiveDate];
     v18 = 138412290;
-    v19 = v13;
+    v19 = lastActiveDate;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider lastActiveDate %@", &v18, 0xCu);
   }
 
   v14 = sub_100002830();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(FMFGainsboroughServiceProvider *)self companionUDID];
+    companionUDID = [(FMFGainsboroughServiceProvider *)self companionUDID];
     v18 = 138412290;
-    v19 = v15;
+    v19 = companionUDID;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider companionUDID %@", &v18, 0xCu);
   }
 
   v16 = sub_100002830();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(FMFGainsboroughServiceProvider *)self companionUDID];
+    companionUDID2 = [(FMFGainsboroughServiceProvider *)self companionUDID];
     v18 = 138412290;
-    v19 = v17;
+    v19 = companionUDID2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "FMFGainsboroughServiceProvider pairingId %@", &v18, 0xCu);
   }
 }
 
-- (id)substituteStandardURLPlaceholders:(id)a3
+- (id)substituteStandardURLPlaceholders:(id)placeholders
 {
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v5 = +[PreferencesMgr sharedInstance];
-  v6 = [v5 hostportOverride];
+  hostportOverride = [v5 hostportOverride];
 
-  if ([v6 length])
+  if ([hostportOverride length])
   {
-    v7 = [v4 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v6];
+    v7 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:hostportOverride];
   }
 
   else
   {
-    v8 = [(ServiceProvider *)self account];
-    v9 = [v8 serverHost];
+    account = [(ServiceProvider *)self account];
+    serverHost = [account serverHost];
 
-    if (!v9)
+    if (!serverHost)
     {
       goto LABEL_6;
     }
 
-    v10 = [(ServiceProvider *)self account];
-    v11 = [v10 serverHost];
-    v7 = [v4 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v11];
+    account2 = [(ServiceProvider *)self account];
+    serverHost2 = [account2 serverHost];
+    v7 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:serverHost2];
 
-    v4 = v10;
+    placeholdersCopy = account2;
   }
 
-  v4 = v7;
+  placeholdersCopy = v7;
 LABEL_6:
   v12 = +[PreferencesMgr sharedInstance];
-  v13 = [v12 protocolSchemeOverride];
+  protocolSchemeOverride = [v12 protocolSchemeOverride];
 
-  if ([v13 length])
+  if ([protocolSchemeOverride length])
   {
-    v14 = [v4 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v13];
+    v14 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:protocolSchemeOverride];
   }
 
   else
   {
-    v15 = [(ServiceProvider *)self account];
-    v16 = [v15 serverProtocolScheme];
+    account3 = [(ServiceProvider *)self account];
+    serverProtocolScheme = [account3 serverProtocolScheme];
 
-    if (!v16)
+    if (!serverProtocolScheme)
     {
       goto LABEL_11;
     }
 
-    v17 = [(ServiceProvider *)self account];
-    v18 = [v17 serverProtocolScheme];
-    v14 = [v4 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v18];
+    account4 = [(ServiceProvider *)self account];
+    serverProtocolScheme2 = [account4 serverProtocolScheme];
+    v14 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:serverProtocolScheme2];
 
-    v4 = v17;
+    placeholdersCopy = account4;
   }
 
-  v4 = v14;
+  placeholdersCopy = v14;
 LABEL_11:
-  v19 = [(FMFServiceProvider *)self serviceIdentifierInURL];
+  serviceIdentifierInURL = [(FMFServiceProvider *)self serviceIdentifierInURL];
 
-  if (v19)
+  if (serviceIdentifierInURL)
   {
-    v20 = [(FMFServiceProvider *)self serviceIdentifierInURL];
-    v21 = [v4 stringByReplacingOccurrencesOfString:@"${service}" withString:v20];
+    serviceIdentifierInURL2 = [(FMFServiceProvider *)self serviceIdentifierInURL];
+    v21 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${service}" withString:serviceIdentifierInURL2];
 
-    v4 = v21;
+    placeholdersCopy = v21;
   }
 
-  v22 = [(ServiceProvider *)self account];
-  v23 = [v22 authId];
+  account5 = [(ServiceProvider *)self account];
+  authId = [account5 authId];
 
-  if (v23)
+  if (authId)
   {
-    v24 = [(ServiceProvider *)self account];
-    v25 = [v24 authId];
-    v26 = [v4 stringByReplacingOccurrencesOfString:@"${dsid}" withString:v25];
+    account6 = [(ServiceProvider *)self account];
+    authId2 = [account6 authId];
+    v26 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${dsid}" withString:authId2];
 
-    v4 = v26;
+    placeholdersCopy = v26;
   }
 
-  v27 = [(FMFGainsboroughServiceProvider *)self udid];
-  if (v27)
+  udid = [(FMFGainsboroughServiceProvider *)self udid];
+  if (udid)
   {
-    v28 = [v4 stringByReplacingOccurrencesOfString:@"${udid}" withString:v27];
+    v28 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${udid}" withString:udid];
 
-    v4 = v28;
+    placeholdersCopy = v28;
   }
 
-  return v4;
+  return placeholdersCopy;
 }
 
 - (id)_constructVolatileFullDeviceInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FindBaseServiceProvider *)self apsToken];
-  [v3 fm_safelyMapKey:@"aps-token" toObject:v4];
+  apsToken = [(FindBaseServiceProvider *)self apsToken];
+  [v3 fm_safelyMapKey:@"aps-token" toObject:apsToken];
   v5 = +[SystemConfig sharedInstance];
   v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isLocationServicesEnabled]);
   [v3 setObject:v6 forKeyedSubscript:@"locationServicesEnabled"];
@@ -314,34 +314,34 @@ LABEL_11:
   v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isShareMyLocationSystemServiceEnabled]);
   [v3 setObject:v8 forKeyedSubscript:@"smlLS"];
 
-  v9 = [(FMFGainsboroughServiceProvider *)self deviceName];
-  [v3 fm_safelyMapKey:@"deviceName" toObject:v9];
+  deviceName = [(FMFGainsboroughServiceProvider *)self deviceName];
+  [v3 fm_safelyMapKey:@"deviceName" toObject:deviceName];
 
   v10 = +[SystemConfig sharedInstance];
-  v11 = [v10 timezone];
-  [v3 fm_safelyMapKey:@"timezone" toObject:v11];
+  timezone = [v10 timezone];
+  [v3 fm_safelyMapKey:@"timezone" toObject:timezone];
 
   v12 = +[SystemConfig sharedInstance];
-  v13 = [v12 locale];
-  [v3 fm_safelyMapKey:@"locale" toObject:v13];
+  locale = [v12 locale];
+  [v3 fm_safelyMapKey:@"locale" toObject:locale];
 
   v14 = +[SystemConfig sharedInstance];
   v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v14 processIdentifier]);
-  v16 = [v15 stringValue];
-  [v3 fm_safelyMapKey:@"processId" toObject:v16];
+  stringValue = [v15 stringValue];
+  [v3 fm_safelyMapKey:@"processId" toObject:stringValue];
 
   v17 = +[SystemConfig sharedInstance];
   v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 unlockState]);
   [v3 setObject:v18 forKeyedSubscript:@"unlockState"];
 
-  v19 = [(FMFGainsboroughServiceProvider *)self connectionStatusString];
-  [v3 fm_safelyMapKey:@"connectionStatus" toObject:v19];
+  connectionStatusString = [(FMFGainsboroughServiceProvider *)self connectionStatusString];
+  [v3 fm_safelyMapKey:@"connectionStatus" toObject:connectionStatusString];
 
-  v20 = [(FMFGainsboroughServiceProvider *)self wristStatusString];
-  [v3 fm_safelyMapKey:@"wristStatus" toObject:v20];
+  wristStatusString = [(FMFGainsboroughServiceProvider *)self wristStatusString];
+  [v3 fm_safelyMapKey:@"wristStatus" toObject:wristStatusString];
 
-  v21 = [(FMFGainsboroughServiceProvider *)self lastOnWristTime];
-  v22 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v21 fm_epoch]);
+  lastOnWristTime = [(FMFGainsboroughServiceProvider *)self lastOnWristTime];
+  v22 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [lastOnWristTime fm_epoch]);
   [v3 fm_safelyMapKey:@"lastOnWristTime" toObject:v22];
 
   v23 = +[SystemConfig sharedInstance];
@@ -349,11 +349,11 @@ LABEL_11:
   [v3 fm_safelyMapKey:@"hasGainsborough" toObject:v24];
 
   v25 = +[FMFFencesMgr sharedInstance];
-  v26 = [v25 fenceVersion];
-  [v3 fm_safelyMapKey:@"fenceVersion" toObject:v26];
+  fenceVersion = [v25 fenceVersion];
+  [v3 fm_safelyMapKey:@"fenceVersion" toObject:fenceVersion];
 
-  v27 = [(FMFGainsboroughServiceProvider *)self _constructPairedDevicesInfo];
-  [v3 setObject:v27 forKeyedSubscript:@"otherDevices"];
+  _constructPairedDevicesInfo = [(FMFGainsboroughServiceProvider *)self _constructPairedDevicesInfo];
+  [v3 setObject:_constructPairedDevicesInfo forKeyedSubscript:@"otherDevices"];
   v28 = sub_100002830();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -370,13 +370,13 @@ LABEL_11:
   v3 = objc_alloc_init(NSMutableDictionary);
   [v3 fm_safelyMapKey:@"productType" toObject:{@"Watch3, 1"}];
   [v3 fm_safelyMapKey:@"productVersion" toObject:@"4.0"];
-  v4 = [(FMFGainsboroughServiceProvider *)self udid];
-  [v3 fm_safelyMapKey:@"udid" toObject:v4];
+  udid = [(FMFGainsboroughServiceProvider *)self udid];
+  [v3 fm_safelyMapKey:@"udid" toObject:udid];
 
   [v3 fm_safelyMapKey:@"deviceClass" toObject:@"watch"];
   v5 = +[SystemConfig sharedInstance];
-  v6 = [v5 buildVersion];
-  [v3 fm_safelyMapKey:@"buildVersion" toObject:v6];
+  buildVersion = [v5 buildVersion];
+  [v3 fm_safelyMapKey:@"buildVersion" toObject:buildVersion];
 
   [v3 fm_safelyMapKey:@"platform" toObject:@"watchos"];
   v7 = +[FMSystemInfo sharedInstance];
@@ -384,21 +384,21 @@ LABEL_11:
   [v3 fm_safelyMapKey:@"isInternal" toObject:v8];
 
   v9 = +[SystemConfig sharedInstance];
-  v10 = [v9 serialNumber];
-  [v3 fm_safelyMapKey:@"serialNumber" toObject:v10];
+  serialNumber = [v9 serialNumber];
+  [v3 fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
-  v11 = [(ServiceProvider *)self account];
-  v12 = [v11 versionHistory];
-  v13 = [v12 componentsJoinedByString:{@", "}];
+  account = [(ServiceProvider *)self account];
+  versionHistory = [account versionHistory];
+  v13 = [versionHistory componentsJoinedByString:{@", "}];
   [v3 fm_safelyMapKey:@"versionHistory" toObject:v13];
 
   v14 = +[SystemConfig sharedInstance];
-  v15 = [v14 deviceColor];
-  [v3 fm_safelyMapKey:@"deviceColor" toObject:v15];
+  deviceColor = [v14 deviceColor];
+  [v3 fm_safelyMapKey:@"deviceColor" toObject:deviceColor];
 
   v16 = +[SystemConfig sharedInstance];
-  v17 = [v16 deviceEnclosureColor];
-  [v3 fm_safelyMapKey:@"enclosureColor" toObject:v17];
+  deviceEnclosureColor = [v16 deviceEnclosureColor];
+  [v3 fm_safelyMapKey:@"enclosureColor" toObject:deviceEnclosureColor];
 
   v18 = +[SystemConfig sharedInstance];
   v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 forceTouchAvailable]);
@@ -423,8 +423,8 @@ LABEL_11:
 - (id)_constructLocationDeviceInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FMFGainsboroughServiceProvider *)self udid];
-  [v3 fm_safelyMapKey:@"udid" toObject:v4];
+  udid = [(FMFGainsboroughServiceProvider *)self udid];
+  [v3 fm_safelyMapKey:@"udid" toObject:udid];
 
   v5 = +[SystemConfig sharedInstance];
   v6 = v5;
@@ -448,11 +448,11 @@ LABEL_11:
 {
   v3 = +[NSMutableArray array];
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(FMFGainsboroughServiceProvider *)self lastActiveDate];
-  v6 = v5;
-  if (v5)
+  lastActiveDate = [(FMFGainsboroughServiceProvider *)self lastActiveDate];
+  v6 = lastActiveDate;
+  if (lastActiveDate)
   {
-    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 fm_epoch]);
+    v7 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [lastActiveDate fm_epoch]);
   }
 
   else
@@ -461,11 +461,11 @@ LABEL_11:
   }
 
   [v4 fm_safelyMapKey:@"lastActiveTime" toObject:v7];
-  v8 = [(FMFGainsboroughServiceProvider *)self companionUDID];
-  [v4 fm_safelyMapKey:@"udid" toObject:v8];
+  companionUDID = [(FMFGainsboroughServiceProvider *)self companionUDID];
+  [v4 fm_safelyMapKey:@"udid" toObject:companionUDID];
 
-  v9 = [(FMFGainsboroughServiceProvider *)self companionUDID];
-  [v4 fm_safelyMapKey:@"pairingId" toObject:v9];
+  companionUDID2 = [(FMFGainsboroughServiceProvider *)self companionUDID];
+  [v4 fm_safelyMapKey:@"pairingId" toObject:companionUDID2];
 
   [v4 fm_safelyMapKey:@"productType" toObject:{@"iPhone6, 1"}];
   [v4 fm_safelyMapKey:@"deviceClass" toObject:@"iPhone"];

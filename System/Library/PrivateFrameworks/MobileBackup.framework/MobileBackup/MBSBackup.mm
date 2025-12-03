@@ -1,16 +1,16 @@
 @interface MBSBackup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSnapshot:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSnapshot:(id)snapshot;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasQuotaUsed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasQuotaUsed:(BOOL)used;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBSBackup
@@ -25,9 +25,9 @@
   [(MBSBackup *)&v3 dealloc];
 }
 
-- (void)setHasQuotaUsed:(BOOL)a3
+- (void)setHasQuotaUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 2;
   }
@@ -40,7 +40,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSnapshot:(id)a3
+- (void)addSnapshot:(id)snapshot
 {
   snapshots = self->_snapshots;
   if (!snapshots)
@@ -49,7 +49,7 @@
     self->_snapshots = snapshots;
   }
 
-  [(NSMutableArray *)snapshots addObject:a3];
+  [(NSMutableArray *)snapshots addObject:snapshot];
 }
 
 - (id)description
@@ -122,14 +122,14 @@
   return v4;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -140,16 +140,16 @@
       while (1)
       {
         LOBYTE(v32) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          [objc_msgSend(a3 "data")];
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [objc_msgSend(from "data")];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v32 & 0x7F) << v6;
@@ -167,9 +167,9 @@
         }
       }
 
-      v12 = [a3 hasError] ? 0 : v8;
+      v12 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v12 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v12 & 7) == 4)
       {
         break;
       }
@@ -194,16 +194,16 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v32) = 0;
-            v23 = [a3 position] + 1;
-            if (v23 >= [a3 position] && (v24 = objc_msgSend(a3, "position") + 1, v24 <= objc_msgSend(a3, "length")))
+            v23 = [from position] + 1;
+            if (v23 >= [from position] && (v24 = objc_msgSend(from, "position") + 1, v24 <= objc_msgSend(from, "length")))
             {
-              [objc_msgSend(a3 "data")];
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [objc_msgSend(from "data")];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v22 |= (v32 & 0x7F) << v20;
@@ -221,7 +221,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v19 = 0;
           }
@@ -253,7 +253,7 @@ LABEL_57:
               return v26;
             }
 
-            v26 = MBSSnapshotReadFrom(v25, a3);
+            v26 = MBSSnapshotReadFrom(v25, from);
             if (!v26)
             {
               return v26;
@@ -272,7 +272,7 @@ LABEL_57:
               return v26;
             }
 
-            v26 = MBSBackupAttributesReadFrom(v27, a3);
+            v26 = MBSBackupAttributesReadFrom(v27, from);
             if (!v26)
             {
               return v26;
@@ -289,16 +289,16 @@ LABEL_46:
             while (1)
             {
               LOBYTE(v32) = 0;
-              v17 = [a3 position] + 1;
-              if (v17 >= [a3 position] && (v18 = objc_msgSend(a3, "position") + 1, v18 <= objc_msgSend(a3, "length")))
+              v17 = [from position] + 1;
+              if (v17 >= [from position] && (v18 = objc_msgSend(from, "position") + 1, v18 <= objc_msgSend(from, "length")))
               {
-                [objc_msgSend(a3 "data")];
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [objc_msgSend(from "data")];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v16 |= (v32 & 0x7F) << v14;
@@ -316,7 +316,7 @@ LABEL_46:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v19 = 0;
             }
@@ -341,17 +341,17 @@ LABEL_58:
       }
 
 LABEL_59:
-      v30 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v30 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v26) = [a3 hasError] ^ 1;
+  LOBYTE(v26) = [from hasError] ^ 1;
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_backupUDID)
   {
@@ -405,50 +405,50 @@ LABEL_59:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_backupUDID)
   {
-    [a3 setBackupUDID:?];
+    [to setBackupUDID:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_quotaUsed;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_quotaUsed;
+    *(to + 48) |= 2u;
   }
 
   if ([(MBSBackup *)self snapshotsCount])
   {
-    [a3 clearSnapshots];
-    v5 = [(MBSBackup *)self snapshotsCount];
-    if (v5)
+    [to clearSnapshots];
+    snapshotsCount = [(MBSBackup *)self snapshotsCount];
+    if (snapshotsCount)
     {
-      v6 = v5;
+      v6 = snapshotsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSnapshot:{-[MBSBackup snapshotAtIndex:](self, "snapshotAtIndex:", i)}];
+        [to addSnapshot:{-[MBSBackup snapshotAtIndex:](self, "snapshotAtIndex:", i)}];
       }
     }
   }
 
   if (self->_attributes)
   {
-    [a3 setAttributes:?];
+    [to setAttributes:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_keysLastModified;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_keysLastModified;
+    *(to + 48) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[4] = [(NSData *)self->_backupUDID copyWithZone:a3];
+  v5[4] = [(NSData *)self->_backupUDID copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     v5[2] = self->_quotaUsed;
@@ -474,7 +474,7 @@ LABEL_59:
           objc_enumerationMutation(snapshots);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v13 + 1) + 8 * i) copyWithZone:zone];
         [v5 addSnapshot:v11];
       }
 
@@ -484,7 +484,7 @@ LABEL_59:
     while (v8);
   }
 
-  v5[3] = [(MBSBackupAttributes *)self->_attributes copyWithZone:a3];
+  v5[3] = [(MBSBackupAttributes *)self->_attributes copyWithZone:zone];
   if (*&self->_has)
   {
     v5[1] = self->_keysLastModified;
@@ -494,24 +494,24 @@ LABEL_59:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     backupUDID = self->_backupUDID;
-    if (!(backupUDID | *(a3 + 4)) || (v5 = [(NSData *)backupUDID isEqual:?]) != 0)
+    if (!(backupUDID | *(equal + 4)) || (v5 = [(NSData *)backupUDID isEqual:?]) != 0)
     {
-      v7 = *(a3 + 48);
+      v7 = *(equal + 48);
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 48) & 2) == 0 || self->_quotaUsed != *(a3 + 2))
+        if ((*(equal + 48) & 2) == 0 || self->_quotaUsed != *(equal + 2))
         {
           goto LABEL_17;
         }
       }
 
-      else if ((*(a3 + 48) & 2) != 0)
+      else if ((*(equal + 48) & 2) != 0)
       {
 LABEL_17:
         LOBYTE(v5) = 0;
@@ -519,15 +519,15 @@ LABEL_17:
       }
 
       snapshots = self->_snapshots;
-      if (!(snapshots | *(a3 + 5)) || (v5 = [(NSMutableArray *)snapshots isEqual:?]) != 0)
+      if (!(snapshots | *(equal + 5)) || (v5 = [(NSMutableArray *)snapshots isEqual:?]) != 0)
       {
         attributes = self->_attributes;
-        if (!(attributes | *(a3 + 3)) || (v5 = [(MBSBackupAttributes *)attributes isEqual:?]) != 0)
+        if (!(attributes | *(equal + 3)) || (v5 = [(MBSBackupAttributes *)attributes isEqual:?]) != 0)
         {
-          LOBYTE(v5) = (*(a3 + 48) & 1) == 0;
+          LOBYTE(v5) = (*(equal + 48) & 1) == 0;
           if (*&self->_has)
           {
-            if ((*(a3 + 48) & 1) == 0 || self->_keysLastModified != *(a3 + 1))
+            if ((*(equal + 48) & 1) == 0 || self->_keysLastModified != *(equal + 1))
             {
               goto LABEL_17;
             }
@@ -570,16 +570,16 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(MBSBackup *)self setBackupUDID:?];
   }
 
-  if ((*(a3 + 48) & 2) != 0)
+  if ((*(from + 48) & 2) != 0)
   {
-    self->_quotaUsed = *(a3 + 2);
+    self->_quotaUsed = *(from + 2);
     *&self->_has |= 2u;
   }
 
@@ -587,7 +587,7 @@ LABEL_17:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(a3 + 5);
+  v5 = *(from + 5);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -612,7 +612,7 @@ LABEL_17:
   }
 
   attributes = self->_attributes;
-  v11 = *(a3 + 3);
+  v11 = *(from + 3);
   if (attributes)
   {
     if (v11)
@@ -626,9 +626,9 @@ LABEL_17:
     [(MBSBackup *)self setAttributes:?];
   }
 
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_keysLastModified = *(a3 + 1);
+    self->_keysLastModified = *(from + 1);
     *&self->_has |= 1u;
   }
 }

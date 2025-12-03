@@ -1,10 +1,10 @@
 @interface HMDRetailDemoModeRequestHandler
 - (HMDHomeManager)homeManager;
 - (HMDRelaunchHandling)relaunchHandler;
-- (HMDRetailDemoModeRequestHandler)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 relaunchHandler:(id)a5;
-- (void)_handleConfigRetailDemoModeMessage:(id)a3;
-- (void)_handleConfigRetailDemoModeMessageForFinalize:(id)a3;
-- (void)_handleConfigRetailDemoModeMessageForPrepare:(id)a3;
+- (HMDRetailDemoModeRequestHandler)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher relaunchHandler:(id)handler;
+- (void)_handleConfigRetailDemoModeMessage:(id)message;
+- (void)_handleConfigRetailDemoModeMessageForFinalize:(id)finalize;
+- (void)_handleConfigRetailDemoModeMessageForPrepare:(id)prepare;
 - (void)configure;
 @end
 
@@ -24,13 +24,13 @@
   return WeakRetained;
 }
 
-- (void)_handleConfigRetailDemoModeMessage:(id)a3
+- (void)_handleConfigRetailDemoModeMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 BOOLForKey:@"kFinalizeRetailDemoSetupKey"];
+  messageCopy = message;
+  v5 = [messageCopy BOOLForKey:@"kFinalizeRetailDemoSetupKey"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -46,42 +46,42 @@
   objc_autoreleasePoolPop(v6);
   if (v5)
   {
-    [(HMDRetailDemoModeRequestHandler *)v7 _handleConfigRetailDemoModeMessageForFinalize:v4];
+    [(HMDRetailDemoModeRequestHandler *)selfCopy _handleConfigRetailDemoModeMessageForFinalize:messageCopy];
   }
 
   else
   {
-    [(HMDRetailDemoModeRequestHandler *)v7 _handleConfigRetailDemoModeMessageForPrepare:v4];
+    [(HMDRetailDemoModeRequestHandler *)selfCopy _handleConfigRetailDemoModeMessageForPrepare:messageCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConfigRetailDemoModeMessageForFinalize:(id)a3
+- (void)_handleConfigRetailDemoModeMessageForFinalize:(id)finalize
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRetailDemoModeRequestHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  finalizeCopy = finalize;
+  workQueue = [(HMDRetailDemoModeRequestHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 BOOLForKey:@"kAllowRetailDemoModeEditingKey"];
-  v7 = [(HMDRetailDemoModeRequestHandler *)self homeManager];
-  if (v7)
+  v6 = [finalizeCopy BOOLForKey:@"kAllowRetailDemoModeEditingKey"];
+  homeManager = [(HMDRetailDemoModeRequestHandler *)self homeManager];
+  if (homeManager)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __81__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageForFinalize___block_invoke;
     v14[3] = &unk_279730C20;
-    v15 = v4;
-    v16 = self;
-    [v7 finalizeRetailDemoModeWithAllowEditing:v6 completionHandler:v14];
+    v15 = finalizeCopy;
+    selfCopy = self;
+    [homeManager finalizeRetailDemoModeWithAllowEditing:v6 completionHandler:v14];
     v8 = v15;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -93,7 +93,7 @@
 
     objc_autoreleasePoolPop(v9);
     v8 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v4 respondWithError:v8];
+    [finalizeCopy respondWithError:v8];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -126,36 +126,36 @@ void __81__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageFor
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConfigRetailDemoModeMessageForPrepare:(id)a3
+- (void)_handleConfigRetailDemoModeMessageForPrepare:(id)prepare
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRetailDemoModeRequestHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  prepareCopy = prepare;
+  workQueue = [(HMDRetailDemoModeRequestHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 dataForKey:@"kControllerKeyPairKey"];
-  v7 = [v4 stringForKey:@"kControllerPairingNameKey"];
-  v8 = [v4 dictionaryForKey:@"kAccessoriesDataBlobKey"];
+  v6 = [prepareCopy dataForKey:@"kControllerKeyPairKey"];
+  v7 = [prepareCopy stringForKey:@"kControllerPairingNameKey"];
+  v8 = [prepareCopy dictionaryForKey:@"kAccessoriesDataBlobKey"];
   v9 = v8;
   if (v6 && v7 && v8)
   {
-    v10 = [(HMDRetailDemoModeRequestHandler *)self homeManager];
-    if (v10)
+    homeManager = [(HMDRetailDemoModeRequestHandler *)self homeManager];
+    if (homeManager)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __80__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageForPrepare___block_invoke;
       v22[3] = &unk_2797358C8;
-      v23 = v4;
-      v24 = self;
-      [v10 configureRetailDemoModeWithKeyPair:v6 controllerName:v7 demoAccessories:v9 completionHandler:v22];
+      v23 = prepareCopy;
+      selfCopy = self;
+      [homeManager configureRetailDemoModeWithKeyPair:v6 controllerName:v7 demoAccessories:v9 completionHandler:v22];
       v11 = v23;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -167,14 +167,14 @@ void __81__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageFor
 
       objc_autoreleasePoolPop(v16);
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      [v4 respondWithError:v11];
+      [prepareCopy respondWithError:v11];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -200,8 +200,8 @@ void __81__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageFor
     }
 
     objc_autoreleasePoolPop(v12);
-    v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v10];
+    homeManager = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+    [prepareCopy respondWithError:homeManager];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -227,37 +227,37 @@ void __80__HMDRetailDemoModeRequestHandler__handleConfigRetailDemoModeMessageFor
 - (void)configure
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRetailDemoModeRequestHandler *)self messageDispatcher];
+  messageDispatcher = [(HMDRetailDemoModeRequestHandler *)self messageDispatcher];
   v4 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 registerForMessage:@"HomeUtilConfigRetailDemoModeMessage" receiver:self policies:v5 selector:sel__handleConfigRetailDemoModeMessage_];
+  [messageDispatcher registerForMessage:@"HomeUtilConfigRetailDemoModeMessage" receiver:self policies:v5 selector:sel__handleConfigRetailDemoModeMessage_];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDRetailDemoModeRequestHandler)initWithHomeManager:(id)a3 messageDispatcher:(id)a4 relaunchHandler:(id)a5
+- (HMDRetailDemoModeRequestHandler)initWithHomeManager:(id)manager messageDispatcher:(id)dispatcher relaunchHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  dispatcherCopy = dispatcher;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = HMDRetailDemoModeRequestHandler;
   v11 = [(HMDRetailDemoModeRequestHandler *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_homeManager, v8);
-    v13 = [v8 uuid];
+    objc_storeWeak(&v11->_homeManager, managerCopy);
+    uuid = [managerCopy uuid];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = uuid;
 
-    v15 = [v8 workQueue];
+    workQueue = [managerCopy workQueue];
     workQueue = v12->_workQueue;
-    v12->_workQueue = v15;
+    v12->_workQueue = workQueue;
 
-    objc_storeStrong(&v12->_messageDispatcher, a4);
-    objc_storeWeak(&v12->_relaunchHandler, v10);
+    objc_storeStrong(&v12->_messageDispatcher, dispatcher);
+    objc_storeWeak(&v12->_relaunchHandler, handlerCopy);
   }
 
   return v12;

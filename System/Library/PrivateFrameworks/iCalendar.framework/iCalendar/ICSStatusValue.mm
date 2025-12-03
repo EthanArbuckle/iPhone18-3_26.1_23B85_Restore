@@ -1,17 +1,17 @@
 @interface ICSStatusValue
-+ (id)statusTypeFromCode:(int)a3 statusString:(id)a4;
-+ (id)statusValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)statusTypeFromCode:(int)code statusString:(id)string;
++ (id)statusValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSStatusValue
 
-+ (id)statusValueFromICSString:(id)a3
++ (id)statusValueFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [ICSStatusValue statusTypeFromCode:[ICSComponent statusFromString:v3] statusString:v3];
+    v4 = [ICSStatusValue statusTypeFromCode:[ICSComponent statusFromString:stringCopy] statusString:stringCopy];
   }
 
   else
@@ -22,21 +22,21 @@
   return v4;
 }
 
-+ (id)statusTypeFromCode:(int)a3 statusString:(id)a4
++ (id)statusTypeFromCode:(int)code statusString:(id)string
 {
-  v5 = a4;
-  v6 = [(ICSPredefinedValue *)[ICSStatusValue alloc] initWithLong:a3];
-  [(ICSStatusValue *)v6 setStatusString:v5];
+  stringCopy = string;
+  v6 = [(ICSPredefinedValue *)[ICSStatusValue alloc] initWithLong:code];
+  [(ICSStatusValue *)v6 setStatusString:stringCopy];
 
   return v6;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v10 = a4;
-  v6 = [(ICSStatusValue *)self statusString];
-  if (v6)
+  optionsCopy = options;
+  stringCopy = string;
+  statusString = [(ICSStatusValue *)self statusString];
+  if (statusString)
   {
     [(ICSStatusValue *)self statusString];
   }
@@ -55,7 +55,7 @@
 
   v9 = v8;
 
-  iCalendarAppendStringToStringWithOptions(v9, v10, v4);
+  iCalendarAppendStringToStringWithOptions(v9, stringCopy, optionsCopy);
 }
 
 @end

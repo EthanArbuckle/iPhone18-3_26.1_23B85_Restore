@@ -1,19 +1,19 @@
 @interface AVTViewSessionProvider
-+ (CGSize)backingSizeForEnvironment:(id)a3;
++ (CGSize)backingSizeForEnvironment:(id)environment;
 + (id)creatorForAVTRecordView;
 + (id)creatorForAVTView;
-- (AVTViewSessionProvider)initWithAVTViewBackingSize:(CGSize)a3 viewCreator:(id)a4 environment:(id)a5;
+- (AVTViewSessionProvider)initWithAVTViewBackingSize:(CGSize)size viewCreator:(id)creator environment:(id)environment;
 - (AVTViewSessionProviderDelegate)delegate;
 - (CGSize)avtViewBackingSize;
-- (id)sessionWithDidBecomeActiveHandler:(id)a3 tearDownHandler:(id)a4;
+- (id)sessionWithDidBecomeActiveHandler:(id)handler tearDownHandler:(id)downHandler;
 - (void)activateNextSession;
 - (void)createContainerAndViewIfNeeded;
 - (void)dealloc;
-- (void)didLosePrimaryStatusWithSessionToPause:(id)a3;
-- (void)handleProviderReleasesPrimaryStatusNotification:(id)a3;
-- (void)handleProviderTakesPrimaryStatusNotification:(id)a3;
+- (void)didLosePrimaryStatusWithSessionToPause:(id)pause;
+- (void)handleProviderReleasesPrimaryStatusNotification:(id)notification;
+- (void)handleProviderTakesPrimaryStatusNotification:(id)notification;
 - (void)recoverPrimaryStatus;
-- (void)sessionDidTearDown:(id)a3;
+- (void)sessionDidTearDown:(id)down;
 @end
 
 @implementation AVTViewSessionProvider
@@ -48,17 +48,17 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
   return result;
 }
 
-+ (CGSize)backingSizeForEnvironment:(id)a3
++ (CGSize)backingSizeForEnvironment:(id)environment
 {
-  v3 = [a3 deviceIsPad];
+  deviceIsPad = [environment deviceIsPad];
   v4 = 380.0;
-  if (v3)
+  if (deviceIsPad)
   {
     v4 = 512.0;
   }
 
   v5 = 285.0;
-  if (v3)
+  if (deviceIsPad)
   {
     v5 = 384.0;
   }
@@ -68,12 +68,12 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
   return result;
 }
 
-- (AVTViewSessionProvider)initWithAVTViewBackingSize:(CGSize)a3 viewCreator:(id)a4 environment:(id)a5
+- (AVTViewSessionProvider)initWithAVTViewBackingSize:(CGSize)size viewCreator:(id)creator environment:(id)environment
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  creatorCopy = creator;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = AVTViewSessionProvider;
   v11 = [(AVTViewSessionProvider *)&v18 init];
@@ -82,14 +82,14 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
   {
     v11->_avtViewBackingSize.width = width;
     v11->_avtViewBackingSize.height = height;
-    v13 = [v9 copy];
+    v13 = [creatorCopy copy];
     viewCreator = v12->_viewCreator;
     v12->_viewCreator = v13;
 
-    objc_storeStrong(&v12->_environment, a5);
-    v15 = [v10 notificationCenter];
+    objc_storeStrong(&v12->_environment, environment);
+    notificationCenter = [environmentCopy notificationCenter];
     notificationCenter = v12->_notificationCenter;
-    v12->_notificationCenter = v15;
+    v12->_notificationCenter = notificationCenter;
 
     [(NSNotificationCenter *)v12->_notificationCenter addObserver:v12 selector:sel_handleProviderTakesPrimaryStatusNotification_ name:@"AVTViewSessionProviderTakePrimaryStatusNotification" object:0];
     [(NSNotificationCenter *)v12->_notificationCenter addObserver:v12 selector:sel_handleProviderReleasesPrimaryStatusNotification_ name:@"AVTViewSessionProviderReleasePrimaryStatusNotification" object:0];
@@ -106,24 +106,24 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
   [(AVTViewSessionProvider *)&v3 dealloc];
 }
 
-- (id)sessionWithDidBecomeActiveHandler:(id)a3 tearDownHandler:(id)a4
+- (id)sessionWithDidBecomeActiveHandler:(id)handler tearDownHandler:(id)downHandler
 {
-  v6 = a4;
-  v7 = a3;
+  downHandlerCopy = downHandler;
+  handlerCopy = handler;
   v8 = [AVTViewSession alloc];
   [(AVTViewSessionProvider *)self avtViewBackingSize];
-  v9 = [(AVTViewSession *)v8 initWithBecomeActiveHandler:v7 tearDownHandler:v6 aspectRatio:?];
+  v9 = [(AVTViewSession *)v8 initWithBecomeActiveHandler:handlerCopy tearDownHandler:downHandlerCopy aspectRatio:?];
 
   [(AVTViewSession *)v9 setDelegate:self];
   [(AVTViewSessionProvider *)self setPendingSession:v9];
-  v10 = [(AVTViewSessionProvider *)self activeSession];
-  LODWORD(v6) = [v10 isActive];
+  activeSession = [(AVTViewSessionProvider *)self activeSession];
+  LODWORD(downHandlerCopy) = [activeSession isActive];
 
-  v11 = [(AVTViewSessionProvider *)self activeSession];
-  v12 = v11;
-  if (v6)
+  activeSession2 = [(AVTViewSessionProvider *)self activeSession];
+  v12 = activeSession2;
+  if (downHandlerCopy)
   {
-    [v11 tearDownWithCompletionHandler:0];
+    [activeSession2 tearDownWithCompletionHandler:0];
   }
 
   else
@@ -131,13 +131,13 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
 
     if (!v12)
     {
-      v13 = [(AVTViewSessionProvider *)self delegate];
+      delegate = [(AVTViewSessionProvider *)self delegate];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v15 = [(AVTViewSessionProvider *)self delegate];
-        [v15 sessionProviderWillStartCameraSession:self];
+        delegate2 = [(AVTViewSessionProvider *)self delegate];
+        [delegate2 sessionProviderWillStartCameraSession:self];
       }
 
       [(AVTViewSessionProvider *)self activateNextSession];
@@ -149,31 +149,31 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
 
 - (void)activateNextSession
 {
-  v3 = [(AVTViewSessionProvider *)self pendingSession];
+  pendingSession = [(AVTViewSessionProvider *)self pendingSession];
 
-  v4 = [(AVTViewSessionProvider *)self notificationCenter];
-  v5 = v4;
-  if (v3)
+  notificationCenter = [(AVTViewSessionProvider *)self notificationCenter];
+  v5 = notificationCenter;
+  if (pendingSession)
   {
-    [v4 postNotificationName:@"AVTViewSessionProviderTakePrimaryStatusNotification" object:self];
+    [notificationCenter postNotificationName:@"AVTViewSessionProviderTakePrimaryStatusNotification" object:self];
 
     [(AVTViewSessionProvider *)self createContainerAndViewIfNeeded];
-    v6 = [(AVTViewSessionProvider *)self pendingSession];
-    [(AVTViewSessionProvider *)self setActiveSession:v6];
+    pendingSession2 = [(AVTViewSessionProvider *)self pendingSession];
+    [(AVTViewSessionProvider *)self setActiveSession:pendingSession2];
 
     [(AVTViewSessionProvider *)self setPendingSession:0];
-    v12 = [(AVTViewSessionProvider *)self activeSession];
-    v7 = [(AVTViewSessionProvider *)self avtView];
-    v8 = [(AVTViewSessionProvider *)self avtViewContainer];
-    v9 = [(AVTViewSessionProvider *)self avtViewUpdater];
-    [v12 activateWithAVTView:v7 container:v8 updater:v9];
+    activeSession = [(AVTViewSessionProvider *)self activeSession];
+    avtView = [(AVTViewSessionProvider *)self avtView];
+    avtViewContainer = [(AVTViewSessionProvider *)self avtViewContainer];
+    avtViewUpdater = [(AVTViewSessionProvider *)self avtViewUpdater];
+    [activeSession activateWithAVTView:avtView container:avtViewContainer updater:avtViewUpdater];
   }
 
   else
   {
-    [v4 postNotificationName:@"AVTViewSessionProviderReleasePrimaryStatusNotification" object:self];
+    [notificationCenter postNotificationName:@"AVTViewSessionProviderReleasePrimaryStatusNotification" object:self];
 
-    v10 = [(AVTViewSessionProvider *)self delegate];
+    delegate = [(AVTViewSessionProvider *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -181,77 +181,77 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
       return;
     }
 
-    v12 = [(AVTViewSessionProvider *)self delegate];
-    [v12 sessionProviderDidEndCameraSession:self];
+    activeSession = [(AVTViewSessionProvider *)self delegate];
+    [activeSession sessionProviderDidEndCameraSession:self];
   }
 }
 
 - (void)createContainerAndViewIfNeeded
 {
-  v3 = [(AVTViewSessionProvider *)self avtViewContainer];
+  avtViewContainer = [(AVTViewSessionProvider *)self avtViewContainer];
 
-  if (!v3)
+  if (!avtViewContainer)
   {
-    v4 = [(AVTViewSessionProvider *)self viewCreator];
+    viewCreator = [(AVTViewSessionProvider *)self viewCreator];
     [(AVTViewSessionProvider *)self avtViewBackingSize];
     v15 = 0;
     v16 = 0;
-    (v4)[2](v4, &v16, &v15);
+    (viewCreator)[2](viewCreator, &v16, &v15);
     v5 = v16;
     v6 = v15;
 
     [(AVTViewSessionProvider *)self setAvtViewContainer:v6];
     [(AVTViewSessionProvider *)self setAvtView:v5];
     v7 = [AVTViewUpdater alloc];
-    v8 = [(AVTViewSessionProvider *)self avtView];
-    v9 = [(AVTViewSessionProvider *)self environment];
-    v10 = [v9 logger];
-    v11 = [(AVTViewUpdater *)v7 initWithAVTView:v8 logger:v10];
+    avtView = [(AVTViewSessionProvider *)self avtView];
+    environment = [(AVTViewSessionProvider *)self environment];
+    logger = [environment logger];
+    v11 = [(AVTViewUpdater *)v7 initWithAVTView:avtView logger:logger];
     [(AVTViewSessionProvider *)self setAvtViewUpdater:v11];
 
     v12 = [AVTFaceTrackingManager alloc];
-    v13 = [(AVTViewSessionProvider *)self environment];
-    v14 = [(AVTFaceTrackingManager *)v12 initWithAvatarView:v5 environment:v13];
+    environment2 = [(AVTViewSessionProvider *)self environment];
+    v14 = [(AVTFaceTrackingManager *)v12 initWithAvatarView:v5 environment:environment2];
 
     [(AVTViewSessionProvider *)self setFaceTrackingManager:v14];
   }
 }
 
-- (void)handleProviderTakesPrimaryStatusNotification:(id)a3
+- (void)handleProviderTakesPrimaryStatusNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
 
-  if (v4 != self)
+  if (object != self)
   {
-    v5 = [(AVTViewSessionProvider *)self activeSession];
-    [(AVTViewSessionProvider *)self didLosePrimaryStatusWithSessionToPause:v5];
+    activeSession = [(AVTViewSessionProvider *)self activeSession];
+    [(AVTViewSessionProvider *)self didLosePrimaryStatusWithSessionToPause:activeSession];
   }
 }
 
-- (void)didLosePrimaryStatusWithSessionToPause:(id)a3
+- (void)didLosePrimaryStatusWithSessionToPause:(id)pause
 {
-  v7 = a3;
-  v4 = [v7 avtView];
-  v5 = [v4 enableFaceTracking];
+  pauseCopy = pause;
+  avtView = [pauseCopy avtView];
+  enableFaceTracking = [avtView enableFaceTracking];
 
-  if (v5)
+  if (enableFaceTracking)
   {
-    v6 = [v7 avtView];
-    [v6 setEnableFaceTracking:0];
+    avtView2 = [pauseCopy avtView];
+    [avtView2 setEnableFaceTracking:0];
 
-    [(AVTViewSessionProvider *)self setPausedTrackingSession:v7];
+    [(AVTViewSessionProvider *)self setPausedTrackingSession:pauseCopy];
   }
 }
 
-- (void)handleProviderReleasesPrimaryStatusNotification:(id)a3
+- (void)handleProviderReleasesPrimaryStatusNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
 
-  if (v4 != self)
+  if (object != self)
   {
-    v5 = [(AVTViewSessionProvider *)self pausedTrackingSession];
+    pausedTrackingSession = [(AVTViewSessionProvider *)self pausedTrackingSession];
 
-    if (v5)
+    if (pausedTrackingSession)
     {
 
       [(AVTViewSessionProvider *)self recoverPrimaryStatus];
@@ -261,28 +261,28 @@ AVTFixedSizeViewContainer *__49__AVTViewSessionProvider_creatorForAVTRecordView_
 
 - (void)recoverPrimaryStatus
 {
-  v3 = [(AVTViewSessionProvider *)self pausedTrackingSession];
-  v4 = [v3 avtView];
-  [v4 setEnableFaceTracking:1];
+  pausedTrackingSession = [(AVTViewSessionProvider *)self pausedTrackingSession];
+  avtView = [pausedTrackingSession avtView];
+  [avtView setEnableFaceTracking:1];
 
   [(AVTViewSessionProvider *)self setPausedTrackingSession:0];
 }
 
-- (void)sessionDidTearDown:(id)a3
+- (void)sessionDidTearDown:(id)down
 {
-  v6 = a3;
-  v4 = [(AVTViewSessionProvider *)self pendingSession];
+  downCopy = down;
+  pendingSession = [(AVTViewSessionProvider *)self pendingSession];
 
-  if (v4 == v6)
+  if (pendingSession == downCopy)
   {
     [(AVTViewSessionProvider *)self setPendingSession:0];
   }
 
   else
   {
-    v5 = [(AVTViewSessionProvider *)self activeSession];
+    activeSession = [(AVTViewSessionProvider *)self activeSession];
 
-    if (v5 != v6)
+    if (activeSession != downCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This method can only be called if the session was known to the provider"];
     }

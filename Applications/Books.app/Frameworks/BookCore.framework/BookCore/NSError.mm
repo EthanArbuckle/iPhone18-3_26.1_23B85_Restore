@@ -6,14 +6,14 @@
 
 - (void)logRecursively
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [(NSError *)self localizedDescription];
-  v5 = [(NSError *)self localizedFailureReason];
-  v6 = [(NSError *)self localizedRecoverySuggestion];
-  v7 = [(NSError *)self localizedRecoveryOptions];
-  NSLog(@"NSError %@\n%@\n%@\n%@\n%@\n%@", self, v4, v5, v6, v7, v3);
+  userInfo = [(NSError *)self userInfo];
+  localizedDescription = [(NSError *)self localizedDescription];
+  localizedFailureReason = [(NSError *)self localizedFailureReason];
+  localizedRecoverySuggestion = [(NSError *)self localizedRecoverySuggestion];
+  localizedRecoveryOptions = [(NSError *)self localizedRecoveryOptions];
+  NSLog(@"NSError %@\n%@\n%@\n%@\n%@\n%@", self, localizedDescription, localizedFailureReason, localizedRecoverySuggestion, localizedRecoveryOptions, userInfo);
 
-  v8 = [v3 objectForKey:@"NSDetailedErrors"];
+  v8 = [userInfo objectForKey:@"NSDetailedErrors"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 count])
   {

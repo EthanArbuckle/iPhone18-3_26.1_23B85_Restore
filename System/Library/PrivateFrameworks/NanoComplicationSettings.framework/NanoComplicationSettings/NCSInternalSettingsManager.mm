@@ -2,20 +2,20 @@
 - (BOOL)hasSettings;
 - (NCSInternalSettingsManager)init;
 - (NSString)selectedComplicationIdentifier;
-- (id)complicationDefinitionForAppBundleIdentifier:(id)a3;
-- (id)complicationDefinitionForComplicationIdentifier:(id)a3;
-- (id)complicationDefinitionForWatchKitIdentifier:(id)a3;
-- (id)complicationIdentifierForComplicationDefinitionAtIndex:(unint64_t)a3;
+- (id)complicationDefinitionForAppBundleIdentifier:(id)identifier;
+- (id)complicationDefinitionForComplicationIdentifier:(id)identifier;
+- (id)complicationDefinitionForWatchKitIdentifier:(id)identifier;
+- (id)complicationIdentifierForComplicationDefinitionAtIndex:(unint64_t)index;
 - (unint64_t)_numberOfActiveComplications;
 - (void)_saveSettings;
-- (void)addComplicationDefinition:(id)a3;
-- (void)enumerateAllComplicationDefinitionsUsingBlock:(id)a3;
-- (void)enumerateComplicationDefinitionsUsingBlock:(id)a3;
+- (void)addComplicationDefinition:(id)definition;
+- (void)enumerateAllComplicationDefinitionsUsingBlock:(id)block;
+- (void)enumerateComplicationDefinitionsUsingBlock:(id)block;
 - (void)loadSettings;
-- (void)moveComplicationDefinitionFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)removeComplicationDefinitionsInArray:(id)a3;
+- (void)moveComplicationDefinitionFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)removeComplicationDefinitionsInArray:(id)array;
 - (void)saveSettings;
-- (void)setSelectedComplicationIdentifier:(id)a3;
+- (void)setSelectedComplicationIdentifier:(id)identifier;
 @end
 
 @implementation NCSInternalSettingsManager
@@ -45,7 +45,7 @@
   if (!selectedComplicationIdentifier)
   {
     v4 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano-complications"];
-    v5 = [v4 synchronize];
+    synchronize = [v4 synchronize];
     v6 = [v4 stringForKey:@"SelectedComplicationIdentifier"];
     v7 = self->_selectedComplicationIdentifier;
     self->_selectedComplicationIdentifier = v6;
@@ -56,18 +56,18 @@
   return selectedComplicationIdentifier;
 }
 
-- (void)setSelectedComplicationIdentifier:(id)a3
+- (void)setSelectedComplicationIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_selectedComplicationIdentifier isEqualToString:?])
   {
-    v4 = [v9 copy];
+    v4 = [identifierCopy copy];
     selectedComplicationIdentifier = self->_selectedComplicationIdentifier;
     self->_selectedComplicationIdentifier = v4;
 
     v6 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano-complications"];
     [v6 setObject:self->_selectedComplicationIdentifier forKey:@"SelectedComplicationIdentifier"];
-    v7 = [v6 synchronize];
+    synchronize = [v6 synchronize];
     v8 = [MEMORY[0x277CBEB98] setWithObject:@"SelectedComplicationIdentifier"];
     [(NPSManager *)self->_syncManager synchronizeNanoDomain:@"com.apple.nano-complications" keys:v8];
   }
@@ -75,23 +75,23 @@
 
 - (BOOL)hasSettings
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__NCSInternalSettingsManager_hasSettings__block_invoke;
   v5[3] = &unk_27992E050;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __41__NCSInternalSettingsManager_hasSettings__block_invoke(uint64_t a1)
@@ -101,23 +101,23 @@ uint64_t __41__NCSInternalSettingsManager_hasSettings__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addComplicationDefinition:(id)a3
+- (void)addComplicationDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__NCSInternalSettingsManager_addComplicationDefinition___block_invoke;
   v7[3] = &unk_27992E078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = definitionCopy;
+  v6 = definitionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeComplicationDefinitionsInArray:(id)a3
+- (void)removeComplicationDefinitionsInArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -125,20 +125,20 @@ uint64_t __41__NCSInternalSettingsManager_hasSettings__block_invoke(uint64_t a1)
   v7[2] = __67__NCSInternalSettingsManager_removeComplicationDefinitionsInArray___block_invoke;
   v7[3] = &unk_27992E078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)enumerateComplicationDefinitionsUsingBlock:(id)a3
+- (void)enumerateComplicationDefinitionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__NCSInternalSettingsManager_enumerateComplicationDefinitionsUsingBlock___block_invoke;
   v6[3] = &unk_27992E0A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(NCSInternalSettingsManager *)self enumerateAllComplicationDefinitionsUsingBlock:v6];
 }
 
@@ -151,9 +151,9 @@ void __73__NCSInternalSettingsManager_enumerateComplicationDefinitionsUsingBlock
   }
 }
 
-- (void)enumerateAllComplicationDefinitionsUsingBlock:(id)a3
+- (void)enumerateAllComplicationDefinitionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -174,7 +174,7 @@ void __73__NCSInternalSettingsManager_enumerateComplicationDefinitionsUsingBlock
   v8[1] = 3221225472;
   v8[2] = __76__NCSInternalSettingsManager_enumerateAllComplicationDefinitionsUsingBlock___block_invoke_2;
   v8[3] = &unk_27992E0A0;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
   [v6 enumerateObjectsUsingBlock:v8];
 
@@ -191,7 +191,7 @@ uint64_t __76__NCSInternalSettingsManager_enumerateAllComplicationDefinitionsUsi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)moveComplicationDefinitionFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveComplicationDefinitionFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
@@ -200,8 +200,8 @@ uint64_t __76__NCSInternalSettingsManager_enumerateAllComplicationDefinitionsUsi
   block[2] = __74__NCSInternalSettingsManager_moveComplicationDefinitionFromIndex_toIndex___block_invoke;
   block[3] = &unk_27992E0C8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = index;
+  block[6] = toIndex;
   dispatch_async(queue, block);
 }
 
@@ -213,9 +213,9 @@ void __74__NCSInternalSettingsManager_moveComplicationDefinitionFromIndex_toInde
   [*(a1 + 32) _saveSettings];
 }
 
-- (id)complicationDefinitionForAppBundleIdentifier:(id)a3
+- (id)complicationDefinitionForAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -227,7 +227,7 @@ void __74__NCSInternalSettingsManager_moveComplicationDefinitionFromIndex_toInde
   v8[1] = 3221225472;
   v8[2] = __75__NCSInternalSettingsManager_complicationDefinitionForAppBundleIdentifier___block_invoke;
   v8[3] = &unk_27992E0F0;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(NCSInternalSettingsManager *)self enumerateAllComplicationDefinitionsUsingBlock:v8];
@@ -251,9 +251,9 @@ void __75__NCSInternalSettingsManager_complicationDefinitionForAppBundleIdentifi
   }
 }
 
-- (id)complicationDefinitionForComplicationIdentifier:(id)a3
+- (id)complicationDefinitionForComplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -265,7 +265,7 @@ void __75__NCSInternalSettingsManager_complicationDefinitionForAppBundleIdentifi
   v8[1] = 3221225472;
   v8[2] = __78__NCSInternalSettingsManager_complicationDefinitionForComplicationIdentifier___block_invoke;
   v8[3] = &unk_27992E0F0;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(NCSInternalSettingsManager *)self enumerateAllComplicationDefinitionsUsingBlock:v8];
@@ -289,9 +289,9 @@ void __78__NCSInternalSettingsManager_complicationDefinitionForComplicationIdent
   }
 }
 
-- (id)complicationDefinitionForWatchKitIdentifier:(id)a3
+- (id)complicationDefinitionForWatchKitIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -303,7 +303,7 @@ void __78__NCSInternalSettingsManager_complicationDefinitionForComplicationIdent
   v8[1] = 3221225472;
   v8[2] = __74__NCSInternalSettingsManager_complicationDefinitionForWatchKitIdentifier___block_invoke;
   v8[3] = &unk_27992E0F0;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(NCSInternalSettingsManager *)self enumerateAllComplicationDefinitionsUsingBlock:v8];
@@ -382,7 +382,7 @@ void __74__NCSInternalSettingsManager_complicationDefinitionForWatchKitIdentifie
     objc_storeStrong(&self->_storedSettings, v3);
     v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano-complications"];
     [v10 setObject:v3 forKey:@"ComplicationDefinitions"];
-    v11 = [v10 synchronize];
+    synchronize = [v10 synchronize];
     v12 = [MEMORY[0x277CBEB98] setWithObject:@"ComplicationDefinitions"];
     [(NPSManager *)self->_syncManager synchronizeNanoDomain:@"com.apple.nano-complications" keys:v12];
   }
@@ -390,7 +390,7 @@ void __74__NCSInternalSettingsManager_complicationDefinitionForWatchKitIdentifie
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)complicationIdentifierForComplicationDefinitionAtIndex:(unint64_t)a3
+- (id)complicationIdentifierForComplicationDefinitionAtIndex:(unint64_t)index
 {
   dispatch_assert_queue_not_V2(self->_queue);
   v9 = 0;
@@ -406,12 +406,12 @@ void __74__NCSInternalSettingsManager_complicationDefinitionForWatchKitIdentifie
   block[3] = &unk_27992E140;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(queue, block);
-  v6 = [v10[5] complicationIdentifier];
+  complicationIdentifier = [v10[5] complicationIdentifier];
   _Block_object_dispose(&v9, 8);
 
-  return v6;
+  return complicationIdentifier;
 }
 
 uint64_t __85__NCSInternalSettingsManager_complicationIdentifierForComplicationDefinitionAtIndex___block_invoke(void *a1)

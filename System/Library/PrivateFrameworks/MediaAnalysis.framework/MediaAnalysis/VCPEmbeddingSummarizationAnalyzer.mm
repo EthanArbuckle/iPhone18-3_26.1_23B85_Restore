@@ -1,23 +1,23 @@
 @interface VCPEmbeddingSummarizationAnalyzer
 - (id)summarizedEmbeddings;
-- (int)findSummarizedEmbeddings:(id)a3 embeddingSize:(unint64_t)a4 isFP16:(BOOL)a5;
+- (int)findSummarizedEmbeddings:(id)embeddings embeddingSize:(unint64_t)size isFP16:(BOOL)p16;
 @end
 
 @implementation VCPEmbeddingSummarizationAnalyzer
 
-- (int)findSummarizedEmbeddings:(id)a3 embeddingSize:(unint64_t)a4 isFP16:(BOOL)a5
+- (int)findSummarizedEmbeddings:(id)embeddings embeddingSize:(unint64_t)size isFP16:(BOOL)p16
 {
-  v8 = a3;
-  objc_storeStrong(&self->_videoEmbeddings, a3);
+  embeddingsCopy = embeddings;
+  objc_storeStrong(&self->_videoEmbeddings, embeddings);
   if ([(NSArray *)self->_videoEmbeddings count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     summarizedEmbeddingIds = self->_summarizedEmbeddingIds;
-    self->_summarizedEmbeddingIds = v9;
+    self->_summarizedEmbeddingIds = array;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     representativeMapping = self->_representativeMapping;
-    self->_representativeMapping = v11;
+    self->_representativeMapping = array2;
 
     v21 = 0uLL;
     v22 = 0;
@@ -25,7 +25,7 @@
     v20 = 0;
     __p = 0;
     v18 = 0uLL;
-    getEmbeddingArray(self->_videoEmbeddings, a4, &v15);
+    getEmbeddingArray(self->_videoEmbeddings, size, &v15);
     std::vector<dlib::matrix<float,1l,0l,dlib::memory_manager_stateless_kernel_1<char>,dlib::row_major_layout>>::__vdeallocate(&v21);
     v21 = v15;
     v22 = v16;
@@ -66,7 +66,7 @@
 - (id)summarizedEmbeddings
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_videoEmbeddings count]&& [(NSMutableArray *)self->_summarizedEmbeddingIds count]&& [(NSMutableArray *)self->_representativeMapping count])
   {
     v4 = *(MEMORY[0x1E6960CA8] + 16);
@@ -92,8 +92,8 @@
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [v9 unsignedIntValue];
-          if ([(NSArray *)self->_videoEmbeddings count]> v10)
+          unsignedIntValue = [v9 unsignedIntValue];
+          if ([(NSArray *)self->_videoEmbeddings count]> unsignedIntValue)
           {
             memset(&v21, 0, sizeof(v21));
             v11 = -[NSArray objectAtIndexedSubscript:](self->_videoEmbeddings, "objectAtIndexedSubscript:", [v9 unsignedIntValue]);
@@ -130,10 +130,10 @@
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v30[2] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
-    [v3 addObject:v16];
+    [array addObject:v16];
   }
 
-  return v3;
+  return array;
 }
 
 @end

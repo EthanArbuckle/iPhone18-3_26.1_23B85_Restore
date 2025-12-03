@@ -1,18 +1,18 @@
 @interface DisplayFilterPageGridViewController
-- (DisplayFilterPageGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DisplayFilterPageGridViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_dynamicPreviewView;
 - (void)_updateConstraints;
 - (void)loadView;
-- (void)setPageHeight:(double)a3;
+- (void)setPageHeight:(double)height;
 @end
 
 @implementation DisplayFilterPageGridViewController
 
-- (DisplayFilterPageGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DisplayFilterPageGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = DisplayFilterPageGridViewController;
-  v4 = [(DisplayFilterPageGridViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(DisplayFilterPageGridViewController *)&v14 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -35,12 +35,12 @@
   return v4;
 }
 
-- (void)setPageHeight:(double)a3
+- (void)setPageHeight:(double)height
 {
   v5.receiver = self;
   v5.super_class = DisplayFilterPageGridViewController;
-  [(DisplayFilterPageViewController *)&v5 setPageHeight:a3];
-  v4 = [(DisplayFilterPageGridViewController *)self view];
+  [(DisplayFilterPageViewController *)&v5 setPageHeight:height];
+  view = [(DisplayFilterPageGridViewController *)self view];
   [(DisplayFilterPageGridViewController *)self _updateConstraints];
 }
 
@@ -52,8 +52,8 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(DisplayFilterPageGridViewController *)self swatchWidthConstraints];
-  v6 = [v5 countByEnumeratingWithState:&v37 objects:v44 count:16];
+  swatchWidthConstraints = [(DisplayFilterPageGridViewController *)self swatchWidthConstraints];
+  v6 = [swatchWidthConstraints countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -65,7 +65,7 @@
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(swatchWidthConstraints);
         }
 
         [*(*(&v37 + 1) + 8 * v9) setConstant:v4 * 6.0 / 3.0];
@@ -73,7 +73,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v37 objects:v44 count:16];
+      v7 = [swatchWidthConstraints countByEnumeratingWithState:&v37 objects:v44 count:16];
     }
 
     while (v7);
@@ -83,8 +83,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [(DisplayFilterPageGridViewController *)self swatchHeightConstraints];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  swatchHeightConstraints = [(DisplayFilterPageGridViewController *)self swatchHeightConstraints];
+  v11 = [swatchHeightConstraints countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v11)
   {
     v12 = v11;
@@ -96,7 +96,7 @@
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(swatchHeightConstraints);
         }
 
         [*(*(&v33 + 1) + 8 * v14) setConstant:v4];
@@ -104,7 +104,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      v12 = [swatchHeightConstraints countByEnumeratingWithState:&v33 objects:v43 count:16];
     }
 
     while (v12);
@@ -114,8 +114,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [(DisplayFilterPageGridViewController *)self labelHeightConstraints];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v42 count:16];
+  labelHeightConstraints = [(DisplayFilterPageGridViewController *)self labelHeightConstraints];
+  v16 = [labelHeightConstraints countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
@@ -127,7 +127,7 @@
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(labelHeightConstraints);
         }
 
         [*(*(&v29 + 1) + 8 * v19) setConstant:v4];
@@ -135,7 +135,7 @@
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v42 count:16];
+      v17 = [labelHeightConstraints countByEnumeratingWithState:&v29 objects:v42 count:16];
     }
 
     while (v17);
@@ -145,8 +145,8 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
-  v21 = [v20 countByEnumeratingWithState:&v25 objects:v41 count:16];
+  pageHeightConstraints = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
+  v21 = [pageHeightConstraints countByEnumeratingWithState:&v25 objects:v41 count:16];
   if (v21)
   {
     v22 = v21;
@@ -158,7 +158,7 @@
       {
         if (*v26 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(pageHeightConstraints);
         }
 
         [*(*(&v25 + 1) + 8 * v24) setConstant:v4 * 6.0];
@@ -166,7 +166,7 @@
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v25 objects:v41 count:16];
+      v22 = [pageHeightConstraints countByEnumeratingWithState:&v25 objects:v41 count:16];
     }
 
     while (v22);
@@ -294,8 +294,8 @@
       v17 = [NSLayoutConstraint constraintWithItem:v34 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:?];
 
       [v34 addConstraint:v17];
-      v38 = [(DisplayFilterPageGridViewController *)self labelHeightConstraints];
-      [v38 addObject:v17];
+      labelHeightConstraints = [(DisplayFilterPageGridViewController *)self labelHeightConstraints];
+      [labelHeightConstraints addObject:v17];
 
       v80 = v34;
       [v24 addArrangedSubview:v34];
@@ -325,14 +325,14 @@
             v46 = [NSLayoutConstraint constraintWithItem:v45 attribute:7 relatedBy:0 toItem:0 attribute:7 multiplier:1.0 constant:v37];
 
             [v45 addConstraint:v46];
-            v47 = [(DisplayFilterPageGridViewController *)self swatchWidthConstraints];
-            [v47 addObject:v46];
+            swatchWidthConstraints = [(DisplayFilterPageGridViewController *)self swatchWidthConstraints];
+            [swatchWidthConstraints addObject:v46];
 
             v17 = [NSLayoutConstraint constraintWithItem:v45 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v37];
 
             [v45 addConstraint:v17];
-            v48 = [(DisplayFilterPageGridViewController *)self swatchHeightConstraints];
-            [v48 addObject:v17];
+            swatchHeightConstraints = [(DisplayFilterPageGridViewController *)self swatchHeightConstraints];
+            [swatchHeightConstraints addObject:v17];
           }
 
           v41 = [v39 countByEnumeratingWithState:&v87 objects:v91 count:16];
@@ -369,14 +369,14 @@
 
   v59 = [NSLayoutConstraint constraintWithItem:v57 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v50];
   [v57 addConstraint:v59];
-  v60 = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
-  [v60 addObject:v59];
+  pageHeightConstraints = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
+  [pageHeightConstraints addObject:v59];
 
   v61 = [NSLayoutConstraint constraintWithItem:v78 attribute:8 relatedBy:0 toItem:0 attribute:8 multiplier:1.0 constant:v50];
 
   [v78 addConstraint:v61];
-  v62 = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
-  [v62 addObject:v61];
+  pageHeightConstraints2 = [(DisplayFilterPageGridViewController *)self pageHeightConstraints];
+  [pageHeightConstraints2 addObject:v61];
 
   return v57;
 }
@@ -385,15 +385,15 @@
 {
   v3 = [[UIView alloc] initWithFrame:{0.0, 0.0, 600.0, 600.0}];
   [(DisplayFilterPageGridViewController *)self setView:v3];
-  v4 = [(DisplayFilterPageGridViewController *)self _dynamicPreviewView];
-  [v3 addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _dynamicPreviewView = [(DisplayFilterPageGridViewController *)self _dynamicPreviewView];
+  [v3 addSubview:_dynamicPreviewView];
+  [_dynamicPreviewView setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = v3;
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:9 relatedBy:0 toItem:v5 attribute:9 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:_dynamicPreviewView attribute:9 relatedBy:0 toItem:v5 attribute:9 multiplier:1.0 constant:0.0];
   [v5 addConstraint:v6];
 
   v8 = v5;
-  v7 = [NSLayoutConstraint constraintWithItem:v4 attribute:10 relatedBy:0 toItem:v8 attribute:10 multiplier:1.0 constant:0.0];
+  v7 = [NSLayoutConstraint constraintWithItem:_dynamicPreviewView attribute:10 relatedBy:0 toItem:v8 attribute:10 multiplier:1.0 constant:0.0];
   [v8 addConstraint:v7];
 }
 

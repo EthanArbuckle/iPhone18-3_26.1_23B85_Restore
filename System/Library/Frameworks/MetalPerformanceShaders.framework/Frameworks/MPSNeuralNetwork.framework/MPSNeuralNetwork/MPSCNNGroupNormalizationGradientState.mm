@@ -1,6 +1,6 @@
 @interface MPSCNNGroupNormalizationGradientState
-+ (id)temporaryStateWithCommandBuffer:(id)a3 numberOfFeatureChannels:(unint64_t)a4 groupNormalization:(id)a5;
-- (MPSCNNGroupNormalizationGradientState)initWithDevice:(id)a3 numberOfFeatureChannels:(unint64_t)a4 groupNormalization:(id)a5;
++ (id)temporaryStateWithCommandBuffer:(id)buffer numberOfFeatureChannels:(unint64_t)channels groupNormalization:(id)normalization;
+- (MPSCNNGroupNormalizationGradientState)initWithDevice:(id)device numberOfFeatureChannels:(unint64_t)channels groupNormalization:(id)normalization;
 - (id)beta;
 - (id)debugDescription;
 - (id)gamma;
@@ -53,15 +53,15 @@
   atomic_load_explicit(*(&self->super.super.super.isa + v2) + 19, memory_order_acquire);
   if (!atomic_load_explicit(*(&self->super.super.super.isa + v2) + 19, memory_order_acquire))
   {
-    v6 = self;
+    selfCopy = self;
     v7 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v7)
     {
       v8 = objc_opt_class();
       NSStringFromClass(v8);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -83,15 +83,15 @@
   atomic_load_explicit(*(&self->super.super.super.isa + v2) + 10, memory_order_acquire);
   if (!atomic_load_explicit(*(&self->super.super.super.isa + v2) + 10, memory_order_acquire))
   {
-    v6 = self;
+    selfCopy = self;
     v7 = MTLReportFailureTypeEnabled();
-    self = v6;
+    self = selfCopy;
     if (v7)
     {
       v8 = objc_opt_class();
       NSStringFromClass(v8);
       MTLReportFailure();
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -107,37 +107,37 @@
   return result;
 }
 
-+ (id)temporaryStateWithCommandBuffer:(id)a3 numberOfFeatureChannels:(unint64_t)a4 groupNormalization:(id)a5
++ (id)temporaryStateWithCommandBuffer:(id)buffer numberOfFeatureChannels:(unint64_t)channels groupNormalization:(id)normalization
 {
-  v9 = (4 * a4 + 12) & 0xFFFFFFFFFFFFFFF0;
-  v10 = 8 * *(a5 + 45);
+  v9 = (4 * channels + 12) & 0xFFFFFFFFFFFFFFF0;
+  v10 = 8 * *(normalization + 45);
   v11 = objc_autoreleasePoolPush();
   v18 = objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], v12, (v10 + 24) & 0xFFFFFFFFFFFFFFE0, v13, v14, v15, v16, v17, v9, v9, 0);
   v19 = v18;
   objc_autoreleasePoolPop(v11);
-  v25 = objc_msgSend_temporaryStateWithCommandBuffer_resourceList_(a1, v20, a3, v18, v21, v22, v23, v24);
+  v25 = objc_msgSend_temporaryStateWithCommandBuffer_resourceList_(self, v20, buffer, v18, v21, v22, v23, v24);
 
-  v25[37] = a4;
-  v25[38] = *(a5 + 45);
-  v25[36] = a5;
+  v25[37] = channels;
+  v25[38] = *(normalization + 45);
+  v25[36] = normalization;
   return v25;
 }
 
-- (MPSCNNGroupNormalizationGradientState)initWithDevice:(id)a3 numberOfFeatureChannels:(unint64_t)a4 groupNormalization:(id)a5
+- (MPSCNNGroupNormalizationGradientState)initWithDevice:(id)device numberOfFeatureChannels:(unint64_t)channels groupNormalization:(id)normalization
 {
-  v9 = (4 * a4 + 12) & 0xFFFFFFFFFFFFFFF0;
-  v10 = 8 * *(a5 + 45);
+  v9 = (4 * channels + 12) & 0xFFFFFFFFFFFFFFF0;
+  v10 = 8 * *(normalization + 45);
   v11 = objc_autoreleasePoolPush();
   v18 = objc_msgSend_resourceListWithBufferSizes_(MEMORY[0x277CD72A0], v12, (v10 + 24) & 0xFFFFFFFFFFFFFFE0, v13, v14, v15, v16, v17, v9, v9, 0);
   v21.receiver = self;
   v21.super_class = MPSCNNGroupNormalizationGradientState;
-  v19 = [(MPSState *)&v21 initWithDevice:a3 resourceList:v18];
+  v19 = [(MPSState *)&v21 initWithDevice:device resourceList:v18];
   objc_autoreleasePoolPop(v11);
   if (v19)
   {
-    v19->_numberOfFeatureChannels = a4;
-    v19->_numberOfGroups = *(a5 + 45);
-    v19->_groupNormalization = a5;
+    v19->_numberOfFeatureChannels = channels;
+    v19->_numberOfGroups = *(normalization + 45);
+    v19->_groupNormalization = normalization;
   }
 
   return v19;

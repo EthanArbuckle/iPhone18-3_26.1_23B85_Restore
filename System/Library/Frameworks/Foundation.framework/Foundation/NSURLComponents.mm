@@ -1,13 +1,13 @@
 @interface NSURLComponents
-+ (NSURLComponents)allocWithZone:(_NSZone *)a3;
++ (NSURLComponents)allocWithZone:(_NSZone *)zone;
 + (NSURLComponents)componentsWithString:(NSString *)URLString;
 + (NSURLComponents)componentsWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters;
 + (NSURLComponents)componentsWithURL:(NSURL *)url resolvingAgainstBaseURL:(BOOL)resolve;
-+ (_NSRange)_matchWithString:(id)a3 requiredComponents:(unint64_t)a4 defaultValues:(id)a5 urlPtr:(id *)a6;
++ (_NSRange)_matchWithString:(id)string requiredComponents:(unint64_t)components defaultValues:(id)values urlPtr:(id *)ptr;
 + (id)_components;
-+ (id)_componentsWithString:(id)a3 encodingInvalidCharacters:(BOOL)a4;
-+ (id)_componentsWithUrl:(id)a3 resolvingAgainstBaseURL:(BOOL)a4;
-+ (id)_parseString:(id)a3 encodingInvalidCharacters:(BOOL)a4 allowEmptyScheme:(BOOL)a5;
++ (id)_componentsWithString:(id)string encodingInvalidCharacters:(BOOL)characters;
++ (id)_componentsWithUrl:(id)url resolvingAgainstBaseURL:(BOOL)l;
++ (id)_parseString:(id)string encodingInvalidCharacters:(BOOL)characters allowEmptyScheme:(BOOL)scheme;
 - (NSURLComponents)init;
 - (void)setEncodedHost:(NSString *)encodedHost;
 - (void)setFragment:(NSString *)fragment;
@@ -30,11 +30,11 @@
 
 @implementation NSURLComponents
 
-+ (id)_parseString:(id)a3 encodingInvalidCharacters:(BOOL)a4 allowEmptyScheme:(BOOL)a5
++ (id)_parseString:(id)string encodingInvalidCharacters:(BOOL)characters allowEmptyScheme:(BOOL)scheme
 {
-  v5 = a5;
-  v7 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
-  v9 = specialized static RFC3986Parser.parse(urlString:encodingInvalidCharacters:allowEmptyScheme:)(v7, v8, a4, v5);
+  schemeCopy = scheme;
+  v7 = static String._unconditionallyBridgeFromObjectiveC(_:)(string);
+  v9 = specialized static RFC3986Parser.parse(urlString:encodingInvalidCharacters:allowEmptyScheme:)(v7, v8, characters, schemeCopy);
 
   if (v9)
   {
@@ -45,11 +45,11 @@
   return v9;
 }
 
-+ (id)_componentsWithUrl:(id)a3 resolvingAgainstBaseURL:(BOOL)a4
++ (id)_componentsWithUrl:(id)url resolvingAgainstBaseURL:(BOOL)l
 {
-  static URL._unconditionallyBridgeFromObjectiveC(_:)(a3, &v8);
+  static URL._unconditionallyBridgeFromObjectiveC(_:)(url, &v8);
   v7 = v8;
-  v5 = specialized static NSURLComponents._componentsWith(url:resolvingAgainstBaseURL:)(&v7, a4);
+  v5 = specialized static NSURLComponents._componentsWith(url:resolvingAgainstBaseURL:)(&v7, l);
   swift_unknownObjectRelease();
 
   return v5;
@@ -63,12 +63,12 @@
   return [(NSURLComponents *)&v3 init];
 }
 
-+ (id)_componentsWithString:(id)a3 encodingInvalidCharacters:(BOOL)a4
++ (id)_componentsWithString:(id)string encodingInvalidCharacters:(BOOL)characters
 {
-  v5 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v5 = static String._unconditionallyBridgeFromObjectiveC(_:)(string);
   v7 = v6;
 
-  specialized URLComponents._URLComponents.init(string:encodingInvalidCharacters:)(v5, v7, a4, v28);
+  specialized URLComponents._URLComponents.init(string:encodingInvalidCharacters:)(v5, v7, characters, v28);
   if (_s10Foundation13URLComponentsV01_B0VSgWOg(v28) == 1)
   {
 
@@ -147,16 +147,16 @@
   return v9;
 }
 
-+ (_NSRange)_matchWithString:(id)a3 requiredComponents:(unint64_t)a4 defaultValues:(id)a5 urlPtr:(id *)a6
++ (_NSRange)_matchWithString:(id)string requiredComponents:(unint64_t)components defaultValues:(id)values urlPtr:(id *)ptr
 {
-  v8 = a4;
-  v9 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  componentsCopy = components;
+  v9 = static String._unconditionallyBridgeFromObjectiveC(_:)(string);
   v11 = v10;
   v17 = 0;
-  v12 = _sSD10FoundationE26_forceBridgeFromObjectiveC_6resultySo12NSDictionaryC_SDyxq_GSgztFZSi_SSTt1g5(a5, &v17);
+  v12 = _sSD10FoundationE26_forceBridgeFromObjectiveC_6resultySo12NSDictionaryC_SDyxq_GSgztFZSi_SSTt1g5(values, &v17);
   if (v17)
   {
-    v14 = specialized static NSURLComponents._matchWith(string:requiredComponents:defaultValues:urlPtr:)(v9, v11, v8, v17, a6);
+    v14 = specialized static NSURLComponents._matchWith(string:requiredComponents:defaultValues:urlPtr:)(v9, v11, componentsCopy, v17, ptr);
     v16 = v15;
 
     v12 = v14;
@@ -173,36 +173,36 @@
   return result;
 }
 
-+ (NSURLComponents)allocWithZone:(_NSZone *)a3
++ (NSURLComponents)allocWithZone:(_NSZone *)zone
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (NSURLComponents == a1)
+  if (NSURLComponents == self)
   {
     return &___immutablePlaceholderURLComponents;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSURLComponents;
-  return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
 }
 
 + (NSURLComponents)componentsWithURL:(NSURL *)url resolvingAgainstBaseURL:(BOOL)resolve
 {
-  v4 = [objc_allocWithZone(a1) initWithURL:url resolvingAgainstBaseURL:resolve];
+  v4 = [objc_allocWithZone(self) initWithURL:url resolvingAgainstBaseURL:resolve];
 
   return v4;
 }
 
 + (NSURLComponents)componentsWithString:(NSString *)URLString
 {
-  v3 = [objc_allocWithZone(a1) initWithString:URLString];
+  v3 = [objc_allocWithZone(self) initWithString:URLString];
 
   return v3;
 }
 
 + (NSURLComponents)componentsWithString:(NSString *)URLString encodingInvalidCharacters:(BOOL)encodingInvalidCharacters
 {
-  v4 = [objc_allocWithZone(a1) initWithString:URLString encodingInvalidCharacters:encodingInvalidCharacters];
+  v4 = [objc_allocWithZone(self) initWithString:URLString encodingInvalidCharacters:encodingInvalidCharacters];
 
   return v4;
 }

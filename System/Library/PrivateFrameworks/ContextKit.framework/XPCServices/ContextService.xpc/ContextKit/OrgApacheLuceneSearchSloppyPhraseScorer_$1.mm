@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneSearchSloppyPhraseScorer_$1
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchSloppyPhraseScorer_$1
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 4) - *(a4 + 4);
+  return *(id + 4) - *(withId + 4);
 }
 
 @end

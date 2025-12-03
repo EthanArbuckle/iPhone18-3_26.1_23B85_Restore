@@ -1,67 +1,67 @@
 @interface REExportedValueEncoder
-- (REExportedValueEncoder)initWithOptions:(unint64_t)a3;
-- (id)_namesArrayFromArray:(id)a3;
-- (id)dataFromExportedValue:(id)a3;
-- (void)_writeCollection:(id)a3 toStream:(id)a4 startBlock:(id)a5 writerBlock:(id)a6 endBlock:(id)a7 wantsHeader:(BOOL)a8 depth:(unint64_t)a9;
-- (void)_writeValue:(id)a3 toStream:(id)a4 depth:(unint64_t)a5 needsIndent:(BOOL)a6;
-- (void)writeUnsupportedObject:(id)a3 toStream:(id)a4;
+- (REExportedValueEncoder)initWithOptions:(unint64_t)options;
+- (id)_namesArrayFromArray:(id)array;
+- (id)dataFromExportedValue:(id)value;
+- (void)_writeCollection:(id)collection toStream:(id)stream startBlock:(id)block writerBlock:(id)writerBlock endBlock:(id)endBlock wantsHeader:(BOOL)header depth:(unint64_t)depth;
+- (void)_writeValue:(id)value toStream:(id)stream depth:(unint64_t)depth needsIndent:(BOOL)indent;
+- (void)writeUnsupportedObject:(id)object toStream:(id)stream;
 @end
 
 @implementation REExportedValueEncoder
 
-- (REExportedValueEncoder)initWithOptions:(unint64_t)a3
+- (REExportedValueEncoder)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = REExportedValueEncoder;
   result = [(REExportedValueEncoder *)&v5 init];
   if (result)
   {
-    result->_options = a3;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (id)dataFromExportedValue:(id)a3
+- (id)dataFromExportedValue:(id)value
 {
   v4 = MEMORY[0x277CBEB78];
-  v5 = a3;
-  v6 = [v4 outputStreamToMemory];
-  [v6 open];
-  [(REExportedValueEncoder *)self writeExportedValue:v5 toStream:v6];
+  valueCopy = value;
+  outputStreamToMemory = [v4 outputStreamToMemory];
+  [outputStreamToMemory open];
+  [(REExportedValueEncoder *)self writeExportedValue:valueCopy toStream:outputStreamToMemory];
 
-  v7 = [v6 propertyForKey:*MEMORY[0x277CBE740]];
-  [v6 close];
+  v7 = [outputStreamToMemory propertyForKey:*MEMORY[0x277CBE740]];
+  [outputStreamToMemory close];
 
   return v7;
 }
 
-- (void)_writeValue:(id)a3 toStream:(id)a4 depth:(unint64_t)a5 needsIndent:(BOOL)a6
+- (void)_writeValue:(id)value toStream:(id)stream depth:(unint64_t)depth needsIndent:(BOOL)indent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [REExportedValue exportedValueForObject:v10];
-  v13 = self->_options & a6;
+  valueCopy = value;
+  streamCopy = stream;
+  v12 = [REExportedValue exportedValueForObject:valueCopy];
+  v13 = self->_options & indent;
   if (v13 == 1)
   {
-    if (a5)
+    if (depth)
     {
-      if (a5 == 1)
+      if (depth == 1)
       {
         v14 = @"    ";
       }
 
       else
       {
-        v15 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(@"    ", "length") * a5}];
-        v16 = a5;
+        v15 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(@"    ", "length") * depth}];
+        depthCopy = depth;
         do
         {
           [v15 appendString:@"    "];
-          --v16;
+          --depthCopy;
         }
 
-        while (v16);
+        while (depthCopy);
         v14 = [v15 copy];
       }
     }
@@ -71,19 +71,19 @@
       v14 = &stru_283B97458;
     }
 
-    [v11 re_writeString:v14];
+    [streamCopy re_writeString:v14];
   }
 
-  v17 = [v12 type];
-  if (v17 > 3)
+  type = [v12 type];
+  if (type > 3)
   {
-    if (v17 > 5)
+    if (type > 5)
     {
-      if (v17 == 6)
+      if (type == 6)
       {
-        if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          [(REExportedValueEncoder *)self writeNullToStream:v11];
+          [(REExportedValueEncoder *)self writeNullToStream:streamCopy];
           if (v13)
           {
             goto LABEL_37;
@@ -93,25 +93,25 @@
         }
       }
 
-      else if (v17 != 7)
+      else if (type != 7)
       {
         goto LABEL_36;
       }
 
-      [(REExportedValueEncoder *)self writeUnsupportedObject:v10 toStream:v11];
+      [(REExportedValueEncoder *)self writeUnsupportedObject:valueCopy toStream:streamCopy];
       goto LABEL_36;
     }
 
-    if (v17 == 4)
+    if (type == 4)
     {
-      v18 = [v12 numberValue];
-      [(REExportedValueEncoder *)self writeNumber:v18 toStream:v11];
+      numberValue = [v12 numberValue];
+      [(REExportedValueEncoder *)self writeNumber:numberValue toStream:streamCopy];
     }
 
     else
     {
-      v18 = [v12 dateValue];
-      [(REExportedValueEncoder *)self writeDate:v18 toStream:v11];
+      numberValue = [v12 dateValue];
+      [(REExportedValueEncoder *)self writeDate:numberValue toStream:streamCopy];
     }
 
 LABEL_27:
@@ -124,9 +124,9 @@ LABEL_27:
     goto LABEL_37;
   }
 
-  if (v17 > 1)
+  if (type > 1)
   {
-    if (v17 == 2)
+    if (type == 2)
     {
       if ([v12 propertyCount] == 1)
       {
@@ -135,8 +135,8 @@ LABEL_27:
         v31[2] = __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block_invoke;
         v31[3] = &unk_2785F9EB8;
         v31[4] = self;
-        v32 = v11;
-        v33 = a5;
+        v32 = streamCopy;
+        depthCopy2 = depth;
         [v12 enumerateValuesUsingBlock:v31];
         v19 = v32;
       }
@@ -160,7 +160,7 @@ LABEL_27:
         v26[3] = &unk_2785F9EE0;
         v26[4] = self;
         v27 = v30;
-        [(REExportedValueEncoder *)self _writeCollection:v27 toStream:v11 startBlock:v29 writerBlock:v28 endBlock:v26 wantsHeader:1 depth:a5];
+        [(REExportedValueEncoder *)self _writeCollection:v27 toStream:streamCopy startBlock:v29 writerBlock:v28 endBlock:v26 wantsHeader:1 depth:depth];
 
         v19 = v30;
       }
@@ -173,12 +173,12 @@ LABEL_27:
       goto LABEL_38;
     }
 
-    v18 = [v12 stringValue];
-    [(REExportedValueEncoder *)self writeString:v18 toStream:v11];
+    numberValue = [v12 stringValue];
+    [(REExportedValueEncoder *)self writeString:numberValue toStream:streamCopy];
     goto LABEL_27;
   }
 
-  if (!v17)
+  if (!type)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -195,7 +195,7 @@ LABEL_27:
     v23[1] = 3221225472;
     v23[2] = __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block_invoke_7;
     v23[3] = &unk_2785F9F30;
-    [(REExportedValueEncoder *)self _writeCollection:v12 toStream:v11 startBlock:v25 writerBlock:v24 endBlock:v23 wantsHeader:[(REExportedValueEncoder *)self writesArrayHeader] depth:a5];
+    [(REExportedValueEncoder *)self _writeCollection:v12 toStream:streamCopy startBlock:v25 writerBlock:v24 endBlock:v23 wantsHeader:[(REExportedValueEncoder *)self writesArrayHeader] depth:depth];
 LABEL_24:
     if (!v13)
     {
@@ -205,7 +205,7 @@ LABEL_24:
     goto LABEL_37;
   }
 
-  if (v17 == 1)
+  if (type == 1)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -222,7 +222,7 @@ LABEL_24:
     v20[1] = 3221225472;
     v20[2] = __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block_invoke_10;
     v20[3] = &unk_2785F9F30;
-    [(REExportedValueEncoder *)self _writeCollection:v12 toStream:v11 startBlock:v22 writerBlock:v21 endBlock:v20 wantsHeader:[(REExportedValueEncoder *)self writesDictionaryHeader] depth:a5];
+    [(REExportedValueEncoder *)self _writeCollection:v12 toStream:streamCopy startBlock:v22 writerBlock:v21 endBlock:v20 wantsHeader:[(REExportedValueEncoder *)self writesDictionaryHeader] depth:depth];
     goto LABEL_24;
   }
 
@@ -230,7 +230,7 @@ LABEL_36:
   if (v13)
   {
 LABEL_37:
-    [v11 re_writeString:@"\n"];
+    [streamCopy re_writeString:@"\n"];
   }
 
 LABEL_38:
@@ -254,18 +254,18 @@ void __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block
   [v2 writeObjectEnd:v5 toStream:v4];
 }
 
-- (void)_writeCollection:(id)a3 toStream:(id)a4 startBlock:(id)a5 writerBlock:(id)a6 endBlock:(id)a7 wantsHeader:(BOOL)a8 depth:(unint64_t)a9
+- (void)_writeCollection:(id)collection toStream:(id)stream startBlock:(id)block writerBlock:(id)writerBlock endBlock:(id)endBlock wantsHeader:(BOOL)header depth:(unint64_t)depth
 {
-  v9 = a8;
-  v15 = a9;
-  v31 = a3;
-  v16 = a4;
-  v17 = a5;
-  v28 = a6;
-  v29 = self;
-  v30 = a7;
+  headerCopy = header;
+  depthCopy = depth;
+  collectionCopy = collection;
+  streamCopy = stream;
+  blockCopy = block;
+  writerBlockCopy = writerBlock;
+  selfCopy = self;
+  endBlockCopy = endBlock;
   options = self->_options;
-  if (a9)
+  if (depth)
   {
     v19 = (self->_options & 4) != 0;
   }
@@ -277,18 +277,18 @@ void __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block
 
   v20 = options & 1;
   v21 = (options >> 1) & 1;
-  v27 = v17;
-  (*(v17 + 2))(v17, v16);
-  v22 = options & v9;
+  v27 = blockCopy;
+  (*(blockCopy + 2))(blockCopy, streamCopy);
+  v22 = options & headerCopy;
   if (v22 == 1)
   {
-    [v16 re_writeString:@"\n"];
+    [streamCopy re_writeString:@"\n"];
   }
 
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
-  v42[3] = [v31 propertyCount];
+  v42[3] = [collectionCopy propertyCount];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __102__REExportedValueEncoder__writeCollection_toStream_startBlock_writerBlock_endBlock_wantsHeader_depth___block_invoke;
@@ -296,34 +296,34 @@ void __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block
   v36 = v42;
   v38 = v19;
   v39 = v21;
-  v40 = v9;
+  v40 = headerCopy;
   v41 = v20;
-  v23 = v16;
+  v23 = streamCopy;
   v33 = v23;
-  v37 = a9;
-  v24 = v28;
-  v34 = v29;
+  depthCopy2 = depth;
+  v24 = writerBlockCopy;
+  v34 = selfCopy;
   v35 = v24;
-  [v31 enumerateValuesUsingBlock:v32];
+  [collectionCopy enumerateValuesUsingBlock:v32];
   if (v22)
   {
-    if (a9)
+    if (depth)
     {
-      if (a9 == 1)
+      if (depth == 1)
       {
         v25 = @"    ";
       }
 
       else
       {
-        v26 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(@"    ", "length") * a9}];
+        v26 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(@"    ", "length") * depth}];
         do
         {
           [v26 appendString:@"    "];
-          --v15;
+          --depthCopy;
         }
 
-        while (v15);
+        while (depthCopy);
         v25 = [v26 copy];
       }
     }
@@ -336,7 +336,7 @@ void __65__REExportedValueEncoder__writeValue_toStream_depth_needsIndent___block
     [v23 re_writeString:v25];
   }
 
-  v30[2](v30, v23);
+  endBlockCopy[2](endBlockCopy, v23);
 
   _Block_object_dispose(v42, 8);
 }
@@ -544,14 +544,14 @@ uint64_t __102__REExportedValueEncoder__writeCollection_toStream_startBlock_writ
   return [v6 _writeValue:v7 toStream:v8 depth:v9 needsIndent:0];
 }
 
-- (id)_namesArrayFromArray:(id)a3
+- (id)_namesArrayFromArray:(id)array
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = [REExportedValue exportedValueForObject:v4];
+    firstObject = [arrayCopy firstObject];
+    v5 = [REExportedValue exportedValueForObject:firstObject];
 
     if ([v5 type] == 6)
     {
@@ -579,19 +579,19 @@ uint64_t __102__REExportedValueEncoder__writeCollection_toStream_startBlock_writ
             }
 
             v10 = [v5 exportedValueForKey:*(*(&v39 + 1) + 8 * i)];
-            v11 = [v10 type];
+            type = [v10 type];
 
-            if (v11 == 3)
+            if (type == 3)
             {
               v25 = v5;
 
-              v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+              v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
               v38 = 0u;
-              v26 = v3;
-              obj = v3;
+              v26 = arrayCopy;
+              obj = arrayCopy;
               v30 = [obj countByEnumeratingWithState:&v35 objects:v44 count:16];
               if (v30)
               {
@@ -628,11 +628,11 @@ uint64_t __102__REExportedValueEncoder__writeCollection_toStream_startBlock_writ
                           v19 = *(*(&v31 + 1) + 8 * k);
                           v20 = [REExportedValue exportedValueForObject:v13, v25];
                           v21 = [v20 exportedValueForKey:v19];
-                          v22 = [v21 stringValue];
+                          stringValue = [v21 stringValue];
 
-                          if (v22)
+                          if (stringValue)
                           {
-                            [v28 addObject:v22];
+                            [v28 addObject:stringValue];
 
                             goto LABEL_29;
                           }
@@ -660,7 +660,7 @@ LABEL_29:
               v7 = v28;
               v6 = [v28 copy];
               v5 = v25;
-              v3 = v26;
+              arrayCopy = v26;
               goto LABEL_32;
             }
           }
@@ -689,26 +689,26 @@ LABEL_32:
   return v6;
 }
 
-- (void)writeUnsupportedObject:(id)a3 toStream:(id)a4
+- (void)writeUnsupportedObject:(id)object toStream:(id)stream
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  streamCopy = stream;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v10 objectValue];
+    objectValue = [objectCopy objectValue];
 
-    v8 = v7;
+    v8 = objectValue;
   }
 
   else
   {
-    v8 = v10;
+    v8 = objectCopy;
   }
 
   v11 = v8;
   v9 = [v8 description];
-  [(REExportedValueEncoder *)self writeString:v9 toStream:v6];
+  [(REExportedValueEncoder *)self writeString:v9 toStream:streamCopy];
 }
 
 @end

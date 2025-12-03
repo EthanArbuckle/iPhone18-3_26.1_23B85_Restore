@@ -1,25 +1,25 @@
 @interface RMConfigurationSubscriberDelegate
-+ (id)sharedDelegateWithApplicators:(id)a3;
-- (RMConfigurationSubscriberDelegate)initWithApplicators:(id)a3;
-- (id)_configurationsByApplicatorClassNameForConfigurationsByType:(id)a3;
-- (void)_sendConfigurationUIForConfigurationReference:(id)a3 visible:(BOOL)a4 configurationUI:(id)a5 configurationUIGroup:(id)a6;
-- (void)didFailToFetchConfigurationsWithTypes:(id)a3 scope:(int64_t)a4 error:(id)a5;
-- (void)didFetchConfigurationsByType:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-- (void)didFetchConfigurationsWithVisibleUIByType:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
++ (id)sharedDelegateWithApplicators:(id)applicators;
+- (RMConfigurationSubscriberDelegate)initWithApplicators:(id)applicators;
+- (id)_configurationsByApplicatorClassNameForConfigurationsByType:(id)type;
+- (void)_sendConfigurationUIForConfigurationReference:(id)reference visible:(BOOL)visible configurationUI:(id)i configurationUIGroup:(id)group;
+- (void)didFailToFetchConfigurationsWithTypes:(id)types scope:(int64_t)scope error:(id)error;
+- (void)didFetchConfigurationsByType:(id)type storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
+- (void)didFetchConfigurationsWithVisibleUIByType:(id)type storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation RMConfigurationSubscriberDelegate
 
-+ (id)sharedDelegateWithApplicators:(id)a3
++ (id)sharedDelegateWithApplicators:(id)applicators
 {
-  v3 = a3;
+  applicatorsCopy = applicators;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators___block_invoke;
   block[3] = &unk_279B058D0;
-  v10 = v3;
+  v10 = applicatorsCopy;
   v4 = sharedDelegateWithApplicators__onceToken;
-  v5 = v3;
+  v5 = applicatorsCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedDelegateWithApplicators__onceToken, block);
@@ -38,10 +38,10 @@ uint64_t __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators__
   return MEMORY[0x2821F96F8]();
 }
 
-- (RMConfigurationSubscriberDelegate)initWithApplicators:(id)a3
+- (RMConfigurationSubscriberDelegate)initWithApplicators:(id)applicators
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicatorsCopy = applicators;
   v30.receiver = self;
   v30.super_class = RMConfigurationSubscriberDelegate;
   v5 = [(RMConfigurationSubscriberDelegate *)&v30 init];
@@ -49,8 +49,8 @@ uint64_t __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators__
   if (v5)
   {
     v28 = v5;
-    v29 = v4;
-    v7 = v4;
+    v29 = applicatorsCopy;
+    v7 = applicatorsCopy;
     v8 = objc_opt_new();
     v35 = 0u;
     v36 = 0u;
@@ -77,8 +77,8 @@ uint64_t __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators__
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v16 = [(objc_class *)v14 supportedConfigurationTypes];
-          v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          supportedConfigurationTypes = [(objc_class *)v14 supportedConfigurationTypes];
+          v17 = [supportedConfigurationTypes countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v17)
           {
             v18 = v17;
@@ -89,13 +89,13 @@ uint64_t __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators__
               {
                 if (*v32 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(supportedConfigurationTypes);
                 }
 
                 [(NSDictionary *)v8 setObject:v15 forKeyedSubscript:*(*(&v31 + 1) + 8 * j), v28];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v18 = [supportedConfigurationTypes countByEnumeratingWithState:&v31 objects:v39 count:16];
             }
 
             while (v18);
@@ -120,61 +120,61 @@ uint64_t __67__RMConfigurationSubscriberDelegate_sharedDelegateWithApplicators__
     applyLock = v28->_applyLock;
     v28->_applyLock = v24;
 
-    v4 = v29;
+    applicatorsCopy = v29;
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)didFetchConfigurationsByType:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)didFetchConfigurationsByType:(id)type storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  typeCopy = type;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  configurationSubscriberDelegate = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
+  if (os_log_type_enabled(configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v10;
-    _os_log_impl(&dword_261E36000, v13, OS_LOG_TYPE_DEFAULT, "Did fetch configurations by type: %{public}@", buf, 0xCu);
+    v29 = typeCopy;
+    _os_log_impl(&dword_261E36000, configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT, "Did fetch configurations by type: %{public}@", buf, 0xCu);
   }
 
   v14 = self->_applyLock;
   if (![(NSConditionLock *)v14 tryLockWhenCondition:0])
   {
-    v15 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    configurationSubscriberDelegate2 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
+    if (os_log_type_enabled(configurationSubscriberDelegate2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_261E36000, v15, OS_LOG_TYPE_DEFAULT, "Waiting for previous fetch to finish...", buf, 2u);
+      _os_log_impl(&dword_261E36000, configurationSubscriberDelegate2, OS_LOG_TYPE_DEFAULT, "Waiting for previous fetch to finish...", buf, 2u);
     }
 
     [(NSConditionLock *)v14 lockWhenCondition:0];
   }
 
   [(NSConditionLock *)v14 unlockWithCondition:1];
-  v16 = [(RMConfigurationSubscriberDelegate *)self _configurationsByApplicatorClassNameForConfigurationsByType:v10];
+  v16 = [(RMConfigurationSubscriberDelegate *)self _configurationsByApplicatorClassNameForConfigurationsByType:typeCopy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __109__RMConfigurationSubscriberDelegate_didFetchConfigurationsByType_storesByIdentifier_scope_completionHandler___block_invoke;
   v25[3] = &unk_279B05948;
-  v26 = v11;
-  v27 = a5;
+  v26 = identifierCopy;
+  scopeCopy = scope;
   v25[4] = self;
-  v17 = v11;
+  v17 = identifierCopy;
   [v16 enumerateKeysAndObjectsUsingBlock:v25];
-  v18 = [(RMConfigurationSubscriberDelegate *)self applicatorQueue];
+  applicatorQueue = [(RMConfigurationSubscriberDelegate *)self applicatorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__RMConfigurationSubscriberDelegate_didFetchConfigurationsByType_storesByIdentifier_scope_completionHandler___block_invoke_12;
   block[3] = &unk_279B05970;
   v23 = v14;
-  v24 = v12;
-  v19 = v12;
+  v24 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v14;
-  dispatch_async(v18, block);
+  dispatch_async(applicatorQueue, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -270,56 +270,56 @@ uint64_t __109__RMConfigurationSubscriberDelegate_didFetchConfigurationsByType_s
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)didFailToFetchConfigurationsWithTypes:(id)a3 scope:(int64_t)a4 error:(id)a5
+- (void)didFailToFetchConfigurationsWithTypes:(id)types scope:(int64_t)scope error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  typesCopy = types;
+  errorCopy = error;
+  configurationSubscriberDelegate = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
+  if (os_log_type_enabled(configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x277CCACA8] rms_stringWithScope:a4];
+    v10 = [MEMORY[0x277CCACA8] rms_stringWithScope:scope];
     v12 = 138543874;
     v13 = v10;
     v14 = 2114;
-    v15 = v7;
+    v15 = typesCopy;
     v16 = 2114;
-    v17 = v8;
-    _os_log_impl(&dword_261E36000, v9, OS_LOG_TYPE_DEFAULT, "Did fail in %{public}@ scope to fetch configurations %{public}@: %{public}@", &v12, 0x20u);
+    v17 = errorCopy;
+    _os_log_impl(&dword_261E36000, configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT, "Did fail in %{public}@ scope to fetch configurations %{public}@: %{public}@", &v12, 0x20u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFetchConfigurationsWithVisibleUIByType:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)didFetchConfigurationsWithVisibleUIByType:(id)type storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  typeCopy = type;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  configurationSubscriberDelegate = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
+  if (os_log_type_enabled(configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v10;
-    _os_log_impl(&dword_261E36000, v13, OS_LOG_TYPE_DEFAULT, "Fetch configurationUIs by type: %{public}@", &buf, 0xCu);
+    *(&buf + 4) = typeCopy;
+    _os_log_impl(&dword_261E36000, configurationSubscriberDelegate, OS_LOG_TYPE_DEFAULT, "Fetch configurationUIs by type: %{public}@", &buf, 0xCu);
   }
 
   v14 = self->_applyLock;
   if (![(NSConditionLock *)v14 tryLockWhenCondition:0])
   {
-    v15 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    configurationSubscriberDelegate2 = [MEMORY[0x277D45F58] configurationSubscriberDelegate];
+    if (os_log_type_enabled(configurationSubscriberDelegate2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf) = 0;
-      _os_log_impl(&dword_261E36000, v15, OS_LOG_TYPE_DEFAULT, "Waiting for previous fetch UIs to finish...", &buf, 2u);
+      _os_log_impl(&dword_261E36000, configurationSubscriberDelegate2, OS_LOG_TYPE_DEFAULT, "Waiting for previous fetch UIs to finish...", &buf, 2u);
     }
 
     [(NSConditionLock *)v14 lockWhenCondition:0];
   }
 
   [(NSConditionLock *)v14 unlockWithCondition:1];
-  v16 = [(RMConfigurationSubscriberDelegate *)self _configurationsByApplicatorClassNameForConfigurationsByType:v10];
+  v16 = [(RMConfigurationSubscriberDelegate *)self _configurationsByApplicatorClassNameForConfigurationsByType:typeCopy];
   v17 = dispatch_group_create();
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -333,9 +333,9 @@ uint64_t __109__RMConfigurationSubscriberDelegate_didFetchConfigurationsByType_s
   v27[3] = &unk_279B059E8;
   v18 = v17;
   v28 = v18;
-  v29 = self;
+  selfCopy = self;
   p_buf = &buf;
-  v31 = a5;
+  scopeCopy = scope;
   [v16 enumerateKeysAndObjectsUsingBlock:v27];
   v19 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -343,9 +343,9 @@ uint64_t __109__RMConfigurationSubscriberDelegate_didFetchConfigurationsByType_s
   block[2] = __122__RMConfigurationSubscriberDelegate_didFetchConfigurationsWithVisibleUIByType_storesByIdentifier_scope_completionHandler___block_invoke_2_17;
   block[3] = &unk_279B05A10;
   v24 = v14;
-  v25 = v12;
+  v25 = handlerCopy;
   v26 = &buf;
-  v20 = v12;
+  v20 = handlerCopy;
   v21 = v14;
   dispatch_group_notify(v18, v19, block);
 
@@ -509,12 +509,12 @@ uint64_t __122__RMConfigurationSubscriberDelegate_didFetchConfigurationsWithVisi
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)_configurationsByApplicatorClassNameForConfigurationsByType:(id)a3
+- (id)_configurationsByApplicatorClassNameForConfigurationsByType:(id)type
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [(RMConfigurationSubscriberDelegate *)self applicatorClassNameByConfigurationType];
-  v7 = [v4 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  typeCopy = type;
+  applicatorClassNameByConfigurationType = [(RMConfigurationSubscriberDelegate *)self applicatorClassNameByConfigurationType];
+  v7 = [v4 dictionaryWithCapacity:{objc_msgSend(applicatorClassNameByConfigurationType, "count")}];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -523,7 +523,7 @@ uint64_t __122__RMConfigurationSubscriberDelegate_didFetchConfigurationsWithVisi
   v12[4] = self;
   v8 = v7;
   v13 = v8;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  [typeCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -552,28 +552,28 @@ void __97__RMConfigurationSubscriberDelegate__configurationsByApplicatorClassNam
   }
 }
 
-- (void)_sendConfigurationUIForConfigurationReference:(id)a3 visible:(BOOL)a4 configurationUI:(id)a5 configurationUIGroup:(id)a6
+- (void)_sendConfigurationUIForConfigurationReference:(id)reference visible:(BOOL)visible configurationUI:(id)i configurationUIGroup:(id)group
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 store];
-  dispatch_group_enter(v12);
-  v14 = [(RMConfigurationSubscriberDelegate *)self applicatorQueue];
+  referenceCopy = reference;
+  iCopy = i;
+  groupCopy = group;
+  store = [referenceCopy store];
+  dispatch_group_enter(groupCopy);
+  applicatorQueue = [(RMConfigurationSubscriberDelegate *)self applicatorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__RMConfigurationSubscriberDelegate__sendConfigurationUIForConfigurationReference_visible_configurationUI_configurationUIGroup___block_invoke;
   block[3] = &unk_279B05A60;
-  v20 = v13;
-  v21 = v10;
-  v24 = a4;
-  v22 = v11;
-  v23 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
-  dispatch_async(v14, block);
+  v20 = store;
+  v21 = referenceCopy;
+  visibleCopy = visible;
+  v22 = iCopy;
+  v23 = groupCopy;
+  v15 = groupCopy;
+  v16 = iCopy;
+  v17 = referenceCopy;
+  v18 = store;
+  dispatch_async(applicatorQueue, block);
 }
 
 void __128__RMConfigurationSubscriberDelegate__sendConfigurationUIForConfigurationReference_visible_configurationUI_configurationUIGroup___block_invoke(uint64_t a1)

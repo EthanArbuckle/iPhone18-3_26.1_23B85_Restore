@@ -1,8 +1,8 @@
 @interface FavoriteItem_Inbox
 - (BOOL)_displayNameShouldBeRedacted;
-- (BOOL)isEqual:(id)a3;
-- (FavoriteItem_Inbox)initWithAccount:(id)a3;
-- (FavoriteItem_Inbox)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FavoriteItem_Inbox)initWithAccount:(id)account;
+- (FavoriteItem_Inbox)initWithDictionary:(id)dictionary;
 - (id)criterion;
 - (id)dictionaryRepresentation;
 - (id)displayName;
@@ -10,8 +10,8 @@
 - (id)parentItemID;
 - (id)uniqueIDAndDisplayName;
 - (unint64_t)hash;
-- (void)configureOutlineCell:(id)a3;
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6;
+- (void)configureOutlineCell:(id)cell;
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated;
 @end
 
 @implementation FavoriteItem_Inbox
@@ -19,10 +19,10 @@
 - (id)displayName
 {
   v3 = sub_1000CD6FC();
-  v4 = [v3 accountsProvider];
-  v5 = [v4 isDisplayingMultipleAccounts];
+  accountsProvider = [v3 accountsProvider];
+  isDisplayingMultipleAccounts = [accountsProvider isDisplayingMultipleAccounts];
 
-  if (v5)
+  if (isDisplayingMultipleAccounts)
   {
     [(MailAccount *)self->_account displayName];
   }
@@ -43,8 +43,8 @@
   {
     if ([(FavoriteItem_Inbox *)self _displayNameShouldBeRedacted])
     {
-      v4 = [(FavoriteItem_Inbox *)self displayName];
-      v5 = [EFPrivacy partiallyRedactedStringForString:v4];
+      displayName = [(FavoriteItem_Inbox *)self displayName];
+      v5 = [EFPrivacy partiallyRedactedStringForString:displayName];
 
       v6 = v5;
     }
@@ -54,9 +54,9 @@
       v6 = [objc_opt_class() description];
     }
 
-    v7 = [(FavoriteItem_Inbox *)self representingMailbox];
-    v8 = [v7 uniqueId];
-    v9 = [NSString stringWithFormat:@"%@-%@", v8, v6];
+    representingMailbox = [(FavoriteItem_Inbox *)self representingMailbox];
+    uniqueId = [representingMailbox uniqueId];
+    v9 = [NSString stringWithFormat:@"%@-%@", uniqueId, v6];
     v10 = self->_uniqueIDAndDisplayName;
     self->_uniqueIDAndDisplayName = v9;
 
@@ -70,11 +70,11 @@
 {
   v7.receiver = self;
   v7.super_class = FavoriteItem_Inbox;
-  v3 = [(FavoriteItem *)&v7 dictionaryRepresentation];
-  v4 = [(MailAccount *)self->_account uniqueID];
-  if (v4)
+  dictionaryRepresentation = [(FavoriteItem *)&v7 dictionaryRepresentation];
+  uniqueID = [(MailAccount *)self->_account uniqueID];
+  if (uniqueID)
   {
-    [v3 setObject:v4 forKey:@"uniqueID"];
+    [dictionaryRepresentation setObject:uniqueID forKey:@"uniqueID"];
   }
 
   else
@@ -85,78 +85,78 @@
       sub_1004860BC(self, v5);
     }
 
-    [v3 removeAllObjects];
+    [dictionaryRepresentation removeAllObjects];
   }
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (BOOL)_displayNameShouldBeRedacted
 {
   v2 = sub_1000CD6FC();
-  v3 = [v2 accountsProvider];
-  v4 = [v3 isDisplayingMultipleAccounts];
+  accountsProvider = [v2 accountsProvider];
+  isDisplayingMultipleAccounts = [accountsProvider isDisplayingMultipleAccounts];
 
-  return v4;
+  return isDisplayingMultipleAccounts;
 }
 
-- (void)configureOutlineCell:(id)a3
+- (void)configureOutlineCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v8.receiver = self;
   v8.super_class = FavoriteItem_Inbox;
-  [(FavoriteItem *)&v8 configureOutlineCell:v4];
-  v5 = [(FavoriteItem_Inbox *)self representingMailbox];
-  v6 = [NSSet setWithObject:v5];
-  [v4 setLegacyMailboxes:v6 showUnreadCount:{-[FavoriteItem showUnreadCount](self, "showUnreadCount")}];
+  [(FavoriteItem *)&v8 configureOutlineCell:cellCopy];
+  representingMailbox = [(FavoriteItem_Inbox *)self representingMailbox];
+  v6 = [NSSet setWithObject:representingMailbox];
+  [cellCopy setLegacyMailboxes:v6 showUnreadCount:{-[FavoriteItem showUnreadCount](self, "showUnreadCount")}];
 
-  v7 = [(FavoriteItem_Inbox *)self displayName];
-  [v4 setTitle:v7];
+  displayName = [(FavoriteItem_Inbox *)self displayName];
+  [cellCopy setTitle:displayName];
 }
 
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a3;
-  v8 = [(FavoriteItem_Inbox *)self representingMailbox];
-  [v9 selectMailbox:v8 item:self animated:v6];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  representingMailbox = [(FavoriteItem_Inbox *)self representingMailbox];
+  [selectedCopy selectMailbox:representingMailbox item:self animated:animatedCopy];
 }
 
-- (FavoriteItem_Inbox)initWithAccount:(id)a3
+- (FavoriteItem_Inbox)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = FavoriteItem_Inbox;
   v6 = [(FavoriteItem *)&v9 initWithType:3];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = v6[12];
-    v8 = [(MailAccount *)self->_account uniqueID];
-    v9 = [v7 uniqueID];
-    if ([v8 isEqualToString:v9])
+    uniqueID = [(MailAccount *)self->_account uniqueID];
+    uniqueID2 = [v7 uniqueID];
+    if ([uniqueID isEqualToString:uniqueID2])
     {
-      v10 = [(FavoriteItem_Inbox *)self uniqueIDAndDisplayName];
-      v11 = [v6 uniqueIDAndDisplayName];
-      v12 = [v10 isEqualToString:v11];
+      uniqueIDAndDisplayName = [(FavoriteItem_Inbox *)self uniqueIDAndDisplayName];
+      uniqueIDAndDisplayName2 = [v6 uniqueIDAndDisplayName];
+      v12 = [uniqueIDAndDisplayName isEqualToString:uniqueIDAndDisplayName2];
     }
 
     else
@@ -175,24 +175,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MailAccount *)self->_account uniqueID];
-  v3 = [v2 hash];
+  uniqueID = [(MailAccount *)self->_account uniqueID];
+  v3 = [uniqueID hash];
 
   return v3;
 }
 
-- (FavoriteItem_Inbox)initWithDictionary:(id)a3
+- (FavoriteItem_Inbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FavoriteItem_Inbox;
-  v5 = [(FavoriteItem *)&v12 initWithDictionary:v4];
+  v5 = [(FavoriteItem *)&v12 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 objectForKey:@"uniqueID"];
+  v6 = [dictionaryCopy objectForKey:@"uniqueID"];
   if (v6)
   {
     v7 = [MailAccount accountWithUniqueId:v6];
@@ -231,8 +231,8 @@ LABEL_5:
       collectionID = &stru_100662A88;
     }
 
-    v5 = [(FavoriteItem_Inbox *)self uniqueIDAndDisplayName];
-    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, v5];
+    uniqueIDAndDisplayName = [(FavoriteItem_Inbox *)self uniqueIDAndDisplayName];
+    v6 = [NSString stringWithFormat:@"%@-%@", collectionID, uniqueIDAndDisplayName];
     v7 = self->super._itemID;
     self->super._itemID = v6;
 
@@ -244,16 +244,16 @@ LABEL_5:
 
 - (id)parentItemID
 {
-  v2 = [(FavoriteItem_Inbox *)self account];
-  v3 = [v2 uniqueID];
+  account = [(FavoriteItem_Inbox *)self account];
+  uniqueID = [account uniqueID];
 
-  return v3;
+  return uniqueID;
 }
 
 - (id)criterion
 {
-  v2 = [(FavoriteItem_Inbox *)self representingMailbox];
-  v3 = [MFMessageCriterion criterionForMailbox:v2];
+  representingMailbox = [(FavoriteItem_Inbox *)self representingMailbox];
+  v3 = [MFMessageCriterion criterionForMailbox:representingMailbox];
 
   return v3;
 }

@@ -1,32 +1,32 @@
 @interface PTPDeviceUSBTransport
-- (BOOL)handleBulkData:(unint64_t)a3 result:(int)a4;
-- (BOOL)processDeviceInterface:(unsigned int)a3;
-- (BOOL)sendEvent:(id)a3;
+- (BOOL)handleBulkData:(unint64_t)data result:(int)result;
+- (BOOL)processDeviceInterface:(unsigned int)interface;
+- (BOOL)sendEvent:(id)event;
 - (BOOL)sendNextEvent;
-- (BOOL)sendResponse:(id)a3;
+- (BOOL)sendResponse:(id)response;
 - (BOOL)startResponder;
-- (PTPDeviceUSBTransport)initWithDelegate:(id)a3;
+- (PTPDeviceUSBTransport)initWithDelegate:(id)delegate;
 - (id)delegate;
-- (int)handleDeviceRequest:(id *)a3 data:(__IOUSBDeviceData *)a4 dataSize:(unint64_t *)a5 status:(int *)a6;
+- (int)handleDeviceRequest:(id *)request data:(__IOUSBDeviceData *)data dataSize:(unint64_t *)size status:(int *)status;
 - (int)readBulkData;
 - (int)readInterruptData;
 - (int)setupDeviceInterface;
-- (int)writeBulkData:(id)a3;
-- (int)writeInterruptData:(id)a3;
-- (unsigned)transactionCanceled:(unsigned int)a3;
-- (void)abortInterruptWrite:(id)a3;
+- (int)writeBulkData:(id)data;
+- (int)writeInterruptData:(id)data;
+- (unsigned)transactionCanceled:(unsigned int)canceled;
+- (void)abortInterruptWrite:(id)write;
 - (void)abortPendingIO;
-- (void)activate:(unsigned int)a3;
+- (void)activate:(unsigned int)activate;
 - (void)clearDeviceInterface;
 - (void)deactivate;
 - (void)dealloc;
-- (void)deviceAdded:(unsigned int)a3;
-- (void)handleInterruptData:(unint64_t)a3;
-- (void)handleWriteInterruptDataCompletion:(id)a3;
-- (void)sendData:(id)a3;
-- (void)sendDataPackets:(id)a3;
-- (void)sendDataPacketsSplit:(id)a3;
-- (void)setUsbCore:(PTPDeviceUSBCore *)a3;
+- (void)deviceAdded:(unsigned int)added;
+- (void)handleInterruptData:(unint64_t)data;
+- (void)handleWriteInterruptDataCompletion:(id)completion;
+- (void)sendData:(id)data;
+- (void)sendDataPackets:(id)packets;
+- (void)sendDataPacketsSplit:(id)split;
+- (void)setUsbCore:(PTPDeviceUSBCore *)core;
 - (void)stop;
 @end
 
@@ -62,13 +62,13 @@
     }
 
     v6 = NSSelectorFromString(@"transportDeactivated");
-    v7 = [(PTPDeviceUSBTransport *)self delegate];
+    delegate = [(PTPDeviceUSBTransport *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(PTPDeviceUSBTransport *)self delegate];
-      [v9 performSelector:v6];
+      delegate2 = [(PTPDeviceUSBTransport *)self delegate];
+      [delegate2 performSelector:v6];
     }
 
     __ICOSLogCreate();
@@ -86,7 +86,7 @@
       v14 = v10;
       v15 = v13;
       v16 = 136446466;
-      v17 = [(__CFString *)v10 UTF8String];
+      uTF8String = [(__CFString *)v10 UTF8String];
       v18 = 2114;
       v19 = v12;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v16, 0x16u);
@@ -101,9 +101,9 @@
   return WeakRetained;
 }
 
-- (PTPDeviceUSBTransport)initWithDelegate:(id)a3
+- (PTPDeviceUSBTransport)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PTPDeviceUSBTransport;
   v5 = [(PTPDeviceUSBTransport *)&v22 init];
@@ -112,7 +112,7 @@
   {
     v5->_type = 1;
     v5->_role = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_locationID = 0;
     v7 = [[NSMutableData alloc] initWithCapacity:0];
     transactionData = v6->_transactionData;
@@ -182,7 +182,7 @@
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v72 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v73 = 2114;
     v74 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -209,9 +209,9 @@
 
     v14 = v9;
     v15 = v13;
-    v16 = [(__CFString *)v9 UTF8String];
+    uTF8String2 = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v72 = v16;
+    uTF8String = uTF8String2;
     v73 = 2114;
     v74 = v12;
 LABEL_10:
@@ -240,9 +240,9 @@ LABEL_11:
   {
     v23 = v19;
     v24 = v22;
-    v25 = [(__CFString *)v19 UTF8String];
+    uTF8String3 = [(__CFString *)v19 UTF8String];
     *buf = 136446466;
-    v72 = v25;
+    uTF8String = uTF8String3;
     v73 = 2114;
     v74 = v21;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -274,9 +274,9 @@ LABEL_11:
 LABEL_31:
     v39 = v9;
     v15 = v38;
-    v40 = [(__CFString *)v9 UTF8String];
+    uTF8String4 = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v72 = v40;
+    uTF8String = uTF8String4;
     v73 = 2114;
     v74 = v12;
     goto LABEL_10;
@@ -329,9 +329,9 @@ LABEL_31:
     {
       v48 = v43;
       v49 = v47;
-      v50 = [(__CFString *)v43 UTF8String];
+      uTF8String5 = [(__CFString *)v43 UTF8String];
       *buf = 136446466;
-      v72 = v50;
+      uTF8String = uTF8String5;
       v73 = 2114;
       v74 = v46;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -365,9 +365,9 @@ LABEL_31:
 
     v34 = v9;
     v15 = v33;
-    v35 = [(__CFString *)v9 UTF8String];
+    uTF8String6 = [(__CFString *)v9 UTF8String];
     *buf = 136446466;
-    v72 = v35;
+    uTF8String = uTF8String6;
     v73 = 2114;
     v74 = v12;
     goto LABEL_10;
@@ -395,9 +395,9 @@ LABEL_31:
       {
         v58 = v53;
         v59 = v57;
-        v60 = [(__CFString *)v53 UTF8String];
+        uTF8String7 = [(__CFString *)v53 UTF8String];
         *buf = 136446466;
-        v72 = v60;
+        uTF8String = uTF8String7;
         v73 = 2114;
         v74 = v56;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -426,9 +426,9 @@ LABEL_31:
   {
     v66 = v61;
     v67 = v65;
-    v68 = [(__CFString *)v61 UTF8String];
+    uTF8String8 = [(__CFString *)v61 UTF8String];
     *buf = 136446466;
-    v72 = v68;
+    uTF8String = uTF8String8;
     v73 = 2114;
     v74 = v64;
     _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -457,7 +457,7 @@ LABEL_31:
     v7 = v3;
     v8 = v6;
     *buf = 136446466;
-    v16 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v17 = 2114;
     v18 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -499,9 +499,9 @@ LABEL_31:
   }
 
   v12 = sub_10000C470();
-  v13 = [v12 delegate];
+  delegate = [v12 delegate];
 
-  if (v13)
+  if (delegate)
   {
     [v12 setDelegate:0];
   }
@@ -509,7 +509,7 @@ LABEL_31:
   exit(0);
 }
 
-- (void)activate:(unsigned int)a3
+- (void)activate:(unsigned int)activate
 {
   v82 = 0;
   if ((*(*self->_usbCore._deviceInterfaceInterfaceRef + 36))(self->_usbCore._deviceInterfaceInterfaceRef, &v82 + 4, &v82))
@@ -540,9 +540,9 @@ LABEL_31:
     {
       v10 = v5;
       v11 = v9;
-      v12 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       *buf = 136446466;
-      v84 = v12;
+      v84 = uTF8String;
       v85 = 2114;
       v86 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -599,17 +599,17 @@ LABEL_31:
       v32 = [v33 stringByAppendingString:@".."];
     }
 
-    v34 = [NSString stringWithFormat:@"Attempting smaller allocation... %d", 0x100000];
+    0x100000 = [NSString stringWithFormat:@"Attempting smaller allocation... %d", 0x100000];
     v35 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v36 = v32;
       v37 = v35;
-      v38 = [v32 UTF8String];
+      uTF8String2 = [v32 UTF8String];
       *buf = 136446466;
-      v84 = v38;
+      v84 = uTF8String2;
       v85 = 2114;
-      v86 = v34;
+      v86 = 0x100000;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
@@ -693,9 +693,9 @@ LABEL_31:
   {
     v50 = v46;
     v51 = v49;
-    v52 = [v46 UTF8String];
+    uTF8String3 = [v46 UTF8String];
     *buf = 136446466;
-    v84 = v52;
+    v84 = uTF8String3;
     v85 = 2114;
     v86 = v48;
     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -735,9 +735,9 @@ LABEL_31:
   {
     v59 = v55;
     v60 = v58;
-    v61 = [(__CFString *)v55 UTF8String];
+    uTF8String4 = [(__CFString *)v55 UTF8String];
     *buf = 136446466;
-    v84 = v61;
+    v84 = uTF8String4;
     v85 = 2114;
     v86 = v57;
     _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -783,9 +783,9 @@ LABEL_17:
     {
       v22 = v17;
       v23 = v21;
-      v24 = [(__CFString *)v17 UTF8String];
+      uTF8String5 = [(__CFString *)v17 UTF8String];
       *buf = 136446466;
-      v84 = v24;
+      v84 = uTF8String5;
       v85 = 2114;
       v86 = v20;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -808,9 +808,9 @@ LABEL_17:
   {
     v69 = v65;
     v70 = v68;
-    v71 = [v65 UTF8String];
+    uTF8String6 = [v65 UTF8String];
     *buf = 136446466;
-    v84 = v71;
+    v84 = uTF8String6;
     v85 = 2114;
     v86 = v67;
     _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -820,13 +820,13 @@ LABEL_17:
   self->_sendEvents = 1;
   self->_numberOfSendEventsTimedOut = 0;
   v72 = NSSelectorFromString(@"transportActivated");
-  v73 = [(PTPDeviceUSBTransport *)self delegate];
+  delegate = [(PTPDeviceUSBTransport *)self delegate];
   v74 = objc_opt_respondsToSelector();
 
   if (v74)
   {
-    v75 = [(PTPDeviceUSBTransport *)self delegate];
-    [v75 performSelector:v72];
+    delegate2 = [(PTPDeviceUSBTransport *)self delegate];
+    [delegate2 performSelector:v72];
   }
 
   if ([(PTPDeviceUSBTransport *)self readBulkData])
@@ -850,9 +850,9 @@ LABEL_17:
   {
     v79 = v17;
     v80 = v78;
-    v81 = [(__CFString *)v17 UTF8String];
+    uTF8String7 = [(__CFString *)v17 UTF8String];
     *buf = 136446466;
-    v84 = v81;
+    v84 = uTF8String7;
     v85 = 2114;
     v86 = v20;
     _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -864,22 +864,22 @@ LABEL_22:
   [(PTPDeviceUSBTransport *)self waitForHostConnection:v25];
 }
 
-- (void)sendDataPackets:(id)a3
+- (void)sendDataPackets:(id)packets
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
+  packetsCopy = packets;
+  transactionID = [packetsCopy transactionID];
   v6 = [[PTPWrappedBytes alloc] initWithBytes:self->_writeBuffer capacity:self->_writeBufferSize];
-  v41 = v4;
-  [v4 range];
+  v41 = packetsCopy;
+  [packetsCopy range];
   v40 = v7;
-  v8 = [(PTPDeviceUSBTransport *)self transactionCanceled:v5]== 0;
+  v8 = [(PTPDeviceUSBTransport *)self transactionCanceled:transactionID]== 0;
   v9 = 0;
   if ([(PTPDeviceUSBTransport *)self connected])
   {
     v10 = -536870212;
     while (1)
     {
-      if (v5 && !v8)
+      if (transactionID && !v8)
       {
         goto LABEL_26;
       }
@@ -913,7 +913,7 @@ LABEL_22:
         }
       }
 
-      v8 = [(PTPDeviceUSBTransport *)self transactionCanceled:v5]== 0;
+      v8 = [(PTPDeviceUSBTransport *)self transactionCanceled:transactionID]== 0;
       v10 = 0;
       v17 = 0;
       if (![(PTPDeviceUSBTransport *)self connected])
@@ -1011,11 +1011,11 @@ LABEL_14:
   v18 = 0;
 LABEL_27:
   v23 = NSSelectorFromString(@"sentData:responseCode:");
-  v24 = [(PTPDeviceUSBTransport *)self delegate];
-  if (v24)
+  delegate = [(PTPDeviceUSBTransport *)self delegate];
+  if (delegate)
   {
-    v25 = v24;
-    v26 = [(PTPDeviceUSBTransport *)self delegate];
+    v25 = delegate;
+    delegate2 = [(PTPDeviceUSBTransport *)self delegate];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
@@ -1035,22 +1035,22 @@ LABEL_27:
         if (v17 == -536870186)
         {
           __ICOSLogCreate();
-          v29 = &stru_100038B48;
+          delegate3 = &stru_100038B48;
           if ([&stru_100038B48 length] >= 0x15)
           {
             v30 = [&stru_100038B48 substringWithRange:{0, 18}];
-            v29 = [v30 stringByAppendingString:@".."];
+            delegate3 = [v30 stringByAppendingString:@".."];
           }
 
           v31 = [NSString stringWithFormat:@"[TERM] No device to read BulkIn - Do Not Send Response \n"];
           v32 = _gICOSLog;
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = v29;
+            v33 = delegate3;
             v34 = v32;
-            v35 = [(__CFString *)v29 UTF8String];
+            uTF8String = [(__CFString *)delegate3 UTF8String];
             *buf = 136446466;
-            v43 = v35;
+            v43 = uTF8String;
             v44 = 2114;
             v45 = v31;
             _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1059,18 +1059,18 @@ LABEL_27:
           goto LABEL_41;
         }
 
-        v29 = [(PTPDeviceUSBTransport *)self delegate];
+        delegate3 = [(PTPDeviceUSBTransport *)self delegate];
         v36 = 8199;
       }
 
       else
       {
-        v29 = [(PTPDeviceUSBTransport *)self delegate];
+        delegate3 = [(PTPDeviceUSBTransport *)self delegate];
         v36 = 8193;
       }
 
       v31 = [NSNumber numberWithUnsignedShort:v36];
-      [(__CFString *)v29 performSelector:v23 withObject:v41 withObject:v31];
+      [(__CFString *)delegate3 performSelector:v23 withObject:v41 withObject:v31];
 LABEL_41:
     }
   }
@@ -1078,7 +1078,7 @@ LABEL_41:
   self->_busy = 0;
 }
 
-- (unsigned)transactionCanceled:(unsigned int)a3
+- (unsigned)transactionCanceled:(unsigned int)canceled
 {
   os_unfair_lock_lock(&self->_cancelLock);
   canceledTransactionID = self->_canceledTransactionID;
@@ -1096,20 +1096,20 @@ LABEL_41:
   return canceledTransactionID;
 }
 
-- (void)sendDataPacketsSplit:(id)a3
+- (void)sendDataPacketsSplit:(id)split
 {
-  v4 = a3;
-  v5 = [v4 transactionID];
-  v57 = v4;
-  [v4 range];
+  splitCopy = split;
+  transactionID = [splitCopy transactionID];
+  v57 = splitCopy;
+  [splitCopy range];
   v56 = v6;
-  v7 = [(PTPDeviceUSBTransport *)self transactionCanceled:v5];
-  v8 = [(PTPDeviceUSBTransport *)self connected];
+  v7 = [(PTPDeviceUSBTransport *)self transactionCanceled:transactionID];
+  connected = [(PTPDeviceUSBTransport *)self connected];
   v9 = 0;
   v10 = v7 != 0;
   if (v7)
   {
-    v11 = v5 != 0;
+    v11 = transactionID != 0;
   }
 
   else
@@ -1117,7 +1117,7 @@ LABEL_41:
     v11 = 0;
   }
 
-  if (v8 && !v11 && (v9 = [[PTPWrappedBytes alloc] initWithBytes:self->_writeBuffer capacity:self->_writeBufferSize], objc_msgSend(v57, "copyHeaderToWrappedBytes:forTransport:", v9, 1), (v12 = objc_msgSend(v9, "length")) != 0))
+  if (connected && !v11 && (v9 = [[PTPWrappedBytes alloc] initWithBytes:self->_writeBuffer capacity:self->_writeBufferSize], objc_msgSend(v57, "copyHeaderToWrappedBytes:forTransport:", v9, 1), (v12 = objc_msgSend(v9, "length")) != 0))
   {
     v13 = v12;
     v14 = [(PTPDeviceUSBTransport *)self writeBulkData:v9];
@@ -1143,7 +1143,7 @@ LABEL_41:
         v37 = v33;
         v38 = v36;
         *buf = 136446466;
-        v59 = [(__CFString *)v33 UTF8String];
+        uTF8String = [(__CFString *)v33 UTF8String];
         v60 = 2114;
         v61 = v35;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1191,18 +1191,18 @@ LABEL_41:
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = v23;
+          uTF8String = v23;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
       }
 
-      v25 = [(PTPDeviceUSBTransport *)self transactionCanceled:v5];
-      v26 = [(PTPDeviceUSBTransport *)self connected];
+      v25 = [(PTPDeviceUSBTransport *)self transactionCanceled:transactionID];
+      connected2 = [(PTPDeviceUSBTransport *)self connected];
       v15 = 0;
       v10 = v25 != 0;
       if (v25)
       {
-        v27 = v5 != 0;
+        v27 = transactionID != 0;
       }
 
       else
@@ -1210,7 +1210,7 @@ LABEL_41:
         v27 = 0;
       }
 
-      if (!v26 || v27)
+      if (!connected2 || v27)
       {
         goto LABEL_24;
       }
@@ -1243,7 +1243,7 @@ LABEL_41:
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = v31;
+          uTF8String = v31;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
       }
@@ -1270,7 +1270,7 @@ LABEL_41:
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v59 = v54;
+          uTF8String = v54;
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
       }
@@ -1303,11 +1303,11 @@ LABEL_25:
   v28 = 1;
 LABEL_43:
   v39 = NSSelectorFromString(@"sentData:responseCode:");
-  v40 = [(PTPDeviceUSBTransport *)self delegate];
-  if (v40)
+  delegate = [(PTPDeviceUSBTransport *)self delegate];
+  if (delegate)
   {
-    v41 = v40;
-    v42 = [(PTPDeviceUSBTransport *)self delegate];
+    v41 = delegate;
+    delegate2 = [(PTPDeviceUSBTransport *)self delegate];
     v43 = objc_opt_respondsToSelector();
 
     if (v43)
@@ -1327,22 +1327,22 @@ LABEL_43:
         if (v15 == -536870186)
         {
           __ICOSLogCreate();
-          v45 = &stru_100038B48;
+          delegate3 = &stru_100038B48;
           if ([&stru_100038B48 length] >= 0x15)
           {
             v46 = [&stru_100038B48 substringWithRange:{0, 18}];
-            v45 = [v46 stringByAppendingString:@".."];
+            delegate3 = [v46 stringByAppendingString:@".."];
           }
 
           v47 = [NSString stringWithFormat:@"[TERM] No device to read BulkIn - Do Not Send Response \n"];
           v48 = _gICOSLog;
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v49 = v45;
+            v49 = delegate3;
             v50 = v48;
-            v51 = [(__CFString *)v45 UTF8String];
+            uTF8String2 = [(__CFString *)delegate3 UTF8String];
             *buf = 136446466;
-            v59 = v51;
+            uTF8String = uTF8String2;
             v60 = 2114;
             v61 = v47;
             _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1351,18 +1351,18 @@ LABEL_43:
           goto LABEL_57;
         }
 
-        v45 = [(PTPDeviceUSBTransport *)self delegate];
+        delegate3 = [(PTPDeviceUSBTransport *)self delegate];
         v52 = 8199;
       }
 
       else
       {
-        v45 = [(PTPDeviceUSBTransport *)self delegate];
+        delegate3 = [(PTPDeviceUSBTransport *)self delegate];
         v52 = 8193;
       }
 
       v47 = [NSNumber numberWithUnsignedShort:v52];
-      [(__CFString *)v45 performSelector:v39 withObject:v57 withObject:v47];
+      [(__CFString *)delegate3 performSelector:v39 withObject:v57 withObject:v47];
 LABEL_57:
     }
   }
@@ -1370,26 +1370,26 @@ LABEL_57:
   self->_busy = 0;
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   transportQueue = self->_transportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100007890;
   v7[3] = &unk_100038830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(transportQueue, v7);
 }
 
-- (BOOL)sendResponse:(id)a3
+- (BOOL)sendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if ([(PTPDeviceUSBTransport *)self connected])
   {
-    v5 = [v4 contentForUSBUsingBuffer:self->_writeBuffer capacity:self->_writeBufferSize];
+    v5 = [responseCopy contentForUSBUsingBuffer:self->_writeBuffer capacity:self->_writeBufferSize];
     v6 = [(PTPDeviceUSBTransport *)self writeBulkData:v5];
 
     v7 = v6 == 0;
@@ -1400,7 +1400,7 @@ LABEL_57:
     v7 = 0;
   }
 
-  if ([v4 responseCode] != 8193)
+  if ([responseCopy responseCode] != 8193)
   {
     __ICOSLogCreate();
     v8 = &stru_100038B48;
@@ -1410,14 +1410,14 @@ LABEL_57:
       v8 = [v9 stringByAppendingString:@".."];
     }
 
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[%4x]", [v4 responseCode]);
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[%4x]", [responseCopy responseCode]);
     v11 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
       v13 = v11;
       *buf = 136446466;
-      v16 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1427,9 +1427,9 @@ LABEL_57:
   return v7;
 }
 
-- (BOOL)sendEvent:(id)a3
+- (BOOL)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (![(PTPDeviceUSBTransport *)self connected]|| !self->_sendEvents)
   {
     __ICOSLogCreate();
@@ -1440,9 +1440,9 @@ LABEL_57:
       v5 = [v9 stringByAppendingString:@".."];
     }
 
-    v10 = [(PTPDeviceUSBTransport *)self connected];
+    connected = [(PTPDeviceUSBTransport *)self connected];
     v11 = "NO";
-    if (v10)
+    if (connected)
     {
       v12 = "YES";
     }
@@ -1467,18 +1467,18 @@ LABEL_57:
     v15 = v5;
     v16 = v14;
     *buf = 136446466;
-    v23 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v24 = 2114;
     v25 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
 LABEL_16:
 
 LABEL_17:
-    v8 = 0;
+    sendNextEvent = 0;
     goto LABEL_18;
   }
 
-  [v4 eventCode];
+  [eventCopy eventCode];
   v5 = stringForEventCode();
   v6 = [(NSMutableArray *)self->_eventArray count];
   eventArray = self->_eventArray;
@@ -1499,7 +1499,7 @@ LABEL_17:
       v20 = v13;
       v21 = v19;
       *buf = 136446466;
-      v23 = [(__CFString *)v13 UTF8String];
+      uTF8String = [(__CFString *)v13 UTF8String];
       v24 = 2114;
       v25 = v16;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1508,20 +1508,20 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  [(NSMutableArray *)eventArray addObject:v4];
+  [(NSMutableArray *)eventArray addObject:eventCopy];
   if (v6)
   {
-    v8 = 1;
+    sendNextEvent = 1;
   }
 
   else
   {
-    v8 = [(PTPDeviceUSBTransport *)self sendNextEvent];
+    sendNextEvent = [(PTPDeviceUSBTransport *)self sendNextEvent];
   }
 
 LABEL_18:
 
-  return v8;
+  return sendNextEvent;
 }
 
 - (void)abortPendingIO
@@ -1582,9 +1582,9 @@ LABEL_18:
   }
 }
 
-- (int)writeBulkData:(id)a3
+- (int)writeBulkData:(id)data
 {
-  v15 = [a3 length];
+  v15 = [data length];
   if (![(PTPDeviceUSBTransport *)self connected])
   {
     return -536870183;
@@ -1612,9 +1612,9 @@ LABEL_18:
 LABEL_12:
     v11 = v6;
     v12 = v9;
-    v13 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)v6 UTF8String];
     *buf = 136446466;
-    v17 = v13;
+    v17 = uTF8String;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1647,9 +1647,9 @@ LABEL_13:
   return v5;
 }
 
-- (int)writeInterruptData:(id)a3
+- (int)writeInterruptData:(id)data
 {
-  [a3 length];
+  [data length];
   if (![(PTPDeviceUSBTransport *)self connected])
   {
     return -536870183;
@@ -1662,14 +1662,14 @@ LABEL_13:
   return v4();
 }
 
-- (void)handleWriteInterruptDataCompletion:(id)a3
+- (void)handleWriteInterruptDataCompletion:(id)completion
 {
   eventArray = self->_eventArray;
-  v5 = a3;
+  completionCopy = completion;
   v6 = [(NSMutableArray *)eventArray count];
-  v7 = [v5 intValue];
+  intValue = [completionCopy intValue];
 
-  if (v7 == 1)
+  if (intValue == 1)
   {
     numberOfSendEventsTimedOut = self->_numberOfSendEventsTimedOut;
     if (numberOfSendEventsTimedOut > 1)
@@ -1711,13 +1711,13 @@ LABEL_13:
   }
 }
 
-- (void)abortInterruptWrite:(id)a3
+- (void)abortInterruptWrite:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   if (![(PTPDeviceUSBTransport *)self connected])
   {
     __ICOSLogCreate();
-    v7 = [NSString stringWithFormat:@"[0x%x] Device Not Attached", 3758097113];
+    3758097113 = [NSString stringWithFormat:@"[0x%x] Device Not Attached", 3758097113];
     v8 = __ICLogTypeEnabled();
     v9 = _gICOSLog;
     if (v8)
@@ -1725,20 +1725,20 @@ LABEL_13:
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = v7;
+        uTF8String = 3758097113;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEBUG))
     {
-      sub_100024780(v7, v9);
+      sub_100024780(3758097113, v9);
     }
 
     goto LABEL_16;
   }
 
-  if ([(NSMutableArray *)self->_eventArray containsObject:v4])
+  if ([(NSMutableArray *)self->_eventArray containsObject:writeCopy])
   {
     v5 = (*(*self->_usbCore._deviceInterfaceInterfaceRef + 24))(self->_usbCore._deviceInterfaceInterfaceRef, self->_interruptPipeIn);
     numberOfSendEventsTimedOut = self->_numberOfSendEventsTimedOut;
@@ -1752,13 +1752,13 @@ LABEL_13:
       self->_numberOfSendEventsTimedOut = numberOfSendEventsTimedOut + 1;
     }
 
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%x", [v4 eventCode]);
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%x", [writeCopy eventCode]);
     __ICOSLogCreate();
-    v7 = v10;
-    v11 = v7;
-    if ([v7 length] >= 0x15)
+    3758097113 = v10;
+    v11 = 3758097113;
+    if ([3758097113 length] >= 0x15)
     {
-      v12 = [v7 substringWithRange:{0, 18}];
+      v12 = [3758097113 substringWithRange:{0, 18}];
       v11 = [v12 stringByAppendingString:@".."];
     }
 
@@ -1769,7 +1769,7 @@ LABEL_13:
       v15 = v11;
       v16 = v14;
       *buf = 136446466;
-      v18 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       v19 = 2114;
       v20 = v13;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1806,7 +1806,7 @@ LABEL_16:
     v11 = v7;
     v12 = v10;
     *buf = 136446466;
-    v23 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v24 = 2114;
     v25 = v9;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1903,7 +1903,7 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)handleBulkData:(unint64_t)a3 result:(int)a4
+- (BOOL)handleBulkData:(unint64_t)data result:(int)result
 {
   __ICOSLogCreate();
   if (__ICLogTypeEnabled())
@@ -1915,8 +1915,8 @@ LABEL_16:
       v6 = [v7 stringByAppendingString:@".."];
     }
 
-    v8 = [(PTPDeviceUSBTransport *)self transactionData];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Received: [%8ld]b, Buffer Allocated: [%8ld]b\n", a3, [v8 length]);
+    transactionData = [(PTPDeviceUSBTransport *)self transactionData];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Received: [%8ld]b, Buffer Allocated: [%8ld]b\n", data, [transactionData length]);
 
     v10 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
@@ -1924,71 +1924,71 @@ LABEL_16:
       v11 = v6;
       v12 = v10;
       *buf = 136446466;
-      v84 = [(__CFString *)v6 UTF8String];
+      uTF8String = [(__CFString *)v6 UTF8String];
       v85 = 2114;
       v86 = v9;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
   }
 
-  v81 = [(PTPDeviceUSBTransport *)self connected];
-  if (v81)
+  connected = [(PTPDeviceUSBTransport *)self connected];
+  if (connected)
   {
-    if (a3)
+    if (data)
     {
-      v13 = [(PTPDeviceUSBTransport *)self transactionData];
-      v14 = [v13 length];
+      transactionData2 = [(PTPDeviceUSBTransport *)self transactionData];
+      v14 = [transactionData2 length];
 
-      v15 = [(PTPDeviceUSBTransport *)self transactionData];
-      [v15 increaseLengthBy:a3];
+      transactionData3 = [(PTPDeviceUSBTransport *)self transactionData];
+      [transactionData3 increaseLengthBy:data];
 
-      v16 = [(PTPDeviceUSBTransport *)self transactionData];
-      memcpy(&v14[[v16 mutableBytes]], self->_readBuffer, a3);
+      transactionData4 = [(PTPDeviceUSBTransport *)self transactionData];
+      memcpy(&v14[[transactionData4 mutableBytes]], self->_readBuffer, data);
 
       __ICOSLogCreate();
-      v17 = [NSString stringWithFormat:@"Grew Buffer:     [%8lu]b\n", a3];
+      data = [NSString stringWithFormat:@"Grew Buffer:     [%8lu]b\n", data];
       if (__ICLogTypeEnabled())
       {
         v18 = _gICOSLog;
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v84 = v17;
+          uTF8String = data;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
         }
       }
     }
 
-    v19 = [(PTPDeviceUSBTransport *)self transactionData];
-    v20 = [v19 length];
+    transactionData5 = [(PTPDeviceUSBTransport *)self transactionData];
+    v20 = [transactionData5 length];
 
     if (v20)
     {
-      v21 = 0;
+      mutableBytes = 0;
       v22 = 0;
-      v82 = a3;
+      dataCopy = data;
       do
       {
         if (v20 >= 4)
         {
           do
           {
-            v23 = [(PTPDeviceUSBTransport *)self transactionData];
-            v21 = [v23 mutableBytes];
+            transactionData6 = [(PTPDeviceUSBTransport *)self transactionData];
+            mutableBytes = [transactionData6 mutableBytes];
 
-            v22 = *v21;
+            v22 = *mutableBytes;
             if (v22 > 0xB)
             {
               break;
             }
 
-            v24 = [(PTPDeviceUSBTransport *)self transactionData];
+            transactionData7 = [(PTPDeviceUSBTransport *)self transactionData];
             v87.location = 0;
             v87.length = 4;
-            CFDataDeleteBytes(v24, v87);
+            CFDataDeleteBytes(transactionData7, v87);
 
-            v25 = [(PTPDeviceUSBTransport *)self transactionData];
-            v20 = [v25 length];
+            transactionData8 = [(PTPDeviceUSBTransport *)self transactionData];
+            v20 = [transactionData8 length];
 
             __ICOSLogCreate();
             v26 = &stru_100038B48;
@@ -1998,17 +1998,17 @@ LABEL_16:
               v26 = [v27 stringByAppendingString:@".."];
             }
 
-            v28 = [(PTPDeviceUSBTransport *)self transactionData];
-            v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Illegal Length:   [%8lu]b, Adjusting Buffer: [%8lu]b\n", a3, [v28 length]);
+            transactionData9 = [(PTPDeviceUSBTransport *)self transactionData];
+            v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Illegal Length:   [%8lu]b, Adjusting Buffer: [%8lu]b\n", data, [transactionData9 length]);
 
             v30 = _gICOSLog;
             if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
             {
               v31 = v26;
               v32 = v30;
-              v33 = [(__CFString *)v26 UTF8String];
+              uTF8String2 = [(__CFString *)v26 UTF8String];
               *buf = 136446466;
-              v84 = v33;
+              uTF8String = uTF8String2;
               v85 = 2114;
               v86 = v29;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2026,30 +2026,30 @@ LABEL_16:
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v84 = v34;
+            uTF8String = v34;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
           }
         }
 
         if (v22 < 0xC || v20 < v22)
         {
-          return v81;
+          return connected;
         }
 
-        v36 = *(v21 + 2);
+        v36 = *(mutableBytes + 2);
         switch(v36)
         {
           case 3:
             v52 = NSSelectorFromString(@"handleResponse:");
-            v37 = [[PTPOperationResponsePacket alloc] initWithUSBBuffer:v21];
+            v37 = [[PTPOperationResponsePacket alloc] initWithUSBBuffer:mutableBytes];
             if (!v37)
             {
               __ICOSLogCreate();
-              v50 = &stru_100038B48;
+              delegate3 = &stru_100038B48;
               if ([&stru_100038B48 length] >= 0x15)
               {
                 v58 = [&stru_100038B48 substringWithRange:{0, 18}];
-                v50 = [v58 stringByAppendingString:@".."];
+                delegate3 = [v58 stringByAppendingString:@".."];
               }
 
               v59 = [NSString stringWithFormat:@"PTPDeviceUSBTransport received bad response!"];
@@ -2057,16 +2057,16 @@ LABEL_16:
               if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
               {
 LABEL_63:
-                v68 = v50;
+                v68 = delegate3;
                 v69 = v60;
-                v70 = [(__CFString *)v50 UTF8String];
+                uTF8String3 = [(__CFString *)delegate3 UTF8String];
                 *buf = 136446466;
-                v84 = v70;
+                uTF8String = uTF8String3;
                 v85 = 2114;
                 v86 = v59;
                 _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
 
-                a3 = v82;
+                data = dataCopy;
               }
 
 LABEL_64:
@@ -2074,11 +2074,11 @@ LABEL_64:
               goto LABEL_65;
             }
 
-            v56 = [(PTPDeviceUSBTransport *)self delegate];
-            if (v56)
+            delegate = [(PTPDeviceUSBTransport *)self delegate];
+            if (delegate)
             {
-              v50 = v56;
-              v54 = [(PTPDeviceUSBTransport *)self delegate];
+              delegate3 = delegate;
+              delegate2 = [(PTPDeviceUSBTransport *)self delegate];
               if ((objc_opt_respondsToSelector() & 1) == 0)
               {
 LABEL_59:
@@ -2086,35 +2086,35 @@ LABEL_59:
                 goto LABEL_65;
               }
 
-              v55 = [(PTPDeviceUSBTransport *)self delegateNeedsResponse];
+              delegateNeedsResponse = [(PTPDeviceUSBTransport *)self delegateNeedsResponse];
 LABEL_46:
-              v57 = v55;
+              v57 = delegateNeedsResponse;
 
               if (v57)
               {
-                v50 = [(PTPDeviceUSBTransport *)self delegate];
-                [(__CFString *)v50 performSelector:v52 withObject:v37];
+                delegate3 = [(PTPDeviceUSBTransport *)self delegate];
+                [(__CFString *)delegate3 performSelector:v52 withObject:v37];
                 goto LABEL_58;
               }
 
 LABEL_48:
-              a3 = v82;
+              data = dataCopy;
             }
 
             break;
           case 2:
-            v37 = [[PTPDataPacket alloc] initWithUSBBuffer:v21];
-            if ([v37 bufferSize] <= a3)
+            v37 = [[PTPDataPacket alloc] initWithUSBBuffer:mutableBytes];
+            if ([v37 bufferSize] <= data)
             {
               v51 = NSSelectorFromString(@"handleData:");
               if (!v37)
               {
                 __ICOSLogCreate();
-                v50 = &stru_100038B48;
+                delegate3 = &stru_100038B48;
                 if ([&stru_100038B48 length] >= 0x15)
                 {
                   v67 = [&stru_100038B48 substringWithRange:{0, 18}];
-                  v50 = [v67 stringByAppendingString:@".."];
+                  delegate3 = [v67 stringByAppendingString:@".."];
                 }
 
                 v59 = [NSString stringWithFormat:@"PTPDeviceUSBTransport received bad data!"];
@@ -2128,36 +2128,36 @@ LABEL_48:
               }
 
               v52 = v51;
-              v53 = [(PTPDeviceUSBTransport *)self delegate];
-              if (v53)
+              delegate4 = [(PTPDeviceUSBTransport *)self delegate];
+              if (delegate4)
               {
-                v50 = v53;
-                v54 = [(PTPDeviceUSBTransport *)self delegate];
+                delegate3 = delegate4;
+                delegate2 = [(PTPDeviceUSBTransport *)self delegate];
                 if ((objc_opt_respondsToSelector() & 1) == 0)
                 {
                   goto LABEL_59;
                 }
 
-                v55 = [(PTPDeviceUSBTransport *)self delegateNeedsData];
+                delegateNeedsResponse = [(PTPDeviceUSBTransport *)self delegateNeedsData];
                 goto LABEL_46;
               }
             }
 
             break;
           case 1:
-            v37 = [[PTPOperationRequestPacket alloc] initWithUSBBuffer:v21];
+            v37 = [[PTPOperationRequestPacket alloc] initWithUSBBuffer:mutableBytes];
             v38 = NSSelectorFromString(@"holdPowerAssertion");
-            v39 = [(PTPDeviceUSBTransport *)self delegate];
-            if (v39)
+            delegate5 = [(PTPDeviceUSBTransport *)self delegate];
+            if (delegate5)
             {
-              v40 = v39;
-              v41 = [(PTPDeviceUSBTransport *)self delegate];
+              v40 = delegate5;
+              delegate6 = [(PTPDeviceUSBTransport *)self delegate];
               v42 = objc_opt_respondsToSelector();
 
               if (v42)
               {
-                v43 = [(PTPDeviceUSBTransport *)self delegate];
-                [v43 performSelector:v38 withObject:0];
+                delegate7 = [(PTPDeviceUSBTransport *)self delegate];
+                [delegate7 performSelector:v38 withObject:0];
               }
             }
 
@@ -2165,46 +2165,46 @@ LABEL_48:
             if (!v37)
             {
               __ICOSLogCreate();
-              v50 = &stru_100038B48;
+              delegate3 = &stru_100038B48;
               if ([&stru_100038B48 length] >= 0x15)
               {
                 v61 = [&stru_100038B48 substringWithRange:{0, 18}];
-                v50 = [v61 stringByAppendingString:@".."];
+                delegate3 = [v61 stringByAppendingString:@".."];
               }
 
               v62 = [NSString stringWithFormat:@"PTPDeviceUSBTransport received bad request!\n"];
               v63 = _gICOSLog;
               if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
               {
-                v64 = v50;
+                v64 = delegate3;
                 v65 = v63;
-                v66 = [(__CFString *)v50 UTF8String];
+                uTF8String4 = [(__CFString *)delegate3 UTF8String];
                 *buf = 136446466;
-                v84 = v66;
+                uTF8String = uTF8String4;
                 v85 = 2114;
                 v86 = v62;
                 _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
               }
 
 LABEL_58:
-              a3 = v82;
+              data = dataCopy;
 LABEL_65:
 
               break;
             }
 
             v45 = v44;
-            v46 = [(PTPDeviceUSBTransport *)self delegate];
-            if (v46)
+            delegate8 = [(PTPDeviceUSBTransport *)self delegate];
+            if (delegate8)
             {
-              v47 = v46;
-              v48 = [(PTPDeviceUSBTransport *)self delegate];
+              v47 = delegate8;
+              delegate9 = [(PTPDeviceUSBTransport *)self delegate];
               v49 = objc_opt_respondsToSelector();
 
               if (v49)
               {
-                v50 = [(PTPDeviceUSBTransport *)self delegate];
-                -[PTPDeviceUSBTransport setDelegateNeedsData:](self, "setDelegateNeedsData:", [-[__CFString performSelector:withObject:](v50 performSelector:v45 withObject:{v37), "BOOLValue"}]);
+                delegate3 = [(PTPDeviceUSBTransport *)self delegate];
+                -[PTPDeviceUSBTransport setDelegateNeedsData:](self, "setDelegateNeedsData:", [-[__CFString performSelector:withObject:](delegate3 performSelector:v45 withObject:{v37), "BOOLValue"}]);
                 goto LABEL_58;
               }
             }
@@ -2225,9 +2225,9 @@ LABEL_65:
             {
               v78 = v74;
               v79 = v77;
-              v80 = [(__CFString *)v74 UTF8String];
+              uTF8String5 = [(__CFString *)v74 UTF8String];
               *buf = 136446466;
-              v84 = v80;
+              uTF8String = uTF8String5;
               v85 = 2114;
               v86 = v76;
               _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2236,89 +2236,89 @@ LABEL_65:
             exit(1);
         }
 
-        v71 = [(PTPDeviceUSBTransport *)self transactionData];
+        transactionData10 = [(PTPDeviceUSBTransport *)self transactionData];
         v88.location = 0;
         v88.length = v20;
-        CFDataDeleteBytes(v71, v88);
+        CFDataDeleteBytes(transactionData10, v88);
 
-        v72 = [(PTPDeviceUSBTransport *)self transactionData];
-        v20 = [v72 length];
+        transactionData11 = [(PTPDeviceUSBTransport *)self transactionData];
+        v20 = [transactionData11 length];
       }
 
       while (v20);
     }
   }
 
-  return v81;
+  return connected;
 }
 
-- (void)handleInterruptData:(unint64_t)a3
+- (void)handleInterruptData:(unint64_t)data
 {
   if ([(PTPDeviceUSBTransport *)self connected])
   {
-    v5 = [(PTPDeviceUSBTransport *)self eventData];
-    [v5 appendBytes:-[PTPDeviceUSBTransport eventDataBuffer](self length:{"eventDataBuffer"), a3}];
+    eventData = [(PTPDeviceUSBTransport *)self eventData];
+    [eventData appendBytes:-[PTPDeviceUSBTransport eventDataBuffer](self length:{"eventDataBuffer"), data}];
 
-    v6 = [(PTPDeviceUSBTransport *)self eventData];
-    v7 = [v6 length];
+    eventData2 = [(PTPDeviceUSBTransport *)self eventData];
+    v7 = [eventData2 length];
 
     while (v7)
     {
-      v8 = [(PTPDeviceUSBTransport *)self eventData];
-      v9 = [v8 mutableBytes];
+      eventData3 = [(PTPDeviceUSBTransport *)self eventData];
+      mutableBytes = [eventData3 mutableBytes];
 
-      v10 = *v9;
+      v10 = *mutableBytes;
       if (v7 < v10)
       {
         break;
       }
 
-      if (*(v9 + 2) == 4)
+      if (*(mutableBytes + 2) == 4)
       {
         v11 = NSSelectorFromString(@"handleEvent:");
-        v12 = [[PTPEventPacket alloc] initWithUSBBuffer:v9];
-        v13 = [(PTPDeviceUSBTransport *)self delegate];
-        if (v13)
+        v12 = [[PTPEventPacket alloc] initWithUSBBuffer:mutableBytes];
+        delegate = [(PTPDeviceUSBTransport *)self delegate];
+        if (delegate)
         {
-          v14 = v13;
-          v15 = [(PTPDeviceUSBTransport *)self delegate];
+          v14 = delegate;
+          delegate2 = [(PTPDeviceUSBTransport *)self delegate];
           v16 = objc_opt_respondsToSelector();
 
           if (v16)
           {
-            v17 = [(PTPDeviceUSBTransport *)self delegate];
-            [v17 performSelector:v11 withObject:v12 afterDelay:0.0];
+            delegate3 = [(PTPDeviceUSBTransport *)self delegate];
+            [delegate3 performSelector:v11 withObject:v12 afterDelay:0.0];
           }
         }
       }
 
-      v18 = [(PTPDeviceUSBTransport *)self eventData];
+      eventData4 = [(PTPDeviceUSBTransport *)self eventData];
       v20.location = 0;
       v20.length = v10;
-      CFDataDeleteBytes(v18, v20);
+      CFDataDeleteBytes(eventData4, v20);
 
-      v19 = [(PTPDeviceUSBTransport *)self eventData];
-      v7 = [v19 length];
+      eventData5 = [(PTPDeviceUSBTransport *)self eventData];
+      v7 = [eventData5 length];
     }
   }
 }
 
-- (void)deviceAdded:(unsigned int)a3
+- (void)deviceAdded:(unsigned int)added
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100009B84;
   v3[3] = &unk_100038858;
   v3[4] = self;
-  v4 = a3;
+  addedCopy = added;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (BOOL)processDeviceInterface:(unsigned int)a3
+- (BOOL)processDeviceInterface:(unsigned int)interface
 {
   theInterface = 0;
   theScore = 0;
-  if (!a3)
+  if (!interface)
   {
     __ICOSLogCreate();
     v40 = @"<USB>";
@@ -2345,7 +2345,7 @@ LABEL_65:
     [(PTPDeviceUSBTransport *)self clearDeviceInterface];
     v6 = CFUUIDGetConstantUUIDWithBytes(0, 0x9Eu, 0x72u, 0x21u, 0x7Eu, 0x8Au, 0x60u, 0x11u, 0xDBu, 0xBFu, 0x57u, 0, 0xDu, 0x93u, 0x6Du, 6u, 0xD2u);
     v7 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu);
-    v8 = IOCreatePlugInInterfaceForService(a3, v6, v7, &theInterface, &theScore);
+    v8 = IOCreatePlugInInterfaceForService(interface, v6, v7, &theInterface, &theScore);
     v9 = v8;
     v10 = theInterface;
     if (theInterface)
@@ -2376,9 +2376,9 @@ LABEL_65:
 LABEL_28:
     v33 = v14;
     v34 = v21;
-    v35 = [(__CFString *)v14 UTF8String];
+    uTF8String = [(__CFString *)v14 UTF8String];
     *buf = 136446466;
-    v56 = v35;
+    v56 = uTF8String;
     v57 = 2114;
     v58 = v17;
     _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%{public}20s ! %{public}@", buf, 0x16u);
@@ -2406,9 +2406,9 @@ LABEL_20:
     {
       v30 = v24;
       v31 = v29;
-      v32 = [(__CFString *)v24 UTF8String];
+      uTF8String2 = [(__CFString *)v24 UTF8String];
       *buf = 136446466;
-      v56 = v32;
+      v56 = uTF8String2;
       v57 = 2114;
       v58 = v28;
       _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%{public}20s ! %{public}@", buf, 0x16u);
@@ -2468,9 +2468,9 @@ LABEL_20:
     {
       v36 = v14;
       v37 = v18;
-      v38 = [(__CFString *)v14 UTF8String];
+      uTF8String3 = [(__CFString *)v14 UTF8String];
       *buf = 136446466;
-      v56 = v38;
+      v56 = uTF8String3;
       v57 = 2114;
       v58 = v17;
       _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%{public}20s ! %{public}@", buf, 0x16u);
@@ -2480,7 +2480,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  IOServiceAddInterestNotification(self->_usbCore._notificationPort, a3, "IOGeneralInterest", sub_100001464, self, &self->_usbCore._notification);
+  IOServiceAddInterestNotification(self->_usbCore._notificationPort, interface, "IOGeneralInterest", sub_100001464, self, &self->_usbCore._notification);
   v39 = 0;
   v9 = 0;
 LABEL_35:
@@ -2523,7 +2523,7 @@ LABEL_43:
     }
   }
 
-  IOObjectRelease(a3);
+  IOObjectRelease(interface);
   if (v39)
   {
     [(PTPDeviceUSBTransport *)self clearDeviceInterface];
@@ -2553,7 +2553,7 @@ LABEL_43:
     v8 = v4;
     v9 = v7;
     *buf = 136446466;
-    v73 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v74 = 2114;
     v75 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2910,9 +2910,9 @@ LABEL_76:
     {
       v68 = v63;
       v69 = v67;
-      v70 = [(__CFString *)v63 UTF8String];
+      uTF8String2 = [(__CFString *)v63 UTF8String];
       *buf = 136446466;
-      v73 = v70;
+      uTF8String = uTF8String2;
       v74 = 2114;
       v75 = v66;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2943,7 +2943,7 @@ LABEL_76:
     v8 = v3;
     v9 = v7;
     v11 = 136446466;
-    v12 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v13 = 2114;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v11, 0x16u);
@@ -2958,7 +2958,7 @@ LABEL_76:
   }
 }
 
-- (int)handleDeviceRequest:(id *)a3 data:(__IOUSBDeviceData *)a4 dataSize:(unint64_t *)a5 status:(int *)a6
+- (int)handleDeviceRequest:(id *)request data:(__IOUSBDeviceData *)data dataSize:(unint64_t *)size status:(int *)status
 {
   __ICOSLogCreate();
   v11 = @"<USB>";
@@ -2970,24 +2970,24 @@ LABEL_76:
     v11 = v13;
   }
 
-  v14 = [NSString stringWithFormat:@"PTPDeviceUSBTransport | Handle Service Device Request: 0x%x, Data: %p, Count: %llu\n", a3->var1, a4, *a5];
+  v14 = [NSString stringWithFormat:@"PTPDeviceUSBTransport | Handle Service Device Request: 0x%x, Data: %p, Count: %llu\n", request->var1, data, *size];
   v15 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v11;
     v17 = v15;
     *buf = 136446466;
-    v38 = [(__CFString *)v11 UTF8String];
+    uTF8String = [(__CFString *)v11 UTF8String];
     v39 = 2114;
     v40 = v14;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  var1 = a3->var1;
+  var1 = request->var1;
   switch(var1)
   {
     case 'd':
-      if (*a5 < 6)
+      if (*size < 6)
       {
         return 1;
       }
@@ -2995,8 +2995,8 @@ LABEL_76:
       v36 = 0;
       if (!(*(*self->_usbCore._deviceInterfaceInterfaceRef + 26))(self->_usbCore._deviceInterfaceInterfaceRef, 6, &v36))
       {
-        *a4 = v36;
-        *a6 = 0;
+        *data = v36;
+        *status = 0;
       }
 
       os_unfair_lock_lock(&self->_cancelLock);
@@ -3017,9 +3017,9 @@ LABEL_76:
 LABEL_28:
         v31 = v26;
         v32 = v29;
-        v33 = [(__CFString *)v26 UTF8String];
+        uTF8String2 = [(__CFString *)v26 UTF8String];
         *buf = 136446466;
-        v38 = v33;
+        uTF8String = uTF8String2;
         v39 = 2114;
         v40 = v28;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3029,7 +3029,7 @@ LABEL_29:
 
       return 1;
     case 'f':
-      if (*a5)
+      if (*size)
       {
         return 1;
       }
@@ -3037,8 +3037,8 @@ LABEL_29:
       v36 = 0;
       if (!(*(*self->_usbCore._deviceInterfaceInterfaceRef + 26))(self->_usbCore._deviceInterfaceInterfaceRef, 6, &v36))
       {
-        *a4 = v36;
-        *a6 = 0;
+        *data = v36;
+        *status = 0;
       }
 
       __ICOSLogCreate();
@@ -3058,11 +3058,11 @@ LABEL_29:
 
       goto LABEL_29;
     case 'g':
-      if (*a5 < 4 || (v36 = 0, (*(*self->_usbCore._deviceInterfaceInterfaceRef + 26))(self->_usbCore._deviceInterfaceInterfaceRef, 4, &v36)))
+      if (*size < 4 || (v36 = 0, (*(*self->_usbCore._deviceInterfaceInterfaceRef + 26))(self->_usbCore._deviceInterfaceInterfaceRef, 4, &v36)))
       {
-        *a5 = 0;
-        *a4 = 0;
-        *a6 = -536870212;
+        *size = 0;
+        *data = 0;
+        *status = -536870212;
         __ICOSLogCreate();
         v19 = &stru_100038B48;
         if ([&stru_100038B48 length] >= 0x15)
@@ -3082,9 +3082,9 @@ LABEL_29:
       else
       {
         *IOUSBDeviceDataGetBytePtr() = 536936452;
-        *a5 = 4;
-        *a4 = v36;
-        *a6 = 0;
+        *size = 4;
+        *data = v36;
+        *status = 0;
         __ICOSLogCreate();
         v19 = &stru_100038B48;
         if ([&stru_100038B48 length] >= 0x15)
@@ -3103,9 +3103,9 @@ LABEL_29:
 
       v23 = v19;
       v24 = v22;
-      v25 = [(__CFString *)v19 UTF8String];
+      uTF8String3 = [(__CFString *)v19 UTF8String];
       *buf = 136446466;
-      v38 = v25;
+      uTF8String = uTF8String3;
       v39 = 2114;
       v40 = v21;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3117,10 +3117,10 @@ LABEL_14:
   return 0;
 }
 
-- (void)setUsbCore:(PTPDeviceUSBCore *)a3
+- (void)setUsbCore:(PTPDeviceUSBCore *)core
 {
-  v3 = *&a3->_deviceInterfaceInterfaceRef;
-  self->_usbCore._notificationPort = a3->_notificationPort;
+  v3 = *&core->_deviceInterfaceInterfaceRef;
+  self->_usbCore._notificationPort = core->_notificationPort;
   *&self->_usbCore._deviceInterfaceInterfaceRef = v3;
 }
 

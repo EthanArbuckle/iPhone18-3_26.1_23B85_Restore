@@ -1,18 +1,18 @@
 @interface PPContactDiskCache
 - (BOOL)isEmpty;
-- (BOOL)iterNameRecordCacheWithError:(id *)a3 block:(id)a4;
-- (PPContactDiskCache)initWithPath:(id)a3;
-- (id)_cacheObjectFromFilePath:(id)a3 error:(id *)a4;
+- (BOOL)iterNameRecordCacheWithError:(id *)error block:(id)block;
+- (PPContactDiskCache)initWithPath:(id)path;
+- (id)_cacheObjectFromFilePath:(id)path error:(id *)error;
 @end
 
 @implementation PPContactDiskCache
 
-- (id)_cacheObjectFromFilePath:(id)a3 error:(id *)a4
+- (id)_cacheObjectFromFilePath:(id)path error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v17 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v5 options:1 error:&v17];
+  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy options:1 error:&v17];
   v7 = v17;
   if (v6)
   {
@@ -29,15 +29,15 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = v5;
+        v21 = pathCopy;
         _os_log_impl(&dword_23224A000, v14, OS_LOG_TYPE_DEFAULT, "PPPB: malformed contact name record cache file at %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D3A580] code:16 userInfo:0];
         v9 = 0;
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -54,13 +54,13 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v5;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v7;
       _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPPB: failed to read %@: error: %@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_19;
@@ -81,7 +81,7 @@
     }
 
     [v12 errorWithDomain:v13 code:15 userInfo:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     if (!v7)
     {
       goto LABEL_19;
@@ -94,13 +94,13 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)iterNameRecordCacheWithError:(id *)a3 block:(id)a4
+- (BOOL)iterNameRecordCacheWithError:(id *)error block:(id)block
 {
   v74 = *MEMORY[0x277D85DE8];
-  v53 = a4;
+  blockCopy = block;
   v67 = 0;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:self->_path isDirectory:&v67];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:self->_path isDirectory:&v67];
   v7 = v67;
 
   v8 = pp_contacts_log_handle();
@@ -115,8 +115,8 @@ LABEL_19:
       _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_INFO, "PPPB: loading contact record cache from: %@", &buf, 0xCu);
     }
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 enumeratorAtPath:self->_path];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager2 enumeratorAtPath:self->_path];
 
     if (v12)
     {
@@ -132,7 +132,7 @@ LABEL_19:
         v15 = *v64;
         v49 = *v64;
         v50 = v8;
-        v51 = self;
+        selfCopy = self;
         while (2)
         {
           v16 = 0;
@@ -145,8 +145,8 @@ LABEL_19:
             }
 
             v17 = *(*(&v63 + 1) + 8 * v16);
-            v18 = [v17 pathExtension];
-            v19 = [v18 isEqualToString:@"pb"];
+            pathExtension = [v17 pathExtension];
+            v19 = [pathExtension isEqualToString:@"pb"];
 
             if (v19)
             {
@@ -162,19 +162,19 @@ LABEL_19:
                 if ([v22 hasCreatedAt])
                 {
                   lastCreatedAt = self->_lastCreatedAt;
-                  v24 = [v22 createdAt];
-                  if (lastCreatedAt && v24 >= self->_lastCreatedAt)
+                  createdAt = [v22 createdAt];
+                  if (lastCreatedAt && createdAt >= self->_lastCreatedAt)
                   {
-                    v24 = self->_lastCreatedAt;
+                    createdAt = self->_lastCreatedAt;
                   }
                 }
 
                 else
                 {
-                  v24 = 1;
+                  createdAt = 1;
                 }
 
-                self->_lastCreatedAt = v24;
+                self->_lastCreatedAt = createdAt;
                 v26 = objc_alloc(MEMORY[0x277CBEB38]);
                 [v22 records];
                 v28 = v27 = v22;
@@ -185,8 +185,8 @@ LABEL_19:
                 v58 = 0u;
                 v59 = 0u;
                 v54 = v27;
-                v30 = [v27 records];
-                v31 = [v30 countByEnumeratingWithState:&v58 objects:v68 count:16];
+                records = [v27 records];
+                v31 = [records countByEnumeratingWithState:&v58 objects:v68 count:16];
                 if (v31)
                 {
                   v32 = v31;
@@ -197,24 +197,24 @@ LABEL_19:
                     {
                       if (*v59 != v33)
                       {
-                        objc_enumerationMutation(v30);
+                        objc_enumerationMutation(records);
                       }
 
                       v35 = *(*(&v58 + 1) + 8 * i);
                       v36 = objc_autoreleasePoolPush();
-                      v37 = [v35 sourceIdentifier];
+                      sourceIdentifier = [v35 sourceIdentifier];
 
-                      if (v37)
+                      if (sourceIdentifier)
                       {
                         v38 = [[PPInternalContactNameRecord alloc] initWithPBContactNameRecord:v35];
-                        v39 = [v35 sourceIdentifier];
-                        [v29 setObject:v38 forKeyedSubscript:v39];
+                        sourceIdentifier2 = [v35 sourceIdentifier];
+                        [v29 setObject:v38 forKeyedSubscript:sourceIdentifier2];
                       }
 
                       objc_autoreleasePoolPop(v36);
                     }
 
-                    v32 = [v30 countByEnumeratingWithState:&v58 objects:v68 count:16];
+                    v32 = [records countByEnumeratingWithState:&v58 objects:v68 count:16];
                   }
 
                   while (v32);
@@ -222,7 +222,7 @@ LABEL_19:
 
                 v57 = 0;
                 v40 = objc_autoreleasePoolPush();
-                v53[2](v53, v29, &v57);
+                blockCopy[2](blockCopy, v29, &v57);
                 objc_autoreleasePoolPop(v40);
                 v25 = 0;
                 v15 = v49;
@@ -242,14 +242,14 @@ LABEL_19:
                   v25 = 2;
                 }
 
-                self = v51;
+                self = selfCopy;
               }
 
               else
               {
-                if (a3)
+                if (error)
                 {
-                  *a3 = v56;
+                  *error = v56;
                 }
 
                 v25 = 1;
@@ -257,7 +257,7 @@ LABEL_19:
 
               if (v25)
               {
-                v42 = (v25 & 1) == 0;
+                errorCopy = (v25 & 1) == 0;
                 goto LABEL_48;
               }
             }
@@ -276,7 +276,7 @@ LABEL_19:
         }
       }
 
-      v42 = 1;
+      errorCopy = 1;
 LABEL_48:
     }
 
@@ -291,12 +291,12 @@ LABEL_48:
         _os_log_error_impl(&dword_23224A000, v44, OS_LOG_TYPE_ERROR, "PPPB: failed to create enumerator for %@", &buf, 0xCu);
       }
 
-      v42 = a3;
-      if (a3)
+      errorCopy = error;
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D3A580] code:14 userInfo:0];
         v8 = 0;
-        *a3 = v42 = 0;
+        *error = errorCopy = 0;
       }
 
       else
@@ -313,24 +313,24 @@ LABEL_48:
     v71 = v43;
     v72 = 1024;
     v73 = v67;
-    v42 = 1;
+    errorCopy = 1;
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_INFO, "PPPB: No name record cache at: %@ (isDirectory=%d)", &buf, 0x12u);
   }
 
   else
   {
-    v42 = 1;
+    errorCopy = 1;
   }
 
   v45 = *MEMORY[0x277D85DE8];
-  return v42;
+  return errorCopy;
 }
 
 - (BOOL)isEmpty
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:self->_path error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:self->_path error:0];
 
   v18 = 0u;
   v19 = 0u;
@@ -352,8 +352,8 @@ LABEL_48:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) pathExtension];
-        v12 = [v11 isEqualToString:@"pb"];
+        pathExtension = [*(*(&v16 + 1) + 8 * i) pathExtension];
+        v12 = [pathExtension isEqualToString:@"pb"];
 
         v8 += v12;
       }
@@ -374,16 +374,16 @@ LABEL_48:
   return v13;
 }
 
-- (PPContactDiskCache)initWithPath:(id)a3
+- (PPContactDiskCache)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PPContactDiskCache;
   v6 = [(PPContactDiskCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
   }
 
   return v7;

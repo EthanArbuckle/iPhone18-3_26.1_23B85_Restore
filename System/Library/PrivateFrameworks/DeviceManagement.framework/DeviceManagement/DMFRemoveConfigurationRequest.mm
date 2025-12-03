@@ -1,19 +1,19 @@
 @interface DMFRemoveConfigurationRequest
-- (DMFRemoveConfigurationRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFRemoveConfigurationRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFRemoveConfigurationRequest
 
-- (DMFRemoveConfigurationRequest)initWithCoder:(id)a3
+- (DMFRemoveConfigurationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = DMFRemoveConfigurationRequest;
-  v5 = [(CATTaskRequest *)&v22 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 unsignedIntegerValue];
 
     v21 = MEMORY[0x1E695DFD8];
@@ -28,7 +28,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v21 setWithObjects:{v20, v19, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"profile"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"profile"];
     profile = v5->_profile;
     v5->_profile = v16;
   }
@@ -36,17 +36,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFRemoveConfigurationRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFRemoveConfigurationRequest type](self, "type", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  v6 = [(DMFRemoveConfigurationRequest *)self profile];
-  [v4 encodeObject:v6 forKey:@"profile"];
+  profile = [(DMFRemoveConfigurationRequest *)self profile];
+  [coderCopy encodeObject:profile forKey:@"profile"];
 }
 
 @end

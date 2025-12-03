@@ -8,10 +8,10 @@
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   sub_1A524EEF4();
   MEMORY[0x1A5907B60](8250, 0xE200000000000000);
-  MEMORY[0x1A5907B60](*(&v3->super.isa + OBJC_IVAR____TtCE12PhotosUICoreCSo18PXApplicationStateP33_F7335C9F0C324821A31E9D1547FA77F623VisibilityChangeHandler_identifier), *&v3->identifier[OBJC_IVAR____TtCE12PhotosUICoreCSo18PXApplicationStateP33_F7335C9F0C324821A31E9D1547FA77F623VisibilityChangeHandler_identifier]);
+  MEMORY[0x1A5907B60](*(&selfCopy->super.isa + OBJC_IVAR____TtCE12PhotosUICoreCSo18PXApplicationStateP33_F7335C9F0C324821A31E9D1547FA77F623VisibilityChangeHandler_identifier), *&selfCopy->identifier[OBJC_IVAR____TtCE12PhotosUICoreCSo18PXApplicationStateP33_F7335C9F0C324821A31E9D1547FA77F623VisibilityChangeHandler_identifier]);
 
   v4 = sub_1A524C634();
 

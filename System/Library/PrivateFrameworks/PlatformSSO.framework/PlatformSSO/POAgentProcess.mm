@@ -2,42 +2,42 @@
 - (BOOL)verifyAgentEntitlement;
 - (BOOL)verifyLoginUserEntitlement;
 - (BOOL)verifyPasswordChangeEntitlement;
-- (POAgentProcess)initWithAuthenticationProcess:(id)a3;
-- (POAgentProcess)initWithXPCConnection:(id)a3 authenticationProcess:(id)a4;
+- (POAgentProcess)initWithAuthenticationProcess:(id)process;
+- (POAgentProcess)initWithXPCConnection:(id)connection authenticationProcess:(id)process;
 - (POAuthPluginProcess)systemAuthPluginProcess;
-- (void)_saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)configurationDidChangeAndRemovedExtension:(id)a3 removed:(BOOL)a4 completion:(id)a5;
+- (void)_saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion;
+- (void)configurationDidChangeAndRemovedExtension:(id)extension removed:(BOOL)removed completion:(id)completion;
 - (void)connectionInvalidated;
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4;
-- (void)passwordDidChangeForUsername:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)updateLocalAccountPassword:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)updateLocalAccountPassword:(id)a3 passwordContextData:(id)a4 completion:(id)a5;
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5;
+- (void)getLoginTypeForUser:(id)user completion:(id)completion;
+- (void)passwordDidChangeForUsername:(id)username passwordContext:(id)context completion:(id)completion;
+- (void)saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion;
+- (void)updateLocalAccountPassword:(id)password passwordContext:(id)context completion:(id)completion;
+- (void)updateLocalAccountPassword:(id)password passwordContextData:(id)data completion:(id)completion;
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion;
 @end
 
 @implementation POAgentProcess
 
-- (POAgentProcess)initWithXPCConnection:(id)a3 authenticationProcess:(id)a4
+- (POAgentProcess)initWithXPCConnection:(id)connection authenticationProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  processCopy = process;
   v8 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(POAgentProcess *)v6 initWithXPCConnection:v8 authenticationProcess:?];
+    [(POAgentProcess *)connectionCopy initWithXPCConnection:v8 authenticationProcess:?];
   }
 
   v9 = objc_alloc_init(PODirectoryServices);
   v10 = [[POKeychainJWKSStorageProvider alloc] initWithSystem:0];
   v21.receiver = self;
   v21.super_class = POAgentProcess;
-  v11 = [(POAgentCoreProcess *)&v21 initWithXPCConnection:v6 identifierProvider:v9 jwksStroageProvider:v10];
+  v11 = [(POAgentCoreProcess *)&v21 initWithXPCConnection:connectionCopy identifierProvider:v9 jwksStroageProvider:v10];
 
   if (v11)
   {
-    objc_storeWeak(&v11->_xpcConnection, v6);
-    objc_storeStrong(&v11->_process, a4);
+    objc_storeWeak(&v11->_xpcConnection, connectionCopy);
+    objc_storeStrong(&v11->_process, process);
     objc_storeStrong(&v11->_directoryServices, v9);
     v12 = objc_alloc_init(MEMORY[0x277D3D210]);
     keyWrap = v11->_keyWrap;
@@ -47,9 +47,9 @@
     keychainHelper = v11->_keychainHelper;
     v11->_keychainHelper = v14;
 
-    v16 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     distributedNotificationCenter = v11->_distributedNotificationCenter;
-    v11->_distributedNotificationCenter = v16;
+    v11->_distributedNotificationCenter = defaultCenter;
   }
 
   if ([(POAgentProcess *)v11 verifyAgentEntitlement]|| [(POAgentProcess *)v11 verifyLoginUserEntitlement]|| [(POAgentProcess *)v11 verifyPasswordChangeEntitlement])
@@ -78,16 +78,16 @@ id __62__POAgentProcess_initWithXPCConnection_authenticationProcess___block_invo
   return v0;
 }
 
-- (POAgentProcess)initWithAuthenticationProcess:(id)a3
+- (POAgentProcess)initWithAuthenticationProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v5 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(POAgentProcess *)self initWithAuthenticationProcess:v5];
   }
 
-  v6 = [(POAgentProcess *)self initWithXPCConnection:0 authenticationProcess:v4];
+  v6 = [(POAgentProcess *)self initWithXPCConnection:0 authenticationProcess:processCopy];
   return v6;
 }
 
@@ -226,21 +226,21 @@ void __40__POAgentProcess_verifyAgentEntitlement__block_invoke()
     v5 = 136315394;
     v6 = "[POAgentProcess connectionInvalidated]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4
+- (void)getLoginTypeForUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   if (![(POAgentProcess *)self verifyAgentEntitlement]&& ![(POAgentProcess *)self verifyPasswordChangeEntitlement])
   {
     v8 = __62__POAgentProcess_initWithXPCConnection_authenticationProcess___block_invoke();
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
 LABEL_18:
 
     goto LABEL_19;
@@ -248,20 +248,20 @@ LABEL_18:
 
   if (+[POConfigurationUtil platformSSOEnabled])
   {
-    v8 = [[POConfigurationManager alloc] initWithUserName:v6];
+    v8 = [[POConfigurationManager alloc] initWithUserName:userCopy];
     v9 = PO_LOG_POAgentProcess();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(POAgentProcess *)v6 getLoginTypeForUser:v9 completion:?];
+      [(POAgentProcess *)userCopy getLoginTypeForUser:v9 completion:?];
     }
 
-    v10 = [(POConfigurationManager *)v8 currentUserConfiguration];
-    v11 = v10;
-    if (v10)
+    currentUserConfiguration = [(POConfigurationManager *)v8 currentUserConfiguration];
+    v11 = currentUserConfiguration;
+    if (currentUserConfiguration)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, [v10 loginType], 0);
+        completionCopy[2](completionCopy, [currentUserConfiguration loginType], 0);
       }
     }
 
@@ -271,11 +271,11 @@ LABEL_18:
       v14[1] = 3221225472;
       v14[2] = __49__POAgentProcess_getLoginTypeForUser_completion___block_invoke_24;
       v14[3] = &unk_279A3A088;
-      v15 = v6;
+      v15 = userCopy;
       v13 = __49__POAgentProcess_getLoginTypeForUser_completion___block_invoke_24(v14);
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0, v13);
+        completionCopy[2](completionCopy, 0, v13);
       }
     }
 
@@ -288,9 +288,9 @@ LABEL_18:
     [POAgentProcess getLoginTypeForUser:completion:];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_19:
@@ -680,20 +680,20 @@ id __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_upda
   return v2;
 }
 
-- (void)updateLocalAccountPassword:(id)a3 passwordContextData:(id)a4 completion:(id)a5
+- (void)updateLocalAccountPassword:(id)password passwordContextData:(id)data completion:(id)completion
 {
   v8 = MEMORY[0x277CD4790];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithExternalizedContext:v10];
+  completionCopy = completion;
+  dataCopy = data;
+  passwordCopy = password;
+  v12 = [[v8 alloc] initWithExternalizedContext:dataCopy];
 
-  [(POAgentProcess *)self updateLocalAccountPassword:v11 passwordContext:v12 completion:v9];
+  [(POAgentProcess *)self updateLocalAccountPassword:passwordCopy passwordContext:v12 completion:completionCopy];
 }
 
-- (void)updateLocalAccountPassword:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)updateLocalAccountPassword:(id)password passwordContext:(id)context completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -701,126 +701,126 @@ id __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_upda
     _os_log_impl(&dword_25E831000, v6, OS_LOG_TYPE_INFO, "Checking local account", v7, 2u);
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, 3, 0);
+    completionCopy[2](completionCopy, 3, 0);
   }
 }
 
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loginCopy = login;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [MEMORY[0x277D3D1E0] maskName:v8];
+    v19 = [MEMORY[0x277D3D1E0] maskName:loginCopy];
     *buf = 136315906;
     v24 = "[POAgentProcess verifyPasswordLogin:passwordContext:completion:]";
     v25 = 2114;
     v26 = v19;
     v27 = 2114;
-    v28 = v9;
+    v28 = contextCopy;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEBUG, "%s loginUserName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
   v12 = [POConfigurationManager alloc];
-  v13 = [(POAgentProcess *)self directoryServices];
-  v14 = [(POConfigurationManager *)v12 initWithUserName:0 directoryServices:v13 sharedOnly:1];
+  directoryServices = [(POAgentProcess *)self directoryServices];
+  v14 = [(POConfigurationManager *)v12 initWithUserName:0 directoryServices:directoryServices sharedOnly:1];
 
-  v15 = [(POConfigurationManager *)v14 currentDeviceConfiguration];
-  if (v15)
+  currentDeviceConfiguration = [(POConfigurationManager *)v14 currentDeviceConfiguration];
+  if (currentDeviceConfiguration)
   {
-    v16 = [(POConfigurationManager *)v14 currentLoginConfiguration];
-    if (v16)
+    currentLoginConfiguration = [(POConfigurationManager *)v14 currentLoginConfiguration];
+    if (currentLoginConfiguration)
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __65__POAgentProcess_verifyPasswordLogin_passwordContext_completion___block_invoke_102;
       v21[3] = &unk_279A3A688;
-      v22 = v10;
+      v22 = completionCopy;
       v20.receiver = self;
       v20.super_class = POAgentProcess;
-      [(POAgentCoreProcess *)&v20 _verifyLogin:v8 passwordContext:v9 smartCardContext:0 tokenId:0 deviceConfiguration:v15 loginConfiguration:v16 forAuthorization:1 completion:v21];
+      [(POAgentCoreProcess *)&v20 _verifyLogin:loginCopy passwordContext:contextCopy smartCardContext:0 tokenId:0 deviceConfiguration:currentDeviceConfiguration loginConfiguration:currentLoginConfiguration forAuthorization:1 completion:v21];
       v17 = v22;
     }
 
     else
     {
       v17 = __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_updateLocalAccountPassword_completion___block_invoke_37();
-      (*(v10 + 2))(v10, 2, v17);
+      (*(completionCopy + 2))(completionCopy, 2, v17);
     }
   }
 
   else
   {
-    v16 = __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_updateLocalAccountPassword_completion___block_invoke_31();
-    (*(v10 + 2))(v10, 2, v16);
+    currentLoginConfiguration = __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_updateLocalAccountPassword_completion___block_invoke_31();
+    (*(completionCopy + 2))(completionCopy, 2, currentLoginConfiguration);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315906;
     v15 = "[POAgentProcess saveCredentialForUserName:passwordContext:completion:]";
     v16 = 2114;
-    v17 = v8;
+    v17 = nameCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = contextCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@, passwordContext = %{public}@ on %@", &v14, 0x2Au);
   }
 
   if ([(POAgentProcess *)self verifyAgentEntitlement]|| [(POAgentProcess *)self verifyLoginUserEntitlement])
   {
-    [(POAgentProcess *)self _saveCredentialForUserName:v8 passwordContext:v9 completion:v10];
+    [(POAgentProcess *)self _saveCredentialForUserName:nameCopy passwordContext:contextCopy completion:completionCopy];
   }
 
   else
   {
     v12 = __62__POAgentProcess_initWithXPCConnection_authenticationProcess___block_invoke();
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveCredentialForUserName:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)_saveCredentialForUserName:(id)name passwordContext:(id)context completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v29 = "[POAgentProcess _saveCredentialForUserName:passwordContext:completion:]";
     v30 = 2114;
-    v31 = v8;
+    v31 = nameCopy;
     v32 = 2114;
-    v33 = v9;
+    v33 = contextCopy;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEBUG, "%s userName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
-  v12 = [[POConfigurationManager alloc] initWithUserName:v8];
-  v13 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:v9];
+  v12 = [[POConfigurationManager alloc] initWithUserName:nameCopy];
+  v13 = [objc_alloc(MEMORY[0x277CD4790]) initWithExternalizedContext:contextCopy];
   v27 = 0;
   v14 = [MEMORY[0x277D3D1E0] passwordDataFromContext:v13 error:&v27];
   v15 = v27;
@@ -833,25 +833,25 @@ id __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_upda
     v25[3] = &unk_279A3A088;
     v26 = v15;
     v17 = __72__POAgentProcess__saveCredentialForUserName_passwordContext_completion___block_invoke(v25);
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
   }
 
   else
   {
-    v18 = [(POAgentProcess *)self keyWrap];
-    v19 = [v18 wrapBlob:v14];
-    v20 = [(POConfigurationManager *)v12 currentUserConfiguration];
-    [v20 set_credential:v19];
+    keyWrap = [(POAgentProcess *)self keyWrap];
+    v19 = [keyWrap wrapBlob:v14];
+    currentUserConfiguration = [(POConfigurationManager *)v12 currentUserConfiguration];
+    [currentUserConfiguration set_credential:v19];
 
     memset_s([v14 mutableBytes], objc_msgSend(v14, "length"), 0, objc_msgSend(v14, "length"));
     if ([(POConfigurationManager *)v12 saveCurrentUserConfigurationAndSyncToPreboot:0])
     {
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
@@ -861,11 +861,11 @@ id __107__POAgentProcess_performPasswordLogin_loginUserName_passwordContext_upda
       v23[1] = 3221225472;
       v23[2] = __72__POAgentProcess__saveCredentialForUserName_passwordContext_completion___block_invoke_111;
       v23[3] = &unk_279A3A088;
-      v24 = v8;
+      v24 = nameCopy;
       v21 = __72__POAgentProcess__saveCredentialForUserName_passwordContext_completion___block_invoke_111(v23);
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 0, v21);
+        completionCopy[2](completionCopy, 0, v21);
       }
     }
   }
@@ -897,65 +897,65 @@ id __72__POAgentProcess__saveCredentialForUserName_passwordContext_completion___
   return v2;
 }
 
-- (void)passwordDidChangeForUsername:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)passwordDidChangeForUsername:(id)username passwordContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  usernameCopy = username;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = PO_LOG_POAgentProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315906;
     v15 = "[POAgentProcess passwordDidChangeForUsername:passwordContext:completion:]";
     v16 = 2114;
-    v17 = v8;
+    v17 = usernameCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = contextCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@, passwordContext = %{public}@ on %@", &v14, 0x2Au);
   }
 
   if ([(POAgentProcess *)self verifyPasswordChangeEntitlement])
   {
-    [(POAgentProcess *)self _saveCredentialForUserName:v8 passwordContext:v9 completion:v10];
+    [(POAgentProcess *)self _saveCredentialForUserName:usernameCopy passwordContext:contextCopy completion:completionCopy];
   }
 
   else
   {
     v12 = __62__POAgentProcess_initWithXPCConnection_authenticationProcess___block_invoke();
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configurationDidChangeAndRemovedExtension:(id)a3 removed:(BOOL)a4 completion:(id)a5
+- (void)configurationDidChangeAndRemovedExtension:(id)extension removed:(BOOL)removed completion:(id)completion
 {
-  v6 = a4;
-  v12 = a3;
-  v8 = a5;
+  removedCopy = removed;
+  extensionCopy = extension;
+  completionCopy = completion;
   if ([(POAgentProcess *)self verifyAgentEntitlement])
   {
-    if (v6)
+    if (removedCopy)
     {
-      v9 = [(POAgentProcess *)self process];
-      [v9 configurationRemovedForExtension:v12];
+      process = [(POAgentProcess *)self process];
+      [process configurationRemovedForExtension:extensionCopy];
     }
 
-    v10 = [(POAgentProcess *)self process];
-    [v10 configurationChanged];
+    process2 = [(POAgentProcess *)self process];
+    [process2 configurationChanged];
 
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
     v11 = __62__POAgentProcess_initWithXPCConnection_authenticationProcess___block_invoke();
-    v8[2](v8, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
-    v8 = v11;
+    completionCopy = v11;
   }
 }
 

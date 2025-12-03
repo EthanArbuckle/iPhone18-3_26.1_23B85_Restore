@@ -1,32 +1,32 @@
 @interface IMNicknameEncryptionHelpers
-+ (id)_decryptAndVerifyCipherFields:(id)a3 withPreKey:(id)a4 recordTagToVerify:(id)a5 error:(id *)a6;
-+ (id)_decryptCipherField:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6;
-+ (id)_decryptCipherFields:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6;
-+ (id)_encryptAndTagPlainFields:(id)a3 withPreKey:(id)a4 returningRecordTag:(id *)a5 error:(id *)a6;
-+ (id)_encryptPlainField:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6;
-+ (id)_encryptPlainFields:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6;
-+ (id)_fieldTagForFieldName:(id)a3 cipherData:(id)a4 IV:(id)a5 fieldTaggingKey:(id)a6 error:(id *)a7;
-+ (id)_hmacForData:(id)a3 key:(id)a4;
-+ (id)_performOperation:(unsigned int)a3 onData:(id)a4 withFieldEncryptionKey:(id)a5 iv:(id)a6 error:(id *)a7;
-+ (id)_randomBytesWithLength:(unint64_t)a3 error:(id *)a4;
-+ (id)_recordTagForCipherFields:(id)a3 recordTaggingKey:(id)a4 error:(id *)a5;
-+ (id)_tagForData:(id)a3 key:(id)a4 error:(id *)a5;
-+ (id)decryptAndVerifyCipherFields:(id)a3 withPreKey:(id)a4 recordTagToVerify:(id)a5 error:(id *)a6;
-+ (id)encryptAndTagPlainField:(id)a3 withPreKey:(id)a4 returningFieldTag:(id *)a5 error:(id *)a6;
-+ (id)encryptAndTagPlainFields:(id)a3 withPreKey:(id)a4 returningRecordTag:(id *)a5 error:(id *)a6;
++ (id)_decryptAndVerifyCipherFields:(id)fields withPreKey:(id)key recordTagToVerify:(id)verify error:(id *)error;
++ (id)_decryptCipherField:(id)field withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error;
++ (id)_decryptCipherFields:(id)fields withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error;
++ (id)_encryptAndTagPlainFields:(id)fields withPreKey:(id)key returningRecordTag:(id *)tag error:(id *)error;
++ (id)_encryptPlainField:(id)field withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error;
++ (id)_encryptPlainFields:(id)fields withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error;
++ (id)_fieldTagForFieldName:(id)name cipherData:(id)data IV:(id)v fieldTaggingKey:(id)key error:(id *)error;
++ (id)_hmacForData:(id)data key:(id)key;
++ (id)_performOperation:(unsigned int)operation onData:(id)data withFieldEncryptionKey:(id)key iv:(id)iv error:(id *)error;
++ (id)_randomBytesWithLength:(unint64_t)length error:(id *)error;
++ (id)_recordTagForCipherFields:(id)fields recordTaggingKey:(id)key error:(id *)error;
++ (id)_tagForData:(id)data key:(id)key error:(id *)error;
++ (id)decryptAndVerifyCipherFields:(id)fields withPreKey:(id)key recordTagToVerify:(id)verify error:(id *)error;
++ (id)encryptAndTagPlainField:(id)field withPreKey:(id)key returningFieldTag:(id *)tag error:(id *)error;
++ (id)encryptAndTagPlainFields:(id)fields withPreKey:(id)key returningRecordTag:(id *)tag error:(id *)error;
 @end
 
 @implementation IMNicknameEncryptionHelpers
 
-+ (id)encryptAndTagPlainFields:(id)a3 withPreKey:(id)a4 returningRecordTag:(id *)a5 error:(id *)a6
++ (id)encryptAndTagPlainFields:(id)fields withPreKey:(id)key returningRecordTag:(id *)tag error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v28 = a4;
-  if (!a6)
+  fieldsCopy = fields;
+  keyCopy = key;
+  if (!error)
   {
     v35 = 0;
-    a6 = &v35;
+    error = &v35;
   }
 
   if (IMOSLoggingEnabled())
@@ -34,22 +34,22 @@
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v10 allKeys];
+      allKeys = [fieldsCopy allKeys];
       *buf = 138412290;
-      v37 = v12;
+      v37 = allKeys;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Encrypting nickname fields {plainFieldsMap.keys: %@}", buf, 0xCu);
     }
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = sub_1A861C398;
   v33[3] = &unk_1E7826298;
   v14 = v13;
   v34 = v14;
-  [v10 enumerateKeysAndObjectsUsingBlock:v33];
-  v15 = [a1 _encryptAndTagPlainFields:v14 withPreKey:v28 returningRecordTag:a5 error:a6];
+  [fieldsCopy enumerateKeysAndObjectsUsingBlock:v33];
+  v15 = [self _encryptAndTagPlainFields:v14 withPreKey:keyCopy returningRecordTag:tag error:error];
   v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v15, "count")}];
   v31 = 0u;
   v32 = 0u;
@@ -70,7 +70,7 @@
         }
 
         v21 = *(*(&v29 + 1) + 8 * i);
-        v22 = [v21 dataRepresentationWithError:a6];
+        v22 = [v21 dataRepresentationWithError:error];
         if (!v22)
         {
 
@@ -79,11 +79,11 @@
             v25 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
-              v26 = *a6;
+              v26 = *error;
               *buf = 138412546;
               v37 = v26;
               v38 = 2112;
-              v39 = v10;
+              v39 = fieldsCopy;
               _os_log_impl(&dword_1A85E5000, v25, OS_LOG_TYPE_INFO, "Failed to encrypt nickname record {error: %@, plainFieldsMap: %@}", buf, 0x16u);
             }
           }
@@ -92,8 +92,8 @@
           goto LABEL_21;
         }
 
-        v23 = [v21 fieldName];
-        [v16 setObject:v22 forKey:v23];
+        fieldName = [v21 fieldName];
+        [v16 setObject:v22 forKey:fieldName];
       }
 
       v18 = [v17 countByEnumeratingWithState:&v29 objects:v40 count:16];
@@ -112,25 +112,25 @@ LABEL_21:
   return v24;
 }
 
-+ (id)decryptAndVerifyCipherFields:(id)a3 withPreKey:(id)a4 recordTagToVerify:(id)a5 error:(id *)a6
++ (id)decryptAndVerifyCipherFields:(id)fields withPreKey:(id)key recordTagToVerify:(id)verify error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v33 = a4;
-  v34 = a5;
-  if (!a6)
+  fieldsCopy = fields;
+  keyCopy = key;
+  verifyCopy = verify;
+  if (!error)
   {
     v43 = 0;
-    a6 = &v43;
+    error = &v43;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = [v9 allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v39 objects:v51 count:16];
+  allKeys = [fieldsCopy allKeys];
+  v12 = [allKeys countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v12)
   {
     v13 = *v40;
@@ -140,12 +140,12 @@ LABEL_21:
       {
         if (*v40 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v39 + 1) + 8 * i);
-        v16 = [v9 objectForKey:v15];
-        v17 = [IMNicknameEncryptionCipherRecordField cipherRecordFieldWithFieldName:v15 dataRepresentation:v16 error:a6];
+        v16 = [fieldsCopy objectForKey:v15];
+        v17 = [IMNicknameEncryptionCipherRecordField cipherRecordFieldWithFieldName:v15 dataRepresentation:v16 error:error];
         if (!v17)
         {
 
@@ -154,13 +154,13 @@ LABEL_21:
             v27 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = *a6;
+              v28 = *error;
               *buf = 138412802;
               v46 = v28;
               v47 = 2112;
-              v48 = v9;
+              v48 = fieldsCopy;
               v49 = 2112;
-              v50 = v34;
+              v50 = verifyCopy;
               _os_log_impl(&dword_1A85E5000, v27, OS_LOG_TYPE_INFO, "Failed to create cipherFields from dictionary {error: %@, cipherfieldsMap: %@, tagToVerify: %@}", buf, 0x20u);
             }
           }
@@ -172,7 +172,7 @@ LABEL_21:
         [v10 addObject:v17];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v39 objects:v51 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v39 objects:v51 count:16];
       if (v12)
       {
         continue;
@@ -182,7 +182,7 @@ LABEL_21:
     }
   }
 
-  v18 = [a1 _decryptAndVerifyCipherFields:v10 withPreKey:v33 recordTagToVerify:v34 error:a6];
+  v18 = [self _decryptAndVerifyCipherFields:v10 withPreKey:keyCopy recordTagToVerify:verifyCopy error:error];
   if (v18)
   {
     v19 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v18, "count")}];
@@ -205,9 +205,9 @@ LABEL_21:
           }
 
           v24 = *(*(&v35 + 1) + 8 * j);
-          v25 = [v24 plainData];
-          v26 = [v24 fieldName];
-          [v19 setObject:v25 forKey:v26];
+          plainData = [v24 plainData];
+          fieldName = [v24 fieldName];
+          [v19 setObject:plainData forKey:fieldName];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -224,13 +224,13 @@ LABEL_21:
       v29 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = *a6;
+        v30 = *error;
         *buf = 138412802;
         v46 = v30;
         v47 = 2112;
-        v48 = v9;
+        v48 = fieldsCopy;
         v49 = 2112;
-        v50 = v34;
+        v50 = verifyCopy;
         _os_log_impl(&dword_1A85E5000, v29, OS_LOG_TYPE_INFO, "Failed to decrypt cipher fields {error: %@, cipherfieldsMap: %@, tagToVerify: %@}", buf, 0x20u);
       }
     }
@@ -243,79 +243,79 @@ LABEL_31:
   return v19;
 }
 
-+ (id)_encryptAndTagPlainFields:(id)a3 withPreKey:(id)a4 returningRecordTag:(id *)a5 error:(id *)a6
++ (id)_encryptAndTagPlainFields:(id)fields withPreKey:(id)key returningRecordTag:(id *)tag error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [v10 fieldEncryptionKey];
-  v13 = [v10 fieldTaggingKey];
-  v14 = [a1 _encryptPlainFields:v11 withFieldEncryptionKey:v12 fieldTaggingKey:v13 error:a6];
+  keyCopy = key;
+  fieldsCopy = fields;
+  fieldEncryptionKey = [keyCopy fieldEncryptionKey];
+  fieldTaggingKey = [keyCopy fieldTaggingKey];
+  v14 = [self _encryptPlainFields:fieldsCopy withFieldEncryptionKey:fieldEncryptionKey fieldTaggingKey:fieldTaggingKey error:error];
 
   if (v14)
   {
-    v15 = [v10 recordTaggingKey];
-    *a5 = [a1 _recordTagForCipherFields:v14 recordTaggingKey:v15 error:a6];
+    recordTaggingKey = [keyCopy recordTaggingKey];
+    *tag = [self _recordTagForCipherFields:v14 recordTaggingKey:recordTaggingKey error:error];
   }
 
   return v14;
 }
 
-+ (id)encryptAndTagPlainField:(id)a3 withPreKey:(id)a4 returningFieldTag:(id *)a5 error:(id *)a6
++ (id)encryptAndTagPlainField:(id)field withPreKey:(id)key returningFieldTag:(id *)tag error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (field)
   {
-    v20 = a3;
+    fieldCopy = field;
     v10 = MEMORY[0x1E695DEC8];
-    v11 = a4;
-    v12 = a3;
-    v13 = [v10 arrayWithObjects:&v20 count:1];
+    keyCopy = key;
+    fieldCopy2 = field;
+    v13 = [v10 arrayWithObjects:&fieldCopy count:1];
 
-    v14 = [v11 fieldEncryptionKey];
-    v15 = [v11 fieldTaggingKey];
+    fieldEncryptionKey = [keyCopy fieldEncryptionKey];
+    fieldTaggingKey = [keyCopy fieldTaggingKey];
 
-    v16 = [a1 _encryptPlainFields:v13 withFieldEncryptionKey:v14 fieldTaggingKey:v15 error:a6];
+    v16 = [self _encryptPlainFields:v13 withFieldEncryptionKey:fieldEncryptionKey fieldTaggingKey:fieldTaggingKey error:error];
 
     if (v16 && [v16 count])
     {
-      v17 = [v16 firstObject];
-      *a5 = [v17 fieldTag];
+      firstObject = [v16 firstObject];
+      *tag = [firstObject fieldTag];
 
-      v18 = [v16 firstObject];
+      firstObject2 = [v16 firstObject];
     }
 
     else
     {
-      v18 = 0;
+      firstObject2 = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    firstObject2 = 0;
   }
 
-  return v18;
+  return firstObject2;
 }
 
-+ (id)_decryptAndVerifyCipherFields:(id)a3 withPreKey:(id)a4 recordTagToVerify:(id)a5 error:(id *)a6
++ (id)_decryptAndVerifyCipherFields:(id)fields withPreKey:(id)key recordTagToVerify:(id)verify error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v12)
+  fieldsCopy = fields;
+  keyCopy = key;
+  verifyCopy = verify;
+  if (verifyCopy)
   {
-    v13 = [v11 recordTaggingKey];
-    v14 = [a1 _recordTagForCipherFields:v10 recordTaggingKey:v13 error:a6];
+    recordTaggingKey = [keyCopy recordTaggingKey];
+    v14 = [self _recordTagForCipherFields:fieldsCopy recordTaggingKey:recordTaggingKey error:error];
 
     if (v14)
     {
-      if ([v14 isEqualToTag:v12 error:a6])
+      if ([v14 isEqualToTag:verifyCopy error:error])
       {
-        v15 = [v11 fieldEncryptionKey];
-        v16 = [v11 fieldTaggingKey];
-        v17 = [a1 _decryptCipherFields:v10 withFieldEncryptionKey:v15 fieldTaggingKey:v16 error:a6];
+        fieldEncryptionKey = [keyCopy fieldEncryptionKey];
+        fieldTaggingKey = [keyCopy fieldTaggingKey];
+        v17 = [self _decryptCipherFields:fieldsCopy withFieldEncryptionKey:fieldEncryptionKey fieldTaggingKey:fieldTaggingKey error:error];
 
 LABEL_20:
         goto LABEL_21;
@@ -326,13 +326,13 @@ LABEL_20:
         v20 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v22 = *a6;
+          v22 = *error;
           v24 = 138412802;
           v25 = v22;
           v26 = 2112;
           v27 = v14;
           v28 = 2112;
-          v29 = v12;
+          v29 = verifyCopy;
           _os_log_impl(&dword_1A85E5000, v20, OS_LOG_TYPE_INFO, "Tag mismatch -- record decryption failed {error: %@, tag: %@, recordTagToVerify: %@}", &v24, 0x20u);
         }
 
@@ -345,11 +345,11 @@ LABEL_18:
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = *a6;
+        v21 = *error;
         v24 = 138412546;
         v25 = v21;
         v26 = 2112;
-        v27 = v10;
+        v27 = fieldsCopy;
         _os_log_impl(&dword_1A85E5000, v20, OS_LOG_TYPE_INFO, "Failed to compute record tag -- nickname decryption failed {error: %@, cipherFields: %@}", &v24, 0x16u);
       }
 
@@ -366,19 +366,19 @@ LABEL_18:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25 = v10;
+      v25 = fieldsCopy;
       _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "Missing tag to verify -- Nickname decryption failed {cipherFields: %@}", &v24, 0xCu);
     }
   }
 
-  if (a6)
+  if (error)
   {
     v19 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A278];
     v31[0] = @"Missing recordTagToVerify";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     [v19 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-1000 userInfo:v14];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_20;
   }
 
@@ -388,18 +388,18 @@ LABEL_21:
   return v17;
 }
 
-+ (id)_encryptPlainFields:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6
++ (id)_encryptPlainFields:(id)fields withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  fieldsCopy = fields;
+  keyCopy = key;
+  taggingKeyCopy = taggingKey;
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v10;
+  v14 = fieldsCopy;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
@@ -414,7 +414,7 @@ LABEL_21:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [a1 _encryptPlainField:*(*(&v23 + 1) + 8 * i) withFieldEncryptionKey:v11 fieldTaggingKey:v12 error:{a6, v23}];
+        v19 = [self _encryptPlainField:*(*(&v23 + 1) + 8 * i) withFieldEncryptionKey:keyCopy fieldTaggingKey:taggingKeyCopy error:{error, v23}];
         if (!v19)
         {
 
@@ -442,11 +442,11 @@ LABEL_11:
   return v21;
 }
 
-+ (id)_recordTagForCipherFields:(id)a3 recordTaggingKey:(id)a4 error:(id *)a5
++ (id)_recordTagForCipherFields:(id)fields recordTaggingKey:(id)key error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a3 sortedArrayUsingComparator:&unk_1F1BA5808];
+  keyCopy = key;
+  v9 = [fields sortedArrayUsingComparator:&unk_1F1BA5808];
   v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v24 = 0u;
   v25 = 0u;
@@ -467,9 +467,9 @@ LABEL_11:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v24 + 1) + 8 * i) fieldTag];
-        v17 = [v16 dataRepresentation];
-        [v10 appendData:v17];
+        fieldTag = [*(*(&v24 + 1) + 8 * i) fieldTag];
+        dataRepresentation = [fieldTag dataRepresentation];
+        [v10 appendData:dataRepresentation];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -478,10 +478,10 @@ LABEL_11:
     while (v13);
   }
 
-  v18 = [v8 data];
-  v19 = [a1 _tagForData:v10 key:v18 error:a5];
+  data = [keyCopy data];
+  v19 = [self _tagForData:v10 key:data error:error];
 
-  v20 = [IMNicknameEncryptionRecordTag tagWithDataRepresentation:v19 error:a5];
+  v20 = [IMNicknameEncryptionRecordTag tagWithDataRepresentation:v19 error:error];
   v21 = v20;
   if (v20)
   {
@@ -491,47 +491,47 @@ LABEL_11:
   return v21;
 }
 
-+ (id)_encryptPlainField:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6
++ (id)_encryptPlainField:(id)field withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 _randomBytesWithLength:16 error:a6];
+  fieldCopy = field;
+  keyCopy = key;
+  taggingKeyCopy = taggingKey;
+  v13 = [self _randomBytesWithLength:16 error:error];
   if (v13)
   {
-    v14 = [v10 plainData];
-    v15 = [a1 _performOperation:0 onData:v14 withFieldEncryptionKey:v11 iv:v13 error:a6];
+    plainData = [fieldCopy plainData];
+    v15 = [self _performOperation:0 onData:plainData withFieldEncryptionKey:keyCopy iv:v13 error:error];
 
     if (v15)
     {
-      v16 = [v10 fieldName];
-      v17 = [a1 _fieldTagForFieldName:v16 cipherData:v15 IV:v13 fieldTaggingKey:v12 error:a6];
+      fieldName = [fieldCopy fieldName];
+      v17 = [self _fieldTagForFieldName:fieldName cipherData:v15 IV:v13 fieldTaggingKey:taggingKeyCopy error:error];
 
       if (v17)
       {
         v18 = [IMNicknameEncryptionCipherRecordField alloc];
-        v19 = [v10 fieldName];
-        a6 = [(IMNicknameEncryptionCipherRecordField *)v18 initWithFieldName:v19 cipherData:v15 IV:v13 tag:v17];
+        fieldName2 = [fieldCopy fieldName];
+        error = [(IMNicknameEncryptionCipherRecordField *)v18 initWithFieldName:fieldName2 cipherData:v15 IV:v13 tag:v17];
       }
 
-      else if (a6)
+      else if (error)
       {
         if (IMOSLoggingEnabled())
         {
           v24 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
-            v25 = *a6;
+            v25 = *error;
             v27 = 138412546;
             v28 = v25;
             v29 = 2112;
-            v30 = v10;
+            v30 = fieldCopy;
             _os_log_impl(&dword_1A85E5000, v24, OS_LOG_TYPE_INFO, "Failed to compute tag -- nickname encryption failed {error: %@, plainField: %@}", &v27, 0x16u);
           }
         }
 
-        a6 = 0;
+        error = 0;
       }
     }
 
@@ -542,53 +542,53 @@ LABEL_11:
         v22 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = *a6;
+          v23 = *error;
           v27 = 138412546;
           v28 = v23;
           v29 = 2112;
-          v30 = v10;
+          v30 = fieldCopy;
           _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Failed to encrypt data -- nickname encryption failed {error: %@, plainField: %@}", &v27, 0x16u);
         }
       }
 
-      a6 = 0;
+      error = 0;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     if (IMOSLoggingEnabled())
     {
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = *a6;
+        v21 = *error;
         v27 = 138412546;
         v28 = v21;
         v29 = 2112;
-        v30 = v10;
+        v30 = fieldCopy;
         _os_log_impl(&dword_1A85E5000, v20, OS_LOG_TYPE_INFO, "Failed to generate IV -- nickname encryption failed {error: %@, plainField: %@}", &v27, 0x16u);
       }
     }
 
-    a6 = 0;
+    error = 0;
   }
 
-  return a6;
+  return error;
 }
 
-+ (id)_decryptCipherFields:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6
++ (id)_decryptCipherFields:(id)fields withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  fieldsCopy = fields;
+  keyCopy = key;
+  taggingKeyCopy = taggingKey;
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v10;
+  v14 = fieldsCopy;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
   {
@@ -602,7 +602,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        v18 = [a1 _decryptCipherField:*(*(&v23 + 1) + 8 * i) withFieldEncryptionKey:v11 fieldTaggingKey:v12 error:{a6, v23}];
+        v18 = [self _decryptCipherField:*(*(&v23 + 1) + 8 * i) withFieldEncryptionKey:keyCopy fieldTaggingKey:taggingKeyCopy error:{error, v23}];
         if (!v18)
         {
           if (IMOSLoggingEnabled())
@@ -610,7 +610,7 @@ LABEL_11:
             v20 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
-              v21 = *a6;
+              v21 = *error;
               *buf = 138412546;
               v28 = v21;
               v29 = 2112;
@@ -642,16 +642,16 @@ LABEL_15:
   return v19;
 }
 
-+ (id)_decryptCipherField:(id)a3 withFieldEncryptionKey:(id)a4 fieldTaggingKey:(id)a5 error:(id *)a6
++ (id)_decryptCipherField:(id)field withFieldEncryptionKey:(id)key fieldTaggingKey:(id)taggingKey error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 fieldName];
-  v14 = [v10 cipherData];
-  v15 = [v10 IV];
-  v16 = [a1 _fieldTagForFieldName:v13 cipherData:v14 IV:v15 fieldTaggingKey:v12 error:a6];
+  fieldCopy = field;
+  keyCopy = key;
+  taggingKeyCopy = taggingKey;
+  fieldName = [fieldCopy fieldName];
+  cipherData = [fieldCopy cipherData];
+  v15 = [fieldCopy IV];
+  v16 = [self _fieldTagForFieldName:fieldName cipherData:cipherData IV:v15 fieldTaggingKey:taggingKeyCopy error:error];
 
   if (!v16)
   {
@@ -660,11 +660,11 @@ LABEL_15:
       v25 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = *a6;
+        v26 = *error;
         v32 = 138412546;
         v33 = v26;
         v34 = 2112;
-        v35 = v10;
+        v35 = fieldCopy;
         _os_log_impl(&dword_1A85E5000, v25, OS_LOG_TYPE_INFO, "Failed to calculate field tag -- nickname decryption failed {error: %@, cipherField: %@}", &v32, 0x16u);
       }
 
@@ -676,8 +676,8 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v17 = [v10 fieldTag];
-  v18 = [v16 isEqualToTag:v17 error:a6];
+  fieldTag = [fieldCopy fieldTag];
+  v18 = [v16 isEqualToTag:fieldTag error:error];
 
   if ((v18 & 1) == 0)
   {
@@ -686,13 +686,13 @@ LABEL_13:
       v25 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v27 = *a6;
+        v27 = *error;
         v32 = 138412802;
         v33 = v27;
         v34 = 2112;
         v35 = v16;
         v36 = 2112;
-        v37 = v10;
+        v37 = fieldCopy;
         _os_log_impl(&dword_1A85E5000, v25, OS_LOG_TYPE_INFO, "Field tag mismatch -- nickname decryption failed {error: %@, tag: %@, cipherField: %@}", &v32, 0x20u);
       }
 
@@ -704,15 +704,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v19 = [v10 cipherData];
-  v20 = [v10 IV];
-  v21 = [a1 _performOperation:1 onData:v19 withFieldEncryptionKey:v11 iv:v20 error:a6];
+  cipherData2 = [fieldCopy cipherData];
+  v20 = [fieldCopy IV];
+  v21 = [self _performOperation:1 onData:cipherData2 withFieldEncryptionKey:keyCopy iv:v20 error:error];
 
   if (v21)
   {
     v22 = [IMNicknameEncryptionPlainRecordField alloc];
-    v23 = [v10 fieldName];
-    v24 = [(IMNicknameEncryptionPlainRecordField *)v22 initWithFieldName:v23 plainData:v21];
+    fieldName2 = [fieldCopy fieldName];
+    v24 = [(IMNicknameEncryptionPlainRecordField *)v22 initWithFieldName:fieldName2 plainData:v21];
   }
 
   else
@@ -722,12 +722,12 @@ LABEL_12:
       v28 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        v29 = *a6;
-        v30 = [v10 IV];
+        v29 = *error;
+        v30 = [fieldCopy IV];
         v32 = 138412802;
         v33 = v29;
         v34 = 2112;
-        v35 = v10;
+        v35 = fieldCopy;
         v36 = 2112;
         v37 = v30;
         _os_log_impl(&dword_1A85E5000, v28, OS_LOG_TYPE_INFO, "Decryption operation failed -- nickname decryption failed {error: %@, cipherField: %@, cipherField.IV: %@}", &v32, 0x20u);
@@ -742,20 +742,20 @@ LABEL_20:
   return v24;
 }
 
-+ (id)_performOperation:(unsigned int)a3 onData:(id)a4 withFieldEncryptionKey:(id)a5 iv:(id)a6 error:(id *)a7
++ (id)_performOperation:(unsigned int)operation onData:(id)data withFieldEncryptionKey:(id)key iv:(id)iv error:(id *)error
 {
-  v10 = *&a3;
+  v10 = *&operation;
   v51[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  keyCopy = key;
+  ivCopy = iv;
   cryptorRef = 0;
-  if ([v13 length] <= 0xF)
+  if ([ivCopy length] <= 0xF)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IV too short {IV: %@}", v13];
+    ivCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"IV too short {IV: %@}", ivCopy];
     v15 = MEMORY[0x1E696ABC0];
     v50 = *MEMORY[0x1E696A278];
-    v51[0] = v14;
+    v51[0] = ivCopy;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
     v17 = [v15 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-1000 userInfo:v16];
 
@@ -772,27 +772,27 @@ LABEL_20:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v19 = v17;
-      *a7 = v17;
+      *error = v17;
     }
 
     goto LABEL_9;
   }
 
-  v21 = CCCryptorCreateWithMode(v10, 4u, 0, 0, [v13 bytes], objc_msgSend(v12, "bytes"), objc_msgSend(v12, "length"), 0, 0, 0, 2u, &cryptorRef);
+  v21 = CCCryptorCreateWithMode(v10, 4u, 0, 0, [ivCopy bytes], objc_msgSend(keyCopy, "bytes"), objc_msgSend(keyCopy, "length"), 0, 0, 0, 2u, &cryptorRef);
   if (!v21)
   {
-    v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{CCCryptorGetOutputLength(cryptorRef, objc_msgSend(v11, "length"), 1)}];
+    ivCopy = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{CCCryptorGetOutputLength(cryptorRef, objc_msgSend(dataCopy, "length"), 1)}];
     dataOutMoved = 0;
     v26 = cryptorRef;
-    v27 = v11;
-    v28 = [v11 bytes];
-    v29 = [v11 length];
-    v30 = v14;
-    v31 = CCCryptorUpdate(v26, v28, v29, [v14 mutableBytes], objc_msgSend(v14, "length"), &dataOutMoved);
-    [v14 setLength:dataOutMoved];
+    v27 = dataCopy;
+    bytes = [dataCopy bytes];
+    v29 = [dataCopy length];
+    v30 = ivCopy;
+    v31 = CCCryptorUpdate(v26, bytes, v29, [ivCopy mutableBytes], objc_msgSend(ivCopy, "length"), &dataOutMoved);
+    [ivCopy setLength:dataOutMoved];
     if (cryptorRef)
     {
       CCCryptorRelease(cryptorRef);
@@ -800,7 +800,7 @@ LABEL_20:
 
     if (!v31)
     {
-      a7 = v14;
+      error = ivCopy;
       goto LABEL_10;
     }
 
@@ -826,34 +826,34 @@ LABEL_20:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v37 = v35;
-      *a7 = v35;
+      *error = v35;
     }
 
 LABEL_9:
-    a7 = 0;
+    error = 0;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if (a7)
+  if (error)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create Crytpor {operation: %u, retval: %d}", v10, v21];
+    ivCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create Crytpor {operation: %u, retval: %d}", v10, v21];
     v22 = MEMORY[0x1E696ABC0];
     v48 = *MEMORY[0x1E696A278];
-    v49 = v14;
+    v49 = ivCopy;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    *a7 = [v22 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-2000 userInfo:v23];
+    *error = [v22 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-2000 userInfo:v23];
 
     if (IMOSLoggingEnabled())
     {
       v24 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = *a7;
+        v25 = *error;
         *buf = 138412802;
         v43 = v25;
         v44 = 1024;
@@ -869,84 +869,84 @@ LABEL_10:
 
 LABEL_11:
 
-  return a7;
+  return error;
 }
 
-+ (id)_fieldTagForFieldName:(id)a3 cipherData:(id)a4 IV:(id)a5 fieldTaggingKey:(id)a6 error:(id *)a7
++ (id)_fieldTagForFieldName:(id)name cipherData:(id)data IV:(id)v fieldTaggingKey:(id)key error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a3 dataUsingEncoding:4];
+  keyCopy = key;
+  vCopy = v;
+  dataCopy = data;
+  v15 = [name dataUsingEncoding:4];
   v16 = [v15 mutableCopy];
 
-  [v16 appendData:v13];
-  [v16 appendData:v14];
+  [v16 appendData:vCopy];
+  [v16 appendData:dataCopy];
 
-  v17 = [v12 data];
+  data = [keyCopy data];
 
-  v18 = [a1 _tagForData:v16 key:v17 error:a7];
+  v18 = [self _tagForData:v16 key:data error:error];
 
-  v19 = [IMNicknameEncryptionFieldTag tagWithDataRepresentation:v18 error:a7];
+  v19 = [IMNicknameEncryptionFieldTag tagWithDataRepresentation:v18 error:error];
 
   return v19;
 }
 
-+ (id)_tagForData:(id)a3 key:(id)a4 error:(id *)a5
++ (id)_tagForData:(id)data key:(id)key error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 length];
-  if (a5 && !v10)
+  dataCopy = data;
+  keyCopy = key;
+  v10 = [dataCopy length];
+  if (error && !v10)
   {
     v11 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696A278];
     v16[0] = @"Passed empty data to tag calculation";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a5 = [v11 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-1000 userInfo:v12];
+    *error = [v11 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-1000 userInfo:v12];
   }
 
-  v13 = [a1 _hmacForData:v8 key:v9];
+  v13 = [self _hmacForData:dataCopy key:keyCopy];
 
   return v13;
 }
 
-+ (id)_hmacForData:(id)a3 key:(id)a4
++ (id)_hmacForData:(id)data key:(id)key
 {
   v5 = MEMORY[0x1E695DF88];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  dataCopy = data;
   v8 = [[v5 alloc] initWithLength:32];
-  v9 = [v6 bytes];
-  v10 = [v6 length];
+  bytes = [keyCopy bytes];
+  v10 = [keyCopy length];
 
-  v11 = [v7 bytes];
-  v12 = [v7 length];
+  bytes2 = [dataCopy bytes];
+  v12 = [dataCopy length];
 
-  CCHmac(2u, v9, v10, v11, v12, [v8 mutableBytes]);
+  CCHmac(2u, bytes, v10, bytes2, v12, [v8 mutableBytes]);
 
   return v8;
 }
 
-+ (id)_randomBytesWithLength:(unint64_t)a3 error:(id *)a4
++ (id)_randomBytesWithLength:(unint64_t)length error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v6 = [MEMORY[0x1E695DF88] dataWithLength:?];
-  Bytes = CCRandomGenerateBytes([v6 mutableBytes], a3);
+  Bytes = CCRandomGenerateBytes([v6 mutableBytes], length);
   if (Bytes)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Call to CCRandomGenerateBytes faield {status: %d}", Bytes];
+    bytes = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Call to CCRandomGenerateBytes faield {status: %d}", Bytes];
     v9 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696A278];
-    v16[0] = v8;
+    v16[0] = bytes;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v11 = [v9 errorWithDomain:@"IMNicknameEncryptionHelpersErrorDomain" code:-2000 userInfo:v10];
 
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v13 = 0;

@@ -1,72 +1,72 @@
 @interface UIMovieScrubber
 - (BOOL)cancelTouchTracking;
-- (BOOL)pointInsideThumb:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInsideThumb:(CGPoint)thumb withEvent:(id)event;
 - (CGRect)_editingRect;
-- (CGRect)_editingRectForStartTime:(double)a3 endTime:(double)a4;
-- (CGRect)thumbRectForValue:(double)a3;
+- (CGRect)_editingRectForStartTime:(double)time endTime:(double)endTime;
+- (CGRect)thumbRectForValue:(double)value;
 - (CGRect)trackRect;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (UIEdgeInsets)alignmentMargins;
-- (UIMovieScrubber)initWithFrame:(CGRect)a3;
+- (UIMovieScrubber)initWithFrame:(CGRect)frame;
 - (UIMovieScrubberDataSource)dataSource;
 - (UIMovieScrubberDelegate)delegate;
-- (double)_valueForLocatable:(id)a3;
-- (double)movieScrubberTrackViewDuration:(id)a3;
-- (double)movieScrubberTrackViewThumbnailAspectRatio:(id)a3;
+- (double)_valueForLocatable:(id)locatable;
+- (double)movieScrubberTrackViewDuration:(id)duration;
+- (double)movieScrubberTrackViewThumbnailAspectRatio:(id)ratio;
 - (double)trimEndValue;
 - (double)trimStartValue;
-- (id)movieScrubberTrackView:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6;
-- (int)_editingHandleWithLocatable:(id)a3;
-- (void)_animateAfterEdit:(BOOL)a3;
-- (void)_beginTrackPressWithLocatable:(id)a3 touchesBegan:(BOOL)a4;
-- (void)_cancelTrackPress:(BOOL)a3;
-- (void)_cancelTrackPressIfNeccessaryWithLocatable:(id)a3;
-- (void)_computeTrackRectForBounds:(CGRect)a3;
-- (void)_handlePanGesture:(id)a3;
+- (id)movieScrubberTrackView:(id)view evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt;
+- (int)_editingHandleWithLocatable:(id)locatable;
+- (void)_animateAfterEdit:(BOOL)edit;
+- (void)_beginTrackPressWithLocatable:(id)locatable touchesBegan:(BOOL)began;
+- (void)_cancelTrackPress:(BOOL)press;
+- (void)_cancelTrackPressIfNeccessaryWithLocatable:(id)locatable;
+- (void)_computeTrackRectForBounds:(CGRect)bounds;
+- (void)_handlePanGesture:(id)gesture;
 - (void)_initSubviews;
-- (void)_setValue:(double)a3 andSendAction:(BOOL)a4;
-- (void)_setZoomAnimating:(BOOL)a3;
-- (void)_sliderAnimationDidStop:(BOOL)a3;
-- (void)_sliderValueDidChange:(id)a3;
+- (void)_setValue:(double)value andSendAction:(BOOL)action;
+- (void)_setZoomAnimating:(BOOL)animating;
+- (void)_sliderAnimationDidStop:(BOOL)stop;
+- (void)_sliderValueDidChange:(id)change;
 - (void)_trackPressWasHeld;
-- (void)_trimAnimationDidStop:(BOOL)a3 glassView:(id)a4;
+- (void)_trimAnimationDidStop:(BOOL)stop glassView:(id)view;
 - (void)_updateThumbLocation;
 - (void)_updateTimes;
-- (void)beginTrackingWithLocatable:(id)a3;
-- (void)continueTrackingWithLocatable:(id)a3;
+- (void)beginTrackingWithLocatable:(id)locatable;
+- (void)continueTrackingWithLocatable:(id)locatable;
 - (void)dealloc;
-- (void)endTrackingWithLocatable:(id)a3;
+- (void)endTrackingWithLocatable:(id)locatable;
 - (void)forceUnzoom;
 - (void)layoutSubviews;
-- (void)movieScrubberTrackView:(id)a3 clampedSizeWidthDelta:(double)a4 actualSizeWidthDelta:(double)a5 originXDelta:(double)a6 minimumVisibleValue:(double)a7 maximumVisibleValue:(double)a8;
-- (void)movieScrubberTrackView:(id)a3 requestThumbnailImageForTimestamp:(id)a4 isSummaryThumbnail:(BOOL)a5;
-- (void)movieScrubberTrackViewDidCollapse:(id)a3;
-- (void)movieScrubberTrackViewDidExpand:(id)a3;
-- (void)movieScrubberTrackViewDidFinishRequestingThumbnails:(id)a3;
-- (void)movieScrubberTrackViewWillBeginRequestingThumbnails:(id)a3;
+- (void)movieScrubberTrackView:(id)view clampedSizeWidthDelta:(double)delta actualSizeWidthDelta:(double)widthDelta originXDelta:(double)xDelta minimumVisibleValue:(double)value maximumVisibleValue:(double)visibleValue;
+- (void)movieScrubberTrackView:(id)view requestThumbnailImageForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail;
+- (void)movieScrubberTrackViewDidCollapse:(id)collapse;
+- (void)movieScrubberTrackViewDidExpand:(id)expand;
+- (void)movieScrubberTrackViewDidFinishRequestingThumbnails:(id)thumbnails;
+- (void)movieScrubberTrackViewWillBeginRequestingThumbnails:(id)thumbnails;
 - (void)reloadData;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setEdgeInset:(double)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setRotationDisabled:(BOOL)a3;
-- (void)setThumbIsVisible:(BOOL)a3;
-- (void)setTrimEndValue:(double)a3;
-- (void)setTrimStartValue:(double)a3;
-- (void)setValue:(double)a3 animated:(BOOL)a4;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setDuration:(double)duration;
+- (void)setEdgeInset:(double)inset;
+- (void)setEditable:(BOOL)editable;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setRotationDisabled:(BOOL)disabled;
+- (void)setThumbIsVisible:(BOOL)visible;
+- (void)setTrimEndValue:(double)value;
+- (void)setTrimStartValue:(double)value;
+- (void)setValue:(double)value animated:(BOOL)animated;
 @end
 
 @implementation UIMovieScrubber
 
-- (UIMovieScrubber)initWithFrame:(CGRect)a3
+- (UIMovieScrubber)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UIMovieScrubber;
-  v3 = [(UIControl *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, 39.0];
+  v3 = [(UIControl *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, 39.0];
   v4 = v3;
   if (v3)
   {
@@ -76,8 +76,8 @@
     v3->_value = 0.0;
     v3->_zoomDelay = 1.0;
     v3->_showTimeViews = 0;
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupOpacity:1];
 
     v6 = [[UIPanGestureRecognizer alloc] initWithTarget:v4 action:sel__handlePanGesture_];
     panGestureRecognizer = v4->_panGestureRecognizer;
@@ -101,9 +101,9 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -141,9 +141,9 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -306,12 +306,12 @@
   return WeakRetained;
 }
 
-- (void)setThumbIsVisible:(BOOL)a3
+- (void)setThumbIsVisible:(BOOL)visible
 {
   v3 = *(&self->_sliderFlags + 8);
-  if (((((v3 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x10) == 0) ^ visible) & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v4 = 16;
     }
@@ -331,27 +331,27 @@
   }
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   if ((*(&self->_sliderFlags + 8) & 8) != 0)
   {
-    self->_editable = a3;
+    self->_editable = editable;
   }
 
   else
   {
-    if (!a3)
+    if (!editable)
     {
       [(UIMovieScrubber *)self setEditing:0];
     }
 
-    self->_editable = v3;
+    self->_editable = editableCopy;
     editingView = self->_editingView;
     if (editingView)
     {
 
-      [(UIMovieScrubberEditingView *)editingView setEnabled:v3];
+      [(UIMovieScrubberEditingView *)editingView setEnabled:editableCopy];
     }
 
     else
@@ -363,9 +363,9 @@
   }
 }
 
-- (void)_animateAfterEdit:(BOOL)a3
+- (void)_animateAfterEdit:(BOOL)edit
 {
-  v3 = a3;
+  editCopy = edit;
   [(UIView *)self->_editingView frame];
   v6 = v5;
   v8 = v7;
@@ -393,7 +393,7 @@
   }
 
   *(&self->_sliderFlags + 8) |= 8u;
-  if (v3)
+  if (editCopy)
   {
     v22 = 0.5;
   }
@@ -412,13 +412,13 @@
   v32 = v18;
   v33 = v20;
   v28 = v21;
-  v29 = self;
-  v34 = v3;
+  selfCopy = self;
+  v34 = editCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __37__UIMovieScrubber__animateAfterEdit___block_invoke_2;
   v24[3] = &unk_1E70F8A60;
-  v26 = v3;
+  v26 = editCopy;
   v24[4] = self;
   v25 = v28;
   v23 = v28;
@@ -447,17 +447,17 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   if (self->_editable)
   {
-    v4 = a3;
+    editingCopy = editing;
     p_sliderFlags = &self->_sliderFlags;
     v7 = *(&self->_sliderFlags + 8);
-    if ((((v7 >= 0) ^ a3) & 1) == 0)
+    if ((((v7 >= 0) ^ editing) & 1) == 0)
     {
-      v8 = a4;
-      if (a3)
+      animatedCopy = animated;
+      if (editing)
       {
         v9 = 0x80;
       }
@@ -473,9 +473,9 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
         [(UIMovieScrubber *)self layoutSubviews];
       }
 
-      if (!v8 || v4)
+      if (!animatedCopy || editingCopy)
       {
-        [(UIMovieScrubber *)self setThumbIsVisible:!v4];
+        [(UIMovieScrubber *)self setThumbIsVisible:!editingCopy];
       }
 
       if (*(p_sliderFlags + 8) < 0)
@@ -522,7 +522,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
         [(UIMovieScrubberEditingView *)self->_editingView setEditing:1];
         [(UIMovieScrubberTrackView *)self->_trackView setStartValue:self->_trimStartValue];
         [(UIMovieScrubberTrackView *)self->_trackView setEndValue:self->_trimEndValue];
-        if (v8)
+        if (animatedCopy)
         {
           [(UIMovieScrubberEditingView *)self->_editingView bounce];
         }
@@ -537,7 +537,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
       else
       {
         [(UIMovieScrubber *)self _cancelTrackPress:0];
-        if (v8)
+        if (animatedCopy)
         {
 
           [(UIMovieScrubber *)self animateCancelEdit];
@@ -558,18 +558,18 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_trimAnimationDidStop:(BOOL)a3 glassView:(id)a4
+- (void)_trimAnimationDidStop:(BOOL)stop glassView:(id)view
 {
-  v4 = a3;
-  v6 = a4;
+  stopCopy = stop;
+  viewCopy = view;
   *(&self->_sliderFlags + 8) &= 0x77u;
   [(UIView *)self->_editingView removeFromSuperview];
   editingView = self->_editingView;
-  self->_editingView = v6;
-  v8 = v6;
+  self->_editingView = viewCopy;
+  v8 = viewCopy;
 
   [(UIMovieScrubberEditingView *)self->_editingView setEnabled:self->_editable];
-  if (v4)
+  if (stopCopy)
   {
     [(UIMovieScrubber *)self setValue:0 animated:0.0];
     [(UIMovieScrubber *)self setThumbIsVisible:1];
@@ -587,13 +587,13 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_computeTrackRectForBounds:(CGRect)a3
+- (void)_computeTrackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  y = a3.origin.y;
+  height = bounds.size.height;
+  y = bounds.origin.y;
   edgeInset = self->_edgeInset;
-  v7 = a3.origin.x + edgeInset;
-  v8 = a3.size.width - (edgeInset + edgeInset);
+  v7 = bounds.origin.x + edgeInset;
+  v8 = bounds.size.width - (edgeInset + edgeInset);
   if ((*&self->_sliderFlags & 0x10) != 0 || !self->_showTimeViews)
   {
     v7 = v7 + 12.0;
@@ -655,7 +655,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)_editingRectForStartTime:(double)a3 endTime:(double)a4
+- (CGRect)_editingRectForStartTime:(double)time endTime:(double)endTime
 {
   [(UIMovieScrubber *)self trackRect];
   minimumValue = self->_minimumValue;
@@ -668,39 +668,39 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
 
   else
   {
-    if (a4 >= a3)
+    if (endTime >= time)
     {
-      v12 = a3;
+      endTimeCopy = time;
     }
 
     else
     {
-      v12 = a4;
+      endTimeCopy = endTime;
     }
 
-    if (a4 >= a3)
+    if (endTime >= time)
     {
-      v13 = a4;
+      timeCopy2 = endTime;
     }
 
     else
     {
-      v13 = a3;
+      timeCopy2 = time;
     }
 
-    if (v13 >= maximumValue)
+    if (timeCopy2 >= maximumValue)
     {
-      v13 = self->_maximumValue;
+      timeCopy2 = self->_maximumValue;
     }
 
-    if (v12 < minimumValue)
+    if (endTimeCopy < minimumValue)
     {
-      v12 = self->_minimumValue;
+      endTimeCopy = self->_minimumValue;
     }
 
-    v14 = rint(v8 * ((v12 - minimumValue) / v11));
+    v14 = rint(v8 * ((endTimeCopy - minimumValue) / v11));
     v7 = v7 + v14;
-    v15 = v8 - (v14 + rint(v8 * ((maximumValue - v13) / v11)));
+    v15 = v8 - (v14 + rint(v8 * ((maximumValue - timeCopy2) / v11)));
   }
 
   v16 = self->_edgeInset + 12.0;
@@ -715,7 +715,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)thumbRectForValue:(double)a3
+- (CGRect)thumbRectForValue:(double)value
 {
   minimumValue = self->_minimumValue;
   maximumValue = self->_maximumValue;
@@ -728,22 +728,22 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   v15 = 0.0;
   if (v13 != v14)
   {
-    if (minimumValue <= a3)
+    if (minimumValue <= value)
     {
-      v16 = a3;
+      valueCopy = value;
     }
 
     else
     {
-      v16 = minimumValue;
+      valueCopy = minimumValue;
     }
 
-    if (v16 > maximumValue)
+    if (valueCopy > maximumValue)
     {
-      v16 = maximumValue;
+      valueCopy = maximumValue;
     }
 
-    v15 = (v16 - v14) / (v13 - v14);
+    v15 = (valueCopy - v14) / (v13 - v14);
   }
 
   v17 = _GetScrubberThumbImage();
@@ -762,12 +762,12 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1018,16 +1018,16 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEdgeInset:(double)a3
+- (void)setEdgeInset:(double)inset
 {
-  if (a3 < 0.0)
+  if (inset < 0.0)
   {
-    a3 = 0.0;
+    inset = 0.0;
   }
 
-  if (self->_edgeInset != a3)
+  if (self->_edgeInset != inset)
   {
-    self->_edgeInset = a3;
+    self->_edgeInset = inset;
     *&self->_sliderFlags |= 0x20u;
     [(UIMovieScrubberEditingView *)self->_editingView setEdgeInset:self->_edgeInset];
 
@@ -1053,9 +1053,9 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setValue:(double)a3 animated:(BOOL)a4
+- (void)setValue:(double)value animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v5 = *(&self->_sliderFlags + 8);
     v6 = v5 < 0;
@@ -1077,36 +1077,36 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
     }
 
     v10 = *v9;
-    if (v8 > a3)
+    if (v8 > value)
     {
-      a3 = v8;
+      value = v8;
     }
 
-    if (a3 <= *(&self->super.super.super.super.isa + v10))
+    if (value <= *(&self->super.super.super.super.isa + v10))
     {
-      v11 = a3;
+      valueCopy = value;
     }
 
     else
     {
-      v11 = *(&self->super.super.super.super.isa + v10);
+      valueCopy = *(&self->super.super.super.super.isa + v10);
     }
 
     [(UIMovieScrubber *)self trackRect];
     v13 = v12;
-    v14 = [(UIView *)self->_thumbView layer];
-    v15 = [v14 presentationLayer];
-    [v15 frame];
+    layer = [(UIView *)self->_thumbView layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer frame];
     v17 = v16;
 
-    [(UIMovieScrubber *)self thumbRectForValue:v11];
+    [(UIMovieScrubber *)self thumbRectForValue:valueCopy];
     v20[4] = self;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __37__UIMovieScrubber_setValue_animated___block_invoke;
     v21[3] = &unk_1E70F32F0;
     v21[4] = self;
-    *&v21[5] = v11;
+    *&v21[5] = valueCopy;
     v19[4] = self;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -1122,7 +1122,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   else
   {
 
-    [(UIMovieScrubber *)self _setValue:a3 andSendAction:?];
+    [(UIMovieScrubber *)self _setValue:value andSendAction:?];
   }
 }
 
@@ -1135,9 +1135,9 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   [(UIImageView *)thumbView setFrame:?];
 }
 
-- (void)_setValue:(double)a3 andSendAction:(BOOL)a4
+- (void)_setValue:(double)value andSendAction:(BOOL)action
 {
-  v4 = a4;
+  actionCopy = action;
   v6 = *(&self->_sliderFlags + 8);
   v7 = v6 < 0;
   if (v6 < 0)
@@ -1158,37 +1158,37 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 
   v11 = *v10;
-  if (v9 > a3)
+  if (v9 > value)
   {
-    a3 = v9;
+    value = v9;
   }
 
-  if (a3 > *(&self->super.super.super.super.isa + v11))
+  if (value > *(&self->super.super.super.super.isa + v11))
   {
-    a3 = *(&self->super.super.super.super.isa + v11);
+    value = *(&self->super.super.super.super.isa + v11);
   }
 
-  if (a3 != self->_value)
+  if (value != self->_value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(UIMovieScrubberTrackView *)self->_trackView setValue:?];
     [(UIMovieScrubber *)self _updateThumbLocation];
     [(UIMovieScrubber *)self _updateTimes];
   }
 
-  if (v4)
+  if (actionCopy)
   {
 
     [(UIControl *)self _sendActionsForEvents:4096 withEvent:0];
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_maximumValue != a3)
+  if (self->_maximumValue != duration)
   {
-    self->_maximumValue = a3;
-    if ((60 * (a3 / 60) - 60 * (a3 / 60 % 60) + 3599) < 0x1C1F)
+    self->_maximumValue = duration;
+    if ((60 * (duration / 60) - 60 * (duration / 60 % 60) + 3599) < 0x1C1F)
     {
       v3 = 2;
     }
@@ -1221,13 +1221,13 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTrimStartValue:(double)a3
+- (void)setTrimStartValue:(double)value
 {
-  minimumValue = a3;
+  minimumValue = value;
   p_sliderFlags = &self->_sliderFlags;
   if (!self->_sliderFlags.clampingTrimRange)
   {
-    if (self->_minimumValue > a3)
+    if (self->_minimumValue > value)
     {
       minimumValue = self->_minimumValue;
     }
@@ -1307,13 +1307,13 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTrimEndValue:(double)a3
+- (void)setTrimEndValue:(double)value
 {
-  minimumValue = a3;
+  minimumValue = value;
   p_sliderFlags = &self->_sliderFlags;
   if (!self->_sliderFlags.clampingTrimRange)
   {
-    if (self->_minimumValue > a3)
+    if (self->_minimumValue > value)
     {
       minimumValue = self->_minimumValue;
     }
@@ -1376,19 +1376,19 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sliderAnimationDidStop:(BOOL)a3
+- (void)_sliderAnimationDidStop:(BOOL)stop
 {
-  if (a3)
+  if (stop)
   {
     *&self->_sliderFlags &= ~2u;
   }
 }
 
-- (double)_valueForLocatable:(id)a3
+- (double)_valueForLocatable:(id)locatable
 {
   minimumValue = self->_minimumValue;
   maximumValue = self->_maximumValue;
-  [a3 locationInView:self->_trackView];
+  [locatable locationInView:self->_trackView];
   v7 = v6;
   [(UIView *)self->_trackView frame];
   v9 = v8;
@@ -1406,16 +1406,16 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
   return minimumValue;
 }
 
-- (void)setRotationDisabled:(BOOL)a3
+- (void)setRotationDisabled:(BOOL)disabled
 {
   p_sliderFlags = &self->_sliderFlags;
   rotationDisabled = self->_sliderFlags.rotationDisabled;
-  if (a3)
+  if (disabled)
   {
     if (!rotationDisabled)
     {
-      v5 = [(UIView *)self window];
-      [v5 beginDisablingInterfaceAutorotation];
+      window = [(UIView *)self window];
+      [window beginDisablingInterfaceAutorotation];
 
       rotationDisabled = p_sliderFlags->rotationDisabled;
     }
@@ -1429,23 +1429,23 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
     self->_sliderFlags.rotationDisabled = v6;
     if (!v6)
     {
-      v7 = [(UIView *)self window];
-      [v7 endDisablingInterfaceAutorotation];
+      window2 = [(UIView *)self window];
+      [window2 endDisablingInterfaceAutorotation];
     }
   }
 }
 
-- (void)_setZoomAnimating:(BOOL)a3
+- (void)_setZoomAnimating:(BOOL)animating
 {
   p_sliderFlags = &self->_sliderFlags;
   v4 = *(&self->_sliderFlags + 8);
-  if ((((v4 & 2) == 0) ^ a3))
+  if ((((v4 & 2) == 0) ^ animating))
   {
     return;
   }
 
-  v5 = a3;
-  if (a3)
+  animatingCopy = animating;
+  if (animating)
   {
     v7 = 2;
   }
@@ -1457,7 +1457,7 @@ uint64_t __37__UIMovieScrubber__animateAfterEdit___block_invoke(uint64_t a1)
 
   *(&self->_sliderFlags + 8) = v4 & 0xFD | v7;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (v5)
+  if (animatingCopy)
   {
     if ((*(p_sliderFlags + 10) & 0x800) != 0)
     {
@@ -1518,19 +1518,19 @@ LABEL_10:
   }
 }
 
-- (void)_beginTrackPressWithLocatable:(id)a3 touchesBegan:(BOOL)a4
+- (void)_beginTrackPressWithLocatable:(id)locatable touchesBegan:(BOOL)began
 {
   p_sliderFlags = &self->_sliderFlags;
   if ((*(&self->_sliderFlags + 8) & 5) == 0)
   {
-    v5 = a4;
+    beganCopy = began;
     p_touchLocationWhenTrackPressBegan = &self->_touchLocationWhenTrackPressBegan;
-    [a3 locationInView:self->_trackView];
+    [locatable locationInView:self->_trackView];
     p_touchLocationWhenTrackPressBegan->x = v8;
     p_touchLocationWhenTrackPressBegan->y = v9;
     *(p_sliderFlags + 8) |= 4u;
     [(UIMovieScrubber *)self performSelector:sel__trackPressWasHeld withObject:0 afterDelay:self->_zoomDelay];
-    if (v5)
+    if (beganCopy)
     {
       [(UIMovieScrubber *)self setRotationDisabled:1];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1542,16 +1542,16 @@ LABEL_10:
   }
 }
 
-- (void)_cancelTrackPress:(BOOL)a3
+- (void)_cancelTrackPress:(BOOL)press
 {
   p_sliderFlags = &self->_sliderFlags;
   if ((*(&self->_sliderFlags + 8) & 5) == 4)
   {
-    v4 = a3;
+    pressCopy = press;
     [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__trackPressWasHeld object:0];
     v6 = *(p_sliderFlags + 8);
     *(p_sliderFlags + 8) = v6 & 0xFB;
-    if (v4)
+    if (pressCopy)
     {
       if ((v6 & 3) == 0)
       {
@@ -1567,10 +1567,10 @@ LABEL_10:
   }
 }
 
-- (void)_cancelTrackPressIfNeccessaryWithLocatable:(id)a3
+- (void)_cancelTrackPressIfNeccessaryWithLocatable:(id)locatable
 {
   x = self->_touchLocationWhenTrackPressBegan.x;
-  [a3 locationInView:self->_trackView];
+  [locatable locationInView:self->_trackView];
   if (vabdd_f64(x, v5) > 2.0)
   {
 
@@ -1578,13 +1578,13 @@ LABEL_10:
   }
 }
 
-- (BOOL)pointInsideThumb:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInsideThumb:(CGPoint)thumb withEvent:(id)event
 {
   thumbView = self->_thumbView;
   if (thumbView)
   {
-    y = a3.y;
-    x = a3.x;
+    y = thumb.y;
+    x = thumb.x;
     trackView = self->_trackView;
     [(UIView *)thumbView hitRect];
     [(UIView *)trackView convertRect:self->_thumbView fromView:?];
@@ -1598,59 +1598,59 @@ LABEL_10:
   return thumbView;
 }
 
-- (int)_editingHandleWithLocatable:(id)a3
+- (int)_editingHandleWithLocatable:(id)locatable
 {
-  [a3 locationInView:self->_editingView];
+  [locatable locationInView:self->_editingView];
   result = [(UIMovieScrubberEditingView *)self->_editingView handleForPoint:&self->_hitOffset hitOffset:?];
   self->_sliderFlags.editingHandle = result;
   return result;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 <= 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(UIMovieScrubber *)self beginTrackingWithLocatable:v7];
+      [(UIMovieScrubber *)self beginTrackingWithLocatable:gestureCopy];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v7;
+      v5 = state == 2;
+      v6 = gestureCopy;
       if (!v5)
       {
         goto LABEL_12;
       }
 
-      [(UIMovieScrubber *)self continueTrackingWithLocatable:v7];
+      [(UIMovieScrubber *)self continueTrackingWithLocatable:gestureCopy];
     }
 
 LABEL_11:
-    v6 = v7;
+    v6 = gestureCopy;
     goto LABEL_12;
   }
 
-  if (v4 == 3 || (v5 = v4 == 4, v6 = v7, v5))
+  if (state == 3 || (v5 = state == 4, v6 = gestureCopy, v5))
   {
-    [(UIMovieScrubber *)self endTrackingWithLocatable:v7];
+    [(UIMovieScrubber *)self endTrackingWithLocatable:gestureCopy];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)beginTrackingWithLocatable:(id)a3
+- (void)beginTrackingWithLocatable:(id)locatable
 {
-  v4 = a3;
-  v5 = v4;
+  locatableCopy = locatable;
+  v5 = locatableCopy;
   if ((*(&self->_sliderFlags + 8) & 0x10) != 0)
   {
-    v20 = v4;
-    [v4 locationInView:self->_trackView];
+    v20 = locatableCopy;
+    [locatableCopy locationInView:self->_trackView];
     v7 = v6;
     v9 = v8;
     [(UIView *)self->_thumbView convertPoint:self->_trackView fromView:?];
@@ -1764,15 +1764,15 @@ LABEL_30:
   *(&self->_sliderFlags + 8) = *(&self->_sliderFlags + 8) & 0xDF | v17;
 }
 
-- (void)continueTrackingWithLocatable:(id)a3
+- (void)continueTrackingWithLocatable:(id)locatable
 {
-  v4 = a3;
+  locatableCopy = locatable;
   if ((*(&self->_sliderFlags + 8) & 0x20) != 0)
   {
-    v6 = v4;
-    [(UIMovieScrubber *)self _cancelTrackPressIfNeccessaryWithLocatable:v4];
+    v6 = locatableCopy;
+    [(UIMovieScrubber *)self _cancelTrackPressIfNeccessaryWithLocatable:locatableCopy];
     [(UIMovieScrubber *)self _beginTrackPressWithLocatable:v6 touchesBegan:0];
-    v4 = v6;
+    locatableCopy = v6;
     if ((*(&self->_sliderFlags + 8) & 2) == 0)
     {
       [(UIMovieScrubber *)self _valueForLocatable:v6];
@@ -1789,7 +1789,7 @@ LABEL_30:
 
       else
       {
-        v4 = v6;
+        locatableCopy = v6;
         if (editingHandle)
         {
           goto LABEL_12;
@@ -1804,16 +1804,16 @@ LABEL_30:
         [(UIControl *)self setHighlighted:1];
       }
 
-      v4 = v6;
+      locatableCopy = v6;
     }
   }
 
 LABEL_12:
 }
 
-- (void)endTrackingWithLocatable:(id)a3
+- (void)endTrackingWithLocatable:(id)locatable
 {
-  v8 = a3;
+  locatableCopy = locatable;
   if ((*(&self->_sliderFlags + 8) & 0x20) != 0)
   {
     v4 = +[_UIStatistics scrubberUsageCount];
@@ -1875,7 +1875,7 @@ LABEL_12:
   return 1;
 }
 
-- (void)_sliderValueDidChange:(id)a3
+- (void)_sliderValueDidChange:(id)change
 {
   if ((*(&self->_sliderFlags + 10) & 2) != 0)
   {
@@ -1884,7 +1884,7 @@ LABEL_12:
   }
 }
 
-- (double)movieScrubberTrackViewDuration:(id)a3
+- (double)movieScrubberTrackViewDuration:(id)duration
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   [WeakRetained movieScrubberDuration:self];
@@ -1894,35 +1894,35 @@ LABEL_12:
   return v6;
 }
 
-- (id)movieScrubberTrackView:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6
+- (id)movieScrubberTrackView:(id)view evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt
 {
-  v7 = *&a4;
-  v9 = a6;
-  v10 = a5;
+  v7 = *&timestamps;
+  endingAtCopy = endingAt;
+  atCopy = at;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v12 = [WeakRetained movieScrubber:self evenlySpacedTimestamps:v7 startingAt:v10 endingAt:v9];
+  v12 = [WeakRetained movieScrubber:self evenlySpacedTimestamps:v7 startingAt:atCopy endingAt:endingAtCopy];
 
   return v12;
 }
 
-- (void)movieScrubberTrackView:(id)a3 requestThumbnailImageForTimestamp:(id)a4 isSummaryThumbnail:(BOOL)a5
+- (void)movieScrubberTrackView:(id)view requestThumbnailImageForTimestamp:(id)timestamp isSummaryThumbnail:(BOOL)thumbnail
 {
-  v5 = a5;
-  v7 = a4;
+  thumbnailCopy = thumbnail;
+  timestampCopy = timestamp;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v9 = WeakRetained;
   if ((*(&self->_sliderFlags + 10) & 0x4000) != 0)
   {
-    [WeakRetained movieScrubber:self requestThumbnailImageForTimestamp:v7 isSummaryThumbnail:v5];
+    [WeakRetained movieScrubber:self requestThumbnailImageForTimestamp:timestampCopy isSummaryThumbnail:thumbnailCopy];
   }
 
   else
   {
-    [WeakRetained movieScrubber:self requestThumbnailImageForTimestamp:v7];
+    [WeakRetained movieScrubber:self requestThumbnailImageForTimestamp:timestampCopy];
   }
 }
 
-- (double)movieScrubberTrackViewThumbnailAspectRatio:(id)a3
+- (double)movieScrubberTrackViewThumbnailAspectRatio:(id)ratio
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   [WeakRetained movieScrubberThumbnailAspectRatio:self];
@@ -1931,10 +1931,10 @@ LABEL_12:
   return v6;
 }
 
-- (void)movieScrubberTrackView:(id)a3 clampedSizeWidthDelta:(double)a4 actualSizeWidthDelta:(double)a5 originXDelta:(double)a6 minimumVisibleValue:(double)a7 maximumVisibleValue:(double)a8
+- (void)movieScrubberTrackView:(id)view clampedSizeWidthDelta:(double)delta actualSizeWidthDelta:(double)widthDelta originXDelta:(double)xDelta minimumVisibleValue:(double)value maximumVisibleValue:(double)visibleValue
 {
-  self->_minimumValue = a7;
-  self->_maximumValue = a8;
+  self->_minimumValue = value;
+  self->_maximumValue = visibleValue;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = WeakRetained;
   if ((*(&self->_sliderFlags + 10) & 0x2000) != 0)
@@ -1943,10 +1943,10 @@ LABEL_12:
   }
 
   [(UIMovieScrubberTrackView *)self->_trackView zoomAnimationDuration];
-  v15 = fmax(a4 / a5, 0.2) * v14;
+  v15 = fmax(delta / widthDelta, 0.2) * v14;
   self->_zoomAnimationDuration = v15;
   v16 = v14 - v15;
-  if (a4 >= 0.0)
+  if (delta >= 0.0)
   {
     v17 = 0.0;
   }
@@ -1964,8 +1964,8 @@ LABEL_12:
   v20[3] = &unk_1E70F9780;
   v20[4] = self;
   v21 = v13;
-  v22 = a4;
-  v23 = a6;
+  deltaCopy = delta;
+  xDeltaCopy = xDelta;
   v19 = v13;
   [UIView animateWithDuration:4 delay:v20 options:0 animations:zoomAnimationDuration completion:v17];
 }
@@ -2000,7 +2000,7 @@ uint64_t __138__UIMovieScrubber_movieScrubberTrackView_clampedSizeWidthDelta_act
   return result;
 }
 
-- (void)movieScrubberTrackViewDidExpand:(id)a3
+- (void)movieScrubberTrackViewDidExpand:(id)expand
 {
   if (*(&self->_sliderFlags + 8))
   {
@@ -2009,7 +2009,7 @@ uint64_t __138__UIMovieScrubber_movieScrubberTrackView_clampedSizeWidthDelta_act
   }
 }
 
-- (void)movieScrubberTrackViewDidCollapse:(id)a3
+- (void)movieScrubberTrackViewDidCollapse:(id)collapse
 {
   *&self->_sliderFlags |= 0x20u;
   [(UIMovieScrubber *)self _setZoomAnimating:0];
@@ -2017,7 +2017,7 @@ uint64_t __138__UIMovieScrubber_movieScrubberTrackView_clampedSizeWidthDelta_act
   [(UIMovieScrubber *)self setRotationDisabled:0];
 }
 
-- (void)movieScrubberTrackViewWillBeginRequestingThumbnails:(id)a3
+- (void)movieScrubberTrackViewWillBeginRequestingThumbnails:(id)thumbnails
 {
   if ((*(&self->_sliderFlags + 10) & 0x10) != 0)
   {
@@ -2026,7 +2026,7 @@ uint64_t __138__UIMovieScrubber_movieScrubberTrackView_clampedSizeWidthDelta_act
   }
 }
 
-- (void)movieScrubberTrackViewDidFinishRequestingThumbnails:(id)a3
+- (void)movieScrubberTrackViewDidFinishRequestingThumbnails:(id)thumbnails
 {
   if ((*(&self->_sliderFlags + 10) & 0x20) != 0)
   {

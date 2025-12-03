@@ -1,31 +1,31 @@
 @interface RMProtocolEnrollRequest
-+ (id)requestWithEnrollmentToken:(id)a3 statusItems:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)requestWithEnrollmentToken:(id)token statusItems:(id)items;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMProtocolEnrollRequest
 
-+ (id)requestWithEnrollmentToken:(id)a3 statusItems:(id)a4
++ (id)requestWithEnrollmentToken:(id)token statusItems:(id)items
 {
-  v5 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  tokenCopy = token;
   v7 = objc_opt_new();
-  [v7 setRequestEnrollmentToken:v6];
+  [v7 setRequestEnrollmentToken:tokenCopy];
 
-  [v7 setRequestStatusItems:v5];
+  [v7 setRequestStatusItems:itemsCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"EnrollmentToken" forKeyPath:@"requestEnrollmentToken" isRequired:1 defaultValue:0 error:a5])
+  dictionaryCopy = dictionary;
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EnrollmentToken" forKeyPath:@"requestEnrollmentToken" isRequired:1 defaultValue:0 error:error])
   {
-    LOWORD(v11) = a4;
-    v9 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"StatusItems" forKeyPath:@"requestStatusItems" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v11 error:a5];
+    LOWORD(v11) = type;
+    v9 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"StatusItems" forKeyPath:@"requestStatusItems" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v11 error:error];
   }
 
   else
@@ -36,30 +36,30 @@
   return v9;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMProtocolEnrollRequest *)self requestEnrollmentToken];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EnrollmentToken" value:v6 isRequired:1 defaultValue:0];
+  requestEnrollmentToken = [(RMProtocolEnrollRequest *)self requestEnrollmentToken];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EnrollmentToken" value:requestEnrollmentToken isRequired:1 defaultValue:0];
 
-  v7 = [(RMProtocolEnrollRequest *)self requestStatusItems];
+  requestStatusItems = [(RMProtocolEnrollRequest *)self requestStatusItems];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__RMProtocolEnrollRequest_serializeWithType___block_invoke;
   v10[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v11 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"StatusItems" value:v7 dictSerializer:v10 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"StatusItems" value:requestStatusItems dictSerializer:v10 isRequired:1 defaultValue:0];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMProtocolEnrollRequest;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_requestEnrollmentToken copy];
   v6 = v4[2];
   v4[2] = v5;

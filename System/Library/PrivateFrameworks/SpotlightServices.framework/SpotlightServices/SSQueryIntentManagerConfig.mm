@@ -1,18 +1,18 @@
 @interface SSQueryIntentManagerConfig
 + (id)_getParsecDomainMapping;
-+ (id)_parseConditionalExtraSuggestions:(id)a3;
-+ (id)_parseIntentOverrides:(id)a3;
-+ (id)_parseServerDomainExclusionSet:(id)a3;
++ (id)_parseConditionalExtraSuggestions:(id)suggestions;
++ (id)_parseIntentOverrides:(id)overrides;
++ (id)_parseServerDomainExclusionSet:(id)set;
 + (id)sharedInstance;
 - (BOOL)expired;
-- (BOOL)getBoolParameter:(id)a3;
-- (float)getFloatParameter:(id)a3;
+- (BOOL)getBoolParameter:(id)parameter;
+- (float)getFloatParameter:(id)parameter;
 - (id)_defaultOptions;
-- (int)getIntParameter:(id)a3;
+- (int)getIntParameter:(id)parameter;
 - (void)_clearConfig;
-- (void)_updateInternalConfig:(id)a3;
-- (void)update:(BOOL)a3;
-- (void)updateWithResources:(id)a3 defaults:(id)a4;
+- (void)_updateInternalConfig:(id)config;
+- (void)update:(BOOL)update;
+- (void)updateWithResources:(id)resources defaults:(id)defaults;
 @end
 
 @implementation SSQueryIntentManagerConfig
@@ -32,25 +32,25 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)getBoolParameter:(id)a3
+- (BOOL)getBoolParameter:(id)parameter
 {
-  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:parameter];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (int)getIntParameter:(id)a3
+- (int)getIntParameter:(id)parameter
 {
-  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:parameter];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (float)getFloatParameter:(id)a3
+- (float)getFloatParameter:(id)parameter
 {
-  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_config objectForKeyedSubscript:parameter];
   [v3 floatValue];
   v5 = v4;
 
@@ -151,11 +151,11 @@ uint64_t __44__SSQueryIntentManagerConfig_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_updateInternalConfig:(id)a3
+- (void)_updateInternalConfig:(id)config
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IntentModelingServerDomainsExcludedForDemotion"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"IntentModelingServerDomainsExcludedForDemotion"];
   if (v5)
   {
     objc_opt_class();
@@ -178,7 +178,7 @@ uint64_t __44__SSQueryIntentManagerConfig_sharedInstance__block_invoke()
     }
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"IntentModelingConditionalExtraSuggestions"];
+  v10 = [configCopy objectForKeyedSubscript:@"IntentModelingConditionalExtraSuggestions"];
 
   if (v10)
   {
@@ -202,7 +202,7 @@ uint64_t __44__SSQueryIntentManagerConfig_sharedInstance__block_invoke()
     }
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"IntentModelingIntentOverrides"];
+  v15 = [configCopy objectForKeyedSubscript:@"IntentModelingIntentOverrides"];
 
   if (v15)
   {
@@ -229,16 +229,16 @@ uint64_t __44__SSQueryIntentManagerConfig_sharedInstance__block_invoke()
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithResources:(id)a3 defaults:(id)a4
+- (void)updateWithResources:(id)resources defaults:(id)defaults
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resourcesCopy = resources;
+  defaultsCopy = defaults;
   resources = self->_resources;
   location = &self->_resources;
-  if (v7 && !resources)
+  if (resourcesCopy && !resources)
   {
-    objc_storeStrong(location, a3);
+    objc_storeStrong(location, resources);
     v10 = SSGeneralLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -274,21 +274,21 @@ uint64_t __44__SSQueryIntentManagerConfig_sharedInstance__block_invoke()
       _os_log_impl(&dword_1D9F69000, v15, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking][IntentModeling][Config] Init config", buf, 2u);
     }
 
-    if (!v8)
+    if (!defaultsCopy)
     {
-      v8 = [(SSQueryIntentManagerConfig *)self _defaultOptions];
+      defaultsCopy = [(SSQueryIntentManagerConfig *)self _defaultOptions];
     }
 
-    v33 = v8;
-    v34 = self;
-    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
+    v33 = defaultsCopy;
+    selfCopy = self;
+    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:defaultsCopy];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     obj = [(NSDictionary *)v16 allKeys];
     v17 = [obj countByEnumeratingWithState:&v38 objects:v48 count:16];
-    v35 = v7;
+    v35 = resourcesCopy;
     if (!v17)
     {
       v19 = 0;
@@ -347,15 +347,15 @@ LABEL_26:
       {
 LABEL_32:
 
-        self = v34;
-        v28 = v34->_baseConfig;
-        v34->_baseConfig = v16;
+        self = selfCopy;
+        v28 = selfCopy->_baseConfig;
+        selfCopy->_baseConfig = v16;
         v29 = v16;
 
-        [(SSQueryIntentManagerConfig *)v34 _updateInternalConfig:v29];
-        v14 = v34->_baseConfig;
-        v7 = v35;
-        v8 = v33;
+        [(SSQueryIntentManagerConfig *)selfCopy _updateInternalConfig:v29];
+        v14 = selfCopy->_baseConfig;
+        resourcesCopy = v35;
+        defaultsCopy = v33;
         break;
       }
     }
@@ -382,13 +382,13 @@ LABEL_32:
   return v4;
 }
 
-- (void)update:(BOOL)a3
+- (void)update:(BOOL)update
 {
-  if (a3 || [(SSQueryIntentManagerConfig *)self expired])
+  if (update || [(SSQueryIntentManagerConfig *)self expired])
   {
     os_unfair_lock_lock(&sConfigLock);
-    v4 = [MEMORY[0x1E69D3E28] sharedResourcesManager];
-    v5 = [v4 resourcesForClient:@"Spotlight" options:&unk_1F55B7920];
+    mEMORY[0x1E69D3E28] = [MEMORY[0x1E69D3E28] sharedResourcesManager];
+    v5 = [mEMORY[0x1E69D3E28] resourcesForClient:@"Spotlight" options:&unk_1F55B7920];
 
     [(SSQueryIntentManagerConfig *)self updateWithResources:v5 defaults:0];
     os_unfair_lock_unlock(&sConfigLock);
@@ -453,17 +453,17 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_parseServerDomainExclusionSet:(id)a3
++ (id)_parseServerDomainExclusionSet:(id)set
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  setCopy = set;
   v4 = [MEMORY[0x1E695DFA8] set];
-  if (v3)
+  if (setCopy)
   {
-    v5 = v3;
+    v5 = setCopy;
     v6 = +[SSQueryIntentManagerConfig _getParsecDomainMapping];
-    v7 = [v5 lowercaseString];
-    v8 = [v7 componentsSeparatedByString:{@", "}];
+    lowercaseString = [v5 lowercaseString];
+    v8 = [lowercaseString componentsSeparatedByString:{@", "}];
 
     v19 = 0u;
     v20 = 0u;
@@ -506,19 +506,19 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
   return v4;
 }
 
-+ (id)_parseConditionalExtraSuggestions:(id)a3
++ (id)_parseConditionalExtraSuggestions:(id)suggestions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v26 = [MEMORY[0x1E695DF90] dictionary];
-  if (v3)
+  suggestionsCopy = suggestions;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (suggestionsCopy)
   {
-    v25 = v3;
-    v4 = v3;
+    v25 = suggestionsCopy;
+    v4 = suggestionsCopy;
     v5 = +[SSQueryIntentManagerConfig _getParsecDomainMapping];
     v24 = v4;
-    v6 = [v4 lowercaseString];
-    v7 = [v6 componentsSeparatedByString:{@", "}];
+    lowercaseString = [v4 lowercaseString];
+    v7 = [lowercaseString componentsSeparatedByString:{@", "}];
 
     v29 = 0u;
     v30 = 0u;
@@ -542,8 +542,8 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
           v13 = *(*(&v27 + 1) + 8 * i);
           if (v13 && [*(*(&v27 + 1) + 8 * i) containsString:@":"])
           {
-            v14 = [v13 lowercaseString];
-            v15 = [v14 componentsSeparatedByString:@":"];
+            lowercaseString2 = [v13 lowercaseString];
+            v15 = [lowercaseString2 componentsSeparatedByString:@":"];
 
             if ([v15 count] == 2)
             {
@@ -551,11 +551,11 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
               v17 = [v5 objectForKeyedSubscript:v16];
 
               v18 = [v15 objectAtIndexedSubscript:1];
-              v19 = [v18 integerValue];
+              integerValue = [v18 integerValue];
 
               if (v17)
               {
-                v20 = v19 < 1;
+                v20 = integerValue < 1;
               }
 
               else
@@ -565,8 +565,8 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
 
               if (!v20)
               {
-                v21 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
-                [v26 setValue:v21 forKey:v17];
+                v21 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+                [dictionary setValue:v21 forKey:v17];
               }
             }
           }
@@ -578,24 +578,24 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
       while (v10);
     }
 
-    v3 = v25;
+    suggestionsCopy = v25;
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return dictionary;
 }
 
-+ (id)_parseIntentOverrides:(id)a3
++ (id)_parseIntentOverrides:(id)overrides
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  overridesCopy = overrides;
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v3)
+  if (overridesCopy)
   {
-    v23 = v3;
-    v4 = [v3 lowercaseString];
-    v5 = [v4 componentsSeparatedByString:{@", "}];
+    v23 = overridesCopy;
+    lowercaseString = [overridesCopy lowercaseString];
+    v5 = [lowercaseString componentsSeparatedByString:{@", "}];
 
     v27 = 0u;
     v28 = 0u;
@@ -619,21 +619,21 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
           v11 = *(*(&v25 + 1) + 8 * i);
           if (v11 && [*(*(&v25 + 1) + 8 * i) containsString:@":"])
           {
-            v12 = [v11 lowercaseString];
-            v13 = [v12 componentsSeparatedByString:@":"];
+            lowercaseString2 = [v11 lowercaseString];
+            v13 = [lowercaseString2 componentsSeparatedByString:@":"];
 
             if ([v13 count] == 2)
             {
               v14 = [v13 objectAtIndexedSubscript:0];
-              v15 = [v14 intValue];
+              intValue = [v14 intValue];
 
               v16 = [v13 objectAtIndexedSubscript:1];
-              v17 = [v16 intValue];
+              intValue2 = [v16 intValue];
 
-              if (v15 <= 0x15 && v17 <= 0x15)
+              if (intValue <= 0x15 && intValue2 <= 0x15)
               {
-                v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v17];
-                v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
+                v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:intValue2];
+                v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:intValue];
                 [v24 setObject:v19 forKey:v20];
               }
             }
@@ -646,7 +646,7 @@ void __53__SSQueryIntentManagerConfig__getParsecDomainMapping__block_invoke()
       while (v8);
     }
 
-    v3 = v23;
+    overridesCopy = v23;
   }
 
   v21 = *MEMORY[0x1E69E9840];

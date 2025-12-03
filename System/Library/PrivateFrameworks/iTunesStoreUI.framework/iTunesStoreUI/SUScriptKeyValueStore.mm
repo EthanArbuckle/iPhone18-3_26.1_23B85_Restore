@@ -1,27 +1,27 @@
 @interface SUScriptKeyValueStore
-+ (id)_checkOutStoreWithDomain:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (void)_popStoreWithDomain:(id)a3;
++ (id)_checkOutStoreWithDomain:(id)domain;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (void)_popStoreWithDomain:(id)domain;
 + (void)initialize;
-- (SUScriptKeyValueStore)initWithDomain:(id)a3;
-- (id)valueForKey:(id)a3;
+- (SUScriptKeyValueStore)initWithDomain:(id)domain;
+- (id)valueForKey:(id)key;
 - (void)dealloc;
-- (void)getValueForKey:(id)a3 usingFunction:(id)a4;
-- (void)removeValueForKey:(id)a3;
-- (void)setValueForKey:(id)a3 value:(id)a4;
+- (void)getValueForKey:(id)key usingFunction:(id)function;
+- (void)removeValueForKey:(id)key;
+- (void)setValueForKey:(id)key value:(id)value;
 @end
 
 @implementation SUScriptKeyValueStore
 
-- (SUScriptKeyValueStore)initWithDomain:(id)a3
+- (SUScriptKeyValueStore)initWithDomain:(id)domain
 {
   v6.receiver = self;
   v6.super_class = SUScriptKeyValueStore;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_domain = [a3 copy];
-    v4->_keyValueStore = [objc_opt_class() _checkOutStoreWithDomain:a3];
+    v4->_domain = [domain copy];
+    v4->_keyValueStore = [objc_opt_class() _checkOutStoreWithDomain:domain];
   }
 
   return v4;
@@ -36,12 +36,12 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (void)getValueForKey:(id)a3 usingFunction:(id)a4
+- (void)getValueForKey:(id)key usingFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [[SUScriptFunction alloc] initWithScriptObject:a4];
+    v7 = [[SUScriptFunction alloc] initWithScriptObject:function];
     [(SUScriptFunction *)v7 setThisObject:self];
     keyValueStore = self->_keyValueStore;
     domain = self->_domain;
@@ -51,7 +51,7 @@
     v11[3] = &unk_1E81671B0;
     v11[4] = self;
     v11[5] = v7;
-    [(SSKeyValueStore *)keyValueStore getValueForDomain:domain key:a3 usingBlock:v11];
+    [(SSKeyValueStore *)keyValueStore getValueForDomain:domain key:key usingBlock:v11];
   }
 
   else
@@ -76,7 +76,7 @@ void __54__SUScriptKeyValueStore_getValueForKey_usingFunction___block_invoke(uin
   v5 = *(a1 + 40);
 }
 
-- (void)removeValueForKey:(id)a3
+- (void)removeValueForKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -84,7 +84,7 @@ void __54__SUScriptKeyValueStore_getValueForKey_usingFunction___block_invoke(uin
     keyValueStore = self->_keyValueStore;
     domain = self->_domain;
 
-    [(SSKeyValueStore *)keyValueStore setValue:0 forDomain:domain key:a3 completionBlock:0];
+    [(SSKeyValueStore *)keyValueStore setValue:0 forDomain:domain key:key completionBlock:0];
   }
 
   else
@@ -95,21 +95,21 @@ void __54__SUScriptKeyValueStore_getValueForKey_usingFunction___block_invoke(uin
   }
 }
 
-- (void)setValueForKey:(id)a3 value:(id)a4
+- (void)setValueForKey:(id)key value:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    value = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!value || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     keyValueStore = self->_keyValueStore;
     domain = self->_domain;
 
-    [(SSKeyValueStore *)keyValueStore setValue:a4 forDomain:domain key:a3 completionBlock:0];
+    [(SSKeyValueStore *)keyValueStore setValue:value forDomain:domain key:key completionBlock:0];
   }
 
   else
@@ -120,7 +120,7 @@ void __54__SUScriptKeyValueStore_getValueForKey_usingFunction___block_invoke(uin
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v11 = 0;
   v12 = &v11;
@@ -140,7 +140,7 @@ void __54__SUScriptKeyValueStore_getValueForKey_usingFunction___block_invoke(uin
     v10[3] = &unk_1E8167160;
     v10[4] = v5;
     v10[5] = &v11;
-    [(SSKeyValueStore *)keyValueStore getValueForDomain:domain key:a3 usingBlock:v10];
+    [(SSKeyValueStore *)keyValueStore getValueForDomain:domain key:key usingBlock:v10];
     dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v5);
   }
@@ -169,7 +169,7 @@ intptr_t __37__SUScriptKeyValueStore_valueForKey___block_invoke(uint64_t a1, voi
   return dispatch_semaphore_signal(v4);
 }
 
-+ (id)_checkOutStoreWithDomain:(id)a3
++ (id)_checkOutStoreWithDomain:(id)domain
 {
   _os_nospin_lock_lock();
   v4 = sAccountStoreCounts;
@@ -179,7 +179,7 @@ intptr_t __37__SUScriptKeyValueStore_valueForKey___block_invoke(uint64_t a1, voi
     sAccountStoreCounts = v4;
   }
 
-  [v4 addObject:a3];
+  [v4 addObject:domain];
   v5 = sActiveStores;
   if (!sActiveStores)
   {
@@ -187,11 +187,11 @@ intptr_t __37__SUScriptKeyValueStore_valueForKey___block_invoke(uint64_t a1, voi
     sActiveStores = v5;
   }
 
-  v6 = [v5 objectForKey:a3];
+  v6 = [v5 objectForKey:domain];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69D4930]);
-    [sActiveStores setObject:v6 forKey:a3];
+    [sActiveStores setObject:v6 forKey:domain];
   }
 
   _os_nospin_lock_unlock();
@@ -199,27 +199,27 @@ intptr_t __37__SUScriptKeyValueStore_valueForKey___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-+ (void)_popStoreWithDomain:(id)a3
++ (void)_popStoreWithDomain:(id)domain
 {
   _os_nospin_lock_lock();
-  v4 = [sAccountStoreCounts countForObject:a3];
-  [sAccountStoreCounts removeObject:a3];
+  v4 = [sAccountStoreCounts countForObject:domain];
+  [sAccountStoreCounts removeObject:domain];
   if (v4 == 1)
   {
-    [sActiveStores removeObjectForKey:a3];
+    [sActiveStores removeObjectForKey:domain];
   }
 
   _os_nospin_lock_unlock();
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_55, 5);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_55, 5);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptKeyValueStore;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -227,7 +227,7 @@ intptr_t __37__SUScriptKeyValueStore_valueForKey___block_invoke(uint64_t a1, voi
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_55 = sel_getValueForKey_usingFunction_;
     *algn_1EBF3B888 = @"getValue";

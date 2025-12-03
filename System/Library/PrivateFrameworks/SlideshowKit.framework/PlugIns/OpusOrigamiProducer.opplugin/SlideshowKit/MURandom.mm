@@ -1,13 +1,13 @@
 @interface MURandom
-+ (id)randomGeneratorWithSeed:(unint64_t)a3;
++ (id)randomGeneratorWithSeed:(unint64_t)seed;
 @end
 
 @implementation MURandom
 
-+ (id)randomGeneratorWithSeed:(unint64_t)a3
++ (id)randomGeneratorWithSeed:(unint64_t)seed
 {
   v4 = objc_alloc_init(MURandom);
-  [(MURandom *)v4 _seed:a3];
+  [(MURandom *)v4 _seed:seed];
 
   return v4;
 }

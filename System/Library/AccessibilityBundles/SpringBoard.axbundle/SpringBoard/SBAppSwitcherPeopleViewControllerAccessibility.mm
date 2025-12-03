@@ -1,28 +1,28 @@
 @interface SBAppSwitcherPeopleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)tappedExpandCollapseForItem:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)tappedExpandCollapseForItem:(id)item;
 @end
 
 @implementation SBAppSwitcherPeopleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBAppSwitcherPeopleViewController" hasInstanceMethod:@"tappedExpandCollapseForItem:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBAppSwitcherPeopleScrollView" hasInstanceMethod:@"expandedItemWrapper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppSwitcherPeopleViewController" hasInstanceVariable:@"_peopleScrollView" withType:"SBAppSwitcherPeopleScrollView"];
-  [v3 validateClass:@"SBAppSwitcherPeopleScrollView" hasInstanceVariable:@"_wrappersToViews" withType:"NSDictionary"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBAppSwitcherPeopleViewController" hasInstanceMethod:@"tappedExpandCollapseForItem:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherPeopleScrollView" hasInstanceMethod:@"expandedItemWrapper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppSwitcherPeopleViewController" hasInstanceVariable:@"_peopleScrollView" withType:"SBAppSwitcherPeopleScrollView"];
+  [validationsCopy validateClass:@"SBAppSwitcherPeopleScrollView" hasInstanceVariable:@"_wrappersToViews" withType:"NSDictionary"];
 }
 
-- (void)tappedExpandCollapseForItem:(id)a3
+- (void)tappedExpandCollapseForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16 = 0;
   v5 = [(SBAppSwitcherPeopleViewControllerAccessibility *)self safeValueForKey:@"_peopleScrollView"];
   v6 = __UIAccessibilitySafeClass();
 
   v7 = [v6 safeValueForKey:@"expandedItemWrapper"];
-  v8 = [v4 isEqual:v7];
+  v8 = [itemCopy isEqual:v7];
 
   if (v8)
   {
@@ -37,7 +37,7 @@
     v11 = [(SBAppSwitcherPeopleViewControllerAccessibility *)self safeValueForKey:@"_peopleScrollView"];
     v12 = [v11 safeValueForKey:@"_wrappersToViews"];
     v13 = __UIAccessibilityCastAsClass();
-    v10 = [v13 objectForKey:v4];
+    v10 = [v13 objectForKey:itemCopy];
 
     v14 = [v10 _accessibilityDescendantOfType:NSClassFromString(&cfstr_Sbappswitcherp_7.isa)];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v14);
@@ -45,7 +45,7 @@
 
   v15.receiver = self;
   v15.super_class = SBAppSwitcherPeopleViewControllerAccessibility;
-  [(SBAppSwitcherPeopleViewControllerAccessibility *)&v15 tappedExpandCollapseForItem:v4];
+  [(SBAppSwitcherPeopleViewControllerAccessibility *)&v15 tappedExpandCollapseForItem:itemCopy];
 }
 
 @end

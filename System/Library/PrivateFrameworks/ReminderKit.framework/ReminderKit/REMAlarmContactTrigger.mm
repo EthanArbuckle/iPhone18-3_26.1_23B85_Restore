@@ -1,55 +1,55 @@
 @interface REMAlarmContactTrigger
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmContactTrigger)initWithCoder:(id)a3;
-- (REMAlarmContactTrigger)initWithContactRepresentation:(id)a3;
-- (REMAlarmContactTrigger)initWithObjectID:(id)a3 contactRepresentation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmContactTrigger)initWithCoder:(id)coder;
+- (REMAlarmContactTrigger)initWithContactRepresentation:(id)representation;
+- (REMAlarmContactTrigger)initWithObjectID:(id)d contactRepresentation:(id)representation;
 - (id)_deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmContactTrigger
 
-- (REMAlarmContactTrigger)initWithObjectID:(id)a3 contactRepresentation:(id)a4
+- (REMAlarmContactTrigger)initWithObjectID:(id)d contactRepresentation:(id)representation
 {
-  v7 = a4;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = REMAlarmContactTrigger;
-  v8 = [(REMAlarmTrigger *)&v11 initWithObjectID:a3];
+  v8 = [(REMAlarmTrigger *)&v11 initWithObjectID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contactRepresentation, a4);
+    objc_storeStrong(&v8->_contactRepresentation, representation);
   }
 
   return v9;
 }
 
-- (REMAlarmContactTrigger)initWithContactRepresentation:(id)a3
+- (REMAlarmContactTrigger)initWithContactRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = REMAlarmContactTrigger;
   v6 = [(REMAlarmTrigger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactRepresentation, a3);
+    objc_storeStrong(&v6->_contactRepresentation, representation);
   }
 
   return v7;
 }
 
-- (REMAlarmContactTrigger)initWithCoder:(id)a3
+- (REMAlarmContactTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMAlarmContactTrigger;
-  v5 = [(REMAlarmTrigger *)&v9 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactRepresentation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactRepresentation"];
     contactRepresentation = v5->_contactRepresentation;
     v5->_contactRepresentation = v6;
   }
@@ -60,39 +60,39 @@
 - (id)_deepCopy
 {
   v3 = [REMAlarmContactTrigger alloc];
-  v4 = [(REMAlarmContactTrigger *)self contactRepresentation];
-  v5 = [(REMAlarmContactTrigger *)v3 initWithContactRepresentation:v4];
+  contactRepresentation = [(REMAlarmContactTrigger *)self contactRepresentation];
+  v5 = [(REMAlarmContactTrigger *)v3 initWithContactRepresentation:contactRepresentation];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMAlarmContactTrigger *)v6 contactRepresentation];
-      v8 = [(REMAlarmContactTrigger *)self contactRepresentation];
-      if (v7 == v8)
+      contactRepresentation = [(REMAlarmContactTrigger *)v6 contactRepresentation];
+      contactRepresentation2 = [(REMAlarmContactTrigger *)self contactRepresentation];
+      if (contactRepresentation == contactRepresentation2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMAlarmContactTrigger *)v6 contactRepresentation];
-        v10 = [(REMAlarmContactTrigger *)self contactRepresentation];
-        v11 = [v9 isEqual:v10];
+        contactRepresentation3 = [(REMAlarmContactTrigger *)v6 contactRepresentation];
+        contactRepresentation4 = [(REMAlarmContactTrigger *)self contactRepresentation];
+        v11 = [contactRepresentation3 isEqual:contactRepresentation4];
       }
     }
 
@@ -107,8 +107,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMAlarmContactTrigger *)self contactRepresentation];
-  v3 = [v2 hash];
+  contactRepresentation = [(REMAlarmContactTrigger *)self contactRepresentation];
+  v3 = [contactRepresentation hash];
 
   return v3;
 }
@@ -119,20 +119,20 @@
   v8.receiver = self;
   v8.super_class = REMAlarmContactTrigger;
   v4 = [(REMAlarmContactTrigger *)&v8 description];
-  v5 = [(REMAlarmContactTrigger *)self contactRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ {contact: %@}", v4, v5];
+  contactRepresentation = [(REMAlarmContactTrigger *)self contactRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ {contact: %@}", v4, contactRepresentation];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = REMAlarmContactTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(REMAlarmContactTrigger *)self contactRepresentation:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"contactRepresentation"];
+  [coderCopy encodeObject:v5 forKey:@"contactRepresentation"];
 }
 
 @end

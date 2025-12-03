@@ -1,9 +1,9 @@
 @interface _MKLegendString
 - (_MKLegendString)init;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setString:(id)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)setFrame:(CGRect)frame;
+- (void)setString:(id)string;
 - (void)sizeToFit;
 @end
 
@@ -16,8 +16,8 @@
   v2 = [(_MKLegendString *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     [(_MKLegendString *)v2 setContentsScale:?];
   }
 
@@ -41,39 +41,39 @@
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(_MKLegendString *)self string];
-  if (v5)
+  string = [(_MKLegendString *)self string];
+  if (string)
   {
     line = self->_line;
 
     if (line)
     {
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       [(_MKLegendString *)self bounds];
-      CGContextTranslateCTM(a3, 0.0, v7);
-      CGContextScaleCTM(a3, 1.0, -1.0);
-      CGContextSetTextPosition(a3, 0.0, self->_baselineDistanceFromBottom);
+      CGContextTranslateCTM(context, 0.0, v7);
+      CGContextScaleCTM(context, 1.0, -1.0);
+      CGContextSetTextPosition(context, 0.0, self->_baselineDistanceFromBottom);
       VKLineDrawWithOuterStroke();
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_string != v5)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (self->_string != stringCopy)
   {
-    v10 = v5;
-    v7 = [(NSAttributedString *)v5 isEqualToAttributedString:?];
+    v10 = stringCopy;
+    v7 = [(NSAttributedString *)stringCopy isEqualToAttributedString:?];
     v6 = v10;
     if (!v7)
     {
-      objc_storeStrong(&self->_string, a3);
+      objc_storeStrong(&self->_string, string);
       line = self->_line;
       if (line)
       {
@@ -84,8 +84,8 @@
       v6 = v10;
       if (self->_string)
       {
-        v9 = [(_MKLegendString *)self string];
-        self->_line = CTLineCreateWithAttributedString(v9);
+        string = [(_MKLegendString *)self string];
+        self->_line = CTLineCreateWithAttributedString(string);
 
         v6 = v10;
       }
@@ -93,11 +93,11 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = _MKLegendString;
-  [(_MKLegendString *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_MKLegendString *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)dealloc

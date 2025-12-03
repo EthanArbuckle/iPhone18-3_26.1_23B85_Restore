@@ -1,12 +1,12 @@
 @interface FCPuzzleLeaderboard
-- (FCPuzzleLeaderboard)initWithDictionary:(id)a3;
+- (FCPuzzleLeaderboard)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCPuzzleLeaderboard
 
-- (FCPuzzleLeaderboard)initWithDictionary:(id)a3
+- (FCPuzzleLeaderboard)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FCPuzzleLeaderboard;
   v5 = [(FCPuzzleLeaderboard *)&v11 init];
@@ -15,24 +15,24 @@
     goto LABEL_4;
   }
 
-  v6 = FCAppConfigurationStringValue(v4, @"identifier", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"identifier", 0);
   [(FCPuzzleLeaderboard *)v5 setLeaderboardID:v6];
 
-  v7 = [(FCPuzzleLeaderboard *)v5 leaderboardID];
+  leaderboardID = [(FCPuzzleLeaderboard *)v5 leaderboardID];
 
-  if (v7)
+  if (leaderboardID)
   {
-    v8 = FCAppConfigurationStringValue(v4, @"name", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"name", 0);
     [(FCPuzzleLeaderboard *)v5 setName:v8];
 
-    v9 = FCAppConfigurationNumberValue(v4, @"difficulty", 0);
+    v9 = FCAppConfigurationNumberValue(dictionaryCopy, @"difficulty", 0);
     [(FCPuzzleLeaderboard *)v5 setDifficulty:v9];
 
 LABEL_4:
-    v7 = v5;
+    leaderboardID = v5;
   }
 
-  return v7;
+  return leaderboardID;
 }
 
 @end

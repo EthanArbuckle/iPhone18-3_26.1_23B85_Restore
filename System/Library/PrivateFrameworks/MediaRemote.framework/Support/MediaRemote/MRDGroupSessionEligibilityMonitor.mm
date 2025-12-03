@@ -1,25 +1,25 @@
 @interface MRDGroupSessionEligibilityMonitor
 + (id)sharedMonitor;
-+ (unint64_t)bestHostingStateForUserStates:(id)a3 reason:(id *)a4;
-+ (unint64_t)hostingStateForEligibilityStatus:(id)a3 reason:(id *)a4;
-+ (unint64_t)hostingStateForUserState:(id)a3 reason:(id *)a4;
-+ (unint64_t)joiningStateForEligibilityStatus:(id)a3 reason:(id *)a4;
++ (unint64_t)bestHostingStateForUserStates:(id)states reason:(id *)reason;
++ (unint64_t)hostingStateForEligibilityStatus:(id)status reason:(id *)reason;
++ (unint64_t)hostingStateForUserState:(id)state reason:(id *)reason;
++ (unint64_t)joiningStateForEligibilityStatus:(id)status reason:(id *)reason;
 - (BOOL)isCarPlay;
 - (MRDGroupSessionEligibilityMonitor)init;
 - (MRGroupSessionEligibilityStatus)eligibilityStatus;
 - (NSString)description;
 - (unsigned)pickedRouteType;
-- (void)_onQueue_notifyObservers:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_onQueue_notifyObservers:(id)observers;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)handleCloudStateChangeNotification:(id)a3;
-- (void)handleDeviceInfoChangeNotification:(id)a3;
-- (void)handleEndpointNotification:(id)a3;
+- (void)handleCloudStateChangeNotification:(id)notification;
+- (void)handleDeviceInfoChangeNotification:(id)notification;
+- (void)handleEndpointNotification:(id)notification;
 - (void)initializeObserversAndState;
 - (void)reevaluateState;
-- (void)removeObserver:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation MRDGroupSessionEligibilityMonitor
@@ -60,27 +60,27 @@
   [v3 setMediaAccountJoiningState:0];
   if ([v3 idsAccountIsValid] && objc_msgSend(v3, "routeIsValidForHosting"))
   {
-    v5 = [v3 isManateeEnabled];
+    isManateeEnabled = [v3 isManateeEnabled];
   }
 
   else
   {
-    v5 = 0;
+    isManateeEnabled = 0;
   }
 
   v6 = +[MRDMusicUserStateCenter sharedCenter];
-  v7 = [v6 cachedStateLoaded];
+  cachedStateLoaded = [v6 cachedStateLoaded];
 
-  if ((v7 & 1) != 0 || v5)
+  if ((cachedStateLoaded & 1) != 0 || isManateeEnabled)
   {
     v10 = +[MRDMusicUserStateCenter sharedCenter];
-    v11 = [v10 localActiveUserState];
-    v12 = [v11 frameworkState];
-    [v3 setCurrentMediaUserState:v12];
+    localActiveUserState = [v10 localActiveUserState];
+    frameworkState = [localActiveUserState frameworkState];
+    [v3 setCurrentMediaUserState:frameworkState];
 
     v13 = +[MRDMusicUserStateCenter sharedCenter];
-    v14 = [v13 localUserStates];
-    v15 = [v14 msv_map:&stru_1004C1328];
+    localUserStates = [v13 localUserStates];
+    v15 = [localUserStates msv_map:&stru_1004C1328];
     [v3 setMediaUserStates:v15];
 
     v31 = 0;
@@ -120,7 +120,7 @@
   v25[2] = sub_100038830;
   v25[3] = &unk_1004B7310;
   v26 = v3;
-  v27 = self;
+  selfCopy = self;
   v28 = v8;
   v29 = v9;
   v22 = v9;
@@ -132,15 +132,15 @@
 - (unsigned)pickedRouteType
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 startGroupSessionsForAllRoutes];
+  startGroupSessionsForAllRoutes = [v3 startGroupSessionsForAllRoutes];
 
-  if ((v4 & 1) != 0 || [(MRDGroupSessionEligibilityMonitor *)self isCarPlay])
+  if ((startGroupSessionsForAllRoutes & 1) != 0 || [(MRDGroupSessionEligibilityMonitor *)self isCarPlay])
   {
     return 2;
   }
 
   v6 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-  v7 = [v6 outputDevices];
+  outputDevices = [v6 outputDevices];
   v8 = MRGroupSessionRouteTypeForOutputDevices();
 
   return v8;
@@ -148,9 +148,9 @@
 
 - (BOOL)isCarPlay
 {
-  v2 = [(MRDGroupSessionEligibilityMonitor *)self carStatus];
-  v3 = [v2 currentSession];
-  v4 = v3 != 0;
+  carStatus = [(MRDGroupSessionEligibilityMonitor *)self carStatus];
+  currentSession = [carStatus currentSession];
+  v4 = currentSession != 0;
 
   return v4;
 }
@@ -196,13 +196,13 @@
     observers = v2->_observers;
     v2->_observers = v15;
 
-    v17 = [(MRDGroupSessionEligibilityMonitor *)v2 queue];
+    queue = [(MRDGroupSessionEligibilityMonitor *)v2 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001A8854;
     block[3] = &unk_1004B6D08;
     v20 = v2;
-    dispatch_async(v17, block);
+    dispatch_async(queue, block);
   }
 
   return v2;
@@ -235,8 +235,8 @@
   self->_accountController = v15;
 
   v17 = self->_accountController;
-  v18 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
-  [(IDSAccountController *)v17 addDelegate:self queue:v18];
+  workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  [(IDSAccountController *)v17 addDelegate:self queue:workerQueue];
 
   v19 = objc_alloc_init(CARSessionStatus);
   carStatus = self->_carStatus;
@@ -247,8 +247,8 @@
   systemMonitor = self->_systemMonitor;
   self->_systemMonitor = v21;
 
-  v23 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
-  [(CUSystemMonitor *)self->_systemMonitor setDispatchQueue:v23];
+  workerQueue2 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  [(CUSystemMonitor *)self->_systemMonitor setDispatchQueue:workerQueue2];
 
   v24 = self->_systemMonitor;
   objc_initWeak(&location, self);
@@ -300,84 +300,84 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRDGroupSessionEligibilityMonitor *)self eligibilityStatus];
-  v6 = [v3 initWithFormat:@"<%@: eligibility: %@>", v4, v5];
+  eligibilityStatus = [(MRDGroupSessionEligibilityMonitor *)self eligibilityStatus];
+  v6 = [v3 initWithFormat:@"<%@: eligibility: %@>", v4, eligibilityStatus];
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A8FF0;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A916C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_onQueue_notifyObservers:(id)a3
+- (void)_onQueue_notifyObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  observersCopy = observers;
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   notificationQueue = self->_notificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A9244;
   block[3] = &unk_1004B69D0;
-  v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = allObjects;
+  selfCopy = self;
+  v12 = observersCopy;
+  v7 = observersCopy;
+  v8 = allObjects;
   dispatch_async(notificationQueue, block);
 }
 
-+ (unint64_t)joiningStateForEligibilityStatus:(id)a3 reason:(id *)a4
++ (unint64_t)joiningStateForEligibilityStatus:(id)status reason:(id *)reason
 {
-  v5 = a3;
-  v6 = [v5 currentMediaUserState];
-  v7 = v6;
-  if (v6)
+  statusCopy = status;
+  currentMediaUserState = [statusCopy currentMediaUserState];
+  v7 = currentMediaUserState;
+  if (currentMediaUserState)
   {
-    v8 = [v6 userIdentity];
-    v9 = v8;
-    if (v8)
+    userIdentity = [currentMediaUserState userIdentity];
+    v9 = userIdentity;
+    if (userIdentity)
     {
-      if ([v8 type] == 1)
+      if ([userIdentity type] == 1)
       {
         if ([v7 identitySupportsCollaboration])
         {
-          v10 = [v5 currentMediaUserState];
-          v11 = [v10 identifier];
-          v12 = [v9 identifier];
+          currentMediaUserState2 = [statusCopy currentMediaUserState];
+          identifier = [currentMediaUserState2 identifier];
+          identifier2 = [v9 identifier];
           v13 = [NSNumber numberWithBool:1];
-          *a4 = [NSString stringWithFormat:@"<id=%@ - %@ - collab=%@>", v11, v12, v13];
+          *reason = [NSString stringWithFormat:@"<id=%@ - %@ - collab=%@>", identifier, identifier2, v13];
 
           v14 = 5;
         }
 
         else
         {
-          *a4 = @"Identity does not support collaboration";
+          *reason = @"Identity does not support collaboration";
           v14 = 4;
         }
 
@@ -392,37 +392,37 @@
       v15 = @"No media user identity";
     }
 
-    *a4 = v15;
+    *reason = v15;
     v14 = 3;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  *a4 = @"No current media user";
+  *reason = @"No current media user";
   v14 = 2;
 LABEL_11:
 
   return v14;
 }
 
-+ (unint64_t)hostingStateForEligibilityStatus:(id)a3 reason:(id *)a4
++ (unint64_t)hostingStateForEligibilityStatus:(id)status reason:(id *)reason
 {
-  v5 = a3;
+  statusCopy = status;
   IsAudioAccessory = MSVDeviceIsAudioAccessory();
   v7 = objc_opt_class();
   if (IsAudioAccessory)
   {
-    v8 = [v5 mediaUserStates];
+    mediaUserStates = [statusCopy mediaUserStates];
 
-    v9 = [v7 bestHostingStateForUserStates:v8 reason:a4];
+    v9 = [v7 bestHostingStateForUserStates:mediaUserStates reason:reason];
   }
 
   else
   {
-    v8 = [v5 currentMediaUserState];
+    mediaUserStates = [statusCopy currentMediaUserState];
 
-    v9 = [v7 hostingStateForUserState:v8 reason:a4];
+    v9 = [v7 hostingStateForUserState:mediaUserStates reason:reason];
   }
 
   v10 = v9;
@@ -430,19 +430,19 @@ LABEL_11:
   return v10;
 }
 
-+ (unint64_t)bestHostingStateForUserStates:(id)a3 reason:(id *)a4
++ (unint64_t)bestHostingStateForUserStates:(id)states reason:(id *)reason
 {
-  v6 = a3;
-  if (v6)
+  statesCopy = states;
+  if (statesCopy)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1001A9718;
     v21[3] = &unk_1004C1350;
-    v23 = a1;
+    selfCopy = self;
     v7 = [[NSMutableString alloc] initWithString:@"{"];
     v22 = v7;
-    v8 = [v6 mr_map:v21];
+    v8 = [statesCopy mr_map:v21];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -462,10 +462,10 @@ LABEL_11:
             objc_enumerationMutation(v8);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) integerValue];
-          if (v11 <= v14)
+          integerValue = [*(*(&v17 + 1) + 8 * i) integerValue];
+          if (v11 <= integerValue)
           {
-            v11 = v14;
+            v11 = integerValue;
           }
         }
 
@@ -481,42 +481,42 @@ LABEL_11:
     }
 
     v15 = v7;
-    *a4 = v7;
+    *reason = v7;
   }
 
   else
   {
-    *a4 = @"No media user states";
+    *reason = @"No media user states";
     v11 = 1;
   }
 
   return v11;
 }
 
-+ (unint64_t)hostingStateForUserState:(id)a3 reason:(id *)a4
++ (unint64_t)hostingStateForUserState:(id)state reason:(id *)reason
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
-    v8 = [v6 userIdentity];
+    userIdentity = [stateCopy userIdentity];
     if ([v7 isFullSubscriber])
     {
-      v9 = [v7 isMinor];
-      v10 = [v7 groupSessionsSupportedForAccountRegion];
-      v11 = v10;
-      if ((v9 & 1) != 0 || !v10)
+      isMinor = [v7 isMinor];
+      groupSessionsSupportedForAccountRegion = [v7 groupSessionsSupportedForAccountRegion];
+      v11 = groupSessionsSupportedForAccountRegion;
+      if ((isMinor & 1) != 0 || !groupSessionsSupportedForAccountRegion)
       {
-        v24 = [NSNumber numberWithBool:v9];
+        v24 = [NSNumber numberWithBool:isMinor];
         v25 = [NSNumber numberWithBool:v11];
-        *a4 = [NSString stringWithFormat:@"Restricted: ageRestricted=%@, regionRestricted=%@", v24, v25];
+        *reason = [NSString stringWithFormat:@"Restricted: ageRestricted=%@, regionRestricted=%@", v24, v25];
 
         v23 = 4;
       }
 
       else
       {
-        if (v8)
+        if (userIdentity)
         {
           v12 = [NSNumber numberWithInt:1];
           v13 = [NSNumber numberWithBool:0];
@@ -524,17 +524,17 @@ LABEL_11:
           v15 = [NSNumber numberWithBool:1];
           v16 = [NSMutableString stringWithFormat:@"hasIdentity=%@, ageRestricted=%@, sub=%@, validRegion=%@", v12, v13, v14, v15];
 
-          if ([a1 needsAcknowledgement])
+          if ([self needsAcknowledgement])
           {
-            v17 = [v7 hasAcceptedPrivacyAcknowledgement];
-            v18 = [v7 hasAcceptedDisplayNameAcknowledgement];
-            v19 = [NSNumber numberWithBool:v17];
-            v20 = [NSNumber numberWithBool:v18];
+            hasAcceptedPrivacyAcknowledgement = [v7 hasAcceptedPrivacyAcknowledgement];
+            hasAcceptedDisplayNameAcknowledgement = [v7 hasAcceptedDisplayNameAcknowledgement];
+            v19 = [NSNumber numberWithBool:hasAcceptedPrivacyAcknowledgement];
+            v20 = [NSNumber numberWithBool:hasAcceptedDisplayNameAcknowledgement];
             v21 = [NSString stringWithFormat:@"privacyAck=%@, displayNameAck=%@", v19, v20];
 
-            if (!v17 || (v18 & 1) == 0)
+            if (!hasAcceptedPrivacyAcknowledgement || (hasAcceptedDisplayNameAcknowledgement & 1) == 0)
             {
-              *a4 = [NSString stringWithFormat:@"Missing acknowledgements: %@", v21];
+              *reason = [NSString stringWithFormat:@"Missing acknowledgements: %@", v21];
 
               v23 = 5;
               goto LABEL_16;
@@ -544,21 +544,21 @@ LABEL_11:
           }
 
           v22 = v16;
-          *a4 = v16;
+          *reason = v16;
           v23 = 6;
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        *a4 = @"Missing identity";
+        *reason = @"Missing identity";
         v23 = 3;
       }
     }
 
     else
     {
-      *a4 = @"Not a subscriber";
+      *reason = @"Not a subscriber";
       v23 = 2;
     }
 
@@ -567,77 +567,77 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  *a4 = @"No media user state";
+  *reason = @"No media user state";
   v23 = 1;
 LABEL_18:
 
   return v23;
 }
 
-- (void)handleCloudStateChangeNotification:(id)a3
+- (void)handleCloudStateChangeNotification:(id)notification
 {
-  v4 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A9B0C;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workerQueue, block);
 }
 
-- (void)handleEndpointNotification:(id)a3
+- (void)handleEndpointNotification:(id)notification
 {
-  v4 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A9B9C;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workerQueue, block);
 }
 
-- (void)handleDeviceInfoChangeNotification:(id)a3
+- (void)handleDeviceInfoChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = MRGetDeviceInfoFromUserInfo();
 
   v6 = +[MRDeviceInfoRequest localDeviceInfo];
-  v7 = [v5 identifier];
-  v8 = [v6 identifier];
-  v9 = [v7 isEqualToString:v8];
+  identifier = [v5 identifier];
+  identifier2 = [v6 identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
   if (v9)
   {
-    v10 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+    workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001A9CB8;
     block[3] = &unk_1004B6D08;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(workerQueue, block);
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A9D58;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workerQueue, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
+  workerQueue = [(MRDGroupSessionEligibilityMonitor *)self workerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A9DE8;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workerQueue, block);
 }
 
 @end

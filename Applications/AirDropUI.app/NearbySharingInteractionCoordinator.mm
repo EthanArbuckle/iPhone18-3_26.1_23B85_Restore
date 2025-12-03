@@ -1,23 +1,23 @@
 @interface NearbySharingInteractionCoordinator
-- (void)collaborationMessageListener:(id)a3 receivedMessage:(id)a4 inChat:(id)a5 style:(unsigned __int8)a6 accountID:(id)a7;
-- (void)conversationsChangedForConversationManager:(id)a3;
+- (void)collaborationMessageListener:(id)listener receivedMessage:(id)message inChat:(id)chat style:(unsigned __int8)style accountID:(id)d;
+- (void)conversationsChangedForConversationManager:(id)manager;
 @end
 
 @implementation NearbySharingInteractionCoordinator
 
-- (void)collaborationMessageListener:(id)a3 receivedMessage:(id)a4 inChat:(id)a5 style:(unsigned __int8)a6 accountID:(id)a7
+- (void)collaborationMessageListener:(id)listener receivedMessage:(id)message inChat:(id)chat style:(unsigned __int8)style accountID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1000AA5C4(v10);
+  listenerCopy = listener;
+  messageCopy = message;
+  selfCopy = self;
+  sub_1000AA5C4(messageCopy);
 }
 
-- (void)conversationsChangedForConversationManager:(id)a3
+- (void)conversationsChangedForConversationManager:(id)manager
 {
-  v4 = a3;
-  v6 = self;
-  sub_1000A4C38(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1000A4C38(managerCopy);
   sub_1000A48AC(v5);
 }
 

@@ -1,16 +1,16 @@
 @interface CPUITableViewHeaderView
-- (void)setLabelText:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setLabelText:(id)text;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CPUITableViewHeaderView
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_labelText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     labelText = self->_labelText;
     self->_labelText = v4;
 
@@ -18,28 +18,28 @@
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v11 = [MEMORY[0x277D756E0] headerConfiguration];
-  v4 = [(CPUITableViewHeaderView *)self labelText];
-  [v11 setText:v4];
+  headerConfiguration = [MEMORY[0x277D756E0] headerConfiguration];
+  labelText = [(CPUITableViewHeaderView *)self labelText];
+  [headerConfiguration setText:labelText];
 
   v5 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D743F8]];
-  v6 = [v11 textProperties];
-  [v6 setFont:v5];
+  textProperties = [headerConfiguration textProperties];
+  [textProperties setFont:v5];
 
-  v7 = [MEMORY[0x277D75348] labelColor];
-  v8 = [v11 textProperties];
-  [v8 setColor:v7];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  textProperties2 = [headerConfiguration textProperties];
+  [textProperties2 setColor:labelColor];
 
-  v9 = [v11 textProperties];
-  [v9 setNumberOfLines:2];
+  textProperties3 = [headerConfiguration textProperties];
+  [textProperties3 setNumberOfLines:2];
 
-  [v11 setDirectionalLayoutMargins:{4.0, 8.0, 4.0, 12.0}];
-  v10 = [MEMORY[0x277D751C0] clearConfiguration];
-  [(CPUITableViewHeaderView *)self setBackgroundConfiguration:v10];
+  [headerConfiguration setDirectionalLayoutMargins:{4.0, 8.0, 4.0, 12.0}];
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+  [(CPUITableViewHeaderView *)self setBackgroundConfiguration:clearConfiguration];
 
-  [(CPUITableViewHeaderView *)self setContentConfiguration:v11];
+  [(CPUITableViewHeaderView *)self setContentConfiguration:headerConfiguration];
 }
 
 @end

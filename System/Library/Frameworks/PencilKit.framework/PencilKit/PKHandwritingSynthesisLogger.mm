@@ -2,7 +2,7 @@
 + (id)sharedHandwritingSynthesisLogger;
 - (PKHandwritingSynthesisLogger)init;
 - (id)entries;
-- (void)addLogEntry:(void *)a1;
+- (void)addLogEntry:(void *)entry;
 - (void)clearAllEntries;
 @end
 
@@ -15,31 +15,31 @@
   v2 = [(PKHandwritingSynthesisLogger *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     entryLog = v2->_entryLog;
-    v2->_entryLog = v3;
+    v2->_entryLog = array;
   }
 
   return v2;
 }
 
-- (void)addLogEntry:(void *)a1
+- (void)addLogEntry:(void *)entry
 {
   v5 = a2;
-  if (a1)
+  if (entry)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    [objc_getProperty(v3 v4];
-    objc_sync_exit(v3);
+    entryCopy = entry;
+    objc_sync_enter(entryCopy);
+    [objc_getProperty(entryCopy v4];
+    objc_sync_exit(entryCopy);
   }
 }
 
 - (void)clearAllEntries
 {
-  if (a1)
+  if (self)
   {
-    self = a1;
+    self = self;
     objc_sync_enter(self);
     [objc_getProperty(self v1];
     objc_sync_exit(self);
@@ -48,12 +48,12 @@
 
 - (id)entries
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v3 = objc_getProperty(v1, v2, 8, 1);
-    objc_sync_exit(v1);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v3 = objc_getProperty(selfCopy, v2, 8, 1);
+    objc_sync_exit(selfCopy);
   }
 
   else

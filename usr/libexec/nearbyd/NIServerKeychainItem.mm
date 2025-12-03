@@ -1,34 +1,34 @@
 @interface NIServerKeychainItem
-- (BOOL)isEqual:(id)a3;
-- (NIServerKeychainItem)initWithService:(id)a3 account:(id)a4 data:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIServerKeychainItem)initWithService:(id)service account:(id)account data:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation NIServerKeychainItem
 
-- (NIServerKeychainItem)initWithService:(id)a3 account:(id)a4 data:(id)a5
+- (NIServerKeychainItem)initWithService:(id)service account:(id)account data:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  v12 = dataCopy;
+  if (!serviceCopy)
   {
     v16 = "service";
     v17 = 734;
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!accountCopy)
   {
     v16 = "account";
     v17 = 735;
     goto LABEL_10;
   }
 
-  if (!v11)
+  if (!dataCopy)
   {
     v16 = "data";
     v17 = 736;
@@ -42,15 +42,15 @@ LABEL_10:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_service, a3);
-    objc_storeStrong(&v14->_account, a4);
-    objc_storeStrong(&v14->_data, a5);
+    objc_storeStrong(&v13->_service, service);
+    objc_storeStrong(&v14->_account, account);
+    objc_storeStrong(&v14->_data, data);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NIServerKeychainItem alloc];
   service = self->_service;
@@ -60,13 +60,13 @@ LABEL_10:
   return [(NIServerKeychainItem *)v4 initWithService:service account:account data:data];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {

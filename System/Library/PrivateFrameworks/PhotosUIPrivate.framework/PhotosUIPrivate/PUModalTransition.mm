@@ -1,10 +1,10 @@
 @interface PUModalTransition
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)interactionControllerForDismissal:(id)a3;
-- (id)interactionControllerForPresentation:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)interactionControllerForDismissal:(id)dismissal;
+- (id)interactionControllerForPresentation:(id)presentation;
 - (id)presentingViewController;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
 - (void)imageModulationIntensityDidChange;
@@ -12,39 +12,39 @@
 
 @implementation PUModalTransition
 
-- (id)interactionControllerForDismissal:(id)a3
+- (id)interactionControllerForDismissal:(id)dismissal
 {
   [(PUModalTransition *)self _setOperation:1];
 
   return [(PUViewControllerTransition *)self interactiveTransition];
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
   [(PUModalTransition *)self _setOperation:0];
 
   return [(PUViewControllerTransition *)self interactiveTransition];
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   [(PUModalTransition *)self _setOperation:1];
   [(PUModalTransition *)self transitionWillDismissInteractively:[(PUViewControllerTransition *)self isInteractive]];
   return self;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  [(PUModalTransition *)self _setOperation:0, a4, a5];
+  [(PUModalTransition *)self _setOperation:0, presentingController, sourceController];
   [(PUModalTransition *)self transitionWillPresentInteractively:[(PUViewControllerTransition *)self isInteractive]];
   return self;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v4.receiver = self;
   v4.super_class = PUModalTransition;
-  [(PUViewControllerTransition *)&v4 animateTransition:a3];
+  [(PUViewControllerTransition *)&v4 animateTransition:transition];
   if ([(PUModalTransition *)self _operation])
   {
     if ([(PUModalTransition *)self _operation]== 1)
@@ -107,23 +107,23 @@
 
 - (id)presentingViewController
 {
-  v3 = [(PUModalTransition *)self _operation];
-  if (v3 == 1)
+  _operation = [(PUModalTransition *)self _operation];
+  if (_operation == 1)
   {
-    v4 = [(PUViewControllerTransition *)self toViewController];
+    toViewController = [(PUViewControllerTransition *)self toViewController];
   }
 
-  else if (v3)
+  else if (_operation)
   {
-    v4 = 0;
+    toViewController = 0;
   }
 
   else
   {
-    v4 = [(PUViewControllerTransition *)self fromViewController];
+    toViewController = [(PUViewControllerTransition *)self fromViewController];
   }
 
-  return v4;
+  return toViewController;
 }
 
 - (void)imageModulationIntensityDidChange
@@ -131,8 +131,8 @@
   v4.receiver = self;
   v4.super_class = PUModalTransition;
   [(PUViewControllerTransition *)&v4 imageModulationIntensityDidChange];
-  v3 = [(PUModalTransition *)self presentingViewController];
-  [v3 px_setNeedsImageModulationIntensityUpdate];
+  presentingViewController = [(PUModalTransition *)self presentingViewController];
+  [presentingViewController px_setNeedsImageModulationIntensityUpdate];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface IDSGenericConnectionID
-+ (id)idWithAccount:(id)a3 service:(id)a4 name:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (IDSGenericConnectionID)initWithAccount:(id)a3 service:(id)a4 name:(id)a5;
++ (id)idWithAccount:(id)account service:(id)service name:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (IDSGenericConnectionID)initWithAccount:(id)account service:(id)service name:(id)name;
 - (id)description;
 - (id)serviceConnectorServiceForAccount;
 @end
 
 @implementation IDSGenericConnectionID
 
-+ (id)idWithAccount:(id)a3 service:(id)a4 name:(id)a5
++ (id)idWithAccount:(id)account service:(id)service name:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IDSGenericConnectionID alloc] initWithAccount:v9 service:v8 name:v7];
+  nameCopy = name;
+  serviceCopy = service;
+  accountCopy = account;
+  v10 = [[IDSGenericConnectionID alloc] initWithAccount:accountCopy service:serviceCopy name:nameCopy];
 
   return v10;
 }
@@ -35,7 +35,7 @@
       service = self->_service;
       name = self->_name;
       *buf = 138413314;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = 0;
       v15 = 2112;
@@ -74,25 +74,25 @@
   return v4;
 }
 
-- (IDSGenericConnectionID)initWithAccount:(id)a3 service:(id)a4 name:(id)a5
+- (IDSGenericConnectionID)initWithAccount:(id)account service:(id)service name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  serviceCopy = service;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = IDSGenericConnectionID;
   v11 = [(IDSGenericConnectionID *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [accountCopy copy];
     account = v11->_account;
     v11->_account = v12;
 
-    v14 = [v9 copy];
+    v14 = [serviceCopy copy];
     service = v11->_service;
     v11->_service = v14;
 
-    v16 = [v10 copy];
+    v16 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v16;
 
@@ -104,24 +104,24 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     account = self->_account;
-    v9 = [v7 account];
-    if ([(NSString *)account isEqualToString:v9])
+    account = [v7 account];
+    if ([(NSString *)account isEqualToString:account])
     {
       service = self->_service;
-      v11 = [v7 service];
-      if ([(NSString *)service isEqualToString:v11])
+      service = [v7 service];
+      if ([(NSString *)service isEqualToString:service])
       {
         name = self->_name;
-        v13 = [v7 name];
-        v6 = [(NSString *)name isEqualToString:v13];
+        name = [v7 name];
+        v6 = [(NSString *)name isEqualToString:name];
       }
 
       else

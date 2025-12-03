@@ -1,43 +1,43 @@
 @interface SUUILoadArtworkResourceOperation
 - (SSVLoadURLOperation)underlyingOperation;
-- (SUUILoadArtworkResourceOperation)initWithResourceRequest:(id)a3;
+- (SUUILoadArtworkResourceOperation)initWithResourceRequest:(id)request;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation SUUILoadArtworkResourceOperation
 
-- (SUUILoadArtworkResourceOperation)initWithResourceRequest:(id)a3
+- (SUUILoadArtworkResourceOperation)initWithResourceRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SUUILoadArtworkResourceOperation;
-  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:a3];
+  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:request];
 }
 
 - (void)main
 {
-  v3 = [(SUUILoadResourceOperation *)self resourceRequest];
-  v4 = [v3 imageName];
-  v5 = [v3 URL];
+  resourceRequest = [(SUUILoadResourceOperation *)self resourceRequest];
+  imageName = [resourceRequest imageName];
+  v5 = [resourceRequest URL];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D69CD8]);
-    v7 = [v3 URL];
+    v7 = [resourceRequest URL];
     v8 = [v6 initWithURL:v7];
 
-    v9 = [v3 dataConsumer];
-    [v8 setDataConsumer:v9];
+    dataConsumer = [resourceRequest dataConsumer];
+    [v8 setDataConsumer:dataConsumer];
 
     [v8 setITunesStoreRequest:0];
     [v8 setRecordsMetrics:0];
-    v10 = [(SUUILoadResourceOperation *)self outputBlock];
-    [v8 setOutputBlock:v10];
+    outputBlock = [(SUUILoadResourceOperation *)self outputBlock];
+    [v8 setOutputBlock:outputBlock];
 
     [(SUUILoadArtworkResourceOperation *)self setUnderlyingOperation:v8];
     [v8 main];
   }
 
-  else if (v4)
+  else if (imageName)
   {
     v26 = 0;
     v27 = &v26;
@@ -49,7 +49,7 @@
     {
       v11 = MEMORY[0x277D755B8];
       v12 = SUUIBundle();
-      v13 = [v11 imageNamed:v4 inBundle:v12];
+      v13 = [v11 imageNamed:imageName inBundle:v12];
       v14 = v27[5];
       v27[5] = v13;
     }
@@ -61,18 +61,18 @@
       v22 = __40__SUUILoadArtworkResourceOperation_main__block_invoke;
       v23 = &unk_2798F5B48;
       v25 = &v26;
-      v24 = v4;
+      v24 = imageName;
       dispatch_sync(MEMORY[0x277D85CD0], &v20);
       v12 = v24;
     }
 
     if (([(SUUILoadArtworkResourceOperation *)self isCancelled]& 1) == 0)
     {
-      v15 = [v3 dataConsumer];
-      v16 = v15;
-      if (v15)
+      dataConsumer2 = [resourceRequest dataConsumer];
+      v16 = dataConsumer2;
+      if (dataConsumer2)
       {
-        v17 = [v15 imageForImage:v27[5]];
+        v17 = [dataConsumer2 imageForImage:v27[5]];
         v18 = v27[5];
         v27[5] = v17;
       }
@@ -104,8 +104,8 @@ void __40__SUUILoadArtworkResourceOperation_main__block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = SUUILoadArtworkResourceOperation;
   [(SUUILoadResourceOperation *)&v4 cancel];
-  v3 = [(SUUILoadArtworkResourceOperation *)self underlyingOperation];
-  [v3 cancel];
+  underlyingOperation = [(SUUILoadArtworkResourceOperation *)self underlyingOperation];
+  [underlyingOperation cancel];
 }
 
 - (SSVLoadURLOperation)underlyingOperation

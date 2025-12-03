@@ -1,9 +1,9 @@
 @interface HDSPSleepScheduleStateCoordinator
-- (BOOL)_updateEventRecordHelper:(id)a3 sleepScheduleState:(unint64_t)a4 context:(id)a5;
+- (BOOL)_updateEventRecordHelper:(id)helper sleepScheduleState:(unint64_t)state context:(id)context;
 - (BOOL)isAppleWatch;
 - (BOOL)sleepFeaturesEnabled;
 - (HDSPEnvironment)environment;
-- (HDSPSleepScheduleStateCoordinator)initWithEnvironment:(id)a3;
+- (HDSPSleepScheduleStateCoordinator)initWithEnvironment:(id)environment;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (HKSPSleepScheduleOccurrence)previousOccurrence;
 - (NSDate)currentDate;
@@ -12,26 +12,26 @@
 - (id)diagnosticDescription;
 - (id)diagnosticInfo;
 - (unint64_t)currentSleepScheduleState;
-- (void)_updateEventRecordForSleepScheduleState:(unint64_t)a3 context:(id)a4 notifyBlock:(id)a5;
+- (void)_updateEventRecordForSleepScheduleState:(unint64_t)state context:(id)context notifyBlock:(id)block;
 - (void)_updateSleepScheduleState;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 context:(id)a5;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state context:(id)context;
 - (void)snoozeFireDateShouldBeReset;
-- (void)timeZoneChangeDetected:(id)a3;
-- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)a3;
-- (void)wakeUpWasConfirmed:(BOOL)a3;
+- (void)timeZoneChangeDetected:(id)detected;
+- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)source;
+- (void)wakeUpWasConfirmed:(BOOL)confirmed;
 @end
 
 @implementation HDSPSleepScheduleStateCoordinator
 
-- (HDSPSleepScheduleStateCoordinator)initWithEnvironment:(id)a3
+- (HDSPSleepScheduleStateCoordinator)initWithEnvironment:(id)environment
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v28.receiver = self;
   v28.super_class = HDSPSleepScheduleStateCoordinator;
   v5 = [(HDSPSleepScheduleStateCoordinator *)&v28 init];
@@ -49,15 +49,15 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v9 = objc_alloc(MEMORY[0x277D624A0]);
-    v10 = [v4 defaultCallbackScheduler];
-    v11 = [v9 initWithCallbackScheduler:v10];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v11 = [v9 initWithCallbackScheduler:defaultCallbackScheduler];
     observers = v5->_observers;
     v5->_observers = v11;
 
-    v13 = [v4 mutexGenerator];
-    v14 = v13[2]();
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v14 = mutexGenerator[2]();
     mutexProvider = v5->_mutexProvider;
     v5->_mutexProvider = v14;
 
@@ -65,10 +65,10 @@
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = objc_alloc(MEMORY[0x277D62558]);
-    v20 = [v4 userDefaults];
-    v21 = [v19 initWithUserDefaults:v20];
-    v22 = [v4 currentDateProvider];
-    v23 = [(HDSPSleepScheduleStateCoordinatorStateMachine *)v16 initWithIdentifier:v18 persistence:v21 delegate:v5 infoProvider:v5 currentDateProvider:v22];
+    userDefaults = [environmentCopy userDefaults];
+    v21 = [v19 initWithUserDefaults:userDefaults];
+    currentDateProvider = [environmentCopy currentDateProvider];
+    v23 = [(HDSPSleepScheduleStateCoordinatorStateMachine *)v16 initWithIdentifier:v18 persistence:v21 delegate:v5 infoProvider:v5 currentDateProvider:currentDateProvider];
     stateMachine = v5->_stateMachine;
     v5->_stateMachine = v23;
 
@@ -100,10 +100,10 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,25 +113,25 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v13, 0xCu);
   }
 
-  v7 = [v4 sleepScheduleModelManager];
-  [v7 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v8 = [v4 sleepScheduler];
-  [v8 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v9 = [v4 actionManager];
-  [v9 addObserver:self];
+  actionManager = [readyCopy actionManager];
+  [actionManager addObserver:self];
 
-  v10 = [v4 timeChangeListener];
-  [v10 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v11 = [v4 diagnostics];
+  diagnostics = [readyCopy diagnostics];
 
-  [v11 addProvider:self];
+  [diagnostics addProvider:self];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -152,12 +152,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 context:(id)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state context:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-  v10 = [v9 currentContext];
+  contextCopy = context;
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  currentContext = [environment currentContext];
 
   v11 = HKSPLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -166,7 +166,7 @@
     v20 = v12;
     v13 = NSStringFromHKSPSleepScheduleState();
     v14 = NSStringFromHKSPSleepScheduleState();
-    [v8 reason];
+    [contextCopy reason];
     v15 = NSStringFromHKSPSleepScheduleStateChangeReason();
     *buf = 138544130;
     v27 = v12;
@@ -183,15 +183,15 @@
   v21[1] = 3221225472;
   v21[2] = __87__HDSPSleepScheduleStateCoordinator_sleepScheduleStateDidChange_previousState_context___block_invoke;
   v21[3] = &unk_279C7CA78;
-  v24 = a3;
-  v25 = a4;
+  changeCopy = change;
+  stateCopy = state;
   v21[4] = self;
-  v22 = v8;
-  v23 = v10;
-  v16 = v10;
-  v17 = v8;
+  v22 = contextCopy;
+  v23 = currentContext;
+  v16 = currentContext;
+  v17 = contextCopy;
   v18 = MEMORY[0x26D64B6C0](v21);
-  [(HDSPSleepScheduleStateCoordinator *)self _updateEventRecordForSleepScheduleState:a3 context:v17 notifyBlock:v18];
+  [(HDSPSleepScheduleStateCoordinator *)self _updateEventRecordForSleepScheduleState:change context:v17 notifyBlock:v18];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -244,36 +244,36 @@ uint64_t __87__HDSPSleepScheduleStateCoordinator_sleepScheduleStateDidChange_pre
   return [v3 sleepScheduleStateDidChange:v1 previousState:v2 reason:v4];
 }
 
-- (void)_updateEventRecordForSleepScheduleState:(unint64_t)a3 context:(id)a4 notifyBlock:(id)a5
+- (void)_updateEventRecordForSleepScheduleState:(unint64_t)state context:(id)context notifyBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
-  v11 = [v10 sleepEventRecord];
-  v12 = [v11 mutableCopy];
+  blockCopy = block;
+  contextCopy = context;
+  sleepScheduleModel = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+  v12 = [sleepEventRecord mutableCopy];
 
-  LODWORD(a3) = [(HDSPSleepScheduleStateCoordinator *)self _updateEventRecordHelper:v12 sleepScheduleState:a3 context:v9];
-  if (a3)
+  LODWORD(state) = [(HDSPSleepScheduleStateCoordinator *)self _updateEventRecordHelper:v12 sleepScheduleState:state context:contextCopy];
+  if (state)
   {
-    v13 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-    v14 = [v13 sleepScheduleModelManager];
+    environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+    sleepScheduleModelManager = [environment sleepScheduleModelManager];
 
-    v15 = [(HDSPSleepScheduleStateCoordinator *)self environment];
+    environment2 = [(HDSPSleepScheduleStateCoordinator *)self environment];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __97__HDSPSleepScheduleStateCoordinator__updateEventRecordForSleepScheduleState_context_notifyBlock___block_invoke;
     v18[3] = &unk_279C7CAA0;
-    v19 = v14;
+    v19 = sleepScheduleModelManager;
     v20 = v12;
-    v21 = self;
-    v22 = v8;
-    v16 = v14;
-    [v15 perform:v18 withSource:self];
+    selfCopy = self;
+    v22 = blockCopy;
+    v16 = sleepScheduleModelManager;
+    [environment2 perform:v18 withSource:self];
   }
 
   else
   {
-    v17 = v8[2](v8);
+    v17 = blockCopy[2](blockCopy);
   }
 }
 
@@ -304,25 +304,25 @@ void __97__HDSPSleepScheduleStateCoordinator__updateEventRecordForSleepScheduleS
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateEventRecordHelper:(id)a3 sleepScheduleState:(unint64_t)a4 context:(id)a5
+- (BOOL)_updateEventRecordHelper:(id)helper sleepScheduleState:(unint64_t)state context:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 == 1 && [a5 isForAlarmTurnedOffWhileFiring])
+  helperCopy = helper;
+  if (state == 1 && [context isForAlarmTurnedOffWhileFiring])
   {
-    v9 = [(HDSPSleepScheduleStateCoordinator *)self currentDate];
+    currentDate = [(HDSPSleepScheduleStateCoordinator *)self currentDate];
     v10 = HKSPLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
       v16 = objc_opt_class();
       v17 = 2114;
-      v18 = v9;
+      v18 = currentDate;
       v11 = v16;
       _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] setting wakeUpAlarmDismissedDate to %{public}@", &v15, 0x16u);
     }
 
-    [v8 setWakeUpAlarmDismissedDate:v9];
+    [helperCopy setWakeUpAlarmDismissedDate:currentDate];
     v12 = 1;
   }
 
@@ -347,24 +347,24 @@ void __97__HDSPSleepScheduleStateCoordinator__updateEventRecordForSleepScheduleS
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] snoozeFireDateShouldBeReset", buf, 0xCu);
   }
 
-  v5 = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
-  v6 = [v5 sleepEventRecord];
-  v7 = [v6 mutableCopy];
+  sleepScheduleModel = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
+  sleepEventRecord = [sleepScheduleModel sleepEventRecord];
+  v7 = [sleepEventRecord mutableCopy];
 
   [v7 setWakeUpAlarmSnoozedUntilDate:0];
-  v8 = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __64__HDSPSleepScheduleStateCoordinator_snoozeFireDateShouldBeReset__block_invoke;
   v16 = &unk_279C7B2D0;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  [v8 perform:&v13 withSource:self];
+  [environment perform:&v13 withSource:self];
 
   v10 = [(HDSPSleepScheduleStateCoordinator *)self environment:v13];
-  v11 = [v10 sleepAlarmManager];
-  [v11 resetSleepAlarmSnoozeState];
+  sleepAlarmManager = [v10 sleepAlarmManager];
+  [sleepAlarmManager resetSleepAlarmSnoozeState];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -400,82 +400,82 @@ void __64__HDSPSleepScheduleStateCoordinator_snoozeFireDateShouldBeReset__block_
 
 - (unint64_t)currentSleepScheduleState
 {
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self currentState];
-  v3 = [v2 scheduleState];
+  currentState = [(HDSPSleepScheduleStateCoordinator *)self currentState];
+  scheduleState = [currentState scheduleState];
 
-  return v3;
+  return scheduleState;
 }
 
 - (BOOL)isAppleWatch
 {
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-  v3 = [v2 behavior];
-  v4 = [v3 isAppleWatch];
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  behavior = [environment behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  return v4;
+  return isAppleWatch;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
-  v3 = [v2 sleepSettings];
-  v4 = [v3 watchSleepFeaturesEnabled];
+  sleepScheduleModel = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
+  sleepSettings = [sleepScheduleModel sleepSettings];
+  watchSleepFeaturesEnabled = [sleepSettings watchSleepFeaturesEnabled];
 
-  return v4;
+  return watchSleepFeaturesEnabled;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-  v3 = [v2 sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  sleepScheduleModelManager = [environment sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-  v3 = [v2 currentDateProvider];
-  v4 = v3[2]();
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
 
 - (HKSPSleepScheduleOccurrence)previousOccurrence
 {
-  v3 = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
-  v4 = [(HDSPSleepScheduleStateCoordinator *)self currentDate];
-  v5 = [v3 previousOccurrenceBeforeDate:v4];
+  sleepScheduleModel = [(HDSPSleepScheduleStateCoordinator *)self sleepScheduleModel];
+  currentDate = [(HDSPSleepScheduleStateCoordinator *)self currentDate];
+  v5 = [sleepScheduleModel previousOccurrenceBeforeDate:currentDate];
 
   return v5;
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = HKSPLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v15 = objc_opt_class();
     v16 = 2114;
-    v17 = v5;
+    v17 = modelCopy;
     v7 = v15;
     _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didUpdateSleepScheduleModel: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(HDSPSleepScheduleStateCoordinator *)self environment];
-  v9 = [v8 currentContext];
+  environment = [(HDSPSleepScheduleStateCoordinator *)self environment];
+  currentContext = [environment currentContext];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__HDSPSleepScheduleStateCoordinator_sleepScheduleModelManager_didUpdateSleepScheduleModel___block_invoke;
   v12[3] = &unk_279C7B2D0;
   v12[4] = self;
-  v13 = v9;
-  v10 = v9;
+  v13 = currentContext;
+  v10 = currentContext;
   [(HDSPSleepScheduleStateCoordinator *)self _withLock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -488,7 +488,7 @@ void __91__HDSPSleepScheduleStateCoordinator_sleepScheduleModelManager_didUpdate
   [v1 scheduleModelChanged:v2];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -509,7 +509,7 @@ void __91__HDSPSleepScheduleStateCoordinator_sleepScheduleModelManager_didUpdate
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timeZoneChangeDetected:(id)a3
+- (void)timeZoneChangeDetected:(id)detected
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -530,23 +530,23 @@ void __91__HDSPSleepScheduleStateCoordinator_sleepScheduleModelManager_didUpdate
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v29 = objc_opt_class();
     v30 = 2114;
-    v31 = v4;
+    v31 = dueCopy;
     v6 = v29;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepEventIsDue: %{public}@", buf, 0x16u);
   }
 
-  v7 = [v4 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D621E0]];
+  identifier = [dueCopy identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x277D621E0]];
 
   if (v8)
   {
@@ -572,8 +572,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v14 = [v4 identifier];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D621B8]];
+  identifier2 = [dueCopy identifier];
+  v15 = [identifier2 isEqualToString:*MEMORY[0x277D621B8]];
 
   if (v15)
   {
@@ -594,8 +594,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v19 = [v4 identifier];
-  v20 = [v19 isEqualToString:*MEMORY[0x277D621F0]];
+  identifier3 = [dueCopy identifier];
+  v20 = [identifier3 isEqualToString:*MEMORY[0x277D621F0]];
 
   if (v20)
   {
@@ -621,9 +621,9 @@ LABEL_16:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wakeUpWasConfirmed:(BOOL)a3
+- (void)wakeUpWasConfirmed:(BOOL)confirmed
 {
-  v3 = a3;
+  confirmedCopy = confirmed;
   v14 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -631,7 +631,7 @@ LABEL_16:
     *buf = 138543618;
     v11 = objc_opt_class();
     v12 = 1024;
-    v13 = v3;
+    v13 = confirmedCopy;
     v6 = v11;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] wakeUpWasConfirmed (wasExplicitConfirmation: %d)", buf, 0x12u);
   }
@@ -641,12 +641,12 @@ LABEL_16:
   v8[2] = __56__HDSPSleepScheduleStateCoordinator_wakeUpWasConfirmed___block_invoke;
   v8[3] = &unk_279C7CAC8;
   v8[4] = self;
-  v9 = v3;
+  v9 = confirmedCopy;
   [(HDSPSleepScheduleStateCoordinator *)self _withLock:v8];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)a3
+- (void)wakeUpAlarmWasDismissedFromSource:(unint64_t)source
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -708,8 +708,8 @@ uint64_t __49__HDSPSleepScheduleStateCoordinator_currentState__block_invoke(uint
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPSleepScheduleStateCoordinator *)self currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  currentState = [(HDSPSleepScheduleStateCoordinator *)self currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", currentState];
 
   return v4;
 }
@@ -718,9 +718,9 @@ uint64_t __49__HDSPSleepScheduleStateCoordinator_currentState__block_invoke(uint
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"Current State";
-  v2 = [(HDSPSleepScheduleStateCoordinator *)self currentState];
-  v3 = [v2 stateName];
-  v8[0] = v3;
+  currentState = [(HDSPSleepScheduleStateCoordinator *)self currentState];
+  stateName = [currentState stateName];
+  v8[0] = stateName;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];

@@ -1,8 +1,8 @@
 @interface ATXCDNDownloaderTriggerManager
-+ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4;
++ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now;
 - (ATXCDNDownloaderTriggerManager)init;
-- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)a3 heroAppServer:(id)a4 heroClipManager:(id)a5 heroAppManager:(id)a6 predictionContextBuilder:(id)a7 nudgeRegistrar:(Class)a8 locationManager:(id)a9;
-- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)a3 predictionContextBuilder:(id)a4 nudgeRegistrar:(Class)a5;
+- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)downloader heroAppServer:(id)server heroClipManager:(id)manager heroAppManager:(id)appManager predictionContextBuilder:(id)builder nudgeRegistrar:(Class)registrar locationManager:(id)locationManager;
+- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)downloader predictionContextBuilder:(id)builder nudgeRegistrar:(Class)registrar;
 - (id)requestHighQualityLocationWithHundredMeterAccuracy;
 - (void)_registerForRestrictionChangedNotifications;
 - (void)_registerForSiriSettingsChangedNotifications;
@@ -21,12 +21,12 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   v6 = __atxlog_handle_default();
@@ -37,11 +37,11 @@
     v12 = 138412546;
     v13 = v8;
     v14 = 1024;
-    v15 = v5;
+    v15 = bOOLValue;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "%@ - got siri settings notification, canSuggestAppClips is: %{BOOL}d", &v12, 0x12u);
   }
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     heroClipManager = self->_heroClipManager;
     v10 = objc_opt_new();
@@ -54,9 +54,9 @@
 - (void)queryAndHandlePredictionsFromCDNDownloader
 {
   v3 = +[_ATXGlobals sharedInstance];
-  v4 = [v3 cdnDownloaderIsEnabled];
+  cdnDownloaderIsEnabled = [v3 cdnDownloaderIsEnabled];
 
-  if (v4)
+  if (cdnDownloaderIsEnabled)
   {
     cdnDownloader = self->_cdnDownloader;
     v7[0] = MEMORY[0x277D85DD0];
@@ -78,42 +78,42 @@
   }
 }
 
-- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)a3 predictionContextBuilder:(id)a4 nudgeRegistrar:(Class)a5
+- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)downloader predictionContextBuilder:(id)builder nudgeRegistrar:(Class)registrar
 {
-  v8 = a4;
-  v9 = a3;
+  builderCopy = builder;
+  downloaderCopy = downloader;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = [ATXHeroDataServer alloc];
   v13 = objc_opt_new();
   v14 = [(ATXHeroDataServer *)v12 initWithHeroClipManager:v10 heroAppManager:v11 tracker:v13];
 
-  v15 = [MEMORY[0x277D41BF8] sharedInstance];
-  v16 = [(ATXCDNDownloaderTriggerManager *)self initWithCDNDownloader:v9 heroAppServer:v14 heroClipManager:v10 heroAppManager:v11 predictionContextBuilder:v8 nudgeRegistrar:a5 locationManager:v15];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  v16 = [(ATXCDNDownloaderTriggerManager *)self initWithCDNDownloader:downloaderCopy heroAppServer:v14 heroClipManager:v10 heroAppManager:v11 predictionContextBuilder:builderCopy nudgeRegistrar:registrar locationManager:mEMORY[0x277D41BF8]];
 
   return v16;
 }
 
-- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)a3 heroAppServer:(id)a4 heroClipManager:(id)a5 heroAppManager:(id)a6 predictionContextBuilder:(id)a7 nudgeRegistrar:(Class)a8 locationManager:(id)a9
+- (ATXCDNDownloaderTriggerManager)initWithCDNDownloader:(id)downloader heroAppServer:(id)server heroClipManager:(id)manager heroAppManager:(id)appManager predictionContextBuilder:(id)builder nudgeRegistrar:(Class)registrar locationManager:(id)locationManager
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  downloaderCopy = downloader;
+  serverCopy = server;
+  managerCopy = manager;
+  appManagerCopy = appManager;
+  builderCopy = builder;
+  locationManagerCopy = locationManager;
   v34.receiver = self;
   v34.super_class = ATXCDNDownloaderTriggerManager;
   v18 = [(ATXCDNDownloaderTriggerManager *)&v34 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_heroClipManager, a5);
-    objc_storeStrong(&v19->_heroAppManager, a6);
-    objc_storeStrong(&v19->_server, a4);
-    objc_storeStrong(&v19->_cdnDownloader, a3);
-    objc_storeStrong(&v19->_locationManager, a9);
-    objc_storeStrong(&v19->_predictionContextBuilder, a7);
+    objc_storeStrong(&v18->_heroClipManager, manager);
+    objc_storeStrong(&v19->_heroAppManager, appManager);
+    objc_storeStrong(&v19->_server, server);
+    objc_storeStrong(&v19->_cdnDownloader, downloader);
+    objc_storeStrong(&v19->_locationManager, locationManager);
+    objc_storeStrong(&v19->_predictionContextBuilder, builder);
     v20 = objc_opt_class();
     Name = class_getName(v20);
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -132,7 +132,7 @@
     v32[2] = __157__ATXCDNDownloaderTriggerManager_initWithCDNDownloader_heroAppServer_heroClipManager_heroAppManager_predictionContextBuilder_nudgeRegistrar_locationManager___block_invoke;
     v32[3] = &unk_278596BB8;
     v33 = v19;
-    [(objc_class *)a8 registerForNearbyAppNudgeWithBlock:v32];
+    [(objc_class *)registrar registerForNearbyAppNudgeWithBlock:v32];
   }
 
   return v19;
@@ -208,13 +208,13 @@ LABEL_12:
 {
   sel_getName(a2);
   v3 = os_transaction_create();
-  v4 = [(ATXCDNDownloaderTriggerManager *)self rateLimiter];
-  v5 = [v4 tryToIncrementCountAndReturnSuccess];
+  rateLimiter = [(ATXCDNDownloaderTriggerManager *)self rateLimiter];
+  tryToIncrementCountAndReturnSuccess = [rateLimiter tryToIncrementCountAndReturnSuccess];
 
-  if (v5)
+  if (tryToIncrementCountAndReturnSuccess)
   {
-    v6 = [(ATXCDNDownloaderTriggerManager *)self requestHighQualityLocationWithHundredMeterAccuracy];
-    if (v6)
+    requestHighQualityLocationWithHundredMeterAccuracy = [(ATXCDNDownloaderTriggerManager *)self requestHighQualityLocationWithHundredMeterAccuracy];
+    if (requestHighQualityLocationWithHundredMeterAccuracy)
     {
       cdnDownloader = self->_cdnDownloader;
       v10[0] = MEMORY[0x277D85DD0];
@@ -222,7 +222,7 @@ LABEL_12:
       v10[2] = __78__ATXCDNDownloaderTriggerManager_forwardLocationToCDNDownloaderAndHandleReply__block_invoke;
       v10[3] = &unk_278599D18;
       v10[4] = self;
-      [(ATXProactiveCDNDownloaderProtocol *)cdnDownloader heroDatasForLocation:v6 completion:v10];
+      [(ATXProactiveCDNDownloaderProtocol *)cdnDownloader heroDatasForLocation:requestHighQualityLocationWithHundredMeterAccuracy completion:v10];
     }
 
     else
@@ -241,11 +241,11 @@ LABEL_12:
 
   else
   {
-    v6 = __atxlog_handle_hero();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    requestHighQualityLocationWithHundredMeterAccuracy = __atxlog_handle_hero();
+    if (os_log_type_enabled(requestHighQualityLocationWithHundredMeterAccuracy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "Skipping CDN download since rate limit exceeded", buf, 2u);
+      _os_log_impl(&dword_2263AA000, requestHighQualityLocationWithHundredMeterAccuracy, OS_LOG_TYPE_DEFAULT, "Skipping CDN download since rate limit exceeded", buf, 2u);
     }
   }
 }
@@ -271,14 +271,14 @@ void __78__ATXCDNDownloaderTriggerManager_forwardLocationToCDNDownloaderAndHandl
 - (id)requestHighQualityLocationWithHundredMeterAccuracy
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
-  v4 = [(ATXLocationManager *)self->_locationManager getCurrentLocation];
-  v5 = [v3 timeContext];
-  v6 = [v5 date];
+  predictionContextForCurrentContext = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
+  getCurrentLocation = [(ATXLocationManager *)self->_locationManager getCurrentLocation];
+  timeContext = [predictionContextForCurrentContext timeContext];
+  date = [timeContext date];
 
   v7 = __atxlog_handle_hero();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v4)
+  if (!getCurrentLocation)
   {
     if (v8)
     {
@@ -291,9 +291,9 @@ void __78__ATXCDNDownloaderTriggerManager_forwardLocationToCDNDownloaderAndHandl
 
   if (v8)
   {
-    [v4 coordinate];
+    [getCurrentLocation coordinate];
     v10 = v9;
-    [v4 coordinate];
+    [getCurrentLocation coordinate];
     v18 = 134545921;
     v19 = v10;
     v20 = 2053;
@@ -301,7 +301,7 @@ void __78__ATXCDNDownloaderTriggerManager_forwardLocationToCDNDownloaderAndHandl
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "Received location, %{sensitive}f, %{sensitive}f", &v18, 0x16u);
   }
 
-  v12 = [objc_opt_class() _locationIsStaleOrNotAccurateEnough:v4 now:v6];
+  v12 = [objc_opt_class() _locationIsStaleOrNotAccurateEnough:getCurrentLocation now:date];
   v13 = __atxlog_handle_hero();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -323,7 +323,7 @@ LABEL_11:
     _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "Location passed quality checks. Forwarding to CDN Downloader.", &v18, 2u);
   }
 
-  v15 = v4;
+  v15 = getCurrentLocation;
 LABEL_15:
 
   v16 = *MEMORY[0x277D85DE8];
@@ -331,18 +331,18 @@ LABEL_15:
   return v15;
 }
 
-+ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)a3 now:(id)a4
++ (BOOL)_locationIsStaleOrNotAccurateEnough:(id)enough now:(id)now
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 timestamp];
-  [v6 timeIntervalSinceDate:v7];
+  enoughCopy = enough;
+  nowCopy = now;
+  timestamp = [enoughCopy timestamp];
+  [nowCopy timeIntervalSinceDate:timestamp];
   v9 = v8;
 
   if (v9 <= 60.0)
   {
-    [v5 horizontalAccuracy];
+    [enoughCopy horizontalAccuracy];
     if (v12 <= 100.0)
     {
       v14 = 0;
@@ -352,7 +352,7 @@ LABEL_15:
     v10 = __atxlog_handle_hero();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      [v5 horizontalAccuracy];
+      [enoughCopy horizontalAccuracy];
       v17 = 134217984;
       v18 = v13;
       v11 = "Location uncertainty too large, horizontalAccuracy, %f. Ignoring trigger.";
@@ -410,14 +410,14 @@ void __87__ATXCDNDownloaderTriggerManager__forwardHeroAppPredictionsToHeroAppPre
   {
     v9[7] = v2;
     v9[8] = v3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D26178];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __77__ATXCDNDownloaderTriggerManager__registerForRestrictionChangedNotifications__block_invoke;
     v9[3] = &unk_278599D40;
     v9[4] = self;
-    v7 = [v5 addObserverForName:v6 object:0 queue:0 usingBlock:v9];
+    v7 = [defaultCenter addObserverForName:v6 object:0 queue:0 usingBlock:v9];
     restrictionChangedNotificationToken = self->_restrictionChangedNotificationToken;
     self->_restrictionChangedNotificationToken = v7;
   }
@@ -426,10 +426,10 @@ void __87__ATXCDNDownloaderTriggerManager__forwardHeroAppPredictionsToHeroAppPre
 - (void)handleProfileChangedNotification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isAppClipsAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAppClipsAllowed = [mEMORY[0x277D262A0] isAppClipsAllowed];
 
-  if ((v4 & 1) == 0)
+  if ((isAppClipsAllowed & 1) == 0)
   {
     v5 = __atxlog_handle_hero();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

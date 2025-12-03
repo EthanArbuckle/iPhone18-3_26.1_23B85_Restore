@@ -6,7 +6,7 @@
 
 - (MPModelObject)innermostModelObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MPModelPlaylistEntry.innermostModelObject.getter();
 
   return v3;

@@ -1,45 +1,45 @@
 @interface SUUIBrickSwooshArtworkLoader
-- (BOOL)loadImageForBrick:(id)a3 reason:(int64_t)a4;
-- (SUUIBrickSwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4;
-- (void)loadImagesForNextPageWithReason:(int64_t)a3;
-- (void)setImage:(id)a3 forRequest:(id)a4;
+- (BOOL)loadImageForBrick:(id)brick reason:(int64_t)reason;
+- (SUUIBrickSwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh;
+- (void)loadImagesForNextPageWithReason:(int64_t)reason;
+- (void)setImage:(id)image forRequest:(id)request;
 @end
 
 @implementation SUUIBrickSwooshArtworkLoader
 
-- (SUUIBrickSwooshArtworkLoader)initWithArtworkLoader:(id)a3 swoosh:(id)a4
+- (SUUIBrickSwooshArtworkLoader)initWithArtworkLoader:(id)loader swoosh:(id)swoosh
 {
-  v6 = a4;
+  swooshCopy = swoosh;
   v16.receiver = self;
   v16.super_class = SUUIBrickSwooshArtworkLoader;
-  v7 = [(SUUISwooshArtworkLoader *)&v16 initWithArtworkLoader:a3 swoosh:v6];
+  v7 = [(SUUISwooshArtworkLoader *)&v16 initWithArtworkLoader:loader swoosh:swooshCopy];
   if (v7)
   {
     v8 = +[SUUIStyledImageDataConsumer brickConsumer];
-    v9 = [v6 colorScheme];
-    v10 = [v9 backgroundColor];
-    [v8 setBackgroundColor:v10];
+    colorScheme = [swooshCopy colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    [v8 setBackgroundColor:backgroundColor];
 
     [(SUUISwooshArtworkLoader *)v7 setImageDataConsumer:v8];
     [v8 imageSize];
     v12 = v11;
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v7->_artworkSize = (v12 * v14);
   }
 
   return v7;
 }
 
-- (BOOL)loadImageForBrick:(id)a3 reason:(int64_t)a4
+- (BOOL)loadImageForBrick:(id)brick reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 artwork];
-  v8 = [v7 URL];
+  brickCopy = brick;
+  artwork = [brickCopy artwork];
+  v8 = [artwork URL];
 
   if (v8)
   {
-    v9 = [(SUUISwooshArtworkLoader *)self loadImageForObject:v6 URL:v8 reason:a4];
+    v9 = [(SUUISwooshArtworkLoader *)self loadImageForObject:brickCopy URL:v8 reason:reason];
   }
 
   else
@@ -50,12 +50,12 @@
   return v9;
 }
 
-- (void)loadImagesForNextPageWithReason:(int64_t)a3
+- (void)loadImagesForNextPageWithReason:(int64_t)reason
 {
-  v5 = [(SUUISwooshArtworkLoader *)self swooshViewController];
-  v12 = [v5 bricks];
+  swooshViewController = [(SUUISwooshArtworkLoader *)self swooshViewController];
+  bricks = [swooshViewController bricks];
 
-  v6 = [v12 count];
+  v6 = [bricks count];
   if (v6 >= 1)
   {
     v7 = v6;
@@ -63,8 +63,8 @@
     v9 = 1;
     do
     {
-      v10 = [v12 objectAtIndex:v9 - 1];
-      v11 = [(SUUIBrickSwooshArtworkLoader *)self loadImageForBrick:v10 reason:a3];
+      v10 = [bricks objectAtIndex:v9 - 1];
+      v11 = [(SUUIBrickSwooshArtworkLoader *)self loadImageForBrick:v10 reason:reason];
 
       if (v9 >= v7)
       {
@@ -79,15 +79,15 @@
   }
 }
 
-- (void)setImage:(id)a3 forRequest:(id)a4
+- (void)setImage:(id)image forRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v19 = a4;
-  v7 = [v19 requestIdentifier];
-  v8 = [(SUUISwooshArtworkLoader *)self swooshViewController];
-  v9 = [v8 bricks];
-  [v8 indexPathsForVisibleItems];
+  imageCopy = image;
+  requestCopy = request;
+  requestIdentifier = [requestCopy requestIdentifier];
+  swooshViewController = [(SUUISwooshArtworkLoader *)self swooshViewController];
+  bricks = [swooshViewController bricks];
+  [swooshViewController indexPathsForVisibleItems];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -97,7 +97,7 @@
   {
     v12 = v11;
     v13 = *v22;
-    v18 = v6;
+    v18 = imageCopy;
     while (2)
     {
       for (i = 0; i != v12; ++i)
@@ -108,19 +108,19 @@
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v9 objectAtIndex:{objc_msgSend(v15, "item", v18)}];
-        if ([(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:v16]== v7)
+        v16 = [bricks objectAtIndex:{objc_msgSend(v15, "item", v18)}];
+        if ([(SUUISwooshArtworkLoader *)self artworkRequestIdentifierForObject:v16]== requestIdentifier)
         {
-          v17 = [v15 item];
-          v6 = v18;
-          [v8 setImage:v18 forItemAtIndex:v17];
+          item = [v15 item];
+          imageCopy = v18;
+          [swooshViewController setImage:v18 forItemAtIndex:item];
 
           goto LABEL_11;
         }
       }
 
       v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
-      v6 = v18;
+      imageCopy = v18;
       if (v12)
       {
         continue;
@@ -134,7 +134,7 @@ LABEL_11:
 
   v20.receiver = self;
   v20.super_class = SUUIBrickSwooshArtworkLoader;
-  [(SUUISwooshArtworkLoader *)&v20 setImage:v6 forRequest:v19];
+  [(SUUISwooshArtworkLoader *)&v20 setImage:imageCopy forRequest:requestCopy];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface MapsDigitalSeparationSource
-- (BOOL)_shouldReportSharedTripServiceError:(id)a3;
-- (void)_didFetchSharedResources:(id)a3 withErrors:(id)a4 completion:(id)a5;
-- (void)_fetchActiveSharedTripWithCompletion:(id)a3;
-- (void)_fetchFavoritesWithCompletion:(id)a3;
-- (void)_fetchFavoritesWithStore:(id)a3 withCompletion:(id)a4;
-- (void)_performOperationsInParallelForSharing:(id)a3 favorites:(id)a4 completion:(id)a5;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (BOOL)_shouldReportSharedTripServiceError:(id)error;
+- (void)_didFetchSharedResources:(id)resources withErrors:(id)errors completion:(id)completion;
+- (void)_fetchActiveSharedTripWithCompletion:(id)completion;
+- (void)_fetchFavoritesWithCompletion:(id)completion;
+- (void)_fetchFavoritesWithStore:(id)store withCompletion:(id)completion;
+- (void)_performOperationsInParallelForSharing:(id)sharing favorites:(id)favorites completion:(id)completion;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation MapsDigitalSeparationSource
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MSPMapsInstallState isMapsAppInstalled];
   self->_mapsIsInstalled = v5;
   v6 = sub_47FC();
@@ -62,7 +62,7 @@
     v19[4] = self;
     v20 = v14;
     v21 = v15;
-    v22 = v4;
+    v22 = completionCopy;
     v17 = v15;
     v18 = v14;
     dispatch_group_notify(v16, &_dispatch_main_q, v19);
@@ -77,16 +77,16 @@
     }
 
     v16 = [NSError errorWithDomain:DSSourceNameMaps code:0 userInfo:0];
-    (*(v4 + 2))(v4, &__NSArray0__struct, v16);
+    (*(completionCopy + 2))(completionCopy, &__NSArray0__struct, v16);
   }
 }
 
-- (void)_didFetchSharedResources:(id)a3 withErrors:(id)a4 completion:(id)a5
+- (void)_didFetchSharedResources:(id)resources withErrors:(id)errors completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 count];
+  resourcesCopy = resources;
+  errorsCopy = errors;
+  completionCopy = completion;
+  v10 = [errorsCopy count];
   v11 = sub_47FC();
   v12 = v11;
   if (v10)
@@ -94,9 +94,9 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v18 = 134218242;
-      v19 = [v7 count];
+      v19 = [resourcesCopy count];
       v20 = 2114;
-      v21 = v8;
+      v21 = errorsCopy;
       v13 = "Fetched %lu resources, encountered errors: %{public}@,";
       v14 = v12;
       v15 = OS_LOG_TYPE_ERROR;
@@ -109,7 +109,7 @@ LABEL_6:
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v18 = 134217984;
-    v19 = [v7 count];
+    v19 = [resourcesCopy count];
     v13 = "Fetched %lu resources";
     v14 = v12;
     v15 = OS_LOG_TYPE_INFO;
@@ -117,21 +117,21 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v17 = [v8 firstObject];
-  v9[2](v9, v7, v17);
+  firstObject = [errorsCopy firstObject];
+  completionCopy[2](completionCopy, resourcesCopy, firstObject);
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   if (!self->_mapsIsInstalled)
   {
     v9 = sub_47FC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v19 = v6;
+      v19 = sharingCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Cannot stop sharing resource %{private}@, Maps is not installed", buf, 0xCu);
     }
 
@@ -148,7 +148,7 @@ LABEL_6:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Will stop active trip sharing...", buf, 2u);
     }
 
-    [(__CFString *)v6 _ds_stopSharingWithCompletion:v7];
+    [(__CFString *)sharingCopy _ds_stopSharingWithCompletion:completionCopy];
     goto LABEL_9;
   }
 
@@ -165,7 +165,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v12 = v6;
+    v12 = sharingCopy;
     if (!v12)
     {
       v17 = @"<nil>";
@@ -200,18 +200,18 @@ LABEL_23:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v19 = v6;
+    v19 = sharingCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Will stop sharing in Favorite %{private}@...", buf, 0xCu);
   }
 
-  [(__CFString *)v6 _ds_stopSharing];
+  [(__CFString *)sharingCopy _ds_stopSharing];
 LABEL_9:
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  completionCopy = completion;
   mapsIsInstalled = self->_mapsIsInstalled;
   v9 = sub_47FC();
   v10 = v9;
@@ -220,7 +220,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v19 = v6;
+      v19 = participantCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Will stop sharing with participant '%{private}@'...", buf, 0xCu);
     }
 
@@ -228,7 +228,7 @@ LABEL_9:
     v16[1] = 3221225472;
     v16[2] = sub_50FC;
     v16[3] = &unk_CE70;
-    v17 = v6;
+    v17 = participantCopy;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_5264;
@@ -238,7 +238,7 @@ LABEL_9:
     v12[1] = 3221225472;
     v12[2] = sub_542C;
     v12[3] = &unk_CEC0;
-    v13 = v7;
+    v13 = completionCopy;
     [(MapsDigitalSeparationSource *)self _performOperationsInParallelForSharing:v16 favorites:v14 completion:v12];
 
     v11 = v17;
@@ -249,18 +249,18 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v19 = v6;
+      v19 = participantCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Cannot stop sharing with participant %{private}@, Maps is not installed", buf, 0xCu);
     }
 
     v11 = [NSError errorWithDomain:DSSourceNameMaps code:0 userInfo:0];
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   mapsIsInstalled = self->_mapsIsInstalled;
   v6 = sub_47FC();
   v7 = v6;
@@ -276,7 +276,7 @@ LABEL_9:
     v9[1] = 3221225472;
     v9[2] = sub_5A4C;
     v9[3] = &unk_CEC0;
-    v10 = v4;
+    v10 = completionCopy;
     [(MapsDigitalSeparationSource *)self _performOperationsInParallelForSharing:&stru_CF00 favorites:&stru_CF40 completion:v9];
     v8 = v10;
   }
@@ -290,13 +290,13 @@ LABEL_9:
     }
 
     v8 = [NSError errorWithDomain:DSSourceNameMaps code:0 userInfo:0];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
-- (void)_fetchFavoritesWithCompletion:(id)a3
+- (void)_fetchFavoritesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   store = self->_store;
   v6 = sub_47FC();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -308,7 +308,7 @@ LABEL_9:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Will fetch favorites from sync...", buf, 2u);
     }
 
-    [(MapsDigitalSeparationSource *)self _fetchFavoritesWithStore:self->_store withCompletion:v4];
+    [(MapsDigitalSeparationSource *)self _fetchFavoritesWithStore:self->_store withCompletion:completionCopy];
   }
 
   else
@@ -324,14 +324,14 @@ LABEL_9:
     v8[2] = sub_5C14;
     v8[3] = &unk_CF90;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     [_TtC8MapsSync13MapsSyncStore withDefaultStoreWithBlock:v8];
   }
 }
 
-- (void)_fetchActiveSharedTripWithCompletion:(id)a3
+- (void)_fetchActiveSharedTripWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_47FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -345,42 +345,42 @@ LABEL_9:
   v8[2] = sub_5EDC;
   v8[3] = &unk_CFB8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 performBlockAfterInitialConnection:v8];
 }
 
-- (BOOL)_shouldReportSharedTripServiceError:(id)a3
+- (BOOL)_shouldReportSharedTripServiceError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code] == &dword_0 + 1 || objc_msgSend(v3, "code") == &dword_14 + 2 || objc_msgSend(v3, "code") == &dword_0 + 3;
+  errorCopy = error;
+  v4 = [errorCopy code] == &dword_0 + 1 || objc_msgSend(errorCopy, "code") == &dword_14 + 2 || objc_msgSend(errorCopy, "code") == &dword_0 + 3;
 
   return v4;
 }
 
-- (void)_fetchFavoritesWithStore:(id)a3 withCompletion:(id)a4
+- (void)_fetchFavoritesWithStore:(id)store withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  storeCopy = store;
   v7 = [_TtC8MapsSync20MapsSyncQueryOptions alloc];
   v8 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"contactHandles.@count != 0" argumentArray:0];
   v9 = [v7 initWithPredicate:v8 sortDescriptors:0 range:0];
 
-  v10 = [[MSFavoriteItemRequest alloc] initWithStore:v6];
+  v10 = [[MSFavoriteItemRequest alloc] initWithStore:storeCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_62B4;
   v12[3] = &unk_CFE0;
-  v13 = v5;
-  v11 = v5;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v10 fetchWithOptions:v9 completionHandler:v12];
 }
 
-- (void)_performOperationsInParallelForSharing:(id)a3 favorites:(id)a4 completion:(id)a5
+- (void)_performOperationsInParallelForSharing:(id)sharing favorites:(id)favorites completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sharingCopy = sharing;
+  favoritesCopy = favorites;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v12 = [[NSMutableArray alloc] initWithCapacity:2];
   dispatch_group_enter(v11);
@@ -392,8 +392,8 @@ LABEL_9:
   v30 = v13;
   v14 = v11;
   v31 = v14;
-  v32 = v8;
-  v15 = v8;
+  v32 = sharingCopy;
+  v15 = sharingCopy;
   [(MapsDigitalSeparationSource *)self _fetchActiveSharedTripWithCompletion:v29];
   dispatch_group_enter(v14);
   v24[0] = _NSConcreteStackBlock;
@@ -403,9 +403,9 @@ LABEL_9:
   v16 = v13;
   v25 = v16;
   v26 = v14;
-  v27 = self;
-  v28 = v9;
-  v17 = v9;
+  selfCopy = self;
+  v28 = favoritesCopy;
+  v17 = favoritesCopy;
   v18 = v14;
   [(MapsDigitalSeparationSource *)self _fetchFavoritesWithCompletion:v24];
   block[0] = _NSConcreteStackBlock;
@@ -413,8 +413,8 @@ LABEL_9:
   block[2] = sub_6700;
   block[3] = &unk_D058;
   v22 = v16;
-  v23 = v10;
-  v19 = v10;
+  v23 = completionCopy;
+  v19 = completionCopy;
   v20 = v16;
   dispatch_group_notify(v18, &_dispatch_main_q, block);
 }

@@ -9,11 +9,11 @@
 + (id)hmbProperties;
 + (id)hmbQueries;
 - (NSArray)videoSegments;
-- (id)createClipWithSignificantEvents:(id)a3;
+- (id)createClipWithSignificantEvents:(id)events;
 - (int64_t)quality;
 - (unint64_t)feedbackStatus;
-- (void)setFeedbackStatus:(unint64_t)a3;
-- (void)setQuality:(int64_t)a3;
+- (void)setFeedbackStatus:(unint64_t)status;
+- (void)setQuality:(int64_t)quality;
 @end
 
 @implementation HMDCameraClipModel
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __62__HMDCameraClipModel_countOfClipsWithQualityBetweenDatesQuery__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (countOfClipsWithQualityBetweenDatesQuery_onceToken != -1)
   {
     dispatch_once(&countOfClipsWithQualityBetweenDatesQuery_onceToken, block);
@@ -66,7 +66,7 @@ void __62__HMDCameraClipModel_countOfClipsWithQualityBetweenDatesQuery__block_in
   block[1] = 3221225472;
   block[2] = __65__HMDCameraClipModel_clipsWithQualityBetweenDatesDescendingQuery__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (clipsWithQualityBetweenDatesDescendingQuery_onceToken != -1)
   {
     dispatch_once(&clipsWithQualityBetweenDatesDescendingQuery_onceToken, block);
@@ -108,7 +108,7 @@ void __65__HMDCameraClipModel_clipsWithQualityBetweenDatesDescendingQuery__block
   block[1] = 3221225472;
   block[2] = __64__HMDCameraClipModel_clipsWithQualityBetweenDatesAscendingQuery__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (clipsWithQualityBetweenDatesAscendingQuery_onceToken != -1)
   {
     dispatch_once(&clipsWithQualityBetweenDatesAscendingQuery_onceToken, block);
@@ -252,18 +252,18 @@ void __40__HMDCameraClipModel_sentinelParentUUID__block_invoke()
 + (id)hmbQueries
 {
   v12[6] = *MEMORY[0x277D85DE8];
-  v3 = [a1 incompleteClipsQuery];
-  v12[0] = v3;
-  v4 = [a1 clipsWithNeedsUploadFeedbackStatusQuery];
-  v12[1] = v4;
-  v5 = [a1 clipsBeforeDateQuery];
-  v12[2] = v5;
-  v6 = [a1 clipsWithQualityBetweenDatesAscendingQuery];
-  v12[3] = v6;
-  v7 = [a1 clipsWithQualityBetweenDatesDescendingQuery];
-  v12[4] = v7;
-  v8 = [a1 countOfClipsWithQualityBetweenDatesQuery];
-  v12[5] = v8;
+  incompleteClipsQuery = [self incompleteClipsQuery];
+  v12[0] = incompleteClipsQuery;
+  clipsWithNeedsUploadFeedbackStatusQuery = [self clipsWithNeedsUploadFeedbackStatusQuery];
+  v12[1] = clipsWithNeedsUploadFeedbackStatusQuery;
+  clipsBeforeDateQuery = [self clipsBeforeDateQuery];
+  v12[2] = clipsBeforeDateQuery;
+  clipsWithQualityBetweenDatesAscendingQuery = [self clipsWithQualityBetweenDatesAscendingQuery];
+  v12[3] = clipsWithQualityBetweenDatesAscendingQuery;
+  clipsWithQualityBetweenDatesDescendingQuery = [self clipsWithQualityBetweenDatesDescendingQuery];
+  v12[4] = clipsWithQualityBetweenDatesDescendingQuery;
+  countOfClipsWithQualityBetweenDatesQuery = [self countOfClipsWithQualityBetweenDatesQuery];
+  v12[5] = countOfClipsWithQualityBetweenDatesQuery;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:6];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -367,28 +367,28 @@ void __35__HMDCameraClipModel_hmbProperties__block_invoke()
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setQuality:(int64_t)a3
+- (void)setQuality:(int64_t)quality
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:quality];
   [(HMDCameraClipModel *)self setQualityField:v4];
 }
 
 - (int64_t)quality
 {
-  v2 = [(HMDCameraClipModel *)self qualityField];
-  v3 = [v2 unsignedIntValue];
+  qualityField = [(HMDCameraClipModel *)self qualityField];
+  unsignedIntValue = [qualityField unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (NSArray)videoSegments
 {
-  v3 = [(HMDCameraClipModel *)self videoMetadataArray];
-  v4 = v3;
+  videoMetadataArray = [(HMDCameraClipModel *)self videoMetadataArray];
+  v4 = videoMetadataArray;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (videoMetadataArray)
   {
-    v5 = v3;
+    v5 = videoMetadataArray;
   }
 
   v6 = v5;
@@ -455,98 +455,98 @@ id __35__HMDCameraClipModel_videoSegments__block_invoke(uint64_t a1, void *a2)
   return v18;
 }
 
-- (void)setFeedbackStatus:(unint64_t)a3
+- (void)setFeedbackStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
   [(HMDCameraClipModel *)self setFeedbackStatusField:v4];
 }
 
 - (unint64_t)feedbackStatus
 {
-  v2 = [(HMDCameraClipModel *)self feedbackStatusField];
-  v3 = [v2 unsignedIntValue];
+  feedbackStatusField = [(HMDCameraClipModel *)self feedbackStatusField];
+  unsignedIntValue = [feedbackStatusField unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (id)createClipWithSignificantEvents:(id)a3
+- (id)createClipWithSignificantEvents:(id)events
 {
   v51 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  if (!v46)
+  eventsCopy = events;
+  if (!eventsCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = [(HMDCameraClipModel *)self encryptionKey];
-  v5 = [(HMDCameraClipModel *)self encryptionScheme];
-  v6 = [(HMDCameraClipModel *)self startDate];
-  v7 = [(HMDCameraClipModel *)self duration];
+  encryptionKey = [(HMDCameraClipModel *)self encryptionKey];
+  encryptionScheme = [(HMDCameraClipModel *)self encryptionScheme];
+  startDate = [(HMDCameraClipModel *)self startDate];
+  duration = [(HMDCameraClipModel *)self duration];
   v8 = [(HMDCameraClipModel *)self size];
-  v9 = [(HMDCameraClipModel *)self targetFragmentDuration];
-  v10 = [(HMDCameraClipModel *)self isComplete];
-  v11 = [(HMDCameraClipModel *)self streamingAssetVersion];
-  v12 = v11;
-  v45 = v4;
-  if (v4 && v5 && v6 && v7 && v9 && v10 && v11)
+  targetFragmentDuration = [(HMDCameraClipModel *)self targetFragmentDuration];
+  isComplete = [(HMDCameraClipModel *)self isComplete];
+  streamingAssetVersion = [(HMDCameraClipModel *)self streamingAssetVersion];
+  v12 = streamingAssetVersion;
+  v45 = encryptionKey;
+  if (encryptionKey && encryptionScheme && startDate && duration && targetFragmentDuration && isComplete && streamingAssetVersion)
   {
-    v43 = v11;
-    v13 = [objc_alloc(MEMORY[0x277CD18D8]) initWithKey:v4 scheme:{objc_msgSend(v5, "unsignedIntegerValue")}];
-    v41 = v6;
+    v43 = streamingAssetVersion;
+    v13 = [objc_alloc(MEMORY[0x277CD18D8]) initWithKey:encryptionKey scheme:{objc_msgSend(encryptionScheme, "unsignedIntegerValue")}];
+    v41 = startDate;
     v14 = objc_alloc(MEMORY[0x277CD18C8]);
-    v15 = [(HMBModel *)self hmbModelID];
-    [v7 doubleValue];
+    hmbModelID = [(HMBModel *)self hmbModelID];
+    [duration doubleValue];
     v17 = v16;
-    v37 = [v8 unsignedIntegerValue];
-    [v9 floatValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
+    [targetFragmentDuration floatValue];
     v19 = v18;
-    contexta = v7;
-    v20 = [v10 BOOLValue];
-    v21 = v9;
+    contexta = duration;
+    bOOLValue = [isComplete BOOLValue];
+    v21 = targetFragmentDuration;
     v22 = v8;
-    v23 = v5;
+    v23 = encryptionScheme;
     v24 = [(HMDCameraClipModel *)self feedbackStatus]!= 0;
-    v25 = [(HMDCameraClipModel *)self quality];
+    quality = [(HMDCameraClipModel *)self quality];
     v26 = v14;
-    v6 = v41;
-    v27 = v20;
-    v7 = contexta;
+    startDate = v41;
+    v27 = bOOLValue;
+    duration = contexta;
     v28 = v24;
-    v5 = v23;
+    encryptionScheme = v23;
     v8 = v22;
-    v9 = v21;
+    targetFragmentDuration = v21;
     v12 = v43;
-    v29 = [v26 initWithUniqueIdentifier:v15 startDate:v41 duration:v37 size:v27 targetFragmentDuration:v28 isComplete:v25 isDonated:v17 quality:v19 streamingAssetVersion:v43 encryptionContext:v13 significantEvents:v46];
+    v29 = [v26 initWithUniqueIdentifier:hmbModelID startDate:v41 duration:unsignedIntegerValue size:v27 targetFragmentDuration:v28 isComplete:quality isDonated:v17 quality:v19 streamingAssetVersion:v43 encryptionContext:v13 significantEvents:eventsCopy];
   }
 
   else
   {
-    v42 = v10;
+    v42 = isComplete;
     context = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v32 = v44 = v12;
-      [(HMBModel *)v30 debugDescription];
-      v38 = v9;
-      v34 = v33 = v6;
+      [(HMBModel *)selfCopy debugDescription];
+      v38 = targetFragmentDuration;
+      v34 = v33 = startDate;
       *buf = 138543618;
       v48 = v32;
       v49 = 2112;
       v50 = v34;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Cannot create clip from model: %@", buf, 0x16u);
 
-      v6 = v33;
-      v9 = v38;
+      startDate = v33;
+      targetFragmentDuration = v38;
 
       v12 = v44;
     }
 
     objc_autoreleasePoolPop(context);
     v29 = 0;
-    v10 = v42;
+    isComplete = v42;
   }
 
   v35 = *MEMORY[0x277D85DE8];

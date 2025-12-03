@@ -1,64 +1,64 @@
 @interface CLKUIDualTimeDigitalTicksView
-+ (CGSize)_sizeFromFrame:(CGRect)a3;
-- (CLKUIDualTimeDigitalTicksView)initWithConfiguration:(id *)a3 timer:(id)a4;
-- (CLKUIDualTimeDigitalTicksView)initWithFrame:(CGRect)a3 configuration:(id *)a4 timer:(id)a5;
++ (CGSize)_sizeFromFrame:(CGRect)frame;
+- (CLKUIDualTimeDigitalTicksView)initWithConfiguration:(id *)configuration timer:(id)timer;
+- (CLKUIDualTimeDigitalTicksView)initWithFrame:(CGRect)frame configuration:(id *)configuration timer:(id)timer;
 - (CLKUIDualTimeDigitalTicksViewPaletteDelegate)delegate;
-- (void)_colorizeDigitalTicksWithActiveColor:(id)a3 inactiveColor:(id)a4 now:(id)a5 secondFraction:(double)a6;
+- (void)_colorizeDigitalTicksWithActiveColor:(id)color inactiveColor:(id)inactiveColor now:(id)now secondFraction:(double)fraction;
 - (void)_configureTicks;
-- (void)_refreshDigitalTicksWithNow:(id)a3 secondFraction:(double)a4;
+- (void)_refreshDigitalTicksWithNow:(id)now secondFraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3;
+- (void)setOverrideDate:(id)date;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
 
 @implementation CLKUIDualTimeDigitalTicksView
 
-- (CLKUIDualTimeDigitalTicksView)initWithConfiguration:(id *)a3 timer:(id)a4
+- (CLKUIDualTimeDigitalTicksView)initWithConfiguration:(id *)configuration timer:(id)timer
 {
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  var1 = a3->var1;
-  v10[0] = a3->var0;
+  var1 = configuration->var1;
+  v10[0] = configuration->var0;
   v10[1] = var1;
-  v10[2] = *&a3->var2;
-  return [(CLKUIDualTimeDigitalTicksView *)self initWithFrame:v10 configuration:a4 timer:v4, v5, v6, v7];
+  v10[2] = *&configuration->var2;
+  return [(CLKUIDualTimeDigitalTicksView *)self initWithFrame:v10 configuration:timer timer:v4, v5, v6, v7];
 }
 
-- (CLKUIDualTimeDigitalTicksView)initWithFrame:(CGRect)a3 configuration:(id *)a4 timer:(id)a5
+- (CLKUIDualTimeDigitalTicksView)initWithFrame:(CGRect)frame configuration:(id *)configuration timer:(id)timer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  timerCopy = timer;
   v25.receiver = self;
   v25.super_class = CLKUIDualTimeDigitalTicksView;
-  v13 = [(CLKUIDualTimeDigitalTicksView *)&v25 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(CLKUIDualTimeDigitalTicksView *)&v25 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_hideActiveTicks = 0;
-    var0 = a4->var0;
-    v16 = *&a4->var2;
-    v13->_configuration.cardinalTickSize = a4->var1;
-    *&v13->_configuration.tickInset = v16;
-    v13->_configuration.tickSize = var0;
-    activeTickColor = v13->_activeTickColor;
-    v13->_activeTickColor = 0;
+    height->_hideActiveTicks = 0;
+    var0 = configuration->var0;
+    v16 = *&configuration->var2;
+    height->_configuration.cardinalTickSize = configuration->var1;
+    *&height->_configuration.tickInset = v16;
+    height->_configuration.tickSize = var0;
+    activeTickColor = height->_activeTickColor;
+    height->_activeTickColor = 0;
 
     inactiveTickColor = v14->_inactiveTickColor;
     v14->_inactiveTickColor = 0;
 
-    objc_storeStrong(&v14->_timer, a5);
-    v19 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    objc_storeStrong(&v14->_timer, timer);
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
     calendar = v14->_calendar;
-    v14->_calendar = v19;
+    v14->_calendar = autoupdatingCurrentCalendar;
 
-    v21 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    [(NSCalendar *)v14->_calendar setTimeZone:v21];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    [(NSCalendar *)v14->_calendar setTimeZone:systemTimeZone];
 
     [(CLKUIDualTimeDigitalTicksView *)v14 _configureTicks];
     [objc_opt_class() _sizeFromFrame:{x, y, width, height}];
@@ -69,15 +69,15 @@
   return v14;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v5 = a3;
-  if (self->_overrideDate != v5)
+  dateCopy = date;
+  if (self->_overrideDate != dateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideDate, a3);
+    v6 = dateCopy;
+    objc_storeStrong(&self->_overrideDate, date);
     [(CLKUIDualTimeDigitalTicksView *)self refreshTicks];
-    v5 = v6;
+    dateCopy = v6;
   }
 }
 
@@ -142,13 +142,13 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
   }
 }
 
-+ (CGSize)_sizeFromFrame:(CGRect)a3
++ (CGSize)_sizeFromFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = CGRectGetWidth(frame);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
@@ -189,8 +189,8 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
     }
 
     [v7 setActions:_disabledLayerActions__dictionary];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [v7 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v7 setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     v9 = -15 * ((286331154 * v5) >> 32) + v5;
     if (v9)
@@ -236,8 +236,8 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
     CGAffineTransformMakeRotation(&v28, v6 * 0.104719755 + 3.14159265);
     [v7 setAffineTransform:&v28];
     [v4 addObject:v7];
-    v20 = [(CLKUIDualTimeDigitalTicksView *)self layer];
-    [v20 addSublayer:v7];
+    layer = [(CLKUIDualTimeDigitalTicksView *)self layer];
+    [layer addSublayer:v7];
 
     v6 = ++v5;
   }
@@ -248,46 +248,46 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
   self->_digitalTicks = v21;
 }
 
-- (void)_refreshDigitalTicksWithNow:(id)a3 secondFraction:(double)a4
+- (void)_refreshDigitalTicksWithNow:(id)now secondFraction:(double)fraction
 {
-  v11 = a3;
+  nowCopy = now;
   if (self->_activeTickColor && self->_inactiveTickColor)
   {
-    [CLKUIDualTimeDigitalTicksView _colorizeDigitalTicksWithActiveColor:"_colorizeDigitalTicksWithActiveColor:inactiveColor:now:secondFraction:" inactiveColor:a4 now:? secondFraction:?];
+    [CLKUIDualTimeDigitalTicksView _colorizeDigitalTicksWithActiveColor:"_colorizeDigitalTicksWithActiveColor:inactiveColor:now:secondFraction:" inactiveColor:fraction now:? secondFraction:?];
   }
 
   else
   {
-    v6 = [(CLKUIDualTimeDigitalTicksView *)self delegate];
+    delegate = [(CLKUIDualTimeDigitalTicksView *)self delegate];
 
-    if (v6)
+    if (delegate)
     {
-      v7 = [(CLKUIDualTimeDigitalTicksView *)self delegate];
-      v8 = [v7 activeColorForDualTimeDigitalTicksView:self];
+      delegate2 = [(CLKUIDualTimeDigitalTicksView *)self delegate];
+      v8 = [delegate2 activeColorForDualTimeDigitalTicksView:self];
 
-      v9 = [(CLKUIDualTimeDigitalTicksView *)self delegate];
-      v10 = [v9 inactiveColorForDualTimeDigitalTicksView:self];
+      delegate3 = [(CLKUIDualTimeDigitalTicksView *)self delegate];
+      v10 = [delegate3 inactiveColorForDualTimeDigitalTicksView:self];
 
-      [(CLKUIDualTimeDigitalTicksView *)self _colorizeDigitalTicksWithActiveColor:v8 inactiveColor:v10 now:v11 secondFraction:a4];
+      [(CLKUIDualTimeDigitalTicksView *)self _colorizeDigitalTicksWithActiveColor:v8 inactiveColor:v10 now:nowCopy secondFraction:fraction];
     }
   }
 }
 
-- (void)_colorizeDigitalTicksWithActiveColor:(id)a3 inactiveColor:(id)a4 now:(id)a5 secondFraction:(double)a6
+- (void)_colorizeDigitalTicksWithActiveColor:(id)color inactiveColor:(id)inactiveColor now:(id)now secondFraction:(double)fraction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  colorCopy = color;
+  inactiveColorCopy = inactiveColor;
+  nowCopy = now;
+  v13 = nowCopy;
   if (self->_hideActiveTicks)
   {
-    v14 = -1;
+    second = -1;
   }
 
   else
   {
     overrideDate = self->_overrideDate;
-    if (overrideDate || (overrideDate = v12) != 0)
+    if (overrideDate || (overrideDate = nowCopy) != 0)
     {
       v16 = overrideDate;
     }
@@ -299,15 +299,15 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
 
     v17 = v16;
     v18 = [(NSCalendar *)self->_calendar components:128 fromDate:v16];
-    v14 = [v18 second];
+    second = [v18 second];
 
     if (self->_overrideDate)
     {
-      a6 = 0.0;
+      fraction = 0.0;
     }
   }
 
-  v19 = v11;
+  v19 = inactiveColorCopy;
   v20 = v19;
   v21 = v19;
   if (!self->_hideActiveTicks)
@@ -319,7 +319,7 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
       if (!self->_editing)
       {
         v21 = v19;
-        if (a6 >= 0.883333333)
+        if (fraction >= 0.883333333)
         {
           CLKCompressFraction();
           v21 = CLKInterpolateBetweenColors();
@@ -334,11 +334,11 @@ void __47__CLKUIDualTimeDigitalTicksView_startAnimation__block_invoke(uint64_t a
   v26[2] = __103__CLKUIDualTimeDigitalTicksView__colorizeDigitalTicksWithActiveColor_inactiveColor_now_secondFraction___block_invoke;
   v26[3] = &unk_1E8762820;
   v27 = v21;
-  v28 = v10;
+  v28 = colorCopy;
   v29 = v20;
-  v30 = v14;
+  v30 = second;
   v23 = v20;
-  v24 = v10;
+  v24 = colorCopy;
   v25 = v21;
   [(NSArray *)digitalTicks enumerateObjectsUsingBlock:v26];
 }

@@ -1,21 +1,21 @@
 @interface LinkListCell
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LinkListCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(LinkListCell *)&v6 traitCollectionDidChange:v4];
+  [(LinkListCell *)&v6 traitCollectionDidChange:changeCopy];
   sub_12B748();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_402EA8);
   __chkstk_darwin(v4 - 8);
@@ -27,7 +27,7 @@
   sub_3045F8();
   if (*(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews12LinkListCell_itemKind) != 75)
   {
-    v11 = self;
+    selfCopy = self;
     v12 = sub_3070F8();
     v14 = v13;
     if (v12 == sub_3070F8() && v14 == v15)
@@ -44,7 +44,7 @@
       }
     }
 
-    sub_12CA60(v11, v10, v6);
+    sub_12CA60(selfCopy, v10, v6);
     sub_30CA88();
 LABEL_10:
   }

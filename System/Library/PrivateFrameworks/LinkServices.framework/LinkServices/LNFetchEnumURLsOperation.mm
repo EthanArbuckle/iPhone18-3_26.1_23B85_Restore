@@ -1,5 +1,5 @@
 @interface LNFetchEnumURLsOperation
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_19767221C();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_197672530(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_197672530(error);
 }
 
 @end

@@ -6,9 +6,9 @@
 - (void)dealloc;
 - (void)displayTick;
 - (void)layoutSubviews;
-- (void)setRadius:(double)a3 animationDuration:(double)a4 completion:(id)a5;
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5 failure:(id)a6;
-- (void)startAnimationWithDuration:(double)a3 completion:(id)a4;
+- (void)setRadius:(double)radius animationDuration:(double)duration completion:(id)completion;
+- (void)setState:(unint64_t)state animated:(BOOL)animated completion:(id)completion failure:(id)failure;
+- (void)startAnimationWithDuration:(double)duration completion:(id)completion;
 - (void)tearDownPillView;
 @end
 
@@ -25,16 +25,16 @@
     v4 = *(v2 + 59);
     *(v2 + 59) = v3;
 
-    v5 = [v2 layer];
-    [v5 addSublayer:*(v2 + 59)];
+    layer = [v2 layer];
+    [layer addSublayer:*(v2 + 59)];
 
     v6 = [MEMORY[0x277CD9E48] displayLinkWithTarget:v2 selector:sel_displayTick];
     v7 = *(v2 + 58);
     *(v2 + 58) = v6;
 
     v8 = *(v2 + 58);
-    v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v8 addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [v8 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
     [(CADisplayLink *)*(v2 + 58) bkui_enableHighFrameRate];
     *(v2 + 51) = 0;
@@ -46,25 +46,25 @@
 
 - (void)displayTick
 {
-  v3 = [(BKUIPearlPillView *)self stateAnimationStart];
-  if (v3)
+  stateAnimationStart = [(BKUIPearlPillView *)self stateAnimationStart];
+  if (stateAnimationStart)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BKUIPearlPillView *)self radiusAnimationStart];
-    v4 = v5 != 0;
+    radiusAnimationStart = [(BKUIPearlPillView *)self radiusAnimationStart];
+    v4 = radiusAnimationStart != 0;
   }
 
-  v6 = [(BKUIPearlPillView *)self stateAnimationStart];
+  stateAnimationStart2 = [(BKUIPearlPillView *)self stateAnimationStart];
 
-  if (v6)
+  if (stateAnimationStart2)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(BKUIPearlPillView *)self stateAnimationStart];
-    [v7 timeIntervalSinceDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    stateAnimationStart3 = [(BKUIPearlPillView *)self stateAnimationStart];
+    [date timeIntervalSinceDate:stateAnimationStart3];
     v10 = v9;
 
     [(BKUIPearlPillView *)self stateAnimationDuration];
@@ -94,24 +94,24 @@
     [(BKUIPearlPillView *)self setCornerRadius:v25 + (v27 - v28) * v13];
     if (v13 == 1.0)
     {
-      v29 = [(BKUIPearlPillView *)self stateAnimationCompletion];
+      stateAnimationCompletion = [(BKUIPearlPillView *)self stateAnimationCompletion];
 
-      if (v29)
+      if (stateAnimationCompletion)
       {
-        v30 = [(BKUIPearlPillView *)self stateAnimationCompletion];
+        stateAnimationCompletion2 = [(BKUIPearlPillView *)self stateAnimationCompletion];
         [(BKUIPearlPillView *)self setStateAnimationCompletion:0];
-        v30[2](v30, 1);
+        stateAnimationCompletion2[2](stateAnimationCompletion2, 1);
       }
     }
   }
 
-  v31 = [(BKUIPearlPillView *)self radiusAnimationStart];
+  radiusAnimationStart2 = [(BKUIPearlPillView *)self radiusAnimationStart];
 
-  if (v31)
+  if (radiusAnimationStart2)
   {
-    v32 = [MEMORY[0x277CBEAA8] date];
-    v33 = [(BKUIPearlPillView *)self radiusAnimationStart];
-    [v32 timeIntervalSinceDate:v33];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    radiusAnimationStart3 = [(BKUIPearlPillView *)self radiusAnimationStart];
+    [date2 timeIntervalSinceDate:radiusAnimationStart3];
     v35 = v34;
 
     [(BKUIPearlPillView *)self radiusAnimationDuration];
@@ -129,22 +129,22 @@
     [(BKUIPearlPillView *)self setRadius:v40 + (v42 - v43) * v38];
     if (v38 == 1.0)
     {
-      v44 = [(BKUIPearlPillView *)self radiusAnimationCompletion];
+      radiusAnimationCompletion = [(BKUIPearlPillView *)self radiusAnimationCompletion];
 
-      if (v44)
+      if (radiusAnimationCompletion)
       {
-        v45 = [(BKUIPearlPillView *)self radiusAnimationCompletion];
+        radiusAnimationCompletion2 = [(BKUIPearlPillView *)self radiusAnimationCompletion];
         [(BKUIPearlPillView *)self setRadiusAnimationCompletion:0];
-        v45[2](v45);
+        radiusAnimationCompletion2[2](radiusAnimationCompletion2);
       }
     }
   }
 
   if (v4)
   {
-    v46 = [(BKUIPearlPillView *)self pillPath];
-    v47 = [(BKUIPearlPillView *)self shapeLayer];
-    [v47 setPath:v46];
+    pillPath = [(BKUIPearlPillView *)self pillPath];
+    shapeLayer = [(BKUIPearlPillView *)self shapeLayer];
+    [shapeLayer setPath:pillPath];
   }
 }
 
@@ -158,12 +158,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKUIPearlPillView *)self shapeLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  shapeLayer = [(BKUIPearlPillView *)self shapeLayer];
+  [shapeLayer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(BKUIPearlPillView *)self pillPath];
-  v13 = [(BKUIPearlPillView *)self shapeLayer];
-  [v13 setPath:v12];
+  pillPath = [(BKUIPearlPillView *)self pillPath];
+  shapeLayer2 = [(BKUIPearlPillView *)self shapeLayer];
+  [shapeLayer2 setPath:pillPath];
 }
 
 - (CGPath)pillPath
@@ -226,39 +226,39 @@
   [(BKUIPearlPillView *)self cornerRadius];
   [v15 bkui_bezierPathAddRoundedCorner:1 withRadius:? followingAngle:?];
   [v15 closePath];
-  v33 = [v15 CGPath];
+  cGPath = [v15 CGPath];
 
-  return v33;
+  return cGPath;
 }
 
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5 failure:(id)a6
+- (void)setState:(unint64_t)state animated:(BOOL)animated completion:(id)completion failure:(id)failure
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
-  self->_state = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  failureCopy = failure;
+  self->_state = state;
   [(BKUIPearlPillView *)self height];
   v13 = v12;
   [(BKUIPearlPillView *)self arc];
   v15 = v14;
   [(BKUIPearlPillView *)self cornerRadius];
   v17 = v16;
-  if (a3 == 5 || a3 == 3)
+  if (state == 5 || state == 3)
   {
-    v18 = [MEMORY[0x277D75348] systemGreenColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
   }
 
   else
   {
-    v18 = [MEMORY[0x277D75348] lightGrayColor];
+    systemGreenColor = [MEMORY[0x277D75348] lightGrayColor];
   }
 
-  v19 = v18;
-  v20 = [v18 CGColor];
-  v21 = [(BKUIPearlPillView *)self shapeLayer];
-  [v21 setFillColor:v20];
+  v19 = systemGreenColor;
+  cGColor = [systemGreenColor CGColor];
+  shapeLayer = [(BKUIPearlPillView *)self shapeLayer];
+  [shapeLayer setFillColor:cGColor];
 
-  if (v7)
+  if (animatedCopy)
   {
     v22 = 0.3;
   }
@@ -272,14 +272,14 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __58__BKUIPearlPillView_setState_animated_completion_failure___block_invoke;
   aBlock[3] = &unk_278D09D08;
-  v23 = v10;
+  v23 = completionCopy;
   v48 = v23;
-  v24 = v11;
+  v24 = failureCopy;
   v49 = v24;
   v25 = _Block_copy(aBlock);
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 - 4 < 2)
+    if (state - 4 < 2)
     {
       [(BKUIPearlPillView *)self ringHeight];
       v13 = v27;
@@ -291,7 +291,7 @@
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 1uLL:
         goto LABEL_12;
@@ -316,7 +316,7 @@ LABEL_16:
   [(BKUIPearlPillView *)self targetHeight];
   v31 = v30;
   [(BKUIPearlPillView *)self height];
-  if (v31 == v32 || ([(BKUIPearlPillView *)self targetArc], v34 = v33, [(BKUIPearlPillView *)self arc], v34 == v35) || !v7)
+  if (v31 == v32 || ([(BKUIPearlPillView *)self targetArc], v34 = v33, [(BKUIPearlPillView *)self arc], v34 == v35) || !animatedCopy)
   {
     v40 = _Block_copy(v25);
   }
@@ -445,43 +445,43 @@ uint64_t __73__BKUIPearlPillView_setState_animated_animationDelay_completion_fai
   return result;
 }
 
-- (void)setRadius:(double)a3 animationDuration:(double)a4 completion:(id)a5
+- (void)setRadius:(double)radius animationDuration:(double)duration completion:(id)completion
 {
-  v10 = a5;
+  completionCopy = completion;
   [(BKUIPearlPillView *)self radius];
   [(BKUIPearlPillView *)self setStartRadius:?];
-  [(BKUIPearlPillView *)self setTargetRadius:a3];
-  if (a4 == 0.0)
+  [(BKUIPearlPillView *)self setTargetRadius:radius];
+  if (duration == 0.0)
   {
     [(BKUIPearlPillView *)self setRadiusAnimationDuration:0.0];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [(BKUIPearlPillView *)self setRadiusAnimationStart:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(BKUIPearlPillView *)self setRadiusAnimationStart:date];
 
     [(BKUIPearlPillView *)self displayTick];
-    if (v10)
+    if (completionCopy)
     {
-      v10[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    [(BKUIPearlPillView *)self setRadiusAnimationCompletion:v10];
-    [(BKUIPearlPillView *)self setRadiusAnimationDuration:a4];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(BKUIPearlPillView *)self setRadiusAnimationStart:v9];
+    [(BKUIPearlPillView *)self setRadiusAnimationCompletion:completionCopy];
+    [(BKUIPearlPillView *)self setRadiusAnimationDuration:duration];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(BKUIPearlPillView *)self setRadiusAnimationStart:date2];
   }
 }
 
-- (void)startAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)startAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKUIPearlPillView *)self stateAnimationCompletion];
+  completionCopy = completion;
+  stateAnimationCompletion = [(BKUIPearlPillView *)self stateAnimationCompletion];
 
-  if (v7)
+  if (stateAnimationCompletion)
   {
-    v8 = [(BKUIPearlPillView *)self stateAnimationCompletion];
-    v8[2](v8, 0);
+    stateAnimationCompletion2 = [(BKUIPearlPillView *)self stateAnimationCompletion];
+    stateAnimationCompletion2[2](stateAnimationCompletion2, 0);
 
     [(BKUIPearlPillView *)self setStateAnimationCompletion:0];
   }
@@ -492,19 +492,19 @@ uint64_t __73__BKUIPearlPillView_setState_animated_animationDelay_completion_fai
   [(BKUIPearlPillView *)self setStartArc:?];
   [(BKUIPearlPillView *)self cornerRadius];
   [(BKUIPearlPillView *)self setStartCornerRadius:?];
-  [(BKUIPearlPillView *)self setStateAnimationDuration:a3];
-  [(BKUIPearlPillView *)self setStateAnimationCompletion:v6];
+  [(BKUIPearlPillView *)self setStateAnimationDuration:duration];
+  [(BKUIPearlPillView *)self setStateAnimationCompletion:completionCopy];
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [(BKUIPearlPillView *)self setStateAnimationStart:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(BKUIPearlPillView *)self setStateAnimationStart:date];
 }
 
 - (double)ringArcLength
 {
   [(BKUIPearlPillView *)self numberOfPills];
   v3 = 6.28318531 / v2;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v3 + 0.5 / v5;
 
   return v6;

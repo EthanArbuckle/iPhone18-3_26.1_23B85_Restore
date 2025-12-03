@@ -3,33 +3,33 @@
 + (unsigned)_generateSessionID;
 + (void)initializeSessionClose;
 - (ACCExternalAccessorySessionManager)init;
-- (BOOL)_continueOpenSessionForSingleSessionPerEAProtocol:(id)a3 fromPrimaryAccessoryUUID:(id)a4 fromClient:(id)a5;
-- (BOOL)_eaProtocolHasValidMatchActionForOpeningSession:(id)a3;
-- (BOOL)_isSessionOpenForProtocol:(id)a3 filterPrimaryUUID:(id)a4 filterClientBundleID:(id)a5;
-- (BOOL)_sessionUUIDClientSupportsBackgroundEA:(id)a3;
-- (BOOL)closeSessionsForPrimaryAccessoryUUID:(id)a3;
-- (BOOL)eaClientHasOpenEASession:(id)a3;
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEndpointUUID:(id)a4;
-- (BOOL)openSocketFromAccessoryToApp:(id)a3;
-- (BOOL)openSocketFromAppToAccessory:(id)a3;
-- (BOOL)outgoingEADataFromClientAvailable:(id)a3;
-- (id)_accessoryForPrimaryUUID:(id)a3;
-- (id)_appBundleIDForSessionUUID:(id)a3;
-- (id)_clientsOwningSessionForProtocol:(id)a3 withAccessoryUUID:(id)a4;
-- (id)_copySessionInfoDictionaryForSessionUUID:(id)a3;
-- (id)_eaSessionUUIDsOwnedByClientBundleID:(id)a3;
-- (id)_internalCloseSessionForEASessionUUID:(id)a3 informAccessory:(BOOL)a4;
-- (id)_sessionInfoMatchingProtocol:(id)a3 withPrimaryAccessoryUUID:(id)a4;
-- (id)createSessionForProtocol:(id)a3 fromPrimaryAccessoryUUID:(id)a4 fromClient:(id)a5 result:(BOOL *)a6;
-- (id)eaSessionUUIDForEndpointUUID:(id)a3;
-- (id)eaSessionUUIDForSessionID:(unsigned __int16)a3;
-- (id)sessionInfoDictionaryForSessionUUID:(id)a3;
-- (void)_eaNativeDataArrived:(id)a3;
-- (void)_handleApplicationStateChange:(id)a3;
+- (BOOL)_continueOpenSessionForSingleSessionPerEAProtocol:(id)protocol fromPrimaryAccessoryUUID:(id)d fromClient:(id)client;
+- (BOOL)_eaProtocolHasValidMatchActionForOpeningSession:(id)session;
+- (BOOL)_isSessionOpenForProtocol:(id)protocol filterPrimaryUUID:(id)d filterClientBundleID:(id)iD;
+- (BOOL)_sessionUUIDClientSupportsBackgroundEA:(id)a;
+- (BOOL)closeSessionsForPrimaryAccessoryUUID:(id)d;
+- (BOOL)eaClientHasOpenEASession:(id)session;
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEndpointUUID:(id)d;
+- (BOOL)openSocketFromAccessoryToApp:(id)app;
+- (BOOL)openSocketFromAppToAccessory:(id)accessory;
+- (BOOL)outgoingEADataFromClientAvailable:(id)available;
+- (id)_accessoryForPrimaryUUID:(id)d;
+- (id)_appBundleIDForSessionUUID:(id)d;
+- (id)_clientsOwningSessionForProtocol:(id)protocol withAccessoryUUID:(id)d;
+- (id)_copySessionInfoDictionaryForSessionUUID:(id)d;
+- (id)_eaSessionUUIDsOwnedByClientBundleID:(id)d;
+- (id)_internalCloseSessionForEASessionUUID:(id)d informAccessory:(BOOL)accessory;
+- (id)_sessionInfoMatchingProtocol:(id)protocol withPrimaryAccessoryUUID:(id)d;
+- (id)createSessionForProtocol:(id)protocol fromPrimaryAccessoryUUID:(id)d fromClient:(id)client result:(BOOL *)result;
+- (id)eaSessionUUIDForEndpointUUID:(id)d;
+- (id)eaSessionUUIDForSessionID:(unsigned __int16)d;
+- (id)sessionInfoDictionaryForSessionUUID:(id)d;
+- (void)_eaNativeDataArrived:(id)arrived;
+- (void)_handleApplicationStateChange:(id)change;
 - (void)_sendSessionCloseNotification;
 - (void)_sendSessionOpenNotification;
-- (void)startIncomingDataNotificationsForEASessionUUID:(id)a3;
-- (void)stopIncomingDataNotificationsForEASessionUUID:(id)a3;
+- (void)startIncomingDataNotificationsForEASessionUUID:(id)d;
+- (void)stopIncomingDataNotificationsForEASessionUUID:(id)d;
 @end
 
 @implementation ACCExternalAccessorySessionManager
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __51__ACCExternalAccessorySessionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_6 != -1)
   {
     dispatch_once(&sharedManager_once_6, block);
@@ -118,15 +118,15 @@ uint64_t __51__ACCExternalAccessorySessionManager_sharedManager__block_invoke(ui
   return v2;
 }
 
-- (BOOL)_continueOpenSessionForSingleSessionPerEAProtocol:(id)a3 fromPrimaryAccessoryUUID:(id)a4 fromClient:(id)a5
+- (BOOL)_continueOpenSessionForSingleSessionPerEAProtocol:(id)protocol fromPrimaryAccessoryUUID:(id)d fromClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:v8 filterPrimaryUUID:v9 filterClientBundleID:0])
+  protocolCopy = protocol;
+  dCopy = d;
+  clientCopy = client;
+  if ([(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:protocolCopy filterPrimaryUUID:dCopy filterClientBundleID:0])
   {
-    v11 = [v10 bundleID];
-    v12 = [(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:v8 filterPrimaryUUID:v9 filterClientBundleID:v11];
+    bundleID = [clientCopy bundleID];
+    v12 = [(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:protocolCopy filterPrimaryUUID:dCopy filterClientBundleID:bundleID];
 
     if (v12)
     {
@@ -148,18 +148,18 @@ uint64_t __51__ACCExternalAccessorySessionManager_sharedManager__block_invoke(ui
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v10 bundleID];
+        bundleID2 = [clientCopy bundleID];
         v26 = 138412546;
-        v27 = v18;
+        v27 = bundleID2;
         v28 = 2112;
-        v29 = v8;
+        v29 = protocolCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "The same EA client %@ already has an open session for protocol %@", &v26, 0x16u);
       }
 
       goto LABEL_16;
     }
 
-    v13 = [(ACCExternalAccessorySessionManager *)self _clientsOwningSessionForProtocol:v8 withAccessoryUUID:v9];
+    v13 = [(ACCExternalAccessorySessionManager *)self _clientsOwningSessionForProtocol:protocolCopy withAccessoryUUID:dCopy];
     if (![v13 count])
     {
 LABEL_16:
@@ -169,7 +169,7 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v15 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     if (gLogObjects && gNumLogObjects >= 10)
     {
       v16 = *(gLogObjects + 72);
@@ -189,20 +189,20 @@ LABEL_30:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412546;
-      v27 = v8;
+      v27 = protocolCopy;
       v28 = 2112;
-      v29 = v15;
+      v29 = firstObject;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Client currently owning EA session for protocol %@ is %@", &v26, 0x16u);
     }
 
-    v20 = [v10 bundleID];
-    if (platform_system_isApplicationInForeground(v20))
+    bundleID3 = [clientCopy bundleID];
+    if (platform_system_isApplicationInForeground(bundleID3))
     {
     }
 
     else
     {
-      v21 = platform_system_isApplicationInForeground(v15);
+      v21 = platform_system_isApplicationInForeground(firstObject);
 
       if (v21)
       {
@@ -213,11 +213,11 @@ LABEL_29:
       }
     }
 
-    v22 = [(ACCExternalAccessorySessionManager *)self _sessionInfoMatchingProtocol:v8 withPrimaryAccessoryUUID:v9];
+    v22 = [(ACCExternalAccessorySessionManager *)self _sessionInfoMatchingProtocol:protocolCopy withPrimaryAccessoryUUID:dCopy];
     if ([v22 count])
     {
-      v23 = [v22 firstObject];
-      v24 = [v23 objectForKey:kACCExternalAccessorySessionUUIDKey];
+      firstObject2 = [v22 firstObject];
+      v24 = [firstObject2 objectForKey:kACCExternalAccessorySessionUUIDKey];
       [(ACCExternalAccessorySessionManager *)self _accessoryCloseSessionForEASessionUUID:v24 informAccessory:1];
     }
 
@@ -231,20 +231,20 @@ LABEL_31:
   return v14;
 }
 
-- (id)_internalCloseSessionForEASessionUUID:(id)a3 informAccessory:(BOOL)a4
+- (id)_internalCloseSessionForEASessionUUID:(id)d informAccessory:(BOOL)accessory
 {
-  v35 = a4;
-  v5 = a3;
-  v6 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:v5];
+  accessoryCopy = accessory;
+  dCopy = d;
+  v6 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:dCopy];
   v7 = [v6 objectForKey:kACCExternalAccessoryProtocolNameKey];
   v8 = [v6 objectForKey:kACCExternalAccessoryPrimaryUUID];
   if ([(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:v7 filterPrimaryUUID:0 filterClientBundleID:0])
   {
-    v9 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-    [v9 lock];
+    openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+    [openEASessionHandlersLock lock];
 
-    v10 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-    v11 = [v10 objectForKey:v5];
+    openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+    v11 = [openEASessionHandlers objectForKey:dCopy];
 
     if (v11)
     {
@@ -267,20 +267,20 @@ LABEL_31:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = dCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "removing ACCExternalAccessorySessionBasic for eaSessionUUID %@", &buf, 0xCu);
       }
 
       [v11 closeDataPipes];
-      v16 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-      [v16 removeObjectForKey:v5];
+      openEASessionHandlers2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+      [openEASessionHandlers2 removeObjectForKey:dCopy];
     }
 
-    v17 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-    [v17 unlock];
+    openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+    [openEASessionHandlersLock2 unlock];
 
-    v18 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
-    v19 = [v18 objectForKey:v8];
+    openEASessionUUIDsForEndpointUUID = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
+    v19 = [openEASessionUUIDsForEndpointUUID objectForKey:v8];
 
     if (v19)
     {
@@ -294,7 +294,7 @@ LABEL_31:
       v36[1] = 3221225472;
       v36[2] = __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionUUID_informAccessory___block_invoke;
       v36[3] = &unk_1002288F0;
-      v37 = v5;
+      v37 = dCopy;
       p_buf = &buf;
       [v19 enumerateObjectsUsingBlock:v36];
       if (*(*(&buf + 1) + 40))
@@ -327,16 +327,16 @@ LABEL_31:
     }
 
     v14 = [v6 copy];
-    v22 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-    [v22 lock];
+    openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+    [openEASessionsLock lock];
 
-    v23 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-    [v23 removeObject:v6];
+    openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+    [openEASessions removeObject:v6];
 
-    v24 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-    [v24 unlock];
+    openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+    [openEASessionsLock2 unlock];
 
-    if (v35)
+    if (accessoryCopy)
     {
       v25 = [v14 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
       v26 = [v25 copy];
@@ -344,18 +344,18 @@ LABEL_31:
       platform_externalAccessory_closeExternalAccessorySession(v26, v14);
     }
 
-    v27 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
-    v28 = [v27 objectForKey:v5];
+    pidForOpenSessionUUID = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
+    v28 = [pidForOpenSessionUUID objectForKey:dCopy];
 
     if (v28)
     {
-      v29 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
-      [v29 removeObjectForKey:v5];
+      pidForOpenSessionUUID2 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
+      [pidForOpenSessionUUID2 removeObjectForKey:dCopy];
     }
 
     [(ACCExternalAccessorySessionManager *)self _sendSessionCloseNotification];
-    v30 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-    [v30 lock];
+    openEASessionsLock3 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+    [openEASessionsLock3 lock];
 
     if (gLogObjects && gNumLogObjects >= 10)
     {
@@ -375,11 +375,11 @@ LABEL_31:
 
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
-      [(ACCExternalAccessorySessionManager *)v5 _internalCloseSessionForEASessionUUID:v31 informAccessory:?];
+      [(ACCExternalAccessorySessionManager *)dCopy _internalCloseSessionForEASessionUUID:v31 informAccessory:?];
     }
 
-    v33 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-    [v33 unlock];
+    openEASessionsLock4 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+    [openEASessionsLock4 unlock];
   }
 
   else
@@ -421,20 +421,20 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   }
 }
 
-- (BOOL)openSocketFromAccessoryToApp:(id)a3
+- (BOOL)openSocketFromAccessoryToApp:(id)app
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:v4];
+  appCopy = app;
+  v5 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:appCopy];
   v6 = [v5 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
   platform_externalAccessory_openSocketFromAccessoryToApp(v6, v5);
-  v7 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v7 lock];
+  openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock lock];
 
-  v8 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-  v9 = [v8 objectForKey:v4];
+  openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+  v9 = [openEASessionHandlers objectForKey:appCopy];
 
-  v10 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v10 lock];
+  openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock2 lock];
 
   if (v9)
   {
@@ -444,20 +444,20 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   return 1;
 }
 
-- (BOOL)openSocketFromAppToAccessory:(id)a3
+- (BOOL)openSocketFromAppToAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:v4];
+  accessoryCopy = accessory;
+  v5 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:accessoryCopy];
   v6 = [v5 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
   platform_externalAccessory_openSocketFromAppToAccessory(v6, v5);
-  v7 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v7 lock];
+  openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock lock];
 
-  v8 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-  v9 = [v8 objectForKey:v4];
+  openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+  v9 = [openEASessionHandlers objectForKey:accessoryCopy];
 
-  v10 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v10 unlock];
+  openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock2 unlock];
 
   if (v9)
   {
@@ -467,26 +467,26 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   return 1;
 }
 
-- (BOOL)outgoingEADataFromClientAvailable:(id)a3
+- (BOOL)outgoingEADataFromClientAvailable:(id)available
 {
-  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:a3];
+  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:available];
   v4 = [v3 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
   v5 = platform_externalAccessory_outgoingEADataFromClientAvailable(v4, v3);
 
   return v5;
 }
 
-- (void)stopIncomingDataNotificationsForEASessionUUID:(id)a3
+- (void)stopIncomingDataNotificationsForEASessionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v5 lock];
+  dCopy = d;
+  openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock lock];
 
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-  v9 = [v6 objectForKey:v4];
+  openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+  v9 = [openEASessionHandlers objectForKey:dCopy];
 
-  v7 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v7 unlock];
+  openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock2 unlock];
 
   v8 = v9;
   if (v9)
@@ -496,17 +496,17 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   }
 }
 
-- (void)startIncomingDataNotificationsForEASessionUUID:(id)a3
+- (void)startIncomingDataNotificationsForEASessionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v5 lock];
+  dCopy = d;
+  openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock lock];
 
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-  v9 = [v6 objectForKey:v4];
+  openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+  v9 = [openEASessionHandlers objectForKey:dCopy];
 
-  v7 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-  [v7 unlock];
+  openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+  [openEASessionHandlersLock2 unlock];
 
   v8 = v9;
   if (v9)
@@ -516,11 +516,11 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   }
 }
 
-- (BOOL)closeSessionsForPrimaryAccessoryUUID:(id)a3
+- (BOOL)closeSessionsForPrimaryAccessoryUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  openEASessionUUIDsForEndpointUUID = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
+  v6 = [openEASessionUUIDsForEndpointUUID objectForKey:dCopy];
 
   if (v6)
   {
@@ -531,46 +531,46 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
     v10[3] = &unk_100228E28;
     v10[4] = self;
     [v7 enumerateObjectsUsingBlock:v10];
-    v8 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
-    [v8 removeObjectForKey:v4];
+    openEASessionUUIDsForEndpointUUID2 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
+    [openEASessionUUIDsForEndpointUUID2 removeObjectForKey:dCopy];
   }
 
   return v6 != 0;
 }
 
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEndpointUUID:(id)a4
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEndpointUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(ACCExternalAccessorySessionManager *)self eaSessionUUIDForEndpointUUID:a4];
+  dataCopy = data;
+  v7 = [(ACCExternalAccessorySessionManager *)self eaSessionUUIDForEndpointUUID:d];
   if (v7)
   {
     if ([(ACCExternalAccessorySessionManager *)self _sessionUUIDClientSupportsBackgroundEA:v7])
     {
       v8 = [(ACCExternalAccessorySessionManager *)self _appBundleIDForSessionUUID:v7];
-      v9 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
-      v10 = [v9 objectForKey:v7];
+      pidForOpenSessionUUID = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
+      v10 = [pidForOpenSessionUUID objectForKey:v7];
       platform_system_toggleProcessAssertionForBundleID(v8, [v10 intValue]);
     }
 
-    v11 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-    [v11 lock];
+    openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+    [openEASessionHandlersLock lock];
 
-    v12 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-    v13 = [v12 objectForKey:v7];
+    openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+    v13 = [openEASessionHandlers objectForKey:v7];
 
-    v14 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-    [v14 unlock];
+    openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+    [openEASessionHandlersLock2 unlock];
 
     if (v13)
     {
-      [v13 sendEABufferDataToApp:v6];
+      [v13 sendEABufferDataToApp:dataCopy];
       v15 = 0;
     }
 
     else
     {
       v16 = +[ACCExternalAccessoryServer sharedServer];
-      v15 = [v16 handleIncomingExternalAccessoryData:v6 forEASessionIdentifier:v7];
+      v15 = [v16 handleIncomingExternalAccessoryData:dataCopy forEASessionIdentifier:v7];
     }
   }
 
@@ -582,21 +582,21 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
   return v15;
 }
 
-- (id)_clientsOwningSessionForProtocol:(id)a3 withAccessoryUUID:(id)a4
+- (id)_clientsOwningSessionForProtocol:(id)protocol withAccessoryUUID:(id)d
 {
-  v6 = a3;
-  v27 = a4;
+  protocolCopy = protocol;
+  dCopy = d;
   v25 = +[NSMutableArray array];
-  v7 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v7 lock];
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v23 = self;
-  v8 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  selfCopy = self;
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v9 = [openEASessions countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -611,18 +611,18 @@ void __92__ACCExternalAccessorySessionManager__internalCloseSessionForEASessionU
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(openEASessions);
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
         v15 = [v14 objectForKey:v12];
-        if ([v15 caseInsensitiveCompare:v6])
+        if ([v15 caseInsensitiveCompare:protocolCopy])
         {
           goto LABEL_7;
         }
 
         v16 = [v14 objectForKey:v26];
-        v17 = [v16 caseInsensitiveCompare:v27];
+        v17 = [v16 caseInsensitiveCompare:dCopy];
 
         if (!v17)
         {
@@ -635,7 +635,7 @@ LABEL_7:
       }
 
       while (v10 != v13);
-      v18 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v18 = [openEASessions countByEnumeratingWithState:&v28 objects:v32 count:16];
       v10 = v18;
     }
 
@@ -663,16 +663,16 @@ LABEL_7:
     [ACCExternalAccessorySessionManager _clientsOwningSessionForProtocol:withAccessoryUUID:];
   }
 
-  v21 = [(ACCExternalAccessorySessionManager *)v23 openEASessionsLock];
-  [v21 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)selfCopy openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v25;
 }
 
-- (BOOL)eaClientHasOpenEASession:(id)a3
+- (BOOL)eaClientHasOpenEASession:(id)session
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self _eaSessionUUIDsOwnedByClientBundleID:v4];
+  sessionCopy = session;
+  v5 = [(ACCExternalAccessorySessionManager *)self _eaSessionUUIDsOwnedByClientBundleID:sessionCopy];
   v6 = [v5 count];
   if (gLogObjects)
   {
@@ -703,7 +703,7 @@ LABEL_7:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = sessionCopy;
     v13 = 1024;
     v14 = v6 != 0;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "client %@ has openEASession: %d", &v11, 0x12u);
@@ -712,20 +712,20 @@ LABEL_7:
   return v6 != 0;
 }
 
-- (id)_eaSessionUUIDsOwnedByClientBundleID:(id)a3
+- (id)_eaSessionUUIDsOwnedByClientBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v22 = +[NSMutableArray array];
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v5 lock];
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v21 = self;
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  selfCopy = self;
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v7 = [openEASessions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -738,12 +738,12 @@ LABEL_7:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(openEASessions);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = [v13 objectForKey:v10];
-        v15 = [v14 caseInsensitiveCompare:v4];
+        v15 = [v14 caseInsensitiveCompare:dCopy];
 
         if (!v15)
         {
@@ -752,7 +752,7 @@ LABEL_7:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [openEASessions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
@@ -779,23 +779,23 @@ LABEL_7:
     [ACCExternalAccessorySessionManager _eaSessionUUIDsOwnedByClientBundleID:];
   }
 
-  v19 = [(ACCExternalAccessorySessionManager *)v21 openEASessionsLock];
-  [v19 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)selfCopy openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v22;
 }
 
-- (id)_accessoryForPrimaryUUID:(id)a3
+- (id)_accessoryForPrimaryUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v4 = +[ACCExternalAccessoryServer sharedServer];
-  v5 = [v4 eaAccessories];
+  eaAccessories = [v4 eaAccessories];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [eaAccessories countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -805,12 +805,12 @@ LABEL_7:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eaAccessories);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 primaryEndpointUUID];
-        v11 = [v10 isEqualToString:v3];
+        primaryEndpointUUID = [v9 primaryEndpointUUID];
+        v11 = [primaryEndpointUUID isEqualToString:dCopy];
 
         if (v11)
         {
@@ -840,7 +840,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [eaAccessories countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -855,13 +855,13 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)_eaProtocolHasValidMatchActionForOpeningSession:(id)a3
+- (BOOL)_eaProtocolHasValidMatchActionForOpeningSession:(id)session
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sessionCopy = session;
+  v4 = sessionCopy;
+  if (sessionCopy)
   {
-    v5 = [v3 objectForKey:kACCExternalAccessoryMatchActionKey];
+    v5 = [sessionCopy objectForKey:kACCExternalAccessoryMatchActionKey];
     v6 = v5;
     if (v5 && [v5 unsignedShortValue] - 3 <= 1)
     {
@@ -903,19 +903,19 @@ LABEL_19:
   return v8;
 }
 
-- (id)_copySessionInfoDictionaryForSessionUUID:(id)a3
+- (id)_copySessionInfoDictionaryForSessionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v5 lock];
+  dCopy = d;
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = self;
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v7 = [openEASessions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -928,12 +928,12 @@ LABEL_19:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(openEASessions);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [v13 objectForKey:v11];
-        v15 = [v14 isEqualToString:v4];
+        v15 = [v14 isEqualToString:dCopy];
 
         if (v15)
         {
@@ -943,7 +943,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [openEASessions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -954,25 +954,25 @@ LABEL_19:
     v9 = 0;
   }
 
-  v17 = [(ACCExternalAccessorySessionManager *)v19 openEASessionsLock];
-  [v17 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)selfCopy openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v9;
 }
 
-- (id)sessionInfoDictionaryForSessionUUID:(id)a3
+- (id)sessionInfoDictionaryForSessionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v5 lock];
+  dCopy = d;
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = self;
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v7 = [openEASessions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -985,12 +985,12 @@ LABEL_19:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(openEASessions);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [v13 objectForKey:v11];
-        v15 = [v14 isEqualToString:v4];
+        v15 = [v14 isEqualToString:dCopy];
 
         if (v15)
         {
@@ -1000,7 +1000,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [openEASessions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -1011,24 +1011,24 @@ LABEL_19:
     v9 = 0;
   }
 
-  v17 = [(ACCExternalAccessorySessionManager *)v19 openEASessionsLock];
-  [v17 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)selfCopy openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v9;
 }
 
-- (id)eaSessionUUIDForSessionID:(unsigned __int16)a3
+- (id)eaSessionUUIDForSessionID:(unsigned __int16)d
 {
   v4 = [NSNumber numberWithUnsignedShort:?];
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v5 lock];
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v7 = [openEASessions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1040,7 +1040,7 @@ LABEL_19:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(openEASessions);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -1077,7 +1077,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [openEASessions countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -1090,24 +1090,24 @@ LABEL_19:
   v15 = 0;
 LABEL_19:
 
-  v19 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v19 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v15;
 }
 
-- (id)eaSessionUUIDForEndpointUUID:(id)a3
+- (id)eaSessionUUIDForEndpointUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v5 lock];
+  dCopy = d;
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v7 = [openEASessions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1119,12 +1119,12 @@ LABEL_19:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(openEASessions);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = [v12 objectForKey:v10];
-        v14 = [v13 isEqualToString:v4];
+        v14 = [v13 isEqualToString:dCopy];
 
         if (v14)
         {
@@ -1156,7 +1156,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [openEASessions countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -1169,47 +1169,47 @@ LABEL_19:
   v15 = 0;
 LABEL_19:
 
-  v19 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v19 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   return v15;
 }
 
-- (id)_appBundleIDForSessionUUID:(id)a3
+- (id)_appBundleIDForSessionUUID:(id)d
 {
-  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:a3];
+  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:d];
   v4 = [v3 objectForKey:kACCExternalAccessoryClientBundleIDKey];
 
   return v4;
 }
 
-- (BOOL)_sessionUUIDClientSupportsBackgroundEA:(id)a3
+- (BOOL)_sessionUUIDClientSupportsBackgroundEA:(id)a
 {
-  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:a3];
+  v3 = [(ACCExternalAccessorySessionManager *)self sessionInfoDictionaryForSessionUUID:a];
   v4 = [v3 objectForKey:kACCExternalAccessoryCapabilitiesKey];
   v5 = ([v4 unsignedLongLongValue] >> 4) & 1;
 
   return v5;
 }
 
-- (void)_eaNativeDataArrived:(id)a3
+- (void)_eaNativeDataArrived:(id)arrived
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKey:ACCTransportEANative_EASessionUUID];
+  userInfo = [arrived userInfo];
+  v8 = [userInfo objectForKey:ACCTransportEANative_EASessionUUID];
 
   if (v8 && [(ACCExternalAccessorySessionManager *)self _sessionUUIDClientSupportsBackgroundEA:v8])
   {
     v5 = [(ACCExternalAccessorySessionManager *)self _appBundleIDForSessionUUID:v8];
-    v6 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
-    v7 = [v6 objectForKey:v8];
+    pidForOpenSessionUUID = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
+    v7 = [pidForOpenSessionUUID objectForKey:v8];
     platform_system_toggleProcessAssertionForBundleID(v5, [v7 intValue]);
   }
 }
 
-- (void)_handleApplicationStateChange:(id)a3
+- (void)_handleApplicationStateChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v21 = [v4 objectForKey:@"ACCPlatformApplicationStateDisplayIDKey"];
+  userInfo = [change userInfo];
+  v21 = [userInfo objectForKey:@"ACCPlatformApplicationStateDisplayIDKey"];
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -1239,14 +1239,14 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = userInfo;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "handling app state change notification %@", buf, 0xCu);
   }
 
-  v8 = [v4 objectForKey:@"ACCPlatformApplicationStateKey"];
+  v8 = [userInfo objectForKey:@"ACCPlatformApplicationStateKey"];
   if ([v8 unsignedIntValue] == 2)
   {
-    v20 = v4;
+    v20 = userInfo;
     v9 = [(ACCExternalAccessorySessionManager *)self _eaSessionUUIDsOwnedByClientBundleID:v21];
     v22 = 0u;
     v23 = 0u;
@@ -1320,7 +1320,7 @@ LABEL_19:
       while (v11);
     }
 
-    v4 = v20;
+    userInfo = v20;
   }
 }
 
@@ -1576,13 +1576,13 @@ LABEL_19:
   }
 }
 
-- (id)createSessionForProtocol:(id)a3 fromPrimaryAccessoryUUID:(id)a4 fromClient:(id)a5 result:(BOOL *)a6
+- (id)createSessionForProtocol:(id)protocol fromPrimaryAccessoryUUID:(id)d fromClient:(id)client result:(BOOL *)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v157 = [(ACCExternalAccessorySessionManager *)self _accessoryForPrimaryUUID:v11];
-  v13 = [v157 externalAccessoryProtocolInformationForProtocolName:v10];
+  protocolCopy = protocol;
+  dCopy = d;
+  clientCopy = client;
+  v157 = [(ACCExternalAccessorySessionManager *)self _accessoryForPrimaryUUID:dCopy];
+  v13 = [v157 externalAccessoryProtocolInformationForProtocolName:protocolCopy];
   if (!v13)
   {
 LABEL_17:
@@ -1598,7 +1598,7 @@ LABEL_17:
 
   if (([v157 supportsMultipleSessionsPerProtocol] & 1) == 0)
   {
-    if ([(ACCExternalAccessorySessionManager *)self _continueOpenSessionForSingleSessionPerEAProtocol:v10 fromPrimaryAccessoryUUID:v11 fromClient:v12])
+    if ([(ACCExternalAccessorySessionManager *)self _continueOpenSessionForSingleSessionPerEAProtocol:protocolCopy fromPrimaryAccessoryUUID:dCopy fromClient:clientCopy])
     {
       goto LABEL_5;
     }
@@ -1606,8 +1606,8 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  v15 = [v12 bundleID];
-  v16 = [(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:v10 filterPrimaryUUID:v11 filterClientBundleID:v15];
+  bundleID = [clientCopy bundleID];
+  v16 = [(ACCExternalAccessorySessionManager *)self _isSessionOpenForProtocol:protocolCopy filterPrimaryUUID:dCopy filterClientBundleID:bundleID];
 
   v14 = &audioProductCerts_endpoint_publish_onceToken;
   if (v16)
@@ -1635,10 +1635,10 @@ LABEL_8:
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      [v12 bundleID];
+      [clientCopy bundleID];
       v159 = *buf = 138412546;
       v160 = 2112;
-      v161 = v10;
+      v161 = protocolCopy;
       OUTLINED_FUNCTION_9_2();
       _os_log_impl(v28, v29, OS_LOG_TYPE_DEFAULT, v30, v31, 0x16u);
     }
@@ -1649,13 +1649,13 @@ LABEL_8:
 LABEL_5:
   v17 = +[NSMutableDictionary dictionary];
   v18 = +[NSUUID UUID];
-  v19 = [v18 UUIDString];
+  uUIDString = [v18 UUIDString];
 
   v20 = [OUTLINED_FUNCTION_8_18() objectForKey:?];
   LODWORD(v148) = [v20 unsignedIntValue];
 
-  v156 = v19;
-  [v17 setObject:v19 forKey:kACCExternalAccessorySessionUUIDKey];
+  v156 = uUIDString;
+  [v17 setObject:uUIDString forKey:kACCExternalAccessorySessionUUIDKey];
   v21 = kACCExternalAccessoryProtocolIndexKey;
   v22 = [v13 objectForKey:kACCExternalAccessoryProtocolIndexKey];
   v154 = v22;
@@ -1677,7 +1677,7 @@ LABEL_5:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         OUTLINED_FUNCTION_4_29();
-        OUTLINED_FUNCTION_6_23(&_mh_execute_header, &_os_log_default, v122, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", v123, v124, v125, v126, v143, v144, v146, v148, v151, 0, v19, v157, buf[0]);
+        OUTLINED_FUNCTION_6_23(&_mh_execute_header, &_os_log_default, v122, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", v123, v124, v125, v126, v143, v144, v146, v148, v151, 0, uUIDString, v157, buf[0]);
       }
 
       v32 = &_os_log_default;
@@ -1690,8 +1690,8 @@ LABEL_5:
     }
   }
 
-  v40 = [v12 bundleID];
-  v41 = [v40 copy];
+  bundleID2 = [clientCopy bundleID];
+  v41 = [bundleID2 copy];
   [v17 setObject:v41 forKey:kACCExternalAccessoryClientBundleIDKey];
 
   if (gLogObjects && gNumLogObjects >= 10)
@@ -1751,10 +1751,10 @@ LABEL_5:
     }
   }
 
-  v54 = [v10 copy];
+  v54 = [protocolCopy copy];
   [OUTLINED_FUNCTION_10_16() setObject:? forKey:?];
 
-  v55 = [v11 copy];
+  v55 = [dCopy copy];
   [OUTLINED_FUNCTION_10_16() setObject:? forKey:?];
 
   v56 = [OUTLINED_FUNCTION_8_18() objectForKey:?];
@@ -1763,9 +1763,9 @@ LABEL_5:
   v57 = [OUTLINED_FUNCTION_8_18() objectForKey:?];
   [OUTLINED_FUNCTION_10_16() setObject:? forKey:?];
 
-  v58 = [v157 EAAccessoryDictionary];
+  eAAccessoryDictionary = [v157 EAAccessoryDictionary];
   v59 = kACCExternalAccessoryLegacyConnectionIDKey;
-  v60 = [v58 objectForKey:kACCExternalAccessoryLegacyConnectionIDKey];
+  v60 = [eAAccessoryDictionary objectForKey:kACCExternalAccessoryLegacyConnectionIDKey];
 
   v152 = v60;
   [v17 setObject:v60 forKey:v59];
@@ -1832,17 +1832,17 @@ LABEL_5:
       v73 = -[ACCExternalAccessorySessionBasic initWithEASessionUUID:protocolID:legacyConnectionID:sessionID:]([ACCExternalAccessorySessionBasic alloc], "initWithEASessionUUID:protocolID:legacyConnectionID:sessionID:", v156, [v154 unsignedShortValue], objc_msgSend(v152, "unsignedLongLongValue"), v44);
       if (v73)
       {
-        v74 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-        [v74 lock];
+        openEASessionHandlersLock = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+        [openEASessionHandlersLock lock];
 
-        v75 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
-        [v75 setObject:v73 forKey:v156];
+        openEASessionHandlers = [(ACCExternalAccessorySessionManager *)self openEASessionHandlers];
+        [openEASessionHandlers setObject:v73 forKey:v156];
 
-        v76 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
-        [v76 unlock];
+        openEASessionHandlersLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionHandlersLock];
+        [openEASessionHandlersLock2 unlock];
 
-        v77 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
-        v78 = [v77 objectForKeyedSubscript:v11];
+        openEASessionUUIDsForEndpointUUID = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
+        v78 = [openEASessionUUIDsForEndpointUUID objectForKeyedSubscript:dCopy];
 
         if (v78)
         {
@@ -1853,8 +1853,8 @@ LABEL_5:
         {
           v78 = +[NSMutableArray array];
           [v78 addObject:v156];
-          v85 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
-          [v85 setObject:v78 forKey:v11];
+          openEASessionUUIDsForEndpointUUID2 = [(ACCExternalAccessorySessionManager *)self openEASessionUUIDsForEndpointUUID];
+          [openEASessionUUIDsForEndpointUUID2 setObject:v78 forKey:dCopy];
         }
       }
 
@@ -1890,13 +1890,13 @@ LABEL_5:
     }
   }
 
-  v147 = v11;
-  v87 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v12 clientCapabilities]);
+  v147 = dCopy;
+  v87 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [clientCopy clientCapabilities]);
   [v17 setObject:v87 forKey:kACCExternalAccessoryCapabilitiesKey];
-  v88 = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
-  v150 = v12;
-  v89 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 clientPid]);
-  [v88 setObject:v89 forKey:v156];
+  pidForOpenSessionUUID = [(ACCExternalAccessorySessionManager *)self pidForOpenSessionUUID];
+  v150 = clientCopy;
+  v89 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [clientCopy clientPid]);
+  [pidForOpenSessionUUID setObject:v89 forKey:v156];
 
   v90 = gNumLogObjects;
   if (gLogObjects && gNumLogObjects >= 10)
@@ -1910,7 +1910,7 @@ LABEL_5:
     {
       OUTLINED_FUNCTION_1_25();
       LODWORD(v161) = v90;
-      OUTLINED_FUNCTION_6_23(&_mh_execute_header, &_os_log_default, v112, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", v113, v114, v115, v116, v143, v145, v147, v12, v152, v154, v156, v157, buf[0]);
+      OUTLINED_FUNCTION_6_23(&_mh_execute_header, &_os_log_default, v112, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", v113, v114, v115, v116, v143, v145, v147, clientCopy, v152, v154, v156, v157, buf[0]);
     }
 
     v91 = &_os_log_default;
@@ -1925,17 +1925,17 @@ LABEL_5:
     _os_log_impl(v93, v94, OS_LOG_TYPE_DEFAULT, v95, v96, 0xCu);
   }
 
-  v97 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v97 lock];
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
-  v98 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  [v98 addObject:v17];
+  openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  [openEASessions addObject:v17];
 
-  v99 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-  v100 = [v99 count];
+  openEASessions2 = [(ACCExternalAccessorySessionManager *)self openEASessions];
+  v100 = [openEASessions2 count];
 
-  v101 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v101 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
   if (v100 == 1)
   {
@@ -1948,30 +1948,30 @@ LABEL_5:
     [(ACCExternalAccessorySessionManager *)self _sendSessionOpenNotification];
   }
 
-  v11 = v147;
-  v12 = v150;
+  dCopy = v147;
+  clientCopy = v150;
 LABEL_90:
 
   return v17;
 }
 
-- (id)_sessionInfoMatchingProtocol:(id)a3 withPrimaryAccessoryUUID:(id)a4
+- (id)_sessionInfoMatchingProtocol:(id)protocol withPrimaryAccessoryUUID:(id)d
 {
-  v6 = a3;
-  v28 = a4;
+  protocolCopy = protocol;
+  dCopy = d;
   v27 = +[NSMutableArray array];
-  if (v6)
+  if (protocolCopy)
   {
-    v7 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-    [v7 lock];
+    openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+    [openEASessionsLock lock];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = self;
-    v8 = [(ACCExternalAccessorySessionManager *)self openEASessions];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    selfCopy = self;
+    openEASessions = [(ACCExternalAccessorySessionManager *)self openEASessions];
+    v9 = [openEASessions countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1984,17 +1984,17 @@ LABEL_90:
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(openEASessions);
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
           v16 = [v15 objectForKey:v12];
-          v17 = [v16 caseInsensitiveCompare:v6];
+          v17 = [v16 caseInsensitiveCompare:protocolCopy];
 
           if (!v17)
           {
             v18 = [v15 objectForKey:v13];
-            v19 = [v18 isEqualToString:v28];
+            v19 = [v18 isEqualToString:dCopy];
 
             if (v19)
             {
@@ -2003,14 +2003,14 @@ LABEL_90:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v10 = [openEASessions countByEnumeratingWithState:&v29 objects:v37 count:16];
       }
 
       while (v10);
     }
 
-    v20 = [(ACCExternalAccessorySessionManager *)v26 openEASessionsLock];
-    [v20 unlock];
+    openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)selfCopy openEASessionsLock];
+    [openEASessionsLock2 unlock];
 
     v21 = gLogObjects;
     v22 = gNumLogObjects;
@@ -2037,7 +2037,7 @@ LABEL_90:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v34 = v6;
+      v34 = protocolCopy;
       v35 = 2112;
       v36 = v27;
       _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "_copySessionInfoDictionaryForProtocol %@ = %@", buf, 0x16u);
@@ -2047,19 +2047,19 @@ LABEL_90:
   return v27;
 }
 
-- (BOOL)_isSessionOpenForProtocol:(id)a3 filterPrimaryUUID:(id)a4 filterClientBundleID:(id)a5
+- (BOOL)_isSessionOpenForProtocol:(id)protocol filterPrimaryUUID:(id)d filterClientBundleID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v34 = a5;
-  if (!v8)
+  protocolCopy = protocol;
+  dCopy = d;
+  iDCopy = iD;
+  if (!protocolCopy)
   {
     v23 = 0;
     goto LABEL_31;
   }
 
-  v10 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v10 lock];
+  openEASessionsLock = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock lock];
 
   v37 = 0u;
   v38 = 0u;
@@ -2074,7 +2074,7 @@ LABEL_90:
   }
 
   v12 = v11;
-  v30 = self;
+  selfCopy = self;
   LOBYTE(v13) = 0;
   v14 = *v36;
   v15 = kACCExternalAccessoryProtocolNameKey;
@@ -2091,19 +2091,19 @@ LABEL_90:
 
       v17 = *(*(&v35 + 1) + 8 * i);
       v18 = [v17 objectForKey:v15];
-      v19 = [v18 caseInsensitiveCompare:v8];
+      v19 = [v18 caseInsensitiveCompare:protocolCopy];
 
       if (v19)
       {
         continue;
       }
 
-      if (v9)
+      if (dCopy)
       {
         v20 = [v17 objectForKey:v31];
-        v13 = [v20 isEqualToString:v9];
+        v13 = [v20 isEqualToString:dCopy];
 
-        if (!v34)
+        if (!iDCopy)
         {
           if (v13)
           {
@@ -2114,15 +2114,15 @@ LABEL_90:
         }
       }
 
-      else if (!v34)
+      else if (!iDCopy)
       {
         goto LABEL_20;
       }
 
       v21 = [v17 objectForKey:v32];
-      v22 = [v21 caseInsensitiveCompare:v34];
+      v22 = [v21 caseInsensitiveCompare:iDCopy];
 
-      if (v9)
+      if (dCopy)
       {
         if (((v22 == 0) & v13) != 0)
         {
@@ -2138,12 +2138,12 @@ LABEL_20:
         if (gLogObjects && gNumLogObjects >= 10)
         {
           v26 = *(gLogObjects + 72);
-          self = v30;
+          self = selfCopy;
         }
 
         else
         {
-          self = v30;
+          self = selfCopy;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218240;
@@ -2160,13 +2160,13 @@ LABEL_20:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138413058;
-          v40 = v8;
+          v40 = protocolCopy;
           v41 = 2112;
           v42 = @"yes";
           v43 = 2112;
-          v44 = v9;
+          v44 = dCopy;
           v45 = 2112;
-          v46 = v34;
+          v46 = iDCopy;
           _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "sessionOpenForProtocol %@ = %@, primaryAccUUID %@, clientBundleID %@", buf, 0x2Au);
         }
 
@@ -2185,11 +2185,11 @@ LABEL_20:
   }
 
   v23 = 0;
-  self = v30;
+  self = selfCopy;
 LABEL_30:
 
-  v28 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
-  [v28 unlock];
+  openEASessionsLock2 = [(ACCExternalAccessorySessionManager *)self openEASessionsLock];
+  [openEASessionsLock2 unlock];
 
 LABEL_31:
   return v23;

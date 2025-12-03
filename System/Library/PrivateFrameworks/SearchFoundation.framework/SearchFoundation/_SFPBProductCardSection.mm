@@ -1,31 +1,31 @@
 @interface _SFPBProductCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBProductCardSection)initWithDictionary:(id)a3;
-- (_SFPBProductCardSection)initWithFacade:(id)a3;
-- (_SFPBProductCardSection)initWithJSON:(id)a3;
+- (_SFPBProductCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBProductCardSection)initWithFacade:(id)facade;
+- (_SFPBProductCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setProductJSON:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPunchoutOptions:(id)options;
+- (void)setProductJSON:(id)n;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBProductCardSection
 
-- (_SFPBProductCardSection)initWithFacade:(id)a3
+- (_SFPBProductCardSection)initWithFacade:(id)facade
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBProductCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -39,8 +39,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -51,7 +51,7 @@
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v29 + 1) + 8 * i)];
@@ -61,73 +61,73 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBProductCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBProductCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBProductCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBProductCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBProductCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBProductCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBProductCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBProductCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBProductCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBProductCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBProductCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBProductCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBProductCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBProductCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBProductCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBProductCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 productJSON];
+    productJSON = [facadeCopy productJSON];
 
-    if (v24)
+    if (productJSON)
     {
-      v25 = [v4 productJSON];
-      [(_SFPBProductCardSection *)v5 setProductJSON:v25];
+      productJSON2 = [facadeCopy productJSON];
+      [(_SFPBProductCardSection *)v5 setProductJSON:productJSON2];
     }
 
     v26 = v5;
@@ -137,16 +137,16 @@
   return v5;
 }
 
-- (_SFPBProductCardSection)initWithDictionary:(id)a3
+- (_SFPBProductCardSection)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = _SFPBProductCardSection;
   v5 = [(_SFPBProductCardSection *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -189,7 +189,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -198,7 +198,7 @@
     }
 
     v33 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -207,21 +207,21 @@
     }
 
     v32 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBProductCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBProductCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -229,7 +229,7 @@
     }
 
     v34 = v6;
-    v21 = [v4 objectForKeyedSubscript:{@"type", v18}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"type", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -237,14 +237,14 @@
       [(_SFPBProductCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBProductCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
       [(_SFPBProductCardSection *)v5 setBackgroundColor:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"productJSON"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"productJSON"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -267,30 +267,30 @@
   return v5;
 }
 
-- (_SFPBProductCardSection)initWithJSON:(id)a3
+- (_SFPBProductCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBProductCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBProductCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBProductCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -304,60 +304,60 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBProductCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBProductCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBProductCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if (self->_hasBottomPadding)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBProductCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBProductCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if (self->_productJSON)
   {
-    v10 = [(_SFPBProductCardSection *)self productJSON];
-    v11 = [v10 base64EncodedStringWithOptions:0];
+    productJSON = [(_SFPBProductCardSection *)self productJSON];
+    v11 = [productJSON base64EncodedStringWithOptions:0];
     if (v11)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"productJSON"];
+      [dictionary setObject:v11 forKeyedSubscript:@"productJSON"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"productJSON"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"productJSON"];
     }
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -377,16 +377,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v13 addObject:v19];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -396,49 +396,49 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v21 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
+    v22 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v23 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBProductCardSection *)self punchoutPickerTitle];
+    v24 = [punchoutPickerTitle copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v25 = [(_SFPBProductCardSection *)self separatorStyle];
-    if (v25 >= 6)
+    separatorStyle = [(_SFPBProductCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v25];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v26 = off_1E7ACE580[v25];
+      v26 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v26 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_type)
   {
-    v27 = [(_SFPBProductCardSection *)self type];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"type"];
+    type = [(_SFPBProductCardSection *)self type];
+    v28 = [type copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"type"];
   }
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -481,28 +481,28 @@
   return v9 ^ v10 ^ [(NSData *)self->_productJSON hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  v5 = [(_SFPBProductCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_35;
   }
 
-  v7 = [(_SFPBProductCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBProductCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBProductCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBProductCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -514,20 +514,20 @@
   {
   }
 
-  v5 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_35;
   }
 
-  v12 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBProductCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -539,20 +539,20 @@
   {
   }
 
-  v5 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_35;
   }
 
-  v17 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -565,37 +565,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_36;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_36;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_36;
   }
 
-  v5 = [(_SFPBProductCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_35;
   }
 
-  v25 = [(_SFPBProductCardSection *)self type];
-  if (v25)
+  type = [(_SFPBProductCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBProductCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBProductCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -608,25 +608,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_36;
   }
 
-  v5 = [(_SFPBProductCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_35;
   }
 
-  v31 = [(_SFPBProductCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBProductCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBProductCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBProductCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -638,17 +638,17 @@
   {
   }
 
-  v5 = [(_SFPBProductCardSection *)self productJSON];
-  v6 = [v4 productJSON];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBProductCardSection *)self productJSON];
+  punchoutOptions2 = [equalCopy productJSON];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  v36 = [(_SFPBProductCardSection *)self productJSON];
-  if (!v36)
+  productJSON = [(_SFPBProductCardSection *)self productJSON];
+  if (!productJSON)
   {
 
 LABEL_39:
@@ -656,10 +656,10 @@ LABEL_39:
     goto LABEL_37;
   }
 
-  v37 = v36;
-  v38 = [(_SFPBProductCardSection *)self productJSON];
-  v39 = [v4 productJSON];
-  v40 = [v38 isEqual:v39];
+  v37 = productJSON;
+  productJSON2 = [(_SFPBProductCardSection *)self productJSON];
+  productJSON3 = [equalCopy productJSON];
+  v40 = [productJSON2 isEqual:productJSON3];
 
   if (v40)
   {
@@ -673,16 +673,16 @@ LABEL_37:
   return v41;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBProductCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBProductCardSection *)self punchoutOptions];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -694,7 +694,7 @@ LABEL_37:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
@@ -703,20 +703,20 @@ LABEL_37:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBProductCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBProductCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBProductCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -736,8 +736,8 @@ LABEL_37:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBProductCardSection *)self type];
-  if (v13)
+  type = [(_SFPBProductCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -747,14 +747,14 @@ LABEL_37:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBProductCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBProductCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBProductCardSection *)self productJSON];
-  if (v15)
+  productJSON = [(_SFPBProductCardSection *)self productJSON];
+  if (productJSON)
   {
     PBDataWriterWriteDataField();
   }
@@ -762,63 +762,63 @@ LABEL_37:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setProductJSON:(id)a3
+- (void)setProductJSON:(id)n
 {
-  v4 = [a3 copy];
+  v4 = [n copy];
   productJSON = self->_productJSON;
   self->_productJSON = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

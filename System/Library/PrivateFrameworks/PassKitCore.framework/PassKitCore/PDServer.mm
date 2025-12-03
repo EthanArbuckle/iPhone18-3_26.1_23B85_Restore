@@ -1,82 +1,82 @@
 @interface PDServer
-- (BOOL)defaultPassManagerCanUpdateDefaultPass:(id)a3;
-- (BOOL)deviceAvailableForContinuityPayments:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldDelayRefreshFor:(id)a3;
-- (BOOL)shouldWritePass:(id)a3 source:(int64_t)a4 error:(id *)a5;
-- (CGImage)thumbnailImageForPassIdentifier:(id)a3 size:(CGSize)a4 manager:(id)a5;
+- (BOOL)defaultPassManagerCanUpdateDefaultPass:(id)pass;
+- (BOOL)deviceAvailableForContinuityPayments:(id)payments;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldDelayRefreshFor:(id)for;
+- (BOOL)shouldWritePass:(id)pass source:(int64_t)source error:(id *)error;
+- (CGImage)thumbnailImageForPassIdentifier:(id)identifier size:(CGSize)size manager:(id)manager;
 - (id)createCurrentNotificationRegistrationState;
-- (id)defaultPaymentPassForContinuityDiscovery:(id)a3;
-- (id)paymentPassesForContinuityDiscovery:(id)a3;
-- (id)webServiceConfigurationForContinuityPayments:(id)a3;
+- (id)defaultPaymentPassForContinuityDiscovery:(id)discovery;
+- (id)paymentPassesForContinuityDiscovery:(id)discovery;
+- (id)webServiceConfigurationForContinuityPayments:(id)payments;
 - (void)_updateQuickActions;
-- (void)accountForPaymentPass:(id)a3 manager:(id)a4 completion:(id)a5;
-- (void)accountManager:(id)a3 didAddAccount:(id)a4;
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4;
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5;
-- (void)applePayCloudStoreContainer:(id)a3 didFinishTransactionFetchForPassUniqueID:(id)a4 error:(id)a5;
-- (void)appletSubcredentialManager:(id)a3 didUpdateCredential:(id)a4 onPassWithIdentifier:(id)a5 oldShares:(id)a6;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)archivePassWithUniqueID:(id)a3;
-- (void)bindingStateChangedForPass:(id)a3;
-- (void)cardFileManager:(id)a3 didFailToDecryptRemoteAssets:(id)a4 forPass:(id)a5;
-- (void)cardFileManager:(id)a3 didUpdateRemoteAssetsForPassWithUniqueID:(id)a4;
-- (void)dataMigrationRequestedWithPassLibrary:(id)a3 didRestoreFromBackup:(BOOL)a4;
+- (void)accountForPaymentPass:(id)pass manager:(id)manager completion:(id)completion;
+- (void)accountManager:(id)manager didAddAccount:(id)account;
+- (void)accountManager:(id)manager didRemoveAccount:(id)account;
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount;
+- (void)applePayCloudStoreContainer:(id)container didFinishTransactionFetchForPassUniqueID:(id)d error:(id)error;
+- (void)appletSubcredentialManager:(id)manager didUpdateCredential:(id)credential onPassWithIdentifier:(id)identifier oldShares:(id)shares;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)archivePassWithUniqueID:(id)d;
+- (void)bindingStateChangedForPass:(id)pass;
+- (void)cardFileManager:(id)manager didFailToDecryptRemoteAssets:(id)assets forPass:(id)pass;
+- (void)cardFileManager:(id)manager didUpdateRemoteAssetsForPassWithUniqueID:(id)d;
+- (void)dataMigrationRequestedWithPassLibrary:(id)library didRestoreFromBackup:(BOOL)backup;
 - (void)dealloc;
-- (void)defaultDiscoveryManager:(id)a3 sendDiscoveryArticleLayoutsUpdated:(id)a4;
-- (void)didCompleteRefresh:(id)a3;
-- (void)didReceiveRemotePaymentRequest:(id)a3;
-- (void)didRequestToRegister:(id)a3 fromDestination:(id)a4;
-- (void)displayTapToRadarAlertForRequest:(id)a3 completion:(id)a4;
-- (void)dynamicStateManager:(id)a3 dynamicStatesDidUpdate:(id)a4;
-- (void)expressPassManager:(id)a3 didFinishExpressTransactionWithState:(id)a4;
-- (void)expressPassManager:(id)a3 didUpdateExpressPassConfigurations:(id)a4;
-- (void)handleContinuityPaymentBulletinActionWithIdentifier:(id)a3 manager:(id)a4;
+- (void)defaultDiscoveryManager:(id)manager sendDiscoveryArticleLayoutsUpdated:(id)updated;
+- (void)didCompleteRefresh:(id)refresh;
+- (void)didReceiveRemotePaymentRequest:(id)request;
+- (void)didRequestToRegister:(id)register fromDestination:(id)destination;
+- (void)displayTapToRadarAlertForRequest:(id)request completion:(id)completion;
+- (void)dynamicStateManager:(id)manager dynamicStatesDidUpdate:(id)update;
+- (void)expressPassManager:(id)manager didFinishExpressTransactionWithState:(id)state;
+- (void)expressPassManager:(id)manager didUpdateExpressPassConfigurations:(id)configurations;
+- (void)handleContinuityPaymentBulletinActionWithIdentifier:(id)identifier manager:(id)manager;
 - (void)handleDatabaseIntegrityProblem;
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5;
-- (void)handlerDetailsForConfiguration:(id)a3 completion:(id)a4;
-- (void)inAppPaymentService:(id)a3 presentAdditionalInAppPaymentWithContext:(id)a4 completion:(id)a5;
-- (void)inAppPaymentService:(id)a3 registerInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)a4;
-- (void)inAppPaymentService:(id)a3 registerPaymentListenerEndpoint:(id)a4 forHostIdentifier:(id)a5 processIdentifier:(int)a6 completion:(id)a7;
-- (void)inAppPaymentService:(id)a3 retrievePaymentListenerEndpointForHostIdentifier:(id)a4 completion:(id)a5;
-- (void)inAppPaymentService:(id)a3 unregisterInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)a4;
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream;
+- (void)handlerDetailsForConfiguration:(id)configuration completion:(id)completion;
+- (void)inAppPaymentService:(id)service presentAdditionalInAppPaymentWithContext:(id)context completion:(id)completion;
+- (void)inAppPaymentService:(id)service registerInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)completion;
+- (void)inAppPaymentService:(id)service registerPaymentListenerEndpoint:(id)endpoint forHostIdentifier:(id)identifier processIdentifier:(int)processIdentifier completion:(id)completion;
+- (void)inAppPaymentService:(id)service retrievePaymentListenerEndpointForHostIdentifier:(id)identifier completion:(id)completion;
+- (void)inAppPaymentService:(id)service unregisterInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)completion;
 - (void)introduceDatabaseIntegrityProblem;
-- (void)issueSecureElementPassStateChangeNotificationForNewPasses:(id)a3;
-- (void)markPassWithUniqueIdentifiersForDeletion:(id)a3;
-- (void)mutateTrueUniqueIDs:(id)a3;
-- (void)noteACAccountChanged:(id)a3 handler:(id)a4;
-- (void)noteAutomaticallyPresentSettingsChangedForPassWithUniqueIdentifier:(id)a3;
-- (void)notePassWithUniqueID:(id)a3 isRevoked:(BOOL)a4;
-- (void)noteSettingsChangedForPassWithUniqueIdentifier:(id)a3 newSettings:(unint64_t)a4;
+- (void)issueSecureElementPassStateChangeNotificationForNewPasses:(id)passes;
+- (void)markPassWithUniqueIdentifiersForDeletion:(id)deletion;
+- (void)mutateTrueUniqueIDs:(id)ds;
+- (void)noteACAccountChanged:(id)changed handler:(id)handler;
+- (void)noteAutomaticallyPresentSettingsChangedForPassWithUniqueIdentifier:(id)identifier;
+- (void)notePassWithUniqueID:(id)d isRevoked:(BOOL)revoked;
+- (void)noteSettingsChangedForPassWithUniqueIdentifier:(id)identifier newSettings:(unint64_t)settings;
 - (void)nukeStuff;
-- (void)passDidUpdateTransactionSourceIdentifierWithPassUniqueIdentifier:(id)a3;
-- (void)passUniqueIdentifiersMovedToExpired:(id)a3;
-- (void)passWithUniqueIdentifierDidDisappear:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5;
-- (void)passWithUniqueIdentifierWillDisappear:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5;
-- (void)passWritten:(id)a3 withDaemonData:(id)a4 diff:(id)a5 fromSource:(int64_t)a6;
-- (void)paymentPass:(id)a3 didUpdatePaymentApplications:(id)a4 toPaymentApplications:(id)a5;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableDailyCashNotifications:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didResolvePendingTransitTransactionAmountsWithTransaction:(id)a4 paymentApplication:(id)a5 balance:(id)a6;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateDefaultPaymentApplication:(id)a4;
-- (void)paymentTransactionProcessorDidActivate:(id)a3;
-- (void)paymentTransactionProcessorDidDeactivate:(id)a3;
-- (void)paymentTransactionUpdated:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)peerPaymentWebServiceCoordinator:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5;
+- (void)passDidUpdateTransactionSourceIdentifierWithPassUniqueIdentifier:(id)identifier;
+- (void)passUniqueIdentifiersMovedToExpired:(id)expired;
+- (void)passWithUniqueIdentifierDidDisappear:(id)disappear forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason;
+- (void)passWithUniqueIdentifierWillDisappear:(id)disappear forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason;
+- (void)passWritten:(id)written withDaemonData:(id)data diff:(id)diff fromSource:(int64_t)source;
+- (void)paymentPass:(id)pass didUpdatePaymentApplications:(id)applications toPaymentApplications:(id)paymentApplications;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableDailyCashNotifications:(BOOL)notifications;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didResolvePendingTransitTransactionAmountsWithTransaction:(id)transaction paymentApplication:(id)application balance:(id)balance;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateDefaultPaymentApplication:(id)application;
+- (void)paymentTransactionProcessorDidActivate:(id)activate;
+- (void)paymentTransactionProcessorDidDeactivate:(id)deactivate;
+- (void)paymentTransactionUpdated:(id)updated forTransactionSourceIdentifier:(id)identifier;
+- (void)peerPaymentWebServiceCoordinator:(id)coordinator didUpdateAccount:(id)account oldAccount:(id)oldAccount;
 - (void)peerPaymentWebServiceCoordinatorDidDeleteAccount;
-- (void)pendingProvisioningManagerDidFinishProvisioningWithReceipts:(id)a3;
-- (void)placemarkFound:(id)a3 forTransaction:(id)a4;
-- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)a3 destinationFileHandles:(id)a4 handler:(id)a5;
-- (void)primaryAppleAccountWasUpdated:(id)a3 handler:(id)a4;
-- (void)readTrueTransactionReceiptUniqueiDs:(id)a3;
-- (void)readTrueUniqueIDs:(id)a3;
-- (void)recoverPassWithUniqueID:(id)a3;
-- (void)removePassesOfType:(unint64_t)a3 withDiagnosticReason:(id)a4;
-- (void)secureElementPairingDidChangeForReason:(unint64_t)a3;
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)supportedPaymentSetupFeatures:(id)a3 completion:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 willRemoveTransaction:(id)a4;
-- (void)willRemoveTransactionsWithSourceIdentifierMapping:(id)a3;
+- (void)pendingProvisioningManagerDidFinishProvisioningWithReceipts:(id)receipts;
+- (void)placemarkFound:(id)found forTransaction:(id)transaction;
+- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)ls destinationFileHandles:(id)handles handler:(id)handler;
+- (void)primaryAppleAccountWasUpdated:(id)updated handler:(id)handler;
+- (void)readTrueTransactionReceiptUniqueiDs:(id)ds;
+- (void)readTrueUniqueIDs:(id)ds;
+- (void)recoverPassWithUniqueID:(id)d;
+- (void)removePassesOfType:(unint64_t)type withDiagnosticReason:(id)reason;
+- (void)secureElementPairingDidChangeForReason:(unint64_t)reason;
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)supportedPaymentSetupFeatures:(id)features completion:(id)completion;
+- (void)transactionSourceIdentifier:(id)identifier willRemoveTransaction:(id)transaction;
+- (void)willRemoveTransactionsWithSourceIdentifierMapping:(id)mapping;
 @end
 
 @implementation PDServer
@@ -110,10 +110,10 @@
   [(PDServer *)&v9 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = v6;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   v8 = -1;
   v9 = qword_100923FC8;
   do
@@ -123,8 +123,8 @@
     v10 = v11;
   }
 
-  while (v11 != a3 && v8++ != 9);
-  if (v10 == a3)
+  while (v11 != listener && v8++ != 9);
+  if (v10 == listener)
   {
     v13 = v8;
   }
@@ -136,7 +136,7 @@
 
   if (v13 <= 0xAu)
   {
-    [v6 processIdentifier];
+    [connectionCopy processIdentifier];
     v15 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -150,12 +150,12 @@
   return v13 < 0xBu;
 }
 
-- (BOOL)shouldWritePass:(id)a3 source:(int64_t)a4 error:(id *)a5
+- (BOOL)shouldWritePass:(id)pass source:(int64_t)source error:(id *)error
 {
-  v6 = a3;
-  if ([v6 passType] || !PKIsManagedAppleID())
+  passCopy = pass;
+  if ([passCopy passType] || !PKIsManagedAppleID())
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
   else
@@ -163,51 +163,51 @@
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 uniqueID];
+      uniqueID = [passCopy uniqueID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = uniqueID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Managed Apple Account cannot support pass with unique ID: %@", &v12, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = PKDisplayableErrorForCommonType();
-      v11 = *a5;
-      *a5 = v10;
+      v11 = *error;
+      *error = v10;
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-- (void)passWritten:(id)a3 withDaemonData:(id)a4 diff:(id)a5 fromSource:(int64_t)a6
+- (void)passWritten:(id)written withDaemonData:(id)data diff:(id)diff fromSource:(int64_t)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 passType];
-  v14 = [v10 uniqueID];
-  v96 = v13;
-  if (v13 == 1)
+  writtenCopy = written;
+  dataCopy = data;
+  diffCopy = diff;
+  passType = [writtenCopy passType];
+  uniqueID = [writtenCopy uniqueID];
+  v96 = passType;
+  if (passType == 1)
   {
-    v15 = [v10 paymentPass];
+    paymentPass = [writtenCopy paymentPass];
   }
 
   else
   {
-    v15 = 0;
+    paymentPass = 0;
   }
 
   v105 = 0;
-  v16 = [(PDDatabaseManager *)self->_databaseManager passSharesForPassUniqueIdentifier:v14];
-  v94 = [(PDDatabaseManager *)self->_databaseManager passEntitlementsForPassUniqueIdentifier:v14];
-  v95 = [(PDDatabaseManager *)self->_databaseManager auxiliaryItemIdentifiersForPassUniqueIdentifier:v14];
+  v16 = [(PDDatabaseManager *)self->_databaseManager passSharesForPassUniqueIdentifier:uniqueID];
+  v94 = [(PDDatabaseManager *)self->_databaseManager passEntitlementsForPassUniqueIdentifier:uniqueID];
+  v95 = [(PDDatabaseManager *)self->_databaseManager auxiliaryItemIdentifiersForPassUniqueIdentifier:uniqueID];
   os_unfair_lock_lock(&self->_installedPassesLock);
-  [(NSMutableSet *)self->_installedPassUniqueIDs addObject:v14];
+  [(NSMutableSet *)self->_installedPassUniqueIDs addObject:uniqueID];
   os_unfair_lock_unlock(&self->_installedPassesLock);
-  v17 = [(PDDatabaseManager *)self->_databaseManager passExistsWithUniqueID:v14];
+  v17 = [(PDDatabaseManager *)self->_databaseManager passExistsWithUniqueID:uniqueID];
   v18 = PKLogFacilityTypeGetObject();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
   if (v17)
@@ -215,21 +215,21 @@
     if (v19)
     {
       *buf = 138412802;
-      v109 = v14;
+      v109 = uniqueID;
       v110 = 2048;
-      v111 = a6;
+      sourceCopy2 = source;
       v112 = 2112;
-      v113 = v12;
+      v113 = diffCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "PDServer (pass): updating pass %@ for %ld:\n\t%@.", buf, 0x20u);
     }
 
-    if ([(PDDatabaseManager *)self->_databaseManager updatePass:v10 withDaemonData:v11 oldPass:&v105 fromSource:a6])
+    if ([(PDDatabaseManager *)self->_databaseManager updatePass:writtenCopy withDaemonData:dataCopy oldPass:&v105 fromSource:source])
     {
       if (v96 == 1)
       {
-        v20 = [v105 passType];
+        passType2 = [v105 passType];
         v21 = v105;
-        if (v20 != 1)
+        if (passType2 != 1)
         {
           v21 = 0;
         }
@@ -241,7 +241,7 @@
       }
 
       v89 = v21;
-      v22 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v14];
+      v22 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:uniqueID];
 
       if (v96 == 1)
       {
@@ -278,7 +278,7 @@
 
       if (PKCloudKitPassSyncEnabled())
       {
-        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passUpdated:v22 source:a6];
+        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passUpdated:v22 source:source];
       }
 
       if (sub_1005B032C(self, kTCCServiceCalendar))
@@ -296,17 +296,17 @@
     if (v19)
     {
       *buf = 138412546;
-      v109 = v14;
+      v109 = uniqueID;
       v110 = 2048;
-      v111 = a6;
+      sourceCopy2 = source;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "PDServer (pass): inserting pass %@ for %ld.", buf, 0x16u);
     }
 
-    if ([(PDDatabaseManager *)self->_databaseManager insertPass:v10 withDaemonData:v11 source:a6])
+    if ([(PDDatabaseManager *)self->_databaseManager insertPass:writtenCopy withDaemonData:dataCopy source:source])
     {
-      v22 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v14];
+      v22 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:uniqueID];
 
-      v23 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:v14];
+      v23 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:uniqueID];
       if (v96 == 1)
       {
         if ([v22 passType] == 1)
@@ -329,31 +329,31 @@
 
       if (PKCloudKitPassSyncEnabled())
       {
-        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passAdded:v22 source:a6];
+        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passAdded:v22 source:source];
       }
 
       if (v22)
       {
         v92 = v25;
-        v26 = v11;
+        v26 = dataCopy;
         v27 = v23;
-        v28 = v12;
+        v28 = diffCopy;
         v29 = v16;
-        v30 = [(PDPassDynamicStateManager *)self->_dynamicStateManager passDynamicStateForUniqueIdentifier:v14];
+        v30 = [(PDPassDynamicStateManager *)self->_dynamicStateManager passDynamicStateForUniqueIdentifier:uniqueID];
         v31 = v22;
         v32 = v30;
         v33 = v31;
         v34 = [v31 copy];
         if (v34)
         {
-          sub_10002A2B8(self, v34, v32, a6);
+          sub_10002A2B8(self, v34, v32, source);
         }
 
         v22 = v33;
         v16 = v29;
-        v12 = v28;
+        diffCopy = v28;
         v23 = v27;
-        v11 = v26;
+        dataCopy = v26;
         v25 = v92;
       }
 
@@ -380,7 +380,7 @@
           v35 = 0;
         }
 
-        [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:v14 state:v35];
+        [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:uniqueID state:v35];
       }
 
       v37 = 0;
@@ -391,10 +391,10 @@ LABEL_51:
       if ([v25 isIdentityPass])
       {
         iso18013Manager = self->_iso18013Manager;
-        v42 = [v91 uniqueID];
+        uniqueID2 = [v91 uniqueID];
         v43 = iso18013Manager;
         v22 = v91;
-        [(PDISO18013Manager *)v43 identityPassCacheCredentialsForPassAddedOrUpdated:v42];
+        [(PDISO18013Manager *)v43 identityPassCacheCredentialsForPassAddedOrUpdated:uniqueID2];
       }
 
       if (PKBoardingPassEnhancementsEnabled())
@@ -406,10 +406,10 @@ LABEL_51:
       v90 = v37;
       if (!v25)
       {
-        v93 = 0;
-        v48 = 0;
+        state2 = 0;
+        effectiveContactlessPaymentApplicationState = 0;
 LABEL_94:
-        sub_1005D7124(self->_passTileManager, v22, v11);
+        sub_1005D7124(self->_passTileManager, v22, dataCopy);
         [(PDSpotlightIndexer *)self->_spotlightIndexer passAddedOrUpdated:v22];
         [(PDIssuerBindingManager *)self->_issuerBindingManager passAddedOrUpdated:v22 passAdded:v105 == 0];
         unprotectedManagers = self->_unprotectedManagers;
@@ -425,11 +425,11 @@ LABEL_94:
 
         [(PDNotificationStreamManager *)notificationStreamManager recalculateNotificationNames];
         [(PDUserNotificationManager *)self->_userNotificationManager updateWalletBadgeCount];
-        [(PDUserNotificationManager *)self->_userNotificationManager updatePassAssetsWithPassUniqueID:v14];
-        v72 = [(PDDatabaseManager *)self->_databaseManager settingEnabled:128 forPassWithUniqueIdentifier:v14];
+        [(PDUserNotificationManager *)self->_userNotificationManager updatePassAssetsWithPassUniqueID:uniqueID];
+        v72 = [(PDDatabaseManager *)self->_databaseManager settingEnabled:128 forPassWithUniqueIdentifier:uniqueID];
         if (v96 == 1)
         {
-          v73 = [(PDDatabaseManager *)self->_databaseManager settingEnabled:8 forPassWithUniqueIdentifier:v14];
+          v73 = [(PDDatabaseManager *)self->_databaseManager settingEnabled:8 forPassWithUniqueIdentifier:uniqueID];
           v74 = 0;
           v75 = v73 ^ 1;
         }
@@ -441,23 +441,23 @@ LABEL_94:
           v74 = v76 ^ 1;
         }
 
-        if (a6 != 2 && ((v72 | v75) & 1) == 0 && (v74 & 1) == 0)
+        if (source != 2 && ((v72 | v75) & 1) == 0 && (v74 & 1) == 0)
         {
           v77 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v109 = v14;
+            v109 = uniqueID;
             _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "PDServer: issuing insert/update user notification for pass %@.", buf, 0xCu);
           }
 
-          v78 = [[PDPassUpdateUserNotification alloc] initWithPassDiff:v12];
+          v78 = [[PDPassUpdateUserNotification alloc] initWithPassDiff:diffCopy];
           [(PDUserNotification *)v78 setReissueBannerOnUpdate:1];
           [(PDUserNotificationManager *)self->_userNotificationManager insertUserNotification:v78];
         }
 
-        v79 = v48;
-        [(_PDSystemPassRelevancyCoordinator *)self->_relevancyCoordinator passAddedOrUpdated:v91 oldPass:v105 from:a6];
+        v79 = effectiveContactlessPaymentApplicationState;
+        [(_PDSystemPassRelevancyCoordinator *)self->_relevancyCoordinator passAddedOrUpdated:v91 oldPass:v105 from:source];
         [(PDDefaultPassManager *)self->_defaultPassManager updateContactlessPassesAvailability];
         if (v96 == 1)
         {
@@ -468,48 +468,48 @@ LABEL_94:
         v97[1] = 3221225472;
         v97[2] = sub_10002A5EC;
         v97[3] = &unk_10083CFC8;
-        v15 = v25;
-        v98 = v15;
-        v99 = self;
-        v101 = v93;
+        paymentPass = v25;
+        v98 = paymentPass;
+        selfCopy = self;
+        v101 = state2;
         v102 = v79;
-        v103 = a6;
+        sourceCopy3 = source;
         v104 = v86;
-        v10 = v91;
-        v100 = v10;
+        writtenCopy = v91;
+        v100 = writtenCopy;
         sub_100028874(v97);
 
         goto LABEL_108;
       }
 
-      v44 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-      v45 = [v25 primaryPaymentApplicationForSecureElementIdentifiers:v44];
-      v80 = v44;
-      v46 = [v37 primaryPaymentApplicationForSecureElementIdentifiers:v44];
+      secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+      v45 = [v25 primaryPaymentApplicationForSecureElementIdentifiers:secureElementIdentifiers];
+      v80 = secureElementIdentifiers;
+      v46 = [v37 primaryPaymentApplicationForSecureElementIdentifiers:secureElementIdentifiers];
       if (v45)
       {
-        v47 = [v45 state];
+        state = [v45 state];
       }
 
       else
       {
-        v47 = 0;
+        state = 0;
       }
 
-      v84 = v11;
-      v85 = v47;
-      v82 = a6;
-      v83 = v12;
+      v84 = dataCopy;
+      v85 = state;
+      sourceCopy4 = source;
+      v83 = diffCopy;
       v81 = v16;
       v87 = v46;
       if (v46)
       {
-        v93 = [v46 state];
+        state2 = [v46 state];
       }
 
       else
       {
-        v93 = 0;
+        state2 = 0;
       }
 
       v106[0] = @"primary-payment-method-type";
@@ -517,43 +517,43 @@ LABEL_94:
       v49 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v45 paymentType]);
       v107[0] = v49;
       v106[1] = @"has-transaction-service";
-      v50 = [v25 transactionServiceURL];
-      v51 = [NSNumber numberWithBool:v50 != 0];
+      transactionServiceURL = [v25 transactionServiceURL];
+      v51 = [NSNumber numberWithBool:transactionServiceURL != 0];
       v107[1] = v51;
       v106[2] = @"has-message-service";
-      v52 = [v25 messageServiceURL];
-      v53 = [NSNumber numberWithBool:v52 != 0];
+      messageServiceURL = [v25 messageServiceURL];
+      v53 = [NSNumber numberWithBool:messageServiceURL != 0];
       v107[2] = v53;
       v54 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:3];
       PKAnalyticsSendEvent();
 
-      v48 = v85;
-      if (v85 == 6 && v93 != 6)
+      effectiveContactlessPaymentApplicationState = v85;
+      if (v85 == 6 && state2 != 6)
       {
         PKAnalyticsSendEvent();
       }
 
       v55 = PKLogFacilityTypeGetObject();
       v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
-      if (v85 == v93)
+      if (v85 == state2)
       {
         if (!v56)
         {
           goto LABEL_80;
         }
 
-        v63 = [v88 stateAsString];
-        v58 = v63;
+        stateAsString = [v88 stateAsString];
+        v58 = stateAsString;
         v64 = @"none";
-        if (v63)
+        if (stateAsString)
         {
-          v64 = v63;
+          v64 = stateAsString;
         }
 
         *buf = 138412546;
-        v109 = v14;
+        v109 = uniqueID;
         v110 = 2114;
-        v111 = v64;
+        sourceCopy2 = v64;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "PDServer (pass): secure element pass %@ maintained primary application state %{public}@.", buf, 0x16u);
       }
 
@@ -564,11 +564,11 @@ LABEL_94:
           goto LABEL_80;
         }
 
-        v57 = [v87 stateAsString];
-        v58 = v57;
-        if (v57)
+        stateAsString2 = [v87 stateAsString];
+        v58 = stateAsString2;
+        if (stateAsString2)
         {
-          v59 = v57;
+          v59 = stateAsString2;
         }
 
         else
@@ -576,12 +576,12 @@ LABEL_94:
           v59 = @"none";
         }
 
-        v60 = [v88 stateAsString];
-        v61 = v60;
+        stateAsString3 = [v88 stateAsString];
+        v61 = stateAsString3;
         *buf = 138412802;
-        if (v60)
+        if (stateAsString3)
         {
-          v62 = v60;
+          v62 = stateAsString3;
         }
 
         else
@@ -589,19 +589,19 @@ LABEL_94:
           v62 = @"none";
         }
 
-        v109 = v14;
+        v109 = uniqueID;
         v110 = 2114;
-        v111 = v59;
+        sourceCopy2 = v59;
         v37 = v90;
         v112 = 2114;
         v113 = v62;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "PDServer (pass): secure element pass %@ updated primary application state: %{public}@ -> %{public}@.", buf, 0x20u);
 
-        v48 = v85;
+        effectiveContactlessPaymentApplicationState = v85;
       }
 
 LABEL_80:
-      if ((v48 - 1) < 5 || v48 == 15)
+      if ((effectiveContactlessPaymentApplicationState - 1) < 5 || effectiveContactlessPaymentApplicationState == 15)
       {
         PKSetNeedsLostModeExitAuth();
       }
@@ -609,15 +609,15 @@ LABEL_80:
       v65 = +[NSDate date];
       PDSetLastPaymentPassInsertionOrRemovalDate();
 
-      v11 = v84;
+      dataCopy = v84;
       if (v88)
       {
-        v48 = [v25 effectiveContactlessPaymentApplicationState];
+        effectiveContactlessPaymentApplicationState = [v25 effectiveContactlessPaymentApplicationState];
       }
 
       if (v87)
       {
-        v93 = [v37 effectiveContactlessPaymentApplicationState];
+        state2 = [v37 effectiveContactlessPaymentApplicationState];
       }
 
       [(PDAppletSubcredentialManager *)self->_subcredentialManager passAddedOrUpdated:v25 oldPass:v37 oldShares:v81];
@@ -629,11 +629,11 @@ LABEL_80:
       if (v37)
       {
         sub_1005AD1B0(v84);
-        v68 = v67 = v48;
+        v68 = v67 = effectiveContactlessPaymentApplicationState;
         v69 = v81;
         -[PDSharingManager passUpdated:hasValidSharesList:oldPass:oldShares:oldEntitlements:](sharingManager, "passUpdated:hasValidSharesList:oldPass:oldShares:oldEntitlements:", v25, [v68 failedToReadShares] ^ 1, v37, v81, v94);
 
-        v48 = v67;
+        effectiveContactlessPaymentApplicationState = v67;
         if ([v25 contactlessActivationGroupingType] != 2)
         {
           sub_1005C5244(self->_expressPassManager, v25);
@@ -647,7 +647,7 @@ LABEL_80:
       }
 
       v22 = v91;
-      if (v93 == 2 && v48 == 1)
+      if (state2 == 2 && effectiveContactlessPaymentApplicationState == 1)
       {
         [(PDProvisioningSupportDataManager *)self->_provisioningSupportDataManager applyPostPersonalizedSupportDataIfNecessaryToPass:v25];
       }
@@ -657,8 +657,8 @@ LABEL_80:
       [(PDUserLegalAgreementManager *)self->_userLegalAgreementManager passAddedOrUpdatedWithPass:v25 oldPass:v37];
 
       v16 = v69;
-      a6 = v82;
-      v12 = v83;
+      source = sourceCopy4;
+      diffCopy = v83;
       goto LABEL_94;
     }
   }
@@ -666,23 +666,23 @@ LABEL_80:
 LABEL_108:
 }
 
-- (void)passWithUniqueIdentifierWillDisappear:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5
+- (void)passWithUniqueIdentifierWillDisappear:(id)disappear forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason
 {
-  v13 = a3;
-  v8 = a5;
-  if (v13)
+  disappearCopy = disappear;
+  diagnosticReasonCopy = diagnosticReason;
+  if (disappearCopy)
   {
     v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:?];
     if (v9)
     {
-      [(PDDatabaseManager *)self->_databaseManager prepareToDeletePassWithUniqueIdentifier:v13];
-      [(PDUserNotificationManager *)self->_userNotificationManager removeUserNotificationsForPassUniqueIdentifier:v13];
-      [(PDUserNotificationManager *)self->_userNotificationManager removeNotificationAssetsForPassWithUniqueIdentifier:v13];
+      [(PDDatabaseManager *)self->_databaseManager prepareToDeletePassWithUniqueIdentifier:disappearCopy];
+      [(PDUserNotificationManager *)self->_userNotificationManager removeUserNotificationsForPassUniqueIdentifier:disappearCopy];
+      [(PDUserNotificationManager *)self->_userNotificationManager removeNotificationAssetsForPassWithUniqueIdentifier:disappearCopy];
       if ([v9 passType] == 1)
       {
         paymentWebServiceCoordinator = self->_paymentWebServiceCoordinator;
         v11 = v9;
-        [(PDPaymentWebServiceCoordinator *)paymentWebServiceCoordinator passWillBeRemoved:v11 withDiagnosticReason:v8];
+        [(PDPaymentWebServiceCoordinator *)paymentWebServiceCoordinator passWillBeRemoved:v11 withDiagnosticReason:diagnosticReasonCopy];
         [(PDAppletSubcredentialManager *)self->_subcredentialManager passWillBeRemoved:v11];
         [(PDAuxiliaryCapabilityManager *)self->_auxiliaryCapabilityManager passWillBeRemoved:v11];
         [(PDAuxiliaryPassInformationManager *)self->_auxPassInformationManager passWillBeRemoved:v11];
@@ -690,28 +690,28 @@ LABEL_108:
         [(PDPassVerificationManager *)self->_passVerificationManager passWillBeRemoved:v11];
         [(PDBarcodeCredentialManager *)self->_barcodeCredentialManager passWillBeRemoved:v11];
         [(PDISO18013Manager *)self->_iso18013Manager passWillBeRemoved:v11];
-        v12 = [v11 paymentApplications];
-        sub_1005B08E8(self, v11, v12, 0);
+        paymentApplications = [v11 paymentApplications];
+        sub_1005B08E8(self, v11, paymentApplications, 0);
 
         sub_1005B0CA8(self, v11);
       }
 
       else
       {
-        sub_1005B7494(self, v9, a4, v13);
+        sub_1005B7494(self, v9, reason, disappearCopy);
       }
     }
   }
 }
 
-- (void)passWithUniqueIdentifierDidDisappear:(id)a3 forReason:(unint64_t)a4 withDiagnosticReason:(id)a5
+- (void)passWithUniqueIdentifierDidDisappear:(id)disappear forReason:(unint64_t)reason withDiagnosticReason:(id)diagnosticReason
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  disappearCopy = disappear;
+  v8 = disappearCopy;
+  if (disappearCopy)
   {
-    v12 = v7;
-    v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v7];
+    v12 = disappearCopy;
+    v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:disappearCopy];
     if (v9)
     {
       os_unfair_lock_lock(&self->_installedPassesLock);
@@ -721,12 +721,12 @@ LABEL_108:
       [(PDPassSignalManager *)self->_passSignalManager removeSignalForPass:v9 completion:&stru_10083CFE8];
       if ([v9 passType] == 1)
       {
-        sub_1005B7540(&self->super.isa, v9, a4, &self->_databaseManager);
+        sub_1005B7540(&self->super.isa, v9, reason, &self->_databaseManager);
       }
 
       if (PKCloudKitPassSyncEnabled())
       {
-        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passDeleted:v9 reason:a4];
+        [(PDCloudSyncCoordinator *)self->_cloudSyncCoordiantor passDeleted:v9 reason:reason];
       }
 
       sub_10002AAC8(self, v9);
@@ -756,90 +756,90 @@ LABEL_108:
     v8 = v12;
   }
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(disappearCopy, v8);
 }
 
-- (void)cardFileManager:(id)a3 didUpdateRemoteAssetsForPassWithUniqueID:(id)a4
+- (void)cardFileManager:(id)manager didUpdateRemoteAssetsForPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  dCopy = d;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v7;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PDServer: received pass with uniqueID:%@ did update remote assets. sending notification", &v10, 0xCu);
   }
 
-  v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v7];
+  v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:dCopy];
   if (v9)
   {
     sub_10002A05C(self, v9);
   }
 }
 
-- (void)notePassWithUniqueID:(id)a3 isRevoked:(BOOL)a4
+- (void)notePassWithUniqueID:(id)d isRevoked:(BOOL)revoked
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(PDDatabaseManager *)self->_databaseManager uniqueIDIsRevoked:v10];
-  v7 = v10;
-  if (v6 != v4)
+  revokedCopy = revoked;
+  dCopy = d;
+  v6 = [(PDDatabaseManager *)self->_databaseManager uniqueIDIsRevoked:dCopy];
+  v7 = dCopy;
+  if (v6 != revokedCopy)
   {
     v8 = v6;
-    [(PDDatabaseManager *)self->_databaseManager updateRevocationStatus:v4 forUniqueID:v10];
-    v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v10];
+    [(PDDatabaseManager *)self->_databaseManager updateRevocationStatus:revokedCopy forUniqueID:dCopy];
+    v9 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:dCopy];
     if (v9)
     {
       sub_10002A05C(self, v9);
     }
 
-    if (v8 && !v4)
+    if (v8 && !revokedCopy)
     {
       [(PDCardFileManager *)self->_cardFileManager scheduleImmediateRevocationCheck];
     }
 
-    v7 = v10;
+    v7 = dCopy;
   }
 
   _objc_release_x1(v6, v7);
 }
 
-- (void)cardFileManager:(id)a3 didFailToDecryptRemoteAssets:(id)a4 forPass:(id)a5
+- (void)cardFileManager:(id)manager didFailToDecryptRemoteAssets:(id)assets forPass:(id)pass
 {
-  v8 = a4;
-  v7 = [a5 secureElementPass];
-  if (v7)
+  assetsCopy = assets;
+  secureElementPass = [pass secureElementPass];
+  if (secureElementPass)
   {
-    [(PDAuxiliaryCapabilityManager *)self->_auxiliaryCapabilityManager didFailToDecryptRemoteAssets:v8 forPass:v7];
+    [(PDAuxiliaryCapabilityManager *)self->_auxiliaryCapabilityManager didFailToDecryptRemoteAssets:assetsCopy forPass:secureElementPass];
   }
 }
 
-- (void)noteAutomaticallyPresentSettingsChangedForPassWithUniqueIdentifier:(id)a3
+- (void)noteAutomaticallyPresentSettingsChangedForPassWithUniqueIdentifier:(id)identifier
 {
   defaultPassManager = self->_defaultPassManager;
-  v4 = a3;
+  identifierCopy = identifier;
   [(PDDefaultPassManager *)defaultPassManager updateContactlessPassesAvailability];
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   v6 = PKPassAutomaticPresentationSettingsDidChangeNotification;
   v8 = PKPassLibraryUniqueIDUserInfoKey;
-  v9 = v4;
+  v9 = identifierCopy;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
   [v5 postNotificationName:v6 object:0 userInfo:v7];
 }
 
-- (void)noteSettingsChangedForPassWithUniqueIdentifier:(id)a3 newSettings:(unint64_t)a4
+- (void)noteSettingsChangedForPassWithUniqueIdentifier:(id)identifier newSettings:(unint64_t)settings
 {
   paymentOffersManager = self->_paymentOffersManager;
-  v6 = a3;
+  identifierCopy = identifier;
   [(PDPaymentOffersManager *)paymentOffersManager recomputePassTileStates];
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   v8 = PKPassSettingsDidChangeNotification;
   v11[0] = PKPassLibraryUniqueIDUserInfoKey;
   v11[1] = PKPassLibrarySettingsUserInfoKey;
-  v12[0] = v6;
-  v9 = [NSNumber numberWithUnsignedInteger:a4];
+  v12[0] = identifierCopy;
+  v9 = [NSNumber numberWithUnsignedInteger:settings];
   v12[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
 
@@ -878,61 +878,61 @@ LABEL_8:
   }
 }
 
-- (void)passDidUpdateTransactionSourceIdentifierWithPassUniqueIdentifier:(id)a3
+- (void)passDidUpdateTransactionSourceIdentifierWithPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PDDefaultQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002BCC8;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)readTrueUniqueIDs:(id)a3
+- (void)readTrueUniqueIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
-    v4 = a3;
+    dsCopy = ds;
     os_unfair_lock_lock(&self->_installedPassesLock);
-    v4[2](v4, self->_installedPassUniqueIDs);
+    dsCopy[2](dsCopy, self->_installedPassUniqueIDs);
 
     os_unfair_lock_unlock(&self->_installedPassesLock);
   }
 }
 
-- (void)readTrueTransactionReceiptUniqueiDs:(id)a3
+- (void)readTrueTransactionReceiptUniqueiDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     transactionReceiptFileManager = self->_transactionReceiptFileManager;
-    v5 = a3;
-    v6 = [(PDTransactionReceiptFileManager *)transactionReceiptFileManager uniqueIDs];
-    (*(a3 + 2))(v5, v6);
+    dsCopy = ds;
+    uniqueIDs = [(PDTransactionReceiptFileManager *)transactionReceiptFileManager uniqueIDs];
+    (*(ds + 2))(dsCopy, uniqueIDs);
   }
 }
 
-- (void)mutateTrueUniqueIDs:(id)a3
+- (void)mutateTrueUniqueIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
-    v4 = a3;
+    dsCopy = ds;
     os_unfair_lock_lock(&self->_installedPassesLock);
-    v4[2](v4, self->_installedPassUniqueIDs);
+    dsCopy[2](dsCopy, self->_installedPassUniqueIDs);
 
     os_unfair_lock_unlock(&self->_installedPassesLock);
   }
 }
 
-- (void)paymentPass:(id)a3 didUpdatePaymentApplications:(id)a4 toPaymentApplications:(id)a5
+- (void)paymentPass:(id)pass didUpdatePaymentApplications:(id)applications toPaymentApplications:(id)paymentApplications
 {
-  v8 = a3;
+  passCopy = pass;
   secureElement = self->_secureElement;
-  v10 = a5;
-  v11 = a4;
+  paymentApplicationsCopy = paymentApplications;
+  applicationsCopy = applications;
   [(PKSecureElement *)secureElement secureElementIdentifiers];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
@@ -940,33 +940,33 @@ LABEL_8:
   v12 = v47[3] = &unk_10083D070;
   v48 = v12;
   v13 = objc_retainBlock(v47);
-  v14 = [v11 objectsPassingTest:v13];
+  v14 = [applicationsCopy objectsPassingTest:v13];
 
-  v15 = [v10 objectsPassingTest:v13];
+  v15 = [paymentApplicationsCopy objectsPassingTest:v13];
 
   expressPassManager = self->_expressPassManager;
-  v17 = [v8 uniqueID];
-  sub_1005C4838(expressPassManager, v14, v15, v17);
+  uniqueID = [passCopy uniqueID];
+  sub_1005C4838(expressPassManager, v14, v15, uniqueID);
 
-  v18 = [v8 deviceContactlessPaymentApplications];
-  if ([v18 count] >= 2)
+  deviceContactlessPaymentApplications = [passCopy deviceContactlessPaymentApplications];
+  if ([deviceContactlessPaymentApplications count] >= 2)
   {
     databaseManager = self->_databaseManager;
-    v20 = [v8 uniqueID];
-    v21 = [(PDDatabaseManager *)databaseManager defaultPaymentApplicationForPassUniqueIdentifier:v20];
+    uniqueID2 = [passCopy uniqueID];
+    v21 = [(PDDatabaseManager *)databaseManager defaultPaymentApplicationForPassUniqueIdentifier:uniqueID2];
 
     if (!v21)
     {
       v39 = v15;
       v40 = v13;
       v41 = v12;
-      v22 = [v8 devicePrimaryContactlessPaymentApplication];
+      devicePrimaryContactlessPaymentApplication = [passCopy devicePrimaryContactlessPaymentApplication];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v38 = v18;
-      v23 = v18;
+      v38 = deviceContactlessPaymentApplications;
+      v23 = deviceContactlessPaymentApplications;
       v24 = [v23 countByEnumeratingWithState:&v43 objects:v49 count:16];
       if (v24)
       {
@@ -982,12 +982,12 @@ LABEL_8:
             }
 
             v28 = *(*(&v43 + 1) + 8 * i);
-            v29 = [v28 contactlessPriority];
-            if (v29 > [v22 contactlessPriority])
+            contactlessPriority = [v28 contactlessPriority];
+            if (contactlessPriority > [devicePrimaryContactlessPaymentApplication contactlessPriority])
             {
               v30 = v28;
 
-              v22 = v30;
+              devicePrimaryContactlessPaymentApplication = v30;
             }
           }
 
@@ -998,29 +998,29 @@ LABEL_8:
       }
 
       v31 = self->_databaseManager;
-      v32 = [v8 uniqueID];
-      v33 = [(PDDatabaseManager *)v31 setDefaultPaymentApplication:v22 forPassUniqueIdentifier:v32];
+      uniqueID3 = [passCopy uniqueID];
+      v33 = [(PDDatabaseManager *)v31 setDefaultPaymentApplication:devicePrimaryContactlessPaymentApplication forPassUniqueIdentifier:uniqueID3];
 
       v13 = v40;
       v12 = v41;
-      v18 = v38;
+      deviceContactlessPaymentApplications = v38;
       v15 = v39;
     }
   }
 
   if ([v14 count])
   {
-    sub_1005B08E8(self, v8, v14, v15);
+    sub_1005B08E8(self, passCopy, v14, v15);
   }
 
   else if ([v15 count])
   {
     cloudStoreTransactionSourceController = self->_cloudStoreTransactionSourceController;
-    v35 = [v15 anyObject];
-    [(PDCloudStoreTransactionSourceController *)cloudStoreTransactionSourceController didAddPaymentApplication:v35 forPaymentPass:v8];
+    anyObject = [v15 anyObject];
+    [(PDCloudStoreTransactionSourceController *)cloudStoreTransactionSourceController didAddPaymentApplication:anyObject forPaymentPass:passCopy];
 
-    v36 = [v8 associatedAccountServiceAccountIdentifier];
-    if (v36)
+    associatedAccountServiceAccountIdentifier = [passCopy associatedAccountServiceAccountIdentifier];
+    if (associatedAccountServiceAccountIdentifier)
     {
       accountManager = self->_accountManager;
       v42[0] = _NSConcreteStackBlock;
@@ -1028,10 +1028,10 @@ LABEL_8:
       v42[2] = sub_10002C438;
       v42[3] = &unk_10083D098;
       v42[4] = self;
-      [(PDAccountManager *)accountManager accountWithIdentifier:v36 completion:v42];
+      [(PDAccountManager *)accountManager accountWithIdentifier:associatedAccountServiceAccountIdentifier completion:v42];
     }
 
-    if ([v8 hasAssociatedPeerPaymentAccount])
+    if ([passCopy hasAssociatedPeerPaymentAccount])
     {
       PKSharedCacheSetBoolForKey();
       PKPeerPaymentSetIsSetup();
@@ -1042,32 +1042,32 @@ LABEL_8:
     }
   }
 
-  [(PDISO18013Manager *)self->_iso18013Manager handlePaymentPassUpdateFrom:v8 priorPaymentApplications:v14 completion:0];
-  [(PDPaymentUserCommunicationManager *)self->_paymentUserCommunicationManager handlePaymentPassDidUpdatePaymentApplications:v8 fromPaymentApplications:v14 withCompletion:0];
-  if ([v8 isCarKeyPass])
+  [(PDISO18013Manager *)self->_iso18013Manager handlePaymentPassUpdateFrom:passCopy priorPaymentApplications:v14 completion:0];
+  [(PDPaymentUserCommunicationManager *)self->_paymentUserCommunicationManager handlePaymentPassDidUpdatePaymentApplications:passCopy fromPaymentApplications:v14 withCompletion:0];
+  if ([passCopy isCarKeyPass])
   {
     PDRegisterCarKeySiriVocabulary(self->_databaseManager, 1);
   }
 }
 
-- (void)appletSubcredentialManager:(id)a3 didUpdateCredential:(id)a4 onPassWithIdentifier:(id)a5 oldShares:(id)a6
+- (void)appletSubcredentialManager:(id)manager didUpdateCredential:(id)credential onPassWithIdentifier:(id)identifier oldShares:(id)shares
 {
-  v10 = a6;
-  v8 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:a5];
-  v9 = [v8 secureElementPass];
+  sharesCopy = shares;
+  v8 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:identifier];
+  secureElementPass = [v8 secureElementPass];
 
-  if (v9)
+  if (secureElementPass)
   {
-    sub_1005B2BF8(self, v9);
-    [(PDPendingProvisioningManager *)self->_pendingProvisioningManager passAddedOrUpdated:v9];
-    if (v10)
+    sub_1005B2BF8(self, secureElementPass);
+    [(PDPendingProvisioningManager *)self->_pendingProvisioningManager passAddedOrUpdated:secureElementPass];
+    if (sharesCopy)
     {
-      [(PDSharingManager *)self->_sharingManager passUpdated:v9 oldShares:v10];
+      [(PDSharingManager *)self->_sharingManager passUpdated:secureElementPass oldShares:sharesCopy];
     }
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableDailyCashNotifications:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableDailyCashNotifications:(BOOL)notifications
 {
   accountManager = self->_accountManager;
   v5[0] = _NSConcreteStackBlock;
@@ -1078,72 +1078,72 @@ LABEL_8:
   [(PDAccountManager *)accountManager defaultAccountForFeature:2 completion:v5];
 }
 
-- (void)transactionSourceIdentifier:(id)a3 willRemoveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier willRemoveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 associatedReceiptUniqueID];
-  if (v8)
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  associatedReceiptUniqueID = [transactionCopy associatedReceiptUniqueID];
+  if (associatedReceiptUniqueID)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 serviceIdentifier];
+      serviceIdentifier = [transactionCopy serviceIdentifier];
       v11 = 138412290;
-      v12 = v10;
+      v12 = serviceIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Deleting receipt for transaction %@ since transaction is being removed from the database", &v11, 0xCu);
     }
 
-    [(PDTransactionReceiptFileManager *)self->_transactionReceiptFileManager deleteTransactionReceiptWithUniqueID:v8];
+    [(PDTransactionReceiptFileManager *)self->_transactionReceiptFileManager deleteTransactionReceiptWithUniqueID:associatedReceiptUniqueID];
   }
 
-  [(PDTransactionNotificationController *)self->_transactionNotificationController paymentTransactionRemoved:v7 transactionSourceIdentifier:v6];
+  [(PDTransactionNotificationController *)self->_transactionNotificationController paymentTransactionRemoved:transactionCopy transactionSourceIdentifier:identifierCopy];
 }
 
-- (void)willRemoveTransactionsWithSourceIdentifierMapping:(id)a3
+- (void)willRemoveTransactionsWithSourceIdentifierMapping:(id)mapping
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002CF0C;
   v3[3] = &unk_10083D238;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [mapping enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didResolvePendingTransitTransactionAmountsWithTransaction:(id)a4 paymentApplication:(id)a5 balance:(id)a6
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didResolvePendingTransitTransactionAmountsWithTransaction:(id)transaction paymentApplication:(id)application balance:(id)balance
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[PDPassTransitTransactionUserNotification alloc] initWithPaymentTransaction:v13 forPassUniqueIdentifier:v10 paymentApplication:v12 balance:v11];
+  identifierCopy = identifier;
+  balanceCopy = balance;
+  applicationCopy = application;
+  transactionCopy = transaction;
+  v14 = [[PDPassTransitTransactionUserNotification alloc] initWithPaymentTransaction:transactionCopy forPassUniqueIdentifier:identifierCopy paymentApplication:applicationCopy balance:balanceCopy];
 
   v15 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v10;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Inserting PDPassTransitTransactionUserNotification for pass with unique identifier: %@, having resolved pending transit transaction amounts", &v16, 0xCu);
   }
 
   [(PDUserNotificationManager *)self->_userNotificationManager insertUserNotification:v14];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateDefaultPaymentApplication:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateDefaultPaymentApplication:(id)application
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSDistributedNotificationCenter defaultCenter];
-  [v5 postNotificationName:PKDistributedNotificationDefaultPaymentApplicationChangedForPass object:v4 userInfo:0];
+  [v5 postNotificationName:PKDistributedNotificationDefaultPaymentApplicationChangedForPass object:identifierCopy userInfo:0];
 }
 
-- (void)passUniqueIdentifiersMovedToExpired:(id)a3
+- (void)passUniqueIdentifiersMovedToExpired:(id)expired
 {
-  v4 = a3;
+  expiredCopy = expired;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [expiredCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1154,7 +1154,7 @@ LABEL_8:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(expiredCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1165,17 +1165,17 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [expiredCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removePassesOfType:(unint64_t)a3 withDiagnosticReason:(id)a4
+- (void)removePassesOfType:(unint64_t)type withDiagnosticReason:(id)reason
 {
-  v6 = a4;
-  if (a3 == 1)
+  reasonCopy = reason;
+  if (type == 1)
   {
     v22 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1187,14 +1187,14 @@ LABEL_8:
     v23 = atomic_load(&self->_initializationState);
     if (v23 == 1)
     {
-      sub_1005B3BE4(self, 1, v6, 0, 5);
+      sub_1005B3BE4(self, 1, reasonCopy, 0, 5);
       goto LABEL_32;
     }
 
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!type)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1207,7 +1207,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a3 != -1)
+  if (type != -1)
   {
     goto LABEL_32;
   }
@@ -1246,7 +1246,7 @@ LABEL_9:
             objc_enumerationMutation(v11);
           }
 
-          [(PDCardFileManager *)self->_cardFileManager deleteCardWithUniqueID:*(*(&v29 + 1) + 8 * i) forReason:2 withDiagnosticReason:v6];
+          [(PDCardFileManager *)self->_cardFileManager deleteCardWithUniqueID:*(*(&v29 + 1) + 8 * i) forReason:2 withDiagnosticReason:reasonCopy];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -1256,16 +1256,16 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (a3 == -1)
+    if (type == -1)
     {
-      sub_1005B3BE4(self, 1, v6, 0, 2);
+      sub_1005B3BE4(self, 1, reasonCopy, 0, 2);
       v16 = objc_autoreleasePoolPush();
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v17 = [(PDDatabaseManager *)self->_databaseManager passUniqueIDs];
-      v18 = [v17 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      passUniqueIDs = [(PDDatabaseManager *)self->_databaseManager passUniqueIDs];
+      v18 = [passUniqueIDs countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v18)
       {
         v19 = v18;
@@ -1276,13 +1276,13 @@ LABEL_9:
           {
             if (*v26 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(passUniqueIDs);
             }
 
-            [(PDCardFileManager *)self->_cardFileManager deleteCardWithUniqueID:*(*(&v25 + 1) + 8 * j) forReason:2 withDiagnosticReason:v6];
+            [(PDCardFileManager *)self->_cardFileManager deleteCardWithUniqueID:*(*(&v25 + 1) + 8 * j) forReason:2 withDiagnosticReason:reasonCopy];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v19 = [passUniqueIDs countByEnumeratingWithState:&v25 objects:v34 count:16];
         }
 
         while (v19);
@@ -1305,26 +1305,26 @@ LABEL_29:
 LABEL_32:
 }
 
-- (void)recoverPassWithUniqueID:(id)a3
+- (void)recoverPassWithUniqueID:(id)d
 {
-  v11 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v11];
+  v5 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:dCopy];
   if (v5)
   {
-    v6 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:v11];
+    v6 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:dCopy];
     v7 = v6;
     if (v6 && [v6 isArchived])
     {
-      [(PDDatabaseManager *)self->_databaseManager updatePassAnnotationsForPassWithUniqueIdentifier:v11 withSortingState:2];
+      [(PDDatabaseManager *)self->_databaseManager updatePassAnnotationsForPassWithUniqueIdentifier:dCopy withSortingState:2];
       dynamicStateManager = self->_dynamicStateManager;
-      v9 = [v5 uniqueID];
-      v10 = [(PDPassDynamicStateManager *)dynamicStateManager passDynamicStateForUniqueIdentifier:v9];
+      uniqueID = [v5 uniqueID];
+      v10 = [(PDPassDynamicStateManager *)dynamicStateManager passDynamicStateForUniqueIdentifier:uniqueID];
 
       sub_10002E400(self, v5, v10);
       if ([v5 supportsLifecycleUpdates])
       {
-        [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:v11 state:0];
+        [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:dCopy state:0];
       }
     }
   }
@@ -1332,35 +1332,35 @@ LABEL_32:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)archivePassWithUniqueID:(id)a3
+- (void)archivePassWithUniqueID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v9];
+  v5 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:dCopy];
   if (PKManualArchiveEnabled() && v5)
   {
-    v6 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:v9];
+    v6 = [(PDDatabaseManager *)self->_databaseManager passAnnotationsForPassUniqueIdentifier:dCopy];
     v7 = v6;
     if (v6 && ([v6 isArchived] & 1) == 0)
     {
-      [(PDDatabaseManager *)self->_databaseManager updatePassAnnotationsForPassWithUniqueIdentifier:v9 withSortingState:4];
-      v8 = [(PDPassDynamicStateManager *)self->_dynamicStateManager passDynamicStateForUniqueIdentifier:v9];
+      [(PDDatabaseManager *)self->_databaseManager updatePassAnnotationsForPassWithUniqueIdentifier:dCopy withSortingState:4];
+      v8 = [(PDPassDynamicStateManager *)self->_dynamicStateManager passDynamicStateForUniqueIdentifier:dCopy];
       sub_10002E730(self, v5, v8);
-      [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:v9 state:1];
+      [(PDWebServicesCoordinator *)self->_webServicesCoordinator sendPassLifecycleEventForUniqueIdentifier:dCopy state:1];
     }
   }
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)noteACAccountChanged:(id)a3 handler:(id)a4
+- (void)noteACAccountChanged:(id)changed handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 operation];
-  if (v8 > 1)
+  changedCopy = changed;
+  handlerCopy = handler;
+  operation = [changedCopy operation];
+  if (operation > 1)
   {
-    if (v8 == 2)
+    if (operation == 2)
     {
       v15 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1375,15 +1375,15 @@ LABEL_32:
       v20[2] = sub_10002ECBC;
       v20[3] = &unk_10083D320;
       v20[4] = self;
-      v21 = v6;
-      v22 = v7;
+      v21 = changedCopy;
+      v22 = handlerCopy;
       dispatch_async(v16, v20);
 
       v11 = v21;
       goto LABEL_19;
     }
 
-    if (v8 == 3)
+    if (operation == 3)
     {
       v12 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1398,8 +1398,8 @@ LABEL_32:
       v17[2] = sub_10002ECCC;
       v17[3] = &unk_10083D320;
       v17[4] = self;
-      v18 = v6;
-      v19 = v7;
+      v18 = changedCopy;
+      v19 = handlerCopy;
       dispatch_async(v13, v17);
 
       v11 = v18;
@@ -1407,9 +1407,9 @@ LABEL_32:
     }
   }
 
-  else if (v8)
+  else if (operation)
   {
-    if (v8 == 1)
+    if (operation == 1)
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1424,8 +1424,8 @@ LABEL_32:
       block[2] = sub_10002ECAC;
       block[3] = &unk_10083D320;
       block[4] = self;
-      v24 = v6;
-      v25 = v7;
+      v24 = changedCopy;
+      v25 = handlerCopy;
       dispatch_async(v10, block);
 
       v11 = v24;
@@ -1442,46 +1442,46 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "passd was asked to respond to account change that is unsupported.", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)primaryAppleAccountWasUpdated:(id)a3 handler:(id)a4
+- (void)primaryAppleAccountWasUpdated:(id)updated handler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
+  updatedCopy = updated;
+  handlerCopy = handler;
   PKDisableCloudKitEnvironmentChangeHandling();
-  if ([v7 didEnablementOfUbiquityDataclassChange])
+  if ([updatedCopy didEnablementOfUbiquityDataclassChange])
   {
     [(PDCardFileManager *)self->_cardFileManager restartUbiquity];
   }
 
-  if ([v7 didEnablementOfWalletDataclassChange])
+  if ([updatedCopy didEnablementOfWalletDataclassChange])
   {
     [(PDCloudStoreNotificationCoordinator *)self->_cloudStoreCoordinator noteCloudSyncPassesSwitchChanged];
     +[PKWalletVisibility updateWalletVisibility];
   }
 
-  if ([v7 didAccountManagedStateChange])
+  if ([updatedCopy didAccountManagedStateChange])
   {
     +[PKWalletVisibility updateWalletVisibility];
   }
 
   [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator noteAccountChanged];
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)a3 destinationFileHandles:(id)a4 handler:(id)a5
+- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)ls destinationFileHandles:(id)handles handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lsCopy = ls;
+  handlesCopy = handles;
+  handlerCopy = handler;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1501,14 +1501,14 @@ LABEL_19:
   v15[1] = 3221225472;
   v15[2] = sub_10002F344;
   v15[3] = &unk_10083C420;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
+  v16 = lsCopy;
+  v17 = handlesCopy;
+  v13 = handlesCopy;
+  v14 = lsCopy;
   [(PDDatabaseManager *)databaseManager accessDatabaseUsingBlock:v15];
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1521,7 +1521,7 @@ LABEL_19:
   [(PDBarcodeCredentialManager *)barcodeCredentialManager nukeTasks];
 }
 
-- (void)dataMigrationRequestedWithPassLibrary:(id)a3 didRestoreFromBackup:(BOOL)a4
+- (void)dataMigrationRequestedWithPassLibrary:(id)library didRestoreFromBackup:(BOOL)backup
 {
   Current = CFAbsoluteTimeGetCurrent();
   v7 = PKLogFacilityTypeGetObject();
@@ -1537,7 +1537,7 @@ LABEL_19:
   block[2] = sub_1005B45B4;
   block[3] = &unk_10083C3A8;
   block[4] = self;
-  v17 = a4;
+  backupCopy = backup;
   *&block[5] = Current;
   dispatch_sync(v8, block);
 
@@ -1550,7 +1550,7 @@ LABEL_19:
     v13[2] = sub_10002FC54;
     v13[3] = &unk_10083C420;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     v11 = v9;
     dispatch_async(v10, v13);
   }
@@ -1595,9 +1595,9 @@ LABEL_19:
   exit(0);
 }
 
-- (void)issueSecureElementPassStateChangeNotificationForNewPasses:(id)a3
+- (void)issueSecureElementPassStateChangeNotificationForNewPasses:(id)passes
 {
-  v4 = [a3 pk_objectsPassingTest:&stru_10083D4C8];
+  v4 = [passes pk_objectsPassingTest:&stru_10083D4C8];
   v5 = [v4 count];
   if (v5)
   {
@@ -1622,7 +1622,7 @@ LABEL_19:
       v10[1] = 3221225472;
       v10[2] = sub_100030088;
       v10[3] = &unk_10083D580;
-      v12 = self;
+      selfCopy = self;
       v13 = v5;
       v11 = v4;
       sub_10017F518(expressPassManager, v10);
@@ -1631,51 +1631,51 @@ LABEL_19:
   }
 }
 
-- (void)didRequestToRegister:(id)a3 fromDestination:(id)a4
+- (void)didRequestToRegister:(id)register fromDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
+  destinationCopy = destination;
+  registerCopy = register;
   v8 = [NSString stringWithFormat:@"request to register device over IDS"];
   deviceRegistrationServiceCoordinator = self->_deviceRegistrationServiceCoordinator;
-  v10 = [v7 registerBroker];
-  v11 = [v7 registerPeerPayment];
+  registerBroker = [registerCopy registerBroker];
+  registerPeerPayment = [registerCopy registerPeerPayment];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000303A4;
   v13[3] = &unk_10083C6C8;
-  v14 = v6;
-  v15 = self;
-  v12 = v6;
-  [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performDeviceRegistrationForReason:v8 brokerURL:0 action:1 forceApplePayRegister:v10 forcePeerPaymentRegister:v11 completion:v13];
+  v14 = destinationCopy;
+  selfCopy = self;
+  v12 = destinationCopy;
+  [(PDDeviceRegistrationServiceCoordinator *)deviceRegistrationServiceCoordinator performDeviceRegistrationForReason:v8 brokerURL:0 action:1 forceApplePayRegister:registerBroker forcePeerPaymentRegister:registerPeerPayment completion:v13];
 }
 
-- (void)handlerDetailsForConfiguration:(id)a3 completion:(id)a4
+- (void)handlerDetailsForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = configurationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Getting current user and handle user info for configuration %@", &buf, 0xCu);
   }
 
-  v9 = [v6 handle];
-  v10 = v9;
-  if (v7)
+  handle = [configurationCopy handle];
+  v10 = handle;
+  if (completionCopy)
   {
-    if (v6 && v9)
+    if (configurationCopy && handle)
     {
-      v11 = [v6 sharingGroup];
-      if (v11 == 1)
+      sharingGroup = [configurationCopy sharingGroup];
+      if (sharingGroup == 1)
       {
         v12 = 0;
         goto LABEL_12;
       }
 
-      if (v11 == 2)
+      if (sharingGroup == 2)
       {
         v12 = 1;
 LABEL_12:
@@ -1722,8 +1722,8 @@ LABEL_12:
           v23[2] = sub_100030D38;
           v23[3] = &unk_10083D5F8;
           v27 = v38;
-          v24 = v6;
-          v25 = self;
+          v24 = configurationCopy;
+          selfCopy = self;
           v26 = v14;
           v28 = v34;
           v29 = v36;
@@ -1739,7 +1739,7 @@ LABEL_12:
         v20 = v36;
         v21 = v38;
         v22 = v34;
-        v18 = v7;
+        v18 = completionCopy;
         v16 = [v13 evaluateWithInput:v15 completion:v17];
 
         _Block_object_dispose(v34, 8);
@@ -1752,13 +1752,13 @@ LABEL_12:
       }
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_16:
 }
 
-- (BOOL)shouldDelayRefreshFor:(id)a3
+- (BOOL)shouldDelayRefreshFor:(id)for
 {
   unprotectedManagers = self->_unprotectedManagers;
   if (!unprotectedManagers)
@@ -1778,7 +1778,7 @@ LABEL_16:
   return v6;
 }
 
-- (void)didCompleteRefresh:(id)a3
+- (void)didCompleteRefresh:(id)refresh
 {
   v4 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
@@ -1789,18 +1789,18 @@ LABEL_16:
   dispatch_async(v4, block);
 }
 
-- (void)inAppPaymentService:(id)a3 registerPaymentListenerEndpoint:(id)a4 forHostIdentifier:(id)a5 processIdentifier:(int)a6 completion:(id)a7
+- (void)inAppPaymentService:(id)service registerPaymentListenerEndpoint:(id)endpoint forHostIdentifier:(id)identifier processIdentifier:(int)processIdentifier completion:(id)completion
 {
-  v8 = *&a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  v8 = *&processIdentifier;
+  serviceCopy = service;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
+  completionCopy = completion;
   paymentHostEndpointRegistry = self->_paymentHostEndpointRegistry;
-  if (!v13)
+  if (!endpointCopy)
   {
-    v19 = [(PKPaymentHostEndpointRegistry *)paymentHostEndpointRegistry takeListenerEndpointForHostIdentifier:v14];
-    if (!v15)
+    v19 = [(PKPaymentHostEndpointRegistry *)paymentHostEndpointRegistry takeListenerEndpointForHostIdentifier:identifierCopy];
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -1808,16 +1808,16 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  [(PKPaymentHostEndpointRegistry *)paymentHostEndpointRegistry addListenerEndpoint:v13 forHostIdentifier:v14 processIdentifier:v8];
+  [(PKPaymentHostEndpointRegistry *)paymentHostEndpointRegistry addListenerEndpoint:endpointCopy forHostIdentifier:identifierCopy processIdentifier:v8];
   v17 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v13;
+    v23 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "registerPaymentListenerEndpoint saved listenerEndpoint: %@", buf, 0xCu);
   }
 
-  if (v15)
+  if (completionCopy)
   {
 LABEL_5:
     v18 = PDDefaultQueue();
@@ -1825,17 +1825,17 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_1000313DC;
     block[3] = &unk_10083D648;
-    v21 = v15;
+    v21 = completionCopy;
     dispatch_async(v18, block);
   }
 
 LABEL_6:
 }
 
-- (void)inAppPaymentService:(id)a3 retrievePaymentListenerEndpointForHostIdentifier:(id)a4 completion:(id)a5
+- (void)inAppPaymentService:(id)service retrievePaymentListenerEndpointForHostIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(PKPaymentHostEndpointRegistry *)self->_paymentHostEndpointRegistry takeListenerEndpointForHostIdentifier:a4];
+  completionCopy = completion;
+  v8 = [(PKPaymentHostEndpointRegistry *)self->_paymentHostEndpointRegistry takeListenerEndpointForHostIdentifier:identifier];
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1844,63 +1844,63 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "takeListenerEndpointForHostIdentifier returns listenerEndpoint: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v10 = PDDefaultQueue();
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10003154C;
     v11[3] = &unk_10083C820;
-    v13 = v7;
+    v13 = completionCopy;
     v12 = v8;
     dispatch_async(v10, v11);
   }
 }
 
-- (void)inAppPaymentService:(id)a3 registerInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)a4
+- (void)inAppPaymentService:(id)service registerInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v8 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003163C;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = serviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = serviceCopy;
   dispatch_async(v8, block);
 }
 
-- (void)inAppPaymentService:(id)a3 unregisterInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)a4
+- (void)inAppPaymentService:(id)service unregisterInterfaceAvailableForAdditionalPaymentRequestWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v8 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000317AC;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = serviceCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = serviceCopy;
   dispatch_async(v8, block);
 }
 
-- (void)inAppPaymentService:(id)a3 presentAdditionalInAppPaymentWithContext:(id)a4 completion:(id)a5
+- (void)inAppPaymentService:(id)service presentAdditionalInAppPaymentWithContext:(id)context completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_inAppPaymentServiceWithInterfaceAvailable);
 
   if (WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_inAppPaymentServiceWithInterfaceAvailable);
-    [v10 presentAdditionalInAppPaymentWithContext:v7 completion:v8];
+    [v10 presentAdditionalInAppPaymentWithContext:contextCopy completion:completionCopy];
   }
 
   else
@@ -1912,14 +1912,14 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Payment request already presented, no registered service to present additional request", v12, 2u);
     }
 
-    (*(v8 + 2))(v8, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)handleContinuityPaymentBulletinActionWithIdentifier:(id)a3 manager:(id)a4
+- (void)handleContinuityPaymentBulletinActionWithIdentifier:(id)identifier manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1927,8 +1927,8 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received continuity notification", v10, 2u);
   }
 
-  v9 = [(PKIDSManager *)self->_idsManager requestForIdentifier:v6];
-  if (v6)
+  v9 = [(PKIDSManager *)self->_idsManager requestForIdentifier:identifierCopy];
+  if (identifierCopy)
   {
     sub_1005B7968(self, v9);
   }
@@ -1987,38 +1987,38 @@ LABEL_6:
   return v7;
 }
 
-- (void)handleNotificationWithName:(id)a3 event:(id)a4 forStream:(int64_t)a5
+- (void)handleNotificationWithName:(id)name event:(id)event forStream:(int64_t)stream
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100031CD8;
   block[3] = &unk_10083D690;
-  v12 = self;
-  v13 = a5;
-  v11 = v7;
-  v9 = v7;
+  selfCopy = self;
+  streamCopy = stream;
+  v11 = nameCopy;
+  v9 = nameCopy;
   dispatch_async(v8, block);
 }
 
-- (void)paymentTransactionUpdated:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)paymentTransactionUpdated:(id)updated forTransactionSourceIdentifier:(id)identifier
 {
-  v8 = a4;
-  v6 = [PDDatabaseManager insertOrUpdatePaymentTransaction:"insertOrUpdatePaymentTransaction:withTransactionSourceIdentifier:insertionMode:performTruncation:insertedTransaction:" withTransactionSourceIdentifier:a3 insertionMode:? performTruncation:? insertedTransaction:?];
-  v7 = [v6 updateReasonIsInitialDownload];
-  if ([v6 fullyProcessed] && (v7 & 1) == 0)
+  identifierCopy = identifier;
+  v6 = [PDDatabaseManager insertOrUpdatePaymentTransaction:"insertOrUpdatePaymentTransaction:withTransactionSourceIdentifier:insertionMode:performTruncation:insertedTransaction:" withTransactionSourceIdentifier:updated insertionMode:? performTruncation:? insertedTransaction:?];
+  updateReasonIsInitialDownload = [v6 updateReasonIsInitialDownload];
+  if ([v6 fullyProcessed] && (updateReasonIsInitialDownload & 1) == 0)
   {
-    [(PDAccountNotificationController *)self->_accountNotificationController paymentTransactionUpdated:v6 forTransactionSourceIdentifier:v8];
+    [(PDAccountNotificationController *)self->_accountNotificationController paymentTransactionUpdated:v6 forTransactionSourceIdentifier:identifierCopy];
   }
 
-  if ((v7 & 1) == 0)
+  if ((updateReasonIsInitialDownload & 1) == 0)
   {
     [(PDServer *)self _updateQuickActions];
   }
 }
 
-- (void)paymentTransactionProcessorDidActivate:(id)a3
+- (void)paymentTransactionProcessorDidActivate:(id)activate
 {
   os_unfair_lock_lock(&self->_transactionProcesssorActiveLock);
   if (!self->_transactionProcesssorOSTransaction)
@@ -2031,7 +2031,7 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_transactionProcesssorActiveLock);
 }
 
-- (void)paymentTransactionProcessorDidDeactivate:(id)a3
+- (void)paymentTransactionProcessorDidDeactivate:(id)deactivate
 {
   os_unfair_lock_lock(&self->_transactionProcesssorActiveLock);
   transactionProcesssorOSTransaction = self->_transactionProcesssorOSTransaction;
@@ -2040,16 +2040,16 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_transactionProcesssorActiveLock);
 }
 
-- (void)placemarkFound:(id)a3 forTransaction:(id)a4
+- (void)placemarkFound:(id)found forTransaction:(id)transaction
 {
   spotlightIndexer = self->_spotlightIndexer;
   if (spotlightIndexer)
   {
-    [(PDSpotlightIndexer *)spotlightIndexer placemarkFound:a3 forTransaction:a4];
+    [(PDSpotlightIndexer *)spotlightIndexer placemarkFound:found forTransaction:transaction];
   }
 }
 
-- (id)paymentPassesForContinuityDiscovery:(id)a3
+- (id)paymentPassesForContinuityDiscovery:(id)discovery
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2059,20 +2059,20 @@ LABEL_6:
   }
 
   v5 = [(PDDatabaseManager *)self->_databaseManager passesOfType:1];
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (id)defaultPaymentPassForContinuityDiscovery:(id)a3
+- (id)defaultPaymentPassForContinuityDiscovery:(id)discovery
 {
   databaseManager = self->_databaseManager;
   v5 = PDDefaultPaymentPassUniqueIdentifier();
   v6 = [(PDDatabaseManager *)databaseManager passWithUniqueIdentifier:v5];
-  v7 = [v6 paymentPass];
+  paymentPass = [v6 paymentPass];
 
-  v8 = [v7 devicePrimaryInAppPaymentApplication];
-  LOBYTE(v6) = [v8 supportsInAppPayment];
+  devicePrimaryInAppPaymentApplication = [paymentPass devicePrimaryInAppPaymentApplication];
+  LOBYTE(v6) = [devicePrimaryInAppPaymentApplication supportsInAppPayment];
 
   if ((v6 & 1) == 0)
   {
@@ -2089,65 +2089,65 @@ LABEL_6:
 
     if ([v16 count])
     {
-      v17 = [v16 anyObject];
+      anyObject = [v16 anyObject];
     }
 
     else
     {
-      v17 = 0;
+      anyObject = 0;
     }
 
-    v7 = v17;
+    paymentPass = anyObject;
   }
 
-  return v7;
+  return paymentPass;
 }
 
-- (void)accountForPaymentPass:(id)a3 manager:(id)a4 completion:(id)a5
+- (void)accountForPaymentPass:(id)pass manager:(id)manager completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 hasAssociatedPeerPaymentAccount])
+  passCopy = pass;
+  completionCopy = completion;
+  if ([passCopy hasAssociatedPeerPaymentAccount])
   {
     peerPaymentWebServiceCoordinator = self->_peerPaymentWebServiceCoordinator;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100032864;
     v10[3] = &unk_10083D6B8;
-    v11 = v7;
-    v12 = v8;
+    v11 = passCopy;
+    v12 = completionCopy;
     [(PDPeerPaymentWebServiceCoordinator *)peerPaymentWebServiceCoordinator accountWithPreventingServerFetch:0 completion:v10];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)supportedPaymentSetupFeatures:(id)a3 completion:(id)a4
+- (void)supportedPaymentSetupFeatures:(id)features completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  featuresCopy = features;
+  completionCopy = completion;
+  if (completionCopy)
   {
     paymentWebServiceCoordinator = self->_paymentWebServiceCoordinator;
     if (paymentWebServiceCoordinator)
     {
-      v8 = [(PDPaymentWebServiceCoordinator *)paymentWebServiceCoordinator paymentSetupFeaturesCoordinator];
-      [v8 staticPaymentSetupFeaturesForSourceApplicationID:PKPassdBundleIdentifier blockServerFetch:0 completion:v6];
+      paymentSetupFeaturesCoordinator = [(PDPaymentWebServiceCoordinator *)paymentWebServiceCoordinator paymentSetupFeaturesCoordinator];
+      [paymentSetupFeaturesCoordinator staticPaymentSetupFeaturesForSourceApplicationID:PKPassdBundleIdentifier blockServerFetch:0 completion:completionCopy];
     }
 
     else
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (BOOL)deviceAvailableForContinuityPayments:(id)a3
+- (BOOL)deviceAvailableForContinuityPayments:(id)payments
 {
-  v4 = a3;
+  paymentsCopy = payments;
   unprotectedManagers = self->_unprotectedManagers;
   if (unprotectedManagers && (v6 = unprotectedManagers->_remoteInterfacePresenter) != 0)
   {
@@ -2172,35 +2172,35 @@ LABEL_6:
   return v8;
 }
 
-- (id)webServiceConfigurationForContinuityPayments:(id)a3
+- (id)webServiceConfigurationForContinuityPayments:(id)payments
 {
-  v3 = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebServiceContext];
-  v4 = [v3 configuration];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebServiceContext];
+  configuration = [sharedWebServiceContext configuration];
 
-  return v4;
+  return configuration;
 }
 
-- (CGImage)thumbnailImageForPassIdentifier:(id)a3 size:(CGSize)a4 manager:(id)a5
+- (CGImage)thumbnailImageForPassIdentifier:(id)identifier size:(CGSize)size manager:(id)manager
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v9;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received request for thumbnail image for pass: %@", &v18, 0xCu);
   }
 
-  v12 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v9];
+  v12 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:identifierCopy];
   if (v12)
   {
-    v13 = [PKImageResizingConstraints constraintsWithAspectFillToSize:width, height];
-    [v13 setOutputScale:1.0];
-    v14 = [v12 frontFaceImage];
-    v15 = [v14 resizedImageWithConstraints:v13];
+    height = [PKImageResizingConstraints constraintsWithAspectFillToSize:width, height];
+    [height setOutputScale:1.0];
+    frontFaceImage = [v12 frontFaceImage];
+    v15 = [frontFaceImage resizedImageWithConstraints:height];
     v16 = CGImageRetain([v15 imageRef]);
 
     if (v16)
@@ -2217,29 +2217,29 @@ LABEL_6:
   return v16;
 }
 
-- (void)didReceiveRemotePaymentRequest:(id)a3
+- (void)didReceiveRemotePaymentRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    sub_1005B7A48(self, a3);
+    sub_1005B7A48(self, request);
   }
 }
 
-- (void)markPassWithUniqueIdentifiersForDeletion:(id)a3
+- (void)markPassWithUniqueIdentifiersForDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = PDDefaultQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100032DB4;
   v7[3] = &unk_10083C420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deletionCopy;
+  selfCopy = self;
+  v6 = deletionCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)secureElementPairingDidChangeForReason:(unint64_t)a3
+- (void)secureElementPairingDidChangeForReason:(unint64_t)reason
 {
   v5 = PDDefaultQueue();
   v6[0] = _NSConcreteStackBlock;
@@ -2247,45 +2247,45 @@ LABEL_6:
   v6[2] = sub_1005B6570;
   v6[3] = &unk_10083D700;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = reason;
   dispatch_async(v5, v6);
 }
 
-- (void)expressPassManager:(id)a3 didUpdateExpressPassConfigurations:(id)a4
+- (void)expressPassManager:(id)manager didUpdateExpressPassConfigurations:(id)configurations
 {
-  v5 = a4;
+  configurationsCopy = configurations;
   v6 = PDDefaultQueue();
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100033008;
   v8[3] = &unk_10083C420;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationsCopy;
+  v7 = configurationsCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)expressPassManager:(id)a3 didFinishExpressTransactionWithState:(id)a4
+- (void)expressPassManager:(id)manager didFinishExpressTransactionWithState:(id)state
 {
-  v13 = a4;
-  v5 = [v13 passUniqueIdentifier];
-  v6 = [v13 applicationIdentifier];
-  v7 = v6;
-  if (v5 && v6)
+  stateCopy = state;
+  passUniqueIdentifier = [stateCopy passUniqueIdentifier];
+  applicationIdentifier = [stateCopy applicationIdentifier];
+  v7 = applicationIdentifier;
+  if (passUniqueIdentifier && applicationIdentifier)
   {
     v8 = [PKPaymentApplicationUsageSummary alloc];
     v9 = +[NSDate now];
-    v10 = [v8 initWithPassUniqueIdentifier:v5 paymentApplicationIdentifier:v7 lastUsed:v9];
+    v10 = [v8 initWithPassUniqueIdentifier:passUniqueIdentifier paymentApplicationIdentifier:v7 lastUsed:v9];
 
     [(PDDatabaseManager *)self->_databaseManager insertPaymentApplicationUsageSummary:v10];
-    v11 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:v5];
-    v12 = [v11 secureElementPass];
+    v11 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:passUniqueIdentifier];
+    secureElementPass = [v11 secureElementPass];
 
-    [(PDUserActivitySignalsManager *)self->_userActivitySignalsManager handlePassTransactionActivitySummaryWithPassUniqueIdentifier:v5 paymentApplicationIdentifier:v7 pass:v12 state:v13];
+    [(PDUserActivitySignalsManager *)self->_userActivitySignalsManager handlePassTransactionActivitySummaryWithPassUniqueIdentifier:passUniqueIdentifier paymentApplicationIdentifier:v7 pass:secureElementPass state:stateCopy];
   }
 }
 
-- (BOOL)defaultPassManagerCanUpdateDefaultPass:(id)a3
+- (BOOL)defaultPassManagerCanUpdateDefaultPass:(id)pass
 {
   v4 = PKPendingProvisioningBackgroundProvisioningInBuddyTypes();
   LOBYTE(self) = [(PDPendingProvisioningManager *)self->_pendingProvisioningManager hasPendingProvisioningsOfTypes:v4];
@@ -2293,14 +2293,14 @@ LABEL_6:
   return self ^ 1;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2313,11 +2313,11 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) bundleIdentifier];
-        v11 = [v10 isEqualToString:v8];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * v9) bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:v8];
 
         if (v11)
         {
@@ -2335,21 +2335,21 @@ LABEL_6:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2362,11 +2362,11 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) bundleIdentifier];
-        v11 = [v10 isEqualToString:v8];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * v9) bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:v8];
 
         if (v11)
         {
@@ -2377,78 +2377,78 @@ LABEL_6:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)defaultDiscoveryManager:(id)a3 sendDiscoveryArticleLayoutsUpdated:(id)a4
+- (void)defaultDiscoveryManager:(id)manager sendDiscoveryArticleLayoutsUpdated:(id)updated
 {
-  v5 = a4;
+  updatedCopy = updated;
   v6 = sub_100012A20(self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100033694;
   v8[3] = &unk_10083D790;
-  v9 = v5;
-  v7 = v5;
+  v9 = updatedCopy;
+  v7 = updatedCopy;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 
-- (void)applePayCloudStoreContainer:(id)a3 didFinishTransactionFetchForPassUniqueID:(id)a4 error:(id)a5
+- (void)applePayCloudStoreContainer:(id)container didFinishTransactionFetchForPassUniqueID:(id)d error:(id)error
 {
-  if (a4)
+  if (d)
   {
-    v7 = a5;
-    v8 = a4;
+    errorCopy = error;
+    dCopy = d;
     [(PDServer *)self _updateQuickActions];
     v9 = +[NSDistributedNotificationCenter defaultCenter];
     v11 = PKDistributedNotificationTransactionPassUniqueIDKey;
-    v12 = v8;
+    v12 = dCopy;
     v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     [v9 postNotificationName:PKDistributedNotificationTransactionsFetchCompleted object:0 userInfo:v10];
-    [(PDDatabaseManager *)self->_databaseManager recomputeCategoryVisualizationMagnitudesForPassUniqueID:v8 withStyle:0];
-    [(PDSpotlightIndexer *)self->_spotlightIndexer transactionFetchCompletedForPassUniqueID:v8 error:v7];
+    [(PDDatabaseManager *)self->_databaseManager recomputeCategoryVisualizationMagnitudesForPassUniqueID:dCopy withStyle:0];
+    [(PDSpotlightIndexer *)self->_spotlightIndexer transactionFetchCompletedForPassUniqueID:dCopy error:errorCopy];
   }
 }
 
-- (void)accountManager:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5
+- (void)accountManager:(id)manager didUpdateAccount:(id)account oldAccount:(id)oldAccount
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  sub_10002BE80(self, v9, v8);
-  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:v10 didUpdateAccount:v9 oldAccount:v8];
+  oldAccountCopy = oldAccount;
+  accountCopy = account;
+  managerCopy = manager;
+  sub_10002BE80(self, accountCopy, oldAccountCopy);
+  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:managerCopy didUpdateAccount:accountCopy oldAccount:oldAccountCopy];
 
   financeSyncManager = self->_financeSyncManager;
 
   [(PDFinanceSyncManager *)financeSyncManager setNeedsSync];
 }
 
-- (void)accountManager:(id)a3 didAddAccount:(id)a4
+- (void)accountManager:(id)manager didAddAccount:(id)account
 {
-  v7 = a4;
-  v6 = a3;
-  sub_10002BE80(self, v7, 0);
-  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:v6 didAddAccount:v7];
+  accountCopy = account;
+  managerCopy = manager;
+  sub_10002BE80(self, accountCopy, 0);
+  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:managerCopy didAddAccount:accountCopy];
 
   [(PDFinanceSyncManager *)self->_financeSyncManager setNeedsSync];
-  [(PDBankCredentialMigrator *)self->_bankCredentialMigrator accountAdded:v7];
+  [(PDBankCredentialMigrator *)self->_bankCredentialMigrator accountAdded:accountCopy];
 }
 
-- (void)accountManager:(id)a3 didRemoveAccount:(id)a4
+- (void)accountManager:(id)manager didRemoveAccount:(id)account
 {
-  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:a3 didRemoveAccount:a4];
+  [(PDSpotlightIndexer *)self->_spotlightIndexer accountManager:manager didRemoveAccount:account];
   financeSyncManager = self->_financeSyncManager;
 
   [(PDFinanceSyncManager *)financeSyncManager setNeedsSync];
 }
 
-- (void)peerPaymentWebServiceCoordinator:(id)a3 didUpdateAccount:(id)a4 oldAccount:(id)a5
+- (void)peerPaymentWebServiceCoordinator:(id)coordinator didUpdateAccount:(id)account oldAccount:(id)oldAccount
 {
-  [(PDSpotlightIndexer *)self->_spotlightIndexer peerPaymentAccountDidUpdate:a4];
+  [(PDSpotlightIndexer *)self->_spotlightIndexer peerPaymentAccountDidUpdate:account];
   financeSyncManager = self->_financeSyncManager;
 
   [(PDFinanceSyncManager *)financeSyncManager setNeedsSync];
@@ -2466,27 +2466,27 @@ LABEL_6:
   [(PDFinanceSyncManager *)self->_financeSyncManager setNeedsSync];
 }
 
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:a3];
-  v6 = [v4 secureElementPass];
+  v4 = [(PDDatabaseManager *)self->_databaseManager passWithUniqueIdentifier:identifier];
+  secureElementPass = [v4 secureElementPass];
 
-  v5 = v6;
-  if (v6)
+  v5 = secureElementPass;
+  if (secureElementPass)
   {
-    sub_1005B2BF8(self, v6);
-    v5 = v6;
+    sub_1005B2BF8(self, secureElementPass);
+    v5 = secureElementPass;
   }
 }
 
-- (void)displayTapToRadarAlertForRequest:(id)a3 completion:(id)a4
+- (void)displayTapToRadarAlertForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 reason];
+  requestCopy = request;
+  completionCopy = completion;
+  reason = [requestCopy reason];
   if (os_variant_has_internal_ui())
   {
-    v9 = v8 == 0;
+    v9 = reason == 0;
   }
 
   else
@@ -2496,42 +2496,42 @@ LABEL_6:
 
   if (v9)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v10 = [(PDDatabaseManager *)self->_databaseManager tapToRadarPromptWithReason:v8];
+    v10 = [(PDDatabaseManager *)self->_databaseManager tapToRadarPromptWithReason:reason];
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v27 = v8;
+      v27 = reason;
       v28 = 2112;
       v29 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Last tap to radar prompt for reason %@: %@", buf, 0x16u);
     }
 
-    v13 = [v10 lastPromptDate];
+    lastPromptDate = [v10 lastPromptDate];
     v14 = +[NSDate date];
     v15 = v14;
-    if (v13 && ([v14 timeIntervalSinceDate:v13], v16 <= 86400.0))
+    if (lastPromptDate && ([v14 timeIntervalSinceDate:lastPromptDate], v16 <= 86400.0))
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v27 = v13;
+        v27 = lastPromptDate;
         v28 = 2112;
-        v29 = v6;
+        v29 = requestCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Not presenting tap to radar prompt since it was displayed less than 30 minutes ago, %@. %@", buf, 0x16u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -2540,17 +2540,17 @@ LABEL_6:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v6;
+        v27 = requestCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Presenting tap to radar request alert: %@", buf, 0xCu);
       }
 
-      [(PDDatabaseManager *)self->_databaseManager noteTapToRadarPromptedForReason:v8 lastPromptDate:v15];
+      [(PDDatabaseManager *)self->_databaseManager noteTapToRadarPromptedForReason:reason lastPromptDate:v15];
       v17 = objc_alloc_init(NSMutableDictionary);
-      v18 = [v6 alertHeader];
-      v19 = v18;
-      if (v18)
+      alertHeader = [requestCopy alertHeader];
+      v19 = alertHeader;
+      if (alertHeader)
       {
-        v20 = v18;
+        v20 = alertHeader;
       }
 
       else
@@ -2560,15 +2560,15 @@ LABEL_6:
 
       [v17 setObject:v20 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
 
-      v21 = [v6 alertMessage];
-      if (v21)
+      alertMessage = [requestCopy alertMessage];
+      if (alertMessage)
       {
-        [v17 setObject:v21 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
+        [v17 setObject:alertMessage forKeyedSubscript:kCFUserNotificationAlertMessageKey];
       }
 
       else
       {
-        v22 = [NSString stringWithFormat:@"A problem has been detected with Wallet:\n%@", v8];
+        v22 = [NSString stringWithFormat:@"A problem has been detected with Wallet:\n%@", reason];
         [v17 setObject:v22 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
       }
 
@@ -2578,34 +2578,34 @@ LABEL_6:
       v23[1] = 3221225472;
       v23[2] = sub_100033E84;
       v23[3] = &unk_10083D7F8;
-      v24 = v6;
-      v25 = v8;
+      v24 = requestCopy;
+      v25 = reason;
       [PKUserNotificationAgent presentNotificationWithParameters:v17 responseHandler:v23];
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
   }
 }
 
-- (void)dynamicStateManager:(id)a3 dynamicStatesDidUpdate:(id)a4
+- (void)dynamicStateManager:(id)manager dynamicStatesDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v6 = PDDefaultQueue();
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003410C;
   v8[3] = &unk_10083C420;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)bindingStateChangedForPass:(id)a3
+- (void)bindingStateChangedForPass:(id)pass
 {
-  v4 = [a3 copy];
+  v4 = [pass copy];
   v5 = v4;
   if (v4)
   {
@@ -2621,13 +2621,13 @@ LABEL_6:
 {
   v3 = objc_alloc_init(SBSApplicationShortcutService);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(_PDSystemPassRelevancyCoordinator *)self->_relevancyCoordinator currentRelevancyInformation];
-  v6 = [v5 firstObject];
+  currentRelevancyInformation = [(_PDSystemPassRelevancyCoordinator *)self->_relevancyCoordinator currentRelevancyInformation];
+  firstObject = [currentRelevancyInformation firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v29 = [v5 firstObject];
-    v30 = [v29 objectForKeyedSubscript:PKPassLibraryRelevantInfoUniqueID];
+    firstObject2 = [currentRelevancyInformation firstObject];
+    v30 = [firstObject2 objectForKeyedSubscript:PKPassLibraryRelevantInfoUniqueID];
 
     v31 = PKLocalizedString(@"ORB_RELEVANT_PASS");
     v32 = sub_1005B6A7C();
@@ -2644,8 +2644,8 @@ LABEL_6:
     [v4 addObject:v34];
   }
 
-  v8 = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierForMostRecentVisibleTransaction];
-  if (v8)
+  passUniqueIdentifierForMostRecentVisibleTransaction = [(PDDatabaseManager *)self->_databaseManager passUniqueIdentifierForMostRecentVisibleTransaction];
+  if (passUniqueIdentifierForMostRecentVisibleTransaction)
   {
     v9 = objc_alloc_init(SBSApplicationShortcutItem);
     v10 = [[SBSApplicationShortcutSystemIcon alloc] initWithSystemImageName:@"checkmark.circle"];
@@ -2656,20 +2656,20 @@ LABEL_6:
     [v9 setLocalizedTitle:v11];
 
     v35 = PKQuickActionPassUniqueIDKKey;
-    v36 = v8;
+    v36 = passUniqueIdentifierForMostRecentVisibleTransaction;
     v12 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     [v9 setUserInfo:v12];
 
     [v4 addObject:v9];
   }
 
-  v13 = [(PDDatabaseManager *)self->_databaseManager peerPaymentAccount];
+  peerPaymentAccount = [(PDDatabaseManager *)self->_databaseManager peerPaymentAccount];
   databaseManager = self->_databaseManager;
-  v15 = [v13 associatedPassUniqueID];
-  [(PDDatabaseManager *)databaseManager primaryPaymentApplicationStateForPassUniqueIdentifier:v15];
+  associatedPassUniqueID = [peerPaymentAccount associatedPassUniqueID];
+  [(PDDatabaseManager *)databaseManager primaryPaymentApplicationStateForPassUniqueIdentifier:associatedPassUniqueID];
   IsPersonalized = PKPaymentApplicationStateIsPersonalized();
 
-  if (v13 && IsPersonalized && [v13 supportsDeviceTap])
+  if (peerPaymentAccount && IsPersonalized && [peerPaymentAccount supportsDeviceTap])
   {
     v17 = objc_alloc_init(SBSApplicationShortcutItem);
     v18 = [[SBSApplicationShortcutSystemPrivateIcon alloc] initWithSystemImageName:@"apple.cash.tap"];
@@ -2684,10 +2684,10 @@ LABEL_6:
 
   if (PKSecureElementIsAvailable())
   {
-    v20 = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
-    v21 = [v20 paymentSetupSupportedInRegion];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
+    paymentSetupSupportedInRegion = [sharedWebService paymentSetupSupportedInRegion];
 
-    if (v21 == 1)
+    if (paymentSetupSupportedInRegion == 1)
     {
       v22 = [(PDDatabaseManager *)self->_databaseManager countPassesOfType:1];
       if (!v22)
@@ -2698,16 +2698,16 @@ LABEL_6:
       if (v22 == 1)
       {
         v23 = [(PDDatabaseManager *)self->_databaseManager passUniqueIDsOfType:1];
-        v24 = [v23 anyObject];
-        if (!v24)
+        anyObject = [v23 anyObject];
+        if (!anyObject)
         {
 LABEL_18:
 
           goto LABEL_19;
         }
 
-        v25 = v24;
-        [(PDDatabaseManager *)self->_databaseManager primaryPaymentApplicationStateForPassUniqueIdentifier:v24];
+        v25 = anyObject;
+        [(PDDatabaseManager *)self->_databaseManager primaryPaymentApplicationStateForPassUniqueIdentifier:anyObject];
         v26 = PKSecureElementPassActivationStateForApplicationState();
 
         if (v26 == 4)
@@ -2733,15 +2733,15 @@ LABEL_19:
   [v3 invalidate];
 }
 
-- (void)pendingProvisioningManagerDidFinishProvisioningWithReceipts:(id)a3
+- (void)pendingProvisioningManagerDidFinishProvisioningWithReceipts:(id)receipts
 {
-  v4 = a3;
+  receiptsCopy = receipts;
   [(PDDefaultPassManager *)self->_defaultPassManager updateDefaultPaymentPassIfNeeded];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v4;
+  obj = receiptsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {

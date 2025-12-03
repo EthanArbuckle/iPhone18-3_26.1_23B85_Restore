@@ -1,118 +1,118 @@
 @interface SymptomExpertSystemHandler
-+ (BOOL)noteSymptom:(id)a3;
-+ (BOOL)parseEndpoint:(id)a3 intoURL:(id *)a4 host:(id *)a5 scheme:(id *)a6 path:(id *)a7;
-+ (id)configureClass:(id)a3;
++ (BOOL)noteSymptom:(id)symptom;
++ (BOOL)parseEndpoint:(id)endpoint intoURL:(id *)l host:(id *)host scheme:(id *)scheme path:(id *)path;
++ (id)configureClass:(id)class;
 + (id)internalStateDictionary;
-+ (id)libtraceInfo:(id)a3;
++ (id)libtraceInfo:(id)info;
 + (id)sharedInstance;
-- (BOOL)didInstallProfileForKey:(id)a3;
+- (BOOL)didInstallProfileForKey:(id)key;
 - (BOOL)loadDefaultRules;
-- (BOOL)loadModule:(id)a3 requiresBasebandModule:(BOOL)a4;
-- (BOOL)noteSymptom:(id)a3;
-- (BOOL)postCoreAnalyticsEvent:(id)a3 forEventName:(id)a4;
-- (BOOL)urlIsAppleDomain:(id)a3;
+- (BOOL)loadModule:(id)module requiresBasebandModule:(BOOL)basebandModule;
+- (BOOL)noteSymptom:(id)symptom;
+- (BOOL)postCoreAnalyticsEvent:(id)event forEventName:(id)name;
+- (BOOL)urlIsAppleDomain:(id)domain;
 - (NSDataDetector)urlDetector;
 - (SymptomExpertSystemHandler)init;
-- (_NSRange)rangeOfValueForSlotName:(id)a3 in:(id)a4;
-- (id)analyticsCLIPSModuleDictForModule:(id)a3;
-- (id)analyticsObserveModule:(id)a3 requiredModules:(id)a4 unloadModule:(id)a5;
-- (id)arbitratorDictionaryForSymptom:(id)a3 procName:(id)a4 interfaceType:(id)a5 eventCount:(id)a6 duration:(id)a7;
-- (id)deParamsDictForDiagnosticExtension:(id)a3 withDEParams:(id)a4;
-- (id)getBatteryPercentage:(id)a3;
+- (_NSRange)rangeOfValueForSlotName:(id)name in:(id)in;
+- (id)analyticsCLIPSModuleDictForModule:(id)module;
+- (id)analyticsObserveModule:(id)module requiredModules:(id)modules unloadModule:(id)unloadModule;
+- (id)arbitratorDictionaryForSymptom:(id)symptom procName:(id)name interfaceType:(id)type eventCount:(id)count duration:(id)duration;
+- (id)deParamsDictForDiagnosticExtension:(id)extension withDEParams:(id)params;
+- (id)getBatteryPercentage:(id)percentage;
 - (id)getOperatorName;
 - (id)getSignalBars;
-- (id)interfaceTypeForName:(id)a3;
+- (id)interfaceTypeForName:(id)name;
 - (id)internalStateDictionary;
-- (id)obfuscatedEndpoint:(id)a3;
-- (id)obfuscatedPrimaryComponent:(id)a3 obfuscationType:(id)a4;
-- (id)obfuscatedSubcomponent:(id)a3 fromPrimaryEntry:(id)a4 withKey:(id)a5 obfuscation:(id)a6;
-- (id)primaryComponent:(id)a3 obfuscationType:(id)a4;
-- (id)serviceToFactString:(id)a3 type:(int64_t)a4;
-- (id)symptomDictionaryForSymptom:(id)a3 domain:(id)a4 type:(id)a5;
+- (id)obfuscatedEndpoint:(id)endpoint;
+- (id)obfuscatedPrimaryComponent:(id)component obfuscationType:(id)type;
+- (id)obfuscatedSubcomponent:(id)subcomponent fromPrimaryEntry:(id)entry withKey:(id)key obfuscation:(id)obfuscation;
+- (id)primaryComponent:(id)component obfuscationType:(id)type;
+- (id)serviceToFactString:(id)string type:(int64_t)type;
+- (id)symptomDictionaryForSymptom:(id)symptom domain:(id)domain type:(id)type;
 - (void)_addAllObservers;
 - (void)_addExternalRelayObservers;
 - (void)_administrativeDisable;
 - (void)_administrativeEnable;
-- (void)_airplaySymptom:(id)a3;
+- (void)_airplaySymptom:(id)symptom;
 - (void)_bringStateToDiagnosing;
 - (void)_bringStateToIdle;
 - (void)_bringStateToRunning;
 - (void)_completeInitialization;
-- (void)_configdSymptom:(id)a3;
+- (void)_configdSymptom:(id)symptom;
 - (void)_dumpState;
-- (void)_libnetcoreSymptom:(id)a3;
-- (void)_libtraceOSLog:(id)a3;
+- (void)_libnetcoreSymptom:(id)symptom;
+- (void)_libtraceOSLog:(id)log;
 - (void)_performSeedCleanup;
-- (void)_processAnomalousFlowSymptom:(id)a3 symptomName:(id)a4 categoryType:(id)a5;
-- (void)_processLibnetcoreSymptom:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdEnergyBackgroundFullActivityMap:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdEnergyBackgroundRRCExcActivity:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdExcessiveFailedConnections:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdFlowCountExceededThreshold:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdNoDefaultRoute:(id)a3 symptomName:(id)a4;
-- (void)_processSymptomsdRnfSymptom:(id)a3 symptomName:(id)a4 categoryType:(id)a5;
-- (void)_processSymptomsdWiFiShimSymptom:(id)a3 symptomName:(id)a4;
-- (void)_processUIPerformanceThunderingHerdCase:(id)a3 symptomName:(id)a4;
+- (void)_processAnomalousFlowSymptom:(id)symptom symptomName:(id)name categoryType:(id)type;
+- (void)_processLibnetcoreSymptom:(id)symptom symptomName:(id)name;
+- (void)_processSymptomsdEnergyBackgroundFullActivityMap:(id)map symptomName:(id)name;
+- (void)_processSymptomsdEnergyBackgroundRRCExcActivity:(id)activity symptomName:(id)name;
+- (void)_processSymptomsdExcessiveFailedConnections:(id)connections symptomName:(id)name;
+- (void)_processSymptomsdFlowCountExceededThreshold:(id)threshold symptomName:(id)name;
+- (void)_processSymptomsdNoDefaultRoute:(id)route symptomName:(id)name;
+- (void)_processSymptomsdRnfSymptom:(id)symptom symptomName:(id)name categoryType:(id)type;
+- (void)_processSymptomsdWiFiShimSymptom:(id)symptom symptomName:(id)name;
+- (void)_processUIPerformanceThunderingHerdCase:(id)case symptomName:(id)name;
 - (void)_removeAllObservers;
 - (void)_removeDebuggabilityFolder;
 - (void)_removeExternalRelayObservers;
-- (void)_symptomsdSymptom:(id)a3;
-- (void)_usageUpdaterSymptom:(id)a3;
-- (void)addDiagnosticSession:(id)a3 hasDictionary:(id)a4 endSession:(id)a5;
-- (void)adjustStrobeTimerInterval:(id)a3 maximum:(id)a4;
-- (void)assertFactAndRun:(id)a3 module:(id)a4 reply:(id)a5;
-- (void)assertFactAsSymptom:(id)a3 module:(id)a4;
-- (void)assertFactString:(id)a3 moduleName:(id)a4 run:(BOOL)a5;
-- (void)assertRelayFact:(id)a3 forRelayKey:(id)a4 moduleName:(id)a5;
+- (void)_symptomsdSymptom:(id)symptom;
+- (void)_usageUpdaterSymptom:(id)symptom;
+- (void)addDiagnosticSession:(id)session hasDictionary:(id)dictionary endSession:(id)endSession;
+- (void)adjustStrobeTimerInterval:(id)interval maximum:(id)maximum;
+- (void)assertFactAndRun:(id)run module:(id)module reply:(id)reply;
+- (void)assertFactAsSymptom:(id)symptom module:(id)module;
+- (void)assertFactString:(id)string moduleName:(id)name run:(BOOL)run;
+- (void)assertRelayFact:(id)fact forRelayKey:(id)key moduleName:(id)name;
 - (void)cancelAllWaitingForFactTimers;
-- (void)cancelDiagnosticSession:(id)a3;
-- (void)cancelWaitForFactWithTemplateName:(id)a3;
+- (void)cancelDiagnosticSession:(id)session;
+- (void)cancelWaitForFactWithTemplateName:(id)name;
 - (void)checkObfuscationsInAllCaseSignatures;
-- (void)clipsConsoleOutput:(id)a3 consoleChannel:(const char *)a4 forEngine:(id)a5;
-- (void)coreTelephonyDumpCompletedTo:(id)a3 folderPrefix:(id)a4;
-- (void)coreTelephonyDumpStartedTo:(id)a3 folderPrefix:(id)a4 gotFilteredOut:(BOOL)a5;
-- (void)deactivateModule:(id)a3;
+- (void)clipsConsoleOutput:(id)output consoleChannel:(const char *)channel forEngine:(id)engine;
+- (void)coreTelephonyDumpCompletedTo:(id)to folderPrefix:(id)prefix;
+- (void)coreTelephonyDumpStartedTo:(id)to folderPrefix:(id)prefix gotFilteredOut:(BOOL)out;
+- (void)deactivateModule:(id)module;
 - (void)dealloc;
-- (void)endDiagnosticSession:(id)a3;
+- (void)endDiagnosticSession:(id)session;
 - (void)fetchCoreTelephonyLoggingEnabledStatus;
-- (void)handleEvent:(id)a3 forEventName:(id)a4;
+- (void)handleEvent:(id)event forEventName:(id)name;
 - (void)ingestPendingOTAUpdates;
-- (void)logSessionEventMessage:(id)a3;
-- (void)logSessionEventProbe:(id)a3 endpoint:(id)a4 interface:(id)a5 status:(id)a6;
-- (void)logSessionEventSymptom:(id)a3 process:(id)a4 endpoint:(id)a5 interface:(id)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observer:(id)a3 didChangeConfiguration:(id)a4 type:(id)a5;
-- (void)onDisruptiveFlowChange:(id)a3;
-- (void)operatorNameChangedForSubscription:(id)a3;
-- (void)probeFactString:(id)a3 module:(id)a4 goIntoDiagnosing:(BOOL)a5 run:(BOOL)a6;
-- (void)probeOutputFilePaths:(id)a3 forDiagSessionUUID:(id)a4;
-- (void)probeStatusUpdate:(id)a3;
-- (void)processIncomingOTAUpdate:(id)a3;
-- (void)processRelayStateChange:(id)a3 key:(id)a4 relay:(id)a5 scalar:(BOOL)a6;
-- (void)processWiFiAssociationChange:(BOOL)a3 atTime:(id)a4;
+- (void)logSessionEventMessage:(id)message;
+- (void)logSessionEventProbe:(id)probe endpoint:(id)endpoint interface:(id)interface status:(id)status;
+- (void)logSessionEventSymptom:(id)symptom process:(id)process endpoint:(id)endpoint interface:(id)interface;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observer:(id)observer didChangeConfiguration:(id)configuration type:(id)type;
+- (void)onDisruptiveFlowChange:(id)change;
+- (void)operatorNameChangedForSubscription:(id)subscription;
+- (void)probeFactString:(id)string module:(id)module goIntoDiagnosing:(BOOL)diagnosing run:(BOOL)run;
+- (void)probeOutputFilePaths:(id)paths forDiagSessionUUID:(id)d;
+- (void)probeStatusUpdate:(id)update;
+- (void)processIncomingOTAUpdate:(id)update;
+- (void)processRelayStateChange:(id)change key:(id)key relay:(id)relay scalar:(BOOL)scalar;
+- (void)processWiFiAssociationChange:(BOOL)change atTime:(id)time;
 - (void)registerAllCLIPSCallbacks;
 - (void)releaseAllRelayFacts;
-- (void)requestCoreTelephonyDumpViaDiagnosticExtension:(id)a3 folderPrefix:(id)a4 dumpReason:(id)a5 resetBaseband:(id)a6;
+- (void)requestCoreTelephonyDumpViaDiagnosticExtension:(id)extension folderPrefix:(id)prefix dumpReason:(id)reason resetBaseband:(id)baseband;
 - (void)resetPreviousObfuscations;
-- (void)retractFact:(void *)a3 moduleName:(id)a4 run:(BOOL)a5;
-- (void)retractFacts:(id)a3 runAfterLastFact:(BOOL)a4;
-- (void)retractService:(id)a3 type:(int64_t)a4;
+- (void)retractFact:(void *)fact moduleName:(id)name run:(BOOL)run;
+- (void)retractFacts:(id)facts runAfterLastFact:(BOOL)fact;
+- (void)retractService:(id)service type:(int64_t)type;
 - (void)runEngine;
-- (void)sendCaseSignaturesToSDRWithSessionID:(id)a3;
-- (void)serviceAdded:(id)a3 type:(int64_t)a4;
-- (void)serviceRemoved:(id)a3 type:(int64_t)a4;
-- (void)serviceUpdated:(id)a3 type:(int64_t)a4;
+- (void)sendCaseSignaturesToSDRWithSessionID:(id)d;
+- (void)serviceAdded:(id)added type:(int64_t)type;
+- (void)serviceRemoved:(id)removed type:(int64_t)type;
+- (void)serviceUpdated:(id)updated type:(int64_t)type;
 - (void)setDefaultFacts;
-- (void)setValue:(id)a3 forKey:(id)a4 toEBFProfiles:(id)a5;
-- (void)signalStrengthChangedForSubscription:(id)a3;
-- (void)snapshotDiagnosticSessionWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subTypeContext:(id)a6 processID:(id)a7 processName:(id)a8 bundleID:(id)a9 interfaceType:(id)a10 threshold:(id)a11 sessionDuration:(id)a12;
-- (void)startAnalyticsObserving:(id)a3;
+- (void)setValue:(id)value forKey:(id)key toEBFProfiles:(id)profiles;
+- (void)signalStrengthChangedForSubscription:(id)subscription;
+- (void)snapshotDiagnosticSessionWithDomain:(id)domain type:(id)type subType:(id)subType subTypeContext:(id)context processID:(id)d processName:(id)name bundleID:(id)iD interfaceType:(id)self0 threshold:(id)self1 sessionDuration:(id)self2;
+- (void)startAnalyticsObserving:(id)observing;
 - (void)startCAEventObserverTimer;
-- (void)startDiagnosticSessionWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subTypeContext:(id)a6 processID:(id)a7 processName:(id)a8 bundleID:(id)a9 interfaceType:(id)a10 threshold:(id)a11 sessionDuration:(id)a12 triggerRemoteCase:(id)a13;
-- (void)startLoadDefaultRulesTimer:(double)a3;
-- (void)stopAnalyticsObserving:(id)a3;
+- (void)startDiagnosticSessionWithDomain:(id)domain type:(id)type subType:(id)subType subTypeContext:(id)context processID:(id)d processName:(id)name bundleID:(id)iD interfaceType:(id)self0 threshold:(id)self1 sessionDuration:(id)self2 triggerRemoteCase:(id)self3;
+- (void)startLoadDefaultRulesTimer:(double)timer;
+- (void)stopAnalyticsObserving:(id)observing;
 - (void)unloadAnalyticsObservedModules;
-- (void)waitForFactWithTemplateName:(id)a3 module:(id)a4 timeout:(id)a5;
+- (void)waitForFactWithTemplateName:(id)name module:(id)module timeout:(id)timeout;
 @end
 
 @implementation SymptomExpertSystemHandler
@@ -168,22 +168,22 @@ void __53__SymptomExpertSystemHandler__completeInitialization__block_invoke_3(ui
 - (void)runEngine
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = debuggabilityLogHandle;
-  if (v2->_asyncKVOCount)
+  if (selfCopy->_asyncKVOCount)
   {
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
-      asyncKVOCount = v2->_asyncKVOCount;
+      asyncKVOCount = selfCopy->_asyncKVOCount;
       v13 = 134217984;
       v14 = asyncKVOCount;
       _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_INFO, "NDFSM: Delaying run until %lu pending KVO events have been processed", &v13, 0xCu);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v2->_pendingEngineRun = 1;
+    selfCopy->_pendingEngineRun = 1;
     v5 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -205,10 +205,10 @@ LABEL_10:
       _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "NDFSM: No pending KVO events. Allowing run", &v13, 2u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v10 = [(CLIPSShim *)v2->ruleEngine run];
-    v2->_pendingEngineRun = 0;
+    v10 = [(CLIPSShim *)selfCopy->ruleEngine run];
+    selfCopy->_pendingEngineRun = 0;
     v11 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
@@ -228,9 +228,9 @@ LABEL_10:
 - (SymptomExpertSystemHandler)init
 {
   v3 = +[SystemProperties sharedInstance];
-  v4 = [v3 isSymptomsdHelper];
+  isSymptomsdHelper = [v3 isSymptomsdHelper];
 
-  if (v4)
+  if (isSymptomsdHelper)
   {
     v5 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -239,7 +239,7 @@ LABEL_10:
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "NDFSM: Not supported in this process", buf, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -256,30 +256,30 @@ LABEL_10:
       v9->relayObservingState = 2;
       [(SymptomExpertSystemHandler *)v9 setDiagnosingStrobeInterval:3];
       [(SymptomExpertSystemHandler *)v10 setMaximumDiagnosingTime:15];
-      v11 = [MEMORY[0x277CBEB18] array];
-      [(SymptomExpertSystemHandler *)v10 setCaseSignatures:v11];
+      array = [MEMORY[0x277CBEB18] array];
+      [(SymptomExpertSystemHandler *)v10 setCaseSignatures:array];
 
-      v12 = [MEMORY[0x277CBEB18] array];
-      [(SymptomExpertSystemHandler *)v10 setIncomingSymptoms:v12];
+      array2 = [MEMORY[0x277CBEB18] array];
+      [(SymptomExpertSystemHandler *)v10 setIncomingSymptoms:array2];
 
-      v13 = [MEMORY[0x277CBEB18] array];
-      [(SymptomExpertSystemHandler *)v10 setProcessedSymptoms:v13];
+      array3 = [MEMORY[0x277CBEB18] array];
+      [(SymptomExpertSystemHandler *)v10 setProcessedSymptoms:array3];
 
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      [(SymptomExpertSystemHandler *)v10 setDiagnosticSessionOutput:v14];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(SymptomExpertSystemHandler *)v10 setDiagnosticSessionOutput:dictionary];
 
-      v15 = [MEMORY[0x277CBEB38] dictionary];
-      [(SymptomExpertSystemHandler *)v10 setObfuscations:v15];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [(SymptomExpertSystemHandler *)v10 setObfuscations:dictionary2];
 
-      v16 = [MEMORY[0x277CBEB38] dictionary];
-      [(SymptomExpertSystemHandler *)v10 setClipsFactsWaitTimers:v16];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+      [(SymptomExpertSystemHandler *)v10 setClipsFactsWaitTimers:dictionary3];
 
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary4 = [MEMORY[0x277CBEB38] dictionary];
       pendingOTACLIPSUpdates = v10->_pendingOTACLIPSUpdates;
-      v10->_pendingOTACLIPSUpdates = v17;
+      v10->_pendingOTACLIPSUpdates = dictionary4;
 
-      v19 = [MEMORY[0x277CBEB38] dictionary];
-      [(SymptomExpertSystemHandler *)v10 setLibtraceOSLogWhiteList:v19];
+      dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+      [(SymptomExpertSystemHandler *)v10 setLibtraceOSLogWhiteList:dictionary5];
 
       v20 = [MEMORY[0x277CBEB58] set];
       [(SymptomExpertSystemHandler *)v10 setFilteredCTDumps:v20];
@@ -288,13 +288,13 @@ LABEL_10:
       [(SymptomExpertSystemHandler *)v10 setSdrReporter:v21];
 
       v22 = [ProbeManager alloc];
-      v23 = [(ExpertSystemHandlerCore *)v10 queue];
-      v24 = [(ProbeManager *)v22 initWithQueue:v23];
+      queue = [(ExpertSystemHandlerCore *)v10 queue];
+      v24 = [(ProbeManager *)v22 initWithQueue:queue];
       probeManager = v10->_probeManager;
       v10->_probeManager = v24;
 
       [(ProbeManager *)v10->_probeManager setDelegate:v10];
-      v26 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __34__SymptomExpertSystemHandler_init__block_invoke;
@@ -303,7 +303,7 @@ LABEL_10:
       v39 = v27;
       v28 = v8;
       v40 = v28;
-      v29 = [v26 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v38];
+      v29 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v38];
       relayReadyObserver = v27->relayReadyObserver;
       v27->relayReadyObserver = v29;
 
@@ -329,10 +329,10 @@ LABEL_10:
 
     self = v10;
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 void __34__SymptomExpertSystemHandler_init__block_invoke(uint64_t a1)
@@ -381,9 +381,9 @@ void __34__SymptomExpertSystemHandler_init__block_invoke(uint64_t a1)
   self->systemPropsRelay = v13;
 
   self->_internalBuild = [(SystemProperties *)self->systemPropsRelay internalBuild];
-  v15 = [(SystemProperties *)self->systemPropsRelay carrierSeedBuild];
-  self->_carrierSeedBuild = v15;
-  self->_internalOrCarrierSeedBuild = self->_internalBuild || v15;
+  carrierSeedBuild = [(SystemProperties *)self->systemPropsRelay carrierSeedBuild];
+  self->_carrierSeedBuild = carrierSeedBuild;
+  self->_internalOrCarrierSeedBuild = self->_internalBuild || carrierSeedBuild;
   self->_customerSeedBuild = [(SystemProperties *)self->systemPropsRelay customerSeedBuild];
   self->_vendorBuild = [(SystemProperties *)self->systemPropsRelay vendorBuild];
   v16 = +[MotionStateRelay sharedInstance];
@@ -402,8 +402,8 @@ void __34__SymptomExpertSystemHandler_init__block_invoke(uint64_t a1)
   self->_analyticsConfigObserver = v20;
 
   v22 = self->_analyticsConfigObserver;
-  v23 = [(ExpertSystemHandlerCore *)self queue];
-  [(AnalyticsConfigurationObserver *)v22 setConfigurationObserverDelegate:self queue:v23];
+  queue = [(ExpertSystemHandlerCore *)self queue];
+  [(AnalyticsConfigurationObserver *)v22 setConfigurationObserverDelegate:self queue:queue];
 
   self->wifiRelayContext.relayName = "WiFi";
   *&self->wifiRelayContext.symptomLike = 0;
@@ -499,8 +499,8 @@ void __34__SymptomExpertSystemHandler_init__block_invoke(uint64_t a1)
   states = self->states;
   self->states = v28;
 
-  v30 = [(ExpertSystemHandlerCore *)self queue];
-  v31 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v30);
+  queue2 = [(ExpertSystemHandlerCore *)self queue];
+  v31 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
   clipsReleaseMemoryTimer = self->_clipsReleaseMemoryTimer;
   self->_clipsReleaseMemoryTimer = v31;
 
@@ -513,9 +513,9 @@ void __34__SymptomExpertSystemHandler_init__block_invoke(uint64_t a1)
   handler[4] = self;
   dispatch_source_set_event_handler(v33, handler);
   dispatch_resume(self->_clipsReleaseMemoryTimer);
-  v34 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   completedInitializationDate = self->_completedInitializationDate;
-  self->_completedInitializationDate = v34;
+  self->_completedInitializationDate = date;
 
   objc_destroyWeak(&v40);
   objc_destroyWeak(&v42);
@@ -801,9 +801,9 @@ uint64_t __53__SymptomExpertSystemHandler__completeInitialization__block_invoke_
   currentState = self->currentState;
   if (currentState)
   {
-    v6 = [(ExpertSystemStateCore *)currentState label];
-    v7 = [v3 label];
-    v8 = [v6 isEqualToString:v7];
+    label = [(ExpertSystemStateCore *)currentState label];
+    label2 = [v3 label];
+    v8 = [label isEqualToString:label2];
 
     if ((v8 & 1) == 0)
     {
@@ -812,9 +812,9 @@ uint64_t __53__SymptomExpertSystemHandler__completeInitialization__block_invoke_
       {
         v10 = self->currentState;
         v11 = v9;
-        v12 = [(ExpertSystemStateCore *)v10 label];
+        label3 = [(ExpertSystemStateCore *)v10 label];
         *buf = 138412290;
-        v19 = v12;
+        v19 = label3;
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "NDFSM Idling from %@ state", buf, 0xCu);
       }
 
@@ -831,11 +831,11 @@ uint64_t __53__SymptomExpertSystemHandler__completeInitialization__block_invoke_
   else
   {
     objc_storeStrong(&self->currentState, v3);
-    v14 = [(ExpertSystemStateCore *)self->currentState sojournTime];
-    [v14 start];
+    sojournTime = [(ExpertSystemStateCore *)self->currentState sojournTime];
+    [sojournTime start];
 
-    v15 = [(ExpertSystemStateCore *)self->currentState entryAction];
-    v15[2]();
+    entryAction = [(ExpertSystemStateCore *)self->currentState entryAction];
+    entryAction[2]();
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -880,15 +880,15 @@ void __47__SymptomExpertSystemHandler__bringStateToIdle__block_invoke(uint64_t a
   if (!currentState)
   {
     objc_storeStrong(&self->currentState, v4);
-    v7 = [(ExpertSystemStateCore *)self->currentState entryAction];
-    v7[2]();
+    entryAction = [(ExpertSystemStateCore *)self->currentState entryAction];
+    entryAction[2]();
 
     currentState = self->currentState;
   }
 
-  v8 = [(ExpertSystemStateCore *)currentState label];
-  v9 = [v3 label];
-  v10 = [v8 isEqualToString:v9];
+  label = [(ExpertSystemStateCore *)currentState label];
+  label2 = [v3 label];
+  v10 = [label isEqualToString:label2];
 
   if ((v10 & 1) == 0)
   {
@@ -897,14 +897,14 @@ void __47__SymptomExpertSystemHandler__bringStateToIdle__block_invoke(uint64_t a
     {
       v12 = self->currentState;
       v13 = v11;
-      v14 = [(ExpertSystemStateCore *)v12 label];
+      label3 = [(ExpertSystemStateCore *)v12 label];
       v23 = 138412290;
-      v24 = v14;
+      v24 = label3;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "NDFSM running state from %@ state", &v23, 0xCu);
     }
 
-    v15 = [(ExpertSystemStateCore *)self->currentState exitAction];
-    v15[2]();
+    exitAction = [(ExpertSystemStateCore *)self->currentState exitAction];
+    exitAction[2]();
 
     v16 = self->currentState;
     v17 = v3;
@@ -913,12 +913,12 @@ void __47__SymptomExpertSystemHandler__bringStateToIdle__block_invoke(uint64_t a
     v19 = v16;
 
     [(ExpertSystemStateCore *)self->currentState setPreviousState:v19];
-    v20 = [(ExpertSystemStateCore *)self->currentState sojournTime];
-    [v20 start];
+    sojournTime = [(ExpertSystemStateCore *)self->currentState sojournTime];
+    [sojournTime start];
 
-    v21 = [(ExpertSystemStateCore *)self->currentState entryAction];
+    entryAction2 = [(ExpertSystemStateCore *)self->currentState entryAction];
 
-    v21[2](v21);
+    entryAction2[2](entryAction2);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -978,19 +978,19 @@ void __47__SymptomExpertSystemHandler__bringStateToIdle__block_invoke(uint64_t a
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "NDFSM diagnosing state from running state", v19, 2u);
   }
 
-  v7 = [(ExpertSystemStateCore *)self->currentState exitAction];
-  v7[2]();
+  exitAction = [(ExpertSystemStateCore *)self->currentState exitAction];
+  exitAction[2]();
 
-  v8 = [(ExpertSystemStateCore *)self->currentState sojournTime];
-  [v8 stop];
+  sojournTime = [(ExpertSystemStateCore *)self->currentState sojournTime];
+  [sojournTime stop];
 
   objc_storeStrong(&self->currentState, v3);
   [(ExpertSystemStateCore *)self->currentState setPreviousState:v4];
-  v9 = [(ExpertSystemStateCore *)self->currentState sojournTime];
-  [v9 start];
+  sojournTime2 = [(ExpertSystemStateCore *)self->currentState sojournTime];
+  [sojournTime2 start];
 
-  v10 = [(ExpertSystemStateCore *)self->currentState entryAction];
-  v10[2]();
+  entryAction = [(ExpertSystemStateCore *)self->currentState entryAction];
+  entryAction[2]();
 
 LABEL_13:
 }
@@ -1018,13 +1018,13 @@ LABEL_13:
     if (!self->_didScheduleCleanupTask)
     {
       self->_didScheduleCleanupTask = 1;
-      v5 = [(ExpertSystemHandlerCore *)self queue];
+      queue = [(ExpertSystemHandlerCore *)self queue];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __51__SymptomExpertSystemHandler__administrativeEnable__block_invoke;
       v6[3] = &unk_27898A0C8;
       v6[4] = self;
-      [(PeriodicMaintenanceActivity *)HourlyMaintenanceActivity registerPeriodicActivityWithIdentifier:@"SESH.CLIPSCleanup" queue:v5 activity:v6];
+      [(PeriodicMaintenanceActivity *)HourlyMaintenanceActivity registerPeriodicActivityWithIdentifier:@"SESH.CLIPSCleanup" queue:queue activity:v6];
     }
 
     self->administrativeState = 1;
@@ -1118,8 +1118,8 @@ void __51__SymptomExpertSystemHandler__administrativeEnable__block_invoke(uint64
     [(MotionStateRelay *)self->motionRelay subscribe];
     [(SymptomExpertSystemHandler *)self addObserver:self forKeyPath:@"incomingSymptoms" options:3 context:0];
     [(SymptomExpertSystemHandler *)self _addExternalRelayObservers];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_onDisruptiveFlowChange_ name:@"kNotificationOfFlowDisruptingEvent" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_onDisruptiveFlowChange_ name:@"kNotificationOfFlowDisruptingEvent" object:0];
 
     self->relayObservingState = 1;
   }
@@ -1166,12 +1166,12 @@ void __51__SymptomExpertSystemHandler__administrativeEnable__block_invoke(uint64
   if (ctShim)
   {
     [(CoreTelephonyShim *)ctShim addDelegate:self];
-    v6 = [(CoreTelephonyShim *)self->ctShim subscriptions];
+    subscriptions = [(CoreTelephonyShim *)self->ctShim subscriptions];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v7 = [subscriptions countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1183,10 +1183,10 @@ void __51__SymptomExpertSystemHandler__administrativeEnable__block_invoke(uint64
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subscriptions);
           }
 
-          v11 = [v6 objectForKeyedSubscript:*(*(&v21 + 1) + 8 * v10)];
+          v11 = [subscriptions objectForKeyedSubscript:*(*(&v21 + 1) + 8 * v10)];
           if (v11)
           {
             [(SymptomExpertSystemHandler *)self operatorNameChangedForSubscription:v11];
@@ -1197,7 +1197,7 @@ void __51__SymptomExpertSystemHandler__administrativeEnable__block_invoke(uint64
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v8 = [subscriptions countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v8);
@@ -1256,8 +1256,8 @@ LABEL_17:
     [(MotionStateRelay *)self->motionRelay unsubscribe];
     [(SymptomExpertSystemHandler *)self removeObserver:self forKeyPath:@"incomingSymptoms"];
     [(SymptomExpertSystemHandler *)self _removeExternalRelayObservers];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:@"kNotificationOfFlowDisruptingEvent" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"kNotificationOfFlowDisruptingEvent" object:0];
 
     self->relayObservingState = 2;
   }
@@ -1322,8 +1322,8 @@ LABEL_17:
 
   if (self->relayReadyObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->relayReadyObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->relayReadyObserver];
   }
 
   [(SymptomExpertSystemHandler *)self stopAnalyticsObserving:0];
@@ -1367,12 +1367,12 @@ LABEL_17:
 - (void)_removeDebuggabilityFolder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 1;
-  if ([v3 fileExistsAtPath:@"/private/var/networkd/Library/Logs/Debuggability/" isDirectory:&v14] && v14 == 1)
+  if ([defaultManager fileExistsAtPath:@"/private/var/networkd/Library/Logs/Debuggability/" isDirectory:&v14] && v14 == 1)
   {
     v13 = 0;
-    v4 = [v3 removeItemAtPath:@"/private/var/networkd/Library/Logs/Debuggability/" error:&v13];
+    v4 = [defaultManager removeItemAtPath:@"/private/var/networkd/Library/Logs/Debuggability/" error:&v13];
     v5 = v13;
     if ((v4 & 1) == 0)
     {
@@ -1386,23 +1386,23 @@ LABEL_17:
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_ERROR, "Removal of %@ folder failed because %@", buf, 0x16u);
       }
 
-      v7 = [v5 domain];
-      if ([v7 isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v5, "code") == 513)
+      domain = [v5 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v5, "code") == 513)
       {
 
         goto LABEL_11;
       }
 
-      v8 = [v5 domain];
-      if (([v8 isEqualToString:*MEMORY[0x277CCA5B8]] & 1) == 0)
+      domain2 = [v5 domain];
+      if (([domain2 isEqualToString:*MEMORY[0x277CCA5B8]] & 1) == 0)
       {
 
         goto LABEL_13;
       }
 
-      v9 = [v5 code];
+      code = [v5 code];
 
-      if (v9 == 13)
+      if (code == 13)
       {
 LABEL_11:
         v10 = [[SymptomsFileCleaner alloc] initWithQueue:0];
@@ -1411,8 +1411,8 @@ LABEL_11:
         [(SymptomsFileCleaner *)self->_abcCleaner setDelegate:self];
         abcCleaner = self->_abcCleaner;
         v15 = @"/private/var/networkd/Library/Logs/Debuggability/";
-        v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-        [(SymptomsFileCleaner *)abcCleaner cleanupFiles:v7];
+        domain = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
+        [(SymptomsFileCleaner *)abcCleaner cleanupFiles:domain];
 LABEL_13:
       }
     }
@@ -1431,12 +1431,12 @@ LABEL_13:
   }
 }
 
-- (BOOL)didInstallProfileForKey:(id)a3
+- (BOOL)didInstallProfileForKey:(id)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:@"EnhancedBetaFeedbackProfiles"];
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"EnhancedBetaFeedbackProfiles"];
 
   v7 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1455,9 +1455,9 @@ LABEL_13:
     {
       if (v9 == 1)
       {
-        v10 = [v8 allKeys];
-        v11 = [v10 firstObject];
-        v12 = [v11 isEqualToString:v4];
+        allKeys = [v8 allKeys];
+        firstObject = [allKeys firstObject];
+        v12 = [firstObject isEqualToString:keyCopy];
 
         if (v12)
         {
@@ -1465,7 +1465,7 @@ LABEL_13:
           if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v33 = v4;
+            v33 = keyCopy;
             _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "NDFSM Found %@ in EnhancedBetaFeedbackProfiles", buf, 0xCu);
           }
 
@@ -1484,12 +1484,12 @@ LABEL_13:
           _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_ERROR, "NDFSM Found unexpected content in EnhancedBetaFeedbackProfiles %@", buf, 0xCu);
         }
 
-        v21 = [v8 allKeys];
+        allKeys2 = [v8 allKeys];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v22 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v22 = [allKeys2 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v22)
         {
           v23 = v22;
@@ -1500,13 +1500,13 @@ LABEL_13:
             {
               if (*v29 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allKeys2);
               }
 
               [(SymptomExpertSystemHandler *)self setValue:0 forKey:*(*(&v28 + 1) + 8 * i) toEBFProfiles:v8];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v23 = [allKeys2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v23);
@@ -1550,24 +1550,24 @@ LABEL_27:
   return v14;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 toEBFProfiles:(id)a5
+- (void)setValue:(id)value forKey:(id)key toEBFProfiles:(id)profiles
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  profilesCopy = profiles;
+  dictionary = profilesCopy;
+  if (valueCopy)
   {
-    if (v9)
+    if (profilesCopy)
     {
 LABEL_23:
-      [v10 setObject:v7 forKeyedSubscript:v8];
+      [dictionary setObject:valueCopy forKeyedSubscript:keyCopy];
       goto LABEL_24;
     }
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 objectForKey:@"EnhancedBetaFeedbackProfiles"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults objectForKey:@"EnhancedBetaFeedbackProfiles"];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1581,8 +1581,8 @@ LABEL_23:
         _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "NDFSM: Found existing EnhancedBetaFeedbackProfiles 1: %@", v25, 0xCu);
       }
 
-      v10 = [v12 mutableCopy];
-      if (v10)
+      dictionary = [v12 mutableCopy];
+      if (dictionary)
       {
         goto LABEL_22;
       }
@@ -1599,28 +1599,28 @@ LABEL_23:
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "NDFSM Found a unexpected EnhancedBetaFeedbackProfiles class %@ (%@) 2", v25, 0x16u);
     }
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if (v9)
+  if (profilesCopy)
   {
-    [v9 setObject:0 forKeyedSubscript:v8];
-    if (![v10 count])
+    [profilesCopy setObject:0 forKeyedSubscript:keyCopy];
+    if (![dictionary count])
     {
 
-      v10 = 0;
+      dictionary = 0;
     }
 
     goto LABEL_24;
   }
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v15 objectForKey:@"EnhancedBetaFeedbackProfiles"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  dictionary = [standardUserDefaults2 objectForKey:@"EnhancedBetaFeedbackProfiles"];
 
-  if (v10)
+  if (dictionary)
   {
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
@@ -1632,13 +1632,13 @@ LABEL_22:
         goto LABEL_28;
       }
 
-      v22 = v17;
+      standardUserDefaults3 = v17;
       *v25 = 138412546;
-      *&v25[4] = v10;
+      *&v25[4] = dictionary;
       *&v25[12] = 2112;
       *&v25[14] = objc_opt_class();
       v24 = *&v25[14];
-      _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "NDFSM Found a unexpected EnhancedBetaFeedbackProfiles class %@ (%@) 3", v25, 0x16u);
+      _os_log_impl(&dword_23255B000, standardUserDefaults3, OS_LOG_TYPE_ERROR, "NDFSM Found a unexpected EnhancedBetaFeedbackProfiles class %@ (%@) 3", v25, 0x16u);
 
       goto LABEL_27;
     }
@@ -1646,30 +1646,30 @@ LABEL_22:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v25 = 138412290;
-      *&v25[4] = v10;
+      *&v25[4] = dictionary;
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "NDFSM: Found existing EnhancedBetaFeedbackProfiles 2: %@", v25, 0xCu);
     }
 
-    v18 = [v10 mutableCopy];
-    [v18 setObject:0 forKeyedSubscript:v8];
+    v18 = [dictionary mutableCopy];
+    [v18 setObject:0 forKeyedSubscript:keyCopy];
     if (v18 && ![v18 count])
     {
 
       v18 = 0;
     }
 
-    v10 = v18;
+    dictionary = v18;
 LABEL_24:
     v21 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v25 = 138412290;
-      *&v25[4] = v10;
+      *&v25[4] = dictionary;
       _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "NDFSM: Saving off new EnhancedBetaFeedbackProfiles Pref: %@", v25, 0xCu);
     }
 
-    v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v22 setObject:v10 forKey:@"EnhancedBetaFeedbackProfiles"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults3 setObject:dictionary forKey:@"EnhancedBetaFeedbackProfiles"];
 LABEL_27:
   }
 
@@ -1687,9 +1687,9 @@ LABEL_28:
   {
     currentState = self->currentState;
     v5 = v3;
-    v6 = [(ExpertSystemStateCore *)currentState label];
+    label = [(ExpertSystemStateCore *)currentState label];
     *buf = 138412290;
-    v34 = v6;
+    v34 = label;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "NDFSM Current state: %@", buf, 0xCu);
   }
 
@@ -1721,11 +1721,11 @@ LABEL_28:
           if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             v15 = v14;
-            v16 = [v12 label];
-            v17 = [v12 sojournTime];
-            [v17 total];
+            label2 = [v12 label];
+            sojournTime = [v12 sojournTime];
+            [sojournTime total];
             *buf = 138412546;
-            v34 = v16;
+            v34 = label2;
             v35 = 2048;
             v36 = v18;
             _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "NDFSM Cumulative time on state %@: %f", buf, 0x16u);
@@ -1739,9 +1739,9 @@ LABEL_28:
     while (v9);
   }
 
-  v19 = [(ExpertSystemStateCore *)self->currentState label];
-  v20 = [v28 label];
-  v21 = [v19 isEqualToString:v20];
+  label3 = [(ExpertSystemStateCore *)self->currentState label];
+  label4 = [v28 label];
+  v21 = [label3 isEqualToString:label4];
 
   if ((v21 & 1) == 0)
   {
@@ -1753,9 +1753,9 @@ LABEL_28:
   {
     v23 = v22;
     v24 = +[SystemSettingsRelay defaultRelay];
-    v25 = [v24 autoFeedbackAssistantEnable];
+    autoFeedbackAssistantEnable = [v24 autoFeedbackAssistantEnable];
     v26 = "off";
-    if (v25)
+    if (autoFeedbackAssistantEnable)
     {
       v26 = "on";
     }
@@ -1768,17 +1768,17 @@ LABEL_28:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRelayStateChange:(id)a3 key:(id)a4 relay:(id)a5 scalar:(BOOL)a6
+- (void)processRelayStateChange:(id)change key:(id)key relay:(id)relay scalar:(BOOL)scalar
 {
-  v6 = a6;
+  scalarCopy = scalar;
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  changeCopy = change;
+  keyCopy = key;
+  relayCopy = relay;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v10;
+    v13 = changeCopy;
   }
 
   else
@@ -1787,11 +1787,11 @@ LABEL_28:
   }
 
   v14 = v13;
-  if ([v12 isEqualToString:@"System"])
+  if ([relayCopy isEqualToString:@"System"])
   {
-    if ([v11 isEqualToString:@"internalBuild"] && v14)
+    if ([keyCopy isEqualToString:@"internalBuild"] && v14)
     {
-      v15 = [(ExpertSystemHandlerCore *)self queue];
+      queue = [(ExpertSystemHandlerCore *)self queue];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar___block_invoke;
@@ -1801,14 +1801,14 @@ LABEL_28:
       v47 = v14;
       v17 = v46;
 LABEL_17:
-      dispatch_async(v15, v17);
+      dispatch_async(queue, v17);
 
       goto LABEL_18;
     }
 
-    if ([v11 isEqualToString:@"carrierSeedBuild"] && v14)
+    if ([keyCopy isEqualToString:@"carrierSeedBuild"] && v14)
     {
-      v15 = [(ExpertSystemHandlerCore *)self queue];
+      queue = [(ExpertSystemHandlerCore *)self queue];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar___block_invoke_303;
@@ -1820,9 +1820,9 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if ([v11 isEqualToString:@"customerSeedBuild"] && v14)
+    if ([keyCopy isEqualToString:@"customerSeedBuild"] && v14)
     {
-      v15 = [(ExpertSystemHandlerCore *)self queue];
+      queue = [(ExpertSystemHandlerCore *)self queue];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar___block_invoke_304;
@@ -1834,9 +1834,9 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if ([v11 isEqualToString:@"vendorBuild"] && v14)
+    if ([keyCopy isEqualToString:@"vendorBuild"] && v14)
     {
-      v15 = [(ExpertSystemHandlerCore *)self queue];
+      queue = [(ExpertSystemHandlerCore *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar___block_invoke_305;
@@ -1850,38 +1850,38 @@ LABEL_17:
   }
 
 LABEL_18:
-  v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", v12, v11];
-  v19 = [(NSMutableDictionary *)self->relayToFacts objectForKeyedSubscript:v18];
+  keyCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", relayCopy, keyCopy];
+  v19 = [(NSMutableDictionary *)self->relayToFacts objectForKeyedSubscript:keyCopy];
   if (v19)
   {
-    v20 = v10;
-    v21 = v11;
+    v20 = changeCopy;
+    v21 = keyCopy;
     v22 = v14;
-    v23 = v6;
+    v23 = scalarCopy;
     v24 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v25 = v24;
-      v26 = [v19 pointerValue];
+      pointerValue = [v19 pointerValue];
       *buf = 138412546;
-      v49 = v18;
+      v49 = keyCopy;
       v50 = 2048;
-      v51 = v26;
+      v51 = pointerValue;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_INFO, "NDFSM: Relay retracting old fact, for %@ (%p)", buf, 0x16u);
     }
 
     -[SymptomExpertSystemHandler retractFact:moduleName:run:](self, "retractFact:moduleName:run:", [v19 pointerValue], @"COMMON", 0);
     -[CLIPSShim releaseFact:](self->ruleEngine, "releaseFact:", [v19 pointerValue]);
-    [(NSMutableDictionary *)self->relayToFacts removeObjectForKey:v18];
-    v6 = v23;
+    [(NSMutableDictionary *)self->relayToFacts removeObjectForKey:keyCopy];
+    scalarCopy = v23;
     v14 = v22;
-    v11 = v21;
-    v10 = v20;
+    keyCopy = v21;
+    changeCopy = v20;
   }
 
-  if ([v12 isEqualToString:@"Hardware"])
+  if ([relayCopy isEqualToString:@"Hardware"])
   {
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(Hardware (component \"%@\"", v11, v10, v38];
+    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(Hardware (component \"%@\"", keyCopy, changeCopy, v38];
 LABEL_32:
     v34 = v27;
     goto LABEL_34;
@@ -1889,24 +1889,24 @@ LABEL_32:
 
   if (v14)
   {
-    if (v6)
+    if (scalarCopy)
     {
       v28 = objc_alloc(MEMORY[0x277CCACA8]);
-      v37 = v11;
-      v39 = [v14 integerValue];
-      v36 = v12;
+      v37 = keyCopy;
+      integerValue = [v14 integerValue];
+      v36 = relayCopy;
       v29 = @"(State (component %@) (attribute %@) (value %ld))";
 LABEL_31:
-      v27 = [v28 initWithFormat:v29, v36, v37, v39];
+      v27 = [v28 initWithFormat:v29, v36, v37, integerValue];
       goto LABEL_32;
     }
 
-    if ([v10 BOOLValue])
+    if ([changeCopy BOOLValue])
     {
       v28 = objc_alloc(MEMORY[0x277CCACA8]);
-      v37 = v11;
-      v39 = [v14 BOOLValue];
-      v36 = v12;
+      v37 = keyCopy;
+      integerValue = [v14 BOOLValue];
+      v36 = relayCopy;
       v29 = @"(State (component %@) (attribute %@) (value %d))";
       goto LABEL_31;
     }
@@ -1923,11 +1923,11 @@ LABEL_31:
       *buf = 138413058;
       v49 = v33;
       v50 = 2112;
-      v51 = v10;
+      v51 = changeCopy;
       v52 = 2112;
-      v53 = v12;
+      v53 = relayCopy;
       v54 = 2112;
-      v55 = v11;
+      v55 = keyCopy;
       _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_ERROR, "NDFSM: Unhandled class %@ (value: %@) for relay %@, key %@", buf, 0x2Au);
     }
   }
@@ -1936,7 +1936,7 @@ LABEL_31:
 LABEL_34:
   if ([v34 length])
   {
-    [(SymptomExpertSystemHandler *)self assertRelayFact:v34 forRelayKey:v18 moduleName:@"COMMON"];
+    [(SymptomExpertSystemHandler *)self assertRelayFact:v34 forRelayKey:keyCopy moduleName:@"COMMON"];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -2030,12 +2030,12 @@ void __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertRelayFact:(id)a3 forRelayKey:(id)a4 moduleName:(id)a5
+- (void)assertRelayFact:(id)fact forRelayKey:(id)key moduleName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SymptomExpertSystemHandler *)self assertFactString:v8 moduleName:a5 run:0];
+  factCopy = fact;
+  keyCopy = key;
+  v10 = [(SymptomExpertSystemHandler *)self assertFactString:factCopy moduleName:name run:0];
   if (v10)
   {
     v11 = v10;
@@ -2044,14 +2044,14 @@ void __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar__
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v15 = 138412546;
-      v16 = v8;
+      v16 = factCopy;
       v17 = 2048;
       v18 = v11;
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_INFO, "NDFSM: Relay asserted fact:  %@ (%p)", &v15, 0x16u);
     }
 
     v13 = [MEMORY[0x277CCAE60] valueWithPointer:v11];
-    [(NSMutableDictionary *)self->relayToFacts setObject:v13 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->relayToFacts setObject:v13 forKeyedSubscript:keyCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2064,8 +2064,8 @@ void __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar__
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->relayToFacts allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->relayToFacts allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2077,14 +2077,14 @@ void __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar__
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         -[CLIPSShim releaseFact:](self->ruleEngine, "releaseFact:", [*(*(&v9 + 1) + 8 * v7++) pointerValue]);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -2094,18 +2094,18 @@ void __71__SymptomExpertSystemHandler_processRelayStateChange_key_relay_scalar__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operatorNameChangedForSubscription:(id)a3
+- (void)operatorNameChangedForSubscription:(id)subscription
 {
-  v4 = [a3 copy];
-  v5 = [(ExpertSystemHandlerCore *)self queue];
+  v4 = [subscription copy];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SymptomExpertSystemHandler_operatorNameChangedForSubscription___block_invoke;
   v7[3] = &unk_27898A7D0;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 void __65__SymptomExpertSystemHandler_operatorNameChangedForSubscription___block_invoke(uint64_t a1)
@@ -2150,18 +2150,18 @@ LABEL_7:
   }
 }
 
-- (void)signalStrengthChangedForSubscription:(id)a3
+- (void)signalStrengthChangedForSubscription:(id)subscription
 {
-  v4 = [a3 copy];
-  v5 = [(ExpertSystemHandlerCore *)self queue];
+  v4 = [subscription copy];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__SymptomExpertSystemHandler_signalStrengthChangedForSubscription___block_invoke;
   v7[3] = &unk_27898A7D0;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 void __67__SymptomExpertSystemHandler_signalStrengthChangedForSubscription___block_invoke(uint64_t a1)
@@ -2186,20 +2186,20 @@ void __67__SymptomExpertSystemHandler_signalStrengthChangedForSubscription___blo
   }
 }
 
-- (void)coreTelephonyDumpStartedTo:(id)a3 folderPrefix:(id)a4 gotFilteredOut:(BOOL)a5
+- (void)coreTelephonyDumpStartedTo:(id)to folderPrefix:(id)prefix gotFilteredOut:(BOOL)out
 {
-  v8 = a4;
-  if ([a3 length] && objc_msgSend(v8, "length"))
+  prefixCopy = prefix;
+  if ([to length] && objc_msgSend(prefixCopy, "length"))
   {
-    v9 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__SymptomExpertSystemHandler_coreTelephonyDumpStartedTo_folderPrefix_gotFilteredOut___block_invoke;
     block[3] = &unk_27898BE18;
-    v12 = a5;
+    outCopy = out;
     block[4] = self;
-    v11 = v8;
-    dispatch_async(v9, block);
+    v11 = prefixCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -2225,21 +2225,21 @@ void __85__SymptomExpertSystemHandler_coreTelephonyDumpStartedTo_folderPrefix_go
   }
 }
 
-- (void)coreTelephonyDumpCompletedTo:(id)a3 folderPrefix:(id)a4
+- (void)coreTelephonyDumpCompletedTo:(id)to folderPrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  toCopy = to;
+  prefixCopy = prefix;
+  if ([toCopy length] && objc_msgSend(prefixCopy, "length"))
   {
-    v8 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix___block_invoke;
     block[3] = &unk_27898A328;
     block[4] = self;
-    v10 = v7;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v10 = prefixCopy;
+    v11 = toCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -2263,20 +2263,20 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
   }
 }
 
-- (void)onDisruptiveFlowChange:(id)a3
+- (void)onDisruptiveFlowChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  if (v5 && (v6 = v5, [v4 userInfo], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, !v8))
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  if (userInfo && (v6 = userInfo, [changeCopy userInfo], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, !v8))
   {
-    v9 = 0;
+    date = 0;
     v10 = 1;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v10 = 0;
   }
 
@@ -2294,25 +2294,25 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "NDFSM: Received WiFi %@association notification (kNotificationOfFlowDisruptingEvent)", buf, 0xCu);
   }
 
-  v13 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SymptomExpertSystemHandler_onDisruptiveFlowChange___block_invoke;
   block[3] = &unk_27898BE18;
   v18 = v10 ^ 1;
   block[4] = self;
-  v17 = v9;
-  v14 = v9;
-  dispatch_async(v13, block);
+  v17 = date;
+  v14 = date;
+  dispatch_async(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processWiFiAssociationChange:(BOOL)a3 atTime:(id)a4
+- (void)processWiFiAssociationChange:(BOOL)change atTime:(id)time
 {
-  v5 = a3;
+  changeCopy = change;
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  timeCopy = time;
   v8 = [(NSMutableDictionary *)self->relayToFacts objectForKeyedSubscript:@"WiFi-AssocTime"];
   if (v8)
   {
@@ -2323,7 +2323,7 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
       *buf = 138412546;
       v23 = @"WiFi-AssocTime";
       v24 = 2048;
-      v25 = [v8 pointerValue];
+      pointerValue = [v8 pointerValue];
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "NDFSM: Retracting old fact for %@ (%p)", buf, 0x16u);
     }
 
@@ -2332,9 +2332,9 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
     [(NSMutableDictionary *)self->relayToFacts removeObjectForKey:@"WiFi-AssocTime"];
   }
 
-  if (v5)
+  if (changeCopy)
   {
-    objc_storeStrong(&self->lastWiFiAssociationTime, a4);
+    objc_storeStrong(&self->lastWiFiAssociationTime, time);
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
     [(NSDate *)self->lastWiFiAssociationTime timeIntervalSince1970];
     lastWiFiAssociationTime = [v11 initWithFormat:@"(State (component \"WiFi\"", v12];
@@ -2371,15 +2371,15 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v91 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v66 = a4;
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-  if ([v10 isEqualToString:@"incomingSymptoms"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+  if ([pathCopy isEqualToString:@"incomingSymptoms"])
   {
     v14 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -2395,23 +2395,23 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
       v15 = v12;
       if ([v15 count])
       {
-        v16 = [(ExpertSystemHandlerCore *)self queue];
+        queue = [(ExpertSystemHandlerCore *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke;
         block[3] = &unk_27898A7D0;
         block[4] = self;
         v84 = v15;
-        dispatch_async(v16, block);
+        dispatch_async(queue, block);
       }
     }
   }
 
-  else if (a6)
+  else if (context)
   {
-    v17 = *(a6 + 8);
-    v18 = *(a6 + 9);
-    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:*a6];
+    v17 = *(context + 8);
+    v18 = *(context + 9);
+    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:*context];
     if (v12)
     {
       v20 = v13 == 0;
@@ -2436,7 +2436,7 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
           v31 = " (symptom-like)";
         }
 
-        v87 = v10;
+        v87 = pathCopy;
         *v88 = 2112;
         *&v88[2] = v12;
         v89 = 2080;
@@ -2444,32 +2444,32 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
         _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_INFO, "NDFSM: Processing initial state relay (%@) %@ = %@%s", buf, 0x2Au);
       }
 
-      [(SymptomExpertSystemHandler *)self processRelayStateChange:v12 key:v10 relay:v19 scalar:v18];
+      [(SymptomExpertSystemHandler *)self processRelayStateChange:v12 key:pathCopy relay:v19 scalar:v18];
     }
 
     else
     {
-      v21 = self;
-      objc_sync_enter(v21);
-      ++v21->_asyncKVOCount;
-      objc_sync_exit(v21);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      ++selfCopy->_asyncKVOCount;
+      objc_sync_exit(selfCopy);
 
-      v22 = [(ExpertSystemHandlerCore *)v21 queue];
+      queue2 = [(ExpertSystemHandlerCore *)selfCopy queue];
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
       v77[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_359;
       v77[3] = &unk_27898BE40;
       v81 = v17;
-      v77[4] = v21;
+      v77[4] = selfCopy;
       v78 = v19;
-      v79 = v10;
+      v79 = pathCopy;
       v80 = v12;
       v82 = v18;
-      dispatch_async(v22, v77);
+      dispatch_async(queue2, v77);
     }
   }
 
-  else if ([v10 isEqualToString:@"autoBugCaptureEnabled"])
+  else if ([pathCopy isEqualToString:@"autoBugCaptureEnabled"])
   {
     if ([(SystemSettingsRelay *)self->settingsRelay autoBugCaptureEnabled])
     {
@@ -2480,9 +2480,9 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
         {
           settingsRelay = self->settingsRelay;
           v25 = v23;
-          v26 = [(SystemSettingsRelay *)settingsRelay autoBugCaptureEnabled];
+          autoBugCaptureEnabled = [(SystemSettingsRelay *)settingsRelay autoBugCaptureEnabled];
           customerSeedBuild = self->_customerSeedBuild;
-          v28 = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
+          autoFeedbackAssistantEnable = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
           if (self->_internalBuild)
           {
             v29 = "yes";
@@ -2498,23 +2498,23 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
           }
 
           *buf = 67109890;
-          *v86 = v26;
+          *v86 = autoBugCaptureEnabled;
           *&v86[4] = 1024;
           *&v86[6] = customerSeedBuild;
           LOWORD(v87) = 1024;
-          *(&v87 + 2) = v28;
+          *(&v87 + 2) = autoFeedbackAssistantEnable;
           HIWORD(v87) = 2080;
           *v88 = v29;
           _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_INFO, "NDFSM is enabled (autoBugCaptureEnabled is %d, customerSeedBuild is %d, autoFeedbackAssistantEnable is %d, available build is %s)", buf, 0x1Eu);
         }
 
-        v52 = [(ExpertSystemHandlerCore *)self queue];
+        queue3 = [(ExpertSystemHandlerCore *)self queue];
         v76[0] = MEMORY[0x277D85DD0];
         v76[1] = 3221225472;
         v76[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_362;
         v76[3] = &unk_27898A0C8;
         v76[4] = self;
-        dispatch_async(v52, v76);
+        dispatch_async(queue3, v76);
       }
 
       else
@@ -2524,9 +2524,9 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
         {
           v63 = self->settingsRelay;
           log = v53;
-          v54 = [(SystemSettingsRelay *)v63 autoBugCaptureEnabled];
+          autoBugCaptureEnabled2 = [(SystemSettingsRelay *)v63 autoBugCaptureEnabled];
           v65 = self->_customerSeedBuild;
-          v55 = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
+          autoFeedbackAssistantEnable2 = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
           if (self->_internalBuild)
           {
             v56 = "yes";
@@ -2542,23 +2542,23 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
           }
 
           *buf = 67109890;
-          *v86 = v54;
+          *v86 = autoBugCaptureEnabled2;
           *&v86[4] = 1024;
           *&v86[6] = v65;
           LOWORD(v87) = 1024;
-          *(&v87 + 2) = v55;
+          *(&v87 + 2) = autoFeedbackAssistantEnable2;
           HIWORD(v87) = 2080;
           *v88 = v56;
           _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_INFO, "NDFSM is disabled (autoBugCaptureEnabled is %d but customerSeedBuild is %d, autoFeedbackAssistantEnable is %d and available build is %s)", buf, 0x1Eu);
         }
 
-        v62 = [(ExpertSystemHandlerCore *)self queue];
+        queue4 = [(ExpertSystemHandlerCore *)self queue];
         v75[0] = MEMORY[0x277D85DD0];
         v75[1] = 3221225472;
         v75[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_363;
         v75[3] = &unk_27898A0C8;
         v75[4] = self;
-        dispatch_async(v62, v75);
+        dispatch_async(queue4, v75);
       }
     }
 
@@ -2574,26 +2574,26 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
         _os_log_impl(&dword_23255B000, v45, OS_LOG_TYPE_INFO, "NDFSM is disabled (autoBugCaptureEnabled is %d)", buf, 8u);
       }
 
-      v46 = [(ExpertSystemHandlerCore *)self queue];
+      queue5 = [(ExpertSystemHandlerCore *)self queue];
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
       v74[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_364;
       v74[3] = &unk_27898A0C8;
       v74[4] = self;
-      dispatch_async(v46, v74);
+      dispatch_async(queue5, v74);
     }
   }
 
-  else if ([v10 isEqualToString:@"autoFeedbackAssistantEnable"])
+  else if ([pathCopy isEqualToString:@"autoFeedbackAssistantEnable"])
   {
     v33 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v34 = self->settingsRelay;
       v35 = v33;
-      v36 = [(SystemSettingsRelay *)v34 autoFeedbackAssistantEnable];
+      autoFeedbackAssistantEnable3 = [(SystemSettingsRelay *)v34 autoFeedbackAssistantEnable];
       v37 = "off";
-      if (v36)
+      if (autoFeedbackAssistantEnable3)
       {
         v37 = "on";
       }
@@ -2603,10 +2603,10 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
       _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_DEFAULT, "NDFSM: autoFeedbackAssistantEnable changed to %{public}s", buf, 0xCu);
     }
 
-    v38 = [(SystemSettingsRelay *)self->settingsRelay autoBugCaptureEnabled];
+    autoBugCaptureEnabled3 = [(SystemSettingsRelay *)self->settingsRelay autoBugCaptureEnabled];
     if (v12)
     {
-      v39 = v38;
+      v39 = autoBugCaptureEnabled3;
     }
 
     else
@@ -2619,17 +2619,17 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v40 = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
-        v41 = [(ExpertSystemHandlerCore *)self queue];
-        v42 = v41;
-        if (v40)
+        autoFeedbackAssistantEnable4 = [(SystemSettingsRelay *)self->settingsRelay autoFeedbackAssistantEnable];
+        queue6 = [(ExpertSystemHandlerCore *)self queue];
+        v42 = queue6;
+        if (autoFeedbackAssistantEnable4)
         {
           v73[0] = MEMORY[0x277D85DD0];
           v73[1] = 3221225472;
           v73[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_366;
           v73[3] = &unk_27898A0C8;
           v73[4] = self;
-          dispatch_async(v41, v73);
+          dispatch_async(queue6, v73);
         }
 
         else
@@ -2639,26 +2639,26 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
           v72[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_372;
           v72[3] = &unk_27898A0C8;
           v72[4] = self;
-          dispatch_async(v41, v72);
+          dispatch_async(queue6, v72);
         }
       }
     }
   }
 
-  else if ([v10 isEqualToString:@"stepper"])
+  else if ([pathCopy isEqualToString:@"stepper"])
   {
-    v47 = [(ExpertSystemHandlerCore *)self queue];
+    queue7 = [(ExpertSystemHandlerCore *)self queue];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v69[3] = &unk_27898A328;
     v69[4] = self;
-    v70 = v10;
+    v70 = pathCopy;
     v71 = v12;
-    dispatch_async(v47, v69);
+    dispatch_async(queue7, v69);
   }
 
-  else if ([v10 isEqualToString:@"mostRecentAPSleepMachTime"])
+  else if ([pathCopy isEqualToString:@"mostRecentAPSleepMachTime"])
   {
     v48 = self->_apSleep;
     objc_sync_enter(v48);
@@ -2673,7 +2673,7 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
     objc_sync_exit(v48);
   }
 
-  else if ([v10 isEqualToString:@"mostRecentAPWakeMachTime"])
+  else if ([pathCopy isEqualToString:@"mostRecentAPWakeMachTime"])
   {
     v50 = self->_apSleep;
     objc_sync_enter(v50);
@@ -2688,7 +2688,7 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
     objc_sync_exit(v50);
   }
 
-  else if ([v10 isEqualToString:@"installedVisibleProfileIdentifiers"])
+  else if ([pathCopy isEqualToString:@"installedVisibleProfileIdentifiers"])
   {
     if (v12)
     {
@@ -2705,14 +2705,14 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
           _os_log_impl(&dword_23255B000, v59, OS_LOG_TYPE_DEFAULT, "NDFSM: installedVisibleProfileIdentifiers is %@", buf, 0xCu);
         }
 
-        v60 = [(ExpertSystemHandlerCore *)self queue];
+        queue8 = [(ExpertSystemHandlerCore *)self queue];
         v67[0] = MEMORY[0x277D85DD0];
         v67[1] = 3221225472;
         v67[2] = __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change_context___block_invoke_373;
         v67[3] = &unk_27898A3A0;
         v67[4] = self;
         v68 = v58;
-        dispatch_async(v60, v67);
+        dispatch_async(queue8, v67);
       }
     }
   }
@@ -2723,7 +2723,7 @@ void __72__SymptomExpertSystemHandler_coreTelephonyDumpCompletedTo_folderPrefix_
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *v86 = v10;
+      *v86 = pathCopy;
       *&v86[8] = 2048;
       v87 = 0;
       _os_log_impl(&dword_23255B000, v61, OS_LOG_TYPE_ERROR, "Unrecognized event for keypath: %@, context: %p", buf, 0x16u);
@@ -3243,14 +3243,14 @@ uint64_t __77__SymptomExpertSystemHandler_observeValueForKeyPath_ofObject_change
   }
 }
 
-- (id)symptomDictionaryForSymptom:(id)a3 domain:(id)a4 type:(id)a5
+- (id)symptomDictionaryForSymptom:(id)symptom domain:(id)domain type:(id)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  symptomCopy = symptom;
+  domainCopy = domain;
+  typeCopy = type;
+  v10 = typeCopy;
+  if (!domainCopy)
   {
     v19 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3265,7 +3265,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!typeCopy)
   {
     v19 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3278,8 +3278,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v11 = [v7 eventKey];
-  if (!v11)
+  eventKey = [symptomCopy eventKey];
+  if (!eventKey)
   {
     v19 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3294,8 +3294,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = v11;
-  v13 = [SymptomStore nameFromSymptomKey:v11];
+  v12 = eventKey;
+  v13 = [SymptomStore nameFromSymptomKey:eventKey];
   if (!v13)
   {
     v23 = debuggabilityLogHandle;
@@ -3316,16 +3316,16 @@ LABEL_15:
     v15 = v14;
   }
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  [v16 setObject:v14 forKeyedSubscript:@"SYMPTOM_NAME"];
-  [v16 setObject:v15 forKeyedSubscript:@"DESCRIPTION"];
-  [v16 setObject:v8 forKeyedSubscript:@"SIGNATURE_DOMAIN"];
-  [v16 setObject:v10 forKeyedSubscript:@"SIGNATURE_TYPE"];
-  [v16 setObject:v7 forKeyedSubscript:@"EVENT_DESCRIPTION"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v14 forKeyedSubscript:@"SYMPTOM_NAME"];
+  [dictionary setObject:v15 forKeyedSubscript:@"DESCRIPTION"];
+  [dictionary setObject:domainCopy forKeyedSubscript:@"SIGNATURE_DOMAIN"];
+  [dictionary setObject:v10 forKeyedSubscript:@"SIGNATURE_TYPE"];
+  [dictionary setObject:symptomCopy forKeyedSubscript:@"EVENT_DESCRIPTION"];
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_approximate_time()];
-  [v16 setObject:v17 forKeyedSubscript:@"MACH_TIMESTAMP"];
+  [dictionary setObject:v17 forKeyedSubscript:@"MACH_TIMESTAMP"];
 
-  v18 = v16;
+  v18 = dictionary;
 LABEL_16:
 
   v21 = *MEMORY[0x277D85DE8];
@@ -3333,17 +3333,17 @@ LABEL_16:
   return v18;
 }
 
-- (id)arbitratorDictionaryForSymptom:(id)a3 procName:(id)a4 interfaceType:(id)a5 eventCount:(id)a6 duration:(id)a7
+- (id)arbitratorDictionaryForSymptom:(id)symptom procName:(id)name interfaceType:(id)type eventCount:(id)count duration:(id)duration
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v17 = [v11 eventKey];
-  if (!v17)
+  symptomCopy = symptom;
+  nameCopy = name;
+  typeCopy = type;
+  countCopy = count;
+  durationCopy = duration;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  eventKey = [symptomCopy eventKey];
+  if (!eventKey)
   {
     v24 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3361,14 +3361,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v18 = [SymptomStore nameFromSymptomKey:v17];
+  v18 = [SymptomStore nameFromSymptomKey:eventKey];
   if (!v18)
   {
     v28 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       v31 = 138412290;
-      v32 = v17;
+      v32 = eventKey;
       v25 = "NDFSM Cannot get symptom name from eventKey:%@";
       v26 = v28;
       v27 = 12;
@@ -3379,35 +3379,35 @@ LABEL_17:
   }
 
   v19 = v18;
-  [v16 setObject:v18 forKeyedSubscript:*MEMORY[0x277D6B110]];
+  [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x277D6B110]];
   v20 = MEMORY[0x277CCABB0];
-  v21 = [v11 creationTimeStamp];
-  [v21 timeIntervalSince1970];
+  creationTimeStamp = [symptomCopy creationTimeStamp];
+  [creationTimeStamp timeIntervalSince1970];
   v22 = [v20 numberWithDouble:?];
-  [v16 setObject:v22 forKeyedSubscript:*MEMORY[0x277D6B148]];
+  [dictionary setObject:v22 forKeyedSubscript:*MEMORY[0x277D6B148]];
 
-  [v16 setObject:*MEMORY[0x277D6B0E0] forKeyedSubscript:*MEMORY[0x277D6B150]];
-  if (v12)
+  [dictionary setObject:*MEMORY[0x277D6B0E0] forKeyedSubscript:*MEMORY[0x277D6B150]];
+  if (nameCopy)
   {
-    [v16 setObject:v12 forKeyedSubscript:*MEMORY[0x277D6B118]];
+    [dictionary setObject:nameCopy forKeyedSubscript:*MEMORY[0x277D6B118]];
   }
 
-  if (v14)
+  if (countCopy)
   {
-    [v16 setObject:v14 forKeyedSubscript:*MEMORY[0x277D6B0E8]];
+    [dictionary setObject:countCopy forKeyedSubscript:*MEMORY[0x277D6B0E8]];
   }
 
-  if (v15)
+  if (durationCopy)
   {
-    [v16 setObject:v15 forKeyedSubscript:*MEMORY[0x277D6B0F0]];
+    [dictionary setObject:durationCopy forKeyedSubscript:*MEMORY[0x277D6B0F0]];
   }
 
-  if (v13)
+  if (typeCopy)
   {
-    [v16 setObject:v13 forKeyedSubscript:*MEMORY[0x277D6B108]];
+    [dictionary setObject:typeCopy forKeyedSubscript:*MEMORY[0x277D6B108]];
   }
 
-  v23 = v16;
+  v23 = dictionary;
 
 LABEL_18:
   v29 = *MEMORY[0x277D85DE8];
@@ -3415,13 +3415,13 @@ LABEL_18:
   return v23;
 }
 
-- (void)_configdSymptom:(id)a3
+- (void)_configdSymptom:(id)symptom
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v5 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v4 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B218]];
+    v5 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:symptomCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B218]];
     [(NSMutableArray *)self->_processedSymptoms addObject:v5];
     v6 = [v5 objectForKeyedSubscript:@"SYMPTOM_NAME"];
     v7 = [v6 isEqualToString:@"SYMPTOM_ADDRESS_ACQUISITION_SUCCEEDED"];
@@ -3444,14 +3444,14 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v12 = [v4 eventData];
-    if (v12)
+    eventData = [symptomCopy eventData];
+    if (eventData)
     {
-      if (*(v12 + 4))
+      if (*(eventData + 4))
       {
-        if (*(v12 + 24))
+        if (*(eventData + 24))
         {
-          v27 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceIndex:*(v12 + 24)];
+          v27 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceIndex:*(eventData + 24)];
         }
 
         else
@@ -3459,18 +3459,18 @@ LABEL_22:
           v27 = 0;
         }
 
-        v26 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v14 = MEMORY[0x277CCAB68];
         v15 = [v5 objectForKeyedSubscript:@"DESCRIPTION"];
         v16 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v5];
         v17 = [v5 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
         v18 = [v5 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-        v19 = objc_msgSend(v14, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %s)"), v6, v15, v16, v17, v18, objc_msgSend(v4, "processName");
+        v19 = objc_msgSend(v14, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %s)"), v6, v15, v16, v17, v18, objc_msgSend(symptomCopy, "processName");
 
         if (v27)
         {
-          v20 = [v27 interfaceName];
-          [v19 appendFormat:@" (interfaceName \"%@\"", v20];
+          interfaceName = [v27 interfaceName];
+          [v19 appendFormat:@" (interfaceName \"%@\"", interfaceName];
         }
 
         if (v7)
@@ -3484,7 +3484,7 @@ LABEL_22:
         v33[0] = v19;
         v33[1] = @"Symptoms";
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-        [v26 addObject:v21];
+        [array addObject:v21];
 
         v30[0] = @"FACT_STRING";
         v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v6];
@@ -3492,9 +3492,9 @@ LABEL_22:
         v31[0] = v22;
         v31[1] = @"Symptoms";
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-        [v26 addObject:v23];
+        [array addObject:v23];
 
-        [v5 setObject:v26 forKey:@"FACTS_STRINGS"];
+        [v5 setObject:array forKey:@"FACTS_STRINGS"];
         v24 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
         [v24 addObject:v5];
 
@@ -3533,13 +3533,13 @@ LABEL_23:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_airplaySymptom:(id)a3
+- (void)_airplaySymptom:(id)symptom
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v5 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v4 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B228]];
+    v5 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:symptomCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B228]];
     [(NSMutableArray *)self->_processedSymptoms addObject:v5];
     v6 = [v5 objectForKeyedSubscript:@"SYMPTOM_NAME"];
     v7 = [v6 isEqualToString:@"SYMPTOM_AIRPLAY_CONNECTION_NOT_STALLED"];
@@ -3562,20 +3562,20 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v12 = [v4 eventData];
-    if (v12)
+    eventData = [symptomCopy eventData];
+    if (eventData)
     {
-      v13 = v12;
-      if ((*(v12 + 4) & 2) != 0)
+      v13 = eventData;
+      if ((*(eventData + 4) & 2) != 0)
       {
-        v15 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v37 = MEMORY[0x277CCAB68];
-        v38 = v15;
+        v38 = array;
         v16 = [v5 objectForKeyedSubscript:@"DESCRIPTION"];
         v17 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v5];
         v18 = [v5 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
         v19 = [v5 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-        v20 = objc_msgSend(v37, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %s)"), v6, v16, v17, v18, v19, objc_msgSend(v4, "processName");
+        v20 = objc_msgSend(v37, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %s)"), v6, v16, v17, v18, v19, objc_msgSend(symptomCopy, "processName");
 
         v21 = *(v13 + 32);
         if (*(v13 + 32))
@@ -3583,19 +3583,19 @@ LABEL_30:
           v21 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceIndex:v21];
         }
 
-        v36 = [v4 eventQualifierStringForKey:@"0"];
+        v36 = [symptomCopy eventQualifierStringForKey:@"0"];
         [v36 length];
-        v22 = [v4 eventQualifierStringForKey:@"1"];
+        v22 = [symptomCopy eventQualifierStringForKey:@"1"];
         if ([v22 length])
         {
           [v20 appendFormat:@" (url \"%@\"", v22];
         }
 
         v35 = v22;
-        v34 = [v4 eventQualifierStringForKey:@"2"];
+        v34 = [symptomCopy eventQualifierStringForKey:@"2"];
         [v34 length];
-        v23 = [v4 eventQualifiers];
-        v24 = [v23 objectForKeyedSubscript:@"3"];
+        eventQualifiers = [symptomCopy eventQualifiers];
+        v24 = [eventQualifiers objectForKeyedSubscript:@"3"];
 
         if ([v24 length])
         {
@@ -3623,8 +3623,8 @@ LABEL_30:
 
         if (v21)
         {
-          v28 = [v21 interfaceName];
-          [v20 appendFormat:@" (interfaceName \"%@\"", v28];
+          interfaceName = [v21 interfaceName];
+          [v20 appendFormat:@" (interfaceName \"%@\"", interfaceName];
         }
 
         if (v7)
@@ -3687,12 +3687,12 @@ LABEL_31:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_libnetcoreSymptom:(id)a3
+- (void)_libnetcoreSymptom:(id)symptom
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventKey];
-  if (!v5)
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
+  if (!eventKey)
   {
     v8 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -3709,7 +3709,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [SymptomStore nameFromSymptomKey:v5];
+  v6 = [SymptomStore nameFromSymptomKey:eventKey];
   if (!v6)
   {
     v12 = debuggabilityLogHandle;
@@ -3719,7 +3719,7 @@ LABEL_13:
     }
 
     v15 = 138412290;
-    v16 = v5;
+    v16 = eventKey;
     v9 = "NDFSM Cannot get symptom name from eventKey:%@";
     v10 = v12;
     v11 = 12;
@@ -3729,7 +3729,7 @@ LABEL_13:
   v7 = v6;
   if (([v6 isEqualToString:@"SYMPTOM_LIBNETCORE_DATA_STALL"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SYMPTOM_LIBNETCORE_ADAPTIVE_WRITE_TIMEOUT") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"SYMPTOM_LIBNETCORE_TLS_HANDSHAKE_FAILED") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"SYMPTOM_LIBNETCORE_DNS_FAILED"))
   {
-    [(SymptomExpertSystemHandler *)self _processLibnetcoreSymptom:v4 symptomName:v7];
+    [(SymptomExpertSystemHandler *)self _processLibnetcoreSymptom:symptomCopy symptomName:v7];
   }
 
   else
@@ -3747,19 +3747,19 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processLibnetcoreSymptom:(id)a3 symptomName:(id)a4
+- (void)_processLibnetcoreSymptom:(id)symptom symptomName:(id)name
 {
-  v5 = a3;
+  symptomCopy = symptom;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v6 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __68__SymptomExpertSystemHandler__processLibnetcoreSymptom_symptomName___block_invoke;
     v10[3] = &unk_27898BE68;
     v10[4] = self;
-    v11 = v5;
-    v7 = libnetcoreSymptomTrampoline(v11, 0, 0, 0, v6, v10);
+    v11 = symptomCopy;
+    v7 = libnetcoreSymptomTrampoline(v11, 0, 0, 0, queue, v10);
 
     if ((v7 & 1) == 0)
     {
@@ -3895,63 +3895,63 @@ LABEL_21:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)urlIsAppleDomain:(id)a3
+- (BOOL)urlIsAppleDomain:(id)domain
 {
-  v3 = [a3 host];
-  v4 = [v3 lowercaseString];
+  host = [domain host];
+  lowercaseString = [host lowercaseString];
 
-  if ([v4 isEqualToString:@"apple.com"] & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".icloud.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"me.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".me.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"mac.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".mac.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"itunes.com"))
+  if ([lowercaseString isEqualToString:@"apple.com"] & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".icloud.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"me.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".me.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"mac.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".mac.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"itunes.com"))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 hasSuffix:@".itunes.com"];
+    v5 = [lowercaseString hasSuffix:@".itunes.com"];
   }
 
   return v5;
 }
 
-+ (id)libtraceInfo:(id)a3
++ (id)libtraceInfo:(id)info
 {
   v73 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v67 = 0;
   v68 = 0;
   v65 = 0;
   v66 = 0;
-  v4 = extractLibtraceSymptomElements(v3, &v68, &v67, &v66, &v65);
+  v4 = extractLibtraceSymptomElements(infoCopy, &v68, &v67, &v66, &v65);
   v62 = v68;
   v5 = v67;
   v63 = v66;
   v6 = v65;
   if (v4)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    v8 = [v3 eventData];
-    v10 = v8[3];
-    v9 = v8[4];
-    v11 = v8[5];
-    v12 = [v3 eventQualifiers];
-    v13 = [v12 objectForKeyedSubscript:@"3"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    eventData = [infoCopy eventData];
+    v10 = eventData[3];
+    v9 = eventData[4];
+    v11 = eventData[5];
+    eventQualifiers = [infoCopy eventQualifiers];
+    v13 = [eventQualifiers objectForKeyedSubscript:@"3"];
 
-    v14 = [v3 eventQualifiers];
-    v61 = [v14 objectForKeyedSubscript:@"4"];
+    eventQualifiers2 = [infoCopy eventQualifiers];
+    v61 = [eventQualifiers2 objectForKeyedSubscript:@"4"];
 
     v60 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"pc:0x%llx", v10];
-    [v7 setObject:v62 forKeyedSubscript:@"SYMPTOM_NAME"];
-    [v7 setObject:v5 forKeyedSubscript:@"PROC_NAME"];
-    [v7 setObject:v63 forKeyedSubscript:@"INTERFACE_TYPE"];
-    [v7 setObject:v6 forKeyedSubscript:@"OSLOG_COMPOSED_STRING"];
+    [dictionary setObject:v62 forKeyedSubscript:@"SYMPTOM_NAME"];
+    [dictionary setObject:v5 forKeyedSubscript:@"PROC_NAME"];
+    [dictionary setObject:v63 forKeyedSubscript:@"INTERFACE_TYPE"];
+    [dictionary setObject:v6 forKeyedSubscript:@"OSLOG_COMPOSED_STRING"];
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v10];
-    [v7 setObject:v15 forKeyedSubscript:@"PROGRAM_COUNTER"];
+    [dictionary setObject:v15 forKeyedSubscript:@"PROGRAM_COUNTER"];
 
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
-    [v7 setObject:v16 forKeyedSubscript:@"MACH_TIMESTAMP"];
+    [dictionary setObject:v16 forKeyedSubscript:@"MACH_TIMESTAMP"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
-    [v7 setObject:v17 forKeyedSubscript:@"ACTIVITY_ID"];
+    [dictionary setObject:v17 forKeyedSubscript:@"ACTIVITY_ID"];
 
     if ([v13 length])
     {
@@ -3962,10 +3962,10 @@ LABEL_21:
       if ([v21 count] == 2)
       {
         v22 = [v21 objectAtIndexedSubscript:0];
-        [v7 setObject:v22 forKey:@"SIGNATURE_DOMAIN"];
+        [dictionary setObject:v22 forKey:@"SIGNATURE_DOMAIN"];
 
         v23 = [v21 objectAtIndexedSubscript:1];
-        [v7 setObject:v23 forKey:@"SIGNATURE_TYPE"];
+        [dictionary setObject:v23 forKey:@"SIGNATURE_TYPE"];
       }
     }
 
@@ -3990,7 +3990,7 @@ LABEL_21:
       v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v61 encoding:4];
       if (v31)
       {
-        [v7 setObject:v31 forKeyedSubscript:@"ENDPOINT"];
+        [dictionary setObject:v31 forKeyedSubscript:@"ENDPOINT"];
       }
 
       else
@@ -4013,34 +4013,34 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      v27 = [v7 objectForKeyedSubscript:@"SYMPTOM_NAME"];
-      [v7 setObject:v27 forKeyedSubscript:@"DESCRIPTION"];
+      v27 = [dictionary objectForKeyedSubscript:@"SYMPTOM_NAME"];
+      [dictionary setObject:v27 forKeyedSubscript:@"DESCRIPTION"];
 
       v28 = [v24 objectForKeyedSubscript:@"domain"];
       if ([v28 length])
       {
-        [v7 setObject:v28 forKeyedSubscript:@"SIGNATURE_DOMAIN"];
+        [dictionary setObject:v28 forKeyedSubscript:@"SIGNATURE_DOMAIN"];
       }
 
       v29 = [v24 objectForKeyedSubscript:@"type"];
 
       if ([v29 length])
       {
-        [v7 setObject:v29 forKeyedSubscript:@"SIGNATURE_TYPE"];
+        [dictionary setObject:v29 forKeyedSubscript:@"SIGNATURE_TYPE"];
       }
 
       v30 = [v24 objectForKeyedSubscript:@"subtype"];
 
       if ([v30 length])
       {
-        [v7 setObject:v30 forKeyedSubscript:@"SIGNATURE_SUBTYPE"];
+        [dictionary setObject:v30 forKeyedSubscript:@"SIGNATURE_SUBTYPE"];
       }
 
       v31 = [v24 objectForKeyedSubscript:@"subtype_context"];
 
       if ([v31 length])
       {
-        [v7 setObject:v31 forKeyedSubscript:@"SIGNATURE_SUBTYPE_CONTEXT"];
+        [dictionary setObject:v31 forKeyedSubscript:@"SIGNATURE_SUBTYPE_CONTEXT"];
       }
 
       v59 = [v24 objectForKeyedSubscript:@"error_domain"];
@@ -4048,35 +4048,35 @@ LABEL_21:
       if (v59 && v58)
       {
         v32 = MEMORY[0x277CCA9B8];
-        v33 = [v58 integerValue];
+        integerValue = [v58 integerValue];
         v34 = [v24 objectForKeyedSubscript:@"error_info"];
-        v35 = [v32 errorWithDomain:v59 code:v33 userInfo:v34];
-        [v7 setObject:v35 forKeyedSubscript:@"ERROR"];
+        v35 = [v32 errorWithDomain:v59 code:integerValue userInfo:v34];
+        [dictionary setObject:v35 forKeyedSubscript:@"ERROR"];
       }
 
       v36 = [v24 objectForKeyedSubscript:@"endpoint"];
-      [v7 setObject:v36 forKeyedSubscript:@"ENDPOINT"];
+      [dictionary setObject:v36 forKeyedSubscript:@"ENDPOINT"];
 
       v37 = [v24 objectForKeyedSubscript:@"macAddress"];
-      [v7 setObject:v37 forKeyedSubscript:@"MACADDRESS"];
+      [dictionary setObject:v37 forKeyedSubscript:@"MACADDRESS"];
 
       v38 = [v24 objectForKeyedSubscript:@"isAntisymptom"];
-      [v7 setObject:v38 forKeyedSubscript:@"SYMPTOM_PAYLOAD_IS_ANTI_SYMPTOM"];
+      [dictionary setObject:v38 forKeyedSubscript:@"SYMPTOM_PAYLOAD_IS_ANTI_SYMPTOM"];
 
       v39 = [v24 objectForKeyedSubscript:@"identifier"];
-      [v7 setObject:v39 forKeyedSubscript:@"IDENTIFIER"];
+      [dictionary setObject:v39 forKeyedSubscript:@"IDENTIFIER"];
 
       v40 = [v24 objectForKeyedSubscript:@"interfaceName"];
-      [v7 setObject:v40 forKeyedSubscript:@"INTERFACE_NAME"];
+      [dictionary setObject:v40 forKeyedSubscript:@"INTERFACE_NAME"];
 
       v41 = [v24 objectForKeyedSubscript:@"uuid"];
-      [v7 setObject:v41 forKeyedSubscript:@"UUID"];
+      [dictionary setObject:v41 forKeyedSubscript:@"UUID"];
 
       v42 = [v24 objectForKeyedSubscript:@"triggerCount"];
-      [v7 setObject:v42 forKeyedSubscript:@"TRIGGER_COUNT"];
+      [dictionary setObject:v42 forKeyedSubscript:@"TRIGGER_COUNT"];
 
       v43 = [v24 objectForKeyedSubscript:@"triggerThreshold"];
-      [v7 setObject:v43 forKeyedSubscript:@"TRIGGER_THRESHOLD"];
+      [dictionary setObject:v43 forKeyedSubscript:@"TRIGGER_THRESHOLD"];
 
       v26 = 0;
     }
@@ -4084,19 +4084,19 @@ LABEL_21:
 LABEL_32:
     if ([v5 length])
     {
-      v49 = [v7 objectForKeyedSubscript:@"DESCRIPTION"];
+      v49 = [dictionary objectForKeyedSubscript:@"DESCRIPTION"];
       v50 = v49 == 0;
 
       if (v50)
       {
         v51 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"os_log error/fault: %@ %@", v5, v60];
-        [v7 setObject:v51 forKeyedSubscript:@"DESCRIPTION"];
+        [dictionary setObject:v51 forKeyedSubscript:@"DESCRIPTION"];
       }
     }
 
-    if ([v3 bundleId])
+    if ([infoCopy bundleId])
     {
-      v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v3, "bundleId")}];
+      v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(infoCopy, "bundleId")}];
     }
 
     else
@@ -4106,14 +4106,14 @@ LABEL_32:
 
     if ([v52 length])
     {
-      [v7 setObject:v52 forKeyedSubscript:@"BUNDLE_ID"];
-      v53 = [v7 objectForKeyedSubscript:@"DESCRIPTION"];
+      [dictionary setObject:v52 forKeyedSubscript:@"BUNDLE_ID"];
+      v53 = [dictionary objectForKeyedSubscript:@"DESCRIPTION"];
       v54 = v53 == 0;
 
       if (v54)
       {
         v55 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"os_log error/fault: %@ %@", v52, v60];
-        [v7 setObject:v55 forKeyedSubscript:@"DESCRIPTION"];
+        [dictionary setObject:v55 forKeyedSubscript:@"DESCRIPTION"];
       }
     }
 
@@ -4127,20 +4127,20 @@ LABEL_32:
     _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_ERROR, "NDFSM: failed to get libtrace symptom details", buf, 2u);
   }
 
-  v7 = 0;
+  dictionary = 0;
 LABEL_42:
 
   v56 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)_libtraceOSLog:(id)a3
+- (void)_libtraceOSLog:(id)log
 {
   v56 = *MEMORY[0x277D85DE8];
   if (self->_internalOrCarrierSeedBuild)
   {
-    v4 = [SymptomExpertSystemHandler libtraceInfo:a3];
+    v4 = [SymptomExpertSystemHandler libtraceInfo:log];
     v5 = v4;
     if (v4)
     {
@@ -4154,8 +4154,8 @@ LABEL_42:
           _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "Received an os_log_error() symptom from symptomtool. Not processing as this is a test.", buf, 2u);
         }
 
-        v8 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v8 postNotificationName:@"com.apple.symptoms.oslogfromsymptomstool" object:self userInfo:v5];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"com.apple.symptoms.oslogfromsymptomstool" object:self userInfo:v5];
       }
 
       else
@@ -4166,16 +4166,16 @@ LABEL_42:
           goto LABEL_31;
         }
 
-        v10 = [(SymptomExpertSystemHandler *)self libtraceOSLogWhiteList];
-        v11 = [v10 count];
+        libtraceOSLogWhiteList = [(SymptomExpertSystemHandler *)self libtraceOSLogWhiteList];
+        v11 = [libtraceOSLogWhiteList count];
 
         if (!v11)
         {
           goto LABEL_31;
         }
 
-        v12 = [(SymptomExpertSystemHandler *)self libtraceOSLogWhiteList];
-        v13 = [v12 objectForKeyedSubscript:v6];
+        libtraceOSLogWhiteList2 = [(SymptomExpertSystemHandler *)self libtraceOSLogWhiteList];
+        v13 = [libtraceOSLogWhiteList2 objectForKeyedSubscript:v6];
 
         if (v13 && (v14 = [v13 containsObject:v9], v13, (v14 & 1) != 0))
         {
@@ -4231,13 +4231,13 @@ LABEL_42:
           v44 = v28;
           v45 = v26;
           v29 = [v5 objectForKeyedSubscript:@"ERROR"];
-          v8 = v29;
+          defaultCenter = v29;
           if (v29)
           {
-            v30 = [v29 domain];
-            [v19 appendFormat:@"(errorDomain \"%@\"", v30];
+            domain = [v29 domain];
+            [v19 appendFormat:@"(errorDomain \"%@\"", domain];
 
-            [v19 appendFormat:@"(errorCode %ld) ", objc_msgSend(v8, "code")];
+            [v19 appendFormat:@"(errorCode %ld) ", objc_msgSend(defaultCenter, "code")];
           }
 
           if ([v9 isEqualToString:@"com.apple.sharingd.airdrop.discovery.failed"])
@@ -4247,30 +4247,30 @@ LABEL_42:
             self->_airdropID = v31;
 
             v33 = [v5 objectForKeyedSubscript:@"TRIGGER_THRESHOLD"];
-            v34 = [v33 intValue];
+            intValue = [v33 intValue];
 
-            if (v34)
+            if (intValue)
             {
-              [v19 appendFormat:@"(threshold %d) ", v34];
+              [v19 appendFormat:@"(threshold %d) ", intValue];
             }
           }
 
           v35 = [v5 objectForKeyedSubscript:@"SYMPTOM_PAYLOAD_IS_ANTI_SYMPTOM"];
-          v36 = [v35 BOOLValue];
+          bOOLValue = [v35 BOOLValue];
 
-          if (v36)
+          if (bOOLValue)
           {
             [v19 appendFormat:@" (isAntiSymptom TRUE)"];
           }
 
           [v19 appendString:@""]);
-          v37 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v50[0] = @"FACT_STRING";
           v50[1] = @"FACT_MODULE";
           v51[0] = v19;
           v51[1] = @"Symptoms";
           v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
-          [v37 addObject:v38];
+          [array addObject:v38];
 
           v48[0] = @"FACT_STRING";
           v39 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v9];
@@ -4278,13 +4278,13 @@ LABEL_42:
           v49[0] = v39;
           v49[1] = @"Symptoms";
           v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-          [v37 addObject:v40];
+          [array addObject:v40];
 
-          [v5 setObject:v37 forKey:@"FACTS_STRINGS"];
+          [v5 setObject:array forKey:@"FACTS_STRINGS"];
           v41 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
           [v41 addObject:v5];
 
-          v6 = v37;
+          v6 = array;
         }
 
         else
@@ -4300,7 +4300,7 @@ LABEL_31:
             _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_INFO, "Not feeding %@ symptom from %@ into the Expert System", buf, 0x16u);
           }
 
-          v8 = v9;
+          defaultCenter = v9;
         }
       }
     }
@@ -4309,22 +4309,22 @@ LABEL_31:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_symptomsdSymptom:(id)a3
+- (void)_symptomsdSymptom:(id)symptom
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  symptomCopy = symptom;
+  v5 = symptomCopy;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v6 = [v4 eventKey];
-    if (v6)
+    eventKey = [symptomCopy eventKey];
+    if (eventKey)
     {
-      v7 = [SymptomStore nameFromSymptomKey:v6];
+      v7 = [SymptomStore nameFromSymptomKey:eventKey];
       if (v7)
       {
         v8 = v7;
-        v9 = [v5 eventData];
-        if (!v9)
+        eventData = [v5 eventData];
+        if (!eventData)
         {
           v16 = debuggabilityLogHandle;
           if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -4342,10 +4342,10 @@ LABEL_17:
           goto LABEL_40;
         }
 
-        v10 = *(v9 + 16) & 0xFFFFF;
+        v10 = *(eventData + 16) & 0xFFFFF;
         if (v10 > 0x63008)
         {
-          if ((*(v9 + 16) & 0xFFFFFu) > 0x6300D)
+          if ((*(eventData + 16) & 0xFFFFFu) > 0x6300D)
           {
             switch(v10)
             {
@@ -4388,7 +4388,7 @@ LABEL_34:
           goto LABEL_35;
         }
 
-        if ((*(v9 + 16) & 0xFFFFFu) <= 0x63003)
+        if ((*(eventData + 16) & 0xFFFFFu) <= 0x63003)
         {
           if (v10 == 405505)
           {
@@ -4445,7 +4445,7 @@ LABEL_32:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         v25 = 138412290;
-        v26 = v6;
+        v26 = eventKey;
         v12 = "NDFSM Cannot get symptom name from eventKey:%@";
         v13 = v15;
         v14 = 12;
@@ -4473,25 +4473,25 @@ LABEL_41:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdEnergyBackgroundRRCExcActivity:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdEnergyBackgroundRRCExcActivity:(id)activity symptomName:(id)name
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [v6 eventData];
-    if (v8)
+    eventData = [activityCopy eventData];
+    if (eventData)
     {
-      v9 = v8;
-      if ((~*(v8 + 4) & 3) == 0)
+      v9 = eventData;
+      if ((~*(eventData + 4) & 3) == 0)
       {
-        v40 = v7;
+        v40 = nameCopy;
         v44 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
         v11 = *(v9 + 24);
         v10 = *(v9 + 32);
-        v12 = [v6 eventQualifiers];
-        v41 = [v12 objectForKeyedSubscript:@"0"];
+        eventQualifiers = [activityCopy eventQualifiers];
+        v41 = [eventQualifiers objectForKeyedSubscript:@"0"];
 
         if (v41)
         {
@@ -4515,7 +4515,7 @@ LABEL_41:
 LABEL_26:
 
 LABEL_27:
-            v7 = v40;
+            nameCopy = v40;
             goto LABEL_28;
           }
         }
@@ -4543,8 +4543,8 @@ LABEL_27:
 
           v36 = v18;
           v43 = [v13 keysSortedByValueUsingComparator:&__block_literal_global_570];
-          v38 = [v43 firstObject];
-          v19 = [MEMORY[0x277CBEB18] array];
+          firstObject = [v43 firstObject];
+          array = [MEMORY[0x277CBEB18] array];
           if (v10)
           {
             v20 = 0;
@@ -4563,29 +4563,29 @@ LABEL_27:
               }
 
               v23 = [v13 objectForKeyedSubscript:v22];
-              [v19 addObject:v23];
+              [array addObject:v23];
 
               v20 = v22;
             }
           }
 
-          v42 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
+          v42 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:activityCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
           [(NSMutableArray *)self->_processedSymptoms addObject:v42];
-          v39 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v35 = MEMORY[0x277CCAB68];
           v24 = [v42 objectForKeyedSubscript:@"DESCRIPTION"];
           v25 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v42];
           v26 = [v42 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
           v27 = [v42 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-          v28 = [v19 componentsJoinedByString:@" "];
-          v37 = [v35 stringWithFormat:@"(Symptom (symptomName \"%@\"", v40, v24, v25, v26, v27, v38, v36, v10, v44, v28];
+          v28 = [array componentsJoinedByString:@" "];
+          v37 = [v35 stringWithFormat:@"(Symptom (symptomName \"%@\"", v40, v24, v25, v26, v27, firstObject, v36, v10, v44, v28];
 
           v48[0] = @"FACT_STRING";
           v48[1] = @"FACT_MODULE";
           v49[0] = v37;
           v49[1] = @"Symptoms";
           v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-          [v39 addObject:v29];
+          [array2 addObject:v29];
 
           v46[0] = @"FACT_STRING";
           v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v40];
@@ -4593,9 +4593,9 @@ LABEL_27:
           v47[0] = v30;
           v47[1] = @"Symptoms";
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-          [v39 addObject:v31];
+          [array2 addObject:v31];
 
-          [v42 setObject:v39 forKey:@"FACTS_STRINGS"];
+          [v42 setObject:array2 forKey:@"FACTS_STRINGS"];
           v32 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
           [v32 addObject:v42];
 
@@ -4631,19 +4631,19 @@ LABEL_28:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdEnergyBackgroundFullActivityMap:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdEnergyBackgroundFullActivityMap:(id)map symptomName:(id)name
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [v6 eventData];
-    if (v8 && (*(v8 + 4) & 1) != 0)
+    eventData = [mapCopy eventData];
+    if (eventData && (*(eventData + 4) & 1) != 0)
     {
-      v24 = *(v8 + 24);
-      v26 = [MEMORY[0x277D6B3E0] stringForFunctionalInterfaceType:*(v8 + 32)];
-      v10 = [v6 eventQualifierStringForKey:@"0"];
+      v24 = *(eventData + 24);
+      v26 = [MEMORY[0x277D6B3E0] stringForFunctionalInterfaceType:*(eventData + 32)];
+      v10 = [mapCopy eventQualifierStringForKey:@"0"];
       if ([(__CFString *)v10 length])
       {
         v25 = v10;
@@ -4655,32 +4655,32 @@ LABEL_28:
         v25 = @"<Unknown>";
       }
 
-      v11 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
+      v11 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:mapCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
       [(NSMutableArray *)self->_processedSymptoms addObject:v11];
-      v12 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v13 = MEMORY[0x277CCAB68];
       v14 = [v11 objectForKeyedSubscript:@"DESCRIPTION"];
       v15 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v11];
       v16 = [v11 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
       v17 = [v11 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-      v18 = [v13 stringWithFormat:@"(Symptom (symptomName \"%@\"", v7, v14, v15, v16, v17, v25, v24, v26];
+      v18 = [v13 stringWithFormat:@"(Symptom (symptomName \"%@\"", nameCopy, v14, v15, v16, v17, v25, v24, v26];
 
       v30[0] = @"FACT_STRING";
       v30[1] = @"FACT_MODULE";
       v31[0] = v18;
       v31[1] = @"Symptoms";
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-      [v12 addObject:v19];
+      [array addObject:v19];
 
       v28[0] = @"FACT_STRING";
-      v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v7];
+      nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", nameCopy];
       v28[1] = @"FACT_MODULE";
-      v29[0] = v20;
+      v29[0] = nameCopy;
       v29[1] = @"Symptoms";
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
-      [v12 addObject:v21];
+      [array addObject:v21];
 
-      [v11 setObject:v12 forKey:@"FACTS_STRINGS"];
+      [v11 setObject:array forKey:@"FACTS_STRINGS"];
       v22 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
       [v22 addObject:v11];
     }
@@ -4699,18 +4699,18 @@ LABEL_28:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdFlowCountExceededThreshold:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdFlowCountExceededThreshold:(id)threshold symptomName:(id)name
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  thresholdCopy = threshold;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [v6 eventData];
-    if (v8)
+    eventData = [thresholdCopy eventData];
+    if (eventData)
     {
-      v9 = v8;
-      if ((~*(v8 + 4) & 0x1F) == 0)
+      v9 = eventData;
+      if ((~*(eventData + 4) & 0x1F) == 0)
       {
         v10 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
         v38 = v9[4];
@@ -4736,7 +4736,7 @@ LABEL_28:
           while (1)
           {
             v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v13];
-            v15 = [v6 eventQualifierStringForKey:v14];
+            v15 = [thresholdCopy eventQualifierStringForKey:v14];
 
             if (v15)
             {
@@ -4769,20 +4769,20 @@ LABEL_15:
 
         v39 = &stru_2847966D8;
 LABEL_18:
-        v17 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
+        v17 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:thresholdCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B210]];
         [(NSMutableArray *)self->_processedSymptoms addObject:v17];
-        v37 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v18 = [MEMORY[0x277CCABB0] numberWithInteger:v31];
         v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v38];
         v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v33];
-        v34 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:v6 procName:v39 interfaceType:v18 eventCount:v19 duration:v20];
+        v34 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:thresholdCopy procName:v39 interfaceType:v18 eventCount:v19 duration:v20];
 
         v32 = MEMORY[0x277CCAB68];
         v21 = [v17 objectForKeyedSubscript:@"DESCRIPTION"];
         v22 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v17];
         v23 = [v17 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
         v24 = [v17 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-        v25 = objc_msgSend(v32, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %@) (appCount %llu) (threshold %llu) (appList %@) (hasDictForArbitrator TRUE)"), v7, v21, v22, v23, v24, v39, v38, v35, v10;
+        v25 = objc_msgSend(v32, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %@) (appCount %llu) (threshold %llu) (appList %@) (hasDictForArbitrator TRUE)"), nameCopy, v21, v22, v23, v24, v39, v38, v35, v10;
 
         if (v36)
         {
@@ -4795,17 +4795,17 @@ LABEL_18:
         v43[0] = v25;
         v43[1] = @"Symptoms";
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
-        [v37 addObject:v26];
+        [array addObject:v26];
 
         v40[0] = @"FACT_STRING";
-        v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v7];
+        nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", nameCopy];
         v40[1] = @"FACT_MODULE";
-        v41[0] = v27;
+        v41[0] = nameCopy;
         v41[1] = @"Symptoms";
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
-        [v37 addObject:v28];
+        [array addObject:v28];
 
-        [v17 setObject:v37 forKey:@"FACTS_STRINGS"];
+        [v17 setObject:array forKey:@"FACTS_STRINGS"];
         [v17 setObject:v34 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
         v29 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
         [v29 addObject:v17];
@@ -4816,15 +4816,15 @@ LABEL_18:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processUIPerformanceThunderingHerdCase:(id)a3 symptomName:(id)a4
+- (void)_processUIPerformanceThunderingHerdCase:(id)case symptomName:(id)name
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  caseCopy = case;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [v6 eventData];
-    if (!v8 || (~*(v8 + 4) & 3) != 0)
+    eventData = [caseCopy eventData];
+    if (!eventData || (~*(eventData + 4) & 3) != 0)
     {
       v31 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -4836,30 +4836,30 @@ LABEL_18:
 
     else
     {
-      v9 = *(v8 + 32);
-      v38 = *(v8 + 24);
-      v10 = [v6 eventQualifierStringForKey:@"0"];
+      v9 = *(eventData + 32);
+      v38 = *(eventData + 24);
+      v10 = [caseCopy eventQualifierStringForKey:@"0"];
       if (![(__CFString *)v10 length])
       {
 
         v10 = @"<Unknown>";
       }
 
-      v11 = [v6 eventQualifierStringForKey:@"1"];
+      v11 = [caseCopy eventQualifierStringForKey:@"1"];
       if (![(__CFString *)v11 length])
       {
 
         v11 = @"<Unknown>";
       }
 
-      v35 = v7;
-      v12 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B228]];
+      v35 = nameCopy;
+      v12 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:caseCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B228]];
       v41 = v10;
       [v12 setObject:v10 forKeyedSubscript:@"PROC_NAME"];
       v40 = v11;
       [v12 setObject:v11 forKeyedSubscript:@"SIGNATURE_SUBTYPE_CONTEXT"];
-      v13 = [v6 eventQualifiers];
-      v14 = [v13 objectForKeyedSubscript:@"2"];
+      eventQualifiers = [caseCopy eventQualifiers];
+      v14 = [eventQualifiers objectForKeyedSubscript:@"2"];
 
       if (v14 && [(__CFData *)v14 length])
       {
@@ -4871,8 +4871,8 @@ LABEL_18:
           v49 = *MEMORY[0x277D6B130];
           v50[0] = v15;
           v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-          v18 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-          [v18 setObject:v17 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
+          diagnosticSessionOutput = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+          [diagnosticSessionOutput setObject:v17 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
 
           v19 = debuggabilityLogHandle;
           if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -4885,7 +4885,7 @@ LABEL_18:
       }
 
       [(NSMutableArray *)self->_processedSymptoms addObject:v12];
-      v36 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v33 = MEMORY[0x277CCAB68];
       v20 = [v12 objectForKeyedSubscript:@"DESCRIPTION"];
       v37 = v14;
@@ -4896,7 +4896,7 @@ LABEL_18:
       v25 = [v12 objectForKeyedSubscript:@"PROC_NAME"];
       v26 = [InterfaceUtils stringForInterfaceType:v9];
       v34 = v12;
-      v7 = v35;
+      nameCopy = v35;
       v39 = [v33 stringWithFormat:@"(Symptom (symptomName \"%@\"", v35, v20, v21, v22, v23, v24, v25, v38, v26];
 
       v45[0] = @"FACT_STRING";
@@ -4904,7 +4904,7 @@ LABEL_18:
       v46[0] = v39;
       v46[1] = @"Symptoms";
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
-      [v36 addObject:v27];
+      [array addObject:v27];
 
       v43[0] = @"FACT_STRING";
       v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v35];
@@ -4912,9 +4912,9 @@ LABEL_18:
       v44[0] = v28;
       v44[1] = @"Symptoms";
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:2];
-      [v36 addObject:v29];
+      [array addObject:v29];
 
-      [v34 setObject:v36 forKey:@"FACTS_STRINGS"];
+      [v34 setObject:array forKey:@"FACTS_STRINGS"];
       v30 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
       [v30 addObject:v34];
     }
@@ -4923,23 +4923,23 @@ LABEL_18:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdExcessiveFailedConnections:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdExcessiveFailedConnections:(id)connections symptomName:(id)name
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionsCopy = connections;
+  nameCopy = name;
   if (!self->_internalOrCarrierSeedBuild)
   {
     goto LABEL_20;
   }
 
-  v8 = [v6 eventData];
-  if (v8)
+  eventData = [connectionsCopy eventData];
+  if (eventData)
   {
-    v9 = v8;
-    if ((~*(v8 + 4) & 0x3F) == 0)
+    v9 = eventData;
+    if ((~*(eventData + 4) & 0x3F) == 0)
     {
-      v45 = v7;
+      v45 = nameCopy;
       v10 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
       v11 = 0;
       v12 = *(v9 + 32);
@@ -4954,18 +4954,18 @@ LABEL_18:
       while (1)
       {
         v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v11];
-        v17 = [v6 eventQualifierStringForKey:v16];
+        v17 = [connectionsCopy eventQualifierStringForKey:v16];
 
         if (!v17)
         {
 LABEL_12:
-          v19 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
+          v19 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:connectionsCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
           [(NSMutableArray *)self->_processedSymptoms addObject:v19];
-          v42 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v20 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
           v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v44];
           v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v41];
-          v39 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:v6 procName:v13 interfaceType:v20 eventCount:v21 duration:v22];
+          v39 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:connectionsCopy procName:v13 interfaceType:v20 eventCount:v21 duration:v22];
 
           v37 = MEMORY[0x277CCAB68];
           v23 = [v19 objectForKeyedSubscript:@"DESCRIPTION"];
@@ -4977,8 +4977,8 @@ LABEL_12:
           if (v38)
           {
             v28 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceIndex:v38];
-            v29 = [v28 interfaceName];
-            [v27 appendFormat:@" (interfaceName \"%@\"", v29];
+            interfaceName = [v28 interfaceName];
+            [v27 appendFormat:@" (interfaceName \"%@\"", interfaceName];
           }
 
           if (v40)
@@ -4999,18 +4999,18 @@ LABEL_12:
           v51[0] = v27;
           v51[1] = @"Symptoms";
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
-          [v42 addObject:v31];
+          [array addObject:v31];
 
           v48[0] = @"FACT_STRING";
-          v7 = v45;
+          nameCopy = v45;
           v32 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v45];
           v48[1] = @"FACT_MODULE";
           v49[0] = v32;
           v49[1] = @"Symptoms";
           v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-          [v42 addObject:v33];
+          [array addObject:v33];
 
-          [v19 setObject:v42 forKey:@"FACTS_STRINGS"];
+          [v19 setObject:array forKey:@"FACTS_STRINGS"];
           [v19 setObject:v39 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
           v34 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
           [v34 addObject:v19];
@@ -5051,7 +5051,7 @@ LABEL_10:
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v47 = v7;
+    v47 = nameCopy;
     _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_ERROR, "NDFSM Incorrect syntax for symptomsd symptom: %@, ignoring", buf, 0xCu);
   }
 
@@ -5060,33 +5060,33 @@ LABEL_20:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdWiFiShimSymptom:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdWiFiShimSymptom:(id)symptom symptomName:(id)name
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  symptomCopy = symptom;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
+    v8 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:symptomCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
     [(NSMutableArray *)self->_processedSymptoms addObject:v8];
-    v23 = [MEMORY[0x277CBEB18] array];
-    v22 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:v6 procName:@"symptomsd" interfaceType:&unk_2847EF5F0 eventCount:0 duration:0];
+    array = [MEMORY[0x277CBEB18] array];
+    v22 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:symptomCopy procName:@"symptomsd" interfaceType:&unk_2847EF5F0 eventCount:0 duration:0];
     v9 = MEMORY[0x277CCAB68];
     v10 = [v8 objectForKeyedSubscript:@"DESCRIPTION"];
     v11 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v8];
     v12 = [v8 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
     v13 = [v8 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-    v14 = objc_msgSend(v9, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %@) (hasDictForArbitrator TRUE)"), v7, v10, v11, v12, v13, CFSTR("symptomsd");
+    v14 = objc_msgSend(v9, "stringWithFormat:", @"(Symptom (symptomName %@) (symptomDescription %@) (sequence %lu) (symptomDomain %@) (symptomType %@) (processName %@) (hasDictForArbitrator TRUE)"), nameCopy, v10, v11, v12, v13, CFSTR("symptomsd");
 
-    if ([v7 isEqualToString:@"SYMPTOM_WIFI_LQM_BRADYCARDIA"])
+    if ([nameCopy isEqualToString:@"SYMPTOM_WIFI_LQM_BRADYCARDIA"])
     {
-      v15 = [v6 eventData];
-      if (v15)
+      eventData = [symptomCopy eventData];
+      if (eventData)
       {
-        if ((~*(v15 + 4) & 3) == 0)
+        if ((~*(eventData + 4) & 3) == 0)
         {
-          v16 = *(v15 + 32);
-          [v14 appendFormat:@" (appCount %llu)", *(v15 + 24)];
+          v16 = *(eventData + 32);
+          [v14 appendFormat:@" (appCount %llu)", *(eventData + 24)];
           [v14 appendFormat:@" (threshold %llu)", v16];
         }
       }
@@ -5098,17 +5098,17 @@ LABEL_20:
     v27[0] = v14;
     v27[1] = @"Symptoms";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    [v23 addObject:v17];
+    [array addObject:v17];
 
     v24[0] = @"FACT_STRING";
-    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v7];
+    nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", nameCopy];
     v24[1] = @"FACT_MODULE";
-    v25[0] = v18;
+    v25[0] = nameCopy;
     v25[1] = @"Symptoms";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
-    [v23 addObject:v19];
+    [array addObject:v19];
 
-    [v8 setObject:v23 forKey:@"FACTS_STRINGS"];
+    [v8 setObject:array forKey:@"FACTS_STRINGS"];
     [v8 setObject:v22 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
     v20 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
     [v20 addObject:v8];
@@ -5117,48 +5117,48 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdNoDefaultRoute:(id)a3 symptomName:(id)a4
+- (void)_processSymptomsdNoDefaultRoute:(id)route symptomName:(id)name
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  nameCopy = name;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v8 = [v6 eventData];
-    if (v8)
+    eventData = [routeCopy eventData];
+    if (eventData)
     {
-      if (*(v8 + 4))
+      if (*(eventData + 4))
       {
-        v9 = *(v8 + 24);
-        v10 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v6 domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
+        v9 = *(eventData + 24);
+        v10 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:routeCopy domain:*MEMORY[0x277D6B020] type:*MEMORY[0x277D6B220]];
         [(NSMutableArray *)self->_processedSymptoms addObject:v10];
-        v11 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v12 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-        v24 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:v6 procName:@"symptomsd" interfaceType:v12 eventCount:0 duration:0];
+        v24 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:routeCopy procName:@"symptomsd" interfaceType:v12 eventCount:0 duration:0];
 
         v13 = MEMORY[0x277CCAB68];
         v14 = [v10 objectForKeyedSubscript:@"DESCRIPTION"];
         v15 = [(NSMutableArray *)self->_processedSymptoms indexOfObject:v10];
         v16 = [v10 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
         v17 = [v10 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
-        v18 = [v13 stringWithFormat:@"(Symptom (symptomName \"%@\", v7, v14, v15, v16, v17, @"symptomsd""];
+        v18 = [v13 stringWithFormat:@"(Symptom (symptomName \"%@\", nameCopy, v14, v15, v16, v17, @"symptomsd""];
 
         v27[0] = @"FACT_STRING";
         v27[1] = @"FACT_MODULE";
         v28[0] = v18;
         v28[1] = @"Symptoms";
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
-        [v11 addObject:v19];
+        [array addObject:v19];
 
         v25[0] = @"FACT_STRING";
-        v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v7];
+        nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", nameCopy];
         v25[1] = @"FACT_MODULE";
-        v26[0] = v20;
+        v26[0] = nameCopy;
         v26[1] = @"Symptoms";
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
-        [v11 addObject:v21];
+        [array addObject:v21];
 
-        [v10 setObject:v11 forKey:@"FACTS_STRINGS"];
+        [v10 setObject:array forKey:@"FACTS_STRINGS"];
         [v10 setObject:v24 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
         v22 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
         [v22 addObject:v10];
@@ -5169,30 +5169,30 @@ LABEL_20:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processSymptomsdRnfSymptom:(id)a3 symptomName:(id)a4 categoryType:(id)a5
+- (void)_processSymptomsdRnfSymptom:(id)symptom symptomName:(id)name categoryType:(id)type
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  symptomCopy = symptom;
+  nameCopy = name;
+  typeCopy = type;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v11 = [v8 eventData];
-    if (!v11 || (v12 = v11, (~*(v11 + 4) & 7) != 0))
+    eventData = [symptomCopy eventData];
+    if (!eventData || (v12 = eventData, (~*(eventData + 4) & 7) != 0))
     {
       v21 = debuggabilityLogHandle;
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v45 = v9;
+        v45 = nameCopy;
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_ERROR, "NDFSM Incorrect syntax for symptomsd symptom: %@, ignoring", buf, 0xCu);
       }
     }
 
     else
     {
-      v42 = v9;
-      v43 = v10;
+      v42 = nameCopy;
+      v43 = typeCopy;
       v13 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
       v38 = v12[3];
       v40 = v12[4];
@@ -5214,7 +5214,7 @@ LABEL_20:
         while (1)
         {
           v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v16];
-          v19 = [v8 eventQualifierStringForKey:v18];
+          v19 = [symptomCopy eventQualifierStringForKey:v18];
 
           if (v19)
           {
@@ -5247,13 +5247,13 @@ LABEL_15:
 
       v17 = @"symptomsd";
 LABEL_20:
-      v22 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:v8 domain:*MEMORY[0x277D6B020] type:v43];
+      v22 = [(SymptomExpertSystemHandler *)self symptomDictionaryForSymptom:symptomCopy domain:*MEMORY[0x277D6B020] type:v43];
       [(NSMutableArray *)self->_processedSymptoms addObject:v22];
-      v36 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
       v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v38];
       v37 = v17;
-      v39 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:v8 procName:v17 interfaceType:&unk_2847EF608 eventCount:v23 duration:v24];
+      v39 = [(SymptomExpertSystemHandler *)self arbitratorDictionaryForSymptom:symptomCopy procName:v17 interfaceType:&unk_2847EF608 eventCount:v23 duration:v24];
 
       v35 = MEMORY[0x277CCAB68];
       v25 = [v22 objectForKeyedSubscript:@"DESCRIPTION"];
@@ -5261,7 +5261,7 @@ LABEL_20:
       v27 = [v22 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
       v28 = [v22 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
       v34 = v17;
-      v9 = v42;
+      nameCopy = v42;
       v41 = [v35 stringWithFormat:@"(Symptom (symptomName \"%@\""], v42, v25, v26, v27, v28, v34, v40, v15, v13);
 
       v48[0] = @"FACT_STRING";
@@ -5269,7 +5269,7 @@ LABEL_20:
       v49[0] = v41;
       v49[1] = @"Symptoms";
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-      [v36 addObject:v29];
+      [array addObject:v29];
 
       v46[0] = @"FACT_STRING";
       v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v42];
@@ -5277,31 +5277,31 @@ LABEL_20:
       v47[0] = v30;
       v47[1] = @"Symptoms";
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
-      [v36 addObject:v31];
+      [array addObject:v31];
 
-      [v22 setObject:v36 forKey:@"FACTS_STRINGS"];
+      [v22 setObject:array forKey:@"FACTS_STRINGS"];
       [v22 setObject:v39 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
       v32 = [(SymptomExpertSystemHandler *)self mutableArrayValueForKey:@"incomingSymptoms"];
       [v32 addObject:v22];
 
-      v10 = v43;
+      typeCopy = v43;
     }
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_usageUpdaterSymptom:(id)a3
+- (void)_usageUpdaterSymptom:(id)symptom
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  symptomCopy = symptom;
+  v5 = symptomCopy;
   if (self->_internalOrCarrierSeedBuild)
   {
-    v6 = [v4 eventKey];
-    if (v6)
+    eventKey = [symptomCopy eventKey];
+    if (eventKey)
     {
-      v7 = [SymptomStore nameFromSymptomKey:v6];
+      v7 = [SymptomStore nameFromSymptomKey:eventKey];
       if (v7)
       {
         v8 = v7;
@@ -5350,7 +5350,7 @@ LABEL_12:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = eventKey;
         v10 = "NDFSM Cannot get symptom name from eventKey:%@";
         v11 = v13;
         v12 = 12;
@@ -5381,29 +5381,29 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processAnomalousFlowSymptom:(id)a3 symptomName:(id)a4 categoryType:(id)a5
+- (void)_processAnomalousFlowSymptom:(id)symptom symptomName:(id)name categoryType:(id)type
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 eventData];
-  if (!v11 || (v12 = v11, (~*(v11 + 4) & 0x1F) != 0))
+  symptomCopy = symptom;
+  nameCopy = name;
+  typeCopy = type;
+  eventData = [symptomCopy eventData];
+  if (!eventData || (v12 = eventData, (~*(eventData + 4) & 0x1F) != 0))
   {
     v21 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v51 = v9;
+      v51 = nameCopy;
       _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_ERROR, "NDFSM Incorrect syntax for symptomsd symptom: %@, ignoring", buf, 0xCu);
     }
   }
 
   else
   {
-    v47 = self;
-    v48 = v10;
-    v49 = v9;
+    selfCopy = self;
+    v48 = typeCopy;
+    v49 = nameCopy;
     v13 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
     v42 = *(v12 + 24);
     v46 = *(v12 + 32);
@@ -5427,7 +5427,7 @@ LABEL_13:
       while (1)
       {
         v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v16];
-        v19 = [v8 eventQualifierStringForKey:v18];
+        v19 = [symptomCopy eventQualifierStringForKey:v18];
 
         if (v19)
         {
@@ -5461,17 +5461,17 @@ LABEL_14:
     v17 = @"symptomsd-flow";
 LABEL_19:
     v22 = v17;
-    v23 = [(SymptomExpertSystemHandler *)v47 symptomDictionaryForSymptom:v8 domain:*MEMORY[0x277D6B020] type:v48];
-    [(NSMutableArray *)v47->_processedSymptoms addObject:v23];
-    v45 = [MEMORY[0x277CBEB18] array];
+    v23 = [(SymptomExpertSystemHandler *)selfCopy symptomDictionaryForSymptom:symptomCopy domain:*MEMORY[0x277D6B020] type:v48];
+    [(NSMutableArray *)selfCopy->_processedSymptoms addObject:v23];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = [MEMORY[0x277CCABB0] numberWithInteger:v40];
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
     v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v42];
-    v43 = [(SymptomExpertSystemHandler *)v47 arbitratorDictionaryForSymptom:v8 procName:v17 interfaceType:v24 eventCount:v25 duration:v26];
+    v43 = [(SymptomExpertSystemHandler *)selfCopy arbitratorDictionaryForSymptom:symptomCopy procName:v17 interfaceType:v24 eventCount:v25 duration:v26];
 
     v27 = MEMORY[0x277CCAB68];
     v28 = [v23 objectForKeyedSubscript:@"DESCRIPTION"];
-    v29 = [(NSMutableArray *)v47->_processedSymptoms indexOfObject:v23];
+    v29 = [(NSMutableArray *)selfCopy->_processedSymptoms indexOfObject:v23];
     v30 = [v23 objectForKeyedSubscript:@"SIGNATURE_DOMAIN"];
     v41 = v23;
     v31 = [v23 objectForKeyedSubscript:@"SIGNATURE_TYPE"];
@@ -5480,8 +5480,8 @@ LABEL_19:
     if (v44)
     {
       v33 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceIndex:v44];
-      v34 = [v33 interfaceName];
-      [v32 appendFormat:@" (interfaceName \"%@\"", v34];
+      interfaceName = [v33 interfaceName];
+      [v32 appendFormat:@" (interfaceName \"%@\"", interfaceName];
     }
 
     [v32 appendString:@""]);
@@ -5490,7 +5490,7 @@ LABEL_19:
     v55[0] = v32;
     v55[1] = @"Symptoms";
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
-    [v45 addObject:v35];
+    [array addObject:v35];
 
     v52[0] = @"FACT_STRING";
     v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(EvaluateIncomingSymptom (symptomName \"%@\"", v49];
@@ -5498,35 +5498,35 @@ LABEL_19:
     v53[0] = v36;
     v53[1] = @"Symptoms";
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
-    [v45 addObject:v37];
+    [array addObject:v37];
 
-    [v41 setObject:v45 forKey:@"FACTS_STRINGS"];
+    [v41 setObject:array forKey:@"FACTS_STRINGS"];
     [v41 setObject:v43 forKey:@"ARBITRATOR_EVENT_DICTIONARY"];
-    v38 = [(SymptomExpertSystemHandler *)v47 mutableArrayValueForKey:@"incomingSymptoms"];
+    v38 = [(SymptomExpertSystemHandler *)selfCopy mutableArrayValueForKey:@"incomingSymptoms"];
     [v38 addObject:v41];
 
-    v9 = v49;
-    v10 = v48;
+    nameCopy = v49;
+    typeCopy = v48;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleEvent:(id)a3 forEventName:(id)a4
+- (void)handleEvent:(id)event forEventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ExpertSystemHandlerCore *)self queue];
+  eventCopy = event;
+  nameCopy = name;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SymptomExpertSystemHandler_handleEvent_forEventName___block_invoke;
   block[3] = &unk_27898A328;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = nameCopy;
+  v9 = nameCopy;
+  v10 = eventCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__SymptomExpertSystemHandler_handleEvent_forEventName___block_invoke(uint64_t a1)
@@ -6351,14 +6351,14 @@ void __55__SymptomExpertSystemHandler_handleEvent_forEventName___block_invoke_68
   }
 }
 
-- (void)observer:(id)a3 didChangeConfiguration:(id)a4 type:(id)a5
+- (void)observer:(id)observer didChangeConfiguration:(id)configuration type:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10 || ([v10 isEqualToString:@"AutoBugCapture-NDF-CLIPS"] & 1) == 0)
+  observerCopy = observer;
+  configurationCopy = configuration;
+  typeCopy = type;
+  v11 = typeCopy;
+  if (!typeCopy || ([typeCopy isEqualToString:@"AutoBugCapture-NDF-CLIPS"] & 1) == 0)
   {
     v13 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -6374,7 +6374,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!configurationCopy)
   {
     v13 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -6388,14 +6388,14 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v12 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__SymptomExpertSystemHandler_observer_didChangeConfiguration_type___block_invoke;
   v16[3] = &unk_27898A7D0;
   v16[4] = self;
-  v17 = v9;
-  dispatch_async(v12, v16);
+  v17 = configurationCopy;
+  dispatch_async(queue, v16);
 
 LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
@@ -6414,14 +6414,14 @@ _BYTE *__67__SymptomExpertSystemHandler_observer_didChangeConfiguration_type___b
   return result;
 }
 
-- (void)processIncomingOTAUpdate:(id)a3
+- (void)processIncomingOTAUpdate:(id)update
 {
   v51 = *MEMORY[0x277D85DE8];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = a3;
+  obj = update;
   v3 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v3)
   {
@@ -6461,14 +6461,14 @@ _BYTE *__67__SymptomExpertSystemHandler_observer_didChangeConfiguration_type___b
 
           if ([v10 count])
           {
-            v14 = [(CLIPSShim *)self->ruleEngine otaUpdatePlatformStringForDeviceClass:[(SystemProperties *)self->systemPropsRelay deviceClass]];
-            if (v14 && [v10 containsObject:v14])
+            dictionary = [(CLIPSShim *)self->ruleEngine otaUpdatePlatformStringForDeviceClass:[(SystemProperties *)self->systemPropsRelay deviceClass]];
+            if (dictionary && [v10 containsObject:dictionary])
             {
               v15 = debuggabilityLogHandle;
               if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412802;
-                v45 = v14;
+                v45 = dictionary;
                 v46 = 2112;
                 v47 = v8;
                 v48 = 2112;
@@ -6483,7 +6483,7 @@ _BYTE *__67__SymptomExpertSystemHandler_observer_didChangeConfiguration_type___b
             if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              v45 = v14;
+              v45 = dictionary;
               v46 = 2112;
               v47 = v8;
               v48 = 2112;
@@ -6505,8 +6505,8 @@ LABEL_40:
           }
 
 LABEL_22:
-          v14 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)self->_pendingOTACLIPSUpdates setObject:v14 forKeyedSubscript:v8];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)self->_pendingOTACLIPSUpdates setObject:dictionary forKeyedSubscript:v8];
           if (v11)
           {
             objc_opt_class();
@@ -6526,14 +6526,14 @@ LABEL_22:
                   _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_ERROR, "The expirationDateString (%@) is invalid. Please use YYYY-MM-DDTHH:MM:SS+ZZ:ZZ", buf, 0xCu);
                 }
 
-                [v14 setObject:&unk_2847EF620 forKeyedSubscript:@"FailureReason"];
+                [dictionary setObject:&unk_2847EF620 forKeyedSubscript:@"FailureReason"];
 
                 goto LABEL_40;
               }
 
               v21 = v20;
-              v22 = [MEMORY[0x277CBEAA8] date];
-              if ([v21 compare:v22] == -1)
+              date = [MEMORY[0x277CBEAA8] date];
+              if ([v21 compare:date] == -1)
               {
                 log = debuggabilityLogHandle;
                 if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -6543,11 +6543,11 @@ LABEL_22:
                   v46 = 2112;
                   v47 = v11;
                   v48 = 2112;
-                  v49 = v22;
+                  v49 = date;
                   _os_log_impl(&dword_23255B000, log, OS_LOG_TYPE_ERROR, "This OTA Update has expired (%@ [%@] compared to %@)", buf, 0x20u);
                 }
 
-                [v14 setObject:&unk_2847EF638 forKeyedSubscript:{@"FailureReason", log}];
+                [dictionary setObject:&unk_2847EF638 forKeyedSubscript:{@"FailureReason", log}];
 
                 v5 = v35;
                 goto LABEL_40;
@@ -6565,7 +6565,7 @@ LABEL_22:
               _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_ERROR, "Expiration Date value is NOT valid: %@", buf, 0xCu);
             }
 
-            v23 = v14;
+            v23 = dictionary;
             v24 = &unk_2847EF620;
 LABEL_38:
             v25 = @"FailureReason";
@@ -6585,12 +6585,12 @@ LABEL_28:
                 _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_ERROR, "Version value is NOT valid: %@", buf, 0xCu);
               }
 
-              v23 = v14;
+              v23 = dictionary;
               v24 = &unk_2847EF650;
               goto LABEL_38;
             }
 
-            [v14 setObject:v9 forKeyedSubscript:@"Version"];
+            [dictionary setObject:v9 forKeyedSubscript:@"Version"];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
@@ -6605,12 +6605,12 @@ LABEL_28:
                 _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_ERROR, "Compressed_CLP value is NOT a string: %@", buf, 0xCu);
               }
 
-              v23 = v14;
+              v23 = dictionary;
               v24 = &unk_2847EF668;
               goto LABEL_38;
             }
 
-            v23 = v14;
+            v23 = dictionary;
             v24 = v12;
             v25 = @"Constructs";
           }
@@ -6645,30 +6645,30 @@ LABEL_41:
 
 - (void)ingestPendingOTAUpdates
 {
-  v2 = self;
+  selfCopy = self;
   v64 = *MEMORY[0x277D85DE8];
   v3 = [(NSArray *)self->states objectAtIndexedSubscript:2];
-  v4 = [(ExpertSystemStateCore *)v2->currentState label];
+  label = [(ExpertSystemStateCore *)selfCopy->currentState label];
   v40 = v3;
-  v5 = [v3 label];
-  v6 = [v4 isEqualToString:v5];
+  label2 = [v3 label];
+  v6 = [label isEqualToString:label2];
 
   if (v6)
   {
-    [(SymptomExpertSystemHandler *)v2 cancelDiagnosticSession:v2->_diagnosticSessionIdentifier];
+    [(SymptomExpertSystemHandler *)selfCopy cancelDiagnosticSession:selfCopy->_diagnosticSessionIdentifier];
   }
 
-  [(CLIPSShim *)v2->ruleEngine clear];
-  [(SymptomExpertSystemHandler *)v2 _removeAllObservers];
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(NSMutableDictionary *)v2->_pendingOTACLIPSUpdates allKeys];
+  [(CLIPSShim *)selfCopy->ruleEngine clear];
+  [(SymptomExpertSystemHandler *)selfCopy _removeAllObservers];
+  array = [MEMORY[0x277CBEB18] array];
+  [(NSMutableDictionary *)selfCopy->_pendingOTACLIPSUpdates allKeys];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   obj = v58 = 0u;
   v8 = [obj countByEnumeratingWithState:&v55 objects:v63 count:16];
-  p_isa = &v2->super.super.isa;
-  v44 = v7;
+  p_isa = &selfCopy->super.super.isa;
+  v44 = array;
   if (v8)
   {
     v9 = v8;
@@ -6689,14 +6689,14 @@ LABEL_41:
 
         v11 = *(*(&v55 + 1) + 8 * v13);
 
-        v10 = [(NSMutableDictionary *)v2->_pendingOTACLIPSUpdates objectForKeyedSubscript:v11];
+        v10 = [(NSMutableDictionary *)selfCopy->_pendingOTACLIPSUpdates objectForKeyedSubscript:v11];
 
-        ruleEngine = v2->ruleEngine;
+        ruleEngine = selfCopy->ruleEngine;
         v17 = [v10 objectForKeyedSubscript:@"Constructs"];
         v18 = [v10 objectForKeyedSubscript:@"Version"];
         [(CLIPSShim *)ruleEngine setOTAUpdate:v17 version:v18 module:v11];
 
-        v2 = p_isa;
+        selfCopy = p_isa;
         [v44 addObject:v11];
         ++v13;
         v14 = v10;
@@ -6709,29 +6709,29 @@ LABEL_41:
 
     while (v9);
 
-    v7 = v44;
+    array = v44;
   }
 
-  [(NSMutableDictionary *)v2->_pendingOTACLIPSUpdates removeAllObjects];
-  if ([v7 containsObject:@"COMMON"])
+  [(NSMutableDictionary *)selfCopy->_pendingOTACLIPSUpdates removeAllObjects];
+  if ([array containsObject:@"COMMON"])
   {
     v19 = 0;
   }
 
   else
   {
-    [v7 insertObject:@"COMMON" atIndex:0];
+    [array insertObject:@"COMMON" atIndex:0];
     v19 = 1;
   }
 
-  if (([v7 containsObject:@"Modules"] & 1) == 0)
+  if (([array containsObject:@"Modules"] & 1) == 0)
   {
-    [v7 insertObject:@"Modules" atIndex:v19++];
+    [array insertObject:@"Modules" atIndex:v19++];
   }
 
-  if (([v7 containsObject:@"Networking"] & 1) == 0)
+  if (([array containsObject:@"Networking"] & 1) == 0)
   {
-    [v7 insertObject:@"Networking" atIndex:v19];
+    [array insertObject:@"Networking" atIndex:v19];
   }
 
   v20 = debuggabilityLogHandle;
@@ -6739,11 +6739,11 @@ LABEL_41:
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v62 = v7;
+    v62 = array;
     _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "Unsorted Pending OTA Load List is : %@", buf, 0xCu);
   }
 
-  v22 = [v7 sortedArrayUsingComparator:&__block_literal_global_720];
+  v22 = [array sortedArrayUsingComparator:&__block_literal_global_720];
   v23 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -6752,7 +6752,7 @@ LABEL_41:
     _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_INFO, "Sorted Load List is : %@", buf, 0xCu);
   }
 
-  [(CLIPSShim *)v2->ruleEngine addModuleNamed:@"EXTERNAL" withConstruct:@"(defmodule EXTERNAL (export deffunction ?ALL))"];
+  [(CLIPSShim *)selfCopy->ruleEngine addModuleNamed:@"EXTERNAL" withConstruct:@"(defmodule EXTERNAL (export deffunction ?ALL))"];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -6816,8 +6816,8 @@ LABEL_24:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v31 = [v41 reverseObjectEnumerator];
-  v32 = [v31 countByEnumeratingWithState:&v47 objects:v59 count:16];
+  reverseObjectEnumerator = [v41 reverseObjectEnumerator];
+  v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v32)
   {
     v33 = v32;
@@ -6830,7 +6830,7 @@ LABEL_24:
         v36 = v26;
         if (*v48 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v26 = *(*(&v47 + 1) + 8 * i);
@@ -6849,7 +6849,7 @@ LABEL_24:
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v47 objects:v59 count:16];
     }
 
     while (v33);
@@ -6987,7 +6987,7 @@ uint64_t __53__SymptomExpertSystemHandler_ingestPendingOTAUpdates__block_invoke_
   block[1] = 3221225472;
   block[2] = __44__SymptomExpertSystemHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_14 != -1)
   {
     dispatch_once(&sharedInstance_pred_14, block);
@@ -7013,29 +7013,29 @@ void __44__SymptomExpertSystemHandler_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[SymptomExpertSystemHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-+ (BOOL)noteSymptom:(id)a3
++ (BOOL)noteSymptom:(id)symptom
 {
-  v3 = a3;
+  symptomCopy = symptom;
   v4 = +[SymptomExpertSystemHandler sharedInstance];
-  v5 = [v4 noteSymptom:v3];
+  v5 = [v4 noteSymptom:symptomCopy];
 
   return v5;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventKey];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
   if (self->administrativeState != 1)
   {
     failedToLoadDefaultRules = self->_failedToLoadDefaultRules;
@@ -7064,7 +7064,7 @@ LABEL_21:
     }
 
     *buf = 138412290;
-    v39 = v5;
+    v39 = eventKey;
     v15 = "NDFSM: auto bug capture is administratively OFF, ignoring symptom with key: %@";
     v16 = v13;
     goto LABEL_17;
@@ -7074,12 +7074,12 @@ LABEL_21:
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v39 = v5;
+    v39 = eventKey;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "NDFSM: receiving symptom with key: %@", buf, 0xCu);
   }
 
-  v7 = [v4 eventData];
-  if (!v7)
+  eventData = [symptomCopy eventData];
+  if (!eventData)
   {
     v19 = debuggabilityLogHandle;
     if (!os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -7088,19 +7088,19 @@ LABEL_21:
     }
 
     *buf = 138412290;
-    v39 = v4;
+    v39 = symptomCopy;
     v15 = "symptom is corrupted: %@";
     v16 = v19;
     v17 = OS_LOG_TYPE_ERROR;
     goto LABEL_20;
   }
 
-  v8 = (*(v7 + 16) >> 12);
+  v8 = (*(eventData + 16) >> 12);
   v9 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v39 = v5;
+    v39 = eventKey;
     v40 = 1024;
     v41 = v8;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_INFO, "NDFSM: receiving symptom with key: %@ for reporter %u", buf, 0x12u);
@@ -7111,38 +7111,38 @@ LABEL_21:
     switch(v8)
     {
       case 'c':
-        v21 = [(ExpertSystemHandlerCore *)self queue];
+        queue = [(ExpertSystemHandlerCore *)self queue];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __42__SymptomExpertSystemHandler_noteSymptom___block_invoke_2;
         v34[3] = &unk_27898A7D0;
         v34[4] = self;
-        v35 = v4;
-        dispatch_async(v21, v34);
+        v35 = symptomCopy;
+        dispatch_async(queue, v34);
 
         v11 = v35;
         goto LABEL_26;
       case 'j':
-        v20 = [(ExpertSystemHandlerCore *)self queue];
+        queue2 = [(ExpertSystemHandlerCore *)self queue];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __42__SymptomExpertSystemHandler_noteSymptom___block_invoke_3;
         v32[3] = &unk_27898A7D0;
         v32[4] = self;
-        v33 = v4;
-        dispatch_async(v20, v32);
+        v33 = symptomCopy;
+        dispatch_async(queue2, v32);
 
         v11 = v33;
         goto LABEL_26;
       case 'i':
-        v10 = [(ExpertSystemHandlerCore *)self queue];
+        queue3 = [(ExpertSystemHandlerCore *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __42__SymptomExpertSystemHandler_noteSymptom___block_invoke;
         block[3] = &unk_27898A7D0;
         block[4] = self;
-        v37 = v4;
-        dispatch_async(v10, block);
+        v37 = symptomCopy;
+        dispatch_async(queue3, block);
 
         v11 = v37;
 LABEL_26:
@@ -7151,25 +7151,25 @@ LABEL_26:
     }
 
     v22 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBTRACE_OS_LOG"];
-    v23 = [v5 isEqualToString:v22];
+    v23 = [eventKey isEqualToString:v22];
 
     if (v23)
     {
-      v24 = [(ExpertSystemHandlerCore *)self queue];
+      queue4 = [(ExpertSystemHandlerCore *)self queue];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __42__SymptomExpertSystemHandler_noteSymptom___block_invoke_4;
       v30[3] = &unk_27898A7D0;
       v30[4] = self;
-      v31 = v4;
-      dispatch_async(v24, v30);
+      v31 = symptomCopy;
+      dispatch_async(queue4, v30);
 
       v11 = v31;
       goto LABEL_26;
     }
 
     v27 = [SymptomStore keyFromSymptomName:@"com.apple.ndfsm.stepper"];
-    v28 = [v5 isEqualToString:v27];
+    v28 = [eventKey isEqualToString:v27];
 
     v29 = debuggabilityLogHandle;
     if (v28)
@@ -7190,7 +7190,7 @@ LABEL_26:
     }
 
     *buf = 138412290;
-    v39 = v5;
+    v39 = eventKey;
     v15 = "NDFSM: Unable to process symptom: %@";
     v16 = v29;
 LABEL_17:
@@ -7209,55 +7209,55 @@ LABEL_27:
 + (id)internalStateDictionary
 {
   v2 = +[SymptomExpertSystemHandler sharedInstance];
-  v3 = [v2 internalStateDictionary];
+  internalStateDictionary = [v2 internalStateDictionary];
 
-  return v3;
+  return internalStateDictionary;
 }
 
 - (id)internalStateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->administrativeState];
-  [v3 setObject:v4 forKeyedSubscript:@"adminEnabled"];
+  [dictionary setObject:v4 forKeyedSubscript:@"adminEnabled"];
 
-  v5 = [(ExpertSystemStateCore *)self->currentState label];
-  [v3 setObject:v5 forKeyedSubscript:@"stateMachineState"];
+  label = [(ExpertSystemStateCore *)self->currentState label];
+  [dictionary setObject:label forKeyedSubscript:@"stateMachineState"];
 
   v6 = [(NSArray *)self->states objectAtIndexedSubscript:2];
-  v7 = [(ExpertSystemStateCore *)self->currentState label];
-  v8 = [v6 label];
-  v9 = [v7 isEqualToString:v8];
+  label2 = [(ExpertSystemStateCore *)self->currentState label];
+  label3 = [v6 label];
+  v9 = [label2 isEqualToString:label3];
 
   if (v9)
   {
-    v10 = [v6 triggeringSymptom];
-    [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x277D6AFE8]];
+    triggeringSymptom = [v6 triggeringSymptom];
+    [dictionary setObject:triggeringSymptom forKeyedSubscript:*MEMORY[0x277D6AFE8]];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_loadedCLIPSRulesAndFacts];
-  [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x277D6AFE0]];
+  [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x277D6AFE0]];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_failedToLoadDefaultRules];
-  [v3 setObject:v12 forKeyedSubscript:*MEMORY[0x277D6AFD8]];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277D6AFD8]];
 
-  v13 = [(CLIPSShim *)self->ruleEngine modules];
-  v14 = [v13 copy];
-  [v3 setObject:v14 forKeyedSubscript:*MEMORY[0x277D6AFD0]];
+  modules = [(CLIPSShim *)self->ruleEngine modules];
+  v14 = [modules copy];
+  [dictionary setObject:v14 forKeyedSubscript:*MEMORY[0x277D6AFD0]];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)clipsConsoleOutput:(id)a3 consoleChannel:(const char *)a4 forEngine:(id)a5
+- (void)clipsConsoleOutput:(id)output consoleChannel:(const char *)channel forEngine:(id)engine
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ((strlen(a4) != 6 || !strncmp(a4, "wtrace", 6uLL)) && (([v7 hasPrefix:@"==> f-"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"<== f-") & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"FIRE")))
+  outputCopy = output;
+  if ((strlen(channel) != 6 || !strncmp(channel, "wtrace", 6uLL)) && (([outputCopy hasPrefix:@"==> f-"] & 1) != 0 || (objc_msgSend(outputCopy, "hasPrefix:", @"<== f-") & 1) != 0 || objc_msgSend(outputCopy, "hasPrefix:", @"FIRE")))
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = v9;
 
-    v11 = [v7 copy];
+    v11 = [outputCopy copy];
     if ([v11 hasPrefix:@"FIRE"])
     {
       v12 = debuggabilityLogHandle;
@@ -7269,16 +7269,16 @@ LABEL_27:
       }
     }
 
-    v13 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__SymptomExpertSystemHandler_clipsConsoleOutput_consoleChannel_forEngine___block_invoke;
     block[3] = &unk_27898BFA0;
     v19 = v10;
     v17 = v11;
-    v18 = self;
+    selfCopy = self;
     v14 = v11;
-    dispatch_async(v13, block);
+    dispatch_async(queue, block);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -7303,12 +7303,12 @@ void __74__SymptomExpertSystemHandler_clipsConsoleOutput_consoleChannel_forEngin
 - (void)registerAllCLIPSCallbacks
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ProbeManager *)self->_probeManager probeCallbackFunctions];
+  probeCallbackFunctions = [(ProbeManager *)self->_probeManager probeCallbackFunctions];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [probeCallbackFunctions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7319,16 +7319,16 @@ void __74__SymptomExpertSystemHandler_clipsConsoleOutput_consoleChannel_forEngin
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(probeCallbackFunctions);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         ruleEngine = self->ruleEngine;
-        v10 = [v3 objectForKeyedSubscript:v8];
+        v10 = [probeCallbackFunctions objectForKeyedSubscript:v8];
         [(CLIPSShim *)ruleEngine registerCallbackFunction:v8 selector:NSSelectorFromString(v10) target:self->_probeManager];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [probeCallbackFunctions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -7409,11 +7409,11 @@ void __74__SymptomExpertSystemHandler_clipsConsoleOutput_consoleChannel_forEngin
     [(CLIPSShim *)self->ruleEngine logMemoryStatistics:@"NDFSM: Post-loadDefaultRulesForEngine memory usage by CLIPS"];
     self->_loadedCLIPSRulesAndFacts = 1;
     self->administrativeState = 1;
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [(SymptomExpertSystemHandler *)self setAnalyticsCLIPSMapping:v12];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(SymptomExpertSystemHandler *)self setAnalyticsCLIPSMapping:dictionary];
 
-    v13 = [MEMORY[0x277CBEB18] array];
-    [(SymptomExpertSystemHandler *)self setAnalyticsCLIPSModules:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    [(SymptomExpertSystemHandler *)self setAnalyticsCLIPSModules:array];
 
     [(CLIPSShim *)self->ruleEngine reset];
     [(SymptomExpertSystemHandler *)self _addAllObservers];
@@ -7449,17 +7449,17 @@ void __74__SymptomExpertSystemHandler_clipsConsoleOutput_consoleChannel_forEngin
   return result;
 }
 
-- (BOOL)loadModule:(id)a3 requiresBasebandModule:(BOOL)a4
+- (BOOL)loadModule:(id)module requiresBasebandModule:(BOOL)basebandModule
 {
-  v4 = a4;
+  basebandModuleCopy = basebandModule;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (([(CLIPSShim *)self->ruleEngine constructLoadStateForModule:v6]- 1) < 2)
+  moduleCopy = module;
+  if (([(CLIPSShim *)self->ruleEngine constructLoadStateForModule:moduleCopy]- 1) < 2)
   {
     goto LABEL_7;
   }
 
-  if ((([v6 isEqualToString:@"Baseband"] & 1) != 0 || v4) && (-[CLIPSShim constructLoadStateForModule:](self->ruleEngine, "constructLoadStateForModule:", @"Baseband") - 3) <= 0xFFFFFFFFFFFFFFFDLL && !-[CLIPSShim loadConstructsForModule:](self->ruleEngine, "loadConstructsForModule:", @"Baseband"))
+  if ((([moduleCopy isEqualToString:@"Baseband"] & 1) != 0 || basebandModuleCopy) && (-[CLIPSShim constructLoadStateForModule:](self->ruleEngine, "constructLoadStateForModule:", @"Baseband") - 3) <= 0xFFFFFFFFFFFFFFFDLL && !-[CLIPSShim loadConstructsForModule:](self->ruleEngine, "loadConstructsForModule:", @"Baseband"))
   {
     v12 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -7476,13 +7476,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![(CLIPSShim *)self->ruleEngine loadConstructsForModule:v6])
+  if (![(CLIPSShim *)self->ruleEngine loadConstructsForModule:moduleCopy])
   {
     v8 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = moduleCopy;
       v9 = "NDFSM: Failed to load %@ rules";
       v10 = v8;
       v11 = 12;
@@ -7516,11 +7516,11 @@ LABEL_14:
   [(SymptomExpertSystemHandler *)self assertFactString:v3 moduleName:@"COMMON" run:0];
 }
 
-- (void)assertFactString:(id)a3 moduleName:(id)a4 run:(BOOL)a5
+- (void)assertFactString:(id)string moduleName:(id)name run:(BOOL)run
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  runCopy = run;
+  stringCopy = string;
+  nameCopy = name;
   if (self->administrativeState == 2)
   {
     v10 = debuggabilityLogHandle;
@@ -7535,7 +7535,7 @@ LABEL_14:
 
   else
   {
-    v12 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModuleDictForModule:v9];
+    v12 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModuleDictForModule:nameCopy];
     v13 = v12;
     if (v12)
     {
@@ -7548,13 +7548,13 @@ LABEL_14:
       v15 = 0;
     }
 
-    if ([(SymptomExpertSystemHandler *)self loadModule:v9 requiresBasebandModule:v15])
+    if ([(SymptomExpertSystemHandler *)self loadModule:nameCopy requiresBasebandModule:v15])
     {
-      v11 = [(CLIPSShim *)self->ruleEngine assertFactString:v8 moduleName:v9];
+      v11 = [(CLIPSShim *)self->ruleEngine assertFactString:stringCopy moduleName:nameCopy];
       if (v11)
       {
         [(CLIPSShim *)self->ruleEngine logFacts:4];
-        if (v5)
+        if (runCopy)
         {
           [(SymptomExpertSystemHandler *)self runEngine];
         }
@@ -7570,16 +7570,16 @@ LABEL_14:
   return v11;
 }
 
-- (void)retractFacts:(id)a3 runAfterLastFact:(BOOL)a4
+- (void)retractFacts:(id)facts runAfterLastFact:(BOOL)fact
 {
-  v4 = a4;
+  factCopy = fact;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  factsCopy = facts;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [factsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -7591,21 +7591,21 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(factsCopy);
         }
 
         -[CLIPSShim retractFact:](self->ruleEngine, "retractFact:", [*(*(&v12 + 1) + 8 * v10++) pointerValue]);
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [factsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
   [(CLIPSShim *)self->ruleEngine logFacts:0];
-  if (v4)
+  if (factCopy)
   {
     [(SymptomExpertSystemHandler *)self runEngine];
   }
@@ -7613,43 +7613,43 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retractFact:(void *)a3 moduleName:(id)a4 run:(BOOL)a5
+- (void)retractFact:(void *)fact moduleName:(id)name run:(BOOL)run
 {
-  v5 = a5;
-  [(CLIPSShim *)self->ruleEngine retractFact:a3, a4];
+  runCopy = run;
+  [(CLIPSShim *)self->ruleEngine retractFact:fact, name];
   [(CLIPSShim *)self->ruleEngine logFacts:0];
-  if (v5)
+  if (runCopy)
   {
 
     [(SymptomExpertSystemHandler *)self runEngine];
   }
 }
 
-- (void)assertFactAndRun:(id)a3 module:(id)a4 reply:(id)a5
+- (void)assertFactAndRun:(id)run module:(id)module reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->administrativeState == 2 || ![v8 length])
+  runCopy = run;
+  moduleCopy = module;
+  replyCopy = reply;
+  if (self->administrativeState == 2 || ![runCopy length])
   {
-    if (v10)
+    if (replyCopy)
     {
-      v10[2](v10, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
   else
   {
-    v11 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__SymptomExpertSystemHandler_assertFactAndRun_module_reply___block_invoke;
     v12[3] = &unk_27898BFC8;
-    v13 = v9;
-    v14 = self;
-    v15 = v8;
-    v16 = v10;
-    dispatch_async(v11, v12);
+    v13 = moduleCopy;
+    selfCopy = self;
+    v15 = runCopy;
+    v16 = replyCopy;
+    dispatch_async(queue, v12);
   }
 }
 
@@ -7670,21 +7670,21 @@ void __60__SymptomExpertSystemHandler_assertFactAndRun_module_reply___block_invo
   }
 }
 
-- (void)assertFactAsSymptom:(id)a3 module:(id)a4
+- (void)assertFactAsSymptom:(id)symptom module:(id)module
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->administrativeState != 2 && [v6 length])
+  symptomCopy = symptom;
+  moduleCopy = module;
+  if (self->administrativeState != 2 && [symptomCopy length])
   {
-    v8 = [(ExpertSystemHandlerCore *)self queue];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__SymptomExpertSystemHandler_assertFactAsSymptom_module___block_invoke;
     block[3] = &unk_27898A328;
-    v10 = v7;
-    v11 = v6;
-    v12 = self;
-    dispatch_async(v8, block);
+    v10 = moduleCopy;
+    v11 = symptomCopy;
+    selfCopy = self;
+    dispatch_async(queue, block);
   }
 }
 
@@ -7716,12 +7716,12 @@ void __57__SymptomExpertSystemHandler_assertFactAsSymptom_module___block_invoke(
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)postCoreAnalyticsEvent:(id)a3 forEventName:(id)a4
+- (BOOL)postCoreAnalyticsEvent:(id)event forEventName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->administrativeState == 2 || ![v6 count])
+  eventCopy = event;
+  nameCopy = name;
+  if (self->administrativeState == 2 || ![eventCopy count])
   {
     v10 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
@@ -7731,29 +7731,29 @@ void __57__SymptomExpertSystemHandler_assertFactAsSymptom_module___block_invoke(
       *buf = 67109376;
       v19 = administrativeState;
       v20 = 2048;
-      v21 = [v6 count];
+      v21 = [eventCopy count];
       _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "NDFSM: postCoreAnalyticsEvent can't post because administrativeState (%u) or inEvent.count (%lu)", buf, 0x12u);
     }
 
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(ExpertSystemHandlerCore *)self queue];
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SymptomExpertSystemHandler_postCoreAnalyticsEvent_forEventName___block_invoke;
   block[3] = &unk_27898A328;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  dispatch_async(v8, block);
+  v16 = eventCopy;
+  v17 = nameCopy;
+  dispatch_async(queue, block);
 
   v9 = 1;
 LABEL_8:
@@ -7762,14 +7762,14 @@ LABEL_8:
   return v9;
 }
 
-- (void)probeStatusUpdate:(id)a3
+- (void)probeStatusUpdate:(id)update
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kNDFProbeName"];
-  v6 = [v4 objectForKeyedSubscript:@"kNDFProbeCLIPSModule"];
-  v7 = [v4 objectForKeyedSubscript:@"kNDFProbeStatus"];
-  v8 = [v7 intValue];
+  updateCopy = update;
+  v5 = [updateCopy objectForKeyedSubscript:@"kNDFProbeName"];
+  v6 = [updateCopy objectForKeyedSubscript:@"kNDFProbeCLIPSModule"];
+  v7 = [updateCopy objectForKeyedSubscript:@"kNDFProbeStatus"];
+  intValue = [v7 intValue];
 
   if (!v6)
   {
@@ -7777,16 +7777,16 @@ LABEL_8:
   }
 
   v9 = 0;
-  if (v8 <= 1)
+  if (intValue <= 1)
   {
     v10 = 0;
     v11 = 0;
-    if ((v8 + 1) < 2)
+    if ((intValue + 1) < 2)
     {
       goto LABEL_40;
     }
 
-    if (v8 != 1)
+    if (intValue != 1)
     {
       goto LABEL_18;
     }
@@ -7800,7 +7800,7 @@ LABEL_8:
     if ([(CLIPSShim *)self->ruleEngine deftemplateNamed:v11 moduleName:v6])
     {
       ruleEngine = self->ruleEngine;
-      v16 = [v4 objectForKeyedSubscript:@"kNDFProbeContext"];
+      v16 = [updateCopy objectForKeyedSubscript:@"kNDFProbeContext"];
       v10 = [(CLIPSShim *)ruleEngine slotsStringForTemplate:v11 fromDictionary:v16 moduleName:v6];
 
       v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(%@%@)", v11, v10];
@@ -7833,12 +7833,12 @@ LABEL_38:
 
   v10 = 0;
   v11 = 0;
-  if ((v8 - 4) < 2)
+  if ((intValue - 4) < 2)
   {
     goto LABEL_40;
   }
 
-  if (v8 == 2)
+  if (intValue == 2)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@Result", v5];
     if (!v11)
@@ -7849,7 +7849,7 @@ LABEL_38:
     if ([(CLIPSShim *)self->ruleEngine deftemplateNamed:v11 moduleName:v6])
     {
       v19 = self->ruleEngine;
-      v20 = [v4 objectForKeyedSubscript:@"kNDFProbeContext"];
+      v20 = [updateCopy objectForKeyedSubscript:@"kNDFProbeContext"];
       v10 = [(CLIPSShim *)v19 slotsStringForTemplate:v11 fromDictionary:v20 moduleName:v6];
 
       v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(%@%@ (result success))", v11, v10];
@@ -7875,7 +7875,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v8 == 3)
+  if (intValue == 3)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@Result", v5];
     if (v11)
@@ -7883,7 +7883,7 @@ LABEL_38:
       if ([(CLIPSShim *)self->ruleEngine deftemplateNamed:v11 moduleName:v6])
       {
         v12 = self->ruleEngine;
-        v13 = [v4 objectForKeyedSubscript:@"kNDFProbeContext"];
+        v13 = [updateCopy objectForKeyedSubscript:@"kNDFProbeContext"];
         v10 = [(CLIPSShim *)v12 slotsStringForTemplate:v11 fromDictionary:v13 moduleName:v6];
 
         v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"(%@%@ (result failure))", v11, v10];
@@ -7938,7 +7938,7 @@ LABEL_18:
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    LODWORD(v26) = v8;
+    LODWORD(v26) = intValue;
     _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_ERROR, "NDFSM: Unexpected kNDFProbeStatus (%d)", buf, 8u);
   }
 
@@ -7950,21 +7950,21 @@ LABEL_40:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)probeOutputFilePaths:(id)a3 forDiagSessionUUID:(id)a4
+- (void)probeOutputFilePaths:(id)paths forDiagSessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ExpertSystemHandlerCore *)self queue];
+  pathsCopy = paths;
+  dCopy = d;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SymptomExpertSystemHandler_probeOutputFilePaths_forDiagSessionUUID___block_invoke;
   block[3] = &unk_27898A328;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pathsCopy;
+  v13 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
+  v10 = pathsCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__SymptomExpertSystemHandler_probeOutputFilePaths_forDiagSessionUUID___block_invoke(uint64_t a1)
@@ -8034,23 +8034,23 @@ void __70__SymptomExpertSystemHandler_probeOutputFilePaths_forDiagSessionUUID___
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)probeFactString:(id)a3 module:(id)a4 goIntoDiagnosing:(BOOL)a5 run:(BOOL)a6
+- (void)probeFactString:(id)string module:(id)module goIntoDiagnosing:(BOOL)diagnosing run:(BOOL)run
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(ExpertSystemHandlerCore *)self queue];
+  stringCopy = string;
+  moduleCopy = module;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__SymptomExpertSystemHandler_probeFactString_module_goIntoDiagnosing_run___block_invoke;
   v15[3] = &unk_27898BFF0;
-  v18 = a5;
+  diagnosingCopy = diagnosing;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, v15);
+  v16 = stringCopy;
+  v17 = moduleCopy;
+  runCopy = run;
+  v13 = moduleCopy;
+  v14 = stringCopy;
+  dispatch_async(queue, v15);
 }
 
 void __74__SymptomExpertSystemHandler_probeFactString_module_goIntoDiagnosing_run___block_invoke(uint64_t a1)
@@ -8139,21 +8139,21 @@ LABEL_20:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceAdded:(id)a3 type:(int64_t)a4
+- (void)serviceAdded:(id)added type:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  addedCopy = added;
   v7 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = addedCopy;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Got a service added: %@", &v11, 0xCu);
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v8 = [v6 objectForKeyedSubscript:@"name"];
+    v8 = [addedCopy objectForKeyedSubscript:@"name"];
     v9 = v8;
     if (self->_airdropID && ([v8 isEqualToString:?] & 1) != 0)
     {
@@ -8161,7 +8161,7 @@ LABEL_20:
     }
   }
 
-  v9 = [(SymptomExpertSystemHandler *)self serviceToFactString:v6 type:a4];
+  v9 = [(SymptomExpertSystemHandler *)self serviceToFactString:addedCopy type:type];
   if (v9)
   {
     [(SymptomExpertSystemHandler *)self assertFactString:v9 moduleName:@"Networking" run:0];
@@ -8172,21 +8172,21 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceUpdated:(id)a3 type:(int64_t)a4
+- (void)serviceUpdated:(id)updated type:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  updatedCopy = updated;
   v7 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = updatedCopy;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Got a service update: %@", &v11, 0xCu);
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v8 = [v6 objectForKeyedSubscript:@"name"];
+    v8 = [updatedCopy objectForKeyedSubscript:@"name"];
     v9 = v8;
     if (self->_airdropID && ([v8 isEqualToString:?] & 1) != 0)
     {
@@ -8194,8 +8194,8 @@ LABEL_9:
     }
   }
 
-  [(SymptomExpertSystemHandler *)self retractService:v6 type:a4];
-  v9 = [(SymptomExpertSystemHandler *)self serviceToFactString:v6 type:a4];
+  [(SymptomExpertSystemHandler *)self retractService:updatedCopy type:type];
+  v9 = [(SymptomExpertSystemHandler *)self serviceToFactString:updatedCopy type:type];
   if (v9)
   {
     [(SymptomExpertSystemHandler *)self assertFactString:v9 moduleName:@"Networking" run:0];
@@ -8206,36 +8206,36 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceRemoved:(id)a3 type:(int64_t)a4
+- (void)serviceRemoved:(id)removed type:(int64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  removedCopy = removed;
   v7 = debuggabilityLogHandle;
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = removedCopy;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Got a service removed: %@", &v9, 0xCu);
   }
 
-  [(SymptomExpertSystemHandler *)self retractService:v6 type:a4];
+  [(SymptomExpertSystemHandler *)self retractService:removedCopy type:type];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retractService:(id)a3 type:(int64_t)a4
+- (void)retractService:(id)service type:(int64_t)type
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  serviceCopy = service;
+  v7 = serviceCopy;
   if (!self->ruleEngine)
   {
     goto LABEL_27;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v8 = [v6 objectForKeyedSubscript:@"STATION_MAC"];
+    v8 = [serviceCopy objectForKeyedSubscript:@"STATION_MAC"];
     if ([v8 length])
     {
       v12 = ether_ntoa([v8 bytes]);
@@ -8248,7 +8248,7 @@ LABEL_9:
           if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v30 = v13;
+            typeCopy = v13;
             _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEBUG, "Removed AWDL service is %@", buf, 0xCu);
           }
 
@@ -8269,13 +8269,13 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     v17 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v30 = a4;
+      typeCopy = type;
       v31 = 2112;
       v32 = v7;
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_ERROR, "Unsupported removed service type (%ld) for service %@", buf, 0x16u);
@@ -8285,7 +8285,7 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"dnsName"];
+  v8 = [serviceCopy objectForKeyedSubscript:@"dnsName"];
   if (!v8)
   {
 LABEL_15:
@@ -8331,14 +8331,14 @@ LABEL_27:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)serviceToFactString:(id)a3 type:(int64_t)a4
+- (id)serviceToFactString:(id)string type:(int64_t)type
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 2)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (type == 2)
   {
-    v18 = [v5 objectForKeyedSubscript:@"STATION_AWDL_SERVICES"];
+    v18 = [stringCopy objectForKeyedSubscript:@"STATION_AWDL_SERVICES"];
     if ([v18 count])
     {
       v19 = v6;
@@ -8414,7 +8414,7 @@ LABEL_27:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v7 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"(BonjourService");
     v8 = [v6 objectForKeyedSubscript:@"dnsName"];
@@ -8485,7 +8485,7 @@ LABEL_27:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v45 = a4;
+      typeCopy = type;
       v46 = 2112;
       v47 = v6;
       _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_ERROR, "Unsupported service type (%ld) for service %@", buf, 0x16u);
@@ -8499,47 +8499,47 @@ LABEL_27:
   return v7;
 }
 
-- (void)startDiagnosticSessionWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subTypeContext:(id)a6 processID:(id)a7 processName:(id)a8 bundleID:(id)a9 interfaceType:(id)a10 threshold:(id)a11 sessionDuration:(id)a12 triggerRemoteCase:(id)a13
+- (void)startDiagnosticSessionWithDomain:(id)domain type:(id)type subType:(id)subType subTypeContext:(id)context processID:(id)d processName:(id)name bundleID:(id)iD interfaceType:(id)self0 threshold:(id)self1 sessionDuration:(id)self2 triggerRemoteCase:(id)self3
 {
-  v35 = a3;
-  v34 = a4;
-  v33 = a5;
-  v40 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  interfaceTypeCopy = interfaceType;
+  thresholdCopy = threshold;
+  durationCopy = duration;
+  caseCopy = case;
   queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __180__SymptomExpertSystemHandler_startDiagnosticSessionWithDomain_type_subType_subTypeContext_processID_processName_bundleID_interfaceType_threshold_sessionDuration_triggerRemoteCase___block_invoke;
   block[3] = &unk_27898C040;
   block[4] = self;
-  v43 = v35;
-  v44 = v34;
-  v45 = v33;
-  v46 = v19;
-  v47 = v20;
-  v48 = v22;
-  v49 = v21;
-  v50 = v23;
-  v51 = v25;
-  v52 = v24;
-  v53 = v40;
-  v41 = v40;
-  v39 = v24;
-  v38 = v25;
-  v37 = v23;
-  v26 = v21;
-  v27 = v22;
-  v28 = v20;
-  v29 = v19;
-  v30 = v33;
-  v31 = v34;
-  v32 = v35;
+  v43 = domainCopy;
+  v44 = typeCopy;
+  v45 = subTypeCopy;
+  v46 = dCopy;
+  v47 = nameCopy;
+  v48 = interfaceTypeCopy;
+  v49 = iDCopy;
+  v50 = thresholdCopy;
+  v51 = caseCopy;
+  v52 = durationCopy;
+  v53 = contextCopy;
+  v41 = contextCopy;
+  v39 = durationCopy;
+  v38 = caseCopy;
+  v37 = thresholdCopy;
+  v26 = iDCopy;
+  v27 = interfaceTypeCopy;
+  v28 = nameCopy;
+  v29 = dCopy;
+  v30 = subTypeCopy;
+  v31 = typeCopy;
+  v32 = domainCopy;
   dispatch_async(queue, block);
 }
 
@@ -8789,44 +8789,44 @@ uint64_t __180__SymptomExpertSystemHandler_startDiagnosticSessionWithDomain_type
   return [*(a1 + 32) cancelDiagnosticSession:*(a1 + 40)];
 }
 
-- (void)snapshotDiagnosticSessionWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subTypeContext:(id)a6 processID:(id)a7 processName:(id)a8 bundleID:(id)a9 interfaceType:(id)a10 threshold:(id)a11 sessionDuration:(id)a12
+- (void)snapshotDiagnosticSessionWithDomain:(id)domain type:(id)type subType:(id)subType subTypeContext:(id)context processID:(id)d processName:(id)name bundleID:(id)iD interfaceType:(id)self0 threshold:(id)self1 sessionDuration:(id)self2
 {
-  v34 = a3;
-  v33 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  interfaceTypeCopy = interfaceType;
+  thresholdCopy = threshold;
+  durationCopy = duration;
   queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __165__SymptomExpertSystemHandler_snapshotDiagnosticSessionWithDomain_type_subType_subTypeContext_processID_processName_bundleID_interfaceType_threshold_sessionDuration___block_invoke;
   block[3] = &unk_27898C090;
   block[4] = self;
-  v40 = v34;
-  v41 = v33;
-  v42 = v18;
-  v43 = v20;
-  v44 = v21;
-  v45 = v23;
-  v46 = v22;
-  v47 = v24;
-  v48 = v25;
-  v49 = v19;
-  v38 = v19;
-  v37 = v25;
-  v36 = v24;
-  v26 = v22;
-  v27 = v23;
-  v28 = v21;
-  v29 = v20;
-  v30 = v18;
-  v31 = v33;
-  v32 = v34;
+  v40 = domainCopy;
+  v41 = typeCopy;
+  v42 = subTypeCopy;
+  v43 = dCopy;
+  v44 = nameCopy;
+  v45 = interfaceTypeCopy;
+  v46 = iDCopy;
+  v47 = thresholdCopy;
+  v48 = durationCopy;
+  v49 = contextCopy;
+  v38 = contextCopy;
+  v37 = durationCopy;
+  v36 = thresholdCopy;
+  v26 = iDCopy;
+  v27 = interfaceTypeCopy;
+  v28 = nameCopy;
+  v29 = dCopy;
+  v30 = subTypeCopy;
+  v31 = typeCopy;
+  v32 = domainCopy;
   dispatch_async(queue, block);
 }
 
@@ -8997,13 +8997,13 @@ LABEL_12:
   return result;
 }
 
-- (void)addDiagnosticSession:(id)a3 hasDictionary:(id)a4 endSession:(id)a5
+- (void)addDiagnosticSession:(id)session hasDictionary:(id)dictionary endSession:(id)endSession
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [(NSMutableArray *)self->_processedSymptoms count])
+  sessionCopy = session;
+  dictionaryCopy = dictionary;
+  endSessionCopy = endSession;
+  if (dictionaryCopy && [(NSMutableArray *)self->_processedSymptoms count])
   {
     v11 = [(NSMutableArray *)self->_processedSymptoms objectAtIndexedSubscript:0];
     v12 = v11;
@@ -9015,31 +9015,31 @@ LABEL_12:
 
       v16 = MEMORY[0x277CBEB38];
       v17 = [v12 objectForKeyedSubscript:@"ARBITRATOR_PAYLOAD_DICTIONARY"];
-      v18 = [v16 dictionaryWithDictionary:v17];
+      dictionary = [v16 dictionaryWithDictionary:v17];
     }
 
     else
     {
-      v18 = 0;
+      dictionary = 0;
       v15 = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    dictionary = 0;
     v15 = 0;
     v12 = 0;
   }
 
-  v19 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-  v20 = [v19 objectForKeyedSubscript:v8];
+  diagnosticSessionOutput = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+  v20 = [diagnosticSessionOutput objectForKeyedSubscript:sessionCopy];
 
   if (v20)
   {
-    if (!v18)
+    if (!dictionary)
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     v21 = *MEMORY[0x277D6B158];
@@ -9049,28 +9049,28 @@ LABEL_12:
     v37[0] = v21;
     v37[1] = v20;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-    [v18 addEntriesFromDictionary:v23];
+    [dictionary addEntriesFromDictionary:v23];
 
-    v24 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-    [v24 setObject:0 forKeyedSubscript:v8];
+    diagnosticSessionOutput2 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+    [diagnosticSessionOutput2 setObject:0 forKeyedSubscript:sessionCopy];
   }
 
-  v25 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-  v26 = [v25 objectForKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
+  diagnosticSessionOutput3 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+  v26 = [diagnosticSessionOutput3 objectForKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
 
   if (v26)
   {
-    if (!v18)
+    if (!dictionary)
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    [v18 addEntriesFromDictionary:v26];
-    v27 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-    [v27 setObject:0 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
+    [dictionary addEntriesFromDictionary:v26];
+    diagnosticSessionOutput4 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+    [diagnosticSessionOutput4 setObject:0 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
   }
 
-  if ([v15 count] || objc_msgSend(v18, "count"))
+  if ([v15 count] || objc_msgSend(dictionary, "count"))
   {
     objc_initWeak(&location, self);
     sdrReporter = self->_sdrReporter;
@@ -9079,18 +9079,18 @@ LABEL_12:
     v31[2] = __76__SymptomExpertSystemHandler_addDiagnosticSession_hasDictionary_endSession___block_invoke;
     v31[3] = &unk_27898C0E0;
     objc_copyWeak(&v34, &location);
-    v32 = v10;
-    v33 = v8;
-    [(SDRDiagnosticReporter *)sdrReporter addToSession:v33 event:v15 payload:v18 reply:v31];
+    v32 = endSessionCopy;
+    v33 = sessionCopy;
+    [(SDRDiagnosticReporter *)sdrReporter addToSession:v33 event:v15 payload:dictionary reply:v31];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&location);
   }
 
-  else if ([v10 BOOLValue])
+  else if ([endSessionCopy BOOLValue])
   {
-    v30 = [(SymptomExpertSystemHandler *)self diagnosticSessionIdentifier];
-    [(SymptomExpertSystemHandler *)self endDiagnosticSession:v30];
+    diagnosticSessionIdentifier = [(SymptomExpertSystemHandler *)self diagnosticSessionIdentifier];
+    [(SymptomExpertSystemHandler *)self endDiagnosticSession:diagnosticSessionIdentifier];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -9121,18 +9121,18 @@ void __76__SymptomExpertSystemHandler_addDiagnosticSession_hasDictionary_endSess
   }
 }
 
-- (void)cancelDiagnosticSession:(id)a3
+- (void)cancelDiagnosticSession:(id)session
 {
-  v4 = a3;
-  v5 = [(ExpertSystemHandlerCore *)self queue];
+  sessionCopy = session;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SymptomExpertSystemHandler_cancelDiagnosticSession___block_invoke;
   v7[3] = &unk_27898A7D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __54__SymptomExpertSystemHandler_cancelDiagnosticSession___block_invoke(uint64_t a1)
@@ -9167,18 +9167,18 @@ uint64_t __54__SymptomExpertSystemHandler_cancelDiagnosticSession___block_invoke
   return result;
 }
 
-- (void)endDiagnosticSession:(id)a3
+- (void)endDiagnosticSession:(id)session
 {
-  v4 = a3;
-  v5 = [(ExpertSystemHandlerCore *)self queue];
+  sessionCopy = session;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SymptomExpertSystemHandler_endDiagnosticSession___block_invoke;
   v7[3] = &unk_27898A7D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __51__SymptomExpertSystemHandler_endDiagnosticSession___block_invoke(uint64_t a1)
@@ -9400,10 +9400,10 @@ uint64_t __51__SymptomExpertSystemHandler_endDiagnosticSession___block_invoke(ui
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCaseSignaturesToSDRWithSessionID:(id)a3
+- (void)sendCaseSignaturesToSDRWithSessionID:(id)d
 {
-  v4 = a3;
-  if ([v4 length] && -[NSMutableArray count](self->_caseSignatures, "count"))
+  dCopy = d;
+  if ([dCopy length] && -[NSMutableArray count](self->_caseSignatures, "count"))
   {
     [(SymptomExpertSystemHandler *)self checkObfuscationsInAllCaseSignatures];
     objc_initWeak(&location, self);
@@ -9414,7 +9414,7 @@ uint64_t __51__SymptomExpertSystemHandler_endDiagnosticSession___block_invoke(ui
     v9 = __67__SymptomExpertSystemHandler_sendCaseSignaturesToSDRWithSessionID___block_invoke;
     v10 = &unk_27898C068;
     objc_copyWeak(&v11, &location);
-    [(SDRDiagnosticReporter *)sdrReporter addToSession:v4 events:caseSignatures payload:0 reply:&v7];
+    [(SDRDiagnosticReporter *)sdrReporter addToSession:dCopy events:caseSignatures payload:0 reply:&v7];
     [(NSMutableArray *)self->_caseSignatures removeAllObjects:v7];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -9440,27 +9440,27 @@ void __67__SymptomExpertSystemHandler_sendCaseSignaturesToSDRWithSessionID___blo
   }
 }
 
-- (void)logSessionEventProbe:(id)a3 endpoint:(id)a4 interface:(id)a5 status:(id)a6
+- (void)logSessionEventProbe:(id)probe endpoint:(id)endpoint interface:(id)interface status:(id)status
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ExpertSystemHandlerCore *)self queue];
+  probeCopy = probe;
+  endpointCopy = endpoint;
+  interfaceCopy = interface;
+  statusCopy = status;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SymptomExpertSystemHandler_logSessionEventProbe_endpoint_interface_status___block_invoke;
   block[3] = &unk_27898C108;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = probeCopy;
+  v21 = endpointCopy;
+  v22 = interfaceCopy;
+  v23 = statusCopy;
+  selfCopy = self;
+  v15 = statusCopy;
+  v16 = interfaceCopy;
+  v17 = endpointCopy;
+  v18 = probeCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__SymptomExpertSystemHandler_logSessionEventProbe_endpoint_interface_status___block_invoke(uint64_t a1)
@@ -9504,27 +9504,27 @@ void __77__SymptomExpertSystemHandler_logSessionEventProbe_endpoint_interface_st
   [*(a1 + 64) sendCaseSignaturesToSDRWithSessionID:*(*(a1 + 64) + 424)];
 }
 
-- (void)logSessionEventSymptom:(id)a3 process:(id)a4 endpoint:(id)a5 interface:(id)a6
+- (void)logSessionEventSymptom:(id)symptom process:(id)process endpoint:(id)endpoint interface:(id)interface
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ExpertSystemHandlerCore *)self queue];
+  symptomCopy = symptom;
+  processCopy = process;
+  endpointCopy = endpoint;
+  interfaceCopy = interface;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__SymptomExpertSystemHandler_logSessionEventSymptom_process_endpoint_interface___block_invoke;
   block[3] = &unk_27898C108;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = symptomCopy;
+  v21 = processCopy;
+  v22 = endpointCopy;
+  v23 = interfaceCopy;
+  selfCopy = self;
+  v15 = interfaceCopy;
+  v16 = endpointCopy;
+  v17 = processCopy;
+  v18 = symptomCopy;
+  dispatch_async(queue, block);
 }
 
 void __80__SymptomExpertSystemHandler_logSessionEventSymptom_process_endpoint_interface___block_invoke(uint64_t a1)
@@ -9568,18 +9568,18 @@ void __80__SymptomExpertSystemHandler_logSessionEventSymptom_process_endpoint_in
   [*(a1 + 64) sendCaseSignaturesToSDRWithSessionID:*(*(a1 + 64) + 424)];
 }
 
-- (void)logSessionEventMessage:(id)a3
+- (void)logSessionEventMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(ExpertSystemHandlerCore *)self queue];
+  messageCopy = message;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SymptomExpertSystemHandler_logSessionEventMessage___block_invoke;
   v7[3] = &unk_27898A7D0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __53__SymptomExpertSystemHandler_logSessionEventMessage___block_invoke(uint64_t a1)
@@ -9633,14 +9633,14 @@ void __53__SymptomExpertSystemHandler_logSessionEventMessage___block_invoke(uint
   return urlDetector;
 }
 
-- (void)waitForFactWithTemplateName:(id)a3 module:(id)a4 timeout:(id)a5
+- (void)waitForFactWithTemplateName:(id)name module:(id)module timeout:(id)timeout
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  nameCopy = name;
+  moduleCopy = module;
+  timeoutCopy = timeout;
+  clipsFactsWaitTimers = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
+  v12 = [clipsFactsWaitTimers objectForKeyedSubscript:nameCopy];
 
   if (v12)
   {
@@ -9648,34 +9648,34 @@ void __53__SymptomExpertSystemHandler_logSessionEventMessage___block_invoke(uint
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v8;
+      v26 = nameCopy;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "NDFSM: Already waiting for %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v14 = v9;
+    v14 = moduleCopy;
     if (!v14)
     {
       v14 = @"COMMON";
     }
 
     objc_initWeak(buf, self);
-    v15 = [(ExpertSystemHandlerCore *)self queue];
-    v16 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v15);
+    queue = [(ExpertSystemHandlerCore *)self queue];
+    v16 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
 
-    v17 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
-    [v17 setObject:v16 forKeyedSubscript:v8];
+    clipsFactsWaitTimers2 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
+    [clipsFactsWaitTimers2 setObject:v16 forKeyedSubscript:nameCopy];
 
-    v18 = dispatch_time(0, 1000000000 * [v10 integerValue]);
+    v18 = dispatch_time(0, 1000000000 * [timeoutCopy integerValue]);
     dispatch_source_set_timer(v16, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __73__SymptomExpertSystemHandler_waitForFactWithTemplateName_module_timeout___block_invoke;
     handler[3] = &unk_27898C130;
     objc_copyWeak(&v24, buf);
-    v22 = v8;
+    v22 = nameCopy;
     v23 = v14;
     v19 = v14;
     dispatch_source_set_event_handler(v16, handler);
@@ -9720,8 +9720,8 @@ void __73__SymptomExpertSystemHandler_waitForFactWithTemplateName_module_timeout
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clipsFactsWaitTimers = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
+  v4 = [clipsFactsWaitTimers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -9733,31 +9733,31 @@ void __73__SymptomExpertSystemHandler_waitForFactWithTemplateName_module_timeout
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clipsFactsWaitTimers);
         }
 
         [(SymptomExpertSystemHandler *)self cancelWaitForFactWithTemplateName:*(*(&v10 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [clipsFactsWaitTimers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
-  [v8 removeAllObjects];
+  clipsFactsWaitTimers2 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
+  [clipsFactsWaitTimers2 removeAllObjects];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelWaitForFactWithTemplateName:(id)a3
+- (void)cancelWaitForFactWithTemplateName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  clipsFactsWaitTimers = [(SymptomExpertSystemHandler *)self clipsFactsWaitTimers];
+  v6 = [clipsFactsWaitTimers objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {
@@ -9765,7 +9765,7 @@ void __73__SymptomExpertSystemHandler_waitForFactWithTemplateName_module_timeout
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_INFO, "NDFSM: Canceling timer for %@", &v9, 0xCu);
     }
 
@@ -9775,21 +9775,21 @@ void __73__SymptomExpertSystemHandler_waitForFactWithTemplateName_module_timeout
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adjustStrobeTimerInterval:(id)a3 maximum:(id)a4
+- (void)adjustStrobeTimerInterval:(id)interval maximum:(id)maximum
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ExpertSystemHandlerCore *)self queue];
+  intervalCopy = interval;
+  maximumCopy = maximum;
+  queue = [(ExpertSystemHandlerCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_invoke;
   block[3] = &unk_27898A328;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = maximumCopy;
+  selfCopy = self;
+  v14 = intervalCopy;
+  v9 = intervalCopy;
+  v10 = maximumCopy;
+  dispatch_async(queue, block);
 }
 
 void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_invoke(id *a1)
@@ -9841,35 +9841,35 @@ void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)interfaceTypeForName:(id)a3
+- (id)interfaceTypeForName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     interfaceNameToType = self->_interfaceNameToType;
     if (!interfaceNameToType)
     {
-      v6 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v7 = self->_interfaceNameToType;
-      self->_interfaceNameToType = v6;
+      self->_interfaceNameToType = dictionary;
 
       interfaceNameToType = self->_interfaceNameToType;
     }
 
-    v8 = [(NSMutableDictionary *)interfaceNameToType objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)interfaceNameToType objectForKeyedSubscript:nameCopy];
     if (!v8)
     {
-      if (([v4 isEqualToString:@"WiFi"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Cellular") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"WiredEthernet") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Loopback") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"Other"))
+      if (([nameCopy isEqualToString:@"WiFi"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"Cellular") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"WiredEthernet") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"Loopback") & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"Other"))
       {
-        v8 = v4;
+        v8 = nameCopy;
       }
 
       else
       {
-        v12 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceName:v4];
+        v12 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceName:nameCopy];
         v8 = +[InterfaceUtils stringForInterfaceType:](InterfaceUtils, "stringForInterfaceType:", [v12 type]);
-        [(NSMutableDictionary *)self->_interfaceNameToType setObject:v8 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_interfaceNameToType setObject:v8 forKeyedSubscript:nameCopy];
       }
     }
   }
@@ -9885,7 +9885,7 @@ void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v4;
+    v16 = nameCopy;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "NDFSM: Returning interfaceType %@ for %@", &v13, 0x16u);
   }
 
@@ -9894,16 +9894,16 @@ void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_
   return v8;
 }
 
-- (id)analyticsCLIPSModuleDictForModule:(id)a3
+- (id)analyticsCLIPSModuleDictForModule:(id)module
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  moduleCopy = module;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  analyticsCLIPSModules = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
+  v6 = [analyticsCLIPSModules countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -9914,12 +9914,12 @@ void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(analyticsCLIPSModules);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"Module"];
-        v12 = [v11 isEqualToString:v4];
+        v12 = [v11 isEqualToString:moduleCopy];
 
         if (v12)
         {
@@ -9928,7 +9928,7 @@ void __64__SymptomExpertSystemHandler_adjustStrobeTimerInterval_maximum___block_
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [analyticsCLIPSModules countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -9946,23 +9946,23 @@ LABEL_11:
   return v13;
 }
 
-- (id)analyticsObserveModule:(id)a3 requiredModules:(id)a4 unloadModule:(id)a5
+- (id)analyticsObserveModule:(id)module requiredModules:(id)modules unloadModule:(id)unloadModule
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
-  v43 = v8;
-  if (v9)
+  moduleCopy = module;
+  modulesCopy = modules;
+  unloadModuleCopy = unloadModule;
+  array = [MEMORY[0x277CBEB18] array];
+  v43 = moduleCopy;
+  if (modulesCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v60[0] = v9;
+      v60[0] = modulesCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:1];
 
-      v9 = v12;
+      modulesCopy = v12;
     }
 
     objc_opt_class();
@@ -9972,7 +9972,7 @@ LABEL_11:
       if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v59 = v9;
+        v59 = modulesCopy;
         _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "NDFSM: analyticsObserveModule Unexpected requiredModules: %@", buf, 0xCu);
       }
     }
@@ -9981,8 +9981,8 @@ LABEL_11:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v9 = v9;
-    v14 = [v9 countByEnumeratingWithState:&v48 objects:v57 count:16];
+    modulesCopy = modulesCopy;
+    v14 = [modulesCopy countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v14)
     {
       v15 = v14;
@@ -9997,15 +9997,15 @@ LABEL_11:
         {
           if (*v49 != v17)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(modulesCopy);
           }
 
           v16 = *(*(&v48 + 1) + 8 * v19);
 
           v21 = [(SymptomExpertSystemHandler *)self analyticsObserveModule:v16 requiredModules:0 unloadModule:v18];
-          if ([v10 BOOLValue])
+          if ([unloadModuleCopy BOOLValue])
           {
-            [v11 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v19;
@@ -10013,16 +10013,16 @@ LABEL_11:
         }
 
         while (v15 != v19);
-        v15 = [v9 countByEnumeratingWithState:&v48 objects:v57 count:16];
+        v15 = [modulesCopy countByEnumeratingWithState:&v48 objects:v57 count:16];
       }
 
       while (v15);
 
-      v8 = v43;
+      moduleCopy = v43;
     }
   }
 
-  v22 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModuleDictForModule:v8];
+  v22 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModuleDictForModule:moduleCopy];
 
   if (v22)
   {
@@ -10031,20 +10031,20 @@ LABEL_11:
 
   else
   {
-    if ([(CLIPSShim *)self->ruleEngine loadConstructsForModule:v8])
+    if ([(CLIPSShim *)self->ruleEngine loadConstructsForModule:moduleCopy])
     {
-      v24 = [(CLIPSShim *)self->ruleEngine setCurrentModule:v8];
+      v24 = [(CLIPSShim *)self->ruleEngine setCurrentModule:moduleCopy];
       v25 = [(CLIPSShim *)self->ruleEngine deftemplatesMatchingPrefix:@"AnalyticsEvent_"];
-      v26 = [(SymptomExpertSystemHandler *)self analyticsCLIPSMapping];
-      [v26 addEntriesFromDictionary:v25];
+      analyticsCLIPSMapping = [(SymptomExpertSystemHandler *)self analyticsCLIPSMapping];
+      [analyticsCLIPSMapping addEntriesFromDictionary:v25];
 
-      v27 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
-      if (v9)
+      analyticsCLIPSModules = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
+      if (modulesCopy)
       {
         v55[0] = @"Module";
         v55[1] = @"RequiredModules";
-        v56[0] = v8;
-        v56[1] = v9;
+        v56[0] = moduleCopy;
+        v56[1] = modulesCopy;
         v28 = MEMORY[0x277CBEAC0];
         v29 = v56;
         v30 = v55;
@@ -10054,7 +10054,7 @@ LABEL_11:
       else
       {
         v53 = @"Module";
-        v54 = v8;
+        v54 = moduleCopy;
         v28 = MEMORY[0x277CBEAC0];
         v29 = &v54;
         v30 = &v53;
@@ -10062,11 +10062,11 @@ LABEL_11:
       }
 
       v32 = [v28 dictionaryWithObjects:v29 forKeys:v30 count:v31];
-      [v27 addObject:v32];
+      [analyticsCLIPSModules addObject:v32];
 
       v33 = [(CLIPSShim *)self->ruleEngine setCurrentModule:v24];
       v23 = MEMORY[0x277CBEC38];
-      v8 = v43;
+      moduleCopy = v43;
     }
 
     else
@@ -10074,16 +10074,16 @@ LABEL_11:
       v23 = MEMORY[0x277CBEC28];
     }
 
-    if ([v10 BOOLValue])
+    if ([unloadModuleCopy BOOLValue])
     {
-      if ([v11 count])
+      if ([array count])
       {
-        [v11 insertObject:v8 atIndex:0];
+        [array insertObject:moduleCopy atIndex:0];
       }
 
       else
       {
-        [v11 addObject:v8];
+        [array addObject:moduleCopy];
       }
     }
   }
@@ -10092,7 +10092,7 @@ LABEL_11:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v34 = v11;
+  v34 = array;
   v35 = [v34 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v35)
   {
@@ -10123,7 +10123,7 @@ LABEL_11:
 
     while (v36);
 
-    v8 = v43;
+    moduleCopy = v43;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -10133,14 +10133,14 @@ LABEL_11:
 - (void)unloadAnalyticsObservedModules
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
-  v4 = [v3 reverseObjectEnumerator];
+  analyticsCLIPSModules = [(SymptomExpertSystemHandler *)self analyticsCLIPSModules];
+  reverseObjectEnumerator = [analyticsCLIPSModules reverseObjectEnumerator];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = v4;
+  obj = reverseObjectEnumerator;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -10180,26 +10180,26 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateModule:(id)a3
+- (void)deactivateModule:(id)module
 {
   ruleEngine = self->ruleEngine;
-  v5 = a3;
-  [(CLIPSShim *)ruleEngine deactivateModule:v5];
-  [(CLIPSShim *)self->ruleEngine unloadConstructsForModule:v5 unconditionally:1];
+  moduleCopy = module;
+  [(CLIPSShim *)ruleEngine deactivateModule:moduleCopy];
+  [(CLIPSShim *)self->ruleEngine unloadConstructsForModule:moduleCopy unconditionally:1];
 }
 
-- (void)requestCoreTelephonyDumpViaDiagnosticExtension:(id)a3 folderPrefix:(id)a4 dumpReason:(id)a5 resetBaseband:(id)a6
+- (void)requestCoreTelephonyDumpViaDiagnosticExtension:(id)extension folderPrefix:(id)prefix dumpReason:(id)reason resetBaseband:(id)baseband
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  extensionCopy = extension;
+  prefixCopy = prefix;
+  reasonCopy = reason;
+  basebandCopy = baseband;
+  if (extensionCopy)
   {
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    if ([v10 BOOLValue])
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if ([extensionCopy BOOLValue])
     {
-      if ([v13 BOOLValue])
+      if ([basebandCopy BOOLValue])
       {
         v15 = @"dumpWithBasebandReset";
       }
@@ -10209,16 +10209,16 @@ LABEL_11:
         v15 = @"dump_attach";
       }
 
-      [v14 setObject:v15 forKeyedSubscript:@"CellularExtensionCommandKey"];
+      [dictionary setObject:v15 forKeyedSubscript:@"CellularExtensionCommandKey"];
     }
 
-    else if ([v11 length])
+    else if ([prefixCopy length])
     {
-      [v14 setObject:@"attach" forKeyedSubscript:@"CellularExtensionCommandKey"];
-      v17 = [CoreTelephonyShim dateTimeStringFromCTDumpFolderPrefix:v11];
+      [dictionary setObject:@"attach" forKeyedSubscript:@"CellularExtensionCommandKey"];
+      v17 = [CoreTelephonyShim dateTimeStringFromCTDumpFolderPrefix:prefixCopy];
       if ([v17 length])
       {
-        [v14 setObject:v17 forKeyedSubscript:@"CellularExtensionFindLogsKey"];
+        [dictionary setObject:v17 forKeyedSubscript:@"CellularExtensionFindLogsKey"];
       }
     }
 
@@ -10232,14 +10232,14 @@ LABEL_11:
       }
     }
 
-    if (v12 && [v12 length])
+    if (reasonCopy && [reasonCopy length])
     {
-      [v14 setObject:v12 forKeyedSubscript:@"CellularExtensionDumpReasonKey"];
+      [dictionary setObject:reasonCopy forKeyedSubscript:@"CellularExtensionDumpReasonKey"];
     }
 
-    v18 = [(SymptomExpertSystemHandler *)self deParamsDictForDiagnosticExtension:@"com.apple.DiagnosticExtensions.Cellular" withDEParams:v14];
-    v19 = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
-    [v19 setObject:v18 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
+    v18 = [(SymptomExpertSystemHandler *)self deParamsDictForDiagnosticExtension:@"com.apple.DiagnosticExtensions.Cellular" withDEParams:dictionary];
+    diagnosticSessionOutput = [(SymptomExpertSystemHandler *)self diagnosticSessionOutput];
+    [diagnosticSessionOutput setObject:v18 forKeyedSubscript:@"DIAGNOSTIC_EXTENSION_PARAMS"];
 
     [(SymptomExpertSystemHandler *)self addDiagnosticSession:self->_diagnosticSessionIdentifier hasDictionary:MEMORY[0x277CBEC38] endSession:MEMORY[0x277CBEC28]];
   }
@@ -10255,17 +10255,17 @@ LABEL_11:
   }
 }
 
-- (id)deParamsDictForDiagnosticExtension:(id)a3 withDEParams:(id)a4
+- (id)deParamsDictForDiagnosticExtension:(id)extension withDEParams:(id)params
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D6B130];
-  v14 = a4;
+  paramsCopy = params;
   v15 = v5;
-  v13 = a3;
+  extensionCopy = extension;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:&v14 forKeys:&v13 count:1];
+  paramsCopy2 = params;
+  extensionCopy2 = extension;
+  v9 = [v6 dictionaryWithObjects:&paramsCopy forKeys:&extensionCopy count:1];
   v16[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
@@ -10274,7 +10274,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)getBatteryPercentage:(id)a3
+- (id)getBatteryPercentage:(id)percentage
 {
   v3 = MEMORY[0x277CCABB0];
   [(PowerStateRelay *)self->powerRelay batteryPercentage];
@@ -10284,31 +10284,31 @@ LABEL_11:
 
 - (id)getOperatorName
 {
-  v3 = [(SymptomExpertSystemHandler *)self activeDataSIMOperatorName];
-  v4 = [v3 length];
+  activeDataSIMOperatorName = [(SymptomExpertSystemHandler *)self activeDataSIMOperatorName];
+  v4 = [activeDataSIMOperatorName length];
 
   if (v4)
   {
-    v5 = [(SymptomExpertSystemHandler *)self activeDataSIMOperatorName];
+    activeDataSIMOperatorName2 = [(SymptomExpertSystemHandler *)self activeDataSIMOperatorName];
   }
 
   else
   {
-    v6 = [(SymptomExpertSystemHandler *)self lastActiveDataSIMOperatorName];
-    v7 = [v6 length];
+    lastActiveDataSIMOperatorName = [(SymptomExpertSystemHandler *)self lastActiveDataSIMOperatorName];
+    v7 = [lastActiveDataSIMOperatorName length];
 
     if (v7)
     {
-      v5 = [(SymptomExpertSystemHandler *)self lastActiveDataSIMOperatorName];
+      activeDataSIMOperatorName2 = [(SymptomExpertSystemHandler *)self lastActiveDataSIMOperatorName];
     }
 
     else
     {
-      v5 = &stru_2847966D8;
+      activeDataSIMOperatorName2 = &stru_2847966D8;
     }
   }
 
-  return v5;
+  return activeDataSIMOperatorName2;
 }
 
 - (id)getSignalBars
@@ -10316,16 +10316,16 @@ LABEL_11:
   if ([(SymptomExpertSystemHandler *)self activeDataSIMSignalBars])
   {
     v3 = MEMORY[0x277CCABB0];
-    v4 = [(SymptomExpertSystemHandler *)self activeDataSIMSignalBars];
+    activeDataSIMSignalBars = [(SymptomExpertSystemHandler *)self activeDataSIMSignalBars];
 LABEL_5:
-    v5 = [v3 numberWithUnsignedInteger:v4];
+    v5 = [v3 numberWithUnsignedInteger:activeDataSIMSignalBars];
     goto LABEL_6;
   }
 
   if ([(SymptomExpertSystemHandler *)self lastActiveDataSIMSignalBars])
   {
     v3 = MEMORY[0x277CCABB0];
-    v4 = [(SymptomExpertSystemHandler *)self lastActiveDataSIMSignalBars];
+    activeDataSIMSignalBars = [(SymptomExpertSystemHandler *)self lastActiveDataSIMSignalBars];
     goto LABEL_5;
   }
 
@@ -10367,21 +10367,21 @@ LABEL_6:
   }
 }
 
-- (_NSRange)rangeOfValueForSlotName:(id)a3 in:(id)a4
+- (_NSRange)rangeOfValueForSlotName:(id)name in:(id)in
 {
-  v5 = a4;
+  inCopy = in;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = objc_msgSend([v6 alloc], "initWithFormat:", @"(%@ "), v7;
+  nameCopy = name;
+  v8 = objc_msgSend([v6 alloc], "initWithFormat:", @"(%@ "), nameCopy;
 
-  v9 = [v5 rangeOfString:v8];
+  v9 = [inCopy rangeOfString:v8];
   v11 = v10;
 
   v12 = 0x7FFFFFFFFFFFFFFFLL;
   if (v11)
   {
     v13 = v11 + v9;
-    v14 = [v5 rangeOfString:@"\" options:? range:?], 0, v13, objc_msgSend(v5, "length"") + ~v13);
+    v14 = [inCopy rangeOfString:@"\" options:? range:?], 0, v13, objc_msgSend(inCopy, "length"") + ~v13);
     v16 = v15 != 0;
     v17 = v14 > v13;
     if (v16 && v17)
@@ -10412,12 +10412,12 @@ LABEL_6:
   return result;
 }
 
-+ (BOOL)parseEndpoint:(id)a3 intoURL:(id *)a4 host:(id *)a5 scheme:(id *)a6 path:(id *)a7
++ (BOOL)parseEndpoint:(id)endpoint intoURL:(id *)l host:(id *)host scheme:(id *)scheme path:(id *)path
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = v11;
-  if (!v11 || ![v11 length] || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CBEBC0]), "initWithString:", v12)) == 0)
+  endpointCopy = endpoint;
+  v12 = endpointCopy;
+  if (!endpointCopy || ![endpointCopy length] || (v13 = objc_msgSend(objc_alloc(MEMORY[0x277CBEBC0]), "initWithString:", v12)) == 0)
   {
     v20 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -10429,11 +10429,11 @@ LABEL_6:
 
     v14 = 0;
 LABEL_10:
-    v18 = 0;
+    path = 0;
     v16 = 0;
-    v17 = 0;
+    scheme = 0;
     v19 = 0;
-    if (!a4)
+    if (!l)
     {
       goto LABEL_12;
     }
@@ -10442,8 +10442,8 @@ LABEL_10:
   }
 
   v14 = v13;
-  v15 = [v13 host];
-  if (!v15)
+  host = [v13 host];
+  if (!host)
   {
     v27 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
@@ -10456,34 +10456,34 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = v15;
-  v17 = [v14 scheme];
-  v18 = [v14 path];
+  v16 = host;
+  scheme = [v14 scheme];
+  path = [v14 path];
   v19 = 1;
-  if (a4)
+  if (l)
   {
 LABEL_11:
     v21 = v14;
-    *a4 = v14;
+    *l = v14;
   }
 
 LABEL_12:
-  if (a5)
+  if (host)
   {
     v22 = v16;
-    *a5 = v16;
+    *host = v16;
   }
 
-  if (a6)
+  if (scheme)
   {
-    v23 = v17;
-    *a6 = v17;
+    v23 = scheme;
+    *scheme = scheme;
   }
 
-  if (a7)
+  if (path)
   {
-    v24 = v18;
-    *a7 = v18;
+    v24 = path;
+    *path = path;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -10492,19 +10492,19 @@ LABEL_12:
 
 - (void)resetPreviousObfuscations
 {
-  v2 = [(SymptomExpertSystemHandler *)self obfuscations];
-  [v2 removeAllObjects];
+  obfuscations = [(SymptomExpertSystemHandler *)self obfuscations];
+  [obfuscations removeAllObjects];
 }
 
-- (id)obfuscatedEndpoint:(id)a3
+- (id)obfuscatedEndpoint:(id)endpoint
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v24 = 0;
   v25 = 0;
   v22 = 0;
   v23 = 0;
-  v5 = [SymptomExpertSystemHandler parseEndpoint:v4 intoURL:&v25 host:&v24 scheme:&v23 path:&v22];
+  v5 = [SymptomExpertSystemHandler parseEndpoint:endpointCopy intoURL:&v25 host:&v24 scheme:&v23 path:&v22];
   v6 = v25;
   v7 = v24;
   v8 = v23;
@@ -10515,7 +10515,7 @@ LABEL_12:
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = v4;
+      v27 = endpointCopy;
       _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_INFO, "Endpoint malformed: %@", buf, 0xCu);
     }
 
@@ -10549,11 +10549,11 @@ LABEL_11:
     v14 = 0;
   }
 
-  v20 = [MEMORY[0x277CCAB68] string];
-  v21 = v20;
+  string = [MEMORY[0x277CCAB68] string];
+  v21 = string;
   if (v8)
   {
-    [v20 appendFormat:@"%@://", v8];
+    [string appendFormat:@"%@://", v8];
   }
 
   [v21 appendFormat:@"%@", v13];
@@ -10570,9 +10570,9 @@ LABEL_12:
   return v17;
 }
 
-- (id)obfuscatedPrimaryComponent:(id)a3 obfuscationType:(id)a4
+- (id)obfuscatedPrimaryComponent:(id)component obfuscationType:(id)type
 {
-  v4 = [(SymptomExpertSystemHandler *)self primaryComponent:a3 obfuscationType:a4];
+  v4 = [(SymptomExpertSystemHandler *)self primaryComponent:component obfuscationType:type];
   v5 = v4;
   if (v4)
   {
@@ -10587,15 +10587,15 @@ LABEL_12:
   return v6;
 }
 
-- (id)primaryComponent:(id)a3 obfuscationType:(id)a4
+- (id)primaryComponent:(id)component obfuscationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_obfuscations objectForKeyedSubscript:v7];
+  componentCopy = component;
+  typeCopy = type;
+  v8 = [(NSMutableDictionary *)self->_obfuscations objectForKeyedSubscript:typeCopy];
   if (v8)
   {
-    v9 = v8;
-    v10 = [v8 objectForKeyedSubscript:v6];
+    dictionary = v8;
+    v10 = [v8 objectForKeyedSubscript:componentCopy];
     if (v10)
     {
       goto LABEL_10;
@@ -10604,16 +10604,16 @@ LABEL_12:
 
   else
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_obfuscations setObject:v9 forKeyedSubscript:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_obfuscations setObject:dictionary forKeyedSubscript:typeCopy];
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", v7, objc_msgSend(v9, "count") + 1];
+  v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", typeCopy, objc_msgSend(dictionary, "count") + 1];
   v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:v11 forKey:@"EO_PRIMARY_STRING"];
   if (v12)
   {
     v10 = v12;
-    [v9 setObject:v12 forKeyedSubscript:v6];
+    [dictionary setObject:v12 forKeyedSubscript:componentCopy];
   }
 
   else
@@ -10633,30 +10633,30 @@ LABEL_10:
   return v10;
 }
 
-- (id)obfuscatedSubcomponent:(id)a3 fromPrimaryEntry:(id)a4 withKey:(id)a5 obfuscation:(id)a6
+- (id)obfuscatedSubcomponent:(id)subcomponent fromPrimaryEntry:(id)entry withKey:(id)key obfuscation:(id)obfuscation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 objectForKeyedSubscript:v11];
-  if (!v13)
+  subcomponentCopy = subcomponent;
+  entryCopy = entry;
+  keyCopy = key;
+  obfuscationCopy = obfuscation;
+  dictionary = [entryCopy objectForKeyedSubscript:keyCopy];
+  if (!dictionary)
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    [v10 setObject:v13 forKeyedSubscript:v11];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [entryCopy setObject:dictionary forKeyedSubscript:keyCopy];
   }
 
-  v14 = [v13 objectForKeyedSubscript:v9];
+  v14 = [dictionary objectForKeyedSubscript:subcomponentCopy];
   if (!v14)
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", v12, objc_msgSend(v13, "count") + 1];
-    [v13 setObject:v14 forKeyedSubscript:v9];
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%lu", obfuscationCopy, objc_msgSend(dictionary, "count") + 1];
+    [dictionary setObject:v14 forKeyedSubscript:subcomponentCopy];
   }
 
   return v14;
 }
 
-- (void)startLoadDefaultRulesTimer:(double)a3
+- (void)startLoadDefaultRulesTimer:(double)timer
 {
   v20 = *MEMORY[0x277D85DE8];
   loadDefaultRulesTimer = self->_loadDefaultRulesTimer;
@@ -10667,12 +10667,12 @@ LABEL_10:
     if (v7)
     {
       *buf = 134217984;
-      v19 = a3;
+      timerCopy2 = timer;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "Already have a _loadDefaultRulesTimer. Setting for %f second delay", buf, 0xCu);
     }
 
     v8 = self->_loadDefaultRulesTimer;
-    v9 = dispatch_time(0, (a3 * 1000000000.0));
+    v9 = dispatch_time(0, (timer * 1000000000.0));
     dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
@@ -10681,17 +10681,17 @@ LABEL_10:
     if (v7)
     {
       *buf = 134217984;
-      v19 = a3;
+      timerCopy2 = timer;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "Create a new _loadDefaultRulesTimer. Setting for %f second delay", buf, 0xCu);
     }
 
-    v10 = [(ExpertSystemHandlerCore *)self queue];
-    v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v10);
+    queue = [(ExpertSystemHandlerCore *)self queue];
+    v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     v12 = self->_loadDefaultRulesTimer;
     self->_loadDefaultRulesTimer = v11;
 
     v13 = self->_loadDefaultRulesTimer;
-    v14 = dispatch_time(0, (a3 * 1000000000.0));
+    v14 = dispatch_time(0, (timer * 1000000000.0));
     dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, 0);
     v15 = self->_loadDefaultRulesTimer;
     handler[0] = MEMORY[0x277D85DD0];
@@ -10744,8 +10744,8 @@ void __57__SymptomExpertSystemHandler_startLoadDefaultRulesTimer___block_invoke(
       _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_INFO, "Create a new _clipsCAEventObserverTimer. Setting for %d second delay", buf, 8u);
     }
 
-    v8 = [(ExpertSystemHandlerCore *)self queue];
-    v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8);
+    queue = [(ExpertSystemHandlerCore *)self queue];
+    v9 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     v10 = self->_clipsCAEventObserverTimer;
     self->_clipsCAEventObserverTimer = v9;
 
@@ -10777,18 +10777,18 @@ void __55__SymptomExpertSystemHandler_startCAEventObserverTimer__block_invoke(ui
   *(v4 + 536) = 0;
 }
 
-- (void)startAnalyticsObserving:(id)a3
+- (void)startAnalyticsObserving:(id)observing
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observingCopy = observing;
   v5 = debuggabilityLogHandle;
-  if (v4)
+  if (observingCopy)
   {
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       v6 = v5;
       *buf = 134217984;
-      v25 = [v4 count];
+      v25 = [observingCopy count];
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "ANALYTICS-CLIPS: Setting CAEventObserver configuration to [%lu entries]", buf, 0xCu);
     }
 
@@ -10796,8 +10796,8 @@ void __55__SymptomExpertSystemHandler_startCAEventObserverTimer__block_invoke(ui
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v4;
-    v7 = v4;
+    v16 = observingCopy;
+    v7 = observingCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -10828,18 +10828,18 @@ void __55__SymptomExpertSystemHandler_startCAEventObserverTimer__block_invoke(ui
     }
 
     objc_initWeak(buf, self);
-    v13 = [(SymptomExpertSystemHandler *)self symptomsCAObserver];
-    v14 = [(ExpertSystemHandlerCore *)self queue];
+    symptomsCAObserver = [(SymptomExpertSystemHandler *)self symptomsCAObserver];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __54__SymptomExpertSystemHandler_startAnalyticsObserving___block_invoke;
     v17[3] = &unk_27898C158;
     objc_copyWeak(&v18, buf);
-    [v13 addDelegate:self forEvents:v7 withQueue:v14 completion:v17];
+    [symptomsCAObserver addDelegate:self forEvents:v7 withQueue:queue completion:v17];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
-    v4 = v16;
+    observingCopy = v16;
   }
 
   else if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -10875,30 +10875,30 @@ void __54__SymptomExpertSystemHandler_startAnalyticsObserving___block_invoke(uin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAnalyticsObserving:(id)a3
+- (void)stopAnalyticsObserving:(id)observing
 {
-  v4 = a3;
-  v5 = v4;
+  observingCopy = observing;
+  v5 = observingCopy;
   if (self->_observingAnalyticsMetrics)
   {
     objc_initWeak(&location, self);
-    v6 = [(SymptomExpertSystemHandler *)self symptomsCAObserver];
-    v7 = [(ExpertSystemHandlerCore *)self queue];
+    symptomsCAObserver = [(SymptomExpertSystemHandler *)self symptomsCAObserver];
+    queue = [(ExpertSystemHandlerCore *)self queue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__SymptomExpertSystemHandler_stopAnalyticsObserving___block_invoke;
     v8[3] = &unk_27898C180;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    [v6 removeDelegate:self withQueue:v7 completion:v8];
+    [symptomsCAObserver removeDelegate:self withQueue:queue completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (observingCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(observingCopy + 2))(observingCopy);
   }
 }
 

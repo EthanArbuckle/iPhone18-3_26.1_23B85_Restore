@@ -1,29 +1,29 @@
 @interface PKPassPaymentCardFrontFaceView
 - (CGSize)_barcodeSize;
 - (CGSize)contentSize;
-- (PKPassPaymentCardFrontFaceView)initWithStyle:(int64_t)a3;
+- (PKPassPaymentCardFrontFaceView)initWithStyle:(int64_t)style;
 - (double)_barcodePadding;
-- (id)_filterAuxiliaryField:(id)a3;
-- (id)_filterSecondaryField:(id)a3;
+- (id)_filterAuxiliaryField:(id)field;
+- (id)_filterSecondaryField:(id)field;
 - (id)templateForHeaderBucket;
-- (id)templateForLayoutMode:(int64_t)a3;
-- (void)_handleAccountChanged:(id)a3;
-- (void)_handlePeerPaymentAccountChanged:(id)a3;
-- (void)_initializeBalanceLabelWithTextColor:(id)a3;
-- (void)_showFullScreenBarcodeForButton:(id)a3;
-- (void)_updateAccountBalanceVisibilityAnimated:(BOOL)a3;
+- (id)templateForLayoutMode:(int64_t)mode;
+- (void)_handleAccountChanged:(id)changed;
+- (void)_handlePeerPaymentAccountChanged:(id)changed;
+- (void)_initializeBalanceLabelWithTextColor:(id)color;
+- (void)_showFullScreenBarcodeForButton:(id)button;
+- (void)_updateAccountBalanceVisibilityAnimated:(BOOL)animated;
 - (void)_updateBalanceLabelFontSize;
-- (void)_updateBalanceWithAmount:(id)a3;
-- (void)_updateStateForAccount:(id)a3 animated:(BOOL)a4;
+- (void)_updateBalanceWithAmount:(id)amount;
+- (void)_updateStateForAccount:(id)account animated:(BOOL)animated;
 - (void)createBodyContentViews;
 - (void)createHeaderContentViews;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDynamicBarcodeData:(id)a3;
-- (void)setModallyPresented:(BOOL)a3;
-- (void)setShowsLiveBalance:(BOOL)a3;
-- (void)setViewExpanded:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDynamicBarcodeData:(id)data;
+- (void)setModallyPresented:(BOOL)presented;
+- (void)setShowsLiveBalance:(BOOL)balance;
+- (void)setViewExpanded:(BOOL)expanded;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPassPaymentCardFrontFaceView
@@ -32,8 +32,8 @@
 {
   if (self->_balanceLabel)
   {
-    v3 = [(PKPassPaymentCardFrontFaceView *)self traitCollection];
-    lhs = [v3 preferredContentSizeCategory];
+    traitCollection = [(PKPassPaymentCardFrontFaceView *)self traitCollection];
+    lhs = [traitCollection preferredContentSizeCategory];
 
     if (UIContentSizeCategoryCompareToCategory(lhs, *MEMORY[0x1E69DDC50]) == NSOrderedDescending)
     {
@@ -45,12 +45,12 @@
       v4 = 24.0;
     }
 
-    v5 = [(PKPassFaceView *)self pass];
-    v6 = [v5 paymentPass];
-    v7 = [v6 hasAssociatedPeerPaymentAccount];
+    pass = [(PKPassFaceView *)self pass];
+    paymentPass = [pass paymentPass];
+    hasAssociatedPeerPaymentAccount = [paymentPass hasAssociatedPeerPaymentAccount];
 
     balanceLabel = self->_balanceLabel;
-    if (v7)
+    if (hasAssociatedPeerPaymentAccount)
     {
       [MEMORY[0x1E69DB878] pk_peerPaymentCashFontOfSize:v4];
     }
@@ -68,10 +68,10 @@
 
 - (void)createHeaderContentViews
 {
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 paymentPass];
+  pass = [(PKPassFaceView *)self pass];
+  paymentPass = [pass paymentPass];
 
-  if (([v4 hasAssociatedPeerPaymentAccount] & 1) == 0)
+  if (([paymentPass hasAssociatedPeerPaymentAccount] & 1) == 0)
   {
     v6.receiver = self;
     v6.super_class = PKPassPaymentCardFrontFaceView;
@@ -87,8 +87,8 @@
 
 - (CGSize)contentSize
 {
-  v3 = [(PKPassFaceView *)self pass];
-  [v3 style];
+  pass = [(PKPassFaceView *)self pass];
+  [pass style];
   PKPassFrontFaceContentSize();
   v5 = v4;
   v7 = v6;
@@ -110,10 +110,10 @@
   v37.receiver = self;
   v37.super_class = PKPassPaymentCardFrontFaceView;
   [(PKPassFrontFaceView *)&v37 createBodyContentViews];
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 paymentPass];
+  pass = [(PKPassFaceView *)self pass];
+  paymentPass = [pass paymentPass];
 
-  if ([v4 supportsBarcodePayment])
+  if ([paymentPass supportsBarcodePayment])
   {
     backdropView = self->_backdropView;
     if (!backdropView)
@@ -123,10 +123,10 @@
       self->_backdropView = v6;
 
       [(PKBackdropView *)self->_backdropView setAlpha:0.0];
-      v8 = [(PKBackdropView *)self->_backdropView backdropLayer];
+      backdropLayer = [(PKBackdropView *)self->_backdropView backdropLayer];
       if (UIAccessibilityIsReduceTransparencyEnabled())
       {
-        [v8 setFilters:0];
+        [backdropLayer setFilters:0];
       }
 
       else
@@ -134,10 +134,10 @@
         v9 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
         [v9 setName:@"gaussianBlur"];
         [v9 setValue:&unk_1F3CC7520 forKey:@"inputRadius"];
-        [v8 setScale:0.1];
+        [backdropLayer setScale:0.1];
         v38[0] = v9;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
-        [v8 setFilters:v10];
+        [backdropLayer setFilters:v10];
       }
 
       backdropView = self->_backdropView;
@@ -153,15 +153,15 @@
 
       [(UIView *)self->_scrimView setClipsToBounds:1];
       v14 = self->_scrimView;
-      v15 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIView *)v14 setBackgroundColor:v15];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIView *)v14 setBackgroundColor:whiteColor];
 
       [(UIView *)self->_scrimView setAlpha:0.0];
       v16 = MEMORY[0x1E69DC740];
       v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.left.and.arrow.down.right"];
       v18 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:2 scale:18.0];
-      v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v20 = [v16 pkui_plainConfigurationWithImage:v17 imageConfiguration:v18 foregroundColor:v19];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v20 = [v16 pkui_plainConfigurationWithImage:v17 imageConfiguration:v18 foregroundColor:secondaryLabelColor];
 
       objc_initWeak(&location, self);
       v21 = MEMORY[0x1E69DC628];
@@ -178,11 +178,11 @@
       [(UIButton *)self->_fullScreenButton setConfigurationUpdateHandler:&__block_literal_global_97];
       [(UIButton *)self->_fullScreenButton setOverrideUserInterfaceStyle:1];
       [(UIView *)self->_scrimView addSubview:self->_fullScreenButton];
-      v25 = [(PKPassFaceView *)self pass];
-      v26 = [v25 compactBankLogoDarkImage];
+      pass2 = [(PKPassFaceView *)self pass];
+      compactBankLogoDarkImage = [pass2 compactBankLogoDarkImage];
 
       v27 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      v28 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v26];
+      v28 = [MEMORY[0x1E69DCAB8] imageWithPKImage:compactBankLogoDarkImage];
       v29 = [v27 initWithImage:v28];
       compactBankLogoView = self->_compactBankLogoView;
       self->_compactBankLogoView = v29;
@@ -203,8 +203,8 @@
   v62.receiver = self;
   v62.super_class = PKPassPaymentCardFrontFaceView;
   [(PKPassFrontFaceView *)&v62 layoutSubviews];
-  v3 = [(PKPassFaceView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPassFaceView *)self contentView];
+  [contentView bounds];
   balanceLabel = self->_balanceLabel;
   if (balanceLabel)
   {
@@ -230,7 +230,7 @@
     [(UILabel *)v13 setFrame:?];
   }
 
-  v14 = [(PKPassFaceView *)self viewExpanded];
+  viewExpanded = [(PKPassFaceView *)self viewExpanded];
   PKPassFrontFaceContentSize();
   v16 = v15;
   v18 = v17;
@@ -249,7 +249,7 @@
   backdropView = self->_backdropView;
   if (backdropView)
   {
-    if (v14)
+    if (viewExpanded)
     {
       v23 = v16;
     }
@@ -260,14 +260,14 @@
     }
 
     [(PKBackdropView *)backdropView setFrame:0.0, 0.0, v16, v23];
-    v24 = [(PKBackdropView *)self->_backdropView layer];
+    layer = [(PKBackdropView *)self->_backdropView layer];
     PKPaymentStyleApplyCorners();
   }
 
   scrimView = self->_scrimView;
   if (scrimView)
   {
-    if (v14)
+    if (viewExpanded)
     {
       v26 = v16;
     }
@@ -278,7 +278,7 @@
     }
 
     [(UIView *)scrimView setFrame:0.0, 0.0, v16, v26];
-    v27 = [(UIView *)self->_scrimView layer];
+    layer2 = [(UIView *)self->_scrimView layer];
     PKPaymentStyleApplyCorners();
   }
 
@@ -293,8 +293,8 @@
   compactBankLogoView = self->_compactBankLogoView;
   if (compactBankLogoView)
   {
-    v31 = [(UIImageView *)compactBankLogoView image];
-    [v31 size];
+    image = [(UIImageView *)compactBankLogoView image];
+    [image size];
 
     PKSizeAspectFit();
     PKSizeRoundToPixel();
@@ -314,7 +314,7 @@
 
   [(PKBarcodeStickerView *)topBarcodeView frame];
   v39.n128_f64[0] = v18 + 256.0;
-  if (v14)
+  if (viewExpanded)
   {
     v39.n128_f64[0] = v20 + v21 + 24.0;
   }
@@ -341,7 +341,7 @@ LABEL_26:
   if (self->_bottomBarcodeView || [(NSMutableArray *)self->_oldBottomBarcodeViews count])
   {
     [(PKBarcodeStickerView *)self->_bottomBarcodeView frame];
-    if (v14)
+    if (viewExpanded)
     {
       v50.n128_f64[0] = v16 + v52 * -0.5 - v20 - v21;
     }
@@ -385,16 +385,16 @@ LABEL_26:
   [(PKPassBucketTemplate *)v3 setBucketAlignment:3];
   PKPassFrontFaceContentSize();
   v5 = v4;
-  v6 = [(PKPassFaceView *)self buckets];
-  v7 = [v6 objectAtIndex:0];
-  v8 = [v7 firstObject];
+  buckets = [(PKPassFaceView *)self buckets];
+  v7 = [buckets objectAtIndex:0];
+  firstObject = [v7 firstObject];
 
-  v9 = [v6 objectAtIndex:3];
-  v10 = [v9 firstObject];
-  v11 = [(PKPassPaymentCardFrontFaceView *)self _filterAuxiliaryField:v10];
+  v9 = [buckets objectAtIndex:3];
+  firstObject2 = [v9 firstObject];
+  v11 = [(PKPassPaymentCardFrontFaceView *)self _filterAuxiliaryField:firstObject2];
 
   [(PKPassFaceView *)self cobrandLogoSize];
-  if (v8 && v11)
+  if (firstObject && v11)
   {
     v13 = v5 * 0.5 + 17.0;
     v14 = v5 * 0.5 + -34.0;
@@ -409,19 +409,19 @@ LABEL_26:
 
   [(PKPassBucketTemplate *)v3 setBucketRect:v13, 12.0, v14, 35.0];
   [(PKPassBucketTemplate *)v3 setMaxFields:1];
-  v16 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
+  defaultFieldTemplate = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
   v17 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10]];
   v18 = [v17 fontDescriptorWithSymbolicTraits:2];
 
   v19 = [MEMORY[0x1E69DB878] fontWithDescriptor:v18 size:11.0];
 
-  [v16 setLabelFont:v19];
-  v20 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
-  v21 = [v8 label];
-  v22 = v21;
-  if (v21)
+  [defaultFieldTemplate setLabelFont:v19];
+  defaultFieldTemplate2 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
+  label = [firstObject label];
+  v22 = label;
+  if (label)
   {
-    v23 = [(__CFString *)v21 length];
+    v23 = [(__CFString *)label length];
     v24 = 0;
     if (v22 != @" " && v23)
     {
@@ -435,25 +435,25 @@ LABEL_26:
   }
 
   v25 = PKPassPaymentFrontFaceValueFont(v24);
-  [v20 setValueFont:v25];
+  [defaultFieldTemplate2 setValueFont:v25];
 
-  v26 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
-  [v26 setVerticalPadding:-3.0];
+  defaultFieldTemplate3 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
+  [defaultFieldTemplate3 setVerticalPadding:-3.0];
 
-  v27 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
-  [v27 setSuppressesEmptyLabel:1];
+  defaultFieldTemplate4 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
+  [defaultFieldTemplate4 setSuppressesEmptyLabel:1];
 
-  v28 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
-  [v28 setTextAlignment:2];
+  defaultFieldTemplate5 = [(PKPassBucketTemplate *)v3 defaultFieldTemplate];
+  [defaultFieldTemplate5 setTextAlignment:2];
 
   return v3;
 }
 
-- (PKPassPaymentCardFrontFaceView)initWithStyle:(int64_t)a3
+- (PKPassPaymentCardFrontFaceView)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = PKPassPaymentCardFrontFaceView;
-  v3 = [(PKPassFrontFaceView *)&v9 initWithStyle:a3];
+  v3 = [(PKPassFrontFaceView *)&v9 initWithStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -470,50 +470,50 @@ LABEL_26:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69BC360];
-  v5 = [MEMORY[0x1E69B9000] sharedInstance];
-  [v3 removeObserver:self name:v4 object:v5];
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+  [defaultCenter removeObserver:self name:v4 object:mEMORY[0x1E69B9000]];
 
   v6.receiver = self;
   v6.super_class = PKPassPaymentCardFrontFaceView;
   [(PKPassFaceView *)&v6 dealloc];
 }
 
-- (id)templateForLayoutMode:(int64_t)a3
+- (id)templateForLayoutMode:(int64_t)mode
 {
   v4 = objc_alloc_init(PKPassFaceTemplate);
   [(PKPassFaceTemplate *)v4 setBarcodeMaxSize:290.0, 165.0];
-  v5 = [(PKPassFaceTemplate *)v4 defaultFieldTemplate];
-  [v5 setTextAlignment:0];
+  defaultFieldTemplate = [(PKPassFaceTemplate *)v4 defaultFieldTemplate];
+  [defaultFieldTemplate setTextAlignment:0];
 
-  v6 = [(PKPassFaceTemplate *)v4 defaultFieldTemplate];
+  defaultFieldTemplate2 = [(PKPassFaceTemplate *)v4 defaultFieldTemplate];
   v7 = *MEMORY[0x1E69DDD10];
   v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10]];
   v9 = [v8 fontDescriptorWithSymbolicTraits:2];
 
   v10 = [MEMORY[0x1E69DB878] fontWithDescriptor:v9 size:11.0];
 
-  [v6 setLabelFont:v10];
+  [defaultFieldTemplate2 setLabelFont:v10];
   PKPassFrontFaceContentSize();
   v12 = v11;
   v14 = v13;
-  v15 = [(PKPassFaceView *)self buckets];
-  v16 = [v15 objectAtIndex:0];
-  v73 = [v16 firstObject];
+  buckets = [(PKPassFaceView *)self buckets];
+  v16 = [buckets objectAtIndex:0];
+  firstObject = [v16 firstObject];
 
-  v17 = [v15 objectAtIndex:1];
-  v18 = [v17 firstObject];
+  v17 = [buckets objectAtIndex:1];
+  firstObject2 = [v17 firstObject];
 
-  v19 = [v15 objectAtIndex:2];
-  v20 = [v19 firstObject];
-  v21 = [(PKPassPaymentCardFrontFaceView *)self _filterSecondaryField:v20];
+  v19 = [buckets objectAtIndex:2];
+  firstObject3 = [v19 firstObject];
+  v21 = [(PKPassPaymentCardFrontFaceView *)self _filterSecondaryField:firstObject3];
 
-  v22 = [v15 objectAtIndex:3];
-  v23 = [v22 firstObject];
-  v24 = [(PKPassPaymentCardFrontFaceView *)self _filterAuxiliaryField:v23];
+  v22 = [buckets objectAtIndex:3];
+  firstObject4 = [v22 firstObject];
+  v24 = [(PKPassPaymentCardFrontFaceView *)self _filterAuxiliaryField:firstObject4];
 
-  if (v18)
+  if (firstObject2)
   {
     v25 = objc_alloc_init(PKPassBucketTemplate);
     [(PKPassBucketTemplate *)v25 setBucketAlignment:3];
@@ -529,12 +529,12 @@ LABEL_26:
 
     [(PKPassBucketTemplate *)v25 setBucketRect:17.0, v14 + -35.0 + -12.0, v26, 35.0];
     [(PKPassBucketTemplate *)v25 setMaxFields:1];
-    v27 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
-    v28 = [v18 label];
-    v29 = v28;
-    if (v28)
+    defaultFieldTemplate3 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
+    label = [firstObject2 label];
+    v29 = label;
+    if (label)
     {
-      v30 = [(__CFString *)v28 length];
+      v30 = [(__CFString *)label length];
       v31 = 0;
       if (v29 != @" " && v30)
       {
@@ -548,23 +548,23 @@ LABEL_26:
     }
 
     v32 = PKPassPaymentFrontFaceValueFont(v31);
-    [v27 setValueFont:v32];
+    [defaultFieldTemplate3 setValueFont:v32];
 
-    v33 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
+    defaultFieldTemplate4 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
     v34 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7];
     v35 = [v34 fontDescriptorWithSymbolicTraits:2];
 
     v36 = [MEMORY[0x1E69DB878] fontWithDescriptor:v35 size:11.0];
 
-    [v33 setLabelFont:v36];
-    v37 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
-    [v37 setVerticalPadding:-3.0];
+    [defaultFieldTemplate4 setLabelFont:v36];
+    defaultFieldTemplate5 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
+    [defaultFieldTemplate5 setVerticalPadding:-3.0];
 
-    v38 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
-    [v38 setSuppressesEmptyLabel:1];
+    defaultFieldTemplate6 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
+    [defaultFieldTemplate6 setSuppressesEmptyLabel:1];
 
-    v39 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
-    [v39 setTextAlignment:0];
+    defaultFieldTemplate7 = [(PKPassBucketTemplate *)v25 defaultFieldTemplate];
+    [defaultFieldTemplate7 setTextAlignment:0];
 
     [(PKPassFaceTemplate *)v4 addBucketTemplate:v25];
   }
@@ -574,7 +574,7 @@ LABEL_26:
     v40 = objc_alloc_init(PKPassBucketTemplate);
     [(PKPassBucketTemplate *)v40 setBucketAlignment:3];
     v41 = 17.0;
-    if (v18)
+    if (firstObject2)
     {
       v41 = v12 * 0.5 + 17.0;
       v42 = v12 * 0.5 + -34.0;
@@ -587,12 +587,12 @@ LABEL_26:
 
     [(PKPassBucketTemplate *)v40 setBucketRect:v41, v14 + -35.0 + -12.0, v42, 35.0, v24];
     [(PKPassBucketTemplate *)v40 setMaxFields:1];
-    v43 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
-    v44 = [v21 label];
-    v45 = v44;
-    if (v44)
+    defaultFieldTemplate8 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
+    label2 = [v21 label];
+    v45 = label2;
+    if (label2)
     {
-      v46 = [(__CFString *)v44 length];
+      v46 = [(__CFString *)label2 length];
       v47 = 0;
       if (v45 != @" " && v46)
       {
@@ -606,23 +606,23 @@ LABEL_26:
     }
 
     v48 = PKPassPaymentFrontFaceValueFont(v47);
-    [v43 setValueFont:v48];
+    [defaultFieldTemplate8 setValueFont:v48];
 
-    v49 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
+    defaultFieldTemplate9 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
     v50 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7];
     v51 = [v50 fontDescriptorWithSymbolicTraits:2];
 
     v52 = [MEMORY[0x1E69DB878] fontWithDescriptor:v51 size:11.0];
 
-    [v49 setLabelFont:v52];
-    v53 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
-    [v53 setVerticalPadding:-3.0];
+    [defaultFieldTemplate9 setLabelFont:v52];
+    defaultFieldTemplate10 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
+    [defaultFieldTemplate10 setVerticalPadding:-3.0];
 
-    v54 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
-    [v54 setSuppressesEmptyLabel:1];
+    defaultFieldTemplate11 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
+    [defaultFieldTemplate11 setSuppressesEmptyLabel:1];
 
-    v55 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
-    [v55 setTextAlignment:2];
+    defaultFieldTemplate12 = [(PKPassBucketTemplate *)v40 defaultFieldTemplate];
+    [defaultFieldTemplate12 setTextAlignment:2];
 
     [(PKPassFaceTemplate *)v4 addBucketTemplate:v40];
     v24 = v72;
@@ -632,7 +632,7 @@ LABEL_26:
   {
     v56 = objc_alloc_init(PKPassBucketTemplate);
     [(PKPassBucketTemplate *)v56 setBucketAlignment:3];
-    if (v73)
+    if (firstObject)
     {
       v57 = v12 * 0.5 + -34.0;
     }
@@ -644,12 +644,12 @@ LABEL_26:
 
     [(PKPassBucketTemplate *)v56 setBucketRect:17.0, 12.0, v57, 35.0];
     [(PKPassBucketTemplate *)v56 setMaxFields:1];
-    v58 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
-    v59 = [v24 label];
-    v60 = v59;
-    if (v59)
+    defaultFieldTemplate13 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
+    label3 = [v24 label];
+    v60 = label3;
+    if (label3)
     {
-      v61 = [(__CFString *)v59 length];
+      v61 = [(__CFString *)label3 length];
       v62 = 0;
       if (v60 != @" " && v61)
       {
@@ -663,23 +663,23 @@ LABEL_26:
     }
 
     v63 = PKPassPaymentFrontFaceValueFont(v62);
-    [v58 setValueFont:v63];
+    [defaultFieldTemplate13 setValueFont:v63];
 
-    v64 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
+    defaultFieldTemplate14 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
     v65 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7];
     v66 = [v65 fontDescriptorWithSymbolicTraits:2];
 
     v67 = [MEMORY[0x1E69DB878] fontWithDescriptor:v66 size:11.0];
 
-    [v64 setLabelFont:v67];
-    v68 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
-    [v68 setVerticalPadding:-3.0];
+    [defaultFieldTemplate14 setLabelFont:v67];
+    defaultFieldTemplate15 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
+    [defaultFieldTemplate15 setVerticalPadding:-3.0];
 
-    v69 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
-    [v69 setSuppressesEmptyLabel:1];
+    defaultFieldTemplate16 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
+    [defaultFieldTemplate16 setSuppressesEmptyLabel:1];
 
-    v70 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
-    [v70 setTextAlignment:0];
+    defaultFieldTemplate17 = [(PKPassBucketTemplate *)v56 defaultFieldTemplate];
+    [defaultFieldTemplate17 setTextAlignment:0];
 
     [(PKPassFaceTemplate *)v4 addBucketTemplate:v56];
   }
@@ -687,16 +687,16 @@ LABEL_26:
   return v4;
 }
 
-- (id)_filterSecondaryField:(id)a3
+- (id)_filterSecondaryField:(id)field
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fieldCopy = field;
+  v4 = fieldCopy;
+  if (!fieldCopy)
   {
     goto LABEL_8;
   }
 
-  v5 = [v3 key];
+  v5 = [fieldCopy key];
   v6 = *MEMORY[0x1E69BBB90];
   v7 = v5;
   v8 = v7;
@@ -727,17 +727,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)_filterAuxiliaryField:(id)a3
+- (id)_filterAuxiliaryField:(id)field
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fieldCopy = field;
+  v4 = fieldCopy;
+  if (!fieldCopy)
   {
     v10 = 0;
     goto LABEL_20;
   }
 
-  v5 = [v3 key];
+  v5 = [fieldCopy key];
   v6 = *MEMORY[0x1E69BBB98];
   v7 = v5;
   v8 = v7;
@@ -804,17 +804,17 @@ void __56__PKPassPaymentCardFrontFaceView_createBodyContentViews__block_invoke(u
   [WeakRetained _showFullScreenBarcodeForButton:v4];
 }
 
-- (void)_initializeBalanceLabelWithTextColor:(id)a3
+- (void)_initializeBalanceLabelWithTextColor:(id)color
 {
   if (!self->_balanceLabel)
   {
     v4 = MEMORY[0x1E69DCC10];
-    v5 = a3;
+    colorCopy = color;
     v6 = objc_alloc_init(v4);
     balanceLabel = self->_balanceLabel;
     self->_balanceLabel = v6;
 
-    [(UILabel *)self->_balanceLabel setTextColor:v5];
+    [(UILabel *)self->_balanceLabel setTextColor:colorCopy];
     [(PKPassPaymentCardFrontFaceView *)self _updateBalanceLabelFontSize];
     v8 = self->_balanceLabel;
 
@@ -822,49 +822,49 @@ void __56__PKPassPaymentCardFrontFaceView_createBodyContentViews__block_invoke(u
   }
 }
 
-- (void)setShowsLiveBalance:(BOOL)a3
+- (void)setShowsLiveBalance:(BOOL)balance
 {
-  if (a3)
+  if (balance)
   {
-    v4 = [(PKPassFaceView *)self pass];
-    v5 = [v4 paymentPass];
+    pass = [(PKPassFaceView *)self pass];
+    paymentPass = [pass paymentPass];
 
-    if ([v5 hasAssociatedPeerPaymentAccount])
+    if ([paymentPass hasAssociatedPeerPaymentAccount])
     {
-      v6 = [MEMORY[0x1E69B9000] sharedInstance];
-      v7 = [v6 account];
-      v8 = [v7 associatedPassUniqueID];
-      v9 = [v5 uniqueID];
-      v10 = [v8 isEqualToString:v9];
+      mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+      account = [mEMORY[0x1E69B9000] account];
+      associatedPassUniqueID = [account associatedPassUniqueID];
+      uniqueID = [paymentPass uniqueID];
+      v10 = [associatedPassUniqueID isEqualToString:uniqueID];
 
       if (v10)
       {
         if (!self->_balanceLabel)
         {
-          v11 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v11 addObserver:self selector:sel__handlePeerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:v6];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__handlePeerPaymentAccountChanged_ name:*MEMORY[0x1E69BC360] object:mEMORY[0x1E69B9000]];
         }
 
-        v12 = [MEMORY[0x1E69DC888] whiteColor];
-        [(PKPassPaymentCardFrontFaceView *)self _initializeBalanceLabelWithTextColor:v12];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(PKPassPaymentCardFrontFaceView *)self _initializeBalanceLabelWithTextColor:whiteColor];
 
-        v13 = [v7 currentBalance];
-        [(PKPassPaymentCardFrontFaceView *)self _updateBalanceWithAmount:v13];
+        currentBalance = [account currentBalance];
+        [(PKPassPaymentCardFrontFaceView *)self _updateBalanceWithAmount:currentBalance];
 
         [(UILabel *)self->_balanceLabel setAlpha:1.0];
       }
     }
 
-    else if ([v5 associatedAccountFeatureIdentifier] == 4)
+    else if ([paymentPass associatedAccountFeatureIdentifier] == 4)
     {
       objc_initWeak(&location, self);
-      v15 = [MEMORY[0x1E69B8400] sharedInstance];
+      mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __54__PKPassPaymentCardFrontFaceView_setShowsLiveBalance___block_invoke;
       v16[3] = &unk_1E80159B0;
       objc_copyWeak(&v17, &location);
-      [v15 defaultAccountForFeature:4 completion:v16];
+      [mEMORY[0x1E69B8400] defaultAccountForFeature:4 completion:v16];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -914,32 +914,32 @@ void __54__PKPassPaymentCardFrontFaceView_setShowsLiveBalance___block_invoke_2(u
   }
 }
 
-- (void)setModallyPresented:(BOOL)a3
+- (void)setModallyPresented:(BOOL)presented
 {
   v6.receiver = self;
   v6.super_class = PKPassPaymentCardFrontFaceView;
-  [(PKPassFaceView *)&v6 setModallyPresented:a3];
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [v4 paymentPass];
+  [(PKPassFaceView *)&v6 setModallyPresented:presented];
+  pass = [(PKPassFaceView *)self pass];
+  paymentPass = [pass paymentPass];
 
-  if ([v5 associatedAccountFeatureIdentifier] == 4)
+  if ([paymentPass associatedAccountFeatureIdentifier] == 4)
   {
     [(PKPassPaymentCardFrontFaceView *)self _updateAccountBalanceVisibilityAnimated:1];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKPassPaymentCardFrontFaceView;
-  [(PKPassPaymentCardFrontFaceView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(PKPassPaymentCardFrontFaceView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  if (v4 && v5)
+  [(PKPassPaymentCardFrontFaceView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPassPaymentCardFrontFaceView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (changeCopy && traitCollection)
   {
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = UIContentSizeCategoryCompareToCategory(v7, v6);
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, preferredContentSizeCategory);
 
     if (v8 == NSOrderedSame)
     {
@@ -949,7 +949,7 @@ void __54__PKPassPaymentCardFrontFaceView_setShowsLiveBalance___block_invoke_2(u
     goto LABEL_7;
   }
 
-  if (v5 && !v4)
+  if (traitCollection && !changeCopy)
   {
 LABEL_7:
     [(PKPassPaymentCardFrontFaceView *)self _updateBalanceLabelFontSize];
@@ -958,23 +958,23 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_showFullScreenBarcodeForButton:(id)a3
+- (void)_showFullScreenBarcodeForButton:(id)button
 {
-  v4 = [(PKPassFaceView *)self delegate];
+  delegate = [(PKPassFaceView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 passFaceViewExpandButtonTapped:self];
+    [delegate passFaceViewExpandButtonTapped:self];
   }
 }
 
-- (void)_updateBalanceWithAmount:(id)a3
+- (void)_updateBalanceWithAmount:(id)amount
 {
-  v15 = a3;
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [v4 paymentPass];
-  v6 = [v5 devicePrimaryPaymentApplication];
+  amountCopy = amount;
+  pass = [(PKPassFaceView *)self pass];
+  paymentPass = [pass paymentPass];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
 
-  if (!v15)
+  if (!amountCopy)
   {
     balanceLabel = self->_balanceLabel;
 LABEL_10:
@@ -985,7 +985,7 @@ LABEL_10:
   balanceLabel = self->_balanceLabel;
   if (balanceLabel)
   {
-    v8 = v6 == 0;
+    v8 = devicePrimaryPaymentApplication == 0;
   }
 
   else
@@ -998,41 +998,41 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [v15 minimalFormattedStringValue];
-  v10 = [(PKPassFaceView *)self pass];
-  v11 = [v10 paymentPass];
-  v12 = [v11 hasAssociatedPeerPaymentAccount];
+  minimalFormattedStringValue = [amountCopy minimalFormattedStringValue];
+  pass2 = [(PKPassFaceView *)self pass];
+  paymentPass2 = [pass2 paymentPass];
+  hasAssociatedPeerPaymentAccount = [paymentPass2 hasAssociatedPeerPaymentAccount];
 
-  if (v12)
+  if (hasAssociatedPeerPaymentAccount)
   {
     v13 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US"];
-    v14 = [v15 minimalFormattedStringValueInLocale:v13];
+    v14 = [amountCopy minimalFormattedStringValueInLocale:v13];
 
-    v9 = v14;
+    minimalFormattedStringValue = v14;
   }
 
-  [(UILabel *)self->_balanceLabel setText:v9];
+  [(UILabel *)self->_balanceLabel setText:minimalFormattedStringValue];
 
 LABEL_11:
 }
 
-- (void)_handleAccountChanged:(id)a3
+- (void)_handleAccountChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PKPassFaceView *)self pass];
-  v6 = [v5 paymentPass];
+  changedCopy = changed;
+  pass = [(PKPassFaceView *)self pass];
+  paymentPass = [pass paymentPass];
 
-  if ([v6 associatedAccountFeatureIdentifier] == 4)
+  if ([paymentPass associatedAccountFeatureIdentifier] == 4)
   {
     objc_initWeak(&location, self);
-    v7 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __56__PKPassPaymentCardFrontFaceView__handleAccountChanged___block_invoke;
     v8[3] = &unk_1E8017060;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    [v7 defaultAccountForFeature:4 completion:v8];
+    [mEMORY[0x1E69B8400] defaultAccountForFeature:4 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1084,50 +1084,50 @@ void __56__PKPassPaymentCardFrontFaceView__handleAccountChanged___block_invoke_6
   }
 }
 
-- (void)_updateStateForAccount:(id)a3 animated:(BOOL)a4
+- (void)_updateStateForAccount:(id)account animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  self->_accountIsActive = [v12 state] == 1;
-  if ([v12 supportsTopUp])
+  animatedCopy = animated;
+  accountCopy = account;
+  self->_accountIsActive = [accountCopy state] == 1;
+  if ([accountCopy supportsTopUp])
   {
-    v6 = 1;
+    supportsAMPTopUp = 1;
   }
 
   else
   {
-    v6 = [v12 supportsAMPTopUp];
+    supportsAMPTopUp = [accountCopy supportsAMPTopUp];
   }
 
-  self->_accountSupportsTopUp = v6;
+  self->_accountSupportsTopUp = supportsAMPTopUp;
   if (self->_accountIsActive)
   {
-    v7 = [v12 appleBalanceDetails];
-    v8 = [v7 accountSummary];
-    v9 = [v8 currentBalance];
-    v10 = [v7 currencyCode];
+    appleBalanceDetails = [accountCopy appleBalanceDetails];
+    accountSummary = [appleBalanceDetails accountSummary];
+    currentBalance = [accountSummary currentBalance];
+    currencyCode = [appleBalanceDetails currencyCode];
     v11 = PKCurrencyAmountMake();
     [(PKPassPaymentCardFrontFaceView *)self _updateBalanceWithAmount:v11];
   }
 
-  [(PKPassPaymentCardFrontFaceView *)self _updateAccountBalanceVisibilityAnimated:v4];
+  [(PKPassPaymentCardFrontFaceView *)self _updateAccountBalanceVisibilityAnimated:animatedCopy];
 }
 
-- (void)_updateAccountBalanceVisibilityAnimated:(BOOL)a3
+- (void)_updateAccountBalanceVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 0.0;
   if (self->_accountIsActive)
   {
-    v6 = [(PKPassFaceView *)self modallyPresented];
+    modallyPresented = [(PKPassFaceView *)self modallyPresented];
     v5 = 1.0;
-    if (v6 && self->_accountSupportsTopUp)
+    if (modallyPresented && self->_accountSupportsTopUp)
     {
       v5 = 0.0;
     }
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1146,7 +1146,7 @@ void __56__PKPassPaymentCardFrontFaceView__handleAccountChanged___block_invoke_6
   }
 }
 
-- (void)_handlePeerPaymentAccountChanged:(id)a3
+- (void)_handlePeerPaymentAccountChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1168,25 +1168,25 @@ void __67__PKPassPaymentCardFrontFaceView__handlePeerPaymentAccountChanged___blo
   [*(a1 + 32) setNeedsLayout];
 }
 
-- (void)setViewExpanded:(BOOL)a3
+- (void)setViewExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPassFaceView *)self viewExpanded];
+  viewExpanded = [(PKPassFaceView *)self viewExpanded];
   v8.receiver = self;
   v8.super_class = PKPassPaymentCardFrontFaceView;
-  [(PKPassFaceView *)&v8 setViewExpanded:v3];
-  if (v5 != v3)
+  [(PKPassFaceView *)&v8 setViewExpanded:expandedCopy];
+  if (viewExpanded != expandedCopy)
   {
     v6 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = v3;
+      v10 = expandedCopy;
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKPassPaymentCardFrontFaceView setting viewExpanded: %ld", buf, 0xCu);
     }
 
-    if (v3)
+    if (expandedCopy)
     {
       v7 = 1.0;
     }
@@ -1202,15 +1202,15 @@ void __67__PKPassPaymentCardFrontFaceView__handlePeerPaymentAccountChanged___blo
   }
 }
 
-- (void)setDynamicBarcodeData:(id)a3
+- (void)setDynamicBarcodeData:(id)data
 {
-  v4 = a3;
-  v5 = [(PKPassFaceView *)self dynamicBarcodeData];
+  dataCopy = data;
+  dynamicBarcodeData = [(PKPassFaceView *)self dynamicBarcodeData];
   v6 = PKEqualObjects();
 
   v33.receiver = self;
   v33.super_class = PKPassPaymentCardFrontFaceView;
-  [(PKPassFaceView *)&v33 setDynamicBarcodeData:v4];
+  [(PKPassFaceView *)&v33 setDynamicBarcodeData:dataCopy];
   if ((v6 & 1) == 0)
   {
     PKPassFrontFaceContentSize();
@@ -1266,11 +1266,11 @@ void __67__PKPassPaymentCardFrontFaceView__handlePeerPaymentAccountChanged___blo
       objc_destroyWeak(&location);
     }
 
-    if (v4)
+    if (dataCopy)
     {
       v13 = objc_alloc_init(MEMORY[0x1E69B86B0]);
       [v13 setFormat:1];
-      [v13 setMessageData:v4];
+      [v13 setMessageData:dataCopy];
       v14 = [[PKBarcodeStickerView alloc] initWithBarcode:v13 validityState:0];
       v15 = self->_bottomBarcodeView;
       self->_bottomBarcodeView = v14;
@@ -1288,7 +1288,7 @@ void __67__PKPassPaymentCardFrontFaceView__handlePeerPaymentAccountChanged___blo
       [(PKBarcodeStickerView *)self->_bottomBarcodeView sizeToFit];
       v17 = objc_alloc_init(MEMORY[0x1E69B86B0]);
       [v17 setFormat:4];
-      [v17 setMessageData:v4];
+      [v17 setMessageData:dataCopy];
       [v17 setShouldRemoveQuietZone:1];
       v18 = [[PKBarcodeStickerView alloc] initWithBarcode:v17 validityState:0];
       v19 = self->_topBarcodeView;

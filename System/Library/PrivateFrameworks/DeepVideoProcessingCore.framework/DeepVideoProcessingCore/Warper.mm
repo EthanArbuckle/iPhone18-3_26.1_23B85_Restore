@@ -1,184 +1,184 @@
 @interface Warper
-- (BOOL)computeErrorMask:(__CVBuffer *)a3 reference:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 threshold:(float)a7 scaleFactor:(float)a8;
-- (BOOL)encodeWarpBlendToCommandBuffer:(id)a3 source:(id)a4 scaleFactor:(unint64_t)a5 withLowResFlow:(id)a6 withBicubicUpscaled:(id)a7 withErrorMask:(id)a8 destination:(id)a9;
+- (BOOL)computeErrorMask:(__CVBuffer *)mask reference:(__CVBuffer *)reference flow:(__CVBuffer *)flow output:(__CVBuffer *)output threshold:(float)threshold scaleFactor:(float)factor;
+- (BOOL)encodeWarpBlendToCommandBuffer:(id)buffer source:(id)source scaleFactor:(unint64_t)factor withLowResFlow:(id)flow withBicubicUpscaled:(id)upscaled withErrorMask:(id)mask destination:(id)destination;
 - (BOOL)setupKernels;
-- (BOOL)warpBlendBufferRGBTexture:(id)a3 scaleFactor:(unint64_t)a4 withLowResFlowTexture:(id)a5 withBicubicUpscaledTexture:(id)a6 withErrorMaskTexture:(id)a7 toHighResBufferTexture:(id)a8;
+- (BOOL)warpBlendBufferRGBTexture:(id)texture scaleFactor:(unint64_t)factor withLowResFlowTexture:(id)flowTexture withBicubicUpscaledTexture:(id)upscaledTexture withErrorMaskTexture:(id)maskTexture toHighResBufferTexture:(id)bufferTexture;
 - (Warper)init;
-- (void)encodeErrorMapFilteringWithGaussian3x3ToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeErrorMapFilteringWithGaussian5x5ToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5;
-- (void)encodeErrorThresholdToCommandBuffer:(id)a3 source:(id)a4 threshold:(float)a5 scaleFactor:(float)a6 mask:(id)a7;
-- (void)encodeWarpErrorToCommandBuffer:(id)a3 source:(id)a4 reference:(id)a5 flow:(id)a6 error:(id)a7;
+- (void)encodeErrorMapFilteringWithGaussian3x3ToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeErrorMapFilteringWithGaussian5x5ToCommandBuffer:(id)buffer source:(id)source destination:(id)destination;
+- (void)encodeErrorThresholdToCommandBuffer:(id)buffer source:(id)source threshold:(float)threshold scaleFactor:(float)factor mask:(id)mask;
+- (void)encodeWarpErrorToCommandBuffer:(id)buffer source:(id)source reference:(id)reference flow:(id)flow error:(id)error;
 @end
 
 @implementation Warper
 
-- (BOOL)warpBlendBufferRGBTexture:(id)a3 scaleFactor:(unint64_t)a4 withLowResFlowTexture:(id)a5 withBicubicUpscaledTexture:(id)a6 withErrorMaskTexture:(id)a7 toHighResBufferTexture:(id)a8
+- (BOOL)warpBlendBufferRGBTexture:(id)texture scaleFactor:(unint64_t)factor withLowResFlowTexture:(id)flowTexture withBicubicUpscaledTexture:(id)upscaledTexture withErrorMaskTexture:(id)maskTexture toHighResBufferTexture:(id)bufferTexture
 {
   commandQueue = self->super._commandQueue;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  v21 = [(Warper *)self encodeWarpBlendToCommandBuffer:v20 source:v19 scaleFactor:a4 withLowResFlow:v18 withBicubicUpscaled:v17 withErrorMask:v16 destination:v15];
+  bufferTextureCopy = bufferTexture;
+  maskTextureCopy = maskTexture;
+  upscaledTextureCopy = upscaledTexture;
+  flowTextureCopy = flowTexture;
+  textureCopy = texture;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  v21 = [(Warper *)self encodeWarpBlendToCommandBuffer:commandBuffer source:textureCopy scaleFactor:factor withLowResFlow:flowTextureCopy withBicubicUpscaled:upscaledTextureCopy withErrorMask:maskTextureCopy destination:bufferTextureCopy];
 
   if (v21)
   {
-    [v20 commit];
-    [v20 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v21;
 }
 
-- (BOOL)encodeWarpBlendToCommandBuffer:(id)a3 source:(id)a4 scaleFactor:(unint64_t)a5 withLowResFlow:(id)a6 withBicubicUpscaled:(id)a7 withErrorMask:(id)a8 destination:(id)a9
+- (BOOL)encodeWarpBlendToCommandBuffer:(id)buffer source:(id)source scaleFactor:(unint64_t)factor withLowResFlow:(id)flow withBicubicUpscaled:(id)upscaled withErrorMask:(id)mask destination:(id)destination
 {
-  v28[0] = a5;
-  v28[1] = 1.0 / a5;
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a4;
-  v20 = a3;
-  v21 = ([v17 width] + 15) >> 4;
-  v22 = ([v17 height] + 15) >> 4;
-  v23 = [v20 computeCommandEncoder];
+  v28[0] = factor;
+  v28[1] = 1.0 / factor;
+  destinationCopy = destination;
+  maskCopy = mask;
+  upscaledCopy = upscaled;
+  flowCopy = flow;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v21 = ([upscaledCopy width] + 15) >> 4;
+  v22 = ([upscaledCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v23 setComputePipelineState:self->_warpBlendRGBKernel];
-  [v23 setTexture:v19 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_warpBlendRGBKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v23 setTexture:v18 atIndex:1];
-  [v23 setTexture:v17 atIndex:2];
+  [computeCommandEncoder setTexture:flowCopy atIndex:1];
+  [computeCommandEncoder setTexture:upscaledCopy atIndex:2];
 
-  [v23 setTexture:v16 atIndex:3];
-  [v23 setTexture:v15 atIndex:4];
+  [computeCommandEncoder setTexture:maskCopy atIndex:3];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:4];
 
-  [v23 setBytes:v28 length:8 atIndex:0];
+  [computeCommandEncoder setBytes:v28 length:8 atIndex:0];
   v27[0] = v21;
   v27[1] = v22;
   v27[2] = 1;
   v25 = vdupq_n_s64(0x10uLL);
   v26 = 1;
-  [v23 dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
-  [v23 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
+  [computeCommandEncoder endEncoding];
 
   return 1;
 }
 
-- (void)encodeWarpErrorToCommandBuffer:(id)a3 source:(id)a4 reference:(id)a5 flow:(id)a6 error:(id)a7
+- (void)encodeWarpErrorToCommandBuffer:(id)buffer source:(id)source reference:(id)reference flow:(id)flow error:(id)error
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = ([v15 width] + 15) >> 4;
-  v18 = ([v15 height] + 15) >> 4;
-  v19 = [v16 computeCommandEncoder];
+  errorCopy = error;
+  flowCopy = flow;
+  referenceCopy = reference;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v17 = ([sourceCopy width] + 15) >> 4;
+  v18 = ([sourceCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v19 setComputePipelineState:self->_warpErrorKernel];
-  [v19 setTexture:v15 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_warpErrorKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v19 setTexture:v14 atIndex:1];
-  [v19 setTexture:v13 atIndex:2];
+  [computeCommandEncoder setTexture:referenceCopy atIndex:1];
+  [computeCommandEncoder setTexture:flowCopy atIndex:2];
 
-  [v19 setTexture:v12 atIndex:3];
+  [computeCommandEncoder setTexture:errorCopy atIndex:3];
   v22[0] = v17;
   v22[1] = v18;
   v22[2] = 1;
   v20 = vdupq_n_s64(0x10uLL);
   v21 = 1;
-  [v19 dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
-  [v19 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v22 threadsPerThreadgroup:&v20];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeErrorMapFilteringWithGaussian3x3ToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeErrorMapFilteringWithGaussian3x3ToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  sourceCopy = source;
+  destinationCopy = destination;
   if (!self->_gaussian3x3CoefficientBuffer)
   {
     v11 = [(MTLDevice *)self->super._device newBufferWithLength:18 options:0];
     gaussian3x3CoefficientBuffer = self->_gaussian3x3CoefficientBuffer;
     self->_gaussian3x3CoefficientBuffer = v11;
 
-    v13 = [(MTLBuffer *)self->_gaussian3x3CoefficientBuffer contents];
-    *(v13 + 16) = 11470;
-    *v13 = Gaussian3x3FilterCoeffients_1;
+    contents = [(MTLBuffer *)self->_gaussian3x3CoefficientBuffer contents];
+    *(contents + 16) = 11470;
+    *contents = Gaussian3x3FilterCoeffients_1;
   }
 
-  v14 = [v8 computeCommandEncoder];
-  [v14 setComputePipelineState:self->_gaussian3x3FilterKernel];
-  [v14 setTexture:v9 atIndex:0];
-  [v14 setTexture:v10 atIndex:1];
-  [v14 setBuffer:self->_gaussian3x3CoefficientBuffer offset:0 atIndex:0];
-  v17[0] = ([v10 width] + 15) >> 4;
-  v17[1] = ([v10 height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_gaussian3x3FilterKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBuffer:self->_gaussian3x3CoefficientBuffer offset:0 atIndex:0];
+  v17[0] = ([destinationCopy width] + 15) >> 4;
+  v17[1] = ([destinationCopy height] + 15) >> 4;
   v17[2] = 1;
   v15 = vdupq_n_s64(0x10uLL);
   v16 = 1;
-  [v14 dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeErrorThresholdToCommandBuffer:(id)a3 source:(id)a4 threshold:(float)a5 scaleFactor:(float)a6 mask:(id)a7
+- (void)encodeErrorThresholdToCommandBuffer:(id)buffer source:(id)source threshold:(float)threshold scaleFactor:(float)factor mask:(id)mask
 {
-  v19[0] = 1.0 / a6;
-  v19[1] = a5;
-  v10 = a7;
-  v11 = a4;
-  v12 = a3;
-  v13 = ([v10 width] + 15) >> 4;
-  v14 = ([v10 height] + 15) >> 4;
-  v15 = [v12 computeCommandEncoder];
+  v19[0] = 1.0 / factor;
+  v19[1] = threshold;
+  maskCopy = mask;
+  sourceCopy = source;
+  bufferCopy = buffer;
+  v13 = ([maskCopy width] + 15) >> 4;
+  v14 = ([maskCopy height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v15 setComputePipelineState:self->_maskKernel];
-  [v15 setTexture:v11 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_maskKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v15 setTexture:v10 atIndex:1];
-  [v15 setBytes:v19 length:8 atIndex:0];
+  [computeCommandEncoder setTexture:maskCopy atIndex:1];
+  [computeCommandEncoder setBytes:v19 length:8 atIndex:0];
   v18[0] = v13;
   v18[1] = v14;
   v18[2] = 1;
   v16 = vdupq_n_s64(0x10uLL);
   v17 = 1;
-  [v15 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v15 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeErrorMapFilteringWithGaussian5x5ToCommandBuffer:(id)a3 source:(id)a4 destination:(id)a5
+- (void)encodeErrorMapFilteringWithGaussian5x5ToCommandBuffer:(id)buffer source:(id)source destination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bufferCopy = buffer;
+  sourceCopy = source;
+  destinationCopy = destination;
   if (!self->_gaussian5x5CoefficientBuffer)
   {
     v11 = [(MTLDevice *)self->super._device newBufferWithLength:50 options:0];
     gaussian5x5CoefficientBuffer = self->_gaussian5x5CoefficientBuffer;
     self->_gaussian5x5CoefficientBuffer = v11;
 
-    v13 = [(MTLBuffer *)self->_gaussian5x5CoefficientBuffer contents];
-    *(v13 + 48) = 9712;
-    *v13 = Gaussian5x5FilterCoeffients;
-    *(v13 + 16) = unk_2487C3A92;
-    *(v13 + 32) = xmmword_2487C3AA2;
+    contents = [(MTLBuffer *)self->_gaussian5x5CoefficientBuffer contents];
+    *(contents + 48) = 9712;
+    *contents = Gaussian5x5FilterCoeffients;
+    *(contents + 16) = unk_2487C3A92;
+    *(contents + 32) = xmmword_2487C3AA2;
   }
 
-  v14 = [v8 computeCommandEncoder];
-  [v14 setComputePipelineState:self->_gaussian5x5FilterKernel];
-  [v14 setTexture:v9 atIndex:0];
-  [v14 setTexture:v10 atIndex:1];
-  [v14 setBuffer:self->_gaussian5x5CoefficientBuffer offset:0 atIndex:0];
-  v17[0] = ([v10 width] + 15) >> 4;
-  v17[1] = ([v10 height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_gaussian5x5FilterKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:1];
+  [computeCommandEncoder setBuffer:self->_gaussian5x5CoefficientBuffer offset:0 atIndex:0];
+  v17[0] = ([destinationCopy width] + 15) >> 4;
+  v17[1] = ([destinationCopy height] + 15) >> 4;
   v17[2] = 1;
   v15 = vdupq_n_s64(0x10uLL);
   v16 = 1;
-  [v14 dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
+  [computeCommandEncoder endEncoding];
 }
 
 - (Warper)init
@@ -226,18 +226,18 @@
   return v13;
 }
 
-- (BOOL)computeErrorMask:(__CVBuffer *)a3 reference:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 threshold:(float)a7 scaleFactor:(float)a8
+- (BOOL)computeErrorMask:(__CVBuffer *)mask reference:(__CVBuffer *)reference flow:(__CVBuffer *)flow output:(__CVBuffer *)output threshold:(float)threshold scaleFactor:(float)factor
 {
-  v15 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v16 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 1uLL);
-  v17 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 1uLL);
-  v18 = createTexturesFromCVPixelBuffer(a5, self->super._device, 2, 1uLL);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v16 = createTexturesFromCVPixelBuffer(mask, self->super._device, 1, 1uLL);
+  v17 = createTexturesFromCVPixelBuffer(reference, self->super._device, 1, 1uLL);
+  v18 = createTexturesFromCVPixelBuffer(flow, self->super._device, 2, 1uLL);
   v19 = createTextures(self->super._device, [v16 width], objc_msgSend(v16, "height"), 1, 1uLL);
   v20 = createTextures(self->super._device, [v16 width], objc_msgSend(v16, "height"), 1, 1uLL);
-  v21 = createTexturesFromCVPixelBuffer(a6, self->super._device, 1, 1uLL);
+  v21 = createTexturesFromCVPixelBuffer(output, self->super._device, 1, 1uLL);
   v22 = createTextures(self->super._device, [v21 width], objc_msgSend(v21, "height"), 1, 1uLL);
   v23 = v22;
-  if (v15)
+  if (commandBuffer)
   {
     v24 = v16 == 0;
   }
@@ -254,12 +254,12 @@
     [OUTLINED_FUNCTION_1_6() encodeWarpErrorToCommandBuffer:? source:? reference:? flow:? error:?];
     [OUTLINED_FUNCTION_1_6() encodeErrorMapFilteringWithGaussian3x3ToCommandBuffer:? source:? destination:?];
     v32 = OUTLINED_FUNCTION_1_6();
-    *&v33 = a7;
-    *&v34 = a8;
+    *&v33 = threshold;
+    *&v34 = factor;
     [v32 encodeErrorThresholdToCommandBuffer:v33 source:v34 threshold:? scaleFactor:? mask:?];
     [OUTLINED_FUNCTION_1_6() encodeErrorMapFilteringWithGaussian5x5ToCommandBuffer:? source:? destination:?];
-    [v15 commit];
-    [v15 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v31 ^ 1;

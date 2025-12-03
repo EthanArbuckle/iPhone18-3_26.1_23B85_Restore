@@ -1,41 +1,41 @@
 @interface HDCloudSyncOwnerIdentifier
-+ (id)unitTest_ownerIdentifierWithDatabaseIdentifer:(id)a3 deviceIdentifier:(id)a4 ownerDifferentiator:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)unitTest_ownerIdentifierWithDatabaseIdentifer:(id)identifer deviceIdentifier:(id)identifier ownerDifferentiator:(id)differentiator;
+- (BOOL)isEqual:(id)equal;
 - (NSString)string;
-- (id)_initWithDatabaseIdentifer:(id)a3 deviceIdentifier:(id)a4 ownerDifferentiator:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithDatabaseIdentifer:(id)identifer deviceIdentifier:(id)identifier ownerDifferentiator:(id)differentiator;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HDCloudSyncOwnerIdentifier
 
-+ (id)unitTest_ownerIdentifierWithDatabaseIdentifer:(id)a3 deviceIdentifier:(id)a4 ownerDifferentiator:(id)a5
++ (id)unitTest_ownerIdentifierWithDatabaseIdentifer:(id)identifer deviceIdentifier:(id)identifier ownerDifferentiator:(id)differentiator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HDCloudSyncOwnerIdentifier alloc] _initWithDatabaseIdentifer:v9 deviceIdentifier:v8 ownerDifferentiator:v7];
+  differentiatorCopy = differentiator;
+  identifierCopy = identifier;
+  identiferCopy = identifer;
+  v10 = [[HDCloudSyncOwnerIdentifier alloc] _initWithDatabaseIdentifer:identiferCopy deviceIdentifier:identifierCopy ownerDifferentiator:differentiatorCopy];
 
   return v10;
 }
 
-- (id)_initWithDatabaseIdentifer:(id)a3 deviceIdentifier:(id)a4 ownerDifferentiator:(id)a5
+- (id)_initWithDatabaseIdentifer:(id)identifer deviceIdentifier:(id)identifier ownerDifferentiator:(id)differentiator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
+  differentiatorCopy = differentiator;
   v19.receiver = self;
   v19.super_class = HDCloudSyncOwnerIdentifier;
   v12 = [(HDCloudSyncOwnerIdentifier *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_databaseIdentifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_databaseIdentifier, identifer);
+    v14 = [identifierCopy copy];
     deviceIdentifier = v13->_deviceIdentifier;
     v13->_deviceIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [differentiatorCopy copy];
     ownerDifferentiator = v13->_ownerDifferentiator;
     v13->_ownerDifferentiator = v16;
   }
@@ -52,8 +52,8 @@
     v4 = MEMORY[0x277CBEB18];
     databaseIdentifier = self->_databaseIdentifier;
     v13[0] = self->_deviceIdentifier;
-    v6 = [(NSUUID *)databaseIdentifier UUIDString];
-    v13[1] = v6;
+    uUIDString = [(NSUUID *)databaseIdentifier UUIDString];
+    v13[1] = uUIDString;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     v8 = [v4 arrayWithArray:v7];
 
@@ -74,15 +74,15 @@
   return ownerIdentifierString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDCloudSyncOwnerIdentifier *)self string];
-    v6 = [v4 string];
-    v7 = [v5 isEqualToString:v6];
+    string = [(HDCloudSyncOwnerIdentifier *)self string];
+    string2 = [equalCopy string];
+    v7 = [string isEqualToString:string2];
   }
 
   else
@@ -95,15 +95,15 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HDCloudSyncOwnerIdentifier *)self string];
-  v3 = [v2 hash];
+  string = [(HDCloudSyncOwnerIdentifier *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HDCloudSyncOwnerIdentifier allocWithZone:a3];
+  v4 = [HDCloudSyncOwnerIdentifier allocWithZone:zone];
   deviceIdentifier = self->_deviceIdentifier;
   databaseIdentifier = self->_databaseIdentifier;
   ownerDifferentiator = self->_ownerDifferentiator;

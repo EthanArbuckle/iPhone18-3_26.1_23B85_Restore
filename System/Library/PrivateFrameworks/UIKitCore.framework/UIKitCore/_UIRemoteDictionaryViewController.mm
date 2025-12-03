@@ -1,30 +1,30 @@
 @interface _UIRemoteDictionaryViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (_UIRemoteDictionaryViewController)initWithStyle:(int64_t)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (_UIRemoteDictionaryViewController)initWithStyle:(int64_t)style;
 - (id)_downloadButton;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleDownloadButton:(id)a3;
-- (void)_startDownloadForDictionary:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleDownloadButton:(id)button;
+- (void)_startDownloadForDictionary:(id)dictionary;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation _UIRemoteDictionaryViewController
 
-- (_UIRemoteDictionaryViewController)initWithStyle:(int64_t)a3
+- (_UIRemoteDictionaryViewController)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = _UIRemoteDictionaryViewController;
-  v3 = [(UITableViewController *)&v9 initWithStyle:a3];
+  v3 = [(UITableViewController *)&v9 initWithStyle:style];
   if (v3)
   {
     v4 = +[_UIDictionaryManager assetManager];
     dictionaryAssetManager = v3->_dictionaryAssetManager;
     v3->_dictionaryAssetManager = v4;
 
-    v6 = [(_UIDictionaryManager *)v3->_dictionaryAssetManager availableDefinitionDictionaries];
+    availableDefinitionDictionaries = [(_UIDictionaryManager *)v3->_dictionaryAssetManager availableDefinitionDictionaries];
     availableDictionaries = v3->_availableDictionaries;
-    v3->_availableDictionaries = v6;
+    v3->_availableDictionaries = availableDefinitionDictionaries;
   }
 
   return v3;
@@ -66,13 +66,13 @@
   return v7;
 }
 
-- (void)_handleDownloadButton:(id)a3
+- (void)_handleDownloadButton:(id)button
 {
-  v4 = objc_getAssociatedObject(a3, &_UIReferenceLibraryViewController_definitionDictionary);
-  v5 = [v4 rawAsset];
-  v6 = [v5 state];
+  v4 = objc_getAssociatedObject(button, &_UIReferenceLibraryViewController_definitionDictionary);
+  rawAsset = [v4 rawAsset];
+  state = [rawAsset state];
 
-  if (v6 == 1)
+  if (state == 1)
   {
     [(_UIRemoteDictionaryViewController *)self _startDownloadForDictionary:v4];
     v7[0] = MEMORY[0x1E69E9820];
@@ -80,25 +80,25 @@
     v7[2] = __59___UIRemoteDictionaryViewController__handleDownloadButton___block_invoke;
     v7[3] = &unk_1E70F35B8;
     v8 = v4;
-    v9 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
 
-- (void)_startDownloadForDictionary:(id)a3
+- (void)_startDownloadForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 rawAsset];
+  dictionaryCopy = dictionary;
+  rawAsset = [dictionaryCopy rawAsset];
   if (!self->_downloadingAssets)
   {
     v6 = objc_opt_new();
     [(_UIRemoteDictionaryViewController *)self setDownloadingAssets:v6];
   }
 
-  v7 = [v5 assetId];
+  assetId = [rawAsset assetId];
   downloadingAssets = self->_downloadingAssets;
-  v9 = [MEMORY[0x1E695DFB0] null];
-  [(NSMutableDictionary *)downloadingAssets setObject:v9 forKey:v7];
+  null = [MEMORY[0x1E695DFB0] null];
+  [(NSMutableDictionary *)downloadingAssets setObject:null forKey:assetId];
 
   v10 = objc_opt_new();
   [v10 setAllowsCellularAccess:1];
@@ -108,95 +108,95 @@
   v14[1] = 3221225472;
   v14[2] = __65___UIRemoteDictionaryViewController__startDownloadForDictionary___block_invoke;
   v14[3] = &unk_1E7103508;
-  v15 = v5;
-  v16 = v4;
-  v17 = self;
-  v18 = v7;
-  v11 = v7;
-  v12 = v4;
-  v13 = v5;
+  v15 = rawAsset;
+  v16 = dictionaryCopy;
+  selfCopy = self;
+  v18 = assetId;
+  v11 = assetId;
+  v12 = dictionaryCopy;
+  v13 = rawAsset;
   [v13 startDownload:v10 then:v14];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"downloadable_dictionary_cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"downloadable_dictionary_cell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"downloadable_dictionary_cell"];
   }
 
-  v8 = [(UITableViewCell *)v7 textLabel];
-  [v8 setText:0];
+  textLabel = [(UITableViewCell *)v7 textLabel];
+  [textLabel setText:0];
 
-  v9 = [(UITableViewCell *)v7 detailTextLabel];
-  [v9 setText:0];
+  detailTextLabel = [(UITableViewCell *)v7 detailTextLabel];
+  [detailTextLabel setText:0];
 
   availableDictionaries = self->_availableDictionaries;
-  v11 = [v6 row];
+  v11 = [pathCopy row];
 
   v12 = [(NSArray *)availableDictionaries objectAtIndex:v11];
-  v13 = [v12 rawAsset];
-  v14 = [v13 attributes];
-  v15 = [v14 objectForKey:@"DictionaryPackageName"];
+  rawAsset = [v12 rawAsset];
+  attributes = [rawAsset attributes];
+  v15 = [attributes objectForKey:@"DictionaryPackageName"];
   v16 = [v15 isEqual:@"Apple Dictionary.dictionary"];
 
   if (v16)
   {
-    v17 = [(UITableViewCell *)v7 textLabel];
-    v18 = _UINSLocalizedStringWithDefaultValue(@"Apple Dictionary", @"Apple Dictionary");
+    textLabel2 = [(UITableViewCell *)v7 textLabel];
+    localizedLanguageName = _UINSLocalizedStringWithDefaultValue(@"Apple Dictionary", @"Apple Dictionary");
   }
 
   else
   {
-    v19 = [v14 objectForKey:@"DictionaryPackageName"];
+    v19 = [attributes objectForKey:@"DictionaryPackageName"];
     v20 = [v19 isEqualToString:@"TTY Abbreviations Dictionary.dictionary"];
 
     if (!v20)
     {
-      v21 = [(UITableViewCell *)v7 detailTextLabel];
-      v22 = [v12 localizedDictionaryName];
-      [v21 setText:v22];
+      detailTextLabel2 = [(UITableViewCell *)v7 detailTextLabel];
+      localizedDictionaryName = [v12 localizedDictionaryName];
+      [detailTextLabel2 setText:localizedDictionaryName];
     }
 
-    v17 = [(UITableViewCell *)v7 textLabel];
-    v18 = [v12 localizedLanguageName];
+    textLabel2 = [(UITableViewCell *)v7 textLabel];
+    localizedLanguageName = [v12 localizedLanguageName];
   }
 
-  v23 = v18;
-  [v17 setText:v18];
+  v23 = localizedLanguageName;
+  [textLabel2 setText:localizedLanguageName];
 
-  v24 = [v13 state];
-  if (v24 == 4)
+  state = [rawAsset state];
+  if (state == 4)
   {
-    v25 = [(UITableViewCell *)v7 accessoryView];
+    accessoryView = [(UITableViewCell *)v7 accessoryView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v27 = [(UITableViewCell *)v7 accessoryView];
+      accessoryView2 = [(UITableViewCell *)v7 accessoryView];
     }
 
     else
     {
       [(UITableViewCell *)v7 setAccessoryView:0];
-      v27 = 0;
+      accessoryView2 = 0;
     }
 
     if (([v12 assetIsLocal] & 1) == 0)
     {
       downloadingAssets = self->_downloadingAssets;
-      v31 = [v13 assetId];
-      v32 = [(NSMutableDictionary *)downloadingAssets objectForKeyedSubscript:v31];
+      assetId = [rawAsset assetId];
+      v32 = [(NSMutableDictionary *)downloadingAssets objectForKeyedSubscript:assetId];
 
       if (v32)
       {
-        if (v27)
+        if (accessoryView2)
         {
 LABEL_17:
-          v33 = v27;
+          v33 = accessoryView2;
           goto LABEL_28;
         }
       }
@@ -204,7 +204,7 @@ LABEL_17:
       else
       {
         [(_UIRemoteDictionaryViewController *)self _startDownloadForDictionary:v12];
-        if (v27)
+        if (accessoryView2)
         {
           goto LABEL_17;
         }
@@ -212,19 +212,19 @@ LABEL_17:
 
       v33 = [[_UICircleProgressIndicator alloc] initWithFrame:0.0, 0.0, 26.0, 26.0];
 LABEL_28:
-      v35 = v33;
+      _downloadButton2 = v33;
       v36 = +[UIColor clearColor];
-      [v35 setBackgroundColor:v36];
+      [_downloadButton2 setBackgroundColor:v36];
 
-      if (!v27)
+      if (!accessoryView2)
       {
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __69___UIRemoteDictionaryViewController_tableView_cellForRowAtIndexPath___block_invoke_2;
         v39[3] = &unk_1E7103530;
-        v37 = v35;
+        v37 = _downloadButton2;
         v40 = v37;
-        [v13 attachProgressCallBack:v39];
+        [rawAsset attachProgressCallBack:v39];
         objc_setAssociatedObject(v37, &_UIReferenceLibraryViewController_definitionDictionary, v12, 1);
         [(UITableViewCell *)v7 setAccessoryView:v37];
       }
@@ -237,43 +237,43 @@ LABEL_30:
 
   else
   {
-    v28 = v24;
+    v28 = state;
     [(UITableViewCell *)v7 setAccessoryView:0];
     if (v28 == 1)
     {
-      v29 = [(_UIRemoteDictionaryViewController *)self _downloadButton];
-      objc_setAssociatedObject(v29, &_UIReferenceLibraryViewController_definitionDictionary, v12, 1);
-      [(UITableViewCell *)v7 setAccessoryView:v29];
+      _downloadButton = [(_UIRemoteDictionaryViewController *)self _downloadButton];
+      objc_setAssociatedObject(_downloadButton, &_UIReferenceLibraryViewController_definitionDictionary, v12, 1);
+      [(UITableViewCell *)v7 setAccessoryView:_downloadButton];
 
-      v27 = 0;
+      accessoryView2 = 0;
       goto LABEL_31;
     }
 
-    v27 = 0;
+    accessoryView2 = 0;
     if (![v12 assetIsLocal])
     {
       goto LABEL_31;
     }
   }
 
-  v34 = [v12 assetToUpgrade];
+  assetToUpgrade = [v12 assetToUpgrade];
 
-  if (!v34)
+  if (!assetToUpgrade)
   {
     if ([v12 activated])
     {
       goto LABEL_31;
     }
 
-    v35 = [(_UIRemoteDictionaryViewController *)self _downloadButton];
-    objc_setAssociatedObject(v35, &_UIReferenceLibraryViewController_definitionDictionary, v12, 1);
-    [(UITableViewCell *)v7 setAccessoryView:v35];
+    _downloadButton2 = [(_UIRemoteDictionaryViewController *)self _downloadButton];
+    objc_setAssociatedObject(_downloadButton2, &_UIReferenceLibraryViewController_definitionDictionary, v12, 1);
+    [(UITableViewCell *)v7 setAccessoryView:_downloadButton2];
     goto LABEL_30;
   }
 
   if ([v12 assetIsDeletable])
   {
-    [v13 purgeSync];
+    [rawAsset purgeSync];
   }
 
   [v12 updateAsset];
@@ -285,7 +285,7 @@ LABEL_30:
     block[2] = __69___UIRemoteDictionaryViewController_tableView_cellForRowAtIndexPath___block_invoke;
     block[3] = &unk_1E70F35B8;
     v42 = v12;
-    v43 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -294,31 +294,31 @@ LABEL_31:
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 setEditing:0 animated:1];
-  v9 = -[NSArray objectAtIndex:](self->_availableDictionaries, "objectAtIndex:", [v8 row]);
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy setEditing:0 animated:1];
+  v9 = -[NSArray objectAtIndex:](self->_availableDictionaries, "objectAtIndex:", [pathCopy row]);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84___UIRemoteDictionaryViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
   block[3] = &unk_1E70F6228;
   v14 = v9;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
+  v15 = viewCopy;
+  v16 = pathCopy;
+  v10 = pathCopy;
+  v11 = viewCopy;
   v12 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndex:](self->_availableDictionaries, "objectAtIndex:", [a4 row]);
-  v5 = [v4 assetIsDeletable];
+  v4 = -[NSArray objectAtIndex:](self->_availableDictionaries, "objectAtIndex:", [path row]);
+  assetIsDeletable = [v4 assetIsDeletable];
 
-  return v5;
+  return assetIsDeletable;
 }
 
 @end

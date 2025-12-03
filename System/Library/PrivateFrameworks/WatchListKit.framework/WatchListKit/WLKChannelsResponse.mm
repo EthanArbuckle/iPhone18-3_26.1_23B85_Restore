@@ -1,11 +1,11 @@
 @interface WLKChannelsResponse
-+ (id)parseChannelsFromPayload:(id)a3;
-- (BOOL)isValidForFiltered:(BOOL)a3;
++ (id)parseChannelsFromPayload:(id)payload;
+- (BOOL)isValidForFiltered:(BOOL)filtered;
 - (NSArray)orderedChannels;
 - (NSDictionary)channels;
-- (void)modifyConsentStatusForChannelEntry:(id)a3 consented:(BOOL)a4;
-- (void)setChannels:(id)a3;
-- (void)setOrderedChannels:(id)a3;
+- (void)modifyConsentStatusForChannelEntry:(id)entry consented:(BOOL)consented;
+- (void)setChannels:(id)channels;
+- (void)setOrderedChannels:(id)channels;
 @end
 
 @implementation WLKChannelsResponse
@@ -26,9 +26,9 @@ void __82__WLKChannelsResponse_initWithDictionary_expirationDate_environmentHash
   }
 }
 
-- (void)setChannels:(id)a3
+- (void)setChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   objc_initWeak(&location, self);
   modificationQueue = self->_modificationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -36,8 +36,8 @@ void __82__WLKChannelsResponse_initWithDictionary_expirationDate_environmentHash
   block[2] = __35__WLKChannelsResponse_setChannels___block_invoke;
   block[3] = &unk_279E60B28;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = channelsCopy;
+  v6 = channelsCopy;
   dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -96,9 +96,9 @@ void __31__WLKChannelsResponse_channels__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setOrderedChannels:(id)a3
+- (void)setOrderedChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   objc_initWeak(&location, self);
   modificationQueue = self->_modificationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -106,8 +106,8 @@ void __31__WLKChannelsResponse_channels__block_invoke(uint64_t a1)
   block[2] = __42__WLKChannelsResponse_setOrderedChannels___block_invoke;
   block[3] = &unk_279E60B28;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = channelsCopy;
+  v6 = channelsCopy;
   dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
@@ -165,9 +165,9 @@ void __38__WLKChannelsResponse_orderedChannels__block_invoke(uint64_t a1)
   }
 }
 
-- (void)modifyConsentStatusForChannelEntry:(id)a3 consented:(BOOL)a4
+- (void)modifyConsentStatusForChannelEntry:(id)entry consented:(BOOL)consented
 {
-  v6 = a3;
+  entryCopy = entry;
   objc_initWeak(&location, self);
   modificationQueue = self->_modificationQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -175,9 +175,9 @@ void __38__WLKChannelsResponse_orderedChannels__block_invoke(uint64_t a1)
   v9[2] = __68__WLKChannelsResponse_modifyConsentStatusForChannelEntry_consented___block_invoke;
   v9[3] = &unk_279E60BA0;
   objc_copyWeak(&v11, &location);
-  v10 = v6;
-  v12 = a4;
-  v8 = v6;
+  v10 = entryCopy;
+  consentedCopy = consented;
+  v8 = entryCopy;
   dispatch_async(modificationQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -201,11 +201,11 @@ void __68__WLKChannelsResponse_modifyConsentStatusForChannelEntry_consented___bl
   }
 }
 
-- (BOOL)isValidForFiltered:(BOOL)a3
+- (BOOL)isValidForFiltered:(BOOL)filtered
 {
-  v3 = a3;
+  filteredCopy = filtered;
   filtered = self->_filtered;
-  v6 = [(WLKChannelsResponse *)self channels];
+  channels = [(WLKChannelsResponse *)self channels];
 
   expirationDate = self->_expirationDate;
   if (expirationDate)
@@ -224,7 +224,7 @@ void __68__WLKChannelsResponse_modifyConsentStatusForChannelEntry_consented___bl
   v12 = [v11 hash];
 
   result = 0;
-  if (filtered == v3 && v6)
+  if (filtered == filteredCopy && channels)
   {
     return environmentHash == v12 && v9;
   }
@@ -232,9 +232,9 @@ void __68__WLKChannelsResponse_modifyConsentStatusForChannelEntry_consented___bl
   return result;
 }
 
-+ (id)parseChannelsFromPayload:(id)a3
++ (id)parseChannelsFromPayload:(id)payload
 {
-  v3 = [a3 wlk_arrayForKey:@"channels"];
+  v3 = [payload wlk_arrayForKey:@"channels"];
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

@@ -1,16 +1,16 @@
 @interface PKNumberPadSuggestionsView
 + (CGSize)defaultSize;
 - (PKNumberPadSuggestionsView)initWithDefaultFrame;
-- (PKNumberPadSuggestionsView)initWithFrame:(CGRect)a3;
+- (PKNumberPadSuggestionsView)initWithFrame:(CGRect)frame;
 - (PKNumberPadSuggestionsViewDelegate)delegate;
-- (id)_createBorderedButtonForSuggestion:(id)a3 withBorder:(unint64_t)a4 primaryAction:(id)a5;
+- (id)_createBorderedButtonForSuggestion:(id)suggestion withBorder:(unint64_t)border primaryAction:(id)action;
 - (void)_reloadSubviews;
-- (void)_selectedSuggestion:(id)a3;
+- (void)_selectedSuggestion:(id)suggestion;
 - (void)_updateButtons;
-- (void)performBatchUpdates:(id)a3;
-- (void)setButtonBackgroundColor:(id)a3;
-- (void)setButtonTextColor:(id)a3;
-- (void)setSuggestions:(id)a3;
+- (void)performBatchUpdates:(id)updates;
+- (void)setButtonBackgroundColor:(id)color;
+- (void)setButtonTextColor:(id)color;
+- (void)setSuggestions:(id)suggestions;
 @end
 
 @implementation PKNumberPadSuggestionsView
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (PKNumberPadSuggestionsView)initWithFrame:(CGRect)a3
+- (PKNumberPadSuggestionsView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PKNumberPadSuggestionsView;
-  v3 = [(PKNumberPadSuggestionsView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKNumberPadSuggestionsView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -68,14 +68,14 @@ void __44__PKNumberPadSuggestionsView_initWithFrame___block_invoke(uint64_t a1, 
   return [(PKNumberPadSuggestionsView *)self initWithFrame:0.0, 0.0, v3, 44.0];
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
-  if (v4)
+  updatesCopy = updates;
+  if (updatesCopy)
   {
     ++self->_batchedUpdateCount;
-    v6 = v4;
-    (*(v4 + 2))(v4, self);
+    v6 = updatesCopy;
+    (*(updatesCopy + 2))(updatesCopy, self);
     v5 = self->_batchedUpdateCount - 1;
     self->_batchedUpdateCount = v5;
     if (!v5)
@@ -98,11 +98,11 @@ void __44__PKNumberPadSuggestionsView_initWithFrame___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
-  if (self->_suggestions != a3)
+  if (self->_suggestions != suggestions)
   {
-    v4 = [a3 copy];
+    v4 = [suggestions copy];
     suggestions = self->_suggestions;
     self->_suggestions = v4;
 
@@ -110,27 +110,27 @@ void __44__PKNumberPadSuggestionsView_initWithFrame___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setButtonTextColor:(id)a3
+- (void)setButtonTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_buttonTextColor != v5)
+  colorCopy = color;
+  if (self->_buttonTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_buttonTextColor, color);
     [(PKNumberPadSuggestionsView *)self _updateButtons];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setButtonBackgroundColor:(id)a3
+- (void)setButtonBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_buttonBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_buttonBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_buttonBackgroundColor, color);
     [(PKNumberPadSuggestionsView *)self _updateButtons];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -179,7 +179,7 @@ void __44__PKNumberPadSuggestionsView_initWithFrame___block_invoke(uint64_t a1, 
     suggestionButtons = self->_suggestionButtons;
     self->_suggestionButtons = 0;
 
-    v9 = [(PKNumberPadSuggestionsView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKNumberPadSuggestionsView *)self _shouldReverseLayoutDirection];
     v10 = [(NSArray *)self->_suggestions count];
     objc_initWeak(&location, self);
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
@@ -188,9 +188,9 @@ void __44__PKNumberPadSuggestionsView_initWithFrame___block_invoke(uint64_t a1, 
     v17 = 3221225472;
     v18 = __45__PKNumberPadSuggestionsView__reloadSubviews__block_invoke;
     v19 = &unk_1E8019098;
-    v23 = v9;
+    v23 = _shouldReverseLayoutDirection;
     v22[1] = v10;
-    v20 = self;
+    selfCopy = self;
     objc_copyWeak(v22, &location);
     v13 = v11;
     v21 = v13;
@@ -322,24 +322,24 @@ void __45__PKNumberPadSuggestionsView__reloadSubviews__block_invoke_3(uint64_t a
   }
 }
 
-- (id)_createBorderedButtonForSuggestion:(id)a3 withBorder:(unint64_t)a4 primaryAction:(id)a5
+- (id)_createBorderedButtonForSuggestion:(id)suggestion withBorder:(unint64_t)border primaryAction:(id)action
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a5;
+  suggestionCopy = suggestion;
+  actionCopy = action;
   v8 = +[PKBorderedButtonConfiguration plainButtonConfiguration];
-  [v8 setBorder:a4];
-  v23 = [v8 background];
-  [v23 setCornerRadius:0.0];
-  v9 = [v7 displayValue];
+  [v8 setBorder:border];
+  background = [v8 background];
+  [background setCornerRadius:0.0];
+  displayValue = [suggestionCopy displayValue];
   v10 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v10 setAlignment:1];
-  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9];
+  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:displayValue];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [v9 componentsSeparatedByString:@"\n"];
+  v12 = [displayValue componentsSeparatedByString:@"\n"];
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
@@ -356,7 +356,7 @@ void __45__PKNumberPadSuggestionsView__reloadSubviews__block_invoke_3(uint64_t a
           objc_enumerationMutation(v12);
         }
 
-        v18 = [v9 rangeOfString:*(*(&v27 + 1) + 8 * v17)];
+        v18 = [displayValue rangeOfString:*(*(&v27 + 1) + 8 * v17)];
         [v11 addAttribute:v16 value:v10 range:{v18, v19}];
         ++v17;
       }
@@ -374,10 +374,10 @@ void __45__PKNumberPadSuggestionsView__reloadSubviews__block_invoke_3(uint64_t a
   v25[1] = 3221225472;
   v25[2] = __90__PKNumberPadSuggestionsView__createBorderedButtonForSuggestion_withBorder_primaryAction___block_invoke;
   v25[3] = &unk_1E8013EE8;
-  v26 = v7;
-  v20 = v7;
+  v26 = suggestionCopy;
+  v20 = suggestionCopy;
   [v8 setTitleTextAttributesTransformer:v25];
-  v21 = [PKBorderedButton borderedButtonWithConfiguration:v8 primaryAction:v24];
+  v21 = [PKBorderedButton borderedButtonWithConfiguration:v8 primaryAction:actionCopy];
 
   return v21;
 }
@@ -400,16 +400,16 @@ id __90__PKNumberPadSuggestionsView__createBorderedButtonForSuggestion_withBorde
   return v3;
 }
 
-- (void)_selectedSuggestion:(id)a3
+- (void)_selectedSuggestion:(id)suggestion
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(NSArray *)self->_suggestions objectAtIndex:[(NSArray *)self->_suggestionButtons indexOfObject:a3]];
+  v4 = [(NSArray *)self->_suggestions objectAtIndex:[(NSArray *)self->_suggestionButtons indexOfObject:suggestion]];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 displayValue];
+    displayValue = [v4 displayValue];
     v8 = 138412290;
-    v9 = v6;
+    v9 = displayValue;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Suggestion %@ selected", &v8, 0xCu);
   }
 

@@ -1,21 +1,21 @@
 @interface SLBatchRequest
-- (SLBatchRequest)initWithServiceType:(id)a3 URL:(id)a4 parameters:(id)a5 requestMethod:(int64_t)a6;
+- (SLBatchRequest)initWithServiceType:(id)type URL:(id)l parameters:(id)parameters requestMethod:(int64_t)method;
 - (id)preparedURLRequest;
-- (void)addRequest:(id)a3;
+- (void)addRequest:(id)request;
 @end
 
 @implementation SLBatchRequest
 
-- (SLBatchRequest)initWithServiceType:(id)a3 URL:(id)a4 parameters:(id)a5 requestMethod:(int64_t)a6
+- (SLBatchRequest)initWithServiceType:(id)type URL:(id)l parameters:(id)parameters requestMethod:(int64_t)method
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"com.apple.social.facebook"])
+  typeCopy = type;
+  lCopy = l;
+  parametersCopy = parameters;
+  if ([typeCopy isEqualToString:@"com.apple.social.facebook"])
   {
     v18.receiver = self;
     v18.super_class = SLBatchRequest;
-    v13 = [(SLRequest *)&v18 initWithServiceType:v10 URL:v11 parameters:v12 requestMethod:a6];
+    v13 = [(SLRequest *)&v18 initWithServiceType:typeCopy URL:lCopy parameters:parametersCopy requestMethod:method];
     if (v13)
     {
       v14 = objc_opt_new();
@@ -24,24 +24,24 @@
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
-  v5 = a3;
-  v4 = [(SLRequest *)self multiPartBoundary];
-  [v5 setMultiPartBoundary:v4];
+  requestCopy = request;
+  multiPartBoundary = [(SLRequest *)self multiPartBoundary];
+  [requestCopy setMultiPartBoundary:multiPartBoundary];
 
-  [(NSMutableArray *)self->_requests addObject:v5];
+  [(NSMutableArray *)self->_requests addObject:requestCopy];
 }
 
 - (id)preparedURLRequest
@@ -68,15 +68,15 @@
         }
 
         v7 = *(*(&v30 + 1) + 8 * i);
-        v8 = [v7 dictionaryRepresentationForJSONSerialization];
-        [v23 addObject:v8];
+        dictionaryRepresentationForJSONSerialization = [v7 dictionaryRepresentationForJSONSerialization];
+        [v23 addObject:dictionaryRepresentationForJSONSerialization];
 
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v9 = [v7 multiParts];
-        v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        multiParts = [v7 multiParts];
+        v10 = [multiParts countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v10)
         {
           v11 = v10;
@@ -87,17 +87,17 @@
             {
               if (*v27 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(multiParts);
               }
 
               v14 = *(*(&v26 + 1) + 8 * j);
-              v15 = [v14 uniqueIdentifier];
-              [v14 setName:v15];
+              uniqueIdentifier = [v14 uniqueIdentifier];
+              [v14 setName:uniqueIdentifier];
 
               [(SLRequest *)self addMultiPart:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v11 = [multiParts countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v11);
@@ -127,9 +127,9 @@
 
   v24.receiver = self;
   v24.super_class = SLBatchRequest;
-  v18 = [(SLRequest *)&v24 preparedURLRequest];
+  preparedURLRequest = [(SLRequest *)&v24 preparedURLRequest];
 
-  return v18;
+  return preparedURLRequest;
 }
 
 @end

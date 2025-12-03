@@ -1,9 +1,9 @@
 @interface RWIDriverConfiguration
-+ (BOOL)isValidPayload:(id)a3;
-+ (id)decodeFromPayload:(id)a3;
++ (BOOL)isValidPayload:(id)payload;
++ (id)decodeFromPayload:(id)payload;
 - (RWIDriverConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeToPayload:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeToPayload:(id)payload;
 @end
 
 @implementation RWIDriverConfiguration
@@ -23,44 +23,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RWIDriverConfiguration *)self driverIdentifier];
-  [v4 setDriverIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  driverIdentifier = [(RWIDriverConfiguration *)self driverIdentifier];
+  [v4 setDriverIdentifier:driverIdentifier];
 
-  v6 = [(RWIDriverConfiguration *)self driverName];
-  [v4 setDriverName:v6];
+  driverName = [(RWIDriverConfiguration *)self driverName];
+  [v4 setDriverName:driverName];
 
-  v7 = [(RWIDriverConfiguration *)self driverVersion];
-  [v4 setDriverVersion:v7];
+  driverVersion = [(RWIDriverConfiguration *)self driverVersion];
+  [v4 setDriverVersion:driverVersion];
 
-  v8 = [(RWIDriverConfiguration *)self driverHost];
-  [v4 setDriverHost:v8];
+  driverHost = [(RWIDriverConfiguration *)self driverHost];
+  [v4 setDriverHost:driverHost];
 
   [v4 setDriverPort:{-[RWIDriverConfiguration driverPort](self, "driverPort")}];
   [v4 setDriverBidiPort:{-[RWIDriverConfiguration driverBidiPort](self, "driverBidiPort")}];
   return v4;
 }
 
-+ (BOOL)isValidPayload:(id)a3
++ (BOOL)isValidPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverIdentifierKey"];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverIdentifierKey"];
   v5 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverNameKey"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverNameKey"];
   v5 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverVersionKey"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverVersionKey"];
   v5 = objc_opt_class();
   if (v4)
   {
@@ -70,7 +70,7 @@
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverHostKey"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverHostKey"];
   v5 = objc_opt_class();
   if (v4)
   {
@@ -80,7 +80,7 @@
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverPortKey"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverPortKey"];
   v5 = objc_opt_class();
   if (v4)
   {
@@ -90,7 +90,7 @@
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverBidiPortKey"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverBidiPortKey"];
   v5 = objc_opt_class();
   if (!v4 || (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -108,10 +108,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)decodeFromPayload:(id)a3
++ (id)decodeFromPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WIRDriverIdentifierKey"];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"WIRDriverIdentifierKey"];
   v5 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -121,17 +121,17 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"WIRDriverNameKey"];
+  v5 = [payloadCopy objectForKeyedSubscript:@"WIRDriverNameKey"];
   v6 = objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    v6 = [v3 objectForKeyedSubscript:@"WIRDriverVersionKey"];
+    v6 = [payloadCopy objectForKeyedSubscript:@"WIRDriverVersionKey"];
     v7 = objc_opt_class();
     if (!v6 || (objc_opt_isKindOfClass() & 1) != 0)
     {
 
-      v8 = [v3 objectForKeyedSubscript:@"WIRDriverHostKey"];
+      v8 = [payloadCopy objectForKeyedSubscript:@"WIRDriverHostKey"];
       v9 = objc_opt_class();
       if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -144,7 +144,7 @@ LABEL_12:
       else
       {
 
-        v10 = [v3 objectForKeyedSubscript:@"WIRDriverPortKey"];
+        v10 = [payloadCopy objectForKeyedSubscript:@"WIRDriverPortKey"];
         v11 = objc_opt_class();
         if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -158,7 +158,7 @@ LABEL_12:
         else
         {
 
-          v9 = [v3 objectForKeyedSubscript:@"WIRDriverBidiPortKey"];
+          v9 = [payloadCopy objectForKeyedSubscript:@"WIRDriverBidiPortKey"];
           v12 = v10;
           v13 = objc_opt_class();
           if (v10 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -179,26 +179,26 @@ LABEL_12:
             [v14 setDriverHost:v8];
             if (v10)
             {
-              v15 = [v12 integerValue];
+              integerValue = [v12 integerValue];
             }
 
             else
             {
-              v15 = 0;
+              integerValue = 0;
             }
 
-            [v14 setDriverPort:v15];
+            [v14 setDriverPort:integerValue];
             if (v9)
             {
-              v22 = [v9 integerValue];
+              integerValue2 = [v9 integerValue];
             }
 
             else
             {
-              v22 = 0;
+              integerValue2 = 0;
             }
 
-            [v14 setDriverBidiPort:v22];
+            [v14 setDriverBidiPort:integerValue2];
           }
         }
       }
@@ -224,45 +224,45 @@ LABEL_27:
   return v14;
 }
 
-- (void)encodeToPayload:(id)a3
+- (void)encodeToPayload:(id)payload
 {
-  v14 = a3;
-  v4 = [(RWIDriverConfiguration *)self driverIdentifier];
-  [v14 setObject:v4 forKeyedSubscript:@"WIRDriverIdentifierKey"];
+  payloadCopy = payload;
+  driverIdentifier = [(RWIDriverConfiguration *)self driverIdentifier];
+  [payloadCopy setObject:driverIdentifier forKeyedSubscript:@"WIRDriverIdentifierKey"];
 
-  v5 = [(RWIDriverConfiguration *)self driverName];
-  [v14 setObject:v5 forKeyedSubscript:@"WIRDriverNameKey"];
+  driverName = [(RWIDriverConfiguration *)self driverName];
+  [payloadCopy setObject:driverName forKeyedSubscript:@"WIRDriverNameKey"];
 
-  v6 = [(RWIDriverConfiguration *)self driverVersion];
+  driverVersion = [(RWIDriverConfiguration *)self driverVersion];
 
-  if (v6)
+  if (driverVersion)
   {
-    v7 = [(RWIDriverConfiguration *)self driverVersion];
-    [v14 setObject:v7 forKeyedSubscript:@"WIRDriverVersionKey"];
+    driverVersion2 = [(RWIDriverConfiguration *)self driverVersion];
+    [payloadCopy setObject:driverVersion2 forKeyedSubscript:@"WIRDriverVersionKey"];
   }
 
-  v8 = [(RWIDriverConfiguration *)self driverHost];
+  driverHost = [(RWIDriverConfiguration *)self driverHost];
 
-  if (v8)
+  if (driverHost)
   {
-    v9 = [(RWIDriverConfiguration *)self driverHost];
-    [v14 setObject:v9 forKeyedSubscript:@"WIRDriverHostKey"];
+    driverHost2 = [(RWIDriverConfiguration *)self driverHost];
+    [payloadCopy setObject:driverHost2 forKeyedSubscript:@"WIRDriverHostKey"];
   }
 
   if ([(RWIDriverConfiguration *)self driverPort])
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RWIDriverConfiguration driverPort](self, "driverPort")}];
-    [v14 setObject:v10 forKeyedSubscript:@"WIRDriverPortKey"];
+    [payloadCopy setObject:v10 forKeyedSubscript:@"WIRDriverPortKey"];
   }
 
-  v11 = [(RWIDriverConfiguration *)self driverBidiPort];
-  v12 = v14;
-  if (v11)
+  driverBidiPort = [(RWIDriverConfiguration *)self driverBidiPort];
+  v12 = payloadCopy;
+  if (driverBidiPort)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[RWIDriverConfiguration driverBidiPort](self, "driverBidiPort")}];
-    [v14 setObject:v13 forKeyedSubscript:@"WIRDriverBidiPortKey"];
+    [payloadCopy setObject:v13 forKeyedSubscript:@"WIRDriverBidiPortKey"];
 
-    v12 = v14;
+    v12 = payloadCopy;
   }
 }
 

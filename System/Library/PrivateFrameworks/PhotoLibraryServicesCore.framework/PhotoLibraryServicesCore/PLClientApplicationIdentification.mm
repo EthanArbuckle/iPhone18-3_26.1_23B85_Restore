@@ -1,6 +1,6 @@
 @interface PLClientApplicationIdentification
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientAuditToken;
-- (PLClientApplicationIdentification)initWithConnection:(id)a3;
+- (PLClientApplicationIdentification)initWithConnection:(id)connection;
 @end
 
 @implementation PLClientApplicationIdentification
@@ -13,13 +13,13 @@
   return self;
 }
 
-- (PLClientApplicationIdentification)initWithConnection:(id)a3
+- (PLClientApplicationIdentification)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLXPCUtilities.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLXPCUtilities.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
   }
 
   v13.receiver = self;
@@ -27,9 +27,9 @@
   v6 = [(PLClientApplicationIdentification *)&v13 init];
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      [v5 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -40,8 +40,8 @@
 
     *(v6 + 24) = v12;
     *(v6 + 8) = v11;
-    *(v6 + 10) = [v5 processIdentifier];
-    v7 = PLClientApplicationIdentifierFromXPCConnection(v5);
+    *(v6 + 10) = [connectionCopy processIdentifier];
+    v7 = PLClientApplicationIdentifierFromXPCConnection(connectionCopy);
     v8 = *(v6 + 6);
     *(v6 + 6) = v7;
   }

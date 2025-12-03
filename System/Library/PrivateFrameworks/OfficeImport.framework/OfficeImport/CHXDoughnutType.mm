@@ -1,17 +1,17 @@
 @interface CHXDoughnutType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXDoughnutType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 chart];
-  v7 = [(CHDChartType *)CHDPie2DType chartTypeWithChart:v6];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v7 = [(CHDChartType *)CHDPie2DType chartTypeWithChart:chart];
 
   [v7 setDoughnutType:1];
-  [CHXPie2DType readFrom:a3 chartType:v7 state:v5];
+  [CHXPie2DType readFrom:element chartType:v7 state:stateCopy];
 
   return v7;
 }

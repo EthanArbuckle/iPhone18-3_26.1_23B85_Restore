@@ -1,18 +1,18 @@
 @interface SXLegacySupport
-+ (id)deprecatedComponentForType:(void *)a3 andVersion:;
++ (id)deprecatedComponentForType:(void *)type andVersion:;
 + (id)deprecatedComponents;
-+ (id)deprecatedComponentsForVersion:(uint64_t)a1;
++ (id)deprecatedComponentsForVersion:(uint64_t)version;
 @end
 
 @implementation SXLegacySupport
 
-+ (id)deprecatedComponentForType:(void *)a3 andVersion:
++ (id)deprecatedComponentForType:(void *)type andVersion:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_opt_self();
-  [(SXLegacySupport *)v6 deprecatedComponentsForVersion:v5];
+  [(SXLegacySupport *)v6 deprecatedComponentsForVersion:typeCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -31,8 +31,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(SXFullscreenCaption *)v11 text];
-        v13 = [v12 isEqualToString:{v4, v15}];
+        text = [(SXFullscreenCaption *)v11 text];
+        v13 = [text isEqualToString:{v4, v15}];
 
         if (v13)
         {
@@ -56,18 +56,18 @@ LABEL_11:
   return v8;
 }
 
-+ (id)deprecatedComponentsForVersion:(uint64_t)a1
++ (id)deprecatedComponentsForVersion:(uint64_t)version
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[SXLegacySupport deprecatedComponents];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__SXLegacySupport_deprecatedComponentsForVersion___block_invoke;
   v10[3] = &unk_1E8501380;
   v11 = v2;
-  v5 = v3;
+  v5 = array;
   v12 = v5;
   v6 = v2;
   [v4 enumerateKeysAndObjectsUsingBlock:v10];

@@ -70,40 +70,40 @@
 + (VOSGesture)TwoFingerSplitFlickLeft;
 + (VOSGesture)TwoFingerSplitFlickRight;
 + (VOSGesture)TwoFingerTripleTap;
-+ (VOSGesture)gestureWithStringValue:(id)a3;
-+ (id)_gesturesForFingerCount:(int64_t)a3;
-+ (id)_splitGesturesForFingerCount:(int64_t)a3;
-+ (id)horizontalMirrorGestureForGesture:(id)a3;
-+ (id)rtlGestureForGesture:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (VOSGesture)gestureWithStringValue:(id)value;
++ (id)_gesturesForFingerCount:(int64_t)count;
++ (id)_splitGesturesForFingerCount:(int64_t)count;
++ (id)horizontalMirrorGestureForGesture:(id)gesture;
++ (id)rtlGestureForGesture:(id)gesture;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
-- (VOSGesture)initWithCoder:(id)a3;
-- (id)_initWithRawValue:(id)a3;
+- (VOSGesture)initWithCoder:(id)coder;
+- (id)_initWithRawValue:(id)value;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VOSGesture
 
-- (id)_initWithRawValue:(id)a3
+- (id)_initWithRawValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = VOSGesture;
   v6 = [(VOSGesture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValue, a3);
+    objc_storeStrong(&v6->_rawValue, value);
   }
 
   return v7;
 }
 
-- (VOSGesture)initWithCoder:(id)a3
+- (VOSGesture)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawValue"];
 
   v6 = [(VOSGesture *)self _initWithRawValue:v5];
   return v6;
@@ -121,8 +121,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VOSGesture *)self rawValue];
-  v3 = [v2 hash];
+  rawValue = [(VOSGesture *)self rawValue];
+  v3 = [rawValue hash];
 
   return v3;
 }
@@ -1386,16 +1386,16 @@ void __25__VOSGesture_allGestures__block_invoke()
   allGestures__AllGestures = v8;
 }
 
-+ (VOSGesture)gestureWithStringValue:(id)a3
++ (VOSGesture)gestureWithStringValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 allGestures];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allGestures = [self allGestures];
+  v6 = [allGestures countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1405,18 +1405,18 @@ void __25__VOSGesture_allGestures__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allGestures);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9[1] isEqualToString:v4])
+        if ([v9[1] isEqualToString:valueCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allGestures countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1433,17 +1433,17 @@ LABEL_11:
   return v6;
 }
 
-+ (id)horizontalMirrorGestureForGesture:(id)a3
++ (id)horizontalMirrorGestureForGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v4 = +[VOSGesture OneFingerFlickLeft];
 
   v5 = +[VOSGesture OneFingerFlickRight];
   v6 = v5;
-  if (v4 != v3)
+  if (v4 != gestureCopy)
   {
 
-    if (v6 == v3)
+    if (v6 == gestureCopy)
     {
       v19 = +[VOSGesture OneFingerFlickLeft];
     }
@@ -1454,12 +1454,12 @@ LABEL_11:
 
       v8 = +[VOSGesture TwoFingerFlickRight];
       v6 = v8;
-      if (v7 == v3)
+      if (v7 == gestureCopy)
       {
         goto LABEL_24;
       }
 
-      if (v6 == v3)
+      if (v6 == gestureCopy)
       {
         v19 = +[VOSGesture TwoFingerFlickLeft];
       }
@@ -1470,12 +1470,12 @@ LABEL_11:
 
         v10 = +[VOSGesture ThreeFingerFlickRight];
         v6 = v10;
-        if (v9 == v3)
+        if (v9 == gestureCopy)
         {
           goto LABEL_24;
         }
 
-        if (v6 == v3)
+        if (v6 == gestureCopy)
         {
           v19 = +[VOSGesture ThreeFingerFlickLeft];
         }
@@ -1486,12 +1486,12 @@ LABEL_11:
 
           v12 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickRight];
           v6 = v12;
-          if (v11 == v3)
+          if (v11 == gestureCopy)
           {
             goto LABEL_24;
           }
 
-          if (v6 == v3)
+          if (v6 == gestureCopy)
           {
             v19 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickLeft];
           }
@@ -1502,12 +1502,12 @@ LABEL_11:
 
             v14 = +[VOSGesture FourFingerFlickRight];
             v6 = v14;
-            if (v13 == v3)
+            if (v13 == gestureCopy)
             {
               goto LABEL_24;
             }
 
-            if (v6 == v3)
+            if (v6 == gestureCopy)
             {
               v19 = +[VOSGesture FourFingerFlickLeft];
             }
@@ -1518,12 +1518,12 @@ LABEL_11:
 
               v16 = +[VOSGesture OneFingerSplitFlickRight];
               v6 = v16;
-              if (v15 == v3)
+              if (v15 == gestureCopy)
               {
                 goto LABEL_24;
               }
 
-              if (v6 == v3)
+              if (v6 == gestureCopy)
               {
                 v19 = +[VOSGesture OneFingerSplitFlickLeft];
               }
@@ -1534,12 +1534,12 @@ LABEL_11:
 
                 v18 = +[VOSGesture TwoFingerSplitFlickRight];
                 v6 = v18;
-                if (v17 == v3)
+                if (v17 == gestureCopy)
                 {
                   goto LABEL_24;
                 }
 
-                if (v6 != v3)
+                if (v6 != gestureCopy)
                 {
                   v6 = 0;
                   goto LABEL_24;
@@ -1561,17 +1561,17 @@ LABEL_24:
   return v6;
 }
 
-+ (id)rtlGestureForGesture:(id)a3
++ (id)rtlGestureForGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v4 = +[VOSGesture OneFingerFlickLeft];
 
   v5 = +[VOSGesture OneFingerFlickRight];
   v6 = v5;
-  if (v4 != v3)
+  if (v4 != gestureCopy)
   {
 
-    if (v6 == v3)
+    if (v6 == gestureCopy)
     {
       v11 = +[VOSGesture OneFingerFlickLeft];
     }
@@ -1582,12 +1582,12 @@ LABEL_24:
 
       v8 = +[VOSGesture OneFingerSplitFlickRight];
       v6 = v8;
-      if (v7 == v3)
+      if (v7 == gestureCopy)
       {
         goto LABEL_12;
       }
 
-      if (v6 == v3)
+      if (v6 == gestureCopy)
       {
         v11 = +[VOSGesture OneFingerSplitFlickLeft];
       }
@@ -1598,12 +1598,12 @@ LABEL_24:
 
         v10 = +[VOSGesture TwoFingerSplitFlickRight];
         v6 = v10;
-        if (v9 == v3)
+        if (v9 == gestureCopy)
         {
           goto LABEL_12;
         }
 
-        if (v6 != v3)
+        if (v6 != gestureCopy)
         {
           v6 = 0;
           goto LABEL_12;
@@ -1621,16 +1621,16 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = 0;
   if (objc_opt_isKindOfClass())
   {
     rawValue = self->_rawValue;
-    v6 = [v4 rawValue];
-    LOBYTE(rawValue) = [(NSString *)rawValue isEqualToString:v6];
+    rawValue = [equalCopy rawValue];
+    LOBYTE(rawValue) = [(NSString *)rawValue isEqualToString:rawValue];
 
     if (rawValue)
     {
@@ -1649,14 +1649,14 @@ LABEL_12:
   return v3;
 }
 
-+ (id)_gesturesForFingerCount:(int64_t)a3
++ (id)_gesturesForFingerCount:(int64_t)count
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  if (a3 > 3)
+  if (count > 3)
   {
-    if (a3 > 10)
+    if (count > 10)
     {
-      if (a3 == 11)
+      if (count == 11)
       {
         v56 = +[VOSGesture OneFingerSplitFlickUp];
         [v4 addObject:v56];
@@ -1672,7 +1672,7 @@ LABEL_12:
 
       else
       {
-        if (a3 != 12)
+        if (count != 12)
         {
           goto LABEL_21;
         }
@@ -1684,7 +1684,7 @@ LABEL_12:
       }
     }
 
-    else if (a3 == 4)
+    else if (count == 4)
     {
       v33 = +[VOSGesture FourFingerSingleTap];
       [v4 addObject:v33];
@@ -1712,7 +1712,7 @@ LABEL_12:
 
     else
     {
-      if (a3 != 5)
+      if (count != 5)
       {
         goto LABEL_21;
       }
@@ -1730,9 +1730,9 @@ LABEL_12:
     }
   }
 
-  else if (a3 > 1)
+  else if (count > 1)
   {
-    if (a3 == 2)
+    if (count == 2)
     {
       v40 = +[VOSGesture TwoFingerSingleTap];
       [v4 addObject:v40];
@@ -1831,9 +1831,9 @@ LABEL_12:
     v14 = ;
   }
 
-  else if (a3)
+  else if (count)
   {
-    if (a3 != 1)
+    if (count != 1)
     {
       goto LABEL_21;
     }
@@ -1884,14 +1884,14 @@ LABEL_21:
   return v4;
 }
 
-+ (id)_splitGesturesForFingerCount:(int64_t)a3
++ (id)_splitGesturesForFingerCount:(int64_t)count
 {
   v4 = [MEMORY[0x277CBEB58] set];
-  if (a3 > -7)
+  if (count > -7)
   {
-    if (a3 > 0)
+    if (count > 0)
     {
-      if (a3 == 1)
+      if (count == 1)
       {
         v56 = +[VOSGesture OneFingerSplitFlickUp];
         [v4 addObject:v56];
@@ -1907,7 +1907,7 @@ LABEL_21:
 
       else
       {
-        if (a3 != 2)
+        if (count != 2)
         {
           goto LABEL_21;
         }
@@ -1919,7 +1919,7 @@ LABEL_21:
       }
     }
 
-    else if (a3 == -6)
+    else if (count == -6)
     {
       v33 = +[VOSGesture FourFingerSingleTap];
       [v4 addObject:v33];
@@ -1947,7 +1947,7 @@ LABEL_21:
 
     else
     {
-      if (a3 != -5)
+      if (count != -5)
       {
         goto LABEL_21;
       }
@@ -1965,9 +1965,9 @@ LABEL_21:
     }
   }
 
-  else if (a3 > -9)
+  else if (count > -9)
   {
-    if (a3 == -8)
+    if (count == -8)
     {
       v40 = +[VOSGesture TwoFingerSingleTap];
       [v4 addObject:v40];
@@ -2066,7 +2066,7 @@ LABEL_21:
     v14 = ;
   }
 
-  else if (a3 == -10)
+  else if (count == -10)
   {
     v32 = +[VOSGesture BackTapDoubleTap];
     [v4 addObject:v32];
@@ -2076,7 +2076,7 @@ LABEL_21:
 
   else
   {
-    if (a3 != -9)
+    if (count != -9)
     {
       goto LABEL_21;
     }

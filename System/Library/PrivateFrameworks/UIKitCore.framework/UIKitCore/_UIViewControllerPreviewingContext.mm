@@ -1,34 +1,34 @@
 @interface _UIViewControllerPreviewingContext
-- (CGRect)preferredSourceViewRectInCoordinateSpace:(id)a3;
+- (CGRect)preferredSourceViewRectInCoordinateSpace:(id)space;
 - (CGRect)sourceRect;
 - (UIGestureRecognizer)previewingGestureRecognizerForFailureRelationship;
 - (UIViewController)viewController;
 - (UIViewControllerPreviewingDelegate)delegate;
-- (_UIViewControllerPreviewingContext)initWithSourceView:(id)a3 viewController:(id)a4;
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtLocation:(CGPoint)a4 inCoordinateSpace:(id)a5 presentingViewController:(id *)a6;
-- (void)previewInteractionController:(id)a3 commitViewController:(id)a4;
-- (void)previewInteractionController:(id)a3 didDismissViewController:(id)a4 committing:(BOOL)a5;
-- (void)previewInteractionController:(id)a3 willDismissViewController:(id)a4;
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4;
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forLocation:(CGPoint)a5 inSourceView:(id)a6;
+- (_UIViewControllerPreviewingContext)initWithSourceView:(id)view viewController:(id)controller;
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtLocation:(CGPoint)location inCoordinateSpace:(id)space presentingViewController:(id *)viewController;
+- (void)previewInteractionController:(id)controller commitViewController:(id)viewController;
+- (void)previewInteractionController:(id)controller didDismissViewController:(id)viewController committing:(BOOL)committing;
+- (void)previewInteractionController:(id)controller willDismissViewController:(id)viewController;
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController;
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forLocation:(CGPoint)location inSourceView:(id)view;
 - (void)unregister;
 @end
 
 @implementation _UIViewControllerPreviewingContext
 
-- (_UIViewControllerPreviewingContext)initWithSourceView:(id)a3 viewController:(id)a4
+- (_UIViewControllerPreviewingContext)initWithSourceView:(id)view viewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = _UIViewControllerPreviewingContext;
   v9 = [(_UIViewControllerPreviewingContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceView, a3);
-    objc_storeWeak(&v10->_viewController, v8);
-    v11 = [[_UIPreviewInteractionController alloc] initWithView:v7];
+    objc_storeStrong(&v9->_sourceView, view);
+    objc_storeWeak(&v10->_viewController, controllerCopy);
+    v11 = [[_UIPreviewInteractionController alloc] initWithView:viewCopy];
     previewInteractionController = v10->_previewInteractionController;
     v10->_previewInteractionController = v11;
 
@@ -42,23 +42,23 @@
 
 - (UIGestureRecognizer)previewingGestureRecognizerForFailureRelationship
 {
-  v2 = [(_UIViewControllerPreviewingContext *)self previewInteractionController];
-  v3 = [v2 presentationGestureRecognizer];
+  previewInteractionController = [(_UIViewControllerPreviewingContext *)self previewInteractionController];
+  presentationGestureRecognizer = [previewInteractionController presentationGestureRecognizer];
 
-  return v3;
+  return presentationGestureRecognizer;
 }
 
-- (CGRect)preferredSourceViewRectInCoordinateSpace:(id)a3
+- (CGRect)preferredSourceViewRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(_UIViewControllerPreviewingContext *)self sourceRect];
   v39.origin.x = v5;
   v39.origin.y = v6;
   v39.size.width = v7;
   v39.size.height = v8;
-  v9 = [(_UIViewControllerPreviewingContext *)self sourceView];
+  sourceView = [(_UIViewControllerPreviewingContext *)self sourceView];
   previewInteractionController = self->_previewInteractionController;
-  v38 = v9;
+  v38 = sourceView;
   [(_UIPreviewInteractionController *)previewInteractionController _overrideSourceViewForBinaryCompatibilityIfNeeded:&v38 sourceRect:&v39];
   v11 = v38;
 
@@ -93,11 +93,11 @@
   v43.size.height = v19;
   if (CGRectEqualToRect(*&x, v43))
   {
-    v24 = [v11 window];
-    v25 = v24;
-    if (v24)
+    window = [v11 window];
+    v25 = window;
+    if (window)
     {
-      [v24 bounds];
+      [window bounds];
       [v11 convertRect:v25 fromCoordinateSpace:?];
       v26 = v40.origin.x;
       v27 = v40.origin.y;
@@ -114,9 +114,9 @@
     }
   }
 
-  if (v4 && v11 != v4)
+  if (spaceCopy && v11 != spaceCopy)
   {
-    [v11 convertRect:v4 toCoordinateSpace:{v39.origin.x, v39.origin.y, v39.size.width, v39.size.height}];
+    [v11 convertRect:spaceCopy toCoordinateSpace:{v39.origin.x, v39.origin.y, v39.size.width, v39.size.height}];
     v39.origin.x = v30;
     v39.origin.y = v31;
     v39.size.width = v32;
@@ -144,40 +144,40 @@
   self->_previewInteractionController = 0;
 }
 
-- (id)previewInteractionController:(id)a3 viewControllerForPreviewingAtLocation:(CGPoint)a4 inCoordinateSpace:(id)a5 presentingViewController:(id *)a6
+- (id)previewInteractionController:(id)controller viewControllerForPreviewingAtLocation:(CGPoint)location inCoordinateSpace:(id)space presentingViewController:(id *)viewController
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v11 = [WeakRetained presentedViewController];
+  presentedViewController = [WeakRetained presentedViewController];
 
-  if (v11)
+  if (presentedViewController)
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v13 = [(_UIViewControllerPreviewingContext *)self sourceView];
-  [v13 bounds];
+  sourceView = [(_UIViewControllerPreviewingContext *)self sourceView];
+  [sourceView bounds];
   [(_UIViewControllerPreviewingContext *)self setSourceRect:?];
 
   [(_UIViewControllerPreviewingContext *)self setCustomViewForInteractiveHighlight:0];
-  v14 = [(_UIViewControllerPreviewingContext *)self delegate];
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 previewingContext:self viewControllerForLocation:{x, y}];
+    v15 = [delegate previewingContext:self viewControllerForLocation:{x, y}];
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 previewViewControllerForLocation:self->_sourceView inSourceView:{x, y}];
+    v15 = [delegate previewViewControllerForLocation:self->_sourceView inSourceView:{x, y}];
 LABEL_7:
     v12 = v15;
     if (v15)
     {
       v16 = WeakRetained;
-      *a6 = WeakRetained;
+      *viewController = WeakRetained;
     }
 
     goto LABEL_10;
@@ -191,67 +191,67 @@ LABEL_11:
   return v12;
 }
 
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4 forLocation:(CGPoint)a5 inSourceView:(id)a6
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController forLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = a4;
-  v10 = a6;
-  v11 = [(_UIViewControllerPreviewingContext *)self delegate];
+  y = location.y;
+  x = location.x;
+  viewControllerCopy = viewController;
+  viewCopy = view;
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 willPresentPreviewViewController:v12 forLocation:v10 inSourceView:{x, y}];
+    [delegate willPresentPreviewViewController:viewControllerCopy forLocation:viewCopy inSourceView:{x, y}];
   }
 }
 
-- (void)previewInteractionController:(id)a3 willPresentViewController:(id)a4
+- (void)previewInteractionController:(id)controller willPresentViewController:(id)viewController
 {
-  v6 = a4;
-  v5 = [(_UIViewControllerPreviewingContext *)self delegate];
+  viewControllerCopy = viewController;
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 _previewingContext:self willPresentViewController:v6];
+    [delegate _previewingContext:self willPresentViewController:viewControllerCopy];
   }
 }
 
-- (void)previewInteractionController:(id)a3 willDismissViewController:(id)a4
+- (void)previewInteractionController:(id)controller willDismissViewController:(id)viewController
 {
-  v6 = a4;
-  v5 = [(_UIViewControllerPreviewingContext *)self delegate];
+  viewControllerCopy = viewController;
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 _previewingContext:self willDismissViewController:v6];
+    [delegate _previewingContext:self willDismissViewController:viewControllerCopy];
   }
 }
 
-- (void)previewInteractionController:(id)a3 didDismissViewController:(id)a4 committing:(BOOL)a5
+- (void)previewInteractionController:(id)controller didDismissViewController:(id)viewController committing:(BOOL)committing
 {
-  v5 = a5;
-  v8 = a4;
-  v7 = [(_UIViewControllerPreviewingContext *)self delegate];
+  committingCopy = committing;
+  viewControllerCopy = viewController;
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 didDismissPreviewViewController:v8 committing:v5];
+    [delegate didDismissPreviewViewController:viewControllerCopy committing:committingCopy];
   }
 }
 
-- (void)previewInteractionController:(id)a3 commitViewController:(id)a4
+- (void)previewInteractionController:(id)controller commitViewController:(id)viewController
 {
-  v6 = a4;
-  v5 = [(_UIViewControllerPreviewingContext *)self delegate];
+  viewControllerCopy = viewController;
+  delegate = [(_UIViewControllerPreviewingContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 previewingContext:self commitViewController:v6];
+    [delegate previewingContext:self commitViewController:viewControllerCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v5 commitPreviewViewController:v6 committedViewController:v6];
+    [delegate commitPreviewViewController:viewControllerCopy committedViewController:viewControllerCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v5 commitPreviewViewController:v6];
+    [delegate commitPreviewViewController:viewControllerCopy];
   }
 }
 

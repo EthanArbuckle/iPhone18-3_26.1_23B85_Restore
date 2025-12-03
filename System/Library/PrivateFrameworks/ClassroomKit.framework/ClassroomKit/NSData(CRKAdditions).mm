@@ -8,7 +8,7 @@
 - (id)crk_sha1Hash
 {
   v5 = *MEMORY[0x277D85DE8];
-  CC_SHA1([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA1([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x277CCAB68] stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
   {
@@ -20,17 +20,17 @@
 
 - (id)crk_hexString
 {
-  v2 = [a1 bytes];
-  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  if ([a1 length])
+  bytes = [self bytes];
+  v3 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v3 appendFormat:@"%02x", *(v2 + v4++)];
+      [v3 appendFormat:@"%02x", *(bytes + v4++)];
     }
 
-    while ([a1 length] > v4);
+    while ([self length] > v4);
   }
 
   return v3;

@@ -1,16 +1,16 @@
 @interface MRImageUtilities
-+ (CGSize)imageDimensionsForImageData:(id)a3 error:(id *)a4;
-+ (CGSize)sizeFromSource:(CGImageSource *)a3 error:(id *)a4;
-+ (id)resizeImageData:(id)a3 forFittingSize:(CGSize)a4 error:(id *)a5;
-+ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)a3 imageSize:(CGSize)a4;
++ (CGSize)imageDimensionsForImageData:(id)data error:(id *)error;
++ (CGSize)sizeFromSource:(CGImageSource *)source error:(id *)error;
++ (id)resizeImageData:(id)data forFittingSize:(CGSize)size error:(id *)error;
++ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)size imageSize:(CGSize)imageSize;
 @end
 
 @implementation MRImageUtilities
 
-+ (id)resizeImageData:(id)a3 forFittingSize:(CGSize)a4 error:(id *)a5
++ (id)resizeImageData:(id)data forFittingSize:(CGSize)size error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v7 = _MRLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,18 +19,18 @@
   }
 
   v35 = 0;
-  [MRImageUtilities imageDimensionsForImageData:v6 error:&v35];
+  [MRImageUtilities imageDimensionsForImageData:dataCopy error:&v35];
   v9 = v8;
   v11 = v10;
   v12 = v35;
   v13 = v12;
   if (v12)
   {
-    if (a5)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -44,7 +44,7 @@
     MSVImageUtilitiesMakeBoundingBoxSize();
     v17 = v16;
     v19 = v18;
-    v20 = v6;
+    v20 = dataCopy;
     v21 = *MEMORY[0x1E696E0A8];
     v39 = *MEMORY[0x1E696E0A8];
     v22 = MEMORY[0x1E695E110];
@@ -86,10 +86,10 @@
       v15 = v31;
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MRImageUtilitiesError" code:3 debugDescription:@"Could not produce resized image data for source data."];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -103,18 +103,18 @@
   return v15;
 }
 
-+ (CGSize)imageDimensionsForImageData:(id)a3 error:(id *)a4
++ (CGSize)imageDimensionsForImageData:(id)data error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15 = *MEMORY[0x1E696E0A8];
   v16[0] = MEMORY[0x1E695E110];
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
-  v7 = CGImageSourceCreateWithData(v6, [v5 dictionaryWithObjects:v16 forKeys:&v15 count:1]);
+  dataCopy = data;
+  v7 = CGImageSourceCreateWithData(dataCopy, [v5 dictionaryWithObjects:v16 forKeys:&v15 count:1]);
 
   if (v7)
   {
-    [MRImageUtilities sizeFromSource:v7 error:a4];
+    [MRImageUtilities sizeFromSource:v7 error:error];
     v9 = v8;
     v11 = v10;
     CFRelease(v7);
@@ -122,9 +122,9 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MRImageUtilitiesError" code:1 debugDescription:@"Provided data did not produce valid image source."];
+      *error = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MRImageUtilitiesError" code:1 debugDescription:@"Provided data did not produce valid image source."];
     }
 
     v9 = *MEMORY[0x1E695F060];
@@ -139,12 +139,12 @@
   return result;
 }
 
-+ (CGSize)sizeFromSource:(CGImageSource *)a3 error:(id *)a4
++ (CGSize)sizeFromSource:(CGImageSource *)source error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15 = *MEMORY[0x1E696E0A8];
   v16[0] = MEMORY[0x1E695E110];
-  v5 = CGImageSourceCopyPropertiesAtIndex(a3, 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1]);
+  v5 = CGImageSourceCopyPropertiesAtIndex(source, 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1]);
   v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
   v7 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
   v8 = v7;
@@ -160,37 +160,37 @@
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MRImageUtilitiesError" code:2 debugDescription:@"Could not decode image to obtain dimensions."];
+      *error = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MRImageUtilitiesError" code:2 debugDescription:@"Could not decode image to obtain dimensions."];
     }
 
-    v10 = *MEMORY[0x1E695F060];
-    v11 = *(MEMORY[0x1E695F060] + 8);
+    integerValue = *MEMORY[0x1E695F060];
+    integerValue2 = *(MEMORY[0x1E695F060] + 8);
   }
 
   else
   {
-    v10 = [v6 integerValue];
-    v11 = [v8 integerValue];
+    integerValue = [v6 integerValue];
+    integerValue2 = [v8 integerValue];
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  v13 = v10;
-  v14 = v11;
+  v13 = integerValue;
+  v14 = integerValue2;
   result.height = v14;
   result.width = v13;
   return result;
 }
 
-+ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)a3 imageSize:(CGSize)a4
++ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)size imageSize:(CGSize)imageSize
 {
-  if (a4.width <= a4.height)
+  if (imageSize.width <= imageSize.height)
   {
-    a4.width = a4.height;
+    imageSize.width = imageSize.height;
   }
 
-  return vcvtmd_s64_f64(a4.width / a3);
+  return vcvtmd_s64_f64(imageSize.width / size);
 }
 
 @end

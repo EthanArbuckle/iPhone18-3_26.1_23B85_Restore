@@ -1,22 +1,22 @@
 @interface FusionRemixStageShared
-+ (id)getSharedInstanceOrRelease:(BOOL)a3;
-- (id)getShaders:(id)a3 fp16:(BOOL)a4;
++ (id)getSharedInstanceOrRelease:(BOOL)release;
+- (id)getShaders:(id)shaders fp16:(BOOL)fp16;
 @end
 
 @implementation FusionRemixStageShared
 
-- (id)getShaders:(id)a3 fp16:(BOOL)a4
+- (id)getShaders:(id)shaders fp16:(BOOL)fp16
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = &self->super.isa + v4;
+  fp16Copy = fp16;
+  shadersCopy = shaders;
+  v7 = &self->super.isa + fp16Copy;
   v9 = v7[1];
   v8 = (v7 + 1);
   v10 = v9;
   if (!v10)
   {
     v11 = [FuseRemixShaders alloc];
-    if (v4)
+    if (fp16Copy)
     {
       v13 = 25;
     }
@@ -26,14 +26,14 @@
       v13 = 10;
     }
 
-    if (v4)
+    if (fp16Copy)
     {
-      v14 = objc_msgSend_initWithMetal_pixelFormatLuma_pixelFormatChroma_(v11, v12, v6, v13, 65);
+      v14 = objc_msgSend_initWithMetal_pixelFormatLuma_pixelFormatChroma_(v11, v12, shadersCopy, v13, 65);
     }
 
     else
     {
-      v14 = objc_msgSend_initWithMetal_pixelFormatLuma_pixelFormatChroma_(v11, v12, v6, v13, 30);
+      v14 = objc_msgSend_initWithMetal_pixelFormatLuma_pixelFormatChroma_(v11, v12, shadersCopy, v13, 30);
     }
 
     v10 = v14;
@@ -51,12 +51,12 @@
   return v10;
 }
 
-+ (id)getSharedInstanceOrRelease:(BOOL)a3
++ (id)getSharedInstanceOrRelease:(BOOL)release
 {
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = qword_2A18C2308;
-  if (a3)
+  if (release)
   {
     v6 = 0;
   }

@@ -1,13 +1,13 @@
 @interface CAMUpdateFocusAndExposureForStopVideoRecordingCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMUpdateFocusAndExposureForStopVideoRecordingCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
-  if ([v4 focusMode] == 2 && objc_msgSend(v4, "isSmoothAutoFocusSupported") && objc_msgSend(v4, "isSmoothAutoFocusEnabled"))
+  currentVideoDevice = [context currentVideoDevice];
+  if ([currentVideoDevice focusMode] == 2 && objc_msgSend(currentVideoDevice, "isSmoothAutoFocusSupported") && objc_msgSend(currentVideoDevice, "isSmoothAutoFocusEnabled"))
   {
     v5 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))

@@ -5,7 +5,7 @@
 - (BOOL)sendReserveCurrentNotification;
 - (BOOL)supportsPowerModeOnAcrossSleep;
 - (BOOL)supportsUltraHighPowerMode;
-- (IAPPortManager)initWithService:(unsigned int)a3 andNotificationPort:(IONotificationPort *)a4;
+- (IAPPortManager)initWithService:(unsigned int)service andNotificationPort:(IONotificationPort *)port;
 - (int)accessoryPowerState;
 - (unsigned)availableCurrentFromAccInMa;
 - (unsigned)maxInputCurrentFromAccInMa;
@@ -13,16 +13,16 @@
 - (unsigned)ultraHighPowerModeCurrentLimit;
 - (void)dealloc;
 - (void)restoreAvailableCurrentFromAcc;
-- (void)setAccessoryPowerModeOnDuringSleep:(BOOL)a3;
-- (void)setAccessoryPowerState:(int)a3;
-- (void)setInternalBatteryChargingState:(BOOL)a3;
-- (void)setMaxInputCurrentFromAccInMa:(unsigned __int16)a3;
-- (void)setReserveCurrentForAccInMa:(unsigned __int16)a3;
+- (void)setAccessoryPowerModeOnDuringSleep:(BOOL)sleep;
+- (void)setAccessoryPowerState:(int)state;
+- (void)setInternalBatteryChargingState:(BOOL)state;
+- (void)setMaxInputCurrentFromAccInMa:(unsigned __int16)ma;
+- (void)setReserveCurrentForAccInMa:(unsigned __int16)ma;
 @end
 
 @implementation IAPPortManager
 
-- (IAPPortManager)initWithService:(unsigned int)a3 andNotificationPort:(IONotificationPort *)a4
+- (IAPPortManager)initWithService:(unsigned int)service andNotificationPort:(IONotificationPort *)port
 {
   v16.receiver = self;
   v16.super_class = IAPPortManager;
@@ -37,7 +37,7 @@
   *&result->_supportsUltraHighPowerMode = -1;
   if (((result + 16) & 7) == 0)
   {
-    result->_notificationPortRef = a4;
+    result->_notificationPortRef = port;
     if (((result + 40) & 3) == 0)
     {
       result->_accessoryPowerState = 1;
@@ -45,8 +45,8 @@
       p_service = &result->_service;
       if ((&result->_service & 3) == 0)
       {
-        *p_service = a3;
-        v9 = IOObjectRetain(a3);
+        *p_service = service;
+        v9 = IOObjectRetain(service);
         if (v9)
         {
           NSLog(@"ERROR - %s:%s - %d IOObjectRetain failed %#x", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IAPPortManager.mm", "[IAPPortManager initWithService:andNotificationPort:]", 128, v9);
@@ -151,7 +151,7 @@ LABEL_9:
   return v5;
 }
 
-- (void)setAccessoryPowerState:(int)a3
+- (void)setAccessoryPowerState:(int)state
 {
   p_accessoryPowerState = &self->_accessoryPowerState;
   if ((&self->_accessoryPowerState & 3) != 0)
@@ -159,14 +159,14 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if ((*p_accessoryPowerState | a3) >= 4)
+  if ((*p_accessoryPowerState | state) >= 4)
   {
 LABEL_20:
     __break(0x550Au);
     return;
   }
 
-  if (*p_accessoryPowerState == a3)
+  if (*p_accessoryPowerState == state)
   {
     return;
   }
@@ -197,7 +197,7 @@ LABEL_19:
 
   else
   {
-    if (a3 != 2 && a3 != 3 || ![(IAPPortManager *)self isDeviceInLowPowerMode])
+    if (state != 2 && state != 3 || ![(IAPPortManager *)self isDeviceInLowPowerMode])
     {
       v8 = IOAccessoryManagerConfigurePower();
       if (v8)
@@ -209,7 +209,7 @@ LABEL_19:
     IOServiceClose(connect);
   }
 
-  *p_accessoryPowerState = a3;
+  *p_accessoryPowerState = state;
 }
 
 - (BOOL)supportsUltraHighPowerMode
@@ -217,7 +217,7 @@ LABEL_19:
   supportsUltraHighPowerMode = self->_supportsUltraHighPowerMode;
   if (supportsUltraHighPowerMode == 255)
   {
-    v3 = self;
+    selfCopy = self;
     if (((self + 8) & 3) != 0)
     {
       __break(0x5516u);
@@ -226,7 +226,7 @@ LABEL_19:
 
     service = self->_service;
     supportsUltraHighPowerMode = IOAccessoryManagerPowerModeIsSupported() != 0;
-    v3->_supportsUltraHighPowerMode = supportsUltraHighPowerMode;
+    selfCopy->_supportsUltraHighPowerMode = supportsUltraHighPowerMode;
   }
 
   LOBYTE(self) = supportsUltraHighPowerMode != 0;
@@ -238,7 +238,7 @@ LABEL_19:
   supportsPowerModeOnAcrossSleep = self->_supportsPowerModeOnAcrossSleep;
   if (supportsPowerModeOnAcrossSleep == 255)
   {
-    v3 = self;
+    selfCopy = self;
     if (((self + 8) & 3) != 0)
     {
       __break(0x5516u);
@@ -247,7 +247,7 @@ LABEL_19:
 
     service = self->_service;
     supportsPowerModeOnAcrossSleep = IOAccessoryManagerPowerDuringSleepIsSupported() != 0;
-    v3->_supportsPowerModeOnAcrossSleep = supportsPowerModeOnAcrossSleep;
+    selfCopy->_supportsPowerModeOnAcrossSleep = supportsPowerModeOnAcrossSleep;
   }
 
   LOBYTE(self) = supportsPowerModeOnAcrossSleep != 0;
@@ -270,7 +270,7 @@ LABEL_19:
   return self;
 }
 
-- (void)setAccessoryPowerModeOnDuringSleep:(BOOL)a3
+- (void)setAccessoryPowerModeOnDuringSleep:(BOOL)sleep
 {
   connect = 0;
   if ((&self->_service & 3) != 0)
@@ -423,7 +423,7 @@ LABEL_19:
   return self;
 }
 
-- (void)setReserveCurrentForAccInMa:(unsigned __int16)a3
+- (void)setReserveCurrentForAccInMa:(unsigned __int16)ma
 {
   connect = 0;
   if ((&self->_service & 3) != 0)
@@ -502,7 +502,7 @@ LABEL_19:
   return self;
 }
 
-- (void)setMaxInputCurrentFromAccInMa:(unsigned __int16)a3
+- (void)setMaxInputCurrentFromAccInMa:(unsigned __int16)ma
 {
   connect = 0;
   if ((&self->_service & 3) != 0)
@@ -568,7 +568,7 @@ LABEL_17:
   IOServiceClose(connect);
 }
 
-- (void)setInternalBatteryChargingState:(BOOL)a3
+- (void)setInternalBatteryChargingState:(BOOL)state
 {
   connect = 0;
   if ((&self->_service & 3) != 0)

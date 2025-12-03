@@ -1,23 +1,23 @@
 @interface WLProgressBar
-- (WLProgressBar)initWithFrame:(CGRect)a3;
-- (void)addTopBorderWithColor:(id)a3 andWidth:(double)a4;
+- (WLProgressBar)initWithFrame:(CGRect)frame;
+- (void)addTopBorderWithColor:(id)color andWidth:(double)width;
 @end
 
 @implementation WLProgressBar
 
-- (WLProgressBar)initWithFrame:(CGRect)a3
+- (WLProgressBar)initWithFrame:(CGRect)frame
 {
   v46[3] = *MEMORY[0x277D85DE8];
   v44.receiver = self;
   v44.super_class = WLProgressBar;
-  v3 = [(WLProgressBar *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WLProgressBar *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemGrayColor];
-    [(WLProgressBar *)v3 addTopBorderWithColor:v4 andWidth:0.5];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(WLProgressBar *)v3 addTopBorderWithColor:systemGrayColor andWidth:0.5];
 
-    v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WLProgressBar *)v3 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WLProgressBar *)v3 setBackgroundColor:systemBackgroundColor];
 
     v6 = [objc_alloc(MEMORY[0x277D758F0]) initWithProgressViewStyle:0];
     progressView = v3->_progressView;
@@ -26,17 +26,17 @@
     [(UIProgressView *)v3->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(WLProgressBar *)v3 addSubview:v3->_progressView];
     v38 = MEMORY[0x277CCAAD0];
-    v42 = [(UIProgressView *)v3->_progressView topAnchor];
-    v40 = [(WLProgressBar *)v3 topAnchor];
-    v8 = [v42 constraintEqualToAnchor:v40 constant:25.0];
+    topAnchor = [(UIProgressView *)v3->_progressView topAnchor];
+    topAnchor2 = [(WLProgressBar *)v3 topAnchor];
+    v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:25.0];
     v46[0] = v8;
-    v9 = [(UIProgressView *)v3->_progressView leadingAnchor];
-    v10 = [(WLProgressBar *)v3 leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:25.0];
+    leadingAnchor = [(UIProgressView *)v3->_progressView leadingAnchor];
+    leadingAnchor2 = [(WLProgressBar *)v3 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:25.0];
     v46[1] = v11;
-    v12 = [(UIProgressView *)v3->_progressView trailingAnchor];
-    v13 = [(WLProgressBar *)v3 trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:-25.0];
+    trailingAnchor = [(UIProgressView *)v3->_progressView trailingAnchor];
+    trailingAnchor2 = [(WLProgressBar *)v3 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-25.0];
     v46[2] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
     [v38 activateConstraints:v15];
@@ -60,21 +60,21 @@
 
     [(WLProgressBar *)v3 addSubview:v3->_label];
     v36 = MEMORY[0x277CCAAD0];
-    v43 = [(UILabel *)v3->_label topAnchor];
-    v41 = [(UIProgressView *)v3->_progressView bottomAnchor];
-    v39 = [v43 constraintEqualToAnchor:v41 constant:-20.0];
+    topAnchor3 = [(UILabel *)v3->_label topAnchor];
+    bottomAnchor = [(UIProgressView *)v3->_progressView bottomAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:-20.0];
     v45[0] = v39;
-    v37 = [(UILabel *)v3->_label leadingAnchor];
-    v23 = [(WLProgressBar *)v3 leadingAnchor];
-    v24 = [v37 constraintEqualToAnchor:v23 constant:20.0];
+    leadingAnchor3 = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor4 = [(WLProgressBar *)v3 leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
     v45[1] = v24;
-    v25 = [(UILabel *)v3->_label trailingAnchor];
-    v26 = [(WLProgressBar *)v3 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-20.0];
+    trailingAnchor3 = [(UILabel *)v3->_label trailingAnchor];
+    trailingAnchor4 = [(WLProgressBar *)v3 trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
     v45[2] = v27;
-    v28 = [(UILabel *)v3->_label bottomAnchor];
-    v29 = [(WLProgressBar *)v3 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    bottomAnchor2 = [(UILabel *)v3->_label bottomAnchor];
+    bottomAnchor3 = [(WLProgressBar *)v3 bottomAnchor];
+    v30 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v45[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
     [v36 activateConstraints:v31];
@@ -92,11 +92,11 @@
   return v3;
 }
 
-- (void)addTopBorderWithColor:(id)a3 andWidth:(double)a4
+- (void)addTopBorderWithColor:(id)color andWidth:(double)width
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_opt_new();
-  [v6 setBackgroundColor:v5];
+  [v6 setBackgroundColor:colorCopy];
 
   [v6 setAutoresizingMask:34];
   [(WLProgressBar *)self frame];

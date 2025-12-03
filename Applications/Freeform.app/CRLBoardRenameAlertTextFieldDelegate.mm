@@ -1,25 +1,25 @@
 @interface CRLBoardRenameAlertTextFieldDelegate
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldClear:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldClear:(id)clear;
 - (_TtC8FreeformP33_1F7AC1847BE2554B067346642BF3ED1536CRLBoardRenameAlertTextFieldDelegate)init;
 @end
 
 @implementation CRLBoardRenameAlertTextFieldDelegate
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_10068B404(v12, location, length, v9, v11);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_10068B404(fieldCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

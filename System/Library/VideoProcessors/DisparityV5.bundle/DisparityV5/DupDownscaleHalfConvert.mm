@@ -1,17 +1,17 @@
 @interface DupDownscaleHalfConvert
-- (DupDownscaleHalfConvert)initWithMetalContext:(id)a3;
+- (DupDownscaleHalfConvert)initWithMetalContext:(id)context;
 - (int)AllocateResources;
-- (int)DownscaleAndCrop:(float)a3 outY:(__CVBuffer *)a4 inYuv420:(__CVBuffer *)a5;
-- (int)DownscaleConvertAndCenterCrop:(__CVBuffer *)a3 outCroppedLuma:(__CVBuffer *)a4 inYuv420:(__CVBuffer *)a5;
-- (int)GenerateImageY:(id)a3 inYuv420:(id)a4 waitForCompletion:(BOOL)a5;
+- (int)DownscaleAndCrop:(float)crop outY:(__CVBuffer *)y inYuv420:(__CVBuffer *)yuv420;
+- (int)DownscaleConvertAndCenterCrop:(__CVBuffer *)crop outCroppedLuma:(__CVBuffer *)luma inYuv420:(__CVBuffer *)yuv420;
+- (int)GenerateImageY:(id)y inYuv420:(id)yuv420 waitForCompletion:(BOOL)completion;
 - (void)dealloc;
 @end
 
 @implementation DupDownscaleHalfConvert
 
-- (DupDownscaleHalfConvert)initWithMetalContext:(id)a3
+- (DupDownscaleHalfConvert)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v42.receiver = self;
   v42.super_class = DupDownscaleHalfConvert;
   v6 = [(DupDownscaleHalfConvert *)&v42 init];
@@ -22,7 +22,7 @@
   }
 
   v6->_ResourcesAvailable = 0;
-  objc_storeStrong(&v6->_MetalContext, a3);
+  objc_storeStrong(&v6->_MetalContext, context);
   v7->_ContextAvailable = 1;
   v14 = objc_msgSend_computePipelineStateFor_constants_(v7->_MetalContext, v8, @"kernelDownscalerConverterYUVA", 0, v9, v10, v11, v12, v13);
   KernelYUVA = v7->_KernelYUVA;
@@ -94,15 +94,15 @@ LABEL_7:
   [(DupDownscaleHalfConvert *)&v18 dealloc];
 }
 
-- (int)GenerateImageY:(id)a3 inYuv420:(id)a4 waitForCompletion:(BOOL)a5
+- (int)GenerateImageY:(id)y inYuv420:(id)yuv420 waitForCompletion:(BOOL)completion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v18 = objc_msgSend_width(v9, v10, v11, v12, v13, v14, v15, v16, v17);
-  v27 = objc_msgSend_height(v9, v19, v20, v21, v22, v23, v24, v25, v26);
-  v36 = objc_msgSend_width(v8, v28, v29, v30, v31, v32, v33, v34, v35);
-  v45 = objc_msgSend_height(v8, v37, v38, v39, v40, v41, v42, v43, v44);
+  completionCopy = completion;
+  yCopy = y;
+  yuv420Copy = yuv420;
+  v18 = objc_msgSend_width(yuv420Copy, v10, v11, v12, v13, v14, v15, v16, v17);
+  v27 = objc_msgSend_height(yuv420Copy, v19, v20, v21, v22, v23, v24, v25, v26);
+  v36 = objc_msgSend_width(yCopy, v28, v29, v30, v31, v32, v33, v34, v35);
+  v45 = objc_msgSend_height(yCopy, v37, v38, v39, v40, v41, v42, v43, v44);
   v200 = 0;
   if (!self->_ContextAvailable)
   {
@@ -110,7 +110,7 @@ LABEL_7:
 LABEL_23:
     v115 = 0;
     v98 = 0;
-    v5 = -12780;
+    completionCopy = -12780;
     goto LABEL_15;
   }
 
@@ -120,26 +120,26 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (!v9)
+  if (!yuv420Copy)
   {
     sub_295767AD4();
     goto LABEL_23;
   }
 
   v54 = v45;
-  if (objc_msgSend_pixelFormat(v9, v46, v47, v48, v49, v50, v51, v52, v53) != 10)
+  if (objc_msgSend_pixelFormat(yuv420Copy, v46, v47, v48, v49, v50, v51, v52, v53) != 10)
   {
     sub_295767804();
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!yCopy)
   {
     sub_295767A5C();
     goto LABEL_23;
   }
 
-  if (objc_msgSend_pixelFormat(v8, v55, v56, v57, v58, v59, v60, v61, v62) != 10)
+  if (objc_msgSend_pixelFormat(yCopy, v55, v56, v57, v58, v59, v60, v61, v62) != 10)
   {
     sub_29576787C();
     goto LABEL_23;
@@ -162,7 +162,7 @@ LABEL_23:
     sub_29576796C();
     v115 = 0;
 LABEL_26:
-    v5 = -12786;
+    completionCopy = -12786;
     goto LABEL_15;
   }
 
@@ -175,8 +175,8 @@ LABEL_26:
   }
 
   objc_msgSend_setComputePipelineState_(v107, v108, self->_KernelY, v109, v110, v111, v112, v113, v114);
-  objc_msgSend_setTexture_atIndex_(v115, v116, v9, 0, v117, v118, v119, v120, v121);
-  objc_msgSend_setTexture_atIndex_(v115, v122, v8, 1, v123, v124, v125, v126, v127);
+  objc_msgSend_setTexture_atIndex_(v115, v116, yuv420Copy, 0, v117, v118, v119, v120, v121);
+  objc_msgSend_setTexture_atIndex_(v115, v122, yCopy, 1, v123, v124, v125, v126, v127);
   v199[0] = v36 / HIDWORD(v200);
   v199[1] = v54 / v200;
   v199[2] = 1;
@@ -197,21 +197,21 @@ LABEL_26:
   }
 
   objc_msgSend_commit(v98, v142, v143, v144, v145, v146, v147, v148, v149);
-  if (v5)
+  if (completionCopy)
   {
     objc_msgSend_waitUntilCompleted(v98, v189, v190, v191, v192, v193, v194, v195, v196);
-    v5 = 0;
+    completionCopy = 0;
   }
 
 LABEL_15:
 
-  return v5;
+  return completionCopy;
 }
 
-- (int)DownscaleConvertAndCenterCrop:(__CVBuffer *)a3 outCroppedLuma:(__CVBuffer *)a4 inYuv420:(__CVBuffer *)a5
+- (int)DownscaleConvertAndCenterCrop:(__CVBuffer *)crop outCroppedLuma:(__CVBuffer *)luma inYuv420:(__CVBuffer *)yuv420
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(crop);
+  Height = CVPixelBufferGetHeight(crop);
   v177 = 0;
   if (!self->_ContextAvailable)
   {
@@ -226,7 +226,7 @@ LABEL_15:
   }
 
   v15 = Height;
-  v16 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v11, a5, 10, 17, 0, v12, v13, v14);
+  v16 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v11, yuv420, 10, 17, 0, v12, v13, v14);
   if (!v16)
   {
     sub_295767EB4();
@@ -234,7 +234,7 @@ LABEL_15:
   }
 
   v21 = v16;
-  v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v17, a5, 30, 17, 1, v18, v19, v20);
+  v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v17, yuv420, 30, 17, 1, v18, v19, v20);
   if (!v22)
   {
     sub_295767E24(v21);
@@ -242,7 +242,7 @@ LABEL_15:
   }
 
   v27 = v22;
-  v28 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v23, a3, 80, 22, 0, v24, v25, v26);
+  v28 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v23, crop, 80, 22, 0, v24, v25, v26);
   if (!v28)
   {
     sub_295767D8C(v27, v21);
@@ -250,7 +250,7 @@ LABEL_15:
   }
 
   v33 = v28;
-  v34 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v29, a4, 10, 22, 0, v30, v31, v32);
+  v34 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v29, luma, 10, 22, 0, v30, v31, v32);
   if (!v34)
   {
     sub_295767CE4(v33, v27, v21);
@@ -309,7 +309,7 @@ LABEL_15:
   return 0;
 }
 
-- (int)DownscaleAndCrop:(float)a3 outY:(__CVBuffer *)a4 inYuv420:(__CVBuffer *)a5
+- (int)DownscaleAndCrop:(float)crop outY:(__CVBuffer *)y inYuv420:(__CVBuffer *)yuv420
 {
   if (!self->_ContextAvailable)
   {
@@ -323,28 +323,28 @@ LABEL_15:
     return -12780;
   }
 
-  if (!a5)
+  if (!yuv420)
   {
     sub_2957683B4();
     return -12780;
   }
 
-  if (!a4)
+  if (!y)
   {
     sub_29576833C();
     return -12780;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a5) != 875704422)
+  if (CVPixelBufferGetPixelFormatType(yuv420) != 875704422)
   {
     sub_29576801C();
     return -12780;
   }
 
-  Width = CVPixelBufferGetWidth(a5);
-  Height = CVPixelBufferGetHeight(a5);
-  v11 = CVPixelBufferGetWidth(a4);
-  v15 = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(yuv420);
+  Height = CVPixelBufferGetHeight(yuv420);
+  v11 = CVPixelBufferGetWidth(y);
+  v15 = CVPixelBufferGetHeight(y);
   v17 = v15;
   if (Width <= v11 || Height <= v17)
   {
@@ -352,7 +352,7 @@ LABEL_15:
     return -12780;
   }
 
-  v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v12, a5, 10, 17, 0, v13, v14, v16);
+  v19 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v12, yuv420, 10, 17, 0, v13, v14, v16);
   if (!v19)
   {
     sub_29576824C();
@@ -360,7 +360,7 @@ LABEL_15:
   }
 
   v24 = v19;
-  v25 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v20, a4, 10, 22, 0, v21, v22, v23);
+  v25 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_MetalContext, v20, y, 10, 22, 0, v21, v22, v23);
   if (!v25)
   {
     sub_2957681BC(v24);
@@ -372,10 +372,10 @@ LABEL_15:
   v35 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_KernelDownscaleAndCrop, v26, v27, v28, v29, v30, v31, v32, v33);
   v44 = objc_msgSend_threadExecutionWidth(self->_KernelDownscaleAndCrop, v36, v37, v38, v39, v40, v41, v42, v43);
   sub_29574A8BC(v35, v44, &v162 + 1, &v162, v11, v15);
-  v45 = (1.0 - (1.0 / a3)) * 0.5;
-  v161[0] = Width / (v11 * a3);
+  v45 = (1.0 - (1.0 / crop)) * 0.5;
+  v161[0] = Width / (v11 * crop);
   v161[1] = v45 * Width;
-  v161[2] = Height / (v17 * a3);
+  v161[2] = Height / (v17 * crop);
   v161[3] = v45 * Height;
   v53 = objc_msgSend_commandQueue(self->_MetalContext, v46, v47, v48, v49, v50, v51, v52, v45 * Height);
   v62 = objc_msgSend_commandBuffer(v53, v54, v55, v56, v57, v58, v59, v60, v61);

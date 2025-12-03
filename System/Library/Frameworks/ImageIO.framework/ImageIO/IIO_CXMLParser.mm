@@ -1,41 +1,41 @@
 @interface IIO_CXMLParser
-+ (id)dictionaryForXMLData:(id)a3 error:(id *)a4;
-- (IIO_CXMLParser)initWithError:(id *)a3;
-- (id)initializeWithData:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
++ (id)dictionaryForXMLData:(id)data error:(id *)error;
+- (IIO_CXMLParser)initWithError:(id *)error;
+- (id)initializeWithData:(id)data;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
 @end
 
 @implementation IIO_CXMLParser
 
-+ (id)dictionaryForXMLData:(id)a3 error:(id *)a4
++ (id)dictionaryForXMLData:(id)data error:(id *)error
 {
-  v5 = [[IIO_CXMLParser alloc] initWithError:a4];
+  v5 = [[IIO_CXMLParser alloc] initWithError:error];
 
-  return [(IIO_CXMLParser *)v5 initializeWithData:a3];
+  return [(IIO_CXMLParser *)v5 initializeWithData:data];
 }
 
-- (IIO_CXMLParser)initWithError:(id *)a3
+- (IIO_CXMLParser)initWithError:(id *)error
 {
   v5.receiver = self;
   v5.super_class = IIO_CXMLParser;
   result = [(IIO_CXMLParser *)&v5 init];
   if (result)
   {
-    result->_errorPointer = a3;
+    result->_errorPointer = error;
   }
 
   return result;
 }
 
-- (id)initializeWithData:(id)a3
+- (id)initializeWithData:(id)data
 {
   self->_dictionaryStack = objc_alloc_init(MEMORY[0x1E695DF70]);
   self->_textInProgress = objc_alloc_init(MEMORY[0x1E696AD60]);
   -[NSMutableArray addObject:](self->_dictionaryStack, "addObject:", [MEMORY[0x1E695DF90] dictionary]);
-  v5 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:a3];
+  v5 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:data];
   [v5 setDelegate:self];
   if ([v5 parse])
   {
@@ -48,60 +48,60 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v8 = a4;
-  v10 = [(NSMutableArray *)self->_dictionaryStack lastObject:a3];
-  if ([v8 hasPrefix:@"ofd:"])
+  elementCopy = element;
+  v10 = [(NSMutableArray *)self->_dictionaryStack lastObject:parser];
+  if ([elementCopy hasPrefix:@"ofd:"])
   {
-    v8 = [v8 substringFromIndex:4];
+    elementCopy = [elementCopy substringFromIndex:4];
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [v11 addEntriesFromDictionary:a7];
-  v12 = [v10 objectForKey:v8];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary addEntriesFromDictionary:attributes];
+  v12 = [v10 objectForKey:elementCopy];
   if (v12)
   {
     v13 = v12;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v14 = [MEMORY[0x1E695DF70] array];
-      [v14 addObject:v13];
-      [v10 setObject:v14 forKey:v8];
-      v13 = v14;
+      array = [MEMORY[0x1E695DF70] array];
+      [array addObject:v13];
+      [v10 setObject:array forKey:elementCopy];
+      v13 = array;
     }
 
-    [v13 addObject:v11];
+    [v13 addObject:dictionary];
   }
 
   else
   {
-    [v10 setObject:v11 forKey:v8];
+    [v10 setObject:dictionary forKey:elementCopy];
   }
 
   dictionaryStack = self->_dictionaryStack;
 
-  [(NSMutableArray *)dictionaryStack addObject:v11];
+  [(NSMutableArray *)dictionaryStack addObject:dictionary];
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v6 = a4;
-  v8 = [(NSMutableArray *)self->_dictionaryStack lastObject:a3];
-  if ([v6 hasPrefix:@"ofd:"])
+  elementCopy = element;
+  v8 = [(NSMutableArray *)self->_dictionaryStack lastObject:parser];
+  if ([elementCopy hasPrefix:@"ofd:"])
   {
-    v6 = [v6 substringFromIndex:4];
+    elementCopy = [elementCopy substringFromIndex:4];
   }
 
   if ([(NSMutableString *)self->_textInProgress length])
   {
     [v8 setObject:self->_textInProgress forKey:@"_text"];
     [(NSMutableArray *)self->_dictionaryStack removeLastObject];
-    v9 = [(NSMutableArray *)self->_dictionaryStack lastObject];
-    if ([objc_msgSend(v9 objectForKey:{v6), "count"}] == 1)
+    lastObject = [(NSMutableArray *)self->_dictionaryStack lastObject];
+    if ([objc_msgSend(lastObject objectForKey:{elementCopy), "count"}] == 1)
     {
-      [v9 setObject:self->_textInProgress forKey:v6];
+      [lastObject setObject:self->_textInProgress forKey:elementCopy];
     }
 
     self->_textInProgress = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -115,27 +115,27 @@
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = [a4 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet", a3)}];
+  v5 = [characters stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet", parser)}];
   textInProgress = self->_textInProgress;
 
   [(NSMutableString *)textInProgress appendString:v5];
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
   errorPointer = self->_errorPointer;
   if (errorPointer)
   {
-    *errorPointer = a4;
+    *errorPointer = occurred;
   }
 
-  [a3 abortParsing];
+  [parser abortParsing];
   v6 = MEMORY[0x1E695DF30];
-  if (a4)
+  if (occurred)
   {
-    v7 = [objc_msgSend(a4 "userInfo")];
+    v7 = [objc_msgSend(occurred "userInfo")];
   }
 
   else

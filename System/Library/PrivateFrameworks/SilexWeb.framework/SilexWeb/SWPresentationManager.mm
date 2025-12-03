@@ -1,24 +1,24 @@
 @interface SWPresentationManager
-- (SWPresentationManager)initWithWebContentScriptsManager:(id)a3 messageHandlerManager:(id)a4 documentStateProvider:(id)a5 logger:(id)a6;
+- (SWPresentationManager)initWithWebContentScriptsManager:(id)manager messageHandlerManager:(id)handlerManager documentStateProvider:(id)provider logger:(id)logger;
 - (double)height;
-- (id)descriptionForPresentationState:(unint64_t)a3;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)inspectionWithCompletion:(id)a3;
+- (id)descriptionForPresentationState:(unint64_t)state;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)inspectionWithCompletion:(id)completion;
 - (void)refresh;
 - (void)reset;
-- (void)setPresentationState:(unint64_t)a3;
+- (void)setPresentationState:(unint64_t)state;
 @end
 
 @implementation SWPresentationManager
 
-- (SWPresentationManager)initWithWebContentScriptsManager:(id)a3 messageHandlerManager:(id)a4 documentStateProvider:(id)a5 logger:(id)a6
+- (SWPresentationManager)initWithWebContentScriptsManager:(id)manager messageHandlerManager:(id)handlerManager documentStateProvider:(id)provider logger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = 0;
-  if (v11 && v12 && v13)
+  managerCopy = manager;
+  handlerManagerCopy = handlerManager;
+  providerCopy = provider;
+  loggerCopy = logger;
+  selfCopy = 0;
+  if (managerCopy && handlerManagerCopy && providerCopy)
   {
     v25.receiver = self;
     v25.super_class = SWPresentationManager;
@@ -29,13 +29,13 @@
       heightValue = v16->_heightValue;
       v16->_heightValue = 0;
 
-      objc_storeStrong(p_isa + 4, a3);
-      objc_storeStrong(p_isa + 5, a6);
+      objc_storeStrong(p_isa + 4, manager);
+      objc_storeStrong(p_isa + 5, logger);
       v19 = [SWWeakMessageHandler handlerWithMessageHandler:p_isa];
-      [v12 addMessageHandler:v19 name:@"presentable"];
+      [handlerManagerCopy addMessageHandler:v19 name:@"presentable"];
 
       v20 = [SWWeakMessageHandler handlerWithMessageHandler:p_isa];
-      [v12 addMessageHandler:v20 name:@"update"];
+      [handlerManagerCopy addMessageHandler:v20 name:@"update"];
 
       objc_initWeak(&location, p_isa);
       v22[0] = MEMORY[0x1E69E9820];
@@ -43,16 +43,16 @@
       v22[2] = __109__SWPresentationManager_initWithWebContentScriptsManager_messageHandlerManager_documentStateProvider_logger___block_invoke;
       v22[3] = &unk_1E84DB2B8;
       objc_copyWeak(&v23, &location);
-      [v13 onLoad:v22];
+      [providerCopy onLoad:v22];
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 void __109__SWPresentationManager_initWithWebContentScriptsManager_messageHandlerManager_documentStateProvider_logger___block_invoke(uint64_t a1)
@@ -85,22 +85,22 @@ void __109__SWPresentationManager_initWithWebContentScriptsManager_messageHandle
 - (void)refresh
 {
   v4 = objc_alloc_init(SWRefreshScript);
-  v3 = [(SWPresentationManager *)self scriptsManager];
-  [v3 executeScript:v4 completion:0];
+  scriptsManager = [(SWPresentationManager *)self scriptsManager];
+  [scriptsManager executeScript:v4 completion:0];
 }
 
-- (void)inspectionWithCompletion:(id)a3
+- (void)inspectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(SWInspectionScript);
-  v6 = [(SWPresentationManager *)self scriptsManager];
+  scriptsManager = [(SWPresentationManager *)self scriptsManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__SWPresentationManager_inspectionWithCompletion___block_invoke;
   v8[3] = &unk_1E84DB2E0;
-  v9 = v4;
-  v7 = v4;
-  [v6 executeScriptWithReturnObject:v5 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [scriptsManager executeScriptWithReturnObject:v5 completion:v8];
 }
 
 void __50__SWPresentationManager_inspectionWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -114,24 +114,24 @@ void __50__SWPresentationManager_inspectionWithCompletion___block_invoke(uint64_
   }
 }
 
-- (void)setPresentationState:(unint64_t)a3
+- (void)setPresentationState:(unint64_t)state
 {
-  if (self->_presentationState != a3)
+  if (self->_presentationState != state)
   {
-    v5 = [(SWPresentationManager *)self logger];
+    logger = [(SWPresentationManager *)self logger];
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(SWPresentationManager *)self descriptionForPresentationState:a3];
+    v7 = [(SWPresentationManager *)self descriptionForPresentationState:state];
     v8 = [(SWPresentationManager *)self descriptionForPresentationState:self->_presentationState];
     v9 = [v6 stringWithFormat:@"PresentationManager: Setting presentation state to %@ from %@", v7, v8];
-    [v5 log:v9];
+    [logger log:v9];
 
-    self->_presentationState = a3;
-    v10 = [[SWPresentationStateScript alloc] initWithPresentationState:a3];
-    v11 = [(SWPresentationManager *)self scriptsManager];
-    [v11 executeScript:v10 completion:0];
+    self->_presentationState = state;
+    v10 = [[SWPresentationStateScript alloc] initWithPresentationState:state];
+    scriptsManager = [(SWPresentationManager *)self scriptsManager];
+    [scriptsManager executeScript:v10 completion:0];
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     heightValue = self->_heightValue;
     self->_heightValue = 0;
@@ -150,20 +150,20 @@ void __50__SWPresentationManager_inspectionWithCompletion___block_invoke(uint64_
   self->_datastore = 0;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v34 = a3;
-  v5 = [v34 body];
-  v6 = [v5 objectForKey:@"height"];
+  messageCopy = message;
+  body = [messageCopy body];
+  v6 = [body objectForKey:@"height"];
 
-  v7 = [v34 body];
-  v8 = [v7 objectForKey:@"datastore"];
+  body2 = [messageCopy body];
+  v8 = [body2 objectForKey:@"datastore"];
 
-  v9 = [(SWPresentationManager *)self logger];
+  logger = [(SWPresentationManager *)self logger];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v34 name];
+  name = [messageCopy name];
   v12 = objc_claimAutoreleasedReturnValue();
-  [v9 log:v12];
+  [logger log:v12];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -272,14 +272,14 @@ LABEL_19:
 
   else
   {
-    v29 = [v34 name];
-    v27 = [v29 isEqualToString:@"presentable"];
+    name2 = [messageCopy name];
+    v27 = [name2 isEqualToString:@"presentable"];
 
     v28 = *p_heightValue != 0;
   }
 
-  v30 = [(SWPresentationManager *)self presentableBlock];
-  if (v30)
+  presentableBlock = [(SWPresentationManager *)self presentableBlock];
+  if (presentableBlock)
   {
 
     if ((v27 | v25 | (v28 && v20)))
@@ -295,21 +295,21 @@ LABEL_19:
         v32 = 1.79769313e308;
       }
 
-      v33 = [(SWPresentationManager *)self presentableBlock];
-      (v33)[2](v33, self->_datastore, v32);
+      presentableBlock2 = [(SWPresentationManager *)self presentableBlock];
+      (presentableBlock2)[2](presentableBlock2, self->_datastore, v32);
     }
   }
 }
 
-- (id)descriptionForPresentationState:(unint64_t)a3
+- (id)descriptionForPresentationState:(unint64_t)state
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"presented";
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return @"not presented";
   }

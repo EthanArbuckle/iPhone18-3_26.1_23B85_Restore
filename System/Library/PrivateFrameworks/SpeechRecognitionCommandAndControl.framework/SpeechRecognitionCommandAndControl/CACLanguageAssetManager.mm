@@ -1,22 +1,22 @@
 @interface CACLanguageAssetManager
 + (BOOL)isAssetsInstalledForBestLocale;
-+ (BOOL)isAssetsInstalledForLocale:(id)a3;
++ (BOOL)isAssetsInstalledForLocale:(id)locale;
 + (id)downloadedLocaleIdentifiers;
 + (id)downloadingLocaleIdentifiers;
 + (id)sharedManager;
 - (CACLanguageAssetManager)init;
-- (id)downloadProgressForLanguage:(id)a3;
+- (id)downloadProgressForLanguage:(id)language;
 - (id)installationStatus;
 - (id)purgeInstalledAsset;
 - (id)supportedLocaleIdentifiers;
-- (unint64_t)errorStatusForLanguage:(id)a3;
-- (void)_downloadProgressCallback:(__CFDictionary *)a3;
-- (void)_fetchInstallationStatusSynchronously:(BOOL)a3 completion:(id)a4;
-- (void)_handleErrorInDownloadForLanguage:(id)a3;
-- (void)_sendProgressNotificationIfNeededForLanguage:(id)a3;
-- (void)_updateInstallationStatusFromDownloadStatus:(__CFDictionary *)a3;
+- (unint64_t)errorStatusForLanguage:(id)language;
+- (void)_downloadProgressCallback:(__CFDictionary *)callback;
+- (void)_fetchInstallationStatusSynchronously:(BOOL)synchronously completion:(id)completion;
+- (void)_handleErrorInDownloadForLanguage:(id)language;
+- (void)_sendProgressNotificationIfNeededForLanguage:(id)language;
+- (void)_updateInstallationStatusFromDownloadStatus:(__CFDictionary *)status;
 - (void)registerForCallback;
-- (void)startDownloadOfLanguage:(id)a3;
+- (void)startDownloadOfLanguage:(id)language;
 @end
 
 @implementation CACLanguageAssetManager
@@ -47,17 +47,17 @@ uint64_t __40__CACLanguageAssetManager_sharedManager__block_invoke()
   v2 = [(CACLanguageAssetManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     downloadProgressDictionary = v2->_downloadProgressDictionary;
-    v2->_downloadProgressDictionary = v3;
+    v2->_downloadProgressDictionary = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     lastReportedProgressDictionary = v2->_lastReportedProgressDictionary;
-    v2->_lastReportedProgressDictionary = v5;
+    v2->_lastReportedProgressDictionary = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     downloadErrorDictionary = v2->_downloadErrorDictionary;
-    v2->_downloadErrorDictionary = v7;
+    v2->_downloadErrorDictionary = dictionary3;
 
     v2->_isInstallationStatusStale = 1;
   }
@@ -65,10 +65,10 @@ uint64_t __40__CACLanguageAssetManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)_fetchInstallationStatusSynchronously:(BOOL)a3 completion:(id)a4
+- (void)_fetchInstallationStatusSynchronously:(BOOL)synchronously completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__CACLanguageAssetManager__fetchInstallationStatusSynchronously_completion___block_invoke;
@@ -82,11 +82,11 @@ uint64_t __40__CACLanguageAssetManager_sharedManager__block_invoke()
   v18[4] = self;
   v8 = _Block_copy(v18);
   v9 = v8;
-  if (v4)
+  if (synchronouslyCopy)
   {
     v10 = (*(v8 + 2))(v8);
     v7[2](v7, v10);
-    v6[2](v6, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
   else
@@ -107,7 +107,7 @@ uint64_t __40__CACLanguageAssetManager_sharedManager__block_invoke()
     block[3] = &unk_279CEBAC0;
     v15 = v9;
     v16 = v7;
-    v17 = v6;
+    v17 = completionCopy;
     dispatch_async(installationStatusQueue, block);
 
     v10 = v15;
@@ -224,23 +224,23 @@ uint64_t __76__CACLanguageAssetManager__fetchInstallationStatusSynchronously_com
     v5[3] = &unk_279CEBAE8;
     v5[4] = &v6;
     [(CACLanguageAssetManager *)self _fetchInstallationStatusSynchronously:1 completion:v5];
-    v3 = v7[5];
+    cachedInstallationStatus = v7[5];
     _Block_object_dispose(&v6, 8);
   }
 
   else
   {
-    v3 = [(CACLanguageAssetManager *)self cachedInstallationStatus];
+    cachedInstallationStatus = [(CACLanguageAssetManager *)self cachedInstallationStatus];
   }
 
-  return v3;
+  return cachedInstallationStatus;
 }
 
-- (void)startDownloadOfLanguage:(id)a3
+- (void)startDownloadOfLanguage:(id)language
 {
-  v6 = a3;
-  v4 = [(CACLanguageAssetManager *)self installationStatus];
-  v5 = [v4 objectForKey:v6];
+  languageCopy = language;
+  installationStatus = [(CACLanguageAssetManager *)self installationStatus];
+  v5 = [installationStatus objectForKey:languageCopy];
 
   if (([v5 hasPrefix:@"Version:"] & 1) == 0)
   {
@@ -265,32 +265,32 @@ uint64_t __76__CACLanguageAssetManager__fetchInstallationStatusSynchronously_com
   return v2;
 }
 
-- (id)downloadProgressForLanguage:(id)a3
+- (id)downloadProgressForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-  v6 = [v5 objectForKey:v4];
+  languageCopy = language;
+  downloadProgressDictionary = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+  v6 = [downloadProgressDictionary objectForKey:languageCopy];
 
   return v6;
 }
 
-- (unint64_t)errorStatusForLanguage:(id)a3
+- (unint64_t)errorStatusForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-  v6 = [v5 objectForKey:v4];
+  languageCopy = language;
+  downloadErrorDictionary = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+  v6 = [downloadErrorDictionary objectForKey:languageCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (void)registerForCallback
@@ -315,33 +315,33 @@ void __46__CACLanguageAssetManager_registerForCallback__block_invoke(uint64_t a1
 + (BOOL)isAssetsInstalledForBestLocale
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 bestLocaleIdentifier];
-  LOBYTE(a1) = [a1 isAssetsInstalledForLocale:v4];
+  bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+  LOBYTE(self) = [self isAssetsInstalledForLocale:bestLocaleIdentifier];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isAssetsInstalledForLocale:(id)a3
++ (BOOL)isAssetsInstalledForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [a1 downloadedLocaleIdentifiers];
+  downloadedLocaleIdentifiers = [self downloadedLocaleIdentifiers];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke;
   v8[3] = &unk_279CEBB38;
-  v6 = v4;
+  v6 = localeCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [downloadedLocaleIdentifiers enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(downloadedLocaleIdentifiers) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return downloadedLocaleIdentifiers;
 }
 
 void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -362,17 +362,17 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
   v21 = *MEMORY[0x277D85DE8];
   v14 = [MEMORY[0x277CBEB58] set];
   v2 = +[CACLanguageAssetManager sharedManager];
-  v3 = [v2 installationStatus];
+  installationStatus = [v2 installationStatus];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
   v4 = +[CACLanguageAssetManager sharedManager];
-  v5 = [v4 supportedLocaleIdentifiers];
+  supportedLocaleIdentifiers = [v4 supportedLocaleIdentifiers];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  obj = supportedLocaleIdentifiers;
+  v6 = [supportedLocaleIdentifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -388,7 +388,7 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v10 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-        v12 = [v3 objectForKey:v11];
+        v12 = [installationStatus objectForKey:v11];
         if ([v12 hasPrefix:@"Version:"])
         {
           [v14 addObject:v10];
@@ -408,7 +408,7 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
 {
   v29 = *MEMORY[0x277D85DE8];
   v2 = +[CACLanguageAssetManager sharedManager];
-  v22 = [v2 installationStatus];
+  installationStatus = [v2 installationStatus];
 
   v3 = +[CACLanguageAssetManager downloadedLocaleIdentifiers];
   v21 = [MEMORY[0x277CBEB58] set];
@@ -417,10 +417,10 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
   v26 = 0u;
   v27 = 0u;
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 userSelectableLocaleIdentifiers];
+  userSelectableLocaleIdentifiers = [v4 userSelectableLocaleIdentifiers];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  obj = userSelectableLocaleIdentifiers;
+  v6 = [userSelectableLocaleIdentifiers countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -438,7 +438,7 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
         if (([v3 containsObject:v10] & 1) == 0)
         {
           v11 = [v10 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-          v12 = [v22 objectForKey:v11];
+          v12 = [installationStatus objectForKey:v11];
           v13 = +[CACLanguageAssetManager sharedManager];
           v14 = [v13 downloadProgressForLanguage:v11];
 
@@ -462,19 +462,19 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
   return v21;
 }
 
-- (void)_downloadProgressCallback:(__CFDictionary *)a3
+- (void)_downloadProgressCallback:(__CFDictionary *)callback
 {
   [(CACLanguageAssetManager *)self setDownloadProgress:?];
-  [(CACLanguageAssetManager *)self _updateInstallationStatusFromDownloadStatus:a3];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"CACNotificationAssetDownloadProgressChanged" object:0];
+  [(CACLanguageAssetManager *)self _updateInstallationStatusFromDownloadStatus:callback];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CACNotificationAssetDownloadProgressChanged" object:0];
 }
 
-- (void)_updateInstallationStatusFromDownloadStatus:(__CFDictionary *)a3
+- (void)_updateInstallationStatusFromDownloadStatus:(__CFDictionary *)status
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v5 = CFDictionaryGetValue(a3, @"Language");
-  v6 = CFDictionaryGetValue(a3, @"Phase");
+  v5 = CFDictionaryGetValue(status, @"Language");
+  v6 = CFDictionaryGetValue(status, @"Phase");
   if ([v6 isEqualToString:@"Idle"])
   {
     goto LABEL_2;
@@ -483,9 +483,9 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
   if ([v6 isEqualToString:@"DownloadFailed"])
   {
     [(CACLanguageAssetManager *)self markInstallationStatusStale];
-    if (CFDictionaryGetValue(a3, @"Error") != *MEMORY[0x277CBEEE8] && CFDictionaryGetValue(a3, @"Error"))
+    if (CFDictionaryGetValue(status, @"Error") != *MEMORY[0x277CBEEE8] && CFDictionaryGetValue(status, @"Error"))
     {
-      v7 = CFDictionaryGetValue(a3, @"Error");
+      v7 = CFDictionaryGetValue(status, @"Error");
       v8 = CACLogAssetDownload();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -494,8 +494,8 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
 
       if (v5)
       {
-        v9 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-        [v9 setObject:&unk_287BEFCA0 forKey:v5];
+        downloadErrorDictionary = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+        [downloadErrorDictionary setObject:&unk_287BEFCA0 forKey:v5];
 
         [(CACLanguageAssetManager *)self _handleErrorInDownloadForLanguage:v5];
       }
@@ -506,8 +506,8 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
 
   if ([v6 isEqualToString:@"Stalled"])
   {
-    v10 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-    [v10 setObject:&unk_287BEFCB8 forKey:v5];
+    downloadErrorDictionary2 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+    [downloadErrorDictionary2 setObject:&unk_287BEFCB8 forKey:v5];
 
     [(CACLanguageAssetManager *)self _handleErrorInDownloadForLanguage:v5];
     goto LABEL_2;
@@ -516,12 +516,12 @@ void __54__CACLanguageAssetManager_isAssetsInstalledForLocale___block_invoke(uin
   if ([v6 isEqualToString:@"Downloaded"])
   {
     [(CACLanguageAssetManager *)self markInstallationStatusStale];
-    v11 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-    [v11 setObject:&unk_287BEFCD0 forKey:v5];
+    downloadErrorDictionary3 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+    [downloadErrorDictionary3 setObject:&unk_287BEFCD0 forKey:v5];
 
     [(CACLanguageAssetManager *)self _handleErrorInDownloadForLanguage:v5];
-    v12 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-    v13 = [v12 objectForKey:v5];
+    downloadProgressDictionary = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+    v13 = [downloadProgressDictionary objectForKey:v5];
     [v13 setObject:MEMORY[0x277CBEC38] forKey:@"DownloadProgressDictionaryKeyCompleted"];
 
     v14 = CACLogAssetDownload();
@@ -543,12 +543,12 @@ LABEL_22:
       [(CACLanguageAssetManager *)v6 _updateInstallationStatusFromDownloadStatus:v15];
     }
 
-    v16 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-    v17 = [v16 objectForKey:v5];
+    downloadProgressDictionary2 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+    v17 = [downloadProgressDictionary2 objectForKey:v5];
     [v17 setObject:MEMORY[0x277CBEC28] forKey:@"DownloadProgressDictionaryKeyCompleted"];
 
-    v18 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-    v19 = [v18 objectForKey:v5];
+    downloadProgressDictionary3 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+    v19 = [downloadProgressDictionary3 objectForKey:v5];
     [v19 setObject:&unk_287BEFCE8 forKey:@"DownloadProgressDictionaryKeyPercentage"];
 
     [(CACLanguageAssetManager *)self markInstallationStatusStale];
@@ -567,18 +567,18 @@ LABEL_22:
     goto LABEL_31;
   }
 
-  v20 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-  [v20 setObject:&unk_287BEFCD0 forKey:v5];
+  downloadErrorDictionary4 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+  [downloadErrorDictionary4 setObject:&unk_287BEFCD0 forKey:v5];
 
   [(CACLanguageAssetManager *)self _handleErrorInDownloadForLanguage:v5];
   valuePtr = -1.0;
-  Value = CFDictionaryGetValue(a3, @"TimeRemaining");
+  Value = CFDictionaryGetValue(status, @"TimeRemaining");
   CFNumberGetValue(Value, kCFNumberFloatType, &valuePtr);
   v35 = -1.0;
-  v22 = CFDictionaryGetValue(a3, @"BytesWritten");
+  v22 = CFDictionaryGetValue(status, @"BytesWritten");
   CFNumberGetValue(v22, kCFNumberFloatType, &v35);
   v34 = -1.0;
-  v23 = CFDictionaryGetValue(a3, @"BytesTotal");
+  v23 = CFDictionaryGetValue(status, @"BytesTotal");
   CFNumberGetValue(v23, kCFNumberFloatType, &v34);
   if (valuePtr == -1.0 && v35 == -1.0 && v34 <= 0.0)
   {
@@ -634,8 +634,8 @@ LABEL_31:
 
   if (v32)
   {
-    v33 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-    [v33 setObject:v32 forKey:v5];
+    downloadProgressDictionary4 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+    [downloadProgressDictionary4 setObject:v32 forKey:v5];
   }
 
   [(CACLanguageAssetManager *)self _sendProgressNotificationIfNeededForLanguage:v5];
@@ -643,15 +643,15 @@ LABEL_31:
 LABEL_2:
 }
 
-- (void)_sendProgressNotificationIfNeededForLanguage:(id)a3
+- (void)_sendProgressNotificationIfNeededForLanguage:(id)language
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACLanguageAssetManager *)self downloadProgressDictionary];
-  v6 = [v5 objectForKey:v4];
+  languageCopy = language;
+  downloadProgressDictionary = [(CACLanguageAssetManager *)self downloadProgressDictionary];
+  v6 = [downloadProgressDictionary objectForKey:languageCopy];
 
-  v7 = [(CACLanguageAssetManager *)self lastReportedProgressDictionary];
-  v8 = [v7 objectForKey:v4];
+  lastReportedProgressDictionary = [(CACLanguageAssetManager *)self lastReportedProgressDictionary];
+  v8 = [lastReportedProgressDictionary objectForKey:languageCopy];
 
   v9 = [v6 objectForKey:@"DownloadProgressDictionaryKeyPercentage"];
   [v9 floatValue];
@@ -678,21 +678,21 @@ LABEL_2:
   v26 = v25;
 
   v27 = [v6 objectForKey:@"DownloadProgressDictionaryKeyCompleted"];
-  v28 = [v27 BOOLValue];
+  bOOLValue = [v27 BOOLValue];
 
-  if (!v6 || v28 || v20 != v11 || v26 != v17 || v23 != v14)
+  if (!v6 || bOOLValue || v20 != v11 || v26 != v17 || v23 != v14)
   {
     if (v6)
     {
-      v29 = [(CACLanguageAssetManager *)self lastReportedProgressDictionary];
-      [v29 setObject:v6 forKey:v4];
+      lastReportedProgressDictionary2 = [(CACLanguageAssetManager *)self lastReportedProgressDictionary];
+      [lastReportedProgressDictionary2 setObject:v6 forKey:languageCopy];
     }
 
     v30 = CACLogAssetDownload();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v33 = 138412546;
-      v34 = v4;
+      v34 = languageCopy;
       v35 = 2048;
       v36 = v11;
       _os_log_impl(&dword_26B354000, v30, OS_LOG_TYPE_DEFAULT, "percent %@: %f", &v33, 0x16u);
@@ -708,26 +708,26 @@ LABEL_2:
   }
 }
 
-- (void)_handleErrorInDownloadForLanguage:(id)a3
+- (void)_handleErrorInDownloadForLanguage:(id)language
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACLanguageAssetManager *)self downloadErrorDictionary];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 integerValue];
+  languageCopy = language;
+  downloadErrorDictionary = [(CACLanguageAssetManager *)self downloadErrorDictionary];
+  v6 = [downloadErrorDictionary objectForKey:languageCopy];
+  integerValue = [v6 integerValue];
 
   v8 = CACLogAssetDownload();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(CACLanguageAssetManager *)v4 _handleErrorInDownloadForLanguage:?];
+    [(CACLanguageAssetManager *)languageCopy _handleErrorInDownloadForLanguage:?];
   }
 
-  if (v7)
+  if (integerValue)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"CACNotificationAssetDownloadProgressErrorOccured", 0, 0, 1u);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"CACNotificationAssetDownloadErrorOccured" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"CACNotificationAssetDownloadErrorOccured" object:languageCopy];
 
     v11 = CACLogAssetDownload();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -735,7 +735,7 @@ LABEL_2:
       v12 = 138412546;
       v13 = @"CACNotificationAssetDownloadProgressErrorOccured";
       v14 = 2112;
-      v15 = v4;
+      v15 = languageCopy;
       _os_log_impl(&dword_26B354000, v11, OS_LOG_TYPE_INFO, "Sent error notification %@ for language %@", &v12, 0x16u);
     }
   }

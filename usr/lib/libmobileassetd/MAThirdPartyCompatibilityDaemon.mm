@@ -1,17 +1,17 @@
 @interface MAThirdPartyCompatibilityDaemon
-+ (BOOL)isThirdPartyAssetType:(id)a3;
-+ (id)_sanitizedURLPathComponentFor:(id)a3;
-+ (id)thirdPartyServerURLForAssetType:(id)a3;
++ (BOOL)isThirdPartyAssetType:(id)type;
++ (id)_sanitizedURLPathComponentFor:(id)for;
++ (id)thirdPartyServerURLForAssetType:(id)type;
 @end
 
 @implementation MAThirdPartyCompatibilityDaemon
 
-+ (BOOL)isThirdPartyAssetType:(id)a3
++ (BOOL)isThirdPartyAssetType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (__isPlatformVersionAtLeast(2, 18, 6, 0))
   {
-    v4 = [MAThirdPartyCompatibility isThirdPartyAssetType:v3];
+    v4 = [MAThirdPartyCompatibility isThirdPartyAssetType:typeCopy];
   }
 
   else
@@ -22,16 +22,16 @@
   return v4;
 }
 
-+ (id)thirdPartyServerURLForAssetType:(id)a3
++ (id)thirdPartyServerURLForAssetType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (!__isPlatformVersionAtLeast(2, 18, 6, 0))
   {
     v11 = 0;
     goto LABEL_24;
   }
 
-  v4 = [MAThirdPartyCompatibility compatibilityVersionStringForAssetType:v3];
+  v4 = [MAThirdPartyCompatibility compatibilityVersionStringForAssetType:typeCopy];
   if (v4)
   {
     v5 = _MAPreferencesCopyNSStringValue(@"ThirdPartyStagingPathComponent");
@@ -83,9 +83,9 @@ LABEL_22:
     }
 
     v13 = +[SUCoreDevice sharedDevice];
-    v14 = [v13 isBootedOSSecureInternal];
+    isBootedOSSecureInternal = [v13 isBootedOSSecureInternal];
 
-    if (v14)
+    if (isBootedOSSecureInternal)
     {
       [NSString stringWithFormat:@"https://mesu.apple.com/3p/staging/assets/%@/%@/", @"ios", v4];
     }
@@ -106,21 +106,21 @@ LABEL_24:
   return v11;
 }
 
-+ (id)_sanitizedURLPathComponentFor:(id)a3
++ (id)_sanitizedURLPathComponentFor:(id)for
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  forCopy = for;
+  v4 = forCopy;
+  if (forCopy && [forCopy length])
   {
-    v5 = [v4 precomposedStringWithCanonicalMapping];
+    precomposedStringWithCanonicalMapping = [v4 precomposedStringWithCanonicalMapping];
     v6 = +[NSCharacterSet alphanumericCharacterSet];
     v7 = [v6 mutableCopy];
 
     [v7 addCharactersInString:@"-_"];
-    v8 = [v7 invertedSet];
-    if ([v5 rangeOfCharacterFromSet:v8] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "length") <= 0x40)
+    invertedSet = [v7 invertedSet];
+    if ([precomposedStringWithCanonicalMapping rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(precomposedStringWithCanonicalMapping, "length") <= 0x40)
     {
-      v9 = v5;
+      v9 = precomposedStringWithCanonicalMapping;
     }
 
     else

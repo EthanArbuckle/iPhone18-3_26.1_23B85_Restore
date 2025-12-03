@@ -1,5 +1,5 @@
 @interface UICTFont
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -17,15 +17,15 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_9;
   }
@@ -37,7 +37,7 @@
   }
 
   ExtraData = __CTFontGetExtraData(self);
-  v7 = __CTFontGetExtraData(a3);
+  v7 = __CTFontGetExtraData(equal);
   if (ExtraData == v7)
   {
 LABEL_9:

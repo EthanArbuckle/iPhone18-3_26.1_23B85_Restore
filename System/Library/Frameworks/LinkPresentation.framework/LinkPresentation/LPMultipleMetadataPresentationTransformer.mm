@@ -1,5 +1,5 @@
 @interface LPMultipleMetadataPresentationTransformer
-- (LPMultipleMetadataPresentationTransformer)initWithMetadata:(id)a3;
+- (LPMultipleMetadataPresentationTransformer)initWithMetadata:(id)metadata;
 - (id)_summaryCounts;
 - (id)_summarySubtitle;
 - (id)summary;
@@ -9,20 +9,20 @@
 
 @implementation LPMultipleMetadataPresentationTransformer
 
-- (LPMultipleMetadataPresentationTransformer)initWithMetadata:(id)a3
+- (LPMultipleMetadataPresentationTransformer)initWithMetadata:(id)metadata
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  metadataCopy = metadata;
   v27.receiver = self;
   v27.super_class = LPMultipleMetadataPresentationTransformer;
   v6 = [(LPMultipleMetadataPresentationTransformer *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadata, a3);
-    v8 = [(LPMultipleMetadataPresentationTransformer *)v7 _summaryCounts];
+    objc_storeStrong(&v6->_metadata, metadata);
+    _summaryCounts = [(LPMultipleMetadataPresentationTransformer *)v7 _summaryCounts];
     summaryCounts = v7->_summaryCounts;
-    v7->_summaryCounts = v8;
+    v7->_summaryCounts = _summaryCounts;
 
     v7->_hasOnlyFiles = 1;
     v25 = 0u;
@@ -44,11 +44,11 @@
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 originalURL];
-          v16 = v15;
-          if (v15)
+          originalURL = [v14 originalURL];
+          v16 = originalURL;
+          if (originalURL)
           {
-            v17 = v15;
+            v17 = originalURL;
           }
 
           else
@@ -58,7 +58,7 @@
 
           v18 = v17;
 
-          v19 = [v14 specialization];
+          specialization = [v14 specialization];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -66,9 +66,9 @@
 
           else
           {
-            v20 = [v18 isFileURL];
+            isFileURL = [v18 isFileURL];
 
-            if ((v20 & 1) == 0)
+            if ((isFileURL & 1) == 0)
             {
               v7->_hasOnlyFiles = 0;
             }
@@ -118,21 +118,21 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * v7);
-        v9 = [v8 specialization];
-        if (v9 && ([v8 specialization], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "conformsToProtocol:", &unk_1F2496F58), v10, v9, v11))
+        specialization = [v8 specialization];
+        if (specialization && ([v8 specialization], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "conformsToProtocol:", &unk_1F2496F58), v10, specialization, v11))
         {
-          v12 = [v8 specialization];
-          v13 = [v12 summaryTypeForTransformer:self];
+          specialization2 = [v8 specialization];
+          v13 = [specialization2 summaryTypeForTransformer:self];
 
           v3[2](v3, v13);
         }
 
         else
         {
-          v14 = [v8 originalURL];
-          if (v14 || ([v8 URL], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+          originalURL = [v8 originalURL];
+          if (originalURL || ([v8 URL], (originalURL = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            if ([v14 isFileURL])
+            if ([originalURL isFileURL])
             {
               v15 = 2;
             }
@@ -147,8 +147,8 @@
 
           else
           {
-            v16 = [v8 icon];
-            if (v16 || ([v8 image], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "alternateImages"), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+            icon = [v8 icon];
+            if (icon || ([v8 image], (icon = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "alternateImages"), (icon = objc_claimAutoreleasedReturnValue()) != 0))
             {
 
               v17 = 1;
@@ -156,8 +156,8 @@
 
             else
             {
-              v18 = [v8 contentImages];
-              v19 = v18 == 0;
+              contentImages = [v8 contentImages];
+              v19 = contentImages == 0;
 
               if (v19)
               {
@@ -170,7 +170,7 @@
               }
             }
 
-            v14 = 0;
+            originalURL = 0;
             v3[2](v3, v17);
           }
         }
@@ -338,14 +338,14 @@ LABEL_11:
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [v14 specialization];
+        specialization = [v14 specialization];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v17 = [v14 image];
-          v18 = v17 == 0;
+          image = [v14 image];
+          v18 = image == 0;
 
           if (v18)
           {
@@ -354,38 +354,38 @@ LABEL_11:
           }
 
 LABEL_15:
-          v19 = [v14 image];
-          [v9 addObject:v19];
+          image2 = [v14 image];
+          [v9 addObject:image2];
           goto LABEL_22;
         }
 
-        v20 = [v14 icon];
+        icon = [v14 icon];
 
-        if (v20)
+        if (icon)
         {
-          v19 = [v14 icon];
-          [v9 addObject:v19];
+          image2 = [v14 icon];
+          [v9 addObject:image2];
           goto LABEL_22;
         }
 
-        v21 = [v14 image];
+        image3 = [v14 image];
 
-        if (v21)
+        if (image3)
         {
           goto LABEL_15;
         }
 
-        v22 = [v14 alternateImages];
-        v23 = [v22 count] == 0;
+        alternateImages = [v14 alternateImages];
+        v23 = [alternateImages count] == 0;
 
         if (v23)
         {
           continue;
         }
 
-        v19 = [v14 alternateImages];
-        v24 = [v19 firstObject];
-        [v9 addObject:v24];
+        image2 = [v14 alternateImages];
+        firstObject = [image2 firstObject];
+        [v9 addObject:firstObject];
 
 LABEL_22:
       }
@@ -455,30 +455,30 @@ LABEL_12:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v18 originalURL];
-        v20 = v19;
-        if (v19)
+        originalURL = [v18 originalURL];
+        v20 = originalURL;
+        if (originalURL)
         {
-          if ([v19 isFileURL])
+          if ([originalURL isFileURL])
           {
             goto LABEL_23;
           }
 
-          v21 = [v20 _lp_simplifiedDisplayString];
-          v13[2](v13, v21);
+          _lp_simplifiedDisplayString = [v20 _lp_simplifiedDisplayString];
+          v13[2](v13, _lp_simplifiedDisplayString);
         }
 
         else
         {
-          v22 = [v18 summary];
+          summary = [v18 summary];
 
-          if (!v22)
+          if (!summary)
           {
             goto LABEL_23;
           }
 
-          v21 = [v18 summary];
-          v13[2](v13, v21);
+          _lp_simplifiedDisplayString = [v18 summary];
+          v13[2](v13, _lp_simplifiedDisplayString);
         }
 
 LABEL_23:
@@ -515,8 +515,8 @@ LABEL_25:
         objc_enumerationMutation(v3);
       }
 
-      v8 = [*(*(&v30 + 1) + 8 * j) specialization];
-      v9 = [v8 size];
+      specialization = [*(*(&v30 + 1) + 8 * j) specialization];
+      v9 = [specialization size];
 
       v5 += v9;
     }
@@ -550,36 +550,36 @@ void __61__LPMultipleMetadataPresentationTransformer__summarySubtitle__block_inv
 {
   if ([(NSArray *)self->_metadata count]== 1)
   {
-    v3 = [(NSArray *)self->_metadata firstObject];
+    firstObject = [(NSArray *)self->_metadata firstObject];
   }
 
   else
   {
-    v3 = objc_alloc_init(LPLinkMetadata);
-    v4 = [(LPMultipleMetadataPresentationTransformer *)self summary];
-    [(LPLinkMetadata *)v3 setTitle:v4];
+    firstObject = objc_alloc_init(LPLinkMetadata);
+    summary = [(LPMultipleMetadataPresentationTransformer *)self summary];
+    [(LPLinkMetadata *)firstObject setTitle:summary];
 
-    v5 = [(LPMultipleMetadataPresentationTransformer *)self _summarySubtitle];
-    [(LPLinkMetadata *)v3 setSummary:v5];
+    _summarySubtitle = [(LPMultipleMetadataPresentationTransformer *)self _summarySubtitle];
+    [(LPLinkMetadata *)firstObject setSummary:_summarySubtitle];
 
-    v6 = [(LPMultipleMetadataPresentationTransformer *)self summaryImages];
-    if ([v6 count])
+    summaryImages = [(LPMultipleMetadataPresentationTransformer *)self summaryImages];
+    if ([summaryImages count])
     {
-      v7 = [v6 firstObject];
-      [(LPLinkMetadata *)v3 setIcon:v7];
+      firstObject2 = [summaryImages firstObject];
+      [(LPLinkMetadata *)firstObject setIcon:firstObject2];
     }
 
-    if ([v6 count] >= 2)
+    if ([summaryImages count] >= 2)
     {
-      v8 = [v6 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
-      [(LPLinkMetadata *)v3 setAlternateImages:v8];
+      v8 = [summaryImages subarrayWithRange:{1, objc_msgSend(summaryImages, "count") - 1}];
+      [(LPLinkMetadata *)firstObject setAlternateImages:v8];
     }
 
     v9 = objc_alloc_init(LPSummarizedLinkMetadata);
-    [(LPLinkMetadata *)v3 setSpecialization:v9];
+    [(LPLinkMetadata *)firstObject setSpecialization:v9];
   }
 
-  return v3;
+  return firstObject;
 }
 
 @end

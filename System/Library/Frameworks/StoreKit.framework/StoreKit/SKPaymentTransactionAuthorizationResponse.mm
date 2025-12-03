@@ -1,14 +1,14 @@
 @interface SKPaymentTransactionAuthorizationResponse
-- (SKPaymentTransactionAuthorizationResponse)initWithAuthorizationCredential:(id)a3 error:(id)a4;
+- (SKPaymentTransactionAuthorizationResponse)initWithAuthorizationCredential:(id)credential error:(id)error;
 @end
 
 @implementation SKPaymentTransactionAuthorizationResponse
 
-- (SKPaymentTransactionAuthorizationResponse)initWithAuthorizationCredential:(id)a3 error:(id)a4
+- (SKPaymentTransactionAuthorizationResponse)initWithAuthorizationCredential:(id)credential error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  credentialCopy = credential;
+  errorCopy = error;
+  if (credentialCopy | errorCopy)
   {
     v13.receiver = self;
     v13.super_class = SKPaymentTransactionAuthorizationResponse;
@@ -16,12 +16,12 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_authorizationAppleIDCredential, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v10->_authorizationAppleIDCredential, credential);
+      objc_storeStrong(p_isa + 2, error);
     }
 
     self = p_isa;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -31,10 +31,10 @@
       [SKPaymentTransactionAuthorizationResponse initWithAuthorizationCredential:? error:?];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)initWithAuthorizationCredential:(uint64_t)a1 error:.cold.1(uint64_t a1)

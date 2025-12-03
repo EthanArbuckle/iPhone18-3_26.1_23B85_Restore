@@ -25,14 +25,14 @@
 - (int64_t)dynamicRangeControlConfiguration;
 - (void)dealloc;
 - (void)reset;
-- (void)setAudioSyncPacketFrequency:(int64_t)a3;
+- (void)setAudioSyncPacketFrequency:(int64_t)frequency;
 - (void)setBitRate:(NSInteger)bitRate;
 - (void)setBitRateStrategy:(NSString *)bitRateStrategy;
 - (void)setChannelMap:(NSArray *)channelMap;
-- (void)setContentSource:(int64_t)a3;
+- (void)setContentSource:(int64_t)source;
 - (void)setDither:(BOOL)dither;
 - (void)setDownmix:(BOOL)downmix;
-- (void)setDynamicRangeControlConfiguration:(int64_t)a3;
+- (void)setDynamicRangeControlConfiguration:(int64_t)configuration;
 - (void)setMagicCookie:(NSData *)magicCookie;
 - (void)setPrimeInfo:(AVAudioConverterPrimeInfo)primeInfo;
 - (void)setPrimeMethod:(AVAudioConverterPrimeMethod)primeMethod;
@@ -70,8 +70,8 @@
   os_unfair_lock_lock(impl);
   v10 = v9;
   v11 = v8;
-  v12 = [(AVAudioBuffer *)v10 format];
-  v13 = [v12 isEqual:*(impl + 3)];
+  format = [(AVAudioBuffer *)v10 format];
+  v13 = [format isEqual:*(impl + 3)];
 
   if ((v13 & 1) == 0)
   {
@@ -89,15 +89,15 @@ LABEL_6:
   }
 
   [(AVAudioBuffer *)v10 setByteLength:[(AVAudioBuffer *)v10 byteCapacity]];
-  v14 = [(AVAudioBuffer *)v10 mutableAudioBufferList];
+  mutableAudioBufferList = [(AVAudioBuffer *)v10 mutableAudioBufferList];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v17 = 0;
-    v18 = 0;
+    packetDescriptions = 0;
+    packetDependencies = 0;
     ioOutputDataPacketSize = [(AVAudioBuffer *)v10 frameCapacity];
     goto LABEL_11;
   }
@@ -113,21 +113,21 @@ LABEL_6:
   }
 
   ioOutputDataPacketSize = [(AVAudioBuffer *)v10 packetCapacity];
-  v17 = [(AVAudioBuffer *)v10 packetDescriptions];
-  v18 = [(AVAudioBuffer *)v10 packetDependencies];
+  packetDescriptions = [(AVAudioBuffer *)v10 packetDescriptions];
+  packetDependencies = [(AVAudioBuffer *)v10 packetDependencies];
 LABEL_11:
   v23 = _Block_copy(v11);
   v24 = *(impl + 8);
   *(impl + 8) = v23;
 
-  if (v18)
+  if (packetDependencies)
   {
     v25 = AudioConverterFillComplexBufferWithPacketDependencies();
   }
 
   else
   {
-    v25 = AudioConverterFillComplexBuffer(*(impl + 1), AVAudioConverterImpl::FillComplexProc, impl + 8, &ioOutputDataPacketSize, v14, v17);
+    v25 = AudioConverterFillComplexBuffer(*(impl + 1), AVAudioConverterImpl::FillComplexProc, impl + 8, &ioOutputDataPacketSize, mutableAudioBufferList, packetDescriptions);
   }
 
   v26 = v25;
@@ -141,7 +141,7 @@ LABEL_11:
 
   else
   {
-    [(AVAudioBuffer *)v10 setByteLength:*(v14 + 12)];
+    [(AVAudioBuffer *)v10 setByteLength:*(mutableAudioBufferList + 12)];
     [(AVAudioBuffer *)v10 setPacketCount:ioOutputDataPacketSize];
   }
 
@@ -181,9 +181,9 @@ LABEL_8:
   v10 = v9;
   v11 = v8;
   _AVAE_Check("/Library/Caches/com.apple.xbs/Sources/AVFAudio/Source/AVFAudio/AVAudioEngine/AVAudioConverter.mm", 500, "convert", "outputBuffer.frameCapacity >= inputBuffer.frameLength", [(AVAudioPCMBuffer *)v10 frameCapacity]>= [(AVAudioPCMBuffer *)v11 frameLength]);
-  v12 = [(AVAudioPCMBuffer *)v11 frameLength];
-  [(AVAudioPCMBuffer *)v10 setFrameLength:v12];
-  v13 = AudioConverterConvertComplexBuffer(*(impl + 1), v12, [(AVAudioBuffer *)v11 audioBufferList], [(AVAudioBuffer *)v10 mutableAudioBufferList]);
+  frameLength = [(AVAudioPCMBuffer *)v11 frameLength];
+  [(AVAudioPCMBuffer *)v10 setFrameLength:frameLength];
+  v13 = AudioConverterConvertComplexBuffer(*(impl + 1), frameLength, [(AVAudioBuffer *)v11 audioBufferList], [(AVAudioBuffer *)v10 mutableAudioBufferList]);
   if (v13)
   {
     if (outError)
@@ -199,12 +199,12 @@ LABEL_8:
   return v13 == 0;
 }
 
-- (void)setDynamicRangeControlConfiguration:(int64_t)a3
+- (void)setDynamicRangeControlConfiguration:(int64_t)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
-  inPropertyData = v3;
+  inPropertyData = configurationCopy;
   AudioConverterSetProperty(*(impl + 1), 0x63647263u, 4u, &inPropertyData);
   os_unfair_lock_unlock(impl);
 }
@@ -221,12 +221,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setContentSource:(int64_t)a3
+- (void)setContentSource:(int64_t)source
 {
-  v3 = a3;
+  sourceCopy = source;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
-  inPropertyData = v3;
+  inPropertyData = sourceCopy;
   AudioConverterSetProperty(*(impl + 1), 0x63737263u, 4u, &inPropertyData);
   os_unfair_lock_unlock(impl);
 }
@@ -243,12 +243,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setAudioSyncPacketFrequency:(int64_t)a3
+- (void)setAudioSyncPacketFrequency:(int64_t)frequency
 {
-  v3 = a3;
+  frequencyCopy = frequency;
   impl = self->_impl;
   os_unfair_lock_lock(impl);
-  inPropertyData = v3;
+  inPropertyData = frequencyCopy;
   AudioConverterSetProperty(*(impl + 1), 0x61737066u, 4u, &inPropertyData);
   os_unfair_lock_unlock(impl);
 }
@@ -637,13 +637,13 @@ LABEL_10:
   outAudioConverter = 0;
   if (!AudioConverterNew([(AVAudioFormat *)v6 streamDescription], [(AVAudioFormat *)v7 streamDescription], &outAudioConverter) && outAudioConverter)
   {
-    v8 = [(AVAudioFormat *)v6 channelLayout];
-    v9 = v8;
-    if (!v8 || [v8 layoutTag] == 6553601 || objc_msgSend(v9, "layoutTag") == 6619138 || (v10 = objc_msgSend(v9, "layout"), v11 = objc_msgSend(v9, "layoutSize"), !AudioConverterSetProperty(outAudioConverter, 0x69636C20u, v11, v10)))
+    channelLayout = [(AVAudioFormat *)v6 channelLayout];
+    v9 = channelLayout;
+    if (!channelLayout || [channelLayout layoutTag] == 6553601 || objc_msgSend(v9, "layoutTag") == 6619138 || (v10 = objc_msgSend(v9, "layout"), v11 = objc_msgSend(v9, "layoutSize"), !AudioConverterSetProperty(outAudioConverter, 0x69636C20u, v11, v10)))
     {
-      v12 = [(AVAudioFormat *)v7 channelLayout];
-      v13 = v12;
-      if (!v12 || [v12 layoutTag] == 6553601 || objc_msgSend(v13, "layoutTag") == 6619138 || (v14 = objc_msgSend(v13, "layout"), v15 = objc_msgSend(v13, "layoutSize"), !AudioConverterSetProperty(outAudioConverter, 0x6F636C20u, v15, v14)))
+      channelLayout2 = [(AVAudioFormat *)v7 channelLayout];
+      v13 = channelLayout2;
+      if (!channelLayout2 || [channelLayout2 layoutTag] == 6553601 || objc_msgSend(v13, "layoutTag") == 6619138 || (v14 = objc_msgSend(v13, "layout"), v15 = objc_msgSend(v13, "layoutSize"), !AudioConverterSetProperty(outAudioConverter, 0x6F636C20u, v15, v14)))
       {
         operator new();
       }

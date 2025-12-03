@@ -1,14 +1,14 @@
 @interface ARCameraSourceReplay
 - (_TtC6Tamale20ARCameraSourceReplay)init;
-- (void)replayConfigurationDidFinishReplaying:(id)a3;
+- (void)replayConfigurationDidFinishReplaying:(id)replaying;
 @end
 
 @implementation ARCameraSourceReplay
 
-- (void)replayConfigurationDidFinishReplaying:(id)a3
+- (void)replayConfigurationDidFinishReplaying:(id)replaying
 {
-  v4 = a3;
-  v5 = self;
+  replayingCopy = replaying;
+  selfCopy = self;
   sub_100091D3C();
 }
 

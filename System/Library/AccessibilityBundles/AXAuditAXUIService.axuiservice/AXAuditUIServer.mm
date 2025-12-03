@@ -1,9 +1,9 @@
 @interface AXAuditUIServer
 - (AXAuditUIServer)init;
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)_handleSetCursorFrameMessage:(id)a3;
-- (void)_handleSetCursorFrameStyleMessage:(id)a3;
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)_handleSetCursorFrameMessage:(id)message;
+- (void)_handleSetCursorFrameStyleMessage:(id)message;
 - (void)_removeCursorViewController;
 - (void)dealloc;
 @end
@@ -25,49 +25,49 @@
   [(AXAuditUIServer *)&v3 dealloc];
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 == 2)
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
+  if (identifier == 2)
   {
-    [(AXAuditUIServer *)self _handleSetCursorFrameStyleMessage:v9];
+    [(AXAuditUIServer *)self _handleSetCursorFrameStyleMessage:messageCopy];
   }
 
   else
   {
-    if (a4 != 1)
+    if (identifier != 1)
     {
       abort();
     }
 
-    [(AXAuditUIServer *)self _handleSetCursorFrameMessage:v9];
+    [(AXAuditUIServer *)self _handleSetCursorFrameMessage:messageCopy];
   }
 
   return 0;
 }
 
-- (void)_handleSetCursorFrameStyleMessage:(id)a3
+- (void)_handleSetCursorFrameStyleMessage:(id)message
 {
-  v8 = [a3 objectForKey:@"frameStyle"];
+  v8 = [message objectForKey:@"frameStyle"];
   -[AXAuditUIServer set_highlightStyle:](self, "set_highlightStyle:", [v8 integerValue]);
-  v4 = [(AXAuditUIServer *)self cursorViewController];
+  cursorViewController = [(AXAuditUIServer *)self cursorViewController];
 
-  if (v4)
+  if (cursorViewController)
   {
-    v5 = [(AXAuditUIServer *)self _highlightStyle];
-    v6 = [(AXAuditUIServer *)self cursorViewController];
-    [v6 setHighlightStyle:v5];
+    _highlightStyle = [(AXAuditUIServer *)self _highlightStyle];
+    cursorViewController2 = [(AXAuditUIServer *)self cursorViewController];
+    [cursorViewController2 setHighlightStyle:_highlightStyle];
   }
 
-  v7 = [(AXAuditUIServer *)self cursorViewController];
-  [v7 setHighlightStyle:{objc_msgSend(v8, "integerValue")}];
+  cursorViewController3 = [(AXAuditUIServer *)self cursorViewController];
+  [cursorViewController3 setHighlightStyle:{objc_msgSend(v8, "integerValue")}];
 }
 
-- (void)_handleSetCursorFrameMessage:(id)a3
+- (void)_handleSetCursorFrameMessage:(id)message
 {
-  v21 = a3;
-  v4 = [v21 objectForKey:@"frame"];
+  messageCopy = message;
+  v4 = [messageCopy objectForKey:@"frame"];
   v5 = v4;
   if (v4)
   {
@@ -86,7 +86,7 @@
     height = CGRectZero.size.height;
   }
 
-  v10 = [v21 objectForKey:@"path"];
+  v10 = [messageCopy objectForKey:@"path"];
   if (v10)
   {
     v11 = AX_CGPathCreateWithDataRepresentation();
@@ -106,8 +106,8 @@
   v25.size.width = width;
   v25.size.height = height;
   v12 = CGRectEqualToRect(v24, v25);
-  v13 = [(AXAuditUIServer *)self cursorViewController];
-  v14 = v13;
+  cursorViewController = [(AXAuditUIServer *)self cursorViewController];
+  v14 = cursorViewController;
   if (v12 && v11 == 0)
   {
 
@@ -126,39 +126,39 @@
       [(AXAuditUIServer *)self setCursorViewController:v16];
 
       v17 = +[AXUIDisplayManager sharedDisplayManager];
-      v18 = [(AXAuditUIServer *)self cursorViewController];
-      [v17 addContentViewController:v18 withUserInteractionEnabled:0 forService:self];
+      cursorViewController2 = [(AXAuditUIServer *)self cursorViewController];
+      [v17 addContentViewController:cursorViewController2 withUserInteractionEnabled:0 forService:self];
     }
 
-    v19 = [(AXAuditUIServer *)self cursorViewController];
-    [v19 setCursorFrame:{x, y, width, height}];
-    [v19 setCursorPath:v11];
-    [v19 setHighlightStyle:{-[AXAuditUIServer _highlightStyle](self, "_highlightStyle")}];
+    cursorViewController3 = [(AXAuditUIServer *)self cursorViewController];
+    [cursorViewController3 setCursorFrame:{x, y, width, height}];
+    [cursorViewController3 setCursorPath:v11];
+    [cursorViewController3 setHighlightStyle:{-[AXAuditUIServer _highlightStyle](self, "_highlightStyle")}];
     if (v11)
     {
       CFRelease(v11);
     }
 
-    v20 = [(AXAuditUIServer *)self cursorViewController];
-    [v20 setCursorHidden:0];
+    cursorViewController4 = [(AXAuditUIServer *)self cursorViewController];
+    [cursorViewController4 setCursorHidden:0];
   }
 }
 
 - (void)_removeCursorViewController
 {
-  v3 = [(AXAuditUIServer *)self cursorViewController];
-  [v3 setCursorHidden:1];
+  cursorViewController = [(AXAuditUIServer *)self cursorViewController];
+  [cursorViewController setCursorHidden:1];
 
   v4 = +[AXUIDisplayManager sharedDisplayManager];
-  v5 = [(AXAuditUIServer *)self cursorViewController];
-  [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+  cursorViewController2 = [(AXAuditUIServer *)self cursorViewController];
+  [v4 removeContentViewController:cursorViewController2 withUserInteractionEnabled:0 forService:self];
 
   [(AXAuditUIServer *)self setCursorViewController:0];
 }
 
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled
 {
-  [(AXAuditUIServer *)self cursorViewController:a3];
+  [(AXAuditUIServer *)self cursorViewController:controller];
 
   return 10000013.0;
 }

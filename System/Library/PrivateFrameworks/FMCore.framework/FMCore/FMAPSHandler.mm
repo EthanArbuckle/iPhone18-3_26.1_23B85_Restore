@@ -1,16 +1,16 @@
 @interface FMAPSHandler
-+ (id)constantForEnvironmentString:(id)a3;
-- (FMAPSHandler)initWithEnvironmentName:(id)a3 launchOnDemandPort:(id)a4;
++ (id)constantForEnvironmentString:(id)string;
+- (FMAPSHandler)initWithEnvironmentName:(id)name launchOnDemandPort:(id)port;
 - (NSString)apsToken;
-- (void)_handleMessage:(id)a3 onTopic:(id)a4;
+- (void)_handleMessage:(id)message onTopic:(id)topic;
 - (void)_registrationsWereResumed;
-- (void)_setEnabledTopics:(id)a3;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_setEnabledTopics:(id)topics;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)deregisterDelegate:(id)a3;
+- (void)deregisterDelegate:(id)delegate;
 - (void)invalidate;
-- (void)registerDelegate:(id)a3 forTopic:(id)a4;
+- (void)registerDelegate:(id)delegate forTopic:(id)topic;
 - (void)resumeRegistrations;
 @end
 
@@ -18,13 +18,13 @@
 
 - (NSString)apsToken
 {
-  v2 = [(FMAPSHandler *)self apsConnection];
-  v3 = [v2 publicToken];
-  v4 = [v3 fm_hexString];
+  apsConnection = [(FMAPSHandler *)self apsConnection];
+  publicToken = [apsConnection publicToken];
+  fm_hexString = [publicToken fm_hexString];
 
-  if ([v4 length])
+  if ([fm_hexString length])
   {
-    v5 = v4;
+    v5 = fm_hexString;
   }
 
   else
@@ -37,16 +37,16 @@
   return v5;
 }
 
-+ (id)constantForEnvironmentString:(id)a3
++ (id)constantForEnvironmentString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 compare:@"production" options:1];
+  stringCopy = string;
+  v4 = [stringCopy compare:@"production" options:1];
   v5 = MEMORY[0x277CEE9F0];
   if (v4)
   {
-    if ([v3 compare:@"development" options:1])
+    if ([stringCopy compare:@"development" options:1])
     {
-      if (![v3 compare:@"demo" options:1])
+      if (![stringCopy compare:@"demo" options:1])
       {
         v5 = MEMORY[0x277CEE9E0];
       }
@@ -64,39 +64,39 @@
   return v6;
 }
 
-- (FMAPSHandler)initWithEnvironmentName:(id)a3 launchOnDemandPort:(id)a4
+- (FMAPSHandler)initWithEnvironmentName:(id)name launchOnDemandPort:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  portCopy = port;
   v17.receiver = self;
   v17.super_class = FMAPSHandler;
   v8 = [(FMAPSHandler *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    [(FMAPSHandler *)v8 setEnvironmentName:v6];
-    v10 = [MEMORY[0x277CBEB18] array];
-    [(FMAPSHandler *)v9 setRegisteredDelegates:v10];
+    [(FMAPSHandler *)v8 setEnvironmentName:nameCopy];
+    array = [MEMORY[0x277CBEB18] array];
+    [(FMAPSHandler *)v9 setRegisteredDelegates:array];
 
-    v11 = [MEMORY[0x277CBEB18] array];
-    [(FMAPSHandler *)v9 setPendingPushes:v11];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(FMAPSHandler *)v9 setPendingPushes:array2];
 
     v12 = objc_alloc(MEMORY[0x277CEEA10]);
-    if (v7)
+    if (portCopy)
     {
-      v13 = [v12 initWithEnvironmentName:v6 namedDelegatePort:v7 queue:MEMORY[0x277D85CD0]];
+      v13 = [v12 initWithEnvironmentName:nameCopy namedDelegatePort:portCopy queue:MEMORY[0x277D85CD0]];
     }
 
     else
     {
-      v13 = [v12 initWithEnvironmentName:v6 queue:MEMORY[0x277D85CD0]];
+      v13 = [v12 initWithEnvironmentName:nameCopy queue:MEMORY[0x277D85CD0]];
     }
 
     v14 = v13;
     [(FMAPSHandler *)v9 setApsConnection:v13];
 
-    v15 = [(FMAPSHandler *)v9 apsConnection];
-    [v15 setDelegate:v9];
+    apsConnection = [(FMAPSHandler *)v9 apsConnection];
+    [apsConnection setDelegate:v9];
   }
 
   return v9;
@@ -112,12 +112,12 @@
 
 - (void)invalidate
 {
-  v3 = [(FMAPSHandler *)self apsConnection];
-  [v3 setDelegate:0];
+  apsConnection = [(FMAPSHandler *)self apsConnection];
+  [apsConnection setDelegate:0];
 
   [(FMAPSHandler *)self _setEnabledTopics:0];
-  v4 = [(FMAPSHandler *)self apsConnection];
-  [v4 shutdown];
+  apsConnection2 = [(FMAPSHandler *)self apsConnection];
+  [apsConnection2 shutdown];
 }
 
 - (void)resumeRegistrations
@@ -127,19 +127,19 @@
   [(FMAPSHandler *)self _registrationsWereResumed];
 }
 
-- (void)registerDelegate:(id)a3 forTopic:(id)a4
+- (void)registerDelegate:(id)delegate forTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  topicCopy = topic;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__FMAPSHandler_registerDelegate_forTopic___block_invoke;
   block[3] = &unk_278FD98E8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = delegateCopy;
+  v12 = topicCopy;
+  v8 = topicCopy;
+  v9 = delegateCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -263,16 +263,16 @@ LABEL_14:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterDelegate:(id)a3
+- (void)deregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__FMAPSHandler_deregisterDelegate___block_invoke;
   v6[3] = &unk_278FD9690;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -473,19 +473,19 @@ void __41__FMAPSHandler__registrationsWereResumed__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMessage:(id)a3 onTopic:(id)a4
+- (void)_handleMessage:(id)message onTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  topicCopy = topic;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__FMAPSHandler__handleMessage_onTopic___block_invoke;
   block[3] = &unk_278FD98E8;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = topicCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = topicCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -574,25 +574,25 @@ void __39__FMAPSHandler__handleMessage_onTopic___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setEnabledTopics:(id)a3
+- (void)_setEnabledTopics:(id)topics
 {
-  v4 = a3;
-  v5 = [(FMAPSHandler *)self apsConnection];
-  [v5 _setEnabledTopics:v4];
+  topicsCopy = topics;
+  apsConnection = [(FMAPSHandler *)self apsConnection];
+  [apsConnection _setEnabledTopics:topicsCopy];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [a4 fm_hexString];
+  fm_hexString = [token fm_hexString];
   v6 = LogCategory_APS();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(FMAPSHandler *)self environmentName];
+    environmentName = [(FMAPSHandler *)self environmentName];
     *buf = 138412546;
-    v14 = v5;
+    v14 = fm_hexString;
     v15 = 2112;
-    v16 = v7;
+    v16 = environmentName;
     _os_log_impl(&dword_24A2EE000, v6, OS_LOG_TYPE_INFO, "Received updated APS token %@ for environment %@", buf, 0x16u);
   }
 
@@ -600,9 +600,9 @@ void __39__FMAPSHandler__handleMessage_onTopic___block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __49__FMAPSHandler_connection_didReceivePublicToken___block_invoke;
   v10[3] = &unk_278FD9690;
-  v11 = v5;
-  v12 = self;
-  v8 = v5;
+  v11 = fm_hexString;
+  selfCopy = self;
+  v8 = fm_hexString;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -668,18 +668,18 @@ void __49__FMAPSHandler_connection_didReceivePublicToken___block_invoke_37(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  topicCopy = topic;
+  infoCopy = info;
   v9 = LogCategory_APS();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = v7;
+    v17 = topicCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = infoCopy;
     _os_log_impl(&dword_24A2EE000, v9, OS_LOG_TYPE_INFO, "Received APS message on topic %@: %@", buf, 0x16u);
   }
 
@@ -688,10 +688,10 @@ void __49__FMAPSHandler_connection_didReceivePublicToken___block_invoke_37(uint6
   activity_block[2] = __62__FMAPSHandler_connection_didReceiveMessageForTopic_userInfo___block_invoke;
   activity_block[3] = &unk_278FD98E8;
   activity_block[4] = self;
-  v14 = v8;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
+  v14 = infoCopy;
+  v15 = topicCopy;
+  v10 = topicCopy;
+  v11 = infoCopy;
   _os_activity_initiate(&dword_24A2EE000, "APS message received", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v12 = *MEMORY[0x277D85DE8];

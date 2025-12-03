@@ -1,9 +1,9 @@
 @interface MFDADeferredMessageMoveOperation
 + (id)log;
-- (BOOL)translateToLocalActionWithConnection:(id)a3;
-- (MFDADeferredMessageMoveOperation)initWithCoder:(id)a3;
+- (BOOL)translateToLocalActionWithConnection:(id)connection;
+- (MFDADeferredMessageMoveOperation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFDADeferredMessageMoveOperation
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __39__MFDADeferredMessageMoveOperation_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_304 != -1)
   {
     dispatch_once(&log_onceToken_304, block);
@@ -33,25 +33,25 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
   log_log_303 = v1;
 }
 
-- (MFDADeferredMessageMoveOperation)initWithCoder:(id)a3
+- (MFDADeferredMessageMoveOperation)initWithCoder:(id)coder
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = MFDADeferredMessageMoveOperation;
   v5 = [(MFDADeferredMessageMoveOperation *)&v27 init];
   if (v5)
   {
-    if (([v4 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       __assert_rtn("[MFDADeferredMessageMoveOperation initWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 546, "[aDecoder allowsKeyedCoding] && aDecoder must allow keyed coding");
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceMailbox"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceMailbox"];
     sourceMailboxID = v5->_sourceMailboxID;
     v5->_sourceMailboxID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DestinationMailbox"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DestinationMailbox"];
     destinationMailboxID = v5->_destinationMailboxID;
     v5->_destinationMailboxID = v8;
 
@@ -60,7 +60,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
     v30[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"SourceRemoteIDs"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"SourceRemoteIDs"];
     sourceRemoteIDs = v5->_sourceRemoteIDs;
     v5->_sourceRemoteIDs = v13;
 
@@ -69,7 +69,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
     v29[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"OriginalFlags"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"OriginalFlags"];
     originalFlags = v5->_originalFlags;
     v5->_originalFlags = v18;
 
@@ -78,7 +78,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
     v28[1] = objc_opt_class();
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v22 = [v20 setWithArray:v21];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"TemporaryIDs"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"TemporaryIDs"];
     temporaryRemoteIDs = v5->_temporaryRemoteIDs;
     v5->_temporaryRemoteIDs = v23;
   }
@@ -87,25 +87,25 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     __assert_rtn("[MFDADeferredMessageMoveOperation encodeWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 558, "[aCoder allowsKeyedCoding] && aCoder must allow keyed coding");
   }
 
-  [v4 encodeObject:self->_sourceMailboxID forKey:@"SourceMailbox"];
-  [v4 encodeObject:self->_destinationMailboxID forKey:@"DestinationMailbox"];
-  [v4 encodeObject:self->_sourceRemoteIDs forKey:@"SourceRemoteIDs"];
-  [v4 encodeObject:self->_originalFlags forKey:@"OriginalFlags"];
-  [v4 encodeObject:self->_temporaryRemoteIDs forKey:@"TemporaryIDs"];
+  [coderCopy encodeObject:self->_sourceMailboxID forKey:@"SourceMailbox"];
+  [coderCopy encodeObject:self->_destinationMailboxID forKey:@"DestinationMailbox"];
+  [coderCopy encodeObject:self->_sourceRemoteIDs forKey:@"SourceRemoteIDs"];
+  [coderCopy encodeObject:self->_originalFlags forKey:@"OriginalFlags"];
+  [coderCopy encodeObject:self->_temporaryRemoteIDs forKey:@"TemporaryIDs"];
 }
 
-- (BOOL)translateToLocalActionWithConnection:(id)a3
+- (BOOL)translateToLocalActionWithConnection:(id)connection
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   if ([(NSArray *)self->_sourceRemoteIDs count])
   {
     v5 = [(NSArray *)self->_sourceRemoteIDs count];
@@ -129,7 +129,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
       v8 = [v7 componentsJoinedByString:{@", "}];
       v38 = [v6 initWithFormat:@"SELECT messages.ROWID, messages.mailbox, mailboxes.url FROM messages JOIN mailboxes ON messages.mailbox = mailboxes.ROWID WHERE remote_id IN (%@)", v8];
 
-      v9 = [v4 preparedStatementForQueryString:v38];
+      v9 = [connectionCopy preparedStatementForQueryString:v38];
       v63 = 0;
       v64 = &v63;
       v65 = 0x3032000000;
@@ -156,7 +156,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
       v12 = v60;
       if ((v60[3] & 1) == 0)
       {
-        [v4 handleError:v64[5] message:@"Selecting messages with temporary remote IDs"];
+        [connectionCopy handleError:v64[5] message:@"Selecting messages with temporary remote IDs"];
         v12 = v60;
       }
 
@@ -171,15 +171,15 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
         goto LABEL_24;
       }
 
-      v13 = [v70[5] URLByDeletingLastPathComponent];
-      v14 = [v13 URLByAppendingPathComponent:self->_sourceMailboxID];
+      uRLByDeletingLastPathComponent = [v70[5] URLByDeletingLastPathComponent];
+      v14 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:self->_sourceMailboxID];
 
       v15 = 0x1E695D000uLL;
       if (v14)
       {
-        v16 = [v4 preparedStatementForQueryString:@"SELECT ROWID FROM mailboxes WHERE URL = ? LIMIT 1"];
-        v17 = [v14 absoluteString];
-        v77 = v17;
+        v16 = [connectionCopy preparedStatementForQueryString:@"SELECT ROWID FROM mailboxes WHERE URL = ? LIMIT 1"];
+        absoluteString = [v14 absoluteString];
+        v77 = absoluteString;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
@@ -195,7 +195,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
 
         if ((v60[3] & 1) == 0)
         {
-          [v4 handleError:v64[5] message:@"Selecting source mailbox"];
+          [connectionCopy handleError:v64[5] message:@"Selecting source mailbox"];
         }
 
         if (!v49[5])
@@ -224,7 +224,7 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
         goto LABEL_24;
       }
 
-      v28 = [v4 preparedStatementForQueryString:{@"INSERT INTO local_message_actions (action_type, mailbox, source_mailbox, destination_mailbox, user_initiated) VALUES (6, ?, ?, ?, 0)"}];
+      v28 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO local_message_actions (action_type, mailbox, source_mailbox, destination_mailbox, user_initiated) VALUES (6, ?, ?, ?, 0)"}];
       v75[0] = v49[5];
       v75[1] = v75[0];
       v75[2] = *(*&buf[8] + 40);
@@ -237,9 +237,9 @@ void __39__MFDADeferredMessageMoveOperation_log__block_invoke(uint64_t a1)
 
       if (*(v60 + 24) == 1)
       {
-        v32 = [v4 lastInsertedDatabaseID];
+        lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
 
-        if (!v32)
+        if (!lastInsertedDatabaseID)
         {
 LABEL_24:
           v26 = *(v60 + 24);
@@ -254,7 +254,7 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v33 = [v4 preparedStatementForQueryString:{@"INSERT INTO action_messages (action, message, remote_id, destination_message, action_phase) VALUES (?, NULL, ?, ?, 3)"}];
+        v33 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO action_messages (action, message, remote_id, destination_message, action_phase) VALUES (?, NULL, ?, ?, 3)"}];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __73__MFDADeferredMessageMoveOperation_translateToLocalActionWithConnection___block_invoke_349;
@@ -263,15 +263,15 @@ LABEL_24:
         v40 = v33;
         v42 = &v59;
         v43 = &v63;
-        v44 = v32;
-        v41 = v4;
+        v44 = lastInsertedDatabaseID;
+        v41 = connectionCopy;
         v28 = v33;
         [v10 enumerateObjectsUsingBlock:v39];
       }
 
       else
       {
-        [v4 handleError:v64[5] message:@"Inserting move action"];
+        [connectionCopy handleError:v64[5] message:@"Inserting move action"];
       }
 
       goto LABEL_24;

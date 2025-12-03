@@ -25,10 +25,10 @@
 
 - (NSArray)events
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_entries copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_entries copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

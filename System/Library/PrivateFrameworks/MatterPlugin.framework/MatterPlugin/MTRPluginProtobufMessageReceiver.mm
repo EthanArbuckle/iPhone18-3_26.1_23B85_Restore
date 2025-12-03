@@ -1,29 +1,29 @@
 @interface MTRPluginProtobufMessageReceiver
-- (MTRPluginProtobufMessageReceiver)initWithDelegate:(id)a3 delegateQueue:(id)a4 sessionID:(id)a5;
+- (MTRPluginProtobufMessageReceiver)initWithDelegate:(id)delegate delegateQueue:(id)queue sessionID:(id)d;
 - (MTRPluginProtobufMessageTransportDelegate)delegate;
 - (id)description;
 @end
 
 @implementation MTRPluginProtobufMessageReceiver
 
-- (MTRPluginProtobufMessageReceiver)initWithDelegate:(id)a3 delegateQueue:(id)a4 sessionID:(id)a5
+- (MTRPluginProtobufMessageReceiver)initWithDelegate:(id)delegate delegateQueue:(id)queue sessionID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = MTRPluginProtobufMessageReceiver;
   v11 = [(MTRPluginProtobufMessageReceiver *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(MTRPluginProtobufMessageReceiver *)v11 setSessionID:v10];
-    [(MTRPluginProtobufMessageReceiver *)v12 setDelegate:v8];
-    [(MTRPluginProtobufMessageReceiver *)v12 setDelegateQueue:v9];
-    if (v10)
+    [(MTRPluginProtobufMessageReceiver *)v11 setSessionID:dCopy];
+    [(MTRPluginProtobufMessageReceiver *)v12 setDelegate:delegateCopy];
+    [(MTRPluginProtobufMessageReceiver *)v12 setDelegateQueue:queueCopy];
+    if (dCopy)
     {
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      [(MTRPluginProtobufMessageReceiver *)v12 setMessageSelectors:v13];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(MTRPluginProtobufMessageReceiver *)v12 setMessageSelectors:dictionary];
     }
   }
 
@@ -33,8 +33,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(MTRPluginProtobufMessageReceiver *)self delegate];
-  v4 = [v2 stringWithFormat:@"<MTRPluginProtobufMessageReceiver: delegate: %p>", v3];
+  delegate = [(MTRPluginProtobufMessageReceiver *)self delegate];
+  v4 = [v2 stringWithFormat:@"<MTRPluginProtobufMessageReceiver: delegate: %p>", delegate];
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface HUHomeHubsAndBridgesHelper
-+ (id)serviceDetailVCWithItem:(id)a3;
++ (id)serviceDetailVCWithItem:(id)item;
 @end
 
 @implementation HUHomeHubsAndBridgesHelper
 
-+ (id)serviceDetailVCWithItem:(id)a3
++ (id)serviceDetailVCWithItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[HUViewControllerRegistry sharedInstance];
-  v5 = [objc_alloc(objc_msgSend(v4 viewControllerClassForIdentifier:{@"serviceLikeItemDetails", "initWithServiceLikeItem:", v3}];
+  v5 = [objc_alloc(objc_msgSend(v4 viewControllerClassForIdentifier:{@"serviceLikeItemDetails", "initWithServiceLikeItem:", itemCopy}];
 
   return v5;
 }

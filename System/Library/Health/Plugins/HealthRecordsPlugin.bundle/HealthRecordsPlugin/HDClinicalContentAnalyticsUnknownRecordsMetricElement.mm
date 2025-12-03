@@ -1,23 +1,23 @@
 @interface HDClinicalContentAnalyticsUnknownRecordsMetricElement
-- (BOOL)isEqual:(id)a3;
-- (HDClinicalContentAnalyticsUnknownRecordsMetricElement)initWithExtractionRulesVersion:(int64_t)a3 reportedHost:(id)a4 resourceType:(id)a5 propertyName:(id)a6 resourceKeyPath:(id)a7 failureCode:(int64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (HDClinicalContentAnalyticsUnknownRecordsMetricElement)initWithExtractionRulesVersion:(int64_t)version reportedHost:(id)host resourceType:(id)type propertyName:(id)name resourceKeyPath:(id)path failureCode:(int64_t)code;
 - (id)debugDescription;
-- (id)payloadForCoreAnalyticsWithEventCount:(id)a3 deviceContext:(id)a4;
-- (int64_t)compare:(id)a3;
+- (id)payloadForCoreAnalyticsWithEventCount:(id)count deviceContext:(id)context;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation HDClinicalContentAnalyticsUnknownRecordsMetricElement
 
-- (HDClinicalContentAnalyticsUnknownRecordsMetricElement)initWithExtractionRulesVersion:(int64_t)a3 reportedHost:(id)a4 resourceType:(id)a5 propertyName:(id)a6 resourceKeyPath:(id)a7 failureCode:(int64_t)a8
+- (HDClinicalContentAnalyticsUnknownRecordsMetricElement)initWithExtractionRulesVersion:(int64_t)version reportedHost:(id)host resourceType:(id)type propertyName:(id)name resourceKeyPath:(id)path failureCode:(int64_t)code
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v15)
+  hostCopy = host;
+  typeCopy = type;
+  nameCopy = name;
+  pathCopy = path;
+  if (hostCopy)
   {
-    if (v16)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -26,7 +26,7 @@
   else
   {
     sub_A5EB0(a2, self);
-    if (v16)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -39,35 +39,35 @@ LABEL_3:
   v19 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)&v29 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [hostCopy copy];
     reportedHost = v19->_reportedHost;
     v19->_reportedHost = v20;
 
-    v22 = [v16 copy];
+    v22 = [typeCopy copy];
     resourceType = v19->_resourceType;
     v19->_resourceType = v22;
 
-    v24 = [v17 copy];
+    v24 = [nameCopy copy];
     propertyName = v19->_propertyName;
     v19->_propertyName = v24;
 
-    v26 = [v18 copy];
+    v26 = [pathCopy copy];
     keyPath = v19->_keyPath;
     v19->_keyPath = v26;
 
-    v19->_failureCode = a8;
-    v19->_extractionRulesVersion = a3;
+    v19->_failureCode = code;
+    v19->_extractionRulesVersion = version;
   }
 
   return v19;
 }
 
-- (id)payloadForCoreAnalyticsWithEventCount:(id)a3 deviceContext:(id)a4
+- (id)payloadForCoreAnalyticsWithEventCount:(id)count deviceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  countCopy = count;
+  contextCopy = context;
   v8 = [NSMutableDictionary alloc];
-  v9 = [v7 objectForKeyedSubscript:@"countPairediPad"];
+  v9 = [contextCopy objectForKeyedSubscript:@"countPairediPad"];
   v10 = v9;
   if (v9)
   {
@@ -81,7 +81,7 @@ LABEL_3:
 
   v32[0] = v11;
   v31[1] = @"countPairediPhone";
-  v12 = [v7 objectForKeyedSubscript:?];
+  v12 = [contextCopy objectForKeyedSubscript:?];
   v13 = v12;
   if (v12)
   {
@@ -95,7 +95,7 @@ LABEL_3:
 
   v32[1] = v14;
   v31[2] = @"countPairedWatch";
-  v15 = [v7 objectForKeyedSubscript:?];
+  v15 = [contextCopy objectForKeyedSubscript:?];
   v16 = v15;
   if (v15)
   {
@@ -109,7 +109,7 @@ LABEL_3:
 
   v32[2] = v17;
   v31[3] = @"countPairedVisionPro";
-  v18 = [v7 objectForKeyedSubscript:?];
+  v18 = [contextCopy objectForKeyedSubscript:?];
 
   if (v18)
   {
@@ -122,7 +122,7 @@ LABEL_3:
   }
 
   v32[3] = v19;
-  v32[4] = v6;
+  v32[4] = countCopy;
   v31[4] = @"extractionFailureEventCount";
   v31[5] = @"extractionRulesVersion";
   v20 = [NSNumber numberWithInteger:self->_extractionRulesVersion];
@@ -166,10 +166,10 @@ LABEL_3:
   return v6 ^ [(NSString *)self->_propertyName hash]^ self->_failureCode;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -179,7 +179,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_extractionRulesVersion != v5->_extractionRulesVersion)
       {
         goto LABEL_19;
@@ -213,16 +213,16 @@ LABEL_19:
   return v14;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [NSNumber numberWithInteger:self->_extractionRulesVersion];
-  v6 = [NSNumber numberWithInteger:v4[1]];
+  v6 = [NSNumber numberWithInteger:compareCopy[1]];
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
-    v8 = [(NSString *)self->_resourceType compare:v4[3]];
+    v8 = [(NSString *)self->_resourceType compare:compareCopy[3]];
     if (v8)
     {
 LABEL_3:
@@ -231,7 +231,7 @@ LABEL_3:
     }
 
     propertyName = self->_propertyName;
-    v11 = v4[4];
+    v11 = compareCopy[4];
     if (propertyName)
     {
       if (!v11)
@@ -252,7 +252,7 @@ LABEL_3:
     }
 
     keyPath = self->_keyPath;
-    v13 = v4[5];
+    v13 = compareCopy[5];
     if (keyPath)
     {
       if (v13)
@@ -265,7 +265,7 @@ LABEL_3:
 
 LABEL_17:
         v14 = [NSNumber numberWithInteger:self->_failureCode];
-        v15 = [NSNumber numberWithInteger:v4[6]];
+        v15 = [NSNumber numberWithInteger:compareCopy[6]];
         v7 = [v14 compare:v15];
 
         goto LABEL_4;
@@ -292,14 +292,14 @@ LABEL_4:
 
 - (id)debugDescription
 {
-  v3 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self extractionRulesVersion];
-  v4 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self reportedHost];
-  v5 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self resourceType];
-  v6 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self propertyName];
-  v7 = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self keyPath];
+  extractionRulesVersion = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self extractionRulesVersion];
+  reportedHost = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self reportedHost];
+  resourceType = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self resourceType];
+  propertyName = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self propertyName];
+  keyPath = [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self keyPath];
   [(HDClinicalContentAnalyticsUnknownRecordsMetricElement *)self failureCode];
   v8 = NSStringFromHDClinicalAnalyticsExtractionFailureCode();
-  v9 = [NSString stringWithFormat:@"(%ld, %@, %@, %@, %@, %@)", v3, v4, v5, v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"(%ld, %@, %@, %@, %@, %@)", extractionRulesVersion, reportedHost, resourceType, propertyName, keyPath, v8];
 
   v10 = [NSString stringWithFormat:@"<%@ %p> %@", objc_opt_class(), self, v9];
 

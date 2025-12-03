@@ -1,36 +1,36 @@
 @interface KSAddExtensionKeyboardController
-+ (id)specifiersForExtensionInputMode:(id)a3 parentSpecifier:(id)a4;
-- (id)fetchInputModeEnabled:(id)a3;
++ (id)specifiersForExtensionInputMode:(id)mode parentSpecifier:(id)specifier;
+- (id)fetchInputModeEnabled:(id)enabled;
 - (id)newSpecifiers;
 - (id)selectedInputModes;
 - (id)specifiers;
 - (void)addCheckedInputModes;
 - (void)cancelButtonTapped;
 - (void)dealloc;
-- (void)didEnterBackground:(id)a3;
+- (void)didEnterBackground:(id)background;
 - (void)doneButtonTapped;
-- (void)setNetworkAccessSpecifierForKeyboardInputMode:(id)a3;
-- (void)setNetworkPolicyValue:(id)a3;
-- (void)setPrivacyAccess:(id)a3 forSpecifier:(id)a4;
+- (void)setNetworkAccessSpecifierForKeyboardInputMode:(id)mode;
+- (void)setNetworkPolicyValue:(id)value;
+- (void)setPrivacyAccess:(id)access forSpecifier:(id)specifier;
 - (void)trackExtensionsContainedInApp;
 - (void)updateDoneButton;
 - (void)updateNetworkPolicyState;
-- (void)updateNetworkPolicyStateIfNecessaryForCell:(id)a3;
+- (void)updateNetworkPolicyStateIfNecessaryForCell:(id)cell;
 @end
 
 @implementation KSAddExtensionKeyboardController
 
-+ (id)specifiersForExtensionInputMode:(id)a3 parentSpecifier:(id)a4
++ (id)specifiersForExtensionInputMode:(id)mode parentSpecifier:(id)specifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (![a3 isExtensionInputMode])
+  if (![mode isExtensionInputMode])
   {
     goto LABEL_20;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  [v6 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithName:", objc_msgSend(a3, "safe__extendedDisplayName"))}];
-  v7 = [objc_msgSend(a3 "extension")];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithName:", objc_msgSend(mode, "safe__extendedDisplayName"))}];
+  v7 = [objc_msgSend(mode "extension")];
   if (v7)
   {
     v8 = [MEMORY[0x277CCA8D8] bundleWithURL:{objc_msgSend(objc_msgSend(v7, "bundleURL"), "URLByAppendingPathComponent:", @"Settings.bundle"}];
@@ -41,11 +41,11 @@
     v8 = 0;
   }
 
-  [a4 setProperty:v8 forKey:*MEMORY[0x277D3FD98]];
+  [specifier setProperty:v8 forKey:*MEMORY[0x277D3FD98]];
   v9 = *MEMORY[0x277D3FD90];
-  if (![a4 propertyForKey:*MEMORY[0x277D3FD90]])
+  if (![specifier propertyForKey:*MEMORY[0x277D3FD90]])
   {
-    [a4 setProperty:objc_msgSend(a4 forKey:{"propertyForKey:", *MEMORY[0x277D3FFB8]), v9}];
+    [specifier setProperty:objc_msgSend(specifier forKey:{"propertyForKey:", *MEMORY[0x277D3FFB8]), v9}];
   }
 
   v10 = [v8 pathForResource:@"Root" ofType:@"plist"];
@@ -74,10 +74,10 @@
             objc_enumerationMutation(v13);
           }
 
-          v20 = [MEMORY[0x277D3F950] specifiersFromDictionary:*(*(&v23 + 1) + 8 * i) stringsTable:v12 parentSpecifier:a4 target:0];
+          v20 = [MEMORY[0x277D3F950] specifiersFromDictionary:*(*(&v23 + 1) + 8 * i) stringsTable:v12 parentSpecifier:specifier target:0];
           if (v20)
           {
-            [v6 addObjectsFromArray:v20];
+            [array addObjectsFromArray:v20];
             v17 = 1;
           }
         }
@@ -88,7 +88,7 @@
       while (v16);
       if (v17)
       {
-        v15 = v6;
+        v15 = array;
       }
     }
   }
@@ -125,11 +125,11 @@ LABEL_20:
   return result;
 }
 
-- (void)setNetworkAccessSpecifierForKeyboardInputMode:(id)a3
+- (void)setNetworkAccessSpecifierForKeyboardInputMode:(id)mode
 {
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a3 "extension")])
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(mode "extension")])
   {
-    -[PSAppListController setSystemPolicy:](self, "setSystemPolicy:", [objc_alloc(MEMORY[0x277D3FB30]) initWithBundleIdentifier:{objc_msgSend(objc_msgSend(a3, "containingBundle"), "bundleIdentifier")}]);
+    -[PSAppListController setSystemPolicy:](self, "setSystemPolicy:", [objc_alloc(MEMORY[0x277D3FB30]) initWithBundleIdentifier:{objc_msgSend(objc_msgSend(mode, "containingBundle"), "bundleIdentifier")}]);
     v5 = [(PSSystemPolicyForApp *)[(PSAppListController *)self systemPolicy] specifiersForPolicyOptions:0x20000 force:1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -157,8 +157,8 @@ uint64_t __82__KSAddExtensionKeyboardController_setNetworkAccessSpecifierForKeyb
 {
   v24 = *MEMORY[0x277D85DE8];
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [MEMORY[0x277CBEB18] array];
-  v18 = self;
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -181,9 +181,9 @@ uint64_t __82__KSAddExtensionKeyboardController_setNetworkAccessSpecifierForKeyb
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(v10 target:"displayName") set:v18 get:sel_toggleInputMode_specifier_ detail:sel_fetchInputModeEnabled_ cell:0 edit:{6, 0}];
+        v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(v10 target:"displayName") set:selfCopy get:sel_toggleInputMode_specifier_ detail:sel_fetchInputModeEnabled_ cell:0 edit:{6, 0}];
         [v11 setProperty:objc_msgSend(v10 forKey:{"identifier"), v8}];
-        [v3 addObject:v11];
+        [array addObject:v11];
         if (v6)
         {
           v6 = 1;
@@ -206,10 +206,10 @@ uint64_t __82__KSAddExtensionKeyboardController_setNetworkAccessSpecifierForKeyb
     v6 = 0;
   }
 
-  -[KSAddExtensionKeyboardController setModuleSpecifiers:](v18, "setModuleSpecifiers:", [v3 sortedArrayUsingComparator:&__block_literal_global_0]);
-  v12 = [(NSArray *)[(KSAddExtensionKeyboardController *)v18 moduleSpecifiers] count];
-  v18->_didRequestOpenAccess = v6;
-  if (![obj count] || -[KSAddExtensionKeyboardController behavesAsModalForAddSheet](v18, "behavesAsModalForAddSheet") || ((v6 ^ 1) & 1) != 0)
+  -[KSAddExtensionKeyboardController setModuleSpecifiers:](selfCopy, "setModuleSpecifiers:", [array sortedArrayUsingComparator:&__block_literal_global_0]);
+  v12 = [(NSArray *)[(KSAddExtensionKeyboardController *)selfCopy moduleSpecifiers] count];
+  selfCopy->_didRequestOpenAccess = v6;
+  if (![obj count] || -[KSAddExtensionKeyboardController behavesAsModalForAddSheet](selfCopy, "behavesAsModalForAddSheet") || ((v6 ^ 1) & 1) != 0)
   {
     v13 = v16;
     if (v12 >= 2)
@@ -220,18 +220,18 @@ uint64_t __82__KSAddExtensionKeyboardController_setNetworkAccessSpecifierForKeyb
 
   else
   {
-    -[KSAddExtensionKeyboardController setNetworkAccessSpecifierForKeyboardInputMode:](v18, "setNetworkAccessSpecifierForKeyboardInputMode:", [obj firstObject]);
+    -[KSAddExtensionKeyboardController setNetworkAccessSpecifierForKeyboardInputMode:](selfCopy, "setNetworkAccessSpecifierForKeyboardInputMode:", [obj firstObject]);
     v13 = v16;
-    [v16 addObject:{-[KSAddExtensionKeyboardController networkAccessSpecifier](v18, "networkAccessSpecifier")}];
+    [v16 addObject:{-[KSAddExtensionKeyboardController networkAccessSpecifier](selfCopy, "networkAccessSpecifier")}];
     if (v12 >= 2)
     {
       [v16 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithName:", &stru_28679E3A8)}];
 LABEL_19:
-      [v13 addObjectsFromArray:{-[KSAddExtensionKeyboardController moduleSpecifiers](v18, "moduleSpecifiers")}];
+      [v13 addObjectsFromArray:{-[KSAddExtensionKeyboardController moduleSpecifiers](selfCopy, "moduleSpecifiers")}];
     }
   }
 
-  [(KSAddExtensionKeyboardController *)v18 trackExtensionsContainedInApp];
+  [(KSAddExtensionKeyboardController *)selfCopy trackExtensionsContainedInApp];
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
@@ -294,13 +294,13 @@ uint64_t __49__KSAddExtensionKeyboardController_newSpecifiers__block_invoke(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPrivacyAccess:(id)a3 forSpecifier:(id)a4
+- (void)setPrivacyAccess:(id)access forSpecifier:(id)specifier
 {
   if ([-[PSSpecifier name](-[KSAddExtensionKeyboardController networkAccessSpecifier](self "networkAccessSpecifier")])
   {
     v7 = [-[PSSpecifier identifier](-[KSAddExtensionKeyboardController networkAccessSpecifier](self "networkAccessSpecifier")];
     v8 = v7;
-    if (!self->_hasShownWarning && v7 && [a3 BOOLValue])
+    if (!self->_hasShownWarning && v7 && [access BOOLValue])
     {
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
@@ -309,8 +309,8 @@ uint64_t __49__KSAddExtensionKeyboardController_newSpecifiers__block_invoke(uint
       v23[4] = self;
       v9 = MEMORY[0x277CCACA8];
       v10 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ADD_THIRD_PARTY_KEYBOARD_WARNING_TITLE", &stru_28679E3A8, @"Keyboard"}];
-      v11 = [(KSAddExtensionKeyboardController *)self specifier];
-      v12 = [v9 stringWithFormat:v10, objc_msgSend(v11, "propertyForKey:", *MEMORY[0x277D40170]), v23[0], 3221225472, __66__KSAddExtensionKeyboardController_setPrivacyAccess_forSpecifier___block_invoke, &unk_2797F9EA0, self];
+      specifier = [(KSAddExtensionKeyboardController *)self specifier];
+      v12 = [v9 stringWithFormat:v10, objc_msgSend(specifier, "propertyForKey:", *MEMORY[0x277D40170]), v23[0], 3221225472, __66__KSAddExtensionKeyboardController_setPrivacyAccess_forSpecifier___block_invoke, &unk_2797F9EA0, self];
       v13 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ADD_THIRD_PARTY_KEYBOARD_WARNING_MESSAGE", &stru_28679E3A8, @"Keyboard"}];
       v14 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ADD_THIRD_PARTY_KEYBOARD_WARNING_CANCEL", &stru_28679E3A8, @"Keyboard"}];
       v15 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"ADD_THIRD_PARTY_KEYBOARD_WARNING_ACTION", &stru_28679E3A8, @"Keyboard"}];
@@ -319,31 +319,31 @@ uint64_t __49__KSAddExtensionKeyboardController_newSpecifiers__block_invoke(uint
       -[KSAddExtensionKeyboardController setNetworkAccessAlertActionCancel:](self, "setNetworkAccessAlertActionCancel:", [MEMORY[0x277D750F8] actionWithTitle:v14 style:1 handler:v23]);
       [(UIAlertController *)[(KSAddExtensionKeyboardController *)self networkAccessAlertController] addAction:[(KSAddExtensionKeyboardController *)self networkAccessAlertActionDefault]];
       [(UIAlertController *)[(KSAddExtensionKeyboardController *)self networkAccessAlertController] addAction:[(KSAddExtensionKeyboardController *)self networkAccessAlertActionCancel]];
-      [(KSAddExtensionKeyboardController *)self setSpecifierForWarning:a4];
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v16 addObserver:self selector:sel_didEnterBackground_ name:*MEMORY[0x277D76768] object:0];
+      [(KSAddExtensionKeyboardController *)self setSpecifierForWarning:specifier];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_didEnterBackground_ name:*MEMORY[0x277D76768] object:0];
       if ([-[KSAddExtensionKeyboardController view](self "view")])
       {
-        v17 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v17 = [objc_msgSend(MEMORY[0x277D75DA0] "keyWindow")];
+        selfCopy = [objc_msgSend(MEMORY[0x277D75DA0] "keyWindow")];
       }
 
-      v22 = [(KSAddExtensionKeyboardController *)v17 view];
-      [objc_msgSend(MEMORY[0x277D75D28] _viewControllerForFullScreenPresentationFromView:{v22), "presentViewController:animated:completion:", -[KSAddExtensionKeyboardController networkAccessAlertController](self, "networkAccessAlertController"), 1, 0}];
+      view = [(KSAddExtensionKeyboardController *)selfCopy view];
+      [objc_msgSend(MEMORY[0x277D75D28] _viewControllerForFullScreenPresentationFromView:{view), "presentViewController:animated:completion:", -[KSAddExtensionKeyboardController networkAccessAlertController](self, "networkAccessAlertController"), 1, 0}];
       return;
     }
 
     v19 = *MEMORY[0x277D40148];
-    [objc_msgSend(a4 propertyForKey:{*MEMORY[0x277D40148]), "setValue:", a3}];
-    [objc_msgSend(a4 propertyForKey:{v19), "reloadWithSpecifier:animated:", a4, 1}];
+    [objc_msgSend(specifier propertyForKey:{*MEMORY[0x277D40148]), "setValue:", access}];
+    [objc_msgSend(specifier propertyForKey:{v19), "reloadWithSpecifier:animated:", specifier, 1}];
     if (v8)
     {
-      [(KSAddExtensionKeyboardController *)self setNetworkPolicyValue:a3];
-      self->_didGrantOpenAccess = [a3 BOOLValue];
+      [(KSAddExtensionKeyboardController *)self setNetworkPolicyValue:access];
+      self->_didGrantOpenAccess = [access BOOLValue];
       return;
     }
   }
@@ -351,14 +351,14 @@ uint64_t __49__KSAddExtensionKeyboardController_newSpecifiers__block_invoke(uint
   else
   {
     v18 = *MEMORY[0x277D40148];
-    [objc_msgSend(a4 propertyForKey:{*MEMORY[0x277D40148]), "setValue:", a3}];
-    [objc_msgSend(a4 propertyForKey:{v18), "reloadWithSpecifier:animated:", a4, 1}];
+    [objc_msgSend(specifier propertyForKey:{*MEMORY[0x277D40148]), "setValue:", access}];
+    [objc_msgSend(specifier propertyForKey:{v18), "reloadWithSpecifier:animated:", specifier, 1}];
   }
 
-  v20 = [(PSAppListController *)self systemPolicy];
-  v21 = *(a4 + *MEMORY[0x277D3FCB0]);
+  systemPolicy = [(PSAppListController *)self systemPolicy];
+  v21 = *(specifier + *MEMORY[0x277D3FCB0]);
 
-  [(PSSystemPolicyForApp *)v20 performSelector:v21 withObject:a3 withObject:a4];
+  [(PSSystemPolicyForApp *)systemPolicy performSelector:v21 withObject:access withObject:specifier];
 }
 
 uint64_t __66__KSAddExtensionKeyboardController_setPrivacyAccess_forSpecifier___block_invoke(uint64_t a1, uint64_t a2)
@@ -382,12 +382,12 @@ uint64_t __66__KSAddExtensionKeyboardController_setPrivacyAccess_forSpecifier___
   return result;
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
   if ([(KSAddExtensionKeyboardController *)self specifierForWarning])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
     [(UIAlertController *)[(KSAddExtensionKeyboardController *)self networkAccessAlertController] dismissViewControllerAnimated:0 completion:0];
     [(KSAddExtensionKeyboardController *)self setSpecifierForWarning:0];
     [(KSAddExtensionKeyboardController *)self setNetworkAccessAlertController:0];
@@ -395,17 +395,17 @@ uint64_t __66__KSAddExtensionKeyboardController_setPrivacyAccess_forSpecifier___
     [(KSAddExtensionKeyboardController *)self setNetworkAccessAlertActionDefault:0];
   }
 
-  v5 = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
-  v6 = [(PSSpecifier *)v5 propertyForKey:*MEMORY[0x277D40148]];
-  v7 = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
+  networkAccessSpecifier = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
+  v6 = [(PSSpecifier *)networkAccessSpecifier propertyForKey:*MEMORY[0x277D40148]];
+  networkAccessSpecifier2 = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
 
-  [v6 reloadWithSpecifier:v7 animated:1];
+  [v6 reloadWithSpecifier:networkAccessSpecifier2 animated:1];
 }
 
-- (void)updateNetworkPolicyStateIfNecessaryForCell:(id)a3
+- (void)updateNetworkPolicyStateIfNecessaryForCell:(id)cell
 {
-  v5 = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
-  if ([(PSSpecifier *)v5 propertyForKey:*MEMORY[0x277D40148]]== a3)
+  networkAccessSpecifier = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
+  if ([(PSSpecifier *)networkAccessSpecifier propertyForKey:*MEMORY[0x277D40148]]== cell)
   {
 
     [(KSAddExtensionKeyboardController *)self updateNetworkPolicyState];
@@ -478,21 +478,21 @@ LABEL_14:
   }
 
 LABEL_16:
-  v13 = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
+  networkAccessSpecifier = [(KSAddExtensionKeyboardController *)self networkAccessSpecifier];
   v14 = *MEMORY[0x277D40148];
-  v15 = [(PSSpecifier *)v13 propertyForKey:*MEMORY[0x277D40148]];
+  v15 = [(PSSpecifier *)networkAccessSpecifier propertyForKey:*MEMORY[0x277D40148]];
   [v15 setValue:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v3 & 1)}];
   [-[PSSpecifier propertyForKey:](-[KSAddExtensionKeyboardController networkAccessSpecifier](self "networkAccessSpecifier")];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetworkPolicyValue:(id)a3
+- (void)setNetworkPolicyValue:(id)value
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = [-[KSAddExtensionKeyboardController specifier](self "specifier")];
   v5 = CFBundleCreate(0, [objc_msgSend(objc_msgSend(v4 "firstObject")]);
   v6 = *MEMORY[0x277D6C188];
-  [a3 BOOLValue];
+  [value BOOLValue];
   TCCAccessSetForBundle();
   CFRelease(v5);
   v20 = 0u;
@@ -518,17 +518,17 @@ LABEL_16:
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([objc_msgSend(objc_msgSend(objc_msgSend(v12 "extension")])
         {
-          v13 = a3;
+          valueCopy = value;
         }
 
         else
         {
-          v13 = v10;
+          valueCopy = v10;
         }
 
         v14 = CFBundleCreate(0, [objc_msgSend(objc_msgSend(v12 "extension")]);
         v15 = *MEMORY[0x277D6C188];
-        [v13 BOOLValue];
+        [valueCopy BOOLValue];
         TCCAccessSetForBundle();
         CFRelease(v14);
         [objc_msgSend(v12 "extension")];
@@ -543,9 +543,9 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchInputModeEnabled:(id)a3
+- (id)fetchInputModeEnabled:(id)enabled
 {
-  v3 = [a3 propertyForKey:*MEMORY[0x277D40148]];
+  v3 = [enabled propertyForKey:*MEMORY[0x277D40148]];
 
   return [v3 controlValue];
 }
@@ -553,15 +553,15 @@ LABEL_16:
 - (id)selectedInputModes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(NSArray *)[(KSAddExtensionKeyboardController *)self moduleSpecifiers] count]> 1)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(KSAddExtensionKeyboardController *)self moduleSpecifiers];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    moduleSpecifiers = [(KSAddExtensionKeyboardController *)self moduleSpecifiers];
+    v6 = [(NSArray *)moduleSpecifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -574,17 +574,17 @@ LABEL_16:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(moduleSpecifiers);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           if ([objc_msgSend(objc_msgSend(v12 propertyForKey:{v9), "controlValue"), "BOOLValue"}])
           {
-            [v3 addObject:{objc_msgSend(v12, "propertyForKey:", v10)}];
+            [array addObject:{objc_msgSend(v12, "propertyForKey:", v10)}];
           }
         }
 
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [(NSArray *)moduleSpecifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -593,21 +593,21 @@ LABEL_16:
 
   else
   {
-    v4 = [(NSArray *)[(KSAddExtensionKeyboardController *)self moduleSpecifiers] firstObject];
-    [v3 addObject:{objc_msgSend(v4, "propertyForKey:", *MEMORY[0x277D3FFB8])}];
+    firstObject = [(NSArray *)[(KSAddExtensionKeyboardController *)self moduleSpecifiers] firstObject];
+    [array addObject:{objc_msgSend(firstObject, "propertyForKey:", *MEMORY[0x277D3FFB8])}];
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v3;
+  return array;
 }
 
 - (void)addCheckedInputModes
 {
   v3 = [objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")];
-  v4 = [(KSAddExtensionKeyboardController *)self selectedInputModes];
-  if ([v4 count])
+  selectedInputModes = [(KSAddExtensionKeyboardController *)self selectedInputModes];
+  if ([selectedInputModes count])
   {
-    +[KSKeyboardListController setInputModes:](KSKeyboardListController, "setInputModes:", [v3 arrayByAddingObjectsFromArray:v4]);
+    +[KSKeyboardListController setInputModes:](KSKeyboardListController, "setInputModes:", [v3 arrayByAddingObjectsFromArray:selectedInputModes]);
     v5 = *MEMORY[0x277D6FAB0];
     if (TIStatisticShouldSample())
     {
@@ -641,17 +641,17 @@ LABEL_16:
 
 - (void)cancelButtonTapped
 {
-  v2 = [(KSAddExtensionKeyboardController *)self parentController];
+  parentController = [(KSAddExtensionKeyboardController *)self parentController];
 
-  [v2 dismiss];
+  [parentController dismiss];
 }
 
 - (void)doneButtonTapped
 {
   [(KSAddExtensionKeyboardController *)self addCheckedInputModes];
-  v3 = [(KSAddExtensionKeyboardController *)self parentController];
+  parentController = [(KSAddExtensionKeyboardController *)self parentController];
 
-  [v3 dismissForDone];
+  [parentController dismissForDone];
 }
 
 @end

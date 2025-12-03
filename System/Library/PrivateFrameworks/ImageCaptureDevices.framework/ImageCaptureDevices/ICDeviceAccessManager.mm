@@ -1,22 +1,22 @@
 @interface ICDeviceAccessManager
 + (id)sharedAccessManager;
-- (BOOL)captureUserIntentForBundleIdentifier:(id)a3 withNotification:(id)a4;
-- (BOOL)captureUserIntentForControlWithBundleIdentifier:(id)a3 withNotification:(id)a4;
-- (BOOL)validateBundleIdentifierInstalled:(id)a3;
+- (BOOL)captureUserIntentForBundleIdentifier:(id)identifier withNotification:(id)notification;
+- (BOOL)captureUserIntentForControlWithBundleIdentifier:(id)identifier withNotification:(id)notification;
+- (BOOL)validateBundleIdentifierInstalled:(id)installed;
 - (ICDeviceAccessManager)init;
 - (NSArray)allBundleIdentifiers;
 - (NSArray)bundleIdentifiersAccessingExternalCameras;
 - (NSArray)bundleIdentifiersAccessingExternalCamerasWithStatus;
-- (id)bundleIdentifiersWithAccessType:(id)a3;
-- (int)openDB:(id)a3;
-- (unint64_t)bundleIdentifier:(id)a3 stateForAccessType:(id)a4;
-- (unint64_t)connection:(id)a3 stateForAccessType:(id)a4;
-- (void)addBundleIdentifier:(id)a3;
+- (id)bundleIdentifiersWithAccessType:(id)type;
+- (int)openDB:(id)b;
+- (unint64_t)bundleIdentifier:(id)identifier stateForAccessType:(id)type;
+- (unint64_t)connection:(id)connection stateForAccessType:(id)type;
+- (void)addBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)displayAlertForApplication:(id)a3 withNotification:(id)a4 completionBlock:(id)a5;
-- (void)displayAlertForControlWithNotification:(id)a3 completionBlock:(id)a4;
-- (void)revokeBundleIdentifier:(id)a3;
-- (void)updateBundleIdentifier:(id)a3 accessType:(id)a4 withState:(unint64_t)a5;
+- (void)displayAlertForApplication:(id)application withNotification:(id)notification completionBlock:(id)block;
+- (void)displayAlertForControlWithNotification:(id)notification completionBlock:(id)block;
+- (void)revokeBundleIdentifier:(id)identifier;
+- (void)updateBundleIdentifier:(id)identifier accessType:(id)type withState:(unint64_t)state;
 @end
 
 @implementation ICDeviceAccessManager
@@ -37,7 +37,7 @@
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v6 = [(ICDeviceAccessManager *)v2 deviceAccessQueue];
+    deviceAccessQueue = [(ICDeviceAccessManager *)v2 deviceAccessQueue];
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __29__ICDeviceAccessManager_init__block_invoke;
@@ -47,7 +47,7 @@
     v13 = &v14;
     v7 = v5;
     v12 = v7;
-    dispatch_async(v6, block);
+    dispatch_async(deviceAccessQueue, block);
 
     v8 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v7, v8);
@@ -121,12 +121,12 @@ LABEL_14:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (int)openDB:(id)a3
+- (int)openDB:(id)b
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  bCopy = b;
+  uTF8String = [b UTF8String];
 
-  return sqlite3_open(v6, &self->_externalMediaAccessDB);
+  return sqlite3_open(uTF8String, &self->_externalMediaAccessDB);
 }
 
 - (void)dealloc
@@ -182,7 +182,7 @@ uint64_t __44__ICDeviceAccessManager_sharedAccessManager__block_invoke()
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__0;
   v36 = __Block_byref_object_dispose__0;
-  v37 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if (_os_feature_enabled_impl())
   {
     __ICOSLogCreate();
@@ -202,9 +202,9 @@ uint64_t __44__ICDeviceAccessManager_sharedAccessManager__block_invoke()
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v4;
-      v15 = [(__CFString *)v4 UTF8String];
+      uTF8String = [(__CFString *)v4 UTF8String];
       *buf = 136446466;
-      v40 = v15;
+      v40 = uTF8String;
       v41 = 2114;
       v42 = v12;
       _os_log_impl(&dword_29EB58000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -405,7 +405,7 @@ LABEL_9:
   v85 = 0x3032000000;
   v86 = __Block_byref_object_copy__0;
   v87 = __Block_byref_object_dispose__0;
-  v88 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if (_os_feature_enabled_impl())
   {
     __ICOSLogCreate();
@@ -425,9 +425,9 @@ LABEL_9:
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
       v53 = v3;
-      v54 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       *buf = 136446466;
-      v92 = v54;
+      v92 = uTF8String;
       v93 = 2114;
       v94 = v51;
       _os_log_impl(&dword_29EB58000, v52, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -471,26 +471,26 @@ LABEL_9:
 
         v6 = *(*(&v73 + 1) + 8 * i);
         v7 = [v6 objectForKeyedSubscript:@"read_access"];
-        v8 = [v7 intValue];
+        intValue = [v7 intValue];
 
-        if (v8 == 1)
+        if (intValue == 1)
         {
           v9 = 0;
           goto LABEL_13;
         }
 
-        if (v8 == 2)
+        if (intValue == 2)
         {
           v9 = 1;
 LABEL_13:
-          v10 = [MEMORY[0x29EDB8E00] dictionary];
+          dictionary = [MEMORY[0x29EDB8E00] dictionary];
           v11 = [MEMORY[0x29EDBA070] numberWithBool:v9];
-          [(__CFString *)v10 setObject:v11 forKeyedSubscript:@"whitelisted"];
+          [(__CFString *)dictionary setObject:v11 forKeyedSubscript:@"whitelisted"];
 
           v12 = [v6 objectForKeyedSubscript:@"bundle_id"];
-          [(__CFString *)v10 setObject:v12 forKeyedSubscript:@"bundle_id"];
+          [(__CFString *)dictionary setObject:v12 forKeyedSubscript:@"bundle_id"];
 
-          [v84[5] addObject:v10];
+          [v84[5] addObject:dictionary];
           __ICOSLogCreate();
           v13 = @"PrivacySettings";
           if ([@"PrivacySettings" length] >= 0x15)
@@ -507,9 +507,9 @@ LABEL_13:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
             v19 = v13;
-            v20 = [(__CFString *)v13 UTF8String];
+            uTF8String2 = [(__CFString *)v13 UTF8String];
             *buf = 136446466;
-            v92 = v20;
+            v92 = uTF8String2;
             v93 = 2114;
             v94 = v17;
             _os_log_impl(&dword_29EB58000, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -519,11 +519,11 @@ LABEL_13:
         }
 
         __ICOSLogCreate();
-        v10 = @"PrivacySettings";
+        dictionary = @"PrivacySettings";
         if ([@"PrivacySettings" length] >= 0x15)
         {
           v21 = [@"PrivacySettings" substringWithRange:{0, 18}];
-          v10 = [v21 stringByAppendingString:@".."];
+          dictionary = [v21 stringByAppendingString:@".."];
         }
 
         v22 = MEMORY[0x29EDBA0F8];
@@ -533,10 +533,10 @@ LABEL_13:
         v17 = _gICOSLog;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = v10;
-          v25 = [(__CFString *)v10 UTF8String];
+          v24 = dictionary;
+          uTF8String3 = [(__CFString *)dictionary UTF8String];
           *buf = 136446466;
-          v92 = v25;
+          v92 = uTF8String3;
           v93 = 2114;
           v94 = v13;
           _os_log_impl(&dword_29EB58000, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -574,26 +574,26 @@ LABEL_22:
 
       v29 = *(*(&v69 + 1) + 8 * j);
       v30 = [v29 objectForKeyedSubscript:@"write_access"];
-      v31 = [v30 intValue];
+      intValue2 = [v30 intValue];
 
-      if (v31 == 1)
+      if (intValue2 == 1)
       {
         v32 = 0;
         goto LABEL_33;
       }
 
-      if (v31 == 2)
+      if (intValue2 == 2)
       {
         v32 = 1;
 LABEL_33:
-        v33 = [MEMORY[0x29EDB8E00] dictionary];
+        dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
         v34 = [MEMORY[0x29EDBA070] numberWithBool:v32];
-        [(__CFString *)v33 setObject:v34 forKeyedSubscript:@"whitelisted"];
+        [(__CFString *)dictionary2 setObject:v34 forKeyedSubscript:@"whitelisted"];
 
         v35 = [v29 objectForKeyedSubscript:@"bundle_id"];
-        [(__CFString *)v33 setObject:v35 forKeyedSubscript:@"bundle_id"];
+        [(__CFString *)dictionary2 setObject:v35 forKeyedSubscript:@"bundle_id"];
 
-        [v84[5] addObject:v33];
+        [v84[5] addObject:dictionary2];
         __ICOSLogCreate();
         v36 = @"PrivacySettings";
         if ([@"PrivacySettings" length] >= 0x15)
@@ -610,9 +610,9 @@ LABEL_33:
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
           v42 = v36;
-          v43 = [(__CFString *)v36 UTF8String];
+          uTF8String4 = [(__CFString *)v36 UTF8String];
           *buf = 136446466;
-          v92 = v43;
+          v92 = uTF8String4;
           v93 = 2114;
           v94 = v40;
           _os_log_impl(&dword_29EB58000, v41, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -622,11 +622,11 @@ LABEL_33:
       }
 
       __ICOSLogCreate();
-      v33 = @"PrivacySettings";
+      dictionary2 = @"PrivacySettings";
       if ([@"PrivacySettings" length] >= 0x15)
       {
         v44 = [@"PrivacySettings" substringWithRange:{0, 18}];
-        v33 = [v44 stringByAppendingString:@".."];
+        dictionary2 = [v44 stringByAppendingString:@".."];
       }
 
       v45 = MEMORY[0x29EDBA0F8];
@@ -636,10 +636,10 @@ LABEL_33:
       v40 = _gICOSLog;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = v33;
-        v48 = [(__CFString *)v33 UTF8String];
+        v47 = dictionary2;
+        uTF8String5 = [(__CFString *)dictionary2 UTF8String];
         *buf = 136446466;
-        v92 = v48;
+        v92 = uTF8String5;
         v93 = 2114;
         v94 = v36;
         _os_log_impl(&dword_29EB58000, v40, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -671,9 +671,9 @@ LABEL_44:
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
   {
     v60 = v50;
-    v61 = [(__CFString *)v50 UTF8String];
+    uTF8String6 = [(__CFString *)v50 UTF8String];
     *buf = 136446466;
-    v92 = v61;
+    v92 = uTF8String6;
     v93 = 2114;
     v94 = v58;
     _os_log_impl(&dword_29EB58000, v59, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -798,9 +798,9 @@ LABEL_27:
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
-  v16 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v3 = dispatch_semaphore_create(0);
-  v4 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+  deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __45__ICDeviceAccessManager_allBundleIdentifiers__block_invoke;
@@ -809,7 +809,7 @@ LABEL_27:
   v10 = &v11;
   block[4] = self;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(deviceAccessQueue, block);
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
@@ -844,14 +844,14 @@ void __45__ICDeviceAccessManager_allBundleIdentifiers__block_invoke(uint64_t a1)
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)addBundleIdentifier:(id)a3
+- (void)addBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  identifierCopy = identifier;
   if (!_os_feature_enabled_impl())
   {
-    v5 = [(ICDeviceAccessManager *)self allBundleIdentifiers];
-    if ([(__CFString *)v5 containsObject:v4])
+    allBundleIdentifiers = [(ICDeviceAccessManager *)self allBundleIdentifiers];
+    if ([(__CFString *)allBundleIdentifiers containsObject:identifierCopy])
     {
       __ICOSLogCreate();
       v7 = @"icaccess";
@@ -861,7 +861,7 @@ void __45__ICDeviceAccessManager_allBundleIdentifiers__block_invoke(uint64_t a1)
         v7 = [v11 stringByAppendingString:@".."];
       }
 
-      v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ is already in the database, will not be added again", v4];
+      identifierCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ is already in the database, will not be added again", identifierCopy];
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_ERROR))
       {
         __29__ICDeviceAccessManager_init__block_invoke_cold_1();
@@ -871,45 +871,45 @@ void __45__ICDeviceAccessManager_allBundleIdentifiers__block_invoke(uint64_t a1)
     else
     {
       v12 = dispatch_semaphore_create(0);
-      v13 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+      deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = __45__ICDeviceAccessManager_addBundleIdentifier___block_invoke;
       block[3] = &unk_29F380FE0;
-      v17 = v4;
-      v18 = self;
+      v17 = identifierCopy;
+      selfCopy = self;
       v19 = v12;
       v7 = v12;
-      dispatch_async(v13, block);
+      dispatch_async(deviceAccessQueue, block);
 
       v14 = dispatch_time(0, 1000000000);
       dispatch_semaphore_wait(v7, v14);
 
-      v10 = v17;
+      identifierCopy = v17;
     }
 
     goto LABEL_12;
   }
 
   __ICOSLogCreate();
-  v5 = @"☀️ TCC";
+  allBundleIdentifiers = @"☀️ TCC";
   if ([@"☀️ TCC" length] >= 0x15)
   {
     v6 = [@"☀️ TCC" substringWithRange:{0, 18}];
-    v5 = [v6 stringByAppendingString:@".."];
+    allBundleIdentifiers = [v6 stringByAppendingString:@".."];
   }
 
   v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No work performed in new TCC path"];
   v8 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = v5;
-    v10 = v8;
+    v9 = allBundleIdentifiers;
+    identifierCopy = v8;
     *buf = 136446466;
-    v21 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)allBundleIdentifiers UTF8String];
     v22 = 2114;
     v23 = v7;
-    _os_log_impl(&dword_29EB58000, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_29EB58000, identifierCopy, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
 LABEL_12:
   }
 
@@ -927,27 +927,27 @@ void __45__ICDeviceAccessManager_addBundleIdentifier___block_invoke(uint64_t a1)
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)updateBundleIdentifier:(id)a3 accessType:(id)a4 withState:(unint64_t)a5
+- (void)updateBundleIdentifier:(id)identifier accessType:(id)type withState:(unint64_t)state
 {
   v43 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v10 = _os_feature_enabled_impl();
-  if (v9 == @"control_informed" || !v10)
+  if (typeCopy == @"control_informed" || !v10)
   {
     v25 = dispatch_semaphore_create(0);
-    v26 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+    deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __69__ICDeviceAccessManager_updateBundleIdentifier_accessType_withState___block_invoke_2;
     block[3] = &unk_29F381008;
-    v30 = v9;
-    v34 = a5;
-    v31 = v8;
-    v32 = self;
+    v30 = typeCopy;
+    stateCopy = state;
+    v31 = identifierCopy;
+    selfCopy = self;
     v33 = v25;
     v21 = v25;
-    dispatch_async(v26, block);
+    dispatch_async(deviceAccessQueue, block);
 
     v27 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v21, v27);
@@ -984,8 +984,8 @@ void __45__ICDeviceAccessManager_addBundleIdentifier___block_invoke(uint64_t a1)
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v42 = 1;
-    v19 = v8;
-    [v8 UTF8String];
+    v19 = identifierCopy;
+    [identifierCopy UTF8String];
     v20 = tcc_identity_create();
     v35 = MEMORY[0x29EDCA5F8];
     v36 = 3221225472;
@@ -1074,28 +1074,28 @@ void __69__ICDeviceAccessManager_updateBundleIdentifier_accessType_withState___b
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (id)bundleIdentifiersWithAccessType:(id)a3
+- (id)bundleIdentifiersWithAccessType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__0;
   v21 = __Block_byref_object_dispose__0;
-  v22 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v5 = dispatch_semaphore_create(0);
-  v6 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+  deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
   v12[0] = MEMORY[0x29EDCA5F8];
   v12[1] = 3221225472;
   v12[2] = __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke;
   v12[3] = &unk_29F381030;
-  v13 = v4;
-  v14 = self;
+  v13 = typeCopy;
+  selfCopy = self;
   v15 = v5;
   v16 = &v17;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, v12);
+  v8 = typeCopy;
+  dispatch_async(deviceAccessQueue, v12);
 
   v9 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v7, v9);
@@ -1134,10 +1134,10 @@ void __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke(
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (unint64_t)connection:(id)a3 stateForAccessType:(id)a4
+- (unint64_t)connection:(id)connection stateForAccessType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  typeCopy = type;
   v8 = xpc_connection_copy_entitlement_value();
   v9 = v8;
   if (v8 && xpc_BOOL_get_value(v8))
@@ -1166,32 +1166,32 @@ void __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke(
       v14 = 0;
     }
 
-    v10 = [(ICDeviceAccessManager *)self bundleIdentifier:v14 stateForAccessType:v7];
+    v10 = [(ICDeviceAccessManager *)self bundleIdentifier:v14 stateForAccessType:typeCopy];
   }
 
   return v10;
 }
 
-- (unint64_t)bundleIdentifier:(id)a3 stateForAccessType:(id)a4
+- (unint64_t)bundleIdentifier:(id)identifier stateForAccessType:(id)type
 {
   v27 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v8 = _os_feature_enabled_impl();
-  v21 = v7;
-  if (v7 == @"control_informed" || (v8 & 1) == 0)
+  v21 = typeCopy;
+  if (typeCopy == @"control_informed" || (v8 & 1) == 0)
   {
-    [(ICDeviceAccessManager *)self validateBundleIdentifierInstalled:v6];
+    [(ICDeviceAccessManager *)self validateBundleIdentifierInstalled:identifierCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(ICDeviceAccessManager *)self bundleIdentifiersWithAccessType:v7];
+    v10 = [(ICDeviceAccessManager *)self bundleIdentifiersWithAccessType:typeCopy];
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
-      v9 = 0;
+      intValue = 0;
       v13 = *v23;
       do
       {
@@ -1204,12 +1204,12 @@ void __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke(
 
           v15 = *(*(&v22 + 1) + 8 * i);
           v16 = [v15 objectForKeyedSubscript:@"bundle_id"];
-          v17 = [v16 isEqualToString:v6];
+          v17 = [v16 isEqualToString:identifierCopy];
 
           if (v17)
           {
             v18 = [v15 objectForKeyedSubscript:v21];
-            v9 = [v18 intValue];
+            intValue = [v18 intValue];
           }
         }
 
@@ -1221,22 +1221,22 @@ void __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke(
 
     else
     {
-      v9 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    intValue = 0;
   }
 
   v19 = *MEMORY[0x29EDCA608];
-  return v9;
+  return intValue;
 }
 
-- (void)revokeBundleIdentifier:(id)a3
+- (void)revokeBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   __ICOSLogCreate();
   v5 = @"icaccess";
   if ([@"icaccess" length] >= 0x15)
@@ -1245,24 +1245,24 @@ void __57__ICDeviceAccessManager_bundleIdentifiersWithAccessType___block_invoke(
     v5 = [v6 stringByAppendingString:@".."];
   }
 
-  v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Revoking Application BundleID %@", v4];
+  identifierCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Revoking Application BundleID %@", identifierCopy];
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_ERROR))
   {
     __29__ICDeviceAccessManager_init__block_invoke_cold_1();
   }
 
   v8 = dispatch_semaphore_create(0);
-  v9 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+  deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __48__ICDeviceAccessManager_revokeBundleIdentifier___block_invoke;
   block[3] = &unk_29F380FE0;
-  v14 = v4;
-  v15 = self;
+  v14 = identifierCopy;
+  selfCopy = self;
   v16 = v8;
   v10 = v8;
-  v11 = v4;
-  dispatch_async(v9, block);
+  v11 = identifierCopy;
+  dispatch_async(deviceAccessQueue, block);
 
   v12 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v10, v12);
@@ -1292,29 +1292,29 @@ void __48__ICDeviceAccessManager_revokeBundleIdentifier___block_invoke(uint64_t 
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (BOOL)validateBundleIdentifierInstalled:(id)a3
+- (BOOL)validateBundleIdentifierInstalled:(id)installed
 {
   v49 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  installedCopy = installed;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy__0;
   v42 = __Block_byref_object_dispose__0;
-  v43 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(ICDeviceAccessManager *)self deviceAccessQueue];
+  deviceAccessQueue = [(ICDeviceAccessManager *)self deviceAccessQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __59__ICDeviceAccessManager_validateBundleIdentifierInstalled___block_invoke;
   block[3] = &unk_29F381030;
-  v6 = v3;
+  v6 = installedCopy;
   v34 = v6;
-  v35 = self;
+  selfCopy = self;
   v37 = &v38;
   v7 = v4;
   v36 = v7;
-  dispatch_async(v5, block);
+  dispatch_async(deviceAccessQueue, block);
 
   v8 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v7, v8);
@@ -1381,9 +1381,9 @@ void __48__ICDeviceAccessManager_revokeBundleIdentifier___block_invoke(uint64_t 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = v18;
-    v22 = [(__CFString *)v18 UTF8String];
+    uTF8String = [(__CFString *)v18 UTF8String];
     *buf = 136446466;
-    v45 = v22;
+    v45 = uTF8String;
     v46 = 2114;
     v47 = v19;
     _os_log_impl(&dword_29EB58000, v20, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1426,30 +1426,30 @@ void __59__ICDeviceAccessManager_validateBundleIdentifierInstalled___block_invok
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)displayAlertForApplication:(id)a3 withNotification:(id)a4 completionBlock:(id)a5
+- (void)displayAlertForApplication:(id)application withNotification:(id)notification completionBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   error = 0;
-  v7 = CFUserNotificationCreate(*MEMORY[0x29EDB8ED8], 0.0, 0, &error, a4);
+  v7 = CFUserNotificationCreate(*MEMORY[0x29EDB8ED8], 0.0, 0, &error, notification);
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     CFUserNotificationReceiveResponse(v7, 0.0, &v9);
-    v6[2](v6, 1, v9);
+    blockCopy[2](blockCopy, 1, v9);
     CFRelease(v8);
   }
 }
 
-- (BOOL)captureUserIntentForBundleIdentifier:(id)a3 withNotification:(id)a4
+- (BOOL)captureUserIntentForBundleIdentifier:(id)identifier withNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  notificationCopy = notification;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (v6)
+  if (notificationCopy)
   {
     v7 = dispatch_semaphore_create(0);
     v8 = +[ICDeviceAccessManager sharedAccessManager];
@@ -1460,7 +1460,7 @@ void __59__ICDeviceAccessManager_validateBundleIdentifierInstalled___block_invok
     v14 = &v15;
     v9 = v7;
     v13 = v9;
-    [v8 displayAlertForApplication:v5 withNotification:v6 completionBlock:v12];
+    [v8 displayAlertForApplication:identifierCopy withNotification:notificationCopy completionBlock:v12];
 
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     v10 = *(v16 + 24);
@@ -1476,30 +1476,30 @@ void __59__ICDeviceAccessManager_validateBundleIdentifierInstalled___block_invok
   return v10 & 1;
 }
 
-- (void)displayAlertForControlWithNotification:(id)a3 completionBlock:(id)a4
+- (void)displayAlertForControlWithNotification:(id)notification completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   error = 0;
-  v6 = CFUserNotificationCreate(*MEMORY[0x29EDB8ED8], 0.0, 0, &error, a3);
+  v6 = CFUserNotificationCreate(*MEMORY[0x29EDB8ED8], 0.0, 0, &error, notification);
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     CFUserNotificationReceiveResponse(v6, 0.0, &v8);
-    v5[2](v5, 1, v8);
+    blockCopy[2](blockCopy, 1, v8);
     CFRelease(v7);
   }
 }
 
-- (BOOL)captureUserIntentForControlWithBundleIdentifier:(id)a3 withNotification:(id)a4
+- (BOOL)captureUserIntentForControlWithBundleIdentifier:(id)identifier withNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  notificationCopy = notification;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (v6)
+  if (notificationCopy)
   {
     v7 = dispatch_semaphore_create(0);
     v8 = +[ICDeviceAccessManager sharedAccessManager];
@@ -1510,7 +1510,7 @@ void __59__ICDeviceAccessManager_validateBundleIdentifierInstalled___block_invok
     v14 = &v15;
     v9 = v7;
     v13 = v9;
-    [v8 displayAlertForControlWithNotification:v6 completionBlock:v12];
+    [v8 displayAlertForControlWithNotification:notificationCopy completionBlock:v12];
 
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     v10 = *(v16 + 24);

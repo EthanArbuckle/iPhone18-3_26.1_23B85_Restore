@@ -1,16 +1,16 @@
 @interface TetheringSwitchFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 inTableView:(id)a4 shouldSetSize:(BOOL)a5;
-- (TetheringSwitchFooterView)initWithSpecifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits inTableView:(id)view shouldSetSize:(BOOL)size;
+- (TetheringSwitchFooterView)initWithSpecifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation TetheringSwitchFooterView
 
-- (TetheringSwitchFooterView)initWithSpecifier:(id)a3
+- (TetheringSwitchFooterView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = TetheringSwitchFooterView;
   v5 = [(TetheringSwitchFooterView *)&v11 init];
@@ -20,26 +20,26 @@
     labels = v5->_labels;
     v5->_labels = v6;
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(TetheringSwitchFooterView *)v5 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TetheringSwitchFooterView *)v5 setBackgroundColor:clearColor];
 
-    v9 = [v4 propertyForKey:@"TextFooterInitialText"];
+    v9 = [specifierCopy propertyForKey:@"TextFooterInitialText"];
     [(TetheringSwitchFooterView *)v5 setText:v9];
   }
 
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(TetheringSwitchFooterView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  subviews = [(TetheringSwitchFooterView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -51,14 +51,14 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v26 + 1) + 8 * v9++) removeFromSuperview];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -69,8 +69,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = v4;
-  obj = [v4 componentsSeparatedByString:@"\n"];
+  v19 = textCopy;
+  obj = [textCopy componentsSeparatedByString:@"\n"];
   v10 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v10)
   {
@@ -91,8 +91,8 @@
         v16 = PreferencesTableViewFooterColor();
         [v15 setTextColor:v16];
 
-        v17 = [MEMORY[0x277D75348] clearColor];
-        [v15 setBackgroundColor:v17];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v15 setBackgroundColor:clearColor];
 
         [v15 setLineBreakMode:0];
         v18 = PreferencesTableViewFooterFont();
@@ -116,10 +116,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 inTableView:(id)a4 shouldSetSize:(BOOL)a5
+- (CGSize)sizeThatFits:(CGSize)fits inTableView:(id)view shouldSetSize:(BOOL)size
 {
-  v5 = a5;
-  width = a3.width;
+  sizeCopy = size;
+  width = fits.width;
   v38 = *MEMORY[0x277D85DE8];
   PreferencesTableViewCellLeftPad();
   v9 = v8;
@@ -152,15 +152,15 @@
 
         v22 = *(*(&v31 + 1) + 8 * i);
         [v22 frame];
-        v23 = [v22 text];
+        text = [v22 text];
         v35 = v19;
-        v24 = [v22 font];
-        v36 = v24;
+        font = [v22 font];
+        v36 = font;
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-        [v23 boundingRectWithSize:1 options:v25 attributes:0 context:{v16, 3.40282347e38}];
+        [text boundingRectWithSize:1 options:v25 attributes:0 context:{v16, 3.40282347e38}];
         v27 = v26;
 
-        if (v5)
+        if (sizeCopy)
         {
           v40.origin.x = v17;
           v40.origin.y = v20;
@@ -191,12 +191,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TetheringSwitchFooterView *)self superview];
-  [(TetheringSwitchFooterView *)self sizeThatFits:v6 inTableView:0 shouldSetSize:width, height];
+  height = fits.height;
+  width = fits.width;
+  superview = [(TetheringSwitchFooterView *)self superview];
+  [(TetheringSwitchFooterView *)self sizeThatFits:superview inTableView:0 shouldSetSize:width, height];
   v8 = v7;
   v10 = v9;
 
@@ -215,8 +215,8 @@
   [(TetheringSwitchFooterView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(TetheringSwitchFooterView *)self superview];
-  [(TetheringSwitchFooterView *)self sizeThatFits:v7 inTableView:1 shouldSetSize:v4, v6];
+  superview = [(TetheringSwitchFooterView *)self superview];
+  [(TetheringSwitchFooterView *)self sizeThatFits:superview inTableView:1 shouldSetSize:v4, v6];
 }
 
 @end

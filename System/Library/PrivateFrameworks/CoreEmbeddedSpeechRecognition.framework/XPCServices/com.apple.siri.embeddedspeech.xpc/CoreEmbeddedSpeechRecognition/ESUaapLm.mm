@@ -1,6 +1,6 @@
 @interface ESUaapLm
 - (ESUaapLm)init;
-- (id)readUaapLMsForLanguage:(id)a3 recognizer:(id)a4;
+- (id)readUaapLMsForLanguage:(id)language recognizer:(id)recognizer;
 - (void)dealloc;
 - (void)invalidate;
 - (void)registerForegroundBundleIdentifiersUpdate;
@@ -35,13 +35,13 @@
   [(ESUaapLm *)&v4 dealloc];
 }
 
-- (id)readUaapLMsForLanguage:(id)a3 recognizer:(id)a4
+- (id)readUaapLMsForLanguage:(id)language recognizer:(id)recognizer
 {
-  v6 = a3;
-  v39 = self;
-  v40 = a4;
-  v43 = v6;
-  if (![(NSString *)self->_language isEqualToString:v6])
+  languageCopy = language;
+  selfCopy = self;
+  recognizerCopy = recognizer;
+  v43 = languageCopy;
+  if (![(NSString *)self->_language isEqualToString:languageCopy])
   {
     [(ESUaapLm *)self invalidate];
   }
@@ -91,9 +91,9 @@ LABEL_5:
 
       v21 = [v20 stringByAppendingPathComponent:@"LM"];
 
-      v22 = [v21 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v21 stringByDeletingLastPathComponent];
 
-      if (v22)
+      if (stringByDeletingLastPathComponent)
       {
         v49 = 0;
         v50 = &v49;
@@ -106,14 +106,14 @@ LABEL_5:
         v48[2] = 0x2020000000;
         v48[3] = 0;
         v23 = +[NSFileManager defaultManager];
-        v24 = [v23 contentsOfDirectoryAtPath:v22 error:0];
+        v24 = [v23 contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:0];
         *buf = _NSConcreteStackBlock;
         *&buf[8] = 3221225472;
         *&buf[16] = sub_100007430;
         v57 = &unk_100054C20;
         v59 = v48;
         v60 = &v49;
-        v58 = v22;
+        v58 = stringByDeletingLastPathComponent;
         [v24 enumerateObjectsUsingBlock:buf];
 
         v25 = v50[5];
@@ -131,17 +131,17 @@ LABEL_5:
         v26 = [[_EARAppLmArtifact alloc] initWithPath:v25];
         if (v26)
         {
-          v27 = [v40 modelInfo];
-          v28 = [v27 version];
-          v29 = [v40 modelInfo];
-          v30 = [v29 language];
-          v31 = [v26 isAdaptableToSpeechModelVersion:v28 locale:v30];
+          modelInfo = [recognizerCopy modelInfo];
+          version = [modelInfo version];
+          modelInfo2 = [recognizerCopy modelInfo];
+          language = [modelInfo2 language];
+          v31 = [v26 isAdaptableToSpeechModelVersion:version locale:language];
 
           if (v31)
           {
-            v32 = [v26 loadLmHandle];
+            loadLmHandle = [v26 loadLmHandle];
             v33 = AFSiriLogContextSpeech;
-            if (v32)
+            if (loadLmHandle)
             {
               if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
               {
@@ -152,7 +152,7 @@ LABEL_5:
                 _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "%s UaaP: Loaded path=%@", buf, 0x16u);
               }
 
-              [v7 addObject:v32];
+              [v7 addObject:loadLmHandle];
             }
 
             else if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -200,8 +200,8 @@ LABEL_5:
     }
   }
 
-  language = v39->_language;
-  v39->_language = v43;
+  language = selfCopy->_language;
+  selfCopy->_language = v43;
 
   v37 = [v7 copy];
 

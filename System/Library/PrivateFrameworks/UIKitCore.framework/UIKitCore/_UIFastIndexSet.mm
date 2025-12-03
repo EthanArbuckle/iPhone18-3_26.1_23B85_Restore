@@ -1,19 +1,19 @@
 @interface _UIFastIndexSet
-+ (char)indexSetWithIndexesInRange:(uint64_t)a3;
++ (char)indexSetWithIndexesInRange:(uint64_t)range;
 + (id)indexSet;
-- (BOOL)isEqual:(id)a3;
-- (__n128)initWithIndex:(__n128 *)a1;
-- (char)initWithIndexesInRange:(uint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (__n128)initWithIndex:(__n128 *)index;
+- (char)initWithIndexesInRange:(uint64_t)range;
 - (id).cxx_construct;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int8x16_t)count;
 - (uint64_t)firstIndex;
-- (uint64_t)indexGreaterThanOrEqualToIndex:(uint16x8_t *)a1;
-- (unint64_t)containsIndex:(uint16x8_t *)a1;
+- (uint64_t)indexGreaterThanOrEqualToIndex:(uint16x8_t *)index;
+- (unint64_t)containsIndex:(uint16x8_t *)index;
 - (unint64_t)hash;
-- (unsigned)initWithIndexSet:(void *)a1;
-- (void)enumerateIndexesUsingBlock:(uint64_t)a1;
+- (unsigned)initWithIndexSet:(void *)set;
+- (void)enumerateIndexesUsingBlock:(uint64_t)block;
 @end
 
 @implementation _UIFastIndexSet
@@ -145,7 +145,7 @@
   block[1] = 3221225472;
   block[2] = __27___UIFastIndexSet_indexSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1080 != -1)
   {
     dispatch_once(&_MergedGlobals_1080, block);
@@ -156,15 +156,15 @@
   return v2;
 }
 
-- (__n128)initWithIndex:(__n128 *)a1
+- (__n128)initWithIndex:(__n128 *)index
 {
   v151 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (index)
   {
     v2 = a2;
     if (a2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v138.receiver = a1;
+      v138.receiver = index;
       v138.super_class = _UIFastIndexSet;
       v4 = [(__n128 *)&v138 init];
       v6 = v4;
@@ -431,8 +431,8 @@ LABEL_71:
           }
 
 LABEL_188:
-          a1 = v6;
-          v3 = a1;
+          index = v6;
+          indexCopy = index;
           goto LABEL_189;
         }
 
@@ -1017,31 +1017,31 @@ LABEL_49:
     }
   }
 
-  v3 = 0;
+  indexCopy = 0;
 LABEL_189:
 
-  return v3;
+  return indexCopy;
 }
 
-+ (char)indexSetWithIndexesInRange:(uint64_t)a3
++ (char)indexSetWithIndexesInRange:(uint64_t)range
 {
   v5 = objc_alloc(objc_opt_self());
-  v6 = [(_UIFastIndexSet *)v5 initWithIndexesInRange:a2, a3];
+  range = [(_UIFastIndexSet *)v5 initWithIndexesInRange:a2, range];
 
-  return v6;
+  return range;
 }
 
-- (char)initWithIndexesInRange:(uint64_t)a3
+- (char)initWithIndexesInRange:(uint64_t)range
 {
-  if (a1 && a2 != 0x7FFFFFFFFFFFFFFFLL)
+  if (self && a2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v36.receiver = a1;
+    v36.receiver = self;
     v36.super_class = _UIFastIndexSet;
     v6 = objc_msgSendSuper2(&v36, sel_init);
     v9 = v6;
     if (v6)
     {
-      v10 = a3 == 0;
+      v10 = range == 0;
     }
 
     else
@@ -1054,7 +1054,7 @@ LABEL_189:
       goto LABEL_9;
     }
 
-    v12 = a2 + a3;
+    v12 = a2 + range;
     if (a2 <= 0xFF && v12 <= 0xFF)
     {
       if (*(v6 + 16))
@@ -1164,8 +1164,8 @@ LABEL_189:
         *(v6 + 2) = v7;
         *(v6 + 6) = 2;
 LABEL_9:
-        a1 = v9;
-        v4 = a1;
+        self = v9;
+        selfCopy = self;
         goto LABEL_10;
       }
 
@@ -1183,20 +1183,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v4;
+  return selfCopy;
 }
 
-- (unsigned)initWithIndexSet:(void *)a1
+- (unsigned)initWithIndexSet:(void *)set
 {
-  if (!a1)
+  if (!set)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = set;
   v8.super_class = _UIFastIndexSet;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -1226,26 +1226,26 @@ LABEL_10:
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [_UIMutableFastIndexSet alloc];
 
   return [(_UIFastIndexSet *)v4 initWithIndexSet:?];
 }
 
-- (unint64_t)containsIndex:(uint16x8_t *)a1
+- (unint64_t)containsIndex:(uint16x8_t *)index
 {
   v2 = 0;
-  if (a1 && a2 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index && a2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = a1[4].i32[0];
+    v3 = index[4].i32[0];
     if (v3 != 2)
     {
       if (v3 == 1)
       {
-        v4 = a1[3].u64[0];
+        v4 = index[3].u64[0];
         v5 = vdupq_n_s16(a2);
-        v6 = __clz(__rbit64(*&vshrn_n_s16(vuzp1q_s8(vcgtq_u16(a1[1], v5), vcgtq_u16(a1[2], v5)), 4uLL))) >> 2;
+        v6 = __clz(__rbit64(*&vshrn_n_s16(vuzp1q_s8(vcgtq_u16(index[1], v5), vcgtq_u16(index[2], v5)), 4uLL))) >> 2;
         if (v6 < v4)
         {
           LOBYTE(v4) = v6;
@@ -1259,14 +1259,14 @@ LABEL_10:
           return 0;
         }
 
-        v4 = *(a1[1].i64 + ((a2 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> a2;
+        v4 = *(index[1].i64 + ((a2 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> a2;
       }
 
       return v4 & 1;
     }
 
-    v7 = a1[1].i64[0];
-    v8 = a1[1].i64[1];
+    v7 = index[1].i64[0];
+    v8 = index[1].i64[1];
     v9 = (v8 - v7) >> 3;
     if (v9 < 2)
     {
@@ -1306,12 +1306,12 @@ LABEL_10:
   return v2;
 }
 
-- (void)enumerateIndexesUsingBlock:(uint64_t)a1
+- (void)enumerateIndexesUsingBlock:(uint64_t)block
 {
-  if (a1)
+  if (block)
   {
-    v3 = (a1 + 16);
-    v4 = *(a1 + 64);
+    v3 = (block + 16);
+    v4 = *(block + 64);
     if (v4)
     {
       v5 = 0;
@@ -1319,7 +1319,7 @@ LABEL_10:
 
     else
     {
-      v5 = a1 + 16;
+      v5 = block + 16;
     }
 
     if (v4)
@@ -1327,8 +1327,8 @@ LABEL_10:
       if (v4 == 2)
       {
         v27 = 0;
-        v19 = *(a1 + 16);
-        v20 = *(a1 + 24);
+        v19 = *(block + 16);
+        v20 = *(block + 24);
         if (v19 != v20)
         {
           while (1)
@@ -1367,7 +1367,7 @@ LABEL_30:
       else if (v4 == 1)
       {
         v27 = 0;
-        v6 = *(a1 + 48);
+        v6 = *(block + 48);
         if (v6)
         {
           v7 = 0;
@@ -1773,7 +1773,7 @@ LABEL_31:
   return v14 + v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1782,7 +1782,7 @@ LABEL_31:
   }
 
   v5 = 0;
-  if (self && a3)
+  if (self && equal)
   {
     p_inOutIndexes = &self->_inOutIndexes;
     tail = self[1]._inOutIndexes.__impl_.__data.__tail;
@@ -1799,16 +1799,16 @@ LABEL_31:
     switch(tail.var1)
     {
       case 0:
-        v15 = *(a3 + 16);
+        v15 = *(equal + 16);
         if (!v15)
         {
-          v5 = vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_s64(*p_inOutIndexes, *(a3 + 1)), vceqq_s64(*(&self->_inOutIndexes.__impl_.__data.__tail + 1), *(a3 + 2)))))) ^ 1;
+          v5 = vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_s64(*p_inOutIndexes, *(equal + 1)), vceqq_s64(*(&self->_inOutIndexes.__impl_.__data.__tail + 1), *(equal + 2)))))) ^ 1;
           return v5 & 1;
         }
 
         if (v15 == 1)
         {
-          v16 = a3 + 16;
+          v16 = equal + 16;
         }
 
         else
@@ -1905,7 +1905,7 @@ LABEL_137:
           v32 = v15 == 2;
           if (v15 == 2)
           {
-            v33 = a3 + 16;
+            v33 = equal + 16;
           }
 
           else
@@ -1990,7 +1990,7 @@ LABEL_142:
 
         goto LABEL_135;
       case 2:
-        v23 = *(a3 + 16);
+        v23 = *(equal + 16);
         if (v23)
         {
           v24 = 0;
@@ -1998,7 +1998,7 @@ LABEL_142:
 
         else
         {
-          v24 = (a3 + 16);
+          v24 = (equal + 16);
         }
 
         if (v23)
@@ -2009,7 +2009,7 @@ LABEL_142:
             {
               v25 = self->_inOutIndexes.__impl_.__data.__head.__value._chunks[0];
               v26 = self->_inOutIndexes.__impl_.__data.__head.__value._chunks[1];
-              v27 = *(a3 + 6);
+              v27 = *(equal + 6);
               if (v27 == (v26 - v25) >> 3)
               {
                 if (v25 == v26)
@@ -2021,8 +2021,8 @@ LABEL_152:
                 }
 
                 v28 = 0;
-                v30 = *(a3 + 1);
-                v29 = *(a3 + 2);
+                v30 = *(equal + 1);
+                v29 = *(equal + 2);
                 while (v27 != v28)
                 {
                   v31 = *v25;
@@ -2048,8 +2048,8 @@ LABEL_152:
 
           v61 = self->_inOutIndexes.__impl_.__data.__head.__value._chunks[0];
           v62 = self->_inOutIndexes.__impl_.__data.__head.__value._chunks[1] - v61;
-          v63 = *(a3 + 2);
-          if (v62 != *(a3 + 3) - v63)
+          v63 = *(equal + 2);
+          if (v62 != *(equal + 3) - v63)
           {
             goto LABEL_135;
           }
@@ -2135,14 +2135,14 @@ LABEL_102:
 
         break;
       case 1:
-        v9 = *(a3 + 16);
+        v9 = *(equal + 16);
         if (v9)
         {
           if (v9 == 2)
           {
             isa = self[1].super.isa;
-            v38 = *(a3 + 2);
-            v39 = *(a3 + 3);
+            v38 = *(equal + 2);
+            v39 = *(equal + 3);
             if (isa == (v39 - v38))
             {
               v56 = 0;
@@ -2185,7 +2185,7 @@ LABEL_145:
 
           else if (v9 == 1)
           {
-            v10 = *(a3 + 6);
+            v10 = *(equal + 6);
             v11 = self[1].super.isa;
             if (v10 >= v11)
             {
@@ -2194,10 +2194,10 @@ LABEL_145:
 
             else
             {
-              v12 = *(a3 + 6);
+              v12 = *(equal + 6);
             }
 
-            v13 = __clz(__rbit64(*&vshrn_n_s16(vmvnq_s8(vuzp1q_s8(vceqq_s16(*&self->_inOutIndexes.__impl_.__data.__dummy, *(a3 + 1)), vceqq_s16(*(&self->_inOutIndexes.__impl_.__data.__tail + 1), *(a3 + 2)))), 4uLL))) >> 2;
+            v13 = __clz(__rbit64(*&vshrn_n_s16(vmvnq_s8(vuzp1q_s8(vceqq_s16(*&self->_inOutIndexes.__impl_.__data.__dummy, *(equal + 1)), vceqq_s16(*(&self->_inOutIndexes.__impl_.__data.__tail + 1), *(equal + 2)))), 4uLL))) >> 2;
             if (v13 < v12)
             {
               v12 = v13;
@@ -2220,7 +2220,7 @@ LABEL_135:
         v40 = 0;
         v41 = self[1].super.isa;
         v42 = 256;
-        v43 = (a3 + 16);
+        v43 = (equal + 16);
         while (1)
         {
           v44 = *v43++;
@@ -2267,7 +2267,7 @@ LABEL_86:
               v70 = -64 * v68;
               while (1)
               {
-                v71 = __clz(__rbit64((*(a3 + v68 + 2) ^ -!v64) & (-1 << v69)));
+                v71 = __clz(__rbit64((*(equal + v68 + 2) ^ -!v64) & (-1 << v69)));
                 if (v71 < 0x40)
                 {
                   break;
@@ -2317,9 +2317,9 @@ LABEL_134:
   return v5 & 1;
 }
 
-- (uint64_t)indexGreaterThanOrEqualToIndex:(uint16x8_t *)a1
+- (uint64_t)indexGreaterThanOrEqualToIndex:(uint16x8_t *)index
 {
-  if (!a1)
+  if (!index)
   {
     return 0;
   }
@@ -2329,21 +2329,21 @@ LABEL_134:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = a1[4].i32[0];
+  v3 = index[4].i32[0];
   if (v3)
   {
     if (v3 != 2)
     {
       if (v3 == 1)
       {
-        v4 = a1[3].u64[0];
-        v5 = a1[2];
+        v4 = index[3].u64[0];
+        v5 = index[2];
         v6 = vdupq_n_s16(a2);
-        v7 = __clz(__rbit64(*&vshrn_n_s16(vuzp1q_s8(vcgtq_u16(a1[1], v6), vcgtq_u16(v5, v6)), 4uLL)));
+        v7 = __clz(__rbit64(*&vshrn_n_s16(vuzp1q_s8(vcgtq_u16(index[1], v6), vcgtq_u16(v5, v6)), 4uLL)));
         v8 = v7 >> 2;
         if (v7 >> 2 >= v4)
         {
-          v9 = a1[3].u64[0];
+          v9 = index[3].u64[0];
         }
 
         else
@@ -2355,7 +2355,7 @@ LABEL_134:
         {
           if (v4 > v8)
           {
-            v22[0] = a1[1];
+            v22[0] = index[1];
             v22[1] = v5;
             return *(v22 + (v9 & 0xF));
           }
@@ -2369,8 +2369,8 @@ LABEL_134:
       return 0;
     }
 
-    v15 = a1[1].i64[0];
-    v14 = a1[1].i64[1];
+    v15 = index[1].i64[0];
+    v14 = index[1].i64[1];
     v16 = (v14 - v15) >> 3;
     if (v16 < 2)
     {
@@ -2420,7 +2420,7 @@ LABEL_134:
     v12 = a2 >> 6;
     while (1)
     {
-      v13 = __clz(__rbit64(a1[1].i64[v12] & (-1 << v10)));
+      v13 = __clz(__rbit64(index[1].i64[v12] & (-1 << v10)));
       if (v13 < 0x40)
       {
         break;

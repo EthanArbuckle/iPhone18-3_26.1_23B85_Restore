@@ -1,35 +1,35 @@
 @interface CLSSceneConfidenceThresholdHelper
-- (CLSSceneConfidenceThresholdHelper)initWithSceneNames:(id)a3 thresholdType:(unint64_t)a4;
-- (id)confidenceThresholdBySceneIdentifierWithCurationModel:(id)a3;
-- (id)initForEntityNetWithSceneNames:(id)a3 thresholdType:(unint64_t)a4;
-- (void)_commonInitWithSceneNames:(id)a3 thresholdType:(unint64_t)a4;
+- (CLSSceneConfidenceThresholdHelper)initWithSceneNames:(id)names thresholdType:(unint64_t)type;
+- (id)confidenceThresholdBySceneIdentifierWithCurationModel:(id)model;
+- (id)initForEntityNetWithSceneNames:(id)names thresholdType:(unint64_t)type;
+- (void)_commonInitWithSceneNames:(id)names thresholdType:(unint64_t)type;
 @end
 
 @implementation CLSSceneConfidenceThresholdHelper
 
-- (id)confidenceThresholdBySceneIdentifierWithCurationModel:(id)a3
+- (id)confidenceThresholdBySceneIdentifierWithCurationModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   os_unfair_lock_lock(&self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifierLock);
   if (self->_useEntityNet)
   {
-    [v4 entityNetModel];
+    [modelCopy entityNetModel];
   }
 
   else
   {
-    [v4 sceneModel];
+    [modelCopy sceneModel];
   }
   v5 = ;
 
-  v6 = [v5 identifier];
-  if (v6)
+  identifier = [v5 identifier];
+  if (identifier)
   {
-    v7 = [(NSMutableDictionary *)self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:identifier];
     if (!v7)
     {
       v7 = [v5 confidenceThresholdBySceneIdentifierForSceneNames:self->_sceneNames withThresholdType:self->_thresholdType];
-      [(NSMutableDictionary *)self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier setObject:v7 forKeyedSubscript:identifier];
     }
   }
 
@@ -43,11 +43,11 @@
   return v7;
 }
 
-- (void)_commonInitWithSceneNames:(id)a3 thresholdType:(unint64_t)a4
+- (void)_commonInitWithSceneNames:(id)names thresholdType:(unint64_t)type
 {
-  objc_storeStrong(&self->_sceneNames, a3);
-  v7 = a3;
-  self->_thresholdType = a4;
+  objc_storeStrong(&self->_sceneNames, names);
+  namesCopy = names;
+  self->_thresholdType = type;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   confidenceThresholdBySceneIdentifierBySceneModelIdentifier = self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier;
   self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifier = v8;
@@ -55,32 +55,32 @@
   self->_confidenceThresholdBySceneIdentifierBySceneModelIdentifierLock._os_unfair_lock_opaque = 0;
 }
 
-- (id)initForEntityNetWithSceneNames:(id)a3 thresholdType:(unint64_t)a4
+- (id)initForEntityNetWithSceneNames:(id)names thresholdType:(unint64_t)type
 {
-  v6 = a3;
+  namesCopy = names;
   v10.receiver = self;
   v10.super_class = CLSSceneConfidenceThresholdHelper;
   v7 = [(CLSSceneConfidenceThresholdHelper *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CLSSceneConfidenceThresholdHelper *)v7 _commonInitWithSceneNames:v6 thresholdType:a4];
+    [(CLSSceneConfidenceThresholdHelper *)v7 _commonInitWithSceneNames:namesCopy thresholdType:type];
     v8->_useEntityNet = 1;
   }
 
   return v8;
 }
 
-- (CLSSceneConfidenceThresholdHelper)initWithSceneNames:(id)a3 thresholdType:(unint64_t)a4
+- (CLSSceneConfidenceThresholdHelper)initWithSceneNames:(id)names thresholdType:(unint64_t)type
 {
-  v6 = a3;
+  namesCopy = names;
   v10.receiver = self;
   v10.super_class = CLSSceneConfidenceThresholdHelper;
   v7 = [(CLSSceneConfidenceThresholdHelper *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CLSSceneConfidenceThresholdHelper *)v7 _commonInitWithSceneNames:v6 thresholdType:a4];
+    [(CLSSceneConfidenceThresholdHelper *)v7 _commonInitWithSceneNames:namesCopy thresholdType:type];
     v8->_useEntityNet = 0;
   }
 

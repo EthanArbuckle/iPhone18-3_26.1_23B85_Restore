@@ -1,18 +1,18 @@
 @interface PXAlertAction
 - (PXAlertAction)init;
-- (PXAlertAction)initWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5;
+- (PXAlertAction)initWithTitle:(id)title style:(int64_t)style action:(id)action;
 @end
 
 @implementation PXAlertAction
 
-- (PXAlertAction)initWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5
+- (PXAlertAction)initWithTitle:(id)title style:(int64_t)style action:(id)action
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  titleCopy = title;
+  actionCopy = action;
+  if (!titleCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXAlert.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"title != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAlert.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"title != nil"}];
   }
 
   v18.receiver = self;
@@ -20,12 +20,12 @@
   v11 = [(PXAlertAction *)&v18 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v11->_style = a4;
-    v14 = [v10 copy];
+    v11->_style = style;
+    v14 = [actionCopy copy];
     action = v11->_action;
     v11->_action = v14;
   }
@@ -35,8 +35,8 @@
 
 - (PXAlertAction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAlert.m" lineNumber:371 description:{@"%s is not available as initializer", "-[PXAlertAction init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAlert.m" lineNumber:371 description:{@"%s is not available as initializer", "-[PXAlertAction init]"}];
 
   abort();
 }

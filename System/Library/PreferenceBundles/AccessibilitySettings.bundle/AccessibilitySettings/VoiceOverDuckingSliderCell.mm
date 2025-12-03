@@ -1,42 +1,42 @@
 @interface VoiceOverDuckingSliderCell
 - (double)_currentDuckingValue;
 - (id)accessibilityValue;
-- (void)_setCurrentDuckingValue:(double)a3;
-- (void)_updateRightLabelWithValue:(double)a3;
-- (void)accessibilityIncrementOrDecrement:(BOOL)a3;
-- (void)handleSliderBeingDragged:(id)a3;
-- (void)handleSliderDidFinishDrag:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)_setCurrentDuckingValue:(double)value;
+- (void)_updateRightLabelWithValue:(double)value;
+- (void)accessibilityIncrementOrDecrement:(BOOL)decrement;
+- (void)handleSliderBeingDragged:(id)dragged;
+- (void)handleSliderDidFinishDrag:(id)drag;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation VoiceOverDuckingSliderCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = VoiceOverDuckingSliderCell;
-  [(VoiceOverDuckingSliderCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(VoiceOverDuckingSliderCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(VoiceOverDuckingSliderCell *)self initialValue];
   [(VoiceOverDuckingSliderCell *)self _updateRightLabelWithValue:?];
 }
 
-- (void)_updateRightLabelWithValue:(double)a3
+- (void)_updateRightLabelWithValue:(double)value
 {
   v5 = AXFormatFloatWithPercentage();
   [(VoiceOverDuckingSliderCell *)self setLabelText:v5];
 
-  v6 = [(VoiceOverDuckingSliderCell *)self slider];
+  slider = [(VoiceOverDuckingSliderCell *)self slider];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VoiceOverDuckingSliderCell *)self slider];
+    slider2 = [(VoiceOverDuckingSliderCell *)self slider];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __57__VoiceOverDuckingSliderCell__updateRightLabelWithValue___block_invoke;
     v9[3] = &__block_descriptor_40_e15___NSString_8__0l;
-    *&v9[4] = a3;
-    [v8 _setAccessibilityValueBlock:v9];
+    *&v9[4] = value;
+    [slider2 _setAccessibilityValueBlock:v9];
   }
 }
 
@@ -56,45 +56,45 @@
   return v4;
 }
 
-- (void)_setCurrentDuckingValue:(double)a3
+- (void)_setCurrentDuckingValue:(double)value
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setVoiceOverMediaDuckingAmount:a3];
+  [v4 setVoiceOverMediaDuckingAmount:value];
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
-  [v4 value];
-  [v4 setValue:0 animated:?];
-  [v4 value];
+  draggedCopy = dragged;
+  [draggedCopy value];
+  [draggedCopy setValue:0 animated:?];
+  [draggedCopy value];
   v6 = v5;
 
   [(VoiceOverDuckingSliderCell *)self _updateRightLabelWithValue:v6];
 }
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  v8 = a3;
-  [v8 value];
+  dragCopy = drag;
+  [dragCopy value];
   v5 = v4;
   [(VoiceOverDuckingSliderCell *)self _currentDuckingValue];
   if (vabdd_f64(v5, v6) >= 0.001)
   {
-    [v8 value];
+    [dragCopy value];
     [(VoiceOverDuckingSliderCell *)self _setCurrentDuckingValue:v7];
   }
 }
 
-- (void)accessibilityIncrementOrDecrement:(BOOL)a3
+- (void)accessibilityIncrementOrDecrement:(BOOL)decrement
 {
-  v3 = a3;
-  v5 = [(VoiceOverDuckingSliderCell *)self slider];
-  [v5 value];
+  decrementCopy = decrement;
+  slider = [(VoiceOverDuckingSliderCell *)self slider];
+  [slider value];
   v7 = v6;
 
   v8 = -0.05;
-  if (v3)
+  if (decrementCopy)
   {
     v8 = 0.05;
   }
@@ -117,16 +117,16 @@
   }
 
   v12 = v11;
-  v13 = [(VoiceOverDuckingSliderCell *)self slider];
+  slider2 = [(VoiceOverDuckingSliderCell *)self slider];
   *&v14 = v12;
-  [v13 setValue:0 animated:v14];
+  [slider2 setValue:0 animated:v14];
 
-  v15 = [(VoiceOverDuckingSliderCell *)self slider];
-  [v15 value];
+  slider3 = [(VoiceOverDuckingSliderCell *)self slider];
+  [slider3 value];
   [(VoiceOverDuckingSliderCell *)self _updateRightLabelWithValue:v16];
 
-  v18 = [(VoiceOverDuckingSliderCell *)self slider];
-  [v18 value];
+  slider4 = [(VoiceOverDuckingSliderCell *)self slider];
+  [slider4 value];
   [(VoiceOverDuckingSliderCell *)self _setCurrentDuckingValue:v17];
 }
 

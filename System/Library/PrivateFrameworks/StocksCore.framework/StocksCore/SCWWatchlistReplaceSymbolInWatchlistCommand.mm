@@ -1,31 +1,31 @@
 @interface SCWWatchlistReplaceSymbolInWatchlistCommand
-- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithCoder:(id)a3;
-- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithOldSymbol:(id)a3 replacementSymbol:(id)a4 watchlistIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithCoder:(id)coder;
+- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithOldSymbol:(id)symbol replacementSymbol:(id)replacementSymbol watchlistIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWWatchlistReplaceSymbolInWatchlistCommand
 
-- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithOldSymbol:(id)a3 replacementSymbol:(id)a4 watchlistIdentifier:(id)a5
+- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithOldSymbol:(id)symbol replacementSymbol:(id)replacementSymbol watchlistIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  symbolCopy = symbol;
+  replacementSymbolCopy = replacementSymbol;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = SCWWatchlistReplaceSymbolInWatchlistCommand;
   v11 = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [symbolCopy copy];
     oldSymbol = v11->_oldSymbol;
     v11->_oldSymbol = v12;
 
-    v14 = [v9 copy];
+    v14 = [replacementSymbolCopy copy];
     replacementSymbol = v11->_replacementSymbol;
     v11->_replacementSymbol = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     watchlistIdentifier = v11->_watchlistIdentifier;
     v11->_watchlistIdentifier = v16;
   }
@@ -33,17 +33,17 @@
   return v11;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__SCWWatchlistReplaceSymbolInWatchlistCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v4 = a3;
+  zoneCopy = zone;
   v5 = _Block_copy(aBlock);
-  v6 = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self watchlistIdentifier];
-  [v4 createOrUpdateRecordWithName:v6 recordType:@"Watchlist" modifyBlock:v5];
+  watchlistIdentifier = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self watchlistIdentifier];
+  [zoneCopy createOrUpdateRecordWithName:watchlistIdentifier recordType:@"Watchlist" modifyBlock:v5];
 }
 
 void __63__SCWWatchlistReplaceSymbolInWatchlistCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -69,12 +69,12 @@ void __63__SCWWatchlistReplaceSymbolInWatchlistCommand_executeWithZone___block_i
   [v11 setObject:v10 forKeyedSubscript:@"symbols"];
 }
 
-- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithCoder:(id)a3
+- (SCWWatchlistReplaceSymbolInWatchlistCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oldSymbol"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replacementSymbol"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oldSymbol"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replacementSymbol"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
 
   if (v5)
   {
@@ -88,31 +88,31 @@ void __63__SCWWatchlistReplaceSymbolInWatchlistCommand_executeWithZone___block_i
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self initWithOldSymbol:v5 replacementSymbol:v6 watchlistIdentifier:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self oldSymbol];
-  [v4 encodeObject:v5 forKey:@"oldSymbol"];
+  coderCopy = coder;
+  oldSymbol = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self oldSymbol];
+  [coderCopy encodeObject:oldSymbol forKey:@"oldSymbol"];
 
-  v6 = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self replacementSymbol];
-  [v4 encodeObject:v6 forKey:@"replacementSymbol"];
+  replacementSymbol = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self replacementSymbol];
+  [coderCopy encodeObject:replacementSymbol forKey:@"replacementSymbol"];
 
-  v7 = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self watchlistIdentifier];
-  [v4 encodeObject:v7 forKey:@"watchlistIdentifier"];
+  watchlistIdentifier = [(SCWWatchlistReplaceSymbolInWatchlistCommand *)self watchlistIdentifier];
+  [coderCopy encodeObject:watchlistIdentifier forKey:@"watchlistIdentifier"];
 }
 
 @end

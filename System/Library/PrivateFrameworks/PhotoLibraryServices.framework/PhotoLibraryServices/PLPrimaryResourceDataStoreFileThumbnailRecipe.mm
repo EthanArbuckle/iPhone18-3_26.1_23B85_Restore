@@ -1,26 +1,26 @@
 @interface PLPrimaryResourceDataStoreFileThumbnailRecipe
-- (CGSize)sizeForAssetWidth:(int64_t)a3 height:(int64_t)a4;
-- (PLPrimaryResourceDataStoreFileThumbnailRecipe)initWithRecipeID:(unsigned int)a3;
+- (CGSize)sizeForAssetWidth:(int64_t)width height:(int64_t)height;
+- (PLPrimaryResourceDataStoreFileThumbnailRecipe)initWithRecipeID:(unsigned int)d;
 - (double)_longSideTargetLength;
 - (double)_shortSideTargetLength;
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4;
-- (id)expectedFileURLForVersion:(unsigned int)a3 asset:(id)a4;
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version;
+- (id)expectedFileURLForVersion:(unsigned int)version asset:(id)asset;
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
 @end
 
 @implementation PLPrimaryResourceDataStoreFileThumbnailRecipe
 
-- (CGSize)sizeForAssetWidth:(int64_t)a3 height:(int64_t)a4
+- (CGSize)sizeForAssetWidth:(int64_t)width height:(int64_t)height
 {
-  v5 = a3;
-  v6 = a4;
+  widthCopy = width;
+  heightCopy = height;
   if ([(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self _isAspectShortSizing])
   {
     [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self _shortSideTargetLength];
     v8 = v7;
     v9 = objc_opt_class();
 
-    [v9 scaleOriginalSize:v5 toShortSideTarget:v6 maxLongSideLength:{v8, v8 * 5.0}];
+    [v9 scaleOriginalSize:widthCopy toShortSideTarget:heightCopy maxLongSideLength:{v8, v8 * 5.0}];
   }
 
   else
@@ -29,7 +29,7 @@
     v13 = v12;
     v14 = objc_opt_class();
 
-    [v14 scaleOriginalSize:v5 toLongSideTarget:{v6, v13}];
+    [v14 scaleOriginalSize:widthCopy toLongSideTarget:{heightCopy, v13}];
   }
 
   result.height = v11;
@@ -37,35 +37,35 @@
   return result;
 }
 
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
   v45[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  optionsCopy = options;
   v11 = MEMORY[0x1E695DFA8];
-  v12 = a6;
+  completionCopy = completion;
   v13 = [v11 set];
-  v14 = [v9 assetID];
-  v15 = [v14 libraryID];
+  assetID = [assetCopy assetID];
+  libraryID = [assetID libraryID];
 
-  v16 = [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self supportedVersionsForLocalResourceGeneration];
-  v40 = v10;
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v10, "version")}];
-  LODWORD(v10) = [v16 containsObject:v17];
+  supportedVersionsForLocalResourceGeneration = [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self supportedVersionsForLocalResourceGeneration];
+  v40 = optionsCopy;
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(optionsCopy, "version")}];
+  LODWORD(optionsCopy) = [supportedVersionsForLocalResourceGeneration containsObject:v17];
 
-  v38 = v15;
-  if (v10)
+  v38 = libraryID;
+  if (optionsCopy)
   {
     if (PLIsAssetsd())
     {
-      v18 = -[PLPrimaryResourceDataStoreFileThumbnailRecipe chooseIngredientsFrom:version:](self, "chooseIngredientsFrom:version:", v9, [v40 version]);
+      v18 = -[PLPrimaryResourceDataStoreFileThumbnailRecipe chooseIngredientsFrom:version:](self, "chooseIngredientsFrom:version:", assetCopy, [v40 version]);
       v19 = [v18 objectForKeyedSubscript:@"Image"];
 
       if (v19)
       {
-        v20 = [v19 dataStoreKey];
-        v21 = [v9 assetID];
-        v22 = [v20 fileURLForAssetID:v21];
+        dataStoreKey = [v19 dataStoreKey];
+        assetID2 = [assetCopy assetID];
+        v22 = [dataStoreKey fileURLForAssetID:assetID2];
 
         if (v22)
         {
@@ -84,14 +84,14 @@
         v23 = 0;
       }
 
-      [v9 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:v23 forceSRGBConversion:0];
-      if ([v9 hasAllThumbs])
+      [assetCopy generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:v23 forceSRGBConversion:0];
+      if ([assetCopy hasAllThumbs])
       {
-        v27 = [PLResourceGenerator fileAndTableBackedThumbnailManagerRecipesForLibraryID:v15];
+        v27 = [PLResourceGenerator fileAndTableBackedThumbnailManagerRecipesForLibraryID:libraryID];
         v29 = [v27 set];
         [v13 unionSet:v29];
 
-        if ([v9 hasAdjustments])
+        if ([assetCopy hasAdjustments])
         {
           v30 = 2;
         }
@@ -102,14 +102,14 @@
         }
 
         v31 = [PLResourceRecipe recipeFromID:65737];
-        v32 = [PLResourceInstaller onDemand_installPrimaryImageResourceWithRecipe:v31 version:v30 forAsset:v9];
+        v32 = [PLResourceInstaller onDemand_installPrimaryImageResourceWithRecipe:v31 version:v30 forAsset:assetCopy];
         if (v32)
         {
           [v13 addObject:v31];
         }
 
         v25 = [PLResourceRecipe recipeFromID:65741];
-        v33 = [PLResourceInstaller onDemand_installPrimaryImageResourceWithRecipe:v25 version:v30 forAsset:v9];
+        v33 = [PLResourceInstaller onDemand_installPrimaryImageResourceWithRecipe:v25 version:v30 forAsset:assetCopy];
         if (v33)
         {
           [v13 addObject:v25];
@@ -144,7 +144,7 @@
   else
   {
     v24 = *MEMORY[0x1E69BFF48];
-    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:47004 userInfo:{0, v15}];
+    v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:47004 userInfo:{0, libraryID}];
     if (PLIsAssetsd())
     {
       goto LABEL_25;
@@ -166,19 +166,19 @@ LABEL_24:
 
   v25 = v28;
 LABEL_25:
-  v36 = [v9 managedObjectContext];
-  v37 = [MEMORY[0x1E695DFB8] orderedSet];
-  v12[2](v12, v36, v25, v13, v37, 0);
+  managedObjectContext = [assetCopy managedObjectContext];
+  orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+  completionCopy[2](completionCopy, managedObjectContext, v25, v13, orderedSet, 0);
 }
 
-- (id)expectedFileURLForVersion:(unsigned int)a3 asset:(id)a4
+- (id)expectedFileURLForVersion:(unsigned int)version asset:(id)asset
 {
   v5 = MEMORY[0x1E69BF308];
-  v6 = a4;
-  v7 = [v6 thumbnailIdentifier];
-  v8 = [v6 pathManager];
+  assetCopy = asset;
+  thumbnailIdentifier = [assetCopy thumbnailIdentifier];
+  pathManager = [assetCopy pathManager];
 
-  v9 = [v5 thumbnailPathForThumbIdentifier:v7 withPathManager:v8 recipeID:-[PLPrimaryResourceDataStoreFileThumbnailRecipe recipeID](self forDelete:{"recipeID"), 0}];
+  v9 = [v5 thumbnailPathForThumbIdentifier:thumbnailIdentifier withPathManager:pathManager recipeID:-[PLPrimaryResourceDataStoreFileThumbnailRecipe recipeID](self forDelete:{"recipeID"), 0}];
 
   if (v9)
   {
@@ -193,14 +193,14 @@ LABEL_25:
   return v10;
 }
 
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version
 {
-  v4 = *&a4;
+  v4 = *&version;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self supportedVersionsForLocalResourceGeneration];
+  fromCopy = from;
+  supportedVersionsForLocalResourceGeneration = [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)self supportedVersionsForLocalResourceGeneration];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-  v9 = [v7 containsObject:v8];
+  v9 = [supportedVersionsForLocalResourceGeneration containsObject:v8];
 
   if (!v9)
   {
@@ -210,12 +210,12 @@ LABEL_25:
 
   v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
   [v10 addIndex:0];
-  if ([v6 isRAWPlusJPEGWithRAWOnTop])
+  if ([fromCopy isRAWPlusJPEGWithRAWOnTop])
   {
     [v10 addIndex:4];
   }
 
-  if ([v6 hasAdjustments])
+  if ([fromCopy hasAdjustments])
   {
     v11 = 2;
   }
@@ -225,7 +225,7 @@ LABEL_25:
     v11 = 0;
   }
 
-  [v6 resourcesSortedByQualityWithOptions:1];
+  [fromCopy resourcesSortedByQualityWithOptions:1];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -262,10 +262,10 @@ LABEL_35:
       v17 = *(*(&v31 + 1) + 8 * i);
       if ([v10 containsIndex:{objc_msgSend(v17, "resourceType")}] && objc_msgSend(v17, "version") == v11 && objc_msgSend(v17, "localAvailability") >= 1)
       {
-        v18 = v6;
-        if ([v6 isRAWPlusJPEGWithRAWOnTop] && (objc_msgSend(v17, "isDerivative") & 1) == 0 && (objc_msgSend(v17, "uniformTypeIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isPrimaryImageFormat"), v19, (v20 & 1) != 0))
+        v18 = fromCopy;
+        if ([fromCopy isRAWPlusJPEGWithRAWOnTop] && (objc_msgSend(v17, "isDerivative") & 1) == 0 && (objc_msgSend(v17, "uniformTypeIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isPrimaryImageFormat"), v19, (v20 & 1) != 0))
         {
-          v6 = v18;
+          fromCopy = v18;
         }
 
         else
@@ -275,20 +275,20 @@ LABEL_35:
             v25 = v17;
 
             v30 = v25;
-            v6 = v18;
+            fromCopy = v18;
             goto LABEL_31;
           }
 
-          v21 = [v17 recipeID];
-          v22 = v21;
-          if (v21 == 65938 || v21 == 65737)
+          recipeID = [v17 recipeID];
+          v22 = recipeID;
+          if (recipeID == 65938 || recipeID == 65737)
           {
             v23 = v17;
 
             v30 = v23;
           }
 
-          v6 = v18;
+          fromCopy = v18;
           if (v22 == 65737 || v22 == 65938)
           {
             goto LABEL_31;
@@ -332,9 +332,9 @@ LABEL_39:
   return v24;
 }
 
-- (PLPrimaryResourceDataStoreFileThumbnailRecipe)initWithRecipeID:(unsigned int)a3
+- (PLPrimaryResourceDataStoreFileThumbnailRecipe)initWithRecipeID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v9.receiver = self;
   v9.super_class = PLPrimaryResourceDataStoreFileThumbnailRecipe;
   v5 = [(PLPrimaryResourceDataStoreFileThumbnailRecipe *)&v9 init];
@@ -343,8 +343,8 @@ LABEL_39:
     v6 = [objc_opt_class() classFromRecipeID:v3];
     if (v6 != objc_opt_class())
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreFileThumbnailRecipe.m" lineNumber:85 description:@"wrong recipe class passed to recipe initializer."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreFileThumbnailRecipe.m" lineNumber:85 description:@"wrong recipe class passed to recipe initializer."];
     }
 
     *(&v5->super._recipeID + 1) = v3;

@@ -1,21 +1,21 @@
 @interface HFHomeSettingsVisibilityArbitrator
-+ (id)homeManagerConfigurationWithExpandedOptions:(BOOL)a3;
++ (id)homeManagerConfigurationWithExpandedOptions:(BOOL)options;
 + (void)initialize;
 - (HFHomeSettingsVisibilityArbitrator)init;
-- (void)_queryHomeAppInstallStateWithCompletion:(id)a3;
-- (void)_reloadVisibilityStateIncludingInstallState:(BOOL)a3;
+- (void)_queryHomeAppInstallStateWithCompletion:(id)completion;
+- (void)_reloadVisibilityStateIncludingInstallState:(BOOL)state;
 - (void)_startListeningForManagedConfigurationChanges;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)setVisibilityState:(unint64_t)a3;
+- (void)setVisibilityState:(unint64_t)state;
 @end
 
 @implementation HFHomeSettingsVisibilityArbitrator
 
-+ (id)homeManagerConfigurationWithExpandedOptions:(BOOL)a3
++ (id)homeManagerConfigurationWithExpandedOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 4075;
   }
@@ -34,7 +34,7 @@
 
 + (void)initialize
 {
-  v2 = [a1 homeManagerConfigurationWithExpandedOptions:0];
+  v2 = [self homeManagerConfigurationWithExpandedOptions:0];
   [HFHomeKitDispatcher setConfiguration:v2];
 }
 
@@ -47,8 +47,8 @@
   if (v2)
   {
     v2->_visibilityState = 0;
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v4 addObserver:v3];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v3];
 
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
     [v5 addHomeManagerObserver:v3];
@@ -99,25 +99,25 @@ void __42__HFHomeSettingsVisibilityArbitrator_init__block_invoke_2(uint64_t a1)
   [(HFHomeSettingsVisibilityArbitrator *)&v3 dealloc];
 }
 
-- (void)setVisibilityState:(unint64_t)a3
+- (void)setVisibilityState:(unint64_t)state
 {
-  if (self->_visibilityState != a3)
+  if (self->_visibilityState != state)
   {
-    self->_visibilityState = a3;
-    v5 = [(HFHomeSettingsVisibilityArbitrator *)self visibilityStateChangeHandler];
+    self->_visibilityState = state;
+    visibilityStateChangeHandler = [(HFHomeSettingsVisibilityArbitrator *)self visibilityStateChangeHandler];
 
-    if (v5)
+    if (visibilityStateChangeHandler)
     {
-      v6 = [(HFHomeSettingsVisibilityArbitrator *)self visibilityStateChangeHandler];
-      v6[2](v6, a3);
+      visibilityStateChangeHandler2 = [(HFHomeSettingsVisibilityArbitrator *)self visibilityStateChangeHandler];
+      visibilityStateChangeHandler2[2](visibilityStateChangeHandler2, state);
     }
   }
 }
 
-- (void)_reloadVisibilityStateIncludingInstallState:(BOOL)a3
+- (void)_reloadVisibilityStateIncludingInstallState:(BOOL)state
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!state)
   {
     [(HFHomeSettingsVisibilityArbitrator *)self setHomesConfigured:CFPreferencesGetAppBooleanValue(@"kHomesConfigured", @"com.apple.homed", 0) != 0];
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"kIncomingInvitesPresent", @"com.apple.homed", 0);
@@ -132,7 +132,7 @@ void __42__HFHomeSettingsVisibilityArbitrator_init__block_invoke_2(uint64_t a1)
       v21 = 2112;
       v22 = v9;
       v23 = 1024;
-      v24 = [(HFHomeSettingsVisibilityArbitrator *)self homesConfigured];
+      homesConfigured = [(HFHomeSettingsVisibilityArbitrator *)self homesConfigured];
       v25 = 1024;
       v26 = AppBooleanValue != 0;
       v27 = 1024;
@@ -149,7 +149,7 @@ LABEL_22:
     }
 
     v11 = [(HFHomeSettingsVisibilityArbitrator *)self homeAppInstallState]== 2;
-    v12 = [(HFHomeSettingsVisibilityArbitrator *)self homesConfigured];
+    homesConfigured2 = [(HFHomeSettingsVisibilityArbitrator *)self homesConfigured];
     if (v11)
     {
       if (AppBooleanValue)
@@ -159,7 +159,7 @@ LABEL_22:
 
       else
       {
-        v13 = v12;
+        v13 = homesConfigured2;
       }
 
       if (v13 != 1)
@@ -168,27 +168,27 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      v14 = [objc_opt_class() homeManagerConfigurationWithExpandedOptions:1];
+      homeManager = [objc_opt_class() homeManagerConfigurationWithExpandedOptions:1];
       v15 = +[HFHomeKitDispatcher sharedDispatcher];
-      [v15 updateHomeManagerConfiguration:v14];
+      [v15 updateHomeManagerConfiguration:homeManager];
 
       v10 = 1;
     }
 
     else
     {
-      if (!v12)
+      if (!homesConfigured2)
       {
         v10 = 0;
         goto LABEL_22;
       }
 
       v16 = +[HFHomeKitDispatcher sharedDispatcher];
-      v14 = [v16 homeManager];
+      homeManager = [v16 homeManager];
 
-      if (v14)
+      if (homeManager)
       {
-        if ([v14 isThisDeviceResidentCapable])
+        if ([homeManager isThisDeviceResidentCapable])
         {
           v10 = 1;
         }
@@ -246,9 +246,9 @@ void __83__HFHomeSettingsVisibilityArbitrator__startListeningForManagedConfigura
   notify_register_dispatch("com.apple.ManagedConfiguration.profileListChanged", &_startListeningForManagedConfigurationChanges_token, v2, *(a1 + 32));
 }
 
-- (void)_queryHomeAppInstallStateWithCompletion:(id)a3
+- (void)_queryHomeAppInstallStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -256,8 +256,8 @@ void __83__HFHomeSettingsVisibilityArbitrator__startListeningForManagedConfigura
   block[2] = __78__HFHomeSettingsVisibilityArbitrator__queryHomeAppInstallStateWithCompletion___block_invoke;
   block[3] = &unk_277DF9610;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -308,16 +308,16 @@ uint64_t __78__HFHomeSettingsVisibilityArbitrator__queryHomeAppInstallStateWithC
   return result;
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__HFHomeSettingsVisibilityArbitrator_applicationsDidUninstall___block_invoke;
   v6[3] = &unk_277DF3370;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = uninstallCopy;
+  selfCopy = self;
+  v5 = uninstallCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -343,16 +343,16 @@ uint64_t __63__HFHomeSettingsVisibilityArbitrator_applicationsDidUninstall___blo
   return v3;
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__HFHomeSettingsVisibilityArbitrator_applicationsDidInstall___block_invoke;
   v6[3] = &unk_277DF3370;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = installCopy;
+  selfCopy = self;
+  v5 = installCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

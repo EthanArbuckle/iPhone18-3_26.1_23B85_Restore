@@ -1,5 +1,5 @@
 @interface NRConnectivitySubscriber
-+ (BOOL)getDropoutCounter:(unint64_t *)a3;
++ (BOOL)getDropoutCounter:(unint64_t *)counter;
 - (NRConnectivitySubscriber)init;
 @end
 
@@ -76,10 +76,10 @@ void __32__NRConnectivitySubscriber_init__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)getDropoutCounter:(unint64_t *)a3
++ (BOOL)getDropoutCounter:(unint64_t *)counter
 {
   v4 = objc_opt_new();
-  if (a3)
+  if (counter)
   {
     if (v4)
     {
@@ -91,7 +91,7 @@ void __32__NRConnectivitySubscriber_init__block_invoke()
       v5 = 0;
     }
 
-    *a3 = v5;
+    *counter = v5;
   }
 
   if (v4)

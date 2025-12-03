@@ -1,15 +1,15 @@
 @interface CannedRawVideoCapture
-- (CannedRawVideoCapture)initWithPath:(id)a3;
-- (__CVBuffer)createPixelBufferForFrameIndex:(int)a3;
-- (int)initializeFrameResolutionArrayFromFolder:(id)a3;
-- (int)setWidth:(int)a3 height:(int)a4;
+- (CannedRawVideoCapture)initWithPath:(id)path;
+- (__CVBuffer)createPixelBufferForFrameIndex:(int)index;
+- (int)initializeFrameResolutionArrayFromFolder:(id)folder;
+- (int)setWidth:(int)width height:(int)height;
 - (void)dealloc;
-- (void)getFrameRate:(double *)a3 frameCount:(int *)a4 transformFlags:(unsigned int *)a5;
+- (void)getFrameRate:(double *)rate frameCount:(int *)count transformFlags:(unsigned int *)flags;
 @end
 
 @implementation CannedRawVideoCapture
 
-- (CannedRawVideoCapture)initWithPath:(id)a3
+- (CannedRawVideoCapture)initWithPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -20,7 +20,7 @@
   {
     pthread_mutex_init(&v5->_inputMutex, 0);
     pthread_mutex_init(&v6->_attributeMutex, 0);
-    v7 = [(CannedRawVideoCapture *)v6 initializeFrameResolutionArrayFromFolder:a3];
+    v7 = [(CannedRawVideoCapture *)v6 initializeFrameResolutionArrayFromFolder:path];
     v6->_shouldScaleAndPad = 0;
     v6->_videoScaler = objc_alloc_init(VideoScaler);
     if (v7)
@@ -84,11 +84,11 @@
   [(CannedRawVideoCapture *)&v6 dealloc];
 }
 
-- (int)initializeFrameResolutionArrayFromFolder:(id)a3
+- (int)initializeFrameResolutionArrayFromFolder:(id)folder
 {
   v38 = *MEMORY[0x1E69E9840];
-  v26 = [MEMORY[0x1E695DF70] array];
-  v27 = a3;
+  array = [MEMORY[0x1E695DF70] array];
+  folderCopy = folder;
   v4 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   v34 = 0u;
   v35 = 0u;
@@ -121,7 +121,7 @@
             *&v11 = v29;
             if (v29 > 0.0)
             {
-              v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v11, v27, v10];
+              v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", v11, folderCopy, v10];
               v15 = [objc_msgSend(objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
               v16 = v15 / ((12 * HIDWORD(v30) * v30 + (12 * HIDWORD(v30) * v30 < 0 ? 7 : 0)) >> 3);
               if (v16)
@@ -133,7 +133,7 @@
                 v31[2] = @"path";
                 v32[1] = v17;
                 v32[2] = v14;
-                [v26 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v32, v31, 3)}];
+                [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v32, v31, 3)}];
                 v18 = v28 >= v16 ? v16 : v28;
                 v28 = v18;
                 v11 = v29;
@@ -159,11 +159,11 @@
     v8 = 0.0;
   }
 
-  if ([v26 count])
+  if ([array count])
   {
     pthread_mutex_lock(&self->_inputMutex);
 
-    self->_allResolutions = v26;
+    self->_allResolutions = array;
     v19 = v28;
     if (v28 <= 1)
     {
@@ -192,7 +192,7 @@
       v23 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(CannedRawVideoCapture *)v22 initializeFrameResolutionArrayFromFolder:v27, v23];
+        [(CannedRawVideoCapture *)v22 initializeFrameResolutionArrayFromFolder:folderCopy, v23];
       }
     }
   }
@@ -200,14 +200,14 @@
   return v21;
 }
 
-- (int)setWidth:(int)a3 height:(int)a4
+- (int)setWidth:(int)width height:(int)height
 {
   v55 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_attributeMutex);
-  if (*&self->_width != __PAIR64__(a4, a3))
+  if (*&self->_width != __PAIR64__(height, width))
   {
-    self->_width = a3;
-    self->_height = a4;
+    self->_width = width;
+    self->_height = height;
     pthread_mutex_lock(&self->_inputMutex);
     v51 = 0u;
     v52 = 0u;
@@ -371,9 +371,9 @@ LABEL_45:
       v44 = 1024;
       v45 = 204;
       v46 = 1024;
-      v47 = a3;
+      widthCopy = width;
       v48 = 1024;
-      v49 = a4;
+      heightCopy = height;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d No width/height change (%dx%d). Skipping re-initialization.", buf, 0x28u);
     }
   }
@@ -384,10 +384,10 @@ LABEL_46:
   return v9;
 }
 
-- (__CVBuffer)createPixelBufferForFrameIndex:(int)a3
+- (__CVBuffer)createPixelBufferForFrameIndex:(int)index
 {
   v32 = *MEMORY[0x1E69E9840];
-  valuePtr = a3;
+  valuePtr = index;
   pthread_mutex_lock(&self->_inputMutex);
   LODWORD(v4) = [-[NSDictionary objectForKeyedSubscript:](self->_currentResolution objectForKeyedSubscript:{@"width", "intValue"}];
   v5 = [-[NSDictionary objectForKeyedSubscript:](self->_currentResolution objectForKeyedSubscript:{@"height", "intValue"}];
@@ -545,20 +545,20 @@ LABEL_46:
   }
 }
 
-- (void)getFrameRate:(double *)a3 frameCount:(int *)a4 transformFlags:(unsigned int *)a5
+- (void)getFrameRate:(double *)rate frameCount:(int *)count transformFlags:(unsigned int *)flags
 {
   pthread_mutex_lock(&self->_inputMutex);
-  if (a3)
+  if (rate)
   {
-    *a3 = self->_allFrameRate;
+    *rate = self->_allFrameRate;
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = self->_allFrameCount;
+    *count = self->_allFrameCount;
   }
 
-  *a5 = 0;
+  *flags = 0;
 
   pthread_mutex_unlock(&self->_inputMutex);
 }

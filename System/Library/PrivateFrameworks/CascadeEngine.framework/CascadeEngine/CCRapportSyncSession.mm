@@ -1,38 +1,38 @@
 @interface CCRapportSyncSession
-- (BOOL)_hasFlags:(unsigned __int8)a3 forInteractionType:(unsigned __int8)a4;
-- (BOOL)_isRunningInteractionType:(unsigned __int8)a3;
-- (CCRapportSyncSession)initWithQueue:(id)a3 interactionHandler:(id)a4;
+- (BOOL)_hasFlags:(unsigned __int8)flags forInteractionType:(unsigned __int8)type;
+- (BOOL)_isRunningInteractionType:(unsigned __int8)type;
+- (CCRapportSyncSession)initWithQueue:(id)queue interactionHandler:(id)handler;
 - (id)description;
-- (id)interactionOfType:(unsigned __int8)a3 withDevice:(id)a4;
-- (void)_addFlags:(unsigned __int8)a3 forInteractionType:(unsigned __int8)a4;
+- (id)interactionOfType:(unsigned __int8)type withDevice:(id)device;
+- (void)_addFlags:(unsigned __int8)flags forInteractionType:(unsigned __int8)type;
 - (void)_cancelNextInteractionTimeout;
-- (void)_completeSession:(id)a3;
-- (void)_runInteraction:(id)a3;
+- (void)_completeSession:(id)session;
+- (void)_runInteraction:(id)interaction;
 - (void)_runNextInteraction;
-- (void)_setNextInteractionTimeout:(unint64_t)a3;
-- (void)cancel:(id)a3;
+- (void)_setNextInteractionTimeout:(unint64_t)timeout;
+- (void)cancel:(id)cancel;
 @end
 
 @implementation CCRapportSyncSession
 
-- (CCRapportSyncSession)initWithQueue:(id)a3 interactionHandler:(id)a4
+- (CCRapportSyncSession)initWithQueue:(id)queue interactionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v33.receiver = self;
   v33.super_class = CCRapportSyncSession;
   v9 = [(CCRapportSyncSession *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = MEMORY[0x1DA74EA40](v8);
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = MEMORY[0x1DA74EA40](handlerCopy);
     interactionHandler = v10->_interactionHandler;
     v10->_interactionHandler = v11;
 
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v10->_uuid;
-    v10->_uuid = v13;
+    v10->_uuid = uUID;
 
     v15 = objc_opt_new();
     completionHandlers = v10->_completionHandlers;
@@ -88,26 +88,26 @@
   return v7;
 }
 
-- (void)_addFlags:(unsigned __int8)a3 forInteractionType:(unsigned __int8)a4
+- (void)_addFlags:(unsigned __int8)flags forInteractionType:(unsigned __int8)type
 {
-  v4 = a3;
+  flagsCopy = flags;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v9 = [(NSMutableArray *)self->_flags objectAtIndexedSubscript:a4];
-  v8 = [v6 numberWithInt:{objc_msgSend(v9, "intValue") | v4}];
-  [(NSMutableArray *)self->_flags setObject:v8 atIndexedSubscript:v7];
+  typeCopy = type;
+  v9 = [(NSMutableArray *)self->_flags objectAtIndexedSubscript:type];
+  v8 = [v6 numberWithInt:{objc_msgSend(v9, "intValue") | flagsCopy}];
+  [(NSMutableArray *)self->_flags setObject:v8 atIndexedSubscript:typeCopy];
 }
 
-- (BOOL)_hasFlags:(unsigned __int8)a3 forInteractionType:(unsigned __int8)a4
+- (BOOL)_hasFlags:(unsigned __int8)flags forInteractionType:(unsigned __int8)type
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_flags objectAtIndexedSubscript:a4];
-  LOBYTE(v4) = ([v5 intValue] & v4) != 0;
+  flagsCopy = flags;
+  v5 = [(NSMutableArray *)self->_flags objectAtIndexedSubscript:type];
+  LOBYTE(flagsCopy) = ([v5 intValue] & flagsCopy) != 0;
 
-  return v4;
+  return flagsCopy;
 }
 
-- (void)_setNextInteractionTimeout:(unint64_t)a3
+- (void)_setNextInteractionTimeout:(unint64_t)timeout
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_nextInteractionTimeout && ![(NSMutableArray *)self->_runningInteractions count])
@@ -118,7 +118,7 @@
     block[2] = __51__CCRapportSyncSession__setNextInteractionTimeout___block_invoke;
     block[3] = &unk_1E85C2B80;
     objc_copyWeak(v9, &location);
-    v9[1] = a3;
+    v9[1] = timeout;
     v5 = dispatch_block_create(0, block);
     nextInteractionTimeout = self->_nextInteractionTimeout;
     self->_nextInteractionTimeout = v5;
@@ -172,13 +172,13 @@ void __64__CCRapportSyncSession_submitInteractionType_withDevice_reason___block_
   if (![(CCRapportSyncSession *)self _isRunningInteractionType:1])
   {
     v3 = [(NSMutableArray *)self->_registeredInteractions objectAtIndexedSubscript:0];
-    v4 = [v3 allValues];
+    allValues = [v3 allValues];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = v4;
+    v5 = allValues;
     v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
@@ -212,13 +212,13 @@ void __64__CCRapportSyncSession_submitInteractionType_withDevice_reason___block_
     }
 
     v11 = [(NSMutableArray *)self->_registeredInteractions objectAtIndexedSubscript:1];
-    v12 = [v11 allValues];
+    allValues2 = [v11 allValues];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v12;
+    v13 = allValues2;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v14)
     {
@@ -294,32 +294,32 @@ LABEL_34:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)interactionOfType:(unsigned __int8)a3 withDevice:(id)a4
+- (id)interactionOfType:(unsigned __int8)type withDevice:(id)device
 {
-  v4 = a3;
+  typeCopy = type;
   queue = self->_queue;
-  v7 = a4;
+  deviceCopy = device;
   dispatch_assert_queue_V2(queue);
-  v8 = [(NSMutableArray *)self->_registeredInteractions objectAtIndexedSubscript:v4];
-  v9 = [v7 rapportIdentifier];
+  v8 = [(NSMutableArray *)self->_registeredInteractions objectAtIndexedSubscript:typeCopy];
+  rapportIdentifier = [deviceCopy rapportIdentifier];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [v8 objectForKeyedSubscript:rapportIdentifier];
 
   return v10;
 }
 
-- (void)_runInteraction:(id)a3
+- (void)_runInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CCRapportSyncSession *)self _runInteraction:v4, v5];
+    [(CCRapportSyncSession *)self _runInteraction:interactionCopy, v5];
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [v4 updateState:2];
-  [(NSMutableArray *)self->_runningInteractions addObject:v4];
+  [interactionCopy updateState:2];
+  [(NSMutableArray *)self->_runningInteractions addObject:interactionCopy];
   [(CCRapportSyncSession *)self _cancelNextInteractionTimeout];
   v6 = MEMORY[0x1DA74EA40](self->_interactionHandler);
   queue = self->_queue;
@@ -327,41 +327,41 @@ LABEL_34:
   v10[1] = 3221225472;
   v10[2] = __40__CCRapportSyncSession__runInteraction___block_invoke;
   v10[3] = &unk_1E85C2BD0;
-  v11 = v4;
+  v11 = interactionCopy;
   v12 = v6;
-  v8 = v4;
+  v8 = interactionCopy;
   v9 = v6;
   dispatch_async(queue, v10);
 }
 
-- (BOOL)_isRunningInteractionType:(unsigned __int8)a3
+- (BOOL)_isRunningInteractionType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableArray *)self->_runningInteractions firstObject];
-  LOBYTE(v3) = [v5 type] == v3;
+  firstObject = [(NSMutableArray *)self->_runningInteractions firstObject];
+  LOBYTE(typeCopy) = [firstObject type] == typeCopy;
 
-  return v3;
+  return typeCopy;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   queue = self->_queue;
-  v5 = a3;
+  cancelCopy = cancel;
   dispatch_assert_queue_V2(queue);
-  [(CCRapportSyncSession *)self _completeSession:v5];
+  [(CCRapportSyncSession *)self _completeSession:cancelCopy];
 }
 
-- (void)_completeSession:(id)a3
+- (void)_completeSession:(id)session
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_completionHandlers)
   {
-    if (v4)
+    if (sessionCopy)
     {
-      v47[0] = v4;
+      v47[0] = sessionCopy;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
       v6 = MEMORY[0x1E695E0F0];
     }
@@ -373,7 +373,7 @@ LABEL_34:
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v28 = self;
+      selfCopy = self;
       v7 = self->_completedInteractions;
       v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v33 objects:v46 count:16];
       if (v8)
@@ -391,16 +391,16 @@ LABEL_34:
             }
 
             v12 = *(*(&v33 + 1) + 8 * i);
-            v13 = [v12 detailedDescription];
-            [v6 addObject:v13];
+            detailedDescription = [v12 detailedDescription];
+            [v6 addObject:detailedDescription];
 
-            v14 = [v12 error];
+            error = [v12 error];
 
-            if (v14)
+            if (error)
             {
-              v15 = [v12 error];
-              v16 = [v12 device];
-              v17 = CCRapportSyncErrorWithDevice(v15, v16);
+              error2 = [v12 error];
+              device = [v12 device];
+              v17 = CCRapportSyncErrorWithDevice(error2, device);
 
               if (!v5)
               {
@@ -422,8 +422,8 @@ LABEL_34:
         v5 = 0;
       }
 
-      self = v28;
-      v4 = 0;
+      self = selfCopy;
+      sessionCopy = 0;
     }
 
     v18 = __biome_log_for_category();
@@ -432,10 +432,10 @@ LABEL_34:
       v19 = [v6 count];
       v20 = &stru_1F55F1328;
       *buf = 138413058;
-      v39 = self;
-      if (v4)
+      selfCopy2 = self;
+      if (sessionCopy)
       {
-        v20 = v4;
+        v20 = sessionCopy;
       }
 
       v40 = 2048;
@@ -484,7 +484,7 @@ LABEL_34:
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CCRapportSyncSession *)self _completeSession:v4, v6];
+      [(CCRapportSyncSession *)self _completeSession:sessionCopy, v6];
     }
   }
 

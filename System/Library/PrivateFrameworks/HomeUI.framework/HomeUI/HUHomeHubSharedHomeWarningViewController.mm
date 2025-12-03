@@ -1,34 +1,34 @@
 @interface HUHomeHubSharedHomeWarningViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubSharedHomeWarningViewController)initWithSharedHomes:(id)a3;
+- (HUHomeHubSharedHomeWarningViewController)initWithSharedHomes:(id)homes;
 - (id)_commitOrContinueButtonTitle;
-- (void)_cancelFlow:(id)a3;
+- (void)_cancelFlow:(id)flow;
 - (void)_commitOrContinue;
-- (void)_continueTapped:(id)a3;
+- (void)_continueTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubSharedHomeWarningViewController
 
-- (HUHomeHubSharedHomeWarningViewController)initWithSharedHomes:(id)a3
+- (HUHomeHubSharedHomeWarningViewController)initWithSharedHomes:(id)homes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homesCopy = homes;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v5;
+    v18 = homesCopy;
     v19 = 2048;
-    v20 = [v5 count];
+    v20 = [homesCopy count];
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedHomeWarningViewController:initWithSharedHomes] homes = %@ (%lu)", buf, 0x16u);
   }
 
-  v7 = [[HUHomeHubSharedHomeWarningItemManager alloc] initWithDelegate:self homes:v5];
+  v7 = [[HUHomeHubSharedHomeWarningItemManager alloc] initWithDelegate:self homes:homesCopy];
   v8 = [[HUHomeHubSimpleTableViewController alloc] initWithItemManager:v7 tableViewStyle:1 descriptionStringWithFormatKey:@"HUSoftwareUpdateSharedHomesWarningSharedBySecondaryText"];
-  if ([v5 count] >= 2)
+  if ([homesCopy count] >= 2)
   {
     v9 = @"HUSoftwareUpdateSharedHomesWarningTitlePlural";
   }
@@ -39,7 +39,7 @@
   }
 
   v10 = _HULocalizedStringWithDefaultValue(v9, v9, 1);
-  if ([v5 count] >= 2)
+  if ([homesCopy count] >= 2)
   {
     v11 = @"HUSoftwareUpdateSharedHomesWarningDescriptionPlural";
   }
@@ -56,7 +56,7 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_homes, a3);
+    objc_storeStrong(&v13->_homes, homes);
   }
 
   return v14;
@@ -67,37 +67,37 @@
   v19.receiver = self;
   v19.super_class = HUHomeHubSharedHomeWarningViewController;
   [(HUItemTableOBWelcomeController *)&v19 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubSharedHomeWarningViewController *)self setCommitButton:v3];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubSharedHomeWarningViewController *)self setCommitButton:boldButton];
 
-  v4 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  commitButton = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
+  [commitButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
-  v6 = [(HUHomeHubSharedHomeWarningViewController *)self _commitOrContinueButtonTitle];
-  [v5 setTitle:v6 forState:0];
+  commitButton2 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
+  _commitOrContinueButtonTitle = [(HUHomeHubSharedHomeWarningViewController *)self _commitOrContinueButtonTitle];
+  [commitButton2 setTitle:_commitOrContinueButtonTitle forState:0];
 
-  v7 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
-  [v7 addTarget:self action:sel__continueTapped_ forControlEvents:64];
+  commitButton3 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
+  [commitButton3 addTarget:self action:sel__continueTapped_ forControlEvents:64];
 
-  v8 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
-  [v8 setAccessibilityIdentifier:@"HUHomeHubSharedHomeWarningViewController.commitButton"];
+  commitButton4 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
+  [commitButton4 setAccessibilityIdentifier:@"HUHomeHubSharedHomeWarningViewController.commitButton"];
 
-  v9 = [(HUHomeHubSharedHomeWarningViewController *)self buttonTray];
-  v10 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
-  [v9 addButton:v10];
+  buttonTray = [(HUHomeHubSharedHomeWarningViewController *)self buttonTray];
+  commitButton5 = [(HUHomeHubSharedHomeWarningViewController *)self commitButton];
+  [buttonTray addButton:commitButton5];
 
   v11 = objc_alloc(MEMORY[0x277D751E0]);
   v12 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v13 = [v11 initWithTitle:v12 style:0 target:self action:sel__cancelFlow_];
   [(HUHomeHubSharedHomeWarningViewController *)self setCancelButton:v13];
 
-  v14 = [(HUHomeHubSharedHomeWarningViewController *)self cancelButton];
-  [v14 setAccessibilityIdentifier:@"HUHomeHubSharedHomeWarningViewController.cancelButton"];
+  cancelButton = [(HUHomeHubSharedHomeWarningViewController *)self cancelButton];
+  [cancelButton setAccessibilityIdentifier:@"HUHomeHubSharedHomeWarningViewController.cancelButton"];
 
-  v15 = [(OBBaseWelcomeController *)self navigationItem];
-  v16 = [(HUHomeHubSharedHomeWarningViewController *)self cancelButton];
-  [v15 setRightBarButtonItem:v16];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  cancelButton2 = [(HUHomeHubSharedHomeWarningViewController *)self cancelButton];
+  [navigationItem setRightBarButtonItem:cancelButton2];
 
   [(HUHomeHubSharedHomeWarningViewController *)self setModalInPresentation:1];
   v17 = HFLogForCategory();
@@ -108,11 +108,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSharedHomeWarningViewController;
-  [(HUHomeHubSharedHomeWarningViewController *)&v5 viewWillAppear:a3];
+  [(HUHomeHubSharedHomeWarningViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -121,11 +121,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSharedHomeWarningViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -152,7 +152,7 @@
   return v5;
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -164,7 +164,7 @@
   [(HUHomeHubSharedHomeWarningViewController *)self _commitOrContinue];
 }
 
-- (void)_cancelFlow:(id)a3
+- (void)_cancelFlow:(id)flow
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -174,11 +174,11 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubSharedHomeWarningViewController:_cancelFlow] User tapped cancel button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubSharedHomeWarningViewController *)self delegate];
+  delegate = [(HUHomeHubSharedHomeWarningViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491178;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)_commitOrContinue
@@ -186,11 +186,11 @@
   v6[1] = *MEMORY[0x277D85DE8];
   if ([(HUHomeHubSharedHomeWarningViewController *)self isFinalStep])
   {
-    v3 = [(HUHomeHubSharedHomeWarningViewController *)self delegate];
+    delegate = [(HUHomeHubSharedHomeWarningViewController *)self delegate];
     v5 = @"HUHomeHub2OnboardingKey_UserInput";
     v6[0] = &unk_282491190;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
-    [v3 viewController:self didFinishWithConfigurationResults:v4];
+    [delegate viewController:self didFinishWithConfigurationResults:v4];
   }
 }
 

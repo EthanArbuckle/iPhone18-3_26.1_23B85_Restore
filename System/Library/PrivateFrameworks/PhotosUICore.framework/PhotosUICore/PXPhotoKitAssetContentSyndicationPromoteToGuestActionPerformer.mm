@@ -1,19 +1,19 @@
 @interface PXPhotoKitAssetContentSyndicationPromoteToGuestActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitAssetContentSyndicationPromoteToGuestActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [v7 wellKnownPhotoLibraryIdentifier];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-  if (v8 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
-    v9 = [v6 isGuestAsset] ^ 1;
+    v9 = [assetCopy isGuestAsset] ^ 1;
   }
 
   else
@@ -26,22 +26,22 @@
 
 - (void)performBackgroundTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [v3 firstObject];
-  v5 = [v4 photoLibrary];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__PXPhotoKitAssetContentSyndicationPromoteToGuestActionPerformer_performBackgroundTask__block_invoke;
   v8[3] = &unk_1E774C648;
-  v9 = v3;
+  v9 = assets;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__PXPhotoKitAssetContentSyndicationPromoteToGuestActionPerformer_performBackgroundTask__block_invoke_2;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  v6 = v3;
-  [v5 performChanges:v8 completionHandler:v7];
+  v6 = assets;
+  [photoLibrary performChanges:v8 completionHandler:v7];
 }
 
 void __87__PXPhotoKitAssetContentSyndicationPromoteToGuestActionPerformer_performBackgroundTask__block_invoke(uint64_t a1)

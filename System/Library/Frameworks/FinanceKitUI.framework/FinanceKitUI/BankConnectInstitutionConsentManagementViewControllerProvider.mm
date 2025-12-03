@@ -1,11 +1,11 @@
 @interface BankConnectInstitutionConsentManagementViewControllerProvider
-+ (id)makeViewControllerWithInstitutionIdentifier:(id)a3;
++ (id)makeViewControllerWithInstitutionIdentifier:(id)identifier;
 - (_TtC12FinanceKitUI61BankConnectInstitutionConsentManagementViewControllerProvider)init;
 @end
 
 @implementation BankConnectInstitutionConsentManagementViewControllerProvider
 
-+ (id)makeViewControllerWithInstitutionIdentifier:(id)a3
++ (id)makeViewControllerWithInstitutionIdentifier:(id)identifier
 {
   sub_23875ED50();
   sub_23875ED40();

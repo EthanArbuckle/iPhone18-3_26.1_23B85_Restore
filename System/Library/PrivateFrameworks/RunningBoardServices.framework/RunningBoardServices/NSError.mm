@@ -6,22 +6,22 @@
 
 - (BOOL)rbs_isServiceDenied
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 domain];
-    if ([v2 isEqualToString:@"RBSServiceErrorDomain"])
+    domain = [self domain];
+    if ([domain isEqualToString:@"RBSServiceErrorDomain"])
     {
-      v1 = [v1 code] == 1;
+      selfCopy = [selfCopy code] == 1;
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

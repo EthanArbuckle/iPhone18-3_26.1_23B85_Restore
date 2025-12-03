@@ -1,16 +1,16 @@
 @interface RedoSearchController
-- (BOOL)shouldShowManualRedoSearchButton:(id)a3 searchResults:(id)a4;
-- (BOOL)shouldTriggerAutoRedoWithThreshold:(id)a3 searchResults:(id)a4;
-- (BOOL)shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:(unint64_t)a3 panDeltaThresholdInMeters:(double)a4 zoomInPercentageThreshold:(double)a5 zoomOutPercentageThreshold:(double)a6 searchResults:(id)a7;
-- (RedoSearchController)initWithMapState:(id)a3 zoomLevel:(double)a4;
-- (unint64_t)numberOfVisibleSearchResults:(id)a3;
+- (BOOL)shouldShowManualRedoSearchButton:(id)button searchResults:(id)results;
+- (BOOL)shouldTriggerAutoRedoWithThreshold:(id)threshold searchResults:(id)results;
+- (BOOL)shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:(unint64_t)is panDeltaThresholdInMeters:(double)meters zoomInPercentageThreshold:(double)threshold zoomOutPercentageThreshold:(double)percentageThreshold searchResults:(id)results;
+- (RedoSearchController)initWithMapState:(id)state zoomLevel:(double)level;
+- (unint64_t)numberOfVisibleSearchResults:(id)results;
 @end
 
 @implementation RedoSearchController
 
-- (unint64_t)numberOfVisibleSearchResults:(id)a3
+- (unint64_t)numberOfVisibleSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -21,27 +21,27 @@
   v7[3] = &unk_101650128;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [resultsCopy enumerateObjectsUsingBlock:v7];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (BOOL)shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:(unint64_t)a3 panDeltaThresholdInMeters:(double)a4 zoomInPercentageThreshold:(double)a5 zoomOutPercentageThreshold:(double)a6 searchResults:(id)a7
+- (BOOL)shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:(unint64_t)is panDeltaThresholdInMeters:(double)meters zoomInPercentageThreshold:(double)threshold zoomOutPercentageThreshold:(double)percentageThreshold searchResults:(id)results
 {
-  v12 = a7;
-  v13 = [(RedoSearchController *)self currentState];
-  if (v13)
+  resultsCopy = results;
+  currentState = [(RedoSearchController *)self currentState];
+  if (currentState)
   {
-    v14 = v13;
-    v15 = [(RedoSearchController *)self originalState];
+    v14 = currentState;
+    originalState = [(RedoSearchController *)self originalState];
 
-    if (v15)
+    if (originalState)
     {
-      v16 = [(RedoSearchController *)self currentState];
-      v17 = [(RedoSearchController *)self originalState];
-      v18 = [v16 isEqual:v17];
+      currentState2 = [(RedoSearchController *)self currentState];
+      originalState2 = [(RedoSearchController *)self originalState];
+      v18 = [currentState2 isEqual:originalState2];
 
       if (v18)
       {
@@ -52,50 +52,50 @@
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Current and Original states are equal, ignoring.", buf, 2u);
         }
 
-        LOBYTE(v15) = 0;
+        LOBYTE(originalState) = 0;
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v48 = a3;
-      v20 = [(RedoSearchController *)self originalState];
-      v21 = [v20 mapRegion];
-      [v21 centerLat];
-      v22 = [(RedoSearchController *)self originalState];
-      v23 = [v22 mapRegion];
-      [v23 centerLng];
-      v24 = [(RedoSearchController *)self currentState];
-      v25 = [v24 mapRegion];
-      [v25 centerLat];
-      v26 = [(RedoSearchController *)self currentState];
-      v27 = [v26 mapRegion];
-      [v27 centerLng];
+      isCopy = is;
+      originalState3 = [(RedoSearchController *)self originalState];
+      mapRegion = [originalState3 mapRegion];
+      [mapRegion centerLat];
+      originalState4 = [(RedoSearchController *)self originalState];
+      mapRegion2 = [originalState4 mapRegion];
+      [mapRegion2 centerLng];
+      currentState3 = [(RedoSearchController *)self currentState];
+      mapRegion3 = [currentState3 mapRegion];
+      [mapRegion3 centerLat];
+      currentState4 = [(RedoSearchController *)self currentState];
+      mapRegion4 = [currentState4 mapRegion];
+      [mapRegion4 centerLng];
       GEOCalculateDistance();
       v29 = v28;
 
-      *&v30 = COERCE_DOUBLE([(RedoSearchController *)self numberOfVisibleSearchResults:v12]);
-      v31 = [(RedoSearchController *)self currentState];
-      [v31 zoomLevel];
+      *&v30 = COERCE_DOUBLE([(RedoSearchController *)self numberOfVisibleSearchResults:resultsCopy]);
+      currentState5 = [(RedoSearchController *)self currentState];
+      [currentState5 zoomLevel];
       v33 = v32;
-      v34 = [(RedoSearchController *)self originalState];
-      [v34 zoomLevel];
+      originalState5 = [(RedoSearchController *)self originalState];
+      [originalState5 zoomLevel];
       v36 = v33 * 100.0 / v35;
 
       if (v36 <= 100.0)
       {
-        v37 = v48;
+        v37 = isCopy;
         if (v36 >= 100.0)
         {
-          if (v29 > a4 && v30 < v48)
+          if (v29 > meters && v30 < isCopy)
           {
             v40 = @"Triggered with reason: distance && visible results number";
-            LOBYTE(v15) = 1;
+            LOBYTE(originalState) = 1;
             goto LABEL_23;
           }
 
 LABEL_22:
-          LOBYTE(v15) = 0;
+          LOBYTE(originalState) = 0;
           v40 = @"Not triggered";
 LABEL_23:
           v41 = sub_1007991E4();
@@ -104,30 +104,30 @@ LABEL_23:
             *buf = 134218752;
             v50 = *&v37;
             v51 = 2048;
-            v52 = a4;
+            metersCopy = meters;
             v53 = 2048;
-            v54 = a5;
+            thresholdCopy = threshold;
             v55 = 2048;
-            v56 = a6;
+            percentageThresholdCopy = percentageThreshold;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "Thresholds - Number of results: %lu. Distance: %f Zoom in: %f. Zoom out: %f.", buf, 0x2Au);
           }
 
           v19 = sub_1007991E4();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v42 = [(RedoSearchController *)self currentState];
-            [v42 zoomLevel];
+            currentState6 = [(RedoSearchController *)self currentState];
+            [currentState6 zoomLevel];
             v44 = v43;
-            v45 = [(RedoSearchController *)self originalState];
-            [v45 zoomLevel];
+            originalState6 = [(RedoSearchController *)self originalState];
+            [originalState6 zoomLevel];
             *buf = 134219266;
             v50 = v29;
             v51 = 2048;
-            v52 = *&v30;
+            metersCopy = *&v30;
             v53 = 2048;
-            v54 = v44;
+            thresholdCopy = v44;
             v55 = 2048;
-            v56 = v46;
+            percentageThresholdCopy = v46;
             v57 = 2048;
             v58 = v36;
             v59 = 2112;
@@ -138,16 +138,16 @@ LABEL_23:
           goto LABEL_27;
         }
 
-        v39 = 100.0 - v36 > a6;
+        v39 = 100.0 - v36 > percentageThreshold;
       }
 
       else
       {
-        v37 = v48;
-        v39 = v36 + -100.0 > a5 && v30 < v48;
+        v37 = isCopy;
+        v39 = v36 + -100.0 > threshold && v30 < isCopy;
       }
 
-      if (v29 > a4 && v30 < v37)
+      if (v29 > meters && v30 < v37)
       {
         v40 = @"Triggered with reason: distance && visible results number";
       }
@@ -157,8 +157,8 @@ LABEL_23:
         v40 = @"Triggered with reason: zoom level";
       }
 
-      LOBYTE(v15) = 1;
-      if (v29 > a4 && v30 < v37 || v39)
+      LOBYTE(originalState) = 1;
+      if (v29 > meters && v30 < v37 || v39)
       {
         goto LABEL_23;
       }
@@ -169,55 +169,55 @@ LABEL_23:
 
   else
   {
-    LOBYTE(v15) = 0;
+    LOBYTE(originalState) = 0;
   }
 
 LABEL_28:
 
-  return v15;
+  return originalState;
 }
 
-- (BOOL)shouldTriggerAutoRedoWithThreshold:(id)a3 searchResults:(id)a4
+- (BOOL)shouldTriggerAutoRedoWithThreshold:(id)threshold searchResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 numberOfVisiblePoisThreshold];
-  [v7 panDeltaThresholdInMeters];
+  resultsCopy = results;
+  thresholdCopy = threshold;
+  numberOfVisiblePoisThreshold = [thresholdCopy numberOfVisiblePoisThreshold];
+  [thresholdCopy panDeltaThresholdInMeters];
   v10 = v9;
-  [v7 zoomInPercentThreshold];
+  [thresholdCopy zoomInPercentThreshold];
   v12 = v11;
-  [v7 zoomOutPercentThreshold];
+  [thresholdCopy zoomOutPercentThreshold];
   v14 = v13;
 
-  LOBYTE(v7) = [(RedoSearchController *)self shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:v8 panDeltaThresholdInMeters:v6 zoomInPercentageThreshold:v10 zoomOutPercentageThreshold:v12 searchResults:v14];
-  return v7;
+  LOBYTE(thresholdCopy) = [(RedoSearchController *)self shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:numberOfVisiblePoisThreshold panDeltaThresholdInMeters:resultsCopy zoomInPercentageThreshold:v10 zoomOutPercentageThreshold:v12 searchResults:v14];
+  return thresholdCopy;
 }
 
-- (BOOL)shouldShowManualRedoSearchButton:(id)a3 searchResults:(id)a4
+- (BOOL)shouldShowManualRedoSearchButton:(id)button searchResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 numberOfVisiblePoisThreshold];
-  [v7 panDeltaThresholdInMeters];
+  resultsCopy = results;
+  buttonCopy = button;
+  numberOfVisiblePoisThreshold = [buttonCopy numberOfVisiblePoisThreshold];
+  [buttonCopy panDeltaThresholdInMeters];
   v10 = v9;
-  [v7 zoomInPercentThreshold];
+  [buttonCopy zoomInPercentThreshold];
   v12 = v11;
-  [v7 zoomOutPercentThreshold];
+  [buttonCopy zoomOutPercentThreshold];
   v14 = v13;
 
-  LOBYTE(v7) = [(RedoSearchController *)self shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:v8 panDeltaThresholdInMeters:v6 zoomInPercentageThreshold:v10 zoomOutPercentageThreshold:v12 searchResults:v14];
-  return v7;
+  LOBYTE(buttonCopy) = [(RedoSearchController *)self shouldTriggerSearchHereWithMinimumNumberOfVisiblePOIs:numberOfVisiblePoisThreshold panDeltaThresholdInMeters:resultsCopy zoomInPercentageThreshold:v10 zoomOutPercentageThreshold:v12 searchResults:v14];
+  return buttonCopy;
 }
 
-- (RedoSearchController)initWithMapState:(id)a3 zoomLevel:(double)a4
+- (RedoSearchController)initWithMapState:(id)state zoomLevel:(double)level
 {
-  v6 = a3;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = RedoSearchController;
   v7 = [(RedoSearchController *)&v11 init];
   if (v7)
   {
-    v8 = [[RedoSearchMapState alloc] initWithMapRegion:v6 zoomLevel:a4];
+    v8 = [[RedoSearchMapState alloc] initWithMapRegion:stateCopy zoomLevel:level];
     originalState = v7->_originalState;
     v7->_originalState = v8;
   }

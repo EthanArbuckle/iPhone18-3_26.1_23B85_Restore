@@ -1,26 +1,26 @@
 @interface PKAccountScheduledTransfer
-- (PKAccountScheduledTransfer)initWithCoder:(id)a3;
-- (PKAccountScheduledTransfer)initWithCurrencyAmount:(id)a3 type:(unint64_t)a4 externalAccount:(id)a5;
+- (PKAccountScheduledTransfer)initWithCoder:(id)coder;
+- (PKAccountScheduledTransfer)initWithCurrencyAmount:(id)amount type:(unint64_t)type externalAccount:(id)account;
 - (id)hashComponent;
 - (id)jsonDictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountScheduledTransfer
 
-- (PKAccountScheduledTransfer)initWithCurrencyAmount:(id)a3 type:(unint64_t)a4 externalAccount:(id)a5
+- (PKAccountScheduledTransfer)initWithCurrencyAmount:(id)amount type:(unint64_t)type externalAccount:(id)account
 {
-  v9 = a3;
-  v10 = a5;
+  amountCopy = amount;
+  accountCopy = account;
   v14.receiver = self;
   v14.super_class = PKAccountScheduledTransfer;
   v11 = [(PKAccountScheduledTransfer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_currencyAmount, a3);
-    v12->_type = a4;
-    objc_storeStrong(&v12->_externalAccount, a5);
+    objc_storeStrong(&v11->_currencyAmount, amount);
+    v12->_type = type;
+    objc_storeStrong(&v12->_externalAccount, account);
   }
 
   return v12;
@@ -28,91 +28,91 @@
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-  v6 = v5;
-  if (v5 && ([v5 pk_isNotANumber] & 1) == 0)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+  v6 = amount;
+  if (amount && ([amount pk_isNotANumber] & 1) == 0)
   {
-    v7 = [v6 stringValue];
-    [v4 setObject:v7 forKeyedSubscript:@"amount"];
+    stringValue = [v6 stringValue];
+    [dictionary2 setObject:stringValue forKeyedSubscript:@"amount"];
 
-    v8 = [(PKCurrencyAmount *)self->_currencyAmount currency];
-    [v4 setObject:v8 forKeyedSubscript:@"currencyCode"];
+    currency = [(PKCurrencyAmount *)self->_currencyAmount currency];
+    [dictionary2 setObject:currency forKeyedSubscript:@"currencyCode"];
   }
 
-  v9 = [(PKAccountPaymentFundingSource *)self->_externalAccount jsonDictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"transferDetails"];
-  [v3 setObject:v9 forKeyedSubscript:@"externalAccount"];
+  jsonDictionaryRepresentation = [(PKAccountPaymentFundingSource *)self->_externalAccount jsonDictionaryRepresentation];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"transferDetails"];
+  [dictionary setObject:jsonDictionaryRepresentation forKeyedSubscript:@"externalAccount"];
   v10 = PKAccountTransferTypeToString(self->_type);
-  [v3 setObject:v10 forKeyedSubscript:@"type"];
+  [dictionary setObject:v10 forKeyedSubscript:@"type"];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
 - (id)hashComponent
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PKAccountTransferExternalAccount *)self->_externalAccount hashComponent];
-  if (v4)
+  string = [MEMORY[0x1E696AD60] string];
+  hashComponent = [(PKAccountTransferExternalAccount *)self->_externalAccount hashComponent];
+  if (hashComponent)
   {
-    [v3 appendString:v4];
+    [string appendString:hashComponent];
   }
 
   currencyAmount = self->_currencyAmount;
   if (currencyAmount)
   {
-    v6 = [(PKCurrencyAmount *)currencyAmount amount];
-    v7 = v6;
-    if (v6 && ([v6 pk_isNotANumber] & 1) == 0)
+    amount = [(PKCurrencyAmount *)currencyAmount amount];
+    v7 = amount;
+    if (amount && ([amount pk_isNotANumber] & 1) == 0)
     {
-      v8 = [v7 stringValue];
-      [v3 appendString:v8];
+      stringValue = [v7 stringValue];
+      [string appendString:stringValue];
 
-      v9 = [(PKCurrencyAmount *)self->_currencyAmount currency];
-      [v3 appendString:v9];
+      currency = [(PKCurrencyAmount *)self->_currencyAmount currency];
+      [string appendString:currency];
     }
   }
 
   v10 = PKAccountTransferTypeToString(self->_type);
-  [v3 appendString:v10];
+  [string appendString:v10];
 
-  v11 = [v3 copy];
+  v11 = [string copy];
 
   return v11;
 }
 
-- (PKAccountScheduledTransfer)initWithCoder:(id)a3
+- (PKAccountScheduledTransfer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountScheduledTransfer;
   v5 = [(PKAccountScheduledTransfer *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
     currencyAmount = v5->_currencyAmount;
     v5->_currencyAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalAccount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalAccount"];
     externalAccount = v5->_externalAccount;
     v5->_externalAccount = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currencyAmount = self->_currencyAmount;
-  v5 = a3;
-  [v5 encodeObject:currencyAmount forKey:@"currencyAmount"];
-  [v5 encodeObject:self->_externalAccount forKey:@"externalAccount"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:currencyAmount forKey:@"currencyAmount"];
+  [coderCopy encodeObject:self->_externalAccount forKey:@"externalAccount"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
 @end

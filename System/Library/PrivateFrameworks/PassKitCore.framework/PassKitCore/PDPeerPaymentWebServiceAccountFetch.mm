@@ -8,8 +8,8 @@
 {
   if ([(NSMutableSet *)self->_diagnosticReasons count])
   {
-    v3 = [(NSMutableSet *)self->_diagnosticReasons allObjects];
-    v4 = [v3 sortedArrayUsingSelector:"compare:"];
+    allObjects = [(NSMutableSet *)self->_diagnosticReasons allObjects];
+    v4 = [allObjects sortedArrayUsingSelector:"compare:"];
     v5 = [v4 componentsJoinedByString:{@", "}];
   }
 

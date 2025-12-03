@@ -1,60 +1,60 @@
 @interface GKDelayedRequestWriter
-+ (id)writerWithCacheWriter:(id)a3 cacheReader:(id)a4 networkWriter:(id)a5 batchSubmissionInterval:(double)a6;
-- (GKDelayedRequestWriter)initWithCacheWriter:(id)a3 cacheReader:(id)a4 networkWriter:(id)a5 batchSubmissionInterval:(double)a6;
-- (void)batchAndPerformInGroup:(id)a3 block:(id)a4;
-- (void)deleteSubmittedRequestsWithIDs:(id)a3 onConnection:(id)a4;
-- (void)readAndSubmitDelayedRequestsOfResources:(id)a3 handler:(id)a4;
-- (void)submitDelayedRequestsForPlayer:(id)a3 handler:(id)a4;
-- (void)writeResources:(id)a3 handler:(id)a4;
-- (void)writeResourcesToCacheOnly:(id)a3 handler:(id)a4;
++ (id)writerWithCacheWriter:(id)writer cacheReader:(id)reader networkWriter:(id)networkWriter batchSubmissionInterval:(double)interval;
+- (GKDelayedRequestWriter)initWithCacheWriter:(id)writer cacheReader:(id)reader networkWriter:(id)networkWriter batchSubmissionInterval:(double)interval;
+- (void)batchAndPerformInGroup:(id)group block:(id)block;
+- (void)deleteSubmittedRequestsWithIDs:(id)ds onConnection:(id)connection;
+- (void)readAndSubmitDelayedRequestsOfResources:(id)resources handler:(id)handler;
+- (void)submitDelayedRequestsForPlayer:(id)player handler:(id)handler;
+- (void)writeResources:(id)resources handler:(id)handler;
+- (void)writeResourcesToCacheOnly:(id)only handler:(id)handler;
 @end
 
 @implementation GKDelayedRequestWriter
 
-+ (id)writerWithCacheWriter:(id)a3 cacheReader:(id)a4 networkWriter:(id)a5 batchSubmissionInterval:(double)a6
++ (id)writerWithCacheWriter:(id)writer cacheReader:(id)reader networkWriter:(id)networkWriter batchSubmissionInterval:(double)interval
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 databaseConnection];
-  v13 = [v9 databaseConnection];
-  v14 = [v12 isEqual:v13];
+  writerCopy = writer;
+  readerCopy = reader;
+  networkWriterCopy = networkWriter;
+  databaseConnection = [readerCopy databaseConnection];
+  databaseConnection2 = [writerCopy databaseConnection];
+  v14 = [databaseConnection isEqual:databaseConnection2];
 
   if ((v14 & 1) == 0)
   {
-    v17 = [v10 databaseConnection];
-    v18 = [v9 databaseConnection];
-    v19 = [NSString stringWithFormat:@"cacheReader.databaseConnection (%@) is not shared by the cacheWriter.databaseConnection (%@) Exiting to reset", v17, v18];
+    databaseConnection3 = [readerCopy databaseConnection];
+    databaseConnection4 = [writerCopy databaseConnection];
+    v19 = [NSString stringWithFormat:@"cacheReader.databaseConnection (%@) is not shared by the cacheWriter.databaseConnection (%@) Exiting to reset", databaseConnection3, databaseConnection4];
 
     v20 = [NSException exceptionWithName:NSInvalidArgumentException reason:v19 userInfo:0];
     objc_exception_throw(v20);
   }
 
-  v15 = [objc_alloc(objc_opt_class()) initWithCacheWriter:v9 cacheReader:v10 networkWriter:v11 batchSubmissionInterval:a6];
+  v15 = [objc_alloc(objc_opt_class()) initWithCacheWriter:writerCopy cacheReader:readerCopy networkWriter:networkWriterCopy batchSubmissionInterval:interval];
 
   return v15;
 }
 
-- (GKDelayedRequestWriter)initWithCacheWriter:(id)a3 cacheReader:(id)a4 networkWriter:(id)a5 batchSubmissionInterval:(double)a6
+- (GKDelayedRequestWriter)initWithCacheWriter:(id)writer cacheReader:(id)reader networkWriter:(id)networkWriter batchSubmissionInterval:(double)interval
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  writerCopy = writer;
+  readerCopy = reader;
+  networkWriterCopy = networkWriter;
   v20.receiver = self;
   v20.super_class = GKDelayedRequestWriter;
   v13 = [(GKDelayedRequestWriter *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    [(GKDelayedRequestWriter *)v13 setCacheWriter:v10];
-    [(GKDelayedRequestWriter *)v14 setCacheReader:v11];
-    [(GKDelayedRequestWriter *)v14 setNetworkWriter:v12];
+    [(GKDelayedRequestWriter *)v13 setCacheWriter:writerCopy];
+    [(GKDelayedRequestWriter *)v14 setCacheReader:readerCopy];
+    [(GKDelayedRequestWriter *)v14 setNetworkWriter:networkWriterCopy];
     v15 = objc_alloc_init(NSSet);
     resourcesPending = v14->_resourcesPending;
     v14->_resourcesPending = v15;
 
     v14->_shouldWaitForNetworkError = 1;
-    v14->_intervalInSeconds = a6;
+    v14->_intervalInSeconds = interval;
     v17 = dispatch_queue_create("com.apple.gamed.delayedRequests.batchQueue", 0);
     operationQueue = v14->_operationQueue;
     v14->_operationQueue = v17;
@@ -63,14 +63,14 @@
   return v14;
 }
 
-- (void)batchAndPerformInGroup:(id)a3 block:(id)a4
+- (void)batchAndPerformInGroup:(id)group block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  groupCopy = group;
+  blockCopy = block;
+  v8 = blockCopy;
   if (self->_intervalInSeconds <= 0.0)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 
   else
@@ -82,40 +82,40 @@
     v9[3] = &unk_1003670B0;
     v9[4] = self;
     v11 = qword_1003B9200;
-    v10 = v7;
-    [v6 perform:v9];
+    v10 = blockCopy;
+    [groupCopy perform:v9];
   }
 }
 
-- (void)submitDelayedRequestsForPlayer:(id)a3 handler:(id)a4
+- (void)submitDelayedRequestsForPlayer:(id)player handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = v6;
+  playerCopy = player;
+  handlerCopy = handler;
+  v10 = playerCopy;
   v8 = [NSArray arrayWithObjects:&v10 count:1];
   v9 = [NSSet _gkSetOfResourcesWithIDs:v8];
-  [(GKDelayedRequestWriter *)self readAndSubmitDelayedRequestsOfResources:v9 handler:v7];
+  [(GKDelayedRequestWriter *)self readAndSubmitDelayedRequestsOfResources:v9 handler:handlerCopy];
 }
 
-- (void)deleteSubmittedRequestsWithIDs:(id)a3 onConnection:(id)a4
+- (void)deleteSubmittedRequestsWithIDs:(id)ds onConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   [NSString stringWithFormat:@"DELETE FROM requests WHERE request_id = %s;", ":request_id"];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100115C68;
   v10 = v9[3] = &unk_100366E48;
-  v7 = v5;
+  v7 = dsCopy;
   v11 = v7;
   v8 = v10;
-  [v6 performAsyncTransaction:v9 handler:&stru_1003670D0];
+  [connectionCopy performAsyncTransaction:v9 handler:&stru_1003670D0];
 }
 
-- (void)readAndSubmitDelayedRequestsOfResources:(id)a3 handler:(id)a4
+- (void)readAndSubmitDelayedRequestsOfResources:(id)resources handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  handlerCopy = handler;
   v8 = [NSString stringWithFormat:@"%s:%d %s", "GKDelayedRequestWriter.mm", 129, "[GKDelayedRequestWriter readAndSubmitDelayedRequestsOfResources:handler:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
@@ -128,7 +128,7 @@
   v19[2] = sub_100116110;
   v19[3] = &unk_100367170;
   v19[4] = self;
-  v10 = v6;
+  v10 = resourcesCopy;
   v20 = v10;
   v11 = v9;
   v21 = v11;
@@ -139,7 +139,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_1001168B4;
   v15[3] = &unk_100367198;
-  v13 = v7;
+  v13 = handlerCopy;
   v17 = v13;
   v14 = v11;
   v16 = v14;
@@ -149,39 +149,39 @@
   _Block_object_dispose(v23, 8);
 }
 
-- (void)writeResources:(id)a3 handler:(id)a4
+- (void)writeResources:(id)resources handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKDelayedRequestWriter *)self shouldWaitForNetworkError];
+  resourcesCopy = resources;
+  handlerCopy = handler;
+  shouldWaitForNetworkError = [(GKDelayedRequestWriter *)self shouldWaitForNetworkError];
   operationQueue = self->_operationQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100116A1C;
   v12[3] = &unk_100367300;
   v12[4] = self;
-  v13 = v6;
-  v15 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = resourcesCopy;
+  v15 = shouldWaitForNetworkError;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = resourcesCopy;
   dispatch_async(operationQueue, v12);
 }
 
-- (void)writeResourcesToCacheOnly:(id)a3 handler:(id)a4
+- (void)writeResourcesToCacheOnly:(id)only handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  onlyCopy = only;
+  handlerCopy = handler;
   operationQueue = self->_operationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001175CC;
   block[3] = &unk_100367210;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = onlyCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = onlyCopy;
   dispatch_async(operationQueue, block);
 }
 

@@ -1,6 +1,6 @@
 @interface SGNotificationListener
 - (BOOL)unsubscribe;
-- (SGNotificationListener)initWithNotification:(__CFString *)a3 callback:(id)a4;
+- (SGNotificationListener)initWithNotification:(__CFString *)notification callback:(id)callback;
 - (void)_notify;
 - (void)dealloc;
 @end
@@ -48,19 +48,19 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (SGNotificationListener)initWithNotification:(__CFString *)a3 callback:(id)a4
+- (SGNotificationListener)initWithNotification:(__CFString *)notification callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = SGNotificationListener;
   v7 = [(SGNotificationListener *)&v12 init];
   if (v7)
   {
-    v8 = MEMORY[0x1BFAF7240](v6);
+    v8 = MEMORY[0x1BFAF7240](callbackCopy);
     callback = v7->_callback;
     v7->_callback = v8;
 
-    v7->_notification = CFRetain(a3);
+    v7->_notification = CFRetain(notification);
     pthread_mutex_init(&v7->_lock, 0);
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, v7, changeCallback, v7->_notification, v7->_notification, CFNotificationSuspensionBehaviorDeliverImmediately);

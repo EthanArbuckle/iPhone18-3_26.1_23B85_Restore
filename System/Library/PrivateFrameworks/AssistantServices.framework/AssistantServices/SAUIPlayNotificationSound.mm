@@ -1,14 +1,14 @@
 @interface SAUIPlayNotificationSound
-- (id)_soundURLForAnnouncePlatform:(int64_t)a3;
-- (int64_t)_soundIDForAnnouncePlatform:(int64_t)a3;
-- (void)_adui_handleWithCompletion:(id)a3;
+- (id)_soundURLForAnnouncePlatform:(int64_t)platform;
+- (int64_t)_soundIDForAnnouncePlatform:(int64_t)platform;
+- (void)_adui_handleWithCompletion:(id)completion;
 @end
 
 @implementation SAUIPlayNotificationSound
 
-- (void)_adui_handleWithCompletion:(id)a3
+- (void)_adui_handleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -23,14 +23,14 @@
   v45[2] = sub_100285784;
   v45[3] = &unk_100519680;
   v45[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v46 = v7;
   v8 = [v6 initWithBlock:v45 defaultValue1:0 defaultValue2:0];
   v9 = +[ADCommandCenter sharedCommandCenter];
   v10 = +[ADExternalNotificationRequestHandler sharedNotificationRequestHandler];
-  v11 = [v10 announcePlatformForCurrentRequest];
+  announcePlatformForCurrentRequest = [v10 announcePlatformForCurrentRequest];
 
-  v12 = [(SAUIPlayNotificationSound *)self _soundURLForAnnouncePlatform:v11];
+  v12 = [(SAUIPlayNotificationSound *)self _soundURLForAnnouncePlatform:announcePlatformForCurrentRequest];
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -49,10 +49,10 @@
     v42[2] = sub_100285890;
     v42[3] = &unk_1005187A0;
     v43 = v12;
-    v44 = self;
+    selfCopy = self;
     v15 = [v14 initWithBuilder:v42];
     v16 = [AFSpeechRequestOptions alloc];
-    if (v11 == 2)
+    if (announcePlatformForCurrentRequest == 2)
     {
       v17 = 32;
     }
@@ -63,9 +63,9 @@
     }
 
     v18 = [v16 initWithActivationEvent:{v17, v7}];
-    [v18 setAnnouncementPlatform:v11];
-    v19 = [(SAUIPlayNotificationSound *)self notificationType];
-    v20 = [v19 isEqualToString:SANotificationTypeConnectedCallValue];
+    [v18 setAnnouncementPlatform:announcePlatformForCurrentRequest];
+    notificationType = [(SAUIPlayNotificationSound *)self notificationType];
+    v20 = [notificationType isEqualToString:SANotificationTypeConnectedCallValue];
 
     if (v20)
     {
@@ -80,9 +80,9 @@
       v22 = +[AFAnalytics sharedAnalytics];
       [v22 logEventWithType:6011 context:0];
 
-      v23 = [(SAUIPlayNotificationSound *)self notificationId];
+      notificationId = [(SAUIPlayNotificationSound *)self notificationId];
 
-      if (!v23)
+      if (!notificationId)
       {
         v31 = objc_alloc_init(SACommandSucceeded);
         [v8 invokeWithValue:v31 andValue:0];
@@ -105,20 +105,20 @@ LABEL_21:
     v37 = v18;
     v41 = v20;
     v38 = v15;
-    v40 = v11;
+    v40 = announcePlatformForCurrentRequest;
     v39 = v8;
     v25 = objc_retainBlock(v35);
     v26 = v25;
     if (v20)
     {
       v27 = dispatch_time(0, 750000000);
-      v28 = [v24 _queue];
+      _queue = [v24 _queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100285A7C;
       block[3] = &unk_10051CF58;
       v34 = v26;
-      dispatch_after(v27, v28, block);
+      dispatch_after(v27, _queue, block);
     }
 
     else
@@ -143,10 +143,10 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)_soundURLForAnnouncePlatform:(int64_t)a3
+- (id)_soundURLForAnnouncePlatform:(int64_t)platform
 {
-  v5 = [(SAUIPlayNotificationSound *)self notificationType];
-  v6 = [v5 isEqualToString:SANotificationTypeConnectedCallValue];
+  notificationType = [(SAUIPlayNotificationSound *)self notificationType];
+  v6 = [notificationType isEqualToString:SANotificationTypeConnectedCallValue];
 
   if (v6)
   {
@@ -155,7 +155,7 @@ LABEL_22:
 
   else
   {
-    v8 = [(SAUIPlayNotificationSound *)self _soundIDForAnnouncePlatform:a3];
+    v8 = [(SAUIPlayNotificationSound *)self _soundIDForAnnouncePlatform:platform];
     if (v8)
     {
       v9 = v8;
@@ -169,11 +169,11 @@ LABEL_22:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v13 = v11;
-        v14 = [(SAUIPlayNotificationSound *)self notificationType];
+        notificationType2 = [(SAUIPlayNotificationSound *)self notificationType];
         v15 = 136315394;
         v16 = "[SAUIPlayNotificationSound(ADUIService) _soundURLForAnnouncePlatform:]";
         v17 = 2112;
-        v18 = v14;
+        v18 = notificationType2;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Unsupported notificationType: %@", &v15, 0x16u);
       }
 
@@ -184,21 +184,21 @@ LABEL_22:
   return v7;
 }
 
-- (int64_t)_soundIDForAnnouncePlatform:(int64_t)a3
+- (int64_t)_soundIDForAnnouncePlatform:(int64_t)platform
 {
-  v5 = [(SAUIPlayNotificationSound *)self notificationType];
+  notificationType = [(SAUIPlayNotificationSound *)self notificationType];
 
-  if (!v5)
+  if (!notificationType)
   {
     return 0;
   }
 
-  v6 = [(SAUIPlayNotificationSound *)self notificationType];
-  v7 = [v6 isEqualToString:SANotificationTypeIncomingMessageValue];
+  notificationType2 = [(SAUIPlayNotificationSound *)self notificationType];
+  v7 = [notificationType2 isEqualToString:SANotificationTypeIncomingMessageValue];
 
   if (v7)
   {
-    if (a3 == 2)
+    if (platform == 2)
     {
       return 7;
     }
@@ -211,8 +211,8 @@ LABEL_22:
 
   else
   {
-    v9 = [(SAUIPlayNotificationSound *)self notificationType];
-    v10 = [v9 isEqualToString:SANotificationTypeIncomingHomeCommunicationValue];
+    notificationType3 = [(SAUIPlayNotificationSound *)self notificationType];
+    v10 = [notificationType3 isEqualToString:SANotificationTypeIncomingHomeCommunicationValue];
 
     if (v10)
     {

@@ -1,30 +1,30 @@
 @interface TKTonePickerTableViewCellLayoutManager
-- (CGRect)_adjustedTextFrameWithOriginalTextFrame:(CGRect)a3 forCell:(id)a4;
+- (CGRect)_adjustedTextFrameWithOriginalTextFrame:(CGRect)frame forCell:(id)cell;
 @end
 
 @implementation TKTonePickerTableViewCellLayoutManager
 
-- (CGRect)_adjustedTextFrameWithOriginalTextFrame:(CGRect)a3 forCell:(id)a4
+- (CGRect)_adjustedTextFrameWithOriginalTextFrame:(CGRect)frame forCell:(id)cell
 {
-  y = a3.origin.y;
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v6 = a4;
-  v7 = [v6 contentView];
-  [v7 bounds];
+  y = frame.origin.y;
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  [contentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v6 safeAreaInsets];
+  [cellCopy safeAreaInsets];
   v17 = v16;
   v19 = v18;
   v20 = MEMORY[0x277D75D18];
-  v21 = [v6 semanticContentAttribute];
+  semanticContentAttribute = [cellCopy semanticContentAttribute];
 
-  v22 = [v20 userInterfaceLayoutDirectionForSemanticContentAttribute:v21];
+  v22 = [v20 userInterfaceLayoutDirectionForSemanticContentAttribute:semanticContentAttribute];
   [(TKTonePickerTableViewCellLayoutManager *)self minimumTextIndentation];
   v24 = v23;
   if (v22)

@@ -1,12 +1,12 @@
 @interface CALNTravelAdvisoryUtilities
-+ (BOOL)isLastFireTimeOfAlert:(id)a3 withinEightMinutesOfDate:(id)a4;
++ (BOOL)isLastFireTimeOfAlert:(id)alert withinEightMinutesOfDate:(id)date;
 @end
 
 @implementation CALNTravelAdvisoryUtilities
 
-+ (BOOL)isLastFireTimeOfAlert:(id)a3 withinEightMinutesOfDate:(id)a4
++ (BOOL)isLastFireTimeOfAlert:(id)alert withinEightMinutesOfDate:(id)date
 {
-  [a3 timeIntervalSinceDate:a4];
+  [alert timeIntervalSinceDate:date];
   if (v4 < 0.0)
   {
     v4 = -v4;

@@ -1,6 +1,6 @@
 @interface FeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation FeatureProvider
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (sub_257ECF500() == 0x6567616D69 && v4 == 0xE500000000000000)
   {
@@ -35,9 +35,9 @@
 
     else
     {
-      v7 = [objc_opt_self() featureValueWithPixelBuffer_];
+      featureValueWithPixelBuffer_ = [objc_opt_self() featureValueWithPixelBuffer_];
 
-      v5 = v7;
+      v5 = featureValueWithPixelBuffer_;
     }
   }
 

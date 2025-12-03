@@ -1,11 +1,11 @@
 @interface PHMediaFormatConversionRequest
 + (BOOL)hasInternalDiagnostics;
-+ (double)heifToJPEGFactorForBitsPerPixel:(double)a3;
-+ (double)heifToJPEGFactorWithImageDimensions:(CGSize)a3 fileLength:(unint64_t)a4;
-+ (id)requestForSource:(id)a3 destinationCapabilities:(id)a4 error:(id *)a5;
-+ (id)stringForRequestStatus:(int64_t)a3;
++ (double)heifToJPEGFactorForBitsPerPixel:(double)pixel;
++ (double)heifToJPEGFactorWithImageDimensions:(CGSize)dimensions fileLength:(unint64_t)length;
++ (id)requestForSource:(id)source destinationCapabilities:(id)capabilities error:(id *)error;
++ (id)stringForRequestStatus:(int64_t)status;
 - (BOOL)_calculateRequiresFormatConversion;
-- (BOOL)_isKnownUTTypeForPathExtension:(id)a3;
+- (BOOL)_isKnownUTTypeForPathExtension:(id)extension;
 - (BOOL)destinationCapabilitiesHintsIndicateSupportForSource;
 - (BOOL)requiresAccessibilityDescriptionMetadataChange;
 - (BOOL)requiresCaptionMetadataChange;
@@ -27,18 +27,18 @@
 - (int64_t)passthroughConversionAdditionalByteCount;
 - (unint64_t)estimatedOutputFileLength;
 - (void)didFinishProcessing;
-- (void)enableSinglePassVideoEncodingWithUpdateHandler:(id)a3;
+- (void)enableSinglePassVideoEncodingWithUpdateHandler:(id)handler;
 - (void)markAsCancelled;
 - (void)padOutputFileToEstimatedLength;
-- (void)preflightWithConversionManager:(id)a3;
-- (void)setAccessibilityDescriptionMetadataBehavior:(int64_t)a3 withAccessibilityDescription:(id)a4;
-- (void)setCaptionMetadataBehavior:(int64_t)a3 withCaption:(id)a4;
-- (void)setCreationDateMetadataBehavior:(int64_t)a3 withCreationDate:(id)a4 inTimeZone:(id)a5;
-- (void)setDestination:(id)a3;
-- (void)setFormatConversionExpansionFactor:(double)a3;
-- (void)setLocationMetadataBehavior:(int64_t)a3 withLocation:(id)a4;
+- (void)preflightWithConversionManager:(id)manager;
+- (void)setAccessibilityDescriptionMetadataBehavior:(int64_t)behavior withAccessibilityDescription:(id)description;
+- (void)setCaptionMetadataBehavior:(int64_t)behavior withCaption:(id)caption;
+- (void)setCreationDateMetadataBehavior:(int64_t)behavior withCreationDate:(id)date inTimeZone:(id)zone;
+- (void)setDestination:(id)destination;
+- (void)setFormatConversionExpansionFactor:(double)factor;
+- (void)setLocationMetadataBehavior:(int64_t)behavior withLocation:(id)location;
 - (void)setupProgress;
-- (void)updateSinglePassVideoConversionStatus:(int64_t)a3 addedRange:(_NSRange)a4 error:(id)a5;
+- (void)updateSinglePassVideoConversionStatus:(int64_t)status addedRange:(_NSRange)range error:(id)error;
 @end
 
 @implementation PHMediaFormatConversionRequest
@@ -50,26 +50,26 @@
   return WeakRetained;
 }
 
-- (void)updateSinglePassVideoConversionStatus:(int64_t)a3 addedRange:(_NSRange)a4 error:(id)a5
+- (void)updateSinglePassVideoConversionStatus:(int64_t)status addedRange:(_NSRange)range error:(id)error
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  errorCopy = error;
   if (!self->_requiresSinglePassVideoConversion)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1471 description:@"Invalid request configuration for single pass video conversion callback"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1471 description:@"Invalid request configuration for single pass video conversion callback"];
   }
 
   if (!self->_singlePassVideoConversionUpdateHandler)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1472 description:@"Unexpected nil single pass video conversion update handler"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1472 description:@"Unexpected nil single pass video conversion update handler"];
   }
 
-  v10 = [(PHMediaFormatConversionRequest *)self status];
-  if (v10 == 3)
+  status = [(PHMediaFormatConversionRequest *)self status];
+  if (status == 3)
   {
     [(PHMediaFormatConversionDestination *)self->_destination addAvailableRange:location, length];
     (*(self->_singlePassVideoConversionUpdateHandler + 2))();
@@ -77,7 +77,7 @@
 
   else
   {
-    v11 = v10;
+    v11 = status;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
@@ -89,17 +89,17 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableSinglePassVideoEncodingWithUpdateHandler:(id)a3
+- (void)enableSinglePassVideoEncodingWithUpdateHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   if ([(PHMediaFormatConversionContent *)self->_source mediaType]!= 1 || [(PHMediaFormatConversionRequest *)self isCompositeRequest])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1464 description:@"Invalid request configuration for single pass video conversion"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1464 description:@"Invalid request configuration for single pass video conversion"];
   }
 
   self->_requiresSinglePassVideoConversion = 1;
-  v5 = MEMORY[0x259C84340](v8);
+  v5 = MEMORY[0x259C84340](handlerCopy);
   singlePassVideoConversionUpdateHandler = self->_singlePassVideoConversionUpdateHandler;
   self->_singlePassVideoConversionUpdateHandler = v5;
 }
@@ -113,48 +113,48 @@
 
   if ([(PHMediaFormatConversionRequest *)self status]!= 4 && [(PHMediaFormatConversionRequest *)self requiresSinglePassVideoConversion])
   {
-    v3 = [(PHMediaFormatConversionRequest *)self destination];
-    v4 = [v3 singlePassVideoExportRangeCoordinator];
-    [v4 cancel];
+    destination = [(PHMediaFormatConversionRequest *)self destination];
+    singlePassVideoExportRangeCoordinator = [destination singlePassVideoExportRangeCoordinator];
+    [singlePassVideoExportRangeCoordinator cancel];
   }
 
-  v5 = [(PHMediaFormatConversionRequest *)self progress];
-  [v5 setCompletedUnitCount:1];
+  progress = [(PHMediaFormatConversionRequest *)self progress];
+  [progress setCompletedUnitCount:1];
 }
 
 - (void)padOutputFileToEstimatedLength
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(PHMediaFormatConversionRequest *)self destination];
+  destination = [(PHMediaFormatConversionRequest *)self destination];
   v16 = 0;
-  v4 = [v3 padToLength:-[PHMediaFormatConversionRequest estimatedOutputFileLength](self error:{"estimatedOutputFileLength"), &v16}];
+  v4 = [destination padToLength:-[PHMediaFormatConversionRequest estimatedOutputFileLength](self error:{"estimatedOutputFileLength"), &v16}];
   v5 = v16;
 
   if ((v4 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v15 = [(PHMediaFormatConversionRequest *)self source];
-      v7 = [v15 fileType];
-      v8 = [(PHMediaFormatConversionRequest *)self destination];
-      v9 = [v8 length];
-      v10 = [(PHMediaFormatConversionRequest *)self estimatedOutputFileLength];
-      v11 = [(PHMediaFormatConversionRequest *)self source];
-      v12 = [v11 fileURL];
-      v13 = [(PHMediaFormatConversionRequest *)self destination];
-      v14 = [v13 fileURL];
+      source = [(PHMediaFormatConversionRequest *)self source];
+      fileType = [source fileType];
+      destination2 = [(PHMediaFormatConversionRequest *)self destination];
+      v9 = [destination2 length];
+      estimatedOutputFileLength = [(PHMediaFormatConversionRequest *)self estimatedOutputFileLength];
+      source2 = [(PHMediaFormatConversionRequest *)self source];
+      fileURL = [source2 fileURL];
+      destination3 = [(PHMediaFormatConversionRequest *)self destination];
+      fileURL2 = [destination3 fileURL];
       *buf = 138544642;
-      v18 = v7;
+      v18 = fileType;
       v19 = 2048;
       v20 = v9;
       v21 = 2048;
-      v22 = v10;
+      v22 = estimatedOutputFileLength;
       v23 = 2114;
       v24 = v5;
       v25 = 2112;
-      v26 = v12;
+      v26 = fileURL;
       v27 = 2112;
-      v28 = v14;
+      v28 = fileURL2;
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to pad output file (type %{public}@) of length %llu to estimated length %llu: %{public}@, %@ -> %@", buf, 0x3Eu);
     }
 
@@ -186,14 +186,14 @@
   {
     if (![(PHMediaFormatConversionRequest *)self preflighted])
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1384 description:@"Request must be preflighted"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1384 description:@"Request must be preflighted"];
     }
 
-    v5 = [(PHMediaFormatConversionRequest *)self source];
-    v6 = [v5 isVideo];
+    source = [(PHMediaFormatConversionRequest *)self source];
+    isVideo = [source isVideo];
 
-    if (v6)
+    if (isVideo)
     {
       [(PHMediaFormatConversionRequest *)self requiresSinglePassVideoConversion];
       formatConversionExpansionFactor = 2.2;
@@ -202,26 +202,26 @@
     else
     {
       v7 = objc_opt_class();
-      v8 = [(PHMediaFormatConversionRequest *)self source];
-      [v8 imageDimensions];
+      source2 = [(PHMediaFormatConversionRequest *)self source];
+      [source2 imageDimensions];
       v10 = v9;
       v12 = v11;
-      v13 = [(PHMediaFormatConversionRequest *)self source];
-      [v7 heifToJPEGFactorWithImageDimensions:objc_msgSend(v13 fileLength:{"length"), v10, v12}];
+      source3 = [(PHMediaFormatConversionRequest *)self source];
+      [v7 heifToJPEGFactorWithImageDimensions:objc_msgSend(source3 fileLength:{"length"), v10, v12}];
       formatConversionExpansionFactor = v14;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v17 = [(PHMediaFormatConversionRequest *)self source];
-        [v17 imageDimensions];
+        source4 = [(PHMediaFormatConversionRequest *)self source];
+        [source4 imageDimensions];
         v18 = NSStringFromSize(v28);
-        v19 = [(PHMediaFormatConversionRequest *)self source];
+        source5 = [(PHMediaFormatConversionRequest *)self source];
         v21 = 134218498;
         v22 = formatConversionExpansionFactor;
         v23 = 2112;
         v24 = v18;
         v25 = 2048;
-        v26 = [v19 length];
+        v26 = [source5 length];
         _os_log_debug_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Calculated formatConversionExpansionFactor: %f (image dimensions: %@, file length: %llu)", &v21, 0x20u);
       }
     }
@@ -239,7 +239,7 @@
   return formatConversionExpansionFactor;
 }
 
-- (void)setFormatConversionExpansionFactor:(double)a3
+- (void)setFormatConversionExpansionFactor:(double)factor
 {
   v9 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -250,7 +250,7 @@
     _os_log_debug_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Setting explicit formatConversionExpansionFactor: %f", &v7, 0xCu);
   }
 
-  self->_formatConversionExpansionFactor = a3;
+  self->_formatConversionExpansionFactor = factor;
   v5 = *MEMORY[0x277D85DE8];
 }
 
@@ -258,18 +258,18 @@
 {
   if ([(PHMediaFormatConversionRequest *)self requiresFormatConversion])
   {
-    v3 = [(PHMediaFormatConversionRequest *)self source];
-    v4 = [v3 length];
+    source = [(PHMediaFormatConversionRequest *)self source];
+    v4 = [source length];
     [(PHMediaFormatConversionRequest *)self formatConversionExpansionFactor];
     v6 = (v5 * v4);
   }
 
   else
   {
-    v7 = [(PHMediaFormatConversionRequest *)self requiresPassthroughConversion];
-    v3 = [(PHMediaFormatConversionRequest *)self source];
-    v6 = [v3 length];
-    if (v7)
+    requiresPassthroughConversion = [(PHMediaFormatConversionRequest *)self requiresPassthroughConversion];
+    source = [(PHMediaFormatConversionRequest *)self source];
+    v6 = [source length];
+    if (requiresPassthroughConversion)
     {
       v6 += [(PHMediaFormatConversionRequest *)self passthroughConversionAdditionalByteCount];
     }
@@ -283,67 +283,67 @@
   v24 = *MEMORY[0x277D85DE8];
   if (![(PHMediaFormatConversionRequest *)self preflighted])
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1337 description:@"Request must be preflighted"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1337 description:@"Request must be preflighted"];
   }
 
-  v4 = [(PHMediaFormatConversionRequest *)self source];
+  source = [(PHMediaFormatConversionRequest *)self source];
 
-  if (!v4)
+  if (!source)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1338 description:@"Invalid request for output type identifier on request without source"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1338 description:@"Invalid request for output type identifier on request without source"];
   }
 
-  v5 = [(PHMediaFormatConversionRequest *)self source];
-  if ([v5 mediaType] != 2)
+  source2 = [(PHMediaFormatConversionRequest *)self source];
+  if ([source2 mediaType] != 2)
   {
 
     goto LABEL_11;
   }
 
-  v6 = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
+  requiresFormatConversion = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
 
-  if (!v6)
+  if (!requiresFormatConversion)
   {
 LABEL_11:
-    v15 = [(PHMediaFormatConversionRequest *)self source];
-    v7 = [v15 fileType];
+    source3 = [(PHMediaFormatConversionRequest *)self source];
+    fileType = [source3 fileType];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v7 = [*MEMORY[0x277CE1DC0] identifier];
-  v8 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+  fileType = [*MEMORY[0x277CE1DC0] identifier];
+  forcedOutputPathExtension = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
 
-  if (!v8)
+  if (!forcedOutputPathExtension)
   {
     goto LABEL_13;
   }
 
-  v9 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
-  v10 = [(PHMediaFormatConversionRequest *)self _isKnownUTTypeForPathExtension:v9];
+  forcedOutputPathExtension2 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+  v10 = [(PHMediaFormatConversionRequest *)self _isKnownUTTypeForPathExtension:forcedOutputPathExtension2];
 
   if (v10)
   {
     v11 = MEMORY[0x277CE1CB8];
-    v12 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
-    v13 = [v11 typeWithFilenameExtension:v12];
+    forcedOutputPathExtension3 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+    v13 = [v11 typeWithFilenameExtension:forcedOutputPathExtension3];
 
-    v14 = [v13 identifier];
+    identifier = [v13 identifier];
 
-    v7 = v14;
+    fileType = identifier;
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v15 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+    source3 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
     v20 = 138412546;
-    v21 = v15;
+    v21 = source3;
     v22 = 2114;
-    v23 = v7;
+    v23 = fileType;
     _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Forced path extension (%@) is not a known UTType. Falling back to %{public}@ as the output type identifier.", &v20, 0x16u);
     goto LABEL_12;
   }
@@ -351,7 +351,7 @@ LABEL_12:
 LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return fileType;
 }
 
 - (NSString)outputPathExtension
@@ -359,57 +359,57 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
   if (![(PHMediaFormatConversionRequest *)self preflighted])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1319 description:@"Request must be preflighted"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1319 description:@"Request must be preflighted"];
   }
 
-  v4 = [(PHMediaFormatConversionRequest *)self source];
+  source = [(PHMediaFormatConversionRequest *)self source];
 
-  if (!v4)
+  if (!source)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1320 description:@"Invalid request for output path extension on request without source"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1320 description:@"Invalid request for output path extension on request without source"];
   }
 
-  v5 = [(PHMediaFormatConversionRequest *)self source];
-  if ([v5 mediaType] != 2)
+  source2 = [(PHMediaFormatConversionRequest *)self source];
+  if ([source2 mediaType] != 2)
   {
 
     goto LABEL_11;
   }
 
-  v6 = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
+  requiresFormatConversion = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
 
-  if (!v6)
+  if (!requiresFormatConversion)
   {
 LABEL_11:
-    v11 = [(PHMediaFormatConversionRequest *)self source];
-    v12 = [v11 fileURL];
-    v10 = [v12 pathExtension];
+    source3 = [(PHMediaFormatConversionRequest *)self source];
+    fileURL = [source3 fileURL];
+    pathExtension = [fileURL pathExtension];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+  forcedOutputPathExtension = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
 
-  if (v7)
+  if (forcedOutputPathExtension)
   {
-    v8 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
-    v9 = [(PHMediaFormatConversionRequest *)self _isKnownUTTypeForPathExtension:v8];
+    forcedOutputPathExtension2 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+    v9 = [(PHMediaFormatConversionRequest *)self _isKnownUTTypeForPathExtension:forcedOutputPathExtension2];
 
     if (v9)
     {
-      v10 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+      pathExtension = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
       goto LABEL_13;
     }
 
-    v10 = @"jpg";
+    pathExtension = @"jpg";
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
+      source3 = [(PHMediaFormatConversionRequest *)self forcedOutputPathExtension];
       v17 = 138412546;
-      v18 = v11;
+      v18 = source3;
       v19 = 2114;
       v20 = @"jpg";
       _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Forced path extension (%@) is not a known UTType. Falling back to %{public}@ as the output path extension.", &v17, 0x16u);
@@ -419,41 +419,41 @@ LABEL_12:
 
   else
   {
-    v10 = @"jpg";
+    pathExtension = @"jpg";
   }
 
 LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return pathExtension;
 }
 
-- (BOOL)_isKnownUTTypeForPathExtension:(id)a3
+- (BOOL)_isKnownUTTypeForPathExtension:(id)extension
 {
-  v3 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:a3];
-  v4 = [v3 isDynamic];
+  v3 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:extension];
+  isDynamic = [v3 isDynamic];
 
-  return v4 ^ 1;
+  return isDynamic ^ 1;
 }
 
-- (void)setAccessibilityDescriptionMetadataBehavior:(int64_t)a3 withAccessibilityDescription:(id)a4
+- (void)setAccessibilityDescriptionMetadataBehavior:(int64_t)behavior withAccessibilityDescription:(id)description
 {
-  v7 = a4;
-  v12 = v7;
-  if (self->_accessibilityDescriptionMetadataBehavior != a3 || (v8 = [(NSString *)self->_accessibilityDescription isEqualToString:v7], v7 = v12, !v8))
+  descriptionCopy = description;
+  v12 = descriptionCopy;
+  if (self->_accessibilityDescriptionMetadataBehavior != behavior || (v8 = [(NSString *)self->_accessibilityDescription isEqualToString:descriptionCopy], descriptionCopy = v12, !v8))
   {
-    self->_accessibilityDescriptionMetadataBehavior = a3;
-    if (a3 == 2)
+    self->_accessibilityDescriptionMetadataBehavior = behavior;
+    if (behavior == 2)
     {
-      if (!v7)
+      if (!descriptionCopy)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1304 description:@"caption must not be nil if accessibilityDescriptionMetadataBehavior is PHMediaFormatMetadataBehaviorApply"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1304 description:@"caption must not be nil if accessibilityDescriptionMetadataBehavior is PHMediaFormatMetadataBehaviorApply"];
 
-        v7 = v12;
+        descriptionCopy = v12;
       }
 
-      v9 = [v7 copy];
+      v9 = [descriptionCopy copy];
     }
 
     else
@@ -468,24 +468,24 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCaptionMetadataBehavior:(int64_t)a3 withCaption:(id)a4
+- (void)setCaptionMetadataBehavior:(int64_t)behavior withCaption:(id)caption
 {
-  v7 = a4;
-  v12 = v7;
-  if (self->_captionMetadataBehavior != a3 || (v8 = [(NSString *)self->_caption isEqualToString:v7], v7 = v12, !v8))
+  captionCopy = caption;
+  v12 = captionCopy;
+  if (self->_captionMetadataBehavior != behavior || (v8 = [(NSString *)self->_caption isEqualToString:captionCopy], captionCopy = v12, !v8))
   {
-    self->_captionMetadataBehavior = a3;
-    if (a3 == 2)
+    self->_captionMetadataBehavior = behavior;
+    if (behavior == 2)
     {
-      if (!v7)
+      if (!captionCopy)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1290 description:@"caption must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1290 description:@"caption must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
 
-        v7 = v12;
+        captionCopy = v12;
       }
 
-      v9 = [v7 copy];
+      v9 = [captionCopy copy];
     }
 
     else
@@ -500,29 +500,29 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCreationDateMetadataBehavior:(int64_t)a3 withCreationDate:(id)a4 inTimeZone:(id)a5
+- (void)setCreationDateMetadataBehavior:(int64_t)behavior withCreationDate:(id)date inTimeZone:(id)zone
 {
-  v16 = a4;
-  v10 = a5;
-  if (a3 == 1)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (behavior == 1)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1267 description:@"Stripping creation date metadata is not permitted"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1267 description:@"Stripping creation date metadata is not permitted"];
   }
 
-  if (self->_creationDateMetadataBehavior != a3 || ![(NSDate *)self->_creationDate isEqualToDate:v16])
+  if (self->_creationDateMetadataBehavior != behavior || ![(NSDate *)self->_creationDate isEqualToDate:dateCopy])
   {
-    self->_creationDateMetadataBehavior = a3;
-    if (a3 == 2)
+    self->_creationDateMetadataBehavior = behavior;
+    if (behavior == 2)
     {
-      if (!v16)
+      if (!dateCopy)
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1274 description:@"creationDate must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1274 description:@"creationDate must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
       }
 
-      objc_storeStrong(&self->_creationDate, a4);
-      v11 = v10;
+      objc_storeStrong(&self->_creationDate, date);
+      v11 = zoneCopy;
       creationDateTimeZone = self->_creationDateTimeZone;
       self->_creationDateTimeZone = v11;
     }
@@ -538,24 +538,24 @@ LABEL_13:
   }
 }
 
-- (void)setLocationMetadataBehavior:(int64_t)a3 withLocation:(id)a4
+- (void)setLocationMetadataBehavior:(int64_t)behavior withLocation:(id)location
 {
-  v7 = a4;
-  v12 = v7;
-  if (self->_locationMetadataBehavior != a3 || (v8 = [(CLLocation *)self->_location isEqual:v7], v7 = v12, (v8 & 1) == 0))
+  locationCopy = location;
+  v12 = locationCopy;
+  if (self->_locationMetadataBehavior != behavior || (v8 = [(CLLocation *)self->_location isEqual:locationCopy], locationCopy = v12, (v8 & 1) == 0))
   {
-    self->_locationMetadataBehavior = a3;
-    if (a3 == 2)
+    self->_locationMetadataBehavior = behavior;
+    if (behavior == 2)
     {
-      if (!v7)
+      if (!locationCopy)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1259 description:@"location must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1259 description:@"location must not be nil if behavior is PHMediaFormatMetadataBehaviorApply"];
 
-        v7 = v12;
+        locationCopy = v12;
       }
 
-      v9 = v7;
+      v9 = locationCopy;
       location = self->_location;
       self->_location = v9;
     }
@@ -573,12 +573,12 @@ LABEL_13:
 - (BOOL)destinationCapabilitiesHintsIndicateSupportForSource
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
-  v4 = [v3 outOfBandHints];
+  destinationCapabilities = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+  outOfBandHints = [destinationCapabilities outOfBandHints];
 
-  if (v4)
+  if (outOfBandHints)
   {
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B578]];
+    v5 = [outOfBandHints objectForKeyedSubscript:*MEMORY[0x277D3B578]];
     v6 = v5;
     if (v5 && [v5 integerValue] == 1 && -[PHMediaFormatConversionSource containsProResVideoWithFormatEligibleForTranscoding](self->_source, "containsProResVideoWithFormatEligibleForTranscoding"))
     {
@@ -589,10 +589,10 @@ LABEL_13:
     {
       if ([(PHMediaFormatConversionContent *)self->_source isVideo]&& [(PHMediaFormatConversionSource *)self->_source containsVideoWithFormatEligibleForTranscoding])
       {
-        v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B570]];
+        v8 = [outOfBandHints objectForKeyedSubscript:*MEMORY[0x277D3B570]];
         if (v8)
         {
-          v9 = [(PHMediaFormatConversionSource *)self->_source firstVideoTrackCodec];
+          firstVideoTrackCodec = [(PHMediaFormatConversionSource *)self->_source firstVideoTrackCodec];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
@@ -612,7 +612,7 @@ LABEL_13:
                   objc_enumerationMutation(v10);
                 }
 
-                if ([*(*(&v29 + 1) + 8 * i) unsignedIntValue] == v9)
+                if ([*(*(&v29 + 1) + 8 * i) unsignedIntValue] == firstVideoTrackCodec)
                 {
                   LOBYTE(v7) = 1;
                   v15 = v10;
@@ -632,10 +632,10 @@ LABEL_13:
         }
       }
 
-      v15 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3B568]];
+      v15 = [outOfBandHints objectForKeyedSubscript:*MEMORY[0x277D3B568]];
       v16 = MEMORY[0x277D3B508];
-      v17 = [(PHMediaFormatConversionContent *)self->_source fileType];
-      v10 = [v16 typeWithIdentifier:v17];
+      fileType = [(PHMediaFormatConversionContent *)self->_source fileType];
+      v10 = [v16 typeWithIdentifier:fileType];
 
       if (v15)
       {
@@ -715,35 +715,35 @@ LABEL_37:
   v74 = *MEMORY[0x277D85DE8];
   if (![(PHMediaFormatConversionRequest *)self preflighted])
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1128 description:@"Request must be preflighted"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1128 description:@"Request must be preflighted"];
   }
 
-  v4 = [(PHMediaFormatConversionRequest *)self forceFormatConversion];
-  v5 = [(PHMediaFormatConversionRequest *)self useTransferBehaviorUserPreference];
-  v6 = [(PHMediaFormatConversionRequest *)self userPreferenceProhibitsFormatConversion];
-  v7 = [(PHMediaFormatConversionRequest *)self destinationCapabilitiesHintsIndicateSupportForSource];
-  v8 = [(PHMediaFormatConversionRequest *)self source];
-  v9 = [v8 isVideo];
+  forceFormatConversion = [(PHMediaFormatConversionRequest *)self forceFormatConversion];
+  useTransferBehaviorUserPreference = [(PHMediaFormatConversionRequest *)self useTransferBehaviorUserPreference];
+  userPreferenceProhibitsFormatConversion = [(PHMediaFormatConversionRequest *)self userPreferenceProhibitsFormatConversion];
+  destinationCapabilitiesHintsIndicateSupportForSource = [(PHMediaFormatConversionRequest *)self destinationCapabilitiesHintsIndicateSupportForSource];
+  source = [(PHMediaFormatConversionRequest *)self source];
+  isVideo = [source isVideo];
 
-  v10 = [(PHMediaFormatConversionRequest *)self source];
-  v11 = v10;
-  if (!v9)
+  source2 = [(PHMediaFormatConversionRequest *)self source];
+  v11 = source2;
+  if (!isVideo)
   {
-    v23 = [v10 isImage];
+    isImage = [source2 isImage];
 
-    if (v23)
+    if (isImage)
     {
-      v24 = [(PHMediaFormatConversionRequest *)self source];
-      v25 = [v24 containsImageWithFormatEligibleForTranscoding];
+      source3 = [(PHMediaFormatConversionRequest *)self source];
+      containsImageWithFormatEligibleForTranscoding = [source3 containsImageWithFormatEligibleForTranscoding];
 
-      if (v25)
+      if (containsImageWithFormatEligibleForTranscoding)
       {
-        v26 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
-        v27 = [*MEMORY[0x277CE1F10] identifier];
-        v28 = [v26 supportForContainerTypeIdentifier:v27];
+        destinationCapabilities = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+        identifier = [*MEMORY[0x277CE1F10] identifier];
+        v28 = [destinationCapabilities supportForContainerTypeIdentifier:identifier];
 
-        v18 = ((v28 + 1) < 2) & ~v7;
+        v18 = ((v28 + 1) < 2) & ~destinationCapabilitiesHintsIndicateSupportForSource;
 LABEL_18:
         v19 = 1;
         goto LABEL_19;
@@ -760,25 +760,25 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = [v10 containsVideoWithFormatEligibleForTranscoding];
+  containsVideoWithFormatEligibleForTranscoding = [source2 containsVideoWithFormatEligibleForTranscoding];
 
-  if (v7 & 1 | ((v12 & 1) == 0))
+  if (destinationCapabilitiesHintsIndicateSupportForSource & 1 | ((containsVideoWithFormatEligibleForTranscoding & 1) == 0))
   {
     goto LABEL_14;
   }
 
-  v13 = [(PHMediaFormatConversionRequest *)self source];
-  v14 = [v13 transcodingEligibleVideoTrackFormatDescription];
+  source4 = [(PHMediaFormatConversionRequest *)self source];
+  transcodingEligibleVideoTrackFormatDescription = [source4 transcodingEligibleVideoTrackFormatDescription];
 
-  if (!v14)
+  if (!transcodingEligibleVideoTrackFormatDescription)
   {
-    v29 = [(PHMediaFormatConversionRequest *)self source];
-    v30 = [v29 firstVideoTrackCodec];
+    source5 = [(PHMediaFormatConversionRequest *)self source];
+    firstVideoTrackCodec = [source5 firstVideoTrackCodec];
 
-    if (v30 == 1752589105)
+    if (firstVideoTrackCodec == 1752589105)
     {
-      v31 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
-      v32 = [v31 supportForCodec:1752589105];
+      destinationCapabilities2 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+      v32 = [destinationCapabilities2 supportForCodec:1752589105];
 
       v18 = v32 == -1;
     }
@@ -791,19 +791,19 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v15 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
-  v16 = [v15 decodingSupportForFormatDescription:v14];
+  destinationCapabilities3 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+  v16 = [destinationCapabilities3 decodingSupportForFormatDescription:transcodingEligibleVideoTrackFormatDescription];
 
-  v17 = [(PHMediaFormatConversionRequest *)self shouldExportAsHDR];
+  shouldExportAsHDR = [(PHMediaFormatConversionRequest *)self shouldExportAsHDR];
   v18 = 0;
   v19 = 1;
   v20 = v16 != 2;
-  if (v16 != 2 && v17)
+  if (v16 != 2 && shouldExportAsHDR)
   {
-    v21 = [(PHMediaFormatConversionRequest *)self source];
-    v22 = [v21 containsProResVideoWithFormatEligibleForTranscoding];
+    source6 = [(PHMediaFormatConversionRequest *)self source];
+    containsProResVideoWithFormatEligibleForTranscoding = [source6 containsProResVideoWithFormatEligibleForTranscoding];
 
-    if ((v22 & 1) == 0)
+    if ((containsProResVideoWithFormatEligibleForTranscoding & 1) == 0)
     {
       [(PHMediaFormatConversionRequest *)self setShouldExportAsHDR:0];
     }
@@ -823,7 +823,7 @@ LABEL_20:
   else
   {
     v48 = 0;
-    v33 = v19 & (v4 | (!v5 || !v6) & (v20 | v18));
+    v33 = v19 & (forceFormatConversion | (!useTransferBehaviorUserPreference || !userPreferenceProhibitsFormatConversion) & (v20 | v18));
   }
 
   if ([objc_opt_class() hasInternalDiagnostics])
@@ -838,22 +838,22 @@ LABEL_20:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], v34))
   {
-    v46 = v5;
+    v46 = useTransferBehaviorUserPreference;
     v47 = v18;
-    v35 = v6;
+    v35 = userPreferenceProhibitsFormatConversion;
     v36 = [MEMORY[0x277D3B448] stringForSupport:v16];
-    v37 = [(PHMediaFormatConversionRequest *)self shouldExportAsHDR];
-    v38 = [(PHMediaFormatConversionRequest *)self source];
-    v39 = [v38 fileURL];
-    v40 = [v39 lastPathComponent];
+    shouldExportAsHDR2 = [(PHMediaFormatConversionRequest *)self shouldExportAsHDR];
+    source7 = [(PHMediaFormatConversionRequest *)self source];
+    fileURL = [source7 fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
     v41 = v19;
-    v42 = v40;
+    v42 = lastPathComponent;
     *buf = 67111939;
     v51 = v33;
     v52 = 1024;
     v53 = v41;
     v54 = 1024;
-    v55 = v4;
+    v55 = forceFormatConversion;
     v56 = 1024;
     v57 = v35;
     v58 = 1024;
@@ -865,13 +865,13 @@ LABEL_20:
     v64 = 2114;
     v65 = v36;
     v66 = 1024;
-    v67 = v7;
+    v67 = destinationCapabilitiesHintsIndicateSupportForSource;
     v68 = 1024;
     v69 = v48;
     v70 = 1024;
-    v71 = v37;
+    v71 = shouldExportAsHDR2;
     v72 = 2113;
-    v73 = v40;
+    v73 = lastPathComponent;
     _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], v34, "Media format conversion decision: result=%d containsModernFormat=%d forcedOnRequest=%d prohibitedByUserPreference=%d useTransferBehaviorUserChoice=%d destinationMissingSupport=%d, destinationMissingSupportForAsset=%d (assetSupport=%{public}@), destinationPlatformHintIndicatesSupport=%d, unsupportedUserModifiedMetadataPassthroughConversion=%d shouldExportAsHDR=%d filename=%{private}@", buf, 0x52u);
   }
 
@@ -889,19 +889,19 @@ LABEL_20:
   else
   {
     self->_didCalculateRequiresFormatConversion = 1;
-    v3 = [(PHMediaFormatConversionRequest *)self _calculateRequiresFormatConversion];
-    self->_requiresFormatConversion = v3;
+    _calculateRequiresFormatConversion = [(PHMediaFormatConversionRequest *)self _calculateRequiresFormatConversion];
+    self->_requiresFormatConversion = _calculateRequiresFormatConversion;
   }
 
-  return v3;
+  return _calculateRequiresFormatConversion;
 }
 
 - (BOOL)requiresAccessibilityDescriptionMetadataChange
 {
   if ([(PHMediaFormatConversionRequest *)self accessibilityDescriptionMetadataBehavior]== 1)
   {
-    v3 = [(PHMediaFormatConversionRequest *)self source];
-    v4 = [v3 accessibilityDescriptionMetadataStatus] == 2;
+    source = [(PHMediaFormatConversionRequest *)self source];
+    v4 = [source accessibilityDescriptionMetadataStatus] == 2;
   }
 
   else
@@ -911,8 +911,8 @@ LABEL_20:
 
   if ([(PHMediaFormatConversionRequest *)self accessibilityDescriptionMetadataBehavior]== 2)
   {
-    v5 = [(PHMediaFormatConversionRequest *)self accessibilityDescription];
-    v6 = v5 != 0;
+    accessibilityDescription = [(PHMediaFormatConversionRequest *)self accessibilityDescription];
+    v6 = accessibilityDescription != 0;
   }
 
   else
@@ -927,8 +927,8 @@ LABEL_20:
 {
   if ([(PHMediaFormatConversionRequest *)self captionMetadataBehavior]== 1)
   {
-    v3 = [(PHMediaFormatConversionRequest *)self source];
-    v4 = [v3 captionMetadataStatus] == 2;
+    source = [(PHMediaFormatConversionRequest *)self source];
+    v4 = [source captionMetadataStatus] == 2;
   }
 
   else
@@ -938,8 +938,8 @@ LABEL_20:
 
   if ([(PHMediaFormatConversionRequest *)self captionMetadataBehavior]== 2)
   {
-    v5 = [(PHMediaFormatConversionRequest *)self caption];
-    v6 = v5 != 0;
+    caption = [(PHMediaFormatConversionRequest *)self caption];
+    v6 = caption != 0;
   }
 
   else
@@ -957,8 +957,8 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(PHMediaFormatConversionRequest *)self creationDate];
-  v4 = v3 != 0;
+  creationDate = [(PHMediaFormatConversionRequest *)self creationDate];
+  v4 = creationDate != 0;
 
   return v4;
 }
@@ -967,8 +967,8 @@ LABEL_20:
 {
   if ([(PHMediaFormatConversionRequest *)self locationMetadataBehavior]== 1)
   {
-    v3 = [(PHMediaFormatConversionRequest *)self source];
-    v4 = [v3 locationMetadataStatus] == 2;
+    source = [(PHMediaFormatConversionRequest *)self source];
+    v4 = [source locationMetadataStatus] == 2;
   }
 
   else
@@ -978,8 +978,8 @@ LABEL_20:
 
   if ([(PHMediaFormatConversionRequest *)self locationMetadataBehavior]== 2)
   {
-    v5 = [(PHMediaFormatConversionRequest *)self location];
-    v6 = v5 != 0;
+    location = [(PHMediaFormatConversionRequest *)self location];
+    v6 = location != 0;
   }
 
   else
@@ -992,48 +992,48 @@ LABEL_20:
 
 - (BOOL)requiresLivePhotoPairingIdentifierChange
 {
-  v4 = [(PHMediaFormatConversionRequest *)self livePhotoPairingIdentifierBehavior];
-  v5 = 1;
-  if (v4 <= 1)
+  livePhotoPairingIdentifierBehavior = [(PHMediaFormatConversionRequest *)self livePhotoPairingIdentifierBehavior];
+  requiresFormatConversion = 1;
+  if (livePhotoPairingIdentifierBehavior <= 1)
   {
-    if (v4)
+    if (livePhotoPairingIdentifierBehavior)
     {
-      return v4 != 1;
+      return livePhotoPairingIdentifierBehavior != 1;
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1084 description:@"Unexpected invalid live photo pairing identifier behavior value"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1084 description:@"Unexpected invalid live photo pairing identifier behavior value"];
 
     return 1;
   }
 
-  if (v4 == 5)
+  if (livePhotoPairingIdentifierBehavior == 5)
   {
-    v8 = [(PHMediaFormatConversionRequest *)self source];
-    v9 = [v8 livePhotoPairingIdentifier];
-    if (v9)
+    source = [(PHMediaFormatConversionRequest *)self source];
+    livePhotoPairingIdentifier = [source livePhotoPairingIdentifier];
+    if (livePhotoPairingIdentifier)
     {
-      v5 = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
+      requiresFormatConversion = [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
     }
 
     else
     {
-      v5 = 0;
+      requiresFormatConversion = 0;
     }
 
-    return v5;
+    return requiresFormatConversion;
   }
 
-  if (v4 != 4)
+  if (livePhotoPairingIdentifierBehavior != 4)
   {
-    if (v4 == 2)
+    if (livePhotoPairingIdentifierBehavior == 2)
     {
-      v6 = [(PHMediaFormatConversionRequest *)self source];
-      v7 = [v6 livePhotoPairingIdentifier];
-      v5 = v7 != 0;
+      source2 = [(PHMediaFormatConversionRequest *)self source];
+      livePhotoPairingIdentifier2 = [source2 livePhotoPairingIdentifier];
+      requiresFormatConversion = livePhotoPairingIdentifier2 != 0;
     }
 
-    return v5;
+    return requiresFormatConversion;
   }
 
   return [(PHMediaFormatConversionRequest *)self requiresFormatConversion];
@@ -1041,9 +1041,9 @@ LABEL_20:
 
 - (BOOL)requiresMetadataChanges
 {
-  v3 = [(PHMediaFormatConversionRequest *)self source];
-  v4 = [v3 renderOriginatingSignature];
-  v5 = v4 || [(PHMediaFormatConversionRequest *)self requiresLivePhotoPairingIdentifierChange]|| [(PHMediaFormatConversionRequest *)self requiresLocationMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresCreationDateMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresCaptionMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresAccessibilityDescriptionMetadataChange];
+  source = [(PHMediaFormatConversionRequest *)self source];
+  renderOriginatingSignature = [source renderOriginatingSignature];
+  v5 = renderOriginatingSignature || [(PHMediaFormatConversionRequest *)self requiresLivePhotoPairingIdentifierChange]|| [(PHMediaFormatConversionRequest *)self requiresLocationMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresCreationDateMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresCaptionMetadataChange]|| [(PHMediaFormatConversionRequest *)self requiresAccessibilityDescriptionMetadataChange];
 
   return v5;
 }
@@ -1076,8 +1076,8 @@ LABEL_20:
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = MEMORY[0x277CE1CB8];
-        v11 = [(PHMediaFormatConversionContent *)self->_source fileType];
-        v12 = [v10 typeWithIdentifier:v11];
+        fileType = [(PHMediaFormatConversionContent *)self->_source fileType];
+        v12 = [v10 typeWithIdentifier:fileType];
         LOBYTE(v9) = [v12 conformsToType:v9];
 
         if (v9)
@@ -1106,9 +1106,9 @@ LABEL_11:
 
 - (BOOL)requiresPassthroughConversion
 {
-  v3 = [(PHMediaFormatConversionRequest *)self useTransferBehaviorUserPreference];
-  v4 = [(PHMediaFormatConversionRequest *)self userPreferenceProhibitsFormatConversion];
-  if (v3 && v4 || [(PHMediaFormatConversionRequest *)self requiresFormatConversion]|| ![(PHMediaFormatConversionRequest *)self requiresMetadataChanges])
+  useTransferBehaviorUserPreference = [(PHMediaFormatConversionRequest *)self useTransferBehaviorUserPreference];
+  userPreferenceProhibitsFormatConversion = [(PHMediaFormatConversionRequest *)self userPreferenceProhibitsFormatConversion];
+  if (useTransferBehaviorUserPreference && userPreferenceProhibitsFormatConversion || [(PHMediaFormatConversionRequest *)self requiresFormatConversion]|| ![(PHMediaFormatConversionRequest *)self requiresMetadataChanges])
   {
     return 0;
   }
@@ -1128,9 +1128,9 @@ LABEL_11:
     return 2;
   }
 
-  v3 = [(PHMediaFormatConversionRequest *)self videoExportPreset];
+  videoExportPreset = [(PHMediaFormatConversionRequest *)self videoExportPreset];
 
-  if (v3)
+  if (videoExportPreset)
   {
     return 2;
   }
@@ -1141,52 +1141,52 @@ LABEL_11:
   }
 }
 
-- (void)preflightWithConversionManager:(id)a3
+- (void)preflightWithConversionManager:(id)manager
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(PHMediaFormatConversionRequest *)self status];
-  if (v5 <= 5 && ((1 << v5) & 0x31) != 0)
+  status = [(PHMediaFormatConversionRequest *)self status];
+  if (status <= 5 && ((1 << status) & 0x31) != 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    v7 = [(PHMediaFormatConversionRequest *)self statusString];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:957 description:{@"Preflight of request in invalid state %@", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    statusString = [(PHMediaFormatConversionRequest *)self statusString];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:957 description:{@"Preflight of request in invalid state %@", statusString}];
   }
 
   if ([(PHMediaFormatConversionRequest *)self preflighted])
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:960 description:@"Preflight of already preflighted request"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:960 description:@"Preflight of already preflighted request"];
   }
 
-  v8 = [(PHMediaFormatConversionRequest *)self source];
+  source = [(PHMediaFormatConversionRequest *)self source];
 
-  if (!v8)
+  if (!source)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:962 description:@"Preflight of request without source"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:962 description:@"Preflight of request without source"];
   }
 
   if ([(PHMediaFormatConversionRequest *)self locationMetadataBehavior]!= 1)
   {
-    v9 = [(PHMediaFormatConversionRequest *)self source];
-    [v9 markLocationMetadataAsCheckedWithStatus:1];
+    source2 = [(PHMediaFormatConversionRequest *)self source];
+    [source2 markLocationMetadataAsCheckedWithStatus:1];
   }
 
   if ([(PHMediaFormatConversionRequest *)self captionMetadataBehavior]!= 1)
   {
-    v10 = [(PHMediaFormatConversionRequest *)self source];
-    [v10 markCaptionMetadataAsCheckedWithStatus:1];
+    source3 = [(PHMediaFormatConversionRequest *)self source];
+    [source3 markCaptionMetadataAsCheckedWithStatus:1];
   }
 
   if ([(PHMediaFormatConversionRequest *)self accessibilityDescriptionMetadataBehavior]!= 1)
   {
-    v11 = [(PHMediaFormatConversionRequest *)self source];
-    [v11 markAccessibilityDescriptionMetadataAsCheckedWithStatus:1];
+    source4 = [(PHMediaFormatConversionRequest *)self source];
+    [source4 markAccessibilityDescriptionMetadataAsCheckedWithStatus:1];
   }
 
-  v12 = [(PHMediaFormatConversionRequest *)self source];
+  source5 = [(PHMediaFormatConversionRequest *)self source];
   v27 = 0;
-  v13 = [v12 preflightWithError:&v27];
+  v13 = [source5 preflightWithError:&v27];
   v14 = v27;
 
   if (v13)
@@ -1196,20 +1196,20 @@ LABEL_11:
       goto LABEL_25;
     }
 
-    v15 = [(PHMediaFormatConversionRequest *)self source];
-    if ([v15 mediaType] == 1)
+    source6 = [(PHMediaFormatConversionRequest *)self source];
+    if ([source6 mediaType] == 1)
     {
-      v16 = [(PHMediaFormatConversionRequest *)self isCompositeRequest];
+      isCompositeRequest = [(PHMediaFormatConversionRequest *)self isCompositeRequest];
 
-      if (!v16)
+      if (!isCompositeRequest)
       {
         if ([(PHMediaFormatConversionRequest *)self locationMetadataBehavior]|| [(PHMediaFormatConversionRequest *)self creationDateMetadataBehavior]|| [(PHMediaFormatConversionRequest *)self captionMetadataBehavior]|| [(PHMediaFormatConversionRequest *)self accessibilityDescriptionMetadataBehavior])
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
-            v17 = [(PHMediaFormatConversionRequest *)self source];
+            source7 = [(PHMediaFormatConversionRequest *)self source];
             *buf = 138412290;
-            v29 = v17;
+            v29 = source7;
             v18 = MEMORY[0x277D86220];
             v19 = "Invalid request using single pass encoding option and metadata changes (like location stripping, custom location, custom creation date, custom description) for video source %@";
 LABEL_36:
@@ -1222,11 +1222,11 @@ LABEL_36:
         }
 
 LABEL_25:
-        v20 = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
-        if ([v20 supportsHDR])
+        destinationCapabilities = [(PHMediaFormatConversionRequest *)self destinationCapabilities];
+        if ([destinationCapabilities supportsHDR])
         {
-          v21 = [(PHMediaFormatConversionRequest *)self source];
-          -[PHMediaFormatConversionRequest setShouldExportAsHDR:](self, "setShouldExportAsHDR:", [v21 isHDR]);
+          source8 = [(PHMediaFormatConversionRequest *)self source];
+          -[PHMediaFormatConversionRequest setShouldExportAsHDR:](self, "setShouldExportAsHDR:", [source8 isHDR]);
         }
 
         else
@@ -1235,11 +1235,11 @@ LABEL_25:
         }
 
         [(PHMediaFormatConversionRequest *)self setPreflighted:1];
-        v22 = [(PHMediaFormatConversionRequest *)self parentRequest];
-        v23 = v22;
-        if (v22)
+        parentRequest = [(PHMediaFormatConversionRequest *)self parentRequest];
+        v23 = parentRequest;
+        if (parentRequest)
         {
-          [v22 didPreflightSubrequest:self];
+          [parentRequest didPreflightSubrequest:self];
         }
 
         goto LABEL_33;
@@ -1252,9 +1252,9 @@ LABEL_25:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v17 = [(PHMediaFormatConversionRequest *)self source];
+      source7 = [(PHMediaFormatConversionRequest *)self source];
       *buf = 138412290;
-      v29 = v17;
+      v29 = source7;
       v18 = MEMORY[0x277D86220];
       v19 = "Invalid request using single pass encoding option for non-video source %@";
       goto LABEL_36;
@@ -1295,9 +1295,9 @@ LABEL_34:
 - (NSString)statusString
 {
   v3 = objc_opt_class();
-  v4 = [(PHMediaFormatConversionRequest *)self status];
+  status = [(PHMediaFormatConversionRequest *)self status];
 
-  return [v3 stringForRequestStatus:v4];
+  return [v3 stringForRequestStatus:status];
 }
 
 - (NSString)description
@@ -1305,25 +1305,25 @@ LABEL_34:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PHMediaFormatConversionRequest *)self identifier];
-  v7 = [(PHMediaFormatConversionRequest *)self statusString];
-  v8 = [(PHMediaFormatConversionRequest *)self preflighted];
-  v9 = [(PHMediaFormatConversionRequest *)self source];
-  v10 = [v9 fileURL];
-  v11 = [v10 path];
-  v12 = [v11 lastPathComponent];
-  v13 = [v3 stringWithFormat:@"<%@ %p identifier=%@ status=%@ preflighted=%d path=%@>", v5, self, v6, v7, v8, v12];
+  identifier = [(PHMediaFormatConversionRequest *)self identifier];
+  statusString = [(PHMediaFormatConversionRequest *)self statusString];
+  preflighted = [(PHMediaFormatConversionRequest *)self preflighted];
+  source = [(PHMediaFormatConversionRequest *)self source];
+  fileURL = [source fileURL];
+  path = [fileURL path];
+  lastPathComponent = [path lastPathComponent];
+  v13 = [v3 stringWithFormat:@"<%@ %p identifier=%@ status=%@ preflighted=%d path=%@>", v5, self, identifier, statusString, preflighted, lastPathComponent];
 
   return v13;
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   if (self->_destination)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:875 description:@"Conversion destination may be set only once"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:875 description:@"Conversion destination may be set only once"];
 
     destination = self->_destination;
   }
@@ -1333,7 +1333,7 @@ LABEL_34:
     destination = 0;
   }
 
-  self->_destination = v5;
+  self->_destination = destinationCopy;
 }
 
 - (PHMediaFormatConversionRequest)init
@@ -1344,16 +1344,16 @@ LABEL_34:
   v2 = [(PHMediaFormatConversionRequest *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
 
     v2->_status = 1;
     v2->_livePhotoPairingIdentifierBehavior = 4;
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID2 UUIDString];
     livePhotoPairingIdentifier = v2->_livePhotoPairingIdentifier;
-    v2->_livePhotoPairingIdentifier = v6;
+    v2->_livePhotoPairingIdentifier = uUIDString;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -1371,15 +1371,15 @@ LABEL_34:
   return v2;
 }
 
-+ (double)heifToJPEGFactorForBitsPerPixel:(double)a3
++ (double)heifToJPEGFactorForBitsPerPixel:(double)pixel
 {
   v3 = 2.3;
-  if (a3 > 1.3)
+  if (pixel > 1.3)
   {
     v3 = 2.0;
   }
 
-  v4 = a3 > 0.7;
+  v4 = pixel > 0.7;
   result = 3.0;
   if (v4)
   {
@@ -1389,18 +1389,18 @@ LABEL_34:
   return result;
 }
 
-+ (double)heifToJPEGFactorWithImageDimensions:(CGSize)a3 fileLength:(unint64_t)a4
++ (double)heifToJPEGFactorWithImageDimensions:(CGSize)dimensions fileLength:(unint64_t)length
 {
   v4 = *MEMORY[0x277CBF3A8];
-  v5 = a3.height == *(MEMORY[0x277CBF3A8] + 8) && a3.width == *MEMORY[0x277CBF3A8];
-  if (!a4 || v5)
+  v5 = dimensions.height == *(MEMORY[0x277CBF3A8] + 8) && dimensions.width == *MEMORY[0x277CBF3A8];
+  if (!length || v5)
   {
     return 2.3;
   }
 
-  [a1 bitsPerPixelWithImageDimensions:? fileLength:?];
+  [self bitsPerPixelWithImageDimensions:? fileLength:?];
 
-  [a1 heifToJPEGFactorForBitsPerPixel:?];
+  [self heifToJPEGFactorForBitsPerPixel:?];
   return result;
 }
 
@@ -1421,24 +1421,24 @@ uint64_t __56__PHMediaFormatConversionRequest_hasInternalDiagnostics__block_invo
   return result;
 }
 
-+ (id)requestForSource:(id)a3 destinationCapabilities:(id)a4 error:(id *)a5
++ (id)requestForSource:(id)source destinationCapabilities:(id)capabilities error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 fileURL];
+  capabilitiesCopy = capabilities;
+  sourceCopy = source;
+  fileURL = [sourceCopy fileURL];
 
-  if (!v11)
+  if (!fileURL)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHMediaFormatConversion.m" lineNumber:926 description:{@"Invalid parameter not satisfying: %@", @"source.fileURL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:926 description:{@"Invalid parameter not satisfying: %@", @"source.fileURL"}];
   }
 
   [objc_opt_class() requestClass];
   v12 = objc_opt_new();
-  [v12 setSource:v10];
+  [v12 setSource:sourceCopy];
 
-  [v12 setDestinationCapabilities:v9];
-  if ([v12 prepareWithError:a5])
+  [v12 setDestinationCapabilities:capabilitiesCopy];
+  if ([v12 prepareWithError:error])
   {
     [v12 setupProgress];
     v13 = v12;
@@ -1452,16 +1452,16 @@ uint64_t __56__PHMediaFormatConversionRequest_hasInternalDiagnostics__block_invo
   return v13;
 }
 
-+ (id)stringForRequestStatus:(int64_t)a3
++ (id)stringForRequestStatus:(int64_t)status
 {
-  if ((a3 - 1) > 4)
+  if ((status - 1) > 4)
   {
     return @"PHMediaFormatRequestStatusUnknown";
   }
 
   else
   {
-    return off_27989B800[a3 - 1];
+    return off_27989B800[status - 1];
   }
 }
 

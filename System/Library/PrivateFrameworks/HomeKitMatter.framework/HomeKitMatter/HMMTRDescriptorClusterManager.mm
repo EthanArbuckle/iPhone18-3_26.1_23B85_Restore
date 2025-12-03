@@ -2,72 +2,72 @@
 + (id)logCategory;
 + (id)sharedManager;
 - (HMMTRDescriptorClusterManager)init;
-- (id)_buildClustersInUseDictWithClustersInUse:(id)a3;
-- (id)_endpointIncludingClusterID:(id)a3 amongEndpoints:(id)a4 device:(id)a5 error:(id *)a6;
-- (id)_fetchAccessoryConfigurationForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5;
-- (id)_fetchAccessoryConfigurationForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)_populateMeasuredValueAttributeForClusterClassName:(id)a3 clusterClassFeatureMap:(id)a4 endpoint:(id)a5 device:(id)a6 deviceTopology:(id)a7 callbackQueue:(id)a8;
-- (id)buildClusterDescriptorWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5;
-- (id)endpointForClusterID:(id)a3 mtrDevice:(id)a4;
-- (id)endpointsWithMTRDevice:(id)a3 endpointID:(id)a4;
-- (id)fetchClientClustersForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5;
-- (id)fetchClusterAcceptedCommandsForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchClusterAttributesForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchClusterEventListForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchClusterFeatureMapForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchClusterGeneratedCommandsForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchClusterRevisionForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6;
-- (id)fetchDeviceTypesWithMTRDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5;
-- (id)fetchPartsListForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5;
-- (id)fetchServerClustersForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5;
-- (id)getBridgeEndpointsDeviceTypes:(id)a3 endpointDeviceTypes:(id)a4;
-- (id)hapServiceDescriptionForServiceType:(id)a3 linkedServiceTypes:(id)a4 clustersInUse:(id)a5 endpoint:(id)a6 name:(id)a7 hapToCHIPClusterMappingArray:(id)a8 clusterClassesToQuery:(id)a9 hapServicesToCheckForFeatureMap:(id)a10 hapServicesToCheckForOptionalMatterAttribute:(id)a11 hapServicesToCheckForRequiredAttributeValues:(id)a12 hapCharacteristicsToCheckForRequiredAttributeValues:(id)a13 server:(id)a14;
-- (id)hapServiceDescriptionsForTopology:(id)a3 namesDictionary:(id)a4 server:(id)a5;
-- (id)runBlockForAllEndpointsWithClusterID:(id)a3 mtrDevice:(id)a4 callbackQueue:(id)a5 block:(id)a6;
-- (void)_populateAttributeValuesForClusterClassName:(id)a3 clusterClassFeatureMap:(id)a4 endpoint:(id)a5 device:(id)a6 deviceTopology:(id)a7 callbackQueue:(id)a8 completionHandler:(id)a9;
-- (void)_queryAttributeValueFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 attributeValuesToCheckDict:(id)a5 attributeValuesSupportedDict:(id)a6 attributeValuesRetrievedDict:(id)a7 callbackQueue:(id)a8 clusterClassName:(id)a9 completionHandler:(id)a10;
-- (void)_queryEndpointsForClusterID:(id)a3 endpoints:(id)a4 device:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)_queryEndpointsForClusterID:(id)a3 endpoints:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)_queryFeatureMapFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 clusterClassName:(id)a6 completionHandler:(id)a7;
-- (void)_querySupportedAttributesFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 clusterClassName:(id)a6 completionHandler:(id)a7;
-- (void)_removeDisabledCharacteristicsFromServiceDescription:(id)a3 endpoint:(id)a4 topology:(id)a5;
-- (void)_runBlockForAllEndpointsWithClusterID:(id)a3 endpoints:(id)a4 device:(id)a5 callbackQueue:(id)a6 finishedRunningAllBlocksPromise:(id)a7 block:(id)a8;
-- (void)_runBlockForAllEndpointsWithClusterID:(id)a3 endpoints:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 finishedRunningAllBlocksPromise:(id)a7 block:(id)a8;
-- (void)_updateOTARequestorEndpointsInTopology:(id)a3 device:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)_verifyHAPCharacteristicSupportAtCHIPEndpoint:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 callbackQueue:(id)a6 clusterClassToQueryForFeatureMap:(id)a7 hapServicesToCheckForFeatureMap:(id)a8 hapServicesInUse:(id)a9 deviceTopology:(id)a10 bridgeAggregateNodeEndpoint:(id)a11 server:(id)a12 lastError:(id)a13 completionHandler:(id)a14;
-- (void)_verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 hapServicesToCheckForRequiredAttributeValues:(id)a6 hapCharacteristicsToCheckForRequiredAttributeValues:(id)a7 attributeValuesSupportedDict:(id)a8 attributeValuesRetrievedDict:(id)a9 deviceTopology:(id)a10 server:(id)a11 lastError:(id)a12 completionHandler:(id)a13;
-- (void)_verifyHAPOptionalCharacteristicSupportAtCHIPEndpoint:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 callbackQueue:(id)a6 clusterClassToQueryForAttributes:(id)a7 hapServicesToCheckForOptionalMatterAttribute:(id)a8 clusterAttributesSupported:(id)a9 hapServicesInUse:(id)a10 deviceTopology:(id)a11 bridgeAggregateNodeEndpoint:(id)a12 server:(id)a13 lastError:(id)a14 completionHandler:(id)a15;
-- (void)endpointForClusterID:(id)a3 device:(id)a4 partsList:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)endpointForClusterID:(id)a3 mtrDevice:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchAccessoryConfigurationForDevice:(id)a3 nodeId:(id)a4 server:(id)a5 reasonString:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8;
-- (void)fetchDeviceTypesForDevice:(id)a3 atEndpoint:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchDeviceTypesForEndpoints:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 lastError:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8;
-- (void)fetchDeviceTypesForEndpoints:(id)a3 mtrDevice:(id)a4 endpointDeviceTypes:(id)a5 lastError:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8;
-- (void)fetchDeviceTypesWithMTRDevice:(id)a3 atEndpoint:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchEndpointsWithMTRDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchHAPCategoryForCHIPDevice:(id)a3 nodeId:(id)a4 server:(id)a5 partsList:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8;
-- (void)fetchHAPCategoryWithMTRDevice:(id)a3 nodeId:(id)a4 server:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)fetchHAPServicesAtCHIPEndpoint:(id)a3 deviceTopology:(id)a4 endpointDeviceTypes:(id)a5 accessoryInfo:(id)a6 hapToCHIPClusterMappingArray:(id)a7 device:(id)a8 isBridge:(BOOL)a9 bridgeAggregateNodeEndpoint:(id)a10 isComposedDevice:(BOOL)a11 server:(id)a12 callbackQueue:(id)a13 completionHandler:(id)a14;
-- (void)fetchHAPServicesForEndpoints:(id)a3 endpointDeviceTypes:(id)a4 device:(id)a5 nodeId:(id)a6 isBridge:(BOOL)a7 bridgeAggregateNodeEndpoint:(id)a8 server:(id)a9 topology:(id)a10 hapAccessoryInfo:(id)a11 callbackQueue:(id)a12 completionHandler:(id)a13;
-- (void)fetchHAPServicesWithMTRDevice:(id)a3 nodeId:(id)a4 server:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)isEndpointPresentForClusterID:(id)a3 endpoint:(id)a4 device:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
-- (void)isEndpointPresentForClusterID:(id)a3 endpoint:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7;
+- (id)_buildClustersInUseDictWithClustersInUse:(id)use;
+- (id)_endpointIncludingClusterID:(id)d amongEndpoints:(id)endpoints device:(id)device error:(id *)error;
+- (id)_fetchAccessoryConfigurationForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue;
+- (id)_fetchAccessoryConfigurationForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)_populateMeasuredValueAttributeForClusterClassName:(id)name clusterClassFeatureMap:(id)map endpoint:(id)endpoint device:(id)device deviceTopology:(id)topology callbackQueue:(id)queue;
+- (id)buildClusterDescriptorWithDevice:(id)device endpointID:(id)d queue:(id)queue;
+- (id)endpointForClusterID:(id)d mtrDevice:(id)device;
+- (id)endpointsWithMTRDevice:(id)device endpointID:(id)d;
+- (id)fetchClientClustersForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue;
+- (id)fetchClusterAcceptedCommandsForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchClusterAttributesForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchClusterEventListForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchClusterFeatureMapForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchClusterGeneratedCommandsForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchClusterRevisionForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue;
+- (id)fetchDeviceTypesWithMTRDevice:(id)device endpointID:(id)d callbackQueue:(id)queue;
+- (id)fetchPartsListForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue;
+- (id)fetchServerClustersForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue;
+- (id)getBridgeEndpointsDeviceTypes:(id)types endpointDeviceTypes:(id)deviceTypes;
+- (id)hapServiceDescriptionForServiceType:(id)type linkedServiceTypes:(id)types clustersInUse:(id)use endpoint:(id)endpoint name:(id)name hapToCHIPClusterMappingArray:(id)array clusterClassesToQuery:(id)query hapServicesToCheckForFeatureMap:(id)self0 hapServicesToCheckForOptionalMatterAttribute:(id)self1 hapServicesToCheckForRequiredAttributeValues:(id)self2 hapCharacteristicsToCheckForRequiredAttributeValues:(id)self3 server:(id)self4;
+- (id)hapServiceDescriptionsForTopology:(id)topology namesDictionary:(id)dictionary server:(id)server;
+- (id)runBlockForAllEndpointsWithClusterID:(id)d mtrDevice:(id)device callbackQueue:(id)queue block:(id)block;
+- (void)_populateAttributeValuesForClusterClassName:(id)name clusterClassFeatureMap:(id)map endpoint:(id)endpoint device:(id)device deviceTopology:(id)topology callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_queryAttributeValueFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device attributeValuesToCheckDict:(id)dict attributeValuesSupportedDict:(id)supportedDict attributeValuesRetrievedDict:(id)retrievedDict callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)self0;
+- (void)_queryEndpointsForClusterID:(id)d endpoints:(id)endpoints device:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_queryEndpointsForClusterID:(id)d endpoints:(id)endpoints mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_queryFeatureMapFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)handler;
+- (void)_querySupportedAttributesFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)handler;
+- (void)_removeDisabledCharacteristicsFromServiceDescription:(id)description endpoint:(id)endpoint topology:(id)topology;
+- (void)_runBlockForAllEndpointsWithClusterID:(id)d endpoints:(id)endpoints device:(id)device callbackQueue:(id)queue finishedRunningAllBlocksPromise:(id)promise block:(id)block;
+- (void)_runBlockForAllEndpointsWithClusterID:(id)d endpoints:(id)endpoints mtrDevice:(id)device callbackQueue:(id)queue finishedRunningAllBlocksPromise:(id)promise block:(id)block;
+- (void)_updateOTARequestorEndpointsInTopology:(id)topology device:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_verifyHAPCharacteristicSupportAtCHIPEndpoint:(id)endpoint device:(id)device endpointDeviceTypes:(id)types callbackQueue:(id)queue clusterClassToQueryForFeatureMap:(id)map hapServicesToCheckForFeatureMap:(id)featureMap hapServicesInUse:(id)use deviceTopology:(id)self0 bridgeAggregateNodeEndpoint:(id)self1 server:(id)self2 lastError:(id)self3 completionHandler:(id)self4;
+- (void)_verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue hapServicesToCheckForRequiredAttributeValues:(id)values hapCharacteristicsToCheckForRequiredAttributeValues:(id)attributeValues attributeValuesSupportedDict:(id)dict attributeValuesRetrievedDict:(id)retrievedDict deviceTopology:(id)self0 server:(id)self1 lastError:(id)self2 completionHandler:(id)self3;
+- (void)_verifyHAPOptionalCharacteristicSupportAtCHIPEndpoint:(id)endpoint device:(id)device endpointDeviceTypes:(id)types callbackQueue:(id)queue clusterClassToQueryForAttributes:(id)attributes hapServicesToCheckForOptionalMatterAttribute:(id)attribute clusterAttributesSupported:(id)supported hapServicesInUse:(id)self0 deviceTopology:(id)self1 bridgeAggregateNodeEndpoint:(id)self2 server:(id)self3 lastError:(id)self4 completionHandler:(id)self5;
+- (void)endpointForClusterID:(id)d device:(id)device partsList:(id)list callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)endpointForClusterID:(id)d mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchAccessoryConfigurationForDevice:(id)device nodeId:(id)id server:(id)server reasonString:(id)string callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchDeviceTypesForDevice:(id)device atEndpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchDeviceTypesForEndpoints:(id)endpoints device:(id)device endpointDeviceTypes:(id)types lastError:(id)error callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchDeviceTypesForEndpoints:(id)endpoints mtrDevice:(id)device endpointDeviceTypes:(id)types lastError:(id)error callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchDeviceTypesWithMTRDevice:(id)device atEndpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchEndpointsWithMTRDevice:(id)device endpointID:(id)d callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchHAPCategoryForCHIPDevice:(id)device nodeId:(id)id server:(id)server partsList:(id)list callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchHAPCategoryWithMTRDevice:(id)device nodeId:(id)id server:(id)server callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchHAPServicesAtCHIPEndpoint:(id)endpoint deviceTopology:(id)topology endpointDeviceTypes:(id)types accessoryInfo:(id)info hapToCHIPClusterMappingArray:(id)array device:(id)device isBridge:(BOOL)bridge bridgeAggregateNodeEndpoint:(id)self0 isComposedDevice:(BOOL)self1 server:(id)self2 callbackQueue:(id)self3 completionHandler:(id)self4;
+- (void)fetchHAPServicesForEndpoints:(id)endpoints endpointDeviceTypes:(id)types device:(id)device nodeId:(id)id isBridge:(BOOL)bridge bridgeAggregateNodeEndpoint:(id)endpoint server:(id)server topology:(id)self0 hapAccessoryInfo:(id)self1 callbackQueue:(id)self2 completionHandler:(id)self3;
+- (void)fetchHAPServicesWithMTRDevice:(id)device nodeId:(id)id server:(id)server callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)isEndpointPresentForClusterID:(id)d endpoint:(id)endpoint device:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)isEndpointPresentForClusterID:(id)d endpoint:(id)endpoint mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation HMMTRDescriptorClusterManager
 
-- (void)_runBlockForAllEndpointsWithClusterID:(id)a3 endpoints:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 finishedRunningAllBlocksPromise:(id)a7 block:(id)a8
+- (void)_runBlockForAllEndpointsWithClusterID:(id)d endpoints:(id)endpoints mtrDevice:(id)device callbackQueue:(id)queue finishedRunningAllBlocksPromise:(id)promise block:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v15 count])
+  dCopy = d;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
+  queueCopy = queue;
+  promiseCopy = promise;
+  blockCopy = block;
+  if ([endpointsCopy count])
   {
-    v20 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:v17];
+    v20 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:queueCopy];
     *buf = _HMFThreadLocalAsyncContextPush();
     v21 = MEMORY[0x277D0F7C0];
     v31[0] = MEMORY[0x277D85DD0];
@@ -75,39 +75,39 @@
     v31[2] = __143__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithClusterID_endpoints_mtrDevice_callbackQueue_finishedRunningAllBlocksPromise_block___block_invoke;
     v31[3] = &unk_2786EE870;
     v31[4] = self;
-    v32 = v16;
-    v33 = v17;
-    v34 = v14;
-    v35 = v19;
-    v22 = [v15 na_map:v31];
+    v32 = deviceCopy;
+    v33 = queueCopy;
+    v34 = dCopy;
+    v35 = blockCopy;
+    v22 = [endpointsCopy na_map:v31];
     v23 = [v21 allSettled:v22];
-    v24 = [v23 ignoreResult];
+    ignoreResult = [v23 ignoreResult];
 
-    [v18 resolveWithFuture:v24];
+    [promiseCopy resolveWithFuture:ignoreResult];
     _HMFThreadLocalAsyncContextPop();
   }
 
   else
   {
     context = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v16 nodeID];
+      nodeID = [deviceCopy nodeID];
       *buf = 138543874;
       *&buf[4] = v27;
       v37 = 2112;
-      v38 = v14;
+      v38 = dCopy;
       v39 = 2112;
-      v40 = v28;
+      v40 = nodeID;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_INFO, "%{public}@Cluster ID %@ not found at any endpoints of node %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(context);
     v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    [v18 rejectWithError:v20];
+    [promiseCopy rejectWithError:v20];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -171,41 +171,41 @@ id __143__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithClusterID_en
   return v16;
 }
 
-- (void)_runBlockForAllEndpointsWithClusterID:(id)a3 endpoints:(id)a4 device:(id)a5 callbackQueue:(id)a6 finishedRunningAllBlocksPromise:(id)a7 block:(id)a8
+- (void)_runBlockForAllEndpointsWithClusterID:(id)d endpoints:(id)endpoints device:(id)device callbackQueue:(id)queue finishedRunningAllBlocksPromise:(id)promise block:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v15 count])
+  dCopy = d;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
+  queueCopy = queue;
+  promiseCopy = promise;
+  blockCopy = block;
+  if ([endpointsCopy count])
   {
-    v20 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:v17];
+    v20 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:queueCopy];
     *buf = _HMFThreadLocalAsyncContextPush();
     v21 = MEMORY[0x277D0F7C0];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithClusterID_endpoints_device_callbackQueue_finishedRunningAllBlocksPromise_block___block_invoke;
     v30[3] = &unk_2786EE870;
-    v31 = v16;
-    v32 = v17;
-    v33 = v14;
-    v34 = self;
-    v35 = v19;
-    v22 = [v15 na_map:v30];
+    v31 = deviceCopy;
+    v32 = queueCopy;
+    v33 = dCopy;
+    selfCopy = self;
+    v35 = blockCopy;
+    v22 = [endpointsCopy na_map:v30];
     v23 = [v21 allSettled:v22];
-    v24 = [v23 ignoreResult];
+    ignoreResult = [v23 ignoreResult];
 
-    [v18 resolveWithFuture:v24];
+    [promiseCopy resolveWithFuture:ignoreResult];
     _HMFThreadLocalAsyncContextPop();
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -213,13 +213,13 @@ id __143__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithClusterID_en
       *buf = 138543618;
       *&buf[4] = v28;
       v37 = 2112;
-      v38 = v14;
+      v38 = dCopy;
       _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@Cluster ID %@ not found at any endpoints", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
     v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    [v18 rejectWithError:v20];
+    [promiseCopy rejectWithError:v20];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -319,48 +319,48 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
   return 2;
 }
 
-- (void)_queryEndpointsForClusterID:(id)a3 endpoints:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)_queryEndpointsForClusterID:(id)d endpoints:(id)endpoints mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v23 = 0;
-  v13 = a6;
-  v14 = [(HMMTRDescriptorClusterManager *)self _endpointIncludingClusterID:a3 amongEndpoints:a4 device:a5 error:&v23];
+  queueCopy = queue;
+  v14 = [(HMMTRDescriptorClusterManager *)self _endpointIncludingClusterID:d amongEndpoints:endpoints device:device error:&v23];
   v15 = v23;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __113__HMMTRDescriptorClusterManager__queryEndpointsForClusterID_endpoints_mtrDevice_callbackQueue_completionHandler___block_invoke;
   v19[3] = &unk_2786F0EA8;
   v21 = v15;
-  v22 = v12;
+  v22 = handlerCopy;
   v20 = v14;
   v16 = v15;
   v17 = v14;
-  v18 = v12;
-  dispatch_async(v13, v19);
+  v18 = handlerCopy;
+  dispatch_async(queueCopy, v19);
 }
 
-- (id)_endpointIncludingClusterID:(id)a3 amongEndpoints:(id)a4 device:(id)a5 error:(id *)a6
+- (id)_endpointIncludingClusterID:(id)d amongEndpoints:(id)endpoints device:(id)device error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
   v47 = dispatch_queue_create("hmmtr.descriptorClusterManager.temporary", 0);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v14 = v12;
+  v14 = endpointsCopy;
   v46 = [v14 countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v46)
   {
     v45 = *v49;
     *&v15 = 138543874;
     v38 = v15;
-    v44 = self;
-    v39 = v11;
-    v40 = a6;
-    v41 = v13;
+    selfCopy = self;
+    v39 = dCopy;
+    errorCopy = error;
+    v41 = deviceCopy;
     obj = v14;
     while (2)
     {
@@ -372,7 +372,7 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
         }
 
         v17 = *(*(&v48 + 1) + 8 * i);
-        v18 = [(HMMTRDescriptorClusterManager *)self buildClusterDescriptorWithDevice:v13 endpointID:v17 queue:v47, v38];
+        v18 = [(HMMTRDescriptorClusterManager *)self buildClusterDescriptorWithDevice:deviceCopy endpointID:v17 queue:v47, v38];
         v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
         v20 = [v18 readAttributeServerListWithParams:v19];
 
@@ -388,12 +388,12 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
           v22 = 0;
         }
 
-        v23 = self;
+        selfCopy2 = self;
         v24 = v22;
 
         if (v24)
         {
-          if ([v24 containsObject:v11])
+          if ([v24 containsObject:dCopy])
           {
             v6 = v17;
             v25 = 0;
@@ -408,30 +408,30 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
         else
         {
           context = objc_autoreleasePoolPush();
-          v26 = v23;
+          v26 = selfCopy2;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             v28 = HMFGetLogIdentifier();
-            v29 = [v41 nodeID];
+            nodeID = [v41 nodeID];
             *buf = v38;
             v53 = v28;
             v54 = 2112;
             v55 = v17;
             v56 = 2112;
-            v57 = v29;
+            v57 = nodeID;
             _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_ERROR, "%{public}@ServerList at endpoint %@ of node %@ absent from cache", buf, 0x20u);
 
-            v11 = v39;
-            v13 = v41;
+            dCopy = v39;
+            deviceCopy = v41;
           }
 
           objc_autoreleasePoolPop(context);
-          if (v40)
+          if (errorCopy)
           {
             [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2318];
             v25 = 0;
-            *v40 = v6 = 0;
+            *errorCopy = v6 = 0;
           }
 
           else
@@ -448,7 +448,7 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
           goto LABEL_25;
         }
 
-        self = v44;
+        self = selfCopy;
       }
 
       v14 = obj;
@@ -463,22 +463,22 @@ uint64_t __140__HMMTRDescriptorClusterManager__runBlockForAllEndpointsWithCluste
   }
 
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy3 = self;
   v32 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
     v33 = HMFGetLogIdentifier();
-    [v13 nodeID];
-    v35 = v34 = v13;
+    [deviceCopy nodeID];
+    v35 = v34 = deviceCopy;
     *buf = 138543874;
     v53 = v33;
     v54 = 2112;
-    v55 = v11;
+    v55 = dCopy;
     v56 = 2112;
     v57 = v35;
     _os_log_impl(&dword_22AEAE000, v32, OS_LOG_TYPE_DEBUG, "%{public}@Cluster ID %@ not found at any endpoints of node %@", buf, 0x20u);
 
-    v13 = v34;
+    deviceCopy = v34;
   }
 
   objc_autoreleasePoolPop(v30);
@@ -490,37 +490,37 @@ LABEL_25:
   return v6;
 }
 
-- (void)_queryEndpointsForClusterID:(id)a3 endpoints:(id)a4 device:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)_queryEndpointsForClusterID:(id)d endpoints:(id)endpoints device:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v13 count])
+  dCopy = d;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([endpointsCopy count])
   {
-    v17 = [v13 popFirstObject];
-    v18 = [objc_alloc(MEMORY[0x277CD51F0]) initWithDevice:v14 endpoint:objc_msgSend(v17 queue:{"unsignedShortValue"), v15}];
+    popFirstObject = [endpointsCopy popFirstObject];
+    v18 = [objc_alloc(MEMORY[0x277CD51F0]) initWithDevice:deviceCopy endpoint:objc_msgSend(popFirstObject queue:{"unsignedShortValue"), queueCopy}];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __110__HMMTRDescriptorClusterManager__queryEndpointsForClusterID_endpoints_device_callbackQueue_completionHandler___block_invoke;
     v25[3] = &unk_2786EE7F8;
     v25[4] = self;
-    v26 = v17;
-    v31 = v16;
-    v27 = v12;
-    v28 = v13;
-    v29 = v14;
-    v30 = v15;
-    v19 = v17;
+    v26 = popFirstObject;
+    v31 = handlerCopy;
+    v27 = dCopy;
+    v28 = endpointsCopy;
+    v29 = deviceCopy;
+    v30 = queueCopy;
+    v19 = popFirstObject;
     [v18 readAttributeServerListWithCompletionHandler:v25];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -528,12 +528,12 @@ LABEL_25:
       *buf = 138543618;
       v33 = v23;
       v34 = 2112;
-      v35 = v12;
+      v35 = dCopy;
       _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_DEBUG, "%{public}@Cluster ID %@ not found at any endpoints", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
-    (*(v16 + 2))(v16, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -584,11 +584,11 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isEndpointPresentForClusterID:(id)a3 endpoint:(id)a4 mtrDevice:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)isEndpointPresentForClusterID:(id)d endpoint:(id)endpoint mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v21 = a3;
-  v12 = a7;
-  v13 = [(HMMTRDescriptorClusterManager *)self buildClusterDescriptorWithDevice:a5 endpointID:a4 queue:a6];
+  dCopy = d;
+  handlerCopy = handler;
+  v13 = [(HMMTRDescriptorClusterManager *)self buildClusterDescriptorWithDevice:device endpointID:endpoint queue:queue];
   v14 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v15 = [v13 readAttributeServerListWithParams:v14];
 
@@ -608,40 +608,40 @@ LABEL_8:
   v19 = v18;
   if (v18)
   {
-    if ([v18 containsObject:v21])
+    if ([v18 containsObject:dCopy])
     {
-      v12[2](v12, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
   }
 
   else
   {
     v20 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2318];
-    (v12)[2](v12, 0, v20);
+    (handlerCopy)[2](handlerCopy, 0, v20);
   }
 }
 
-- (void)isEndpointPresentForClusterID:(id)a3 endpoint:(id)a4 device:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)isEndpointPresentForClusterID:(id)d endpoint:(id)endpoint device:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dCopy = d;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CD51F0];
-  v16 = a6;
-  v17 = a5;
-  v18 = [[v15 alloc] initWithDevice:v17 endpointID:v13 queue:v16];
+  queueCopy = queue;
+  deviceCopy = device;
+  v18 = [[v15 alloc] initWithDevice:deviceCopy endpointID:endpointCopy queue:queueCopy];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __111__HMMTRDescriptorClusterManager_isEndpointPresentForClusterID_endpoint_device_callbackQueue_completionHandler___block_invoke;
   v22[3] = &unk_2786F0030;
   v22[4] = self;
-  v23 = v13;
-  v24 = v12;
-  v25 = v14;
-  v19 = v12;
-  v20 = v14;
-  v21 = v13;
+  v23 = endpointCopy;
+  v24 = dCopy;
+  v25 = handlerCopy;
+  v19 = dCopy;
+  v20 = handlerCopy;
+  v21 = endpointCopy;
   [v18 readAttributeServerListWithCompletionHandler:v22];
 }
 
@@ -704,26 +704,26 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runBlockForAllEndpointsWithClusterID:(id)a3 mtrDevice:(id)a4 callbackQueue:(id)a5 block:(id)a6
+- (id)runBlockForAllEndpointsWithClusterID:(id)d mtrDevice:(id)device callbackQueue:(id)queue block:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  deviceCopy = device;
+  queueCopy = queue;
+  blockCopy = block;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v11 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     *&buf[4] = v17;
     v33 = 2112;
-    v34 = v18;
+    v34 = nodeID;
     v35 = 2112;
-    v36 = v10;
+    v36 = dCopy;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@Running block on all endpoints of node %@ with clusterID %@", buf, 0x20u);
   }
 
@@ -734,17 +734,17 @@ LABEL_10:
   v26[1] = 3221225472;
   v26[2] = __100__HMMTRDescriptorClusterManager_runBlockForAllEndpointsWithClusterID_mtrDevice_callbackQueue_block___block_invoke;
   v26[3] = &unk_2786EE7D0;
-  v26[4] = v15;
-  v27 = v11;
+  v26[4] = selfCopy;
+  v27 = deviceCopy;
   v28 = *buf;
-  v29 = v10;
-  v30 = v12;
-  v31 = v13;
-  v20 = v13;
-  v21 = v12;
-  v22 = v10;
-  v23 = v11;
-  [(HMMTRDescriptorClusterManager *)v15 fetchEndpointsWithMTRDevice:v23 endpointID:&unk_283EE8598 callbackQueue:v21 completionHandler:v26];
+  v29 = dCopy;
+  v30 = queueCopy;
+  v31 = blockCopy;
+  v20 = blockCopy;
+  v21 = queueCopy;
+  v22 = dCopy;
+  v23 = deviceCopy;
+  [(HMMTRDescriptorClusterManager *)selfCopy fetchEndpointsWithMTRDevice:v23 endpointID:&unk_283EE8598 callbackQueue:v21 completionHandler:v26];
 
   v24 = *MEMORY[0x277D85DE8];
 
@@ -788,49 +788,49 @@ void __100__HMMTRDescriptorClusterManager_runBlockForAllEndpointsWithClusterID_m
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)endpointForClusterID:(id)a3 mtrDevice:(id)a4
+- (id)endpointForClusterID:(id)d mtrDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v24 = v11;
     v25 = 2112;
-    v26 = v6;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v12;
+    v28 = nodeID;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Finding endpoint for clusterID %@ from node %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMMTRDescriptorClusterManager *)v9 endpointsWithMTRDevice:v7 endpointID:&unk_283EE8598];
+  v13 = [(HMMTRDescriptorClusterManager *)selfCopy endpointsWithMTRDevice:deviceCopy endpointID:&unk_283EE8598];
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{&unk_283EE8598, 0}];
     [v14 addObjectsFromArray:v13];
-    v15 = [(HMMTRDescriptorClusterManager *)v9 _endpointIncludingClusterID:v6 amongEndpoints:v14 device:v7 error:0];
+    v15 = [(HMMTRDescriptorClusterManager *)selfCopy _endpointIncludingClusterID:dCopy amongEndpoints:v14 device:deviceCopy error:0];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v7 nodeID];
+      nodeID2 = [deviceCopy nodeID];
       *buf = 138543618;
       v24 = v19;
       v25 = 2112;
-      v26 = v20;
+      v26 = nodeID2;
       _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to get endpoints for node %@", buf, 0x16u);
     }
 
@@ -843,26 +843,26 @@ void __100__HMMTRDescriptorClusterManager_runBlockForAllEndpointsWithClusterID_m
   return v15;
 }
 
-- (void)endpointForClusterID:(id)a3 mtrDevice:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)endpointForClusterID:(id)d mtrDevice:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  deviceCopy = device;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v11 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v30 = v17;
     v31 = 2112;
-    v32 = v10;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = v18;
+    v34 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Finding endpoint for clusterID %@ from node %@", buf, 0x20u);
   }
 
@@ -871,16 +871,16 @@ void __100__HMMTRDescriptorClusterManager_runBlockForAllEndpointsWithClusterID_m
   v24[1] = 3221225472;
   v24[2] = __96__HMMTRDescriptorClusterManager_endpointForClusterID_mtrDevice_callbackQueue_completionHandler___block_invoke;
   v24[3] = &unk_2786F0ED0;
-  v24[4] = v15;
-  v25 = v11;
-  v27 = v12;
-  v28 = v13;
-  v26 = v10;
-  v19 = v12;
-  v20 = v10;
-  v21 = v13;
-  v22 = v11;
-  [(HMMTRDescriptorClusterManager *)v15 fetchEndpointsWithMTRDevice:v22 endpointID:&unk_283EE8598 callbackQueue:v19 completionHandler:v24];
+  v24[4] = selfCopy;
+  v25 = deviceCopy;
+  v27 = queueCopy;
+  v28 = handlerCopy;
+  v26 = dCopy;
+  v19 = queueCopy;
+  v20 = dCopy;
+  v21 = handlerCopy;
+  v22 = deviceCopy;
+  [(HMMTRDescriptorClusterManager *)selfCopy fetchEndpointsWithMTRDevice:v22 endpointID:&unk_283EE8598 callbackQueue:v19 completionHandler:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -931,16 +931,16 @@ void __96__HMMTRDescriptorClusterManager_endpointForClusterID_mtrDevice_callback
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endpointForClusterID:(id)a3 device:(id)a4 partsList:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)endpointForClusterID:(id)d device:(id)device partsList:(id)list callbackQueue:(id)queue completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  deviceCopy = device;
+  listCopy = list;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
@@ -948,7 +948,7 @@ void __96__HMMTRDescriptorClusterManager_endpointForClusterID_mtrDevice_callback
     *buf = 138543618;
     v35 = v20;
     v36 = 2112;
-    v37 = v12;
+    v37 = dCopy;
     _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Finding endpoint for clusterID %@", buf, 0x16u);
   }
 
@@ -957,17 +957,17 @@ void __96__HMMTRDescriptorClusterManager_endpointForClusterID_mtrDevice_callback
   v27[1] = 3221225472;
   v27[2] = __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_callbackQueue_completionHandler___block_invoke;
   v27[3] = &unk_2786EEE48;
-  v28 = v14;
-  v29 = v18;
-  v30 = v12;
-  v31 = v13;
-  v32 = v15;
-  v33 = v16;
-  v21 = v16;
-  v22 = v15;
-  v23 = v13;
-  v24 = v12;
-  v25 = v14;
+  v28 = listCopy;
+  v29 = selfCopy;
+  v30 = dCopy;
+  v31 = deviceCopy;
+  v32 = queueCopy;
+  v33 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = queueCopy;
+  v23 = deviceCopy;
+  v24 = dCopy;
+  v25 = listCopy;
   dispatch_async(v22, v27);
 
   v26 = *MEMORY[0x277D85DE8];
@@ -989,34 +989,34 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
   [v3 _queryEndpointsForClusterID:v4 endpoints:v2 device:v5 callbackQueue:v6 completionHandler:v7];
 }
 
-- (void)fetchDeviceTypesWithMTRDevice:(id)a3 atEndpoint:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchDeviceTypesWithMTRDevice:(id)device atEndpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler
 {
   v113 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v18 = v17 = v15;
-    v19 = [v10 nodeID];
+    v18 = v17 = selfCopy;
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v104 = v18;
     v105 = 2112;
-    v106 = v11;
+    v106 = endpointCopy;
     v107 = 2112;
-    v108 = v19;
+    v108 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@Examining MTRClusterDescriptor device list at endpoint %@ of node %@", buf, 0x20u);
 
-    v15 = v17;
+    selfCopy = v17;
   }
 
   objc_autoreleasePoolPop(v14);
-  v20 = [(HMMTRDescriptorClusterManager *)v15 buildClusterDescriptorWithDevice:v10 endpointID:v11 queue:v12];
+  v20 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:endpointCopy queue:queueCopy];
   v21 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v82 = v20;
   v22 = [v20 readAttributeDeviceTypeListWithParams:v21];
@@ -1046,13 +1046,13 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
 
   v26 = v25;
 
-  v93 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v81 = v22;
   if ([v26 isEqual:*MEMORY[0x277CD50B0]])
   {
-    v78 = v13;
-    v79 = v11;
-    v80 = v10;
+    v78 = handlerCopy;
+    v79 = endpointCopy;
+    v80 = deviceCopy;
     v87 = *MEMORY[0x277CD51A0];
     v27 = [v22 objectForKeyedSubscript:?];
     objc_opt_class();
@@ -1216,7 +1216,7 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
 
                         v66 = v65;
 
-                        [v93 addObject:v66];
+                        [array addObject:v66];
                       }
                     }
                   }
@@ -1246,9 +1246,9 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
       while (v32);
     }
 
-    v11 = v79;
-    v10 = v80;
-    v13 = v78;
+    endpointCopy = v79;
+    deviceCopy = v80;
+    handlerCopy = v78;
     v67 = v30;
     v22 = v81;
   }
@@ -1260,39 +1260,39 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
     v83 = v68;
   }
 
-  if ([v93 hmf_isEmpty])
+  if ([array hmf_isEmpty])
   {
     v69 = v83;
-    v13[2](v13, 0, v83);
-    v70 = v93;
+    handlerCopy[2](handlerCopy, 0, v83);
+    v70 = array;
   }
 
   else
   {
     v71 = objc_autoreleasePoolPush();
-    v72 = v15;
+    v72 = selfCopy;
     v73 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
     {
       v74 = HMFGetLogIdentifier();
-      [v10 nodeID];
-      v76 = v75 = v13;
+      [deviceCopy nodeID];
+      v76 = v75 = handlerCopy;
       *buf = 138544130;
       v104 = v74;
       v105 = 2112;
-      v106 = v11;
+      v106 = endpointCopy;
       v107 = 2112;
       v108 = v76;
       v109 = 2112;
-      v110 = v93;
+      v110 = array;
       _os_log_impl(&dword_22AEAE000, v73, OS_LOG_TYPE_INFO, "%{public}@Device Type Enumeration : Got at endpoint %@ of node %@, following device types in use %@", buf, 0x2Au);
 
-      v13 = v75;
+      handlerCopy = v75;
     }
 
     objc_autoreleasePoolPop(v71);
-    v70 = v93;
-    (v13)[2](v13, v93, 0);
+    v70 = array;
+    (handlerCopy)[2](handlerCopy, array, 0);
     v22 = v81;
     v69 = v83;
   }
@@ -1300,15 +1300,15 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDeviceTypesForDevice:(id)a3 atEndpoint:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchDeviceTypesForDevice:(id)device atEndpoint:(id)endpoint callbackQueue:(id)queue completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -1316,21 +1316,21 @@ void __103__HMMTRDescriptorClusterManager_endpointForClusterID_device_partsList_
     *buf = 138543618;
     v26 = v17;
     v27 = 2112;
-    v28 = v11;
+    v28 = endpointCopy;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@Examining MTRBaseClusterDescriptor device list at endpoint %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [objc_alloc(MEMORY[0x277CD51F0]) initWithDevice:v10 endpoint:objc_msgSend(v11 queue:{"unsignedShortValue"), v12}];
+  v18 = [objc_alloc(MEMORY[0x277CD51F0]) initWithDevice:deviceCopy endpoint:objc_msgSend(endpointCopy queue:{"unsignedShortValue"), queueCopy}];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __102__HMMTRDescriptorClusterManager_fetchDeviceTypesForDevice_atEndpoint_callbackQueue_completionHandler___block_invoke;
   v22[3] = &unk_2786F1038;
-  v23 = v11;
-  v24 = v13;
-  v22[4] = v15;
-  v19 = v11;
-  v20 = v13;
+  v23 = endpointCopy;
+  v24 = handlerCopy;
+  v22[4] = selfCopy;
+  v19 = endpointCopy;
+  v20 = handlerCopy;
   [v18 readAttributeDeviceListWithCompletionHandler:v22];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1426,32 +1426,32 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchClusterGeneratedCommandsForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterGeneratedCommandsForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterGeneratedCommandsForDevice: Examining MTRBaseClusterDescriptor cluster generated command list attribute at endpoint %@ of node %@ to retrieve accepted commands.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8778 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8778 params:v19];
 
   if (v20)
   {
@@ -1470,19 +1470,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1491,10 +1491,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterGeneratedCommandsForDevice: For endpoint %@ of node %@, cluster %@, retrieved the following generated command list %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1510,32 +1510,32 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClusterAcceptedCommandsForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterAcceptedCommandsForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterAcceptedCommandsForDevice: Examining MTRBaseClusterDescriptor cluster acceptedCommandList attribute at endpoint %@ of node %@ to retrieve accepted commands.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8760 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8760 params:v19];
 
   if (v20)
   {
@@ -1554,19 +1554,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1575,10 +1575,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterAcceptedCommandsForDevice: For endpoint %@ of node %@, cluster %@, retrieved the following accepted command list %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1594,32 +1594,32 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClusterFeatureMapForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterFeatureMapForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterFeatureMapForDevice: Examining MTRBaseClusterDescriptor cluster feature map attribute at endpoint %@ of node %@ to retrieve feature map.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8748 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8748 params:v19];
 
   if (v20)
   {
@@ -1638,19 +1638,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1659,10 +1659,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterFeatureMapForDevice: For endpoint %@ of node %@, cluster %@, retrieved the following feature map %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1678,32 +1678,32 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClusterRevisionForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterRevisionForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterRevisionForDevice: Examining MTRBaseClusterDescriptor cluster revision attribute at endpoint %@ of node %@ to cluster revision number.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8730 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8730 params:v19];
 
   if (v20)
   {
@@ -1722,19 +1722,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1743,10 +1743,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterRevisionForDevice: For endpoint %@ of node %@, cluster %@, retrieved the revison number %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1762,32 +1762,32 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClusterEventListForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterEventListForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterEventListForDevice: Examining MTRBaseClusterDescriptor eventlist attribute at endpoint %@ of node %@ to retrieve events.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8718 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8718 params:v19];
 
   if (v20)
   {
@@ -1806,19 +1806,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1827,10 +1827,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterEventListForDevice: For endpoint %@ of node %@, cluster %@, retrieved the following events %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1846,32 +1846,32 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClusterAttributesForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)fetchClusterAttributesForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v10 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v35 = v17;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v18;
+    v39 = nodeID;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@fetchClusterAttributesForDevice: Examining MTRBaseClusterDescriptor attributelist attribute at endpoint %@ of node %@ to retrieve cluster attributes.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [v10 readAttributeWithEndpointID:v11 clusterID:v12 attributeID:&unk_283EE8700 params:v19];
+  v20 = [deviceCopy readAttributeWithEndpointID:dCopy clusterID:iDCopy attributeID:&unk_283EE8700 params:v19];
 
   if (v20)
   {
@@ -1890,19 +1890,19 @@ LABEL_18:
     v23 = v22;
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v15;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v27 = v33 = v13;
-      [v10 nodeID];
+      v27 = v33 = queueCopy;
+      [deviceCopy nodeID];
       v32 = v24;
-      v29 = v28 = v12;
+      v29 = v28 = iDCopy;
       *buf = 138544386;
       v35 = v27;
       v36 = 2112;
-      v37 = v11;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v29;
       v40 = 2112;
@@ -1911,10 +1911,10 @@ LABEL_18:
       v43 = v23;
       _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_DEBUG, "%{public}@fetchClusterAttributesForDevice: For endpoint %@ of node %@, cluster %@, retrieved the following attributes %@", buf, 0x34u);
 
-      v12 = v28;
+      iDCopy = v28;
       v24 = v32;
 
-      v13 = v33;
+      queueCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -1930,30 +1930,30 @@ LABEL_18:
   return v23;
 }
 
-- (id)fetchClientClustersForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5
+- (id)fetchClientClustersForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  queueCopy = queue;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v29 = v14;
     v30 = 2112;
-    v31 = v9;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v15;
+    v33 = nodeID;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@fetchClientClustersForDevice: Examining MTRBaseClusterDescriptor clientlist attribute at endpoint %@ of node %@ to retrieve client clusters.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMMTRDescriptorClusterManager *)v12 buildClusterDescriptorWithDevice:v8 endpointID:v9 queue:v10];
+  v16 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:dCopy queue:queueCopy];
   v17 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v18 = [v16 readAttributeClientListWithParams:v17];
 
@@ -1961,24 +1961,24 @@ LABEL_18:
   {
     v19 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReadResultValue:v18 forIdentify:@"ClustersInUse"];
     v20 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       v23 = HMFGetLogIdentifier();
-      [v8 nodeID];
-      v24 = v27 = v10;
+      [deviceCopy nodeID];
+      v24 = v27 = queueCopy;
       *buf = 138544130;
       v29 = v23;
       v30 = 2112;
-      v31 = v9;
+      v31 = dCopy;
       v32 = 2112;
       v33 = v24;
       v34 = 2112;
       v35 = v19;
       _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_DEBUG, "%{public}@fetchClientClustersForDevice of endpoint %@ of node %@: Retrieved the following client clusters %@", buf, 0x2Au);
 
-      v10 = v27;
+      queueCopy = v27;
     }
 
     objc_autoreleasePoolPop(v20);
@@ -1994,30 +1994,30 @@ LABEL_18:
   return v19;
 }
 
-- (id)fetchServerClustersForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5
+- (id)fetchServerClustersForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  queueCopy = queue;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v29 = v14;
     v30 = 2112;
-    v31 = v9;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v15;
+    v33 = nodeID;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@fetchServerClustersForDevice: Examining MTRBaseClusterDescriptor serverlist attribute at endpoint %@ of node %@ to retrieve server clusters.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMMTRDescriptorClusterManager *)v12 buildClusterDescriptorWithDevice:v8 endpointID:v9 queue:v10];
+  v16 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:dCopy queue:queueCopy];
   v17 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v18 = [v16 readAttributeServerListWithParams:v17];
 
@@ -2025,24 +2025,24 @@ LABEL_18:
   {
     v19 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReadResultValue:v18 forIdentify:@"ClustersInUse"];
     v20 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       v23 = HMFGetLogIdentifier();
-      [v8 nodeID];
-      v24 = v27 = v10;
+      [deviceCopy nodeID];
+      v24 = v27 = queueCopy;
       *buf = 138544130;
       v29 = v23;
       v30 = 2112;
-      v31 = v9;
+      v31 = dCopy;
       v32 = 2112;
       v33 = v24;
       v34 = 2112;
       v35 = v19;
       _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_DEBUG, "%{public}@fetchServerClustersForDevice for endpoint %@ of node %@: Retrieved the following server clusters %@", buf, 0x2Au);
 
-      v10 = v27;
+      queueCopy = v27;
     }
 
     objc_autoreleasePoolPop(v20);
@@ -2058,48 +2058,48 @@ LABEL_18:
   return v19;
 }
 
-- (id)fetchDeviceTypesWithMTRDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5
+- (id)fetchDeviceTypesWithMTRDevice:(id)device endpointID:(id)d callbackQueue:(id)queue
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  queueCopy = queue;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v30 = v14;
     v31 = 2112;
-    v32 = v9;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = v15;
+    v34 = nodeID;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@fetchDeviceTypesWithMTRDevice: Examining MTRClusterDescriptor cluster parts list at endpoint %@ of node %@ to retrieve device types.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMMTRDescriptorClusterManager *)v12 buildClusterDescriptorWithDevice:v8 endpointID:v9 queue:v10];
+  v16 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:dCopy queue:queueCopy];
   v17 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v18 = [v16 readAttributeDeviceTypeListWithParams:v17];
   if (v18)
   {
     v19 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReadResultValue:v18 clusterIdentifier:&unk_283EE86D0 attributeIdentifier:&unk_283EE86E8 forIdentify:@"DeviceList"];
     v20 = objc_autoreleasePoolPush();
-    v21 = v12;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       HMFGetLogIdentifier();
-      v23 = v28 = v10;
-      [v8 nodeID];
+      v23 = v28 = queueCopy;
+      [deviceCopy nodeID];
       v24 = v27 = v20;
       *buf = 138544130;
       v30 = v23;
       v31 = 2112;
-      v32 = v9;
+      v32 = dCopy;
       v33 = 2112;
       v34 = v24;
       v35 = 2112;
@@ -2107,7 +2107,7 @@ LABEL_18:
       _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_DEBUG, "%{public}@fetchDeviceTypesWithMTRDevice: At endpoint %@ of node %@, retrieved the following device types in use %@", buf, 0x2Au);
 
       v20 = v27;
-      v10 = v28;
+      queueCopy = v28;
     }
 
     objc_autoreleasePoolPop(v20);
@@ -2123,23 +2123,23 @@ LABEL_18:
   return v19;
 }
 
-- (void)fetchEndpointsWithMTRDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchEndpointsWithMTRDevice:(id)device endpointID:(id)d callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID_callbackQueue_completionHandler___block_invoke;
   v16[3] = &unk_2786EFA60;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(a5, v16);
+  v17 = deviceCopy;
+  v18 = dCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
+  v15 = deviceCopy;
+  dispatch_async(queue, v16);
 }
 
 void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID_callbackQueue_completionHandler___block_invoke(uint64_t a1)
@@ -2158,30 +2158,30 @@ void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)endpointsWithMTRDevice:(id)a3 endpointID:(id)a4
+- (id)endpointsWithMTRDevice:(id)device endpointID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v40 = v11;
     v41 = 2112;
-    v42 = v7;
+    v42 = dCopy;
     v43 = 2112;
-    v44 = v12;
+    v44 = nodeID;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Examining MTRClusterDescriptor cluster parts list at endpoint %@ of node %@ to retrieve endpoints in use.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   v13 = dispatch_queue_create("hmmtr.descriptorClusterManager.temporary", 0);
-  v14 = [(HMMTRDescriptorClusterManager *)v9 buildClusterDescriptorWithDevice:v6 endpointID:v7 queue:v13];
+  v14 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:dCopy queue:v13];
   v15 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v16 = [v14 readAttributePartsListWithParams:v15];
 
@@ -2199,23 +2199,23 @@ void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID
 
   v19 = v18;
 
-  if (v19 || ![v7 isEqual:&unk_283EE8598])
+  if (v19 || ![dCopy isEqual:&unk_283EE8598])
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v9;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v38 = v14;
-      v29 = v28 = v6;
+      v29 = v28 = deviceCopy;
       [v28 nodeID];
       v36 = v16;
       v31 = v30 = v13;
       *buf = 138544130;
       v40 = v29;
       v41 = 2112;
-      v42 = v7;
+      v42 = dCopy;
       v43 = 2112;
       v44 = v31;
       v45 = 2112;
@@ -2225,7 +2225,7 @@ void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID
       v13 = v30;
       v16 = v36;
 
-      v6 = v28;
+      deviceCopy = v28;
       v14 = v38;
     }
 
@@ -2236,18 +2236,18 @@ void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v9;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v23 = v35 = v21;
-      [v6 nodeID];
+      [deviceCopy nodeID];
       v24 = v37 = v20;
       *buf = 138543874;
       v40 = v23;
       v41 = 2112;
-      v42 = v7;
+      v42 = dCopy;
       v43 = 2112;
       v44 = v24;
       _os_log_impl(&dword_22AEAE000, v22, OS_LOG_TYPE_ERROR, "%{public}@Parts list of endpoint %@ of node %@ absent from cache", buf, 0x20u);
@@ -2264,56 +2264,56 @@ void __104__HMMTRDescriptorClusterManager_fetchEndpointsWithMTRDevice_endpointID
   return v19;
 }
 
-- (id)fetchPartsListForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5
+- (id)fetchPartsListForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  queueCopy = queue;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138543874;
     v33 = v14;
     v34 = 2112;
-    v35 = v9;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = nodeID;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@fetchPartsListForDevice: Examining MTRClusterDescriptor cluster parts list at endpoint %@ of node %@ to retrieve endpoints in use.", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMMTRDescriptorClusterManager *)v12 buildClusterDescriptorWithDevice:v8 endpointID:v9 queue:v10];
+  v16 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:dCopy queue:queueCopy];
   v17 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v18 = [v16 readAttributePartsListWithParams:v17];
   if (v18)
   {
     v19 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReadResultValue:v18 forIdentify:@"PartsList"];
     context = objc_autoreleasePoolPush();
-    v20 = v12;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       v22 = HMFGetLogIdentifier();
-      [v8 nodeID];
-      v30 = v8;
-      v24 = v23 = v10;
+      [deviceCopy nodeID];
+      v30 = deviceCopy;
+      v24 = v23 = queueCopy;
       *buf = 138544130;
       v33 = v22;
       v34 = 2112;
-      v35 = v9;
+      v35 = dCopy;
       v36 = 2112;
       v37 = v24;
       v38 = 2112;
       v39 = v19;
       _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_DEBUG, "%{public}@fetchPartsListForDevice for endpoint %@ of node %@: Retrieved the following parts list in use %@", buf, 0x2Au);
 
-      v10 = v23;
-      v8 = v30;
+      queueCopy = v23;
+      deviceCopy = v30;
     }
 
 LABEL_10:
@@ -2322,21 +2322,21 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v9 isEqual:&unk_283EE8598])
+  if ([dCopy isEqual:&unk_283EE8598])
   {
     context = objc_autoreleasePoolPush();
-    v25 = v12;
+    v25 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v8 nodeID];
+      nodeID2 = [deviceCopy nodeID];
       *buf = 138543874;
       v33 = v26;
       v34 = 2112;
-      v35 = v9;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v27;
+      v37 = nodeID2;
       _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_ERROR, "%{public}@fetchPartsListForDevice for endpoint %@ of node %@: Failed to read parts list.", buf, 0x20u);
     }
 
@@ -2352,103 +2352,103 @@ LABEL_11:
   return v19;
 }
 
-- (void)fetchHAPServicesForEndpoints:(id)a3 endpointDeviceTypes:(id)a4 device:(id)a5 nodeId:(id)a6 isBridge:(BOOL)a7 bridgeAggregateNodeEndpoint:(id)a8 server:(id)a9 topology:(id)a10 hapAccessoryInfo:(id)a11 callbackQueue:(id)a12 completionHandler:(id)a13
+- (void)fetchHAPServicesForEndpoints:(id)endpoints endpointDeviceTypes:(id)types device:(id)device nodeId:(id)id isBridge:(BOOL)bridge bridgeAggregateNodeEndpoint:(id)endpoint server:(id)server topology:(id)self0 hapAccessoryInfo:(id)self1 callbackQueue:(id)self2 completionHandler:(id)self3
 {
-  v57 = a7;
-  v18 = a3;
-  v19 = a4;
-  v60 = a5;
-  v56 = a6;
-  v55 = a8;
-  v59 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v49 = self;
-  v24 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-  v25 = [v24 hapToCHIPClusterMappingArray];
+  bridgeCopy = bridge;
+  endpointsCopy = endpoints;
+  typesCopy = types;
+  deviceCopy = device;
+  idCopy = id;
+  endpointCopy = endpoint;
+  serverCopy = server;
+  topologyCopy = topology;
+  infoCopy = info;
+  queueCopy = queue;
+  handlerCopy = handler;
+  selfCopy = self;
+  protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+  hapToCHIPClusterMappingArray = [protocolMap hapToCHIPClusterMappingArray];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v84[2] = __198__HMMTRDescriptorClusterManager_fetchHAPServicesForEndpoints_endpointDeviceTypes_device_nodeId_isBridge_bridgeAggregateNodeEndpoint_server_topology_hapAccessoryInfo_callbackQueue_completionHandler___block_invoke;
   v84[3] = &unk_2786EE708;
-  v26 = v22;
+  v26 = queueCopy;
   v85 = v26;
-  v27 = v23;
+  v27 = handlerCopy;
   v86 = v27;
   v51 = MEMORY[0x2318887D0](v84);
-  v58 = v25;
+  v58 = hapToCHIPClusterMappingArray;
   v53 = v27;
-  v54 = v24;
+  v54 = protocolMap;
   v52 = v26;
-  if ([v18 count])
+  if ([endpointsCopy count])
   {
-    if (!v20)
+    if (!topologyCopy)
     {
-      v20 = objc_alloc_init(HMMTRMutableDeviceTopology);
+      topologyCopy = objc_alloc_init(HMMTRMutableDeviceTopology);
     }
 
-    v28 = v19;
-    if (!v21)
+    v28 = typesCopy;
+    if (!infoCopy)
     {
       v29 = objc_opt_new();
-      v21 = [[HMMTRHAPAccessoryInfo alloc] initWithType:v29];
+      infoCopy = [[HMMTRHAPAccessoryInfo alloc] initWithType:v29];
     }
 
-    [v18 popFirstObject];
-    v31 = v30 = v18;
+    [endpointsCopy popFirstObject];
+    v31 = v30 = endpointsCopy;
     v48 = [v28 objectForKey:v31];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __198__HMMTRDescriptorClusterManager_fetchHAPServicesForEndpoints_endpointDeviceTypes_device_nodeId_isBridge_bridgeAggregateNodeEndpoint_server_topology_hapAccessoryInfo_callbackQueue_completionHandler___block_invoke_3;
     v69[3] = &unk_2786EE780;
-    v69[4] = v49;
+    v69[4] = selfCopy;
     v70 = v31;
-    v71 = v60;
-    v50 = v20;
+    v71 = deviceCopy;
+    v50 = topologyCopy;
     v72 = v50;
-    v73 = v24;
+    v73 = protocolMap;
     v74 = v28;
     v75 = v26;
-    v32 = v21;
+    v32 = infoCopy;
     v76 = v32;
-    v77 = v25;
-    v83 = v57;
-    v33 = v55;
-    v78 = v55;
-    v79 = v59;
+    v77 = hapToCHIPClusterMappingArray;
+    v83 = bridgeCopy;
+    v33 = endpointCopy;
+    v78 = endpointCopy;
+    v79 = serverCopy;
     v80 = v30;
-    v34 = v56;
-    v81 = v56;
+    v34 = idCopy;
+    v81 = idCopy;
     v35 = v27;
     v82 = v27;
     v36 = v31;
-    v18 = v30;
+    endpointsCopy = v30;
     v37 = v36;
     v38 = v52;
     [v73 servicesOfMTRDevice:v71 forDeviceTypes:v48 endpoint:v36 callbackQueue:v75 completionHandler:v69];
 
-    v39 = v60;
+    v39 = deviceCopy;
     v40 = v51;
   }
 
   else
   {
-    v41 = v57;
-    if (v57)
+    v41 = bridgeCopy;
+    if (bridgeCopy)
     {
-      v33 = v55;
-      v34 = v56;
-      if (!v20)
+      v33 = endpointCopy;
+      v34 = idCopy;
+      if (!topologyCopy)
       {
-        if ([v18 count])
+        if ([endpointsCopy count])
         {
-          v20 = 0;
+          topologyCopy = 0;
         }
 
         else
         {
-          v20 = objc_alloc_init(HMMTRMutableDeviceTopology);
+          topologyCopy = objc_alloc_init(HMMTRMutableDeviceTopology);
         }
       }
 
@@ -2456,23 +2456,23 @@ LABEL_11:
       v44 = [MEMORY[0x277CCABB0] numberWithInteger:2];
       v45 = [v43 arrayWithObject:v44];
 
-      if (v55)
+      if (endpointCopy)
       {
-        [(HMMTRMutableDeviceTopology *)v20 setHAPCategories:v45 atEndpoint:v55];
+        [(HMMTRMutableDeviceTopology *)topologyCopy setHAPCategories:v45 atEndpoint:endpointCopy];
         v46 = [[HMMTRHAPDescriptionAtEndpoint alloc] initWithType:v45 serviceDescriptions:0];
-        [(HMMTRHAPAccessoryInfo *)v21 setAccessoryInfo:v46 forEndpoint:v55];
+        [(HMMTRHAPAccessoryInfo *)infoCopy setAccessoryInfo:v46 forEndpoint:endpointCopy];
       }
 
-      v42 = v19;
+      v42 = typesCopy;
 
-      v41 = v57;
+      v41 = bridgeCopy;
     }
 
     else
     {
-      v42 = v19;
-      v33 = v55;
-      v34 = v56;
+      v42 = typesCopy;
+      v33 = endpointCopy;
+      v34 = idCopy;
     }
 
     v61[0] = MEMORY[0x277D85DD0];
@@ -2480,14 +2480,14 @@ LABEL_11:
     v61[2] = __198__HMMTRDescriptorClusterManager_fetchHAPServicesForEndpoints_endpointDeviceTypes_device_nodeId_isBridge_bridgeAggregateNodeEndpoint_server_topology_hapAccessoryInfo_callbackQueue_completionHandler___block_invoke_365;
     v61[3] = &unk_2786EE7A8;
     v68 = v41;
-    v47 = v49;
-    v62 = v20;
-    v63 = v49;
-    v39 = v60;
-    v64 = v60;
+    v47 = selfCopy;
+    v62 = topologyCopy;
+    v63 = selfCopy;
+    v39 = deviceCopy;
+    v64 = deviceCopy;
     v40 = v51;
     v67 = v51;
-    v32 = v21;
+    v32 = infoCopy;
     v65 = v32;
     v66 = v33;
     v50 = v62;
@@ -2790,19 +2790,19 @@ void __198__HMMTRDescriptorClusterManager_fetchHAPServicesForEndpoints_endpointD
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateOTARequestorEndpointsInTopology:(id)a3 device:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)_updateOTARequestorEndpointsInTopology:(id)topology device:(id)device callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  topologyCopy = topology;
+  deviceCopy = device;
+  queueCopy = queue;
+  handlerCopy = handler;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy__7675;
   v28[4] = __Block_byref_object_dispose__7676;
   v29 = 0;
-  v14 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:v12];
+  v14 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:queueCopy];
   v15 = _HMFThreadLocalAsyncContextPush();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -2810,17 +2810,17 @@ void __198__HMMTRDescriptorClusterManager_fetchHAPServicesForEndpoints_endpointD
   v24[3] = &unk_2786EE690;
   v26 = v28;
   v27 = v15;
-  v16 = v10;
+  v16 = topologyCopy;
   v25 = v16;
-  v17 = [(HMMTRDescriptorClusterManager *)self runBlockForAllEndpointsWithClusterID:&unk_283EE86B8 mtrDevice:v11 callbackQueue:v12 block:v24];
+  v17 = [(HMMTRDescriptorClusterManager *)self runBlockForAllEndpointsWithClusterID:&unk_283EE86B8 mtrDevice:deviceCopy callbackQueue:queueCopy block:v24];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __111__HMMTRDescriptorClusterManager__updateOTARequestorEndpointsInTopology_device_callbackQueue_completionHandler___block_invoke_2;
   v21[3] = &unk_2786EE6B8;
   v21[4] = self;
-  v18 = v11;
+  v18 = deviceCopy;
   v22 = v18;
-  v19 = v13;
+  v19 = handlerCopy;
   v23 = v19;
   v20 = [v17 finally:v21];
 
@@ -2878,48 +2878,48 @@ uint64_t __111__HMMTRDescriptorClusterManager__updateOTARequestorEndpointsInTopo
   return 1;
 }
 
-- (void)fetchDeviceTypesForEndpoints:(id)a3 mtrDevice:(id)a4 endpointDeviceTypes:(id)a5 lastError:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8
+- (void)fetchDeviceTypesForEndpoints:(id)endpoints mtrDevice:(id)device endpointDeviceTypes:(id)types lastError:(id)error callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
+  typesCopy = types;
+  errorCopy = error;
+  queueCopy = queue;
+  handlerCopy = handler;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __134__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_mtrDevice_endpointDeviceTypes_lastError_callbackQueue_completionHandler___block_invoke;
   v36[3] = &unk_2786EE668;
   v36[4] = self;
-  v20 = v15;
+  v20 = deviceCopy;
   v37 = v20;
-  v21 = v18;
+  v21 = queueCopy;
   v38 = v21;
-  v22 = v19;
+  v22 = handlerCopy;
   v39 = v22;
   v23 = MEMORY[0x2318887D0](v36);
-  if ([v14 count])
+  if ([endpointsCopy count])
   {
-    if (!v16)
+    if (!typesCopy)
     {
-      v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
+      typesCopy = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v24 = [v14 popFirstObject];
+    popFirstObject = [endpointsCopy popFirstObject];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __134__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_mtrDevice_endpointDeviceTypes_lastError_callbackQueue_completionHandler___block_invoke_2;
     v27[3] = &unk_2786EE640;
-    v28 = v17;
-    v29 = self;
-    v30 = v24;
+    v28 = errorCopy;
+    selfCopy = self;
+    v30 = popFirstObject;
     v31 = v20;
-    v16 = v16;
-    v32 = v16;
-    v33 = v14;
+    typesCopy = typesCopy;
+    v32 = typesCopy;
+    v33 = endpointsCopy;
     v34 = v21;
     v35 = v22;
-    v25 = v24;
+    v25 = popFirstObject;
     [(HMMTRDescriptorClusterManager *)self fetchDeviceTypesWithMTRDevice:v31 atEndpoint:v25 callbackQueue:v34 completionHandler:v27];
 
     v23 = v26;
@@ -2927,7 +2927,7 @@ uint64_t __111__HMMTRDescriptorClusterManager__updateOTARequestorEndpointsInTopo
 
   else
   {
-    (v23)[2](v23, v16, v17);
+    (v23)[2](v23, typesCopy, errorCopy);
   }
 }
 
@@ -3038,52 +3038,52 @@ void __134__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_mtrDevice
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDeviceTypesForEndpoints:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 lastError:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8
+- (void)fetchDeviceTypesForEndpoints:(id)endpoints device:(id)device endpointDeviceTypes:(id)types lastError:(id)error callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  endpointsCopy = endpoints;
+  deviceCopy = device;
+  typesCopy = types;
+  errorCopy = error;
+  queueCopy = queue;
+  handlerCopy = handler;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __131__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_device_endpointDeviceTypes_lastError_callbackQueue_completionHandler___block_invoke;
   v34[3] = &unk_2786EE4D8;
   v34[4] = self;
-  v20 = v18;
+  v20 = queueCopy;
   v35 = v20;
-  v21 = v19;
+  v21 = handlerCopy;
   v36 = v21;
   v22 = MEMORY[0x2318887D0](v34);
-  if ([v14 count])
+  if ([endpointsCopy count])
   {
-    if (!v16)
+    if (!typesCopy)
     {
-      v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
+      typesCopy = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v23 = [v14 popFirstObject];
+    popFirstObject = [endpointsCopy popFirstObject];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __131__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_device_endpointDeviceTypes_lastError_callbackQueue_completionHandler___block_invoke_2;
     v25[3] = &unk_2786EE640;
-    v26 = v17;
-    v27 = self;
-    v28 = v23;
-    v16 = v16;
-    v29 = v16;
-    v30 = v14;
-    v31 = v15;
+    v26 = errorCopy;
+    selfCopy = self;
+    v28 = popFirstObject;
+    typesCopy = typesCopy;
+    v29 = typesCopy;
+    v30 = endpointsCopy;
+    v31 = deviceCopy;
     v32 = v20;
     v33 = v21;
-    v24 = v23;
+    v24 = popFirstObject;
     [(HMMTRDescriptorClusterManager *)self fetchDeviceTypesForDevice:v31 atEndpoint:v24 callbackQueue:v32 completionHandler:v25];
   }
 
   else
   {
-    (v22)[2](v22, v16, v17);
+    (v22)[2](v22, typesCopy, errorCopy);
   }
 }
 
@@ -3185,37 +3185,37 @@ void __131__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_device_en
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hapServiceDescriptionForServiceType:(id)a3 linkedServiceTypes:(id)a4 clustersInUse:(id)a5 endpoint:(id)a6 name:(id)a7 hapToCHIPClusterMappingArray:(id)a8 clusterClassesToQuery:(id)a9 hapServicesToCheckForFeatureMap:(id)a10 hapServicesToCheckForOptionalMatterAttribute:(id)a11 hapServicesToCheckForRequiredAttributeValues:(id)a12 hapCharacteristicsToCheckForRequiredAttributeValues:(id)a13 server:(id)a14
+- (id)hapServiceDescriptionForServiceType:(id)type linkedServiceTypes:(id)types clustersInUse:(id)use endpoint:(id)endpoint name:(id)name hapToCHIPClusterMappingArray:(id)array clusterClassesToQuery:(id)query hapServicesToCheckForFeatureMap:(id)self0 hapServicesToCheckForOptionalMatterAttribute:(id)self1 hapServicesToCheckForRequiredAttributeValues:(id)self2 hapCharacteristicsToCheckForRequiredAttributeValues:(id)self3 server:(id)self4
 {
   v224 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
-  v189 = a5;
-  v193 = a6;
-  v22 = a7;
-  v23 = a8;
-  v185 = a9;
-  v178 = a10;
-  v176 = a11;
-  v177 = a12;
-  v184 = a13;
-  v192 = a14;
+  typeCopy = type;
+  typesCopy = types;
+  useCopy = use;
+  endpointCopy = endpoint;
+  nameCopy = name;
+  arrayCopy = array;
+  queryCopy = query;
+  mapCopy = map;
+  attributeCopy = attribute;
+  valuesCopy = values;
+  attributeValuesCopy = attributeValues;
+  serverCopy = server;
   v24 = [HMMTRHAPServiceDescription alloc];
-  v25 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-  v26 = [v25 optionalServiceLabelIndexIncludedInService:v20];
-  v173 = v21;
-  v174 = v20;
-  v27 = v20;
-  v28 = v23;
-  v29 = v193;
-  v172 = v22;
-  v30 = [(HMMTRHAPServiceDescription *)v24 initWithType:v27 linkedServiceTypes:v21 endpoint:v193 name:v22 optionalServiceLabelIndexIncluded:v26];
+  protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+  v26 = [protocolMap optionalServiceLabelIndexIncludedInService:typeCopy];
+  v173 = typesCopy;
+  v174 = typeCopy;
+  v27 = typeCopy;
+  v28 = arrayCopy;
+  v29 = endpointCopy;
+  v172 = nameCopy;
+  v30 = [(HMMTRHAPServiceDescription *)v24 initWithType:v27 linkedServiceTypes:typesCopy endpoint:endpointCopy name:nameCopy optionalServiceLabelIndexIncluded:v26];
 
-  v190 = self;
-  v31 = [(HMMTRDescriptorClusterManager *)self protocolMap];
+  selfCopy = self;
+  protocolMap2 = [(HMMTRDescriptorClusterManager *)self protocolMap];
   v191 = v30;
-  v32 = [(HMMTRHAPServiceDescription *)v30 serviceType];
-  v33 = [v31 requiredCharacteristicsForService:v32];
+  serviceType = [(HMMTRHAPServiceDescription *)v30 serviceType];
+  v33 = [protocolMap2 requiredCharacteristicsForService:serviceType];
 
   v208 = 0u;
   v209 = 0u;
@@ -3228,9 +3228,9 @@ void __131__HMMTRDescriptorClusterManager_fetchDeviceTypesForEndpoints_device_en
   {
 LABEL_35:
 
-    v72 = [(HMMTRDescriptorClusterManager *)v190 protocolMap];
-    v73 = [(HMMTRHAPServiceDescription *)v191 serviceType];
-    v74 = [v72 optionalCharacteristicsForService:v73];
+    protocolMap3 = [(HMMTRDescriptorClusterManager *)selfCopy protocolMap];
+    serviceType2 = [(HMMTRHAPServiceDescription *)v191 serviceType];
+    v74 = [protocolMap3 optionalCharacteristicsForService:serviceType2];
 
     v200 = 0u;
     v201 = 0u;
@@ -3243,7 +3243,7 @@ LABEL_35:
 LABEL_76:
 
       v127 = v191;
-      v83 = v192;
+      v83 = serverCopy;
 LABEL_85:
       v133 = v175;
       goto LABEL_86;
@@ -3265,31 +3265,31 @@ LABEL_37:
       }
 
       v80 = *(*(&v198 + 1) + 8 * v79);
-      v81 = [(HMMTRDescriptorClusterManager *)v190 protocolMap];
+      protocolMap4 = [(HMMTRDescriptorClusterManager *)selfCopy protocolMap];
       obja = v80;
-      v82 = [v81 getIDForCharacteristic:v80];
+      v82 = [protocolMap4 getIDForCharacteristic:v80];
 
-      v83 = v192;
+      v83 = serverCopy;
       if (!v82)
       {
         v158 = objc_autoreleasePoolPush();
-        v159 = v190;
+        v159 = selfCopy;
         v160 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v160, OS_LOG_TYPE_DEBUG))
         {
           v161 = HMFGetLogIdentifier();
-          v162 = [v192 nodeID];
+          nodeID = [serverCopy nodeID];
           *buf = 138544130;
           v213 = v161;
           v214 = 2112;
           v215 = obja;
           v216 = 2112;
-          v217 = v193;
+          v217 = endpointCopy;
           v218 = 2112;
-          v219 = v162;
+          v219 = nodeID;
           _os_log_impl(&dword_22AEAE000, v160, OS_LOG_TYPE_DEBUG, "%{public}@Failed to find HAP characteristic ID for characteristic %@ on endpoint %@ of node %@, aborting", buf, 0x2Au);
 
-          v29 = v193;
+          v29 = endpointCopy;
         }
 
         objc_autoreleasePoolPop(v158);
@@ -3322,12 +3322,12 @@ LABEL_84:
 
             v87 = *(*(&v194 + 1) + 8 * i);
             v88 = objc_autoreleasePoolPush();
-            v89 = v190;
+            v89 = selfCopy;
             v90 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
             {
               v91 = HMFGetLogIdentifier();
-              v92 = [v192 nodeID];
+              nodeID2 = [serverCopy nodeID];
               *buf = 138544386;
               v213 = v91;
               v214 = 2112;
@@ -3335,21 +3335,21 @@ LABEL_84:
               v216 = 2112;
               v217 = v87;
               v218 = 2112;
-              v219 = v193;
+              v219 = endpointCopy;
               v220 = 2112;
-              v221 = v92;
+              v221 = nodeID2;
               _os_log_impl(&dword_22AEAE000, v90, OS_LOG_TYPE_DEBUG, "%{public}@Looking for optional HAP Characteristic %@ as its matching CHIP clusterID %@ on endpoint %@ of node %@", buf, 0x34u);
 
-              v29 = v193;
+              v29 = endpointCopy;
             }
 
             objc_autoreleasePoolPop(v88);
-            v93 = [v189 objectForKeyedSubscript:v87];
+            v93 = [useCopy objectForKeyedSubscript:v87];
             v94 = (v93 == 0) | v85;
 
             if ((v94 & 1) == 0)
             {
-              [v192 setClusterIDForCharacteristic:v82 endpointID:v29 clusterID:v87];
+              [serverCopy setClusterIDForCharacteristic:v82 endpointID:v29 clusterID:v87];
               v95 = objc_autoreleasePoolPush();
               v96 = v89;
               v97 = HMFGetOSLogHandle();
@@ -3357,7 +3357,7 @@ LABEL_84:
               if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
               {
                 v99 = HMFGetLogIdentifier();
-                v100 = [v192 nodeID];
+                nodeID3 = [serverCopy nodeID];
                 *buf = 138544386;
                 v213 = v99;
                 v214 = 2112;
@@ -3367,54 +3367,54 @@ LABEL_84:
                 v218 = 2112;
                 v219 = v98;
                 v220 = 2112;
-                v221 = v100;
+                v221 = nodeID3;
                 _os_log_impl(&dword_22AEAE000, v97, OS_LOG_TYPE_DEBUG, "%{public}@Constructed HAP service description for optional HAP Characteristic %@, CHIP clusterID %@, endpoint %@ of node %@", buf, 0x34u);
               }
 
               objc_autoreleasePoolPop(v95);
               [(HMMTRHAPServiceDescription *)v191 addOptionalCharacteristic:v82];
-              v101 = [(HMMTRDescriptorClusterManager *)v96 protocolMap];
-              v102 = [v192 clusterIDCharacteristicMap];
-              v103 = [v101 getMTRClusterClassForCharacteristic:v82 endpointID:v98 clusterIDCharacteristicMap:v102];
+              protocolMap5 = [(HMMTRDescriptorClusterManager *)v96 protocolMap];
+              clusterIDCharacteristicMap = [serverCopy clusterIDCharacteristicMap];
+              v103 = [protocolMap5 getMTRClusterClassForCharacteristic:v82 endpointID:v98 clusterIDCharacteristicMap:clusterIDCharacteristicMap];
 
               if (!v103)
               {
                 v134 = objc_autoreleasePoolPush();
                 v135 = v96;
                 v136 = HMFGetOSLogHandle();
-                v83 = v192;
+                v83 = serverCopy;
                 v75 = v167;
                 if (os_log_type_enabled(v136, OS_LOG_TYPE_DEBUG))
                 {
                   v137 = HMFGetLogIdentifier();
-                  v138 = [v192 nodeID];
+                  nodeID4 = [serverCopy nodeID];
                   *buf = 138544130;
                   v213 = v137;
                   v214 = 2112;
                   v215 = v82;
                   v216 = 2112;
-                  v217 = v193;
+                  v217 = endpointCopy;
                   v218 = 2112;
-                  v219 = v138;
+                  v219 = nodeID4;
                   _os_log_impl(&dword_22AEAE000, v136, OS_LOG_TYPE_DEBUG, "%{public}@Cluster class name not found for optional characteristic %@ in use at endpoint %@ of node %@", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(v134);
-                v29 = v193;
+                v29 = endpointCopy;
                 v28 = v171;
                 goto LABEL_84;
               }
 
-              [v185 addObject:v103];
-              v104 = [v184 objectForKey:v82];
+              [queryCopy addObject:v103];
+              v104 = [attributeValuesCopy objectForKey:v82];
 
               if (v104)
               {
-                [v177 addObject:v191];
+                [valuesCopy addObject:v191];
               }
 
-              v105 = [(HMMTRDescriptorClusterManager *)v96 protocolMap];
-              v106 = [v105 getRequiredFeaturesBitmapForCharacteristic:obja];
+              protocolMap6 = [(HMMTRDescriptorClusterManager *)v96 protocolMap];
+              v106 = [protocolMap6 getRequiredFeaturesBitmapForCharacteristic:obja];
 
               v107 = objc_autoreleasePoolPush();
               v108 = v96;
@@ -3426,7 +3426,7 @@ LABEL_84:
                 if (v110)
                 {
                   v111 = HMFGetLogIdentifier();
-                  v112 = [v192 nodeID];
+                  nodeID5 = [serverCopy nodeID];
                   *buf = 138544386;
                   v213 = v111;
                   v214 = 2112;
@@ -3434,15 +3434,15 @@ LABEL_84:
                   v216 = 2112;
                   v217 = v82;
                   v218 = 2112;
-                  v219 = v193;
+                  v219 = endpointCopy;
                   v220 = 2112;
-                  v221 = v112;
+                  v221 = nodeID5;
                   _os_log_impl(&dword_22AEAE000, v109, OS_LOG_TYPE_DEBUG, "%{public}@Found required feature map %@ for optional characteristic %@ on endpoint %@ of node %@", buf, 0x34u);
                 }
 
                 objc_autoreleasePoolPop(v107);
                 [(HMMTRHAPServiceDescription *)v191 addFeatureMapForCharacteristic:v82 featureMap:v106];
-                [v178 addObject:v191];
+                [mapCopy addObject:v191];
               }
 
               else
@@ -3450,23 +3450,23 @@ LABEL_84:
                 if (v110)
                 {
                   v113 = HMFGetLogIdentifier();
-                  v114 = [v192 nodeID];
+                  nodeID6 = [serverCopy nodeID];
                   *buf = 138544130;
                   v213 = v113;
                   v214 = 2112;
                   v215 = v82;
                   v216 = 2112;
-                  v217 = v193;
+                  v217 = endpointCopy;
                   v218 = 2112;
-                  v219 = v114;
+                  v219 = nodeID6;
                   _os_log_impl(&dword_22AEAE000, v109, OS_LOG_TYPE_DEBUG, "%{public}@Feature map information not available for optional characteristic %@ on endpoint %@ of node %@", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(v107);
               }
 
-              v115 = [(HMMTRDescriptorClusterManager *)v108 protocolMap];
-              v116 = [v115 isRequiresOptionalMatterAttributeForCharacteristic:obja];
+              protocolMap7 = [(HMMTRDescriptorClusterManager *)v108 protocolMap];
+              v116 = [protocolMap7 isRequiresOptionalMatterAttributeForCharacteristic:obja];
 
               if (v116)
               {
@@ -3476,24 +3476,24 @@ LABEL_84:
                 if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
                 {
                   v120 = HMFGetLogIdentifier();
-                  v121 = [v192 nodeID];
+                  nodeID7 = [serverCopy nodeID];
                   *buf = 138544130;
                   v213 = v120;
                   v214 = 2112;
                   v215 = v82;
                   v216 = 2112;
-                  v217 = v193;
+                  v217 = endpointCopy;
                   v218 = 2112;
-                  v219 = v121;
+                  v219 = nodeID7;
                   _os_log_impl(&dword_22AEAE000, v119, OS_LOG_TYPE_DEBUG, "%{public}@Optional characteristic %@ on endpoint %@ of node %@ requires an additional Optional Matter attribute check", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(v117);
-                [v176 addObject:v191];
+                [attributeCopy addObject:v191];
               }
 
               v85 = 1;
-              v29 = v193;
+              v29 = endpointCopy;
             }
           }
 
@@ -3506,7 +3506,7 @@ LABEL_84:
           break;
         }
 
-        v83 = v192;
+        v83 = serverCopy;
         v75 = v167;
         if (v85)
         {
@@ -3519,23 +3519,23 @@ LABEL_84:
       }
 
       v122 = objc_autoreleasePoolPush();
-      v123 = v190;
+      v123 = selfCopy;
       v124 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v124, OS_LOG_TYPE_DEBUG))
       {
         v125 = HMFGetLogIdentifier();
-        v126 = [v83 nodeID];
+        nodeID8 = [v83 nodeID];
         *buf = 138544130;
         v213 = v125;
         v214 = 2112;
         v215 = v82;
         v216 = 2112;
-        v217 = v193;
+        v217 = endpointCopy;
         v218 = 2112;
-        v219 = v126;
+        v219 = nodeID8;
         _os_log_impl(&dword_22AEAE000, v124, OS_LOG_TYPE_DEBUG, "%{public}@Optional characteristic %@ cannot be found in clusters in use at endpoint %@ of node %@", buf, 0x2Au);
 
-        v29 = v193;
+        v29 = endpointCopy;
       }
 
       objc_autoreleasePoolPop(v122);
@@ -3570,9 +3570,9 @@ LABEL_3:
 
     v168 = v38;
     v39 = *(*(&v206 + 1) + 8 * v38);
-    v40 = [(HMMTRDescriptorClusterManager *)v190 protocolMap];
+    protocolMap8 = [(HMMTRDescriptorClusterManager *)selfCopy protocolMap];
     v181 = v39;
-    v41 = [v40 getIDForCharacteristic:v39];
+    v41 = [protocolMap8 getIDForCharacteristic:v39];
 
     if (!v41)
     {
@@ -3582,14 +3582,14 @@ LABEL_3:
     if (!v28 || ![v28 count])
     {
       v141 = objc_autoreleasePoolPush();
-      v142 = v190;
+      v142 = selfCopy;
       v143 = HMFGetOSLogHandle();
-      v83 = v192;
+      v83 = serverCopy;
       if (os_log_type_enabled(v143, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
         v145 = v144 = v28;
-        v146 = [v192 nodeID];
+        nodeID9 = [serverCopy nodeID];
         *buf = 138544130;
         v213 = v145;
         v214 = 2112;
@@ -3597,7 +3597,7 @@ LABEL_3:
         v216 = 2112;
         v217 = v29;
         v218 = 2112;
-        v219 = v146;
+        v219 = nodeID9;
         _os_log_impl(&dword_22AEAE000, v143, OS_LOG_TYPE_DEBUG, "%{public}@Failed to find HAP to CHIP cluster mapping for characteristic %@ on endpoint %@ of node %@, aborting", buf, 0x2Au);
 
         v28 = v144;
@@ -3618,26 +3618,26 @@ LABEL_3:
 
 LABEL_96:
       v153 = objc_autoreleasePoolPush();
-      v154 = v190;
+      v154 = selfCopy;
       v155 = HMFGetOSLogHandle();
-      v83 = v192;
+      v83 = serverCopy;
       if (os_log_type_enabled(v155, OS_LOG_TYPE_DEBUG))
       {
         v156 = HMFGetLogIdentifier();
-        v157 = [v192 nodeID];
+        nodeID10 = [serverCopy nodeID];
         *buf = 138544130;
         v213 = v156;
         v214 = 2112;
         v215 = v41;
         v216 = 2112;
-        v217 = v193;
+        v217 = endpointCopy;
         v218 = 2112;
-        v219 = v157;
+        v219 = nodeID10;
         _os_log_impl(&dword_22AEAE000, v155, OS_LOG_TYPE_DEBUG, "%{public}@Mandatory characteristic %@ cannot be found in clusters in use at endpoint %@ of node %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v153);
-      v29 = v193;
+      v29 = endpointCopy;
       goto LABEL_80;
     }
 
@@ -3658,12 +3658,12 @@ LABEL_96:
 
         v45 = *(*(&v202 + 1) + 8 * j);
         v46 = objc_autoreleasePoolPush();
-        v47 = v190;
+        v47 = selfCopy;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
         {
           v49 = HMFGetLogIdentifier();
-          v50 = [v192 nodeID];
+          nodeID11 = [serverCopy nodeID];
           *buf = 138544386;
           v213 = v49;
           v214 = 2112;
@@ -3671,27 +3671,27 @@ LABEL_96:
           v216 = 2112;
           v217 = v45;
           v218 = 2112;
-          v219 = v193;
+          v219 = endpointCopy;
           v220 = 2112;
-          v221 = v50;
+          v221 = nodeID11;
           _os_log_impl(&dword_22AEAE000, v48, OS_LOG_TYPE_DEBUG, "%{public}@Looking for required HAP Characteristic %@ as its matching CHIP clusterID %@ on endpoint %@ of node %@", buf, 0x34u);
         }
 
         objc_autoreleasePoolPop(v46);
-        v51 = [v189 objectForKeyedSubscript:v45];
+        v51 = [useCopy objectForKeyedSubscript:v45];
         v52 = (v51 == 0) | v42;
 
         if ((v52 & 1) == 0)
         {
-          v29 = v193;
-          [v192 setClusterIDForCharacteristic:v41 endpointID:v193 clusterID:v45];
+          v29 = endpointCopy;
+          [serverCopy setClusterIDForCharacteristic:v41 endpointID:endpointCopy clusterID:v45];
           v53 = objc_autoreleasePoolPush();
           v54 = v47;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
           {
             v56 = HMFGetLogIdentifier();
-            v57 = [v192 nodeID];
+            nodeID12 = [serverCopy nodeID];
             *buf = 138544386;
             v213 = v56;
             v214 = 2112;
@@ -3699,36 +3699,36 @@ LABEL_96:
             v216 = 2112;
             v217 = v45;
             v218 = 2112;
-            v219 = v193;
+            v219 = endpointCopy;
             v220 = 2112;
-            v221 = v57;
+            v221 = nodeID12;
             _os_log_impl(&dword_22AEAE000, v55, OS_LOG_TYPE_DEBUG, "%{public}@Constructed HAP service description for HAP Characteristic %@, CHIP clusterID %@, endpoint %@ of node %@", buf, 0x34u);
           }
 
           objc_autoreleasePoolPop(v53);
           [(HMMTRHAPServiceDescription *)v191 addMandatoryCharacteristic:v41];
-          v58 = [(HMMTRDescriptorClusterManager *)v54 protocolMap];
-          v59 = [v192 clusterIDCharacteristicMap];
-          v60 = [v58 getMTRClusterClassForCharacteristic:v41 endpointID:v193 clusterIDCharacteristicMap:v59];
+          protocolMap9 = [(HMMTRDescriptorClusterManager *)v54 protocolMap];
+          clusterIDCharacteristicMap2 = [serverCopy clusterIDCharacteristicMap];
+          v60 = [protocolMap9 getMTRClusterClassForCharacteristic:v41 endpointID:endpointCopy clusterIDCharacteristicMap:clusterIDCharacteristicMap2];
 
           if (!v60)
           {
             v128 = objc_autoreleasePoolPush();
             v129 = v54;
             v130 = HMFGetOSLogHandle();
-            v83 = v192;
+            v83 = serverCopy;
             if (os_log_type_enabled(v130, OS_LOG_TYPE_DEBUG))
             {
               v131 = HMFGetLogIdentifier();
-              v132 = [v192 nodeID];
+              nodeID13 = [serverCopy nodeID];
               *buf = 138544130;
               v213 = v131;
               v214 = 2112;
               v215 = v41;
               v216 = 2112;
-              v217 = v193;
+              v217 = endpointCopy;
               v218 = 2112;
-              v219 = v132;
+              v219 = nodeID13;
               _os_log_impl(&dword_22AEAE000, v130, OS_LOG_TYPE_DEBUG, "%{public}@Cluster class name not found for mandatory characteristic %@ in use at endpoint %@ of node %@", buf, 0x2Au);
             }
 
@@ -3737,16 +3737,16 @@ LABEL_96:
             goto LABEL_80;
           }
 
-          [v185 addObject:v60];
-          v61 = [v184 objectForKey:v41];
+          [queryCopy addObject:v60];
+          v61 = [attributeValuesCopy objectForKey:v41];
 
           if (v61)
           {
-            [v177 addObject:v191];
+            [valuesCopy addObject:v191];
           }
 
-          v62 = [(HMMTRDescriptorClusterManager *)v54 protocolMap];
-          v63 = [v62 getRequiredFeaturesBitmapForCharacteristic:v181];
+          protocolMap10 = [(HMMTRDescriptorClusterManager *)v54 protocolMap];
+          v63 = [protocolMap10 getRequiredFeaturesBitmapForCharacteristic:v181];
 
           v64 = objc_autoreleasePoolPush();
           v65 = v54;
@@ -3758,7 +3758,7 @@ LABEL_96:
             if (v67)
             {
               v68 = HMFGetLogIdentifier();
-              v69 = [v192 nodeID];
+              nodeID14 = [serverCopy nodeID];
               *buf = 138544386;
               v213 = v68;
               v214 = 2112;
@@ -3766,15 +3766,15 @@ LABEL_96:
               v216 = 2112;
               v217 = v41;
               v218 = 2112;
-              v219 = v193;
+              v219 = endpointCopy;
               v220 = 2112;
-              v221 = v69;
+              v221 = nodeID14;
               _os_log_impl(&dword_22AEAE000, v66, OS_LOG_TYPE_DEBUG, "%{public}@Found required feature map %@ for mandatory characteristic %@ on endpoint %@ of node %@", buf, 0x34u);
             }
 
             objc_autoreleasePoolPop(v64);
             [(HMMTRHAPServiceDescription *)v191 addFeatureMapForCharacteristic:v41 featureMap:v63];
-            [v178 addObject:v191];
+            [mapCopy addObject:v191];
           }
 
           else
@@ -3782,15 +3782,15 @@ LABEL_96:
             if (v67)
             {
               v70 = HMFGetLogIdentifier();
-              v71 = [v192 nodeID];
+              nodeID15 = [serverCopy nodeID];
               *buf = 138544130;
               v213 = v70;
               v214 = 2112;
               v215 = v41;
               v216 = 2112;
-              v217 = v193;
+              v217 = endpointCopy;
               v218 = 2112;
-              v219 = v71;
+              v219 = nodeID15;
               _os_log_impl(&dword_22AEAE000, v66, OS_LOG_TYPE_DEBUG, "%{public}@Feature map information not available for mandatory characteristic %@ on endpoint %@ of node %@", buf, 0x2Au);
             }
 
@@ -3815,7 +3815,7 @@ LABEL_96:
     v37 = v166;
     v38 = v168 + 1;
     v36 = v164;
-    v29 = v193;
+    v29 = endpointCopy;
     v34 = v175;
     if (v168 + 1 == v164)
     {
@@ -3830,14 +3830,14 @@ LABEL_96:
   }
 
   v147 = objc_autoreleasePoolPush();
-  v148 = v190;
+  v148 = selfCopy;
   v149 = HMFGetOSLogHandle();
-  v83 = v192;
+  v83 = serverCopy;
   if (os_log_type_enabled(v149, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
     v151 = v150 = v28;
-    v152 = [v192 nodeID];
+    nodeID16 = [serverCopy nodeID];
     *buf = 138544130;
     v213 = v151;
     v214 = 2112;
@@ -3845,7 +3845,7 @@ LABEL_96:
     v216 = 2112;
     v217 = v29;
     v218 = 2112;
-    v219 = v152;
+    v219 = nodeID16;
     _os_log_impl(&dword_22AEAE000, v149, OS_LOG_TYPE_DEBUG, "%{public}@Failed to find HAP characteristic ID for characteristic %@ on endpoint %@ of node %@, aborting", buf, 0x2Au);
 
     v28 = v150;
@@ -3865,16 +3865,16 @@ LABEL_86:
   return v127;
 }
 
-- (id)_buildClustersInUseDictWithClustersInUse:(id)a3
+- (id)_buildClustersInUseDictWithClustersInUse:(id)use
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  useCopy = use;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = useCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -3905,24 +3905,24 @@ LABEL_86:
   return v4;
 }
 
-- (id)hapServiceDescriptionsForTopology:(id)a3 namesDictionary:(id)a4 server:(id)a5
+- (id)hapServiceDescriptionsForTopology:(id)topology namesDictionary:(id)dictionary server:(id)server
 {
   v115 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v62 = a4;
-  v84 = a5;
-  v61 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-  v83 = [v61 hapToCHIPClusterMappingArray];
+  topologyCopy = topology;
+  dictionaryCopy = dictionary;
+  serverCopy = server;
+  protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+  hapToCHIPClusterMappingArray = [protocolMap hapToCHIPClusterMappingArray];
   v58 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v58 setNumberStyle:1];
   v65 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [v8 hapServiceTypes];
-  v81 = v8;
-  v73 = [v8 hapLinkedServiceTypes];
-  v74 = v9;
+  hapServiceTypes = [topologyCopy hapServiceTypes];
+  v81 = topologyCopy;
+  hapLinkedServiceTypes = [topologyCopy hapLinkedServiceTypes];
+  v74 = hapServiceTypes;
   v10 = MEMORY[0x277CBEB18];
-  v11 = [v9 allKeys];
-  v12 = [v10 arrayWithArray:v11];
+  allKeys = [hapServiceTypes allKeys];
+  v12 = [v10 arrayWithArray:allKeys];
 
   v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v12 sortUsingComparator:&__block_literal_global_345];
@@ -3935,7 +3935,7 @@ LABEL_86:
   if (v63)
   {
     v60 = *v107;
-    v82 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -3954,7 +3954,7 @@ LABEL_86:
         v88 = objc_opt_new();
         v87 = objc_opt_new();
         v86 = objc_opt_new();
-        v85 = [v61 retrieveHAPCharacteristicsToCheckForRequiredAttributeValues];
+        retrieveHAPCharacteristicsToCheckForRequiredAttributeValues = [protocolMap retrieveHAPCharacteristicsToCheckForRequiredAttributeValues];
         v17 = [v81 getPartsListAtEndpoint:v15];
         v18 = [v81 getNodeLabelAtEndpoint:v15];
         if (v18)
@@ -3967,13 +3967,13 @@ LABEL_86:
           v19 = &stru_283ED2308;
         }
 
-        [v62 setObject:v19 forKey:v14];
+        [dictionaryCopy setObject:v19 forKey:v14];
         v20 = [v81 getClustersInUseAtEndpoint:v15];
         v76 = [(HMMTRDescriptorClusterManager *)self _buildClustersInUseDictWithClustersInUse:v20];
 
         v21 = [v74 objectForKeyedSubscript:v14];
         v64 = v14;
-        v22 = [v73 objectForKeyedSubscript:v14];
+        v22 = [hapLinkedServiceTypes objectForKeyedSubscript:v14];
         v102 = 0u;
         v103 = 0u;
         v104 = 0u;
@@ -4003,12 +4003,12 @@ LABEL_86:
                 v28 = v29;
               }
 
-              v30 = [(HMMTRDescriptorClusterManager *)v82 hapServiceDescriptionForServiceType:v27 linkedServiceTypes:v28 clustersInUse:v76 endpoint:v15 name:v19 hapToCHIPClusterMappingArray:v83 clusterClassesToQuery:v89 hapServicesToCheckForFeatureMap:v88 hapServicesToCheckForOptionalMatterAttribute:v87 hapServicesToCheckForRequiredAttributeValues:v86 hapCharacteristicsToCheckForRequiredAttributeValues:v85 server:v84];
+              v30 = [(HMMTRDescriptorClusterManager *)selfCopy hapServiceDescriptionForServiceType:v27 linkedServiceTypes:v28 clustersInUse:v76 endpoint:v15 name:v19 hapToCHIPClusterMappingArray:hapToCHIPClusterMappingArray clusterClassesToQuery:v89 hapServicesToCheckForFeatureMap:v88 hapServicesToCheckForOptionalMatterAttribute:v87 hapServicesToCheckForRequiredAttributeValues:v86 hapCharacteristicsToCheckForRequiredAttributeValues:retrieveHAPCharacteristicsToCheckForRequiredAttributeValues server:serverCopy];
               v31 = v30;
               if (v30)
               {
                 [v30 setEndpoint:v15];
-                [(HMMTRDescriptorClusterManager *)v82 _removeDisabledCharacteristicsFromServiceDescription:v31 endpoint:v15 topology:v81];
+                [(HMMTRDescriptorClusterManager *)selfCopy _removeDisabledCharacteristicsFromServiceDescription:v31 endpoint:v15 topology:v81];
                 [v16 addObject:v31];
               }
 
@@ -4030,7 +4030,7 @@ LABEL_86:
         v98 = 0u;
         v99 = 0u;
         v69 = v17;
-        self = v82;
+        self = selfCopy;
         v77 = [v69 countByEnumeratingWithState:&v98 objects:v112 count:16];
         if (v77)
         {
@@ -4047,16 +4047,16 @@ LABEL_86:
 
               v78 = v32;
               v33 = *(*(&v98 + 1) + 8 * v32);
-              v34 = [v33 stringValue];
-              v35 = [v74 objectForKeyedSubscript:v34];
+              stringValue = [v33 stringValue];
+              v35 = [v74 objectForKeyedSubscript:stringValue];
 
-              v36 = [v33 stringValue];
-              v37 = [v73 objectForKeyedSubscript:v36];
+              stringValue2 = [v33 stringValue];
+              v37 = [hapLinkedServiceTypes objectForKeyedSubscript:stringValue2];
 
               v38 = [v81 getClustersInUseAtEndpoint:v33];
-              v39 = [(HMMTRDescriptorClusterManager *)v82 _buildClustersInUseDictWithClustersInUse:v38];
+              v39 = [(HMMTRDescriptorClusterManager *)selfCopy _buildClustersInUseDictWithClustersInUse:v38];
 
-              self = v82;
+              self = selfCopy;
               v40 = [v81 getNodeLabelAtEndpoint:v33];
               v94 = 0u;
               v95 = 0u;
@@ -4084,10 +4084,10 @@ LABEL_86:
                       v47 = [v37 objectForKey:v45];
 
                       v46 = v47;
-                      self = v82;
+                      self = selfCopy;
                     }
 
-                    v48 = [(HMMTRDescriptorClusterManager *)self hapServiceDescriptionForServiceType:v45 linkedServiceTypes:v46 clustersInUse:v39 endpoint:v33 name:v40 hapToCHIPClusterMappingArray:v83 clusterClassesToQuery:v89 hapServicesToCheckForFeatureMap:v88 hapServicesToCheckForOptionalMatterAttribute:v87 hapServicesToCheckForRequiredAttributeValues:v86 hapCharacteristicsToCheckForRequiredAttributeValues:v85 server:v84];
+                    v48 = [(HMMTRDescriptorClusterManager *)self hapServiceDescriptionForServiceType:v45 linkedServiceTypes:v46 clustersInUse:v39 endpoint:v33 name:v40 hapToCHIPClusterMappingArray:hapToCHIPClusterMappingArray clusterClassesToQuery:v89 hapServicesToCheckForFeatureMap:v88 hapServicesToCheckForOptionalMatterAttribute:v87 hapServicesToCheckForRequiredAttributeValues:v86 hapCharacteristicsToCheckForRequiredAttributeValues:retrieveHAPCharacteristicsToCheckForRequiredAttributeValues server:serverCopy];
                     v49 = v48;
                     if (v48)
                     {
@@ -4103,8 +4103,8 @@ LABEL_86:
                 while (v42);
               }
 
-              v50 = [v33 stringValue];
-              [v71 addObject:v50];
+              stringValue3 = [v33 stringValue];
+              [v71 addObject:stringValue3];
 
               v32 = v78 + 1;
             }
@@ -4178,69 +4178,69 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
   return v10;
 }
 
-- (void)_removeDisabledCharacteristicsFromServiceDescription:(id)a3 endpoint:(id)a4 topology:(id)a5
+- (void)_removeDisabledCharacteristicsFromServiceDescription:(id)description endpoint:(id)endpoint topology:(id)topology
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  endpointCopy = endpoint;
+  topologyCopy = topology;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = [v7 requiredCharacteristics];
-  v11 = [v10 countByEnumeratingWithState:&v46 objects:v55 count:16];
-  v40 = v8;
+  requiredCharacteristics = [descriptionCopy requiredCharacteristics];
+  v11 = [requiredCharacteristics countByEnumeratingWithState:&v46 objects:v55 count:16];
+  v40 = endpointCopy;
   if (v11)
   {
     v12 = v11;
     v13 = *v47;
-    v38 = v7;
+    v38 = descriptionCopy;
     do
     {
       for (i = 0; i != v12; ++i)
       {
         if (*v47 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(requiredCharacteristics);
         }
 
         v15 = [HMMTRUtilities hmmtr_shortTypeFromUUID:*(*(&v46 + 1) + 8 * i)];
-        v16 = [v7 serviceType];
-        v17 = [v9 isHAPCharacteristicDisabledAtEndpoint:v8 hapServiceType:v16 hapCharacteristic:v15];
+        serviceType = [descriptionCopy serviceType];
+        v17 = [topologyCopy isHAPCharacteristicDisabledAtEndpoint:endpointCopy hapServiceType:serviceType hapCharacteristic:v15];
 
         if (v17)
         {
-          [v7 removeCharacteristic:v15];
+          [descriptionCopy removeCharacteristic:v15];
           v18 = objc_autoreleasePoolPush();
-          v19 = self;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
             HMFGetLogIdentifier();
             v21 = v12;
             v22 = v13;
-            v23 = v9;
-            v25 = v24 = v10;
+            v23 = topologyCopy;
+            v25 = v24 = requiredCharacteristics;
             *buf = 138543618;
             v52 = v25;
             v53 = 2112;
             v54 = v15;
             _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Removed disabled required characteristic : %@", buf, 0x16u);
 
-            v10 = v24;
-            v9 = v23;
+            requiredCharacteristics = v24;
+            topologyCopy = v23;
             v13 = v22;
             v12 = v21;
-            v7 = v38;
+            descriptionCopy = v38;
           }
 
           objc_autoreleasePoolPop(v18);
-          v8 = v40;
+          endpointCopy = v40;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      v12 = [requiredCharacteristics countByEnumeratingWithState:&v46 objects:v55 count:16];
     }
 
     while (v12);
@@ -4250,7 +4250,7 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = [v7 optionalCharacteristics];
+  obj = [descriptionCopy optionalCharacteristics];
   v26 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v26)
   {
@@ -4266,14 +4266,14 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
         }
 
         v30 = [HMMTRUtilities hmmtr_shortTypeFromUUID:*(*(&v42 + 1) + 8 * j)];
-        v31 = [v7 serviceType];
-        v32 = [v9 isHAPCharacteristicDisabledAtEndpoint:v8 hapServiceType:v31 hapCharacteristic:v30];
+        serviceType2 = [descriptionCopy serviceType];
+        v32 = [topologyCopy isHAPCharacteristicDisabledAtEndpoint:endpointCopy hapServiceType:serviceType2 hapCharacteristic:v30];
 
         if (v32)
         {
-          [v7 removeCharacteristic:v30];
+          [descriptionCopy removeCharacteristic:v30];
           v33 = objc_autoreleasePoolPush();
-          v34 = self;
+          selfCopy2 = self;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
@@ -4286,7 +4286,7 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
           }
 
           objc_autoreleasePoolPop(v33);
-          v8 = v40;
+          endpointCopy = v40;
         }
       }
 
@@ -4299,42 +4299,42 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHAPServicesAtCHIPEndpoint:(id)a3 deviceTopology:(id)a4 endpointDeviceTypes:(id)a5 accessoryInfo:(id)a6 hapToCHIPClusterMappingArray:(id)a7 device:(id)a8 isBridge:(BOOL)a9 bridgeAggregateNodeEndpoint:(id)a10 isComposedDevice:(BOOL)a11 server:(id)a12 callbackQueue:(id)a13 completionHandler:(id)a14
+- (void)fetchHAPServicesAtCHIPEndpoint:(id)endpoint deviceTopology:(id)topology endpointDeviceTypes:(id)types accessoryInfo:(id)info hapToCHIPClusterMappingArray:(id)array device:(id)device isBridge:(BOOL)bridge bridgeAggregateNodeEndpoint:(id)self0 isComposedDevice:(BOOL)self1 server:(id)self2 callbackQueue:(id)self3 completionHandler:(id)self4
 {
   v179 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v133 = a4;
-  v112 = a5;
-  v111 = a6;
-  v131 = a7;
-  v20 = a8;
-  v21 = a10;
-  v132 = a12;
-  v114 = a13;
-  v22 = v21;
-  v110 = a14;
+  endpointCopy = endpoint;
+  topologyCopy = topology;
+  typesCopy = types;
+  infoCopy = info;
+  arrayCopy = array;
+  deviceCopy = device;
+  nodeEndpointCopy = nodeEndpoint;
+  serverCopy = server;
+  queueCopy = queue;
+  v22 = nodeEndpointCopy;
+  handlerCopy = handler;
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v26 = HMFGetLogIdentifier();
-    v27 = [v20 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138544386;
     v172 = v26;
     v173 = 2112;
-    v174 = v19;
+    v174 = endpointCopy;
     v175 = 2112;
     v176 = v22;
     v177 = 1024;
-    *v178 = a11;
+    *v178 = composedDevice;
     *&v178[4] = 2112;
-    *&v178[6] = v27;
+    *&v178[6] = nodeID;
     _os_log_impl(&dword_22AEAE000, v25, OS_LOG_TYPE_INFO, "%{public}@Fetching server list from descriptor cluster at endpoint %@, bridgeAggregateNodeEndpoint %@, isComposedDevice %d of node %@", buf, 0x30u);
   }
 
   objc_autoreleasePoolPop(v23);
-  v28 = [(HMMTRDescriptorClusterManager *)v24 buildClusterDescriptorWithDevice:v20 endpointID:v19 queue:v114];
+  v28 = [(HMMTRDescriptorClusterManager *)selfCopy buildClusterDescriptorWithDevice:deviceCopy endpointID:endpointCopy queue:queueCopy];
   v29 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v109 = v28;
   v30 = [v28 readAttributeServerListWithParams:v29];
@@ -4361,32 +4361,32 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
     if ([v33 count])
     {
       v103 = v22;
-      v104 = v20;
-      [v133 setClustersInUse:v33 atEndpoint:v19];
-      v34 = [(HMMTRDescriptorClusterManager *)v24 protocolMap];
-      v126 = [(HMMTRDescriptorClusterManager *)v24 _buildClustersInUseDictWithClustersInUse:v33];
-      v35 = [v133 getHAPServiceTypesAtEndpoint:v19];
-      v124 = [v133 getHAPLinkedServiceTypesAtEndpoint:v19];
-      v36 = [v133 getHAPCategoriesAtEndpoint:v19];
+      v104 = deviceCopy;
+      [topologyCopy setClustersInUse:v33 atEndpoint:endpointCopy];
+      protocolMap = [(HMMTRDescriptorClusterManager *)selfCopy protocolMap];
+      v126 = [(HMMTRDescriptorClusterManager *)selfCopy _buildClustersInUseDictWithClustersInUse:v33];
+      v35 = [topologyCopy getHAPServiceTypesAtEndpoint:endpointCopy];
+      v124 = [topologyCopy getHAPLinkedServiceTypesAtEndpoint:endpointCopy];
+      v36 = [topologyCopy getHAPCategoriesAtEndpoint:endpointCopy];
       v128 = objc_opt_new();
       v127 = objc_opt_new();
       v118 = objc_opt_new();
       v120 = objc_opt_new();
-      v101 = v34;
-      v122 = [v34 retrieveHAPCharacteristicsToCheckForRequiredAttributeValues];
+      v101 = protocolMap;
+      retrieveHAPCharacteristicsToCheckForRequiredAttributeValues = [protocolMap retrieveHAPCharacteristicsToCheckForRequiredAttributeValues];
       v37 = objc_autoreleasePoolPush();
-      v38 = v24;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v40 = HMFGetLogIdentifier();
-        v41 = [v104 nodeID];
+        nodeID2 = [v104 nodeID];
         *buf = 138544130;
         v172 = v40;
         v173 = 2112;
-        v174 = v19;
+        v174 = endpointCopy;
         v175 = 2112;
-        v176 = v41;
+        v176 = nodeID2;
         v177 = 2112;
         *v178 = v33;
         _os_log_impl(&dword_22AEAE000, v39, OS_LOG_TYPE_INFO, "%{public}@Retrieved at endpoint %@ of node %@, following clusters in use %@", buf, 0x2Au);
@@ -4399,20 +4399,20 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
         v45 = HMFGetLogIdentifier();
-        v46 = [v104 nodeID];
+        nodeID3 = [v104 nodeID];
         *buf = 138544130;
         v172 = v45;
         v173 = 2112;
-        v174 = v19;
+        v174 = endpointCopy;
         v175 = 2112;
-        v176 = v46;
+        v176 = nodeID3;
         v177 = 2112;
         *v178 = v36;
         _os_log_impl(&dword_22AEAE000, v44, OS_LOG_TYPE_INFO, "%{public}@Retrieved at endpoint %@ of node %@, following HAP categories in use %@", buf, 0x2Au);
       }
 
       v99 = v36;
-      v130 = v19;
+      v130 = endpointCopy;
 
       v47 = v43;
       objc_autoreleasePoolPop(v42);
@@ -4439,7 +4439,7 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
 
             v53 = *(*(&v164 + 1) + 8 * i);
             v54 = [v124 objectForKey:v53];
-            v55 = [v133 getNodeLabelAtEndpoint:v19];
+            v55 = [topologyCopy getNodeLabelAtEndpoint:endpointCopy];
             if (v55)
             {
               v56 = v55;
@@ -4450,11 +4450,11 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
               v56 = &stru_283ED2308;
             }
 
-            v57 = [(HMMTRDescriptorClusterManager *)v47 hapServiceDescriptionForServiceType:v53 linkedServiceTypes:v54 clustersInUse:v126 endpoint:v19 name:v56 hapToCHIPClusterMappingArray:v131 clusterClassesToQuery:v128 hapServicesToCheckForFeatureMap:v127 hapServicesToCheckForOptionalMatterAttribute:v118 hapServicesToCheckForRequiredAttributeValues:v120 hapCharacteristicsToCheckForRequiredAttributeValues:v122 server:v132];
+            v57 = [(HMMTRDescriptorClusterManager *)v47 hapServiceDescriptionForServiceType:v53 linkedServiceTypes:v54 clustersInUse:v126 endpoint:endpointCopy name:v56 hapToCHIPClusterMappingArray:arrayCopy clusterClassesToQuery:v128 hapServicesToCheckForFeatureMap:v127 hapServicesToCheckForOptionalMatterAttribute:v118 hapServicesToCheckForRequiredAttributeValues:v120 hapCharacteristicsToCheckForRequiredAttributeValues:retrieveHAPCharacteristicsToCheckForRequiredAttributeValues server:serverCopy];
             v58 = v57;
             if (v57)
             {
-              [v57 setEndpoint:v19];
+              [v57 setEndpoint:endpointCopy];
               [v116 addObject:v58];
               [v48 addObject:v53];
             }
@@ -4466,11 +4466,11 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
         while (v50);
       }
 
-      v59 = [v128 allObjects];
-      v102 = [v59 mutableCopy];
+      allObjects = [v128 allObjects];
+      v102 = [allObjects mutableCopy];
 
-      v60 = [v128 allObjects];
-      v61 = [v60 mutableCopy];
+      allObjects2 = [v128 allObjects];
+      v61 = [allObjects2 mutableCopy];
 
       v62 = objc_opt_new();
       v93 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -4480,10 +4480,10 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
       v142[2] = __242__HMMTRDescriptorClusterManager_fetchHAPServicesAtCHIPEndpoint_deviceTopology_endpointDeviceTypes_accessoryInfo_hapToCHIPClusterMappingArray_device_isBridge_bridgeAggregateNodeEndpoint_isComposedDevice_server_callbackQueue_completionHandler___block_invoke;
       v142[3] = &unk_2786EE618;
       v142[4] = v47;
-      v143 = v19;
+      v143 = endpointCopy;
       v144 = v104;
-      v145 = v112;
-      v146 = v114;
+      v145 = typesCopy;
+      v146 = queueCopy;
       v98 = v61;
       v147 = v98;
       v119 = v118;
@@ -4491,24 +4491,24 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
       v97 = v62;
       v149 = v97;
       v150 = v116;
-      v151 = v133;
+      v151 = topologyCopy;
       v152 = v103;
-      v153 = v132;
+      v153 = serverCopy;
       v96 = v120;
       v154 = v96;
-      v95 = v122;
+      v95 = retrieveHAPCharacteristicsToCheckForRequiredAttributeValues;
       v155 = v95;
       v94 = v93;
       v156 = v94;
       v92 = v91;
       v157 = v92;
-      v161 = v110;
-      v162 = a9;
+      v161 = handlerCopy;
+      bridgeCopy = bridge;
       v106 = v99;
       v158 = v106;
-      v159 = v111;
+      v159 = infoCopy;
       v160 = v113;
-      v163 = a11;
+      composedDeviceCopy = composedDevice;
       v100 = v151;
       v117 = v150;
       v105 = v143;
@@ -4608,58 +4608,58 @@ uint64_t __90__HMMTRDescriptorClusterManager_hapServiceDescriptionsForTopology_n
       [v100 setHAPServiceTypes:v48 atEndpoint:v105];
       [v100 setHAPLinkedServiceTypes:v63 atEndpoint:v105];
 
-      v19 = v130;
+      endpointCopy = v130;
       v22 = v103;
-      v20 = v104;
-      v78 = v110;
+      deviceCopy = v104;
+      v78 = handlerCopy;
     }
 
     else
     {
       v85 = objc_autoreleasePoolPush();
-      v86 = v24;
+      v86 = selfCopy;
       v87 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
       {
         v88 = HMFGetLogIdentifier();
-        v89 = [v20 nodeID];
+        nodeID4 = [deviceCopy nodeID];
         *buf = 138543874;
         v172 = v88;
         v173 = 2112;
-        v174 = v19;
+        v174 = endpointCopy;
         v175 = 2112;
-        v176 = v89;
+        v176 = nodeID4;
         _os_log_impl(&dword_22AEAE000, v87, OS_LOG_TYPE_ERROR, "%{public}@No clusters in use at endpoint %@ of node %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v85);
-      v78 = v110;
-      (*(v110 + 2))(v110, 0, a9, v22, 0);
+      v78 = handlerCopy;
+      (*(handlerCopy + 2))(handlerCopy, 0, bridge, v22, 0);
     }
   }
 
   else
   {
     v79 = objc_autoreleasePoolPush();
-    v80 = v24;
+    v80 = selfCopy;
     v81 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
     {
       v82 = HMFGetLogIdentifier();
-      v83 = [v20 nodeID];
+      nodeID5 = [deviceCopy nodeID];
       *buf = 138543874;
       v172 = v82;
       v173 = 2112;
-      v174 = v19;
+      v174 = endpointCopy;
       v175 = 2112;
-      v176 = v83;
+      v176 = nodeID5;
       _os_log_impl(&dword_22AEAE000, v81, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch clusters in use at endpoint %@ of node %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v79);
     v84 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2314];
-    v78 = v110;
-    (*(v110 + 2))(v110, 0, a9, v22, v84);
+    v78 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, 0, bridge, v22, v84);
   }
 
   v90 = *MEMORY[0x277D85DE8];
@@ -4913,40 +4913,40 @@ void __242__HMMTRDescriptorClusterManager_fetchHAPServicesAtCHIPEndpoint_deviceT
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 hapServicesToCheckForRequiredAttributeValues:(id)a6 hapCharacteristicsToCheckForRequiredAttributeValues:(id)a7 attributeValuesSupportedDict:(id)a8 attributeValuesRetrievedDict:(id)a9 deviceTopology:(id)a10 server:(id)a11 lastError:(id)a12 completionHandler:(id)a13
+- (void)_verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue hapServicesToCheckForRequiredAttributeValues:(id)values hapCharacteristicsToCheckForRequiredAttributeValues:(id)attributeValues attributeValuesSupportedDict:(id)dict attributeValuesRetrievedDict:(id)retrievedDict deviceTopology:(id)self0 server:(id)self1 lastError:(id)self2 completionHandler:(id)self3
 {
   v117 = *MEMORY[0x277D85DE8];
-  v71 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v70 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v62 = a12;
-  v25 = a13;
-  v63 = v20;
-  v69 = v19;
-  v72 = v25;
-  v73 = v24;
-  if (![v20 count] || !objc_msgSend(v21, "count"))
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  queueCopy = queue;
+  valuesCopy = values;
+  attributeValuesCopy = attributeValues;
+  dictCopy = dict;
+  retrievedDictCopy = retrievedDict;
+  topologyCopy = topology;
+  serverCopy = server;
+  errorCopy = error;
+  handlerCopy = handler;
+  v63 = valuesCopy;
+  v69 = queueCopy;
+  v72 = handlerCopy;
+  v73 = serverCopy;
+  if (![valuesCopy count] || !objc_msgSend(attributeValuesCopy, "count"))
   {
-    v38 = v70;
-    v39 = [v70 allKeys];
-    v37 = v71;
-    v74 = v39;
-    if (![v70 count] || !objc_msgSend(v39, "count"))
+    v38 = dictCopy;
+    allKeys = [dictCopy allKeys];
+    v37 = endpointCopy;
+    keyEnumerator = allKeys;
+    if (![dictCopy count] || !objc_msgSend(allKeys, "count"))
     {
-      (*(v25 + 2))(v25, 0);
-      v20 = v63;
+      (*(handlerCopy + 2))(handlerCopy, 0);
+      valuesCopy = v63;
       goto LABEL_36;
     }
 
-    v68 = v23;
-    v59 = v21;
-    v61 = v18;
+    v68 = topologyCopy;
+    v59 = attributeValuesCopy;
+    v61 = deviceCopy;
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
@@ -4976,8 +4976,8 @@ void __242__HMMTRDescriptorClusterManager_fetchHAPServicesAtCHIPEndpoint_deviceT
         v84 = 0u;
         v85 = 0u;
         v79 = v41;
-        v76 = [v41 optionalCharacteristics];
-        v42 = [v76 countByEnumeratingWithState:&v82 objects:v103 count:16];
+        optionalCharacteristics = [v41 optionalCharacteristics];
+        v42 = [optionalCharacteristics countByEnumeratingWithState:&v82 objects:v103 count:16];
         if (v42)
         {
           v43 = v42;
@@ -4988,33 +4988,33 @@ void __242__HMMTRDescriptorClusterManager_fetchHAPServicesAtCHIPEndpoint_deviceT
             {
               if (*v83 != v81)
               {
-                objc_enumerationMutation(v76);
+                objc_enumerationMutation(optionalCharacteristics);
               }
 
               v45 = [HMMTRUtilities hmmtr_shortTypeFromUUID:*(*(&v82 + 1) + 8 * i)];
-              if ([v39 containsObject:v45])
+              if ([allKeys containsObject:v45])
               {
-                v46 = [v38 objectForKey:v45];
-                v47 = v22;
-                v48 = [v22 objectForKey:v45];
+                serviceType = [v38 objectForKey:v45];
+                v47 = retrievedDictCopy;
+                v48 = [retrievedDictCopy objectForKey:v45];
                 v49 = v48;
                 if (v48)
                 {
                   v50 = 1 << [v48 unsignedIntegerValue];
-                  if ((v50 & ~[v46 unsignedIntegerValue]) == 0)
+                  if ((v50 & ~[serviceType unsignedIntegerValue]) == 0)
                   {
 
 LABEL_29:
-                    v22 = v47;
-                    v25 = v72;
-                    v24 = v73;
-                    v39 = v74;
+                    retrievedDictCopy = v47;
+                    handlerCopy = v72;
+                    serverCopy = v73;
+                    allKeys = keyEnumerator;
                     goto LABEL_30;
                   }
 
                   [v79 removeCharacteristic:v45];
                   v51 = objc_autoreleasePoolPush();
-                  v57 = self;
+                  selfCopy = self;
                   v53 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
                   {
@@ -5024,12 +5024,12 @@ LABEL_29:
                     v107 = 2112;
                     v108 = v45;
                     v109 = 2112;
-                    v55 = v71;
-                    v110 = v71;
+                    v55 = endpointCopy;
+                    v110 = endpointCopy;
                     v111 = 2112;
                     v112 = v49;
                     v113 = 2112;
-                    v114 = v46;
+                    v114 = serviceType;
                     v56 = v53;
 LABEL_26:
                     _os_log_impl(&dword_22AEAE000, v56, OS_LOG_TYPE_INFO, "%{public}@Removed unsupported characteristic %@ for endpoint %@ due to attribute value %@ not matching supported attribute mask %@.", buf, 0x34u);
@@ -5037,11 +5037,11 @@ LABEL_26:
 LABEL_28:
                     objc_autoreleasePoolPop(v51);
 
-                    v46 = [v79 serviceType];
-                    [v68 addHAPDisabledCharacteristic:v45 atEndpoint:v55 hapServiceType:v46];
+                    serviceType = [v79 serviceType];
+                    [v68 addHAPDisabledCharacteristic:v45 atEndpoint:v55 hapServiceType:serviceType];
                     v37 = v55;
-                    v19 = v69;
-                    v38 = v70;
+                    queueCopy = v69;
+                    v38 = dictCopy;
                     goto LABEL_29;
                   }
                 }
@@ -5050,7 +5050,7 @@ LABEL_28:
                 {
                   [v79 removeCharacteristic:v45];
                   v51 = objc_autoreleasePoolPush();
-                  v52 = self;
+                  selfCopy2 = self;
                   v53 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
                   {
@@ -5060,25 +5060,25 @@ LABEL_28:
                     v107 = 2112;
                     v108 = v45;
                     v109 = 2112;
-                    v55 = v71;
-                    v110 = v71;
+                    v55 = endpointCopy;
+                    v110 = endpointCopy;
                     v111 = 2112;
                     v112 = 0;
                     v113 = 2112;
-                    v114 = v46;
+                    v114 = serviceType;
                     v56 = v53;
                     goto LABEL_26;
                   }
                 }
 
-                v55 = v71;
+                v55 = endpointCopy;
                 goto LABEL_28;
               }
 
 LABEL_30:
             }
 
-            v43 = [v76 countByEnumeratingWithState:&v82 objects:v103 count:16];
+            v43 = [optionalCharacteristics countByEnumeratingWithState:&v82 objects:v103 count:16];
           }
 
           while (v43);
@@ -5093,28 +5093,28 @@ LABEL_30:
       {
 LABEL_34:
 
-        (*(v25 + 2))(v25, v62);
-        v21 = v59;
-        v18 = v61;
-        v20 = v63;
-        v23 = v68;
+        (*(handlerCopy + 2))(handlerCopy, errorCopy);
+        attributeValuesCopy = v59;
+        deviceCopy = v61;
+        valuesCopy = v63;
+        topologyCopy = v68;
         goto LABEL_36;
       }
     }
   }
 
-  v26 = v22;
-  v60 = v18;
-  v74 = [v21 keyEnumerator];
-  v27 = [v74 nextObject];
-  v28 = [v21 objectForKey:v27];
-  v29 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-  v30 = [v24 clusterIDCharacteristicMap];
-  v31 = v27;
-  v80 = [v29 getClusterClassForCharacteristic:v27 endpointID:v71 clusterIDCharacteristicMap:v30];
+  v26 = retrievedDictCopy;
+  v60 = deviceCopy;
+  keyEnumerator = [attributeValuesCopy keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  v28 = [attributeValuesCopy objectForKey:nextObject];
+  protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+  clusterIDCharacteristicMap = [serverCopy clusterIDCharacteristicMap];
+  v31 = nextObject;
+  v80 = [protocolMap getClusterClassForCharacteristic:nextObject endpointID:endpointCopy clusterIDCharacteristicMap:clusterIDCharacteristicMap];
 
   v32 = objc_autoreleasePoolPush();
-  v33 = self;
+  selfCopy3 = self;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
@@ -5126,9 +5126,9 @@ LABEL_34:
     v109 = 2112;
     v110 = v80;
     v111 = 2112;
-    v112 = v20;
+    v112 = valuesCopy;
     v113 = 2112;
-    v114 = v21;
+    v114 = attributeValuesCopy;
     v115 = 2112;
     v116 = v28;
     _os_log_impl(&dword_22AEAE000, v34, OS_LOG_TYPE_DEBUG, "%{public}@verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint shortCharacteristicKey = %@, clusterClassName = %@,  hapServicesToCheckForRequiredAttributeValues = %@, hapCharacteristicsToCheckForRequiredAttributeValues = %@, curHAPCharacteristicAttributesToCheck = %@", buf, 0x3Eu);
@@ -5141,28 +5141,28 @@ LABEL_34:
   v90[3] = &unk_2786EE578;
   v91 = v26;
   v92 = v31;
-  v93 = v70;
-  v94 = v21;
-  v95 = v33;
+  v93 = dictCopy;
+  v94 = attributeValuesCopy;
+  v95 = selfCopy3;
   v75 = v28;
-  v96 = v71;
+  v96 = endpointCopy;
   v97 = v60;
   v98 = v69;
-  v99 = v20;
-  v100 = v23;
-  v24 = v73;
+  v99 = valuesCopy;
+  v100 = topologyCopy;
+  serverCopy = v73;
   v101 = v73;
-  v25 = v72;
+  handlerCopy = v72;
   v102 = v72;
   v78 = v31;
-  v36 = v33;
-  v22 = v26;
-  v38 = v70;
-  v37 = v71;
+  v36 = selfCopy3;
+  retrievedDictCopy = v26;
+  v38 = dictCopy;
+  v37 = endpointCopy;
   [(HMMTRDescriptorClusterManager *)v36 _queryAttributeValueFromClusterAtCHIPEndpoint:v96 device:v97 attributeValuesToCheckDict:v28 attributeValuesSupportedDict:v93 attributeValuesRetrievedDict:v91 callbackQueue:v98 clusterClassName:v80 completionHandler:v90];
 
-  v18 = v60;
-  v19 = v69;
+  deviceCopy = v60;
+  queueCopy = v69;
 
 LABEL_36:
   v58 = *MEMORY[0x277D85DE8];
@@ -5181,36 +5181,36 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
   [*(a1 + 64) _verifyHAPCharacteristicSupportWithRequiredAttributeValuesAtCHIPEndpoint:*(a1 + 72) device:*(a1 + 80) callbackQueue:*(a1 + 88) hapServicesToCheckForRequiredAttributeValues:*(a1 + 96) hapCharacteristicsToCheckForRequiredAttributeValues:*(a1 + 56) attributeValuesSupportedDict:*(a1 + 48) attributeValuesRetrievedDict:*(a1 + 32) deviceTopology:*(a1 + 104) server:*(a1 + 112) lastError:0 completionHandler:*(a1 + 120)];
 }
 
-- (void)_verifyHAPOptionalCharacteristicSupportAtCHIPEndpoint:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 callbackQueue:(id)a6 clusterClassToQueryForAttributes:(id)a7 hapServicesToCheckForOptionalMatterAttribute:(id)a8 clusterAttributesSupported:(id)a9 hapServicesInUse:(id)a10 deviceTopology:(id)a11 bridgeAggregateNodeEndpoint:(id)a12 server:(id)a13 lastError:(id)a14 completionHandler:(id)a15
+- (void)_verifyHAPOptionalCharacteristicSupportAtCHIPEndpoint:(id)endpoint device:(id)device endpointDeviceTypes:(id)types callbackQueue:(id)queue clusterClassToQueryForAttributes:(id)attributes hapServicesToCheckForOptionalMatterAttribute:(id)attribute clusterAttributesSupported:(id)supported hapServicesInUse:(id)self0 deviceTopology:(id)self1 bridgeAggregateNodeEndpoint:(id)self2 server:(id)self3 lastError:(id)self4 completionHandler:(id)self5
 {
   v139 = *MEMORY[0x277D85DE8];
-  v96 = a3;
-  v20 = a4;
-  v80 = a5;
-  v82 = a6;
-  v21 = a7;
-  v22 = a8;
-  v89 = a9;
-  v23 = v20;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = v21;
-  v28 = a13;
-  v77 = a14;
-  v76 = a15;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  typesCopy = types;
+  queueCopy = queue;
+  attributesCopy = attributes;
+  attributeCopy = attribute;
+  supportedCopy = supported;
+  v23 = deviceCopy;
+  useCopy = use;
+  topologyCopy = topology;
+  nodeEndpointCopy = nodeEndpoint;
+  v27 = attributesCopy;
+  serverCopy = server;
+  errorCopy = error;
+  handlerCopy = handler;
   v29 = objc_autoreleasePoolPush();
-  v30 = self;
+  selfCopy = self;
   v31 = HMFGetOSLogHandle();
-  v98 = v30;
-  v81 = v24;
+  v98 = selfCopy;
+  v81 = useCopy;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
     v32 = v27;
     v34 = v33 = v23;
     [v33 nodeID];
-    v36 = v35 = v22;
+    v36 = v35 = attributeCopy;
     *buf = 138543874;
     v125 = v34;
     v126 = 2112;
@@ -5219,52 +5219,52 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
     v129 = v32;
     _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_DEBUG, "%{public}@Cluster classes to query for attributes of node %@: %@", buf, 0x20u);
 
-    v22 = v35;
-    v30 = v98;
+    attributeCopy = v35;
+    selfCopy = v98;
 
     v23 = v33;
     v27 = v32;
   }
 
-  v92 = v28;
-  v78 = v26;
-  v88 = v25;
+  v92 = serverCopy;
+  v78 = nodeEndpointCopy;
+  v88 = topologyCopy;
 
   objc_autoreleasePoolPop(v29);
   v90 = v23;
   v79 = v27;
   if ([v27 count])
   {
-    v94 = [v27 popFirstObject];
+    popFirstObject = [v27 popFirstObject];
     v111[0] = MEMORY[0x277D85DD0];
     v111[1] = 3221225472;
     v111[2] = __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSupportAtCHIPEndpoint_device_endpointDeviceTypes_callbackQueue_clusterClassToQueryForAttributes_hapServicesToCheckForOptionalMatterAttribute_clusterAttributesSupported_hapServicesInUse_deviceTopology_bridgeAggregateNodeEndpoint_server_lastError_completionHandler___block_invoke;
     v111[3] = &unk_2786EE550;
-    v111[4] = v30;
-    v37 = v96;
-    v112 = v96;
-    v38 = v22;
+    v111[4] = selfCopy;
+    v37 = endpointCopy;
+    v112 = endpointCopy;
+    v38 = attributeCopy;
     v113 = v23;
-    v39 = v89;
-    v114 = v89;
-    v40 = v80;
-    v115 = v80;
-    v116 = v82;
+    v39 = supportedCopy;
+    v114 = supportedCopy;
+    v40 = typesCopy;
+    v115 = typesCopy;
+    v116 = queueCopy;
     v117 = v27;
     v118 = v38;
     v119 = v81;
-    v41 = v25;
-    v120 = v25;
-    v42 = v26;
-    v121 = v26;
+    v41 = topologyCopy;
+    v120 = topologyCopy;
+    v42 = nodeEndpointCopy;
+    v121 = nodeEndpointCopy;
     v43 = v92;
     v122 = v92;
-    v44 = v76;
-    v123 = v76;
+    v44 = handlerCopy;
+    v123 = handlerCopy;
     v45 = v23;
-    [(HMMTRDescriptorClusterManager *)v98 _querySupportedAttributesFromClusterAtCHIPEndpoint:v112 device:v113 callbackQueue:v116 clusterClassName:v94 completionHandler:v111];
+    [(HMMTRDescriptorClusterManager *)v98 _querySupportedAttributesFromClusterAtCHIPEndpoint:v112 device:v113 callbackQueue:v116 clusterClassName:popFirstObject completionHandler:v111];
 
-    v46 = v77;
+    v46 = errorCopy;
   }
 
   else
@@ -5273,10 +5273,10 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
     v110 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v75 = v22;
-    obj = v22;
-    v37 = v96;
-    v39 = v89;
+    v75 = attributeCopy;
+    obj = attributeCopy;
+    v37 = endpointCopy;
+    v39 = supportedCopy;
     v85 = [obj countByEnumeratingWithState:&v107 objects:v138 count:16];
     if (v85)
     {
@@ -5298,8 +5298,8 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
           v105 = 0u;
           v106 = 0u;
           v91 = v48;
-          v87 = [v48 optionalCharacteristics];
-          v95 = [v87 countByEnumeratingWithState:&v103 objects:v137 count:16];
+          optionalCharacteristics = [v48 optionalCharacteristics];
+          v95 = [optionalCharacteristics countByEnumeratingWithState:&v103 objects:v137 count:16];
           if (v95)
           {
             v93 = *v104;
@@ -5309,18 +5309,18 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
               {
                 if (*v104 != v93)
                 {
-                  objc_enumerationMutation(v87);
+                  objc_enumerationMutation(optionalCharacteristics);
                 }
 
                 v50 = *(*(&v103 + 1) + 8 * i);
                 v51 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v50];
-                v52 = [(HMMTRDescriptorClusterManager *)v98 protocolMap];
-                v53 = [v92 clusterIDCharacteristicMap];
-                v54 = [v52 getClusterClassForCharacteristic:v51 endpointID:v37 clusterIDCharacteristicMap:v53];
+                protocolMap = [(HMMTRDescriptorClusterManager *)v98 protocolMap];
+                clusterIDCharacteristicMap = [v92 clusterIDCharacteristicMap];
+                v54 = [protocolMap getClusterClassForCharacteristic:v51 endpointID:v37 clusterIDCharacteristicMap:clusterIDCharacteristicMap];
 
                 v55 = [v39 objectForKey:v54];
-                v56 = [(HMMTRDescriptorClusterManager *)v98 protocolMap];
-                v57 = [v56 getCHIPAttributesForCharacteristic:v50];
+                protocolMap2 = [(HMMTRDescriptorClusterManager *)v98 protocolMap];
+                v57 = [protocolMap2 getCHIPAttributesForCharacteristic:v50];
 
                 v101 = 0u;
                 v102 = 0u;
@@ -5349,7 +5349,7 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
                         if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
                         {
                           v66 = HMFGetLogIdentifier();
-                          v67 = [v90 nodeID];
+                          nodeID = [v90 nodeID];
                           *buf = 138544642;
                           v125 = v66;
                           v126 = 2112;
@@ -5359,19 +5359,19 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
                           v130 = 2112;
                           v131 = v55;
                           v132 = 2112;
-                          v133 = v96;
+                          v133 = endpointCopy;
                           v134 = 2112;
-                          v135 = v67;
+                          v135 = nodeID;
                           _os_log_impl(&dword_22AEAE000, v65, OS_LOG_TYPE_INFO, "%{public}@Attributes %@ for characteristic %@ not found in supported attribute list %@ for endpoint %@ of node %@", buf, 0x3Eu);
 
-                          v37 = v96;
-                          v39 = v89;
+                          v37 = endpointCopy;
+                          v39 = supportedCopy;
                         }
 
                         objc_autoreleasePoolPop(v63);
                         [v91 removeCharacteristic:v51];
-                        v68 = [v91 serviceType];
-                        [v88 addHAPDisabledCharacteristic:v51 atEndpoint:v37 hapServiceType:v68];
+                        serviceType = [v91 serviceType];
+                        [v88 addHAPDisabledCharacteristic:v51 atEndpoint:v37 hapServiceType:serviceType];
 
                         v69 = objc_autoreleasePoolPush();
                         v70 = v64;
@@ -5379,19 +5379,19 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
                         if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
                         {
                           v72 = HMFGetLogIdentifier();
-                          v73 = [v90 nodeID];
+                          nodeID2 = [v90 nodeID];
                           *buf = 138544130;
                           v125 = v72;
                           v126 = 2112;
                           v127 = v51;
                           v128 = 2112;
-                          v129 = v96;
+                          v129 = endpointCopy;
                           v130 = 2112;
-                          v131 = v73;
+                          v131 = nodeID2;
                           _os_log_impl(&dword_22AEAE000, v71, OS_LOG_TYPE_INFO, "%{public}@Removed unsupported characteristic %@ for endpoint %@ of node %@", buf, 0x2Au);
 
-                          v39 = v89;
-                          v37 = v96;
+                          v39 = supportedCopy;
+                          v37 = endpointCopy;
                         }
 
                         objc_autoreleasePoolPop(v69);
@@ -5412,7 +5412,7 @@ void __332__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportWithReq
 LABEL_29:
               }
 
-              v95 = [v87 countByEnumeratingWithState:&v103 objects:v137 count:16];
+              v95 = [optionalCharacteristics countByEnumeratingWithState:&v103 objects:v137 count:16];
             }
 
             while (v95);
@@ -5428,11 +5428,11 @@ LABEL_29:
       while (v85);
     }
 
-    v44 = v76;
-    v46 = v77;
-    (*(v76 + 2))(v76, v77);
+    v44 = handlerCopy;
+    v46 = errorCopy;
+    (*(handlerCopy + 2))(handlerCopy, errorCopy);
     v45 = v90;
-    v40 = v80;
+    v40 = typesCopy;
     v38 = v75;
     v41 = v88;
     v42 = v78;
@@ -5487,90 +5487,90 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_verifyHAPCharacteristicSupportAtCHIPEndpoint:(id)a3 device:(id)a4 endpointDeviceTypes:(id)a5 callbackQueue:(id)a6 clusterClassToQueryForFeatureMap:(id)a7 hapServicesToCheckForFeatureMap:(id)a8 hapServicesInUse:(id)a9 deviceTopology:(id)a10 bridgeAggregateNodeEndpoint:(id)a11 server:(id)a12 lastError:(id)a13 completionHandler:(id)a14
+- (void)_verifyHAPCharacteristicSupportAtCHIPEndpoint:(id)endpoint device:(id)device endpointDeviceTypes:(id)types callbackQueue:(id)queue clusterClassToQueryForFeatureMap:(id)map hapServicesToCheckForFeatureMap:(id)featureMap hapServicesInUse:(id)use deviceTopology:(id)self0 bridgeAggregateNodeEndpoint:(id)self1 server:(id)self2 lastError:(id)self3 completionHandler:(id)self4
 {
   v143 = *MEMORY[0x277D85DE8];
-  v96 = a3;
-  v19 = a4;
-  v89 = a5;
-  v88 = a6;
-  v20 = a7;
-  v87 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = v19;
-  v24 = a11;
-  v25 = a12;
-  v85 = a13;
-  v84 = a14;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  typesCopy = types;
+  queueCopy = queue;
+  mapCopy = map;
+  featureMapCopy = featureMap;
+  useCopy = use;
+  topologyCopy = topology;
+  v23 = deviceCopy;
+  nodeEndpointCopy = nodeEndpoint;
+  serverCopy = server;
+  errorCopy = error;
+  handlerCopy = handler;
   v26 = objc_autoreleasePoolPush();
-  v27 = self;
+  selfCopy = self;
   v28 = HMFGetOSLogHandle();
-  v98 = v22;
+  v98 = topologyCopy;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v23 nodeID];
+    nodeID = [v23 nodeID];
     *buf = 138543874;
     v136 = v29;
     v137 = 2112;
-    *v138 = v30;
+    *v138 = nodeID;
     *&v138[8] = 2112;
-    *&v138[10] = v20;
+    *&v138[10] = mapCopy;
     _os_log_impl(&dword_22AEAE000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Cluster classes to query for feature map of node %@: %@", buf, 0x20u);
 
-    v22 = v98;
+    topologyCopy = v98;
   }
 
-  v83 = v24;
-  v86 = v21;
+  v83 = nodeEndpointCopy;
+  v86 = useCopy;
 
   objc_autoreleasePoolPop(v26);
-  v99 = v25;
+  v99 = serverCopy;
   v97 = v23;
-  if ([v20 count])
+  if ([mapCopy count])
   {
-    v107 = [v20 popFirstObject];
+    popFirstObject = [mapCopy popFirstObject];
     v122[0] = MEMORY[0x277D85DD0];
     v122[1] = 3221225472;
     v122[2] = __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPEndpoint_device_endpointDeviceTypes_callbackQueue_clusterClassToQueryForFeatureMap_hapServicesToCheckForFeatureMap_hapServicesInUse_deviceTopology_bridgeAggregateNodeEndpoint_server_lastError_completionHandler___block_invoke;
     v122[3] = &unk_2786EE528;
-    v122[4] = v27;
-    v31 = v20;
-    v123 = v96;
+    v122[4] = selfCopy;
+    v31 = mapCopy;
+    v123 = endpointCopy;
     v124 = v23;
-    v125 = v22;
-    v126 = v88;
-    v127 = v89;
-    v128 = v20;
-    v32 = v87;
-    v129 = v87;
-    v33 = v21;
-    v130 = v21;
+    v125 = topologyCopy;
+    v126 = queueCopy;
+    v127 = typesCopy;
+    v128 = mapCopy;
+    v32 = featureMapCopy;
+    v129 = featureMapCopy;
+    v33 = useCopy;
+    v130 = useCopy;
     v34 = v83;
     v131 = v83;
     v132 = v99;
-    v35 = v84;
-    v133 = v84;
-    v36 = v27;
-    v37 = v107;
-    v38 = v96;
+    v35 = handlerCopy;
+    v133 = handlerCopy;
+    v36 = selfCopy;
+    v37 = popFirstObject;
+    v38 = endpointCopy;
     v39 = v31;
-    v25 = v99;
-    [(HMMTRDescriptorClusterManager *)v36 _queryFeatureMapFromClusterAtCHIPEndpoint:v123 device:v124 callbackQueue:v126 clusterClassName:v107 completionHandler:v122];
+    serverCopy = v99;
+    [(HMMTRDescriptorClusterManager *)v36 _queryFeatureMapFromClusterAtCHIPEndpoint:v123 device:v124 callbackQueue:v126 clusterClassName:popFirstObject completionHandler:v122];
 
-    v40 = v85;
+    v40 = errorCopy;
     goto LABEL_45;
   }
 
-  v100 = v27;
-  v82 = v20;
+  v100 = selfCopy;
+  v82 = mapCopy;
   v120 = 0u;
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v87;
-  v38 = v96;
+  obj = featureMapCopy;
+  v38 = endpointCopy;
   v92 = [obj countByEnumeratingWithState:&v118 objects:v142 count:16];
   if (!v92)
   {
@@ -5595,8 +5595,8 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
       v116 = 0u;
       v117 = 0u;
       v104 = v42;
-      v94 = [v42 characteristicFeatureMap];
-      v102 = [v94 countByEnumeratingWithState:&v114 objects:v141 count:16];
+      characteristicFeatureMap = [v42 characteristicFeatureMap];
+      v102 = [characteristicFeatureMap countByEnumeratingWithState:&v114 objects:v141 count:16];
       if (v102)
       {
         v101 = *v115;
@@ -5606,19 +5606,19 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
           {
             if (*v115 != v101)
             {
-              objc_enumerationMutation(v94);
+              objc_enumerationMutation(characteristicFeatureMap);
             }
 
             v44 = *(*(&v114 + 1) + 8 * i);
             v45 = [HMMTRUtilities hmmtr_shortTypeFromUUID:v44];
-            v46 = [(HMMTRDescriptorClusterManager *)v100 protocolMap];
-            v47 = [v25 clusterIDCharacteristicMap];
-            v48 = [v46 getClusterClassForCharacteristic:v45 endpointID:v38 clusterIDCharacteristicMap:v47];
+            protocolMap = [(HMMTRDescriptorClusterManager *)v100 protocolMap];
+            clusterIDCharacteristicMap = [serverCopy clusterIDCharacteristicMap];
+            v48 = [protocolMap getClusterClassForCharacteristic:v45 endpointID:v38 clusterIDCharacteristicMap:clusterIDCharacteristicMap];
 
             v108 = v48;
-            v49 = [v22 getFeatureMapForClusterClassName:v48 endpoint:v38];
-            v50 = [v104 characteristicFeatureMap];
-            v51 = [v50 objectForKey:v44];
+            v49 = [topologyCopy getFeatureMapForClusterClassName:v48 endpoint:v38];
+            characteristicFeatureMap2 = [v104 characteristicFeatureMap];
+            v51 = [characteristicFeatureMap2 objectForKey:v44];
 
             v52 = objc_autoreleasePoolPush();
             v53 = v100;
@@ -5630,7 +5630,7 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
               {
                 HMFGetLogIdentifier();
                 v68 = v67 = v52;
-                v69 = [v97 nodeID];
+                nodeID2 = [v97 nodeID];
                 *buf = 138544386;
                 v136 = v68;
                 v137 = 2112;
@@ -5640,12 +5640,12 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
                 *&v138[18] = 2112;
                 *v139 = v38;
                 *&v139[8] = 2112;
-                v140 = v69;
+                v140 = nodeID2;
                 _os_log_impl(&dword_22AEAE000, v55, OS_LOG_TYPE_ERROR, "%{public}@Failed to get device feature map value for characteristic %@ with cluster class name %@ at endpoint %@ of node %@", buf, 0x34u);
 
-                v25 = v99;
+                serverCopy = v99;
                 v52 = v67;
-                v22 = v98;
+                topologyCopy = v98;
               }
 
               goto LABEL_24;
@@ -5655,35 +5655,35 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
             {
               HMFGetLogIdentifier();
               v56 = v95 = v52;
-              v57 = [v49 unsignedIntValue];
-              v58 = [v51 unsignedIntValue];
-              v59 = [v97 nodeID];
+              unsignedIntValue = [v49 unsignedIntValue];
+              unsignedIntValue2 = [v51 unsignedIntValue];
+              nodeID3 = [v97 nodeID];
               *buf = 138544386;
               v136 = v56;
               v137 = 1024;
-              *v138 = v57;
+              *v138 = unsignedIntValue;
               *&v138[4] = 2112;
               *&v138[6] = v45;
               *&v138[14] = 1024;
-              *&v138[16] = v58;
-              v22 = v98;
-              v25 = v99;
+              *&v138[16] = unsignedIntValue2;
+              topologyCopy = v98;
+              serverCopy = v99;
               *v139 = 2112;
-              *&v139[2] = v59;
+              *&v139[2] = nodeID3;
               _os_log_impl(&dword_22AEAE000, v55, OS_LOG_TYPE_INFO, "%{public}@Comparing device feature map %u with characteristic %@ required feature map %u of node %@", buf, 0x2Cu);
 
-              v38 = v96;
+              v38 = endpointCopy;
               v52 = v95;
             }
 
             objc_autoreleasePoolPop(v52);
-            v60 = [v49 unsignedIntegerValue];
-            v61 = [v51 unsignedIntegerValue] & v60;
+            unsignedIntegerValue = [v49 unsignedIntegerValue];
+            v61 = [v51 unsignedIntegerValue] & unsignedIntegerValue;
             if (v61 != [v51 unsignedIntegerValue])
             {
               [v104 removeCharacteristic:v45];
-              v62 = [v104 serviceType];
-              [v22 addHAPDisabledCharacteristic:v45 atEndpoint:v38 hapServiceType:v62];
+              serviceType = [v104 serviceType];
+              [topologyCopy addHAPDisabledCharacteristic:v45 atEndpoint:v38 hapServiceType:serviceType];
 
               v63 = objc_autoreleasePoolPush();
               v64 = v53;
@@ -5691,30 +5691,30 @@ void __328__HMMTRDescriptorClusterManager__verifyHAPOptionalCharacteristicSuppor
               if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
               {
                 v65 = HMFGetLogIdentifier();
-                v66 = [v97 nodeID];
+                nodeID4 = [v97 nodeID];
                 *buf = 138544130;
                 v136 = v65;
                 v137 = 2112;
                 *v138 = v45;
                 *&v138[8] = 2112;
-                *&v138[10] = v96;
+                *&v138[10] = endpointCopy;
                 *&v138[18] = 2112;
-                *v139 = v66;
+                *v139 = nodeID4;
                 _os_log_impl(&dword_22AEAE000, v55, OS_LOG_TYPE_INFO, "%{public}@Removed unsupported characteristic %@ for endpoint %@ of node %@", buf, 0x2Au);
 
-                v22 = v98;
-                v38 = v96;
+                topologyCopy = v98;
+                v38 = endpointCopy;
               }
 
               v52 = v63;
-              v25 = v99;
+              serverCopy = v99;
 LABEL_24:
 
               objc_autoreleasePoolPop(v52);
             }
           }
 
-          v102 = [v94 countByEnumeratingWithState:&v114 objects:v141 count:16];
+          v102 = [characteristicFeatureMap countByEnumeratingWithState:&v114 objects:v141 count:16];
         }
 
         while (v102);
@@ -5730,17 +5730,17 @@ LABEL_24:
   while (v92);
 LABEL_29:
 
-  v37 = [v89 objectForKey:v38];
+  v37 = [typesCopy objectForKey:v38];
   v39 = v82;
-  v70 = v87;
-  v35 = v84;
-  v40 = v85;
+  v70 = featureMapCopy;
+  v35 = handlerCopy;
+  v40 = errorCopy;
   if ([v37 count] == 1)
   {
     v105 = [v37 objectAtIndex:0];
     if ([v105 integerValue] == 256)
     {
-      v103 = [v22 getClustersInUseAtEndpoint:v38];
+      v103 = [topologyCopy getClustersInUseAtEndpoint:v38];
       if ([v103 containsObject:&unk_283EE8670])
       {
         v109 = v37;
@@ -5766,16 +5766,16 @@ LABEL_29:
               }
 
               v78 = *(*(&v110 + 1) + 8 * j);
-              v79 = [v78 serviceType];
-              v80 = [v79 isEqualToString:v72];
+              serviceType2 = [v78 serviceType];
+              v80 = [serviceType2 isEqualToString:v72];
 
               if (v80)
               {
                 [v78 removeCharacteristic:v71];
-                [v22 addHAPDisabledCharacteristic:v71 atEndpoint:v96 hapServiceType:v72];
+                [topologyCopy addHAPDisabledCharacteristic:v71 atEndpoint:endpointCopy hapServiceType:v72];
               }
 
-              v25 = v99;
+              serverCopy = v99;
             }
 
             v75 = [v73 countByEnumeratingWithState:&v110 objects:v134 count:16];
@@ -5784,11 +5784,11 @@ LABEL_29:
           while (v75);
         }
 
-        v38 = v96;
+        v38 = endpointCopy;
         v39 = v82;
-        v70 = v87;
-        v35 = v84;
-        v40 = v85;
+        v70 = featureMapCopy;
+        v35 = handlerCopy;
+        v40 = errorCopy;
         v37 = v109;
       }
     }
@@ -5876,30 +5876,30 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_populateMeasuredValueAttributeForClusterClassName:(id)a3 clusterClassFeatureMap:(id)a4 endpoint:(id)a5 device:(id)a6 deviceTopology:(id)a7 callbackQueue:(id)a8
+- (id)_populateMeasuredValueAttributeForClusterClassName:(id)name clusterClassFeatureMap:(id)map endpoint:(id)endpoint device:(id)device deviceTopology:(id)topology callbackQueue:(id)queue
 {
   v95 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (([v14 isEqualToString:@"HMMTRSyncClusterCarbonDioxideConcentrationMeasurement"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterCarbonDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterCarbonMonoxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterCarbonMonoxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterNitrogenDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterNitrogenDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterOzoneConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterOzoneConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterPM10ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterPM10ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterPM25ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"MTRClusterPM25ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"HMMTRSyncClusterTotalVolatileOrganicCompoundsConcentrationMeasurement") & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"MTRClusterTotalVolatileOrganicCompoundsConcentrationMeasurement"))
+  nameCopy = name;
+  mapCopy = map;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  topologyCopy = topology;
+  queueCopy = queue;
+  if (([nameCopy isEqualToString:@"HMMTRSyncClusterCarbonDioxideConcentrationMeasurement"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterCarbonDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterCarbonMonoxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterCarbonMonoxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterNitrogenDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterNitrogenDioxideConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterOzoneConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterOzoneConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterPM10ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterPM10ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterPM25ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterPM25ConcentrationMeasurement") & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncClusterTotalVolatileOrganicCompoundsConcentrationMeasurement") & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterTotalVolatileOrganicCompoundsConcentrationMeasurement"))
   {
-    v80 = v18;
-    v75 = v15;
-    v20 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-    v21 = [v20 getBaseClusterName:v14];
+    v80 = topologyCopy;
+    v75 = mapCopy;
+    protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+    v21 = [protocolMap getBaseClusterName:nameCopy];
 
-    v76 = self;
-    v22 = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
-    v81 = v17;
-    v23 = v17;
+    selfCopy = self;
+    createClusterInstance = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
+    v81 = deviceCopy;
+    v23 = deviceCopy;
     v24 = v21;
-    v74 = v19;
-    (v22)[2](v22, v14, v23, v16, v19);
-    v26 = v25 = v16;
+    v74 = queueCopy;
+    (createClusterInstance)[2](createClusterInstance, nameCopy, v23, endpointCopy, queueCopy);
+    v26 = v25 = endpointCopy;
 
     v27 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v28 = [v26 readAttributeMinMeasuredValueWithParams:v27];
@@ -5907,7 +5907,7 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
     v29 = [v21 stringByAppendingString:@"MinMeasuredValue"];
     v30 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReadResultValue:v28 forIdentify:v29];
 
-    v83 = v14;
+    v83 = nameCopy;
     v31 = v30;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -5929,12 +5929,12 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
     {
       v77 = v28;
       v36 = objc_autoreleasePoolPush();
-      v37 = v76;
+      v37 = selfCopy;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v39 = HMFGetLogIdentifier();
-        v40 = [v81 nodeID];
+        nodeID = [v81 nodeID];
         *buf = 138544130;
         v88 = v39;
         v89 = 2112;
@@ -5942,7 +5942,7 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
         v91 = 2112;
         v92 = v25;
         v93 = 2112;
-        v94 = v40;
+        v94 = nodeID;
         _os_log_impl(&dword_22AEAE000, v38, OS_LOG_TYPE_ERROR, "%{public}@MinMeasuredValue attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
@@ -5982,12 +5982,12 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
     if (!v48)
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = v76;
+      v51 = selfCopy;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
         v53 = HMFGetLogIdentifier();
-        v54 = [v81 nodeID];
+        nodeID2 = [v81 nodeID];
         *buf = 138544130;
         v88 = v53;
         v89 = 2112;
@@ -5995,7 +5995,7 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
         v91 = 2112;
         v92 = v78;
         v93 = 2112;
-        v94 = v54;
+        v94 = nodeID2;
         _os_log_impl(&dword_22AEAE000, v52, OS_LOG_TYPE_ERROR, "%{public}@MaxMeasuredValue attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
@@ -6036,24 +6036,24 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
       [v80 addDeviceAttributeValues:v64 clusterClassName:v83 attributeName:@"MeasurementUnit" atEndpoint:v78];
 
       v65 = 0;
-      v18 = v80;
-      v19 = v74;
-      v17 = v81;
+      topologyCopy = v80;
+      queueCopy = v74;
+      deviceCopy = v81;
       v66 = v82;
-      v16 = v78;
-      v14 = v83;
+      endpointCopy = v78;
+      nameCopy = v83;
     }
 
     else
     {
       v67 = objc_autoreleasePoolPush();
-      v68 = v76;
+      v68 = selfCopy;
       v69 = HMFGetOSLogHandle();
-      v14 = v83;
+      nameCopy = v83;
       if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
       {
         v70 = HMFGetLogIdentifier();
-        v71 = [v81 nodeID];
+        nodeID3 = [v81 nodeID];
         *buf = 138544130;
         v88 = v70;
         v89 = 2112;
@@ -6061,20 +6061,20 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
         v91 = 2112;
         v92 = v78;
         v93 = 2112;
-        v94 = v71;
+        v94 = nodeID3;
         _os_log_impl(&dword_22AEAE000, v69, OS_LOG_TYPE_ERROR, "%{public}@MeasurementUnit attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v67);
       v65 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14];
-      v16 = v78;
-      v18 = v80;
-      v17 = v81;
-      v19 = v74;
+      endpointCopy = v78;
+      topologyCopy = v80;
+      deviceCopy = v81;
+      queueCopy = v74;
       v66 = v82;
     }
 
-    v15 = v75;
+    mapCopy = v75;
   }
 
   else
@@ -6087,18 +6087,18 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
   return v65;
 }
 
-- (void)_populateAttributeValuesForClusterClassName:(id)a3 clusterClassFeatureMap:(id)a4 endpoint:(id)a5 device:(id)a6 deviceTopology:(id)a7 callbackQueue:(id)a8 completionHandler:(id)a9
+- (void)_populateAttributeValuesForClusterClassName:(id)name clusterClassFeatureMap:(id)map endpoint:(id)endpoint device:(id)device deviceTopology:(id)topology callbackQueue:(id)queue completionHandler:(id)handler
 {
   v249 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v228 = a7;
-  v230 = a8;
-  v226 = a9;
+  nameCopy = name;
+  mapCopy = map;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  topologyCopy = topology;
+  queueCopy = queue;
+  handlerCopy = handler;
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -6106,23 +6106,23 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
     *buf = 138544386;
     v240 = v22;
     v241 = 2112;
-    v242 = v15;
+    v242 = nameCopy;
     v243 = 2112;
-    v244 = v16;
+    v244 = mapCopy;
     v245 = 2112;
-    v246 = v17;
+    v246 = endpointCopy;
     v247 = 2112;
-    v248 = v18;
+    v248 = deviceCopy;
     _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_INFO, "%{public}@Populate attribute values for %@ cluster with featureMap %@ on endpoint %@ from device %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v19);
-  v227 = v16;
-  v229 = v18;
-  if ([v15 isEqualToString:@"MTRClusterPowerSourceConfiguration"])
+  v227 = mapCopy;
+  v229 = deviceCopy;
+  if ([nameCopy isEqualToString:@"MTRClusterPowerSourceConfiguration"])
   {
-    v23 = [(HMMTRDescriptorClusterManager *)v20 createClusterInstance];
-    v24 = (v23)[2](v23, v15, v18, v17, v230);
+    createClusterInstance = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+    v24 = (createClusterInstance)[2](createClusterInstance, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
     v25 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v26 = [v24 readAttributeSourcesWithParams:v25];
@@ -6145,32 +6145,32 @@ void __280__HMMTRDescriptorClusterManager__verifyHAPCharacteristicSupportAtCHIPE
     {
       v223 = v24;
       v44 = objc_autoreleasePoolPush();
-      v45 = v20;
+      v45 = selfCopy;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
         v47 = HMFGetLogIdentifier();
-        v48 = [v229 nodeID];
+        nodeID = [v229 nodeID];
         *buf = 138544130;
         v240 = v47;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v48;
+        v246 = nodeID;
         _os_log_impl(&dword_22AEAE000, v46, OS_LOG_TYPE_ERROR, "%{public}@Sources attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v44);
       v35 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2310];
-      v30 = v228;
+      v30 = topologyCopy;
       v24 = v223;
       goto LABEL_29;
     }
 
-    v30 = v228;
-    [v228 addDeviceAttributeValues:v29 clusterClassName:v15 attributeName:@"Sources" atEndpoint:v17];
+    v30 = topologyCopy;
+    [topologyCopy addDeviceAttributeValues:v29 clusterClassName:nameCopy attributeName:@"Sources" atEndpoint:endpointCopy];
 LABEL_15:
     v35 = 0;
 LABEL_29:
@@ -6178,10 +6178,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ([v15 isEqualToString:@"MTRClusterPowerSource"])
+  if ([nameCopy isEqualToString:@"MTRClusterPowerSource"])
   {
-    v31 = [(HMMTRDescriptorClusterManager *)v20 createClusterInstance];
-    v24 = (v31)[2](v31, v15, v18, v17, v230);
+    createClusterInstance2 = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+    v24 = (createClusterInstance2)[2](createClusterInstance2, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
     v32 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v26 = [v24 readAttributeOrderWithParams:v32];
@@ -6202,17 +6202,17 @@ LABEL_29:
 
     if (!v29)
     {
-      v49 = v17;
-      v50 = v15;
+      v49 = endpointCopy;
+      v50 = nameCopy;
       v51 = v49;
       v224 = v24;
       v52 = objc_autoreleasePoolPush();
-      v53 = v20;
+      v53 = selfCopy;
       v54 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
         v55 = HMFGetLogIdentifier();
-        v56 = [v18 nodeID];
+        nodeID2 = [deviceCopy nodeID];
         *buf = 138544130;
         v240 = v55;
         v241 = 2112;
@@ -6220,32 +6220,32 @@ LABEL_29:
         v243 = 2112;
         v244 = v51;
         v245 = 2112;
-        v246 = v56;
+        v246 = nodeID2;
         _os_log_impl(&dword_22AEAE000, v54, OS_LOG_TYPE_ERROR, "%{public}@Order attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v52);
       v35 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2311];
-      v30 = v228;
+      v30 = topologyCopy;
       v24 = v224;
       v57 = v51;
-      v15 = v50;
-      v17 = v57;
+      nameCopy = v50;
+      endpointCopy = v57;
       goto LABEL_29;
     }
 
     v238 = v29;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v238 count:1];
-    v30 = v228;
-    [v228 addDeviceAttributeValues:v34 clusterClassName:v15 attributeName:@"Order" atEndpoint:v17];
+    v30 = topologyCopy;
+    [topologyCopy addDeviceAttributeValues:v34 clusterClassName:nameCopy attributeName:@"Order" atEndpoint:endpointCopy];
 
     goto LABEL_15;
   }
 
-  if (([v15 isEqualToString:@"MTRClusterColorControl"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"HMMTRSyncColorControl"))
+  if (([nameCopy isEqualToString:@"MTRClusterColorControl"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"HMMTRSyncColorControl"))
   {
-    v36 = [(HMMTRDescriptorClusterManager *)v20 createClusterInstance];
-    v37 = (v36)[2](v36, v15, v18, v17, v230);
+    createClusterInstance3 = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+    v37 = (createClusterInstance3)[2](createClusterInstance3, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
     v38 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v222 = v37;
@@ -6269,7 +6269,7 @@ LABEL_29:
     {
       v237 = v42;
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v237 count:1];
-      [v228 addDeviceAttributeValues:v43 clusterClassName:v15 attributeName:@"ColorTempPhysicalMinMireds" atEndpoint:v17];
+      [topologyCopy addDeviceAttributeValues:v43 clusterClassName:nameCopy attributeName:@"ColorTempPhysicalMinMireds" atEndpoint:endpointCopy];
 
       v35 = 0;
     }
@@ -6277,20 +6277,20 @@ LABEL_29:
     else
     {
       context = objc_autoreleasePoolPush();
-      v59 = v20;
+      v59 = selfCopy;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
         v61 = HMFGetLogIdentifier();
-        v62 = [v229 nodeID];
+        nodeID3 = [v229 nodeID];
         *buf = 138544130;
         v240 = v61;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v62;
+        v246 = nodeID3;
         _os_log_impl(&dword_22AEAE000, v60, OS_LOG_TYPE_ERROR, "%{public}@ColorTempPhysicalMinMireds attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
       }
 
@@ -6321,14 +6321,14 @@ LABEL_29:
     {
       v236 = v68;
       v69 = [MEMORY[0x277CBEA60] arrayWithObjects:&v236 count:1];
-      v30 = v228;
-      [v228 addDeviceAttributeValues:v69 clusterClassName:v15 attributeName:@"ColorTempPhysicalMaxMireds" atEndpoint:v17];
+      v30 = topologyCopy;
+      [topologyCopy addDeviceAttributeValues:v69 clusterClassName:nameCopy attributeName:@"ColorTempPhysicalMaxMireds" atEndpoint:endpointCopy];
     }
 
     else
     {
       v70 = objc_autoreleasePoolPush();
-      v71 = v20;
+      v71 = selfCopy;
       v72 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
       {
@@ -6338,9 +6338,9 @@ LABEL_29:
         *buf = 138544130;
         v240 = v73;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
         v246 = v74;
         _os_log_impl(&dword_22AEAE000, v72, OS_LOG_TYPE_ERROR, "%{public}@ColorTempPhysicalMaxMireds attribute from the %@ cluster endpoint:%@ absent from cache of node %@", buf, 0x2Au);
@@ -6351,17 +6351,17 @@ LABEL_29:
       objc_autoreleasePoolPop(v70);
       [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2313];
       v35 = v69 = v35;
-      v30 = v228;
+      v30 = topologyCopy;
     }
 
     v24 = v222;
     goto LABEL_30;
   }
 
-  if (([v15 isEqualToString:@"HMMTRThermostat"] & 1) == 0 && !objc_msgSend(v15, "isEqualToString:", @"MTRClusterThermostat"))
+  if (([nameCopy isEqualToString:@"HMMTRThermostat"] & 1) == 0 && !objc_msgSend(nameCopy, "isEqualToString:", @"MTRClusterThermostat"))
   {
-    v30 = v228;
-    v83 = [(HMMTRDescriptorClusterManager *)v20 _populateMeasuredValueAttributeForClusterClassName:v15 clusterClassFeatureMap:v16 endpoint:v17 device:v18 deviceTopology:v228 callbackQueue:v230];
+    v30 = topologyCopy;
+    v83 = [(HMMTRDescriptorClusterManager *)selfCopy _populateMeasuredValueAttributeForClusterClassName:nameCopy clusterClassFeatureMap:mapCopy endpoint:endpointCopy device:deviceCopy deviceTopology:topologyCopy callbackQueue:queueCopy];
     if (v83)
     {
       v24 = v83;
@@ -6377,9 +6377,9 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v24 = v16;
-  v75 = [(HMMTRDescriptorClusterManager *)v20 createClusterInstance];
-  v76 = (v75)[2](v75, v15, v18, v17, v230);
+  v24 = mapCopy;
+  createClusterInstance4 = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+  v76 = (createClusterInstance4)[2](createClusterInstance4, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
   contexta = v76;
   v225 = v24;
@@ -6410,20 +6410,20 @@ LABEL_29:
     else
     {
       v84 = objc_autoreleasePoolPush();
-      v85 = v20;
+      v85 = selfCopy;
       v86 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
       {
         v87 = HMFGetLogIdentifier();
-        v88 = [v229 nodeID];
+        nodeID4 = [v229 nodeID];
         *buf = 138544130;
         v240 = v87;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v88;
+        v246 = nodeID4;
         _os_log_impl(&dword_22AEAE000, v86, OS_LOG_TYPE_INFO, "%{public}@MinCoolSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
         v76 = contexta;
@@ -6458,15 +6458,15 @@ LABEL_29:
         if (os_log_type_enabled(v121, OS_LOG_TYPE_INFO))
         {
           v122 = HMFGetLogIdentifier();
-          v123 = [v229 nodeID];
+          nodeID5 = [v229 nodeID];
           *buf = 138544130;
           v240 = v122;
           v241 = 2112;
-          v242 = v15;
+          v242 = nameCopy;
           v243 = 2112;
-          v244 = v17;
+          v244 = endpointCopy;
           v245 = 2112;
-          v246 = v123;
+          v246 = nodeID5;
           _os_log_impl(&dword_22AEAE000, v121, OS_LOG_TYPE_INFO, "%{public}@AbsMinCoolSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
         }
 
@@ -6480,7 +6480,7 @@ LABEL_29:
     v93 = v79;
 LABEL_61:
     v94 = objc_autoreleasePoolPush();
-    v95 = v20;
+    v95 = selfCopy;
     v96 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
     {
@@ -6492,9 +6492,9 @@ LABEL_61:
       v241 = 2112;
       v242 = v93;
       v243 = 2112;
-      v244 = v15;
+      v244 = nameCopy;
       v245 = 2112;
-      v246 = v17;
+      v246 = endpointCopy;
       v247 = 2112;
       v248 = v98;
       _os_log_impl(&dword_22AEAE000, v96, OS_LOG_TYPE_INFO, "%{public}@Saving AbsMinCoolSetpointLimit attribute as %@ from the %@ cluster for endpoint:%@ of node %@", buf, 0x34u);
@@ -6505,7 +6505,7 @@ LABEL_61:
     objc_autoreleasePoolPop(v94);
     v235 = v93;
     v99 = [MEMORY[0x277CBEA60] arrayWithObjects:&v235 count:1];
-    [v228 addDeviceAttributeValues:v99 clusterClassName:v15 attributeName:@"AbsMinCoolSetpointLimit" atEndpoint:v17];
+    [topologyCopy addDeviceAttributeValues:v99 clusterClassName:nameCopy attributeName:@"AbsMinCoolSetpointLimit" atEndpoint:endpointCopy];
 
     v100 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v76 = contexta;
@@ -6542,15 +6542,15 @@ LABEL_61:
       if (os_log_type_enabled(v110, OS_LOG_TYPE_INFO))
       {
         v111 = HMFGetLogIdentifier();
-        v112 = [v229 nodeID];
+        nodeID6 = [v229 nodeID];
         *buf = 138544130;
         v240 = v111;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v112;
+        v246 = nodeID6;
         _os_log_impl(&dword_22AEAE000, v110, OS_LOG_TYPE_INFO, "%{public}@MaxCoolSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
         v76 = contexta;
@@ -6590,15 +6590,15 @@ LABEL_61:
         if (os_log_type_enabled(v126, OS_LOG_TYPE_INFO))
         {
           v127 = HMFGetLogIdentifier();
-          v128 = [v229 nodeID];
+          nodeID7 = [v229 nodeID];
           *buf = 138544130;
           v240 = v127;
           v241 = 2112;
-          v242 = v15;
+          v242 = nameCopy;
           v243 = 2112;
-          v244 = v17;
+          v244 = endpointCopy;
           v245 = 2112;
-          v246 = v128;
+          v246 = nodeID7;
           _os_log_impl(&dword_22AEAE000, v126, OS_LOG_TYPE_INFO, "%{public}@AbsMaxCoolSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
           v76 = contexta;
@@ -6618,17 +6618,17 @@ LABEL_61:
     {
       HMFGetLogIdentifier();
       v132 = v213 = v106;
-      v133 = [v229 nodeID];
+      nodeID8 = [v229 nodeID];
       *buf = 138544386;
       v240 = v132;
       v241 = 2112;
       v242 = v107;
       v243 = 2112;
-      v244 = v15;
+      v244 = nameCopy;
       v245 = 2112;
-      v246 = v17;
+      v246 = endpointCopy;
       v247 = 2112;
-      v248 = v133;
+      v248 = nodeID8;
       _os_log_impl(&dword_22AEAE000, v131, OS_LOG_TYPE_INFO, "%{public}@Saving AbsMaxCoolSetpointLimit attribute as %@ from the %@ cluster for endpoint:%@ of node %@", buf, 0x34u);
 
       v76 = contexta;
@@ -6638,7 +6638,7 @@ LABEL_61:
     objc_autoreleasePoolPop(v129);
     v234 = v107;
     v134 = [MEMORY[0x277CBEA60] arrayWithObjects:&v234 count:1];
-    [v228 addDeviceAttributeValues:v134 clusterClassName:v15 attributeName:@"AbsMaxCoolSetpointLimit" atEndpoint:v17];
+    [topologyCopy addDeviceAttributeValues:v134 clusterClassName:nameCopy attributeName:@"AbsMaxCoolSetpointLimit" atEndpoint:endpointCopy];
 
     v24 = v225;
   }
@@ -6670,20 +6670,20 @@ LABEL_61:
     else
     {
       v141 = objc_autoreleasePoolPush();
-      v142 = v20;
+      v142 = selfCopy;
       v143 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v143, OS_LOG_TYPE_INFO))
       {
         v144 = HMFGetLogIdentifier();
-        v145 = [v229 nodeID];
+        nodeID9 = [v229 nodeID];
         *buf = 138544130;
         v240 = v144;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v145;
+        v246 = nodeID9;
         _os_log_impl(&dword_22AEAE000, v143, OS_LOG_TYPE_INFO, "%{public}@MinHeatSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
         v76 = contexta;
@@ -6718,15 +6718,15 @@ LABEL_61:
         if (os_log_type_enabled(v178, OS_LOG_TYPE_INFO))
         {
           v179 = HMFGetLogIdentifier();
-          v180 = [v229 nodeID];
+          nodeID10 = [v229 nodeID];
           *buf = 138544130;
           v240 = v179;
           v241 = 2112;
-          v242 = v15;
+          v242 = nameCopy;
           v243 = 2112;
-          v244 = v17;
+          v244 = endpointCopy;
           v245 = 2112;
-          v246 = v180;
+          v246 = nodeID10;
           _os_log_impl(&dword_22AEAE000, v178, OS_LOG_TYPE_INFO, "%{public}@AbsMinHeatSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
         }
 
@@ -6740,7 +6740,7 @@ LABEL_61:
     v150 = v137;
 LABEL_100:
     v151 = objc_autoreleasePoolPush();
-    v152 = v20;
+    v152 = selfCopy;
     v153 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v153, OS_LOG_TYPE_INFO))
     {
@@ -6752,9 +6752,9 @@ LABEL_100:
       v241 = 2112;
       v242 = v150;
       v243 = 2112;
-      v244 = v15;
+      v244 = nameCopy;
       v245 = 2112;
-      v246 = v17;
+      v246 = endpointCopy;
       v247 = 2112;
       v248 = v155;
       _os_log_impl(&dword_22AEAE000, v153, OS_LOG_TYPE_INFO, "%{public}@Saving AbsMinHeatSetpointLimit attribute as %@ from the %@ cluster for endpoint:%@ of node %@", buf, 0x34u);
@@ -6765,7 +6765,7 @@ LABEL_100:
     objc_autoreleasePoolPop(v151);
     v233 = v150;
     v156 = [MEMORY[0x277CBEA60] arrayWithObjects:&v233 count:1];
-    [v228 addDeviceAttributeValues:v156 clusterClassName:v15 attributeName:@"AbsMinHeatSetpointLimit" atEndpoint:v17];
+    [topologyCopy addDeviceAttributeValues:v156 clusterClassName:nameCopy attributeName:@"AbsMinHeatSetpointLimit" atEndpoint:endpointCopy];
 
     v157 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v76 = contexta;
@@ -6802,15 +6802,15 @@ LABEL_100:
       if (os_log_type_enabled(v167, OS_LOG_TYPE_INFO))
       {
         v168 = HMFGetLogIdentifier();
-        v169 = [v229 nodeID];
+        nodeID11 = [v229 nodeID];
         *buf = 138544130;
         v240 = v168;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v169;
+        v246 = nodeID11;
         _os_log_impl(&dword_22AEAE000, v167, OS_LOG_TYPE_INFO, "%{public}@MaxHeatSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
         v76 = contexta;
@@ -6850,15 +6850,15 @@ LABEL_100:
         if (os_log_type_enabled(v183, OS_LOG_TYPE_INFO))
         {
           v184 = HMFGetLogIdentifier();
-          v185 = [v229 nodeID];
+          nodeID12 = [v229 nodeID];
           *buf = 138544130;
           v240 = v184;
           v241 = 2112;
-          v242 = v15;
+          v242 = nameCopy;
           v243 = 2112;
-          v244 = v17;
+          v244 = endpointCopy;
           v245 = 2112;
-          v246 = v185;
+          v246 = nodeID12;
           _os_log_impl(&dword_22AEAE000, v183, OS_LOG_TYPE_INFO, "%{public}@AbsMaxHeatSetpointLimit attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
           v76 = contexta;
@@ -6878,17 +6878,17 @@ LABEL_100:
     {
       HMFGetLogIdentifier();
       v189 = v216 = v163;
-      v190 = [v229 nodeID];
+      nodeID13 = [v229 nodeID];
       *buf = 138544386;
       v240 = v189;
       v241 = 2112;
       v242 = v164;
       v243 = 2112;
-      v244 = v15;
+      v244 = nameCopy;
       v245 = 2112;
-      v246 = v17;
+      v246 = endpointCopy;
       v247 = 2112;
-      v248 = v190;
+      v248 = nodeID13;
       _os_log_impl(&dword_22AEAE000, v188, OS_LOG_TYPE_INFO, "%{public}@Saving AbsMaxHeatSetpointLimit attribute as %@ from the %@ cluster for endpoint:%@ of node %@", buf, 0x34u);
 
       v76 = contexta;
@@ -6898,7 +6898,7 @@ LABEL_100:
     objc_autoreleasePoolPop(v186);
     v232 = v164;
     v191 = [MEMORY[0x277CBEA60] arrayWithObjects:&v232 count:1];
-    [v228 addDeviceAttributeValues:v191 clusterClassName:v15 attributeName:@"AbsMaxHeatSetpointLimit" atEndpoint:v17];
+    [topologyCopy addDeviceAttributeValues:v191 clusterClassName:nameCopy attributeName:@"AbsMaxHeatSetpointLimit" atEndpoint:endpointCopy];
 
     v24 = v225;
   }
@@ -6926,21 +6926,21 @@ LABEL_100:
     if (!v196)
     {
       v198 = objc_autoreleasePoolPush();
-      v199 = v20;
+      v199 = selfCopy;
       v200 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v200, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
         v202 = v201 = v193;
-        v203 = [v229 nodeID];
+        nodeID14 = [v229 nodeID];
         *buf = 138544130;
         v240 = v202;
         v241 = 2112;
-        v242 = v15;
+        v242 = nameCopy;
         v243 = 2112;
-        v244 = v17;
+        v244 = endpointCopy;
         v245 = 2112;
-        v246 = v203;
+        v246 = nodeID14;
         _os_log_impl(&dword_22AEAE000, v200, OS_LOG_TYPE_INFO, "%{public}@MinSetpointDeadBand attribute from the %@ cluster endpoint:%@ of node %@ not available", buf, 0x2Au);
 
         v76 = contexta;
@@ -6952,23 +6952,23 @@ LABEL_100:
     }
 
     v204 = objc_autoreleasePoolPush();
-    v205 = v20;
+    v205 = selfCopy;
     v206 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v206, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v208 = v207 = v193;
-      v209 = [v229 nodeID];
+      nodeID15 = [v229 nodeID];
       *buf = 138544386;
       v240 = v208;
       v241 = 2112;
       v242 = v197;
       v243 = 2112;
-      v244 = v15;
+      v244 = nameCopy;
       v245 = 2112;
-      v246 = v17;
+      v246 = endpointCopy;
       v247 = 2112;
-      v248 = v209;
+      v248 = nodeID15;
       _os_log_impl(&dword_22AEAE000, v206, OS_LOG_TYPE_INFO, "%{public}@Saving MinSetpointDeadBand attribute as %@ from the %@ cluster for endpoint:%@ of node %@", buf, 0x34u);
 
       v76 = contexta;
@@ -6978,47 +6978,47 @@ LABEL_100:
     objc_autoreleasePoolPop(v204);
     v231 = v197;
     v210 = [MEMORY[0x277CBEA60] arrayWithObjects:&v231 count:1];
-    [v228 addDeviceAttributeValues:v210 clusterClassName:v15 attributeName:@"MinSetpointDeadBand" atEndpoint:v17];
+    [topologyCopy addDeviceAttributeValues:v210 clusterClassName:nameCopy attributeName:@"MinSetpointDeadBand" atEndpoint:endpointCopy];
 
     v24 = v225;
   }
 
   v35 = 0;
-  v30 = v228;
+  v30 = topologyCopy;
 LABEL_30:
 
-  v226[2](v226, v35);
+  handlerCopy[2](handlerCopy, v35);
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryAttributeValueFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 attributeValuesToCheckDict:(id)a5 attributeValuesSupportedDict:(id)a6 attributeValuesRetrievedDict:(id)a7 callbackQueue:(id)a8 clusterClassName:(id)a9 completionHandler:(id)a10
+- (void)_queryAttributeValueFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device attributeValuesToCheckDict:(id)dict attributeValuesSupportedDict:(id)supportedDict attributeValuesRetrievedDict:(id)retrievedDict callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)self0
 {
   v94 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v83 = a4;
-  v17 = a5;
-  v82 = a6;
-  v81 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if ([v17 count] && objc_msgSend(v19, "length"))
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  dictCopy = dict;
+  supportedDictCopy = supportedDict;
+  retrievedDictCopy = retrievedDict;
+  queueCopy = queue;
+  nameCopy = name;
+  handlerCopy = handler;
+  if ([dictCopy count] && objc_msgSend(nameCopy, "length"))
   {
-    v78 = [v17 keyEnumerator];
-    v21 = [v78 nextObject];
-    v22 = [(HMMTRDescriptorClusterManager *)self protocolMap];
-    v23 = [v22 mtrClusterNameFromMTRBaseClusterName:v21];
+    keyEnumerator = [dictCopy keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    protocolMap = [(HMMTRDescriptorClusterManager *)self protocolMap];
+    v23 = [protocolMap mtrClusterNameFromMTRBaseClusterName:nextObject];
 
-    v77 = v21;
-    v24 = [v17 objectForKey:v21];
-    v25 = [v24 firstObject];
+    v77 = nextObject;
+    v24 = [dictCopy objectForKey:nextObject];
+    firstObject = [v24 firstObject];
 
-    v26 = [v25 objectForKey:@"Selector"];
-    v76 = v25;
-    v27 = [v25 objectForKey:@"SupportedAttributeBitmap"];
-    v28 = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
+    v26 = [firstObject objectForKey:@"Selector"];
+    v76 = firstObject;
+    v27 = [firstObject objectForKey:@"SupportedAttributeBitmap"];
+    createClusterInstance = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
     v80 = v23;
-    v29 = (v28)[2](v28, v23, v83, v16, v18);
+    v29 = (createClusterInstance)[2](createClusterInstance, v23, deviceCopy, endpointCopy, queueCopy);
 
     v79 = v26;
     v30 = v26;
@@ -7059,7 +7059,7 @@ LABEL_30:
           v67 = v38;
 
           context = objc_autoreleasePoolPush();
-          v68 = self;
+          selfCopy = self;
           v41 = HMFGetOSLogHandle();
           v42 = v41;
           if (v40)
@@ -7072,9 +7072,9 @@ LABEL_30:
               *buf = 138544130;
               v87 = v44;
               v88 = 2112;
-              v89 = v19;
+              v89 = nameCopy;
               v90 = 2112;
-              v91 = v16;
+              v91 = endpointCopy;
               v92 = 2112;
               v93 = v65;
               _os_log_impl(&dword_22AEAE000, v42, OS_LOG_TYPE_INFO, "%{public}@Received supportedAttribute value from accessory for cluster class %@ on endpoint %@. Value: %@", buf, 0x2Au);
@@ -7083,7 +7083,7 @@ LABEL_30:
             }
 
             objc_autoreleasePoolPop(context);
-            v20[2](v20, v80, v37, v40, 0);
+            handlerCopy[2](handlerCopy, v80, v37, v40, 0);
           }
 
           else
@@ -7097,13 +7097,13 @@ LABEL_30:
               v88 = 2112;
               v89 = v31;
               v90 = 2112;
-              v91 = v16;
+              v91 = endpointCopy;
               _os_log_impl(&dword_22AEAE000, v42, OS_LOG_TYPE_ERROR, "%{public}@Error: Failed to read attribute value from cluster class %@ on endpoint %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(context);
             v63 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2309];
-            (v20)[2](v20, v80, v37, 0, v63);
+            (handlerCopy)[2](handlerCopy, v80, v37, 0, v63);
 
             v40 = 0;
           }
@@ -7114,28 +7114,28 @@ LABEL_30:
         else
         {
           v56 = objc_autoreleasePoolPush();
-          v57 = self;
+          selfCopy2 = self;
           v58 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
-            v70 = v19;
-            v60 = v59 = v18;
+            v70 = nameCopy;
+            v60 = v59 = queueCopy;
             *buf = 138543874;
             v87 = v60;
             v88 = 2112;
             v89 = v31;
             v90 = 2112;
-            v91 = v16;
+            v91 = endpointCopy;
             _os_log_impl(&dword_22AEAE000, v58, OS_LOG_TYPE_ERROR, "%{public}@Error: Failed to read attribute from cluster class %@ on endpoint %@", buf, 0x20u);
 
-            v18 = v59;
-            v19 = v70;
+            queueCopy = v59;
+            nameCopy = v70;
           }
 
           objc_autoreleasePoolPop(v56);
           v61 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2308];
-          (v20)[2](v20, v80, v37, 0, v61);
+          (handlerCopy)[2](handlerCopy, v80, v37, 0, v61);
           v43 = v72;
         }
       }
@@ -7143,14 +7143,14 @@ LABEL_30:
       else
       {
         v73 = objc_autoreleasePoolPush();
-        v52 = self;
+        selfCopy3 = self;
         v53 = HMFGetOSLogHandle();
         v37 = v27;
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
-          v69 = v19;
-          v55 = v54 = v18;
+          v69 = nameCopy;
+          v55 = v54 = queueCopy;
           *buf = 138543874;
           v87 = v55;
           v88 = 2112;
@@ -7159,26 +7159,26 @@ LABEL_30:
           v91 = v31;
           _os_log_impl(&dword_22AEAE000, v53, OS_LOG_TYPE_ERROR, "%{public}@Error: Cannot get signature for %@ from %@ cluster", buf, 0x20u);
 
-          v18 = v54;
-          v19 = v69;
+          queueCopy = v54;
+          nameCopy = v69;
         }
 
         objc_autoreleasePoolPop(v73);
         v43 = [MEMORY[0x277CCA9B8] hapErrorWithCode:11];
-        (v20)[2](v20, v80, v37, 0, v43);
+        (handlerCopy)[2](handlerCopy, v80, v37, 0, v43);
       }
     }
 
     else
     {
-      v75 = v18;
+      v75 = queueCopy;
       v45 = objc_autoreleasePoolPush();
-      v46 = self;
+      selfCopy4 = self;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v48 = v16;
+        v48 = endpointCopy;
         v50 = v49 = v31;
         *buf = 138543618;
         v87 = v50;
@@ -7187,59 +7187,59 @@ LABEL_30:
         _os_log_impl(&dword_22AEAE000, v47, OS_LOG_TYPE_ERROR, "%{public}@Attribute selector not found for cluster: %@", buf, 0x16u);
 
         v31 = v49;
-        v16 = v48;
+        endpointCopy = v48;
       }
 
       objc_autoreleasePoolPop(v45);
       v51 = [MEMORY[0x277CCA9B8] hapErrorWithCode:11];
       v37 = v27;
-      (v20)[2](v20, v80, v27, 0, v51);
+      (handlerCopy)[2](handlerCopy, v80, v27, 0, v51);
 
-      v18 = v75;
+      queueCopy = v75;
     }
   }
 
   else
   {
-    v20[2](v20, 0, &unk_283EE8598, 0, 0);
+    handlerCopy[2](handlerCopy, 0, &unk_283EE8598, 0, 0);
   }
 
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_querySupportedAttributesFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 clusterClassName:(id)a6 completionHandler:(id)a7
+- (void)_querySupportedAttributesFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)handler
 {
   v58 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  queueCopy = queue;
+  nameCopy = name;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v12 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138544130;
     v49 = v19;
     v50 = 2112;
-    v51 = v14;
+    v51 = nameCopy;
     v52 = 2112;
-    v53 = v47;
+    v53 = endpointCopy;
     v54 = 2112;
-    v55 = v20;
+    v55 = nodeID;
     _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_INFO, "%{public}@Querying device cluster %@ at endpoint %@ of node %@ for supported attributes", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  v21 = [(HMMTRDescriptorClusterManager *)v17 createClusterInstance];
-  v22 = (v21)[2](v21, v14, v12, v47, v13);
+  createClusterInstance = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+  v22 = (createClusterInstance)[2](createClusterInstance, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
   if (objc_opt_respondsToSelector())
   {
-    v46 = v13;
+    v46 = queueCopy;
     v23 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v24 = [v22 readAttributeAttributeListWithParams:v23];
 
@@ -7258,7 +7258,7 @@ LABEL_30:
     v27 = v26;
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v17;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     v31 = v30;
     if (v27)
@@ -7266,16 +7266,16 @@ LABEL_30:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v32 = v42 = v15;
-        [v12 nodeID];
-        v44 = v12;
+        v32 = v42 = handlerCopy;
+        [deviceCopy nodeID];
+        v44 = deviceCopy;
         v34 = v33 = v28;
         *buf = 138544386;
         v49 = v32;
         v50 = 2112;
-        v51 = v14;
+        v51 = nameCopy;
         v52 = 2112;
-        v53 = v47;
+        v53 = endpointCopy;
         v54 = 2112;
         v55 = v34;
         v56 = 2112;
@@ -7283,13 +7283,13 @@ LABEL_30:
         _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_INFO, "%{public}@Received supported attributes list from accessory for cluster class %@ on endpoint %@ of node %@. Attributes: %@", buf, 0x34u);
 
         v28 = v33;
-        v12 = v44;
+        deviceCopy = v44;
 
-        v15 = v42;
+        handlerCopy = v42;
       }
 
       objc_autoreleasePoolPop(v28);
-      v15[2](v15, v14, v27, 0);
+      handlerCopy[2](handlerCopy, nameCopy, v27, 0);
     }
 
     else
@@ -7297,85 +7297,85 @@ LABEL_30:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v45 = HMFGetLogIdentifier();
-        v43 = [v12 nodeID];
+        nodeID2 = [deviceCopy nodeID];
         *buf = 138544130;
         v49 = v45;
         v50 = 2112;
-        v51 = v14;
+        v51 = nameCopy;
         v52 = 2112;
-        v53 = v47;
+        v53 = endpointCopy;
         v54 = 2112;
-        v55 = v43;
+        v55 = nodeID2;
         _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_ERROR, "%{public}@AttributeList attribute for cluster class %@ on endpoint %@ absent from cache of node %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v28);
       v40 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2307];
-      (v15)[2](v15, v14, 0, v40);
+      (handlerCopy)[2](handlerCopy, nameCopy, 0, v40);
     }
 
-    v13 = v46;
+    queueCopy = v46;
   }
 
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = v17;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [v12 nodeID];
+      nodeID3 = [deviceCopy nodeID];
       *buf = 138543874;
       v49 = v38;
       v50 = 2112;
       v51 = v22;
       v52 = 2112;
-      v53 = v39;
+      v53 = nodeID3;
       _os_log_impl(&dword_22AEAE000, v37, OS_LOG_TYPE_ERROR, "%{public}@Supported attributes selector not found for cluster: %@ of node %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v35);
     v24 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
-    (v15)[2](v15, v14, 0, v24);
+    (handlerCopy)[2](handlerCopy, nameCopy, 0, v24);
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryFeatureMapFromClusterAtCHIPEndpoint:(id)a3 device:(id)a4 callbackQueue:(id)a5 clusterClassName:(id)a6 completionHandler:(id)a7
+- (void)_queryFeatureMapFromClusterAtCHIPEndpoint:(id)endpoint device:(id)device callbackQueue:(id)queue clusterClassName:(id)name completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  queueCopy = queue;
+  nameCopy = name;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v12 nodeID];
+    nodeID = [deviceCopy nodeID];
     *buf = 138544130;
     v48 = v19;
     v49 = 2112;
-    v50 = v14;
+    v50 = nameCopy;
     v51 = 2112;
-    v52 = v46;
+    v52 = endpointCopy;
     v53 = 2112;
-    v54 = v20;
+    v54 = nodeID;
     _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_INFO, "%{public}@Querying device cluster %@ at endpoint %@ of node %@ for feature map value", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v16);
-  v21 = [(HMMTRDescriptorClusterManager *)v17 createClusterInstance];
-  v22 = (v21)[2](v21, v14, v12, v46, v13);
+  createClusterInstance = [(HMMTRDescriptorClusterManager *)selfCopy createClusterInstance];
+  v22 = (createClusterInstance)[2](createClusterInstance, nameCopy, deviceCopy, endpointCopy, queueCopy);
 
   if (objc_opt_respondsToSelector())
   {
-    v45 = v13;
+    v45 = queueCopy;
     v23 = objc_alloc_init(MEMORY[0x277CD54D8]);
     v24 = [v22 readAttributeFeatureMapWithParams:v23];
 
@@ -7394,7 +7394,7 @@ LABEL_30:
     v27 = v26;
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v17;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     v31 = v30;
     if (v27)
@@ -7402,13 +7402,13 @@ LABEL_30:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v32 = v43 = v12;
+        v32 = v43 = deviceCopy;
         [v43 nodeID];
         v33 = v41 = v28;
         *buf = 138544130;
         v48 = v32;
         v49 = 2112;
-        v50 = v14;
+        v50 = nameCopy;
         v51 = 2112;
         v52 = v33;
         v53 = 2112;
@@ -7416,11 +7416,11 @@ LABEL_30:
         _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_INFO, "%{public}@Received feature map from accessory for cluster class %@ of node %@. Value: %@", buf, 0x2Au);
 
         v28 = v41;
-        v12 = v43;
+        deviceCopy = v43;
       }
 
       objc_autoreleasePoolPop(v28);
-      v15[2](v15, v14, v27, 0);
+      handlerCopy[2](handlerCopy, nameCopy, v27, 0);
     }
 
     else
@@ -7428,69 +7428,69 @@ LABEL_30:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v44 = HMFGetLogIdentifier();
-        v42 = [v12 nodeID];
+        nodeID2 = [deviceCopy nodeID];
         *buf = 138543874;
         v48 = v44;
         v49 = 2112;
-        v50 = v14;
+        v50 = nameCopy;
         v51 = 2112;
-        v52 = v42;
+        v52 = nodeID2;
         _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_ERROR, "%{public}@Feature map not in cache for cluster class %@ of node %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v28);
       v39 = [MEMORY[0x277CCA9B8] hapErrorWithCode:14 marker:2306];
-      (v15)[2](v15, v14, 0, v39);
+      (handlerCopy)[2](handlerCopy, nameCopy, 0, v39);
     }
 
-    v13 = v45;
+    queueCopy = v45;
   }
 
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = v17;
+    v35 = selfCopy;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [v12 nodeID];
+      nodeID3 = [deviceCopy nodeID];
       *buf = 138543874;
       v48 = v37;
       v49 = 2112;
       v50 = v22;
       v51 = 2112;
-      v52 = v38;
+      v52 = nodeID3;
       _os_log_impl(&dword_22AEAE000, v36, OS_LOG_TYPE_ERROR, "%{public}@Feature map selector not found for cluster: %@ of node %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v34);
     v24 = [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
-    (v15)[2](v15, v14, 0, v24);
+    (handlerCopy)[2](handlerCopy, nameCopy, 0, v24);
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHAPCategoryWithMTRDevice:(id)a3 nodeId:(id)a4 server:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)fetchHAPCategoryWithMTRDevice:(id)device nodeId:(id)id server:(id)server callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  deviceCopy = device;
+  idCopy = id;
+  queueCopy = queue;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __109__HMMTRDescriptorClusterManager_fetchHAPCategoryWithMTRDevice_nodeId_server_callbackQueue_completionHandler___block_invoke;
   v19[3] = &unk_2786F0ED0;
   v19[4] = self;
-  v20 = v12;
-  v22 = v13;
-  v23 = v14;
-  v21 = v11;
-  v15 = v13;
-  v16 = v11;
-  v17 = v14;
-  v18 = v12;
+  v20 = idCopy;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  v21 = deviceCopy;
+  v15 = queueCopy;
+  v16 = deviceCopy;
+  v17 = handlerCopy;
+  v18 = idCopy;
   [(HMMTRDescriptorClusterManager *)self fetchEndpointsWithMTRDevice:v16 endpointID:&unk_283EE8598 callbackQueue:v15 completionHandler:v19];
 }
 
@@ -7775,22 +7775,22 @@ LABEL_44:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHAPCategoryForCHIPDevice:(id)a3 nodeId:(id)a4 server:(id)a5 partsList:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8
+- (void)fetchHAPCategoryForCHIPDevice:(id)device nodeId:(id)id server:(id)server partsList:(id)list callbackQueue:(id)queue completionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v17 count])
+  deviceCopy = device;
+  idCopy = id;
+  serverCopy = server;
+  listCopy = list;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([listCopy count])
   {
-    v31 = v16;
+    v31 = serverCopy;
     v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{&unk_283EE8598, 0}];
-    [v20 addObjectsFromArray:v17];
+    [v20 addObjectsFromArray:listCopy];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -7798,7 +7798,7 @@ LABEL_44:
       *buf = 138543874;
       v36 = v24;
       v37 = 2112;
-      v38 = v15;
+      v38 = idCopy;
       v39 = 2112;
       v40 = v20;
       _os_log_impl(&dword_22AEAE000, v23, OS_LOG_TYPE_INFO, "%{public}@Total endpoints In Use at endpoint 0 of node %@: %@", buf, 0x20u);
@@ -7810,18 +7810,18 @@ LABEL_44:
     v32[1] = 3221225472;
     v32[2] = __119__HMMTRDescriptorClusterManager_fetchHAPCategoryForCHIPDevice_nodeId_server_partsList_callbackQueue_completionHandler___block_invoke;
     v32[3] = &unk_2786EE4D8;
-    v32[4] = v22;
-    v33 = v15;
-    v34 = v19;
-    [(HMMTRDescriptorClusterManager *)v22 fetchDeviceTypesForEndpoints:v25 device:v14 endpointDeviceTypes:0 lastError:0 callbackQueue:v18 completionHandler:v32];
+    v32[4] = selfCopy;
+    v33 = idCopy;
+    v34 = handlerCopy;
+    [(HMMTRDescriptorClusterManager *)selfCopy fetchDeviceTypesForEndpoints:v25 device:deviceCopy endpointDeviceTypes:0 lastError:0 callbackQueue:queueCopy completionHandler:v32];
 
-    v16 = v31;
+    serverCopy = v31;
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -7829,13 +7829,13 @@ LABEL_44:
       *buf = 138543618;
       v36 = v29;
       v37 = 2112;
-      v38 = v15;
+      v38 = idCopy;
       _os_log_impl(&dword_22AEAE000, v28, OS_LOG_TYPE_ERROR, "%{public}@No Endpoints In Use at endpoint 0 of node %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v26);
     v20 = [MEMORY[0x277CCA9B8] hapErrorWithCode:15];
-    (*(v19 + 2))(v19, 0, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -8054,13 +8054,13 @@ LABEL_44:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHAPServicesWithMTRDevice:(id)a3 nodeId:(id)a4 server:(id)a5 callbackQueue:(id)a6 completionHandler:(id)a7
+- (void)fetchHAPServicesWithMTRDevice:(id)device nodeId:(id)id server:(id)server callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  deviceCopy = device;
+  idCopy = id;
+  serverCopy = server;
+  queueCopy = queue;
+  handlerCopy = handler;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -8076,17 +8076,17 @@ LABEL_44:
   v22[2] = __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_server_callbackQueue_completionHandler___block_invoke;
   v22[3] = &unk_2786EE4B0;
   v22[4] = self;
-  v17 = v12;
+  v17 = deviceCopy;
   v23 = v17;
-  v18 = v16;
+  v18 = handlerCopy;
   v27 = v18;
   v28 = v32;
-  v19 = v15;
+  v19 = queueCopy;
   v24 = v19;
-  v20 = v14;
+  v20 = serverCopy;
   v25 = v20;
   v29 = v30;
-  v21 = v13;
+  v21 = idCopy;
   v26 = v21;
   [(HMMTRDescriptorClusterManager *)self fetchEndpointsWithMTRDevice:v17 endpointID:&unk_283EE8598 callbackQueue:v19 completionHandler:v22];
 
@@ -8573,37 +8573,37 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAccessoryConfigurationForDevice:(id)a3 nodeId:(id)a4 server:(id)a5 reasonString:(id)a6 callbackQueue:(id)a7 completionHandler:(id)a8
+- (void)fetchAccessoryConfigurationForDevice:(id)device nodeId:(id)id server:(id)server reasonString:(id)string callbackQueue:(id)queue completionHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v60 = a8;
-  v61 = v18;
-  v62 = v14;
-  v19 = [(HMMTRDescriptorClusterManager *)self fetchPartsListForDevice:v14 endpointID:&unk_283EE8598 callbackQueue:v18];
+  deviceCopy = device;
+  idCopy = id;
+  serverCopy = server;
+  stringCopy = string;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v61 = queueCopy;
+  v62 = deviceCopy;
+  v19 = [(HMMTRDescriptorClusterManager *)self fetchPartsListForDevice:deviceCopy endpointID:&unk_283EE8598 callbackQueue:queueCopy];
   v59 = v19;
   if (v19 && (v20 = v19, [v19 count]))
   {
     v21 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v21 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    v56 = v17;
-    v74[0] = v17;
+    v56 = stringCopy;
+    v74[0] = stringCopy;
     v73[0] = @"Reason";
     v73[1] = @"Time";
     v22 = [MEMORY[0x277CBEAA8] now];
     v55 = v21;
     v23 = [v21 stringFromDate:v22];
     v74[1] = v23;
-    v74[2] = v15;
-    v57 = v16;
+    v74[2] = idCopy;
+    v57 = serverCopy;
     v73[2] = @"NodeID";
     v73[3] = @"FabricID";
-    v24 = [v16 fabricID];
-    v74[3] = v24;
+    fabricID = [serverCopy fabricID];
+    v74[3] = fabricID;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:4];
     v58 = [v25 mutableCopy];
 
@@ -8667,80 +8667,80 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
     if (v39)
     {
       v41 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v39 encoding:4];
-      v42 = v60;
-      (*(v60 + 2))(v60, v41);
+      v42 = handlerCopy;
+      (*(handlerCopy + 2))(handlerCopy, v41);
 
-      v16 = v57;
-      v17 = v56;
+      serverCopy = v57;
+      stringCopy = v56;
     }
 
     else
     {
       v48 = objc_autoreleasePoolPush();
-      v49 = self;
+      selfCopy = self;
       v50 = HMFGetOSLogHandle();
-      v17 = v56;
+      stringCopy = v56;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
         v51 = HMFGetLogIdentifier();
-        v52 = [v40 localizedDescription];
+        localizedDescription = [v40 localizedDescription];
         *buf = 138543618;
         v76 = v51;
         v77 = 2112;
-        v78 = v52;
+        v78 = localizedDescription;
         _os_log_impl(&dword_22AEAE000, v50, OS_LOG_TYPE_ERROR, "%{public}@Accessory Configuration: JSON conversion failed: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v48);
-      v42 = v60;
-      (*(v60 + 2))(v60, 0);
-      v16 = v57;
+      v42 = handlerCopy;
+      (*(handlerCopy + 2))(handlerCopy, 0);
+      serverCopy = v57;
     }
   }
 
   else
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy2 = self;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       v46 = HMFGetLogIdentifier();
-      v47 = [v62 nodeID];
+      nodeID = [v62 nodeID];
       *buf = 138543618;
       v76 = v46;
       v77 = 2112;
-      v78 = v47;
+      v78 = nodeID;
       _os_log_impl(&dword_22AEAE000, v45, OS_LOG_TYPE_ERROR, "%{public}@Accessory Configuration: No Endpoints In Use at endpoint 0 of node %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v43);
-    v42 = v60;
-    (*(v60 + 2))(v60, 0);
+    v42 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchAccessoryConfigurationForDevice:(id)a3 endpointID:(id)a4 callbackQueue:(id)a5
+- (id)_fetchAccessoryConfigurationForDevice:(id)device endpointID:(id)d callbackQueue:(id)queue
 {
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  queueCopy = queue;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v66 = self;
-  v67 = v10;
-  v68 = v9;
-  v12 = [(HMMTRDescriptorClusterManager *)self fetchPartsListForDevice:v8 endpointID:v9 callbackQueue:v10];
+  selfCopy = self;
+  v67 = queueCopy;
+  v68 = dCopy;
+  v12 = [(HMMTRDescriptorClusterManager *)self fetchPartsListForDevice:deviceCopy endpointID:dCopy callbackQueue:queueCopy];
   if (v12)
   {
     [v11 setObject:v12 forKey:@"PartsList"];
   }
 
   v59 = v12;
-  [(HMMTRDescriptorClusterManager *)self fetchDeviceTypesWithMTRDevice:v8 endpointID:v68 callbackQueue:v10];
-  v60 = v65 = v8;
+  [(HMMTRDescriptorClusterManager *)self fetchDeviceTypesWithMTRDevice:deviceCopy endpointID:v68 callbackQueue:queueCopy];
+  v60 = v65 = deviceCopy;
   v61 = v11;
   if (v60)
   {
@@ -8841,10 +8841,10 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
     v11 = v61;
     [v61 setObject:v62 forKey:@"DeviceTypes"];
 
-    v8 = v65;
+    deviceCopy = v65;
   }
 
-  v32 = [(HMMTRDescriptorClusterManager *)v66 fetchServerClustersForDevice:v8 endpointID:v68 callbackQueue:v10];
+  v32 = [(HMMTRDescriptorClusterManager *)selfCopy fetchServerClustersForDevice:deviceCopy endpointID:v68 callbackQueue:queueCopy];
   obja = v32;
   if (v32)
   {
@@ -8869,7 +8869,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
           }
 
           v39 = *(*(&v73 + 1) + 8 * j);
-          v40 = [(HMMTRDescriptorClusterManager *)v66 _fetchAccessoryConfigurationForDevice:v8 endpointID:v68 clusterID:v39 callbackQueue:v67];
+          v40 = [(HMMTRDescriptorClusterManager *)selfCopy _fetchAccessoryConfigurationForDevice:deviceCopy endpointID:v68 clusterID:v39 callbackQueue:v67];
           v41 = v40;
           if (v39)
           {
@@ -8890,7 +8890,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v85 forKeys:v84 count:2];
             [v33 addObject:v43];
 
-            v8 = v65;
+            deviceCopy = v65;
           }
         }
 
@@ -8906,7 +8906,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
     v32 = obja;
   }
 
-  v44 = [(HMMTRDescriptorClusterManager *)v66 fetchClientClustersForDevice:v8 endpointID:v68 callbackQueue:v67];
+  v44 = [(HMMTRDescriptorClusterManager *)selfCopy fetchClientClustersForDevice:deviceCopy endpointID:v68 callbackQueue:v67];
   if (v44)
   {
     v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -8930,7 +8930,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
           }
 
           v51 = *(*(&v69 + 1) + 8 * k);
-          v52 = [(HMMTRDescriptorClusterManager *)v66 _fetchAccessoryConfigurationForDevice:v8 endpointID:v68 clusterID:v51 callbackQueue:v67];
+          v52 = [(HMMTRDescriptorClusterManager *)selfCopy _fetchAccessoryConfigurationForDevice:deviceCopy endpointID:v68 clusterID:v51 callbackQueue:v67];
           v53 = v52;
           if (v51)
           {
@@ -8951,7 +8951,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
             v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:v81 count:2];
             [v45 addObject:v55];
 
-            v8 = v65;
+            deviceCopy = v65;
           }
         }
 
@@ -8974,45 +8974,45 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
   return v56;
 }
 
-- (id)_fetchAccessoryConfigurationForDevice:(id)a3 endpointID:(id)a4 clusterID:(id)a5 callbackQueue:(id)a6
+- (id)_fetchAccessoryConfigurationForDevice:(id)device endpointID:(id)d clusterID:(id)iD callbackQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v15 = [(HMMTRDescriptorClusterManager *)self fetchClusterRevisionForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v15 = [(HMMTRDescriptorClusterManager *)self fetchClusterRevisionForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v15)
   {
     [v14 setObject:v15 forKey:@"ClusterRevision"];
   }
 
-  v16 = [(HMMTRDescriptorClusterManager *)self fetchClusterFeatureMapForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v16 = [(HMMTRDescriptorClusterManager *)self fetchClusterFeatureMapForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v16)
   {
     [v14 setObject:v16 forKey:@"FeatureMap"];
   }
 
-  v17 = [(HMMTRDescriptorClusterManager *)self fetchClusterAttributesForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v17 = [(HMMTRDescriptorClusterManager *)self fetchClusterAttributesForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v17)
   {
     [v14 setObject:v17 forKey:@"Attributes"];
   }
 
   v23 = v15;
-  v18 = [(HMMTRDescriptorClusterManager *)self fetchClusterEventListForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v18 = [(HMMTRDescriptorClusterManager *)self fetchClusterEventListForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v18)
   {
     [v14 setObject:v18 forKey:@"Events"];
   }
 
-  v19 = [(HMMTRDescriptorClusterManager *)self fetchClusterAcceptedCommandsForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v19 = [(HMMTRDescriptorClusterManager *)self fetchClusterAcceptedCommandsForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v19)
   {
     [v14 setObject:v19 forKey:@"AcceptedCommands"];
   }
 
-  v20 = [(HMMTRDescriptorClusterManager *)self fetchClusterGeneratedCommandsForDevice:v10 endpointID:v11 clusterID:v12 callbackQueue:v13];
+  v20 = [(HMMTRDescriptorClusterManager *)self fetchClusterGeneratedCommandsForDevice:deviceCopy endpointID:dCopy clusterID:iDCopy callbackQueue:queueCopy];
   if (v20)
   {
     [v14 setObject:v20 forKey:@"GeneratedCommands"];
@@ -9023,17 +9023,17 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
   return v22;
 }
 
-- (id)getBridgeEndpointsDeviceTypes:(id)a3 endpointDeviceTypes:(id)a4
+- (id)getBridgeEndpointsDeviceTypes:(id)types endpointDeviceTypes:(id)deviceTypes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  typesCopy = types;
+  deviceTypesCopy = deviceTypes;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -9049,7 +9049,7 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v17}];
+        v14 = [deviceTypesCopy objectForKeyedSubscript:{v13, v17}];
         if (v14)
         {
           [v7 setObject:v14 forKeyedSubscript:v13];
@@ -9067,13 +9067,13 @@ void __109__HMMTRDescriptorClusterManager_fetchHAPServicesWithMTRDevice_nodeId_s
   return v7;
 }
 
-- (id)buildClusterDescriptorWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5
+- (id)buildClusterDescriptorWithDevice:(id)device endpointID:(id)d queue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
-  v12 = (v11)[2](v11, @"MTRClusterDescriptor", v10, v9, v8);
+  queueCopy = queue;
+  dCopy = d;
+  deviceCopy = device;
+  createClusterInstance = [(HMMTRDescriptorClusterManager *)self createClusterInstance];
+  v12 = (createClusterInstance)[2](createClusterInstance, @"MTRClusterDescriptor", deviceCopy, dCopy, queueCopy);
 
   return v12;
 }

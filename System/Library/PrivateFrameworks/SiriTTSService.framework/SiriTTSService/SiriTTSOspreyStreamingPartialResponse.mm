@@ -1,17 +1,17 @@
 @interface SiriTTSOspreyStreamingPartialResponse
-+ (void)processServerLogs:(id)a3;
++ (void)processServerLogs:(id)logs;
 - (AudioStreamBasicDescription)asbd;
-- (SiriTTSOspreyStreamingPartialResponse)initWithOspreyPartialResponse:(id)a3;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
+- (SiriTTSOspreyStreamingPartialResponse)initWithOspreyPartialResponse:(id)response;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
 @end
 
 @implementation SiriTTSOspreyStreamingPartialResponse
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mBytesPerPacket = v4;
   *&self->_asbd.mSampleRate = v3;
 }
@@ -25,27 +25,27 @@
   return self;
 }
 
-- (SiriTTSOspreyStreamingPartialResponse)initWithOspreyPartialResponse:(id)a3
+- (SiriTTSOspreyStreamingPartialResponse)initWithOspreyPartialResponse:(id)response
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v25.receiver = self;
   v25.super_class = SiriTTSOspreyStreamingPartialResponse;
   v5 = [(SiriTTSOspreyStreamingPartialResponse *)&v25 init];
   if (v5)
   {
-    v6 = [v4 audio];
+    audio = [responseCopy audio];
     audioData = v5->_audioData;
-    v5->_audioData = v6;
+    v5->_audioData = audio;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v4;
-    v9 = [v4 word_timing_info];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v20 = responseCopy;
+    word_timing_info = [responseCopy word_timing_info];
+    v10 = [word_timing_info countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -57,7 +57,7 @@
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(word_timing_info);
           }
 
           v14 = *(*(&v21 + 1) + 8 * v13);
@@ -65,38 +65,38 @@
           -[SiriTTSOspreyWordTimingInfo setTextRange:](v15, "setTextRange:", [v14 offset], objc_msgSend(v14, "length"));
           [v14 timestamp];
           [(SiriTTSOspreyWordTimingInfo *)v15 setTimestamp:v16];
-          [(NSArray *)v8 addObject:v15];
+          [(NSArray *)array addObject:v15];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v11 = [word_timing_info countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v11);
     }
 
     timingInfos = v5->_timingInfos;
-    v5->_timingInfos = v8;
+    v5->_timingInfos = array;
 
-    v4 = v20;
+    responseCopy = v20;
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-+ (void)processServerLogs:(id)a3
++ (void)processServerLogs:(id)logs
 {
   v92 = *MEMORY[0x1E69E9840];
-  [a3 feature];
+  [logs feature];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v55 = v81 = 0u;
-  v3 = [v55 replacement];
-  v4 = [v3 countByEnumeratingWithState:&v78 objects:v91 count:16];
+  replacement = [v55 replacement];
+  v4 = [replacement countByEnumeratingWithState:&v78 objects:v91 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,23 +107,23 @@
       {
         if (*v79 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(replacement);
         }
 
         v8 = *(*(&v78 + 1) + 8 * i);
         v9 = TTSGetServiceLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 original];
-          v11 = [v8 replacement];
+          original = [v8 original];
+          replacement2 = [v8 replacement];
           *buf = 138412546;
-          v88 = v10;
+          v88 = original;
           v89 = 2112;
-          v90 = v11;
+          v90 = replacement2;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v78 objects:v91 count:16];
+      v5 = [replacement countByEnumeratingWithState:&v78 objects:v91 count:16];
     }
 
     while (v5);
@@ -133,8 +133,8 @@
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v12 = [v55 prompts];
-  v13 = [v12 countByEnumeratingWithState:&v74 objects:v86 count:16];
+  prompts = [v55 prompts];
+  v13 = [prompts countByEnumeratingWithState:&v74 objects:v86 count:16];
   if (v13)
   {
     v14 = v13;
@@ -145,20 +145,20 @@
       {
         if (*v75 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(prompts);
         }
 
         v17 = *(*(&v74 + 1) + 8 * j);
-        v18 = [v17 prompts];
-        v19 = [v18 count];
+        prompts2 = [v17 prompts];
+        v19 = [prompts2 count];
 
         if (v19)
         {
           v20 = TTSGetServiceLog();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
-            v21 = [v17 prompts];
-            v22 = [v21 componentsJoinedByString:@" "];
+            prompts3 = [v17 prompts];
+            v22 = [prompts3 componentsJoinedByString:@" "];
             *buf = 138412290;
             v88 = v22;
             _os_log_impl(&dword_1B1A8A000, v20, OS_LOG_TYPE_INFO, "Prompt: %@", buf, 0xCu);
@@ -166,7 +166,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v74 objects:v86 count:16];
+      v14 = [prompts countByEnumeratingWithState:&v74 objects:v86 count:16];
     }
 
     while (v14);
@@ -192,13 +192,13 @@
         }
 
         v26 = *(*(&v70 + 1) + 8 * k);
-        v27 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v28 = [v26 word_phonemes];
-        v29 = [v28 countByEnumeratingWithState:&v66 objects:v84 count:16];
+        word_phonemes = [v26 word_phonemes];
+        v29 = [word_phonemes countByEnumeratingWithState:&v66 objects:v84 count:16];
         if (v29)
         {
           v30 = v29;
@@ -209,15 +209,15 @@
             {
               if (*v67 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(word_phonemes);
               }
 
-              v33 = [*(*(&v66 + 1) + 8 * m) phonemes];
-              v34 = [v33 componentsJoinedByString:@" "];
-              [v27 addObject:v34];
+              phonemes = [*(*(&v66 + 1) + 8 * m) phonemes];
+              v34 = [phonemes componentsJoinedByString:@" "];
+              [array addObject:v34];
             }
 
-            v30 = [v28 countByEnumeratingWithState:&v66 objects:v84 count:16];
+            v30 = [word_phonemes countByEnumeratingWithState:&v66 objects:v84 count:16];
           }
 
           while (v30);
@@ -226,7 +226,7 @@
         v35 = TTSGetServiceLog();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
-          v36 = [v27 componentsJoinedByString:@" _ "];
+          v36 = [array componentsJoinedByString:@" _ "];
           *buf = 138412290;
           v88 = v36;
           _os_log_impl(&dword_1B1A8A000, v35, OS_LOG_TYPE_INFO, "Phonemes: %@", buf, 0xCu);
@@ -243,8 +243,8 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v37 = [v55 normalized_text];
-  v38 = [v37 countByEnumeratingWithState:&v62 objects:v83 count:16];
+  normalized_text = [v55 normalized_text];
+  v38 = [normalized_text countByEnumeratingWithState:&v62 objects:v83 count:16];
   if (v38)
   {
     v39 = v38;
@@ -255,20 +255,20 @@
       {
         if (*v63 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(normalized_text);
         }
 
         v42 = *(*(&v62 + 1) + 8 * n);
         v43 = TTSGetServiceLog();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
-          v44 = [v42 text];
+          text = [v42 text];
           *buf = 138412290;
-          v88 = v44;
+          v88 = text;
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v62 objects:v83 count:16];
+      v39 = [normalized_text countByEnumeratingWithState:&v62 objects:v83 count:16];
     }
 
     while (v39);
@@ -278,8 +278,8 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v45 = [v55 neural_phoneme_sequence];
-  v46 = [v45 countByEnumeratingWithState:&v58 objects:v82 count:16];
+  neural_phoneme_sequence = [v55 neural_phoneme_sequence];
+  v46 = [neural_phoneme_sequence countByEnumeratingWithState:&v58 objects:v82 count:16];
   if (v46)
   {
     v47 = v46;
@@ -290,22 +290,22 @@
       {
         if (*v59 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(neural_phoneme_sequence);
         }
 
         v50 = *(*(&v58 + 1) + 8 * ii);
         v51 = TTSGetServiceLog();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
-          v52 = [v50 phonemes];
-          v53 = [v52 componentsJoinedByString:@" "];
+          phonemes2 = [v50 phonemes];
+          v53 = [phonemes2 componentsJoinedByString:@" "];
           *buf = 138412290;
           v88 = v53;
           _os_log_impl(&dword_1B1A8A000, v51, OS_LOG_TYPE_INFO, "Neural Phonemes: %@", buf, 0xCu);
         }
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v58 objects:v82 count:16];
+      v47 = [neural_phoneme_sequence countByEnumeratingWithState:&v58 objects:v82 count:16];
     }
 
     while (v47);

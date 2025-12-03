@@ -1,22 +1,22 @@
 @interface HMBSQLFile
 + (NSHashTable)contexts;
-+ (id)_openContextWithURL:(id)a3 usingSubclass:(Class)a4 error:(id *)a5;
-+ (id)openContextWithURL:(id)a3 usingSubclass:(Class)a4 error:(id *)a5;
-+ (void)_close:(id)a3;
-+ (void)close:(id)a3;
++ (id)_openContextWithURL:(id)l usingSubclass:(Class)subclass error:(id *)error;
++ (id)openContextWithURL:(id)l usingSubclass:(Class)subclass error:(id *)error;
++ (void)_close:(id)_close;
++ (void)close:(id)close;
 @end
 
 @implementation HMBSQLFile
 
-+ (void)_close:(id)a3
++ (void)_close:(id)_close
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  _closeCopy = _close;
   os_unfair_lock_assert_owner(&contextLock);
-  if ([v4 connection])
+  if ([_closeCopy connection])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = v4;
+    v6 = _closeCopy;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -29,8 +29,8 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [a1 contexts];
-    [v9 removeObject:v6];
+    contexts = [self contexts];
+    [contexts removeObject:v6];
 
     os_unfair_lock_lock_with_options();
     [(os_unfair_lock_s *)v6 finalize];
@@ -38,8 +38,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v10 = [a1 contexts];
-    v11 = [v10 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    contexts2 = [self contexts];
+    v11 = [contexts2 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v11)
     {
       v12 = *v32;
@@ -49,12 +49,12 @@
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(contexts2);
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
-          v15 = [v14 connection];
-          if (v15 == [(os_unfair_lock_s *)v6 connection])
+          connection = [v14 connection];
+          if (connection == [(os_unfair_lock_s *)v6 connection])
           {
             v26 = objc_autoreleasePoolPush();
             v27 = v6;
@@ -74,7 +74,7 @@
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v11 = [contexts2 countByEnumeratingWithState:&v31 objects:v41 count:16];
         if (v11)
         {
           continue;
@@ -125,24 +125,24 @@ LABEL_21:
 
   else
   {
-    [v4 setFinalized:1];
+    [_closeCopy setFinalized:1];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)close:(id)a3
++ (void)close:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   os_unfair_lock_lock_with_options();
-  [a1 _close:v4];
+  [self _close:closeCopy];
   os_unfair_lock_unlock(&contextLock);
 }
 
-+ (id)_openContextWithURL:(id)a3 usingSubclass:(Class)a4 error:(id *)a5
++ (id)_openContextWithURL:(id)l usingSubclass:(Class)subclass error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   os_unfair_lock_assert_owner(&contextLock);
   if (_openContextWithURL_usingSubclass_error__dispatchOnce != -1)
   {
@@ -153,8 +153,8 @@ LABEL_21:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [a1 contexts];
-  v9 = [(os_unfair_lock_s *)v8 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  contexts = [self contexts];
+  v9 = [(os_unfair_lock_s *)contexts countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v9)
   {
     v10 = *v41;
@@ -164,16 +164,16 @@ LABEL_21:
       {
         if (*v41 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(contexts);
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
         v13 = [v12 url];
-        v14 = [v13 isEqual:v7];
+        v14 = [v13 isEqual:lCopy];
 
         if (v14)
         {
-          if (objc_opt_class() != a4)
+          if (objc_opt_class() != subclass)
           {
             objc_opt_class();
             _HMFPreconditionFailureWithFormat();
@@ -199,7 +199,7 @@ LABEL_21:
         }
       }
 
-      v9 = [(os_unfair_lock_s *)v8 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v9 = [(os_unfair_lock_s *)contexts countByEnumeratingWithState:&v40 objects:v50 count:16];
       if (v9)
       {
         continue;
@@ -209,9 +209,9 @@ LABEL_21:
     }
   }
 
-  v15 = [a4 alloc];
-  v16 = [v7 absoluteURL];
-  v17 = [v15 initWithURL:v16];
+  v15 = [subclass alloc];
+  absoluteURL = [lCopy absoluteURL];
+  v17 = [v15 initWithURL:absoluteURL];
 
   v18 = objc_autoreleasePoolPush();
   v19 = v17;
@@ -230,7 +230,7 @@ LABEL_21:
   v22 = __open(v19, &v39);
   v23 = v39;
   v24 = objc_autoreleasePoolPush();
-  v8 = v19;
+  contexts = v19;
   if (v22)
   {
     v25 = HMFGetOSLogHandle();
@@ -240,16 +240,16 @@ LABEL_21:
       *buf = 138543618;
       v45 = v26;
       v46 = 2112;
-      v47 = v8;
+      v47 = contexts;
       _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Opened SQL context with new sqlite database handle: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v24);
     os_unfair_lock_unlock(v19 + 2);
-    v27 = [a1 contexts];
-    [v27 addObject:v8];
+    contexts2 = [self contexts];
+    [contexts2 addObject:contexts];
 
-    v28 = v8;
+    v28 = contexts;
   }
 
   else
@@ -261,7 +261,7 @@ LABEL_21:
       *buf = 138543874;
       v45 = v34;
       v46 = 2112;
-      v47 = v8;
+      v47 = contexts;
       v48 = 2112;
       v49 = v23;
       _os_log_impl(&dword_22AD27000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to open context %@: %@", buf, 0x20u);
@@ -269,12 +269,12 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v24);
     os_unfair_lock_unlock(v19 + 2);
-    [a1 _close:v8];
-    if (a5)
+    [self _close:contexts];
+    if (error)
     {
       v35 = v23;
       v28 = 0;
-      *a5 = v23;
+      *error = v23;
     }
 
     else
@@ -289,11 +289,11 @@ LABEL_27:
   return v28;
 }
 
-+ (id)openContextWithURL:(id)a3 usingSubclass:(Class)a4 error:(id *)a5
++ (id)openContextWithURL:(id)l usingSubclass:(Class)subclass error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   os_unfair_lock_lock_with_options();
-  v9 = [a1 _openContextWithURL:v8 usingSubclass:a4 error:a5];
+  v9 = [self _openContextWithURL:lCopy usingSubclass:subclass error:error];
   os_unfair_lock_unlock(&contextLock);
 
   return v9;

@@ -1,14 +1,14 @@
 @interface _HMFCFHTTPServer
 + (id)logCategory;
 - (_HMFCFHTTPServer)init;
-- (_HMFCFHTTPServer)initWithPort:(unint64_t)a3 options:(unint64_t)a4;
+- (_HMFCFHTTPServer)initWithPort:(unint64_t)port options:(unint64_t)options;
 - (_HMFCFHTTPServerDelegate)delegate;
 - (double)connectionIdleTimeout;
 - (double)watchdogTimeout;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setConnectionIdleTimeout:(double)a3;
-- (void)setWatchdogTimeout:(double)a3;
+- (void)setConnectionIdleTimeout:(double)timeout;
+- (void)setWatchdogTimeout:(double)timeout;
 @end
 
 @implementation _HMFCFHTTPServer
@@ -26,15 +26,15 @@
   objc_exception_throw(v7);
 }
 
-- (_HMFCFHTTPServer)initWithPort:(unint64_t)a3 options:(unint64_t)a4
+- (_HMFCFHTTPServer)initWithPort:(unint64_t)port options:(unint64_t)options
 {
   v41 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0x10000)
+  if (port >= 0x10000)
   {
     _HMFPreconditionFailure(@"port <= UINT16_MAX");
   }
 
-  v4 = a4;
+  optionsCopy = options;
   v36.receiver = self;
   v36.super_class = _HMFCFHTTPServer;
   v6 = [(_HMFCFHTTPServer *)&v36 init];
@@ -49,9 +49,9 @@
   clientQueue = v7->_clientQueue;
   v7->_clientQueue = v9;
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   connections = v7->_connections;
-  v7->_connections = v11;
+  v7->_connections = array;
 
   v13 = [[HMFWeakObject alloc] initWithWeakObject:v7];
   v14 = *MEMORY[0x277CBECE8];
@@ -73,7 +73,7 @@
     goto LABEL_21;
   }
 
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v15 = objc_autoreleasePoolPush();
     v16 = v7;
@@ -99,10 +99,10 @@
   }
 
   [(_HMFCFHTTPServer *)v7 internal];
-  v22 = [(_HMFCFHTTPServer *)v7 clientQueue];
+  clientQueue = [(_HMFCFHTTPServer *)v7 clientQueue];
   _CFHTTPServerSetDispatchQueue();
 
-  if (!a3)
+  if (!port)
   {
     [(_HMFCFHTTPServer *)v7 internal];
     v28 = *MEMORY[0x277CBAC70];
@@ -134,7 +134,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v7->_port = a3;
+  v7->_port = port;
 LABEL_10:
 
 LABEL_11:
@@ -235,11 +235,11 @@ LABEL_22:
   return v8;
 }
 
-- (void)setConnectionIdleTimeout:(double)a3
+- (void)setConnectionIdleTimeout:(double)timeout
 {
   [(_HMFCFHTTPServer *)self internal];
   v4 = *MEMORY[0x277CBAC00];
-  [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  [MEMORY[0x277CCABB0] numberWithDouble:timeout];
 
   _CFHTTPServerSetProperty();
 }
@@ -283,11 +283,11 @@ LABEL_22:
   return v8;
 }
 
-- (void)setWatchdogTimeout:(double)a3
+- (void)setWatchdogTimeout:(double)timeout
 {
   [(_HMFCFHTTPServer *)self internal];
   v4 = *MEMORY[0x277CBAC80];
-  [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  [MEMORY[0x277CCABB0] numberWithDouble:timeout];
 
   _CFHTTPServerSetProperty();
 }

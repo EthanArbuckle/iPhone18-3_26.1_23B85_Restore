@@ -1,37 +1,37 @@
 @interface DCCredentialResponse
-- (DCCredentialResponse)initWithCoder:(id)a3;
-- (DCCredentialResponse)initWithResponseData:(id)a3 elementsByNamespace:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (DCCredentialResponse)initWithCoder:(id)coder;
+- (DCCredentialResponse)initWithResponseData:(id)data elementsByNamespace:(id)namespace;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DCCredentialResponse
 
-- (DCCredentialResponse)initWithResponseData:(id)a3 elementsByNamespace:(id)a4
+- (DCCredentialResponse)initWithResponseData:(id)data elementsByNamespace:(id)namespace
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  namespaceCopy = namespace;
   v12.receiver = self;
   v12.super_class = DCCredentialResponse;
   v8 = [(DCCredentialResponse *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     [(DCCredentialResponse *)v8 setResponseData:v9];
 
-    v10 = [v7 copy];
+    v10 = [namespaceCopy copy];
     [(DCCredentialResponse *)v8 setElementsByNamespace:v10];
   }
 
   return v8;
 }
 
-- (DCCredentialResponse)initWithCoder:(id)a3
+- (DCCredentialResponse)initWithCoder:(id)coder
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_responseData);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
@@ -40,29 +40,29 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
   v9 = [MEMORY[0x277CBEB98] setWithArray:v8];
   v10 = NSStringFromSelector(sel_elementsByNamespace);
-  v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+  v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
 
-  v12 = 0;
+  selfCopy = 0;
   if (v7 && v11)
   {
     self = [(DCCredentialResponse *)self initWithResponseData:v7 elementsByNamespace:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DCCredentialResponse *)self responseData];
+  coderCopy = coder;
+  responseData = [(DCCredentialResponse *)self responseData];
   v6 = NSStringFromSelector(sel_responseData);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:responseData forKey:v6];
 
-  v8 = [(DCCredentialResponse *)self elementsByNamespace];
+  elementsByNamespace = [(DCCredentialResponse *)self elementsByNamespace];
   v7 = NSStringFromSelector(sel_elementsByNamespace);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:elementsByNamespace forKey:v7];
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface _INPBSetLabeledSettingIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetLabeledSettingIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetLabeledSettingIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLabeledValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLabeledValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetLabeledSettingIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if (self->_labeledValue)
   {
-    v6 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"labeledValue"];
+    labeledValue = [(_INPBSetLabeledSettingIntent *)self labeledValue];
+    v7 = [labeledValue copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"labeledValue"];
   }
 
-  v8 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"settingMetadata"];
+  settingMetadata = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+  dictionaryRepresentation2 = [settingMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"settingMetadata"];
 
-  v10 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"temporalEventTrigger"];
+  temporalEventTrigger = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+  dictionaryRepresentation3 = [temporalEventTrigger dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"temporalEventTrigger"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -44,28 +44,28 @@
   return v4 ^ v5 ^ [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -77,20 +77,20 @@
   {
   }
 
-  v5 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
-  v6 = [v4 labeledValue];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self labeledValue];
+  intentMetadata2 = [equalCopy labeledValue];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
-  if (v12)
+  labeledValue = [(_INPBSetLabeledSettingIntent *)self labeledValue];
+  if (labeledValue)
   {
-    v13 = v12;
-    v14 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
-    v15 = [v4 labeledValue];
-    v16 = [v14 isEqual:v15];
+    v13 = labeledValue;
+    labeledValue2 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
+    labeledValue3 = [equalCopy labeledValue];
+    v16 = [labeledValue2 isEqual:labeledValue3];
 
     if (!v16)
     {
@@ -102,20 +102,20 @@
   {
   }
 
-  v5 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
-  v6 = [v4 settingMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+  intentMetadata2 = [equalCopy settingMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
-  if (v17)
+  settingMetadata = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+  if (settingMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
-    v20 = [v4 settingMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = settingMetadata;
+    settingMetadata2 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+    settingMetadata3 = [equalCopy settingMetadata];
+    v21 = [settingMetadata2 isEqual:settingMetadata3];
 
     if (!v21)
     {
@@ -127,12 +127,12 @@
   {
   }
 
-  v5 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
-  v6 = [v4 temporalEventTrigger];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+  intentMetadata2 = [equalCopy temporalEventTrigger];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v22 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
-    if (!v22)
+    temporalEventTrigger = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+    if (!temporalEventTrigger)
     {
 
 LABEL_25:
@@ -140,10 +140,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
-    v25 = [v4 temporalEventTrigger];
-    v26 = [v24 isEqual:v25];
+    v23 = temporalEventTrigger;
+    temporalEventTrigger2 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+    temporalEventTrigger3 = [equalCopy temporalEventTrigger];
+    v26 = [temporalEventTrigger2 isEqual:temporalEventTrigger3];
 
     if (v26)
     {
@@ -163,90 +163,90 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetLabeledSettingIntent allocWithZone:](_INPBSetLabeledSettingIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetLabeledSettingIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSString *)self->_labeledValue copyWithZone:a3];
+  v7 = [(NSString *)self->_labeledValue copyWithZone:zone];
   [(_INPBSetLabeledSettingIntent *)v5 setLabeledValue:v7];
 
-  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:a3];
+  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:zone];
   [(_INPBSetLabeledSettingIntent *)v5 setSettingMetadata:v8];
 
-  v9 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:a3];
+  v9 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:zone];
   [(_INPBSetLabeledSettingIntent *)v5 setTemporalEventTrigger:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetLabeledSettingIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetLabeledSettingIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetLabeledSettingIntent)initWithCoder:(id)a3
+- (_INPBSetLabeledSettingIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetLabeledSettingIntent *)self initWithData:v6];
+    self = [(_INPBSetLabeledSettingIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetLabeledSettingIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBSetLabeledSettingIntent *)self labeledValue];
+  labeledValue = [(_INPBSetLabeledSettingIntent *)self labeledValue];
 
-  if (v6)
+  if (labeledValue)
   {
     labeledValue = self->_labeledValue;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+  settingMetadata = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
 
-  if (v8)
+  if (settingMetadata)
   {
-    v9 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
+    settingMetadata2 = [(_INPBSetLabeledSettingIntent *)self settingMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+  temporalEventTrigger = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (temporalEventTrigger)
   {
-    v12 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
+    temporalEventTrigger2 = [(_INPBSetLabeledSettingIntent *)self temporalEventTrigger];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setLabeledValue:(id)a3
+- (void)setLabeledValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   labeledValue = self->_labeledValue;
   self->_labeledValue = v4;
 

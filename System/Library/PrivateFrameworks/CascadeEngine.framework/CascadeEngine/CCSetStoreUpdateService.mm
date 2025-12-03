@@ -1,23 +1,23 @@
 @interface CCSetStoreUpdateService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CCSetStoreUpdateService)initWithQueue:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CCSetStoreUpdateService)initWithQueue:(id)queue;
 @end
 
 @implementation CCSetStoreUpdateService
 
-- (CCSetStoreUpdateService)initWithQueue:(id)a3
+- (CCSetStoreUpdateService)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = CCSetStoreUpdateService;
   v6 = [(CCSetStoreUpdateService *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [MEMORY[0x1E69939B8] defaultInstance];
+    objc_storeStrong(&v6->_queue, queue);
+    defaultInstance = [MEMORY[0x1E69939B8] defaultInstance];
     writeAccess = v7->_writeAccess;
-    v7->_writeAccess = v8;
+    v7->_writeAccess = defaultInstance;
 
     v10 = [[CCDonateRequestManager alloc] initWithWriteAccess:v7->_writeAccess];
     donateRequestManager = v7->_donateRequestManager;
@@ -57,37 +57,37 @@ uint64_t __41__CCSetStoreUpdateService_initWithQueue___block_invoke()
   return xpc_transaction_exit_clean();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v7];
+  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:connectionCopy];
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 executableName];
+    executableName = [v9 executableName];
     *buf = 138543618;
-    v29 = v11;
+    v29 = executableName;
     v30 = 1024;
     v31 = [v9 pid];
     _os_log_impl(&dword_1DA444000, v10, OS_LOG_TYPE_DEFAULT, "Incoming connection from %{public}@(%d)", buf, 0x12u);
   }
 
   v12 = [MEMORY[0x1E698E970] policyForProcess:v9 connectionFlags:0 useCase:*MEMORY[0x1E698E948]];
-  v13 = [v12 allowsConnectionToSetStoreUpdateService];
-  if (v13)
+  allowsConnectionToSetStoreUpdateService = [v12 allowsConnectionToSetStoreUpdateService];
+  if (allowsConnectionToSetStoreUpdateService)
   {
     if (self->_eagerExitTimer)
     {
       v14 = __biome_log_for_category();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v9 executableName];
+        executableName2 = [v9 executableName];
         v16 = [v9 pid];
         *buf = 138543618;
-        v29 = v15;
+        v29 = executableName2;
         v30 = 1024;
         v31 = v16;
         _os_log_impl(&dword_1DA444000, v14, OS_LOG_TYPE_DEFAULT, "Resetting eager-exit timer for incoming connection from %{public}@(%d)", buf, 0x12u);
@@ -96,22 +96,22 @@ uint64_t __41__CCSetStoreUpdateService_initWithQueue___block_invoke()
       [(_PASSimpleCoalescingTimer *)self->_eagerExitTimer cancelPendingOperations];
     }
 
-    v17 = [[CCSetStoreUpdateServiceExported alloc] initWithQueue:self->_queue process:v9 connection:v7 writeAccess:self->_writeAccess donateConnectionFactory:self->_donateConnectionFactory];
+    v17 = [[CCSetStoreUpdateServiceExported alloc] initWithQueue:self->_queue process:v9 connection:connectionCopy writeAccess:self->_writeAccess donateConnectionFactory:self->_donateConnectionFactory];
     v18 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F55FA0D8];
-    [v7 setExportedInterface:v18];
+    [connectionCopy setExportedInterface:v18];
 
-    [v7 setExportedObject:v17];
+    [connectionCopy setExportedObject:v17];
     v19 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5600938];
-    [v7 setRemoteObjectInterface:v19];
+    [connectionCopy setRemoteObjectInterface:v19];
 
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __62__CCSetStoreUpdateService_listener_shouldAcceptNewConnection___block_invoke;
     v25 = &unk_1E85C2F40;
-    v26 = self;
+    selfCopy = self;
     v27 = v9;
-    [v7 setInvalidationHandler:&v22];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v22];
+    [connectionCopy resume];
   }
 
   else
@@ -125,7 +125,7 @@ uint64_t __41__CCSetStoreUpdateService_initWithQueue___block_invoke()
 
   objc_autoreleasePoolPop(v8);
   v20 = *MEMORY[0x1E69E9840];
-  return v13;
+  return allowsConnectionToSetStoreUpdateService;
 }
 
 uint64_t __62__CCSetStoreUpdateService_listener_shouldAcceptNewConnection___block_invoke(uint64_t result)

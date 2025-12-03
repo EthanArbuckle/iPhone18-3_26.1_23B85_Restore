@@ -1,6 +1,6 @@
 @interface ErrorPresenter
 - (_TtC12GameStoreKit14ErrorPresenter)init;
-- (void)airplaneModeInquiryDidObserveChange:(id)a3;
+- (void)airplaneModeInquiryDidObserveChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -18,14 +18,14 @@
     v6 = v12;
     __swift_project_boxed_opaque_existential_1(v10, v11);
     v7 = *(v6 + 8);
-    v8 = self;
+    selfCopy = self;
     v7(v5, v6);
     __swift_destroy_boxed_opaque_existential_1(v10);
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v13.receiver = self;
@@ -33,9 +33,9 @@
   [(ErrorPresenter *)&v13 dealloc];
 }
 
-- (void)airplaneModeInquiryDidObserveChange:(id)a3
+- (void)airplaneModeInquiryDidObserveChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   ErrorPresenter.update()();
 }
 

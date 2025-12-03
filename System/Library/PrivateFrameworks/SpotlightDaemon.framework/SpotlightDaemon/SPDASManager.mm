@@ -1,7 +1,7 @@
 @interface SPDASManager
 - (SPDASManager)init;
 - (id)context;
-- (void)setContext:(void *)a1;
+- (void)setContext:(void *)context;
 @end
 
 @implementation SPDASManager
@@ -13,11 +13,11 @@
   block[1] = 3221225472;
   block[2] = __20__SPDASManager_init__block_invoke;
   block[3] = &unk_278934050;
-  v4 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = selfCopy;
   dispatch_async(v3, block);
 
-  return v4;
+  return selfCopy;
 }
 
 uint64_t __20__SPDASManager_init__block_invoke(uint64_t a1)
@@ -32,11 +32,11 @@ uint64_t __20__SPDASManager_init__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setContext:(void *)a1
+- (void)setContext:(void *)context
 {
-  if (a1)
+  if (context)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 8);
+    objc_setProperty_atomic(context, newValue, newValue, 8);
   }
 }
 

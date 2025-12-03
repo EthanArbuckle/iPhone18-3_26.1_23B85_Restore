@@ -1,6 +1,6 @@
 @interface MTEpisodeLockupAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityPerformMoreActions:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityPerformMoreActions:(id)actions;
 - (BOOL)updateIsCurrentPlayerItemState;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -9,31 +9,31 @@
 
 @implementation MTEpisodeLockupAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"episode" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"metadataLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"title" withType:"@"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"pubDate" withType:"d"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"duration" withType:"d"];
-  [v3 validateClass:@"MTEpisode" hasInstanceMethod:@"timeRemaining" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"video" withType:"B"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"audio" withType:"B"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"explicit" withType:"B"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"saved" withType:"B"];
-  [v3 validateClass:@"MTEpisode" hasProperty:@"byteSize" withType:"q"];
-  [v3 validateClass:@"MTEpisodeLockup" hasProperty:@"currentPlayerItem" customGetter:@"isCurrentPlayerItem" customSetter:0 withType:"B"];
-  [v3 validateClass:@"MTEpisode" hasInstanceMethod:@"isUnplayed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisode" hasInstanceMethod:@"isPartiallyPlayed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisode" hasInstanceMethod:@"isPlayed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_streaming" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_document" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_error" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_airplaneMode" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"updateIsCurrentPlayerItemState" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"episode" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"metadataLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"title" withType:"@"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"pubDate" withType:"d"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"duration" withType:"d"];
+  [validationsCopy validateClass:@"MTEpisode" hasInstanceMethod:@"timeRemaining" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"video" withType:"B"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"audio" withType:"B"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"explicit" withType:"B"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"saved" withType:"B"];
+  [validationsCopy validateClass:@"MTEpisode" hasProperty:@"byteSize" withType:"q"];
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasProperty:@"currentPlayerItem" customGetter:@"isCurrentPlayerItem" customSetter:0 withType:"B"];
+  [validationsCopy validateClass:@"MTEpisode" hasInstanceMethod:@"isUnplayed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisode" hasInstanceMethod:@"isPartiallyPlayed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisode" hasInstanceMethod:@"isPlayed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_streaming" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_document" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_error" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisodeStateView" hasInstanceMethod:@"_airplaneMode" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MTEpisodeLockup" hasInstanceMethod:@"updateIsCurrentPlayerItemState" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -202,7 +202,7 @@ LABEL_28:
   return v31;
 }
 
-- (BOOL)accessibilityPerformMoreActions:(id)a3
+- (BOOL)accessibilityPerformMoreActions:(id)actions
 {
   v3 = [(MTEpisodeLockupAccessibility *)self safeValueForKey:@"actionButton"];
   [v3 accessibilityActivate];
@@ -212,7 +212,7 @@ LABEL_28:
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MTEpisodeLockupAccessibility *)self safeValueForKey:@"actionButton"];
   v5 = v4;
   if (v4 && ([v4 isHidden] & 1) == 0)
@@ -221,30 +221,30 @@ LABEL_28:
     v7 = accessibilityLocalizedString(@"more.actions");
     v8 = [v6 initWithName:v7 target:self selector:sel_accessibilityPerformMoreActions_];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)automationElements
 {
   v11.receiver = self;
   v11.super_class = MTEpisodeLockupAccessibility;
-  v3 = [(MTEpisodeLockupAccessibility *)&v11 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(MTEpisodeLockupAccessibility *)&v11 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   objc_opt_class();
   v8 = [(MTEpisodeLockupAccessibility *)self safeValueForKey:@"metadataLabel"];
@@ -262,9 +262,9 @@ LABEL_28:
 {
   v4.receiver = self;
   v4.super_class = MTEpisodeLockupAccessibility;
-  v2 = [(MTEpisodeLockupAccessibility *)&v4 updateIsCurrentPlayerItemState];
+  updateIsCurrentPlayerItemState = [(MTEpisodeLockupAccessibility *)&v4 updateIsCurrentPlayerItemState];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  return v2;
+  return updateIsCurrentPlayerItemState;
 }
 
 @end

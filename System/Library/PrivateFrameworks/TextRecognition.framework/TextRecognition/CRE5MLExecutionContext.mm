@@ -1,27 +1,27 @@
 @interface CRE5MLExecutionContext
-- (BOOL)predictFromPreboundInputsWithError:(id *)a3;
-- (CRE5MLExecutionContext)initWithFunction:(id)a3;
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 error:(id *)a4;
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 preboundInputs:(id)a4 preboundOutputs:(id)a5 error:(id *)a6;
-- (id)predictionFromInputObjects:(id)a3 error:(id *)a4;
-- (id)sharedExecutionContextWithError:(id *)a3;
-- (void)prebindInputs:(id)a3;
-- (void)predictFromPreboundInputsAsync:(id)a3;
+- (BOOL)predictFromPreboundInputsWithError:(id *)error;
+- (CRE5MLExecutionContext)initWithFunction:(id)function;
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor error:(id *)error;
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor preboundInputs:(id)inputs preboundOutputs:(id)outputs error:(id *)error;
+- (id)predictionFromInputObjects:(id)objects error:(id *)error;
+- (id)sharedExecutionContextWithError:(id *)error;
+- (void)prebindInputs:(id)inputs;
+- (void)predictFromPreboundInputsAsync:(id)async;
 - (void)unbindInputs;
 @end
 
 @implementation CRE5MLExecutionContext
 
-- (CRE5MLExecutionContext)initWithFunction:(id)a3
+- (CRE5MLExecutionContext)initWithFunction:(id)function
 {
-  v5 = a3;
+  functionCopy = function;
   v21.receiver = self;
   v21.super_class = CRE5MLExecutionContext;
   v6 = [(CRE5MLExecutionContext *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_functionDescriptor, a3);
+    objc_storeStrong(&v6->_functionDescriptor, function);
     v7->_executionLock._os_unfair_lock_opaque = 0;
     v8 = dispatch_semaphore_create(1);
     prewarmSemaphore = v7->_prewarmSemaphore;
@@ -75,46 +75,46 @@ void __43__CRE5MLExecutionContext_initWithFunction___block_invoke(uint64_t a1)
   dispatch_semaphore_signal(*(*(a1 + 32) + 24));
 }
 
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 error:(id *)a4
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor error:(id *)error
 {
   v6 = MEMORY[0x1E69DF8D8];
-  v7 = a3;
+  descriptorCopy = descriptor;
   v8 = objc_alloc_init(v6);
   dispatch_semaphore_wait(self->_prewarmSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   [v8 setPrewarmedState:self->_prewarmedState];
   dispatch_semaphore_signal(self->_prewarmSemaphore);
-  v9 = [v7 function];
+  function = [descriptorCopy function];
 
-  v10 = [v9 newExecutionContextWithConfiguration:v8 error:a4];
+  v10 = [function newExecutionContextWithConfiguration:v8 error:error];
   return v10;
 }
 
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 preboundInputs:(id)a4 preboundOutputs:(id)a5 error:(id *)a6
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor preboundInputs:(id)inputs preboundOutputs:(id)outputs error:(id *)error
 {
   v10 = MEMORY[0x1E69DF8D8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  outputsCopy = outputs;
+  inputsCopy = inputs;
+  descriptorCopy = descriptor;
   v14 = objc_alloc_init(v10);
   dispatch_semaphore_wait(self->_prewarmSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   [v14 setPrewarmedState:self->_prewarmedState];
   dispatch_semaphore_signal(self->_prewarmSemaphore);
-  [v14 setBoundInputObjects:v12];
+  [v14 setBoundInputObjects:inputsCopy];
 
-  [v14 setBoundOutputObjects:v11];
+  [v14 setBoundOutputObjects:outputsCopy];
   [v14 setPrewireInUseAllocations:1];
-  v15 = [v13 function];
+  function = [descriptorCopy function];
 
-  v16 = [v15 newExecutionContextWithConfiguration:v14 error:a6];
+  v16 = [function newExecutionContextWithConfiguration:v14 error:error];
   return v16;
 }
 
-- (id)sharedExecutionContextWithError:(id *)a3
+- (id)sharedExecutionContextWithError:(id *)error
 {
   executionContext = self->_executionContext;
   if (!executionContext)
   {
-    v5 = [(CRE5MLExecutionContext *)self newE5RTExecutionContextForFunctionDescriptor:self->_functionDescriptor error:a3];
+    v5 = [(CRE5MLExecutionContext *)self newE5RTExecutionContextForFunctionDescriptor:self->_functionDescriptor error:error];
     v6 = self->_executionContext;
     self->_executionContext = v5;
 
@@ -124,11 +124,11 @@ void __43__CRE5MLExecutionContext_initWithFunction___block_invoke(uint64_t a1)
   return executionContext;
 }
 
-- (id)predictionFromInputObjects:(id)a3 error:(id *)a4
+- (id)predictionFromInputObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  objectsCopy = objects;
+  v7 = objectsCopy;
+  if (objectsCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -150,14 +150,14 @@ void __43__CRE5MLExecutionContext_initWithFunction___block_invoke(uint64_t a1)
     v12[4] = self;
     v14 = &v16;
     v15 = &v22;
-    v13 = v6;
+    v13 = objectsCopy;
     dispatch_sync(contextQueue, v12);
-    if (a4)
+    if (error)
     {
       v9 = v17[5];
       if (v9)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -238,10 +238,10 @@ LABEL_15:
   }
 }
 
-- (void)prebindInputs:(id)a3
+- (void)prebindInputs:(id)inputs
 {
-  objc_storeStrong(&self->_preboundInputObjects, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_preboundInputObjects, inputs);
+  inputsCopy = inputs;
   preboundExecutionContext = self->_preboundExecutionContext;
   self->_preboundExecutionContext = 0;
 }
@@ -255,7 +255,7 @@ LABEL_15:
   self->_preboundExecutionContext = 0;
 }
 
-- (BOOL)predictFromPreboundInputsWithError:(id *)a3
+- (BOOL)predictFromPreboundInputsWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -276,12 +276,12 @@ LABEL_15:
   block[5] = &v9;
   block[6] = &v15;
   dispatch_sync(contextQueue, block);
-  if (a3)
+  if (error)
   {
     v5 = v10[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -377,17 +377,17 @@ LABEL_19:
   }
 }
 
-- (void)predictFromPreboundInputsAsync:(id)a3
+- (void)predictFromPreboundInputsAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   contextQueue = self->_contextQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CRE5MLExecutionContext_predictFromPreboundInputsAsync___block_invoke;
   v7[3] = &unk_1E7BC2FF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(contextQueue, v7);
 }
 

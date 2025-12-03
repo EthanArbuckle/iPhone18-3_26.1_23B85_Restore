@@ -1,30 +1,30 @@
 @interface LACEvaluationResult
-+ (id)resultWithFailure:(id)a3;
-+ (id)resultWithNext:(id)a3;
-+ (id)resultWithRetry:(id)a3 error:(id)a4;
-+ (id)resultWithSuccess:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LACEvaluationResult)initWithValue:(id)a3 error:(id)a4 request:(id)a5;
++ (id)resultWithFailure:(id)failure;
++ (id)resultWithNext:(id)next;
++ (id)resultWithRetry:(id)retry error:(id)error;
++ (id)resultWithSuccess:(id)success;
+- (BOOL)isEqual:(id)equal;
+- (LACEvaluationResult)initWithValue:(id)value error:(id)error request:(id)request;
 - (id)description;
 @end
 
 @implementation LACEvaluationResult
 
-- (LACEvaluationResult)initWithValue:(id)a3 error:(id)a4 request:(id)a5
+- (LACEvaluationResult)initWithValue:(id)value error:(id)error request:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  errorCopy = error;
+  requestCopy = request;
   v17.receiver = self;
   v17.super_class = LACEvaluationResult;
   v12 = [(LACEvaluationResult *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_value, a3);
-    objc_storeStrong(&v13->_error, a4);
-    objc_storeStrong(&v13->_request, a5);
-    if (v9)
+    objc_storeStrong(&v12->_value, value);
+    objc_storeStrong(&v13->_error, error);
+    objc_storeStrong(&v13->_request, request);
+    if (valueCopy)
     {
       v14 = 3;
 LABEL_13:
@@ -32,9 +32,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v11)
+    if (requestCopy)
     {
-      v15 = v10 == 0;
+      v15 = errorCopy == 0;
     }
 
     else
@@ -48,12 +48,12 @@ LABEL_13:
       v14 = 0;
     }
 
-    if (!v10)
+    if (!errorCopy)
     {
       v14 = 1;
     }
 
-    if (v10 | v11)
+    if (errorCopy | requestCopy)
     {
       goto LABEL_13;
     }
@@ -64,35 +64,35 @@ LABEL_14:
   return v13;
 }
 
-+ (id)resultWithNext:(id)a3
++ (id)resultWithNext:(id)next
 {
-  v3 = a3;
-  v4 = [[LACEvaluationResult alloc] initWithValue:0 error:0 request:v3];
+  nextCopy = next;
+  v4 = [[LACEvaluationResult alloc] initWithValue:0 error:0 request:nextCopy];
 
   return v4;
 }
 
-+ (id)resultWithRetry:(id)a3 error:(id)a4
++ (id)resultWithRetry:(id)retry error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[LACEvaluationResult alloc] initWithValue:0 error:v5 request:v6];
+  errorCopy = error;
+  retryCopy = retry;
+  v7 = [[LACEvaluationResult alloc] initWithValue:0 error:errorCopy request:retryCopy];
 
   return v7;
 }
 
-+ (id)resultWithSuccess:(id)a3
++ (id)resultWithSuccess:(id)success
 {
-  v3 = a3;
-  v4 = [[LACEvaluationResult alloc] initWithValue:v3 error:0 request:0];
+  successCopy = success;
+  v4 = [[LACEvaluationResult alloc] initWithValue:successCopy error:0 request:0];
 
   return v4;
 }
 
-+ (id)resultWithFailure:(id)a3
++ (id)resultWithFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [[LACEvaluationResult alloc] initWithValue:0 error:v3 request:0];
+  failureCopy = failure;
+  v4 = [[LACEvaluationResult alloc] initWithValue:0 error:failureCopy request:0];
 
   return v4;
 }
@@ -121,17 +121,17 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v4;
-    v8 = [(LACEvaluationResult *)self rawValue];
-    if (v8 != [v7 rawValue])
+    v7 = equalCopy;
+    rawValue = [(LACEvaluationResult *)self rawValue];
+    if (rawValue != [v7 rawValue])
     {
 LABEL_20:
       v14 = 0;
@@ -140,28 +140,28 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v9 = [(LACEvaluationResult *)self rawValue];
-    if (v9 > 1)
+    rawValue2 = [(LACEvaluationResult *)self rawValue];
+    if (rawValue2 > 1)
     {
-      if (v9 != 2)
+      if (rawValue2 != 2)
       {
-        if (v9 != 3)
+        if (rawValue2 != 3)
         {
           goto LABEL_22;
         }
 
-        v10 = [(LACEvaluationResult *)self value];
-        v11 = [v7 value];
-        if (v10 == v11)
+        value = [(LACEvaluationResult *)self value];
+        value2 = [v7 value];
+        if (value == value2)
         {
           goto LABEL_21;
         }
 
-        v12 = [(LACEvaluationResult *)self value];
-        v13 = [v7 value];
+        value3 = [(LACEvaluationResult *)self value];
+        value4 = [v7 value];
 LABEL_19:
-        v21 = v13;
-        v22 = [v12 isEqual:v13];
+        v21 = value4;
+        v22 = [value3 isEqual:value4];
 
         if ((v22 & 1) == 0)
         {
@@ -173,18 +173,18 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v15 = [(LACEvaluationResult *)self request];
-      v16 = [v7 request];
-      v17 = v16;
-      if (v15 == v16)
+      request = [(LACEvaluationResult *)self request];
+      request2 = [v7 request];
+      v17 = request2;
+      if (request == request2)
       {
       }
 
       else
       {
-        v18 = [(LACEvaluationResult *)self request];
-        v19 = [v7 request];
-        v20 = [v18 isEqual:v19];
+        request3 = [(LACEvaluationResult *)self request];
+        request4 = [v7 request];
+        v20 = [request3 isEqual:request4];
 
         if (!v20)
         {
@@ -193,19 +193,19 @@ LABEL_22:
       }
     }
 
-    else if (v9)
+    else if (rawValue2)
     {
-      if (v9 != 1)
+      if (rawValue2 != 1)
       {
         goto LABEL_22;
       }
 
-      v10 = [(LACEvaluationResult *)self request];
-      v11 = [v7 request];
-      if (v10 != v11)
+      value = [(LACEvaluationResult *)self request];
+      value2 = [v7 request];
+      if (value != value2)
       {
-        v12 = [(LACEvaluationResult *)self request];
-        v13 = [v7 request];
+        value3 = [(LACEvaluationResult *)self request];
+        value4 = [v7 request];
         goto LABEL_19;
       }
 
@@ -214,15 +214,15 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v10 = [(LACEvaluationResult *)self error];
-    v11 = [v7 error];
-    if (v10 == v11)
+    value = [(LACEvaluationResult *)self error];
+    value2 = [v7 error];
+    if (value == value2)
     {
       goto LABEL_21;
     }
 
-    v12 = [(LACEvaluationResult *)self error];
-    v13 = [v7 error];
+    value3 = [(LACEvaluationResult *)self error];
+    value4 = [v7 error];
     goto LABEL_19;
   }
 

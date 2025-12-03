@@ -1,7 +1,7 @@
 @interface PKMutableMediaCol
 - (PKMutableMediaCol)init;
 - (id)makeMediaCol;
-- (void)setMarginsTop:(int)a3 left:(int)a4 bottom:(int)a5 right:(int)a6;
+- (void)setMarginsTop:(int)top left:(int)left bottom:(int)bottom right:(int)right;
 @end
 
 @implementation PKMutableMediaCol
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (void)setMarginsTop:(int)a3 left:(int)a4 bottom:(int)a5 right:(int)a6
+- (void)setMarginsTop:(int)top left:(int)left bottom:(int)bottom right:(int)right
 {
   v7 = 0;
   v18 = *MEMORY[0x277D85DE8];
   v10 = @"media-bottom-margin";
-  v11 = a5;
+  bottomCopy = bottom;
   v12 = @"media-left-margin";
-  v13 = a4;
+  leftCopy = left;
   v14 = @"media-top-margin";
-  v15 = a3;
+  topCopy = top;
   v16 = @"media-right-margin";
-  v17 = a6;
+  rightCopy = right;
   do
   {
     v8 = [MEMORY[0x277CCABB0] numberWithInt:*(&v10 + v7 + 8)];
@@ -49,13 +49,13 @@
 - (id)makeMediaCol
 {
   v3 = objc_opt_new();
-  v4 = [(PKMutableMediaCol *)self mediaSize];
+  mediaSize = [(PKMutableMediaCol *)self mediaSize];
 
-  if (v4)
+  if (mediaSize)
   {
-    v5 = [(PKMutableMediaCol *)self mediaSize];
-    v6 = [v5 collection];
-    [v3 _addCollection:0 name:@"media-size" value:v6];
+    mediaSize2 = [(PKMutableMediaCol *)self mediaSize];
+    collection = [mediaSize2 collection];
+    [v3 _addCollection:0 name:@"media-size" value:collection];
   }
 
   v7 = [MEMORY[0x277CBEB98] setWithArray:&unk_2871ADB38];

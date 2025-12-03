@@ -1,16 +1,16 @@
 @interface CNFInternalAccountListViewController
-- (CNFInternalAccountListViewController)initWithServiceType:(int64_t)a3;
-- (id)accountNameForSpecifier:(id)a3;
+- (CNFInternalAccountListViewController)initWithServiceType:(int64_t)type;
+- (id)accountNameForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_handleAccountNotification:(id)a3;
+- (void)_handleAccountNotification:(id)notification;
 - (void)_startListeningForNotifications;
 - (void)_stopListeningForNotifications;
-- (void)accountTappedWithSpecifier:(id)a3;
+- (void)accountTappedWithSpecifier:(id)specifier;
 @end
 
 @implementation CNFInternalAccountListViewController
 
-- (CNFInternalAccountListViewController)initWithServiceType:(int64_t)a3
+- (CNFInternalAccountListViewController)initWithServiceType:(int64_t)type
 {
   v12.receiver = self;
   v12.super_class = CNFInternalAccountListViewController;
@@ -28,7 +28,7 @@
 
     v7 = v6;
     [(CNFInternalAccountListViewController *)v4 setService:v6];
-    v8 = [[FTRegConnectionHandler alloc] initWithServiceType:a3 name:@"InternalAccountList"];
+    v8 = [[FTRegConnectionHandler alloc] initWithServiceType:type name:@"InternalAccountList"];
     connectionHandler = v4->_connectionHandler;
     v4->_connectionHandler = v8;
   }
@@ -59,9 +59,9 @@ LABEL_6:
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = [MEMORY[0x277D18D28] sharedInstance];
-      v9 = [(CNFInternalAccountListViewController *)self service];
-      v10 = [v8 accountsForService:v9];
+      mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+      service = [(CNFInternalAccountListViewController *)self service];
+      v10 = [mEMORY[0x277D18D28] accountsForService:service];
 
       obj = v10;
       v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -80,9 +80,9 @@ LABEL_6:
             }
 
             v16 = *(*(&v30 + 1) + 8 * i);
-            v17 = [v16 login];
-            v18 = v17;
-            if (!v17 || ![(__CFString *)v17 length])
+            login = [v16 login];
+            v18 = login;
+            if (!login || ![(__CFString *)login length])
             {
 
               v18 = @"Unnamed";
@@ -130,12 +130,12 @@ LABEL_6:
   return v4;
 }
 
-- (id)accountNameForSpecifier:(id)a3
+- (id)accountNameForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"cnf-internal-account"];
-  v4 = [v3 login];
-  v5 = v4;
-  if (!v4 || ![(__CFString *)v4 length])
+  v3 = [specifier propertyForKey:@"cnf-internal-account"];
+  login = [v3 login];
+  v5 = login;
+  if (!login || ![(__CFString *)login length])
   {
 
     v5 = @"Unnamed";
@@ -144,16 +144,16 @@ LABEL_6:
   return v5;
 }
 
-- (void)accountTappedWithSpecifier:(id)a3
+- (void)accountTappedWithSpecifier:(id)specifier
 {
-  v7 = a3;
-  v4 = [v7 propertyForKey:@"cnf-internal-account"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"cnf-internal-account"];
   if (v4)
   {
     v5 = [[CNFInternalAccountViewController alloc] initWithAccount:v4];
-    [(CNFInternalAccountViewController *)v5 setSpecifier:v7];
-    v6 = [(CNFInternalAccountListViewController *)self rootController];
-    [(CNFInternalAccountViewController *)v5 setRootController:v6];
+    [(CNFInternalAccountViewController *)v5 setSpecifier:specifierCopy];
+    rootController = [(CNFInternalAccountListViewController *)self rootController];
+    [(CNFInternalAccountViewController *)v5 setRootController:rootController];
 
     [(CNFInternalAccountListViewController *)self showController:v5 animate:1];
   }
@@ -161,23 +161,23 @@ LABEL_6:
 
 - (void)_startListeningForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
-  [v3 addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
-  [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleDaemonDisconnected_ name:*MEMORY[0x277D18CE8] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
 }
 
 - (void)_stopListeningForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C18] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D18C20] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C18] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D18C20] object:0];
 }
 
-- (void)_handleAccountNotification:(id)a3
+- (void)_handleAccountNotification:(id)notification
 {
   if ([(FTRegConnectionHandler *)self->_connectionHandler isConnectedToDaemon])
   {

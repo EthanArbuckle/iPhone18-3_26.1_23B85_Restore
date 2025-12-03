@@ -1,91 +1,91 @@
 @interface NNMKResendScheduler
 - (NNMKResendSchedulerDelegate)delegate;
 - (id)deviceRegistry;
-- (id)messageTypeForIDSIdentifier:(id)a3;
-- (id)objectIdsForPendingIDSIdentifier:(id)a3;
+- (id)messageTypeForIDSIdentifier:(id)identifier;
+- (id)objectIdsForPendingIDSIdentifier:(id)identifier;
 - (void)_executePendingResendsAndContentRequests;
 - (void)_failPendingComposedMessages;
-- (void)_resendInitialSyncWithIDSIdentifier:(id)a3 newResendInterval:(unint64_t)a4 mailboxIds:(id)a5;
-- (void)_resendObjectIds:(id)a3 type:(id)a4 resendInterval:(unint64_t)a5 idsIdentifier:(id)a6;
-- (void)_resendPendingAccountWithIds:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5;
-- (void)_resendPendingMessagesWithIds:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5;
-- (void)_resendSendingProgressForComposedMessageWithId:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5;
-- (void)_scheduleIdsIdentifierForResend:(id)a3 currentResendInterval:(unint64_t)a4 newResendInterval:(unint64_t)a5 errorCode:(int64_t)a6;
-- (void)deletePendingIDSMessagesForMailboxId:(id)a3;
+- (void)_resendInitialSyncWithIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval mailboxIds:(id)ids;
+- (void)_resendObjectIds:(id)ids type:(id)type resendInterval:(unint64_t)interval idsIdentifier:(id)identifier;
+- (void)_resendPendingAccountWithIds:(id)ids forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval;
+- (void)_resendPendingMessagesWithIds:(id)ids forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval;
+- (void)_resendSendingProgressForComposedMessageWithId:(id)id forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval;
+- (void)_scheduleIdsIdentifierForResend:(id)resend currentResendInterval:(unint64_t)interval newResendInterval:(unint64_t)resendInterval errorCode:(int64_t)code;
+- (void)deletePendingIDSMessagesForMailboxId:(id)id;
 - (void)forceRetryingAllPendingIDSMessages;
-- (void)handleIDSMessageFailedWithId:(id)a3 errorCode:(int64_t)a4;
-- (void)handleIDSMessageSentSuccessfullyWithId:(id)a3;
-- (void)registerIDSIdentifier:(id)a3 objectIds:(id)a4 type:(id)a5 resendInterval:(unint64_t)a6;
-- (void)resendObjectsForIDSIdentifier:(id)a3;
+- (void)handleIDSMessageFailedWithId:(id)id errorCode:(int64_t)code;
+- (void)handleIDSMessageSentSuccessfullyWithId:(id)id;
+- (void)registerIDSIdentifier:(id)identifier objectIds:(id)ids type:(id)type resendInterval:(unint64_t)interval;
+- (void)resendObjectsForIDSIdentifier:(id)identifier;
 @end
 
 @implementation NNMKResendScheduler
 
-- (void)registerIDSIdentifier:(id)a3 objectIds:(id)a4 type:(id)a5 resendInterval:(unint64_t)a6
+- (void)registerIDSIdentifier:(id)identifier objectIds:(id)ids type:(id)type resendInterval:(unint64_t)interval
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  idsCopy = ids;
+  typeCopy = type;
   v13 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEBUG))
   {
-    [NNMKResendScheduler registerIDSIdentifier:v10 objectIds:v12 type:v13 resendInterval:?];
+    [NNMKResendScheduler registerIDSIdentifier:identifierCopy objectIds:typeCopy type:v13 resendInterval:?];
   }
 
-  if (![v11 count])
+  if (![idsCopy count])
   {
 
-    v11 = &unk_286C7BF40;
+    idsCopy = &unk_286C7BF40;
   }
 
-  v14 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v14 addObjectIds:v11 type:v12 resendInterval:a6 forIDSIdentifierNotYetAckd:v10];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry addObjectIds:idsCopy type:typeCopy resendInterval:interval forIDSIdentifierNotYetAckd:identifierCopy];
 }
 
-- (void)resendObjectsForIDSIdentifier:(id)a3
+- (void)resendObjectsForIDSIdentifier:(id)identifier
 {
   v9 = 0;
-  v4 = a3;
-  v5 = [(NNMKResendScheduler *)self deviceRegistry];
+  identifierCopy = identifier;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
   v8 = 0;
-  v6 = [v5 objectIdsForIDSIdentifierNotYetAckd:v4 type:&v8 resendInterval:&v9];
+  v6 = [deviceRegistry objectIdsForIDSIdentifierNotYetAckd:identifierCopy type:&v8 resendInterval:&v9];
   v7 = v8;
 
-  [(NNMKResendScheduler *)self _resendObjectIds:v6 type:v7 resendInterval:v9 idsIdentifier:v4];
+  [(NNMKResendScheduler *)self _resendObjectIds:v6 type:v7 resendInterval:v9 idsIdentifier:identifierCopy];
 }
 
-- (void)handleIDSMessageFailedWithId:(id)a3 errorCode:(int64_t)a4
+- (void)handleIDSMessageFailedWithId:(id)id errorCode:(int64_t)code
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NNMKResendScheduler *)self deviceRegistry];
+  idCopy = id;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
 
-  if (v7)
+  if (deviceRegistry)
   {
     v18 = 0;
-    v8 = [(NNMKResendScheduler *)self deviceRegistry];
+    deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
     v17 = 0;
-    v9 = [v8 objectIdsForIDSIdentifierNotYetAckd:v6 type:&v17 resendInterval:&v18];
+    v9 = [deviceRegistry2 objectIdsForIDSIdentifierNotYetAckd:idCopy type:&v17 resendInterval:&v18];
     v10 = v17;
 
     v11 = qword_28144D620;
     if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v20 = v6;
+      v20 = idCopy;
       v21 = 2114;
       v22 = v10;
       v23 = 2048;
       v24 = v18;
       v25 = 2048;
-      v26 = a4;
+      codeCopy = code;
       _os_log_error_impl(&dword_25B19F000, v11, OS_LOG_TYPE_ERROR, "Error sending IDS Messages (IDS Identifier: %{public}@ - Object Type: %{public}@ - Resend Interval: %lu - Error code: %li).", buf, 0x2Au);
     }
 
-    v12 = [(NNMKResendScheduler *)self delegate];
-    v13 = [v12 resendScheduler:self didRequestNewResendIntervalForPreviousResendInterval:v18 errorCode:a4];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    v13 = [delegate resendScheduler:self didRequestNewResendIntervalForPreviousResendInterval:v18 errorCode:code];
 
-    if (a4 == 27)
+    if (code == 27)
     {
       v18 = v13;
       if (v13)
@@ -99,19 +99,19 @@
       goto LABEL_10;
     }
 
-    v14 = [(NNMKResendScheduler *)self delegate];
-    v15 = [v14 resendSchedulerShouldSendRetries:self];
+    delegate2 = [(NNMKResendScheduler *)self delegate];
+    v15 = [delegate2 resendSchedulerShouldSendRetries:self];
 
     if (v15)
     {
-      [(NNMKResendScheduler *)self _resendObjectIds:v9 type:v10 resendInterval:v13 idsIdentifier:v6];
+      [(NNMKResendScheduler *)self _resendObjectIds:v9 type:v10 resendInterval:v13 idsIdentifier:idCopy];
 LABEL_11:
 
       goto LABEL_12;
     }
 
 LABEL_10:
-    [NNMKResendScheduler _scheduleIdsIdentifierForResend:"_scheduleIdsIdentifierForResend:currentResendInterval:newResendInterval:errorCode:" currentResendInterval:v6 newResendInterval:? errorCode:?];
+    [NNMKResendScheduler _scheduleIdsIdentifierForResend:"_scheduleIdsIdentifierForResend:currentResendInterval:newResendInterval:errorCode:" currentResendInterval:idCopy newResendInterval:? errorCode:?];
     goto LABEL_11;
   }
 
@@ -120,44 +120,44 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIDSMessageSentSuccessfullyWithId:(id)a3
+- (void)handleIDSMessageSentSuccessfullyWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(NNMKResendScheduler *)self deviceRegistry];
+  idCopy = id;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
 
-  if (v5)
+  if (deviceRegistry)
   {
     v6 = qword_28144D620;
     if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEBUG))
     {
-      [(NNMKResendScheduler *)v4 handleIDSMessageSentSuccessfullyWithId:v6];
+      [(NNMKResendScheduler *)idCopy handleIDSMessageSentSuccessfullyWithId:v6];
     }
 
-    v7 = [(NNMKResendScheduler *)self deviceRegistry];
-    [v7 markIDSIdentifierAsAckd:v4];
+    deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+    [deviceRegistry2 markIDSIdentifierAsAckd:idCopy];
 
-    v8 = [(NNMKResendScheduler *)self delegate];
-    [v8 resendScheduler:self didRequestDequeueIDSIdentifierForResend:v4];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    [delegate resendScheduler:self didRequestDequeueIDSIdentifierForResend:idCopy];
   }
 }
 
-- (void)deletePendingIDSMessagesForMailboxId:(id)a3
+- (void)deletePendingIDSMessagesForMailboxId:(id)id
 {
   v63 = *MEMORY[0x277D85DE8];
-  v45 = a3;
+  idCopy = id;
   v4 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v62 = v45;
+    v62 = idCopy;
     _os_log_impl(&dword_25B19F000, v4, OS_LOG_TYPE_DEFAULT, "Deleting pending IDS messages for mailbox. (Id: %{public}@)", buf, 0xCu);
   }
 
-  v5 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v5 beginUpdates];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry beginUpdates];
 
-  v6 = [(NNMKResendScheduler *)self deviceRegistry];
-  v7 = [v6 objectIdsForType:@"InitialSync"];
+  deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+  v7 = [deviceRegistry2 objectIdsForType:@"InitialSync"];
 
   v56 = 0u;
   v57 = 0u;
@@ -181,8 +181,8 @@ LABEL_12:
         v13 = *(*(&v54 + 1) + 8 * i);
         if ([v13 isEqualToString:v13])
         {
-          v14 = [(NNMKResendScheduler *)self deviceRegistry];
-          [v14 deleteObjectId:v13 fromIDSIdentifiersNotYetAckdOfType:@"InitialSync"];
+          deviceRegistry3 = [(NNMKResendScheduler *)self deviceRegistry];
+          [deviceRegistry3 deleteObjectId:v13 fromIDSIdentifiersNotYetAckdOfType:@"InitialSync"];
         }
       }
 
@@ -194,8 +194,8 @@ LABEL_12:
 
   v44 = v8;
 
-  v15 = [(NNMKResendScheduler *)self deviceRegistry];
-  v16 = [v15 objectIdsForType:@"Message"];
+  deviceRegistry4 = [(NNMKResendScheduler *)self deviceRegistry];
+  v16 = [deviceRegistry4 objectIdsForType:@"Message"];
 
   v52 = 0u;
   v53 = 0u;
@@ -217,13 +217,13 @@ LABEL_12:
         }
 
         v22 = *(*(&v50 + 1) + 8 * j);
-        v23 = [(NNMKResendScheduler *)self deviceRegistry];
-        v24 = [v23 syncedMessageForMessageWithId:v22];
+        deviceRegistry5 = [(NNMKResendScheduler *)self deviceRegistry];
+        v24 = [deviceRegistry5 syncedMessageForMessageWithId:v22];
 
-        if (!v24 || ([v24 mailboxId], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", v45), v25, v26))
+        if (!v24 || ([v24 mailboxId], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", idCopy), v25, v26))
         {
-          v27 = [(NNMKResendScheduler *)self deviceRegistry];
-          [v27 deleteObjectId:v22 fromIDSIdentifiersNotYetAckdOfType:@"Message"];
+          deviceRegistry6 = [(NNMKResendScheduler *)self deviceRegistry];
+          [deviceRegistry6 deleteObjectId:v22 fromIDSIdentifiersNotYetAckdOfType:@"Message"];
         }
       }
 
@@ -235,8 +235,8 @@ LABEL_12:
 
   v43 = v17;
 
-  v28 = [(NNMKResendScheduler *)self deviceRegistry];
-  v29 = [v28 objectIdsForType:@"MessageContent"];
+  deviceRegistry7 = [(NNMKResendScheduler *)self deviceRegistry];
+  v29 = [deviceRegistry7 objectIdsForType:@"MessageContent"];
 
   v48 = 0u;
   v49 = 0u;
@@ -258,13 +258,13 @@ LABEL_12:
         }
 
         v35 = *(*(&v46 + 1) + 8 * k);
-        v36 = [(NNMKResendScheduler *)self deviceRegistry];
-        v37 = [v36 syncedMessageForMessageWithId:v35];
+        deviceRegistry8 = [(NNMKResendScheduler *)self deviceRegistry];
+        v37 = [deviceRegistry8 syncedMessageForMessageWithId:v35];
 
-        if (!v37 || ([v37 mailboxId], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqualToString:", v45), v38, v39))
+        if (!v37 || ([v37 mailboxId], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqualToString:", idCopy), v38, v39))
         {
-          v40 = [(NNMKResendScheduler *)self deviceRegistry];
-          [v40 deleteObjectId:v35 fromIDSIdentifiersNotYetAckdOfType:@"MessageContent"];
+          deviceRegistry9 = [(NNMKResendScheduler *)self deviceRegistry];
+          [deviceRegistry9 deleteObjectId:v35 fromIDSIdentifiersNotYetAckdOfType:@"MessageContent"];
         }
       }
 
@@ -274,20 +274,20 @@ LABEL_12:
     while (v32);
   }
 
-  v41 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v41 endUpdates];
+  deviceRegistry10 = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry10 endUpdates];
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
 - (void)forceRetryingAllPendingIDSMessages
 {
-  v3 = [(NNMKResendScheduler *)self deviceRegistry];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
 
-  if (v3)
+  if (deviceRegistry)
   {
-    v4 = [(NNMKResendScheduler *)self delegate];
-    v5 = [v4 resendSchedulerShouldSendRetries:self];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    v5 = [delegate resendSchedulerShouldSendRetries:self];
 
     v6 = qword_28144D620;
     if (v5)
@@ -298,13 +298,13 @@ LABEL_12:
         _os_log_impl(&dword_25B19F000, v6, OS_LOG_TYPE_DEFAULT, "Forcing retrying all pending ids messages", v11, 2u);
       }
 
-      v7 = [(NNMKResendScheduler *)self deviceRegistry];
-      [v7 prepareIDSIdentifiersForResendForErrorCode:27];
+      deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+      [deviceRegistry2 prepareIDSIdentifiersForResendForErrorCode:27];
 
-      v8 = [(NNMKResendScheduler *)self delegate];
-      v9 = [(NNMKResendScheduler *)self deviceRegistry];
-      v10 = [v9 datesForIDSIdentifiersScheduledToBeResent];
-      [v8 resendScheduler:self didRequestEnqueueIDSIdentifiersForResend:v10];
+      delegate2 = [(NNMKResendScheduler *)self delegate];
+      deviceRegistry3 = [(NNMKResendScheduler *)self deviceRegistry];
+      datesForIDSIdentifiersScheduledToBeResent = [deviceRegistry3 datesForIDSIdentifiersScheduledToBeResent];
+      [delegate2 resendScheduler:self didRequestEnqueueIDSIdentifiersForResend:datesForIDSIdentifiersScheduledToBeResent];
 
       [(NNMKResendScheduler *)self _executePendingResendsAndContentRequests];
       [(NNMKResendScheduler *)self _failPendingComposedMessages];
@@ -317,52 +317,52 @@ LABEL_12:
   }
 }
 
-- (id)messageTypeForIDSIdentifier:(id)a3
+- (id)messageTypeForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NNMKResendScheduler *)self deviceRegistry];
-  v6 = [v5 typeForIDSIdentifierNotYetAckd:v4];
+  identifierCopy = identifier;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  v6 = [deviceRegistry typeForIDSIdentifierNotYetAckd:identifierCopy];
 
   return v6;
 }
 
-- (id)objectIdsForPendingIDSIdentifier:(id)a3
+- (id)objectIdsForPendingIDSIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NNMKResendScheduler *)self deviceRegistry];
-  v6 = [v5 objectIdsForIDSIdentifierNotYetAckd:v4 type:0 resendInterval:0];
+  identifierCopy = identifier;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  v6 = [deviceRegistry objectIdsForIDSIdentifierNotYetAckd:identifierCopy type:0 resendInterval:0];
 
   return v6;
 }
 
 - (id)deviceRegistry
 {
-  v2 = [(NNMKResendScheduler *)self delegate];
-  v3 = [v2 currentDeviceRegistry];
+  delegate = [(NNMKResendScheduler *)self delegate];
+  currentDeviceRegistry = [delegate currentDeviceRegistry];
 
-  return v3;
+  return currentDeviceRegistry;
 }
 
 - (void)_executePendingResendsAndContentRequests
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [(NNMKResendScheduler *)self deviceRegistry];
-  v4 = [v3 syncedMessageIdsResendRequested];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  syncedMessageIdsResendRequested = [deviceRegistry syncedMessageIdsResendRequested];
 
-  if ([v4 count])
+  if ([syncedMessageIdsResendRequested count])
   {
-    v5 = [(NNMKResendScheduler *)self delegate];
-    [v5 resendScheduler:self didRequestRetrySendingMessageWithIds:v4];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    [delegate resendScheduler:self didRequestRetrySendingMessageWithIds:syncedMessageIdsResendRequested];
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [(NNMKResendScheduler *)self deviceRegistry];
-  v7 = [v6 syncedAccountIdsResendRequested];
+  deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+  syncedAccountIdsResendRequested = [deviceRegistry2 syncedAccountIdsResendRequested];
 
-  v8 = [v7 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v8 = [syncedAccountIdsResendRequested countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v8)
   {
     v9 = v8;
@@ -373,30 +373,30 @@ LABEL_12:
       {
         if (*v40 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(syncedAccountIdsResendRequested);
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [(NNMKResendScheduler *)self delegate];
-        [v13 resendScheduler:self didRequestRetrySendingAccountWithId:v12];
+        delegate2 = [(NNMKResendScheduler *)self delegate];
+        [delegate2 resendScheduler:self didRequestRetrySendingAccountWithId:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v9 = [syncedAccountIdsResendRequested countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(NNMKResendScheduler *)self deviceRegistry];
-  v15 = [v14 syncedMessageIdsContentRequestedByUser];
+  deviceRegistry3 = [(NNMKResendScheduler *)self deviceRegistry];
+  syncedMessageIdsContentRequestedByUser = [deviceRegistry3 syncedMessageIdsContentRequestedByUser];
 
-  if ([v15 count])
+  if ([syncedMessageIdsContentRequestedByUser count])
   {
     v37 = 0uLL;
     v38 = 0uLL;
     v35 = 0uLL;
     v36 = 0uLL;
-    v16 = v15;
+    v16 = syncedMessageIdsContentRequestedByUser;
     v17 = [v16 countByEnumeratingWithState:&v35 objects:v44 count:16];
     if (v17)
     {
@@ -412,8 +412,8 @@ LABEL_12:
           }
 
           v21 = *(*(&v35 + 1) + 8 * j);
-          v22 = [(NNMKResendScheduler *)self delegate];
-          [v22 resendScheduler:self didRequestRetrySendingContentForMessageId:v21 highPriority:1];
+          delegate3 = [(NNMKResendScheduler *)self delegate];
+          [delegate3 resendScheduler:self didRequestRetrySendingContentForMessageId:v21 highPriority:1];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -429,8 +429,8 @@ LABEL_12:
     v34 = 0uLL;
     *(&v31 + 1) = 0;
     v32 = 0uLL;
-    v23 = [(NNMKResendScheduler *)self deviceRegistry];
-    v16 = [v23 firstSyncedMessageIdsContentNotSyncedOrRequestedByUser:20];
+    deviceRegistry4 = [(NNMKResendScheduler *)self deviceRegistry];
+    v16 = [deviceRegistry4 firstSyncedMessageIdsContentNotSyncedOrRequestedByUser:20];
 
     v24 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v24)
@@ -447,8 +447,8 @@ LABEL_12:
           }
 
           v28 = *(*(&v31 + 1) + 8 * k);
-          v29 = [(NNMKResendScheduler *)self delegate];
-          [v29 resendScheduler:self didRequestRetrySendingContentForMessageId:v28 highPriority:0];
+          delegate4 = [(NNMKResendScheduler *)self delegate];
+          [delegate4 resendScheduler:self didRequestRetrySendingContentForMessageId:v28 highPriority:0];
         }
 
         v25 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -464,14 +464,14 @@ LABEL_12:
 - (void)_failPendingComposedMessages
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(NNMKResendScheduler *)self deviceRegistry];
-  v4 = [v3 pendingComposedMessageIds];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  pendingComposedMessageIds = [deviceRegistry pendingComposedMessageIds];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = pendingComposedMessageIds;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -488,8 +488,8 @@ LABEL_12:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(NNMKResendScheduler *)self delegate];
-        [v11 resendScheduler:self didRequestRetrySendingComposeMessageProgress:-1 messageId:v10 resendInterval:0];
+        delegate = [(NNMKResendScheduler *)self delegate];
+        [delegate resendScheduler:self didRequestRetrySendingComposeMessageProgress:-1 messageId:v10 resendInterval:0];
 
         ++v9;
       }
@@ -501,97 +501,97 @@ LABEL_12:
     while (v7);
   }
 
-  v12 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v12 removePendingComposedMessages];
+  deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry2 removePendingComposedMessages];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleIdsIdentifierForResend:(id)a3 currentResendInterval:(unint64_t)a4 newResendInterval:(unint64_t)a5 errorCode:(int64_t)a6
+- (void)_scheduleIdsIdentifierForResend:(id)resend currentResendInterval:(unint64_t)interval newResendInterval:(unint64_t)resendInterval errorCode:(int64_t)code
 {
-  v14 = a3;
-  v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a4];
-  v11 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v11 rescheduleIDSIdentifier:v14 resendInterval:a5 withDateToResend:v10 errorCode:a6];
+  resendCopy = resend;
+  v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:interval];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry rescheduleIDSIdentifier:resendCopy resendInterval:resendInterval withDateToResend:v10 errorCode:code];
 
-  v12 = [(NNMKResendScheduler *)self delegate];
-  LODWORD(a5) = [v12 resendSchedulerShouldSendRetries:self];
+  delegate = [(NNMKResendScheduler *)self delegate];
+  LODWORD(resendInterval) = [delegate resendSchedulerShouldSendRetries:self];
 
-  if (a5)
+  if (resendInterval)
   {
-    v13 = [(NNMKResendScheduler *)self delegate];
-    [v13 resendScheduler:self didRequestEnqueueIDSIdentifierForResend:v14 date:v10 silent:0];
+    delegate2 = [(NNMKResendScheduler *)self delegate];
+    [delegate2 resendScheduler:self didRequestEnqueueIDSIdentifierForResend:resendCopy date:v10 silent:0];
   }
 }
 
-- (void)_resendObjectIds:(id)a3 type:(id)a4 resendInterval:(unint64_t)a5 idsIdentifier:(id)a6
+- (void)_resendObjectIds:(id)ids type:(id)type resendInterval:(unint64_t)interval idsIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  idsCopy = ids;
+  typeCopy = type;
+  identifierCopy = identifier;
   v13 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138544130;
-    v23 = v12;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = typeCopy;
     v26 = 2114;
-    v27 = v10;
+    v27 = idsCopy;
     v28 = 2048;
-    v29 = a5;
+    intervalCopy = interval;
     _os_log_impl(&dword_25B19F000, v13, OS_LOG_TYPE_DEFAULT, "Resending IDS messages. (IDS id: %{public}@, Type: %{public}@, objects: %{public}@, resend interval: %lu)", &v22, 0x2Au);
   }
 
-  if ([v11 isEqualToString:@"InitialSync"])
+  if ([typeCopy isEqualToString:@"InitialSync"])
   {
-    [(NNMKResendScheduler *)self _resendInitialSyncWithIDSIdentifier:v12 newResendInterval:a5 mailboxIds:v10];
+    [(NNMKResendScheduler *)self _resendInitialSyncWithIDSIdentifier:identifierCopy newResendInterval:interval mailboxIds:idsCopy];
     goto LABEL_23;
   }
 
-  if ([v11 isEqualToString:@"Message"])
+  if ([typeCopy isEqualToString:@"Message"])
   {
-    [(NNMKResendScheduler *)self _resendPendingMessagesWithIds:v10 forIDSIdentifier:v12 newResendInterval:a5];
+    [(NNMKResendScheduler *)self _resendPendingMessagesWithIds:idsCopy forIDSIdentifier:identifierCopy newResendInterval:interval];
     goto LABEL_23;
   }
 
-  if (![v11 isEqualToString:@"MessageContent"])
+  if (![typeCopy isEqualToString:@"MessageContent"])
   {
-    if ([v11 isEqualToString:@"Account"])
+    if ([typeCopy isEqualToString:@"Account"])
     {
-      [(NNMKResendScheduler *)self _resendPendingAccountWithIds:v10 forIDSIdentifier:v12 newResendInterval:a5];
+      [(NNMKResendScheduler *)self _resendPendingAccountWithIds:idsCopy forIDSIdentifier:identifierCopy newResendInterval:interval];
       goto LABEL_23;
     }
 
-    if ([v11 isEqualToString:@"SendingProgress"])
+    if ([typeCopy isEqualToString:@"SendingProgress"])
     {
-      v14 = [v10 firstObject];
-      [(NNMKResendScheduler *)self _resendSendingProgressForComposedMessageWithId:v14 forIDSIdentifier:v12 newResendInterval:a5];
+      firstObject = [idsCopy firstObject];
+      [(NNMKResendScheduler *)self _resendSendingProgressForComposedMessageWithId:firstObject forIDSIdentifier:identifierCopy newResendInterval:interval];
     }
 
-    else if ([v11 isEqualToString:@"MailboxSelection"])
+    else if ([typeCopy isEqualToString:@"MailboxSelection"])
     {
-      v14 = [(NNMKResendScheduler *)self delegate];
-      [v14 resendScheduler:self didRequestRetrySendingMailboxSelectionWithResendInterval:a5];
+      firstObject = [(NNMKResendScheduler *)self delegate];
+      [firstObject resendScheduler:self didRequestRetrySendingMailboxSelectionWithResendInterval:interval];
     }
 
-    else if ([v11 isEqualToString:@"AccountIdentity"])
+    else if ([typeCopy isEqualToString:@"AccountIdentity"])
     {
-      v14 = [v10 firstObject];
-      v18 = [(NNMKResendScheduler *)self delegate];
-      [v18 resendScheduler:self didRequestRetrySendingAccountIdentifier:v14 resendInterval:a5];
+      firstObject = [idsCopy firstObject];
+      delegate = [(NNMKResendScheduler *)self delegate];
+      [delegate resendScheduler:self didRequestRetrySendingAccountIdentifier:firstObject resendInterval:interval];
     }
 
     else
     {
-      if (![v11 isEqualToString:@"VIPList"])
+      if (![typeCopy isEqualToString:@"VIPList"])
       {
         goto LABEL_23;
       }
 
-      v14 = [(NNMKResendScheduler *)self delegate];
-      [v14 resendScheduler:self didRequestRetrySendingVIPListWithResendInterval:a5];
+      firstObject = [(NNMKResendScheduler *)self delegate];
+      [firstObject resendScheduler:self didRequestRetrySendingVIPListWithResendInterval:interval];
     }
 
 LABEL_22:
@@ -599,42 +599,42 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v10 count] == 2)
+  if ([idsCopy count] == 2)
   {
-    v14 = [v10 objectAtIndexedSubscript:0];
-    v15 = [v10 objectAtIndexedSubscript:1];
-    v16 = [v15 BOOLValue];
+    firstObject = [idsCopy objectAtIndexedSubscript:0];
+    v15 = [idsCopy objectAtIndexedSubscript:1];
+    bOOLValue = [v15 BOOLValue];
 
-    [(NNMKResendScheduler *)self _resendPendingMessageContentWithId:v14 sentBecauseUserRequested:v16 idsIdentifier:v12 newResendInterval:a5];
+    [(NNMKResendScheduler *)self _resendPendingMessageContentWithId:firstObject sentBecauseUserRequested:bOOLValue idsIdentifier:identifierCopy newResendInterval:interval];
     goto LABEL_22;
   }
 
   v17 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_ERROR))
   {
-    [NNMKResendScheduler _resendObjectIds:v12 type:v17 resendInterval:? idsIdentifier:?];
+    [NNMKResendScheduler _resendObjectIds:identifierCopy type:v17 resendInterval:? idsIdentifier:?];
   }
 
 LABEL_23:
-  v19 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v19 markIDSIdentifierAsAckd:v12];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry markIDSIdentifierAsAckd:identifierCopy];
 
-  v20 = [(NNMKResendScheduler *)self delegate];
-  [v20 resendScheduler:self didRequestDequeueIDSIdentifierForResend:v12];
+  delegate2 = [(NNMKResendScheduler *)self delegate];
+  [delegate2 resendScheduler:self didRequestDequeueIDSIdentifierForResend:identifierCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resendInitialSyncWithIDSIdentifier:(id)a3 newResendInterval:(unint64_t)a4 mailboxIds:(id)a5
+- (void)_resendInitialSyncWithIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval mailboxIds:(id)ids
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  idsCopy = ids;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = idsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -651,8 +651,8 @@ LABEL_23:
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [(NNMKResendScheduler *)self deviceRegistry];
-        v16 = [v15 mailboxWithId:v14];
+        deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+        v16 = [deviceRegistry mailboxWithId:v14];
 
         if (v16)
         {
@@ -671,31 +671,31 @@ LABEL_23:
 
   if ([v8 count])
   {
-    v17 = [(NNMKResendScheduler *)self delegate];
-    [v17 resendScheduler:self didRequestRetryFullSyncForMailboxes:v8];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    [delegate resendScheduler:self didRequestRetryFullSyncForMailboxes:v8];
 
-    self->_initialSyncResendInterval = a4;
+    self->_initialSyncResendInterval = interval;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resendPendingMessagesWithIds:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5
+- (void)_resendPendingMessagesWithIds:(id)ids forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v46 = a4;
-  v8 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v8 beginUpdates];
+  idsCopy = ids;
+  identifierCopy = identifier;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry beginUpdates];
 
-  v43 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v43 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v45 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v7;
+  obj = idsCopy;
   v9 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v9)
   {
@@ -714,24 +714,24 @@ LABEL_23:
         }
 
         v14 = *(*(&v49 + 1) + 8 * v13);
-        v15 = [(NNMKResendScheduler *)self deviceRegistry];
-        v16 = [v15 syncedMessageForMessageWithId:v14];
+        deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+        v16 = [deviceRegistry2 syncedMessageForMessageWithId:v14];
 
         if (v16)
         {
-          v17 = [v16 resendRequested];
+          resendRequested = [v16 resendRequested];
           v18 = qword_28144D620;
           v19 = os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT);
-          if (v17)
+          if (resendRequested)
           {
             if (v19)
             {
               *buf = 138543874;
               v54 = v14;
               v55 = 2114;
-              v56 = v46;
+              v56 = identifierCopy;
               v57 = 2048;
-              v58 = a5;
+              intervalCopy3 = interval;
               _os_log_impl(&dword_25B19F000, v18, OS_LOG_TYPE_DEFAULT, "Requested to resend message but a resend has already been requested. Ignoring. (Id: %{public}@ - Last IDS Identifier: %{public}@ - New Resend Interval: %lu)...", buf, 0x20u);
             }
           }
@@ -743,16 +743,16 @@ LABEL_23:
               *buf = 138543874;
               v54 = v14;
               v55 = 2114;
-              v56 = v46;
+              v56 = identifierCopy;
               v57 = 2048;
-              v58 = a5;
+              intervalCopy3 = interval;
               _os_log_impl(&dword_25B19F000, v18, OS_LOG_TYPE_DEFAULT, "Resending Message (Id: %{public}@ - Last IDS Identifier: %{public}@ - New Resend Interval: %lu)...", buf, 0x20u);
             }
 
             if ([v16 usedNotificationPriorityForMessageSync])
             {
-              v29 = [v16 dateReceived];
-              [v29 timeIntervalSinceNow];
+              dateReceived = [v16 dateReceived];
+              [dateReceived timeIntervalSinceNow];
               v31 = -v30;
               v32 = *&kIntervalBeforeDowngradingMessagesToDefaultPriority;
 
@@ -773,12 +773,12 @@ LABEL_23:
             }
 
             [v16 setResendRequested:1];
-            [v16 setResendInterval:a5];
-            v34 = [(NNMKResendScheduler *)self deviceRegistry];
-            [v34 addOrUpdateSyncedMessage:v16];
+            [v16 setResendInterval:interval];
+            deviceRegistry3 = [(NNMKResendScheduler *)self deviceRegistry];
+            [deviceRegistry3 addOrUpdateSyncedMessage:v16];
 
-            v35 = [(NNMKResendScheduler *)self deviceRegistry];
-            [v35 deleteObjectId:v14 fromIDSIdentifiersNotYetAckdOfType:@"Message"];
+            deviceRegistry4 = [(NNMKResendScheduler *)self deviceRegistry];
+            [deviceRegistry4 deleteObjectId:v14 fromIDSIdentifiersNotYetAckdOfType:@"Message"];
 
             [v43 addObject:v14];
           }
@@ -787,43 +787,43 @@ LABEL_23:
         else
         {
           v20 = objc_alloc_init(NNMKProtoMessageDeletion);
-          v21 = [(NNMKResendScheduler *)self syncController];
-          v22 = [v21 watchMessageIdFromMessageId:v14];
+          syncController = [(NNMKResendScheduler *)self syncController];
+          v22 = [syncController watchMessageIdFromMessageId:v14];
           [(NNMKProtoMessageDeletion *)v20 setMessageId:v22];
 
-          v23 = [(NNMKResendScheduler *)self deviceRegistry];
-          v24 = [v23 mailboxIdForDeletedMessageId:v14];
+          deviceRegistry5 = [(NNMKResendScheduler *)self deviceRegistry];
+          mailboxId = [deviceRegistry5 mailboxIdForDeletedMessageId:v14];
 
-          if (v24)
+          if (mailboxId)
           {
             goto LABEL_12;
           }
 
-          v25 = [(NNMKResendScheduler *)self deviceRegistry];
-          v26 = [v25 mailboxWithId:@"-1"];
-          v24 = [v26 mailboxId];
+          deviceRegistry6 = [(NNMKResendScheduler *)self deviceRegistry];
+          v26 = [deviceRegistry6 mailboxWithId:@"-1"];
+          mailboxId = [v26 mailboxId];
 
-          if (v24)
+          if (mailboxId)
           {
 LABEL_12:
-            v27 = [v45 objectForKeyedSubscript:v24];
+            v27 = [v45 objectForKeyedSubscript:mailboxId];
             if (!v27)
             {
               v27 = objc_alloc_init(NNMKProtoMessageDeletions);
-              [v45 setObject:v27 forKeyedSubscript:v24];
+              [v45 setObject:v27 forKeyedSubscript:mailboxId];
             }
 
             [(NNMKProtoMessageDeletions *)v27 addMessageDeletion:v20];
-            [v44 addObject:v14];
+            [array addObject:v14];
             v28 = qword_28144D620;
             if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
               v54 = v14;
               v55 = 2114;
-              v56 = v46;
+              v56 = identifierCopy;
               v57 = 2048;
-              v58 = a5;
+              intervalCopy3 = interval;
               _os_log_impl(&dword_25B19F000, v28, OS_LOG_TYPE_DEFAULT, "Resending Message Deletion (Id: %{public}@ - Last IDS Identifier: %{public}@ - New Resend Interval: %lu)...", buf, 0x20u);
             }
           }
@@ -853,35 +853,35 @@ LABEL_12:
 
   if ([v43 count])
   {
-    v38 = [(NNMKResendScheduler *)self delegate];
-    [v38 resendScheduler:self didRequestRetrySendingMessageWithIds:v43];
+    delegate = [(NNMKResendScheduler *)self delegate];
+    [delegate resendScheduler:self didRequestRetrySendingMessageWithIds:v43];
   }
 
-  if ([v44 count])
+  if ([array count])
   {
-    v39 = [(NNMKResendScheduler *)self delegate];
-    [v39 resendScheduler:self didRequestRetrySendingMessageDeletions:v45 deletionsMessageIds:v44 resendInterval:a5];
+    delegate2 = [(NNMKResendScheduler *)self delegate];
+    [delegate2 resendScheduler:self didRequestRetrySendingMessageDeletions:v45 deletionsMessageIds:array resendInterval:interval];
   }
 
-  v40 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v40 endUpdates];
+  deviceRegistry7 = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry7 endUpdates];
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resendPendingAccountWithIds:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5
+- (void)_resendPendingAccountWithIds:(id)ids forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v25 = a4;
-  v9 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v9 beginUpdates];
+  idsCopy = ids;
+  identifierCopy = identifier;
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry beginUpdates];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v8;
+  v10 = idsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v11)
   {
@@ -906,28 +906,28 @@ LABEL_12:
           *buf = v24;
           v31 = v16;
           v32 = 2114;
-          v33 = v25;
+          v33 = identifierCopy;
           _os_log_impl(&dword_25B19F000, v17, OS_LOG_TYPE_DEFAULT, "Resending account (Id: %{public}@ - IDS Identifier: %{public}@)...", buf, 0x16u);
         }
 
-        v18 = [(NNMKResendScheduler *)self deviceRegistry];
-        v19 = [v18 syncedAccountForAccountWithId:v16];
+        deviceRegistry2 = [(NNMKResendScheduler *)self deviceRegistry];
+        v19 = [deviceRegistry2 syncedAccountForAccountWithId:v16];
 
         if (v19)
         {
           [v19 setResendRequested:1];
-          [v19 setResendInterval:a5];
-          v20 = [(NNMKResendScheduler *)self deviceRegistry];
-          [v20 addOrUpdateSyncedAccount:v19];
+          [v19 setResendInterval:interval];
+          deviceRegistry3 = [(NNMKResendScheduler *)self deviceRegistry];
+          [deviceRegistry3 addOrUpdateSyncedAccount:v19];
 
-          v21 = [(NNMKResendScheduler *)self delegate];
-          [v21 resendScheduler:self didRequestRetrySendingAccountWithId:v16];
+          delegate = [(NNMKResendScheduler *)self delegate];
+          [delegate resendScheduler:self didRequestRetrySendingAccountWithId:v16];
         }
 
         else
         {
-          v21 = [(NNMKResendScheduler *)self delegate];
-          [v21 resendScheduler:self didRequestRetrySendingDeletionForAccountWithId:v16 resendInterval:a5];
+          delegate = [(NNMKResendScheduler *)self delegate];
+          [delegate resendScheduler:self didRequestRetrySendingDeletionForAccountWithId:v16 resendInterval:interval];
         }
 
         ++v15;
@@ -940,29 +940,29 @@ LABEL_12:
     while (v13);
   }
 
-  v22 = [(NNMKResendScheduler *)self deviceRegistry];
-  [v22 endUpdates];
+  deviceRegistry4 = [(NNMKResendScheduler *)self deviceRegistry];
+  [deviceRegistry4 endUpdates];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resendSendingProgressForComposedMessageWithId:(id)a3 forIDSIdentifier:(id)a4 newResendInterval:(unint64_t)a5
+- (void)_resendSendingProgressForComposedMessageWithId:(id)id forIDSIdentifier:(id)identifier newResendInterval:(unint64_t)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  identifierCopy = identifier;
   v10 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543618;
-    v17 = v8;
+    v17 = idCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = identifierCopy;
     _os_log_impl(&dword_25B19F000, v10, OS_LOG_TYPE_DEFAULT, "Resending progress for composed message (Id: %{public}@ - IDS Identifier: %{public}@)...", &v16, 0x16u);
   }
 
-  v11 = [(NNMKResendScheduler *)self deviceRegistry];
-  v12 = [v11 progressForComposedMessageWithId:v8];
+  deviceRegistry = [(NNMKResendScheduler *)self deviceRegistry];
+  v12 = [deviceRegistry progressForComposedMessageWithId:idCopy];
 
   if (v12)
   {
@@ -974,8 +974,8 @@ LABEL_12:
     v13 = 0x7FFFFFFFLL;
   }
 
-  v14 = [(NNMKResendScheduler *)self delegate];
-  [v14 resendScheduler:self didRequestRetrySendingComposeMessageProgress:v13 messageId:v8 resendInterval:a5];
+  delegate = [(NNMKResendScheduler *)self delegate];
+  [delegate resendScheduler:self didRequestRetrySendingComposeMessageProgress:v13 messageId:idCopy resendInterval:interval];
 
   v15 = *MEMORY[0x277D85DE8];
 }

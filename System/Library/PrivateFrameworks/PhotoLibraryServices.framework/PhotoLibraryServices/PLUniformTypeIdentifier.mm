@@ -1,21 +1,21 @@
 @interface PLUniformTypeIdentifier
-+ (BOOL)isPlayableVideoTypeIdentifierString:(id)a3;
++ (BOOL)isPlayableVideoTypeIdentifierString:(id)string;
 + (id)jpegUniformTypeIdentifier;
 + (id)plistUniformTypeIdentifier;
 + (id)quicktimeUniformTypeIdentifier;
-+ (id)utiWithCompactRepresentation:(id)a3 conformanceHint:(signed __int16)a4;
-+ (id)utiWithIdentifier:(id)a3;
++ (id)utiWithCompactRepresentation:(id)representation conformanceHint:(signed __int16)hint;
++ (id)utiWithIdentifier:(id)identifier;
 - (BOOL)conformsToAudio;
 - (BOOL)conformsToData;
 - (BOOL)isDynamic;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUniformTypeIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUniformTypeIdentifier:(id)identifier;
 - (BOOL)isLosslessEncoding;
 - (BOOL)isPlayableVideo;
 - (BOOL)isPrimaryImageFormat;
 - (NSString)compactRepresentation;
-- (PLUniformTypeIdentifier)initWithIdentifier:(id)a3 conformanceHint:(signed __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PLUniformTypeIdentifier)initWithIdentifier:(id)identifier conformanceHint:(signed __int16)hint;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)preferredExtension;
 - (unint64_t)hash;
@@ -26,11 +26,11 @@
 - (BOOL)isDynamic
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PLUniformTypeIdentifier *)self identifier];
-  v4 = [v2 typeWithIdentifier:v3];
-  v5 = [v4 isDynamic];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v4 = [v2 typeWithIdentifier:identifier];
+  isDynamic = [v4 isDynamic];
 
-  return v5;
+  return isDynamic;
 }
 
 - (BOOL)isLosslessEncoding
@@ -55,31 +55,31 @@
 
 - (id)preferredExtension
 {
-  v2 = [(PLUniformTypeIdentifier *)self identifier];
-  v3 = [PLManagedAsset preferredFileExtensionForType:v2];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v3 = [PLManagedAsset preferredFileExtensionForType:identifier];
 
   return v3;
 }
 
 - (BOOL)conformsToData
 {
-  v3 = [(PLUniformTypeIdentifier *)self identifier];
-  v4 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-  v5 = [v4 identifier];
-  if ([v3 isEqualToString:v5])
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+  identifier2 = [supplementalResourceAAEType identifier];
+  if ([identifier isEqualToString:identifier2])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(PLUniformTypeIdentifier *)self identifier];
-    v8 = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
-    v9 = [v8 identifier];
-    v6 = [v7 isEqualToString:v9];
+    identifier3 = [(PLUniformTypeIdentifier *)self identifier];
+    supplementalResourceXMPType = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
+    identifier4 = [supplementalResourceXMPType identifier];
+    v6 = [identifier3 isEqualToString:identifier4];
   }
 
-  v10 = [(PLUniformTypeIdentifier *)self identifier];
+  identifier5 = [(PLUniformTypeIdentifier *)self identifier];
   if (v6)
   {
     v11 = 1;
@@ -87,7 +87,7 @@
 
   else
   {
-    v12 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v10];
+    v12 = [MEMORY[0x1E69C08F0] typeWithIdentifier:identifier5];
     v11 = [v12 conformsToType:*MEMORY[0x1E6982D60]];
   }
 
@@ -97,8 +97,8 @@
 - (BOOL)conformsToAudio
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PLUniformTypeIdentifier *)self identifier];
-  v4 = [v2 typeWithIdentifier:v3];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v4 = [v2 typeWithIdentifier:identifier];
   v5 = [v4 conformsToType:*MEMORY[0x1E6982CD0]];
 
   return v5;
@@ -107,33 +107,33 @@
 - (BOOL)isPlayableVideo
 {
   v3 = objc_opt_class();
-  v4 = [(PLUniformTypeIdentifier *)self identifier];
-  LOBYTE(v3) = [v3 isPlayableVideoTypeIdentifierString:v4];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  LOBYTE(v3) = [v3 isPlayableVideoTypeIdentifierString:identifier];
 
   return v3;
 }
 
 - (BOOL)isPrimaryImageFormat
 {
-  v2 = [(PLUniformTypeIdentifier *)self identifier];
-  v3 = [PLManagedAsset isPrimaryImageFormatForUTI:v2];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v3 = [PLManagedAsset isPrimaryImageFormatForUTI:identifier];
 
   return v3;
 }
 
 - (NSString)compactRepresentation
 {
-  v2 = [(PLUniformTypeIdentifier *)self identifier];
-  v3 = [PLUniformTypeIdentifierIntegratedLookup compactRepresentationForIdentifier:v2];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v3 = [PLUniformTypeIdentifierIntegratedLookup compactRepresentationForIdentifier:identifier];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PLUniformTypeIdentifier alloc];
-  v5 = [(PLUniformTypeIdentifier *)self identifier];
-  v6 = [(PLUniformTypeIdentifier *)v4 initWithIdentifier:v5 conformanceHint:[(PLUniformTypeIdentifier *)self conformanceHint]];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v6 = [(PLUniformTypeIdentifier *)v4 initWithIdentifier:identifier conformanceHint:[(PLUniformTypeIdentifier *)self conformanceHint]];
 
   return v6;
 }
@@ -144,24 +144,24 @@
   v8.receiver = self;
   v8.super_class = PLUniformTypeIdentifier;
   v4 = [(PLUniformTypeIdentifier *)&v8 description];
-  v5 = [(PLUniformTypeIdentifier *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PLUniformTypeIdentifier *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -169,42 +169,42 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(PLUniformTypeIdentifier *)self isEqualToUniformTypeIdentifier:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(PLUniformTypeIdentifier *)self isEqualToUniformTypeIdentifier:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToUniformTypeIdentifier:(id)a3
+- (BOOL)isEqualToUniformTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PLUniformTypeIdentifier *)self identifier];
-  v6 = [v4 identifier];
+  identifierCopy = identifier;
+  identifier = [(PLUniformTypeIdentifier *)self identifier];
+  identifier2 = [identifierCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(identifierCopy) = [identifier isEqualToString:identifier2];
+  return identifierCopy;
 }
 
-- (PLUniformTypeIdentifier)initWithIdentifier:(id)a3 conformanceHint:(signed __int16)a4
+- (PLUniformTypeIdentifier)initWithIdentifier:(id)identifier conformanceHint:(signed __int16)hint
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PLUniformTypeIdentifier;
   v8 = [(PLUniformTypeIdentifier *)&v13 init];
   if (v8)
   {
-    if (![v7 length])
+    if (![identifierCopy length])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"PLUniformTypeIdentifier.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"PLUniformTypeIdentifier.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"identifier.length > 0"}];
     }
 
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_conformanceHint = a4;
-    v8->_wellKnownFileType = PLFileTypeFromIdentifier(v7);
+    v8->_conformanceHint = hint;
+    v8->_wellKnownFileType = PLFileTypeFromIdentifier(identifierCopy);
   }
 
   return v8;
@@ -212,40 +212,40 @@
 
 + (id)plistUniformTypeIdentifier
 {
-  v3 = [*MEMORY[0x1E6982F68] identifier];
-  v4 = [a1 utiWithIdentifier:v3];
+  identifier = [*MEMORY[0x1E6982F68] identifier];
+  v4 = [self utiWithIdentifier:identifier];
 
   return v4;
 }
 
 + (id)quicktimeUniformTypeIdentifier
 {
-  v3 = [*MEMORY[0x1E6982F80] identifier];
-  v4 = [a1 utiWithIdentifier:v3];
+  identifier = [*MEMORY[0x1E6982F80] identifier];
+  v4 = [self utiWithIdentifier:identifier];
 
   return v4;
 }
 
 + (id)jpegUniformTypeIdentifier
 {
-  v3 = [*MEMORY[0x1E6982E58] identifier];
-  v4 = [a1 utiWithIdentifier:v3];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v4 = [self utiWithIdentifier:identifier];
 
   return v4;
 }
 
-+ (BOOL)isPlayableVideoTypeIdentifierString:(id)a3
++ (BOOL)isPlayableVideoTypeIdentifierString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
     v3 = [MEMORY[0x1E69C08F0] typeWithIdentifier:?];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [MEMORY[0x1E69C08F0] supportedMovieTypes];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    supportedMovieTypes = [MEMORY[0x1E69C08F0] supportedMovieTypes];
+    v5 = [supportedMovieTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -255,7 +255,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(supportedMovieTypes);
           }
 
           if ([v3 conformsToType:*(*(&v9 + 1) + 8 * i)])
@@ -265,7 +265,7 @@
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [supportedMovieTypes countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           continue;
@@ -286,16 +286,16 @@ LABEL_12:
   return v5;
 }
 
-+ (id)utiWithCompactRepresentation:(id)a3 conformanceHint:(signed __int16)a4
++ (id)utiWithCompactRepresentation:(id)representation conformanceHint:(signed __int16)hint
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  hintCopy = hint;
+  representationCopy = representation;
+  if ([representationCopy length])
   {
-    v7 = [PLUniformTypeIdentifierIntegratedLookup identifierFromCompactRepresentation:v6];
+    v7 = [PLUniformTypeIdentifierIntegratedLookup identifierFromCompactRepresentation:representationCopy];
     if ([v7 length])
     {
-      v8 = [[a1 alloc] initWithIdentifier:v7 conformanceHint:v4];
+      v8 = [[self alloc] initWithIdentifier:v7 conformanceHint:hintCopy];
     }
 
     else
@@ -312,12 +312,12 @@ LABEL_12:
   return v8;
 }
 
-+ (id)utiWithIdentifier:(id)a3
++ (id)utiWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [[a1 alloc] initWithIdentifier:v4 conformanceHint:{+[PLUniformTypeIdentifierIntegratedLookup conformanceHintForIdentifier:](PLUniformTypeIdentifierIntegratedLookup, "conformanceHintForIdentifier:", v4)}];
+    v5 = [[self alloc] initWithIdentifier:identifierCopy conformanceHint:{+[PLUniformTypeIdentifierIntegratedLookup conformanceHintForIdentifier:](PLUniformTypeIdentifierIntegratedLookup, "conformanceHintForIdentifier:", identifierCopy)}];
   }
 
   else

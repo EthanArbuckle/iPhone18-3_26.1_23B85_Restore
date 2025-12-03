@@ -1,8 +1,8 @@
 @interface VCPHomeKitAnalysisServiceTask
-+ (id)taskForFragmentData:(id)a3 withProperties:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6;
-+ (id)taskForFragmentSurface:(id)a3 withProperties:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (VCPHomeKitAnalysisServiceTask)initWithFragmentData:(id)a3 properties:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (VCPHomeKitAnalysisServiceTask)initWithFragmentSurface:(id)a3 properties:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
++ (id)taskForFragmentData:(id)data withProperties:(id)properties andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (id)taskForFragmentSurface:(id)surface withProperties:(id)properties andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (VCPHomeKitAnalysisServiceTask)initWithFragmentData:(id)data properties:(id)properties progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (VCPHomeKitAnalysisServiceTask)initWithFragmentSurface:(id)surface properties:(id)properties progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (int)run;
 - (void)cancel;
 - (void)runFragmentLevelAnalysis;
@@ -11,24 +11,24 @@
 
 @implementation VCPHomeKitAnalysisServiceTask
 
-- (VCPHomeKitAnalysisServiceTask)initWithFragmentData:(id)a3 properties:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (VCPHomeKitAnalysisServiceTask)initWithFragmentData:(id)data properties:(id)properties progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v29.receiver = self;
   v29.super_class = VCPHomeKitAnalysisServiceTask;
   v15 = [(VCPHomeKitAnalysisServiceTask *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fragmentData, a3);
+    objc_storeStrong(&v15->_fragmentData, data);
     *&v16->_cancel = 0;
     v16->_requestID = -1;
-    if (v13)
+    if (handlerCopy)
     {
-      v17 = v13;
+      v17 = handlerCopy;
     }
 
     else
@@ -40,9 +40,9 @@
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v18;
 
-    if (v14)
+    if (completionHandlerCopy)
     {
-      v20 = v14;
+      v20 = completionHandlerCopy;
     }
 
     else
@@ -54,7 +54,7 @@
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v21;
 
-    objc_storeStrong(&v16->_properties, a4);
+    objc_storeStrong(&v16->_properties, properties);
     v23 = objc_alloc_init(sub_100024A98());
     analysisService = v16->_analysisService;
     v16->_analysisService = v23;
@@ -69,24 +69,24 @@
   return v16;
 }
 
-- (VCPHomeKitAnalysisServiceTask)initWithFragmentSurface:(id)a3 properties:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (VCPHomeKitAnalysisServiceTask)initWithFragmentSurface:(id)surface properties:(id)properties progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v29.receiver = self;
   v29.super_class = VCPHomeKitAnalysisServiceTask;
   v15 = [(VCPHomeKitAnalysisServiceTask *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fragmentSurface, a3);
+    objc_storeStrong(&v15->_fragmentSurface, surface);
     *&v16->_cancel = 0;
     v16->_requestID = -1;
-    if (v13)
+    if (handlerCopy)
     {
-      v17 = v13;
+      v17 = handlerCopy;
     }
 
     else
@@ -98,9 +98,9 @@
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v18;
 
-    if (v14)
+    if (completionHandlerCopy)
     {
-      v20 = v14;
+      v20 = completionHandlerCopy;
     }
 
     else
@@ -112,7 +112,7 @@
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v21;
 
-    objc_storeStrong(&v16->_properties, a4);
+    objc_storeStrong(&v16->_properties, properties);
     v23 = objc_alloc_init(sub_100024A98());
     analysisService = v16->_analysisService;
     v16->_analysisService = v23;
@@ -127,15 +127,15 @@
   return v16;
 }
 
-+ (id)taskForFragmentData:(id)a3 withProperties:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskForFragmentData:(id)data withProperties:(id)properties andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  dataCopy = data;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (dataCopy)
   {
-    v13 = [objc_alloc(objc_opt_class()) initWithFragmentData:v9 properties:v10 progressHandler:v11 completionHandler:v12];
+    v13 = [objc_alloc(objc_opt_class()) initWithFragmentData:dataCopy properties:propertiesCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
@@ -146,15 +146,15 @@
   return v13;
 }
 
-+ (id)taskForFragmentSurface:(id)a3 withProperties:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskForFragmentSurface:(id)surface withProperties:(id)properties andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  surfaceCopy = surface;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (surfaceCopy)
   {
-    v13 = [objc_alloc(objc_opt_class()) initWithFragmentSurface:v9 properties:v10 progressHandler:v11 completionHandler:v12];
+    v13 = [objc_alloc(objc_opt_class()) initWithFragmentSurface:surfaceCopy properties:propertiesCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
@@ -207,11 +207,11 @@
 
   v37 = kCVPixelBufferPixelFormatTypeKey;
   v38 = &off_100294320;
-  v20 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1, context];
+  context = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1, context];
   v18 = [VCPInMemoryAVAsset assetWithData:self->_fragmentData];
   v19 = [v18 vcp_firstEnabledTrackWithMediaType:AVMediaTypeVideo];
   v4 = [AVAssetReader assetReaderWithAsset:v18 error:0];
-  v5 = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:v19 outputSettings:v20];
+  v5 = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:v19 outputSettings:context];
   if (([v4 canAddOutput:v5] & 1) != 0 && (objc_msgSend(v4, "addOutput:", v5), objc_msgSend(v4, "startReading")))
   {
     v31 = 0;

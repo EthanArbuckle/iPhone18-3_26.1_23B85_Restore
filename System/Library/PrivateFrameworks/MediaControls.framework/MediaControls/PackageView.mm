@@ -1,15 +1,15 @@
 @interface PackageView
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)mru_applyVisualStylingWith:(id)a3;
-- (void)mt_applyVisualStyling:(id)a3;
+- (void)mru_applyVisualStylingWith:(id)with;
+- (void)mt_applyVisualStyling:(id)styling;
 @end
 
 @implementation PackageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A211C0D8();
 }
 
@@ -18,9 +18,9 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaControls11PackageView_packageLayer);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = [v2 size];
-    (*((*MEMORY[0x1E69E7D40] & v3->super.super.super.isa) + 0xA8))(v4);
+    (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.isa) + 0xA8))(v4);
     sub_1A22E6BF8();
     v6 = v5;
     v8 = v7;
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (void)mt_applyVisualStyling:(id)a3
+- (void)mt_applyVisualStyling:(id)styling
 {
-  if (a3)
+  if (styling)
   {
     v5 = swift_allocObject();
     *(v5 + 16) = self;
@@ -55,10 +55,10 @@
     v10[2] = sub_1A22E03B0;
     v10[3] = &block_descriptor_23;
     v7 = _Block_copy(v10);
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    stylingCopy = styling;
 
-    [v9 applyToView:v8 withColorBlock:v7];
+    [stylingCopy applyToView:selfCopy withColorBlock:v7];
     _Block_release(v7);
   }
 
@@ -68,12 +68,12 @@
   }
 }
 
-- (void)mru_applyVisualStylingWith:(id)a3
+- (void)mru_applyVisualStylingWith:(id)with
 {
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xC8);
-  v6 = a3;
-  v7 = self;
-  v5(a3);
+  withCopy = with;
+  selfCopy = self;
+  v5(with);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface _NSSharedKeySetS
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NSSharedKeySetS)init;
 - (uint64_t)allKeys;
-- (uint64_t)keyAtIndex:(uint64_t)a1;
+- (uint64_t)keyAtIndex:(uint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)indexForBytes:(char *)a3 length:(unint64_t)a4;
-- (unint64_t)indexForKey:(unsigned __int16 *)a3 length:(unint64_t)a4;
+- (unint64_t)indexForBytes:(char *)bytes length:(unint64_t)length;
+- (unint64_t)indexForKey:(unsigned __int16 *)key length:(unint64_t)length;
 - (void)dealloc;
-- (void)initWithConfiguration:(void *)a1;
+- (void)initWithConfiguration:(void *)configuration;
 @end
 
 @implementation _NSSharedKeySetS
@@ -29,15 +29,15 @@
   return self;
 }
 
-- (void)initWithConfiguration:(void *)a1
+- (void)initWithConfiguration:(void *)configuration
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = configuration;
   v8.super_class = _NSSharedKeySetS;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -73,38 +73,38 @@
 
 - (uint64_t)allKeys
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a1[12])
+  if (self[12])
   {
     LODWORD(v2) = 0;
-    v3 = a1;
+    selfCopy = self;
     do
     {
-      v2 = (v3[12] + v2);
-      v3 = *(v3 + 12);
+      v2 = (selfCopy[12] + v2);
+      selfCopy = *(selfCopy + 12);
     }
 
-    while (v3);
+    while (selfCopy);
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v2];
     v5 = 0;
-    v6 = (a1[26] << (a1[27] == 0));
+    v6 = (self[26] << (self[27] == 0));
     v7 = v2 - 1;
     do
     {
       v8 = MEMORY[0x1E695DEF0];
-      if (a1[27])
+      if (self[27])
       {
-        if (a1[12])
+        if (self[12])
         {
           v9 = v5;
-          v10 = a1;
+          selfCopy2 = self;
           while (1)
           {
-            v11 = v10[12];
+            v11 = selfCopy2[12];
             v12 = v9 >= v11;
             v13 = v9 - v11;
             if (!v12)
@@ -112,15 +112,15 @@
               break;
             }
 
-            v10 = *(v10 + 12);
+            selfCopy2 = *(selfCopy2 + 12);
             v9 = v13;
-            if (!v10)
+            if (!selfCopy2)
             {
               goto LABEL_12;
             }
           }
 
-          v14 = *(v10 + 11) + 3 * v9;
+          v14 = *(selfCopy2 + 11) + 3 * v9;
         }
 
         else
@@ -132,7 +132,7 @@ LABEL_12:
 
       else
       {
-        v14 = [(_NSSharedKeySetS *)a1 keyAtIndex:v5];
+        v14 = [(_NSSharedKeySetS *)self keyAtIndex:v5];
       }
 
       [v4 addObject:{objc_msgSend(v8, "dataWithBytes:length:", v14, v6)}];
@@ -148,14 +148,14 @@ LABEL_12:
   return [v16 array];
 }
 
-- (uint64_t)keyAtIndex:(uint64_t)a1
+- (uint64_t)keyAtIndex:(uint64_t)index
 {
   v2 = 0;
-  if (a1 && a2 != 0x7FFFFFFFFFFFFFFFLL && *(a1 + 48))
+  if (index && a2 != 0x7FFFFFFFFFFFFFFFLL && *(index + 48))
   {
     while (1)
     {
-      v3 = *(a1 + 48);
+      v3 = *(index + 48);
       v4 = a2 >= v3;
       v5 = a2 - v3;
       if (!v4)
@@ -163,23 +163,23 @@ LABEL_12:
         break;
       }
 
-      a1 = *(a1 + 96);
+      index = *(index + 96);
       a2 = v5;
-      if (!a1)
+      if (!index)
       {
         return 0;
       }
     }
 
-    v6 = *(a1 + 104);
+    v6 = *(index + 104);
     switch(v6)
     {
       case 3:
-        return *(a1 + 80) + 6 * a2;
+        return *(index + 80) + 6 * a2;
       case 2:
-        return *(a1 + 72) + 4 * a2;
+        return *(index + 72) + 4 * a2;
       case 1:
-        return *(a1 + 64) + 2 * a2;
+        return *(index + 64) + 2 * a2;
       default:
         return 0;
     }
@@ -188,40 +188,40 @@ LABEL_12:
   return v2;
 }
 
-- (unint64_t)indexForKey:(unsigned __int16 *)a3 length:(unint64_t)a4
+- (unint64_t)indexForKey:(unsigned __int16 *)key length:(unint64_t)length
 {
   v30 = *MEMORY[0x1E69E9840];
   keyLen = self->_keyLen;
-  if (keyLen != a4)
+  if (keyLen != length)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = self;
+  selfCopy = self;
   if (!self->_numKey)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = a4;
-  v8 = a3;
-  if (a4 >= 4)
+  lengthCopy2 = length;
+  keyCopy2 = key;
+  if (length >= 4)
   {
-    v8 = a3;
-    v7 = a4;
+    keyCopy2 = key;
+    lengthCopy2 = length;
     do
     {
-      v7 = 67503105 * v7 + 16974593 * *v8 + 66049 * v8[1] + 257 * v8[2] + v8[3];
-      v8 += 4;
+      lengthCopy2 = 67503105 * lengthCopy2 + 16974593 * *keyCopy2 + 66049 * keyCopy2[1] + 257 * keyCopy2[2] + keyCopy2[3];
+      keyCopy2 += 4;
     }
 
-    while (v8 < &a3[a4 & 0xFFFFFFFC]);
+    while (keyCopy2 < &key[length & 0xFFFFFFFC]);
   }
 
-  while (v8 < &a3[a4])
+  while (keyCopy2 < &key[length])
   {
-    v9 = *v8++;
-    v7 = 257 * v7 + v9;
+    v9 = *keyCopy2++;
+    lengthCopy2 = 257 * lengthCopy2 + v9;
   }
 
   if (!self)
@@ -230,13 +230,13 @@ LABEL_12:
   }
 
   v10 = 0;
-  v11 = (v7 << a4) + v7;
+  v11 = (lengthCopy2 << length) + lengthCopy2;
   M = self->_M;
-  v13 = 2 * a4;
+  v13 = 2 * length;
   while (1)
   {
-    seeds = v5->_seeds;
-    factor = v5->_factor;
+    seeds = selfCopy->_seeds;
+    factor = selfCopy->_factor;
     v16 = *seeds - 559038733;
     HIDWORD(v17) = v16;
     LODWORD(v17) = v16;
@@ -266,34 +266,34 @@ LABEL_12:
       goto LABEL_33;
     }
 
-    v24 = v29[((v5->_g[(2 * v21) >> 3] >> (v22 & 7)) ^ (v5->_g[v20 >> 3] >> (v20 & 6))) & 1];
+    v24 = v29[((selfCopy->_g[(2 * v21) >> 3] >> (v22 & 7)) ^ (selfCopy->_g[v20 >> 3] >> (v20 & 6))) & 1];
     if (v24 >= M)
     {
       goto LABEL_33;
     }
 
-    select = v5->_select;
+    select = selfCopy->_select;
     if (select == 2)
     {
-      v26 = *(v5->_rankTable + v24);
+      v26 = *(selfCopy->_rankTable + v24);
     }
 
     else if (select == 1)
     {
-      v26 = *(v5->_rankTable + v24);
+      v26 = *(selfCopy->_rankTable + v24);
     }
 
     else
     {
-      if (v5->_select)
+      if (selfCopy->_select)
       {
         goto LABEL_33;
       }
 
-      v26 = *(v5->_rankTable + v24);
+      v26 = *(selfCopy->_rankTable + v24);
     }
 
-    if (v26 >= v5->_numKey)
+    if (v26 >= selfCopy->_numKey)
     {
       goto LABEL_33;
     }
@@ -303,16 +303,16 @@ LABEL_12:
       break;
     }
 
-    v27 = v5->_keys3[v26];
+    v27 = selfCopy->_keys3[v26];
     if (v27)
     {
       goto LABEL_31;
     }
 
 LABEL_33:
-    v10 += v5->_numKey;
-    v5 = v5->_subSharedKeySet;
-    if (!v5)
+    v10 += selfCopy->_numKey;
+    selfCopy = selfCopy->_subSharedKeySet;
+    if (!selfCopy)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -320,7 +320,7 @@ LABEL_33:
 
   if (keyLen == 2)
   {
-    v27 = v5->_keys2[v26];
+    v27 = selfCopy->_keys2[v26];
     if (v27)
     {
       goto LABEL_31;
@@ -334,14 +334,14 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v27 = v5->_keys1[v26];
+  v27 = selfCopy->_keys1[v26];
   if (!v27)
   {
     goto LABEL_33;
   }
 
 LABEL_31:
-  if (v27 != a3 && memcmp(a3, v27, v13))
+  if (v27 != key && memcmp(key, v27, v13))
   {
     goto LABEL_33;
   }
@@ -349,45 +349,45 @@ LABEL_31:
   return v26 + v10;
 }
 
-- (unint64_t)indexForBytes:(char *)a3 length:(unint64_t)a4
+- (unint64_t)indexForBytes:(char *)bytes length:(unint64_t)length
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (self->_keyLen != a4)
+  if (self->_keyLen != length)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = self;
+  selfCopy = self;
   if (!self->_numKey)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = a3;
-  if (a4 >= 4)
+  bytesCopy3 = bytes;
+  lengthCopy2 = length;
+  bytesCopy4 = bytes;
+  if (length >= 4)
   {
-    v7 = a3;
-    v9 = a3;
-    v8 = a4;
+    bytesCopy3 = bytes;
+    bytesCopy4 = bytes;
+    lengthCopy2 = length;
     do
     {
-      v8 = 67503105 * v8 + 16974593 * *v9 + 66049 * v9[1] + (v9[2] | (v9[2] << 8)) + v9[3];
-      v9 += 4;
-      v7 += 4;
+      lengthCopy2 = 67503105 * lengthCopy2 + 16974593 * *bytesCopy4 + 66049 * bytesCopy4[1] + (bytesCopy4[2] | (bytesCopy4[2] << 8)) + bytesCopy4[3];
+      bytesCopy4 += 4;
+      bytesCopy3 += 4;
     }
 
-    while (v9 < &a3[a4 & 0xFFFFFFFC]);
+    while (bytesCopy4 < &bytes[length & 0xFFFFFFFC]);
   }
 
-  if (v9 < &a3[a4])
+  if (bytesCopy4 < &bytes[length])
   {
-    v10 = (&a3[a4] - v7);
+    v10 = (&bytes[length] - bytesCopy3);
     do
     {
-      v11 = *v9++;
-      v8 = 257 * v8 + v11;
+      v11 = *bytesCopy4++;
+      lengthCopy2 = 257 * lengthCopy2 + v11;
       --v10;
     }
 
@@ -400,11 +400,11 @@ LABEL_31:
   }
 
   v12 = 0;
-  v13 = (v8 << a4) + v8;
+  v13 = (lengthCopy2 << length) + lengthCopy2;
   while (1)
   {
-    seeds = v4->_seeds;
-    factor = v4->_factor;
+    seeds = selfCopy->_seeds;
+    factor = selfCopy->_factor;
     v16 = *seeds - 559038733;
     HIDWORD(v17) = v16;
     LODWORD(v17) = v16;
@@ -428,53 +428,53 @@ LABEL_31:
     v21 = HIDWORD(v17) % factor;
     v29[0] = v20;
     v29[1] = (2 * v21) | 1;
-    v22 = v29[((v4->_g[(2 * v21) >> 3] >> ((2 * v21) & 6 | 1)) ^ (v4->_g[v20 >> 3] >> (v20 & 6))) & 1];
-    select = v4->_select;
-    if (!v4->_select)
+    v22 = v29[((selfCopy->_g[(2 * v21) >> 3] >> ((2 * v21) & 6 | 1)) ^ (selfCopy->_g[v20 >> 3] >> (v20 & 6))) & 1];
+    select = selfCopy->_select;
+    if (!selfCopy->_select)
     {
       break;
     }
 
     if (select == 1)
     {
-      v24 = *(v4->_rankTable + v22);
+      v24 = *(selfCopy->_rankTable + v22);
       goto LABEL_17;
     }
 
     if (select == 2)
     {
-      v24 = *(v4->_rankTable + v22);
+      v24 = *(selfCopy->_rankTable + v22);
       goto LABEL_17;
     }
 
-    LODWORD(numKey) = v4->_numKey;
+    LODWORD(numKey) = selfCopy->_numKey;
 LABEL_23:
     v12 += numKey;
-    v4 = v4->_subSharedKeySet;
-    if (!v4)
+    selfCopy = selfCopy->_subSharedKeySet;
+    if (!selfCopy)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  v24 = *(v4->_rankTable + v22);
+  v24 = *(selfCopy->_rankTable + v22);
 LABEL_17:
-  numKey = v4->_numKey;
+  numKey = selfCopy->_numKey;
   if (v24 >= numKey)
   {
     goto LABEL_23;
   }
 
-  ckeys = v4->_ckeys;
+  ckeys = selfCopy->_ckeys;
   if (!ckeys)
   {
     goto LABEL_23;
   }
 
   v27 = ckeys[v24];
-  if (v27 != a3)
+  if (v27 != bytes)
   {
-    if (memcmp(a3, v27, a4))
+    if (memcmp(bytes, v27, length))
     {
       goto LABEL_23;
     }
@@ -489,25 +489,25 @@ LABEL_17:
   v2 = 0;
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
     do
     {
-      v2 += v3->_numKey;
-      v3 = v3->_subSharedKeySet;
+      v2 += selfCopy->_numKey;
+      selfCopy = selfCopy->_subSharedKeySet;
     }
 
-    while (v3);
+    while (selfCopy);
   }
 
   v4 = v2;
-  v5 = [(_NSSharedKeySetS *)self allKeys];
+  allKeys = [(_NSSharedKeySetS *)self allKeys];
   v6 = malloc_type_calloc(v2, 8uLL, 0x100004000313F17uLL);
   bzero(v6, 8 * v2);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -520,14 +520,14 @@ LABEL_17:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         *(v6 + v9++) = [*(*(&v19 + 1) + 8 * v11++) hash];
       }
 
       while (v8 != v11);
-      v8 = [v5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v19 objects:v18 count:16];
     }
 
     while (v8);
@@ -559,17 +559,17 @@ LABEL_17:
   return v16 + v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v21) = 1;
   }
 
   else
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_51;
     }
@@ -583,47 +583,47 @@ LABEL_17:
     v5 = 0;
     if (self)
     {
-      v6 = self;
+      selfCopy = self;
       do
       {
-        v5 += v6->_numKey;
-        v6 = v6->_subSharedKeySet;
+        v5 += selfCopy->_numKey;
+        selfCopy = selfCopy->_subSharedKeySet;
       }
 
-      while (v6);
+      while (selfCopy);
     }
 
     v7 = 0;
-    v8 = a3;
+    equalCopy = equal;
     do
     {
-      v7 += v8[12];
-      v8 = *(v8 + 12);
+      v7 += equalCopy[12];
+      equalCopy = *(equalCopy + 12);
     }
 
-    while (v8);
+    while (equalCopy);
     if (self)
     {
-      if (self->_keyLen != *(a3 + 26) || v5 != v7)
+      if (self->_keyLen != *(equal + 26) || v5 != v7)
       {
         goto LABEL_51;
       }
 
       v10 = 0;
-      v11 = self;
+      selfCopy2 = self;
       do
       {
         ++v10;
-        v11 = v11->_subSharedKeySet;
+        selfCopy2 = selfCopy2->_subSharedKeySet;
       }
 
-      while (v11);
+      while (selfCopy2);
     }
 
     else
     {
       v10 = 0;
-      if (*(a3 + 26))
+      if (*(equal + 26))
       {
         v37 = 0;
       }
@@ -639,14 +639,14 @@ LABEL_17:
       }
     }
 
-    v12 = a3;
+    equalCopy2 = equal;
     do
     {
-      v12 = v12[12];
+      equalCopy2 = equalCopy2[12];
       --v10;
     }
 
-    while (v12);
+    while (equalCopy2);
     if (v10)
     {
       goto LABEL_51;
@@ -655,23 +655,23 @@ LABEL_17:
     if (self)
     {
       v13 = 0;
-      v14 = self;
+      selfCopy3 = self;
       do
       {
-        v13 += v14->_numKey;
-        v14 = v14->_subSharedKeySet;
+        v13 += selfCopy3->_numKey;
+        selfCopy3 = selfCopy3->_subSharedKeySet;
       }
 
-      while (v14);
-      v15 = self;
+      while (selfCopy3);
+      selfCopy4 = self;
       do
       {
-        LODWORD(v14) = v15->_numKey + v14;
-        v15 = v15->_subSharedKeySet;
+        LODWORD(selfCopy3) = selfCopy4->_numKey + selfCopy3;
+        selfCopy4 = selfCopy4->_subSharedKeySet;
       }
 
-      while (v15);
-      if (v13 != v14)
+      while (selfCopy4);
+      if (v13 != selfCopy3)
       {
         goto LABEL_51;
       }
@@ -684,10 +684,10 @@ LABEL_17:
       v16 = 0;
     }
 
-    v17 = [(_NSSharedKeySetS *)self allKeys];
-    v18 = [(_NSSharedKeySetS *)a3 allKeys];
-    v19 = [v17 count];
-    if (v19 != [v18 count])
+    allKeys = [(_NSSharedKeySetS *)self allKeys];
+    allKeys2 = [(_NSSharedKeySetS *)equal allKeys];
+    v19 = [allKeys count];
+    if (v19 != [allKeys2 count])
     {
 LABEL_51:
       LOBYTE(v21) = 0;
@@ -699,13 +699,13 @@ LABEL_51:
     if (v21)
     {
       v22 = v21;
-      obj = v18;
+      obj = allKeys2;
       v39 = v16;
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v23 = [v17 countByEnumeratingWithState:&v48 objects:v47 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v48 objects:v47 count:16];
       if (v23)
       {
         v24 = v23;
@@ -718,18 +718,18 @@ LABEL_31:
         {
           if (*v49 != v26)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys);
           }
 
           [*(*(&v48 + 1) + 8 * v27) getBytes:v22 length:v20];
-          if ([a3 indexForKey:v22 length:self->_keyLen] == 0x7FFFFFFFFFFFFFFFLL)
+          if ([equal indexForKey:v22 length:self->_keyLen] == 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_50;
           }
 
           if (v24 == ++v27)
           {
-            v24 = [v17 countByEnumeratingWithState:&v48 objects:v47 count:16];
+            v24 = [allKeys countByEnumeratingWithState:&v48 objects:v47 count:16];
             v25 = v40;
             if (v24)
             {
@@ -802,7 +802,7 @@ LABEL_54:
       v33 = 0;
       do
       {
-        v34 = [(_NSSharedKeySetS *)a3 keyAtIndex:v33];
+        v34 = [(_NSSharedKeySetS *)equal keyAtIndex:v33];
         v35 = [(_NSSharedKeySetS *)self keyAtIndex:?];
         if (v34 && v35)
         {
@@ -821,8 +821,8 @@ LABEL_54:
       }
 
       while (v33 <= v39);
-      v36 = [(_NSSharedKeySetS *)self isEmpty];
-      LOBYTE(v21) = v36 ^ [a3 isEmpty] ^ 1;
+      isEmpty = [(_NSSharedKeySetS *)self isEmpty];
+      LOBYTE(v21) = isEmpty ^ [equal isEmpty] ^ 1;
     }
   }
 

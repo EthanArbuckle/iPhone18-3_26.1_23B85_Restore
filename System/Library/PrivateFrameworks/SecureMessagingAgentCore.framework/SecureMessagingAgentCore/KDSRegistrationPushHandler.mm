@@ -1,6 +1,6 @@
 @interface KDSRegistrationPushHandler
 - (_TtC24SecureMessagingAgentCore26KDSRegistrationPushHandler)init;
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7;
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context;
 @end
 
 @implementation KDSRegistrationPushHandler
@@ -20,28 +20,28 @@
   return [(KDSRegistrationPushHandler *)&v7 init];
 }
 
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v18 - v11;
-  if (a4)
+  if (message)
   {
-    a4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    message = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v13 = type metadata accessor for TaskPriority();
   (*(*(v13 - 8) + 56))(v12, 1, 1, v13);
   type metadata accessor for RegistrationActor();
-  v14 = self;
+  selfCopy = self;
   v15 = static RegistrationActor.shared.getter();
   v16 = lazy protocol witness table accessor for type RegistrationActor and conformance RegistrationActor();
   v17 = swift_allocObject();
   v17[2] = v15;
   v17[3] = v16;
-  v17[4] = a4;
-  v17[5] = v14;
+  v17[4] = message;
+  v17[5] = selfCopy;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v12, &closure #1 in KDSRegistrationPushHandler.handler(_:didReceiveMessage:forTopic:fromID:messageContext:)partial apply, v17);
 }
 

@@ -1,27 +1,27 @@
 @interface WFFinderImageResizeDescriptor
-- (BOOL)isEqual:(id)a3;
-- (WFFinderImageResizeDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFFinderImageResizeDescriptor)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFinderImageResizeDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[WFFinderImageResizeDescriptor format](self forKey:{"format"), @"format"}];
-  [v4 encodeInteger:-[WFFinderImageResizeDescriptor size](self forKey:{"size"), @"size"}];
-  [v4 encodeBool:-[WFFinderImageResizeDescriptor preserveMetadata](self forKey:{"preserveMetadata"), @"preserveMetadata"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WFFinderImageResizeDescriptor format](self forKey:{"format"), @"format"}];
+  [coderCopy encodeInteger:-[WFFinderImageResizeDescriptor size](self forKey:{"size"), @"size"}];
+  [coderCopy encodeBool:-[WFFinderImageResizeDescriptor preserveMetadata](self forKey:{"preserveMetadata"), @"preserveMetadata"}];
 }
 
-- (WFFinderImageResizeDescriptor)initWithCoder:(id)a3
+- (WFFinderImageResizeDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"format"];
-  v6 = [v4 decodeIntegerForKey:@"size"];
-  v7 = [v4 decodeBoolForKey:@"preserveMetadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"format"];
+  v6 = [coderCopy decodeIntegerForKey:@"size"];
+  v7 = [coderCopy decodeBoolForKey:@"preserveMetadata"];
 
   v8 = [(WFFinderImageResizeDescriptor *)self initWithFormat:v5 size:v6 preserveMetadata:v7];
   v9 = v8;
@@ -43,17 +43,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
     goto LABEL_11;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -63,8 +63,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(WFFinderImageResizeDescriptor *)self format];
-  if (v7 != [(WFFinderImageResizeDescriptor *)v6 format])
+  format = [(WFFinderImageResizeDescriptor *)self format];
+  if (format != [(WFFinderImageResizeDescriptor *)v6 format])
   {
     goto LABEL_8;
   }
@@ -75,8 +75,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = [(WFFinderImageResizeDescriptor *)self preserveMetadata];
-  v10 = v9 ^ [(WFFinderImageResizeDescriptor *)v6 preserveMetadata]^ 1;
+  preserveMetadata = [(WFFinderImageResizeDescriptor *)self preserveMetadata];
+  v10 = preserveMetadata ^ [(WFFinderImageResizeDescriptor *)v6 preserveMetadata]^ 1;
 LABEL_9:
 
 LABEL_11:

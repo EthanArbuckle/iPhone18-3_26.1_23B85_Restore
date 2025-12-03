@@ -3,8 +3,8 @@
 - (double)normalizedDefaultLevel;
 - (id)copy;
 - (id)description;
-- (void)setCurrentLevel:(double)a3;
-- (void)setLastAdjustedLevel:(double)a3;
+- (void)setCurrentLevel:(double)level;
+- (void)setLastAdjustedLevel:(double)level;
 @end
 
 @implementation NTK_PUAdjustmentInfo
@@ -56,20 +56,20 @@
   return v9 / (v11 - v12);
 }
 
-- (void)setCurrentLevel:(double)a3
+- (void)setCurrentLevel:(double)level
 {
-  if (self->_currentLevel != a3)
+  if (self->_currentLevel != level)
   {
     [(NTK_PUAdjustmentInfo *)self setLastAdjustedLevel:?];
-    self->_currentLevel = a3;
+    self->_currentLevel = level;
   }
 }
 
-- (void)setLastAdjustedLevel:(double)a3
+- (void)setLastAdjustedLevel:(double)level
 {
-  if (self->_lastAdjustedLevel != a3)
+  if (self->_lastAdjustedLevel != level)
   {
-    self->_lastAdjustedLevel = a3;
+    self->_lastAdjustedLevel = level;
   }
 }
 
@@ -77,12 +77,12 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(NTK_PUAdjustmentInfo *)self localizedName];
-  v6 = [(NTK_PUAdjustmentInfo *)self enabled];
-  v7 = [(NTK_PUAdjustmentInfo *)self localizedSectionName];
-  v8 = [(NTK_PUAdjustmentInfo *)self adjustmentKey];
-  v9 = [(NTK_PUAdjustmentInfo *)self settingKey];
-  v10 = [(NTK_PUAdjustmentInfo *)self attributeKey];
+  localizedName = [(NTK_PUAdjustmentInfo *)self localizedName];
+  enabled = [(NTK_PUAdjustmentInfo *)self enabled];
+  localizedSectionName = [(NTK_PUAdjustmentInfo *)self localizedSectionName];
+  adjustmentKey = [(NTK_PUAdjustmentInfo *)self adjustmentKey];
+  settingKey = [(NTK_PUAdjustmentInfo *)self settingKey];
+  attributeKey = [(NTK_PUAdjustmentInfo *)self attributeKey];
   [(NTK_PUAdjustmentInfo *)self minimumLevel];
   v12 = v11;
   [(NTK_PUAdjustmentInfo *)self maximumLevel];
@@ -94,7 +94,7 @@
   [(NTK_PUAdjustmentInfo *)self lastAdjustedLevel];
   v20 = v19;
   [(NTK_PUAdjustmentInfo *)self currentLevel];
-  v22 = [NSString stringWithFormat:@"<%@: %p, name=%@, enabled:%d, sectionName:%@, adjustmentKey=%@, settingsKey:%@, attributeKey:%@, min=%f, max=%f, default=%f, identity=%f, lastAdjusted=%f, current=%f", v4, self, v5, v6, v7, v8, v9, v10, v12, v14, v16, v18, v20, v21];
+  v22 = [NSString stringWithFormat:@"<%@: %p, name=%@, enabled:%d, sectionName:%@, adjustmentKey=%@, settingsKey:%@, attributeKey:%@, min=%f, max=%f, default=%f, identity=%f, lastAdjusted=%f, current=%f", v4, self, localizedName, enabled, localizedSectionName, adjustmentKey, settingKey, attributeKey, v12, v14, v16, v18, v20, v21];
 
   return v22;
 }

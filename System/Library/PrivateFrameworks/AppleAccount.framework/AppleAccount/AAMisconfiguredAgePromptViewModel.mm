@@ -1,13 +1,13 @@
 @interface AAMisconfiguredAgePromptViewModel
 - (AAMisconfiguredAgePromptViewModel)init;
-- (AAMisconfiguredAgePromptViewModel)initWithTitle:(id)a3 message:(id)a4 primaryButtonText:(id)a5 secondaryButtonText:(id)a6 cancelButtonText:(id)a7 bundleID:(id)a8 altDSID:(id)a9;
+- (AAMisconfiguredAgePromptViewModel)initWithTitle:(id)title message:(id)message primaryButtonText:(id)text secondaryButtonText:(id)buttonText cancelButtonText:(id)cancelButtonText bundleID:(id)d altDSID:(id)iD;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAMisconfiguredAgePromptViewModel
 
-- (AAMisconfiguredAgePromptViewModel)initWithTitle:(id)a3 message:(id)a4 primaryButtonText:(id)a5 secondaryButtonText:(id)a6 cancelButtonText:(id)a7 bundleID:(id)a8 altDSID:(id)a9
+- (AAMisconfiguredAgePromptViewModel)initWithTitle:(id)title message:(id)message primaryButtonText:(id)text secondaryButtonText:(id)buttonText cancelButtonText:(id)cancelButtonText bundleID:(id)d altDSID:(id)iD
 {
   v10 = sub_1B7055830();
   v38 = v11;
@@ -50,16 +50,16 @@
   return [(AAMisconfiguredAgePromptViewModel *)&v40 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AAMisconfiguredAgePromptViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AAMisconfiguredAgePromptViewModel.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AAMisconfiguredAgePromptViewModel.description.getter();
 
   v3 = sub_1B7055820();

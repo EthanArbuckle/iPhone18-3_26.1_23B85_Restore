@@ -1,177 +1,177 @@
 @interface ICCloudContext
-+ (BOOL)haveZoneIDsInAccountZoneIDs:(id)a3;
-+ (BOOL)isZoneConfigurations:(id)a3 subsetOfZoneConfigurations:(id)a4;
-+ (BOOL)shouldIgnoreErrorForBackoffTimer:(id)a3;
++ (BOOL)haveZoneIDsInAccountZoneIDs:(id)ds;
++ (BOOL)isZoneConfigurations:(id)configurations subsetOfZoneConfigurations:(id)zoneConfigurations;
++ (BOOL)shouldIgnoreErrorForBackoffTimer:(id)timer;
 + (CKRecordZoneID)metadataZoneID;
 + (CKRecordZoneID)notesZoneID;
 + (ICCloudContext)sharedContext;
-+ (id)allZoneIDsInAccountZoneIDs:(id)a3;
-+ (id)deduplicatedRecordsForCloudObjects:(id)a3;
++ (id)allZoneIDsInAccountZoneIDs:(id)ds;
++ (id)deduplicatedRecordsForCloudObjects:(id)objects;
 + (id)errorForDisabledCloudSyncing;
 + (id)errorForWaitingForRetryTimer;
-+ (id)errorFromErrors:(id)a3;
-+ (id)errorFromOperations:(id)a3;
-+ (id)errorsFromError:(id)a3;
-+ (id)newNotesContainerForAccountID:(id)a3;
-+ (id)objectsByAccount:(id)a3;
-+ (id)objectsByDatabaseScope:(id)a3;
-+ (id)sortedRecords:(id)a3;
-+ (id)userRecordNameForContainer:(id)a3;
-+ (id)zoneIDsFromZoneInfos:(id)a3;
-+ (id)zoneInfosFromZoneIDs:(id)a3;
-+ (void)batchRecordsToSave:(id)a3 delete:(id)a4 maxRecordCountPerBatch:(unint64_t)a5 maxRecordSizePerBatch:(unint64_t)a6 withBlock:(id)a7;
++ (id)errorFromErrors:(id)errors;
++ (id)errorFromOperations:(id)operations;
++ (id)errorsFromError:(id)error;
++ (id)newNotesContainerForAccountID:(id)d;
++ (id)objectsByAccount:(id)account;
++ (id)objectsByDatabaseScope:(id)scope;
++ (id)sortedRecords:(id)records;
++ (id)userRecordNameForContainer:(id)container;
++ (id)zoneIDsFromZoneInfos:(id)infos;
++ (id)zoneInfosFromZoneIDs:(id)ds;
++ (void)batchRecordsToSave:(id)save delete:(id)delete maxRecordCountPerBatch:(unint64_t)batch maxRecordSizePerBatch:(unint64_t)perBatch withBlock:(id)block;
 - (BOOL)hasCompletedInitialSync;
-- (BOOL)hasNoteContextOptions:(unint64_t)a3;
+- (BOOL)hasNoteContextOptions:(unint64_t)options;
 - (BOOL)hasPendingOperations;
 - (BOOL)isCloudKitAccountAvailable;
 - (BOOL)isFetchingAllRecordZones;
 - (BOOL)isReadyToSync;
-- (BOOL)partialError:(id)a3 containsErrorCode:(int64_t)a4;
-- (BOOL)shouldUpdateServerRecordForObject:(id)a3 withRecord:(id)a4;
+- (BOOL)partialError:(id)error containsErrorCode:(int64_t)code;
+- (BOOL)shouldUpdateServerRecordForObject:(id)object withRecord:(id)record;
 - (BOOL)supportsDeferredAssetDownload;
 - (ICCloudAnalyticsDelegate)cloudAnalyticsDelegate;
-- (ICCloudContext)initWithDelegate:(id)a3;
+- (ICCloudContext)initWithDelegate:(id)delegate;
 - (ICCloudContextDelegate)cloudContextDelegate;
 - (ICCloudSessionDelegate)cloudSessionDelegate;
 - (NSDictionary)cloudObjectClassesByRecordType;
 - (NSDictionary)containersByAccountID;
-- (double)timeIntervalToRetryAfterFromError:(id)a3;
-- (id)_objectIDsToProcessForFullSyncInContext:(id)a3;
-- (id)accountIDForContainer:(id)a3;
-- (id)accountIDForDatabase:(id)a3;
-- (id)allCloudObjectIDsInContext:(id)a3 predicate:(id)a4;
+- (double)timeIntervalToRetryAfterFromError:(id)error;
+- (id)_objectIDsToProcessForFullSyncInContext:(id)context;
+- (id)accountIDForContainer:(id)container;
+- (id)accountIDForDatabase:(id)database;
+- (id)allCloudObjectIDsInContext:(id)context predicate:(id)predicate;
 - (id)allZoneIDs;
 - (id)backgroundContext;
-- (id)completionEndingProcessingSession:(id)a3 wrappingCompletion:(id)a4;
-- (id)containerForAccountID:(id)a3;
-- (id)existingCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-- (id)existingCloudObjectForRecordID:(id)a3 recordType:(id)a4 accountID:(id)a5 context:(id)a6 excludingRecordTypes:(id)a7;
-- (id)existingCloudObjectForUserSpecificRecordID:(id)a3 createPlaceholderIfNecessary:(BOOL)a4 accountID:(id)a5 context:(id)a6;
-- (id)invernessClientForAccountID:(id)a3;
-- (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-- (id)newOperationToFetchRecordZoneChangesWithZoneConfigurations:(id)a3 database:(id)a4 session:(id)a5;
-- (id)newPlaceholderObjectForRecordID:(id)a3 recordType:(id)a4 accountID:(id)a5 context:(id)a6;
-- (id)newSessionForReason:(id)a3;
-- (id)operationToFetchDatabaseChangesForDatabase:(id)a3 session:(id)a4 completionHandler:(id)a5;
-- (id)operationToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 database:(id)a6 qualityOfService:(int64_t)a7;
-- (id)operationToFetchRecordZoneChangesForZoneIDs:(id)a3 database:(id)a4 session:(id)a5;
-- (id)operationToModifyRecordsToSave:(id)a3 delete:(id)a4 forSession:(id)a5 rootRecordIDsByShareID:(id)a6 database:(id)a7;
-- (id)operationToSaveZonesForZoneIDs:(id)a3 accountID:(id)a4;
-- (id)operationToSaveZonesIfNecessaryForAccountID:(id)a3;
-- (id)operationsToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 database:(id)a6 qualityOfService:(int64_t)a7;
-- (id)operationsToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 accountID:(id)a8;
-- (id)operationsToFetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 session:(id)a5;
-- (id)operationsToModifyRecordsForCloudObjectsToSave:(id)a3 delete:(id)a4 deleteShares:(id)a5 saveUserSpecificRecords:(id)a6 forSession:(id)a7 operationGroupName:(id)a8 addDependencies:(BOOL)a9 accountID:(id)a10;
-- (id)operationsToModifyRecordsToSave:(id)a3 delete:(id)a4 forSession:(id)a5 rootRecordIDsByShareID:(id)a6 database:(id)a7;
+- (id)completionEndingProcessingSession:(id)session wrappingCompletion:(id)completion;
+- (id)containerForAccountID:(id)d;
+- (id)existingCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
+- (id)existingCloudObjectForRecordID:(id)d recordType:(id)type accountID:(id)iD context:(id)context excludingRecordTypes:(id)types;
+- (id)existingCloudObjectForUserSpecificRecordID:(id)d createPlaceholderIfNecessary:(BOOL)necessary accountID:(id)iD context:(id)context;
+- (id)invernessClientForAccountID:(id)d;
+- (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
+- (id)newOperationToFetchRecordZoneChangesWithZoneConfigurations:(id)configurations database:(id)database session:(id)session;
+- (id)newPlaceholderObjectForRecordID:(id)d recordType:(id)type accountID:(id)iD context:(id)context;
+- (id)newSessionForReason:(id)reason;
+- (id)operationToFetchDatabaseChangesForDatabase:(id)database session:(id)session completionHandler:(id)handler;
+- (id)operationToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets database:(id)database qualityOfService:(int64_t)service;
+- (id)operationToFetchRecordZoneChangesForZoneIDs:(id)ds database:(id)database session:(id)session;
+- (id)operationToModifyRecordsToSave:(id)save delete:(id)delete forSession:(id)session rootRecordIDsByShareID:(id)d database:(id)database;
+- (id)operationToSaveZonesForZoneIDs:(id)ds accountID:(id)d;
+- (id)operationToSaveZonesIfNecessaryForAccountID:(id)d;
+- (id)operationsToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets database:(id)database qualityOfService:(int64_t)service;
+- (id)operationsToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets qualityOfService:(int64_t)service operationGroupName:(id)name accountID:(id)d;
+- (id)operationsToFetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d session:(id)session;
+- (id)operationsToModifyRecordsForCloudObjectsToSave:(id)save delete:(id)delete deleteShares:(id)shares saveUserSpecificRecords:(id)records forSession:(id)session operationGroupName:(id)name addDependencies:(BOOL)dependencies accountID:(id)self0;
+- (id)operationsToModifyRecordsToSave:(id)save delete:(id)delete forSession:(id)session rootRecordIDsByShareID:(id)d database:(id)database;
 - (id)overrideAccountID;
 - (id)persistentStoreCoordinator;
 - (id)readinessLoggingDescription;
-- (id)serverChangeTokenForChangedZonesInDatabase:(id)a3 accountID:(id)a4 context:(id)a5;
-- (id)serverChangeTokenForRecordZoneID:(id)a3 databaseScope:(int64_t)a4 accountID:(id)a5 context:(id)a6;
-- (id)subscriptionForDatabase:(id)a3;
+- (id)serverChangeTokenForChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context;
+- (id)serverChangeTokenForRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context;
+- (id)subscriptionForDatabase:(id)database;
 - (id)viewContext;
 - (int64_t)accountStatus;
-- (void)_addModifyRecordsOperationsWithCloudObjectsToSave:(id)a3 delete:(id)a4 accountID:(id)a5 forSession:(id)a6 operationGroupName:(id)a7 waitForDependencies:(BOOL)a8 completionHandler:(id)a9;
-- (void)_filterCloudSyncingObjects:(id)a3 accountID:(id)a4 objectsToSave:(id *)a5 objectsToDelete:(id *)a6 objectsToDeleteShares:(id *)a7 objectsToSaveUserSpecificRecord:(id *)a8;
-- (void)_ingestCloudKitRecord:(id)a3 forAccountID:(id)a4 forceMerge:(BOOL)a5 session:(id)a6 context:(id)a7;
-- (void)_processCloudObjects:(id)a3 inSession:(id)a4 completionHandler:(id)a5;
-- (void)_processPendingCloudObjectsInSession:(id)a3 withCompletionHandler:(id)a4;
-- (void)_syncWithReason:(id)a3 uploadUnsyncedChanges:(BOOL)a4 completionHandler:(id)a5;
-- (void)addCallbackBlocksToModifyRecordsOperation:(id)a3 rootRecordIDsByShareID:(id)a4 session:(id)a5;
-- (void)addDependenciesForModifyRecordsOperation:(id)a3;
-- (void)addFetchOperationsForRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 completionHandler:(id)a8;
-- (void)addFetchOperationsForRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 shouldDownloadAssets:(BOOL)a8 completionHandler:(id)a9;
-- (void)addModifyRecordsOperationsWithCloudObjectsToSave:(id)a3 delete:(id)a4 accountID:(id)a5 forSession:(id)a6 operationGroupName:(id)a7 waitForDependencies:(BOOL)a8 completionHandler:(id)a9;
-- (void)addOperationToProcessObjectsInSession:(id)a3 withCompletionHandler:(id)a4;
-- (void)addOperations:(id)a3;
-- (void)addOperationsToFetchRecordZoneChangesForAccountZoneIDs:(id)a3 session:(id)a4 completionHandler:(id)a5;
-- (void)cancelEverythingWithCompletionHandler:(id)a3;
+- (void)_addModifyRecordsOperationsWithCloudObjectsToSave:(id)save delete:(id)delete accountID:(id)d forSession:(id)session operationGroupName:(id)name waitForDependencies:(BOOL)dependencies completionHandler:(id)handler;
+- (void)_filterCloudSyncingObjects:(id)objects accountID:(id)d objectsToSave:(id *)save objectsToDelete:(id *)delete objectsToDeleteShares:(id *)shares objectsToSaveUserSpecificRecord:(id *)record;
+- (void)_ingestCloudKitRecord:(id)record forAccountID:(id)d forceMerge:(BOOL)merge session:(id)session context:(id)context;
+- (void)_processCloudObjects:(id)objects inSession:(id)session completionHandler:(id)handler;
+- (void)_processPendingCloudObjectsInSession:(id)session withCompletionHandler:(id)handler;
+- (void)_syncWithReason:(id)reason uploadUnsyncedChanges:(BOOL)changes completionHandler:(id)handler;
+- (void)addCallbackBlocksToModifyRecordsOperation:(id)operation rootRecordIDsByShareID:(id)d session:(id)session;
+- (void)addDependenciesForModifyRecordsOperation:(id)operation;
+- (void)addFetchOperationsForRecordIDs:(id)ds forSession:(id)session accountID:(id)d qualityOfService:(int64_t)service operationGroupName:(id)name completionHandler:(id)handler;
+- (void)addFetchOperationsForRecordIDs:(id)ds forSession:(id)session accountID:(id)d qualityOfService:(int64_t)service operationGroupName:(id)name shouldDownloadAssets:(BOOL)assets completionHandler:(id)handler;
+- (void)addModifyRecordsOperationsWithCloudObjectsToSave:(id)save delete:(id)delete accountID:(id)d forSession:(id)session operationGroupName:(id)name waitForDependencies:(BOOL)dependencies completionHandler:(id)handler;
+- (void)addOperationToProcessObjectsInSession:(id)session withCompletionHandler:(id)handler;
+- (void)addOperations:(id)operations;
+- (void)addOperationsToFetchRecordZoneChangesForAccountZoneIDs:(id)ds session:(id)session completionHandler:(id)handler;
+- (void)cancelEverythingWithCompletionHandler:(id)handler;
 - (void)clearContainers;
 - (void)clearPendingActivity;
-- (void)clearRetryCountForOperationType:(id)a3;
+- (void)clearRetryCountForOperationType:(id)type;
 - (void)clearSubscribedSubscriptionIDs;
 - (void)clearZoneFetchState;
-- (void)cloudKitAccountChanged:(id)a3;
-- (void)contextDidSaveOrMerge:(id)a3;
+- (void)cloudKitAccountChanged:(id)changed;
+- (void)contextDidSaveOrMerge:(id)merge;
 - (void)dealloc;
 - (void)deleteAllServerChangeTokens;
-- (void)deleteRecordZonesWithZoneIDs:(id)a3 accountID:(id)a4 markZonesAsUserPurged:(BOOL)a5 completionHandler:(id)a6;
-- (void)deleteServerChangeTokenForChangedZonesInDatabase:(id)a3 accountID:(id)a4 context:(id)a5;
-- (void)deleteServerChangeTokenForRecordZoneID:(id)a3 databaseScope:(int64_t)a4 accountID:(id)a5 context:(id)a6;
-- (void)deleteSharesForObjects:(id)a3 completionHandler:(id)a4;
-- (void)deleteSharesForObjects:(id)a3 forSession:(id)a4 accountID:(id)a5 completionHandler:(id)a6;
-- (void)didFetchShare:(id)a3 accountID:(id)a4 context:(id)a5;
-- (void)disableCloudSyncingIfCurrentVersionNotSupported:(id)a3;
-- (void)enqueueLongLivedOperationsIfNeededWithCompletionHandler:(id)a3;
-- (void)enqueueLongLivedOperationsWithIDsIfNeeded:(id)a3 container:(id)a4 completionHandler:(id)a5;
-- (void)fetchAssetsOnDemandIfEnabledForNoteObjectID:(id)a3;
-- (void)fetchCloudObjects:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
-- (void)fetchCloudObjects:(id)a3 forSession:(id)a4 accountID:(id)a5 completionHandler:(id)a6;
-- (void)fetchDatabaseChangesForDatabases:(id)a3 session:(id)a4 completionHandler:(id)a5;
-- (void)fetchDatabaseChangesForSession:(id)a3 completionHandler:(id)a4;
-- (void)fetchDatabaseChangesOperation:(id)a3 changeTokenUpdated:(id)a4 accountID:(id)a5 context:(id)a6;
-- (void)fetchDatabaseChangesOperation:(id)a3 finishedWithServerChangeToken:(id)a4 accountID:(id)a5 session:(id)a6 error:(id)a7 completionHandler:(id)a8 context:(id)a9;
-- (void)fetchDatabaseChangesOperation:(id)a3 recordZoneWithIDChanged:(id)a4 accountID:(id)a5 session:(id)a6;
-- (void)fetchDatabaseChangesOperation:(id)a3 recordZoneWithIDWasDeleted:(id)a4 accountID:(id)a5 session:(id)a6;
-- (void)fetchOperation:(id)a3 didCompleteWithRecordsByRecordID:(id)a4 session:(id)a5 error:(id)a6;
-- (void)fetchOperation:(id)a3 progressChangedWithRecordID:(id)a4 progress:(double)a5;
-- (void)fetchOperation:(id)a3 recordWasFetchedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7;
-- (void)fetchRecordIDs:(id)a3 accountID:(id)a4 operationGroupName:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 operationGroupName:(id)a6 completionHandler:(id)a7;
-- (void)fetchRecordZoneChangesForAccountZoneIDs:(id)a3 session:(id)a4 completionHandler:(id)a5;
-- (void)fetchRecordZoneChangesForSession:(id)a3 completionHandler:(id)a4;
-- (void)fetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 reason:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 session:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordZoneChangesOperation:(id)a3 completedFetchForZoneID:(id)a4 serverChangeToken:(id)a5 error:(id)a6 context:(id)a7;
-- (void)fetchRecordZoneChangesOperation:(id)a3 recordWasChangedWithRecordID:(id)a4 record:(id)a5 error:(id)a6 session:(id)a7 context:(id)a8;
-- (void)fetchRecordZoneChangesOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 recordType:(id)a5 session:(id)a6 context:(id)a7;
-- (void)fetchRecordZoneChangesOperation:(id)a3 zoneID:(id)a4 accountID:(id)a5 changeTokenUpdated:(id)a6 context:(id)a7;
-- (void)fetchRecordZoneChangesOperationDidComplete:(id)a3 session:(id)a4 error:(id)a5;
-- (void)fetchRecordZoneChangesWithReason:(id)a3 completionHandler:(id)a4;
-- (void)fetchSubscriptionsForDatabase:(id)a3 completionHandler:(id)a4;
-- (void)fetchUserRecordWithAccountID:(id)a3 completionHandler:(id)a4;
-- (void)fetchUserRecordWithContainer:(id)a3 completionHandler:(id)a4;
-- (void)finishOperationsForRecordID:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5;
-- (void)handleCloudKitNotification:(id)a3 completionHandler:(id)a4;
-- (void)handleGenericPartialFailuresForError:(id)a3 operation:(id)a4;
-- (void)handleRemoteNotificationWithUserInfo:(id)a3 completion:(id)a4;
-- (void)incrementOrClearRetryCountForOperationType:(id)a3 error:(id)a4;
-- (void)incrementRetryCountForOperationType:(id)a3;
-- (void)informCloudAnalyticsDelegateForOperationDidEnd:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5;
-- (void)ingestCloudKitRecord:(id)a3 forAccountID:(id)a4 forceMerge:(BOOL)a5 context:(id)a6;
+- (void)deleteRecordZonesWithZoneIDs:(id)ds accountID:(id)d markZonesAsUserPurged:(BOOL)purged completionHandler:(id)handler;
+- (void)deleteServerChangeTokenForChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context;
+- (void)deleteServerChangeTokenForRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context;
+- (void)deleteSharesForObjects:(id)objects completionHandler:(id)handler;
+- (void)deleteSharesForObjects:(id)objects forSession:(id)session accountID:(id)d completionHandler:(id)handler;
+- (void)didFetchShare:(id)share accountID:(id)d context:(id)context;
+- (void)disableCloudSyncingIfCurrentVersionNotSupported:(id)supported;
+- (void)enqueueLongLivedOperationsIfNeededWithCompletionHandler:(id)handler;
+- (void)enqueueLongLivedOperationsWithIDsIfNeeded:(id)needed container:(id)container completionHandler:(id)handler;
+- (void)fetchAssetsOnDemandIfEnabledForNoteObjectID:(id)d;
+- (void)fetchCloudObjects:(id)objects accountID:(id)d completionHandler:(id)handler;
+- (void)fetchCloudObjects:(id)objects forSession:(id)session accountID:(id)d completionHandler:(id)handler;
+- (void)fetchDatabaseChangesForDatabases:(id)databases session:(id)session completionHandler:(id)handler;
+- (void)fetchDatabaseChangesForSession:(id)session completionHandler:(id)handler;
+- (void)fetchDatabaseChangesOperation:(id)operation changeTokenUpdated:(id)updated accountID:(id)d context:(id)context;
+- (void)fetchDatabaseChangesOperation:(id)operation finishedWithServerChangeToken:(id)token accountID:(id)d session:(id)session error:(id)error completionHandler:(id)handler context:(id)context;
+- (void)fetchDatabaseChangesOperation:(id)operation recordZoneWithIDChanged:(id)changed accountID:(id)d session:(id)session;
+- (void)fetchDatabaseChangesOperation:(id)operation recordZoneWithIDWasDeleted:(id)deleted accountID:(id)d session:(id)session;
+- (void)fetchOperation:(id)operation didCompleteWithRecordsByRecordID:(id)d session:(id)session error:(id)error;
+- (void)fetchOperation:(id)operation progressChangedWithRecordID:(id)d progress:(double)progress;
+- (void)fetchOperation:(id)operation recordWasFetchedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error;
+- (void)fetchRecordIDs:(id)ds accountID:(id)d operationGroupName:(id)name completionHandler:(id)handler;
+- (void)fetchRecordIDs:(id)ds forSession:(id)session accountID:(id)d operationGroupName:(id)name completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesForAccountZoneIDs:(id)ds session:(id)session completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesForSession:(id)session completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d reason:(id)reason completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d session:(id)session completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesOperation:(id)operation completedFetchForZoneID:(id)d serverChangeToken:(id)token error:(id)error context:(id)context;
+- (void)fetchRecordZoneChangesOperation:(id)operation recordWasChangedWithRecordID:(id)d record:(id)record error:(id)error session:(id)session context:(id)context;
+- (void)fetchRecordZoneChangesOperation:(id)operation recordWasDeletedWithRecordID:(id)d recordType:(id)type session:(id)session context:(id)context;
+- (void)fetchRecordZoneChangesOperation:(id)operation zoneID:(id)d accountID:(id)iD changeTokenUpdated:(id)updated context:(id)context;
+- (void)fetchRecordZoneChangesOperationDidComplete:(id)complete session:(id)session error:(id)error;
+- (void)fetchRecordZoneChangesWithReason:(id)reason completionHandler:(id)handler;
+- (void)fetchSubscriptionsForDatabase:(id)database completionHandler:(id)handler;
+- (void)fetchUserRecordWithAccountID:(id)d completionHandler:(id)handler;
+- (void)fetchUserRecordWithContainer:(id)container completionHandler:(id)handler;
+- (void)finishOperationsForRecordID:(id)d qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)handleCloudKitNotification:(id)notification completionHandler:(id)handler;
+- (void)handleGenericPartialFailuresForError:(id)error operation:(id)operation;
+- (void)handleRemoteNotificationWithUserInfo:(id)info completion:(id)completion;
+- (void)incrementOrClearRetryCountForOperationType:(id)type error:(id)error;
+- (void)incrementRetryCountForOperationType:(id)type;
+- (void)informCloudAnalyticsDelegateForOperationDidEnd:(id)end recordsByRecordID:(id)d operationError:(id)error;
+- (void)ingestCloudKitRecord:(id)record forAccountID:(id)d forceMerge:(BOOL)merge context:(id)context;
 - (void)loadZoneFetchState;
-- (void)modifyRecordsOperation:(id)a3 forSession:(id)a4 didCompleteWithError:(id)a5;
-- (void)modifyRecordsOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 rootRecordIDsByShareID:(id)a5 session:(id)a6 error:(id)a7;
-- (void)modifyRecordsOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 rootRecordIDsByShareID:(id)a5 session:(id)a6 error:(id)a7 context:(id)a8;
-- (void)modifyRecordsOperation:(id)a3 recordWasSavedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7;
-- (void)modifyRecordsOperation:(id)a3 recordWasSavedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7 context:(id)a8;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pauseCloudSyncWhileSynchronouslyPerformingBlock:(id)a3;
+- (void)modifyRecordsOperation:(id)operation forSession:(id)session didCompleteWithError:(id)error;
+- (void)modifyRecordsOperation:(id)operation recordWasDeletedWithRecordID:(id)d rootRecordIDsByShareID:(id)iD session:(id)session error:(id)error;
+- (void)modifyRecordsOperation:(id)operation recordWasDeletedWithRecordID:(id)d rootRecordIDsByShareID:(id)iD session:(id)session error:(id)error context:(id)context;
+- (void)modifyRecordsOperation:(id)operation recordWasSavedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error;
+- (void)modifyRecordsOperation:(id)operation recordWasSavedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error context:(id)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pauseCloudSyncWhileSynchronouslyPerformingBlock:(id)block;
 - (void)printOperationQueue;
-- (void)processAllCloudObjectsInSession:(id)a3 withCompletionHandler:(id)a4;
-- (void)processAllCloudObjectsWithCompletionHandler:(id)a3;
-- (void)processObjectIDs:(id)a3 inSession:(id)a4 completionHandler:(id)a5;
-- (void)processPendingCloudObjectsWithCompletionHandler:(id)a3;
-- (void)pushCloudObjects:(id)a3 operationGroupName:(id)a4 completionHandler:(id)a5;
-- (void)reachabilityChanged:(id)a3;
-- (void)receivedZoneNotFound:(id)a3 operation:(id)a4 context:(id)a5;
-- (void)resetZoneForCloudAccount:(id)a3 withReason:(id)a4;
+- (void)processAllCloudObjectsInSession:(id)session withCompletionHandler:(id)handler;
+- (void)processAllCloudObjectsWithCompletionHandler:(id)handler;
+- (void)processObjectIDs:(id)ds inSession:(id)session completionHandler:(id)handler;
+- (void)processPendingCloudObjectsWithCompletionHandler:(id)handler;
+- (void)pushCloudObjects:(id)objects operationGroupName:(id)name completionHandler:(id)handler;
+- (void)reachabilityChanged:(id)changed;
+- (void)receivedZoneNotFound:(id)found operation:(id)operation context:(id)context;
+- (void)resetZoneForCloudAccount:(id)account withReason:(id)reason;
 - (void)retryOperationsIfNecessary;
-- (void)saveServerChangeToken:(id)a3 forChangedZonesInDatabase:(id)a4 accountID:(id)a5 context:(id)a6;
-- (void)saveServerChangeToken:(id)a3 forRecordZoneID:(id)a4 databaseScope:(int64_t)a5 accountID:(id)a6 context:(id)a7;
-- (void)saveSubscriptionsForDatabase:(id)a3 completionHandler:(id)a4;
+- (void)saveServerChangeToken:(id)token forChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context;
+- (void)saveServerChangeToken:(id)token forRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context;
+- (void)saveSubscriptionsForDatabase:(id)database completionHandler:(id)handler;
 - (void)saveZoneFetchState;
-- (void)setAccountStatus:(int64_t)a3;
-- (void)setAssetDownloadStateOnObject:(id)a3 withRecord:(id)a4 managedObjectContext:(id)a5;
-- (void)setCompletedInitialSync:(BOOL)a3;
-- (void)startRetryTimerIfNecessaryWithError:(id)a3;
-- (void)syncForSession:(id)a3 completedWithErrors:(id)a4;
-- (void)syncWithReason:(id)a3 uploadUnsyncedChanges:(BOOL)a4 completionHandler:(id)a5;
-- (void)updateAccountStatusWithCompletionHandler:(id)a3;
-- (void)updateCloudContextStateWithCompletion:(id)a3;
-- (void)updateConfiguration:(id)a3;
-- (void)updateSelectorDelayers:(id)a3;
-- (void)updateSubscriptionsWithCompletionHandler:(id)a3;
+- (void)setAccountStatus:(int64_t)status;
+- (void)setAssetDownloadStateOnObject:(id)object withRecord:(id)record managedObjectContext:(id)context;
+- (void)setCompletedInitialSync:(BOOL)sync;
+- (void)startRetryTimerIfNecessaryWithError:(id)error;
+- (void)syncForSession:(id)session completedWithErrors:(id)errors;
+- (void)syncWithReason:(id)reason uploadUnsyncedChanges:(BOOL)changes completionHandler:(id)handler;
+- (void)updateAccountStatusWithCompletionHandler:(id)handler;
+- (void)updateCloudContextStateWithCompletion:(id)completion;
+- (void)updateConfiguration:(id)configuration;
+- (void)updateSelectorDelayers:(id)delayers;
+- (void)updateSubscriptionsWithCompletionHandler:(id)handler;
 - (void)validateAccountZoneIDsNeedingFetchChanges;
 @end
 
@@ -205,7 +205,7 @@ void __31__ICCloudContext_sharedContext__block_invoke()
 
 - (void)loadZoneFetchState
 {
-  v1 = [a1 accountZoneIDsNeedingFetchChanges];
+  accountZoneIDsNeedingFetchChanges = [self accountZoneIDsNeedingFetchChanges];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -251,8 +251,8 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
 
 - (int64_t)accountStatus
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 integerForKey:@"CloudKitAccountStatus"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] integerForKey:@"CloudKitAccountStatus"];
 
   return v3;
 }
@@ -269,39 +269,39 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     [(ICCloudContext *)self backgroundContext];
   }
   v3 = ;
-  v4 = [v3 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v3 persistentStoreCoordinator];
 
-  if (v4)
+  if (persistentStoreCoordinator)
   {
-    LOBYTE(v4) = [ICAccount isCloudKitAccountAvailableInContext:v3];
+    LOBYTE(persistentStoreCoordinator) = [ICAccount isCloudKitAccountAvailableInContext:v3];
   }
 
-  return v4;
+  return persistentStoreCoordinator;
 }
 
 - (id)viewContext
 {
-  v3 = [(ICCloudContext *)self cloudContextDelegate];
-  if (v3)
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  if (cloudContextDelegate)
   {
-    v4 = [(ICCloudContext *)self cloudContextDelegate];
-    [v4 viewContextForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate2 viewContextForCloudContext:self];
   }
 
   else
   {
-    v4 = +[ICNoteContext sharedContext];
-    [v4 managedObjectContext];
+    cloudContextDelegate2 = +[ICNoteContext sharedContext];
+    [cloudContextDelegate2 managedObjectContext];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)newNotesContainerForAccountID:(id)a3
++ (id)newNotesContainerForAccountID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (ICIsSandboxModeEnabled())
   {
     v4 = 2;
@@ -314,16 +314,16 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
 
   v5 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:@"com.apple.notes" environment:v4];
   v6 = objc_alloc_init(MEMORY[0x277CBC230]);
-  if ([v3 length])
+  if ([dCopy length])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBC170]) initWithAccountID:v3];
+    v7 = [objc_alloc(MEMORY[0x277CBC170]) initWithAccountID:dCopy];
     [v6 setAccountOverrideInfo:v7];
     v8 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v5 options:v6];
     v9 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412290;
-      v25 = v3;
+      v25 = dCopy;
       _os_log_impl(&dword_214D51000, v9, OS_LOG_TYPE_DEFAULT, "Created new container for account ID %@", &v24, 0xCu);
     }
   }
@@ -339,19 +339,19 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     }
   }
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v12 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138412290;
-    v25 = v11;
+    v25 = bundleIdentifier;
     _os_log_impl(&dword_214D51000, v12, OS_LOG_TYPE_DEFAULT, "BundleIDDebug: bundleIdentifier is %@", &v24, 0xCu);
   }
 
   v13 = ICNotesAppBundleIdentifier();
-  v14 = [v11 hasPrefix:v13];
+  v14 = [bundleIdentifier hasPrefix:v13];
 
   if ((v14 & 1) == 0)
   {
@@ -365,37 +365,37 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     }
 
     v17 = ICNotesAppBundleIdentifier();
-    v18 = [v8 options];
-    [v18 setApplicationBundleIdentifierOverrideForContainerAccess:v17];
+    options = [v8 options];
+    [options setApplicationBundleIdentifierOverrideForContainerAccess:v17];
 
     v19 = ICNotesAppBundleIdentifier();
-    v20 = [v8 options];
-    [v20 setApplicationBundleIdentifierOverrideForNetworkAttribution:v19];
+    options2 = [v8 options];
+    [options2 setApplicationBundleIdentifierOverrideForNetworkAttribution:v19];
 
     v21 = ICNotesAppBundleIdentifier();
-    v22 = [v8 options];
-    [v22 setApplicationBundleIdentifierOverrideForPushTopicGeneration:v21];
+    options3 = [v8 options];
+    [options3 setApplicationBundleIdentifierOverrideForPushTopicGeneration:v21];
   }
 
   return v8;
 }
 
-- (ICCloudContext)initWithDelegate:(id)a3
+- (ICCloudContext)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = ICCloudContext;
   v5 = [(ICCloudContext *)&v39 init];
   v6 = v5;
   if (v5)
   {
-    [(ICCloudContext *)v5 setCloudContextDelegate:v4];
+    [(ICCloudContext *)v5 setCloudContextDelegate:delegateCopy];
     [(ICCloudContext *)v6 setSyncOnlyIfReachable:1];
     v7 = objc_opt_new();
     [(ICCloudContext *)v6 setOperationQueue:v7];
 
-    v8 = [(ICCloudContext *)v6 operationQueue];
-    [v8 setMaxConcurrentOperationCount:10];
+    operationQueue = [(ICCloudContext *)v6 operationQueue];
+    [operationQueue setMaxConcurrentOperationCount:10];
 
     v9 = [[ICCloudOperationObserver alloc] initWithQueue:v6->_operationQueue];
     [(ICCloudContext *)v6 setOperationObserver:v9];
@@ -411,14 +411,14 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     v14 = [MEMORY[0x277CBEB58] set];
     [(ICCloudContext *)v6 setObjectIDsToProcess:v14];
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICCloudContext *)v6 setAccountZoneIDsNeedingToBeSaved:v15];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ICCloudContext *)v6 setAccountZoneIDsNeedingToBeSaved:dictionary];
 
     v16 = [MEMORY[0x277CBEB58] set];
     [(ICCloudContext *)v6 setObjectIDsToRetry:v16];
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICCloudContext *)v6 setRetryCountsByOperationType:v17];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(ICCloudContext *)v6 setRetryCountsByOperationType:dictionary2];
 
     v18 = [MEMORY[0x277CBEB58] set];
     [(ICCloudContext *)v6 setSubscribedSubscriptionIDs:v18];
@@ -436,13 +436,13 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     v20 = [MEMORY[0x277CBEB58] set];
     [(ICCloudContext *)v6 setOperationIDsBeforeEnqueuingLongLivedOperations:v20];
 
-    v21 = [MEMORY[0x277D36200] currentConfiguration];
-    v22 = [v21 resetsCloud];
+    currentConfiguration = [MEMORY[0x277D36200] currentConfiguration];
+    resetsCloud = [currentConfiguration resetsCloud];
 
-    if (v22)
+    if (resetsCloud)
     {
-      v23 = [(ICCloudContext *)v6 viewContext];
-      v24 = [ICAccount cloudKitAccountInContext:v23];
+      viewContext = [(ICCloudContext *)v6 viewContext];
+      v24 = [ICAccount cloudKitAccountInContext:viewContext];
 
       if (v24)
       {
@@ -462,15 +462,15 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
     [(ICCloudContext *)v6 loadZoneFetchState];
     if (v19)
     {
-      v26 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v27 = *MEMORY[0x277D36350];
-      v28 = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
-      [v26 addObserver:v6 selector:sel_reachabilityChanged_ name:v27 object:v28];
+      mEMORY[0x277D36240] = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
+      [defaultCenter addObserver:v6 selector:sel_reachabilityChanged_ name:v27 object:mEMORY[0x277D36240]];
 
-      [v26 addObserver:v6 selector:sel_contextDidSaveOrMerge_ name:*MEMORY[0x277CBE1B0] object:0];
-      [v26 addObserver:v6 selector:sel_contextDidSaveOrMerge_ name:*MEMORY[0x277CBE1A0] object:0];
-      [v26 addObserver:v6 selector:sel_cloudKitAccountChanged_ name:*MEMORY[0x277CBBF00] object:0];
-      [v26 addObserver:v6 selector:sel_cloudKitAccountChanged_ name:@"ICAccountsDidChangeNotification" object:0];
+      [defaultCenter addObserver:v6 selector:sel_contextDidSaveOrMerge_ name:*MEMORY[0x277CBE1B0] object:0];
+      [defaultCenter addObserver:v6 selector:sel_contextDidSaveOrMerge_ name:*MEMORY[0x277CBE1A0] object:0];
+      [defaultCenter addObserver:v6 selector:sel_cloudKitAccountChanged_ name:*MEMORY[0x277CBBF00] object:0];
+      [defaultCenter addObserver:v6 selector:sel_cloudKitAccountChanged_ name:@"ICAccountsDidChangeNotification" object:0];
       objc_initWeak(&location, v6);
       v29 = dispatch_time(0, 2000000000);
       v30 = dispatch_get_global_queue(-2, 0);
@@ -481,10 +481,10 @@ void __36__ICCloudContext_loadZoneFetchState__block_invoke()
       objc_copyWeak(&v37, &location);
       dispatch_after(v29, v30, &v33);
 
-      [v26 addObserver:v6 selector:sel_updateConfiguration_ name:@"ICCloudConfigurationChanged" object:{0, v33, v34, v35, v36}];
-      [v26 addObserver:v6 selector:sel_updateSelectorDelayers_ name:@"ICCloudBatchIntervalDidChangeNotification" object:0];
-      v31 = [(ICCloudContext *)v6 operationQueue];
-      [v31 ic_addObserver:v6 forKeyPath:@"operationCount" context:compoundliteral_1];
+      [defaultCenter addObserver:v6 selector:sel_updateConfiguration_ name:@"ICCloudConfigurationChanged" object:{0, v33, v34, v35, v36}];
+      [defaultCenter addObserver:v6 selector:sel_updateSelectorDelayers_ name:@"ICCloudBatchIntervalDidChangeNotification" object:0];
+      operationQueue2 = [(ICCloudContext *)v6 operationQueue];
+      [operationQueue2 ic_addObserver:v6 forKeyPath:@"operationCount" context:compoundliteral_1];
 
       [(ICCloudContext *)v6 setDidAddObservers:1];
       objc_destroyWeak(&v37);
@@ -510,17 +510,17 @@ void __35__ICCloudContext_initWithDelegate___block_invoke(uint64_t a1)
 
 - (id)persistentStoreCoordinator
 {
-  v3 = [(ICCloudContext *)self cloudContextDelegate];
-  if (v3)
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  if (cloudContextDelegate)
   {
-    v4 = [(ICCloudContext *)self cloudContextDelegate];
-    [v4 persistentStoreCoordinatorForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate2 persistentStoreCoordinatorForCloudContext:self];
   }
 
   else
   {
-    v4 = +[ICNoteContext sharedContext];
-    [v4 persistentStoreCoordinator];
+    cloudContextDelegate2 = +[ICNoteContext sharedContext];
+    [cloudContextDelegate2 persistentStoreCoordinator];
   }
   v5 = ;
 
@@ -529,36 +529,36 @@ void __35__ICCloudContext_initWithDelegate___block_invoke(uint64_t a1)
 
 - (id)backgroundContext
 {
-  v3 = [(ICCloudContext *)self cloudContextDelegate];
-  if (v3)
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  if (cloudContextDelegate)
   {
-    v4 = [(ICCloudContext *)self cloudContextDelegate];
-    [v4 backgroundContextForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate2 backgroundContextForCloudContext:self];
   }
 
   else
   {
-    v4 = +[ICNoteContext sharedContext];
-    [v4 workerManagedObjectContext];
+    cloudContextDelegate2 = +[ICNoteContext sharedContext];
+    [cloudContextDelegate2 workerManagedObjectContext];
   }
   v5 = ;
 
   return v5;
 }
 
-- (BOOL)hasNoteContextOptions:(unint64_t)a3
+- (BOOL)hasNoteContextOptions:(unint64_t)options
 {
-  v5 = [(ICCloudContext *)self cloudContextDelegate];
-  if (v5)
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  if (cloudContextDelegate)
   {
-    v6 = [(ICCloudContext *)self cloudContextDelegate];
-    v7 = [v6 cloudContext:self hasContextOptions:a3];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    v7 = [cloudContextDelegate2 cloudContext:self hasContextOptions:options];
   }
 
   else
   {
-    v6 = +[ICNoteContext sharedContext];
-    v7 = [v6 hasContextOptions:a3];
+    cloudContextDelegate2 = +[ICNoteContext sharedContext];
+    v7 = [cloudContextDelegate2 hasContextOptions:options];
   }
 
   v8 = v7;
@@ -568,11 +568,11 @@ void __35__ICCloudContext_initWithDelegate___block_invoke(uint64_t a1)
 
 - (BOOL)supportsDeferredAssetDownload
 {
-  v3 = [(ICCloudContext *)self cloudContextDelegate];
-  if (v3)
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  if (cloudContextDelegate)
   {
-    v4 = [(ICCloudContext *)self cloudContextDelegate];
-    v5 = [v4 supportsDeferredAssetDownloadForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    v5 = [cloudContextDelegate2 supportsDeferredAssetDownloadForCloudContext:self];
   }
 
   else
@@ -585,13 +585,13 @@ void __35__ICCloudContext_initWithDelegate___block_invoke(uint64_t a1)
 
 - (NSDictionary)containersByAccountID
 {
-  v3 = [(ICCloudContext *)self containersCreationQueue];
+  containersCreationQueue = [(ICCloudContext *)self containersCreationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__ICCloudContext_containersByAccountID__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(containersCreationQueue, block);
 
   return self->_containersByAccountID;
 }
@@ -677,33 +677,33 @@ void __33__ICCloudContext_clearContainers__block_invoke(uint64_t a1)
   *(v1 + 128) = 0;
 }
 
-- (id)containerForAccountID:(id)a3
+- (id)containerForAccountID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"accountID != ((void*)0)" functionName:"-[ICCloudContext containerForAccountID:]" simulateCrash:1 showAlert:0 format:@"accountID must not be nil to get container."];
   }
 
-  if ([v4 length])
+  if ([dCopy length])
   {
     v12 = 0;
     v13 = &v12;
     v14 = 0x3032000000;
     v15 = __Block_byref_object_copy__48;
     v16 = __Block_byref_object_dispose__48;
-    v5 = [(ICCloudContext *)self containersByAccountID];
-    v17 = [v5 objectForKeyedSubscript:v4];
+    containersByAccountID = [(ICCloudContext *)self containersByAccountID];
+    v17 = [containersByAccountID objectForKeyedSubscript:dCopy];
 
-    v6 = [(ICCloudContext *)self containersCreationQueue];
+    containersCreationQueue = [(ICCloudContext *)self containersCreationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__ICCloudContext_containerForAccountID___block_invoke;
     block[3] = &unk_278195740;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
-    dispatch_sync(v6, block);
+    v10 = dCopy;
+    dispatch_sync(containersCreationQueue, block);
 
     v7 = v13[5];
     _Block_object_dispose(&v12, 8);
@@ -734,9 +734,9 @@ void __40__ICCloudContext_containerForAccountID___block_invoke(void *a1)
   }
 }
 
-- (id)invernessClientForAccountID:(id)a3
+- (id)invernessClientForAccountID:(id)d
 {
-  v3 = [(ICCloudContext *)self containerForAccountID:a3];
+  v3 = [(ICCloudContext *)self containerForAccountID:d];
   v4 = [[ICNotesInvernessClient alloc] initWithContainer:v3];
 
   return v4;
@@ -746,29 +746,29 @@ void __40__ICCloudContext_containerForAccountID___block_invoke(void *a1)
 {
   if ([(ICCloudContext *)self didAddObservers])
   {
-    v3 = [(ICCloudContext *)self operationQueue];
-    [v3 ic_removeObserver:self forKeyPath:@"operationCount" context:compoundliteral_1];
+    operationQueue = [(ICCloudContext *)self operationQueue];
+    [operationQueue ic_removeObserver:self forKeyPath:@"operationCount" context:compoundliteral_1];
   }
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-  v4 = [(ICCloudContext *)self retryTimer];
-  [v4 invalidate];
+  retryTimer = [(ICCloudContext *)self retryTimer];
+  [retryTimer invalidate];
 
-  v5 = [(ICCloudContext *)self processingSelectorDelayer];
-  [v5 cancelPreviousFireRequests];
+  processingSelectorDelayer = [(ICCloudContext *)self processingSelectorDelayer];
+  [processingSelectorDelayer cancelPreviousFireRequests];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = ICCloudContext;
   [(ICCloudContext *)&v7 dealloc];
 }
 
-- (void)disableCloudSyncingIfCurrentVersionNotSupported:(id)a3
+- (void)disableCloudSyncingIfCurrentVersionNotSupported:(id)supported
 {
-  v4 = [a3 minimumClientVersion];
-  v5 = [v4 componentsSeparatedByString:{@", "}];
+  minimumClientVersion = [supported minimumClientVersion];
+  v5 = [minimumClientVersion componentsSeparatedByString:{@", "}];
   if ([v5 count] != 3)
   {
     v13 = os_log_create("com.apple.notes", "Cloud");
@@ -781,21 +781,21 @@ void __40__ICCloudContext_containerForAccountID___block_invoke(void *a1)
   }
 
   v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 intValue];
+  intValue2 = [v8 intValue];
 
   v10 = [v5 objectAtIndexedSubscript:2];
-  v11 = [v10 intValue];
+  intValue3 = [v10 intValue];
 
-  v12 = [MEMORY[0x277CCAC38] processInfo];
-  v14[0] = v7;
-  v14[1] = v9;
-  v14[2] = v11;
-  LODWORD(v7) = [v12 isOperatingSystemAtLeastVersion:v14];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v14[0] = intValue;
+  v14[1] = intValue2;
+  v14[2] = intValue3;
+  LODWORD(intValue) = [processInfo isOperatingSystemAtLeastVersion:v14];
 
-  if (!v7)
+  if (!intValue)
   {
     [(ICCloudContext *)self setSyncDisabledByServer:1];
     v13 = os_log_create("com.apple.notes", "Cloud");
@@ -812,17 +812,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __38__ICCloudContext_updateConfiguration___block_invoke;
   aBlock[3] = &unk_278198698;
   aBlock[4] = self;
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = _Block_copy(aBlock);
   objc_opt_class();
-  v5 = [v3 object];
+  object = [configurationCopy object];
 
   v6 = ICDynamicCast();
 
@@ -848,14 +848,14 @@ void __38__ICCloudContext_updateConfiguration___block_invoke(uint64_t a1, void *
   [v5 updateSelectorDelayers:v6];
 }
 
-- (void)updateSelectorDelayers:(id)a3
+- (void)updateSelectorDelayers:(id)delayers
 {
-  v23 = a3;
+  delayersCopy = delayers;
   objc_opt_class();
   v4 = ICDynamicCast();
   if (v4)
   {
-    v5 = v4;
+    throttlingPolicy = v4;
   }
 
   else
@@ -863,66 +863,66 @@ void __38__ICCloudContext_updateConfiguration___block_invoke(uint64_t a1, void *
     objc_opt_class();
     v6 = ICDynamicCast();
     objc_opt_class();
-    v7 = [v6 object];
-    v5 = ICDynamicCast();
+    object = [v6 object];
+    throttlingPolicy = ICDynamicCast();
 
-    if (!v5)
+    if (!throttlingPolicy)
     {
       v8 = +[ICCloudConfiguration sharedConfiguration];
-      v5 = [v8 throttlingPolicy];
+      throttlingPolicy = [v8 throttlingPolicy];
     }
   }
 
-  [v5 batchInterval];
+  [throttlingPolicy batchInterval];
   v10 = v9;
-  [v5 maximumBatchIntervalFactor];
+  [throttlingPolicy maximumBatchIntervalFactor];
   v12 = v11;
-  v13 = self;
-  objc_sync_enter(v13);
-  v14 = [(ICCloudContext *)v13 processingSelectorDelayer];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processingSelectorDelayer = [(ICCloudContext *)selfCopy processingSelectorDelayer];
   v15 = v10 * v12;
 
-  if (!v14)
+  if (!processingSelectorDelayer)
   {
-    v16 = [objc_alloc(MEMORY[0x277D36258]) initWithTarget:v13 selector:sel_processPendingCloudObjects delay:1 maximumDelay:v10 callOnMainThread:v15];
-    [(ICCloudContext *)v13 setProcessingSelectorDelayer:v16];
+    v16 = [objc_alloc(MEMORY[0x277D36258]) initWithTarget:selfCopy selector:sel_processPendingCloudObjects delay:1 maximumDelay:v10 callOnMainThread:v15];
+    [(ICCloudContext *)selfCopy setProcessingSelectorDelayer:v16];
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
-  v17 = [(ICCloudContext *)v13 processingSelectorDelayer];
-  [v17 setDelay:v10];
+  processingSelectorDelayer2 = [(ICCloudContext *)selfCopy processingSelectorDelayer];
+  [processingSelectorDelayer2 setDelay:v10];
 
-  v18 = [(ICCloudContext *)v13 processingSelectorDelayer];
-  [v18 setMaximumDelay:v15];
+  processingSelectorDelayer3 = [(ICCloudContext *)selfCopy processingSelectorDelayer];
+  [processingSelectorDelayer3 setMaximumDelay:v15];
 
-  v19 = [(ICCloudContext *)v13 processingSelectorDelayer];
-  v20 = [v19 isScheduledToFire];
+  processingSelectorDelayer4 = [(ICCloudContext *)selfCopy processingSelectorDelayer];
+  isScheduledToFire = [processingSelectorDelayer4 isScheduledToFire];
 
-  if (v20)
+  if (isScheduledToFire)
   {
-    v21 = [(ICCloudContext *)v13 processingSelectorDelayer];
-    [v21 cancelPreviousFireRequests];
+    processingSelectorDelayer5 = [(ICCloudContext *)selfCopy processingSelectorDelayer];
+    [processingSelectorDelayer5 cancelPreviousFireRequests];
 
-    v22 = [(ICCloudContext *)v13 processingSelectorDelayer];
-    [v22 requestFire];
+    processingSelectorDelayer6 = [(ICCloudContext *)selfCopy processingSelectorDelayer];
+    [processingSelectorDelayer6 requestFire];
   }
 }
 
-- (void)fetchAssetsOnDemandIfEnabledForNoteObjectID:(id)a3
+- (void)fetchAssetsOnDemandIfEnabledForNoteObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self supportsDeferredAssetDownload];
-  if (v4 && v5)
+  dCopy = d;
+  supportsDeferredAssetDownload = [(ICCloudContext *)self supportsDeferredAssetDownload];
+  if (dCopy && supportsDeferredAssetDownload)
   {
-    v6 = [(ICCloudContext *)self processingQueue];
+    processingQueue = [(ICCloudContext *)self processingQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__ICCloudContext_fetchAssetsOnDemandIfEnabledForNoteObjectID___block_invoke;
     v7[3] = &unk_278194AD8;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = dCopy;
+    dispatch_async(processingQueue, v7);
   }
 }
 
@@ -1120,12 +1120,12 @@ void __32__ICCloudContext_metadataZoneID__block_invoke()
   metadataZoneID_sMetadataZoneID = v1;
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = [(ICCloudContext *)self isInternetReachable];
+  isInternetReachable = [(ICCloudContext *)self isInternetReachable];
   v5 = os_log_create("com.apple.notes", "Cloud");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (isInternetReachable)
   {
     if (v6)
     {
@@ -1146,15 +1146,15 @@ void __32__ICCloudContext_metadataZoneID__block_invoke()
   [(ICCloudContext *)self updateCloudContextState];
 }
 
-- (void)cloudKitAccountChanged:(id)a3
+- (void)cloudKitAccountChanged:(id)changed
 {
-  v4 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__ICCloudContext_cloudKitAccountChanged___block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(processingQueue, block);
 }
 
 uint64_t __41__ICCloudContext_cloudKitAccountChanged___block_invoke(uint64_t a1)
@@ -1188,8 +1188,8 @@ uint64_t __41__ICCloudContext_cloudKitAccountChanged___block_invoke_160(uint64_t
 
 - (BOOL)hasPendingOperations
 {
-  v2 = [(ICCloudContext *)self operationQueue];
-  v3 = [v2 operationCount] != 0;
+  operationQueue = [(ICCloudContext *)self operationQueue];
+  v3 = [operationQueue operationCount] != 0;
 
   return v3;
 }
@@ -1262,68 +1262,68 @@ id __38__ICCloudContext_registerStateHandler__block_invoke()
   return v4;
 }
 
-- (void)receivedZoneNotFound:(id)a3 operation:(id)a4 context:(id)a5
+- (void)receivedZoneNotFound:(id)found operation:(id)operation context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 database];
-  v12 = [(ICCloudContext *)self accountIDForDatabase:v11];
+  foundCopy = found;
+  operationCopy = operation;
+  contextCopy = context;
+  database = [operationCopy database];
+  v12 = [(ICCloudContext *)self accountIDForDatabase:database];
 
-  v13 = [v8 ic_isOwnedByCurrentUser];
+  ic_isOwnedByCurrentUser = [foundCopy ic_isOwnedByCurrentUser];
   v14 = os_log_create("com.apple.notes", "Cloud");
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (ic_isOwnedByCurrentUser)
   {
     if (v15)
     {
-      v16 = [v8 ic_loggingDescription];
-      v17 = [v9 ic_loggingDescription];
+      ic_loggingDescription = [foundCopy ic_loggingDescription];
+      ic_loggingDescription2 = [operationCopy ic_loggingDescription];
       v24 = 138412546;
-      v25 = v16;
+      v25 = ic_loggingDescription;
       v26 = 2112;
-      v27 = v17;
+      v27 = ic_loggingDescription2;
       _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Zone not found %@ %@", &v24, 0x16u);
     }
 
-    v18 = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
-    [v18 ic_addZoneID:v8 forAccountID:v12];
+    accountZoneIDsNeedingToBeSaved = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
+    [accountZoneIDsNeedingToBeSaved ic_addZoneID:foundCopy forAccountID:v12];
 
-    v19 = [(ICCloudContext *)self cloudContextDelegate];
-    [v19 cloudContext:self receivedZoneNotFound:v8 accountID:v12];
+    cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate cloudContext:self receivedZoneNotFound:foundCopy accountID:v12];
   }
 
   else
   {
     if (v15)
     {
-      v20 = [v8 ic_loggingDescription];
-      v21 = [v9 ic_loggingDescription];
+      ic_loggingDescription3 = [foundCopy ic_loggingDescription];
+      ic_loggingDescription4 = [operationCopy ic_loggingDescription];
       v24 = 138412546;
-      v25 = v20;
+      v25 = ic_loggingDescription3;
       v26 = 2112;
-      v27 = v21;
+      v27 = ic_loggingDescription4;
       _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Shared zone not found %@ %@", &v24, 0x16u);
     }
 
-    v22 = [(ICCloudContext *)self accountZoneIDsFetchingChanges];
-    [v22 ic_removeZoneID:v8 forAccountID:v12];
+    accountZoneIDsFetchingChanges = [(ICCloudContext *)self accountZoneIDsFetchingChanges];
+    [accountZoneIDsFetchingChanges ic_removeZoneID:foundCopy forAccountID:v12];
 
-    v19 = [(ICCloudContext *)self cloudContextDelegate];
-    [v19 cloudContext:self sharedZoneWasDeleted:v8 accountID:v12];
+    cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate cloudContext:self sharedZoneWasDeleted:foundCopy accountID:v12];
   }
 
   [(ICCloudContext *)self saveZoneFetchState];
-  v23 = [v9 database];
-  -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", v8, [v23 databaseScope], v12, v10);
+  database2 = [operationCopy database];
+  -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", foundCopy, [database2 databaseScope], v12, contextCopy);
 }
 
-- (id)allCloudObjectIDsInContext:(id)a3 predicate:(id)a4
+- (id)allCloudObjectIDsInContext:(id)context predicate:(id)predicate
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  contextCopy = context;
   v8 = [v5 set];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1331,7 +1331,7 @@ id __38__ICCloudContext_registerStateHandler__block_invoke()
   v12[3] = &unk_278198758;
   v13 = v8;
   v9 = v8;
-  [ICCloudSyncingObject enumerateAllCloudObjectsInContext:v7 predicate:v6 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 batchSize:20 saveAfterBatch:0 usingBlock:v12];
+  [ICCloudSyncingObject enumerateAllCloudObjectsInContext:contextCopy predicate:predicateCopy sortDescriptors:0 relationshipKeyPathsForPrefetching:0 batchSize:20 saveAfterBatch:0 usingBlock:v12];
 
   v10 = [v9 copy];
 
@@ -1345,12 +1345,12 @@ void __55__ICCloudContext_allCloudObjectIDsInContext_predicate___block_invoke(ui
   [v2 addObject:v3];
 }
 
-- (void)syncWithReason:(id)a3 uploadUnsyncedChanges:(BOOL)a4 completionHandler:(id)a5
+- (void)syncWithReason:(id)reason uploadUnsyncedChanges:(BOOL)changes completionHandler:(id)handler
 {
-  v6 = a4;
+  changesCopy = changes;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1359,22 +1359,22 @@ void __55__ICCloudContext_allCloudObjectIDsInContext_predicate___block_invoke(ui
 
   if (![(ICCloudContext *)self isReadyToSync])
   {
-    v12 = [(ICCloudContext *)self isCloudKitAccountAvailable];
+    isCloudKitAccountAvailable = [(ICCloudContext *)self isCloudKitAccountAvailable];
     v13 = os_log_create("com.apple.notes", "Cloud");
     v14 = v13;
-    if (v12)
+    if (isCloudKitAccountAvailable)
     {
       v15 = v13;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(ICCloudContext *)self readinessLoggingDescription];
+        readinessLoggingDescription = [(ICCloudContext *)self readinessLoggingDescription];
         *buf = 138412290;
-        v27 = v16;
+        v27 = readinessLoggingDescription;
         _os_log_impl(&dword_214D51000, v15, OS_LOG_TYPE_DEFAULT, "Trying to sync while not ready <%@>", buf, 0xCu);
       }
 
-      v17 = [objc_opt_class() errorForDisabledCloudSyncing];
-      if (!v9)
+      errorForDisabledCloudSyncing = [objc_opt_class() errorForDisabledCloudSyncing];
+      if (!handlerCopy)
       {
         goto LABEL_28;
       }
@@ -1387,15 +1387,15 @@ void __55__ICCloudContext_allCloudObjectIDsInContext_predicate___block_invoke(ui
         [ICCloudContext syncWithReason:uploadUnsyncedChanges:completionHandler:];
       }
 
-      v17 = 0;
-      if (!v9)
+      errorForDisabledCloudSyncing = 0;
+      if (!handlerCopy)
       {
         goto LABEL_28;
       }
     }
 
 LABEL_27:
-    v9[2](v9, v17);
+    handlerCopy[2](handlerCopy, errorForDisabledCloudSyncing);
 LABEL_28:
 
     goto LABEL_29;
@@ -1416,7 +1416,7 @@ LABEL_28:
       }
 
       [(ICCloudContext *)self setDiscretionaryNetworkBehavior:v11];
-      [(ICCloudContext *)self _syncWithReason:v8 uploadUnsyncedChanges:v6 completionHandler:v9];
+      [(ICCloudContext *)self _syncWithReason:reasonCopy uploadUnsyncedChanges:changesCopy completionHandler:handlerCopy];
     }
 
     else
@@ -1428,16 +1428,16 @@ LABEL_28:
         _os_log_impl(&dword_214D51000, v18, OS_LOG_TYPE_INFO, "Trying to sync with fetching disabled, so only pushing", buf, 2u);
       }
 
-      v19 = [(ICCloudContext *)self newSessionForReason:v8];
-      v20 = [(ICCloudContext *)self cloudSessionDelegate];
-      [v19 setDelegate:v20];
+      v19 = [(ICCloudContext *)self newSessionForReason:reasonCopy];
+      cloudSessionDelegate = [(ICCloudContext *)self cloudSessionDelegate];
+      [v19 setDelegate:cloudSessionDelegate];
 
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __73__ICCloudContext_syncWithReason_uploadUnsyncedChanges_completionHandler___block_invoke;
       v23[3] = &unk_278198780;
       v24 = v19;
-      v25 = v9;
+      v25 = handlerCopy;
       v23[4] = self;
       v21 = v19;
       [(ICCloudContext *)self processAllCloudObjectsInSession:v21 withCompletionHandler:v23];
@@ -1453,9 +1453,9 @@ LABEL_28:
     _os_log_impl(&dword_214D51000, v22, OS_LOG_TYPE_INFO, "Trying to sync with no network connection", buf, 2u);
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v17 = [objc_opt_class() errorForDisabledCloudSyncing];
+    errorForDisabledCloudSyncing = [objc_opt_class() errorForDisabledCloudSyncing];
     goto LABEL_27;
   }
 
@@ -1484,59 +1484,59 @@ void __73__ICCloudContext_syncWithReason_uploadUnsyncedChanges_completionHandler
 
 - (BOOL)hasCompletedInitialSync
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 BOOLForKey:@"IntialCloudKitSyncCompleted"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] BOOLForKey:@"IntialCloudKitSyncCompleted"];
 
   return v3;
 }
 
-- (void)setCompletedInitialSync:(BOOL)a3
+- (void)setCompletedInitialSync:(BOOL)sync
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v4 setBool:v3 forKey:@"IntialCloudKitSyncCompleted"];
+  syncCopy = sync;
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] setBool:syncCopy forKey:@"IntialCloudKitSyncCompleted"];
 }
 
-- (void)_syncWithReason:(id)a3 uploadUnsyncedChanges:(BOOL)a4 completionHandler:(id)a5
+- (void)_syncWithReason:(id)reason uploadUnsyncedChanges:(BOOL)changes completionHandler:(id)handler
 {
-  v6 = a4;
+  changesCopy = changes;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICCloudContext *)self newSessionForReason:v8];
+  reasonCopy = reason;
+  handlerCopy = handler;
+  v10 = [(ICCloudContext *)self newSessionForReason:reasonCopy];
   v11 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v10 identifier];
-    v13 = [v12 UUIDString];
+    identifier = [v10 identifier];
+    uUIDString = [identifier UUIDString];
     v14 = @"NO";
     *buf = 138412802;
-    v35 = v13;
+    v35 = uUIDString;
     v36 = 2112;
-    if (v6)
+    if (changesCopy)
     {
       v14 = @"YES";
     }
 
-    v37 = v8;
+    v37 = reasonCopy;
     v38 = 2112;
     v39 = v14;
     _os_log_impl(&dword_214D51000, v11, OS_LOG_TYPE_INFO, "Enqueuing sync %@ with reason: %@ (uploadUnsyncedChanges=%@)", buf, 0x20u);
   }
 
-  [MEMORY[0x277D36278] postFullSyncTelemetryWithReason:v8];
-  v15 = [MEMORY[0x277CBEB18] array];
+  [MEMORY[0x277D36278] postFullSyncTelemetryWithReason:reasonCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = dispatch_group_create();
   dispatch_group_enter(v16);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __74__ICCloudContext__syncWithReason_uploadUnsyncedChanges_completionHandler___block_invoke;
   v28[3] = &unk_2781987D0;
-  v17 = v15;
+  v17 = array;
   v29 = v17;
-  v30 = self;
+  selfCopy = self;
   v18 = v10;
-  v33 = v6;
+  v33 = changesCopy;
   v31 = v18;
   v32 = v16;
   v19 = v16;
@@ -1549,10 +1549,10 @@ void __73__ICCloudContext_syncWithReason_uploadUnsyncedChanges_completionHandler
   block[4] = self;
   v25 = v17;
   v26 = v18;
-  v27 = v9;
+  v27 = handlerCopy;
   v21 = v18;
   v22 = v17;
-  v23 = v9;
+  v23 = handlerCopy;
   dispatch_group_notify(v19, v20, block);
 }
 
@@ -1685,57 +1685,57 @@ uint64_t __74__ICCloudContext__syncWithReason_uploadUnsyncedChanges_completionHa
   return [v5 syncForSession:v3 completedWithErrors:v4];
 }
 
-- (void)syncForSession:(id)a3 completedWithErrors:(id)a4
+- (void)syncForSession:(id)session completedWithErrors:(id)errors
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorsCopy = errors;
   v8 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 reason];
-    v10 = [v7 count];
-    v11 = [v6 identifier];
-    v12 = [v11 UUIDString];
+    reason = [sessionCopy reason];
+    v10 = [errorsCopy count];
+    identifier = [sessionCopy identifier];
+    uUIDString = [identifier UUIDString];
     *buf = 138413058;
-    v29 = v9;
+    v29 = reason;
     v30 = 2048;
     v31 = v10;
     v32 = 2112;
-    v33 = v12;
+    v33 = uUIDString;
     v34 = 1024;
     v35 = ![(ICCloudContext *)self hasCompletedInitialSync];
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, "Sync session completed for reason = %@ with error count: %lu, identifier = %@, initialSync? %{BOOL}d", buf, 0x26u);
   }
 
-  v13 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ICCloudContext_syncForSession_completedWithErrors___block_invoke;
   block[3] = &unk_278194DC0;
-  v14 = v6;
+  v14 = sessionCopy;
   v25 = v14;
-  v26 = self;
-  v15 = v7;
+  selfCopy = self;
+  v15 = errorsCopy;
   v27 = v15;
-  dispatch_async(v13, block);
+  dispatch_async(processingQueue, block);
 
   if (![v15 count])
   {
     [(ICCloudContext *)self setCompletedInitialSync:1];
     v16 = [MEMORY[0x277CBEAA8] now];
-    v17 = [(ICCloudContext *)self backgroundContext];
+    backgroundContext = [(ICCloudContext *)self backgroundContext];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __53__ICCloudContext_syncForSession_completedWithErrors___block_invoke_2;
     v21[3] = &unk_278194AD8;
-    v22 = v17;
+    v22 = backgroundContext;
     v23 = v16;
     v18 = v16;
-    v19 = v17;
+    v19 = backgroundContext;
     [v19 performBlockAndWait:v21];
-    v20 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v20 postNotificationName:@"ICCloudContextSyncCompletedNotification" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"ICCloudContextSyncCompletedNotification" object:0 userInfo:0];
   }
 }
 
@@ -1782,17 +1782,17 @@ uint64_t __53__ICCloudContext_syncForSession_completedWithErrors___block_invoke_
   return [*(a1 + 32) ic_save];
 }
 
-- (void)cancelEverythingWithCompletionHandler:(id)a3
+- (void)cancelEverythingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ICCloudContext_cancelEverythingWithCompletionHandler___block_invoke;
   v7[3] = &unk_2781957B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -2004,53 +2004,53 @@ void __38__ICCloudContext_clearPendingActivity__block_invoke(uint64_t a1)
   [v5 removeAllObjects];
 }
 
-- (void)deleteRecordZonesWithZoneIDs:(id)a3 accountID:(id)a4 markZonesAsUserPurged:(BOOL)a5 completionHandler:(id)a6
+- (void)deleteRecordZonesWithZoneIDs:(id)ds accountID:(id)d markZonesAsUserPurged:(BOOL)purged completionHandler:(id)handler
 {
-  v7 = a5;
+  purgedCopy = purged;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dsCopy = ds;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109634;
-    v36 = v7;
+    v36 = purgedCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = dCopy;
     v39 = 2112;
-    v40 = v10;
+    v40 = dsCopy;
     _os_log_debug_impl(&dword_214D51000, v13, OS_LOG_TYPE_DEBUG, "Deleting record zones (markZonesAsUserPurged=%d) in account ID %@: %@", buf, 0x1Cu);
   }
 
-  if ([v11 length])
+  if ([dCopy length])
   {
-    v14 = [(ICCloudContext *)self containerForAccountID:v11];
-    v15 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:v10];
+    v14 = [(ICCloudContext *)self containerForAccountID:dCopy];
+    v15 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:dsCopy];
     [v15 setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-    v16 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-    v17 = [v15 configuration];
-    [v17 setDiscretionaryNetworkBehavior:v16];
+    discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+    configuration = [v15 configuration];
+    [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
-    v18 = [v14 privateCloudDatabase];
-    [v15 setDatabase:v18];
-    [v15 setMarkZonesAsUserPurged:v7];
-    v19 = [(ICCloudContext *)self backgroundContext];
+    privateCloudDatabase = [v14 privateCloudDatabase];
+    [v15 setDatabase:privateCloudDatabase];
+    [v15 setMarkZonesAsUserPurged:purgedCopy];
+    backgroundContext = [(ICCloudContext *)self backgroundContext];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __97__ICCloudContext_deleteRecordZonesWithZoneIDs_accountID_markZonesAsUserPurged_completionHandler___block_invoke;
     v28 = &unk_2781988B8;
-    v29 = v11;
-    v30 = self;
-    v31 = v18;
-    v32 = v19;
-    v33 = v12;
-    v20 = v19;
-    v21 = v18;
+    v29 = dCopy;
+    selfCopy = self;
+    v31 = privateCloudDatabase;
+    v32 = backgroundContext;
+    v33 = handlerCopy;
+    v20 = backgroundContext;
+    v21 = privateCloudDatabase;
     [v15 setModifyRecordZonesCompletionBlock:&v25];
     v22 = objc_alloc_init(MEMORY[0x277CBC4F8]);
     [v22 setName:{@"DeleteRecordZones", v25, v26, v27, v28}];
-    [v22 setQuantity:{objc_msgSend(v10, "count")}];
+    [v22 setQuantity:{objc_msgSend(dsCopy, "count")}];
     [v22 setExpectedSendSize:1];
     [v22 setExpectedReceiveSize:1];
     [v15 setGroup:v22];
@@ -2068,10 +2068,10 @@ LABEL_9:
     [ICCloudContext deleteRecordZonesWithZoneIDs:accountID:markZonesAsUserPurged:completionHandler:];
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v14 = ICGenericError();
-    (*(v12 + 2))(v12, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
     goto LABEL_9;
   }
 
@@ -2179,8 +2179,8 @@ void __97__ICCloudContext_deleteRecordZonesWithZoneIDs_accountID_markZonesAsUser
   v11 = 0u;
   v12 = 0u;
   v2 = [(ICCloudContext *)self operationQueue:0];
-  v3 = [v2 operations];
-  v4 = [v3 copy];
+  operations = [v2 operations];
+  v4 = [operations copy];
 
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
@@ -2230,45 +2230,45 @@ LABEL_11:
   return v4;
 }
 
-+ (id)errorFromErrors:(id)a3
++ (id)errorFromErrors:(id)errors
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  errorsCopy = errors;
+  if ([errorsCopy count])
   {
-    if ([v3 count] == 1)
+    if ([errorsCopy count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [errorsCopy firstObject];
     }
 
     else
     {
       v5 = MEMORY[0x277CCA9B8];
       v8 = @"Errors";
-      v9[0] = v3;
+      v9[0] = errorsCopy;
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-      v4 = [v5 errorWithDomain:@"com.apple.notes.cloud" code:3 userInfo:v6];
+      firstObject = [v5 errorWithDomain:@"com.apple.notes.cloud" code:3 userInfo:v6];
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)errorFromOperations:(id)a3
++ (id)errorFromOperations:(id)operations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  operationsCopy = operations;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = operationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -2284,12 +2284,12 @@ LABEL_11:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 error];
+        error = [v10 error];
 
-        if (v11)
+        if (error)
         {
-          v12 = [v10 error];
-          [v4 addObject:v12];
+          error2 = [v10 error];
+          [array addObject:error2];
         }
       }
 
@@ -2299,29 +2299,29 @@ LABEL_11:
     while (v7);
   }
 
-  v13 = [objc_opt_class() errorFromErrors:v4];
+  v13 = [objc_opt_class() errorFromErrors:array];
 
   return v13;
 }
 
-- (double)timeIntervalToRetryAfterFromError:(id)a3
+- (double)timeIntervalToRetryAfterFromError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v5 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
     v6 = *MEMORY[0x277CBBF68];
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
 
     if (v7)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKeyedSubscript:v6];
+      userInfo2 = [v4 userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:v6];
       [v9 doubleValue];
       *(v16 + 3) = v10;
     }
@@ -2336,15 +2336,15 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v12 = [v4 userInfo];
-      v8 = [v12 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+      userInfo3 = [v4 userInfo];
+      userInfo2 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __52__ICCloudContext_timeIntervalToRetryAfterFromError___block_invoke;
       v14[3] = &unk_2781988E0;
       v14[4] = &v15;
-      [v8 enumerateKeysAndObjectsUsingBlock:v14];
+      [userInfo2 enumerateKeysAndObjectsUsingBlock:v14];
     }
 
     goto LABEL_8;
@@ -2371,22 +2371,22 @@ void __52__ICCloudContext_timeIntervalToRetryAfterFromError___block_invoke(uint6
   }
 }
 
-- (void)finishOperationsForRecordID:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)finishOperationsForRecordID:(id)d qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICCloudContext *)self processingQueue];
+  dCopy = d;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__ICCloudContext_finishOperationsForRecordID_qualityOfService_completionHandler___block_invoke;
   v13[3] = &unk_278198908;
-  v16 = v9;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v16 = handlerCopy;
+  serviceCopy = service;
+  v14 = dCopy;
+  selfCopy = self;
+  v11 = handlerCopy;
+  v12 = dCopy;
+  dispatch_async(processingQueue, v13);
 }
 
 void __81__ICCloudContext_finishOperationsForRecordID_qualityOfService_completionHandler___block_invoke(uint64_t a1)
@@ -2569,32 +2569,32 @@ uint64_t __81__ICCloudContext_finishOperationsForRecordID_qualityOfService_compl
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)pauseCloudSyncWhileSynchronouslyPerformingBlock:(id)a3
+- (void)pauseCloudSyncWhileSynchronouslyPerformingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self processingQueue];
-  dispatch_sync(v5, v4);
+  blockCopy = block;
+  processingQueue = [(ICCloudContext *)self processingQueue];
+  dispatch_sync(processingQueue, blockCopy);
 }
 
-- (void)ingestCloudKitRecord:(id)a3 forAccountID:(id)a4 forceMerge:(BOOL)a5 context:(id)a6
+- (void)ingestCloudKitRecord:(id)record forAccountID:(id)d forceMerge:(BOOL)merge context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ICCloudContext *)self processingQueue];
+  recordCopy = record;
+  dCopy = d;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__ICCloudContext_ingestCloudKitRecord_forAccountID_forceMerge_context___block_invoke;
   block[3] = &unk_278198930;
-  v22 = a5;
-  v18 = v11;
-  v19 = v10;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_sync(v13, block);
+  mergeCopy = merge;
+  v18 = dCopy;
+  v19 = recordCopy;
+  selfCopy = self;
+  v21 = contextCopy;
+  v14 = contextCopy;
+  v15 = recordCopy;
+  v16 = dCopy;
+  dispatch_sync(processingQueue, block);
 }
 
 uint64_t __71__ICCloudContext_ingestCloudKitRecord_forAccountID_forceMerge_context___block_invoke(uint64_t a1)
@@ -2608,29 +2608,29 @@ uint64_t __71__ICCloudContext_ingestCloudKitRecord_forAccountID_forceMerge_conte
   return [*(a1 + 48) _ingestCloudKitRecord:*(a1 + 40) forAccountID:*(a1 + 32) forceMerge:*(a1 + 64) session:0 context:*(a1 + 56)];
 }
 
-- (void)_ingestCloudKitRecord:(id)a3 forAccountID:(id)a4 forceMerge:(BOOL)a5 session:(id)a6 context:(id)a7
+- (void)_ingestCloudKitRecord:(id)record forAccountID:(id)d forceMerge:(BOOL)merge session:(id)session context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(ICCloudContext *)self processingQueue];
-  dispatch_assert_queue_V2(v16);
+  recordCopy = record;
+  dCopy = d;
+  sessionCopy = session;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__ICCloudContext__ingestCloudKitRecord_forAccountID_forceMerge_session_context___block_invoke;
   v21[3] = &unk_278198958;
-  v22 = v15;
-  v23 = v13;
-  v24 = v12;
-  v25 = self;
-  v27 = a5;
-  v26 = v14;
-  v17 = v14;
-  v18 = v12;
-  v19 = v13;
-  v20 = v15;
+  v22 = contextCopy;
+  v23 = dCopy;
+  v24 = recordCopy;
+  selfCopy = self;
+  mergeCopy = merge;
+  v26 = sessionCopy;
+  v17 = sessionCopy;
+  v18 = recordCopy;
+  v19 = dCopy;
+  v20 = contextCopy;
   [v20 performBlockAndWait:v21];
 }
 
@@ -2741,39 +2741,39 @@ LABEL_26:
   }
 }
 
-- (id)newSessionForReason:(id)a3
+- (id)newSessionForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[ICCloudSession alloc] initWithReason:v4];
+  reasonCopy = reason;
+  v5 = [[ICCloudSession alloc] initWithReason:reasonCopy];
 
   [(ICCloudSession *)v5 setHasCompletedInitialSync:[(ICCloudContext *)self hasCompletedInitialSync]^ 1];
-  v6 = [(ICCloudContext *)self cloudSessionDelegate];
-  [(ICCloudSession *)v5 setDelegate:v6];
+  cloudSessionDelegate = [(ICCloudContext *)self cloudSessionDelegate];
+  [(ICCloudSession *)v5 setDelegate:cloudSessionDelegate];
 
   return v5;
 }
 
-- (void)setAccountStatus:(int64_t)a3
+- (void)setAccountStatus:(int64_t)status
 {
-  v4 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v4 setInteger:a3 forKey:@"CloudKitAccountStatus"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] setInteger:status forKey:@"CloudKitAccountStatus"];
 
-  v5 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v5 synchronize];
+  mEMORY[0x277D36180]2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180]2 synchronize];
 }
 
-- (void)updateAccountStatusWithCompletionHandler:(id)a3
+- (void)updateAccountStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self processingQueue];
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ICCloudContext_updateAccountStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_2781957B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __59__ICCloudContext_updateAccountStatusWithCompletionHandler___block_invoke(uint64_t a1)
@@ -2904,14 +2904,14 @@ uint64_t __59__ICCloudContext_updateAccountStatusWithCompletionHandler___block_i
   return result;
 }
 
-- (void)fetchUserRecordWithAccountID:(id)a3 completionHandler:(id)a4
+- (void)fetchUserRecordWithAccountID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dCopy = d;
+  handlerCopy = handler;
+  if ([dCopy length])
   {
-    v8 = [(ICCloudContext *)self containerForAccountID:v6];
-    [(ICCloudContext *)self fetchUserRecordWithContainer:v8 completionHandler:v7];
+    v8 = [(ICCloudContext *)self containerForAccountID:dCopy];
+    [(ICCloudContext *)self fetchUserRecordWithContainer:v8 completionHandler:handlerCopy];
   }
 
   else
@@ -2922,33 +2922,33 @@ uint64_t __59__ICCloudContext_updateAccountStatusWithCompletionHandler___block_i
       [ICCloudContext fetchUserRecordWithAccountID:completionHandler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       v10 = ICGenericError();
-      v7[2](v7, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
     }
   }
 }
 
-- (void)fetchUserRecordWithContainer:(id)a3 completionHandler:(id)a4
+- (void)fetchUserRecordWithContainer:(id)container completionHandler:(id)handler
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
-  [v8 setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-  v9 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-  v10 = [v8 configuration];
-  [v10 setDiscretionaryNetworkBehavior:v9];
+  containerCopy = container;
+  handlerCopy = handler;
+  fetchCurrentUserRecordOperation = [MEMORY[0x277CBC3E0] fetchCurrentUserRecordOperation];
+  [fetchCurrentUserRecordOperation setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
+  discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+  configuration = [fetchCurrentUserRecordOperation configuration];
+  [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
-  v11 = [v6 privateCloudDatabase];
-  [v8 setDatabase:v11];
+  privateCloudDatabase = [containerCopy privateCloudDatabase];
+  [fetchCurrentUserRecordOperation setDatabase:privateCloudDatabase];
 
-  objc_initWeak(&location, v8);
+  objc_initWeak(&location, fetchCurrentUserRecordOperation);
   v12 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [v8 ic_loggingDescription];
+    [fetchCurrentUserRecordOperation ic_loggingDescription];
     objc_claimAutoreleasedReturnValue();
     [ICCloudContext fetchUserRecordWithContainer:completionHandler:];
   }
@@ -2964,23 +2964,23 @@ uint64_t __59__ICCloudContext_updateAccountStatusWithCompletionHandler___block_i
   v23[2] = __65__ICCloudContext_fetchUserRecordWithContainer_completionHandler___block_invoke;
   v23[3] = &unk_2781989F8;
   v23[4] = v24;
-  [v8 setPerRecordCompletionBlock:v23];
+  [fetchCurrentUserRecordOperation setPerRecordCompletionBlock:v23];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __65__ICCloudContext_fetchUserRecordWithContainer_completionHandler___block_invoke_235;
   v19 = &unk_278198A20;
   objc_copyWeak(&v22, &location);
-  v13 = v7;
+  v13 = handlerCopy;
   v20 = v13;
   v21 = v24;
-  [v8 setFetchRecordsCompletionBlock:&v16];
+  [fetchCurrentUserRecordOperation setFetchRecordsCompletionBlock:&v16];
   v14 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   [v14 setName:{@"FetchUserRecord", v16, v17, v18, v19}];
   [v14 setQuantity:1];
   [v14 setExpectedSendSize:1];
   [v14 setExpectedReceiveSize:1];
-  [v8 setGroup:v14];
-  v27[0] = v8;
+  [fetchCurrentUserRecordOperation setGroup:v14];
+  v27[0] = fetchCurrentUserRecordOperation;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   [(ICCloudContext *)self addOperations:v15];
 
@@ -3041,9 +3041,9 @@ void __65__ICCloudContext_fetchUserRecordWithContainer_completionHandler___block
   }
 }
 
-+ (id)userRecordNameForContainer:(id)a3
++ (id)userRecordNameForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"+[ICCloudContext userRecordNameForContainer:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
@@ -3063,7 +3063,7 @@ void __65__ICCloudContext_fetchUserRecordWithContainer_completionHandler___block
   v11 = &v12;
   v5 = v4;
   v10 = v5;
-  [v3 fetchUserRecordIDWithCompletionHandler:v9];
+  [containerCopy fetchUserRecordIDWithCompletionHandler:v9];
   v6 = dispatch_time(0, 120000000000);
   dispatch_semaphore_wait(v5, v6);
   v7 = v13[5];
@@ -3094,32 +3094,32 @@ void __45__ICCloudContext_userRecordNameForContainer___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)existingCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)existingCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 recordID];
-  v12 = [v10 recordType];
+  contextCopy = context;
+  dCopy = d;
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordType = [recordCopy recordType];
 
-  v13 = [(ICCloudContext *)self existingCloudObjectForRecordID:v11 recordType:v12 accountID:v9 context:v8];
+  v13 = [(ICCloudContext *)self existingCloudObjectForRecordID:recordID recordType:recordType accountID:dCopy context:contextCopy];
 
   return v13;
 }
 
-- (id)existingCloudObjectForRecordID:(id)a3 recordType:(id)a4 accountID:(id)a5 context:(id)a6 excludingRecordTypes:(id)a7
+- (id)existingCloudObjectForRecordID:(id)d recordType:(id)type accountID:(id)iD context:(id)context excludingRecordTypes:(id)types
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v31 = a6;
-  v15 = a7;
-  if (!v12 || !v14)
+  dCopy = d;
+  typeCopy = type;
+  iDCopy = iD;
+  contextCopy = context;
+  typesCopy = types;
+  if (!dCopy || !iDCopy)
   {
-    if (v12)
+    if (dCopy)
     {
-      if (v14)
+      if (iDCopy)
       {
 LABEL_7:
         v18 = 0;
@@ -3130,7 +3130,7 @@ LABEL_7:
     else
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"recordID" functionName:"-[ICCloudContext existingCloudObjectForRecordID:recordType:accountID:context:excludingRecordTypes:]" simulateCrash:1 showAlert:0 format:@"Trying to fetch a cloud object without a record ID"];
-      if (v14)
+      if (iDCopy)
       {
         goto LABEL_7;
       }
@@ -3140,12 +3140,12 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v13)
+  if (typeCopy)
   {
-    v16 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-    v17 = [v16 objectForKeyedSubscript:v13];
+    cloudObjectClassesByRecordType = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+    v17 = [cloudObjectClassesByRecordType objectForKeyedSubscript:typeCopy];
 
-    v18 = [v17 existingCloudObjectForRecordID:v12 accountID:v14 context:v31];
+    v18 = [v17 existingCloudObjectForRecordID:dCopy accountID:iDCopy context:contextCopy];
   }
 
   else
@@ -3154,10 +3154,10 @@ LABEL_7:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-    v20 = [v19 allKeys];
+    cloudObjectClassesByRecordType2 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+    allKeys = [cloudObjectClassesByRecordType2 allKeys];
 
-    v21 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v21 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v21)
     {
       v22 = v21;
@@ -3169,16 +3169,16 @@ LABEL_7:
         {
           if (*v33 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = *(*(&v32 + 1) + 8 * i);
-          if (([v15 containsObject:{v25, v30}] & 1) == 0)
+          if (([typesCopy containsObject:{v25, v30}] & 1) == 0)
           {
-            v26 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-            v27 = [v26 objectForKeyedSubscript:v25];
+            cloudObjectClassesByRecordType3 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+            v27 = [cloudObjectClassesByRecordType3 objectForKeyedSubscript:v25];
 
-            v28 = [v27 existingCloudObjectForRecordID:v12 accountID:v14 context:v31];
+            v28 = [v27 existingCloudObjectForRecordID:dCopy accountID:iDCopy context:contextCopy];
             if (v28)
             {
               v18 = v28;
@@ -3187,7 +3187,7 @@ LABEL_7:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v22)
         {
           continue;
@@ -3198,7 +3198,7 @@ LABEL_7:
 
       v18 = 0;
 LABEL_21:
-      v13 = v30;
+      typeCopy = v30;
     }
 
     else
@@ -3212,20 +3212,20 @@ LABEL_24:
   return v18;
 }
 
-- (id)existingCloudObjectForUserSpecificRecordID:(id)a3 createPlaceholderIfNecessary:(BOOL)a4 accountID:(id)a5 context:(id)a6
+- (id)existingCloudObjectForUserSpecificRecordID:(id)d createPlaceholderIfNecessary:(BOOL)necessary accountID:(id)iD context:(id)context
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  necessaryCopy = necessary;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v13 = [ICUserSpecificRecordIDParser alloc];
-  v14 = [v10 recordName];
-  v15 = [(ICUserSpecificRecordIDParser *)v13 initWithRecordName:v14];
+  recordName = [dCopy recordName];
+  v15 = [(ICUserSpecificRecordIDParser *)v13 initWithRecordName:recordName];
 
   if (!v15)
   {
-    v24 = os_log_create("com.apple.notes", "Cloud");
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    sharedRecordType3 = os_log_create("com.apple.notes", "Cloud");
+    if (os_log_type_enabled(sharedRecordType3, OS_LOG_TYPE_ERROR))
     {
       [ICCloudContext existingCloudObjectForUserSpecificRecordID:createPlaceholderIfNecessary:accountID:context:];
     }
@@ -3233,31 +3233,31 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  v16 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-  v17 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  cloudObjectClassesByRecordType = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+  sharedRecordType = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
+  v18 = [cloudObjectClassesByRecordType objectForKeyedSubscript:sharedRecordType];
 
   if (([v18 supportsUserSpecificRecords] & 1) == 0)
   {
-    v24 = os_log_create("com.apple.notes", "Cloud");
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+    sharedRecordType3 = os_log_create("com.apple.notes", "Cloud");
+    if (os_log_type_enabled(sharedRecordType3, OS_LOG_TYPE_DEBUG))
     {
       [ICCloudContext existingCloudObjectForUserSpecificRecordID:createPlaceholderIfNecessary:accountID:context:];
     }
 
 LABEL_12:
     v21 = 0;
-    v23 = v24;
+    sharedRecordID2 = sharedRecordType3;
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v19 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordID];
-  v20 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
-  v21 = [(ICCloudContext *)self existingCloudObjectForRecordID:v19 recordType:v20 accountID:v11 context:v12];
+  sharedRecordID = [(ICUserSpecificRecordIDParser *)v15 sharedRecordID];
+  sharedRecordType2 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
+  v21 = [(ICCloudContext *)self existingCloudObjectForRecordID:sharedRecordID recordType:sharedRecordType2 accountID:iDCopy context:contextCopy];
 
-  if (!v21 && v8)
+  if (!v21 && necessaryCopy)
   {
     v22 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -3265,9 +3265,9 @@ LABEL_13:
       [ICCloudContext existingCloudObjectForUserSpecificRecordID:createPlaceholderIfNecessary:accountID:context:];
     }
 
-    v23 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordID];
-    v24 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
-    v21 = [(ICCloudContext *)self newPlaceholderObjectForRecordID:v23 recordType:v24 accountID:v11 context:v12];
+    sharedRecordID2 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordID];
+    sharedRecordType3 = [(ICUserSpecificRecordIDParser *)v15 sharedRecordType];
+    v21 = [(ICCloudContext *)self newPlaceholderObjectForRecordID:sharedRecordID2 recordType:sharedRecordType3 accountID:iDCopy context:contextCopy];
     goto LABEL_13;
   }
 
@@ -3276,41 +3276,41 @@ LABEL_14:
   return v21;
 }
 
-- (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-  v12 = [v10 recordType];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  contextCopy = context;
+  dCopy = d;
+  recordCopy = record;
+  cloudObjectClassesByRecordType = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+  recordType = [recordCopy recordType];
+  v13 = [cloudObjectClassesByRecordType objectForKeyedSubscript:recordType];
 
-  v14 = [v13 newCloudObjectForRecord:v10 accountID:v9 context:v8];
-  [(ICCloudContext *)self setAssetDownloadStateOnObject:v14 withRecord:v10 managedObjectContext:v8];
+  v14 = [v13 newCloudObjectForRecord:recordCopy accountID:dCopy context:contextCopy];
+  [(ICCloudContext *)self setAssetDownloadStateOnObject:v14 withRecord:recordCopy managedObjectContext:contextCopy];
 
   return v14;
 }
 
-- (id)newPlaceholderObjectForRecordID:(id)a3 recordType:(id)a4 accountID:(id)a5 context:(id)a6
+- (id)newPlaceholderObjectForRecordID:(id)d recordType:(id)type accountID:(id)iD context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ICCloudContext *)self cloudObjectClassesByRecordType];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  contextCopy = context;
+  iDCopy = iD;
+  typeCopy = type;
+  dCopy = d;
+  cloudObjectClassesByRecordType = [(ICCloudContext *)self cloudObjectClassesByRecordType];
+  v15 = [cloudObjectClassesByRecordType objectForKeyedSubscript:typeCopy];
 
-  v16 = [v13 recordName];
+  recordName = [dCopy recordName];
 
-  v17 = [v15 newPlaceholderObjectForRecordName:v16 accountID:v11 context:v10];
+  v17 = [v15 newPlaceholderObjectForRecordName:recordName accountID:iDCopy context:contextCopy];
   return v17;
 }
 
-- (void)fetchCloudObjects:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)fetchCloudObjects:(id)objects accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = [(ICCloudContext *)self newSessionForReason:@"FetchCloudObjects"];
   [v11 setHasCompletedInitialSync:{-[ICCloudContext hasCompletedInitialSync](self, "hasCompletedInitialSync") ^ 1}];
   objc_initWeak(&location, self);
@@ -3318,13 +3318,13 @@ LABEL_14:
   v16 = 3221225472;
   v17 = __64__ICCloudContext_fetchCloudObjects_accountID_completionHandler___block_invoke;
   v18 = &unk_278198A70;
-  v12 = v10;
+  v12 = handlerCopy;
   v20 = v12;
   objc_copyWeak(&v21, &location);
   v13 = v11;
   v19 = v13;
   v14 = _Block_copy(&v15);
-  [(ICCloudContext *)self fetchCloudObjects:v8 forSession:v13 accountID:v9 completionHandler:v14, v15, v16, v17, v18];
+  [(ICCloudContext *)self fetchCloudObjects:objectsCopy forSession:v13 accountID:dCopy completionHandler:v14, v15, v16, v17, v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -3354,29 +3354,29 @@ void __64__ICCloudContext_fetchCloudObjects_accountID_completionHandler___block_
   }
 }
 
-- (void)fetchCloudObjects:(id)a3 forSession:(id)a4 accountID:(id)a5 completionHandler:(id)a6
+- (void)fetchCloudObjects:(id)objects forSession:(id)session accountID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  objectsCopy = objects;
+  sessionCopy = session;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([objectsCopy count])
   {
     if ([(ICCloudContext *)self isFetchingEnabled])
     {
-      v14 = [MEMORY[0x277CBE438] ic_objectIDsFromObjects:v10];
-      v15 = [(ICCloudContext *)self processingQueue];
+      v14 = [MEMORY[0x277CBE438] ic_objectIDsFromObjects:objectsCopy];
+      processingQueue = [(ICCloudContext *)self processingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __75__ICCloudContext_fetchCloudObjects_forSession_accountID_completionHandler___block_invoke;
       block[3] = &unk_278198A98;
       block[4] = self;
       v19 = v14;
-      v20 = v11;
-      v21 = v12;
-      v22 = v13;
+      v20 = sessionCopy;
+      v21 = dCopy;
+      v22 = handlerCopy;
       v16 = v14;
-      dispatch_async(v15, block);
+      dispatch_async(processingQueue, block);
 
       goto LABEL_9;
     }
@@ -3389,9 +3389,9 @@ void __64__ICCloudContext_fetchCloudObjects_accountID_completionHandler___block_
     }
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_9:
@@ -3456,25 +3456,25 @@ void __75__ICCloudContext_fetchCloudObjects_forSession_accountID_completionHandl
   }
 }
 
-- (void)fetchRecordIDs:(id)a3 accountID:(id)a4 operationGroupName:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordIDs:(id)ds accountID:(id)d operationGroupName:(id)name completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   v14 = [(ICCloudContext *)self newSessionForReason:@"FetchRecordIDs"];
   objc_initWeak(&location, self);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __80__ICCloudContext_fetchRecordIDs_accountID_operationGroupName_completionHandler___block_invoke;
   v21 = &unk_278198A70;
-  v15 = v13;
+  v15 = handlerCopy;
   v23 = v15;
   objc_copyWeak(&v24, &location);
   v16 = v14;
   v22 = v16;
   v17 = _Block_copy(&v18);
-  [(ICCloudContext *)self fetchRecordIDs:v10 forSession:v16 accountID:v11 operationGroupName:v12 completionHandler:v17, v18, v19, v20, v21];
+  [(ICCloudContext *)self fetchRecordIDs:dsCopy forSession:v16 accountID:dCopy operationGroupName:nameCopy completionHandler:v17, v18, v19, v20, v21];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -3504,63 +3504,63 @@ void __80__ICCloudContext_fetchRecordIDs_accountID_operationGroupName_completion
   }
 }
 
-- (void)fetchRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 operationGroupName:(id)a6 completionHandler:(id)a7
+- (void)fetchRecordIDs:(id)ds forSession:(id)session accountID:(id)d operationGroupName:(id)name completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  dsCopy = ds;
+  sessionCopy = session;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __91__ICCloudContext_fetchRecordIDs_forSession_accountID_operationGroupName_completionHandler___block_invoke;
   v23[3] = &unk_278198AC0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = dsCopy;
+  v25 = sessionCopy;
+  v26 = dCopy;
+  v27 = nameCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = nameCopy;
+  v20 = dCopy;
+  v21 = sessionCopy;
+  v22 = dsCopy;
+  dispatch_async(processingQueue, v23);
 }
 
-- (void)addFetchOperationsForRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 completionHandler:(id)a8
+- (void)addFetchOperationsForRecordIDs:(id)ds forSession:(id)session accountID:(id)d qualityOfService:(int64_t)service operationGroupName:(id)name completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  [(ICCloudContext *)self addFetchOperationsForRecordIDs:v18 forSession:v17 accountID:v16 qualityOfService:a6 operationGroupName:v15 shouldDownloadAssets:[(ICCloudContext *)self supportsDeferredAssetDownload]^ 1 completionHandler:v14];
+  handlerCopy = handler;
+  nameCopy = name;
+  dCopy = d;
+  sessionCopy = session;
+  dsCopy = ds;
+  [(ICCloudContext *)self addFetchOperationsForRecordIDs:dsCopy forSession:sessionCopy accountID:dCopy qualityOfService:service operationGroupName:nameCopy shouldDownloadAssets:[(ICCloudContext *)self supportsDeferredAssetDownload]^ 1 completionHandler:handlerCopy];
 }
 
-- (void)addFetchOperationsForRecordIDs:(id)a3 forSession:(id)a4 accountID:(id)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 shouldDownloadAssets:(BOOL)a8 completionHandler:(id)a9
+- (void)addFetchOperationsForRecordIDs:(id)ds forSession:(id)session accountID:(id)d qualityOfService:(int64_t)service operationGroupName:(id)name shouldDownloadAssets:(BOOL)assets completionHandler:(id)handler
 {
-  v9 = a8;
+  assetsCopy = assets;
   v42 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
+  dsCopy = ds;
+  sessionCopy = session;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   v20 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    [ICCloudContext addFetchOperationsForRecordIDs:v15 forSession:? accountID:? qualityOfService:? operationGroupName:? shouldDownloadAssets:? completionHandler:?];
+    [ICCloudContext addFetchOperationsForRecordIDs:dsCopy forSession:? accountID:? qualityOfService:? operationGroupName:? shouldDownloadAssets:? completionHandler:?];
   }
 
-  v21 = [(ICCloudContext *)self operationsToFetchRecordIDs:v15 forSession:v16 shouldDownloadAssets:v9 qualityOfService:a6 operationGroupName:v18 accountID:v17];
+  v21 = [(ICCloudContext *)self operationsToFetchRecordIDs:dsCopy forSession:sessionCopy shouldDownloadAssets:assetsCopy qualityOfService:service operationGroupName:nameCopy accountID:dCopy];
   [(ICCloudContext *)self addOperations:v21];
-  if (v19)
+  if (handlerCopy)
   {
-    v31 = v16;
-    v32 = v15;
+    v31 = sessionCopy;
+    v32 = dsCopy;
     v22 = MEMORY[0x277CCA8C8];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -3569,7 +3569,7 @@ void __80__ICCloudContext_fetchRecordIDs_accountID_operationGroupName_completion
     v37[4] = self;
     v23 = v21;
     v38 = v23;
-    v39 = v19;
+    v39 = handlerCopy;
     v24 = [v22 blockOperationWithBlock:v37];
     [v24 setName:@"FetchCompletion"];
     [v24 ic_setResistsCancellation:1];
@@ -3607,8 +3607,8 @@ void __80__ICCloudContext_fetchRecordIDs_accountID_operationGroupName_completion
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
     [(ICCloudContext *)self addOperations:v30];
 
-    v16 = v31;
-    v15 = v32;
+    sessionCopy = v31;
+    dsCopy = v32;
   }
 }
 
@@ -3640,44 +3640,44 @@ void __145__ICCloudContext_addFetchOperationsForRecordIDs_forSession_accountID_q
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (id)operationsToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 qualityOfService:(int64_t)a6 operationGroupName:(id)a7 accountID:(id)a8
+- (id)operationsToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets qualityOfService:(int64_t)service operationGroupName:(id)name accountID:(id)d
 {
   v45 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  if ([v17 length])
+  dsCopy = ds;
+  sessionCopy = session;
+  nameCopy = name;
+  dCopy = d;
+  if ([dCopy length])
   {
-    v18 = [MEMORY[0x277CBEB18] array];
-    v30 = [objc_opt_class() objectsByDatabaseScope:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    v30 = [objc_opt_class() objectsByDatabaseScope:dsCopy];
     v43[0] = 0;
     v43[1] = v43;
     v43[2] = 0x2020000000;
     v43[3] = 0;
-    v19 = [(ICCloudContext *)self containerForAccountID:v17];
+    v19 = [(ICCloudContext *)self containerForAccountID:dCopy];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadAssets_qualityOfService_operationGroupName_accountID___block_invoke;
     v35[3] = &unk_278198AE8;
     v20 = v19;
     v36 = v20;
-    v37 = self;
-    v42 = a5;
-    v38 = v15;
-    v41 = a6;
-    v21 = v18;
+    selfCopy = self;
+    assetsCopy = assets;
+    v38 = sessionCopy;
+    serviceCopy = service;
+    v21 = array;
     v39 = v21;
     v40 = v43;
     [v30 enumerateKeysAndObjectsUsingBlock:v35];
-    if (!v16)
+    if (!nameCopy)
     {
-      v16 = @"FetchIndividualRecords";
+      nameCopy = @"FetchIndividualRecords";
     }
 
     v22 = objc_alloc_init(MEMORY[0x277CBC4F8]);
-    [v22 setName:v16];
-    [v22 setQuantity:{objc_msgSend(v14, "count")}];
+    [v22 setName:nameCopy];
+    [v22 setQuantity:{objc_msgSend(dsCopy, "count")}];
     [v22 setExpectedSendSize:1];
     [v22 setExpectedReceiveSize:CKOperationGroupTransferSizeForBytes()];
     v33 = 0u;
@@ -3744,22 +3744,22 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
   *(*(*(a1 + 64) + 8) + 24) += 10240 * v7;
 }
 
-- (id)operationsToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 database:(id)a6 qualityOfService:(int64_t)a7
+- (id)operationsToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets database:(id)database qualityOfService:(int64_t)service
 {
-  v8 = a5;
+  assetsCopy = assets;
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [v11 ic_arrayByGroupingIntoArraysWithMaxCount:100];
+  dsCopy = ds;
+  sessionCopy = session;
+  databaseCopy = database;
+  array = [MEMORY[0x277CBEB18] array];
+  v15 = [dsCopy ic_arrayByGroupingIntoArraysWithMaxCount:100];
   if ([v15 count] >= 2)
   {
     v16 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [v11 count];
-      [v13 databaseScope];
+      v24 = [dsCopy count];
+      [databaseCopy databaseScope];
       v25 = CKDatabaseScopeString();
       *buf = 67109634;
       v34 = v24;
@@ -3771,7 +3771,7 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
     }
   }
 
-  v26 = v11;
+  v26 = dsCopy;
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -3791,8 +3791,8 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
           objc_enumerationMutation(v17);
         }
 
-        v22 = [(ICCloudContext *)self operationToFetchRecordIDs:*(*(&v28 + 1) + 8 * i) forSession:v12 shouldDownloadAssets:v8 database:v13 qualityOfService:a7, v26];
-        [v14 addObject:v22];
+        v22 = [(ICCloudContext *)self operationToFetchRecordIDs:*(*(&v28 + 1) + 8 * i) forSession:sessionCopy shouldDownloadAssets:assetsCopy database:databaseCopy qualityOfService:service, v26];
+        [array addObject:v22];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -3801,26 +3801,26 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
     while (v19);
   }
 
-  return v14;
+  return array;
 }
 
-- (id)operationToFetchRecordIDs:(id)a3 forSession:(id)a4 shouldDownloadAssets:(BOOL)a5 database:(id)a6 qualityOfService:(int64_t)a7
+- (id)operationToFetchRecordIDs:(id)ds forSession:(id)session shouldDownloadAssets:(BOOL)assets database:(id)database qualityOfService:(int64_t)service
 {
-  v27 = a5;
+  assetsCopy = assets;
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v29 = a4;
-  v28 = a6;
-  v11 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:v10];
-  [v11 setQualityOfService:a7];
+  dsCopy = ds;
+  sessionCopy = session;
+  databaseCopy = database;
+  v11 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:dsCopy];
+  [v11 setQualityOfService:service];
   v31 = v11;
-  v12 = [v11 configuration];
-  [v12 setDiscretionaryNetworkBehavior:0];
+  configuration = [v11 configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  [v31 setDatabase:v28];
-  [v31 setIc_cloudSession:v29];
+  [v31 setDatabase:databaseCopy];
+  [v31 setIc_cloudSession:sessionCopy];
   objc_initWeak(&location, v31);
-  if (a7 == 33 || a7 == 25)
+  if (service == 33 || service == 25)
   {
     [v31 setQueuePriority:8];
   }
@@ -3837,7 +3837,7 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v14 = v10;
+  v14 = dsCopy;
   v15 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v15)
   {
@@ -3856,12 +3856,12 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
         v19 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [v18 ic_loggingDescription];
-          v21 = [v31 ic_loggingDescription];
+          ic_loggingDescription = [v18 ic_loggingDescription];
+          ic_loggingDescription2 = [v31 ic_loggingDescription];
           *buf = 138412546;
-          v46 = v20;
+          v46 = ic_loggingDescription;
           v47 = 2112;
-          v48 = v21;
+          v48 = ic_loggingDescription2;
           _os_log_debug_impl(&dword_214D51000, v19, OS_LOG_TYPE_DEBUG, "Will fetch %@ %@", buf, 0x16u);
         }
 
@@ -3888,7 +3888,7 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
   v35[3] = &unk_278198B38;
   v35[4] = self;
   objc_copyWeak(&v37, &location);
-  v22 = v29;
+  v22 = sessionCopy;
   v36 = v22;
   [v31 setPerRecordCompletionBlock:v35];
   v32[0] = MEMORY[0x277D85DD0];
@@ -3900,7 +3900,7 @@ void __123__ICCloudContext_operationsToFetchRecordIDs_forSession_shouldDownloadA
   v23 = v22;
   v33 = v23;
   [v31 setFetchRecordsCompletionBlock:v32];
-  [v31 setShouldFetchAssetContent:v27];
+  [v31 setShouldFetchAssetContent:assetsCopy];
   v24 = v33;
   v25 = v31;
 
@@ -3950,53 +3950,53 @@ void __102__ICCloudContext_operationToFetchRecordIDs_forSession_shouldDownloadAs
   [v10 informCloudAnalyticsDelegateForOperationDidEnd:v11 recordsByRecordID:v6 operationError:v5];
 }
 
-- (void)fetchOperation:(id)a3 progressChangedWithRecordID:(id)a4 progress:(double)a5
+- (void)fetchOperation:(id)operation progressChangedWithRecordID:(id)d progress:(double)progress
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (((a5 * 100.0) - 1) <= 0x62)
+  operationCopy = operation;
+  dCopy = d;
+  if (((progress * 100.0) - 1) <= 0x62)
   {
     v9 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v8 ic_loggingDescription];
-      v11 = [v7 ic_loggingDescription];
+      ic_loggingDescription = [dCopy ic_loggingDescription];
+      ic_loggingDescription2 = [operationCopy ic_loggingDescription];
       v12 = 138412802;
-      v13 = v10;
+      v13 = ic_loggingDescription;
       v14 = 1024;
-      v15 = (a5 * 100.0);
+      v15 = (progress * 100.0);
       v16 = 2112;
-      v17 = v11;
+      v17 = ic_loggingDescription2;
       _os_log_debug_impl(&dword_214D51000, v9, OS_LOG_TYPE_DEBUG, "Progress fetching %@: %d%% %@", &v12, 0x1Cu);
     }
   }
 }
 
-- (void)fetchOperation:(id)a3 recordWasFetchedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7
+- (void)fetchOperation:(id)operation recordWasFetchedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  recordCopy = record;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __83__ICCloudContext_fetchOperation_recordWasFetchedWithRecordID_record_session_error___block_invoke;
   v23[3] = &unk_278198BB0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v16;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = operationCopy;
+  v25 = errorCopy;
+  v26 = dCopy;
+  v27 = recordCopy;
+  v28 = sessionCopy;
+  v18 = sessionCopy;
+  v19 = recordCopy;
+  v20 = dCopy;
+  v21 = errorCopy;
+  v22 = operationCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __83__ICCloudContext_fetchOperation_recordWasFetchedWithRecordID_record_session_error___block_invoke(id *a1)
@@ -4181,24 +4181,24 @@ LABEL_28:
   [v25 ic_saveWithLogDescription:{@"fetch records operation %@", v26}];
 }
 
-- (void)fetchOperation:(id)a3 didCompleteWithRecordsByRecordID:(id)a4 session:(id)a5 error:(id)a6
+- (void)fetchOperation:(id)operation didCompleteWithRecordsByRecordID:(id)d session:(id)session error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __80__ICCloudContext_fetchOperation_didCompleteWithRecordsByRecordID_session_error___block_invoke;
   v16[3] = &unk_278195AC8;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
-  dispatch_async(v12, v16);
+  v17 = sessionCopy;
+  v18 = operationCopy;
+  v19 = errorCopy;
+  selfCopy = self;
+  v13 = errorCopy;
+  v14 = operationCopy;
+  v15 = sessionCopy;
+  dispatch_async(processingQueue, v16);
 }
 
 void __80__ICCloudContext_fetchOperation_didCompleteWithRecordsByRecordID_session_error___block_invoke(uint64_t a1)
@@ -4230,46 +4230,46 @@ void __80__ICCloudContext_fetchOperation_didCompleteWithRecordsByRecordID_sessio
   }
 }
 
-- (void)didFetchShare:(id)a3 accountID:(id)a4 context:(id)a5
+- (void)didFetchShare:(id)share accountID:(id)d context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 rootRecordID];
-  if (!v11)
+  shareCopy = share;
+  dCopy = d;
+  contextCopy = context;
+  rootRecordID = [shareCopy rootRecordID];
+  if (!rootRecordID)
   {
-    v12 = [v8 objectForKeyedSubscript:@"RootRecord"];
-    v11 = [v12 recordID];
+    v12 = [shareCopy objectForKeyedSubscript:@"RootRecord"];
+    rootRecordID = [v12 recordID];
   }
 
-  v13 = [v8 objectForKeyedSubscript:@"RootRecordType"];
+  v13 = [shareCopy objectForKeyedSubscript:@"RootRecordType"];
   if (v13)
   {
-    if (v11)
+    if (rootRecordID)
     {
 LABEL_5:
-      v14 = [(ICCloudContext *)self existingCloudObjectForRecordID:v11 recordType:v13 accountID:v9 context:v10];
+      v14 = [(ICCloudContext *)self existingCloudObjectForRecordID:rootRecordID recordType:v13 accountID:dCopy context:contextCopy];
       v15 = os_log_create("com.apple.notes", "Cloud");
       v16 = v15;
       if (v14)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          [ICCloudContext didFetchShare:v8 accountID:v14 context:v16];
+          [ICCloudContext didFetchShare:shareCopy accountID:v14 context:v16];
         }
 
-        [v14 setServerShareIfNewer:v8];
+        [v14 setServerShareIfNewer:shareCopy];
       }
 
       else
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v8 recordID];
-          v21 = [v20 ic_loggingDescription];
+          recordID = [shareCopy recordID];
+          ic_loggingDescription = [recordID ic_loggingDescription];
           v23 = 138412290;
-          v24 = v21;
+          v24 = ic_loggingDescription;
           _os_log_impl(&dword_214D51000, v16, OS_LOG_TYPE_DEFAULT, "Received share for unknown object: %@", &v23, 0xCu);
         }
       }
@@ -4286,7 +4286,7 @@ LABEL_5:
       [ICCloudContext didFetchShare:accountID:context:];
     }
 
-    if (v11)
+    if (rootRecordID)
     {
       goto LABEL_5;
     }
@@ -4295,24 +4295,24 @@ LABEL_5:
   v14 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v8 recordID];
-    v19 = [v18 ic_loggingDescription];
+    recordID2 = [shareCopy recordID];
+    ic_loggingDescription2 = [recordID2 ic_loggingDescription];
     v23 = 138412290;
-    v24 = v19;
+    v24 = ic_loggingDescription2;
     _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Received a share with no root record ID: %@", &v23, 0xCu);
   }
 
 LABEL_18:
-  v22 = [(ICCloudContext *)self cloudContextDelegate];
-  [v22 cloudContext:self didFetchShare:v8 accountID:v9];
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+  [cloudContextDelegate cloudContext:self didFetchShare:shareCopy accountID:dCopy];
 }
 
-- (void)pushCloudObjects:(id)a3 operationGroupName:(id)a4 completionHandler:(id)a5
+- (void)pushCloudObjects:(id)objects operationGroupName:(id)name completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [ICCloudContext objectsByAccount:v8];
+  objectsCopy = objects;
+  nameCopy = name;
+  handlerCopy = handler;
+  v11 = [ICCloudContext objectsByAccount:objectsCopy];
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -4328,7 +4328,7 @@ LABEL_18:
   aBlock[1] = 3221225472;
   aBlock[2] = __72__ICCloudContext_pushCloudObjects_operationGroupName_completionHandler___block_invoke;
   aBlock[3] = &unk_278198BD8;
-  v13 = v10;
+  v13 = handlerCopy;
   v29 = v13;
   aBlock[4] = self;
   v14 = v12;
@@ -4341,7 +4341,7 @@ LABEL_18:
   v20[4] = self;
   v16 = v14;
   v21 = v16;
-  v17 = v9;
+  v17 = nameCopy;
   v22 = v17;
   v25 = v31;
   v18 = v11;
@@ -4432,11 +4432,11 @@ void __72__ICCloudContext_pushCloudObjects_operationGroupName_completionHandler_
   }
 }
 
-- (void)deleteSharesForObjects:(id)a3 completionHandler:(id)a4
+- (void)deleteSharesForObjects:(id)objects completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [ICCloudContext objectsByAccount:v6];
+  objectsCopy = objects;
+  handlerCopy = handler;
+  v8 = [ICCloudContext objectsByAccount:objectsCopy];
   if ([v8 count])
   {
     v24[0] = 0;
@@ -4454,7 +4454,7 @@ void __72__ICCloudContext_pushCloudObjects_operationGroupName_completionHandler_
     aBlock[1] = 3221225472;
     aBlock[2] = __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invoke;
     aBlock[3] = &unk_278198BD8;
-    v22 = v7;
+    v22 = handlerCopy;
     aBlock[4] = self;
     v10 = v9;
     v21 = v10;
@@ -4477,9 +4477,9 @@ void __72__ICCloudContext_pushCloudObjects_operationGroupName_completionHandler_
     _Block_object_dispose(v24, 8);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -4553,20 +4553,20 @@ void __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invok
   }
 }
 
-- (void)deleteSharesForObjects:(id)a3 forSession:(id)a4 accountID:(id)a5 completionHandler:(id)a6
+- (void)deleteSharesForObjects:(id)objects forSession:(id)session accountID:(id)d completionHandler:(id)handler
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v34 = a4;
-  v10 = a5;
-  v11 = a6;
+  objectsCopy = objects;
+  sessionCopy = session;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v14 = v9;
+  v14 = objectsCopy;
   v15 = [v14 countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v15)
   {
@@ -4584,8 +4584,8 @@ void __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invok
         if ([v18 isSharedRootObject])
         {
           [v12 addObject:v18];
-          v19 = [v18 objectID];
-          [v13 addObject:v19];
+          objectID = [v18 objectID];
+          [v13 addObject:objectID];
         }
       }
 
@@ -4607,11 +4607,11 @@ void __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invok
     v49[1] = 3221225472;
     v49[2] = __80__ICCloudContext_deleteSharesForObjects_forSession_accountID_completionHandler___block_invoke;
     v49[3] = &unk_278198C78;
-    v21 = v10;
+    v21 = dCopy;
     v50 = v21;
     [v12 enumerateObjectsUsingBlock:v49];
     LOBYTE(v32) = 0;
-    v22 = [(ICCloudContext *)self operationsToModifyRecordsForCloudObjectsToSave:0 delete:0 deleteShares:v12 saveUserSpecificRecords:0 forSession:v34 operationGroupName:@"DeleteShares" addDependencies:v32 accountID:v21];
+    v22 = [(ICCloudContext *)self operationsToModifyRecordsForCloudObjectsToSave:0 delete:0 deleteShares:v12 saveUserSpecificRecords:0 forSession:sessionCopy operationGroupName:@"DeleteShares" addDependencies:v32 accountID:v21];
     [(ICCloudContext *)self addOperations:v22];
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -4619,7 +4619,7 @@ void __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invok
     aBlock[2] = __80__ICCloudContext_deleteSharesForObjects_forSession_accountID_completionHandler___block_invoke_283;
     aBlock[3] = &unk_278198CE8;
     objc_copyWeak(&v47, &location);
-    v46 = v11;
+    v46 = handlerCopy;
     v44 = v13;
     v45 = v21;
     v23 = _Block_copy(aBlock);
@@ -4671,9 +4671,9 @@ void __59__ICCloudContext_deleteSharesForObjects_completionHandler___block_invok
     objc_destroyWeak(&location);
   }
 
-  else if (v11)
+  else if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -4862,22 +4862,22 @@ void __80__ICCloudContext_deleteSharesForObjects_forSession_accountID_completion
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)addModifyRecordsOperationsWithCloudObjectsToSave:(id)a3 delete:(id)a4 accountID:(id)a5 forSession:(id)a6 operationGroupName:(id)a7 waitForDependencies:(BOOL)a8 completionHandler:(id)a9
+- (void)addModifyRecordsOperationsWithCloudObjectsToSave:(id)save delete:(id)delete accountID:(id)d forSession:(id)session operationGroupName:(id)name waitForDependencies:(BOOL)dependencies completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  if ([v15 count] || objc_msgSend(v16, "count"))
+  saveCopy = save;
+  deleteCopy = delete;
+  dCopy = d;
+  sessionCopy = session;
+  nameCopy = name;
+  handlerCopy = handler;
+  if ([saveCopy count] || objc_msgSend(deleteCopy, "count"))
   {
-    v21 = a8;
-    [MEMORY[0x277CBE438] ic_objectIDsFromObjects:v15];
-    v22 = v29 = v15;
-    v23 = [MEMORY[0x277CBE438] ic_objectIDsFromObjects:v16];
+    dependenciesCopy = dependencies;
+    [MEMORY[0x277CBE438] ic_objectIDsFromObjects:saveCopy];
+    v22 = v29 = saveCopy;
+    v23 = [MEMORY[0x277CBE438] ic_objectIDsFromObjects:deleteCopy];
     [(ICCloudContext *)self processingQueue];
-    v25 = v24 = v16;
+    v25 = v24 = deleteCopy;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __152__ICCloudContext_addModifyRecordsOperationsWithCloudObjectsToSave_delete_accountID_forSession_operationGroupName_waitForDependencies_completionHandler___block_invoke;
@@ -4885,23 +4885,23 @@ void __80__ICCloudContext_deleteSharesForObjects_forSession_accountID_completion
     block[4] = self;
     v31 = v22;
     v32 = v23;
-    v33 = v17;
-    v34 = v18;
-    v35 = v19;
-    v37 = v21;
-    v36 = v20;
+    v33 = dCopy;
+    v34 = sessionCopy;
+    v35 = nameCopy;
+    v37 = dependenciesCopy;
+    v36 = handlerCopy;
     v26 = v23;
     v27 = v22;
-    v15 = v29;
+    saveCopy = v29;
     v28 = v27;
     dispatch_async(v25, block);
 
-    v16 = v24;
+    deleteCopy = v24;
   }
 
-  else if (v20)
+  else if (handlerCopy)
   {
-    (*(v20 + 2))(v20, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -4934,14 +4934,14 @@ void __152__ICCloudContext_addModifyRecordsOperationsWithCloudObjectsToSave_dele
   [*(a1 + 56) _addModifyRecordsOperationsWithCloudObjectsToSave:v3 delete:v2 accountID:*(a1 + 64) forSession:*(a1 + 72) operationGroupName:*(a1 + 80) waitForDependencies:*(a1 + 96) completionHandler:*(a1 + 88)];
 }
 
-- (void)_addModifyRecordsOperationsWithCloudObjectsToSave:(id)a3 delete:(id)a4 accountID:(id)a5 forSession:(id)a6 operationGroupName:(id)a7 waitForDependencies:(BOOL)a8 completionHandler:(id)a9
+- (void)_addModifyRecordsOperationsWithCloudObjectsToSave:(id)save delete:(id)delete accountID:(id)d forSession:(id)session operationGroupName:(id)name waitForDependencies:(BOOL)dependencies completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v16 = a9;
-  LOBYTE(v27) = a8;
-  v17 = [(ICCloudContext *)self operationsToModifyRecordsForCloudObjectsToSave:a3 delete:a4 deleteShares:0 saveUserSpecificRecords:0 forSession:a6 operationGroupName:a7 addDependencies:v27 accountID:a5];
+  handlerCopy = handler;
+  LOBYTE(v27) = dependencies;
+  v17 = [(ICCloudContext *)self operationsToModifyRecordsForCloudObjectsToSave:save delete:delete deleteShares:0 saveUserSpecificRecords:0 forSession:session operationGroupName:name addDependencies:v27 accountID:d];
   [(ICCloudContext *)self addOperations:v17];
-  if (v16)
+  if (handlerCopy)
   {
     v18 = MEMORY[0x277CCA8C8];
     v32[0] = MEMORY[0x277D85DD0];
@@ -4951,7 +4951,7 @@ void __152__ICCloudContext_addModifyRecordsOperationsWithCloudObjectsToSave_dele
     v32[4] = self;
     v19 = v17;
     v33 = v19;
-    v34 = v16;
+    v34 = handlerCopy;
     v20 = [v18 blockOperationWithBlock:v32];
     [v20 setName:@"ModifyCompletion"];
     [v20 ic_setResistsCancellation:1];
@@ -5011,20 +5011,20 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)operationsToModifyRecordsForCloudObjectsToSave:(id)a3 delete:(id)a4 deleteShares:(id)a5 saveUserSpecificRecords:(id)a6 forSession:(id)a7 operationGroupName:(id)a8 addDependencies:(BOOL)a9 accountID:(id)a10
+- (id)operationsToModifyRecordsForCloudObjectsToSave:(id)save delete:(id)delete deleteShares:(id)shares saveUserSpecificRecords:(id)records forSession:(id)session operationGroupName:(id)name addDependencies:(BOOL)dependencies accountID:(id)self0
 {
   v128 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v77 = a4;
-  v76 = a5;
-  v73 = a6;
-  v83 = a7;
-  v75 = a8;
-  v78 = a10;
-  v74 = v15;
-  if (v78)
+  saveCopy = save;
+  deleteCopy = delete;
+  sharesCopy = shares;
+  recordsCopy = records;
+  sessionCopy = session;
+  nameCopy = name;
+  dCopy = d;
+  v74 = saveCopy;
+  if (dCopy)
   {
-    if ([v15 count])
+    if ([saveCopy count])
     {
       v16 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5033,7 +5033,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       }
     }
 
-    if ([v77 count])
+    if ([deleteCopy count])
     {
       v17 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -5042,7 +5042,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       }
     }
 
-    if ([v76 count])
+    if ([sharesCopy count])
     {
       v18 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -5051,12 +5051,12 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       }
     }
 
-    v80 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v117 = 0u;
     v118 = 0u;
     v115 = 0u;
     v116 = 0u;
-    v19 = v15;
+    v19 = saveCopy;
     v20 = [v19 countByEnumeratingWithState:&v115 objects:v127 count:16];
     if (v20)
     {
@@ -5071,10 +5071,10 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
           }
 
           v23 = *(*(&v115 + 1) + 8 * i);
-          v24 = [v23 recordID];
-          if (v24)
+          recordID = [v23 recordID];
+          if (recordID)
           {
-            [v80 setObject:v23 forKeyedSubscript:v24];
+            [dictionary setObject:v23 forKeyedSubscript:recordID];
           }
         }
 
@@ -5084,30 +5084,30 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       while (v20);
     }
 
-    v25 = v75;
-    if (!v75)
+    v25 = nameCopy;
+    if (!nameCopy)
     {
       v25 = @"ModifyRecords";
     }
 
-    v75 = v25;
+    nameCopy = v25;
     v84 = objc_alloc_init(MEMORY[0x277CBC4F8]);
-    [v84 setName:v75];
-    [v84 setQuantity:{objc_msgSend(v77, "count") + objc_msgSend(v19, "count") + objc_msgSend(v76, "count")}];
+    [v84 setName:nameCopy];
+    [v84 setQuantity:{objc_msgSend(deleteCopy, "count") + objc_msgSend(v19, "count") + objc_msgSend(sharesCopy, "count")}];
     [v84 setExpectedReceiveSize:1];
-    v82 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v26 = [objc_opt_class() deduplicatedRecordsForCloudObjects:v19];
     v79 = [v26 mutableCopy];
 
-    v27 = [objc_opt_class() deduplicatedRecordsForCloudObjects:v77];
+    v27 = [objc_opt_class() deduplicatedRecordsForCloudObjects:deleteCopy];
     v87 = [v27 mutableCopy];
 
-    v86 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v113 = 0u;
     v114 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v28 = v76;
+    v28 = sharesCopy;
     v29 = [v28 countByEnumeratingWithState:&v111 objects:v126 count:16];
     if (v29)
     {
@@ -5122,50 +5122,50 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
           }
 
           v32 = *(*(&v111 + 1) + 8 * j);
-          v33 = [v32 serverShare];
-          if (v33)
+          serverShare = [v32 serverShare];
+          if (serverShare)
           {
-            [v87 addObject:v33];
-            v34 = [v32 recordID];
-            if (v34)
+            [v87 addObject:serverShare];
+            recordID2 = [v32 recordID];
+            if (recordID2)
             {
-              v35 = [v32 recordID];
-              v36 = [v33 recordID];
-              [v86 setObject:v35 forKeyedSubscript:v36];
+              recordID3 = [v32 recordID];
+              recordID4 = [serverShare recordID];
+              [dictionary2 setObject:recordID3 forKeyedSubscript:recordID4];
             }
 
             else
             {
-              v36 = os_log_create("com.apple.notes", "Cloud");
-              if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+              recordID4 = os_log_create("com.apple.notes", "Cloud");
+              if (os_log_type_enabled(recordID4, OS_LOG_TYPE_DEFAULT))
               {
-                v37 = [v32 shortLoggingDescription];
+                shortLoggingDescription = [v32 shortLoggingDescription];
                 *buf = 138412546;
-                *&buf[4] = v37;
+                *&buf[4] = shortLoggingDescription;
                 *&buf[12] = 2112;
-                *&buf[14] = v78;
-                _os_log_impl(&dword_214D51000, v36, OS_LOG_TYPE_DEFAULT, "No root record ID when trying to delete share for %@ for account ID %@", buf, 0x16u);
+                *&buf[14] = dCopy;
+                _os_log_impl(&dword_214D51000, recordID4, OS_LOG_TYPE_DEFAULT, "No root record ID when trying to delete share for %@ for account ID %@", buf, 0x16u);
               }
 
-              v35 = v36;
+              recordID3 = recordID4;
             }
           }
 
           else
           {
-            v35 = os_log_create("com.apple.notes", "Cloud");
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+            recordID3 = os_log_create("com.apple.notes", "Cloud");
+            if (os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
             {
-              v38 = [v32 serverRecord];
-              v39 = [v38 ic_loggingDescription];
+              serverRecord = [v32 serverRecord];
+              ic_loggingDescription = [serverRecord ic_loggingDescription];
               *buf = 138412546;
-              *&buf[4] = v39;
+              *&buf[4] = ic_loggingDescription;
               *&buf[12] = 2112;
-              *&buf[14] = v78;
-              _os_log_error_impl(&dword_214D51000, v35, OS_LOG_TYPE_ERROR, "Record to delete share from doesn't have a server share %@ for account ID %@", buf, 0x16u);
+              *&buf[14] = dCopy;
+              _os_log_error_impl(&dword_214D51000, recordID3, OS_LOG_TYPE_ERROR, "Record to delete share from doesn't have a server share %@ for account ID %@", buf, 0x16u);
             }
 
-            v34 = v35;
+            recordID2 = recordID3;
           }
         }
 
@@ -5179,7 +5179,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
     v110 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v40 = v73;
+    v40 = recordsCopy;
     v41 = [v40 countByEnumeratingWithState:&v107 objects:v125 count:16];
     if (v41)
     {
@@ -5210,7 +5210,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v45 = v77;
+    v45 = deleteCopy;
     v46 = [v45 countByEnumeratingWithState:&v103 objects:v124 count:16];
     if (v46)
     {
@@ -5224,8 +5224,8 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
             objc_enumerationMutation(v45);
           }
 
-          v49 = [*(*(&v103 + 1) + 8 * m) userSpecificServerRecord];
-          [v87 ic_addNonNilObject:v49];
+          userSpecificServerRecord = [*(*(&v103 + 1) + 8 * m) userSpecificServerRecord];
+          [v87 ic_addNonNilObject:userSpecificServerRecord];
         }
 
         v46 = [v45 countByEnumeratingWithState:&v103 objects:v124 count:16];
@@ -5236,7 +5236,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
 
     v81 = [objc_opt_class() objectsByDatabaseScope:v79];
     v50 = [objc_opt_class() objectsByDatabaseScope:v87];
-    v51 = [(ICCloudContext *)self containerForAccountID:v78];
+    v51 = [(ICCloudContext *)self containerForAccountID:dCopy];
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
@@ -5258,8 +5258,8 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
           v56 = [v51 databaseWithDatabaseScope:{objc_msgSend(v55, "integerValue")}];
           v57 = [v81 objectForKeyedSubscript:v55];
           v58 = [v50 objectForKeyedSubscript:v55];
-          v59 = [(ICCloudContext *)self operationsToModifyRecordsToSave:v57 delete:v58 forSession:v83 rootRecordIDsByShareID:v86 database:v56];
-          [v82 addObjectsFromArray:v59];
+          v59 = [(ICCloudContext *)self operationsToModifyRecordsToSave:v57 delete:v58 forSession:sessionCopy rootRecordIDsByShareID:dictionary2 database:v56];
+          [array addObjectsFromArray:v59];
         }
 
         v52 = [&unk_282748090 countByEnumeratingWithState:&v99 objects:v123 count:16];
@@ -5268,7 +5268,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       while (v52);
     }
 
-    v60 = [(ICCloudContext *)self operationToSaveZonesIfNecessaryForAccountID:v78];
+    v60 = [(ICCloudContext *)self operationToSaveZonesIfNecessaryForAccountID:dCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -5277,20 +5277,20 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
     v92[1] = 3221225472;
     v92[2] = __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete_deleteShares_saveUserSpecificRecords_forSession_operationGroupName_addDependencies_accountID___block_invoke;
     v92[3] = &unk_278198D60;
-    v61 = v80;
+    v61 = dictionary;
     v97 = buf;
-    v98 = a9;
+    dependenciesCopy = dependencies;
     v93 = v61;
-    v94 = self;
+    selfCopy = self;
     v62 = v60;
     v95 = v62;
-    v63 = v82;
+    v63 = array;
     v96 = v63;
     [v63 enumerateObjectsUsingBlock:v92];
     [v84 setExpectedSendSize:CKOperationGroupTransferSizeForBytes()];
     if (v62)
     {
-      [v62 setIc_cloudSession:v83];
+      [v62 setIc_cloudSession:sessionCopy];
       [v63 addObject:v62];
     }
 
@@ -5326,7 +5326,7 @@ void __153__ICCloudContext__addModifyRecordsOperationsWithCloudObjectsToSave_del
       v68 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
       {
-        -[ICCloudContext operationsToModifyRecordsForCloudObjectsToSave:delete:deleteShares:saveUserSpecificRecords:forSession:operationGroupName:addDependencies:accountID:].cold.4(v78, v119, [v64 count], v68);
+        -[ICCloudContext operationsToModifyRecordsForCloudObjectsToSave:delete:deleteShares:saveUserSpecificRecords:forSession:operationGroupName:addDependencies:accountID:].cold.4(dCopy, v119, [v64 count], v68);
       }
     }
 
@@ -5441,48 +5441,48 @@ void __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete
   }
 }
 
-+ (void)batchRecordsToSave:(id)a3 delete:(id)a4 maxRecordCountPerBatch:(unint64_t)a5 maxRecordSizePerBatch:(unint64_t)a6 withBlock:(id)a7
++ (void)batchRecordsToSave:(id)save delete:(id)delete maxRecordCountPerBatch:(unint64_t)batch maxRecordSizePerBatch:(unint64_t)perBatch withBlock:(id)block
 {
   v80 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a7;
+  saveCopy = save;
+  deleteCopy = delete;
+  blockCopy = block;
   v12 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v57 = [v9 ic_map:&__block_literal_global_309];
-    v58 = [v10 ic_map:&__block_literal_global_311];
+    v57 = [saveCopy ic_map:&__block_literal_global_309];
+    v58 = [deleteCopy ic_map:&__block_literal_global_311];
     *buf = 138413058;
     *v76 = v57;
     *&v76[8] = 2112;
     *v77 = v58;
     *&v77[8] = 2048;
-    *v78 = a5;
+    *v78 = batch;
     *&v78[8] = 2048;
-    v79 = a6;
+    perBatchCopy = perBatch;
     _os_log_debug_impl(&dword_214D51000, v12, OS_LOG_TYPE_DEBUG, "Batching with recordsToSave:%@ recordsToDelete:%@, maxRecordCountPerBatch:%lu, maxRecordSizePerBatch:%lu", buf, 0x2Au);
   }
 
-  v60 = v9;
-  v13 = [v9 mutableCopy];
-  v59 = v10;
-  v14 = [v10 mutableCopy];
+  v60 = saveCopy;
+  v13 = [saveCopy mutableCopy];
+  v59 = deleteCopy;
+  v14 = [deleteCopy mutableCopy];
   v15 = 0;
   v64 = v14;
-  v62 = v11;
+  v62 = blockCopy;
   while ([v13 count] || objc_msgSend(v14, "count"))
   {
     v63 = v15 + 1;
-    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
-    v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:a5];
+    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:batch];
+    v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:batch];
     v18 = 0;
     while (1)
     {
       if ([v13 count])
       {
-        v19 = [v13 firstObject];
-        v20 = [v19 recordType];
-        v21 = [v20 isEqualToString:@"Media"];
+        firstObject = [v13 firstObject];
+        recordType = [firstObject recordType];
+        v21 = [recordType isEqualToString:@"Media"];
 
         if ([v13 count] < 2)
         {
@@ -5494,16 +5494,16 @@ void __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete
           v22 = [v13 objectAtIndexedSubscript:1];
         }
 
-        v26 = [v22 recordType];
-        v27 = [v26 isEqualToString:@"Attachment"];
+        recordType2 = [v22 recordType];
+        v27 = [recordType2 isEqualToString:@"Attachment"];
 
-        v28 = [v19 size];
+        v28 = [firstObject size];
         if ((v21 & v27) == 1)
         {
           v29 = v28 + v18 + [v22 size];
           v30 = [v16 count];
           v31 = v30 + [v17 count] + 2;
-          v32 = v29 >= a6 || v31 > a5;
+          v32 = v29 >= perBatch || v31 > batch;
           v33 = !v32;
           v34 = !v32 || v18 != 0;
           if (v34)
@@ -5513,18 +5513,18 @@ void __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete
               v35 = os_log_create("com.apple.notes", "Cloud");
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
               {
-                v61 = v31 <= a5;
-                v49 = v29 < a6;
-                v50 = [v19 recordID];
-                v51 = [v22 recordID];
+                v61 = v31 <= batch;
+                v49 = v29 < perBatch;
+                recordID = [firstObject recordID];
+                recordID2 = [v22 recordID];
                 *buf = 67109890;
                 *v76 = v49;
                 *&v76[4] = 1024;
                 *&v76[6] = v61;
                 *v77 = 2112;
-                *&v77[2] = v50;
+                *&v77[2] = recordID;
                 *v78 = 2112;
-                *&v78[2] = v51;
+                *&v78[2] = recordID2;
                 _os_log_debug_impl(&dword_214D51000, v35, OS_LOG_TYPE_DEBUG, "Ending batch because Media/Attachment pair does not fit isSizeOK: %d isCountOK: %d Media: %@ Attachment: %@", buf, 0x22u);
               }
 
@@ -5538,12 +5538,12 @@ void __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete
             v41 = os_log_create("com.apple.notes", "Cloud");
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
-              v47 = [v19 recordID];
-              v48 = [v22 recordID];
+              recordID3 = [firstObject recordID];
+              recordID4 = [v22 recordID];
               *buf = 138412546;
-              *v76 = v47;
+              *v76 = recordID3;
               *&v76[8] = 2112;
-              *v77 = v48;
+              *v77 = recordID4;
               _os_log_error_impl(&dword_214D51000, v41, OS_LOG_TYPE_ERROR, "Ending batch because an impossible batch was detected ICCloudContext. Media: %@ Attachment: %@", buf, 0x16u);
             }
           }
@@ -5551,19 +5551,19 @@ void __165__ICCloudContext_operationsToModifyRecordsForCloudObjectsToSave_delete
           v42 = os_log_create("com.apple.notes", "Cloud");
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
           {
-            v45 = [v19 recordID];
-            v46 = [v22 recordID];
+            recordID5 = [firstObject recordID];
+            recordID6 = [v22 recordID];
             *buf = 138412546;
-            *v76 = v45;
+            *v76 = recordID5;
             *&v76[8] = 2112;
-            *v77 = v46;
+            *v77 = recordID6;
             _os_log_debug_impl(&dword_214D51000, v42, OS_LOG_TYPE_DEBUG, "Adding Media/Attachment pair to batch: %@ %@", buf, 0x16u);
           }
 
           v25 = !v34;
 
           [v13 removeObjectsInRange:{0, 2}];
-          v74[0] = v19;
+          v74[0] = firstObject;
           v74[1] = v22;
           v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:2];
           [v16 addObjectsFromArray:v43];
@@ -5576,13 +5576,13 @@ LABEL_54:
         else
         {
           v36 = v28 + v18;
-          if (v18 && v36 >= a6)
+          if (v18 && v36 >= perBatch)
           {
             v37 = os_log_create("com.apple.notes", "Cloud");
             v14 = v64;
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              [ICCloudContext batchRecordsToSave:v71 delete:v19 maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
+              [ICCloudContext batchRecordsToSave:v71 delete:firstObject maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
             }
 
             v25 = 1;
@@ -5598,7 +5598,7 @@ LABEL_54:
 
             else
             {
-              v38 = v36 >= a6;
+              v38 = v36 >= perBatch;
             }
 
             v25 = v38;
@@ -5607,18 +5607,18 @@ LABEL_54:
               v39 = os_log_create("com.apple.notes", "Cloud");
               if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
               {
-                [ICCloudContext batchRecordsToSave:v73 delete:v19 maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
+                [ICCloudContext batchRecordsToSave:v73 delete:firstObject maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
               }
             }
 
             v40 = os_log_create("com.apple.notes", "Cloud");
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
-              [ICCloudContext batchRecordsToSave:v72 delete:v19 maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
+              [ICCloudContext batchRecordsToSave:v72 delete:firstObject maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
             }
 
             [v13 removeObjectAtIndex:0];
-            [v16 addObject:v19];
+            [v16 addObject:firstObject];
             v18 = v36;
           }
         }
@@ -5628,26 +5628,26 @@ LABEL_54:
 
       if ([v14 count])
       {
-        v23 = [v14 firstObject];
-        v19 = [v23 recordID];
+        firstObject2 = [v14 firstObject];
+        firstObject = [firstObject2 recordID];
 
         v24 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          *v76 = v19;
+          *v76 = firstObject;
           _os_log_debug_impl(&dword_214D51000, v24, OS_LOG_TYPE_DEBUG, "Adding record to delete batch: %@", buf, 0xCu);
         }
 
         [v14 removeObjectAtIndex:0];
-        [v17 addObject:v19];
+        [v17 addObject:firstObject];
         v25 = 0;
       }
 
       else
       {
-        v19 = os_log_create("com.apple.notes", "Cloud");
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+        firstObject = os_log_create("com.apple.notes", "Cloud");
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEBUG))
         {
           [ICCloudContext batchRecordsToSave:v70 delete:? maxRecordCountPerBatch:? maxRecordSizePerBatch:? withBlock:?];
         }
@@ -5658,7 +5658,7 @@ LABEL_54:
 LABEL_56:
 
       v44 = [v16 count];
-      if ([v17 count] + v44 >= a5)
+      if ([v17 count] + v44 >= batch)
       {
         break;
       }
@@ -5689,58 +5689,58 @@ LABEL_65:
 
     v54 = [v16 copy];
     v55 = [v17 copy];
-    v11 = v62;
+    blockCopy = v62;
     v15 = v63;
     (*(v62 + 2))(v62, v63, v54, v55);
   }
 }
 
-- (id)operationsToModifyRecordsToSave:(id)a3 delete:(id)a4 forSession:(id)a5 rootRecordIDsByShareID:(id)a6 database:(id)a7
+- (id)operationsToModifyRecordsToSave:(id)save delete:(id)delete forSession:(id)session rootRecordIDsByShareID:(id)d database:(id)database
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x277CBEB18] array];
-  if (!v12)
+  saveCopy = save;
+  deleteCopy = delete;
+  sessionCopy = session;
+  dCopy = d;
+  databaseCopy = database;
+  array = [MEMORY[0x277CBEB18] array];
+  if (!saveCopy)
   {
     v18 = MEMORY[0x277CBEBF8];
-    if (v13)
+    if (deleteCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v27 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
     goto LABEL_6;
   }
 
-  v18 = [objc_opt_class() sortedRecords:v12];
-  if (!v13)
+  v18 = [objc_opt_class() sortedRecords:saveCopy];
+  if (!deleteCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [objc_opt_class() sortedRecords:v13];
-  v36 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v17;
+  [objc_opt_class() sortedRecords:deleteCopy];
+  v36 = databaseCopy;
+  v19 = dCopy;
+  v20 = sessionCopy;
+  v21 = array;
   v22 = v18;
-  v23 = v13;
-  v25 = v24 = v12;
-  v26 = [v25 reverseObjectEnumerator];
-  v27 = [v26 allObjects];
+  v23 = deleteCopy;
+  v25 = v24 = saveCopy;
+  reverseObjectEnumerator = [v25 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v12 = v24;
-  v13 = v23;
+  saveCopy = v24;
+  deleteCopy = v23;
   v18 = v22;
-  v17 = v21;
-  v14 = v20;
-  v15 = v19;
-  v16 = v36;
+  array = v21;
+  sessionCopy = v20;
+  dCopy = v19;
+  databaseCopy = v36;
 LABEL_6:
   v28 = objc_opt_class();
   v37[0] = MEMORY[0x277D85DD0];
@@ -5748,15 +5748,15 @@ LABEL_6:
   v37[2] = __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_rootRecordIDsByShareID_database___block_invoke;
   v37[3] = &unk_278198DA8;
   v37[4] = self;
-  v38 = v14;
-  v39 = v15;
-  v40 = v16;
-  v29 = v17;
+  v38 = sessionCopy;
+  v39 = dCopy;
+  v40 = databaseCopy;
+  v29 = array;
   v41 = v29;
-  v30 = v16;
-  v31 = v15;
-  v32 = v14;
-  [v28 batchRecordsToSave:v18 delete:v27 maxRecordCountPerBatch:100 maxRecordSizePerBatch:0x200000 withBlock:v37];
+  v30 = databaseCopy;
+  v31 = dCopy;
+  v32 = sessionCopy;
+  [v28 batchRecordsToSave:v18 delete:allObjects maxRecordCountPerBatch:100 maxRecordSizePerBatch:0x200000 withBlock:v37];
   v33 = v41;
   v34 = v29;
 
@@ -5769,43 +5769,43 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
   [*(a1 + 64) addObject:v5];
 }
 
-- (id)operationToModifyRecordsToSave:(id)a3 delete:(id)a4 forSession:(id)a5 rootRecordIDsByShareID:(id)a6 database:(id)a7
+- (id)operationToModifyRecordsToSave:(id)save delete:(id)delete forSession:(id)session rootRecordIDsByShareID:(id)d database:(id)database
 {
   v64 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v45 = a6;
-  v15 = a7;
+  saveCopy = save;
+  deleteCopy = delete;
+  sessionCopy = session;
+  dCopy = d;
+  databaseCopy = database;
   v16 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     [ICCloudContext operationToModifyRecordsToSave:delete:forSession:rootRecordIDsByShareID:database:];
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v12 recordIDsToDelete:v13];
+  v17 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:saveCopy recordIDsToDelete:deleteCopy];
   [v17 setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-  v18 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-  v19 = [v17 configuration];
-  [v19 setDiscretionaryNetworkBehavior:v18];
+  discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+  configuration = [v17 configuration];
+  [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
-  [v17 setDatabase:v15];
-  v20 = [(ICCloudContext *)self enableLongLivedOperations];
-  v21 = [v17 configuration];
-  [v21 setLongLived:v20];
+  [v17 setDatabase:databaseCopy];
+  enableLongLivedOperations = [(ICCloudContext *)self enableLongLivedOperations];
+  configuration2 = [v17 configuration];
+  [configuration2 setLongLived:enableLongLivedOperations];
 
-  [v17 setIc_cloudSession:v14];
+  [v17 setIc_cloudSession:sessionCopy];
   if ([(ICCloudContext *)self disableAutomaticallyRetryNetworkFailures])
   {
-    v22 = [v17 configuration];
-    [v22 setAutomaticallyRetryNetworkFailures:0];
+    configuration3 = [v17 configuration];
+    [configuration3 setAutomaticallyRetryNetworkFailures:0];
   }
 
-  v44 = v15;
-  v46 = v14;
-  v47 = self;
-  v48 = v13;
-  v49 = v12;
+  v44 = databaseCopy;
+  v46 = sessionCopy;
+  selfCopy = self;
+  v48 = deleteCopy;
+  v49 = saveCopy;
   v23 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
@@ -5817,8 +5817,8 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
   v54 = 0u;
   v55 = 0u;
   v24 = v17;
-  v25 = [v17 recordsToSave];
-  v26 = [v25 countByEnumeratingWithState:&v54 objects:v63 count:16];
+  recordsToSave = [v17 recordsToSave];
+  v26 = [recordsToSave countByEnumeratingWithState:&v54 objects:v63 count:16];
   if (v26)
   {
     v27 = v26;
@@ -5830,19 +5830,19 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
       {
         if (*v55 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(recordsToSave);
         }
 
         v30 = *(*(&v54 + 1) + 8 * v29);
         v31 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
-          v32 = [v30 ic_loggingDescription];
-          v33 = [v24 ic_loggingDescription];
+          ic_loggingDescription = [v30 ic_loggingDescription];
+          ic_loggingDescription2 = [v24 ic_loggingDescription];
           *buf = 138412546;
-          v60 = v32;
+          v60 = ic_loggingDescription;
           v61 = 2112;
-          v62 = v33;
+          v62 = ic_loggingDescription2;
           _os_log_debug_impl(&dword_214D51000, v31, OS_LOG_TYPE_DEBUG, "Will push %@ %@", buf, 0x16u);
         }
 
@@ -5850,7 +5850,7 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
       }
 
       while (v27 != v29);
-      v27 = [v25 countByEnumeratingWithState:&v54 objects:v63 count:16];
+      v27 = [recordsToSave countByEnumeratingWithState:&v54 objects:v63 count:16];
     }
 
     while (v27);
@@ -5860,8 +5860,8 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v34 = [v24 recordIDsToDelete];
-  v35 = [v34 countByEnumeratingWithState:&v50 objects:v58 count:16];
+  recordIDsToDelete = [v24 recordIDsToDelete];
+  v35 = [recordIDsToDelete countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v35)
   {
     v36 = v35;
@@ -5873,19 +5873,19 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
       {
         if (*v51 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(recordIDsToDelete);
         }
 
         v39 = *(*(&v50 + 1) + 8 * v38);
         v40 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
-          v41 = [v39 ic_loggingDescription];
-          v42 = [v24 ic_loggingDescription];
+          ic_loggingDescription3 = [v39 ic_loggingDescription];
+          ic_loggingDescription4 = [v24 ic_loggingDescription];
           *buf = 138412546;
-          v60 = v41;
+          v60 = ic_loggingDescription3;
           v61 = 2112;
-          v62 = v42;
+          v62 = ic_loggingDescription4;
           _os_log_debug_impl(&dword_214D51000, v40, OS_LOG_TYPE_DEBUG, "Will delete %@ %@", buf, 0x16u);
         }
 
@@ -5893,51 +5893,51 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
       }
 
       while (v36 != v38);
-      v36 = [v34 countByEnumeratingWithState:&v50 objects:v58 count:16];
+      v36 = [recordIDsToDelete countByEnumeratingWithState:&v50 objects:v58 count:16];
     }
 
     while (v36);
   }
 
-  [(ICCloudContext *)v47 addCallbackBlocksToModifyRecordsOperation:v24 rootRecordIDsByShareID:v45 session:v46];
+  [(ICCloudContext *)selfCopy addCallbackBlocksToModifyRecordsOperation:v24 rootRecordIDsByShareID:dCopy session:v46];
 
   return v24;
 }
 
-- (void)addCallbackBlocksToModifyRecordsOperation:(id)a3 rootRecordIDsByShareID:(id)a4 session:(id)a5
+- (void)addCallbackBlocksToModifyRecordsOperation:(id)operation rootRecordIDsByShareID:(id)d session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_initWeak(&location, v8);
+  operationCopy = operation;
+  dCopy = d;
+  sessionCopy = session;
+  objc_initWeak(&location, operationCopy);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __91__ICCloudContext_addCallbackBlocksToModifyRecordsOperation_rootRecordIDsByShareID_session___block_invoke;
   v26[3] = &unk_278198DD0;
   v26[4] = self;
   objc_copyWeak(&v28, &location);
-  v11 = v10;
+  v11 = sessionCopy;
   v27 = v11;
-  [v8 setPerRecordSaveBlock:v26];
+  [operationCopy setPerRecordSaveBlock:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __91__ICCloudContext_addCallbackBlocksToModifyRecordsOperation_rootRecordIDsByShareID_session___block_invoke_2;
   v22[3] = &unk_278198DF8;
   v22[4] = self;
   objc_copyWeak(&v25, &location);
-  v12 = v9;
+  v12 = dCopy;
   v23 = v12;
   v13 = v11;
   v24 = v13;
-  [v8 setPerRecordDeleteBlock:v22];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  [operationCopy setPerRecordDeleteBlock:v22];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __91__ICCloudContext_addCallbackBlocksToModifyRecordsOperation_rootRecordIDsByShareID_session___block_invoke_3;
   v20[3] = &unk_278198E20;
-  v15 = v14;
+  v15 = dictionary;
   v21 = v15;
-  [v8 setPerRecordProgressBlock:v20];
+  [operationCopy setPerRecordProgressBlock:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __91__ICCloudContext_addCallbackBlocksToModifyRecordsOperation_rootRecordIDsByShareID_session___block_invoke_318;
@@ -5946,7 +5946,7 @@ void __100__ICCloudContext_operationsToModifyRecordsToSave_delete_forSession_roo
   objc_copyWeak(&v19, &location);
   v16 = v13;
   v18 = v16;
-  [v8 setModifyRecordsCompletionBlock:v17];
+  [operationCopy setModifyRecordsCompletionBlock:v17];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v25);
@@ -6012,30 +6012,30 @@ void __91__ICCloudContext_addCallbackBlocksToModifyRecordsOperation_rootRecordID
   [v8 informCloudAnalyticsDelegateForOperationDidEnd:v9 recordsByRecordID:MEMORY[0x277CBEC10] operationError:v6];
 }
 
-- (void)modifyRecordsOperation:(id)a3 recordWasSavedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7
+- (void)modifyRecordsOperation:(id)operation recordWasSavedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  recordCopy = record;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __89__ICCloudContext_modifyRecordsOperation_recordWasSavedWithRecordID_record_session_error___block_invoke;
   v23[3] = &unk_278198BB0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = operationCopy;
+  v25 = dCopy;
+  v26 = recordCopy;
+  v27 = sessionCopy;
+  v28 = errorCopy;
+  v18 = errorCopy;
+  v19 = sessionCopy;
+  v20 = recordCopy;
+  v21 = dCopy;
+  v22 = operationCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __89__ICCloudContext_modifyRecordsOperation_recordWasSavedWithRecordID_record_session_error___block_invoke(id *a1)
@@ -6060,23 +6060,23 @@ void __89__ICCloudContext_modifyRecordsOperation_recordWasSavedWithRecordID_reco
   [v7 performBlockAndWait:v9];
 }
 
-- (void)modifyRecordsOperation:(id)a3 recordWasSavedWithRecordID:(id)a4 record:(id)a5 session:(id)a6 error:(id)a7 context:(id)a8
+- (void)modifyRecordsOperation:(id)operation recordWasSavedWithRecordID:(id)d record:(id)record session:(id)session error:(id)error context:(id)context
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v16)
+  operationCopy = operation;
+  dCopy = d;
+  recordCopy = record;
+  sessionCopy = session;
+  errorCopy = error;
+  contextCopy = context;
+  if (!recordCopy)
   {
-    if ([v18 code] == 14)
+    if ([errorCopy code] == 14)
     {
-      v20 = [v18 userInfo];
-      v16 = [v20 objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
+      userInfo = [errorCopy userInfo];
+      recordCopy = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFE8]];
 
-      if (!v16)
+      if (!recordCopy)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"record != ((void*)0)" functionName:"-[ICCloudContext modifyRecordsOperation:recordWasSavedWithRecordID:record:session:error:context:]" simulateCrash:1 showAlert:1 format:@"Missing server record for CKErrorServerRecordChanged"];
       }
@@ -6084,15 +6084,15 @@ void __89__ICCloudContext_modifyRecordsOperation_recordWasSavedWithRecordID_reco
 
     else
     {
-      v16 = 0;
+      recordCopy = 0;
     }
   }
 
-  v21 = [v14 database];
-  v22 = [(ICCloudContext *)self accountIDForDatabase:v21];
+  database = [operationCopy database];
+  v22 = [(ICCloudContext *)self accountIDForDatabase:database];
 
-  v23 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v15];
-  if (!v18)
+  v23 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:dCopy];
+  if (!errorCopy)
   {
     v26 = os_log_create("com.apple.notes", "Cloud");
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG);
@@ -6100,168 +6100,168 @@ void __89__ICCloudContext_modifyRecordsOperation_recordWasSavedWithRecordID_reco
     {
       if (v27)
       {
-        v48 = [v16 ic_loggingDescription];
-        [v14 ic_loggingDescription];
-        v56 = v14;
-        v50 = v49 = v17;
+        ic_loggingDescription = [recordCopy ic_loggingDescription];
+        [operationCopy ic_loggingDescription];
+        v56 = operationCopy;
+        v50 = v49 = sessionCopy;
         *buf = 138412802;
         v60 = v22;
         v61 = 2112;
-        v62 = v48;
+        v62 = ic_loggingDescription;
         v63 = 2112;
         v64 = v50;
         _os_log_debug_impl(&dword_214D51000, v26, OS_LOG_TYPE_DEBUG, "Pushed user-specific record for account ID %@: %@ %@", buf, 0x20u);
 
-        v17 = v49;
-        v14 = v56;
+        sessionCopy = v49;
+        operationCopy = v56;
       }
 
-      v28 = [v16 recordID];
-      v29 = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:v28 createPlaceholderIfNecessary:0 accountID:v22 context:v19];
+      recordID = [recordCopy recordID];
+      v29 = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:recordID createPlaceholderIfNecessary:0 accountID:v22 context:contextCopy];
 
-      LOBYTE(v28) = [v29 isInCloud];
-      [v29 didSaveUserSpecificRecord:v16];
+      LOBYTE(recordID) = [v29 isInCloud];
+      [v29 didSaveUserSpecificRecord:recordCopy];
 
-      if ((v28 & 1) == 0)
+      if ((recordID & 1) == 0)
       {
 LABEL_13:
-        v24 = [v16 recordType];
-        [v17 recordAdditionWasPushed:v15 type:v24];
+        recordType = [recordCopy recordType];
+        [sessionCopy recordAdditionWasPushed:dCopy type:recordType];
         goto LABEL_30;
       }
     }
 
     else
     {
-      v54 = v14;
-      v58 = v17;
+      v54 = operationCopy;
+      v58 = sessionCopy;
       if (v27)
       {
-        v51 = [v16 ic_loggingDescription];
-        v52 = [v14 ic_loggingDescription];
+        ic_loggingDescription2 = [recordCopy ic_loggingDescription];
+        ic_loggingDescription3 = [operationCopy ic_loggingDescription];
         *buf = 138412802;
         v60 = v22;
         v61 = 2112;
-        v62 = v51;
+        v62 = ic_loggingDescription2;
         v63 = 2112;
-        v64 = v52;
+        v64 = ic_loggingDescription3;
         _os_log_debug_impl(&dword_214D51000, v26, OS_LOG_TYPE_DEBUG, "Pushed account ID %@: %@ %@", buf, 0x20u);
       }
 
-      v37 = [(ICCloudContext *)self cloudContextDelegate];
-      v38 = [v16 recordID];
-      [v37 cloudContext:self didPushRecordID:v38 accountID:v22];
+      cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+      recordID2 = [recordCopy recordID];
+      [cloudContextDelegate cloudContext:self didPushRecordID:recordID2 accountID:v22];
 
-      v39 = [(ICCloudContext *)self existingCloudObjectForRecord:v16 accountID:v22 context:v19];
-      v40 = [v39 isInCloud];
+      v39 = [(ICCloudContext *)self existingCloudObjectForRecord:recordCopy accountID:v22 context:contextCopy];
+      isInCloud = [v39 isInCloud];
       if (v39)
       {
-        [v39 objectWasPushedToCloudWithOperation:v14 serverRecord:v16];
+        [v39 objectWasPushedToCloudWithOperation:operationCopy serverRecord:recordCopy];
         [(ICCloudContext *)self objectIDsToRetry];
-        v42 = v41 = v40;
-        v43 = [v39 objectID];
-        [v42 removeObject:v43];
+        v42 = v41 = isInCloud;
+        objectID = [v39 objectID];
+        [v42 removeObject:objectID];
 
-        v44 = [v39 serverRecord];
-        v45 = [v39 cloudAccount];
-        v40 = v41;
-        [ICAssetSignature mergeIncomingAssetsFromRecord:v44 forObject:v39 account:v45 context:v19];
+        serverRecord = [v39 serverRecord];
+        cloudAccount = [v39 cloudAccount];
+        isInCloud = v41;
+        [ICAssetSignature mergeIncomingAssetsFromRecord:serverRecord forObject:v39 account:cloudAccount context:contextCopy];
       }
 
-      v14 = v54;
-      v17 = v58;
-      if ((v40 & 1) == 0)
+      operationCopy = v54;
+      sessionCopy = v58;
+      if ((isInCloud & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    v24 = [v16 recordType];
-    [v17 recordModificationWasPushed:v15 type:v24];
+    recordType = [recordCopy recordType];
+    [sessionCopy recordModificationWasPushed:dCopy type:recordType];
     goto LABEL_30;
   }
 
-  v57 = v17;
+  v57 = sessionCopy;
   if (v23)
   {
-    v24 = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:v15 createPlaceholderIfNecessary:0 accountID:v22 context:v19];
-    v25 = [v24 didFailToSaveUserSpecificRecordWithID:v15 accountID:v22 error:v18];
+    recordType = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:dCopy createPlaceholderIfNecessary:0 accountID:v22 context:contextCopy];
+    v25 = [recordType didFailToSaveUserSpecificRecordWithID:dCopy accountID:v22 error:errorCopy];
   }
 
   else
   {
-    v24 = [(ICCloudContext *)self existingCloudObjectForRecordID:v15 recordType:0 accountID:v22 context:v19];
-    v25 = [v24 objectFailedToBePushedToCloudWithOperation:v14 recordID:v15 error:v18];
+    recordType = [(ICCloudContext *)self existingCloudObjectForRecordID:dCopy recordType:0 accountID:v22 context:contextCopy];
+    v25 = [recordType objectFailedToBePushedToCloudWithOperation:operationCopy recordID:dCopy error:errorCopy];
   }
 
   v30 = v25;
-  if (!v24)
+  if (!recordType)
   {
     v31 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v55 = [v15 ic_loggingDescription];
-      v53 = [v14 ic_loggingDescription];
+      ic_loggingDescription4 = [dCopy ic_loggingDescription];
+      ic_loggingDescription5 = [operationCopy ic_loggingDescription];
       *buf = 138413058;
       v60 = v22;
       v61 = 2112;
-      v62 = v55;
+      v62 = ic_loggingDescription4;
       v63 = 2112;
-      v64 = v53;
+      v64 = ic_loggingDescription5;
       v65 = 2112;
-      v66 = v18;
+      v66 = errorCopy;
       _os_log_error_impl(&dword_214D51000, v31, OS_LOG_TYPE_ERROR, "Failed to find existing cloud object for modify error in account ID %@: %@ %@: %@", buf, 0x2Au);
     }
   }
 
-  v32 = [v24 objectID];
-  v33 = (v32 != 0) & v30;
+  objectID2 = [recordType objectID];
+  v33 = (objectID2 != 0) & v30;
 
   if (v33 == 1)
   {
-    v34 = [(ICCloudContext *)self objectIDsToRetry];
-    v35 = [v24 objectID];
-    [v34 addObject:v35];
+    objectIDsToRetry = [(ICCloudContext *)self objectIDsToRetry];
+    objectID3 = [recordType objectID];
+    [objectIDsToRetry addObject:objectID3];
   }
 
-  v36 = [v18 code];
-  v17 = v57;
-  if (v36 <= 0x1F && ((1 << v36) & 0xC0081400) != 0)
+  code = [errorCopy code];
+  sessionCopy = v57;
+  if (code <= 0x1F && ((1 << code) & 0xC0081400) != 0)
   {
-    [v24 incrementFailureCounts];
+    [recordType incrementFailureCounts];
   }
 
 LABEL_30:
 
-  v46 = [v16 recordID];
-  v47 = [v46 recordName];
-  [v19 ic_saveWithLogDescription:{@"pushing record for account ID %@: %@", v22, v47}];
+  recordID3 = [recordCopy recordID];
+  recordName = [recordID3 recordName];
+  [contextCopy ic_saveWithLogDescription:{@"pushing record for account ID %@: %@", v22, recordName}];
 }
 
-- (void)modifyRecordsOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 rootRecordIDsByShareID:(id)a5 session:(id)a6 error:(id)a7
+- (void)modifyRecordsOperation:(id)operation recordWasDeletedWithRecordID:(id)d rootRecordIDsByShareID:(id)iD session:(id)session error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  iDCopy = iD;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __107__ICCloudContext_modifyRecordsOperation_recordWasDeletedWithRecordID_rootRecordIDsByShareID_session_error___block_invoke;
   v23[3] = &unk_278198BB0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = operationCopy;
+  v25 = dCopy;
+  v26 = iDCopy;
+  v27 = sessionCopy;
+  v28 = errorCopy;
+  v18 = errorCopy;
+  v19 = sessionCopy;
+  v20 = iDCopy;
+  v21 = dCopy;
+  v22 = operationCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __107__ICCloudContext_modifyRecordsOperation_recordWasDeletedWithRecordID_rootRecordIDsByShareID_session_error___block_invoke(id *a1)
@@ -6286,24 +6286,24 @@ void __107__ICCloudContext_modifyRecordsOperation_recordWasDeletedWithRecordID_r
   [v7 performBlockAndWait:v9];
 }
 
-- (void)modifyRecordsOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 rootRecordIDsByShareID:(id)a5 session:(id)a6 error:(id)a7 context:(id)a8
+- (void)modifyRecordsOperation:(id)operation recordWasDeletedWithRecordID:(id)d rootRecordIDsByShareID:(id)iD session:(id)session error:(id)error context:(id)context
 {
   v88 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a5;
-  v20 = [v14 database];
-  v21 = [(ICCloudContext *)self accountIDForDatabase:v20];
+  operationCopy = operation;
+  dCopy = d;
+  sessionCopy = session;
+  errorCopy = error;
+  contextCopy = context;
+  iDCopy = iD;
+  database = [operationCopy database];
+  v21 = [(ICCloudContext *)self accountIDForDatabase:database];
 
-  v22 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v15];
-  v23 = [v19 objectForKeyedSubscript:v15];
+  v22 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:dCopy];
+  v23 = [iDCopy objectForKeyedSubscript:dCopy];
 
   if (v22)
   {
-    v24 = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:v15 createPlaceholderIfNecessary:0 accountID:v21 context:v18];
+    v24 = [(ICCloudContext *)self existingCloudObjectForUserSpecificRecordID:dCopy createPlaceholderIfNecessary:0 accountID:v21 context:contextCopy];
   }
 
   else
@@ -6315,16 +6315,16 @@ void __107__ICCloudContext_modifyRecordsOperation_recordWasDeletedWithRecordID_r
 
     else
     {
-      v25 = v15;
+      v25 = dCopy;
     }
 
-    v24 = [(ICCloudContext *)self existingCloudObjectForRecordID:v25 recordType:0 accountID:v21 context:v18];
+    v24 = [(ICCloudContext *)self existingCloudObjectForRecordID:v25 recordType:0 accountID:v21 context:contextCopy];
   }
 
   v26 = v24;
   if (v24)
   {
-    if (v17)
+    if (errorCopy)
     {
       goto LABEL_9;
     }
@@ -6332,97 +6332,97 @@ void __107__ICCloudContext_modifyRecordsOperation_recordWasDeletedWithRecordID_r
 
   else
   {
-    v28 = v18;
+    v28 = contextCopy;
     v29 = v23;
-    v30 = v16;
+    v30 = sessionCopy;
     v31 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v69 = [v15 ic_loggingDescription];
-      v66 = [v14 ic_loggingDescription];
+      ic_loggingDescription = [dCopy ic_loggingDescription];
+      ic_loggingDescription2 = [operationCopy ic_loggingDescription];
       *buf = 138413058;
       v79 = v21;
       v80 = 2112;
-      v81 = v69;
+      v81 = ic_loggingDescription;
       v82 = 2112;
-      v83 = v66;
+      v83 = ic_loggingDescription2;
       v84 = 2112;
-      v85 = v17;
+      v85 = errorCopy;
       _os_log_error_impl(&dword_214D51000, v31, OS_LOG_TYPE_ERROR, "Failed to find existing cloud object for delete error in account ID %@: %@ %@: %@", buf, 0x2Au);
     }
 
-    v16 = v30;
+    sessionCopy = v30;
     v23 = v29;
-    v18 = v28;
+    contextCopy = v28;
     v26 = 0;
-    if (v17)
+    if (errorCopy)
     {
 LABEL_9:
       if (v22)
       {
-        v27 = os_log_create("com.apple.notes", "Cloud");
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        objectIDsToRetry = os_log_create("com.apple.notes", "Cloud");
+        if (os_log_type_enabled(objectIDsToRetry, OS_LOG_TYPE_ERROR))
         {
-          v46 = [v15 ic_loggingDescription];
+          ic_loggingDescription3 = [dCopy ic_loggingDescription];
           *buf = 138412802;
           v79 = v21;
           v80 = 2112;
-          v81 = v46;
+          v81 = ic_loggingDescription3;
           v82 = 2112;
-          v83 = v17;
-          _os_log_error_impl(&dword_214D51000, v27, OS_LOG_TYPE_ERROR, "Error deleting user-specific record in account ID %@: %@: %@", buf, 0x20u);
+          v83 = errorCopy;
+          _os_log_error_impl(&dword_214D51000, objectIDsToRetry, OS_LOG_TYPE_ERROR, "Error deleting user-specific record in account ID %@: %@: %@", buf, 0x20u);
         }
 
 LABEL_13:
         goto LABEL_49;
       }
 
-      v77 = v16;
-      v35 = [v17 code];
+      v77 = sessionCopy;
+      code = [errorCopy code];
       v36 = os_log_create("com.apple.notes", "Cloud");
       v37 = v36;
       if (v23)
       {
-        if (v35 == 26)
+        if (code == 26)
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
-            v72 = [v15 ic_loggingDescription];
-            v67 = [v26 shortLoggingDescription];
-            v56 = [v14 ic_loggingDescription];
+            ic_loggingDescription4 = [dCopy ic_loggingDescription];
+            shortLoggingDescription = [v26 shortLoggingDescription];
+            ic_loggingDescription5 = [operationCopy ic_loggingDescription];
             *buf = 138413058;
             v79 = v21;
             v80 = 2112;
-            v81 = v72;
+            v81 = ic_loggingDescription4;
             v82 = 2112;
-            v83 = v67;
+            v83 = shortLoggingDescription;
             v84 = 2112;
-            v85 = v56;
-            v57 = v56;
+            v85 = ic_loggingDescription5;
+            v57 = ic_loggingDescription5;
             _os_log_debug_impl(&dword_214D51000, v37, OS_LOG_TYPE_DEBUG, "Zone not found deleting share in account ID %@: %@ for %@ %@", buf, 0x2Au);
           }
 
           [v26 setServerShare:0];
-          v42 = [v15 zoneID];
-          [(ICCloudContext *)self receivedZoneNotFound:v42 operation:v14 context:v18];
+          zoneID = [dCopy zoneID];
+          [(ICCloudContext *)self receivedZoneNotFound:zoneID operation:operationCopy context:contextCopy];
         }
 
-        else if (v35 == 11)
+        else if (code == 11)
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
-            v71 = [v15 ic_loggingDescription];
-            v53 = [v26 shortLoggingDescription];
-            v54 = [v14 ic_loggingDescription];
+            ic_loggingDescription6 = [dCopy ic_loggingDescription];
+            shortLoggingDescription2 = [v26 shortLoggingDescription];
+            ic_loggingDescription7 = [operationCopy ic_loggingDescription];
             *buf = 138413058;
             v79 = v21;
             v80 = 2112;
-            v81 = v71;
+            v81 = ic_loggingDescription6;
             v82 = 2112;
-            v83 = v53;
+            v83 = shortLoggingDescription2;
             v84 = 2112;
-            v85 = v54;
-            v55 = v54;
+            v85 = ic_loggingDescription7;
+            v55 = ic_loggingDescription7;
             _os_log_debug_impl(&dword_214D51000, v37, OS_LOG_TYPE_DEBUG, "Unknown item deleting share in account ID %@: %@ for %@ %@", buf, 0x2Au);
           }
 
@@ -6433,46 +6433,46 @@ LABEL_13:
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v73 = [v15 ic_loggingDescription];
-            v58 = [v26 shortLoggingDescription];
-            v59 = [v14 ic_loggingDescription];
+            ic_loggingDescription8 = [dCopy ic_loggingDescription];
+            shortLoggingDescription3 = [v26 shortLoggingDescription];
+            ic_loggingDescription9 = [operationCopy ic_loggingDescription];
             *buf = 138413314;
             v79 = v21;
             v80 = 2112;
-            v81 = v73;
+            v81 = ic_loggingDescription8;
             v82 = 2112;
-            v83 = v58;
+            v83 = shortLoggingDescription3;
             v84 = 2112;
-            v85 = v59;
-            v60 = v59;
+            v85 = ic_loggingDescription9;
+            v60 = ic_loggingDescription9;
             v86 = 2112;
-            v87 = v17;
+            v87 = errorCopy;
             _os_log_error_impl(&dword_214D51000, v37, OS_LOG_TYPE_ERROR, "Error deleting share in account ID %@: %@ for %@ %@: %@", buf, 0x34u);
           }
         }
 
-        v16 = v77;
+        sessionCopy = v77;
         goto LABEL_49;
       }
 
-      switch(v35)
+      switch(code)
       {
         case 31:
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v74 = [v15 ic_loggingDescription];
-            v61 = [v14 ic_loggingDescription];
+            ic_loggingDescription10 = [dCopy ic_loggingDescription];
+            ic_loggingDescription11 = [operationCopy ic_loggingDescription];
             *buf = 138412802;
             v79 = v21;
             v80 = 2112;
-            v81 = v74;
+            v81 = ic_loggingDescription10;
             v82 = 2112;
-            v83 = v61;
-            v62 = v61;
+            v83 = ic_loggingDescription11;
+            v62 = ic_loggingDescription11;
             _os_log_error_impl(&dword_214D51000, v37, OS_LOG_TYPE_ERROR, "Reference violation in account ID %@: for %@ %@", buf, 0x20u);
           }
 
-          [v26 fixBrokenReferencesWithError:v17];
+          [v26 fixBrokenReferencesWithError:errorCopy];
           [v26 incrementFailureCounts];
           goto LABEL_57;
         case 22:
@@ -6481,29 +6481,29 @@ LABEL_13:
             goto LABEL_56;
           }
 
-          v68 = [v15 ic_loggingDescription];
-          v43 = [v14 ic_loggingDescription];
+          ic_loggingDescription12 = [dCopy ic_loggingDescription];
+          ic_loggingDescription13 = [operationCopy ic_loggingDescription];
           *buf = 138412802;
           v79 = v21;
           v80 = 2112;
-          v81 = v68;
+          v81 = ic_loggingDescription12;
           v82 = 2112;
-          v83 = v43;
-          v44 = v43;
+          v83 = ic_loggingDescription13;
+          v44 = ic_loggingDescription13;
           _os_log_debug_impl(&dword_214D51000, v37, OS_LOG_TYPE_DEBUG, "Batch request failed for deleting in account ID %@: %@ %@", buf, 0x20u);
           break;
         case 11:
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
-            v75 = [v15 ic_loggingDescription];
-            v63 = [v14 ic_loggingDescription];
+            ic_loggingDescription14 = [dCopy ic_loggingDescription];
+            ic_loggingDescription15 = [operationCopy ic_loggingDescription];
             *buf = 138412802;
             v79 = v21;
             v80 = 2112;
-            v81 = v75;
+            v81 = ic_loggingDescription14;
             v82 = 2112;
-            v83 = v63;
-            v64 = v63;
+            v83 = ic_loggingDescription15;
+            v64 = ic_loggingDescription15;
             _os_log_debug_impl(&dword_214D51000, v37, OS_LOG_TYPE_DEBUG, "No record on server to delete in account ID %@: %@ %@", buf, 0x20u);
           }
 
@@ -6515,30 +6515,30 @@ LABEL_13:
 LABEL_56:
 
 LABEL_57:
-            v16 = v77;
+            sessionCopy = v77;
             if (!v26)
             {
               goto LABEL_49;
             }
 
-            v27 = [(ICCloudContext *)self objectIDsToRetry];
-            v45 = [v26 objectID];
-            [v27 addObject:v45];
+            objectIDsToRetry = [(ICCloudContext *)self objectIDsToRetry];
+            objectID = [v26 objectID];
+            [objectIDsToRetry addObject:objectID];
 
             goto LABEL_13;
           }
 
-          v68 = [v15 ic_loggingDescription];
-          v65 = [v14 ic_loggingDescription];
+          ic_loggingDescription12 = [dCopy ic_loggingDescription];
+          ic_loggingDescription16 = [operationCopy ic_loggingDescription];
           *buf = 138413058;
           v79 = v21;
           v80 = 2112;
-          v81 = v68;
+          v81 = ic_loggingDescription12;
           v82 = 2112;
-          v83 = v65;
-          v44 = v65;
+          v83 = ic_loggingDescription16;
+          v44 = ic_loggingDescription16;
           v84 = 2112;
-          v85 = v17;
+          v85 = errorCopy;
           _os_log_error_impl(&dword_214D51000, v37, OS_LOG_TYPE_ERROR, "Error deleting record in account ID %@: %@ %@: %@", buf, 0x2Au);
           break;
       }
@@ -6547,40 +6547,40 @@ LABEL_57:
     }
   }
 
-  v76 = v14;
-  v32 = v16;
+  v76 = operationCopy;
+  v32 = sessionCopy;
   v33 = os_log_create("com.apple.notes", "Cloud");
   v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG);
   if (v22)
   {
     if (v34)
     {
-      v47 = [v15 ic_loggingDescription];
-      v48 = [v76 ic_loggingDescription];
+      ic_loggingDescription17 = [dCopy ic_loggingDescription];
+      ic_loggingDescription18 = [v76 ic_loggingDescription];
       *buf = 138412802;
       v79 = v21;
       v80 = 2112;
-      v81 = v47;
+      v81 = ic_loggingDescription17;
       v82 = 2112;
-      v83 = v48;
+      v83 = ic_loggingDescription18;
       _os_log_debug_impl(&dword_214D51000, v33, OS_LOG_TYPE_DEBUG, "Deleted user-specific record in account ID %@: %@ %@", buf, 0x20u);
     }
 
-    [v26 didDeleteUserSpecificRecordID:v15];
+    [v26 didDeleteUserSpecificRecordID:dCopy];
   }
 
   else if (v23)
   {
     if (v34)
     {
-      v49 = [v15 ic_loggingDescription];
-      v50 = [v76 ic_loggingDescription];
+      ic_loggingDescription19 = [dCopy ic_loggingDescription];
+      ic_loggingDescription20 = [v76 ic_loggingDescription];
       *buf = 138412802;
       v79 = v21;
       v80 = 2112;
-      v81 = v49;
+      v81 = ic_loggingDescription19;
       v82 = 2112;
-      v83 = v50;
+      v83 = ic_loggingDescription20;
       _os_log_debug_impl(&dword_214D51000, v33, OS_LOG_TYPE_DEBUG, "Deleted share in account ID %@: %@ %@", buf, 0x20u);
     }
 
@@ -6591,56 +6591,56 @@ LABEL_57:
   {
     if (v34)
     {
-      v70 = [v15 ic_loggingDescription];
-      v51 = [v76 ic_loggingDescription];
+      ic_loggingDescription21 = [dCopy ic_loggingDescription];
+      ic_loggingDescription22 = [v76 ic_loggingDescription];
       *buf = 138412802;
       v79 = v21;
       v80 = 2112;
-      v81 = v70;
+      v81 = ic_loggingDescription21;
       v82 = 2112;
-      v83 = v51;
-      v52 = v51;
+      v83 = ic_loggingDescription22;
+      v52 = ic_loggingDescription22;
       _os_log_debug_impl(&dword_214D51000, v33, OS_LOG_TYPE_DEBUG, "Deleted record in account ID %@: %@ %@", buf, 0x20u);
     }
 
     [v26 objectWasDeletedFromCloud];
-    v38 = [v26 objectID];
+    objectID2 = [v26 objectID];
 
-    if (v38)
+    if (objectID2)
     {
-      v39 = [(ICCloudContext *)self objectIDsToRetry];
-      v40 = [v26 objectID];
-      [v39 removeObject:v40];
+      objectIDsToRetry2 = [(ICCloudContext *)self objectIDsToRetry];
+      objectID3 = [v26 objectID];
+      [objectIDsToRetry2 removeObject:objectID3];
     }
   }
 
-  v41 = [v26 recordType];
-  v16 = v32;
-  [v32 recordDeletionWasPushed:v15 type:v41];
+  recordType = [v26 recordType];
+  sessionCopy = v32;
+  [v32 recordDeletionWasPushed:dCopy type:recordType];
 
-  v14 = v76;
+  operationCopy = v76;
 LABEL_49:
-  [v18 ic_saveWithLogDescription:@"finished modify operation"];
+  [contextCopy ic_saveWithLogDescription:@"finished modify operation"];
 }
 
-- (void)modifyRecordsOperation:(id)a3 forSession:(id)a4 didCompleteWithError:(id)a5
+- (void)modifyRecordsOperation:(id)operation forSession:(id)session didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__ICCloudContext_modifyRecordsOperation_forSession_didCompleteWithError___block_invoke;
   v15[3] = &unk_278195AC8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = operationCopy;
+  v17 = errorCopy;
+  v18 = sessionCopy;
+  v12 = sessionCopy;
+  v13 = errorCopy;
+  v14 = operationCopy;
+  dispatch_async(processingQueue, v15);
 }
 
 void __73__ICCloudContext_modifyRecordsOperation_forSession_didCompleteWithError___block_invoke(uint64_t a1)
@@ -6768,13 +6768,13 @@ LABEL_25:
   }
 }
 
-- (void)handleGenericPartialFailuresForError:(id)a3 operation:(id)a4
+- (void)handleGenericPartialFailuresForError:(id)error operation:(id)operation
 {
   v63 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v6 = a4;
-  v7 = [v6 database];
-  v8 = [(ICCloudContext *)self accountIDForDatabase:v7];
+  errorCopy = error;
+  operationCopy = operation;
+  database = [operationCopy database];
+  v8 = [(ICCloudContext *)self accountIDForDatabase:database];
 
   v53 = 0;
   v54 = &v53;
@@ -6788,8 +6788,8 @@ LABEL_25:
   v52 = 0;
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = [MEMORY[0x277CBEB58] set];
-  v11 = [v31 userInfo];
-  v29 = [v11 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+  userInfo = [errorCopy userInfo];
+  v29 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -6812,11 +6812,11 @@ LABEL_25:
       _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "User exceeded iCloud quota in account ID %@", buf, 0xCu);
     }
 
-    v15 = [(ICCloudContext *)self cloudContextDelegate];
-    [v15 cloudContext:self didExceedQuotaForRecordID:v48[5] accountID:v8];
+    cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
+    [cloudContextDelegate cloudContext:self didExceedQuotaForRecordID:v48[5] accountID:v8];
   }
 
-  v16 = [(ICCloudContext *)self backgroundContext];
+  backgroundContext = [(ICCloudContext *)self backgroundContext];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -6835,7 +6835,7 @@ LABEL_25:
           objc_enumerationMutation(obj);
         }
 
-        [(ICCloudContext *)self receivedZoneNotFound:*(*(&v38 + 1) + 8 * i) operation:v6 context:v16];
+        [(ICCloudContext *)self receivedZoneNotFound:*(*(&v38 + 1) + 8 * i) operation:operationCopy context:backgroundContext];
       }
 
       v17 = [obj countByEnumeratingWithState:&v38 objects:v62 count:16];
@@ -6866,22 +6866,22 @@ LABEL_25:
         v24 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v23 ic_loggingDescription];
+          ic_loggingDescription = [v23 ic_loggingDescription];
           *buf = 138412546;
           v58 = v8;
           v59 = 2112;
-          v60 = v25;
+          v60 = ic_loggingDescription;
           _os_log_impl(&dword_214D51000, v24, OS_LOG_TYPE_DEFAULT, "User deleted zone in account ID %@: %@", buf, 0x16u);
         }
 
-        v26 = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
-        [v26 ic_addZoneID:v23 forAccountID:v8];
+        accountZoneIDsNeedingToBeSaved = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
+        [accountZoneIDsNeedingToBeSaved ic_addZoneID:v23 forAccountID:v8];
 
-        v27 = [v6 database];
-        -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", v23, [v27 databaseScope], v8, v16);
+        database2 = [operationCopy database];
+        -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", v23, [database2 databaseScope], v8, backgroundContext);
 
-        v28 = [(ICCloudContext *)self cloudContextDelegate];
-        [v28 cloudContext:self userDidDeleteRecordZoneWithID:v23 accountID:v8];
+        cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+        [cloudContextDelegate2 cloudContext:self userDidDeleteRecordZoneWithID:v23 accountID:v8];
       }
 
       v20 = [v32 countByEnumeratingWithState:&v34 objects:v61 count:16];
@@ -6949,13 +6949,13 @@ LABEL_15:
 
 - (id)overrideAccountID
 {
-  v3 = [(ICCloudContext *)self cloudContextDelegate];
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICCloudContext *)self cloudContextDelegate];
-    v6 = [v5 overrideAccountIDForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    v6 = [cloudContextDelegate2 overrideAccountIDForCloudContext:self];
   }
 
   else
@@ -6966,42 +6966,42 @@ LABEL_15:
   return v6;
 }
 
-- (id)accountIDForDatabase:(id)a3
+- (id)accountIDForDatabase:(id)database
 {
-  v4 = [a3 container];
-  v5 = [(ICCloudContext *)self accountIDForContainer:v4];
+  container = [database container];
+  v5 = [(ICCloudContext *)self accountIDForContainer:container];
 
   return v5;
 }
 
-- (id)accountIDForContainer:(id)a3
+- (id)accountIDForContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self overrideAccountID];
-  v6 = v5;
-  if (v5)
+  containerCopy = container;
+  overrideAccountID = [(ICCloudContext *)self overrideAccountID];
+  v6 = overrideAccountID;
+  if (overrideAccountID)
   {
-    v7 = v5;
+    accountID = overrideAccountID;
   }
 
   else
   {
-    v8 = [v4 options];
-    v9 = [v8 accountOverrideInfo];
-    v7 = [v9 accountID];
+    options = [containerCopy options];
+    accountOverrideInfo = [options accountOverrideInfo];
+    accountID = [accountOverrideInfo accountID];
   }
 
-  return v7;
+  return accountID;
 }
 
-+ (id)sortedRecords:(id)a3
++ (id)sortedRecords:(id)records
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v54 = 0;
-  v4 = [MEMORY[0x277CBC5C0] topologicallySortRecords:v3 withError:&v54];
+  v4 = [MEMORY[0x277CBC5C0] topologicallySortRecords:recordsCopy withError:&v54];
   v41 = v54;
-  v42 = v3;
+  v42 = recordsCopy;
   if (v41)
   {
     v5 = os_log_create("com.apple.notes", "Cloud");
@@ -7010,7 +7010,7 @@ LABEL_15:
       +[ICCloudContext sortedRecords:];
     }
 
-    v6 = v3;
+    v6 = recordsCopy;
     v4 = v6;
   }
 
@@ -7039,8 +7039,8 @@ LABEL_15:
         }
 
         v13 = *(*(&v50 + 1) + 8 * v12);
-        v14 = [v13 recordID];
-        v15 = [v8 containsObject:v14];
+        recordID = [v13 recordID];
+        v15 = [v8 containsObject:recordID];
 
         if (v15)
         {
@@ -7055,11 +7055,11 @@ LABEL_15:
 
         else
         {
-          v17 = [v13 recordID];
-          [v8 addObject:v17];
+          recordID2 = [v13 recordID];
+          [v8 addObject:recordID2];
 
-          v18 = [v13 recordType];
-          v19 = [v18 isEqualToString:@"Media"];
+          recordType = [v13 recordType];
+          v19 = [recordType isEqualToString:@"Media"];
 
           if (v19)
           {
@@ -7067,23 +7067,23 @@ LABEL_15:
             [v20 setObject:v13 atIndexedSubscript:0];
             [v43 addObject:v20];
             v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v43, "count") - 1}];
-            v22 = [v13 recordID];
-            [v44 setObject:v21 forKeyedSubscript:v22];
+            recordID3 = [v13 recordID];
+            [v44 setObject:v21 forKeyedSubscript:recordID3];
 
 LABEL_16:
             goto LABEL_23;
           }
 
-          v23 = [v13 recordType];
-          if ([v23 isEqualToString:@"Attachment"])
+          recordType2 = [v13 recordType];
+          if ([recordType2 isEqualToString:@"Attachment"])
           {
             v24 = [v13 objectForKeyedSubscript:@"Media"];
 
             if (v24)
             {
               v20 = [v13 objectForKeyedSubscript:@"Media"];
-              v25 = [v20 recordID];
-              v21 = [v44 objectForKeyedSubscript:v25];
+              recordID4 = [v20 recordID];
+              v21 = [v44 objectForKeyedSubscript:recordID4];
 
               if (v21)
               {
@@ -7173,16 +7173,16 @@ LABEL_23:
   return v36;
 }
 
-+ (id)objectsByAccount:(id)a3
++ (id)objectsByAccount:(id)account
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  accountCopy = account;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = accountCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -7203,36 +7203,36 @@ LABEL_23:
         v19 = __Block_byref_object_copy__48;
         v20 = __Block_byref_object_dispose__48;
         v21 = 0;
-        v9 = [v8 managedObjectContext];
+        managedObjectContext = [v8 managedObjectContext];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __35__ICCloudContext_objectsByAccount___block_invoke;
         v15[3] = &unk_278194DE8;
         v15[4] = v8;
         v15[5] = &v16;
-        [v9 performBlockAndWait:v15];
+        [managedObjectContext performBlockAndWait:v15];
 
         if ([v17[5] length])
         {
-          v10 = [v4 objectForKeyedSubscript:v17[5]];
-          if (!v10)
+          array = [dictionary objectForKeyedSubscript:v17[5]];
+          if (!array)
           {
-            v10 = [MEMORY[0x277CBEB18] array];
-            [v4 setObject:v10 forKeyedSubscript:v17[5]];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:v17[5]];
           }
 
-          [v10 addObject:v8];
+          [array addObject:v8];
         }
 
         else
         {
-          v11 = [v8 managedObjectContext];
+          managedObjectContext2 = [v8 managedObjectContext];
           v14[0] = MEMORY[0x277D85DD0];
           v14[1] = 3221225472;
           v14[2] = __35__ICCloudContext_objectsByAccount___block_invoke_2;
           v14[3] = &unk_278194B00;
           v14[4] = v8;
-          [v11 performBlockAndWait:v14];
+          [managedObjectContext2 performBlockAndWait:v14];
         }
 
         _Block_object_dispose(&v16, 8);
@@ -7244,7 +7244,7 @@ LABEL_23:
     while (v5);
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __35__ICCloudContext_objectsByAccount___block_invoke(uint64_t a1)
@@ -7265,16 +7265,16 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
   }
 }
 
-+ (id)objectsByDatabaseScope:(id)a3
++ (id)objectsByDatabaseScope:(id)scope
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  scopeCopy = scope;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = scopeCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -7290,18 +7290,18 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 databaseScope];
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-        v13 = [v4 objectForKeyedSubscript:v12];
+        databaseScope = [v10 databaseScope];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:databaseScope];
+        array = [dictionary objectForKeyedSubscript:v12];
 
-        if (!v13)
+        if (!array)
         {
-          v13 = [MEMORY[0x277CBEB18] array];
-          v14 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-          [v4 setObject:v13 forKeyedSubscript:v14];
+          array = [MEMORY[0x277CBEB18] array];
+          v14 = [MEMORY[0x277CCABB0] numberWithInteger:databaseScope];
+          [dictionary setObject:array forKeyedSubscript:v14];
         }
 
-        [v13 addObject:v10];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -7310,20 +7310,20 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)deduplicatedRecordsForCloudObjects:(id)a3
++ (id)deduplicatedRecordsForCloudObjects:(id)objects
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  objectsCopy = objects;
+  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(objectsCopy, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v3;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v7)
   {
@@ -7345,15 +7345,15 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
         }
 
         v14 = *(*(&v28 + 1) + 8 * v13);
-        v15 = [v14 recordID];
-        if (v15)
+        recordID = [v14 recordID];
+        if (recordID)
         {
-          if ([v4 containsObject:v15])
+          if ([v4 containsObject:recordID])
           {
             v16 = os_log_create(v11, v12);
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              [v15 ic_loggingDescription];
+              [recordID ic_loggingDescription];
               v17 = v10;
               v18 = v4;
               v19 = v6;
@@ -7376,7 +7376,7 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
 
           else
           {
-            [v4 addObject:v15];
+            [v4 addObject:recordID];
             v16 = [v14 makeCloudKitRecordForApproach:0];
             [v5 addObject:v16];
           }
@@ -7407,14 +7407,14 @@ void __35__ICCloudContext_objectsByAccount___block_invoke_2()
   return v24;
 }
 
-+ (id)allZoneIDsInAccountZoneIDs:(id)a3
++ (id)allZoneIDsInAccountZoneIDs:(id)ds
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  [v4 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_344_0];
+  dsCopy = ds;
+  array = [v3 array];
+  [dsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_344_0];
 
-  v6 = [v5 copy];
+  v6 = [array copy];
 
   return v6;
 }
@@ -7429,9 +7429,9 @@ void __45__ICCloudContext_allZoneIDsInAccountZoneIDs___block_invoke(uint64_t a1,
   }
 }
 
-+ (BOOL)haveZoneIDsInAccountZoneIDs:(id)a3
++ (BOOL)haveZoneIDsInAccountZoneIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -7441,7 +7441,7 @@ void __45__ICCloudContext_allZoneIDsInAccountZoneIDs___block_invoke(uint64_t a1,
   v6[2] = __46__ICCloudContext_haveZoneIDsInAccountZoneIDs___block_invoke;
   v6[3] = &unk_278198EB8;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [dsCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -7460,26 +7460,26 @@ uint64_t __46__ICCloudContext_haveZoneIDsInAccountZoneIDs___block_invoke(uint64_
   return result;
 }
 
-- (void)resetZoneForCloudAccount:(id)a3 withReason:(id)a4
+- (void)resetZoneForCloudAccount:(id)account withReason:(id)reason
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 accountType] == 1)
+  accountCopy = account;
+  if ([accountCopy accountType] == 1)
   {
     v6 = dispatch_semaphore_create(0);
     v7 = +[ICCloudContext notesZoneID];
     v14[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
 
-    v9 = [v5 identifier];
+    identifier = [accountCopy identifier];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__ICCloudContext_resetZoneForCloudAccount_withReason___block_invoke;
     v11[3] = &unk_278197F80;
-    v12 = v5;
+    v12 = accountCopy;
     v13 = v6;
     v10 = v6;
-    [(ICCloudContext *)self deleteRecordZonesWithZoneIDs:v8 accountID:v9 markZonesAsUserPurged:1 completionHandler:v11];
+    [(ICCloudContext *)self deleteRecordZonesWithZoneIDs:v8 accountID:identifier markZonesAsUserPurged:1 completionHandler:v11];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -7508,36 +7508,36 @@ void __54__ICCloudContext_resetZoneForCloudAccount_withReason___block_invoke(uin
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (id)errorsFromError:(id)a3
++ (id)errorsFromError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
-    v10 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
     goto LABEL_22;
   }
 
-  v6 = [v4 domain];
-  if ([v6 isEqualToString:*MEMORY[0x277CBBF50]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CBBF50]])
   {
-    v7 = [v5 code];
+    code = [v5 code];
 
-    if (v7 == 2)
+    if (code == 2)
     {
-      v8 = [v5 userInfo];
-      v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+      userInfo = [v5 userInfo];
+      v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 allValues];
+        allValues = [v9 allValues];
       }
 
       else
       {
-        v10 = MEMORY[0x277CBEBF8];
+        allValues = MEMORY[0x277CBEBF8];
       }
 
       goto LABEL_22;
@@ -7548,26 +7548,26 @@ void __54__ICCloudContext_resetZoneForCloudAccount_withReason___block_invoke(uin
   {
   }
 
-  v11 = [v5 domain];
-  if (![v11 isEqualToString:@"com.apple.notes.cloud"])
+  domain2 = [v5 domain];
+  if (![domain2 isEqualToString:@"com.apple.notes.cloud"])
   {
 
     goto LABEL_19;
   }
 
-  v12 = [v5 code];
+  code2 = [v5 code];
 
-  if (v12 != 3)
+  if (code2 != 3)
   {
 LABEL_19:
     v26 = v5;
-    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
+    allValues = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
     goto LABEL_22;
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v13 = [v5 userInfo];
-  v14 = [v13 objectForKeyedSubscript:@"Errors"];
+  allValues = [MEMORY[0x277CBEB18] array];
+  userInfo2 = [v5 userInfo];
+  v14 = [userInfo2 objectForKeyedSubscript:@"Errors"];
 
   v24 = 0u;
   v25 = 0u;
@@ -7588,8 +7588,8 @@ LABEL_19:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [a1 errorsFromError:{*(*(&v22 + 1) + 8 * i), v22}];
-        [v10 addObjectsFromArray:v20];
+        v20 = [self errorsFromError:{*(*(&v22 + 1) + 8 * i), v22}];
+        [allValues addObjectsFromArray:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -7600,27 +7600,27 @@ LABEL_19:
 
 LABEL_22:
 
-  return v10;
+  return allValues;
 }
 
-- (BOOL)partialError:(id)a3 containsErrorCode:(int64_t)a4
+- (BOOL)partialError:(id)error containsErrorCode:(int64_t)code
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 code] != 2)
+  errorCopy = error;
+  if ([errorCopy code] != 2)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"partialError.code == CKErrorPartialFailure" functionName:"-[ICCloudContext partialError:containsErrorCode:]" simulateCrash:1 showAlert:0 format:@"Called -partialFailure:containsError with a non-partialFailure."];
   }
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
-  v8 = [v7 allValues];
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+  allValues = [v7 allValues];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = allValues;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -7635,7 +7635,7 @@ LABEL_22:
           objc_enumerationMutation(v9);
         }
 
-        if ([*(*(&v16 + 1) + 8 * i) code] == a4)
+        if ([*(*(&v16 + 1) + 8 * i) code] == code)
         {
           v14 = 1;
           goto LABEL_13;
@@ -7658,17 +7658,17 @@ LABEL_13:
   return v14;
 }
 
-- (void)addDependenciesForModifyRecordsOperation:(id)a3
+- (void)addDependenciesForModifyRecordsOperation:(id)operation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICCloudContext *)self operationQueue];
-  v6 = [v5 operations];
-  v7 = [v6 copy];
+  operationQueue = [(ICCloudContext *)self operationQueue];
+  operations = [operationQueue operations];
+  v7 = [operations copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -7689,7 +7689,7 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [v4 addDependency:v12];
+          [operationCopy addDependency:v12];
         }
 
         ++v11;
@@ -7703,18 +7703,18 @@ LABEL_13:
   }
 }
 
-- (void)addOperations:(id)a3
+- (void)addOperations:(id)operations
 {
-  v7 = a3;
+  operationsCopy = operations;
   if (![(ICCloudContext *)self didEnqueueLongLivedOperations])
   {
-    v4 = [v7 ic_compactMap:&__block_literal_global_352];
-    v5 = [(ICCloudContext *)self operationIDsBeforeEnqueuingLongLivedOperations];
-    [v5 addObjectsFromArray:v4];
+    v4 = [operationsCopy ic_compactMap:&__block_literal_global_352];
+    operationIDsBeforeEnqueuingLongLivedOperations = [(ICCloudContext *)self operationIDsBeforeEnqueuingLongLivedOperations];
+    [operationIDsBeforeEnqueuingLongLivedOperations addObjectsFromArray:v4];
   }
 
-  v6 = [(ICCloudContext *)self operationQueue];
-  [v6 addOperations:v7 waitUntilFinished:0];
+  operationQueue = [(ICCloudContext *)self operationQueue];
+  [operationQueue addOperations:operationsCopy waitUntilFinished:0];
 }
 
 id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
@@ -7728,31 +7728,31 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)informCloudAnalyticsDelegateForOperationDidEnd:(id)a3 recordsByRecordID:(id)a4 operationError:(id)a5
+- (void)informCloudAnalyticsDelegateForOperationDidEnd:(id)end recordsByRecordID:(id)d operationError:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICCloudContext *)self cloudAnalyticsDelegate];
-  [v11 cloudContext:self reportOperationEnd:v10 recordsByRecordID:v9 operationError:v8];
+  errorCopy = error;
+  dCopy = d;
+  endCopy = end;
+  cloudAnalyticsDelegate = [(ICCloudContext *)self cloudAnalyticsDelegate];
+  [cloudAnalyticsDelegate cloudContext:self reportOperationEnd:endCopy recordsByRecordID:dCopy operationError:errorCopy];
 }
 
-- (id)operationToSaveZonesIfNecessaryForAccountID:(id)a3
+- (id)operationToSaveZonesIfNecessaryForAccountID:(id)d
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CBEB58] set];
-  v38 = self;
-  v6 = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
-  v37 = v4;
-  v7 = [v6 objectForKeyedSubscript:v4];
-  v8 = [v7 allObjects];
+  selfCopy = self;
+  accountZoneIDsNeedingToBeSaved = [(ICCloudContext *)self accountZoneIDsNeedingToBeSaved];
+  v37 = dCopy;
+  v7 = [accountZoneIDsNeedingToBeSaved objectForKeyedSubscript:dCopy];
+  allObjects = [v7 allObjects];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v10)
   {
@@ -7769,8 +7769,8 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
         }
 
         v15 = *(*(&v48 + 1) + 8 * i);
-        v16 = [v15 ownerName];
-        v17 = [v16 isEqualToString:v13];
+        ownerName = [v15 ownerName];
+        v17 = [ownerName isEqualToString:v13];
 
         if (v17)
         {
@@ -7790,10 +7790,10 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = [(ICCloudContext *)v38 operationQueue];
-  v19 = [v18 operations];
+  operationQueue = [(ICCloudContext *)selfCopy operationQueue];
+  operations = [operationQueue operations];
 
-  v20 = [v19 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  v20 = [operations countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v20)
   {
     v21 = v20;
@@ -7806,7 +7806,7 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
       {
         if (*v45 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(operations);
         }
 
         v24 = *(*(&v44 + 1) + 8 * v23);
@@ -7818,8 +7818,8 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v26 = [v25 recordZonesToSave];
-          v27 = [v26 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          recordZonesToSave = [v25 recordZonesToSave];
+          v27 = [recordZonesToSave countByEnumeratingWithState:&v40 objects:v52 count:16];
           if (v27)
           {
             v28 = v27;
@@ -7830,14 +7830,14 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
               {
                 if (*v41 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(recordZonesToSave);
                 }
 
-                v31 = [*(*(&v40 + 1) + 8 * j) zoneID];
-                [v5 removeObject:v31];
+                zoneID = [*(*(&v40 + 1) + 8 * j) zoneID];
+                [v5 removeObject:zoneID];
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v40 objects:v52 count:16];
+              v28 = [recordZonesToSave countByEnumeratingWithState:&v40 objects:v52 count:16];
             }
 
             while (v28);
@@ -7850,7 +7850,7 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
       }
 
       while (v23 != v21);
-      v21 = [v19 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v21 = [operations countByEnumeratingWithState:&v44 objects:v53 count:16];
     }
 
     while (v21);
@@ -7858,9 +7858,9 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
 
   if ([v5 count])
   {
-    v32 = [v5 allObjects];
+    allObjects2 = [v5 allObjects];
     v33 = v37;
-    v34 = [(ICCloudContext *)v38 operationToSaveZonesForZoneIDs:v32 accountID:v37];
+    v34 = [(ICCloudContext *)selfCopy operationToSaveZonesForZoneIDs:allObjects2 accountID:v37];
   }
 
   else
@@ -7872,20 +7872,20 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
   return v34;
 }
 
-- (id)operationToSaveZonesForZoneIDs:(id)a3 accountID:(id)a4
+- (id)operationToSaveZonesForZoneIDs:(id)ds accountID:(id)d
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v28 = a4;
-  v27 = v5;
-  if ([v28 length])
+  dsCopy = ds;
+  dCopy = d;
+  v27 = dsCopy;
+  if ([dCopy length])
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v5;
+    obj = dsCopy;
     v7 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v7)
     {
@@ -7909,15 +7909,15 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
       while (v7);
     }
 
-    v26 = [(ICCloudContext *)self containerForAccountID:v28];
+    v26 = [(ICCloudContext *)self containerForAccountID:dCopy];
     val = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:v6 recordZoneIDsToDelete:0];
     [val setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-    v11 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-    v12 = [val configuration];
-    [v12 setDiscretionaryNetworkBehavior:v11];
+    discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+    configuration = [val configuration];
+    [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
-    v13 = [v26 privateCloudDatabase];
-    [val setDatabase:v13];
+    privateCloudDatabase = [v26 privateCloudDatabase];
+    [val setDatabase:privateCloudDatabase];
 
     objc_initWeak(&location, val);
     v37 = 0u;
@@ -7943,13 +7943,13 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
           v19 = os_log_create("com.apple.notes", "Cloud");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [v18 zoneID];
-            v21 = [v20 ic_loggingDescription];
-            v22 = [val ic_loggingDescription];
+            zoneID = [v18 zoneID];
+            ic_loggingDescription = [zoneID ic_loggingDescription];
+            ic_loggingDescription2 = [val ic_loggingDescription];
             *buf = 138412546;
-            v45 = v21;
+            v45 = ic_loggingDescription;
             v46 = 2112;
-            v47 = v22;
+            v47 = ic_loggingDescription2;
             _os_log_debug_impl(&dword_214D51000, v19, OS_LOG_TYPE_DEBUG, "Will save zone %@ %@", buf, 0x16u);
           }
 
@@ -7969,7 +7969,7 @@ id __32__ICCloudContext_addOperations___block_invoke(uint64_t a1, void *a2)
     v32[3] = &unk_278198F28;
     objc_copyWeak(&v34, &location);
     v32[4] = self;
-    v33 = v28;
+    v33 = dCopy;
     [val setModifyRecordZonesCompletionBlock:v32];
     v23 = objc_alloc_init(MEMORY[0x277CBC4F8]);
     [v23 setName:@"SaveRecordZones"];
@@ -8088,29 +8088,29 @@ void __59__ICCloudContext_operationToSaveZonesForZoneIDs_accountID___block_invok
   }
 }
 
-- (void)contextDidSaveOrMerge:(id)a3
+- (void)contextDidSaveOrMerge:(id)merge
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICCloudContext *)self persistentStoreCoordinator];
+  mergeCopy = merge;
+  persistentStoreCoordinator = [(ICCloudContext *)self persistentStoreCoordinator];
   objc_opt_class();
-  v6 = [v4 object];
+  object = [mergeCopy object];
   v7 = ICDynamicCast();
 
-  v8 = [v7 persistentStoreCoordinator];
-  v9 = [v8 isEqual:v5];
+  persistentStoreCoordinator2 = [v7 persistentStoreCoordinator];
+  v9 = [persistentStoreCoordinator2 isEqual:persistentStoreCoordinator];
 
   if (v9)
   {
     context = objc_autoreleasePoolPush();
-    v10 = [v4 userInfo];
-    v25 = [v10 objectForKeyedSubscript:*MEMORY[0x277CBE148]];
+    userInfo = [mergeCopy userInfo];
+    v25 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE148]];
 
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CBE180]];
+    userInfo2 = [mergeCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CBE180]];
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBE308]];
+    userInfo3 = [mergeCopy userInfo];
+    v14 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CBE308]];
 
     v15 = [MEMORY[0x277CBEB58] set];
     if ([v12 count])
@@ -8155,17 +8155,17 @@ void __59__ICCloudContext_operationToSaveZonesForZoneIDs_accountID___block_invok
       while (v19);
     }
 
-    v22 = [(ICCloudContext *)self processingQueue];
+    processingQueue = [(ICCloudContext *)self processingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__ICCloudContext_contextDidSaveOrMerge___block_invoke;
     block[3] = &unk_278194DC0;
     v30 = v26;
     v31 = v16;
-    v32 = self;
+    selfCopy = self;
     v23 = v16;
     v24 = v26;
-    dispatch_async(v22, block);
+    dispatch_async(processingQueue, block);
 
     objc_autoreleasePoolPop(context);
   }
@@ -8207,39 +8207,39 @@ void __40__ICCloudContext_contextDidSaveOrMerge___block_invoke(id *a1)
   }
 }
 
-- (void)processPendingCloudObjectsWithCompletionHandler:(id)a3
+- (void)processPendingCloudObjectsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6 = [(ICCloudContext *)self newSessionForReason:@"ProcessPendingCloudObjects"];
-  v5 = [(ICCloudContext *)self completionEndingProcessingSession:v6 wrappingCompletion:v4];
+  v5 = [(ICCloudContext *)self completionEndingProcessingSession:v6 wrappingCompletion:handlerCopy];
 
   [(ICCloudContext *)self processPendingCloudObjectsInSession:v6 withCompletionHandler:v5];
 }
 
-- (void)processAllCloudObjectsWithCompletionHandler:(id)a3
+- (void)processAllCloudObjectsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6 = [(ICCloudContext *)self newSessionForReason:@"ProcessAllCloudObjects"];
-  v5 = [(ICCloudContext *)self completionEndingProcessingSession:v6 wrappingCompletion:v4];
+  v5 = [(ICCloudContext *)self completionEndingProcessingSession:v6 wrappingCompletion:handlerCopy];
 
   [(ICCloudContext *)self processAllCloudObjectsInSession:v6 withCompletionHandler:v5];
 }
 
-- (void)processAllCloudObjectsInSession:(id)a3 withCompletionHandler:(id)a4
+- (void)processAllCloudObjectsInSession:(id)session withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self processingQueue];
+  sessionCopy = session;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__ICCloudContext_processAllCloudObjectsInSession_withCompletionHandler___block_invoke;
   block[3] = &unk_278194E38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sessionCopy;
+  dispatch_async(processingQueue, block);
 }
 
 uint64_t __72__ICCloudContext_processAllCloudObjectsInSession_withCompletionHandler___block_invoke(uint64_t a1)
@@ -8252,19 +8252,19 @@ uint64_t __72__ICCloudContext_processAllCloudObjectsInSession_withCompletionHand
   return [v2 addOperationToProcessObjectsInSession:v3 withCompletionHandler:v4];
 }
 
-- (id)completionEndingProcessingSession:(id)a3 wrappingCompletion:(id)a4
+- (id)completionEndingProcessingSession:(id)session wrappingCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__ICCloudContext_completionEndingProcessingSession_wrappingCompletion___block_invoke;
   aBlock[3] = &unk_278198780;
-  v13 = v6;
-  v14 = v7;
+  v13 = sessionCopy;
+  v14 = completionCopy;
   aBlock[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = sessionCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
 
   return v10;
@@ -8303,11 +8303,11 @@ void __71__ICCloudContext_completionEndingProcessingSession_wrappingCompletion__
   }
 }
 
-- (void)addOperationToProcessObjectsInSession:(id)a3 withCompletionHandler:(id)a4
+- (void)addOperationToProcessObjectsInSession:(id)session withCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   if ([(ICCloudContext *)self isDisabled]|| [(ICCloudContext *)self isDisabledInternal]|| ![(ICCloudContext *)self isReadyToSync]|| [(ICCloudContext *)self syncOnlyIfReachable]&& ![(ICCloudContext *)self isInternetReachable])
   {
     v18 = os_log_create("com.apple.notes", "Cloud");
@@ -8331,10 +8331,10 @@ void __71__ICCloudContext_completionEndingProcessingSession_wrappingCompletion__
       _os_log_impl(&dword_214D51000, v18, OS_LOG_TYPE_DEFAULT, "Not adding operation to process objects because we're not able to sync: isDisabled=%@, isDisabledInternal=%@, isReadyToSync=%@, syncOnlyIfReachable=%@, isInternetReachable=%@", buf, 0x34u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v15 = [objc_opt_class() errorForDisabledCloudSyncing];
-      v31 = v15;
+      errorForDisabledCloudSyncing = [objc_opt_class() errorForDisabledCloudSyncing];
+      v31 = errorForDisabledCloudSyncing;
       v16 = MEMORY[0x277CBEA60];
       v17 = &v31;
       goto LABEL_17;
@@ -8345,17 +8345,17 @@ void __71__ICCloudContext_completionEndingProcessingSession_wrappingCompletion__
   {
     if (-[ICCloudContext disableRetryTimer](self, "disableRetryTimer") || (-[ICCloudContext retryTimer](self, "retryTimer"), (v8 = objc_claimAutoreleasedReturnValue()) == 0) || (v9 = v8, -[ICCloudContext retryTimer](self, "retryTimer"), v10 = objc_claimAutoreleasedReturnValue(), [v10 fireDate], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEAA8], "date"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "ic_isLaterThanDate:", v12), v12, v11, v10, v9, !v13))
     {
-      v25 = [(ICCloudContext *)self processingQueue];
+      processingQueue = [(ICCloudContext *)self processingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __78__ICCloudContext_addOperationToProcessObjectsInSession_withCompletionHandler___block_invoke;
       block[3] = &unk_278194E38;
-      v27 = v6;
-      v28 = self;
-      v29 = v7;
-      dispatch_async(v25, block);
+      v27 = sessionCopy;
+      selfCopy = self;
+      v29 = handlerCopy;
+      dispatch_async(processingQueue, block);
 
-      v15 = v27;
+      errorForDisabledCloudSyncing = v27;
       goto LABEL_18;
     }
 
@@ -8366,15 +8366,15 @@ void __71__ICCloudContext_completionEndingProcessingSession_wrappingCompletion__
       _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Not adding operation to process objects because we're waiting for a retry timer", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v15 = [objc_opt_class() errorForWaitingForRetryTimer];
-      v30 = v15;
+      errorForDisabledCloudSyncing = [objc_opt_class() errorForWaitingForRetryTimer];
+      v30 = errorForDisabledCloudSyncing;
       v16 = MEMORY[0x277CBEA60];
       v17 = &v30;
 LABEL_17:
       v24 = [v16 arrayWithObjects:v17 count:1];
-      (*(v7 + 2))(v7, v24);
+      (*(handlerCopy + 2))(handlerCopy, v24);
 
 LABEL_18:
     }
@@ -8502,19 +8502,19 @@ uint64_t __78__ICCloudContext_addOperationToProcessObjectsInSession_withCompleti
   return [v5 _processPendingCloudObjectsInSession:v6 withCompletionHandler:v7];
 }
 
-- (id)_objectIDsToProcessForFullSyncInContext:(id)a3
+- (id)_objectIDsToProcessForFullSyncInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__ICCloudContext__objectIDsToProcessForFullSyncInContext___block_invoke;
   v10[3] = &unk_278194DC0;
   v10[4] = self;
-  v11 = v4;
+  v11 = contextCopy;
   v12 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = contextCopy;
   [v7 performBlockAndWait:v10];
   v8 = [v6 copy];
 
@@ -8546,24 +8546,24 @@ void __58__ICCloudContext__objectIDsToProcessForFullSyncInContext___block_invoke
   [*(a1 + 48) unionSet:v9];
 }
 
-- (void)_processPendingCloudObjectsInSession:(id)a3 withCompletionHandler:(id)a4
+- (void)_processPendingCloudObjectsInSession:(id)session withCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   if ([(ICCloudContext *)self isReadyToSync])
   {
     if (![(ICCloudContext *)self syncOnlyIfReachable]|| [(ICCloudContext *)self isInternetReachable])
     {
-      v8 = [(ICCloudContext *)self processingQueue];
+      processingQueue = [(ICCloudContext *)self processingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __77__ICCloudContext__processPendingCloudObjectsInSession_withCompletionHandler___block_invoke;
       block[3] = &unk_278194E38;
       block[4] = self;
-      v15 = v6;
-      v16 = v7;
-      dispatch_async(v8, block);
+      v15 = sessionCopy;
+      v16 = handlerCopy;
+      dispatch_async(processingQueue, block);
 
       goto LABEL_15;
     }
@@ -8577,10 +8577,10 @@ void __58__ICCloudContext__objectIDsToProcessForFullSyncInContext___block_invoke
 
   else
   {
-    v9 = [(ICCloudContext *)self isCloudKitAccountAvailable];
+    isCloudKitAccountAvailable = [(ICCloudContext *)self isCloudKitAccountAvailable];
     v10 = os_log_create("com.apple.notes", "Cloud");
     v11 = v10;
-    if (v9)
+    if (isCloudKitAccountAvailable)
     {
       v11 = v10;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -8595,12 +8595,12 @@ void __58__ICCloudContext__objectIDsToProcessForFullSyncInContext___block_invoke
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v12 = [objc_opt_class() errorForDisabledCloudSyncing];
-    v17[0] = v12;
+    errorForDisabledCloudSyncing = [objc_opt_class() errorForDisabledCloudSyncing];
+    v17[0] = errorForDisabledCloudSyncing;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    (*(v7 + 2))(v7, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 
 LABEL_15:
@@ -8648,25 +8648,25 @@ void __77__ICCloudContext__processPendingCloudObjectsInSession_withCompletionHan
   [v13 removeAllObjects];
 }
 
-- (void)processObjectIDs:(id)a3 inSession:(id)a4 completionHandler:(id)a5
+- (void)processObjectIDs:(id)ds inSession:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCloudContext *)self backgroundContext];
+  dsCopy = ds;
+  sessionCopy = session;
+  handlerCopy = handler;
+  backgroundContext = [(ICCloudContext *)self backgroundContext];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__ICCloudContext_processObjectIDs_inSession_completionHandler___block_invoke;
   v16[3] = &unk_278198A98;
-  v17 = v8;
-  v18 = v11;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v11;
-  v15 = v8;
+  v17 = dsCopy;
+  v18 = backgroundContext;
+  selfCopy = self;
+  v20 = sessionCopy;
+  v21 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = sessionCopy;
+  v14 = backgroundContext;
+  v15 = dsCopy;
   [v14 performBlockAndWait:v16];
 }
 
@@ -8811,18 +8811,18 @@ void __63__ICCloudContext_processObjectIDs_inSession_completionHandler___block_i
   [v39 _processCloudObjects:v40 inSession:v41[7] completionHandler:v41[8]];
 }
 
-- (void)_processCloudObjects:(id)a3 inSession:(id)a4 completionHandler:(id)a5
+- (void)_processCloudObjects:(id)objects inSession:(id)session completionHandler:(id)handler
 {
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v47 = a4;
-  v9 = a5;
-  v10 = v8;
-  v11 = v9;
-  if ([v8 count])
+  objectsCopy = objects;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v10 = objectsCopy;
+  v11 = handlerCopy;
+  if ([objectsCopy count])
   {
-    v12 = [MEMORY[0x277CBEB18] array];
-    v45 = [objc_opt_class() objectsByAccount:v8];
+    array = [MEMORY[0x277CBEB18] array];
+    v45 = [objc_opt_class() objectsByAccount:objectsCopy];
     v46 = v11;
     v78 = 0;
     v79 = &v78;
@@ -8836,10 +8836,10 @@ void __63__ICCloudContext_processObjectIDs_inSession_completionHandler___block_i
     v68[1] = 3221225472;
     v68[2] = __67__ICCloudContext__processCloudObjects_inSession_completionHandler___block_invoke_2;
     v68[3] = &unk_278198F78;
-    v13 = v47;
+    v13 = sessionCopy;
     v69 = v13;
-    v70 = self;
-    v14 = v12;
+    selfCopy = self;
+    v14 = array;
     v71 = v14;
     v72 = &v74;
     v73 = &v78;
@@ -8847,8 +8847,8 @@ void __63__ICCloudContext_processObjectIDs_inSession_completionHandler___block_i
     if ([v14 count])
     {
       v15 = +[ICCloudConfiguration sharedConfiguration];
-      v16 = [v15 throttlingPolicy];
-      [v16 incrementBatchCount];
+      throttlingPolicy = [v15 throttlingPolicy];
+      [throttlingPolicy incrementBatchCount];
 
       [(ICCloudContext *)self addOperations:v14];
     }
@@ -8996,7 +8996,7 @@ LABEL_45:
     v52[3] = &unk_278194E38;
     v37 = v14;
     v53 = v37;
-    v54 = self;
+    selfCopy2 = self;
     v55 = v11;
     v38 = [v36 blockOperationWithBlock:v52];
     [v38 setName:@"ProcessObjects-Completion"];
@@ -9041,8 +9041,8 @@ LABEL_45:
       [v38 addDependency:v29];
     }
 
-    v43 = [(ICCloudContext *)self operationQueue];
-    [v43 addOperation:v38];
+    operationQueue = [(ICCloudContext *)self operationQueue];
+    [operationQueue addOperation:v38];
 
     goto LABEL_45;
   }
@@ -9050,18 +9050,18 @@ LABEL_45:
   v26 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    [ICCloudContext _processCloudObjects:v47 inSession:? completionHandler:?];
+    [ICCloudContext _processCloudObjects:sessionCopy inSession:? completionHandler:?];
   }
 
   if (v11)
   {
-    v27 = [(ICCloudContext *)self operationQueue];
+    operationQueue2 = [(ICCloudContext *)self operationQueue];
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = __67__ICCloudContext__processCloudObjects_inSession_completionHandler___block_invoke;
     v82[3] = &unk_278195F28;
     v83 = v11;
-    [v27 addOperationWithBlock:v82];
+    [operationQueue2 addOperationWithBlock:v82];
 
     v14 = v83;
 LABEL_46:
@@ -9321,25 +9321,25 @@ void __67__ICCloudContext__processCloudObjects_inSession_completionHandler___blo
   }
 }
 
-- (void)_filterCloudSyncingObjects:(id)a3 accountID:(id)a4 objectsToSave:(id *)a5 objectsToDelete:(id *)a6 objectsToDeleteShares:(id *)a7 objectsToSaveUserSpecificRecord:(id *)a8
+- (void)_filterCloudSyncingObjects:(id)objects accountID:(id)d objectsToSave:(id *)save objectsToDelete:(id *)delete objectsToDeleteShares:(id *)shares objectsToSaveUserSpecificRecord:(id *)record
 {
-  v28 = a5;
+  saveCopy = save;
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v33 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CBEB18] array];
+  objectsCopy = objects;
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v14 = v9;
-  v15 = v13;
+  v14 = objectsCopy;
+  v15 = array4;
   v16 = v14;
   v17 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
-  v32 = v13;
+  v32 = array4;
   if (v17)
   {
     v18 = v17;
@@ -9358,7 +9358,7 @@ void __67__ICCloudContext__processCloudObjects_inSession_completionHandler___blo
         {
           if ([v21 hasAllMandatoryFields])
           {
-            v22 = v10;
+            v22 = array;
 LABEL_18:
             [v22 addObject:v21];
             goto LABEL_19;
@@ -9367,11 +9367,11 @@ LABEL_18:
           v23 = os_log_create("com.apple.notes", "Cloud");
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v21 loggingDescription];
+            loggingDescription = [v21 loggingDescription];
             *buf = 138412546;
-            v39 = v33;
+            v39 = dCopy;
             v40 = 2112;
-            v41 = v24;
+            v41 = loggingDescription;
             _os_log_impl(&dword_214D51000, v23, OS_LOG_TYPE_DEFAULT, "Not syncing object because it's missing mandatory fields in account ID %@: %@", buf, 0x16u);
 
             v15 = v32;
@@ -9386,22 +9386,22 @@ LABEL_18:
 
         if ([v21 needsToBeDeletedFromCloud])
         {
-          v22 = v11;
+          v22 = array2;
           goto LABEL_18;
         }
 
 LABEL_19:
         if ([v21 needsToDeleteShare])
         {
-          [v12 addObject:v21];
-          [v10 removeObject:v21];
+          [array3 addObject:v21];
+          [array removeObject:v21];
         }
 
         if (([v21 needsToBeDeletedFromCloud] & 1) == 0 && objc_msgSend(v21, "wantsUserSpecificRecord") && objc_msgSend(v21, "needsToSaveUserSpecificRecord"))
         {
-          v25 = [v21 userSpecificRecordID];
+          userSpecificRecordID = [v21 userSpecificRecordID];
 
-          if (v25)
+          if (userSpecificRecordID)
           {
             [v15 addObject:v21];
           }
@@ -9411,11 +9411,11 @@ LABEL_19:
             v26 = os_log_create("com.apple.notes", "Cloud");
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v27 = [v21 loggingDescription];
+              loggingDescription2 = [v21 loggingDescription];
               *buf = 138412546;
-              v39 = v33;
+              v39 = dCopy;
               v40 = 2112;
-              v41 = v27;
+              v41 = loggingDescription2;
               _os_log_error_impl(&dword_214D51000, v26, OS_LOG_TYPE_ERROR, "Not syncing user-specific object because it's missing its user-specific record ID in account ID %@: %@", buf, 0x16u);
 
               v15 = v32;
@@ -9430,38 +9430,38 @@ LABEL_19:
     while (v18);
   }
 
-  if (v28)
+  if (saveCopy)
   {
-    *v28 = [v10 copy];
+    *saveCopy = [array copy];
   }
 
-  if (a6)
+  if (delete)
   {
-    *a6 = [v11 copy];
+    *delete = [array2 copy];
   }
 
-  if (a7)
+  if (shares)
   {
-    *a7 = [v12 copy];
+    *shares = [array3 copy];
   }
 
-  if (a8)
+  if (record)
   {
-    *a8 = [v32 copy];
+    *record = [v32 copy];
   }
 }
 
-- (void)handleRemoteNotificationWithUserInfo:(id)a3 completion:(id)a4
+- (void)handleRemoteNotificationWithUserInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self cloudContextDelegate];
+  infoCopy = info;
+  completionCopy = completion;
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
 LABEL_6:
-    v11 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v6];
-    v12 = [v6 objectForKeyedSubscript:@"aps"];
+    v11 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:infoCopy];
+    v12 = [infoCopy objectForKeyedSubscript:@"aps"];
     v13 = [v12 objectForKeyedSubscript:@"content-available"];
 
     if (v11)
@@ -9470,7 +9470,7 @@ LABEL_6:
       v17[1] = 3221225472;
       v17[2] = __66__ICCloudContext_handleRemoteNotificationWithUserInfo_completion___block_invoke;
       v17[3] = &unk_278194CD8;
-      v18 = v7;
+      v18 = completionCopy;
       [(ICCloudContext *)self handleCloudKitNotification:v11 completionHandler:v17];
       v14 = v18;
     }
@@ -9479,9 +9479,9 @@ LABEL_6:
     {
       if ([v13 integerValue] != 1)
       {
-        if (v7)
+        if (completionCopy)
         {
-          (*(v7 + 2))(v7, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0);
         }
 
         goto LABEL_11;
@@ -9491,7 +9491,7 @@ LABEL_6:
       v15[1] = 3221225472;
       v15[2] = __66__ICCloudContext_handleRemoteNotificationWithUserInfo_completion___block_invoke_2;
       v15[3] = &unk_278194CD8;
-      v16 = v7;
+      v16 = completionCopy;
       [(ICCloudContext *)self syncWithReason:@"GenericContentAvailablePush" uploadUnsyncedChanges:0 completionHandler:v15];
       v14 = v16;
     }
@@ -9500,17 +9500,17 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [(ICCloudContext *)self cloudContextDelegate];
-  v10 = [v9 shouldIgnoreNotificationsForCloudContext:self];
+  cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+  v10 = [cloudContextDelegate2 shouldIgnoreNotificationsForCloudContext:self];
 
   if (!v10)
   {
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 1);
+    (*(completionCopy + 2))(completionCopy, 0, 1);
   }
 
 LABEL_12:
@@ -9546,22 +9546,22 @@ uint64_t __66__ICCloudContext_handleRemoteNotificationWithUserInfo_completion___
   return result;
 }
 
-- (void)handleCloudKitNotification:(id)a3 completionHandler:(id)a4
+- (void)handleCloudKitNotification:(id)notification completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self cloudContextDelegate];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  cloudContextDelegate = [(ICCloudContext *)self cloudContextDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(ICCloudContext *)self cloudContextDelegate];
-    v10 = [v9 shouldIgnoreNotificationsForCloudContext:self];
+    cloudContextDelegate2 = [(ICCloudContext *)self cloudContextDelegate];
+    v10 = [cloudContextDelegate2 shouldIgnoreNotificationsForCloudContext:self];
 
     if (v10)
     {
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       goto LABEL_15;
@@ -9575,7 +9575,7 @@ uint64_t __66__ICCloudContext_handleRemoteNotificationWithUserInfo_completion___
   v11 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [ICCloudContext handleCloudKitNotification:v6 completionHandler:?];
+    [ICCloudContext handleCloudKitNotification:notificationCopy completionHandler:?];
   }
 
   if (![(ICCloudContext *)self isReadyToSync]|| [(ICCloudContext *)self isDisabled]|| [(ICCloudContext *)self isDisabledInternal])
@@ -9583,74 +9583,74 @@ uint64_t __66__ICCloudContext_handleRemoteNotificationWithUserInfo_completion___
     v12 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(ICCloudContext *)self readinessLoggingDescription];
+      readinessLoggingDescription = [(ICCloudContext *)self readinessLoggingDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v13;
+      *(&buf + 4) = readinessLoggingDescription;
       _os_log_impl(&dword_214D51000, v12, OS_LOG_TYPE_INFO, "Not handling CloudKit push notification: %@", &buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v14 = [objc_opt_class() errorForDisabledCloudSyncing];
-      (v7)[2](v7, v14);
+      errorForDisabledCloudSyncing = [objc_opt_class() errorForDisabledCloudSyncing];
+      (handlerCopy)[2](handlerCopy, errorForDisabledCloudSyncing);
     }
   }
 
   else
   {
-    v15 = [v6 notificationType];
-    if (v15 == 2 || v15 == 4)
+    notificationType = [notificationCopy notificationType];
+    if (notificationType == 2 || notificationType == 4)
     {
-      v16 = v6;
-      v17 = [v16 databaseScope];
-      v18 = [v16 subscriptionOwnerUserRecordID];
+      v16 = notificationCopy;
+      databaseScope = [v16 databaseScope];
+      subscriptionOwnerUserRecordID = [v16 subscriptionOwnerUserRecordID];
 
-      v19 = [v18 recordName];
+      recordName = [subscriptionOwnerUserRecordID recordName];
     }
 
     else
     {
-      v18 = os_log_create("com.apple.notes", "Cloud");
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      subscriptionOwnerUserRecordID = os_log_create("com.apple.notes", "Cloud");
+      if (os_log_type_enabled(subscriptionOwnerUserRecordID, OS_LOG_TYPE_ERROR))
       {
         [ICCloudContext handleCloudKitNotification:completionHandler:];
       }
 
-      v19 = 0;
-      v17 = 0;
+      recordName = 0;
+      databaseScope = 0;
     }
 
     *&buf = 0;
     *(&buf + 1) = &buf;
     v30 = 0x2020000000;
     v31 = 0;
-    if (v17)
+    if (databaseScope)
     {
-      if (v19)
+      if (recordName)
       {
-        v20 = [(ICCloudContext *)self containersByAccountID];
-        v21 = [v20 count] == 0;
+        containersByAccountID = [(ICCloudContext *)self containersByAccountID];
+        v21 = [containersByAccountID count] == 0;
 
         if (!v21)
         {
-          v22 = [(ICCloudContext *)self containersByAccountID];
+          containersByAccountID2 = [(ICCloudContext *)self containersByAccountID];
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __63__ICCloudContext_handleCloudKitNotification_completionHandler___block_invoke;
           v23[3] = &unk_278198FF0;
           p_buf = &buf;
-          v28 = v17;
-          v24 = v19;
-          v25 = self;
-          v26 = v7;
-          [v22 enumerateKeysAndObjectsUsingBlock:v23];
+          v28 = databaseScope;
+          v24 = recordName;
+          selfCopy = self;
+          v26 = handlerCopy;
+          [containersByAccountID2 enumerateKeysAndObjectsUsingBlock:v23];
         }
       }
     }
 
-    if (v7 && (*(*(&buf + 1) + 24) & 1) == 0)
+    if (handlerCopy && (*(*(&buf + 1) + 24) & 1) == 0)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     _Block_object_dispose(&buf, 8);
@@ -9737,14 +9737,14 @@ void __63__ICCloudContext_handleCloudKitNotification_completionHandler___block_i
 - (void)validateAccountZoneIDsNeedingFetchChanges
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(ICCloudContext *)self accountZoneIDsNeedingFetchChanges];
-  v5 = [v4 allKeys];
-  v6 = [v3 setWithArray:v5];
+  accountZoneIDsNeedingFetchChanges = [(ICCloudContext *)self accountZoneIDsNeedingFetchChanges];
+  allKeys = [accountZoneIDsNeedingFetchChanges allKeys];
+  v6 = [v3 setWithArray:allKeys];
 
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(ICCloudContext *)self containersByAccountID];
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
+  containersByAccountID = [(ICCloudContext *)self containersByAccountID];
+  allKeys2 = [containersByAccountID allKeys];
+  v10 = [v7 setWithArray:allKeys2];
 
   [v6 minusSet:v10];
   v11[0] = MEMORY[0x277D85DD0];
@@ -9771,19 +9771,19 @@ void __59__ICCloudContext_validateAccountZoneIDsNeedingFetchChanges__block_invok
   [v5 setObject:0 forKeyedSubscript:v3];
 }
 
-- (void)fetchRecordZoneChangesWithReason:(id)a3 completionHandler:(id)a4
+- (void)fetchRecordZoneChangesWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudContext *)self newSessionForReason:a3];
+  handlerCopy = handler;
+  v7 = [(ICCloudContext *)self newSessionForReason:reason];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__ICCloudContext_fetchRecordZoneChangesWithReason_completionHandler___block_invoke;
   aBlock[3] = &unk_278198BD8;
   v12 = v7;
-  v13 = v6;
+  v13 = handlerCopy;
   aBlock[4] = self;
   v8 = v7;
-  v9 = v6;
+  v9 = handlerCopy;
   v10 = _Block_copy(aBlock);
   [(ICCloudContext *)self fetchRecordZoneChangesForSession:v8 completionHandler:v10];
 }
@@ -9808,21 +9808,21 @@ void __69__ICCloudContext_fetchRecordZoneChangesWithReason_completionHandler___b
   dispatch_async(v5, v7);
 }
 
-- (void)fetchRecordZoneChangesForSession:(id)a3 completionHandler:(id)a4
+- (void)fetchRecordZoneChangesForSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self processingQueue];
+  sessionCopy = session;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ICCloudContext_fetchRecordZoneChangesForSession_completionHandler___block_invoke;
   block[3] = &unk_278194E38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sessionCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __69__ICCloudContext_fetchRecordZoneChangesForSession_completionHandler___block_invoke(uint64_t a1)
@@ -9833,23 +9833,23 @@ void __69__ICCloudContext_fetchRecordZoneChangesForSession_completionHandler___b
   [v2 fetchRecordZoneChangesForAccountZoneIDs:v3 session:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)fetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 reason:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d reason:(id)reason completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ICCloudContext *)self newSessionForReason:a5];
+  handlerCopy = handler;
+  dCopy = d;
+  dsCopy = ds;
+  v13 = [(ICCloudContext *)self newSessionForReason:reason];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__ICCloudContext_fetchRecordZoneChangesForZoneIDs_accountID_reason_completionHandler___block_invoke;
   aBlock[3] = &unk_278198BD8;
   v18 = v13;
-  v19 = v10;
+  v19 = handlerCopy;
   aBlock[4] = self;
   v14 = v13;
-  v15 = v10;
+  v15 = handlerCopy;
   v16 = _Block_copy(aBlock);
-  [(ICCloudContext *)self fetchRecordZoneChangesForZoneIDs:v12 accountID:v11 session:v14 completionHandler:v16];
+  [(ICCloudContext *)self fetchRecordZoneChangesForZoneIDs:dsCopy accountID:dCopy session:v14 completionHandler:v16];
 }
 
 void __86__ICCloudContext_fetchRecordZoneChangesForZoneIDs_accountID_reason_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -9872,17 +9872,17 @@ void __86__ICCloudContext_fetchRecordZoneChangesForZoneIDs_accountID_reason_comp
   dispatch_async(v5, v7);
 }
 
-- (void)fetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 session:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d session:(id)session completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  dCopy = d;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v13 = [MEMORY[0x277CBEB98] setWithArray:ds];
   v14 = v13;
-  if (v10)
+  if (dCopy)
   {
-    v16 = v10;
+    v16 = dCopy;
     v17[0] = v13;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   }
@@ -9892,31 +9892,31 @@ void __86__ICCloudContext_fetchRecordZoneChangesForZoneIDs_accountID_reason_comp
     v15 = 0;
   }
 
-  [(ICCloudContext *)self fetchRecordZoneChangesForAccountZoneIDs:v15 session:v11 completionHandler:v12];
+  [(ICCloudContext *)self fetchRecordZoneChangesForAccountZoneIDs:v15 session:sessionCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchRecordZoneChangesForAccountZoneIDs:(id)a3 session:(id)a4 completionHandler:(id)a5
+- (void)fetchRecordZoneChangesForAccountZoneIDs:(id)ds session:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  sessionCopy = session;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D36278];
-  v12 = [v9 reason];
-  [v11 postFetchZoneChangesTelemetryWithReason:v12];
+  reason = [sessionCopy reason];
+  [v11 postFetchZoneChangesTelemetryWithReason:reason];
 
-  v13 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__ICCloudContext_fetchRecordZoneChangesForAccountZoneIDs_session_completionHandler___block_invoke;
   v17[3] = &unk_278195788;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  dispatch_async(v13, v17);
+  v18 = dsCopy;
+  selfCopy = self;
+  v20 = sessionCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = sessionCopy;
+  v16 = dsCopy;
+  dispatch_async(processingQueue, v17);
 }
 
 void __84__ICCloudContext_fetchRecordZoneChangesForAccountZoneIDs_session_completionHandler___block_invoke(id *a1)
@@ -10061,24 +10061,24 @@ void __84__ICCloudContext_fetchRecordZoneChangesForAccountZoneIDs_session_comple
   [*(a1 + 32) appendFormat:@" account ID: %@, zone IDs: %@.", v5, v14, v15];
 }
 
-- (void)addOperationsToFetchRecordZoneChangesForAccountZoneIDs:(id)a3 session:(id)a4 completionHandler:(id)a5
+- (void)addOperationsToFetchRecordZoneChangesForAccountZoneIDs:(id)ds session:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCloudContext *)self processingQueue];
+  dsCopy = ds;
+  sessionCopy = session;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __99__ICCloudContext_addOperationsToFetchRecordZoneChangesForAccountZoneIDs_session_completionHandler___block_invoke;
   v15[3] = &unk_278195788;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dsCopy;
+  selfCopy = self;
+  v18 = sessionCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = sessionCopy;
+  v14 = dsCopy;
+  dispatch_async(processingQueue, v15);
 }
 
 void __99__ICCloudContext_addOperationsToFetchRecordZoneChangesForAccountZoneIDs_session_completionHandler___block_invoke(id *a1)
@@ -10328,16 +10328,16 @@ void __99__ICCloudContext_addOperationsToFetchRecordZoneChangesForAccountZoneIDs
   }
 }
 
-- (id)operationsToFetchRecordZoneChangesForZoneIDs:(id)a3 accountID:(id)a4 session:(id)a5
+- (id)operationsToFetchRecordZoneChangesForZoneIDs:(id)ds accountID:(id)d session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  dsCopy = ds;
+  dCopy = d;
+  sessionCopy = session;
+  if ([dCopy length])
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [objc_opt_class() objectsByDatabaseScope:v8];
-    v13 = [(ICCloudContext *)self containerForAccountID:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    v12 = [objc_opt_class() objectsByDatabaseScope:dsCopy];
+    v13 = [(ICCloudContext *)self containerForAccountID:dCopy];
     v14 = [objc_opt_class() userRecordNameForContainer:v13];
     v15 = objc_alloc_init(MEMORY[0x277CBC4F8]);
     [v15 setName:@"FetchRecordZoneChanges"];
@@ -10348,14 +10348,14 @@ void __99__ICCloudContext_addOperationsToFetchRecordZoneChangesForAccountZoneIDs
     v23[2] = __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID_session___block_invoke;
     v23[3] = &unk_278199090;
     v24 = v13;
-    v25 = self;
-    v26 = v9;
+    selfCopy = self;
+    v26 = dCopy;
     v27 = v14;
-    v28 = v10;
+    v28 = sessionCopy;
     v16 = v15;
     v29 = v16;
-    v30 = v11;
-    v17 = v11;
+    v30 = array;
+    v17 = array;
     v18 = v14;
     v19 = v13;
     [v12 enumerateKeysAndObjectsUsingBlock:v23];
@@ -10459,20 +10459,20 @@ void __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID
   [*(a1 + 80) addObject:v22];
 }
 
-- (id)operationToFetchRecordZoneChangesForZoneIDs:(id)a3 database:(id)a4 session:(id)a5
+- (id)operationToFetchRecordZoneChangesForZoneIDs:(id)ds database:(id)database session:(id)session
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v41 = a5;
-  v42 = v9;
-  v10 = [(ICCloudContext *)self accountIDForDatabase:v9];
-  v43 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  databaseCopy = database;
+  sessionCopy = session;
+  v42 = databaseCopy;
+  v10 = [(ICCloudContext *)self accountIDForDatabase:databaseCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v8;
+  obj = dsCopy;
   v11 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v11)
   {
@@ -10489,8 +10489,8 @@ void __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID
         }
 
         v16 = *(*(&v53 + 1) + 8 * i);
-        v17 = [v16 zoneName];
-        v18 = [v17 isEqualToString:v14];
+        zoneName = [v16 zoneName];
+        v18 = [zoneName isEqualToString:v14];
 
         if (v18)
         {
@@ -10506,20 +10506,20 @@ void __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID
         else
         {
           v19 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-          v20 = [(ICCloudContext *)self backgroundContext];
-          v21 = -[ICCloudContext serverChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "serverChangeTokenForRecordZoneID:databaseScope:accountID:context:", v16, [v42 databaseScope], v10, v20);
+          backgroundContext = [(ICCloudContext *)self backgroundContext];
+          v21 = -[ICCloudContext serverChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "serverChangeTokenForRecordZoneID:databaseScope:accountID:context:", v16, [v42 databaseScope], v10, backgroundContext);
           [v19 setPreviousServerChangeToken:v21];
 
-          v22 = [v19 previousServerChangeToken];
+          previousServerChangeToken = [v19 previousServerChangeToken];
 
-          if (!v22)
+          if (!previousServerChangeToken)
           {
             v49[0] = MEMORY[0x277D85DD0];
             v49[1] = 3221225472;
             v49[2] = __79__ICCloudContext_operationToFetchRecordZoneChangesForZoneIDs_database_session___block_invoke;
             v49[3] = &unk_278194DC0;
             v50 = v10;
-            v23 = v20;
+            v23 = backgroundContext;
             v51 = v23;
             v52 = v19;
             [v23 performBlockAndWait:v49];
@@ -10528,7 +10528,7 @@ void __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID
           v24 = +[ICCloudConfiguration sharedConfiguration];
           -[NSObject setResultsLimit:](v19, "setResultsLimit:", [v24 resultsLimitPerSyncOperation]);
 
-          [v43 setObject:v19 forKeyedSubscript:v16];
+          [dictionary setObject:v19 forKeyedSubscript:v16];
         }
       }
 
@@ -10542,19 +10542,19 @@ void __81__ICCloudContext_operationsToFetchRecordZoneChangesForZoneIDs_accountID
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v25 = [(ICCloudContext *)self operationQueue];
-  v26 = [v25 operations];
+  operationQueue = [(ICCloudContext *)self operationQueue];
+  operations = [operationQueue operations];
 
-  v27 = [v26 countByEnumeratingWithState:&v45 objects:v57 count:16];
+  v27 = [operations countByEnumeratingWithState:&v45 objects:v57 count:16];
   if (!v27)
   {
 LABEL_24:
 
 LABEL_29:
     v36 = v42;
-    v38 = v43;
-    v37 = v41;
-    v32 = [(ICCloudContext *)self newOperationToFetchRecordZoneChangesWithZoneConfigurations:v43 database:v42 session:v41];
+    v38 = dictionary;
+    v37 = sessionCopy;
+    v32 = [(ICCloudContext *)self newOperationToFetchRecordZoneChangesWithZoneConfigurations:dictionary database:v42 session:sessionCopy];
     goto LABEL_30;
   }
 
@@ -10566,7 +10566,7 @@ LABEL_16:
   {
     if (*v46 != v29)
     {
-      objc_enumerationMutation(v26);
+      objc_enumerationMutation(operations);
     }
 
     v31 = *(*(&v45 + 1) + 8 * v30);
@@ -10578,8 +10578,8 @@ LABEL_16:
 
     v32 = v31;
     v33 = objc_opt_class();
-    v34 = [v32 configurationsByRecordZoneID];
-    LOBYTE(v33) = [v33 isZoneConfigurations:v43 subsetOfZoneConfigurations:v34];
+    configurationsByRecordZoneID = [v32 configurationsByRecordZoneID];
+    LOBYTE(v33) = [v33 isZoneConfigurations:dictionary subsetOfZoneConfigurations:configurationsByRecordZoneID];
 
     if (v33)
     {
@@ -10589,7 +10589,7 @@ LABEL_16:
 LABEL_22:
     if (v28 == ++v30)
     {
-      v28 = [v26 countByEnumeratingWithState:&v45 objects:v57 count:16];
+      v28 = [operations countByEnumeratingWithState:&v45 objects:v57 count:16];
       if (v28)
       {
         goto LABEL_16;
@@ -10606,13 +10606,13 @@ LABEL_22:
 
   v35 = os_log_create("com.apple.notes", "Cloud");
   v36 = v42;
-  v37 = v41;
+  v37 = sessionCopy;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
   {
     [ICCloudContext operationToFetchRecordZoneChangesForZoneIDs:database:session:];
   }
 
-  v38 = v43;
+  v38 = dictionary;
 LABEL_30:
   v39 = v32;
 
@@ -10707,13 +10707,13 @@ void __79__ICCloudContext_operationToFetchRecordZoneChangesForZoneIDs_database_s
 LABEL_25:
 }
 
-+ (BOOL)isZoneConfigurations:(id)a3 subsetOfZoneConfigurations:(id)a4
++ (BOOL)isZoneConfigurations:(id)configurations subsetOfZoneConfigurations:(id)zoneConfigurations
 {
   v31 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v25 = a4;
-  v5 = [v24 allKeys];
-  v6 = [v5 copy];
+  configurationsCopy = configurations;
+  zoneConfigurationsCopy = zoneConfigurations;
+  allKeys = [configurationsCopy allKeys];
+  v6 = [allKeys copy];
 
   v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
   v26 = 0u;
@@ -10736,23 +10736,23 @@ LABEL_3:
       }
 
       v12 = *(*(&v26 + 1) + 8 * v11);
-      v13 = [v25 objectForKeyedSubscript:v12];
+      v13 = [zoneConfigurationsCopy objectForKeyedSubscript:v12];
       if (!v13)
       {
         goto LABEL_15;
       }
 
       v14 = v13;
-      v15 = [v24 objectForKeyedSubscript:v12];
-      v16 = [v14 previousServerChangeToken];
-      if (v16)
+      v15 = [configurationsCopy objectForKeyedSubscript:v12];
+      previousServerChangeToken = [v14 previousServerChangeToken];
+      if (previousServerChangeToken)
       {
         break;
       }
 
-      v17 = [v15 previousServerChangeToken];
+      previousServerChangeToken2 = [v15 previousServerChangeToken];
 
-      if (v17)
+      if (previousServerChangeToken2)
       {
         goto LABEL_10;
       }
@@ -10773,9 +10773,9 @@ LABEL_11:
     }
 
 LABEL_10:
-    v18 = [v14 previousServerChangeToken];
-    v19 = [v15 previousServerChangeToken];
-    v20 = [v18 isEqual:v19];
+    previousServerChangeToken3 = [v14 previousServerChangeToken];
+    previousServerChangeToken4 = [v15 previousServerChangeToken];
+    v20 = [previousServerChangeToken3 isEqual:previousServerChangeToken4];
 
     if ((v20 & 1) == 0)
     {
@@ -10792,24 +10792,24 @@ LABEL_15:
   return v21;
 }
 
-- (id)newOperationToFetchRecordZoneChangesWithZoneConfigurations:(id)a3 database:(id)a4 session:(id)a5
+- (id)newOperationToFetchRecordZoneChangesWithZoneConfigurations:(id)configurations database:(id)database session:(id)session
 {
   location[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCloudContext *)self accountIDForDatabase:v9];
+  configurationsCopy = configurations;
+  databaseCopy = database;
+  sessionCopy = session;
+  v11 = [(ICCloudContext *)self accountIDForDatabase:databaseCopy];
   v12 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v13 = [v8 allKeys];
-  v14 = [v12 initWithRecordZoneIDs:v13 configurationsByRecordZoneID:v8];
+  allKeys = [configurationsCopy allKeys];
+  v14 = [v12 initWithRecordZoneIDs:allKeys configurationsByRecordZoneID:configurationsCopy];
 
   [v14 setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-  v15 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-  v16 = [v14 configuration];
-  [v16 setDiscretionaryNetworkBehavior:v15];
+  discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+  configuration = [v14 configuration];
+  [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
-  [v14 setDatabase:v9];
-  [v14 setIc_cloudSession:v10];
+  [v14 setDatabase:databaseCopy];
+  [v14 setIc_cloudSession:sessionCopy];
   objc_initWeak(location, v14);
   [v14 setFetchAllChanges:1];
   v55[0] = 0;
@@ -10817,7 +10817,7 @@ LABEL_15:
   v55[2] = 0x3032000000;
   v55[3] = __Block_byref_object_copy__48;
   v55[4] = __Block_byref_object_dispose__48;
-  v56 = [(ICCloudContext *)self backgroundContext];
+  backgroundContext = [(ICCloudContext *)self backgroundContext];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__ICCloudContext_newOperationToFetchRecordZoneChangesWithZoneConfigurations_database_session___block_invoke;
@@ -10831,7 +10831,7 @@ LABEL_15:
   v50[3] = &unk_2781990B8;
   v50[4] = self;
   objc_copyWeak(&v53, location);
-  v18 = v10;
+  v18 = sessionCopy;
   v51 = v18;
   v52 = v55;
   [v14 setRecordWasChangedBlock:v50];
@@ -10871,14 +10871,14 @@ LABEL_15:
   v30 = 3221225472;
   v31 = __94__ICCloudContext_newOperationToFetchRecordZoneChangesWithZoneConfigurations_database_session___block_invoke_8;
   v32 = &unk_278199158;
-  v33 = self;
+  selfCopy = self;
   objc_copyWeak(&v36, location);
   v23 = v19;
   v34 = v23;
   v24 = v22;
   v35 = v24;
   [v14 setFetchRecordZoneChangesCompletionBlock:&v29];
-  [v14 setShouldFetchAssetContents:{-[ICCloudContext supportsDeferredAssetDownload](self, "supportsDeferredAssetDownload", v29, v30, v31, v32, v33) ^ 1}];
+  [v14 setShouldFetchAssetContents:{-[ICCloudContext supportsDeferredAssetDownload](self, "supportsDeferredAssetDownload", v29, v30, v31, v32, selfCopy) ^ 1}];
   v25 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
@@ -11020,30 +11020,30 @@ void __94__ICCloudContext_newOperationToFetchRecordZoneChangesWithZoneConfigurat
   [(ICParticipantUpdater *)v12 updateWithCompletion:0];
 }
 
-- (void)fetchRecordZoneChangesOperation:(id)a3 completedFetchForZoneID:(id)a4 serverChangeToken:(id)a5 error:(id)a6 context:(id)a7
+- (void)fetchRecordZoneChangesOperation:(id)operation completedFetchForZoneID:(id)d serverChangeToken:(id)token error:(id)error context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  tokenCopy = token;
+  errorCopy = error;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __106__ICCloudContext_fetchRecordZoneChangesOperation_completedFetchForZoneID_serverChangeToken_error_context___block_invoke;
   v23[3] = &unk_278198BB0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v15;
-  v26 = v13;
-  v27 = v14;
-  v28 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v13;
-  v21 = v15;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = operationCopy;
+  v25 = errorCopy;
+  v26 = dCopy;
+  v27 = tokenCopy;
+  v28 = contextCopy;
+  v18 = contextCopy;
+  v19 = tokenCopy;
+  v20 = dCopy;
+  v21 = errorCopy;
+  v22 = operationCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __106__ICCloudContext_fetchRecordZoneChangesOperation_completedFetchForZoneID_serverChangeToken_error_context___block_invoke(uint64_t a1)
@@ -11227,24 +11227,24 @@ void __106__ICCloudContext_fetchRecordZoneChangesOperation_completedFetchForZone
   [v2 postNotificationName:@"ICCloudContextFetchRecordChangeOperationDidFinishNotification" object:*(a1 + 32)];
 }
 
-- (void)fetchRecordZoneChangesOperationDidComplete:(id)a3 session:(id)a4 error:(id)a5
+- (void)fetchRecordZoneChangesOperationDidComplete:(id)complete session:(id)session error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCloudContext *)self processingQueue];
+  completeCopy = complete;
+  sessionCopy = session;
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ICCloudContext_fetchRecordZoneChangesOperationDidComplete_session_error___block_invoke;
   v15[3] = &unk_278195AC8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = completeCopy;
+  v17 = sessionCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = sessionCopy;
+  v14 = completeCopy;
+  dispatch_sync(processingQueue, v15);
 }
 
 void __75__ICCloudContext_fetchRecordZoneChangesOperationDidComplete_session_error___block_invoke(uint64_t a1)
@@ -11368,33 +11368,33 @@ LABEL_15:
   }
 }
 
-- (void)fetchRecordZoneChangesOperation:(id)a3 recordWasChangedWithRecordID:(id)a4 record:(id)a5 error:(id)a6 session:(id)a7 context:(id)a8
+- (void)fetchRecordZoneChangesOperation:(id)operation recordWasChangedWithRecordID:(id)d record:(id)record error:(id)error session:(id)session context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  recordCopy = record;
+  errorCopy = error;
+  sessionCopy = session;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__ICCloudContext_fetchRecordZoneChangesOperation_recordWasChangedWithRecordID_record_error_session_context___block_invoke;
   block[3] = &unk_278198B88;
   block[4] = self;
-  v28 = v14;
-  v29 = v16;
-  v30 = v18;
-  v31 = v19;
-  v32 = v15;
-  v33 = v17;
-  v21 = v17;
-  v22 = v15;
-  v23 = v19;
-  v24 = v18;
-  v25 = v16;
-  v26 = v14;
-  dispatch_async(v20, block);
+  v28 = operationCopy;
+  v29 = recordCopy;
+  v30 = sessionCopy;
+  v31 = contextCopy;
+  v32 = dCopy;
+  v33 = errorCopy;
+  v21 = errorCopy;
+  v22 = dCopy;
+  v23 = contextCopy;
+  v24 = sessionCopy;
+  v25 = recordCopy;
+  v26 = operationCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __108__ICCloudContext_fetchRecordZoneChangesOperation_recordWasChangedWithRecordID_record_error_session_context___block_invoke(uint64_t a1)
@@ -11445,30 +11445,30 @@ void __108__ICCloudContext_fetchRecordZoneChangesOperation_recordWasChangedWithR
   }
 }
 
-- (void)fetchRecordZoneChangesOperation:(id)a3 recordWasDeletedWithRecordID:(id)a4 recordType:(id)a5 session:(id)a6 context:(id)a7
+- (void)fetchRecordZoneChangesOperation:(id)operation recordWasDeletedWithRecordID:(id)d recordType:(id)type session:(id)session context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  typeCopy = type;
+  sessionCopy = session;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __106__ICCloudContext_fetchRecordZoneChangesOperation_recordWasDeletedWithRecordID_recordType_session_context___block_invoke;
   v23[3] = &unk_278198BB0;
-  v24 = v16;
-  v25 = self;
-  v26 = v12;
-  v27 = v13;
-  v28 = v15;
-  v29 = v14;
-  v18 = v14;
-  v19 = v15;
-  v20 = v13;
-  v21 = v12;
-  v22 = v16;
-  dispatch_async(v17, v23);
+  v24 = contextCopy;
+  selfCopy = self;
+  v26 = operationCopy;
+  v27 = dCopy;
+  v28 = sessionCopy;
+  v29 = typeCopy;
+  v18 = typeCopy;
+  v19 = sessionCopy;
+  v20 = dCopy;
+  v21 = operationCopy;
+  v22 = contextCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __106__ICCloudContext_fetchRecordZoneChangesOperation_recordWasDeletedWithRecordID_recordType_session_context___block_invoke(uint64_t a1)
@@ -11574,30 +11574,30 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)fetchRecordZoneChangesOperation:(id)a3 zoneID:(id)a4 accountID:(id)a5 changeTokenUpdated:(id)a6 context:(id)a7
+- (void)fetchRecordZoneChangesOperation:(id)operation zoneID:(id)d accountID:(id)iD changeTokenUpdated:(id)updated context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  dCopy = d;
+  iDCopy = iD;
+  updatedCopy = updated;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __94__ICCloudContext_fetchRecordZoneChangesOperation_zoneID_accountID_changeTokenUpdated_context___block_invoke;
   v23[3] = &unk_278198BB0;
-  v24 = v13;
-  v25 = v15;
-  v26 = v12;
-  v27 = self;
-  v28 = v14;
-  v29 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v12;
-  v21 = v15;
-  v22 = v13;
-  dispatch_async(v17, v23);
+  v24 = dCopy;
+  v25 = updatedCopy;
+  v26 = operationCopy;
+  selfCopy = self;
+  v28 = iDCopy;
+  v29 = contextCopy;
+  v18 = contextCopy;
+  v19 = iDCopy;
+  v20 = operationCopy;
+  v21 = updatedCopy;
+  v22 = dCopy;
+  dispatch_async(processingQueue, v23);
 }
 
 void __94__ICCloudContext_fetchRecordZoneChangesOperation_zoneID_accountID_changeTokenUpdated_context___block_invoke(uint64_t a1)
@@ -11615,10 +11615,10 @@ void __94__ICCloudContext_fetchRecordZoneChangesOperation_zoneID_accountID_chang
   [v5 saveServerChangeToken:v3 forRecordZoneID:v4 databaseScope:objc_msgSend(v6 accountID:"databaseScope") context:{*(a1 + 64), *(a1 + 72)}];
 }
 
-- (BOOL)shouldUpdateServerRecordForObject:(id)a3 withRecord:(id)a4
+- (BOOL)shouldUpdateServerRecordForObject:(id)object withRecord:(id)record
 {
-  v6 = a4;
-  v7 = a3;
+  recordCopy = record;
+  objectCopy = object;
   objc_opt_class();
   v8 = ICDynamicCast();
 
@@ -11627,15 +11627,15 @@ void __94__ICCloudContext_fetchRecordZoneChangesOperation_zoneID_accountID_chang
     goto LABEL_8;
   }
 
-  v9 = [v6 recordID];
-  v10 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v9];
+  recordID = [recordCopy recordID];
+  v10 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:recordID];
 
   if (!v10)
   {
-    v16 = [v8 serverRecord];
-    v17 = [v16 recordChangeTag];
-    v18 = [v6 recordChangeTag];
-    v19 = [v17 isEqualToString:v18];
+    serverRecord = [v8 serverRecord];
+    recordChangeTag = [serverRecord recordChangeTag];
+    recordChangeTag2 = [recordCopy recordChangeTag];
+    v19 = [recordChangeTag isEqualToString:recordChangeTag2];
 
     if (!v19)
     {
@@ -11645,63 +11645,63 @@ void __94__ICCloudContext_fetchRecordZoneChangesOperation_zoneID_accountID_chang
     goto LABEL_6;
   }
 
-  v11 = [v8 userSpecificServerRecord];
-  v12 = [v11 recordChangeTag];
-  v13 = [v6 recordChangeTag];
-  v14 = [v12 isEqualToString:v13];
+  userSpecificServerRecord = [v8 userSpecificServerRecord];
+  recordChangeTag3 = [userSpecificServerRecord recordChangeTag];
+  recordChangeTag4 = [recordCopy recordChangeTag];
+  v14 = [recordChangeTag3 isEqualToString:recordChangeTag4];
 
   if (v14)
   {
 LABEL_6:
     if ([(ICCloudContext *)self supportsDeferredAssetDownload])
     {
-      v15 = [v6 hasFetchedAssets];
+      hasFetchedAssets = [recordCopy hasFetchedAssets];
       goto LABEL_9;
     }
 
 LABEL_8:
-    v15 = 0;
+    hasFetchedAssets = 0;
     goto LABEL_9;
   }
 
 LABEL_4:
-  v15 = 1;
+  hasFetchedAssets = 1;
 LABEL_9:
 
-  return v15;
+  return hasFetchedAssets;
 }
 
-- (void)setAssetDownloadStateOnObject:(id)a3 withRecord:(id)a4 managedObjectContext:(id)a5
+- (void)setAssetDownloadStateOnObject:(id)object withRecord:(id)record managedObjectContext:(id)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  recordCopy = record;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v11 = ICDynamicCast();
 
   if (v11)
   {
-    v12 = [v11 cloudAccount];
-    [ICAssetSignature mergeIncomingAssetsFromRecord:v8 forObject:v11 account:v12 context:v9];
+    cloudAccount = [v11 cloudAccount];
+    [ICAssetSignature mergeIncomingAssetsFromRecord:recordCopy forObject:v11 account:cloudAccount context:contextCopy];
 
     if ([(ICCloudContext *)self supportsDeferredAssetDownload])
     {
-      v13 = [v8 hasUnfetchedAssets];
-      v14 = [v8 hasFetchedAssets];
+      hasUnfetchedAssets = [recordCopy hasUnfetchedAssets];
+      hasFetchedAssets = [recordCopy hasFetchedAssets];
       v15 = [v11 isUnsupported] ^ 1;
-      v16 = [v11 outOfDateCommonAssetSignatures];
-      v17 = [v11 outOfDateUserSpecificAssetSignatures];
+      outOfDateCommonAssetSignatures = [v11 outOfDateCommonAssetSignatures];
+      outOfDateUserSpecificAssetSignatures = [v11 outOfDateUserSpecificAssetSignatures];
       v18 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v8 ic_loggingDescription];
-        v31 = [v11 ic_loggingDescription];
-        v27 = [v11 isUnsupported];
+        ic_loggingDescription = [recordCopy ic_loggingDescription];
+        ic_loggingDescription2 = [v11 ic_loggingDescription];
+        isUnsupported = [v11 isUnsupported];
         *buf = 138413826;
         v28 = @"NO";
-        v33 = v26;
-        if (v27)
+        v33 = ic_loggingDescription;
+        if (isUnsupported)
         {
           v29 = @"YES";
         }
@@ -11711,7 +11711,7 @@ LABEL_9:
           v29 = @"NO";
         }
 
-        if (v13)
+        if (hasUnfetchedAssets)
         {
           v30 = @"YES";
         }
@@ -11722,9 +11722,9 @@ LABEL_9:
         }
 
         v34 = 2112;
-        v35 = v31;
+        v35 = ic_loggingDescription2;
         v36 = 2112;
-        if (v14)
+        if (hasFetchedAssets)
         {
           v28 = @"YES";
         }
@@ -11735,27 +11735,27 @@ LABEL_9:
         v40 = 2112;
         v41 = v28;
         v42 = 2112;
-        v43 = v16;
+        v43 = outOfDateCommonAssetSignatures;
         v44 = 2112;
-        v45 = v17;
+        v45 = outOfDateUserSpecificAssetSignatures;
         _os_log_debug_impl(&dword_214D51000, v18, OS_LOG_TYPE_DEBUG, "[AssetDownload] setAssetDownloadStateOnObject:withRecord :: record %@ fetched for object %@. object.isUnsupported = %@, record.hasUnfetchedAssets = %@, record.hasFetchedAssets = %@, outOfDateCommonAssetKeys = %@, outOfDateUserSpecificAssetKeys = %@", buf, 0x48u);
       }
 
-      v19 = v15 & v13;
+      v19 = v15 & hasUnfetchedAssets;
 
-      if ([objc_opt_class() supportsUserSpecificRecords] && (objc_msgSend(v8, "recordID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = +[ICUserSpecificRecordIDParser isUserSpecificRecordID:](ICUserSpecificRecordIDParser, "isUserSpecificRecordID:", v20), v20, v21))
+      if ([objc_opt_class() supportsUserSpecificRecords] && (objc_msgSend(recordCopy, "recordID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = +[ICUserSpecificRecordIDParser isUserSpecificRecordID:](ICUserSpecificRecordIDParser, "isUserSpecificRecordID:", v20), v20, v21))
       {
         if (v19 && [v11 shouldAlwaysDownloadAssets])
         {
-          v22 = [v11 hasOutOfDateUserSpecificAssetSignatures];
+          hasOutOfDateUserSpecificAssetSignatures = [v11 hasOutOfDateUserSpecificAssetSignatures];
         }
 
         else
         {
-          v22 = 0;
+          hasOutOfDateUserSpecificAssetSignatures = 0;
         }
 
-        [v11 setNeedsToFetchUserSpecificRecordAssets:v22];
+        [v11 setNeedsToFetchUserSpecificRecordAssets:hasOutOfDateUserSpecificAssetSignatures];
       }
 
       else
@@ -11764,15 +11764,15 @@ LABEL_9:
         {
           if ([v11 shouldAlwaysDownloadAssets])
           {
-            v23 = [v11 hasOutOfDateCommonAssetSignatures];
+            hasOutOfDateCommonAssetSignatures = [v11 hasOutOfDateCommonAssetSignatures];
           }
 
           else
           {
-            v23 = 0;
+            hasOutOfDateCommonAssetSignatures = 0;
           }
 
-          [v11 setNeedsToBeFetchedFromCloud:v23];
+          [v11 setNeedsToBeFetchedFromCloud:hasOutOfDateCommonAssetSignatures];
           v24 = [v11 hasPresentableContent] ^ 1;
         }
 
@@ -11793,22 +11793,22 @@ LABEL_9:
   }
 }
 
-- (void)fetchDatabaseChangesForSession:(id)a3 completionHandler:(id)a4
+- (void)fetchDatabaseChangesForSession:(id)session completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  sessionCopy = session;
   v8 = objc_opt_new();
-  v9 = [(ICCloudContext *)self containersByAccountID];
+  containersByAccountID = [(ICCloudContext *)self containersByAccountID];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ICCloudContext_fetchDatabaseChangesForSession_completionHandler___block_invoke;
   v12[3] = &unk_278199180;
   v13 = v8;
   v10 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  [containersByAccountID enumerateKeysAndObjectsUsingBlock:v12];
 
   v11 = [v10 copy];
-  [(ICCloudContext *)self fetchDatabaseChangesForDatabases:v11 session:v7 completionHandler:v6];
+  [(ICCloudContext *)self fetchDatabaseChangesForDatabases:v11 session:sessionCopy completionHandler:handlerCopy];
 }
 
 void __67__ICCloudContext_fetchDatabaseChangesForSession_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -11831,28 +11831,28 @@ void __67__ICCloudContext_fetchDatabaseChangesForSession_completionHandler___blo
   [v10 addObject:v11];
 }
 
-- (void)fetchDatabaseChangesForDatabases:(id)a3 session:(id)a4 completionHandler:(id)a5
+- (void)fetchDatabaseChangesForDatabases:(id)databases session:(id)session completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  databasesCopy = databases;
+  sessionCopy = session;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D36278];
-  v12 = [v9 reason];
-  [v11 postFetchDatabaseChangesTelemetryWithReason:v12];
+  reason = [sessionCopy reason];
+  [v11 postFetchDatabaseChangesTelemetryWithReason:reason];
 
-  v13 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHandler___block_invoke;
   v17[3] = &unk_278195788;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v10;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
-  dispatch_async(v13, v17);
+  v18 = sessionCopy;
+  v19 = databasesCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = databasesCopy;
+  v16 = sessionCopy;
+  dispatch_async(processingQueue, v17);
 }
 
 void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHandler___block_invoke(id *a1)
@@ -12041,25 +12041,25 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
   }
 }
 
-- (id)operationToFetchDatabaseChangesForDatabase:(id)a3 session:(id)a4 completionHandler:(id)a5
+- (id)operationToFetchDatabaseChangesForDatabase:(id)database session:(id)session completionHandler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v40 = v8;
-  v11 = [(ICCloudContext *)self accountIDForDatabase:v8];
-  v12 = [(ICCloudContext *)self backgroundContext];
-  v39 = [(ICCloudContext *)self serverChangeTokenForChangedZonesInDatabase:v8 accountID:v11 context:v12];
+  databaseCopy = database;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v40 = databaseCopy;
+  v11 = [(ICCloudContext *)self accountIDForDatabase:databaseCopy];
+  backgroundContext = [(ICCloudContext *)self backgroundContext];
+  v39 = [(ICCloudContext *)self serverChangeTokenForChangedZonesInDatabase:databaseCopy accountID:v11 context:backgroundContext];
   v13 = [objc_alloc(MEMORY[0x277CBC388]) initWithPreviousServerChangeToken:v39];
   [v13 setQualityOfService:{-[ICCloudContext qualityOfService](self, "qualityOfService")}];
-  v14 = [(ICCloudContext *)self discretionaryNetworkBehavior];
-  v15 = [v13 configuration];
-  [v15 setDiscretionaryNetworkBehavior:v14];
+  discretionaryNetworkBehavior = [(ICCloudContext *)self discretionaryNetworkBehavior];
+  configuration = [v13 configuration];
+  [configuration setDiscretionaryNetworkBehavior:discretionaryNetworkBehavior];
 
   [v13 setDatabase:v40];
   [v13 setFetchAllChanges:1];
-  [v13 setIc_cloudSession:v9];
+  [v13 setIc_cloudSession:sessionCopy];
   objc_initWeak(&location, v13);
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
@@ -12069,7 +12069,7 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
   objc_copyWeak(&v62, &location);
   v16 = v11;
   v60 = v16;
-  v17 = v9;
+  v17 = sessionCopy;
   v61 = v17;
   [v13 setRecordZoneWithIDChangedBlock:v59];
   v55[0] = MEMORY[0x277D85DD0];
@@ -12091,7 +12091,7 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
   objc_copyWeak(&v54, &location);
   v20 = v18;
   v52 = v20;
-  v21 = v12;
+  v21 = backgroundContext;
   v53 = v21;
   [v13 setChangeTokenUpdatedBlock:v51];
   v45[0] = MEMORY[0x277D85DD0];
@@ -12104,7 +12104,7 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
   v46 = v38;
   v35 = v19;
   v47 = v35;
-  v36 = v10;
+  v36 = handlerCopy;
   v49 = v36;
   v37 = v21;
   v48 = v37;
@@ -12121,10 +12121,10 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v23 = [(ICCloudContext *)self operationQueue];
-  v24 = [v23 operations];
+  operationQueue = [(ICCloudContext *)self operationQueue];
+  operations = [operationQueue operations];
 
-  v25 = [v24 countByEnumeratingWithState:&v41 objects:v68 count:16];
+  v25 = [operations countByEnumeratingWithState:&v41 objects:v68 count:16];
   if (v25)
   {
     v26 = *v42;
@@ -12135,7 +12135,7 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
       {
         if (*v42 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(operations);
         }
 
         v28 = *(*(&v41 + 1) + 8 * v27);
@@ -12145,12 +12145,12 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
           v29 = os_log_create("com.apple.notes", "Cloud");
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
           {
-            v30 = [v13 ic_loggingDescription];
-            v31 = [v28 ic_loggingDescription];
+            ic_loggingDescription = [v13 ic_loggingDescription];
+            ic_loggingDescription2 = [v28 ic_loggingDescription];
             *buf = 138412546;
-            v65 = v30;
+            v65 = ic_loggingDescription;
             v66 = 2112;
-            v67 = v31;
+            v67 = ic_loggingDescription2;
             _os_log_debug_impl(&dword_214D51000, v29, OS_LOG_TYPE_DEBUG, "Database changes operation %@ will wait for %@", buf, 0x16u);
           }
 
@@ -12161,7 +12161,7 @@ void __77__ICCloudContext_fetchDatabaseChangesForDatabases_session_completionHan
       }
 
       while (v25 != v27);
-      v25 = [v24 countByEnumeratingWithState:&v41 objects:v68 count:16];
+      v25 = [operations countByEnumeratingWithState:&v41 objects:v68 count:16];
     }
 
     while (v25);
@@ -12218,27 +12218,27 @@ void __87__ICCloudContext_operationToFetchDatabaseChangesForDatabase_session_com
   [v10 informCloudAnalyticsDelegateForOperationDidEnd:v11 recordsByRecordID:MEMORY[0x277CBEC10] operationError:v7];
 }
 
-- (void)fetchDatabaseChangesOperation:(id)a3 recordZoneWithIDChanged:(id)a4 accountID:(id)a5 session:(id)a6
+- (void)fetchDatabaseChangesOperation:(id)operation recordZoneWithIDChanged:(id)changed accountID:(id)d session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  changedCopy = changed;
+  dCopy = d;
+  sessionCopy = session;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDChanged_accountID_session___block_invoke;
   block[3] = &unk_278198F00;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = changedCopy;
+  v22 = operationCopy;
+  v23 = sessionCopy;
+  selfCopy = self;
+  v15 = sessionCopy;
+  v16 = operationCopy;
+  v17 = changedCopy;
+  v18 = dCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __90__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDChanged_accountID_session___block_invoke(uint64_t a1)
@@ -12262,27 +12262,27 @@ void __90__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDChanged_
   }
 }
 
-- (void)fetchDatabaseChangesOperation:(id)a3 recordZoneWithIDWasDeleted:(id)a4 accountID:(id)a5 session:(id)a6
+- (void)fetchDatabaseChangesOperation:(id)operation recordZoneWithIDWasDeleted:(id)deleted accountID:(id)d session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  deletedCopy = deleted;
+  dCopy = d;
+  sessionCopy = session;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDWasDeleted_accountID_session___block_invoke;
   block[3] = &unk_278198F00;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
-  v23 = v13;
-  v24 = self;
-  v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = deletedCopy;
+  v22 = operationCopy;
+  v23 = sessionCopy;
+  selfCopy = self;
+  v15 = sessionCopy;
+  v16 = operationCopy;
+  v17 = deletedCopy;
+  v18 = dCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __93__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDWasDeleted_accountID_session___block_invoke(uint64_t a1)
@@ -12355,27 +12355,27 @@ void __93__ICCloudContext_fetchDatabaseChangesOperation_recordZoneWithIDWasDelet
   }
 }
 
-- (void)fetchDatabaseChangesOperation:(id)a3 changeTokenUpdated:(id)a4 accountID:(id)a5 context:(id)a6
+- (void)fetchDatabaseChangesOperation:(id)operation changeTokenUpdated:(id)updated accountID:(id)d context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  updatedCopy = updated;
+  dCopy = d;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__ICCloudContext_fetchDatabaseChangesOperation_changeTokenUpdated_accountID_context___block_invoke;
   block[3] = &unk_278198F00;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
-  dispatch_async(v14, block);
+  v20 = dCopy;
+  v21 = updatedCopy;
+  v22 = operationCopy;
+  selfCopy = self;
+  v24 = contextCopy;
+  v15 = contextCopy;
+  v16 = operationCopy;
+  v17 = updatedCopy;
+  v18 = dCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __85__ICCloudContext_fetchDatabaseChangesOperation_changeTokenUpdated_accountID_context___block_invoke(uint64_t a1)
@@ -12392,36 +12392,36 @@ void __85__ICCloudContext_fetchDatabaseChangesOperation_changeTokenUpdated_accou
   [v3 saveServerChangeToken:v4 forRecordZoneID:0 databaseScope:objc_msgSend(v5 accountID:"databaseScope") context:{*(a1 + 32), *(a1 + 64)}];
 }
 
-- (void)fetchDatabaseChangesOperation:(id)a3 finishedWithServerChangeToken:(id)a4 accountID:(id)a5 session:(id)a6 error:(id)a7 completionHandler:(id)a8 context:(id)a9
+- (void)fetchDatabaseChangesOperation:(id)operation finishedWithServerChangeToken:(id)token accountID:(id)d session:(id)session error:(id)error completionHandler:(id)handler context:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(ICCloudContext *)self processingQueue];
+  operationCopy = operation;
+  tokenCopy = token;
+  dCopy = d;
+  sessionCopy = session;
+  errorCopy = error;
+  handlerCopy = handler;
+  contextCopy = context;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __128__ICCloudContext_fetchDatabaseChangesOperation_finishedWithServerChangeToken_accountID_session_error_completionHandler_context___block_invoke;
   v30[3] = &unk_278199270;
-  v31 = v19;
-  v32 = v17;
-  v33 = v15;
-  v34 = v16;
-  v35 = self;
-  v36 = v21;
-  v37 = v18;
-  v38 = v20;
-  v23 = v20;
-  v24 = v18;
-  v25 = v21;
-  v26 = v16;
-  v27 = v15;
-  v28 = v17;
-  v29 = v19;
-  dispatch_async(v22, v30);
+  v31 = errorCopy;
+  v32 = dCopy;
+  v33 = operationCopy;
+  v34 = tokenCopy;
+  selfCopy = self;
+  v36 = contextCopy;
+  v37 = sessionCopy;
+  v38 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = sessionCopy;
+  v25 = contextCopy;
+  v26 = tokenCopy;
+  v27 = operationCopy;
+  v28 = dCopy;
+  v29 = errorCopy;
+  dispatch_async(processingQueue, v30);
 }
 
 uint64_t __128__ICCloudContext_fetchDatabaseChangesOperation_finishedWithServerChangeToken_accountID_session_error_completionHandler_context___block_invoke(uint64_t a1)
@@ -12608,13 +12608,13 @@ void __36__ICCloudContext_saveZoneFetchState__block_invoke_2(uint64_t a1, void *
 
 - (void)clearZoneFetchState
 {
-  v3 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ICCloudContext_clearZoneFetchState__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(processingQueue, block);
 }
 
 uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
@@ -12634,16 +12634,16 @@ uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
   return [*(a1 + 32) saveZoneFetchState];
 }
 
-+ (id)zoneInfosFromZoneIDs:(id)a3
++ (id)zoneInfosFromZoneIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -12660,20 +12660,20 @@ uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [MEMORY[0x277CBEB38] dictionary];
-        v12 = [v10 zoneName];
-        [v11 setObject:v12 forKeyedSubscript:@"ZoneName"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        zoneName = [v10 zoneName];
+        [dictionary setObject:zoneName forKeyedSubscript:@"ZoneName"];
 
-        v13 = [v10 ownerName];
-        v14 = [v13 isEqualToString:v8];
+        ownerName = [v10 ownerName];
+        v14 = [ownerName isEqualToString:v8];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v10 ownerName];
-          [v11 setObject:v15 forKeyedSubscript:@"OwnerName"];
+          ownerName2 = [v10 ownerName];
+          [dictionary setObject:ownerName2 forKeyedSubscript:@"OwnerName"];
         }
 
-        [v4 addObject:v11];
+        [v4 addObject:dictionary];
       }
 
       v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -12685,16 +12685,16 @@ uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)zoneIDsFromZoneInfos:(id)a3
++ (id)zoneIDsFromZoneInfos:(id)infos
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
+  infosCopy = infos;
+  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = infosCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -12731,10 +12731,10 @@ uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)subscriptionForDatabase:(id)a3
+- (id)subscriptionForDatabase:(id)database
 {
   v3 = MEMORY[0x277CCACA8];
-  [a3 databaseScope];
+  [database databaseScope];
   v4 = CKDatabaseScopeString();
   v5 = [v3 stringWithFormat:@"DatabaseSubscription-%@", v4];
 
@@ -12746,27 +12746,27 @@ uint64_t __37__ICCloudContext_clearZoneFetchState__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)updateSubscriptionsWithCompletionHandler:(id)a3
+- (void)updateSubscriptionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(ICCloudContext *)self hasNoteContextOptions:1])
   {
-    v5 = [(ICCloudContext *)self processingQueue];
+    processingQueue = [(ICCloudContext *)self processingQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__ICCloudContext_updateSubscriptionsWithCompletionHandler___block_invoke;
     v6[3] = &unk_2781957B0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(processingQueue, v6);
   }
 
   else
   {
     [(ICCloudContext *)self setNeedsToUpdateSubscriptions:0];
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -12934,21 +12934,21 @@ void __59__ICCloudContext_updateSubscriptionsWithCompletionHandler___block_invok
   }
 }
 
-- (void)fetchSubscriptionsForDatabase:(id)a3 completionHandler:(id)a4
+- (void)fetchSubscriptionsForDatabase:(id)database completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self processingQueue];
+  databaseCopy = database;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__ICCloudContext_fetchSubscriptionsForDatabase_completionHandler___block_invoke;
   block[3] = &unk_278196690;
-  v12 = v6;
-  v13 = v7;
+  v12 = databaseCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = databaseCopy;
+  v10 = handlerCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __66__ICCloudContext_fetchSubscriptionsForDatabase_completionHandler___block_invoke(uint64_t a1)
@@ -13116,21 +13116,21 @@ uint64_t __66__ICCloudContext_fetchSubscriptionsForDatabase_completionHandler___
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)saveSubscriptionsForDatabase:(id)a3 completionHandler:(id)a4
+- (void)saveSubscriptionsForDatabase:(id)database completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudContext *)self processingQueue];
+  databaseCopy = database;
+  handlerCopy = handler;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ICCloudContext_saveSubscriptionsForDatabase_completionHandler___block_invoke;
   block[3] = &unk_278194E38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = databaseCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = databaseCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __65__ICCloudContext_saveSubscriptionsForDatabase_completionHandler___block_invoke(uint64_t a1)
@@ -13342,13 +13342,13 @@ uint64_t __65__ICCloudContext_saveSubscriptionsForDatabase_completionHandler___b
 
 - (void)clearSubscribedSubscriptionIDs
 {
-  v3 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ICCloudContext_clearSubscribedSubscriptionIDs__block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(processingQueue, block);
 }
 
 void __48__ICCloudContext_clearSubscribedSubscriptionIDs__block_invoke(uint64_t a1)
@@ -13364,23 +13364,23 @@ void __48__ICCloudContext_clearSubscribedSubscriptionIDs__block_invoke(uint64_t 
   [v3 removeAllObjects];
 }
 
-- (void)updateCloudContextStateWithCompletion:(id)a3
+- (void)updateCloudContextStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v11 = 0;
-  v5 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ICCloudContext_updateCloudContextStateWithCompletion___block_invoke;
   block[3] = &unk_2781993D8;
   block[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = v10;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v6 = completionCopy;
+  dispatch_async(processingQueue, block);
 
   _Block_object_dispose(v10, 8);
 }
@@ -13712,38 +13712,38 @@ uint64_t __56__ICCloudContext_updateCloudContextStateWithCompletion___block_invo
   return result;
 }
 
-- (void)enqueueLongLivedOperationsIfNeededWithCompletionHandler:(id)a3
+- (void)enqueueLongLivedOperationsIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (-[ICCloudContext isEnqueueingLongLivedOperations](self, "isEnqueueingLongLivedOperations") || -[ICCloudContext didEnqueueLongLivedOperations](self, "didEnqueueLongLivedOperations") || (-[ICCloudContext setEnqueueingLongLivedOperations:](self, "setEnqueueingLongLivedOperations:", 1), -[ICCloudContext containersByAccountID](self, "containersByAccountID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, !v6))
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
     v7 = dispatch_group_create();
-    v8 = [(ICCloudContext *)self containersByAccountID];
+    containersByAccountID = [(ICCloudContext *)self containersByAccountID];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__ICCloudContext_enqueueLongLivedOperationsIfNeededWithCompletionHandler___block_invoke;
     v13[3] = &unk_2781993B0;
     v14 = v7;
-    v15 = self;
+    selfCopy = self;
     v9 = v7;
-    [v8 enumerateKeysAndObjectsUsingBlock:v13];
+    [containersByAccountID enumerateKeysAndObjectsUsingBlock:v13];
 
-    v10 = [(ICCloudContext *)self processingQueue];
+    processingQueue = [(ICCloudContext *)self processingQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __74__ICCloudContext_enqueueLongLivedOperationsIfNeededWithCompletionHandler___block_invoke_2_664;
     v11[3] = &unk_2781957B0;
     v11[4] = self;
-    v12 = v4;
-    dispatch_group_notify(v9, v10, v11);
+    v12 = handlerCopy;
+    dispatch_group_notify(v9, processingQueue, v11);
   }
 }
 
@@ -13809,18 +13809,18 @@ uint64_t __74__ICCloudContext_enqueueLongLivedOperationsIfNeededWithCompletionHa
   return result;
 }
 
-- (void)enqueueLongLivedOperationsWithIDsIfNeeded:(id)a3 container:(id)a4 completionHandler:(id)a5
+- (void)enqueueLongLivedOperationsWithIDsIfNeeded:(id)needed container:(id)container completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v19 = a5;
+  neededCopy = needed;
+  containerCopy = container;
+  handlerCopy = handler;
   v10 = dispatch_group_create();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v8;
+  obj = neededCopy;
   v11 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
@@ -13843,7 +13843,7 @@ uint64_t __74__ICCloudContext_enqueueLongLivedOperationsIfNeededWithCompletionHa
         v23[2] = __88__ICCloudContext_enqueueLongLivedOperationsWithIDsIfNeeded_container_completionHandler___block_invoke;
         v23[3] = &unk_278199450;
         v23[4] = self;
-        v16 = v9;
+        v16 = containerCopy;
         v24 = v16;
         v25 = v15;
         v26 = v10;
@@ -13859,14 +13859,14 @@ uint64_t __74__ICCloudContext_enqueueLongLivedOperationsIfNeededWithCompletionHa
     while (v12);
   }
 
-  v17 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__ICCloudContext_enqueueLongLivedOperationsWithIDsIfNeeded_container_completionHandler___block_invoke_671;
   block[3] = &unk_278195F28;
-  v22 = v19;
-  v18 = v19;
-  dispatch_group_notify(v10, v17, block);
+  v22 = handlerCopy;
+  v18 = handlerCopy;
+  dispatch_group_notify(v10, processingQueue, block);
 }
 
 void __88__ICCloudContext_enqueueLongLivedOperationsWithIDsIfNeeded_container_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -13983,18 +13983,18 @@ uint64_t __88__ICCloudContext_enqueueLongLivedOperationsWithIDsIfNeeded_containe
   return result;
 }
 
-- (void)incrementRetryCountForOperationType:(id)a3
+- (void)incrementRetryCountForOperationType:(id)type
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self processingQueue];
+  typeCopy = type;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ICCloudContext_incrementRetryCountForOperationType___block_invoke;
   v7[3] = &unk_278194AD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __54__ICCloudContext_incrementRetryCountForOperationType___block_invoke(uint64_t a1)
@@ -14030,18 +14030,18 @@ void __54__ICCloudContext_incrementRetryCountForOperationType___block_invoke(uin
   [v10 setObject:v9 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)clearRetryCountForOperationType:(id)a3
+- (void)clearRetryCountForOperationType:(id)type
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self processingQueue];
+  typeCopy = type;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ICCloudContext_clearRetryCountForOperationType___block_invoke;
   v7[3] = &unk_278194AD8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __50__ICCloudContext_clearRetryCountForOperationType___block_invoke(uint64_t a1)
@@ -14056,63 +14056,63 @@ void __50__ICCloudContext_clearRetryCountForOperationType___block_invoke(uint64_
   [v3 removeObjectForKey:*(a1 + 32)];
 }
 
-- (void)incrementOrClearRetryCountForOperationType:(id)a3 error:(id)a4
+- (void)incrementOrClearRetryCountForOperationType:(id)type error:(id)error
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  typeCopy = type;
+  errorCopy = error;
+  if (errorCopy)
   {
-    if (([objc_opt_class() shouldIgnoreErrorForBackoffTimer:v6] & 1) == 0)
+    if (([objc_opt_class() shouldIgnoreErrorForBackoffTimer:errorCopy] & 1) == 0)
     {
-      [(ICCloudContext *)self incrementRetryCountForOperationType:v7];
+      [(ICCloudContext *)self incrementRetryCountForOperationType:typeCopy];
     }
   }
 
   else
   {
-    [(ICCloudContext *)self clearRetryCountForOperationType:v7];
+    [(ICCloudContext *)self clearRetryCountForOperationType:typeCopy];
   }
 }
 
-+ (BOOL)shouldIgnoreErrorForBackoffTimer:(id)a3
++ (BOOL)shouldIgnoreErrorForBackoffTimer:(id)timer
 {
-  v4 = a3;
-  if ([v4 code] == 2)
+  timerCopy = timer;
+  if ([timerCopy code] == 2)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
-    v7 = [v6 allValues];
+    userInfo = [timerCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+    allValues = [v6 allValues];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__ICCloudContext_shouldIgnoreErrorForBackoffTimer___block_invoke;
     v12[3] = &__block_descriptor_40_e24_B32__0__NSError_8Q16_B24l;
-    v12[4] = a1;
-    v8 = [v7 ic_containsObjectPassingTest:v12];
+    v12[4] = self;
+    v8 = [allValues ic_containsObjectPassingTest:v12];
   }
 
   else
   {
-    v9 = [a1 errorCodesToIgnoreForBackoffTimer];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
-    v8 = [v9 containsObject:v10];
+    errorCodesToIgnoreForBackoffTimer = [self errorCodesToIgnoreForBackoffTimer];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(timerCopy, "code")}];
+    v8 = [errorCodesToIgnoreForBackoffTimer containsObject:v10];
   }
 
   return v8;
 }
 
-- (void)startRetryTimerIfNecessaryWithError:(id)a3
+- (void)startRetryTimerIfNecessaryWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ICCloudContext *)self processingQueue];
+  errorCopy = error;
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ICCloudContext_startRetryTimerIfNecessaryWithError___block_invoke;
   v7[3] = &unk_278194AD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __54__ICCloudContext_startRetryTimerIfNecessaryWithError___block_invoke(uint64_t a1)
@@ -14250,13 +14250,13 @@ void __54__ICCloudContext_startRetryTimerIfNecessaryWithError___block_invoke_685
   block[3] = &unk_278194B00;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v3 = [(ICCloudContext *)self processingQueue];
+  processingQueue = [(ICCloudContext *)self processingQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__ICCloudContext_retryOperationsIfNecessary__block_invoke_2;
   v4[3] = &unk_278194B00;
   v4[4] = self;
-  dispatch_async(v3, v4);
+  dispatch_async(processingQueue, v4);
 }
 
 uint64_t __44__ICCloudContext_retryOperationsIfNecessary__block_invoke(uint64_t a1)
@@ -14410,21 +14410,21 @@ void __44__ICCloudContext_retryOperationsIfNecessary__block_invoke_693(uint64_t 
   }
 }
 
-- (void)saveServerChangeToken:(id)a3 forRecordZoneID:(id)a4 databaseScope:(int64_t)a5 accountID:(id)a6 context:(id)a7
+- (void)saveServerChangeToken:(id)token forRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  tokenCopy = token;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v15 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v12 ic_loggingDescription];
-    v21 = v20;
-    if (v20)
+    ic_loggingDescription = [dCopy ic_loggingDescription];
+    v21 = ic_loggingDescription;
+    if (ic_loggingDescription)
     {
-      v22 = v20;
+      v22 = ic_loggingDescription;
     }
 
     else
@@ -14433,13 +14433,13 @@ void __44__ICCloudContext_retryOperationsIfNecessary__block_invoke_693(uint64_t 
     }
 
     v23 = CKDatabaseScopeString();
-    v24 = [v11 ic_loggingDescription];
+    ic_loggingDescription2 = [tokenCopy ic_loggingDescription];
     *buf = 138412802;
     v32 = v22;
     v33 = 2112;
     v34 = v23;
     v35 = 2112;
-    v36 = v24;
+    v36 = ic_loggingDescription2;
     _os_log_debug_impl(&dword_214D51000, v15, OS_LOG_TYPE_DEBUG, "Saving server change token for %@ %@: %@", buf, 0x20u);
   }
 
@@ -14447,15 +14447,15 @@ void __44__ICCloudContext_retryOperationsIfNecessary__block_invoke_693(uint64_t 
   v25[1] = 3221225472;
   v25[2] = __88__ICCloudContext_saveServerChangeToken_forRecordZoneID_databaseScope_accountID_context___block_invoke;
   v25[3] = &unk_2781994E8;
-  v26 = v13;
-  v27 = v14;
-  v29 = v11;
-  v30 = a5;
-  v28 = v12;
-  v16 = v11;
-  v17 = v12;
-  v18 = v14;
-  v19 = v13;
+  v26 = iDCopy;
+  v27 = contextCopy;
+  v29 = tokenCopy;
+  scopeCopy = scope;
+  v28 = dCopy;
+  v16 = tokenCopy;
+  v17 = dCopy;
+  v18 = contextCopy;
+  v19 = iDCopy;
   [v18 performBlockAndWait:v25];
 }
 
@@ -14489,11 +14489,11 @@ void __88__ICCloudContext_saveServerChangeToken_forRecordZoneID_databaseScope_ac
   [*(a1 + 40) ic_saveWithLogDescription:@"saving server change token"];
 }
 
-- (id)serverChangeTokenForRecordZoneID:(id)a3 databaseScope:(int64_t)a4 accountID:(id)a5 context:(id)a6
+- (id)serverChangeTokenForRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -14504,13 +14504,13 @@ void __88__ICCloudContext_saveServerChangeToken_forRecordZoneID_databaseScope_ac
   v17[1] = 3221225472;
   v17[2] = __83__ICCloudContext_serverChangeTokenForRecordZoneID_databaseScope_accountID_context___block_invoke;
   v17[3] = &unk_278199510;
-  v12 = v10;
+  v12 = iDCopy;
   v18 = v12;
-  v13 = v11;
+  v13 = contextCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = dCopy;
   v21 = &v23;
-  v22 = a4;
+  scopeCopy = scope;
   v20 = v14;
   [v13 performBlockAndWait:v17];
   v15 = v24[5];
@@ -14542,11 +14542,11 @@ void __83__ICCloudContext_serverChangeTokenForRecordZoneID_databaseScope_account
   }
 }
 
-- (void)deleteServerChangeTokenForRecordZoneID:(id)a3 databaseScope:(int64_t)a4 accountID:(id)a5 context:(id)a6
+- (void)deleteServerChangeTokenForRecordZoneID:(id)d databaseScope:(int64_t)scope accountID:(id)iD context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v12 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -14557,13 +14557,13 @@ void __83__ICCloudContext_serverChangeTokenForRecordZoneID_databaseScope_account
   v16[1] = 3221225472;
   v16[2] = __89__ICCloudContext_deleteServerChangeTokenForRecordZoneID_databaseScope_accountID_context___block_invoke;
   v16[3] = &unk_278199538;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
-  v20 = a4;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
+  v17 = iDCopy;
+  v18 = contextCopy;
+  v19 = dCopy;
+  scopeCopy = scope;
+  v13 = dCopy;
+  v14 = contextCopy;
+  v15 = iDCopy;
   [v14 performBlockAndWait:v16];
 }
 
@@ -14600,13 +14600,13 @@ void __89__ICCloudContext_deleteServerChangeTokenForRecordZoneID_databaseScope_a
     _os_log_impl(&dword_214D51000, v3, OS_LOG_TYPE_INFO, "Deleting all server change tokens", buf, 2u);
   }
 
-  v4 = [(ICCloudContext *)self backgroundContext];
+  backgroundContext = [(ICCloudContext *)self backgroundContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ICCloudContext_deleteAllServerChangeTokens__block_invoke;
   v6[3] = &unk_278194B00;
-  v7 = v4;
-  v5 = v4;
+  v7 = backgroundContext;
+  v5 = backgroundContext;
   [v5 performBlockAndWait:v6];
 }
 
@@ -14675,48 +14675,48 @@ uint64_t __45__ICCloudContext_deleteAllServerChangeTokens__block_invoke(uint64_t
   return [*(a1 + 32) ic_saveWithLogDescription:@"deleting all server change tokens"];
 }
 
-- (void)saveServerChangeToken:(id)a3 forChangedZonesInDatabase:(id)a4 accountID:(id)a5 context:(id)a6
+- (void)saveServerChangeToken:(id)token forChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  -[ICCloudContext saveServerChangeToken:forRecordZoneID:databaseScope:accountID:context:](self, "saveServerChangeToken:forRecordZoneID:databaseScope:accountID:context:", v12, 0, [a4 databaseScope], v11, v10);
+  contextCopy = context;
+  dCopy = d;
+  tokenCopy = token;
+  -[ICCloudContext saveServerChangeToken:forRecordZoneID:databaseScope:accountID:context:](self, "saveServerChangeToken:forRecordZoneID:databaseScope:accountID:context:", tokenCopy, 0, [database databaseScope], dCopy, contextCopy);
 }
 
-- (void)deleteServerChangeTokenForChangedZonesInDatabase:(id)a3 accountID:(id)a4 context:(id)a5
+- (void)deleteServerChangeTokenForChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", 0, [a3 databaseScope], v9, v8);
+  contextCopy = context;
+  dCopy = d;
+  -[ICCloudContext deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "deleteServerChangeTokenForRecordZoneID:databaseScope:accountID:context:", 0, [database databaseScope], dCopy, contextCopy);
 }
 
-- (id)serverChangeTokenForChangedZonesInDatabase:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)serverChangeTokenForChangedZonesInDatabase:(id)database accountID:(id)d context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = -[ICCloudContext serverChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "serverChangeTokenForRecordZoneID:databaseScope:accountID:context:", 0, [a3 databaseScope], v9, v8);
+  contextCopy = context;
+  dCopy = d;
+  v10 = -[ICCloudContext serverChangeTokenForRecordZoneID:databaseScope:accountID:context:](self, "serverChangeTokenForRecordZoneID:databaseScope:accountID:context:", 0, [database databaseScope], dCopy, contextCopy);
 
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICCloudContext *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CloudKit/ICCloudContext.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICCloudContext *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CloudKit/ICCloudContext.m"]& 1) != 0)
   {
-    v13 = [(ICCloudContext *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICCloudContext *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == compoundliteral_1 && (v13 & 1) == 0)
+    if (context == compoundliteral_1 && (v13 & 1) == 0)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v15 = [v14 unsignedIntegerValue];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [v16 unsignedIntegerValue];
+      v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      if (!v15 && v17 || v15 && !v17)
+      if (!unsignedIntegerValue && unsignedIntegerValue2 || unsignedIntegerValue && !unsignedIntegerValue2)
       {
         v18 = dispatch_get_global_queue(0, 0);
         block[0] = MEMORY[0x277D85DD0];
@@ -14727,13 +14727,13 @@ uint64_t __45__ICCloudContext_deleteAllServerChangeTokens__block_invoke(uint64_t
         dispatch_async(v18, block);
       }
 
-      v19 = [(ICCloudContext *)self processingQueue];
+      processingQueue = [(ICCloudContext *)self processingQueue];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __65__ICCloudContext_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
       v20[3] = &unk_278194B00;
       v20[4] = self;
-      dispatch_async(v19, v20);
+      dispatch_async(processingQueue, v20);
     }
   }
 
@@ -14741,7 +14741,7 @@ uint64_t __45__ICCloudContext_deleteAllServerChangeTokens__block_invoke(uint64_t
   {
     v22.receiver = self;
     v22.super_class = ICCloudContext;
-    [(ICCloudContext *)&v22 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICCloudContext *)&v22 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

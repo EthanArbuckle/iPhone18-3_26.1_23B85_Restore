@@ -1,39 +1,39 @@
 @interface SSVInstallManagedApplicationRequest
-- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6;
-- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6 skipDownloads:(BOOL)a7;
-- (SSVInstallManagedApplicationRequest)initWithXPCEncoding:(id)a3;
+- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version;
+- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version skipDownloads:(BOOL)downloads;
+- (SSVInstallManagedApplicationRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithDetailedResponseBlock:(id)a3;
-- (void)startWithMetadataResponseBlock:(id)a3;
-- (void)startWithResponseBlock:(id)a3;
+- (void)startWithDetailedResponseBlock:(id)block;
+- (void)startWithMetadataResponseBlock:(id)block;
+- (void)startWithResponseBlock:(id)block;
 @end
 
 @implementation SSVInstallManagedApplicationRequest
 
-- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6
+- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  versionCopy = version;
   v24.receiver = self;
   v24.super_class = SSVInstallManagedApplicationRequest;
   v14 = [(SSRequest *)&v24 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [bundleIdentifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v15;
 
-    v17 = [v13 copy];
+    v17 = [versionCopy copy];
     bundleVersion = v14->_bundleVersion;
     v14->_bundleVersion = v17;
 
-    v19 = [v11 copy];
+    v19 = [identifierCopy copy];
     externalVersionIdentifier = v14->_externalVersionIdentifier;
     v14->_externalVersionIdentifier = v19;
 
-    v21 = [v10 copy];
+    v21 = [identiferCopy copy];
     itemIdentifier = v14->_itemIdentifier;
     v14->_itemIdentifier = v21;
   }
@@ -41,43 +41,43 @@
   return v14;
 }
 
-- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)a3 externalVersionIdentifier:(id)a4 bundleIdentifier:(id)a5 bundleVersion:(id)a6 skipDownloads:(BOOL)a7
+- (SSVInstallManagedApplicationRequest)initWithItemIdentifer:(id)identifer externalVersionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier bundleVersion:(id)version skipDownloads:(BOOL)downloads
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  versionCopy = version;
   v26.receiver = self;
   v26.super_class = SSVInstallManagedApplicationRequest;
   v16 = [(SSRequest *)&v26 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [bundleIdentifierCopy copy];
     bundleIdentifier = v16->_bundleIdentifier;
     v16->_bundleIdentifier = v17;
 
-    v19 = [v15 copy];
+    v19 = [versionCopy copy];
     bundleVersion = v16->_bundleVersion;
     v16->_bundleVersion = v19;
 
-    v21 = [v13 copy];
+    v21 = [identifierCopy copy];
     externalVersionIdentifier = v16->_externalVersionIdentifier;
     v16->_externalVersionIdentifier = v21;
 
-    v23 = [v12 copy];
+    v23 = [identiferCopy copy];
     itemIdentifier = v16->_itemIdentifier;
     v16->_itemIdentifier = v23;
 
-    v16->_skipDownloads = a7;
+    v16->_skipDownloads = downloads;
   }
 
   return v16;
 }
 
-- (void)startWithResponseBlock:(id)a3
+- (void)startWithResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -86,19 +86,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -122,9 +122,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -136,8 +136,8 @@ LABEL_16:
   v19[2] = __62__SSVInstallManagedApplicationRequest_startWithResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:112 messageBlock:v19];
 }
 
@@ -200,10 +200,10 @@ LABEL_11:
   [*(a1 + 32) _shutdownRequest];
 }
 
-- (void)startWithDetailedResponseBlock:(id)a3
+- (void)startWithDetailedResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -212,19 +212,19 @@ LABEL_11:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -248,9 +248,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -262,8 +262,8 @@ LABEL_16:
   v19[2] = __70__SSVInstallManagedApplicationRequest_startWithDetailedResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:113 messageBlock:v19];
 }
 
@@ -338,10 +338,10 @@ LABEL_10:
   [*(a1 + 32) _shutdownRequest];
 }
 
-- (void)startWithMetadataResponseBlock:(id)a3
+- (void)startWithMetadataResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -350,19 +350,19 @@ LABEL_10:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -386,9 +386,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -400,8 +400,8 @@ LABEL_16:
   v19[2] = __70__SSVInstallManagedApplicationRequest_startWithMetadataResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:113 messageBlock:v19];
 }
 
@@ -493,11 +493,11 @@ LABEL_10:
   return v3;
 }
 
-- (SSVInstallManagedApplicationRequest)initWithXPCEncoding:(id)a3
+- (SSVInstallManagedApplicationRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v20.receiver = self;
     v20.super_class = SSVInstallManagedApplicationRequest;

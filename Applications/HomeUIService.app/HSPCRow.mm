@@ -1,7 +1,7 @@
 @interface HSPCRow
 + (CGSize)leftImageSize;
 + (double)leadingSeparatorMargin;
-- (HSPCRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HSPCRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UITextField)textField;
 - (UIView)leftView;
 @end
@@ -27,11 +27,11 @@
   return v5 + v6;
 }
 
-- (HSPCRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HSPCRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = HSPCRow;
-  v4 = [(HSPCRow *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HSPCRow *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -40,12 +40,12 @@
     [(HSPCRow *)v5 setBackgroundView:v6];
 
     v7 = +[UIColor systemGroupedBackgroundColor];
-    v8 = [(HSPCRow *)v5 backgroundView];
-    [v8 setBackgroundColor:v7];
+    backgroundView = [(HSPCRow *)v5 backgroundView];
+    [backgroundView setBackgroundColor:v7];
 
     v9 = +[UIColor systemGroupedBackgroundColor];
-    v10 = [(HSPCRow *)v5 contentView];
-    [v10 setBackgroundColor:v9];
+    contentView = [(HSPCRow *)v5 contentView];
+    [contentView setBackgroundColor:v9];
 
     v11 = +[UIColor systemGroupedBackgroundColor];
     [(HSPCRow *)v5 setBackgroundColor:v11];
@@ -56,8 +56,8 @@
     [v13 setClearButtonMode:3];
     [v13 setAutocapitalizationType:1];
     [v13 setReturnKeyType:9];
-    v14 = [(HSPCRow *)v5 contentView];
-    [v14 addSubview:v13];
+    contentView2 = [(HSPCRow *)v5 contentView];
+    [contentView2 addSubview:v13];
 
     objc_storeWeak(&v5->_textField, v13);
   }

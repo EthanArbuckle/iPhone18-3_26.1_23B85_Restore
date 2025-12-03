@@ -9,14 +9,14 @@
   v8.receiver = self;
   v8.super_class = SBDodgingModifierEventResponse;
   v3 = [(SBChainableModifierEventResponse *)&v8 description];
-  v4 = [(SBDodgingModifierEventResponse *)self type];
+  type = [(SBDodgingModifierEventResponse *)self type];
   v5 = @"Generic";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"Invalidation";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"ScheduleEvent";
   }

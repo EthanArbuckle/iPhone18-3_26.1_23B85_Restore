@@ -2,30 +2,30 @@
 + (PXImportSourcesManager)sharedController;
 - (NSArray)importSources;
 - (PXImportSourcesManager)init;
-- (void)_notifyObserversDidAddImportSource:(id)a3;
-- (void)_notifyObserversDidRemoveImportSource:(id)a3;
-- (void)_notifyObserversDidUpdateImportSource:(id)a3;
-- (void)_updateImportURLSource:(id)a3;
-- (void)importController:(id)a3 addedImportSource:(id)a4;
-- (void)importController:(id)a3 failedToAddImportSource:(id)a4 exceptions:(id)a5;
-- (void)importController:(id)a3 removedImportSource:(id)a4;
+- (void)_notifyObserversDidAddImportSource:(id)source;
+- (void)_notifyObserversDidRemoveImportSource:(id)source;
+- (void)_notifyObserversDidUpdateImportSource:(id)source;
+- (void)_updateImportURLSource:(id)source;
+- (void)importController:(id)controller addedImportSource:(id)source;
+- (void)importController:(id)controller failedToAddImportSource:(id)source exceptions:(id)exceptions;
+- (void)importController:(id)controller removedImportSource:(id)source;
 @end
 
 @implementation PXImportSourcesManager
 
-- (void)importController:(id)a3 failedToAddImportSource:(id)a4 exceptions:(id)a5
+- (void)importController:(id)controller failedToAddImportSource:(id)source exceptions:(id)exceptions
 {
-  v7 = a4;
-  v8 = a5;
+  sourceCopy = source;
+  exceptionsCopy = exceptions;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__PXImportSourcesManager_importController_failedToAddImportSource_exceptions___block_invoke;
   v11[3] = &unk_1E7731D60;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = sourceCopy;
+  v13 = exceptionsCopy;
+  v9 = exceptionsCopy;
+  v10 = sourceCopy;
   [(PXImportSourcesManager *)self enumerateObserversUsingBlock:v11];
 }
 
@@ -38,16 +38,16 @@ void __78__PXImportSourcesManager_importController_failedToAddImportSource_excep
   }
 }
 
-- (void)importController:(id)a3 removedImportSource:(id)a4
+- (void)importController:(id)controller removedImportSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PXImportSourcesManager_importController_removedImportSource___block_invoke;
   v7[3] = &unk_1E77498F8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   [(PXImportSourcesManager *)self performChanges:v7];
 }
 
@@ -72,16 +72,16 @@ uint64_t __63__PXImportSourcesManager_importController_removedImportSource___blo
   }
 }
 
-- (void)importController:(id)a3 addedImportSource:(id)a4
+- (void)importController:(id)controller addedImportSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PXImportSourcesManager_importController_addedImportSource___block_invoke;
   v7[3] = &unk_1E77498F8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = sourceCopy;
+  selfCopy = self;
+  v6 = sourceCopy;
   [(PXImportSourcesManager *)self performChanges:v7];
 }
 
@@ -107,11 +107,11 @@ uint64_t __61__PXImportSourcesManager_importController_addedImportSource___block
   }
 }
 
-- (void)_updateImportURLSource:(id)a3
+- (void)_updateImportURLSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_URLImportSource != v4 && ([(PHImportSource *)v4 isEqual:?]& 1) == 0)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (self->_URLImportSource != sourceCopy && ([(PHImportSource *)sourceCopy isEqual:?]& 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -175,16 +175,16 @@ LABEL_7:
   return v2;
 }
 
-- (void)_notifyObserversDidRemoveImportSource:(id)a3
+- (void)_notifyObserversDidRemoveImportSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__PXImportSourcesManager__notifyObserversDidRemoveImportSource___block_invoke;
   v6[3] = &unk_1E7731D38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sourceCopy;
+  v5 = sourceCopy;
   [(PXImportSourcesManager *)self enumerateObserversUsingBlock:v6];
 }
 
@@ -197,16 +197,16 @@ void __64__PXImportSourcesManager__notifyObserversDidRemoveImportSource___block_
   }
 }
 
-- (void)_notifyObserversDidUpdateImportSource:(id)a3
+- (void)_notifyObserversDidUpdateImportSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__PXImportSourcesManager__notifyObserversDidUpdateImportSource___block_invoke;
   v6[3] = &unk_1E7731D38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sourceCopy;
+  v5 = sourceCopy;
   [(PXImportSourcesManager *)self enumerateObserversUsingBlock:v6];
 }
 
@@ -219,16 +219,16 @@ void __64__PXImportSourcesManager__notifyObserversDidUpdateImportSource___block_
   }
 }
 
-- (void)_notifyObserversDidAddImportSource:(id)a3
+- (void)_notifyObserversDidAddImportSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PXImportSourcesManager__notifyObserversDidAddImportSource___block_invoke;
   v6[3] = &unk_1E7731D38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sourceCopy;
+  v5 = sourceCopy;
   [(PXImportSourcesManager *)self enumerateObserversUsingBlock:v6];
 }
 
@@ -248,9 +248,9 @@ void __61__PXImportSourcesManager__notifyObserversDidAddImportSource___block_inv
   v2 = [(PXImportSourcesManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6978878] sharedInstance];
+    mEMORY[0x1E6978878] = [MEMORY[0x1E6978878] sharedInstance];
     importController = v2->_importController;
-    v2->_importController = v3;
+    v2->_importController = mEMORY[0x1E6978878];
 
     [(PHImportController *)v2->_importController enableDeviceImport];
     v5 = objc_opt_new();
@@ -269,7 +269,7 @@ void __61__PXImportSourcesManager__notifyObserversDidAddImportSource___block_inv
   block[1] = 3221225472;
   block[2] = __42__PXImportSourcesManager_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken_47845 != -1)
   {
     dispatch_once(&sharedController_onceToken_47845, block);

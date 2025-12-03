@@ -1,60 +1,60 @@
 @interface ICTableVersionedDocument
 - (ICCRDocument)innerTableDocument;
 - (ICTable)table;
-- (ICTableVersionedDocument)initWithColumnCount:(unint64_t)a3 rowCount:(unint64_t)a4 replicaID:(id)a5;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithTableVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (ICTableVersionedDocument)initWithColumnCount:(unint64_t)count rowCount:(unint64_t)rowCount replicaID:(id)d;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithTableVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation ICTableVersionedDocument
 
-- (ICTableVersionedDocument)initWithColumnCount:(unint64_t)a3 rowCount:(unint64_t)a4 replicaID:(id)a5
+- (ICTableVersionedDocument)initWithColumnCount:(unint64_t)count rowCount:(unint64_t)rowCount replicaID:(id)d
 {
   v15.receiver = self;
   v15.super_class = ICTableVersionedDocument;
-  v7 = [(ICTTVersionedDocument *)&v15 initWithData:0 replicaID:a5];
+  v7 = [(ICTTVersionedDocument *)&v15 initWithData:0 replicaID:d];
   if (v7)
   {
-    if (a3)
+    if (count)
     {
       v8 = 0;
       do
       {
-        v9 = [(ICTableVersionedDocument *)v7 table];
-        v10 = [v9 insertColumnAtIndex:v8];
+        table = [(ICTableVersionedDocument *)v7 table];
+        v10 = [table insertColumnAtIndex:v8];
 
         ++v8;
       }
 
-      while (a3 != v8);
+      while (count != v8);
     }
 
-    if (a4)
+    if (rowCount)
     {
       v11 = 0;
       do
       {
-        v12 = [(ICTableVersionedDocument *)v7 table];
-        v13 = [v12 insertRowAtIndex:v11];
+        table2 = [(ICTableVersionedDocument *)v7 table];
+        v13 = [table2 insertRowAtIndex:v11];
 
         ++v11;
       }
 
-      while (a4 != v11);
+      while (rowCount != v11);
     }
   }
 
   return v7;
 }
 
-- (unint64_t)mergeWithTableVersionedDocument:(id)a3
+- (unint64_t)mergeWithTableVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICTableVersionedDocument *)self innerTableDocument];
-  v6 = [v4 innerTableDocument];
+  documentCopy = document;
+  innerTableDocument = [(ICTableVersionedDocument *)self innerTableDocument];
+  innerTableDocument2 = [documentCopy innerTableDocument];
 
-  v7 = [v5 mergeWithDocument:v6];
+  v7 = [innerTableDocument mergeWithDocument:innerTableDocument2];
   v8 = 1;
   if (v7 != 1)
   {
@@ -74,10 +74,10 @@
 
 - (ICCRDocument)innerTableDocument
 {
-  v2 = [(ICTableVersionedDocument *)self table];
-  v3 = [v2 document];
+  table = [(ICTableVersionedDocument *)self table];
+  document = [table document];
 
-  return v3;
+  return document;
 }
 
 - (ICTable)table
@@ -86,8 +86,8 @@
   if (!table)
   {
     v4 = [ICCRTTCompatibleDocument alloc];
-    v5 = [(ICTTVersionedDocument *)self replicaID];
-    v6 = [(ICCRDocument *)v4 initWithReplica:v5];
+    replicaID = [(ICTTVersionedDocument *)self replicaID];
+    v6 = [(ICCRDocument *)v4 initWithReplica:replicaID];
     innerTableDocument = self->_innerTableDocument;
     self->_innerTableDocument = v6;
 
@@ -102,11 +102,11 @@
   return table;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v5 = a4;
-  v6 = [(ICTTVersionedDocument *)self replicaID];
-  obj = [ICCRCoderUnarchiver decodedDocumentFromData:v5 replica:v6];
+  dataCopy = data;
+  replicaID = [(ICTTVersionedDocument *)self replicaID];
+  obj = [ICCRCoderUnarchiver decodedDocumentFromData:dataCopy replica:replicaID];
 
   v7 = obj;
   if (obj)
@@ -120,20 +120,20 @@
     else
     {
       objc_storeStrong(&self->_innerTableDocument, obj);
-      v9 = [(ICCRDocument *)self->_innerTableDocument rootObject];
+      rootObject = [(ICCRDocument *)self->_innerTableDocument rootObject];
       table = self->_table;
-      self->_table = v9;
+      self->_table = rootObject;
     }
 
     v7 = obj;
   }
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = [objc_opt_class() serializationVersion];
+    *version = [objc_opt_class() serializationVersion];
   }
 
   innerTableDocument = self->_innerTableDocument;

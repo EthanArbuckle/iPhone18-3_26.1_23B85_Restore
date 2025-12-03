@@ -17,9 +17,9 @@
     serviceUUIDs = 0;
   }
 
-  v5 = [v3 initWithFormat:@"NRBluetoothAdvertiseRequest[services: %@]", serviceUUIDs];
+  serviceUUIDs = [v3 initWithFormat:@"NRBluetoothAdvertiseRequest[services: %@]", serviceUUIDs];
 
-  return v5;
+  return serviceUUIDs;
 }
 
 @end

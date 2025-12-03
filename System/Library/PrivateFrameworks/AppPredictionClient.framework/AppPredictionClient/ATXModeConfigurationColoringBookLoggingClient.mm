@@ -1,19 +1,19 @@
 @interface ATXModeConfigurationColoringBookLoggingClient
-- (void)logColoringBookWasSeenForModeIdentifier:(id)a3;
+- (void)logColoringBookWasSeenForModeIdentifier:(id)identifier;
 @end
 
 @implementation ATXModeConfigurationColoringBookLoggingClient
 
-- (void)logColoringBookWasSeenForModeIdentifier:(id)a3
+- (void)logColoringBookWasSeenForModeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__ATXModeConfigurationColoringBookLoggingClient_logColoringBookWasSeenForModeIdentifier___block_invoke;
   block[3] = &unk_1E80C0C90;
-  v7 = v3;
-  v5 = v3;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(v4, block);
 }
 

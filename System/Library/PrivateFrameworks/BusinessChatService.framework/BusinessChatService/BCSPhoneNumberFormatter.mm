@@ -1,14 +1,14 @@
 @interface BCSPhoneNumberFormatter
 + (id)_countryCode;
-+ (id)formattedPhoneNumberForPhoneNumber:(id)a3;
++ (id)formattedPhoneNumberForPhoneNumber:(id)number;
 @end
 
 @implementation BCSPhoneNumberFormatter
 
-+ (id)formattedPhoneNumberForPhoneNumber:(id)a3
++ (id)formattedPhoneNumberForPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [a1 _countryCode];
+  numberCopy = number;
+  _countryCode = [self _countryCode];
   v6 = PNCreateFormattedStringWithCountry();
   v7 = v6;
   if (v6)
@@ -18,13 +18,13 @@
 
   else
   {
-    v8 = v4;
+    v8 = numberCopy;
   }
 
   v9 = v8;
 
-  v10 = [MEMORY[0x277CCA900] controlCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:controlCharacterSet];
 
   return v11;
 }

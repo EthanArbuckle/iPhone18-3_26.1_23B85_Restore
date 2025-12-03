@@ -1,22 +1,22 @@
 @interface TabBarDropExpansionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (TabBarDropExpansionView)initWithCoder:(id)a3;
-- (TabBarDropExpansionView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (TabBarDropExpansionView)initWithCoder:(id)coder;
+- (TabBarDropExpansionView)initWithFrame:(CGRect)frame;
 - (TabBarDropExpansionViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
 @end
 
 @implementation TabBarDropExpansionView
 
-- (TabBarDropExpansionView)initWithFrame:(CGRect)a3
+- (TabBarDropExpansionView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TabBarDropExpansionView;
-  v3 = [(TabBarDropExpansionView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(TabBarDropExpansionView *)v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  v3 = [(TabBarDropExpansionView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  layer = [(TabBarDropExpansionView *)v3 layer];
+  [layer setHitTestsAsOpaque:1];
 
   v5 = [objc_alloc(MEMORY[0x277D754A0]) initWithDelegate:v3];
   [(TabBarDropExpansionView *)v3 addInteraction:v5];
@@ -24,23 +24,23 @@
   return v3;
 }
 
-- (TabBarDropExpansionView)initWithCoder:(id)a3
+- (TabBarDropExpansionView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TabBarDropExpansionView;
-  return [(TabBarDropExpansionView *)&v4 initWithCoder:a3];
+  return [(TabBarDropExpansionView *)&v4 initWithCoder:coder];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type] == 9)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
     v10.receiver = self;
     v10.super_class = TabBarDropExpansionView;
-    v8 = [(TabBarDropExpansionView *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(TabBarDropExpansionView *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -51,16 +51,16 @@
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type] == 9)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
     v10.receiver = self;
     v10.super_class = TabBarDropExpansionView;
-    v8 = [(TabBarDropExpansionView *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(TabBarDropExpansionView *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -71,23 +71,23 @@
   return v8;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v6 = a4;
+  enterCopy = enter;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained tabBarDropExpansionView:self didBeginTrackingDropSession:v6];
+    [WeakRetained tabBarDropExpansionView:self didBeginTrackingDropSession:enterCopy];
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v6 = a4;
+  endCopy = end;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained tabBarDropExpansionView:self didEndTrackingDropSession:v6];
+    [WeakRetained tabBarDropExpansionView:self didEndTrackingDropSession:endCopy];
   }
 }
 

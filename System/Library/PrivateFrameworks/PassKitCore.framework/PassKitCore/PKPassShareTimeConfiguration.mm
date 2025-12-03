@@ -1,23 +1,23 @@
 @interface PKPassShareTimeConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassShareTimeConfiguration:(id)a3;
-- (PKPassShareTimeConfiguration)initWithCoder:(id)a3;
-- (PKPassShareTimeConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassShareTimeConfiguration:(id)configuration;
+- (PKPassShareTimeConfiguration)initWithCoder:(id)coder;
+- (PKPassShareTimeConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)intersect:(id)a3;
+- (id)intersect:(id)intersect;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassShareTimeConfiguration
 
-- (PKPassShareTimeConfiguration)initWithDictionary:(id)a3
+- (PKPassShareTimeConfiguration)initWithDictionary:(id)dictionary
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_15;
   }
@@ -27,23 +27,23 @@
   self = [(PKPassShareTimeConfiguration *)&v21 init];
   if (self)
   {
-    v5 = [v4 PKStringForKey:@"timeSupport"];
+    v5 = [dictionaryCopy PKStringForKey:@"timeSupport"];
     self->_support = PKPassShareTimeConfigurationSupportFromString(v5);
 
-    v6 = [v4 PKDateForKey:@"startDate"];
+    v6 = [dictionaryCopy PKDateForKey:@"startDate"];
     startDate = self->_startDate;
     self->_startDate = v6;
 
-    v8 = [v4 PKDateForKey:@"expirationDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"expirationDate"];
     expirationDate = self->_expirationDate;
     self->_expirationDate = v8;
 
-    v10 = [v4 PKArrayContaining:objc_opt_class() forKey:@"schedules"];
+    v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"schedules"];
     v11 = [v10 pk_arrayBySafelyApplyingBlock:&__block_literal_global_103];
     schedules = self->_schedules;
     self->_schedules = v11;
 
-    v13 = [v4 PKDictionaryForKey:@"schedule"];
+    v13 = [dictionaryCopy PKDictionaryForKey:@"schedule"];
     v14 = v13;
     if (!self->_schedules && v13)
     {
@@ -65,16 +65,16 @@
     }
 
 LABEL_15:
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
 LABEL_13:
   self = self;
-  v19 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v19;
+  return selfCopy;
 }
 
 PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -123,18 +123,18 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
   return v12;
 }
 
-- (id)intersect:(id)a3
+- (id)intersect:(id)intersect
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  intersectCopy = intersect;
+  if (!intersectCopy)
   {
-    v10 = self;
+    selfCopy = self;
     goto LABEL_40;
   }
 
   v5 = self->_startDate;
-  v6 = *(v4 + 2);
+  v6 = *(intersectCopy + 2);
   v7 = v6;
   if ((v5 != 0) == (v6 != 0))
   {
@@ -158,7 +158,7 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
 
   v11 = v9;
   v12 = self->_expirationDate;
-  v13 = *(v4 + 3);
+  v13 = *(intersectCopy + 3);
   v14 = v13;
   if ((v12 != 0) == (v13 != 0))
   {
@@ -188,40 +188,40 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2112;
-      v41 = v4;
+      v41 = intersectCopy;
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "PKPassShareTimeConfiguration: Intersected time configurations and found start date after expiration date. \n lhs: %@ \n\n rhs: %@", buf, 0x16u);
     }
 
     v19 = 0;
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_39;
   }
 
-  v20 = [(NSArray *)self->_schedules firstObject];
-  v21 = [*(v4 + 4) firstObject];
-  v35 = v21;
-  v36 = v20;
-  if ((v20 != 0) == (v21 != 0))
+  firstObject = [(NSArray *)self->_schedules firstObject];
+  firstObject2 = [*(intersectCopy + 4) firstObject];
+  v35 = firstObject2;
+  v36 = firstObject;
+  if ((firstObject != 0) == (firstObject2 != 0))
   {
-    if (v20 | v21)
+    if (firstObject | firstObject2)
     {
-      v19 = [v20 intersect:v21];
+      v19 = [firstObject intersect:firstObject2];
       if (!v19)
       {
         v23 = PKLogFacilityTypeGetObject(0x22uLL);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v39 = v20;
+          selfCopy2 = firstObject;
           v40 = 2112;
           v41 = v35;
           _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "PKPassShareTimeConfiguration: Intersected schedules and found no common schedule. \n lhs: %@ \n\n rhs: %@", buf, 0x16u);
         }
 
         v19 = 0;
-        v10 = 0;
+        selfCopy = 0;
         goto LABEL_38;
       }
     }
@@ -234,35 +234,35 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
 
   else
   {
-    if (v20)
+    if (firstObject)
     {
-      v22 = v20;
+      v22 = firstObject;
     }
 
     else
     {
-      v22 = v21;
+      v22 = firstObject2;
     }
 
     v19 = v22;
   }
 
-  v10 = objc_alloc_init(PKPassShareTimeConfiguration);
-  [(PKPassShareTimeConfiguration *)v10 setStartDate:v11];
-  [(PKPassShareTimeConfiguration *)v10 setExpirationDate:v17];
+  selfCopy = objc_alloc_init(PKPassShareTimeConfiguration);
+  [(PKPassShareTimeConfiguration *)selfCopy setStartDate:v11];
+  [(PKPassShareTimeConfiguration *)selfCopy setExpirationDate:v17];
   if (v19)
   {
     v37 = v19;
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-    v34 = self;
-    v24 = v4;
+    selfCopy3 = self;
+    v24 = intersectCopy;
     v25 = v17;
     v26 = v14;
     v27 = v12;
     v28 = v11;
     v29 = v7;
     v31 = v30 = v5;
-    [(PKPassShareTimeConfiguration *)v10 setSchedules:v31];
+    [(PKPassShareTimeConfiguration *)selfCopy setSchedules:v31];
 
     v5 = v30;
     v7 = v29;
@@ -270,13 +270,13 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
     v12 = v27;
     v14 = v26;
     v17 = v25;
-    v4 = v24;
-    self = v34;
+    intersectCopy = v24;
+    self = selfCopy3;
   }
 
-  if (self->_support >= *(v4 + 1))
+  if (self->_support >= *(intersectCopy + 1))
   {
-    support = *(v4 + 1);
+    support = *(intersectCopy + 1);
   }
 
   else
@@ -284,38 +284,38 @@ PKPassShareTimeSchedule *__51__PKPassShareTimeConfiguration_initWithDictionary__
     support = self->_support;
   }
 
-  [(PKPassShareTimeConfiguration *)v10 setSupport:support];
+  [(PKPassShareTimeConfiguration *)selfCopy setSupport:support];
 LABEL_38:
 
 LABEL_39:
 LABEL_40:
 
-  return v10;
+  return selfCopy;
 }
 
-- (PKPassShareTimeConfiguration)initWithCoder:(id)a3
+- (PKPassShareTimeConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPassShareTimeConfiguration;
   v5 = [(PKPassShareTimeConfiguration *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"support"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"support"];
     v5->_support = PKPassShareTimeConfigurationSupportFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"schedules"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"schedules"];
     schedules = v5->_schedules;
     v5->_schedules = v14;
   }
@@ -323,7 +323,7 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = self->_support - 1;
   if (v4 > 2)
@@ -336,11 +336,11 @@ LABEL_40:
     v5 = off_1E79D4740[v4];
   }
 
-  v6 = a3;
-  [v6 encodeObject:v5 forKey:@"support"];
-  [v6 encodeObject:self->_startDate forKey:@"startDate"];
-  [v6 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v6 encodeObject:self->_schedules forKey:@"schedules"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v5 forKey:@"support"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_schedules forKey:@"schedules"];
 }
 
 - (id)description
@@ -373,11 +373,11 @@ LABEL_40:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_startDate)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_expirationDate)
@@ -396,33 +396,33 @@ LABEL_40:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareTimeConfiguration *)self isEqualToPassShareTimeConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareTimeConfiguration *)self isEqualToPassShareTimeConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassShareTimeConfiguration:(id)a3
+- (BOOL)isEqualToPassShareTimeConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     goto LABEL_17;
   }
 
   startDate = self->_startDate;
-  v6 = v4[2];
+  v6 = configurationCopy[2];
   if (startDate)
   {
     v7 = v6 == 0;
@@ -447,7 +447,7 @@ LABEL_40:
   }
 
   expirationDate = self->_expirationDate;
-  v9 = v4[3];
+  v9 = configurationCopy[3];
   if (!expirationDate || !v9)
   {
     if (expirationDate == v9)
@@ -467,7 +467,7 @@ LABEL_17:
 
 LABEL_13:
   schedules = self->_schedules;
-  v11 = v4[4];
+  v11 = configurationCopy[4];
   if (schedules && v11)
   {
     v12 = [(NSArray *)schedules isEqual:?];
@@ -483,7 +483,7 @@ LABEL_18:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPassShareTimeConfiguration allocWithZone:?]];
   v4->_support = self->_support;

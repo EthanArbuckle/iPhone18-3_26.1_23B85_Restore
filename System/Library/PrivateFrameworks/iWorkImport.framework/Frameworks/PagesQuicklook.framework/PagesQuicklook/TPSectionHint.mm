@@ -1,17 +1,17 @@
 @interface TPSectionHint
-+ (BOOL)verifyHints:(id)a3 withBodyStorage:(id)a4 upToPageIndex:(unint64_t)a5;
-- (BOOL)hasEndOfTextLayoutBeforePageIndex:(unint64_t)a3;
-- (BOOL)hasPageHintOfKind:(int64_t)a3 atPageIndex:(unint64_t)a4;
-- (BOOL)hasPageHintOfKind:(int64_t)a3 beforePageIndex:(unint64_t)a4;
++ (BOOL)verifyHints:(id)hints withBodyStorage:(id)storage upToPageIndex:(unint64_t)index;
+- (BOOL)hasEndOfTextLayoutBeforePageIndex:(unint64_t)index;
+- (BOOL)hasPageHintOfKind:(int64_t)kind atPageIndex:(unint64_t)index;
+- (BOOL)hasPageHintOfKind:(int64_t)kind beforePageIndex:(unint64_t)index;
 - (TPSectionHint)init;
-- (TPSectionHint)initWithArchive:(const void *)a3 unarchiver:(id)a4;
+- (TPSectionHint)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (_NSRange)documentPageRange;
 - (id)copyForArchiving;
 - (id)copyForCaching;
-- (id)pageHintForPageIndex:(unint64_t)a3;
+- (id)pageHintForPageIndex:(unint64_t)index;
 - (unint64_t)lastPageIndex;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5 shouldArchiveHintBlock:(id)a6;
-- (void)setPageHints:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context shouldArchiveHintBlock:(id)block;
+- (void)setPageHints:(id)hints;
 @end
 
 @implementation TPSectionHint
@@ -165,9 +165,9 @@
   return result;
 }
 
-- (id)pageHintForPageIndex:(unint64_t)a3
+- (id)pageHintForPageIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_pageHints, a2, v3, v4, v5, v6) < a3)
+  if (objc_msgSend_count(self->_pageHints, a2, v3, v4, v5, v6) < index)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, v13, "[TPSectionHint pageHintForPageIndex:]");
@@ -179,9 +179,9 @@
 
   v33 = objc_msgSend_count(self->_pageHints, v9, v10, v11, v12, v13);
   pageHints = self->_pageHints;
-  if (v33 <= a3)
+  if (v33 <= index)
   {
-    if (objc_msgSend_count(pageHints, v32, v34, v35, v36, v37) == a3)
+    if (objc_msgSend_count(pageHints, v32, v34, v35, v36, v37) == index)
     {
       v39 = objc_alloc_init(TPPageHint);
       objc_msgSend_addObject_(self->_pageHints, v40, v41, v42, v43, v44, v39);
@@ -195,19 +195,19 @@
 
   else
   {
-    v39 = objc_msgSend_objectAtIndexedSubscript_(pageHints, v32, v34, v35, v36, v37, a3);
+    v39 = objc_msgSend_objectAtIndexedSubscript_(pageHints, v32, v34, v35, v36, v37, index);
   }
 
   return v39;
 }
 
-- (BOOL)hasPageHintOfKind:(int64_t)a3 atPageIndex:(unint64_t)a4
+- (BOOL)hasPageHintOfKind:(int64_t)kind atPageIndex:(unint64_t)index
 {
-  v9 = objc_msgSend_firstObject(self->_pageHints, a2, v4, v5, v6, v7, a3, a4);
+  v9 = objc_msgSend_firstObject(self->_pageHints, a2, v4, v5, v6, v7, kind, index);
   v15 = v9;
   if (v9)
   {
-    v16 = objc_msgSend_pageKind(v9, v10, v11, v12, v13, v14) == a3;
+    v16 = objc_msgSend_pageKind(v9, v10, v11, v12, v13, v14) == kind;
   }
 
   else
@@ -218,14 +218,14 @@
   return v16;
 }
 
-- (BOOL)hasPageHintOfKind:(int64_t)a3 beforePageIndex:(unint64_t)a4
+- (BOOL)hasPageHintOfKind:(int64_t)kind beforePageIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_pageHints, a2, v4, v5, v6, v7) < a4)
+  if (objc_msgSend_count(self->_pageHints, a2, v4, v5, v6, v7) < index)
   {
     return 0;
   }
 
-  v17 = a4 - 1;
+  v17 = index - 1;
   do
   {
     v16 = v17 != -1;
@@ -240,29 +240,29 @@
     --v17;
   }
 
-  while (v24 != a3);
+  while (v24 != kind);
   return v16;
 }
 
-- (BOOL)hasEndOfTextLayoutBeforePageIndex:(unint64_t)a3
+- (BOOL)hasEndOfTextLayoutBeforePageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_count(self->_pageHints, a2, v3, v4, v5, v6);
-  if (v9 >= a3)
+  if (v9 >= index)
   {
-    v15 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v15 = v9;
+    indexCopy = v9;
   }
 
-  if (!v15)
+  if (!indexCopy)
   {
     return 0;
   }
 
-  v16 = v15 - 1;
+  v16 = indexCopy - 1;
   while (1)
   {
     v17 = objc_msgSend_objectAtIndexedSubscript_(self->_pageHints, v10, v11, v12, v13, v14, v16);
@@ -284,16 +284,16 @@
   return v28;
 }
 
-- (void)setPageHints:(id)a3
+- (void)setPageHints:(id)hints
 {
-  v14 = a3;
+  hintsCopy = hints;
   objc_msgSend_removeAllObjects(self->_pageHints, v4, v5, v6, v7, v8);
-  objc_msgSend_addObjectsFromArray_(self->_pageHints, v9, v10, v11, v12, v13, v14);
+  objc_msgSend_addObjectsFromArray_(self->_pageHints, v9, v10, v11, v12, v13, hintsCopy);
 }
 
-+ (BOOL)verifyHints:(id)a3 withBodyStorage:(id)a4 upToPageIndex:(unint64_t)a5
++ (BOOL)verifyHints:(id)hints withBodyStorage:(id)storage upToPageIndex:(unint64_t)index
 {
-  sub_275FFC9D0(v148, a3);
+  sub_275FFC9D0(v148, hints);
   v10 = 0;
   v145 = 0;
   v146 = 0;
@@ -308,7 +308,7 @@
       break;
     }
 
-    if (sub_275FFD698(v148) >= a5 || sub_275FFD3B8(v148, v14, v15, v16, v17, v18) == 5)
+    if (sub_275FFD698(v148) >= index || sub_275FFD3B8(v148, v14, v15, v16, v17, v18) == 5)
     {
       v11 = 1;
       break;
@@ -417,9 +417,9 @@
   return v11 & 1;
 }
 
-- (TPSectionHint)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TPSectionHint)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v34.receiver = self;
   v34.super_class = TPSectionHint;
   v7 = [(TPSectionHint *)&v34 init];
@@ -430,7 +430,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = *(a3 + 8);
+  v8 = *(archive + 8);
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
   v15 = objc_msgSend_initWithCapacity_(v9, v10, v11, v12, v13, v14, v8);
   pageHints = v7->_pageHints;
@@ -439,11 +439,11 @@ LABEL_12:
   if (v8 < 1)
   {
 LABEL_6:
-    v30 = *(a3 + 12) == 0x7FFFFFFF || (*(a3 + 4) & 1) == 0;
+    v30 = *(archive + 12) == 0x7FFFFFFF || (*(archive + 4) & 1) == 0;
     v31 = 0x7FFFFFFFFFFFFFFFLL;
     if (!v30)
     {
-      v31 = *(a3 + 12);
+      v31 = *(archive + 12);
     }
 
     v7->_documentStartPageIndex = v31;
@@ -454,7 +454,7 @@ LABEL_6:
   while (1)
   {
     v18 = [TPPageHint alloc];
-    v25 = objc_msgSend_initWithArchive_unarchiver_(v18, v19, v20, v21, v22, v23, *(*(a3 + 5) + v17), v6);
+    v25 = objc_msgSend_initWithArchive_unarchiver_(v18, v19, v20, v21, v22, v23, *(*(archive + 5) + v17), unarchiverCopy);
     if (!v25)
     {
       break;
@@ -475,17 +475,17 @@ LABEL_13:
   return v32;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5 shouldArchiveHintBlock:(id)a6
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context shouldArchiveHintBlock:(id)block
 {
   v87 = *MEMORY[0x277D85DE8];
-  v79 = a4;
-  v80 = a5;
-  v10 = a6;
+  archiverCopy = archiver;
+  contextCopy = context;
+  blockCopy = block;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v78 = self;
+  selfCopy = self;
   obj = self->_pageHints;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, v12, v13, v14, v15, &v82, v86, 16);
   if (v17)
@@ -501,7 +501,7 @@ LABEL_13:
         }
 
         v24 = *(*(&v82 + 1) + 8 * i);
-        if (!objc_msgSend_pageKind(v24, v16, v18, v19, v20, v21, v78))
+        if (!objc_msgSend_pageKind(v24, v16, v18, v19, v20, v21, selfCopy))
         {
           v30 = MEMORY[0x277D81150];
           v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, v29, "[TPSectionHint saveToArchive:archiver:context:shouldArchiveHintBlock:]");
@@ -511,41 +511,41 @@ LABEL_13:
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46, v47);
         }
 
-        v48 = *(a3 + 5);
+        v48 = *(archive + 5);
         if (!v48)
         {
           goto LABEL_13;
         }
 
-        v49 = *(a3 + 8);
+        v49 = *(archive + 8);
         v50 = *v48;
         if (v49 < *v48)
         {
-          *(a3 + 8) = v49 + 1;
+          *(archive + 8) = v49 + 1;
           v51 = *&v48[2 * v49 + 2];
           goto LABEL_15;
         }
 
-        if (v50 == *(a3 + 9))
+        if (v50 == *(archive + 9))
         {
 LABEL_13:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v48 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v48 = *(archive + 5);
           v50 = *v48;
         }
 
         *v48 = v50 + 1;
-        v51 = sub_275FAF7F8(*(a3 + 3));
-        v52 = *(a3 + 8);
-        v53 = *(a3 + 5) + 8 * v52;
-        *(a3 + 8) = v52 + 1;
+        v51 = sub_275FAF7F8(*(archive + 3));
+        v52 = *(archive + 8);
+        v53 = *(archive + 5) + 8 * v52;
+        *(archive + 8) = v52 + 1;
         *(v53 + 8) = v51;
 LABEL_15:
         v51[4] |= 0x40u;
         v51[59] = 53;
-        if (v10[2](v10, v24))
+        if (blockCopy[2](blockCopy, v24))
         {
-          objc_msgSend_saveToArchive_archiver_context_(v24, v16, v18, v19, v20, v21, v51, v79, v80);
+          objc_msgSend_saveToArchive_archiver_context_(v24, v16, v18, v19, v20, v21, v51, archiverCopy, contextCopy);
         }
 
         else
@@ -561,7 +561,7 @@ LABEL_15:
     while (v17);
   }
 
-  documentStartPageIndex = v78->_documentStartPageIndex;
+  documentStartPageIndex = selfCopy->_documentStartPageIndex;
   if (documentStartPageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (HIDWORD(documentStartPageIndex))
@@ -575,8 +575,8 @@ LABEL_15:
       LODWORD(documentStartPageIndex) = -1;
     }
 
-    *(a3 + 4) |= 1u;
-    *(a3 + 12) = documentStartPageIndex;
+    *(archive + 4) |= 1u;
+    *(archive + 12) = documentStartPageIndex;
   }
 }
 

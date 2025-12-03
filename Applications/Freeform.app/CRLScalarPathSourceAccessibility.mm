@@ -1,26 +1,26 @@
 @interface CRLScalarPathSourceAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (id)crlaxHint;
 - (unint64_t)_crlaxNumberOfSides;
 @end
 
 @implementation CRLScalarPathSourceAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (id)crlaxHint
 {
-  v3 = [(CRLScalarPathSourceAccessibility *)self crlaxTarget];
-  v4 = [v3 type];
+  crlaxTarget = [(CRLScalarPathSourceAccessibility *)self crlaxTarget];
+  type = [crlaxTarget type];
 
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"A polygon with %@ sides" value:0 table:0];
@@ -38,8 +38,8 @@
 
 - (unint64_t)_crlaxNumberOfSides
 {
-  v2 = [(CRLScalarPathSourceAccessibility *)self crlaxTarget];
-  [v2 scalar];
+  crlaxTarget = [(CRLScalarPathSourceAccessibility *)self crlaxTarget];
+  [crlaxTarget scalar];
   v4 = llround(v3);
 
   return v4;

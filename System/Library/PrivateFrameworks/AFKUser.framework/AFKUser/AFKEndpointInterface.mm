@@ -1,38 +1,38 @@
 @interface AFKEndpointInterface
-- (AFKEndpointInterface)initWithService:(unsigned int)a3;
-- (int)compleOOBBuffer:(unint64_t)a3;
-- (int)enqueueCommand:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 outputPayloadSize:(unint64_t)a7 context:(void *)a8 options:(unsigned int)a9;
-- (int)enqueueCommandSync:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 responseTimestamp:(unint64_t *)a7 outputBuffer:(void *)a8 inOutBufferSize:(unint64_t *)a9 options:(unsigned int)a10;
-- (int)enqueueDescriptor:(id)a3 packetType:(unsigned int)a4 timestamp:(unint64_t)a5 options:(unsigned int)a6;
-- (int)enqueueReport:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 options:(unsigned int)a7;
-- (int)enqueueResponseForContext:(void *)a3 status:(int)a4 timestamp:(unint64_t)a5 outputBuffer:(void *)a6 outputBufferSize:(unint64_t)a7 options:(unsigned int)a8;
-- (int)startSession:(BOOL)a3;
+- (AFKEndpointInterface)initWithService:(unsigned int)service;
+- (int)compleOOBBuffer:(unint64_t)buffer;
+- (int)enqueueCommand:(unsigned int)command timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size outputPayloadSize:(unint64_t)payloadSize context:(void *)context options:(unsigned int)options;
+- (int)enqueueCommandSync:(unsigned int)sync timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size responseTimestamp:(unint64_t *)responseTimestamp outputBuffer:(void *)outputBuffer inOutBufferSize:(unint64_t *)bufferSize options:(unsigned int)self0;
+- (int)enqueueDescriptor:(id)descriptor packetType:(unsigned int)type timestamp:(unint64_t)timestamp options:(unsigned int)options;
+- (int)enqueueReport:(unsigned int)report timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size options:(unsigned int)options;
+- (int)enqueueResponseForContext:(void *)context status:(int)status timestamp:(unint64_t)timestamp outputBuffer:(void *)buffer outputBufferSize:(unint64_t)size options:(unsigned int)options;
+- (int)startSession:(BOOL)session;
 - (void)_cancel;
-- (void)activate:(unsigned int)a3;
+- (void)activate:(unsigned int)activate;
 - (void)cancel;
 - (void)dealloc;
-- (void)dequeueDataMessage:(_IODataQueueMemory *)a3;
-- (void)handleCommand:(char *)a3 size:(unsigned int)a4;
-- (void)handleDescriptor:(char *)a3 size:(unsigned int)a4;
-- (void)handleQueue:(char *)a3 size:(unsigned int)a4;
-- (void)handleReport:(char *)a3 size:(unsigned int)a4;
-- (void)handleResponse:(char *)a3 size:(unsigned int)a4;
-- (void)setCommandHandler:(id)a3;
-- (void)setCommandHandlerWithReturn:(id)a3;
-- (void)setDescriptorHandler:(id)a3;
-- (void)setDescriptorManagers:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setReportHandler:(id)a3;
-- (void)setResponseHandler:(id)a3;
+- (void)dequeueDataMessage:(_IODataQueueMemory *)message;
+- (void)handleCommand:(char *)command size:(unsigned int)size;
+- (void)handleDescriptor:(char *)descriptor size:(unsigned int)size;
+- (void)handleQueue:(char *)queue size:(unsigned int)size;
+- (void)handleReport:(char *)report size:(unsigned int)size;
+- (void)handleResponse:(char *)response size:(unsigned int)size;
+- (void)setCommandHandler:(id)handler;
+- (void)setCommandHandlerWithReturn:(id)return;
+- (void)setDescriptorHandler:(id)handler;
+- (void)setDescriptorManagers:(id)managers;
+- (void)setDispatchQueue:(id)queue;
+- (void)setEventHandler:(id)handler;
+- (void)setReportHandler:(id)handler;
+- (void)setResponseHandler:(id)handler;
 @end
 
 @implementation AFKEndpointInterface
 
-- (AFKEndpointInterface)initWithService:(unsigned int)a3
+- (AFKEndpointInterface)initWithService:(unsigned int)service
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!service)
   {
     v8 = _AFKUserLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@
     goto LABEL_15;
   }
 
-  if (IOObjectRetain(a3))
+  if (IOObjectRetain(service))
   {
     v9 = _AFKUserLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -55,8 +55,8 @@
     goto LABEL_14;
   }
 
-  self->_service = a3;
-  if (IORegistryEntryGetRegistryEntryID(a3, &self->_regID))
+  self->_service = service;
+  if (IORegistryEntryGetRegistryEntryID(service, &self->_regID))
   {
     v9 = _AFKUserLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -68,22 +68,22 @@
 LABEL_14:
 
 LABEL_15:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
-  v5 = self;
+  selfCopy = self;
 LABEL_5:
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
-- (void)activate:(unsigned int)a3
+- (void)activate:(unsigned int)activate
 {
   input[2] = *MEMORY[0x277D85DE8];
   input[0] = 0;
-  input[1] = a3;
+  input[1] = activate;
   v39 = 0;
   v40 = 0;
   objc_initWeak(&location, self);
@@ -137,10 +137,10 @@ LABEL_5:
       v25 = _AFKUserLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v29 = [(AFKEndpointInterface *)self regID];
+        regID = [(AFKEndpointInterface *)self regID];
         v30 = self->_properties;
         *buf = 134218498;
-        *&buf[4] = v29;
+        *&buf[4] = regID;
         *&buf[12] = 1024;
         *&buf[14] = v7;
         *&buf[18] = 2112;
@@ -331,7 +331,7 @@ LABEL_53:
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy_;
   v44 = __Block_byref_object_dispose_;
-  v45 = self;
+  selfCopy = self;
   v27 = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -392,18 +392,18 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
 - (void)cancel
 {
   v3 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_10(a1, a2);
+  OUTLINED_FUNCTION_10(self, a2);
   OUTLINED_FUNCTION_7();
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_0();
-  v4 = *a1;
+  v4 = *self;
   _os_crash_msg();
   __break(1u);
 }
 
 - (void)_cancel
 {
-  OUTLINED_FUNCTION_2_0(a1, a2);
+  OUTLINED_FUNCTION_2_0(self, a2);
   OUTLINED_FUNCTION_7();
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_1_0();
@@ -411,10 +411,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   __break(1u);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   if (self->_queue)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -423,14 +423,14 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
     [AFKEndpointInterface activate:v6];
   }
 
-  self->_queue = v4;
+  self->_queue = queueCopy;
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResponseHandler:(id)a3
+- (void)setResponseHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -446,10 +446,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setReportHandler:(id)a3
+- (void)setReportHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -465,10 +465,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCommandHandlerWithReturn:(id)a3
+- (void)setCommandHandlerWithReturn:(id)return
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  returnCopy = return;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -484,10 +484,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCommandHandler:(id)a3
+- (void)setCommandHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -503,10 +503,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDescriptorHandler:(id)a3
+- (void)setDescriptorHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -522,11 +522,11 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDescriptorManagers:(id)a3
+- (void)setDescriptorManagers:(id)managers
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  managersCopy = managers;
+  v5 = managersCopy;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -535,7 +535,7 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
     [AFKEndpointInterface activate:v8];
   }
 
-  if ([(NSSet *)v4 count]>= 0x10000)
+  if ([(NSSet *)managersCopy count]>= 0x10000)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     _os_log_send_and_compose_impl();
@@ -548,10 +548,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -606,7 +606,7 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (int)enqueueCommand:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 outputPayloadSize:(unint64_t)a7 context:(void *)a8 options:(unsigned int)a9
+- (int)enqueueCommand:(unsigned int)command timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size outputPayloadSize:(unint64_t)payloadSize context:(void *)context options:(unsigned int)options
 {
   input[10] = *MEMORY[0x277D85DE8];
   if (![(AFKEndpointInterface *)self hasState:1])
@@ -619,15 +619,15 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
     regID = self->_regID;
     kdebug_trace();
     v17 = malloc_type_calloc(0x18uLL, 1uLL, 0x1080040CC6EE3FDuLL);
-    v17[2] = a7;
-    *v17 = a8;
-    input[0] = a3;
-    input[1] = a4;
-    input[2] = a5;
-    input[3] = a6;
+    v17[2] = payloadSize;
+    *v17 = context;
+    input[0] = command;
+    input[1] = timestamp;
+    input[2] = buffer;
+    input[3] = size;
     input[4] = v17;
-    input[5] = a7;
-    input[6] = ~(a9 >> 2) & 8 | a9;
+    input[5] = payloadSize;
+    input[6] = ~(options >> 2) & 8 | options;
     v18 = IOConnectCallMethod(self->_connect, 2u, input, 7u, 0, 0, 0, 0, 0, 0);
     if (v18)
     {
@@ -644,7 +644,7 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   return v18;
 }
 
-- (int)enqueueCommandSync:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 responseTimestamp:(unint64_t *)a7 outputBuffer:(void *)a8 inOutBufferSize:(unint64_t *)a9 options:(unsigned int)a10
+- (int)enqueueCommandSync:(unsigned int)sync timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size responseTimestamp:(unint64_t *)responseTimestamp outputBuffer:(void *)outputBuffer inOutBufferSize:(unint64_t *)bufferSize options:(unsigned int)self0
 {
   input[10] = *MEMORY[0x277D85DE8];
   if (![(AFKEndpointInterface *)self hasState:1])
@@ -657,29 +657,29 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
     regID = self->_regID;
     kdebug_trace();
     v22[1] = v22;
-    input[0] = a3;
-    input[1] = a4;
-    input[2] = a10;
-    input[3] = a8;
-    input[4] = *a9;
+    input[0] = sync;
+    input[1] = timestamp;
+    input[2] = options;
+    input[3] = outputBuffer;
+    input[4] = *bufferSize;
     LODWORD(outputCnt) = 2;
-    result = IOConnectCallMethod(self->_connect, 7u, input, 5u, a5, a6, &v20, &outputCnt, 0, 0);
+    result = IOConnectCallMethod(self->_connect, 7u, input, 5u, buffer, size, &v20, &outputCnt, 0, 0);
     if (!result)
     {
       if (outputCnt == 2)
       {
-        if (v21 > *a9)
+        if (v21 > *bufferSize)
         {
           result = -536870210;
         }
 
         else
         {
-          *a9 = v21;
+          *bufferSize = v21;
           result = 0;
-          if (a7)
+          if (responseTimestamp)
           {
-            *a7 = v20;
+            *responseTimestamp = v20;
           }
         }
       }
@@ -700,7 +700,7 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   return result;
 }
 
-- (int)enqueueReport:(unsigned int)a3 timestamp:(unint64_t)a4 inputBuffer:(const void *)a5 inputBufferSize:(unint64_t)a6 options:(unsigned int)a7
+- (int)enqueueReport:(unsigned int)report timestamp:(unint64_t)timestamp inputBuffer:(const void *)buffer inputBufferSize:(unint64_t)size options:(unsigned int)options
 {
   input[10] = *MEMORY[0x277D85DE8];
   if (![(AFKEndpointInterface *)self hasState:1])
@@ -712,10 +712,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   {
     regID = self->_regID;
     kdebug_trace();
-    input[0] = a3;
-    input[1] = a4;
-    input[2] = ~(4 * a7) & 0x20 | a7;
-    result = IOConnectCallMethod(self->_connect, 4u, input, 3u, a5, a6, 0, 0, 0, 0);
+    input[0] = report;
+    input[1] = timestamp;
+    input[2] = ~(4 * options) & 0x20 | options;
+    result = IOConnectCallMethod(self->_connect, 4u, input, 3u, buffer, size, 0, 0, 0, 0);
   }
 
   else
@@ -727,7 +727,7 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   return result;
 }
 
-- (int)enqueueResponseForContext:(void *)a3 status:(int)a4 timestamp:(unint64_t)a5 outputBuffer:(void *)a6 outputBufferSize:(unint64_t)a7 options:(unsigned int)a8
+- (int)enqueueResponseForContext:(void *)context status:(int)status timestamp:(unint64_t)timestamp outputBuffer:(void *)buffer outputBufferSize:(unint64_t)size options:(unsigned int)options
 {
   input[10] = *MEMORY[0x277D85DE8];
   if (![(AFKEndpointInterface *)self hasState:1])
@@ -737,19 +737,19 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
 
   regID = self->_regID;
   kdebug_trace();
-  input[0] = a3;
-  input[1] = a4;
-  input[2] = a5;
-  input[3] = a8 | 8;
-  result = IOConnectCallMethod(self->_connect, 3u, input, 4u, a6, a7, 0, 0, 0, 0);
+  input[0] = context;
+  input[1] = status;
+  input[2] = timestamp;
+  input[3] = options | 8;
+  result = IOConnectCallMethod(self->_connect, 3u, input, 4u, buffer, size, 0, 0, 0, 0);
   v17 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)enqueueDescriptor:(id)a3 packetType:(unsigned int)a4 timestamp:(unint64_t)a5 options:(unsigned int)a6
+- (int)enqueueDescriptor:(id)descriptor packetType:(unsigned int)type timestamp:(unint64_t)timestamp options:(unsigned int)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  descriptorCopy = descriptor;
   if (![(AFKEndpointInterface *)self hasState:1])
   {
     v20 = 0u;
@@ -767,21 +767,21 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   if ([(AFKEndpointInterface *)self hasState:2])
   {
     regID = self->_regID;
-    [v10 token];
+    [descriptorCopy token];
     kdebug_trace();
-    if (v10)
+    if (descriptorCopy)
     {
-      input[0] = a4;
-      input[1] = a5;
-      *&v18 = [v10 token];
-      v13 = [v10 manager];
-      *(&v18 + 1) = [v13 regID];
-      *&v19 = ~(a6 >> 2) & 8 | a6;
+      input[0] = type;
+      input[1] = timestamp;
+      *&v18 = [descriptorCopy token];
+      manager = [descriptorCopy manager];
+      *(&v18 + 1) = [manager regID];
+      *&v19 = ~(options >> 2) & 8 | options;
 
       v11 = IOConnectCallScalarMethod(self->_connect, 6u, input, 5u, 0, 0);
       if (!v11)
       {
-        [v10 handleEnqueue];
+        [descriptorCopy handleEnqueue];
       }
     }
   }
@@ -795,11 +795,11 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
   return v11;
 }
 
-- (void)dequeueDataMessage:(_IODataQueueMemory *)a3
+- (void)dequeueDataMessage:(_IODataQueueMemory *)message
 {
   v23 = *MEMORY[0x277D85DE8];
   dataSize = 0;
-  v5 = IODataQueuePeek(a3);
+  v5 = IODataQueuePeek(message);
   if (v5)
   {
     v6 = v5;
@@ -845,10 +845,10 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
         v7 = _AFKUserLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          v12 = [(AFKEndpointInterface *)self regID];
+          regID = [(AFKEndpointInterface *)self regID];
           v13 = *data;
           *buf = 134218240;
-          v20 = v12;
+          v20 = regID;
           v21 = 1024;
           v22 = v13;
           _os_log_error_impl(&dword_23C487000, v7, OS_LOG_TYPE_ERROR, "0x%llx: Unknown message type:0x%x", buf, 0x12u);
@@ -860,9 +860,9 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
         v7 = _AFKUserLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          v11 = [(AFKEndpointInterface *)self regID];
+          regID2 = [(AFKEndpointInterface *)self regID];
           *buf = 134218240;
-          v20 = v11;
+          v20 = regID2;
           v21 = 1024;
           v22 = dataSize;
           _os_log_error_impl(&dword_23C487000, v7, OS_LOG_TYPE_ERROR, "0x%llx: Data queue entry size:0x%x", buf, 0x12u);
@@ -870,14 +870,14 @@ uint64_t __33__AFKEndpointInterface_activate___block_invoke_25(uint64_t a1)
       }
 
 LABEL_7:
-      IODataQueueDequeue(a3, 0, &dataSize);
-      v6 = IODataQueuePeek(a3);
+      IODataQueueDequeue(message, 0, &dataSize);
+      v6 = IODataQueuePeek(message);
     }
 
     while (v6);
   }
 
-  v14 = (a3->queue + a3->queueSize);
+  v14 = (message->queue + message->queueSize);
   if (atomic_load(v14))
   {
     atomic_fetch_add(v14, 0xFFFFFFFF);
@@ -895,51 +895,51 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReport:(char *)a3 size:(unsigned int)a4
+- (void)handleReport:(char *)report size:(unsigned int)size
 {
-  v6 = *(a3 + 1);
-  v7 = *(a3 + 3);
+  v6 = *(report + 1);
+  v7 = *(report + 3);
   regID = self->_regID;
   kdebug_trace();
   reportHandler = self->_reportHandler;
-  if ((*a3 & 0x100) != 0)
+  if ((*report & 0x100) != 0)
   {
-    (*(reportHandler + 2))(reportHandler, self, *(a3 + 1), *(a3 + 1), *(a3 + 3), *(a3 + 2));
-    v12 = *(a3 + 3);
+    (*(reportHandler + 2))(reportHandler, self, *(report + 1), *(report + 1), *(report + 3), *(report + 2));
+    v12 = *(report + 3);
 
     [(AFKEndpointInterface *)self compleOOBBuffer:v12];
   }
 
   else
   {
-    v10 = *(a3 + 2);
+    v10 = *(report + 2);
     v11 = *(reportHandler + 2);
 
     v11();
   }
 }
 
-- (void)handleCommand:(char *)a3 size:(unsigned int)a4
+- (void)handleCommand:(char *)command size:(unsigned int)size
 {
   v26 = *MEMORY[0x277D85DE8];
-  if ((*a3 & 0x100) != 0)
+  if ((*command & 0x100) != 0)
   {
-    if (a4 <= 7)
+    if (size <= 7)
     {
       [AFKEndpointInterface handleCommand:v25 size:?];
     }
 
-    v17 = *(a3 + 1);
-    v18 = *(a3 + 3);
+    v17 = *(command + 1);
+    v18 = *(command + 3);
     regID = self->_regID;
     kdebug_trace();
     commandHandlerWithReturn = self->_commandHandlerWithReturn;
     if (commandHandlerWithReturn || (commandHandlerWithReturn = self->_commandHandler) != 0)
     {
-      (*(commandHandlerWithReturn + 2))(commandHandlerWithReturn, self, *(a3 + 3), *(a3 + 1), *(a3 + 1), *(a3 + 5), *(a3 + 4), *(a3 + 4));
+      (*(commandHandlerWithReturn + 2))(commandHandlerWithReturn, self, *(command + 3), *(command + 1), *(command + 1), *(command + 5), *(command + 4), *(command + 4));
     }
 
-    v21 = *(a3 + 5);
+    v21 = *(command + 5);
     v22 = *MEMORY[0x277D85DE8];
 
     [(AFKEndpointInterface *)self compleOOBBuffer:v21];
@@ -947,23 +947,23 @@ LABEL_7:
 
   else
   {
-    if (a4 <= 7)
+    if (size <= 7)
     {
       [AFKEndpointInterface handleCommand:v25 size:?];
     }
 
-    v6 = *(a3 + 1);
-    v7 = *(a3 + 3);
+    v6 = *(command + 1);
+    v7 = *(command + 3);
     v8 = self->_regID;
     kdebug_trace();
     commandHandler = self->_commandHandlerWithReturn;
     if (commandHandler || (commandHandler = self->_commandHandler) != 0)
     {
-      v10 = *(a3 + 1);
-      v11 = *(a3 + 1);
-      v12 = *(a3 + 3);
-      v13 = *(a3 + 4);
-      v14 = *(a3 + 4);
+      v10 = *(command + 1);
+      v11 = *(command + 1);
+      v12 = *(command + 3);
+      v13 = *(command + 4);
+      v14 = *(command + 4);
       v15 = *(commandHandler + 2);
       v16 = *MEMORY[0x277D85DE8];
 
@@ -977,48 +977,48 @@ LABEL_7:
   }
 }
 
-- (void)handleResponse:(char *)a3 size:(unsigned int)a4
+- (void)handleResponse:(char *)response size:(unsigned int)size
 {
   v27 = *MEMORY[0x277D85DE8];
-  if ((*a3 & 0x100) != 0)
+  if ((*response & 0x100) != 0)
   {
-    if (a4 <= 7)
+    if (size <= 7)
     {
       [AFKEndpointInterface handleResponse:v26 size:?];
     }
 
-    v15 = *(a3 + 1);
-    v7 = *(a3 + 2);
+    v15 = *(response + 1);
+    v7 = *(response + 2);
     v16 = *v7;
     regID = self->_regID;
-    v18 = *(a3 + 6);
+    v18 = *(response + 6);
     kdebug_trace();
     v19 = *v7;
-    v20 = *(a3 + 6);
-    v21 = *(a3 + 1);
-    v23 = *(a3 + 4);
-    v22 = *(a3 + 5);
+    v20 = *(response + 6);
+    v21 = *(response + 1);
+    v23 = *(response + 4);
+    v22 = *(response + 5);
     (*(self->_responseHandler + 2))();
-    [(AFKEndpointInterface *)self compleOOBBuffer:*(a3 + 5)];
+    [(AFKEndpointInterface *)self compleOOBBuffer:*(response + 5)];
   }
 
   else
   {
-    if (a4 <= 7)
+    if (size <= 7)
     {
       [AFKEndpointInterface handleResponse:v26 size:?];
     }
 
-    v6 = *(a3 + 1);
-    v7 = *(a3 + 2);
+    v6 = *(response + 1);
+    v7 = *(response + 2);
     v8 = *v7;
     v9 = self->_regID;
-    v10 = *(a3 + 6);
+    v10 = *(response + 6);
     kdebug_trace();
     v11 = *v7;
-    v12 = *(a3 + 6);
-    v13 = *(a3 + 1);
-    v14 = *(a3 + 4);
+    v12 = *(response + 6);
+    v13 = *(response + 1);
+    v14 = *(response + 4);
     (*(self->_responseHandler + 2))();
   }
 
@@ -1027,16 +1027,16 @@ LABEL_7:
   free(v7);
 }
 
-- (void)handleDescriptor:(char *)a3 size:(unsigned int)a4
+- (void)handleDescriptor:(char *)descriptor size:(unsigned int)size
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a4 <= 7)
+  if (size <= 7)
   {
     [AFKEndpointInterface handleDescriptor:buf size:?];
   }
 
-  v6 = *(a3 + 1);
-  v7 = *(a3 + 2);
+  v6 = *(descriptor + 1);
+  v7 = *(descriptor + 2);
   regID = self->_regID;
   kdebug_trace();
   v26 = 0u;
@@ -1058,7 +1058,7 @@ LABEL_4:
       }
 
       v13 = *(*(&v24 + 1) + 8 * v12);
-      if ([v13 regID] == *(a3 + 3))
+      if ([v13 regID] == *(descriptor + 3))
       {
         break;
       }
@@ -1082,7 +1082,7 @@ LABEL_4:
       goto LABEL_17;
     }
 
-    if (a3[36])
+    if (descriptor[36])
     {
       v15 = off_278BBE7D0;
     }
@@ -1092,11 +1092,11 @@ LABEL_4:
       v15 = off_278BBE7E0;
     }
 
-    v16 = [(__objc2_class *)*v15 withManager:v14 capacity:*(a3 + 8) token:*(a3 + 2)];
+    v16 = [(__objc2_class *)*v15 withManager:v14 capacity:*(descriptor + 8) token:*(descriptor + 2)];
     if (v16)
     {
-      v17 = *(a3 + 1);
-      v18 = *(a3 + 1);
+      v17 = *(descriptor + 1);
+      v18 = *(descriptor + 1);
       (*(self->_descriptorHandler + 2))();
       goto LABEL_21;
     }
@@ -1104,11 +1104,11 @@ LABEL_4:
     v19 = _AFKUserLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(AFKEndpointInterface *)self regID];
-      v23 = *(a3 + 2);
-      v22 = *(a3 + 3);
+      regID = [(AFKEndpointInterface *)self regID];
+      v23 = *(descriptor + 2);
+      v22 = *(descriptor + 3);
       *buf = 134218496;
-      v31 = v21;
+      v31 = regID;
       v32 = 2048;
       v33 = v22;
       v34 = 2048;
@@ -1125,7 +1125,7 @@ LABEL_17:
     v19 = _AFKUserLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(AFKEndpointInterface *)a3 handleDescriptor:buf size:[(AFKEndpointInterface *)self regID], v19];
+      [(AFKEndpointInterface *)descriptor handleDescriptor:buf size:[(AFKEndpointInterface *)self regID], v19];
     }
 
     v14 = 0;
@@ -1137,25 +1137,25 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleQueue:(char *)a3 size:(unsigned int)a4
+- (void)handleQueue:(char *)queue size:(unsigned int)size
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a4 <= 7)
+  if (size <= 7)
   {
     [AFKEndpointInterface handleQueue:v9 size:?];
   }
 
-  [(AFKEndpointInterface *)self dequeueDataMessage:*(a3 + 3)];
-  v6 = *(a3 + 3);
+  [(AFKEndpointInterface *)self dequeueDataMessage:*(queue + 3)];
+  v6 = *(queue + 3);
   v7 = *MEMORY[0x277D85DE8];
 
   [(AFKEndpointInterface *)self compleOOBBuffer:v6];
 }
 
-- (int)compleOOBBuffer:(unint64_t)a3
+- (int)compleOOBBuffer:(unint64_t)buffer
 {
   input[1] = *MEMORY[0x277D85DE8];
-  input[0] = a3;
+  input[0] = buffer;
   v5 = IOConnectCallMethod(self->_connect, 9u, input, 1u, 0, 0, 0, 0, 0, 0);
   if (v5)
   {
@@ -1163,9 +1163,9 @@ LABEL_21:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218496;
-      v10 = [(AFKEndpointInterface *)self regID];
+      regID = [(AFKEndpointInterface *)self regID];
       v11 = 2048;
-      v12 = a3;
+      bufferCopy = buffer;
       v13 = 1024;
       v14 = v5;
       _os_log_error_impl(&dword_23C487000, v6, OS_LOG_TYPE_ERROR, "0x%llx: kDataQueueFreeOOBMsgMethod (%llx):0x%x", buf, 0x1Cu);
@@ -1176,9 +1176,9 @@ LABEL_21:
   return v5;
 }
 
-- (int)startSession:(BOOL)a3
+- (int)startSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   input[10] = *MEMORY[0x277D85DE8];
   if (![(AFKEndpointInterface *)self hasState:1])
   {
@@ -1187,7 +1187,7 @@ LABEL_21:
 
   if ([(AFKEndpointInterface *)self hasState:2])
   {
-    input[0] = v3;
+    input[0] = sessionCopy;
     result = IOConnectCallMethod(self->_connect, 5u, input, 1u, 0, 0, 0, 0, 0, 0);
   }
 

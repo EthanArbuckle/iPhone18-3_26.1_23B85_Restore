@@ -1,53 +1,53 @@
 @interface MPSGraphAdamOptimizer
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 momentumTensors:(id)a5 velocityTensors:(id)a6 maximumVelocityTensors:(id)a7 beta1:(float)a8 beta2:(float)a9 epsilon:(float)a10 iterations:(unint64_t)a11 trainableVariables:(id)a12 variablesToGradientTensorMap:(id)a13 name:(id)a14;
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7;
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 beta1:(float)a6 beta2:(float)a7 epsilon:(float)a8 iterations:(unint64_t)a9 trainableVariables:(id)a10 name:(id)a11;
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 momentumTensors:(id)a6 velocityTensors:(id)a7 maximumVelocityTensors:(id)a8 beta1:(float)a9 beta2:(float)a10 epsilon:(float)a11 iterations:(unint64_t)a12 trainableVariables:(id)a13 name:(id)a14;
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 trainableVariables:(id)a6 name:(id)a7;
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor momentumTensors:(id)tensors velocityTensors:(id)velocityTensors maximumVelocityTensors:(id)maximumVelocityTensors beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)self0 iterations:(unint64_t)self1 trainableVariables:(id)self2 variablesToGradientTensorMap:(id)self3 name:(id)self4;
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name;
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon iterations:(unint64_t)iterations trainableVariables:(id)self0 name:(id)self1;
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor momentumTensors:(id)tensors velocityTensors:(id)velocityTensors maximumVelocityTensors:(id)maximumVelocityTensors beta1:(float)beta1 beta2:(float)self0 epsilon:(float)self1 iterations:(unint64_t)self2 trainableVariables:(id)self3 name:(id)self4;
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor trainableVariables:(id)variables name:(id)name;
 @end
 
 @implementation MPSGraphAdamOptimizer
 
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 momentumTensors:(id)a5 velocityTensors:(id)a6 maximumVelocityTensors:(id)a7 beta1:(float)a8 beta2:(float)a9 epsilon:(float)a10 iterations:(unint64_t)a11 trainableVariables:(id)a12 variablesToGradientTensorMap:(id)a13 name:(id)a14
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor momentumTensors:(id)tensors velocityTensors:(id)velocityTensors maximumVelocityTensors:(id)maximumVelocityTensors beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)self0 iterations:(unint64_t)self1 trainableVariables:(id)self2 variablesToGradientTensorMap:(id)self3 name:(id)self4
 {
-  v23 = a3;
-  v24 = a4;
-  v84 = a5;
-  v83 = a6;
-  v82 = a7;
-  v25 = a12;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  tensorsCopy = tensors;
+  velocityTensorsCopy = velocityTensors;
+  maximumVelocityTensorsCopy = maximumVelocityTensors;
+  variablesCopy = variables;
   v96.receiver = self;
   v96.super_class = MPSGraphAdamOptimizer;
-  v86 = v24;
-  v80 = v23;
-  v81 = a13;
-  v78 = a14;
-  v79 = v25;
-  v26 = [(MPSGraphOptimizer *)&v96 initWithGraph:v23 learningRateTensor:v24 trainableVariables:v25 variablesToGradientTensorMap:v81 name:v78];
-  v27 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77CF0 shape:268435488 dataType:a8];
+  v86 = tensorCopy;
+  v80 = graphCopy;
+  mapCopy = map;
+  nameCopy = name;
+  v79 = variablesCopy;
+  v26 = [(MPSGraphOptimizer *)&v96 initWithGraph:graphCopy learningRateTensor:tensorCopy trainableVariables:variablesCopy variablesToGradientTensorMap:mapCopy name:nameCopy];
+  v27 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77CF0 shape:268435488 dataType:beta1];
   beta1Tensor = v26->_beta1Tensor;
   v26->_beta1Tensor = v27;
 
-  v29 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77D08 shape:268435488 dataType:a9];
+  v29 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77D08 shape:268435488 dataType:beta2];
   beta2Tensor = v26->_beta2Tensor;
   v26->_beta2Tensor = v29;
 
-  v31 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77D20 shape:268435488 dataType:a10];
+  v31 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77D20 shape:268435488 dataType:epsilon];
   epsilonTensor = v26->_epsilonTensor;
   v26->_epsilonTensor = v31;
 
   graph = v26->super._graph;
-  v34 = [MPSGraphVariableInitializer initializerWithConstant:a11];
+  v34 = [MPSGraphVariableInitializer initializerWithConstant:iterations];
   v35 = [v34 initializedDataWithNumberOfValues:1 dataType:268435488];
   v36 = [(NSString *)v26->super._name stringByAppendingFormat:@"/iterations"];
   v37 = [(MPSGraph *)graph variableWithData:v35 shape:&unk_1F5B77D38 dataType:268435488 name:v36];
-  v38 = [v37 operation];
+  operation = [v37 operation];
   iterationsVariable = v26->_iterationsVariable;
-  v26->_iterationsVariable = v38;
+  v26->_iterationsVariable = operation;
 
-  v77 = [MEMORY[0x1E695DF90] dictionary];
-  v40 = [(MPSGraphOperation *)v26->_iterationsVariable outputTensors];
-  v41 = [v40 objectAtIndexedSubscript:0];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  outputTensors = [(MPSGraphOperation *)v26->_iterationsVariable outputTensors];
+  v41 = [outputTensors objectAtIndexedSubscript:0];
 
   v76 = v41;
   v42 = [(MPSGraph *)v26->super._graph constantWithScalar:&unk_1F5B77D50 shape:268435488 dataType:1.0];
@@ -74,27 +74,27 @@
   v55 = [(MPSGraph *)v52 powerWithPrimaryTensor:v53 secondaryTensor:v41 name:v54];
 
   v71 = v55;
-  v56 = [(MPSGraph *)v26->super._graph currentLearningRateWithLearningRateTensor:v24 beta1Tensor:v26->_beta1Tensor beta2Tensor:v26->_beta2Tensor beta1PowerTensor:v85 beta2PowerTensor:v55 name:v48];
+  v56 = [(MPSGraph *)v26->super._graph currentLearningRateWithLearningRateTensor:tensorCopy beta1Tensor:v26->_beta1Tensor beta2Tensor:v26->_beta2Tensor beta1PowerTensor:v85 beta2PowerTensor:v55 name:v48];
   trainableVariables = v26->super._trainableVariables;
   v87[0] = MEMORY[0x1E69E9820];
   v87[1] = 3221225472;
   v87[2] = __197__MPSGraphAdamOptimizer_initWithGraph_learningRateTensor_momentumTensors_velocityTensors_maximumVelocityTensors_beta1_beta2_epsilon_iterations_trainableVariables_variablesToGradientTensorMap_name___block_invoke;
   v87[3] = &unk_1E86D4EC0;
-  v58 = v81;
+  v58 = mapCopy;
   v88 = v58;
   v59 = v26;
   v89 = v59;
-  v60 = v84;
+  v60 = tensorsCopy;
   v90 = v60;
-  v61 = v83;
+  v61 = velocityTensorsCopy;
   v91 = v61;
-  v62 = v82;
+  v62 = maximumVelocityTensorsCopy;
   v92 = v62;
   v63 = v56;
   v93 = v63;
   v64 = v73;
   v94 = v64;
-  v65 = v77;
+  v65 = dictionary;
   v95 = v65;
   [(NSArray *)trainableVariables enumerateObjectsUsingBlock:v87];
   v66 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v65];
@@ -214,58 +214,58 @@ void __197__MPSGraphAdamOptimizer_initWithGraph_learningRateTensor_momentumTenso
   *(*(*(a1 + 32) + 8) + 24) *= [v3 integerValue];
 }
 
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 momentumTensors:(id)a6 velocityTensors:(id)a7 maximumVelocityTensors:(id)a8 beta1:(float)a9 beta2:(float)a10 epsilon:(float)a11 iterations:(unint64_t)a12 trainableVariables:(id)a13 name:(id)a14
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor momentumTensors:(id)tensors velocityTensors:(id)velocityTensors maximumVelocityTensors:(id)maximumVelocityTensors beta1:(float)beta1 beta2:(float)self0 epsilon:(float)self1 iterations:(unint64_t)self2 trainableVariables:(id)self3 name:(id)self4
 {
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
-  v28 = a8;
-  v29 = a13;
-  v30 = a14;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  rateTensorCopy = rateTensor;
+  tensorsCopy = tensors;
+  velocityTensorsCopy = velocityTensors;
+  maximumVelocityTensorsCopy = maximumVelocityTensors;
+  variablesCopy = variables;
+  nameCopy = name;
   v37.receiver = self;
   v37.super_class = MPSGraphAdamOptimizer;
-  v31 = [(MPSGraphOptimizer *)&v37 initWithGraph:v23 lossTensor:v24 learningRateTensor:v25 trainableVariables:v29 name:v30];
-  *&v32 = a9;
-  *&v33 = a10;
-  *&v34 = a11;
-  v35 = [(MPSGraphAdamOptimizer *)v31 initWithGraph:v23 learningRateTensor:v25 momentumTensors:v26 velocityTensors:v27 maximumVelocityTensors:v28 beta1:a12 beta2:v32 epsilon:v33 iterations:v34 trainableVariables:v31->super._trainableVariables variablesToGradientTensorMap:v31->super._variablesToGradientTensorMap name:v30];
+  v31 = [(MPSGraphOptimizer *)&v37 initWithGraph:graphCopy lossTensor:tensorCopy learningRateTensor:rateTensorCopy trainableVariables:variablesCopy name:nameCopy];
+  *&v32 = beta1;
+  *&v33 = beta2;
+  *&v34 = epsilon;
+  v35 = [(MPSGraphAdamOptimizer *)v31 initWithGraph:graphCopy learningRateTensor:rateTensorCopy momentumTensors:tensorsCopy velocityTensors:velocityTensorsCopy maximumVelocityTensors:maximumVelocityTensorsCopy beta1:iterations beta2:v32 epsilon:v33 iterations:v34 trainableVariables:v31->super._trainableVariables variablesToGradientTensorMap:v31->super._variablesToGradientTensorMap name:nameCopy];
 
   return v35;
 }
 
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 beta1:(float)a6 beta2:(float)a7 epsilon:(float)a8 iterations:(unint64_t)a9 trainableVariables:(id)a10 name:(id)a11
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon iterations:(unint64_t)iterations trainableVariables:(id)self0 name:(id)self1
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a10;
-  v24 = a11;
+  graphCopy = graph;
+  tensorCopy = tensor;
+  rateTensorCopy = rateTensor;
+  variablesCopy = variables;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = MPSGraphAdamOptimizer;
-  v25 = [(MPSGraphOptimizer *)&v31 initWithGraph:v20 lossTensor:v21 learningRateTensor:v22 trainableVariables:v23 name:v24];
-  *&v26 = a6;
-  *&v27 = a7;
-  *&v28 = a8;
-  v29 = [(MPSGraphAdamOptimizer *)v25 initWithGraph:v20 learningRateTensor:v22 momentumTensors:0 velocityTensors:0 maximumVelocityTensors:0 beta1:a9 beta2:v26 epsilon:v27 iterations:v28 trainableVariables:v25->super._trainableVariables variablesToGradientTensorMap:v25->super._variablesToGradientTensorMap name:v24];
+  v25 = [(MPSGraphOptimizer *)&v31 initWithGraph:graphCopy lossTensor:tensorCopy learningRateTensor:rateTensorCopy trainableVariables:variablesCopy name:nameCopy];
+  *&v26 = beta1;
+  *&v27 = beta2;
+  *&v28 = epsilon;
+  v29 = [(MPSGraphAdamOptimizer *)v25 initWithGraph:graphCopy learningRateTensor:rateTensorCopy momentumTensors:0 velocityTensors:0 maximumVelocityTensors:0 beta1:iterations beta2:v26 epsilon:v27 iterations:v28 trainableVariables:v25->super._trainableVariables variablesToGradientTensorMap:v25->super._variablesToGradientTensorMap name:nameCopy];
 
   return v29;
 }
 
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 learningRateTensor:(id)a4 trainableVariables:(id)a5 variablesToGradientTensorMap:(id)a6 name:(id)a7
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph learningRateTensor:(id)tensor trainableVariables:(id)variables variablesToGradientTensorMap:(id)map name:(id)name
 {
   LODWORD(v7) = 1063675494;
   LODWORD(v8) = 1065336439;
   LODWORD(v9) = 869711765;
-  return [(MPSGraphAdamOptimizer *)self initWithGraph:a3 learningRateTensor:a4 momentumTensors:0 velocityTensors:0 maximumVelocityTensors:0 beta1:0 beta2:v7 epsilon:v8 iterations:v9 trainableVariables:a5 variablesToGradientTensorMap:a6 name:a7];
+  return [(MPSGraphAdamOptimizer *)self initWithGraph:graph learningRateTensor:tensor momentumTensors:0 velocityTensors:0 maximumVelocityTensors:0 beta1:0 beta2:v7 epsilon:v8 iterations:v9 trainableVariables:variables variablesToGradientTensorMap:map name:name];
 }
 
-- (MPSGraphAdamOptimizer)initWithGraph:(id)a3 lossTensor:(id)a4 learningRateTensor:(id)a5 trainableVariables:(id)a6 name:(id)a7
+- (MPSGraphAdamOptimizer)initWithGraph:(id)graph lossTensor:(id)tensor learningRateTensor:(id)rateTensor trainableVariables:(id)variables name:(id)name
 {
   v8.receiver = self;
   v8.super_class = MPSGraphAdamOptimizer;
-  return [(MPSGraphOptimizer *)&v8 initWithGraph:a3 lossTensor:a4 learningRateTensor:a5 trainableVariables:a6 name:a7];
+  return [(MPSGraphOptimizer *)&v8 initWithGraph:graph lossTensor:tensor learningRateTensor:rateTensor trainableVariables:variables name:name];
 }
 
 @end

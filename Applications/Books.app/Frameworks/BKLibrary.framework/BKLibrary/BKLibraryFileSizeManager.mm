@@ -1,20 +1,20 @@
 @interface BKLibraryFileSizeManager
 + (id)sharedInstance;
 - (BKLibraryFileSizeManager)init;
-- (BKLibraryFileSizeManager)initWithLibraryManager:(id)a3;
+- (BKLibraryFileSizeManager)initWithLibraryManager:(id)manager;
 - (BKLibraryManager)libraryManager;
-- (id)_documentsURLWithFilename:(id)a3;
-- (id)cachedFileSizeForAssetWithAssetID:(id)a3;
-- (id)dq_filesSizeForCacheItemRequest:(id)a3;
-- (id)synchronousFileSizeForCacheItemRequest:(id)a3;
-- (int64_t)_fileSizeForAssetAtURL:(id)a3;
-- (void)_installedUnzippedAssetDiskSpaceMetrics:(id *)a3 directory:(id)a4;
+- (id)_documentsURLWithFilename:(id)filename;
+- (id)cachedFileSizeForAssetWithAssetID:(id)d;
+- (id)dq_filesSizeForCacheItemRequest:(id)request;
+- (id)synchronousFileSizeForCacheItemRequest:(id)request;
+- (int64_t)_fileSizeForAssetAtURL:(id)l;
+- (void)_installedUnzippedAssetDiskSpaceMetrics:(id *)metrics directory:(id)directory;
 - (void)_removeObsoletePersistedInfo;
-- (void)clearCacheEntryForAssetID:(id)a3;
+- (void)clearCacheEntryForAssetID:(id)d;
 - (void)dq_persistInfoToDisk;
 - (void)dq_readPersistedInfoFromDisk;
-- (void)filesSizeForCacheItemRequest:(id)a3 completion:(id)a4;
-- (void)filesSizesForCacheItemRequests:(id)a3 completion:(id)a4;
+- (void)filesSizeForCacheItemRequest:(id)request completion:(id)completion;
+- (void)filesSizesForCacheItemRequests:(id)requests completion:(id)completion;
 - (void)purgeUnusedCacheEntries;
 @end
 
@@ -40,9 +40,9 @@
   return v4;
 }
 
-- (BKLibraryFileSizeManager)initWithLibraryManager:(id)a3
+- (BKLibraryFileSizeManager)initWithLibraryManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = BKLibraryFileSizeManager;
   v5 = [(BKLibraryFileSizeManager *)&v15 init];
@@ -57,7 +57,7 @@
     assetPathToCacheItemDict = v5->_assetPathToCacheItemDict;
     v5->_assetPathToCacheItemDict = v9;
 
-    objc_storeWeak(&v5->_libraryManager, v4);
+    objc_storeWeak(&v5->_libraryManager, managerCopy);
     [(BKLibraryFileSizeManager *)v5 _removeObsoletePersistedInfo];
     v11 = v5->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -71,26 +71,26 @@
   return v5;
 }
 
-- (id)cachedFileSizeForAssetWithAssetID:(id)a3
+- (id)cachedFileSizeForAssetWithAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_5A2B8;
   v16 = sub_5A2C8;
   v17 = 0;
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_5A2D0;
     block[3] = &unk_D62A8;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
-    dispatch_sync(v5, block);
+    dispatch_sync(dispatchQueue, block);
 
     v6 = v13[5];
   }
@@ -106,26 +106,26 @@
   return v7;
 }
 
-- (id)synchronousFileSizeForCacheItemRequest:(id)a3
+- (id)synchronousFileSizeForCacheItemRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_5A2B8;
   v16 = sub_5A2C8;
   v17 = 0;
-  if (v4)
+  if (requestCopy)
   {
-    v5 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_5A4B8;
     block[3] = &unk_D62D0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
-    dispatch_sync(v5, block);
+    v10 = requestCopy;
+    dispatch_sync(dispatchQueue, block);
 
     v6 = v13[5];
   }
@@ -141,43 +141,43 @@
   return v7;
 }
 
-- (void)clearCacheEntryForAssetID:(id)a3
+- (void)clearCacheEntryForAssetID:(id)d
 {
-  v4 = a3;
-  if ([v4 count])
+  dCopy = d;
+  if ([dCopy count])
   {
-    v5 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_5A5D8;
     v6[3] = &unk_D5420;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = dCopy;
+    selfCopy = self;
+    dispatch_async(dispatchQueue, v6);
   }
 }
 
-- (void)filesSizeForCacheItemRequest:(id)a3 completion:(id)a4
+- (void)filesSizeForCacheItemRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestCopy)
   {
-    v9 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_5A854;
     block[3] = &unk_D62F8;
     block[4] = self;
-    v13 = v6;
+    v13 = requestCopy;
     v14 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   else
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(completionCopy);
     if (v10)
     {
       v11 = [NSError errorWithDomain:@"BKLibraryFileSizeManagerDomain" code:-1001 userInfo:0];
@@ -186,27 +186,27 @@
   }
 }
 
-- (void)filesSizesForCacheItemRequests:(id)a3 completion:(id)a4
+- (void)filesSizesForCacheItemRequests:(id)requests completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  requestsCopy = requests;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (requestsCopy)
   {
-    v9 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_5AA08;
     block[3] = &unk_D62F8;
-    v13 = v6;
-    v14 = self;
+    v13 = requestsCopy;
+    selfCopy = self;
     v15 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   else
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(completionCopy);
     if (v10)
     {
       v11 = [NSError errorWithDomain:@"BKLibraryFileSizeManagerDomain" code:-1001 userInfo:0];
@@ -217,27 +217,27 @@
 
 - (void)purgeUnusedCacheEntries
 {
-  v3 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_5AC7C;
   block[3] = &unk_D5528;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (id)dq_filesSizeForCacheItemRequest:(id)a3
+- (id)dq_filesSizeForCacheItemRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v16 = 0;
+    fileSizeNumber = 0;
     goto LABEL_20;
   }
 
-  v5 = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
-  v6 = [v4 assetID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  assetPathToCacheItemDict = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
+  assetID = [requestCopy assetID];
+  v7 = [assetPathToCacheItemDict objectForKeyedSubscript:assetID];
 
   if (!v7)
   {
@@ -245,56 +245,56 @@
     goto LABEL_13;
   }
 
-  v8 = [v7 fileOnDiskLastTouchDate];
+  fileOnDiskLastTouchDate = [v7 fileOnDiskLastTouchDate];
   v9 = +[NSFileManager defaultManager];
-  v10 = [v4 assetURL];
-  v11 = [v10 path];
+  assetURL = [requestCopy assetURL];
+  path = [assetURL path];
   v27 = 0;
-  v12 = [v9 attributesOfItemAtPath:v11 error:&v27];
+  v12 = [v9 attributesOfItemAtPath:path error:&v27];
   v13 = v27;
 
-  v14 = [v13 domain];
-  if (![v14 isEqualToString:NSCocoaErrorDomain])
+  domain = [v13 domain];
+  if (![domain isEqualToString:NSCocoaErrorDomain])
   {
 
 LABEL_9:
-    v18 = [v12 fileModificationDate];
-    v17 = v18;
-    if (v8)
+    fileModificationDate = [v12 fileModificationDate];
+    v17 = fileModificationDate;
+    if (fileOnDiskLastTouchDate)
     {
-      if ([v18 compare:v8] != &dword_0 + 1 || (objc_msgSend(v8, "timeIntervalSinceNow"), fabs(v19) <= 1.0))
+      if ([fileModificationDate compare:fileOnDiskLastTouchDate] != &dword_0 + 1 || (objc_msgSend(fileOnDiskLastTouchDate, "timeIntervalSinceNow"), fabs(v19) <= 1.0))
       {
 
-        v16 = [v7 fileSizeNumber];
+        fileSizeNumber = [v7 fileSizeNumber];
         goto LABEL_19;
       }
     }
 
 LABEL_13:
-    v20 = [v4 assetURL];
-    if (v20)
+    assetURL2 = [requestCopy assetURL];
+    if (assetURL2)
     {
-      v16 = [v4 assetID];
+      fileSizeNumber = [requestCopy assetID];
 
-      if (v16)
+      if (fileSizeNumber)
       {
-        v16 = [NSNumber numberWithLongLong:[(BKLibraryFileSizeManager *)self _fileSizeForAssetAtURL:v20]];
+        fileSizeNumber = [NSNumber numberWithLongLong:[(BKLibraryFileSizeManager *)self _fileSizeForAssetAtURL:assetURL2]];
         v21 = objc_opt_new();
 
-        [v21 setFileURL:v20];
-        [v21 setFileSizeNumber:v16];
+        [v21 setFileURL:assetURL2];
+        [v21 setFileSizeNumber:fileSizeNumber];
         [v21 setFileOnDiskLastTouchDate:v17];
-        v22 = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
-        v23 = [v4 assetID];
-        [v22 setObject:v21 forKeyedSubscript:v23];
+        assetPathToCacheItemDict2 = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
+        assetID2 = [requestCopy assetID];
+        [assetPathToCacheItemDict2 setObject:v21 forKeyedSubscript:assetID2];
 
-        v24 = [(BKLibraryFileSizeManager *)self dispatchQueue];
+        dispatchQueue = [(BKLibraryFileSizeManager *)self dispatchQueue];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_5B1E4;
         v26[3] = &unk_D5528;
         v26[4] = self;
-        dispatch_async(v24, v26);
+        dispatch_async(dispatchQueue, v26);
 
         v7 = v21;
       }
@@ -302,35 +302,35 @@ LABEL_13:
 
     else
     {
-      v16 = 0;
+      fileSizeNumber = 0;
     }
 
     goto LABEL_19;
   }
 
-  v15 = [v13 code];
+  code = [v13 code];
 
-  if (v15 != &stru_B8.reserved3)
+  if (code != &stru_B8.reserved3)
   {
     goto LABEL_9;
   }
 
-  v16 = &off_DE120;
-  v17 = v8;
+  fileSizeNumber = &off_DE120;
+  v17 = fileOnDiskLastTouchDate;
 LABEL_19:
 
 LABEL_20:
 
-  return v16;
+  return fileSizeNumber;
 }
 
-- (int64_t)_fileSizeForAssetAtURL:(id)a3
+- (int64_t)_fileSizeForAssetAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v18 = 0;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:&v18];
+  path = [lCopy path];
+  v7 = [v5 fileExistsAtPath:path isDirectory:&v18];
 
   if (v7)
   {
@@ -338,56 +338,56 @@ LABEL_20:
     {
       v17[0] = 0;
       v17[1] = 0;
-      v8 = [v4 path];
-      [(BKLibraryFileSizeManager *)self _installedUnzippedAssetDiskSpaceMetrics:v17 directory:v8];
+      path2 = [lCopy path];
+      [(BKLibraryFileSizeManager *)self _installedUnzippedAssetDiskSpaceMetrics:v17 directory:path2];
 
-      v9 = v17[0];
+      longLongValue = v17[0];
     }
 
     else
     {
-      v10 = [v4 path];
+      path3 = [lCopy path];
       v16 = 0;
-      v11 = [v5 attributesOfItemAtPath:v10 error:&v16];
+      v11 = [v5 attributesOfItemAtPath:path3 error:&v16];
       v12 = v16;
 
-      v9 = 0;
+      longLongValue = 0;
       if (!v12)
       {
         objc_opt_class();
         v13 = [v11 objectForKeyedSubscript:NSFileSize];
         v14 = BUDynamicCast();
 
-        v9 = [v14 longLongValue];
+        longLongValue = [v14 longLongValue];
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
-  return v9;
+  return longLongValue;
 }
 
-- (void)_installedUnzippedAssetDiskSpaceMetrics:(id *)a3 directory:(id)a4
+- (void)_installedUnzippedAssetDiskSpaceMetrics:(id *)metrics directory:(id)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   context = objc_autoreleasePoolPush();
   v5 = +[NSFileManager defaultManager];
-  v25 = v4;
-  v6 = [NSURL fileURLWithPath:v4 isDirectory:1];
+  v25 = directoryCopy;
+  v6 = [NSURL fileURLWithPath:directoryCopy isDirectory:1];
   v29[0] = NSURLTotalFileAllocatedSizeKey;
   v29[1] = NSURLIsDirectoryKey;
   [NSArray arrayWithObjects:v29 count:2];
   v21 = v7 = v5;
   v22 = v6;
   v8 = [v5 enumeratorAtURL:v6 includingPropertiesForKeys:? options:? errorHandler:?];
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     v11 = 0;
     v26 = 0;
     do
@@ -398,9 +398,9 @@ LABEL_20:
       v13 = v28;
       if (([v13 BOOLValue] & 1) == 0)
       {
-        v14 = [v10 path];
+        path = [v10 path];
         v27 = 0;
-        v15 = [v7 attributesOfItemAtPath:v14 error:&v27];
+        v15 = [v7 attributesOfItemAtPath:path error:&v27];
         v16 = v27;
 
         if (!v16)
@@ -415,12 +415,12 @@ LABEL_20:
       }
 
       objc_autoreleasePoolPop(v12);
-      v19 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v10 = v19;
+      v10 = nextObject2;
     }
 
-    while (v19);
+    while (nextObject2);
   }
 
   else
@@ -429,20 +429,20 @@ LABEL_20:
     v11 = 0;
   }
 
-  v20 = a3->var1 + v11;
-  a3->var0 += v26;
-  a3->var1 = v20;
+  v20 = metrics->var1 + v11;
+  metrics->var0 += v26;
+  metrics->var1 = v20;
 
   objc_autoreleasePoolPop(context);
 }
 
-- (id)_documentsURLWithFilename:(id)a3
+- (id)_documentsURLWithFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:0];
 
-  v6 = [v5 URLByAppendingPathComponent:v3 isDirectory:0];
+  v6 = [v5 URLByAppendingPathComponent:filenameCopy isDirectory:0];
 
   return v6;
 }
@@ -452,23 +452,23 @@ LABEL_20:
   v9[0] = @"version";
   v9[1] = @"assetPathToFileSize";
   v10[0] = &off_DE138;
-  v3 = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
-  v4 = [v3 copy];
+  assetPathToCacheItemDict = [(BKLibraryFileSizeManager *)self assetPathToCacheItemDict];
+  v4 = [assetPathToCacheItemDict copy];
   v10[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v6 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v6 encodeObject:v5 forKey:@"root"];
   [v6 finishEncoding];
-  v7 = [v6 encodedData];
-  v8 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
-  [v7 writeToURL:v8 atomically:1];
+  encodedData = [v6 encodedData];
+  _persistedInfoURL = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
+  [encodedData writeToURL:_persistedInfoURL atomically:1];
 }
 
 - (void)dq_readPersistedInfoFromDisk
 {
-  v3 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
-  v4 = [NSData dataWithContentsOfURL:v3];
+  _persistedInfoURL = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
+  v4 = [NSData dataWithContentsOfURL:_persistedInfoURL];
 
   if (v4)
   {
@@ -480,8 +480,8 @@ LABEL_20:
       v7 = BKLibraryLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
-        sub_913D8(v8, v6, buf, v7);
+        _persistedInfoURL2 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
+        sub_913D8(_persistedInfoURL2, v6, buf, v7);
       }
     }
 
@@ -523,9 +523,9 @@ LABEL_20:
         v15 = BCIMLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v18 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
+          _persistedInfoURL3 = [(BKLibraryFileSizeManager *)self _persistedInfoURL];
           *buf = 138543362;
-          v21 = v18;
+          v21 = _persistedInfoURL3;
           _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "@Corrupt ubiquity cache or unrecongnized version at %{public}@", buf, 0xCu);
         }
       }

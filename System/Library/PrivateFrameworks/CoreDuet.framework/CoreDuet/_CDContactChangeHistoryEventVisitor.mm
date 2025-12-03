@@ -1,33 +1,33 @@
 @interface _CDContactChangeHistoryEventVisitor
 - (NSArray)deletedContactIdentifiers;
-- (_CDContactChangeHistoryEventVisitor)initWithChangeEnumerator:(id)a3;
+- (_CDContactChangeHistoryEventVisitor)initWithChangeEnumerator:(id)enumerator;
 - (void)reset;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitEventsWithBatchSize:(unint64_t)a3 batchCallback:(id)a4;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitEventsWithBatchSize:(unint64_t)size batchCallback:(id)callback;
 @end
 
 @implementation _CDContactChangeHistoryEventVisitor
 
-- (_CDContactChangeHistoryEventVisitor)initWithChangeEnumerator:(id)a3
+- (_CDContactChangeHistoryEventVisitor)initWithChangeEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v9.receiver = self;
   v9.super_class = _CDContactChangeHistoryEventVisitor;
   v6 = [(_CDContactChangeHistoryEventVisitor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_changeEnumerator, a3);
+    objc_storeStrong(&v6->_changeEnumerator, enumerator);
     [(_CDContactChangeHistoryEventVisitor *)v7 reset];
   }
 
   return v7;
 }
 
-- (void)visitEventsWithBatchSize:(unint64_t)a3 batchCallback:(id)a4
+- (void)visitEventsWithBatchSize:(unint64_t)size batchCallback:(id)callback
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  callbackCopy = callback;
   v19 = 0;
   v15 = 0u;
   v16 = 0u;
@@ -52,9 +52,9 @@
         v12 = *(*(&v15 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
         [v12 acceptEventVisitor:{self, v15}];
-        if (self->_count >= a3)
+        if (self->_count >= size)
         {
-          v6[2](v6, self, &v19);
+          callbackCopy[2](callbackCopy, self, &v19);
           [(_CDContactChangeHistoryEventVisitor *)self reset];
           if (v19)
           {
@@ -81,7 +81,7 @@
 
   if (self->_count)
   {
-    v6[2](v6, self, &v19);
+    callbackCopy[2](callbackCopy, self, &v19);
     [(_CDContactChangeHistoryEventVisitor *)self reset];
   }
 
@@ -106,11 +106,11 @@ LABEL_13:
   self->_count = 0;
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   deletedContactIdentifiers = self->_deletedContactIdentifiers;
-  v5 = [a3 contactIdentifier];
-  [(NSMutableArray *)deletedContactIdentifiers addObject:v5];
+  contactIdentifier = [event contactIdentifier];
+  [(NSMutableArray *)deletedContactIdentifiers addObject:contactIdentifier];
 
   ++self->_count;
 }

@@ -1,18 +1,18 @@
 @interface PKEditPassesNavigationController
-- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)a3;
-- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)a3 specificGroup:(id)a4 isForWatch:(BOOL)a5 delegate:(id)a6;
+- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)controller;
+- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)controller specificGroup:(id)group isForWatch:(BOOL)watch delegate:(id)delegate;
 - (void)_done;
 @end
 
 @implementation PKEditPassesNavigationController
 
-- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)a3
+- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PKEditGroupsViewController alloc] initInEditingMode:1 existingGroupsController:v4 isForWatch:0];
-  v6 = [v5 navigationItem];
+  controllerCopy = controller;
+  v5 = [[PKEditGroupsViewController alloc] initInEditingMode:1 existingGroupsController:controllerCopy isForWatch:0];
+  navigationItem = [v5 navigationItem];
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__done];
-  [v6 setLeftBarButtonItem:v7];
+  [navigationItem setLeftBarButtonItem:v7];
 
   v16.receiver = self;
   v16.super_class = PKEditPassesNavigationController;
@@ -68,16 +68,16 @@ void __69__PKEditPassesNavigationController_initWithExistingGroupsController___b
   }
 }
 
-- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)a3 specificGroup:(id)a4 isForWatch:(BOOL)a5 delegate:(id)a6
+- (PKEditPassesNavigationController)initWithExistingGroupsController:(id)controller specificGroup:(id)group isForWatch:(BOOL)watch delegate:(id)delegate
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[PKEditGroupViewController alloc] initWithGroup:v11 existingGroupsController:v10 style:1 placeholders:0 isForWatch:v7 delegate:v12];
-  v14 = [(PKEditGroupViewController *)v13 navigationItem];
+  watchCopy = watch;
+  controllerCopy = controller;
+  groupCopy = group;
+  delegateCopy = delegate;
+  v13 = [[PKEditGroupViewController alloc] initWithGroup:groupCopy existingGroupsController:controllerCopy style:1 placeholders:0 isForWatch:watchCopy delegate:delegateCopy];
+  navigationItem = [(PKEditGroupViewController *)v13 navigationItem];
   v15 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__done];
-  [v14 setLeftBarButtonItem:v15];
+  [navigationItem setLeftBarButtonItem:v15];
 
   v24.receiver = self;
   v24.super_class = PKEditPassesNavigationController;
@@ -135,8 +135,8 @@ void __103__PKEditPassesNavigationController_initWithExistingGroupsController_sp
 
 - (void)_done
 {
-  v2 = [(PKEditPassesNavigationController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKEditPassesNavigationController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

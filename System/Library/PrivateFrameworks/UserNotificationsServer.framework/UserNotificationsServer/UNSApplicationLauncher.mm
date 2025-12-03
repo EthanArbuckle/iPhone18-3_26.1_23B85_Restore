@@ -1,35 +1,35 @@
 @interface UNSApplicationLauncher
-- (UNSApplicationLauncher)initWithLocationMonitor:(id)a3;
-- (id)_queue_actionForNotificationResponse:(id)a3 bundleIdentifier:(id)a4 withHandler:(id)a5 error:(id *)a6;
-- (id)_queue_foregroundLaunchOptionsForApplication:(id)a3 withResponse:(id)a4 actionIdentifier:(id)a5 launchImageName:(id)a6 origin:(id)a7 error:(id *)a8;
-- (void)_queue_acquireActivityKitAssertionIfNeededForBundleIdentifier:(id)a3 withResponse:(id)a4;
-- (void)_queue_addProcessAssertion:(id)a3 forBundleID:(id)a4;
-- (void)_queue_backgroundLaunchApplication:(id)a3 withResponse:(id)a4 completionHandler:(id)a5;
-- (void)_queue_foregroundLaunchApplication:(id)a3 withOptions:(id)a4 responseActionIdentifier:(id)a5 endpoint:(id)a6 completionHandler:(id)a7;
-- (void)_queue_removeAllProcessAssertionsAndInvalidate:(BOOL)a3;
-- (void)_queue_removeProcessAssertion:(id)a3 forBundleID:(id)a4 invalidate:(BOOL)a5;
-- (void)_queue_removeProcessAssertionsHavingReason:(unsigned int)a3 forBundleID:(id)a4 invalidate:(BOOL)a5;
-- (void)_queue_willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
-- (void)_removeAllProcessAssertionsAndInvalidate:(BOOL)a3;
-- (void)backgroundLaunchApplication:(id)a3 withResponse:(id)a4 completionHandler:(id)a5;
+- (UNSApplicationLauncher)initWithLocationMonitor:(id)monitor;
+- (id)_queue_actionForNotificationResponse:(id)response bundleIdentifier:(id)identifier withHandler:(id)handler error:(id *)error;
+- (id)_queue_foregroundLaunchOptionsForApplication:(id)application withResponse:(id)response actionIdentifier:(id)identifier launchImageName:(id)name origin:(id)origin error:(id *)error;
+- (void)_queue_acquireActivityKitAssertionIfNeededForBundleIdentifier:(id)identifier withResponse:(id)response;
+- (void)_queue_addProcessAssertion:(id)assertion forBundleID:(id)d;
+- (void)_queue_backgroundLaunchApplication:(id)application withResponse:(id)response completionHandler:(id)handler;
+- (void)_queue_foregroundLaunchApplication:(id)application withOptions:(id)options responseActionIdentifier:(id)identifier endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)_queue_removeAllProcessAssertionsAndInvalidate:(BOOL)invalidate;
+- (void)_queue_removeProcessAssertion:(id)assertion forBundleID:(id)d invalidate:(BOOL)invalidate;
+- (void)_queue_removeProcessAssertionsHavingReason:(unsigned int)reason forBundleID:(id)d invalidate:(BOOL)invalidate;
+- (void)_queue_willPresentNotification:(id)notification forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)_removeAllProcessAssertionsAndInvalidate:(BOOL)invalidate;
+- (void)backgroundLaunchApplication:(id)application withResponse:(id)response completionHandler:(id)handler;
 - (void)dealloc;
-- (void)foregroundLaunchApplication:(id)a3 withResponse:(id)a4 launchImageName:(id)a5 origin:(id)a6 endpoint:(id)a7 completionHandler:(id)a8;
-- (void)foregroundLaunchOptionsForApplication:(id)a3 withResponse:(id)a4 launchImageName:(id)a5 origin:(id)a6 queue:(id)a7 completionHandler:(id)a8;
-- (void)willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (void)foregroundLaunchApplication:(id)application withResponse:(id)response launchImageName:(id)name origin:(id)origin endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)foregroundLaunchOptionsForApplication:(id)application withResponse:(id)response launchImageName:(id)name origin:(id)origin queue:(id)queue completionHandler:(id)handler;
+- (void)willPresentNotification:(id)notification forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
 @end
 
 @implementation UNSApplicationLauncher
 
-- (UNSApplicationLauncher)initWithLocationMonitor:(id)a3
+- (UNSApplicationLauncher)initWithLocationMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v14.receiver = self;
   v14.super_class = UNSApplicationLauncher;
   v6 = [(UNSApplicationLauncher *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locationMonitor, a3);
+    objc_storeStrong(&v6->_locationMonitor, monitor);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     bundleIdentifierToAssertions = v7->_bundleIdentifierToAssertions;
     v7->_bundleIdentifierToAssertions = v8;
@@ -51,32 +51,32 @@
   [(UNSApplicationLauncher *)&v3 dealloc];
 }
 
-- (void)foregroundLaunchApplication:(id)a3 withResponse:(id)a4 launchImageName:(id)a5 origin:(id)a6 endpoint:(id)a7 completionHandler:(id)a8
+- (void)foregroundLaunchApplication:(id)application withResponse:(id)response launchImageName:(id)name origin:(id)origin endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  applicationCopy = application;
+  responseCopy = response;
+  nameCopy = name;
+  originCopy = origin;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__UNSApplicationLauncher_foregroundLaunchApplication_withResponse_launchImageName_origin_endpoint_completionHandler___block_invoke;
   block[3] = &unk_279E10DC8;
-  v28 = v15;
-  v29 = self;
-  v30 = v14;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v14;
-  v26 = v15;
+  v28 = responseCopy;
+  selfCopy = self;
+  v30 = applicationCopy;
+  v31 = nameCopy;
+  v32 = originCopy;
+  v33 = endpointCopy;
+  v34 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = endpointCopy;
+  v23 = originCopy;
+  v24 = nameCopy;
+  v25 = applicationCopy;
+  v26 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -87,32 +87,32 @@ void __117__UNSApplicationLauncher_foregroundLaunchApplication_withResponse_laun
   [*(a1 + 40) _queue_foregroundLaunchApplication:*(a1 + 48) withOptions:v2 responseActionIdentifier:v3 endpoint:*(a1 + 72) completionHandler:*(a1 + 80)];
 }
 
-- (void)foregroundLaunchOptionsForApplication:(id)a3 withResponse:(id)a4 launchImageName:(id)a5 origin:(id)a6 queue:(id)a7 completionHandler:(id)a8
+- (void)foregroundLaunchOptionsForApplication:(id)application withResponse:(id)response launchImageName:(id)name origin:(id)origin queue:(id)queue completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  applicationCopy = application;
+  responseCopy = response;
+  nameCopy = name;
+  originCopy = origin;
+  queueCopy = queue;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __124__UNSApplicationLauncher_foregroundLaunchOptionsForApplication_withResponse_launchImageName_origin_queue_completionHandler___block_invoke;
   block[3] = &unk_279E10DC8;
-  v28 = v15;
-  v29 = self;
-  v30 = v14;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v14;
-  v26 = v15;
+  v28 = responseCopy;
+  selfCopy = self;
+  v30 = applicationCopy;
+  v31 = nameCopy;
+  v32 = originCopy;
+  v33 = queueCopy;
+  v34 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = queueCopy;
+  v23 = originCopy;
+  v24 = nameCopy;
+  v25 = applicationCopy;
+  v26 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -141,27 +141,27 @@ void __124__UNSApplicationLauncher_foregroundLaunchOptionsForApplication_withRes
   dispatch_async(v10, v14);
 }
 
-- (id)_queue_foregroundLaunchOptionsForApplication:(id)a3 withResponse:(id)a4 actionIdentifier:(id)a5 launchImageName:(id)a6 origin:(id)a7 error:(id *)a8
+- (id)_queue_foregroundLaunchOptionsForApplication:(id)application withResponse:(id)response actionIdentifier:(id)identifier launchImageName:(id)name origin:(id)origin error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v33 = a6;
-  v17 = a7;
+  applicationCopy = application;
+  responseCopy = response;
+  identifierCopy = identifier;
+  nameCopy = name;
+  originCopy = origin;
   dispatch_assert_queue_V2(self->_queue);
-  v18 = [v15 notification];
-  v19 = [v18 request];
-  v20 = [v19 content];
-  v21 = [v20 targetContentIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  targetContentIdentifier = [content targetContentIdentifier];
 
   v22 = *MEMORY[0x277CE2060];
   if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v39 = v14;
+    v39 = applicationCopy;
     v40 = 2114;
-    v41 = v16;
+    v41 = identifierCopy;
     _os_log_impl(&dword_270AA8000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launch application in foreground for notification response action %{public}@", buf, 0x16u);
   }
 
@@ -169,32 +169,32 @@ void __124__UNSApplicationLauncher_foregroundLaunchOptionsForApplication_withRes
   v34[1] = 3221225472;
   v34[2] = __130__UNSApplicationLauncher__queue_foregroundLaunchOptionsForApplication_withResponse_actionIdentifier_launchImageName_origin_error___block_invoke;
   v34[3] = &unk_279E10E18;
-  v23 = v14;
+  v23 = applicationCopy;
   v35 = v23;
-  v24 = v16;
+  v24 = identifierCopy;
   v36 = v24;
-  v25 = [(UNSApplicationLauncher *)self _queue_actionForNotificationResponse:v15 bundleIdentifier:v23 withHandler:v34 error:a8];
+  v25 = [(UNSApplicationLauncher *)self _queue_actionForNotificationResponse:responseCopy bundleIdentifier:v23 withHandler:v34 error:error];
   if (v25)
   {
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v37 = v25;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-    [v26 bs_setSafeObject:v27 forKey:*MEMORY[0x277D0ABD0]];
+    [dictionary bs_setSafeObject:v27 forKey:*MEMORY[0x277D0ABD0]];
 
-    v28 = v33;
-    [v26 bs_setSafeObject:v33 forKey:*MEMORY[0x277D0AC18]];
-    [v26 bs_setSafeObject:v17 forKey:*MEMORY[0x277D0AC28]];
+    v28 = nameCopy;
+    [dictionary bs_setSafeObject:nameCopy forKey:*MEMORY[0x277D0AC18]];
+    [dictionary bs_setSafeObject:originCopy forKey:*MEMORY[0x277D0AC28]];
     v29 = MEMORY[0x277CBEC38];
-    [v26 bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
-    [v26 bs_setSafeObject:v29 forKey:*MEMORY[0x277D0AC70]];
-    [v26 bs_setSafeObject:v21 forKey:*MEMORY[0x277D77838]];
-    v30 = [MEMORY[0x277D0AD60] optionsWithDictionary:v26];
+    [dictionary bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0AC58]];
+    [dictionary bs_setSafeObject:v29 forKey:*MEMORY[0x277D0AC70]];
+    [dictionary bs_setSafeObject:targetContentIdentifier forKey:*MEMORY[0x277D77838]];
+    v30 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
   }
 
   else
   {
     v30 = 0;
-    v28 = v33;
+    v28 = nameCopy;
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -223,19 +223,19 @@ void __130__UNSApplicationLauncher__queue_foregroundLaunchOptionsForApplication_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_foregroundLaunchApplication:(id)a3 withOptions:(id)a4 responseActionIdentifier:(id)a5 endpoint:(id)a6 completionHandler:(id)a7
+- (void)_queue_foregroundLaunchApplication:(id)application withOptions:(id)options responseActionIdentifier:(id)identifier endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (v12)
+  applicationCopy = application;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v14)
+    if (endpointCopy)
     {
-      [MEMORY[0x277D0AD78] serviceWithEndpoint:v14];
+      [MEMORY[0x277D0AD78] serviceWithEndpoint:endpointCopy];
     }
 
     else
@@ -247,15 +247,15 @@ void __130__UNSApplicationLauncher__queue_foregroundLaunchOptionsForApplication_
     v18[1] = 3221225472;
     v18[2] = __125__UNSApplicationLauncher__queue_foregroundLaunchApplication_withOptions_responseActionIdentifier_endpoint_completionHandler___block_invoke;
     v18[3] = &unk_279E10E40;
-    v19 = v11;
-    v20 = v13;
+    v19 = applicationCopy;
+    v20 = identifierCopy;
     v21 = v16;
-    [v17 openApplication:v19 withOptions:v12 completion:v18];
+    [v17 openApplication:v19 withOptions:optionsCopy completion:v18];
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
-    (*(v15 + 2))(v15, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -295,19 +295,19 @@ void __125__UNSApplicationLauncher__queue_foregroundLaunchApplication_withOption
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)backgroundLaunchApplication:(id)a3 withResponse:(id)a4 completionHandler:(id)a5
+- (void)backgroundLaunchApplication:(id)application withResponse:(id)response completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = *MEMORY[0x277CE2060];
   if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v8;
+    v22 = applicationCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = responseCopy;
     _os_log_impl(&dword_270AA8000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] backgroundLaunchApplication: response: %@", buf, 0x16u);
   }
 
@@ -317,12 +317,12 @@ void __125__UNSApplicationLauncher__queue_foregroundLaunchApplication_withOption
   v17[2] = __85__UNSApplicationLauncher_backgroundLaunchApplication_withResponse_completionHandler___block_invoke;
   v17[3] = &unk_279E10D78;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = applicationCopy;
+  v19 = responseCopy;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = responseCopy;
+  v15 = applicationCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -339,13 +339,13 @@ uint64_t __85__UNSApplicationLauncher_backgroundLaunchApplication_withResponse_c
   return [v2 _queue_backgroundLaunchApplication:v3 withResponse:v4 completionHandler:v5];
 }
 
-- (void)_queue_acquireActivityKitAssertionIfNeededForBundleIdentifier:(id)a3 withResponse:(id)a4
+- (void)_queue_acquireActivityKitAssertionIfNeededForBundleIdentifier:(id)identifier withResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 actionIdentifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CE20F0]];
+  identifierCopy = identifier;
+  responseCopy = response;
+  actionIdentifier = [responseCopy actionIdentifier];
+  v8 = [actionIdentifier isEqualToString:*MEMORY[0x277CE20F0]];
 
   if ((v8 & 1) == 0)
   {
@@ -354,35 +354,35 @@ uint64_t __85__UNSApplicationLauncher_backgroundLaunchApplication_withResponse_c
     if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v6 actionIdentifier];
+      actionIdentifier2 = [responseCopy actionIdentifier];
       v26 = 138543618;
-      v27 = v5;
+      v27 = identifierCopy;
       v28 = 2114;
-      v29 = v12;
+      v29 = actionIdentifier2;
       _os_log_impl(&dword_270AA8000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Attempting to acquire live activity assertion for notification response with action identifier %{public}@.", &v26, 0x16u);
     }
 
-    v13 = [objc_alloc(MEMORY[0x277D4D500]) initWithBundleIdentifier:v5];
+    v13 = [objc_alloc(MEMORY[0x277D4D500]) initWithBundleIdentifier:identifierCopy];
     v14 = [objc_alloc(MEMORY[0x277D4D4F8]) initWithExplanation:@"Background Launch App To Launch Live Activity from Notification" target:v13 invalidationHandler:0];
-    v15 = [v14 state];
+    state = [v14 state];
     v16 = *v9;
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15 == 1)
+    if (state == 1)
     {
       if (v17)
       {
         v18 = v16;
-        v19 = [v6 actionIdentifier];
-        v20 = [v14 state];
-        v21 = [v14 invalidationReason];
+        actionIdentifier3 = [responseCopy actionIdentifier];
+        state2 = [v14 state];
+        invalidationReason = [v14 invalidationReason];
         v26 = 138544130;
-        v27 = v5;
+        v27 = identifierCopy;
         v28 = 2114;
-        v29 = v19;
+        v29 = actionIdentifier3;
         v30 = 2050;
-        v31 = v20;
+        v31 = state2;
         v32 = 2050;
-        v33 = v21;
+        v33 = invalidationReason;
         v22 = "[%{public}@] Successfully to acquired live activity assertion for notification response with action identifier %{public}@. SNAAssertionState=%{public}lu SNAInvalidationReason=%{public}lu";
         v23 = v18;
         v24 = 42;
@@ -394,11 +394,11 @@ LABEL_9:
     else if (v17)
     {
       v18 = v16;
-      v19 = [v6 actionIdentifier];
+      actionIdentifier3 = [responseCopy actionIdentifier];
       v26 = 138543618;
-      v27 = v5;
+      v27 = identifierCopy;
       v28 = 2114;
-      v29 = v19;
+      v29 = actionIdentifier3;
       v22 = "[%{public}@] Failed to acquire live activity assertion for notification response with action identifier %{public}@.";
       v23 = v18;
       v24 = 22;
@@ -409,21 +409,21 @@ LABEL_9:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_backgroundLaunchApplication:(id)a3 withResponse:(id)a4 completionHandler:(id)a5
+- (void)_queue_backgroundLaunchApplication:(id)application withResponse:(id)response completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v26 = a5;
-  v10 = [v9 actionIdentifier];
+  applicationCopy = application;
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
   v11 = MEMORY[0x277CE2060];
   v12 = *MEMORY[0x277CE2060];
   if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = applicationCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v10;
+    *&buf[14] = actionIdentifier;
     _os_log_impl(&dword_270AA8000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launch application in background for notification response %{public}@", buf, 0x16u);
   }
 
@@ -439,13 +439,13 @@ LABEL_9:
   v32[2] = __92__UNSApplicationLauncher__queue_backgroundLaunchApplication_withResponse_completionHandler___block_invoke;
   v32[3] = &unk_279E10E90;
   v32[4] = self;
-  v13 = v8;
+  v13 = applicationCopy;
   v33 = v13;
-  v14 = v10;
+  v14 = actionIdentifier;
   v34 = v14;
   objc_copyWeak(&v36, &location);
   v35 = buf;
-  v15 = [(UNSApplicationLauncher *)self _queue_actionForNotificationResponse:v9 bundleIdentifier:v13 withHandler:v32];
+  v15 = [(UNSApplicationLauncher *)self _queue_actionForNotificationResponse:responseCopy bundleIdentifier:v13 withHandler:v32];
   v16 = *v11;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -458,20 +458,20 @@ LABEL_9:
 
   if (v15)
   {
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v38 = v15;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-    [v17 bs_setSafeObject:v18 forKey:*MEMORY[0x277D0ABD0]];
+    [dictionary bs_setSafeObject:v18 forKey:*MEMORY[0x277D0ABD0]];
 
-    [v17 bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0ABF0]];
-    v19 = [v9 notification];
-    v20 = [v19 request];
-    v21 = [v20 content];
-    v22 = [v21 targetContentIdentifier];
+    [dictionary bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0ABF0]];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    targetContentIdentifier = [content targetContentIdentifier];
 
-    [v17 bs_setSafeObject:v22 forKey:*MEMORY[0x277D77838]];
-    v23 = [MEMORY[0x277D0AD60] optionsWithDictionary:v17];
-    v24 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    [dictionary bs_setSafeObject:targetContentIdentifier forKey:*MEMORY[0x277D77838]];
+    v23 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __92__UNSApplicationLauncher__queue_backgroundLaunchApplication_withResponse_completionHandler___block_invoke_12;
@@ -480,13 +480,13 @@ LABEL_9:
     v28 = v13;
     v29 = v14;
     v31 = buf;
-    v30 = v26;
-    [v24 openApplication:v28 withOptions:v23 completion:v27];
+    v30 = handlerCopy;
+    [serviceWithDefaultShellEndpoint openApplication:v28 withOptions:v23 completion:v27];
   }
 
-  else if (v26)
+  else if (handlerCopy)
   {
-    (*(v26 + 2))(v26, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   objc_destroyWeak(&v36);
@@ -636,35 +636,35 @@ void __92__UNSApplicationLauncher__queue_backgroundLaunchApplication_withRespons
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_actionForNotificationResponse:(id)a3 bundleIdentifier:(id)a4 withHandler:(id)a5 error:(id *)a6
+- (id)_queue_actionForNotificationResponse:(id)response bundleIdentifier:(id)identifier withHandler:(id)handler error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 notification];
-  v14 = [v13 request];
-  v15 = [v14 trigger];
+  responseCopy = response;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  trigger = [request trigger];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ((isKindOfClass & 1) != 0 && ([(UNCLocationMonitor *)self->_locationMonitor isBundleIdentifierAuthorizedForRegionMonitoring:v11]& 1) == 0)
+  if ((isKindOfClass & 1) != 0 && ([(UNCLocationMonitor *)self->_locationMonitor isBundleIdentifierAuthorizedForRegionMonitoring:identifierCopy]& 1) == 0)
   {
     v21 = *MEMORY[0x277CE2060];
     if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
     {
       v22 = v21;
-      v23 = [v10 actionIdentifier];
+      actionIdentifier = [responseCopy actionIdentifier];
       *buf = 138543618;
-      v31 = v11;
+      v31 = identifierCopy;
       v32 = 2114;
-      v33 = v23;
+      v33 = actionIdentifier;
       _os_log_impl(&dword_270AA8000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Suppressing response action %{public}@ because app does not have location authorization.", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:1 userInfo:0];
-      *a6 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -680,11 +680,11 @@ void __92__UNSApplicationLauncher__queue_backgroundLaunchApplication_withRespons
     v24[1] = 3221225472;
     v24[2] = __98__UNSApplicationLauncher__queue_actionForNotificationResponse_bundleIdentifier_withHandler_error___block_invoke;
     v24[3] = &unk_279E10F08;
-    v25 = v11;
+    v25 = identifierCopy;
     v29 = isKindOfClass & 1;
-    v26 = v10;
-    v27 = self;
-    v28 = v12;
+    v26 = responseCopy;
+    selfCopy = self;
+    v28 = handlerCopy;
     v18 = [v17 initWithResponse:v26 withHandler:v24];
   }
 
@@ -725,35 +725,35 @@ void __98__UNSApplicationLauncher__queue_actionForNotificationResponse_bundleIde
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)willPresentNotification:(id)notification forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__UNSApplicationLauncher_willPresentNotification_forBundleIdentifier_withCompletionHandler___block_invoke;
   v15[3] = &unk_279E10D78;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = notificationCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = notificationCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_queue_willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)_queue_willPresentNotification:(id)notification forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v29 = v8;
-  v11 = [v8 request];
-  v30 = [v11 trigger];
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v29 = notificationCopy;
+  request = [notificationCopy request];
+  trigger = [request trigger];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -765,7 +765,7 @@ void __98__UNSApplicationLauncher__queue_actionForNotificationResponse_bundleIde
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v30 isContentAvailable] ^ 1;
+      v12 = [trigger isContentAvailable] ^ 1;
       goto LABEL_6;
     }
   }
@@ -776,12 +776,12 @@ LABEL_6:
   if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v11 identifier];
-    v16 = [v15 un_logDigest];
+    identifier = [request identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543618;
-    *&buf[4] = v9;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v16;
+    *&buf[14] = un_logDigest;
     _os_log_impl(&dword_270AA8000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Send willPresentNotification for notification %{public}@", buf, 0x16u);
   }
 
@@ -802,24 +802,24 @@ LABEL_6:
   v36[2] = __99__UNSApplicationLauncher__queue_willPresentNotification_forBundleIdentifier_withCompletionHandler___block_invoke;
   v36[3] = &unk_279E10F58;
   v36[4] = self;
-  v18 = v9;
+  v18 = identifierCopy;
   v37 = v18;
-  v19 = v11;
+  v19 = request;
   v38 = v19;
   v40 = v44;
   v41 = buf;
   objc_copyWeak(&v42, &location);
-  v20 = v10;
+  v20 = handlerCopy;
   v39 = v20;
   v21 = [v17 initWithNotification:v29 deliverable:v12 timeout:v36 withHandler:30.0];
-  v22 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v46 = v21;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-  [v22 bs_setSafeObject:v23 forKey:*MEMORY[0x277D0ABD0]];
+  [dictionary bs_setSafeObject:v23 forKey:*MEMORY[0x277D0ABD0]];
 
-  [v22 bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0ABF0]];
-  v24 = [MEMORY[0x277D0AD60] optionsWithDictionary:v22];
-  v25 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  [dictionary bs_setSafeObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D0ABF0]];
+  v24 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __99__UNSApplicationLauncher__queue_willPresentNotification_forBundleIdentifier_withCompletionHandler___block_invoke_24;
@@ -831,7 +831,7 @@ LABEL_6:
   v33 = v27;
   v34 = v44;
   v35 = buf;
-  [v25 openApplication:v26 withOptions:v24 completion:v31];
+  [serviceWithDefaultShellEndpoint openApplication:v26 withOptions:v24 completion:v31];
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(&location);
@@ -1120,56 +1120,56 @@ uint64_t __142__UNSApplicationLauncher__queue_newProcessAssertionForBundleID_PID
   return v4();
 }
 
-- (void)_queue_addProcessAssertion:(id)a3 forBundleID:(id)a4
+- (void)_queue_addProcessAssertion:(id)assertion forBundleID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  assertionCopy = assertion;
+  dCopy = d;
+  if (assertionCopy && dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:v6];
-    if (!v7)
+    array = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:dCopy];
+    if (!array)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_bundleIdentifierToAssertions setObject:v7 forKey:v6];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_bundleIdentifierToAssertions setObject:array forKey:dCopy];
     }
 
-    [v7 addObject:v8];
+    [array addObject:assertionCopy];
   }
 }
 
-- (void)_queue_removeProcessAssertion:(id)a3 forBundleID:(id)a4 invalidate:(BOOL)a5
+- (void)_queue_removeProcessAssertion:(id)assertion forBundleID:(id)d invalidate:(BOOL)invalidate
 {
-  v5 = a5;
+  invalidateCopy = invalidate;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  assertionCopy = assertion;
+  dCopy = d;
+  v10 = dCopy;
+  if (assertionCopy && dCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:v9];
-    if ([v11 containsObject:v8])
+    v11 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:dCopy];
+    if ([v11 containsObject:assertionCopy])
     {
       v12 = *MEMORY[0x277CE2060];
       if (os_log_type_enabled(*MEMORY[0x277CE2060], OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [v8 name];
+        name = [assertionCopy name];
         v16 = 138543618;
         v17 = v10;
         v18 = 2114;
-        v19 = v14;
+        v19 = name;
         _os_log_impl(&dword_270AA8000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing process assertion for %{public}@", &v16, 0x16u);
       }
 
-      [v11 removeObject:v8];
+      [v11 removeObject:assertionCopy];
       if (![v11 count])
       {
         [(NSMutableDictionary *)self->_bundleIdentifierToAssertions removeObjectForKey:v10];
       }
 
-      if (v5)
+      if (invalidateCopy)
       {
-        [v8 invalidate];
+        [assertionCopy invalidate];
       }
     }
   }
@@ -1177,30 +1177,30 @@ uint64_t __142__UNSApplicationLauncher__queue_newProcessAssertionForBundleID_PID
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeProcessAssertionsHavingReason:(unsigned int)a3 forBundleID:(id)a4 invalidate:(BOOL)a5
+- (void)_queue_removeProcessAssertionsHavingReason:(unsigned int)reason forBundleID:(id)d invalidate:(BOOL)invalidate
 {
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  if (dCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:v8];
+    v9 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions objectForKey:dCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __92__UNSApplicationLauncher__queue_removeProcessAssertionsHavingReason_forBundleID_invalidate___block_invoke;
     v14[3] = &__block_descriptor_37_e29__16__0__BKSProcessAssertion_8l;
-    v15 = a3;
-    v16 = a5;
+    reasonCopy = reason;
+    invalidateCopy = invalidate;
     v10 = [v9 bs_mapNoNulls:v14];
     v11 = [v10 count];
     bundleIdentifierToAssertions = self->_bundleIdentifierToAssertions;
     if (v11)
     {
       v13 = [v10 mutableCopy];
-      [(NSMutableDictionary *)bundleIdentifierToAssertions setObject:v13 forKey:v8];
+      [(NSMutableDictionary *)bundleIdentifierToAssertions setObject:v13 forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)bundleIdentifierToAssertions removeObjectForKey:v8];
+      [(NSMutableDictionary *)bundleIdentifierToAssertions removeObjectForKey:dCopy];
     }
   }
 }
@@ -1226,7 +1226,7 @@ id __92__UNSApplicationLauncher__queue_removeProcessAssertionsHavingReason_forBu
   return v4;
 }
 
-- (void)_removeAllProcessAssertionsAndInvalidate:(BOOL)a3
+- (void)_removeAllProcessAssertionsAndInvalidate:(BOOL)invalidate
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1234,21 +1234,21 @@ id __92__UNSApplicationLauncher__queue_removeProcessAssertionsHavingReason_forBu
   v4[2] = __67__UNSApplicationLauncher__removeAllProcessAssertionsAndInvalidate___block_invoke;
   v4[3] = &unk_279E11090;
   v4[4] = self;
-  v5 = a3;
+  invalidateCopy = invalidate;
   dispatch_async(queue, v4);
 }
 
-- (void)_queue_removeAllProcessAssertionsAndInvalidate:(BOOL)a3
+- (void)_queue_removeAllProcessAssertionsAndInvalidate:(BOOL)invalidate
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (invalidate)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions allValues];
-    v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allValues = [(NSMutableDictionary *)self->_bundleIdentifierToAssertions allValues];
+    v5 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1260,7 +1260,7 @@ id __92__UNSApplicationLauncher__queue_removeProcessAssertionsHavingReason_forBu
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v20 + 1) + 8 * v8);
@@ -1298,7 +1298,7 @@ id __92__UNSApplicationLauncher__queue_removeProcessAssertionsHavingReason_forBu
         }
 
         while (v8 != v6);
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v6);

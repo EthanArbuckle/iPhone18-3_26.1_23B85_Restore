@@ -1,41 +1,41 @@
 @interface _FBSSnapshotContext
 - (CGSize)snapshotSize;
-- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)a3 layer:(id)a4;
-- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)a3 layers:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)configuration layer:(id)layer;
+- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)configuration layers:(id)layers;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _FBSSnapshotContext
 
-- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)a3 layer:(id)a4
+- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)configuration layer:(id)layer
 {
   v6 = MEMORY[0x1E695DFB8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithObject:v7];
+  layerCopy = layer;
+  configurationCopy = configuration;
+  v9 = [[v6 alloc] initWithObject:layerCopy];
 
-  v10 = [(_FBSSnapshotContext *)self initWithDisplayConfiguration:v8 layers:v9];
+  v10 = [(_FBSSnapshotContext *)self initWithDisplayConfiguration:configurationCopy layers:v9];
   return v10;
 }
 
-- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)a3 layers:(id)a4
+- (_FBSSnapshotContext)initWithDisplayConfiguration:(id)configuration layers:(id)layers
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  layersCopy = layers;
   v17.receiver = self;
   v17.super_class = _FBSSnapshotContext;
   v9 = [(_FBSSnapshotContext *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_displayConfiguration, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_displayConfiguration, configuration);
+    v11 = [layersCopy copy];
     layers = v10->_layers;
     v10->_layers = v11;
 
-    [v7 pointScale];
+    [configurationCopy pointScale];
     v10->_scale = v13;
-    [v7 bounds];
+    [configurationCopy bounds];
     v10->_snapshotSize.width = v14;
     v10->_snapshotSize.height = v15;
     v10->_opaque = 1;
@@ -44,7 +44,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_FBSSnapshotContext alloc] initWithDisplayConfiguration:self->_displayConfiguration layers:self->_layers];
   [(_FBSSnapshotContext *)v4 setOpaque:self->_opaque];

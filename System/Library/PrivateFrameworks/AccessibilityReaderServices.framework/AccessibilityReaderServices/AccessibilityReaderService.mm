@@ -1,9 +1,9 @@
 @interface AccessibilityReaderService
 + (_TtC27AccessibilityReaderServices26AccessibilityReaderService)sharedInstance;
-- (BOOL)hideAccessibilityReaderUIViewAndReturnError:(id *)a3;
-- (BOOL)showAccessibilityReaderUIViewAndReturnError:(id *)a3;
-- (BOOL)startAccessibilityReaderAndReturnError:(id *)a3;
-- (BOOL)stopAccessibilityReaderAndReturnError:(id *)a3;
+- (BOOL)hideAccessibilityReaderUIViewAndReturnError:(id *)error;
+- (BOOL)showAccessibilityReaderUIViewAndReturnError:(id *)error;
+- (BOOL)startAccessibilityReaderAndReturnError:(id *)error;
+- (BOOL)stopAccessibilityReaderAndReturnError:(id *)error;
 - (_TtC27AccessibilityReaderServices26AccessibilityReaderService)init;
 @end
 
@@ -35,7 +35,7 @@
   return [(AccessibilityReaderService *)&v8 init];
 }
 
-- (BOOL)startAccessibilityReaderAndReturnError:(id *)a3
+- (BOOL)startAccessibilityReaderAndReturnError:(id *)error
 {
   sub_23D826DDC(self + OBJC_IVAR____TtC27AccessibilityReaderServices26AccessibilityReaderService_serviceImpl, v6);
   v3 = v7;
@@ -46,7 +46,7 @@
   return 1;
 }
 
-- (BOOL)stopAccessibilityReaderAndReturnError:(id *)a3
+- (BOOL)stopAccessibilityReaderAndReturnError:(id *)error
 {
   sub_23D826DDC(self + OBJC_IVAR____TtC27AccessibilityReaderServices26AccessibilityReaderService_serviceImpl, v6);
   v3 = v7;
@@ -57,7 +57,7 @@
   return 1;
 }
 
-- (BOOL)showAccessibilityReaderUIViewAndReturnError:(id *)a3
+- (BOOL)showAccessibilityReaderUIViewAndReturnError:(id *)error
 {
   sub_23D826DDC(self + OBJC_IVAR____TtC27AccessibilityReaderServices26AccessibilityReaderService_serviceImpl, v6);
   v3 = v7;
@@ -68,7 +68,7 @@
   return 1;
 }
 
-- (BOOL)hideAccessibilityReaderUIViewAndReturnError:(id *)a3
+- (BOOL)hideAccessibilityReaderUIViewAndReturnError:(id *)error
 {
   sub_23D826DDC(self + OBJC_IVAR____TtC27AccessibilityReaderServices26AccessibilityReaderService_serviceImpl, v6);
   v3 = v7;

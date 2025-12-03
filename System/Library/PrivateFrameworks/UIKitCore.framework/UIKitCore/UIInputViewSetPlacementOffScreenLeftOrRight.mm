@@ -1,33 +1,33 @@
 @interface UIInputViewSetPlacementOffScreenLeftOrRight
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (void)setOtherPlacement:(id)a3;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (void)setOtherPlacement:(id)placement;
 @end
 
 @implementation UIInputViewSetPlacementOffScreenLeftOrRight
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
   if (self->_otherPlacement)
   {
-    v5 = [(UIInputViewSetPlacement *)self->_otherPlacement verticalConstraintForInputViewSet:a3 hostView:a4 containerView:a5];
+    v5 = [(UIInputViewSetPlacement *)self->_otherPlacement verticalConstraintForInputViewSet:set hostView:view containerView:containerView];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIInputViewSetPlacementOffScreenLeftOrRight;
-    v5 = [(UIInputViewSetPlacement *)&v7 verticalConstraintForInputViewSet:a3 hostView:a4 containerView:a5];
+    v5 = [(UIInputViewSetPlacement *)&v7 verticalConstraintForInputViewSet:set hostView:view containerView:containerView];
   }
 
   return v5;
 }
 
-- (void)setOtherPlacement:(id)a3
+- (void)setOtherPlacement:(id)placement
 {
-  v6 = a3;
-  if ([v6 showsInputViews] && (objc_msgSend(v6, "showsKeyboard") & 1) == 0)
+  placementCopy = placement;
+  if ([placementCopy showsInputViews] && (objc_msgSend(placementCopy, "showsKeyboard") & 1) == 0)
   {
-    v5 = v6;
+    v5 = placementCopy;
     otherPlacement = self->_otherPlacement;
     self->_otherPlacement = v5;
   }

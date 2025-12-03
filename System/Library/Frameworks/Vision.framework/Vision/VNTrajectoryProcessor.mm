@@ -1,30 +1,30 @@
 @interface VNTrajectoryProcessor
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (VNTrajectoryProcessor)initWithFrameAnalysisSpacing:(id *)a3 trajectoryLength:(int64_t)a4;
-- (__CVBuffer)_createCroppedAndScaledBufferFromVNImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 withOptions:(id)a5 error:(id *)a6;
-- (id)_VNPointsFromCGPoints:(const void *)a3;
-- (id)processVNImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 withOptions:(id)a5 warningRecorder:(id)a6 requestUUID:(id)a7 error:(id *)a8;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (VNTrajectoryProcessor)initWithFrameAnalysisSpacing:(id *)spacing trajectoryLength:(int64_t)length;
+- (__CVBuffer)_createCroppedAndScaledBufferFromVNImageBuffer:(id)buffer regionOfInterest:(CGRect)interest withOptions:(id)options error:(id *)error;
+- (id)_VNPointsFromCGPoints:(const void *)points;
+- (id)processVNImageBuffer:(id)buffer regionOfInterest:(CGRect)interest withOptions:(id)options warningRecorder:(id)recorder requestUUID:(id)d error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation VNTrajectoryProcessor
 
-- (id)processVNImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 withOptions:(id)a5 warningRecorder:(id)a6 requestUUID:(id)a7 error:(id *)a8
+- (id)processVNImageBuffer:(id)buffer regionOfInterest:(CGRect)interest withOptions:(id)options warningRecorder:(id)recorder requestUUID:(id)d error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v166[1] = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a5;
-  v136 = a6;
-  v137 = a7;
+  bufferCopy = buffer;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  dCopy = d;
   if (!self->_processAllFrames)
   {
-    if (v18)
+    if (bufferCopy)
     {
-      [v18 timingInfo];
+      [bufferCopy timingInfo];
     }
 
     else
@@ -50,7 +50,7 @@
     }
   }
 
-  v135 = [VNValidationUtilities originatingRequestSpecifierInOptions:v19 error:a8];
+  v135 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v135)
   {
     previousFrameImage = 0;
@@ -58,30 +58,30 @@
     goto LABEL_102;
   }
 
-  v20 = [v18 width];
-  v21 = [v18 height];
+  width = [bufferCopy width];
+  height = [bufferCopy height];
   v153[0] = MEMORY[0x1E69E9820];
   v153[1] = 3221225472;
   v153[2] = __109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_withOptions_warningRecorder_requestUUID_error___block_invoke;
   v153[3] = &unk_1E77B6810;
   v153[4] = self;
-  if ([VNValidationUtilities validateNonZeroImageWidth:v20 height:v21 componentNameProvidingBlock:v153 error:a8])
+  if ([VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v153 error:error])
   {
-    v22 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrajectoryProcessorOption_RequestState" inOptions:v19 error:a8];
+    v22 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrajectoryProcessorOption_RequestState" inOptions:optionsCopy error:error];
     v23 = v22;
     if (v22)
     {
       v134 = v22;
-      v24 = [v22 targetImageDimensionForContourDetection];
+      targetImageDimensionForContourDetection = [v22 targetImageDimensionForContourDetection];
       if (self->_previousFrameBuffer)
       {
-        v25 = v24;
+        v25 = targetImageDimensionForContourDetection;
         HostTimeInMillis = getHostTimeInMillis();
-        v27 = [(VNTrajectoryProcessor *)self _createCroppedAndScaledBufferFromVNImageBuffer:v18 regionOfInterest:v19 withOptions:a8 error:x, y, width, height];
-        v28 = v27;
-        if (v27)
+        height2 = [(VNTrajectoryProcessor *)self _createCroppedAndScaledBufferFromVNImageBuffer:bufferCopy regionOfInterest:optionsCopy withOptions:error error:x, y, width, height];
+        v28 = height2;
+        if (height2)
         {
-          self->_currentImageWidth = CVPixelBufferGetWidth(v27);
+          self->_currentImageWidth = CVPixelBufferGetWidth(height2);
           v29 = v25;
           self->_currentImageHeight = CVPixelBufferGetHeight(v28);
           v30 = MEMORY[0x1E695F658];
@@ -100,11 +100,11 @@
           [(CIFilter *)v34 setValue:v35 forKey:@"inputImage2"];
 
           thresholdFilter = self->_thresholdFilter;
-          v37 = [(CIFilter *)self->_absoluteDiffFilter outputImage];
-          v38 = [v37 imageByApplyingFilter:@"CIMaximumComponent" withInputParameters:MEMORY[0x1E695E0F8]];
+          outputImage = [(CIFilter *)self->_absoluteDiffFilter outputImage];
+          v38 = [outputImage imageByApplyingFilter:@"CIMaximumComponent" withInputParameters:MEMORY[0x1E695E0F8]];
           [(CIFilter *)thresholdFilter setValue:v38 forKey:@"inputImage"];
 
-          v132 = [(CIFilter *)self->_thresholdFilter outputImage];
+          outputImage2 = [(CIFilter *)self->_thresholdFilter outputImage];
           v39 = v29;
           v40 = self->_maximumImageDimension / v29;
           self->_dilateRadius = v40;
@@ -117,9 +117,9 @@
           v45 = [MEMORY[0x1E696AD98] numberWithFloat:v44];
           [(CIFilter *)v43 setValue:v45 forKey:@"inputHeight"];
 
-          [(CIFilter *)self->_dilateFilter setValue:v132 forKey:@"inputImage"];
-          v130 = [(CIFilter *)self->_dilateFilter outputImage];
-          [(CIFilter *)self->_contrastFilter setValue:v130 forKey:@"inputImage"];
+          [(CIFilter *)self->_dilateFilter setValue:outputImage2 forKey:@"inputImage"];
+          outputImage3 = [(CIFilter *)self->_dilateFilter outputImage];
+          [(CIFilter *)self->_contrastFilter setValue:outputImage3 forKey:@"inputImage"];
           pixelBufferOut = 0;
           currentImageWidth = self->_currentImageWidth;
           v47 = v29 / currentImageWidth;
@@ -134,10 +134,10 @@
           v51 = (v49 * currentImageHeight);
           if (CVPixelBufferCreate(*MEMORY[0x1E695E480], v50, v51, 0x4C303038u, 0, &pixelBufferOut))
           {
-            if (a8)
+            if (error)
             {
               [VNError errorWithCode:3 message:@"Could not create intermediate buffer"];
-              *a8 = v52 = 0;
+              *error = v52 = 0;
             }
 
             else
@@ -150,12 +150,12 @@
 
           memset(&time1, 0, sizeof(time1));
           CGAffineTransformMakeScale(&time1, v49, v49);
-          v60 = [(CIFilter *)self->_contrastFilter outputImage];
+          outputImage4 = [(CIFilter *)self->_contrastFilter outputImage];
           v154 = time1;
-          v128 = [v60 imageByApplyingTransform:&v154 highQualityDownsample:0];
+          v128 = [outputImage4 imageByApplyingTransform:&v154 highQualityDownsample:0];
 
           [(CIContext *)self->_ciContext render:v128 toCVPixelBuffer:pixelBufferOut bounds:0 colorSpace:0.0, 0.0, v50, v51];
-          v61 = [VNValidationUtilities requiredSessionInOptions:v19 error:a8];
+          v61 = [VNValidationUtilities requiredSessionInOptions:optionsCopy error:error];
           v62 = v61;
           if (!v61)
           {
@@ -169,15 +169,15 @@ LABEL_99:
 
           v126 = v61;
           v63 = [VNImageRequestHandler alloc];
-          v127 = [(VNImageRequestHandler *)v63 initWithCVPixelBuffer:pixelBufferOut options:v19 session:v62];
+          v127 = [(VNImageRequestHandler *)v63 initWithCVPixelBuffer:pixelBufferOut options:optionsCopy session:v62];
           CVPixelBufferRelease(pixelBufferOut);
-          objc_storeStrong(&self->_previousFrameBuffer, a3);
+          objc_storeStrong(&self->_previousFrameBuffer, buffer);
           objc_storeStrong(&self->_previousFrameImage, obj);
           if (!self->_processAllFrames)
           {
-            if (v18)
+            if (bufferCopy)
             {
-              [v18 timingInfo];
+              [bufferCopy timingInfo];
             }
 
             else
@@ -201,7 +201,7 @@ LABEL_99:
           [(VNDetectContoursRequest *)self->_detectContoursRequest setMaximumImageDimension:v39];
           detectContoursRequest = self->_detectContoursRequest;
           v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&detectContoursRequest count:1];
-          v66 = [(VNImageRequestHandler *)v127 performRequests:v65 error:a8];
+          v66 = [(VNImageRequestHandler *)v127 performRequests:v65 error:error];
 
           if (!v66)
           {
@@ -212,24 +212,24 @@ LABEL_97:
             goto LABEL_98;
           }
 
-          v67 = [(VNRequest *)self->_detectContoursRequest results];
-          v123 = [v67 firstObject];
+          results = [(VNRequest *)self->_detectContoursRequest results];
+          firstObject = [results firstObject];
 
-          v68 = v123;
-          if (v123)
+          v68 = firstObject;
+          if (firstObject)
           {
             v149 = 0.0;
-            if ([VNValidationUtilities getFloatValue:&v149 forKey:@"VNTrajectoryProcessorOption_ObjectMinimumNormalizedRadius" inOptions:v19 error:a8])
+            if ([VNValidationUtilities getFloatValue:&v149 forKey:@"VNTrajectoryProcessorOption_ObjectMinimumNormalizedRadius" inOptions:optionsCopy error:error])
             {
               v69 = v149;
               maximumImageDimension = self->_maximumImageDimension;
               v148 = 1.0;
-              if ([VNValidationUtilities getFloatValue:&v148 forKey:@"VNTrajectoryProcessorOption_ObjectMaximumNormalizedRadius" inOptions:v19 error:a8])
+              if ([VNValidationUtilities getFloatValue:&v148 forKey:@"VNTrajectoryProcessorOption_ObjectMaximumNormalizedRadius" inOptions:optionsCopy error:error])
               {
                 if (v148 >= v149)
                 {
                   v147 = 0;
-                  v74 = [VNValidationUtilities getOptionalObject:&v147 ofClass:objc_opt_class() forKey:@"VNTrajectoryProcessorOption_ProcessingTargetFrameTime" inOptions:v19 error:a8];
+                  v74 = [VNValidationUtilities getOptionalObject:&v147 ofClass:objc_opt_class() forKey:@"VNTrajectoryProcessorOption_ProcessingTargetFrameTime" inOptions:optionsCopy error:error];
                   v73 = v147;
                   if (v74)
                   {
@@ -241,16 +241,16 @@ LABEL_97:
                     v142 = 0u;
                     v143 = 0u;
                     v144 = 0u;
-                    v75 = [v123 topLevelContours];
-                    v125 = v75;
-                    v76 = [v75 countByEnumeratingWithState:&v141 objects:v161 count:16];
+                    topLevelContours = [firstObject topLevelContours];
+                    v125 = topLevelContours;
+                    v76 = [topLevelContours countByEnumeratingWithState:&v141 objects:v161 count:16];
                     v121 = maximumImageDimension;
                     if (v76)
                     {
                       v77 = v76;
                       v78 = 0;
                       v131 = *v142;
-                      v124 = v19;
+                      v124 = optionsCopy;
                       do
                       {
                         v79 = 0;
@@ -259,10 +259,10 @@ LABEL_97:
                         {
                           if (*v142 != v131)
                           {
-                            objc_enumerationMutation(v75);
+                            objc_enumerationMutation(topLevelContours);
                           }
 
-                          v80 = [VNGeometryUtils boundingCircleForContour:*(*(&v141 + 1) + 8 * v79) error:a8];
+                          v80 = [VNGeometryUtils boundingCircleForContour:*(*(&v141 + 1) + 8 * v79) error:error];
                           v81 = v80;
                           if (v80)
                           {
@@ -272,8 +272,8 @@ LABEL_97:
                             *&v84 = v148;
                             if (v149 <= v82 && v148 >= v82)
                             {
-                              v86 = [v81 center];
-                              [v86 location];
+                              center = [v81 center];
+                              [center location];
                               VisionCoreImagePointForNormalizedPoint();
                               v88 = v87;
                               v90 = v89;
@@ -330,8 +330,8 @@ LABEL_97:
                                   operator delete(v92);
                                 }
 
-                                v19 = v124;
-                                v75 = v125;
+                                optionsCopy = v124;
+                                topLevelContours = v125;
                                 v77 = location;
                               }
 
@@ -351,21 +351,21 @@ LABEL_97:
                         }
 
                         while (v77 != v79);
-                        v77 = [v75 countByEnumeratingWithState:&v141 objects:v161 count:16];
+                        v77 = [topLevelContours countByEnumeratingWithState:&v141 objects:v161 count:16];
                       }
 
                       while (v77);
                     }
 
-                    v99 = [v123 topLevelContours];
-                    v100 = [v99 count] > 0xF9;
+                    topLevelContours2 = [firstObject topLevelContours];
+                    v100 = [topLevelContours2 count] > 0xF9;
 
                     if (v100)
                     {
-                      if (a8)
+                      if (error)
                       {
                         [VNError errorWithCode:3 message:@"Too many moving objects or noise detected which prevents trajectory processing."];
-                        *a8 = v52 = 0;
+                        *error = v52 = 0;
                       }
 
                       else
@@ -377,9 +377,9 @@ LABEL_97:
                     else
                     {
                       parabolaDetector = self->_parabolaDetector;
-                      if (v18)
+                      if (bufferCopy)
                       {
-                        [v18 timingInfo];
+                        [bufferCopy timingInfo];
                       }
 
                       else
@@ -405,7 +405,7 @@ LABEL_97:
                           a = v154.a;
                           v108 = [(VNTrajectoryProcessor *)self _VNPointsFromCGPoints:&v154.tx];
                           v109 = [(VNTrajectoryProcessor *)self _VNPointsFromCGPoints:&v154.b];
-                          v110 = [(VNTrajectoryObservation *)v106 initWithOriginatingRequestSpecifier:v135 requestUUID:v137 trajectoryUUID:*&a detectedPoints:v108 projectedPoints:v109 movingAverageRadius:*(&v155 + 1) / self->_maximumImageDimension equationCoefficients:v156 confidence:v157];
+                          v110 = [(VNTrajectoryObservation *)v106 initWithOriginatingRequestSpecifier:v135 requestUUID:dCopy trajectoryUUID:*&a detectedPoints:v108 projectedPoints:v109 movingAverageRadius:*(&v155 + 1) / self->_maximumImageDimension equationCoefficients:v156 confidence:v157];
 
                           *&time2.start.value = v158;
                           time2.start.epoch = v159;
@@ -452,7 +452,7 @@ LABEL_97:
                       *&time2.start.value = *&v154.a;
                       time2.start.epoch = *&v154.c;
                       end = rhs;
-                      if (CMTimeCompare(&time2.start, &end) != 1 || ([v123 topLevelContours], v115 = objc_claimAutoreleasedReturnValue(), v116 = objc_msgSend(v115, "count") == 0, v115, v116))
+                      if (CMTimeCompare(&time2.start, &end) != 1 || ([firstObject topLevelContours], v115 = objc_claimAutoreleasedReturnValue(), v116 = objc_msgSend(v115, "count") == 0, v115, v116))
                       {
                         v119 = (320.0 - v39) * 0.5 + v39;
                         if (((v119 + 1) & 0xFFFFFFFFFFFFFFFELL) >= 0x140)
@@ -499,16 +499,16 @@ LABEL_97:
                   goto LABEL_95;
                 }
 
-                if (a8)
+                if (error)
                 {
                   v71 = objc_alloc(MEMORY[0x1E696AEC0]);
-                  v72 = [v71 initWithFormat:@"cannot perform analysis with minimum object radius of %f and maximum object radius of %f", v149, v148];
+                  v148 = [v71 initWithFormat:@"cannot perform analysis with minimum object radius of %f and maximum object radius of %f", v149, v148];
                   [VNError errorForInvalidOperationWithLocalizedDescription:?];
-                  *a8 = v52 = 0;
-                  v73 = v72;
+                  *error = v52 = 0;
+                  v73 = v148;
 LABEL_95:
 
-                  v68 = v123;
+                  v68 = firstObject;
                   goto LABEL_96;
                 }
               }
@@ -530,21 +530,21 @@ LABEL_96:
 
       else
       {
-        objc_storeStrong(&self->_previousFrameBuffer, a3);
+        objc_storeStrong(&self->_previousFrameBuffer, buffer);
         v23 = v134;
-        v55 = [(VNTrajectoryProcessor *)self _createCroppedAndScaledBufferFromVNImageBuffer:self->_previousFrameBuffer regionOfInterest:v19 withOptions:a8 error:x, y, width, height];
-        if (v55)
+        height3 = [(VNTrajectoryProcessor *)self _createCroppedAndScaledBufferFromVNImageBuffer:self->_previousFrameBuffer regionOfInterest:optionsCopy withOptions:error error:x, y, width, height];
+        if (height3)
         {
           v56 = MEMORY[0x1E695F658];
           v165 = *MEMORY[0x1E695F940];
           v166[0] = MEMORY[0x1E695E118];
           v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v166 forKeys:&v165 count:1];
-          v58 = [v56 imageWithCVImageBuffer:v55 options:v57];
+          v58 = [v56 imageWithCVImageBuffer:height3 options:v57];
           v59 = self->_previousFrameImage;
           self->_previousFrameImage = v58;
 
           v23 = v134;
-          CVPixelBufferRelease(v55);
+          CVPixelBufferRelease(height3);
           v52 = MEMORY[0x1E695E0F0];
 LABEL_100:
 
@@ -572,10 +572,10 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
   return NSStringFromClass(v0);
 }
 
-- (id)_VNPointsFromCGPoints:(const void *)a3
+- (id)_VNPointsFromCGPoints:(const void *)points
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:(*(a3 + 1) - *a3) >> 4];
-  for (i = *a3; i != *(a3 + 1); i += 16)
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:(*(points + 1) - *points) >> 4];
+  for (i = *points; i != *(points + 1); i += 16)
   {
     VisionCoreNormalizedPointForImagePoint();
     v8 = [[VNPoint alloc] initWithLocation:v6, v7];
@@ -588,20 +588,20 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
   return v4;
 }
 
-- (__CVBuffer)_createCroppedAndScaledBufferFromVNImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 withOptions:(id)a5 error:(id *)a6
+- (__CVBuffer)_createCroppedAndScaledBufferFromVNImageBuffer:(id)buffer regionOfInterest:(CGRect)interest withOptions:(id)options error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = [v13 width];
-  v16 = [v13 height];
-  v27.origin.x = x * v15;
-  v27.size.width = width * v15;
-  v27.origin.y = y * v16;
-  v27.size.height = height * v16;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  bufferCopy = buffer;
+  optionsCopy = options;
+  width = [bufferCopy width];
+  height = [bufferCopy height];
+  v27.origin.x = x * width;
+  v27.size.width = width * width;
+  v27.origin.y = y * height;
+  v27.size.height = height * height;
   v28 = CGRectIntegral(v27);
   if (v28.size.width >= v28.size.height)
   {
@@ -645,7 +645,7 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
     v24 = v18;
   }
 
-  v25 = [v13 croppedBufferWithWidth:v24 height:v23 format:875704422 cropRect:v14 options:a6 error:{v28.origin.x, v28.origin.y}];
+  v25 = [bufferCopy croppedBufferWithWidth:v24 height:v23 format:875704422 cropRect:optionsCopy options:error error:{v28.origin.x, v28.origin.y}];
 
   return v25;
 }
@@ -658,7 +658,7 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
   [(VNTrajectoryProcessor *)&v3 dealloc];
 }
 
-- (VNTrajectoryProcessor)initWithFrameAnalysisSpacing:(id *)a3 trajectoryLength:(int64_t)a4
+- (VNTrajectoryProcessor)initWithFrameAnalysisSpacing:(id *)spacing trajectoryLength:(int64_t)length
 {
   v73[2] = *MEMORY[0x1E69E9840];
   v69.receiver = self;
@@ -669,10 +669,10 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
   {
     *(v6 + 20) = 1065353216;
     *(v6 + 9) = 1280;
-    v8 = *&a3->var0;
-    *(v6 + 13) = a3->var3;
+    v8 = *&spacing->var0;
+    *(v6 + 13) = spacing->var3;
     *(v6 + 88) = v8;
-    time1 = *a3;
+    time1 = *spacing;
     v9 = MEMORY[0x1E6960CC0];
     time2 = **&MEMORY[0x1E6960CC0];
     v6[160] = CMTimeCompare(&time1, &time2) == 0;
@@ -685,9 +685,9 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
     *(v7 + 21) = 1082130432;
     v12 = MEMORY[0x1E695F620];
     v72[0] = *MEMORY[0x1E695F868];
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v72[1] = *MEMORY[0x1E695F7F0];
-    v73[0] = v13;
+    v73[0] = null;
     v73[1] = MEMORY[0x1E695E110];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:v72 count:2];
     v15 = [v12 contextWithOptions:v14];
@@ -726,7 +726,7 @@ NSString *__109__VNTrajectoryProcessor_processVNImageBuffer_regionOfInterest_wit
     [*(v7 + 6) setForceUseInputCVPixelBufferDirectly:1];
     [*(v7 + 6) setInHierarchy:0];
     v70 = @"parabolaLength";
-    v33 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v33 = [MEMORY[0x1E696AD98] numberWithInteger:length];
     v71 = v33;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
 
@@ -770,13 +770,13 @@ LABEL_27:
     else
     {
       v44 = [v37 objectForKey:@"parabolaLength"];
-      v45 = [v44 intValue];
+      intValue = [v44 intValue];
 
-      if (v45 > 4)
+      if (intValue > 4)
       {
-        if (v45 < 0x65)
+        if (intValue < 0x65)
         {
-          v35->_forestAlgoParams.parabolaLength = v45;
+          v35->_forestAlgoParams.parabolaLength = intValue;
           goto LABEL_13;
         }
 
@@ -874,7 +874,7 @@ LABEL_28:
   return v7;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = [[VNSizeRange alloc] initWithMinimumDimension:1 maximumDimension:1280 idealDimension:0];

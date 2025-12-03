@@ -1,16 +1,16 @@
 @interface KSKeyboardSettingsBundleController
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)dealloc;
 @end
 
 @implementation KSKeyboardSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   if (!self->_specifier)
   {
     v5 = *MEMORY[0x277D3FFB8];
-    if ([objc_msgSend(a3 propertyForKey:{*MEMORY[0x277D3FFB8]), "isEqualToString:", @"General"}])
+    if ([objc_msgSend(specifier propertyForKey:{*MEMORY[0x277D3FFB8]), "isEqualToString:", @"General"}])
     {
       v6 = MEMORY[0x277D3FAD8];
       v7 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"Keyboard", &stru_28679E3A8, @"Keyboard"}];
@@ -21,7 +21,7 @@
 
     else
     {
-      if ([objc_msgSend(a3 propertyForKey:{v5), "isEqualToString:", @"Keyboard"}])
+      if ([objc_msgSend(specifier propertyForKey:{v5), "isEqualToString:", @"Keyboard"}])
       {
         v10 = MEMORY[0x277D3FAD8];
         v11 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"KEYBOARDS", &stru_28679E3A8, @"Keyboard"}];
@@ -32,7 +32,7 @@
       else
       {
         v12 = *MEMORY[0x277D3FD90];
-        v13 = [a3 propertyForKey:*MEMORY[0x277D3FD90]];
+        v13 = [specifier propertyForKey:*MEMORY[0x277D3FD90]];
         if (![+[KSKeyboardExtensionController keyboardsForBundleID:](KSKeyboardExtensionController keyboardsForBundleID:{v13), "count"}])
         {
           return MEMORY[0x277CBEBF8];

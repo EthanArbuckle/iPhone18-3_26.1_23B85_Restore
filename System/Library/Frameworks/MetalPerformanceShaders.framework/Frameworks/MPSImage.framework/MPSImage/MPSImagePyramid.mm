@@ -2,9 +2,9 @@
 - (MPSImagePyramid)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImagePyramid)initWithDevice:(id)device centerWeight:(float)centerWeight;
 - (MPSImagePyramid)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight weights:(const float *)kernelWeights;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImagePyramid
@@ -140,11 +140,11 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v49.receiver = self;
   v49.super_class = MPSImagePyramid;
-  v5 = [(MPSUnaryImageKernel *)&v49 copyWithZone:a3 device:a4];
+  v5 = [(MPSUnaryImageKernel *)&v49 copyWithZone:zone device:device];
   v11 = v5;
   if (v5)
   {
@@ -382,17 +382,17 @@ LABEL_29:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v45.receiver = self;
   v45.super_class = MPSImagePyramid;
   [(MPSUnaryImageKernel *)&v45 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_fWidth, @"MPSImagePyramid._fWidth", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->_fHeight, @"MPSImagePyramid._fHeight", v9, v10);
-  objc_msgSend_encodeBool_forKey_(a3, v11, self->separable, @"MPSImagePyramid.separable", v12, v13);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_fWidth, @"MPSImagePyramid._fWidth", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->_fHeight, @"MPSImagePyramid._fHeight", v9, v10);
+  objc_msgSend_encodeBool_forKey_(coder, v11, self->separable, @"MPSImagePyramid.separable", v12, v13);
   wtBuffer = self->wtBuffer;
-  objc_msgSend_encodeBool_forKey_(a3, v15, wtBuffer != 0, @"MPSImagePyramid.UseBuffers", v16, v17);
+  objc_msgSend_encodeBool_forKey_(coder, v15, wtBuffer != 0, @"MPSImagePyramid.UseBuffers", v16, v17);
   fWidth = self->_fWidth;
   fHeight = self->_fHeight;
   v20 = fHeight + fWidth;
@@ -454,8 +454,8 @@ LABEL_29:
     }
 
     MPSCopyToFromNetworkByteOrder16();
-    objc_msgSend_encodeBytes_length_forKey_(a3, v40, v23, 4 * v22, @"MPSImagePyramid.wtArray", v41);
-    objc_msgSend_encodeBytes_length_forKey_(a3, v42, v30, 2 * v22, @"MPSImagePyramid.wtHalfArray", v43);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v40, v23, 4 * v22, @"MPSImagePyramid.wtArray", v41);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v42, v30, 2 * v22, @"MPSImagePyramid.wtHalfArray", v43);
     free(v23);
 LABEL_21:
     free(v30);

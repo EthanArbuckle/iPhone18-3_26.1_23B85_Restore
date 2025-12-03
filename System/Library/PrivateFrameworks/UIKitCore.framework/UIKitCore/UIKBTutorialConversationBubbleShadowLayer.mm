@@ -1,16 +1,16 @@
 @interface UIKBTutorialConversationBubbleShadowLayer
-- (CGSize)_offsetForShadowStyle:(int64_t)a3;
-- (UIKBTutorialConversationBubbleShadowLayer)initWithShadowType:(int64_t)a3;
-- (double)_opacityForShadowStyle:(int64_t)a3;
-- (double)_radiusForShadowStyle:(int64_t)a3;
-- (int64_t)_shadowStyleForShadowType:(int64_t)a3 userInterfaceStyle:(int64_t)a4;
+- (CGSize)_offsetForShadowStyle:(int64_t)style;
+- (UIKBTutorialConversationBubbleShadowLayer)initWithShadowType:(int64_t)type;
+- (double)_opacityForShadowStyle:(int64_t)style;
+- (double)_radiusForShadowStyle:(int64_t)style;
+- (int64_t)_shadowStyleForShadowType:(int64_t)type userInterfaceStyle:(int64_t)style;
 - (void)_updateShadowProperties;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation UIKBTutorialConversationBubbleShadowLayer
 
-- (UIKBTutorialConversationBubbleShadowLayer)initWithShadowType:(int64_t)a3
+- (UIKBTutorialConversationBubbleShadowLayer)initWithShadowType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = UIKBTutorialConversationBubbleShadowLayer;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_shadowType = a3;
+    v4->_shadowType = type;
     v4->_userInterfaceStyle = 0;
     v6 = +[UIColor blackColor];
     -[UIKBTutorialConversationBubbleShadowLayer setShadowColor:](v5, "setShadowColor:", [v6 CGColor]);
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(UIKBTutorialConversationBubbleShadowLayer *)self _updateShadowProperties];
   }
 }
@@ -51,63 +51,63 @@
   [(UIKBTutorialConversationBubbleShadowLayer *)self setShadowOffset:?];
 }
 
-- (int64_t)_shadowStyleForShadowType:(int64_t)a3 userInterfaceStyle:(int64_t)a4
+- (int64_t)_shadowStyleForShadowType:(int64_t)type userInterfaceStyle:(int64_t)style
 {
   v4 = 3;
-  if (a3 != 1)
+  if (type != 1)
   {
     v4 = 0;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = 1;
   }
 
-  if (a4 != 2)
+  if (style != 2)
   {
     v4 = 0;
   }
 
-  if (a4 >= 2)
+  if (style >= 2)
   {
     return v4;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (type == 1);
   }
 }
 
-- (double)_opacityForShadowStyle:(int64_t)a3
+- (double)_opacityForShadowStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 <= 3)
+  if (style <= 3)
   {
-    return dbl_18A683290[a3];
+    return dbl_18A683290[style];
   }
 
   return result;
 }
 
-- (double)_radiusForShadowStyle:(int64_t)a3
+- (double)_radiusForShadowStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 <= 3)
+  if (style <= 3)
   {
-    return dbl_18A6832B0[a3];
+    return dbl_18A6832B0[style];
   }
 
   return result;
 }
 
-- (CGSize)_offsetForShadowStyle:(int64_t)a3
+- (CGSize)_offsetForShadowStyle:(int64_t)style
 {
   v3 = 0.0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2 || (v4 = 0.0, a3 == 3))
+    if (style == 2 || (v4 = 0.0, style == 3))
     {
       v3 = *MEMORY[0x1E695F060];
       v4 = *(MEMORY[0x1E695F060] + 8);
@@ -118,12 +118,12 @@
   {
     v4 = 8.0;
     v5 = 6.0;
-    if (a3 != 1)
+    if (style != 1)
     {
       v5 = 0.0;
     }
 
-    if (a3)
+    if (style)
     {
       v4 = v5;
     }

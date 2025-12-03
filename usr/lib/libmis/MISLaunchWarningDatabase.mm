@@ -1,17 +1,17 @@
 @interface MISLaunchWarningDatabase
-- (id)queryForBundle:(id)a3 withError:(id *)a4;
-- (id)queryForExecutableURL:(id)a3 withError:(id *)a4;
+- (id)queryForBundle:(id)bundle withError:(id *)error;
+- (id)queryForExecutableURL:(id)l withError:(id *)error;
 @end
 
 @implementation MISLaunchWarningDatabase
 
-- (id)queryForExecutableURL:(id)a3 withError:(id *)a4
+- (id)queryForExecutableURL:(id)l withError:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   if (_os_feature_enabled_impl())
   {
     v6 = objc_opt_new();
-    v8 = objc_msgSend_queryExecutableURL_error_(v6, v7, v5, a4);
+    v8 = objc_msgSend_queryExecutableURL_error_(v6, v7, lCopy, error);
   }
 
   else
@@ -23,13 +23,13 @@
   return v8;
 }
 
-- (id)queryForBundle:(id)a3 withError:(id *)a4
+- (id)queryForBundle:(id)bundle withError:(id *)error
 {
-  v5 = a3;
+  bundleCopy = bundle;
   if (_os_feature_enabled_impl())
   {
     v6 = objc_opt_new();
-    v8 = objc_msgSend_queryAppBundle_error_(v6, v7, v5, a4);
+    v8 = objc_msgSend_queryAppBundle_error_(v6, v7, bundleCopy, error);
   }
 
   else

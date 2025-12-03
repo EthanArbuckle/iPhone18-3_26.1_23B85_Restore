@@ -1,7 +1,7 @@
 @interface _INCodableAttributeRelationshipValueTransformer
 - (INCodableAttribute)codableAttribute;
-- (_INCodableAttributeRelationshipValueTransformer)initWithCodableAttribute:(id)a3;
-- (id)transformedValue:(id)a3;
+- (_INCodableAttributeRelationshipValueTransformer)initWithCodableAttribute:(id)attribute;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation _INCodableAttributeRelationshipValueTransformer
@@ -13,13 +13,13 @@
   return WeakRetained;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
-  [v5 objectClass];
+  valueCopy = value;
+  codableAttribute = [(_INCodableAttributeRelationshipValueTransformer *)self codableAttribute];
+  [codableAttribute objectClass];
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v4;
+  v7 = valueCopy;
   v8 = v7;
   v9 = v7;
   if ((isKindOfClass & 1) == 0)
@@ -56,7 +56,7 @@ LABEL_13:
         }
 
         v15 = objc_alloc_init(INJSONDecoder);
-        v9 = -[INJSONDecoder decodeObjectOfClass:from:](v15, "decodeObjectOfClass:from:", [v5 objectClass], v10);
+        v9 = -[INJSONDecoder decodeObjectOfClass:from:](v15, "decodeObjectOfClass:from:", [codableAttribute objectClass], v10);
 
         goto LABEL_13;
       }
@@ -76,16 +76,16 @@ LABEL_14:
   return v9;
 }
 
-- (_INCodableAttributeRelationshipValueTransformer)initWithCodableAttribute:(id)a3
+- (_INCodableAttributeRelationshipValueTransformer)initWithCodableAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v8.receiver = self;
   v8.super_class = _INCodableAttributeRelationshipValueTransformer;
   v5 = [(_INCodableAttributeRelationshipValueTransformer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_codableAttribute, v4);
+    objc_storeWeak(&v5->_codableAttribute, attributeCopy);
   }
 
   return v6;

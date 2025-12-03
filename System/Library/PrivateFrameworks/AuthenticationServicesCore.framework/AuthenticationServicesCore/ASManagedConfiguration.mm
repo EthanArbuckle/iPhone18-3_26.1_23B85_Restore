@@ -1,13 +1,13 @@
 @interface ASManagedConfiguration
-+ (id)loadFromDiskWithPlistURL:(id)a3 error:(id *)a4;
-- (BOOL)isConfiguredForEnterpriseAttestationForRelyingParty:(id)a3;
++ (id)loadFromDiskWithPlistURL:(id)l error:(id *)error;
+- (BOOL)isConfiguredForEnterpriseAttestationForRelyingParty:(id)party;
 - (_TtC26AuthenticationServicesCore22ASManagedConfiguration)init;
-- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3;
+- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party;
 @end
 
 @implementation ASManagedConfiguration
 
-+ (id)loadFromDiskWithPlistURL:(id)a3 error:(id *)a4
++ (id)loadFromDiskWithPlistURL:(id)l error:(id *)error
 {
   v5 = sub_1C2170024();
   v6 = *(v5 - 8);
@@ -18,7 +18,7 @@
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v13 = &v16[-v12];
-  if (a3)
+  if (l)
   {
     sub_1C216FFD4();
     (*(v6 + 32))(v13, v9, v5);
@@ -37,21 +37,21 @@
   return v14;
 }
 
-- (BOOL)isConfiguredForEnterpriseAttestationForRelyingParty:(id)a3
+- (BOOL)isConfiguredForEnterpriseAttestationForRelyingParty:(id)party
 {
   v4 = sub_1C2170914();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1C214A868(v4, v6);
 
   return v4 & 1;
 }
 
-- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)a3
+- (id)entepriseAttestationIdentityPersistentReferenceForRelyingParty:(id)party
 {
   v4 = sub_1C2170914();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1C214ABEC(v4, v6);
   v10 = v9;
 

@@ -1,20 +1,20 @@
 @interface PAEBadTV
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEBadTV)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEBadTV)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)createWavyTableOfHeight:(int)a3 rowBytes:(unint64_t)a4 table:(char *)a5 flip:(BOOL)a6 atTime:(id)a7;
+- (void)createWavyTableOfHeight:(int)height rowBytes:(unint64_t)bytes table:(char *)table flip:(BOOL)flip atTime:(id)time;
 - (void)dealloc;
 @end
 
 @implementation PAEBadTV
 
-- (PAEBadTV)initWithAPIManager:(id)a3
+- (PAEBadTV)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEBadTV;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -84,12 +84,12 @@
   return v3 != 0;
 }
 
-- (void)createWavyTableOfHeight:(int)a3 rowBytes:(unint64_t)a4 table:(char *)a5 flip:(BOOL)a6 atTime:(id)a7
+- (void)createWavyTableOfHeight:(int)height rowBytes:(unint64_t)bytes table:(char *)table flip:(BOOL)flip atTime:(id)time
 {
-  v8 = a6;
-  std::vector<float>::vector[abi:ne200100](v42, a3);
+  flipCopy = flip;
+  std::vector<float>::vector[abi:ne200100](v42, height);
   RandMersenne::RandMersenne(&v39);
-  [(PAESharedDefaultBase *)self frameFromFxTime:a7.var1 forPlugIn:self];
+  [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
   RandMersenne::SetSeed(&v39, (v13 + v13) + 1);
   v14 = v41;
   if (v41 >= 382)
@@ -100,12 +100,12 @@
 
   v15 = v14 + 1;
   v41 = v14 + 1;
-  v16 = (a3 + 1);
-  v17 = ~a3;
+  v16 = (height + 1);
+  v17 = ~height;
   v18 = *&v40[v14] + -1.0;
   v19 = v42[0];
   *v42[0] = v18;
-  if (a3 > 1)
+  if (height > 1)
   {
     v20 = 0;
     while (1)
@@ -136,7 +136,7 @@
 LABEL_11:
       v20 += 4;
       v17 = v23;
-      if (4 * a3 - 4 == v20)
+      if (4 * height - 4 == v20)
       {
         goto LABEL_14;
       }
@@ -148,7 +148,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v23 = ~a3;
+  v23 = ~height;
 LABEL_14:
   v24 = fabsf(v16);
   v25 = fabsf(v23);
@@ -157,36 +157,36 @@ LABEL_14:
     v25 = v24;
   }
 
-  if (a3 >= 1)
+  if (height >= 1)
   {
     v26 = v25 + v25;
-    v27 = a3;
+    heightCopy = height;
     v28 = v19;
     do
     {
       *v28 = (*v28 / v26) + 0.5;
       ++v28;
-      --v27;
+      --heightCopy;
     }
 
-    while (v27);
+    while (heightCopy);
   }
 
-  v29 = (a3 - 1) * a4;
-  if (v8)
+  v29 = (height - 1) * bytes;
+  if (flipCopy)
   {
-    v30 = -a4;
+    bytesCopy = -bytes;
   }
 
   else
   {
     v29 = 0;
-    v30 = a4;
+    bytesCopy = bytes;
   }
 
-  v31 = &a5[v29];
-  v32 = (a3 - 1);
-  if (a3 == 1)
+  v31 = &table[v29];
+  v32 = (height - 1);
+  if (height == 1)
   {
     *v31 = -1;
     v33 = *v19;
@@ -198,12 +198,12 @@ LABEL_14:
     *v31 = -1;
     v31[1] = ((v34 * 255.0) * 0.5);
     *(v31 + 1) = 0;
-    if (a3 < 3)
+    if (height < 3)
     {
       goto LABEL_29;
     }
 
-    v31 += v30;
+    v31 += bytesCopy;
     v35 = v32 - 1;
     v36 = v19 + 2;
     do
@@ -213,12 +213,12 @@ LABEL_14:
       *v31 = -1;
       v31[1] = (((v37 + v38) * 255.0) / 3.0);
       *(v31 + 1) = 0;
-      v31 += v30;
+      v31 += bytesCopy;
       --v35;
     }
 
     while (v35);
-    v33 = v19[a3 - 2] + v19[v32];
+    v33 = v19[height - 2] + v19[v32];
     *v31 = -1;
   }
 
@@ -233,20 +233,20 @@ LABEL_29:
   }
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v55 = 0;
   memset(&v54[16], 0, 64);
-  if (a4)
+  if (input)
   {
-    [a4 imageInfo];
+    [input imageInfo];
   }
 
   if (self)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self getImageBoundary:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self getImageBoundary:input];
     v9 = vcvtq_f64_f32(v42[0]);
     v10 = vcvtq_f64_f32(v42[1]);
   }
@@ -263,8 +263,8 @@ LABEL_29:
   v11 = PCMatrix44Tmpl<double>::transformRect<double>(v54, v53, v53);
   if (v11)
   {
-    v12 = [a4 width];
-    v13 = [a4 height];
+    width = [input width];
+    height = [input height];
     v14 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
     v15 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
     v16 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_287359A98];
@@ -286,11 +286,11 @@ LABEL_29:
     else
     {
       v19 = v16;
-      v40 = v13;
-      v41 = v12;
-      v20 = [v15 versionAtCreation];
+      v40 = height;
+      v41 = width;
+      versionAtCreation = [v15 versionAtCreation];
       v52 = 0;
-      [v14 getFloatValue:&v52 fromParm:1 atFxTime:a5->var0.var1];
+      [v14 getFloatValue:&v52 fromParm:1 atFxTime:info->var0.var1];
       v21 = HGRectMake4i(0, 0, 1u, 0x438u);
       v23 = v22;
       v24 = HGObject::operator new(0x80uLL);
@@ -299,20 +299,20 @@ LABEL_29:
       {
         [PAEBadTV createWavyTableOfHeight:"createWavyTableOfHeight:rowBytes:table:flip:atTime:" rowBytes:1080 table:*(v24 + 8) flip:? atTime:?];
         v51 = 0.0;
-        [v14 getFloatValue:&v51 fromParm:2 atFxTime:a5->var0.var1];
+        [v14 getFloatValue:&v51 fromParm:2 atFxTime:info->var0.var1];
         v50 = 1.0;
-        [v14 getFloatValue:&v50 fromParm:5 atFxTime:a5->var0.var1];
+        [v14 getFloatValue:&v50 fromParm:5 atFxTime:info->var0.var1];
         v50 = v50 / 100.0 + 1.0;
         v49 = 0x3FF0000000000000;
-        [v14 getFloatValue:&v49 fromParm:6 atFxTime:a5->var0.var1];
+        [v14 getFloatValue:&v49 fromParm:6 atFxTime:info->var0.var1];
         v48 = 1.0;
-        var1 = a5->var0.var1;
-        if (v20)
+        var1 = info->var0.var1;
+        if (versionAtCreation)
         {
           [v14 getFloatValue:&v48 fromParm:9 atFxTime:var1];
           v47 = 1.0;
           v42[0] = 0;
-          [v14 getFloatValue:v42 fromParm:10 atFxTime:a5->var0.var1];
+          [v14 getFloatValue:v42 fromParm:10 atFxTime:info->var0.var1];
           v27 = v40;
           v26 = v41;
           v28 = *v42;
@@ -321,8 +321,8 @@ LABEL_29:
             v42[0] = 0x3FF0000000000000;
           }
 
-          v29 = [a4 height];
-          v30 = v29 / *v42;
+          height2 = [input height];
+          v30 = height2 / *v42;
           v47 = v30 - v30 * v48;
           v48 = v30 * v48;
         }
@@ -331,27 +331,27 @@ LABEL_29:
         {
           [v14 getFloatValue:&v48 fromParm:7 atFxTime:var1];
           v47 = 1.0;
-          [v14 getFloatValue:&v47 fromParm:8 atFxTime:a5->var0.var1];
+          [v14 getFloatValue:&v47 fromParm:8 atFxTime:info->var0.var1];
           v27 = v40;
           v26 = v41;
         }
 
         v46 = 1.0;
-        [v14 getFloatValue:&v46 fromParm:4 atFxTime:a5->var0.var1];
+        [v14 getFloatValue:&v46 fromParm:4 atFxTime:info->var0.var1];
         v46 = (1.0 - v46) * 10.0;
         v45 = 0.0;
-        [v14 getFloatValue:&v45 fromParm:3 atFxTime:a5->var0.var1];
+        [v14 getFloatValue:&v45 fromParm:3 atFxTime:info->var0.var1];
         v31 = v45;
         if (v45 > 0.0)
         {
-          [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4, v45];
-          [(PAESharedDefaultBase *)self frameFromFxTime:a5->var0.var1 forPlugIn:self];
+          [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input, v45];
+          [(PAESharedDefaultBase *)self frameFromFxTime:info->var0.var1 forPlugIn:self];
           PAEGenerateNoise(v45, v32, v26, v27, 0, 0, 1, 0);
         }
 
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
           v43 = v44;
           if (v44)
           {
@@ -394,10 +394,10 @@ LABEL_29:
 
         v34 = HGObject::operator new(0x1F0uLL);
         HGBitmapLoader::HGBitmapLoader(v34, v24);
-        [a4 height];
-        [a4 width];
+        [input height];
+        [input width];
         v51 = fmod(v51 * 1080.0 / 100.0, 1080.0);
-        [objc_msgSend(v19 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
+        [objc_msgSend(v19 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
         v35 = HGObject::operator new(0x1D0uLL);
         HGTextureWrap::HGTextureWrap(v35);
         HGTextureWrap::SetTextureWrapMode(v35, 3, v36);
@@ -420,15 +420,15 @@ LABEL_29:
   return v11;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

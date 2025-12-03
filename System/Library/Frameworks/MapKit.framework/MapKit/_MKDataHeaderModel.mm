@@ -2,7 +2,7 @@
 - (UIView)ownerView;
 - (_MKDataHeaderModel)init;
 - (id)description;
-- (void)setOwnerView:(id)a3;
+- (void)setOwnerView:(id)view;
 @end
 
 @implementation _MKDataHeaderModel
@@ -38,15 +38,15 @@
   return v3;
 }
 
-- (void)setOwnerView:(id)a3
+- (void)setOwnerView:(id)view
 {
   firstLine = self->_firstLine;
-  v5 = a3;
-  [(_MKLineHeaderModel *)firstLine setOwnerView:v5];
-  [(_MKLineHeaderModel *)self->_secondLine setOwnerView:v5];
-  [(_MKLineHeaderModel *)self->_thirdLine setOwnerView:v5];
-  [(_MKLineHeaderModel *)self->_forthLine setOwnerView:v5];
-  [(_MKLineHeaderModel *)self->_secondaryNameLine setOwnerView:v5];
+  viewCopy = view;
+  [(_MKLineHeaderModel *)firstLine setOwnerView:viewCopy];
+  [(_MKLineHeaderModel *)self->_secondLine setOwnerView:viewCopy];
+  [(_MKLineHeaderModel *)self->_thirdLine setOwnerView:viewCopy];
+  [(_MKLineHeaderModel *)self->_forthLine setOwnerView:viewCopy];
+  [(_MKLineHeaderModel *)self->_secondaryNameLine setOwnerView:viewCopy];
 }
 
 - (_MKDataHeaderModel)init

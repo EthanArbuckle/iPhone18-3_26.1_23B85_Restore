@@ -2,102 +2,102 @@
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
 - (void)_setupView;
-- (void)configureControllerFromViewModel:(id)a3;
-- (void)proximityAutomatedDeviceEnrollmentController:(id)a3 hasEnrollmentStatusViewModelUpdate:(id)a4;
-- (void)proximityAutomatedDeviceEnrollmentControllerWantsToTransitionToCompletion:(id)a3;
-- (void)setProximityAutomatedDeviceEnrollmentController:(id)a3;
+- (void)configureControllerFromViewModel:(id)model;
+- (void)proximityAutomatedDeviceEnrollmentController:(id)controller hasEnrollmentStatusViewModelUpdate:(id)update;
+- (void)proximityAutomatedDeviceEnrollmentControllerWantsToTransitionToCompletion:(id)completion;
+- (void)setProximityAutomatedDeviceEnrollmentController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyProximityAutomatedDeviceEnrollmentInProgressController
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = BuddyProximityAutomatedDeviceEnrollmentInProgressController;
   [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)&v6 viewDidLoad];
-  v2 = v8;
-  v3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v8 proximityAutomatedDeviceEnrollmentController];
-  v4 = [(BuddyProximityAutomatedDeviceEnrollmentController *)v3 currentEnrollmentStatusViewModel];
-  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v2 configureControllerFromViewModel:v4];
+  v2 = selfCopy;
+  proximityAutomatedDeviceEnrollmentController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy proximityAutomatedDeviceEnrollmentController];
+  currentEnrollmentStatusViewModel = [(BuddyProximityAutomatedDeviceEnrollmentController *)proximityAutomatedDeviceEnrollmentController currentEnrollmentStatusViewModel];
+  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v2 configureControllerFromViewModel:currentEnrollmentStatusViewModel];
 
-  v5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v8 featureFlags];
-  LOBYTE(v3) = [(BuddyFeatureFlags *)v5 isSolariumEnabled];
+  featureFlags = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy featureFlags];
+  LOBYTE(proximityAutomatedDeviceEnrollmentController) = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v3)
+  if (proximityAutomatedDeviceEnrollmentController)
   {
-    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v8 _setupViewForSolarium];
+    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy _setupViewForSolarium];
   }
 
   else
   {
-    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v8 _setupView];
+    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy _setupView];
   }
 }
 
 - (void)_setupView
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [[UIActivityIndicatorView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [location[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   [location[0] startAnimating];
-  v2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v3 = [(BuddyWelcomeController *)v2 contentView];
-  [v3 addSubview:location[0]];
+  welcomeController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView = [(BuddyWelcomeController *)welcomeController contentView];
+  [contentView addSubview:location[0]];
 
   v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  spinnerStatusLabel = v40->_spinnerStatusLabel;
-  v40->_spinnerStatusLabel = v4;
+  spinnerStatusLabel = selfCopy->_spinnerStatusLabel;
+  selfCopy->_spinnerStatusLabel = v4;
 
-  [(UILabel *)v40->_spinnerStatusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v40->_spinnerStatusLabel setNumberOfLines:0];
+  [(UILabel *)selfCopy->_spinnerStatusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)selfCopy->_spinnerStatusLabel setNumberOfLines:0];
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [(UILabel *)v40->_spinnerStatusLabel setFont:v6];
+  [(UILabel *)selfCopy->_spinnerStatusLabel setFont:v6];
 
-  [(UILabel *)v40->_spinnerStatusLabel setTextAlignment:1];
-  v7 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v8 = [(BuddyWelcomeController *)v7 contentView];
-  [v8 addSubview:v40->_spinnerStatusLabel];
+  [(UILabel *)selfCopy->_spinnerStatusLabel setTextAlignment:1];
+  welcomeController2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView2 = [(BuddyWelcomeController *)welcomeController2 contentView];
+  [contentView2 addSubview:selfCopy->_spinnerStatusLabel];
 
-  v36 = [location[0] centerXAnchor];
-  v38 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v37 = [(BuddyWelcomeController *)v38 contentView];
-  v35 = [v37 centerXAnchor];
-  v34 = [v36 constraintEqualToAnchor:?];
+  centerXAnchor = [location[0] centerXAnchor];
+  welcomeController3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView3 = [(BuddyWelcomeController *)welcomeController3 contentView];
+  centerXAnchor2 = [contentView3 centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:?];
   v41[0] = v34;
-  v31 = [location[0] topAnchor];
-  v33 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v32 = [(BuddyWelcomeController *)v33 contentView];
-  v30 = [v32 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:?];
+  topAnchor = [location[0] topAnchor];
+  welcomeController4 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView4 = [(BuddyWelcomeController *)welcomeController4 contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:?];
   v41[1] = v29;
-  v28 = [location[0] widthAnchor];
-  v27 = [v28 constraintEqualToConstant:50.0];
+  widthAnchor = [location[0] widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:50.0];
   v41[2] = v27;
-  v26 = [location[0] heightAnchor];
-  v25 = [v26 constraintEqualToConstant:50.0];
+  heightAnchor = [location[0] heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:50.0];
   v41[3] = v25;
-  v22 = [(UILabel *)v40->_spinnerStatusLabel leadingAnchor];
-  v24 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v23 = [(BuddyWelcomeController *)v24 contentView];
-  v21 = [v23 layoutMarginsGuide];
-  v20 = [v21 leadingAnchor];
-  v19 = [v22 constraintEqualToAnchor:?];
+  leadingAnchor = [(UILabel *)selfCopy->_spinnerStatusLabel leadingAnchor];
+  welcomeController5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView5 = [(BuddyWelcomeController *)welcomeController5 contentView];
+  layoutMarginsGuide = [contentView5 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:?];
   v41[4] = v19;
-  v9 = [(UILabel *)v40->_spinnerStatusLabel trailingAnchor];
-  v10 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v40 welcomeController];
-  v11 = [(BuddyWelcomeController *)v10 contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v9 constraintEqualToAnchor:v13];
+  trailingAnchor = [(UILabel *)selfCopy->_spinnerStatusLabel trailingAnchor];
+  welcomeController6 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+  contentView6 = [(BuddyWelcomeController *)welcomeController6 contentView];
+  layoutMarginsGuide2 = [contentView6 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[5] = v14;
-  v15 = [(UILabel *)v40->_spinnerStatusLabel topAnchor];
-  v16 = [location[0] bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:20.0];
+  topAnchor3 = [(UILabel *)selfCopy->_spinnerStatusLabel topAnchor];
+  bottomAnchor = [location[0] bottomAnchor];
+  v17 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v41[6] = v17;
   v18 = [NSArray arrayWithObjects:v41 count:7];
   [NSLayoutConstraint activateConstraints:v18];
@@ -105,65 +105,65 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyProximityAutomatedDeviceEnrollmentInProgressController;
-  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)&v4 viewWillAppear:a3];
-  v3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v7 animationController];
-  [(OBAnimationController *)v3 startAnimation];
+  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)&v4 viewWillAppear:appear];
+  animationController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy animationController];
+  [(OBAnimationController *)animationController startAnimation];
 }
 
-- (void)setProximityAutomatedDeviceEnrollmentController:(id)a3
+- (void)setProximityAutomatedDeviceEnrollmentController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_proximityAutomatedDeviceEnrollmentController, location[0]);
-  [(BuddyProximityAutomatedDeviceEnrollmentController *)v4->_proximityAutomatedDeviceEnrollmentController setDelegate:v4];
+  objc_storeStrong(location, controller);
+  objc_storeStrong(&selfCopy->_proximityAutomatedDeviceEnrollmentController, location[0]);
+  [(BuddyProximityAutomatedDeviceEnrollmentController *)selfCopy->_proximityAutomatedDeviceEnrollmentController setDelegate:selfCopy];
   objc_storeStrong(location, 0);
 }
 
-- (void)proximityAutomatedDeviceEnrollmentControllerWantsToTransitionToCompletion:(id)a3
+- (void)proximityAutomatedDeviceEnrollmentControllerWantsToTransitionToCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v5 delegate];
-  [(BFFFlowItemDelegate *)v3 flowItemDone:v5];
+  objc_storeStrong(location, completion);
+  delegate = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)proximityAutomatedDeviceEnrollmentController:(id)a3 hasEnrollmentStatusViewModelUpdate:(id)a4
+- (void)proximityAutomatedDeviceEnrollmentController:(id)controller hasEnrollmentStatusViewModelUpdate:(id)update
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v7 configureControllerFromViewModel:v5];
+  objc_storeStrong(&v5, update);
+  [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy configureControllerFromViewModel:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v11 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)self proximityAutomatedDeviceEnrollmentController];
+  proximityAutomatedDeviceEnrollmentController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)self proximityAutomatedDeviceEnrollmentController];
 
-  if (v2)
+  if (proximityAutomatedDeviceEnrollmentController)
   {
-    v5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v11 proximityAutomatedDeviceEnrollmentController];
-    v6 = [(BuddyProximityAutomatedDeviceEnrollmentController *)v5 completionViewModel];
-    v12 = v6 == 0;
+    proximityAutomatedDeviceEnrollmentController2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy proximityAutomatedDeviceEnrollmentController];
+    completionViewModel = [(BuddyProximityAutomatedDeviceEnrollmentController *)proximityAutomatedDeviceEnrollmentController2 completionViewModel];
+    v12 = completionViewModel == 0;
   }
 
   else
@@ -185,98 +185,98 @@
   return v12;
 }
 
-- (void)configureControllerFromViewModel:(id)a3
+- (void)configureControllerFromViewModel:(id)model
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isSolariumEnabled];
+  objc_storeStrong(location, model);
+  featureFlags = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v4)
+  if (isSolariumEnabled)
   {
-    v5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
+    spinnerController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
 
-    if (v5)
+    if (spinnerController)
     {
-      v6 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-      [(BFFSpinnerController *)v6 removeFromParentViewController];
+      spinnerController2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+      [(BFFSpinnerController *)spinnerController2 removeFromParentViewController];
     }
 
     v7 = [BFFSpinnerController alloc];
-    v8 = [location[0] statusMessage];
-    v9 = [location[0] title];
-    v10 = [v7 initWithSpinnerText:v8 title:v9];
-    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 setSpinnerController:v10];
+    statusMessage = [location[0] statusMessage];
+    title = [location[0] title];
+    v10 = [v7 initWithSpinnerText:statusMessage title:title];
+    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy setSpinnerController:v10];
 
-    v11 = v45;
-    v12 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v11 addChildViewController:v12];
+    v11 = selfCopy;
+    spinnerController3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+    [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v11 addChildViewController:spinnerController3];
 
-    v13 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-    [(BFFSpinnerController *)v13 didMoveToParentViewController:v45];
+    spinnerController4 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+    [(BFFSpinnerController *)spinnerController4 didMoveToParentViewController:selfCopy];
 
-    v14 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 view];
-    v15 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-    v16 = [(BFFSpinnerController *)v15 view];
-    [v14 addSubview:v16];
+    view = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy view];
+    spinnerController5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+    view2 = [(BFFSpinnerController *)spinnerController5 view];
+    [view addSubview:view2];
 
-    v17 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-    v18 = [(BFFSpinnerController *)v17 view];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    spinnerController6 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+    view3 = [(BFFSpinnerController *)spinnerController6 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerController];
-    v20 = [(BFFSpinnerController *)v19 view];
-    v21 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 view];
-    [v20 pinToEdges:v21];
+    spinnerController7 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerController];
+    view4 = [(BFFSpinnerController *)spinnerController7 view];
+    view5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy view];
+    [view4 pinToEdges:view5];
   }
 
   else
   {
-    v22 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-    v23 = v22 == 0;
+    welcomeController = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+    v23 = welcomeController == 0;
 
     if (v23)
     {
       v24 = [[BuddyWelcomeController alloc] initWithTitle:&stru_10032F900 detailText:0 symbolName:0];
-      [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 setWelcomeController:v24];
+      [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy setWelcomeController:v24];
 
-      v25 = v45;
-      v26 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-      [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v25 addChildViewController:v26];
+      v25 = selfCopy;
+      welcomeController2 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+      [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v25 addChildViewController:welcomeController2];
 
-      v27 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-      [(BuddyWelcomeController *)v27 didMoveToParentViewController:v45];
+      welcomeController3 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+      [(BuddyWelcomeController *)welcomeController3 didMoveToParentViewController:selfCopy];
 
-      v28 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 view];
-      v29 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-      v30 = [(BuddyWelcomeController *)v29 view];
-      [v28 addSubview:v30];
+      view6 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy view];
+      welcomeController4 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+      view7 = [(BuddyWelcomeController *)welcomeController4 view];
+      [view6 addSubview:view7];
 
-      v31 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-      v32 = [(BuddyWelcomeController *)v31 view];
-      [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+      welcomeController5 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+      view8 = [(BuddyWelcomeController *)welcomeController5 view];
+      [view8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v33 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-      v34 = [(BuddyWelcomeController *)v33 view];
-      v35 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 view];
-      [v34 pinToEdges:v35];
+      welcomeController6 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+      view9 = [(BuddyWelcomeController *)welcomeController6 view];
+      view10 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy view];
+      [view9 pinToEdges:view10];
     }
 
-    v36 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-    v37 = [(BuddyWelcomeController *)v36 headerView];
-    v38 = [location[0] title];
-    [v37 setTitle:v38];
+    welcomeController7 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+    headerView = [(BuddyWelcomeController *)welcomeController7 headerView];
+    title2 = [location[0] title];
+    [headerView setTitle:title2];
 
-    v39 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 welcomeController];
-    v40 = [(BuddyWelcomeController *)v39 headerView];
-    v41 = [location[0] detailText];
-    [v40 setDetailText:v41];
+    welcomeController8 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy welcomeController];
+    headerView2 = [(BuddyWelcomeController *)welcomeController8 headerView];
+    detailText = [location[0] detailText];
+    [headerView2 setDetailText:detailText];
 
-    v42 = [location[0] statusMessage];
-    v43 = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)v45 spinnerStatusLabel];
-    [(UILabel *)v43 setText:v42];
+    statusMessage2 = [location[0] statusMessage];
+    spinnerStatusLabel = [(BuddyProximityAutomatedDeviceEnrollmentInProgressController *)selfCopy spinnerStatusLabel];
+    [(UILabel *)spinnerStatusLabel setText:statusMessage2];
   }
 
   objc_storeStrong(location, 0);

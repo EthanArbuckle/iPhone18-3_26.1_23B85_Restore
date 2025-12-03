@@ -1,20 +1,20 @@
 @interface WFAppleIntelligenceAccessResource
 - (NSString)name;
 - (WFImage)icon;
-- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)a3;
-- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3;
+- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)definition;
+- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status;
 - (unint64_t)status;
-- (void)attemptRecoveryFromError:(NSError *)a3 optionIndex:(int64_t)a4 userInterface:(WFUserInterfaceHost *)a5 completionHandler:(id)a6;
-- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)a3 completionHandler:(id)a4;
+- (void)attemptRecoveryFromError:(NSError *)error optionIndex:(int64_t)index userInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler;
+- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler;
 @end
 
 @implementation WFAppleIntelligenceAccessResource
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA2AA43C();
   v4 = v3;
 
@@ -33,7 +33,7 @@
 
 - (WFImage)icon
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA2AA52C();
 
   return v3;
@@ -41,29 +41,29 @@
 
 - (unint64_t)status
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA2AA6D4();
 
   return v3;
 }
 
-- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = interface;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_1CA67052C(&unk_1CA981618, v7);
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  v4 = self;
-  sub_1CA2AAC1C(a3);
+  selfCopy = self;
+  sub_1CA2AAC1C(status);
   v6 = v5;
 
   if (v6)
@@ -79,10 +79,10 @@
   return v7;
 }
 
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status
 {
-  v4 = self;
-  v5 = sub_1CA2ACB84(a3);
+  selfCopy = self;
+  v5 = sub_1CA2ACB84(status);
 
   if (v5)
   {
@@ -97,25 +97,25 @@
   return v6;
 }
 
-- (void)attemptRecoveryFromError:(NSError *)a3 optionIndex:(int64_t)a4 userInterface:(WFUserInterfaceHost *)a5 completionHandler:(id)a6
+- (void)attemptRecoveryFromError:(NSError *)error optionIndex:(int64_t)index userInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = error;
+  v11[3] = index;
+  v11[4] = interface;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
+  errorCopy = error;
   swift_unknownObjectRetain();
-  v13 = self;
+  selfCopy = self;
 
   sub_1CA67052C(&unk_1CA9815D8, v11);
 }
 
-- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4
+- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }
@@ -123,9 +123,9 @@
   sub_1CA2AD2BC();
 }
 
-- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)a3
+- (_TtC11WorkflowKit33WFAppleIntelligenceAccessResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }

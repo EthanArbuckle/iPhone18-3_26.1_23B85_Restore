@@ -19,7 +19,7 @@
 - (id)factorySUKeyIsSEP;
 - (id)factorySUKeyPath;
 - (id)fakeTatsuPayloadPath;
-- (id)getValueFromTestPreferencesForKey:(id)a3;
+- (id)getValueFromTestPreferencesForKey:(id)key;
 - (id)initialBuddySetupComplete;
 - (id)isActivated;
 - (id)isOnLockScreen;
@@ -61,15 +61,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"UseLiveTatsu"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)fakeTatsuPayloadPath
@@ -93,15 +93,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"UseAppleConnect"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)useSrNmForDeviceKey
@@ -109,15 +109,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"UseSrNmForDeviceKey"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)useScriptForDeviceKey
@@ -221,15 +221,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"EnablePipelineMode"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)skipDeviceIdentityVerification
@@ -237,15 +237,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipDeviceIdentityVerification"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)disableNarrativeAuthentication
@@ -253,15 +253,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"DisableNarrativeAuthentication"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)nfcIdleTime
@@ -301,15 +301,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"FactorySUCertExist"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)inBoxUpdateMode
@@ -317,15 +317,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"InBoxUpdateMode"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)initialBuddySetupComplete
@@ -509,15 +509,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"UsePandoraNonProdCerts"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)wifiSSID
@@ -557,15 +557,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipWiFiAssociation"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)skipDaemonDisable
@@ -573,15 +573,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipDaemonDisable"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)skipCertDeletion
@@ -589,15 +589,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipCertDeletion"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)statusServerHostAddress
@@ -637,15 +637,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"UsePythonLoopbackServer"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enterLPMAfterUpdateComplete
@@ -653,15 +653,15 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"EnterLPMAfterUpdateComplete"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)standbyIdleTimeout
@@ -669,20 +669,20 @@
   v2 = [(MIBUTestPreferences *)self getValueFromTestPreferencesForKey:@"StandbyIdleTimeout"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (id)getValueFromTestPreferencesForKey:(id)a3
+- (id)getValueFromTestPreferencesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (!CFPreferencesSynchronize(@"com.apple.MobileInBoxUpdater.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost))
   {
     if (qword_1000B84A8[0] != -1)
@@ -697,7 +697,7 @@
     }
   }
 
-  v5 = CFPreferencesCopyValue(v3, @"com.apple.MobileInBoxUpdater.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
+  v5 = CFPreferencesCopyValue(keyCopy, @"com.apple.MobileInBoxUpdater.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface _SFPBSafariAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSafariAttributes)initWithDictionary:(id)a3;
-- (_SFPBSafariAttributes)initWithFacade:(id)a3;
-- (_SFPBSafariAttributes)initWithJSON:(id)a3;
+- (_SFPBSafariAttributes)initWithDictionary:(id)dictionary;
+- (_SFPBSafariAttributes)initWithFacade:(id)facade;
+- (_SFPBSafariAttributes)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSafariAttributes
 
-- (_SFPBSafariAttributes)initWithFacade:(id)a3
+- (_SFPBSafariAttributes)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSafariAttributes *)self init];
   if (v5)
   {
-    if ([v4 hasHideReason])
+    if ([facadeCopy hasHideReason])
     {
-      -[_SFPBSafariAttributes setHideReason:](v5, "setHideReason:", [v4 hideReason]);
+      -[_SFPBSafariAttributes setHideReason:](v5, "setHideReason:", [facadeCopy hideReason]);
     }
 
     v6 = v5;
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (_SFPBSafariAttributes)initWithDictionary:(id)a3
+- (_SFPBSafariAttributes)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBSafariAttributes;
   v5 = [(_SFPBSafariAttributes *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hideReason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hideReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (_SFPBSafariAttributes)initWithJSON:(id)a3
+- (_SFPBSafariAttributes)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSafariAttributes *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSafariAttributes *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSafariAttributes *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,33 +84,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_hideReason)
   {
-    v4 = [(_SFPBSafariAttributes *)self hideReason];
-    if (v4 >= 3)
+    hideReason = [(_SFPBSafariAttributes *)self hideReason];
+    if (hideReason >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", hideReason];
     }
 
     else
     {
-      v5 = off_1E7ACE548[v4];
+      v5 = off_1E7ACE548[hideReason];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"hideReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hideReason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     hideReason = self->_hideReason;
-    v6 = hideReason == [v4 hideReason];
+    v6 = hideReason == [equalCopy hideReason];
   }
 
   else
@@ -121,9 +121,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBSafariAttributes *)self hideReason])
   {
     PBDataWriterWriteInt32Field();

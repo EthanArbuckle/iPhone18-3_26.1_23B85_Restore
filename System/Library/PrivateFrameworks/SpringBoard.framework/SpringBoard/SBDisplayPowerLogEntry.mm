@@ -1,9 +1,9 @@
 @interface SBDisplayPowerLogEntry
-+ (id)forDisplay:(id)a3 mode:(unint64_t)a4 zoom:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)forDisplay:(id)display mode:(unint64_t)mode zoom:(unint64_t)zoom;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)canvasSize;
 - (CGSize)nativeSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)logPayload;
 - (unint64_t)hash;
@@ -11,11 +11,11 @@
 
 @implementation SBDisplayPowerLogEntry
 
-+ (id)forDisplay:(id)a3 mode:(unint64_t)a4 zoom:(unint64_t)a5
++ (id)forDisplay:(id)display mode:(unint64_t)mode zoom:(unint64_t)zoom
 {
-  v7 = [a3 CADisplay];
-  v8 = v7;
-  if (!v7)
+  cADisplay = [display CADisplay];
+  v8 = cADisplay;
+  if (!cADisplay)
   {
     v20 = SBLogDisplayControlling();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -26,11 +26,11 @@
     goto LABEL_6;
   }
 
-  v9 = [v7 name];
+  name = [cADisplay name];
 
-  v10 = [v8 name];
-  v11 = v10;
-  if (v9)
+  name2 = [v8 name];
+  v11 = name2;
+  if (name)
   {
     [v8 bounds];
     v13 = v12;
@@ -62,13 +62,13 @@ LABEL_9:
   [(SBDisplayPowerLogEntry *)v21 setDisplayName:v11];
   [(SBDisplayPowerLogEntry *)v21 setCanvasSize:v13, v15];
   [(SBDisplayPowerLogEntry *)v21 setNativeSize:v17, v19];
-  [(SBDisplayPowerLogEntry *)v21 setWindowingMode:a4];
-  [(SBDisplayPowerLogEntry *)v21 setZoomLevel:a5];
+  [(SBDisplayPowerLogEntry *)v21 setWindowingMode:mode];
+  [(SBDisplayPowerLogEntry *)v21 setZoomLevel:zoom];
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBDisplayPowerLogEntry);
   [(SBDisplayPowerLogEntry *)v4 setDisplayName:self->_displayName];
@@ -79,10 +79,10 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -92,7 +92,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = [(NSString *)self->_displayName isEqualToString:v5->_displayName]&& (self->_canvasSize.width == v5->_canvasSize.width ? (v6 = self->_canvasSize.height == v5->_canvasSize.height) : (v6 = 0), v6 && (self->_nativeSize.width == v5->_nativeSize.width ? (v7 = self->_nativeSize.height == v5->_nativeSize.height) : (v7 = 0), v7 && self->_windowingMode == v5->_windowingMode)) && self->_zoomLevel == v5->_zoomLevel;
     }
 
@@ -107,13 +107,13 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_displayName];
-  v5 = [v3 appendCGSize:{self->_canvasSize.width, self->_canvasSize.height}];
-  v6 = [v3 appendCGSize:{self->_nativeSize.width, self->_nativeSize.height}];
-  v7 = [v3 appendUnsignedInteger:self->_windowingMode];
-  v8 = [v3 appendUnsignedInteger:self->_zoomLevel];
-  v9 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_displayName];
+  v5 = [builder appendCGSize:{self->_canvasSize.width, self->_canvasSize.height}];
+  v6 = [builder appendCGSize:{self->_nativeSize.width, self->_nativeSize.height}];
+  v7 = [builder appendUnsignedInteger:self->_windowingMode];
+  v8 = [builder appendUnsignedInteger:self->_zoomLevel];
+  v9 = [builder hash];
 
   return v9;
 }
@@ -148,9 +148,9 @@ LABEL_9:
   }
 
   [v3 appendString:v9 withName:@"zoomLevel"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (id)logPayload

@@ -1,16 +1,16 @@
 @interface JSInlinePopupViewController
 - (NSString)title;
-- (_TtC16MusicApplication27JSInlinePopupViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (_TtC16MusicApplication27JSInlinePopupViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)music_viewInheritedLayoutInsetsDidChange;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation JSInlinePopupViewController
@@ -20,10 +20,10 @@
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(JSInlinePopupViewController *)&v7 title];
-  if (v3)
+  title = [(JSInlinePopupViewController *)&v7 title];
+  if (title)
   {
-    v4 = v3;
+    v4 = title;
     sub_AB92A0();
 
     v5 = sub_AB9260();
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_AB92A0();
     v6 = v5;
@@ -52,53 +52,53 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_31AB50(v4, v6);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_31B040();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_31B948(a3);
+  selfCopy = self;
+  sub_31B948(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_31BB7C(a3, &selRef_viewDidAppear_, 0x81u);
+  selfCopy = self;
+  sub_31BB7C(appear, &selRef_viewDidAppear_, 0x81u);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_31BA90(a3);
+  selfCopy = self;
+  sub_31BA90(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_31BB7C(a3, &selRef_viewDidDisappear_, 0x80u);
+  selfCopy = self;
+  sub_31BB7C(disappear, &selRef_viewDidDisappear_, 0x80u);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_31BC74();
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  controllerCopy = controller;
   v5 = v6.receiver;
-  [(JSInlinePopupViewController *)&v6 didMoveToParentViewController:v4];
+  [(JSInlinePopupViewController *)&v6 didMoveToParentViewController:controllerCopy];
   sub_31C210();
 }
 
@@ -111,14 +111,14 @@
   sub_31C49C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_31C8F8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_31C8F8(change);
 }
 
-- (_TtC16MusicApplication27JSInlinePopupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication27JSInlinePopupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

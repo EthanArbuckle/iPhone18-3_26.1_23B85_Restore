@@ -1,34 +1,34 @@
 @interface HKNumericFixedAxisScalingRule
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4;
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 noDataAxisBounds:(id)a5;
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides;
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides noDataAxisBounds:(id)axisBounds;
 - (id)description;
 @end
 
 @implementation HKNumericFixedAxisScalingRule
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() ruleWithDefaultAxisBounds:v6 axisBoundsOverrides:v5 noDataAxisBounds:0];
+  overridesCopy = overrides;
+  boundsCopy = bounds;
+  v7 = [objc_opt_class() ruleWithDefaultAxisBounds:boundsCopy axisBoundsOverrides:overridesCopy noDataAxisBounds:0];
 
   return v7;
 }
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 noDataAxisBounds:(id)a5
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides noDataAxisBounds:(id)axisBounds
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  boundsCopy = bounds;
+  overridesCopy = overrides;
+  axisBoundsCopy = axisBounds;
   v10 = objc_alloc_init(objc_opt_class());
   v11 = v10[1];
-  v10[1] = v7;
-  v12 = v7;
+  v10[1] = boundsCopy;
+  v12 = boundsCopy;
 
   v13 = v10[2];
-  v10[2] = v8;
+  v10[2] = overridesCopy;
 
-  [v10 setNoDataAxisBounds:v9];
+  [v10 setNoDataAxisBounds:axisBoundsCopy];
 
   return v10;
 }

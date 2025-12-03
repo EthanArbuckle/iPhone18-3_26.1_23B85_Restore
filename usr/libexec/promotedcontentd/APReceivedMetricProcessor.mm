@@ -1,20 +1,20 @@
 @interface APReceivedMetricProcessor
-- (APReceivedMetricProcessor)initWithDatabase:(id)a3;
-- (void)processReceivedMetric:(id)a3;
+- (APReceivedMetricProcessor)initWithDatabase:(id)database;
+- (void)processReceivedMetric:(id)metric;
 @end
 
 @implementation APReceivedMetricProcessor
 
-- (APReceivedMetricProcessor)initWithDatabase:(id)a3
+- (APReceivedMetricProcessor)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v11.receiver = self;
   v11.super_class = APReceivedMetricProcessor;
   v6 = [(APReceivedMetricProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = objc_alloc_init(APExperimentationReportTelemetryDelivery);
     telemetryDelivery = v7->_telemetryDelivery;
     v7->_telemetryDelivery = v8;
@@ -23,29 +23,29 @@
   return v7;
 }
 
-- (void)processReceivedMetric:(id)a3
+- (void)processReceivedMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [(APReceivedMetricProcessor *)self database];
-  if (v5)
+  metricCopy = metric;
+  database = [(APReceivedMetricProcessor *)self database];
+  if (database)
   {
-    v6 = [v4 internalProperties];
-    v7 = v6;
-    if (v6)
+    internalProperties = [metricCopy internalProperties];
+    v7 = internalProperties;
+    if (internalProperties)
     {
-      v8 = [v6 objectForKey:kAPTriggersIdentifier];
+      v8 = [internalProperties objectForKey:kAPTriggersIdentifier];
       v9 = v8;
       if (v8 && [v8 count])
       {
-        v10 = [v5 getTableForClass:objc_opt_class()];
-        v11 = [v5 getTableForClass:objc_opt_class()];
+        v10 = [database getTableForClass:objc_opt_class()];
+        v11 = [database getTableForClass:objc_opt_class()];
         v12 = v11;
         v41 = v10;
         if (v10 && v11)
         {
           v42 = v11;
           v39 = v7;
-          v40 = v5;
+          v40 = database;
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
@@ -85,18 +85,18 @@
 
                 if (v21)
                 {
-                  v22 = [(APReceivedMetricProcessor *)self telemetryDelivery];
-                  [v22 logExperimentationErrorWithErrorType:3 description:0];
+                  telemetryDelivery = [(APReceivedMetricProcessor *)self telemetryDelivery];
+                  [telemetryDelivery logExperimentationErrorWithErrorType:3 description:0];
                 }
 
                 else
                 {
                   v23 = [v14 getOrInsertTriggerWithExperimentId:v18 treatmentId:v19];
-                  v22 = v23;
+                  telemetryDelivery = v23;
                   if (v23)
                   {
-                    v24 = [v4 secondaryHandle];
-                    if (!v24)
+                    secondaryHandle = [metricCopy secondaryHandle];
+                    if (!secondaryHandle)
                     {
                       v25 = APLogForCategory();
                       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -105,16 +105,16 @@
                         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Secondary Handle is nil, falling back to handle for impressionId.", buf, 2u);
                       }
 
-                      v24 = [v4 handle];
+                      secondaryHandle = [metricCopy handle];
                     }
 
-                    v26 = [v22 rowid];
-                    v27 = [v42 insertSignalTrackForTriggerRowId:v26 impressionId:v24];
+                    rowid = [telemetryDelivery rowid];
+                    v27 = [v42 insertSignalTrackForTriggerRowId:rowid impressionId:secondaryHandle];
 
                     if (!v27)
                     {
-                      v28 = [(APReceivedMetricProcessor *)self telemetryDelivery];
-                      [v28 logExperimentationErrorWithErrorType:5 description:0];
+                      telemetryDelivery2 = [(APReceivedMetricProcessor *)self telemetryDelivery];
+                      [telemetryDelivery2 logExperimentationErrorWithErrorType:5 description:0];
                     }
 
                     v29 = APLogForCategory();
@@ -128,22 +128,22 @@
                       v54 = 2114;
                       v55 = v20;
                       v56 = 2114;
-                      v57 = v24;
-                      v31 = self;
-                      v32 = v4;
+                      v57 = secondaryHandle;
+                      selfCopy = self;
+                      v32 = metricCopy;
                       v33 = v30;
                       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "[%{private}@] Trigger insert completed successfully, ExperimentId: %{public}@, TreatmentId: %{public}@, ImpressionId: %{public}@.", buf, 0x2Au);
 
-                      v4 = v32;
-                      self = v31;
+                      metricCopy = v32;
+                      self = selfCopy;
                       v14 = v41;
                     }
                   }
 
                   else
                   {
-                    v24 = [(APReceivedMetricProcessor *)self telemetryDelivery];
-                    [v24 logExperimentationErrorWithErrorType:4 description:0];
+                    secondaryHandle = [(APReceivedMetricProcessor *)self telemetryDelivery];
+                    [secondaryHandle logExperimentationErrorWithErrorType:4 description:0];
                   }
 
                   v15 = v43;
@@ -160,15 +160,15 @@
           }
 
           v7 = v39;
-          v5 = v40;
+          database = v40;
           v9 = v38;
           v12 = v42;
         }
 
         else
         {
-          v37 = [(APReceivedMetricProcessor *)self telemetryDelivery];
-          [v37 logExperimentationErrorWithErrorType:2 description:@"Received metric processor"];
+          telemetryDelivery3 = [(APReceivedMetricProcessor *)self telemetryDelivery];
+          [telemetryDelivery3 logExperimentationErrorWithErrorType:2 description:@"Received metric processor"];
         }
       }
 

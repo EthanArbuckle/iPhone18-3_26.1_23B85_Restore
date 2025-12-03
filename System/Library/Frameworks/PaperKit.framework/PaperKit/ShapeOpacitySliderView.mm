@@ -1,14 +1,14 @@
 @interface ShapeOpacitySliderView
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (_TtC8PaperKit22ShapeOpacitySliderView)initWithCoder:(id)a3;
-- (_TtC8PaperKit22ShapeOpacitySliderView)initWithFrame:(CGRect)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (_TtC8PaperKit22ShapeOpacitySliderView)initWithCoder:(id)coder;
+- (_TtC8PaperKit22ShapeOpacitySliderView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
 
 @implementation ShapeOpacitySliderView
 
-- (_TtC8PaperKit22ShapeOpacitySliderView)initWithCoder:(id)a3
+- (_TtC8PaperKit22ShapeOpacitySliderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8PaperKit22ShapeOpacitySliderView_gradient;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E6979380]) init];
@@ -20,30 +20,30 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   ShapeOpacitySliderView.didMoveToSuperview()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ShapeOpacitySliderView.layoutSubviews()();
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
   v19.receiver = self;
   v19.super_class = swift_getObjectType();
-  [(ShapeOpacitySliderView *)&v19 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(a5)];
-  v16 = a5 * -6.0 + 3.0 + v15;
+  [(ShapeOpacitySliderView *)&v19 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(value)];
+  v16 = value * -6.0 + 3.0 + v15;
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (_TtC8PaperKit22ShapeOpacitySliderView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit22ShapeOpacitySliderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

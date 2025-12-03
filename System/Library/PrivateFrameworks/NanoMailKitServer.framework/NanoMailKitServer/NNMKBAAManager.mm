@@ -1,20 +1,20 @@
 @interface NNMKBAAManager
-+ (void)appleAuthHeaderFrom:(id)a3 completion:(id)a4;
-+ (void)signRequestData:(id)a3 completion:(id)a4;
++ (void)appleAuthHeaderFrom:(id)from completion:(id)completion;
++ (void)signRequestData:(id)data completion:(id)completion;
 @end
 
 @implementation NNMKBAAManager
 
-+ (void)appleAuthHeaderFrom:(id)a3 completion:(id)a4
++ (void)appleAuthHeaderFrom:(id)from completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__NNMKBAAManager_appleAuthHeaderFrom_completion___block_invoke;
   v8[3] = &unk_2799364E0;
-  v9 = v6;
-  v7 = v6;
-  [a1 signRequestData:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self signRequestData:from completion:v8];
 }
 
 void __49__NNMKBAAManager_appleAuthHeaderFrom_completion___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -65,11 +65,11 @@ void __49__NNMKBAAManager_appleAuthHeaderFrom_completion___block_invoke(uint64_t
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)signRequestData:(id)a3 completion:(id)a4
++ (void)signRequestData:(id)data completion:(id)completion
 {
   v99[6] = *MEMORY[0x277D85DE8];
-  v82 = a3;
-  v5 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v92 = 0;
   v93 = &v92;
   v94 = 0x2020000000;
@@ -108,7 +108,7 @@ void __49__NNMKBAAManager_appleAuthHeaderFrom_completion___block_invoke(uint64_t
       }
 
       v66 = [MEMORY[0x277CCA9B8] genericErrorWithMessage:@"Failed to create access control"];
-      (*(v5 + 2))(v5, 0, 0, v66);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v66);
       goto LABEL_53;
     }
 
@@ -479,8 +479,8 @@ void __49__NNMKBAAManager_appleAuthHeaderFrom_completion___block_invoke(uint64_t
       v83[1] = 3221225472;
       v83[2] = __45__NNMKBAAManager_signRequestData_completion___block_invoke;
       v83[3] = &unk_279936508;
-      v85 = v5;
-      v84 = v82;
+      v85 = completionCopy;
+      v84 = dataCopy;
       v66 = v81;
       v67 = v83;
       v92 = 0;
@@ -525,7 +525,7 @@ LABEL_68:
   }
 
   v71 = [MEMORY[0x277CCA9B8] genericErrorWithMessage:@"DeviceIdentity not supported on this platform."];
-  (*(v5 + 2))(v5, 0, 0, v71);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v71);
 
 LABEL_54:
   v79 = *MEMORY[0x277D85DE8];

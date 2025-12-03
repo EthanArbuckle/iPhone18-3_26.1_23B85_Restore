@@ -1,6 +1,6 @@
 @interface MTRActionsClusterActionFailedEvent
 - (MTRActionsClusterActionFailedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRActionsClusterActionFailedEvent);
-  v5 = [(MTRActionsClusterActionFailedEvent *)self actionID];
-  [(MTRActionsClusterActionFailedEvent *)v4 setActionID:v5];
+  actionID = [(MTRActionsClusterActionFailedEvent *)self actionID];
+  [(MTRActionsClusterActionFailedEvent *)v4 setActionID:actionID];
 
-  v6 = [(MTRActionsClusterActionFailedEvent *)self invokeID];
-  [(MTRActionsClusterActionFailedEvent *)v4 setInvokeID:v6];
+  invokeID = [(MTRActionsClusterActionFailedEvent *)self invokeID];
+  [(MTRActionsClusterActionFailedEvent *)v4 setInvokeID:invokeID];
 
-  v7 = [(MTRActionsClusterActionFailedEvent *)self getNewState];
-  [(MTRActionsClusterActionFailedEvent *)v4 setNewState:v7];
+  getNewState = [(MTRActionsClusterActionFailedEvent *)self getNewState];
+  [(MTRActionsClusterActionFailedEvent *)v4 setNewState:getNewState];
 
-  v8 = [(MTRActionsClusterActionFailedEvent *)self error];
-  [(MTRActionsClusterActionFailedEvent *)v4 setError:v8];
+  error = [(MTRActionsClusterActionFailedEvent *)self error];
+  [(MTRActionsClusterActionFailedEvent *)v4 setError:error];
 
   return v4;
 }

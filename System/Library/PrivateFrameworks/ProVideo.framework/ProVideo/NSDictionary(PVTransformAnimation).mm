@@ -39,23 +39,23 @@
   *(a2 + 24) = 0;
   *(a2 + 32) = 0;
   *(a2 + 40) = xmmword_2603426F0;
-  v5 = [a1 objectForKeyedSubscript:@"tV"];
-  v6 = [a1 objectForKeyedSubscript:@"tS"];
+  v5 = [self objectForKeyedSubscript:@"tV"];
+  v6 = [self objectForKeyedSubscript:@"tS"];
   CMTimeMake(&v15, [v5 longLongValue], objc_msgSend(v6, "intValue"));
   *a2 = v15;
-  v7 = [a1 objectForKeyedSubscript:@"X"];
+  v7 = [self objectForKeyedSubscript:@"X"];
 
   [v7 doubleValue];
   *(a2 + 24) = v8;
-  v9 = [a1 objectForKeyedSubscript:@"Y"];
+  v9 = [self objectForKeyedSubscript:@"Y"];
 
   [v9 doubleValue];
   *(a2 + 32) = v10;
-  v11 = [a1 objectForKeyedSubscript:@"S"];
+  v11 = [self objectForKeyedSubscript:@"S"];
 
   [v11 doubleValue];
   *(a2 + 40) = v12;
-  v13 = [a1 objectForKeyedSubscript:@"R"];
+  v13 = [self objectForKeyedSubscript:@"R"];
 
   [v13 doubleValue];
   *(a2 + 48) = v14;

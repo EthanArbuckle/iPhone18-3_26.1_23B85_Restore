@@ -1,8 +1,8 @@
 @interface TLKIconsView
 - (TLKIconsView)init;
-- (void)setProminence:(unint64_t)a3;
-- (void)setSymbolFont:(id)a3;
-- (void)updateIcons:(id)a3;
+- (void)setProminence:(unint64_t)prominence;
+- (void)setSymbolFont:(id)font;
+- (void)updateIcons:(id)icons;
 @end
 
 @implementation TLKIconsView
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (void)setProminence:(unint64_t)a3
+- (void)setProminence:(unint64_t)prominence
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_prominence = a3;
+  self->_prominence = prominence;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TLKIconsView *)self imageViews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  imageViews = [(TLKIconsView *)self imageViews];
+  v5 = [imageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -47,31 +47,31 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(imageViews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setProminence:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setProminence:prominence];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [imageViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setSymbolFont:(id)a3
+- (void)setSymbolFont:(id)font
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_symbolFont, a3);
+  fontCopy = font;
+  objc_storeStrong(&self->_symbolFont, font);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(TLKIconsView *)self imageViews];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  imageViews = [(TLKIconsView *)self imageViews];
+  v7 = [imageViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -83,30 +83,30 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(imageViews);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setSymbolFont:v5];
+        [*(*(&v11 + 1) + 8 * v10++) setSymbolFont:fontCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [imageViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)updateIcons:(id)a3
+- (void)updateIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__TLKIconsView_updateIcons___block_invoke;
   v6[3] = &unk_1E7FD8DA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = iconsCopy;
+  selfCopy = self;
+  v5 = iconsCopy;
   [(TLKIconsView *)self performBatchUpdates:v6];
 }
 

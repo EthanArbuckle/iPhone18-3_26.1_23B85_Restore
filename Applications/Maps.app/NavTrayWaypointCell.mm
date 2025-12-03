@@ -1,25 +1,25 @@
 @interface NavTrayWaypointCell
-- (_TtC4Maps19NavTrayWaypointCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC4Maps19NavTrayWaypointCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (_TtP4Maps27NavTrayWaypointCellDelegate_)delegate;
-- (void)applyWithIsCallable:(BOOL)a3 isDeletable:(BOOL)a4;
-- (void)setEtaString:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setWaypoint:(id)a3;
-- (void)setWaypointImage:(id)a3;
+- (void)applyWithIsCallable:(BOOL)callable isDeletable:(BOOL)deletable;
+- (void)setEtaString:(id)string;
+- (void)setTitle:(id)title;
+- (void)setWaypoint:(id)waypoint;
+- (void)setWaypointImage:(id)image;
 @end
 
 @implementation NavTrayWaypointCell
 
-- (void)setWaypointImage:(id)a3
+- (void)setWaypointImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_100134644(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_100134644(image);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -34,14 +34,14 @@
   v7 = (self + OBJC_IVAR____TtC4Maps19NavTrayWaypointCell_title);
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
   dispatch thunk of ListCellViewModel.title.setter();
 }
 
-- (void)setEtaString:(id)a3
+- (void)setEtaString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -55,16 +55,16 @@
   v6 = (self + OBJC_IVAR____TtC4Maps19NavTrayWaypointCell_etaString);
   *v6 = v4;
   v6[1] = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_1001348EC();
 }
 
-- (void)setWaypoint:(id)a3
+- (void)setWaypoint:(id)waypoint
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps19NavTrayWaypointCell_waypoint);
-  *(self + OBJC_IVAR____TtC4Maps19NavTrayWaypointCell_waypoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps19NavTrayWaypointCell_waypoint) = waypoint;
+  waypointCopy = waypoint;
 }
 
 - (_TtP4Maps27NavTrayWaypointCellDelegate_)delegate
@@ -74,11 +74,11 @@
   return Strong;
 }
 
-- (_TtC4Maps19NavTrayWaypointCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps19NavTrayWaypointCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -87,13 +87,13 @@
     v6 = 0;
   }
 
-  return sub_100134C50(a3, a4, v6);
+  return sub_100134C50(style, identifier, v6);
 }
 
-- (void)applyWithIsCallable:(BOOL)a3 isDeletable:(BOOL)a4
+- (void)applyWithIsCallable:(BOOL)callable isDeletable:(BOOL)deletable
 {
-  v6 = self;
-  sub_1001355D0(a3, a4);
+  selfCopy = self;
+  sub_1001355D0(callable, deletable);
 }
 
 @end

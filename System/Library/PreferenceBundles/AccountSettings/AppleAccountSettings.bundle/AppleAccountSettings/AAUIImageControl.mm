@@ -1,17 +1,17 @@
 @interface AAUIImageControl
-- (AAUIImageControl)initWithCoder:(id)a3;
-- (AAUIImageControl)initWithFrame:(CGRect)a3;
+- (AAUIImageControl)initWithCoder:(id)coder;
+- (AAUIImageControl)initWithFrame:(CGRect)frame;
 - (void)_updateLabelVisibility;
 - (void)_updateOverlayViewVisibility;
 @end
 
 @implementation AAUIImageControl
 
-- (AAUIImageControl)initWithFrame:(CGRect)a3
+- (AAUIImageControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AAUIImageControl;
-  v3 = [(AAUIImageControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIImageControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (AAUIImageControl)initWithCoder:(id)a3
+- (AAUIImageControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUIImageControl;
-  v3 = [(AAUIImageControl *)&v6 initWithCoder:a3];
+  v3 = [(AAUIImageControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

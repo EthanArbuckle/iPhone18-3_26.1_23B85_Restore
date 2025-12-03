@@ -1,11 +1,11 @@
 @interface ADMonocularVideoExecutor
-- (ADMonocularVideoExecutor)initWithParameters:(id)a3;
+- (ADMonocularVideoExecutor)initWithParameters:(id)parameters;
 - (__CVBuffer)prevColorFeatures;
 - (__CVBuffer)prevDepthFeatures;
 - (id)getIntermediates;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)executeWithColor:(__CVBuffer *)a3 efl:(float)a4 outDisparityMap:(__CVBuffer *)a5;
-- (int64_t)prepareForEngineType:(unint64_t)a3;
+- (int64_t)executeWithColor:(__CVBuffer *)color efl:(float)efl outDisparityMap:(__CVBuffer *)map;
+- (int64_t)prepareForEngineType:(unint64_t)type;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
 @end
@@ -16,9 +16,9 @@
 {
   v26[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ADMonocularVideoPipeline *)self->_pipeline shouldPreProcessColorInputs];
+  shouldPreProcessColorInputs = [(ADMonocularVideoPipeline *)self->_pipeline shouldPreProcessColorInputs];
   v5 = &OBJC_IVAR___ADMonocularVideoExecutor__refColor;
-  if (v4)
+  if (shouldPreProcessColorInputs)
   {
     v5 = &OBJC_IVAR___ADMonocularVideoExecutor__itmChunkyRefColor;
   }
@@ -92,14 +92,14 @@
   [(ADExecutor *)&v3 dealloc];
 }
 
-- (int64_t)executeWithColor:(__CVBuffer *)a3 efl:(float)a4 outDisparityMap:(__CVBuffer *)a5
+- (int64_t)executeWithColor:(__CVBuffer *)color efl:(float)efl outDisparityMap:(__CVBuffer *)map
 {
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8->_isPrepared)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isPrepared)
   {
-    v9 = [(ADMonocularVideoExecutor *)v8 prepareForEngineType:v8->super._engineType];
-    if (v9)
+    execute = [(ADMonocularVideoExecutor *)selfCopy prepareForEngineType:selfCopy->super._engineType];
+    if (execute)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -111,43 +111,43 @@
     }
   }
 
-  if (v8->super._espressoRunner)
+  if (selfCopy->super._espressoRunner)
   {
-    if (a5)
+    if (map)
     {
-      v10 = [(ADExecutor *)v8 executorParameters];
-      v11 = [v10 logger];
+      executorParameters = [(ADExecutor *)selfCopy executorParameters];
+      logger = [executorParameters logger];
 
-      v12 = [MEMORY[0x277CCAC38] processInfo];
-      [v12 systemUptime];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v14 = v13;
 
       *buf = 335685464;
       v57 = 0u;
       v58 = 0u;
       kdebug_trace();
-      [v11 logPixelBuffer:a3 name:"inputColor" timestamp:v14];
-      v15 = [(ADExecutor *)v8 executorParameters];
-      v16 = [v15 stepsToExecute];
+      [logger logPixelBuffer:color name:"inputColor" timestamp:v14];
+      executorParameters2 = [(ADExecutor *)selfCopy executorParameters];
+      stepsToExecute = [executorParameters2 stepsToExecute];
 
-      v17 = [(ADExecutor *)v8 executorParameters];
-      v18 = [v17 timeProfiler];
+      executorParameters3 = [(ADExecutor *)selfCopy executorParameters];
+      timeProfiler = [executorParameters3 timeProfiler];
 
-      if (v16 >= 1)
+      if (stepsToExecute >= 1)
       {
         kdebug_trace();
-        [v18 startWithUTFString:"preprocess color"];
-        [(ADExecutor *)v8 frameExecutionStart];
-        v19 = [(ADMonocularVideoPipeline *)v8->_pipeline shouldPreProcessColorInputs];
+        [timeProfiler startWithUTFString:"preprocess color"];
+        [(ADExecutor *)selfCopy frameExecutionStart];
+        shouldPreProcessColorInputs = [(ADMonocularVideoPipeline *)selfCopy->_pipeline shouldPreProcessColorInputs];
         v20 = &OBJC_IVAR___ADMonocularVideoExecutor__refColor;
-        if (v19)
+        if (shouldPreProcessColorInputs)
         {
           v20 = &OBJC_IVAR___ADMonocularVideoExecutor__itmChunkyRefColor;
         }
 
-        v21 = *(&v8->super.super.isa + *v20);
-        v9 = [ADUtils scaleConvertRotateImage:a3 rotateBy:LOBYTE(v8->super._rotationConstant) cropBy:v21 scaleInto:&v8->_itmCroppedScaledRefColor intermediateScalingBuffer:&v8->_itmRotatedRefColor intermediateRotatingBuffer:1 useVT:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-        if (v9)
+        v21 = *(&selfCopy->super.super.isa + *v20);
+        execute = [ADUtils scaleConvertRotateImage:color rotateBy:LOBYTE(selfCopy->super._rotationConstant) cropBy:v21 scaleInto:&selfCopy->_itmCroppedScaledRefColor intermediateScalingBuffer:&selfCopy->_itmRotatedRefColor intermediateRotatingBuffer:1 useVT:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+        if (execute)
         {
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -165,10 +165,10 @@ LABEL_13:
           goto LABEL_36;
         }
 
-        if ([(ADMonocularVideoPipeline *)v8->_pipeline shouldPreProcessColorInputs])
+        if ([(ADMonocularVideoPipeline *)selfCopy->_pipeline shouldPreProcessColorInputs])
         {
-          v9 = [(ADMonocularVideoPipeline *)v8->_pipeline preProcessColorInput:v21 toBuffer:v8->_refColor];
-          if (v9)
+          execute = [(ADMonocularVideoPipeline *)selfCopy->_pipeline preProcessColorInput:v21 toBuffer:selfCopy->_refColor];
+          if (execute)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -182,14 +182,14 @@ LABEL_13:
           }
         }
 
-        [v11 logPixelBuffer:v8->_refColor name:"refColorProcessed" timestamp:v14];
-        [v11 logPixelBuffer:v8->_itmPrevDepthFeatures name:"prevDepthFeatures" timestamp:v14];
-        [v11 logPixelBuffer:v8->_itmPrevColorFeatures name:"prevColorFeatures" timestamp:v14];
+        [logger logPixelBuffer:selfCopy->_refColor name:"refColorProcessed" timestamp:v14];
+        [logger logPixelBuffer:selfCopy->_itmPrevDepthFeatures name:"prevDepthFeatures" timestamp:v14];
+        [logger logPixelBuffer:selfCopy->_itmPrevColorFeatures name:"prevColorFeatures" timestamp:v14];
         _S10 = 1.0;
-        if (a4 > 0.0)
+        if (efl > 0.0)
         {
-          Width = CVPixelBufferGetWidth(v8->_refColor);
-          Height = CVPixelBufferGetHeight(v8->_refColor);
+          Width = CVPixelBufferGetWidth(selfCopy->_refColor);
+          Height = CVPixelBufferGetHeight(selfCopy->_refColor);
           if (Width <= Height)
           {
             v27 = Height;
@@ -200,8 +200,8 @@ LABEL_13:
             v27 = Width;
           }
 
-          v28 = CVPixelBufferGetWidth(a3);
-          v29 = CVPixelBufferGetHeight(a3);
+          v28 = CVPixelBufferGetWidth(color);
+          v29 = CVPixelBufferGetHeight(color);
           if (v28 <= v29)
           {
             v31 = v29;
@@ -212,30 +212,30 @@ LABEL_13:
             v31 = v28;
           }
 
-          *&v30 = (v31 / v27) * a4;
-          [(ADMonocularVideoPipeline *)v8->_pipeline getMetricScaleFactorForEFL:v30];
+          *&v30 = (v31 / v27) * efl;
+          [(ADMonocularVideoPipeline *)selfCopy->_pipeline getMetricScaleFactorForEFL:v30];
           _S10 = v32;
         }
 
-        scaleFactorBuffer = v8->_scaleFactorBuffer;
+        scaleFactorBuffer = selfCopy->_scaleFactorBuffer;
         if (scaleFactorBuffer)
         {
           CVPixelBufferLockBaseAddress(scaleFactorBuffer, 0);
-          BaseAddress = CVPixelBufferGetBaseAddress(v8->_scaleFactorBuffer);
+          BaseAddress = CVPixelBufferGetBaseAddress(selfCopy->_scaleFactorBuffer);
           __asm { FCVT            H0, S10 }
 
           *BaseAddress = _H0;
-          CVPixelBufferUnlockBaseAddress(v8->_scaleFactorBuffer, 0);
+          CVPixelBufferUnlockBaseAddress(selfCopy->_scaleFactorBuffer, 0);
         }
 
-        [v18 stopWithUTFString:"preprocess color"];
+        [timeProfiler stopWithUTFString:"preprocess color"];
         kdebug_trace();
-        if (v16 != 1)
+        if (stepsToExecute != 1)
         {
           kdebug_trace();
-          [v18 startWithUTFString:"network execution"];
-          v9 = [(ADEspressoRunnerProtocol *)v8->super._espressoRunner execute];
-          if (v9)
+          [timeProfiler startWithUTFString:"network execution"];
+          execute = [(ADEspressoRunnerProtocol *)selfCopy->super._espressoRunner execute];
+          if (execute)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -248,29 +248,29 @@ LABEL_13:
             goto LABEL_13;
           }
 
-          [v11 logPixelBuffer:v8->_disparity name:"outputDisparity" timestamp:v14];
-          [v11 logPixelBuffer:v8->_itmColorFeaturesOutput name:"outputColorFeatures" timestamp:v14];
-          [v11 logPixelBuffer:v8->_itmDepthFeaturesOutput name:"outputDepthFeatures" timestamp:v14];
-          [v18 stopWithUTFString:"network execution"];
+          [logger logPixelBuffer:selfCopy->_disparity name:"outputDisparity" timestamp:v14];
+          [logger logPixelBuffer:selfCopy->_itmColorFeaturesOutput name:"outputColorFeatures" timestamp:v14];
+          [logger logPixelBuffer:selfCopy->_itmDepthFeaturesOutput name:"outputDepthFeatures" timestamp:v14];
+          [timeProfiler stopWithUTFString:"network execution"];
           kdebug_trace();
-          if (v16 >= 3)
+          if (stepsToExecute >= 3)
           {
             kdebug_trace();
-            [v18 startWithUTFString:"postprocess depth"];
-            if (!*a5)
+            [timeProfiler startWithUTFString:"postprocess depth"];
+            if (!*map)
             {
-              disparity = v8->_disparity;
+              disparity = selfCopy->_disparity;
               PixelFormatType = CVPixelBufferGetPixelFormatType(disparity);
-              *a5 = PixelBufferUtils::createPixelBufferWithSameSize(disparity, PixelFormatType, 1);
+              *map = PixelBufferUtils::createPixelBufferWithSameSize(disparity, PixelFormatType, 1);
             }
 
-            if (_S10 != 1.0 && !v8->_scaleFactorBuffer)
+            if (_S10 != 1.0 && !selfCopy->_scaleFactorBuffer)
             {
-              PixelBufferUtils::inPlaceColorScaling(v8->_disparity, 1, _S10, 0.0, 1);
+              PixelBufferUtils::inPlaceColorScaling(selfCopy->_disparity, 1, _S10, 0.0, 1);
             }
 
-            v9 = [ADUtils postProcessDepth:v8->_disparity depthOutput:?];
-            if (v9)
+            execute = [ADUtils postProcessDepth:selfCopy->_disparity depthOutput:?];
+            if (execute)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -283,28 +283,28 @@ LABEL_13:
               goto LABEL_13;
             }
 
-            [v11 logPixelBuffer:*a5 name:"outputDisparityConvertedUnits" timestamp:v14];
-            [v18 stopWithUTFString:"postprocess depth"];
+            [logger logPixelBuffer:*map name:"outputDisparityConvertedUnits" timestamp:v14];
+            [timeProfiler stopWithUTFString:"postprocess depth"];
             kdebug_trace();
-            if (v16 != 3)
+            if (stepsToExecute != 3)
             {
               kdebug_trace();
-              [v18 startWithUTFString:"postprocess previous depth"];
-              v43 = [(ADExecutor *)v8 executorParameters];
-              v44 = [v43 temporalConsistencyActive];
+              [timeProfiler startWithUTFString:"postprocess previous depth"];
+              executorParameters4 = [(ADExecutor *)selfCopy executorParameters];
+              temporalConsistencyActive = [executorParameters4 temporalConsistencyActive];
 
-              if (v44)
+              if (temporalConsistencyActive)
               {
-                if (v8->_itmPrevDepthFeatures)
+                if (selfCopy->_itmPrevDepthFeatures)
                 {
-                  espressoRunner = v8->super._espressoRunner;
-                  v54 = [(ADMonocularVideoPipeline *)v8->_pipeline inferenceDescriptor];
-                  v53 = [v54 prevDepthFeaturesInput];
-                  v46 = [(ADMonocularVideoPipeline *)v8->_pipeline inferenceDescriptor];
-                  v47 = [v46 depthFeaturesOutput];
-                  v9 = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&v8->_itmPrevDepthFeatures inputDescriptor:v53 outputBuffer:&v8->_itmDepthFeaturesOutput outputDescriptor:v47];
+                  espressoRunner = selfCopy->super._espressoRunner;
+                  inferenceDescriptor = [(ADMonocularVideoPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  prevDepthFeaturesInput = [inferenceDescriptor prevDepthFeaturesInput];
+                  inferenceDescriptor2 = [(ADMonocularVideoPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  depthFeaturesOutput = [inferenceDescriptor2 depthFeaturesOutput];
+                  execute = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&selfCopy->_itmPrevDepthFeatures inputDescriptor:prevDepthFeaturesInput outputBuffer:&selfCopy->_itmDepthFeaturesOutput outputDescriptor:depthFeaturesOutput];
 
-                  if (v9)
+                  if (execute)
                   {
                     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -318,16 +318,16 @@ LABEL_13:
                   }
                 }
 
-                if (v8->_itmPrevColorFeatures)
+                if (selfCopy->_itmPrevColorFeatures)
                 {
-                  v48 = v8->super._espressoRunner;
-                  v49 = [(ADMonocularVideoPipeline *)v8->_pipeline inferenceDescriptor];
-                  v50 = [v49 prevColorFeaturesInput];
-                  v51 = [(ADMonocularVideoPipeline *)v8->_pipeline inferenceDescriptor];
-                  v52 = [v51 colorFeaturesOutput];
-                  v9 = [(ADEspressoRunnerProtocol *)v48 updateFeedbackLoopInputBuffer:&v8->_itmPrevColorFeatures inputDescriptor:v50 outputBuffer:&v8->_itmColorFeaturesOutput outputDescriptor:v52];
+                  v48 = selfCopy->super._espressoRunner;
+                  inferenceDescriptor3 = [(ADMonocularVideoPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  prevColorFeaturesInput = [inferenceDescriptor3 prevColorFeaturesInput];
+                  inferenceDescriptor4 = [(ADMonocularVideoPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  colorFeaturesOutput = [inferenceDescriptor4 colorFeaturesOutput];
+                  execute = [(ADEspressoRunnerProtocol *)v48 updateFeedbackLoopInputBuffer:&selfCopy->_itmPrevColorFeatures inputDescriptor:prevColorFeaturesInput outputBuffer:&selfCopy->_itmColorFeaturesOutput outputDescriptor:colorFeaturesOutput];
 
-                  if (v9)
+                  if (execute)
                   {
                     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -342,12 +342,12 @@ LABEL_13:
                 }
               }
 
-              [v18 stopWithUTFString:"postprocess previous depth"];
+              [timeProfiler stopWithUTFString:"postprocess previous depth"];
               kdebug_trace();
-              if (v16 >= 5)
+              if (stepsToExecute >= 5)
               {
-                [(ADExecutor *)v8 frameExecutionEnd];
-                v9 = 0;
+                [(ADExecutor *)selfCopy frameExecutionEnd];
+                execute = 0;
                 goto LABEL_36;
               }
             }
@@ -355,7 +355,7 @@ LABEL_13:
         }
       }
 
-      v9 = -22977;
+      execute = -22977;
       goto LABEL_36;
     }
 
@@ -365,7 +365,7 @@ LABEL_13:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "must provide an output pointer to CVPixelBufferRef", buf, 2u);
     }
 
-    v9 = -22953;
+    execute = -22953;
   }
 
   else
@@ -376,21 +376,21 @@ LABEL_13:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "executor could not be initialized", buf, 2u);
     }
 
-    v9 = -22960;
+    execute = -22960;
   }
 
 LABEL_37:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return execute;
 }
 
 - (__CVBuffer)prevDepthFeatures
 {
-  v3 = [(ADExecutor *)self executorParameters];
-  v4 = [v3 temporalConsistencyActive];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  temporalConsistencyActive = [executorParameters temporalConsistencyActive];
 
-  if (v4)
+  if (temporalConsistencyActive)
   {
     return self->_itmPrevDepthFeatures;
   }
@@ -403,10 +403,10 @@ LABEL_37:
 
 - (__CVBuffer)prevColorFeatures
 {
-  v3 = [(ADExecutor *)self executorParameters];
-  v4 = [v3 temporalConsistencyActive];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  temporalConsistencyActive = [executorParameters temporalConsistencyActive];
 
-  if (v4)
+  if (temporalConsistencyActive)
   {
     return self->_itmPrevColorFeatures;
   }
@@ -417,16 +417,16 @@ LABEL_37:
   }
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3
+- (int64_t)prepareForEngineType:(unint64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 335683364;
   v20 = 0u;
   v21 = 0u;
   kdebug_trace();
-  v5 = [(ADMonocularVideoPipeline *)v4->_pipeline adjustForEngine:a3];
-  if (v5)
+  allocateIntermediateBuffers = [(ADMonocularVideoPipeline *)selfCopy->_pipeline adjustForEngine:type];
+  if (allocateIntermediateBuffers)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -437,18 +437,18 @@ LABEL_37:
 
   else
   {
-    v6 = [(ADMonocularVideoPipeline *)v4->_pipeline inferenceDescriptor];
-    v7 = [v6 colorInput];
-    v8 = [v7 imageDescriptor];
-    [v8 sizeForLayout:255];
+    inferenceDescriptor = [(ADMonocularVideoPipeline *)selfCopy->_pipeline inferenceDescriptor];
+    colorInput = [inferenceDescriptor colorInput];
+    imageDescriptor = [colorInput imageDescriptor];
+    [imageDescriptor sizeForLayout:255];
     v10 = v9;
     v12 = v11;
 
-    v13 = [v6 colorInput];
-    v14 = [v13 imageDescriptor];
-    v5 = [(ADExecutor *)v4 prepareForEngineType:a3 roi:v14 descriptorForROI:1 exifOrientation:2 rotationPreference:v6 inferenceDescriptor:0.0, 0.0, v10, v12];
+    colorInput2 = [inferenceDescriptor colorInput];
+    imageDescriptor2 = [colorInput2 imageDescriptor];
+    allocateIntermediateBuffers = [(ADExecutor *)selfCopy prepareForEngineType:type roi:imageDescriptor2 descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:0.0, 0.0, v10, v12];
 
-    if (v5)
+    if (allocateIntermediateBuffers)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -459,62 +459,62 @@ LABEL_37:
 
     else
     {
-      v5 = [(ADMonocularVideoExecutor *)v4 allocateIntermediateBuffers];
-      PixelBufferUtils::blacken(v4->_itmPrevDepthFeatures, v15);
-      PixelBufferUtils::blacken(v4->_itmPrevColorFeatures, v16);
-      v4->_isPrepared = v5 == 0;
+      allocateIntermediateBuffers = [(ADMonocularVideoExecutor *)selfCopy allocateIntermediateBuffers];
+      PixelBufferUtils::blacken(selfCopy->_itmPrevDepthFeatures, v15);
+      PixelBufferUtils::blacken(selfCopy->_itmPrevColorFeatures, v16);
+      selfCopy->_isPrepared = allocateIntermediateBuffers == 0;
     }
   }
 
   kdebug_trace();
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allocateIntermediateBuffers;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADMonocularVideoExecutor *)self deallocateEspressoBuffers];
   espressoRunner = self->super._espressoRunner;
-  v4 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v5 = [v4 colorInput];
-  self->_refColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:v5];
+  inferenceDescriptor = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  self->_refColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:colorInput];
 
   v6 = self->super._espressoRunner;
-  v7 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v8 = [v7 disparityOutput];
-  self->_disparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:v8];
+  inferenceDescriptor2 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  disparityOutput = [inferenceDescriptor2 disparityOutput];
+  self->_disparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:disparityOutput];
 
-  v9 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v10 = [v9 outputScale];
+  inferenceDescriptor3 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  outputScale = [inferenceDescriptor3 outputScale];
 
-  if (v10)
+  if (outputScale)
   {
     v11 = self->super._espressoRunner;
-    v12 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-    v13 = [v12 outputScale];
-    self->_scaleFactorBuffer = [(ADEspressoRunnerProtocol *)v11 createAndRegisterPixelBufferForDescriptor:v13];
+    inferenceDescriptor4 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+    outputScale2 = [inferenceDescriptor4 outputScale];
+    self->_scaleFactorBuffer = [(ADEspressoRunnerProtocol *)v11 createAndRegisterPixelBufferForDescriptor:outputScale2];
   }
 
   v14 = self->super._espressoRunner;
-  v15 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v16 = [v15 prevDepthFeaturesInput];
-  self->_itmPrevDepthFeatures = [(ADEspressoRunnerProtocol *)v14 createAndRegisterPixelBufferForDescriptor:v16];
+  inferenceDescriptor5 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  prevDepthFeaturesInput = [inferenceDescriptor5 prevDepthFeaturesInput];
+  self->_itmPrevDepthFeatures = [(ADEspressoRunnerProtocol *)v14 createAndRegisterPixelBufferForDescriptor:prevDepthFeaturesInput];
 
   v17 = self->super._espressoRunner;
-  v18 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v19 = [v18 prevColorFeaturesInput];
-  self->_itmPrevColorFeatures = [(ADEspressoRunnerProtocol *)v17 createAndRegisterPixelBufferForDescriptor:v19];
+  inferenceDescriptor6 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  prevColorFeaturesInput = [inferenceDescriptor6 prevColorFeaturesInput];
+  self->_itmPrevColorFeatures = [(ADEspressoRunnerProtocol *)v17 createAndRegisterPixelBufferForDescriptor:prevColorFeaturesInput];
 
   v20 = self->super._espressoRunner;
-  v21 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v22 = [v21 depthFeaturesOutput];
-  self->_itmDepthFeaturesOutput = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:v22];
+  inferenceDescriptor7 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  depthFeaturesOutput = [inferenceDescriptor7 depthFeaturesOutput];
+  self->_itmDepthFeaturesOutput = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:depthFeaturesOutput];
 
   v23 = self->super._espressoRunner;
-  v24 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
-  v25 = [v24 colorFeaturesOutput];
-  self->_itmColorFeaturesOutput = [(ADEspressoRunnerProtocol *)v23 createAndRegisterPixelBufferForDescriptor:v25];
+  inferenceDescriptor8 = [(ADMonocularVideoPipeline *)self->_pipeline inferenceDescriptor];
+  colorFeaturesOutput = [inferenceDescriptor8 colorFeaturesOutput];
+  self->_itmColorFeaturesOutput = [(ADEspressoRunnerProtocol *)v23 createAndRegisterPixelBufferForDescriptor:colorFeaturesOutput];
 
   self->_itmChunkyRefColor = PixelBufferUtils::createPixelBufferCopy(self->_refColor, v26);
   return 0;
@@ -538,9 +538,9 @@ LABEL_37:
   self->_itmColorFeaturesOutput = 0;
 }
 
-- (ADMonocularVideoExecutor)initWithParameters:(id)a3
+- (ADMonocularVideoExecutor)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v14 = 335683796;
   v15 = 0u;
   v16 = 0u;
@@ -552,30 +552,30 @@ LABEL_37:
   if (!v5)
   {
 LABEL_7:
-    v6 = v5;
+    executorParameters = v5;
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!parametersCopy)
   {
-    v4 = objc_opt_new();
+    parametersCopy = objc_opt_new();
   }
 
-  [(ADExecutor *)v5 setExecutorParameters:v4];
-  v6 = [(ADExecutor *)v5 executorParameters];
+  [(ADExecutor *)v5 setExecutorParameters:parametersCopy];
+  executorParameters = [(ADExecutor *)v5 executorParameters];
 
-  if (v6)
+  if (executorParameters)
   {
     v7 = [ADMonocularVideoPipeline alloc];
-    v8 = [(ADExecutor *)v5 executorParameters];
-    v9 = [v8 pipelineParameters];
-    v10 = [(ADMonocularVideoPipeline *)v7 initWithParameters:v9];
+    executorParameters2 = [(ADExecutor *)v5 executorParameters];
+    pipelineParameters = [executorParameters2 pipelineParameters];
+    v10 = [(ADMonocularVideoPipeline *)v7 initWithParameters:pipelineParameters];
     pipeline = v5->_pipeline;
     v5->_pipeline = v10;
 
     if (!v5->_pipeline)
     {
-      v6 = 0;
+      executorParameters = 0;
       goto LABEL_8;
     }
 
@@ -595,7 +595,7 @@ LABEL_7:
 LABEL_8:
   kdebug_trace();
 
-  return v6;
+  return executorParameters;
 }
 
 @end

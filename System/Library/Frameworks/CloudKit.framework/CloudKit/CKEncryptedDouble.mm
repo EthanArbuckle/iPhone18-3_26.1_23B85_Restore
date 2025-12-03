@@ -1,15 +1,15 @@
 @interface CKEncryptedDouble
-- (CKEncryptedDouble)initWithDouble:(double)a3;
+- (CKEncryptedDouble)initWithDouble:(double)double;
 - (double)ckDoubleValue;
 - (id)value;
 @end
 
 @implementation CKEncryptedDouble
 
-- (CKEncryptedDouble)initWithDouble:(double)a3
+- (CKEncryptedDouble)initWithDouble:(double)double
 {
   v5 = objc_alloc_init(CKDPRecordFieldValueEncryptedValue);
-  objc_msgSend_setCkDoubleValue_(v5, v6, v7, a3);
+  objc_msgSend_setCkDoubleValue_(v5, v6, v7, double);
   v10 = objc_msgSend_data(v5, v8, v9);
   v13.receiver = self;
   v13.super_class = CKEncryptedDouble;

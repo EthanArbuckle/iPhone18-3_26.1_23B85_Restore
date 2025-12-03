@@ -1,35 +1,35 @@
 @interface TSCHBaseStyle
-+ (id)allSpecificsForGeneric:(int)a3;
++ (id)allSpecificsForGeneric:(int)generic;
 + (id)defaultPropertyMap;
 + (id)g_genericToSpecificPropertySetMap;
-+ (id)g_gilliganPropertyStringFromProperty:(int)a3;
-+ (id)g_objectTypeForSpecific:(int)a3;
++ (id)g_gilliganPropertyStringFromProperty:(int)property;
++ (id)g_objectTypeForSpecific:(int)specific;
 + (id)g_specificPropertyToOperationNameBimap;
 + (id)g_specificToGenericPropertyMap;
 + (id)paragraphStyleIndexProperties;
-+ (int)g_tangierPropertyFromGilliganPropertyString:(id)a3;
-+ (void)g_splitProperty:(int)a3 outStyleOwner:(id *)a4 outSpecifier:(id *)a5 outKeyName:(id *)a6;
-- (float)defaultFloatValueForProperty:(int)a3;
-- (id)allSpecificsForGeneric:(int)a3;
-- (id)boxedDefaultValueForProperty:(int)a3;
++ (int)g_tangierPropertyFromGilliganPropertyString:(id)string;
++ (void)g_splitProperty:(int)property outStyleOwner:(id *)owner outSpecifier:(id *)specifier outKeyName:(id *)name;
+- (float)defaultFloatValueForProperty:(int)property;
+- (id)allSpecificsForGeneric:(int)generic;
+- (id)boxedDefaultValueForProperty:(int)property;
 - (id)customFormatKeys;
-- (id)defaultValueForProperty:(int)a3;
-- (id)g_gilliganPropertyStringFromProperty:(int)a3;
-- (id)g_objectTypeForSpecific:(int)a3;
+- (id)defaultValueForProperty:(int)property;
+- (id)g_gilliganPropertyStringFromProperty:(int)property;
+- (id)g_objectTypeForSpecific:(int)specific;
 - (id)g_specificPropertyToOperationNameBimap;
 - (id)g_specificToGenericPropertyMap;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)properties;
 - (id)shortDescription;
-- (int)defaultIntValueForProperty:(int)a3;
-- (int)g_tangierPropertyFromGilliganPropertyString:(id)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)enumerateFormatObjectsUsingBlock:(id)a3;
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3;
-- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)a3;
-- (void)transformFormatObjectsUsingBlock:(id)a3;
-- (void)updateAfterPasteForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4;
-- (void)updateForCollaborationForProperties:(id)a3 documentRoot:(id)a4;
+- (int)defaultIntValueForProperty:(int)property;
+- (int)g_tangierPropertyFromGilliganPropertyString:(id)string;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)enumerateFormatObjectsUsingBlock:(id)block;
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver;
+- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)map;
+- (void)transformFormatObjectsUsingBlock:(id)block;
+- (void)updateAfterPasteForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list;
+- (void)updateForCollaborationForProperties:(id)properties documentRoot:(id)root;
 @end
 
 @implementation TSCHBaseStyle
@@ -53,7 +53,7 @@
   return objc_msgSend_g_specificToGenericPropertyMap(v2, v3, v4, v5, v6);
 }
 
-+ (id)g_objectTypeForSpecific:(int)a3
++ (id)g_objectTypeForSpecific:(int)specific
 {
   if (qword_280A47580 != -1)
   {
@@ -62,12 +62,12 @@
 
   v7 = qword_280A47578;
 
-  return objc_msgSend_objectForKey_(v7, a2, v3, v4, v5, a3);
+  return objc_msgSend_objectForKey_(v7, a2, v3, v4, v5, specific);
 }
 
-- (id)g_objectTypeForSpecific:(int)a3
+- (id)g_objectTypeForSpecific:(int)specific
 {
-  v3 = *&a3;
+  v3 = *&specific;
   v4 = objc_opt_class();
 
   return objc_msgSend_g_objectTypeForSpecific_(v4, v5, v6, v7, v8, v3);
@@ -92,25 +92,25 @@
   return objc_msgSend_g_specificPropertyToOperationNameBimap(v2, v3, v4, v5, v6);
 }
 
-+ (void)g_splitProperty:(int)a3 outStyleOwner:(id *)a4 outSpecifier:(id *)a5 outKeyName:(id *)a6
++ (void)g_splitProperty:(int)property outStyleOwner:(id *)owner outSpecifier:(id *)specifier outKeyName:(id *)name
 {
-  if (a4)
+  if (owner)
   {
-    *a4 = 0;
+    *owner = 0;
   }
 
-  if (a5)
+  if (specifier)
   {
-    *a5 = 0;
+    *specifier = 0;
   }
 
-  if (a6)
+  if (name)
   {
-    *a6 = 0;
+    *name = 0;
   }
 
-  v6 = a3 - 1228;
-  if ((a3 - 1228) < 0x2A)
+  v6 = property - 1228;
+  if ((property - 1228) < 0x2A)
   {
     v7 = off_27A6B7838[v6];
     v8 = off_27A6B7988[v6];
@@ -119,8 +119,8 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v10 = a3 - 1270;
-  if ((a3 - 1270) < 0x40)
+  v10 = property - 1270;
+  if ((property - 1270) < 0x40)
   {
     v9 = off_27A6B7AD8[v10];
     v7 = off_27A6B7CD8[v10];
@@ -130,8 +130,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = a3 - 1334;
-  if ((a3 - 1334) < 0x40)
+  v10 = property - 1334;
+  if ((property - 1334) < 0x40)
   {
     v9 = off_27A6B80D8[v10];
     v7 = off_27A6B82D8[v10];
@@ -139,19 +139,19 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = a3 - 1398;
-  if ((a3 - 1398) >= 0x40)
+  v12 = property - 1398;
+  if ((property - 1398) >= 0x40)
   {
-    v12 = a3 - 1462;
-    if ((a3 - 1462) >= 0x40)
+    v12 = property - 1462;
+    if ((property - 1462) >= 0x40)
     {
-      v10 = a3 - 1526;
-      if ((a3 - 1526) >= 0x40)
+      v10 = property - 1526;
+      if ((property - 1526) >= 0x40)
       {
         v8 = @"ShowValueLabel";
         v7 = @"Default";
         v9 = @"TSCHReferenceLine";
-        switch(a3)
+        switch(property)
         {
           case 1590:
             goto LABEL_15;
@@ -280,7 +280,7 @@ LABEL_38:
             v7 = @"Pie";
             goto LABEL_27;
           default:
-            switch(a3)
+            switch(property)
             {
               case 1024:
                 v7 = 0;
@@ -398,7 +398,7 @@ LABEL_38:
                 v7 = 0;
                 v8 = @"ShowLabels";
                 v9 = @"TSCHChartAxis";
-                switch(a3)
+                switch(property)
                 {
                   case 1052:
                     goto LABEL_15;
@@ -659,7 +659,7 @@ LABEL_167:
                     v7 = 0;
                     v8 = @"2_3LabelExplosion";
                     v9 = @"TSCHChartSeries";
-                    switch(a3)
+                    switch(property)
                     {
                       case 1129:
                         goto LABEL_15;
@@ -914,11 +914,11 @@ LABEL_167:
                         goto LABEL_15;
                       default:
                         v9 = 0;
-                        if (a3 > 1194)
+                        if (property > 1194)
                         {
                           v7 = 0;
                           v8 = 0;
-                          switch(a3)
+                          switch(property)
                           {
                             case 1195:
                               v7 = 0;
@@ -1065,7 +1065,7 @@ LABEL_282:
 
                         v7 = 0;
                         v8 = 0;
-                        switch(a3)
+                        switch(property)
                         {
                           case 1083:
                             v7 = 0;
@@ -1123,7 +1123,7 @@ LABEL_282:
                             v8 = @"DEPRECATEDTrendlineRSquaredShadow";
                             goto LABEL_101;
                           default:
-                            if (a3 == 1134)
+                            if (property == 1134)
                             {
                               v7 = 0;
                               v8 = @"DEPRECATED3DFill";
@@ -1133,7 +1133,7 @@ LABEL_282:
                             {
                               v7 = 0;
                               v8 = 0;
-                              if (a3 != 1135)
+                              if (property != 1135)
                               {
                                 goto LABEL_15;
                               }
@@ -1178,23 +1178,23 @@ LABEL_282:
 LABEL_27:
   v9 = @"TSCHChartSeries";
 LABEL_15:
-  if (a4)
+  if (owner)
   {
-    *a4 = v9;
+    *owner = v9;
   }
 
-  if (a5)
+  if (specifier)
   {
-    *a5 = v7;
+    *specifier = v7;
   }
 
-  if (a6)
+  if (name)
   {
-    *a6 = v8;
+    *name = v8;
   }
 }
 
-+ (id)g_gilliganPropertyStringFromProperty:(int)a3
++ (id)g_gilliganPropertyStringFromProperty:(int)property
 {
   if (qword_280A475A0 != -1)
   {
@@ -1203,25 +1203,25 @@ LABEL_15:
 
   v7 = qword_280A47598;
 
-  return objc_msgSend_objectForKey_(v7, a2, v3, v4, v5, a3);
+  return objc_msgSend_objectForKey_(v7, a2, v3, v4, v5, property);
 }
 
-- (id)g_gilliganPropertyStringFromProperty:(int)a3
+- (id)g_gilliganPropertyStringFromProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_class();
 
   return objc_msgSend_g_gilliganPropertyStringFromProperty_(v4, v5, v6, v7, v8, v3);
 }
 
-+ (int)g_tangierPropertyFromGilliganPropertyString:(id)a3
++ (int)g_tangierPropertyFromGilliganPropertyString:(id)string
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6, v7, v8))
+  stringCopy = string;
+  if (objc_msgSend_length(stringCopy, v5, v6, v7, v8))
   {
-    v13 = objc_msgSend_properties(a1, v9, v10, v11, v12);
+    v13 = objc_msgSend_properties(self, v9, v10, v11, v12);
     v18 = objc_msgSend_propertySet(MEMORY[0x277D80AA8], v14, v15, v16, v17);
-    v23 = objc_msgSend_g_specificToGenericPropertyMap(a1, v19, v20, v21, v22);
+    v23 = objc_msgSend_g_specificToGenericPropertyMap(self, v19, v20, v21, v22);
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
@@ -1230,8 +1230,8 @@ LABEL_15:
     v41[1] = 3221225472;
     v41[2] = sub_2762DE89C;
     v41[3] = &unk_27A6B77C8;
-    v46 = a1;
-    v24 = v4;
+    selfCopy = self;
+    v24 = stringCopy;
     v42 = v24;
     v45 = &v47;
     v25 = v18;
@@ -1246,7 +1246,7 @@ LABEL_15:
       v37[1] = 3221225472;
       v37[2] = sub_2762DE938;
       v37[3] = &unk_27A6B77F0;
-      v40 = a1;
+      selfCopy2 = self;
       v38 = v24;
       v39 = &v47;
       objc_msgSend_enumeratePropertiesUsingBlock_(v25, v32, v33, v34, v35, v37);
@@ -1264,11 +1264,11 @@ LABEL_15:
   return v31;
 }
 
-- (int)g_tangierPropertyFromGilliganPropertyString:(id)a3
+- (int)g_tangierPropertyFromGilliganPropertyString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_class();
-  v9 = objc_msgSend_g_tangierPropertyFromGilliganPropertyString_(v4, v5, v6, v7, v8, v3);
+  v9 = objc_msgSend_g_tangierPropertyFromGilliganPropertyString_(v4, v5, v6, v7, v8, stringCopy);
 
   return v9;
 }
@@ -1279,7 +1279,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_2762DEA9C;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A475B0 != -1)
   {
     dispatch_once(&qword_280A475B0, block);
@@ -1290,45 +1290,45 @@ LABEL_15:
   return v2;
 }
 
-+ (id)allSpecificsForGeneric:(int)a3
++ (id)allSpecificsForGeneric:(int)generic
 {
-  v7 = objc_msgSend_g_genericToSpecificPropertySetMap(a1, a2, v3, v4, v5);
-  v12 = objc_msgSend_objectForKey_(v7, v8, v9, v10, v11, a3);
+  v7 = objc_msgSend_g_genericToSpecificPropertySetMap(self, a2, v3, v4, v5);
+  v12 = objc_msgSend_objectForKey_(v7, v8, v9, v10, v11, generic);
 
   return v12;
 }
 
-- (id)allSpecificsForGeneric:(int)a3
+- (id)allSpecificsForGeneric:(int)generic
 {
   v3 = objc_opt_class();
 
   return MEMORY[0x2821F9670](v3, sel_allSpecificsForGeneric_, v4, v5, v6);
 }
 
-- (void)enumerateFormatObjectsUsingBlock:(id)a3
+- (void)enumerateFormatObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_formatObjectPropertySet(self, v5, v6, v7, v8);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2762F9D30;
   v15[3] = &unk_27A6B97A0;
   v15[4] = self;
-  v10 = v4;
+  v10 = blockCopy;
   v16 = v10;
   objc_msgSend_enumeratePropertiesUsingBlock_(v9, v11, v12, v13, v14, v15);
 }
 
-- (void)transformFormatObjectsUsingBlock:(id)a3
+- (void)transformFormatObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_formatObjectPropertySet(self, v5, v6, v7, v8);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2762F9EE0;
   v15[3] = &unk_27A6B97A0;
   v15[4] = self;
-  v10 = v4;
+  v10 = blockCopy;
   v16 = v10;
   objc_msgSend_enumeratePropertiesUsingBlock_(v9, v11, v12, v13, v14, v15);
 }
@@ -1348,48 +1348,48 @@ LABEL_15:
   return v16;
 }
 
-- (void)updateAfterPasteForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4
+- (void)updateAfterPasteForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  listCopy = list;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2762FA318;
   v14[3] = &unk_27A6B97F0;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = rootCopy;
+  v16 = listCopy;
+  v8 = listCopy;
+  v9 = rootCopy;
   objc_msgSend_transformFormatObjectsUsingBlock_(self, v10, v11, v12, v13, v14);
 }
 
-- (void)updateForCollaborationForProperties:(id)a3 documentRoot:(id)a4
+- (void)updateForCollaborationForProperties:(id)properties documentRoot:(id)root
 {
-  v5 = a4;
+  rootCopy = root;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2762FA3D0;
   v11[3] = &unk_27A6B9818;
-  v12 = v5;
-  v6 = v5;
+  v12 = rootCopy;
+  v6 = rootCopy;
   objc_msgSend_transformFormatObjectsUsingBlock_(self, v7, v8, v9, v10, v11);
 }
 
-- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)a3
+- (void)remapCustomFormatKeysWithOldToNewKeyMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2762FA488;
   v10[3] = &unk_27A6B9818;
-  v11 = v4;
-  v5 = v4;
+  v11 = mapCopy;
+  v5 = mapCopy;
   objc_msgSend_transformFormatObjectsUsingBlock_(self, v6, v7, v8, v9, v10);
 }
 
 + (id)paragraphStyleIndexProperties
 {
-  v5 = objc_msgSend_properties(a1, a2, v2, v3, v4);
+  v5 = objc_msgSend_properties(self, a2, v2, v3, v4);
   v10 = objc_msgSend_paragraphStyleIndexProperties(TSCHChartInfo, v6, v7, v8, v9);
   v15 = objc_msgSend_propertySetByIntersectingWithPropertySet_(v5, v11, v12, v13, v14, v10);
 
@@ -1403,34 +1403,34 @@ LABEL_15:
   return objc_msgSend_properties(v2, v3, v4, v5, v6);
 }
 
-- (id)defaultValueForProperty:(int)a3
+- (id)defaultValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_class();
 
   return objc_msgSend_defaultValueForProperty_(v4, v5, v6, v7, v8, v3);
 }
 
-- (int)defaultIntValueForProperty:(int)a3
+- (int)defaultIntValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_class();
 
   return objc_msgSend_defaultIntValueForProperty_(v4, v5, v6, v7, v8, v3);
 }
 
-- (float)defaultFloatValueForProperty:(int)a3
+- (float)defaultFloatValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_class();
 
   objc_msgSend_defaultFloatValueForProperty_(v4, v5, v6, v7, v8, v3);
   return result;
 }
 
-- (id)boxedDefaultValueForProperty:(int)a3
+- (id)boxedDefaultValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_class();
 
   return objc_msgSend_boxedDefaultValueForProperty_(v4, v5, v6, v7, v8, v3);
@@ -1491,12 +1491,12 @@ LABEL_15:
 + (id)defaultPropertyMap
 {
   v3 = objc_alloc_init(MEMORY[0x277D80AB8]);
-  v8 = objc_msgSend_properties(a1, v4, v5, v6, v7);
+  v8 = objc_msgSend_properties(self, v4, v5, v6, v7);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2763327F4;
   v15[3] = &unk_27A6B9B50;
-  v17 = a1;
+  selfCopy = self;
   v9 = v3;
   v16 = v9;
   objc_msgSend_enumeratePropertiesUsingBlock_(v8, v10, v11, v12, v13, v15);
@@ -1504,10 +1504,10 @@ LABEL_15:
   return v9;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
   v7 = MEMORY[0x277D81150];
-  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHBaseStyle mixingTypeWithObject:context:]", a4);
+  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHBaseStyle mixingTypeWithObject:context:]", context);
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHBaseStyle.mm");
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
@@ -1517,10 +1517,10 @@ LABEL_15:
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, v4, v5, "[TSCHBaseStyle mixedObjectWithFraction:ofObject:]");
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, fraction, v4, v5, "[TSCHBaseStyle mixedObjectWithFraction:ofObject:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHBaseStyle.mm");
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
@@ -1530,9 +1530,9 @@ LABEL_15:
   return 0;
 }
 
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver
 {
-  v3 = a3;
+  unarchiverCopy = unarchiver;
   v4 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, "[TSCHBaseStyle(PreUFFUnarchiving) loadFromPreUFFArchiveWithUnarchiver:]");
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHBaseStyle.mm");

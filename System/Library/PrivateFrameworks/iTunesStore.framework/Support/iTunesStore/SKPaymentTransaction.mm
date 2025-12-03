@@ -1,21 +1,21 @@
 @interface SKPaymentTransaction
-- (BOOL)canMergeWithTransaction:(id)a3;
-- (BOOL)mergeWithServerTransaction:(id)a3;
-- (BOOL)mergeWithTransaction:(id)a3;
+- (BOOL)canMergeWithTransaction:(id)transaction;
+- (BOOL)mergeWithServerTransaction:(id)transaction;
+- (BOOL)mergeWithTransaction:(id)transaction;
 - (NSString)matchingIdentifier;
 - (SKPaymentTransaction)init;
-- (SKPaymentTransaction)initWithPayment:(id)a3;
-- (SKPaymentTransaction)initWithServerTransaction:(id)a3;
-- (SKPaymentTransaction)initWithXPCEncoding:(id)a3;
+- (SKPaymentTransaction)initWithPayment:(id)payment;
+- (SKPaymentTransaction)initWithServerTransaction:(id)transaction;
+- (SKPaymentTransaction)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (id)getPaymentDiscountFromTransactionXPCEncoding:(id)a3;
-- (void)_setDownloads:(id)a3;
-- (void)_setError:(id)a3;
-- (void)_setOriginalTransaction:(id)a3;
-- (void)_setTemporaryIdentifier:(id)a3;
-- (void)_setTransactionDate:(id)a3;
-- (void)_setTransactionIdentifier:(id)a3;
-- (void)_setTransactionReceipt:(id)a3;
+- (id)getPaymentDiscountFromTransactionXPCEncoding:(id)encoding;
+- (void)_setDownloads:(id)downloads;
+- (void)_setError:(id)error;
+- (void)_setOriginalTransaction:(id)transaction;
+- (void)_setTemporaryIdentifier:(id)identifier;
+- (void)_setTransactionDate:(id)date;
+- (void)_setTransactionIdentifier:(id)identifier;
+- (void)_setTransactionReceipt:(id)receipt;
 @end
 
 @implementation SKPaymentTransaction
@@ -35,15 +35,15 @@
   return v2;
 }
 
-- (SKPaymentTransaction)initWithPayment:(id)a3
+- (SKPaymentTransaction)initWithPayment:(id)payment
 {
-  v4 = a3;
+  paymentCopy = payment;
   v5 = [(SKPaymentTransaction *)self init];
   v6 = v5;
   if (v5)
   {
     v7 = v5->_internal;
-    v8 = [v4 copy];
+    v8 = [paymentCopy copy];
     v9 = v7[5];
     v7[5] = v8;
   }
@@ -51,13 +51,13 @@
   return v6;
 }
 
-- (BOOL)canMergeWithTransaction:(id)a3
+- (BOOL)canMergeWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = *(self->_internal + 5);
-  v7 = *(v4[1] + 40);
+  v7 = *(transactionCopy[1] + 40);
   v8 = v7;
   if (isKindOfClass)
   {
@@ -81,7 +81,7 @@
 
   if (v10)
   {
-    v11 = *(v4[1] + 64);
+    v11 = *(transactionCopy[1] + 64);
 
     if (v9)
     {
@@ -116,11 +116,11 @@
   return v3;
 }
 
-- (BOOL)mergeWithTransaction:(id)a3
+- (BOOL)mergeWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_internal;
-  v6 = v4[1];
+  v6 = transactionCopy[1];
   v7 = v6[3];
   if (v5[3] != v7)
   {
@@ -179,16 +179,16 @@
   return v10;
 }
 
-- (void)_setDownloads:(id)a3
+- (void)_setDownloads:(id)downloads
 {
   internal = self->_internal;
   v4 = internal[2];
-  if (v4 != a3)
+  if (v4 != downloads)
   {
     v10 = internal;
-    v7 = a3;
+    downloadsCopy = downloads;
     [v4 makeObjectsPerformSelector:"_setTransaction:" withObject:0];
-    v8 = [v7 copy];
+    v8 = [downloadsCopy copy];
 
     v9 = internal[2];
     internal[2] = v8;
@@ -197,115 +197,115 @@
   }
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   internal = self->_internal;
   v8 = *(internal + 3);
   v7 = (internal + 24);
-  if (v8 != v5)
+  if (v8 != errorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = errorCopy;
+    objc_storeStrong(v7, error);
+    errorCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, errorCopy);
 }
 
-- (void)_setOriginalTransaction:(id)a3
+- (void)_setOriginalTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   internal = self->_internal;
   v8 = *(internal + 4);
   v7 = (internal + 32);
-  if (v8 != v5)
+  if (v8 != transactionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = transactionCopy;
+    objc_storeStrong(v7, transaction);
+    transactionCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, transactionCopy);
 }
 
-- (void)_setTemporaryIdentifier:(id)a3
+- (void)_setTemporaryIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[6] != a3)
+  if (internal[6] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[6];
     internal[6] = v5;
   }
 }
 
-- (void)_setTransactionDate:(id)a3
+- (void)_setTransactionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   internal = self->_internal;
   v8 = *(internal + 7);
   v7 = (internal + 56);
-  if (v8 != v5)
+  if (v8 != dateCopy)
   {
-    v9 = v5;
-    objc_storeStrong(v7, a3);
-    v5 = v9;
+    v9 = dateCopy;
+    objc_storeStrong(v7, date);
+    dateCopy = v9;
   }
 
-  _objc_release_x1(v7, v5);
+  _objc_release_x1(v7, dateCopy);
 }
 
-- (void)_setTransactionIdentifier:(id)a3
+- (void)_setTransactionIdentifier:(id)identifier
 {
   internal = self->_internal;
-  if (internal[8] != a3)
+  if (internal[8] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[8];
     internal[8] = v5;
   }
 }
 
-- (void)_setTransactionReceipt:(id)a3
+- (void)_setTransactionReceipt:(id)receipt
 {
   internal = self->_internal;
-  if (internal[9] != a3)
+  if (internal[9] != receipt)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [receipt copy];
     v6 = internal[9];
     internal[9] = v5;
   }
 }
 
-- (SKPaymentTransaction)initWithServerTransaction:(id)a3
+- (SKPaymentTransaction)initWithServerTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [(SKPaymentTransaction *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SKPaymentTransaction *)v5 mergeWithServerTransaction:v4];
+    [(SKPaymentTransaction *)v5 mergeWithServerTransaction:transactionCopy];
   }
 
   return v6;
 }
 
-- (BOOL)mergeWithServerTransaction:(id)a3
+- (BOOL)mergeWithServerTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_internal;
-  v6 = [v4 objectForKeyedSubscript:@"uuid"];
+  v6 = [transactionCopy objectForKeyedSubscript:@"uuid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(v5 + 1, v6);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"tid"];
+  v7 = [transactionCopy objectForKeyedSubscript:@"tid"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -313,21 +313,21 @@
     objc_storeStrong(v5 + 8, v7);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"state"];
+  v8 = [transactionCopy objectForKeyedSubscript:@"state"];
 
   if (objc_opt_respondsToSelector())
   {
     v5[10] = [v8 integerValue];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"assets"];
+  v9 = [transactionCopy objectForKeyedSubscript:@"assets"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v46 = v9;
-    v47 = self;
-    v48 = v4;
+    selfCopy = self;
+    v48 = transactionCopy;
     v10 = v9;
     v49 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
     v51 = 0u;
@@ -351,11 +351,11 @@
 
           v15 = *(*(&v51 + 1) + 8 * i);
           v16 = [v15 objectForKeyedSubscript:{@"hosted-id", v46}];
-          v17 = [v5[5] productIdentifier];
-          v18 = v17;
+          productIdentifier = [v5[5] productIdentifier];
+          v18 = productIdentifier;
           if (v16)
           {
-            v19 = v17 == 0;
+            v19 = productIdentifier == 0;
           }
 
           else
@@ -386,12 +386,12 @@
       while (v12);
     }
 
-    [(SKPaymentTransaction *)v47 _setDownloads:v49];
-    v4 = v48;
+    [(SKPaymentTransaction *)selfCopy _setDownloads:v49];
+    transactionCopy = v48;
     v9 = v46;
   }
 
-  v24 = [v4 objectForKeyedSubscript:{@"error", v46}];
+  v24 = [transactionCopy objectForKeyedSubscript:{@"error", v46}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -401,7 +401,7 @@
     v5[3] = v26;
   }
 
-  v28 = [v4 objectForKeyedSubscript:@"odate"];
+  v28 = [transactionCopy objectForKeyedSubscript:@"odate"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -409,7 +409,7 @@
     objc_storeStrong(v5 + 7, v28);
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"rcpt"];
+  v29 = [transactionCopy objectForKeyedSubscript:@"rcpt"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -417,8 +417,8 @@
     objc_storeStrong(v5 + 9, v29);
   }
 
-  v30 = [v4 objectForKeyedSubscript:@"date"];
-  v31 = [v4 objectForKeyedSubscript:@"otid"];
+  v30 = [transactionCopy objectForKeyedSubscript:@"date"];
+  v31 = [transactionCopy objectForKeyedSubscript:@"otid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -441,12 +441,12 @@
     v32 = 0;
   }
 
-  v39 = [v4 objectForKeyedSubscript:@"id"];
-  v40 = [v4 objectForKeyedSubscript:@"qty"];
+  v39 = [transactionCopy objectForKeyedSubscript:@"id"];
+  v40 = [transactionCopy objectForKeyedSubscript:@"qty"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v41 = v4;
+    v41 = transactionCopy;
     v42 = objc_alloc_init(SKMutablePayment);
     [(SKMutablePayment *)v42 setProductIdentifier:v39];
     -[SKMutablePayment setQuantity:](v42, "setQuantity:", [v40 integerValue]);
@@ -464,7 +464,7 @@
       objc_storeStrong(v32->_internal + 5, v42);
     }
 
-    v4 = v41;
+    transactionCopy = v41;
   }
 
   else
@@ -478,11 +478,11 @@
   return 1;
 }
 
-- (SKPaymentTransaction)initWithXPCEncoding:(id)a3
+- (SKPaymentTransaction)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || xpc_get_type(v4) != &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (!encodingCopy || xpc_get_type(encodingCopy) != &_xpc_type_dictionary)
   {
 
     v6 = 0;
@@ -519,9 +519,9 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(__CFDictionary *)v15 integerValue];
-    *(v9 + 10) = v16;
-    if (v16 == 10000)
+    integerValue = [(__CFDictionary *)v15 integerValue];
+    *(v9 + 10) = integerValue;
+    if (integerValue == 10000)
     {
       v17 = _CFExecutableLinkedOnOrAfter();
       v18 = 3;
@@ -684,28 +684,28 @@ LABEL_4:
   return v6;
 }
 
-- (id)getPaymentDiscountFromTransactionXPCEncoding:(id)a3
+- (id)getPaymentDiscountFromTransactionXPCEncoding:(id)encoding
 {
-  v3 = a3;
+  encodingCopy = encoding;
   objc_opt_class();
-  v4 = sub_10018E3FC(v3, "18");
+  v4 = sub_10018E3FC(encodingCopy, "18");
   if (v4)
   {
     objc_opt_class();
-    v5 = sub_10018E3FC(v3, "19");
+    v5 = sub_10018E3FC(encodingCopy, "19");
     if (v5)
     {
       objc_opt_class();
-      v6 = sub_10018E3FC(v3, "20");
+      v6 = sub_10018E3FC(encodingCopy, "20");
       v7 = [[NSUUID alloc] initWithUUIDString:v6];
       if (v7)
       {
         objc_opt_class();
-        v8 = sub_10018E3FC(v3, "21");
+        v8 = sub_10018E3FC(encodingCopy, "21");
         if (v8)
         {
           objc_opt_class();
-          v9 = sub_10018E3FC(v3, "22");
+          v9 = sub_10018E3FC(encodingCopy, "22");
           if (v9)
           {
             v10 = [[SKPaymentDiscount alloc] initWithIdentifier:v4 keyIdentifier:v5 nonce:v7 signature:v8 timestamp:v9];
@@ -768,16 +768,16 @@ LABEL_4:
   sub_10018E448(v3, "13", v6[8]);
   xpc_dictionary_set_BOOL(v3, "16", [internal[5] simulatesAskToBuyInSandbox]);
   xpc_dictionary_set_BOOL(v3, "17", [internal[5] isStoreOriginated]);
-  v8 = [internal[5] paymentDiscount];
+  paymentDiscount = [internal[5] paymentDiscount];
 
-  sub_10018E448(v3, "18", [v8 identifier]);
-  sub_10018E448(v3, "19", [v8 keyIdentifier]);
-  v9 = [v8 nonce];
-  v10 = [v9 UUIDString];
-  sub_10018E448(v3, "20", [v10 lowercaseString]);
+  sub_10018E448(v3, "18", [paymentDiscount identifier]);
+  sub_10018E448(v3, "19", [paymentDiscount keyIdentifier]);
+  nonce = [paymentDiscount nonce];
+  uUIDString = [nonce UUIDString];
+  sub_10018E448(v3, "20", [uUIDString lowercaseString]);
 
-  sub_10018E448(v3, "21", [v8 signature]);
-  sub_10018E448(v3, "22", [v8 timestamp]);
+  sub_10018E448(v3, "21", [paymentDiscount signature]);
+  sub_10018E448(v3, "22", [paymentDiscount timestamp]);
 
   return v3;
 }

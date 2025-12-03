@@ -66,9 +66,9 @@
     return 0;
   }
 
-  v3 = [(CISharpenLuminance *)self _isIdentity];
+  _isIdentity = [(CISharpenLuminance *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 
@@ -77,15 +77,15 @@
 
   else
   {
-    v7 = [(CIImage *)inputImage imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
     [(NSNumber *)self->inputRadius floatValue];
-    v9 = [(CIImage *)v7 imageByApplyingGaussianBlurWithSigma:v8];
-    v10 = [(CISharpenLuminance *)self _kernel];
-    [(CIImage *)v7 extent];
-    v16[0] = v7;
+    v9 = [(CIImage *)imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:v8];
+    _kernel = [(CISharpenLuminance *)self _kernel];
+    [(CIImage *)imageByClampingToExtent extent];
+    v16[0] = imageByClampingToExtent;
     v16[1] = v9;
     v16[2] = self->inputSharpness;
-    v15 = [v10 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v16, 3), v11, v12, v13, v14}];
+    v15 = [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v16, 3), v11, v12, v13, v14}];
     [(CIImage *)self->inputImage extent];
     return [v15 imageByCroppingToRect:?];
   }

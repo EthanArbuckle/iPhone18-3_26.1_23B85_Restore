@@ -2,27 +2,27 @@
 + (CKRecordZone)defaultRecordZone;
 + (id)systemRecordZone;
 + (void)initialize;
-- (CKRecordZone)initWithCoder:(id)a3;
+- (CKRecordZone)initWithCoder:(id)coder;
 - (CKRecordZone)initWithZoneID:(CKRecordZoneID *)zoneID;
 - (CKRecordZone)initWithZoneName:(NSString *)zoneName;
 - (CKRecordZoneID)zoneID;
 - (CKRecordZoneReference)parent;
 - (CKRoughlyEquivalentProperties)equivalencyProperties;
 - (NSArray)invitedKeysToRemove;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)encryptionScope;
-- (void)CKAssignToContainerWithID:(id)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)_setEncryptionScopeNoSideEffects:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceZoneIDWith:(id)a3;
-- (void)setEncryptionScope:(int64_t)a3;
-- (void)setExpirationAfterTimeInterval:(id)a3;
-- (void)setInvitedKeysToRemove:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setParentReferenceFromZone:(id)a3;
-- (void)setParentReferenceFromZoneID:(id)a3;
-- (void)setZoneID:(id)a3;
+- (void)CKAssignToContainerWithID:(id)d;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)_setEncryptionScopeNoSideEffects:(int64_t)effects;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceZoneIDWith:(id)with;
+- (void)setEncryptionScope:(int64_t)scope;
+- (void)setExpirationAfterTimeInterval:(id)interval;
+- (void)setInvitedKeysToRemove:(id)remove;
+- (void)setParent:(id)parent;
+- (void)setParentReferenceFromZone:(id)zone;
+- (void)setParentReferenceFromZoneID:(id)d;
+- (void)setZoneID:(id)d;
 @end
 
 @implementation CKRecordZone
@@ -49,10 +49,10 @@
 
 - (CKRecordZoneID)zoneID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_zoneID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_zoneID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -116,7 +116,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKRecordZone alloc];
   v7 = objc_msgSend_zoneID(self, v5, v6);
@@ -249,62 +249,62 @@
 
 - (NSArray)invitedKeysToRemove
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_invitedKeysToRemove;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_invitedKeysToRemove;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setInvitedKeysToRemove:(id)a3
+- (void)setInvitedKeysToRemove:(id)remove
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  invitedKeysToRemove = v4->_invitedKeysToRemove;
-  v4->_invitedKeysToRemove = v7;
+  removeCopy = remove;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(removeCopy, v5, v6);
+  invitedKeysToRemove = selfCopy->_invitedKeysToRemove;
+  selfCopy->_invitedKeysToRemove = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setZoneID:(id)a3
+- (void)setZoneID:(id)d
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_copy(v9, v5, v6);
-  zoneID = v4->_zoneID;
-  v4->_zoneID = v7;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_copy(dCopy, v5, v6);
+  zoneID = selfCopy->_zoneID;
+  selfCopy->_zoneID = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)encryptionScope
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  encryptionScope = v2->_encryptionScope;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  encryptionScope = selfCopy->_encryptionScope;
+  objc_sync_exit(selfCopy);
 
   return encryptionScope;
 }
 
-- (void)_setEncryptionScopeNoSideEffects:(int64_t)a3
+- (void)_setEncryptionScopeNoSideEffects:(int64_t)effects
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_encryptionScope = a3;
+  obj->_encryptionScope = effects;
   objc_sync_exit(obj);
 }
 
-- (void)setEncryptionScope:(int64_t)a3
+- (void)setEncryptionScope:(int64_t)scope
 {
   obj = self;
   objc_sync_enter(obj);
   v7 = obj;
-  if (obj->_encryptionScope != a3 && obj->_etag)
+  if (obj->_encryptionScope != scope && obj->_etag)
   {
     v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, obj, @"CKRecordZone.m", 232, @"Cannot change the encryption scope of an existing zone");
@@ -312,51 +312,51 @@
     v7 = obj;
   }
 
-  v7->_encryptionScope = a3;
+  v7->_encryptionScope = scope;
   objc_sync_exit(v7);
 }
 
-- (void)replaceZoneIDWith:(id)a3
+- (void)replaceZoneIDWith:(id)with
 {
-  v34 = a3;
-  if (!v34)
+  withCopy = with;
+  if (!withCopy)
   {
     v28 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v28, v29, a2, self, @"CKRecordZone.m", 240, @"Must not be nil");
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v10 = objc_msgSend_zoneName(v7->_zoneID, v8, v9);
-  v13 = objc_msgSend_zoneName(v34, v11, v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = objc_msgSend_zoneName(selfCopy->_zoneID, v8, v9);
+  v13 = objc_msgSend_zoneName(withCopy, v11, v12);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v14, v13);
 
   if ((isEqualToString & 1) == 0)
   {
     v30 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v16, v17);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v30, v31, a2, v7, @"CKRecordZone.m", 242, @"Must use the same zone name");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v30, v31, a2, selfCopy, @"CKRecordZone.m", 242, @"Must use the same zone name");
   }
 
-  v18 = objc_msgSend_ownerName(v7->_zoneID, v16, v17);
-  v21 = objc_msgSend_ownerName(v34, v19, v20);
+  v18 = objc_msgSend_ownerName(selfCopy->_zoneID, v16, v17);
+  v21 = objc_msgSend_ownerName(withCopy, v19, v20);
   v23 = objc_msgSend_isEqualToString_(v18, v22, v21);
 
   if ((v23 & 1) == 0)
   {
     v32 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v24, v25);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, v7, @"CKRecordZone.m", 243, @"Must use the same owner name");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, selfCopy, @"CKRecordZone.m", 243, @"Must use the same owner name");
   }
 
-  v26 = objc_msgSend_copy(v34, v24, v25);
-  zoneID = v7->_zoneID;
-  v7->_zoneID = v26;
+  v26 = objc_msgSend_copy(withCopy, v24, v25);
+  zoneID = selfCopy->_zoneID;
+  selfCopy->_zoneID = v26;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)CKAssignToContainerWithID:(id)a3
+- (void)CKAssignToContainerWithID:(id)d
 {
-  newValue = a3;
+  newValue = d;
   if (self)
   {
     Property = objc_getProperty(self, v5, 80, 1);
@@ -394,37 +394,37 @@ LABEL_8:
 
 - (CKRecordZoneReference)parent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_parent;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_parent;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v11 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ((objc_msgSend_isEqual_(v11, v5, v4->_parent) & 1) == 0)
+  parentCopy = parent;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((objc_msgSend_isEqual_(parentCopy, v5, selfCopy->_parent) & 1) == 0)
   {
-    objc_msgSend_setHasUpdatedParent_(v4, v6, 1);
-    v9 = objc_msgSend_copy(v11, v7, v8);
-    parent = v4->_parent;
-    v4->_parent = v9;
+    objc_msgSend_setHasUpdatedParent_(selfCopy, v6, 1);
+    v9 = objc_msgSend_copy(parentCopy, v7, v8);
+    parent = selfCopy->_parent;
+    selfCopy->_parent = v9;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setParentReferenceFromZone:(id)a3
+- (void)setParentReferenceFromZone:(id)zone
 {
-  if (a3)
+  if (zone)
   {
-    v4 = a3;
+    zoneCopy = zone;
     v5 = [CKRecordZoneReference alloc];
-    v8 = objc_msgSend_zoneID(v4, v6, v7);
+    v8 = objc_msgSend_zoneID(zoneCopy, v6, v7);
 
     v10 = objc_msgSend_initWithZoneID_action_(v5, v9, v8, 1);
   }
@@ -437,13 +437,13 @@ LABEL_8:
   objc_msgSend_setParent_(self, a2, v10);
 }
 
-- (void)setParentReferenceFromZoneID:(id)a3
+- (void)setParentReferenceFromZoneID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
+    dCopy = d;
     v5 = [CKRecordZoneReference alloc];
-    v7 = objc_msgSend_initWithZoneID_action_(v5, v6, v4, 1);
+    v7 = objc_msgSend_initWithZoneID_action_(v5, v6, dCopy, 1);
   }
 
   else
@@ -454,9 +454,9 @@ LABEL_8:
   objc_msgSend_setParent_(self, a2, v7);
 }
 
-- (CKRecordZone)initWithCoder:(id)a3
+- (CKRecordZone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v115.receiver = self;
   v115.super_class = CKRecordZone;
   v5 = [(CKRecordZone *)&v115 init];
@@ -464,64 +464,64 @@ LABEL_8:
   {
     context = objc_autoreleasePoolPush();
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"ZoneID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"ZoneID");
     zoneID = v5->_zoneID;
     v5->_zoneID = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"Capabilities");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"Capabilities");
     v5->_capabilities = objc_msgSend_unsignedIntegerValue(v12, v13, v14);
 
-    v5->_deviceCount = objc_msgSend_decodeInt32ForKey_(v4, v15, @"DeviceCount");
+    v5->_deviceCount = objc_msgSend_decodeInt32ForKey_(coderCopy, v15, @"DeviceCount");
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"ClientChangeToken");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"ClientChangeToken");
     clientChangeToken = v5->_clientChangeToken;
     v5->_clientChangeToken = v18;
 
     v20 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"CurrentServerChangeToken");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"CurrentServerChangeToken");
     currentServerChangeToken = v5->_currentServerChangeToken;
     v5->_currentServerChangeToken = v22;
 
     v24 = objc_opt_class();
-    v26 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v25, v24, @"PreviousProtectionEtag");
+    v26 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v25, v24, @"PreviousProtectionEtag");
     previousProtectionEtag = v5->_previousProtectionEtag;
     v5->_previousProtectionEtag = v26;
 
-    v5->_assetQuotaUsage = objc_msgSend_decodeInt64ForKey_(v4, v28, @"AssetQuotaUsage");
-    v5->_metadataQuotaUsage = objc_msgSend_decodeInt64ForKey_(v4, v29, @"MetadataQuotaUsage");
+    v5->_assetQuotaUsage = objc_msgSend_decodeInt64ForKey_(coderCopy, v28, @"AssetQuotaUsage");
+    v5->_metadataQuotaUsage = objc_msgSend_decodeInt64ForKey_(coderCopy, v29, @"MetadataQuotaUsage");
     v30 = objc_opt_class();
-    v32 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"PCSModificationDate");
+    v32 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"PCSModificationDate");
     zonePCSModificationDate = v5->_zonePCSModificationDate;
     v5->_zonePCSModificationDate = v32;
 
     v34 = objc_opt_class();
-    v36 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v35, v34, @"PCSKeyID");
+    v36 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v35, v34, @"PCSKeyID");
     pcsKeyID = v5->_pcsKeyID;
     v5->_pcsKeyID = v36;
 
     v38 = objc_opt_class();
-    v40 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v39, v38, @"ZoneishKeyID");
+    v40 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v39, v38, @"ZoneishKeyID");
     zoneishKeyID = v5->_zoneishKeyID;
     v5->_zoneishKeyID = v40;
 
     v42 = objc_opt_class();
-    v44 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v43, v42, @"ProtectionData");
+    v44 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v43, v42, @"ProtectionData");
     protectionData = v5->_protectionData;
     v5->_protectionData = v44;
 
     v46 = objc_opt_class();
-    v48 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v47, v46, @"ProtectionEtag");
+    v48 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v47, v46, @"ProtectionEtag");
     protectionEtag = v5->_protectionEtag;
     v5->_protectionEtag = v48;
 
     v50 = objc_opt_class();
-    v52 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v51, v50, @"ZoneishProtectionData");
+    v52 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v51, v50, @"ZoneishProtectionData");
     zoneishProtectionData = v5->_zoneishProtectionData;
     v5->_zoneishProtectionData = v52;
 
     v54 = objc_opt_class();
-    v56 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v55, v54, @"ShareReference");
+    v56 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v55, v54, @"ShareReference");
     share = v5->_share;
     v5->_share = v56;
 
@@ -529,27 +529,27 @@ LABEL_8:
     v59 = objc_opt_class();
     v60 = objc_opt_class();
     v62 = objc_msgSend_setWithObjects_(v58, v61, v59, v60, 0);
-    v64 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v63, v62, @"InvitedKeysToRemove");
+    v64 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v63, v62, @"InvitedKeysToRemove");
     invitedKeysToRemove = v5->_invitedKeysToRemove;
     v5->_invitedKeysToRemove = v64;
 
     v66 = objc_opt_class();
-    v68 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v67, v66, @"ExpirationDate");
+    v68 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v67, v66, @"ExpirationDate");
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v68;
 
-    v5->_expired = objc_msgSend_decodeBoolForKey_(v4, v70, @"Expired");
-    v5->_hasUpdatedExpirationTimeInterval = objc_msgSend_decodeBoolForKey_(v4, v71, @"HasUpdatedExpiration");
+    v5->_expired = objc_msgSend_decodeBoolForKey_(coderCopy, v70, @"Expired");
+    v5->_hasUpdatedExpirationTimeInterval = objc_msgSend_decodeBoolForKey_(coderCopy, v71, @"HasUpdatedExpiration");
     v72 = objc_opt_class();
-    v74 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v73, v72, @"UpdatedExpiration");
+    v74 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v73, v72, @"UpdatedExpiration");
     updatedExpirationTimeInterval = v5->_updatedExpirationTimeInterval;
     v5->_updatedExpirationTimeInterval = v74;
 
-    v77 = objc_msgSend_decodeRequiredFeatureSetWithKey_(v4, v76, @"RequiredFeaturesKey");
+    v77 = objc_msgSend_decodeRequiredFeatureSetWithKey_(coderCopy, v76, @"RequiredFeaturesKey");
     requiredFeatures = v5->_requiredFeatures;
     v5->_requiredFeatures = v77;
 
-    v80 = objc_msgSend_decodeRequiredFeatureSetWithKey_(v4, v79, @"OriginalRequiredFeaturesKey");
+    v80 = objc_msgSend_decodeRequiredFeatureSetWithKey_(coderCopy, v79, @"OriginalRequiredFeaturesKey");
     originalRequiredFeatures = v5->_originalRequiredFeatures;
     v5->_originalRequiredFeatures = v80;
 
@@ -559,7 +559,7 @@ LABEL_8:
     v85 = objc_opt_class();
     v86 = objc_opt_class();
     v88 = objc_msgSend_setWithObjects_(v82, v87, v83, v84, v85, v86, 0);
-    v90 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v89, v88, @"ZonePCSKeysToRemove");
+    v90 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v89, v88, @"ZonePCSKeysToRemove");
     zonePCSKeysToRemove = v5->_zonePCSKeysToRemove;
     v5->_zonePCSKeysToRemove = v90;
 
@@ -569,91 +569,91 @@ LABEL_8:
     v95 = objc_opt_class();
     v96 = objc_opt_class();
     v98 = objc_msgSend_setWithObjects_(v92, v97, v93, v94, v95, v96, 0);
-    v100 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v99, v98, @"ZoneishPCSKeysToRemove");
+    v100 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v99, v98, @"ZoneishPCSKeysToRemove");
     zoneishPCSKeysToRemove = v5->_zoneishPCSKeysToRemove;
     v5->_zoneishPCSKeysToRemove = v100;
 
-    v5->_applyPCSKeysToRemoveForTesting = objc_msgSend_decodeBoolForKey_(v4, v102, @"ApplyPCSKeysToRemoveForTesting");
+    v5->_applyPCSKeysToRemoveForTesting = objc_msgSend_decodeBoolForKey_(coderCopy, v102, @"ApplyPCSKeysToRemoveForTesting");
     v103 = objc_opt_class();
-    v105 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v104, v103, @"ZoneParent");
+    v105 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v104, v103, @"ZoneParent");
     parent = v5->_parent;
     v5->_parent = v105;
 
-    v5->_hasUpdatedParent = objc_msgSend_decodeBoolForKey_(v4, v107, @"HasUpdatedParent");
+    v5->_hasUpdatedParent = objc_msgSend_decodeBoolForKey_(coderCopy, v107, @"HasUpdatedParent");
     v108 = objc_opt_class();
-    v110 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v109, v108, @"RecordZoneETag");
+    v110 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v109, v108, @"RecordZoneETag");
     etag = v5->_etag;
     v5->_etag = v110;
 
-    v5->_encryptionScope = objc_msgSend_decodeIntegerForKey_(v4, v112, @"EncryptionScope");
+    v5->_encryptionScope = objc_msgSend_decodeIntegerForKey_(coderCopy, v112, @"EncryptionScope");
     objc_autoreleasePoolPop(context);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v128 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_zoneID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v128, v8, v7, @"ZoneID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"ZoneID");
 
   v9 = MEMORY[0x1E696AD98];
   v12 = objc_msgSend_capabilities(self, v10, v11);
   v14 = objc_msgSend_numberWithUnsignedInteger_(v9, v13, v12);
-  objc_msgSend_encodeObject_forKey_(v128, v15, v14, @"Capabilities");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"Capabilities");
 
   v18 = objc_msgSend_deviceCount(self, v16, v17);
-  objc_msgSend_encodeInt32_forKey_(v128, v19, v18, @"DeviceCount");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v19, v18, @"DeviceCount");
   v22 = objc_msgSend_clientChangeToken(self, v20, v21);
-  objc_msgSend_encodeObject_forKey_(v128, v23, v22, @"ClientChangeToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, v22, @"ClientChangeToken");
 
   v26 = objc_msgSend_currentServerChangeToken(self, v24, v25);
-  objc_msgSend_encodeObject_forKey_(v128, v27, v26, @"CurrentServerChangeToken");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, v26, @"CurrentServerChangeToken");
 
   v30 = objc_msgSend_previousProtectionEtag(self, v28, v29);
-  objc_msgSend_encodeObject_forKey_(v128, v31, v30, @"PreviousProtectionEtag");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v31, v30, @"PreviousProtectionEtag");
 
   v34 = objc_msgSend_assetQuotaUsage(self, v32, v33);
-  objc_msgSend_encodeInt64_forKey_(v128, v35, v34, @"AssetQuotaUsage");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v35, v34, @"AssetQuotaUsage");
   v38 = objc_msgSend_metadataQuotaUsage(self, v36, v37);
-  objc_msgSend_encodeInt64_forKey_(v128, v39, v38, @"MetadataQuotaUsage");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v39, v38, @"MetadataQuotaUsage");
   v42 = objc_msgSend_zonePCSModificationDate(self, v40, v41);
-  objc_msgSend_encodeObject_forKey_(v128, v43, v42, @"PCSModificationDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v43, v42, @"PCSModificationDate");
 
   v46 = objc_msgSend_pcsKeyID(self, v44, v45);
-  objc_msgSend_encodeObject_forKey_(v128, v47, v46, @"PCSKeyID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v47, v46, @"PCSKeyID");
 
   v50 = objc_msgSend_zoneishKeyID(self, v48, v49);
-  objc_msgSend_encodeObject_forKey_(v128, v51, v50, @"ZoneishKeyID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v51, v50, @"ZoneishKeyID");
 
   v54 = objc_msgSend_share(self, v52, v53);
-  objc_msgSend_encodeObject_forKey_(v128, v55, v54, @"ShareReference");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v55, v54, @"ShareReference");
 
   v58 = objc_msgSend_invitedKeysToRemove(self, v56, v57);
-  objc_msgSend_encodeObject_forKey_(v128, v59, v58, @"InvitedKeysToRemove");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v59, v58, @"InvitedKeysToRemove");
 
   if ((byte_1EA90C538 & 1) == 0)
   {
     if (objc_msgSend_serializeProtectionData(self, v60, v61))
     {
       v62 = objc_msgSend_protectionData(self, v60, v61);
-      objc_msgSend_encodeObject_forKey_(v128, v63, v62, @"ProtectionData");
+      objc_msgSend_encodeObject_forKey_(coderCopy, v63, v62, @"ProtectionData");
 
       v66 = objc_msgSend_protectionEtag(self, v64, v65);
-      objc_msgSend_encodeObject_forKey_(v128, v67, v66, @"ProtectionEtag");
+      objc_msgSend_encodeObject_forKey_(coderCopy, v67, v66, @"ProtectionEtag");
 
       v70 = objc_msgSend_zoneishProtectionData(self, v68, v69);
-      objc_msgSend_encodeObject_forKey_(v128, v71, v70, @"ZoneishProtectionData");
+      objc_msgSend_encodeObject_forKey_(coderCopy, v71, v70, @"ZoneishProtectionData");
 
       if (__sTestOverridesAvailable[0] == 1)
       {
         v72 = objc_msgSend_zonePCSKeysToRemove(self, v60, v61);
-        objc_msgSend_encodeObject_forKey_(v128, v73, v72, @"ZonePCSKeysToRemove");
+        objc_msgSend_encodeObject_forKey_(coderCopy, v73, v72, @"ZonePCSKeysToRemove");
 
         v76 = objc_msgSend_zoneishPCSKeysToRemove(self, v74, v75);
-        objc_msgSend_encodeObject_forKey_(v128, v77, v76, @"ZoneishPCSKeysToRemove");
+        objc_msgSend_encodeObject_forKey_(coderCopy, v77, v76, @"ZoneishPCSKeysToRemove");
       }
     }
   }
@@ -661,68 +661,68 @@ LABEL_8:
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend_applyPCSKeysToRemoveForTesting(self, v60, v61))
   {
     v78 = objc_msgSend_applyPCSKeysToRemoveForTesting(self, v60, v61);
-    objc_msgSend_encodeBool_forKey_(v128, v79, v78, @"ApplyPCSKeysToRemoveForTesting");
+    objc_msgSend_encodeBool_forKey_(coderCopy, v79, v78, @"ApplyPCSKeysToRemoveForTesting");
     v82 = objc_msgSend_zonePCSKeysToRemove(self, v80, v81);
-    objc_msgSend_encodeObject_forKey_(v128, v83, v82, @"ZonePCSKeysToRemove");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v83, v82, @"ZonePCSKeysToRemove");
 
     v86 = objc_msgSend_zoneishPCSKeysToRemove(self, v84, v85);
-    objc_msgSend_encodeObject_forKey_(v128, v87, v86, @"ZoneishPCSKeysToRemove");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v87, v86, @"ZoneishPCSKeysToRemove");
   }
 
   v88 = objc_msgSend_expirationDate(self, v60, v61);
-  objc_msgSend_encodeObject_forKey_(v128, v89, v88, @"ExpirationDate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v89, v88, @"ExpirationDate");
 
   isExpired = objc_msgSend_isExpired(self, v90, v91);
-  objc_msgSend_encodeBool_forKey_(v128, v93, isExpired, @"Expired");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v93, isExpired, @"Expired");
   hasUpdatedExpirationTimeInterval = objc_msgSend_hasUpdatedExpirationTimeInterval(self, v94, v95);
-  objc_msgSend_encodeBool_forKey_(v128, v97, hasUpdatedExpirationTimeInterval, @"HasUpdatedExpiration");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v97, hasUpdatedExpirationTimeInterval, @"HasUpdatedExpiration");
   v100 = objc_msgSend_updatedExpirationTimeInterval(self, v98, v99);
-  objc_msgSend_encodeObject_forKey_(v128, v101, v100, @"UpdatedExpiration");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v101, v100, @"UpdatedExpiration");
 
   v104 = objc_msgSend_requiredFeatures(self, v102, v103);
-  objc_msgSend_encodeObject_forKey_(v128, v105, v104, @"RequiredFeaturesKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v105, v104, @"RequiredFeaturesKey");
 
   v108 = objc_msgSend_originalRequiredFeatures(self, v106, v107);
-  objc_msgSend_encodeObject_forKey_(v128, v109, v108, @"OriginalRequiredFeaturesKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v109, v108, @"OriginalRequiredFeaturesKey");
 
   v112 = objc_msgSend_parent(self, v110, v111);
 
   if (v112)
   {
     v115 = objc_msgSend_parent(self, v113, v114);
-    objc_msgSend_encodeObject_forKey_(v128, v116, v115, @"ZoneParent");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v116, v115, @"ZoneParent");
   }
 
   hasUpdatedParent = objc_msgSend_hasUpdatedParent(self, v113, v114);
-  objc_msgSend_encodeBool_forKey_(v128, v118, hasUpdatedParent, @"HasUpdatedParent");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v118, hasUpdatedParent, @"HasUpdatedParent");
   v121 = objc_msgSend_etag(self, v119, v120);
 
   if (v121)
   {
     v124 = objc_msgSend_etag(self, v122, v123);
-    objc_msgSend_encodeObject_forKey_(v128, v125, v124, @"RecordZoneETag");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v125, v124, @"RecordZoneETag");
   }
 
   v126 = objc_msgSend_encryptionScope(self, v122, v123);
-  objc_msgSend_encodeInteger_forKey_(v128, v127, v126, @"EncryptionScope");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v127, v126, @"EncryptionScope");
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v26 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_zoneID(self, v4, v5);
-  objc_msgSend_addProperty_value_shouldRedact_(v26, v7, @"zoneID", v6, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"zoneID", v6, 0);
 
   v10 = objc_msgSend_capabilities(self, v8, v9);
   v11 = CKStringFromCapabilities(v10);
-  objc_msgSend_addProperty_value_shouldRedact_(v26, v12, @"capabilities", v11, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v12, @"capabilities", v11, 0);
 
   v15 = objc_msgSend_parent(self, v13, v14);
-  objc_msgSend_addProperty_value_shouldRedact_(v26, v16, @"parent", v15, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v16, @"parent", v15, 0);
 
   v19 = objc_msgSend_etag(self, v17, v18);
-  objc_msgSend_addProperty_value_shouldRedact_(v26, v20, @"recordZoneEtag", v19, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v20, @"recordZoneEtag", v19, 0);
 
   v23 = objc_msgSend_encryptionScope(self, v21, v22);
   v25 = &stru_1EFA32970;
@@ -733,20 +733,20 @@ LABEL_8:
 
   if (v23)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v26, v24, @"encryptionScope", v25, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v24, @"encryptionScope", v25, 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v26, v24, @"encryptionScope", @"per-record", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v24, @"encryptionScope", @"per-record", 0);
   }
 }
 
-- (void)setExpirationAfterTimeInterval:(id)a3
+- (void)setExpirationAfterTimeInterval:(id)interval
 {
-  v6 = a3;
+  intervalCopy = interval;
   objc_msgSend_setHasUpdatedExpirationTimeInterval_(self, v4, 1);
-  objc_msgSend_setUpdatedExpirationTimeInterval_(self, v5, v6);
+  objc_msgSend_setUpdatedExpirationTimeInterval_(self, v5, intervalCopy);
 }
 
 @end

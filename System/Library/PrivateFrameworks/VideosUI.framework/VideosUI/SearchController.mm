@@ -1,17 +1,17 @@
 @interface SearchController
-- (_TtC8VideosUI16SearchController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI16SearchController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation SearchController
 
-- (_TtC8VideosUI16SearchController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI16SearchController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E410A790();
 }
 

@@ -1,14 +1,14 @@
 @interface MFMailMessage
 + (id)externalDataTypeIdentifiers;
-+ (id)forwardedMessagePrefixWithSpacer:(BOOL)a3;
-+ (unsigned)validatePriority:(int)a3;
++ (id)forwardedMessagePrefixWithSpacer:(BOOL)spacer;
++ (unsigned)validatePriority:(int)priority;
 - (BOOL)shouldSetSummary;
 - (MFMailboxUid)mailbox;
 - (NSString)vf_publicDescription;
 - (id)URL;
 - (id)_privacySafeDescription;
 - (id)account;
-- (id)bestAlternativePart:(BOOL *)a3;
+- (id)bestAlternativePart:(BOOL *)part;
 - (id)copyMessageInfo;
 - (id)globalMessageURL;
 - (id)listUnsubscribe;
@@ -23,25 +23,25 @@
 - (unint64_t)modSequenceNumber;
 - (unint64_t)numberOfAttachments;
 - (void)dealloc;
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3;
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers;
 - (void)markAsFlagged;
 - (void)markAsForwarded;
 - (void)markAsNotFlagged;
 - (void)markAsNotViewed;
 - (void)markAsReplied;
 - (void)markAsViewed;
-- (void)setModSequenceNumber:(unint64_t)a3;
-- (void)setMutableInfoFromMessage:(id)a3;
-- (void)setPriorityFromHeaders:(id)a3;
-- (void)setSummary:(id)a3;
+- (void)setModSequenceNumber:(unint64_t)number;
+- (void)setMutableInfoFromMessage:(id)message;
+- (void)setPriorityFromHeaders:(id)headers;
+- (void)setSummary:(id)summary;
 @end
 
 @implementation MFMailMessage
 
-+ (id)forwardedMessagePrefixWithSpacer:(BOOL)a3
++ (id)forwardedMessagePrefixWithSpacer:(BOOL)spacer
 {
   v4 = @"Begin forwarded message:\n\n";
-  if (a3)
+  if (spacer)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\n%@", @"Begin forwarded message:\n\n"];
     v3 = vars8;
@@ -54,18 +54,18 @@
 {
   v4.receiver = self;
   v4.super_class = MFMailMessage;
-  v2 = [(MFMailMessage *)&v4 messageStore];
+  messageStore = [(MFMailMessage *)&v4 messageStore];
 
-  return v2;
+  return messageStore;
 }
 
 - (id)mailMessageStore
 {
-  v2 = [(MFMailMessage *)self messageStore];
+  messageStore = [(MFMailMessage *)self messageStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = messageStore;
   }
 
   else
@@ -86,10 +86,10 @@
   return modSequenceNumber;
 }
 
-- (void)setModSequenceNumber:(unint64_t)a3
+- (void)setModSequenceNumber:(unint64_t)number
 {
   [(MFMailMessage *)self mf_lock];
-  self->_modSequenceNumber = a3;
+  self->_modSequenceNumber = number;
 
   [(MFMailMessage *)self mf_unlock];
 }
@@ -102,11 +102,11 @@
   return messageFlags;
 }
 
-+ (unsigned)validatePriority:(int)a3
++ (unsigned)validatePriority:(int)priority
 {
-  if ((a3 - 6) >= 0xFFFFFFFB)
+  if ((priority - 6) >= 0xFFFFFFFB)
   {
-    return a3;
+    return priority;
   }
 
   else
@@ -115,9 +115,9 @@
   }
 }
 
-- (void)setPriorityFromHeaders:(id)a3
+- (void)setPriorityFromHeaders:(id)headers
 {
-  v5 = [a3 firstHeaderForKey:*MEMORY[0x277D07060]];
+  v5 = [headers firstHeaderForKey:*MEMORY[0x277D07060]];
   if (v5)
   {
     v4 = ([objc_opt_class() validatePriority:{objc_msgSend(v5, "intValue")}] & 7) << 16;
@@ -137,8 +137,8 @@
   v4 = v3 & 7;
   if ((v3 & 7) == 0)
   {
-    v5 = [(MFMailMessage *)self messageStore];
-    v6 = [v5 headersForMessage:self fetchIfNotAvailable:0];
+    messageStore = [(MFMailMessage *)self messageStore];
+    v6 = [messageStore headersForMessage:self fetchIfNotAvailable:0];
     [(MFMailMessage *)self loadCachedHeaderValuesFromHeaders:v6];
   }
 
@@ -147,26 +147,26 @@
   return [v7 validatePriority:v4];
 }
 
-- (void)loadCachedHeaderValuesFromHeaders:(id)a3
+- (void)loadCachedHeaderValuesFromHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v8.receiver = self;
   v8.super_class = MFMailMessage;
-  [(MFMailMessage *)&v8 loadCachedHeaderValuesFromHeaders:v4];
+  [(MFMailMessage *)&v8 loadCachedHeaderValuesFromHeaders:headersCopy];
   _MFLockGlobalLock();
   v5 = self->_messageFlags & 0x70000;
   v6 = *(&self->super.super.isa + *MEMORY[0x277D24FD8]);
   _MFUnlockGlobalLock();
   if (!v5)
   {
-    [(MFMailMessage *)self setPriorityFromHeaders:v4];
+    [(MFMailMessage *)self setPriorityFromHeaders:headersCopy];
     if (v6)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v7 = [v4 firstHeaderForKey:*MEMORY[0x277D06FE0]];
+    v7 = [headersCopy firstHeaderForKey:*MEMORY[0x277D06FE0]];
     [(MFMailMessage *)self setMessageIDHash:MFStringHashForMessageIDHeader()];
 
     goto LABEL_3;
@@ -242,32 +242,32 @@ LABEL_3:
 
 - (MFMailboxUid)mailbox
 {
-  v2 = [(MFMailMessage *)self messageStore];
-  v3 = [v2 mailboxUid];
+  messageStore = [(MFMailMessage *)self messageStore];
+  mailboxUid = [messageStore mailboxUid];
 
-  return v3;
+  return mailboxUid;
 }
 
 - (id)loadMeetingExternalID
 {
-  v3 = [(MFMailMessage *)self messageStore];
-  v4 = [v3 loadMeetingExternalIDForMessage:self];
+  messageStore = [(MFMailMessage *)self messageStore];
+  v4 = [messageStore loadMeetingExternalIDForMessage:self];
 
   return v4;
 }
 
 - (id)loadMeetingData
 {
-  v3 = [(MFMailMessage *)self messageStore];
-  v4 = [v3 loadMeetingDataForMessage:self];
+  messageStore = [(MFMailMessage *)self messageStore];
+  v4 = [messageStore loadMeetingDataForMessage:self];
 
   return v4;
 }
 
 - (id)loadMeetingMetadata
 {
-  v3 = [(MFMailMessage *)self mailMessageStore];
-  v4 = [v3 loadMeetingMetadataForMessage:self];
+  mailMessageStore = [(MFMailMessage *)self mailMessageStore];
+  v4 = [mailMessageStore loadMeetingMetadataForMessage:self];
 
   return v4;
 }
@@ -279,10 +279,10 @@ LABEL_3:
   _MFUnlockGlobalLock();
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(MFMailMessage *)self conversationID];
+  conversationID = [(MFMailMessage *)self conversationID];
   LODWORD(v7) = *(&self->super.super.isa + *MEMORY[0x277D24FD0]);
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v7];
-  v9 = [v4 stringWithFormat:@"<%@ %p> conversationID=%lld messageID=%lld received=%@", v5, self, v6, v3, v8];
+  v9 = [v4 stringWithFormat:@"<%@ %p> conversationID=%lld messageID=%lld received=%@", v5, self, conversationID, v3, v8];
 
   return v9;
 }
@@ -305,24 +305,24 @@ LABEL_3:
 
 - (id)account
 {
-  v2 = [(MFMailMessage *)self messageStore];
-  v3 = [v2 account];
+  messageStore = [(MFMailMessage *)self messageStore];
+  account = [messageStore account];
 
-  return v3;
+  return account;
 }
 
 - (id)originalMailboxURL
 {
-  v2 = [(MFMailMessage *)self mailbox];
-  v3 = [v2 URLString];
+  mailbox = [(MFMailMessage *)self mailbox];
+  uRLString = [mailbox URLString];
 
-  return v3;
+  return uRLString;
 }
 
 - (id)URL
 {
-  v3 = [(MFMailMessage *)self account];
-  v4 = [v3 URLForMessage:self];
+  account = [(MFMailMessage *)self account];
+  v4 = [account URLForMessage:self];
 
   return v4;
 }
@@ -332,12 +332,12 @@ LABEL_3:
   globalMessageURL = self->_globalMessageURL;
   if (!globalMessageURL)
   {
-    v4 = [(MFMailMessage *)self messageIDHeader];
-    if ([v4 length])
+    messageIDHeader = [(MFMailMessage *)self messageIDHeader];
+    if ([messageIDHeader length])
     {
       v5 = objc_alloc_init(MEMORY[0x277CCACE0]);
       [v5 setScheme:@"message"];
-      [v5 setPath:v4];
+      [v5 setPath:messageIDHeader];
       v6 = [v5 URL];
       v7 = [v6 copy];
       v8 = self->_globalMessageURL;
@@ -364,21 +364,21 @@ LABEL_3:
   }
 }
 
-- (void)setMutableInfoFromMessage:(id)a3
+- (void)setMutableInfoFromMessage:(id)message
 {
-  v4 = [a3 messageFlags];
+  messageFlags = [message messageFlags];
 
-  [(MFMailMessage *)self setMessageFlags:v4];
+  [(MFMailMessage *)self setMessageFlags:messageFlags];
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
-  v6 = a3;
+  summaryCopy = summary;
   _MFLockGlobalLock();
   v5 = *MEMORY[0x277D24FE0];
-  if (*(&self->super.super.isa + v5) != v6)
+  if (*(&self->super.super.isa + v5) != summaryCopy)
   {
-    objc_storeStrong((&self->super.super.isa + v5), a3);
+    objc_storeStrong((&self->super.super.isa + v5), summary);
   }
 
   _MFUnlockGlobalLock();
@@ -386,11 +386,11 @@ LABEL_3:
 
 - (BOOL)shouldSetSummary
 {
-  v3 = [(MFMailMessage *)self messageStore];
-  if ([v3 shouldSetSummaryForMessage:self])
+  messageStore = [(MFMailMessage *)self messageStore];
+  if ([messageStore shouldSetSummaryForMessage:self])
   {
-    v4 = [(MFMailMessage *)self summary];
-    v5 = v4 == 0;
+    summary = [(MFMailMessage *)self summary];
+    v5 = summary == 0;
   }
 
   else
@@ -448,7 +448,7 @@ LABEL_3:
   [(MFMailMessage *)&v2 dealloc];
 }
 
-- (id)bestAlternativePart:(BOOL *)a3
+- (id)bestAlternativePart:(BOOL *)part
 {
   v36 = *MEMORY[0x277D85DE8];
   v34 = 0;
@@ -456,7 +456,7 @@ LABEL_3:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 topLevelPart];
+    topLevelPart = [v5 topLevelPart];
     v8 = 0;
     v9 = 0;
     v10 = 0;
@@ -465,14 +465,14 @@ LABEL_3:
     {
       if (!v11)
       {
-        v12 = [v9 contentToOffset:1 resultOffset:&v34 downloadIfNecessary:0 asHTML:1 isComplete:a3];
+        v12 = [v9 contentToOffset:1 resultOffset:&v34 downloadIfNecessary:0 asHTML:1 isComplete:part];
 
         v13 = v9;
         v10 = v13;
         v8 = v12;
       }
 
-      v14 = [(MFMailMessage *)self bestAlternativeInPart:v7];
+      v14 = [(MFMailMessage *)self bestAlternativeInPart:topLevelPart];
 
       v11 = v14 == 0;
       v9 = v14;
@@ -516,13 +516,13 @@ LABEL_3:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v21 htmlData];
-          if (v22)
+          htmlData = [v21 htmlData];
+          if (htmlData)
           {
-            v23 = [v21 preferredEncoding];
+            preferredEncoding = [v21 preferredEncoding];
             v24 = MFCreateStringWithData();
             v25 = v24;
-            if (v23 != -1 && v24 == 0)
+            if (preferredEncoding != -1 && v24 == 0)
             {
               v25 = MFCreateStringWithData();
             }
@@ -563,34 +563,34 @@ LABEL_3:
 
 + (id)externalDataTypeIdentifiers
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  [v2 addObject:@"com.apple.mail.email"];
-  [v2 addObject:*MEMORY[0x277CC2068]];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:@"com.apple.mail.email"];
+  [array addObject:*MEMORY[0x277CC2068]];
   if (objc_opt_respondsToSelector())
   {
-    [v2 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CCAE58], "performSelector:", sel_writableTypeIdentifiersForItemProvider)}];
+    [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CCAE58], "performSelector:", sel_writableTypeIdentifiersForItemProvider)}];
   }
 
-  v3 = [MEMORY[0x277CBEBC0] writableTypeIdentifiersForItemProvider];
-  [v2 addObjectsFromArray:v3];
+  writableTypeIdentifiersForItemProvider = [MEMORY[0x277CBEBC0] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider];
 
   if (objc_opt_respondsToSelector())
   {
-    [v2 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CCA898], "performSelector:", sel_writableTypeIdentifiersForItemProvider)}];
+    [array addObjectsFromArray:{objc_msgSend(MEMORY[0x277CCA898], "performSelector:", sel_writableTypeIdentifiersForItemProvider)}];
   }
 
-  v4 = [MEMORY[0x277CCACA8] writableTypeIdentifiersForItemProvider];
-  [v2 addObjectsFromArray:v4];
+  writableTypeIdentifiersForItemProvider2 = [MEMORY[0x277CCACA8] writableTypeIdentifiersForItemProvider];
+  [array addObjectsFromArray:writableTypeIdentifiersForItemProvider2];
 
-  return v2;
+  return array;
 }
 
 - (id)listUnsubscribe
 {
-  v2 = [(MFMailMessage *)self headers];
-  v3 = [v2 listUnsubscribeCommands];
+  headers = [(MFMailMessage *)self headers];
+  listUnsubscribeCommands = [headers listUnsubscribeCommands];
 
-  return v3;
+  return listUnsubscribeCommands;
 }
 
 @end

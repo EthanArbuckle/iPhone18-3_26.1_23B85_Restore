@@ -1,39 +1,39 @@
 @interface IDSDXPCDaemonServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (IDSDXPCDaemonServer)initWithServiceName:(id)a3 queue:(id)a4;
-- (id)activityMonitorCollaboratorForXPCDaemon:(id)a3;
-- (id)baaSignerCollaboratorForTopic:(id)a3 forXPCDaemon:(id)a4;
-- (id)diagnosticHandlingCollaboratorForXPCDaemon:(id)a3;
-- (id)eventReportingCollaboratorForXPCDaemon:(id)a3;
-- (id)featureTogglerCollaboratorForService:(id)a3 forXPCDaemon:(id)a4;
-- (id)firewallCollaboratorForService:(id)a3 forXPCDaemon:(id)a4;
-- (id)groupSessionKeyValueDeliveryProviderCollaboratorForXPCDaemon:(id)a3;
-- (id)internalTestingCollaboratorForXPCDaemon:(id)a3;
-- (id)keyTransparencyCollaboratorForXPCDaemon:(id)a3;
-- (id)offGridMessengerCollaboratorForXPCDaemon:(id)a3;
-- (id)offGridStateManagerCollaboratorForXPCDaemon:(id)a3;
-- (id)opportunisticCollaboratorForXPCDaemon:(id)a3;
-- (id)phoneNumberCredentialVendorCollaboratorForXPCDaemon:(id)a3;
-- (id)pinnedIdentityCollaboratorForXPCDaemon:(id)a3;
-- (id)registrationCollaboratorForXPCDaemon:(id)a3;
-- (id)reunionSyncCollaboratorWithClientProcessName:(id)a3 forXPCDaemon:(id)a4;
-- (id)serverMessagingCollaboratorForXPCDaemon:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (IDSDXPCDaemonServer)initWithServiceName:(id)name queue:(id)queue;
+- (id)activityMonitorCollaboratorForXPCDaemon:(id)daemon;
+- (id)baaSignerCollaboratorForTopic:(id)topic forXPCDaemon:(id)daemon;
+- (id)diagnosticHandlingCollaboratorForXPCDaemon:(id)daemon;
+- (id)eventReportingCollaboratorForXPCDaemon:(id)daemon;
+- (id)featureTogglerCollaboratorForService:(id)service forXPCDaemon:(id)daemon;
+- (id)firewallCollaboratorForService:(id)service forXPCDaemon:(id)daemon;
+- (id)groupSessionKeyValueDeliveryProviderCollaboratorForXPCDaemon:(id)daemon;
+- (id)internalTestingCollaboratorForXPCDaemon:(id)daemon;
+- (id)keyTransparencyCollaboratorForXPCDaemon:(id)daemon;
+- (id)offGridMessengerCollaboratorForXPCDaemon:(id)daemon;
+- (id)offGridStateManagerCollaboratorForXPCDaemon:(id)daemon;
+- (id)opportunisticCollaboratorForXPCDaemon:(id)daemon;
+- (id)phoneNumberCredentialVendorCollaboratorForXPCDaemon:(id)daemon;
+- (id)pinnedIdentityCollaboratorForXPCDaemon:(id)daemon;
+- (id)registrationCollaboratorForXPCDaemon:(id)daemon;
+- (id)reunionSyncCollaboratorWithClientProcessName:(id)name forXPCDaemon:(id)daemon;
+- (id)serverMessagingCollaboratorForXPCDaemon:(id)daemon;
 - (void)reportDailyMetric;
 @end
 
 @implementation IDSDXPCDaemonServer
 
-- (IDSDXPCDaemonServer)initWithServiceName:(id)a3 queue:(id)a4
+- (IDSDXPCDaemonServer)initWithServiceName:(id)name queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  dispatch_assert_queue_V2(v7);
+  nameCopy = name;
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v43.receiver = self;
   v43.super_class = IDSDXPCDaemonServer;
   v8 = [(IDSDXPCDaemonServer *)&v43 init];
   if (v8)
   {
-    obj = a4;
+    obj = queue;
     v9 = _os_feature_enabled_impl();
     v10 = +[IDSFoundationLog xpc];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -45,13 +45,13 @@
       }
 
       *buf = 138543618;
-      v45 = v6;
+      v45 = nameCopy;
       v46 = 2112;
       v47 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Created IDSDXPCDaemonServer {serviceName: %{public}@, syncSupport: %@}", buf, 0x16u);
     }
 
-    v42 = v6;
+    v42 = nameCopy;
 
     v12 = [IDSDXPCPairing alloc];
     v13 = +[IDSDaemon sharedInstance];
@@ -62,7 +62,7 @@
     +[IDSUTunController sharedInstance];
     v18 = v40 = v9;
     v19 = +[IDSUTunDeliveryController sharedInstance];
-    v20 = [(IDSDXPCPairing *)v12 initWithQueue:v7 idsDaemon:v13 serviceController:v14 pairingManager:v15 quickSwitchHelper:v16 accountController:v17 utunController:v18 utunDeliveryController:v19];
+    v20 = [(IDSDXPCPairing *)v12 initWithQueue:queueCopy idsDaemon:v13 serviceController:v14 pairingManager:v15 quickSwitchHelper:v16 accountController:v17 utunController:v18 utunDeliveryController:v19];
     pairingCollaborator = v8->_pairingCollaborator;
     v8->_pairingCollaborator = v20;
 
@@ -72,11 +72,11 @@
     pairedDeviceManagerCollaborator = v8->_pairedDeviceManagerCollaborator;
     v8->_pairedDeviceManagerCollaborator = v24;
 
-    v26 = [[IDSDXPCOffGridMessenger alloc] initWithQueue:v7];
+    v26 = [[IDSDXPCOffGridMessenger alloc] initWithQueue:queueCopy];
     offGridMessengerCollaborator = v8->_offGridMessengerCollaborator;
     v8->_offGridMessengerCollaborator = v26;
 
-    v28 = [[IDSDXPCOffGridStateManager alloc] initWithQueue:v7];
+    v28 = [[IDSDXPCOffGridStateManager alloc] initWithQueue:queueCopy];
     offGridStateManagerCollaborator = v8->_offGridStateManagerCollaborator;
     v8->_offGridStateManagerCollaborator = v28;
 
@@ -91,7 +91,7 @@
 
     else
     {
-      v33 = v7;
+      v33 = queueCopy;
       v30 = v8->_xpcQueue;
       v8->_xpcQueue = v33;
     }
@@ -100,7 +100,7 @@
     daemonClients = v8->_daemonClients;
     v8->_daemonClients = v34;
 
-    v6 = v42;
+    nameCopy = v42;
     v36 = [[NSXPCListener alloc] initWithMachServiceName:v42];
     listener = v8->_listener;
     v8->_listener = v36;
@@ -115,18 +115,18 @@
   return v8;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSDXPCDaemonServer *)self xpcQueue];
-  dispatch_assert_queue_V2(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  xpcQueue = [(IDSDXPCDaemonServer *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
   v9 = +[IDSFoundationLog xpc];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = connectionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Incoming XPC connection {newConnection: %{public}@}", &buf, 0xCu);
   }
 
@@ -142,220 +142,220 @@
   v16[3] = &unk_100BD9060;
   v16[4] = self;
   v16[5] = &buf;
-  [v7 setInvalidationHandler:v16];
+  [connectionCopy setInvalidationHandler:v16];
   v10 = [IDSDXPCDaemon alloc];
-  v11 = [(IDSDXPCDaemonServer *)self xpcQueue];
-  v12 = [(IDSDXPCDaemon *)v10 initWithQueue:v11 syncOntoMain:_os_feature_enabled_impl() collaboratorProvider:self takingOverAndResumingConnection:v7];
+  xpcQueue2 = [(IDSDXPCDaemonServer *)self xpcQueue];
+  v12 = [(IDSDXPCDaemon *)v10 initWithQueue:xpcQueue2 syncOntoMain:_os_feature_enabled_impl() collaboratorProvider:self takingOverAndResumingConnection:connectionCopy];
   v13 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v12;
 
-  v14 = [(IDSDXPCDaemonServer *)self daemonClients];
-  [v14 addObject:*(*(&buf + 1) + 40)];
+  daemonClients = [(IDSDXPCDaemonServer *)self daemonClients];
+  [daemonClients addObject:*(*(&buf + 1) + 40)];
 
   _Block_object_dispose(&buf, 8);
   return 1;
 }
 
-- (id)reunionSyncCollaboratorWithClientProcessName:(id)a3 forXPCDaemon:(id)a4
+- (id)reunionSyncCollaboratorWithClientProcessName:(id)name forXPCDaemon:(id)daemon
 {
-  v5 = a4;
-  v6 = a3;
+  daemonCopy = daemon;
+  nameCopy = name;
   v7 = [IDSDXPCReunionSync alloc];
-  v8 = [v5 clientConnection];
+  clientConnection = [daemonCopy clientConnection];
 
   v9 = +[IDSUTunDeliveryController sharedInstance];
   v10 = +[IDSDuetInterface sharedInstance];
-  v11 = [(IDSDXPCReunionSync *)v7 initWithConnection:v8 clientProcessName:v6 UTunDeliveryController:v9 duetInterface:v10];
+  v11 = [(IDSDXPCReunionSync *)v7 initWithConnection:clientConnection clientProcessName:nameCopy UTunDeliveryController:v9 duetInterface:v10];
 
   return v11;
 }
 
-- (id)opportunisticCollaboratorForXPCDaemon:(id)a3
+- (id)opportunisticCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = +[IDSDaemon sharedInstance];
-  v6 = [v5 opportunisticDeliveryController];
-  v7 = [v6 cache];
+  opportunisticDeliveryController = [v5 opportunisticDeliveryController];
+  cache = [opportunisticDeliveryController cache];
 
   v8 = [IDSDXPCOpportunistic alloc];
-  v9 = [(IDSDXPCDaemonServer *)self queue];
-  v10 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v11 = [(IDSDXPCOpportunistic *)v8 initWithQueue:v9 connection:v10 opportunisticCache:v7];
+  v11 = [(IDSDXPCOpportunistic *)v8 initWithQueue:queue connection:clientConnection opportunisticCache:cache];
 
   return v11;
 }
 
-- (id)registrationCollaboratorForXPCDaemon:(id)a3
+- (id)registrationCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCRegistration alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCRegistration *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCRegistration *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)activityMonitorCollaboratorForXPCDaemon:(id)a3
+- (id)activityMonitorCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCActivityMonitor alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
   v8 = +[IDSActivityMonitorStateManager sharedInstance];
-  v9 = [(IDSDXPCActivityMonitor *)v5 initWithQueue:v6 connection:v7 activityMonitorStateManager:v8];
+  v9 = [(IDSDXPCActivityMonitor *)v5 initWithQueue:queue connection:clientConnection activityMonitorStateManager:v8];
 
   return v9;
 }
 
-- (id)serverMessagingCollaboratorForXPCDaemon:(id)a3
+- (id)serverMessagingCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCServerMessaging alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
   v8 = [+[FTMessageDelivery APNSMessageDeliveryClass](FTMessageDelivery "APNSMessageDeliveryClass")];
   v9 = +[IDSPushHandler sharedInstance];
-  v10 = [(IDSDXPCServerMessaging *)v5 initWithQueue:v6 connection:v7 messageDelivery:v8 pushHandler:v9];
+  v10 = [(IDSDXPCServerMessaging *)v5 initWithQueue:queue connection:clientConnection messageDelivery:v8 pushHandler:v9];
 
   return v10;
 }
 
-- (id)offGridMessengerCollaboratorForXPCDaemon:(id)a3
+- (id)offGridMessengerCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
-  v5 = [(IDSDXPCDaemonServer *)self offGridMessengerCollaborator];
-  v6 = [v4 clientConnection];
+  daemonCopy = daemon;
+  offGridMessengerCollaborator = [(IDSDXPCDaemonServer *)self offGridMessengerCollaborator];
+  clientConnection = [daemonCopy clientConnection];
 
-  [v5 monitorConnection:v6];
+  [offGridMessengerCollaborator monitorConnection:clientConnection];
 
   return [(IDSDXPCDaemonServer *)self offGridMessengerCollaborator];
 }
 
-- (id)offGridStateManagerCollaboratorForXPCDaemon:(id)a3
+- (id)offGridStateManagerCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
-  v5 = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
-  v6 = [v4 clientConnection];
+  daemonCopy = daemon;
+  offGridStateManagerCollaborator = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
+  clientConnection = [daemonCopy clientConnection];
 
-  [v5 monitorConnection:v6];
+  [offGridStateManagerCollaborator monitorConnection:clientConnection];
 
   return [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
 }
 
-- (id)keyTransparencyCollaboratorForXPCDaemon:(id)a3
+- (id)keyTransparencyCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCKeyTransparency alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCKeyTransparency *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCKeyTransparency *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)pinnedIdentityCollaboratorForXPCDaemon:(id)a3
+- (id)pinnedIdentityCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCPinnedIdentity alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCPinnedIdentity *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCPinnedIdentity *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)phoneNumberCredentialVendorCollaboratorForXPCDaemon:(id)a3
+- (id)phoneNumberCredentialVendorCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCPhoneNumberCredentialVendor alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCPhoneNumberCredentialVendor *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCPhoneNumberCredentialVendor *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)firewallCollaboratorForService:(id)a3 forXPCDaemon:(id)a4
+- (id)firewallCollaboratorForService:(id)service forXPCDaemon:(id)daemon
 {
-  v6 = a4;
-  v7 = a3;
+  daemonCopy = daemon;
+  serviceCopy = service;
   v8 = [IDSDXPCFirewall alloc];
-  v9 = [(IDSDXPCDaemonServer *)self queue];
-  v10 = [v6 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v11 = [(IDSDXPCFirewall *)v8 initWithService:v7 queue:v9 connection:v10];
+  v11 = [(IDSDXPCFirewall *)v8 initWithService:serviceCopy queue:queue connection:clientConnection];
 
   return v11;
 }
 
-- (id)groupSessionKeyValueDeliveryProviderCollaboratorForXPCDaemon:(id)a3
+- (id)groupSessionKeyValueDeliveryProviderCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCGroupSessionKeyValueDeliveryProvider alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCGroupSessionKeyValueDeliveryProvider *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCGroupSessionKeyValueDeliveryProvider *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)featureTogglerCollaboratorForService:(id)a3 forXPCDaemon:(id)a4
+- (id)featureTogglerCollaboratorForService:(id)service forXPCDaemon:(id)daemon
 {
-  v6 = a4;
-  v7 = a3;
+  daemonCopy = daemon;
+  serviceCopy = service;
   v8 = [IDSDXPCFeatureToggler alloc];
-  v9 = [(IDSDXPCDaemonServer *)self queue];
-  v10 = [v6 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v11 = [(IDSDXPCFeatureToggler *)v8 initWithService:v7 queue:v9 connection:v10];
+  v11 = [(IDSDXPCFeatureToggler *)v8 initWithService:serviceCopy queue:queue connection:clientConnection];
 
   return v11;
 }
 
-- (id)baaSignerCollaboratorForTopic:(id)a3 forXPCDaemon:(id)a4
+- (id)baaSignerCollaboratorForTopic:(id)topic forXPCDaemon:(id)daemon
 {
-  v6 = a4;
-  v7 = a3;
+  daemonCopy = daemon;
+  topicCopy = topic;
   v8 = [IDSDXPCBAASigner alloc];
-  v9 = [(IDSDXPCDaemonServer *)self queue];
-  v10 = [v6 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v11 = [(IDSDXPCBAASigner *)v8 initWithTopic:v7 queue:v9 connection:v10];
+  v11 = [(IDSDXPCBAASigner *)v8 initWithTopic:topicCopy queue:queue connection:clientConnection];
 
   return v11;
 }
 
-- (id)eventReportingCollaboratorForXPCDaemon:(id)a3
+- (id)eventReportingCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCEventReporting alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCEventReporting *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCEventReporting *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
-- (id)internalTestingCollaboratorForXPCDaemon:(id)a3
+- (id)internalTestingCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   if (CUTIsInternalInstall())
   {
     v5 = [IDSDXPCInternalTesting alloc];
-    v6 = [(IDSDXPCDaemonServer *)self queue];
-    v7 = [v4 clientConnection];
-    v8 = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
-    v9 = [(IDSDXPCInternalTesting *)v5 initWithQueue:v6 connection:v7 offGridStateManager:v8];
+    queue = [(IDSDXPCDaemonServer *)self queue];
+    clientConnection = [daemonCopy clientConnection];
+    offGridStateManagerCollaborator = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
+    v9 = [(IDSDXPCInternalTesting *)v5 initWithQueue:queue connection:clientConnection offGridStateManager:offGridStateManagerCollaborator];
   }
 
   else
@@ -366,22 +366,22 @@
   return v9;
 }
 
-- (id)diagnosticHandlingCollaboratorForXPCDaemon:(id)a3
+- (id)diagnosticHandlingCollaboratorForXPCDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [IDSDXPCDiagnosticHandling alloc];
-  v6 = [(IDSDXPCDaemonServer *)self queue];
-  v7 = [v4 clientConnection];
+  queue = [(IDSDXPCDaemonServer *)self queue];
+  clientConnection = [daemonCopy clientConnection];
 
-  v8 = [(IDSDXPCDiagnosticHandling *)v5 initWithQueue:v6 connection:v7];
+  v8 = [(IDSDXPCDiagnosticHandling *)v5 initWithQueue:queue connection:clientConnection];
 
   return v8;
 }
 
 - (void)reportDailyMetric
 {
-  v2 = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
-  [v2 fetchContactsOfType:3 phoneNumbersOnly:0 completion:&stru_100BDD4B8];
+  offGridStateManagerCollaborator = [(IDSDXPCDaemonServer *)self offGridStateManagerCollaborator];
+  [offGridStateManagerCollaborator fetchContactsOfType:3 phoneNumbersOnly:0 completion:&stru_100BDD4B8];
 }
 
 @end

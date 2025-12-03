@@ -1,18 +1,18 @@
 @interface NLPLearnerACTShadowEvaluator
-+ (id)actParamFilesAtPath:(id)a3;
-+ (id)actParametersFromConfig:(id)a3;
-+ (id)processACTResults:(id)a3 metric:(id)a4;
++ (id)actParamFilesAtPath:(id)path;
++ (id)actParametersFromConfig:(id)config;
++ (id)processACTResults:(id)results metric:(id)metric;
 + (void)initialize;
-- (NLPLearnerACTShadowEvaluator)initWithLocale:(id)a3 andMetricParameters:(id)a4;
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7;
-- (id)runACTWithParams:(id)a3 modelPath:(id)a4 data:(id)a5;
+- (NLPLearnerACTShadowEvaluator)initWithLocale:(id)locale andMetricParameters:(id)parameters;
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error;
+- (id)runACTWithParams:(id)params modelPath:(id)path data:(id)data;
 @end
 
 @implementation NLPLearnerACTShadowEvaluator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_7 = os_log_create("com.apple.NLPLearner", "NLPLearnerACTShadowEvaluator");
 
@@ -20,33 +20,33 @@
   }
 }
 
-- (NLPLearnerACTShadowEvaluator)initWithLocale:(id)a3 andMetricParameters:(id)a4
+- (NLPLearnerACTShadowEvaluator)initWithLocale:(id)locale andMetricParameters:(id)parameters
 {
-  v7 = a4;
-  v8 = a3;
+  parametersCopy = parameters;
+  localeCopy = locale;
   v9 = os_log_create("com.apple.NLPLearner", "NLPLearnerACTShadowEvaluator");
   v10 = sLog_7;
   sLog_7 = v9;
 
   v13.receiver = self;
   v13.super_class = NLPLearnerACTShadowEvaluator;
-  v11 = [(NLPLearnerShadowEvaluator *)&v13 initWithLocale:v8 andTask:7];
+  v11 = [(NLPLearnerShadowEvaluator *)&v13 initWithLocale:localeCopy andTask:7];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_metricParameters, a4);
+    objc_storeStrong(&v11->_metricParameters, parameters);
   }
 
   return v11;
 }
 
-+ (id)actParamFilesAtPath:(id)a3
++ (id)actParamFilesAtPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v24];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v24];
   v6 = v24;
 
   if (v6)
@@ -81,16 +81,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v20 + 1) + 8 * i) stringByDeletingPathExtension];
+          stringByDeletingPathExtension = [*(*(&v20 + 1) + 8 * i) stringByDeletingPathExtension];
           v14 = supportedMetrics();
-          v15 = [v14 containsObject:v13];
+          v15 = [v14 containsObject:stringByDeletingPathExtension];
 
           if ((v15 & 1) == 0)
           {
             v16 = sLog_7;
             if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_ERROR))
             {
-              [(NLPLearnerACTShadowEvaluator *)v13 actParamFilesAtPath:v16];
+              [(NLPLearnerACTShadowEvaluator *)stringByDeletingPathExtension actParamFilesAtPath:v16];
             }
 
             v7 = 0;
@@ -117,12 +117,12 @@ LABEL_17:
   return v7;
 }
 
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v11 = a4;
-  v12 = [a5 objectForKeyedSubscript:@"skip_if_ondevice_autocorrection_disabled"];
+  modelCopy = model;
+  recordsCopy = records;
+  v12 = [options objectForKeyedSubscript:@"skip_if_ondevice_autocorrection_disabled"];
   if (!v12)
   {
     goto LABEL_9;
@@ -138,9 +138,9 @@ LABEL_17:
   if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     v16 = @"NO";
-    if (v15)
+    if (bOOLValue)
     {
       v16 = @"YES";
     }
@@ -153,10 +153,10 @@ LABEL_17:
   if (![v12 BOOLValue] || (objc_msgSend(MEMORY[0x277D262A0], "sharedConnection"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isAutoCorrectionAllowed"), v17, (v18 & 1) != 0))
   {
 LABEL_9:
-    v58 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:v11];
+    v58 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:recordsCopy];
     if (![v58 numSamples])
     {
-      if (!a7)
+      if (!error)
       {
         v31 = 0;
 LABEL_39:
@@ -169,25 +169,25 @@ LABEL_39:
       v73 = @"missing evaluation data for ACT";
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
       [v32 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:9 userInfo:v19];
-      *a7 = v31 = 0;
+      *error = v31 = 0;
 LABEL_38:
 
       goto LABEL_39;
     }
 
     v19 = objc_opt_new();
-    v20 = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
+    metricParameters = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
 
-    if (v20)
+    if (metricParameters)
     {
       v52 = v12;
-      v54 = v11;
+      v54 = recordsCopy;
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v21 = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
-      v22 = [v21 countByEnumeratingWithState:&v64 objects:v71 count:16];
+      metricParameters2 = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
+      v22 = [metricParameters2 countByEnumeratingWithState:&v64 objects:v71 count:16];
       if (v22)
       {
         v23 = v22;
@@ -198,19 +198,19 @@ LABEL_38:
           {
             if (*v65 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(metricParameters2);
             }
 
             v26 = *(*(&v64 + 1) + 8 * i);
-            v27 = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
-            v28 = [v27 objectForKeyedSubscript:v26];
+            metricParameters3 = [(NLPLearnerACTShadowEvaluator *)self metricParameters];
+            v28 = [metricParameters3 objectForKeyedSubscript:v26];
 
-            v29 = [(NLPLearnerACTShadowEvaluator *)self runACTWithParams:v28 modelPath:v59 data:v58];
+            v29 = [(NLPLearnerACTShadowEvaluator *)self runACTWithParams:v28 modelPath:modelCopy data:v58];
             v30 = [NLPLearnerACTShadowEvaluator processACTResults:v29 metric:v26];
             [v19 addEntriesFromDictionary:v30];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v64 objects:v71 count:16];
+          v23 = [metricParameters2 countByEnumeratingWithState:&v64 objects:v71 count:16];
         }
 
         while (v23);
@@ -219,17 +219,17 @@ LABEL_38:
       v19 = v19;
       v31 = v19;
       v12 = v52;
-      v11 = v54;
+      recordsCopy = v54;
       goto LABEL_38;
     }
 
-    v33 = [v59 path];
-    v34 = [NLPLearnerACTShadowEvaluator actParamFilesAtPath:v33];
+    path = [modelCopy path];
+    v34 = [NLPLearnerACTShadowEvaluator actParamFilesAtPath:path];
 
     if ([v34 count])
     {
       v53 = v12;
-      v55 = v11;
+      v55 = recordsCopy;
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
@@ -251,7 +251,7 @@ LABEL_38:
             }
 
             v38 = *(*(&v60 + 1) + 8 * j);
-            v39 = [v59 URLByAppendingPathComponent:v38];
+            v39 = [modelCopy URLByAppendingPathComponent:v38];
             v40 = [NLPLearnerACTShadowEvaluator actParametersFromConfig:v39];
             v41 = sLog_7;
             if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_INFO))
@@ -261,9 +261,9 @@ LABEL_38:
               _os_log_impl(&dword_25AE22000, v41, OS_LOG_TYPE_INFO, "Run ACT with params : %@", buf, 0xCu);
             }
 
-            v42 = [(NLPLearnerACTShadowEvaluator *)self runACTWithParams:v40 modelPath:v59 data:v58];
-            v43 = [v38 stringByDeletingPathExtension];
-            v44 = [NLPLearnerACTShadowEvaluator processACTResults:v42 metric:v43];
+            v42 = [(NLPLearnerACTShadowEvaluator *)self runACTWithParams:v40 modelPath:modelCopy data:v58];
+            stringByDeletingPathExtension = [v38 stringByDeletingPathExtension];
+            v44 = [NLPLearnerACTShadowEvaluator processACTResults:v42 metric:stringByDeletingPathExtension];
             [v19 addEntriesFromDictionary:v44];
           }
 
@@ -276,21 +276,21 @@ LABEL_38:
       v31 = v19;
       v34 = v51;
       v12 = v53;
-      v11 = v55;
+      recordsCopy = v55;
       goto LABEL_37;
     }
 
     v45 = sLog_7;
     if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_ERROR))
     {
-      [NLPLearnerACTShadowEvaluator evaluateModel:v45 onRecords:v59 options:? completion:? error:?];
-      if (!a7)
+      [NLPLearnerACTShadowEvaluator evaluateModel:v45 onRecords:modelCopy options:? completion:? error:?];
+      if (!error)
       {
         goto LABEL_36;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
 LABEL_36:
       v31 = 0;
@@ -303,7 +303,7 @@ LABEL_37:
     v69 = *MEMORY[0x277CCA450];
     v70 = @"Cannot load params file for ACT evaluation";
     v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-    *a7 = [v46 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v47];
+    *error = [v46 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v47];
 
     goto LABEL_36;
   }
@@ -312,17 +312,17 @@ LABEL_37:
   if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_ERROR))
   {
     [NLPLearnerACTShadowEvaluator evaluateModel:v50 onRecords:self options:? completion:? error:?];
-    if (a7)
+    if (error)
     {
       goto LABEL_45;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
 LABEL_45:
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:10 userInfo:&unk_286C3AB80];
-    *a7 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_40;
   }
 
@@ -334,17 +334,17 @@ LABEL_40:
   return v31;
 }
 
-+ (id)processACTResults:(id)a3 metric:(id)a4
++ (id)processACTResults:(id)results metric:(id)metric
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  metricCopy = metric;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v5;
+  v8 = resultsCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v9)
   {
@@ -367,7 +367,7 @@ LABEL_40:
         {
           if ([v14 isEqualToString:@"InsertedCharacterCount"])
           {
-            if (![v6 isEqualToString:@"KSR"])
+            if (![metricCopy isEqualToString:@"KSR"])
             {
               goto LABEL_22;
             }
@@ -393,7 +393,7 @@ LABEL_40:
                   v23 = v22;
                   v24 = [v8 objectForKeyedSubscript:v14];
                   *buf = 138413058;
-                  v33 = v6;
+                  v33 = metricCopy;
                   v34 = 2112;
                   v35 = v14;
                   v36 = 2112;
@@ -426,10 +426,10 @@ LABEL_20:
           +[NLPLearnerACTShadowEvaluator processACTResults:metric:];
         }
 
-        if ([overrideWordErrorCountForMetrics_overrideWordErrorCountForMetrics containsObject:v6])
+        if ([overrideWordErrorCountForMetrics_overrideWordErrorCountForMetrics containsObject:metricCopy])
         {
           v15 = [v8 objectForKeyedSubscript:v14];
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v6, v14];
+          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", metricCopy, v14];
           v17 = v7;
           v18 = v15;
           v19 = v16;
@@ -452,16 +452,16 @@ LABEL_22:
   return v7;
 }
 
-+ (id)actParametersFromConfig:(id)a3
++ (id)actParametersFromConfig:(id)config
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
+  configCopy = config;
   v5 = [v3 alloc];
-  v6 = [v4 path];
+  path = [configCopy path];
 
   v19 = 0;
-  v7 = [v5 initWithContentsOfFile:v6 options:1 error:&v19];
+  v7 = [v5 initWithContentsOfFile:path options:1 error:&v19];
   v8 = v19;
 
   v18 = v8;
@@ -499,24 +499,24 @@ LABEL_22:
   return v15;
 }
 
-- (id)runACTWithParams:(id)a3 modelPath:(id)a4 data:(id)a5
+- (id)runACTWithParams:(id)params modelPath:(id)path data:(id)data
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 path];
-  v12 = [v11 stringByDeletingPathExtension];
+  paramsCopy = params;
+  pathCopy = path;
+  dataCopy = data;
+  path = [pathCopy path];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
 
-  v13 = [v8 objectForKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
+  v13 = [paramsCopy objectForKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
   if (v13)
   {
-    [v8 setObject:v12 forKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
+    [paramsCopy setObject:stringByDeletingPathExtension forKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
     v14 = sLog_7;
     if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v8 objectForKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
+      v16 = [paramsCopy objectForKeyedSubscript:@"CUSTOM_LANGUAGE_MODEL_PATH"];
       *buf = 138412546;
       *&buf[4] = v13;
       *&buf[12] = 2112;
@@ -525,17 +525,17 @@ LABEL_22:
     }
   }
 
-  v17 = [v8 objectForKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
+  v17 = [paramsCopy objectForKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
   if (v17)
   {
-    v18 = [v12 stringByAppendingPathComponent:v17];
-    [v8 setObject:v18 forKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
+    v18 = [stringByDeletingPathExtension stringByAppendingPathComponent:v17];
+    [paramsCopy setObject:v18 forKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
 
     v19 = sLog_7;
     if (os_log_type_enabled(sLog_7, OS_LOG_TYPE_INFO))
     {
       v20 = v19;
-      v21 = [v8 objectForKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
+      v21 = [paramsCopy objectForKeyedSubscript:@"CUSTOM_STATIC_DICTIONARY_PATH"];
       *buf = 138412546;
       *&buf[4] = v17;
       *&buf[12] = 2112;
@@ -544,33 +544,33 @@ LABEL_22:
     }
   }
 
-  v22 = [(NLPLearnerShadowEvaluator *)self locale];
-  v23 = [v22 localeIdentifier];
-  [v8 setValue:v23 forKey:@"KEYBOARD_LANGUAGE"];
+  locale = [(NLPLearnerShadowEvaluator *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  [paramsCopy setValue:localeIdentifier forKey:@"KEYBOARD_LANGUAGE"];
 
-  v24 = [v10 getSamples];
-  [v8 setObject:v24 forKey:@"INPUT_SAMPLES"];
+  getSamples = [dataCopy getSamples];
+  [paramsCopy setObject:getSamples forKey:@"INPUT_SAMPLES"];
 
-  [v8 setValue:@"0" forKey:@"WORD_LEARNING_ENABLED"];
+  [paramsCopy setValue:@"0" forKey:@"WORD_LEARNING_ENABLED"];
   v25 = objc_alloc_init(MEMORY[0x277D6FF58]);
-  [v25 resetOptions:v8];
+  [v25 resetOptions:paramsCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v46 = __Block_byref_object_copy__1;
   v47 = __Block_byref_object_dispose__1;
-  v48 = [MEMORY[0x277CBEB38] dictionary];
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "numSamples")}];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "numSamples")}];
   [*(*&buf[8] + 40) setObject:v26 forKeyedSubscript:@"Samples"];
 
   v27 = dispatch_semaphore_create(0);
   dispatch_get_global_queue(0, 0);
-  v28 = v8;
+  v28 = paramsCopy;
   v29 = v17;
-  v30 = v10;
+  v30 = dataCopy;
   v31 = v13;
-  v32 = v12;
-  v34 = v33 = v9;
+  v32 = stringByDeletingPathExtension;
+  v34 = v33 = pathCopy;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__NLPLearnerACTShadowEvaluator_runACTWithParams_modelPath_data___block_invoke;

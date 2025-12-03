@@ -11,11 +11,11 @@
   v9 = a4;
   v10 = a3;
   v11 = objc_alloc_init(v7);
-  v12 = [v10 domain];
-  [v11 setErrorDomain:v12];
+  domain = [v10 domain];
+  [v11 setErrorDomain:domain];
 
-  v13 = [v10 code];
-  [v11 setErrorCode:v13];
+  code = [v10 code];
+  [v11 setErrorCode:code];
   v14 = objc_alloc_init(MEMORY[0x277D58AF8]);
   [v14 setError:v11];
   [v14 setQssSessionId:v8];

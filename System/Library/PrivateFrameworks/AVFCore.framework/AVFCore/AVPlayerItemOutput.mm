@@ -1,13 +1,13 @@
 @interface AVPlayerItemOutput
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_itemTimeForHostTimeAsCMTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_itemTimeForHostTimeAsCMTime:(SEL)time;
 - (AVPlayerItemOutput)init;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (BOOL)isDefunct;
-- (CMTime)itemTimeForHostTime:(SEL)a3;
-- (CMTime)itemTimeForMachAbsoluteTime:(SEL)a3;
+- (CMTime)itemTimeForHostTime:(SEL)time;
+- (CMTime)itemTimeForMachAbsoluteTime:(SEL)time;
 - (OpaqueCMTimebase)_copyTimebase;
 - (void)_detachFromPlayerItem;
-- (void)_setTimebase:(OpaqueCMTimebase *)a3;
+- (void)_setTimebase:(OpaqueCMTimebase *)timebase;
 - (void)dealloc;
 @end
 
@@ -66,7 +66,7 @@
   [(AVPlayerItemOutput *)&v5 dealloc];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_itemTimeForHostTimeAsCMTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_itemTimeForHostTimeAsCMTime:(SEL)time
 {
   *retstr = **&MEMORY[0x1E6960C70];
   result = [(AVPlayerItemOutput *)self _copyTimebase];
@@ -82,7 +82,7 @@
   return result;
 }
 
-- (CMTime)itemTimeForHostTime:(SEL)a3
+- (CMTime)itemTimeForHostTime:(SEL)time
 {
   memset(&v8, 0, sizeof(v8));
   result = CMTimeMakeWithSeconds(&v8, hostTimeInSeconds, 1000000000);
@@ -102,7 +102,7 @@
   return result;
 }
 
-- (CMTime)itemTimeForMachAbsoluteTime:(SEL)a3
+- (CMTime)itemTimeForMachAbsoluteTime:(SEL)time
 {
   memset(&v8, 0, sizeof(v8));
   result = CMClockMakeHostTimeFromSystemUnits(&v8, machAbsoluteTime);
@@ -122,7 +122,7 @@
   return result;
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
@@ -167,11 +167,11 @@ CFTypeRef __35__AVPlayerItemOutput__copyTimebase__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setTimebase:(OpaqueCMTimebase *)a3
+- (void)_setTimebase:(OpaqueCMTimebase *)timebase
 {
-  if (a3)
+  if (timebase)
   {
-    CFRetain(a3);
+    CFRetain(timebase);
   }
 
   timebaseReadWriteQueue = self->_outputInternal->timebaseReadWriteQueue;
@@ -180,7 +180,7 @@ CFTypeRef __35__AVPlayerItemOutput__copyTimebase__block_invoke(uint64_t a1)
   v6[2] = __35__AVPlayerItemOutput__setTimebase___block_invoke;
   v6[3] = &unk_1E7460FA8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = timebase;
   av_readwrite_dispatch_queue_write_async(timebaseReadWriteQueue, v6);
 }
 

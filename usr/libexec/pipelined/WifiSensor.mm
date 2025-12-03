@@ -5,10 +5,10 @@
 - (void)invalidate;
 - (void)start;
 - (void)stop;
-- (void)strategyChanged:(const void *)a3;
-- (void)updateWifiSettingsForNextScan:(id)a3;
-- (void)wifiScanData:(id)a3 forSettings:(id)a4;
-- (void)wifiScanFailed:(id)a3;
+- (void)strategyChanged:(const void *)changed;
+- (void)updateWifiSettingsForNextScan:(id)scan;
+- (void)wifiScanData:(id)data forSettings:(id)settings;
+- (void)wifiScanFailed:(id)failed;
 @end
 
 @implementation WifiSensor
@@ -135,10 +135,10 @@ LABEL_4:
   }
 }
 
-- (void)strategyChanged:(const void *)a3
+- (void)strategyChanged:(const void *)changed
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
+  v4 = *changed;
+  v3 = *(changed + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -155,9 +155,9 @@ LABEL_4:
   }
 }
 
-- (void)updateWifiSettingsForNextScan:(id)a3
+- (void)updateWifiSettingsForNextScan:(id)scan
 {
-  v4 = a3;
+  scanCopy = scan;
   if (!self->_nextSettings)
   {
     sub_100014A08(v6, "");
@@ -176,16 +176,16 @@ LABEL_4:
     sub_10003F5D0(&v5);
   }
 
-  [v4 updateFrom:?];
+  [scanCopy updateFrom:?];
 }
 
-- (void)wifiScanData:(id)a3 forSettings:(id)a4
+- (void)wifiScanData:(id)data forSettings:(id)settings
 {
-  v56 = a3;
-  v57 = a4;
-  if (([v57 cachedScan] & 1) == 0)
+  dataCopy = data;
+  settingsCopy = settings;
+  if (([settingsCopy cachedScan] & 1) == 0)
   {
-    v6 = (*(*self->_scanStrategy.__ptr_ + 40))(self->_scanStrategy.__ptr_, [v57 timestamp], v56);
+    v6 = (*(*self->_scanStrategy.__ptr_ + 40))(self->_scanStrategy.__ptr_, [settingsCopy timestamp], dataCopy);
     nextSettings = self->_nextSettings;
     self->_nextSettings = v6;
   }
@@ -193,10 +193,10 @@ LABEL_4:
   v73 = 0;
   v74 = 0;
   v75 = 0;
-  sub_100309E68(&v73, [v56 count]);
+  sub_100309E68(&v73, [dataCopy count]);
   if (self->_previousScanTimestamp.m_initialized)
   {
-    v8 = ([v57 timestamp] - *(&self->_previousScanTimestamp.m_storage.dummy_.aligner_ + 7)) / 1000000.0;
+    v8 = ([settingsCopy timestamp] - *(&self->_previousScanTimestamp.m_storage.dummy_.aligner_ + 7)) / 1000000.0;
   }
 
   else
@@ -204,19 +204,19 @@ LABEL_4:
     v8 = 1.79769313e308;
   }
 
-  v9 = [v57 timestamp];
+  timestamp = [settingsCopy timestamp];
   if (!self->_previousScanTimestamp.m_initialized)
   {
     self->_previousScanTimestamp.m_initialized = 1;
   }
 
-  v55 = self;
-  *(&self->_previousScanTimestamp.m_storage.dummy_.aligner_ + 7) = v9;
+  selfCopy = self;
+  *(&self->_previousScanTimestamp.m_storage.dummy_.aligner_ + 7) = timestamp;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v10 = v56;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v69 objects:v84 count:16];
   v12 = Keybag;
   if (!v11)
@@ -243,11 +243,11 @@ LABEL_4:
       }
 
       v17 = *(*(&v69 + 1) + 8 * i);
-      v18 = [v17 bssid];
-      v19 = v18;
-      if (v18)
+      bssid = [v17 bssid];
+      v19 = bssid;
+      if (bssid)
       {
-        [v18 ps_STLString];
+        [bssid ps_STLString];
       }
 
       else
@@ -334,19 +334,19 @@ LABEL_73:
             }
 
             v61.__r_.__value_.__r.__words[0] = 0;
-            v61.__r_.__value_.__r.__words[0] = [v57 timestamp];
-            v68 = [v17 rssi];
-            v67 = [v17 channelFlags];
+            v61.__r_.__value_.__r.__words[0] = [settingsCopy timestamp];
+            rssi = [v17 rssi];
+            channelFlags = [v17 channelFlags];
             v66 = sub_10000AA28([v17 channel]);
             v65 = [v17 adHoc] ^ 1;
-            v64 = [v17 personalHotspot];
-            v63 = [v17 mode];
+            personalHotspot = [v17 personalHotspot];
+            mode = [v17 mode];
             v34 = [v17 age] / 1000000000.0;
             v62 = v34;
             v35 = v74;
             if (v74 >= v75)
             {
-              v74 = sub_10030BF9C(&v73, &buf, &v68, &v67, &v66, &v65, &v64, &v63, &v62, &v61);
+              v74 = sub_10030BF9C(&v73, &buf, &rssi, &channelFlags, &v66, &v65, &personalHotspot, &mode, &v62, &v61);
               if ((v83 & 0x80000000) == 0)
               {
                 continue;
@@ -369,9 +369,9 @@ LABEL_73:
             }
 
             LODWORD(v85.__r_.__value_.__l.__data_) = data ^ LODWORD(buf.__r_.__value_.__l.__data_);
-            HIDWORD(v76.__r_.__value_.__r.__words[0]) = v67;
+            HIDWORD(v76.__r_.__value_.__r.__words[0]) = channelFlags;
             v76.__r_.__value_.__s.__data_[0] = 1;
-            sub_100336A18(v74, &v85, &v76, v66, v65, v64, v63, v61.__r_.__value_.__l.__data_, v68, v34);
+            sub_100336A18(v74, &v85, &v76, v66, v65, personalHotspot, mode, v61.__r_.__value_.__l.__data_, rssi, v34);
             v74 = v35 + 88;
             if (v83 < 0)
             {
@@ -445,11 +445,11 @@ LABEL_73:
         v21 = v12[2].superclass;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v17 bssid];
-          v23 = v22;
-          if (v22)
+          bssid2 = [v17 bssid];
+          v23 = bssid2;
+          if (bssid2)
           {
-            [v22 ps_STLString];
+            [bssid2 ps_STLString];
             v24 = &v85;
             if ((v85.__r_.__value_.__r.__words[2] & 0x8000000000000000) != 0)
             {
@@ -723,26 +723,26 @@ LABEL_119:
         }
       }
 
-      ptr = v55->fSensorBridge.__ptr_;
-      [v57 timestamp];
-      sub_10030A00C(v60, v57);
+      ptr = selfCopy->fSensorBridge.__ptr_;
+      [settingsCopy timestamp];
+      sub_10030A00C(v60, settingsCopy);
     }
   }
 }
 
-- (void)wifiScanFailed:(id)a3
+- (void)wifiScanFailed:(id)failed
 {
-  v4 = a3;
-  if (([v4 cachedScan] & 1) == 0)
+  failedCopy = failed;
+  if (([failedCopy cachedScan] & 1) == 0)
   {
-    v5 = (*(*self->_scanStrategy.__ptr_ + 40))(self->_scanStrategy.__ptr_, [v4 timestamp], 0);
+    v5 = (*(*self->_scanStrategy.__ptr_ + 40))(self->_scanStrategy.__ptr_, [failedCopy timestamp], 0);
     nextSettings = self->_nextSettings;
     self->_nextSettings = v5;
   }
 
   ptr = self->fSensorBridge.__ptr_;
-  [v4 timestamp];
-  sub_10030A00C(&v8, v4);
+  [failedCopy timestamp];
+  sub_10030A00C(&v8, failedCopy);
 }
 
 - (id).cxx_construct

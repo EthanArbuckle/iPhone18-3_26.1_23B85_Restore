@@ -1,24 +1,24 @@
 @interface OADTextBody
 - (BOOL)isEmpty;
-- (BOOL)isSimilarToTextBody:(id)a3;
+- (BOOL)isSimilarToTextBody:(id)body;
 - (BOOL)propagateActualTextStyleToTextListStyle;
 - (OADTextBody)init;
 - (id)addParagraph;
 - (id)description;
-- (id)findFirstTextRunOfClass:(Class)a3;
+- (id)findFirstTextRunOfClass:(Class)class;
 - (id)firstParagraphEffects;
 - (id)overrideTextListStyle;
 - (id)plainText;
 - (unint64_t)newLineCount;
 - (unint64_t)nonEmptyParagraphCount;
-- (void)applyTextListStyle:(id)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3 ownTextListStyle:(BOOL)a4;
+- (void)applyTextListStyle:(id)style;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values ownTextListStyle:(BOOL)style;
 - (void)flattenProperties;
 - (void)removeLastParagraphIfEmpty;
 - (void)removeLeadingNewlines;
 - (void)removeTrailingNewlines;
 - (void)removeUnnecessaryOverrides;
-- (void)setParentTextListStyle:(id)a3;
+- (void)setParentTextListStyle:(id)style;
 @end
 
 @implementation OADTextBody
@@ -95,9 +95,9 @@
     for (i = 0; i != v4; v5 = i >= v4)
     {
       v7 = [(NSMutableArray *)self->mParagraphs objectAtIndex:i];
-      v8 = [v7 isEmpty];
+      isEmpty = [v7 isEmpty];
 
-      if ((v8 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
         break;
       }
@@ -177,47 +177,47 @@
   if ([(OADTextBody *)self paragraphCount])
   {
     v3 = [(OADTextBody *)self paragraphAtIndex:0];
-    v4 = [v3 properties];
+    properties = [v3 properties];
 
-    if (v4 && [v4 hasEffects])
+    if (properties && [properties hasEffects])
     {
-      v5 = [v4 effects];
+      effects = [properties effects];
     }
 
     else
     {
-      v5 = 0;
+      effects = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    effects = 0;
   }
 
-  return v5;
+  return effects;
 }
 
-- (void)applyTextListStyle:(id)a3
+- (void)applyTextListStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   if (!self->mTextListStyle)
   {
     v4 = objc_alloc_init(OADTextListStyle);
     mTextListStyle = self->mTextListStyle;
     self->mTextListStyle = v4;
 
-    [(OADTextListStyle *)self->mTextListStyle overrideWithTextStyle:v6];
+    [(OADTextListStyle *)self->mTextListStyle overrideWithTextStyle:styleCopy];
   }
 
-  [(NSMutableArray *)self->mParagraphs makeObjectsPerformSelector:sel_applyProperties_ withObject:v6];
+  [(NSMutableArray *)self->mParagraphs makeObjectsPerformSelector:sel_applyProperties_ withObject:styleCopy];
 }
 
-- (void)setParentTextListStyle:(id)a3
+- (void)setParentTextListStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   mTextListStyle = self->mTextListStyle;
-  v8 = v4;
+  v8 = styleCopy;
   if (!mTextListStyle)
   {
     v6 = objc_alloc_init(OADTextListStyle);
@@ -226,38 +226,38 @@
 
     [(NSMutableArray *)self->mParagraphs makeObjectsPerformSelector:sel_setParentTextListStyle_ withObject:self->mTextListStyle];
     mTextListStyle = self->mTextListStyle;
-    v4 = v8;
+    styleCopy = v8;
   }
 
-  [(OADTextListStyle *)mTextListStyle setParentTextListStyle:v4];
+  [(OADTextListStyle *)mTextListStyle setParentTextListStyle:styleCopy];
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3 ownTextListStyle:(BOOL)a4
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values ownTextListStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valuesCopy = values;
   mTextListStyle = self->mTextListStyle;
   if (mTextListStyle)
   {
     self->mTextListStyle = 0;
   }
 
-  if (v4)
+  if (styleCopy)
   {
     v8 = objc_alloc_init(OADTextListStyle);
     v9 = self->mTextListStyle;
     self->mTextListStyle = v8;
 
-    [(OADTextListStyle *)self->mTextListStyle setParentTextListStyle:v6];
+    [(OADTextListStyle *)self->mTextListStyle setParentTextListStyle:valuesCopy];
     if ([(OADTextBody *)self propagateActualTextStyleToTextListStyle])
     {
-      [(OADTextListStyle *)self->mTextListStyle changeParentTextListStylePreservingEffectiveValues:v6];
+      [(OADTextListStyle *)self->mTextListStyle changeParentTextListStylePreservingEffectiveValues:valuesCopy];
     }
 
     v10 = self->mTextListStyle;
 
-    v6 = v10;
+    valuesCopy = v10;
   }
 
   v17 = 0u;
@@ -279,7 +279,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) changeParentTextListStylePreservingEffectiveValues:{v6, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) changeParentTextListStylePreservingEffectiveValues:{valuesCopy, v15}];
       }
 
       while (v12 != v14);
@@ -333,8 +333,8 @@
 {
   if ([(NSMutableArray *)self->mParagraphs count])
   {
-    v3 = [(NSMutableArray *)self->mParagraphs lastObject];
-    if ([v3 isEmpty])
+    lastObject = [(NSMutableArray *)self->mParagraphs lastObject];
+    if ([lastObject isEmpty])
     {
       [(NSMutableArray *)self->mParagraphs removeLastObject];
     }
@@ -351,8 +351,8 @@
     for (i = 0; i != v4; ++i)
     {
       v6 = [(NSMutableArray *)self->mParagraphs objectAtIndex:i];
-      v7 = [v6 properties];
-      [v7 flatten];
+      properties = [v6 properties];
+      [properties flatten];
     }
   }
 
@@ -363,39 +363,39 @@
 
 - (BOOL)propagateActualTextStyleToTextListStyle
 {
-  v3 = [(OADTextBody *)self textListStyle];
-  v4 = [(OADTextBody *)self paragraphCount];
-  if (v4)
+  textListStyle = [(OADTextBody *)self textListStyle];
+  paragraphCount = [(OADTextBody *)self paragraphCount];
+  if (paragraphCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != paragraphCount; ++i)
     {
       v6 = [(OADTextBody *)self paragraphAtIndex:i];
-      v7 = [v6 properties];
-      v8 = [v7 level];
+      properties = [v6 properties];
+      level = [properties level];
 
-      if (i != v8)
+      if (i != level)
       {
 
         goto LABEL_10;
       }
 
-      v9 = [v6 textRunCount];
+      textRunCount = [v6 textRunCount];
 
-      if (v9 != 1)
+      if (textRunCount != 1)
       {
         goto LABEL_10;
       }
     }
 
-    for (j = 0; j != v4; ++j)
+    for (j = 0; j != paragraphCount; ++j)
     {
       v11 = [(OADTextBody *)self paragraphAtIndex:j];
-      v12 = [v11 properties];
-      v13 = [v3 propertiesForListLevel:j];
-      [v13 overrideWithProperties:v12];
+      properties2 = [v11 properties];
+      v13 = [textListStyle propertiesForListLevel:j];
+      [v13 overrideWithProperties:properties2];
       v14 = [v11 textRunAtIndex:0];
-      v15 = [v14 properties];
-      [v13 overrideWithCharacterProperties:v15];
+      properties3 = [v14 properties];
+      [v13 overrideWithCharacterProperties:properties3];
     }
 
     v16 = 1;
@@ -410,20 +410,20 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)isSimilarToTextBody:(id)a3
+- (BOOL)isSimilarToTextBody:(id)body
 {
-  v4 = a3;
-  v5 = [v4 paragraphCount];
-  if ([v4 paragraphCount] == v5)
+  bodyCopy = body;
+  paragraphCount = [bodyCopy paragraphCount];
+  if ([bodyCopy paragraphCount] == paragraphCount)
   {
-    if (v5)
+    if (paragraphCount)
     {
       v6 = 0;
-      v7 = v5 - 1;
+      v7 = paragraphCount - 1;
       do
       {
         v8 = [(OADTextBody *)self paragraphAtIndex:v6];
-        v9 = [v4 paragraphAtIndex:v6];
+        v9 = [bodyCopy paragraphAtIndex:v6];
         v10 = [v8 isSimilarToParagraph:v9];
 
         if (!v10)
@@ -466,8 +466,8 @@ LABEL_10:
           [v3 appendString:@"\n"];
         }
 
-        v8 = [v7 plainText];
-        [v3 appendString:v8];
+        plainText = [v7 plainText];
+        [v3 appendString:plainText];
 
         v5 = 1;
       }
@@ -486,13 +486,13 @@ LABEL_10:
   return v2;
 }
 
-- (id)findFirstTextRunOfClass:(Class)a3
+- (id)findFirstTextRunOfClass:(Class)class
 {
   v5 = 0;
   while ([(NSMutableArray *)self->mParagraphs count]> v5)
   {
     v6 = [(NSMutableArray *)self->mParagraphs objectAtIndex:v5];
-    v7 = [v6 findFirstTextRunOfClass:a3];
+    v7 = [v6 findFirstTextRunOfClass:class];
 
     ++v5;
     if (v7)

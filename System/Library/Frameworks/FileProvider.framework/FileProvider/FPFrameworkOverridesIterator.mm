@@ -1,23 +1,23 @@
 @interface FPFrameworkOverridesIterator
 + (id)allOverrides;
-+ (id)newIteratorForURL:(__CFURL *)a3 withNotFoundHandler:(id)a4;
-+ (void)addOverride:(id)a3;
-+ (void)removeOverride:(id)a3;
-- (FPFrameworkOverridesIterator)initWithOverrides:(id)a3 url:(__CFURL *)a4 noSuitableModuleFoundHandler:(id)a5;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (id)newIteratorForURL:(__CFURL *)l withNotFoundHandler:(id)handler;
++ (void)addOverride:(id)override;
++ (void)removeOverride:(id)override;
+- (FPFrameworkOverridesIterator)initWithOverrides:(id)overrides url:(__CFURL *)url noSuitableModuleFoundHandler:(id)handler;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)callNextOverrides;
 - (void)finish;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FPFrameworkOverridesIterator
 
-+ (id)newIteratorForURL:(__CFURL *)a3 withNotFoundHandler:(id)a4
++ (id)newIteratorForURL:(__CFURL *)l withNotFoundHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [FPFrameworkOverridesIterator alloc];
   v7 = cachedFrameworkOverridingObjects();
-  v8 = [(FPFrameworkOverridesIterator *)v6 initWithOverrides:v7 url:a3 noSuitableModuleFoundHandler:v5];
+  v8 = [(FPFrameworkOverridesIterator *)v6 initWithOverrides:v7 url:l noSuitableModuleFoundHandler:handlerCopy];
 
   return v8;
 }
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (FPFrameworkOverridesIterator)initWithOverrides:(id)a3 url:(__CFURL *)a4 noSuitableModuleFoundHandler:(id)a5
+- (FPFrameworkOverridesIterator)initWithOverrides:(id)overrides url:(__CFURL *)url noSuitableModuleFoundHandler:(id)handler
 {
-  v9 = a3;
-  objc_storeStrong(&self->_overrides, a3);
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  overridesCopy = overrides;
+  objc_storeStrong(&self->_overrides, overrides);
+  handlerCopy = handler;
+  v11 = _Block_copy(handlerCopy);
 
   noSuitableModuleFoundHandler = self->_noSuitableModuleFoundHandler;
   self->_noSuitableModuleFoundHandler = v11;
 
-  if (a4)
+  if (url)
   {
     self->_checkURL = 1;
-    v13 = FPURLMightBeInFileProvider(a4);
+    v13 = FPURLMightBeInFileProvider(url);
   }
 
   else
@@ -61,8 +61,8 @@
 {
   if (!self->_invocation)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"FPFrameworkOverridesIterator.m" lineNumber:230 description:@"Object misuses: you can only call -callNextOverrides after you have invoked the method once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPFrameworkOverridesIterator.m" lineNumber:230 description:@"Object misuses: you can only call -callNextOverrides after you have invoked the method once"];
   }
 
   currentIndex = self->_currentIndex;
@@ -106,8 +106,8 @@ LABEL_8:
       }
     }
 
-    v10 = [(NSInvocation *)self->_invocation fp_copy];
-    [v10 invokeWithTarget:v11];
+    fp_copy = [(NSInvocation *)self->_invocation fp_copy];
+    [fp_copy invokeWithTarget:v11];
 
     invocation = v11;
   }
@@ -120,46 +120,46 @@ LABEL_8:
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)addOverride:(id)a3
++ (void)addOverride:(id)override
 {
-  if (a3)
+  if (override)
   {
-    v3 = a3;
+    overrideCopy = override;
     v4 = cachedFrameworkOverridingObjects();
     v5 = [frameworkOverridingObjects mutableCopy];
-    [v5 insertObject:v3 atIndex:0];
+    [v5 insertObject:overrideCopy atIndex:0];
 
     v6 = frameworkOverridingObjects;
     frameworkOverridingObjects = v5;
   }
 }
 
-+ (void)removeOverride:(id)a3
++ (void)removeOverride:(id)override
 {
-  if (a3)
+  if (override)
   {
     v3 = frameworkOverridingObjects;
-    v4 = a3;
+    overrideCopy = override;
     v5 = [v3 mutableCopy];
-    [v5 removeObject:v4];
+    [v5 removeObject:overrideCopy];
 
     v6 = frameworkOverridingObjects;
     frameworkOverridingObjects = v5;
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  objc_storeStrong(&self->_invocation, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_invocation, invocation);
+  invocationCopy = invocation;
   [(NSInvocation *)self->_invocation retainArguments];
 
   [(FPFrameworkOverridesIterator *)self callNextOverrides];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(&unk_1F1FF3C48, a3, 0, 1);
+  MethodDescription = protocol_getMethodDescription(&unk_1F1FF3C48, selector, 0, 1);
   if (MethodDescription == 0uLL)
   {
     v4 = 0;

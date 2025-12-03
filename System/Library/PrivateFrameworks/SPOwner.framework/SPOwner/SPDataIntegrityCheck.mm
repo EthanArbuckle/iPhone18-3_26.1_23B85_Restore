@@ -1,53 +1,53 @@
 @interface SPDataIntegrityCheck
-- (SPDataIntegrityCheck)initWithCoder:(id)a3;
-- (SPDataIntegrityCheck)initWithValue:(id)a3 severity:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPDataIntegrityCheck)initWithCoder:(id)coder;
+- (SPDataIntegrityCheck)initWithValue:(id)value severity:(int64_t)severity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPDataIntegrityCheck
 
-- (SPDataIntegrityCheck)initWithValue:(id)a3 severity:(int64_t)a4
+- (SPDataIntegrityCheck)initWithValue:(id)value severity:(int64_t)severity
 {
-  v7 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = SPDataIntegrityCheck;
   v8 = [(SPDataIntegrityCheck *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_value, a3);
-    v9->_severity = a4;
+    objc_storeStrong(&v8->_value, value);
+    v9->_severity = severity;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPDataIntegrityCheck alloc];
-  v5 = [(SPDataIntegrityCheck *)self value];
-  v6 = [(SPDataIntegrityCheck *)v4 initWithValue:v5 severity:[(SPDataIntegrityCheck *)self severity]];
+  value = [(SPDataIntegrityCheck *)self value];
+  v6 = [(SPDataIntegrityCheck *)v4 initWithValue:value severity:[(SPDataIntegrityCheck *)self severity]];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"value"];
-  [v5 encodeInteger:self->_severity forKey:@"severity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"value"];
+  [coderCopy encodeInteger:self->_severity forKey:@"severity"];
 }
 
-- (SPDataIntegrityCheck)initWithCoder:(id)a3
+- (SPDataIntegrityCheck)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
   value = self->_value;
   self->_value = v5;
 
-  v7 = [v4 decodeIntegerForKey:@"severity"];
+  v7 = [coderCopy decodeIntegerForKey:@"severity"];
   self->_severity = v7;
   return self;
 }

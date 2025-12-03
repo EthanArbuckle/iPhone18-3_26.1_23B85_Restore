@@ -19,8 +19,8 @@
   v31 = *MEMORY[0x1E69E9840];
   v24 = a3;
   v6 = a5;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -49,20 +49,20 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v8;
+        v16 = dictionary2;
       }
 
       else
       {
         if ([v14 isEqualToString:@"filterVersion"])
         {
-          v16 = v7;
+          v16 = dictionary;
           v17 = v15;
           v18 = v25;
           goto LABEL_12;
         }
 
-        v16 = v7;
+        v16 = dictionary;
       }
 
       v17 = v15;
@@ -89,7 +89,7 @@ LABEL_14:
     v20 = v24;
   }
 
-  v21 = [objc_alloc(MEMORY[0x1E69B3A30]) initWithFilterName:v20 settings:v7 inputs:v8];
+  v21 = [objc_alloc(MEMORY[0x1E69B3A30]) initWithFilterName:v20 settings:dictionary inputs:dictionary2];
 
   return v21;
 }
@@ -99,8 +99,8 @@ LABEL_14:
   v31 = *MEMORY[0x1E69E9840];
   v24 = a3;
   v6 = a5;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -129,20 +129,20 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v8;
+        v16 = dictionary2;
       }
 
       else
       {
         if ([v14 isEqualToString:@"filterVersion"])
         {
-          v16 = v7;
+          v16 = dictionary;
           v17 = v15;
           v18 = v25;
           goto LABEL_12;
         }
 
-        v16 = v7;
+        v16 = dictionary;
       }
 
       v17 = v15;
@@ -169,7 +169,7 @@ LABEL_14:
     v20 = v24;
   }
 
-  v21 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:v20 settings:v7 inputs:v8];
+  v21 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:v20 settings:dictionary inputs:dictionary2];
 
   return v21;
 }
@@ -205,7 +205,7 @@ LABEL_14:
     v20[4] = @"inputDestinationImage";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:5];
 
-    v17 = [a1 nodeByApplyingFilterWithName:@"PIRedEye" useHDRFilter:a4 settingsAndInputs:v16];
+    v17 = [self nodeByApplyingFilterWithName:@"PIRedEye" useHDRFilter:a4 settingsAndInputs:v16];
 
     v8 = v17;
   }
@@ -226,7 +226,7 @@ LABEL_14:
   v16[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v13 = [a1 nodeByApplyingFilterWithName:@"PIApertureRedEyeFilter" useHDRFilter:a4 settingsAndInputs:v12];
+  v13 = [self nodeByApplyingFilterWithName:@"PIApertureRedEyeFilter" useHDRFilter:a4 settingsAndInputs:v12];
 
   return v13;
 }
@@ -240,13 +240,13 @@ LABEL_14:
   v13 = [v12 objectForKeyedSubscript:@"alignment"];
   v14 = [v13 objectForKeyedSubscript:@"extent"];
   v15 = [v13 objectForKeyedSubscript:@"transform"];
-  v16 = [a1 getTagWithPath:@"AutoLoop/LongExposureMotion" error:a6];
+  v16 = [self getTagWithPath:@"AutoLoop/LongExposureMotion" error:a6];
   if (v16)
   {
     v38 = a5;
     v40 = v10;
     v17 = [v10 objectForKeyedSubscript:@"source"];
-    v18 = [a1 renderNodeFromSource:v17 settings:&unk_1F47245A0 error:a6];
+    v18 = [self renderNodeFromSource:v17 settings:&unk_1F47245A0 error:a6];
 
     v41 = v18;
     if (v18)
@@ -262,18 +262,18 @@ LABEL_14:
         v44[1] = &unk_1F471F2E8;
         v43[2] = @"inputVideoScale";
         v21 = MEMORY[0x1E696AD98];
-        v22 = [v19 renderScale];
+        renderScale = [v19 renderScale];
         [v20 renderScale];
-        v35 = [v21 numberWithDouble:v22 / v23];
+        v35 = [v21 numberWithDouble:renderScale / v23];
         v44[2] = v35;
         v43[3] = @"inputRenderScale";
         v34 = [MEMORY[0x1E69B3C38] scaleMultiplyOfScalar:1.0];
         v44[3] = v34;
         v43[4] = @"inputAlignmentExtent";
-        v24 = [a1 vectorWithFloats:v14];
+        v24 = [self vectorWithFloats:v14];
         v44[4] = v24;
         v43[5] = @"inputAlignmentTransform";
-        v25 = [a1 vectorWithFloats:v15];
+        v25 = [self vectorWithFloats:v15];
         v44[5] = v25;
         v44[6] = v11;
         v43[6] = @"inputImage";
@@ -282,23 +282,23 @@ LABEL_14:
         v44[7] = v41;
         v44[8] = v16;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:9];
-        v39 = [a1 nodeByApplyingFilterWithName:@"PILongExposureFusion" useHDRFilter:v38 settingsAndInputs:v26];
+        v39 = [self nodeByApplyingFilterWithName:@"PILongExposureFusion" useHDRFilter:v38 settingsAndInputs:v26];
 
         v27 = [v14 objectAtIndexedSubscript:2];
-        v36 = [v27 integerValue];
+        integerValue = [v27 integerValue];
         v28 = [v14 objectAtIndexedSubscript:3];
         v29 = v15;
         v30 = v20;
-        v31 = [v28 integerValue];
+        integerValue2 = [v28 integerValue];
 
         v12 = v37;
         v42[0] = 0;
         v42[1] = 0;
-        v42[2] = v36;
-        v42[3] = v31;
+        v42[2] = integerValue;
+        v42[3] = integerValue2;
         v20 = v30;
         v15 = v29;
-        v32 = [a1 cropNode:v39 cropRect:v42 cropSettings:0];
+        v32 = [self cropNode:v39 cropRect:v42 cropSettings:0];
       }
 
       else
@@ -368,8 +368,8 @@ LABEL_14:
         v30 = dispatch_get_specific(*v24);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v30;
         v37 = 2114;
@@ -380,8 +380,8 @@ LABEL_14:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v29;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -391,12 +391,12 @@ LABEL_14:
   }
 
   v14 = v13;
-  v15 = [v12 definition];
+  definition = [v12 definition];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 sourceDefinitions];
-    v17 = [v16 firstObject];
+    sourceDefinitions = [definition sourceDefinitions];
+    firstObject = [sourceDefinitions firstObject];
   }
 
   else
@@ -404,12 +404,12 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v15;
+      firstObject = definition;
     }
 
     else
     {
-      v17 = 0;
+      firstObject = 0;
     }
   }
 
@@ -417,7 +417,7 @@ LABEL_14:
   if (objc_opt_isKindOfClass())
   {
     v18 = [PIPortraitVideoDebugDetectionsRenderNode alloc];
-    v19 = [v17 url];
+    v19 = [firstObject url];
     v20 = [(PIPortraitVideoDebugDetectionsRenderNode *)v18 initWithInput:v11 assetURL:v19 cinematographyState:v14 monochrome:a6];
   }
 
@@ -459,8 +459,8 @@ LABEL_14:
         v30 = dispatch_get_specific(*v24);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v30;
         v37 = 2114;
@@ -471,8 +471,8 @@ LABEL_14:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v29;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -516,8 +516,8 @@ LABEL_14:
         v31 = dispatch_get_specific(*v25);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v44.start.value) = 138543618;
         *(&v44.start.value + 4) = v31;
         LOWORD(v44.start.flags) = 2114;
@@ -528,8 +528,8 @@ LABEL_14:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v44.start.value) = 138543362;
       *(&v44.start.value + 4) = v30;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v44, 0xCu);
@@ -571,8 +571,8 @@ LABEL_14:
     }
 
     v20 = MEMORY[0x1E69B3A48];
-    v21 = [MEMORY[0x1E695DFB0] null];
-    *a5 = [v20 missingError:@"input to VideoCrossfadeLoop cannot be nil" object:v21];
+    null = [MEMORY[0x1E695DFB0] null];
+    *a5 = [v20 missingError:@"input to VideoCrossfadeLoop cannot be nil" object:null];
 
     v19 = 0;
   }
@@ -616,8 +616,8 @@ LABEL_9:
         v31 = dispatch_get_specific(*v25);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v31;
         *&buf[12] = 2114;
@@ -628,8 +628,8 @@ LABEL_9:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v30;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -648,18 +648,18 @@ LABEL_9:
     {
       v38 = [PIReframeKeyframe keyframesFromDictionaryRepresentations:v10];
       v13 = [v12 objectForKeyedSubscript:@"X"];
-      v37 = [v13 intValue];
+      intValue = [v13 intValue];
       v14 = [v12 objectForKeyedSubscript:@"Y"];
-      v36 = [v14 intValue];
+      intValue2 = [v14 intValue];
       v15 = [v12 objectForKeyedSubscript:@"Width"];
-      v16 = [v15 intValue];
+      intValue3 = [v15 intValue];
       v17 = [v12 objectForKeyedSubscript:@"Height"];
-      v18 = [v17 intValue];
+      intValue4 = [v17 intValue];
 
-      *buf = v37;
-      *&buf[8] = v36;
-      *&buf[16] = v16;
-      v40 = v18;
+      *buf = intValue;
+      *&buf[8] = intValue2;
+      *&buf[16] = intValue3;
+      v40 = intValue4;
       v19 = [[PIVideoReframeNode alloc] initWithKeyframes:v38 stabCropRect:buf input:v7];
 
       goto LABEL_8;

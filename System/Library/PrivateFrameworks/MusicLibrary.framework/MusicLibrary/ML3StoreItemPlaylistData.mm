@@ -1,27 +1,27 @@
 @interface ML3StoreItemPlaylistData
-- (ML3StoreItemPlaylistData)initWithLookupItems:(id)a3;
-- (ML3StoreItemPlaylistData)initWithPlaylistsData:(id)a3;
+- (ML3StoreItemPlaylistData)initWithLookupItems:(id)items;
+- (ML3StoreItemPlaylistData)initWithPlaylistsData:(id)data;
 - (NSArray)parsedStorePlaylistsImportProperties;
 - (NSData)playlistsData;
-- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)a3 cropStyle:(id)a4;
-- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)a3;
-- (id)_playlistPropertiesForLookupItems:(id)a3;
-- (id)_playlistPropertiesFromPlaylistData:(id)a3;
+- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)variants cropStyle:(id)style;
+- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)variants;
+- (id)_playlistPropertiesForLookupItems:(id)items;
+- (id)_playlistPropertiesFromPlaylistData:(id)data;
 - (unint64_t)playlistCount;
 @end
 
 @implementation ML3StoreItemPlaylistData
 
-- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)a3 cropStyle:(id)a4
+- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)variants cropStyle:(id)style
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  variantsCopy = variants;
+  styleCopy = style;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = v5;
+  v7 = variantsCopy;
   v8 = [v7 countByEnumeratingWithState:&v45 objects:v58 count:16];
   v9 = *MEMORY[0x277CBF3A8];
   v10 = *(MEMORY[0x277CBF3A8] + 8);
@@ -41,8 +41,8 @@
         }
 
         v16 = *(*(&v45 + 1) + 8 * i);
-        v17 = [v16 sizeInfo];
-        [v17 maxSupportedSize];
+        sizeInfo = [v16 sizeInfo];
+        [sizeInfo maxSupportedSize];
         v19 = v18;
         v21 = v20;
 
@@ -65,8 +65,8 @@
   MSVGetMaximumScreenSize();
   v25 = v24;
   v27 = v26;
-  v28 = [v11 sizeInfo];
-  [v28 maxSupportedSize];
+  sizeInfo2 = [v11 sizeInfo];
+  [sizeInfo2 maxSupportedSize];
   v30 = v29;
   v32 = v31;
 
@@ -99,24 +99,24 @@
   _Block_object_dispose(&v54, 8);
   if (!v36)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStoreArtworkInfoImageFormatJPEG(void)"];
-    [v43 handleFailureInFunction:v44 file:@"ML3StoreItemPlaylistData.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v44 file:@"ML3StoreItemPlaylistData.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v39 = *v36;
-  v40 = [v11 artworkURLWithSize:v6 cropStyle:v39 format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{v25, v27}];
+  v40 = [v11 artworkURLWithSize:styleCopy cropStyle:v39 format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{v25, v27}];
 
-  v41 = [v40 absoluteString];
+  absoluteString = [v40 absoluteString];
 
-  return v41;
+  return absoluteString;
 }
 
-- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)a3
+- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)variants
 {
-  v4 = a3;
+  variantsCopy = variants;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -133,16 +133,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemPlaylistData *)self _bestArtworkImageURLFromStoreArtworkVariants:v4 cropStyle:*v5];
+    v7 = [(ML3StoreItemPlaylistData *)self _bestArtworkImageURLFromStoreArtworkVariants:variantsCopy cropStyle:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStoreArtworkInfoCropStyleSquareCenterCrop(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemPlaylistData.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemPlaylistData.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -150,14 +150,14 @@
   return result;
 }
 
-- (id)_playlistPropertiesFromPlaylistData:(id)a3
+- (id)_playlistPropertiesFromPlaylistData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  dataCopy = data;
   v5 = MSVPropertyListDataClasses();
   v11 = 0;
-  v6 = [v3 unarchivedObjectOfClasses:v5 fromData:v4 error:&v11];
+  v6 = [v3 unarchivedObjectOfClasses:v5 fromData:dataCopy error:&v11];
 
   v7 = v11;
   if (!v6)
@@ -176,16 +176,16 @@
   return v9;
 }
 
-- (id)_playlistPropertiesForLookupItems:(id)a3
+- (id)_playlistPropertiesForLookupItems:(id)items
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v40 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v45 = [obj countByEnumeratingWithState:&v47 objects:v60 count:16];
   if (v45)
   {
@@ -200,7 +200,7 @@
         }
 
         v5 = *(*(&v47 + 1) + 8 * i);
-        v6 = [v5 kind];
+        kind = [v5 kind];
         v56 = 0;
         v57 = &v56;
         v58 = 0x2020000000;
@@ -223,60 +223,60 @@
         _Block_object_dispose(&v56, 8);
         if (!v7)
         {
-          v38 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindPlaylist(void)"];
-          [v38 handleFailureInFunction:v39 file:@"ML3StoreItemPlaylistData.m" lineNumber:21 description:{@"%s", dlerror()}];
+          [currentHandler handleFailureInFunction:v39 file:@"ML3StoreItemPlaylistData.m" lineNumber:21 description:{@"%s", dlerror()}];
 
           __break(1u);
         }
 
-        v10 = [v6 isEqualToString:*v7];
+        v10 = [kind isEqualToString:*v7];
 
         if (v10)
         {
           v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v12 = [v5 metadataDictionary];
-          v13 = [v12 objectForKeyedSubscript:@"name"];
+          metadataDictionary = [v5 metadataDictionary];
+          v13 = [metadataDictionary objectForKeyedSubscript:@"name"];
 
           if (v13)
           {
-            v14 = [v12 objectForKeyedSubscript:@"name"];
+            v14 = [metadataDictionary objectForKeyedSubscript:@"name"];
             [v11 setObject:v14 forKeyedSubscript:&unk_2840C9650];
           }
 
-          v15 = [v12 objectForKeyedSubscript:@"playlistId"];
+          v15 = [metadataDictionary objectForKeyedSubscript:@"playlistId"];
 
           if (v15)
           {
-            v16 = [v12 objectForKeyedSubscript:@"playlistId"];
+            v16 = [metadataDictionary objectForKeyedSubscript:@"playlistId"];
             [v11 setObject:v16 forKeyedSubscript:&unk_2840C9668];
           }
 
-          v17 = [v12 objectForKeyedSubscript:@"curatorName"];
+          v17 = [metadataDictionary objectForKeyedSubscript:@"curatorName"];
 
           if (v17)
           {
-            v18 = [v12 objectForKeyedSubscript:@"curatorName"];
+            v18 = [metadataDictionary objectForKeyedSubscript:@"curatorName"];
             [v11 setObject:v18 forKeyedSubscript:&unk_2840C9680];
           }
 
-          v19 = [v12 objectForKeyedSubscript:@"versionHash"];
+          v19 = [metadataDictionary objectForKeyedSubscript:@"versionHash"];
 
           if (v19)
           {
-            v20 = [v12 objectForKeyedSubscript:@"versionHash"];
+            v20 = [metadataDictionary objectForKeyedSubscript:@"versionHash"];
             [v11 setObject:v20 forKeyedSubscript:&unk_2840C9698];
           }
 
-          v21 = [v12 objectForKeyedSubscript:@"isChart"];
+          v21 = [metadataDictionary objectForKeyedSubscript:@"isChart"];
 
           if (v21)
           {
-            v22 = [v12 objectForKeyedSubscript:@"isChart"];
+            v22 = [metadataDictionary objectForKeyedSubscript:@"isChart"];
             [v11 setObject:v22 forKeyedSubscript:&unk_2840C96B0];
           }
 
-          v46 = [v12 objectForKeyedSubscript:@"description"];
+          v46 = [metadataDictionary objectForKeyedSubscript:@"description"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -296,11 +296,11 @@ LABEL_25:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v24 = [v46 allValues];
-              v25 = [v24 firstObject];
+              allValues = [v46 allValues];
+              firstObject = [allValues firstObject];
 
-              v23 = v25;
-              if (v25)
+              v23 = firstObject;
+              if (firstObject)
               {
                 goto LABEL_25;
               }
@@ -310,8 +310,8 @@ LABEL_26:
             v43 = 0;
           }
 
-          v26 = [v5 artworkInfos];
-          v27 = [(ML3StoreItemPlaylistData *)self _bestPlaylistArtworkImageURLFromStoreArtworkVariants:v26];
+          artworkInfos = [v5 artworkInfos];
+          v27 = [(ML3StoreItemPlaylistData *)self _bestPlaylistArtworkImageURLFromStoreArtworkVariants:artworkInfos];
           if (v27)
           {
             [v11 setObject:v27 forKeyedSubscript:&unk_2840C96E0];
@@ -323,7 +323,7 @@ LABEL_26:
           v29 = [v28 numberWithDouble:?];
           [v11 setObject:v29 forKeyedSubscript:&unk_2840C9710];
           [v11 setObject:v29 forKeyedSubscript:&unk_2840C9728];
-          v30 = [v12 objectForKey:@"lastModifiedDate"];
+          v30 = [metadataDictionary objectForKey:@"lastModifiedDate"];
           if (v30)
           {
             v31 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -338,7 +338,7 @@ LABEL_26:
             [v11 setObject:v35 forKeyedSubscript:&unk_2840C9728];
           }
 
-          v36 = [v12 objectForKeyedSubscript:@"childrenIds"];
+          v36 = [metadataDictionary objectForKeyedSubscript:@"childrenIds"];
           if (v36)
           {
             [v11 setObject:v36 forKeyedSubscript:@"childrenIds"];
@@ -346,7 +346,7 @@ LABEL_26:
 
           if (v11)
           {
-            [v40 addObject:v11];
+            [array addObject:v11];
           }
 
           continue;
@@ -359,13 +359,13 @@ LABEL_26:
     while (v45);
   }
 
-  return v40;
+  return array;
 }
 
 - (unint64_t)playlistCount
 {
-  v2 = [(ML3StoreItemPlaylistData *)self parsedStorePlaylistsImportProperties];
-  v3 = [v2 count];
+  parsedStorePlaylistsImportProperties = [(ML3StoreItemPlaylistData *)self parsedStorePlaylistsImportProperties];
+  v3 = [parsedStorePlaylistsImportProperties count];
 
   return v3;
 }
@@ -403,12 +403,12 @@ LABEL_7:
 - (NSData)playlistsData
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(ML3StoreItemPlaylistData *)self parsedStorePlaylistsImportProperties];
-  v3 = v2;
-  if (v2)
+  parsedStorePlaylistsImportProperties = [(ML3StoreItemPlaylistData *)self parsedStorePlaylistsImportProperties];
+  v3 = parsedStorePlaylistsImportProperties;
+  if (parsedStorePlaylistsImportProperties)
   {
     v7 = @"playlist";
-    v8[0] = v2;
+    v8[0] = parsedStorePlaylistsImportProperties;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
   }
@@ -421,15 +421,15 @@ LABEL_7:
   return v5;
 }
 
-- (ML3StoreItemPlaylistData)initWithPlaylistsData:(id)a3
+- (ML3StoreItemPlaylistData)initWithPlaylistsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ML3StoreItemPlaylistData;
   v5 = [(ML3StoreItemPlaylistData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     playlistData = v5->_playlistData;
     v5->_playlistData = v6;
   }
@@ -437,15 +437,15 @@ LABEL_7:
   return v5;
 }
 
-- (ML3StoreItemPlaylistData)initWithLookupItems:(id)a3
+- (ML3StoreItemPlaylistData)initWithLookupItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = ML3StoreItemPlaylistData;
   v5 = [(ML3StoreItemPlaylistData *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     lookupItems = v5->_lookupItems;
     v5->_lookupItems = v6;
 

@@ -1,23 +1,23 @@
 @interface PHASESharedEngine
-- (PHASESharedEngine)initWithUpdateMode:(int64_t)a3 error:(id *)a4;
+- (PHASESharedEngine)initWithUpdateMode:(int64_t)mode error:(id *)error;
 - (PHASESharedListener)sharedListener;
-- (id)rootObjectForSessionUUID:(id)a3 error:(id *)a4;
-- (void)gatherSharedEntityDebugInformation:(id)a3;
+- (id)rootObjectForSessionUUID:(id)d error:(id *)error;
+- (void)gatherSharedEntityDebugInformation:(id)information;
 @end
 
 @implementation PHASESharedEngine
 
-- (PHASESharedEngine)initWithUpdateMode:(int64_t)a3 error:(id *)a4
+- (PHASESharedEngine)initWithUpdateMode:(int64_t)mode error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v11.receiver = self;
   v11.super_class = PHASESharedEngine;
-  v5 = [(PHASEEngine *)&v11 initWithUpdateMode:a3];
+  v5 = [(PHASEEngine *)&v11 initWithUpdateMode:mode];
   v6 = *MEMORY[0x277CCA450];
   v18 = *MEMORY[0x277CCA450];
   v19[0] = @"PHASESharedEngine not available";
@@ -35,9 +35,9 @@
     _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v7];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v7];
   }
 
   return 0;
@@ -58,13 +58,13 @@
   return sharedListener;
 }
 
-- (id)rootObjectForSessionUUID:(id)a3 error:(id *)a4
+- (id)rootObjectForSessionUUID:(id)d error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (Phase::CurrentProcessCanModifySharedEntities(void)::onceToken != -1)
@@ -74,14 +74,14 @@
 
   if (Phase::CurrentProcessCanModifySharedEntities(void)::currentProcessCanModifySharedEntities)
   {
-    v7 = [(PHASEEngine *)self sessionRootObjects];
-    v8 = [v7 objectForKey:v6];
+    sessionRootObjects = [(PHASEEngine *)self sessionRootObjects];
+    v8 = [sessionRootObjects objectForKey:dCopy];
 
     if (!v8)
     {
-      v8 = [[PHASESharedRoot alloc] initWithEngine:self sessionUUID:v6];
-      v9 = [(PHASEEngine *)self sessionRootObjects];
-      [v9 setObject:v8 forKey:v6];
+      v8 = [[PHASESharedRoot alloc] initWithEngine:self sessionUUID:dCopy];
+      sessionRootObjects2 = [(PHASEEngine *)self sessionRootObjects];
+      [sessionRootObjects2 setObject:v8 forKey:dCopy];
     }
   }
 
@@ -104,9 +104,9 @@
       _os_log_impl(&dword_23A302000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", &v15, 0x1Cu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v11];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v11];
     }
 
     v8 = 0;
@@ -115,11 +115,11 @@
   return v8;
 }
 
-- (void)gatherSharedEntityDebugInformation:(id)a3
+- (void)gatherSharedEntityDebugInformation:(id)information
 {
-  v5 = a3;
-  v4 = [(PHASEEngine *)self implementation];
-  (*(*v4[61] + 80))(v4[61], v5);
+  informationCopy = information;
+  implementation = [(PHASEEngine *)self implementation];
+  (*(*implementation[61] + 80))(implementation[61], informationCopy);
 }
 
 @end

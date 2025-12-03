@@ -1,18 +1,18 @@
 @interface MapsSuggestionsTriggeringToggle
 - (BOOL)state;
-- (MapsSuggestionsTriggeringToggle)initWithName:(id)a3 startState:(BOOL)a4 behavior:(unint64_t)a5;
+- (MapsSuggestionsTriggeringToggle)initWithName:(id)name startState:(BOOL)state behavior:(unint64_t)behavior;
 - (NSString)description;
 - (id)objectForJSON;
-- (void)setState:(BOOL)a3;
+- (void)setState:(BOOL)state;
 @end
 
 @implementation MapsSuggestionsTriggeringToggle
 
 - (id)objectForJSON
 {
-  v2 = [(MapsSuggestionsTriggeringToggle *)self isTrue];
+  isTrue = [(MapsSuggestionsTriggeringToggle *)self isTrue];
 
-  return MSg::jsonFor(v2);
+  return MSg::jsonFor(isTrue);
 }
 
 - (BOOL)state
@@ -21,9 +21,9 @@
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
     v7 = 138412290;
-    v8 = v4;
+    v8 = uniqueName;
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "Reading state for TriggeringToggle: %@", &v7, 0xCu);
   }
 
@@ -31,23 +31,23 @@
   return v5 & 1;
 }
 
-- (MapsSuggestionsTriggeringToggle)initWithName:(id)a3 startState:(BOOL)a4 behavior:(unint64_t)a5
+- (MapsSuggestionsTriggeringToggle)initWithName:(id)name startState:(BOOL)state behavior:(unint64_t)behavior
 {
   v8.receiver = self;
   v8.super_class = MapsSuggestionsTriggeringToggle;
-  result = [(MapsSuggestionsBaseTrigger *)&v8 initWithName:a3];
+  result = [(MapsSuggestionsBaseTrigger *)&v8 initWithName:name];
   if (result)
   {
-    result->_behavior = a5;
-    atomic_store(a4, &result->_state);
+    result->_behavior = behavior;
+    atomic_store(state, &result->_state);
   }
 
   return result;
 }
 
-- (void)setState:(BOOL)a3
+- (void)setState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v24 = *MEMORY[0x1E69E9840];
   v14 = 0;
   v15 = &v14;
@@ -56,22 +56,22 @@
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
     *buf = 67109378;
-    *&buf[4] = v3;
+    *&buf[4] = stateCopy;
     *&buf[8] = 2112;
-    *&buf[10] = v6;
+    *&buf[10] = uniqueName;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Setting state %d for TriggeringToggle: %@", buf, 0x12u);
   }
 
-  v7 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__MapsSuggestionsTriggeringToggle_setState___block_invoke;
   v12[3] = &unk_1E81F7D30;
   v12[4] = self;
   v12[5] = &v14;
-  v13 = v3;
+  v13 = stateCopy;
   v8 = v12;
   v18[0] = 0;
   v18[1] = v18;
@@ -83,18 +83,18 @@
   v21 = &unk_1E81F5E78;
   v22 = v8;
   v23 = v18;
-  dispatch_sync(v7, buf);
+  dispatch_sync(dispatchQueue, buf);
 
   _Block_object_dispose(v18, 8);
   behavior = self->_behavior;
-  if (((behavior & 4) != 0 || (v15[3] & 1) == 0) && ((behavior & 1) != 0 && v3 || (behavior & 2) != 0 && !v3))
+  if (((behavior & 4) != 0 || (v15[3] & 1) == 0) && ((behavior & 1) != 0 && stateCopy || (behavior & 2) != 0 && !stateCopy))
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+      uniqueName2 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
       *buf = 138412290;
-      *&buf[4] = v11;
+      *&buf[4] = uniqueName2;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Triggering observers for TriggeringToggle: %@", buf, 0xCu);
     }
 
@@ -129,16 +129,16 @@ uint64_t __44__MapsSuggestionsTriggeringToggle_setState___block_invoke(uint64_t 
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
-  v5 = [(MapsSuggestionsTriggeringToggle *)self state];
-  v6 = [(MapsSuggestionsTriggeringToggle *)self timesUpdated];
+  uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+  state = [(MapsSuggestionsTriggeringToggle *)self state];
+  timesUpdated = [(MapsSuggestionsTriggeringToggle *)self timesUpdated];
   v7 = "NO";
-  if (v5)
+  if (state)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 initWithFormat:@"%@ state=%s (%u updates)", v4, v7, v6];
+  v8 = [v3 initWithFormat:@"%@ state=%s (%u updates)", uniqueName, v7, timesUpdated];
 
   return v8;
 }

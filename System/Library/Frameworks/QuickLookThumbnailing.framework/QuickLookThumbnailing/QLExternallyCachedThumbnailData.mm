@@ -1,32 +1,32 @@
 @interface QLExternallyCachedThumbnailData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4;
+- (id)initFromPQLResultSet:(id)set error:(id *)error;
 @end
 
 @implementation QLExternallyCachedThumbnailData
 
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4
+- (id)initFromPQLResultSet:(id)set error:(id *)error
 {
-  v5 = a3;
+  setCopy = set;
   v14.receiver = self;
   v14.super_class = QLExternallyCachedThumbnailData;
   v6 = [(QLExternallyCachedThumbnailData *)&v14 init];
   if (v6)
   {
-    v7 = [v5 stringAtIndex:0];
+    v7 = [setCopy stringAtIndex:0];
     itemIdentifier = v6->_itemIdentifier;
     v6->_itemIdentifier = v7;
 
-    v9 = [v5 dataAtIndex:1];
+    v9 = [setCopy dataAtIndex:1];
     versionIdentifier = v6->_versionIdentifier;
     v6->_versionIdentifier = v9;
 
-    v11 = [v5 stringAtIndex:2];
+    v11 = [setCopy stringAtIndex:2];
     fileExtension = v6->_fileExtension;
     v6->_fileExtension = v11;
 
-    v6->_size = [v5 unsignedIntegerAtIndex:3];
+    v6->_size = [setCopy unsignedIntegerAtIndex:3];
   }
 
   return v6;
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -55,18 +55,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       itemIdentifier = self->_itemIdentifier;
-      v7 = [(QLExternallyCachedThumbnailData *)v5 itemIdentifier];
-      if ([(NSString *)itemIdentifier isEqualToString:v7])
+      itemIdentifier = [(QLExternallyCachedThumbnailData *)v5 itemIdentifier];
+      if ([(NSString *)itemIdentifier isEqualToString:itemIdentifier])
       {
         versionIdentifier = self->_versionIdentifier;
-        v9 = [(QLExternallyCachedThumbnailData *)v5 versionIdentifier];
-        if ([(NSData *)versionIdentifier isEqualToData:v9])
+        versionIdentifier = [(QLExternallyCachedThumbnailData *)v5 versionIdentifier];
+        if ([(NSData *)versionIdentifier isEqualToData:versionIdentifier])
         {
           fileExtension = self->_fileExtension;
-          v11 = [(QLExternallyCachedThumbnailData *)v5 fileExtension];
-          v12 = [(NSString *)fileExtension isEqualToString:v11];
+          fileExtension = [(QLExternallyCachedThumbnailData *)v5 fileExtension];
+          v12 = [(NSString *)fileExtension isEqualToString:fileExtension];
         }
 
         else

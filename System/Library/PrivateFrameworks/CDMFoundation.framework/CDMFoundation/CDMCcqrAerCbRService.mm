@@ -1,17 +1,17 @@
 @interface CDMCcqrAerCbRService
-+ (BOOL)suppressCcqrUsingCurContext:(id)a3;
++ (BOOL)suppressCcqrUsingCurContext:(id)context;
 + (id)getCDMServiceAssetConfig;
 + (void)CcqrAerCbRServiceLogInitIfNeeded;
-- (BOOL)skipServiceSetup:(id)a3;
-- (id)createSetupResponseWithError:(id)a3;
-- (id)doInference:(id)a3 status:(id *)a4;
-- (id)getPredictor:(id)a3 FilesPath:(id)a4 modelType:(id)a5 status:(id *)a6;
-- (id)handle:(id)a3;
+- (BOOL)skipServiceSetup:(id)setup;
+- (id)createSetupResponseWithError:(id)error;
+- (id)doInference:(id)inference status:(id *)status;
+- (id)getPredictor:(id)predictor FilesPath:(id)path modelType:(id)type status:(id *)status;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)match:(id)a3;
-- (id)setup:(id)a3;
-- (id)warmup:(id)a3;
-- (void)debugCcqrResponse:(id)a3;
+- (id)match:(id)match;
+- (id)setup:(id)setup;
+- (id)warmup:(id)warmup;
+- (void)debugCcqrResponse:(id)response;
 @end
 
 @implementation CDMCcqrAerCbRService
@@ -55,10 +55,10 @@
   }
 }
 
-- (BOOL)skipServiceSetup:(id)a3
+- (BOOL)skipServiceSetup:(id)setup
 {
-  v3 = a3;
-  if (AFDeviceSupportsSAE() && [CDMCcqrServiceUtils isNLRouterAssetAvailable:v3])
+  setupCopy = setup;
+  if (AFDeviceSupportsSAE() && [CDMCcqrServiceUtils isNLRouterAssetAvailable:setupCopy])
   {
     v4 = objc_alloc_init(NLRouterExperimentTrialController);
     v5 = ![(NLRouterExperimentTrialController *)v4 suppressRewrite];
@@ -72,24 +72,24 @@
   return v5;
 }
 
-- (id)doInference:(id)a3 status:(id *)a4
+- (id)doInference:(id)inference status:(id *)status
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(QueryRewriter *)v7->_ccqrPredictor predictWithInput:v6 status:a4];
-  objc_sync_exit(v7);
+  inferenceCopy = inference;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(QueryRewriter *)selfCopy->_ccqrPredictor predictWithInput:inferenceCopy status:status];
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)getPredictor:(id)a3 FilesPath:(id)a4 modelType:(id)a5 status:(id *)a6
+- (id)getPredictor:(id)predictor FilesPath:(id)path modelType:(id)type status:(id *)status
 {
   v21 = *MEMORY[0x1E69E9840];
   self->_modelType = 1;
-  v10 = a4;
-  v11 = a3;
-  if ([a5 isEqualToString:@"JointCCQR"])
+  pathCopy = path;
+  predictorCopy = predictor;
+  if ([type isEqualToString:@"JointCCQR"])
   {
     self->_modelType = 4;
   }
@@ -114,35 +114,35 @@
     _os_log_debug_impl(&dword_1DC287000, v12, OS_LOG_TYPE_DEBUG, "%s CCQR initialized with %@ functionality", &v17, 0x16u);
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E69AE150]) initWithLocale:v11 filesPath:v10 predictorType:self->_modelType status:a6];
+  v13 = [objc_alloc(MEMORY[0x1E69AE150]) initWithLocale:predictorCopy filesPath:pathCopy predictorType:self->_modelType status:status];
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-- (void)debugCcqrResponse:(id)a3
+- (void)debugCcqrResponse:(id)response
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 rewriteHypothesesCount];
+  responseCopy = response;
+  rewriteHypothesesCount = [responseCopy rewriteHypothesesCount];
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315394;
     v16 = "[CDMCcqrAerCbRService debugCcqrResponse:]";
     v17 = 2048;
-    v18 = v4;
+    v18 = rewriteHypothesesCount;
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s CcqrAerCbR: Generated %lu rewrite hypotheses.", &v15, 0x16u);
   }
 
-  if (v4)
+  if (rewriteHypothesesCount)
   {
-    v6 = [v3 rewriteHypothesesAtIndex:0];
-    v7 = [v6 rewriteType];
+    v6 = [responseCopy rewriteHypothesesAtIndex:0];
+    rewriteType = [v6 rewriteType];
 
     v8 = CDMOSLoggerForCategory(0);
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-    if (v7)
+    if (rewriteType)
     {
       if (v9)
       {
@@ -165,12 +165,12 @@ LABEL_13:
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v3 rewriteHypothesesAtIndex:0];
-      v14 = [v13 utterance];
+      v13 = [responseCopy rewriteHypothesesAtIndex:0];
+      utterance = [v13 utterance];
       v15 = 136315394;
       v16 = "[CDMCcqrAerCbRService debugCcqrResponse:]";
       v17 = 2112;
-      v18 = v14;
+      v18 = utterance;
       _os_log_debug_impl(&dword_1DC287000, v11, OS_LOG_TYPE_DEBUG, "%s Rewritten Utterance: %@", &v15, 0x16u);
     }
   }
@@ -178,29 +178,29 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = CDMLogContext;
   if (os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_DEBUG))
   {
     v17 = v5;
-    v18 = [v4 qrRequest];
+    qrRequest = [handleCopy qrRequest];
     *buf = 136315650;
     v21 = "[CDMCcqrAerCbRService handle:]";
     v22 = 2112;
     v23 = @"queryrewrite";
     v24 = 2112;
-    v25 = v18;
+    v25 = qrRequest;
     _os_log_debug_impl(&dword_1DC287000, v17, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\nQUERYREWRITEQRRequest: %@", buf, 0x20u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_ccqrPredictor)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_ccqrPredictor)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v7 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -210,13 +210,13 @@ LABEL_13:
       _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s Calling CCQR (AER & CbR)", buf, 0xCu);
     }
 
-    v8 = [v4 qrRequest];
-    v9 = [CDMCcqrServiceUtils leftShiftSiriResponse:v8];
+    qrRequest2 = [handleCopy qrRequest];
+    v9 = [CDMCcqrServiceUtils leftShiftSiriResponse:qrRequest2];
 
     v19 = 0;
-    v10 = [(CDMCcqrAerCbRService *)v6 doInference:v9 status:&v19];
+    v10 = [(CDMCcqrAerCbRService *)selfCopy doInference:v9 status:&v19];
     v11 = v19;
-    [(CDMCcqrAerCbRService *)v6 debugCcqrResponse:v10];
+    [(CDMCcqrAerCbRService *)selfCopy debugCcqrResponse:v10];
     v12 = CDMLogContext;
     if (os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_DEBUG))
     {
@@ -231,7 +231,7 @@ LABEL_13:
 
     v13 = [[CDMQRResponseCommand alloc] initWithResponse:v10];
 
-    v6 = v9;
+    selfCopy = v9;
   }
 
   else
@@ -244,7 +244,7 @@ LABEL_13:
       _os_log_error_impl(&dword_1DC287000, v14, OS_LOG_TYPE_ERROR, "%s [ERR]: CCQR (AER & CbR): Predictor not initialized!", buf, 0xCu);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     v13 = 0;
   }
 
@@ -253,60 +253,60 @@ LABEL_13:
   return v13;
 }
 
-- (id)match:(id)a3
+- (id)match:(id)match
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [(SiriNLUOverrideProxy *)self->_overrideProxy matchWithInputs:a3 overrideNamespace:2];
+  v4 = [(SiriNLUOverrideProxy *)self->_overrideProxy matchWithInputs:match overrideNamespace:2];
   v5 = v4;
   if (!v4 || ![v4 hasCcqrOverrideTemplate])
   {
     goto LABEL_18;
   }
 
-  v6 = [v5 ccqrOverrideTemplate];
-  if (([v6 hasRewriteMessage] & 1) == 0)
+  ccqrOverrideTemplate = [v5 ccqrOverrideTemplate];
+  if (([ccqrOverrideTemplate hasRewriteMessage] & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  v7 = [v5 ccqrOverrideTemplate];
-  v8 = [v7 rewriteMessage];
-  if (([v8 hasRewriteType] & 1) == 0)
+  ccqrOverrideTemplate2 = [v5 ccqrOverrideTemplate];
+  rewriteMessage = [ccqrOverrideTemplate2 rewriteMessage];
+  if (([rewriteMessage hasRewriteType] & 1) == 0)
   {
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [v5 ccqrOverrideTemplate];
-  v10 = [v9 rewriteMessage];
-  v11 = [v10 hasRewrittenUtterance];
+  ccqrOverrideTemplate3 = [v5 ccqrOverrideTemplate];
+  rewriteMessage2 = [ccqrOverrideTemplate3 rewriteMessage];
+  hasRewrittenUtterance = [rewriteMessage2 hasRewrittenUtterance];
 
-  if (v11)
+  if (hasRewrittenUtterance)
   {
     v12 = [[CDMQRResponseCommand alloc] initWithResponse:0];
-    v13 = [v5 ccqrOverrideTemplate];
-    v14 = [v13 rewriteMessage];
-    v15 = [v14 rewrittenUtterance];
+    ccqrOverrideTemplate4 = [v5 ccqrOverrideTemplate];
+    rewriteMessage3 = [ccqrOverrideTemplate4 rewriteMessage];
+    rewrittenUtterance = [rewriteMessage3 rewrittenUtterance];
 
-    v16 = [(CDMCcqrAerCbROverridesProxy *)self->_overrideProxy getRewriteHypothesisWithOverrideUtterance:v15];
+    v16 = [(CDMCcqrAerCbROverridesProxy *)self->_overrideProxy getRewriteHypothesisWithOverrideUtterance:rewrittenUtterance];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 utterance];
-      v19 = [v18 isEqualToString:&stru_1F5800F50];
+      utterance = [v16 utterance];
+      v19 = [utterance isEqualToString:&stru_1F5800F50];
 
       if ((v19 & 1) == 0)
       {
-        v20 = [v5 ccqrOverrideTemplate];
-        v21 = [v20 rewriteMessage];
-        v22 = [v21 rewriteType];
+        ccqrOverrideTemplate5 = [v5 ccqrOverrideTemplate];
+        rewriteMessage4 = [ccqrOverrideTemplate5 rewriteMessage];
+        rewriteType = [rewriteMessage4 rewriteType];
 
-        if (v22)
+        if (rewriteType)
         {
-          if (v22 != 1)
+          if (rewriteType != 1)
           {
-            if (v22 != 2)
+            if (rewriteType != 2)
             {
               v29 = CDMOSLoggerForCategory(0);
               if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -320,10 +320,10 @@ LABEL_17:
               goto LABEL_15;
             }
 
-            v22 = 0;
+            rewriteType = 0;
           }
 
-          [v17 setRewriteType:v22];
+          [v17 setRewriteType:rewriteType];
         }
 
         v23 = objc_alloc_init(MEMORY[0x1E69D1360]);
@@ -351,10 +351,10 @@ LABEL_19:
   return v26;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -364,8 +364,8 @@ LABEL_19:
   }
 
   +[CDMCcqrAerCbRService CcqrAerCbRServiceLogInitIfNeeded];
-  v6 = [v4 dynamicConfig];
-  v7 = [v6 languageCode];
+  dynamicConfig = [setupCopy dynamicConfig];
+  languageCode = [dynamicConfig languageCode];
 
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -373,14 +373,14 @@ LABEL_19:
     *buf = 136315394;
     v62 = "[CDMCcqrAerCbRService setup:]";
     v63 = 2112;
-    v64 = v7;
+    v64 = languageCode;
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Checking CDMCcqrAerCbRService assets for locale: %@", buf, 0x16u);
   }
 
-  if (![(CDMCcqrAerCbRService *)self skipServiceSetup:v7])
+  if (![(CDMCcqrAerCbRService *)self skipServiceSetup:languageCode])
   {
-    v12 = [v4 dynamicConfig];
-    v13 = [v12 getAssetForFactorName:@"com.apple.siri.nl.marrs.ccqr"];
+    dynamicConfig2 = [setupCopy dynamicConfig];
+    v13 = [dynamicConfig2 getAssetForFactorName:@"com.apple.siri.nl.marrs.ccqr"];
     nlAsset = self->_nlAsset;
     self->_nlAsset = v13;
 
@@ -397,11 +397,11 @@ LABEL_19:
       _os_log_debug_impl(&dword_1DC287000, v15, OS_LOG_TYPE_DEBUG, "%s Asset is: [%@] for factor: %@.", buf, 0x20u);
     }
 
-    v58 = [(NLAsset *)self->_nlAsset getAssetMetadata];
+    getAssetMetadata = [(NLAsset *)self->_nlAsset getAssetMetadata];
     v16 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v49 = [v58 description];
+      v49 = [getAssetMetadata description];
       *buf = 136315394;
       v62 = "[CDMCcqrAerCbRService setup:]";
       v63 = 2112;
@@ -409,29 +409,29 @@ LABEL_19:
       _os_log_debug_impl(&dword_1DC287000, v16, OS_LOG_TYPE_DEBUG, "%s CCQRAerCbR Asset Metadata: %@", buf, 0x16u);
     }
 
-    v17 = [v4 dynamicConfig];
-    v59 = [v17 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.ccqr"];
+    dynamicConfig3 = [setupCopy dynamicConfig];
+    v59 = [dynamicConfig3 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.ccqr"];
 
     if (v59)
     {
-      v18 = self;
-      objc_sync_enter(v18);
-      v19 = [v4 dynamicConfig];
-      v20 = [v19 languageCode];
-      v21 = [v59 resourcePath];
-      v22 = [v58 objectForKey:@"modelType"];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      dynamicConfig4 = [setupCopy dynamicConfig];
+      languageCode2 = [dynamicConfig4 languageCode];
+      resourcePath = [v59 resourcePath];
+      v22 = [getAssetMetadata objectForKey:@"modelType"];
       v60 = 0;
-      v23 = [(CDMCcqrAerCbRService *)v18 getPredictor:v20 FilesPath:v21 modelType:v22 status:&v60];
+      v23 = [(CDMCcqrAerCbRService *)selfCopy getPredictor:languageCode2 FilesPath:resourcePath modelType:v22 status:&v60];
       v24 = v60;
-      ccqrPredictor = v18->_ccqrPredictor;
-      v18->_ccqrPredictor = v23;
+      ccqrPredictor = selfCopy->_ccqrPredictor;
+      selfCopy->_ccqrPredictor = v23;
 
       if (v24)
       {
-        v26 = [v24 localizedDescription];
-        v10 = [(CDMBaseService *)v18 createErrorWithCode:1 description:v26];
+        localizedDescription = [v24 localizedDescription];
+        v10 = [(CDMBaseService *)selfCopy createErrorWithCode:1 description:localizedDescription];
 
-        v18->super.super._serviceState = 4;
+        selfCopy->super.super._serviceState = 4;
         v27 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -443,7 +443,7 @@ LABEL_19:
 
       else
       {
-        v18->super.super._serviceState = 2;
+        selfCopy->super.super._serviceState = 2;
         v27 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -455,7 +455,7 @@ LABEL_19:
         v10 = 0;
       }
 
-      objc_sync_exit(v18);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -477,8 +477,8 @@ LABEL_19:
       _os_log_debug_impl(&dword_1DC287000, v28, OS_LOG_TYPE_DEBUG, "%s Trie Overrides FF Enabled, CCQR loading override trie bundle", buf, 0xCu);
     }
 
-    v29 = [v4 dynamicConfig];
-    v30 = [v29 getAssetBundlePathForFactorName:@"com.apple.siri.nl.overrides"];
+    dynamicConfig5 = [setupCopy dynamicConfig];
+    v30 = [dynamicConfig5 getAssetBundlePathForFactorName:@"com.apple.siri.nl.overrides"];
 
     if (!v30)
     {
@@ -489,16 +489,16 @@ LABEL_19:
       goto LABEL_50;
     }
 
-    v31 = [v30 resourcePath];
-    v56 = [v31 stringByAppendingPathComponent:@"trie_bundle"];
+    resourcePath2 = [v30 resourcePath];
+    v56 = [resourcePath2 stringByAppendingPathComponent:@"trie_bundle"];
 
-    v32 = [v59 resourcePath];
-    v57 = [v32 stringByAppendingPathComponent:@"trie_bundle"];
+    resourcePath3 = [v59 resourcePath];
+    v57 = [resourcePath3 stringByAppendingPathComponent:@"trie_bundle"];
 
-    v33 = [MEMORY[0x1E696AC08] defaultManager];
-    LODWORD(v32) = [v33 fileExistsAtPath:v56];
-    v34 = [v33 fileExistsAtPath:v57];
-    if (!v32)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    LODWORD(resourcePath3) = [defaultManager fileExistsAtPath:v56];
+    v34 = [defaultManager fileExistsAtPath:v57];
+    if (!resourcePath3)
     {
       v11 = [(CDMCcqrAerCbRService *)self createSetupResponseWithError:v10];
       v46 = 0;
@@ -506,8 +506,8 @@ LABEL_19:
     }
 
     v11 = v34;
-    v35 = self;
-    objc_sync_enter(v35);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     v36 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
@@ -516,9 +516,9 @@ LABEL_19:
       _os_log_impl(&dword_1DC287000, v36, OS_LOG_TYPE_INFO, "%s Trie overrides: CCQR service detects global overrides assets factor has trie bundle, getting the shared trie overrides store", buf, 0xCu);
     }
 
-    v37 = [[_TtC13CDMFoundation27CDMCcqrAerCbROverridesProxy alloc] initWithUseTrie:1 useMemory:v35->_useMemoryForOverrideStore templatePattern:0];
-    overrideProxy = v35->_overrideProxy;
-    v35->_overrideProxy = v37;
+    v37 = [[_TtC13CDMFoundation27CDMCcqrAerCbROverridesProxy alloc] initWithUseTrie:1 useMemory:selfCopy2->_useMemoryForOverrideStore templatePattern:0];
+    overrideProxy = selfCopy2->_overrideProxy;
+    selfCopy2->_overrideProxy = v37;
 
     if (v11)
     {
@@ -542,7 +542,7 @@ LABEL_19:
         _os_log_impl(&dword_1DC287000, v42, OS_LOG_TYPE_INFO, "%s Trie overrides initializing CCQR component overrides from ccqr bundle", buf, 0xCu);
       }
 
-      v11 = [(SiriNLUOverrideProxy *)v35->_overrideProxy loadComponentOverrideTrieStoreWithTrieFilePath:v57];
+      v11 = [(SiriNLUOverrideProxy *)selfCopy2->_overrideProxy loadComponentOverrideTrieStoreWithTrieFilePath:v57];
       v43 = CDMCcqrAerCbRServiceLogContext;
       v44 = v43;
       if (v55 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
@@ -561,10 +561,10 @@ LABEL_19:
           _os_log_impl(&dword_1DC287000, v50, OS_LOG_TYPE_INFO, "%s Trie Overrides: Fail to load CCQR Trie overrides bundle", buf, 0xCu);
         }
 
-        v51 = [(CDMBaseService *)v35 createErrorWithCode:1 description:@"Unable to initialize CCQR component override from trie assets"];
+        v51 = [(CDMBaseService *)selfCopy2 createErrorWithCode:1 description:@"Unable to initialize CCQR component override from trie assets"];
 
-        v35->super.super._serviceState = 4;
-        v11 = [(CDMCcqrAerCbRService *)v35 createSetupResponseWithError:v51];
+        selfCopy2->super.super._serviceState = 4;
+        v11 = [(CDMCcqrAerCbRService *)selfCopy2 createSetupResponseWithError:v51];
         v46 = 0;
         v10 = v51;
         goto LABEL_48;
@@ -581,7 +581,7 @@ LABEL_19:
 
     v46 = 1;
 LABEL_48:
-    objc_sync_exit(v35);
+    objc_sync_exit(selfCopy2);
 
 LABEL_49:
     if (!v46)
@@ -614,7 +614,7 @@ LABEL_52:
   return v11;
 }
 
-- (id)warmup:(id)a3
+- (id)warmup:(id)warmup
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = CDMOSLoggerForCategory(0);
@@ -633,36 +633,36 @@ LABEL_52:
   }
 
   v7 = [CDMWarmupResponseCommand alloc];
-  v8 = [(CDMBaseService *)self serviceState];
-  v9 = [(CDMBaseService *)self serviceName];
-  v10 = [(CDMWarmupResponseCommand *)v7 initWithServiceState:v8 serviceName:v9];
+  serviceState = [(CDMBaseService *)self serviceState];
+  serviceName = [(CDMBaseService *)self serviceName];
+  v10 = [(CDMWarmupResponseCommand *)v7 initWithServiceState:serviceState serviceName:serviceName];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)createSetupResponseWithError:(id)a3
+- (id)createSetupResponseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CDMBaseService *)self createSetupResponseCommand];
-  [v5 setCmdError:v4];
+  errorCopy = error;
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
+  [createSetupResponseCommand setCmdError:errorCopy];
 
-  return v5;
+  return createSetupResponseCommand;
 }
 
-+ (BOOL)suppressCcqrUsingCurContext:(id)a3
++ (BOOL)suppressCcqrUsingCurContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 nlContext];
-  v5 = [v4 systemDialogActs];
+  nlContext = [contextCopy nlContext];
+  systemDialogActs = [nlContext systemDialogActs];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v6 = [systemDialogActs countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -673,7 +673,7 @@ LABEL_52:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(systemDialogActs);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -691,7 +691,7 @@ LABEL_52:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [systemDialogActs countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -701,20 +701,20 @@ LABEL_52:
     }
   }
 
-  v11 = [v3 legacyNlContext];
-  v12 = [v11 previousDomainName];
-  v13 = [v12 isEqualToString:@"arithmetic"];
+  legacyNlContext = [contextCopy legacyNlContext];
+  previousDomainName = [legacyNlContext previousDomainName];
+  v13 = [previousDomainName isEqualToString:@"arithmetic"];
 
   if (v13)
   {
-    v5 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    systemDialogActs = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(systemDialogActs, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315394;
       v23 = "+[CDMCcqrAerCbRService suppressCcqrUsingCurContext:]";
       v24 = 2112;
       v25 = @"arithmetic";
-      _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s Skipping ccqr to reason #3: Disable certain domain(s): %@", buf, 0x16u);
+      _os_log_debug_impl(&dword_1DC287000, systemDialogActs, OS_LOG_TYPE_DEBUG, "%s Skipping ccqr to reason #3: Disable certain domain(s): %@", buf, 0x16u);
     }
 
 LABEL_17:

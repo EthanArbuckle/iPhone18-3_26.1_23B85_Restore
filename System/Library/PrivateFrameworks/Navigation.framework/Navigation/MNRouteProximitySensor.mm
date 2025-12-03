@@ -1,14 +1,14 @@
 @interface MNRouteProximitySensor
 - (GEOLocation)closestPointOnRoute;
 - (MNRouteProximitySensor)init;
-- (MNRouteProximitySensor)initWithRoute:(id)a3;
+- (MNRouteProximitySensor)initWithRoute:(id)route;
 - (double)courseOnRoute;
 - (double)distanceFromDestination;
 - (double)distanceFromOrigin;
 - (double)distanceFromRoute;
 - (void)_updateProximity;
 - (void)_updateRouteMatch;
-- (void)updateForLocation:(id)a3;
+- (void)updateForLocation:(id)location;
 @end
 
 @implementation MNRouteProximitySensor
@@ -72,14 +72,14 @@
   }
 
   location = self->_location;
-  v3 = [(MNRouteProximitySensor *)self route];
-  v4 = [v3 destination];
+  route = [(MNRouteProximitySensor *)self route];
+  destination = [route destination];
   v5 = location;
-  v6 = [v4 bestLatLng];
-  v7 = v6;
-  if (v6)
+  bestLatLng = [destination bestLatLng];
+  v7 = bestLatLng;
+  if (bestLatLng)
   {
-    [v6 coordinate];
+    [bestLatLng coordinate];
     [(GEOLocation *)v5 coordinate];
     GEOCalculateDistance();
     v9 = v8;
@@ -113,14 +113,14 @@
   }
 
   location = self->_location;
-  v3 = [(MNRouteProximitySensor *)self route];
-  v4 = [v3 origin];
+  route = [(MNRouteProximitySensor *)self route];
+  origin = [route origin];
   v5 = location;
-  v6 = [v4 bestLatLng];
-  v7 = v6;
-  if (v6)
+  bestLatLng = [origin bestLatLng];
+  v7 = bestLatLng;
+  if (bestLatLng)
   {
-    [v6 coordinate];
+    [bestLatLng coordinate];
     [(GEOLocation *)v5 coordinate];
     GEOCalculateDistance();
     v9 = v8;
@@ -141,12 +141,12 @@
     return -1.79769313e308;
   }
 
-  v3 = [(MNRouteProximitySensor *)self route];
+  route = [(MNRouteProximitySensor *)self route];
   [(GEOLocation *)self->_location coordinate];
-  v4 = [v3 closestPointOnRoute:?];
+  v4 = [route closestPointOnRoute:?];
 
-  v5 = [(MNRouteProximitySensor *)self route];
-  [v5 courseAtRouteCoordinateIndex:v4];
+  route2 = [(MNRouteProximitySensor *)self route];
+  [route2 courseAtRouteCoordinateIndex:v4];
   v7 = v6;
 
   return v7;
@@ -158,12 +158,12 @@
   {
     if (self->_routeMatch)
     {
-      v4 = [(MNRouteProximitySensor *)self route];
+      route = [(MNRouteProximitySensor *)self route];
       [(GEOLocation *)self->_location coordinate];
-      v5 = [v4 closestPointOnRoute:?];
+      v5 = [route closestPointOnRoute:?];
 
-      v6 = [(MNRouteProximitySensor *)self route];
-      [v6 pointAtRouteCoordinate:v5];
+      route2 = [(MNRouteProximitySensor *)self route];
+      [route2 pointAtRouteCoordinate:v5];
       v8 = v7;
       v10 = v9;
 
@@ -184,13 +184,13 @@
   return v11;
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  locationCopy = location;
+  if (locationCopy)
   {
-    objc_storeStrong(&self->_location, a3);
+    objc_storeStrong(&self->_location, location);
     [(MNRouteProximitySensor *)self _updateRouteMatch];
     [(MNRouteProximitySensor *)self _updateProximity];
   }
@@ -218,9 +218,9 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (MNRouteProximitySensor)initWithRoute:(id)a3
+- (MNRouteProximitySensor)initWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v10.receiver = self;
   v10.super_class = MNRouteProximitySensor;
   v5 = [(MNRouteProximitySensor *)&v10 init];
@@ -229,7 +229,7 @@
   {
     v5->_proximity = 0;
     v5->_proximityThreshold = 20.0;
-    v7 = [objc_alloc(MEMORY[0x1E69A2548]) initWithRoute:v4 auditToken:0];
+    v7 = [objc_alloc(MEMORY[0x1E69A2548]) initWithRoute:routeCopy auditToken:0];
     routeMatcher = v6->_routeMatcher;
     v6->_routeMatcher = v7;
   }

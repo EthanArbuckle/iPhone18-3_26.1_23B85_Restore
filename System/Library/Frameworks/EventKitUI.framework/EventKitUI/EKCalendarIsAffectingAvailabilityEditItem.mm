@@ -1,6 +1,6 @@
 @interface EKCalendarIsAffectingAvailabilityEditItem
-+ (BOOL)shouldDisplayForCalendar:(id)a3;
-- (BOOL)configureWithCalendar:(id)a3;
++ (BOOL)shouldDisplayForCalendar:(id)calendar;
+- (BOOL)configureWithCalendar:(id)calendar;
 - (id)cellText;
 - (id)descriptionLabelText;
 - (id)headerTitle;
@@ -8,16 +8,16 @@
 
 @implementation EKCalendarIsAffectingAvailabilityEditItem
 
-+ (BOOL)shouldDisplayForCalendar:(id)a3
++ (BOOL)shouldDisplayForCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 source];
-  if ([v4 syncs])
+  calendarCopy = calendar;
+  source = [calendarCopy source];
+  if ([source syncs])
   {
-    v5 = [v4 constraints];
-    if ([v5 supportsAvailabilityRequests] && (!objc_msgSend(v4, "isDelegate") || objc_msgSend(v3, "allowsContentModifications")) && (objc_msgSend(v3, "isSubscribed") & 1) == 0)
+    constraints = [source constraints];
+    if ([constraints supportsAvailabilityRequests] && (!objc_msgSend(source, "isDelegate") || objc_msgSend(calendarCopy, "allowsContentModifications")) && (objc_msgSend(calendarCopy, "isSubscribed") & 1) == 0)
     {
-      v6 = [v3 isSuggestedEventCalendar] ^ 1;
+      v6 = [calendarCopy isSuggestedEventCalendar] ^ 1;
     }
 
     else
@@ -34,13 +34,13 @@
   return v6;
 }
 
-- (BOOL)configureWithCalendar:(id)a3
+- (BOOL)configureWithCalendar:(id)calendar
 {
   v6.receiver = self;
   v6.super_class = EKCalendarIsAffectingAvailabilityEditItem;
-  v3 = a3;
-  [(EKCalendarEditItem *)&v6 configureWithCalendar:v3];
-  v4 = [objc_opt_class() shouldDisplayForCalendar:{v3, v6.receiver, v6.super_class}];
+  calendarCopy = calendar;
+  [(EKCalendarEditItem *)&v6 configureWithCalendar:calendarCopy];
+  v4 = [objc_opt_class() shouldDisplayForCalendar:{calendarCopy, v6.receiver, v6.super_class}];
 
   return v4;
 }

@@ -1,16 +1,16 @@
 @interface PXSlide
-+ (id)readFromPackagePart:(id)a3 presentationState:(id)a4;
++ (id)readFromPackagePart:(id)part presentationState:(id)state;
 @end
 
 @implementation PXSlide
 
-+ (id)readFromPackagePart:(id)a3 presentationState:(id)a4
++ (id)readFromPackagePart:(id)part presentationState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  partCopy = part;
+  stateCopy = state;
   v7 = objc_alloc_init(PDSlide);
-  v8 = [v6 OCXSlideLayoutRelationshipType];
-  v9 = [v5 relationshipsByType:v8];
+  oCXSlideLayoutRelationshipType = [stateCopy OCXSlideLayoutRelationshipType];
+  v9 = [partCopy relationshipsByType:oCXSlideLayoutRelationshipType];
 
   v36 = v9;
   if ([v9 count] != 1)
@@ -19,40 +19,40 @@
   }
 
   v35 = [v9 objectAtIndex:0];
-  v34 = [v35 targetLocation];
-  v10 = [v6 modelObjectForLocation:v34];
+  targetLocation = [v35 targetLocation];
+  v10 = [stateCopy modelObjectForLocation:targetLocation];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
   [(PDSlide *)v7 setSlideLayout:v10];
-  v11 = [v10 slideMaster];
-  v12 = v11;
-  if (v11)
+  slideMaster = [v10 slideMaster];
+  v12 = slideMaster;
+  if (slideMaster)
   {
-    v13 = [v11 theme];
-    v14 = v13;
-    if (v13)
+    theme = [slideMaster theme];
+    v14 = theme;
+    if (theme)
     {
-      v15 = [v13 baseStyles];
-      v16 = v15;
-      if (v15)
+      baseStyles = [theme baseStyles];
+      v16 = baseStyles;
+      if (baseStyles)
       {
-        v17 = [v15 styleMatrix];
-        v18 = [v6 officeArtState];
-        v19 = v18;
-        if (v17 && v18)
+        styleMatrix = [baseStyles styleMatrix];
+        officeArtState = [stateCopy officeArtState];
+        v19 = officeArtState;
+        if (styleMatrix && officeArtState)
         {
-          [v18 setStyleMatrix:v17];
+          [officeArtState setStyleMatrix:styleMatrix];
         }
       }
     }
   }
 
-  [PXSlideChild readFromPackagePart:v5 toSlideChild:v7 presentationState:v6];
-  v20 = [v6 OCXCommentsRelationshipType];
-  v21 = [v5 relationshipsByType:v20];
+  [PXSlideChild readFromPackagePart:partCopy toSlideChild:v7 presentationState:stateCopy];
+  oCXCommentsRelationshipType = [stateCopy OCXCommentsRelationshipType];
+  v21 = [partCopy relationshipsByType:oCXCommentsRelationshipType];
 
   if ([v21 count])
   {
@@ -62,29 +62,29 @@
     }
 
     v22 = [v21 objectAtIndex:0];
-    v23 = [v5 package];
-    v24 = [v22 targetLocation];
-    v25 = [v23 partForLocation:v24];
+    package = [partCopy package];
+    targetLocation2 = [v22 targetLocation];
+    v25 = [package partForLocation:targetLocation2];
 
-    [PXComment readComments:v25 slide:v7 state:v6];
-    v26 = [v5 package];
-    v27 = [v22 targetLocation];
-    [v26 resetPartForLocation:v27];
+    [PXComment readComments:v25 slide:v7 state:stateCopy];
+    package2 = [partCopy package];
+    targetLocation3 = [v22 targetLocation];
+    [package2 resetPartForLocation:targetLocation3];
   }
 
-  v28 = [(PDSlide *)v7 transition];
-  v29 = [v10 transition];
-  [v28 setParent:v29];
+  transition = [(PDSlide *)v7 transition];
+  transition2 = [v10 transition];
+  [transition setParent:transition2];
 
-  [v6 resetOfficeArtState];
-  v30 = [v6 OCXNotesSlideRelationshipType];
-  v31 = [v5 firstPartWithRelationshipOfType:v30];
+  [stateCopy resetOfficeArtState];
+  oCXNotesSlideRelationshipType = [stateCopy OCXNotesSlideRelationshipType];
+  v31 = [partCopy firstPartWithRelationshipOfType:oCXNotesSlideRelationshipType];
 
   if (v31)
   {
-    v32 = [PXNotesSlide readFromPackagePart:v31 presentationState:v6];
+    v32 = [PXNotesSlide readFromPackagePart:v31 presentationState:stateCopy];
     [(PDSlide *)v7 setNotesSlide:v32];
-    [v6 resetOfficeArtState];
+    [stateCopy resetOfficeArtState];
   }
 
   return v7;

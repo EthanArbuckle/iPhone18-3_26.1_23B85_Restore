@@ -2,7 +2,7 @@
 + (id)settingsControllerModule;
 + (id)sharedInstance;
 + (id)transientProperties;
-- (BOOL)allowAutoplayVideoForAsset:(id)a3;
+- (BOOL)allowAutoplayVideoForAsset:(id)asset;
 - (BOOL)allowVisualIntelligence;
 - (BOOL)allowsVisualIntelligenceInVideoFrame;
 - (BOOL)allowsVisualIntelligenceRemoveBackground;
@@ -31,14 +31,14 @@
   [(PUOneUpSettings *)self setFullQualityCrossfadeDuration:0.8];
   [(PUOneUpSettings *)self setFullQualityCrossfadeBehavior:2];
   v3 = MGGetBoolAnswer() ^ 1;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   [(PUOneUpSettings *)self setTitleTapAction:0];
   v6 = 1;
   [(PUOneUpSettings *)self setAllowUserTransform:1];
   [(PUOneUpSettings *)self setAllowBadges:1];
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v7 = 1;
   }
@@ -48,7 +48,7 @@
     v7 = v3;
   }
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v8 = 100.0;
   }
@@ -232,23 +232,23 @@
 
 - (UIColor)videoHighlightColor
 {
-  v2 = [(PUOneUpSettings *)self videoHighlightColorName];
-  if (v2 == 1)
+  videoHighlightColorName = [(PUOneUpSettings *)self videoHighlightColorName];
+  if (videoHighlightColorName == 1)
   {
-    v2 = [MEMORY[0x1E69DC888] systemYellowColor];
+    videoHighlightColorName = [MEMORY[0x1E69DC888] systemYellowColor];
   }
 
-  else if (!v2)
+  else if (!videoHighlightColorName)
   {
-    v2 = [MEMORY[0x1E69DC888] systemBlueColor];
+    videoHighlightColorName = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  return v2;
+  return videoHighlightColorName;
 }
 
-- (BOOL)allowAutoplayVideoForAsset:(id)a3
+- (BOOL)allowAutoplayVideoForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (!self->_cachedAutoplayVideoEnabled)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:PXPreferencesIsVideoAutoplayEnabled()];
@@ -260,15 +260,15 @@
 
   if ([(PUOneUpSettings *)self autoplayVideo])
   {
-    v7 = [(NSNumber *)self->_cachedAutoplayVideoEnabled BOOLValue];
+    bOOLValue = [(NSNumber *)self->_cachedAutoplayVideoEnabled BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)allowsVisualIntelligenceVisualLookupInfoPanelMode
@@ -305,18 +305,18 @@
 
 - (BOOL)allowsVisualIntelligenceInVideoFrame
 {
-  v2 = [(PUOneUpSettings *)self userAllowsVisualIntelligenceInVideoFrame];
-  if (v2)
+  userAllowsVisualIntelligenceInVideoFrame = [(PUOneUpSettings *)self userAllowsVisualIntelligenceInVideoFrame];
+  if (userAllowsVisualIntelligenceInVideoFrame)
   {
     if (_visualIntelligenceSupport_onceToken != -1)
     {
       dispatch_once(&_visualIntelligenceSupport_onceToken, &__block_literal_global_2072);
     }
 
-    LOBYTE(v2) = byte_1EB866924 & 1;
+    LOBYTE(userAllowsVisualIntelligenceInVideoFrame) = byte_1EB866924 & 1;
   }
 
-  return v2;
+  return userAllowsVisualIntelligenceInVideoFrame;
 }
 
 - (BOOL)allowsVisualIntelligenceV2
@@ -361,7 +361,7 @@
   block[1] = 3221225472;
   block[2] = __38__PUOneUpSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken != -1)
   {
     dispatch_once(&transientProperties_onceToken, block);
@@ -427,8 +427,8 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v399 = [v407 pu_increment:1.0];
   v528[8] = v399;
   v2 = MEMORY[0x1E69C6610];
-  v391 = [MEMORY[0x1E69C3B50] sharedInstance];
-  v383 = [v2 pu_rowWithTitle:@"Swipe Down" settings:v391];
+  mEMORY[0x1E69C3B50] = [MEMORY[0x1E69C3B50] sharedInstance];
+  v383 = [v2 pu_rowWithTitle:@"Swipe Down" settings:mEMORY[0x1E69C3B50]];
   v528[9] = v383;
   v375 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Library Scrubber" valueKeyPath:@"allowScrubber"];
   v528[10] = v375;
@@ -652,8 +652,8 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v101 = [v100 pu_increment:0.100000001];
   v520[0] = v101;
   v102 = MEMORY[0x1E69C6610];
-  v103 = [MEMORY[0x1E69C3738] sharedInstance];
-  v104 = [v102 pu_rowWithTitle:@"Core Settings" settings:v103];
+  mEMORY[0x1E69C3738] = [MEMORY[0x1E69C3738] sharedInstance];
+  v104 = [v102 pu_rowWithTitle:@"Core Settings" settings:mEMORY[0x1E69C3738]];
   v520[1] = v104;
   v105 = [MEMORY[0x1E69C6610] pu_rowWithTitle:@"Review Initial Zoom Scales" action:&__block_literal_global_727];
   v520[2] = v105;
@@ -682,16 +682,16 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v429 = NSStringFromSelector(sel_retainProxyUntilZoom);
   v116 = [v115 rowWithTitle:@"Retain DP Proxy Until Zoom" valueKeyPath:v429];
   v117 = NSStringFromSelector(sel_fullQualityCrossfadeBehavior);
-  v118 = [v116 conditionFormat:@"%@ != 0", v117];
-  v518[1] = v118;
+  v117 = [v116 conditionFormat:@"%@ != 0", v117];
+  v518[1] = v117;
   v119 = MEMORY[0x1E69C66A0];
   v120 = NSStringFromSelector(sel_fullQualityCrossfadeDuration);
   v121 = [v119 rowWithTitle:@"Duration" valueKeyPath:v120];
   v122 = [v121 minValue:0.0 maxValue:3.0];
   v123 = [v122 pu_increment:0.1];
   v124 = NSStringFromSelector(sel_fullQualityCrossfadeBehavior);
-  v125 = [v123 conditionFormat:@"%@ != 0", v124];
-  v518[2] = v125;
+  v124 = [v123 conditionFormat:@"%@ != 0", v124];
+  v518[2] = v124;
   v126 = [MEMORY[0x1E695DEC8] arrayWithObjects:v518 count:3];
   v460 = [v459 sectionWithRows:v126 title:@"Image Loading"];
 
@@ -754,8 +754,8 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v301 = NSStringFromSelector(sel_showSearchQueryInVideoHighlightLabel);
   v298 = [v143 rowWithTitle:@"Show Query" valueKeyPath:v301];
   v295 = NSStringFromSelector(sel_showVideoSearchHighlightLabel);
-  v144 = [v298 conditionFormat:@"%@ == YES", v295];
-  v516[9] = v144;
+  v295 = [v298 conditionFormat:@"%@ == YES", v295];
+  v516[9] = v295;
   v145 = MEMORY[0x1E69C66A8];
   v146 = NSStringFromSelector(sel_videoStartAtFirstHighlight);
   v147 = [v145 rowWithTitle:@"Seek To Highlight" valueKeyPath:v146];
@@ -911,12 +911,12 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
 
   v201 = MEMORY[0x1E696AE18];
   v202 = NSStringFromSelector(sel_simulateAssetContentLoading);
-  v203 = [v201 predicateWithFormat:@"%@ != 0", v202];
+  v202 = [v201 predicateWithFormat:@"%@ != 0", v202];
 
   v204 = MEMORY[0x1E696AE18];
   v205 = NSStringFromSelector(sel_simulateAssetContentLoading);
   v206 = NSStringFromSelector(sel_simulateLoadingError);
-  v398 = [v204 predicateWithFormat:@"%@ != 0 AND %@ != 0", v205, v206];
+  v206 = [v204 predicateWithFormat:@"%@ != 0 AND %@ != 0", v205, v206];
 
   v389 = MEMORY[0x1E69C6638];
   v207 = MEMORY[0x1E69C66A8];
@@ -928,19 +928,19 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v355 = [v208 rowWithTitle:@"Loading Speed" valueKeyPath:v363];
   v348 = [v355 minValue:0.0 maxValue:10.0];
   v341 = [v348 pu_increment:0.5];
-  v406 = v203;
-  v334 = [v341 condition:v203];
+  v406 = v202;
+  v334 = [v341 condition:v202];
   v511[1] = v334;
   v209 = MEMORY[0x1E69C66A8];
   v210 = NSStringFromSelector(sel_simulateLoadingError);
   v211 = [v209 rowWithTitle:@"Simulate Loading Error" valueKeyPath:v210];
-  v212 = [v211 condition:v203];
+  v212 = [v211 condition:v202];
   v511[2] = v212;
   v213 = MEMORY[0x1E69C65F8];
   v214 = NSStringFromSelector(sel_simulatedLoadingErrorType);
   v215 = [v213 rowWithTitle:@"Simulated Error" valueKeyPath:v214];
   v216 = [v215 possibleValues:&unk_1F2B7D250 titles:&unk_1F2B7D268];
-  v217 = [v216 condition:v398];
+  v217 = [v216 condition:v206];
   v511[3] = v217;
   v218 = MEMORY[0x1E69C66A8];
   v219 = NSStringFromSelector(sel_showFileRadarButtonForOneUpErrorPresentationsOnInternalInstalls);
@@ -982,7 +982,7 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
 
   v238 = MEMORY[0x1E696AE18];
   v239 = NSStringFromSelector(sel_alwaysShowRenderIndicator);
-  v357 = [v238 predicateWithFormat:@"%@ != 0", v239];
+  v239 = [v238 predicateWithFormat:@"%@ != 0", v239];
 
   v303 = MEMORY[0x1E69C6638];
   v240 = MEMORY[0x1E69C66A8];
@@ -1027,7 +1027,7 @@ void __38__PUOneUpSettings_transientProperties__block_invoke(uint64_t a1)
   v285 = [v248 rowWithTitle:@"Fake Render Progress" valueKeyPath:v286];
   v284 = [v285 minValue:0.0 maxValue:1.0];
   v283 = [v284 pu_increment:1.0];
-  v282 = [v283 condition:v357];
+  v282 = [v283 condition:v239];
   v509[8] = v282;
   v249 = MEMORY[0x1E69C66A8];
   v281 = NSStringFromSelector(sel_alwaysShowAirPlayButton);

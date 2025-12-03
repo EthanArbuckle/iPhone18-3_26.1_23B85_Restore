@@ -4,7 +4,7 @@
 - (id)_queue_remoteTarget;
 - (void)_queue_createConnection;
 - (void)_queue_invalidateConnection;
-- (void)getIsLocalUserAvailableWithRequestDetails:(id)a3 completionHandler:(id)a4;
+- (void)getIsLocalUserAvailableWithRequestDetails:(id)details completionHandler:(id)handler;
 @end
 
 @implementation DNDRemoteAvailabilityServiceConnection
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __56__DNDRemoteAvailabilityServiceConnection_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -44,12 +44,12 @@ uint64_t __56__DNDRemoteAvailabilityServiceConnection_sharedInstance__block_invo
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CF32C8] userInitiated];
+    userInitiated = [MEMORY[0x277CF32C8] userInitiated];
     queuePriority = v3->_queuePriority;
-    v3->_queuePriority = v4;
+    v3->_queuePriority = userInitiated;
 
-    v6 = [MEMORY[0x277CF0C18] serial];
-    v7 = [v6 serviceClass:-[BSServiceQuality serviceClass](v3->_queuePriority relativePriority:{"serviceClass"), -[BSServiceQuality relativePriority](v3->_queuePriority, "relativePriority")}];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v7 = [serial serviceClass:-[BSServiceQuality serviceClass](v3->_queuePriority relativePriority:{"serviceClass"), -[BSServiceQuality relativePriority](v3->_queuePriority, "relativePriority")}];
     v8 = BSDispatchQueueCreate();
     queue = v3->_queue;
     v3->_queue = v8;
@@ -62,15 +62,15 @@ uint64_t __56__DNDRemoteAvailabilityServiceConnection_sharedInstance__block_invo
 {
   queue = self->_queue;
   BSDispatchQueueAssert();
-  v4 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
-  if (!v4)
+  remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+  if (!remoteTarget)
   {
     [(DNDRemoteAvailabilityServiceConnection *)self _queue_invalidateConnection];
     [(DNDRemoteAvailabilityServiceConnection *)self _queue_createConnection];
-    v4 = [(BSServiceConnection *)self->_queue_connection remoteTarget];
+    remoteTarget = [(BSServiceConnection *)self->_queue_connection remoteTarget];
   }
 
-  return v4;
+  return remoteTarget;
 }
 
 - (void)_queue_createConnection
@@ -79,8 +79,8 @@ uint64_t __56__DNDRemoteAvailabilityServiceConnection_sharedInstance__block_invo
   BSDispatchQueueAssert();
   v4 = DNDRemoteAvailabilityServiceServerInterface();
   v5 = MEMORY[0x277CF3288];
-  v6 = [v4 identifier];
-  v7 = [v5 endpointForMachName:@"com.apple.donotdisturb.availability.service" service:v6 instance:0];
+  identifier = [v4 identifier];
+  v7 = [v5 endpointForMachName:@"com.apple.donotdisturb.availability.service" service:identifier instance:0];
 
   if (v7)
   {
@@ -93,7 +93,7 @@ uint64_t __56__DNDRemoteAvailabilityServiceConnection_sharedInstance__block_invo
     v12 = 3221225472;
     v13 = __65__DNDRemoteAvailabilityServiceConnection__queue_createConnection__block_invoke;
     v14 = &unk_27843A9E0;
-    v15 = self;
+    selfCopy = self;
     v16 = v4;
     [(BSServiceConnection *)v10 configureConnection:&v11];
     [(BSServiceConnection *)self->_queue_connection activate:v11];
@@ -171,20 +171,20 @@ void __65__DNDRemoteAvailabilityServiceConnection__queue_createConnection__block
   }
 }
 
-- (void)getIsLocalUserAvailableWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getIsLocalUserAvailableWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__DNDRemoteAvailabilityServiceConnection_getIsLocalUserAvailableWithRequestDetails_completionHandler___block_invoke;
   block[3] = &unk_27843A198;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = detailsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = detailsCopy;
   dispatch_sync(queue, block);
 }
 

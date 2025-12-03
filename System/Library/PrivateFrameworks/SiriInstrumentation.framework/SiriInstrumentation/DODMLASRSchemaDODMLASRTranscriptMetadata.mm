@@ -1,80 +1,80 @@
 @interface DODMLASRSchemaDODMLASRTranscriptMetadata
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumDocumentsAccepted:(BOOL)a3;
-- (void)setHasNumDocumentsDictated:(BOOL)a3;
-- (void)setHasNumDocumentsTyped:(BOOL)a3;
-- (void)setHasNumSentencesAccepted:(BOOL)a3;
-- (void)setHasNumSentencesMungeChanged:(BOOL)a3;
-- (void)setHasNumSentencesMungeRejected:(BOOL)a3;
-- (void)setHasNumSentencesRejected:(BOOL)a3;
-- (void)setHasNumTokensAccepted:(BOOL)a3;
-- (void)setHasNumTokensDictated:(BOOL)a3;
-- (void)setHasNumTokensEstimatedExamined:(BOOL)a3;
-- (void)setHasNumTokensEstimatedRejected:(BOOL)a3;
-- (void)setHasNumTokensOutOfVocabularyAccepted:(BOOL)a3;
-- (void)setHasNumTokensTyped:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumDocumentsAccepted:(BOOL)accepted;
+- (void)setHasNumDocumentsDictated:(BOOL)dictated;
+- (void)setHasNumDocumentsTyped:(BOOL)typed;
+- (void)setHasNumSentencesAccepted:(BOOL)accepted;
+- (void)setHasNumSentencesMungeChanged:(BOOL)changed;
+- (void)setHasNumSentencesMungeRejected:(BOOL)rejected;
+- (void)setHasNumSentencesRejected:(BOOL)rejected;
+- (void)setHasNumTokensAccepted:(BOOL)accepted;
+- (void)setHasNumTokensDictated:(BOOL)dictated;
+- (void)setHasNumTokensEstimatedExamined:(BOOL)examined;
+- (void)setHasNumTokensEstimatedRejected:(BOOL)rejected;
+- (void)setHasNumTokensOutOfVocabularyAccepted:(BOOL)accepted;
+- (void)setHasNumTokensTyped:(BOOL)typed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRTranscriptMetadata
 
-- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = DODMLASRSchemaDODMLASRTranscriptMetadata;
   v5 = [(DODMLASRSchemaDODMLASRTranscriptMetadata *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numDocumentsRejected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numDocumentsRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumDocumentsRejected:](v5, "setNumDocumentsRejected:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numSentencesRejected"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numSentencesRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumSentencesRejected:](v5, "setNumSentencesRejected:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numDocumentsAccepted"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numDocumentsAccepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumDocumentsAccepted:](v5, "setNumDocumentsAccepted:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numSentencesAccepted"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numSentencesAccepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumSentencesAccepted:](v5, "setNumSentencesAccepted:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numTokensAccepted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numTokensAccepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumTokensAccepted:](v5, "setNumTokensAccepted:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"numTokensOutOfVocabularyAccepted"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numTokensOutOfVocabularyAccepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumTokensOutOfVocabularyAccepted:](v5, "setNumTokensOutOfVocabularyAccepted:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"numDocumentsDictated"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"numDocumentsDictated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
     }
 
     v29 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"numDocumentsTyped"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numDocumentsTyped"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
 
     v23 = v13;
     v28 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"numTokensDictated"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numTokensDictated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
     }
 
     v27 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"numTokensTyped"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numTokensTyped"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
     }
 
     v26 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"numSentencesMungeRejected"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numSentencesMungeRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
 
     v24 = v12;
     v25 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"numSentencesMungeChanged"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numSentencesMungeChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,14 +124,14 @@
     }
 
     v18 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"numTokensEstimatedRejected"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"numTokensEstimatedRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRTranscriptMetadata setNumTokensEstimatedRejected:](v5, "setNumTokensEstimatedRejected:", [v19 unsignedIntValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"numTokensEstimatedExamined"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"numTokensEstimatedExamined"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,30 +144,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRTranscriptMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRTranscriptMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRTranscriptMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRTranscriptMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -180,12 +180,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numDocumentsAccepted](self, "numDocumentsAccepted")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numDocumentsAccepted"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numDocumentsAccepted"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -206,7 +206,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numDocumentsDictated](self, "numDocumentsDictated")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numDocumentsDictated"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numDocumentsDictated"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -222,7 +222,7 @@ LABEL_4:
 
 LABEL_21:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numDocumentsRejected](self, "numDocumentsRejected")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numDocumentsRejected"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numDocumentsRejected"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -238,7 +238,7 @@ LABEL_5:
 
 LABEL_22:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numDocumentsTyped](self, "numDocumentsTyped")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numDocumentsTyped"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numDocumentsTyped"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -254,7 +254,7 @@ LABEL_6:
 
 LABEL_23:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numSentencesAccepted](self, "numSentencesAccepted")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numSentencesAccepted"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numSentencesAccepted"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -270,7 +270,7 @@ LABEL_7:
 
 LABEL_24:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numSentencesMungeChanged](self, "numSentencesMungeChanged")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numSentencesMungeChanged"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numSentencesMungeChanged"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -286,7 +286,7 @@ LABEL_8:
 
 LABEL_25:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numSentencesMungeRejected](self, "numSentencesMungeRejected")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numSentencesMungeRejected"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numSentencesMungeRejected"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -302,7 +302,7 @@ LABEL_9:
 
 LABEL_26:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numSentencesRejected](self, "numSentencesRejected")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numSentencesRejected"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numSentencesRejected"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -318,7 +318,7 @@ LABEL_10:
 
 LABEL_27:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensAccepted](self, "numTokensAccepted")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numTokensAccepted"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numTokensAccepted"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -334,7 +334,7 @@ LABEL_11:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensDictated](self, "numTokensDictated")}];
-  [v3 setObject:v16 forKeyedSubscript:@"numTokensDictated"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numTokensDictated"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -350,7 +350,7 @@ LABEL_12:
 
 LABEL_29:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensEstimatedExamined](self, "numTokensEstimatedExamined")}];
-  [v3 setObject:v17 forKeyedSubscript:@"numTokensEstimatedExamined"];
+  [dictionary setObject:v17 forKeyedSubscript:@"numTokensEstimatedExamined"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -366,7 +366,7 @@ LABEL_13:
 
 LABEL_30:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensEstimatedRejected](self, "numTokensEstimatedRejected")}];
-  [v3 setObject:v18 forKeyedSubscript:@"numTokensEstimatedRejected"];
+  [dictionary setObject:v18 forKeyedSubscript:@"numTokensEstimatedRejected"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -382,19 +382,19 @@ LABEL_14:
 
 LABEL_31:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensOutOfVocabularyAccepted](self, "numTokensOutOfVocabularyAccepted")}];
-  [v3 setObject:v19 forKeyedSubscript:@"numTokensOutOfVocabularyAccepted"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numTokensOutOfVocabularyAccepted"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRTranscriptMetadata numTokensTyped](self, "numTokensTyped")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numTokensTyped"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numTokensTyped"];
   }
 
 LABEL_16:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -592,16 +592,16 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_58;
@@ -610,13 +610,13 @@ LABEL_15:
   if (*&has)
   {
     numDocumentsRejected = self->_numDocumentsRejected;
-    if (numDocumentsRejected != [v4 numDocumentsRejected])
+    if (numDocumentsRejected != [equalCopy numDocumentsRejected])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -628,13 +628,13 @@ LABEL_15:
   if (v8)
   {
     numSentencesRejected = self->_numSentencesRejected;
-    if (numSentencesRejected != [v4 numSentencesRejected])
+    if (numSentencesRejected != [equalCopy numSentencesRejected])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -646,13 +646,13 @@ LABEL_15:
   if (v10)
   {
     numDocumentsAccepted = self->_numDocumentsAccepted;
-    if (numDocumentsAccepted != [v4 numDocumentsAccepted])
+    if (numDocumentsAccepted != [equalCopy numDocumentsAccepted])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -664,13 +664,13 @@ LABEL_15:
   if (v12)
   {
     numSentencesAccepted = self->_numSentencesAccepted;
-    if (numSentencesAccepted != [v4 numSentencesAccepted])
+    if (numSentencesAccepted != [equalCopy numSentencesAccepted])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -682,13 +682,13 @@ LABEL_15:
   if (v14)
   {
     numTokensAccepted = self->_numTokensAccepted;
-    if (numTokensAccepted != [v4 numTokensAccepted])
+    if (numTokensAccepted != [equalCopy numTokensAccepted])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -700,13 +700,13 @@ LABEL_15:
   if (v16)
   {
     numTokensOutOfVocabularyAccepted = self->_numTokensOutOfVocabularyAccepted;
-    if (numTokensOutOfVocabularyAccepted != [v4 numTokensOutOfVocabularyAccepted])
+    if (numTokensOutOfVocabularyAccepted != [equalCopy numTokensOutOfVocabularyAccepted])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -718,13 +718,13 @@ LABEL_15:
   if (v18)
   {
     numDocumentsDictated = self->_numDocumentsDictated;
-    if (numDocumentsDictated != [v4 numDocumentsDictated])
+    if (numDocumentsDictated != [equalCopy numDocumentsDictated])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -736,13 +736,13 @@ LABEL_15:
   if (v20)
   {
     numDocumentsTyped = self->_numDocumentsTyped;
-    if (numDocumentsTyped != [v4 numDocumentsTyped])
+    if (numDocumentsTyped != [equalCopy numDocumentsTyped])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -754,13 +754,13 @@ LABEL_15:
   if (v22)
   {
     numTokensDictated = self->_numTokensDictated;
-    if (numTokensDictated != [v4 numTokensDictated])
+    if (numTokensDictated != [equalCopy numTokensDictated])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -772,13 +772,13 @@ LABEL_15:
   if (v24)
   {
     numTokensTyped = self->_numTokensTyped;
-    if (numTokensTyped != [v4 numTokensTyped])
+    if (numTokensTyped != [equalCopy numTokensTyped])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -790,13 +790,13 @@ LABEL_15:
   if (v26)
   {
     numSentencesMungeRejected = self->_numSentencesMungeRejected;
-    if (numSentencesMungeRejected != [v4 numSentencesMungeRejected])
+    if (numSentencesMungeRejected != [equalCopy numSentencesMungeRejected])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -808,13 +808,13 @@ LABEL_15:
   if (v28)
   {
     numSentencesMungeChanged = self->_numSentencesMungeChanged;
-    if (numSentencesMungeChanged != [v4 numSentencesMungeChanged])
+    if (numSentencesMungeChanged != [equalCopy numSentencesMungeChanged])
     {
       goto LABEL_58;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v30 = (*&has >> 12) & 1;
@@ -826,10 +826,10 @@ LABEL_15:
   if (v30)
   {
     numTokensEstimatedRejected = self->_numTokensEstimatedRejected;
-    if (numTokensEstimatedRejected == [v4 numTokensEstimatedRejected])
+    if (numTokensEstimatedRejected == [equalCopy numTokensEstimatedRejected])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_54;
     }
 
@@ -848,7 +848,7 @@ LABEL_54:
   if (v32)
   {
     numTokensEstimatedExamined = self->_numTokensEstimatedExamined;
-    if (numTokensEstimatedExamined != [v4 numTokensEstimatedExamined])
+    if (numTokensEstimatedExamined != [equalCopy numTokensEstimatedExamined])
     {
       goto LABEL_58;
     }
@@ -860,9 +860,9 @@ LABEL_59:
   return v34;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1049,9 +1049,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)setHasNumTokensEstimatedExamined:(BOOL)a3
+- (void)setHasNumTokensEstimatedExamined:(BOOL)examined
 {
-  if (a3)
+  if (examined)
   {
     v3 = 0x2000;
   }
@@ -1064,9 +1064,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasNumTokensEstimatedRejected:(BOOL)a3
+- (void)setHasNumTokensEstimatedRejected:(BOOL)rejected
 {
-  if (a3)
+  if (rejected)
   {
     v3 = 4096;
   }
@@ -1079,9 +1079,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasNumSentencesMungeChanged:(BOOL)a3
+- (void)setHasNumSentencesMungeChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 2048;
   }
@@ -1094,9 +1094,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasNumSentencesMungeRejected:(BOOL)a3
+- (void)setHasNumSentencesMungeRejected:(BOOL)rejected
 {
-  if (a3)
+  if (rejected)
   {
     v3 = 1024;
   }
@@ -1109,9 +1109,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasNumTokensTyped:(BOOL)a3
+- (void)setHasNumTokensTyped:(BOOL)typed
 {
-  if (a3)
+  if (typed)
   {
     v3 = 512;
   }
@@ -1124,9 +1124,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumTokensDictated:(BOOL)a3
+- (void)setHasNumTokensDictated:(BOOL)dictated
 {
-  if (a3)
+  if (dictated)
   {
     v3 = 256;
   }
@@ -1139,9 +1139,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumDocumentsTyped:(BOOL)a3
+- (void)setHasNumDocumentsTyped:(BOOL)typed
 {
-  if (a3)
+  if (typed)
   {
     v3 = 128;
   }
@@ -1154,9 +1154,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumDocumentsDictated:(BOOL)a3
+- (void)setHasNumDocumentsDictated:(BOOL)dictated
 {
-  if (a3)
+  if (dictated)
   {
     v3 = 64;
   }
@@ -1169,9 +1169,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumTokensOutOfVocabularyAccepted:(BOOL)a3
+- (void)setHasNumTokensOutOfVocabularyAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 32;
   }
@@ -1184,9 +1184,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumTokensAccepted:(BOOL)a3
+- (void)setHasNumTokensAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 16;
   }
@@ -1199,9 +1199,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumSentencesAccepted:(BOOL)a3
+- (void)setHasNumSentencesAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 8;
   }
@@ -1214,9 +1214,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumDocumentsAccepted:(BOOL)a3
+- (void)setHasNumDocumentsAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 4;
   }
@@ -1229,9 +1229,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumSentencesRejected:(BOOL)a3
+- (void)setHasNumSentencesRejected:(BOOL)rejected
 {
-  if (a3)
+  if (rejected)
   {
     v3 = 2;
   }

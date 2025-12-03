@@ -1,79 +1,79 @@
 @interface EDSenderPersistence
 + (EFSQLTableSchema)senderAddressesTableSchema;
 + (EFSQLTableSchema)sendersTableSchema;
-+ (id)addJoinsForSenderBucketToSelectStatement:(id)a3 withSourceAddressColumn:(id)a4;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (BOOL)_addAddressesWithDatabaseIDs:(id)a3 toSenderWithDatabaseID:(id)a4 connection:(id)a5 error:(id *)a6;
-- (BOOL)_addNewSender:(id)a3 toCategoryType:(unint64_t)a4 connection:(id)a5;
-- (BOOL)_addNewSenderWithAddressIDs:(id)a3 contactIdentifier:(id)a4 toBucket:(int64_t)a5 categoryType:(unint64_t)a6 connection:(id)a7 senderDatabaseID:(int64_t *)a8;
-- (BOOL)_addNewSenderWithAddressIDs:(id)a3 contactIdentifier:(id)a4 toBucket:(int64_t)a5 connection:(id)a6 senderDatabaseID:(int64_t *)a7;
-- (BOOL)_addNewSendersForEmailAddresses:(id)a3 toBucket:(int64_t)a4 categoryType:(unint64_t)a5 connection:(id)a6 newSenders:(id *)a7;
-- (BOOL)_addNewSendersForEmailAddresses:(id)a3 toBucket:(int64_t)a4 connection:(id)a5 newSenders:(id *)a6;
-- (BOOL)_moveSenderWithDatabaseID:(int64_t)a3 toBucket:(int64_t)a4 connection:(id)a5;
-- (BOOL)_moveSenderWithDatabaseID:(int64_t)a3 toCategoryType:(unint64_t)a4 connection:(id)a5;
-- (BOOL)bucketForSenderAddress:(id)a3 bucket:(int64_t *)a4;
-- (BOOL)bucketsForSenderAddresses:(id)a3 buckets:(id *)a4;
++ (id)addJoinsForSenderBucketToSelectStatement:(id)statement withSourceAddressColumn:(id)column;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (BOOL)_addAddressesWithDatabaseIDs:(id)ds toSenderWithDatabaseID:(id)d connection:(id)connection error:(id *)error;
+- (BOOL)_addNewSender:(id)sender toCategoryType:(unint64_t)type connection:(id)connection;
+- (BOOL)_addNewSenderWithAddressIDs:(id)ds contactIdentifier:(id)identifier toBucket:(int64_t)bucket categoryType:(unint64_t)type connection:(id)connection senderDatabaseID:(int64_t *)d;
+- (BOOL)_addNewSenderWithAddressIDs:(id)ds contactIdentifier:(id)identifier toBucket:(int64_t)bucket connection:(id)connection senderDatabaseID:(int64_t *)d;
+- (BOOL)_addNewSendersForEmailAddresses:(id)addresses toBucket:(int64_t)bucket categoryType:(unint64_t)type connection:(id)connection newSenders:(id *)senders;
+- (BOOL)_addNewSendersForEmailAddresses:(id)addresses toBucket:(int64_t)bucket connection:(id)connection newSenders:(id *)senders;
+- (BOOL)_moveSenderWithDatabaseID:(int64_t)d toBucket:(int64_t)bucket connection:(id)connection;
+- (BOOL)_moveSenderWithDatabaseID:(int64_t)d toCategoryType:(unint64_t)type connection:(id)connection;
+- (BOOL)bucketForSenderAddress:(id)address bucket:(int64_t *)bucket;
+- (BOOL)bucketsForSenderAddresses:(id)addresses buckets:(id *)buckets;
 - (CNContactStore)contactStore;
-- (EDSenderPersistence)initWithDatabase:(id)a3 blockedSenderManager:(id)a4 hookRegistry:(id)a5 contactStore:(id)a6;
-- (id)_addressIDsForAddresses:(id)a3 connection:(id)a4;
-- (id)_addressIDsGroupedByContactsForAddressesByContact:(id)a3 withConnection:(id)a4 addressesByID:(id *)a5;
-- (id)_addressesGroupedByContactForAddresses:(id)a3 unmatchedAddresses:(id *)a4 otherAddressesByContact:(id *)a5;
-- (id)_addressesGroupedBySimpleAddressForAddresses:(id)a3;
-- (id)_addressesToDatabaseIDsForSelect:(id)a3 addressColumns:(id)a4 connection:(id)a5 error:(id *)a6;
-- (id)_addressesToDatabaseIDsForSimpleAddresses:(id)a3 connection:(id)a4;
-- (id)_bucketForSenderAddress:(id)a3;
-- (id)_combineDictionary:(id)a3 withDictionary:(id)a4;
-- (id)_contactIdentifierForSenderWithDatabaseID:(int64_t)a3 connection:(id)a4;
-- (id)_emailAddressForDatabaseID:(id)a3 connection:(id)a4;
-- (id)_moveSenderWithSimpleEmailAddresses:(id)a3 toBucket:(int64_t)a4 sync:(BOOL)a5 userInitiated:(BOOL)a6 transactionGeneration:(int64_t *)a7;
-- (id)_moveSendersWithSimpleEmailAddresses:(id)a3 toCategoryType:(unint64_t)a4 sync:(BOOL)a5 userInitiated:(BOOL)a6 transactionGeneration:(int64_t *)a7;
-- (id)_newlyBlockedAddressesForBlockedAddressDatabaseIDs:(id)a3 connection:(id)a4;
-- (id)_newlyUnblockedAddressesForBlockedAddressDatabaseIDs:(id)a3 connection:(id)a4;
-- (id)_simpleAddressesForAddresses:(id)a3;
-- (id)_simpleAddressesInBucket:(int64_t)a3 connection:(id)a4;
-- (id)_simpleAddressesNotInBucket:(int64_t)a3 withMessagesNewerThan:(id)a4 connection:(id)a5;
+- (EDSenderPersistence)initWithDatabase:(id)database blockedSenderManager:(id)manager hookRegistry:(id)registry contactStore:(id)store;
+- (id)_addressIDsForAddresses:(id)addresses connection:(id)connection;
+- (id)_addressIDsGroupedByContactsForAddressesByContact:(id)contact withConnection:(id)connection addressesByID:(id *)d;
+- (id)_addressesGroupedByContactForAddresses:(id)addresses unmatchedAddresses:(id *)unmatchedAddresses otherAddressesByContact:(id *)contact;
+- (id)_addressesGroupedBySimpleAddressForAddresses:(id)addresses;
+- (id)_addressesToDatabaseIDsForSelect:(id)select addressColumns:(id)columns connection:(id)connection error:(id *)error;
+- (id)_addressesToDatabaseIDsForSimpleAddresses:(id)addresses connection:(id)connection;
+- (id)_bucketForSenderAddress:(id)address;
+- (id)_combineDictionary:(id)dictionary withDictionary:(id)withDictionary;
+- (id)_contactIdentifierForSenderWithDatabaseID:(int64_t)d connection:(id)connection;
+- (id)_emailAddressForDatabaseID:(id)d connection:(id)connection;
+- (id)_moveSenderWithSimpleEmailAddresses:(id)addresses toBucket:(int64_t)bucket sync:(BOOL)sync userInitiated:(BOOL)initiated transactionGeneration:(int64_t *)generation;
+- (id)_moveSendersWithSimpleEmailAddresses:(id)addresses toCategoryType:(unint64_t)type sync:(BOOL)sync userInitiated:(BOOL)initiated transactionGeneration:(int64_t *)generation;
+- (id)_newlyBlockedAddressesForBlockedAddressDatabaseIDs:(id)ds connection:(id)connection;
+- (id)_newlyUnblockedAddressesForBlockedAddressDatabaseIDs:(id)ds connection:(id)connection;
+- (id)_simpleAddressesForAddresses:(id)addresses;
+- (id)_simpleAddressesInBucket:(int64_t)bucket connection:(id)connection;
+- (id)_simpleAddressesNotInBucket:(int64_t)bucket withMessagesNewerThan:(id)than connection:(id)connection;
 - (id)relevantSendersForSearch;
-- (int64_t)_bucketForSenderWithDatabaseID:(int64_t)a3 connection:(id)a4;
-- (unint64_t)handleReconciliationMergeErrorForTable:(id)a3 columnName:(id)a4 statement:(id)a5 journalRowID:(id)a6 protectedRowID:(id)a7 connection:(id)a8 rowsUpdated:(unint64_t *)a9 error:(id *)a10;
-- (unint64_t)userHasSentToSenderAddress:(id)a3;
+- (int64_t)_bucketForSenderWithDatabaseID:(int64_t)d connection:(id)connection;
+- (unint64_t)handleReconciliationMergeErrorForTable:(id)table columnName:(id)name statement:(id)statement journalRowID:(id)d protectedRowID:(id)iD connection:(id)connection rowsUpdated:(unint64_t *)updated error:(id *)self0;
+- (unint64_t)userHasSentToSenderAddress:(id)address;
 - (void)_invalidateCaches;
-- (void)_invalidateCachesForAddresses:(id)a3;
+- (void)_invalidateCachesForAddresses:(id)addresses;
 - (void)_loadSentToFilterFromDisk;
-- (void)_moveAddressesFromSentMessagesToPrimaryForMessages:(id)a3;
-- (void)_persistenceDidAddMessages:(id)a3;
-- (void)_reloadBlockedSendersWithAddresses:(id)a3;
-- (void)_setIsBlocked:(BOOL)a3 forAddresses:(id)a4;
-- (void)_updateBlockedSendersWithBlockedSenderAddresses:(id)a3 newlyBlockedAddresses:(id)a4 newlyUnblockedAddresses:(id)a5;
+- (void)_moveAddressesFromSentMessagesToPrimaryForMessages:(id)messages;
+- (void)_persistenceDidAddMessages:(id)messages;
+- (void)_reloadBlockedSendersWithAddresses:(id)addresses;
+- (void)_setIsBlocked:(BOOL)blocked forAddresses:(id)addresses;
+- (void)_updateBlockedSendersWithBlockedSenderAddresses:(id)addresses newlyBlockedAddresses:(id)blockedAddresses newlyUnblockedAddresses:(id)unblockedAddresses;
 - (void)_updateSentToFilter;
-- (void)addAddresses:(id)a3 toSender:(id)a4;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)moveSender:(id)a3 toCategory:(unint64_t)a4;
-- (void)moveSendersWithEmailAddresses:(id)a3 toCategoryType:(unint64_t)a4;
-- (void)removeAddresses:(id)a3 fromSender:(id)a4;
+- (void)addAddresses:(id)addresses toSender:(id)sender;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)moveSender:(id)sender toCategory:(unint64_t)category;
+- (void)moveSendersWithEmailAddresses:(id)addresses toCategoryType:(unint64_t)type;
+- (void)removeAddresses:(id)addresses fromSender:(id)sender;
 - (void)scheduleRecurringActivity;
 - (void)test_tearDown;
 @end
 
 @implementation EDSenderPersistence
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = [a1 sendersTableSchema];
-  v8 = [a1 senderAddressesTableSchema];
-  v9 = [v8 columnForName:@"sender"];
-  [v9 setAsForeignKeyForTable:v7 onDelete:2 onUpdate:0];
+  sendersTableSchema = [self sendersTableSchema];
+  senderAddressesTableSchema = [self senderAddressesTableSchema];
+  v9 = [senderAddressesTableSchema columnForName:@"sender"];
+  [v9 setAsForeignKeyForTable:sendersTableSchema onDelete:2 onUpdate:0];
 
   v10 = [EDPersistenceAssociationPlaceholder alloc];
-  v11 = [v8 columnForName:@"address"];
+  v11 = [senderAddressesTableSchema columnForName:@"address"];
   v12 = +[EDMessagePersistence addressesTableName];
   v13 = [(EDPersistenceAssociationPlaceholder *)v10 initWithColumn:v11 tableName:v12];
 
-  *a3 = MEMORY[0x1E695E0F0];
+  *resolve = MEMORY[0x1E695E0F0];
   v18[0] = v13;
-  *a4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v17[0] = v7;
-  v17[1] = v8;
+  *toResolve = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+  v17[0] = sendersTableSchema;
+  v17[1] = senderAddressesTableSchema;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -131,25 +131,25 @@
   return v5;
 }
 
-+ (id)addJoinsForSenderBucketToSelectStatement:(id)a3 withSourceAddressColumn:(id)a4
++ (id)addJoinsForSenderBucketToSelectStatement:(id)statement withSourceAddressColumn:(id)column
 {
-  v5 = a3;
-  v6 = [v5 leftOuterJoin:@"sender_addresses" sourceColumn:a4 targetColumn:@"address"];
+  statementCopy = statement;
+  v6 = [statementCopy leftOuterJoin:@"sender_addresses" sourceColumn:column targetColumn:@"address"];
   v7 = [v6 leftOuterJoin:@"senders" sourceColumn:@"sender" targetColumn:*MEMORY[0x1E699B768]];
   v8 = MEMORY[0x1E699B8F8];
   v9 = [MEMORY[0x1E699B8C8] table:@"senders" column:@"bucket"];
   v10 = [v8 ifNull:v9 second:&unk_1F45E6A18];
-  [v5 addResult:v10 alias:@"bucket"];
+  [statementCopy addResult:v10 alias:@"bucket"];
 
   return @"bucket";
 }
 
-- (EDSenderPersistence)initWithDatabase:(id)a3 blockedSenderManager:(id)a4 hookRegistry:(id)a5 contactStore:(id)a6
+- (EDSenderPersistence)initWithDatabase:(id)database blockedSenderManager:(id)manager hookRegistry:(id)registry contactStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  databaseCopy = database;
+  managerCopy = manager;
+  registryCopy = registry;
+  storeCopy = store;
   v35.receiver = self;
   v35.super_class = EDSenderPersistence;
   v15 = [(EDSenderPersistence *)&v35 init];
@@ -157,10 +157,10 @@
   v17 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_database, a3);
-    objc_storeStrong(p_isa + 3, a4);
-    objc_storeStrong(p_isa + 4, a5);
-    objc_storeStrong(p_isa + 5, a6);
+    objc_storeStrong(&v15->_database, database);
+    objc_storeStrong(p_isa + 3, manager);
+    objc_storeStrong(p_isa + 4, registry);
+    objc_storeStrong(p_isa + 5, store);
     v18 = [objc_alloc(MEMORY[0x1E699B7E0]) initWithCountLimit:1000];
     emailAddressToBucketCache = v17->_emailAddressToBucketCache;
     v17->_emailAddressToBucketCache = v18;
@@ -169,8 +169,8 @@
     databaseIDToEmailAddressCache = v17->_databaseIDToEmailAddressCache;
     v17->_databaseIDToEmailAddressCache = v20;
 
-    v22 = [(EDPersistenceDatabase *)v17->_database protectedDatabasePersistence];
-    [v22 registerMergeHandler:v17 forTable:@"sender_addresses"];
+    protectedDatabasePersistence = [(EDPersistenceDatabase *)v17->_database protectedDatabasePersistence];
+    [protectedDatabasePersistence registerMergeHandler:v17 forTable:@"sender_addresses"];
 
     v17->_contactStoreLock._os_unfair_lock_opaque = 0;
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -196,7 +196,7 @@
       EFRegisterContentProtectionObserver();
     }
 
-    [v13 registerMessageChangeHookResponder:v17];
+    [registryCopy registerMessageChangeHookResponder:v17];
   }
 
   return v17;
@@ -223,28 +223,28 @@
 
 - (void)scheduleRecurringActivity
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__blockedSendersDidChange_ name:*MEMORY[0x1E699A6D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__blockedSendersDidChange_ name:*MEMORY[0x1E699A6D8] object:0];
 
-  v5 = [(EDSenderPersistence *)self blockedSenderManager];
-  v3 = [v5 blockedSenderEmailAddresses];
-  [(EDSenderPersistence *)self _reloadBlockedSendersWithAddresses:v3];
+  blockedSenderManager = [(EDSenderPersistence *)self blockedSenderManager];
+  blockedSenderEmailAddresses = [blockedSenderManager blockedSenderEmailAddresses];
+  [(EDSenderPersistence *)self _reloadBlockedSendersWithAddresses:blockedSenderEmailAddresses];
 }
 
 - (void)test_tearDown
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:245 description:{@"%s can only be called from unit tests", "-[EDSenderPersistence test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:245 description:{@"%s can only be called from unit tests", "-[EDSenderPersistence test_tearDown]"}];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   dispatch_barrier_sync(self->_processingQueue, &__block_literal_global_85);
-  v6 = [(EDSenderPersistence *)self sentToAddressesQueue];
-  dispatch_sync(v6, &__block_literal_global_69_0);
+  sentToAddressesQueue = [(EDSenderPersistence *)self sentToAddressesQueue];
+  dispatch_sync(sentToAddressesQueue, &__block_literal_global_69_0);
 }
 
 - (id)relevantSendersForSearch
@@ -263,14 +263,14 @@
   v15 = __Block_byref_object_copy__41;
   v16 = __Block_byref_object_dispose__41;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence relevantSendersForSearch]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__EDSenderPersistence_relevantSendersForSearch__block_invoke;
   v11[3] = &unk_1E8251DA0;
   v11[4] = buf;
-  [v4 __performReadWithCaller:v5 usingBlock:v11];
+  [database __performReadWithCaller:v5 usingBlock:v11];
 
   v6 = EDSenderLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -364,15 +364,15 @@ void __47__EDSenderPersistence_relevantSendersForSearch__block_invoke_82(uint64_
   [v2 addObject:v3];
 }
 
-- (void)_invalidateCachesForAddresses:(id)a3
+- (void)_invalidateCachesForAddresses:(id)addresses
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  addressesCopy = addresses;
+  v5 = [addressesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -383,78 +383,78 @@ void __47__EDSenderPersistence_relevantSendersForSearch__block_invoke_82(uint64_
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(addressesCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(EDSenderPersistence *)self emailAddressToBucketCache];
-        v10 = [v8 emailAddressValue];
-        [v9 removeObjectForKey:v10];
+        emailAddressToBucketCache = [(EDSenderPersistence *)self emailAddressToBucketCache];
+        emailAddressValue = [v8 emailAddressValue];
+        [emailAddressToBucketCache removeObjectForKey:emailAddressValue];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [addressesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
-  [v11 removeAllObjects];
+  databaseIDToEmailAddressCache = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
+  [databaseIDToEmailAddressCache removeAllObjects];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_invalidateCaches
 {
-  v3 = [(EDSenderPersistence *)self emailAddressToBucketCache];
-  [v3 removeAllObjects];
+  emailAddressToBucketCache = [(EDSenderPersistence *)self emailAddressToBucketCache];
+  [emailAddressToBucketCache removeAllObjects];
 
-  v4 = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
-  [v4 removeAllObjects];
+  databaseIDToEmailAddressCache = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
+  [databaseIDToEmailAddressCache removeAllObjects];
 }
 
-- (BOOL)bucketForSenderAddress:(id)a3 bucket:(int64_t *)a4
+- (BOOL)bucketForSenderAddress:(id)address bucket:(int64_t *)bucket
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 emailAddressValue];
-  if (v7)
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  if (emailAddressValue)
   {
-    v8 = [(EDSenderPersistence *)self emailAddressToBucketCache];
+    emailAddressToBucketCache = [(EDSenderPersistence *)self emailAddressToBucketCache];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __53__EDSenderPersistence_bucketForSenderAddress_bucket___block_invoke;
     v18 = &unk_1E8257598;
-    v19 = self;
-    v20 = v6;
-    v9 = [v8 objectForKey:v7 generator:&v15];
+    selfCopy = self;
+    v20 = addressCopy;
+    v9 = [emailAddressToBucketCache objectForKey:emailAddressValue generator:&v15];
 
     v10 = EDSenderLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v7 ef_publicDescription];
+      ef_publicDescription = [emailAddressValue ef_publicDescription];
       *buf = 138543618;
-      v22 = v11;
+      v22 = ef_publicDescription;
       v23 = 2112;
       v24 = v9;
       _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_INFO, "EmailAddress:%{public}@ bucket is %@", buf, 0x16u);
     }
 
     v12 = v9 != 0;
-    if (a4 && v9)
+    if (bucket && v9)
     {
-      *a4 = [v9 integerValue];
+      *bucket = [v9 integerValue];
     }
   }
 
   else
   {
-    if (a4)
+    if (bucket)
     {
-      *a4 = 0;
+      *bucket = 0;
     }
 
     v12 = 1;
@@ -464,9 +464,9 @@ void __47__EDSenderPersistence_relevantSendersForSearch__block_invoke_82(uint64_
   return v12;
 }
 
-- (id)_bucketForSenderAddress:(id)a3
+- (id)_bucketForSenderAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -477,20 +477,20 @@ void __47__EDSenderPersistence_relevantSendersForSearch__block_invoke_82(uint64_
   v20 = __Block_byref_object_copy__41;
   v21 = __Block_byref_object_dispose__41;
   v22 = 0;
-  v5 = [v4 emailAddressValue];
-  v6 = [(EDSenderPersistence *)self database];
+  emailAddressValue = [addressCopy emailAddressValue];
+  database = [(EDSenderPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence _bucketForSenderAddress:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__EDSenderPersistence__bucketForSenderAddress___block_invoke;
   v12[3] = &unk_1E82575C0;
-  v8 = v4;
+  v8 = addressCopy;
   v13 = v8;
-  v9 = v5;
+  v9 = emailAddressValue;
   v14 = v9;
   v15 = v23;
   v16 = &v17;
-  [v6 __performReadWithCaller:v7 usingBlock:v12];
+  [database __performReadWithCaller:v7 usingBlock:v12];
 
   v10 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -600,17 +600,17 @@ void __47__EDSenderPersistence__bucketForSenderAddress___block_invoke_2(uint64_t
   *(v5 + 40) = v4;
 }
 
-- (BOOL)bucketsForSenderAddresses:(id)a3 buckets:(id *)a4
+- (BOOL)bucketsForSenderAddresses:(id)addresses buckets:(id *)buckets
 {
   v27 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  addressesCopy = addresses;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v18;
-  v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:{16, v18}];
+  obj = addressesCopy;
+  v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:{16, addressesCopy}];
   if (v6)
   {
     v7 = *v23;
@@ -627,9 +627,9 @@ void __47__EDSenderPersistence__bucketForSenderAddress___block_invoke_2(uint64_t
         v21 = 0;
         if (![(EDSenderPersistence *)self bucketForSenderAddress:v9 bucket:&v21])
         {
-          if (a4)
+          if (buckets)
           {
-            *a4 = 0;
+            *buckets = 0;
           }
 
           v15 = 0;
@@ -661,10 +661,10 @@ void __47__EDSenderPersistence__bucketForSenderAddress___block_invoke_2(uint64_t
     }
   }
 
-  if (a4)
+  if (buckets)
   {
     v14 = v5;
-    *a4 = v5;
+    *buckets = v5;
   }
 
   v15 = 1;
@@ -674,39 +674,39 @@ LABEL_17:
   return v15;
 }
 
-- (void)moveSender:(id)a3 toCategory:(unint64_t)a4
+- (void)moveSender:(id)sender toCategory:(unint64_t)category
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(EDSenderPersistence *)self hookRegistry];
-  v26[0] = v6;
+  senderCopy = sender;
+  hookRegistry = [(EDSenderPersistence *)self hookRegistry];
+  v26[0] = senderCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  [v7 persistenceWillChangeSenders:v8];
+  [hookRegistry persistenceWillChangeSenders:v8];
 
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v9 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence moveSender:toCategory:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __45__EDSenderPersistence_moveSender_toCategory___block_invoke;
   v16[3] = &unk_1E8253058;
   v19 = &v21;
-  v11 = v6;
+  v11 = senderCopy;
   v17 = v11;
-  v18 = self;
-  v20 = a4;
-  [v9 __performWriteWithCaller:v10 usingBlock:v16];
+  selfCopy = self;
+  categoryCopy = category;
+  [database __performWriteWithCaller:v10 usingBlock:v16];
 
-  v12 = [v11 addresses];
-  [(EDSenderPersistence *)self _invalidateCachesForAddresses:v12];
+  addresses = [v11 addresses];
+  [(EDSenderPersistence *)self _invalidateCachesForAddresses:addresses];
 
-  v13 = [(EDSenderPersistence *)self hookRegistry];
+  hookRegistry2 = [(EDSenderPersistence *)self hookRegistry];
   v25 = v11;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-  [v13 persistenceDidChangeSenders:v14 generation:v22[3]];
+  [hookRegistry2 persistenceDidChangeSenders:v14 generation:v22[3]];
 
   _Block_object_dispose(&v21, 8);
   v15 = *MEMORY[0x1E69E9840];
@@ -732,19 +732,19 @@ uint64_t __45__EDSenderPersistence_moveSender_toCategory___block_invoke(uint64_t
   return v6;
 }
 
-- (void)moveSendersWithEmailAddresses:(id)a3 toCategoryType:(unint64_t)a4
+- (void)moveSendersWithEmailAddresses:(id)addresses toCategoryType:(unint64_t)type
 {
-  v9[4] = a4;
+  v9[4] = type;
   v10 = 0;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__EDSenderPersistence_moveSendersWithEmailAddresses_toCategoryType___block_invoke;
   v9[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v6 = [a3 ef_compactMap:v9];
-  v7 = [(EDSenderPersistence *)self _moveSendersWithSimpleEmailAddresses:v6 toCategoryType:a4 sync:1 userInitiated:1 transactionGeneration:&v10];
+  v6 = [addresses ef_compactMap:v9];
+  v7 = [(EDSenderPersistence *)self _moveSendersWithSimpleEmailAddresses:v6 toCategoryType:type sync:1 userInitiated:1 transactionGeneration:&v10];
   [(EDSenderPersistence *)self _invalidateCaches];
-  v8 = [(EDSenderPersistence *)self hookRegistry];
-  [v8 persistenceDidChangeSenders:v7 generation:v10];
+  hookRegistry = [(EDSenderPersistence *)self hookRegistry];
+  [hookRegistry persistenceDidChangeSenders:v7 generation:v10];
 }
 
 id __68__EDSenderPersistence_moveSendersWithEmailAddresses_toCategoryType___block_invoke(uint64_t a1, void *a2)
@@ -786,32 +786,32 @@ id __81__EDSenderPersistence__moveSenderWithEmailAddresses_toBucket_sync_userIni
   return v3;
 }
 
-- (id)_moveSendersWithSimpleEmailAddresses:(id)a3 toCategoryType:(unint64_t)a4 sync:(BOOL)a5 userInitiated:(BOOL)a6 transactionGeneration:(int64_t *)a7
+- (id)_moveSendersWithSimpleEmailAddresses:(id)addresses toCategoryType:(unint64_t)type sync:(BOOL)sync userInitiated:(BOOL)initiated transactionGeneration:(int64_t *)generation
 {
-  v10 = a3;
+  addressesCopy = addresses;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence _moveSendersWithSimpleEmailAddresses:toCategoryType:sync:userInitiated:transactionGeneration:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __116__EDSenderPersistence__moveSendersWithSimpleEmailAddresses_toCategoryType_sync_userInitiated_transactionGeneration___block_invoke;
   v20[3] = &unk_1E8254B20;
   v24 = &v26;
-  v14 = v10;
+  v14 = addressesCopy;
   v21 = v14;
-  v22 = self;
-  v25 = a4;
+  selfCopy = self;
+  typeCopy = type;
   v15 = v11;
   v23 = v15;
-  v16 = [v12 __performWriteWithCaller:v13 usingBlock:v20];
+  v16 = [database __performWriteWithCaller:v13 usingBlock:v20];
 
-  if (a7)
+  if (generation)
   {
-    *a7 = v27[3];
+    *generation = v27[3];
   }
 
   if (v16)
@@ -1093,32 +1093,32 @@ void __116__EDSenderPersistence__moveSendersWithSimpleEmailAddresses_toCategoryT
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_moveSenderWithSimpleEmailAddresses:(id)a3 toBucket:(int64_t)a4 sync:(BOOL)a5 userInitiated:(BOOL)a6 transactionGeneration:(int64_t *)a7
+- (id)_moveSenderWithSimpleEmailAddresses:(id)addresses toBucket:(int64_t)bucket sync:(BOOL)sync userInitiated:(BOOL)initiated transactionGeneration:(int64_t *)generation
 {
-  v10 = a3;
+  addressesCopy = addresses;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence _moveSenderWithSimpleEmailAddresses:toBucket:sync:userInitiated:transactionGeneration:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __109__EDSenderPersistence__moveSenderWithSimpleEmailAddresses_toBucket_sync_userInitiated_transactionGeneration___block_invoke;
   v20[3] = &unk_1E8254B20;
   v24 = &v26;
-  v14 = v10;
+  v14 = addressesCopy;
   v21 = v14;
-  v22 = self;
-  v25 = a4;
+  selfCopy = self;
+  bucketCopy = bucket;
   v15 = v11;
   v23 = v15;
-  v16 = [v12 __performWriteWithCaller:v13 usingBlock:v20];
+  v16 = [database __performWriteWithCaller:v13 usingBlock:v20];
 
-  if (a7)
+  if (generation)
   {
-    *a7 = v27[3];
+    *generation = v27[3];
   }
 
   if (v16)
@@ -1401,27 +1401,27 @@ void __109__EDSenderPersistence__moveSenderWithSimpleEmailAddresses_toBucket_syn
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAddresses:(id)a3 toSender:(id)a4
+- (void)addAddresses:(id)addresses toSender:(id)sender
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 databaseID];
-  if (v9 == *MEMORY[0x1E699A728])
+  addressesCopy = addresses;
+  senderCopy = sender;
+  databaseID = [senderCopy databaseID];
+  if (databaseID == *MEMORY[0x1E699A728])
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:693 description:@"Sender must have valid database ID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:693 description:@"Sender must have valid database ID"];
   }
 
-  v10 = [(EDSenderPersistence *)self hookRegistry];
-  [v10 persistenceWillAddAddresses:v7 toSender:v8];
+  hookRegistry = [(EDSenderPersistence *)self hookRegistry];
+  [hookRegistry persistenceWillAddAddresses:addressesCopy toSender:senderCopy];
 
-  v11 = [v8 bucket];
+  bucket = [senderCopy bucket];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v12 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence addAddresses:toSender:]"];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -1429,10 +1429,10 @@ void __109__EDSenderPersistence__moveSenderWithSimpleEmailAddresses_toBucket_syn
   v27[3] = &unk_1E8253058;
   v29 = &v31;
   v27[4] = self;
-  v14 = v7;
+  v14 = addressesCopy;
   v28 = v14;
-  v30 = v9;
-  v15 = [v12 __performWriteWithCaller:v13 usingBlock:v27];
+  v30 = databaseID;
+  v15 = [database __performWriteWithCaller:v13 usingBlock:v27];
 
   if (v15)
   {
@@ -1455,7 +1455,7 @@ void __109__EDSenderPersistence__moveSenderWithSimpleEmailAddresses_toBucket_syn
             objc_enumerationMutation(v16);
           }
 
-          [v8 addAddress:{*(*(&v23 + 1) + 8 * v19++), v23}];
+          [senderCopy addAddress:{*(*(&v23 + 1) + 8 * v19++), v23}];
         }
 
         while (v17 != v19);
@@ -1466,10 +1466,10 @@ void __109__EDSenderPersistence__moveSenderWithSimpleEmailAddresses_toBucket_syn
     }
   }
 
-  [(EDSenderPersistence *)self _setIsBlocked:v11 == 50 forAddresses:v14];
+  [(EDSenderPersistence *)self _setIsBlocked:bucket == 50 forAddresses:v14];
   [(EDSenderPersistence *)self _invalidateCaches];
-  v20 = [(EDSenderPersistence *)self hookRegistry];
-  [v20 persistenceDidAddAddresses:v14 toSender:v8 generation:v32[3]];
+  hookRegistry2 = [(EDSenderPersistence *)self hookRegistry];
+  [hookRegistry2 persistenceDidAddAddresses:v14 toSender:senderCopy generation:v32[3]];
 
   _Block_object_dispose(&v31, 8);
   v21 = *MEMORY[0x1E69E9840];
@@ -1521,26 +1521,26 @@ uint64_t __45__EDSenderPersistence_addAddresses_toSender___block_invoke(uint64_t
   return v10;
 }
 
-- (void)removeAddresses:(id)a3 fromSender:(id)a4
+- (void)removeAddresses:(id)addresses fromSender:(id)sender
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 databaseID];
-  if (v9 == *MEMORY[0x1E699A728])
+  addressesCopy = addresses;
+  senderCopy = sender;
+  databaseID = [senderCopy databaseID];
+  if (databaseID == *MEMORY[0x1E699A728])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:728 description:@"Sender must have valid database ID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSenderPersistence.m" lineNumber:728 description:@"Sender must have valid database ID"];
   }
 
-  v10 = [(EDSenderPersistence *)self hookRegistry];
-  [v10 persistenceWillRemoveAddresses:v7 fromSender:v8];
+  hookRegistry = [(EDSenderPersistence *)self hookRegistry];
+  [hookRegistry persistenceWillRemoveAddresses:addressesCopy fromSender:senderCopy];
 
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v11 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence removeAddresses:fromSender:]"];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -1548,9 +1548,9 @@ uint64_t __45__EDSenderPersistence_addAddresses_toSender___block_invoke(uint64_t
   v26[3] = &unk_1E8251078;
   v28 = &v29;
   v26[4] = self;
-  v13 = v8;
+  v13 = senderCopy;
   v27 = v13;
-  v14 = [v11 __performWriteWithCaller:v12 usingBlock:v26];
+  v14 = [database __performWriteWithCaller:v12 usingBlock:v26];
 
   if (v14)
   {
@@ -1558,7 +1558,7 @@ uint64_t __45__EDSenderPersistence_addAddresses_toSender___block_invoke(uint64_t
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v7;
+    v15 = addressesCopy;
     v16 = [v15 countByEnumeratingWithState:&v22 objects:v33 count:16];
     if (v16)
     {
@@ -1584,10 +1584,10 @@ uint64_t __45__EDSenderPersistence_addAddresses_toSender___block_invoke(uint64_t
     }
   }
 
-  [(EDSenderPersistence *)self _setIsBlocked:0 forAddresses:v7, v22];
+  [(EDSenderPersistence *)self _setIsBlocked:0 forAddresses:addressesCopy, v22];
   [(EDSenderPersistence *)self _invalidateCaches];
-  v19 = [(EDSenderPersistence *)self hookRegistry];
-  [v19 persistenceDidRemoveAddresses:v7 fromSender:v13 generation:v30[3]];
+  hookRegistry2 = [(EDSenderPersistence *)self hookRegistry];
+  [hookRegistry2 persistenceDidRemoveAddresses:addressesCopy fromSender:v13 generation:v30[3]];
 
   _Block_object_dispose(&v29, 8);
   v20 = *MEMORY[0x1E69E9840];
@@ -1610,10 +1610,10 @@ uint64_t __50__EDSenderPersistence_removeAddresses_fromSender___block_invoke(uin
   return v11;
 }
 
-- (unint64_t)userHasSentToSenderAddress:(id)a3
+- (unint64_t)userHasSentToSenderAddress:(id)address
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   if ((*(*MEMORY[0x1E699B750] + 16))())
   {
     v5 = 1;
@@ -1621,22 +1621,22 @@ uint64_t __50__EDSenderPersistence_removeAddresses_fromSender___block_invoke(uin
   }
 
   v22 = 0;
-  if (![(EDSenderPersistence *)self bucketForSenderAddress:v4 bucket:&v22])
+  if (![(EDSenderPersistence *)self bucketForSenderAddress:addressCopy bucket:&v22])
   {
     *buf = 0;
     *&v24 = buf;
     *(&v24 + 1) = 0x2020000000;
     v25 = 0;
-    v7 = [(EDSenderPersistence *)self sentToAddressesQueue];
+    sentToAddressesQueue = [(EDSenderPersistence *)self sentToAddressesQueue];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __50__EDSenderPersistence_userHasSentToSenderAddress___block_invoke;
     v18 = &unk_1E8251C08;
     v21 = buf;
-    v19 = self;
-    v8 = v4;
+    selfCopy = self;
+    v8 = addressCopy;
     v20 = v8;
-    dispatch_sync(v7, &v15);
+    dispatch_sync(sentToAddressesQueue, &v15);
 
     v9 = *(v24 + 24);
     if (v9)
@@ -1705,12 +1705,12 @@ LABEL_23:
   v6 = EDSenderLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v4 emailAddressValue];
-    v14 = [v13 ef_publicDescription];
+    emailAddressValue = [addressCopy emailAddressValue];
+    ef_publicDescription = [emailAddressValue ef_publicDescription];
     *buf = 67109378;
     *&buf[4] = v5;
     LOWORD(v24) = 2114;
-    *(&v24 + 2) = v14;
+    *(&v24 + 2) = ef_publicDescription;
     _os_log_debug_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEBUG, "Returning 'sentTo' result %u from protected database for address: %{public}@", buf, 0x12u);
   }
 
@@ -1744,13 +1744,13 @@ void __50__EDSenderPersistence_userHasSentToSenderAddress___block_invoke(uint64_
 - (void)_loadSentToFilterFromDisk
 {
   objc_initWeak(&location, self);
-  v3 = [(EDSenderPersistence *)self sentToAddressesQueue];
+  sentToAddressesQueue = [(EDSenderPersistence *)self sentToAddressesQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__EDSenderPersistence__loadSentToFilterFromDisk__block_invoke;
   v4[3] = &unk_1E8250808;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(sentToAddressesQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1809,54 +1809,54 @@ void __42__EDSenderPersistence__updateSentToFilter__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_addNewSender:(id)a3 toCategoryType:(unint64_t)a4 connection:(id)a5
+- (BOOL)_addNewSender:(id)sender toCategoryType:(unint64_t)type connection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 addresses];
-  v11 = [(EDSenderPersistence *)self _addressIDsForAddresses:v10 connection:v9];
+  senderCopy = sender;
+  connectionCopy = connection;
+  addresses = [senderCopy addresses];
+  v11 = [(EDSenderPersistence *)self _addressIDsForAddresses:addresses connection:connectionCopy];
 
   v14 = *MEMORY[0x1E699A728];
-  v12 = [v8 contactIdentifier];
-  LOBYTE(a4) = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v11 contactIdentifier:v12 toBucket:0 categoryType:a4 connection:v9 senderDatabaseID:&v14];
+  contactIdentifier = [senderCopy contactIdentifier];
+  LOBYTE(type) = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v11 contactIdentifier:contactIdentifier toBucket:0 categoryType:type connection:connectionCopy senderDatabaseID:&v14];
 
-  [v8 setDatabaseID:v14];
-  return a4;
+  [senderCopy setDatabaseID:v14];
+  return type;
 }
 
-- (id)_addressIDsForAddresses:(id)a3 connection:(id)a4
+- (id)_addressIDsForAddresses:(id)addresses connection:(id)connection
 {
-  v6 = a4;
-  v7 = [(EDSenderPersistence *)self _simpleAddressesForAddresses:a3];
-  v8 = [EDMessagePersistence allDatabaseIDsForSimpleAddresses:v7 connection:v6];
+  connectionCopy = connection;
+  v7 = [(EDSenderPersistence *)self _simpleAddressesForAddresses:addresses];
+  v8 = [EDMessagePersistence allDatabaseIDsForSimpleAddresses:v7 connection:connectionCopy];
 
   return v8;
 }
 
-- (BOOL)_addNewSenderWithAddressIDs:(id)a3 contactIdentifier:(id)a4 toBucket:(int64_t)a5 connection:(id)a6 senderDatabaseID:(int64_t *)a7
+- (BOOL)_addNewSenderWithAddressIDs:(id)ds contactIdentifier:(id)identifier toBucket:(int64_t)bucket connection:(id)connection senderDatabaseID:(int64_t *)d
 {
   v73 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v11 = a4;
-  v12 = a6;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  connectionCopy = connection;
   v13 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"senders"];
-  v14 = v11;
-  if (!v11)
+  null = identifierCopy;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v13 setObject:v14 forKeyedSubscript:@"contact_identifier"];
-  if (!v11)
+  [v13 setObject:null forKeyedSubscript:@"contact_identifier"];
+  if (!identifierCopy)
   {
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   [v13 setObject:v15 forKeyedSubscript:@"bucket"];
 
   [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"user_initiated"];
   v62 = 0;
-  LODWORD(v15) = [v12 executeInsertStatement:v13 error:&v62];
+  LODWORD(v15) = [connectionCopy executeInsertStatement:v13 error:&v62];
   v16 = v62;
   v17 = v16;
   v58 = 0;
@@ -1866,27 +1866,27 @@ void __42__EDSenderPersistence__updateSentToFilter__block_invoke_2(uint64_t a1)
   v61 = *MEMORY[0x1E699A728];
   if (v15)
   {
-    v51 = self;
-    v19 = [v12 lastInsertedDatabaseID];
-    v59[3] = v19;
+    selfCopy2 = self;
+    lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
+    v59[3] = lastInsertedDatabaseID;
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!identifierCopy)
   {
     goto LABEL_29;
   }
 
-  v51 = self;
-  v29 = [v16 domain];
-  if (![v29 isEqualToString:*MEMORY[0x1E699B770]] || objc_msgSend(v17, "code") != 19)
+  selfCopy2 = self;
+  domain = [v16 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E699B770]] || objc_msgSend(v17, "code") != 19)
   {
     v22 = v17;
     goto LABEL_26;
   }
 
-  v30 = [v17 userInfo];
-  v31 = [v30 objectForKeyedSubscript:*MEMORY[0x1E699B778]];
+  userInfo = [v17 userInfo];
+  v31 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E699B778]];
   v32 = [v31 integerValue] == 2067;
 
   if (!v32)
@@ -1898,7 +1898,7 @@ void __42__EDSenderPersistence__updateSentToFilter__block_invoke_2(uint64_t a1)
   v34 = *MEMORY[0x1E699B768];
   v50 = [v33 initWithResultColumn:*MEMORY[0x1E699B768] table:@"senders"];
   v35 = [MEMORY[0x1E699B8C8] column:@"contact_identifier"];
-  v36 = [v35 equalTo:v11];
+  v36 = [v35 equalTo:identifierCopy];
   [v50 setWhere:v36];
 
   v56 = v17;
@@ -1907,13 +1907,13 @@ void __42__EDSenderPersistence__updateSentToFilter__block_invoke_2(uint64_t a1)
   v57[2] = __106__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_toBucket_connection_senderDatabaseID___block_invoke;
   v57[3] = &unk_1E8250418;
   v57[4] = &v58;
-  LODWORD(v36) = [v12 executeSelectStatement:v50 withBlock:v57 error:&v56];
+  LODWORD(v36) = [connectionCopy executeSelectStatement:v50 withBlock:v57 error:&v56];
   v22 = v56;
 
   if (!v36)
   {
 LABEL_24:
-    v29 = v50;
+    domain = v50;
 LABEL_26:
 
     goto LABEL_30;
@@ -1924,14 +1924,14 @@ LABEL_26:
     v37 = EDSenderLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      [EDSenderPersistence _addNewSenderWithAddressIDs:v11 contactIdentifier:v37 toBucket:? connection:? senderDatabaseID:?];
+      [EDSenderPersistence _addNewSenderWithAddressIDs:identifierCopy contactIdentifier:v37 toBucket:? connection:? senderDatabaseID:?];
     }
 
     goto LABEL_24;
   }
 
   v38 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"senders"];
-  v39 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v39 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   [v38 setObject:v39 forKeyedSubscript:@"bucket"];
 
   [v38 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"user_initiated"];
@@ -1941,7 +1941,7 @@ LABEL_26:
   [v38 setWhereClause:v42];
 
   v55 = v22;
-  v43 = [v12 executeUpdateStatement:v38 error:&v55];
+  v43 = [connectionCopy executeUpdateStatement:v38 error:&v55];
   v17 = v55;
 
   if (!v43)
@@ -1951,11 +1951,11 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v19 = v59[3];
+  lastInsertedDatabaseID = v59[3];
 LABEL_7:
-  v20 = [MEMORY[0x1E696AD98] numberWithLongLong:v19];
+  v20 = [MEMORY[0x1E696AD98] numberWithLongLong:lastInsertedDatabaseID];
   v54 = v17;
-  v21 = [(EDSenderPersistence *)v51 _addAddressesWithDatabaseIDs:v53 toSenderWithDatabaseID:v20 connection:v12 error:&v54];
+  v21 = [(EDSenderPersistence *)selfCopy2 _addAddressesWithDatabaseIDs:dsCopy toSenderWithDatabaseID:v20 connection:connectionCopy error:&v54];
   v22 = v54;
 
   if (v21)
@@ -1965,18 +1965,18 @@ LABEL_7:
     {
       v24 = v59[3];
       v25 = @"default";
-      if (a5 == 200)
+      if (bucket == 200)
       {
         v25 = @"sentTo";
       }
 
-      if (a5 == 50)
+      if (bucket == 50)
       {
         v25 = @"blocked";
       }
 
       v26 = v25;
-      v27 = [v53 count];
+      v27 = [dsCopy count];
       *buf = 134219010;
       v64 = v24;
       v65 = 2114;
@@ -1984,9 +1984,9 @@ LABEL_7:
       v67 = 2048;
       v68 = v27;
       v69 = 2114;
-      v70 = v53;
+      v70 = dsCopy;
       v71 = 2114;
-      v72 = v11;
+      v72 = identifierCopy;
       _os_log_impl(&dword_1C61EF000, v23, OS_LOG_TYPE_DEFAULT, "Added new sender (%lld) to bucket %{public}@ with %lu addresses: %{public}@, contact identifier: %{public}@", buf, 0x34u);
     }
 
@@ -1999,38 +1999,38 @@ LABEL_30:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v46 = @"default";
-    if (a5 == 200)
+    if (bucket == 200)
     {
       v46 = @"sentTo";
     }
 
-    if (a5 == 50)
+    if (bucket == 50)
     {
       v46 = @"blocked";
     }
 
     v47 = v46;
-    v48 = [v53 count];
-    v49 = [v22 ef_publicDescription];
+    v48 = [dsCopy count];
+    ef_publicDescription = [v22 ef_publicDescription];
     *buf = 138544386;
     v64 = v47;
     v65 = 2048;
     v66 = v48;
     v67 = 2114;
-    v68 = v53;
+    v68 = dsCopy;
     v69 = 2114;
-    v70 = v11;
+    v70 = identifierCopy;
     v71 = 2114;
-    v72 = v49;
+    v72 = ef_publicDescription;
     _os_log_error_impl(&dword_1C61EF000, v23, OS_LOG_TYPE_ERROR, "Failed to add new sender to bucket %{public}@ with %lu addresses: %{public}@, contact identifier: %{public}@, error: %{public}@", buf, 0x34u);
   }
 
   v28 = 0;
 LABEL_32:
 
-  if (a7)
+  if (d)
   {
-    *a7 = v59[3];
+    *d = v59[3];
   }
 
   _Block_object_dispose(&v58, 8);
@@ -2046,34 +2046,34 @@ void __106__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (BOOL)_addNewSenderWithAddressIDs:(id)a3 contactIdentifier:(id)a4 toBucket:(int64_t)a5 categoryType:(unint64_t)a6 connection:(id)a7 senderDatabaseID:(int64_t *)a8
+- (BOOL)_addNewSenderWithAddressIDs:(id)ds contactIdentifier:(id)identifier toBucket:(int64_t)bucket categoryType:(unint64_t)type connection:(id)connection senderDatabaseID:(int64_t *)d
 {
   v77 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v13 = a4;
-  v57 = a7;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  connectionCopy = connection;
   v14 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"senders"];
-  v15 = v13;
-  if (!v13)
+  null = identifierCopy;
+  if (!identifierCopy)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v14 setObject:v15 forKeyedSubscript:@"contact_identifier"];
-  if (!v13)
+  [v14 setObject:null forKeyedSubscript:@"contact_identifier"];
+  if (!identifierCopy)
   {
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   [v14 setObject:v16 forKeyedSubscript:@"bucket"];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v14 setObject:v17 forKeyedSubscript:@"category"];
 
   [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"user_initiated"];
-  v54 = self;
+  selfCopy = self;
   v66 = 0;
-  LODWORD(v17) = [v57 executeInsertStatement:v14 error:&v66];
+  LODWORD(v17) = [connectionCopy executeInsertStatement:v14 error:&v66];
   v18 = v66;
   v19 = v18;
   v62 = 0;
@@ -2081,28 +2081,28 @@ void __106__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   v64 = 0x2020000000;
   v20 = *MEMORY[0x1E699A728];
   v65 = *MEMORY[0x1E699A728];
-  v21 = v56;
+  v21 = dsCopy;
   if (v17)
   {
-    v22 = [v57 lastInsertedDatabaseID];
-    v63[3] = v22;
+    lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
+    v63[3] = lastInsertedDatabaseID;
     goto LABEL_7;
   }
 
-  if (!v13)
+  if (!identifierCopy)
   {
     goto LABEL_29;
   }
 
-  v32 = [v18 domain];
-  if (![v32 isEqualToString:*MEMORY[0x1E699B770]] || objc_msgSend(v19, "code") != 19)
+  domain = [v18 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E699B770]] || objc_msgSend(v19, "code") != 19)
   {
     v25 = v19;
     goto LABEL_26;
   }
 
-  v52 = [v19 userInfo];
-  v33 = [v52 objectForKeyedSubscript:*MEMORY[0x1E699B778]];
+  userInfo = [v19 userInfo];
+  v33 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E699B778]];
   v34 = [v33 integerValue] == 2067;
 
   if (!v34)
@@ -2114,7 +2114,7 @@ void __106__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   v51 = *MEMORY[0x1E699B768];
   v53 = [v35 initWithResultColumn:? table:?];
   v36 = [MEMORY[0x1E699B8C8] column:@"contact_identifier"];
-  v37 = [v36 equalTo:v13];
+  v37 = [v36 equalTo:identifierCopy];
   [v53 setWhere:v37];
 
   v60 = v19;
@@ -2123,13 +2123,13 @@ void __106__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   v61[2] = __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_toBucket_categoryType_connection_senderDatabaseID___block_invoke;
   v61[3] = &unk_1E8250418;
   v61[4] = &v62;
-  LODWORD(v37) = [v57 executeSelectStatement:v53 withBlock:v61 error:&v60];
+  LODWORD(v37) = [connectionCopy executeSelectStatement:v53 withBlock:v61 error:&v60];
   v25 = v60;
 
   if (!v37)
   {
 LABEL_24:
-    v32 = v53;
+    domain = v53;
 LABEL_26:
 
     goto LABEL_30;
@@ -2140,17 +2140,17 @@ LABEL_26:
     v38 = EDSenderLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      [EDSenderPersistence _addNewSenderWithAddressIDs:v13 contactIdentifier:v38 toBucket:? connection:? senderDatabaseID:?];
+      [EDSenderPersistence _addNewSenderWithAddressIDs:identifierCopy contactIdentifier:v38 toBucket:? connection:? senderDatabaseID:?];
     }
 
     goto LABEL_24;
   }
 
   v39 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"senders"];
-  v40 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v40 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   [v39 setObject:v40 forKeyedSubscript:@"bucket"];
 
-  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v39 setObject:v41 forKeyedSubscript:@"category"];
 
   [v39 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"user_initiated"];
@@ -2160,7 +2160,7 @@ LABEL_26:
   [v39 setWhereClause:v44];
 
   v59 = v25;
-  LODWORD(v42) = [v57 executeUpdateStatement:v39 error:&v59];
+  LODWORD(v42) = [connectionCopy executeUpdateStatement:v39 error:&v59];
   v19 = v59;
 
   if (!v42)
@@ -2170,12 +2170,12 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v22 = v63[3];
-  v21 = v56;
+  lastInsertedDatabaseID = v63[3];
+  v21 = dsCopy;
 LABEL_7:
-  v23 = [MEMORY[0x1E696AD98] numberWithLongLong:v22];
+  v23 = [MEMORY[0x1E696AD98] numberWithLongLong:lastInsertedDatabaseID];
   v58 = v19;
-  v24 = [(EDSenderPersistence *)v54 _addAddressesWithDatabaseIDs:v21 toSenderWithDatabaseID:v23 connection:v57 error:&v58];
+  v24 = [(EDSenderPersistence *)selfCopy _addAddressesWithDatabaseIDs:v21 toSenderWithDatabaseID:v23 connection:connectionCopy error:&v58];
   v25 = v58;
 
   if (v24)
@@ -2185,18 +2185,18 @@ LABEL_7:
     {
       v27 = v63[3];
       v28 = @"default";
-      if (a5 == 200)
+      if (bucket == 200)
       {
         v28 = @"sentTo";
       }
 
-      if (a5 == 50)
+      if (bucket == 50)
       {
         v28 = @"blocked";
       }
 
       v29 = v28;
-      v30 = [v56 count];
+      v30 = [dsCopy count];
       *buf = 134219010;
       v68 = v27;
       v69 = 2114;
@@ -2204,9 +2204,9 @@ LABEL_7:
       v71 = 2048;
       v72 = v30;
       v73 = 2114;
-      v74 = v56;
+      v74 = dsCopy;
       v75 = 2114;
-      v76 = v13;
+      v76 = identifierCopy;
       _os_log_impl(&dword_1C61EF000, v26, OS_LOG_TYPE_DEFAULT, "Added new sender (%lld) to bucket %{public}@ with %lu addresses: %{public}@, contact identifier: %{public}@", buf, 0x34u);
     }
 
@@ -2219,38 +2219,38 @@ LABEL_30:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     v47 = @"default";
-    if (a5 == 200)
+    if (bucket == 200)
     {
       v47 = @"sentTo";
     }
 
-    if (a5 == 50)
+    if (bucket == 50)
     {
       v47 = @"blocked";
     }
 
     v48 = v47;
-    v49 = [v56 count];
-    v50 = [v25 ef_publicDescription];
+    v49 = [dsCopy count];
+    ef_publicDescription = [v25 ef_publicDescription];
     *buf = 138544386;
     v68 = v48;
     v69 = 2048;
     v70 = v49;
     v71 = 2114;
-    v72 = v56;
+    v72 = dsCopy;
     v73 = 2114;
-    v74 = v13;
+    v74 = identifierCopy;
     v75 = 2114;
-    v76 = v50;
+    v76 = ef_publicDescription;
     _os_log_error_impl(&dword_1C61EF000, v26, OS_LOG_TYPE_ERROR, "Failed to add new sender to bucket %{public}@ with %lu addresses: %{public}@, contact identifier: %{public}@, error: %{public}@", buf, 0x34u);
   }
 
   v31 = 0;
 LABEL_32:
 
-  if (a8)
+  if (d)
   {
-    *a8 = v63[3];
+    *d = v63[3];
   }
 
   _Block_object_dispose(&v62, 8);
@@ -2266,18 +2266,18 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   *(*(*(a1 + 32) + 8) + 24) = [v3 databaseIDValue];
 }
 
-- (BOOL)_addAddressesWithDatabaseIDs:(id)a3 toSenderWithDatabaseID:(id)a4 connection:(id)a5 error:(id *)a6
+- (BOOL)_addAddressesWithDatabaseIDs:(id)ds toSenderWithDatabaseID:(id)d connection:(id)connection error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v21 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  connectionCopy = connection;
   v10 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"sender_addresses" conflictResolution:4];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v8;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -2293,9 +2293,9 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
-        v16 = [v10 addValue];
-        [v16 setObject:v15 forKeyedSubscript:@"address"];
-        [v16 setObject:v9 forKeyedSubscript:@"sender"];
+        addValue = [v10 addValue];
+        [addValue setObject:v15 forKeyedSubscript:@"address"];
+        [addValue setObject:dCopy forKeyedSubscript:@"sender"];
 
         ++v14;
       }
@@ -2307,44 +2307,44 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
     while (v12);
   }
 
-  v17 = [v21 executeInsertStatement:v10 error:a6];
+  v17 = [connectionCopy executeInsertStatement:v10 error:error];
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (BOOL)_moveSenderWithDatabaseID:(int64_t)a3 toCategoryType:(unint64_t)a4 connection:(id)a5
+- (BOOL)_moveSenderWithDatabaseID:(int64_t)d toCategoryType:(unint64_t)type connection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  connectionCopy = connection;
   v8 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"senders"];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v8 setObject:v9 forKeyedSubscript:@"category"];
 
   v10 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v12 = [v10 equalTo:v11];
   [v8 setWhereClause:v12];
 
   v21 = 0;
-  v13 = [v7 executeUpdateStatement:v8 error:&v21];
+  v13 = [connectionCopy executeUpdateStatement:v8 error:&v21];
   v14 = v21;
   if (v13)
   {
     v15 = EDSenderLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4 - 1 > 2)
+      if (type - 1 > 2)
       {
         v16 = @"default";
       }
 
       else
       {
-        v16 = off_1E8257968[a4 - 1];
+        v16 = off_1E8257968[type - 1];
       }
 
       *buf = 134218242;
-      v23 = a3;
+      dCopy2 = d;
       v24 = 2114;
       v25 = v16;
       _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Moved sender (%lld) to category %{public}@", buf, 0x16u);
@@ -2356,23 +2356,23 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
     v15 = EDSenderLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      if (a4 - 1 > 2)
+      if (type - 1 > 2)
       {
         v17 = @"default";
       }
 
       else
       {
-        v17 = off_1E8257968[a4 - 1];
+        v17 = off_1E8257968[type - 1];
       }
 
-      v20 = [v14 ef_publicDescription];
+      ef_publicDescription = [v14 ef_publicDescription];
       *buf = 134218498;
-      v23 = a3;
+      dCopy2 = d;
       v24 = 2114;
       v25 = v17;
       v26 = 2114;
-      v27 = v20;
+      v27 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_ERROR, "Failed to move sender (%lld) to category %{public}@, error: %{public}@", buf, 0x20u);
     }
   }
@@ -2381,22 +2381,22 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   return v13;
 }
 
-- (BOOL)_moveSenderWithDatabaseID:(int64_t)a3 toBucket:(int64_t)a4 connection:(id)a5
+- (BOOL)_moveSenderWithDatabaseID:(int64_t)d toBucket:(int64_t)bucket connection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  connectionCopy = connection;
   v8 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"senders"];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   [v8 setObject:v9 forKeyedSubscript:@"bucket"];
 
   [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"user_initiated"];
   v10 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v12 = [v10 equalTo:v11];
   [v8 setWhereClause:v12];
 
   v23 = 0;
-  v13 = [v7 executeUpdateStatement:v8 error:&v23];
+  v13 = [connectionCopy executeUpdateStatement:v8 error:&v23];
   v14 = v23;
   if (v13)
   {
@@ -2404,18 +2404,18 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"default";
-      if (a4 == 200)
+      if (bucket == 200)
       {
         v16 = @"sentTo";
       }
 
-      if (a4 == 50)
+      if (bucket == 50)
       {
         v16 = @"blocked";
       }
 
       *buf = 134218242;
-      v25 = a3;
+      dCopy2 = d;
       v26 = 2114;
       v27 = v16;
       v17 = v16;
@@ -2429,24 +2429,24 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v20 = @"default";
-      if (a4 == 200)
+      if (bucket == 200)
       {
         v20 = @"sentTo";
       }
 
-      if (a4 == 50)
+      if (bucket == 50)
       {
         v20 = @"blocked";
       }
 
       v21 = v20;
-      v22 = [v14 ef_publicDescription];
+      ef_publicDescription = [v14 ef_publicDescription];
       *buf = 134218498;
-      v25 = a3;
+      dCopy2 = d;
       v26 = 2114;
       v27 = v21;
       v28 = 2114;
-      v29 = v22;
+      v29 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_ERROR, "Failed to move sender (%lld) to bucket %{public}@, error: %{public}@", buf, 0x20u);
     }
   }
@@ -2455,22 +2455,22 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   return v13;
 }
 
-- (BOOL)_addNewSendersForEmailAddresses:(id)a3 toBucket:(int64_t)a4 connection:(id)a5 newSenders:(id *)a6
+- (BOOL)_addNewSendersForEmailAddresses:(id)addresses toBucket:(int64_t)bucket connection:(id)connection newSenders:(id *)senders
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v39 = a5;
+  addressesCopy = addresses;
+  connectionCopy = connection;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_connection_newSenders___block_invoke;
   aBlock[3] = &unk_1E82576A8;
-  v41 = v8;
+  v41 = addressesCopy;
   v74 = v41;
   v33 = _Block_copy(aBlock);
-  v9 = [v41 allKeys];
+  allKeys = [v41 allKeys];
   v71 = 0;
   v72 = 0;
-  v10 = [(EDSenderPersistence *)self _addressesGroupedByContactForAddresses:v9 unmatchedAddresses:&v72 otherAddressesByContact:&v71];
+  v10 = [(EDSenderPersistence *)self _addressesGroupedByContactForAddresses:allKeys unmatchedAddresses:&v72 otherAddressesByContact:&v71];
   v35 = v72;
   v38 = v71;
   v69[0] = MEMORY[0x1E69E9820];
@@ -2482,7 +2482,7 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   v11 = [v10 ef_mapValues:v69];
 
   v68 = 0;
-  v12 = [(EDSenderPersistence *)self _addressIDsGroupedByContactsForAddressesByContact:v38 withConnection:v39 addressesByID:&v68];
+  v12 = [(EDSenderPersistence *)self _addressIDsGroupedByContactsForAddressesByContact:v38 withConnection:connectionCopy addressesByID:&v68];
   v40 = v68;
   v32 = v12;
   v37 = [(EDSenderPersistence *)self _combineDictionary:v11 withDictionary:v12];
@@ -2510,9 +2510,9 @@ void __119__EDSenderPersistence__addNewSenderWithAddressIDs_contactIdentifier_to
   v55[2] = __86__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_connection_newSenders___block_invoke_4;
   v55[3] = &unk_1E8257720;
   v60 = &v62;
-  v61 = a4;
+  bucketCopy = bucket;
   v55[4] = self;
-  v43 = v39;
+  v43 = connectionCopy;
   v56 = v43;
   v31 = v38;
   v57 = v31;
@@ -2552,7 +2552,7 @@ LABEL_6:
 
         v23 = *(*(&v49 + 1) + 8 * v22);
         v48 = v21;
-        v24 = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v23 contactIdentifier:0 toBucket:a4 connection:v43 senderDatabaseID:&v48];
+        v24 = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v23 contactIdentifier:0 toBucket:bucket connection:v43 senderDatabaseID:&v48];
         *(v63 + 24) = v24;
         if (!v24)
         {
@@ -2566,7 +2566,7 @@ LABEL_6:
         v47 = v16;
         v25 = [v23 ef_compactMap:v46];
         v26 = objc_alloc(MEMORY[0x1E699AEB8]);
-        v27 = [v26 initWithDatabaseID:v48 addresses:v25 contactIdentifier:0 bucket:a4];
+        v27 = [v26 initWithDatabaseID:v48 addresses:v25 contactIdentifier:0 bucket:bucket];
         [v44 addObject:v27];
 
         if (v19 == ++v22)
@@ -2583,9 +2583,9 @@ LABEL_6:
     }
   }
 
-  if (a6)
+  if (senders)
   {
-    *a6 = [v44 ef_notEmpty];
+    *senders = [v44 ef_notEmpty];
   }
 
   v28 = *(v63 + 24);
@@ -2708,22 +2708,22 @@ id __86__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_connection
   return v2;
 }
 
-- (BOOL)_addNewSendersForEmailAddresses:(id)a3 toBucket:(int64_t)a4 categoryType:(unint64_t)a5 connection:(id)a6 newSenders:(id *)a7
+- (BOOL)_addNewSendersForEmailAddresses:(id)addresses toBucket:(int64_t)bucket categoryType:(unint64_t)type connection:(id)connection newSenders:(id *)senders
 {
   v79 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v40 = a6;
+  addressesCopy = addresses;
+  connectionCopy = connection;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_categoryType_connection_newSenders___block_invoke;
   aBlock[3] = &unk_1E82576A8;
-  v42 = v9;
+  v42 = addressesCopy;
   v77 = v42;
   v34 = _Block_copy(aBlock);
-  v10 = [v42 allKeys];
+  allKeys = [v42 allKeys];
   v75 = 0;
   v74 = 0;
-  v11 = [(EDSenderPersistence *)self _addressesGroupedByContactForAddresses:v10 unmatchedAddresses:&v75 otherAddressesByContact:&v74];
+  v11 = [(EDSenderPersistence *)self _addressesGroupedByContactForAddresses:allKeys unmatchedAddresses:&v75 otherAddressesByContact:&v74];
   v36 = v75;
   v39 = v74;
   v72[0] = MEMORY[0x1E69E9820];
@@ -2735,7 +2735,7 @@ id __86__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_connection
   v12 = [v11 ef_mapValues:v72];
 
   v71 = 0;
-  v13 = [(EDSenderPersistence *)self _addressIDsGroupedByContactsForAddressesByContact:v39 withConnection:v40 addressesByID:&v71];
+  v13 = [(EDSenderPersistence *)self _addressIDsGroupedByContactsForAddressesByContact:v39 withConnection:connectionCopy addressesByID:&v71];
   v41 = v71;
   v33 = v13;
   v38 = [(EDSenderPersistence *)self _combineDictionary:v12 withDictionary:v13];
@@ -2763,10 +2763,10 @@ id __86__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_connection
   v57[2] = __99__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_categoryType_connection_newSenders___block_invoke_4;
   v57[3] = &unk_1E8257798;
   v62 = &v65;
-  v63 = a4;
+  bucketCopy = bucket;
   v57[4] = self;
-  v64 = a5;
-  v44 = v40;
+  typeCopy = type;
+  v44 = connectionCopy;
   v58 = v44;
   v32 = v39;
   v59 = v32;
@@ -2806,7 +2806,7 @@ LABEL_6:
 
         v24 = *(*(&v51 + 1) + 8 * v23);
         v50 = v22;
-        v25 = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v24 contactIdentifier:0 toBucket:a4 categoryType:a5 connection:v44 senderDatabaseID:&v50];
+        v25 = [(EDSenderPersistence *)self _addNewSenderWithAddressIDs:v24 contactIdentifier:0 toBucket:bucket categoryType:type connection:v44 senderDatabaseID:&v50];
         *(v66 + 24) = v25;
         if (!v25)
         {
@@ -2820,7 +2820,7 @@ LABEL_6:
         v49 = v17;
         v26 = [v24 ef_compactMap:v48];
         v27 = objc_alloc(MEMORY[0x1E699AEB8]);
-        v28 = [v27 initWithDatabaseID:v50 addresses:v26 contactIdentifier:0 bucket:a4];
+        v28 = [v27 initWithDatabaseID:v50 addresses:v26 contactIdentifier:0 bucket:bucket];
         [v46 addObject:v28];
 
         if (v20 == ++v23)
@@ -2837,9 +2837,9 @@ LABEL_6:
     }
   }
 
-  if (a7)
+  if (senders)
   {
-    *a7 = [v46 ef_notEmpty];
+    *senders = [v46 ef_notEmpty];
   }
 
   v29 = *(v66 + 24);
@@ -2962,12 +2962,12 @@ id __99__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_categoryTy
   return v2;
 }
 
-- (id)_contactIdentifierForSenderWithDatabaseID:(int64_t)a3 connection:(id)a4
+- (id)_contactIdentifierForSenderWithDatabaseID:(int64_t)d connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"contact_identifier" table:@"senders"];
   v7 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [v7 equalTo:v8];
   [v6 setWhere:v9];
 
@@ -2982,7 +2982,7 @@ id __99__EDSenderPersistence__addNewSendersForEmailAddresses_toBucket_categoryTy
   v12[2] = __76__EDSenderPersistence__contactIdentifierForSenderWithDatabaseID_connection___block_invoke;
   v12[3] = &unk_1E8250418;
   v12[4] = &v13;
-  [v5 executeSelectStatement:v6 withBlock:v12 error:0];
+  [connectionCopy executeSelectStatement:v6 withBlock:v12 error:0];
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
 
@@ -2999,12 +2999,12 @@ void __76__EDSenderPersistence__contactIdentifierForSenderWithDatabaseID_connect
   *(v5 + 40) = v4;
 }
 
-- (int64_t)_bucketForSenderWithDatabaseID:(int64_t)a3 connection:(id)a4
+- (int64_t)_bucketForSenderWithDatabaseID:(int64_t)d connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"bucket" table:@"senders"];
   v7 = [MEMORY[0x1E699B8C8] column:*MEMORY[0x1E699B768]];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v9 = [v7 equalTo:v8];
   [v6 setWhere:v9];
 
@@ -3017,7 +3017,7 @@ void __76__EDSenderPersistence__contactIdentifierForSenderWithDatabaseID_connect
   v12[2] = __65__EDSenderPersistence__bucketForSenderWithDatabaseID_connection___block_invoke;
   v12[3] = &unk_1E8250418;
   v12[4] = &v13;
-  [v5 executeSelectStatement:v6 withBlock:v12 error:0];
+  [connectionCopy executeSelectStatement:v6 withBlock:v12 error:0];
   v10 = v14[3];
   _Block_object_dispose(&v13, 8);
 
@@ -3031,20 +3031,20 @@ void __65__EDSenderPersistence__bucketForSenderWithDatabaseID_connection___block
   *(*(*(a1 + 32) + 8) + 24) = [v3 integerValue];
 }
 
-- (id)_emailAddressForDatabaseID:(id)a3 connection:(id)a4
+- (id)_emailAddressForDatabaseID:(id)d connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
+  dCopy = d;
+  connectionCopy = connection;
+  databaseIDToEmailAddressCache = [(EDSenderPersistence *)self databaseIDToEmailAddressCache];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__EDSenderPersistence__emailAddressForDatabaseID_connection___block_invoke;
   v13[3] = &unk_1E82577E8;
-  v9 = v6;
+  v9 = dCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = connectionCopy;
   v15 = v10;
-  v11 = [v8 objectForKey:v9 generator:v13];
+  v11 = [databaseIDToEmailAddressCache objectForKey:v9 generator:v13];
 
   return v11;
 }
@@ -3134,9 +3134,9 @@ void __61__EDSenderPersistence__emailAddressForDatabaseID_connection___block_inv
   *(v11 + 40) = v10;
 }
 
-- (id)_simpleAddressesInBucket:(int64_t)a3 connection:(id)a4
+- (id)_simpleAddressesInBucket:(int64_t)bucket connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v23 = 0;
   v6 = [EDMessagePersistence selectAddressesStatementWithResultColumns:&v23];
   v7 = v23;
@@ -3144,7 +3144,7 @@ void __61__EDSenderPersistence__emailAddressForDatabaseID_connection___block_inv
   v9 = [v6 join:@"sender_addresses" sourceColumn:*MEMORY[0x1E699B768] targetColumn:@"address"];
   v10 = [v9 join:@"senders" sourceColumn:@"sender" targetColumn:v8];
   v11 = [MEMORY[0x1E699B8C8] table:@"senders" column:@"bucket"];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:bucket];
   v13 = [v11 equalTo:v12];
   [v6 setWhere:v13];
 
@@ -3157,7 +3157,7 @@ void __61__EDSenderPersistence__emailAddressForDatabaseID_connection___block_inv
   v21 = v15;
   v22 = v14;
   v16 = v14;
-  if ([v5 executeSelectStatement:v6 withBlock:v20 error:0])
+  if ([connectionCopy executeSelectStatement:v6 withBlock:v20 error:0])
   {
     v17 = v16;
   }
@@ -3182,10 +3182,10 @@ void __59__EDSenderPersistence__simpleAddressesInBucket_connection___block_invok
   [*(a1 + 40) addObject:v5];
 }
 
-- (id)_simpleAddressesNotInBucket:(int64_t)a3 withMessagesNewerThan:(id)a4 connection:(id)a5
+- (id)_simpleAddressesNotInBucket:(int64_t)bucket withMessagesNewerThan:(id)than connection:(id)connection
 {
-  v6 = a4;
-  v7 = a5;
+  thanCopy = than;
+  connectionCopy = connection;
   v8 = objc_alloc(MEMORY[0x1E699B948]);
   v9 = +[EDMessagePersistence messagesSenderColumnName];
   v10 = +[EDMessagePersistence messagesTableName];
@@ -3194,7 +3194,7 @@ void __59__EDSenderPersistence__simpleAddressesInBucket_connection___block_invok
   v12 = MEMORY[0x1E699B8C8];
   v13 = +[EDMessagePersistence messagesDateReceivedColumnName];
   v14 = [v12 column:v13];
-  v15 = [v14 greaterThan:v6];
+  v15 = [v14 greaterThan:thanCopy];
   [v11 setWhere:v15];
 
   v29 = 0;
@@ -3213,7 +3213,7 @@ void __59__EDSenderPersistence__simpleAddressesInBucket_connection___block_invok
   v27 = v21;
   v28 = v20;
   v22 = v20;
-  if ([v7 executeSelectStatement:v16 withBlock:v26 error:0])
+  if ([connectionCopy executeSelectStatement:v16 withBlock:v26 error:0])
   {
     v23 = v22;
   }
@@ -3238,17 +3238,17 @@ void __84__EDSenderPersistence__simpleAddressesNotInBucket_withMessagesNewerThan
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)_setIsBlocked:(BOOL)a3 forAddresses:(id)a4
+- (void)_setIsBlocked:(BOOL)blocked forAddresses:(id)addresses
 {
-  v4 = a3;
+  blockedCopy = blocked;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  addressesCopy = addresses;
   v7 = EDSenderLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 count];
+    v8 = [addressesCopy count];
     v9 = @"Unblocking";
-    if (v4)
+    if (blockedCopy)
     {
       v9 = @"Blocking";
     }
@@ -3264,7 +3264,7 @@ void __84__EDSenderPersistence__simpleAddressesNotInBucket_withMessagesNewerThan
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v6;
+  v10 = addressesCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -3279,19 +3279,19 @@ void __84__EDSenderPersistence__simpleAddressesNotInBucket_withMessagesNewerThan
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * v13) emailAddressValue];
-        if (v14)
+        emailAddressValue = [*(*(&v18 + 1) + 8 * v13) emailAddressValue];
+        if (emailAddressValue)
         {
-          v15 = [(EDSenderPersistence *)self blockedSenderManager];
-          v16 = [v14 simpleAddress];
-          if (v4)
+          blockedSenderManager = [(EDSenderPersistence *)self blockedSenderManager];
+          simpleAddress = [emailAddressValue simpleAddress];
+          if (blockedCopy)
           {
-            [v15 blockEmailAddress:v16];
+            [blockedSenderManager blockEmailAddress:simpleAddress];
           }
 
           else
           {
-            [v15 unblockEmailAddress:v16];
+            [blockedSenderManager unblockEmailAddress:simpleAddress];
           }
         }
 
@@ -3328,10 +3328,10 @@ id __48__EDSenderPersistence__blockedSendersDidChange___block_invoke_2(uint64_t 
   return v7;
 }
 
-- (id)_addressesToDatabaseIDsForSimpleAddresses:(id)a3 connection:(id)a4
+- (id)_addressesToDatabaseIDsForSimpleAddresses:(id)addresses connection:(id)connection
 {
-  v6 = a4;
-  v7 = [EDMessagePersistence allDatabaseIDsForSimpleAddresses:a3 connection:v6];
+  connectionCopy = connection;
+  v7 = [EDMessagePersistence allDatabaseIDsForSimpleAddresses:addresses connection:connectionCopy];
   v15 = 0;
   v8 = [EDMessagePersistence selectAddressesStatementWithResultColumns:&v15];
   v9 = v15;
@@ -3341,12 +3341,12 @@ id __48__EDSenderPersistence__blockedSendersDidChange___block_invoke_2(uint64_t 
   v12 = [v11 in:v7];
   [v8 setWhere:v12];
 
-  v13 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:v6 error:0];
+  v13 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:connectionCopy error:0];
 
   return v13;
 }
 
-- (void)_reloadBlockedSendersWithAddresses:(id)a3
+- (void)_reloadBlockedSendersWithAddresses:(id)addresses
 {
   v3[4] = self;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3358,7 +3358,7 @@ id __48__EDSenderPersistence__blockedSendersDidChange___block_invoke_2(uint64_t 
   v3[1] = 3221225472;
   v3[2] = __58__EDSenderPersistence__reloadBlockedSendersWithAddresses___block_invoke_2;
   v3[3] = &unk_1E8257838;
-  [(EDSenderPersistence *)self _updateBlockedSendersWithBlockedSenderAddresses:a3 newlyBlockedAddresses:v4 newlyUnblockedAddresses:v3];
+  [(EDSenderPersistence *)self _updateBlockedSendersWithBlockedSenderAddresses:addresses newlyBlockedAddresses:v4 newlyUnblockedAddresses:v3];
 }
 
 id __58__EDSenderPersistence__reloadBlockedSendersWithAddresses___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -3375,11 +3375,11 @@ id __58__EDSenderPersistence__reloadBlockedSendersWithAddresses___block_invoke_2
   return v3;
 }
 
-- (void)_updateBlockedSendersWithBlockedSenderAddresses:(id)a3 newlyBlockedAddresses:(id)a4 newlyUnblockedAddresses:(id)a5
+- (void)_updateBlockedSendersWithBlockedSenderAddresses:(id)addresses newlyBlockedAddresses:(id)blockedAddresses newlyUnblockedAddresses:(id)unblockedAddresses
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressesCopy = addresses;
+  blockedAddressesCopy = blockedAddresses;
+  unblockedAddressesCopy = unblockedAddresses;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3392,22 +3392,22 @@ id __58__EDSenderPersistence__reloadBlockedSendersWithAddresses___block_invoke_2
   v29 = __Block_byref_object_copy__41;
   v30 = __Block_byref_object_dispose__41;
   v31 = 0;
-  v11 = [(EDSenderPersistence *)self database];
+  database = [(EDSenderPersistence *)self database];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDSenderPersistence _updateBlockedSendersWithBlockedSenderAddresses:newlyBlockedAddresses:newlyUnblockedAddresses:]"];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddresses_newlyBlockedAddresses_newlyUnblockedAddresses___block_invoke;
   v19 = &unk_1E8257860;
-  v13 = v8;
+  v13 = addressesCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = blockedAddressesCopy;
   v22 = v14;
-  v15 = v10;
-  v21 = self;
+  v15 = unblockedAddressesCopy;
+  selfCopy = self;
   v23 = v15;
   v24 = &v32;
   v25 = &v26;
-  [v11 __performWriteWithCaller:v12 usingBlock:&v16];
+  [database __performWriteWithCaller:v12 usingBlock:&v16];
 
   if ([v33[5] count])
   {
@@ -3453,11 +3453,11 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   return v13;
 }
 
-- (id)_newlyBlockedAddressesForBlockedAddressDatabaseIDs:(id)a3 connection:(id)a4
+- (id)_newlyBlockedAddressesForBlockedAddressDatabaseIDs:(id)ds connection:(id)connection
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v26 = 0;
   v8 = [EDMessagePersistence selectAddressesStatementWithResultColumns:&v26];
   v9 = v26;
@@ -3466,7 +3466,7 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   v11 = [v8 leftOuterJoin:@"sender_addresses" sourceColumn:v10 targetColumn:@"address"];
   v12 = [v11 leftOuterJoin:@"senders" sourceColumn:@"sender" targetColumn:v10];
   v13 = [MEMORY[0x1E699B8C8] column:@"address_id"];
-  v14 = [v13 in:v6];
+  v14 = [v13 in:dsCopy];
 
   v15 = [MEMORY[0x1E699B8C8] table:@"senders" column:@"bucket"];
   v16 = [v15 isNot:&unk_1F45E6A48];
@@ -3479,7 +3479,7 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   [v8 setWhere:v19];
 
   v25 = 0;
-  v20 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:v7 error:&v25];
+  v20 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:connectionCopy error:&v25];
   v21 = v25;
   if (!v20)
   {
@@ -3497,11 +3497,11 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   return v20;
 }
 
-- (id)_newlyUnblockedAddressesForBlockedAddressDatabaseIDs:(id)a3 connection:(id)a4
+- (id)_newlyUnblockedAddressesForBlockedAddressDatabaseIDs:(id)ds connection:(id)connection
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  connectionCopy = connection;
   v26 = 0;
   v8 = [EDMessagePersistence selectAddressesStatementWithResultColumns:&v26];
   v9 = v26;
@@ -3513,7 +3513,7 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   v14 = [v13 is:&unk_1F45E6A48];
 
   v15 = [MEMORY[0x1E699B8C8] column:@"address_id"];
-  v16 = [v15 notIn:v6];
+  v16 = [v15 notIn:dsCopy];
 
   v17 = MEMORY[0x1E699B898];
   v27[0] = v14;
@@ -3523,7 +3523,7 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   [v8 setWhere:v19];
 
   v25 = 0;
-  v20 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:v7 error:&v25];
+  v20 = [(EDSenderPersistence *)self _addressesToDatabaseIDsForSelect:v8 addressColumns:v9 connection:connectionCopy error:&v25];
   v21 = v25;
   if (!v20)
   {
@@ -3541,21 +3541,21 @@ uint64_t __117__EDSenderPersistence__updateBlockedSendersWithBlockedSenderAddres
   return v20;
 }
 
-- (id)_addressesToDatabaseIDsForSelect:(id)a3 addressColumns:(id)a4 connection:(id)a5 error:(id *)a6
+- (id)_addressesToDatabaseIDsForSelect:(id)select addressColumns:(id)columns connection:(id)connection error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  selectCopy = select;
+  columnsCopy = columns;
+  connectionCopy = connection;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__EDSenderPersistence__addressesToDatabaseIDsForSelect_addressColumns_connection_error___block_invoke;
   v18[3] = &unk_1E82511B8;
-  v13 = v10;
+  v13 = columnsCopy;
   v19 = v13;
   v20 = v12;
   v14 = v12;
-  if ([v11 executeSelectStatement:v9 withBlock:v18 error:a6])
+  if ([connectionCopy executeSelectStatement:selectCopy withBlock:v18 error:error])
   {
     v15 = v14;
   }
@@ -3729,16 +3729,16 @@ void __119__EDSenderPersistence__blockOrUnblockSendersForAddresses_block_blocked
   }
 }
 
-- (id)_simpleAddressesForAddresses:(id)a3
+- (id)_simpleAddressesForAddresses:(id)addresses
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  addressesCopy = addresses;
+  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = addressesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -3753,20 +3753,20 @@ void __119__EDSenderPersistence__blockOrUnblockSendersForAddresses_block_blocked
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 emailAddressValue];
-        v11 = [v10 simpleAddress];
-        v12 = v11;
-        if (v11)
+        emailAddressValue = [v9 emailAddressValue];
+        simpleAddress = [emailAddressValue simpleAddress];
+        v12 = simpleAddress;
+        if (simpleAddress)
         {
-          v13 = v11;
+          stringValue = simpleAddress;
         }
 
         else
         {
-          v13 = [v9 stringValue];
+          stringValue = [v9 stringValue];
         }
 
-        v14 = v13;
+        v14 = stringValue;
 
         [v4 ef_addOptionalObject:v14];
       }
@@ -3777,19 +3777,19 @@ void __119__EDSenderPersistence__blockOrUnblockSendersForAddresses_block_blocked
     while (v6);
   }
 
-  v15 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return allObjects;
 }
 
-- (id)_addressesGroupedBySimpleAddressForAddresses:(id)a3
+- (id)_addressesGroupedBySimpleAddressForAddresses:(id)addresses
 {
-  v3 = [a3 ef_groupBy:&__block_literal_global_146];
-  v4 = [v3 allValues];
+  v3 = [addresses ef_groupBy:&__block_literal_global_146];
+  allValues = [v3 allValues];
 
-  return v4;
+  return allValues;
 }
 
 id __68__EDSenderPersistence__addressesGroupedBySimpleAddressForAddresses___block_invoke(uint64_t a1, void *a2)
@@ -3813,29 +3813,29 @@ id __68__EDSenderPersistence__addressesGroupedBySimpleAddressForAddresses___bloc
   return v7;
 }
 
-- (id)_combineDictionary:(id)a3 withDictionary:(id)a4
+- (id)_combineDictionary:(id)dictionary withDictionary:(id)withDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dictionaryCopy = dictionary;
+  withDictionaryCopy = withDictionary;
+  if ([dictionaryCopy count])
   {
-    if ([v6 count])
+    if ([withDictionaryCopy count])
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke;
       v18[3] = &unk_1E8255ED0;
-      v8 = v6;
+      v8 = withDictionaryCopy;
       v19 = v8;
       v9 = v7;
       v20 = v9;
-      [v5 enumerateKeysAndObjectsUsingBlock:v18];
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v18];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke_2;
       v15[3] = &unk_1E8255ED0;
-      v16 = v5;
+      v16 = dictionaryCopy;
       v10 = v9;
       v17 = v10;
       [v8 enumerateKeysAndObjectsUsingBlock:v15];
@@ -3845,12 +3845,12 @@ id __68__EDSenderPersistence__addressesGroupedBySimpleAddressForAddresses___bloc
       goto LABEL_7;
     }
 
-    v13 = v5;
+    v13 = dictionaryCopy;
   }
 
   else
   {
-    v13 = v6;
+    v13 = withDictionaryCopy;
   }
 
   v12 = v13;
@@ -3895,10 +3895,10 @@ void __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke_
   }
 }
 
-- (id)_addressesGroupedByContactForAddresses:(id)a3 unmatchedAddresses:(id *)a4 otherAddressesByContact:(id *)a5
+- (id)_addressesGroupedByContactForAddresses:(id)addresses unmatchedAddresses:(id *)unmatchedAddresses otherAddressesByContact:(id *)contact
 {
   v114[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  addressesCopy = addresses;
   v7 = *MEMORY[0x1E695C230];
   v114[0] = *MEMORY[0x1E695C240];
   v114[1] = v7;
@@ -3910,7 +3910,7 @@ void __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke_
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v6;
+  obj = addressesCopy;
   v8 = [obj countByEnumeratingWithState:&v102 objects:v113 count:16];
   if (v8)
   {
@@ -3925,18 +3925,18 @@ void __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke_
         }
 
         v11 = *(*(&v102 + 1) + 8 * i);
-        v12 = [v11 emailAddressValue];
-        if (v12)
+        emailAddressValue = [v11 emailAddressValue];
+        if (emailAddressValue)
         {
-          [v84 addObject:v12];
-          v13 = [v12 simpleAddress];
-          [v83 ef_addOptionalObject:v13];
+          [v84 addObject:emailAddressValue];
+          simpleAddress = [emailAddressValue simpleAddress];
+          [v83 ef_addOptionalObject:simpleAddress];
         }
 
         else
         {
-          v13 = [v11 stringValue];
-          [v83 addObject:v13];
+          simpleAddress = [v11 stringValue];
+          [v83 addObject:simpleAddress];
         }
       }
 
@@ -3949,14 +3949,14 @@ void __57__EDSenderPersistence__combineDictionary_withDictionary___block_invoke_
   v71 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v70 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v75 = [(EDSenderPersistence *)self contactStore];
+  contactStore = [(EDSenderPersistence *)self contactStore];
   if ([obj count] < 0x3E9)
   {
     goto LABEL_38;
   }
 
   v101 = 0;
-  v15 = [v75 unifiedContactCountWithError:&v101];
+  v15 = [contactStore unifiedContactCountWithError:&v101];
   v16 = v101;
   v79 = v15;
   if (!v15)
@@ -3994,7 +3994,7 @@ LABEL_38:
   }
 
   v100 = v16;
-  v76 = [v75 allContactEmailAddressesWithError:&v100];
+  v76 = [contactStore allContactEmailAddressesWithError:&v100];
   v72 = v100;
 
   if (v76)
@@ -4020,20 +4020,20 @@ LABEL_38:
           }
 
           v25 = *(*(&v96 + 1) + 8 * j);
-          v26 = [v25 emailAddressValue];
-          v27 = [v26 simpleAddress];
-          v28 = v27;
-          if (v27)
+          emailAddressValue2 = [v25 emailAddressValue];
+          simpleAddress2 = [emailAddressValue2 simpleAddress];
+          v28 = simpleAddress2;
+          if (simpleAddress2)
           {
-            v29 = v27;
+            stringValue = simpleAddress2;
           }
 
           else
           {
-            v29 = [v25 stringValue];
+            stringValue = [v25 stringValue];
           }
 
-          v30 = v29;
+          v30 = stringValue;
 
           if ([v20 containsObject:v30])
           {
@@ -4043,19 +4043,19 @@ LABEL_38:
           else
           {
             v31 = v25;
-            v32 = [v31 emailAddressValue];
-            v33 = v32;
-            if (v32)
+            emailAddressValue3 = [v31 emailAddressValue];
+            v33 = emailAddressValue3;
+            if (emailAddressValue3)
             {
-              v34 = v32;
+              stringValue2 = emailAddressValue3;
             }
 
             else
             {
-              v34 = [v31 stringValue];
+              stringValue2 = [v31 stringValue];
             }
 
-            v35 = v34;
+            v35 = stringValue2;
 
             [v70 addObject:v35];
           }
@@ -4108,28 +4108,28 @@ LABEL_39:
         }
 
         v37 = *(*(&v92 + 1) + 8 * k);
-        v38 = [v75 em_fetchContactForEmailAddress:v37 keysToFetch:v74 createIfNeeded:0];
+        v38 = [contactStore em_fetchContactForEmailAddress:v37 keysToFetch:v74 createIfNeeded:0];
         if (v38)
         {
           v39 = [v71 objectForKeyedSubscript:v38];
           if (v39)
           {
-            v80 = v39;
+            stringValue3 = v39;
             [v39 addObject:v37];
           }
 
           else
           {
-            v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v37, 0}];
-            [v71 setObject:v80 forKeyedSubscript:v38];
+            stringValue3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v37, 0}];
+            [v71 setObject:stringValue3 forKeyedSubscript:v38];
           }
 
           v90 = 0u;
           v91 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v43 = [v38 emailAddresses];
-          v44 = [v43 ef_compactMapSelector:sel_value];
+          emailAddresses = [v38 emailAddresses];
+          v44 = [emailAddresses ef_compactMapSelector:sel_value];
 
           v45 = [v44 countByEnumeratingWithState:&v88 objects:v106 count:16];
           if (v45)
@@ -4145,20 +4145,20 @@ LABEL_39:
                 }
 
                 v48 = *(*(&v88 + 1) + 8 * m);
-                v49 = [v48 emailAddressValue];
-                v50 = [v49 displayName];
+                emailAddressValue4 = [v48 emailAddressValue];
+                displayName = [emailAddressValue4 displayName];
 
-                if (v50)
+                if (displayName)
                 {
-                  if ([v84 containsObject:v49])
+                  if ([v84 containsObject:emailAddressValue4])
                   {
                     goto LABEL_69;
                   }
 
 LABEL_62:
-                  if (v49)
+                  if (emailAddressValue4)
                   {
-                    v56 = v49;
+                    v56 = emailAddressValue4;
                   }
 
                   else
@@ -4183,11 +4183,11 @@ LABEL_62:
                   goto LABEL_69;
                 }
 
-                v51 = [v49 simpleAddress];
-                v52 = v51;
-                if (v51)
+                simpleAddress3 = [emailAddressValue4 simpleAddress];
+                v52 = simpleAddress3;
+                if (simpleAddress3)
                 {
-                  v53 = v51;
+                  v53 = simpleAddress3;
                 }
 
                 else
@@ -4216,19 +4216,19 @@ LABEL_69:
         else
         {
           v40 = v37;
-          v41 = [v40 emailAddressValue];
-          v42 = v41;
-          if (v41)
+          emailAddressValue5 = [v40 emailAddressValue];
+          v42 = emailAddressValue5;
+          if (emailAddressValue5)
           {
-            v80 = v41;
+            stringValue3 = emailAddressValue5;
           }
 
           else
           {
-            v80 = [v40 stringValue];
+            stringValue3 = [v40 stringValue];
           }
 
-          [v70 addObject:v80];
+          [v70 addObject:stringValue3];
         }
       }
 
@@ -4248,16 +4248,16 @@ LABEL_69:
   v62 = v60;
   v87 = v62;
   [v14 enumerateKeysAndObjectsUsingBlock:v85];
-  if (a4)
+  if (unmatchedAddresses)
   {
     v63 = v70;
-    *a4 = v70;
+    *unmatchedAddresses = v70;
   }
 
-  if (a5)
+  if (contact)
   {
     v64 = v62;
-    *a5 = v62;
+    *contact = v62;
   }
 
   v65 = *MEMORY[0x1E69E9840];
@@ -4337,30 +4337,30 @@ void __105__EDSenderPersistence__addressesGroupedByContactForAddresses_unmatched
   }
 }
 
-- (id)_addressIDsGroupedByContactsForAddressesByContact:(id)a3 withConnection:(id)a4 addressesByID:(id *)a5
+- (id)_addressIDsGroupedByContactsForAddressesByContact:(id)contact withConnection:(id)connection addressesByID:(id *)d
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  connectionCopy = connection;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = objc_alloc(MEMORY[0x1E699B948]);
-  v11 = [MEMORY[0x1E699B8C8] allColumns];
-  v12 = [v10 initWithResult:v11 table:@"addresses"];
+  allColumns = [MEMORY[0x1E699B8C8] allColumns];
+  v12 = [v10 initWithResult:allColumns table:@"addresses"];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __102__EDSenderPersistence__addressIDsGroupedByContactsForAddressesByContact_withConnection_addressesByID___block_invoke;
   v19[3] = &unk_1E82578F8;
   v20 = v12;
-  v13 = v8;
+  v13 = connectionCopy;
   v21 = v13;
   v14 = v9;
   v22 = v14;
   v15 = v12;
-  v16 = [v7 ef_mapValues:v19];
-  if (a5)
+  v16 = [contactCopy ef_mapValues:v19];
+  if (d)
   {
     v17 = v14;
-    *a5 = v14;
+    *d = v14;
   }
 
   return v16;
@@ -4471,9 +4471,9 @@ void __102__EDSenderPersistence__addressIDsGroupedByContactsForAddressesByContac
   [a1[6] setObject:v12 forKeyedSubscript:v4];
 }
 
-- (void)_persistenceDidAddMessages:(id)a3
+- (void)_persistenceDidAddMessages:(id)messages
 {
-  v4 = [a3 ef_filter:&__block_literal_global_164];
+  v4 = [messages ef_filter:&__block_literal_global_164];
   if ([v4 count])
   {
     [(EDSenderPersistence *)self _moveAddressesFromSentMessagesToPrimaryForMessages:v4];
@@ -4488,17 +4488,17 @@ BOOL __50__EDSenderPersistence__persistenceDidAddMessages___block_invoke(uint64_
   return v3;
 }
 
-- (void)_moveAddressesFromSentMessagesToPrimaryForMessages:(id)a3
+- (void)_moveAddressesFromSentMessagesToPrimaryForMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   processingQueue = self->_processingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessages___block_invoke;
   v7[3] = &unk_1E8250128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messagesCopy;
+  selfCopy = self;
+  v6 = messagesCopy;
   dispatch_async(processingQueue, v7);
 }
 
@@ -4570,17 +4570,17 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
   return v3 == 0;
 }
 
-- (unint64_t)handleReconciliationMergeErrorForTable:(id)a3 columnName:(id)a4 statement:(id)a5 journalRowID:(id)a6 protectedRowID:(id)a7 connection:(id)a8 rowsUpdated:(unint64_t *)a9 error:(id *)a10
+- (unint64_t)handleReconciliationMergeErrorForTable:(id)table columnName:(id)name statement:(id)statement journalRowID:(id)d protectedRowID:(id)iD connection:(id)connection rowsUpdated:(unint64_t *)updated error:(id *)self0
 {
   v104 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v73 = a6;
-  v72 = a7;
-  v74 = a8;
-  v70 = v14;
-  v71 = v15;
-  if (v14 == @"sender_addresses" && v15 == @"address")
+  tableCopy = table;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
+  v70 = tableCopy;
+  v71 = nameCopy;
+  if (tableCopy == @"sender_addresses" && nameCopy == @"address")
   {
     v16 = EDSenderLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -4612,7 +4612,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     [v20 addResultColumn:@"user_initiated"];
     v21 = [v20 join:@"sender_addresses" sourceColumn:v19 targetColumn:@"sender"];
     v22 = [MEMORY[0x1E699B8C8] table:@"sender_addresses" column:@"address"];
-    v23 = [v22 equalTo:v73];
+    v23 = [v22 equalTo:dCopy];
     [v20 setWhere:v23];
 
     v85 = 0;
@@ -4623,7 +4623,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     v86[4] = buf;
     v86[5] = &v91;
     v86[6] = &v87;
-    [v74 executeSelectStatement:v20 withBlock:v86 error:&v85];
+    [connectionCopy executeSelectStatement:v20 withBlock:v86 error:&v85];
     v24 = v85;
     v25 = EDSenderLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -4650,7 +4650,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     [v28 addResultColumn:@"user_initiated"];
     v29 = [v28 join:@"sender_addresses" sourceColumn:v19 targetColumn:@"sender"];
     v30 = [MEMORY[0x1E699B8C8] table:@"sender_addresses" column:@"address"];
-    v31 = [v30 equalTo:v72];
+    v31 = [v30 equalTo:iDCopy];
     [v28 setWhere:v31];
 
     v79 = v24;
@@ -4660,7 +4660,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     v80[3] = &unk_1E8250468;
     v80[4] = v100;
     v80[5] = &v81;
-    [v74 executeSelectStatement:v28 withBlock:v80 error:&v79];
+    [connectionCopy executeSelectStatement:v28 withBlock:v80 error:&v79];
     v32 = v79;
 
     v33 = EDSenderLog();
@@ -4702,7 +4702,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
         [v42 setWhereClause:v47];
 
         v78 = v32;
-        [v74 executeUpdateStatement:v42 error:&v78];
+        [connectionCopy executeUpdateStatement:v42 error:&v78];
         v37 = v78;
       }
 
@@ -4713,7 +4713,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
 
       v48 = objc_alloc(MEMORY[0x1E699B898]);
       v67 = [MEMORY[0x1E699B8C8] column:@"address"];
-      v49 = [v67 equalTo:v73];
+      v49 = [v67 equalTo:dCopy];
       v99[0] = v49;
       v50 = [MEMORY[0x1E699B8C8] column:@"sender"];
       v51 = [MEMORY[0x1E696AD98] numberWithLongLong:*(*&buf[8] + 24)];
@@ -4723,17 +4723,17 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
       v69 = [v48 initWithExpressions:v53];
 
       v54 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"sender_addresses" where:v69];
-      [v74 executeDeleteStatement:v54 error:0];
-      if (a9)
+      [connectionCopy executeDeleteStatement:v54 error:0];
+      if (updated)
       {
-        *a9 = sqlite3_changes([v74 sqlDB]);
+        *updated = sqlite3_changes([connectionCopy sqlDB]);
       }
 
       *v97 = 0;
       *&v97[8] = v97;
       *&v97[16] = 0x2020000000;
       v98 = 0;
-      v68 = [v74 preparedStatementForQueryString:@"SELECT count(*) AS associations FROM sender_addresses WHERE sender = :duplicate_sender"];
+      v68 = [connectionCopy preparedStatementForQueryString:@"SELECT count(*) AS associations FROM sender_addresses WHERE sender = :duplicate_sender"];
       v95 = @":duplicate_sender";
       v55 = [MEMORY[0x1E696AD98] numberWithLongLong:*(*&buf[8] + 24)];
       v96 = v55;
@@ -4762,7 +4762,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
         v61 = [v59 equalTo:v60];
         v62 = [v58 initWithTable:@"sender_addresses" where:v61];
 
-        [v74 executeDeleteStatement:v62 error:0];
+        [connectionCopy executeDeleteStatement:v62 error:0];
       }
 
       _Block_object_dispose(v97, 8);
@@ -4799,10 +4799,10 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     _Block_object_dispose(&v87, 8);
     _Block_object_dispose(&v91, 8);
     _Block_object_dispose(buf, 8);
-    if (a10 && v32)
+    if (error && v32)
     {
       v64 = v32;
-      *a10 = v32;
+      *error = v32;
     }
   }
 
@@ -4811,7 +4811,7 @@ BOOL __74__EDSenderPersistence__moveAddressesFromSentMessagesToPrimaryForMessage
     v38 = EDSenderLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      [EDSenderPersistence handleReconciliationMergeErrorForTable:v14 columnName:v15 statement:v38 journalRowID:? protectedRowID:? connection:? rowsUpdated:? error:?];
+      [EDSenderPersistence handleReconciliationMergeErrorForTable:tableCopy columnName:nameCopy statement:v38 journalRowID:? protectedRowID:? connection:? rowsUpdated:? error:?];
     }
 
     v32 = 0;
@@ -4852,9 +4852,9 @@ void __140__EDSenderPersistence_handleReconciliationMergeErrorForTable_columnNam
   *(*(*(a1 + 32) + 8) + 24) = [v3 integerValue];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
-  if (a3 == 2)
+  if (changed == 2)
   {
     [(EDSenderPersistence *)self _updateSentToFilter:2];
   }

@@ -1,23 +1,23 @@
 @interface _UIScreenRouteArrayController
-- (BOOL)objectAttributeModified:(id)a3 newObject:(id)a4;
-- (_UIScreenRouteArrayController)initWithDelegate:(id)a3;
-- (void)_teardownBlockDidFireWithBackgroundTask:(unint64_t)a3;
+- (BOOL)objectAttributeModified:(id)modified newObject:(id)object;
+- (_UIScreenRouteArrayController)initWithDelegate:(id)delegate;
+- (void)_teardownBlockDidFireWithBackgroundTask:(unint64_t)task;
 - (void)armTimer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)scheduleTeardownEndingBackgroundTask:(unint64_t)a3;
-- (void)selectRoute:(id)a3;
+- (void)scheduleTeardownEndingBackgroundTask:(unint64_t)task;
+- (void)selectRoute:(id)route;
 - (void)updateDevices;
 @end
 
 @implementation _UIScreenRouteArrayController
 
-- (_UIScreenRouteArrayController)initWithDelegate:(id)a3
+- (_UIScreenRouteArrayController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = _UIScreenRouteArrayController;
-  v5 = [(_UIScreenRouteArrayController *)&v24 initWithDelegate:v4];
+  v5 = [(_UIScreenRouteArrayController *)&v24 initWithDelegate:delegateCopy];
   if (v5)
   {
     v6 = dispatch_queue_create("screen route update queue", 0);
@@ -75,7 +75,7 @@
   [(_UIScreenRouteArrayController *)self scheduleTeardownEndingBackgroundTask:v4];
 }
 
-- (void)_teardownBlockDidFireWithBackgroundTask:(unint64_t)a3
+- (void)_teardownBlockDidFireWithBackgroundTask:(unint64_t)task
 {
   v5 = +[NSDate date];
   v6 = [v5 compare:self->_discoveryShutdownDate];
@@ -90,7 +90,7 @@
     v11[2] = sub_1000012F4;
     v11[3] = &unk_1000082E8;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = task;
     dispatch_after(v10, &_dispatch_main_q, v11);
   }
 
@@ -101,11 +101,11 @@
     [(AVOutputDeviceDiscoverySession *)self->_outputDevices setDiscoveryMode:0];
     v8 = UIApp;
 
-    [v8 endBackgroundTask:a3];
+    [v8 endBackgroundTask:task];
   }
 }
 
-- (void)scheduleTeardownEndingBackgroundTask:(unint64_t)a3
+- (void)scheduleTeardownEndingBackgroundTask:(unint64_t)task
 {
   v5 = self->_discoveryShutdownDate;
   v6 = [NSDate dateWithTimeIntervalSinceNow:10.0];
@@ -114,7 +114,7 @@
 
   if (v5)
   {
-    [UIApp endBackgroundTask:a3];
+    [UIApp endBackgroundTask:task];
   }
 
   else
@@ -125,7 +125,7 @@
     v9[2] = sub_1000013F4;
     v9[3] = &unk_1000082E8;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = task;
     dispatch_after(v8, &_dispatch_main_q, v9);
   }
 }
@@ -156,13 +156,13 @@
 - (void)updateDevices
 {
   v3 = +[NSMutableArray array];
-  v4 = [(AVOutputContext *)self->_outputContext outputDevice];
+  outputDevice = [(AVOutputContext *)self->_outputContext outputDevice];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AVOutputDeviceDiscoverySession *)self->_outputDevices availableOutputDevices];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  availableOutputDevices = [(AVOutputDeviceDiscoverySession *)self->_outputDevices availableOutputDevices];
+  v6 = [availableOutputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -174,14 +174,14 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableOutputDevices);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        if (v4 || ([*(*(&v14 + 1) + 8 * v9) ID], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+        if (outputDevice || ([*(*(&v14 + 1) + 8 * v9) ID], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
         {
           v12 = [[_UIScreenRoute alloc] initWithDevice:v10];
-          if ([v4 isEqual:v10])
+          if ([outputDevice isEqual:v10])
           {
             [(_UIScreenRoute *)v12 setSelected:1];
           }
@@ -193,7 +193,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [availableOutputDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -204,16 +204,16 @@
   self->_lastUpdate = v13;
 }
 
-- (BOOL)objectAttributeModified:(id)a3 newObject:(id)a4
+- (BOOL)objectAttributeModified:(id)modified newObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sortTitle];
-  v8 = [v6 sortTitle];
-  if ([v7 isEqual:v8])
+  modifiedCopy = modified;
+  objectCopy = object;
+  sortTitle = [modifiedCopy sortTitle];
+  sortTitle2 = [objectCopy sortTitle];
+  if ([sortTitle isEqual:sortTitle2])
   {
-    v9 = [v5 isSelected];
-    v10 = v9 ^ [v6 isSelected];
+    isSelected = [modifiedCopy isSelected];
+    v10 = isSelected ^ [objectCopy isSelected];
   }
 
   else
@@ -224,9 +224,9 @@
   return v10;
 }
 
-- (void)selectRoute:(id)a3
+- (void)selectRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = [UIApp _beginBackgroundTaskWithName:@"route selection" expirationHandler:0];
   v6 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;
@@ -234,9 +234,9 @@
   block[2] = sub_100001968;
   block[3] = &unk_100008360;
   block[4] = self;
-  v9 = v4;
+  v9 = routeCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = routeCopy;
   dispatch_async(v6, block);
 }
 

@@ -7,9 +7,9 @@
 
 - (void)_doAfterNextVisibleContentRectAndStablePresentationUpdate:
 {
-  _Block_release(*(a1 + 40));
-  v2 = *(a1 + 32);
-  *(a1 + 32) = 0;
+  _Block_release(*(self + 40));
+  v2 = *(self + 32);
+  *(self + 32) = 0;
   if (v2)
   {
   }
@@ -17,10 +17,10 @@
 
 - (uint64_t)_setDeviceOrientationUserPermissionHandlerForTesting:()WKTestingIOS
 {
-  *a1 = &unk_1F10FD648;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FD648;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 @end

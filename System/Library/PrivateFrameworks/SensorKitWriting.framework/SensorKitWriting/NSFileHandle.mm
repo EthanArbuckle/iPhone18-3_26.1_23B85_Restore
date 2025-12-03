@@ -9,8 +9,8 @@
   v4 = *MEMORY[0x277D85DE8];
   if (result)
   {
-    v1 = [result fileDescriptor];
-    if (v1 < 0 || fcntl(v1, 50, v3) < 0)
+    fileDescriptor = [result fileDescriptor];
+    if (fileDescriptor < 0 || fcntl(fileDescriptor, 50, v3) < 0)
     {
       result = 0;
     }

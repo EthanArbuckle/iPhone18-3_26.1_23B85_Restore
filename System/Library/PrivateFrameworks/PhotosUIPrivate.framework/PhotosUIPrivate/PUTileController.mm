@@ -5,26 +5,26 @@
 - (CGSize)expectedPresentationSize;
 - (NSMutableArray)reasonsToSuppressAnimatedUpdates;
 - (PUTileController)init;
-- (PUTileController)initWithReuseIdentifier:(id)a3;
+- (PUTileController)initWithReuseIdentifier:(id)identifier;
 - (PUTileLayoutInfo)presentationLayoutInfo;
 - (PUTilingView)tilingView;
 - (id)description;
 - (id)freeze;
-- (void)addToTilingView:(id)a3;
-- (void)applyLayoutInfo:(id)a3;
+- (void)addToTilingView:(id)view;
+- (void)applyLayoutInfo:(id)info;
 - (void)becomeReusable;
-- (void)didEndAnimation:(int64_t)a3;
-- (void)notifyWhenReadyForDisplayWithTimeOut:(double)a3 completionHandler:(id)a4;
+- (void)didEndAnimation:(int64_t)animation;
+- (void)notifyWhenReadyForDisplayWithTimeOut:(double)out completionHandler:(id)handler;
 - (void)prepareForReuse;
 - (void)removeAllAnimations;
 - (void)reuseIfApplicable;
-- (void)setActive:(BOOL)a3;
-- (void)setAnimationCount:(int64_t)a3;
-- (void)setExpectedPresentationSize:(CGSize)a3;
-- (void)setIsViewControllerTransitioning:(BOOL)a3;
-- (void)setLayoutInfo:(id)a3;
-- (void)startSuppressingAnimatedUpdatesWithReason:(id)a3;
-- (void)stopSuppressingAnimatedUpdatesWithReason:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setAnimationCount:(int64_t)count;
+- (void)setExpectedPresentationSize:(CGSize)size;
+- (void)setIsViewControllerTransitioning:(BOOL)transitioning;
+- (void)setLayoutInfo:(id)info;
+- (void)startSuppressingAnimatedUpdatesWithReason:(id)reason;
+- (void)stopSuppressingAnimatedUpdatesWithReason:(id)reason;
 @end
 
 @implementation PUTileController
@@ -47,25 +47,25 @@
 
 - (BOOL)shouldSuppressAnimatedUpdates
 {
-  v2 = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
-  v3 = [v2 count] != 0;
+  reasonsToSuppressAnimatedUpdates = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
+  v3 = [reasonsToSuppressAnimatedUpdates count] != 0;
 
   return v3;
 }
 
-- (void)stopSuppressingAnimatedUpdatesWithReason:(id)a3
+- (void)stopSuppressingAnimatedUpdatesWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
-  [v5 removeObject:v4];
+  reasonCopy = reason;
+  reasonsToSuppressAnimatedUpdates = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
+  [reasonsToSuppressAnimatedUpdates removeObject:reasonCopy];
 }
 
-- (void)startSuppressingAnimatedUpdatesWithReason:(id)a3
+- (void)startSuppressingAnimatedUpdatesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(PUTileController *)self removeAllAnimations];
-  v5 = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
-  [v5 addObject:v4];
+  reasonsToSuppressAnimatedUpdates = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
+  [reasonsToSuppressAnimatedUpdates addObject:reasonCopy];
 }
 
 - (NSMutableArray)reasonsToSuppressAnimatedUpdates
@@ -85,60 +85,60 @@
 
 - (id)description
 {
-  v3 = [(PUTileController *)self layoutInfo];
+  layoutInfo = [(PUTileController *)self layoutInfo];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [v3 indexPath];
-  v7 = [v6 pu_shortDescription];
-  v8 = [v4 stringWithFormat:@"<%@ %p indexPath: %@>", v5, self, v7];;
+  indexPath = [layoutInfo indexPath];
+  pu_shortDescription = [indexPath pu_shortDescription];
+  v8 = [v4 stringWithFormat:@"<%@ %p indexPath: %@>", v5, self, pu_shortDescription];;
 
   return v8;
 }
 
-- (void)notifyWhenReadyForDisplayWithTimeOut:(double)a3 completionHandler:(id)a4
+- (void)notifyWhenReadyForDisplayWithTimeOut:(double)out completionHandler:(id)handler
 {
-  v4 = a4;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    v6 = v4;
+    v6 = handlerCopy;
     px_dispatch_on_main_queue();
   }
 }
 
-- (void)setExpectedPresentationSize:(CGSize)a3
+- (void)setExpectedPresentationSize:(CGSize)size
 {
-  if (a3.width != self->_expectedPresentationSize.width || a3.height != self->_expectedPresentationSize.height)
+  if (size.width != self->_expectedPresentationSize.width || size.height != self->_expectedPresentationSize.height)
   {
-    self->_expectedPresentationSize = a3;
+    self->_expectedPresentationSize = size;
     [(PUTileController *)self expectedPresentationSizeDidChange];
   }
 }
 
-- (void)setIsViewControllerTransitioning:(BOOL)a3
+- (void)setIsViewControllerTransitioning:(BOOL)transitioning
 {
-  if (self->_isViewControllerTransitioning != a3)
+  if (self->_isViewControllerTransitioning != transitioning)
   {
-    self->_isViewControllerTransitioning = a3;
+    self->_isViewControllerTransitioning = transitioning;
     [(PUTileController *)self isViewControllerTransitioningDidChange];
   }
 }
 
-- (void)setLayoutInfo:(id)a3
+- (void)setLayoutInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   layoutInfo = self->_layoutInfo;
-  if (layoutInfo != v5)
+  if (layoutInfo != infoCopy)
   {
-    v8 = v5;
+    v8 = infoCopy;
     v7 = layoutInfo;
-    objc_storeStrong(&self->_layoutInfo, a3);
+    objc_storeStrong(&self->_layoutInfo, info);
     if ([(PUTileController *)self wantsVisibleRectChanges]&& ![(PUTileLayoutInfo *)v8 isGeometryEqualToLayoutInfo:v7])
     {
       [(PUTileController *)self didChangeVisibleRect];
     }
 
-    v5 = v8;
+    infoCopy = v8;
   }
 }
 
@@ -154,56 +154,56 @@
 
 - (void)reuseIfApplicable
 {
-  v3 = [(PUTileController *)self tilingView];
-  if (v3 && ![(PUTileController *)self isReusable]&& ![(PUTileController *)self isActive]&& ![(PUTileController *)self isAnimating]&& ![(PUTileController *)self isDetached])
+  tilingView = [(PUTileController *)self tilingView];
+  if (tilingView && ![(PUTileController *)self isReusable]&& ![(PUTileController *)self isActive]&& ![(PUTileController *)self isAnimating]&& ![(PUTileController *)self isDetached])
   {
-    [v3 enqueueTileControllerForReuse:self];
+    [tilingView enqueueTileControllerForReuse:self];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(PUTileController *)self didChangeActive];
   }
 }
 
-- (void)setAnimationCount:(int64_t)a3
+- (void)setAnimationCount:(int64_t)count
 {
   animationCount = self->_animationCount;
-  if (animationCount != a3)
+  if (animationCount != count)
   {
-    self->_animationCount = a3;
-    if ((a3 == 0) == (animationCount != 0))
+    self->_animationCount = count;
+    if ((count == 0) == (animationCount != 0))
     {
       [(PUTileController *)self didChangeAnimating];
     }
   }
 }
 
-- (void)didEndAnimation:(int64_t)a3
+- (void)didEndAnimation:(int64_t)animation
 {
   [(PUTileController *)self setAnimationCount:[(PUTileController *)self animationCount]- 1];
   if ([(PUTileController *)self animationCount]< 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:105 description:@"unbalanced animations"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:105 description:@"unbalanced animations"];
   }
 
   [(PUTileController *)self reuseIfApplicable];
   if (![(PUTileController *)self isAnimating])
   {
-    v6 = [(PUTileController *)self tilingView];
-    [v6 tileControllerDidEndAnimating:self];
+    tilingView = [(PUTileController *)self tilingView];
+    [tilingView tileControllerDidEndAnimating:self];
   }
 }
 
 - (CGRect)visibleRect
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:92 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:92 description:@"must be implemented by concrete subclass"];
 
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
@@ -216,7 +216,7 @@
   return result;
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   if ([(PUTileController *)self isDetached]&& [(PUTileController *)self wantsVisibleRectChanges])
   {
@@ -227,44 +227,44 @@
 
 - (void)removeAllAnimations
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:79 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:79 description:@"must be implemented by concrete subclass"];
 }
 
 - (id)freeze
 {
-  v3 = [(PUTileController *)self presentationLayoutInfo];
+  presentationLayoutInfo = [(PUTileController *)self presentationLayoutInfo];
   [(PUTileController *)self removeAllAnimations];
-  [(PUTileController *)self applyLayoutInfo:v3];
-  [(PUTileController *)self setLayoutInfo:v3];
+  [(PUTileController *)self applyLayoutInfo:presentationLayoutInfo];
+  [(PUTileController *)self setLayoutInfo:presentationLayoutInfo];
 
-  return v3;
+  return presentationLayoutInfo;
 }
 
 - (PUTileLayoutInfo)presentationLayoutInfo
 {
-  v4 = [(PUTileController *)self layoutInfo];
-  if (!v4)
+  layoutInfo = [(PUTileController *)self layoutInfo];
+  if (!layoutInfo)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:62 description:@"missing layout info"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:62 description:@"missing layout info"];
   }
 
-  return v4;
+  return layoutInfo;
 }
 
 - (void)prepareForReuse
 {
   if (![(PUTileController *)self isReusable])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:53 description:@"unexpected reusable state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:53 description:@"unexpected reusable state"];
   }
 
   [(PUTileController *)self setReusable:0];
   [(PUTileController *)self setLayoutInfo:0];
-  v4 = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
-  [v4 removeAllObjects];
+  reasonsToSuppressAnimatedUpdates = [(PUTileController *)self reasonsToSuppressAnimatedUpdates];
+  [reasonsToSuppressAnimatedUpdates removeAllObjects];
 
   [(PUTileController *)self removeAllAnimations];
 }
@@ -273,8 +273,8 @@
 {
   if ([(PUTileController *)self isReusable])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:47 description:@"unexpected reusable state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:47 description:@"unexpected reusable state"];
   }
 
   [(PUTileController *)self setReusable:1];
@@ -284,21 +284,21 @@
   [(PUTileController *)self setExpectedPresentationSize:v4, v5];
 }
 
-- (void)addToTilingView:(id)a3
+- (void)addToTilingView:(id)view
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:43 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:43 description:@"must be implemented by concrete subclass"];
 }
 
-- (PUTileController)initWithReuseIdentifier:(id)a3
+- (PUTileController)initWithReuseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PUTileController;
   v5 = [(PUTileController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
@@ -310,8 +310,8 @@
 
 - (PUTileController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PUTileController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileController.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PUTileController init]"}];
 
   abort();
 }

@@ -1,12 +1,12 @@
 @interface SearchToolDiagnostic
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation SearchToolDiagnostic
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_100007E84();
   }
@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1000018E8(v4);
   v7 = v6;
 

@@ -1,18 +1,18 @@
 @interface CRLiOSPencilDownGestureRecognizer
-- (CRLiOSPencilDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (CRLiOSPencilDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLiOSPencilDownGestureRecognizer
 
-- (CRLiOSPencilDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CRLiOSPencilDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = CRLiOSPencilDownGestureRecognizer;
-  v4 = [(CRLiOSPencilDownGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(CRLiOSPencilDownGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -22,12 +22,12 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  v6 = [v5 type];
+  anyObject = [began anyObject];
+  type = [anyObject type];
 
-  if (v6 != 2)
+  if (type != 2)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -60,27 +60,27 @@
   [(CRLiOSPencilDownGestureRecognizer *)self setState:3];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  if (![(CRLiOSPencilDownGestureRecognizer *)self state:a3])
+  if (![(CRLiOSPencilDownGestureRecognizer *)self state:moved])
   {
 
     [(CRLiOSPencilDownGestureRecognizer *)self setState:5];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if (![(CRLiOSPencilDownGestureRecognizer *)self state:a3])
+  if (![(CRLiOSPencilDownGestureRecognizer *)self state:ended])
   {
 
     [(CRLiOSPencilDownGestureRecognizer *)self setState:5];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if (![(CRLiOSPencilDownGestureRecognizer *)self state:a3])
+  if (![(CRLiOSPencilDownGestureRecognizer *)self state:cancelled])
   {
 
     [(CRLiOSPencilDownGestureRecognizer *)self setState:5];

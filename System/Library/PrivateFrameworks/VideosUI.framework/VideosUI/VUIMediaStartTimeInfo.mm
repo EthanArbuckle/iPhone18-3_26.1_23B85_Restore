@@ -1,25 +1,25 @@
 @interface VUIMediaStartTimeInfo
-- (VUIMediaStartTimeInfo)initWithStartTime:(id)a3 timestamp:(id)a4 type:(int64_t)a5 source:(id)a6;
+- (VUIMediaStartTimeInfo)initWithStartTime:(id)time timestamp:(id)timestamp type:(int64_t)type source:(id)source;
 - (id)description;
 @end
 
 @implementation VUIMediaStartTimeInfo
 
-- (VUIMediaStartTimeInfo)initWithStartTime:(id)a3 timestamp:(id)a4 type:(int64_t)a5 source:(id)a6
+- (VUIMediaStartTimeInfo)initWithStartTime:(id)time timestamp:(id)timestamp type:(int64_t)type source:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  timeCopy = time;
+  timestampCopy = timestamp;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = VUIMediaStartTimeInfo;
   v14 = [(VUIMediaStartTimeInfo *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_startTime, a3);
-    objc_storeStrong(&v15->_timestamp, a4);
-    v15->_type = a5;
-    objc_storeStrong(&v15->_source, a6);
+    objc_storeStrong(&v14->_startTime, time);
+    objc_storeStrong(&v15->_timestamp, timestamp);
+    v15->_type = type;
+    objc_storeStrong(&v15->_source, source);
   }
 
   return v15;
@@ -46,10 +46,10 @@
   }
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(VUIMediaStartTimeInfo *)self startTime];
-  v6 = [(VUIMediaStartTimeInfo *)self timestamp];
-  v7 = [(VUIMediaStartTimeInfo *)self source];
-  v8 = [v4 stringWithFormat:@"start time: %@, timestamp: %@, type: %@, source: %@", v5, v6, v3, v7];
+  startTime = [(VUIMediaStartTimeInfo *)self startTime];
+  timestamp = [(VUIMediaStartTimeInfo *)self timestamp];
+  source = [(VUIMediaStartTimeInfo *)self source];
+  v8 = [v4 stringWithFormat:@"start time: %@, timestamp: %@, type: %@, source: %@", startTime, timestamp, v3, source];
 
   return v8;
 }

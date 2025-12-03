@@ -1,24 +1,24 @@
 @interface SAAlarmSearch
-- (id)_ad_alarmResponseForResponse:(id)a3;
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3;
+- (id)_ad_alarmResponseForResponse:(id)response;
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation SAAlarmSearch
 
-- (id)_ad_alarmResponseForResponse:(id)a3
+- (id)_ad_alarmResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v16 = objc_alloc_init(SAAlarmSearchCompleted);
-    v4 = [v3 results];
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    results = [responseCopy results];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(results, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = results;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -67,16 +67,16 @@
   return v14;
 }
 
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v21 = objc_alloc_init(AFSearchAlarmsRequest);
   v5 = objc_alloc_init(STAlarm);
-  v6 = [(SAAlarmSearch *)self enabled];
-  v7 = v6;
-  if (v6)
+  enabled = [(SAAlarmSearch *)self enabled];
+  v7 = enabled;
+  if (enabled)
   {
-    [v5 setEnabled:{objc_msgSend(v6, "BOOLValue")}];
+    [v5 setEnabled:{objc_msgSend(enabled, "BOOLValue")}];
     v8 = 2;
   }
 
@@ -85,49 +85,49 @@
     v8 = 0;
   }
 
-  v9 = [(SAAlarmSearch *)self hour];
-  v10 = v9;
-  if (v9)
+  hour = [(SAAlarmSearch *)self hour];
+  v10 = hour;
+  if (hour)
   {
     v8 |= 8uLL;
-    [v5 setHourOfDay:{objc_msgSend(v9, "integerValue")}];
+    [v5 setHourOfDay:{objc_msgSend(hour, "integerValue")}];
   }
 
-  v11 = [(SAAlarmSearch *)self minute];
-  v12 = v11;
-  if (v11)
+  minute = [(SAAlarmSearch *)self minute];
+  v12 = minute;
+  if (minute)
   {
     v8 |= 0x10uLL;
-    [v5 setMinuteOfHour:{objc_msgSend(v11, "integerValue")}];
+    [v5 setMinuteOfHour:{objc_msgSend(minute, "integerValue")}];
   }
 
-  v13 = [(SAAlarmSearch *)self identifier];
-  v14 = v13;
-  if (v13)
+  identifier = [(SAAlarmSearch *)self identifier];
+  v14 = identifier;
+  if (identifier)
   {
     v8 |= 1uLL;
-    v15 = sub_10024B22C(v13);
+    v15 = sub_10024B22C(identifier);
     [v5 setIdentifier:v15];
   }
 
-  v16 = [(SAAlarmSearch *)self frequency];
-  v17 = v16;
-  if (v16)
+  frequency = [(SAAlarmSearch *)self frequency];
+  v17 = frequency;
+  if (frequency)
   {
     v8 |= 4uLL;
-    [v5 setDaysOfWeek:sub_10024AB14(v16)];
+    [v5 setDaysOfWeek:sub_10024AB14(frequency)];
   }
 
-  v18 = [(SAAlarmSearch *)self label];
-  if (v18)
+  label = [(SAAlarmSearch *)self label];
+  if (label)
   {
     v8 |= 0x20uLL;
-    [v5 setLabel:v18];
+    [v5 setLabel:label];
   }
 
-  v19 = [(SAAlarmSearch *)self includesSleepAlarms];
-  v20 = v19;
-  if (v19 && [v19 BOOLValue])
+  includesSleepAlarms = [(SAAlarmSearch *)self includesSleepAlarms];
+  v20 = includesSleepAlarms;
+  if (includesSleepAlarms && [includesSleepAlarms BOOLValue])
   {
     v8 |= 0x40uLL;
     [v5 setSleepAlarm:{objc_msgSend(v20, "BOOLValue")}];
@@ -135,7 +135,7 @@
 
   [v21 setOptions:v8];
   [v21 setCriteria:v5];
-  v4[2](v4, v21);
+  handlerCopy[2](handlerCopy, v21);
 }
 
 @end

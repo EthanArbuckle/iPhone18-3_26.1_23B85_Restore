@@ -1,34 +1,34 @@
 @interface EARLanguageDetectorAudioBuffer
-- (void)addAudioSampleData:(id)a3;
+- (void)addAudioSampleData:(id)data;
 - (void)endAudio;
 @end
 
 @implementation EARLanguageDetectorAudioBuffer
 
-- (void)addAudioSampleData:(id)a3
+- (void)addAudioSampleData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_100046B3C();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_100046B3C();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1000123F0(v3, v7);
-  sub_10000C198(v3, v7);
+  sub_1000123F0(dataCopy, v7);
+  sub_10000C198(dataCopy, v7);
 }
 
 - (void)endAudio
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000125E0();
 }
 

@@ -1,32 +1,32 @@
 @interface _UIBlurEffectCoreMaterialImpl
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (_UIBlurEffectCoreMaterialImpl)initWithLightMaterial:(id)a3 darkMaterial:(id)a4 bundle:(id)a5;
-- (_UIBlurEffectCoreMaterialImpl)initWithStyle:(int64_t)a3;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)appendDescriptionTo:(id)a3;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage;
+- (BOOL)isEqual:(id)equal;
+- (_UIBlurEffectCoreMaterialImpl)initWithLightMaterial:(id)material darkMaterial:(id)darkMaterial bundle:(id)bundle;
+- (_UIBlurEffectCoreMaterialImpl)initWithStyle:(int64_t)style;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)appendDescriptionTo:(id)to;
 @end
 
 @implementation _UIBlurEffectCoreMaterialImpl
 
-- (_UIBlurEffectCoreMaterialImpl)initWithStyle:(int64_t)a3
+- (_UIBlurEffectCoreMaterialImpl)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = _UIBlurEffectCoreMaterialImpl;
   result = [(_UIBlurEffectCoreMaterialImpl *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;
 }
 
-- (_UIBlurEffectCoreMaterialImpl)initWithLightMaterial:(id)a3 darkMaterial:(id)a4 bundle:(id)a5
+- (_UIBlurEffectCoreMaterialImpl)initWithLightMaterial:(id)material darkMaterial:(id)darkMaterial bundle:(id)bundle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  materialCopy = material;
+  darkMaterialCopy = darkMaterial;
+  bundleCopy = bundle;
   v16.receiver = self;
   v16.super_class = _UIBlurEffectCoreMaterialImpl;
   v11 = [(_UIBlurEffectCoreMaterialImpl *)&v16 init];
@@ -34,40 +34,40 @@
   if (v11)
   {
     v11->_style = 0x8000000000000000;
-    if (v8)
+    if (materialCopy)
     {
-      v13 = v8;
+      v13 = materialCopy;
     }
 
     else
     {
-      v13 = v9;
+      v13 = darkMaterialCopy;
     }
 
     objc_storeStrong(&v11->_lightMaterial, v13);
-    if (v9)
+    if (darkMaterialCopy)
     {
-      v14 = v9;
+      v14 = darkMaterialCopy;
     }
 
     else
     {
-      v14 = v8;
+      v14 = materialCopy;
     }
 
     objc_storeStrong(&v12->_darkMaterial, v14);
-    objc_storeStrong(&v12->_bundle, a5);
+    objc_storeStrong(&v12->_bundle, bundle);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[1] == self->_style)
     {
@@ -138,40 +138,40 @@ LABEL_21:
   return v12;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   style = self->_style;
-  v8 = a4;
-  v13 = a3;
+  environmentCopy = environment;
+  descriptorCopy = descriptor;
   if (style == 0x8000000000000000)
   {
-    v9 = [v8 traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection = [environmentCopy traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v11 = 11;
-    if (v10 == 2)
+    if (userInterfaceStyle == 2)
     {
       v11 = 12;
     }
 
     v12 = *(&self->super.super.isa + OBJC_IVAR____UIBlurEffectLegacyImpl__style[v11]);
 
-    _UICoreMaterialUpdateBlurEffectDescriptorForMTMaterial(v12, self->_bundle, v8, v13);
+    _UICoreMaterialUpdateBlurEffectDescriptorForMTMaterial(v12, self->_bundle, environmentCopy, descriptorCopy);
   }
 
   else
   {
-    _UICoreMaterialUpdateBlurEffectDescriptor(style, v8, v13);
+    _UICoreMaterialUpdateBlurEffectDescriptor(style, environmentCopy, descriptorCopy);
   }
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage
 {
-  v8 = a3;
-  v9 = a4;
+  environmentCopy = environment;
+  toEnvironmentCopy = toEnvironment;
   style = self->_style;
   if (style != 0x8000000000000000)
   {
-    if (_UICoreMaterialStyleNeedsUpdateForEnvironmentChange(style, v8, v9))
+    if (_UICoreMaterialStyleNeedsUpdateForEnvironmentChange(style, environmentCopy, toEnvironmentCopy))
     {
       goto LABEL_3;
     }
@@ -179,7 +179,7 @@ LABEL_21:
 LABEL_5:
     v13.receiver = self;
     v13.super_class = _UIBlurEffectCoreMaterialImpl;
-    v11 = [(_UIBlurEffectImpl *)&v13 _needsUpdateForTransitionFromEnvironment:v8 toEnvironment:v9 usage:a5];
+    v11 = [(_UIBlurEffectImpl *)&v13 _needsUpdateForTransitionFromEnvironment:environmentCopy toEnvironment:toEnvironmentCopy usage:usage];
     goto LABEL_6;
   }
 
@@ -195,22 +195,22 @@ LABEL_6:
   return v11;
 }
 
-- (void)appendDescriptionTo:(id)a3
+- (void)appendDescriptionTo:(id)to
 {
   style = self->_style;
   if (style == 0x8000000000000000)
   {
     lightMaterial = self->_lightMaterial;
     darkMaterial = self->_darkMaterial;
-    v7 = a3;
-    [v7 appendFormat:@" lightMaterial=%@ darkMaterial=%@", lightMaterial, darkMaterial];
+    toCopy = to;
+    [toCopy appendFormat:@" lightMaterial=%@ darkMaterial=%@", lightMaterial, darkMaterial];
   }
 
   else
   {
-    v6 = a3;
-    v7 = _UIStyledEffectConvertToString(style);
-    [v6 appendFormat:@" style=%@", v7];
+    toCopy2 = to;
+    toCopy = _UIStyledEffectConvertToString(style);
+    [toCopy2 appendFormat:@" style=%@", toCopy];
   }
 }
 

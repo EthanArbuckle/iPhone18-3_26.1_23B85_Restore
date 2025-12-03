@@ -1,8 +1,8 @@
 @interface GKBulletinAttachment
-- (GKBulletinAttachment)initWithIdentifier:(id)a3 url:(id)a4 hiddenFromDefaultExpandedView:(BOOL)a5;
+- (GKBulletinAttachment)initWithIdentifier:(id)identifier url:(id)url hiddenFromDefaultExpandedView:(BOOL)view;
 - (NSString)identifier;
 - (NSURL)url;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKBulletinAttachment
@@ -29,7 +29,7 @@
   return v8;
 }
 
-- (GKBulletinAttachment)initWithIdentifier:(id)a3 url:(id)a4 hiddenFromDefaultExpandedView:(BOOL)a5
+- (GKBulletinAttachment)initWithIdentifier:(id)identifier url:(id)url hiddenFromDefaultExpandedView:(BOOL)view
 {
   v6 = type metadata accessor for URL();
   __chkstk_darwin(v6 - 8);
@@ -37,14 +37,14 @@
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_100245618(v9, v11, v8, a5);
+  return sub_100245618(v9, v11, v8, view);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002457C0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1002457C0(coderCopy);
 }
 
 @end

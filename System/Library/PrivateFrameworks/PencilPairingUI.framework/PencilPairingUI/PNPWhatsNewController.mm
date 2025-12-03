@@ -1,5 +1,5 @@
 @interface PNPWhatsNewController
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6;
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate;
 - (BOOL)addScribbleBulletIfNecessary;
 - (void)addDoubleTapBullet;
 - (void)addDoubleTapBulletForPro;
@@ -10,16 +10,16 @@
 - (void)addSmarterNotesBullet;
 - (void)addSqueezeBullet;
 - (void)configureFor532;
-- (void)configureForType:(int64_t)a3;
+- (void)configureForType:(int64_t)type;
 - (void)tempDoTheNormalThing;
 - (void)viewDidLoad;
 @end
 
 @implementation PNPWhatsNewController
 
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate
 {
-  v9 = a6;
+  delegateCopy = delegate;
   v10 = [PNPWhatsNewController alloc];
   v11 = PencilPairingUIBundle();
   v12 = [v11 localizedStringForKey:@"WHATS_NEW_TITLE" value:&stru_286FDFDB8 table:0];
@@ -27,7 +27,7 @@
   v14 = [v13 localizedStringForKey:@"WELCOME_DETAIL_TEXT" value:&stru_286FDFDB8 table:0];
   v15 = [(PNPWelcomeController *)v10 initWithTitle:v12 detailText:v14 icon:0];
 
-  [(PNPWelcomeController *)v15 setControllerType:a3 buttonType:a4 deviceType:a5 delegate:v9];
+  [(PNPWelcomeController *)v15 setControllerType:type buttonType:buttonType deviceType:deviceType delegate:delegateCopy];
 
   return v15;
 }
@@ -40,13 +40,13 @@
   [(PNPWhatsNewController *)self configureForType:[(PNPWelcomeController *)self deviceType]];
 }
 
-- (void)configureForType:(int64_t)a3
+- (void)configureForType:(int64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         [(PNPWhatsNewController *)self configureFor222];
       }
@@ -60,7 +60,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         [(PNPWhatsNewController *)self configureFor332];
@@ -91,10 +91,10 @@
   [(PNPWhatsNewController *)self setBulletCount:[(PNPWhatsNewController *)self bulletCount]+ 1];
   v10 = PencilPairingUIBundle();
   v3 = [v10 localizedStringForKey:@"WELCOME_NOTES_TITLE" value:&stru_286FDFDB8 table:0];
-  v4 = [(PNPWelcomeController *)self isRTL];
+  isRTL = [(PNPWelcomeController *)self isRTL];
   v5 = PencilPairingUIBundle();
   v6 = v5;
-  if (v4)
+  if (isRTL)
   {
     v7 = @"WELCOME_NOTES_DESCRIPTION_RTOL";
   }
@@ -122,10 +122,10 @@
 
 - (BOOL)addScribbleBulletIfNecessary
 {
-  v3 = [MEMORY[0x277CD9698] sharedSettings];
-  v4 = [v3 supportedKeyboardLocaleExists];
+  mEMORY[0x277CD9698] = [MEMORY[0x277CD9698] sharedSettings];
+  supportedKeyboardLocaleExists = [mEMORY[0x277CD9698] supportedKeyboardLocaleExists];
 
-  if (v4)
+  if (supportedKeyboardLocaleExists)
   {
     [(PNPWhatsNewController *)self setBulletCount:[(PNPWhatsNewController *)self bulletCount]+ 1];
     v5 = PencilPairingUIBundle();
@@ -136,7 +136,7 @@
     [(PNPWhatsNewController *)self addBulletedListItemWithTitle:v6 description:v8 image:v9];
   }
 
-  return v4;
+  return supportedKeyboardLocaleExists;
 }
 
 - (void)addDoubleTapBullet
@@ -155,10 +155,10 @@
   [(PNPWhatsNewController *)self setBulletCount:[(PNPWhatsNewController *)self bulletCount]+ 1];
   v10 = PencilPairingUIBundle();
   v3 = [v10 localizedStringForKey:@"WELCOME_SCREENSHOT_TITLE" value:&stru_286FDFDB8 table:0];
-  v4 = [(PNPWelcomeController *)self isRTL];
+  isRTL = [(PNPWelcomeController *)self isRTL];
   v5 = PencilPairingUIBundle();
   v6 = v5;
-  if (v4)
+  if (isRTL)
   {
     v7 = @"WELCOME_SCREENSHOT_DESCRIPTION_RTOL";
   }
@@ -200,10 +200,10 @@
   [(PNPWhatsNewController *)self setBulletCount:[(PNPWhatsNewController *)self bulletCount]+ 1];
   v10 = PencilPairingUIBundle();
   v3 = [v10 localizedStringForKey:@"WELCOME_SCREENSHOT_TITLE" value:&stru_286FDFDB8 table:0];
-  v4 = [(PNPWelcomeController *)self isRTL];
+  isRTL = [(PNPWelcomeController *)self isRTL];
   v5 = PencilPairingUIBundle();
   v6 = v5;
-  if (v4)
+  if (isRTL)
   {
     v7 = @"WELCOME_SCREENSHOT_DESCRIPTION_RTOL_PRO";
   }

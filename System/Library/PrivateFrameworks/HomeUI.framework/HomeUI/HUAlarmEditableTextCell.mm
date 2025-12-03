@@ -1,20 +1,20 @@
 @interface HUAlarmEditableTextCell
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (HUAlarmEditableTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (HUAlarmEditableTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (int64_t)autocapitalizationType;
 - (void)layoutSubviews;
-- (void)setAutocapitalizationType:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setAutocapitalizationType:(int64_t)type;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation HUAlarmEditableTextCell
 
-- (HUAlarmEditableTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUAlarmEditableTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = HUAlarmEditableTextCell;
-  v4 = [(HUAlarmEditableTextCell *)&v17 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUAlarmEditableTextCell *)&v17 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,17 +34,17 @@
     [(UITextField *)v5->_textField setClearButtonMode:3];
     [(UITextField *)v5->_textField setDelegate:v5];
     [(UITextField *)v5->_textField setEnablesReturnKeyAutomatically:1];
-    v10 = [(UITextField *)v5->_textField _clearButton];
-    v11 = [v10 imageForState:0];
+    _clearButton = [(UITextField *)v5->_textField _clearButton];
+    v11 = [_clearButton imageForState:0];
 
-    v12 = [MEMORY[0x277D75348] hu_alarmsPrimaryColor];
-    v13 = [v11 _flatImageWithColor:v12];
+    hu_alarmsPrimaryColor = [MEMORY[0x277D75348] hu_alarmsPrimaryColor];
+    v13 = [v11 _flatImageWithColor:hu_alarmsPrimaryColor];
 
-    v14 = [(UITextField *)v5->_textField _clearButton];
-    [v14 setImage:v13 forState:0];
+    _clearButton2 = [(UITextField *)v5->_textField _clearButton];
+    [_clearButton2 setImage:v13 forState:0];
 
-    v15 = [(HUAlarmEditableTextCell *)v5 contentView];
-    [v15 addSubview:v5->_textField];
+    contentView = [(HUAlarmEditableTextCell *)v5 contentView];
+    [contentView addSubview:v5->_textField];
   }
 
   return v5;
@@ -52,16 +52,16 @@
 
 - (int64_t)autocapitalizationType
 {
-  v2 = [(HUAlarmEditableTextCell *)self textField];
-  v3 = [v2 autocapitalizationType];
+  textField = [(HUAlarmEditableTextCell *)self textField];
+  autocapitalizationType = [textField autocapitalizationType];
 
-  return v3;
+  return autocapitalizationType;
 }
 
-- (void)setAutocapitalizationType:(int64_t)a3
+- (void)setAutocapitalizationType:(int64_t)type
 {
-  v4 = [(HUAlarmEditableTextCell *)self textField];
-  [v4 setAutocapitalizationType:a3];
+  textField = [(HUAlarmEditableTextCell *)self textField];
+  [textField setAutocapitalizationType:type];
 }
 
 - (void)layoutSubviews
@@ -69,77 +69,77 @@
   v15.receiver = self;
   v15.super_class = HUAlarmEditableTextCell;
   [(HUAlarmEditableTextCell *)&v15 layoutSubviews];
-  v3 = [(HUAlarmEditableTextCell *)self textField];
-  [v3 isUserInteractionEnabled];
+  textField = [(HUAlarmEditableTextCell *)self textField];
+  [textField isUserInteractionEnabled];
 
-  v4 = [(HUAlarmEditableTextCell *)self contentView];
-  [v4 bounds];
-  v5 = [(HUAlarmEditableTextCell *)self contentView];
-  [v5 bounds];
+  contentView = [(HUAlarmEditableTextCell *)self contentView];
+  [contentView bounds];
+  contentView2 = [(HUAlarmEditableTextCell *)self contentView];
+  [contentView2 bounds];
   UIRectCenteredYInRect();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(HUAlarmEditableTextCell *)self textField];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  textField2 = [(HUAlarmEditableTextCell *)self textField];
+  [textField2 setFrame:{v7, v9, v11, v13}];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [a3 text];
-  v4 = [v3 length];
+  text = [return text];
+  v4 = [text length];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:kHUEditAlarmTitleFinishedNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:kHUEditAlarmTitleFinishedNotification object:0];
   }
 
   return v4 != 0;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(HUAlarmEditableTextCell *)self isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(HUAlarmEditableTextCell *)self isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = HUAlarmEditableTextCell;
-    [(HUAlarmEditableTextCell *)&v5 setUserInteractionEnabled:v3];
-    [(UITextField *)self->_textField setUserInteractionEnabled:v3];
+    [(HUAlarmEditableTextCell *)&v5 setUserInteractionEnabled:enabledCopy];
+    [(UITextField *)self->_textField setUserInteractionEnabled:enabledCopy];
     [(HUAlarmEditableTextCell *)self setNeedsLayout];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_enabled = a3;
+  enabledCopy = enabled;
+  self->_enabled = enabled;
   [(HUAlarmEditableTextCell *)self setUserInteractionEnabled:?];
-  v5 = [(HUAlarmEditableTextCell *)self textField];
-  [v5 setEnabled:v3];
+  textField = [(HUAlarmEditableTextCell *)self textField];
+  [textField setEnabled:enabledCopy];
 
-  v6 = [(HUAlarmEditableTextCell *)self textField];
-  [v6 setUserInteractionEnabled:v3];
+  textField2 = [(HUAlarmEditableTextCell *)self textField];
+  [textField2 setUserInteractionEnabled:enabledCopy];
 
-  if (v3)
+  if (enabledCopy)
   {
-    v7 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v8 = 3;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
+    labelColor = [MEMORY[0x277D75348] systemGrayColor];
     v8 = 0;
   }
 
-  v9 = [(HUAlarmEditableTextCell *)self textField];
-  [v9 setTextColor:v7];
+  textField3 = [(HUAlarmEditableTextCell *)self textField];
+  [textField3 setTextColor:labelColor];
 
-  v10 = [(HUAlarmEditableTextCell *)self textField];
-  [v10 setClearButtonMode:v8];
+  textField4 = [(HUAlarmEditableTextCell *)self textField];
+  [textField4 setClearButtonMode:v8];
 }
 
 @end

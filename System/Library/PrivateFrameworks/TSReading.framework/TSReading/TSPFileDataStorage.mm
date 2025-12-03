@@ -1,24 +1,24 @@
 @interface TSPFileDataStorage
 - (CGDataProvider)newCGDataProvider;
 - (CGImageSource)newCGImageSource;
-- (id)AVAssetWithOptions:(id)a3 contentTypeUTI:(id)a4;
-- (id)AVAssetWithOptions:(id)a3 usingResourceLoaderWithContentTypeUTI:(id)a4;
-- (id)NSDataWithOptions:(unint64_t)a3;
-- (id)bookmarkDataWithOptions:(unint64_t)a3;
+- (id)AVAssetWithOptions:(id)options contentTypeUTI:(id)i;
+- (id)AVAssetWithOptions:(id)options usingResourceLoaderWithContentTypeUTI:(id)i;
+- (id)NSDataWithOptions:(unint64_t)options;
+- (id)bookmarkDataWithOptions:(unint64_t)options;
 - (unint64_t)encodedLength;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performReadWithAccessor:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performReadWithAccessor:(id)accessor;
 @end
 
 @implementation TSPFileDataStorage
 
-- (void)performReadWithAccessor:(id)a3
+- (void)performReadWithAccessor:(id)accessor
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  accessorCopy = accessor;
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPFileDataStorage performReadWithAccessor:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPFileDataStorage.mm"];
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:46 description:@"Abstract method"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:46 description:@"Abstract method"];
 
   v7 = MEMORY[0x277CBEAD8];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Abstract method", "-[TSPFileDataStorage performReadWithAccessor:]"];
@@ -28,15 +28,15 @@
   objc_exception_throw(v9);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__TSPFileDataStorage_performIOChannelReadWithAccessor___block_invoke;
   v6[3] = &unk_279D470E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = accessorCopy;
+  v5 = accessorCopy;
   [(TSPFileDataStorage *)self performReadWithAccessor:v6];
 }
 
@@ -55,7 +55,7 @@ void __55__TSPFileDataStorage_performIOChannelReadWithAccessor___block_invoke(ui
   }
 }
 
-- (id)bookmarkDataWithOptions:(unint64_t)a3
+- (id)bookmarkDataWithOptions:(unint64_t)options
 {
   v6 = 0;
   v7 = &v6;
@@ -68,7 +68,7 @@ void __55__TSPFileDataStorage_performIOChannelReadWithAccessor___block_invoke(ui
   v5[2] = __46__TSPFileDataStorage_bookmarkDataWithOptions___block_invoke;
   v5[3] = &unk_279D47108;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = options;
   [(TSPFileDataStorage *)self performReadWithAccessor:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -150,7 +150,7 @@ void __39__TSPFileDataStorage_newCGDataProvider__block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (id)NSDataWithOptions:(unint64_t)a3
+- (id)NSDataWithOptions:(unint64_t)options
 {
   v6 = 0;
   v7 = &v6;
@@ -236,9 +236,9 @@ void __40__TSPFileDataStorage_NSDataWithOptions___block_invoke_2(uint64_t a1, in
   }
 }
 
-- (id)AVAssetWithOptions:(id)a3 contentTypeUTI:(id)a4
+- (id)AVAssetWithOptions:(id)options contentTypeUTI:(id)i
 {
-  v5 = a3;
+  optionsCopy = options;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -249,9 +249,9 @@ void __40__TSPFileDataStorage_NSDataWithOptions___block_invoke_2(uint64_t a1, in
   v9[1] = 3221225472;
   v9[2] = __56__TSPFileDataStorage_AVAssetWithOptions_contentTypeUTI___block_invoke;
   v9[3] = &unk_279D47180;
-  v10 = v5;
+  v10 = optionsCopy;
   v11 = &v12;
-  v6 = v5;
+  v6 = optionsCopy;
   [(TSPFileDataStorage *)self performReadWithAccessor:v9];
   v7 = v13[5];
 
@@ -269,23 +269,23 @@ void __56__TSPFileDataStorage_AVAssetWithOptions_contentTypeUTI___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (id)AVAssetWithOptions:(id)a3 usingResourceLoaderWithContentTypeUTI:(id)a4
+- (id)AVAssetWithOptions:(id)options usingResourceLoaderWithContentTypeUTI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  optionsCopy = options;
+  iCopy = i;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [@"iWorkAVAsset://" stringByAppendingString:v9];
+  v11 = [@"iWorkAVAsset://" stringByAppendingString:uUIDString];
   v12 = [v10 URLWithString:v11];
 
-  v13 = [MEMORY[0x277CE6650] URLAssetWithURL:v12 options:v6];
-  v14 = [@"TSPFileDataStorage.AVAssetResourceLoaderDelegateQueue.Read" stringByAppendingString:v9];
+  v13 = [MEMORY[0x277CE6650] URLAssetWithURL:v12 options:optionsCopy];
+  v14 = [@"TSPFileDataStorage.AVAssetResourceLoaderDelegateQueue.Read" stringByAppendingString:uUIDString];
   v15 = dispatch_queue_create([v14 UTF8String], 0);
-  v16 = [[TSPAVAssetResourceLoaderDelegate alloc] initWithTSPFileDataStorage:self contentTypeUTI:v7];
-  v17 = [v13 resourceLoader];
-  [v17 setDelegate:v16 queue:v15];
+  v16 = [[TSPAVAssetResourceLoaderDelegate alloc] initWithTSPFileDataStorage:self contentTypeUTI:iCopy];
+  resourceLoader = [v13 resourceLoader];
+  [resourceLoader setDelegate:v16 queue:v15];
   objc_setAssociatedObject(v13, "com.apple.iWork.resourceLoaderDelegate", v16, 1);
 
   return v13;

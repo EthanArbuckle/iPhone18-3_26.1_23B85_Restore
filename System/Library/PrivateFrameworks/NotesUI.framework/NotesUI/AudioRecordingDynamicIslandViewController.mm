@@ -3,28 +3,28 @@
 - (SBUISystemApertureAccessoryView)minimalView;
 - (SBUISystemApertureAccessoryView)trailingView;
 - (UIColor)keyColor;
-- (void)setActiveLayoutMode:(int64_t)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AudioRecordingDynamicIslandViewController
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1D4363E54(a3);
+  selfCopy = self;
+  sub_1D4363E54(mode);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D4364514();
 }
 
 - (SBUISystemApertureAccessoryView)leadingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D4363FC0();
 
   return v3;
@@ -32,7 +32,7 @@
 
 - (SBUISystemApertureAccessoryView)trailingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D4365594();
 
   return v3;
@@ -40,7 +40,7 @@
 
 - (SBUISystemApertureAccessoryView)minimalView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D4365760();
 
   return v3;
@@ -48,13 +48,13 @@
 
 - (UIColor)keyColor
 {
-  v2 = [objc_opt_self() sharedStyleProvider];
-  v3 = [v2 platterKeyColor];
+  sharedStyleProvider = [objc_opt_self() sharedStyleProvider];
+  platterKeyColor = [sharedStyleProvider platterKeyColor];
 
-  return v3;
+  return platterKeyColor;
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -66,9 +66,9 @@
   v8[3] = &block_descriptor_12;
   v6 = _Block_copy(v8);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
 
-  [a3 animateAlongsideTransition:v6 completion:0];
+  [coordinator animateAlongsideTransition:v6 completion:0];
   _Block_release(v6);
   swift_unknownObjectRelease();
 }

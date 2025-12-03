@@ -1,29 +1,29 @@
 @interface DirectionsStepCollectionViewCell
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3;
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6;
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom;
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom;
 + (id)reuseIdentifier;
 + (unint64_t)signViewIconSize;
-- (DirectionsStepCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)setRoute:(id)a3 step:(id)a4 stepIndex:(unint64_t)a5 alignToLeftEdgeIfNoManeuverSign:(BOOL)a6 size:(int64_t)a7;
+- (DirectionsStepCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)setRoute:(id)route step:(id)step stepIndex:(unint64_t)index alignToLeftEdgeIfNoManeuverSign:(BOOL)sign size:(int64_t)size;
 - (void)updateTheme;
 @end
 
 @implementation DirectionsStepCollectionViewCell
 
-- (void)setRoute:(id)a3 step:(id)a4 stepIndex:(unint64_t)a5 alignToLeftEdgeIfNoManeuverSign:(BOOL)a6 size:(int64_t)a7
+- (void)setRoute:(id)route step:(id)step stepIndex:(unint64_t)index alignToLeftEdgeIfNoManeuverSign:(BOOL)sign size:(int64_t)size
 {
-  v8 = a6;
-  v12 = a4;
-  v16 = a3;
+  signCopy = sign;
+  stepCopy = step;
+  routeCopy = route;
   v13 = objc_opt_class();
   [(DirectionsStepView *)self->_stepView bounds];
   Width = CGRectGetWidth(v18);
-  v15 = [(DirectionsStepCollectionViewCell *)self traitCollection];
-  [v13 heightForWidth:v16 route:v12 step:objc_msgSend(v15 idiom:{"userInterfaceIdiom"), Width}];
+  traitCollection = [(DirectionsStepCollectionViewCell *)self traitCollection];
+  [v13 heightForWidth:routeCopy route:stepCopy step:objc_msgSend(traitCollection idiom:{"userInterfaceIdiom"), Width}];
   [(NSLayoutConstraint *)self->_heightConstraint setConstant:?];
 
   [(NSLayoutConstraint *)self->_heightConstraint setActive:1];
-  [(DirectionsStepView *)self->_stepView setRoute:v16 step:v12 stepIndex:a5 alignToLeftEdgeIfNoManeuverSign:v8 size:a7];
+  [(DirectionsStepView *)self->_stepView setRoute:routeCopy step:stepCopy stepIndex:index alignToLeftEdgeIfNoManeuverSign:signCopy size:size];
 }
 
 - (void)updateTheme
@@ -33,53 +33,53 @@
   [(MapsThemeCollectionViewListCell *)&v9 updateTheme];
   if (sub_10000FA08(self) != 5)
   {
-    v3 = [(DirectionsStepCollectionViewCell *)self backgroundView];
+    backgroundView = [(DirectionsStepCollectionViewCell *)self backgroundView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v5 = [(DirectionsStepCollectionViewCell *)self backgroundView];
-      [v5 setHighlightedColor:{-[DirectionsStepCollectionViewCell isSelectedRow](self, "isSelectedRow")}];
+      backgroundView2 = [(DirectionsStepCollectionViewCell *)self backgroundView];
+      [backgroundView2 setHighlightedColor:{-[DirectionsStepCollectionViewCell isSelectedRow](self, "isSelectedRow")}];
     }
 
-    v6 = [(DirectionsStepCollectionViewCell *)self theme];
-    v7 = [v6 tableViewCellHighlightedOverlayColor];
-    v8 = [(DirectionsStepCollectionViewCell *)self selectedBackgroundView];
-    [v8 setBackgroundColor:v7];
+    theme = [(DirectionsStepCollectionViewCell *)self theme];
+    tableViewCellHighlightedOverlayColor = [theme tableViewCellHighlightedOverlayColor];
+    selectedBackgroundView = [(DirectionsStepCollectionViewCell *)self selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:tableViewCellHighlightedOverlayColor];
   }
 }
 
-- (DirectionsStepCollectionViewCell)initWithFrame:(CGRect)a3
+- (DirectionsStepCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = DirectionsStepCollectionViewCell;
-  v3 = [(DirectionsStepCollectionViewCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DirectionsStepCollectionViewCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(DirectionsStepCollectionViewCell *)v3 setAccessibilityIdentifier:@"DirectionsStepCell"];
     v5 = objc_alloc([objc_opt_class() stepViewClass]);
-    v6 = [(DirectionsStepCollectionViewCell *)v4 contentView];
-    [v6 bounds];
+    contentView = [(DirectionsStepCollectionViewCell *)v4 contentView];
+    [contentView bounds];
     v7 = [v5 initWithFrame:?];
     stepView = v4->_stepView;
     v4->_stepView = v7;
 
     [(DirectionsStepView *)v4->_stepView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DirectionsStepView *)v4->_stepView setAccessibilityIdentifier:@"DirectionsStep"];
-    v9 = [(DirectionsStepCollectionViewCell *)v4 contentView];
-    [v9 addSubview:v4->_stepView];
+    contentView2 = [(DirectionsStepCollectionViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_stepView];
 
     v10 = v4->_stepView;
-    v11 = [(DirectionsStepCollectionViewCell *)v4 contentView];
+    contentView3 = [(DirectionsStepCollectionViewCell *)v4 contentView];
     LODWORD(v12) = 1148846080;
-    v13 = [(DirectionsStepView *)v10 _maps_constraintsEqualToEdgesOfView:v11 priority:v12];
-    v14 = [v13 allConstraints];
-    [NSLayoutConstraint activateConstraints:v14];
+    v13 = [(DirectionsStepView *)v10 _maps_constraintsEqualToEdgesOfView:contentView3 priority:v12];
+    allConstraints = [v13 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
-    v15 = [(DirectionsStepView *)v4->_stepView heightAnchor];
-    v16 = [v15 constraintEqualToConstant:0.0];
+    heightAnchor = [(DirectionsStepView *)v4->_stepView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:0.0];
     heightConstraint = v4->_heightConstraint;
     v4->_heightConstraint = v16;
 
@@ -89,11 +89,11 @@
   return v4;
 }
 
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom
 {
-  v10 = a5;
-  v11 = a4;
-  [objc_msgSend(a1 "stepViewClass")];
+  stepCopy = step;
+  routeCopy = route;
+  [objc_msgSend(self "stepViewClass")];
   v13 = v12;
 
   return v13;
@@ -101,12 +101,12 @@
 
 + (unint64_t)signViewIconSize
 {
-  v2 = [a1 stepViewClass];
+  stepViewClass = [self stepViewClass];
 
-  return [v2 signViewIconSize];
+  return [stepViewClass signViewIconSize];
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom
 {
   result = [a2 stepViewClass];
   if (result)

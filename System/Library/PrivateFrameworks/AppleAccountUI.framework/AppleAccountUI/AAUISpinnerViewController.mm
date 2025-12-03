@@ -1,20 +1,20 @@
 @interface AAUISpinnerViewController
-- (AAUISpinnerViewController)initWithCoder:(id)a3;
-- (AAUISpinnerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AAUISpinnerViewController)initWithCoder:(id)coder;
+- (AAUISpinnerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_commonInit;
-- (void)setSpinning:(BOOL)a3;
+- (void)setSpinning:(BOOL)spinning;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AAUISpinnerViewController
 
-- (AAUISpinnerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AAUISpinnerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AAUISpinnerViewController;
-  v4 = [(AAUISpinnerViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AAUISpinnerViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (AAUISpinnerViewController)initWithCoder:(id)a3
+- (AAUISpinnerViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUISpinnerViewController;
-  v3 = [(AAUISpinnerViewController *)&v6 initWithCoder:a3];
+  v3 = [(AAUISpinnerViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -63,71 +63,71 @@
   v30.receiver = self;
   v30.super_class = AAUISpinnerViewController;
   [(AAUISpinnerViewController *)&v30 viewDidLoad];
-  v3 = [(AAUISpinnerViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(AAUISpinnerViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(AAUISpinnerViewController *)self view];
-  [v5 addSubview:self->_label];
+  view2 = [(AAUISpinnerViewController *)self view];
+  [view2 addSubview:self->_label];
 
-  v6 = [(AAUISpinnerViewController *)self view];
-  [v6 addSubview:self->_spinnerView];
+  view3 = [(AAUISpinnerViewController *)self view];
+  [view3 addSubview:self->_spinnerView];
 
   v21 = MEMORY[0x1E696ACD8];
-  v29 = [(UILabel *)self->_label topAnchor];
-  v28 = [(UIActivityIndicatorView *)self->_spinnerView bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 constant:8.0];
+  topAnchor = [(UILabel *)self->_label topAnchor];
+  bottomAnchor = [(UIActivityIndicatorView *)self->_spinnerView bottomAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:8.0];
   v31[0] = v27;
-  v25 = [(UILabel *)self->_label leadingAnchor];
-  v26 = [(AAUISpinnerViewController *)self view];
-  v24 = [v26 safeAreaLayoutGuide];
-  v23 = [v24 leadingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23 constant:8.0];
+  leadingAnchor = [(UILabel *)self->_label leadingAnchor];
+  view4 = [(AAUISpinnerViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v31[1] = v22;
-  v19 = [(UILabel *)self->_label trailingAnchor];
-  v20 = [(AAUISpinnerViewController *)self view];
-  v18 = [v20 safeAreaLayoutGuide];
-  v17 = [v18 trailingAnchor];
-  v7 = [v19 constraintEqualToAnchor:v17 constant:-8.0];
+  trailingAnchor = [(UILabel *)self->_label trailingAnchor];
+  view5 = [(AAUISpinnerViewController *)self view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v31[2] = v7;
-  v8 = [(UIActivityIndicatorView *)self->_spinnerView centerXAnchor];
-  v9 = [(AAUISpinnerViewController *)self view];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinnerView centerXAnchor];
+  view6 = [(AAUISpinnerViewController *)self view];
+  centerXAnchor2 = [view6 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v31[3] = v11;
-  v12 = [(UIActivityIndicatorView *)self->_spinnerView centerYAnchor];
-  v13 = [(AAUISpinnerViewController *)self view];
-  v14 = [v13 centerYAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinnerView centerYAnchor];
+  view7 = [(AAUISpinnerViewController *)self view];
+  centerYAnchor2 = [view7 centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v31[4] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:5];
   [v21 activateConstraints:v16];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = AAUISpinnerViewController;
   [(AAUISpinnerViewController *)&v6 viewWillAppear:?];
-  v5 = [(AAUISpinnerViewController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:v3];
+  navigationController = [(AAUISpinnerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = AAUISpinnerViewController;
   [(AAUISpinnerViewController *)&v6 viewWillDisappear:?];
-  v5 = [(AAUISpinnerViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(AAUISpinnerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:disappearCopy];
 }
 
-- (void)setSpinning:(BOOL)a3
+- (void)setSpinning:(BOOL)spinning
 {
   spinnerView = self->_spinnerView;
-  if (a3)
+  if (spinning)
   {
     [(UIActivityIndicatorView *)spinnerView startAnimating];
   }

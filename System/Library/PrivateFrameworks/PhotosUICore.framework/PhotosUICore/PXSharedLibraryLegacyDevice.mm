@@ -1,7 +1,7 @@
 @interface PXSharedLibraryLegacyDevice
 - (NSString)instructions;
 - (PXSharedLibraryLegacyDevice)init;
-- (PXSharedLibraryLegacyDevice)initWithName:(id)a3 iconData:(id)a4 operatingSystem:(int64_t)a5 upgradeable:(BOOL)a6;
+- (PXSharedLibraryLegacyDevice)initWithName:(id)name iconData:(id)data operatingSystem:(int64_t)system upgradeable:(BOOL)upgradeable;
 - (id)description;
 @end
 
@@ -54,8 +54,8 @@
     v3 = 0;
     if (!operatingSystem)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:56 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:56 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -78,13 +78,13 @@
   return v8;
 }
 
-- (PXSharedLibraryLegacyDevice)initWithName:(id)a3 iconData:(id)a4 operatingSystem:(int64_t)a5 upgradeable:(BOOL)a6
+- (PXSharedLibraryLegacyDevice)initWithName:(id)name iconData:(id)data operatingSystem:(int64_t)system upgradeable:(BOOL)upgradeable
 {
-  v11 = a3;
-  v12 = a4;
-  if (v11)
+  nameCopy = name;
+  dataCopy = data;
+  if (nameCopy)
   {
-    if (a5)
+    if (system)
     {
       goto LABEL_3;
     }
@@ -92,17 +92,17 @@
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (a5)
+    if (system)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"operatingSystem != PXSharedLibraryLegacyDeviceOperatingSystemUnknown"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"operatingSystem != PXSharedLibraryLegacyDeviceOperatingSystemUnknown"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -110,16 +110,16 @@ LABEL_3:
   v13 = [(PXSharedLibraryLegacyDevice *)&v21 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v12 copy];
+    v16 = [dataCopy copy];
     iconData = v13->_iconData;
     v13->_iconData = v16;
 
-    v13->_operatingSystem = a5;
-    v13->_upgradeable = a6;
+    v13->_operatingSystem = system;
+    v13->_upgradeable = upgradeable;
   }
 
   return v13;
@@ -127,8 +127,8 @@ LABEL_3:
 
 - (PXSharedLibraryLegacyDevice)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXSharedLibraryLegacyDevice init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryLegacyDevice.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXSharedLibraryLegacyDevice init]"}];
 
   abort();
 }

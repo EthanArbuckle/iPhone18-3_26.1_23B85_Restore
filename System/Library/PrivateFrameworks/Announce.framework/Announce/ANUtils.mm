@@ -2,9 +2,9 @@
 + (BOOL)isHomeAppInstalled;
 + (BOOL)isInternalBuild;
 + (NSDateFormatter)an_dateFormatterForFilename;
-+ (double)machTimeToSeconds:(unint64_t)a3;
-+ (unint64_t)secondsToMachTime:(double)a3;
-+ (void)asyncDispatchOnGlobalQueue:(id)a3;
++ (double)machTimeToSeconds:(unint64_t)seconds;
++ (unint64_t)secondsToMachTime:(double)time;
++ (void)asyncDispatchOnGlobalQueue:(id)queue;
 @end
 
 @implementation ANUtils
@@ -86,7 +86,7 @@ uint64_t __38__ANUtils_an_dateFormatterForFilename__block_invoke()
   return v3 != 0;
 }
 
-+ (double)machTimeToSeconds:(unint64_t)a3
++ (double)machTimeToSeconds:(unint64_t)seconds
 {
   if (machTimeToSeconds__onceToken != -1)
   {
@@ -94,29 +94,29 @@ uint64_t __38__ANUtils_an_dateFormatterForFilename__block_invoke()
   }
 
   LODWORD(v3) = dword_27D09AA94;
-  return (machTimeToSeconds___timeBaseInfo * a3) / (v3 * 1000000000.0);
+  return (machTimeToSeconds___timeBaseInfo * seconds) / (v3 * 1000000000.0);
 }
 
-+ (unint64_t)secondsToMachTime:(double)a3
++ (unint64_t)secondsToMachTime:(double)time
 {
   if (secondsToMachTime__onceToken != -1)
   {
     +[ANUtils secondsToMachTime:];
   }
 
-  return (*algn_27D09AAA4 * a3 * (1000000000.0 / secondsToMachTime___timeBaseInfo));
+  return (*algn_27D09AAA4 * time * (1000000000.0 / secondsToMachTime___timeBaseInfo));
 }
 
-+ (void)asyncDispatchOnGlobalQueue:(id)a3
++ (void)asyncDispatchOnGlobalQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ANUtils_asyncDispatchOnGlobalQueue___block_invoke;
   block[3] = &unk_2784E2088;
-  v7 = v3;
-  v5 = v3;
+  v7 = queueCopy;
+  v5 = queueCopy;
   dispatch_async(v4, block);
 }
 

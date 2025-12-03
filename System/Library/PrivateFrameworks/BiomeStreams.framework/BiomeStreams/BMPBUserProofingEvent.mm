@@ -1,12 +1,12 @@
 @interface BMPBUserProofingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBUserProofingEvent
@@ -17,212 +17,212 @@
   v8.receiver = self;
   v8.super_class = BMPBUserProofingEvent;
   v4 = [(BMPBUserProofingEvent *)&v8 description];
-  v5 = [(BMPBUserProofingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBUserProofingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   age = self->_age;
   if (age)
   {
-    [v3 setObject:age forKey:@"age"];
+    [dictionary setObject:age forKey:@"age"];
   }
 
   gender = self->_gender;
   if (gender)
   {
-    [v3 setObject:gender forKey:@"gender"];
+    [dictionary setObject:gender forKey:@"gender"];
   }
 
   skinTone = self->_skinTone;
   if (skinTone)
   {
-    [v3 setObject:skinTone forKey:@"skinTone"];
+    [dictionary setObject:skinTone forKey:@"skinTone"];
   }
 
   ethnicity = self->_ethnicity;
   if (ethnicity)
   {
-    [v3 setObject:ethnicity forKey:@"ethnicity"];
+    [dictionary setObject:ethnicity forKey:@"ethnicity"];
   }
 
   deviceLanguage = self->_deviceLanguage;
   if (deviceLanguage)
   {
-    [v3 setObject:deviceLanguage forKey:@"deviceLanguage"];
+    [dictionary setObject:deviceLanguage forKey:@"deviceLanguage"];
   }
 
   proofingDecision = self->_proofingDecision;
   if (proofingDecision)
   {
-    [v3 setObject:proofingDecision forKey:@"proofingDecision"];
+    [dictionary setObject:proofingDecision forKey:@"proofingDecision"];
   }
 
   issuer = self->_issuer;
   if (issuer)
   {
-    [v3 setObject:issuer forKey:@"issuer"];
+    [dictionary setObject:issuer forKey:@"issuer"];
   }
 
   livenessAssessment = self->_livenessAssessment;
   if (livenessAssessment)
   {
-    [v3 setObject:livenessAssessment forKey:@"livenessAssessment"];
+    [dictionary setObject:livenessAssessment forKey:@"livenessAssessment"];
   }
 
   gestureAssessment = self->_gestureAssessment;
   if (gestureAssessment)
   {
-    [v3 setObject:gestureAssessment forKey:@"gestureAssessment"];
+    [dictionary setObject:gestureAssessment forKey:@"gestureAssessment"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_age)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_gender)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_skinTone)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ethnicity)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceLanguage)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_proofingDecision)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_issuer)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_livenessAssessment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_gestureAssessment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 88) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 88) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_age)
   {
-    [v4 setAge:?];
-    v4 = v5;
+    [toCopy setAge:?];
+    toCopy = v5;
   }
 
   if (self->_gender)
   {
     [v5 setGender:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_skinTone)
   {
     [v5 setSkinTone:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ethnicity)
   {
     [v5 setEthnicity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceLanguage)
   {
     [v5 setDeviceLanguage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_proofingDecision)
   {
     [v5 setProofingDecision:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_issuer)
   {
     [v5 setIssuer:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_livenessAssessment)
   {
     [v5 setLivenessAssessment:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_gestureAssessment)
   {
     [v5 setGestureAssessment:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -230,63 +230,63 @@
     *(v5 + 88) |= 1u;
   }
 
-  v7 = [(NSString *)self->_age copyWithZone:a3];
+  v7 = [(NSString *)self->_age copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_gender copyWithZone:a3];
+  v9 = [(NSString *)self->_gender copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(NSString *)self->_skinTone copyWithZone:a3];
+  v11 = [(NSString *)self->_skinTone copyWithZone:zone];
   v12 = v6[10];
   v6[10] = v11;
 
-  v13 = [(NSString *)self->_ethnicity copyWithZone:a3];
+  v13 = [(NSString *)self->_ethnicity copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
-  v15 = [(NSString *)self->_deviceLanguage copyWithZone:a3];
+  v15 = [(NSString *)self->_deviceLanguage copyWithZone:zone];
   v16 = v6[3];
   v6[3] = v15;
 
-  v17 = [(NSString *)self->_proofingDecision copyWithZone:a3];
+  v17 = [(NSString *)self->_proofingDecision copyWithZone:zone];
   v18 = v6[9];
   v6[9] = v17;
 
-  v19 = [(NSString *)self->_issuer copyWithZone:a3];
+  v19 = [(NSString *)self->_issuer copyWithZone:zone];
   v20 = v6[7];
   v6[7] = v19;
 
-  v21 = [(NSString *)self->_livenessAssessment copyWithZone:a3];
+  v21 = [(NSString *)self->_livenessAssessment copyWithZone:zone];
   v22 = v6[8];
   v6[8] = v21;
 
-  v23 = [(NSString *)self->_gestureAssessment copyWithZone:a3];
+  v23 = [(NSString *)self->_gestureAssessment copyWithZone:zone];
   v24 = v6[6];
   v6[6] = v23;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_25:
     v15 = 0;
@@ -294,13 +294,13 @@ LABEL_25:
   }
 
   age = self->_age;
-  if (age | *(v4 + 2) && ![(NSString *)age isEqual:?])
+  if (age | *(equalCopy + 2) && ![(NSString *)age isEqual:?])
   {
     goto LABEL_25;
   }
 
   gender = self->_gender;
-  if (gender | *(v4 + 5))
+  if (gender | *(equalCopy + 5))
   {
     if (![(NSString *)gender isEqual:?])
     {
@@ -309,7 +309,7 @@ LABEL_25:
   }
 
   skinTone = self->_skinTone;
-  if (skinTone | *(v4 + 10))
+  if (skinTone | *(equalCopy + 10))
   {
     if (![(NSString *)skinTone isEqual:?])
     {
@@ -318,7 +318,7 @@ LABEL_25:
   }
 
   ethnicity = self->_ethnicity;
-  if (ethnicity | *(v4 + 4))
+  if (ethnicity | *(equalCopy + 4))
   {
     if (![(NSString *)ethnicity isEqual:?])
     {
@@ -327,7 +327,7 @@ LABEL_25:
   }
 
   deviceLanguage = self->_deviceLanguage;
-  if (deviceLanguage | *(v4 + 3))
+  if (deviceLanguage | *(equalCopy + 3))
   {
     if (![(NSString *)deviceLanguage isEqual:?])
     {
@@ -336,7 +336,7 @@ LABEL_25:
   }
 
   proofingDecision = self->_proofingDecision;
-  if (proofingDecision | *(v4 + 9))
+  if (proofingDecision | *(equalCopy + 9))
   {
     if (![(NSString *)proofingDecision isEqual:?])
     {
@@ -345,7 +345,7 @@ LABEL_25:
   }
 
   issuer = self->_issuer;
-  if (issuer | *(v4 + 7))
+  if (issuer | *(equalCopy + 7))
   {
     if (![(NSString *)issuer isEqual:?])
     {
@@ -354,7 +354,7 @@ LABEL_25:
   }
 
   livenessAssessment = self->_livenessAssessment;
-  if (livenessAssessment | *(v4 + 8))
+  if (livenessAssessment | *(equalCopy + 8))
   {
     if (![(NSString *)livenessAssessment isEqual:?])
     {
@@ -363,7 +363,7 @@ LABEL_25:
   }
 
   gestureAssessment = self->_gestureAssessment;
-  if (gestureAssessment | *(v4 + 6))
+  if (gestureAssessment | *(equalCopy + 6))
   {
     v15 = [(NSString *)gestureAssessment isEqual:?];
   }
@@ -424,68 +424,68 @@ LABEL_26:
   return v14 ^ v16 ^ [(NSString *)self->_gestureAssessment hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[11])
+  fromCopy = from;
+  if (fromCopy[11])
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BMPBUserProofingEvent *)self setAge:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBUserProofingEvent *)self setGender:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BMPBUserProofingEvent *)self setSkinTone:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBUserProofingEvent *)self setEthnicity:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBUserProofingEvent *)self setDeviceLanguage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBUserProofingEvent *)self setProofingDecision:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBUserProofingEvent *)self setIssuer:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBUserProofingEvent *)self setLivenessAssessment:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBUserProofingEvent *)self setGestureAssessment:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

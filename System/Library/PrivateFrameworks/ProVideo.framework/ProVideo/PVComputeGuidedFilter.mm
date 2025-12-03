@@ -1,38 +1,38 @@
 @interface PVComputeGuidedFilter
-- (BOOL)applyFilterToInput:(id)a3 output:(id)a4;
-- (BOOL)runCPUPathOnInput:(void *)a3 guide:(void *)a4 output:(void *)a5 radius:(int)a6 epsilon:(float)a7;
-- (PVComputeGuidedFilter)initWithGuide:(id)a3 radius:(int)a4 epsilon:(float)a5;
-- (void)processStage1Float32Input:(float *)a3 inputRowBytes:(unint64_t)a4 guide:(float *)a5 guideRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11;
-- (void)processStage1UInt8Input:(char *)a3 inputRowBytes:(unint64_t)a4 guide:(char *)a5 guideRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11;
-- (void)processStage5Float32Guide:(float *)a3 guideRowBytes:(unint64_t)a4 stats:(float *)a5 statsRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11;
-- (void)processStage5UInt6Guide:(char *)a3 guideRowBytes:(unint64_t)a4 stats:(float *)a5 statsRowBytes:(unint64_t)a6 output:(char *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11;
+- (BOOL)applyFilterToInput:(id)input output:(id)output;
+- (BOOL)runCPUPathOnInput:(void *)input guide:(void *)guide output:(void *)output radius:(int)radius epsilon:(float)epsilon;
+- (PVComputeGuidedFilter)initWithGuide:(id)guide radius:(int)radius epsilon:(float)epsilon;
+- (void)processStage1Float32Input:(float *)input inputRowBytes:(unint64_t)bytes guide:(float *)guide guideRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1;
+- (void)processStage1UInt8Input:(char *)input inputRowBytes:(unint64_t)bytes guide:(char *)guide guideRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1;
+- (void)processStage5Float32Guide:(float *)guide guideRowBytes:(unint64_t)bytes stats:(float *)stats statsRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1;
+- (void)processStage5UInt6Guide:(char *)guide guideRowBytes:(unint64_t)bytes stats:(float *)stats statsRowBytes:(unint64_t)rowBytes output:(char *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1;
 @end
 
 @implementation PVComputeGuidedFilter
 
-- (PVComputeGuidedFilter)initWithGuide:(id)a3 radius:(int)a4 epsilon:(float)a5
+- (PVComputeGuidedFilter)initWithGuide:(id)guide radius:(int)radius epsilon:(float)epsilon
 {
-  v9 = a3;
+  guideCopy = guide;
   v13.receiver = self;
   v13.super_class = PVComputeGuidedFilter;
   v10 = [(PVComputeGuidedFilter *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_guide, a3);
-    v11->_radius = a4;
-    v11->_epsilon = a5;
+    objc_storeStrong(&v10->_guide, guide);
+    v11->_radius = radius;
+    v11->_epsilon = epsilon;
   }
 
   return v11;
 }
 
-- (BOOL)applyFilterToInput:(id)a3 output:(id)a4
+- (BOOL)applyFilterToInput:(id)input output:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cvPixelBuffer];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v8);
+  inputCopy = input;
+  outputCopy = output;
+  cvPixelBuffer = [inputCopy cvPixelBuffer];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(cvPixelBuffer);
   if (PixelFormatType == 1278226488)
   {
     v10 = 1;
@@ -48,9 +48,9 @@
     }
   }
 
-  HGCVBitmap::create(v8, v10, 0, &v23);
-  v11 = [(PVImageBuffer *)self->_guide cvPixelBuffer];
-  v12 = CVPixelBufferGetPixelFormatType(v11);
+  HGCVBitmap::create(cvPixelBuffer, v10, 0, &v23);
+  cvPixelBuffer2 = [(PVImageBuffer *)self->_guide cvPixelBuffer];
+  v12 = CVPixelBufferGetPixelFormatType(cvPixelBuffer2);
   if (v12 == 1278226488)
   {
     v13 = 1;
@@ -71,9 +71,9 @@
     NSLog(&cfstr_ErrorGuidePixe_0.isa);
   }
 
-  HGCVBitmap::create(v11, v13, 0, &v22);
-  v14 = [v7 cvPixelBuffer];
-  v15 = CVPixelBufferGetPixelFormatType(v14);
+  HGCVBitmap::create(cvPixelBuffer2, v13, 0, &v22);
+  cvPixelBuffer3 = [outputCopy cvPixelBuffer];
+  v15 = CVPixelBufferGetPixelFormatType(cvPixelBuffer3);
   if (v15 == 1278226488)
   {
     v16 = 1;
@@ -94,7 +94,7 @@
     NSLog(&cfstr_ErrorOutputPix.isa);
   }
 
-  HGCVBitmap::create(v14, v16, 0, &v21);
+  HGCVBitmap::create(cvPixelBuffer3, v16, 0, &v21);
   radius = self->_radius;
   if (radius >= -1)
   {
@@ -132,38 +132,38 @@
   return 1;
 }
 
-- (BOOL)runCPUPathOnInput:(void *)a3 guide:(void *)a4 output:(void *)a5 radius:(int)a6 epsilon:(float)a7
+- (BOOL)runCPUPathOnInput:(void *)input guide:(void *)guide output:(void *)output radius:(int)radius epsilon:(float)epsilon
 {
-  v156 = *(a3 + 7);
-  v155 = *(a3 + 5);
+  v156 = *(input + 7);
+  v155 = *(input + 5);
   v10 = v156 - v155;
-  v11 = *(a3 + 8) - *(a3 + 6);
-  v12 = *(a3 + 10);
-  v148 = *(a5 + 10);
-  v13 = *(a3 + 8);
-  v152 = *(a4 + 8);
-  v153 = *(a4 + 10);
-  v147 = *(a5 + 8);
+  v11 = *(input + 8) - *(input + 6);
+  v12 = *(input + 10);
+  v148 = *(output + 10);
+  v13 = *(input + 8);
+  v152 = *(guide + 8);
+  v153 = *(guide + 10);
+  v147 = *(output + 8);
   v14 = 16 * (v156 - v155);
-  v15 = HGMemory::allocate((v14 * v11), 0, a3);
+  v15 = HGMemory::allocate((v14 * v11), 0, input);
   v17 = HGMemory::allocate((v14 * v11), 0, v16);
-  v18 = *(a3 + 4);
+  v18 = *(input + 4);
   if (v18 == 1)
   {
-    LODWORD(v146) = a6;
+    LODWORD(v146) = radius;
     [(PVComputeGuidedFilter *)self processStage1UInt8Input:v12 inputRowBytes:v13 guide:v153 guideRowBytes:v152 output:v17 outputRowBytes:v14 width:__PAIR64__(v11 height:v10) radius:v146];
   }
 
   else if (v18 == 7)
   {
-    LODWORD(v146) = a6;
+    LODWORD(v146) = radius;
     [(PVComputeGuidedFilter *)self processStage1Float32Input:v12 inputRowBytes:v13 guide:v153 guideRowBytes:v152 output:v17 outputRowBytes:v14 width:__PAIR64__(v11 height:v10) radius:v146];
   }
 
-  v19 = (2 * a6) | 1;
+  v19 = (2 * radius) | 1;
   memcpy(v15, v17, v14);
-  v21 = (a6 + 1);
-  if (a6 <= 0)
+  v21 = (radius + 1);
+  if (radius <= 0)
   {
     v23 = v155;
     v22 = v156;
@@ -204,7 +204,7 @@
 
     while (v25 != v21);
     v31 = 0;
-    v32 = &v17[v14 * a6 + 8];
+    v32 = &v17[v14 * radius + 8];
     v33 = (v32 + v14);
     v34 = v15 + 3;
     v35 = v15 + 16 * v156 - 16 * v155 + 8;
@@ -242,15 +242,15 @@
       v35 += v14;
     }
 
-    while (v31 != a6);
+    while (v31 != radius);
   }
 
-  v42 = 2 * a6;
+  v42 = 2 * radius;
   if (v19 < v11)
   {
     v43 = v19;
     v44 = &v17[v14 + v14 * v42];
-    v45 = v15 + v14 * a6 + 8;
+    v45 = v15 + v14 * radius + 8;
     v46 = v15 + v14 * v21 + 8;
     v47 = v17;
     do
@@ -282,12 +282,12 @@
     while (v43 < v11);
   }
 
-  v50 = v11 - a6;
-  v51 = v11 - a6 - 1;
+  v50 = v11 - radius;
+  v51 = v11 - radius - 1;
   v52 = ~v42;
-  v150 = 2 * a6;
+  v150 = 2 * radius;
   v151 = v11 + ~v42;
-  if (a6 >= 1)
+  if (radius >= 1)
   {
     v53 = v50;
     v54 = &v17[v14 * v151 + 8];
@@ -365,7 +365,7 @@
         v71 = v156 - v155;
         do
         {
-          v72 = v70[3] / (v70[2] + a7);
+          v72 = v70[3] / (v70[2] + epsilon);
           v73 = (v65 * v70[1]) - ((v65 * *v70) * v72);
           *v70 = v72;
           v70[1] = v73;
@@ -381,9 +381,9 @@
 
     while (v69 != v11);
     v74 = 0;
-    v20 = (v21 + a6);
+    v20 = (v21 + radius);
     v75 = v10 + v52;
-    v76 = &v15[4 * a6];
+    v76 = &v15[4 * radius];
     v77 = (v15 + 4);
     v78 = &v15[4 * v21 + 2];
     v79 = &v15[4 * v150 + 4];
@@ -393,7 +393,7 @@
     {
       v82 = (v15 + v14 * v74);
       v83 = *v82;
-      if (a6 < 1)
+      if (radius < 1)
       {
         v82[1] = v83;
       }
@@ -445,9 +445,9 @@
 
       v93 = v80;
       v94 = 4 * (v10 - 2);
-      v95 = (16 * (v10 - a6)) | 8;
-      v96 = v10 - a6;
-      if (a6 >= 1)
+      v95 = (16 * (v10 - radius)) | 8;
+      v96 = v10 - radius;
+      if (radius >= 1)
       {
         do
         {
@@ -488,8 +488,8 @@
   }
 
   v99 = 16 * v155;
-  v100 = v11 - a6;
-  if (a6 >= 1)
+  v100 = v11 - radius;
+  if (radius >= 1)
   {
     v101 = &v15[4 * v156 + 2 + -4 * v155];
     v102 = 1;
@@ -520,7 +520,7 @@
     while (v102 != v21);
     v107 = 0;
     v108 = v15 + 3;
-    v109 = v14 * a6;
+    v109 = v14 * radius;
     v20 = &v15[v14 / 4 + 3] + v109;
     v110 = (v15 + v109 + 12);
     do
@@ -555,7 +555,7 @@
       v110 = (v110 + v99 - 16 * v156);
     }
 
-    while (v107 != a6);
+    while (v107 != radius);
   }
 
   if (v19 < v11)
@@ -563,7 +563,7 @@
     v120 = v19;
     v121 = &v15[v14 / 4] + v14 * v150;
     v122 = v15 + v14 * v21;
-    v123 = v15 + v14 * a6 + 4;
+    v123 = v15 + v14 * radius + 4;
     v124 = v15;
     do
     {
@@ -592,7 +592,7 @@
     while (v120 < v11);
   }
 
-  if (a6 >= 1)
+  if (radius >= 1)
   {
     v127 = v51;
     v128 = v100;
@@ -639,16 +639,16 @@
     while (v128 < v11);
   }
 
-  v143 = *(a5 + 4);
+  v143 = *(output + 4);
   if (v143 == 1)
   {
-    LODWORD(v146) = a6;
+    LODWORD(v146) = radius;
     [(PVComputeGuidedFilter *)self processStage5UInt6Guide:v153 guideRowBytes:v152 stats:v15 statsRowBytes:v14 output:v148 outputRowBytes:v147 width:__PAIR64__(v11 height:v10) radius:v146];
   }
 
   else if (v143 == 7)
   {
-    LODWORD(v146) = a6;
+    LODWORD(v146) = radius;
     [(PVComputeGuidedFilter *)self processStage5Float32Guide:v153 guideRowBytes:v152 stats:v15 statsRowBytes:v14 output:v148 outputRowBytes:v147 width:__PAIR64__(v11 height:v10) radius:v146];
   }
 
@@ -657,35 +657,35 @@
   return 1;
 }
 
-- (void)processStage1Float32Input:(float *)a3 inputRowBytes:(unint64_t)a4 guide:(float *)a5 guideRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11
+- (void)processStage1Float32Input:(float *)input inputRowBytes:(unint64_t)bytes guide:(float *)guide guideRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1
 {
-  if (a10 >= 1)
+  if (height >= 1)
   {
     v11 = 0;
-    v12 = (a11 + 1);
-    v75 = v12 + a11;
-    v13 = &a3[a11];
-    v14 = a3 + 1;
-    v15 = &a5[a11];
-    v16 = a5 + 1;
+    v12 = (radius + 1);
+    v75 = v12 + radius;
+    v13 = &input[radius];
+    v14 = input + 1;
+    v15 = &guide[radius];
+    v16 = guide + 1;
     v74 = v12 - 1;
-    v17 = &a3[v12];
-    v18 = a7 + 7;
+    v17 = &input[v12];
+    v18 = output + 7;
     v19 = 1 - v12;
-    v20 = &a7[4 * v12 + 2];
-    v21 = (8 * ((2 * a11) >> 1)) | 4;
-    v22 = &a7[4 * (a9 - a11) + 2];
-    v23 = a3;
-    v24 = a5;
-    v25 = &a5[v12];
+    v20 = &output[4 * v12 + 2];
+    v21 = (8 * ((2 * radius) >> 1)) | 4;
+    v22 = &output[4 * (width - radius) + 2];
+    inputCopy = input;
+    guideCopy = guide;
+    v25 = &guide[v12];
     do
     {
-      v26 = *(a5 + v11 * a6);
-      v27 = (a7 + v11 * a8);
-      v28 = *(a3 + v11 * a4);
+      v26 = *(guide + v11 * rowBytes);
+      v27 = (output + v11 * outputRowBytes);
+      v28 = *(input + v11 * bytes);
       v29 = v26 * v26;
       v30 = v26 * v28;
-      if (a11 < 1)
+      if (radius < 1)
       {
         *v27 = v26;
         v27[1] = v28;
@@ -745,10 +745,10 @@
       }
 
       v49 = v20;
-      v50 = v23;
-      v51 = v24;
-      v52 = (~(2 * a11) + a9);
-      if (v75 < a9)
+      v50 = inputCopy;
+      v51 = guideCopy;
+      v52 = (~(2 * radius) + width);
+      if (v75 < width)
       {
         do
         {
@@ -776,22 +776,22 @@
       }
 
       v61 = v22;
-      v62 = a9 - 2;
-      v63 = ~(2 * a11) + a9;
-      v64 = a9 - a11;
-      if (a11 >= 1)
+      v62 = width - 2;
+      v63 = ~(2 * radius) + width;
+      v64 = width - radius;
+      if (radius >= 1)
       {
         do
         {
-          v65 = v24[v62];
-          v66 = v23[v62];
+          v65 = guideCopy[v62];
+          v66 = inputCopy[v62];
           v67 = v26 + v65;
           v68 = v28 + v66;
           v69 = v29 + (v65 * v65);
           v70 = v65 * v66;
-          v71 = v24[v63];
+          v71 = guideCopy[v63];
           v72 = v30 + v70;
-          v73 = v23[v63];
+          v73 = inputCopy[v63];
           v26 = v67 - v71;
           v28 = v68 - v73;
           v29 = v69 - (v71 * v71);
@@ -806,90 +806,90 @@
           --v62;
         }
 
-        while (v64 < a9);
+        while (v64 < width);
       }
 
       ++v11;
-      v14 = (v14 + a4);
-      v16 = (v16 + a6);
-      v13 = (v13 + a4);
-      v15 = (v15 + a6);
-      v17 = (v17 + a4);
-      v18 = (v18 + a8);
-      v25 = (v25 + a6);
-      v24 = (v24 + a6);
-      v23 = (v23 + a4);
-      v20 = (v20 + a8);
-      v22 = (v22 + a8);
+      v14 = (v14 + bytes);
+      v16 = (v16 + rowBytes);
+      v13 = (v13 + bytes);
+      v15 = (v15 + rowBytes);
+      v17 = (v17 + bytes);
+      v18 = (v18 + outputRowBytes);
+      v25 = (v25 + rowBytes);
+      guideCopy = (guideCopy + rowBytes);
+      inputCopy = (inputCopy + bytes);
+      v20 = (v20 + outputRowBytes);
+      v22 = (v22 + outputRowBytes);
     }
 
-    while (v11 != a10);
+    while (v11 != height);
   }
 }
 
-- (void)processStage5Float32Guide:(float *)a3 guideRowBytes:(unint64_t)a4 stats:(float *)a5 statsRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11
+- (void)processStage5Float32Guide:(float *)guide guideRowBytes:(unint64_t)bytes stats:(float *)stats statsRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1
 {
-  if (a10 >= 1)
+  if (height >= 1)
   {
-    for (i = 0; i != a10; ++i)
+    for (i = 0; i != height; ++i)
     {
-      if (a9 >= 1)
+      if (width >= 1)
       {
-        v13 = (a5 + i * a6);
-        v14 = a9;
-        v15 = a3;
-        v16 = a7;
+        v13 = (stats + i * rowBytes);
+        widthCopy = width;
+        guideCopy = guide;
+        outputCopy = output;
         do
         {
           v17 = *v13;
           v18 = v13[1];
           v13 += 4;
-          v19 = *v15++;
-          v12 = 1.0 / (((2 * a11) | 1) * ((2 * a11) | 1u));
-          *v16++ = (v12 * v18) + ((v12 * v17) * v19);
-          --v14;
+          v19 = *guideCopy++;
+          v12 = 1.0 / (((2 * radius) | 1) * ((2 * radius) | 1u));
+          *outputCopy++ = (v12 * v18) + ((v12 * v17) * v19);
+          --widthCopy;
         }
 
-        while (v14);
+        while (widthCopy);
       }
 
-      a7 = (a7 + a8);
-      a3 = (a3 + a4);
+      output = (output + outputRowBytes);
+      guide = (guide + bytes);
     }
   }
 }
 
-- (void)processStage1UInt8Input:(char *)a3 inputRowBytes:(unint64_t)a4 guide:(char *)a5 guideRowBytes:(unint64_t)a6 output:(float *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11
+- (void)processStage1UInt8Input:(char *)input inputRowBytes:(unint64_t)bytes guide:(char *)guide guideRowBytes:(unint64_t)rowBytes output:(float *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1
 {
-  if (a10 >= 1)
+  if (height >= 1)
   {
     v15 = 0;
-    v16 = &a3[a11];
-    v17 = (a11 + 1);
-    v18 = &a5[a11];
-    v82 = v17 + a11;
-    v19 = a3 + 1;
-    v20 = a5 + 1;
+    v16 = &input[radius];
+    v17 = (radius + 1);
+    v18 = &guide[radius];
+    v82 = v17 + radius;
+    v19 = input + 1;
+    v20 = guide + 1;
     v81 = v17 - 1;
-    v21 = a7 + 7;
+    v21 = output + 7;
     v22 = -v17;
-    v23 = &a7[4 * v17 + 2];
-    v24 = (2 * a11) | 1;
-    v25 = &a7[4 * (a9 - a11) + 2];
-    v26 = a3;
-    v27 = a5;
-    v28 = &a3[v17];
-    v29 = &a5[v17];
+    v23 = &output[4 * v17 + 2];
+    v24 = (2 * radius) | 1;
+    v25 = &output[4 * (width - radius) + 2];
+    inputCopy = input;
+    guideCopy = guide;
+    v28 = &input[v17];
+    v29 = &guide[v17];
     do
     {
-      v30 = (a7 + v15 * a8);
-      LOBYTE(v11) = a5[v15 * a6];
-      LOBYTE(v12) = a3[v15 * a4];
+      v30 = (output + v15 * outputRowBytes);
+      LOBYTE(v11) = guide[v15 * rowBytes];
+      LOBYTE(v12) = input[v15 * bytes];
       v11 = LODWORD(v11) / 255.0;
       v31 = LODWORD(v12) / 255.0;
       v32 = v11 * v11;
       v12 = v11 * v31;
-      if (a11 < 1)
+      if (radius < 1)
       {
         *v30 = v11;
         v30[1] = v31;
@@ -959,10 +959,10 @@
       }
 
       v57 = v23;
-      v58 = v26;
-      v59 = v27;
-      v60 = (~(2 * a11) + a9);
-      if (v82 < a9)
+      v58 = inputCopy;
+      v59 = guideCopy;
+      v60 = (~(2 * radius) + width);
+      if (v82 < width)
       {
         do
         {
@@ -998,24 +998,24 @@
       }
 
       v69 = v25;
-      v70 = a9 - a11;
-      v71 = a9 - 2;
-      v72 = ~(2 * a11) + a9;
-      if (a11 >= 1)
+      v70 = width - radius;
+      v71 = width - 2;
+      v72 = ~(2 * radius) + width;
+      if (radius >= 1)
       {
         do
         {
-          LOBYTE(v13) = v27[v71];
+          LOBYTE(v13) = guideCopy[v71];
           v73 = LODWORD(v13) / 255.0;
-          LOBYTE(v14) = v26[v71];
+          LOBYTE(v14) = inputCopy[v71];
           *&v74 = LODWORD(v14) / 255.0;
           v75 = v11 + v73;
           v76 = v31 + *&v74;
           v77 = v32 + (v73 * v73);
           *&v78 = v73 * *&v74;
           v79 = v12 + *&v78;
-          LOBYTE(v78) = v27[v72];
-          LOBYTE(v74) = v26[v72];
+          LOBYTE(v78) = guideCopy[v72];
+          LOBYTE(v74) = inputCopy[v72];
           v80 = v78 / 255.0;
           v14 = v74 / 255.0;
           v11 = v75 - v80;
@@ -1033,55 +1033,55 @@
           ++v72;
         }
 
-        while (v70 < a9);
+        while (v70 < width);
       }
 
       ++v15;
-      v19 += a4;
-      v20 += a6;
-      v16 += a4;
-      v18 += a6;
-      v28 += a4;
-      v21 = (v21 + a8);
-      v29 += a6;
-      v27 += a6;
-      v26 += a4;
-      v23 = (v23 + a8);
-      v25 = (v25 + a8);
+      v19 += bytes;
+      v20 += rowBytes;
+      v16 += bytes;
+      v18 += rowBytes;
+      v28 += bytes;
+      v21 = (v21 + outputRowBytes);
+      v29 += rowBytes;
+      guideCopy += rowBytes;
+      inputCopy += bytes;
+      v23 = (v23 + outputRowBytes);
+      v25 = (v25 + outputRowBytes);
     }
 
-    while (v15 != a10);
+    while (v15 != height);
   }
 }
 
-- (void)processStage5UInt6Guide:(char *)a3 guideRowBytes:(unint64_t)a4 stats:(float *)a5 statsRowBytes:(unint64_t)a6 output:(char *)a7 outputRowBytes:(unint64_t)a8 width:(int)a9 height:(int)a10 radius:(int)a11
+- (void)processStage5UInt6Guide:(char *)guide guideRowBytes:(unint64_t)bytes stats:(float *)stats statsRowBytes:(unint64_t)rowBytes output:(char *)output outputRowBytes:(unint64_t)outputRowBytes width:(int)width height:(int)self0 radius:(int)self1
 {
-  if (a10 >= 1)
+  if (height >= 1)
   {
-    for (i = 0; i != a10; ++i)
+    for (i = 0; i != height; ++i)
     {
-      if (a9 >= 1)
+      if (width >= 1)
       {
-        v13 = (a5 + i * a6);
-        v14 = a9;
-        v15 = a3;
-        v16 = a7;
+        v13 = (stats + i * rowBytes);
+        widthCopy = width;
+        guideCopy = guide;
+        outputCopy = output;
         do
         {
-          v17 = *v15++;
+          v17 = *guideCopy++;
           v18 = *v13;
           v19 = v13[1];
           v13 += 4;
-          v12 = 1.0 / (((2 * a11) | 1) * ((2 * a11) | 1u));
-          *v16++ = fmin(fmax((((v12 * v19) + ((v12 * v18) * (v17 / 255.0))) * 255.0), 0.0), 255.0);
-          --v14;
+          v12 = 1.0 / (((2 * radius) | 1) * ((2 * radius) | 1u));
+          *outputCopy++ = fmin(fmax((((v12 * v19) + ((v12 * v18) * (v17 / 255.0))) * 255.0), 0.0), 255.0);
+          --widthCopy;
         }
 
-        while (v14);
+        while (widthCopy);
       }
 
-      a7 += a8;
-      a3 += a4;
+      output += outputRowBytes;
+      guide += bytes;
     }
   }
 }

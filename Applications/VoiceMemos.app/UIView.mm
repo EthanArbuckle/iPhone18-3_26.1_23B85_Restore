@@ -1,73 +1,73 @@
 @interface UIView
 + (void)rc_beginDisablingAnimations;
 + (void)rc_endDisablingAnimations;
-+ (void)rc_performAnimateableChangesWithAnimationDuration:(double)a3 setupBlock:(id)a4 animatablesBlock:(id)a5 completion:(id)a6;
++ (void)rc_performAnimateableChangesWithAnimationDuration:(double)duration setupBlock:(id)block animatablesBlock:(id)animatablesBlock completion:(id)completion;
 - (BOOL)rc_canAnimate;
-- (BOOL)rc_isProperDescendantOfView:(id)a3;
+- (BOOL)rc_isProperDescendantOfView:(id)view;
 - (CGSize)size;
-- (id)_rc_constraintsByNameDictionary:(BOOL)a3;
-- (id)_rc_constraintsNamed:(id)a3;
+- (id)_rc_constraintsByNameDictionary:(BOOL)dictionary;
+- (id)_rc_constraintsNamed:(id)named;
 - (id)associatedConstraints;
-- (void)addConstraintWithView:(id)a3 attribute:(int64_t)a4 viewAttribute:(int64_t)a5 scale:(double)a6 padding:(double)a7;
-- (void)addSubviewAndCenter:(id)a3;
-- (void)addSubviewAndPinToEdges:(id)a3;
-- (void)alignBottomLeadingToBottomLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeadingToBottomMarginLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeadingToBottomMarginLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeftToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeftToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeftToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomLeftToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomRightToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomRightToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomRightToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomRightToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignBottomTrailingToBottomTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterBottomToCenterBottomOfView:(id)a3 padding:(double)a4;
-- (void)alignCenterBottomToCenterTopOfView:(id)a3 padding:(double)a4;
-- (void)alignCenterLeadingToCenterLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterLeadingToCenterLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterLeadingToCenterTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterLeftToCenterLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterLeftToCenterRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterRightToCenterLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterRightToCenterRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterToCenterOfView:(id)a3;
-- (void)alignCenterToCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterTopToCenterBottomOfView:(id)a3 padding:(double)a4;
-- (void)alignCenterTopToCenterTopOfView:(id)a3 padding:(double)a4;
-- (void)alignCenterTrailingToCenterLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignCenterTrailingToCenterTrailingMarginOfView:(id)a3 padding:(double)a4;
-- (void)alignCenterTrailingToCenterTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeadingToTopLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeadingToTopMarginLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeadingToTopMarginLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeftToBottomCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeftToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeftToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeftToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopLeftToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopRightToBottomCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopRightToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopRightToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopRightToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopRightToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopTrailingToTopMarginTrailingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)alignTopTrailingToTopTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)constrainHeightBetweenTopView:(id)a3 bottomView:(id)a4 topPadding:(double)a5 bottomPadding:(double)a6;
-- (void)constrainSize:(CGSize)a3;
-- (void)constrainSizeAndAlignCenterToCenterOfView:(id)a3 sizePaddingX:(double)a4 sizePaddingY:(double)a5 centerPaddingX:(double)a6 centerPaddingY:(double)a7;
-- (void)constrainSizeWithView:(id)a3 paddingX:(double)a4 paddingY:(double)a5;
-- (void)rc_addConstraint:(id)a3;
-- (void)rc_addConstraints:(id)a3;
-- (void)rc_removeConstraint:(id)a3;
-- (void)rc_removeConstraints:(id)a3;
-- (void)rc_removeConstraintsNamed:(id)a3;
+- (void)addConstraintWithView:(id)view attribute:(int64_t)attribute viewAttribute:(int64_t)viewAttribute scale:(double)scale padding:(double)padding;
+- (void)addSubviewAndCenter:(id)center;
+- (void)addSubviewAndPinToEdges:(id)edges;
+- (void)alignBottomLeadingToBottomLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeadingToBottomMarginLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeadingToBottomMarginLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeftToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeftToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeftToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomLeftToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomRightToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomRightToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomRightToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomRightToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignBottomTrailingToBottomTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterBottomToCenterBottomOfView:(id)view padding:(double)padding;
+- (void)alignCenterBottomToCenterTopOfView:(id)view padding:(double)padding;
+- (void)alignCenterLeadingToCenterLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterLeadingToCenterLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterLeadingToCenterTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterLeftToCenterLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterLeftToCenterRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterRightToCenterLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterRightToCenterRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterToCenterOfView:(id)view;
+- (void)alignCenterToCenterOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterTopToCenterBottomOfView:(id)view padding:(double)padding;
+- (void)alignCenterTopToCenterTopOfView:(id)view padding:(double)padding;
+- (void)alignCenterTrailingToCenterLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignCenterTrailingToCenterTrailingMarginOfView:(id)view padding:(double)padding;
+- (void)alignCenterTrailingToCenterTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeadingToTopLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeadingToTopMarginLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeadingToTopMarginLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeftToBottomCenterOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeftToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeftToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeftToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopLeftToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopRightToBottomCenterOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopRightToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopRightToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopRightToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopRightToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopTrailingToTopMarginTrailingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)alignTopTrailingToTopTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)constrainHeightBetweenTopView:(id)view bottomView:(id)bottomView topPadding:(double)padding bottomPadding:(double)bottomPadding;
+- (void)constrainSize:(CGSize)size;
+- (void)constrainSizeAndAlignCenterToCenterOfView:(id)view sizePaddingX:(double)x sizePaddingY:(double)y centerPaddingX:(double)paddingX centerPaddingY:(double)paddingY;
+- (void)constrainSizeWithView:(id)view paddingX:(double)x paddingY:(double)y;
+- (void)rc_addConstraint:(id)constraint;
+- (void)rc_addConstraints:(id)constraints;
+- (void)rc_removeConstraint:(id)constraint;
+- (void)rc_removeConstraints:(id)constraints;
+- (void)rc_removeConstraintsNamed:(id)named;
 - (void)rc_removeGlassBackground;
 - (void)rc_removeNamedConstraints;
 - (void)rc_setGlassBackground;
-- (void)rc_setNamedConstraints:(id)a3 forName:(id)a4;
-- (void)rc_showAllViewBoundsRecursively:(BOOL)a3;
+- (void)rc_setNamedConstraints:(id)constraints forName:(id)name;
+- (void)rc_showAllViewBoundsRecursively:(BOOL)recursively;
 - (void)rc_updateConstraintsAndLayoutSubtree;
 - (void)removeAllConstraints;
 - (void)resetAssociatedConstraints;
@@ -94,31 +94,31 @@
 
 - (void)removeAllConstraints
 {
-  v3 = [(UIView *)self associatedConstraints];
-  v5 = [v3 allValues];
+  associatedConstraints = [(UIView *)self associatedConstraints];
+  allValues = [associatedConstraints allValues];
 
-  v4 = [(UIView *)self superview];
-  [v4 removeConstraints:v5];
+  superview = [(UIView *)self superview];
+  [superview removeConstraints:allValues];
 
   [(UIView *)self resetAssociatedConstraints];
 }
 
-- (void)rc_showAllViewBoundsRecursively:(BOOL)a3
+- (void)rc_showAllViewBoundsRecursively:(BOOL)recursively
 {
-  v3 = a3;
+  recursivelyCopy = recursively;
   v5 = arc4random_uniform(0xFFu) / 255.0;
   v6 = arc4random_uniform(0xFFu) / 255.0;
   v7 = [UIColor colorWithRed:v5 green:v6 blue:arc4random_uniform(0xFFu) / 255.0 alpha:0.400000006];
   [(UIView *)self setBackgroundColor:v7];
 
-  if (v3)
+  if (recursivelyCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(UIView *)self subviews];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [(UIView *)self subviews];
+    v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -130,7 +130,7 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v13 + 1) + 8 * v12) rc_showAllViewBoundsRecursively:1];
@@ -138,7 +138,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -153,8 +153,8 @@
     return 0;
   }
 
-  v3 = [(UIView *)self window];
-  v4 = v3 != 0;
+  window = [(UIView *)self window];
+  v4 = window != 0;
 
   return v4;
 }
@@ -175,31 +175,31 @@
   }
 }
 
-+ (void)rc_performAnimateableChangesWithAnimationDuration:(double)a3 setupBlock:(id)a4 animatablesBlock:(id)a5 completion:(id)a6
++ (void)rc_performAnimateableChangesWithAnimationDuration:(double)duration setupBlock:(id)block animatablesBlock:(id)animatablesBlock completion:(id)completion
 {
-  v11 = a4;
-  v9 = a5;
-  v10 = a6;
-  if (v11)
+  blockCopy = block;
+  animatablesBlockCopy = animatablesBlock;
+  completionCopy = completion;
+  if (blockCopy)
   {
-    [UIView performWithoutAnimation:v11];
+    [UIView performWithoutAnimation:blockCopy];
   }
 
   if (+[UIView areAnimationsEnabled])
   {
-    [UIView animateWithDuration:v9 animations:v10 completion:a3];
+    [UIView animateWithDuration:animatablesBlockCopy animations:completionCopy completion:duration];
   }
 
   else
   {
-    if (v9)
+    if (animatablesBlockCopy)
     {
-      v9[2](v9);
+      animatablesBlockCopy[2](animatablesBlockCopy);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -212,9 +212,9 @@
   [(UIView *)self layoutBelowIfNeeded];
 }
 
-- (BOOL)rc_isProperDescendantOfView:(id)a3
+- (BOOL)rc_isProperDescendantOfView:(id)view
 {
-  if (a3 == self)
+  if (view == self)
   {
     return 0;
   }
@@ -225,41 +225,41 @@
   }
 }
 
-- (void)rc_removeConstraint:(id)a3
+- (void)rc_removeConstraint:(id)constraint
 {
-  if (a3)
+  if (constraint)
   {
     [(UIView *)self removeConstraint:?];
   }
 }
 
-- (void)rc_removeConstraints:(id)a3
+- (void)rc_removeConstraints:(id)constraints
 {
-  if (a3)
+  if (constraints)
   {
     [(UIView *)self removeConstraints:?];
   }
 }
 
-- (void)rc_addConstraint:(id)a3
+- (void)rc_addConstraint:(id)constraint
 {
-  if (a3)
+  if (constraint)
   {
     [(UIView *)self addConstraint:?];
   }
 }
 
-- (void)rc_addConstraints:(id)a3
+- (void)rc_addConstraints:(id)constraints
 {
-  if (a3)
+  if (constraints)
   {
     [(UIView *)self addConstraints:?];
   }
 }
 
-- (id)_rc_constraintsByNameDictionary:(BOOL)a3
+- (id)_rc_constraintsByNameDictionary:(BOOL)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_getAssociatedObject(self, "_rc_constraintsByNameStorageKey");
   if (v5)
   {
@@ -268,7 +268,7 @@
 
   else
   {
-    v6 = !v3;
+    v6 = !dictionaryCopy;
   }
 
   if (!v6)
@@ -280,76 +280,76 @@
   return v5;
 }
 
-- (id)_rc_constraintsNamed:(id)a3
+- (id)_rc_constraintsNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:namedCopy];
 
   return v6;
 }
 
-- (void)rc_setNamedConstraints:(id)a3 forName:(id)a4
+- (void)rc_setNamedConstraints:(id)constraints forName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  constraintsCopy = constraints;
+  nameCopy = name;
+  if (constraintsCopy)
   {
-    v7 = [(UIView *)self _rc_constraintsNamed:v6];
+    v7 = [(UIView *)self _rc_constraintsNamed:nameCopy];
 
     if (v7)
     {
-      [(UIView *)self rc_removeConstraintsNamed:v6];
+      [(UIView *)self rc_removeConstraintsNamed:nameCopy];
     }
 
     v8 = [(UIView *)self _rc_constraintsByNameDictionary:1];
-    v9 = [v11 constraints];
+    constraints = [constraintsCopy constraints];
 
-    if (v9)
+    if (constraints)
     {
-      v10 = [v11 constraints];
-      [(UIView *)self addConstraints:v10];
+      constraints2 = [constraintsCopy constraints];
+      [(UIView *)self addConstraints:constraints2];
     }
 
-    [v8 setObject:v11 forKey:v6];
+    [v8 setObject:constraintsCopy forKey:nameCopy];
   }
 
   else
   {
-    [(UIView *)self rc_removeConstraintsNamed:v6];
+    [(UIView *)self rc_removeConstraintsNamed:nameCopy];
   }
 }
 
-- (void)rc_removeConstraintsNamed:(id)a3
+- (void)rc_removeConstraintsNamed:(id)named
 {
-  v9 = a3;
+  namedCopy = named;
   v4 = [(UIView *)self _rc_constraintsNamed:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 constraints];
+    constraints = [v4 constraints];
 
-    if (v6)
+    if (constraints)
     {
-      v7 = [v5 constraints];
-      [(UIView *)self removeConstraints:v7];
+      constraints2 = [v5 constraints];
+      [(UIView *)self removeConstraints:constraints2];
     }
 
     v8 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-    [v8 removeObjectForKey:v9];
+    [v8 removeObjectForKey:namedCopy];
   }
 }
 
 - (void)rc_removeNamedConstraints
 {
   v3 = [(UIView *)self _rc_constraintsByNameDictionary:0];
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -387,356 +387,356 @@
   return result;
 }
 
-- (void)alignTopLeftToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeftToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeftToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeftToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeftToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeftToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeftToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeftToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeftToBottomCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeftToBottomCenterOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToCenterConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToCenterConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeadingToTopLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeadingToTopLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeadingToTopMarginLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeadingToTopMarginLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopMarginConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopMarginConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopLeadingToTopMarginLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopLeadingToTopMarginLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopMarginConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopMarginConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopRightToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopRightToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopRightToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopRightToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopRightToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopRightToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopRightToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopRightToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopRightToBottomCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopRightToBottomCenterOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToCenterConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToCenterConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopTrailingToTopTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopTrailingToTopTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addTrailingToTrailingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addTrailingToTrailingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignTopTrailingToTopMarginTrailingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignTopTrailingToTopMarginTrailingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToTopMarginConstraintWithView:v8 padding:a5];
-  [(UIView *)self addTrailingToTrailingMarginConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToTopMarginConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addTrailingToTrailingMarginConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeftToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeftToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeftToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeftToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeftToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeftToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeftToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeftToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addTopToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeadingToBottomLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeadingToBottomLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeadingToBottomMarginLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeadingToBottomMarginLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomMarginConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomMarginConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomLeadingToBottomMarginLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomLeadingToBottomMarginLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomMarginConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomMarginConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomRightToBottomRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomRightToBottomRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomRightToBottomLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomRightToBottomLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomRightToTopRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomRightToTopRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomRightToTopLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomRightToTopLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToTopConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToTopConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignBottomTrailingToBottomTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignBottomTrailingToBottomTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addBottomToBottomConstraintWithView:v8 padding:a5];
-  [(UIView *)self addTrailingToTrailingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addTrailingToTrailingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterTopToCenterTopOfView:(id)a3 padding:(double)a4
+- (void)alignCenterTopToCenterTopOfView:(id)view padding:(double)padding
 {
-  v6 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v6];
-  [(UIView *)self addTopToTopConstraintWithView:v6 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy];
+  [(UIView *)self addTopToTopConstraintWithView:viewCopy padding:padding];
 }
 
-- (void)alignCenterTopToCenterBottomOfView:(id)a3 padding:(double)a4
+- (void)alignCenterTopToCenterBottomOfView:(id)view padding:(double)padding
 {
-  v6 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v6];
-  [(UIView *)self addTopToBottomConstraintWithView:v6 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy];
+  [(UIView *)self addTopToBottomConstraintWithView:viewCopy padding:padding];
 }
 
-- (void)alignCenterBottomToCenterBottomOfView:(id)a3 padding:(double)a4
+- (void)alignCenterBottomToCenterBottomOfView:(id)view padding:(double)padding
 {
-  v6 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v6];
-  [(UIView *)self addBottomToBottomConstraintWithView:v6 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy];
+  [(UIView *)self addBottomToBottomConstraintWithView:viewCopy padding:padding];
 }
 
-- (void)alignCenterBottomToCenterTopOfView:(id)a3 padding:(double)a4
+- (void)alignCenterBottomToCenterTopOfView:(id)view padding:(double)padding
 {
-  v6 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v6];
-  [(UIView *)self addBottomToTopConstraintWithView:v6 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy];
+  [(UIView *)self addBottomToTopConstraintWithView:viewCopy padding:padding];
 }
 
-- (void)alignCenterLeftToCenterLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterLeftToCenterLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterLeftToCenterRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterLeftToCenterRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeftToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeftToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterRightToCenterRightOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterRightToCenterRightOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToRightConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToRightConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterRightToCenterLeftOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterRightToCenterLeftOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addRightToLeftConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addRightToLeftConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterLeadingToCenterLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterLeadingToCenterLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterLeadingToCenterLeadingMarginOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterLeadingToCenterLeadingMarginOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToLeadingMarginConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterLeadingToCenterTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterLeadingToCenterTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addLeadingToTrailingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addLeadingToTrailingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterTrailingToCenterTrailingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterTrailingToCenterTrailingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addTrailingToTrailingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addTrailingToTrailingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterTrailingToCenterLeadingOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterTrailingToCenterLeadingOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
-  [(UIView *)self addTrailingToLeadingConstraintWithView:v8 padding:a4];
+  viewCopy = view;
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
+  [(UIView *)self addTrailingToLeadingConstraintWithView:viewCopy padding:x];
 }
 
-- (void)alignCenterTrailingToCenterTrailingMarginOfView:(id)a3 padding:(double)a4
+- (void)alignCenterTrailingToCenterTrailingMarginOfView:(id)view padding:(double)padding
 {
-  v6 = a3;
-  [(UIView *)self addConstraintWithView:v6 attribute:6 viewAttribute:18 padding:a4];
-  [(UIView *)self addCenterYConstraintWithView:v6];
+  viewCopy = view;
+  [(UIView *)self addConstraintWithView:viewCopy attribute:6 viewAttribute:18 padding:padding];
+  [(UIView *)self addCenterYConstraintWithView:viewCopy];
 }
 
-- (void)alignCenterToCenterOfView:(id)a3
+- (void)alignCenterToCenterOfView:(id)view
 {
-  v4 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v4];
-  [(UIView *)self addCenterYConstraintWithView:v4];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy];
+  [(UIView *)self addCenterYConstraintWithView:viewCopy];
 }
 
-- (void)alignCenterToCenterOfView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)alignCenterToCenterOfView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addCenterXConstraintWithView:v8 padding:a4];
-  [(UIView *)self addCenterYConstraintWithView:v8 padding:a5];
+  viewCopy = view;
+  [(UIView *)self addCenterXConstraintWithView:viewCopy padding:x];
+  [(UIView *)self addCenterYConstraintWithView:viewCopy padding:y];
 }
 
-- (void)constrainHeightBetweenTopView:(id)a3 bottomView:(id)a4 topPadding:(double)a5 bottomPadding:(double)a6
+- (void)constrainHeightBetweenTopView:(id)view bottomView:(id)bottomView topPadding:(double)padding bottomPadding:(double)bottomPadding
 {
-  v10 = a4;
-  [(UIView *)self alignCenterTopToCenterBottomOfView:a3 padding:a5];
-  [(UIView *)self alignCenterBottomToCenterTopOfView:v10 padding:a6];
+  bottomViewCopy = bottomView;
+  [(UIView *)self alignCenterTopToCenterBottomOfView:view padding:padding];
+  [(UIView *)self alignCenterBottomToCenterTopOfView:bottomViewCopy padding:bottomPadding];
 }
 
-- (void)constrainSize:(CGSize)a3
+- (void)constrainSize:(CGSize)size
 {
-  height = a3.height;
-  [(UIView *)self addConstraintWithAttribute:7 constant:a3.width];
+  height = size.height;
+  [(UIView *)self addConstraintWithAttribute:7 constant:size.width];
 
   [(UIView *)self addConstraintWithAttribute:8 constant:height];
 }
 
-- (void)constrainSizeWithView:(id)a3 paddingX:(double)a4 paddingY:(double)a5
+- (void)constrainSizeWithView:(id)view paddingX:(double)x paddingY:(double)y
 {
-  v8 = a3;
-  [(UIView *)self addConstraintWithView:v8 attribute:7 padding:a4];
-  [(UIView *)self addConstraintWithView:v8 attribute:8 padding:a5];
+  viewCopy = view;
+  [(UIView *)self addConstraintWithView:viewCopy attribute:7 padding:x];
+  [(UIView *)self addConstraintWithView:viewCopy attribute:8 padding:y];
 }
 
-- (void)constrainSizeAndAlignCenterToCenterOfView:(id)a3 sizePaddingX:(double)a4 sizePaddingY:(double)a5 centerPaddingX:(double)a6 centerPaddingY:(double)a7
+- (void)constrainSizeAndAlignCenterToCenterOfView:(id)view sizePaddingX:(double)x sizePaddingY:(double)y centerPaddingX:(double)paddingX centerPaddingY:(double)paddingY
 {
-  v12 = a3;
-  [(UIView *)self constrainSizeWithView:v12 paddingX:a4 paddingY:a5];
-  [(UIView *)self alignCenterToCenterOfView:v12 paddingX:a6 paddingY:a7];
+  viewCopy = view;
+  [(UIView *)self constrainSizeWithView:viewCopy paddingX:x paddingY:y];
+  [(UIView *)self alignCenterToCenterOfView:viewCopy paddingX:paddingX paddingY:paddingY];
 }
 
-- (void)addConstraintWithView:(id)a3 attribute:(int64_t)a4 viewAttribute:(int64_t)a5 scale:(double)a6 padding:(double)a7
+- (void)addConstraintWithView:(id)view attribute:(int64_t)attribute viewAttribute:(int64_t)viewAttribute scale:(double)scale padding:(double)padding
 {
-  v23 = a3;
-  v12 = [(UIView *)self associatedConstraints];
-  v13 = [NSNumber numberWithInteger:a4];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  viewCopy = view;
+  associatedConstraints = [(UIView *)self associatedConstraints];
+  v13 = [NSNumber numberWithInteger:attribute];
+  v14 = [associatedConstraints objectForKeyedSubscript:v13];
 
   if (v14)
   {
-    v15 = [v14 secondItem];
-    if (v15 == v23 && [v14 secondAttribute] == a5)
+    secondItem = [v14 secondItem];
+    if (secondItem == viewCopy && [v14 secondAttribute] == viewAttribute)
     {
       [v14 multiplier];
       v17 = v16;
 
-      if (v17 == a6)
+      if (v17 == scale)
       {
-        [v14 setConstant:a7];
-        v18 = [(UIView *)self superview];
-        [v18 addConstraint:v14];
+        [v14 setConstant:padding];
+        superview = [(UIView *)self superview];
+        [superview addConstraint:v14];
         goto LABEL_9;
       }
     }
@@ -745,48 +745,48 @@
     {
     }
 
-    v19 = [(UIView *)self superview];
-    [v19 removeConstraint:v14];
+    superview2 = [(UIView *)self superview];
+    [superview2 removeConstraint:v14];
   }
 
   [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [NSLayoutConstraint constraintWithItem:self attribute:a4 relatedBy:0 toItem:v23 attribute:a5 multiplier:a6 constant:a7];
+  v20 = [NSLayoutConstraint constraintWithItem:self attribute:attribute relatedBy:0 toItem:viewCopy attribute:viewAttribute multiplier:scale constant:padding];
 
-  v21 = [(UIView *)self superview];
-  [v21 addConstraint:v20];
+  superview3 = [(UIView *)self superview];
+  [superview3 addConstraint:v20];
 
-  v18 = [(UIView *)self associatedConstraints];
-  v22 = [NSNumber numberWithInteger:a4];
-  [v18 setObject:v20 forKeyedSubscript:v22];
+  superview = [(UIView *)self associatedConstraints];
+  v22 = [NSNumber numberWithInteger:attribute];
+  [superview setObject:v20 forKeyedSubscript:v22];
 
   v14 = v20;
 LABEL_9:
 }
 
-- (void)addSubviewAndPinToEdges:(id)a3
+- (void)addSubviewAndPinToEdges:(id)edges
 {
-  v4 = a3;
-  [(UIView *)self addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = _NSDictionaryOfVariableBindings(@"subviewToAddAndPin", v4, 0);
+  edgesCopy = edges;
+  [(UIView *)self addSubview:edgesCopy];
+  [edgesCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  v5 = _NSDictionaryOfVariableBindings(@"subviewToAddAndPin", edgesCopy, 0);
   v6 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-0-[subviewToAddAndPin]-0-|", 0, 0, v5);
   [(UIView *)self addConstraints:v6];
 
-  v8 = _NSDictionaryOfVariableBindings(@"subviewToAddAndPin", v4, 0);
+  v8 = _NSDictionaryOfVariableBindings(@"subviewToAddAndPin", edgesCopy, 0);
 
   v7 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-0-[subviewToAddAndPin]-0-|", 0, 0, v8);
   [(UIView *)self addConstraints:v7];
 }
 
-- (void)addSubviewAndCenter:(id)a3
+- (void)addSubviewAndCenter:(id)center
 {
-  v4 = a3;
-  [(UIView *)self addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [NSLayoutConstraint constraintWithItem:v4 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  centerCopy = center;
+  [(UIView *)self addSubview:centerCopy];
+  [centerCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  v5 = [NSLayoutConstraint constraintWithItem:centerCopy attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(UIView *)self addConstraint:v5];
 
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:centerCopy attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
   [(UIView *)self addConstraint:v6];
 }
@@ -795,7 +795,7 @@ LABEL_9:
 {
   v3 = type metadata accessor for _Glass._GlassVariant();
   __chkstk_darwin(v3 - 8, v4);
-  v5 = self;
+  selfCopy = self;
   static _Glass._GlassVariant.regular.getter();
   v6[3] = type metadata accessor for _Glass();
   v6[4] = &protocol witness table for _Glass;
@@ -806,7 +806,7 @@ LABEL_9:
 
 - (void)rc_removeGlassBackground
 {
-  v2 = self;
+  selfCopy = self;
   UIView._background.setter();
 }
 

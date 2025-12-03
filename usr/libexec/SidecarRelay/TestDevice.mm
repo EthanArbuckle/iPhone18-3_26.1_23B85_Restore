@@ -2,15 +2,15 @@
 - (NSString)identifier;
 - (NSString)model;
 - (NSString)name;
-- (_TtC12SidecarRelay10TestDevice)initWithIdentifier:(id)a3 name:(id)a4 model:(id)a5 accountID:(id)a6;
-- (void)setIdentifier:(id)a3;
+- (_TtC12SidecarRelay10TestDevice)initWithIdentifier:(id)identifier name:(id)name model:(id)model accountID:(id)d;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation TestDevice
 
 - (NSString)identifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_100053154();
   v4 = v3;
 
@@ -27,20 +27,20 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_1000531E4();
 }
 
 - (NSString)model
 {
-  v2 = self;
+  selfCopy = self;
   sub_100053278();
   v4 = v3;
 
@@ -64,16 +64,16 @@
   return v2;
 }
 
-- (_TtC12SidecarRelay10TestDevice)initWithIdentifier:(id)a3 name:(id)a4 model:(id)a5 accountID:(id)a6
+- (_TtC12SidecarRelay10TestDevice)initWithIdentifier:(id)identifier name:(id)name model:(id)model accountID:(id)d
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    if (!a5)
+    if (!model)
     {
 LABEL_3:
-      if (!a6)
+      if (!d)
       {
         goto LABEL_4;
       }
@@ -82,13 +82,13 @@ LABEL_3:
     }
   }
 
-  else if (!a5)
+  else if (!model)
   {
     goto LABEL_3;
   }
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (!a6)
+  if (!d)
   {
 LABEL_4:
     sub_100053328();

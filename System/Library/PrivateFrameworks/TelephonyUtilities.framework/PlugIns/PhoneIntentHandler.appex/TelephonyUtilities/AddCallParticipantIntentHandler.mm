@@ -1,16 +1,16 @@
 @interface AddCallParticipantIntentHandler
 - (AddCallParticipantIntentHandler)init;
-- (AddCallParticipantIntentHandler)initWithCallCenter:(id)a3 dataSource:(id)a4 faceTimeUtilities:(id)a5;
-- (BOOL)_checkParticipantAlreadyActive:(id)a3 inConversation:(id)a4;
-- (BOOL)_checkParticipantLimitedByScreenTimeDownTime:(id)a3 forCall:(id)a4;
-- (BOOL)_checkSelfAdd:(id)a3 toConversation:(id)a4;
-- (id)_checkRestrictionsForCall:(id)a3 conversation:(id)a4 personToAdd:(id)a5 asMember:(id)a6;
-- (id)interpretContactResolutionRecommendation:(id)a3 participant:(id)a4;
-- (id)runNativeContactResolutionOnParticipant:(id)a3;
-- (void)_addCallParticipant:(id)a3 asConversationMember:(id)a4 toConversation:(id)a5 completion:(id)a6;
-- (void)_generateLinkResponseForConversation:(id)a3 person:(id)a4 completion:(id)a5;
-- (void)handleAddCallParticipant:(id)a3 completion:(id)a4;
-- (void)resolveParticipantsForAddCallParticipant:(id)a3 withCompletion:(id)a4;
+- (AddCallParticipantIntentHandler)initWithCallCenter:(id)center dataSource:(id)source faceTimeUtilities:(id)utilities;
+- (BOOL)_checkParticipantAlreadyActive:(id)active inConversation:(id)conversation;
+- (BOOL)_checkParticipantLimitedByScreenTimeDownTime:(id)time forCall:(id)call;
+- (BOOL)_checkSelfAdd:(id)add toConversation:(id)conversation;
+- (id)_checkRestrictionsForCall:(id)call conversation:(id)conversation personToAdd:(id)add asMember:(id)member;
+- (id)interpretContactResolutionRecommendation:(id)recommendation participant:(id)participant;
+- (id)runNativeContactResolutionOnParticipant:(id)participant;
+- (void)_addCallParticipant:(id)participant asConversationMember:(id)member toConversation:(id)conversation completion:(id)completion;
+- (void)_generateLinkResponseForConversation:(id)conversation person:(id)person completion:(id)completion;
+- (void)handleAddCallParticipant:(id)participant completion:(id)completion;
+- (void)resolveParticipantsForAddCallParticipant:(id)participant withCompletion:(id)completion;
 @end
 
 @implementation AddCallParticipantIntentHandler
@@ -28,61 +28,61 @@
   return v8;
 }
 
-- (AddCallParticipantIntentHandler)initWithCallCenter:(id)a3 dataSource:(id)a4 faceTimeUtilities:(id)a5
+- (AddCallParticipantIntentHandler)initWithCallCenter:(id)center dataSource:(id)source faceTimeUtilities:(id)utilities
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  centerCopy = center;
+  sourceCopy = source;
+  utilitiesCopy = utilities;
   v15.receiver = self;
   v15.super_class = AddCallParticipantIntentHandler;
   v12 = [(AddCallParticipantIntentHandler *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_callCenter, a3);
-    objc_storeStrong(&v13->_dataSource, a4);
-    objc_storeStrong(&v13->_ftUtilities, a5);
+    objc_storeStrong(&v12->_callCenter, center);
+    objc_storeStrong(&v13->_dataSource, source);
+    objc_storeStrong(&v13->_ftUtilities, utilities);
   }
 
   return v13;
 }
 
-- (void)handleAddCallParticipant:(id)a3 completion:(id)a4
+- (void)handleAddCallParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
+  participantCopy = participant;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000B5E8;
   v17[3] = &unk_10004CE10;
-  v18 = a4;
-  v7 = v18;
+  completionCopy = completion;
+  v7 = completionCopy;
   v8 = objc_retainBlock(v17);
-  v9 = [(AddCallParticipantIntentHandler *)self callCenter];
-  v10 = [v9 queue];
+  callCenter = [(AddCallParticipantIntentHandler *)self callCenter];
+  queue = [callCenter queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B6C8;
   v13[3] = &unk_10004CE38;
-  v14 = v6;
-  v15 = self;
+  v14 = participantCopy;
+  selfCopy = self;
   v16 = v8;
   v11 = v8;
-  v12 = v6;
-  dispatch_async(v10, v13);
+  v12 = participantCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_addCallParticipant:(id)a3 asConversationMember:(id)a4 toConversation:(id)a5 completion:(id)a6
+- (void)_addCallParticipant:(id)participant asConversationMember:(id)member toConversation:(id)conversation completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AddCallParticipantIntentHandler *)self callCenter];
-  v15 = [v14 queue];
-  dispatch_assert_queue_V2(v15);
+  participantCopy = participant;
+  memberCopy = member;
+  conversationCopy = conversation;
+  completionCopy = completion;
+  callCenter = [(AddCallParticipantIntentHandler *)self callCenter];
+  queue = [callCenter queue];
+  dispatch_assert_queue_V2(queue);
 
-  v16 = [v10 personHandle];
-  if (v16 && (v17 = v16, [v10 personHandle], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "faceTimeType"), v18, v17, v19 == 2))
+  personHandle = [participantCopy personHandle];
+  if (personHandle && (v17 = personHandle, [participantCopy personHandle], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "faceTimeType"), v18, v17, v19 == 2))
   {
     v20 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -90,19 +90,19 @@
       sub_10002F7E0();
     }
 
-    [(AddCallParticipantIntentHandler *)self _generateLinkResponseForConversation:v12 person:v10 completion:v13];
+    [(AddCallParticipantIntentHandler *)self _generateLinkResponseForConversation:conversationCopy person:participantCopy completion:completionCopy];
   }
 
   else
   {
-    v21 = [v12 remoteMembers];
+    remoteMembers = [conversationCopy remoteMembers];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_10000BD88;
     v41[3] = &unk_10004CE60;
-    v22 = v11;
+    v22 = memberCopy;
     v42 = v22;
-    v23 = [v21 tu_containsObjectPassingTest:v41];
+    v23 = [remoteMembers tu_containsObjectPassingTest:v41];
 
     v24 = IntentHandlerDefaultLog();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
@@ -113,12 +113,12 @@
         sub_10002F8D8();
       }
 
-      v26 = [(AddCallParticipantIntentHandler *)self callCenter];
-      v27 = [v26 conversationManager];
-      [v27 buzzMember:v22 conversation:v12];
+      callCenter2 = [(AddCallParticipantIntentHandler *)self callCenter];
+      conversationManager = [callCenter2 conversationManager];
+      [conversationManager buzzMember:v22 conversation:conversationCopy];
 
       v28 = [INCallInvite alloc];
-      v45 = v10;
+      v45 = participantCopy;
       v29 = [NSArray arrayWithObjects:&v45 count:1];
       v30 = v28;
       v31 = v29;
@@ -132,14 +132,14 @@
         sub_10002F85C();
       }
 
-      v33 = [(AddCallParticipantIntentHandler *)self callCenter];
-      v34 = [v33 conversationManager];
+      callCenter3 = [(AddCallParticipantIntentHandler *)self callCenter];
+      conversationManager2 = [callCenter3 conversationManager];
       v35 = [NSSet setWithObject:v22];
       v36 = +[NSSet set];
-      [v34 addRemoteMembers:v35 otherInvitedHandles:v36 toConversation:v12];
+      [conversationManager2 addRemoteMembers:v35 otherInvitedHandles:v36 toConversation:conversationCopy];
 
       v37 = [INCallInvite alloc];
-      v44 = v10;
+      v44 = participantCopy;
       v29 = [NSArray arrayWithObjects:&v44 count:1];
       v30 = v37;
       v31 = v29;
@@ -153,35 +153,35 @@
     v40 = [NSArray arrayWithObjects:&v43 count:1];
     [v39 setInvites:v40];
 
-    v13[2](v13, v39);
+    completionCopy[2](completionCopy, v39);
   }
 }
 
-- (void)_generateLinkResponseForConversation:(id)a3 person:(id)a4 completion:(id)a5
+- (void)_generateLinkResponseForConversation:(id)conversation person:(id)person completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(AddCallParticipantIntentHandler *)self callCenter];
-  v12 = [v11 conversationManager];
+  personCopy = person;
+  completionCopy = completion;
+  conversationCopy = conversation;
+  callCenter = [(AddCallParticipantIntentHandler *)self callCenter];
+  conversationManager = [callCenter conversationManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000BEF4;
   v15[3] = &unk_10004CE88;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v12 generateLinkForConversation:v10 completionHandler:v15];
+  v16 = personCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = personCopy;
+  [conversationManager generateLinkForConversation:conversationCopy completionHandler:v15];
 }
 
-- (id)_checkRestrictionsForCall:(id)a3 conversation:(id)a4 personToAdd:(id)a5 asMember:(id)a6
+- (id)_checkRestrictionsForCall:(id)call conversation:(id)conversation personToAdd:(id)add asMember:(id)member
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(AddCallParticipantIntentHandler *)self _checkSelfAdd:v13 toConversation:v11])
+  callCopy = call;
+  conversationCopy = conversation;
+  addCopy = add;
+  memberCopy = member;
+  if ([(AddCallParticipantIntentHandler *)self _checkSelfAdd:memberCopy toConversation:conversationCopy])
   {
     v14 = 8;
 LABEL_7:
@@ -189,13 +189,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([(AddCallParticipantIntentHandler *)self _checkParticipantAlreadyActive:v13 inConversation:v11])
+  if ([(AddCallParticipantIntentHandler *)self _checkParticipantAlreadyActive:memberCopy inConversation:conversationCopy])
   {
     v14 = 9;
     goto LABEL_7;
   }
 
-  if ([(AddCallParticipantIntentHandler *)self _checkParticipantLimitedByScreenTimeDownTime:v12 forCall:v10])
+  if ([(AddCallParticipantIntentHandler *)self _checkParticipantLimitedByScreenTimeDownTime:addCopy forCall:callCopy])
   {
     v14 = 13;
     goto LABEL_7;
@@ -207,26 +207,26 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)_checkSelfAdd:(id)a3 toConversation:(id)a4
+- (BOOL)_checkSelfAdd:(id)add toConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 localMember];
-  v9 = [v8 handle];
-  if (v9)
+  addCopy = add;
+  conversationCopy = conversation;
+  localMember = [conversationCopy localMember];
+  handle = [localMember handle];
+  if (handle)
   {
-    v10 = v9;
-    v11 = [v7 localMember];
-    v12 = [v11 handle];
-    v13 = [v6 handle];
+    v10 = handle;
+    localMember2 = [conversationCopy localMember];
+    handle2 = [localMember2 handle];
+    handle3 = [addCopy handle];
     v14 = TUHandlesAreCanonicallyEqual();
 
     if (v14)
     {
-      v15 = IntentHandlerDefaultLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      fetchFaceTimeAccountAliases = IntentHandlerDefaultLog();
+      if (os_log_type_enabled(fetchFaceTimeAccountAliases, OS_LOG_TYPE_DEBUG))
       {
-        sub_10002FA74(v7, v15);
+        sub_10002FA74(conversationCopy, fetchFaceTimeAccountAliases);
       }
 
       goto LABEL_12;
@@ -237,18 +237,18 @@ LABEL_8:
   {
   }
 
-  v15 = [(FaceTimeUtilities *)self->_ftUtilities fetchFaceTimeAccountAliases];
-  v16 = [v6 handle];
-  v17 = [v16 value];
-  if ([v15 containsObject:v17])
+  fetchFaceTimeAccountAliases = [(FaceTimeUtilities *)self->_ftUtilities fetchFaceTimeAccountAliases];
+  handle4 = [addCopy handle];
+  value = [handle4 value];
+  if ([fetchFaceTimeAccountAliases containsObject:value])
   {
   }
 
   else
   {
-    v18 = [v6 handle];
-    v19 = [v18 normalizedValue];
-    v20 = [v15 containsObject:v19];
+    handle5 = [addCopy handle];
+    normalizedValue = [handle5 normalizedValue];
+    v20 = [fetchFaceTimeAccountAliases containsObject:normalizedValue];
 
     if (!v20)
     {
@@ -270,45 +270,45 @@ LABEL_13:
   return v22;
 }
 
-- (BOOL)_checkParticipantAlreadyActive:(id)a3 inConversation:(id)a4
+- (BOOL)_checkParticipantAlreadyActive:(id)active inConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = [a4 activeRemoteParticipants];
+  activeCopy = active;
+  activeRemoteParticipants = [conversation activeRemoteParticipants];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000C458;
   v10[3] = &unk_10004CEB0;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 tu_containsObjectPassingTest:v10];
+  v11 = activeCopy;
+  v7 = activeCopy;
+  v8 = [activeRemoteParticipants tu_containsObjectPassingTest:v10];
 
   return v8;
 }
 
-- (BOOL)_checkParticipantLimitedByScreenTimeDownTime:(id)a3 forCall:(id)a4
+- (BOOL)_checkParticipantLimitedByScreenTimeDownTime:(id)time forCall:(id)call
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AddCallParticipantIntentHandler *)self callCenter];
-  v9 = [v8 callFilterController];
-  v14 = v7;
+  callCopy = call;
+  timeCopy = time;
+  callCenter = [(AddCallParticipantIntentHandler *)self callCenter];
+  callFilterController = [callCenter callFilterController];
+  v14 = timeCopy;
   v10 = [NSArray arrayWithObjects:&v14 count:1];
 
-  v11 = [v6 provider];
+  provider = [callCopy provider];
 
-  v12 = [v9 restrictedContacts:v10 callProvider:v11];
-  LOBYTE(v6) = [v12 count] != 0;
+  v12 = [callFilterController restrictedContacts:v10 callProvider:provider];
+  LOBYTE(callCopy) = [v12 count] != 0;
 
-  return v6;
+  return callCopy;
 }
 
-- (void)resolveParticipantsForAddCallParticipant:(id)a3 withCompletion:(id)a4
+- (void)resolveParticipantsForAddCallParticipant:(id)participant withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  completionCopy = completion;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [v6 participants];
-  v10 = [v9 count];
+  participants = [participantCopy participants];
+  v10 = [participants count];
 
   if (!v10)
   {
@@ -316,8 +316,8 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v11 = [v6 participants];
-  v12 = [v11 count];
+  participants2 = [participantCopy participants];
+  v12 = [participants2 count];
 
   if (v12 >= 2)
   {
@@ -327,8 +327,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v15 = [v6 participants];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  participants3 = [participantCopy participants];
+  v16 = [participants3 objectAtIndexedSubscript:0];
   v14 = [(AddCallParticipantIntentHandler *)self runNativeContactResolutionOnParticipant:v16];
 
 LABEL_7:
@@ -340,45 +340,45 @@ LABEL_7:
     sub_10002FB94();
   }
 
-  v7[2](v7, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (id)runNativeContactResolutionOnParticipant:(id)a3
+- (id)runNativeContactResolutionOnParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [[CRRRecommendation alloc] initWithPerson:v4];
-  v6 = [(CRRRecommendation *)v5 recommendedResult];
-  v7 = [(AddCallParticipantIntentHandler *)self interpretContactResolutionRecommendation:v6 participant:v4];
+  participantCopy = participant;
+  v5 = [[CRRRecommendation alloc] initWithPerson:participantCopy];
+  recommendedResult = [(CRRRecommendation *)v5 recommendedResult];
+  v7 = [(AddCallParticipantIntentHandler *)self interpretContactResolutionRecommendation:recommendedResult participant:participantCopy];
 
   return v7;
 }
 
-- (id)interpretContactResolutionRecommendation:(id)a3 participant:(id)a4
+- (id)interpretContactResolutionRecommendation:(id)recommendation participant:(id)participant
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[INAddCallParticipantParticipantResolutionResult alloc] initWithPersonResolutionResult:v6];
-  v8 = [v6 resolutionResultCode];
+  participantCopy = participant;
+  recommendationCopy = recommendation;
+  v7 = [[INAddCallParticipantParticipantResolutionResult alloc] initWithPersonResolutionResult:recommendationCopy];
+  resolutionResultCode = [recommendationCopy resolutionResultCode];
 
-  if (!v8 || v8 == 3)
+  if (!resolutionResultCode || resolutionResultCode == 3)
   {
-    v14 = [v7 resolvedValue];
-    v15 = v14;
-    if (v14)
+    resolvedValue = [v7 resolvedValue];
+    v15 = resolvedValue;
+    if (resolvedValue)
     {
-      v16 = v14;
+      itemToConfirm = resolvedValue;
     }
 
     else
     {
-      v16 = [v7 itemToConfirm];
+      itemToConfirm = [v7 itemToConfirm];
     }
 
-    v17 = v16;
+    v17 = itemToConfirm;
 
-    v18 = [v17 personHandle];
-    v19 = [v18 value];
-    v20 = [v19 length];
+    personHandle = [v17 personHandle];
+    value = [personHandle value];
+    v20 = [value length];
 
     if (!v20)
     {
@@ -394,11 +394,11 @@ LABEL_7:
     }
   }
 
-  else if (v8 == 1)
+  else if (resolutionResultCode == 1)
   {
-    v9 = [v5 personHandle];
-    v10 = [v9 label];
-    v11 = [v10 length];
+    personHandle2 = [participantCopy personHandle];
+    label = [personHandle2 label];
+    v11 = [label length];
 
     if (v11)
     {

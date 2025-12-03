@@ -1,6 +1,6 @@
 @interface CycleFactorsHistoryCollectionViewController
-- (_TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController)initWithCoder:(id)a3;
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController)initWithCoder:(id)coder;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 - (void)pushAddFactorView;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,7 +8,7 @@
 
 @implementation CycleFactorsHistoryCollectionViewController
 
-- (_TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController_collectionViewSections) = MEMORY[0x29EDCA190];
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43CycleFactorsHistoryCollectionViewController_numOngoingFactors;
@@ -32,22 +32,22 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF304E8();
 }
 
 - (void)pushAddFactorView
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2582F4();
 }
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E25A568(v7);
+  providerCopy = provider;
+  analysisCopy = analysis;
+  selfCopy = self;
+  sub_29E25A568(analysisCopy);
 }
 
 @end

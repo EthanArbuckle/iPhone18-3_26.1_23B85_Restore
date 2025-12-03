@@ -1,23 +1,23 @@
 @interface SRAuthHostExtensionContext
 - (id)remoteProxy;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
+- (void)openURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation SRAuthHostExtensionContext
 
 - (id)remoteProxy
 {
-  v2 = [(SRAuthHostExtensionContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(SRAuthHostExtensionContext *)self _auxiliaryConnection];
 
-  return [v2 remoteObjectProxy];
+  return [_auxiliaryConnection remoteObjectProxy];
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
   v5 = [objc_msgSend(MEMORY[0x1E6963608] "defaultWorkspace")];
-  v6 = *(a4 + 2);
+  v6 = *(handler + 2);
 
-  v6(a4, v5);
+  v6(handler, v5);
 }
 
 @end

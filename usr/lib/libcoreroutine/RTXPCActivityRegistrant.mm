@@ -1,17 +1,17 @@
 @interface RTXPCActivityRegistrant
-- (RTXPCActivityRegistrant)initWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6;
+- (RTXPCActivityRegistrant)initWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler;
 - (id)description;
 @end
 
 @implementation RTXPCActivityRegistrant
 
-- (RTXPCActivityRegistrant)initWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6
+- (RTXPCActivityRegistrant)initWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  deferHandlerCopy = deferHandler;
+  if (!identifierCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!criteriaCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@ LABEL_15:
 
 LABEL_16:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -61,18 +61,18 @@ LABEL_16:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_criteria, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_criteria, criteria);
+    v17 = [handlerCopy copy];
     handler = v16->_handler;
     v16->_handler = v17;
 
     deferHandler = v16->_deferHandler;
     v16->_deferHandler = 0;
 
-    if (v14)
+    if (deferHandlerCopy)
     {
-      v20 = [v14 copy];
+      v20 = [deferHandlerCopy copy];
       v21 = v16->_deferHandler;
       v16->_deferHandler = v20;
     }
@@ -81,18 +81,18 @@ LABEL_16:
   }
 
   self = v16;
-  v22 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTXPCActivityRegistrant *)self identifier];
-  v5 = [(RTXPCActivityRegistrant *)self criteria];
-  v6 = [v3 stringWithFormat:@"identifier, %@, criteria, %@", v4, v5];
+  identifier = [(RTXPCActivityRegistrant *)self identifier];
+  criteria = [(RTXPCActivityRegistrant *)self criteria];
+  v6 = [v3 stringWithFormat:@"identifier, %@, criteria, %@", identifier, criteria];
 
   return v6;
 }

@@ -1,66 +1,66 @@
 @interface UIMultiColumnViewController
-- (BOOL)_allowMultipleColumnsForPossibleStates:(id)a3 containerSize:(CGSize)a4;
-- (BOOL)_canShowColumnIndex:(unint64_t)a3;
-- (BOOL)sizeMightAllowMultipleColumns:(CGSize)a3;
+- (BOOL)_allowMultipleColumnsForPossibleStates:(id)states containerSize:(CGSize)size;
+- (BOOL)_canShowColumnIndex:(unint64_t)index;
+- (BOOL)sizeMightAllowMultipleColumns:(CGSize)columns;
 - (NSArray)columnWidths;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (UIMultiColumnViewController)initWithNavController:(id)a3 viewControllers:(id)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (UIMultiColumnViewController)initWithNavController:(id)controller viewControllers:(id)controllers;
 - (UIMultiColumnViewControllerDelegate)delegate;
 - (double)_unsafeAreaPaddingForFirstVisibleColumn;
-- (id)_addSecondColumnBarButton:(int64_t)a3 toNavItem:(id)a4;
-- (id)_contentSizesForColumnWidths:(id)a3;
+- (id)_addSecondColumnBarButton:(int64_t)button toNavItem:(id)item;
+- (id)_contentSizesForColumnWidths:(id)widths;
 - (id)_effectiveColumnWidths;
 - (id)_liveVCs;
 - (id)_navigationBarForDragAffordance;
 - (id)_possibleContentSizes;
 - (id)_preferredContentSizes;
-- (id)_removeSecondColumnBarButton:(int64_t)a3 fromNavItem:(id)a4;
-- (id)_secondColumnBarButtonItem:(int64_t)a3 createIfNecessary:(BOOL)a4;
-- (id)_splitViewControllerImageForDisplayModeButtonToShowPrimary:(id)a3;
+- (id)_removeSecondColumnBarButton:(int64_t)button fromNavItem:(id)item;
+- (id)_secondColumnBarButtonItem:(int64_t)item createIfNecessary:(BOOL)necessary;
+- (id)_splitViewControllerImageForDisplayModeButtonToShowPrimary:(id)primary;
 - (id)childViewControllerForStatusBarStyle;
 - (id)description;
-- (id)separateSecondaryViewControllerForSplitViewController:(id)a3;
+- (id)separateSecondaryViewControllerForSplitViewController:(id)controller;
 - (id)title;
-- (unint64_t)_columnCountForPossibleStates:(id)a3 containerSize:(CGSize)a4;
+- (unint64_t)_columnCountForPossibleStates:(id)states containerSize:(CGSize)size;
 - (unint64_t)columnCount;
-- (void)_adjustNonOverlayScrollViewsForKeyboardInfo:(id)a3;
-- (void)_collapseSecondaryViewController:(id)a3 forSplitViewController:(id)a4 withTransitionCoordinator:(id)a5;
-- (void)_marginInfoForChild:(id)a3 leftMargin:(double *)a4 rightMargin:(double *)a5;
-- (void)_moveViewControllersForColumnCount:(unint64_t)a3;
-- (void)_navigationControllerChangedViewControllers:(id)a3;
-- (void)_setAllowNestedNavigationControllers:(BOOL)a3;
-- (void)_showSecondColumn:(id)a3;
-- (void)_splitViewControllerDidUpdate:(id)a3 withSize:(CGSize)a4;
-- (void)_splitViewControllerWillCollapseOntoPrimaryViewController:(id)a3;
-- (void)_updateButtonsForColumnCount:(unint64_t)a3 animatingChange:(BOOL)a4;
+- (void)_adjustNonOverlayScrollViewsForKeyboardInfo:(id)info;
+- (void)_collapseSecondaryViewController:(id)controller forSplitViewController:(id)viewController withTransitionCoordinator:(id)coordinator;
+- (void)_marginInfoForChild:(id)child leftMargin:(double *)margin rightMargin:(double *)rightMargin;
+- (void)_moveViewControllersForColumnCount:(unint64_t)count;
+- (void)_navigationControllerChangedViewControllers:(id)controllers;
+- (void)_setAllowNestedNavigationControllers:(BOOL)controllers;
+- (void)_showSecondColumn:(id)column;
+- (void)_splitViewControllerDidUpdate:(id)update withSize:(CGSize)size;
+- (void)_splitViewControllerWillCollapseOntoPrimaryViewController:(id)controller;
+- (void)_updateButtonsForColumnCount:(unint64_t)count animatingChange:(BOOL)change;
 - (void)_updateLayoutForStatusBarAndInterfaceOrientation;
-- (void)_willShowColumnCount:(unint64_t)a3;
+- (void)_willShowColumnCount:(unint64_t)count;
 - (void)dealloc;
-- (void)requestColumnCount:(unint64_t)a3 animated:(BOOL)a4;
-- (void)showViewController:(id)a3 sender:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)requestColumnCount:(unint64_t)count animated:(BOOL)animated;
+- (void)showViewController:(id)controller sender:(id)sender;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation UIMultiColumnViewController
 
-- (UIMultiColumnViewController)initWithNavController:(id)a3 viewControllers:(id)a4
+- (UIMultiColumnViewController)initWithNavController:(id)controller viewControllers:(id)controllers
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  controllersCopy = controllers;
   v32.receiver = self;
   v32.super_class = UIMultiColumnViewController;
   v8 = [(UIViewController *)&v32 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v26 = v7;
-    v9 = [v7 copy];
+    v26 = controllersCopy;
+    v9 = [controllersCopy copy];
     viewControllers = v8->_viewControllers;
     v8->_viewControllers = v9;
 
-    v11 = [MEMORY[0x1E695DF70] arrayWithObject:v6];
+    v11 = [MEMORY[0x1E695DF70] arrayWithObject:controllerCopy];
     v12 = [(NSArray *)v8->_viewControllers count];
     if (v12 >= 2)
     {
@@ -68,9 +68,9 @@
       do
       {
         v14 = [UINavigationController alloc];
-        v15 = [v6 navigationBar];
+        navigationBar = [controllerCopy navigationBar];
         v16 = objc_opt_class();
-        v17 = [v6 toolbar];
+        toolbar = [controllerCopy toolbar];
         v18 = [(UINavigationController *)v14 initWithNavigationBarClass:v16 toolbarClass:objc_opt_class()];
 
         [v11 addObject:v18];
@@ -81,7 +81,7 @@
     }
 
     objc_storeStrong(&v8->_navControllers, v11);
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -104,9 +104,9 @@
           v24 = *(*(&v28 + 1) + 8 * i);
           [(UIViewController *)v8 addChildViewController:v24];
           [v24 didMoveToParentViewController:v8];
-          [v19 addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A190 object:v24];
-          [v19 addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A1B0 object:v24];
-          [v19 addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A1D0 object:v24];
+          [defaultCenter addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A190 object:v24];
+          [defaultCenter addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A1B0 object:v24];
+          [defaultCenter addObserver:v8 selector:sel__navigationControllerChangedViewControllers_ name:0x1EFB3A1D0 object:v24];
         }
 
         v21 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -115,7 +115,7 @@
       while (v21);
     }
 
-    v7 = v26;
+    controllersCopy = v26;
   }
 
   return v8;
@@ -124,12 +124,12 @@
 - (void)dealloc
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = 0x1EFB3A190;
   v6[1] = 0x1EFB3A1B0;
   v6[2] = 0x1EFB3A1D0;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIMultiColumnViewController;
@@ -142,23 +142,23 @@
   v115.receiver = self;
   v115.super_class = UIMultiColumnViewController;
   [(UIViewController *)&v115 viewWillLayoutSubviews];
-  v4 = [(UIViewController *)self view];
-  v5 = [v4 window];
+  view = [(UIViewController *)self view];
+  window = [view window];
 
-  if (!v5)
+  if (!window)
   {
     return;
   }
 
   v6 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
   v7 = [(UIMultiColumnViewController *)self _columnCountForPossibleStates:self->_possibleStatesAtLastUpdate containerSize:self->_containerSizeAtLastUpdate.width, self->_containerSizeAtLastUpdate.height];
-  v8 = [(UIMultiColumnViewController *)self navControllers];
-  v9 = [v8 count];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  v9 = [navControllers count];
 
   if (v9 < v7)
   {
-    v93 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v93 handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:142 description:{@"Not enough VCs for %lu columns", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:142 description:{@"Not enough VCs for %lu columns", v7}];
   }
 
   lastColumnCount = self->_lastColumnCount;
@@ -190,36 +190,36 @@ LABEL_9:
 
 LABEL_10:
   v94 = v6;
-  v11 = [(UIViewController *)self view];
-  [v11 bounds];
+  view2 = [(UIViewController *)self view];
+  [view2 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(UIViewController *)self view];
-  v21 = [v20 subviews];
-  v95 = [v21 copy];
+  view3 = [(UIViewController *)self view];
+  subviews = [view3 subviews];
+  v95 = [subviews copy];
 
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__UIMultiColumnViewController_viewWillLayoutSubviews__block_invoke_2;
   aBlock[3] = &unk_1E71036C0;
-  v23 = v22;
+  v23 = array;
   v113 = v23;
   v24 = _Block_copy(aBlock);
   [(UIMultiColumnViewController *)self _effectiveColumnWidths];
   v98 = v97 = v24;
   if (v98)
   {
-    v25 = [(UIViewController *)self view];
-    v26 = [v25 _shouldReverseLayoutDirection];
+    view4 = [(UIViewController *)self view];
+    _shouldReverseLayoutDirection = [view4 _shouldReverseLayoutDirection];
 
     if (v7)
     {
       v27 = 0;
-      if (v26)
+      if (_shouldReverseLayoutDirection)
       {
         v28 = 0.0;
       }
@@ -230,7 +230,7 @@ LABEL_10:
       }
 
       v29 = v24 + 16;
-      v96 = v26;
+      v96 = _shouldReverseLayoutDirection;
       do
       {
         v30 = [v98 objectAtIndexedSubscript:v27];
@@ -244,7 +244,7 @@ LABEL_10:
         }
 
         v34 = v28 - v32;
-        if (v26)
+        if (_shouldReverseLayoutDirection)
         {
           v35 = v28;
         }
@@ -256,7 +256,7 @@ LABEL_10:
 
         v36 = v13 + v35;
         v37 = v28 + v32;
-        if (v26)
+        if (_shouldReverseLayoutDirection)
         {
           v28 = v28 + v32;
         }
@@ -266,18 +266,18 @@ LABEL_10:
           v28 = v28 - v32;
         }
 
-        v38 = [(UIMultiColumnViewController *)self navControllers];
-        v39 = [v38 objectAtIndexedSubscript:v27];
+        navControllers2 = [(UIMultiColumnViewController *)self navControllers];
+        v39 = [navControllers2 objectAtIndexedSubscript:v27];
 
         (*(v24 + 2))(v24, v39, v36, v15, v32, v19);
         v40 = v27 + 1;
         if (v27 + 1 < v7)
         {
-          v41 = [(UIViewController *)self traitCollection];
-          [v41 displayScale];
+          traitCollection = [(UIViewController *)self traitCollection];
+          [traitCollection displayScale];
           v43 = 1.0 / v42;
 
-          if (v26)
+          if (_shouldReverseLayoutDirection)
           {
             v44 = v37;
           }
@@ -287,7 +287,7 @@ LABEL_10:
             v44 = v34 - v43;
           }
 
-          if (v26)
+          if (_shouldReverseLayoutDirection)
           {
             v28 = v37 + v43;
           }
@@ -321,24 +321,24 @@ LABEL_10:
             [(UIView *)v49 setFrame:v48, v15, v43, v19];
           }
 
-          v50 = [(UIViewController *)self splitViewController];
-          v51 = v50;
-          if (v50)
+          splitViewController = [(UIViewController *)self splitViewController];
+          v51 = splitViewController;
+          if (splitViewController)
           {
             v52 = v7;
             v53 = v29;
-            if (![v50 _usesPanelImpl] || (objc_msgSend(v51, "configuration"), v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v54, "borderColor"), v55 = objc_claimAutoreleasedReturnValue(), v54, !v55))
+            if (![splitViewController _usesPanelImpl] || (objc_msgSend(v51, "configuration"), v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v54, "borderColor"), backgroundColor = objc_claimAutoreleasedReturnValue(), v54, !backgroundColor))
             {
-              v56 = [v51 view];
-              v55 = [v56 backgroundColor];
+              view5 = [v51 view];
+              backgroundColor = [view5 backgroundColor];
             }
 
-            [(UIView *)v49 setBackgroundColor:v55];
+            [(UIView *)v49 setBackgroundColor:backgroundColor];
 
             v24 = v97;
             v29 = v53;
             v7 = v52;
-            v26 = v96;
+            _shouldReverseLayoutDirection = v96;
           }
 
           [v23 insertObject:v49 atIndex:0];
@@ -353,16 +353,16 @@ LABEL_10:
 
   else
   {
-    v57 = [(UIMultiColumnViewController *)self navControllers];
-    v58 = [v57 count];
+    navControllers3 = [(UIMultiColumnViewController *)self navControllers];
+    v58 = [navControllers3 count];
 
     if (v58)
     {
-      v59 = [(UIMultiColumnViewController *)self navControllers];
-      v60 = [v59 objectAtIndexedSubscript:0];
+      navControllers4 = [(UIMultiColumnViewController *)self navControllers];
+      v60 = [navControllers4 objectAtIndexedSubscript:0];
 
-      v61 = [(UIViewController *)self view];
-      [v61 bounds];
+      view6 = [(UIViewController *)self view];
+      [view6 bounds];
       (*(v24 + 2))(v24, v60);
     }
   }
@@ -423,8 +423,8 @@ LABEL_10:
           }
 
           v74 = *(*(&v104 + 1) + 8 * j);
-          v75 = [(UIViewController *)self view];
-          [v75 addSubview:v74];
+          view7 = [(UIViewController *)self view];
+          [view7 addSubview:v74];
         }
 
         v71 = [v69 countByEnumeratingWithState:&v104 objects:v117 count:16];
@@ -477,10 +477,10 @@ LABEL_10:
     [v23 enumerateObjectsUsingBlock:v99];
   }
 
-  v82 = [(UIViewController *)self view];
-  v83 = [(UIViewController *)self view];
-  [v83 bounds];
-  [v82 convertRect:0 toView:?];
+  view8 = [(UIViewController *)self view];
+  view9 = [(UIViewController *)self view];
+  [view9 bounds];
+  [view8 convertRect:0 toView:?];
   v85 = v84;
   v87 = v86;
   v89 = v88;
@@ -584,24 +584,24 @@ void __53__UIMultiColumnViewController_viewWillLayoutSubviews__block_invoke_3(ui
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = UIMultiColumnViewController;
-  [(UIViewController *)&v9 viewWillAppear:a3];
-  v4 = [(UIViewController *)self view];
-  [v4 setNeedsLayout];
+  [(UIViewController *)&v9 viewWillAppear:appear];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(UIViewController *)self splitViewController];
-  v6 = v5;
-  if (v5)
+  splitViewController = [(UIViewController *)self splitViewController];
+  v6 = splitViewController;
+  if (splitViewController)
   {
-    if (([v5 isCollapsed] & 1) == 0)
+    if (([splitViewController isCollapsed] & 1) == 0)
     {
-      v7 = [v6 currentState];
-      v8 = [v7 leadingOverlapsMain];
+      currentState = [v6 currentState];
+      leadingOverlapsMain = [currentState leadingOverlapsMain];
 
-      if ((v8 & 1) == 0)
+      if ((leadingOverlapsMain & 1) == 0)
       {
         [(UIMultiColumnViewController *)self _adjustNonOverlayScrollViewsForKeyboardInfo:0];
       }
@@ -609,11 +609,11 @@ void __53__UIMultiColumnViewController_viewWillLayoutSubviews__block_invoke_3(ui
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = UIMultiColumnViewController;
-  [(UIViewController *)&v5 viewDidDisappear:a3];
+  [(UIViewController *)&v5 viewDidDisappear:disappear];
   [(UIMultiColumnViewController *)self setKeyboardInset:0.0];
   v4 = *(MEMORY[0x1E695F058] + 16);
   self->_lastFrameInWindow.origin = *MEMORY[0x1E695F058];
@@ -622,38 +622,38 @@ void __53__UIMultiColumnViewController_viewWillLayoutSubviews__block_invoke_3(ui
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v2 = [(UIMultiColumnViewController *)self navControllers];
-  v3 = [v2 firstObject];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  firstObject = [navControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)title
 {
-  v2 = [(UIMultiColumnViewController *)self navControllers];
-  v3 = [v2 firstObject];
-  v4 = [v3 title];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  firstObject = [navControllers firstObject];
+  title = [firstObject title];
 
-  return v4;
+  return title;
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4
+- (void)showViewController:(id)controller sender:(id)sender
 {
-  v17 = a3;
-  v6 = a4;
-  if (v17)
+  controllerCopy = controller;
+  senderCopy = sender;
+  if (controllerCopy)
   {
-    v7 = [(UIMultiColumnViewController *)self viewControllers];
-    v8 = [v7 lastObject];
+    viewControllers = [(UIMultiColumnViewController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
 
-    v9 = [(UIMultiColumnViewController *)self navControllers];
-    v10 = [v9 firstObject];
+    navControllers = [(UIMultiColumnViewController *)self navControllers];
+    firstObject = [navControllers firstObject];
 
-    if (v8 == v17)
+    if (lastObject == controllerCopy)
     {
-      v14 = [v17 navigationController];
+      navigationController = [controllerCopy navigationController];
 
-      if (v14 == v10)
+      if (navigationController == firstObject)
       {
 LABEL_11:
 
@@ -664,71 +664,71 @@ LABEL_11:
     else
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![v10 _allowNestedNavigationControllers])
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![firstObject _allowNestedNavigationControllers])
       {
-        v11 = [(UIMultiColumnViewController *)self viewControllers];
-        v12 = [v11 mutableCopy];
+        viewControllers2 = [(UIMultiColumnViewController *)self viewControllers];
+        v12 = [viewControllers2 mutableCopy];
 
         [v12 removeLastObject];
-        [v12 addObject:v17];
+        [v12 addObject:controllerCopy];
         [(UIMultiColumnViewController *)self setViewControllers:v12];
-        v13 = [v8 navigationController];
+        navigationController2 = [lastObject navigationController];
 
-        if (v13 == v10)
+        if (navigationController2 == firstObject)
         {
-          v15 = [v10 viewControllers];
-          v16 = [v15 mutableCopy];
+          viewControllers3 = [firstObject viewControllers];
+          v16 = [viewControllers3 mutableCopy];
 
-          [v16 replaceObjectAtIndex:objc_msgSend(v16 withObject:{"indexOfObjectIdenticalTo:", v8), v17}];
-          [v10 setViewControllers:v16 animated:0];
+          [v16 replaceObjectAtIndex:objc_msgSend(v16 withObject:{"indexOfObjectIdenticalTo:", lastObject), controllerCopy}];
+          [firstObject setViewControllers:v16 animated:0];
         }
 
         else
         {
-          [v10 showViewController:v17 sender:v6];
+          [firstObject showViewController:controllerCopy sender:senderCopy];
         }
 
         goto LABEL_11;
       }
     }
 
-    [v10 showViewController:v17 sender:v6];
+    [firstObject showViewController:controllerCopy sender:senderCopy];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)_splitViewControllerWillCollapseOntoPrimaryViewController:(id)a3
+- (void)_splitViewControllerWillCollapseOntoPrimaryViewController:(id)controller
 {
   [(UIMultiColumnViewController *)self _moveViewControllersForColumnCount:1];
   *&self->_mcvcFlags &= ~4u;
-  v4 = [(UIViewController *)self _existingView];
-  [v4 setNeedsLayout];
+  _existingView = [(UIViewController *)self _existingView];
+  [_existingView setNeedsLayout];
 }
 
-- (void)_collapseSecondaryViewController:(id)a3 forSplitViewController:(id)a4 withTransitionCoordinator:(id)a5
+- (void)_collapseSecondaryViewController:(id)controller forSplitViewController:(id)viewController withTransitionCoordinator:(id)coordinator
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(UIMultiColumnViewController *)self navControllers];
-  v14 = [v9 objectAtIndexedSubscript:0];
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  v14 = [navControllers objectAtIndexedSubscript:0];
 
-  v10 = [v14 overrideTraitCollectionForChildViewController:v8];
+  v10 = [v14 overrideTraitCollectionForChildViewController:controllerCopy];
   v11 = objc_opt_class();
-  v12 = [v14 traitCollection];
-  v13 = [v11 _traitCollectionWithParentTraitCollection:v12 overrideTraitCollection:v10];
+  traitCollection = [v14 traitCollection];
+  v13 = [v11 _traitCollectionWithParentTraitCollection:traitCollection overrideTraitCollection:v10];
 
-  [v8 _unsafeParentWillTransitionToTraitCollection:v13 withTransitionCoordinator:v7];
-  [v14 pushViewController:v8 animated:0];
+  [controllerCopy _unsafeParentWillTransitionToTraitCollection:v13 withTransitionCoordinator:coordinatorCopy];
+  [v14 pushViewController:controllerCopy animated:0];
 }
 
-- (id)separateSecondaryViewControllerForSplitViewController:(id)a3
+- (id)separateSecondaryViewControllerForSplitViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIMultiColumnViewController *)self navControllers];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 separateSecondaryViewControllerForSplitViewController:v4];
+  controllerCopy = controller;
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  v6 = [navControllers objectAtIndexedSubscript:0];
+  v7 = [v6 separateSecondaryViewControllerForSplitViewController:controllerCopy];
 
   return v7;
 }
@@ -737,11 +737,11 @@ LABEL_12:
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    if (v5)
+    if (userInterfaceIdiom)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithDouble:320.0];
       v35[0] = v9;
@@ -753,10 +753,10 @@ LABEL_12:
 
     else
     {
-      v6 = [(UIViewController *)self splitViewController];
-      v7 = [v6 _iPhoneShouldUseOverlayInCurrentEnvironment];
+      splitViewController = [(UIViewController *)self splitViewController];
+      _iPhoneShouldUseOverlayInCurrentEnvironment = [splitViewController _iPhoneShouldUseOverlayInCurrentEnvironment];
 
-      if (v7)
+      if (_iPhoneShouldUseOverlayInCurrentEnvironment)
       {
         v8 = 375.0;
       }
@@ -777,20 +777,20 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [(UIViewController *)self _existingView];
-  v14 = [v13 _screen];
-  v15 = v14;
-  if (v14)
+  _existingView = [(UIViewController *)self _existingView];
+  _screen = [_existingView _screen];
+  v15 = _screen;
+  if (_screen)
   {
-    v16 = v14;
+    mainScreen = _screen;
   }
 
   else
   {
-    v16 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
-  v9 = v16;
+  v9 = mainScreen;
 
   [v9 _referenceBounds];
   if (v17 > 1210.0)
@@ -836,24 +836,24 @@ LABEL_30:
   v18 = &unk_1EFE2BB00;
 LABEL_15:
 
-  v19 = [(UIMultiColumnViewController *)self viewControllers];
-  v20 = [v19 count];
+  viewControllers = [(UIMultiColumnViewController *)self viewControllers];
+  v20 = [viewControllers count];
 
   if ((v20 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:500 description:@"Unsupported number of columns"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:500 description:@"Unsupported number of columns"];
   }
 
-  v21 = [(UIMultiColumnViewController *)self viewControllers];
-  v22 = [v21 count];
+  viewControllers2 = [(UIMultiColumnViewController *)self viewControllers];
+  v22 = [viewControllers2 count];
 
   if (v22 == 1)
   {
     if ([v18 count] != 2)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:502 description:@"Computed incorrect column widths"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:502 description:@"Computed incorrect column widths"];
     }
 
     v23 = [v18 subarrayWithRange:{1, 1}];
@@ -864,60 +864,60 @@ LABEL_15:
   return v18;
 }
 
-- (void)requestColumnCount:(unint64_t)a3 animated:(BOOL)a4
+- (void)requestColumnCount:(unint64_t)count animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (count - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v20 handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:512 description:{@"%@ currently only supports 1 or 2 columns.", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMultiColumnViewController.m" lineNumber:512 description:{@"%@ currently only supports 1 or 2 columns.", v22}];
   }
 
-  if ([(UIMultiColumnViewController *)self columnCount]!= a3)
+  if ([(UIMultiColumnViewController *)self columnCount]!= count)
   {
-    if ([(UIMultiColumnViewController *)self _canShowColumnIndex:a3 - 1])
+    if ([(UIMultiColumnViewController *)self _canShowColumnIndex:count - 1])
     {
-      v7 = [(UIMultiColumnViewController *)self _preferredContentSizes];
-      if (a3 - 1 >= [v7 count])
+      _preferredContentSizes = [(UIMultiColumnViewController *)self _preferredContentSizes];
+      if (count - 1 >= [_preferredContentSizes count])
       {
         v17 = *(__UILogGetCategoryCachedImpl("MultiColumnViewController", &qword_1ED499C58) + 8);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v18 = v17;
           *buf = 134218240;
-          v24 = a3;
+          countCopy2 = count;
           v25 = 2048;
-          v26 = [v7 count];
+          v26 = [_preferredContentSizes count];
           _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Cannot show %li columns as there are only %li preferredContentSizes", buf, 0x16u);
         }
       }
 
       else
       {
-        v8 = [v7 objectAtIndex:a3 - 1];
+        v8 = [_preferredContentSizes objectAtIndex:count - 1];
         [v8 CGSizeValue];
         v10 = v9;
 
         v11 = objc_alloc_init(UISlidingBarStateRequest);
         [(UISlidingBarStateRequest *)v11 setLeadingWidth:v10];
         *&self->_mcvcFlags |= 8u;
-        v12 = [(UIViewController *)self splitViewController];
-        v13 = v12;
-        if (v4)
+        splitViewController = [(UIViewController *)self splitViewController];
+        v13 = splitViewController;
+        if (animatedCopy)
         {
-          [v12 _animateToRequest:v11];
+          [splitViewController _animateToRequest:v11];
         }
 
         else
         {
-          [v12 setStateRequest:v11];
+          [splitViewController setStateRequest:v11];
         }
 
         *&self->_mcvcFlags &= ~8u;
-        [(UIMultiColumnViewController *)self _updateButtonsForColumnCount:a3 animatingChange:v4];
+        [(UIMultiColumnViewController *)self _updateButtonsForColumnCount:count animatingChange:animatedCopy];
       }
     }
 
@@ -927,11 +927,11 @@ LABEL_15:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [(UIMultiColumnViewController *)self _liveVCs];
+        _liveVCs = [(UIMultiColumnViewController *)self _liveVCs];
         *buf = 134218240;
-        v24 = a3;
+        countCopy2 = count;
         v25 = 2048;
-        v26 = [v16 count];
+        v26 = [_liveVCs count];
         _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "Cannot show %li columns as there are only %li view controllers currently being displayed.", buf, 0x16u);
       }
     }
@@ -955,8 +955,8 @@ LABEL_15:
 
 - (id)_preferredContentSizes
 {
-  v3 = [(UIMultiColumnViewController *)self _effectiveColumnWidths];
-  v4 = [v3 count];
+  _effectiveColumnWidths = [(UIMultiColumnViewController *)self _effectiveColumnWidths];
+  v4 = [_effectiveColumnWidths count];
   if (v4)
   {
     v5 = v4;
@@ -976,8 +976,8 @@ LABEL_15:
     }
 
 LABEL_7:
-    v7 = [v3 subarrayWithRange:{0, v6}];
-    v8 = [(UIMultiColumnViewController *)self _contentSizesForColumnWidths:v7];
+    v7 = [_effectiveColumnWidths subarrayWithRange:{0, v6}];
+    _preferredContentSizes = [(UIMultiColumnViewController *)self _contentSizesForColumnWidths:v7];
   }
 
   else
@@ -985,15 +985,15 @@ LABEL_7:
 LABEL_8:
     v10.receiver = self;
     v10.super_class = UIMultiColumnViewController;
-    v8 = [(UIViewController *)&v10 _preferredContentSizes];
+    _preferredContentSizes = [(UIViewController *)&v10 _preferredContentSizes];
   }
 
-  return v8;
+  return _preferredContentSizes;
 }
 
-- (void)_setAllowNestedNavigationControllers:(BOOL)a3
+- (void)_setAllowNestedNavigationControllers:(BOOL)controllers
 {
-  v3 = a3;
+  controllersCopy = controllers;
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = UIMultiColumnViewController;
@@ -1002,8 +1002,8 @@ LABEL_8:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(UIMultiColumnViewController *)self navControllers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  v6 = [navControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1015,14 +1015,14 @@ LABEL_8:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(navControllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _setAllowNestedNavigationControllers:v3];
+        [*(*(&v10 + 1) + 8 * v9++) _setAllowNestedNavigationControllers:controllersCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [navControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -1031,28 +1031,28 @@ LABEL_8:
 
 - (id)_navigationBarForDragAffordance
 {
-  v2 = [(UIMultiColumnViewController *)self navControllers];
-  v3 = [v2 firstObject];
-  v4 = [v3 _navigationBarForDragAffordance];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  firstObject = [navControllers firstObject];
+  _navigationBarForDragAffordance = [firstObject _navigationBarForDragAffordance];
 
-  return v4;
+  return _navigationBarForDragAffordance;
 }
 
-- (void)_navigationControllerChangedViewControllers:(id)a3
+- (void)_navigationControllerChangedViewControllers:(id)controllers
 {
   if ((*&self->_mcvcFlags & 1) == 0)
   {
-    v4 = [(UIViewController *)self parentViewController];
-    [v4 preferredContentSizeDidChangeForChildContentContainer:self];
+    parentViewController = [(UIViewController *)self parentViewController];
+    [parentViewController preferredContentSizeDidChangeForChildContentContainer:self];
   }
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
   [(UIViewController *)self _contentOverlayInsets];
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   result.right = v8;
@@ -1062,13 +1062,13 @@ LABEL_8:
   return result;
 }
 
-- (void)_marginInfoForChild:(id)a3 leftMargin:(double *)a4 rightMargin:(double *)a5
+- (void)_marginInfoForChild:(id)child leftMargin:(double *)margin rightMargin:(double *)rightMargin
 {
-  v8 = [(UIViewController *)self _existingView];
-  v9 = [v8 _shouldReverseLayoutDirection];
+  _existingView = [(UIViewController *)self _existingView];
+  _shouldReverseLayoutDirection = [_existingView _shouldReverseLayoutDirection];
 
   [(UIViewController *)self systemMinimumLayoutMargins];
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = v11;
   }
@@ -1078,8 +1078,8 @@ LABEL_8:
     v12 = v10;
   }
 
-  *a4 = v12;
-  if (v9)
+  *margin = v12;
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v10;
   }
@@ -1089,27 +1089,27 @@ LABEL_8:
     v13 = v11;
   }
 
-  *a5 = v13;
+  *rightMargin = v13;
 }
 
-- (void)_splitViewControllerDidUpdate:(id)a3 withSize:(CGSize)a4
+- (void)_splitViewControllerDidUpdate:(id)update withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  updateCopy = update;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___block_invoke;
   aBlock[3] = &unk_1E70F3590;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = [(UIViewController *)self splitViewController];
-  v10 = [v9 possibleStates];
+  splitViewController = [(UIViewController *)self splitViewController];
+  possibleStates = [splitViewController possibleStates];
 
-  v11 = [(UIMultiColumnViewController *)self _columnCountForPossibleStates:v10 containerSize:width, height];
+  height = [(UIMultiColumnViewController *)self _columnCountForPossibleStates:possibleStates containerSize:width, height];
   if (self->_possibleStatesAtLastUpdate)
   {
-    v12 = v11 != self->_lastColumnCount;
+    v12 = height != self->_lastColumnCount;
   }
 
   else
@@ -1119,7 +1119,7 @@ LABEL_8:
 
   self->_containerSizeAtLastUpdate.width = width;
   self->_containerSizeAtLastUpdate.height = height;
-  objc_storeStrong(&self->_possibleStatesAtLastUpdate, v10);
+  objc_storeStrong(&self->_possibleStatesAtLastUpdate, possibleStates);
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -1136,15 +1136,15 @@ LABEL_8:
     v8[2](v8);
   }
 
-  if (([v7 isCollapsed] & 1) != 0 || (objc_msgSend(v7, "currentState"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "leadingOverlapsMain"), v13, v14))
+  if (([updateCopy isCollapsed] & 1) != 0 || (objc_msgSend(updateCopy, "currentState"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "leadingOverlapsMain"), v13, v14))
   {
     [(UIMultiColumnViewController *)self setKeyboardInset:0.0];
   }
 
   if (v12)
   {
-    v15 = [(UIViewController *)self view];
-    [v15 setNeedsLayout];
+    view = [(UIViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -1186,32 +1186,32 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
   }
 }
 
-- (id)_splitViewControllerImageForDisplayModeButtonToShowPrimary:(id)a3
+- (id)_splitViewControllerImageForDisplayModeButtonToShowPrimary:(id)primary
 {
-  v4 = [(UIViewController *)self splitViewController];
-  v5 = [v4 view];
-  [v5 frame];
+  splitViewController = [(UIViewController *)self splitViewController];
+  view = [splitViewController view];
+  [view frame];
   v8 = [(UIMultiColumnViewController *)self sizeMightAllowMultipleColumns:v6, v7];
 
   if (v8)
   {
-    v9 = [(UIMultiColumnViewController *)self _columnToggleButtonImage];
+    _columnToggleButtonImage = [(UIMultiColumnViewController *)self _columnToggleButtonImage];
 
-    if (!v9)
+    if (!_columnToggleButtonImage)
     {
-      v10 = [(UIMultiColumnViewController *)self _sideBarImage];
-      [(UIMultiColumnViewController *)self _setColumnToggleButtonImage:v10];
+      _sideBarImage = [(UIMultiColumnViewController *)self _sideBarImage];
+      [(UIMultiColumnViewController *)self _setColumnToggleButtonImage:_sideBarImage];
     }
 
-    v11 = [(UIMultiColumnViewController *)self _columnToggleButtonImage];
+    _columnToggleButtonImage2 = [(UIMultiColumnViewController *)self _columnToggleButtonImage];
   }
 
   else
   {
-    v11 = 0;
+    _columnToggleButtonImage2 = 0;
   }
 
-  return v11;
+  return _columnToggleButtonImage2;
 }
 
 - (void)_updateLayoutForStatusBarAndInterfaceOrientation
@@ -1221,8 +1221,8 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIViewController *)self childViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v3 = [childViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1234,31 +1234,31 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _updateLayoutForStatusBarAndInterfaceOrientation];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [childViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_adjustNonOverlayScrollViewsForKeyboardInfo:(id)a3
+- (void)_adjustNonOverlayScrollViewsForKeyboardInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIViewController *)self parentViewController];
-  v6 = [v5 viewIfLoaded];
+  infoCopy = info;
+  parentViewController = [(UIViewController *)self parentViewController];
+  viewIfLoaded = [parentViewController viewIfLoaded];
 
-  if (v6)
+  if (viewIfLoaded)
   {
-    v7 = [(UIViewController *)self _keyboardSceneDelegate];
-    [v7 verticalOverlapForView:v6 usingKeyboardInfo:v4];
+    _keyboardSceneDelegate = [(UIViewController *)self _keyboardSceneDelegate];
+    [_keyboardSceneDelegate verticalOverlapForView:viewIfLoaded usingKeyboardInfo:infoCopy];
     v9 = v8;
 
     [(UIMultiColumnViewController *)self keyboardInset];
@@ -1269,8 +1269,8 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [(UIMultiColumnViewController *)self navControllers];
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      navControllers = [(UIMultiColumnViewController *)self navControllers];
+      v12 = [navControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1282,7 +1282,7 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(navControllers);
             }
 
             v16 = *(*(&v19 + 1) + 8 * v15);
@@ -1290,12 +1290,12 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
             {
               if ((v16[94] & 3u) - 1 <= 1)
               {
-                v17 = [*(*(&v19 + 1) + 8 * v15) topViewController];
+                topViewController = [*(*(&v19 + 1) + 8 * v15) topViewController];
 
-                if (v17)
+                if (topViewController)
                 {
-                  v18 = [v16 topViewController];
-                  [v16 _computeAndApplyScrollContentInsetDeltaForViewController:v18];
+                  topViewController2 = [v16 topViewController];
+                  [v16 _computeAndApplyScrollContentInsetDeltaForViewController:topViewController2];
                 }
               }
             }
@@ -1304,7 +1304,7 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [navControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v13);
@@ -1315,30 +1315,30 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
 
 - (id)_effectiveColumnWidths
 {
-  v3 = [(UIViewController *)self splitViewController];
-  v4 = [v3 _isCollapsed];
+  splitViewController = [(UIViewController *)self splitViewController];
+  _isCollapsed = [splitViewController _isCollapsed];
 
-  if (v4)
+  if (_isCollapsed)
   {
-    v5 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v6 = [(UIMultiColumnViewController *)self columnWidths];
-    v7 = [v6 reverseObjectEnumerator];
-    v5 = [v7 allObjects];
+    columnWidths = [(UIMultiColumnViewController *)self columnWidths];
+    reverseObjectEnumerator = [columnWidths reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (id)_possibleContentSizes
 {
-  v3 = [(UIMultiColumnViewController *)self _effectiveColumnWidths];
-  if ([v3 count])
+  _effectiveColumnWidths = [(UIMultiColumnViewController *)self _effectiveColumnWidths];
+  if ([_effectiveColumnWidths count])
   {
-    v4 = [(UIMultiColumnViewController *)self _contentSizesForColumnWidths:v3];
+    v4 = [(UIMultiColumnViewController *)self _contentSizesForColumnWidths:_effectiveColumnWidths];
   }
 
   else
@@ -1351,15 +1351,15 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
 
 - (double)_unsafeAreaPaddingForFirstVisibleColumn
 {
-  v2 = [(UIViewController *)self splitViewController];
-  v3 = [v2 viewIfLoaded];
-  v4 = v3;
-  if (v3)
+  splitViewController = [(UIViewController *)self splitViewController];
+  viewIfLoaded = [splitViewController viewIfLoaded];
+  v4 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v3 safeAreaInsets];
+    [viewIfLoaded safeAreaInsets];
     v6 = v5;
     v8 = v7;
-    if ([v2 _layoutPrimaryOnRight])
+    if ([splitViewController _layoutPrimaryOnRight])
     {
       v6 = v8;
     }
@@ -1373,12 +1373,12 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
   return v6;
 }
 
-- (id)_contentSizesForColumnWidths:(id)a3
+- (id)_contentSizesForColumnWidths:(id)widths
 {
-  v4 = a3;
+  widthsCopy = widths;
   [(UIViewController *)self preferredContentSize];
   v6 = v5;
-  v7 = [v4 count];
+  v7 = [widthsCopy count];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
   if (v7)
   {
@@ -1386,7 +1386,7 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
     v10 = 0.0;
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v9];
+      v11 = [widthsCopy objectAtIndexedSubscript:v9];
       [v11 doubleValue];
       v10 = v10 + v12;
       if (!v9)
@@ -1400,8 +1400,8 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
 
       if (++v9 < v7)
       {
-        v15 = [(UIViewController *)self traitCollection];
-        [v15 displayScale];
+        traitCollection = [(UIViewController *)self traitCollection];
+        [traitCollection displayScale];
         v10 = v10 + 1.0 / v16;
       }
     }
@@ -1414,8 +1414,8 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
 
 - (id)_liveVCs
 {
-  v3 = [(UIMultiColumnViewController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(UIMultiColumnViewController *)self viewControllers];
+  v4 = [viewControllers count];
 
   v5 = v4 + 1;
   v6 = MEMORY[0x1E695E0F0];
@@ -1428,15 +1428,15 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
     }
 
     v8 = v5 - 2;
-    v9 = [(UIMultiColumnViewController *)self viewControllers];
-    v10 = [v9 objectAtIndexedSubscript:v8];
-    v11 = [v10 navigationController];
+    viewControllers2 = [(UIMultiColumnViewController *)self viewControllers];
+    v10 = [viewControllers2 objectAtIndexedSubscript:v8];
+    navigationController = [v10 navigationController];
 
     v5 = v7;
-    if (v11)
+    if (navigationController)
     {
-      v12 = [(UIMultiColumnViewController *)self viewControllers];
-      v6 = [v12 subarrayWithRange:{0, v7}];
+      viewControllers3 = [(UIMultiColumnViewController *)self viewControllers];
+      v6 = [viewControllers3 subarrayWithRange:{0, v7}];
 
       break;
     }
@@ -1445,62 +1445,62 @@ void __70__UIMultiColumnViewController__splitViewControllerDidUpdate_withSize___
   return v6;
 }
 
-- (BOOL)_canShowColumnIndex:(unint64_t)a3
+- (BOOL)_canShowColumnIndex:(unint64_t)index
 {
-  v4 = [(UIMultiColumnViewController *)self _liveVCs];
-  LOBYTE(a3) = [v4 count] > a3;
+  _liveVCs = [(UIMultiColumnViewController *)self _liveVCs];
+  LOBYTE(index) = [_liveVCs count] > index;
 
-  return a3;
+  return index;
 }
 
-- (void)_willShowColumnCount:(unint64_t)a3
+- (void)_willShowColumnCount:(unint64_t)count
 {
-  [(UIMultiColumnViewController *)self _updateButtonsForColumnCount:a3 animatingChange:0];
-  [(UIMultiColumnViewController *)self _moveViewControllersForColumnCount:a3];
+  [(UIMultiColumnViewController *)self _updateButtonsForColumnCount:count animatingChange:0];
+  [(UIMultiColumnViewController *)self _moveViewControllersForColumnCount:count];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    if (a3 <= 1)
+    if (count <= 1)
     {
-      v5 = 1;
+      countCopy = 1;
     }
 
     else
     {
-      v5 = a3;
+      countCopy = count;
     }
 
-    [WeakRetained multiColumnViewController:self willShowColumns:v5];
+    [WeakRetained multiColumnViewController:self willShowColumns:countCopy];
   }
 }
 
-- (void)_moveViewControllersForColumnCount:(unint64_t)a3
+- (void)_moveViewControllersForColumnCount:(unint64_t)count
 {
   *&self->_mcvcFlags |= 1u;
-  if (a3 == 2)
+  if (count == 2)
   {
-    v6 = [(UIMultiColumnViewController *)self _liveVCs];
-    v7 = [v6 subarrayWithRange:{0, 1}];
-    v8 = [v6 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
-    v9 = [(UIMultiColumnViewController *)self navControllers];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    _liveVCs = [(UIMultiColumnViewController *)self _liveVCs];
+    v7 = [_liveVCs subarrayWithRange:{0, 1}];
+    v8 = [_liveVCs subarrayWithRange:{1, objc_msgSend(_liveVCs, "count") - 1}];
+    navControllers = [(UIMultiColumnViewController *)self navControllers];
+    v10 = [navControllers objectAtIndexedSubscript:0];
     [v10 setViewControllers:v8 animated:0];
 
-    v11 = [(UIMultiColumnViewController *)self navControllers];
-    v12 = [v11 objectAtIndexedSubscript:1];
+    navControllers2 = [(UIMultiColumnViewController *)self navControllers];
+    v12 = [navControllers2 objectAtIndexedSubscript:1];
     [v12 setViewControllers:v7 animated:0];
   }
 
-  else if (a3 == 1)
+  else if (count == 1)
   {
-    v4 = [(UIMultiColumnViewController *)self _liveVCs];
+    _liveVCs2 = [(UIMultiColumnViewController *)self _liveVCs];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__UIMultiColumnViewController__moveViewControllersForColumnCount___block_invoke;
     v13[3] = &unk_1E70F35B8;
     v13[4] = self;
-    v14 = v4;
-    v5 = v4;
+    v14 = _liveVCs2;
+    v5 = _liveVCs2;
     [UIViewController _performWithoutDeferringTransitions:v13];
   }
 
@@ -1518,16 +1518,16 @@ void __66__UIMultiColumnViewController__moveViewControllersForColumnCount___bloc
   [v4 setViewControllers:*(a1 + 40) animated:0];
 }
 
-- (id)_addSecondColumnBarButton:(int64_t)a3 toNavItem:(id)a4
+- (id)_addSecondColumnBarButton:(int64_t)button toNavItem:(id)item
 {
-  v6 = a4;
-  v7 = [(UIMultiColumnViewController *)self _secondColumnBarButtonItem:a3 createIfNecessary:1];
-  v8 = [v6 leftBarButtonItems];
-  v9 = v8;
+  itemCopy = item;
+  v7 = [(UIMultiColumnViewController *)self _secondColumnBarButtonItem:button createIfNecessary:1];
+  leftBarButtonItems = [itemCopy leftBarButtonItems];
+  v9 = leftBarButtonItems;
   v10 = MEMORY[0x1E695E0F0];
-  if (v8)
+  if (leftBarButtonItems)
   {
-    v10 = v8;
+    v10 = leftBarButtonItems;
   }
 
   v11 = v10;
@@ -1544,24 +1544,24 @@ void __66__UIMultiColumnViewController__moveViewControllersForColumnCount___bloc
     }
 
     [v15 insertObject:v7 atIndex:0];
-    [v6 setLeftBarButtonItems:v15];
+    [itemCopy setLeftBarButtonItems:v15];
   }
 
   return v7;
 }
 
-- (id)_removeSecondColumnBarButton:(int64_t)a3 fromNavItem:(id)a4
+- (id)_removeSecondColumnBarButton:(int64_t)button fromNavItem:(id)item
 {
-  v6 = a4;
-  v7 = [(UIMultiColumnViewController *)self _secondColumnBarButtonItem:a3 createIfNecessary:0];
+  itemCopy = item;
+  v7 = [(UIMultiColumnViewController *)self _secondColumnBarButtonItem:button createIfNecessary:0];
   if (v7)
   {
-    v8 = [v6 leftBarButtonItems];
-    v9 = v8;
+    leftBarButtonItems = [itemCopy leftBarButtonItems];
+    v9 = leftBarButtonItems;
     v10 = MEMORY[0x1E695E0F0];
-    if (v8)
+    if (leftBarButtonItems)
     {
-      v10 = v8;
+      v10 = leftBarButtonItems;
     }
 
     v11 = v10;
@@ -1572,24 +1572,24 @@ void __66__UIMultiColumnViewController__moveViewControllersForColumnCount___bloc
       v13 = v12;
       v14 = [v11 mutableCopy];
       [v14 removeObjectAtIndex:v13];
-      [v6 setLeftBarButtonItems:v14];
+      [itemCopy setLeftBarButtonItems:v14];
     }
   }
 
   return v7;
 }
 
-- (void)_updateButtonsForColumnCount:(unint64_t)a3 animatingChange:(BOOL)a4
+- (void)_updateButtonsForColumnCount:(unint64_t)count animatingChange:(BOOL)change
 {
   if ((*&self->_mcvcFlags & 8) != 0)
   {
     return;
   }
 
-  v4 = a4;
-  if (a4)
+  changeCopy = change;
+  if (change)
   {
-    self->_animatingTargetColumnCount = a3;
+    self->_animatingTargetColumnCount = count;
     *&self->_mcvcFlags |= 2u;
   }
 
@@ -1598,7 +1598,7 @@ void __66__UIMultiColumnViewController__moveViewControllersForColumnCount___bloc
     animatingTargetColumnCount = self->_animatingTargetColumnCount;
     if (animatingTargetColumnCount)
     {
-      if (animatingTargetColumnCount != a3)
+      if (animatingTargetColumnCount != count)
       {
         goto LABEL_8;
       }
@@ -1607,50 +1607,50 @@ void __66__UIMultiColumnViewController__moveViewControllersForColumnCount___bloc
     }
   }
 
-  animatingTargetColumnCount = a3;
+  animatingTargetColumnCount = count;
 LABEL_8:
-  v7 = [(UIMultiColumnViewController *)self viewControllers];
-  if ([v7 count])
+  viewControllers = [(UIMultiColumnViewController *)self viewControllers];
+  if ([viewControllers count])
   {
-    v8 = [(UIMultiColumnViewController *)self viewControllers];
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [v9 navigationItem];
+    viewControllers2 = [(UIMultiColumnViewController *)self viewControllers];
+    v9 = [viewControllers2 objectAtIndexedSubscript:0];
+    navigationItem = [v9 navigationItem];
   }
 
   else
   {
-    v10 = 0;
+    navigationItem = 0;
   }
 
-  v11 = [(UIMultiColumnViewController *)self viewControllers];
-  if ([v11 count] < 2)
+  viewControllers3 = [(UIMultiColumnViewController *)self viewControllers];
+  if ([viewControllers3 count] < 2)
   {
-    v14 = 0;
+    navigationItem2 = 0;
   }
 
   else
   {
-    v12 = [(UIMultiColumnViewController *)self viewControllers];
-    v13 = [v12 objectAtIndexedSubscript:1];
-    v14 = [v13 navigationItem];
+    viewControllers4 = [(UIMultiColumnViewController *)self viewControllers];
+    v13 = [viewControllers4 objectAtIndexedSubscript:1];
+    navigationItem2 = [v13 navigationItem];
   }
 
   if (animatingTargetColumnCount <= 1)
   {
-    v15 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:1 fromNavItem:v10];
+    v15 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:1 fromNavItem:navigationItem];
     if (![(UIMultiColumnViewController *)self _allowMultipleColumnsForPossibleStates:self->_possibleStatesAtLastUpdate containerSize:self->_containerSizeAtLastUpdate.width, self->_containerSizeAtLastUpdate.height])
     {
       if ((*&self->_mcvcFlags & 2) == 0)
       {
-        v25 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:0 fromNavItem:v14];
+        v25 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:0 fromNavItem:navigationItem2];
       }
 
       goto LABEL_27;
     }
 
-    [v10 _removeBackButtonView];
-    v16 = [(UIMultiColumnViewController *)self _addSecondColumnBarButton:0 toNavItem:v14];
-    if ([v14 hidesBackButton])
+    [navigationItem _removeBackButtonView];
+    v16 = [(UIMultiColumnViewController *)self _addSecondColumnBarButton:0 toNavItem:navigationItem2];
+    if ([navigationItem2 hidesBackButton])
     {
       v17 = 0.0;
     }
@@ -1660,16 +1660,16 @@ LABEL_8:
       v17 = 1.0;
     }
 
-    v18 = [v16 view];
-    [v18 setAlpha:v17];
+    view = [v16 view];
+    [view setAlpha:v17];
 
     goto LABEL_26;
   }
 
   if (animatingTargetColumnCount == 2)
   {
-    v16 = [(UIMultiColumnViewController *)self _addSecondColumnBarButton:1 toNavItem:v10];
-    if ([v10 hidesBackButton])
+    v16 = [(UIMultiColumnViewController *)self _addSecondColumnBarButton:1 toNavItem:navigationItem];
+    if ([navigationItem hidesBackButton])
     {
       v19 = 0.0;
     }
@@ -1679,24 +1679,24 @@ LABEL_8:
       v19 = 1.0;
     }
 
-    v20 = [v16 view];
-    [v20 setAlpha:v19];
+    view2 = [v16 view];
+    [view2 setAlpha:v19];
 
     if ((*&self->_mcvcFlags & 2) == 0)
     {
-      v21 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:0 fromNavItem:v14];
+      v21 = [(UIMultiColumnViewController *)self _removeSecondColumnBarButton:0 fromNavItem:navigationItem2];
     }
 
 LABEL_26:
   }
 
 LABEL_27:
-  if (v4)
+  if (changeCopy)
   {
-    v22 = [v14 leftBarButtonItem];
-    v23 = [v22 view];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+    view3 = [leftBarButtonItem view];
 
-    if (v23)
+    if (view3)
     {
       v24 = 0.0;
       if (animatingTargetColumnCount != 1)
@@ -1704,12 +1704,12 @@ LABEL_27:
         v24 = 1.0;
       }
 
-      [v23 setAlpha:v24];
+      [view3 setAlpha:v24];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __76__UIMultiColumnViewController__updateButtonsForColumnCount_animatingChange___block_invoke;
       v27[3] = &unk_1E70F35E0;
-      v28 = v23;
+      v28 = view3;
       v29 = animatingTargetColumnCount == 1;
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -1721,14 +1721,14 @@ LABEL_27:
   }
 }
 
-- (BOOL)sizeMightAllowMultipleColumns:(CGSize)a3
+- (BOOL)sizeMightAllowMultipleColumns:(CGSize)columns
 {
-  width = a3.width;
-  v5 = [(UIViewController *)self splitViewController:a3.width];
+  width = columns.width;
+  v5 = [(UIViewController *)self splitViewController:columns.width];
   if ([v5 _usesPanelImpl])
   {
-    v6 = [(UIViewController *)self traitCollection];
-    v7 = [v6 userInterfaceIdiom] == 1;
+    traitCollection = [(UIViewController *)self traitCollection];
+    v7 = [traitCollection userInterfaceIdiom] == 1;
   }
 
   else
@@ -1739,19 +1739,19 @@ LABEL_27:
   return width > 1210.0 && v7;
 }
 
-- (BOOL)_allowMultipleColumnsForPossibleStates:(id)a3 containerSize:(CGSize)a4
+- (BOOL)_allowMultipleColumnsForPossibleStates:(id)states containerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  statesCopy = states;
   if ([(UIMultiColumnViewController *)self sizeMightAllowMultipleColumns:width, height])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v7;
+    v8 = statesCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -1800,23 +1800,23 @@ LABEL_15:
   return v9;
 }
 
-- (unint64_t)_columnCountForPossibleStates:(id)a3 containerSize:(CGSize)a4
+- (unint64_t)_columnCountForPossibleStates:(id)states containerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(UIViewController *)self view];
-  [v8 bounds];
+  statesCopy = states;
+  view = [(UIViewController *)self view];
+  [view bounds];
   v10 = v9;
 
-  v11 = [(UIMultiColumnViewController *)self _allowMultipleColumnsForPossibleStates:v7 containerSize:width, height];
+  height = [(UIMultiColumnViewController *)self _allowMultipleColumnsForPossibleStates:statesCopy containerSize:width, height];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(UIMultiColumnViewController *)self _possibleContentSizes];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _possibleContentSizes = [(UIMultiColumnViewController *)self _possibleContentSizes];
+  v13 = [_possibleContentSizes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1828,7 +1828,7 @@ LABEL_3:
     {
       if (*v22 != v16)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(_possibleContentSizes);
       }
 
       v18 = *(*(&v21 + 1) + 8 * v17);
@@ -1839,14 +1839,14 @@ LABEL_3:
 
       ++v15;
       [v18 CGSizeValue];
-      if (v19 >= v10 || !v11)
+      if (v19 >= v10 || !height)
       {
         break;
       }
 
       if (v14 == ++v17)
       {
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [_possibleContentSizes countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v14)
         {
           goto LABEL_3;
@@ -1865,9 +1865,9 @@ LABEL_3:
   return v15;
 }
 
-- (id)_secondColumnBarButtonItem:(int64_t)a3 createIfNecessary:(BOOL)a4
+- (id)_secondColumnBarButtonItem:(int64_t)item createIfNecessary:(BOOL)necessary
 {
-  if (a3 == 1)
+  if (item == 1)
   {
     p_hideSecondColumnBarButtonItem = &self->_hideSecondColumnBarButtonItem;
     hideSecondColumnBarButtonItem = self->_hideSecondColumnBarButtonItem;
@@ -1878,7 +1878,7 @@ LABEL_3:
 
     else
     {
-      v11 = !a4;
+      v11 = !necessary;
     }
 
     if (v11)
@@ -1887,13 +1887,13 @@ LABEL_3:
     }
 
     v12 = [UIBarButtonItem alloc];
-    v13 = [(UIMultiColumnViewController *)self _sideBarImage];
-    v10 = [(UIBarButtonItem *)v12 initWithImage:v13 style:0 target:self action:sel__hideSecondColumn_];
+    _sideBarImage = [(UIMultiColumnViewController *)self _sideBarImage];
+    v10 = [(UIBarButtonItem *)v12 initWithImage:_sideBarImage style:0 target:self action:sel__hideSecondColumn_];
 
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!item)
   {
     p_hideSecondColumnBarButtonItem = &self->_showSecondColumnBarButtonItem;
     hideSecondColumnBarButtonItem = self->_showSecondColumnBarButtonItem;
@@ -1904,7 +1904,7 @@ LABEL_3:
 
     else
     {
-      v7 = !a4;
+      v7 = !necessary;
     }
 
     if (v7)
@@ -1913,8 +1913,8 @@ LABEL_3:
     }
 
     v8 = [UIBarButtonItem alloc];
-    v9 = [(UIMultiColumnViewController *)self _sideBarImage];
-    v10 = [(UIBarButtonItem *)v8 initWithImage:v9 style:0 target:self action:sel__showSecondColumn_];
+    _sideBarImage2 = [(UIMultiColumnViewController *)self _sideBarImage];
+    v10 = [(UIBarButtonItem *)v8 initWithImage:_sideBarImage2 style:0 target:self action:sel__showSecondColumn_];
 
     [(UIBarButtonItem *)v10 _setActsAsFakeBackButton:1];
 LABEL_13:
@@ -1934,13 +1934,13 @@ LABEL_16:
   return v15;
 }
 
-- (void)_showSecondColumn:(id)a3
+- (void)_showSecondColumn:(id)column
 {
-  v4 = [(UIMultiColumnViewController *)self navControllers];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 _isTransitioning];
+  navControllers = [(UIMultiColumnViewController *)self navControllers];
+  v5 = [navControllers objectAtIndexedSubscript:0];
+  _isTransitioning = [v5 _isTransitioning];
 
-  if ((v6 & 1) == 0)
+  if ((_isTransitioning & 1) == 0)
   {
 
     [(UIMultiColumnViewController *)self requestColumnCount:2 animated:1];

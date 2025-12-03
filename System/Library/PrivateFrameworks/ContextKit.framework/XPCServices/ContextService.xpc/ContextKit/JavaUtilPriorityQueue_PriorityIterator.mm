@@ -1,5 +1,5 @@
 @interface JavaUtilPriorityQueue_PriorityIterator
-- (JavaUtilPriorityQueue_PriorityIterator)initWithJavaUtilPriorityQueue:(id)a3;
+- (JavaUtilPriorityQueue_PriorityIterator)initWithJavaUtilPriorityQueue:(id)queue;
 - (id)next;
 - (void)dealloc;
 - (void)remove;
@@ -50,9 +50,9 @@
   sub_1001B7AD8(v3, currentIndex);
 }
 
-- (JavaUtilPriorityQueue_PriorityIterator)initWithJavaUtilPriorityQueue:(id)a3
+- (JavaUtilPriorityQueue_PriorityIterator)initWithJavaUtilPriorityQueue:(id)queue
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, queue);
   self->currentIndex_ = -1;
   self->allowRemove_ = 0;
   return self;

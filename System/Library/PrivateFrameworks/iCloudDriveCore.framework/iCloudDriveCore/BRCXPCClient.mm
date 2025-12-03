@@ -1,45 +1,45 @@
 @interface BRCXPCClient
-- (BOOL)_canCreateAppLibraryWithID:(id)a3 error:(id *)a4;
-- (BOOL)_entitlementBooleanValueForKey:(id)a3;
-- (BOOL)_hasAccessToAppLibraryID:(id)a3 error:(id *)a4;
-- (BOOL)_hasPrivateIPCEntitlementForSelector:(SEL)a3 error:(id *)a4;
+- (BOOL)_canCreateAppLibraryWithID:(id)d error:(id *)error;
+- (BOOL)_entitlementBooleanValueForKey:(id)key;
+- (BOOL)_hasAccessToAppLibraryID:(id)d error:(id *)error;
+- (BOOL)_hasPrivateIPCEntitlementForSelector:(SEL)selector error:(id *)error;
 - (BOOL)_isAppLibraryProxyEntitled;
-- (BOOL)_isAppLibraryProxyWithError:(id *)a3;
+- (BOOL)_isAppLibraryProxyWithError:(id *)error;
 - (BOOL)_isAutomationEntitled;
-- (BOOL)canAccessPath:(const char *)a3 accessKind:(int64_t)a4;
-- (BOOL)canAccessPhysicalURL:(id)a3;
+- (BOOL)canAccessPath:(const char *)path accessKind:(int64_t)kind;
+- (BOOL)canAccessPhysicalURL:(id)l;
 - (BOOL)checkTCCAccess;
 - (BOOL)hasPrivateSharingInterfaceEntitlement;
 - (BOOL)isFPFSExtension;
-- (BRCXPCClient)initWithConnection:(id)a3;
+- (BRCXPCClient)initWithConnection:(id)connection;
 - (BRMangledID)defaultMangledID;
 - (NSSet)entitledAppLibraryIDs;
 - (NSString)bundleID;
 - (NSString)description;
 - (NSXPCConnection)connection;
 - (char)cloudEnabledStatus;
-- (id)_auditedURLFromPath:(id)a3;
-- (id)_entitlementValueForKey:(id)a3 ofClass:(Class)a4;
-- (id)_setupAppLibrary:(id)a3 error:(id *)a4;
-- (id)issueContainerExtensionForURL:(id)a3 error:(id *)a4;
-- (void)_auditURL:(id)a3;
-- (void)_process:(int)a3 didBecomeForeground:(BOOL)a4;
+- (id)_auditedURLFromPath:(id)path;
+- (id)_entitlementValueForKey:(id)key ofClass:(Class)class;
+- (id)_setupAppLibrary:(id)library error:(id *)error;
+- (id)issueContainerExtensionForURL:(id)l error:(id *)error;
+- (void)_auditURL:(id)l;
+- (void)_process:(int)_process didBecomeForeground:(BOOL)foreground;
 - (void)_removeAllAppLibraries;
-- (void)_setupAppLibraryAndZoneWithID:(id)a3 recreateDocumentsIfNeeded:(BOOL)a4 reply:(id)a5;
+- (void)_setupAppLibraryAndZoneWithID:(id)d recreateDocumentsIfNeeded:(BOOL)needed reply:(id)reply;
 - (void)_startMonitoringProcessIfNeeded;
-- (void)_startSharingOperationAfterAcceptation:(id)a3 client:(id)a4 item:(id)a5;
+- (void)_startSharingOperationAfterAcceptation:(id)acceptation client:(id)client item:(id)item;
 - (void)_stopMonitoringProcess;
-- (void)_waitForContainerToBeForcedIngestWithContainerID:(id)a3 containerURL:(id)a4 sandboxExtension:(id)a5 bundleVersion:(id)a6 error:(id)a7 reply:(id)a8;
-- (void)addAppLibrary:(id)a3;
-- (void)addOperation:(id)a3;
-- (void)dumpToContext:(id)a3;
+- (void)_waitForContainerToBeForcedIngestWithContainerID:(id)d containerURL:(id)l sandboxExtension:(id)extension bundleVersion:(id)version error:(id)error reply:(id)reply;
+- (void)addAppLibrary:(id)library;
+- (void)addOperation:(id)operation;
+- (void)dumpToContext:(id)context;
 - (void)invalidate;
-- (void)performBlockWithAnySession:(id)a3;
-- (void)process:(int)a3 didBecomeForeground:(BOOL)a4;
-- (void)removeAppLibrary:(id)a3;
-- (void)setPrivilegesDescriptor:(id)a3;
-- (void)setSession:(id)a3;
-- (void)setupNonSandboxedAccessForUbiquityContainers:(id)a3 forBundleID:(id)a4;
+- (void)performBlockWithAnySession:(id)session;
+- (void)process:(int)process didBecomeForeground:(BOOL)foreground;
+- (void)removeAppLibrary:(id)library;
+- (void)setPrivilegesDescriptor:(id)descriptor;
+- (void)setSession:(id)session;
+- (void)setupNonSandboxedAccessForUbiquityContainers:(id)containers forBundleID:(id)d;
 - (void)wait;
 @end
 
@@ -54,7 +54,7 @@
   {
     *(obj + 32) |= 1u;
     brc_task_tracker_cancel(obj->_tracker);
-    v2 = [(BRCXPCClient *)obj session];
+    session = [(BRCXPCClient *)obj session];
     objc_sync_exit(obj);
 
     memset(v17, 0, sizeof(v17));
@@ -74,8 +74,8 @@
 
     [(BRCXPCClient *)obj _stopMonitoringProcess];
     [(BRCXPCClient *)obj _removeAllAppLibraries];
-    v5 = [v2 notificationManager];
-    [v5 pipeDelegateInvalidated:obj];
+    notificationManager = [session notificationManager];
+    [notificationManager pipeDelegateInvalidated:obj];
 
     v6 = [BRCUserDefaults defaultsForMangledID:0];
     if ([v6 fpfsUploadV2])
@@ -83,20 +83,20 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(BRCXPCClient *)obj bundleID];
-        if ([v7 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
+        bundleID = [(BRCXPCClient *)obj bundleID];
+        if ([bundleID isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
         {
         }
 
         else
         {
-          v9 = [(BRCXPCClient *)obj bundleID];
-          v10 = [v9 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+          bundleID2 = [(BRCXPCClient *)obj bundleID];
+          v10 = [bundleID2 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
 
           if (!v10)
           {
 LABEL_14:
-            [v2 unregisterClient:{obj, obj}];
+            [session unregisterClient:{obj, obj}];
             [obja[8] cancelAllOperations];
             WeakRetained = objc_loadWeakRetained(obja + 15);
             [WeakRetained invalidate];
@@ -107,8 +107,8 @@ LABEL_14:
           }
         }
 
-        v11 = [v2 personaIdentifier];
-        v6 = [BRCUploadSyncUpRequestsManager defaultManagerWithPersonaIdentifier:v11];
+        personaIdentifier = [session personaIdentifier];
+        v6 = [BRCUploadSyncUpRequestsManager defaultManagerWithPersonaIdentifier:personaIdentifier];
 
         v12 = [MEMORY[0x277CCABB0] numberWithInt:obj->_clientPid];
         [v6 invalidateRequestsOfClient:v12];
@@ -200,29 +200,29 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
 
 - (BOOL)isFPFSExtension
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor isFPFSExtension];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isFPFSExtension = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor isFPFSExtension];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isFPFSExtension;
 }
 
 - (NSString)bundleID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor applicationIdentifier];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  applicationIdentifier = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor applicationIdentifier];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return applicationIdentifier;
 }
 
 - (NSString)description
 {
-  v3 = [(BRCXPCClient *)self session];
+  session = [(BRCXPCClient *)self session];
 
-  if (v3)
+  if (session)
   {
     v4 = &stru_2837504F0;
   }
@@ -232,50 +232,50 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
     v4 = @" (Logged out)";
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(BRCClientPrivilegesDescriptor *)v5->_clientPriviledgesDescriptor description];
-  v8 = [v7 fp_obfuscatedDotSeparatedComponents];
-  v9 = [v6 stringWithFormat:@"%@%@", v8, v4];
+  v7 = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor description];
+  fp_obfuscatedDotSeparatedComponents = [v7 fp_obfuscatedDotSeparatedComponents];
+  v9 = [v6 stringWithFormat:@"%@%@", fp_obfuscatedDotSeparatedComponents, v4];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (BOOL)_isAppLibraryProxyEntitled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor isProxyEntitled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isProxyEntitled = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor isProxyEntitled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isProxyEntitled;
 }
 
-- (void)setPrivilegesDescriptor:(id)a3
+- (void)setPrivilegesDescriptor:(id)descriptor
 {
-  objc_storeStrong(&self->_clientPriviledgesDescriptor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_clientPriviledgesDescriptor, descriptor);
+  descriptorCopy = descriptor;
   clientPriviledgesDescriptor = self->_clientPriviledgesDescriptor;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   [WeakRetained setUserInfo:clientPriviledgesDescriptor];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ((*(v6 + 32) & 1) == 0)
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*(selfCopy + 32) & 1) == 0)
   {
-    p_session = &v6->__session;
-    session = v6->__session;
-    if (session != v5)
+    p_session = &selfCopy->__session;
+    session = selfCopy->__session;
+    if (session != sessionCopy)
     {
-      [(BRCAccountSession *)session unregisterClient:v6];
-      if (!v5)
+      [(BRCAccountSession *)session unregisterClient:selfCopy];
+      if (!sessionCopy)
       {
         v10 = brc_bread_crumbs();
         v11 = brc_default_log();
@@ -285,8 +285,8 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
         }
       }
 
-      objc_storeStrong(&v6->__session, a3);
-      if (![(BRCAccountSession *)v6->__session registerClient:v6])
+      objc_storeStrong(&selfCopy->__session, session);
+      if (![(BRCAccountSession *)selfCopy->__session registerClient:selfCopy])
       {
         v9 = *p_session;
         *p_session = 0;
@@ -294,12 +294,12 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (BRCXPCClient)initWithConnection:(id)a3
+- (BRCXPCClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v24.receiver = self;
   v24.super_class = BRCXPCClient;
   v5 = [(BRCXPCClient *)&v24 init];
@@ -314,11 +314,11 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
-    objc_storeWeak(v5 + 15, v4);
-    *(v5 + 18) = [v4 processIdentifier];
-    if (v4)
+    objc_storeWeak(v5 + 15, connectionCopy);
+    *(v5 + 18) = [connectionCopy processIdentifier];
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -334,11 +334,11 @@ uint64_t __38__BRCXPCClient__removeAllAppLibraries__block_invoke(uint64_t a1)
     *(v5 + 7) = v8;
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"xpc-client-queue-%d", *(v5 + 18)];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v13 = initWithConnection__xpcWorkloop;
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(v12, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create_with_target_V2(v11, v14, v13);
+    v15 = dispatch_queue_create_with_target_V2(uTF8String, v14, v13);
 
     v16 = *(v5 + 2);
     *(v5 + 2) = v15;
@@ -369,48 +369,48 @@ uint64_t __35__BRCXPCClient_initWithConnection___block_invoke()
   [(NSOperationQueue *)operationQueue waitUntilAllOperationsAreFinished];
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 writeLineWithFormat:@" o %@", v4];
-  objc_sync_exit(v4);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [contextCopy writeLineWithFormat:@" o %@", selfCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (*(v4 + 32))
+  operationCopy = operation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (*(selfCopy + 32))
   {
-    [v12 cancel];
+    [operationCopy cancel];
   }
 
-  operationQueue = v4->_operationQueue;
+  operationQueue = selfCopy->_operationQueue;
   if (!operationQueue)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCABD8]);
-    v7 = v4->_operationQueue;
-    v4->_operationQueue = v6;
+    v7 = selfCopy->_operationQueue;
+    selfCopy->_operationQueue = v6;
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(v8, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("misc-operations", v9);
 
-    [(NSOperationQueue *)v4->_operationQueue setUnderlyingQueue:v10];
-    operationQueue = v4->_operationQueue;
+    [(NSOperationQueue *)selfCopy->_operationQueue setUnderlyingQueue:v10];
+    operationQueue = selfCopy->_operationQueue;
   }
 
-  [(NSOperationQueue *)operationQueue addOperation:v12];
-  objc_sync_exit(v4);
+  [(NSOperationQueue *)operationQueue addOperation:operationCopy];
+  objc_sync_exit(selfCopy);
 
-  v11 = [(BRCXPCClient *)v4 session];
-  [v11 addMiscOperation:v12];
+  session = [(BRCXPCClient *)selfCopy session];
+  [session addMiscOperation:operationCopy];
 }
 
-- (void)_process:(int)a3 didBecomeForeground:(BOOL)a4
+- (void)_process:(int)_process didBecomeForeground:(BOOL)foreground
 {
   foregroundBackgroundHandlingQueue = self->_foregroundBackgroundHandlingQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -418,7 +418,7 @@ uint64_t __35__BRCXPCClient_initWithConnection___block_invoke()
   v5[2] = __45__BRCXPCClient__process_didBecomeForeground___block_invoke;
   v5[3] = &unk_278500EE0;
   v5[4] = self;
-  v6 = a4;
+  foregroundCopy = foreground;
   dispatch_async_and_wait(foregroundBackgroundHandlingQueue, v5);
 }
 
@@ -498,10 +498,10 @@ void __45__BRCXPCClient__process_didBecomeForeground___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)process:(int)a3 didBecomeForeground:(BOOL)a4
+- (void)process:(int)process didBecomeForeground:(BOOL)foreground
 {
-  v4 = [(BRCXPCClient *)self session];
-  v5 = [v4 personaIdentifier];
+  session = [(BRCXPCClient *)self session];
+  personaIdentifier = [session personaIdentifier];
   BRPerformWithPersonaAndError();
 }
 
@@ -550,24 +550,24 @@ void __44__BRCXPCClient_process_didBecomeForeground___block_invoke(uint64_t a1, 
 
 - (BOOL)checkTCCAccess
 {
-  v2 = self;
-  v3 = [(BRCXPCClient *)self session];
-  LOBYTE(v2) = [(BRCXPCClient *)v2 checkTCCAccessForSession:v3];
+  selfCopy = self;
+  session = [(BRCXPCClient *)self session];
+  LOBYTE(selfCopy) = [(BRCXPCClient *)selfCopy checkTCCAccessForSession:session];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addAppLibrary:(id)a3
+- (void)addAppLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   foregroundBackgroundHandlingQueue = self->_foregroundBackgroundHandlingQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __30__BRCXPCClient_addAppLibrary___block_invoke;
   v10 = &unk_2784FF478;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async_and_wait(foregroundBackgroundHandlingQueue, &v7);
   [(BRCXPCClient *)self _startMonitoringProcessIfNeeded:v7];
 }
@@ -637,17 +637,17 @@ void __30__BRCXPCClient_addAppLibrary___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAppLibrary:(id)a3
+- (void)removeAppLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   foregroundBackgroundHandlingQueue = self->_foregroundBackgroundHandlingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__BRCXPCClient_removeAppLibrary___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async_and_wait(foregroundBackgroundHandlingQueue, v7);
 }
 
@@ -718,20 +718,20 @@ void __33__BRCXPCClient_removeAppLibrary___block_invoke(uint64_t a1)
 
 - (char)cloudEnabledStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  clientPriviledgesDescriptor = v2->_clientPriviledgesDescriptor;
-  v4 = [(BRCXPCClient *)v2 session];
-  LOBYTE(clientPriviledgesDescriptor) = [(BRCClientPrivilegesDescriptor *)clientPriviledgesDescriptor cloudEnabledStatusWithHasSession:v4 != 0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientPriviledgesDescriptor = selfCopy->_clientPriviledgesDescriptor;
+  session = [(BRCXPCClient *)selfCopy session];
+  LOBYTE(clientPriviledgesDescriptor) = [(BRCClientPrivilegesDescriptor *)clientPriviledgesDescriptor cloudEnabledStatusWithHasSession:session != 0];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return clientPriviledgesDescriptor;
 }
 
-- (BOOL)_hasAccessToAppLibraryID:(id)a3 error:(id *)a4
+- (BOOL)_hasAccessToAppLibraryID:(id)d error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   if ([(BRCXPCClient *)self _isAppLibraryProxyEntitled])
   {
     goto LABEL_2;
@@ -744,9 +744,9 @@ void __33__BRCXPCClient_removeAppLibrary___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412802;
-      v16 = v6;
+      v16 = dCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] granting access to %@ for non-sandboxed app %@%@", &v15, 0x20u);
@@ -755,10 +755,10 @@ void __33__BRCXPCClient_removeAppLibrary___block_invoke(uint64_t a1)
     goto LABEL_2;
   }
 
-  v10 = [(BRCXPCClient *)self entitledAppLibraryIDs];
-  if ([v10 count])
+  entitledAppLibraryIDs = [(BRCXPCClient *)self entitledAppLibraryIDs];
+  if ([entitledAppLibraryIDs count])
   {
-    if (!v6 || ([v6 appLibraryOrZoneName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "containsObject:", v11), v11, v12))
+    if (!dCopy || ([dCopy appLibraryOrZoneName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(entitledAppLibraryIDs, "containsObject:", v11), v11, v12))
     {
       if ([(BRCXPCClient *)self cloudEnabledStatus]== 1)
       {
@@ -770,10 +770,10 @@ LABEL_2:
     }
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:1 description:@"Not entitled to access container"];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -787,10 +787,10 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_canCreateAppLibraryWithID:(id)a3 error:(id *)a4
+- (BOOL)_canCreateAppLibraryWithID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if (([v6 isReservedMangedID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isReservedMangedID] & 1) == 0)
   {
     if ([(BRCXPCClient *)self _isAppLibraryProxyEntitled])
     {
@@ -798,11 +798,11 @@ LABEL_16:
       goto LABEL_15;
     }
 
-    v8 = [(BRCXPCClient *)self entitledAppLibraryIDs];
-    if ([v8 count])
+    entitledAppLibraryIDs = [(BRCXPCClient *)self entitledAppLibraryIDs];
+    if ([entitledAppLibraryIDs count])
     {
-      v9 = [v6 appLibraryOrZoneName];
-      if (v9 && [v8 containsObject:v9] && -[BRCXPCClient cloudEnabledStatus](self, "cloudEnabledStatus") == 1)
+      appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+      if (appLibraryOrZoneName && [entitledAppLibraryIDs containsObject:appLibraryOrZoneName] && -[BRCXPCClient cloudEnabledStatus](self, "cloudEnabledStatus") == 1)
       {
 
         v7 = 1;
@@ -812,10 +812,10 @@ LABEL_14:
       }
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:1 description:@"Not entitled to create container"];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -832,7 +832,7 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)_isAppLibraryProxyWithError:(id *)a3
+- (BOOL)_isAppLibraryProxyWithError:(id *)error
 {
   if ([(BRCXPCClient *)self _isAppLibraryProxyEntitled]|| ![(BRCXPCClient *)self isSandboxed]&& [(BRCXPCClient *)self checkTCCAccess])
   {
@@ -846,7 +846,7 @@ LABEL_15:
     [BRCXPCClient _isAppLibraryProxyWithError:];
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
@@ -854,11 +854,11 @@ LABEL_15:
   v8 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:1 description:@"Not a container proxy"];
   v9 = v8;
   result = 0;
-  *a3 = v8;
+  *error = v8;
   return result;
 }
 
-- (BOOL)_hasPrivateIPCEntitlementForSelector:(SEL)a3 error:(id *)a4
+- (BOOL)_hasPrivateIPCEntitlementForSelector:(SEL)selector error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   if ([(BRCXPCClient *)self _isAutomationEntitled])
@@ -868,7 +868,7 @@ LABEL_15:
 
   else
   {
-    v8 = NSStringFromSelector(a3);
+    v8 = NSStringFromSelector(selector);
     v9 = [(BRCXPCClient *)self _entitlementValueForKey:*MEMORY[0x277CFAC88] ofClass:objc_opt_class()];
     v7 = [v9 containsObject:v8];
     if ((v7 & 1) == 0)
@@ -878,7 +878,7 @@ LABEL_15:
       if (os_log_type_enabled(v11, 0x90u))
       {
         *buf = 138412802;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
         v17 = v8;
         v18 = 2112;
@@ -886,9 +886,9 @@ LABEL_15:
         _os_log_error_impl(&dword_223E7A000, v11, 0x90u, "[ERROR] %@: is trying to call %@, but has no access%@", buf, 0x20u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:1 description:{@"Not entitled to access: %@", v8}];
+        *error = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:1 description:{@"Not entitled to access: %@", v8}];
       }
     }
   }
@@ -897,11 +897,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)_entitlementValueForKey:(id)a3 ofClass:(Class)a4
+- (id)_entitlementValueForKey:(id)key ofClass:(Class)class
 {
-  v5 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v7 = [WeakRetained valueForEntitlement:v5];
+  v7 = [WeakRetained valueForEntitlement:keyCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -916,25 +916,25 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)_entitlementBooleanValueForKey:(id)a3
+- (BOOL)_entitlementBooleanValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BRCXPCClient *)self _entitlementValueForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(BRCXPCClient *)self _entitlementValueForKey:keyCopy ofClass:objc_opt_class()];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (BRMangledID)defaultMangledID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor defaultAppLibraryID];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultAppLibraryID = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor defaultAppLibraryID];
+  if (defaultAppLibraryID)
   {
     v4 = objc_alloc(MEMORY[0x277CFAE60]);
-    v5 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor defaultAppLibraryID];
-    v6 = [v4 initWithAppLibraryName:v5];
+    defaultAppLibraryID2 = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor defaultAppLibraryID];
+    v6 = [v4 initWithAppLibraryName:defaultAppLibraryID2];
   }
 
   else
@@ -942,68 +942,68 @@ LABEL_15:
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSSet)entitledAppLibraryIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor appLibraryIDs];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appLibraryIDs = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor appLibraryIDs];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return appLibraryIDs;
 }
 
 - (BOOL)_isAutomationEntitled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor isAutomationEntitled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isAutomationEntitled = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor isAutomationEntitled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isAutomationEntitled;
 }
 
 - (BOOL)hasPrivateSharingInterfaceEntitlement
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRCClientPrivilegesDescriptor *)v2->_clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isSharingPrivateInterfaceEntitled = [(BRCClientPrivilegesDescriptor *)selfCopy->_clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isSharingPrivateInterfaceEntitled;
 }
 
-- (void)_auditURL:(id)a3
+- (void)_auditURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  if (![v5 br_isSideFaultName])
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  if (![lastPathComponent br_isSideFaultName])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v6 = [v4 checkResourceIsReachableAndReturnError:0];
+  v6 = [lCopy checkResourceIsReachableAndReturnError:0];
 
   if ((v6 & 1) == 0)
   {
-    v5 = brc_bread_crumbs();
+    lastPathComponent = brc_bread_crumbs();
     v7 = brc_default_log();
     if (os_log_type_enabled(v7, 0x90u))
     {
-      v9 = [v4 path];
+      path = [lCopy path];
       v10 = 138412802;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v9;
+      v13 = path;
       v14 = 2112;
-      v15 = v5;
+      v15 = lastPathComponent;
       _os_log_error_impl(&dword_223E7A000, v7, 0x90u, "[ERROR] Client %@ gave us a non-existing fault URL path %@%@", &v10, 0x20u);
     }
 
@@ -1015,25 +1015,25 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_auditedURLFromPath:(id)a3
+- (id)_auditedURLFromPath:(id)path
 {
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
   [(BRCXPCClient *)self _auditURL:v4];
 
   return v4;
 }
 
-- (BOOL)canAccessPath:(const char *)a3 accessKind:(int64_t)a4
+- (BOOL)canAccessPath:(const char *)path accessKind:(int64_t)kind
 {
   v7 = *MEMORY[0x277D861D8];
-  if (a4 <= 2)
+  if (kind <= 2)
   {
-    v8 = off_278507728[a4];
+    v8 = off_278507728[kind];
   }
 
   auditToken = self->auditToken;
   v9 = sandbox_check_by_audit_token();
-  if (a4 || v9)
+  if (kind || v9)
   {
     if (!v9)
     {
@@ -1056,25 +1056,25 @@ LABEL_6:
   v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v10)
   {
-    [BRCXPCClient canAccessPath:a3 accessKind:?];
+    [BRCXPCClient canAccessPath:path accessKind:?];
     LOBYTE(v10) = 0;
   }
 
   return v10;
 }
 
-- (void)performBlockWithAnySession:(id)a3
+- (void)performBlockWithAnySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__52;
   v14 = __Block_byref_object_dispose__52;
-  v15 = [(BRCXPCClient *)self session];
+  session = [(BRCXPCClient *)self session];
   if (v11[5])
   {
-    v4[2](v4);
+    sessionCopy[2](sessionCopy);
   }
 
   else
@@ -1085,7 +1085,7 @@ LABEL_6:
     v7[2] = __43__BRCXPCClient_performBlockWithAnySession___block_invoke;
     v7[3] = &unk_278506E08;
     v9 = &v10;
-    v6 = v4;
+    v6 = sessionCopy;
     v8 = v6;
     [v5 enumerateAccountHandlers:v7];
 
@@ -1121,26 +1121,26 @@ void __43__BRCXPCClient_performBlockWithAnySession___block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)canAccessPhysicalURL:(id)a3
+- (BOOL)canAccessPhysicalURL:(id)l
 {
-  v4 = [a3 path];
-  LOBYTE(self) = -[BRCXPCClient canAccessPath:accessKind:](self, "canAccessPath:accessKind:", [v4 fileSystemRepresentation], 0);
+  path = [l path];
+  LOBYTE(self) = -[BRCXPCClient canAccessPath:accessKind:](self, "canAccessPath:accessKind:", [path fileSystemRepresentation], 0);
 
   return self;
 }
 
-- (id)issueContainerExtensionForURL:(id)a3 error:(id *)a4
+- (id)issueContainerExtensionForURL:(id)l error:(id *)error
 {
   v5 = *MEMORY[0x277CFABF0];
-  v6 = a3;
-  v7 = [v6 brc_issueSandboxExtensionOfClass:objc_msgSend(v5 error:{"UTF8String"), a4}];
+  lCopy = l;
+  v7 = [lCopy brc_issueSandboxExtensionOfClass:objc_msgSend(v5 error:{"UTF8String"), error}];
 
   return v7;
 }
 
-- (id)_setupAppLibrary:(id)a3 error:(id *)a4
+- (id)_setupAppLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1153,15 +1153,15 @@ void __43__BRCXPCClient_performBlockWithAnySession___block_invoke(uint64_t a1, v
   v12[2] = __39__BRCXPCClient__setupAppLibrary_error___block_invoke;
   v12[3] = &unk_278506E30;
   v12[4] = self;
-  v8 = v6;
+  v8 = libraryCopy;
   v13 = v8;
   v14 = &v16;
-  v15 = a4;
+  errorCopy = error;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95;
   v11[3] = &__block_descriptor_40_e5_v8__0l;
-  v11[4] = a4;
+  v11[4] = error;
   brc_task_tracker_sync(tracker, v12, v11);
   v9 = v17[5];
 
@@ -1281,16 +1281,16 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_waitForContainerToBeForcedIngestWithContainerID:(id)a3 containerURL:(id)a4 sandboxExtension:(id)a5 bundleVersion:(id)a6 error:(id)a7 reply:(id)a8
+- (void)_waitForContainerToBeForcedIngestWithContainerID:(id)d containerURL:(id)l sandboxExtension:(id)extension bundleVersion:(id)version error:(id)error reply:(id)reply
 {
   v53 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v15)
+  dCopy = d;
+  lCopy = l;
+  extensionCopy = extension;
+  versionCopy = version;
+  errorCopy = error;
+  replyCopy = reply;
+  if (lCopy)
   {
     v20 = brc_bread_crumbs();
     v21 = brc_default_log();
@@ -1299,8 +1299,8 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
       [BRCXPCClient _waitForContainerToBeForcedIngestWithContainerID:containerURL:sandboxExtension:bundleVersion:error:reply:];
     }
 
-    v22 = [(BRCXPCClient *)self session];
-    v23 = [v22 appLibraryByID:v14];
+    session = [(BRCXPCClient *)self session];
+    v23 = [session appLibraryByID:dCopy];
 
     if (v23)
     {
@@ -1309,11 +1309,11 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
       v35[2] = __121__BRCXPCClient__waitForContainerToBeForcedIngestWithContainerID_containerURL_sandboxExtension_bundleVersion_error_reply___block_invoke;
       v35[3] = &unk_278504438;
       v35[4] = self;
-      v36 = v15;
-      v37 = v16;
-      v38 = v17;
-      v39 = v18;
-      v40 = v19;
+      v36 = lCopy;
+      v37 = extensionCopy;
+      v38 = versionCopy;
+      v39 = errorCopy;
+      v40 = replyCopy;
       [v23 waitForRootIngestionWithCompletion:v35];
     }
 
@@ -1326,15 +1326,15 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
         [BRCXPCClient _waitForContainerToBeForcedIngestWithContainerID:containerURL:sandboxExtension:bundleVersion:error:reply:];
       }
 
-      v34 = v16;
+      v34 = extensionCopy;
 
       v29 = brc_bread_crumbs();
       v30 = brc_default_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v14];
+        v31 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
         *buf = 138413570;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 2112;
         v44 = 0;
         v45 = 2112;
@@ -1348,10 +1348,10 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
         _os_log_impl(&dword_223E7A000, v30, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@, %@)%@", buf, 0x3Eu);
       }
 
-      v32 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v14];
-      (*(v19 + 2))(v19, 0, 0, 0, v32);
+      v32 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v32);
 
-      v16 = v34;
+      extensionCopy = v34;
     }
   }
 
@@ -1361,9 +1361,9 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
     v25 = brc_default_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v14];
+      v26 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
       *buf = 138413570;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2112;
       v44 = 0;
       v45 = 2112;
@@ -1377,8 +1377,8 @@ void __39__BRCXPCClient__setupAppLibrary_error___block_invoke_95(uint64_t a1)
       _os_log_impl(&dword_223E7A000, v25, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@, %@)%@", buf, 0x3Eu);
     }
 
-    v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v14];
-    (*(v19 + 2))(v19, 0, 0, 0, v23);
+    v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v23);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -1420,31 +1420,31 @@ uint64_t __121__BRCXPCClient__waitForContainerToBeForcedIngestWithContainerID_co
   return result;
 }
 
-- (void)_setupAppLibraryAndZoneWithID:(id)a3 recreateDocumentsIfNeeded:(BOOL)a4 reply:(id)a5
+- (void)_setupAppLibraryAndZoneWithID:(id)d recreateDocumentsIfNeeded:(BOOL)needed reply:(id)reply
 {
-  v6 = a4;
+  neededCopy = needed;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   location = 0;
-  v9 = a5;
-  v10 = [(BRCXPCClient *)self _setupAppLibrary:v8 error:&location];
+  replyCopy = reply;
+  v10 = [(BRCXPCClient *)self _setupAppLibrary:dCopy error:&location];
   if (v10)
   {
-    if (v6)
+    if (neededCopy)
     {
-      v11 = [(BRCXPCClient *)self session];
-      v12 = [v11 clientTruthWorkloop];
+      session = [(BRCXPCClient *)self session];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __78__BRCXPCClient__setupAppLibraryAndZoneWithID_recreateDocumentsIfNeeded_reply___block_invoke;
       block[3] = &unk_2784FF478;
       block[4] = self;
       v26 = v10;
-      dispatch_async_and_wait(v12, block);
+      dispatch_async_and_wait(clientTruthWorkloop, block);
     }
 
-    v13 = [v10 url];
-    if ([(BRCXPCClient *)self canAccessPhysicalURL:v13])
+    brc_wrappedError3 = [v10 url];
+    if ([(BRCXPCClient *)self canAccessPhysicalURL:brc_wrappedError3])
     {
       v14 = 0;
     }
@@ -1452,25 +1452,25 @@ uint64_t __121__BRCXPCClient__waitForContainerToBeForcedIngestWithContainerID_co
     else
     {
       obj = location;
-      v14 = [(BRCXPCClient *)self issueContainerExtensionForURL:v13 error:&obj];
+      v14 = [(BRCXPCClient *)self issueContainerExtensionForURL:brc_wrappedError3 error:&obj];
       objc_storeStrong(&location, obj);
       if (!v14)
       {
 
-        v13 = 0;
+        brc_wrappedError3 = 0;
       }
     }
 
-    v18 = [v10 containerMetadata];
-    v19 = [(BRCXPCClient *)self bundleID];
-    v20 = [v18 versionNumberForBundleIdentifier:v19];
+    containerMetadata = [v10 containerMetadata];
+    bundleID = [(BRCXPCClient *)self bundleID];
+    v20 = [containerMetadata versionNumberForBundleIdentifier:bundleID];
 
     [(BRCXPCClient *)self addAppLibrary:v10];
-    v21 = [v8 appLibraryOrZoneName];
-    v22 = [location brc_wrappedError];
-    [(BRCXPCClient *)self _waitForContainerToBeForcedIngestWithContainerID:v21 containerURL:v13 sandboxExtension:v14 bundleVersion:v20 error:v22 reply:v9];
+    appLibraryOrZoneName = [dCopy appLibraryOrZoneName];
+    brc_wrappedError = [location brc_wrappedError];
+    [(BRCXPCClient *)self _waitForContainerToBeForcedIngestWithContainerID:appLibraryOrZoneName containerURL:brc_wrappedError3 sandboxExtension:v14 bundleVersion:v20 error:brc_wrappedError reply:replyCopy];
 
-    v9 = v14;
+    replyCopy = v14;
   }
 
   else
@@ -1479,9 +1479,9 @@ uint64_t __121__BRCXPCClient__waitForContainerToBeForcedIngestWithContainerID_co
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [location brc_wrappedError];
+      brc_wrappedError2 = [location brc_wrappedError];
       *buf = 138413570;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
       v31 = 0;
       v32 = 2112;
@@ -1489,14 +1489,14 @@ uint64_t __121__BRCXPCClient__waitForContainerToBeForcedIngestWithContainerID_co
       v34 = 2112;
       v35 = 0;
       v36 = 2112;
-      v37 = v17;
+      v37 = brc_wrappedError2;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@, %@)%@", buf, 0x3Eu);
     }
 
-    v13 = [location brc_wrappedError];
-    (*(v9 + 2))(v9, 0, 0, 0, v13);
+    brc_wrappedError3 = [location brc_wrappedError];
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, brc_wrappedError3);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1514,31 +1514,31 @@ void __78__BRCXPCClient__setupAppLibraryAndZoneWithID_recreateDocumentsIfNeeded_
   [v3 performWithFlags:4 action:v4];
 }
 
-- (void)setupNonSandboxedAccessForUbiquityContainers:(id)a3 forBundleID:(id)a4
+- (void)setupNonSandboxedAccessForUbiquityContainers:(id)containers forBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  containersCopy = containers;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [BRCClientPrivilegesDescriptor alloc];
-  v10 = *&v8->auditToken.val[4];
-  *v15 = *v8->auditToken.val;
+  v10 = *&selfCopy->auditToken.val[4];
+  *v15 = *selfCopy->auditToken.val;
   *&v15[16] = v10;
-  v11 = [(BRCClientPrivilegesDescriptor *)v9 initWithNonSandboxedAppWithAppLibraryIDs:v6 bundleID:v7 auditToken:v15];
-  [(BRCXPCClient *)v8 setPrivilegesDescriptor:v11];
+  v11 = [(BRCClientPrivilegesDescriptor *)v9 initWithNonSandboxedAppWithAppLibraryIDs:containersCopy bundleID:dCopy auditToken:v15];
+  [(BRCXPCClient *)selfCopy setPrivilegesDescriptor:v11];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *v15 = 138413058;
-    *&v15[4] = v8;
+    *&v15[4] = selfCopy;
     *&v15[12] = 2112;
-    *&v15[14] = v6;
+    *&v15[14] = containersCopy;
     *&v15[22] = 2112;
-    *&v15[24] = v7;
+    *&v15[24] = dCopy;
     v16 = 2112;
     v17 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: unsandboxed app is now using %@ as %@%@", v15, 0x2Au);
@@ -1547,26 +1547,26 @@ void __78__BRCXPCClient__setupAppLibraryAndZoneWithID_recreateDocumentsIfNeeded_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSharingOperationAfterAcceptation:(id)a3 client:(id)a4 item:(id)a5
+- (void)_startSharingOperationAfterAcceptation:(id)acceptation client:(id)client item:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  [v8 setRemoteClientProxy:a4];
-  v10 = [v9 clientZone];
-  if ([v10 isSharedZone])
+  acceptationCopy = acceptation;
+  itemCopy = item;
+  [acceptationCopy setRemoteClientProxy:client];
+  clientZone = [itemCopy clientZone];
+  if ([clientZone isSharedZone])
   {
-    v11 = [v9 clientZone];
-    v12 = [v11 asSharedClientZone];
+    clientZone2 = [itemCopy clientZone];
+    asSharedClientZone = [clientZone2 asSharedClientZone];
   }
 
   else
   {
-    v12 = 0;
+    asSharedClientZone = 0;
   }
 
-  v13 = [v9 itemID];
-  v14 = [v12 shareAcceptOperationForItemID:v13];
+  itemID = [itemCopy itemID];
+  v14 = [asSharedClientZone shareAcceptOperationForItemID:itemID];
 
   if (v14)
   {
@@ -1577,19 +1577,19 @@ void __78__BRCXPCClient__setupAppLibraryAndZoneWithID_recreateDocumentsIfNeeded_
       v19 = 138412802;
       v20 = v14;
       v21 = 2112;
-      v22 = v8;
+      v22 = acceptationCopy;
       v23 = 2112;
       v24 = v15;
       _os_log_debug_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] add dependency %@ for operation %@%@", &v19, 0x20u);
     }
 
-    [v8 addDependency:v14];
+    [acceptationCopy addDependency:v14];
   }
 
-  v17 = [(BRCXPCClient *)self session];
-  [v17 addMiscOperation:v8];
+  session = [(BRCXPCClient *)self session];
+  [session addMiscOperation:acceptationCopy];
 
-  [v8 schedule];
+  [acceptationCopy schedule];
   v18 = *MEMORY[0x277D85DE8];
 }
 

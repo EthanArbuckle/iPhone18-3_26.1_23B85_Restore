@@ -1,10 +1,10 @@
 @interface SKUISwooshViewController
-- (CGRect)frameForItemAtIndex:(int64_t)a3;
+- (CGRect)frameForItemAtIndex:(int64_t)index;
 - (SKUISwooshViewControllerDelegate)delegate;
 - (id)indexPathsForVisibleItems;
-- (id)popImageViewForItemAtIndex:(int64_t)a3;
+- (id)popImageViewForItemAtIndex:(int64_t)index;
 - (void)deselectAllItems;
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4;
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index;
 - (void)unhideImages;
 @end
 
@@ -22,7 +22,7 @@
   }
 }
 
-- (CGRect)frameForItemAtIndex:(int64_t)a3
+- (CGRect)frameForItemAtIndex:(int64_t)index
 {
   if (os_variant_has_internal_content())
   {
@@ -64,7 +64,7 @@
   return 0;
 }
 
-- (id)popImageViewForItemAtIndex:(int64_t)a3
+- (id)popImageViewForItemAtIndex:(int64_t)index
 {
   if (os_variant_has_internal_content())
   {
@@ -81,7 +81,7 @@
   return 0;
 }
 
-- (void)setImage:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)setImage:(id)image forItemAtIndex:(int64_t)index
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

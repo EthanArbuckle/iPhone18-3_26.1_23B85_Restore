@@ -1,13 +1,13 @@
 @interface CNFetchRequest
-- (void)acceptVisitor:(id)a3;
+- (void)acceptVisitor:(id)visitor;
 @end
 
 @implementation CNFetchRequest
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = self;
+  visitorCopy = visitor;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }

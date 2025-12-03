@@ -1,27 +1,27 @@
 @interface SUUIVideoImageDataConsumer
 - (CGSize)landscapeSize;
 - (CGSize)portraitSize;
-- (id)imageForColor:(id)a3 orientation:(unint64_t)a4;
-- (id)imageForImage:(id)a3;
+- (id)imageForColor:(id)color orientation:(unint64_t)orientation;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SUUIVideoImageDataConsumer
 
-- (id)imageForColor:(id)a3 orientation:(unint64_t)a4
+- (id)imageForColor:(id)color orientation:(unint64_t)orientation
 {
-  v6 = a3;
-  if (!v6)
+  colorCopy = color;
+  if (!colorCopy)
   {
     colorScheme = self->_colorScheme;
     v22 = 0;
     SUUIIconColorsForColorScheme(colorScheme, &v22, 0, 0);
-    v6 = v22;
+    colorCopy = v22;
   }
 
   v8 = *MEMORY[0x277CBF3A0];
   v9 = *(MEMORY[0x277CBF3A0] + 8);
   v10 = &OBJC_IVAR___SUUIVideoImageDataConsumer__portraitSize;
-  if (a4 == 2)
+  if (orientation == 2)
   {
     v10 = &OBJC_IVAR___SUUIVideoImageDataConsumer__landscapeSize;
   }
@@ -30,14 +30,14 @@
   v13 = *v11;
   v12 = v11[1];
   v14 = self->_backgroundColor != 0;
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v17 = v16;
   v24.width = v13;
   v24.height = v12;
   UIGraphicsBeginImageContextWithOptions(v24, v14, v17);
 
-  [v6 set];
+  [colorCopy set];
   v25.origin.x = v8;
   v25.origin.y = v9;
   v25.size.width = v13;
@@ -54,10 +54,10 @@
   return v20;
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v5 > v6;
   v8 = 2;
   if (v5 <= v6)
@@ -68,13 +68,13 @@
   if ((v8 & self->_allowedOrientations) == 0)
   {
     v9 = objc_alloc(MEMORY[0x277D755B8]);
-    v10 = [v4 CGImage];
-    [v4 scale];
-    v11 = [v9 initWithCGImage:v10 scale:2 orientation:?];
+    cGImage = [imageCopy CGImage];
+    [imageCopy scale];
+    v11 = [v9 initWithCGImage:cGImage scale:2 orientation:?];
 
     [v11 size];
     v7 = self->_allowedOrientations == 2;
-    v4 = v11;
+    imageCopy = v11;
   }
 
   if (v7)
@@ -93,7 +93,7 @@
   v16 = v6 * (v13 / v5);
   v17 = ceilf(v16);
   v18 = self->_backgroundColor != 0;
-  [v4 scale];
+  [imageCopy scale];
   v20 = v19;
   v27.width = v13;
   v27.height = v17;
@@ -109,7 +109,7 @@
     UIRectFill(v28);
   }
 
-  [v4 drawInRect:{v14, v15, v13, v17}];
+  [imageCopy drawInRect:{v14, v15, v13, v17}];
   v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
   [v22 set];
 

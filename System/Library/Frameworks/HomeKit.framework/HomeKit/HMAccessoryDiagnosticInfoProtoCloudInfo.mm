@@ -1,31 +1,31 @@
 @interface HMAccessoryDiagnosticInfoProtoCloudInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCloudState:(id)a3;
-- (int)StringAsOctagonState:(id)a3;
+- (int)StringAsCloudState:(id)state;
+- (int)StringAsOctagonState:(id)state;
 - (int)cloudState;
 - (int)octagonState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFirstCloudImportComplete:(BOOL)a3;
-- (void)setHasOctagonState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFirstCloudImportComplete:(BOOL)complete;
+- (void)setHasOctagonState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoCloudInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_cloudState = *(v4 + 2);
+    self->_cloudState = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -38,17 +38,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 2) == 0)
+  else if ((*(fromCopy + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_octagonState = *(v4 + 3);
+  self->_octagonState = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 20) & 4) != 0)
+  if ((*(fromCopy + 20) & 4) != 0)
   {
 LABEL_4:
-    self->_firstCloudImportComplete = *(v4 + 16);
+    self->_firstCloudImportComplete = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
@@ -95,44 +95,44 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_cloudState != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_cloudState != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_octagonState != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_octagonState != *(equalCopy + 3))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_14;
   }
 
-  v5 = (*(v4 + 20) & 4) == 0;
+  v5 = (*(equalCopy + 20) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0)
+    if ((*(equalCopy + 20) & 4) == 0)
     {
 LABEL_14:
       v5 = 0;
@@ -141,13 +141,13 @@ LABEL_14:
 
     if (self->_firstCloudImportComplete)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_14;
     }
@@ -160,9 +160,9 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -199,14 +199,14 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_cloudState;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_cloudState;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -225,28 +225,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_octagonState;
-  *(v4 + 20) |= 2u;
+  toCopy[3] = self->_octagonState;
+  *(toCopy + 20) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 16) = self->_firstCloudImportComplete;
-    *(v4 + 20) |= 4u;
+    *(toCopy + 16) = self->_firstCloudImportComplete;
+    *(toCopy + 20) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     cloudState = self->_cloudState;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -267,13 +267,13 @@ LABEL_3:
 
   octagonState = self->_octagonState;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     firstCloudImportComplete = self->_firstCloudImportComplete;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
@@ -281,7 +281,7 @@ LABEL_5:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -304,7 +304,7 @@ LABEL_5:
       v8 = @"Unknown";
     }
 
-    [v3 setObject:v8 forKey:@"cloudState"];
+    [dictionary setObject:v8 forKey:@"cloudState"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -343,7 +343,7 @@ LABEL_3:
     v10 = @"Unknown";
   }
 
-  [v3 setObject:v10 forKey:@"octagonState"];
+  [dictionary setObject:v10 forKey:@"octagonState"];
 
   if ((*&self->_has & 4) == 0)
   {
@@ -352,11 +352,11 @@ LABEL_3:
 
 LABEL_4:
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_firstCloudImportComplete];
-  [v3 setObject:v5 forKey:@"firstCloudImportComplete"];
+  [dictionary setObject:v5 forKey:@"firstCloudImportComplete"];
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -365,15 +365,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoCloudInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoCloudInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasFirstCloudImportComplete:(BOOL)a3
+- (void)setHasFirstCloudImportComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 4;
   }
@@ -386,25 +386,25 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsOctagonState:(id)a3
+- (int)StringAsOctagonState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [stateCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasOctagonState:(BOOL)a3
+- (void)setHasOctagonState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -430,17 +430,17 @@ LABEL_5:
   }
 }
 
-- (int)StringAsCloudState:(id)a3
+- (int)StringAsCloudState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [stateCopy isEqualToString:@"Good"];
   }
 
   return v4;

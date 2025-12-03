@@ -2,10 +2,10 @@
 - (ASAuthorizationPlatformPublicKeyCredentialAssertionRequest)createCredentialAssertionRequestWithChallenge:(NSData *)challenge;
 - (ASAuthorizationPlatformPublicKeyCredentialProvider)initWithRelyingPartyIdentifier:(NSString *)relyingPartyIdentifier;
 - (ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest)createCredentialRegistrationRequestWithChallenge:(NSData *)challenge name:(NSString *)name userID:(NSData *)userID;
-- (id)createCredentialAssertionRequestWithClientData:(id)a3;
-- (id)createCredentialRegistrationRequestWithChallenge:(id)a3 name:(id)a4 userID:(id)a5 requestStyle:(int64_t)a6;
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 name:(id)a4 userID:(id)a5;
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 name:(id)a4 userID:(id)a5 requestStyle:(int64_t)a6;
+- (id)createCredentialAssertionRequestWithClientData:(id)data;
+- (id)createCredentialRegistrationRequestWithChallenge:(id)challenge name:(id)name userID:(id)d requestStyle:(int64_t)style;
+- (id)createCredentialRegistrationRequestWithClientData:(id)data name:(id)name userID:(id)d;
+- (id)createCredentialRegistrationRequestWithClientData:(id)data name:(id)name userID:(id)d requestStyle:(int64_t)style;
 @end
 
 @implementation ASAuthorizationPlatformPublicKeyCredentialProvider
@@ -46,40 +46,40 @@
   return v11;
 }
 
-- (id)createCredentialAssertionRequestWithClientData:(id)a3
+- (id)createCredentialAssertionRequestWithClientData:(id)data
 {
-  v4 = a3;
-  v5 = [[ASAuthorizationPlatformPublicKeyCredentialAssertionRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 clientData:v4];
+  dataCopy = data;
+  v5 = [[ASAuthorizationPlatformPublicKeyCredentialAssertionRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 clientData:dataCopy];
 
   return v5;
 }
 
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 name:(id)a4 userID:(id)a5
+- (id)createCredentialRegistrationRequestWithClientData:(id)data name:(id)name userID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 name:v9 userID:v8 clientData:v10 requestStyle:0];
+  dCopy = d;
+  nameCopy = name;
+  dataCopy = data;
+  v11 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 name:nameCopy userID:dCopy clientData:dataCopy requestStyle:0];
 
   return v11;
 }
 
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 name:(id)a4 userID:(id)a5 requestStyle:(int64_t)a6
+- (id)createCredentialRegistrationRequestWithClientData:(id)data name:(id)name userID:(id)d requestStyle:(int64_t)style
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 name:v11 userID:v10 clientData:v12 requestStyle:a6];
+  dCopy = d;
+  nameCopy = name;
+  dataCopy = data;
+  v13 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 name:nameCopy userID:dCopy clientData:dataCopy requestStyle:style];
 
   return v13;
 }
 
-- (id)createCredentialRegistrationRequestWithChallenge:(id)a3 name:(id)a4 userID:(id)a5 requestStyle:(int64_t)a6
+- (id)createCredentialRegistrationRequestWithChallenge:(id)challenge name:(id)name userID:(id)d requestStyle:(int64_t)style
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:v12 name:v11 userID:v10 clientData:0 requestStyle:a6];
+  dCopy = d;
+  nameCopy = name;
+  challengeCopy = challenge;
+  v13 = [[ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:challengeCopy name:nameCopy userID:dCopy clientData:0 requestStyle:style];
 
   return v13;
 }

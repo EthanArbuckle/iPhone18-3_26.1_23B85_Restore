@@ -2,9 +2,9 @@
 - (UIView)view;
 - (_UIWindowSceneDragInteractionImpl_iOS)init;
 - (id)_makeDraggingPanGestureRecognizer;
-- (void)_didRecognizePanGesture:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_didRecognizePanGesture:(id)gesture;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIWindowSceneDragInteractionImpl_iOS
@@ -26,14 +26,14 @@
 
     [(_UIDoubleTapInteraction *)v2->_doubleTapInteraction setIgnoresUIControls:1];
     [(_UIDoubleTapInteraction *)v2->_doubleTapInteraction setNeverRecognizeSimultaneouslyWithOtherGestures:1];
-    v7 = [(_UIWindowSceneDragInteractionImpl_iOS *)v2 _makeDraggingPanGestureRecognizer];
+    _makeDraggingPanGestureRecognizer = [(_UIWindowSceneDragInteractionImpl_iOS *)v2 _makeDraggingPanGestureRecognizer];
     directTouchPanGestureRecognizer = v2->_directTouchPanGestureRecognizer;
-    v2->_directTouchPanGestureRecognizer = v7;
+    v2->_directTouchPanGestureRecognizer = _makeDraggingPanGestureRecognizer;
 
     [(_UIClientToHostRelationshipGestureInteraction *)v2->_clientRelationshipInteraction addGestureRecognizer:v2->_directTouchPanGestureRecognizer];
-    v9 = [(_UIWindowSceneDragInteractionImpl_iOS *)v2 _makeDraggingPanGestureRecognizer];
+    _makeDraggingPanGestureRecognizer2 = [(_UIWindowSceneDragInteractionImpl_iOS *)v2 _makeDraggingPanGestureRecognizer];
     pointerTouchPanGestureRecognizer = v2->_pointerTouchPanGestureRecognizer;
-    v2->_pointerTouchPanGestureRecognizer = v9;
+    v2->_pointerTouchPanGestureRecognizer = _makeDraggingPanGestureRecognizer2;
 
     [(UIGestureRecognizer *)v2->_pointerTouchPanGestureRecognizer setAllowedTouchTypes:&unk_1EFE2BD58];
     [(UIPanGestureRecognizer *)v2->_pointerTouchPanGestureRecognizer _setHysteresis:3.0];
@@ -57,11 +57,11 @@
   return v2;
 }
 
-- (void)_didRecognizePanGesture:(id)a3
+- (void)_didRecognizePanGesture:(id)gesture
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIWindowSceneDrag", &_MergedGlobals_1069);
     if (*CategoryCachedImpl)
@@ -70,7 +70,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = v7;
-        v9 = [v4 description];
+        v9 = [gestureCopy description];
         v13 = 138412290;
         v14 = v9;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Recognized window drag pan gesture in app: %@", &v13, 0xCu);
@@ -80,7 +80,7 @@
     [(_UIRelationshipGestureRecognizer *)self->_failureRelationshipGestureRecognizer _succeed];
   }
 
-  else if ([v4 state] == 5 || objc_msgSend(v4, "state") == 4)
+  else if ([gestureCopy state] == 5 || objc_msgSend(gestureCopy, "state") == 4)
   {
     v6 = __UILogGetCategoryCachedImpl("UIWindowSceneDrag", &qword_1ED49DAC0);
     if (*v6)
@@ -89,7 +89,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = v10;
-        v12 = [v4 description];
+        v12 = [gestureCopy description];
         v13 = 138412290;
         v14 = v12;
         _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Window drag pan gesture failed in app: %@", &v13, 0xCu);
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = objc_storeWeak(&self->_view, v4);
-  [v4 addInteraction:self->_clientRelationshipInteraction];
+  viewCopy = view;
+  v5 = objc_storeWeak(&self->_view, viewCopy);
+  [viewCopy addInteraction:self->_clientRelationshipInteraction];
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained addInteraction:self->_doubleTapInteraction];
@@ -130,7 +130,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained removeInteraction:self->_clientRelationshipInteraction];

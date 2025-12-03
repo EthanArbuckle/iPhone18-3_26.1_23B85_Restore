@@ -1,15 +1,15 @@
 @interface PGGraphTripFeatureEdge
 + (id)filter;
-- (id)initFromHighlightGroupNode:(id)a3 toFeatureNode:(id)a4;
+- (id)initFromHighlightGroupNode:(id)node toFeatureNode:(id)featureNode;
 @end
 
 @implementation PGGraphTripFeatureEdge
 
-- (id)initFromHighlightGroupNode:(id)a3 toFeatureNode:(id)a4
+- (id)initFromHighlightGroupNode:(id)node toFeatureNode:(id)featureNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphTripFeatureEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:featureNode];
 }
 
 + (id)filter

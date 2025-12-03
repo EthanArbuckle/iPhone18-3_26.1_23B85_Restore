@@ -1,7 +1,7 @@
 @interface BLStorage
 + (id)sharedInstance;
 - (BLStorage)init;
-- (void)requestFreeSpace:(unint64_t)a3 atPath:(id)a4 withOptions:(id)a5 completionBlock:(id)a6;
+- (void)requestFreeSpace:(unint64_t)space atPath:(id)path withOptions:(id)options completionBlock:(id)block;
 @end
 
 @implementation BLStorage
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_10008412C;
   block[3] = &unk_10011D1C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10013EBE8 != -1)
   {
     dispatch_once(&qword_10013EBE8, block);
@@ -40,11 +40,11 @@
   return v2;
 }
 
-- (void)requestFreeSpace:(unint64_t)a3 atPath:(id)a4 withOptions:(id)a5 completionBlock:(id)a6
+- (void)requestFreeSpace:(unint64_t)space atPath:(id)path withOptions:(id)options completionBlock:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  pathCopy = path;
+  optionsCopy = options;
+  blockCopy = block;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -56,8 +56,8 @@
   block[1] = 3221225472;
   block[2] = sub_1000842D8;
   block[3] = &unk_10011DC00;
-  v13 = v10;
-  v16 = self;
+  v13 = optionsCopy;
+  selfCopy = self;
   v17 = v18;
   v15 = v13;
   dispatch_sync(dispatchQueue, block);

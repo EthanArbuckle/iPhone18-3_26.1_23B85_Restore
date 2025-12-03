@@ -1,34 +1,34 @@
 @interface CAMDeviceSwitchAnimationTestHarness
-+ (id)harnessWithTestName:(id)a3 viewfinder:(id)a4 devicePosition:(int64_t)a5;
-- (CAMDeviceSwitchAnimationTestHarness)initWithTestName:(id)a3 viewfinder:(id)a4 devicePosition:(int64_t)a5;
-- (void)ensureCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4 thenPerform:(id)a5;
++ (id)harnessWithTestName:(id)name viewfinder:(id)viewfinder devicePosition:(int64_t)position;
+- (CAMDeviceSwitchAnimationTestHarness)initWithTestName:(id)name viewfinder:(id)viewfinder devicePosition:(int64_t)position;
+- (void)ensureCaptureDevicePosition:(int64_t)position mode:(int64_t)mode thenPerform:(id)perform;
 - (void)startTesting;
 @end
 
 @implementation CAMDeviceSwitchAnimationTestHarness
 
-- (CAMDeviceSwitchAnimationTestHarness)initWithTestName:(id)a3 viewfinder:(id)a4 devicePosition:(int64_t)a5
+- (CAMDeviceSwitchAnimationTestHarness)initWithTestName:(id)name viewfinder:(id)viewfinder devicePosition:(int64_t)position
 {
-  v9 = a4;
+  viewfinderCopy = viewfinder;
   v14.receiver = self;
   v14.super_class = CAMDeviceSwitchAnimationTestHarness;
-  v10 = [(CAMModeAndDeviceConfigurationTestHarness *)&v14 initWithTestName:a3];
+  v10 = [(CAMModeAndDeviceConfigurationTestHarness *)&v14 initWithTestName:name];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_viewfinder, a4);
-    v11->_desiredDevicePosition = a5;
+    objc_storeStrong(&v10->_viewfinder, viewfinder);
+    v11->_desiredDevicePosition = position;
     v12 = v11;
   }
 
   return v11;
 }
 
-+ (id)harnessWithTestName:(id)a3 viewfinder:(id)a4 devicePosition:(int64_t)a5
++ (id)harnessWithTestName:(id)name viewfinder:(id)viewfinder devicePosition:(int64_t)position
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CAMDeviceSwitchAnimationTestHarness alloc] initWithTestName:v8 viewfinder:v7 devicePosition:a5];
+  viewfinderCopy = viewfinder;
+  nameCopy = name;
+  v9 = [[CAMDeviceSwitchAnimationTestHarness alloc] initWithTestName:nameCopy viewfinder:viewfinderCopy devicePosition:position];
 
   return v9;
 }
@@ -70,30 +70,30 @@ uint64_t __51__CAMDeviceSwitchAnimationTestHarness_startTesting__block_invoke_2(
   return [v2 ensureCaptureDevicePosition:v3 mode:0 thenPerform:v5];
 }
 
-- (void)ensureCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4 thenPerform:(id)a5
+- (void)ensureCaptureDevicePosition:(int64_t)position mode:(int64_t)mode thenPerform:(id)perform
 {
-  v12 = a5;
-  v8 = [(CAMViewfinderViewController *)self->_viewfinder _configuredMode];
-  v9 = [(CAMViewfinderViewController *)self->_viewfinder _configuredDevice];
-  if ((v9 - 1) > 0xA)
+  performCopy = perform;
+  _configuredMode = [(CAMViewfinderViewController *)self->_viewfinder _configuredMode];
+  _configuredDevice = [(CAMViewfinderViewController *)self->_viewfinder _configuredDevice];
+  if ((_configuredDevice - 1) > 0xA)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_1A3A6A038[v9 - 1];
+    v10 = qword_1A3A6A038[_configuredDevice - 1];
   }
 
-  if (v8 == a4 && v10 == a3)
+  if (_configuredMode == mode && v10 == position)
   {
-    v12[2](v12);
+    performCopy[2](performCopy);
   }
 
   else
   {
-    [(CAMModeAndDeviceConfigurationTestHarness *)self registerHandler:v12 forChangeToMode:a4 devicePosition:a3];
-    [(CAMViewfinderViewController *)self->_viewfinder changeToMode:a4 device:a3 == 1 animated:1];
+    [(CAMModeAndDeviceConfigurationTestHarness *)self registerHandler:performCopy forChangeToMode:mode devicePosition:position];
+    [(CAMViewfinderViewController *)self->_viewfinder changeToMode:mode device:position == 1 animated:1];
   }
 }
 

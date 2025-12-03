@@ -1,35 +1,35 @@
 @interface JavaUtilLoggingHandler
 + (void)initialize;
-- (BOOL)isLoggableWithJavaUtilLoggingLogRecord:(id)a3;
+- (BOOL)isLoggableWithJavaUtilLoggingLogRecord:(id)record;
 - (id)getErrorManager;
 - (void)dealloc;
-- (void)initPropertiesWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withNSString:(id)a6;
-- (void)internalSetEncodingWithNSString:(id)a3;
-- (void)internalSetFormatterWithJavaUtilLoggingFormatter:(id)a3;
-- (void)printInvalidPropMessageWithNSString:(id)a3 withNSString:(id)a4 withJavaLangException:(id)a5;
-- (void)setEncodingWithNSString:(id)a3;
-- (void)setErrorManagerWithJavaUtilLoggingErrorManager:(id)a3;
-- (void)setFilterWithJavaUtilLoggingFilter:(id)a3;
-- (void)setFormatterWithJavaUtilLoggingFormatter:(id)a3;
-- (void)setLevelWithJavaUtilLoggingLevel:(id)a3;
+- (void)initPropertiesWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withNSString:(id)withNSString;
+- (void)internalSetEncodingWithNSString:(id)string;
+- (void)internalSetFormatterWithJavaUtilLoggingFormatter:(id)formatter;
+- (void)printInvalidPropMessageWithNSString:(id)string withNSString:(id)sString withJavaLangException:(id)exception;
+- (void)setEncodingWithNSString:(id)string;
+- (void)setErrorManagerWithJavaUtilLoggingErrorManager:(id)manager;
+- (void)setFilterWithJavaUtilLoggingFilter:(id)filter;
+- (void)setFormatterWithJavaUtilLoggingFormatter:(id)formatter;
+- (void)setLevelWithJavaUtilLoggingLevel:(id)level;
 @end
 
 @implementation JavaUtilLoggingHandler
 
-- (void)printInvalidPropMessageWithNSString:(id)a3 withNSString:(id)a4 withJavaLangException:(id)a5
+- (void)printInvalidPropMessageWithNSString:(id)string withNSString:(id)sString withJavaLangException:(id)exception
 {
   prefix = self->prefix_;
-  v10 = JreStrcat("$$C$C$", a2, a3, a4, a5, v5, v6, v7, @"Invalid property value for ");
+  v10 = JreStrcat("$$C$C$", a2, string, sString, exception, v5, v6, v7, @"Invalid property value for ");
   errorMan = self->errorMan_;
   if (!errorMan)
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilLoggingErrorManager *)errorMan errorWithNSString:v10 withJavaLangException:a5 withInt:0];
+  [(JavaUtilLoggingErrorManager *)errorMan errorWithNSString:v10 withJavaLangException:exception withInt:0];
 }
 
-- (void)initPropertiesWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withNSString:(id)a6
+- (void)initPropertiesWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withNSString:(id)withNSString
 {
   LogManager = JavaUtilLoggingLogManager_getLogManager();
   if (!LogManager)
@@ -53,7 +53,7 @@
 
   else
   {
-    v29 = sub_10027FF1C(a4);
+    v29 = sub_10027FF1C(sString);
     v30 = JavaUtilLoggingFilter_class_();
     if (v29 && ([v30 isInstance:v29] & 1) == 0)
     {
@@ -71,14 +71,14 @@
 
   else
   {
-    v32 = JavaUtilLoggingLevel_parseWithNSString_(a3);
+    v32 = JavaUtilLoggingLevel_parseWithNSString_(string);
   }
 
   JreStrongAssign(&self->level_, v32);
   v40 = [v18 getPropertyWithNSString:{JreStrcat("$$", v33, v34, v35, v36, v37, v38, v39, self->prefix_)}];
   if (!v40)
   {
-    v49 = sub_10027FF1C(a5);
+    v49 = sub_10027FF1C(nSString);
     objc_opt_class();
     if (!v49 || (objc_opt_isKindOfClass() & 1) != 0)
     {
@@ -114,9 +114,9 @@ LABEL_19:
   return self->errorMan_;
 }
 
-- (BOOL)isLoggableWithJavaUtilLoggingLogRecord:(id)a3
+- (BOOL)isLoggableWithJavaUtilLoggingLogRecord:(id)record
 {
-  if (!a3)
+  if (!record)
   {
     v11 = new_JavaLangNullPointerException_initWithNSString_(@"record == null");
     objc_exception_throw(v11);
@@ -128,7 +128,7 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v6 = [(JavaUtilLoggingLevel *)level intValue];
+  intValue = [(JavaUtilLoggingLevel *)level intValue];
   if ((atomic_load_explicit(JavaUtilLoggingLevel__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10019B6E8();
@@ -139,20 +139,20 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (v6 == [JavaUtilLoggingLevel_OFF_ intValue])
+  if (intValue == [JavaUtilLoggingLevel_OFF_ intValue])
   {
     return 0;
   }
 
-  v7 = [a3 getLevel];
-  if (!v7)
+  getLevel = [record getLevel];
+  if (!getLevel)
   {
 LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v8 = [v7 intValue];
-  if (v8 < [(JavaUtilLoggingLevel *)self->level_ intValue])
+  intValue2 = [getLevel intValue];
+  if (intValue2 < [(JavaUtilLoggingLevel *)self->level_ intValue])
   {
     return 0;
   }
@@ -163,33 +163,33 @@ LABEL_15:
     return 1;
   }
 
-  return [(JavaUtilLoggingFilter *)filter isLoggableWithJavaUtilLoggingLogRecord:a3];
+  return [(JavaUtilLoggingFilter *)filter isLoggableWithJavaUtilLoggingLogRecord:record];
 }
 
-- (void)internalSetEncodingWithNSString:(id)a3
+- (void)internalSetEncodingWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    if (!JavaNioCharsetCharset_isSupportedWithNSString_(a3))
+    if (!JavaNioCharsetCharset_isSupportedWithNSString_(string))
     {
-      v7 = new_JavaIoUnsupportedEncodingException_initWithNSString_(a3);
+      v7 = new_JavaIoUnsupportedEncodingException_initWithNSString_(string);
       objc_exception_throw(v7);
     }
 
     p_encoding = &self->encoding_;
-    v6 = a3;
+    stringCopy = string;
   }
 
   else
   {
     p_encoding = &self->encoding_;
-    v6 = 0;
+    stringCopy = 0;
   }
 
-  JreStrongAssign(p_encoding, v6);
+  JreStrongAssign(p_encoding, stringCopy);
 }
 
-- (void)setEncodingWithNSString:(id)a3
+- (void)setEncodingWithNSString:(id)string
 {
   LogManager = JavaUtilLoggingLogManager_getLogManager();
   if (!LogManager)
@@ -199,10 +199,10 @@ LABEL_15:
 
   [LogManager checkAccess];
 
-  [(JavaUtilLoggingHandler *)self internalSetEncodingWithNSString:a3];
+  [(JavaUtilLoggingHandler *)self internalSetEncodingWithNSString:string];
 }
 
-- (void)setErrorManagerWithJavaUtilLoggingErrorManager:(id)a3
+- (void)setErrorManagerWithJavaUtilLoggingErrorManager:(id)manager
 {
   LogManager = JavaUtilLoggingLogManager_getLogManager();
   if (!LogManager)
@@ -211,16 +211,16 @@ LABEL_15:
   }
 
   [LogManager checkAccess];
-  if (!a3)
+  if (!manager)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"newErrorManager == null");
     objc_exception_throw(v6);
   }
 
-  JreStrongAssign(&self->errorMan_, a3);
+  JreStrongAssign(&self->errorMan_, manager);
 }
 
-- (void)setFilterWithJavaUtilLoggingFilter:(id)a3
+- (void)setFilterWithJavaUtilLoggingFilter:(id)filter
 {
   LogManager = JavaUtilLoggingLogManager_getLogManager();
   if (!LogManager)
@@ -230,12 +230,12 @@ LABEL_15:
 
   [LogManager checkAccess];
 
-  JreStrongAssign(&self->filter_, a3);
+  JreStrongAssign(&self->filter_, filter);
 }
 
-- (void)internalSetFormatterWithJavaUtilLoggingFormatter:(id)a3
+- (void)internalSetFormatterWithJavaUtilLoggingFormatter:(id)formatter
 {
-  if (!a3)
+  if (!formatter)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"newFormatter == null");
     objc_exception_throw(v5);
@@ -243,10 +243,10 @@ LABEL_15:
 
   p_formatter = &self->formatter_;
 
-  JreStrongAssign(p_formatter, a3);
+  JreStrongAssign(p_formatter, formatter);
 }
 
-- (void)setFormatterWithJavaUtilLoggingFormatter:(id)a3
+- (void)setFormatterWithJavaUtilLoggingFormatter:(id)formatter
 {
   LogManager = JavaUtilLoggingLogManager_getLogManager();
   if (!LogManager)
@@ -256,12 +256,12 @@ LABEL_15:
 
   [LogManager checkAccess];
 
-  [(JavaUtilLoggingHandler *)self internalSetFormatterWithJavaUtilLoggingFormatter:a3];
+  [(JavaUtilLoggingHandler *)self internalSetFormatterWithJavaUtilLoggingFormatter:formatter];
 }
 
-- (void)setLevelWithJavaUtilLoggingLevel:(id)a3
+- (void)setLevelWithJavaUtilLoggingLevel:(id)level
 {
-  if (!a3)
+  if (!level)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"newLevel == null");
     objc_exception_throw(v6);
@@ -275,7 +275,7 @@ LABEL_15:
 
   [LogManager checkAccess];
 
-  JreStrongAssign(&self->level_, a3);
+  JreStrongAssign(&self->level_, level);
 }
 
 - (void)dealloc
@@ -287,7 +287,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaUtilLoggingLevel__initialized, memory_order_acquire) & 1) == 0)
     {

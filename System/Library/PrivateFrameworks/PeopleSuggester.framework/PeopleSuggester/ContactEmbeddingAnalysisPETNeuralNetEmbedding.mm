@@ -1,13 +1,13 @@
 @interface ContactEmbeddingAnalysisPETNeuralNetEmbedding
-- (BOOL)isEqual:(id)a3;
-- (float)embeddingsAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)embeddingsAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ContactEmbeddingAnalysisPETNeuralNetEmbedding
@@ -20,20 +20,20 @@
   [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)&v3 dealloc];
 }
 
-- (float)embeddingsAtIndex:(unint64_t)a3
+- (float)embeddingsAtIndex:(unint64_t)index
 {
   p_embeddings = &self->_embeddings;
   count = self->_embeddings.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_embeddings->list[a3];
+  return p_embeddings->list[index];
 }
 
 - (id)description
@@ -42,22 +42,22 @@
   v8.receiver = self;
   v8.super_class = ContactEmbeddingAnalysisPETNeuralNetEmbedding;
   v4 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)&v8 description];
-  v5 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = PBRepeatedFloatNSArray();
-  [v2 setObject:v3 forKey:@"embeddings"];
+  [dictionary setObject:v3 forKey:@"embeddings"];
 
-  return v2;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_embeddings = &self->_embeddings;
   if (self->_embeddings.count)
@@ -74,36 +74,36 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self embeddingsCount])
   {
-    [v7 clearEmbeddings];
-    v4 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self embeddingsCount];
-    if (v4)
+    [toCopy clearEmbeddings];
+    embeddingsCount = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self embeddingsCount];
+    if (embeddingsCount)
     {
-      v5 = v4;
+      v5 = embeddingsCount;
       for (i = 0; i != v5; ++i)
       {
         [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self embeddingsAtIndex:i];
-        [v7 addEmbeddings:?];
+        [toCopy addEmbeddings:?];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedFloatCopy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedFloatIsEqual();
   }
@@ -116,16 +116,16 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 embeddingsCount];
-  if (v4)
+  fromCopy = from;
+  embeddingsCount = [fromCopy embeddingsCount];
+  if (embeddingsCount)
   {
-    v5 = v4;
+    v5 = embeddingsCount;
     for (i = 0; i != v5; ++i)
     {
-      [v7 embeddingsAtIndex:i];
+      [fromCopy embeddingsAtIndex:i];
       [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self addEmbeddings:?];
     }
   }

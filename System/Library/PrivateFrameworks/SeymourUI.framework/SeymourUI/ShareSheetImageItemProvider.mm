@@ -1,6 +1,6 @@
 @interface ShareSheetImageItemProvider
-- (_TtC9SeymourUI27ShareSheetImageItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (_TtC9SeymourUI27ShareSheetImageItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 - (id)item;
 @end
 
@@ -8,7 +8,7 @@
 
 - (id)item
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C13A294();
 
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20C0BB690(v8, a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_20C0BB690(selfCopy, type, v17);
 
   v9 = v18;
   if (v18)
@@ -46,7 +46,7 @@
   return v15;
 }
 
-- (_TtC9SeymourUI27ShareSheetImageItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC9SeymourUI27ShareSheetImageItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_20C13DA64();

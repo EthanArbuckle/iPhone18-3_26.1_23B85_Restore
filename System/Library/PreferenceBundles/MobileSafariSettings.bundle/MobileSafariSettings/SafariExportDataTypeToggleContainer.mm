@@ -1,18 +1,18 @@
 @interface SafariExportDataTypeToggleContainer
-- (SafariExportDataTypeToggleContainer)initWithFrame:(CGRect)a3;
+- (SafariExportDataTypeToggleContainer)initWithFrame:(CGRect)frame;
 - (SafariExportDataTypeToggleContainerDelegate)delegate;
-- (void)didTapExportDataTypeToggle:(id)a3;
-- (void)showSpinnerForBrowsingDataExportType:(unint64_t)a3;
-- (void)updateCountOfBrowsingDataExportType:(unint64_t)a3 count:(unint64_t)a4;
+- (void)didTapExportDataTypeToggle:(id)toggle;
+- (void)showSpinnerForBrowsingDataExportType:(unint64_t)type;
+- (void)updateCountOfBrowsingDataExportType:(unint64_t)type count:(unint64_t)count;
 @end
 
 @implementation SafariExportDataTypeToggleContainer
 
-- (SafariExportDataTypeToggleContainer)initWithFrame:(CGRect)a3
+- (SafariExportDataTypeToggleContainer)initWithFrame:(CGRect)frame
 {
   v45.receiver = self;
   v45.super_class = SafariExportDataTypeToggleContainer;
-  v3 = [(SafariExportDataTypeToggleContainer *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SafariExportDataTypeToggleContainer *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,15 +56,15 @@
     }
 
     objc_storeStrong(&v4->_exportDataTypeToggles, v5);
-    v13 = [(NSDictionary *)v4->_exportDataTypeToggles allValues];
-    v14 = [v13 safari_reduceObjectsWithInitialValue:&off_90C58 usingBlock:&__block_literal_global_21];
+    allValues = [(NSDictionary *)v4->_exportDataTypeToggles allValues];
+    v14 = [allValues safari_reduceObjectsWithInitialValue:&off_90C58 usingBlock:&__block_literal_global_21];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = [(NSDictionary *)v4->_exportDataTypeToggles allValues];
-    v16 = [v15 countByEnumeratingWithState:&v37 objects:v46 count:16];
+    allValues2 = [(NSDictionary *)v4->_exportDataTypeToggles allValues];
+    v16 = [allValues2 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v16)
     {
       v17 = v16;
@@ -76,32 +76,32 @@
         {
           if (*v38 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues2);
           }
 
           v21 = *(*(&v37 + 1) + 8 * j);
-          v22 = [v21 iconStackView];
-          [v22 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, height}];
+          iconStackView = [v21 iconStackView];
+          [iconStackView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, height}];
           v24 = v23;
 
           [v14 doubleValue];
           v26 = v25 - v24;
-          v27 = [v21 iconStackView];
-          v28 = [v27 subviews];
-          v29 = v26 / ([v28 count] - 1);
+          iconStackView2 = [v21 iconStackView];
+          subviews = [iconStackView2 subviews];
+          v29 = v26 / ([subviews count] - 1);
 
-          v30 = [v21 iconStackView];
-          [v30 spacing];
-          [v30 setSpacing:v29 + v31];
+          iconStackView3 = [v21 iconStackView];
+          [iconStackView3 spacing];
+          [iconStackView3 setSpacing:v29 + v31];
 
-          v32 = [v21 iconStackView];
-          v33 = [v32 widthAnchor];
+          iconStackView4 = [v21 iconStackView];
+          widthAnchor = [iconStackView4 widthAnchor];
           [v14 doubleValue];
-          v34 = [v33 constraintEqualToConstant:?];
+          v34 = [widthAnchor constraintEqualToConstant:?];
           [v34 setActive:1];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        v17 = [allValues2 countByEnumeratingWithState:&v37 objects:v46 count:16];
       }
 
       while (v17);
@@ -132,30 +132,30 @@ NSNumber *__cdecl __53__SafariExportDataTypeToggleContainer_initWithFrame___bloc
   return v10;
 }
 
-- (void)didTapExportDataTypeToggle:(id)a3
+- (void)didTapExportDataTypeToggle:(id)toggle
 {
-  v4 = a3;
+  toggleCopy = toggle;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 browsingDataExportType];
+  browsingDataExportType = [toggleCopy browsingDataExportType];
 
-  [WeakRetained sender:self didToggleBrowsingDataExportType:v5];
+  [WeakRetained sender:self didToggleBrowsingDataExportType:browsingDataExportType];
 }
 
-- (void)updateCountOfBrowsingDataExportType:(unint64_t)a3 count:(unint64_t)a4
+- (void)updateCountOfBrowsingDataExportType:(unint64_t)type count:(unint64_t)count
 {
   exportDataTypeToggles = self->_exportDataTypeToggles;
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:type];
   v8 = [(NSDictionary *)exportDataTypeToggles objectForKeyedSubscript:v7];
 
-  v9 = [NSNumber numberWithUnsignedInteger:a4];
+  v9 = [NSNumber numberWithUnsignedInteger:count];
   [v8 setCount:v9];
 
-  v10 = [v8 labelStackView];
-  [v10 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  labelStackView = [v8 labelStackView];
+  [labelStackView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v12 = v11;
 
-  v13 = [v8 labelStackView];
-  [v13 frame];
+  labelStackView2 = [v8 labelStackView];
+  [labelStackView2 frame];
   v15 = v14;
 
   if (v12 > v15)
@@ -164,8 +164,8 @@ NSNumber *__cdecl __53__SafariExportDataTypeToggleContainer_initWithFrame___bloc
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = [(NSDictionary *)self->_exportDataTypeToggles allValues];
-    v17 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allValues = [(NSDictionary *)self->_exportDataTypeToggles allValues];
+    v17 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v17)
     {
       v18 = v17;
@@ -177,7 +177,7 @@ NSNumber *__cdecl __53__SafariExportDataTypeToggleContainer_initWithFrame___bloc
         {
           if (*v22 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v21 + 1) + 8 * v20) layoutLabelsVertically];
@@ -185,7 +185,7 @@ NSNumber *__cdecl __53__SafariExportDataTypeToggleContainer_initWithFrame___bloc
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v18 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v18);
@@ -193,10 +193,10 @@ NSNumber *__cdecl __53__SafariExportDataTypeToggleContainer_initWithFrame___bloc
   }
 }
 
-- (void)showSpinnerForBrowsingDataExportType:(unint64_t)a3
+- (void)showSpinnerForBrowsingDataExportType:(unint64_t)type
 {
   exportDataTypeToggles = self->_exportDataTypeToggles;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   v4 = [(NSDictionary *)exportDataTypeToggles objectForKeyedSubscript:v5];
   [v4 showSpinner];
 }

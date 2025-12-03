@@ -36,7 +36,7 @@
       else
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = a1;
+        selfCopy = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
@@ -106,7 +106,7 @@
   v9 = [v7 numberWithInt:sqlite3_errcode(v8)];
   v20[0] = v9;
   v19[1] = @"text";
-  v10 = [a1 errorMessageForSQLite3Context:sqlite3_db_handle(a3)];
+  v10 = [self errorMessageForSQLite3Context:sqlite3_db_handle(a3)];
   v20[1] = v10;
   v19[2] = @"statement";
   v11 = MEMORY[0x277CCACA8];
@@ -140,7 +140,7 @@
   v9 = [MEMORY[0x277CCABB0] numberWithInt:sqlite3_errcode(db)];
   v18[0] = v9;
   v17[1] = @"text";
-  v10 = [a1 errorMessageForSQLite3Context:db];
+  v10 = [self errorMessageForSQLite3Context:db];
   v18[1] = v10;
   v17[2] = @"statement";
   if (a4)
@@ -197,17 +197,17 @@
 + (uint64_t)hmbErrorWithSQLContext:()sqlite3 statement:
 {
   v5 = MEMORY[0x277CCA9B8];
-  v6 = [a3 connection];
+  connection = [a3 connection];
 
-  return [v5 hmbErrorWithSQLite3Connection:v6 statement:a4];
+  return [v5 hmbErrorWithSQLite3Connection:connection statement:a4];
 }
 
 + (uint64_t)hmbErrorWithSQLContext:()sqlite3
 {
   v3 = MEMORY[0x277CCA9B8];
-  v4 = [a3 connection];
+  connection = [a3 connection];
 
-  return [v3 hmbErrorWithSQLite3Connection:v4];
+  return [v3 hmbErrorWithSQLite3Connection:connection];
 }
 
 @end

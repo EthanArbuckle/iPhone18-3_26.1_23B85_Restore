@@ -1,21 +1,21 @@
 @interface EMFQueryResultOverrideListLoader
-+ (id)overrideListForLocale:(id)a3;
++ (id)overrideListForLocale:(id)locale;
 @end
 
 @implementation EMFQueryResultOverrideListLoader
 
-+ (id)overrideListForLocale:(id)a3
++ (id)overrideListForLocale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  localeCopy = locale;
+  if (localeCopy)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreEmoji"];
     if (v4)
     {
-      v5 = _createStrippedLocaleIdentifierForLocale(v3);
+      v5 = _createStrippedLocaleIdentifierForLocale(localeCopy);
       v6 = _overridePlistForLocaleIdentifierCheckingBothLocations(v4, v5);
-      v7 = _createStrippedFallbackLocaleIdentifierForLocale(v3);
+      v7 = _createStrippedFallbackLocaleIdentifierForLocale(localeCopy);
       if (!v6)
       {
         v8 = _overridePlistForLocaleIdentifierCheckingBothLocations(v4, v7);
@@ -58,12 +58,12 @@
         v11 = emf_logging_get_default_log();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v3 localeIdentifier];
-          v13 = [v6 absoluteString];
+          localeIdentifier = [localeCopy localeIdentifier];
+          absoluteString = [v6 absoluteString];
           v16 = 138412546;
-          v17 = v12;
+          v17 = localeIdentifier;
           v18 = 2112;
-          v19 = v13;
+          v19 = absoluteString;
           _os_log_impl(&dword_1AF04E000, v11, OS_LOG_TYPE_INFO, "Loaded override list for locale '%@' (%@)", &v16, 0x16u);
         }
 

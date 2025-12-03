@@ -1,16 +1,16 @@
 @interface AMSEngagementAppData
-- (AMSEngagementAppData)initWithIdentifier:(id)a3 cacheObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSEngagementAppData)initWithIdentifier:(id)identifier cacheObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)exportObject;
 @end
 
 @implementation AMSEngagementAppData
 
-- (AMSEngagementAppData)initWithIdentifier:(id)a3 cacheObject:(id)a4
+- (AMSEngagementAppData)initWithIdentifier:(id)identifier cacheObject:(id)object
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  objectCopy = object;
   v46.receiver = self;
   v46.super_class = AMSEngagementAppData;
   v9 = [(AMSEngagementAppData *)&v46 init];
@@ -20,8 +20,8 @@
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v9->_identifier, a3);
-  v11 = [v8 objectForKeyedSubscript:@"eventFilters"];
+  objc_storeStrong(&v9->_identifier, identifier);
+  v11 = [objectCopy objectForKeyedSubscript:@"eventFilters"];
   objc_opt_class();
   v39 = v10;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -35,7 +35,7 @@
   if (!v12)
   {
 LABEL_6:
-    v15 = [v8 objectForKeyedSubscript:{@"whitelist", v10}];
+    v15 = [objectCopy objectForKeyedSubscript:{@"whitelist", v10}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@ LABEL_10:
   v39->_eventFilters = v27;
 
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v30 = [v8 objectForKeyedSubscript:@"cachedResponses"];
+  v30 = [objectCopy objectForKeyedSubscript:@"cachedResponses"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,7 +131,7 @@ LABEL_10:
   cachedResponses = v39->_cachedResponses;
   v39->_cachedResponses = v33;
 
-  v35 = [v8 objectForKeyedSubscript:@"lastSyncedBuild"];
+  v35 = [objectCopy objectForKeyedSubscript:@"lastSyncedBuild"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -179,9 +179,9 @@ void __55__AMSEngagementAppData_initWithIdentifier_cacheObject___block_invoke(ui
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v29 = self;
-  v4 = [(AMSEngagementAppData *)self cachedResponses];
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v41 count:16];
+  selfCopy = self;
+  cachedResponses = [(AMSEngagementAppData *)self cachedResponses];
+  v5 = [cachedResponses countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (v5)
   {
     v6 = v5;
@@ -192,41 +192,41 @@ void __55__AMSEngagementAppData_initWithIdentifier_cacheObject___block_invoke(ui
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cachedResponses);
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
-        v10 = [v9 exportObject];
-        v11 = [v9 cacheKey];
-        if (v11)
+        exportObject = [v9 exportObject];
+        cacheKey = [v9 cacheKey];
+        if (cacheKey)
         {
-          [v3 setObject:v10 forKeyedSubscript:v11];
+          [v3 setObject:exportObject forKeyedSubscript:cacheKey];
         }
 
         else
         {
-          v12 = [MEMORY[0x1E696AFB0] UUID];
-          v13 = [v12 UUIDString];
-          [v3 setObject:v10 forKeyedSubscript:v13];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          [v3 setObject:exportObject forKeyedSubscript:uUIDString];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v41 count:16];
+      v6 = [cachedResponses countByEnumeratingWithState:&v34 objects:v41 count:16];
     }
 
     while (v6);
   }
 
   v14 = objc_alloc(MEMORY[0x1E695DF70]);
-  v15 = [(AMSEngagementAppData *)v29 eventFilters];
-  v16 = [v14 initWithCapacity:{objc_msgSend(v15, "count")}];
+  eventFilters = [(AMSEngagementAppData *)selfCopy eventFilters];
+  v16 = [v14 initWithCapacity:{objc_msgSend(eventFilters, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v17 = [(AMSEngagementAppData *)v29 eventFilters];
-  v18 = [v17 countByEnumeratingWithState:&v30 objects:v40 count:16];
+  eventFilters2 = [(AMSEngagementAppData *)selfCopy eventFilters];
+  v18 = [eventFilters2 countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v18)
   {
     v19 = v18;
@@ -237,14 +237,14 @@ void __55__AMSEngagementAppData_initWithIdentifier_cacheObject___block_invoke(ui
       {
         if (*v31 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(eventFilters2);
         }
 
-        v22 = [*(*(&v30 + 1) + 8 * j) exportObject];
-        [v16 addObject:v22];
+        exportObject2 = [*(*(&v30 + 1) + 8 * j) exportObject];
+        [v16 addObject:exportObject2];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v30 objects:v40 count:16];
+      v19 = [eventFilters2 countByEnumeratingWithState:&v30 objects:v40 count:16];
     }
 
     while (v19);
@@ -258,23 +258,23 @@ void __55__AMSEngagementAppData_initWithIdentifier_cacheObject___block_invoke(ui
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v25 = [v23 dictionaryWithDictionary:v24];
 
-  v26 = [(AMSEngagementAppData *)v29 lastSyncedBuild];
+  lastSyncedBuild = [(AMSEngagementAppData *)selfCopy lastSyncedBuild];
 
-  if (v26)
+  if (lastSyncedBuild)
   {
-    v27 = [(AMSEngagementAppData *)v29 lastSyncedBuild];
-    [v25 setObject:v27 forKeyedSubscript:@"lastSyncedBuild"];
+    lastSyncedBuild2 = [(AMSEngagementAppData *)selfCopy lastSyncedBuild];
+    [v25 setObject:lastSyncedBuild2 forKeyedSubscript:@"lastSyncedBuild"];
   }
 
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AMSEngagementAppData *)self identifier];
-  v6 = [(AMSEngagementAppData *)self exportObject];
-  v7 = [v4 initWithIdentifier:v5 cacheObject:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(AMSEngagementAppData *)self identifier];
+  exportObject = [(AMSEngagementAppData *)self exportObject];
+  v7 = [v4 initWithIdentifier:identifier cacheObject:exportObject];
 
   return v7;
 }

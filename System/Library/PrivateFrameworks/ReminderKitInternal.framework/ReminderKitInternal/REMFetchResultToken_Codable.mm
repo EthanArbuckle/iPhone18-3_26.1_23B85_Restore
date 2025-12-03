@@ -1,10 +1,10 @@
 @interface REMFetchResultToken_Codable
-- (REMFetchResultToken_Codable)initWithPersistentHistoryTokens:(id)a3;
+- (REMFetchResultToken_Codable)initWithPersistentHistoryTokens:(id)tokens;
 @end
 
 @implementation REMFetchResultToken_Codable
 
-- (REMFetchResultToken_Codable)initWithPersistentHistoryTokens:(id)a3
+- (REMFetchResultToken_Codable)initWithPersistentHistoryTokens:(id)tokens
 {
   ObjectType = swift_getObjectType();
   sub_23004CBA4(0, &qword_280C987F8);

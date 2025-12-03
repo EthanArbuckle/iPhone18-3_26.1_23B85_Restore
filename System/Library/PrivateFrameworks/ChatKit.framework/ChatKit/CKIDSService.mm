@@ -1,6 +1,6 @@
 @interface CKIDSService
-- (BOOL)sendFile:(id)a3 onService:(id)a4;
-- (BOOL)sendProtobufData:(id)a3 type:(unint64_t)a4 service:(id)a5 fireAndForget:(BOOL)a6 includeInactiveDevices:(BOOL)a7;
+- (BOOL)sendFile:(id)file onService:(id)service;
+- (BOOL)sendProtobufData:(id)data type:(unint64_t)type service:(id)service fireAndForget:(BOOL)forget includeInactiveDevices:(BOOL)devices;
 - (CKIDSService)init;
 @end
 
@@ -26,8 +26,8 @@
     v2->_tinkerMessagesActivationService = v7;
 
     v9 = +[NSProcessInfo processInfo];
-    v10 = [v9 processName];
-    v11 = [NSString stringWithFormat:@"%@ - IDS queue", v10];
+    processName = [v9 processName];
+    v11 = [NSString stringWithFormat:@"%@ - IDS queue", processName];
 
     v12 = dispatch_queue_create([v11 UTF8String], 0);
     queue = v2->_queue;
@@ -37,32 +37,32 @@
   return v2;
 }
 
-- (BOOL)sendProtobufData:(id)a3 type:(unint64_t)a4 service:(id)a5 fireAndForget:(BOOL)a6 includeInactiveDevices:(BOOL)a7
+- (BOOL)sendProtobufData:(id)data type:(unint64_t)type service:(id)service fireAndForget:(BOOL)forget includeInactiveDevices:(BOOL)devices
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a4;
-  v11 = a3;
-  v44 = a5;
-  v43 = [[IDSProtobuf alloc] initWithProtobufData:v11 type:v10 isResponse:0];
+  devicesCopy = devices;
+  forgetCopy = forget;
+  typeCopy = type;
+  dataCopy = data;
+  serviceCopy = service;
+  v43 = [[IDSProtobuf alloc] initWithProtobufData:dataCopy type:typeCopy isResponse:0];
   v12 = objc_alloc_init(NSMutableDictionary);
   v13 = v12;
-  if (v8)
+  if (forgetCopy)
   {
     [v12 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionFireAndForgetKey];
   }
 
   v14 = &NSLog_ptr;
-  if (v7)
+  if (devicesCopy)
   {
-    v15 = v11;
-    v16 = [v44 devices];
-    v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v16, "count")}];
+    v15 = dataCopy;
+    devices = [serviceCopy devices];
+    v17 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(devices, "count")}];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v18 = v16;
+    v18 = devices;
     v19 = [v18 countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v19)
     {
@@ -88,7 +88,7 @@
       while (v20);
     }
 
-    v11 = v15;
+    dataCopy = v15;
   }
 
   else
@@ -106,7 +106,7 @@
   {
     v27 = v26;
     v40 = v13;
-    v41 = v11;
+    v41 = dataCopy;
     v28 = 0;
     v29 = 0;
     v30 = *v48;
@@ -127,7 +127,7 @@
         v35 = [v14[96] setWithObject:*(*(&v47 + 1) + 8 * v31)];
         v45 = v33;
         v46 = v32;
-        v36 = [v44 sendProtobuf:v43 toDestinations:v35 priority:200 options:0 identifier:&v46 error:&v45];
+        v36 = [serviceCopy sendProtobuf:v43 toDestinations:v35 priority:200 options:0 identifier:&v46 error:&v45];
         v28 = v46;
 
         v29 = v45;
@@ -135,8 +135,8 @@
         {
           v25 = obj;
 
-          v38 = [v29 localizedDescription];
-          NSLog(@"sendProtobufData failed - %@", v38);
+          localizedDescription = [v29 localizedDescription];
+          NSLog(@"sendProtobufData failed - %@", localizedDescription);
           v37 = 0;
           goto LABEL_23;
         }
@@ -159,10 +159,10 @@
     }
 
     v37 = 1;
-    v38 = obj;
+    localizedDescription = obj;
 LABEL_23:
     v13 = v40;
-    v11 = v41;
+    dataCopy = v41;
   }
 
   else
@@ -170,21 +170,21 @@ LABEL_23:
     v29 = 0;
     v28 = 0;
     v37 = 1;
-    v38 = v25;
+    localizedDescription = v25;
   }
 
   return v37;
 }
 
-- (BOOL)sendFile:(id)a3 onService:(id)a4
+- (BOOL)sendFile:(id)file onService:(id)service
 {
   v5 = IDSDefaultPairedDevice;
-  v6 = a4;
-  v7 = a3;
+  serviceCopy = service;
+  fileCopy = file;
   v8 = [NSSet setWithObject:v5];
   v12 = 0;
   v13 = 0;
-  LOBYTE(v5) = [v6 sendResourceAtURL:v7 metadata:&__NSDictionary0__struct toDestinations:v8 priority:200 options:0 identifier:&v13 error:&v12];
+  LOBYTE(v5) = [serviceCopy sendResourceAtURL:fileCopy metadata:&__NSDictionary0__struct toDestinations:v8 priority:200 options:0 identifier:&v13 error:&v12];
 
   v9 = v13;
   v10 = v12;

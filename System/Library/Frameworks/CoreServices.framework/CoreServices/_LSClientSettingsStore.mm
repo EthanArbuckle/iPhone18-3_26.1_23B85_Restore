@@ -1,8 +1,8 @@
 @interface _LSClientSettingsStore
-- (BOOL)resetUserElectionsWithError:(id *)a3;
+- (BOOL)resetUserElectionsWithError:(id *)error;
 - (_LSClientSettingsStore)init;
-- (id)__internalQueue_xpcConnectionWithError:(id *)a3;
-- (unsigned)userElectionForExtensionKey:(id)a3;
+- (id)__internalQueue_xpcConnectionWithError:(id *)error;
+- (unsigned)userElectionForExtensionKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
 {
   v7.receiver = self;
   v7.super_class = _LSClientSettingsStore;
-  v2 = [(LSSettingsStore *)&v7 _init];
-  if (v2)
+  _init = [(LSSettingsStore *)&v7 _init];
+  if (_init)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.launchservices._LSSettingsInProcessStore", v3);
-    internalQueue = v2->_internalQueue;
-    v2->_internalQueue = v4;
+    internalQueue = _init->_internalQueue;
+    _init->_internalQueue = v4;
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
@@ -32,7 +32,7 @@
   [(_LSClientSettingsStore *)&v3 dealloc];
 }
 
-- (id)__internalQueue_xpcConnectionWithError:(id *)a3
+- (id)__internalQueue_xpcConnectionWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -40,8 +40,8 @@
   v20 = __Block_byref_object_copy__30;
   v21 = __Block_byref_object_dispose__30;
   v22 = 0;
-  v5 = [(_LSClientSettingsStore *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(_LSClientSettingsStore *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if (!self->_configuration)
   {
@@ -67,8 +67,8 @@
     if (xpcConnection)
     {
       v8 = objc_alloc(MEMORY[0x1E696B0B8]);
-      v9 = [(LSSettingsStoreConfiguration *)self->_configuration endpoint];
-      v10 = [v8 initWithListenerEndpoint:v9];
+      endpoint = [(LSSettingsStoreConfiguration *)self->_configuration endpoint];
+      v10 = [v8 initWithListenerEndpoint:endpoint];
 
       v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EEFB22B0];
       [v10 setRemoteObjectInterface:v11];
@@ -86,9 +86,9 @@
       xpcConnection = self->_xpcConnection;
     }
 
-    if (a3 && !xpcConnection)
+    if (error && !xpcConnection)
     {
-      *a3 = v18[5];
+      *error = v18[5];
       xpcConnection = self->_xpcConnection;
     }
   }
@@ -99,9 +99,9 @@
   return v12;
 }
 
-- (unsigned)userElectionForExtensionKey:(id)a3
+- (unsigned)userElectionForExtensionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -134,7 +134,7 @@
     v15[1] = 3221225472;
     v15[2] = __54___LSClientSettingsStore_userElectionForExtensionKey___block_invoke_2;
     v15[3] = &unk_1E6A192C8;
-    v7 = v4;
+    v7 = keyCopy;
     v16 = v7;
     v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v15];
     v12[0] = MEMORY[0x1E69E9820];
@@ -153,7 +153,7 @@
     v9 = _LSExtensionsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(_LSClientSettingsStore *)v4 userElectionForExtensionKey:v23];
+      [(_LSClientSettingsStore *)keyCopy userElectionForExtensionKey:v23];
     }
   }
 
@@ -165,7 +165,7 @@
   return v10;
 }
 
-- (BOOL)resetUserElectionsWithError:(id *)a3
+- (BOOL)resetUserElectionsWithError:(id *)error
 {
   v32 = 0;
   v33 = &v32;
@@ -215,9 +215,9 @@
     v16[4] = &v18;
     v16[5] = &v24;
     [v6 resetUserElectionsWithReply:v16];
-    if (a3 && (v25[3] & 1) == 0)
+    if (error && (v25[3] & 1) == 0)
     {
-      *a3 = v19[5];
+      *error = v19[5];
     }
 
     _Block_object_dispose(&v18, 8);
@@ -232,9 +232,9 @@
       [(_LSClientSettingsStore *)v30 resetUserElectionsWithError:v7, v8, v9, v10, v11, v12, v13];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v30[0] + 40);
+      *error = *(v30[0] + 40);
     }
   }
 

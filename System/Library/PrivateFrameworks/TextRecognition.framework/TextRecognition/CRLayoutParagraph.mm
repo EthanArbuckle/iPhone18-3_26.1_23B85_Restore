@@ -6,11 +6,11 @@
 - (NSUUID)uuid;
 - (_TtC15TextRecognition17CRLayoutParagraph)init;
 - (unint64_t)layoutDirection;
-- (void)setBoundingQuad:(id)a3;
-- (void)setCanWrapToNextGroup:(BOOL)a3;
-- (void)setSubregions:(id)a3;
-- (void)setText:(id)a3;
-- (void)setUuid:(id)a3;
+- (void)setBoundingQuad:(id)quad;
+- (void)setCanWrapToNextGroup:(BOOL)group;
+- (void)setSubregions:(id)subregions;
+- (void)setText:(id)text;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation CRLayoutParagraph
@@ -37,12 +37,12 @@
   return v11;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v13 - v7;
-  if (a3)
+  if (uuid)
   {
     sub_1B429F6B8();
     v9 = sub_1B429F6D8();
@@ -57,7 +57,7 @@
 
   v11 = OBJC_IVAR____TtC15TextRecognition17CRLayoutParagraph_uuid;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1B41289B4(v8, self + v11);
   swift_endAccess();
 }
@@ -71,7 +71,7 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4 = sub_1B429FB98();
   v6 = v5;
@@ -91,7 +91,7 @@
   return v2;
 }
 
-- (void)setSubregions:(id)a3
+- (void)setSubregions:(id)subregions
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884BF0);
   v4 = sub_1B429FDF8();
@@ -107,13 +107,13 @@
   return *(self + v3);
 }
 
-- (void)setBoundingQuad:(id)a3
+- (void)setBoundingQuad:(id)quad
 {
   v5 = OBJC_IVAR____TtC15TextRecognition17CRLayoutParagraph_boundingQuad;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = quad;
+  quadCopy = quad;
 }
 
 - (BOOL)canWrapToNextGroup
@@ -123,17 +123,17 @@
   return *(self + v3);
 }
 
-- (void)setCanWrapToNextGroup:(BOOL)a3
+- (void)setCanWrapToNextGroup:(BOOL)group
 {
   v5 = OBJC_IVAR____TtC15TextRecognition17CRLayoutParagraph_canWrapToNextGroup;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = group;
 }
 
 - (unint64_t)layoutDirection
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xA8);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (!(result >> 62))
   {
@@ -144,7 +144,7 @@
 
 LABEL_8:
 
-    v6 = 0;
+    layoutDirection = 0;
     goto LABEL_9;
   }
 
@@ -169,11 +169,11 @@ LABEL_3:
     swift_unknownObjectRetain();
 LABEL_6:
 
-    v6 = [v5 layoutDirection];
+    layoutDirection = [v5 layoutDirection];
     swift_unknownObjectRelease();
 LABEL_9:
 
-    return v6;
+    return layoutDirection;
   }
 
   __break(1u);

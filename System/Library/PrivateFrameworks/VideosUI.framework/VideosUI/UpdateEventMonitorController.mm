@@ -1,20 +1,20 @@
 @interface UpdateEventMonitorController
-- (void)appDocumentDidReceiveEvent:(id)a3;
+- (void)appDocumentDidReceiveEvent:(id)event;
 - (void)appDocumentHasBecomeActive;
 @end
 
 @implementation UpdateEventMonitorController
 
-- (void)appDocumentDidReceiveEvent:(id)a3
+- (void)appDocumentDidReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_1E3B0598C();
 }
 
 - (void)appDocumentHasBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B0627C();
 }
 

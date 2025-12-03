@@ -2,34 +2,34 @@
 - (int64_t)next;
 - (uint64_t)refill;
 - (void)dealloc;
-- (void)resetWithOrgApacheLuceneStoreDataInput:(id)a3 withLong:(int64_t)a4;
-- (void)skipWithLong:(int64_t)a3;
+- (void)resetWithOrgApacheLuceneStoreDataInput:(id)input withLong:(int64_t)long;
+- (void)skipWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPackedBlockPackedReaderIterator
 
-- (void)resetWithOrgApacheLuceneStoreDataInput:(id)a3 withLong:(int64_t)a4
+- (void)resetWithOrgApacheLuceneStoreDataInput:(id)input withLong:(int64_t)long
 {
-  JreStrongAssign(&self->in_, a3);
-  self->valueCount_ = a4;
+  JreStrongAssign(&self->in_, input);
+  self->valueCount_ = long;
   self->off_ = self->blockSize_;
   self->ord_ = 0;
 }
 
-- (void)skipWithLong:(int64_t)a3
+- (void)skipWithLong:(int64_t)long
 {
-  v3 = self->ord_ + a3;
+  v3 = self->ord_ + long;
   if (v3 > self->valueCount_ || v3 < 0)
   {
     v12 = new_JavaIoEOFException_init();
     goto LABEL_19;
   }
 
-  v6 = JavaLangMath_minWithLong_withLong_(a3, self->blockSize_ - self->off_);
+  v6 = JavaLangMath_minWithLong_withLong_(long, self->blockSize_ - self->off_);
   self->off_ += v6;
   self->ord_ += v6;
-  v7 = a3 - v6;
-  if (a3 == v6)
+  v7 = long - v6;
+  if (long == v6)
   {
     return;
   }
@@ -45,14 +45,14 @@ LABEL_17:
         JreThrowNullPointerException();
       }
 
-      v9 = [(OrgApacheLuceneStoreDataInput *)in readByte];
-      if (v9 >= 0xFFFFFF82)
+      readByte = [(OrgApacheLuceneStoreDataInput *)in readByte];
+      if (readByte >= 0xFFFFFF82)
       {
         break;
       }
 
-      v10 = v9;
-      if ((v9 & 1) == 0)
+      v10 = readByte;
+      if ((readByte & 1) == 0)
       {
         OrgApacheLuceneUtilPackedBlockPackedReaderIterator_readVLongWithOrgApacheLuceneStoreDataInput_(self->in_);
       }
@@ -93,35 +93,35 @@ LABEL_5:
 
 - (uint64_t)refill
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   if (!v2)
   {
     goto LABEL_26;
   }
 
-  v3 = [v2 readByte];
-  if (v3 >= 0xFFFFFF82)
+  readByte = [v2 readByte];
+  if (readByte >= 0xFFFFFF82)
   {
     v25 = new_JavaIoIOException_initWithNSString_(@"Corrupted");
     objc_exception_throw(v25);
   }
 
-  v9 = v3;
-  v10 = v3;
-  if (v3)
+  v9 = readByte;
+  v10 = readByte;
+  if (readByte)
   {
     v12 = 0;
   }
 
   else
   {
-    VLongWithOrgApacheLuceneStoreDataInput = OrgApacheLuceneUtilPackedBlockPackedReaderIterator_readVLongWithOrgApacheLuceneStoreDataInput_(*(a1 + 8));
+    VLongWithOrgApacheLuceneStoreDataInput = OrgApacheLuceneUtilPackedBlockPackedReaderIterator_readVLongWithOrgApacheLuceneStoreDataInput_(*(self + 8));
     v12 = OrgApacheLuceneUtilBitUtil_zigZagDecodeWithLong_(VLongWithOrgApacheLuceneStoreDataInput + 1);
   }
 
   if (v10 <= 1)
   {
-    result = JavaUtilArrays_fillWithLongArray_withLong_(*(a1 + 40), v12);
+    result = JavaUtilArrays_fillWithLongArray_withLong_(*(self + 40), v12);
     goto LABEL_8;
   }
 
@@ -131,23 +131,23 @@ LABEL_5:
     sub_100003648();
   }
 
-  DecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt = OrgApacheLuceneUtilPackedPackedInts_getDecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt_(OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_[0], *(a1 + 16), v14, v4, v5, v6, v7, v8);
+  DecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt = OrgApacheLuceneUtilPackedPackedInts_getDecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt_(OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_[0], *(self + 16), v14, v4, v5, v6, v7, v8);
   if (!DecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt)
   {
     goto LABEL_26;
   }
 
   v16 = DecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt;
-  v17 = *(a1 + 32);
+  v17 = *(self + 32);
   v18 = (v17 / [DecoderWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withInt_withInt byteValueCount]);
   v19 = [v16 byteBlockCount] * v18;
-  v20 = *(a1 + 56);
+  v20 = *(self + 56);
   if (!v20 || *(v20 + 8) < v19)
   {
-    JreStrongAssignAndConsume((a1 + 56), [IOSByteArray newArrayWithLength:v19]);
+    JreStrongAssignAndConsume((self + 56), [IOSByteArray newArrayWithLength:v19]);
   }
 
-  v21 = JavaLangMath_minWithLong_withLong_(*(a1 + 24) - *(a1 + 72), *(a1 + 32));
+  v21 = JavaLangMath_minWithLong_withLong_(*(self + 24) - *(self + 72), *(self + 32));
   if ((atomic_load_explicit(OrgApacheLuceneUtilPackedPackedInts_FormatEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100003648();
@@ -159,15 +159,15 @@ LABEL_26:
     JreThrowNullPointerException();
   }
 
-  [*(a1 + 8) readBytesWithByteArray:*(a1 + 56) withInt:0 withInt:{objc_msgSend(OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_[0], "byteCountWithInt:withInt:withInt:", *(a1 + 16), v21, v14)}];
-  result = [v16 decodeWithByteArray:*(a1 + 56) withInt:0 withLongArray:*(a1 + 40) withInt:0 withInt:v18];
+  [*(self + 8) readBytesWithByteArray:*(self + 56) withInt:0 withInt:{objc_msgSend(OrgApacheLuceneUtilPackedPackedInts_FormatEnum_values_[0], "byteCountWithInt:withInt:withInt:", *(self + 16), v21, v14)}];
+  result = [v16 decodeWithByteArray:*(self + 56) withInt:0 withLongArray:*(self + 40) withInt:0 withInt:v18];
   if (v12 && v21 >= 1)
   {
     v22 = 0;
     v23 = v21 & 0x7FFFFFFF;
     do
     {
-      v24 = *(a1 + 40);
+      v24 = *(self + 40);
       if (!v24)
       {
         goto LABEL_26;
@@ -186,7 +186,7 @@ LABEL_26:
   }
 
 LABEL_8:
-  *(a1 + 64) = 0;
+  *(self + 64) = 0;
   return result;
 }
 

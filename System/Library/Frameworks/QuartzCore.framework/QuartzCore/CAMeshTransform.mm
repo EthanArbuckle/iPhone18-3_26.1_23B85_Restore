@@ -1,37 +1,37 @@
 @interface CAMeshTransform
-+ (CAMeshTransform)meshTransformWithVertexCount:(unint64_t)a3 vertices:(const CAMeshVertex *)a4 faceCount:(unint64_t)a5 faces:(const CAMeshFace *)a6 depthNormalization:(id)a7;
-+ (void)CAMLParserEndElement:(id)a3 content:(id)a4;
-+ (void)CAMLParserStartElement:(id)a3;
-- (BOOL)_constructWithData:(id)a3;
-- (CAMeshFace)faceAtIndex:(SEL)a3;
-- (CAMeshTransform)initWithCoder:(id)a3;
-- (CAMeshTransform)initWithVertexCount:(unint64_t)a3 vertices:(const CAMeshVertex *)a4 faceCount:(unint64_t)a5 faces:(const CAMeshFace *)a6 depthNormalization:(id)a7;
-- (CAMeshVertex)vertexAtIndex:(SEL)a3;
++ (CAMeshTransform)meshTransformWithVertexCount:(unint64_t)count vertices:(const CAMeshVertex *)vertices faceCount:(unint64_t)faceCount faces:(const CAMeshFace *)faces depthNormalization:(id)normalization;
++ (void)CAMLParserEndElement:(id)element content:(id)content;
++ (void)CAMLParserStartElement:(id)element;
+- (BOOL)_constructWithData:(id)data;
+- (CAMeshFace)faceAtIndex:(SEL)index;
+- (CAMeshTransform)initWithCoder:(id)coder;
+- (CAMeshTransform)initWithVertexCount:(unint64_t)count vertices:(const CAMeshVertex *)vertices faceCount:(unint64_t)faceCount faces:(const CAMeshFace *)faces depthNormalization:(id)normalization;
+- (CAMeshVertex)vertexAtIndex:(SEL)index;
 - (NSString)depthNormalization;
 - (Object)CA_copyRenderValue;
-- (id)CA_interpolateValue:(id)a3 byFraction:(float)a4;
-- (id)CA_interpolateValues:(id)a3 :(id)a4 :(id)a5 interpolator:(const ValueInterpolator *)a6;
+- (id)CA_interpolateValue:(id)value byFraction:(float)fraction;
+- (id)CA_interpolateValues:(id)values :(id)a4 :(id)a5 interpolator:(const ValueInterpolator *)interpolator;
 - (id)_data;
 - (id)_init;
-- (id)_initWithMeshTransform:(id)a3;
-- (id)_subdivideToDepth:(int64_t)a3;
+- (id)_initWithMeshTransform:(id)transform;
+- (id)_subdivideToDepth:(int64_t)depth;
 - (id)inverseMesh;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)CA_copyNumericValue:(double *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)CA_copyNumericValue:(double *)value;
 - (unint64_t)CA_numericValueCount;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMeshTransform
 
-- (id)CA_interpolateValues:(id)a3 :(id)a4 :(id)a5 interpolator:(const ValueInterpolator *)a6
+- (id)CA_interpolateValues:(id)values :(id)a4 :(id)a5 interpolator:(const ValueInterpolator *)interpolator
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (values)
   {
-    v7 = *(a3 + 1);
+    v7 = *(values + 1);
   }
 
   else
@@ -47,7 +47,7 @@
   }
 
   v13[0] = 0;
-  CA::Render::mix_objects(v13, v7, impl, v9, a5, a6);
+  CA::Render::mix_objects(v13, v7, impl, v9, a5, interpolator);
   v10 = interpolatedMeshTransform(a4, v13[0]);
   v11 = v13[0];
   if (v13[0] && atomic_fetch_add(v13[0] + 2, 0xFFFFFFFF) == 1)
@@ -58,29 +58,29 @@
   return v10;
 }
 
-+ (void)CAMLParserEndElement:(id)a3 content:(id)a4
++ (void)CAMLParserEndElement:(id)element content:(id)content
 {
-  v6 = [a3 elementValue];
-  if (v6 && !v6[1] && ([v6 _constructWithData:{objc_msgSend(a4, "dataUsingEncoding:", 4)}] & 1) == 0)
+  elementValue = [element elementValue];
+  if (elementValue && !elementValue[1] && ([elementValue _constructWithData:{objc_msgSend(content, "dataUsingEncoding:", 4)}] & 1) == 0)
   {
 
-    [a3 setElementValue:0];
+    [element setElementValue:0];
   }
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = [a3 attributeForKey:@"src" remove:1];
+  v4 = [element attributeForKey:@"src" remove:1];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4 relativeToURL:{objc_msgSend(a3, "baseURL")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4 relativeToURL:{objc_msgSend(element, "baseURL")}];
     if (v5)
     {
       v6 = v5;
-      v7 = [a3 willLoadResourceFromURL:v5];
+      v7 = [element willLoadResourceFromURL:v5];
       if (v7 && (v8 = v7, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        [a3 setElementValue:v8];
+        [element setElementValue:v8];
       }
 
       else
@@ -89,14 +89,14 @@
         if (v9)
         {
           v10 = v9;
-          v11 = [[CAMeshTransform alloc] _init];
-          if ([v11 _constructWithData:v10])
+          _init = [[CAMeshTransform alloc] _init];
+          if ([_init _constructWithData:v10])
           {
 
-            if (v11)
+            if (_init)
             {
-              [a3 setElementValue:v11];
-              [a3 didLoadResource:v11 fromURL:v6];
+              [element setElementValue:_init];
+              [element didLoadResource:_init fromURL:v6];
             }
           }
 
@@ -108,61 +108,61 @@
     }
   }
 
-  v12 = [a3 elementValue];
-  if (!v12)
+  elementValue = [element elementValue];
+  if (!elementValue)
   {
-    v12 = [[CAMeshTransform alloc] _init];
-    [a3 setElementValue:v12];
+    elementValue = [[CAMeshTransform alloc] _init];
+    [element setElementValue:elementValue];
   }
 
-  v13 = [a3 attributeForKey:@"subdivisionSteps" remove:1];
+  v13 = [element attributeForKey:@"subdivisionSteps" remove:1];
   if (v13)
   {
-    *(v12 + 3) = [v13 intValue];
+    *(elementValue + 3) = [v13 intValue];
   }
 
-  v14 = [a3 attributeForKey:@"replicatesEdges" remove:1];
+  v14 = [element attributeForKey:@"replicatesEdges" remove:1];
   if (v14)
   {
-    *(v12 + 32) = [v14 BOOLValue];
+    *(elementValue + 32) = [v14 BOOLValue];
   }
 
-  v15 = [a3 attributeForKey:@"preallocatesBounds" remove:1];
+  v15 = [element attributeForKey:@"preallocatesBounds" remove:1];
   if (v15)
   {
-    *(v12 + 33) = [v15 BOOLValue];
+    *(elementValue + 33) = [v15 BOOLValue];
   }
 
-  v16 = [a3 attributeForKey:@"depthNormalization" remove:1];
+  v16 = [element attributeForKey:@"depthNormalization" remove:1];
   if (v16)
   {
-    setDepthNormalization(v12, v16);
+    setDepthNormalization(elementValue, v16);
   }
 
-  v17 = *(v12 + 1);
+  v17 = *(elementValue + 1);
   if (v17)
   {
-    v17[12] = vmovn_s64(*(v12 + 1));
-    v17[13].i8[4] = *(v12 + 32);
-    v17[13].i8[5] = *(v12 + 33);
+    v17[12] = vmovn_s64(*(elementValue + 1));
+    v17[13].i8[4] = *(elementValue + 32);
+    v17[13].i8[5] = *(elementValue + 33);
   }
 }
 
-+ (CAMeshTransform)meshTransformWithVertexCount:(unint64_t)a3 vertices:(const CAMeshVertex *)a4 faceCount:(unint64_t)a5 faces:(const CAMeshFace *)a6 depthNormalization:(id)a7
++ (CAMeshTransform)meshTransformWithVertexCount:(unint64_t)count vertices:(const CAMeshVertex *)vertices faceCount:(unint64_t)faceCount faces:(const CAMeshFace *)faces depthNormalization:(id)normalization
 {
-  v7 = [[a1 alloc] initWithVertexCount:a3 vertices:a4 faceCount:a5 faces:a6 depthNormalization:a7];
+  v7 = [[self alloc] initWithVertexCount:count vertices:vertices faceCount:faceCount faces:faces depthNormalization:normalization];
 
   return v7;
 }
 
-- (id)CA_interpolateValue:(id)a3 byFraction:(float)a4
+- (id)CA_interpolateValue:(id)value byFraction:(float)fraction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9.var0 = a4;
+  v9.var0 = fraction;
   memset(&v9.var1, 0, 112);
   v8 = 0;
-  CA::Render::mix_objects(&v8, self->_impl, *(a3 + 1), &v9);
-  v5 = interpolatedMeshTransform(a3, v8);
+  CA::Render::mix_objects(&v8, self->_impl, *(value + 1), &v9);
+  v5 = interpolatedMeshTransform(value, v8);
   v6 = v8;
   if (v8 && atomic_fetch_add(v8 + 2, 0xFFFFFFFF) == 1)
   {
@@ -172,69 +172,69 @@
   return v5;
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
-  v5 = [a3 URLStringForResource:self];
+  v5 = [writer URLStringForResource:self];
   if (v5)
   {
 
-    [a3 setElementAttribute:v5 forKey:@"src"];
+    [writer setElementAttribute:v5 forKey:@"src"];
   }
 
   else
   {
     if (self->_normalization != 1)
     {
-      [a3 setElementAttribute:-[CAMeshTransform depthNormalization](self forKey:{"depthNormalization"), @"depthNormalization"}];
+      [writer setElementAttribute:-[CAMeshTransform depthNormalization](self forKey:{"depthNormalization"), @"depthNormalization"}];
     }
 
     if ((self->_subdivisionSteps & 0x8000000000000000) == 0)
     {
       v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d", self->_subdivisionSteps];
-      [a3 setElementAttribute:v6 forKey:@"subdivisionSteps"];
+      [writer setElementAttribute:v6 forKey:@"subdivisionSteps"];
     }
 
     if (self->_replicatesEdges)
     {
-      [a3 setElementAttribute:@"1" forKey:@"replicatesEdges"];
+      [writer setElementAttribute:@"1" forKey:@"replicatesEdges"];
     }
 
     if (self->_preallocatesBounds)
     {
-      [a3 setElementAttribute:@"1" forKey:@"preallocatesBounds"];
+      [writer setElementAttribute:@"1" forKey:@"preallocatesBounds"];
     }
 
-    v7 = [(CAMeshTransform *)self _data];
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
-    [a3 setElementContent:v8];
+    _data = [(CAMeshTransform *)self _data];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:_data encoding:4];
+    [writer setElementContent:v8];
   }
 }
 
-- (CAMeshTransform)initWithCoder:(id)a3
+- (CAMeshTransform)initWithCoder:(id)coder
 {
-  v4 = [(CAMeshTransform *)self _init];
-  if (v4)
+  _init = [(CAMeshTransform *)self _init];
+  if (_init)
   {
-    if ([a3 containsValueForKey:@"subdivisionSteps"])
+    if ([coder containsValueForKey:@"subdivisionSteps"])
     {
-      v4->_subdivisionSteps = [a3 decodeIntForKey:@"subdivisionSteps"];
+      _init->_subdivisionSteps = [coder decodeIntForKey:@"subdivisionSteps"];
     }
 
-    if ([a3 containsValueForKey:@"replicatesEdges"])
+    if ([coder containsValueForKey:@"replicatesEdges"])
     {
-      v4->_replicatesEdges = [a3 decodeBoolForKey:@"replicatesEdges"];
+      _init->_replicatesEdges = [coder decodeBoolForKey:@"replicatesEdges"];
     }
 
-    if ([a3 containsValueForKey:@"preallocatesBounds"])
+    if ([coder containsValueForKey:@"preallocatesBounds"])
     {
-      v4->_preallocatesBounds = [a3 decodeBoolForKey:@"preallocatesBounds"];
+      _init->_preallocatesBounds = [coder decodeBoolForKey:@"preallocatesBounds"];
     }
 
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"meshData"];
-    if (v5 && [(CAMeshTransform *)v4 _constructWithData:v5])
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"meshData"];
+    if (v5 && [(CAMeshTransform *)_init _constructWithData:v5])
     {
-      v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"depthNormalization"];
-      setDepthNormalization(v4, v6);
+      v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"depthNormalization"];
+      setDepthNormalization(_init, v6);
     }
 
     else
@@ -244,71 +244,71 @@
     }
   }
 
-  return v4;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[CAMeshTransform _data](self forKey:{"_data"), @"meshData"}];
+  [coder encodeObject:-[CAMeshTransform _data](self forKey:{"_data"), @"meshData"}];
   if (self->_normalization != 1)
   {
-    [a3 encodeObject:-[CAMeshTransform depthNormalization](self forKey:{"depthNormalization"), @"depthNormalization"}];
+    [coder encodeObject:-[CAMeshTransform depthNormalization](self forKey:{"depthNormalization"), @"depthNormalization"}];
   }
 
   if ((self->_subdivisionSteps & 0x8000000000000000) == 0)
   {
-    [a3 encodeInt:? forKey:?];
+    [coder encodeInt:? forKey:?];
   }
 
   if (self->_replicatesEdges)
   {
-    [a3 encodeBool:1 forKey:@"replicatesEdges"];
+    [coder encodeBool:1 forKey:@"replicatesEdges"];
   }
 
   if (self->_preallocatesBounds)
   {
 
-    [a3 encodeBool:1 forKey:@"preallocatesBounds"];
+    [coder encodeBool:1 forKey:@"preallocatesBounds"];
   }
 }
 
 - (id)inverseMesh
 {
-  v3 = [objc_alloc(objc_opt_class()) _init];
+  _init = [objc_alloc(objc_opt_class()) _init];
   v4 = CA::Render::MeshTransform::retain_inverse_mesh(self->_impl);
-  *(v3 + 8) = v4;
+  *(_init + 8) = v4;
   if (v4)
   {
     v5 = *(v4 + 25);
-    *(v3 + 16) = *(v4 + 24);
-    *(v3 + 24) = v5;
-    *(v3 + 32) = *(v4 + 108);
-    *(v3 + 33) = *(v4 + 109);
+    *(_init + 16) = *(v4 + 24);
+    *(_init + 24) = v5;
+    *(_init + 32) = *(v4 + 108);
+    *(_init + 33) = *(v4 + 109);
   }
 
-  return v3;
+  return _init;
 }
 
-- (id)_subdivideToDepth:(int64_t)a3
+- (id)_subdivideToDepth:(int64_t)depth
 {
-  v3 = self;
-  v4 = CA::Render::MeshTransform::retain_subdivided_mesh(self->_impl, a3);
+  selfCopy = self;
+  v4 = CA::Render::MeshTransform::retain_subdivided_mesh(self->_impl, depth);
   if (!v4)
   {
     return 0;
   }
 
   v5 = v4;
-  if (v4 != v3->_impl)
+  if (v4 != selfCopy->_impl)
   {
-    v6 = [objc_alloc(objc_opt_class()) _init];
+    _init = [objc_alloc(objc_opt_class()) _init];
     if (atomic_fetch_add(v5 + 2, 1u))
     {
       v7 = *(v5 + 25);
-      *(v6 + 16) = *(v5 + 24);
-      *(v6 + 24) = v7;
-      *(v6 + 32) = *(v5 + 108);
-      *(v6 + 33) = *(v5 + 109);
+      *(_init + 16) = *(v5 + 24);
+      *(_init + 24) = v7;
+      *(_init + 32) = *(v5 + 108);
+      *(_init + 33) = *(v5 + 109);
       v8 = v5;
     }
 
@@ -318,8 +318,8 @@
       atomic_fetch_add(v5 + 2, 0xFFFFFFFF);
     }
 
-    *(v6 + 8) = v8;
-    v3 = v6;
+    *(_init + 8) = v8;
+    selfCopy = _init;
   }
 
   if (atomic_fetch_add(v5 + 2, 0xFFFFFFFF) == 1)
@@ -327,7 +327,7 @@
     (*(*v5 + 16))(v5);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_data
@@ -393,7 +393,7 @@
   return v17;
 }
 
-- (BOOL)_constructWithData:(id)a3
+- (BOOL)_constructWithData:(id)data
 {
   v89 = *MEMORY[0x1E69E9840];
   v87 = 0u;
@@ -429,24 +429,24 @@
   *(v5 + 100) = 0xFFFFFFFFLL;
   *(v5 + 54) = 0;
   *(v5 + 25) = 0;
-  v7 = [a3 length];
-  v8 = [a3 bytes];
-  v76 = v8;
+  v7 = [data length];
+  bytes = [data bytes];
+  v76 = bytes;
   if (v7 < 1)
   {
     goto LABEL_72;
   }
 
-  v9 = v8;
+  v9 = bytes;
   v10 = 0;
-  v11 = -v8;
-  v75 = -v8;
+  v11 = -bytes;
+  v75 = -bytes;
   while (2)
   {
-    v12 = &v8[v11];
+    v12 = &bytes[v11];
     while (1)
     {
-      v13 = *v8;
+      v13 = *bytes;
       if (v13 <= 0x2E)
       {
         if (((1 << v13) & 0x100100003600) != 0)
@@ -472,7 +472,7 @@
       }
 
 LABEL_12:
-      v76 = ++v8;
+      v76 = ++bytes;
       if (++v12 >= v7)
       {
         goto LABEL_72;
@@ -637,7 +637,7 @@ LABEL_12:
           while (v46 != 64);
           v10 = 0;
 LABEL_71:
-          v8 = ++v76;
+          bytes = ++v76;
           goto LABEL_17;
         }
 
@@ -814,10 +814,10 @@ LABEL_15:
       goto LABEL_87;
     }
 
-    v81.f64[v10++] = x_strtod(v8, &v76, &v9[v7]);
-    v8 = v76;
+    v81.f64[v10++] = x_strtod(bytes, &v76, &v9[v7]);
+    bytes = v76;
 LABEL_17:
-    if (v8 - v9 < v7)
+    if (bytes - v9 < v7)
     {
       continue;
     }
@@ -834,14 +834,14 @@ LABEL_72:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CAMutableMeshTransform alloc];
 
   return [(CAMeshTransform *)v4 _initWithMeshTransform:self];
 }
 
-- (unint64_t)CA_copyNumericValue:(double *)a3
+- (unint64_t)CA_copyNumericValue:(double *)value
 {
   impl = self->_impl;
   v6 = impl[3];
@@ -851,20 +851,20 @@ LABEL_72:
   LODWORD(v3) = *(impl + 24);
   v9 = v3;
   v10 = *(impl + 25);
-  a3[2] = v9;
-  a3[3] = v10;
+  value[2] = v9;
+  value[3] = v10;
   LOBYTE(v9) = *(impl + 108);
   LOBYTE(v10) = *(impl + 109);
-  a3[4] = *&v9;
-  a3[5] = *&v10;
-  v11 = a3 + 6;
+  value[4] = *&v9;
+  value[5] = *&v10;
+  v11 = value + 6;
   v13 = v5 - v6;
   v12 = v13 == 0;
   v14 = v13 >> 5;
   v15 = (v13 >> 5);
   v16 = (v8 - v7) >> 4;
-  *a3 = v15;
-  a3[1] = v16;
+  *value = v15;
+  value[1] = v16;
   if (!v12)
   {
     if (v14 <= 1)
@@ -923,7 +923,7 @@ LABEL_72:
     v11 = v26;
   }
 
-  return v11 - a3;
+  return v11 - value;
 }
 
 - (unint64_t)CA_numericValueCount
@@ -963,7 +963,7 @@ LABEL_72:
   }
 }
 
-- (CAMeshFace)faceAtIndex:(SEL)a3
+- (CAMeshFace)faceAtIndex:(SEL)index
 {
   v4 = 0;
   v5 = *&self->var0[2];
@@ -984,7 +984,7 @@ LABEL_72:
   return self;
 }
 
-- (CAMeshVertex)vertexAtIndex:(SEL)a3
+- (CAMeshVertex)vertexAtIndex:(SEL)index
 {
   v4 = (*(*&self->var0.y + 24) + 32 * a4);
   v5 = vcvtq_f64_f32(v4[2]);
@@ -994,12 +994,12 @@ LABEL_72:
   return self;
 }
 
-- (id)_initWithMeshTransform:(id)a3
+- (id)_initWithMeshTransform:(id)transform
 {
-  v4 = [(CAMeshTransform *)self _init];
-  if (v4)
+  _init = [(CAMeshTransform *)self _init];
+  if (_init)
   {
-    v5 = *(a3 + 1);
+    v5 = *(transform + 1);
     if (!v5)
     {
       goto LABEL_7;
@@ -1016,11 +1016,11 @@ LABEL_72:
       v7 = CA::Render::MeshTransform::MeshTransform(v6, v5);
       v8 = *(v7 + 24);
       v9 = *(v7 + 25);
-      v4[1] = v7;
-      v4[2] = v8;
-      v4[3] = v9;
-      *(v4 + 32) = *(v7 + 108);
-      *(v4 + 33) = *(v7 + 109);
+      _init[1] = v7;
+      _init[2] = v8;
+      _init[3] = v9;
+      *(_init + 32) = *(v7 + 108);
+      *(_init + 33) = *(v7 + 109);
     }
 
     else
@@ -1031,13 +1031,13 @@ LABEL_7:
     }
   }
 
-  return v4;
+  return _init;
 }
 
-- (CAMeshTransform)initWithVertexCount:(unint64_t)a3 vertices:(const CAMeshVertex *)a4 faceCount:(unint64_t)a5 faces:(const CAMeshFace *)a6 depthNormalization:(id)a7
+- (CAMeshTransform)initWithVertexCount:(unint64_t)count vertices:(const CAMeshVertex *)vertices faceCount:(unint64_t)faceCount faces:(const CAMeshFace *)faces depthNormalization:(id)normalization
 {
-  v12 = [(CAMeshTransform *)self _init];
-  if (v12)
+  _init = [(CAMeshTransform *)self _init];
+  if (_init)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -1048,10 +1048,10 @@ LABEL_7:
     if (v13)
     {
       v14 = v13;
-      CA::Render::MeshTransform::MeshTransform(v13, a3, a5, -1);
-      if (a3)
+      CA::Render::MeshTransform::MeshTransform(v13, count, faceCount, -1);
+      if (count)
       {
-        p_z = &a4->var1.z;
+        p_z = &vertices->var1.z;
         v16 = (*&v14[3] + 28);
         do
         {
@@ -1064,13 +1064,13 @@ LABEL_7:
           *(v16 - 1) = v19;
           *v16 = 1.0;
           v16 += 8;
-          --a3;
+          --count;
         }
 
-        while (a3);
+        while (count);
       }
 
-      if (a5)
+      if (faceCount)
       {
         v20 = 0;
         v21 = v14[6];
@@ -1079,25 +1079,25 @@ LABEL_7:
         {
           for (i = 0; i != 4; ++i)
           {
-            *(*&v21 + i * 4) = a6->var0[i];
-            *(v22 + 1 * i) = a6->var1[i];
+            *(*&v21 + i * 4) = faces->var0[i];
+            *(v22 + 1 * i) = faces->var1[i];
           }
 
           ++v20;
           v22 += 64;
-          ++a6;
+          ++faces;
           *&v21 += 16;
         }
 
-        while (v20 != a5);
+        while (v20 != faceCount);
       }
 
-      setDepthNormalization(v12, a7);
+      setDepthNormalization(_init, normalization);
       v14[1].i32[1] &= 0xFFFFD4FF;
-      *(v12 + 1) = v14;
-      v14[12] = vmovn_s64(*(v12 + 1));
-      v14[13].i8[4] = *(v12 + 32);
-      v14[13].i8[5] = *(v12 + 33);
+      *(_init + 1) = v14;
+      v14[12] = vmovn_s64(*(_init + 1));
+      v14[13].i8[4] = *(_init + 32);
+      v14[13].i8[5] = *(_init + 33);
     }
 
     else
@@ -1107,7 +1107,7 @@ LABEL_7:
     }
   }
 
-  return v12;
+  return _init;
 }
 
 - (id)_init

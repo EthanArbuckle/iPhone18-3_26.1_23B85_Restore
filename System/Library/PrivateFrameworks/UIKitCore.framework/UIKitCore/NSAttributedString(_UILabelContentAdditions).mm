@@ -13,7 +13,7 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -38,7 +38,7 @@ LABEL_3:
       v13[2] = __67__NSAttributedString__UILabelContentAdditions__containsAttributes___block_invoke;
       v13[3] = &unk_1E70F8050;
       v13[4] = &v18;
-      [a1 enumerateAttribute:v10 inRange:0 options:v5 usingBlock:{0x100000, v13}];
+      [self enumerateAttribute:v10 inRange:0 options:v5 usingBlock:{0x100000, v13}];
       if (v19[3])
       {
         break;
@@ -69,7 +69,7 @@ LABEL_3:
   v4 = a3;
   v24[0] = *off_1E70EC8D0;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v6 = [a1 containsAttributes:v5];
+  v6 = [self containsAttributes:v5];
 
   if (v6)
   {
@@ -78,8 +78,8 @@ LABEL_3:
 
   else
   {
-    v8 = [a1 string];
-    if ([v8 _containsEmoji])
+    string = [self string];
+    if ([string _containsEmoji])
     {
 
       v7 = 1;
@@ -89,7 +89,7 @@ LABEL_3:
     {
       v23 = *off_1E70EC8C0;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-      v10 = [a1 containsAttributes:v9];
+      v10 = [self containsAttributes:v9];
 
       v7 = 1;
       if ((v10 & 1) == 0)
@@ -98,7 +98,7 @@ LABEL_3:
         v20 = &v19;
         v21 = 0x2020000000;
         v22 = 1;
-        v11 = [a1 length];
+        v11 = [self length];
         v12 = *off_1E70EC920;
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
@@ -108,7 +108,7 @@ LABEL_3:
         v18 = v11;
         v16 = &v19;
         v15 = v4;
-        [a1 enumerateAttribute:v12 inRange:0 options:v11 usingBlock:{0, v14}];
+        [self enumerateAttribute:v12 inRange:0 options:v11 usingBlock:{0, v14}];
         if (*(v20 + 24))
         {
           v7 = 2;

@@ -1,14 +1,14 @@
 @interface HBXFitnessManager
 + (id)divingFitnessNonGradientTextColor;
-+ (id)fitnessIconFor:(id)a3;
++ (id)fitnessIconFor:(id)for;
 + (id)fitnessNonGradientTextColor;
 @end
 
 @implementation HBXFitnessManager
 
-+ (id)fitnessIconFor:(id)a3
++ (id)fitnessIconFor:(id)for
 {
-  v3 = [MEMORY[0x277D0A810] activityTypeWithWorkout:a3];
+  v3 = [MEMORY[0x277D0A810] activityTypeWithWorkout:for];
   v4 = FIUIStaticWorkoutIconImage();
   v5 = [v4 imageWithRenderingMode:2];
 
@@ -17,18 +17,18 @@
 
 + (id)fitnessNonGradientTextColor
 {
-  v2 = [MEMORY[0x277CE8E80] keyColors];
-  v3 = [v2 nonGradientTextColor];
+  keyColors = [MEMORY[0x277CE8E80] keyColors];
+  nonGradientTextColor = [keyColors nonGradientTextColor];
 
-  return v3;
+  return nonGradientTextColor;
 }
 
 + (id)divingFitnessNonGradientTextColor
 {
-  v2 = [MEMORY[0x277CE8E80] diveColors];
-  v3 = [v2 nonGradientTextColor];
+  diveColors = [MEMORY[0x277CE8E80] diveColors];
+  nonGradientTextColor = [diveColors nonGradientTextColor];
 
-  return v3;
+  return nonGradientTextColor;
 }
 
 @end

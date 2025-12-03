@@ -3,23 +3,23 @@
 - (BOOL)_isWithinGracePeriod;
 - (NSString)stateDescription;
 - (PXPhotoAnalysisStatusController)init;
-- (void)_dequeueAndPerformBlocks:(id)a3;
-- (void)_handleGraphFractionCompletedReply:(id)a3 error:(id)a4;
-- (void)_handleGraphReadyForSomeTimeForDate:(id)a3;
-- (void)_handleGraphReadyReplyWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_dequeueAndPerformBlocks:(id)blocks;
+- (void)_handleGraphFractionCompletedReply:(id)reply error:(id)error;
+- (void)_handleGraphReadyForSomeTimeForDate:(id)date;
+- (void)_handleGraphReadyReplyWithSuccess:(BOOL)success error:(id)error;
 - (void)_handleInitialGraceDelay;
 - (void)_requestGraphFractionCompleted;
 - (void)_requestGraphReady;
-- (void)_setDidReceiveGraphFractionCompleted:(BOOL)a3;
-- (void)_setGraphError:(id)a3;
-- (void)_setGraphFractionCompleted:(double)a3;
-- (void)_setGraphReady:(BOOL)a3;
-- (void)_setGraphStatus:(int64_t)a3;
-- (void)_setHasBeenReadyForSomeTime:(BOOL)a3;
+- (void)_setDidReceiveGraphFractionCompleted:(BOOL)completed;
+- (void)_setGraphError:(id)error;
+- (void)_setGraphFractionCompleted:(double)completed;
+- (void)_setGraphReady:(BOOL)ready;
+- (void)_setGraphStatus:(int64_t)status;
+- (void)_setHasBeenReadyForSomeTime:(BOOL)time;
 - (void)_updateGraphStatusIfNeeded;
 - (void)_updateIfNeeded;
 - (void)didPerformChanges;
-- (void)registerRetryBlock:(id)a3;
+- (void)registerRetryBlock:(id)block;
 - (void)update;
 @end
 
@@ -43,9 +43,9 @@
 
     else
     {
-      v5 = [(PXPhotoAnalysisStatusController *)self _graphError];
+      _graphError = [(PXPhotoAnalysisStatusController *)self _graphError];
 
-      if (v5)
+      if (_graphError)
       {
         v4 = 3;
       }
@@ -74,18 +74,18 @@
     v3 = PLMemoriesGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [(PXPhotoAnalysisStatusController *)self stateDescription];
+      stateDescription = [(PXPhotoAnalysisStatusController *)self stateDescription];
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = stateDescription;
       _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "[%@] state: %@", &v6, 0x16u);
     }
 
     if (([(PXPhotoAnalysisStatusController *)self graphStatus]| 2) == 3)
     {
-      v5 = [(PXPhotoAnalysisStatusController *)self _retryBlocks];
-      [(PXPhotoAnalysisStatusController *)self _dequeueAndPerformBlocks:v5];
+      _retryBlocks = [(PXPhotoAnalysisStatusController *)self _retryBlocks];
+      [(PXPhotoAnalysisStatusController *)self _dequeueAndPerformBlocks:_retryBlocks];
     }
   }
 }
@@ -98,14 +98,14 @@
   [(PXPhotoAnalysisStatusController *)self _updateIfNeeded];
 }
 
-- (void)_dequeueAndPerformBlocks:(id)a3
+- (void)_dequeueAndPerformBlocks:(id)blocks
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  blocksCopy = blocks;
+  if ([blocksCopy count])
   {
-    v4 = [v3 copy];
-    [v3 removeAllObjects];
+    v4 = [blocksCopy copy];
+    [blocksCopy removeAllObjects];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
@@ -141,8 +141,8 @@
 
 - (BOOL)_isWithinGracePeriod
 {
-  v2 = [(PXPhotoAnalysisStatusController *)self _initialUpdateDate];
-  [v2 timeIntervalSinceNow];
+  _initialUpdateDate = [(PXPhotoAnalysisStatusController *)self _initialUpdateDate];
+  [_initialUpdateDate timeIntervalSinceNow];
   v4 = -v3;
 
   v5 = +[PXModelSettings sharedInstance];
@@ -152,47 +152,47 @@
   return v7;
 }
 
-- (void)_setGraphError:(id)a3
+- (void)_setGraphError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->__graphError != v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->__graphError != errorCopy)
   {
-    v8 = v5;
-    v7 = [(NSError *)v5 isEqual:?];
+    v8 = errorCopy;
+    v7 = [(NSError *)errorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->__graphError, a3);
+      objc_storeStrong(&self->__graphError, error);
       [(PXPhotoAnalysisStatusController *)self _invalidateGraphStatus];
       v6 = v8;
     }
   }
 }
 
-- (void)_setGraphReady:(BOOL)a3
+- (void)_setGraphReady:(BOOL)ready
 {
-  if (self->__graphReady != a3)
+  if (self->__graphReady != ready)
   {
-    self->__graphReady = a3;
+    self->__graphReady = ready;
     [(PXPhotoAnalysisStatusController *)self _invalidateGraphStatus];
   }
 }
 
-- (void)_setDidReceiveGraphFractionCompleted:(BOOL)a3
+- (void)_setDidReceiveGraphFractionCompleted:(BOOL)completed
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->__didReceiveGraphFractionCompleted != a3)
+  if (self->__didReceiveGraphFractionCompleted != completed)
   {
-    v3 = a3;
-    self->__didReceiveGraphFractionCompleted = a3;
+    completedCopy = completed;
+    self->__didReceiveGraphFractionCompleted = completed;
     v5 = PLMemoriesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = completedCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] did receive graph fraction completed=%i", &v6, 0x12u);
     }
 
@@ -200,33 +200,33 @@
   }
 }
 
-- (void)_setGraphFractionCompleted:(double)a3
+- (void)_setGraphFractionCompleted:(double)completed
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_graphFractionCompleted != a3)
+  if (self->_graphFractionCompleted != completed)
   {
-    self->_graphFractionCompleted = a3;
+    self->_graphFractionCompleted = completed;
     v5 = PLMemoriesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = a3 * 100.0;
+      v9 = completed * 100.0;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "[%@] graph fraction completed=%f%%", &v6, 0x16u);
     }
 
     [(PXPhotoAnalysisStatusController *)self signalChange:2];
-    if (a3 > 0.0)
+    if (completed > 0.0)
     {
       [(PXPhotoAnalysisStatusController *)self _invalidateGraphStatus];
     }
   }
 }
 
-- (void)_handleGraphReadyForSomeTimeForDate:(id)a3
+- (void)_handleGraphReadyForSomeTimeForDate:(id)date
 {
-  if (self->__lastGraphBecameReadyDate == a3)
+  if (self->__lastGraphBecameReadyDate == date)
   {
     v5[5] = v3;
     v5[6] = v4;
@@ -239,16 +239,16 @@
   }
 }
 
-- (void)_setGraphStatus:(int64_t)a3
+- (void)_setGraphStatus:(int64_t)status
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_graphStatus != a3)
+  if (self->_graphStatus != status)
   {
-    self->_graphStatus = a3;
-    if (a3 == 1)
+    self->_graphStatus = status;
+    if (status == 1)
     {
-      v5 = [MEMORY[0x1E695DF00] date];
-      objc_storeStrong(&self->__lastGraphBecameReadyDate, v5);
+      date = [MEMORY[0x1E695DF00] date];
+      objc_storeStrong(&self->__lastGraphBecameReadyDate, date);
       objc_initWeak(location, self);
       v6 = dispatch_time(0, 10000000000);
       v11[0] = MEMORY[0x1E69E9820];
@@ -256,8 +256,8 @@
       v11[2] = __51__PXPhotoAnalysisStatusController__setGraphStatus___block_invoke;
       v11[3] = &unk_1E774B248;
       objc_copyWeak(&v13, location);
-      v12 = v5;
-      v7 = v5;
+      v12 = date;
+      v7 = date;
       dispatch_after(v6, MEMORY[0x1E69E96A0], v11);
 
       objc_destroyWeak(&v13);
@@ -275,14 +275,14 @@
     v9 = PLMemoriesGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 3)
+      if (status > 3)
       {
         v10 = @"?";
       }
 
       else
       {
-        v10 = off_1E7749D98[a3];
+        v10 = off_1E7749D98[status];
       }
 
       *location = 138412546;
@@ -302,36 +302,36 @@ void __51__PXPhotoAnalysisStatusController__setGraphStatus___block_invoke(uint64
   [WeakRetained _handleGraphReadyForSomeTimeForDate:*(a1 + 32)];
 }
 
-- (void)_setHasBeenReadyForSomeTime:(BOOL)a3
+- (void)_setHasBeenReadyForSomeTime:(BOOL)time
 {
-  if (self->_hasBeenReadyForSomeTime != a3)
+  if (self->_hasBeenReadyForSomeTime != time)
   {
-    self->_hasBeenReadyForSomeTime = a3;
+    self->_hasBeenReadyForSomeTime = time;
     [(PXPhotoAnalysisStatusController *)self signalChange:4];
   }
 }
 
-- (void)_handleGraphFractionCompletedReply:(id)a3 error:(id)a4
+- (void)_handleGraphFractionCompletedReply:(id)reply error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  replyCopy = reply;
+  errorCopy = error;
   [(PXPhotoAnalysisStatusController *)self _setRequestingGraphFractionCompleted:0];
   v8 = PLMemoriesGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v6;
+    v20 = replyCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "[%@] fraction completed=%@ error=%@", buf, 0x20u);
   }
 
-  if (v6 && !v7)
+  if (replyCopy && !errorCopy)
   {
-    [v6 doubleValue];
+    [replyCopy doubleValue];
     v10 = v9 < 1.0;
     if (v9 < 0.0)
     {
@@ -385,13 +385,13 @@ void __76__PXPhotoAnalysisStatusController__handleGraphFractionCompletedReply_er
   {
     [(PXPhotoAnalysisStatusController *)self _setRequestingGraphFractionCompleted:1];
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __65__PXPhotoAnalysisStatusController__requestGraphFractionCompleted__block_invoke;
     v4[3] = &unk_1E7749D50;
     objc_copyWeak(&v5, &location);
-    [v3 requestGraphRebuildProgressWithCompletion:v4];
+    [px_deprecated_appPhotoLibrary requestGraphRebuildProgressWithCompletion:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -414,17 +414,17 @@ void __65__PXPhotoAnalysisStatusController__requestGraphFractionCompleted__block
   [WeakRetained _handleGraphFractionCompletedReply:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_handleGraphReadyReplyWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_handleGraphReadyReplyWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__PXPhotoAnalysisStatusController__handleGraphReadyReplyWithSuccess_error___block_invoke;
   v8[3] = &unk_1E7749D28;
-  v10 = a3;
+  successCopy = success;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = errorCopy;
+  v7 = errorCopy;
   [(PXPhotoAnalysisStatusController *)self performChanges:v8];
 }
 
@@ -491,18 +491,18 @@ void __75__PXPhotoAnalysisStatusController__handleGraphReadyReplyWithSuccess_err
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[%@] request graph ready", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__PXPhotoAnalysisStatusController__requestGraphReady__block_invoke;
   v5[3] = &unk_1E7749D00;
   objc_copyWeak(&v6, buf);
-  [v4 requestGraphReadyNotificationWithCoalescingIdentifier:0 completion:v5];
+  [px_deprecated_appPhotoLibrary requestGraphReadyNotificationWithCoalescingIdentifier:0 completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -535,42 +535,42 @@ void __53__PXPhotoAnalysisStatusController__requestGraphReady__block_invoke_2(ui
 
 - (NSString)stateDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PXPhotoAnalysisStatusController *)self graphStatus];
-  if (v4 > 3)
+  string = [MEMORY[0x1E696AD60] string];
+  graphStatus = [(PXPhotoAnalysisStatusController *)self graphStatus];
+  if (graphStatus > 3)
   {
     v5 = @"?";
   }
 
   else
   {
-    v5 = off_1E7749D98[v4];
+    v5 = off_1E7749D98[graphStatus];
   }
 
-  [v3 appendFormat:@"Graph Status: %@\n", v5];
+  [string appendFormat:@"Graph Status: %@\n", v5];
   [(PXPhotoAnalysisStatusController *)self graphFractionCompleted];
-  [v3 appendFormat:@"Graph Fraction Completed: %0.2f%%\n", v6 * 100.0];
-  v7 = [(PXPhotoAnalysisStatusController *)self _graphError];
-  [v3 appendFormat:@"Graph Error: %@\n", v7];
+  [string appendFormat:@"Graph Fraction Completed: %0.2f%%\n", v6 * 100.0];
+  _graphError = [(PXPhotoAnalysisStatusController *)self _graphError];
+  [string appendFormat:@"Graph Error: %@\n", _graphError];
 
   if ([(PXPhotoAnalysisStatusController *)self _isWithinGracePeriod])
   {
-    [v3 appendString:@"Within grace period\n"];
+    [string appendString:@"Within grace period\n"];
   }
 
-  return v3;
+  return string;
 }
 
-- (void)registerRetryBlock:(id)a3
+- (void)registerRetryBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PXPhotoAnalysisStatusController_registerRetryBlock___block_invoke;
   v6[3] = &unk_1E7749CB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PXPhotoAnalysisStatusController *)self performChanges:v6];
 }
 
@@ -588,12 +588,12 @@ uint64_t __54__PXPhotoAnalysisStatusController_registerRetryBlock___block_invoke
 
 - (void)update
 {
-  v3 = [(PXPhotoAnalysisStatusController *)self _initialUpdateDate];
+  _initialUpdateDate = [(PXPhotoAnalysisStatusController *)self _initialUpdateDate];
 
-  if (!v3)
+  if (!_initialUpdateDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [(PXPhotoAnalysisStatusController *)self _setInitialUpdateDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PXPhotoAnalysisStatusController *)self _setInitialUpdateDate:date];
 
     objc_initWeak(&location, self);
     v5 = +[PXModelSettings sharedInstance];
@@ -633,9 +633,9 @@ void __41__PXPhotoAnalysisStatusController_update__block_invoke(uint64_t a1)
   v2 = [(PXPhotoAnalysisStatusController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     retryBlocks = v2->__retryBlocks;
-    v2->__retryBlocks = v3;
+    v2->__retryBlocks = array;
   }
 
   return v2;

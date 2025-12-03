@@ -1,35 +1,35 @@
 @interface EAOverHID
-- (BOOL)applyStagedFirmwareVersionsAfterDelay:(unsigned __int16)a3;
+- (BOOL)applyStagedFirmwareVersionsAfterDelay:(unsigned __int16)delay;
 - (BOOL)publishEAAccessory;
 - (BOOL)queryAllCurrentFirmwareVersions;
 - (BOOL)queryAllStagedFirmwareVersions;
 - (BOOL)registerForHIDCallbacks;
-- (BOOL)sendControlMessageOutputReport:(int)a3 payload:(char *)a4 payloadLength:(unsigned __int16)a5;
-- (BOOL)sendEAMessageOutputReport:(id)a3;
-- (BOOL)sendHIDReport:(char *)a3 reportID:(int)a4 length:(int)a5;
-- (BOOL)sendVendorSpecificRequest:(id)a3;
+- (BOOL)sendControlMessageOutputReport:(int)report payload:(char *)payload payloadLength:(unsigned __int16)length;
+- (BOOL)sendEAMessageOutputReport:(id)report;
+- (BOOL)sendHIDReport:(char *)report reportID:(int)d length:(int)length;
+- (BOOL)sendVendorSpecificRequest:(id)request;
 - (EAOverHID)init;
 - (id)getEAProductIDForAccessory;
-- (unsigned)getReportSizeForReportUsage:(unsigned int)a3;
-- (unsigned)getServiceForRegistryID:(unint64_t)a3;
-- (void)accessoryAttached:(id)a3 withInfo:(id)a4;
+- (unsigned)getReportSizeForReportUsage:(unsigned int)usage;
+- (unsigned)getServiceForRegistryID:(unint64_t)d;
+- (void)accessoryAttached:(id)attached withInfo:(id)info;
 - (void)dealloc;
 - (void)getHIDAccessoryInformation;
 - (void)handleHIDAccessoryDisconnect;
-- (void)idleExitAllowed:(BOOL)a3;
-- (void)logDebugMessageFromAccessory:(char *)a3 length:(int64_t)a4;
-- (void)parseInputReportWithId:(unsigned int)a3 andBuffer:(id)a4;
-- (void)processControlMessageRequest:(id)a3;
-- (void)processControlMessageResponse:(id)a3;
-- (void)processIncomingEADataFromPlugin:(id)a3;
-- (void)processInputControlMessageReport:(id)a3;
-- (void)processInputEAMessageReportFromAccessory:(id)a3;
-- (void)queueEvent:(id)a3 withInfo:(id)a4;
+- (void)idleExitAllowed:(BOOL)allowed;
+- (void)logDebugMessageFromAccessory:(char *)accessory length:(int64_t)length;
+- (void)parseInputReportWithId:(unsigned int)id andBuffer:(id)buffer;
+- (void)processControlMessageRequest:(id)request;
+- (void)processControlMessageResponse:(id)response;
+- (void)processIncomingEADataFromPlugin:(id)plugin;
+- (void)processInputControlMessageReport:(id)report;
+- (void)processInputEAMessageReportFromAccessory:(id)accessory;
+- (void)queueEvent:(id)event withInfo:(id)info;
 @end
 
 @implementation EAOverHID
 
-- (void)accessoryAttached:(id)a3 withInfo:(id)a4
+- (void)accessoryAttached:(id)attached withInfo:(id)info
 {
   if (qword_100099828 != -1)
   {
@@ -46,7 +46,7 @@
 
   if (self->_isActive)
   {
-    [(EAOverHID *)self queueEvent:a3 withInfo:a4];
+    [(EAOverHID *)self queueEvent:attached withInfo:info];
   }
 
   else
@@ -55,22 +55,22 @@
     self->_eaStreamReady = 0;
     *&self->_expectedHIDMessageID = 0;
     [(EAOverHID *)self idleExitAllowed:0];
-    if ([a4 objectForKeyedSubscript:@"IOMatchLaunchServiceID"])
+    if ([info objectForKeyedSubscript:@"IOMatchLaunchServiceID"])
     {
-      v8 = -[EAOverHID getServiceForRegistryID:](self, "getServiceForRegistryID:", [objc_msgSend(a4 objectForKeyedSubscript:{@"IOMatchLaunchServiceID", "unsignedLongLongValue"}]);
+      v8 = -[EAOverHID getServiceForRegistryID:](self, "getServiceForRegistryID:", [objc_msgSend(info objectForKeyedSubscript:{@"IOMatchLaunchServiceID", "unsignedLongLongValue"}]);
       if (v8)
       {
         v9 = v8;
         v10 = IOHIDDeviceCreate(kCFAllocatorDefault, v8);
         if (v10)
         {
-          v11 = [[EAHIDAccessory alloc] initWithName:a3 HIDDeviceRef:v10];
+          v11 = [[EAHIDAccessory alloc] initWithName:attached HIDDeviceRef:v10];
           self->_eaHIDAccessory = v11;
           if (v11)
           {
             if ([(EAOverHID *)self registerForHIDCallbacks])
             {
-              if (![a4 objectForKey:@"QueryAccInfo"] || objc_msgSend(objc_msgSend(a4, "objectForKey:", @"QueryAccInfo"), "BOOLValue"))
+              if (![info objectForKey:@"QueryAccInfo"] || objc_msgSend(objc_msgSend(info, "objectForKey:", @"QueryAccInfo"), "BOOLValue"))
               {
                 [(EAOverHID *)self getHIDAccessoryInformation];
               }
@@ -121,11 +121,11 @@ LABEL_14:
   dispatch_group_async(qword_10009A9D8, eaHIDQueue, block);
 }
 
-- (BOOL)sendControlMessageOutputReport:(int)a3 payload:(char *)a4 payloadLength:(unsigned __int16)a5
+- (BOOL)sendControlMessageOutputReport:(int)report payload:(char *)payload payloadLength:(unsigned __int16)length
 {
-  v5 = a5;
+  lengthCopy = length;
   LODWORD(v18) = 0;
-  HIDWORD(v18) = a3;
+  HIDWORD(v18) = report;
   v17 = 0;
   if (qword_100099828 != -1)
   {
@@ -136,7 +136,7 @@ LABEL_14:
   if (os_log_type_enabled(qword_100099830, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v20) = a3;
+    LODWORD(v20) = report;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "DEBUG: Creating HID Report for Control message 0x%x\n", buf, 8u);
   }
 
@@ -153,9 +153,9 @@ LABEL_14:
   self->_expectedHIDMessageID = v12;
   LOWORD(v18) = bswap32(v12) >> 16;
   [v11 appendBytes:&v18 length:2];
-  HIWORD(v17) = bswap32(v5 + 14) >> 16;
+  HIWORD(v17) = bswap32(lengthCopy + 14) >> 16;
   [v11 appendBytes:&v17 + 6 length:2];
-  HIDWORD(v18) = bswap32(a3) >> 16;
+  HIDWORD(v18) = bswap32(report) >> 16;
   [v11 appendBytes:&v18 + 4 length:2];
   WORD2(v17) = 256;
   [v11 appendBytes:&v17 + 4 length:2];
@@ -163,11 +163,11 @@ LABEL_14:
   self->_expectedControlMessageID = v13;
   WORD1(v17) = bswap32(v13) >> 16;
   [v11 appendBytes:&v17 + 2 length:2];
-  LOWORD(v17) = bswap32(v5 + 8) >> 16;
+  LOWORD(v17) = bswap32(lengthCopy + 8) >> 16;
   [v11 appendBytes:&v17 length:2];
-  if (a4)
+  if (payload)
   {
-    [v11 appendBytes:a4 length:v5];
+    [v11 appendBytes:payload length:lengthCopy];
   }
 
   if (qword_100099828 != -1)
@@ -210,17 +210,17 @@ LABEL_22:
   return 1;
 }
 
-- (void)parseInputReportWithId:(unsigned int)a3 andBuffer:(id)a4
+- (void)parseInputReportWithId:(unsigned int)id andBuffer:(id)buffer
 {
-  if ([a4 length] > 5)
+  if ([buffer length] > 5)
   {
-    v8 = a4;
-    if ([(EAHIDAccessory *)self->_eaHIDAccessory HIDReportID]== a3)
+    bufferCopy = buffer;
+    if ([(EAHIDAccessory *)self->_eaHIDAccessory HIDReportID]== id)
     {
-      v9 = [a4 bytes];
-      if (v9)
+      bytes = [buffer bytes];
+      if (bytes)
       {
-        if ((v9[1] & 8) != 0)
+        if ((bytes[1] & 8) != 0)
         {
           eaHIDQueue = self->_eaHIDQueue;
           block[0] = _NSConcreteStackBlock;
@@ -228,13 +228,13 @@ LABEL_22:
           block[2] = sub_100030AC4;
           block[3] = &unk_100081788;
           block[4] = self;
-          block[5] = a4;
+          block[5] = buffer;
           dispatch_group_async(qword_10009A9D8, eaHIDQueue, block);
         }
 
         else
         {
-          if ((v9[1] & 4) != 0)
+          if ((bytes[1] & 4) != 0)
           {
             v12 = self->_eaHIDQueue;
             v13[0] = _NSConcreteStackBlock;
@@ -242,9 +242,9 @@ LABEL_22:
             v13[2] = sub_100030AD0;
             v13[3] = &unk_100081788;
             v13[4] = self;
-            v13[5] = a4;
+            v13[5] = buffer;
             dispatch_group_async(qword_10009A9D8, v12, v13);
-            if (!a4)
+            if (!buffer)
             {
               return;
             }
@@ -263,9 +263,9 @@ LABEL_17:
           if (os_log_type_enabled(qword_100099830, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v16 = a4;
+            bufferCopy2 = buffer;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Invalid Incoming HID Message: %@", buf, 0xCu);
-            if (!a4)
+            if (!buffer)
             {
               return;
             }
@@ -276,7 +276,7 @@ LABEL_17:
       }
     }
 
-    if (!a4)
+    if (!buffer)
     {
       return;
     }
@@ -293,48 +293,48 @@ LABEL_17:
   if (os_log_type_enabled(qword_100099830, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v16 = [a4 length];
+    bufferCopy2 = [buffer length];
     v17 = 1024;
     v18 = 6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "HID Report received with invalid length: %lu expected: %u", buf, 0x12u);
   }
 }
 
-- (void)processInputControlMessageReport:(id)a3
+- (void)processInputControlMessageReport:(id)report
 {
-  if (a3 && [a3 length] > 0xD)
+  if (report && [report length] > 0xD)
   {
-    v5 = a3;
-    v6 = [a3 bytes];
-    if (v6)
+    reportCopy = report;
+    bytes = [report bytes];
+    if (bytes)
     {
-      sub_100051170(v6, self, a3);
+      sub_100051170(bytes, self, report);
     }
 
     goto LABEL_5;
   }
 
-  if ((sub_100051098(a3, a3 == 0) & 1) == 0)
+  if ((sub_100051098(report, report == 0) & 1) == 0)
   {
 LABEL_5:
   }
 }
 
-- (void)processControlMessageResponse:(id)a3
+- (void)processControlMessageResponse:(id)response
 {
-  if (a3 && [a3 length] > 7)
+  if (response && [response length] > 7)
   {
-    v5 = a3;
-    v6 = [a3 bytes];
-    if (!v6)
+    responseCopy = response;
+    bytes = [response bytes];
+    if (!bytes)
     {
       goto LABEL_86;
     }
 
-    v7 = v6;
-    v8 = __rev16(*v6);
-    v9 = *(v6 + 3);
-    v10 = v9 | (*(v6 + 2) << 8);
+    v7 = bytes;
+    v8 = __rev16(*bytes);
+    v9 = *(bytes + 3);
+    v10 = v9 | (*(bytes + 2) << 8);
     if ((v9 & 0x10) == 0)
     {
       sub_100052398(v10, v8, &v30);
@@ -362,7 +362,7 @@ LABEL_5:
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received Control Message 0x%x, payloadlength = %d", &v30, 0xEu);
         }
 
-        if ([a3 length] >= v12 + 8)
+        if ([response length] >= v12 + 8)
         {
           if (v8 > 5)
           {
@@ -421,15 +421,15 @@ LABEL_5:
                     v26 = qword_100099830;
                     if (os_log_type_enabled(qword_100099830, OS_LOG_TYPE_DEFAULT))
                     {
-                      v27 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMajor];
-                      v28 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMinor];
-                      v29 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionRelease];
+                      firmwareVersionMajor = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMajor];
+                      firmwareVersionMinor = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMinor];
+                      firmwareVersionRelease = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionRelease];
                       v30 = 67110400;
-                      *v31 = v27;
+                      *v31 = firmwareVersionMajor;
                       *&v31[4] = 1024;
-                      *&v31[6] = v28;
+                      *&v31[6] = firmwareVersionMinor;
                       *v32 = 1024;
-                      *&v32[2] = v29;
+                      *&v32[2] = firmwareVersionRelease;
                       v33 = 1024;
                       v34 = 1;
                       v35 = 1024;
@@ -454,7 +454,7 @@ LABEL_5:
 
               else if (v12)
               {
-                v17 = [a3 subdataWithRange:{8, v12}];
+                v17 = [response subdataWithRange:{8, v12}];
                 if (v17)
                 {
                   -[EAHIDAccessory setSerialNumber:](self->_eaHIDAccessory, "setSerialNumber:", [[NSString alloc] initWithData:v17 encoding:4]);
@@ -492,7 +492,7 @@ LABEL_5:
               case 8:
                 if (v12)
                 {
-                  v22 = [a3 subdataWithRange:{8, v12}];
+                  v22 = [response subdataWithRange:{8, v12}];
                   if (v22)
                   {
                     -[EAHIDAccessory setManufacturer:](self->_eaHIDAccessory, "setManufacturer:", [[NSString alloc] initWithData:v22 encoding:4]);
@@ -530,7 +530,7 @@ LABEL_5:
                   goto LABEL_98;
                 }
 
-                v24 = [a3 subdataWithRange:{8, v12}];
+                v24 = [response subdataWithRange:{8, v12}];
                 if (!v24)
                 {
                   sub_100051608();
@@ -550,7 +550,7 @@ LABEL_5:
               case 11:
                 if (v12)
                 {
-                  v15 = [a3 subdataWithRange:{8, v12}];
+                  v15 = [response subdataWithRange:{8, v12}];
                   if (v15)
                   {
                     v16 = v15;
@@ -599,7 +599,7 @@ LABEL_5:
               {
                 if (v12)
                 {
-                  v23 = [a3 subdataWithRange:{8, v12}];
+                  v23 = [response subdataWithRange:{8, v12}];
                   if (v23)
                   {
                     -[EAHIDAccessory setName:](self->_eaHIDAccessory, "setName:", [[NSString alloc] initWithData:v23 encoding:4]);
@@ -632,7 +632,7 @@ LABEL_5:
 
               else if (v12)
               {
-                v14 = [a3 subdataWithRange:{8, v12}];
+                v14 = [response subdataWithRange:{8, v12}];
                 if (v14)
                 {
                   -[EAHIDAccessory setModelNumber:](self->_eaHIDAccessory, "setModelNumber:", [[NSString alloc] initWithData:v14 encoding:4]);
@@ -676,7 +676,7 @@ LABEL_98:
             {
               if (v12)
               {
-                v18 = [a3 subdataWithRange:{8, v12}];
+                v18 = [response subdataWithRange:{8, v12}];
                 if (v18)
                 {
                   overrideProtocol = self->_overrideProtocol;
@@ -754,30 +754,30 @@ LABEL_86:
     return;
   }
 
-  if ((sub_100052474(a3, a3 == 0) & 1) == 0)
+  if ((sub_100052474(response, response == 0) & 1) == 0)
   {
     goto LABEL_86;
   }
 }
 
-- (void)processInputEAMessageReportFromAccessory:(id)a3
+- (void)processInputEAMessageReportFromAccessory:(id)accessory
 {
-  if (a3 && [a3 length] > 5)
+  if (accessory && [accessory length] > 5)
   {
-    v5 = a3;
+    accessoryCopy = accessory;
     if (self->_expectedState == 1)
     {
       self->_expectedState = 2;
-      v6 = [a3 bytes];
-      if (v6 && (v7 = __rev16(*(v6 + 2)), v7 > 5))
+      bytes = [accessory bytes];
+      if (bytes && (v7 = __rev16(*(bytes + 2)), v7 > 5))
       {
-        if ((v6[1] & 2) != 0)
+        if ((bytes[1] & 2) != 0)
         {
-          self->_expectedHIDMessageID = bswap32(*(v6 + 1)) >> 16;
+          self->_expectedHIDMessageID = bswap32(*(bytes + 1)) >> 16;
           v8 = v7 - 6;
           if (v8)
           {
-            v9 = [a3 subdataWithRange:{6, v8}];
+            v9 = [accessory subdataWithRange:{6, v8}];
             if (v9)
             {
               v10 = v9;
@@ -826,18 +826,18 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ((sub_1000527F8(a3, self, a3 == 0) & 1) == 0)
+  if ((sub_1000527F8(accessory, self, accessory == 0) & 1) == 0)
   {
     goto LABEL_13;
   }
 }
 
-- (void)processIncomingEADataFromPlugin:(id)a3
+- (void)processIncomingEADataFromPlugin:(id)plugin
 {
   if (self->_expectedState == 3)
   {
     self->_expectedState = 4;
-    if (![(EAOverHID *)self sendEAMessageOutputReport:a3])
+    if (![(EAOverHID *)self sendEAMessageOutputReport:plugin])
     {
       sub_100052958(self);
     }
@@ -872,18 +872,18 @@ LABEL_13:
   dispatch_async(eaHIDQueue, block);
 }
 
-- (BOOL)sendEAMessageOutputReport:(id)a3
+- (BOOL)sendEAMessageOutputReport:(id)report
 {
   v13 = 0;
   v12 = 0;
-  if (!a3 || (eaHIDAccessory = self->_eaHIDAccessory) == 0 || ![(EAHIDAccessory *)eaHIDAccessory HIDDevice])
+  if (!report || (eaHIDAccessory = self->_eaHIDAccessory) == 0 || ![(EAHIDAccessory *)eaHIDAccessory HIDDevice])
   {
 LABEL_14:
     [(EAOverHID *)self cleanupEASession];
     return 0;
   }
 
-  v6 = [a3 length];
+  v6 = [report length];
   v7 = v6;
   v8 = v6 + 6;
   v9 = objc_alloc_init(NSMutableData);
@@ -893,7 +893,7 @@ LABEL_14:
   [v9 appendBytes:&v13 length:2];
   v12 = bswap32(v8) >> 16;
   [v9 appendBytes:&v12 length:2];
-  [v9 appendBytes:objc_msgSend(a3 length:{"bytes"), v7}];
+  [v9 appendBytes:objc_msgSend(report length:{"bytes"), v7}];
   v10 = [v9 length];
   if (v10 > [(EAHIDAccessory *)self->_eaHIDAccessory HIDReportSizeOutput])
   {
@@ -919,9 +919,9 @@ LABEL_12:
   return 1;
 }
 
-- (void)idleExitAllowed:(BOOL)a3
+- (void)idleExitAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     if (!self->_dispatchGroupHeld)
     {
@@ -970,7 +970,7 @@ LABEL_12:
   self->_dispatchGroupHeld = v5;
 }
 
-- (BOOL)sendVendorSpecificRequest:(id)a3
+- (BOOL)sendVendorSpecificRequest:(id)request
 {
   v7 = 0;
   v8 = &v7;
@@ -981,7 +981,7 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_100031D2C;
   block[3] = &unk_100081A40;
-  block[5] = a3;
+  block[5] = request;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(eaHIDQueue, block);
@@ -1016,10 +1016,10 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)applyStagedFirmwareVersionsAfterDelay:(unsigned __int16)a3
+- (BOOL)applyStagedFirmwareVersionsAfterDelay:(unsigned __int16)delay
 {
   v8 = 1024;
-  v7 = __rev16(a3);
+  v7 = __rev16(delay);
   v4 = objc_alloc_init(NSMutableData);
   [v4 appendBytes:&v8 length:2];
   [v4 appendBytes:&v7 length:2];
@@ -1031,9 +1031,9 @@ LABEL_12:
   return v5;
 }
 
-- (unsigned)getServiceForRegistryID:(unint64_t)a3
+- (unsigned)getServiceForRegistryID:(unint64_t)d
 {
-  v3 = IORegistryEntryIDMatching(a3);
+  v3 = IORegistryEntryIDMatching(d);
   MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v3);
   if (!MatchingService)
   {
@@ -1043,7 +1043,7 @@ LABEL_12:
   return MatchingService;
 }
 
-- (unsigned)getReportSizeForReportUsage:(unsigned int)a3
+- (unsigned)getReportSizeForReportUsage:(unsigned int)usage
 {
   v5 = IOHIDDeviceCopyMatchingElements([(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice], &off_100088260, 0);
   v15 = 0u;
@@ -1065,7 +1065,7 @@ LABEL_12:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if (IOHIDElementGetUsage(v10) == a3)
+        if (IOHIDElementGetUsage(v10) == usage)
         {
           ReportSize = IOHIDElementGetReportSize(v10);
           [(EAHIDAccessory *)self->_eaHIDAccessory setHIDReportID:IOHIDElementGetReportID(v10)];
@@ -1077,13 +1077,13 @@ LABEL_12:
           v12 = qword_100099830;
           if (os_log_type_enabled(qword_100099830, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(EAHIDAccessory *)self->_eaHIDAccessory HIDReportID];
+            hIDReportID = [(EAHIDAccessory *)self->_eaHIDAccessory HIDReportID];
             *buf = 67109632;
-            v20 = a3;
+            usageCopy = usage;
             v21 = 1024;
             v22 = ReportSize;
             v23 = 1024;
-            v24 = v13;
+            v24 = hIDReportID;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "reportUsage=0x%x, ReportSize=%dbits, reportID=0x%x", buf, 0x14u);
           }
 
@@ -1105,23 +1105,23 @@ LABEL_12:
   return *buf;
 }
 
-- (void)logDebugMessageFromAccessory:(char *)a3 length:(int64_t)a4
+- (void)logDebugMessageFromAccessory:(char *)accessory length:(int64_t)length
 {
-  if (a4 <= 1)
+  if (length <= 1)
   {
     sub_100053108();
     return;
   }
 
-  v6 = *a3;
-  v7 = [(EAOverHID *)self getEAProductIDForAccessory];
-  if (!v7)
+  v6 = *accessory;
+  getEAProductIDForAccessory = [(EAOverHID *)self getEAProductIDForAccessory];
+  if (!getEAProductIDForAccessory)
   {
     sub_10005308C();
     return;
   }
 
-  v8 = [NSString stringWithFormat:@"EA%@Strings", v7];
+  v8 = [NSString stringWithFormat:@"EA%@Strings", getEAProductIDForAccessory];
   if (!v8)
   {
     sub_100052FD8();
@@ -1178,7 +1178,7 @@ LABEL_12:
   v21 = v18 != 0x7FFFFFFFFFFFFFFFLL;
   v22 = (&OBJC_PROTOCOL___FudQueryPlugin + 64);
   p_cb = (&OBJC_PROTOCOL___FudQueryPlugin + 64);
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2 || (v24 = v18, v18 == 0x7FFFFFFFFFFFFFFFLL))
+  if ((length & 0xFFFFFFFFFFFFFFFELL) == 2 || (v24 = v18, v18 == 0x7FFFFFFFFFFFFFFFLL))
   {
 LABEL_22:
     if (!v21)
@@ -1200,9 +1200,9 @@ LABEL_32:
   v26 = 2;
   while (1)
   {
-    v27 = a3[(v26 + 1)] | (a3[v26] << 8);
+    v27 = accessory[(v26 + 1)] | (accessory[v26] << 8);
     v28 = (v26 + 2);
-    if (a4 - v28 < v27)
+    if (length - v28 < v27)
     {
       break;
     }
@@ -1211,7 +1211,7 @@ LABEL_32:
     {
     }
 
-    v20 = [[NSString alloc] initWithBytes:&a3[v28] length:v27 encoding:4];
+    v20 = [[NSString alloc] initWithBytes:&accessory[v28] length:v27 encoding:4];
     [(NSMutableString *)v17 deleteCharactersInRange:v24, v25];
     [(NSMutableString *)v17 insertString:v20 atIndex:v24];
     v29 = [(NSMutableString *)v17 rangeOfString:@"%s"];
@@ -1219,7 +1219,7 @@ LABEL_32:
     v25 = v30;
     v26 = (v28 + v27);
     v21 = v29 != 0x7FFFFFFFFFFFFFFFLL;
-    if ((a4 - v26) < 2 || v29 == 0x7FFFFFFFFFFFFFFFLL)
+    if ((length - v26) < 2 || v29 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v22 = (&OBJC_PROTOCOL___FudQueryPlugin + 64);
       p_cb = (&OBJC_PROTOCOL___FudQueryPlugin + 64);
@@ -1506,11 +1506,11 @@ LABEL_50:
   return v9;
 }
 
-- (void)queueEvent:(id)a3 withInfo:(id)a4
+- (void)queueEvent:(id)event withInfo:(id)info
 {
-  if (a3 && a4)
+  if (event && info)
   {
-    v6 = [[EAOverHIDEvent alloc] initWithName:a3 info:a4];
+    v6 = [[EAOverHIDEvent alloc] initWithName:event info:info];
     if (v6)
     {
       v7 = v6;
@@ -1530,7 +1530,7 @@ LABEL_50:
         *v14 = 136315650;
         *&v14[4] = "[EAOverHID queueEvent:withInfo:]";
         sub_100032704();
-        v15 = a4;
+        infoCopy = info;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Queueing EAOverHID Event for filtername: %@ info: %@", v14, 0x20u);
       }
 
@@ -1579,9 +1579,9 @@ LABEL_50:
             IOHIDDeviceRegisterRemovalCallback([(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice], sub_10004FDF8, self);
             self->_input = [[NSMutableData alloc] initWithLength:{-[EAHIDAccessory HIDReportSizeInput](self->_eaHIDAccessory, "HIDReportSizeInput") + 1}];
             IOHIDDeviceRegisterInputReportCallback([(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice], [(NSMutableData *)self->_input mutableBytes], [(NSMutableData *)self->_input length], sub_10004FE84, self);
-            v4 = [(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice];
+            hIDDevice = [(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice];
             Main = CFRunLoopGetMain();
-            IOHIDDeviceScheduleWithRunLoop(v4, Main, kCFRunLoopDefaultMode);
+            IOHIDDeviceScheduleWithRunLoop(hIDDevice, Main, kCFRunLoopDefaultMode);
             LOBYTE(eaHIDAccessory) = 1;
             self->_hidDeviceScheduled = 1;
           }
@@ -1593,7 +1593,7 @@ LABEL_50:
   return eaHIDAccessory;
 }
 
-- (BOOL)sendHIDReport:(char *)a3 reportID:(int)a4 length:(int)a5
+- (BOOL)sendHIDReport:(char *)report reportID:(int)d length:(int)length
 {
   if (![(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice])
   {
@@ -1602,7 +1602,7 @@ LABEL_50:
 
   v9 = 1;
   self->_expectedState = 1;
-  if (IOHIDDeviceSetReport([(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice], kIOHIDReportTypeOutput, a4, a3, a5))
+  if (IOHIDDeviceSetReport([(EAHIDAccessory *)self->_eaHIDAccessory HIDDevice], kIOHIDReportTypeOutput, d, report, length))
   {
     if (qword_100099828 != -1)
     {
@@ -1622,22 +1622,22 @@ LABEL_50:
   return v9;
 }
 
-- (void)processControlMessageRequest:(id)a3
+- (void)processControlMessageRequest:(id)request
 {
-  if (a3 && [a3 length] > 7)
+  if (request && [request length] > 7)
   {
-    v5 = [a3 bytes];
-    if (v5)
+    bytes = [request bytes];
+    if (bytes)
     {
-      v6 = v5;
-      v7 = *v5;
-      v8 = v5[1];
-      self->_expectedControlMessageID = bswap32(*(v5 + 2)) >> 16;
-      v9 = __rev16(*(v5 + 3));
+      v6 = bytes;
+      v7 = *bytes;
+      v8 = bytes[1];
+      self->_expectedControlMessageID = bswap32(*(bytes + 2)) >> 16;
+      v9 = __rev16(*(bytes + 3));
       if (v9 >= 9)
       {
         v10 = v8 | (v7 << 8);
-        if ([a3 length] >= v9 && v10 == 10)
+        if ([request length] >= v9 && v10 == 10)
         {
           [(EAOverHID *)self logDebugMessageFromAccessory:v6 + 8 length:v9 - 8];
           self->_expectedState = 1;
@@ -1655,7 +1655,7 @@ LABEL_50:
 
     if (sub_1000326A4())
     {
-      [a3 length];
+      [request length];
       sub_100011500();
       sub_1000325FC();
       _os_log_impl(v12, v13, v14, v15, v16, 0x16u);
@@ -1688,14 +1688,14 @@ LABEL_50:
   }
 
   v3 = off_100099840;
-  v4 = [(EAHIDAccessory *)self->_eaHIDAccessory EAConnectionUUID];
-  v5 = [(EAHIDAccessory *)self->_eaHIDAccessory EAProtocolString];
+  eAConnectionUUID = [(EAHIDAccessory *)self->_eaHIDAccessory EAConnectionUUID];
+  eAProtocolString = [(EAHIDAccessory *)self->_eaHIDAccessory EAProtocolString];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_10003158C;
   v37[3] = &unk_100081DC0;
   v37[4] = self;
-  [(EAHIDAccessory *)self->_eaHIDAccessory setEAEndpointUUID:(v3)(v4, 5, 5, v5, v37, 0)];
+  [(EAHIDAccessory *)self->_eaHIDAccessory setEAEndpointUUID:(v3)(eAConnectionUUID, 5, 5, eAProtocolString, v37, 0)];
   if (![(EAHIDAccessory *)self->_eaHIDAccessory EAEndpointUUID])
   {
     if (qword_100099828 != -1)
@@ -1719,9 +1719,9 @@ LABEL_50:
 
   if (sub_1000326A4())
   {
-    v6 = [(EAHIDAccessory *)self->_eaHIDAccessory EAEndpointUUID];
+    eAEndpointUUID = [(EAHIDAccessory *)self->_eaHIDAccessory EAEndpointUUID];
     *buf = 138412290;
-    *v41 = v6;
+    *v41 = eAEndpointUUID;
     sub_10003264C();
     _os_log_impl(v7, v8, v9, v10, v11, 0xCu);
     if (qword_100099828 != -1)
@@ -1732,15 +1732,15 @@ LABEL_50:
 
   if (sub_1000326A4())
   {
-    v12 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMajor];
-    v13 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMinor];
-    v14 = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionRelease];
+    firmwareVersionMajor = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMajor];
+    firmwareVersionMinor = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionMinor];
+    firmwareVersionRelease = [(EAHIDAccessory *)self->_eaHIDAccessory firmwareVersionRelease];
     *buf = 67109632;
-    *v41 = v12;
+    *v41 = firmwareVersionMajor;
     *&v41[4] = 1024;
-    *&v41[6] = v13;
+    *&v41[6] = firmwareVersionMinor;
     v42 = 1024;
-    v43 = v14;
+    v43 = firmwareVersionRelease;
     sub_10003264C();
     _os_log_impl(v15, v16, v17, v18, v19, 0x14u);
   }
@@ -1757,9 +1757,9 @@ LABEL_50:
     v38[3] = @"SerialNumber";
     v39[3] = [(EAHIDAccessory *)self->_eaHIDAccessory serialNumber];
     v38[4] = @"HardwareVersion";
-    v21 = [(EAHIDAccessory *)self->_eaHIDAccessory hardwareVersion];
+    hardwareVersion = [(EAHIDAccessory *)self->_eaHIDAccessory hardwareVersion];
     v38[5] = @"FirmwareVersionActive";
-    v39[4] = v21;
+    v39[4] = hardwareVersion;
     v39[5] = v20;
     v22 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:6];
     if (qword_100099828 != -1)
@@ -1792,9 +1792,9 @@ LABEL_50:
 
         if (sub_1000326A4())
         {
-          v24 = [(EAHIDAccessory *)self->_eaHIDAccessory EAProtocolString];
+          eAProtocolString2 = [(EAHIDAccessory *)self->_eaHIDAccessory EAProtocolString];
           *buf = 138412290;
-          *v41 = v24;
+          *v41 = eAProtocolString2;
           sub_10003264C();
           _os_log_impl(v25, v26, v27, v28, v29, 0xCu);
         }

@@ -1,10 +1,10 @@
 @interface CCProvenanceRecord
 + (id)genSQLCreateStatements;
-+ (id)recordFromDatabaseValueRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemRecord:(id)a3;
++ (id)recordFromDatabaseValueRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemRecord:(id)record;
 - (CCProvenanceRecord)init;
-- (CCProvenanceRecord)initWithDatabaseValueRow:(id)a3;
+- (CCProvenanceRecord)initWithDatabaseValueRow:(id)row;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -17,10 +17,10 @@
   objc_exception_throw(v2);
 }
 
-+ (id)recordFromDatabaseValueRow:(id)a3
++ (id)recordFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:v3];
+  rowCopy = row;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:rowCopy];
 
   return v4;
 }
@@ -45,51 +45,51 @@
   return v7;
 }
 
-- (CCProvenanceRecord)initWithDatabaseValueRow:(id)a3
+- (CCProvenanceRecord)initWithDatabaseValueRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v27.receiver = self;
   v27.super_class = CCProvenanceRecord;
   v5 = [(CCProvenanceRecord *)&v27 init];
   if (v5)
   {
-    v6 = [v4 numberValueAtColumnIndex:0];
+    v6 = [rowCopy numberValueAtColumnIndex:0];
     provenanceRowId = v5->_provenanceRowId;
     v5->_provenanceRowId = v6;
 
-    v8 = [v4 numberValueAtColumnIndex:1];
+    v8 = [rowCopy numberValueAtColumnIndex:1];
     deviceRowId = v5->_deviceRowId;
     v5->_deviceRowId = v8;
 
-    v10 = [v4 numberValueAtColumnIndex:2];
+    v10 = [rowCopy numberValueAtColumnIndex:2];
     instanceHash = v5->_instanceHash;
     v5->_instanceHash = v10;
 
-    v12 = [v4 numberValueAtColumnIndex:3];
+    v12 = [rowCopy numberValueAtColumnIndex:3];
     contentHash = v5->_contentHash;
     v5->_contentHash = v12;
 
-    v14 = [v4 numberValueAtColumnIndex:4];
+    v14 = [rowCopy numberValueAtColumnIndex:4];
     contentSequenceNumber = v5->_contentSequenceNumber;
     v5->_contentSequenceNumber = v14;
 
-    v16 = [v4 numberValueAtColumnIndex:5];
+    v16 = [rowCopy numberValueAtColumnIndex:5];
     contentState = v5->_contentState;
     v5->_contentState = v16;
 
-    v18 = [v4 numberValueAtColumnIndex:6];
+    v18 = [rowCopy numberValueAtColumnIndex:6];
     metaContentSequenceNumber = v5->_metaContentSequenceNumber;
     v5->_metaContentSequenceNumber = v18;
 
-    v20 = [v4 numberValueAtColumnIndex:7];
+    v20 = [rowCopy numberValueAtColumnIndex:7];
     metaContentState = v5->_metaContentState;
     v5->_metaContentState = v20;
 
-    v22 = [v4 numberValueAtColumnIndex:8];
+    v22 = [rowCopy numberValueAtColumnIndex:8];
     contentSequenceNumberEndOfRun = v5->_contentSequenceNumberEndOfRun;
     v5->_contentSequenceNumberEndOfRun = v22;
 
-    v24 = [v4 numberValueAtColumnIndex:9];
+    v24 = [rowCopy numberValueAtColumnIndex:9];
     metaContentSequenceNumberEndOfRun = v5->_metaContentSequenceNumberEndOfRun;
     v5->_metaContentSequenceNumberEndOfRun = v24;
   }
@@ -108,59 +108,59 @@
   instanceHash = self->_instanceHash;
   contentSequenceNumber = self->_contentSequenceNumber;
   contentSequenceNumberEndOfRun = self->_contentSequenceNumberEndOfRun;
-  v7 = [(NSNumber *)self->_contentState unsignedShortValue];
-  if (v7 > 2u)
+  unsignedShortValue = [(NSNumber *)self->_contentState unsignedShortValue];
+  if (unsignedShortValue > 2u)
   {
     v8 = @"Undefined";
   }
 
   else
   {
-    v8 = off_1E7C8B348[v7 & 3];
+    v8 = off_1E7C8B348[unsignedShortValue & 3];
   }
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%u)", v8, v7];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%u)", v8, unsignedShortValue];
   metaContentSequenceNumber = self->_metaContentSequenceNumber;
   metaContentSequenceNumberEndOfRun = self->_metaContentSequenceNumberEndOfRun;
-  v12 = [(NSNumber *)self->_metaContentState unsignedShortValue];
-  if (v12 > 2u)
+  unsignedShortValue2 = [(NSNumber *)self->_metaContentState unsignedShortValue];
+  if (unsignedShortValue2 > 2u)
   {
     v13 = @"Undefined";
   }
 
   else
   {
-    v13 = off_1E7C8B348[v12 & 3];
+    v13 = off_1E7C8B348[unsignedShortValue2 & 3];
   }
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%u)", v13, v12];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%u)", v13, unsignedShortValue2];
   v15 = [v3 stringByAppendingFormat:@" provenanceRowId: %@, deviceRowId: %@, instanceHash: %@, contentHash: %@, contentSequenceNumber: %@, endOfRun: %@, contentState: %@, metaContentSequenceNumber: %@, endOfRun: %@, metaContentState: %@", provenanceRowId, deviceRowId, instanceHash, contentHash, contentSequenceNumber, contentSequenceNumberEndOfRun, v9, metaContentSequenceNumber, metaContentSequenceNumberEndOfRun, v14];
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCProvenanceRecord *)self isEqualToItemRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCProvenanceRecord *)self isEqualToItemRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItemRecord:(id)a3
+- (BOOL)isEqualToItemRecord:(id)record
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  recordCopy = record;
+  v8 = recordCopy;
+  if (!recordCopy)
   {
     v12 = 0;
     goto LABEL_97;
@@ -170,8 +170,8 @@
   v10 = provenanceRowId;
   if (!provenanceRowId)
   {
-    v3 = [v7 provenanceRowId];
-    if (!v3)
+    provenanceRowId = [recordCopy provenanceRowId];
+    if (!provenanceRowId)
     {
       v11 = 0;
       goto LABEL_10;
@@ -180,8 +180,8 @@
     v10 = self->_provenanceRowId;
   }
 
-  v4 = [v8 provenanceRowId];
-  if (([(NSNumber *)v10 isEqual:v4]& 1) == 0)
+  provenanceRowId2 = [v8 provenanceRowId];
+  if (([(NSNumber *)v10 isEqual:provenanceRowId2]& 1) == 0)
   {
 
     v12 = 0;
@@ -194,20 +194,20 @@ LABEL_10:
   v14 = deviceRowId;
   if (!deviceRowId)
   {
-    v15 = [v8 deviceRowId];
-    if (!v15)
+    deviceRowId = [v8 deviceRowId];
+    if (!deviceRowId)
     {
       v71 = 0;
       v72 = 0;
       goto LABEL_17;
     }
 
-    v71 = v15;
+    v71 = deviceRowId;
     v14 = self->_deviceRowId;
   }
 
-  v5 = [v8 deviceRowId];
-  if (([(NSNumber *)v14 isEqual:v5]& 1) == 0)
+  deviceRowId2 = [v8 deviceRowId];
+  if (([(NSNumber *)v14 isEqual:deviceRowId2]& 1) == 0)
   {
 
     v12 = 0;
@@ -220,8 +220,8 @@ LABEL_17:
   v17 = instanceHash;
   if (!instanceHash)
   {
-    v18 = [v8 instanceHash];
-    if (!v18)
+    instanceHash = [v8 instanceHash];
+    if (!instanceHash)
     {
       v69 = 0;
       v70 = v11;
@@ -229,14 +229,14 @@ LABEL_17:
       goto LABEL_24;
     }
 
-    v67 = v18;
+    v67 = instanceHash;
     v17 = self->_instanceHash;
   }
 
-  v19 = [v8 instanceHash];
+  instanceHash2 = [v8 instanceHash];
   v20 = v17;
-  v21 = v19;
-  if (![(NSNumber *)v20 isEqual:v19])
+  v21 = instanceHash2;
+  if (![(NSNumber *)v20 isEqual:instanceHash2])
   {
     v12 = 0;
     goto LABEL_102;
@@ -250,19 +250,19 @@ LABEL_24:
   v23 = contentHash;
   if (!contentHash)
   {
-    v24 = [v8 contentHash];
-    if (!v24)
+    contentHash = [v8 contentHash];
+    if (!contentHash)
     {
       v62 = 0;
       v65 = 0;
       goto LABEL_31;
     }
 
-    v62 = v24;
+    v62 = contentHash;
     v23 = self->_contentHash;
   }
 
-  v68 = [v8 contentHash];
+  contentHash2 = [v8 contentHash];
   if (![(NSNumber *)v23 isEqual:?])
   {
     v12 = 0;
@@ -276,19 +276,19 @@ LABEL_31:
   v64 = contentSequenceNumber;
   if (!contentSequenceNumber)
   {
-    v26 = [v8 contentSequenceNumber];
-    if (!v26)
+    contentSequenceNumber = [v8 contentSequenceNumber];
+    if (!contentSequenceNumber)
     {
       v58 = 0;
       v61 = 0;
       goto LABEL_38;
     }
 
-    v58 = v26;
+    v58 = contentSequenceNumber;
     contentSequenceNumber = self->_contentSequenceNumber;
   }
 
-  v63 = [v8 contentSequenceNumber];
+  contentSequenceNumber2 = [v8 contentSequenceNumber];
   if (![(NSNumber *)contentSequenceNumber isEqual:?])
   {
     v12 = 0;
@@ -302,19 +302,19 @@ LABEL_38:
   v60 = contentSequenceNumberEndOfRun;
   if (!contentSequenceNumberEndOfRun)
   {
-    v28 = [v8 contentSequenceNumberEndOfRun];
-    if (!v28)
+    contentSequenceNumberEndOfRun = [v8 contentSequenceNumberEndOfRun];
+    if (!contentSequenceNumberEndOfRun)
     {
       v54 = 0;
       v57 = 0;
       goto LABEL_45;
     }
 
-    v54 = v28;
+    v54 = contentSequenceNumberEndOfRun;
     contentSequenceNumberEndOfRun = self->_contentSequenceNumberEndOfRun;
   }
 
-  v59 = [v8 contentSequenceNumberEndOfRun];
+  contentSequenceNumberEndOfRun2 = [v8 contentSequenceNumberEndOfRun];
   if (![(NSNumber *)contentSequenceNumberEndOfRun isEqual:?])
   {
     v12 = 0;
@@ -328,19 +328,19 @@ LABEL_45:
   v56 = contentState;
   if (!contentState)
   {
-    v30 = [v8 contentState];
-    if (!v30)
+    contentState = [v8 contentState];
+    if (!contentState)
     {
       v50 = 0;
       v52 = 0;
       goto LABEL_52;
     }
 
-    v50 = v30;
+    v50 = contentState;
     contentState = self->_contentState;
   }
 
-  v55 = [v8 contentState];
+  contentState2 = [v8 contentState];
   if (![(NSNumber *)contentState isEqual:?])
   {
     v12 = 0;
@@ -354,19 +354,19 @@ LABEL_52:
   v53 = metaContentSequenceNumber;
   if (!metaContentSequenceNumber)
   {
-    v32 = [v8 metaContentSequenceNumber];
-    if (!v32)
+    metaContentSequenceNumber = [v8 metaContentSequenceNumber];
+    if (!metaContentSequenceNumber)
     {
       v46 = 0;
       v49 = 0;
       goto LABEL_59;
     }
 
-    v46 = v32;
+    v46 = metaContentSequenceNumber;
     metaContentSequenceNumber = self->_metaContentSequenceNumber;
   }
 
-  v51 = [v8 metaContentSequenceNumber];
+  metaContentSequenceNumber2 = [v8 metaContentSequenceNumber];
   if (![(NSNumber *)metaContentSequenceNumber isEqual:?])
   {
     v12 = 0;
@@ -380,19 +380,19 @@ LABEL_59:
   v48 = metaContentSequenceNumberEndOfRun;
   if (!metaContentSequenceNumberEndOfRun)
   {
-    v34 = [v8 metaContentSequenceNumberEndOfRun];
-    if (!v34)
+    metaContentSequenceNumberEndOfRun = [v8 metaContentSequenceNumberEndOfRun];
+    if (!metaContentSequenceNumberEndOfRun)
     {
       v43 = 0;
       v35 = 0;
       goto LABEL_66;
     }
 
-    v43 = v34;
+    v43 = metaContentSequenceNumberEndOfRun;
     metaContentSequenceNumberEndOfRun = self->_metaContentSequenceNumberEndOfRun;
   }
 
-  v47 = [v8 metaContentSequenceNumberEndOfRun];
+  metaContentSequenceNumberEndOfRun2 = [v8 metaContentSequenceNumberEndOfRun];
   if (![(NSNumber *)metaContentSequenceNumberEndOfRun isEqual:?])
   {
     v12 = 0;
@@ -409,8 +409,8 @@ LABEL_66:
   v45 = v35;
   if (!metaContentState)
   {
-    v38 = [v8 metaContentState];
-    if (!v38)
+    metaContentState = [v8 metaContentState];
+    if (!metaContentState)
     {
       v41 = 0;
       v12 = 1;
@@ -418,13 +418,13 @@ LABEL_66:
       goto LABEL_117;
     }
 
-    v42 = v38;
+    v42 = metaContentState;
     v37 = self->_metaContentState;
   }
 
   v39 = v37;
-  v44 = [v8 metaContentState];
-  v12 = [(NSNumber *)v39 isEqual:v44];
+  metaContentState2 = [v8 metaContentState];
+  v12 = [(NSNumber *)v39 isEqual:metaContentState2];
 
   if (metaContentState)
   {

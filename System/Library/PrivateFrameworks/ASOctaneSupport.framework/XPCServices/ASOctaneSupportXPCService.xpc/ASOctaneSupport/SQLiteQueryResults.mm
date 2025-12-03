@@ -1,45 +1,45 @@
 @interface SQLiteQueryResults
 - (BOOL)hasRows;
 - (NSNumber)firstNumberValue;
-- (SQLiteQueryResults)initWithStatement:(id)a3;
+- (SQLiteQueryResults)initWithStatement:(id)statement;
 - (int64_t)firstInt64Value;
-- (void)enumerateRowsUsingBlock:(id)a3;
+- (void)enumerateRowsUsingBlock:(id)block;
 @end
 
 @implementation SQLiteQueryResults
 
-- (SQLiteQueryResults)initWithStatement:(id)a3
+- (SQLiteQueryResults)initWithStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v9.receiver = self;
   v9.super_class = SQLiteQueryResults;
   v6 = [(SQLiteQueryResults *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_statement, a3);
+    objc_storeStrong(&v6->_statement, statement);
   }
 
   return v7;
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [[SQLiteCursor alloc] initWithStatement:self->_statement];
-  v6 = [(SQLiteStatement *)self->_statement sqlite3_stmt];
-  v7 = [(SQLiteStatement *)self->_statement connection];
+  sqlite3_stmt = [(SQLiteStatement *)self->_statement sqlite3_stmt];
+  connection = [(SQLiteStatement *)self->_statement connection];
   v17 = 0;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100007630;
   v13[3] = &unk_1002781C8;
-  v16 = v6;
-  v8 = v4;
+  v16 = sqlite3_stmt;
+  v8 = blockCopy;
   v15 = v8;
   v9 = v5;
   v14 = v9;
-  v10 = [v7 executeWithError:&v17 usingBlock:v13];
+  v10 = [connection executeWithError:&v17 usingBlock:v13];
   v11 = v17;
 
   if (v10)

@@ -1,5 +1,5 @@
 @interface CRLCanvasMovieKnobAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxIsPlaying;
 - (CRLMovieRepAccessibility)crlaxParentRepForKnob;
 - (id)crlaxLabel;
@@ -8,11 +8,11 @@
 
 @implementation CRLCanvasMovieKnobAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -22,9 +22,9 @@
   v8 = 0;
   v7.receiver = self;
   v7.super_class = CRLCanvasMovieKnobAccessibility;
-  v2 = [(CRLCanvasKnobAccessibility *)&v7 crlaxParentRepForKnob];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)&v7 crlaxParentRepForKnob];
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsSafeCategory(v3, v2, 1, &v8);
+  v4 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxParentRepForKnob, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -37,10 +37,10 @@
 
 - (id)crlaxLabel
 {
-  v2 = [(CRLCanvasMovieKnobAccessibility *)self crlaxIsPlaying];
+  crlaxIsPlaying = [(CRLCanvasMovieKnobAccessibility *)self crlaxIsPlaying];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (crlaxIsPlaying)
   {
     v5 = @"Pause movie";
   }
@@ -57,10 +57,10 @@
 
 - (id)crlaxUserInputLabels
 {
-  v2 = [(CRLCanvasMovieKnobAccessibility *)self crlaxIsPlaying];
+  crlaxIsPlaying = [(CRLCanvasMovieKnobAccessibility *)self crlaxIsPlaying];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (crlaxIsPlaying)
   {
     v5 = @"Pause";
   }
@@ -79,11 +79,11 @@
 
 - (BOOL)crlaxIsPlaying
 {
-  v2 = [(CRLCanvasMovieKnobAccessibility *)self crlaxParentRepForKnob];
-  v3 = [v2 crlaxTarget];
-  v4 = [v3 isPlaying];
+  crlaxParentRepForKnob = [(CRLCanvasMovieKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxTarget = [crlaxParentRepForKnob crlaxTarget];
+  isPlaying = [crlaxTarget isPlaying];
 
-  return v4;
+  return isPlaying;
 }
 
 @end

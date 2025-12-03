@@ -3,15 +3,15 @@
 - (CGSize)minimumSize;
 - (QLPreviewReply)init;
 - (QLPreviewReply)initForPDFWithPageSize:(CGSize)defaultPageSize documentCreationBlock:(void *)documentCreationBlock;
-- (QLPreviewReply)initWithCoder:(id)a3;
+- (QLPreviewReply)initWithCoder:(id)coder;
 - (QLPreviewReply)initWithContextSize:(CGSize)contextSize isBitmap:(BOOL)isBitmap drawingBlock:(void *)drawingBlock;
 - (QLPreviewReply)initWithDataOfContentType:(UTType *)contentType contentSize:(CGSize)contentSize dataCreationBlock:(void *)dataCreationBlock;
-- (QLPreviewReply)initWithFileURL:(id)a3 forcedContentType:(id)a4;
-- (QLPreviewReply)initWithViewControllerOfPreferredContentSize:(CGSize)a3 minimumSize:(CGSize)a4 title:(id)a5 wantsBorder:(BOOL)a6;
-- (id)drawWithContext:(CGContext *)a3;
+- (QLPreviewReply)initWithFileURL:(id)l forcedContentType:(id)type;
+- (QLPreviewReply)initWithViewControllerOfPreferredContentSize:(CGSize)size minimumSize:(CGSize)minimumSize title:(id)title wantsBorder:(BOOL)border;
+- (id)drawWithContext:(CGContext *)context;
 - (id)updateFromDataCreationBlock;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithImageData:(id)a3 bitmapFormat:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithImageData:(id)data bitmapFormat:(id)format;
 @end
 
 @implementation QLPreviewReply
@@ -37,20 +37,20 @@
   return v3;
 }
 
-- (QLPreviewReply)initWithViewControllerOfPreferredContentSize:(CGSize)a3 minimumSize:(CGSize)a4 title:(id)a5 wantsBorder:(BOOL)a6
+- (QLPreviewReply)initWithViewControllerOfPreferredContentSize:(CGSize)size minimumSize:(CGSize)minimumSize title:(id)title wantsBorder:(BOOL)border
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.height;
-  v10 = a3.width;
-  v12 = a5;
+  borderCopy = border;
+  height = minimumSize.height;
+  width = minimumSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  titleCopy = title;
   v13 = objc_opt_new();
-  [(QLPreviewReply *)v13 setTitle:v12];
+  [(QLPreviewReply *)v13 setTitle:titleCopy];
 
   [(QLPreviewReply *)v13 setContentSize:v10, v9];
   [(QLPreviewReply *)v13 setMinimumSize:width, height];
-  [(QLPreviewReply *)v13 setWantsBorder:v6];
+  [(QLPreviewReply *)v13 setWantsBorder:borderCopy];
   [(QLPreviewReply *)v13 setReplyType:5];
 
   return v13;
@@ -92,27 +92,27 @@
   return v8;
 }
 
-- (QLPreviewReply)initWithFileURL:(id)a3 forcedContentType:(id)a4
+- (QLPreviewReply)initWithFileURL:(id)l forcedContentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  typeCopy = type;
   v8 = objc_opt_new();
   [(QLPreviewReply *)v8 setReplyType:3];
-  if (v6)
+  if (lCopy)
   {
     v9 = objc_alloc(MEMORY[0x277CDAB18]);
-    v10 = [v9 initWithURL:v6 sandboxType:*MEMORY[0x277D861B8]];
+    v10 = [v9 initWithURL:lCopy sandboxType:*MEMORY[0x277D861B8]];
     [(QLPreviewReply *)v8 setFileURLHandler:v10];
 
-    if (v7)
+    if (typeCopy)
     {
-      [(QLPreviewReply *)v8 setContentType:v7];
+      [(QLPreviewReply *)v8 setContentType:typeCopy];
     }
 
     else
     {
       v11 = MEMORY[0x277CE1CB8];
-      v12 = [MEMORY[0x277CDAB20] UTIForURL:v6];
+      v12 = [MEMORY[0x277CDAB20] UTIForURL:lCopy];
       v13 = [v11 typeWithIdentifier:v12];
       [(QLPreviewReply *)v8 setContentType:v13];
     }
@@ -137,35 +137,35 @@
   return v11;
 }
 
-- (void)updateWithImageData:(id)a3 bitmapFormat:(id)a4
+- (void)updateWithImageData:(id)data bitmapFormat:(id)format
 {
-  v6 = a4;
-  [(QLPreviewReply *)self setData:a3];
-  [(QLPreviewReply *)self setBitmapFormat:v6];
+  formatCopy = format;
+  [(QLPreviewReply *)self setData:data];
+  [(QLPreviewReply *)self setBitmapFormat:formatCopy];
 }
 
 - (id)updateFromDataCreationBlock
 {
-  v3 = [(QLPreviewReply *)self dataCreationBlock];
+  dataCreationBlock = [(QLPreviewReply *)self dataCreationBlock];
 
-  if (v3)
+  if (dataCreationBlock)
   {
-    v4 = [(QLPreviewReply *)self dataCreationBlock];
+    dataCreationBlock2 = [(QLPreviewReply *)self dataCreationBlock];
     v7 = 0;
-    v5 = (v4)[2](v4, self, &v7);
-    v3 = v7;
+    v5 = (dataCreationBlock2)[2](dataCreationBlock2, self, &v7);
+    dataCreationBlock = v7;
     [(QLPreviewReply *)self setData:v5];
   }
 
-  return v3;
+  return dataCreationBlock;
 }
 
-- (id)drawWithContext:(CGContext *)a3
+- (id)drawWithContext:(CGContext *)context
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = [(QLPreviewReply *)self drawInContextBlock];
+  drawInContextBlock = [(QLPreviewReply *)self drawInContextBlock];
 
-  if (!v5)
+  if (!drawInContextBlock)
   {
     v10 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
@@ -175,9 +175,9 @@
     goto LABEL_5;
   }
 
-  v6 = [(QLPreviewReply *)self drawInContextBlock];
+  drawInContextBlock2 = [(QLPreviewReply *)self drawInContextBlock];
   v12 = 0;
-  v7 = (v6)[2](v6, a3, self, &v12);
+  v7 = (drawInContextBlock2)[2](drawInContextBlock2, context, self, &v12);
   v8 = v12;
 
   v9 = 0;
@@ -191,85 +191,85 @@ LABEL_5:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(QLPreviewReply *)self contentType];
-  [v16 encodeObject:v4 forKey:@"contentType"];
+  coderCopy = coder;
+  contentType = [(QLPreviewReply *)self contentType];
+  [coderCopy encodeObject:contentType forKey:@"contentType"];
 
-  v5 = [(QLPreviewReply *)self data];
-  [v16 encodeObject:v5 forKey:@"data"];
+  data = [(QLPreviewReply *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  [v16 encodeInteger:-[QLPreviewReply stringEncoding](self forKey:{"stringEncoding"), @"stringEncoding"}];
-  v6 = [(QLPreviewReply *)self attachments];
-  [v16 encodeObject:v6 forKey:@"attachments"];
+  [coderCopy encodeInteger:-[QLPreviewReply stringEncoding](self forKey:{"stringEncoding"), @"stringEncoding"}];
+  attachments = [(QLPreviewReply *)self attachments];
+  [coderCopy encodeObject:attachments forKey:@"attachments"];
 
-  v7 = [(QLPreviewReply *)self fileURLHandler];
-  [v16 encodeObject:v7 forKey:@"fileURL"];
+  fileURLHandler = [(QLPreviewReply *)self fileURLHandler];
+  [coderCopy encodeObject:fileURLHandler forKey:@"fileURL"];
 
-  v8 = [(QLPreviewReply *)self bitmapFormat];
-  [v16 encodeObject:v8 forKey:@"bitmapFormat"];
+  bitmapFormat = [(QLPreviewReply *)self bitmapFormat];
+  [coderCopy encodeObject:bitmapFormat forKey:@"bitmapFormat"];
 
-  v9 = [(QLPreviewReply *)self title];
-  [v16 encodeObject:v9 forKey:@"title"];
+  title = [(QLPreviewReply *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
   [(QLPreviewReply *)self contentSize];
   *&v10 = v10;
-  [v16 encodeFloat:@"contentWidth" forKey:v10];
+  [coderCopy encodeFloat:@"contentWidth" forKey:v10];
   [(QLPreviewReply *)self contentSize];
   *&v12 = v11;
-  [v16 encodeFloat:@"contentHeight" forKey:v12];
+  [coderCopy encodeFloat:@"contentHeight" forKey:v12];
   [(QLPreviewReply *)self minimumSize];
   *&v13 = v13;
-  [v16 encodeFloat:@"minimumWidth" forKey:v13];
+  [coderCopy encodeFloat:@"minimumWidth" forKey:v13];
   [(QLPreviewReply *)self minimumSize];
   *&v15 = v14;
-  [v16 encodeFloat:@"minimumHeight" forKey:v15];
-  [v16 encodeBool:-[QLPreviewReply wantsBorder](self forKey:{"wantsBorder"), @"wantsBorder"}];
-  [v16 encodeInteger:-[QLPreviewReply replyType](self forKey:{"replyType"), @"replyType"}];
+  [coderCopy encodeFloat:@"minimumHeight" forKey:v15];
+  [coderCopy encodeBool:-[QLPreviewReply wantsBorder](self forKey:{"wantsBorder"), @"wantsBorder"}];
+  [coderCopy encodeInteger:-[QLPreviewReply replyType](self forKey:{"replyType"), @"replyType"}];
 }
 
-- (QLPreviewReply)initWithCoder:(id)a3
+- (QLPreviewReply)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = QLPreviewReply;
   v5 = [(QLPreviewReply *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     [(QLPreviewReply *)v5 setContentType:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     [(QLPreviewReply *)v5 setData:v7];
 
-    -[QLPreviewReply setStringEncoding:](v5, "setStringEncoding:", [v4 decodeIntegerForKey:@"stringEncoding"]);
+    -[QLPreviewReply setStringEncoding:](v5, "setStringEncoding:", [coderCopy decodeIntegerForKey:@"stringEncoding"]);
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"attachments"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"attachments"];
     [(QLPreviewReply *)v5 setAttachments:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
     [(QLPreviewReply *)v5 setFileURLHandler:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bitmapFormat"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bitmapFormat"];
     [(QLPreviewReply *)v5 setBitmapFormat:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     [(QLPreviewReply *)v5 setTitle:v15];
 
-    [v4 decodeFloatForKey:@"contentWidth"];
+    [coderCopy decodeFloatForKey:@"contentWidth"];
     v17 = v16;
-    [v4 decodeFloatForKey:@"contentHeight"];
+    [coderCopy decodeFloatForKey:@"contentHeight"];
     [(QLPreviewReply *)v5 setContentSize:v17, v18];
-    [v4 decodeFloatForKey:@"minimumWidth"];
+    [coderCopy decodeFloatForKey:@"minimumWidth"];
     v20 = v19;
-    [v4 decodeFloatForKey:@"minimumHeight"];
+    [coderCopy decodeFloatForKey:@"minimumHeight"];
     [(QLPreviewReply *)v5 setMinimumSize:v20, v21];
-    -[QLPreviewReply setWantsBorder:](v5, "setWantsBorder:", [v4 decodeBoolForKey:@"wantsBorder"]);
-    -[QLPreviewReply setReplyType:](v5, "setReplyType:", [v4 decodeIntegerForKey:@"replyType"]);
+    -[QLPreviewReply setWantsBorder:](v5, "setWantsBorder:", [coderCopy decodeBoolForKey:@"wantsBorder"]);
+    -[QLPreviewReply setReplyType:](v5, "setReplyType:", [coderCopy decodeIntegerForKey:@"replyType"]);
   }
 
   return v5;

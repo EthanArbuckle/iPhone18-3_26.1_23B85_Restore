@@ -1,103 +1,103 @@
 @interface HDHRHypertensionNotificationsDailyAnalyticsEvent
-- (HDHRHypertensionNotificationsDailyAnalyticsEvent)initWithProfile:(id)a3;
-- (id)_countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_countOfSamplesWithType:(id)a3 dateInterval:(id)a4 additionalPredicate:(id)a5;
-- (id)_dateIntervalForCalendarDays:(int64_t)a3 fromDate:(id)a4 calendar:(id)a5;
-- (id)_daysSinceLastHypertensionNotificationToDate:(id)a3 withinDateInterval:(id)a4 calendar:(id)a5;
-- (id)_daysSinceMostRecentSampleWithType:(id)a3 toDate:(id)a4 calendar:(id)a5 additionalPredicate:(id)a6 error:(id *)a7;
-- (id)_daysSinceOldestHypertensionNotificationToDate:(id)a3 withinDateInterval:(id)a4 calendar:(id)a5;
-- (id)_daysSinceOldestSampleWithType:(id)a3 toDate:(id)a4 calendar:(id)a5 additionalPredicate:(id)a6 error:(id *)a7;
-- (id)_dnuNumDaysAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_dnuOnboardingAnalyticsWithDataSource:(id)a3;
-- (id)_dnuSampleCountsInPreviousCalendarDayWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_ihaBPJCountAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_ihaNumDaysAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_ihaOnboardingAnalyticsWithDataSource:(id)a3;
-- (id)_ihaSampleCountsAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)_numDaysSinceLastAnalysisWithCurrentDate:(id)a3 calendar:(id)a4;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (HDHRHypertensionNotificationsDailyAnalyticsEvent)initWithProfile:(id)profile;
+- (id)_countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_countOfSamplesWithType:(id)type dateInterval:(id)interval additionalPredicate:(id)predicate;
+- (id)_dateIntervalForCalendarDays:(int64_t)days fromDate:(id)date calendar:(id)calendar;
+- (id)_daysSinceLastHypertensionNotificationToDate:(id)date withinDateInterval:(id)interval calendar:(id)calendar;
+- (id)_daysSinceMostRecentSampleWithType:(id)type toDate:(id)date calendar:(id)calendar additionalPredicate:(id)predicate error:(id *)error;
+- (id)_daysSinceOldestHypertensionNotificationToDate:(id)date withinDateInterval:(id)interval calendar:(id)calendar;
+- (id)_daysSinceOldestSampleWithType:(id)type toDate:(id)date calendar:(id)calendar additionalPredicate:(id)predicate error:(id *)error;
+- (id)_dnuNumDaysAnalyticsWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_dnuOnboardingAnalyticsWithDataSource:(id)source;
+- (id)_dnuSampleCountsInPreviousCalendarDayWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_ihaBPJCountAnalyticsWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_ihaNumDaysAnalyticsWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_ihaOnboardingAnalyticsWithDataSource:(id)source;
+- (id)_ihaSampleCountsAnalyticsWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)_numDaysSinceLastAnalysisWithCurrentDate:(id)date calendar:(id)calendar;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HDHRHypertensionNotificationsDailyAnalyticsEvent
 
-- (HDHRHypertensionNotificationsDailyAnalyticsEvent)initWithProfile:(id)a3
+- (HDHRHypertensionNotificationsDailyAnalyticsEvent)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRHypertensionNotificationsDailyAnalyticsEvent;
   v5 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a3;
+  sourceCopy = source;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 environmentDataSource];
-  v9 = [v8 currentDate];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
 
-  v10 = [v6 environmentDataSource];
-  v11 = [v10 calendarCache];
-  v12 = [v11 currentCalendar];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource2 calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuSampleCountsInPreviousCalendarDayWithCurrentDate:v9 calendar:v12];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuSampleCountsInPreviousCalendarDayWithCurrentDate:currentDate calendar:currentCalendar];
   [v7 hk_addEntriesFromNonNilDictionary:v13];
 
-  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuNumDaysAnalyticsWithCurrentDate:v9 calendar:v12];
+  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuNumDaysAnalyticsWithCurrentDate:currentDate calendar:currentCalendar];
   [v7 hk_addEntriesFromNonNilDictionary:v14];
 
-  v15 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuOnboardingAnalyticsWithDataSource:v6];
+  v15 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dnuOnboardingAnalyticsWithDataSource:sourceCopy];
 
   [v7 hk_addEntriesFromNonNilDictionary:v15];
 
   return v7;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 environmentDataSource];
-  v7 = [v6 currentDate];
+  sourceCopy = source;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
 
-  v8 = [v5 environmentDataSource];
-  v9 = [v8 calendarCache];
-  v10 = [v9 currentCalendar];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource2 calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaNumDaysAnalyticsWithCurrentDate:v7 calendar:v10];
+  v12 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaNumDaysAnalyticsWithCurrentDate:currentDate calendar:currentCalendar];
   [v11 hk_addEntriesFromNonNilDictionary:v12];
 
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaSampleCountsAnalyticsWithCurrentDate:v7 calendar:v10];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaSampleCountsAnalyticsWithCurrentDate:currentDate calendar:currentCalendar];
   [v11 hk_addEntriesFromNonNilDictionary:v13];
 
-  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaOnboardingAnalyticsWithDataSource:v5];
+  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaOnboardingAnalyticsWithDataSource:sourceCopy];
 
   [v11 hk_addEntriesFromNonNilDictionary:v14];
-  v15 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaBPJCountAnalyticsWithCurrentDate:v7 calendar:v10];
+  v15 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _ihaBPJCountAnalyticsWithCurrentDate:currentDate calendar:currentCalendar];
   [v11 hk_addEntriesFromNonNilDictionary:v15];
 
   return v11;
 }
 
-- (id)_ihaBPJCountAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_ihaBPJCountAnalyticsWithCurrentDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [MEMORY[0x277CCD0C0] hypertensionEventType];
+  hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained heartHealthProfileExtension];
-  v12 = [v11 bloodPressureJournalManager];
+  heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
   v54 = 0;
-  v13 = [v12 bloodPressureJournalsWithLimit:2 ascending:0 error:&v54];
+  v13 = [bloodPressureJournalManager bloodPressureJournalsWithLimit:2 ascending:0 error:&v54];
   v14 = v54;
 
   if (!v13 || ![v13 count])
@@ -114,9 +114,9 @@
 
     else
     {
-      v27 = [v7 dateByAddingUnit:16 value:-180 toDate:v6 options:0];
-      v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v27 endDate:v6];
-      v29 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v9 dateInterval:v28];
+      v27 = [calendarCopy dateByAddingUnit:16 value:-180 toDate:dateCopy options:0];
+      v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v27 endDate:dateCopy];
+      v29 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:hypertensionEventType dateInterval:v28];
       v30 = v29;
       if (v29 && [v29 integerValue] >= 1)
       {
@@ -130,32 +130,32 @@
     goto LABEL_30;
   }
 
-  v53 = v6;
-  v52 = v9;
+  v53 = dateCopy;
+  v52 = hypertensionEventType;
   if ([v13 count])
   {
     v15 = [v13 objectAtIndexedSubscript:0];
-    v16 = [v15 startDate];
-    if (!v16)
+    startDate = [v15 startDate];
+    if (!startDate)
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v17 = v16;
+    v17 = startDate;
     v18 = [v13 objectAtIndexedSubscript:0];
-    v19 = [v18 startDate];
-    v20 = [v19 hk_isBeforeDate:v6];
+    startDate2 = [v18 startDate];
+    v20 = [startDate2 hk_isBeforeDate:dateCopy];
 
     if (v20)
     {
       v21 = objc_alloc(MEMORY[0x277CCA970]);
       v22 = [v13 objectAtIndexedSubscript:0];
-      v23 = [v22 startDate];
-      v15 = [v21 initWithStartDate:v23 endDate:v53];
+      startDate3 = [v22 startDate];
+      v15 = [v21 initWithStartDate:startDate3 endDate:v53];
 
-      v9 = v52;
+      hypertensionEventType = v52;
       v24 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v52 dateInterval:v15];
       v25 = v24;
       if (v24 && [v24 integerValue] >= 1)
@@ -166,7 +166,7 @@ LABEL_18:
         v26 = v8;
 
 LABEL_28:
-        v6 = v53;
+        dateCopy = v53;
         goto LABEL_30;
       }
 
@@ -178,31 +178,31 @@ LABEL_19:
   if ([v13 count] == 2)
   {
     v32 = [v13 objectAtIndexedSubscript:1];
-    v33 = [v32 startDate];
-    if (v33)
+    startDate4 = [v32 startDate];
+    if (startDate4)
     {
-      v34 = v33;
+      v34 = startDate4;
       v35 = [v13 objectAtIndexedSubscript:0];
-      v36 = [v35 startDate];
+      startDate5 = [v35 startDate];
 
-      if (v36)
+      if (startDate5)
       {
         v37 = [v13 objectAtIndexedSubscript:1];
-        v38 = [v37 startDate];
+        startDate6 = [v37 startDate];
 
         v39 = [v13 objectAtIndexedSubscript:0];
-        v40 = [v39 startDate];
+        startDate7 = [v39 startDate];
 LABEL_27:
 
-        v44 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v38 endDate:v40];
-        v9 = v52;
+        v44 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate6 endDate:startDate7];
+        hypertensionEventType = v52;
         v45 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v52 dateInterval:v44];
         [v8 setObject:v45 forKeyedSubscript:HDHRAnalyticsPropertyNameCountHTNotificationsUntilMostRecentBPJStarted];
 
-        v46 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceOldestHypertensionNotificationToDate:v40 withinDateInterval:v44 calendar:v7];
+        v46 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceOldestHypertensionNotificationToDate:startDate7 withinDateInterval:v44 calendar:calendarCopy];
         [v8 setObject:v46 forKeyedSubscript:HDHRAnalyticsPropertyNameDifferenceInDaysBetweenFirstHTNotificationAndBPJStarted];
 
-        v47 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceLastHypertensionNotificationToDate:v40 withinDateInterval:v44 calendar:v7];
+        v47 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceLastHypertensionNotificationToDate:startDate7 withinDateInterval:v44 calendar:calendarCopy];
         [v8 setObject:v47 forKeyedSubscript:HDHRAnalyticsPropertyNameDifferenceInDaysBetweenMostRecentHTNotificationAndBPJStarted];
 
         v48 = v8;
@@ -218,15 +218,15 @@ LABEL_27:
   if ([v13 count] == 1)
   {
     v41 = [v13 objectAtIndexedSubscript:0];
-    v42 = [v41 startDate];
+    startDate8 = [v41 startDate];
 
-    if (v42)
+    if (startDate8)
     {
       v43 = [v13 objectAtIndexedSubscript:0];
-      v40 = [v43 startDate];
+      startDate7 = [v43 startDate];
 
-      v39 = [v7 dateByAddingUnit:16 value:-180 toDate:v40 options:0];
-      v38 = [v7 startOfDayForDate:v39];
+      v39 = [calendarCopy dateByAddingUnit:16 value:-180 toDate:startDate7 options:0];
+      startDate6 = [calendarCopy startOfDayForDate:v39];
       goto LABEL_27;
     }
   }
@@ -236,78 +236,78 @@ LABEL_27:
   [v8 setObject:v49 forKeyedSubscript:HDHRAnalyticsPropertyNameDifferenceInDaysBetweenFirstHTNotificationAndBPJStarted];
   [v8 setObject:v49 forKeyedSubscript:HDHRAnalyticsPropertyNameDifferenceInDaysBetweenMostRecentHTNotificationAndBPJStarted];
   v50 = v8;
-  v9 = v52;
-  v6 = v53;
+  hypertensionEventType = v52;
+  dateCopy = v53;
 LABEL_30:
 
   return v8;
 }
 
-- (id)_dnuOnboardingAnalyticsWithDataSource:(id)a3
+- (id)_dnuOnboardingAnalyticsWithDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 healthDataSource];
-  v6 = [v5 featureStatusProviderForIdentifier:*MEMORY[0x277CCC068]];
+  healthDataSource = [sourceCopy healthDataSource];
+  v6 = [healthDataSource featureStatusProviderForIdentifier:*MEMORY[0x277CCC068]];
 
   v52 = 0;
   v7 = [v6 featureStatusWithError:&v52];
   v8 = v52;
-  v9 = [v7 onboardingRecord];
-  v10 = [v9 onboardingCompletion];
+  onboardingRecord = [v7 onboardingRecord];
+  onboardingCompletion = [onboardingRecord onboardingCompletion];
 
-  v11 = [v7 requirementsEvaluationByContext];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  requirementsEvaluationByContext = [v7 requirementsEvaluationByContext];
+  v12 = [requirementsEvaluationByContext objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
 
   v13 = [v12 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF38]];
   v50 = v12;
-  if (v10)
+  if (onboardingCompletion)
   {
     v14 = v13;
-    v15 = [v7 onboardingRecord];
-    v16 = ([v15 onboardingState] != 3) & v14;
+    onboardingRecord2 = [v7 onboardingRecord];
+    v16 = ([onboardingRecord2 onboardingState] != 3) & v14;
 
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v16];
     [v4 setObject:v17 forKeyedSubscript:HDHRAnalyticsPropertyNameIsOnboardedHTN];
 
-    v18 = [v10 countryCode];
-    [v4 setObject:v18 forKeyedSubscript:HDHRAnalyticsPropertyNameCountryCodeHTN];
+    countryCode = [onboardingCompletion countryCode];
+    [v4 setObject:countryCode forKeyedSubscript:HDHRAnalyticsPropertyNameCountryCodeHTN];
 
     if (v16 != 1)
     {
       goto LABEL_8;
     }
 
-    v19 = [v3 environmentDataSource];
-    v20 = [v19 currentDate];
+    environmentDataSource = [sourceCopy environmentDataSource];
+    currentDate = [environmentDataSource currentDate];
 
-    v21 = [v3 environmentDataSource];
-    v22 = [v21 calendarCache];
-    v23 = [v22 currentCalendar];
+    environmentDataSource2 = [sourceCopy environmentDataSource];
+    calendarCache = [environmentDataSource2 calendarCache];
+    currentCalendar = [calendarCache currentCalendar];
 
-    v24 = [v10 completionDate];
-    v25 = [v23 components:0x2000 fromDate:v24 toDate:v20 options:0];
+    completionDate = [onboardingCompletion completionDate];
+    v25 = [currentCalendar components:0x2000 fromDate:completionDate toDate:currentDate options:0];
 
     v26 = *MEMORY[0x277CCB7A0];
     if ([v25 weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v47 = v23;
+      v47 = currentCalendar;
       v27 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v25, "weekOfYear")}];
       HKAnalyticsSigFigBinnedValue();
       v48 = v7;
-      v28 = v10;
+      v28 = onboardingCompletion;
       v29 = v4;
-      v30 = v3;
+      v30 = sourceCopy;
       v31 = v8;
       v33 = v32 = v6;
 
       v26 = v33;
       v6 = v32;
       v8 = v31;
-      v3 = v30;
+      sourceCopy = v30;
       v4 = v29;
-      v10 = v28;
-      v23 = v47;
+      onboardingCompletion = v28;
+      currentCalendar = v47;
       v7 = v48;
     }
 
@@ -321,37 +321,37 @@ LABEL_30:
     v34 = [MEMORY[0x277CCABB0] numberWithBool:0];
     [v4 setObject:v34 forKeyedSubscript:HDHRAnalyticsPropertyNameIsOnboardedHTN];
 
-    v20 = [0 countryCode];
-    [v4 setObject:v20 forKeyedSubscript:HDHRAnalyticsPropertyNameCountryCodeHTN];
+    currentDate = [0 countryCode];
+    [v4 setObject:currentDate forKeyedSubscript:HDHRAnalyticsPropertyNameCountryCodeHTN];
   }
 
 LABEL_8:
-  v35 = [v3 healthDataSource];
-  v36 = [v35 featureStatusProviderForIdentifier:*MEMORY[0x277CCC070]];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  v36 = [healthDataSource2 featureStatusProviderForIdentifier:*MEMORY[0x277CCC070]];
 
   if (v36)
   {
     v49 = v7;
-    v37 = v10;
-    v38 = v3;
+    v37 = onboardingCompletion;
+    v38 = sourceCopy;
     v39 = v8;
     v40 = v6;
     v51 = 0;
     v41 = [v36 featureStatusWithError:&v51];
     v42 = v51;
-    v43 = [v41 onboardingRecord];
-    v44 = [v43 onboardingCompletion];
+    onboardingRecord3 = [v41 onboardingRecord];
+    onboardingCompletion2 = [onboardingRecord3 onboardingCompletion];
 
-    if (v44)
+    if (onboardingCompletion2)
     {
-      v45 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v44, "version")}];
+      v45 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(onboardingCompletion2, "version")}];
       [v4 setObject:v45 forKeyedSubscript:HDHRAnalyticsPropertyNameIRNOnboardedVersion];
     }
 
     v6 = v40;
     v8 = v39;
-    v3 = v38;
-    v10 = v37;
+    sourceCopy = v38;
+    onboardingCompletion = v37;
     v7 = v49;
     v12 = v50;
   }
@@ -359,26 +359,26 @@ LABEL_8:
   return v4;
 }
 
-- (id)_ihaOnboardingAnalyticsWithDataSource:(id)a3
+- (id)_ihaOnboardingAnalyticsWithDataSource:(id)source
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
 
-  v7 = [v6 featureStatusProviderForIdentifier:*MEMORY[0x277CCBFF0]];
+  v7 = [healthDataSource featureStatusProviderForIdentifier:*MEMORY[0x277CCBFF0]];
 
   if (v7)
   {
     v14 = 0;
     v8 = [v7 featureStatusWithError:&v14];
     v9 = v14;
-    v10 = [v8 onboardingRecord];
-    v11 = [v10 onboardingCompletion];
+    onboardingRecord = [v8 onboardingRecord];
+    onboardingCompletion = [onboardingRecord onboardingCompletion];
 
-    if (v11)
+    if (onboardingCompletion)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "version")}];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(onboardingCompletion, "version")}];
       [v5 setObject:v12 forKeyedSubscript:HDHRAnalyticsPropertyNameAfibOnboardedVersion];
     }
   }
@@ -386,24 +386,24 @@ LABEL_8:
   return v5;
 }
 
-- (id)_dateIntervalForCalendarDays:(int64_t)a3 fromDate:(id)a4 calendar:(id)a5
+- (id)_dateIntervalForCalendarDays:(int64_t)days fromDate:(id)date calendar:(id)calendar
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 < 0)
+  dateCopy = date;
+  calendarCopy = calendar;
+  v9 = calendarCopy;
+  if (days < 0)
   {
-    v10 = [v8 dateByAddingUnit:16 value:a3 toDate:v7 options:0];
+    v10 = [calendarCopy dateByAddingUnit:16 value:days toDate:dateCopy options:0];
     v11 = 1;
   }
 
   else
   {
-    v10 = v7;
-    v11 = a3 + 1;
+    v10 = dateCopy;
+    v11 = days + 1;
   }
 
-  v12 = [v9 dateByAddingUnit:16 value:v11 toDate:v7 options:0];
+  v12 = [v9 dateByAddingUnit:16 value:v11 toDate:dateCopy options:0];
   v13 = [v9 startOfDayForDate:v10];
   v14 = [v9 startOfDayForDate:v12];
   v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v13 endDate:v14];
@@ -411,24 +411,24 @@ LABEL_8:
   return v15;
 }
 
-- (id)_dnuSampleCountsInPreviousCalendarDayWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_dnuSampleCountsInPreviousCalendarDayWithCurrentDate:(id)date calendar:(id)calendar
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  calendarCopy = calendar;
+  dateCopy = date;
   v9 = objc_alloc_init(v6);
-  v10 = [v7 hk_dateBySubtractingDays:1 fromDate:v8];
+  v10 = [calendarCopy hk_dateBySubtractingDays:1 fromDate:dateCopy];
 
-  v11 = [MEMORY[0x277CCA970] hk_dateIntervalForDayFromDate:v10 calendar:v7];
+  v11 = [MEMORY[0x277CCA970] hk_dateIntervalForDayFromDate:v10 calendar:calendarCopy];
 
-  v12 = [MEMORY[0x277CCD920] heartbeatSeriesType];
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v12 dateInterval:v11];
+  heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:heartbeatSeriesType dateInterval:v11];
   [v9 setObject:v13 forKeyedSubscript:HDHRAnalyticsPropertyNameNumTachogramsInPreviousCalendarDay];
 
-  v14 = [MEMORY[0x277CCD830] heartRateType];
+  heartRateType = [MEMORY[0x277CCD830] heartRateType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v16 = HDHRBackgroundHeartRateContextPredicate(WeakRetained);
-  v17 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v14 dateInterval:v11 additionalPredicate:v16];
+  v17 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:heartRateType dateInterval:v11 additionalPredicate:v16];
   [v9 setObject:v17 forKeyedSubscript:HDHRAnalyticsPropertyNameNumBackgroundHRSamplesInPreviousCalendarDay];
 
   v18 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB8E0]];
@@ -438,32 +438,32 @@ LABEL_8:
   return v9;
 }
 
-- (id)_ihaSampleCountsAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_ihaSampleCountsAnalyticsWithCurrentDate:(id)date calendar:(id)calendar
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  calendarCopy = calendar;
+  dateCopy = date;
   v9 = objc_alloc_init(v6);
-  v10 = [MEMORY[0x277CCD0C0] hypertensionEventType];
-  v11 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-30 fromDate:v8 calendar:v7];
-  v12 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-180 fromDate:v8 calendar:v7];
+  hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
+  v11 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-30 fromDate:dateCopy calendar:calendarCopy];
+  v12 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-180 fromDate:dateCopy calendar:calendarCopy];
 
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v10 dateInterval:v12];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:hypertensionEventType dateInterval:v12];
   [v9 setObject:v13 forKeyedSubscript:HDHRAnalyticsPropertyNameNumHTNotificationsInPast180Days];
 
-  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:v10 dateInterval:v11];
+  v14 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfSamplesWithType:hypertensionEventType dateInterval:v11];
   [v9 setObject:v14 forKeyedSubscript:HDHRAnalyticsPropertyNameNumHTNotificationsInPast30Days];
 
   return v9;
 }
 
-- (id)_ihaNumDaysAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_ihaNumDaysAnalyticsWithCurrentDate:(id)date calendar:(id)calendar
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  calendarCopy = calendar;
+  dateCopy = date;
   v9 = objc_alloc_init(v6);
-  v10 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceLastHypertensionNotificationToDate:v8 withinDateInterval:0 calendar:v7];
+  v10 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceLastHypertensionNotificationToDate:dateCopy withinDateInterval:0 calendar:calendarCopy];
 
   if (v10)
   {
@@ -480,26 +480,26 @@ LABEL_8:
   return v9;
 }
 
-- (id)_dnuNumDaysAnalyticsWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_dnuNumDaysAnalyticsWithCurrentDate:(id)date calendar:(id)calendar
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  calendarCopy = calendar;
+  dateCopy = date;
   v9 = objc_alloc_init(v6);
-  v10 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:v8 calendar:v7];
+  v10 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:dateCopy calendar:calendarCopy];
   [v9 setObject:v10 forKeyedSubscript:HDHRAnalyticsPropertyNameNumDaysWithAdequateDataInPast30Days];
 
-  v11 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _numDaysSinceLastAnalysisWithCurrentDate:v8 calendar:v7];
+  v11 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _numDaysSinceLastAnalysisWithCurrentDate:dateCopy calendar:calendarCopy];
 
   [v9 setObject:v11 forKeyedSubscript:HDHRAnalyticsPropertyNameNumDaysSinceLastAnalysis];
 
   return v9;
 }
 
-- (id)_numDaysSinceLastAnalysisWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_numDaysSinceLastAnalysisWithCurrentDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v8 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v10 = [v8 hdhr_hypertensionNotificationsSyncedDomainForProfile:WeakRetained];
@@ -510,7 +510,7 @@ LABEL_8:
   v13 = v19;
   if (v12)
   {
-    v14 = [v7 components:16 fromDate:v12 toDate:v6 options:0];
+    v14 = [calendarCopy components:16 fromDate:v12 toDate:dateCopy options:0];
     v15 = [v14 day];
 
     v16 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
@@ -531,15 +531,15 @@ LABEL_8:
   return v16;
 }
 
-- (id)_countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:(id)a3 calendar:(id)a4
+- (id)_countOfLast30DaysWithHypertensiveMeasurementSamplesWithCurrentDate:(id)date calendar:(id)calendar
 {
-  v6 = a4;
-  v7 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-30 fromDate:a3 calendar:v6];
-  v8 = [MEMORY[0x277CBEAB8] hk_oneDay];
-  [v8 setCalendar:v6];
+  calendarCopy = calendar;
+  v7 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _dateIntervalForCalendarDays:-30 fromDate:date calendar:calendarCopy];
+  hk_oneDay = [MEMORY[0x277CBEAB8] hk_oneDay];
+  [hk_oneDay setCalendar:calendarCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [MEMORY[0x277CCD830] hypertensiveMeasurementType];
+  hypertensiveMeasurementType = [MEMORY[0x277CCD830] hypertensiveMeasurementType];
   v11 = HDDataEntityPredicateForObjectsFromAppleWatchSources();
   v12 = HDAnalyticsCountOfIntervalsForQuantityType();
   v13 = 0;
@@ -564,13 +564,13 @@ LABEL_8:
   return v14;
 }
 
-- (id)_daysSinceLastHypertensionNotificationToDate:(id)a3 withinDateInterval:(id)a4 calendar:(id)a5
+- (id)_daysSinceLastHypertensionNotificationToDate:(id)date withinDateInterval:(id)interval calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCD0C0] hypertensionEventType];
-  if (v9)
+  dateCopy = date;
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
+  if (intervalCopy)
   {
     v12 = HDSampleEntityPredicateForDateInterval();
   }
@@ -581,7 +581,7 @@ LABEL_8:
   }
 
   v19 = 0;
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceMostRecentSampleWithType:v11 toDate:v8 calendar:v10 additionalPredicate:v12 error:&v19];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceMostRecentSampleWithType:hypertensionEventType toDate:dateCopy calendar:calendarCopy additionalPredicate:v12 error:&v19];
   v14 = v19;
   v15 = v14;
   if (v13)
@@ -609,13 +609,13 @@ LABEL_8:
   return v16;
 }
 
-- (id)_daysSinceOldestHypertensionNotificationToDate:(id)a3 withinDateInterval:(id)a4 calendar:(id)a5
+- (id)_daysSinceOldestHypertensionNotificationToDate:(id)date withinDateInterval:(id)interval calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCD0C0] hypertensionEventType];
-  if (v9)
+  dateCopy = date;
+  intervalCopy = interval;
+  calendarCopy = calendar;
+  hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
+  if (intervalCopy)
   {
     v12 = HDSampleEntityPredicateForDateInterval();
   }
@@ -626,7 +626,7 @@ LABEL_8:
   }
 
   v19 = 0;
-  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceOldestSampleWithType:v11 toDate:v8 calendar:v10 additionalPredicate:v12 error:&v19];
+  v13 = [(HDHRHypertensionNotificationsDailyAnalyticsEvent *)self _daysSinceOldestSampleWithType:hypertensionEventType toDate:dateCopy calendar:calendarCopy additionalPredicate:v12 error:&v19];
   v14 = v19;
   v15 = v14;
   if (v13)
@@ -654,22 +654,22 @@ LABEL_8:
   return v16;
 }
 
-- (id)_daysSinceMostRecentSampleWithType:(id)a3 toDate:(id)a4 calendar:(id)a5 additionalPredicate:(id)a6 error:(id *)a7
+- (id)_daysSinceMostRecentSampleWithType:(id)type toDate:(id)date calendar:(id)calendar additionalPredicate:(id)predicate error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  dateCopy = date;
+  calendarCopy = calendar;
   v14 = MEMORY[0x277D10848];
-  v15 = a6;
-  v16 = a3;
+  predicateCopy = predicate;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v27 = 0;
-  v18 = [v14 mostRecentSampleWithType:v16 profile:WeakRetained encodingOptions:0 predicate:v15 anchor:0 error:&v27];
+  v18 = [v14 mostRecentSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:predicateCopy anchor:0 error:&v27];
 
   v19 = v27;
   if (v18)
   {
-    v20 = [v18 endDate];
-    v21 = [v13 components:16 fromDate:v20 toDate:v12 options:0];
+    endDate = [v18 endDate];
+    v21 = [calendarCopy components:16 fromDate:endDate toDate:dateCopy options:0];
     v22 = [v21 day];
 
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:v22];
@@ -680,10 +680,10 @@ LABEL_8:
     v24 = v19;
     if (v24)
     {
-      if (a7)
+      if (error)
       {
         v25 = v24;
-        *a7 = v24;
+        *error = v24;
       }
 
       else
@@ -698,22 +698,22 @@ LABEL_8:
   return v23;
 }
 
-- (id)_daysSinceOldestSampleWithType:(id)a3 toDate:(id)a4 calendar:(id)a5 additionalPredicate:(id)a6 error:(id *)a7
+- (id)_daysSinceOldestSampleWithType:(id)type toDate:(id)date calendar:(id)calendar additionalPredicate:(id)predicate error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  dateCopy = date;
+  calendarCopy = calendar;
   v14 = MEMORY[0x277D10848];
-  v15 = a6;
-  v16 = a3;
+  predicateCopy = predicate;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v27 = 0;
-  v18 = [v14 oldestSampleWithType:v16 profile:WeakRetained encodingOptions:0 predicate:v15 error:&v27];
+  v18 = [v14 oldestSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:predicateCopy error:&v27];
 
   v19 = v27;
   if (v18)
   {
-    v20 = [v18 endDate];
-    v21 = [v13 components:16 fromDate:v20 toDate:v12 options:0];
+    endDate = [v18 endDate];
+    v21 = [calendarCopy components:16 fromDate:endDate toDate:dateCopy options:0];
     v22 = [v21 day];
 
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:v22];
@@ -724,10 +724,10 @@ LABEL_8:
     v24 = v19;
     if (v24)
     {
-      if (a7)
+      if (error)
       {
         v25 = v24;
-        *a7 = v24;
+        *error = v24;
       }
 
       else
@@ -742,11 +742,11 @@ LABEL_8:
   return v23;
 }
 
-- (id)_countOfSamplesWithType:(id)a3 dateInterval:(id)a4 additionalPredicate:(id)a5
+- (id)_countOfSamplesWithType:(id)type dateInterval:(id)interval additionalPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
+  intervalCopy = interval;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v12 = HDAnalyticsCountOfSamples();
 

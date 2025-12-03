@@ -1,17 +1,17 @@
 @interface AlishaExternal
 + (_TtC10seserviced14AlishaExternal)shared;
-- (BOOL)isPassiveEntryAvailableFor:(id)a3;
-- (BOOL)isPeerConnectedWithClientUUID:(id)a3;
+- (BOOL)isPassiveEntryAvailableFor:(id)for;
+- (BOOL)isPeerConnectedWithClientUUID:(id)d;
 - (_TtC10seserviced14AlishaExternal)init;
-- (id)cancelRKERequestWithFunctionIdentifier:(unsigned __int16)a3 keyIdentifier:(id)a4;
-- (id)continueExecutingRKERequestWithFunctionIdentifier:(unsigned __int16)a3 actionIdentifier:(unsigned __int8)a4 arbitraryData:(id)a5 keyIdentifier:(id)a6;
+- (id)cancelRKERequestWithFunctionIdentifier:(unsigned __int16)identifier keyIdentifier:(id)keyIdentifier;
+- (id)continueExecutingRKERequestWithFunctionIdentifier:(unsigned __int16)identifier actionIdentifier:(unsigned __int8)actionIdentifier arbitraryData:(id)data keyIdentifier:(id)keyIdentifier;
 - (id)getAllEndpoints;
 - (id)getEnduringRKERequestsInProgress;
-- (id)getReportsWithIsInternalClient:(BOOL)a3;
-- (id)sendPassthroughWithMessage:(id)a3 clientUUID:(id)a4;
-- (void)sendRKERequestWithFunctionIdentifier:(unsigned __int16)a3 actionIdentifier:(unsigned __int8)a4 keyIdentifier:(id)a5 requestType:(unint64_t)a6 actionType:(unint64_t)a7 arbitraryData:(id)a8 enduringRequestHandler:(id)aBlock authorization:(id)a10 completion:(id)a11;
-- (void)subscribeToVehicleFunctionStatusEventsWithRange:(_NSRange)a3 peerUUID:(id)a4;
-- (void)triggerHeadUnitPairingWith:(id)a3 keyIdentifier:(id)a4;
+- (id)getReportsWithIsInternalClient:(BOOL)client;
+- (id)sendPassthroughWithMessage:(id)message clientUUID:(id)d;
+- (void)sendRKERequestWithFunctionIdentifier:(unsigned __int16)identifier actionIdentifier:(unsigned __int8)actionIdentifier keyIdentifier:(id)keyIdentifier requestType:(unint64_t)type actionType:(unint64_t)actionType arbitraryData:(id)data enduringRequestHandler:(id)aBlock authorization:(id)self0 completion:(id)self1;
+- (void)subscribeToVehicleFunctionStatusEventsWithRange:(_NSRange)range peerUUID:(id)d;
+- (void)triggerHeadUnitPairingWith:(id)with keyIdentifier:(id)identifier;
 @end
 
 @implementation AlishaExternal
@@ -43,14 +43,14 @@
   return v2.super.isa;
 }
 
-- (BOOL)isPassiveEntryAvailableFor:(id)a3
+- (BOOL)isPassiveEntryAvailableFor:(id)for
 {
   v4 = type metadata accessor for DispatchPredicate();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin(v4);
   v8 = &v17[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
-  v9 = a3;
+  forCopy = for;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
@@ -83,7 +83,7 @@
   return v15;
 }
 
-- (BOOL)isPeerConnectedWithClientUUID:(id)a3
+- (BOOL)isPeerConnectedWithClientUUID:(id)d
 {
   v3 = type metadata accessor for DispatchPredicate();
   v4 = *(v3 - 8);
@@ -125,14 +125,14 @@
   return v15;
 }
 
-- (id)cancelRKERequestWithFunctionIdentifier:(unsigned __int16)a3 keyIdentifier:(id)a4
+- (id)cancelRKERequestWithFunctionIdentifier:(unsigned __int16)identifier keyIdentifier:(id)keyIdentifier
 {
   v6 = type metadata accessor for DispatchPredicate();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   __chkstk_darwin(v6);
   v10 = (v19 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0));
-  v11 = a4;
+  keyIdentifierCopy = keyIdentifier;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
@@ -150,7 +150,7 @@
   if (v16)
   {
     __chkstk_darwin(result);
-    LOWORD(v19[-4]) = a3;
+    LOWORD(v19[-4]) = identifier;
     v19[-3] = v12;
     v19[-2] = v14;
     sub_100068FC4(&qword_100509E98, &qword_100414A88);
@@ -169,19 +169,19 @@
   return result;
 }
 
-- (id)continueExecutingRKERequestWithFunctionIdentifier:(unsigned __int16)a3 actionIdentifier:(unsigned __int8)a4 arbitraryData:(id)a5 keyIdentifier:(id)a6
+- (id)continueExecutingRKERequestWithFunctionIdentifier:(unsigned __int16)identifier actionIdentifier:(unsigned __int8)actionIdentifier arbitraryData:(id)data keyIdentifier:(id)keyIdentifier
 {
-  v26 = a4;
+  actionIdentifierCopy = actionIdentifier;
   v9 = type metadata accessor for DispatchPredicate();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
   __chkstk_darwin(v9);
   v13 = &v25[-((v12 + 15) & 0xFFFFFFFFFFFFFFF0)];
-  v14 = a6;
-  if (a5)
+  keyIdentifierCopy = keyIdentifier;
+  if (data)
   {
-    v15 = a5;
-    a5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    dataCopy = data;
+    data = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v17 = v16;
   }
 
@@ -207,16 +207,16 @@
   if (v22)
   {
     __chkstk_darwin(result);
-    *&v25[-48] = a3;
-    v25[-46] = v26;
+    *&v25[-48] = identifier;
+    v25[-46] = actionIdentifierCopy;
     *&v25[-40] = v18;
     *&v25[-32] = v20;
-    *&v25[-24] = a5;
+    *&v25[-24] = data;
     *&v25[-16] = v17;
     sub_100068FC4(&qword_100509E98, &qword_100414A88);
     OS_dispatch_queue.sync<A>(execute:)();
     sub_10006A178(v18, v20);
-    sub_10006A2D0(a5, v17);
+    sub_10006A2D0(data, v17);
     v24 = v27;
 
     return v24;
@@ -230,7 +230,7 @@
   return result;
 }
 
-- (id)getReportsWithIsInternalClient:(BOOL)a3
+- (id)getReportsWithIsInternalClient:(BOOL)client
 {
   v4 = type metadata accessor for DispatchPredicate();
   v5 = *(v4 - 8);
@@ -251,7 +251,7 @@
   if (v10)
   {
     __chkstk_darwin(result);
-    *(&v13 - 16) = a3;
+    *(&v13 - 16) = client;
     sub_100068FC4(&qword_100509EA0, qword_100414A90);
     OS_dispatch_queue.sync<A>(execute:)();
     sub_10009393C(0, &qword_100509EA8, SESVehicleReport_ptr);
@@ -268,7 +268,7 @@
   return result;
 }
 
-- (id)sendPassthroughWithMessage:(id)a3 clientUUID:(id)a4
+- (id)sendPassthroughWithMessage:(id)message clientUUID:(id)d
 {
   v6 = type metadata accessor for DispatchPredicate();
   v7 = *(v6 - 8);
@@ -280,8 +280,8 @@
   v13 = *(v12 + 64);
   __chkstk_darwin(v11);
   v15 = v25 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a3;
-  v17 = a4;
+  messageCopy = message;
+  dCopy = d;
   v18 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v20 = v19;
 
@@ -356,18 +356,18 @@
   return result;
 }
 
-- (void)sendRKERequestWithFunctionIdentifier:(unsigned __int16)a3 actionIdentifier:(unsigned __int8)a4 keyIdentifier:(id)a5 requestType:(unint64_t)a6 actionType:(unint64_t)a7 arbitraryData:(id)a8 enduringRequestHandler:(id)aBlock authorization:(id)a10 completion:(id)a11
+- (void)sendRKERequestWithFunctionIdentifier:(unsigned __int16)identifier actionIdentifier:(unsigned __int8)actionIdentifier keyIdentifier:(id)keyIdentifier requestType:(unint64_t)type actionType:(unint64_t)actionType arbitraryData:(id)data enduringRequestHandler:(id)aBlock authorization:(id)self0 completion:(id)self1
 {
   v14 = _Block_copy(aBlock);
-  v15 = _Block_copy(a11);
-  v16 = a5;
-  v33 = self;
-  v17 = a8;
-  v18 = a10;
+  v15 = _Block_copy(completion);
+  keyIdentifierCopy = keyIdentifier;
+  selfCopy = self;
+  dataCopy = data;
+  authorizationCopy = authorization;
   v19 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
-  if (v17)
+  if (dataCopy)
   {
     v22 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v24 = v23;
@@ -379,7 +379,7 @@
 
 LABEL_6:
     v25 = 0;
-    if (v18)
+    if (authorizationCopy)
     {
       goto LABEL_4;
     }
@@ -398,7 +398,7 @@ LABEL_3:
   v25 = swift_allocObject();
   *(v25 + 16) = v14;
   v14 = sub_1002E782C;
-  if (v18)
+  if (authorizationCopy)
   {
 LABEL_4:
     v26 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
@@ -413,7 +413,7 @@ LABEL_7:
 LABEL_8:
   v29 = swift_allocObject();
   *(v29 + 16) = v15;
-  sub_1002E5D90(a3, a4, v19, v21, a6, a7, v22, v24, v14, v25, v26, v28, sub_10021AC84, v29);
+  sub_1002E5D90(identifier, actionIdentifier, v19, v21, type, actionType, v22, v24, v14, v25, v26, v28, sub_10021AC84, v29);
 
   sub_10006A2D0(v26, v28);
   sub_1000B2A4C(v14);
@@ -421,10 +421,10 @@ LABEL_8:
   sub_10006A178(v19, v21);
 }
 
-- (void)subscribeToVehicleFunctionStatusEventsWithRange:(_NSRange)a3 peerUUID:(id)a4
+- (void)subscribeToVehicleFunctionStatusEventsWithRange:(_NSRange)range peerUUID:(id)d
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
@@ -435,31 +435,31 @@ LABEL_8:
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)triggerHeadUnitPairingWith:(id)a3 keyIdentifier:(id)a4
+- (void)triggerHeadUnitPairingWith:(id)with keyIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (a3)
+  withCopy = with;
+  if (with)
   {
-    v6 = a4;
-    v7 = self;
-    v8 = v5;
-    v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    identifierCopy = identifier;
+    selfCopy = self;
+    v8 = withCopy;
+    withCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v11 = a4;
-    v12 = self;
+    identifierCopy2 = identifier;
+    selfCopy2 = self;
     v10 = 0xF000000000000000;
   }
 
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  sub_1002E6DD0(v5, v10, v13, v15);
+  sub_1002E6DD0(withCopy, v10, v13, v15);
   sub_10006A178(v13, v15);
-  sub_10006A2D0(v5, v10);
+  sub_10006A2D0(withCopy, v10);
 }
 
 - (_TtC10seserviced14AlishaExternal)init

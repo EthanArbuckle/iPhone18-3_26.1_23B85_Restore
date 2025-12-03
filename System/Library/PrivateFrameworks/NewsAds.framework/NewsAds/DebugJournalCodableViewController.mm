@@ -1,13 +1,13 @@
 @interface DebugJournalCodableViewController
-- (_TtC7NewsAds33DebugJournalCodableViewController)initWithCoder:(id)a3;
-- (_TtC7NewsAds33DebugJournalCodableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsAds33DebugJournalCodableViewController)initWithCoder:(id)coder;
+- (_TtC7NewsAds33DebugJournalCodableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation DebugJournalCodableViewController
 
-- (_TtC7NewsAds33DebugJournalCodableViewController)initWithCoder:(id)a3
+- (_TtC7NewsAds33DebugJournalCodableViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7NewsAds33DebugJournalCodableViewController_textView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DD168]) init];
@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D76989E4();
 }
 
@@ -29,11 +29,11 @@
   v2 = v14.receiver;
   [(DebugJournalCodableViewController *)&v14 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC7NewsAds33DebugJournalCodableViewController_textView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -48,7 +48,7 @@
   }
 }
 
-- (_TtC7NewsAds33DebugJournalCodableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsAds33DebugJournalCodableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,27 +1,27 @@
 @interface MSHistoryMarkedLocation
 + (Class)managedClass;
 - (GEOMapItemStorage)mapItemStorage;
-- (MSHistoryMarkedLocation)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryMarkedLocation)initWithStore:(id)a3 customName:(id)a4 floorOrdinal:(int)a5 latitude:(id)a6 longitude:(id)a7 mapItemStorage:(id)a8 muid:(id)a9;
+- (MSHistoryMarkedLocation)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryMarkedLocation)initWithStore:(id)store customName:(id)name floorOrdinal:(int)ordinal latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid;
 - (NSNumber)latitude;
 - (NSNumber)longitude;
 - (NSNumber)muid;
 - (NSString)customName;
 - (int)floorOrdinal;
-- (void)setCustomName:(id)a3;
-- (void)setFloorOrdinal:(int)a3;
-- (void)setLatitude:(id)a3;
-- (void)setLongitude:(id)a3;
-- (void)setMapItemStorage:(id)a3;
-- (void)setMuid:(id)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
+- (void)setCustomName:(id)name;
+- (void)setFloorOrdinal:(int)ordinal;
+- (void)setLatitude:(id)latitude;
+- (void)setLongitude:(id)longitude;
+- (void)setMapItemStorage:(id)storage;
+- (void)setMuid:(id)muid;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
 @end
 
 @implementation MSHistoryMarkedLocation
 
-- (MSHistoryMarkedLocation)initWithStore:(id)a3 customName:(id)a4 floorOrdinal:(int)a5 latitude:(id)a6 longitude:(id)a7 mapItemStorage:(id)a8 muid:(id)a9
+- (MSHistoryMarkedLocation)initWithStore:(id)store customName:(id)name floorOrdinal:(int)ordinal latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid
 {
-  if (a4)
+  if (name)
   {
     v14 = sub_1B63BEBD4();
     v16 = v15;
@@ -33,12 +33,12 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  return HistoryMarkedLocation.init(store:customName:floorOrdinal:latitude:longitude:mapItemStorage:muid:)(v17, v14, v16, a5, a6, a7, a8, a9);
+  storeCopy = store;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  storageCopy = storage;
+  muidCopy = muid;
+  return HistoryMarkedLocation.init(store:customName:floorOrdinal:latitude:longitude:mapItemStorage:muid:)(storeCopy, v14, v16, ordinal, latitude, longitude, storage, muid);
 }
 
 + (Class)managedClass
@@ -48,16 +48,16 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62F45C0(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62F45C0(objectCopy, load);
 }
 
 - (NSString)customName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B62F1900();
   v4 = v3;
 
@@ -74,9 +74,9 @@
   return v5;
 }
 
-- (void)setCustomName:(id)a3
+- (void)setCustomName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -88,7 +88,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B62F1D0C(v4, v6);
 }
 
@@ -96,88 +96,88 @@
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LODWORD(v4) = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__floorOrdinal);
+  LODWORD(v4) = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__floorOrdinal);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v4;
 }
 
-- (void)setFloorOrdinal:(int)a3
+- (void)setFloorOrdinal:(int)ordinal
 {
-  v4 = self;
-  sub_1B62F2278(a3);
+  selfCopy = self;
+  sub_1B62F2278(ordinal);
 }
 
 - (NSNumber)latitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F2568();
 
   return v3;
 }
 
-- (void)setLatitude:(id)a3
+- (void)setLatitude:(id)latitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62F4858(a3);
+  latitudeCopy = latitude;
+  selfCopy = self;
+  sub_1B62F4858(latitude);
 }
 
 - (NSNumber)longitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F2A04();
 
   return v3;
 }
 
-- (void)setLongitude:(id)a3
+- (void)setLongitude:(id)longitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62F4A30(a3);
+  longitudeCopy = longitude;
+  selfCopy = self;
+  sub_1B62F4A30(longitude);
 }
 
 - (GEOMapItemStorage)mapItemStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F2F20();
 
   return v3;
 }
 
-- (void)setMapItemStorage:(id)a3
+- (void)setMapItemStorage:(id)storage
 {
   v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v7 = a3;
-  v8 = self;
+  storageCopy = storage;
+  selfCopy = self;
   [v6 lock];
-  sub_1B62F35B0(*(&self->super.super.super.isa + v5), a3, v8);
+  sub_1B62F35B0(*(&self->super.super.super.isa + v5), storage, selfCopy);
   [*(&self->super.super.super.isa + v5) unlock];
 }
 
 - (NSNumber)muid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F3CD0();
 
   return v3;
 }
 
-- (void)setMuid:(id)a3
+- (void)setMuid:(id)muid
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62F4C14(a3);
+  muidCopy = muid;
+  selfCopy = self;
+  sub_1B62F4C14(muid);
 }
 
-- (MSHistoryMarkedLocation)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryMarkedLocation)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   v10 = (&self->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__customName);
   *v10 = 0;
   v10[1] = 0;
@@ -186,8 +186,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__longitude) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__mapItemStorage) = xmmword_1B63C3E40;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMarkedLocation__muid) = 0;
-  v11 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

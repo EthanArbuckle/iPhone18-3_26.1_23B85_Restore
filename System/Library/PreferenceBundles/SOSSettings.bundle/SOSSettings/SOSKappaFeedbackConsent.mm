@@ -1,13 +1,13 @@
 @interface SOSKappaFeedbackConsent
 - (_TtC11SOSSettings23SOSKappaFeedbackConsent)init;
-- (_TtC11SOSSettings23SOSKappaFeedbackConsent)initWithCallback:(id)a3;
+- (_TtC11SOSSettings23SOSKappaFeedbackConsent)initWithCallback:(id)callback;
 @end
 
 @implementation SOSKappaFeedbackConsent
 
-- (_TtC11SOSSettings23SOSKappaFeedbackConsent)initWithCallback:(id)a3
+- (_TtC11SOSSettings23SOSKappaFeedbackConsent)initWithCallback:(id)callback
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(callback);
   if (v3)
   {
     v4 = swift_allocObject();

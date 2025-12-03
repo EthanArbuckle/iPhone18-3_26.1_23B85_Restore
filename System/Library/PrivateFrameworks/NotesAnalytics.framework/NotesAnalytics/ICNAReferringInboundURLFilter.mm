@@ -1,38 +1,38 @@
 @interface ICNAReferringInboundURLFilter
-+ (BOOL)foundMatchingPrefixAmongCandidates:(id)a3 forInputString:(id)a4 matchingPrefixInplaceResult:(id *)a5;
++ (BOOL)foundMatchingPrefixAmongCandidates:(id)candidates forInputString:(id)string matchingPrefixInplaceResult:(id *)result;
 + (id)allowedTieredPrefixReplacements;
-+ (id)filterReferringInboundURL:(id)a3;
-+ (id)filterStringByAllowedTieredPrefixReplacements:(id)a3;
-+ (id)filterURLByLogicalReplacements:(id)a3;
++ (id)filterReferringInboundURL:(id)l;
++ (id)filterStringByAllowedTieredPrefixReplacements:(id)replacements;
++ (id)filterURLByLogicalReplacements:(id)replacements;
 @end
 
 @implementation ICNAReferringInboundURLFilter
 
-+ (id)filterReferringInboundURL:(id)a3
++ (id)filterReferringInboundURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
-    if ([MEMORY[0x277D35DF0] isShowNoteURL:v4])
+    if ([MEMORY[0x277D35DF0] isShowNoteURL:lCopy])
     {
       v6 = @"showNote";
     }
 
-    else if ([MEMORY[0x277D35DF0] isShowLegacyNoteURL:v4])
+    else if ([MEMORY[0x277D35DF0] isShowLegacyNoteURL:lCopy])
     {
       v6 = @"showLegacyNote";
     }
 
     else
     {
-      v7 = [v4 absoluteString];
-      v6 = [a1 filterStringByAllowedTieredPrefixReplacements:v7];
+      absoluteString2 = [lCopy absoluteString];
+      v6 = [self filterStringByAllowedTieredPrefixReplacements:absoluteString2];
 
       if (!v6)
       {
-        v8 = [a1 filterURLByLogicalReplacements:v4];
+        v8 = [self filterURLByLogicalReplacements:lCopy];
         if (v8)
         {
           v6 = v8;
@@ -54,13 +54,13 @@
   return v6;
 }
 
-+ (id)filterStringByAllowedTieredPrefixReplacements:(id)a3
++ (id)filterStringByAllowedTieredPrefixReplacements:(id)replacements
 {
-  v4 = a3;
-  v5 = [a1 allowedTieredPrefixReplacements];
-  v6 = [v5 allKeys];
+  replacementsCopy = replacements;
+  allowedTieredPrefixReplacements = [self allowedTieredPrefixReplacements];
+  allKeys = [allowedTieredPrefixReplacements allKeys];
   v17 = 0;
-  v7 = [a1 foundMatchingPrefixAmongCandidates:v6 forInputString:v4 matchingPrefixInplaceResult:&v17];
+  v7 = [self foundMatchingPrefixAmongCandidates:allKeys forInputString:replacementsCopy matchingPrefixInplaceResult:&v17];
   v8 = v17;
   v9 = v8;
   if (v7)
@@ -68,7 +68,7 @@
     while (1)
     {
       objc_opt_class();
-      v10 = [v5 objectForKeyedSubscript:v9];
+      v10 = [allowedTieredPrefixReplacements objectForKeyedSubscript:v9];
       v11 = ICDynamicCast();
 
       if (!v11)
@@ -76,30 +76,30 @@
         break;
       }
 
-      v12 = [v11 allKeys];
+      allKeys2 = [v11 allKeys];
 
       v17 = v9;
-      v13 = [a1 foundMatchingPrefixAmongCandidates:v12 forInputString:v4 matchingPrefixInplaceResult:&v17];
+      v13 = [self foundMatchingPrefixAmongCandidates:allKeys2 forInputString:replacementsCopy matchingPrefixInplaceResult:&v17];
       v14 = v17;
 
       v9 = v14;
-      v6 = v12;
-      v5 = v11;
+      allKeys = allKeys2;
+      allowedTieredPrefixReplacements = v11;
       if ((v13 & 1) == 0)
       {
         goto LABEL_7;
       }
     }
 
-    v12 = v6;
+    allKeys2 = allKeys;
     v14 = v9;
   }
 
   else
   {
-    v12 = v6;
+    allKeys2 = allKeys;
     v14 = v8;
-    v11 = v5;
+    v11 = allowedTieredPrefixReplacements;
   }
 
 LABEL_7:
@@ -108,54 +108,54 @@ LABEL_7:
   return v15;
 }
 
-+ (id)filterURLByLogicalReplacements:(id)a3
++ (id)filterURLByLogicalReplacements:(id)replacements
 {
-  v3 = a3;
-  v4 = [v3 pathComponents];
-  v5 = [v4 count];
+  replacementsCopy = replacements;
+  pathComponents = [replacementsCopy pathComponents];
+  v5 = [pathComponents count];
 
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [v3 pathComponents];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  pathComponents2 = [replacementsCopy pathComponents];
+  v7 = [pathComponents2 objectAtIndexedSubscript:0];
   v8 = [v7 isEqualToString:@"userActivity"];
 
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+    v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:replacementsCopy resolvingAgainstBaseURL:0];
     [v9 setQuery:0];
-    v10 = [v9 string];
+    string = [v9 string];
 
     goto LABEL_9;
   }
 
-  v11 = [v3 scheme];
-  v10 = @"file";
-  v12 = [v11 isEqualToString:@"file"];
+  scheme = [replacementsCopy scheme];
+  string = @"file";
+  v12 = [scheme isEqualToString:@"file"];
 
   if (v12)
   {
-    v13 = [v3 pathExtension];
-    v14 = [v13 isEqualToString:@"notesairdropdocument"];
+    pathExtension = [replacementsCopy pathExtension];
+    v14 = [pathExtension isEqualToString:@"notesairdropdocument"];
 
     if (v14)
     {
-      v10 = @"notesairdropdocument";
+      string = @"notesairdropdocument";
     }
   }
 
   else
   {
 LABEL_8:
-    v10 = 0;
+    string = 0;
   }
 
 LABEL_9:
 
-  return v10;
+  return string;
 }
 
 + (id)allowedTieredPrefixReplacements
@@ -295,16 +295,16 @@ void __64__ICNAReferringInboundURLFilter_allowedTieredPrefixReplacements__block_
   allowedTieredPrefixReplacements_allowedTieredPrefixReplacements = v44;
 }
 
-+ (BOOL)foundMatchingPrefixAmongCandidates:(id)a3 forInputString:(id)a4 matchingPrefixInplaceResult:(id *)a5
++ (BOOL)foundMatchingPrefixAmongCandidates:(id)candidates forInputString:(id)string matchingPrefixInplaceResult:(id *)result
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  candidatesCopy = candidates;
+  stringCopy = string;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = candidatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -320,10 +320,10 @@ void __64__ICNAReferringInboundURLFilter_allowedTieredPrefixReplacements__block_
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        if ([v8 hasPrefix:{v14, v19}])
+        if ([stringCopy hasPrefix:{v14, v19}])
         {
           v16 = v14;
-          *a5 = v14;
+          *result = v14;
           v15 = 1;
           goto LABEL_11;
         }

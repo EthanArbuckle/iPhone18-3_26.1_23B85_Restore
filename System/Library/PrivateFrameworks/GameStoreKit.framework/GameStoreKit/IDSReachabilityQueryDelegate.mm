@@ -1,6 +1,6 @@
 @interface IDSReachabilityQueryDelegate
 - (_TtC12GameStoreKitP33_07FFAB5A3332DEA17BF1A4D00188D36128IDSReachabilityQueryDelegate)init;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 @end
 
 @implementation IDSReachabilityQueryDelegate
@@ -31,24 +31,24 @@
   return [(IDSReachabilityQueryDelegate *)&v17 init];
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
-  v8 = a4;
-  if (a4)
+  statusCopy = status;
+  if (status)
   {
     sub_24E69A5C4(0, &qword_27F22BD50);
-    v8 = sub_24F92AE38();
+    statusCopy = sub_24F92AE38();
   }
 
-  if (a5)
+  if (service)
   {
     sub_24F92B0D8();
   }
 
-  v11 = a3;
-  v12 = self;
-  v13 = a6;
-  sub_24EAD76F8(v8, a6);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_24EAD76F8(statusCopy, error);
 }
 
 @end

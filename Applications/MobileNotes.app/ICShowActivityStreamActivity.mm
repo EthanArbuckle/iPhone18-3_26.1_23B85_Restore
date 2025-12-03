@@ -1,24 +1,24 @@
 @interface ICShowActivityStreamActivity
 - (ICShowActivityStreamActivity)init;
-- (ICShowActivityStreamActivity)initWithObject:(id)a3;
-- (ICShowActivityStreamActivity)initWithPerformActivity:(id)a3;
+- (ICShowActivityStreamActivity)initWithObject:(id)object;
+- (ICShowActivityStreamActivity)initWithPerformActivity:(id)activity;
 - (ICViewControllerManager)viewControllerManager;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICShowActivityStreamActivity
 
-- (ICShowActivityStreamActivity)initWithObject:(id)a3
+- (ICShowActivityStreamActivity)initWithObject:(id)object
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___ICShowActivityStreamActivity_object) = a3;
+  *(self + OBJC_IVAR___ICShowActivityStreamActivity_object) = object;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  objectCopy = object;
   return [(ICShowActivityStreamActivity *)&v8 init];
 }
 
@@ -31,7 +31,7 @@
 
 - (NSString)activityTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003F6170();
   v4 = v3;
 
@@ -63,9 +63,9 @@
   return v2;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -80,12 +80,12 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1003F6410(v7, v6);
   sub_10000C840(v7);
 }
 
-- (ICShowActivityStreamActivity)initWithPerformActivity:(id)a3
+- (ICShowActivityStreamActivity)initWithPerformActivity:(id)activity
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

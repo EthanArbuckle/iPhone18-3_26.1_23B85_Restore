@@ -1,21 +1,21 @@
 @interface PSSourceTask
-- (PSSourceTask)initWithName:(id)a3;
+- (PSSourceTask)initWithName:(id)name;
 - (id)description;
-- (void)addOutput:(id)a3;
+- (void)addOutput:(id)output;
 @end
 
 @implementation PSSourceTask
 
-- (PSSourceTask)initWithName:(id)a3
+- (PSSourceTask)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PSSourceTask;
   v6 = [(PSSourceTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_opt_new();
     outputs = v7->_outputs;
     v7->_outputs = v8;
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  v4 = [(NSArray *)self->_outputs arrayByAddingObject:a3];
+  v4 = [(NSArray *)self->_outputs arrayByAddingObject:output];
   outputs = self->_outputs;
   self->_outputs = v4;
 

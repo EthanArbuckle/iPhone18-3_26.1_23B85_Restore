@@ -1,28 +1,28 @@
 @interface NRSyncDataDeleter
-+ (id)buildQuarantineJobWithStoreUUID:(id)a3 services:(id)a4;
-+ (id)getLocalPairingStorePairingID:(id)a3;
++ (id)buildQuarantineJobWithStoreUUID:(id)d services:(id)services;
++ (id)getLocalPairingStorePairingID:(id)d;
 + (id)getLocalPairingStorePath;
-+ (id)quarantineBasePathWithStoreUUID:(id)a3;
-+ (void)addPathJobsTo:(id)a3 basePath:(id)a4 paths:(id)a5;
-- (NRSyncDataDeleter)initWithStoreUUID:(id)a3 services:(id)a4;
-- (id)_quarantineDataAfterCreatingDirectoryWithBasePath:(id)a3;
-- (void)deleteQuarantinedDataWithCompletion:(id)a3;
-- (void)quarantineDataWithCompletion:(id)a3;
-- (void)unquarantineDataWithCompletion:(id)a3;
++ (id)quarantineBasePathWithStoreUUID:(id)d;
++ (void)addPathJobsTo:(id)to basePath:(id)path paths:(id)paths;
+- (NRSyncDataDeleter)initWithStoreUUID:(id)d services:(id)services;
+- (id)_quarantineDataAfterCreatingDirectoryWithBasePath:(id)path;
+- (void)deleteQuarantinedDataWithCompletion:(id)completion;
+- (void)quarantineDataWithCompletion:(id)completion;
+- (void)unquarantineDataWithCompletion:(id)completion;
 @end
 
 @implementation NRSyncDataDeleter
 
-- (NRSyncDataDeleter)initWithStoreUUID:(id)a3 services:(id)a4
+- (NRSyncDataDeleter)initWithStoreUUID:(id)d services:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  servicesCopy = services;
   v12.receiver = self;
   v12.super_class = NRSyncDataDeleter;
   v8 = [(NRSyncDataDeleter *)&v12 init];
   if (v8)
   {
-    v9 = [objc_opt_class() buildQuarantineJobWithStoreUUID:v6 services:v7];
+    v9 = [objc_opt_class() buildQuarantineJobWithStoreUUID:dCopy services:servicesCopy];
     job = v8->_job;
     v8->_job = v9;
   }
@@ -32,53 +32,53 @@
 
 + (id)getLocalPairingStorePath
 {
-  v2 = [a1 mobileLibraryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"DeviceRegistry"];
+  mobileLibraryPath = [self mobileLibraryPath];
+  v3 = [mobileLibraryPath stringByAppendingPathComponent:@"DeviceRegistry"];
 
   return v3;
 }
 
-+ (id)getLocalPairingStorePairingID:(id)a3
++ (id)getLocalPairingStorePairingID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 getLocalPairingStorePath];
-  v6 = [v4 UUIDString];
+  dCopy = d;
+  getLocalPairingStorePath = [self getLocalPairingStorePath];
+  uUIDString = [dCopy UUIDString];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  v7 = [getLocalPairingStorePath stringByAppendingPathComponent:uUIDString];
 
   return v7;
 }
 
-+ (id)quarantineBasePathWithStoreUUID:(id)a3
++ (id)quarantineBasePathWithStoreUUID:(id)d
 {
-  v3 = [a1 getLocalPairingStorePairingID:a3];
+  v3 = [self getLocalPairingStorePairingID:d];
   v4 = [v3 stringByAppendingPathComponent:@"MigrationQuarantine"];
 
   return v4;
 }
 
-+ (id)buildQuarantineJobWithStoreUUID:(id)a3 services:(id)a4
++ (id)buildQuarantineJobWithStoreUUID:(id)d services:(id)services
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  servicesCopy = services;
   v8 = objc_opt_new();
-  v31 = v6;
-  [v8 setPairingStoreUUID:v6];
+  v31 = dCopy;
+  [v8 setPairingStoreUUID:dCopy];
   v9 = objc_opt_new();
   v27 = v8;
   [v8 setItems:v9];
-  v10 = [a1 deleterDataDescriptionPath];
-  v11 = [NSDictionary dictionaryWithContentsOfFile:v10];
+  deleterDataDescriptionPath = [self deleterDataDescriptionPath];
+  v11 = [NSDictionary dictionaryWithContentsOfFile:deleterDataDescriptionPath];
   v12 = nr_root_daemon_log();
-  LODWORD(v6) = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+  LODWORD(dCopy) = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
-  if (v6)
+  if (dCopy)
   {
     v13 = nr_root_daemon_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v38 = v10;
+      v38 = deleterDataDescriptionPath;
       v39 = 2112;
       v40 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Read plist %@ %@", buf, 0x16u);
@@ -86,20 +86,20 @@
   }
 
   v28 = v11;
-  v29 = v10;
+  v29 = deleterDataDescriptionPath;
   v14 = [v11 objectForKeyedSubscript:@"Services"];
   v15 = v14;
-  if (!v7)
+  if (!servicesCopy)
   {
-    v16 = [v14 allKeys];
-    v7 = [NSSet setWithArray:v16];
+    allKeys = [v14 allKeys];
+    servicesCopy = [NSSet setWithArray:allKeys];
   }
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v7;
+  obj = servicesCopy;
   v17 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v17)
   {
@@ -118,16 +118,16 @@
         v22 = [v21 objectForKeyedSubscript:@"MobileLibrary"];
         if ([v22 count])
         {
-          v23 = [a1 mobileLibraryPath];
-          [a1 addPathJobsTo:v9 basePath:v23 paths:v22];
+          mobileLibraryPath = [self mobileLibraryPath];
+          [self addPathJobsTo:v9 basePath:mobileLibraryPath paths:v22];
         }
 
         v24 = [v21 objectForKeyedSubscript:@"PairingStorePath"];
 
         if ([v24 count])
         {
-          v25 = [a1 getLocalPairingStorePairingID:v31];
-          [a1 addPathJobsTo:v9 basePath:v25 paths:v24];
+          v25 = [self getLocalPairingStorePairingID:v31];
+          [self addPathJobsTo:v9 basePath:v25 paths:v24];
         }
       }
 
@@ -140,16 +140,16 @@
   return v27;
 }
 
-+ (void)addPathJobsTo:(id)a3 basePath:(id)a4 paths:(id)a5
++ (void)addPathJobsTo:(id)to basePath:(id)path paths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  pathCopy = path;
+  pathsCopy = paths;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [pathsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -161,33 +161,33 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        v14 = [v8 stringByAppendingPathComponent:*(*(&v16 + 1) + 8 * v13)];
+        v14 = [pathCopy stringByAppendingPathComponent:*(*(&v16 + 1) + 8 * v13)];
         v15 = [[NRSyncDataDeleterQuarantineJobItem alloc] initWithSourcePath:v14];
-        [v7 addObject:v15];
+        [toCopy addObject:v15];
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [pathsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)_quarantineDataAfterCreatingDirectoryWithBasePath:(id)a3
+- (id)_quarantineDataAfterCreatingDirectoryWithBasePath:(id)path
 {
-  v30 = a3;
+  pathCopy = path;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(NRSyncDataDeleterQuarantineJob *)self->_job items];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  items = [(NRSyncDataDeleterQuarantineJob *)self->_job items];
+  v5 = [items countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (!v5)
   {
     v8 = 0;
@@ -205,18 +205,18 @@
     {
       if (*v33 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(items);
       }
 
       v11 = *(*(&v32 + 1) + 8 * i);
       v12 = +[NSFileManager defaultManager];
-      v13 = [v11 sourcePath];
-      v14 = [v12 fileExistsAtPath:v13];
+      sourcePath = [v11 sourcePath];
+      v14 = [v12 fileExistsAtPath:sourcePath];
 
       if (v14)
       {
-        v15 = [v11 quarantinePath];
-        v16 = [v30 stringByAppendingPathComponent:v15];
+        quarantinePath = [v11 quarantinePath];
+        v16 = [pathCopy stringByAppendingPathComponent:quarantinePath];
 
         v17 = +[NSFileManager defaultManager];
         [v17 removeItemAtPath:v16 error:0];
@@ -229,9 +229,9 @@
           v20 = nr_root_daemon_log();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v11 sourcePath];
+            sourcePath2 = [v11 sourcePath];
             *buf = 138412546;
-            v37 = v21;
+            v37 = sourcePath2;
             v38 = 2112;
             v39 = v16;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Moving source path %@ to quarantine path %@", buf, 0x16u);
@@ -239,9 +239,9 @@
         }
 
         v22 = +[NSFileManager defaultManager];
-        v23 = [v11 sourcePath];
+        sourcePath3 = [v11 sourcePath];
         v31 = 0;
-        [v22 moveItemAtPath:v23 toPath:v16 error:&v31];
+        [v22 moveItemAtPath:sourcePath3 toPath:v16 error:&v31];
         v24 = v31;
 
         if (v24 && !v8)
@@ -261,9 +261,9 @@ LABEL_15:
         v16 = nr_root_daemon_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v11 sourcePath];
+          sourcePath4 = [v11 sourcePath];
           *buf = v29;
-          v37 = v27;
+          v37 = sourcePath4;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Source path %@ does not exist", buf, 0xCu);
         }
 
@@ -271,7 +271,7 @@ LABEL_15:
       }
     }
 
-    v7 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v7 = [items countByEnumeratingWithState:&v32 objects:v40 count:16];
   }
 
   while (v7);
@@ -280,12 +280,12 @@ LABEL_23:
   return v8;
 }
 
-- (void)quarantineDataWithCompletion:(id)a3
+- (void)quarantineDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
-  v6 = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
-  v7 = [v5 quarantineBasePathWithStoreUUID:v6];
+  pairingStoreUUID = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
+  v7 = [v5 quarantineBasePathWithStoreUUID:pairingStoreUUID];
 
   v8 = +[NSFileManager defaultManager];
   v9 = [v8 fileExistsAtPath:v7];
@@ -333,25 +333,25 @@ LABEL_23:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (void)unquarantineDataWithCompletion:(id)a3
+- (void)unquarantineDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
-  v6 = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
-  v7 = [v5 quarantineBasePathWithStoreUUID:v6];
+  pairingStoreUUID = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
+  v7 = [v5 quarantineBasePathWithStoreUUID:pairingStoreUUID];
 
   v8 = +[NSFileManager defaultManager];
   v9 = [v8 fileExistsAtPath:v7];
 
   if (v9)
   {
-    v37 = v4;
+    v37 = completionCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -377,8 +377,8 @@ LABEL_23:
         }
 
         v15 = *(*(&v41 + 1) + 8 * i);
-        v16 = [v15 quarantinePath];
-        v17 = [v7 stringByAppendingPathComponent:v16];
+        quarantinePath = [v15 quarantinePath];
+        v17 = [v7 stringByAppendingPathComponent:quarantinePath];
 
         v18 = +[NSFileManager defaultManager];
         v19 = [v18 fileExistsAtPath:v17];
@@ -386,30 +386,30 @@ LABEL_23:
         if (v19)
         {
           v20 = +[NSFileManager defaultManager];
-          v21 = [v15 sourcePath];
-          [v20 removeItemAtPath:v21 error:0];
+          sourcePath = [v15 sourcePath];
+          [v20 removeItemAtPath:sourcePath error:0];
 
           v22 = nr_root_daemon_log();
-          LODWORD(v21) = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
+          LODWORD(sourcePath) = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
 
-          if (v21)
+          if (sourcePath)
           {
             v23 = nr_root_daemon_log();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [v15 sourcePath];
+              sourcePath2 = [v15 sourcePath];
               *buf = 138412546;
               v46 = v17;
               v47 = 2112;
-              v48 = v24;
+              v48 = sourcePath2;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Moving quarantine path %@ to source path %@", buf, 0x16u);
             }
           }
 
           v25 = +[NSFileManager defaultManager];
-          v26 = [v15 sourcePath];
+          sourcePath3 = [v15 sourcePath];
           v40 = 0;
-          [v25 moveItemAtPath:v17 toPath:v26 error:&v40];
+          [v25 moveItemAtPath:v17 toPath:sourcePath3 error:&v40];
           v27 = v40;
 
           if (v27 && !v12)
@@ -465,7 +465,7 @@ LABEL_29:
         [v32 removeItemAtPath:v7 error:&v39];
         v33 = v39;
 
-        v4 = v37;
+        completionCopy = v37;
         goto LABEL_34;
       }
     }
@@ -477,7 +477,7 @@ LABEL_29:
   if (!v31)
   {
     v33 = 0;
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_36;
     }
@@ -496,26 +496,26 @@ LABEL_29:
   v33 = 0;
 LABEL_34:
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_35:
-    v4[2](v4, v33);
+    completionCopy[2](completionCopy, v33);
   }
 
 LABEL_36:
 }
 
-- (void)deleteQuarantinedDataWithCompletion:(id)a3
+- (void)deleteQuarantinedDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
-  v6 = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
-  v7 = [v5 quarantineBasePathWithStoreUUID:v6];
+  pairingStoreUUID = [(NRSyncDataDeleterQuarantineJob *)self->_job pairingStoreUUID];
+  v7 = [v5 quarantineBasePathWithStoreUUID:pairingStoreUUID];
 
   v8 = nr_root_daemon_log();
-  LODWORD(v6) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+  LODWORD(pairingStoreUUID) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
-  if (v6)
+  if (pairingStoreUUID)
   {
     v9 = nr_root_daemon_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -529,9 +529,9 @@ LABEL_36:
   v10 = +[NSFileManager defaultManager];
   [v10 removeItemAtPath:v7 error:0];
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

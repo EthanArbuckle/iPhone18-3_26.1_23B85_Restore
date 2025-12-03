@@ -3,7 +3,7 @@
 + (id)sessionID;
 + (id)userDefaults;
 + (void)restartSession;
-+ (void)restartSessionWithIdentifier:(id)a3;
++ (void)restartSessionWithIdentifier:(id)identifier;
 @end
 
 @implementation PKCampaignAttributionSessionManager
@@ -29,42 +29,42 @@ void __51__PKCampaignAttributionSessionManager_userDefaults__block_invoke()
 
 + (void)restartSession
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [a1 restartSessionWithIdentifier:v4];
+  [self restartSessionWithIdentifier:uUIDString];
 }
 
 + (id)sessionID
 {
-  v3 = [a1 existingSessionIdentifier];
-  v4 = v3;
-  if (v3)
+  existingSessionIdentifier = [self existingSessionIdentifier];
+  v4 = existingSessionIdentifier;
+  if (existingSessionIdentifier)
   {
-    v5 = v3;
+    v5 = existingSessionIdentifier;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [a1 restartSessionWithIdentifier:v7];
-    v8 = [a1 userDefaults];
-    v5 = [v8 stringForKey:@"CampaignAttributionSessionID"];
+    [self restartSessionWithIdentifier:uUIDString];
+    userDefaults = [self userDefaults];
+    v5 = [userDefaults stringForKey:@"CampaignAttributionSessionID"];
   }
 
   return v5;
 }
 
-+ (void)restartSessionWithIdentifier:(id)a3
++ (void)restartSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 userDefaults];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v5 setObject:v6 forKey:@"CampaignAttributionSessionCreationDate"];
+  identifierCopy = identifier;
+  userDefaults = [self userDefaults];
+  date = [MEMORY[0x1E695DF00] date];
+  [userDefaults setObject:date forKey:@"CampaignAttributionSessionCreationDate"];
 
-  [v5 setObject:v4 forKey:@"CampaignAttributionSessionID"];
+  [userDefaults setObject:identifierCopy forKey:@"CampaignAttributionSessionID"];
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,14 +75,14 @@ void __51__PKCampaignAttributionSessionManager_userDefaults__block_invoke()
 
 + (id)existingSessionIdentifier
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 objectForKey:@"CampaignAttributionSessionCreationDate"];
-  v4 = [v2 stringForKey:@"CampaignAttributionSessionID"];
+  userDefaults = [self userDefaults];
+  v3 = [userDefaults objectForKey:@"CampaignAttributionSessionCreationDate"];
+  v4 = [userDefaults stringForKey:@"CampaignAttributionSessionID"];
   v5 = v4;
   if (v3 && v4)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v8 = v7;
     [v3 timeIntervalSince1970];
     v10 = v8 - v9;
@@ -100,8 +100,8 @@ void __51__PKCampaignAttributionSessionManager_userDefaults__block_invoke()
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Existing Campaign Attribution session is expired and needs to be restarted.", v15, 2u);
     }
 
-    [v2 setObject:0 forKey:@"CampaignAttributionSessionCreationDate"];
-    [v2 setObject:0 forKey:@"CampaignAttributionSessionID"];
+    [userDefaults setObject:0 forKey:@"CampaignAttributionSessionCreationDate"];
+    [userDefaults setObject:0 forKey:@"CampaignAttributionSessionID"];
   }
 
   else

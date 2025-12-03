@@ -1,15 +1,15 @@
 @interface CSSiriFanInfoManager
 - (void)dealloc;
-- (void)getCurrentFanInfo:(id)a3;
+- (void)getCurrentFanInfo:(id)info;
 @end
 
 @implementation CSSiriFanInfoManager
 
-- (void)getCurrentFanInfo:(id)a3
+- (void)getCurrentFanInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(info + 2))(info, 0);
   }
 }
 

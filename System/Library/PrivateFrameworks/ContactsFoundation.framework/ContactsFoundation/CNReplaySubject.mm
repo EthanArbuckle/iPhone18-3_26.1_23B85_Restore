@@ -1,19 +1,19 @@
 @interface CNReplaySubject
 - (CNReplaySubject)init;
-- (CNReplaySubject)initWithCapacity:(unint64_t)a3 schedulerProvider:(id)a4;
-- (CNReplaySubject)initWithQueue:(id)a3 schedulerProvider:(id)a4;
-- (CNReplaySubject)initWithSchedulerProvider:(id)a3;
+- (CNReplaySubject)initWithCapacity:(unint64_t)capacity schedulerProvider:(id)provider;
+- (CNReplaySubject)initWithQueue:(id)queue schedulerProvider:(id)provider;
+- (CNReplaySubject)initWithSchedulerProvider:(id)provider;
 - (id)resourceLock_removeAllObservers;
-- (id)resourceLock_upToDateObserverFromObserver:(id)a3;
-- (id)resultWithResourceLock:(id)a3;
-- (id)subscribe:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (id)resourceLock_upToDateObserverFromObserver:(id)observer;
+- (id)resultWithResourceLock:(id)lock;
+- (id)subscribe:(id)subscribe;
+- (void)_removeObserver:(id)observer;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
-- (void)performWithResourceLock:(id)a3;
-- (void)resourceLock_scheduleReplayToObserver:(id)a3;
-- (void)resourceLock_swapBufferingStrategiesGivenNewTerminatingEvent:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
+- (void)performWithResourceLock:(id)lock;
+- (void)resourceLock_scheduleReplayToObserver:(id)observer;
+- (void)resourceLock_swapBufferingStrategiesGivenNewTerminatingEvent:(id)event;
 @end
 
 @implementation CNReplaySubject
@@ -26,28 +26,28 @@
   return v4;
 }
 
-- (CNReplaySubject)initWithSchedulerProvider:(id)a3
+- (CNReplaySubject)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(CNQueue);
-  v6 = [(CNReplaySubject *)self initWithQueue:v5 schedulerProvider:v4];
+  v6 = [(CNReplaySubject *)self initWithQueue:v5 schedulerProvider:providerCopy];
 
   return v6;
 }
 
-- (CNReplaySubject)initWithCapacity:(unint64_t)a3 schedulerProvider:(id)a4
+- (CNReplaySubject)initWithCapacity:(unint64_t)capacity schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = [CNQueue boundedQueueWithCapacity:a3];
-  v8 = [(CNReplaySubject *)self initWithQueue:v7 schedulerProvider:v6];
+  providerCopy = provider;
+  v7 = [CNQueue boundedQueueWithCapacity:capacity];
+  v8 = [(CNReplaySubject *)self initWithQueue:v7 schedulerProvider:providerCopy];
 
   return v8;
 }
 
-- (CNReplaySubject)initWithQueue:(id)a3 schedulerProvider:(id)a4
+- (CNReplaySubject)initWithQueue:(id)queue schedulerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = CNReplaySubject;
   v8 = [(CNReplaySubject *)&v19 init];
@@ -57,11 +57,11 @@
     observers = v8->_observers;
     v8->_observers = v9;
 
-    v11 = [_CNObservableEventBufferingStrategy strategyWithQueue:v6];
+    v11 = [_CNObservableEventBufferingStrategy strategyWithQueue:queueCopy];
     recentEventStrategy = v8->_recentEventStrategy;
     v8->_recentEventStrategy = v11;
 
-    objc_storeStrong(&v8->_schedulerProvider, a4);
+    objc_storeStrong(&v8->_schedulerProvider, provider);
     v13 = objc_alloc_init(CNUnfairLock);
     resourceLock = v8->_resourceLock;
     v8->_resourceLock = v13;
@@ -76,32 +76,32 @@
   return v8;
 }
 
-- (id)resultWithResourceLock:(id)a3
+- (id)resultWithResourceLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(CNReplaySubject *)self resourceLock];
-  v6 = CNResultWithLock(v5, v4);
+  lockCopy = lock;
+  resourceLock = [(CNReplaySubject *)self resourceLock];
+  v6 = CNResultWithLock(resourceLock, lockCopy);
 
   return v6;
 }
 
-- (void)performWithResourceLock:(id)a3
+- (void)performWithResourceLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(CNReplaySubject *)self resourceLock];
-  CNRunWithLock(v5, v4);
+  lockCopy = lock;
+  resourceLock = [(CNReplaySubject *)self resourceLock];
+  CNRunWithLock(resourceLock, lockCopy);
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__CNReplaySubject_subscribe___block_invoke;
   v8[3] = &unk_1E6ED5190;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = subscribeCopy;
+  v5 = subscribeCopy;
   v6 = [(CNReplaySubject *)self resultWithResourceLock:v8];
 
   return v6;
@@ -135,11 +135,11 @@ CNCancelationToken *__29__CNReplaySubject_subscribe___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)resourceLock_upToDateObserverFromObserver:(id)a3
+- (id)resourceLock_upToDateObserverFromObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CNReplaySubject *)self schedulerProvider];
-  v6 = [_CNBufferedObserver bufferObserver:v4 schedulerProvider:v5];
+  observerCopy = observer;
+  schedulerProvider = [(CNReplaySubject *)self schedulerProvider];
+  v6 = [_CNBufferedObserver bufferObserver:observerCopy schedulerProvider:schedulerProvider];
 
   [(CNReplaySubject *)self resourceLock_scheduleReplayToObserver:v6];
   [v6 resume];
@@ -147,18 +147,18 @@ CNCancelationToken *__29__CNReplaySubject_subscribe___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)resourceLock_scheduleReplayToObserver:(id)a3
+- (void)resourceLock_scheduleReplayToObserver:(id)observer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CNReplaySubject *)self recentEventStrategy];
-  v6 = [v5 allEvents];
+  recentEventStrategy = [(CNReplaySubject *)self recentEventStrategy];
+  allEvents = [recentEventStrategy allEvents];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -170,14 +170,14 @@ CNCancelationToken *__29__CNReplaySubject_subscribe___block_invoke(uint64_t a1)
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allEvents);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) dematerializeWithObserver:v4];
+        [*(*(&v12 + 1) + 8 * v10++) dematerializeWithObserver:observerCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -186,16 +186,16 @@ CNCancelationToken *__29__CNReplaySubject_subscribe___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__CNReplaySubject__removeObserver___block_invoke;
   v6[3] = &unk_1E6ED5168;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(CNReplaySubject *)self performWithResourceLock:v6];
 }
 
@@ -207,21 +207,21 @@ void __35__CNReplaySubject__removeObserver___block_invoke(uint64_t a1)
 
 - (id)resourceLock_removeAllObservers
 {
-  v3 = [(CNReplaySubject *)self observers];
-  v4 = [v3 copy];
+  observers = [(CNReplaySubject *)self observers];
+  v4 = [observers copy];
 
-  v5 = [(CNReplaySubject *)self observers];
-  [v5 removeAllObjects];
+  observers2 = [(CNReplaySubject *)self observers];
+  [observers2 removeAllObjects];
 
   return v4;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = +[CNObservableContractEnforcement shouldSwizzleNilResults];
-  if (!v4 && v5)
+  if (!resultCopy && v5)
   {
     v6 = +[CNObservable os_log_protocol];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -235,18 +235,18 @@ void __35__CNReplaySubject__removeObserver___block_invoke(uint64_t a1)
       [CNBehaviorSubject observerDidReceiveResult:v7];
     }
 
-    v4 = [MEMORY[0x1E695DFB0] null];
+    resultCopy = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8 = [(CNReplaySubject *)self enforcement];
-  [v8 observerDidReceiveResult:v4];
+  enforcement = [(CNReplaySubject *)self enforcement];
+  [enforcement observerDidReceiveResult:resultCopy];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __44__CNReplaySubject_observerDidReceiveResult___block_invoke;
   v20[3] = &unk_1E6ED5190;
   v20[4] = self;
-  v9 = v4;
+  v9 = resultCopy;
   v21 = v9;
   v10 = [(CNReplaySubject *)self resultWithResourceLock:v20];
   v16 = 0u;
@@ -296,8 +296,8 @@ id __44__CNReplaySubject_observerDidReceiveResult___block_invoke(uint64_t a1)
 - (void)observerDidComplete
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CNReplaySubject *)self enforcement];
-  [v3 observerDidComplete];
+  enforcement = [(CNReplaySubject *)self enforcement];
+  [enforcement observerDidComplete];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -346,20 +346,20 @@ id __38__CNReplaySubject_observerDidComplete__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNReplaySubject *)self enforcement];
-  [v5 observerDidFailWithError:v4];
+  errorCopy = error;
+  enforcement = [(CNReplaySubject *)self enforcement];
+  [enforcement observerDidFailWithError:errorCopy];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __44__CNReplaySubject_observerDidFailWithError___block_invoke;
   v17[3] = &unk_1E6ED5190;
-  v6 = v4;
+  v6 = errorCopy;
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v7 = [(CNReplaySubject *)self resultWithResourceLock:v17];
   v13 = 0u;
   v14 = 0u;
@@ -402,13 +402,13 @@ id __44__CNReplaySubject_observerDidFailWithError___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)resourceLock_swapBufferingStrategiesGivenNewTerminatingEvent:(id)a3
+- (void)resourceLock_swapBufferingStrategiesGivenNewTerminatingEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CNReplaySubject *)self recentEventStrategy];
-  v6 = [v5 allEvents];
+  eventCopy = event;
+  recentEventStrategy = [(CNReplaySubject *)self recentEventStrategy];
+  allEvents = [recentEventStrategy allEvents];
 
-  v8 = [v6 arrayByAddingObject:v4];
+  v8 = [allEvents arrayByAddingObject:eventCopy];
 
   v7 = [_CNObservableEventBufferingStrategy strategyWithEvents:v8];
   [(CNReplaySubject *)self setRecentEventStrategy:v7];

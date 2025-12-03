@@ -1,15 +1,15 @@
 @interface RTTripClusterWaypointDataMO
-+ (id)managedObjectWithTripClusterWaypoints:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterWaypoints:(id)waypoints inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterWaypointDataMO
 
-+ (id)managedObjectWithTripClusterWaypoints:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterWaypoints:(id)waypoints inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  waypointsCopy = waypoints;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!waypointsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,14 +25,14 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterWaypointDataMO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterWaypointDataMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterWaypointDataMO alloc] initWithContext:contextCopy];
+    clusterID = [waypointsCopy clusterID];
+    [(RTTripClusterWaypointDataMO *)v8 setClusterID:clusterID];
 
-    v10 = [v5 waypoints];
-    [(RTTripClusterWaypointDataMO *)v8 setWaypoints:v10];
+    waypoints = [waypointsCopy waypoints];
+    [(RTTripClusterWaypointDataMO *)v8 setWaypoints:waypoints];
 
     goto LABEL_8;
   }

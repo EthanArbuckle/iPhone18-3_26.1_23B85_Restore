@@ -1,50 +1,50 @@
 @interface MRDGroupSessionTransportConnection
-- (MRDGroupSessionTransportConnection)initWithGroupSession:(id)a3 participantIdentifier:(id)a4;
+- (MRDGroupSessionTransportConnection)initWithGroupSession:(id)session participantIdentifier:(id)identifier;
 - (id)error;
-- (id)exportOutputDevice:(id)a3 endpoint:(id)a4;
-- (id)outputDeviceForGroupSession:(id)a3;
-- (void)closeWithError:(id)a3;
+- (id)exportOutputDevice:(id)device endpoint:(id)endpoint;
+- (id)outputDeviceForGroupSession:(id)session;
+- (void)closeWithError:(id)error;
 - (void)leaveSessionIfNeeded;
-- (void)session:(id)a3 didChangeState:(int64_t)a4;
+- (void)session:(id)session didChangeState:(int64_t)state;
 @end
 
 @implementation MRDGroupSessionTransportConnection
 
-- (MRDGroupSessionTransportConnection)initWithGroupSession:(id)a3 participantIdentifier:(id)a4
+- (MRDGroupSessionTransportConnection)initWithGroupSession:(id)session participantIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = MRDGroupSessionTransportConnection;
-  return [(MRDBaseGroupSessionTransportConnection *)&v5 initWithGroupSession:a3 participantIdentifier:a4 dataSource:self];
+  return [(MRDBaseGroupSessionTransportConnection *)&v5 initWithGroupSession:session participantIdentifier:identifier dataSource:self];
 }
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSError *)v2->_error copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSError *)selfCopy->_error copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(MRDGroupSessionTransportConnection *)self error];
+  errorCopy = error;
+  error = [(MRDGroupSessionTransportConnection *)self error];
 
   v7 = _MRLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (error)
   {
     if (v8)
     {
-      v9 = [(MRDGroupSessionTransportConnection *)self error];
+      error2 = [(MRDGroupSessionTransportConnection *)self error];
       v15 = 138543874;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
-      v18 = v5;
+      v18 = errorCopy;
       v19 = 2114;
-      v20 = v9;
+      v20 = error2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionTransportConnection] %{public}@ Ignoring request to close connection with error: %{public}@, because we already had error: %{public}@", &v15, 0x20u);
     }
   }
@@ -54,25 +54,25 @@
     if (v8)
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
-      v18 = v5;
+      v18 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionTransportConnection] %{public}@ Got request to close connection with error: %{public}@", &v15, 0x16u);
     }
 
-    v10 = self;
-    objc_sync_enter(v10);
-    objc_storeStrong(&v10->_error, a3);
-    objc_sync_exit(v10);
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    objc_storeStrong(&selfCopy3->_error, error);
+    objc_sync_exit(selfCopy3);
 
-    if (v5)
+    if (errorCopy)
     {
-      v11 = [(MRDBaseGroupSessionTransportConnection *)v10 groupSession];
-      v12 = [v11 state];
+      groupSession = [(MRDBaseGroupSessionTransportConnection *)selfCopy3 groupSession];
+      state = [groupSession state];
 
-      if (v12 == 3)
+      if (state == 3)
       {
-        [(MRDGroupSessionTransportConnection *)v10 leaveSessionIfNeeded];
+        [(MRDGroupSessionTransportConnection *)selfCopy3 leaveSessionIfNeeded];
       }
 
       else
@@ -80,9 +80,9 @@
         v13 = _MRLogForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = sub_1001B1B38(v12);
+          v14 = sub_1001B1B38(state);
           v15 = 138412546;
-          v16 = v10;
+          selfCopy2 = selfCopy3;
           v17 = 2114;
           v18 = v14;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionTransportConnection] %@ Not destroying session because state is: %{public}@", &v15, 0x16u);
@@ -90,44 +90,44 @@
       }
     }
 
-    [(MRDGroupSessionTransportConnection *)v10 _notifyDelegateDidCloseWithError:v5];
+    [(MRDGroupSessionTransportConnection *)selfCopy3 _notifyDelegateDidCloseWithError:errorCopy];
   }
 }
 
 - (void)leaveSessionIfNeeded
 {
-  v3 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
-  v4 = [v3 isHosted];
+  groupSession = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
+  isHosted = [groupSession isHosted];
 
-  if ((v4 & 1) == 0)
+  if ((isHosted & 1) == 0)
   {
     v5 = _MRLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
+      groupSession2 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
       v11 = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = groupSession2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionTransportConnection] %{public}@ Leaving session due to client disconnect: %{public}@", &v11, 0x16u);
     }
 
     v7 = +[MRDMediaRemoteServer server];
-    v8 = [v7 groupSessionServer];
-    v9 = [v8 sessionManager];
+    groupSessionServer = [v7 groupSessionServer];
+    sessionManager = [groupSessionServer sessionManager];
 
-    v10 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
-    [v9 leaveRemoteControlGroupSession:v10];
+    groupSession3 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
+    [sessionManager leaveRemoteControlGroupSession:groupSession3];
   }
 }
 
-- (void)session:(id)a3 didChangeState:(int64_t)a4
+- (void)session:(id)session didChangeState:(int64_t)state
 {
-  v6 = a3;
-  if (a4 != 3)
+  sessionCopy = session;
+  if (state != 3)
   {
-    v9 = v6;
-    if (a4 == 4)
+    v9 = sessionCopy;
+    if (state == 4)
     {
       v7 = [NSError msv_errorWithDomain:MRGroupSessionError code:1 debugDescription:@"Session changed state to invalidated"];
     }
@@ -140,32 +140,32 @@
     v8 = v7;
     [(MRDGroupSessionTransportConnection *)self closeWithError:v7];
 
-    v6 = v9;
+    sessionCopy = v9;
   }
 }
 
-- (id)exportOutputDevice:(id)a3 endpoint:(id)a4
+- (id)exportOutputDevice:(id)device endpoint:(id)endpoint
 {
-  v5 = a3;
-  if ([v5 isLocalDevice])
+  deviceCopy = device;
+  if ([deviceCopy isLocalDevice])
   {
-    v6 = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
-    v7 = [(MRDGroupSessionTransportConnection *)self outputDeviceForGroupSession:v6];
-    v8 = [v7 mergingVolumeFrom:v5];
+    groupSession = [(MRDBaseGroupSessionTransportConnection *)self groupSession];
+    v7 = [(MRDGroupSessionTransportConnection *)self outputDeviceForGroupSession:groupSession];
+    v8 = [v7 mergingVolumeFrom:deviceCopy];
   }
 
   else
   {
-    v8 = v5;
+    v8 = deviceCopy;
   }
 
   return v8;
 }
 
-- (id)outputDeviceForGroupSession:(id)a3
+- (id)outputDeviceForGroupSession:(id)session
 {
-  v3 = a3;
-  v4 = [[MRAVDistantOutputDevice alloc] initWithGroupSession:v3];
+  sessionCopy = session;
+  v4 = [[MRAVDistantOutputDevice alloc] initWithGroupSession:sessionCopy];
 
   return v4;
 }

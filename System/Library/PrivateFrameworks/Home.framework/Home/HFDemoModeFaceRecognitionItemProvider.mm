@@ -1,21 +1,21 @@
 @interface HFDemoModeFaceRecognitionItemProvider
 - (HFDemoModeFaceRecognitionItemProvider)init;
-- (id)initForMode:(int64_t)a3 home:(id)a4;
+- (id)initForMode:(int64_t)mode home:(id)home;
 - (id)reloadItems;
 @end
 
 @implementation HFDemoModeFaceRecognitionItemProvider
 
-- (id)initForMode:(int64_t)a3 home:(id)a4
+- (id)initForMode:(int64_t)mode home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HFDemoModeFaceRecognitionItemProvider;
   v8 = [(HFItemProvider *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_mode = a3;
+    v8->_mode = mode;
     v10 = [MEMORY[0x277CBEB58] set];
     personItems = v9->_personItems;
     v9->_personItems = v10;
@@ -24,7 +24,7 @@
     dataSource = v9->_dataSource;
     v9->_dataSource = v12;
 
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
   }
 
   return v9;
@@ -32,26 +32,26 @@
 
 - (HFDemoModeFaceRecognitionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initForMode_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDemoModeFaceRecognitionItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeFaceRecognitionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDemoModeFaceRecognitionItemProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFDemoModeFaceRecognitionItemProvider init]", v5}];
 
   return 0;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFDemoModeFaceRecognitionItemProvider *)self mode];
-  v4 = [(HFDemoModeFaceRecognitionItemProvider *)self dataSource];
-  v5 = v4;
-  if (v3)
+  mode = [(HFDemoModeFaceRecognitionItemProvider *)self mode];
+  dataSource = [(HFDemoModeFaceRecognitionItemProvider *)self dataSource];
+  v5 = dataSource;
+  if (mode)
   {
-    [v4 knownToHouseholdEntries];
+    [dataSource knownToHouseholdEntries];
   }
 
   else
   {
-    [v4 recentsEntries];
+    [dataSource recentsEntries];
   }
   v6 = ;
 

@@ -1,26 +1,26 @@
 @interface SUUIErrorDocumentViewController
-- (SUUIErrorDocumentViewController)initWithBackgroundColor:(id)a3 clientContext:(id)a4;
+- (SUUIErrorDocumentViewController)initWithBackgroundColor:(id)color clientContext:(id)context;
 - (void)loadView;
 @end
 
 @implementation SUUIErrorDocumentViewController
 
-- (SUUIErrorDocumentViewController)initWithBackgroundColor:(id)a3 clientContext:(id)a4
+- (SUUIErrorDocumentViewController)initWithBackgroundColor:(id)color clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUIErrorDocumentViewController;
   v8 = [(SUUIErrorDocumentViewController *)&v11 init];
   if (v8)
   {
-    v9 = SUUIColorSchemeStyleForColor(v6);
+    v9 = SUUIColorSchemeStyleForColor(colorCopy);
     if (v9 <= 3)
     {
       v8->_contentUnavailableStyle = qword_259FCB558[v9];
     }
 
-    objc_storeStrong(&v8->_clientContext, a4);
+    objc_storeStrong(&v8->_clientContext, context);
   }
 
   return v8;
@@ -31,9 +31,9 @@
   v9 = SUUIErrorDocumentTitle(self->_clientContext);
   v3 = objc_alloc(MEMORY[0x277D75E78]);
   v4 = [v3 initWithFrame:v9 title:self->_contentUnavailableStyle style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v5 = [(SUUIErrorDocumentViewController *)self retryActionBlock];
+  retryActionBlock = [(SUUIErrorDocumentViewController *)self retryActionBlock];
 
-  if (v5)
+  if (retryActionBlock)
   {
     [v4 setMessage:&stru_286AECDE0];
     clientContext = self->_clientContext;
@@ -49,8 +49,8 @@
     v7 = ;
     [v4 setButtonTitle:v7];
 
-    v8 = [(SUUIErrorDocumentViewController *)self retryActionBlock];
-    [v4 setButtonAction:v8];
+    retryActionBlock2 = [(SUUIErrorDocumentViewController *)self retryActionBlock];
+    [v4 setButtonAction:retryActionBlock2];
   }
 
   [(SUUIErrorDocumentViewController *)self setView:v4];

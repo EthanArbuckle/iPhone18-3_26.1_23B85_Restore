@@ -1,13 +1,13 @@
 @interface RCPEventAction
-+ (id)actionToSetPointerAbsoluteLocation:(CGPoint)a3 environment:(id)a4;
++ (id)actionToSetPointerAbsoluteLocation:(CGPoint)location environment:(id)environment;
 + (id)actionToSetPointerCurrentAbsoluteLocation;
-- (RCPEventAction)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCPEventAction)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RCPEventAction
 
-- (RCPEventAction)initWithCoder:(id)a3
+- (RCPEventAction)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = RCPEventAction;
@@ -16,26 +16,26 @@
 
 + (id)actionToSetPointerCurrentAbsoluteLocation
 {
-  v3 = [MEMORY[0x277CF0720] sharedInstance];
-  [v3 globalPointerPosition];
+  mEMORY[0x277CF0720] = [MEMORY[0x277CF0720] sharedInstance];
+  [mEMORY[0x277CF0720] globalPointerPosition];
   v5 = v4;
   v7 = v6;
   v8 = +[RCPEventEnvironment currentEnvironment];
-  v9 = [a1 actionToSetPointerAbsoluteLocation:v8 environment:{v5, v7}];
+  v9 = [self actionToSetPointerAbsoluteLocation:v8 environment:{v5, v7}];
 
   return v9;
 }
 
-+ (id)actionToSetPointerAbsoluteLocation:(CGPoint)a3 environment:(id)a4
++ (id)actionToSetPointerAbsoluteLocation:(CGPoint)location environment:(id)environment
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = location.y;
+  x = location.x;
+  environmentCopy = environment;
   v7 = objc_alloc_init(_RCPEventActionSetPointerLocation);
-  v8 = [v6 screens];
-  v9 = [v8 firstObject];
+  screens = [environmentCopy screens];
+  firstObject = [screens firstObject];
 
-  [v9 pointSize];
+  [firstObject pointSize];
   if (v10 == 0.0 || v11 == 0.0)
   {
     +[RCPEventAction actionToSetPointerAbsoluteLocation:environment:];
@@ -47,9 +47,9 @@
   if (_CLTLogLevel >= 2)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"get model point: %g, %g -> %g, %g \n", *&x, *&y, *&v12, *&v13];
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = MEMORY[0x277D85E08];
-    fputs(v15, *MEMORY[0x277D85E08]);
+    fputs(uTF8String, *MEMORY[0x277D85E08]);
 
     fflush(*v16);
   }
@@ -57,7 +57,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277CCAAC8];
   v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self];

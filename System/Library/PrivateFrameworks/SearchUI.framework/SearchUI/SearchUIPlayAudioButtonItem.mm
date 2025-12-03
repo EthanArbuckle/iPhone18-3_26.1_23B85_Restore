@@ -1,14 +1,14 @@
 @interface SearchUIPlayAudioButtonItem
-+ (BOOL)isSingleItemMedia:(id)a3;
++ (BOOL)isSingleItemMedia:(id)media;
 - (BOOL)hasState;
 - (BOOL)shouldSkipUpdate;
-- (SearchUIPlayAudioButtonItem)initWithSFButtonItem:(id)a3;
-- (id)commandForStatus:(unint64_t)a3;
+- (SearchUIPlayAudioButtonItem)initWithSFButtonItem:(id)item;
+- (id)commandForStatus:(unint64_t)status;
 - (id)onStateSymbolName;
 - (unint64_t)status;
 - (void)buttonPressed;
 - (void)dealloc;
-- (void)newPlayButtonPressedWithNotification:(id)a3;
+- (void)newPlayButtonPressedWithNotification:(id)notification;
 - (void)nowPlayingItemDidChange;
 - (void)playbackDidFinish;
 - (void)playbackStateDidChange;
@@ -18,32 +18,32 @@
 
 @implementation SearchUIPlayAudioButtonItem
 
-+ (BOOL)isSingleItemMedia:(id)a3
++ (BOOL)isSingleItemMedia:(id)media
 {
-  v3 = [a3 mediaType];
+  mediaType = [media mediaType];
   result = 1;
-  if (v3 > 0x14 || ((1 << v3) & 0x102CC2) == 0)
+  if (mediaType > 0x14 || ((1 << mediaType) & 0x102CC2) == 0)
   {
-    return v3 == 100;
+    return mediaType == 100;
   }
 
   return result;
 }
 
-- (SearchUIPlayAudioButtonItem)initWithSFButtonItem:(id)a3
+- (SearchUIPlayAudioButtonItem)initWithSFButtonItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = SearchUIPlayAudioButtonItem;
-  v3 = [(SearchUIButtonItem *)&v6 initWithSFButtonItem:a3];
+  v3 = [(SearchUIButtonItem *)&v6 initWithSFButtonItem:item];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_playbackStateDidChange name:@"SearchUIMusicPlaybackStateDidChangeNotification" object:0];
-    [v4 addObserver:v3 selector:sel_nowPlayingItemDidChange name:@"SearchUIMusicNowPlayingItemDidChangeNotification" object:0];
-    [v4 addObserver:v3 selector:sel_nowPlayingItemDidChange name:@"SearchUIMusicDidResetNotification" object:0];
-    [v4 addObserver:v3 selector:sel_playbackDidFinish name:*MEMORY[0x1E6987A10] object:0];
-    [v4 addObserver:v3 selector:sel_newPlayButtonPressedWithNotification_ name:@"SearchUIPlayButtonDidBeginPlayingNotification" object:0];
-    [v4 addObserver:v3 selector:sel_playbackDidFinish name:@"SearchUITTSPlaybackDidFinishNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_playbackStateDidChange name:@"SearchUIMusicPlaybackStateDidChangeNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_nowPlayingItemDidChange name:@"SearchUIMusicNowPlayingItemDidChangeNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_nowPlayingItemDidChange name:@"SearchUIMusicDidResetNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_playbackDidFinish name:*MEMORY[0x1E6987A10] object:0];
+    [defaultCenter addObserver:v3 selector:sel_newPlayButtonPressedWithNotification_ name:@"SearchUIPlayButtonDidBeginPlayingNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_playbackDidFinish name:@"SearchUITTSPlaybackDidFinishNotification" object:0];
   }
 
   return v3;
@@ -51,11 +51,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E69707E8] systemMusicPlayer];
-  [v4 endGeneratingPlaybackNotifications];
+  systemMusicPlayer = [MEMORY[0x1E69707E8] systemMusicPlayer];
+  [systemMusicPlayer endGeneratingPlaybackNotifications];
 
   v5.receiver = self;
   v5.super_class = SearchUIPlayAudioButtonItem;
@@ -76,18 +76,18 @@
 
 - (BOOL)hasState
 {
-  v2 = [(SearchUIButtonItem *)self sfButtonItem];
-  v3 = [v2 mediaMetadata];
-  v4 = [v3 mediaIdentifier];
-  if (v4 && ([objc_opt_class() isSingleItemMedia:v3] & 1) != 0)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  mediaMetadata = [sfButtonItem mediaMetadata];
+  mediaIdentifier = [mediaMetadata mediaIdentifier];
+  if (mediaIdentifier && ([objc_opt_class() isSingleItemMedia:mediaMetadata] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v2 audioData];
-    v5 = v6 != 0;
+    audioData = [sfButtonItem audioData];
+    v5 = audioData != 0;
   }
 
   return v5;
@@ -95,9 +95,9 @@
 
 - (id)onStateSymbolName
 {
-  v2 = [(SearchUIButtonItem *)self sfButtonItem];
-  v3 = [v2 audioData];
-  if (v3)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  audioData = [sfButtonItem audioData];
+  if (audioData)
   {
     v4 = @"stop";
   }
@@ -112,20 +112,20 @@
   return v4;
 }
 
-- (id)commandForStatus:(unint64_t)a3
+- (id)commandForStatus:(unint64_t)status
 {
   v5 = objc_opt_new();
-  v6 = [(SearchUIButtonItem *)self sfButtonItem];
-  v7 = [v6 mediaMetadata];
-  [v5 setMediaMetadata:v7];
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  mediaMetadata = [sfButtonItem mediaMetadata];
+  [v5 setMediaMetadata:mediaMetadata];
 
-  v8 = [(SearchUIButtonItem *)self sfButtonItem];
-  v9 = [v8 audioData];
-  [v5 setAudioData:v9];
+  sfButtonItem2 = [(SearchUIButtonItem *)self sfButtonItem];
+  audioData = [sfButtonItem2 audioData];
+  [v5 setAudioData:audioData];
 
   if ([(SearchUIPlayAudioButtonItem *)self hasState])
   {
-    [v5 setShouldPause:a3 == 1];
+    [v5 setShouldPause:status == 1];
   }
 
   return v5;
@@ -136,27 +136,27 @@
   v9[1] = *MEMORY[0x1E69E9840];
   if (![(SearchUIPlayAudioButtonItem *)self status])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = @"senderItem";
     v9[0] = self;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    [v3 postNotificationName:@"SearchUIPlayButtonDidBeginPlayingNotification" object:0 userInfo:v4];
+    [defaultCenter postNotificationName:@"SearchUIPlayButtonDidBeginPlayingNotification" object:0 userInfo:v4];
   }
 
-  v5 = [(SearchUIButtonItem *)self sfButtonItem];
-  v6 = [v5 mediaMetadata];
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  mediaMetadata = [sfButtonItem mediaMetadata];
 
   v7.receiver = self;
   v7.super_class = SearchUIPlayAudioButtonItem;
   [(SearchUIToggleButtonItem *)&v7 buttonPressed];
   if ([(SearchUIPlayAudioButtonItem *)self status]== 1 || ![(SearchUIPlayAudioButtonItem *)self hasState])
   {
-    [SearchUIMediaUtilities setCurrentMedia:v6];
+    [SearchUIMediaUtilities setCurrentMedia:mediaMetadata];
     [SearchUIMediaUtilities setIsPlaying:1];
     [(SearchUIPlayAudioButtonItem *)self setGotNowPlayingChangedNotificationAfterPlaying:0];
   }
 
-  else if ([SearchUIMediaUtilities isCurrentMedia:v6])
+  else if ([SearchUIMediaUtilities isCurrentMedia:mediaMetadata])
   {
     [SearchUIMediaUtilities setIsPlaying:0];
   }
@@ -211,9 +211,9 @@ void __46__SearchUIPlayAudioButtonItem_updatePlayState__block_invoke(uint64_t a1
   }
 
   v3 = +[SearchUIMediaUtilities musicStatusCache];
-  v4 = [v3 playbackState];
+  playbackState = [v3 playbackState];
 
-  if ((v4 - 2) < 4)
+  if ((playbackState - 2) < 4)
   {
     v5 = 0;
 LABEL_4:
@@ -224,13 +224,13 @@ LABEL_5:
     return;
   }
 
-  if (v4 == 1)
+  if (playbackState == 1)
   {
     v5 = 1;
     goto LABEL_4;
   }
 
-  if (v4)
+  if (playbackState)
   {
     goto LABEL_5;
   }
@@ -240,37 +240,37 @@ LABEL_5:
 
 - (BOOL)shouldSkipUpdate
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  v4 = [v3 mediaMetadata];
-  if ([v4 mediaType] == 100)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  mediaMetadata = [sfButtonItem mediaMetadata];
+  if ([mediaMetadata mediaType] == 100)
   {
 
     return 0;
   }
 
-  v5 = [(SearchUIButtonItem *)self sfButtonItem];
-  v6 = [v5 audioData];
+  sfButtonItem2 = [(SearchUIButtonItem *)self sfButtonItem];
+  audioData = [sfButtonItem2 audioData];
 
-  if (v6)
+  if (audioData)
   {
     return 0;
   }
 
   v8 = +[SearchUIMediaUtilities musicStatusCache];
-  v9 = [v8 playbackState];
+  playbackState = [v8 playbackState];
 
-  if (v9 != 1)
+  if (playbackState != 1)
   {
-    if (v9 != 2)
+    if (playbackState != 2)
     {
       v10 = 0;
       goto LABEL_10;
     }
 
-    v9 = 0;
+    playbackState = 0;
   }
 
-  v10 = [(SearchUIPlayAudioButtonItem *)self status]== v9;
+  v10 = [(SearchUIPlayAudioButtonItem *)self status]== playbackState;
 LABEL_10:
   if (![(SearchUIPlayAudioButtonItem *)self needsUpdate]|| !v10) && (_searchUIDebounceStateChanges)
   {
@@ -318,10 +318,10 @@ uint64_t __54__SearchUIPlayAudioButtonItem_nowPlayingItemDidChange__block_invoke
   return [v7 updatePlayState];
 }
 
-- (void)newPlayButtonPressedWithNotification:(id)a3
+- (void)newPlayButtonPressedWithNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"senderItem"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"senderItem"];
 
   if (v5 != self)
   {
@@ -337,8 +337,8 @@ uint64_t __54__SearchUIPlayAudioButtonItem_nowPlayingItemDidChange__block_invoke
 - (void)toggleOff
 {
   [(SearchUIButtonItem *)self setStatus:0];
-  v3 = [(SearchUIButtonItem *)self delegate];
-  [v3 stateDidChangeForButtonItem:self];
+  delegate = [(SearchUIButtonItem *)self delegate];
+  [delegate stateDidChangeForButtonItem:self];
 }
 
 @end

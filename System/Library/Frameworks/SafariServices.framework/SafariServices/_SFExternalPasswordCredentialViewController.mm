@@ -1,35 +1,35 @@
 @interface _SFExternalPasswordCredentialViewController
 - (_SFExternalPasswordCredentialViewController)init;
-- (id)_connectToServiceWithCompletion:(id)a3;
-- (void)_autoFillWithExternalCredential:(id)a3 pageID:(id)a4 frameID:(id)a5;
-- (void)_sceneDidEnterBackground:(id)a3;
+- (id)_connectToServiceWithCompletion:(id)completion;
+- (void)_autoFillWithExternalCredential:(id)credential pageID:(id)d frameID:(id)iD;
+- (void)_sceneDidEnterBackground:(id)background;
 - (void)_setUpServiceProxyIfNeeded;
 - (void)dealloc;
-- (void)getCredentialForExternalCredential:(id)a3 completion:(id)a4;
-- (void)presentExternalPasswordCredentialRemoteViewController:(id)a3;
+- (void)getCredentialForExternalCredential:(id)credential completion:(id)completion;
+- (void)presentExternalPasswordCredentialRemoteViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation _SFExternalPasswordCredentialViewController
 
-- (void)_autoFillWithExternalCredential:(id)a3 pageID:(id)a4 frameID:(id)a5
+- (void)_autoFillWithExternalCredential:(id)credential pageID:(id)d frameID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 externalCredential];
+  dCopy = d;
+  iDCopy = iD;
+  externalCredential = [credential externalCredential];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(_SFExternalPasswordCredentialViewController *)self _setUpServiceProxyIfNeeded];
     serviceProxy = self->_serviceProxy;
-    if (v8 && v9)
+    if (dCopy && iDCopy)
     {
-      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)serviceProxy autoFillWithCredentialIdentity:v10 pageID:v8 frameID:v9];
+      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)serviceProxy autoFillWithCredentialIdentity:externalCredential pageID:dCopy frameID:iDCopy];
     }
 
     else
     {
-      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)serviceProxy autoFillWithCredentialIdentity:v10];
+      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)serviceProxy autoFillWithCredentialIdentity:externalCredential];
     }
   }
 
@@ -43,17 +43,17 @@
   }
 }
 
-- (void)getCredentialForExternalCredential:(id)a3 completion:(id)a4
+- (void)getCredentialForExternalCredential:(id)credential completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [a3 externalCredential];
+    externalCredential = [credential externalCredential];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(_SFExternalPasswordCredentialViewController *)self _setUpServiceProxyIfNeeded];
-      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)self->_serviceProxy getCredentialForCredentialIdentity:v7 completion:v6];
+      [(SFExternalPasswordCredentialServiceViewControllerProtocol *)self->_serviceProxy getCredentialForCredentialIdentity:externalCredential completion:completionCopy];
     }
 
     else
@@ -65,7 +65,7 @@
       }
 
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695A8F0] code:0 userInfo:0];
-      (*(v6 + 2))(v6, 0, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v9);
     }
   }
 }
@@ -86,18 +86,18 @@
   return v3;
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v8 = a3;
-  v4 = [(_SFExternalPasswordCredentialViewController *)self viewIfLoaded];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  backgroundCopy = background;
+  viewIfLoaded = [(_SFExternalPasswordCredentialViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    v7 = [v8 object];
+    object = [backgroundCopy object];
 
-    if (v6 == v7)
+    if (windowScene == object)
     {
       [(_SFPasswordViewController *)self remoteViewControllerWillDismiss:self->_remoteViewController];
     }
@@ -106,8 +106,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SFExternalPasswordCredentialViewController;
@@ -119,8 +119,8 @@
   v4.receiver = self;
   v4.super_class = _SFExternalPasswordCredentialViewController;
   [(_SFExternalPasswordCredentialViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
 
   if (self->_remoteViewController)
   {
@@ -128,12 +128,12 @@
   }
 }
 
-- (void)presentExternalPasswordCredentialRemoteViewController:(id)a3
+- (void)presentExternalPasswordCredentialRemoteViewController:(id)controller
 {
-  v4 = [(_SFPasswordViewController *)self delegate];
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 presentExternalPasswordCredentialViewController:self];
+    [delegate presentExternalPasswordCredentialViewController:self];
   }
 }
 
@@ -151,16 +151,16 @@
   }
 }
 
-- (id)_connectToServiceWithCompletion:(id)a3
+- (id)_connectToServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79___SFExternalPasswordCredentialViewController__connectToServiceWithCompletion___block_invoke;
   v8[3] = &unk_1E8490270;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = [(SFPasswordRemoteViewController *)SFExternalPasswordCredentialRemoteViewController requestViewControllerWithConnectionHandler:v8];
 
   return v6;

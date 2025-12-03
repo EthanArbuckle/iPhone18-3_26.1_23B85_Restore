@@ -1,15 +1,15 @@
 @interface CKDPZoneCryptoFeatureRequirements
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)minimumSchemaVersion;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRevision:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRevision:(BOOL)revision;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneCryptoFeatureRequirements
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasRevision:(BOOL)a3
+- (void)setHasRevision:(BOOL)revision
 {
-  if (a3)
+  if (revision)
   {
     v3 = 2;
   }
@@ -138,16 +138,16 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     do
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v10 = 0;
@@ -156,20 +156,20 @@
       while (1)
       {
         LOBYTE(v87) = 0;
-        v13 = objc_msgSend_position(a3, v8, v9, v87) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9, v87) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v87, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v87 & 0x7F) << v10;
@@ -187,17 +187,17 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v9 = v31 & 7;
       if (v9 == 4)
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v32 = (v31 >> 3);
@@ -214,20 +214,20 @@ LABEL_15:
             while (1)
             {
               LOBYTE(v87) = 0;
-              v60 = objc_msgSend_position(a3, v32, v9, v87) + 1;
-              if (v60 >= objc_msgSend_position(a3, v61, v62) && (v65 = objc_msgSend_position(a3, v63, v64) + 1, v65 <= objc_msgSend_length(a3, v66, v67)))
+              v60 = objc_msgSend_position(from, v32, v9, v87) + 1;
+              if (v60 >= objc_msgSend_position(from, v61, v62) && (v65 = objc_msgSend_position(from, v63, v64) + 1, v65 <= objc_msgSend_length(from, v66, v67)))
               {
-                v68 = objc_msgSend_data(a3, v63, v64);
-                v71 = objc_msgSend_position(a3, v69, v70);
+                v68 = objc_msgSend_data(from, v63, v64);
+                v71 = objc_msgSend_position(from, v69, v70);
                 objc_msgSend_getBytes_range_(v68, v72, &v87, v71, 1);
 
-                v75 = objc_msgSend_position(a3, v73, v74);
-                objc_msgSend_setPosition_(a3, v76, v75 + 1);
+                v75 = objc_msgSend_position(from, v73, v74);
+                objc_msgSend_setPosition_(from, v76, v75 + 1);
               }
 
               else
               {
-                objc_msgSend__setError(a3, v63, v64);
+                objc_msgSend__setError(from, v63, v64);
               }
 
               v59 |= (v87 & 0x7F) << v57;
@@ -245,7 +245,7 @@ LABEL_15:
               }
             }
 
-            if (objc_msgSend_hasError(a3, v32, v9))
+            if (objc_msgSend_hasError(from, v32, v9))
             {
               v56 = 0;
             }
@@ -269,20 +269,20 @@ LABEL_83:
             while (1)
             {
               LOBYTE(v87) = 0;
-              v39 = objc_msgSend_position(a3, v32, v9, v87) + 1;
-              if (v39 >= objc_msgSend_position(a3, v40, v41) && (v44 = objc_msgSend_position(a3, v42, v43) + 1, v44 <= objc_msgSend_length(a3, v45, v46)))
+              v39 = objc_msgSend_position(from, v32, v9, v87) + 1;
+              if (v39 >= objc_msgSend_position(from, v40, v41) && (v44 = objc_msgSend_position(from, v42, v43) + 1, v44 <= objc_msgSend_length(from, v45, v46)))
               {
-                v47 = objc_msgSend_data(a3, v42, v43);
-                v50 = objc_msgSend_position(a3, v48, v49);
+                v47 = objc_msgSend_data(from, v42, v43);
+                v50 = objc_msgSend_position(from, v48, v49);
                 objc_msgSend_getBytes_range_(v47, v51, &v87, v50, 1);
 
-                v54 = objc_msgSend_position(a3, v52, v53);
-                objc_msgSend_setPosition_(a3, v55, v54 + 1);
+                v54 = objc_msgSend_position(from, v52, v53);
+                objc_msgSend_setPosition_(from, v55, v54 + 1);
               }
 
               else
               {
-                objc_msgSend__setError(a3, v42, v43);
+                objc_msgSend__setError(from, v42, v43);
               }
 
               v38 |= (v87 & 0x7F) << v36;
@@ -300,7 +300,7 @@ LABEL_83:
               }
             }
 
-            if (objc_msgSend_hasError(a3, v32, v9))
+            if (objc_msgSend_hasError(from, v32, v9))
             {
               v56 = 0;
             }
@@ -327,7 +327,7 @@ LABEL_88:
               objc_storeStrong(&self->_requiredZoneCryptoFeatures, v33);
               v87 = 0;
               v88 = 0;
-              if (!PBReaderPlaceMark() || !sub_225387834(v33, a3, v80))
+              if (!PBReaderPlaceMark() || !sub_225387834(v33, from, v80))
               {
 LABEL_90:
 
@@ -340,7 +340,7 @@ LABEL_90:
               objc_storeStrong(&self->_requiredRecordCryptoFeatures, v33);
               v87 = 0;
               v88 = 0;
-              if (!PBReaderPlaceMark() || !sub_22531CCC0(v33, a3, v77))
+              if (!PBReaderPlaceMark() || !sub_22531CCC0(v33, from, v77))
               {
                 goto LABEL_90;
               }
@@ -351,7 +351,7 @@ LABEL_90:
               objc_storeStrong(&self->_requiredFieldCryptoFeatures, v33);
               v87 = 0;
               v88 = 0;
-              if (!PBReaderPlaceMark() || !sub_2252F5068(v33, a3, v35))
+              if (!PBReaderPlaceMark() || !sub_2252F5068(v33, from, v35))
               {
                 goto LABEL_90;
               }
@@ -381,7 +381,7 @@ LABEL_90:
             objc_storeStrong(&self->_requiredAdopterFeatures, v33);
             v87 = 0;
             v88 = 0;
-            if (!PBReaderPlaceMark() || !sub_2252D859C(v33, a3, v79))
+            if (!PBReaderPlaceMark() || !sub_2252D859C(v33, from, v79))
             {
               goto LABEL_90;
             }
@@ -410,7 +410,7 @@ LABEL_90:
             objc_storeStrong(&self->_permittedZoneCryptoFeatures, v33);
             v87 = 0;
             v88 = 0;
-            if (!PBReaderPlaceMark() || !sub_225388C28(v33, a3, v81))
+            if (!PBReaderPlaceMark() || !sub_225388C28(v33, from, v81))
             {
               goto LABEL_90;
             }
@@ -421,7 +421,7 @@ LABEL_90:
             objc_storeStrong(&self->_permittedRecordCryptoFeatures, v33);
             v87 = 0;
             v88 = 0;
-            if (!PBReaderPlaceMark() || !sub_225324758(v33, a3, v78))
+            if (!PBReaderPlaceMark() || !sub_225324758(v33, from, v78))
             {
               goto LABEL_90;
             }
@@ -432,7 +432,7 @@ LABEL_90:
             objc_storeStrong(&self->_permittedFieldCryptoFeatures, v33);
             v87 = 0;
             v88 = 0;
-            if (!PBReaderPlaceMark() || !sub_2252F6140(v33, a3, v34))
+            if (!PBReaderPlaceMark() || !sub_2252F6140(v33, from, v34))
             {
               goto LABEL_90;
             }
@@ -450,25 +450,25 @@ LABEL_75:
       }
 
 LABEL_76:
-      v82 = objc_msgSend_position(a3, v32, v9);
+      v82 = objc_msgSend_position(from, v32, v9);
     }
 
-    while (v82 < objc_msgSend_length(a3, v83, v84));
+    while (v82 < objc_msgSend_length(from, v83, v84));
   }
 
-  return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return objc_msgSend_hasError(from, v8, v9) ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     minimumSchemaVersion = self->_minimumSchemaVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -476,150 +476,150 @@ LABEL_76:
   {
     revision = self->_revision;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_requiredZoneCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_requiredRecordCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_requiredFieldCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_permittedZoneCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_permittedRecordCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_permittedFieldCryptoFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_requiredAdopterFeatures)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_lastModifiedTimestamp)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_minimumSchemaVersion;
-    *(v4 + 96) |= 1u;
+    toCopy[4] = self->_minimumSchemaVersion;
+    *(toCopy + 96) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[20] = self->_revision;
-    *(v4 + 96) |= 2u;
+    toCopy[20] = self->_revision;
+    *(toCopy + 96) |= 2u;
   }
 
   requiredZoneCryptoFeatures = self->_requiredZoneCryptoFeatures;
-  v16 = v4;
+  v16 = toCopy;
   if (requiredZoneCryptoFeatures)
   {
-    objc_msgSend_setRequiredZoneCryptoFeatures_(v4, v5, requiredZoneCryptoFeatures);
-    v4 = v16;
+    objc_msgSend_setRequiredZoneCryptoFeatures_(toCopy, v5, requiredZoneCryptoFeatures);
+    toCopy = v16;
   }
 
   requiredRecordCryptoFeatures = self->_requiredRecordCryptoFeatures;
   if (requiredRecordCryptoFeatures)
   {
     objc_msgSend_setRequiredRecordCryptoFeatures_(v16, v5, requiredRecordCryptoFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   requiredFieldCryptoFeatures = self->_requiredFieldCryptoFeatures;
   if (requiredFieldCryptoFeatures)
   {
     objc_msgSend_setRequiredFieldCryptoFeatures_(v16, v5, requiredFieldCryptoFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   permittedZoneCryptoFeatures = self->_permittedZoneCryptoFeatures;
   if (permittedZoneCryptoFeatures)
   {
     objc_msgSend_setPermittedZoneCryptoFeatures_(v16, v5, permittedZoneCryptoFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   permittedRecordCryptoFeatures = self->_permittedRecordCryptoFeatures;
   if (permittedRecordCryptoFeatures)
   {
     objc_msgSend_setPermittedRecordCryptoFeatures_(v16, v5, permittedRecordCryptoFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   permittedFieldCryptoFeatures = self->_permittedFieldCryptoFeatures;
   if (permittedFieldCryptoFeatures)
   {
     objc_msgSend_setPermittedFieldCryptoFeatures_(v16, v5, permittedFieldCryptoFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
   if (zoneIdentifier)
   {
     objc_msgSend_setZoneIdentifier_(v16, v5, zoneIdentifier);
-    v4 = v16;
+    toCopy = v16;
   }
 
   requiredAdopterFeatures = self->_requiredAdopterFeatures;
   if (requiredAdopterFeatures)
   {
     objc_msgSend_setRequiredAdopterFeatures_(v16, v5, requiredAdopterFeatures);
-    v4 = v16;
+    toCopy = v16;
   }
 
   lastModifiedTimestamp = self->_lastModifiedTimestamp;
   if (lastModifiedTimestamp)
   {
     objc_msgSend_setLastModifiedTimestamp_(v16, v5, lastModifiedTimestamp);
-    v4 = v16;
+    toCopy = v16;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   has = self->_has;
@@ -636,64 +636,64 @@ LABEL_76:
     *(v10 + 96) |= 2u;
   }
 
-  v14 = objc_msgSend_copyWithZone_(self->_requiredZoneCryptoFeatures, v11, a3);
+  v14 = objc_msgSend_copyWithZone_(self->_requiredZoneCryptoFeatures, v11, zone);
   v15 = v12[9];
   v12[9] = v14;
 
-  v17 = objc_msgSend_copyWithZone_(self->_requiredRecordCryptoFeatures, v16, a3);
+  v17 = objc_msgSend_copyWithZone_(self->_requiredRecordCryptoFeatures, v16, zone);
   v18 = v12[8];
   v12[8] = v17;
 
-  v20 = objc_msgSend_copyWithZone_(self->_requiredFieldCryptoFeatures, v19, a3);
+  v20 = objc_msgSend_copyWithZone_(self->_requiredFieldCryptoFeatures, v19, zone);
   v21 = v12[7];
   v12[7] = v20;
 
-  v23 = objc_msgSend_copyWithZone_(self->_permittedZoneCryptoFeatures, v22, a3);
+  v23 = objc_msgSend_copyWithZone_(self->_permittedZoneCryptoFeatures, v22, zone);
   v24 = v12[5];
   v12[5] = v23;
 
-  v26 = objc_msgSend_copyWithZone_(self->_permittedRecordCryptoFeatures, v25, a3);
+  v26 = objc_msgSend_copyWithZone_(self->_permittedRecordCryptoFeatures, v25, zone);
   v27 = v12[4];
   v12[4] = v26;
 
-  v29 = objc_msgSend_copyWithZone_(self->_permittedFieldCryptoFeatures, v28, a3);
+  v29 = objc_msgSend_copyWithZone_(self->_permittedFieldCryptoFeatures, v28, zone);
   v30 = v12[3];
   v12[3] = v29;
 
-  v32 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v31, a3);
+  v32 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v31, zone);
   v33 = v12[11];
   v12[11] = v32;
 
-  v35 = objc_msgSend_copyWithZone_(self->_requiredAdopterFeatures, v34, a3);
+  v35 = objc_msgSend_copyWithZone_(self->_requiredAdopterFeatures, v34, zone);
   v36 = v12[6];
   v12[6] = v35;
 
-  v38 = objc_msgSend_copyWithZone_(self->_lastModifiedTimestamp, v37, a3);
+  v38 = objc_msgSend_copyWithZone_(self->_lastModifiedTimestamp, v37, zone);
   v39 = v12[1];
   v12[1] = v38;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_30;
   }
 
-  v8 = *(v4 + 96);
+  v8 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((v4[12] & 1) == 0 || self->_minimumSchemaVersion != *(v4 + 4))
+    if ((equalCopy[12] & 1) == 0 || self->_minimumSchemaVersion != *(equalCopy + 4))
     {
       goto LABEL_30;
     }
   }
 
-  else if (v4[12])
+  else if (equalCopy[12])
   {
 LABEL_30:
     isEqual = 0;
@@ -702,26 +702,26 @@ LABEL_30:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[12] & 2) == 0 || self->_revision != *(v4 + 20))
+    if ((equalCopy[12] & 2) == 0 || self->_revision != *(equalCopy + 20))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((v4[12] & 2) != 0)
+  else if ((equalCopy[12] & 2) != 0)
   {
     goto LABEL_30;
   }
 
   requiredZoneCryptoFeatures = self->_requiredZoneCryptoFeatures;
-  v10 = v4[9];
+  v10 = equalCopy[9];
   if (requiredZoneCryptoFeatures | v10 && !objc_msgSend_isEqual_(requiredZoneCryptoFeatures, v7, v10))
   {
     goto LABEL_30;
   }
 
   requiredRecordCryptoFeatures = self->_requiredRecordCryptoFeatures;
-  v12 = v4[8];
+  v12 = equalCopy[8];
   if (requiredRecordCryptoFeatures | v12)
   {
     if (!objc_msgSend_isEqual_(requiredRecordCryptoFeatures, v7, v12))
@@ -731,7 +731,7 @@ LABEL_30:
   }
 
   requiredFieldCryptoFeatures = self->_requiredFieldCryptoFeatures;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (requiredFieldCryptoFeatures | v14)
   {
     if (!objc_msgSend_isEqual_(requiredFieldCryptoFeatures, v7, v14))
@@ -741,7 +741,7 @@ LABEL_30:
   }
 
   permittedZoneCryptoFeatures = self->_permittedZoneCryptoFeatures;
-  v16 = v4[5];
+  v16 = equalCopy[5];
   if (permittedZoneCryptoFeatures | v16)
   {
     if (!objc_msgSend_isEqual_(permittedZoneCryptoFeatures, v7, v16))
@@ -751,7 +751,7 @@ LABEL_30:
   }
 
   permittedRecordCryptoFeatures = self->_permittedRecordCryptoFeatures;
-  v18 = v4[4];
+  v18 = equalCopy[4];
   if (permittedRecordCryptoFeatures | v18)
   {
     if (!objc_msgSend_isEqual_(permittedRecordCryptoFeatures, v7, v18))
@@ -761,7 +761,7 @@ LABEL_30:
   }
 
   permittedFieldCryptoFeatures = self->_permittedFieldCryptoFeatures;
-  v20 = v4[3];
+  v20 = equalCopy[3];
   if (permittedFieldCryptoFeatures | v20)
   {
     if (!objc_msgSend_isEqual_(permittedFieldCryptoFeatures, v7, v20))
@@ -771,7 +771,7 @@ LABEL_30:
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v22 = v4[11];
+  v22 = equalCopy[11];
   if (zoneIdentifier | v22)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v22))
@@ -781,7 +781,7 @@ LABEL_30:
   }
 
   requiredAdopterFeatures = self->_requiredAdopterFeatures;
-  v24 = v4[6];
+  v24 = equalCopy[6];
   if (requiredAdopterFeatures | v24)
   {
     if (!objc_msgSend_isEqual_(requiredAdopterFeatures, v7, v24))
@@ -791,7 +791,7 @@ LABEL_30:
   }
 
   lastModifiedTimestamp = self->_lastModifiedTimestamp;
-  v26 = v4[1];
+  v26 = equalCopy[1];
   if (lastModifiedTimestamp | v26)
   {
     isEqual = objc_msgSend_isEqual_(lastModifiedTimestamp, v7, v26);
@@ -842,21 +842,21 @@ LABEL_6:
   return v21 ^ v27 ^ objc_msgSend_hash(self->_lastModifiedTimestamp, v28, v29);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 96);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 96);
   if (v6)
   {
-    self->_minimumSchemaVersion = v4[4];
+    self->_minimumSchemaVersion = fromCopy[4];
     *&self->_has |= 1u;
-    v6 = *(v4 + 96);
+    v6 = *(fromCopy + 96);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_revision = v4[20];
+    self->_revision = fromCopy[20];
     *&self->_has |= 2u;
   }
 

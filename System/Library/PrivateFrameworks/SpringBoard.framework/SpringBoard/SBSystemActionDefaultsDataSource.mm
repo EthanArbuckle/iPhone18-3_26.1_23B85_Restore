@@ -1,41 +1,41 @@
 @interface SBSystemActionDefaultsDataSource
-- (id)executorForSystemAction:(id)a3;
-- (id)initWithDefaults:(void *)a3 instanceIdentity:;
+- (id)executorForSystemAction:(id)action;
+- (id)initWithDefaults:(void *)defaults instanceIdentity:;
 - (void)updateSelectedAction;
 @end
 
 @implementation SBSystemActionDefaultsDataSource
 
-- (id)initWithDefaults:(void *)a3 instanceIdentity:
+- (id)initWithDefaults:(void *)defaults instanceIdentity:
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  defaultsCopy = defaults;
+  if (self)
   {
     if (!v6)
     {
       [SBSystemActionDefaultsDataSource initWithDefaults:? instanceIdentity:?];
     }
 
-    if (!v7)
+    if (!defaultsCopy)
     {
       [SBSystemActionDefaultsDataSource initWithDefaults:? instanceIdentity:?];
     }
 
-    objc_storeStrong(a1 + 5, a2);
-    v8 = [v7 copyWithZone:0];
-    v9 = a1[6];
-    a1[6] = v8;
+    objc_storeStrong(self + 5, a2);
+    v8 = [defaultsCopy copyWithZone:0];
+    v9 = self[6];
+    self[6] = v8;
 
-    v10 = [v7 hostIdentifier];
-    v19.receiver = a1;
+    hostIdentifier = [defaultsCopy hostIdentifier];
+    v19.receiver = self;
     v19.super_class = SBSystemActionDefaultsDataSource;
-    a1 = objc_msgSendSuper2(&v19, sel_initWithHostIdentifier_, v10);
+    self = objc_msgSendSuper2(&v19, sel_initWithHostIdentifier_, hostIdentifier);
 
-    if (a1)
+    if (self)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"configuredActionArchive"];
       v20[0] = v11;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
@@ -52,7 +52,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __70__SBSystemActionDefaultsDataSource_initWithDefaults_instanceIdentity___block_invoke(uint64_t a1)
@@ -61,18 +61,18 @@ void __70__SBSystemActionDefaultsDataSource_initWithDefaults_instanceIdentity___
   [WeakRetained updateSelectedAction];
 }
 
-- (id)executorForSystemAction:(id)a3
+- (id)executorForSystemAction:(id)action
 {
-  v3 = [a3 newExecutor];
+  newExecutor = [action newExecutor];
 
-  return v3;
+  return newExecutor;
 }
 
 - (void)updateSelectedAction
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_21ED4E000, log, OS_LOG_TYPE_ERROR, "(%{public}@) Error unarchiving configured action: %{public}@", &v3, 0x16u);

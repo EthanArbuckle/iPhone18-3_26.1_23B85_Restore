@@ -1,39 +1,39 @@
 @interface SHSHeadphoneNotificationTableCell
-- (SHSHeadphoneNotificationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
+- (SHSHeadphoneNotificationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
 - (void)layoutSubviews;
 - (void)updateConstraints;
 @end
 
 @implementation SHSHeadphoneNotificationTableCell
 
-- (SHSHeadphoneNotificationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SHSHeadphoneNotificationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v40.receiver = self;
   v40.super_class = SHSHeadphoneNotificationTableCell;
-  v9 = [(PSTableCell *)&v40 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v40 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v11 = [(PSTableCell *)v9 titleLabel];
-    [v11 setHidden:1];
+    titleLabel = [(PSTableCell *)v9 titleLabel];
+    [titleLabel setHidden:1];
 
-    v12 = [(PSTableCell *)v10 valueLabel];
-    [v12 setHidden:1];
+    valueLabel = [(PSTableCell *)v10 valueLabel];
+    [valueLabel setHidden:1];
 
     v13 = objc_alloc_init(MEMORY[0x277D756B8]);
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v13 setBackgroundColor:clearColor];
 
     v15 = *MEMORY[0x277D76918];
     v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v13 setFont:v16];
 
-    v17 = [MEMORY[0x277D3FA48] appearance];
-    v18 = [v17 textColor];
-    [(UILabel *)v13 setTextColor:v18];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    textColor = [appearance textColor];
+    [(UILabel *)v13 setTextColor:textColor];
 
     [(UILabel *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v19) = 1144750080;
@@ -45,11 +45,11 @@
     v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:v15];
     [(UILabel *)v21 setFont:v22];
 
-    v23 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v21 setTextColor:v23];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v21 setTextColor:secondaryLabelColor];
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v21 setBackgroundColor:v24];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v21 setBackgroundColor:clearColor2];
 
     [(UILabel *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v25) = 1144750080;
@@ -57,10 +57,10 @@
     countLabel = v10->_countLabel;
     v10->_countLabel = v21;
 
-    v27 = [(SHSHeadphoneNotificationTableCell *)v10 contentView];
-    [v27 addSubview:v10->_titleLabel];
-    [v27 addSubview:v10->_countLabel];
-    v28 = [v8 propertyForKey:@"NotificationDataKey"];
+    contentView = [(SHSHeadphoneNotificationTableCell *)v10 contentView];
+    [contentView addSubview:v10->_titleLabel];
+    [contentView addSubview:v10->_countLabel];
+    v28 = [specifierCopy propertyForKey:@"NotificationDataKey"];
     notificationData = v10->_notificationData;
     v10->_notificationData = v28;
 
@@ -75,14 +75,14 @@
       hostingController = v10->_hostingController;
       v10->_hostingController = v35;
 
-      v37 = [(UIViewController *)v10->_hostingController view];
+      view = [(UIViewController *)v10->_hostingController view];
       notificationChart = v10->_notificationChart;
-      v10->_notificationChart = v37;
+      v10->_notificationChart = view;
 
-      v39 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v10->_notificationChart setBackgroundColor:v39];
+      clearColor3 = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v10->_notificationChart setBackgroundColor:clearColor3];
 
-      [v27 addSubview:v10->_notificationChart];
+      [contentView addSubview:v10->_notificationChart];
       [(UIView *)v10->_notificationChart setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
@@ -100,15 +100,15 @@
 - (void)layoutSubviews
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SHSHeadphoneNotificationTableCell *)self textLabel];
-  v5 = [v4 text];
-  v6 = [v3 stringWithFormat:@"%@", v5];
+  textLabel = [(SHSHeadphoneNotificationTableCell *)self textLabel];
+  text = [textLabel text];
+  v6 = [v3 stringWithFormat:@"%@", text];
   [(UILabel *)self->_titleLabel setText:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(PSTableCell *)self valueLabel];
-  v9 = [v8 text];
-  v10 = [v7 stringWithFormat:@"%@", v9];
+  valueLabel = [(PSTableCell *)self valueLabel];
+  text2 = [valueLabel text];
+  v10 = [v7 stringWithFormat:@"%@", text2];
   [(UILabel *)self->_countLabel setText:v10];
 
   v11.receiver = self;
@@ -141,9 +141,9 @@
     v4 = v9;
   }
 
-  v10 = [(SHSHeadphoneNotificationTableCell *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+  traitCollection = [(SHSHeadphoneNotificationTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   shouldHideChart = self->_shouldHideChart;
   if (IsAccessibilityCategory)
@@ -165,20 +165,20 @@
   [(SHSHeadphoneNotificationTableCell *)&v16 updateConstraints];
 }
 
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  chartCopy = chart;
+  bindingsCopy = bindings;
+  metricsCopy = metrics;
   v9 = objc_alloc_init(MEMORY[0x277CBEA60]);
   v10 = objc_alloc_init(MEMORY[0x277CBEA60]);
   v11 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_titleLabel]-(>=minimumLabelMargin)-[_countLabel]-|" options:0 metrics:v8 views:v7];
-  if (v5)
+  v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_titleLabel]-(>=minimumLabelMargin)-[_countLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  if (chartCopy)
   {
-    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-|" options:0 metrics:v8 views:v7];
+    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
-    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_countLabel]-|" options:0 metrics:v8 views:v7];
+    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_countLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
     v15 = [v12 arrayByAddingObjectsFromArray:v13];
     v16 = [v15 arrayByAddingObjectsFromArray:v14];
@@ -186,10 +186,10 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-chartMargin-[_notificationChart]-chartMargin-|" options:0 metrics:v8 views:v7];
-    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:v8 views:v7];
+    v15 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-chartMargin-[_notificationChart]-chartMargin-|" options:0 metrics:metricsCopy views:bindingsCopy];
+    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
-    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_countLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:v8 views:v7];
+    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_countLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
     v17 = [v12 arrayByAddingObjectsFromArray:v15];
     v18 = [v17 arrayByAddingObjectsFromArray:v13];
@@ -201,18 +201,18 @@
   return v16;
 }
 
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  chartCopy = chart;
+  bindingsCopy = bindings;
+  metricsCopy = metrics;
   v9 = objc_alloc_init(MEMORY[0x277CBEA60]);
   v10 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v11 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_titleLabel]-|" options:0 metrics:v8 views:v7];
-  v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_countLabel]-|" options:0 metrics:v8 views:v7];
-  if (v5)
+  v11 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_titleLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  v12 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-[_countLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
+  if (chartCopy)
   {
-    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-[_countLabel]-|" options:0 metrics:v8 views:v7];
+    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-[_countLabel]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
     v14 = [v11 arrayByAddingObjectsFromArray:v12];
     v15 = [v14 arrayByAddingObjectsFromArray:v13];
@@ -220,8 +220,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-chartMargin-[_notificationChart]-chartMargin-|" options:0 metrics:v8 views:v7];
-    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-[_countLabel]-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:v8 views:v7];
+    v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-chartMargin-[_notificationChart]-chartMargin-|" options:0 metrics:metricsCopy views:bindingsCopy];
+    v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[_titleLabel]-[_countLabel]-[_notificationChart(>=minimumChartHeight)]-|" options:0 metrics:metricsCopy views:bindingsCopy];
 
     v16 = [v11 arrayByAddingObjectsFromArray:v12];
     v17 = [v16 arrayByAddingObjectsFromArray:v14];

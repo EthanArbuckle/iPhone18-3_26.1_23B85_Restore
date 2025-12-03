@@ -1,74 +1,74 @@
 @interface DMDPayloadMetadata
-+ (id)fetchRequestForActivePayloadMetadatasFromOrganizationWithIdentifier:(id)a3 withIdentifier:(id)a4;
-+ (id)fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:(id)a3 matchingPredicate:(id)a4;
-+ (id)fetchRequestForPayloadMetadatasPendingStatusUpdateFromOrganizationWithIdentifier:(id)a3;
++ (id)fetchRequestForActivePayloadMetadatasFromOrganizationWithIdentifier:(id)identifier withIdentifier:(id)withIdentifier;
++ (id)fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:(id)identifier matchingPredicate:(id)predicate;
++ (id)fetchRequestForPayloadMetadatasPendingStatusUpdateFromOrganizationWithIdentifier:(id)identifier;
 + (id)keyPathsForValuesAffectingStatus;
-+ (id)metadataWithPayloadDictionary:(id)a3 organizationIdentifier:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
-- (BOOL)validateProperties:(id *)a3;
++ (id)metadataWithPayloadDictionary:(id)dictionary organizationIdentifier:(id)identifier context:(id)context error:(id *)error;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
+- (BOOL)validateProperties:(id *)properties;
 - (DMDPayloadMetadata)init;
-- (DMDPayloadMetadata)initWithContext:(id)a3;
-- (DMDPayloadMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (DMDPayloadMetadata)initWithContext:(id)context;
+- (DMDPayloadMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSString)status;
 - (id)description;
 - (id)descriptiveProperties;
-- (void)setLastStatusReportTimestamp:(id)a3;
-- (void)setStateDictionary:(id)a3;
+- (void)setLastStatusReportTimestamp:(id)timestamp;
+- (void)setStateDictionary:(id)dictionary;
 - (void)willSave;
 @end
 
 @implementation DMDPayloadMetadata
 
-+ (id)fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:(id)a3 matchingPredicate:(id)a4
++ (id)fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:(id)identifier matchingPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
   v8 = objc_opt_new();
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", v6];
-    [v8 addObject:v9];
+    identifierCopy = [NSPredicate predicateWithFormat:@"%K = %@", @"organization.identifier", identifierCopy];
+    [v8 addObject:identifierCopy];
   }
 
-  if (v7)
+  if (predicateCopy)
   {
-    [v8 addObject:v7];
+    [v8 addObject:predicateCopy];
   }
 
-  v10 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v8];
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  return v10;
+  return fetchRequest;
 }
 
-+ (id)fetchRequestForActivePayloadMetadatasFromOrganizationWithIdentifier:(id)a3 withIdentifier:(id)a4
++ (id)fetchRequestForActivePayloadMetadatasFromOrganizationWithIdentifier:(id)identifier withIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = [NSPredicate predicateWithFormat:@"%K = %@", @"identifier", a4];
-  v8 = [a1 fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:v6 matchingPredicate:v7];
+  identifierCopy = identifier;
+  withIdentifier = [NSPredicate predicateWithFormat:@"%K = %@", @"identifier", withIdentifier];
+  v8 = [self fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:identifierCopy matchingPredicate:withIdentifier];
 
   return v8;
 }
 
-+ (id)fetchRequestForPayloadMetadatasPendingStatusUpdateFromOrganizationWithIdentifier:(id)a3
++ (id)fetchRequestForPayloadMetadatasPendingStatusUpdateFromOrganizationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSPredicate predicateWithFormat:@"%K = %@", @"pendingStatusUpdate", &__kCFBooleanTrue];
-  v6 = [a1 fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:v4 matchingPredicate:v5];
+  v6 = [self fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:identifierCopy matchingPredicate:v5];
 
   return v6;
 }
 
-+ (id)metadataWithPayloadDictionary:(id)a3 organizationIdentifier:(id)a4 context:(id)a5 error:(id *)a6
++ (id)metadataWithPayloadDictionary:(id)dictionary organizationIdentifier:(id)identifier context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  contextCopy = context;
   v13 = DMFDeclarationPayloadTypeKey;
-  v14 = [v10 objectForKeyedSubscript:DMFDeclarationPayloadTypeKey];
+  v14 = [dictionaryCopy objectForKeyedSubscript:DMFDeclarationPayloadTypeKey];
   if (![v14 hasPrefix:@"com.apple.command"] && !objc_msgSend(v14, "hasPrefix:", @"com.apple.activation") && !objc_msgSend(v14, "hasPrefix:", @"com.apple.asset") && !objc_msgSend(v14, "hasPrefix:", @"com.apple.configuration"))
   {
     v15 = DMFConfigurationEngineLog();
@@ -79,15 +79,15 @@
   }
 
   v16 = objc_opt_class();
-  if (([v16 isSubclassOfClass:a1] & 1) == 0)
+  if (([v16 isSubclassOfClass:self] & 1) == 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
 
     v40[0] = DMFConfigurationPayloadIdentifierErrorKey;
-    v29 = [v10 objectForKeyedSubscript:DMFDeclarationPayloadIdentifierKey];
+    v29 = [dictionaryCopy objectForKeyedSubscript:DMFDeclarationPayloadIdentifierKey];
     v19 = v29;
     v30 = &stru_1000D0428;
     if (v29)
@@ -99,63 +99,63 @@
     v41[0] = v30;
     v41[1] = v13;
     v26 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
-    *a6 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
     goto LABEL_27;
   }
 
   v17 = [v16 alloc];
-  v18 = [v16 entity];
-  v19 = [v17 initWithEntity:v18 insertIntoManagedObjectContext:v12];
+  entity = [v16 entity];
+  v19 = [v17 initWithEntity:entity insertIntoManagedObjectContext:contextCopy];
 
-  if (a1)
+  if (self)
   {
     [v19 setType:v14];
-    v20 = [v10 objectForKeyedSubscript:DMFDeclarationPayloadIdentifierKey];
+    v20 = [dictionaryCopy objectForKeyedSubscript:DMFDeclarationPayloadIdentifierKey];
     [v19 setIdentifier:v20];
 
-    v21 = [v10 objectForKeyedSubscript:DMFDeclarationPayloadRequiresNetworkTetherKey];
+    v21 = [dictionaryCopy objectForKeyedSubscript:DMFDeclarationPayloadRequiresNetworkTetherKey];
     [v19 setRequiresNetworkTether:{objc_msgSend(v21, "BOOLValue")}];
 
-    v22 = [[DMDPayload alloc] initWithContext:v12];
+    v22 = [[DMDPayload alloc] initWithContext:contextCopy];
     [v19 setPayload:v22];
 
-    v23 = [v19 payload];
-    [v23 setPayloadDictionary:v10];
+    payload = [v19 payload];
+    [payload setPayloadDictionary:dictionaryCopy];
 
     [v19 setAvailable:1];
-    v24 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationWithIdentifier:v11];
+    v24 = [DMDConfigurationOrganization fetchRequestMatchingConfigurationOrganizationWithIdentifier:identifierCopy];
     v35 = 0;
-    v25 = [v12 executeFetchRequest:v24 error:&v35];
+    v25 = [contextCopy executeFetchRequest:v24 error:&v35];
     v26 = v35;
 
     if (v25)
     {
-      v27 = [v25 firstObject];
-      if (v27)
+      firstObject = [v25 firstObject];
+      if (firstObject)
       {
-        [v19 setOrganization:v27];
+        [v19 setOrganization:firstObject];
         [v19 setRequiresUnlockedKeychain:{objc_msgSend(v14, "hasPrefix:", @"com.apple.configuration.policy"}];
         v36 = DMFDeclarationStateStatusKey;
         v37 = DMFDeclarationStatusQueued;
         v28 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         [v19 setStateDictionary:v28];
 
-        [v19 applyPayloadDictionary:v10];
-        if ([v19 validateProperties:a6])
+        [v19 applyPayloadDictionary:dictionaryCopy];
+        if ([v19 validateProperties:error])
         {
 
           goto LABEL_14;
         }
 
-        [v12 deleteObject:v19];
+        [contextCopy deleteObject:v19];
       }
 
-      else if (a6)
+      else if (error)
       {
         v38 = DMFConfigurationOrganizationIdentifierErrorKey;
-        v39 = v11;
+        v39 = identifierCopy;
         v33 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-        *a6 = DMFErrorWithCodeAndUserInfo();
+        *error = DMFErrorWithCodeAndUserInfo();
       }
     }
 
@@ -164,35 +164,35 @@
       v31 = DMFConfigurationEngineLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        sub_100085F14(v11, v26, v31);
+        sub_100085F14(identifierCopy, v26, v31);
       }
 
-      if (a6)
+      if (error)
       {
         v32 = v26;
-        *a6 = v26;
+        *error = v26;
       }
     }
 
 LABEL_27:
 
-    a6 = 0;
+    error = 0;
     goto LABEL_28;
   }
 
 LABEL_14:
   v19 = v19;
-  a6 = v19;
+  error = v19;
 LABEL_28:
 
 LABEL_29:
 
-  return a6;
+  return error;
 }
 
 - (id)description
 {
-  v2 = [(DMDPayloadMetadata *)self descriptiveProperties];
+  descriptiveProperties = [(DMDPayloadMetadata *)self descriptiveProperties];
   v3 = DMFObjectDescriptionWithProperties();
 
   return v3;
@@ -216,8 +216,8 @@ LABEL_29:
 
 - (NSString)status
 {
-  v2 = [(DMDPayloadMetadata *)self stateDictionary];
-  v3 = [v2 objectForKeyedSubscript:DMFDeclarationStateStatusKey];
+  stateDictionary = [(DMDPayloadMetadata *)self stateDictionary];
+  v3 = [stateDictionary objectForKeyedSubscript:DMFDeclarationStateStatusKey];
 
   return v3;
 }
@@ -231,9 +231,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStateDictionary:(id)a3
+- (void)setStateDictionary:(id)dictionary
 {
-  v9 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(DMDPayloadMetadata *)self primitiveValueForKey:@"stateDictionary"];
   v5 = [v4 mutableCopy];
 
@@ -242,21 +242,21 @@ LABEL_29:
     [v5 setObject:0 forKeyedSubscript:DMFDeclarationStateTimestampKey];
   }
 
-  else if (!v9)
+  else if (!dictionaryCopy)
   {
     goto LABEL_6;
   }
 
-  if (([v5 isEqual:v9] & 1) == 0)
+  if (([v5 isEqual:dictionaryCopy] & 1) == 0)
   {
     [(DMDPayloadMetadata *)self willChangeValueForKey:@"stateDictionary"];
     v6 = objc_opt_new();
     [(DMDPayloadMetadata *)self setStateChangeTimestamp:v6];
 
     [(DMDPayloadMetadata *)self setPendingStatusUpdate:1];
-    v7 = [v9 mutableCopy];
-    v8 = [(DMDPayloadMetadata *)self stateChangeTimestamp];
-    [v7 setObject:v8 forKeyedSubscript:DMFDeclarationStateTimestampKey];
+    v7 = [dictionaryCopy mutableCopy];
+    stateChangeTimestamp = [(DMDPayloadMetadata *)self stateChangeTimestamp];
+    [v7 setObject:stateChangeTimestamp forKeyedSubscript:DMFDeclarationStateTimestampKey];
 
     [(DMDPayloadMetadata *)self setPrimitiveValue:v7 forKey:@"stateDictionary"];
     [(DMDPayloadMetadata *)self didChangeValueForKey:@"stateDictionary"];
@@ -265,17 +265,17 @@ LABEL_29:
 LABEL_6:
 }
 
-- (void)setLastStatusReportTimestamp:(id)a3
+- (void)setLastStatusReportTimestamp:(id)timestamp
 {
-  v8 = a3;
+  timestampCopy = timestamp;
   v4 = [(DMDPayloadMetadata *)self primitiveValueForKey:@"lastStatusReportTimestamp"];
-  if (v8 | v4 && ([v4 isEqual:v8] & 1) == 0)
+  if (timestampCopy | v4 && ([v4 isEqual:timestampCopy] & 1) == 0)
   {
     [(DMDPayloadMetadata *)self willChangeValueForKey:@"lastStatusReportTimestamp"];
-    [(DMDPayloadMetadata *)self setPrimitiveValue:v8 forKey:@"lastStatusReportTimestamp"];
-    v5 = [(DMDPayloadMetadata *)self stateChangeTimestamp];
-    v6 = [(DMDPayloadMetadata *)self lastStatusReportTimestamp];
-    v7 = [v5 compare:v6];
+    [(DMDPayloadMetadata *)self setPrimitiveValue:timestampCopy forKey:@"lastStatusReportTimestamp"];
+    stateChangeTimestamp = [(DMDPayloadMetadata *)self stateChangeTimestamp];
+    lastStatusReportTimestamp = [(DMDPayloadMetadata *)self lastStatusReportTimestamp];
+    v7 = [stateChangeTimestamp compare:lastStatusReportTimestamp];
 
     if (v7 != 1)
     {
@@ -288,107 +288,107 @@ LABEL_6:
 
 - (void)willSave
 {
-  v3 = [(DMDPayloadMetadata *)self changedValues];
-  v7 = [v3 allKeys];
+  changedValues = [(DMDPayloadMetadata *)self changedValues];
+  allKeys = [changedValues allKeys];
 
-  if ([v7 containsObject:@"stateDictionary"])
+  if ([allKeys containsObject:@"stateDictionary"])
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(DMDPayloadMetadata *)self organization];
-    v6 = [v5 identifier];
-    [v4 postNotificationName:@"DMDConfigurationSourceStatusDidChange" object:v6];
+    organization = [(DMDPayloadMetadata *)self organization];
+    identifier = [organization identifier];
+    [v4 postNotificationName:@"DMDConfigurationSourceStatusDidChange" object:identifier];
   }
 }
 
-- (BOOL)validateProperties:(id *)a3
+- (BOOL)validateProperties:(id *)properties
 {
-  v5 = [(DMDPayloadMetadata *)self identifier];
+  identifier = [(DMDPayloadMetadata *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(DMDPayloadMetadata *)self type];
+    type = [(DMDPayloadMetadata *)self type];
 
-    if (v6)
+    if (type)
     {
       return 1;
     }
 
-    if (a3)
+    if (properties)
     {
       v10[0] = DMFConfigurationPayloadIdentifierErrorKey;
-      v8 = [(DMDPayloadMetadata *)self identifier];
+      identifier2 = [(DMDPayloadMetadata *)self identifier];
       v10[1] = DMFInvalidParameterErrorKey;
-      v11[0] = v8;
+      v11[0] = identifier2;
       v11[1] = DMFDeclarationPayloadTypeKey;
       v9 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
-      *a3 = DMFErrorWithCodeAndUserInfo();
+      *properties = DMFErrorWithCodeAndUserInfo();
 
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (properties)
   {
     v12 = DMFInvalidParameterErrorKey;
     v13 = DMFDeclarationPayloadIdentifierKey;
-    v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    *a3 = DMFErrorWithCodeAndUserInfo();
+    identifier2 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    *properties = DMFErrorWithCodeAndUserInfo();
 LABEL_8:
   }
 
   return 0;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v5 = [(DMDPayloadMetadata *)self validateProperties:?];
   if (v5)
   {
     v7.receiver = self;
     v7.super_class = DMDPayloadMetadata;
-    LOBYTE(v5) = [(DMDPayloadMetadata *)&v7 validateForInsert:a3];
+    LOBYTE(v5) = [(DMDPayloadMetadata *)&v7 validateForInsert:insert];
   }
 
   return v5;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v5 = [(DMDPayloadMetadata *)self validateProperties:?];
   if (v5)
   {
     v7.receiver = self;
     v7.super_class = DMDPayloadMetadata;
-    LOBYTE(v5) = [(DMDPayloadMetadata *)&v7 validateForUpdate:a3];
+    LOBYTE(v5) = [(DMDPayloadMetadata *)&v7 validateForUpdate:update];
   }
 
   return v5;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v4.receiver = self;
   v4.super_class = DMDPayloadMetadata;
-  return [(DMDPayloadMetadata *)&v4 validateForDelete:a3];
+  return [(DMDPayloadMetadata *)&v4 validateForDelete:delete];
 }
 
-- (DMDPayloadMetadata)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (DMDPayloadMetadata)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = DMDPayloadMetadata;
-  return [(DMDPayloadMetadata *)&v5 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(DMDPayloadMetadata *)&v5 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
-- (DMDPayloadMetadata)initWithContext:(id)a3
+- (DMDPayloadMetadata)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = +[NSAssertionHandler currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(a2);
   [v6 handleFailureInMethod:a2 object:self file:@"DMDPayloadMetadata.m" lineNumber:317 description:{@"%@ cannot call %@", v7, v8}];
 
-  v9 = [objc_opt_class() entity];
-  v10 = [(DMDPayloadMetadata *)self initWithEntity:v9 insertIntoManagedObjectContext:v5];
+  entity = [objc_opt_class() entity];
+  v10 = [(DMDPayloadMetadata *)self initWithEntity:entity insertIntoManagedObjectContext:contextCopy];
 
   return v10;
 }
@@ -400,8 +400,8 @@ LABEL_8:
   v6 = NSStringFromSelector(a2);
   [v4 handleFailureInMethod:a2 object:self file:@"DMDPayloadMetadata.m" lineNumber:322 description:{@"%@ cannot call %@", v5, v6}];
 
-  v7 = [objc_opt_class() entity];
-  v8 = [(DMDPayloadMetadata *)self initWithEntity:v7 insertIntoManagedObjectContext:0];
+  entity = [objc_opt_class() entity];
+  v8 = [(DMDPayloadMetadata *)self initWithEntity:entity insertIntoManagedObjectContext:0];
 
   return v8;
 }

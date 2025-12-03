@@ -1,28 +1,28 @@
 @interface AMDModelOutputMetadata
-- (AMDModelOutputMetadata)initWithDictionary:(id)a3;
+- (AMDModelOutputMetadata)initWithDictionary:(id)dictionary;
 @end
 
 @implementation AMDModelOutputMetadata
 
-- (AMDModelOutputMetadata)initWithDictionary:(id)a3
+- (AMDModelOutputMetadata)initWithDictionary:(id)dictionary
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, dictionary);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = AMDModelOutputMetadata;
-  v10 = [(AMDModelOutputMetadata *)&v8 init];
-  objc_storeStrong(&v10, v10);
+  selfCopy = [(AMDModelOutputMetadata *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
   v6 = [location[0] objectForKey:@"data_type"];
   v4 = [AMDModelInputMetadata getDataTypeFromString:?];
-  [(AMDModelOutputMetadata *)v10 setDataType:v4];
+  [(AMDModelOutputMetadata *)selfCopy setDataType:v4];
   MEMORY[0x277D82BD8](v6);
-  v7 = MEMORY[0x277D82BE0](v10);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 

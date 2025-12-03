@@ -1,15 +1,15 @@
 @interface NFTLV
-+ (id)TLVWithData:(id)a3;
-+ (id)TLVWithTag:(unsigned int)a3 children:(id)a4;
-+ (id)TLVWithTag:(unsigned int)a3 fromData:(id)a4;
-+ (id)TLVWithTag:(unsigned int)a3 value:(id)a4;
-+ (id)TLVsWithData:(id)a3;
-+ (id)_intToData:(unsigned int)a3;
-+ (id)_parseTLVs:(const char *)a3 end:(const char *)a4 simple:(BOOL)a5 definite:(BOOL)a6;
-+ (id)simpleTLVsWithData:(id)a3;
-+ (id)simpleTLVsWithTag:(unsigned int)a3 fromData:(id)a4;
++ (id)TLVWithData:(id)data;
++ (id)TLVWithTag:(unsigned int)tag children:(id)children;
++ (id)TLVWithTag:(unsigned int)tag fromData:(id)data;
++ (id)TLVWithTag:(unsigned int)tag value:(id)value;
++ (id)TLVsWithData:(id)data;
++ (id)_intToData:(unsigned int)data;
++ (id)_parseTLVs:(const char *)vs end:(const char *)end simple:(BOOL)simple definite:(BOOL)definite;
++ (id)simpleTLVsWithData:(id)data;
++ (id)simpleTLVsWithTag:(unsigned int)tag fromData:(id)data;
 - (id)asMutableData;
-- (id)childrenWithTag:(unsigned int)a3;
+- (id)childrenWithTag:(unsigned int)tag;
 - (id)description;
 - (id)valueAsString;
 - (unint64_t)valueAsUnsignedLongLong;
@@ -19,34 +19,34 @@
 
 @implementation NFTLV
 
-+ (id)TLVsWithData:(id)a3
++ (id)TLVsWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v15 = objc_msgSend_bytes(v6, v7, v8);
-  v11 = objc_msgSend_length(v6, v9, v10);
+  dataCopy = data;
+  dataCopy2 = data;
+  v15 = objc_msgSend_bytes(dataCopy2, v7, v8);
+  v11 = objc_msgSend_length(dataCopy2, v9, v10);
 
-  v13 = objc_msgSend__parseTLVs_end_simple_definite_(a1, v12, &v15, v15 + v11, 0, 0);
+  v13 = objc_msgSend__parseTLVs_end_simple_definite_(self, v12, &v15, v15 + v11, 0, 0);
 
   return v13;
 }
 
-+ (id)simpleTLVsWithData:(id)a3
++ (id)simpleTLVsWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v15 = objc_msgSend_bytes(v6, v7, v8);
-  v11 = objc_msgSend_length(v6, v9, v10);
+  dataCopy = data;
+  dataCopy2 = data;
+  v15 = objc_msgSend_bytes(dataCopy2, v7, v8);
+  v11 = objc_msgSend_length(dataCopy2, v9, v10);
 
-  v13 = objc_msgSend__parseTLVs_end_simple_definite_(a1, v12, &v15, v15 + v11, 1, 0);
+  v13 = objc_msgSend__parseTLVs_end_simple_definite_(self, v12, &v15, v15 + v11, 1, 0);
 
   return v13;
 }
 
-+ (id)TLVWithData:(id)a3
++ (id)TLVWithData:(id)data
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_TLVsWithData_(a1, a2, a3);
+  v5 = objc_msgSend_TLVsWithData_(self, a2, data);
   if (!objc_msgSend_count(v5, v6, v7))
   {
     v24 = kNFLOG_DISPATCH_SPECIFIC_KEY;
@@ -56,9 +56,9 @@
       v26 = *(&off_27DA9DE50 + specific);
       if (v26)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v30 = 45;
         if (isMetaClass)
@@ -77,7 +77,7 @@
         goto LABEL_24;
       }
 
-      v32 = object_getClass(a1);
+      v32 = object_getClass(self);
       if (class_isMetaClass(v32))
       {
         v33 = 43;
@@ -91,7 +91,7 @@
       *buf = 67109890;
       v40 = v33;
       v41 = 2082;
-      v42 = object_getClassName(a1);
+      v42 = object_getClassName(self);
       v43 = 2082;
       v44 = sel_getName(a2);
       v45 = 1024;
@@ -113,9 +113,9 @@ LABEL_29:
       v14 = *(&off_27DA9DE50 + v13);
       if (v14)
       {
-        v15 = object_getClass(a1);
+        v15 = object_getClass(self);
         v16 = class_isMetaClass(v15);
-        v17 = object_getClassName(a1);
+        v17 = object_getClassName(self);
         v37 = sel_getName(a2);
         v18 = 45;
         if (v16)
@@ -134,7 +134,7 @@ LABEL_29:
         goto LABEL_24;
       }
 
-      v21 = object_getClass(a1);
+      v21 = object_getClass(self);
       if (class_isMetaClass(v21))
       {
         v22 = 43;
@@ -148,7 +148,7 @@ LABEL_29:
       *buf = 67109890;
       v40 = v22;
       v41 = 2082;
-      v42 = object_getClassName(a1);
+      v42 = object_getClassName(self);
       v43 = 2082;
       v44 = sel_getName(a2);
       v45 = 1024;
@@ -173,14 +173,14 @@ LABEL_26:
   return v34;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 fromData:(id)a4
++ (id)TLVWithTag:(unsigned int)tag fromData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = objc_msgSend_TLVsWithData_(NFTLV, a2, a4, 0);
+  v5 = objc_msgSend_TLVsWithData_(NFTLV, a2, data, 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v17, v21, 16);
   if (v7)
   {
@@ -196,7 +196,7 @@ LABEL_26:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if (objc_msgSend_tag(v13, v8, v9) == a3)
+        if (objc_msgSend_tag(v13, v8, v9) == tag)
         {
           v14 = v13;
           goto LABEL_11;
@@ -221,16 +221,16 @@ LABEL_11:
   return v14;
 }
 
-+ (id)simpleTLVsWithTag:(unsigned int)a3 fromData:(id)a4
++ (id)simpleTLVsWithTag:(unsigned int)tag fromData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dataCopy = data;
   v6 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = objc_msgSend_simpleTLVsWithData_(NFTLV, v7, v5, 0);
+  v8 = objc_msgSend_simpleTLVsWithData_(NFTLV, v7, dataCopy, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v19, v23, 16);
   if (v10)
   {
@@ -246,7 +246,7 @@ LABEL_11:
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if (objc_msgSend_tag(v16, v11, v12) == a3)
+        if (objc_msgSend_tag(v16, v11, v12) == tag)
         {
           objc_msgSend_addObject_(v6, v11, v16);
         }
@@ -263,19 +263,19 @@ LABEL_11:
   return v6;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 children:(id)a4
++ (id)TLVWithTag:(unsigned int)tag children:(id)children
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  childrenCopy = children;
   v7 = objc_opt_new();
-  *(v7 + 8) = a3;
-  objc_storeStrong((v7 + 24), a4);
+  *(v7 + 8) = tag;
+  objc_storeStrong((v7 + 24), children);
   *(v7 + 32) = 8;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = childrenCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v17, v21, 16);
   if (v10)
   {
@@ -304,14 +304,14 @@ LABEL_11:
   return v7;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 value:(id)a4
++ (id)TLVWithTag:(unsigned int)tag value:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v6 = objc_opt_new();
-  *(v6 + 8) = a3;
+  *(v6 + 8) = tag;
   v7 = *(v6 + 16);
-  *(v6 + 16) = v5;
-  v8 = v5;
+  *(v6 + 16) = valueCopy;
+  v8 = valueCopy;
 
   v11 = objc_msgSend_length(v8, v9, v10);
   *(v6 + 32) = v11 + 8;
@@ -646,7 +646,7 @@ LABEL_19:
   return v29;
 }
 
-- (id)childrenWithTag:(unsigned int)a3
+- (id)childrenWithTag:(unsigned int)tag
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -670,7 +670,7 @@ LABEL_19:
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        if (objc_msgSend_tag(v16, v11, v12) == a3)
+        if (objc_msgSend_tag(v16, v11, v12) == tag)
         {
           objc_msgSend_addObject_(v5, v11, v16);
         }
@@ -687,24 +687,24 @@ LABEL_19:
   return v5;
 }
 
-+ (id)_intToData:(unsigned int)a3
++ (id)_intToData:(unsigned int)data
 {
   v4 = objc_alloc(MEMORY[0x277CBEB28]);
   v6 = objc_msgSend_initWithCapacity_(v4, v5, 4);
   v8 = v6;
   v12 = 0;
-  if (a3)
+  if (data)
   {
     v9 = 4;
-    if (HIBYTE(a3))
+    if (HIBYTE(data))
     {
       goto LABEL_14;
     }
 
     do
     {
-      v10 = HIWORD(a3);
-      a3 <<= 8;
+      v10 = HIWORD(data);
+      data <<= 8;
       --v9;
     }
 
@@ -714,9 +714,9 @@ LABEL_19:
 LABEL_14:
       do
       {
-        v12 = HIBYTE(a3);
+        v12 = HIBYTE(data);
         objc_msgSend_appendBytes_length_(v8, v7, &v12, 1);
-        a3 <<= 8;
+        data <<= 8;
         --v9;
       }
 
@@ -803,24 +803,24 @@ LABEL_14:
   return v5;
 }
 
-+ (id)_parseTLVs:(const char *)a3 end:(const char *)a4 simple:(BOOL)a5 definite:(BOOL)a6
++ (id)_parseTLVs:(const char *)vs end:(const char *)end simple:(BOOL)simple definite:(BOOL)definite
 {
-  v203 = a6;
-  v204 = a5;
+  definiteCopy = definite;
+  simpleCopy = simple;
   v222 = *MEMORY[0x277D85DE8];
-  v202 = *a3;
+  v202 = *vs;
   v9 = objc_opt_new();
-  v10 = *a3;
-  if (*a3 < a4)
+  v10 = *vs;
+  if (*vs < end)
   {
     while (1)
     {
       v11 = v10 + 1;
-      *a3 = v10 + 1;
+      *vs = v10 + 1;
       v12 = *v10;
-      if (v204)
+      if (simpleCopy)
       {
-        if (v11 >= a4)
+        if (v11 >= end)
         {
           v134 = kNFLOG_DISPATCH_SPECIFIC_KEY;
           specific = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -832,9 +832,9 @@ LABEL_14:
           v136 = *(&off_27DA9DE50 + specific);
           if (v136)
           {
-            Class = object_getClass(a1);
+            Class = object_getClass(self);
             isMetaClass = class_isMetaClass(Class);
-            ClassName = object_getClassName(a1);
+            ClassName = object_getClassName(self);
             Name = sel_getName(a2);
             v139 = 45;
             if (isMetaClass)
@@ -850,7 +850,7 @@ LABEL_14:
           v88 = NFSharedLogGetLogger(v140);
           if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
           {
-            v141 = object_getClass(a1);
+            v141 = object_getClass(self);
             if (class_isMetaClass(v141))
             {
               v142 = 43;
@@ -861,7 +861,7 @@ LABEL_14:
               v142 = 45;
             }
 
-            v143 = object_getClassName(a1);
+            v143 = object_getClassName(self);
             v144 = sel_getName(a2);
             *buf = 67110146;
             v207 = v142;
@@ -881,7 +881,7 @@ LABEL_14:
         }
 
         v13 = v10 + 2;
-        *a3 = v10 + 2;
+        *vs = v10 + 2;
         v14 = *(v10 + 1);
         if (v14 != 255)
         {
@@ -892,7 +892,7 @@ LABEL_14:
         v15 = 1;
         do
         {
-          if (v13 >= a4)
+          if (v13 >= end)
           {
             v96 = kNFLOG_DISPATCH_SPECIFIC_KEY;
             v97 = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -904,9 +904,9 @@ LABEL_14:
             v98 = *(&off_27DA9DE50 + v97);
             if (v98)
             {
-              v99 = object_getClass(a1);
+              v99 = object_getClass(self);
               v100 = class_isMetaClass(v99);
-              v187 = object_getClassName(a1);
+              v187 = object_getClassName(self);
               v193 = sel_getName(a2);
               v101 = 45;
               if (v100)
@@ -922,7 +922,7 @@ LABEL_14:
             v88 = NFSharedLogGetLogger(v102);
             if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
             {
-              v103 = object_getClass(a1);
+              v103 = object_getClass(self);
               if (class_isMetaClass(v103))
               {
                 v104 = 43;
@@ -933,7 +933,7 @@ LABEL_14:
                 v104 = 45;
               }
 
-              v105 = object_getClassName(a1);
+              v105 = object_getClassName(self);
               v106 = sel_getName(a2);
               *buf = 67110146;
               v207 = v104;
@@ -955,7 +955,7 @@ LABEL_14:
           v16 = v15;
           v15 = 0;
           v17 = v13 + 1;
-          *a3 = v13 + 1;
+          *vs = v13 + 1;
           v14 = *v13++ | (v14 << 8);
         }
 
@@ -978,9 +978,9 @@ LABEL_32:
             v39 = *(&off_27DA9DE50 + v38);
             if (v39)
             {
-              v40 = object_getClass(a1);
+              v40 = object_getClass(self);
               v41 = class_isMetaClass(v40);
-              v185 = object_getClassName(a1);
+              v185 = object_getClassName(self);
               v190 = sel_getName(a2);
               v42 = 45;
               if (v41)
@@ -996,7 +996,7 @@ LABEL_32:
             v44 = NFSharedLogGetLogger(v43);
             if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
             {
-              v45 = object_getClass(a1);
+              v45 = object_getClass(self);
               if (class_isMetaClass(v45))
               {
                 v46 = 43;
@@ -1007,7 +1007,7 @@ LABEL_32:
                 v46 = 45;
               }
 
-              v47 = object_getClassName(a1);
+              v47 = object_getClassName(self);
               v48 = sel_getName(a2);
               *buf = 67110146;
               v207 = v46;
@@ -1023,7 +1023,7 @@ LABEL_32:
             }
 
             v18 = 0;
-            v13 = *a3;
+            v13 = *vs;
             goto LABEL_44;
           }
 
@@ -1052,9 +1052,9 @@ LABEL_164:
             v23 = *(&off_27DA9DE50 + v22);
             if (v23)
             {
-              v24 = object_getClass(a1);
+              v24 = object_getClass(self);
               v25 = class_isMetaClass(v24);
-              v26 = object_getClassName(a1);
+              v26 = object_getClassName(self);
               v189 = sel_getName(a2);
               v27 = 45;
               if (v25)
@@ -1070,7 +1070,7 @@ LABEL_164:
             v29 = NFSharedLogGetLogger(v28);
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v30 = object_getClass(a1);
+              v30 = object_getClass(self);
               if (class_isMetaClass(v30))
               {
                 v31 = 43;
@@ -1081,7 +1081,7 @@ LABEL_164:
                 v31 = 45;
               }
 
-              v32 = object_getClassName(a1);
+              v32 = object_getClassName(self);
               v33 = sel_getName(a2);
               *buf = 67109890;
               v207 = v31;
@@ -1094,16 +1094,16 @@ LABEL_164:
               _os_log_impl(&dword_22EEC4000, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Tag value overflows", buf, 0x22u);
             }
 
-            v11 = *a3;
+            v11 = *vs;
           }
 
-          if (v11 >= a4)
+          if (v11 >= end)
           {
             break;
           }
 
           v34 = v11 + 1;
-          *a3 = v11 + 1;
+          *vs = v11 + 1;
           v35 = *v11;
           v18 = *v11 | (v20 << 8);
           ++v19;
@@ -1125,9 +1125,9 @@ LABEL_164:
         v82 = *(&off_27DA9DE50 + v81);
         if (v82)
         {
-          v83 = object_getClass(a1);
+          v83 = object_getClass(self);
           v84 = class_isMetaClass(v83);
-          v85 = object_getClassName(a1);
+          v85 = object_getClassName(self);
           v192 = sel_getName(a2);
           v86 = 45;
           if (v84)
@@ -1146,7 +1146,7 @@ LABEL_164:
           goto LABEL_136;
         }
 
-        v89 = object_getClass(a1);
+        v89 = object_getClass(self);
         if (class_isMetaClass(v89))
         {
           v90 = 43;
@@ -1157,7 +1157,7 @@ LABEL_164:
           v90 = 45;
         }
 
-        v91 = object_getClassName(a1);
+        v91 = object_getClassName(self);
         v92 = sel_getName(a2);
         *buf = 67109890;
         v207 = v90;
@@ -1177,13 +1177,13 @@ LABEL_82:
       v34 = v10 + 1;
       v18 = v12;
 LABEL_29:
-      if (v34 >= a4)
+      if (v34 >= end)
       {
         break;
       }
 
       v13 = v34 + 1;
-      *a3 = v34 + 1;
+      *vs = v34 + 1;
       v36 = *v34;
       v14 = v36;
       if (v36 < 0)
@@ -1192,10 +1192,10 @@ LABEL_29:
         if ((v14 & 0x7F) != 0)
         {
           LODWORD(v14) = 0;
-          while (v13 < a4)
+          while (v13 < end)
           {
             v64 = v13 + 1;
-            *a3 = v13 + 1;
+            *vs = v13 + 1;
             v14 = *v13++ | (v14 << 8);
             if (!--v63)
             {
@@ -1219,9 +1219,9 @@ LABEL_29:
           v109 = *(&off_27DA9DE50 + v108);
           if (v109)
           {
-            v110 = object_getClass(a1);
+            v110 = object_getClass(self);
             v111 = class_isMetaClass(v110);
-            v112 = object_getClassName(a1);
+            v112 = object_getClassName(self);
             v194 = sel_getName(a2);
             v113 = 45;
             if (v111)
@@ -1237,7 +1237,7 @@ LABEL_29:
           v88 = NFSharedLogGetLogger(v114);
           if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
           {
-            v115 = object_getClass(a1);
+            v115 = object_getClass(self);
             if (class_isMetaClass(v115))
             {
               v116 = 43;
@@ -1248,7 +1248,7 @@ LABEL_29:
               v116 = 45;
             }
 
-            v117 = object_getClassName(a1);
+            v117 = object_getClassName(self);
             v118 = sel_getName(a2);
             *buf = 67110146;
             v207 = v116;
@@ -1282,7 +1282,7 @@ LABEL_29:
       }
 
 LABEL_44:
-      if (a4 - v13 < v14)
+      if (end - v13 < v14)
       {
         v119 = kNFLOG_DISPATCH_SPECIFIC_KEY;
         v120 = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1294,9 +1294,9 @@ LABEL_44:
         v121 = *(&off_27DA9DE50 + v120);
         if (v121)
         {
-          v122 = object_getClass(a1);
+          v122 = object_getClass(self);
           v123 = class_isMetaClass(v122);
-          v124 = object_getClassName(a1);
+          v124 = object_getClassName(self);
           v125 = sel_getName(a2);
           v126 = 43;
           if (!v123)
@@ -1304,7 +1304,7 @@ LABEL_44:
             v126 = 45;
           }
 
-          v121(3, "%c[%{public}s %{public}s]:%i Underflow: tag=0x%x len=%u have=%lu offset=%lu", v126, v124, v125, 390, v18, v14, a4 - *a3, *a3 - v202);
+          v121(3, "%c[%{public}s %{public}s]:%i Underflow: tag=0x%x len=%u have=%lu offset=%lu", v126, v124, v125, 390, v18, v14, end - *vs, *vs - v202);
           v119 = kNFLOG_DISPATCH_SPECIFIC_KEY;
         }
 
@@ -1312,7 +1312,7 @@ LABEL_44:
         v88 = NFSharedLogGetLogger(v127);
         if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
         {
-          v128 = object_getClass(a1);
+          v128 = object_getClass(self);
           if (class_isMetaClass(v128))
           {
             v129 = 43;
@@ -1323,10 +1323,10 @@ LABEL_44:
             v129 = 45;
           }
 
-          v130 = object_getClassName(a1);
+          v130 = object_getClassName(self);
           v131 = sel_getName(a2);
-          v132 = a4 - *a3;
-          v133 = (*a3 - v202);
+          v132 = end - *vs;
+          v133 = (*vs - v202);
           *buf = 67110914;
           v207 = v129;
           v208 = 2082;
@@ -1354,10 +1354,10 @@ LABEL_44:
 
       v49 = v14;
       v50 = objc_alloc(MEMORY[0x277CBEA90]);
-      v53 = objc_msgSend_initWithBytes_length_(v50, v51, *a3, v14);
+      v53 = objc_msgSend_initWithBytes_length_(v50, v51, *vs, v14);
       if ((v12 & 0x20) != 0)
       {
-        v56 = objc_msgSend__parseTLVs_end_simple_definite_(a1, v52, a3, &(*a3)[v49], v204, v203);
+        v56 = objc_msgSend__parseTLVs_end_simple_definite_(self, v52, vs, &(*vs)[v49], simpleCopy, definiteCopy);
         if (objc_msgSend_count(v56, v57, v58))
         {
           v60 = objc_msgSend_TLVWithTag_children_(NFTLV, v59, v18, v56);
@@ -1373,9 +1373,9 @@ LABEL_44:
             v174 = *(&off_27DA9DE50 + v173);
             if (v174)
             {
-              v175 = object_getClass(a1);
+              v175 = object_getClass(self);
               v176 = class_isMetaClass(v175);
-              v177 = object_getClassName(a1);
+              v177 = object_getClassName(self);
               v198 = sel_getName(a2);
               v178 = 45;
               if (v176)
@@ -1391,7 +1391,7 @@ LABEL_44:
             v180 = NFSharedLogGetLogger(v179);
             if (os_log_type_enabled(v180, OS_LOG_TYPE_ERROR))
             {
-              v181 = object_getClass(a1);
+              v181 = object_getClass(self);
               if (class_isMetaClass(v181))
               {
                 v182 = 43;
@@ -1402,7 +1402,7 @@ LABEL_44:
                 v182 = 45;
               }
 
-              v183 = object_getClassName(a1);
+              v183 = object_getClassName(self);
               v184 = sel_getName(a2);
               *buf = 67109890;
               v207 = v182;
@@ -1437,9 +1437,9 @@ LABEL_44:
           v68 = *(&off_27DA9DE50 + v67);
           if (v68)
           {
-            v69 = object_getClass(a1);
+            v69 = object_getClass(self);
             v199 = class_isMetaClass(v69);
-            v186 = object_getClassName(a1);
+            v186 = object_getClassName(self);
             v191 = sel_getName(a2);
             v70 = 45;
             if (v199)
@@ -1456,7 +1456,7 @@ LABEL_44:
           v72 = NFSharedLogGetLogger(v71);
           if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
           {
-            v73 = object_getClass(a1);
+            v73 = object_getClass(self);
             if (class_isMetaClass(v73))
             {
               v74 = 43;
@@ -1468,7 +1468,7 @@ LABEL_44:
             }
 
             v200 = v74;
-            v75 = object_getClassName(a1);
+            v75 = object_getClassName(self);
             v76 = sel_getName(a2);
             *buf = 67110146;
             v207 = v200;
@@ -1487,7 +1487,7 @@ LABEL_44:
           v78 = objc_msgSend_TLVWithTag_value_(NFTLV, v77, v18, v53);
           objc_msgSend_addObject_(v9, v79, v78);
 
-          *a3 = &v13[v49];
+          *vs = &v13[v49];
           v56 = v201;
         }
       }
@@ -1497,11 +1497,11 @@ LABEL_44:
         v54 = objc_msgSend_TLVWithTag_value_(NFTLV, v52, v18, v53);
         objc_msgSend_addObject_(v9, v55, v54);
 
-        *a3 += v49;
+        *vs += v49;
       }
 
-      v10 = *a3;
-      if (*a3 >= a4)
+      v10 = *vs;
+      if (*vs >= end)
       {
         goto LABEL_149;
       }
@@ -1519,9 +1519,9 @@ LABEL_44:
       v147 = *(&off_27DA9DE50 + v146);
       if (v147)
       {
-        v148 = object_getClass(a1);
+        v148 = object_getClass(self);
         v149 = class_isMetaClass(v148);
-        v150 = object_getClassName(a1);
+        v150 = object_getClassName(self);
         v196 = sel_getName(a2);
         v151 = 45;
         if (v149)
@@ -1537,7 +1537,7 @@ LABEL_44:
       v88 = NFSharedLogGetLogger(v152);
       if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
       {
-        v153 = object_getClass(a1);
+        v153 = object_getClass(self);
         if (class_isMetaClass(v153))
         {
           v154 = 43;
@@ -1548,7 +1548,7 @@ LABEL_44:
           v154 = 45;
         }
 
-        v155 = object_getClassName(a1);
+        v155 = object_getClassName(self);
         v156 = sel_getName(a2);
         *buf = 67110146;
         v207 = v154;
@@ -1576,7 +1576,7 @@ LABEL_137:
     }
 
 LABEL_138:
-    if (v203)
+    if (definiteCopy)
     {
       v158 = kNFLOG_DISPATCH_SPECIFIC_KEY;
       v159 = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1588,9 +1588,9 @@ LABEL_138:
       v160 = *(&off_27DA9DE50 + v159);
       if (v160)
       {
-        v161 = object_getClass(a1);
+        v161 = object_getClass(self);
         v162 = class_isMetaClass(v161);
-        v163 = object_getClassName(a1);
+        v163 = object_getClassName(self);
         v197 = sel_getName(a2);
         v164 = 45;
         if (v162)
@@ -1609,7 +1609,7 @@ LABEL_138:
         goto LABEL_136;
       }
 
-      v166 = object_getClass(a1);
+      v166 = object_getClass(self);
       if (class_isMetaClass(v166))
       {
         v167 = 43;
@@ -1620,7 +1620,7 @@ LABEL_138:
         v167 = 45;
       }
 
-      v168 = object_getClassName(a1);
+      v168 = object_getClassName(self);
       v169 = sel_getName(a2);
       *buf = 67109890;
       v207 = v167;

@@ -1,17 +1,17 @@
 @interface RBSAppNapPreventTimerThrottleGrant
-+ (id)grantWithTier:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSAppNapPreventTimerThrottleGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithTier:(unsigned __int8)tier;
+- (BOOL)isEqual:(id)equal;
+- (RBSAppNapPreventTimerThrottleGrant)initWithRBSXPCCoder:(id)coder;
 - (_BYTE)_initWithTier:(_BYTE *)result;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSAppNapPreventTimerThrottleGrant
 
-+ (id)grantWithTier:(unsigned __int8)a3
++ (id)grantWithTier:(unsigned __int8)tier
 {
-  v3 = [[RBSAppNapPreventTimerThrottleGrant alloc] _initWithTier:a3];
+  v3 = [[RBSAppNapPreventTimerThrottleGrant alloc] _initWithTier:tier];
 
   return v3;
 }
@@ -37,37 +37,37 @@
   return result;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSAppNapPreventTimerThrottleGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:self->_tier forKey:{@"_tier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_tier forKey:{@"_tier", v5.receiver, v5.super_class}];
 }
 
-- (RBSAppNapPreventTimerThrottleGrant)initWithRBSXPCCoder:(id)a3
+- (RBSAppNapPreventTimerThrottleGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSAppNapPreventTimerThrottleGrant;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_tier = [v4 decodeInt64ForKey:@"_tier"];
+    v5->_tier = [coderCopy decodeInt64ForKey:@"_tier"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSAppNapPreventTimerThrottleGrant;
-  if ([(RBSAttribute *)&v7 isEqual:v4])
+  if ([(RBSAttribute *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_tier == v4[8];
+    v5 = self->_tier == equalCopy[8];
   }
 
   else

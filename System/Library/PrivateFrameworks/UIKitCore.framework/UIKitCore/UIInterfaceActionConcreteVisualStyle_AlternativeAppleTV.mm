@@ -1,9 +1,9 @@
 @interface UIInterfaceActionConcreteVisualStyle_AlternativeAppleTV
 - (CGSize)minimumActionContentSize;
-- (double)actionSpacingForGroupViewState:(id)a3;
-- (id)actionTitleLabelColorForViewState:(id)a3;
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3;
-- (id)newActionBackgroundViewForViewState:(id)a3;
+- (double)actionSpacingForGroupViewState:(id)state;
+- (id)actionTitleLabelColorForViewState:(id)state;
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view;
+- (id)newActionBackgroundViewForViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_AlternativeAppleTV
@@ -17,19 +17,19 @@
   return result;
 }
 
-- (id)actionTitleLabelColorForViewState:(id)a3
+- (id)actionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 action];
-  v6 = [v5 type];
-  if (v6 < 2 || v6 == 100)
+  stateCopy = state;
+  action = [stateCopy action];
+  type = [action type];
+  if (type < 2 || type == 100)
   {
-    if ([v5 isEnabled])
+    if ([action isEnabled])
     {
-      if ([v4 isPreferred])
+      if ([stateCopy isPreferred])
       {
-        v8 = [v4 tintColor];
-        self = [(UIInterfaceActionConcreteVisualStyle_ModernAppleTV *)self _vibrancyStyleColorForUnfocusedTitleLabelWithTintColor:v8];
+        tintColor = [stateCopy tintColor];
+        self = [(UIInterfaceActionConcreteVisualStyle_ModernAppleTV *)self _vibrancyStyleColorForUnfocusedTitleLabelWithTintColor:tintColor];
 
         goto LABEL_11;
       }
@@ -45,7 +45,7 @@
 
   else
   {
-    if (v6 != 2)
+    if (type != 2)
     {
       goto LABEL_11;
     }
@@ -59,11 +59,11 @@ LABEL_11:
   return self;
 }
 
-- (double)actionSpacingForGroupViewState:(id)a3
+- (double)actionSpacingForGroupViewState:(id)state
 {
-  v3 = [a3 isVerticalLayoutAxis];
+  isVerticalLayoutAxis = [state isVerticalLayoutAxis];
   result = 24.0;
-  if (v3)
+  if (isVerticalLayoutAxis)
   {
     return 8.0;
   }
@@ -71,42 +71,42 @@ LABEL_11:
   return result;
 }
 
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view
 {
-  v3 = a3;
-  v4 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)[_UIInterfaceActionRepresentationViewContext_AlternativeAppleTV alloc] initWithHighlightTransformTargetView:v3];
+  viewCopy = view;
+  v4 = [(_UIInterfaceActionRepresentationViewContext_GlassAppleTV *)[_UIInterfaceActionRepresentationViewContext_AlternativeAppleTV alloc] initWithHighlightTransformTargetView:viewCopy];
 
   return v4;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 action];
+  stateCopy = state;
+  action = [stateCopy action];
   v6 = objc_alloc_init(_UIAlertControllerAlternativeTVActionBackgroundView);
   [(_UIAlertControllerModernTVActionBackgroundView *)v6 setShouldUseTintColorAsHighlightColor:1];
   [(UIInterfaceActionConcreteVisualStyle_GlassAppleTV *)self _actionBackgroundCornerRadius];
   [(_UIAlertControllerTVBackgroundView *)v6 _setContinuousCornerRadius:?];
-  if ([v5 type] == 2)
+  if ([action type] == 2)
   {
-    v7 = +[UIColor systemRedColor];
+    tintColor = +[UIColor systemRedColor];
 LABEL_5:
-    v8 = v7;
+    v8 = tintColor;
     v9 = 1.0;
     v10 = 0.8;
     goto LABEL_6;
   }
 
-  if ([v4 isPreferred])
+  if ([stateCopy isPreferred])
   {
-    v7 = [v4 tintColor];
+    tintColor = [stateCopy tintColor];
     goto LABEL_5;
   }
 
-  v12 = [v4 traitCollection];
-  v13 = [v12 userInterfaceStyle];
+  traitCollection = [stateCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v13 == 1)
+  if (userInterfaceStyle == 1)
   {
     v8 = +[UIColor blackColor];
     v10 = 0.35;

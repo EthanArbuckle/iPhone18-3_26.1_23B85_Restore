@@ -1,7 +1,7 @@
 @interface WFDatabaseLegacyOrderingRecord
 - (NSArray)folders;
 - (NSArray)shortcuts;
-- (WFDatabaseLegacyOrderingRecord)initWithShortcuts:(id)a3 folders:(id)a4 cloudKitMetadata:(id)a5;
+- (WFDatabaseLegacyOrderingRecord)initWithShortcuts:(id)shortcuts folders:(id)folders cloudKitMetadata:(id)metadata;
 @end
 
 @implementation WFDatabaseLegacyOrderingRecord
@@ -29,18 +29,18 @@
   return v2;
 }
 
-- (WFDatabaseLegacyOrderingRecord)initWithShortcuts:(id)a3 folders:(id)a4 cloudKitMetadata:(id)a5
+- (WFDatabaseLegacyOrderingRecord)initWithShortcuts:(id)shortcuts folders:(id)folders cloudKitMetadata:(id)metadata
 {
   v7 = sub_1CA94C658();
-  if (a4)
+  if (folders)
   {
-    a4 = sub_1CA94C658();
+    folders = sub_1CA94C658();
   }
 
-  if (a5)
+  if (metadata)
   {
-    v8 = a5;
-    a5 = sub_1CA948C08();
+    metadataCopy = metadata;
+    metadata = sub_1CA948C08();
     v10 = v9;
   }
 
@@ -49,7 +49,7 @@
     v10 = 0xF000000000000000;
   }
 
-  return sub_1CA3E9BAC(v7, a4, a5, v10);
+  return sub_1CA3E9BAC(v7, folders, metadata, v10);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface RTScenarioTriggerNotification
-- (RTScenarioTriggerNotification)initWithScenarioTrigger:(id)a3;
+- (RTScenarioTriggerNotification)initWithScenarioTrigger:(id)trigger;
 @end
 
 @implementation RTScenarioTriggerNotification
 
-- (RTScenarioTriggerNotification)initWithScenarioTrigger:(id)a3
+- (RTScenarioTriggerNotification)initWithScenarioTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   v9.receiver = self;
   v9.super_class = RTScenarioTriggerNotification;
   v6 = [(RTNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scenarioTrigger, a3);
+    objc_storeStrong(&v6->_scenarioTrigger, trigger);
   }
 
   return v7;

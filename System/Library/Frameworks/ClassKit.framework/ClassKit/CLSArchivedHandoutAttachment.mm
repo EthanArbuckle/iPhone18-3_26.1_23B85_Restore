@@ -1,74 +1,74 @@
 @interface CLSArchivedHandoutAttachment
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSArchivedHandoutAttachment
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, @"type");
-  v6 = [v5 intValue];
-  v7 = sub_10016D778(v4, @"title");
-  v8 = [(CLSArchivedHandoutAttachment *)self initWithType:v6 title:v7];
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, @"type");
+  intValue = [v5 intValue];
+  v7 = sub_10016D778(rowCopy, @"title");
+  v8 = [(CLSArchivedHandoutAttachment *)self initWithType:intValue title:v7];
 
   if (v8)
   {
-    [(CLSArchivedHandoutAttachment *)v8 _initCommonPropsWithDatabaseRow:v4];
-    v9 = sub_10016D778(v4, @"bundleIdentifier");
+    [(CLSArchivedHandoutAttachment *)v8 _initCommonPropsWithDatabaseRow:rowCopy];
+    v9 = sub_10016D778(rowCopy, @"bundleIdentifier");
     [(CLSArchivedHandoutAttachment *)v8 setBundleIdentifier:v9];
 
-    v10 = sub_10016D778(v4, @"URL");
+    v10 = sub_10016D778(rowCopy, @"URL");
     if (v10)
     {
       v11 = [NSURL URLWithString:v10];
       [(CLSArchivedHandoutAttachment *)v8 setURL:v11];
     }
 
-    v12 = sub_10016D778(v4, @"contextPath");
+    v12 = sub_10016D778(rowCopy, @"contextPath");
     if (v12)
     {
       v13 = [CLSUtil pathFromData:v12];
       [(CLSArchivedHandoutAttachment *)v8 setContextPath:v13];
     }
 
-    v14 = sub_10016D778(v4, @"contextSummary");
+    v14 = sub_10016D778(rowCopy, @"contextSummary");
     [(CLSArchivedHandoutAttachment *)v8 setContextSummary:v14];
 
-    v15 = sub_10016D778(v4, @"contextCustomTypeName");
+    v15 = sub_10016D778(rowCopy, @"contextCustomTypeName");
     [(CLSArchivedHandoutAttachment *)v8 setContextCustomTypeName:v15];
 
-    v16 = sub_10016D778(v4, @"contextSourceIsCatalog");
+    v16 = sub_10016D778(rowCopy, @"contextSourceIsCatalog");
     -[CLSArchivedHandoutAttachment setContextSourceIsCatalog:](v8, "setContextSourceIsCatalog:", [v16 BOOLValue]);
 
-    v17 = sub_10016D778(v4, @"parentObjectID");
+    v17 = sub_10016D778(rowCopy, @"parentObjectID");
     [(CLSArchivedHandoutAttachment *)v8 setParentObjectID:v17];
 
-    v18 = sub_10016D778(v4, @"storeIdentifier");
+    v18 = sub_10016D778(rowCopy, @"storeIdentifier");
     [(CLSArchivedHandoutAttachment *)v8 setStoreIdentifier:v18];
 
-    v19 = sub_10016D778(v4, @"contentStoreIdentifier");
+    v19 = sub_10016D778(rowCopy, @"contentStoreIdentifier");
     [(CLSArchivedHandoutAttachment *)v8 setContentStoreIdentifier:v19];
 
-    v20 = sub_10016D778(v4, @"shareType");
+    v20 = sub_10016D778(rowCopy, @"shareType");
     -[CLSArchivedHandoutAttachment setShareType:](v8, "setShareType:", [v20 intValue]);
 
-    v21 = sub_10016D778(v4, @"permissionType");
+    v21 = sub_10016D778(rowCopy, @"permissionType");
     -[CLSArchivedHandoutAttachment setPermissionType:](v8, "setPermissionType:", [v21 intValue]);
 
-    v22 = sub_10016D778(v4, @"displayOrder");
+    v22 = sub_10016D778(rowCopy, @"displayOrder");
     -[CLSArchivedHandoutAttachment setDisplayOrder:](v8, "setDisplayOrder:", [v22 integerValue]);
 
-    v23 = sub_10016D778(v4, @"contextType");
+    v23 = sub_10016D778(rowCopy, @"contextType");
     -[CLSArchivedHandoutAttachment setContextType:](v8, "setContextType:", [v23 integerValue]);
 
-    v24 = sub_10016D778(v4, @"title");
+    v24 = sub_10016D778(rowCopy, @"title");
     [(CLSArchivedHandoutAttachment *)v8 setTitle:v24];
 
-    v25 = sub_10016D778(v4, @"timeExpectation");
+    v25 = sub_10016D778(rowCopy, @"timeExpectation");
     [v25 doubleValue];
     [(CLSArchivedHandoutAttachment *)v8 setTimeExpectation:?];
   }
@@ -76,23 +76,23 @@
   return v8;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v26.receiver = self;
   v26.super_class = CLSArchivedHandoutAttachment;
-  [(CLSArchivedHandoutAttachment *)&v26 bindTo:v4];
+  [(CLSArchivedHandoutAttachment *)&v26 bindTo:toCopy];
   v27 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v27 count:1];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSArchivedHandoutAttachment *)self contextPath];
-  v7 = [v6 count];
+  contextPath = [(CLSArchivedHandoutAttachment *)self contextPath];
+  v7 = [contextPath count];
 
   if (v7)
   {
-    v8 = [(CLSArchivedHandoutAttachment *)self contextPath];
-    v9 = [CLSUtil dataFromPath:v8 makeBackwardCompatible:1 error:0];
+    contextPath2 = [(CLSArchivedHandoutAttachment *)self contextPath];
+    v9 = [CLSUtil dataFromPath:contextPath2 makeBackwardCompatible:1 error:0];
   }
 
   else
@@ -100,64 +100,64 @@
     v9 = 0;
   }
 
-  v10 = [(CLSArchivedHandoutAttachment *)self parentObjectID];
-  sub_1000982FC(v4, v10, @"parentObjectID");
+  parentObjectID = [(CLSArchivedHandoutAttachment *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
-  sub_1000982FC(v4, v9, @"contextPath");
-  v11 = [(CLSArchivedHandoutAttachment *)self contextSummary];
-  sub_1000982FC(v4, v11, @"contextSummary");
+  sub_1000982FC(toCopy, v9, @"contextPath");
+  contextSummary = [(CLSArchivedHandoutAttachment *)self contextSummary];
+  sub_1000982FC(toCopy, contextSummary, @"contextSummary");
 
-  v12 = [(CLSArchivedHandoutAttachment *)self contextCustomTypeName];
-  sub_1000982FC(v4, v12, @"contextCustomTypeName");
+  contextCustomTypeName = [(CLSArchivedHandoutAttachment *)self contextCustomTypeName];
+  sub_1000982FC(toCopy, contextCustomTypeName, @"contextCustomTypeName");
 
   v13 = [NSNumber numberWithBool:[(CLSArchivedHandoutAttachment *)self contextSourceIsCatalog]];
-  sub_1000982FC(v4, v13, @"contextSourceIsCatalog");
+  sub_1000982FC(toCopy, v13, @"contextSourceIsCatalog");
 
   v14 = [(CLSArchivedHandoutAttachment *)self URL];
-  v15 = [v14 absoluteString];
-  sub_1000982FC(v4, v15, @"URL");
+  absoluteString = [v14 absoluteString];
+  sub_1000982FC(toCopy, absoluteString, @"URL");
 
-  v16 = [(CLSArchivedHandoutAttachment *)self title];
-  sub_1000982FC(v4, v16, @"title");
+  title = [(CLSArchivedHandoutAttachment *)self title];
+  sub_1000982FC(toCopy, title, @"title");
 
-  v17 = [(CLSArchivedHandoutAttachment *)self bundleIdentifier];
-  sub_1000982FC(v4, v17, @"bundleIdentifier");
+  bundleIdentifier = [(CLSArchivedHandoutAttachment *)self bundleIdentifier];
+  sub_1000982FC(toCopy, bundleIdentifier, @"bundleIdentifier");
 
-  v18 = [(CLSArchivedHandoutAttachment *)self storeIdentifier];
-  sub_1000982FC(v4, v18, @"storeIdentifier");
+  storeIdentifier = [(CLSArchivedHandoutAttachment *)self storeIdentifier];
+  sub_1000982FC(toCopy, storeIdentifier, @"storeIdentifier");
 
   v19 = [NSNumber numberWithInt:[(CLSArchivedHandoutAttachment *)self type]];
-  sub_1000982FC(v4, v19, @"type");
+  sub_1000982FC(toCopy, v19, @"type");
 
-  v20 = [(CLSArchivedHandoutAttachment *)self contentStoreIdentifier];
-  sub_1000982FC(v4, v20, @"contentStoreIdentifier");
+  contentStoreIdentifier = [(CLSArchivedHandoutAttachment *)self contentStoreIdentifier];
+  sub_1000982FC(toCopy, contentStoreIdentifier, @"contentStoreIdentifier");
 
   v21 = [NSNumber numberWithInt:[(CLSArchivedHandoutAttachment *)self shareType]];
-  sub_1000982FC(v4, v21, @"shareType");
+  sub_1000982FC(toCopy, v21, @"shareType");
 
   v22 = [NSNumber numberWithInt:[(CLSArchivedHandoutAttachment *)self permissionType]];
-  sub_1000982FC(v4, v22, @"permissionType");
+  sub_1000982FC(toCopy, v22, @"permissionType");
 
   v23 = [NSNumber numberWithInteger:[(CLSArchivedHandoutAttachment *)self displayOrder]];
-  sub_1000982FC(v4, v23, @"displayOrder");
+  sub_1000982FC(toCopy, v23, @"displayOrder");
 
   v24 = [NSNumber numberWithInteger:[(CLSArchivedHandoutAttachment *)self contextType]];
-  sub_1000982FC(v4, v24, @"contextType");
+  sub_1000982FC(toCopy, v24, @"contextType");
 
   [(CLSArchivedHandoutAttachment *)self timeExpectation];
   v25 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v25, @"timeExpectation");
+  sub_1000982FC(toCopy, v25, @"timeExpectation");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 > 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version > 1)
   {
-    if (a3 != 2)
+    if (version != 2)
     {
-      if (a3 != 3)
+      if (version != 3)
       {
         goto LABEL_9;
       }
@@ -168,15 +168,15 @@
 
   else
   {
-    if (a3)
+    if (version)
     {
-      if (a3 != 1)
+      if (version != 1)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!sub_1000B9298(v7, @"create table CLSArchivedHandoutAttachment(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    bundleIdentifier  text,    title             text,    type              integer,    complete          integer,    displayOrder      integer,    shareType         integer,    permissionType    integer,    completionStatus  integer,    contextType       integer,    URL               text,    contextPath       blob,    contextSummary    text,    contextCustomTypeName  text,    storeIdentifier   text,    contentStoreIdentifier text,    foreign key (parentObjectID) references CLSArchivedHandout(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSArchivedHandoutAttachment_objectID on CLSArchivedHandoutAttachment (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSArchivedHandoutAttachment_parentObjectID on CLSArchivedHandoutAttachment (parentObjectID)", 0, 0, 0))
+    else if (!sub_1000B9298(databaseCopy, @"create table CLSArchivedHandoutAttachment(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    bundleIdentifier  text,    title             text,    type              integer,    complete          integer,    displayOrder      integer,    shareType         integer,    permissionType    integer,    completionStatus  integer,    contextType       integer,    URL               text,    contextPath       blob,    contextSummary    text,    contextCustomTypeName  text,    storeIdentifier   text,    contentStoreIdentifier text,    foreign key (parentObjectID) references CLSArchivedHandout(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSArchivedHandoutAttachment_objectID on CLSArchivedHandoutAttachment (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSArchivedHandoutAttachment_parentObjectID on CLSArchivedHandoutAttachment (parentObjectID)", 0, 0, 0))
     {
       goto LABEL_37;
     }
@@ -299,23 +299,23 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  a3 = 4;
+  version = 4;
 LABEL_9:
-  *a4 = a3;
+  *finalVersion = version;
   v11 = 1;
 LABEL_38:
 
   return v11;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSArchivedHandoutAttachment *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSArchivedHandoutAttachment *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
 }
 
 @end

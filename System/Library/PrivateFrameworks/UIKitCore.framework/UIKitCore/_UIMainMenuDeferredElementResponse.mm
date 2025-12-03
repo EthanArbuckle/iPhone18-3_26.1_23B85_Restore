@@ -1,35 +1,35 @@
 @interface _UIMainMenuDeferredElementResponse
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuDeferredElementResponse)initWithCoder:(id)a3;
-- (id)_initWithDeferredElementState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuDeferredElementResponse)initWithCoder:(id)coder;
+- (id)_initWithDeferredElementState:(id)state;
 - (id)description;
 @end
 
 @implementation _UIMainMenuDeferredElementResponse
 
-- (id)_initWithDeferredElementState:(id)a3
+- (id)_initWithDeferredElementState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = _UIMainMenuDeferredElementResponse;
   v6 = [(_UIMainMenuDeferredElementResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deferredElementState, a3);
+    objc_storeStrong(&v6->_deferredElementState, state);
   }
 
   return v7;
 }
 
-- (_UIMainMenuDeferredElementResponse)initWithCoder:(id)a3
+- (_UIMainMenuDeferredElementResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuDeferredElementResponse *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"DeferredElementState"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"DeferredElementState"];
     deferredElementState = v5->_deferredElementState;
     v5->_deferredElementState = v7;
   }
@@ -37,10 +37,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -52,7 +52,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       deferredElementState = v7->_deferredElementState;
       v9 = self->_deferredElementState;
       v10 = deferredElementState;
@@ -85,9 +85,9 @@
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_deferredElementState withName:@"deferredElementState" skipIfNil:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

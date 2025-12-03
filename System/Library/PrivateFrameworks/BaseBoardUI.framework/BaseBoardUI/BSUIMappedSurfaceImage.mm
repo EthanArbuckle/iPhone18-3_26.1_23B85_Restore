@@ -1,20 +1,20 @@
 @interface BSUIMappedSurfaceImage
-+ (BOOL)writeSurfaceImage:(int)a3 toFileDescriptor:;
-+ (id)mappedSurfaceImageFromPath:(int)a3 loadEagerly:;
++ (BOOL)writeSurfaceImage:(int)image toFileDescriptor:;
++ (id)mappedSurfaceImageFromPath:(int)path loadEagerly:;
 @end
 
 @implementation BSUIMappedSurfaceImage
 
-+ (BOOL)writeSurfaceImage:(int)a3 toFileDescriptor:
++ (BOOL)writeSurfaceImage:(int)image toFileDescriptor:
 {
   v47 = *MEMORY[0x1E69E9840];
   v41 = a2;
   objc_opt_self();
-  v4 = [v41 ioSurface];
-  v5 = v4;
-  if (v4)
+  ioSurface = [v41 ioSurface];
+  v5 = ioSurface;
+  if (ioSurface)
   {
-    IOSurfaceLock(v4, 1u, 0);
+    IOSurfaceLock(ioSurface, 1u, 0);
     PlaneCount = IOSurfaceGetPlaneCount(v5);
     BaseAddress = IOSurfaceGetBaseAddress(v5);
     v7 = 0;
@@ -24,7 +24,7 @@
       if (!HIDWORD(PlaneCount))
       {
         AllocSize = IOSurfaceGetAllocSize(v5);
-        if (__writeDataToFileDescriptor(a3, v39, AllocSize))
+        if (__writeDataToFileDescriptor(image, v39, AllocSize))
         {
           v9 = IOSurfaceCopyAllValues(v5);
           v10 = v9;
@@ -45,7 +45,7 @@
             else
             {
               BytePtr = CFDataGetBytePtr(v12);
-              v14 = __writeDataToFileDescriptor(a3, BytePtr, Length);
+              v14 = __writeDataToFileDescriptor(image, BytePtr, Length);
             }
 
             CFRelease(v12);
@@ -65,17 +65,17 @@ LABEL_18:
             v37 = AllocSize;
             if (Width != IOSurfaceGetWidthOfPlane(v5, 0))
             {
-              v33 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BSUIMappedSurfaceImage writeSurfaceImage:toFileDescriptor:]"];
-              [v33 handleFailureInFunction:v34 file:@"BSUIMappedSurfaceImage.m" lineNumber:99 description:@"width of surface not the same as width of first plane"];
+              [currentHandler handleFailureInFunction:v34 file:@"BSUIMappedSurfaceImage.m" lineNumber:99 description:@"width of surface not the same as width of first plane"];
             }
 
             Height = IOSurfaceGetHeight(v5);
             if (Height != IOSurfaceGetHeightOfPlane(v5, 0))
             {
-              v35 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
               v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BSUIMappedSurfaceImage writeSurfaceImage:toFileDescriptor:]"];
-              [v35 handleFailureInFunction:v36 file:@"BSUIMappedSurfaceImage.m" lineNumber:100 description:@"height of surface not the same as height of first plane"];
+              [currentHandler2 handleFailureInFunction:v36 file:@"BSUIMappedSurfaceImage.m" lineNumber:100 description:@"height of surface not the same as height of first plane"];
             }
 
             v18 = 0;
@@ -99,7 +99,7 @@ LABEL_18:
               HIDWORD(v44) = BaseAddressOfPlane - v39;
               do
               {
-                v25 = write(a3, &buf[v24], 20 - v24);
+                v25 = write(image, &buf[v24], 20 - v24);
                 if (v25 < 0)
                 {
                   break;
@@ -121,11 +121,11 @@ LABEL_18:
                 [v41 scale];
                 v44 = bswap64(v26);
                 v27 = 0;
-                v45 = [v41 imageOrientation];
+                imageOrientation = [v41 imageOrientation];
                 v46 = -1413377484;
                 do
                 {
-                  v28 = write(a3, &buf[v27], 28 - v27);
+                  v28 = write(image, &buf[v27], 28 - v27);
                   v29 = v28;
                   if (v28 < 0)
                   {
@@ -148,7 +148,7 @@ LABEL_18:
                     v30 = PlaneCount;
                   }
 
-                  v31 = lseek(a3, 0, 2);
+                  v31 = lseek(image, 0, 2);
                   if (v31 == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     __assert_rtn("+[BSUIMappedSurfaceImage writeSurfaceImage:toFileDescriptor:]", "BSUIMappedSurfaceImage.m", 140, "end < LONG_MAX");
@@ -187,7 +187,7 @@ LABEL_47:
   return v7;
 }
 
-+ (id)mappedSurfaceImageFromPath:(int)a3 loadEagerly:
++ (id)mappedSurfaceImageFromPath:(int)path loadEagerly:
 {
   v74[8] = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -202,7 +202,7 @@ LABEL_47:
 
   BytePtr = CFDataGetBytePtr(MappedDataFromPath);
   v9 = CFDataGetLength(v7);
-  if (a3)
+  if (path)
   {
     madvise(BytePtr, v9, 3);
   }

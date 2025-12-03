@@ -1,29 +1,29 @@
 @interface BRPair
-+ (id)pairWithLeft:(id)a3 andRight:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)pairWithLeft:(id)left andRight:(id)right;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation BRPair
 
-+ (id)pairWithLeft:(id)a3 andRight:(id)a4
++ (id)pairWithLeft:(id)left andRight:(id)right
 {
-  v5 = a3;
-  v6 = a4;
+  leftCopy = left;
+  rightCopy = right;
   v7 = objc_alloc_init(BRPair);
   left = v7->_left;
-  v7->_left = v5;
-  v9 = v5;
+  v7->_left = leftCopy;
+  v9 = leftCopy;
 
   right = v7->_right;
-  v7->_right = v6;
+  v7->_right = rightCopy;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       left = self->_left;
       if (left | v5->_left && ![left isEqual:?])
       {

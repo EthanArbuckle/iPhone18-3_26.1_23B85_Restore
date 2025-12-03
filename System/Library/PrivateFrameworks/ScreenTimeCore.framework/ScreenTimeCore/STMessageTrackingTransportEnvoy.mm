@@ -1,59 +1,59 @@
 @interface STMessageTrackingTransportEnvoy
-+ (id)_retryIntervalForNumberOfAttempts:(int64_t)a3;
-- (STMessageTrackingTransportEnvoy)initWithTransportService:(id)a3 messageLedger:(id)a4 queue:(id)a5;
++ (id)_retryIntervalForNumberOfAttempts:(int64_t)attempts;
+- (STMessageTrackingTransportEnvoy)initWithTransportService:(id)service messageLedger:(id)ledger queue:(id)queue;
 - (STTransportEnvoyDelegate)delegate;
 - (id)intervalUntilNextRetryAttempt;
 - (id)retryFailedMessages;
-- (id)sendMessageEnvelope:(id)a3;
+- (id)sendMessageEnvelope:(id)envelope;
 - (int64_t)failMessagesStuckInSentState;
 - (int64_t)purgeExpiredMessages;
-- (void)transportService:(id)a3 didReceiveMessage:(id)a4;
-- (void)transportService:(id)a3 didSendMessageWithIdentifier:(id)a4 result:(id)a5;
+- (void)transportService:(id)service didReceiveMessage:(id)message;
+- (void)transportService:(id)service didSendMessageWithIdentifier:(id)identifier result:(id)result;
 @end
 
 @implementation STMessageTrackingTransportEnvoy
 
-- (STMessageTrackingTransportEnvoy)initWithTransportService:(id)a3 messageLedger:(id)a4 queue:(id)a5
+- (STMessageTrackingTransportEnvoy)initWithTransportService:(id)service messageLedger:(id)ledger queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  ledgerCopy = ledger;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = STMessageTrackingTransportEnvoy;
   v11 = [(STMessageTrackingTransportEnvoy *)&v18 init];
   transportService = v11->_transportService;
-  v11->_transportService = v8;
-  v13 = v8;
+  v11->_transportService = serviceCopy;
+  v13 = serviceCopy;
 
   [(STTransportService *)v11->_transportService setDelegate:v11];
   messageLedger = v11->_messageLedger;
-  v11->_messageLedger = v9;
-  v15 = v9;
+  v11->_messageLedger = ledgerCopy;
+  v15 = ledgerCopy;
 
   queue = v11->_queue;
-  v11->_queue = v10;
+  v11->_queue = queueCopy;
 
   return v11;
 }
 
-- (id)sendMessageEnvelope:(id)a3
+- (id)sendMessageEnvelope:(id)envelope
 {
-  v4 = a3;
-  v5 = [v4 message];
-  v6 = [v4 addresses];
+  envelopeCopy = envelope;
+  message = [envelopeCopy message];
+  addresses = [envelopeCopy addresses];
 
   v7 = +[STLog familyMessaging];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v14 = v5;
+    v14 = message;
     v15 = 2082;
     v16 = "[STMessageTrackingTransportEnvoy sendMessageEnvelope:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[v2]       >>> message: %{private}@, %{public}s", buf, 0x16u);
   }
 
-  v8 = [(STMessageTrackingTransportEnvoy *)self transportService];
-  v9 = [v8 sendMessage:v5 toAddresses:v6];
+  transportService = [(STMessageTrackingTransportEnvoy *)self transportService];
+  v9 = [transportService sendMessage:message toAddresses:addresses];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10004AC20;
@@ -74,7 +74,7 @@
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s", &buf, 0xCu);
   }
 
-  v3 = [(STMessageTrackingTransportEnvoy *)self messageLedger];
+  messageLedger = [(STMessageTrackingTransportEnvoy *)self messageLedger];
   v4 = objc_opt_new();
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -87,7 +87,7 @@
   p_buf = &buf;
   v5 = v4;
   v37 = v5;
-  [v3 enumerateItemsWithState:3 usingBlock:v36];
+  [messageLedger enumerateItemsWithState:3 usingBlock:v36];
   v29 = v5;
   v6 = [v5 count];
   if (v6)
@@ -122,28 +122,28 @@
           }
 
           v12 = *(*(&v32 + 1) + 8 * i);
-          v13 = [v3 addressesFromItem:v12 inState:3];
-          v14 = [v12 message];
+          v13 = [messageLedger addressesFromItem:v12 inState:3];
+          message = [v12 message];
           v15 = +[STLog familyMessaging];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v14 identifier];
+            identifier = [message identifier];
             v17 = [v13 count];
             *v39 = 136446723;
             v40 = "[STMessageTrackingTransportEnvoy retryFailedMessages]";
             v41 = 2113;
-            v42 = v16;
+            v42 = identifier;
             v43 = 2050;
             v44 = v17;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nRetrying message: %{private}@ to %{public}lu addresses", v39, 0x20u);
           }
 
           v18 = [v12 itemWithUpdatedStatusForAddresses:v13 usingBlock:&stru_1001A44A0];
-          v19 = [v14 identifier];
-          [v3 setItem:v18 forMessageIdentifier:v19];
+          identifier2 = [message identifier];
+          [messageLedger setItem:v18 forMessageIdentifier:identifier2];
 
-          v20 = [(STMessageTrackingTransportEnvoy *)self transportService];
-          v21 = [v20 sendMessage:v14 toAddresses:v13];
+          transportService = [(STMessageTrackingTransportEnvoy *)self transportService];
+          v21 = [transportService sendMessage:message toAddresses:v13];
 
           [v8 addObject:v21];
         }
@@ -154,10 +154,10 @@
       while (v9);
     }
 
-    v22 = [(STMessageTrackingTransportEnvoy *)self queue];
-    v23 = [STPromise onQueue:v22 all:v8];
-    v24 = [v23 then];
-    v25 = (v24)[2](v24, &stru_1001A44E0);
+    queue = [(STMessageTrackingTransportEnvoy *)self queue];
+    v23 = [STPromise onQueue:queue all:v8];
+    then = [v23 then];
+    v25 = (then)[2](then, &stru_1001A44E0);
   }
 
   else
@@ -172,8 +172,8 @@
 
     v27 = [STPromise alloc];
     v8 = +[STResult success];
-    v22 = [(STMessageTrackingTransportEnvoy *)self queue];
-    v25 = [(STPromise *)v27 initWithResolution:v8 onQueue:v22];
+    queue = [(STMessageTrackingTransportEnvoy *)self queue];
+    v25 = [(STPromise *)v27 initWithResolution:v8 onQueue:queue];
   }
 
   _Block_object_dispose(&buf, 8);
@@ -197,13 +197,13 @@
   v11 = sub_10004B5EC;
   v12 = sub_10004B5FC;
   v13 = 0;
-  v4 = [(STMessageTrackingTransportEnvoy *)self messageLedger];
+  messageLedger = [(STMessageTrackingTransportEnvoy *)self messageLedger];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004B604;
   v8[3] = &unk_1001A4508;
   v8[4] = &buf;
-  [v4 enumerateItemsWithState:3 usingBlock:v8];
+  [messageLedger enumerateItemsWithState:3 usingBlock:v8];
 
   v5 = *(*(&buf + 1) + 40);
   if (v5)
@@ -221,7 +221,7 @@
   return v6;
 }
 
-+ (id)_retryIntervalForNumberOfAttempts:(int64_t)a3
++ (id)_retryIntervalForNumberOfAttempts:(int64_t)attempts
 {
   v4 = +[STLog familyMessaging];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -231,14 +231,14 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s", &v6, 0xCu);
   }
 
-  if (a3 > 5)
+  if (attempts > 5)
   {
     return &off_1001B2470;
   }
 
   else
   {
-    return qword_1001A4570[a3];
+    return qword_1001A4570[attempts];
   }
 }
 
@@ -252,14 +252,14 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s", buf, 0xCu);
   }
 
-  v4 = [(STMessageTrackingTransportEnvoy *)self messageLedger];
+  messageLedger = [(STMessageTrackingTransportEnvoy *)self messageLedger];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10004BADC;
   v21[3] = &unk_1001A4530;
   v5 = objc_opt_new();
   v22 = v5;
-  [v4 enumerateItemsUsingBlock:v21];
+  [messageLedger enumerateItemsUsingBlock:v21];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -282,9 +282,9 @@
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        [v4 removeItemWithMessageIdentifier:{v12, v17}];
-        v14 = [(STMessageTrackingTransportEnvoy *)self transportService];
-        [v14 stopTrackingMessageWithIdentifier:v12];
+        [messageLedger removeItemWithMessageIdentifier:{v12, v17}];
+        transportService = [(STMessageTrackingTransportEnvoy *)self transportService];
+        [transportService stopTrackingMessageWithIdentifier:v12];
 
         objc_autoreleasePoolPop(v13);
       }
@@ -324,14 +324,14 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s", buf, 0xCu);
   }
 
-  v4 = [(STMessageTrackingTransportEnvoy *)self messageLedger];
+  messageLedger = [(STMessageTrackingTransportEnvoy *)self messageLedger];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10004BE1C;
   v22[3] = &unk_1001A4530;
   v5 = objc_opt_new();
   v23 = v5;
-  [v4 enumerateItemsWithState:2 usingBlock:v22];
+  [messageLedger enumerateItemsWithState:2 usingBlock:v22];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -354,9 +354,9 @@
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 itemWithUpdatedStatusUsingBlock:{&stru_1001A4550, v18}];
-        v14 = [v12 message];
-        v15 = [v14 identifier];
-        [v4 setItem:v13 forMessageIdentifier:v15];
+        message = [v12 message];
+        identifier = [message identifier];
+        [messageLedger setItem:v13 forMessageIdentifier:identifier];
       }
 
       v9 += v8;
@@ -384,29 +384,29 @@
   return v9;
 }
 
-- (void)transportService:(id)a3 didReceiveMessage:(id)a4
+- (void)transportService:(id)service didReceiveMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = +[STLog familyMessaging];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 message];
-    v8 = [v7 identifier];
+    message = [messageCopy message];
+    identifier = [message identifier];
     v10 = 136446467;
     v11 = "[STMessageTrackingTransportEnvoy transportService:didReceiveMessage:]";
     v12 = 2113;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid receive message: %{private}@", &v10, 0x16u);
   }
 
-  v9 = [(STMessageTrackingTransportEnvoy *)self delegate];
-  [v9 transportEnvoy:self didReceiveMessage:v5];
+  delegate = [(STMessageTrackingTransportEnvoy *)self delegate];
+  [delegate transportEnvoy:self didReceiveMessage:messageCopy];
 }
 
-- (void)transportService:(id)a3 didSendMessageWithIdentifier:(id)a4 result:(id)a5
+- (void)transportService:(id)service didSendMessageWithIdentifier:(id)identifier result:(id)result
 {
-  v7 = a5;
-  v8 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   v9 = +[STLog familyMessaging];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -415,8 +415,8 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s", &v11, 0xCu);
   }
 
-  v10 = [(STMessageTrackingTransportEnvoy *)self delegate];
-  [v10 transportEnvoy:self didSendMessageWithIdentifier:v8 result:v7];
+  delegate = [(STMessageTrackingTransportEnvoy *)self delegate];
+  [delegate transportEnvoy:self didSendMessageWithIdentifier:identifierCopy result:resultCopy];
 }
 
 - (STTransportEnvoyDelegate)delegate

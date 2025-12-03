@@ -1,40 +1,40 @@
 @interface TSUAssertionHandler
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4;
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal;
 + (id)packedBacktraceString;
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3;
-+ (id)performBlockIgnoringAssertions:(id)a3;
-+ (id)performBlockIgnoringFatalAssertions:(id)a3;
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3;
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3;
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses;
++ (id)performBlockIgnoringAssertions:(id)assertions;
++ (id)performBlockIgnoringFatalAssertions:(id)assertions;
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions;
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols;
 + (void)logBacktraceThrottled;
 + (void)logFullBacktrace;
-+ (void)setDelegate:(id)a3;
++ (void)setDelegate:(id)delegate;
 @end
 
 @implementation TSUAssertionHandler
 
-+ (id)performBlockIgnoringAssertions:(id)a3
++ (id)performBlockIgnoringAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:0];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:0];
 
   return [v3 lastObject];
 }
 
-+ (id)performBlockIgnoringFatalAssertions:(id)a3
++ (id)performBlockIgnoringFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:1];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:1];
 
   return [v3 lastObject];
 }
 
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:{objc_msgSend(a1, "isQAFatalAssertionsEnabled")}];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:{objc_msgSend(self, "isQAFatalAssertionsEnabled")}];
 
   return [v3 lastObject];
 }
 
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal
 {
   v6 = +[NSMutableArray array];
   v12[0] = 0;
@@ -48,12 +48,12 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000B12D0;
   v10[3] = &unk_1001CEF48;
-  v11 = a4;
+  fatalCopy = fatal;
   v10[4] = v6;
   v10[5] = v12;
   qword_1001EB080 = v10;
   byte_1001EB078 = 1;
-  (*(a3 + 2))(a3);
+  (*(assertions + 2))(assertions);
   byte_1001EB078 = v8;
   qword_1001EB080 = v7;
   _Block_object_dispose(v12, 8);
@@ -71,7 +71,7 @@
     os_unfair_lock_unlock(&unk_1001EB090);
 LABEL_4:
 
-    [a1 logFullBacktrace];
+    [self logFullBacktrace];
     return;
   }
 
@@ -96,22 +96,22 @@ LABEL_4:
 
 + (void)logFullBacktrace
 {
-  v3 = [+[NSThread currentThread](NSThread threadDictionary];
-  v4 = [(NSMutableDictionary *)v3 objectForKeyedSubscript:@"logBacktrace_lastStackAddress"];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v4 = [(NSMutableDictionary *)threadDictionary objectForKeyedSubscript:@"logBacktrace_lastStackAddress"];
   v5 = [(NSArray *)+[NSThread callStackReturnAddresses](NSThread copy];
   if (v4 && [v4 isEqualToArray:v5])
   {
-    [a1 _logBacktraceWithCallStackSymbols:&off_1001D71C0];
+    [self _logBacktraceWithCallStackSymbols:&off_1001D71C0];
   }
 
   else
   {
-    [a1 _logBacktraceWithCallStackSymbols:{+[NSThread callStackSymbols](NSThread, "callStackSymbols")}];
-    [(NSMutableDictionary *)v3 setObject:v5 forKeyedSubscript:@"logBacktrace_lastStackAddress"];
+    [self _logBacktraceWithCallStackSymbols:{+[NSThread callStackSymbols](NSThread, "callStackSymbols")}];
+    [(NSMutableDictionary *)threadDictionary setObject:v5 forKeyedSubscript:@"logBacktrace_lastStackAddress"];
   }
 }
 
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols
 {
   if (TSUAssertCat_init_token != -1)
   {
@@ -121,20 +121,20 @@ LABEL_4:
   v5 = TSUAssertCat_log_t;
   if (os_log_type_enabled(TSUAssertCat_log_t, OS_LOG_TYPE_ERROR))
   {
-    sub_100161A98(a3, v5);
+    sub_100161A98(symbols, v5);
   }
 
-  [a1 simulateCrashWithMessage:@"+[TSUAssert logBacktrace]"];
+  [self simulateCrashWithMessage:@"+[TSUAssert logBacktrace]"];
 }
 
 + (id)packedBacktraceString
 {
   v3 = +[NSThread callStackReturnAddresses];
 
-  return [a1 packedBacktraceStringWithReturnAddresses:v3];
+  return [self packedBacktraceStringWithReturnAddresses:v3];
 }
 
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses
 {
   v4 = +[NSMutableData data];
   v5 = +[NSMutableSet set];
@@ -149,8 +149,8 @@ LABEL_4:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v65 objects:v73 count:16];
-  v47 = a3;
+  v7 = [addresses countByEnumeratingWithState:&v65 objects:v73 count:16];
+  addressesCopy = addresses;
   if (v7)
   {
     v8 = v7;
@@ -161,12 +161,12 @@ LABEL_4:
       {
         if (*v66 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(addresses);
         }
 
-        v11 = [*(*(&v65 + 1) + 8 * i) pointerValue];
+        pointerValue = [*(*(&v65 + 1) + 8 * i) pointerValue];
         memset(&v72, 0, sizeof(v72));
-        if (dladdr(v11, &v72))
+        if (dladdr(pointerValue, &v72))
         {
           v12 = [NSValue valueWithPointer:v72.dli_fbase];
           if (([v5 containsObject:v12] & 1) == 0)
@@ -188,12 +188,12 @@ LABEL_4:
             }
 
             [v14 addObject:v15];
-            a3 = v47;
+            addresses = addressesCopy;
           }
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v65 objects:v73 count:16];
+      v8 = [addresses countByEnumeratingWithState:&v65 objects:v73 count:16];
     }
 
     while (v8);
@@ -203,7 +203,7 @@ LABEL_4:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v16 = [v6 countByEnumeratingWithState:&v61 objects:v71 count:{16, v47}];
+  v16 = [v6 countByEnumeratingWithState:&v61 objects:v71 count:{16, addressesCopy}];
   if (v16)
   {
     v17 = v16;
@@ -218,10 +218,10 @@ LABEL_4:
         }
 
         v20 = *(*(&v61 + 1) + 8 * j);
-        v21 = [v20 pointerValue];
-        magic = v21->magic;
+        pointerValue2 = [v20 pointerValue];
+        magic = pointerValue2->magic;
         v23 = 28;
-        if (v21->magic > -17958195)
+        if (pointerValue2->magic > -17958195)
         {
           if (magic == -17958194)
           {
@@ -248,10 +248,10 @@ LABEL_4:
 
         v23 = 32;
 LABEL_28:
-        ncmds = v21->ncmds;
+        ncmds = pointerValue2->ncmds;
         if (ncmds)
         {
-          v26 = (&v21->magic + v23);
+          v26 = (&pointerValue2->magic + v23);
           v27 = 1;
           while (1)
           {
@@ -280,7 +280,7 @@ LABEL_28:
           }
 
           v72.dli_fname = 0;
-          v31 = getsegmentdata(v21, "__TEXT", &v72);
+          v31 = getsegmentdata(pointerValue2, "__TEXT", &v72);
           if (v31)
           {
             v32 = v31;
@@ -381,7 +381,7 @@ LABEL_42:
   return v45;
 }
 
-+ (void)setDelegate:(id)a3
++ (void)setDelegate:(id)delegate
 {
   if (qword_1001EB0B8)
   {
@@ -389,9 +389,9 @@ LABEL_42:
     qword_1001EB0B8 = 0;
   }
 
-  if (a3)
+  if (delegate)
   {
-    qword_1001EB0B8 = a3;
+    qword_1001EB0B8 = delegate;
   }
 }
 

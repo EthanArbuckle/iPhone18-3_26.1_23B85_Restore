@@ -14,7 +14,7 @@
 
   if (_accessibilityEnumerateDelayedDescriptionsWithBlock__regex)
   {
-    v5 = a1;
+    selfCopy = self;
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -24,12 +24,12 @@
     v23 = 0x2020000000;
     v24 = 0;
     v6 = _accessibilityEnumerateDelayedDescriptionsWithBlock__regex;
-    v7 = [v5 length];
+    v7 = [selfCopy length];
     v13 = MEMORY[0x29EDCA5F8];
     v14 = 3221225472;
     v15 = __94__NSString_AXRealityFoundationUtilities___accessibilityEnumerateDelayedDescriptionsWithBlock___block_invoke_284;
     v16 = &unk_29F2F13E0;
-    v8 = v5;
+    v8 = selfCopy;
     v17 = v8;
     v19 = &v21;
     v9 = v4;
@@ -50,7 +50,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, a1, 0.0);
+    (*(v4 + 2))(v4, self, 0.0);
   }
 }
 

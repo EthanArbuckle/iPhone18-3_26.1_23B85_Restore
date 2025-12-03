@@ -1,57 +1,57 @@
 @interface CRLInteractiveCanvasControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (id)crlaxFocusElementFromSearchReference:(id)a3;
-- (id)crlaxFocusTextRangeFromSearchReference:(id)a3;
-- (id)crlaxSearchReferenceForSelectionPath:(id)a3;
-- (void)crlaxAnnounceSearchReference:(id)a3 forRotor:(id)a4;
++ (id)crlaxCastFrom:(id)from;
+- (id)crlaxFocusElementFromSearchReference:(id)reference;
+- (id)crlaxFocusTextRangeFromSearchReference:(id)reference;
+- (id)crlaxSearchReferenceForSelectionPath:(id)path;
+- (void)crlaxAnnounceSearchReference:(id)reference forRotor:(id)rotor;
 - (void)crlaxGoToFormatInspector;
 @end
 
 @implementation CRLInteractiveCanvasControllerAccessibility
 
-- (id)crlaxSearchReferenceForSelectionPath:(id)a3
+- (id)crlaxSearchReferenceForSelectionPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = CRLInteractiveCanvasControllerAccessibility;
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)&v5 crlaxSearchReferenceForSelectionPath:a3];
+  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)&v5 crlaxSearchReferenceForSelectionPath:path];
 
   return v3;
 }
 
-- (id)crlaxFocusElementFromSearchReference:(id)a3
+- (id)crlaxFocusElementFromSearchReference:(id)reference
 {
   v5.receiver = self;
   v5.super_class = CRLInteractiveCanvasControllerAccessibility;
-  v3 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v5 crlaxFocusElementFromSearchReference:a3];
+  v3 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v5 crlaxFocusElementFromSearchReference:reference];
 
   return v3;
 }
 
-- (id)crlaxFocusTextRangeFromSearchReference:(id)a3
+- (id)crlaxFocusTextRangeFromSearchReference:(id)reference
 {
   v5.receiver = self;
   v5.super_class = CRLInteractiveCanvasControllerAccessibility;
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)&v5 crlaxFocusTextRangeFromSearchReference:a3];
+  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)&v5 crlaxFocusTextRangeFromSearchReference:reference];
 
   return v3;
 }
 
-- (void)crlaxAnnounceSearchReference:(id)a3 forRotor:(id)a4
+- (void)crlaxAnnounceSearchReference:(id)reference forRotor:(id)rotor
 {
   v4.receiver = self;
   v4.super_class = CRLInteractiveCanvasControllerAccessibility;
-  [(CRLTextInteractiveCanvasControllerAccessibility *)&v4 crlaxAnnounceSearchReference:a3 forRotor:a4];
+  [(CRLTextInteractiveCanvasControllerAccessibility *)&v4 crlaxAnnounceSearchReference:reference forRotor:rotor];
 }
 
 - (void)crlaxGoToFormatInspector
 {
-  v2 = [(CRLInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 canvasView];
+  crlaxTarget = [(CRLInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+  canvasView = [crlaxTarget canvasView];
 
   v10 = 0;
-  v4 = [v3 nextResponder];
+  nextResponder = [canvasView nextResponder];
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v10);
+  v6 = __CRLAccessibilityCastAsClass(v5, nextResponder, 1, &v10);
   if (v10 == 1)
   {
     abort();
@@ -59,20 +59,20 @@
 
   v7 = v6;
 
-  v8 = [v7 miniFormatterPresenter];
-  v9 = [v8 isPresentingMiniFormatter];
+  miniFormatterPresenter = [v7 miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  if ((v9 & 1) == 0)
+  if ((isPresentingMiniFormatter & 1) == 0)
   {
     [v7 showDefaultEditUIForCurrentSelection];
   }
 }
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }

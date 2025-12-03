@@ -1,19 +1,19 @@
 @interface MCMError
 + (MCMError)notEntitled;
 + (MCMError)unsupported;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMCMError:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMCMError:(id)error;
 - (MCMError)init;
-- (MCMError)initWithErrorType:(unint64_t)a3;
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4;
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4 message:(id)a5;
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4 path:(id)a5 POSIXerrno:(int)a6 message:(id)a7;
-- (MCMError)initWithLibsystemError:(container_error_extended_s *)a3;
-- (MCMError)initWithNSError:(id)a3 url:(id)a4 defaultErrorType:(unint64_t)a5;
+- (MCMError)initWithErrorType:(unint64_t)type;
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category;
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category message:(id)message;
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category path:(id)path POSIXerrno:(int)xerrno message:(id)message;
+- (MCMError)initWithLibsystemError:(container_error_extended_s *)error;
+- (MCMError)initWithNSError:(id)error url:(id)url defaultErrorType:(unint64_t)type;
 - (NSString)message;
 - (NSString)path;
 - (container_error_extended_s)libsystemError;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDescription;
 - (int)POSIXerrno;
@@ -31,7 +31,7 @@
   v5[1] = 3221225472;
   v5[2] = __23__MCMError_notEntitled__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   if (notEntitled_onceToken != -1)
   {
     dispatch_once(&notEntitled_onceToken, v5);
@@ -134,16 +134,16 @@ id __23__MCMError_description__block_invoke(uint64_t a1, int a2)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 16) = self->_type;
     *(v5 + 24) = self->_category;
-    v7 = [(NSString *)self->_path copyWithZone:a3];
+    v7 = [(NSString *)self->_path copyWithZone:zone];
     v8 = *(v6 + 32);
     *(v6 + 32) = v7;
 
@@ -155,17 +155,17 @@ id __23__MCMError_description__block_invoke(uint64_t a1, int a2)
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self == v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = self == equalCopy;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MCMError *)self isEqualToMCMError:v4];
+      v5 = [(MCMError *)self isEqualToMCMError:equalCopy];
     }
   }
 
@@ -173,17 +173,17 @@ id __23__MCMError_description__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (BOOL)isEqualToMCMError:(id)a3
+- (BOOL)isEqualToMCMError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   path = self->_path;
   if (!path)
   {
     goto LABEL_14;
   }
 
-  if (!v4[4])
+  if (!errorCopy[4])
   {
     LOBYTE(path) = 0;
     goto LABEL_7;
@@ -193,16 +193,16 @@ id __23__MCMError_description__block_invoke(uint64_t a1, int a2)
   if (!self->_path)
   {
 LABEL_14:
-    if (!v4[4])
+    if (!errorCopy[4])
     {
       LOBYTE(path) = 1;
     }
   }
 
 LABEL_7:
-  if (self->_type == v4[2] && self->_category == v4[3])
+  if (self->_type == errorCopy[2] && self->_category == errorCopy[3])
   {
-    v6 = (self->_POSIXerrno == *(v4 + 2)) & path;
+    v6 = (self->_POSIXerrno == *(errorCopy + 2)) & path;
   }
 
   else
@@ -277,48 +277,48 @@ id __27__MCMError_fullDescription__block_invoke(uint64_t a1, int a2)
   v8 = *MEMORY[0x1E69E9840];
   [(MCMError *)self category];
   [(MCMError *)self type];
-  v3 = [(MCMError *)self path];
-  [v3 fileSystemRepresentation];
+  path = [(MCMError *)self path];
+  [path fileSystemRepresentation];
   [(MCMError *)self POSIXerrno];
-  v4 = [(MCMError *)self message];
-  [v4 UTF8String];
+  message = [(MCMError *)self message];
+  [message UTF8String];
   v5 = container_error_create_with_message();
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (MCMError)initWithNSError:(id)a3 url:(id)a4 defaultErrorType:(unint64_t)a5
+- (MCMError)initWithNSError:(id)error url:(id)url defaultErrorType:(unint64_t)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  errorCopy = error;
+  urlCopy = url;
+  if (errorCopy)
   {
-    v10 = [v8 domain];
-    v11 = [v10 isEqual:*MEMORY[0x1E696A798]];
+    domain = [errorCopy domain];
+    v11 = [domain isEqual:*MEMORY[0x1E696A798]];
 
     if (v11)
     {
-      v12 = [v9 path];
-      v13 = -[MCMError initWithErrorType:category:path:POSIXerrno:](self, "initWithErrorType:category:path:POSIXerrno:", a5, 1, v12, [v8 code]);
+      path = [urlCopy path];
+      v13 = -[MCMError initWithErrorType:category:path:POSIXerrno:](self, "initWithErrorType:category:path:POSIXerrno:", type, 1, path, [errorCopy code]);
 LABEL_4:
       self = v13;
 LABEL_12:
 
-      v14 = self;
+      selfCopy2 = self;
       goto LABEL_13;
     }
 
-    v15 = [v8 domain];
-    if ([v15 isEqual:*MEMORY[0x1E696A250]])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqual:*MEMORY[0x1E696A250]])
     {
-      v16 = [v8 code];
+      code = [errorCopy code];
 
-      if (v16 == 2048)
+      if (code == 2048)
       {
-        v12 = [v9 path];
-        v13 = [(MCMError *)self initWithErrorType:a5 category:5 path:v12 POSIXerrno:100];
+        path = [urlCopy path];
+        v13 = [(MCMError *)self initWithErrorType:type category:5 path:path POSIXerrno:100];
         goto LABEL_4;
       }
     }
@@ -327,46 +327,46 @@ LABEL_12:
     {
     }
 
-    v17 = [v8 domain];
-    v18 = [v17 isEqual:@"MCMErrorDomain"];
+    domain3 = [errorCopy domain];
+    v18 = [domain3 isEqual:@"MCMErrorDomain"];
 
     if (!v18)
     {
-      self = [(MCMError *)self initWithErrorType:a5];
-      v14 = self;
+      self = [(MCMError *)self initWithErrorType:type];
+      selfCopy2 = self;
       goto LABEL_13;
     }
 
-    v19 = [v8 code];
-    v12 = [v8 userInfo];
-    v20 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
-    self = [(MCMError *)self initWithErrorType:v19 category:0 message:v20];
+    code2 = [errorCopy code];
+    path = [errorCopy userInfo];
+    v20 = [path objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+    self = [(MCMError *)self initWithErrorType:code2 category:0 message:v20];
 
     goto LABEL_12;
   }
 
-  v14 = 0;
+  selfCopy2 = 0;
 LABEL_13:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy2;
 }
 
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4 path:(id)a5 POSIXerrno:(int)a6 message:(id)a7
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category path:(id)path POSIXerrno:(int)xerrno message:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a7;
-  if (a3 == 1)
+  pathCopy = path;
+  messageCopy = message;
+  if (type == 1)
   {
-    v17 = 0;
+    selfCopy = 0;
 LABEL_7:
 
     v18 = *MEMORY[0x1E69E9840];
-    return v17;
+    return selfCopy;
   }
 
-  if (a3)
+  if (type)
   {
     v20.receiver = self;
     v20.super_class = MCMError;
@@ -374,15 +374,15 @@ LABEL_7:
     v16 = v15;
     if (v15)
     {
-      v15->_type = a3;
-      v15->_category = a4;
-      objc_storeStrong(&v15->_path, a5);
-      v16->_POSIXerrno = a6;
-      objc_storeStrong(&v16->_message, a7);
+      v15->_type = type;
+      v15->_category = category;
+      objc_storeStrong(&v15->_path, path);
+      v16->_POSIXerrno = xerrno;
+      objc_storeStrong(&v16->_message, message);
     }
 
     self = v16;
-    v17 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
@@ -391,28 +391,28 @@ LABEL_7:
   return result;
 }
 
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4 message:(id)a5
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category message:(id)message
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMError *)self initWithErrorType:a3 category:a4 path:0 POSIXerrno:0 message:a5];
+  return [(MCMError *)self initWithErrorType:type category:category path:0 POSIXerrno:0 message:message];
 }
 
-- (MCMError)initWithErrorType:(unint64_t)a3 category:(unint64_t)a4
+- (MCMError)initWithErrorType:(unint64_t)type category:(unint64_t)category
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  return [(MCMError *)self initWithErrorType:a3 category:a4 path:0 POSIXerrno:0 message:0];
+  return [(MCMError *)self initWithErrorType:type category:category path:0 POSIXerrno:0 message:0];
 }
 
-- (MCMError)initWithErrorType:(unint64_t)a3
+- (MCMError)initWithErrorType:(unint64_t)type
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [(MCMError *)self initWithErrorType:a3 category:0 path:0 POSIXerrno:0];
+  return [(MCMError *)self initWithErrorType:type category:0 path:0 POSIXerrno:0];
 }
 
 - (MCMError)init
@@ -423,10 +423,10 @@ LABEL_7:
   return [(MCMError *)self initWithErrorType:1 category:0 path:0 POSIXerrno:0];
 }
 
-- (MCMError)initWithLibsystemError:(container_error_extended_s *)a3
+- (MCMError)initWithLibsystemError:(container_error_extended_s *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
     type = container_error_get_type();
     category = container_error_get_category();
@@ -455,16 +455,16 @@ LABEL_7:
 
     self = [(MCMError *)self initWithErrorType:type category:category path:v8 POSIXerrno:posix_errno message:v11];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
 + (MCMError)unsupported
@@ -474,7 +474,7 @@ LABEL_7:
   v5[1] = 3221225472;
   v5[2] = __23__MCMError_unsupported__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   if (unsupported_onceToken != -1)
   {
     dispatch_once(&unsupported_onceToken, v5);

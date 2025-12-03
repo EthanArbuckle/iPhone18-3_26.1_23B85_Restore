@@ -1,20 +1,20 @@
 @interface PUDefaultReattachedTileTransitionCoordinator
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5;
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type;
 @end
 
 @implementation PUDefaultReattachedTileTransitionCoordinator
 
-- (id)optionsForAnimatingTileController:(id)a3 toLayoutInfo:(id)a4 withAnimationType:(int64_t)a5
+- (id)optionsForAnimatingTileController:(id)controller toLayoutInfo:(id)info withAnimationType:(int64_t)type
 {
-  v8 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PUDefaultReattachedTileTransitionCoordinator;
-  v9 = [(PUDefaultTileTransitionCoordinator *)&v12 optionsForAnimatingTileController:v8 toLayoutInfo:a4 withAnimationType:a5];
-  v10 = [(PUDefaultReattachedTileTransitionCoordinator *)self context];
-  -[PUDefaultTileTransitionCoordinator configureOptions:forSpringAnimationsZoomingIn:](self, "configureOptions:forSpringAnimationsZoomingIn:", v9, [v10 isZoomingIn]);
-  if (v10)
+  v9 = [(PUDefaultTileTransitionCoordinator *)&v12 optionsForAnimatingTileController:controllerCopy toLayoutInfo:info withAnimationType:type];
+  context = [(PUDefaultReattachedTileTransitionCoordinator *)self context];
+  -[PUDefaultTileTransitionCoordinator configureOptions:forSpringAnimationsZoomingIn:](self, "configureOptions:forSpringAnimationsZoomingIn:", v9, [context isZoomingIn]);
+  if (context)
   {
-    [v10 velocityForTileController:v8];
+    [context velocityForTileController:controllerCopy];
     [v9 setInitialVelocity:?];
   }
 

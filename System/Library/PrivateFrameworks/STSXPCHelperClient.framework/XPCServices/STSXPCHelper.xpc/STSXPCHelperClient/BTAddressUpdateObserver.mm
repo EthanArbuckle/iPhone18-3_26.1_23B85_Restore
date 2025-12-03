@@ -1,25 +1,25 @@
 @interface BTAddressUpdateObserver
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BTAddressUpdateObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v29 isEqualToString:@"advertisingAddress"];
-  if (a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = [pathCopy isEqualToString:@"advertisingAddress"];
+  if (context)
   {
     if (v12)
     {
-      v13 = [v11 objectForKeyedSubscript:NSKeyValueChangeKindKey];
-      v14 = [v13 unsignedIntegerValue];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeKindKey];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      if (v14 == 1)
+      if (unsignedIntegerValue == 1)
       {
-        v15 = a6;
+        contextCopy = context;
         if (self)
         {
           lock = self->_lock;
@@ -31,25 +31,25 @@
         }
 
         [(NSCondition *)lock lock];
-        v17 = [v15 advertisingAddress];
-        v18 = [v15 advertisingAddressType];
-        if ([v17 length] == 6)
+        advertisingAddress = [contextCopy advertisingAddress];
+        advertisingAddressType = [contextCopy advertisingAddressType];
+        if ([advertisingAddress length] == 6)
         {
           v22 = [[NSMutableData alloc] initWithLength:7];
-          v23 = [v17 bytes];
-          v24 = [v22 mutableBytes];
-          v25 = [v17 length];
+          bytes = [advertisingAddress bytes];
+          mutableBytes = [v22 mutableBytes];
+          v25 = [advertisingAddress length];
           if ((v25 - 1) >= 0)
           {
             do
             {
-              *v24++ = (v25--)[(v23 - 1)];
+              *mutableBytes++ = (v25--)[(bytes - 1)];
             }
 
             while (v25);
           }
 
-          *v24 = v18;
+          *mutableBytes = advertisingAddressType;
           if (self)
           {
             objc_storeStrong(&self->_btAddress, v22);

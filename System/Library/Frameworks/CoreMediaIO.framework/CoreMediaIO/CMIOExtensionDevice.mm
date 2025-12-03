@@ -4,13 +4,13 @@
 + (id)internalProperties;
 + (id)internalWritableProperties;
 - (BOOL)addStream:(CMIOExtensionStream *)stream error:(NSError *)outError;
-- (BOOL)didRegister:(id *)a3;
+- (BOOL)didRegister:(id *)register;
 - (BOOL)removeStream:(CMIOExtensionStream *)stream error:(NSError *)outError;
 - (CMIOExtensionDevice)initWithLocalizedName:(NSString *)localizedName deviceID:(NSUUID *)deviceID legacyDeviceID:(NSString *)legacyDeviceID source:(id)source;
 - (CMIOExtensionDevice)initWithLocalizedName:(NSString *)localizedName deviceID:(NSUUID *)deviceID source:(id)source;
 - (NSArray)streams;
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3;
-- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)a3 propertyValues:(id)a4 error:(id *)a5;
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties;
+- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)client propertyValues:(id)values error:(id *)error;
 - (id)description;
 - (void)dealloc;
 - (void)didUnregister;
@@ -109,19 +109,19 @@ uint64_t __49__CMIOExtensionDevice_internalWritableProperties__block_invoke()
   return v2;
 }
 
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (properties)
   {
-    if ([a3 containsObject:0x284358D98])
+    if ([properties containsObject:0x284358D98])
     {
       v6 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_localizedName attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-      [v5 setObject:v6 forKey:0x284358D98];
+      [dictionary setObject:v6 forKey:0x284358D98];
     }
 
-    if (([a3 containsObject:0x284358DB8] & 1) == 0)
+    if (([properties containsObject:0x284358DB8] & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -130,28 +130,28 @@ uint64_t __49__CMIOExtensionDevice_internalWritableProperties__block_invoke()
   else
   {
     v7 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_localizedName attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-    [v5 setObject:v7 forKey:0x284358D98];
+    [dictionary setObject:v7 forKey:0x284358D98];
   }
 
   v8 = [[CMIOExtensionPropertyState alloc] initWithValue:[(NSUUID *)self->_deviceID UUIDString] attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-  [v5 setObject:v8 forKey:0x284358DB8];
+  [dictionary setObject:v8 forKey:0x284358DB8];
 
-  if (!a3)
+  if (!properties)
   {
     v10 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_legacyDeviceID attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-    [v5 setObject:v10 forKey:0x284358DD8];
+    [dictionary setObject:v10 forKey:0x284358DD8];
 
     goto LABEL_13;
   }
 
 LABEL_8:
-  if ([a3 containsObject:0x284358DD8])
+  if ([properties containsObject:0x284358DD8])
   {
     v9 = [[CMIOExtensionPropertyState alloc] initWithValue:self->_legacyDeviceID attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
-    [v5 setObject:v9 forKey:0x284358DD8];
+    [dictionary setObject:v9 forKey:0x284358DD8];
   }
 
-  if ([a3 containsObject:0x284358DF8])
+  if ([properties containsObject:0x284358DF8])
   {
 LABEL_13:
     v11 = objc_opt_new();
@@ -159,8 +159,8 @@ LABEL_13:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [(CMIOExtensionDevice *)self streams];
-    v13 = [(NSArray *)v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    streams = [(CMIOExtensionDevice *)self streams];
+    v13 = [(NSArray *)streams countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v13)
     {
       v14 = v13;
@@ -172,14 +172,14 @@ LABEL_13:
         {
           if (*v25 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(streams);
           }
 
           [v11 addObject:{objc_msgSend(objc_msgSend(*(*(&v24 + 1) + 8 * v16++), "streamID"), "UUIDString")}];
         }
 
         while (v14 != v16);
-        v14 = [(NSArray *)v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v14 = [(NSArray *)streams countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v14);
@@ -187,14 +187,14 @@ LABEL_13:
 
     v17 = [[CMIOExtensionPropertyState alloc] initWithValue:v11 attributes:+[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute]];
 
-    [v5 setObject:v17 forKey:0x284358DF8];
-    if (!a3)
+    [dictionary setObject:v17 forKey:0x284358DF8];
+    if (!properties)
     {
       goto LABEL_22;
     }
   }
 
-  if (![a3 containsObject:0x284358E18])
+  if (![properties containsObject:0x284358E18])
   {
     goto LABEL_23;
   }
@@ -202,12 +202,12 @@ LABEL_13:
 LABEL_22:
   v18 = [CMIOExtensionPropertyState alloc];
   v19 = -[CMIOExtensionPropertyState initWithValue:attributes:](v18, "initWithValue:attributes:", [MEMORY[0x277CCABB0] numberWithBool:self->_runningSomewhere], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-  [v5 setObject:v19 forKey:0x284358E18];
+  [dictionary setObject:v19 forKey:0x284358E18];
 
-  if (a3)
+  if (properties)
   {
 LABEL_23:
-    if (![a3 containsObject:0x284358E58])
+    if (![properties containsObject:0x284358E58])
     {
       goto LABEL_25;
     }
@@ -215,12 +215,12 @@ LABEL_23:
 
   v20 = [CMIOExtensionPropertyState alloc];
   v21 = -[CMIOExtensionPropertyState initWithValue:](v20, "initWithValue:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_deviceControlPID]);
-  [v5 setObject:v21 forKey:0x284358E58];
+  [dictionary setObject:v21 forKey:0x284358E58];
 
 LABEL_25:
-  if ([v5 count])
+  if ([dictionary count])
   {
-    result = v5;
+    result = dictionary;
   }
 
   else
@@ -232,30 +232,30 @@ LABEL_25:
   return result;
 }
 
-- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)a3 propertyValues:(id)a4 error:(id *)a5
+- (id)_clientQueue_setAndRemoveInternalPropertyValuesForClient:(id)client propertyValues:(id)values error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  v8 = [CMIOExtensionDevice internalWritableProperties:a3];
+  v8 = [CMIOExtensionDevice internalWritableProperties:client];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __101__CMIOExtensionDevice__clientQueue_setAndRemoveInternalPropertyValuesForClient_propertyValues_error___block_invoke;
   v16[3] = &unk_27885B8C0;
   v16[4] = v8;
   v16[5] = &v17;
-  [a4 enumerateKeysAndObjectsUsingBlock:v16];
+  [values enumerateKeysAndObjectsUsingBlock:v16];
   if (v18[3])
   {
-    v9 = a4;
+    valuesCopy = values;
   }
 
   else
   {
-    v9 = [a4 mutableCopy];
+    valuesCopy = [values mutableCopy];
     v10 = objc_opt_new();
-    v11 = [a4 objectForKey:0x284358E58];
+    v11 = [values objectForKey:0x284358E58];
     v12 = v11;
     if (v11)
     {
@@ -266,11 +266,11 @@ LABEL_25:
 
       else
       {
-        v13 = [a3 pid];
+        v13 = [client pid];
       }
 
       self->_deviceControlPID = v13;
-      [v9 removeObjectForKey:0x284358E58];
+      [valuesCopy removeObjectForKey:0x284358E58];
       v14 = [[CMIOExtensionPropertyState alloc] initWithValue:v12];
       [v10 setObject:v14 forKey:0x284358E58];
     }
@@ -279,7 +279,7 @@ LABEL_25:
   }
 
   _Block_object_dispose(&v17, 8);
-  return v9;
+  return valuesCopy;
 }
 
 uint64_t __101__CMIOExtensionDevice__clientQueue_setAndRemoveInternalPropertyValuesForClient_propertyValues_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -294,7 +294,7 @@ uint64_t __101__CMIOExtensionDevice__clientQueue_setAndRemoveInternalPropertyVal
   return result;
 }
 
-- (BOOL)didRegister:(id *)a3
+- (BOOL)didRegister:(id *)register
 {
   v38 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_streamsLock);
@@ -343,7 +343,7 @@ LABEL_3:
     if (v17 && os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       [CMIOExtensionDevice didRegister:];
-      if (!a3)
+      if (!register)
       {
 LABEL_21:
         v22 = 0u;
@@ -376,12 +376,12 @@ LABEL_21:
       }
     }
 
-    else if (!a3)
+    else if (!register)
     {
       goto LABEL_21;
     }
 
-    *a3 = v30;
+    *register = v30;
     goto LABEL_21;
   }
 
@@ -512,7 +512,7 @@ LABEL_28:
       v30 = 2080;
       v31 = "[CMIOExtensionDevice addStream:error:]";
       v32 = 2112;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = stream;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
@@ -565,7 +565,7 @@ LABEL_28:
         v30 = 2080;
         v31 = "[CMIOExtensionDevice addStream:error:]";
         v32 = 2114;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2114;
         v35 = stream;
         _os_log_impl(&dword_22EA08000, v19, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{public}@", buf, 0x30u);
@@ -642,7 +642,7 @@ LABEL_25:
       v33 = 2080;
       v34 = "[CMIOExtensionDevice removeStream:error:]";
       v35 = 2112;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
       v38 = stream;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
@@ -728,7 +728,7 @@ LABEL_23:
       v33 = 2080;
       v34 = "[CMIOExtensionDevice removeStream:error:]";
       v35 = 2114;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2114;
       v38 = stream;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{public}@", buf, 0x30u);

@@ -1,10 +1,10 @@
 @interface SFCommandForwardingView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (SFCommandForwardingView)initWithCoder:(id)a3;
-- (SFCommandForwardingView)initWithFrame:(CGRect)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (SFCommandForwardingView)initWithCoder:(id)coder;
+- (SFCommandForwardingView)initWithFrame:(CGRect)frame;
 - (UIResponder)commandPerformer;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)validateCommand:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation SFCommandForwardingView
@@ -17,11 +17,11 @@
   return Strong;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18BC218B8();
     swift_unknownObjectRelease();
@@ -30,30 +30,30 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = SFCommandForwardingView.canPerformAction(_:withSender:)(a3, v10);
+  v8 = SFCommandForwardingView.canPerformAction(_:withSender:)(action, v10);
 
   sub_18B7E0F80(v10);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
   v7.receiver = self;
   v7.super_class = SFCommandForwardingView;
-  v4 = a3;
-  v5 = self;
-  [(SFCommandForwardingView *)&v7 validateCommand:v4];
-  v6 = [(SFCommandForwardingView *)v5 commandPerformer:v7.receiver];
-  [(UIResponder *)v6 validateCommand:v4];
+  commandCopy = command;
+  selfCopy = self;
+  [(SFCommandForwardingView *)&v7 validateCommand:commandCopy];
+  v6 = [(SFCommandForwardingView *)selfCopy commandPerformer:v7.receiver];
+  [(UIResponder *)v6 validateCommand:commandCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  SFCommandForwardingView.forwardingTarget(for:)(a3, v13);
+  selfCopy = self;
+  SFCommandForwardingView.forwardingTarget(for:)(selector, v13);
 
   v5 = v14;
   if (v14)
@@ -76,25 +76,25 @@
   return v11;
 }
 
-- (SFCommandForwardingView)initWithFrame:(CGRect)a3
+- (SFCommandForwardingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = SFCommandForwardingView;
   return [(SFCommandForwardingView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (SFCommandForwardingView)initWithCoder:(id)a3
+- (SFCommandForwardingView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = SFCommandForwardingView;
-  v5 = a3;
-  v6 = [(SFCommandForwardingView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SFCommandForwardingView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

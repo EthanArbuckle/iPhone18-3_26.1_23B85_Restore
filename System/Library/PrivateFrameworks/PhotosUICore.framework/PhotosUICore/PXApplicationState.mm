@@ -4,34 +4,34 @@
 + (BOOL)isRunningInPhotosTopShelfExtension;
 + (PXApplicationState)sharedState;
 + (int64_t)photosAppProtectionState;
-- (BOOL)isDisablingIdleTimerForReasons:(id *)a3;
+- (BOOL)isDisablingIdleTimerForReasons:(id *)reasons;
 - (PXApplicationState)init;
-- (PXApplicationState)initWithApplication:(id)a3 isExtension:(BOOL)a4;
-- (id)beginDisablingIdleTimerForReason:(id)a3;
-- (void)_appDidBecomeHidden:(id)a3;
-- (void)_appDidBecomeUnhidden:(id)a3;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_sceneWillDeactivate:(id)a3;
-- (void)_sceneWillEnterBackground:(id)a3;
+- (PXApplicationState)initWithApplication:(id)application isExtension:(BOOL)extension;
+- (id)beginDisablingIdleTimerForReason:(id)reason;
+- (void)_appDidBecomeHidden:(id)hidden;
+- (void)_appDidBecomeUnhidden:(id)unhidden;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_sceneWillDeactivate:(id)deactivate;
+- (void)_sceneWillEnterBackground:(id)background;
 - (void)_updateIfNeeded;
 - (void)_updateVisibilityState;
 - (void)didPerformChanges;
-- (void)endDisablingIdleTimer:(id)a3;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setIsInactive:(BOOL)a3;
-- (void)setVisibilityState:(int64_t)a3;
+- (void)endDisablingIdleTimer:(id)timer;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setIsInactive:(BOOL)inactive;
+- (void)setVisibilityState:(int64_t)state;
 @end
 
 @implementation PXApplicationState
 
 + (BOOL)isRunningInPhotosApp
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"Photos"];
-  return v2;
+  LOBYTE(processInfo) = [processName isEqualToString:@"Photos"];
+  return processInfo;
 }
 
 - (void)didPerformChanges
@@ -44,10 +44,10 @@
 
 + (BOOL)isLaunchedForTesting
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 launchedToTest];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  launchedToTest = [mEMORY[0x1E69DC668] launchedToTest];
 
-  return v3;
+  return launchedToTest;
 }
 
 + (PXApplicationState)sharedState
@@ -88,9 +88,9 @@ void __33__PXApplicationState_sharedState__block_invoke()
 
   else
   {
-    v4 = [(PXApplicationState *)self isInactive];
+    isInactive = [(PXApplicationState *)self isInactive];
     v3 = 1;
-    if (v4)
+    if (isInactive)
     {
       v3 = 2;
     }
@@ -105,14 +105,14 @@ void __33__PXApplicationState_sharedState__block_invoke()
   [(PXApplicationState *)self performChanges:v5];
 }
 
-- (BOOL)isDisablingIdleTimerForReasons:(id *)a3
+- (BOOL)isDisablingIdleTimerForReasons:(id *)reasons
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = [(NSMutableSet *)self->_disabledIdleTimerTokens count];
   if (!v5)
   {
     v13 = 0;
-    if (!a3)
+    if (!reasons)
     {
       goto LABEL_11;
     }
@@ -140,8 +140,8 @@ void __33__PXApplicationState_sharedState__block_invoke()
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) reason];
-        [v6 addObject:v12];
+        reason = [*(*(&v16 + 1) + 8 * i) reason];
+        [v6 addObject:reason];
       }
 
       v9 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -151,11 +151,11 @@ void __33__PXApplicationState_sharedState__block_invoke()
   }
 
   v13 = [v6 copy];
-  if (a3)
+  if (reasons)
   {
 LABEL_10:
     v14 = v13;
-    *a3 = v13;
+    *reasons = v13;
   }
 
 LABEL_11:
@@ -163,25 +163,25 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (void)endDisablingIdleTimer:(id)a3
+- (void)endDisablingIdleTimer:(id)timer
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timerCopy = timer;
   v5 = PLUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 reason];
+    reason = [timerCopy reason];
     *buf = 138412290;
-    v9 = v6;
+    v9 = reason;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "End disabling idle timer for reason: %@", buf, 0xCu);
   }
 
-  if (([(NSMutableSet *)self->_disabledIdleTimerTokens containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_disabledIdleTimerTokens containsObject:timerCopy]& 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  [(NSMutableSet *)self->_disabledIdleTimerTokens removeObject:v4];
+  [(NSMutableSet *)self->_disabledIdleTimerTokens removeObject:timerCopy];
   if (![(NSMutableSet *)self->_disabledIdleTimerTokens count])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -199,25 +199,25 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   [v1 setIdleTimerDisabled:0];
 }
 
-- (id)beginDisablingIdleTimerForReason:(id)a3
+- (id)beginDisablingIdleTimerForReason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if (+[PXApplicationState isRunningInPhotosApp]|| (PFProcessIsLaunchedToExecuteTests() & 1) != 0)
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Begin disabling idle timer for reason: %@", buf, 0xCu);
     }
 
-    v6 = [[PXApplicationDisabledIdleTimerToken alloc] initWithReason:v4 powerAssertionID:0];
+    v6 = [[PXApplicationDisabledIdleTimerToken alloc] initWithReason:reasonCopy powerAssertionID:0];
     if (![(NSMutableSet *)self->_disabledIdleTimerTokens count])
     {
-      v7 = [(PXApplicationState *)self application];
-      if (!v7)
+      application = [(PXApplicationState *)self application];
+      if (!application)
       {
         PXAssertGetLog();
       }
@@ -226,8 +226,8 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __55__PXApplicationState_beginDisablingIdleTimerForReason___block_invoke;
       block[3] = &unk_1E774C648;
-      v12 = v7;
-      v8 = v7;
+      v12 = application;
+      v8 = application;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
@@ -240,7 +240,7 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Skipping disabling idle timer (requested for reason: %@), because process is not the Photos app", buf, 0xCu);
     }
 
@@ -250,12 +250,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_sceneWillEnterBackground:(id)a3
+- (void)_sceneWillEnterBackground:(id)background
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [background object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -263,12 +263,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [background object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -276,12 +276,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [activate object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -289,12 +289,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sceneWillDeactivate:(id)a3
+- (void)_sceneWillDeactivate:(id)deactivate
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [deactivate object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -302,12 +302,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_appDidBecomeUnhidden:(id)a3
+- (void)_appDidBecomeUnhidden:(id)unhidden
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [unhidden object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -315,12 +315,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_appDidBecomeHidden:(id)a3
+- (void)_appDidBecomeHidden:(id)hidden
 {
-  v7 = [a3 object];
-  v4 = [v7 session];
-  v5 = [v4 role];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69DE808]];
+  object = [hidden object];
+  session = [object session];
+  role = [session role];
+  v6 = [role isEqualToString:*MEMORY[0x1E69DE808]];
 
   if (v6)
   {
@@ -328,12 +328,12 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setVisibilityState:(int64_t)a3
+- (void)setVisibilityState:(int64_t)state
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_visibilityState != a3)
+  if (self->_visibilityState != state)
   {
-    self->_visibilityState = a3;
+    self->_visibilityState = state;
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -349,9 +349,9 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  if (self->_isHidden != a3)
+  if (self->_isHidden != hidden)
   {
     v7 = v3;
     v8 = v4;
@@ -360,7 +360,7 @@ void __44__PXApplicationState_endDisablingIdleTimer___block_invoke(uint64_t a1)
     v5[2] = __34__PXApplicationState_setIsHidden___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    hiddenCopy = hidden;
     [(PXApplicationState *)self performChanges:v5];
   }
 }
@@ -383,9 +383,9 @@ uint64_t __34__PXApplicationState_setIsHidden___block_invoke(uint64_t a1)
   return [*(a1 + 32) _invalidateVisibilityState];
 }
 
-- (void)setIsInactive:(BOOL)a3
+- (void)setIsInactive:(BOOL)inactive
 {
-  if (self->_isInactive != a3)
+  if (self->_isInactive != inactive)
   {
     v7 = v3;
     v8 = v4;
@@ -394,7 +394,7 @@ uint64_t __34__PXApplicationState_setIsHidden___block_invoke(uint64_t a1)
     v5[2] = __36__PXApplicationState_setIsInactive___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    inactiveCopy = inactive;
     [(PXApplicationState *)self performChanges:v5];
   }
 }
@@ -417,21 +417,21 @@ uint64_t __36__PXApplicationState_setIsInactive___block_invoke(uint64_t a1)
   return [*(a1 + 32) _invalidateVisibilityState];
 }
 
-- (PXApplicationState)initWithApplication:(id)a3 isExtension:(BOOL)a4
+- (PXApplicationState)initWithApplication:(id)application isExtension:(BOOL)extension
 {
-  v4 = a4;
+  extensionCopy = extension;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  applicationCopy = application;
   v21.receiver = self;
   v21.super_class = PXApplicationState;
   v8 = [(PXApplicationState *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_application, a3);
+    objc_storeStrong(&v8->_application, application);
     v9->_needsUpdateVisibilityState = 1;
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    if (v4)
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    if (extensionCopy)
     {
       v9->_isInactive = 0;
       v9->_isHidden = 0;
@@ -439,24 +439,24 @@ uint64_t __36__PXApplicationState_setIsInactive___block_invoke(uint64_t a1)
       v12 = &selRef__appDidBecomeActive_;
       v13 = MEMORY[0x1E696A2D8];
       v14 = &selRef__appDidBecomeInactive_;
-      v15 = v7;
+      v15 = applicationCopy;
     }
 
     else
     {
-      v9->_isInactive = [v7 applicationState] != 0;
+      v9->_isInactive = [applicationCopy applicationState] != 0;
       v15 = 0;
-      v9->_isHidden = [v7 applicationState] == 2;
+      v9->_isHidden = [applicationCopy applicationState] == 2;
       v11 = MEMORY[0x1E69DE338];
       v12 = &selRef__sceneDidActivate_;
       v13 = MEMORY[0x1E69DE358];
       v14 = &selRef__sceneWillDeactivate_;
     }
 
-    [v10 addObserver:v9 selector:*v14 name:*v13 object:v15];
-    [v10 addObserver:v9 selector:*v12 name:*v11 object:v15];
-    [v10 addObserver:v9 selector:sel__appDidBecomeHidden_ name:*MEMORY[0x1E69DE348] object:0];
-    [v10 addObserver:v9 selector:sel__appDidBecomeUnhidden_ name:*MEMORY[0x1E69DE360] object:0];
+    [defaultCenter addObserver:v9 selector:*v14 name:*v13 object:v15];
+    [defaultCenter addObserver:v9 selector:*v12 name:*v11 object:v15];
+    [defaultCenter addObserver:v9 selector:sel__appDidBecomeHidden_ name:*MEMORY[0x1E69DE348] object:0];
+    [defaultCenter addObserver:v9 selector:sel__appDidBecomeUnhidden_ name:*MEMORY[0x1E69DE360] object:0];
     v16 = PLUIGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -464,9 +464,9 @@ uint64_t __36__PXApplicationState_setIsInactive___block_invoke(uint64_t a1)
       *buf = 136315906;
       v23 = "[PXApplicationState initWithApplication:isExtension:]";
       v24 = 2112;
-      v25 = v7;
+      v25 = applicationCopy;
       v26 = 1024;
-      v27 = v4;
+      v27 = extensionCopy;
       v28 = 2048;
       v29 = visibilityState;
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "%s application: %@ isExtension: %i visibilityState: %ld", buf, 0x26u);
@@ -484,8 +484,8 @@ uint64_t __36__PXApplicationState_setIsInactive___block_invoke(uint64_t a1)
 
 - (PXApplicationState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXApplicationState.m" lineNumber:96 description:{@"%s is not available as initializer", "-[PXApplicationState init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXApplicationState.m" lineNumber:96 description:{@"%s is not available as initializer", "-[PXApplicationState init]"}];
 
   abort();
 }
@@ -509,11 +509,11 @@ uint64_t __36__PXApplicationState_setIsInactive___block_invoke(uint64_t a1)
 
 + (BOOL)isRunningInPhotosTopShelfExtension
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  LOBYTE(v2) = [0 isEqualToString:v3];
-  return v2;
+  LOBYTE(processInfo) = [0 isEqualToString:processName];
+  return processInfo;
 }
 
 @end

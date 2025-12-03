@@ -1,22 +1,22 @@
 @interface UIAvoidanceLargestArea
-- (id)avoid:(id)a3 forClient:(id)a4 withCoordinator:(id)a5;
+- (id)avoid:(id)avoid forClient:(id)client withCoordinator:(id)coordinator;
 @end
 
 @implementation UIAvoidanceLargestArea
 
-- (id)avoid:(id)a3 forClient:(id)a4 withCoordinator:(id)a5
+- (id)avoid:(id)avoid forClient:(id)client withCoordinator:(id)coordinator
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x1E695DF70] array];
+  avoidCopy = avoid;
+  coordinatorCopy = coordinator;
+  array = [MEMORY[0x1E695DF70] array];
   v9 = [MEMORY[0x1E695DFA8] set];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [v6 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [avoidCopy allValues];
+  v11 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -27,24 +27,24 @@
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         [v9 unionSet:*(*(&v21 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
   }
 
-  [v7 avoidanceFrame];
-  FindRectanglesAroundRectangles(v8, v9, v15, v16, v17, v18);
-  [v8 sortUsingComparator:&__block_literal_global_697];
-  v19 = [v8 lastObject];
+  [coordinatorCopy avoidanceFrame];
+  FindRectanglesAroundRectangles(array, v9, v15, v16, v17, v18);
+  [array sortUsingComparator:&__block_literal_global_697];
+  lastObject = [array lastObject];
 
-  return v19;
+  return lastObject;
 }
 
 uint64_t __58__UIAvoidanceLargestArea_avoid_forClient_withCoordinator___block_invoke(uint64_t a1, void *a2, void *a3)

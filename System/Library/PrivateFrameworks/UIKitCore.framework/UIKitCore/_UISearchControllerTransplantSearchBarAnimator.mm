@@ -1,15 +1,15 @@
 @interface _UISearchControllerTransplantSearchBarAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _UISearchControllerTransplantSearchBarAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:@"UITransitionContextFromViewController"];
-  v6 = [v4 viewControllerForKey:@"UITransitionContextToViewController"];
-  v7 = [v4 isAnimated];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+  v6 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+  isAnimated = [transitionCopy isAnimated];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -23,49 +23,49 @@
   }
 
   v10 = v9;
-  v11 = [v10 _searchPresentationController];
-  v12 = [v10 presentingViewController];
-  v54 = [v12 transitionCoordinator];
+  _searchPresentationController = [v10 _searchPresentationController];
+  presentingViewController = [v10 presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
   v53 = v10;
-  v13 = [v10 searchBar];
-  v14 = [v13 _supportsLayoutStates];
-  v55 = v11;
+  searchBar = [v10 searchBar];
+  _supportsLayoutStates = [searchBar _supportsLayoutStates];
+  v55 = _searchPresentationController;
   if (isKindOfClass)
   {
-    v50 = self;
+    selfCopy = self;
     v51 = v5;
-    if ([v11 searchBarToBecomeTopAttached])
+    if ([_searchPresentationController searchBarToBecomeTopAttached])
     {
-      [v6 set_previousSearchBarPosition:{objc_msgSend(v13, "barPosition")}];
-      [v13 _setBarPosition:3];
+      [v6 set_previousSearchBarPosition:{objc_msgSend(searchBar, "barPosition")}];
+      [searchBar _setBarPosition:3];
     }
 
-    v15 = [v11 searchBarContainerView];
-    [v15 addSubview:v13];
+    searchBarContainerView = [_searchPresentationController searchBarContainerView];
+    [searchBarContainerView addSubview:searchBar];
 
-    v16 = [v6 view];
-    [v4 finalFrameForViewController:v6];
-    [v16 setFrame:?];
-    v17 = [v4 containerView];
-    [v17 addSubview:v16];
+    view = [v6 view];
+    [transitionCopy finalFrameForViewController:v6];
+    [view setFrame:?];
+    containerView = [transitionCopy containerView];
+    [containerView addSubview:view];
 
-    [(UIView *)v16 _recursiveEagerlyUpdateSafeAreaInsetsUntilViewController];
-    [v11 resultsControllerContentOffset];
+    [(UIView *)view _recursiveEagerlyUpdateSafeAreaInsetsUntilViewController];
+    [_searchPresentationController resultsControllerContentOffset];
     v19 = v18;
     v77 = 0;
     v78 = &v77;
     v79 = 0x3010000000;
     v80 = "";
     v81 = *MEMORY[0x1E695EFF8];
-    v20 = [v6 searchResultsController];
-    v52 = v14;
-    v21 = [v20 _contentOrObservableScrollViewForEdge:1];
+    searchResultsController = [v6 searchResultsController];
+    v52 = _supportsLayoutStates;
+    v21 = [searchResultsController _contentOrObservableScrollViewForEdge:1];
     if ([v6 hidesNavigationBarDuringPresentation])
     {
-      v22 = [v11 presentingViewController];
-      v23 = [v22 navigationController];
-      v24 = v23 != 0;
+      presentingViewController2 = [_searchPresentationController presentingViewController];
+      navigationController = [presentingViewController2 navigationController];
+      v24 = navigationController != 0;
     }
 
     else
@@ -98,8 +98,8 @@
       [v21 setScrollIndicatorInsets:{v19, v35, v37, v39}];
     }
 
-    v42 = [v6 _resultsControllerViewContainer];
-    [v42 setAlpha:0.0];
+    _resultsControllerViewContainer = [v6 _resultsControllerViewContainer];
+    [_resultsControllerViewContainer setAlpha:0.0];
 
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
@@ -107,10 +107,10 @@
     v68[3] = &unk_1E711EB18;
     v69 = v6;
     v74 = v52;
-    v43 = v13;
+    v43 = searchBar;
     v70 = v43;
-    v75 = v7;
-    v44 = v20;
+    v75 = isAnimated;
+    v44 = searchResultsController;
     v76 = v24;
     v71 = v44;
     v73 = &v77;
@@ -122,20 +122,20 @@
     v65[2] = __68___UISearchControllerTransplantSearchBarAnimator_animateTransition___block_invoke_2;
     v65[3] = &unk_1E70F3C60;
     v66 = v43;
-    v47 = v4;
+    v47 = transitionCopy;
     v67 = v47;
     v48 = _Block_copy(v65);
-    if (v7)
+    if (isAnimated)
     {
-      [(_UISearchControllerAnimator *)v50 transitionDuration:v47];
-      v32 = v54;
-      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [v54 completionCurve], v46, v48, v49, 0.0);
+      [(_UISearchControllerAnimator *)selfCopy transitionDuration:v47];
+      v32 = transitionCoordinator;
+      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [transitionCoordinator completionCurve], v46, v48, v49, 0.0);
     }
 
     else
     {
       v46[2](v46);
-      v32 = v54;
+      v32 = transitionCoordinator;
       v48[2](v48, 1);
     }
 
@@ -150,13 +150,13 @@
     aBlock[2] = __68___UISearchControllerTransplantSearchBarAnimator_animateTransition___block_invoke_3;
     aBlock[3] = &unk_1E70F67F8;
     v25 = v5;
-    v26 = v14;
+    v26 = _supportsLayoutStates;
     v27 = v25;
     v61 = v25;
     v63 = v26;
-    v28 = v13;
+    v28 = searchBar;
     v62 = v28;
-    v64 = v7;
+    v64 = isAnimated;
     v29 = _Block_copy(aBlock);
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -164,24 +164,24 @@
     v56[3] = &unk_1E70F4638;
     v57 = v27;
     v58 = v28;
-    v30 = v4;
+    v30 = transitionCopy;
     v59 = v30;
     v31 = _Block_copy(v56);
-    if (v7)
+    if (isAnimated)
     {
       [(_UISearchControllerAnimator *)self transitionDuration:v30];
-      v32 = v54;
-      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [v54 completionCurve], v29, v31, v33, 0.0);
+      v32 = transitionCoordinator;
+      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [transitionCoordinator completionCurve], v29, v31, v33, 0.0);
     }
 
     else
     {
       v29[2](v29);
       v31[2](v31, 1);
-      v32 = v54;
+      v32 = transitionCoordinator;
     }
 
-    v16 = v61;
+    view = v61;
   }
 }
 

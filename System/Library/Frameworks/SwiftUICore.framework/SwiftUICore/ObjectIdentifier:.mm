@@ -23,7 +23,7 @@
   if (!*a2)
   {
     v7 = a3(255);
-    v8 = a4(a1, v7);
+    v8 = a4(self, v7);
     if (!v9)
     {
       atomic_store(v8, a2);
